@@ -1,275 +1,241 @@
-Return-Path: <linux-wireless+bounces-11418-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11420-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF7A79517FF
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2024 11:45:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5C5195180A
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2024 11:48:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2E221C21EFF
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2024 09:45:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 740A81F239FA
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2024 09:48:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F66B16EB61;
-	Wed, 14 Aug 2024 09:45:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 168B419F461;
+	Wed, 14 Aug 2024 09:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="grTQDPcN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lfD0Jj3A"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A96F16DEB9
-	for <linux-wireless@vger.kernel.org>; Wed, 14 Aug 2024 09:45:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AFA813634A;
+	Wed, 14 Aug 2024 09:48:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723628707; cv=none; b=mDttQtHGwbRRr0O5QqCmdeX0UUndO1ybrYF5Vrdy4r9lv06sk4Phv7nddnCNWpoLx0mxHOjbrzxfyNIZpVw0z9aQQdARAfYbKqJ1rQKnFb94nwUsbSyclH9AOhM6g1xIiQeQa6ZN/KfksHsMyZbA9PcIgaoTAo1MDMn8l2eRlbI=
+	t=1723628934; cv=none; b=FUa5WxjbZAZ2KnPyWiQxSB3rhcii8Ztoyi3e/aFGZ0L3ffTn2RfE10nuUlDCtCHOO+nDZA1OzfLCstsd13lr+UguDtGfP5FHY1WRJW9R4Mz9HeruZE3/MmdhLjTgxu6gOJ1/nCC+ramxuarK+yPEP9L5ROTVbxZJp1Xmco8Rmkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723628707; c=relaxed/simple;
-	bh=Oy86LNP9KrOvNuLpy5ACIWOlE8oEdbi5ia9tI1XYA6M=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t2pIsy+ye9brgpFTGT9OW6gyA92JIhAeKXPvU7Lp5WLL731o9ba0XV9gwsubwONVFBsQ7worYadlhYS5KpvjkQ0Ag/3riY/JtNrI89d6GLAe0g0QXe/SUH+1DKJg+Wv4Hius315IhBKoMHYBSV2+g1GsISQPMFTUzACD1T1d6dY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=grTQDPcN; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47DNFc01032553;
-	Wed, 14 Aug 2024 09:45:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	F7HuTPC34AQoK6/xhxrg6FTfge3vbMgl0mXb071WtcI=; b=grTQDPcNtXf5k4I8
-	oBLtevmmUGRNBUeyb26mYZbjJ8Nc8UejFOM07mL21L5BiWjrAqOAPB2BwMQABat4
-	BZJT9avyve+xt2/az3sr82b7yn2mjuF1Qn9ZSXB7gMi2xXfSlAn9164Wai0ZuxUg
-	B/ROB4g++gADEX8rRMVR0EIvZHVVT2cpQfkXSYERPQFOTAyUkOR1Z7KnEKk7uYrS
-	XUiVXoyB7waIcUlUKRX1OI79GDhuYhbsnLJ4D2XF6tkVGUx8HMhVA1YziGe6Y9OE
-	Y2H8AzD2TmhmyeNRqekOon1M2cB1PRbKfpgqEw8hhAuXnMGk7t4LiTeCfTP+YhRK
-	AHrNgw==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 410437uvp4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 Aug 2024 09:45:01 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47E9ixUY022033
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 Aug 2024 09:44:59 GMT
-Received: from hu-rajkbhag-blr.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Wed, 14 Aug 2024 02:44:57 -0700
-From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Balamurugan S
-	<quic_bselvara@quicinc.com>,
-        P Praneesh <quic_ppranees@quicinc.com>,
-        "Raj
- Kumar Bhagat" <quic_rajkbhag@quicinc.com>
-Subject: [RFC PATCH 18/18] wifi: ath12k: enable ath12k AHB support
-Date: Wed, 14 Aug 2024 15:13:23 +0530
-Message-ID: <20240814094323.3927603-19-quic_rajkbhag@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240814094323.3927603-1-quic_rajkbhag@quicinc.com>
-References: <20240814094323.3927603-1-quic_rajkbhag@quicinc.com>
+	s=arc-20240116; t=1723628934; c=relaxed/simple;
+	bh=n7denkbqhgALgUseHii2av+n0Qsgr2MUbPt4EdOcoJY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JOKVnO3N6E9BdCvzs5moG/RoY+JVWql7wKxvRJjj0+Fz9oZM5W7oLHujd6HoDS/i25nnqH2YCZM4GBV0B3bvXZ9Kq3rvFGsMcAa6OGX2xzm9TgIxne8z8UFtoXSXvRniNFxqwGFft0YkkJf7AesrB7xrrqViQlNgIPDOrAWScYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lfD0Jj3A; arc=none smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-45006bcb482so33265181cf.3;
+        Wed, 14 Aug 2024 02:48:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723628930; x=1724233730; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7E9dz5B79iMiE9YR//5bouzEa+H1xHgYZ6HkutyLa1Y=;
+        b=lfD0Jj3AtDHTvE1rBghXqvTCIlKoyuNDCJrkAFJVnA3dJswod5ICcDOeLbeFnW/0Mo
+         XK36fGS4gB35K5/QVKIPYuph34rOkp1wbjwGzEN5TzcmXWLkCYs7jjpjuYc5HgDZKXVS
+         XqqSSzQB8ASidxWMTIgS2QOFYuDh7JK0r9zTFTwf4Mci/dhl/TVqTngXF4Q0nGDWenQl
+         SoaFkuCtIcxh/C0whwmN50YnK3CXNgbqpaOKMMoKR4uAh1qQP/HsNWxpjRSRonPbjjTO
+         38IvLnzjVSuV9NAGKfiQGRD8JiPam78eYq/Kb7/AgdxVW2is+3XG64RSY6ce/BVlrBcN
+         UJ8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723628930; x=1724233730;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7E9dz5B79iMiE9YR//5bouzEa+H1xHgYZ6HkutyLa1Y=;
+        b=a2KST69iSvUeftA/ySliFcHK42QHbGtYiU8aaipU48kfoKdLvcy10UXhJduGHstSK1
+         vreip/Ao+9vreOkB2kziC4ykuuJrM62Cl42udrM+JPQQzJMvnqNN8hluO48MnhOb/kNa
+         ek5odNTNtTAg+iKiAFU68Nwdk419iGLjUtYeXZxkoI12j2b9b6brsxY9xYEU/HfN734R
+         +HlWJEcg80+dJzgGwJHbRgJWWUzfP1k7RCR22G6O3zTxdW+dLtG/59TE0cvBGZhV2w82
+         x5cAgzRdxT+Y7PvR+dqI7HVoutAcZfvRoGkx/QZ+kM8KxyjdVHC6ycD7ScZ3qlxA7tbE
+         LZjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXnmb5VQ7GT0AN91v6fPMXd2oZQ6iJ3m0/04RjrINNdcMPwGpACEt515peq+uU1kNyfmc7KzvvyZWdIrnD/tbON3uvx/6DnRf4J2sAdMmkr6EwxQCOx+Jiedy7B/MFLA5ZV+1V0BHQSUjo4fXRwjqIejDN9bkfIOfHzorZkwJ2gDEp408yBWNeYZy0CyAHlT2rU0ANuyoQ0wMLd0UxeyZ7F
+X-Gm-Message-State: AOJu0YwVKgCL46KRSjHKAvFjrKkiLPicS/2v6oLWlmwIQohobyk6PAoU
+	gfvZAlwoh+MyZIz4ugY/E7JohiEyho6X4ycsbRyOIopULMREyvERjvHJEKarxGuxcLAim1dw8IK
+	QqaqZ9XqLNQvPgILdBSyVwlD2J2M=
+X-Google-Smtp-Source: AGHT+IHHkrK7mmSRX+NFljHlJety4di7IkukkrNgDqvQHopRybi91eO1UnO/AUVkPQhhdbCRrGEPu+h2HKURrxKNdnc=
+X-Received: by 2002:a05:622a:40cc:b0:447:e562:b6b with SMTP id
+ d75a77b69052e-4535bbd981fmr26069981cf.64.1723628930043; Wed, 14 Aug 2024
+ 02:48:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: leGvk85LtPd87zBSAIe3GeS0NQ-0EJ8d
-X-Proofpoint-GUID: leGvk85LtPd87zBSAIe3GeS0NQ-0EJ8d
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-14_07,2024-08-13_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
- mlxlogscore=999 malwarescore=0 lowpriorityscore=0 phishscore=0 spamscore=0
- bulkscore=0 suspectscore=0 adultscore=0 mlxscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
- definitions=main-2408140067
+References: <20240813082007.2625841-1-jacobe.zang@wesion.com>
+ <20240813082007.2625841-5-jacobe.zang@wesion.com> <721da64c-42ec-4be6-8ad3-e2685a84823a@broadcom.com>
+ <2269063.vFx2qVVIhK@latitude-fedora> <fa019ee9-3f4d-4bea-92a7-929713518dc9@wesion.com>
+In-Reply-To: <fa019ee9-3f4d-4bea-92a7-929713518dc9@wesion.com>
+From: Alexey Charkov <alchark@gmail.com>
+Date: Wed, 14 Aug 2024 12:48:39 +0300
+Message-ID: <CABjd4YwTbG8pm_xwrOVtVwMwvarvz2SB9bapH3LDMqPn6pH9Ew@mail.gmail.com>
+Subject: Re: [PATCH v10 4/5] wifi: brcmfmac: Add optional lpo clock enable support
+To: Jacobe Zang <jacobe.zang@wesion.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, heiko@sntech.de, kvalo@kernel.org, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	conor+dt@kernel.org, linux-rockchip@lists.infradead.org, 
+	efectn@protonmail.com, dsimic@manjaro.org, jagan@edgeble.ai, 
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, arend@broadcom.com, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, megi@xff.cz, 
+	duoming@zju.edu.cn, bhelgaas@google.com, minipli@grsecurity.net, 
+	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com, 
+	nick@khadas.com, Sai Krishna <saikrishnag@marvell.com>, 
+	Arend van Spriel <arend.vanspriel@broadcom.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Balamurugan S <quic_bselvara@quicinc.com>
+On Wed, Aug 14, 2024 at 12:27=E2=80=AFPM Jacobe Zang <jacobe.zang@wesion.co=
+m> wrote:
+>
+>
+>
+> On 2024/8/14 16:47, Alexey Charkov wrote:
+> > Hi Arend, Jacobe,
+> >
+> > On Tuesday, August 13, 2024 2:57:28=E2=80=AFPM GMT+3 Arend van Spriel w=
+rote:
+> >> On 8/13/2024 10:20 AM, Jacobe Zang wrote:
+> >>> WiFi modules often require 32kHz clock to function. Add support to
+> >>> enable the clock to PCIe driver and move "brcm,bcm4329-fmac" check
+> >>> to the top of brcmf_of_probe. Change function prototypes from void
+> >>> to int and add appropriate errno's for return values that will be
+> >>> send to bus when error occurred.
+> >>
+> >> I was going to say it looks good to me, but....
+> >>
+> >>> Co-developed-by: Ondrej Jirman <megi@xff.cz>
+> >>> Signed-off-by: Ondrej Jirman <megi@xff.cz>
+> >>> Co-developed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> >>> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> >>> Reviewed-by: Sai Krishna <saikrishnag@marvell.com>
+> >>> Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
+> >>> ---
+> >>>
+> >>>    .../broadcom/brcm80211/brcmfmac/bcmsdh.c      |  4 +-
+> >>>    .../broadcom/brcm80211/brcmfmac/common.c      |  3 +-
+> >>>    .../wireless/broadcom/brcm80211/brcmfmac/of.c | 53 +++++++++++----=
+----
+> >>>    .../wireless/broadcom/brcm80211/brcmfmac/of.h |  9 ++--
+> >>>    .../broadcom/brcm80211/brcmfmac/pcie.c        |  3 ++
+> >>>    .../broadcom/brcm80211/brcmfmac/sdio.c        | 22 +++++---
+> >>>    .../broadcom/brcm80211/brcmfmac/usb.c         |  3 ++
+> >>>    7 files changed, 61 insertions(+), 36 deletions(-)
+> >>
+> >> [...]
+> >>
+> >>> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+> >>> b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c index
+> >>> e406e11481a62..f19dc7355e0e8 100644
+> >>> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+> >>> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+> >>
+> >> [...]
+> >>
+> >>> @@ -113,33 +118,39 @@ void brcmf_of_probe(struct device *dev, enum
+> >>> brcmf_bus_type bus_type,>
+> >>>             of_node_put(root);
+> >>>
+> >>>     }
+> >>>
+> >>> -   if (!np || !of_device_is_compatible(np, "brcm,bcm4329-fmac"))
+> >>> -           return;
+> >>> -
+> >>>
+> >>>     err =3D brcmf_of_get_country_codes(dev, settings);
+> >>>     if (err)
+> >>>
+> >>>             brcmf_err("failed to get OF country code map (err=3D%d)
+> > \n", err);
+> >>>
+> >>>     of_get_mac_address(np, settings->mac);
+> >>>
+> >>> -   if (bus_type !=3D BRCMF_BUSTYPE_SDIO)
+> >>> -           return;
+> >>> +   if (bus_type =3D=3D BRCMF_BUSTYPE_SDIO) {
+> >>
+> >> Don't like the fact that this now has an extra indentation level and i=
+t
+> >> offers no extra benefit. Just keep the original if-statement and retur=
+n
+> >> 0. Consequently the LPO clock code should move just before the if-stat=
+ement.
+> >>> +           if (of_property_read_u32(np, "brcm,drive-strength",
+> > &val) =3D=3D 0)
+> >>> +                   sdio->drive_strength =3D val;
+> >>>
+> >>> -   if (of_property_read_u32(np, "brcm,drive-strength", &val) =3D=3D =
+0)
+> >>> -           sdio->drive_strength =3D val;
+> >>> +           /* make sure there are interrupts defined in the node */
+> >>> +           if (!of_property_present(np, "interrupts"))
+> >>> +                   return 0;
+> >>>
+> >>> -   /* make sure there are interrupts defined in the node */
+> >>> -   if (!of_property_present(np, "interrupts"))
+> >>> -           return;
+> >>> +           irq =3D irq_of_parse_and_map(np, 0);
+> >>> +           if (!irq) {
+> >>> +                   brcmf_err("interrupt could not be
+> > mapped\n");
+> >>> +                   return 0;
+> >>> +           }
+> >>> +           irqf =3D irqd_get_trigger_type(irq_get_irq_data(irq));
+> >>> +
+> >>> +           sdio->oob_irq_supported =3D true;
+> >>> +           sdio->oob_irq_nr =3D irq;
+> >>> +           sdio->oob_irq_flags =3D irqf;
+> >>> +   }
+> >>>
+> >>> -   irq =3D irq_of_parse_and_map(np, 0);
+> >>> -   if (!irq) {
+> >>> -           brcmf_err("interrupt could not be mapped\n");
+> >>> -           return;
+> >>> +   clk =3D devm_clk_get_optional_enabled(dev, "lpo");
+> >>> +   if (!IS_ERR_OR_NULL(clk)) {
+> >>> +           brcmf_dbg(INFO, "enabling 32kHz clock\n");
+> >>> +           return clk_set_rate(clk, 32768);
+> >>> +   } else {
+> >>> +           return PTR_ERR_OR_ZERO(clk);
+> >>>
+> >>>     }
+> >>
+> >> Change this to:
+> >>   > +        clk =3D devm_clk_get_optional_enabled(dev, "lpo");
+> >>   > +        if (IS_ERR_OR_NULL(clk)) {
+> >>   > +                return PTR_ERR_OR_ZERO(clk);
+> >
+> > Perhaps in this case we should go for IS_ERR and PTR_ERR respectively.
+> > devm_clk_get_optional_enabled would return NULL when the optional clock=
+ is not
+> > found, so NULL is not an error state but serves as a dummy clock that c=
+an be> used with clk_set_rate.
+>
+> I think we don't need to set clock rate for clock is NULL. So it should
+> be changed to:
+>
+> +       clk =3D devm_clk_get_optional_enabled(dev, "lpo");
+> +       if (IS_ERR(clk)) {
+> +               return PTR_ERR(clk);
+> +       } else if (clk) {
+> +               brcmf_dbg(INFO, "enabling 32kHz clock\n");
+> +               clk_set_rate(clk, 32768);
+> +       }
 
-Currently only PCI devices is supported in Ath12k driver. Refactor
-Ath12k module_init and module_exit to include Ath12k AHB support.
+If clk is NULL then clk_set_rate returns immediately with status zero,
+so there is little difference from whether you wrap it into another if
+(clk) or not. You can probably drop the debug statement altogether and
+call clk_set_rate unconditionally - this will look neater.
 
-Add Ath12k AHB support in Kconfig with dependency on Remoteproc
-driver. Ath12k AHB support relies on remoteproc driver for firmware
-download, power up/down etc.
-
-Tested-on: IPQ5332 hw1.0 AHB WLAN.WBE.1.3.1-00130-QCAHKSWPL_SILICONZ-1
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00210-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Balamurugan S <quic_bselvara@quicinc.com>
-Co-developed-by: P Praneesh <quic_ppranees@quicinc.com>
-Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/Kconfig  |  6 ++++
- drivers/net/wireless/ath/ath12k/Makefile |  1 +
- drivers/net/wireless/ath/ath12k/ahb.h    | 12 ++++++++
- drivers/net/wireless/ath/ath12k/core.c   | 35 ++++++++++++++++++++++--
- drivers/net/wireless/ath/ath12k/pci.c    | 12 ++------
- drivers/net/wireless/ath/ath12k/pci.h    |  2 ++
- 6 files changed, 56 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/Kconfig b/drivers/net/wireless/ath/ath12k/Kconfig
-index f64e7c322216..f787bfe4b3a4 100644
---- a/drivers/net/wireless/ath/ath12k/Kconfig
-+++ b/drivers/net/wireless/ath/ath12k/Kconfig
-@@ -15,6 +15,12 @@ config ATH12K
- 
- 	  If you choose to build a module, it'll be called ath12k.
- 
-+config ATH12K_AHB
-+	bool "QTI ath12k AHB support"
-+	depends on ATH12K && REMOTEPROC
-+	help
-+	  Enable support for Ath12k AHB bus chipsets, example IPQ5332.
-+
- config ATH12K_DEBUG
- 	bool "ath12k debugging"
- 	depends on ATH12K
-diff --git a/drivers/net/wireless/ath/ath12k/Makefile b/drivers/net/wireless/ath/ath12k/Makefile
-index 5a1ed20d730e..4b7b9404d0c6 100644
---- a/drivers/net/wireless/ath/ath12k/Makefile
-+++ b/drivers/net/wireless/ath/ath12k/Makefile
-@@ -23,6 +23,7 @@ ath12k-y += core.o \
- 	    fw.o \
- 	    p2p.o
- 
-+ath12k-$(CONFIG_ATH12K_AHB) += ahb.o
- ath12k-$(CONFIG_ATH12K_DEBUGFS) += debugfs.o debugfs_htt_stats.o
- ath12k-$(CONFIG_ACPI) += acpi.o
- ath12k-$(CONFIG_ATH12K_TRACING) += trace.o
-diff --git a/drivers/net/wireless/ath/ath12k/ahb.h b/drivers/net/wireless/ath/ath12k/ahb.h
-index 4a17e041c13a..4fdb493753d7 100644
---- a/drivers/net/wireless/ath/ath12k/ahb.h
-+++ b/drivers/net/wireless/ath/ath12k/ahb.h
-@@ -35,4 +35,16 @@ static inline struct ath12k_ahb *ath12k_ab_to_ahb(struct ath12k_base *ab)
- 	return (struct ath12k_ahb *)ab->drv_priv;
- }
- 
-+#ifdef CONFIG_ATH12K_AHB
-+int ath12k_ahb_init(void);
-+void ath12k_ahb_exit(void);
-+#else
-+static inline int ath12k_ahb_init(void)
-+{
-+	return 0;
-+}
-+
-+static inline void ath12k_ahb_exit(void) {};
-+#endif
-+
- #endif
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index 51252e8bc1ae..a10f0dd295bc 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -9,15 +9,18 @@
- #include <linux/remoteproc.h>
- #include <linux/firmware.h>
- #include <linux/of.h>
-+#include "ahb.h"
- #include "core.h"
- #include "dp_tx.h"
- #include "dp_rx.h"
- #include "debug.h"
--#include "hif.h"
--#include "fw.h"
- #include "debugfs.h"
-+#include "fw.h"
-+#include "hif.h"
-+#include "pci.h"
- #include "wow.h"
- 
-+static int ahb_err, pci_err;
- unsigned int ath12k_debug_mask;
- module_param_named(debug_mask, ath12k_debug_mask, uint, 0644);
- MODULE_PARM_DESC(debug_mask, "Debugging mask");
-@@ -1342,5 +1345,31 @@ struct ath12k_base *ath12k_core_alloc(struct device *dev, size_t priv_size,
- 	return NULL;
- }
- 
--MODULE_DESCRIPTION("Core module for Qualcomm Atheros 802.11be wireless LAN cards.");
-+static int ath12k_init(void)
-+{
-+	ahb_err = ath12k_ahb_init();
-+	if (ahb_err)
-+		pr_warn("Failed to initialize ath12k AHB device: %d\n", ahb_err);
-+
-+	pci_err = ath12k_pci_init();
-+	if (pci_err)
-+		pr_warn("Failed to initialize ath12k PCI device: %d\n", pci_err);
-+
-+	/* If both failed, return one of the failures (arbitrary) */
-+	return ahb_err && pci_err ? ahb_err : 0;
-+}
-+
-+static void ath12k_exit(void)
-+{
-+	if (!pci_err)
-+		ath12k_pci_exit();
-+
-+	if (!ahb_err)
-+		ath12k_ahb_exit();
-+}
-+
-+module_init(ath12k_init)
-+module_exit(ath12k_exit)
-+
-+MODULE_DESCRIPTION("Driver support for Qualcomm Technologies 802.11be WLAN devices");
- MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
-index 9a50d813e9b4..f4a868c2275e 100644
---- a/drivers/net/wireless/ath/ath12k/pci.c
-+++ b/drivers/net/wireless/ath/ath12k/pci.c
-@@ -1627,7 +1627,7 @@ static struct pci_driver ath12k_pci_driver = {
- 	.driver.pm = &ath12k_pci_pm_ops,
- };
- 
--static int ath12k_pci_init(void)
-+int ath12k_pci_init(void)
- {
- 	int ret;
- 
-@@ -1638,16 +1638,10 @@ static int ath12k_pci_init(void)
- 		return ret;
- 	}
- 
--	return 0;
-+	return ret;
- }
--module_init(ath12k_pci_init);
- 
--static void ath12k_pci_exit(void)
-+void ath12k_pci_exit(void)
- {
- 	pci_unregister_driver(&ath12k_pci_driver);
- }
--
--module_exit(ath12k_pci_exit);
--
--MODULE_DESCRIPTION("Driver support for Qualcomm Technologies PCIe 802.11be WLAN devices");
--MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/drivers/net/wireless/ath/ath12k/pci.h b/drivers/net/wireless/ath/ath12k/pci.h
-index 31584a7ad80e..18648ca11dfc 100644
---- a/drivers/net/wireless/ath/ath12k/pci.h
-+++ b/drivers/net/wireless/ath/ath12k/pci.h
-@@ -145,4 +145,6 @@ void ath12k_pci_stop(struct ath12k_base *ab);
- int ath12k_pci_start(struct ath12k_base *ab);
- int ath12k_pci_power_up(struct ath12k_base *ab);
- void ath12k_pci_power_down(struct ath12k_base *ab, bool is_suspend);
-+int ath12k_pci_init(void);
-+void ath12k_pci_exit(void);
- #endif /* ATH12K_PCI_H */
--- 
-2.34.1
-
+Best regards,
+Alexey
 
