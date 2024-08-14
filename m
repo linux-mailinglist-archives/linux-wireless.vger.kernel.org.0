@@ -1,77 +1,81 @@
-Return-Path: <linux-wireless+bounces-11438-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11439-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31021952050
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2024 18:45:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54CB7952051
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2024 18:45:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 635C41C22676
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2024 16:45:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E1D0281E90
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2024 16:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A8D3FB3B;
-	Wed, 14 Aug 2024 16:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 821891B32C1;
+	Wed, 14 Aug 2024 16:45:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sr8I+oMB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cmHseTzj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948041BA888
-	for <linux-wireless@vger.kernel.org>; Wed, 14 Aug 2024 16:45:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B157F1BB690
+	for <linux-wireless@vger.kernel.org>; Wed, 14 Aug 2024 16:45:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723653940; cv=none; b=Q+bASBvXCthgie+LguFGV+YmZ2rAQh2xplvm3W8xZDqJNVeH1KxYgcRMGsSSV18isnkVN8EHBolwSXSpx6dUu3umHPnLDekcspGFYmeGjQFiOS6LG7VmVD028Jph+mH79TVPTkh58hCKbQr8CP4N00OmckQZUWXarAECm3AWPe8=
+	t=1723653942; cv=none; b=YwW+B/UQ1ig85iOfz0+xVgvmQcal8RtJaxwS+mCf9gGtLq3eCzegC14Mg5v+Bpmq3gKD80ZTmhxVWrfVTVc6WRBcyKziYISJ4ddKlrIG7jqO7NtgWZgD1xVo/xa4MW643wxgXe404JgTe9n/SwIcicqZhtfRWAZow6R8816c0UY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723653940; c=relaxed/simple;
-	bh=NmoA2bpmUWX8zWrCtJ2nkSz0fKqymPWvjBYDRxrlKrM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=M1QGhCRJ+Mw5EDbGnTuOhChwkth5CTz/vHk206K7Rab0cUJRf4LbLDBg/0mGlJG8wN77v9kI1zIUGwQ1v4MxJCYP05Z+WZrrIkgXQIbKom5hfiauQC6Ys7e2Lvmvhlo+5sfanplzrqdplty2aOM7RXWFuOxsVazqVqcCIi/6Bw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sr8I+oMB; arc=none smtp.client-ip=209.85.208.50
+	s=arc-20240116; t=1723653942; c=relaxed/simple;
+	bh=z4WGTSzjzqpvQ/tRcSN3ioNJh02e6ZDfhMiaLn+LpWE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=XIfWDTw+Je2iAUs/le/DkCh0mJkt1ZXhLAXjuCG0L1k2dvBpCT+XPWOgaLxp19EayfjY1a2AhWqOaTpuiSq1Avb4hPKAlRfMnzpSIwy4NJmv7jPHmVQnftuiJUHGfJZ+bAY9N1UGnUtmvAMefeN6hLgwuh3Z/efU4bTBY2jWz/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cmHseTzj; arc=none smtp.client-ip=209.85.167.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-58ef19aa69dso120415a12.3
-        for <linux-wireless@vger.kernel.org>; Wed, 14 Aug 2024 09:45:38 -0700 (PDT)
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-52f04b4abdcso62373e87.2
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Aug 2024 09:45:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723653936; x=1724258736; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=D+tPDiTXkWJj5I1HhSQqqfRMrtmrsXTQDIjEBJRLwdU=;
-        b=Sr8I+oMB2nl/8UjoAhVgKvgiiq/gYo+/q+GA5ZZ4+eZOiIVMY6AoRJf6MUG9masb67
-         b89Nk4eABZ5YyWgHQN8LKCN0AhKVVMctPfdOrHJzIflkn3igdK72hQePlhDeUPxdG2fs
-         EWMDWu8cnDvqd+8YQOKSwT39rqhVTfMyj6xazVwje1uahGY21lJ+p6/2yuDG3VaKvkX7
-         Tkmkfm/H9gRjt9jgFIkwjwQMy2RafwPdMHBdmWwdBOGZyHcFNJjhmY8jZjpW0lfuiMgg
-         OG9cufXhIEHVw4H+IywxJzbY0sqcPleXXRALf+wZE2ZhxM8HYZM4+2inpyHT1jOrt/1k
-         rTOQ==
+        d=gmail.com; s=20230601; t=1723653938; x=1724258738; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AGHGrfhVZGCi7ebZvtlasyvLsOQ+wsjF4xpmwarBNSQ=;
+        b=cmHseTzjGrrscr59qsjBn21XwMg/C/eu8IaUJuACKX5bOGT5SHGQB/E0RkU06gfXX5
+         SWZDkLj336rkt53mBItrnEDw5YEO2108aitfwBRTrSgIBJpCksyTih8a/NawOJRsqDdq
+         l9frMPPxheXA28c95YrSSlXQZ+tYfpXCWW82AMq0OlAHkhaNySrTnxWDwzqbwF5hBmqe
+         e+XBnQ54ST4K34a6NlV8LVixgpAgO2Mr18KzbI4FuzBiaM9XBXNu12ICvhlqUV/yatN8
+         U/QYoQH+dNPlW45dp6hWAOXnzDvsU+spoxv55+NJKr/soZcwXKpO730YgLzmXxaPl+5f
+         gG2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723653936; x=1724258736;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=D+tPDiTXkWJj5I1HhSQqqfRMrtmrsXTQDIjEBJRLwdU=;
-        b=aFa9S2b9lE32f08DPkjqv4XMdyPl4RCJeUgw8ro38dO5ktLLxYeNfajG1gqOjyJoR6
-         wsVvpqRJvdNMCPGDo9hvooeUI4fGRh2Jj9pXGpDf7aEUvssNWunLBedDzlUkIGAKPJyq
-         Xu5qvDgHkIyfMczbj4OwQr71duUozEBdjPm25r9jLA7Vr7MO68ShKbTP5ZlcjmQdDVWL
-         Tart8uvPhn24LUbvk9cZXDSdfAo9SaChSqGSEnjN0ihdap5cMvsOvYLnHLQtvmhMpy12
-         BiEByCe6Xw9WqtEpDl6MUg72qw9UgfV7fKRoTvaOQodbQNkoDRWFGSiaOfhGpZQwM/GE
-         pSZw==
-X-Gm-Message-State: AOJu0Yyr36M3SMpVT+fe6w/C/uy7YKw5mk/LpBdahc4u+tvCWO14VSav
-	pRpWfvXZmq9AA9LRxXUXYw/HI8XJQ1tfEEU7G6tGUjBmJCV3ZtGYUIUkXw==
-X-Google-Smtp-Source: AGHT+IH4p+rKi+kxav0+gPINVDeE1ZlmfHcxiA+Uzx43uXFE9ExUtCRNWMsQM0fPxJHCrjbtk4ik9g==
-X-Received: by 2002:a17:907:3f86:b0:a80:f6a9:c311 with SMTP id a640c23a62f3a-a8366460685mr226358266b.0.1723653936195;
-        Wed, 14 Aug 2024 09:45:36 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1723653938; x=1724258738;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AGHGrfhVZGCi7ebZvtlasyvLsOQ+wsjF4xpmwarBNSQ=;
+        b=YsKGEpoAWvCRuvncZunE/BO4hCmjCRe/f7H1hP6aMz+5PECcjrvV08aOUWVhIf3jEA
+         LbLgPZ9m1xp/dJVkECvXntbdxgyOznnOpxh3zWdIAc7YUkeftQIlzlPthw7sdo8aevMm
+         1KwFy6l088PrfAIX80D1bmuX6snRZ0TVzC3HOcP29W75j2cB1/DmJR6gJQbBnBAwo156
+         M0yQ3t3JREpPAFqTGPHR07LPzh/oGNnvA328LZhF3E2uUiYhD6+7T/PSZ3SNFPpaPm/a
+         HPPkUgiyGgWRLOT1hmN4zf/bFCxrcW5OwcO1RrSHGCx7JraNIdgw1Ds4/AMRgxq+/fyZ
+         43mg==
+X-Gm-Message-State: AOJu0Yx1c0n0x/QZdy6plY5F8l1JlYuCzFX6X41XBUbBZOAPDiCJ2Bk1
+	LC/t+x1xpV1F6dRrenpj2rgkUhbvjhn/UplFikTlcmlZMOo8xYDiMH0Qsw==
+X-Google-Smtp-Source: AGHT+IGVg6Z0mt0BxnC93MsDZoAr+SShVFVo+bU62HnJUJOcbpwqge9ERHZqtEV57lc9gM3wwjbHyA==
+X-Received: by 2002:ac2:4e16:0:b0:52c:d80e:55a5 with SMTP id 2adb3069b0e04-532edbb301fmr2484707e87.41.1723653938262;
+        Wed, 14 Aug 2024 09:45:38 -0700 (PDT)
 Received: from LOCLAP699.vf-sint-niklaas.locus ([152.193.78.90])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a80f3f475ccsm196326166b.14.2024.08.14.09.45.34
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a80f3f475ccsm196326166b.14.2024.08.14.09.45.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Aug 2024 09:45:35 -0700 (PDT)
+        Wed, 14 Aug 2024 09:45:37 -0700 (PDT)
 From: James Prestwood <prestwoj@gmail.com>
 To: linux-wireless@vger.kernel.org
 Cc: ath10k@lists.infradead.org,
 	James Prestwood <prestwoj@gmail.com>
-Subject: [RFC 0/1] wifi: ath10k: improvement on key removal failure
-Date: Wed, 14 Aug 2024 09:45:06 -0700
-Message-Id: <20240814164507.996303-1-prestwoj@gmail.com>
+Subject: [RFC 1/1] wifi: ath10k: reduce timeout for disabling a key
+Date: Wed, 14 Aug 2024 09:45:07 -0700
+Message-Id: <20240814164507.996303-2-prestwoj@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240814164507.996303-1-prestwoj@gmail.com>
+References: <20240814164507.996303-1-prestwoj@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -80,35 +84,49 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is in regard to my earlier question [1]. After some testing with
-adding an artificial 3 second delay between auth and assoc frames I
-saw that the device would fail to roam 100% of the time. This further
-backed up my theory that this firmware failure is causing some
-timeout on the AP, and resulting it either ignoring the reassociation
-or rejecting it.
+The QCA6174 experiences random cases of a key failing to be disabled.
+The timeout for this currently is 3 seconds. This can happen on
+roaming when removing the old key during the transition to the new
+BSS. Though the roam will generally succeed (except with
+some AP vendors, explained below) it means that it is delayed by 3
+seconds until the timeout expires.
 
-Changing kernel behavior to fix a vendor quirk isn't great, but
-in this situation since the key removal is non-fatal and it
-improves general performance when the firmware does time out I
-thought it was an acceptable compromise. I am also pursuing the
-vendor to fix this, and allow a greater delay between auth and
-assoc.
+Certain AP vendors appear to have issues with this delay and either
+ignore the subsequent reassociation, or reject it. This results in
+a disconnect.
 
-The reason I'm sending this as an RFC is that I have no idea about
-other hardware, firmwares, etc, that use ath10k. I have only tested
-on the QCA6174. Maybe different configurations _do_ need 3 seconds
-to remove a key? Maybe this timeout needs to be a hw_param?
+Since key removal is a non-fatal failure it feels somewhat safe to
+reduce this timeout down in order to both reduce the potential
+delay and play nice with APs that aren't able to handle the delay
+between authentication and association.
 
-[1] https://lore.kernel.org/linux-wireless/9eafac85-2262-4f92-a70b-32109f65c05a@gmail.com/T/#t
-
-
-
-James Prestwood (1):
-  wifi: ath10k: reduce timeout for disabling a key
-
+Signed-off-by: James Prestwood <prestwoj@gmail.com>
+---
  drivers/net/wireless/ath/ath10k/mac.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
+diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
+index ec8d5b29bc72..fd20107abd0f 100644
+--- a/drivers/net/wireless/ath/ath10k/mac.c
++++ b/drivers/net/wireless/ath/ath10k/mac.c
+@@ -301,6 +301,7 @@ static int ath10k_install_key(struct ath10k_vif *arvif,
+ 	struct ath10k *ar = arvif->ar;
+ 	int ret;
+ 	unsigned long time_left;
++	unsigned long timeout = (cmd == DISABLE_KEY) ? 1 : 3;
+ 
+ 	lockdep_assert_held(&ar->conf_mutex);
+ 
+@@ -313,7 +314,8 @@ static int ath10k_install_key(struct ath10k_vif *arvif,
+ 	if (ret)
+ 		return ret;
+ 
+-	time_left = wait_for_completion_timeout(&ar->install_key_done, 3 * HZ);
++	time_left = wait_for_completion_timeout(&ar->install_key_done,
++						timeout * HZ);
+ 	if (time_left == 0)
+ 		return -ETIMEDOUT;
+ 
 -- 
 2.34.1
 
