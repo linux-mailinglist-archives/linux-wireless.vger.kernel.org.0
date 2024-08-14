@@ -1,376 +1,179 @@
-Return-Path: <linux-wireless+bounces-11425-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11426-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 866879518E4
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2024 12:34:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2174D951912
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2024 12:40:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80A4A1C212C8
-	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2024 10:34:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B79E1C20D8C
+	for <lists+linux-wireless@lfdr.de>; Wed, 14 Aug 2024 10:40:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DFE01AE02D;
-	Wed, 14 Aug 2024 10:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 362D61B0101;
+	Wed, 14 Aug 2024 10:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="eRmiquc+"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DD7OpIbQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79EF41AE03E
-	for <linux-wireless@vger.kernel.org>; Wed, 14 Aug 2024 10:34:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ABDA1AE85A
+	for <linux-wireless@vger.kernel.org>; Wed, 14 Aug 2024 10:38:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723631691; cv=none; b=dh1xdG2v3ECBsuXUIUE1btG4IZm4lkEyHfpigfbX8kyjFGaVAYfCt/uCl8XpNz/E290dQDlO/8R/mCSMJN8XaKgGX+YAjaUL399G/zSE00VvP+IV00/r1stb1TYNEuoy4nwec0p+z5yn7PWHvvZDQrrvY/RARS+DO9filOJ/+0Y=
+	t=1723631889; cv=none; b=VrcDanZkOUo1jewD2yDh/NH7Y3GW7vQ4Qdd+N6yhtGtpNLTCIxi77tFFaZ7c6OpU8EW++t4fp4l2SFjYiHj/+ZSfCr8Mao35oOOXnh5Q6h4ZCsHV6fQyWXPJRAs2cSrQWqnBXq1t1wF6kAlVS6M2/8LraBTZFSXqHeFBdVh4xXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723631691; c=relaxed/simple;
-	bh=SqCJBPXneuVXiDD3p5YhL1zk4Y7PBnKKe5HZvkEcYPA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uNHTHsRtYOEeRu9Kz32AtPkanOBAc3qUhTOmT5oJQxsvXbL1EsiSvf6tqut2jREJRfoqZHsg1S2jAbl0fKBW39m3B2HMfbvhff+9Uuma8SAo+GRpK7+HIVXPJtISHlxDCZTzXamU0MG6oWhW4u9tVSTepwdwr3n6Etju8aYhHzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=eRmiquc+; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47EA8CU6013450;
-	Wed, 14 Aug 2024 10:34:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	GBiesLn8Znc1Fkx6Sp/YdFimi+qml5VvM2sa0AQmyWA=; b=eRmiquc+MIVuIdOG
-	TWrd/oscp9uCEx5E5SaaGi6FGS2vva5rXC/e/ytMNK7Hs3Vaxn1oT/zMChtKNZ2I
-	rjozzxNXTSTI3K7+gHGu11/vh4UaFXOIyC9/1onbZ/FTOfQzZ1Fc+Sr6h5TOe67Q
-	rns5bXKxyDyS9CARhzQrkaV5VRfJv7FSryH51zRsWDRWImw6UfvPbtEssnPQ2V14
-	ICjE1lX+ZKZ06k1ajo5OsUb7JxfWe5vjJJTp6sMog+qehV+mFndfa/g7AD3u2il6
-	KWp62eVewfDeon9kfZNkcOmluPQj3yuVQh3Jt3wqZG2ABZu3skgBXyRUd7aYCJ46
-	lco/KQ==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 410tjd026t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 Aug 2024 10:34:46 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47EAYjM3030758
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 Aug 2024 10:34:45 GMT
-Received: from hu-periyasa-blr.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Wed, 14 Aug 2024 03:34:43 -0700
-From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Karthikeyan Periyasamy
-	<quic_periyasa@quicinc.com>
-Subject: [PATCH 3/3] wifi: ath12k: Advertise multi device iface combination
-Date: Wed, 14 Aug 2024 16:04:23 +0530
-Message-ID: <20240814103423.3980958-4-quic_periyasa@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240814103423.3980958-1-quic_periyasa@quicinc.com>
-References: <20240814103423.3980958-1-quic_periyasa@quicinc.com>
+	s=arc-20240116; t=1723631889; c=relaxed/simple;
+	bh=BjLFDKJyMJol4iq7ns3l6PNcv2TAWojsCWm8EzURTP8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dBtZBhItQYdSdA8CJa7jhpp1VX5Sk2+Vb/F196Mx5d6WNUx01lq8zioNiXiiL7E8SrgO8q93tvZSDhDR94xgGgdcYGPDO9FXMKDegV/hEEosgEA4XvdNGYORmne/BSD0SgzCQtnNtEGjKGTIIwBJRv5QqhWQ30hpQxo3JAYAMI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DD7OpIbQ; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-368440b073bso446478f8f.0
+        for <linux-wireless@vger.kernel.org>; Wed, 14 Aug 2024 03:38:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1723631886; x=1724236686; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=fNKkWw51f5wypgz5w1sJpTMeYJTuNSrvezVgh7cX/iw=;
+        b=DD7OpIbQzKUaMSOAKsPFGdPVDH4oT+5nuwnyrNo93E2y/w6bbTo+S9g5yLCx41oPRI
+         9aFguTIb+a3yojSJwW0CW+MRoXlu35C/DIm6un32o7TDegumRiwaNUmT4y3f8dBdlwdt
+         4ui0WfkUUiryyFjvubnAdMIQcAdEBlNse1hEtqOo8SD+5oAfV3UIN8OnnDwdt9mQmtdR
+         79ZbJe2s28BTPJlvmIvNrglGKJ44XeyFjd/ohzVc7L0kuyFm++vfM5n1OdrBeHXaXmF6
+         Ikti87u24oxT1Yv85eiTSmdXSAp3ydfRzhwvaUKRaWbu7NesMKL5U5m2CJ+PVDEX+bl8
+         Jw3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723631886; x=1724236686;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fNKkWw51f5wypgz5w1sJpTMeYJTuNSrvezVgh7cX/iw=;
+        b=ukEo02yIVWeP2uSvtR29mILURTGddX/FOJi+yaH2ZFvut5J82+/S4wB+EKCW97o6tJ
+         Nxrp3Xvqtx+qeyUxjI2i1SH/i2UItBF6k9Vxul/zpYbThSGzZSdbY+jr0MtQTFxRYAwm
+         T5sB3ZnodUg1nuo7y0OS4mNR2LfRH4zCOLONnf9Df0XQMcQ/9lD7RpCnPvL25L6NnuFM
+         7Ucm5driIl37JrA984J92CKVCEhqonPOkgepO6RIUuMhbGM33wvyM4LpY1QM0dWfOntd
+         nRYOTL/wwWm5lLmgVnrklJJgmOoSJmWl7FU8l96l20xT2bBMiaesnGtTi98EXxGc8+qW
+         yoIg==
+X-Forwarded-Encrypted: i=1; AJvYcCXm/n7itn2BnVWH+7Yc7b6JKnrHGNnixMyFAG6qbttgTR5wwJ8HfpccJzPLhvVBvGXTzB6NV3xlALuWTQvHLJPjjYXzXWRoa/zyimsRsak=
+X-Gm-Message-State: AOJu0Yy6xVjbwjJ4+Kr3H3gtFsAgWm+90hqOOx0QSQQBxDYQkJe4ET4g
+	bQMbJloxf7bPuVp4x4J1qf+fOl9GGPn0Lqd1n0NEWhCih2vFIqIO0mJY09cOM4k=
+X-Google-Smtp-Source: AGHT+IFAKzLv7ilDET28IMwrLig755ftX5WyeocJ71rGFpy8qsd2JDPFQqU5/gZhPVT74JHfONE3xg==
+X-Received: by 2002:adf:e549:0:b0:36b:a9e8:6b5 with SMTP id ffacd0b85a97d-37179620f6dmr1306544f8f.10.1723631885531;
+        Wed, 14 Aug 2024 03:38:05 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.215.209])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36e4e51eb10sm12424380f8f.84.2024.08.14.03.38.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 14 Aug 2024 03:38:04 -0700 (PDT)
+Message-ID: <7bf93d78-ba51-45b9-85d7-2b7e4e0b2e56@linaro.org>
+Date: Wed, 14 Aug 2024 12:38:02 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: DS1odpZSAdP6BqgB76PIVoxHUiO5TSIj
-X-Proofpoint-GUID: DS1odpZSAdP6BqgB76PIVoxHUiO5TSIj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-14_08,2024-08-13_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- priorityscore=1501 phishscore=0 spamscore=0 suspectscore=0 adultscore=0
- mlxlogscore=999 malwarescore=0 bulkscore=0 mlxscore=0 impostorscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2408140073
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 1/5] dt-bindings: net: wireless: brcm4329-fmac: add
+ pci14e4,449d
+To: Jacobe Zang <jacobe.zang@wesion.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Arend Van Spriel <arend.vanspriel@broadcom.com>, robh@kernel.org,
+ krzk+dt@kernel.org, heiko@sntech.de, kvalo@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, conor+dt@kernel.org
+Cc: efectn@protonmail.com, dsimic@manjaro.org, jagan@edgeble.ai,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org,
+ arend@broadcom.com, linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ megi@xff.cz, duoming@zju.edu.cn, bhelgaas@google.com,
+ minipli@grsecurity.net, brcm80211@lists.linux.dev,
+ brcm80211-dev-list.pdl@broadcom.com, nick@khadas.com
+References: <20240813082007.2625841-1-jacobe.zang@wesion.com>
+ <20240813082007.2625841-2-jacobe.zang@wesion.com>
+ <1914cb2b1a8.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <e7401e25-7802-4dc3-9535-226f32b52be1@kernel.org>
+ <05785794-6eca-4ade-a990-2deac7156c48@wesion.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <05785794-6eca-4ade-a990-2deac7156c48@wesion.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The prerequisite for MLO support in cfg80211/mac80211 requires that all
-the links participating in MLO belong to the same wiphy/ieee80211_hw.
-The driver needs to group multiple discrete hardware components, each
-acting as a link in MLO, under one wiphy. Consequently, the driver
-advertises multi-hardware device interface combination capabilities
-specific to the radio, including supported frequencies. The global
-interface combination represent the combined interface capabilities.
+On 14/08/2024 11:12, Jacobe Zang wrote:
+> 
+> 
+> On 2024/8/14 16:53, Krzysztof Kozlowski wrote:
+>> On 13/08/2024 19:04, Arend Van Spriel wrote:
+>>> On August 13, 2024 10:20:24 AM Jacobe Zang <jacobe.zang@wesion.com> wrote:
+>>>
+>>>> It's the device id used by AP6275P which is the Wi-Fi module
+>>>> used by Rockchip's RK3588 evaluation board and also used in
+>>>> some other RK3588 boards.
+>>>
+>>> Hi Kalle,
+>>>
+>>> There probably will be a v11, but wanted to know how this series will be
+>>> handled as it involves device tree bindings, arm arch device tree spec, and
+>>> brcmfmac driver code. Can it all go through wireless-next?
+>>
+>> No, DTS must not go via wireless-next. Please split it from the series
+>> and provide lore link in changelog for bindings.
+>>
+> 
+> I'm little confused that I should push bindings as a series, DTS as a 
+> series and driver as a series separately, so next time I should push 3 
+> series, right?
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00188-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00183-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
+No. I said only DTS.
 
-Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/mac.c | 212 +++++++++++++++++++++-----
- 1 file changed, 175 insertions(+), 37 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 6761204048f6..8f5f6a08446f 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -8850,14 +8850,20 @@ static bool ath12k_mac_is_iface_mode_enable(struct ath12k_hw *ah,
- {
- 	struct ath12k *ar;
- 	int i;
--	u16 interface_modes, mode;
--	bool is_enable = true;
-+	u16 interface_modes, mode = 0;
-+	bool is_enable = false;
-+
-+	if (type == NL80211_IFTYPE_MESH_POINT) {
-+		if (IS_ENABLED(CONFIG_MAC80211_MESH))
-+			mode = BIT(type);
-+	} else {
-+		mode = BIT(type);
-+	}
- 
--	mode = BIT(type);
- 	for_each_ar(ah, ar, i) {
- 		interface_modes = ar->ab->hw_params->interface_modes;
--		if (!(interface_modes & mode)) {
--			is_enable = false;
-+		if (interface_modes & mode) {
-+			is_enable = true;
- 			break;
- 		}
- 	}
-@@ -8865,31 +8871,20 @@ static bool ath12k_mac_is_iface_mode_enable(struct ath12k_hw *ah,
- 	return is_enable;
- }
- 
--static void ath12k_mac_cleanup_iface_combinations(struct ath12k_hw *ah)
--{
--	struct wiphy *wiphy = ah->hw->wiphy;
--
--	kfree(wiphy->iface_combinations[0].limits);
--	kfree(wiphy->iface_combinations);
--}
--
--static int ath12k_mac_setup_iface_combinations(struct ath12k_hw *ah)
-+static int
-+ath12k_mac_setup_radio_iface_comb(struct ath12k *ar,
-+				  struct ieee80211_iface_combination *comb)
- {
--	struct wiphy *wiphy = ah->hw->wiphy;
--	struct ieee80211_iface_combination *combinations;
- 	struct ieee80211_iface_limit *limits;
- 	int n_limits, max_interfaces;
-+	u16 interface_modes = ar->ab->hw_params->interface_modes;
- 	bool ap, mesh, p2p;
- 
--	ap = ath12k_mac_is_iface_mode_enable(ah, NL80211_IFTYPE_AP);
--	p2p = ath12k_mac_is_iface_mode_enable(ah, NL80211_IFTYPE_P2P_DEVICE);
-+	ap = interface_modes & BIT(NL80211_IFTYPE_AP);
-+	p2p = interface_modes & BIT(NL80211_IFTYPE_P2P_DEVICE);
- 
- 	mesh = IS_ENABLED(CONFIG_MAC80211_MESH) &&
--		ath12k_mac_is_iface_mode_enable(ah, NL80211_IFTYPE_MESH_POINT);
--
--	combinations = kzalloc(sizeof(*combinations), GFP_KERNEL);
--	if (!combinations)
--		return -ENOMEM;
-+	       (interface_modes & BIT(NL80211_IFTYPE_MESH_POINT));
- 
- 	if ((ap || mesh) && !p2p) {
- 		n_limits = 2;
-@@ -8906,10 +8901,8 @@ static int ath12k_mac_setup_iface_combinations(struct ath12k_hw *ah)
- 	}
- 
- 	limits = kcalloc(n_limits, sizeof(*limits), GFP_KERNEL);
--	if (!limits) {
--		kfree(combinations);
-+	if (!limits)
- 		return -ENOMEM;
--	}
- 
- 	limits[0].max = 1;
- 	limits[0].types |= BIT(NL80211_IFTYPE_STATION);
-@@ -8925,26 +8918,171 @@ static int ath12k_mac_setup_iface_combinations(struct ath12k_hw *ah)
- 
- 	if (p2p) {
- 		limits[1].types |= BIT(NL80211_IFTYPE_P2P_CLIENT) |
--				   BIT(NL80211_IFTYPE_P2P_GO);
-+					BIT(NL80211_IFTYPE_P2P_GO);
- 		limits[2].max = 1;
- 		limits[2].types |= BIT(NL80211_IFTYPE_P2P_DEVICE);
- 	}
- 
--	combinations[0].limits = limits;
--	combinations[0].n_limits = n_limits;
--	combinations[0].max_interfaces = max_interfaces;
--	combinations[0].num_different_channels = 1;
--	combinations[0].beacon_int_infra_match = true;
--	combinations[0].beacon_int_min_gcd = 100;
--	combinations[0].radar_detect_widths = BIT(NL80211_CHAN_WIDTH_20_NOHT) |
--						BIT(NL80211_CHAN_WIDTH_20) |
--						BIT(NL80211_CHAN_WIDTH_40) |
--						BIT(NL80211_CHAN_WIDTH_80);
-+	comb[0].limits = limits;
-+	comb[0].n_limits = n_limits;
-+	comb[0].max_interfaces = max_interfaces;
-+	comb[0].num_different_channels = 1;
-+	comb[0].beacon_int_infra_match = true;
-+	comb[0].beacon_int_min_gcd = 100;
-+	comb[0].radar_detect_widths = BIT(NL80211_CHAN_WIDTH_20_NOHT) |
-+					BIT(NL80211_CHAN_WIDTH_20) |
-+					BIT(NL80211_CHAN_WIDTH_40) |
-+					BIT(NL80211_CHAN_WIDTH_80);
-+
-+	return 0;
-+}
-+
-+static int
-+ath12k_mac_setup_global_iface_comb(struct ath12k_hw *ah,
-+				   struct wiphy_radio *radio,
-+				   u8 n_radio,
-+				   struct ieee80211_iface_combination *comb)
-+{
-+	struct ieee80211_iface_limit *limits;
-+	const struct ieee80211_iface_combination *iter_comb;
-+	int i, j, n_limits;
-+	bool ap, mesh, p2p;
-+
-+	if (!n_radio)
-+		return 0;
-+
-+	ap = ath12k_mac_is_iface_mode_enable(ah, NL80211_IFTYPE_AP);
-+	p2p = ath12k_mac_is_iface_mode_enable(ah, NL80211_IFTYPE_P2P_DEVICE);
-+	mesh = ath12k_mac_is_iface_mode_enable(ah, NL80211_IFTYPE_MESH_POINT);
-+
-+	if ((ap || mesh) && !p2p)
-+		n_limits = 2;
-+	else if (p2p)
-+		n_limits = 3;
-+	else
-+		n_limits = 1;
-+
-+	limits = kcalloc(n_limits, sizeof(*limits), GFP_KERNEL);
-+	if (!limits)
-+		return -ENOMEM;
-+
-+	for (i = 0; i < n_radio; i++) {
-+		iter_comb = radio[i].iface_combinations;
-+		for (j = 0; j < iter_comb->n_limits && j < n_limits; j++) {
-+			limits[j].types |= iter_comb->limits[j].types;
-+			limits[j].max += iter_comb->limits[j].max;
-+		}
-+
-+		comb->max_interfaces += iter_comb->max_interfaces;
-+		comb->num_different_channels += iter_comb->num_different_channels;
-+		comb->radar_detect_widths |= iter_comb->radar_detect_widths;
-+	}
-+
-+	comb->limits = limits;
-+	comb->n_limits = n_limits;
-+	comb->beacon_int_infra_match = true;
-+	comb->beacon_int_min_gcd = 100;
-+
-+	return 0;
-+}
-+
-+static
-+void ath12k_mac_cleanup_iface_comb(const struct ieee80211_iface_combination *iface_comb)
-+{
-+	kfree(iface_comb[0].limits);
-+	kfree(iface_comb);
-+}
-+
-+static void ath12k_mac_cleanup_iface_combinations(struct ath12k_hw *ah)
-+{
-+	struct wiphy *wiphy = ah->hw->wiphy;
-+	const struct wiphy_radio *radio;
-+	int i;
-+
-+	if (wiphy->n_radio > 0) {
-+		radio = wiphy->radio;
-+		for (i = 0; i < wiphy->n_radio; i++)
-+			ath12k_mac_cleanup_iface_comb(radio[i].iface_combinations);
-+
-+		kfree(wiphy->radio);
-+	}
-+
-+	ath12k_mac_cleanup_iface_comb(wiphy->iface_combinations);
-+}
-+
-+static int ath12k_mac_setup_iface_combinations(struct ath12k_hw *ah)
-+{
-+	struct wiphy *wiphy = ah->hw->wiphy;
-+	struct wiphy_radio *radio;
-+	struct ath12k *ar;
-+	struct ieee80211_iface_combination *combinations;
-+	int i = 0, ret;
-+
-+	combinations = kzalloc(sizeof(*combinations), GFP_KERNEL);
-+	if (!combinations)
-+		return -ENOMEM;
-+
-+	if (ah->num_radio > 1) {
-+		struct ieee80211_iface_combination *comb;
-+
-+		radio = kcalloc(ah->num_radio, sizeof(*radio), GFP_KERNEL);
-+		if (!radio) {
-+			ret = -ENOMEM;
-+			goto err_combination;
-+		}
-+
-+		for_each_ar(ah, ar, i) {
-+			comb = kzalloc(sizeof(*comb), GFP_KERNEL);
-+			if (!comb) {
-+				ret = -ENOMEM;
-+				goto err_radio_comb;
-+			}
-+
-+			ret = ath12k_mac_setup_radio_iface_comb(ar, comb);
-+			if (ret) {
-+				kfree(comb);
-+				goto err_radio_comb;
-+			}
-+
-+			radio[i].freq_range = &ar->freq_range;
-+			radio[i].n_freq_range = 1;
-+
-+			radio[i].iface_combinations = comb;
-+			radio[i].n_iface_combinations = 1;
-+		}
-+
-+		ret = ath12k_mac_setup_global_iface_comb(ah, radio,
-+							 ah->num_radio,
-+							 combinations);
-+		if (ret)
-+			goto err_full_radio_comb;
-+
-+		wiphy->radio = radio;
-+		wiphy->n_radio = ah->num_radio;
-+	} else {
-+		ret = ath12k_mac_setup_radio_iface_comb(&ah->radio[0],
-+							combinations);
-+		if (ret)
-+			goto err_combination;
-+	}
- 
- 	wiphy->iface_combinations = combinations;
- 	wiphy->n_iface_combinations = 1;
- 
- 	return 0;
-+
-+err_full_radio_comb:
-+	i = ah->num_radio;
-+err_radio_comb:
-+	while (i--)
-+		ath12k_mac_cleanup_iface_comb(radio[i].iface_combinations);
-+
-+	kfree(radio);
-+
-+err_combination:
-+	kfree(combinations);
-+
-+	return ret;
- }
- 
- static const u8 ath12k_if_types_ext_capa[] = {
--- 
-2.34.1
+Best regards,
+Krzysztof
 
 
