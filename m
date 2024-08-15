@@ -1,62 +1,56 @@
-Return-Path: <linux-wireless+bounces-11499-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11500-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB2E6953A36
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 20:36:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4678A953A78
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 21:00:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 836D41F21457
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 18:36:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7375285F7B
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 19:00:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4FB452F9B;
-	Thu, 15 Aug 2024 18:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5C343AD5;
+	Thu, 15 Aug 2024 19:00:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n79Jc737"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cGrtYnZW"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB21C3A8CB;
-	Thu, 15 Aug 2024 18:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E71A54205D;
+	Thu, 15 Aug 2024 19:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723746997; cv=none; b=d1MGn2bom8nB8wO07kZLKSb6uZyeUfxMKkvYbch1UbfNRMBT411P12ZZDxl5HABgLVohDdxq5B0LQC+VSlx7mXJshPx5OsQeHchL0w33pP8D1DX2PMCoG4Ps2N5Fgee6ZSvqUUQ+hxA4u13wZPIKPTGijUVhuP1XUDjR/zgui7Q=
+	t=1723748427; cv=none; b=AEb80TyYH0HAvvnvU9smBKQDmJzhij8byKu6mg3zrgryfqmb80UBZRidIbQSbIECfJOM3sIJq7cOb2GfqNjgeFQZ2Yorbq+MJFumV5AM4aaK056uYz43a2SozuHvUgxkk3EcJR683XHhy55fh99jofWTtmLTeJ+qsenAXdo+BqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723746997; c=relaxed/simple;
-	bh=+jqHWnrAC2O9xkqoGcAs5UI8rRiAGafwD+uBErFpfQc=;
+	s=arc-20240116; t=1723748427; c=relaxed/simple;
+	bh=QxUDLnoLCSswiWCQdSYaa1Uy9+RjfDFXGtuCXk56fes=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=dlAfLLdWKSYPGGU71nsv4RvGOtXJDAEqe46A50XIe68Rxnt1uytQXOwcllkYsiroiU3ZMtNO4SeINtfocjlgEwy7NsC+SeKIrlJDPCMZh3ZK4z7+dWXtqD69G08Lhj6vMU9nkPt0K/CXWdbgRRcTZU8RgiisbjfrdPuTNbjY0N0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n79Jc737; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE3ABC32786;
-	Thu, 15 Aug 2024 18:36:35 +0000 (UTC)
+	 Content-Disposition; b=HCvVS8mvZEgK7uIN04D/oT+CaqzrH9cmbYvAXZ0KEDRrj4PH/PK7OS4IBkYbebhC63U4JzpYlbRBxwc0xahF4abV8PjRQCe0T48y6fc5FAXD7M178OwlHx/9R0JMEiB87IoZe5gXKZApw6v5cXqsyHYD63TUkMn5TMbUf2GFjzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cGrtYnZW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D81EDC4AF0F;
+	Thu, 15 Aug 2024 19:00:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723746997;
-	bh=+jqHWnrAC2O9xkqoGcAs5UI8rRiAGafwD+uBErFpfQc=;
+	s=k20201202; t=1723748426;
+	bh=QxUDLnoLCSswiWCQdSYaa1Uy9+RjfDFXGtuCXk56fes=;
 	h=Date:From:To:Cc:Subject:From;
-	b=n79Jc737FXakegcozT8/VHwb/i3TUEX58hqd7ItVtzRsD2mnRK4HaUZEKTK4VQ3pS
-	 /EYAAvNx9pUUG+pA8/O0HvYj8tDySrit+h16/ODNTRDLZqBgLY9scaEf0u3NET7o9F
-	 lIEnsgwC/D4f3ZVIl/eHqzW8+bvrYcXvfwvPea/wbm1qyiqKCTb/tFEN0HBLohjM4Y
-	 U8T7PAoXAIycnEFYyA1ws+pc4xEZosU2G7bOpMvArlObtZzbIMnXPynZ6cnYxTCZFj
-	 MKrxy/78xynyXAMY94MyPa9wwgrFFiruuHA9fd9lzeYTJz53917DP9FQH2LAoQKvJI
-	 hLlzeMQ04+RwA==
-Date: Thu, 15 Aug 2024 12:36:33 -0600
+	b=cGrtYnZW49jp7cuB7v3HYgWnOXjXrQtEshm/gZyzmSYb1+nR1+rzFNEvaHuudjoh0
+	 Xi+k+94Y8SD72ueGkhSJGOJUnvlLMC2nmfrtZpragvI5lMev7soAmYg1BjOOMmJriQ
+	 qt+x8yOAIJouTPhHLCZa969stXv8kzjEluqoq/mhqTJQ7Atho8Yd01UVffGAxSQ82B
+	 ADnwnqQcis9eZpkXJEf7mcqYigpZnznGFNPdaTX9Ju0hHynBCfES6xRl+RfxNVJYIx
+	 fH+ebxOtY1nkYgh8VF70fkqxHV/YEOYwNGApA6tsyK8h6P+hBgIOXTuxtwRPs0ZAuJ
+	 bPpyG8bhxlS3Q==
+Date: Thu, 15 Aug 2024 13:00:23 -0600
 From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>, Kalle Valo <kvalo@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Kalle Valo <kvalo@kernel.org>
 Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
 	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	linux-hardening@vger.kernel.org
-Subject: [PATCH][next] wifi: mt76: Avoid multiple
+Subject: [PATCH][next] wifi: iwlwifi: dvm: Avoid
  -Wflex-array-member-not-at-end warnings
-Message-ID: <Zr5KsZugaEXrApQJ@elsanto>
+Message-ID: <Zr5QR03+wyw571zd@elsanto>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -70,16 +64,15 @@ Content-Disposition: inline
 getting ready to enable it, globally.
 
 So, in order to avoid ending up with a flexible-array member in the
-middle of multiple other structs, we use the `struct_group_tagged()`
-helper to create a new tagged `struct mt76_connac2_mcu_rxd_hdr`.
-This structure groups together all the members of the flexible
-`struct mt76_connac2_mcu_rxd` except the flexible array.
+middle of multiple other structs, we use the `__struct_group()`
+helper to create a new tagged `struct iwl_tx_cmd_hdr`. This structure
+groups together all the members of the flexible `struct iwl_tx_cmd`
+except the flexible array.
 
 As a result, the array is effectively separated from the rest of the
 members without modifying the memory layout of the flexible structure.
 We then change the type of the middle struct members currently causing
-trouble from `struct mt76_connac2_mcu_rxd` to `struct
-mt76_connac2_mcu_rxd_hdr`.
+trouble from `struct iwl_tx_cmd` to `struct iwl_tx_cmd_hdr`.
 
 We also want to ensure that when new members need to be added to the
 flexible structure, they are always included within the newly created
@@ -87,105 +80,205 @@ tagged struct. For this, we use `static_assert()`. This ensures that the
 memory layout for both the flexible structure and the new tagged struct
 is the same after any changes.
 
-This approach avoids having to implement `struct mt76_connac2_mcu_rxd_hdr`
+This approach avoids having to implement `struct iwl_tx_cmd_hdr`
 as a completely separate structure, thus preventing having to maintain
 two independent but basically identical structures, closing the door
 to potential bugs in the future.
 
 So, with these changes, fix the following warnings:
 
-drivers/net/wireless/mediatek/mt76/mt7915/mcu.h:32:37: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/mediatek/mt76/mt7915/mcu.h:40:37: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/mediatek/mt76/mt7915/mcu.h:49:37: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-drivers/net/wireless/mediatek/mt76/mt7915/mcu.h:58:37: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+drivers/net/wireless/intel/iwlwifi/dvm/commands.h:2315:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+drivers/net/wireless/intel/iwlwifi/dvm/commands.h:2426:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
 
 Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
 ---
- .../wireless/mediatek/mt76/mt76_connac_mcu.h  | 25 +++++++++++--------
- .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  8 +++---
- 2 files changed, 19 insertions(+), 14 deletions(-)
+ .../net/wireless/intel/iwlwifi/dvm/commands.h | 154 +++++++++---------
+ 1 file changed, 78 insertions(+), 76 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index 4242d436de26..16689aefa227 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -115,21 +115,26 @@ struct mt76_connac2_mcu_uni_txd {
- } __packed __aligned(4);
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/commands.h b/drivers/net/wireless/intel/iwlwifi/dvm/commands.h
+index 3f49c0bccb28..96ea6c8dfc89 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/commands.h
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/commands.h
+@@ -1180,85 +1180,87 @@ struct iwl_dram_scratch {
+ } __packed;
  
- struct mt76_connac2_mcu_rxd {
--	__le32 rxd[6];
-+	/* New members MUST be added within the struct_group() macro below. */
-+	struct_group_tagged(mt76_connac2_mcu_rxd_hdr, hdr,
-+		__le32 rxd[6];
- 
+ struct iwl_tx_cmd {
+-	/*
+-	 * MPDU byte count:
+-	 * MAC header (24/26/30/32 bytes) + 2 bytes pad if 26/30 header size,
+-	 * + 8 byte IV for CCM or TKIP (not used for WEP)
+-	 * + Data payload
+-	 * + 8-byte MIC (not used for CCM/WEP)
+-	 * NOTE:  Does not include Tx command bytes, post-MAC pad bytes,
+-	 *        MIC (CCM) 8 bytes, ICV (WEP/TKIP/CKIP) 4 bytes, CRC 4 bytes.i
+-	 * Range: 14-2342 bytes.
+-	 */
 -	__le16 len;
--	__le16 pkt_type_id;
+-
+-	/*
+-	 * MPDU or MSDU byte count for next frame.
+-	 * Used for fragmentation and bursting, but not 11n aggregation.
+-	 * Same as "len", but for next frame.  Set to 0 if not applicable.
+-	 */
+-	__le16 next_frame_len;
+-
+-	__le32 tx_flags;	/* TX_CMD_FLG_* */
+-
+-	/* uCode may modify this field of the Tx command (in host DRAM!).
+-	 * Driver must also set dram_lsb_ptr and dram_msb_ptr in this cmd. */
+-	struct iwl_dram_scratch scratch;
+-
+-	/* Rate for *all* Tx attempts, if TX_CMD_FLG_STA_RATE_MSK is cleared. */
+-	__le32 rate_n_flags;	/* RATE_MCS_* */
+-
+-	/* Index of destination station in uCode's station table */
+-	u8 sta_id;
+-
+-	/* Type of security encryption:  CCM or TKIP */
+-	u8 sec_ctl;		/* TX_CMD_SEC_* */
+-
+-	/*
+-	 * Index into rate table (see REPLY_TX_LINK_QUALITY_CMD) for initial
+-	 * Tx attempt, if TX_CMD_FLG_STA_RATE_MSK is set.  Normally "0" for
+-	 * data frames, this field may be used to selectively reduce initial
+-	 * rate (via non-0 value) for special frames (e.g. management), while
+-	 * still supporting rate scaling for all frames.
+-	 */
+-	u8 initial_rate_index;
+-	u8 reserved;
+-	u8 key[16];
+-	__le16 next_frame_flags;
+-	__le16 reserved2;
+-	union {
+-		__le32 life_time;
+-		__le32 attempt;
+-	} stop_time;
+-
+-	/* Host DRAM physical address pointer to "scratch" in this command.
+-	 * Must be dword aligned.  "0" in dram_lsb_ptr disables usage. */
+-	__le32 dram_lsb_ptr;
+-	u8 dram_msb_ptr;
+-
+-	u8 rts_retry_limit;	/*byte 50 */
+-	u8 data_retry_limit;	/*byte 51 */
+-	u8 tid_tspec;
+-	union {
+-		__le16 pm_frame_timeout;
+-		__le16 attempt_duration;
+-	} timeout;
+-
+-	/*
+-	 * Duration of EDCA burst Tx Opportunity, in 32-usec units.
+-	 * Set this if txop time is not specified by HCCA protocol (e.g. by AP).
+-	 */
+-	__le16 driver_txop;
+-
++	/* New members MUST be added within the __struct_group() macro below. */
++	__struct_group(iwl_tx_cmd_hdr, __hdr, __packed,
++		/*
++		 * MPDU byte count:
++		 * MAC header (24/26/30/32 bytes) + 2 bytes pad if 26/30 header size,
++		 * + 8 byte IV for CCM or TKIP (not used for WEP)
++		 * + Data payload
++		 * + 8-byte MIC (not used for CCM/WEP)
++		 * NOTE:  Does not include Tx command bytes, post-MAC pad bytes,
++		 *        MIC (CCM) 8 bytes, ICV (WEP/TKIP/CKIP) 4 bytes, CRC 4 bytes.i
++		 * Range: 14-2342 bytes.
++		 */
 +		__le16 len;
-+		__le16 pkt_type_id;
- 
--	u8 eid;
--	u8 seq;
--	u8 option;
--	u8 rsv;
--	u8 ext_eid;
--	u8 rsv1[2];
--	u8 s2d_index;
-+		u8 eid;
-+		u8 seq;
-+		u8 option;
-+		u8 rsv;
-+		u8 ext_eid;
-+		u8 rsv1[2];
-+		u8 s2d_index;
++
++		/*
++		 * MPDU or MSDU byte count for next frame.
++		 * Used for fragmentation and bursting, but not 11n aggregation.
++		 * Same as "len", but for next frame.  Set to 0 if not applicable.
++		 */
++		__le16 next_frame_len;
++
++		__le32 tx_flags;	/* TX_CMD_FLG_* */
++
++		/* uCode may modify this field of the Tx command (in host DRAM!).
++		 * Driver must also set dram_lsb_ptr and dram_msb_ptr in this cmd. */
++		struct iwl_dram_scratch scratch;
++
++		/* Rate for *all* Tx attempts, if TX_CMD_FLG_STA_RATE_MSK is cleared. */
++		__le32 rate_n_flags;	/* RATE_MCS_* */
++
++		/* Index of destination station in uCode's station table */
++		u8 sta_id;
++
++		/* Type of security encryption:  CCM or TKIP */
++		u8 sec_ctl;		/* TX_CMD_SEC_* */
++
++		/*
++		 * Index into rate table (see REPLY_TX_LINK_QUALITY_CMD) for initial
++		 * Tx attempt, if TX_CMD_FLG_STA_RATE_MSK is set.  Normally "0" for
++		 * data frames, this field may be used to selectively reduce initial
++		 * rate (via non-0 value) for special frames (e.g. management), while
++		 * still supporting rate scaling for all frames.
++		 */
++		u8 initial_rate_index;
++		u8 reserved;
++		u8 key[16];
++		__le16 next_frame_flags;
++		__le16 reserved2;
++		union {
++			__le32 life_time;
++			__le32 attempt;
++		} stop_time;
++
++		/* Host DRAM physical address pointer to "scratch" in this command.
++		 * Must be dword aligned.  "0" in dram_lsb_ptr disables usage. */
++		__le32 dram_lsb_ptr;
++		u8 dram_msb_ptr;
++
++		u8 rts_retry_limit;	/*byte 50 */
++		u8 data_retry_limit;	/*byte 51 */
++		u8 tid_tspec;
++		union {
++			__le16 pm_frame_timeout;
++			__le16 attempt_duration;
++		} timeout;
++
++		/*
++		 * Duration of EDCA burst Tx Opportunity, in 32-usec units.
++		 * Set this if txop time is not specified by HCCA protocol (e.g. by AP).
++		 */
++		__le16 driver_txop;
++
 +	);
- 
- 	u8 tlv[];
- };
-+static_assert(offsetof(struct mt76_connac2_mcu_rxd, tlv) == sizeof(struct mt76_connac2_mcu_rxd_hdr),
-+	      "struct member likely outside of struct_group_tagged()");
- 
- struct mt76_connac2_patch_hdr {
- 	char build_date[16];
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-index b41ac4aaced7..49476a4182fd 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.h
-@@ -29,7 +29,7 @@ struct mt7915_mcu_thermal_ctrl {
+ 	/*
+ 	 * MAC header goes here, followed by 2 bytes padding if MAC header
+ 	 * length is 26 or 30 bytes, followed by payload data
+ 	 */
+-	union {
+-		DECLARE_FLEX_ARRAY(u8, payload);
+-		DECLARE_FLEX_ARRAY(struct ieee80211_hdr, hdr);
+-	};
++	struct ieee80211_hdr hdr[];
  } __packed;
++static_assert(offsetof(struct iwl_tx_cmd, hdr) == sizeof(struct iwl_tx_cmd_hdr),
++	      "struct member likely outside of __struct_group()");
  
- struct mt7915_mcu_thermal_notify {
--	struct mt76_connac2_mcu_rxd rxd;
-+	struct mt76_connac2_mcu_rxd_hdr rxd;
+ /*
+  * TX command response is sent after *agn* transmission attempts.
+@@ -2312,7 +2314,7 @@ struct iwl_scan_cmd {
  
- 	struct mt7915_mcu_thermal_ctrl ctrl;
- 	__le32 temperature;
-@@ -37,7 +37,7 @@ struct mt7915_mcu_thermal_notify {
- } __packed;
+ 	/* For active scans (set to all-0s for passive scans).
+ 	 * Does not include payload.  Must specify Tx rate; no rate scaling. */
+-	struct iwl_tx_cmd tx_cmd;
++	struct iwl_tx_cmd_hdr tx_cmd;
  
- struct mt7915_mcu_csa_notify {
--	struct mt76_connac2_mcu_rxd rxd;
-+	struct mt76_connac2_mcu_rxd_hdr rxd;
+ 	/* For directed active scans (set to all-0s otherwise) */
+ 	struct iwl_ssid_ie direct_scan[PROBE_OPTION_MAX];
+@@ -2423,7 +2425,7 @@ struct iwlagn_beacon_notif {
+  */
  
- 	u8 omac_idx;
- 	u8 csa_count;
-@@ -46,7 +46,7 @@ struct mt7915_mcu_csa_notify {
- } __packed;
- 
- struct mt7915_mcu_bcc_notify {
--	struct mt76_connac2_mcu_rxd rxd;
-+	struct mt76_connac2_mcu_rxd_hdr rxd;
- 
- 	u8 band_idx;
- 	u8 omac_idx;
-@@ -55,7 +55,7 @@ struct mt7915_mcu_bcc_notify {
- } __packed;
- 
- struct mt7915_mcu_rdd_report {
--	struct mt76_connac2_mcu_rxd rxd;
-+	struct mt76_connac2_mcu_rxd_hdr rxd;
- 
- 	u8 band_idx;
- 	u8 long_detected;
+ struct iwl_tx_beacon_cmd {
+-	struct iwl_tx_cmd tx;
++	struct iwl_tx_cmd_hdr tx;
+ 	__le16 tim_idx;
+ 	u8 tim_size;
+ 	u8 reserved1;
 -- 
 2.34.1
 
