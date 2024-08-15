@@ -1,61 +1,85 @@
-Return-Path: <linux-wireless+bounces-11481-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11482-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E102952C63
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 12:38:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F5D3952D81
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 13:29:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6094F1C20442
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 10:38:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 303C42832A1
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 11:29:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD401AD415;
-	Thu, 15 Aug 2024 09:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E501714CE;
+	Thu, 15 Aug 2024 11:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0pmBx7vZ"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GuDeUI+P"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D28417C9BB;
-	Thu, 15 Aug 2024 09:58:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434D41714AA
+	for <linux-wireless@vger.kernel.org>; Thu, 15 Aug 2024 11:29:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723715912; cv=none; b=s0Bx4R21C3Jl0EG/KJznh4FL5EoAbiIC2/MAgfvcR0nBFRtDw44GP5sj5W2FOPgYRhsk3VJtwx+f0HpgXUicQl5F9ZiNVvzZATndoQwjs0gr9ERjCsHCNIFiEGll/K0jtU8WXRH4rzkKeLJwCQONacrfJJ/F3IlbzkKGWMlpEjI=
+	t=1723721376; cv=none; b=HIvBcAEUWneuY/iv5V75WIe2LiIRwWlbQi2JZEJEctZbf/2VMEP+/ilhoS2/MY325vW76d9aIB9knLSjAlFz2ShxxVKiKEc0h4LPadXQF0yaglqHQCB0vuDbmkVgqvPPoUKxoxoqSRdKT6zDCtHzjVggdVUlqlu07n4dRbfAn+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723715912; c=relaxed/simple;
-	bh=L5KS2owqysFKEDXssXd16jQ8G+Y/Y0IWnxwXFq4mJQM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gSPP1feKMBAEp/jyPh2XYhE4kJbGA+k7B/B5iRfRM3W1eQ70alD/urbcYmCJ/Pf1E/xsEq0nL+wcD6sOjBpA/Mal3FrP/ClXaZ5Xs2bV72PaqFXYe/Oax1Xv0kF89epWwjsgbn3ASrVhvM+xe9udAyyVUsiIgGP7IzpfCvzNWrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0pmBx7vZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CE23C32786;
-	Thu, 15 Aug 2024 09:58:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723715911;
-	bh=L5KS2owqysFKEDXssXd16jQ8G+Y/Y0IWnxwXFq4mJQM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=0pmBx7vZI1zbPElkFwNu3Fxwo4xNDdRSvv28rCrJQNpOIn7ACxC/ba7f418U6xdAg
-	 cfPUpLBmb/2ole1QF6NbXy60B2E/nD8g6AGUursGJbuSG9JEf1V3x72AM2Dua23KjY
-	 C3x3tW9CO6TZWDo69DXamobs5xvEWOrAb0nMIITI=
-Date: Thu, 15 Aug 2024 11:58:28 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: David Lin <yu-hao.lin@nxp.com>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-	"briannorris@chromium.org" <briannorris@chromium.org>,
-	"francesco@dolcini.it" <francesco@dolcini.it>,
-	Pete Hsieh <tsung-hsien.hsieh@nxp.com>
-Subject: Re: [EXT] Re: [PATCH v2 40/43] wifi: nxpwifi: add wmm.h
-Message-ID: <2024081500-essential-recovery-374f@gregkh>
-References: <20240809094533.1660-1-yu-hao.lin@nxp.com>
- <20240809094533.1660-41-yu-hao.lin@nxp.com>
- <2024081430-derail-diocese-78dc@gregkh>
- <PA4PR04MB9638C1186FC4D56569D7D0E4D1802@PA4PR04MB9638.eurprd04.prod.outlook.com>
- <2024081523-curator-pronounce-4619@gregkh>
- <877cciyvdg.fsf@kernel.org>
+	s=arc-20240116; t=1723721376; c=relaxed/simple;
+	bh=sr7j5UxC4QXw2ypOBkx4S07fGjjwP6NxkB/0YC95P0c=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=l5hEGVq/tzb9G80fHUDlYwqaUKZS/DiLwte4okY/I6M+YASHhFcm23nfpOxmWUehTz+kPGsqy9je1WiIJucoCchvq/xJITLKbQS91xL4CEYhebwN1X2O6Ddtv2HwE5Wf7GswgeY8afTnc55dI2Z0L6RSfqYlAKfytg2SHTXRJGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GuDeUI+P; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5a156557026so1057033a12.2
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Aug 2024 04:29:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1723721371; x=1724326171; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JTAEGW3OQZ1pLkxp14RqDDaQpOm9zbUm4HJdeRXWAT0=;
+        b=GuDeUI+PD6t2GHTXyS9clkXdr5c+3iuodVEPzDFGaNMIQdJaAH7SSLCdokYM0mHziE
+         f3xmzmjqbbHnbbz8j17h/+xSxLFWVn1wyieDUbEXydIKsg8Lq6jeSQfZbHupzRHfpJ+a
+         cyvqAetO1Yz3psYN9MaRJg3vuduXx2+ybclb1jwo5gy4WkQ2Hxt/slrWBeXTnjZJ1Tq7
+         Q3vMmV2c1rhESMyQClBAU+RpS0ZqFAhcijQiTams4dTPAy5zl+gHgREr4/jZgm8JyASy
+         SNMzEJ+Ey5Q5vi2/q/DXg0/ktaNck4x/wmhFIYMEICgWDqSb6UXaWX0HlbsEaGYIL9Yd
+         MohA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723721371; x=1724326171;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JTAEGW3OQZ1pLkxp14RqDDaQpOm9zbUm4HJdeRXWAT0=;
+        b=FgaJDs4PDe9WtamnLag+qhX1qMa6Z9MQP8lekqgC2ungaIoGxZMHJhIlpZsk+mDVf9
+         lxGMoKNPcIjKn3R/8ctz+Y8YCNEqnEVMdGLD8wSG+QNIiJpZ/mZjJKsPAjntFmUtVlbr
+         TxUFgzkBGHKBxhOAOKsXiU0gzedJW7PxHDenaZWy5gYJcilCs+VpwowaQX2/E20JEN8R
+         1F/14WDCKp1Aoi1CBbv32gl7rgwO0inAXznWziySbIrKcogELXww38n/FZelYt1gfsDo
+         2pU0h4rqKey02KaQ4mx+7EbgWRnr+EhDdkBk28H5d4EYyfKIifrttTvzp7OLKiN4n2u3
+         s4/A==
+X-Forwarded-Encrypted: i=1; AJvYcCVMBohKhpxZI1sh2g0JQ30jPvI9y9aScqJc74Cpgh5PVmdEuuAmuEbDmWg6nov/05SLlE94av21IJcsZQgDA+s7aQ8ZNtZP6o1MzxGoYfE=
+X-Gm-Message-State: AOJu0YxwSynYESrPQ5ZZmDmHs4ezjE5g/cEhVTOvZn+tGbOmuu3dtDWk
+	VyVa/AABN6VUl48JMknNGpybZba0+qs2yIp96emjMuiAuhnoKq+4hLpUfMYZtbo=
+X-Google-Smtp-Source: AGHT+IH9/KXxc6zq/fnEB4afFMropsvLrpcMCVRcWcQLh3uIT597PZfVNI/aJoEfYCz472UFpsw6NQ==
+X-Received: by 2002:a17:907:e9e:b0:a77:c330:ad9d with SMTP id a640c23a62f3a-a836709548emr424568866b.61.1723721371552;
+        Thu, 15 Aug 2024 04:29:31 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a83839356e2sm87568266b.105.2024.08.15.04.29.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Aug 2024 04:29:31 -0700 (PDT)
+Date: Thu, 15 Aug 2024 14:29:27 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: David Lin <yu-hao.lin@nxp.com>
+Cc: Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Kalle Valo <kvalo@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Aloka Dixit <quic_alokad@quicinc.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Rafael Beims <rafael.beims@toradex.com>,
+	Ruan Jinjie <ruanjinjie@huawei.com>, linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] wifi: mwifiex: Fix uninitialized variable in
+ mwifiex_cfg80211_authenticate()
+Message-ID: <d7d043b2-95d5-4e1d-b340-5d7330053ac6@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -64,41 +88,36 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <877cciyvdg.fsf@kernel.org>
+X-Mailer: git-send-email haha only kidding
 
-On Thu, Aug 15, 2024 at 12:43:07PM +0300, Kalle Valo wrote:
-> Greg KH <gregkh@linuxfoundation.org> writes:
-> 
-> > On Thu, Aug 15, 2024 at 01:52:18AM +0000, David Lin wrote:
-> >> Hi Greg,
-> >> 
-> >> 	Following the guideline for new driver, it should let every
-> >> file as a single patch for review and generate a final
-> >> 	single patch after reviewing. I think stuffs mentioned by you can be got from cover letter.
-> >> 
-> >> 	If I misunderstood anything, please let me know.
-> >
-> > Please read the kernel documentation for how to submit kernel changes in
-> > a way that we can properly review, and accept them.  As-is, there is
-> > nothing we can do with this series at all, sorry.
-> 
-> Greg, just a bit background for this:
-> 
-> Because wireless drivers can be huge in our documentation we have
-> actually requested to split the driver one patch per file for easier
-> review and avoid mailing list limits:
-> 
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#new_driver
-> 
-> The final patch to be commited will be just one big patch with a proper
-> commit message.
+Smatch complains that:
 
-Ick, wow, good luck!
+    drivers/net/wireless/marvell/mwifiex/cfg80211.c:4408 mwifiex_cfg80211_authenticate()
+    error: uninitialized symbol 'varptr'.
 
-That being said, you still can't take patches without any changelog text
-and most importantly, no signed-off-by lines, right?
+It's a check for NULL, but "varptr" is either non-NULL or uninitialized.
+Initialize it to NULL.
 
-thanks,
+Fixes: 36995892c271 ("wifi: mwifiex: add host mlme for client mode")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+---
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-greg k-h
+diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+index 722ead51e912..7505de304052 100644
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -4284,7 +4284,7 @@ mwifiex_cfg80211_authenticate(struct wiphy *wiphy,
+ 	struct mwifiex_txinfo *tx_info;
+ 	u32 tx_control = 0, pkt_type = PKT_TYPE_MGMT;
+ 	u8 trans = 1, status_code = 0;
+-	u8 *varptr;
++	u8 *varptr = NULL;
+ 
+ 	if (GET_BSS_ROLE(priv) == MWIFIEX_BSS_ROLE_UAP) {
+ 		mwifiex_dbg(priv->adapter, ERROR, "Interface role is AP\n");
+-- 
+2.43.0
+
 
