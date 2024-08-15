@@ -1,61 +1,59 @@
-Return-Path: <linux-wireless+bounces-11487-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11488-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 649F595327E
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 16:06:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 558869532E0
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 16:11:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9521B1C2574F
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 14:06:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 021FC288E77
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 14:11:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56F4019F49C;
-	Thu, 15 Aug 2024 14:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 978D31AC44F;
+	Thu, 15 Aug 2024 14:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="apfbk/hU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tchp6JIp"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8B119F470;
-	Thu, 15 Aug 2024 14:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737D438DC8
+	for <linux-wireless@vger.kernel.org>; Thu, 15 Aug 2024 14:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730696; cv=none; b=pnwjG+zB9+mQDSvhWxZI4hRWexeRND2CN27VQr6DzlDozAiKWltM8F0k5LszVAoDt25g6q+bD12Z74aJrpW24zwz7MputZ8kzqmWdLJ6+gqRXfRUXJ8kWyLiyPtFgogfdV58fYAU2+1k5bGa4UDnw3QHxkiGLhg9jxJBcmG+Bys=
+	t=1723730918; cv=none; b=b7yWgtPXt4DmF5k/3+R10bCwrt53B0DrwEWJi8DaVYeVbrEd3pqQjCedNcl7pdN3ZsUvGmVRQqJxqA+7ypoY8c5gCgxiXCUXX06VPHhL6K2c2FP3QO3PyoAFV4wuculHWTiWWwmQYhBt2SwXrNjmocGa44m7z3hw06l9h50tbNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730696; c=relaxed/simple;
-	bh=hsIRhn+LY4Ti41CZQ1o9YBVR7CGgFLQpY2GyG4Gwj2w=;
+	s=arc-20240116; t=1723730918; c=relaxed/simple;
+	bh=FuzAVsapDXM2kPBH1JbstQry8C9ktAsU6/i96DIuXk8=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=eXX5DRgPBfw02f9xXAowLkxBoc0BZiZKQM5yXRUHLpM33zJB+JqM3PHAAezdct8hO/yysu/bRLT3EGJnZKiWIrXN2Jq75Ez0OjfJ17CLZIYi8S707aJUtidr1G+jKD6iGs91DHL7T91HKMyBghfwHB0ixbFVcKOgdf5brgALnn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=apfbk/hU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB790C4AF0C;
-	Thu, 15 Aug 2024 14:04:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=G1Gj06RBQvrsrDxPzYvJkooZLPEKpETaXBNN2jlh7T/WAfOxu2Zz4KNXH9FwWEwuofDvSj8Fe1yBqYDPQurx7y9n23zT4iUhTG3ZE78WWUe24mvq0CD8HjLfMRq+JtVJWlcftaBkLGSdkNOfg41hUVfDff7FSoIwiTdbK+8kFHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tchp6JIp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A604C4AF0C;
+	Thu, 15 Aug 2024 14:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723730695;
-	bh=hsIRhn+LY4Ti41CZQ1o9YBVR7CGgFLQpY2GyG4Gwj2w=;
+	s=k20201202; t=1723730918;
+	bh=FuzAVsapDXM2kPBH1JbstQry8C9ktAsU6/i96DIuXk8=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=apfbk/hUNZ2TsrJyVKKu71e8PEzOCRdAQ40+Krq7oy7t03OJSfheU+Ub7vAt4+fty
-	 kyW7K9fp3CwvosWsK9PgJKILzQDSXf9wjqiRNfKBGjeIKjj94yCMZB8HT1frKoeeug
-	 cNxjj5fXsDzuUCjE+z67Wcpkia3Wg20k9T1qrPBAynOl5Y2S1L8XN9mdRvFkNgBTIk
-	 EOrrcujsnCqiK9Bvy199jpMJXY7q+2ico2PlxTiTIo13UtSfxnKH6LXF4ntWskg0Fj
-	 q+3a5POZVI5wHFJumapD0sy8DkEGsYSWf6Q3DVP4bLB1RofwcOP31yUMl3dHvEGgFd
-	 hJp8tYmcsNumQ==
+	b=Tchp6JIpLlKomNlqI8m35yx/80/xClZOt5eVhKCgTTGaHm6T5vhmGRrV5+wkrsx12
+	 rOqCC0VDwAd8PzVJixaWGVFopvbQft3GAwmxC+xKeoZ2WtWYVhZIqFYRAS+YsUIhgy
+	 IPaiW6CRBxr4aQFdPm1jQgcawTYy3iQqtiWVhgSprvsVitLjj/1zrMS+3VNYJzgIR8
+	 BP1b6qwy2BZrVrV6gDEfygQItlIOS0yT5T2rG83BzD3S4xQ2hqeWtw9KdpAypN58/9
+	 SL71VGTP6mgUI3Id3jSc0LLsH2Ic4oCR3iLnt2jv3wGvVwBf45VJVSt3E7UfZ9u4Gu
+	 bfloSOr7G4UcQ==
 From: Kalle Valo <kvalo@kernel.org>
-To: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Jeff Johnson <jjohnson@kernel.org>,  Johannes Berg
- <johannes@sipsolutions.net>,  Ath10k List <ath10k@lists.infradead.org>,
-  Aditya Kumar Singh <quic_adisi@quicinc.com>,  Baochen Qiang
- <quic_bqiang@quicinc.com>,  Linux Kernel Mailing List
- <linux-kernel@vger.kernel.org>,  Linux Next Mailing List
- <linux-next@vger.kernel.org>,  Wireless <linux-wireless@vger.kernel.org>
-Subject: Re: linux-next: manual merge of the ath-next tree with the ath tree
-References: <20240808104348.6846e064@canb.auug.org.au>
-	<20240814110019.6be39d14@canb.auug.org.au>
-Date: Thu, 15 Aug 2024 17:04:52 +0300
-In-Reply-To: <20240814110019.6be39d14@canb.auug.org.au> (Stephen Rothwell's
-	message of "Wed, 14 Aug 2024 11:00:19 +1000")
-Message-ID: <87msldyj97.fsf@kernel.org>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Miaoqing Pan <quic_miaoqing@quicinc.com>,  <ath11k@lists.infradead.org>,
+  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v6 2/2] wifi: ath11k: Add firmware coredump collection
+ support
+References: <20240813013028.2708111-1-quic_miaoqing@quicinc.com>
+	<20240813013028.2708111-2-quic_miaoqing@quicinc.com>
+	<4fc3d4a1-7dbe-412b-a6bc-72d0a5d13196@quicinc.com>
+Date: Thu, 15 Aug 2024 17:08:35 +0300
+In-Reply-To: <4fc3d4a1-7dbe-412b-a6bc-72d0a5d13196@quicinc.com> (Jeff
+	Johnson's message of "Tue, 13 Aug 2024 12:12:12 -0700")
+Message-ID: <87ikw1yj30.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -65,72 +63,28 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Stephen Rothwell <sfr@canb.auug.org.au> writes:
+Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
-> Hi all,
+> On 8/12/2024 6:30 PM, Miaoqing Pan wrote:
+>> In case of firmware assert snapshot of firmware memory is essential for
+>> debugging. Add firmware coredump collection support for PCI bus.
+>> Collect RDDM and firmware paging dumps from MHI and pack them in TLV
+>> format and also pack various memory shared during QMI phase in separate
+>> TLVs.  Add necessary header and share the dumps to user space using dev
+>> coredump framework. Coredump collection is controlled by
+>> CONFIG_DEV_COREDUMP. Dump collected for a radio is 55 MB approximately.
+>> 
+>> The changeset is mostly copied from:
+>> https://lore.kernel.org/all/20240325183414.4016663-1-quic_ssreeela@quicinc.com/.
+>> 
+>> Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-04358-QCAHSPSWPL_V1_V2_SILICONZ_LITE-1
+>> 
+>> Signed-off-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 >
-> On Thu, 8 Aug 2024 10:43:48 +1000 Stephen Rothwell <sfr@canb.auug.org.au> wrote:
->>
->> Today's linux-next merge of the ath-next tree got a conflict in:
->> 
->>   drivers/net/wireless/ath/ath12k/hw.c
->> 
->> between commit:
->> 
->>   38055789d151 ("wifi: ath12k: use 128 bytes aligned iova in transmit path for WCN7850")
->> 
->> from the ath tree and commit:
->> 
->>   8be12629b428 ("wifi: ath12k: restore ASPM for supported hardwares only")
->> 
->> from the ath-next tree.
->> 
->> I fixed it up (see below) and can carry the fix as necessary. This
->> is now fixed as far as linux-next is concerned, but any non trivial
->> conflicts should be mentioned to your upstream maintainer when your tree
->> is submitted for merging.  You may also want to consider cooperating
->> with the maintainer of the conflicting tree to minimise any particularly
->> complex conflicts.
->> 
->> diff --cc drivers/net/wireless/ath/ath12k/hw.c
->> index 7b0b6a7f4701,76c0e07a88de..000000000000
->> --- a/drivers/net/wireless/ath/ath12k/hw.c
->> +++ b/drivers/net/wireless/ath/ath12k/hw.c
->> @@@ -925,7 -925,7 +925,9 @@@ static const struct ath12k_hw_params at
->>   		.acpi_guid = NULL,
->>   		.supports_dynamic_smps_6ghz = true,
->>   
->>  +		.iova_mask = 0,
->> ++
->> + 		.supports_aspm = false,
->>   	},
->>   	{
->>   		.name = "wcn7850 hw2.0",
->> @@@ -1003,7 -1003,7 +1005,9 @@@
->>   		.acpi_guid = &wcn7850_uuid,
->>   		.supports_dynamic_smps_6ghz = false,
->>   
->>  +		.iova_mask = ATH12K_PCIE_MAX_PAYLOAD_SIZE - 1,
->> ++
->> + 		.supports_aspm = true,
->>   	},
->>   	{
->>   		.name = "qcn9274 hw2.0",
->> @@@ -1077,7 -1077,7 +1081,9 @@@
->>   		.acpi_guid = NULL,
->>   		.supports_dynamic_smps_6ghz = true,
->>   
->>  +		.iova_mask = 0,
->> ++
->> + 		.supports_aspm = false,
->>   	},
->>   };
->>   
->
-> This is now a conflict between the wireless-next tree and the ath tree.
+> Kalle, are you able to test this? I don't currently have a HSP setup
 
-Thanks. The plan is that the network maintainers will fix this once the
-commits "meet" in net-next. We are trying to avoid unnessary merges.
+Yes, I have a WCN6855 test setup and I'll test this.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
