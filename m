@@ -1,126 +1,147 @@
-Return-Path: <linux-wireless+bounces-11484-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11485-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 636B5952DB2
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 13:45:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07282953196
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 15:55:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7061B26BBF
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 11:45:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0FCF1F21D93
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 13:55:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E41C21714B4;
-	Thu, 15 Aug 2024 11:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF0F19EEAA;
+	Thu, 15 Aug 2024 13:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JUZgsS5o"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P0cEgGkT"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B857C7DA6D;
-	Thu, 15 Aug 2024 11:45:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897E71714A1
+	for <linux-wireless@vger.kernel.org>; Thu, 15 Aug 2024 13:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723722300; cv=none; b=JCKMQYLWOUbQw6QTyajFaQDdt0vnfENVn4MGG1oSd8vdJOAYqBAqbpkAcrhnK4AYoTON2//7kHCOfC+85iCP2sK2utijUJ98MGdAuil9sfqzSkm+h9BtAwecGFli91dkvO2qBLbm1JuFMCeqXRgZlSARCBFs0okY1hyv+4b4Rtc=
+	t=1723730156; cv=none; b=NcKSJGaIUhNhUNVHj4MrO0Vb8rCRncGIZtaUzSWQhgoylePQB+MBDIVsSI4oOFEFspibqBiSpadGs4NQYxsPUKqxfqiqb8A0ooTOr/6t74/qimVWthbBwZ7agLhm1h+SP+aYxaCAG94YqqftjL065ilMSJwdEDKcqkxxK+TQ6V0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723722300; c=relaxed/simple;
-	bh=DD04X7e+IRTT47kw4861eORV8QakL3FUlZzRdWiImvI=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=EmO1r7VeRB7SfypDhS7B1izzJHg7Fdr6NIsNI0Cx0gMc8OyAwB0zNWPYBXRoKZi8jcUXzTTw6YeJzb+nYYq05wMQNEmYuXoOWR8WKvC59SYzTvkYmnlbHMmjZQZvZSI+bQFYskqA/OGz2y2ORGWV3spP5Y5p03e320ZCewOZLxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JUZgsS5o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF285C32786;
-	Thu, 15 Aug 2024 11:44:58 +0000 (UTC)
+	s=arc-20240116; t=1723730156; c=relaxed/simple;
+	bh=MsSF0ZMUFFKBilcSHXDg3Wgfc1Du5Oe51UnolXkzzvQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=my2jMu9DEqmKogbUkiXsMTPPi80wgVDAyGvwoib8gtgaYQn0ax0nN30du6z2x2kAArElTD2rBz3lX6FP5mYSuK4i+Vg2bqvegy5hso7PVFDLHKeoOgxy7mcDNUtLO8u99FlEj5AfmAVl9TGsvQHsc9RTFYvPK2WGp1MDLCe8XaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P0cEgGkT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A75C4AF0D
+	for <linux-wireless@vger.kernel.org>; Thu, 15 Aug 2024 13:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723722300;
-	bh=DD04X7e+IRTT47kw4861eORV8QakL3FUlZzRdWiImvI=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=JUZgsS5oaxQrKe/f9VIi3RLHwFPM7lXdLegMG1yepHdfce8Fix+Yzc5E2sk0xgGDa
-	 c6FCplqIzpMXN1WNaXi6ZVRY7tkVLhI5cVJZ67IS3+kHCbsXyBFcbnNVJ+b1kH0Xfp
-	 4N4O4ilYVctoAxOcwNkmTRiEBuNImKfVar5h40OQqFD9Y+BXrKjp9gAKyUnjBBv3kJ
-	 ATTtKQu/i197OistiVYU9dVEszL8klK3I3nGszgvZMH5WoI6HuSDzPvSUZwvtTQ3Hk
-	 ligtXcte8h2VL+VNVsTRkQt8daAO+NMOe6IH/f9h8Av3XhXNEP7G2e6Lvin1A1eVfJ
-	 2cNFWiXeF1X3Q==
-From: Kalle Valo <kvalo@kernel.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: David Lin <yu-hao.lin@nxp.com>,  "linux-wireless@vger.kernel.org"
- <linux-wireless@vger.kernel.org>,  "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>,  "johannes@sipsolutions.net"
- <johannes@sipsolutions.net>,  "briannorris@chromium.org"
- <briannorris@chromium.org>,  "francesco@dolcini.it"
- <francesco@dolcini.it>,  Pete Hsieh <tsung-hsien.hsieh@nxp.com>
-Subject: Re: [EXT] Re: [PATCH v2 40/43] wifi: nxpwifi: add wmm.h
-References: <20240809094533.1660-1-yu-hao.lin@nxp.com>
-	<20240809094533.1660-41-yu-hao.lin@nxp.com>
-	<2024081430-derail-diocese-78dc@gregkh>
-	<PA4PR04MB9638C1186FC4D56569D7D0E4D1802@PA4PR04MB9638.eurprd04.prod.outlook.com>
-	<2024081523-curator-pronounce-4619@gregkh> <877cciyvdg.fsf@kernel.org>
-	<2024081500-essential-recovery-374f@gregkh>
-Date: Thu, 15 Aug 2024 14:44:57 +0300
-In-Reply-To: <2024081500-essential-recovery-374f@gregkh> (Greg KH's message of
-	"Thu, 15 Aug 2024 11:58:28 +0200")
-Message-ID: <87v802xb5y.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=k20201202; t=1723730156;
+	bh=MsSF0ZMUFFKBilcSHXDg3Wgfc1Du5Oe51UnolXkzzvQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:List-Id:Cc:From;
+	b=P0cEgGkTVxCOyhlzQ3El8NHry3MfF+l32ATuun3K5VT+yqZ+3BDZj1AtK3PQnHV7D
+	 4mE4GyGi7QUIGdVBG2CdxIteJQMiRUI9oGT+11M/cif9/FBFnOHinWGuhg04aAUhqZ
+	 VzyFJZmCVD+xcyCMe6GyUwX4QwJSWGO9D+Uzn69Mta+YZH4nqX/PU9OuSloH79Lrps
+	 dDlgYCSpAl5RWpS9EaKzI2q9+Bs1gviQBfh3snO2/E1lEKv3wSDVtvKcFgWvUqdScD
+	 xD1MAmyzQ/63N7LGd1CMa3YB4iGqXZEXFghbpTfgat5rzIKLjY9v/4bGXXspyDJQw/
+	 vniTpSjkR9wsg==
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-66ca5e8cc51so9737967b3.1
+        for <linux-wireless@vger.kernel.org>; Thu, 15 Aug 2024 06:55:56 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUfgSeLahId6BI8PIp1GjhFMUfGLXQPpu6j1x9S4fd0WRNzX9x3ohOrkbqXHG5SJodE7TZmmrahWJJNouQ5hMcpg3TjW0zGZBTE1I6YdxU=
+X-Gm-Message-State: AOJu0YwfePnttyxsnwz8zxFW2RrI8D42cnEx7Bfw8ieDUvtgSYNLOS0M
+	FMFVT8X2qrrYBZHlUWgM+zUoAt2W49xuDZZusnAm3FKilkOpwrXHvJK0zlHKG8Ws32qfxvyAUIA
+	7Spd8syNj8lge4LeCconJBbYe69w=
+X-Google-Smtp-Source: AGHT+IE9g8Et9/7N9qT7VqtHIV42bP2F1ImRodlvjO4IZyU8D4JRPGtVEFXM1hFoSuCz+Mw4pNGd3uYxCaaPPr6u6k0=
+X-Received: by 2002:a05:690c:fcb:b0:62f:37c9:77bc with SMTP id
+ 00721157ae682-6ac8fe09107mr83314787b3.0.1723730155534; Thu, 15 Aug 2024
+ 06:55:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <87cymc1iga.fsf@kernel.org>
+In-Reply-To: <87cymc1iga.fsf@kernel.org>
+From: Josh Boyer <jwboyer@kernel.org>
+Date: Thu, 15 Aug 2024 09:55:44 -0400
+X-Gmail-Original-Message-ID: <CA+5PVA5M1vcSH2z41zQwBuv8pj89GG-wGkHApMOe=UiDmhHAkw@mail.gmail.com>
+Message-ID: <CA+5PVA5M1vcSH2z41zQwBuv8pj89GG-wGkHApMOe=UiDmhHAkw@mail.gmail.com>
+Subject: Re: [PULL linux-firmware] ath11k and ath12k firmware 20240813
+To: Kalle Valo <kvalo@kernel.org>
+Cc: linux-firmware@kernel.org, linux-wireless@vger.kernel.org, 
+	ath10k@lists.infradead.org, ath11k@lists.infradead.org, 
+	ath12k@lists.infradead.org, Jeff Johnson <quic_jjohnson@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Greg KH <gregkh@linuxfoundation.org> writes:
-
-> On Thu, Aug 15, 2024 at 12:43:07PM +0300, Kalle Valo wrote:
+On Tue, Aug 13, 2024 at 12:44=E2=80=AFPM Kalle Valo <kvalo@kernel.org> wrot=
+e:
 >
->> Greg KH <gregkh@linuxfoundation.org> writes:
->> 
->> > On Thu, Aug 15, 2024 at 01:52:18AM +0000, David Lin wrote:
->> >> Hi Greg,
->> >> 
->> >> 	Following the guideline for new driver, it should let every
->> >> file as a single patch for review and generate a final
->> >> 	single patch after reviewing. I think stuffs mentioned by you can be got from cover letter.
->> >> 
->> >> 	If I misunderstood anything, please let me know.
->> >
->> > Please read the kernel documentation for how to submit kernel changes in
->> > a way that we can properly review, and accept them.  As-is, there is
->> > nothing we can do with this series at all, sorry.
->> 
->> Greg, just a bit background for this:
->> 
->> Because wireless drivers can be huge in our documentation we have
->> actually requested to split the driver one patch per file for easier
->> review and avoid mailing list limits:
->> 
->> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#new_driver
->> 
->> The final patch to be commited will be just one big patch with a proper
->> commit message.
+> Hi,
 >
-> Ick, wow, good luck!
+> Here's a pull request for ath11k and ath12k. We have new ath11k hardware
+> QCA2066 hw2.1 and usual smaller updates.
+>
+> Please let me know if there are any problems.
+>
+> Kalle
+>
+> The following changes since commit 594600762910b4bbe8a88d0dc6495521366c88=
+0c:
+>
+>   Merge branch 'vpu' into 'main' (2024-08-09 13:02:09 +0000)
+>
+> are available in the Git repository at:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/ath/linux-firmware.git at=
+h-20240813
 
-Wireless drivers can be 40 kLOC and even if you can review a monster
-patch like that, us mere mortals cannot :)
+Merged and pushed out.
 
-> That being said, you still can't take patches without any changelog text
-> and most importantly, no signed-off-by lines, right?
+https://gitlab.com/kernel-firmware/linux-firmware/-/merge_requests/275
 
-I will not accept empty commit messages. I think you misunderstood what
-we do so I'll give a concrete example with rtw89 driver. Here's how the
-driver was split for review one file per patch:
+josh
 
-https://lore.kernel.org/linux-wireless/20201230044223.14085-1-pkshih@realtek.com/
-
-And here's the one big commit the driver was applied to the tree:
-
-https://git.kernel.org/linus/e3ec7017f6a2
-
-Actually initial rtw89 version was a whopping 92 kLOC.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+>
+> for you to fetch changes up to 82318c966fd1af87044299d34611751c76f70927:
+>
+>   ath12k: WCN7850 hw2.0: update board-2.bin (2024-08-13 19:36:13 +0300)
+>
+> ----------------------------------------------------------------
+> Kalle Valo (6):
+>       ath11k: IPQ5018 hw1.0: update to WLAN.HK.2.6.0.1-01291-QCAHKSWPL_SI=
+LICONZ-1
+>       ath11k: QCA2066 hw2.1: add board-2.bin
+>       ath11k: QCA2066 hw2.1: add to WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_S=
+ILICONZ_CE-2.52297.3
+>       ath11k: WCN6855 hw2.0: update board-2.bin
+>       ath11k: WCN6855 hw2.0: update to WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V=
+2_SILICONZ_LITE-3.6510.41
+>       ath12k: WCN7850 hw2.0: update board-2.bin
+>
+>  WHENCE                           |    9 +-
+>  ath11k/IPQ5018/hw1.0/m3_fw.b01   |  Bin 136 -> 136 bytes
+>  ath11k/IPQ5018/hw1.0/m3_fw.b02   |  Bin 262144 -> 262144 bytes
+>  ath11k/IPQ5018/hw1.0/m3_fw.mdt   |  Bin 284 -> 284 bytes
+>  ath11k/IPQ5018/hw1.0/q6_fw.b00   |  Bin 532 -> 532 bytes
+>  ath11k/IPQ5018/hw1.0/q6_fw.b01   |  Bin 520 -> 520 bytes
+>  ath11k/IPQ5018/hw1.0/q6_fw.b02   |  Bin 7552 -> 7552 bytes
+>  ath11k/IPQ5018/hw1.0/q6_fw.b04   |  Bin 86788 -> 86788 bytes
+>  ath11k/IPQ5018/hw1.0/q6_fw.b08   |  Bin 4096 -> 4096 bytes
+>  ath11k/IPQ5018/hw1.0/q6_fw.b09   |  Bin 2330624 -> 2334720 bytes
+>  ath11k/IPQ5018/hw1.0/q6_fw.b10   |  Bin 269028 -> 269220 bytes
+>  ath11k/IPQ5018/hw1.0/q6_fw.b11   |  Bin 99436 -> 99456 bytes
+>  ath11k/IPQ5018/hw1.0/q6_fw.b13   |  Bin 7024 -> 7072 bytes
+>  ath11k/IPQ5018/hw1.0/q6_fw.mdt   |  Bin 1052 -> 1052 bytes
+>  ath11k/QCA2066/hw2.1/Notice.txt  | 3658 ++++++++++++++++++++++++++++++++=
+++++++
+>  ath11k/QCA2066/hw2.1/amss.bin    |  Bin 0 -> 5349376 bytes
+>  ath11k/QCA2066/hw2.1/board-2.bin |  Bin 0 -> 685144 bytes
+>  ath11k/QCA2066/hw2.1/m3.bin      |  Bin 0 -> 266684 bytes
+>  ath11k/WCN6855/hw2.0/amss.bin    |  Bin 4988928 -> 4988928 bytes
+>  ath11k/WCN6855/hw2.0/board-2.bin |  Bin 6308684 -> 6429240 bytes
+>  ath11k/WCN6855/hw2.0/m3.bin      |  Bin 266684 -> 266684 bytes
+>  ath12k/WCN7850/hw2.0/board-2.bin |  Bin 382856 -> 1897968 bytes
+>  22 files changed, 3665 insertions(+), 2 deletions(-)
+>  create mode 100644 ath11k/QCA2066/hw2.1/Notice.txt
+>  create mode 100644 ath11k/QCA2066/hw2.1/amss.bin
+>  create mode 100644 ath11k/QCA2066/hw2.1/board-2.bin
+>  create mode 100644 ath11k/QCA2066/hw2.1/m3.bin
 
