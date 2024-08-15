@@ -1,97 +1,96 @@
-Return-Path: <linux-wireless+bounces-11463-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11464-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46634952986
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 08:53:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33A3895298F
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 08:57:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7B9C2825C7
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 06:53:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FE2A1C2161A
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 06:57:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2B4F17A595;
-	Thu, 15 Aug 2024 06:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE4C178CCA;
+	Thu, 15 Aug 2024 06:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="qPklhPyY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hzj4dlJz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0258017A58C
-	for <linux-wireless@vger.kernel.org>; Thu, 15 Aug 2024 06:52:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0298D43155;
+	Thu, 15 Aug 2024 06:57:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723704778; cv=none; b=tx7PnqOfm38J4Nl+Sc+4MK6t2h6FRytNKnE5/eHhOoc2UW6GbWfSRDN5N6VzU8kAqYQ/PdDfjGfk9WquFyoZD0uQNYKf30Sx9VH+1POrEQvis/gMabKWeA4kn38x35t3VXcSI+g4iHwGyQ7LKODLmrSgMBn8HjlKFo7bJzuWkpY=
+	t=1723705033; cv=none; b=iHaycQBhCTjgFb56trUcmAL6skeaCDRU5mEpVMDL2c0R34hObDkP4O2/1Bh2JNax3aNGLMQinAGGmdOyoo+XFNLUU8pgACP/AO6EVFi5QZxj1k8HcSAPDLhtNq8N1waHqrFm/Cw9G4/h8h0G09bEqpk68es5jqDZbeB8NZu5YKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723704778; c=relaxed/simple;
-	bh=l+Qt19iTTAXx/4RyB//e86xX+3onbX+DlzAH4pFYKOI=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ZZ3zGYaTynLLyeKGb/v2/o8IgFVSpf0TCrVa+XWdniW1olkIdJGAmUObRrezW43MurvV0xV6aRap/Hv0vjmAEqq0dNj59iF6x5gqCdCYcmxUoh5JLjgidid+FT9Yng0u9VBo5FGT/3JklriLiQE8F6KTy97PR4fwowctgHFtl3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=qPklhPyY; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 47F6qrIuB3714038, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1723704773; bh=l+Qt19iTTAXx/4RyB//e86xX+3onbX+DlzAH4pFYKOI=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=qPklhPyYbHnnY4wYhYGK43OKtudY49Rq25gO65jfJdc+p/wYEW9gFSvM9WtMFDaSW
-	 Vo/YKfeJMT5sYXP0aLbGUdmXN9OGWk5nVJjaDtzvS/uXBK3DZJMHRTIO+A55XzYQoY
-	 QC/UXFXUBmQwrcD4Y1JdOpvBWGsXfPX72WD/GZojB/mgaOvy9F8GoeBqqthMw0Vrlp
-	 lqSRm2F+WJoSSek0Yx17YH17djoBEbKcKu3M9kXZhuUb/uDnoIqzOecBCXtE+0nJfn
-	 OagLmULlYsVMdyowwsNDVZw3ku8E5ygqPVVydPLfGV3cvN4/g59uWh9Oe2xA/Z9QvF
-	 n1l2ge6je32vA==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 47F6qrIuB3714038
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 15 Aug 2024 14:52:53 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 15 Aug 2024 14:52:53 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 15 Aug 2024 14:52:53 +0800
-Received: from RTEXDAG02.realtek.com.tw ([fe80::1849:eb4c:c240:1ba0]) by
- RTEXDAG02.realtek.com.tw ([fe80::1849:eb4c:c240:1ba0%5]) with mapi id
- 15.01.2507.035; Thu, 15 Aug 2024 14:52:53 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH 09/20] wifi: rtw88: Support TX page sizes bigger than 128
-Thread-Topic: [PATCH 09/20] wifi: rtw88: Support TX page sizes bigger than 128
-Thread-Index: AQHa7DGPCim1rUKUPE6RD0hAGkiA3LIn5wWw
-Date: Thu, 15 Aug 2024 06:52:53 +0000
-Message-ID: <6b488ee757964c3080a8de89f61c125f@realtek.com>
-References: <ade57ca1-444f-49e2-b49e-f4b9da65b2cc@gmail.com>
- <3d35cd9c-3625-40ae-806e-dacb2fe0039a@gmail.com>
-In-Reply-To: <3d35cd9c-3625-40ae-806e-dacb2fe0039a@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1723705033; c=relaxed/simple;
+	bh=b7LjGN1zgCWQWh0SzfZYNuLiCaLfGCo0AaOv2p75qwk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Vd9uAcPnFYp0HN53w04QSggO00IiLojHUDgoXNC+oGvtNwtDL+YZ5TokOJHzSKeQ/X/xCkBkTAw4jOIQp0aY2HhyPuvs57ZY0Qe/P/1gvpUJ7PhLmWd1oHq9LDzX85JifRuiytdvibxYYxQglq9b4v5WKSCeyx4+KLGa/p6j7/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hzj4dlJz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0B0BC4AF09;
+	Thu, 15 Aug 2024 06:57:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1723705032;
+	bh=b7LjGN1zgCWQWh0SzfZYNuLiCaLfGCo0AaOv2p75qwk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hzj4dlJzf+QDt76LXeKtLbViC3R8nbDVA1qlFQv4qo+xz45ItEh+BmORgsoItSAKI
+	 qmprNDk6bzo1iw+g4V/wj+aHaQLOn17QUeirbby9Di2ZVefiOAAA7tP6grqgvsQrS1
+	 XuebJxtpgsNiWAUiC+S2JgRMAvx5clyvSFmEKrYM=
+Date: Thu, 15 Aug 2024 08:57:09 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: David Lin <yu-hao.lin@nxp.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kvalo@kernel.org" <kvalo@kernel.org>,
+	"johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+	"briannorris@chromium.org" <briannorris@chromium.org>,
+	"francesco@dolcini.it" <francesco@dolcini.it>,
+	Pete Hsieh <tsung-hsien.hsieh@nxp.com>
+Subject: Re: [EXT] Re: [PATCH v2 40/43] wifi: nxpwifi: add wmm.h
+Message-ID: <2024081501-rarity-strategic-cd90@gregkh>
+References: <20240809094533.1660-1-yu-hao.lin@nxp.com>
+ <20240809094533.1660-41-yu-hao.lin@nxp.com>
+ <2024081430-derail-diocese-78dc@gregkh>
+ <PA4PR04MB9638C1186FC4D56569D7D0E4D1802@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <2024081523-curator-pronounce-4619@gregkh>
+ <PA4PR04MB963855F4620A2E2C48B2DC2CD1802@PA4PR04MB9638.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <PA4PR04MB963855F4620A2E2C48B2DC2CD1802@PA4PR04MB9638.eurprd04.prod.outlook.com>
 
-Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBBbGwg
-dGhlIGNoaXBzIHN1cHBvcnRlZCBzbyBmYXIgaGF2ZSBhIFRYIHBhZ2Ugc2l6ZSBvZiAxMjggYnl0
-ZXMuDQo+IA0KPiBDaGFuZ2UgdGhlIHR5cGUgb2YgdGhlIHBhZ2Vfc2l6ZSBtZW1iZXIgb2Ygc3Ry
-dWN0IHJ0d19jaGlwX2luZm8gZnJvbSB1OA0KPiB0byB1MTYgaW4gb3JkZXIgdG8gc3VwcG9ydCBS
-VEw4ODIxQVUgKHBhZ2Ugc2l6ZSBvZiAyNTYgYnl0ZXMpIGFuZA0KPiBSVEw4ODEyQVUgKHBhZ2Ug
-c2l6ZSBvZiA1MTIgYnl0ZXMpLiBBbHNvIGNoYW5nZSB0aGUgdHlwZXMgb2Ygc2V2ZXJhbA0KPiBy
-ZWxhdGVkIHZhcmlhYmxlcyBhbmQgZnVuY3Rpb24gcGFyYW1ldGVycyBmcm9tIHU4IHRvIHUxNi4N
-Cj4gDQo+IFRoZSBUWCBwYWdlIHNpemUgaXMgdXNlZCwgYW1vbmcgb3RoZXIgdGhpbmdzLCB0byBj
-b25zdHJ1Y3QgdGhlIGJlYWNvbiwNCj4gbnVsbCBkYXRhLCBRT1MgbnVsbCBkYXRhLCBhbmQgUFMg
-cG9sbCB0ZW1wbGF0ZXMgd2hpY2ggYXJlIHVwbG9hZGVkIHRvDQo+IHRoZSBjaGlwJ3MgcmVzZXJ2
-ZWQgcGFnZS4gRWFjaCB0ZW1wbGF0ZSBuZWVkcyB0byBiZSBhbGlnbmVkIG9uIGENCj4gbXVsdGlw
-bGUgb2YgdGhlIFRYIHBhZ2Ugc2l6ZS4gUG93ZXIgc2F2aW5nIGNhbid0IHdvcmsgaWYgdGhlIFRY
-IHBhZ2UNCj4gc2l6ZSBpcyB3cm9uZy4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IEJpdHRlcmJsdWUg
-U21pdGggPHJ0bDg4MjFjZXJmZTJAZ21haWwuY29tPg0KDQpBY2tlZC1ieTogUGluZy1LZSBTaGlo
-IDxwa3NoaWhAcmVhbHRlay5jb20+DQoNCg==
+A: http://en.wikipedia.org/wiki/Top_post
+Q: Were do I find info about this thing called top-posting?
+A: Because it messes up the order in which people normally read text.
+Q: Why is top-posting such a bad thing?
+A: Top-posting.
+Q: What is the most annoying thing in e-mail?
+
+A: No.
+Q: Should I include quotations after my reply?
+
+
+http://daringfireball.net/2007/07/on_top
+
+On Thu, Aug 15, 2024 at 06:20:48AM +0000, David Lin wrote:
+> Hi Greg,
+> 
+> 	So that mean I still need to add description for every file, right?
+
+Of course, how else would you want to review such a change?
+
+Think about being on the recieving end of a patch set.  What would you
+need and want in order to be able to properly review it (hint, it is NOT
+one patch per file).
+
+thanks,
+
+greg k-h
 
