@@ -1,123 +1,132 @@
-Return-Path: <linux-wireless+bounces-11482-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11483-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F5D3952D81
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 13:29:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EB73952D8A
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 13:32:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 303C42832A1
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 11:29:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1F0C282EA4
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 11:32:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E501714CE;
-	Thu, 15 Aug 2024 11:29:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GuDeUI+P"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D811714AE;
+	Thu, 15 Aug 2024 11:32:21 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434D41714AA
-	for <linux-wireless@vger.kernel.org>; Thu, 15 Aug 2024 11:29:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DE614AD1A
+	for <linux-wireless@vger.kernel.org>; Thu, 15 Aug 2024 11:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723721376; cv=none; b=HIvBcAEUWneuY/iv5V75WIe2LiIRwWlbQi2JZEJEctZbf/2VMEP+/ilhoS2/MY325vW76d9aIB9knLSjAlFz2ShxxVKiKEc0h4LPadXQF0yaglqHQCB0vuDbmkVgqvPPoUKxoxoqSRdKT6zDCtHzjVggdVUlqlu07n4dRbfAn+4=
+	t=1723721541; cv=none; b=rcDyK6z0nMplpOrnuQCglDRE5zmaNpK2wRhEWQcmi1tOqwq2i/lT9Ux4kM9nLITVYvKAYV5msITRCMjEIVwzGMKd4AmcTpxtt8DotaU9frCOwU6DCY7fR48+nytGnETHVYPq56v3wWMjXiEpufAusruYmNRXgH1ay0/BRyglNDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723721376; c=relaxed/simple;
-	bh=sr7j5UxC4QXw2ypOBkx4S07fGjjwP6NxkB/0YC95P0c=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=l5hEGVq/tzb9G80fHUDlYwqaUKZS/DiLwte4okY/I6M+YASHhFcm23nfpOxmWUehTz+kPGsqy9je1WiIJucoCchvq/xJITLKbQS91xL4CEYhebwN1X2O6Ddtv2HwE5Wf7GswgeY8afTnc55dI2Z0L6RSfqYlAKfytg2SHTXRJGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GuDeUI+P; arc=none smtp.client-ip=209.85.208.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5a156557026so1057033a12.2
-        for <linux-wireless@vger.kernel.org>; Thu, 15 Aug 2024 04:29:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1723721371; x=1724326171; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JTAEGW3OQZ1pLkxp14RqDDaQpOm9zbUm4HJdeRXWAT0=;
-        b=GuDeUI+PD6t2GHTXyS9clkXdr5c+3iuodVEPzDFGaNMIQdJaAH7SSLCdokYM0mHziE
-         f3xmzmjqbbHnbbz8j17h/+xSxLFWVn1wyieDUbEXydIKsg8Lq6jeSQfZbHupzRHfpJ+a
-         cyvqAetO1Yz3psYN9MaRJg3vuduXx2+ybclb1jwo5gy4WkQ2Hxt/slrWBeXTnjZJ1Tq7
-         Q3vMmV2c1rhESMyQClBAU+RpS0ZqFAhcijQiTams4dTPAy5zl+gHgREr4/jZgm8JyASy
-         SNMzEJ+Ey5Q5vi2/q/DXg0/ktaNck4x/wmhFIYMEICgWDqSb6UXaWX0HlbsEaGYIL9Yd
-         MohA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723721371; x=1724326171;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JTAEGW3OQZ1pLkxp14RqDDaQpOm9zbUm4HJdeRXWAT0=;
-        b=FgaJDs4PDe9WtamnLag+qhX1qMa6Z9MQP8lekqgC2ungaIoGxZMHJhIlpZsk+mDVf9
-         lxGMoKNPcIjKn3R/8ctz+Y8YCNEqnEVMdGLD8wSG+QNIiJpZ/mZjJKsPAjntFmUtVlbr
-         TxUFgzkBGHKBxhOAOKsXiU0gzedJW7PxHDenaZWy5gYJcilCs+VpwowaQX2/E20JEN8R
-         1F/14WDCKp1Aoi1CBbv32gl7rgwO0inAXznWziySbIrKcogELXww38n/FZelYt1gfsDo
-         2pU0h4rqKey02KaQ4mx+7EbgWRnr+EhDdkBk28H5d4EYyfKIifrttTvzp7OLKiN4n2u3
-         s4/A==
-X-Forwarded-Encrypted: i=1; AJvYcCVMBohKhpxZI1sh2g0JQ30jPvI9y9aScqJc74Cpgh5PVmdEuuAmuEbDmWg6nov/05SLlE94av21IJcsZQgDA+s7aQ8ZNtZP6o1MzxGoYfE=
-X-Gm-Message-State: AOJu0YxwSynYESrPQ5ZZmDmHs4ezjE5g/cEhVTOvZn+tGbOmuu3dtDWk
-	VyVa/AABN6VUl48JMknNGpybZba0+qs2yIp96emjMuiAuhnoKq+4hLpUfMYZtbo=
-X-Google-Smtp-Source: AGHT+IH9/KXxc6zq/fnEB4afFMropsvLrpcMCVRcWcQLh3uIT597PZfVNI/aJoEfYCz472UFpsw6NQ==
-X-Received: by 2002:a17:907:e9e:b0:a77:c330:ad9d with SMTP id a640c23a62f3a-a836709548emr424568866b.61.1723721371552;
-        Thu, 15 Aug 2024 04:29:31 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a83839356e2sm87568266b.105.2024.08.15.04.29.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Aug 2024 04:29:31 -0700 (PDT)
-Date: Thu, 15 Aug 2024 14:29:27 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: David Lin <yu-hao.lin@nxp.com>
-Cc: Brian Norris <briannorris@chromium.org>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Kalle Valo <kvalo@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Aloka Dixit <quic_alokad@quicinc.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Rafael Beims <rafael.beims@toradex.com>,
-	Ruan Jinjie <ruanjinjie@huawei.com>, linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] wifi: mwifiex: Fix uninitialized variable in
- mwifiex_cfg80211_authenticate()
-Message-ID: <d7d043b2-95d5-4e1d-b340-5d7330053ac6@stanley.mountain>
+	s=arc-20240116; t=1723721541; c=relaxed/simple;
+	bh=uMx55GtCQ/0r4apC4BWuJdoJ3VrEdoLM5jiMAd8HD0g=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=fc/kc8X/fbh2S43apW/KahwjwuE2TII3MvU3iYn+bGUo8rdtzLLLIErlfNHW6+iANKB4ELdYKoDPfdz++8pyi9qyP17xHjJoEoTehtGHdlKawAW1bTrWiEMRfOM/kVx9r1CSmumYRxhihH99Q4Nhj5kkwq54RqzCywGARw3E/lA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
+Received: from localhost (p200300C5970CA890000000000000032B.dip0.t-ipconnect.de [IPv6:2003:c5:970c:a890::32b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.simonwunderlich.de (Postfix) with ESMTPSA id B04DCFA131;
+	Thu, 15 Aug 2024 13:32:15 +0200 (CEST)
+From: Issam Hamdi <ih@simonwunderlich.de>
+To: kvalo@kernel.org
+Cc: ih@simonwunderlich.de,
+	johannes@sipsolutions.net,
+	linux-wireless@vger.kernel.org,
+	lkp@intel.com,
+	llvm@lists.linux.dev,
+	mathias.kretschmer@fit.fraunhofer.de,
+	oe-kbuild-all@lists.linux.dev
+Subject: [PATCH v2] wifi: cfg80211: Set the channel definition for the different Wi-Fi modes when starting CAC
+Date: Thu, 15 Aug 2024 13:32:13 +0200
+Message-Id: <20240815113213.3237491-1-ih@simonwunderlich.de>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <87jzgiyxob.fsf@kernel.org>
+References: <87jzgiyxob.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+Content-Transfer-Encoding: 8bit
 
-Smatch complains that:
+When starting CAC in a mode other than AP mode, it return a
+"WARNING: CPU: 0 PID: 63 at cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]"
+caused by the chandef.chan being null at the end of CAC.
 
-    drivers/net/wireless/marvell/mwifiex/cfg80211.c:4408 mwifiex_cfg80211_authenticate()
-    error: uninitialized symbol 'varptr'.
+Solution: Ensure the channel definition is set for the different modes
+when starting CAC to avoid getting a NULL 'chan' at the end of CAC.
 
-It's a check for NULL, but "varptr" is either non-NULL or uninitialized.
-Initialize it to NULL.
+ Call Trace:
+  ? show_regs.part.0+0x14/0x16
+  ? __warn+0x67/0xc0
+  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
+  ? report_bug+0xa7/0x130
+  ? exc_overflow+0x30/0x30
+  ? handle_bug+0x27/0x50
+  ? exc_invalid_op+0x18/0x60
+  ? handle_exception+0xf6/0xf6
+  ? exc_overflow+0x30/0x30
+  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
+  ? exc_overflow+0x30/0x30
+  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
+  ? regulatory_propagate_dfs_state.cold+0x1b/0x4c [cfg80211]
+  ? cfg80211_propagate_cac_done_wk+0x1a/0x30 [cfg80211]
+  ? process_one_work+0x165/0x280
+  ? worker_thread+0x120/0x3f0
+  ? kthread+0xc2/0xf0
+  ? process_one_work+0x280/0x280
+  ? kthread_complete_and_exit+0x20/0x20
+  ? ret_from_fork+0x19/0x24
 
-Fixes: 36995892c271 ("wifi: mwifiex: add host mlme for client mode")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Issam Hamdi <ih@simonwunderlich.de>
+Signed-off-by: Kretschmer Mathias <mathias.kretschmer@fit.fraunhofer.de>
 ---
- drivers/net/wireless/marvell/mwifiex/cfg80211.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v2: update the subject
+---
+ net/wireless/nl80211.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-index 722ead51e912..7505de304052 100644
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -4284,7 +4284,7 @@ mwifiex_cfg80211_authenticate(struct wiphy *wiphy,
- 	struct mwifiex_txinfo *tx_info;
- 	u32 tx_control = 0, pkt_type = PKT_TYPE_MGMT;
- 	u8 trans = 1, status_code = 0;
--	u8 *varptr;
-+	u8 *varptr = NULL;
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 7397a372c78e..36ae2594753e 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -10143,7 +10143,23 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
  
- 	if (GET_BSS_ROLE(priv) == MWIFIEX_BSS_ROLE_UAP) {
- 		mwifiex_dbg(priv->adapter, ERROR, "Interface role is AP\n");
+ 	err = rdev_start_radar_detection(rdev, dev, &chandef, cac_time_ms);
+ 	if (!err) {
+-		wdev->links[0].ap.chandef = chandef;
++		switch (wdev->iftype) {
++		case NL80211_IFTYPE_MESH_POINT:
++			wdev->u.mesh.chandef = chandef;
++			break;
++		case NL80211_IFTYPE_ADHOC:
++			wdev->u.ibss.chandef = chandef;
++			break;
++		case NL80211_IFTYPE_OCB:
++			wdev->u.ocb.chandef = chandef;
++			break;
++		case NL80211_IFTYPE_AP:
++		case NL80211_IFTYPE_P2P_GO:
++			wdev->links[0].ap.chandef = chandef;
++			break;
++		default:
++			break;
++		}
+ 		wdev->cac_started = true;
+ 		wdev->cac_start_time = jiffies;
+ 		wdev->cac_time_ms = cac_time_ms;
+
+base-commit: cc32e9fb380d8afdbf3486d7063d5520bfb0f071
 -- 
-2.43.0
+2.39.2
 
 
