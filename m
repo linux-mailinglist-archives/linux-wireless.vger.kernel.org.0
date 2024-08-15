@@ -1,59 +1,61 @@
-Return-Path: <linux-wireless+bounces-11476-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11477-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2EF7952B51
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 11:52:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78824952C37
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 12:33:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF1CE283250
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 09:51:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2147C1F21F96
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 10:33:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 283021AB53B;
-	Thu, 15 Aug 2024 08:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D6319EED0;
+	Thu, 15 Aug 2024 09:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T0ngCW3i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h1CqGHyC"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED73129CFB;
-	Thu, 15 Aug 2024 08:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3891519DF57;
+	Thu, 15 Aug 2024 09:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723712009; cv=none; b=ZJ5keZ9UzfYUOXL0r9desp4+OZz+nSUUtDbKHJzMYkacRnfbdLHI9PgF/lET7VqJSv73Tt8dUQsE6o3UFH8kmUVDBcjSBNCZnILwxw1eCOEZRPxlqjwm3bBLfMqWh1W2iabXFjZse+ymhKJMIm7ha6ud4xj/a28fWv1XIA12vtY=
+	t=1723714539; cv=none; b=Q4Pyc/mYwHmEyeHIld2tDCfq6CpTPAOVnfcXUGqiufdF5F1DakjV+GQ7JswzkH8BSCFRSzhHdzZ5XNhu7fkNZJIFZxznOMt3dMazbCpZyDeRzE2cgccZV36nWxuW1KXDlyzOl+kytSUQ8uq88BPh9wA8/RAflGzsVtwR78/OxB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723712009; c=relaxed/simple;
-	bh=uvWuZMpoU48JcHOeJrAEactdukPHmQFQcCZXV9R72Iw=;
+	s=arc-20240116; t=1723714539; c=relaxed/simple;
+	bh=PVQNOeMTQi8lV98jbFqNpHhoYEQEkzMaLvP7V2uLo6E=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=CoUQhA1QtREQSoxeTZP2XFco45Dobto4ta+Zk880E5WHb9ih/oRCOUK70A2hgmoP035jb+WKRd8g83gaIxV9jdT4g4ZOaHB5OtcLZyG9EClAaCp10U77fw+5tY6WOCdWqWvrqivktF/13l4cRPtXBzg4c+ieon2R69x+hc9IxNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T0ngCW3i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2A2C32786;
-	Thu, 15 Aug 2024 08:53:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jW+wozIEYUDxWKB4/lrSe5tsMnqkKTKk1Z6SZPqPboVzTIUERGd/UwKWczmBE3j8fqRk9flMZV/YIsJEDqj1EtVSosGg8COdfijUZOtspdW3utoKxRFZ8+4cduVEWm13/hp2JUr341wU1gv1yPrbgzPi2PI1k0ZhbmSrL1I0M2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h1CqGHyC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E202C32786;
+	Thu, 15 Aug 2024 09:35:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723712008;
-	bh=uvWuZMpoU48JcHOeJrAEactdukPHmQFQcCZXV9R72Iw=;
+	s=k20201202; t=1723714538;
+	bh=PVQNOeMTQi8lV98jbFqNpHhoYEQEkzMaLvP7V2uLo6E=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=T0ngCW3iUiTlGPBlsjJxAbhdz7gvOonRcp3Fpy4fDirFjmg7EaoMqTwCCqVH4zHMZ
-	 /GYY3UzHAZT/xwSX4NSY5JbTLNpoY92XuJ6TyKJ4f+UNKjBNKiM7iDfKxRz2imwGx0
-	 JxcylDWzOTfl6AaNgQpHp5fKBm3e1bZx1wOPX0zPXdQGoYEm14VFelEcuT/PgGpsBx
-	 M8yNJrpjPgyd3o1jjmADmbSg7Ra6MwP2jtzKAIScKJ1nPcfe0+MkngL3zwYqaIOqlo
-	 patR7vrTpMfdxlU/nFbV6WXzz/nR8s7PshuHA7L+GmLuEYdK/IR0U63YkcX26ZQKGc
-	 I1l4iEKgWtbrQ==
+	b=h1CqGHyC2Es2AS4DTk5X203oUiez5uxkxyebGLeRQrtekcZ1q+7Ynx/oXC07giFME
+	 5fyXykLoelGXkYVgF1AYkYMx/I9fIikRO/emHnNrL+12UvqmZKKHk+JzvxfYSuVVQN
+	 DpmZ+FxPnacwXGemUowVsqKoj/50Qpb/7KhLGDBTY6Osjm11ux+LN0HGGxQlzcxb+L
+	 zCeztcLbFTgsxHMbRTPj1EBryGr9+uonqEyDhcbmhQvWaP3MOObtdWQXChHvuYbDiM
+	 PxfmG8N9bNMV6R3Z94QZY8BufhnrDzQMnuRnKrzxny/mFKZHY3jArMZJ8DNd/p8Nfy
+	 t6STs/4oV6yhQ==
 From: Kalle Valo <kvalo@kernel.org>
-To: Issam Hamdi <ih@simonwunderlich.de>
-Cc: johannes@sipsolutions.net,  linux-wireless@vger.kernel.org,
-  lkp@intel.com,  llvm@lists.linux.dev,
-  mathias.kretschmer@fit.fraunhofer.de,  oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] wifi: cfg80211: Set the channel definition for the
- different Wi-Fi modes when starting CAC
-References: <87o75ugup7.fsf@kernel.org>
-	<20240815075439.2198346-1-ih@simonwunderlich.de>
-Date: Thu, 15 Aug 2024 11:53:24 +0300
-In-Reply-To: <20240815075439.2198346-1-ih@simonwunderlich.de> (Issam Hamdi's
-	message of "Thu, 15 Aug 2024 09:54:39 +0200")
-Message-ID: <87jzgiyxob.fsf@kernel.org>
+To: David Lin <yu-hao.lin@nxp.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+  "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+  "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+  "briannorris@chromium.org" <briannorris@chromium.org>,
+  "francesco@dolcini.it" <francesco@dolcini.it>,  Pete Hsieh
+ <tsung-hsien.hsieh@nxp.com>
+Subject: Re: [PATCH v2 00/43] wifi: nxpwifi: create nxpwifi to support iw61x
+References: <20240809094533.1660-1-yu-hao.lin@nxp.com>
+	<PA4PR04MB963858E759C8F61402B2275AD1872@PA4PR04MB9638.eurprd04.prod.outlook.com>
+Date: Thu, 15 Aug 2024 12:35:35 +0300
+In-Reply-To: <PA4PR04MB963858E759C8F61402B2275AD1872@PA4PR04MB9638.eurprd04.prod.outlook.com>
+	(David Lin's message of "Wed, 14 Aug 2024 03:47:03 +0000")
+Message-ID: <87frr6yvq0.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -63,46 +65,43 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Issam Hamdi <ih@simonwunderlich.de> writes:
+David Lin <yu-hao.lin@nxp.com> writes:
 
-> When starting CAC in a mode other than AP mode, it return a
-> "WARNING: CPU: 0 PID: 63 at cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]"
-> caused by the chandef.chan being null at the end of CAC.
+> I found Nxpwifi patch v2 is put in "Deferred" state quickly.
+
+The way I use patchwork states is described here:
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#checking_state_of_patches_from_patchwork
+
+Basically I try to follow the "Inbox Zero" method and keep the amount of
+patches in New state (my "inbox") low and the Deferred state is my todo list. 
+
+> Patch v2 is mainly to address the comments from Johannes and it
+> actually took quite some efforts. We understand there are areas to
+> improve and we are committed to continue enhance/maintain the driver.
 >
-> Solution: Ensure the channel definition is set for the different modes
-> when starting CAC to avoid getting a NULL 'chan' at the end of CAC.
->
->  Call Trace:
->   ? show_regs.part.0+0x14/0x16
->   ? __warn+0x67/0xc0
->   ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
->   ? report_bug+0xa7/0x130
->   ? exc_overflow+0x30/0x30
->   ? handle_bug+0x27/0x50
->   ? exc_invalid_op+0x18/0x60
->   ? handle_exception+0xf6/0xf6
->   ? exc_overflow+0x30/0x30
->   ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
->   ? exc_overflow+0x30/0x30
->   ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
->   ? regulatory_propagate_dfs_state.cold+0x1b/0x4c [cfg80211]
->   ? cfg80211_propagate_cac_done_wk+0x1a/0x30 [cfg80211]
->   ? process_one_work+0x165/0x280
->   ? worker_thread+0x120/0x3f0
->   ? kthread+0xc2/0xf0
->   ? process_one_work+0x280/0x280
->   ? kthread_complete_and_exit+0x20/0x20
->   ? ret_from_fork+0x19/0x24
->
-> Signed-off-by: Issam Hamdi <ih@simonwunderlich.de>
-> Signed-off-by: Kretschmer Mathias <mathias.kretschmer@fit.fraunhofer.de>
+> Could you let me know your plan for reviewing Nxpwifi?
 
-When you submit a new version you should mark it as v2 and include a
-change log what has changed from v1. More info:
+Reviewing new drivers take a lot of time, at the moment I'm following
+what other reviewers say before I'll look at it myself. The process is
+so slow and patience is needed.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#changelog_missing
+The last thing I want to see that once the driver is accepted NXP
+disappears and we end up having an unmaintained driver. Way too many
+companies do that.
 
-And please read the whole wiki page.
+> Is there anything we can do to move this forward?
+
+Yes, get involved with the community and help us, don't just expect that
+we do everything for you gratis. Especially helping Brian with mwifiex
+review/testing helps us (we get a better driver) and also helps you (you
+learn how the community works and you gain trust in the community).
+
+An excellent example is Realtek. Few years back Realtek was not involved
+with upstream development at all. But now Ping is doing an awesome job
+with maintaining ALL Realtek drivers, including the old drivers, and I
+even trust him so much that I pull directly from this tree. This is what
+NXP should aim for.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
