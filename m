@@ -1,57 +1,61 @@
-Return-Path: <linux-wireless+bounces-11486-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11487-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 150A8953254
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 16:05:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 649F595327E
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 16:06:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4DA7289510
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 14:05:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9521B1C2574F
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 14:06:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43A5B1A0710;
-	Thu, 15 Aug 2024 14:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56F4019F49C;
+	Thu, 15 Aug 2024 14:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WCCsjEMX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="apfbk/hU"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201B71AC8BB
-	for <linux-wireless@vger.kernel.org>; Thu, 15 Aug 2024 14:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8B119F470;
+	Thu, 15 Aug 2024 14:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730591; cv=none; b=gzEaMZ9y6sMnhxxtzDAwbYQB+tTvJEu6ugOy04l7fE8oC9KNvhiRevsR7D2iWj6ln1H/OwQDX7YHRFbilfcmU0KAR1TDMxChJvXuecYI8v9SjrdMLnC4uSyU3ioeZyL+Gpe/HIabsdZ8Yu3OYXXbKGFcSNpxRyVQsN1fdmxoDD0=
+	t=1723730696; cv=none; b=pnwjG+zB9+mQDSvhWxZI4hRWexeRND2CN27VQr6DzlDozAiKWltM8F0k5LszVAoDt25g6q+bD12Z74aJrpW24zwz7MputZ8kzqmWdLJ6+gqRXfRUXJ8kWyLiyPtFgogfdV58fYAU2+1k5bGa4UDnw3QHxkiGLhg9jxJBcmG+Bys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730591; c=relaxed/simple;
-	bh=eVQ3U6jCrHLtgSLoUrYnv1NnnjjvT+BRAWf5W+WadB0=;
+	s=arc-20240116; t=1723730696; c=relaxed/simple;
+	bh=hsIRhn+LY4Ti41CZQ1o9YBVR7CGgFLQpY2GyG4Gwj2w=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=Y5cxi/Z2PBHnquS2Ce7XofouTeRfvqvWqeqAs455CHHvQF/vWtiMPK67m/vzYs0XQu/I0l6zBEzQhKK71UsKyANkUOiITAH34aSR0wkOeka6+8BaCVm5xUo8ufjsCafe+hdaREgIwG4ePjLpRRYKMM+FTOQj7hGx32TnZaH5v/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WCCsjEMX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 054DFC4AF0D;
-	Thu, 15 Aug 2024 14:03:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eXX5DRgPBfw02f9xXAowLkxBoc0BZiZKQM5yXRUHLpM33zJB+JqM3PHAAezdct8hO/yysu/bRLT3EGJnZKiWIrXN2Jq75Ez0OjfJ17CLZIYi8S707aJUtidr1G+jKD6iGs91DHL7T91HKMyBghfwHB0ixbFVcKOgdf5brgALnn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=apfbk/hU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB790C4AF0C;
+	Thu, 15 Aug 2024 14:04:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723730590;
-	bh=eVQ3U6jCrHLtgSLoUrYnv1NnnjjvT+BRAWf5W+WadB0=;
+	s=k20201202; t=1723730695;
+	bh=hsIRhn+LY4Ti41CZQ1o9YBVR7CGgFLQpY2GyG4Gwj2w=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=WCCsjEMXgWyuqwIPm3s9cTc2MiTRR0Ie2+Bf4ZUvtQK7mp2yROBt9AYmrM5oG1UO6
-	 5vzuLBztCfIDm8Zjq9owzEoz36NR+3vpTrU7KT+vkC/jaelMOitScxeJqStCIKGAb8
-	 unMfPcHD2eP1OQojYEu3auq+FHxlIvYx+GgLjpOZfElHrJRe865ayO+GYLEHPKg5LF
-	 xdTtHfZZmez1L5FdTPFtHPtzOvdOaQoMVoxEo6ZLNptiBR1iDMVFm0NDlD43JFTma1
-	 cd3Zi+T3iZqKCylOCvQ3JHy0aElyqtAFoOCNQiVbmJGiOeW6GWqqAq3Mzy2yzWg0Cu
-	 /kkfk+i2ilbBg==
+	b=apfbk/hUNZ2TsrJyVKKu71e8PEzOCRdAQ40+Krq7oy7t03OJSfheU+Ub7vAt4+fty
+	 kyW7K9fp3CwvosWsK9PgJKILzQDSXf9wjqiRNfKBGjeIKjj94yCMZB8HT1frKoeeug
+	 cNxjj5fXsDzuUCjE+z67Wcpkia3Wg20k9T1qrPBAynOl5Y2S1L8XN9mdRvFkNgBTIk
+	 EOrrcujsnCqiK9Bvy199jpMJXY7q+2ico2PlxTiTIo13UtSfxnKH6LXF4ntWskg0Fj
+	 q+3a5POZVI5wHFJumapD0sy8DkEGsYSWf6Q3DVP4bLB1RofwcOP31yUMl3dHvEGgFd
+	 hJp8tYmcsNumQ==
 From: Kalle Valo <kvalo@kernel.org>
-To: James Prestwood <prestwoj@gmail.com>
-Cc: linux-wireless@vger.kernel.org,  ath10k@lists.infradead.org
-Subject: Re: ath10k "failed to install key for vdev 0 peer <mac>: -110"
-References: <e780560a-86eb-4189-ab5d-3bed3ee5825e@gmail.com>
-	<c407064a-1c2f-46ec-ac57-32bf9cf6f5c6@gmail.com>
-	<9eafac85-2262-4f92-a70b-32109f65c05a@gmail.com>
-Date: Thu, 15 Aug 2024 17:03:08 +0300
-In-Reply-To: <9eafac85-2262-4f92-a70b-32109f65c05a@gmail.com> (James
-	Prestwood's message of "Mon, 12 Aug 2024 10:33:30 -0700")
-Message-ID: <87r0apyjc3.fsf@kernel.org>
+To: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Jeff Johnson <jjohnson@kernel.org>,  Johannes Berg
+ <johannes@sipsolutions.net>,  Ath10k List <ath10k@lists.infradead.org>,
+  Aditya Kumar Singh <quic_adisi@quicinc.com>,  Baochen Qiang
+ <quic_bqiang@quicinc.com>,  Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>,  Linux Next Mailing List
+ <linux-next@vger.kernel.org>,  Wireless <linux-wireless@vger.kernel.org>
+Subject: Re: linux-next: manual merge of the ath-next tree with the ath tree
+References: <20240808104348.6846e064@canb.auug.org.au>
+	<20240814110019.6be39d14@canb.auug.org.au>
+Date: Thu, 15 Aug 2024 17:04:52 +0300
+In-Reply-To: <20240814110019.6be39d14@canb.auug.org.au> (Stephen Rothwell's
+	message of "Wed, 14 Aug 2024 11:00:19 +1000")
+Message-ID: <87msldyj97.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -59,41 +63,77 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-James Prestwood <prestwoj@gmail.com> writes:
+Stephen Rothwell <sfr@canb.auug.org.au> writes:
 
-> Hi,
+> Hi all,
 >
-> So I have no resolution to this (trying to get the AP vendor to chase
-> it down), but I'm toying with the idea of trying to work around
-> whatever issue the AP is having when this occurs. The only thing I can
-> think of is that there is a 3 second delay between the authentication
-> and reassociation, and perhaps this is causing some timeout in the AP
-> and in turn the deauth.
+> On Thu, 8 Aug 2024 10:43:48 +1000 Stephen Rothwell <sfr@canb.auug.org.au> wrote:
+>>
+>> Today's linux-next merge of the ath-next tree got a conflict in:
+>> 
+>>   drivers/net/wireless/ath/ath12k/hw.c
+>> 
+>> between commit:
+>> 
+>>   38055789d151 ("wifi: ath12k: use 128 bytes aligned iova in transmit path for WCN7850")
+>> 
+>> from the ath tree and commit:
+>> 
+>>   8be12629b428 ("wifi: ath12k: restore ASPM for supported hardwares only")
+>> 
+>> from the ath-next tree.
+>> 
+>> I fixed it up (see below) and can carry the fix as necessary. This
+>> is now fixed as far as linux-next is concerned, but any non trivial
+>> conflicts should be mentioned to your upstream maintainer when your tree
+>> is submitted for merging.  You may also want to consider cooperating
+>> with the maintainer of the conflicting tree to minimise any particularly
+>> complex conflicts.
+>> 
+>> diff --cc drivers/net/wireless/ath/ath12k/hw.c
+>> index 7b0b6a7f4701,76c0e07a88de..000000000000
+>> --- a/drivers/net/wireless/ath/ath12k/hw.c
+>> +++ b/drivers/net/wireless/ath/ath12k/hw.c
+>> @@@ -925,7 -925,7 +925,9 @@@ static const struct ath12k_hw_params at
+>>   		.acpi_guid = NULL,
+>>   		.supports_dynamic_smps_6ghz = true,
+>>   
+>>  +		.iova_mask = 0,
+>> ++
+>> + 		.supports_aspm = false,
+>>   	},
+>>   	{
+>>   		.name = "wcn7850 hw2.0",
+>> @@@ -1003,7 -1003,7 +1005,9 @@@
+>>   		.acpi_guid = &wcn7850_uuid,
+>>   		.supports_dynamic_smps_6ghz = false,
+>>   
+>>  +		.iova_mask = ATH12K_PCIE_MAX_PAYLOAD_SIZE - 1,
+>> ++
+>> + 		.supports_aspm = true,
+>>   	},
+>>   	{
+>>   		.name = "qcn9274 hw2.0",
+>> @@@ -1077,7 -1077,7 +1081,9 @@@
+>>   		.acpi_guid = NULL,
+>>   		.supports_dynamic_smps_6ghz = true,
+>>   
+>>  +		.iova_mask = 0,
+>> ++
+>> + 		.supports_aspm = false,
+>>   	},
+>>   };
+>>   
 >
-> I'm wondering how long it should take to add/remove a key from the
-> firmware? 3 seconds seems very long, and I question if this timeout is
-> really necessary or was just chosen arbitrarily? Is this something
-> that could be lowered down to e.g. 1 second without negative impacts?
-> The code in question is in ath10k_install_key:
->
-> ret =3D ath10k_send_key(arvif, key, cmd, macaddr, flags);
-> if (ret)
-> =C2=A0=C2=A0=C2=A0 return ret;
->
-> time_left =3D wait_for_completion_timeout(&ar->install_key_done, 3 * HZ);
-> if (time_left =3D=3D 0)
-> =C2=A0=C2=A0=C2=A0 return -ETIMEDOUT;
+> This is now a conflict between the wireless-next tree and the ath tree.
 
-I can't remember anymore but I'm guessing the 3s delay was chosen
-arbitrarily just to be on the safe side and not get unnecessary
-timeouts.
+Thanks. The plan is that the network maintainers will fix this once the
+commits "meet" in net-next. We are trying to avoid unnessary merges.
 
---=20
+-- 
 https://patchwork.kernel.org/project/linux-wireless/list/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
