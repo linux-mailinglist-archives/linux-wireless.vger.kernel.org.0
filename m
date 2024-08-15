@@ -1,140 +1,130 @@
-Return-Path: <linux-wireless+bounces-11471-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11472-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CF1E952A2C
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 09:53:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 31241952A2D
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 09:54:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 067AD1F22C76
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 07:53:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C851D1F21A7F
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 07:54:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B15F3B1AC;
-	Thu, 15 Aug 2024 07:53:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="NEa+X0BQ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23A682BAE5;
+	Thu, 15 Aug 2024 07:54:52 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA542BAE5
-	for <linux-wireless@vger.kernel.org>; Thu, 15 Aug 2024 07:53:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF67D19D885
+	for <linux-wireless@vger.kernel.org>; Thu, 15 Aug 2024 07:54:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723708423; cv=none; b=auc2f0j+rFhcjpPNR2gdO3FbCLlLKiLSB2//XqW0sn2o9hFjWnGNeD1FHq1WmQ+ixKUmMto4iWUuR/wvZ4Oa8ddVfKOUh60F4fNKrXak+/6rmoo2f614uGOO+DgC0Zp2sJcnMFQk9cTwTLPxUEtvS3A3bGsSBYqJV0WVWDi6lKc=
+	t=1723708492; cv=none; b=l1LOR8gJLPFmIGvSW4eug72Qbzyon4a8psYxwHGbgPXMxSo5obVrT8c+qyYADtkIcTuodjt8+Ay1bxIwm8WFQf8fGZsnFqVGcigXsF/GluzbycWrygIqHTv8DbaJPXVg/awrKS2GDgh1ZO0wgJJahMmST7ISUAlpnss9YCoIKpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723708423; c=relaxed/simple;
-	bh=u/7kvYnhWm1b0tDRZnu4HuypnSPYxPt1kiuVyuWW4qg=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=RdiSeyYXjBnLcIAzwe4PwTZNufbB6n+A7XhmKc54xAvzLk3xlcAvAUBxkFAZF7yUNpJPNbhE77+fpa9BOWoL1VH2ih0hdJ7kXp+B3TTOTFS7I7GPdstZ1GrSvc5Gia8BX4NqNM5VVvS/qgcwz0PLneH5ax5egPbPvZ0xpHIztn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=NEa+X0BQ; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 47F7raiH73754060, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1723708416; bh=u/7kvYnhWm1b0tDRZnu4HuypnSPYxPt1kiuVyuWW4qg=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=NEa+X0BQGaBsHPyxcZK/hlYYuUKuA3uo+NAfaiYYeWgPgfxpQCi2qLvq7UJdXiKQv
-	 TvzVRx3Iqb3wO1yd6eOA/m1fbx37/ytN3BWcExkEG2o0jUT8jGCPGkYP7QfMr/wXHf
-	 qTjLYzyPQbaQBG/kSGA+5BglfxQANADrR6ZkPiGA6kOhFPvMWDXLMkgTF1DEIqP1by
-	 MZm9ZVgEccGlgkjTjrl7KP5URCB0MAgZA7brJUAOswWGxw9Re5QP4yU4Rv403thRpJ
-	 tgxGUOlsRuP3oPmqHYyd1ARueaGibOJopTM1MvSTCErJ9tgHsav/6xZXZHnzALHF79
-	 Syup67Xits4bw==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 47F7raiH73754060
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 15 Aug 2024 15:53:36 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 15 Aug 2024 15:53:36 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 15 Aug 2024 15:53:36 +0800
-Received: from RTEXDAG02.realtek.com.tw ([fe80::1849:eb4c:c240:1ba0]) by
- RTEXDAG02.realtek.com.tw ([fe80::1849:eb4c:c240:1ba0%5]) with mapi id
- 15.01.2507.035; Thu, 15 Aug 2024 15:53:36 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH 16/20] wifi: rtw88: Add rtw8812a_table.{c,h}
-Thread-Topic: [PATCH 16/20] wifi: rtw88: Add rtw8812a_table.{c,h}
-Thread-Index: AQHa7DJLjT3E6wqwR0qhx7joU+N4ObIn9yAQ
-Date: Thu, 15 Aug 2024 07:53:36 +0000
-Message-ID: <6499c9c2c6db41e9ba8c26c880ea42b4@realtek.com>
-References: <ade57ca1-444f-49e2-b49e-f4b9da65b2cc@gmail.com>
- <e1ee4325-0878-46d5-bd51-8c994fa104a9@gmail.com>
-In-Reply-To: <e1ee4325-0878-46d5-bd51-8c994fa104a9@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1723708492; c=relaxed/simple;
+	bh=4zXgQ0sSmMdLqoRN+Pp9KL1vMd+ZRt7Dyf40GUJGDww=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=k7Z7BZFpRpUihUSIYhrKTfMiBDCwfkOpV9OyHTooiofgtiU9QLeXVBb3exYS1jAhjnGP5acqGb1RPbanrh7VdStu5qqLKmy7OEnFRTjJ3DV76p227TQYOARSrs2xRZy+YAEpPQdPyS+R8aKSpnlIvc/m1TrkXx9xZWpt+Zby21w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
+Received: from localhost (p200300C5970cA890000000000000032b.dip0.t-ipconnect.de [IPv6:2003:c5:970c:a890::32b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.simonwunderlich.de (Postfix) with ESMTPSA id DEDFFFA131;
+	Thu, 15 Aug 2024 09:54:41 +0200 (CEST)
+From: Issam Hamdi <ih@simonwunderlich.de>
+To: kvalo@kernel.org
+Cc: ih@simonwunderlich.de,
+	johannes@sipsolutions.net,
+	linux-wireless@vger.kernel.org,
+	lkp@intel.com,
+	llvm@lists.linux.dev,
+	mathias.kretschmer@fit.fraunhofer.de,
+	oe-kbuild-all@lists.linux.dev
+Subject: [PATCH] wifi: cfg80211: Set the channel definition for the different Wi-Fi modes when starting CAC
+Date: Thu, 15 Aug 2024 09:54:39 +0200
+Message-Id: <20240815075439.2198346-1-ih@simonwunderlich.de>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <87o75ugup7.fsf@kernel.org>
+References: <87o75ugup7.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBUaGVz
-ZSBjb250YWluIHZhcmlvdXMgYXJyYXlzIGZvciBpbml0aWFsaXNpbmcgUlRMODgxMkFVLiBBbHNv
-IFRYIHBvd2VyDQo+IGxpbWl0cy4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6IEJpdHRlcmJsdWUgU21p
-dGggPHJ0bDg4MjFjZXJmZTJAZ21haWwuY29tPg0KPiAtLS0NCj4gIC4uLi93aXJlbGVzcy9yZWFs
-dGVrL3J0dzg4L3J0dzg4MTJhX3RhYmxlLmMgICB8IDI4MTIgKysrKysrKysrKysrKysrKysNCj4g
-IC4uLi93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0dzg4MTJhX3RhYmxlLmggICB8ICAgMjYgKw0K
-PiAgMiBmaWxlcyBjaGFuZ2VkLCAyODM4IGluc2VydGlvbnMoKykNCj4gIGNyZWF0ZSBtb2RlIDEw
-MDY0NCBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0dzg4MTJhX3RhYmxlLmMN
-Cj4gIGNyZWF0ZSBtb2RlIDEwMDY0NCBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4
-L3J0dzg4MTJhX3RhYmxlLmgNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVz
-cy9yZWFsdGVrL3J0dzg4L3J0dzg4MTJhX3RhYmxlLmMNCj4gYi9kcml2ZXJzL25ldC93aXJlbGVz
-cy9yZWFsdGVrL3J0dzg4L3J0dzg4MTJhX3RhYmxlLmMNCj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQN
-Cj4gaW5kZXggMDAwMDAwMDAwMDAwLi4wZDAwNWQ4OGIwYTQNCj4gLS0tIC9kZXYvbnVsbA0KPiAr
-KysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0dzg4MTJhX3RhYmxlLmMN
-Cj4gQEAgLTAsMCArMSwyODEyIEBADQo+ICsvLyBTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogR1BM
-LTIuMCBPUiBCU0QtMy1DbGF1c2UNCj4gKy8qIENvcHlyaWdodChjKSAyMDE4LTIwMTkgIFJlYWx0
-ZWsgQ29ycG9yYXRpb24NCg0KeWVhciAyMDI0DQoNClsuLi5dDQoNCj4gKw0KPiArY29uc3Qgc3Ry
-dWN0IHJ0d19wd3Jfc2VxX2NtZCAqY2FyZF9lbmFibGVfZmxvd184ODEyYVtdID0gew0KPiArICAg
-ICAgIHRyYW5zX2NhcmRkaXNfdG9fY2FyZGVtdV84ODEyYSwNCj4gKyAgICAgICB0cmFuc19jYXJk
-ZW11X3RvX2FjdF84ODEyYSwNCj4gKyAgICAgICBOVUxMDQo+ICt9Ow0KPiArDQo+ICtjb25zdCBz
-dHJ1Y3QgcnR3X3B3cl9zZXFfY21kICplbnRlcl9scHNfZmxvd184ODEyYVtdID0gew0KPiArICAg
-ICAgIHRyYW5zX2FjdF90b19scHNfODgxMmEsDQo+ICsgICAgICAgTlVMTA0KPiArfTsNCj4gKw0K
-PiArY29uc3Qgc3RydWN0IHJ0d19wd3Jfc2VxX2NtZCAqY2FyZF9kaXNhYmxlX2Zsb3dfODgxMmFb
-XSA9IHsNCj4gKyAgICAgICB0cmFuc19hY3RfdG9fY2FyZGVtdV84ODEyYSwNCj4gKyAgICAgICB0
-cmFuc19jYXJkZW11X3RvX2NhcmRkaXNfODgxMmEsDQo+ICsgICAgICAgTlVMTA0KPiArfTsNCj4g
-Kw0KDQpUaGVzZSB0aHJlZSBhcnJheSBzaG91bGQgYmUgJ2NvbnN0IHN0cnVjdCBydHdfcHdyX3Nl
-cV9jbWQgKiBjb25zdCAuLi4nLg0KDQpJIGRvbid0IGV4cGVjdCB0aGluZ3MgaW4gIi5kYXRhIiBz
-ZWN0aW9uLg0KDQokIG9iamR1bXAgIC10IHJ0dzg4MTJhX3RhYmxlLm8gfCBncmVwICJcLmRhdGEi
-DQowMDAwMDAwMDAwMDAwMDAwIGcgICAgIE8gLmRhdGEgIDAwMDAwMDAwMDAwMDAwMTggY2FyZF9k
-aXNhYmxlX2Zsb3dfODgxMmENCjAwMDAwMDAwMDAwMDAwMjAgZyAgICAgTyAuZGF0YSAgMDAwMDAw
-MDAwMDAwMDAxMCBlbnRlcl9scHNfZmxvd184ODEyYQ0KMDAwMDAwMDAwMDAwMDAzMCBnICAgICBP
-IC5kYXRhICAwMDAwMDAwMDAwMDAwMDE4IGNhcmRfZW5hYmxlX2Zsb3dfODgxMmENCg0KDQpbLi4u
-XQ0KDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0
-dzg4MTJhX3RhYmxlLmgNCj4gYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0
-dzg4MTJhX3RhYmxlLmgNCj4gbmV3IGZpbGUgbW9kZSAxMDA2NDQNCj4gaW5kZXggMDAwMDAwMDAw
-MDAwLi4xNWVjYzcyYjE3NWENCj4gLS0tIC9kZXYvbnVsbA0KPiArKysgYi9kcml2ZXJzL25ldC93
-aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3J0dzg4MTJhX3RhYmxlLmgNCj4gQEAgLTAsMCArMSwyNiBA
-QA0KPiArLyogU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0yLjAgT1IgQlNELTMtQ2xhdXNl
-ICovDQo+ICsvKiBDb3B5cmlnaHQoYykgMjAxOC0yMDE5ICBSZWFsdGVrIENvcnBvcmF0aW9uDQoN
-CnllYXIgMjAyNA0KDQo+ICsgKi8NCj4gKw0KPiArI2lmbmRlZiBfX1JUVzg4MTJBX1RBQkxFX0hf
-Xw0KPiArI2RlZmluZSBfX1JUVzg4MTJBX1RBQkxFX0hfXw0KPiArDQo+ICtleHRlcm4gY29uc3Qg
-c3RydWN0IHJ0d190YWJsZSBydHc4ODEyYV9tYWNfdGJsOw0KPiArZXh0ZXJuIGNvbnN0IHN0cnVj
-dCBydHdfdGFibGUgcnR3ODgxMmFfYWdjX3RibDsNCj4gK2V4dGVybiBjb25zdCBzdHJ1Y3QgcnR3
-X3RhYmxlIHJ0dzg4MTJhX2FnY19kaWZmX2xiX3RibDsNCj4gK2V4dGVybiBjb25zdCBzdHJ1Y3Qg
-cnR3X3RhYmxlIHJ0dzg4MTJhX2FnY19kaWZmX2hiX3RibDsNCj4gK2V4dGVybiBjb25zdCBzdHJ1
-Y3QgcnR3X3RhYmxlIHJ0dzg4MTJhX2JiX3RibDsNCj4gK2V4dGVybiBjb25zdCBzdHJ1Y3QgcnR3
-X3RhYmxlIHJ0dzg4MTJhX2JiX3BnX3RibDsNCj4gK2V4dGVybiBjb25zdCBzdHJ1Y3QgcnR3X3Rh
-YmxlIHJ0dzg4MTJhX2JiX3BnX3JmZTNfdGJsOw0KPiArZXh0ZXJuIGNvbnN0IHN0cnVjdCBydHdf
-dGFibGUgcnR3ODgxMmFfcmZfYV90Ymw7DQo+ICtleHRlcm4gY29uc3Qgc3RydWN0IHJ0d190YWJs
-ZSBydHc4ODEyYV9yZl9iX3RibDsNCj4gK2V4dGVybiBjb25zdCBzdHJ1Y3QgcnR3X3RhYmxlIHJ0
-dzg4MTJhX3R4cHdyX2xtdF90Ymw7DQo+ICsNCj4gK2V4dGVybiBjb25zdCBzdHJ1Y3QgcnR3X3B3
-cl9zZXFfY21kICpjYXJkX2VuYWJsZV9mbG93Xzg4MTJhW107DQo+ICtleHRlcm4gY29uc3Qgc3Ry
-dWN0IHJ0d19wd3Jfc2VxX2NtZCAqZW50ZXJfbHBzX2Zsb3dfODgxMmFbXTsNCj4gK2V4dGVybiBj
-b25zdCBzdHJ1Y3QgcnR3X3B3cl9zZXFfY21kICpjYXJkX2Rpc2FibGVfZmxvd184ODEyYVtdOw0K
-PiArDQo+ICtleHRlcm4gY29uc3Qgc3RydWN0IHJ0d19wd3JfdHJhY2tfdGJsIHJ0dzg4MTJhX3J0
-d19wd3JfdHJhY2tfdGJsOw0KPiArZXh0ZXJuIGNvbnN0IHN0cnVjdCBydHdfcHdyX3RyYWNrX3Ri
-bCBydHc4ODEyYV9ydHdfcHdyX3RyYWNrX3JmZTNfdGJsOw0KPiArDQo+ICsjZW5kaWYNCj4gLS0N
-Cj4gMi40Ni4wDQoNCg==
+When starting CAC in a mode other than AP mode, it return a
+"WARNING: CPU: 0 PID: 63 at cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]"
+caused by the chandef.chan being null at the end of CAC.
+
+Solution: Ensure the channel definition is set for the different modes
+when starting CAC to avoid getting a NULL 'chan' at the end of CAC.
+
+ Call Trace:
+  ? show_regs.part.0+0x14/0x16
+  ? __warn+0x67/0xc0
+  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
+  ? report_bug+0xa7/0x130
+  ? exc_overflow+0x30/0x30
+  ? handle_bug+0x27/0x50
+  ? exc_invalid_op+0x18/0x60
+  ? handle_exception+0xf6/0xf6
+  ? exc_overflow+0x30/0x30
+  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
+  ? exc_overflow+0x30/0x30
+  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
+  ? regulatory_propagate_dfs_state.cold+0x1b/0x4c [cfg80211]
+  ? cfg80211_propagate_cac_done_wk+0x1a/0x30 [cfg80211]
+  ? process_one_work+0x165/0x280
+  ? worker_thread+0x120/0x3f0
+  ? kthread+0xc2/0xf0
+  ? process_one_work+0x280/0x280
+  ? kthread_complete_and_exit+0x20/0x20
+  ? ret_from_fork+0x19/0x24
+
+Signed-off-by: Issam Hamdi <ih@simonwunderlich.de>
+Signed-off-by: Kretschmer Mathias <mathias.kretschmer@fit.fraunhofer.de>
+---
+ net/wireless/nl80211.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 7397a372c78e..36ae2594753e 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -10143,7 +10143,23 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
+ 
+ 	err = rdev_start_radar_detection(rdev, dev, &chandef, cac_time_ms);
+ 	if (!err) {
+-		wdev->links[0].ap.chandef = chandef;
++		switch (wdev->iftype) {
++		case NL80211_IFTYPE_MESH_POINT:
++			wdev->u.mesh.chandef = chandef;
++			break;
++		case NL80211_IFTYPE_ADHOC:
++			wdev->u.ibss.chandef = chandef;
++			break;
++		case NL80211_IFTYPE_OCB:
++			wdev->u.ocb.chandef = chandef;
++			break;
++		case NL80211_IFTYPE_AP:
++		case NL80211_IFTYPE_P2P_GO:
++			wdev->links[0].ap.chandef = chandef;
++			break;
++		default:
++			break;
++		}
+ 		wdev->cac_started = true;
+ 		wdev->cac_start_time = jiffies;
+ 		wdev->cac_time_ms = cac_time_ms;
+
+base-commit: cc32e9fb380d8afdbf3486d7063d5520bfb0f071
+-- 
+2.39.2
+
 
