@@ -1,49 +1,49 @@
-Return-Path: <linux-wireless+bounces-11479-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11480-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B24BA952C4A
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 12:34:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2449952C56
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 12:36:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0B7D1C20B52
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 10:34:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C9D7286020
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 10:36:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D2F31714DF;
-	Thu, 15 Aug 2024 09:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5234C199248;
+	Thu, 15 Aug 2024 09:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ud0V1iui"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H1nL5aoz"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7FC51714C4;
-	Thu, 15 Aug 2024 09:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD4217BEAA;
+	Thu, 15 Aug 2024 09:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723714991; cv=none; b=CdZyECOmki82LyRb/vF0bAMe8tU/iZajFpq7pvqea0s7UqRl4CCFBSx2olFy0sC3Qa7jwqFrylGmi5a5MonDw80w0lOvGQR0gfS6WKG3cae/z7cufF2snlKSNMJ+8ZSykCdfXxkWaXOVwUrXsfCbwQ/I9ePCGimXqNt3dRvMK1E=
+	t=1723715497; cv=none; b=oEuTQwLU1hTpSSJJa4D0oBfc6TULOSgcmGZyuLPJG9eg0dyDbdzw+hgWZqpiSkKYceFNFHKPcg9QMyklY+ofohw8wqHkevibl/uSgcw4nNpjhfUx+6SKT8ALn8mSFTG4r15jIXn+/he7SvRlgCDSpjSlQBHvvGSiix8msxPN9YA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723714991; c=relaxed/simple;
-	bh=J/6CNqKbHSOfeOObDnt9v9X0seHR34W3LJo47Nsr+mA=;
+	s=arc-20240116; t=1723715497; c=relaxed/simple;
+	bh=J1UkmUFXsy8DG2J8jkCpx59FPXmshWrfK/EwyZH8ttE=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=L/k8LOmKdjRaEczf6krhCvEeZFFqQFXO/yFEWvXNlmhIkhTfGZ/AYrMnGZdtb1vCtXxaeT26FyEO8uHkDiFxo2dG1q8vt/Kcm6Hfh+/bFAWrG9BICKaHfT8zqsBL7DDYgjoeSYM4kEhEVe3kcPH8Jiyp5WYC3RwjHmPFr6BKKE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ud0V1iui; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D99DC32786;
-	Thu, 15 Aug 2024 09:43:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MIr1ngqrS6Mj64WSvu4KSu10p7aETTV40YgHK1rBQXOQPkfW+qmAFx4toHBvfPElJ9HBH2Mf6GXB4VJ5r+bs1knOkvi1ELGhTNKb8bnXJnDGm3IQFuBi9p3Y1Ju1Rh3fjC/gYEohebBLxRp7Smcsma1GBEzkbelYjHLisKDSg1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H1nL5aoz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EED1CC32786;
+	Thu, 15 Aug 2024 09:51:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723714991;
-	bh=J/6CNqKbHSOfeOObDnt9v9X0seHR34W3LJo47Nsr+mA=;
+	s=k20201202; t=1723715496;
+	bh=J1UkmUFXsy8DG2J8jkCpx59FPXmshWrfK/EwyZH8ttE=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=Ud0V1iuiLqyd9yRfAvzaI7nbl0v1ms+4hogLEbKvHI5tCE4lygeolZzgV5ro7eltq
-	 QAtqy5zv0jpSIK8L4/h+qxojRZYz9ACTxrU6+Bp8mNdQLsZ2orwatbzK/jEbruaVja
-	 LQi63QEUnCNaB8YmthbGg87D+zuui0wU5VVNHBRYGg2OsitpcVvFBcGXy4U1qmvJeE
-	 X8Kfhs+zRuJ6BxxQGdDZBPnANuWbP0xhUuTw7rfoRveSd4oNQOWwPvatZfHpnp0BGQ
-	 iklB6VNXm/Hy0+YBIj8kn8zfd+AzfzJVEfzVgb9EjHlojMbqYo1FXEAQt+g3df8YlP
-	 raMd/WKuveGhg==
+	b=H1nL5aoz0K8KtauZKgFdU+DL3yG3h4M7rGVqsRg9grr4iYMdGx4piO3MGCEI8I+mo
+	 wX8P1YO585VCNLpbFwsP2h/GKUxjncYujDb9ZmM7HSuGC+Yo/82heiu+guIMdc7+4K
+	 YZaN2qDZQnKo7tcVLQmgFrEQqkTbqUhdCsvOz6z17ne0GYx8TwpUK/ChqYhvf0x65M
+	 USdgpJJCA3lFSK3yGUPnstPYLAwDxcY9FFZUz/WywqHJj85VmAuTruURjcQKPz++pF
+	 k5zf+zQin3kv9JixuJLDQRlgp79I5Iv2RdZEeXdBje55TWLgoVMR5AM7nPYfurMov0
+	 GRknFNEFRHAZg==
 From: Kalle Valo <kvalo@kernel.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: David Lin <yu-hao.lin@nxp.com>,  "linux-wireless@vger.kernel.org"
+To: David Lin <yu-hao.lin@nxp.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>,  "linux-wireless@vger.kernel.org"
  <linux-wireless@vger.kernel.org>,  "linux-kernel@vger.kernel.org"
  <linux-kernel@vger.kernel.org>,  "johannes@sipsolutions.net"
  <johannes@sipsolutions.net>,  "briannorris@chromium.org"
@@ -55,10 +55,11 @@ References: <20240809094533.1660-1-yu-hao.lin@nxp.com>
 	<2024081430-derail-diocese-78dc@gregkh>
 	<PA4PR04MB9638C1186FC4D56569D7D0E4D1802@PA4PR04MB9638.eurprd04.prod.outlook.com>
 	<2024081523-curator-pronounce-4619@gregkh>
-Date: Thu, 15 Aug 2024 12:43:07 +0300
-In-Reply-To: <2024081523-curator-pronounce-4619@gregkh> (Greg KH's message of
-	"Thu, 15 Aug 2024 07:08:01 +0200")
-Message-ID: <877cciyvdg.fsf@kernel.org>
+	<PA4PR04MB963855F4620A2E2C48B2DC2CD1802@PA4PR04MB9638.eurprd04.prod.outlook.com>
+Date: Thu, 15 Aug 2024 12:51:33 +0300
+In-Reply-To: <PA4PR04MB963855F4620A2E2C48B2DC2CD1802@PA4PR04MB9638.eurprd04.prod.outlook.com>
+	(David Lin's message of "Thu, 15 Aug 2024 06:20:48 +0000")
+Message-ID: <87zfpexgey.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -68,31 +69,23 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Greg KH <gregkh@linuxfoundation.org> writes:
+David Lin <yu-hao.lin@nxp.com> writes:
 
-> On Thu, Aug 15, 2024 at 01:52:18AM +0000, David Lin wrote:
->> Hi Greg,
->> 
->> 	Following the guideline for new driver, it should let every
->> file as a single patch for review and generate a final
->> 	single patch after reviewing. I think stuffs mentioned by you can be got from cover letter.
->> 
->> 	If I misunderstood anything, please let me know.
+> So that mean I still need to add description for every file, right?
 >
-> Please read the kernel documentation for how to submit kernel changes in
-> a way that we can properly review, and accept them.  As-is, there is
-> nothing we can do with this series at all, sorry.
+> Once if confirmed, I will prepare patch v3.
 
-Greg, just a bit background for this:
+Please don't send a new version yet, patchbombing doesn't solve
+anything. I would say wait for review comments at least a month before
+sending a new version. But maybe send the patches only to
+linux-wireless, that way people outside wireless don't get confused.
 
-Because wireless drivers can be huge in our documentation we have
-actually requested to split the driver one patch per file for easier
-review and avoid mailing list limits:
+And PLEASE do stop top posting, that's the most trivial detail when
+working with the community. If you continue top posting then I will
+automatically drop any patches from you.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches#new_driver
-
-The final patch to be commited will be just one big patch with a proper
-commit message.
+Carefully read our wiki page IN FULL about submitting patches, link
+below.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
