@@ -1,244 +1,123 @@
-Return-Path: <linux-wireless+bounces-11447-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11448-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A4E29527A4
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 03:52:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFB73952808
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 04:56:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EA152861BC
-	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 01:52:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23707B20AA4
+	for <lists+linux-wireless@lfdr.de>; Thu, 15 Aug 2024 02:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1909D17C9;
-	Thu, 15 Aug 2024 01:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E32981BF37;
+	Thu, 15 Aug 2024 02:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="kdLPhR0i"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="EhvLsG96"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010053.outbound.protection.outlook.com [52.101.69.53])
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902034A07;
-	Thu, 15 Aug 2024 01:52:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723686744; cv=fail; b=ck47SnmGLRCO8Wns+kZmzCTsWylxIgTBA7dyiwFSABMsYygWHn0LjNBqQuOW5Xile9hfa/6QQtrAovwXQRh/IGJmQpMuqskHKPGf4ZYxHOKdppjn4mooosfioQYI1NvEwTCSGtoWMorwGkYQFnjk+Qt4ZLUfzwW27J5k0avp3w8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723686744; c=relaxed/simple;
-	bh=Q2COEZ4QYyVdRgeXKg03vqnJRFRxjHsZFzoBp0iE6Dc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Qta8v6Xbf2kCxomCmVT2KXLX5yBlTPQRG+VkAfw+e6rtYo27OumHdUC3ioVvU8znvAshQ0tRNBziE02lMHX6e91uE97MGh49md2/C1tH1HCHlQFf9chof/dd/eaU9z507heElFJE0rt6EgGOpFNkW5LHLHCN4vEm1fHPtGfwmec=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=kdLPhR0i; arc=fail smtp.client-ip=52.101.69.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yNuX6kBZhkKNtt+3qQkivx6+2+7XUAtj3Z7Yyz/KhiYZObOkKnbqKyHOnLbTU02NFzltvaJDuGTGuHAUPrhiZqSDpAr0fX2t1DRf//chrCNtf1vAbqoyu2nhv6gPzzENoQ8N5F0hdojtCoGmnqtZZafZLRhUfXOe25l52mzHhETTo3cJCY2m35+8tDjhAf6pDTZ/R7pfx2+pPWQpzIE9BwK7xEDaDt5ZKtl+U5TisqE38uke/tSykIFvteynAerTXI/U3tVE+smZNif3HYCOBMRUpXAHhGIvjO7Is7R+FJB0xseDfKHKEFrTpdzenl2wkbfnS+sZsBauINt3h3XZcw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zt5vxusmf3mKmV9jZVBcwHZbitpGwJk4FQtbXjAmPzk=;
- b=KX05rsYb5rjRkG7DREd4lAbkIwO0s794gPoPyqipT3GJhkr/TX8YnDuJwkvy0qcg9ALqQXlw87cBdXYfSuoXvNutH7Ikn0eB551zZwQppdgrEEGbLhhmlGMonFUy/u8sXZekJr4cm5NGLe3CBS8/W/GWyFI7ib9dIf9WvTaVT0QtuVmx/JyfZbmxfAccwVSKRtLQf3f5gstb8DEbatqfHfARE9N67o6h+K/DKQTdncoAkuarig9ujtZMi29kJuYt8ZGBEdUORQruJetIjuJpl0tf9K2oS+8MLdBIe0H0+4r+3djbWIbhUhAdR4r1xAsanNgoMeElvqmbhJBA8YgV6w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zt5vxusmf3mKmV9jZVBcwHZbitpGwJk4FQtbXjAmPzk=;
- b=kdLPhR0iYwGeRd6TuECCQ3hHvFXEaaMyuEfa1oNi5oyDOim+Wu9BptH+AjJMi+YvE5ZDMlP7/kJkNi0d+In9ezDwaZysd2Rp1m1BBgoG1HUFb4km7WOPJ1U3IOMZVX2zWiPNo9GxNWFtRfFzg+QkOG0RuM0+BHUej715UFlCIpkcFtElUH0wQ8f8MDTfSaIisXXECIJccriSAzmEMnrquseMGSOP3o3ZYoFDYDdcJkhqX0/MBImOV2oN/Fp5CmsF3PiRYpvaE9A6JHzb8VOOmd0615iB+Y1FmFUmf6nmkaaMM33Ofwr8U8cWWvQ4iegwf0WiTVI0dS+OoljeHw2tYQ==
-Received: from PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20)
- by AM0PR04MB7044.eurprd04.prod.outlook.com (2603:10a6:208:191::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.17; Thu, 15 Aug
- 2024 01:52:18 +0000
-Received: from PA4PR04MB9638.eurprd04.prod.outlook.com
- ([fe80::f950:3bb6:6848:2257]) by PA4PR04MB9638.eurprd04.prod.outlook.com
- ([fe80::f950:3bb6:6848:2257%5]) with mapi id 15.20.7875.016; Thu, 15 Aug 2024
- 01:52:18 +0000
-From: David Lin <yu-hao.lin@nxp.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kvalo@kernel.org" <kvalo@kernel.org>, "johannes@sipsolutions.net"
-	<johannes@sipsolutions.net>, "briannorris@chromium.org"
-	<briannorris@chromium.org>, "francesco@dolcini.it" <francesco@dolcini.it>,
-	Pete Hsieh <tsung-hsien.hsieh@nxp.com>
-Subject: RE: [EXT] Re: [PATCH v2 40/43] wifi: nxpwifi: add wmm.h
-Thread-Topic: [EXT] Re: [PATCH v2 40/43] wifi: nxpwifi: add wmm.h
-Thread-Index: AQHa6kE6j/gZp6A6LU6lI8Wv3luu3rInIIOAgAB1deA=
-Date: Thu, 15 Aug 2024 01:52:18 +0000
-Message-ID:
- <PA4PR04MB9638C1186FC4D56569D7D0E4D1802@PA4PR04MB9638.eurprd04.prod.outlook.com>
-References: <20240809094533.1660-1-yu-hao.lin@nxp.com>
- <20240809094533.1660-41-yu-hao.lin@nxp.com>
- <2024081430-derail-diocese-78dc@gregkh>
-In-Reply-To: <2024081430-derail-diocese-78dc@gregkh>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PA4PR04MB9638:EE_|AM0PR04MB7044:EE_
-x-ms-office365-filtering-correlation-id: c277dbb1-3bf8-49af-17c1-08dcbccce548
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?Oyno8vUKZ9zBuYWIJZcxhVCxJMMa5yUmqUFSUJrzxBnC7z1hx9+HI3QkVoGJ?=
- =?us-ascii?Q?HVoyWcBoMhHwuofskxNzqxlMYA1511f8bnOK4wTh6hafTHRAleCub8K0emJW?=
- =?us-ascii?Q?CnE97TTdtjBTl/gcLzqvgmJTC92vpzHhuV8upYoea3746Q1/XkslpoIhyWLE?=
- =?us-ascii?Q?ZgRb+MfbyZmS21xUbla9wyAxaVQPk/eb1s5oBGZ7/zroXfQPe0M2M94p188M?=
- =?us-ascii?Q?VjYAVdFlwdt3m7as+JEULPjdbCqToE9H8p3v95dDIWu4aBI1bVy874oaFVeN?=
- =?us-ascii?Q?rG6JgXh30HrxkqNrIRH1sfBiMqaXi35AZRuztfUoGcH/HwQfjfr7PAyz4+/Q?=
- =?us-ascii?Q?Oc7KmycUZ0l292wVB3eXclAyj6h133ld0hOPb0AiUFRBgPWBgOF5AXPq4TuV?=
- =?us-ascii?Q?BtLAzDh/Z01CAtxBqfIxKsXYDS3bURIIEUjgFD1BFZoZfVdF+AYFmgpRz73t?=
- =?us-ascii?Q?fyrha5gNPSnEBWDwtPvHelI03CbJ+gwFIPy0uI+1a7d3nkm4SKRHk6XmK2xj?=
- =?us-ascii?Q?SmXXl8WjYnMp+yRIpa49qdeFVRAFwUsU6zfrphG6l5ME1y/IGyyCjqYORI16?=
- =?us-ascii?Q?RT3a3VVcs1kmdsXOe/zGLVc75C/gdmfJAY9krv8ZElOwPj87XZ8fuTgkvJHC?=
- =?us-ascii?Q?/piEPJz03/igHMKanhmgd8CZ2yR2h3XHxnhqwhvv5a8j51ZjaTdPlO8J3biO?=
- =?us-ascii?Q?XdGBXu7Tww2dzYQ+haJPtlFTFg4qJ5jPg4tcAxk3ErNbtmNQDXwow/nkEsoL?=
- =?us-ascii?Q?MWAQ9zh9nr8+ZI/QAmhU3Yu2oaXut8wQ/suN/Xx0KwXWW7UJOzug3xk0Fq8G?=
- =?us-ascii?Q?qqY+5jE2vrYDgwuVS7wlzNAudE3CLMsNZ5L7Hxvx19p/ZyJ3ccQcEaOQM6II?=
- =?us-ascii?Q?8hCB0cI49AeKD7Uuot8m+SjTcy3geju5b/vSU2ciasPDH73+a3V//3XwU4hu?=
- =?us-ascii?Q?JEtEGdPyebiyRnGdOrLn82s9kHDiyWF867IBajCHNzToBGc5qJLTarLi3a+g?=
- =?us-ascii?Q?KRfZ7XVjT9j6rKa0gxJ09eoQu52YozZIJQdsnKVtAJpYyXY4cwhqxRadK5C0?=
- =?us-ascii?Q?YZRxxL8xhTgCGyoh9WmBymbVYknmH6x41qye/OZ31MeKT2Kedu3DOhYbxjdb?=
- =?us-ascii?Q?ZKpiGq4rbmVYFbh2TUzTrDxRqluDRlikrTimEPMZdeDPzLSDj8VWgRMwUfZy?=
- =?us-ascii?Q?U2mVBA3MFiuENyzFhoT8m6NB1V1xsrl5s+/Yjr35SB4O6oP4fYp8Sl87dzPh?=
- =?us-ascii?Q?FwYGdfOHBQnVK1O4Wcp3sQPvpoTX3+Z9sY9uoTfzd9+1LK1ZZ5Nz3c31VXs1?=
- =?us-ascii?Q?Z8mKzYfU9M8TGeM0qx18iPTjAhDfE79ACTf6Zt1vc1S/KwuSa7eJBKLPHUNa?=
- =?us-ascii?Q?pq2xsloH4ZQTvng9l7FVi2hAdWX9ndk4h8DXToMrammoFEMsbg=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?LSRZ3yNvF8Jn6KEhNdbGL7ReRXSdGGVsOACDto2DH3delr0Mtd3/kZmhDvh4?=
- =?us-ascii?Q?UjoI7dsKjAYZzO6XSQDfIjkoljE1q2sFw/FcEcO4TpOJveduSP/0eBT2A0Fy?=
- =?us-ascii?Q?hRQpvLDTaghpqcyX5ZQZG8FAolXWuODCq20MqfwC6xmWtAG8xQS5dHBhQgZ+?=
- =?us-ascii?Q?S2v0ojCgcdaXdBKhW3UI2JqbyqWq7z2jxCy+ptmpEq0IvxduFyYEsIGNZrHu?=
- =?us-ascii?Q?jh2BYpCWvo7Kp3/W6SX97oeBF5ky6iZe9TiHwLg/ypWV1KFA+ox6G4Y2ItK7?=
- =?us-ascii?Q?cHF3FlC56hINc7Q7DSzrORuHHx5lTxnQCwCUsfHdS00V0qmr9+tr458Uj7ZQ?=
- =?us-ascii?Q?KLiJb7TP9pLuMARIcTz7HkaaVPljyeBZqbXIuLZE0uSetXs0tQOjU8uSoeHO?=
- =?us-ascii?Q?6VMPIIXmIAlJLYBBg6D4F0A6wEGGNNPBCoBTztgVfSO/4mX1xo0bVCn/gVWx?=
- =?us-ascii?Q?sd+/AiR0RkQcR1qea22um5Vigee/tMbBzFkqKHZIauchTAEPsGJFZONX/FuT?=
- =?us-ascii?Q?Vq17s64SajhIuYV1Sc7/udMXORRjcjjtA5JkAz+NK8QF6W5wiNtI1xLhO6FL?=
- =?us-ascii?Q?cX/8VVr229YLT8UkwvnCe9q/OCx2k7tHb8NxTBNqUI0GPhjSLdHy2ju7yONz?=
- =?us-ascii?Q?XYChZbXnhWghAxjKP/vupSDUiTgZ59sTFiOMba1a4/4lNLRGUftOH/MrB2j/?=
- =?us-ascii?Q?1WExZNU5eBmxFRHzEgfGE8F9NmGJ7YMogpJQbwCCx2LsYmns2trVKKcpDJJX?=
- =?us-ascii?Q?PfE03Y+FGME2JFMTbjw/VG9fph/kbIL8IND2drEl4ZBuKN+w5aOfvFOrW5Hk?=
- =?us-ascii?Q?JdqqmHHCoYZ9iDqa4RQ527gfCAdfPoCAICoQJjqcDpphrWiGh7eMSi4t5bMk?=
- =?us-ascii?Q?bzp2wysoaKTcVHIqp/GQdAl10bsJnTVq2lVfCsKPA93WhnbG4FrDtz2GU4u1?=
- =?us-ascii?Q?tMxBEemeAlWkMnnCd4bA2L7OGxoSopY7kT5Hjd9cYT87fQjRVW7IV7IWDFzq?=
- =?us-ascii?Q?mlXYmj+q1VoiR31i/iSdu2C0DzCJByXOzBKunVou8KYUYzND4rqURcuw4RGJ?=
- =?us-ascii?Q?96myjHGhYnGs6AqJVaqL5/iJAhWKsYEjqfIuAEVU6QmccF5M+vDWEnfgjsU9?=
- =?us-ascii?Q?TpaIKfYUbun12gALicitLLiG+L12xy9ayVjZP/c10ugcm+KakBV8hpys27gJ?=
- =?us-ascii?Q?ndREqLDnoMJbXfueE0RnFP6t3/wKkF6Camol/1iaszyOKSLsq5eXYGPCr/uJ?=
- =?us-ascii?Q?t7vKXGvPysSaZXhM/NFQKY34ETqedCkRX7xM8qf6jCRMvpYnjleuQse//ey0?=
- =?us-ascii?Q?LEfHsXCCHNVvnhJhxU4jBVJaBoXZVkDbC6bztPS1V8g6zVACMqx6jHqtYd8P?=
- =?us-ascii?Q?cVNebrBeiDR/QOr0vUtkiGaDOJUGSUc1eGPfNnr/hh7AvvsLyUgEXvr9zg8x?=
- =?us-ascii?Q?vsuSALTsggBbHqB2yUbUezdU14lCzXADKWSJPN1Bei8ny3XP5Z78R8MGjyHj?=
- =?us-ascii?Q?AU4lZdKjxy6vFwQC3PcjHd+K7Cl9JVgYtclVyDDcylGk1rlohzsUSumGvfQs?=
- =?us-ascii?Q?0hTh1ecK6FXK0kTNixseB5OnO8IvjH+6VVhGHX2e?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7104B18C0C;
+	Thu, 15 Aug 2024 02:56:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723690606; cv=none; b=M5CGA62P1aydZLZkwbJWNMWWmI082F7pfp4FvR6OZ4YLNR4/aQUFJAj8tctzts2Ag3p07panDRd6O4CxwyvyS2x2pCSNGVouXmSJiGPVSCmafjHNpo+4HtSe1p47AXKI0z2T9mKzxJOF056xX9ey/pSS9QHYai98I3iqNDZT9e0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723690606; c=relaxed/simple;
+	bh=qoaWrAb8kjBtgWeIJuuD1ayfZGcAGUFf/DgXrhGn7xI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=plx1c73cjEehBZo5roFCgx4zwNzFUL6ggRHFJNXfYmbNBqBcTWNwk3Zu20GDdA2qfmbbTgKqc02Zi247/OiVxAU3UgEQrK46t9b53GQi+48lwE/8wndU5kw+r4vSYmp359rx3yn+M1YOz2pUWSbrRl3xIE2ac02DaFBxk8PJZDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=EhvLsG96; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: fdb25da45ab111ef8b96093e013ec31c-20240815
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=IreNKXAd6Wij/T8hdkR8/W4pp0PDvrbdbTuyMa714HU=;
+	b=EhvLsG968NWKTBd2Vn1QWFfmTlDmR4DbviJhNXnuSEnEWBM5g3ZaKGRjmTIwBbk5eJGJQzJkLaA0PJFMhlE3Y3ToJotfW2mrqqyWUkFF9gHTrNkv5VlB9ndkQsHUrG/EHPpJe/VZPLtUSbfaGPq6WLk1vsnv/buqlG/+bbKXcEM=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.41,REQID:7ccb41eb-044a-499b-8505-d0852749139d,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:6dc6a47,CLOUDID:b11c9cfe-77bb-433c-b174-ffb8012693b0,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
+	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: fdb25da45ab111ef8b96093e013ec31c-20240815
+Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw02.mediatek.com
+	(envelope-from <mingyen.hsieh@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1470514797; Thu, 15 Aug 2024 10:56:38 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Thu, 15 Aug 2024 10:56:35 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Thu, 15 Aug 2024 10:56:35 +0800
+From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
+	<Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
+	<Eric-SY.Chang@mediatek.com>, <km.lin@mediatek.com>,
+	<robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
+	<Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
+	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
+	<mingyen.hsieh@mediatek.com>, <stable@vger.kernel.org>
+Subject: [PATCH] wifi: mt76: mt7921: fix wrong UNII-4 freq range check for the channel usage
+Date: Thu, 15 Aug 2024 10:56:33 +0800
+Message-ID: <20240815025633.20974-1-mingyen.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9638.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c277dbb1-3bf8-49af-17c1-08dcbccce548
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Aug 2024 01:52:18.5618
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: tUdczvIzcTnXJ2sWlK4RptKoYIjDGu19xx3j3e9nOrDd1zHlKZz50JVtvexps+18t6leJ56DmWXVfoLubplLWA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7044
+Content-Type: text/plain
+X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-AS-Result: No-10-0.808800-8.000000
+X-TMASE-MatchedRID: PwZ81m9fkLYO9fZKTjt+z/havVZP5tTaKFFZAe4nyZ4Fi3R9x/2qQjEG
+	FjeZwyRU/Wti4Vzf8lvbCHv011Gy9U/CFiHta6tDngIgpj8eDcAZ1CdBJOsoY9mzcdRxL+xwKra
+	uXd3MZDX371moSn0VOAmbF1rkLU7qU7EZP1t1XBI2LIqpGKMvSJdTpzr1FBoedipJQCO3xTig3f
+	bPV9K2v+/Dm8xfT8B7S7S4JFB9LdNl6jZ5qkH35hdGg+ZY7eN6THB2Q+oKru8MTI34nyF36MJL1
+	aANdU8K+rL5VW+ofZc=
+X-TM-AS-User-Approved-Sender: No
+X-TM-AS-User-Blocked-Sender: No
+X-TMASE-Result: 10-0.808800-8.000000
+X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-SNTS-SMTP:
+	7E10A3FC5E124F9FF0A490BB7CFDBDE5BE3AD67CB69DD3D00DA2ED5DBE0B567E2000:8
 
-Hi Greg,
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-	Following the guideline for new driver, it should let every file as a sing=
-le patch for review and generate a final
-	single patch after reviewing. I think stuffs mentioned by you can be got f=
-rom cover letter.
+The check should start from 5845 to 5925, which includes
+channels 169, 173, and 177.
 
-	If I misunderstood anything, please let me know.
+Cc: stable@vger.kernel.org
+Fixes: 09382d8f8641 ("wifi: mt76: mt7921: update the channel usage when the regd domain changed")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks,
-David
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+index ef0c721d26e3..57672c69150e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+@@ -83,7 +83,7 @@ mt7921_regd_channel_update(struct wiphy *wiphy, struct mt792x_dev *dev)
+ 		}
+ 
+ 		/* UNII-4 */
+-		if (IS_UNII_INVALID(0, 5850, 5925))
++		if (IS_UNII_INVALID(0, 5845, 5925))
+ 			ch->flags |= IEEE80211_CHAN_DISABLED;
+ 	}
+ 
+-- 
+2.18.0
 
-> -----Original Message-----
-> From: Greg KH <gregkh@linuxfoundation.org>
-> Sent: Thursday, August 15, 2024 2:48 AM
-> To: David Lin <yu-hao.lin@nxp.com>
-> Cc: linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org;
-> kvalo@kernel.org; johannes@sipsolutions.net; briannorris@chromium.org;
-> francesco@dolcini.it; Pete Hsieh <tsung-hsien.hsieh@nxp.com>
-> Subject: [EXT] Re: [PATCH v2 40/43] wifi: nxpwifi: add wmm.h
->=20
-> Caution: This is an external email. Please take care when clicking links =
-or
-> opening attachments. When in doubt, report the message using the 'Report
-> this email' button
->=20
->=20
-> On Fri, Aug 09, 2024 at 05:45:30PM +0800, David Lin wrote:
-> > ---
-> >  drivers/net/wireless/nxp/nxpwifi/wmm.h | 78
-> > ++++++++++++++++++++++++++
-> >  1 file changed, 78 insertions(+)
-> >  create mode 100644 drivers/net/wireless/nxp/nxpwifi/wmm.h
->=20
->=20
-> Hi,
->=20
-> This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him =
-a
-> patch that has triggered this response.  He used to manually respond to t=
-hese
-> common problems, but in order to save his sanity (he kept writing the sam=
-e
-> thing over and over, yet to different people), I was created.  Hopefully =
-you will
-> not take offence and will fix the problem in your patch and resubmit it s=
-o that
-> it can be accepted into the Linux kernel tree.
->=20
-> You are receiving this message because of the following common error(s) a=
-s
-> indicated below:
->=20
-> - Your patch does not have a Signed-off-by: line.  Please read the
->   kernel file, Documentation/process/submitting-patches.rst and resend
->   it after adding that line.  Note, the line needs to be in the body of
->   the email, before the patch, not at the bottom of the patch or in the
->   email signature.
->=20
-> - You did not specify a description of why the patch is needed, or
->   possibly, any description at all, in the email body.  Please read the
->   section entitled "The canonical patch format" in the kernel file,
->   Documentation/process/submitting-patches.rst for what is needed in
->   order to properly describe the change.
->=20
-> - You did not write a descriptive Subject: for the patch, allowing Greg,
->   and everyone else, to know what this patch is all about.  Please read
->   the section entitled "The canonical patch format" in the kernel file,
->   Documentation/process/submitting-patches.rst for what a proper
->   Subject: line should look like.
->=20
-> If you wish to discuss this problem further, or you have questions about =
-how to
-> resolve this issue, please feel free to respond to this email and Greg wi=
-ll reply
-> once he has dug out from the pending patches received from other develope=
-rs.
->=20
-> thanks,
->=20
-> greg k-h's patch email bot
 
