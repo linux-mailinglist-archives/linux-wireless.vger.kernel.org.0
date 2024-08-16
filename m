@@ -1,63 +1,72 @@
-Return-Path: <linux-wireless+bounces-11559-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11560-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD73A954C60
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 16:30:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34F6D954EAD
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 18:19:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DF181F22963
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 14:30:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9DAA28203A
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 16:19:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C6F31B29BF;
-	Fri, 16 Aug 2024 14:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC531BE85C;
+	Fri, 16 Aug 2024 16:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="oAgzcDBk"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="AP6aOQih"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47BF2BB0D;
-	Fri, 16 Aug 2024 14:30:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 240791BD00B
+	for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2024 16:18:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723818650; cv=none; b=JatDIXWg05mvkhjmTJjH8MOR+cosc1gwZnivEhBFNTl4G8OVzB/1sCBb+yBVSvwIIcqF0x2ZuSqF6OfQOgTENrJxM15uCspPURNYPfbJL4AW+Zsyh10iuiilj104zKe85PflC3znyG2EdqfOF88DCdUiJ0/uWOkmPArcOsxRl4o=
+	t=1723825120; cv=none; b=OtJd2xWafoJZnEdYB0lxdQNIRuAE58FvwbKGYMRX9BE+ztTWwYuA/MaHHapIrtEXp2MrOMwwAXdfeZYazgsa9GjovyJJRv5yTRw+IL3O4KBx44kuzjC1R4G8YPps/F0JBk4KrLpE0PGkO4i1/kocSzT3vJ+tSus0zDOPlKnfrOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723818650; c=relaxed/simple;
-	bh=okqa08d3NtplnUtcUNsK/7qdSLfF0QhpEZkh/WIk5OQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=AkOtw0KZ17cuhQxufq3Z0xhJsHvI3djFtzEfXA4+9R0Js/KS9AABSjcpE631LxvoQ1FBMqpmmJFKzVwZJuHbEHqZepRcvxNF0jZFpXApZqVA38W8I9O2bTFyrFw9Vuv81/DY7kngui2QENgpl6SgVZa3fYOJ6A11bSrvn8bBxD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=oAgzcDBk; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47GA37iQ018931;
-	Fri, 16 Aug 2024 14:30:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ySmGx9Vjqb+jCe6jKNHQOd/iD3jo8brjdUCvlYIe8t4=; b=oAgzcDBkGYLECNsP
-	nZJzgPMJ9llY3CeB6RZaBPofHTXhlpD2en4QmwOh1xfDcJmvHlE37sKWm7Cgmt1Y
-	ory+T6Kb9cSf8cFM3+iM+aQD9mGvoe6iu3zbdISWmSu/T0qW5unpM59/PmQ6mIQ6
-	Yr7vsVRDISG3f/4/jKi2a8whzA5KiFxEKCAz9irXsdEUihjflMjdBukoJRHpUJ3U
-	moWdG5RgyffzEUyBYKu7ZJW2QMTv3qQAu9K5EcdhKX5OLEr9eYA2gS5LsgDcXO+6
-	5KAjFvalMh5QFtfYxZ02hkdcvd5wk+ZTubYUKEhjsijtTVHQg8pp0hRjXuFoE1cN
-	VGVmfQ==
-Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 411rvra4y6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 16 Aug 2024 14:30:27 +0000 (GMT)
-Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
-	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47GEUPkE025479
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 16 Aug 2024 14:30:25 GMT
-Received: from [10.111.179.45] (10.49.16.6) by nasanex01b.na.qualcomm.com
- (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 16 Aug
- 2024 07:30:24 -0700
-Message-ID: <229bcc37-de76-40ea-a30a-14e54a73265d@quicinc.com>
-Date: Fri, 16 Aug 2024 07:30:23 -0700
+	s=arc-20240116; t=1723825120; c=relaxed/simple;
+	bh=kNMwi6/vL9VQa4GWyVCWAlH1b/iiCl6DKS6u4IVuWZE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jyE+lf4MT9fngwfp5e6v1gk7BE4d8QS27APdrlXlmU2GgjaiEwg1UFD0zHuYLct5ODozoumek+xtv/mCFMCOyeA5d3ddi+sazTOAjKODOVAgLzjWwzJbVNhWF9/k7aniD2bLb7jJjSvrLzYDyAdEJTko+/9jiyMgA05WU+wlYBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=AP6aOQih; arc=none smtp.client-ip=209.85.210.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-709428a9469so1354612a34.3
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2024 09:18:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1723825116; x=1724429916; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=pYrK2RhkUPrRPBfldhyUexgVa7GT5fKFpTAHXDEQoBs=;
+        b=AP6aOQihjCPUX9hcJp2rdq03oJJ+s/6znmKutjpOn0YQqPguKKWbRtzjA7y3LXN2Ep
+         0dNjEBOUZ1zS9eZtDazBxjKFLHIF2eEFdwIxBzVDTXLltN5uPsc//17l1Xv3yZJ+WvMC
+         8Yjo+9sGJPfF0TzLic7qr8LTCg1mx1fDI6aCE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723825116; x=1724429916;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pYrK2RhkUPrRPBfldhyUexgVa7GT5fKFpTAHXDEQoBs=;
+        b=FXOmjQSCsTCkTn/vin7PQl+sOsLbymYRLwGr6nsQdxcTEtz3OAwKMiO9E9DFgPsGwL
+         34EPJF04C4b7yoWcUyCA5enCyhDw3vMCkBfQX6mALJTIUa5ukt5yuEQBnYCHJIGQ1Su8
+         eohQ2lvYV4bjf8f8J/H/RE5q3+sy6ITXoBVsGzlWqKSPx4JhT45bPskHGZf1BKMV/xbu
+         g5IBN8RWEKA2BoWiDZB69bJ71ruhJQIjYg+v7pJtqdKVH7w7Vh51G1vvLVMF6y8Kptxu
+         P3KvW53seN/f6VV5D5TILKCWEZkwLwbPJcaABwUpB5vI4nfU2fSniWBvG/ZPK4i3V6gk
+         RLnw==
+X-Forwarded-Encrypted: i=1; AJvYcCUV/eNRt7f+RnQFHjLPSTNwBRpFxK5TZXyXKfBpDcLlgkbjPTSRtgeRIXAAz+/F2yrjD7F9BVy/l9KpGmzKRrJvR+d0ikxqSls8AcY/fOc=
+X-Gm-Message-State: AOJu0Yz4x5nMQOcdTVZqQrYg8V5/Xq+rUEeE9ubpNOia4GERH0Vk/hQM
+	oLMwmVm1r5ugTtsHBO9RKEMeg+O8HpRS9wNbAhZLGPu0wTBiBFzQ+v1DnvDpPg==
+X-Google-Smtp-Source: AGHT+IFGFy80SN39TstUeIUHyNJmrcQez1h79V5ry5FfelR/TvE1aZAi7zD+BNDCMws483yF0eJxHw==
+X-Received: by 2002:a05:6830:6d0c:b0:708:b46d:5c76 with SMTP id 46e09a7af769-70cac8619a0mr4254105a34.17.1723825116108;
+        Fri, 16 Aug 2024 09:18:36 -0700 (PDT)
+Received: from [192.168.178.137] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bf6ff0a5a6sm19004846d6.138.2024.08.16.09.18.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 16 Aug 2024 09:18:35 -0700 (PDT)
+Message-ID: <e9b229f5-b796-4bec-87c6-a7b64df51e44@broadcom.com>
+Date: Fri, 16 Aug 2024 18:18:27 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,94 +74,94 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: mac80211: Fix ieee80211_convert_to_unicast() logic
-To: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-        "Johannes
- Berg" <johannes@sipsolutions.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        "Paolo
- Abeni" <pabeni@redhat.com>,
-        Michael Braun <michael-dev@fami-braun.de>
-CC: Harsh Kumar Bijlani <hbijlani@qti.qualcomm.com>,
-        Kalyan Tallapragada
-	<ktallapr@qti.qualcomm.com>,
-        Jyothi Chukkapalli <jchukkap@qti.qualcomm.com>,
-        Anirban Sirkhell <anirban@qti.qualcomm.com>,
-        Johannes Berg
-	<johannes.berg@intel.com>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <ath12k@lists.infradead.org>
-References: <20240815-ieee80211_convert_to_unicast-v1-1-648f0c195474@quicinc.com>
- <877ccgd7re.fsf@toke.dk>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Subject: Re: [PATCH v11 3/4] wifi: brcmfmac: Add optional lpo clock enable
+ support
+To: Jacobe Zang <jacobe.zang@wesion.com>, kvalo@kernel.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ saikrishnag@marvell.com, megi@xff.cz, bhelgaas@google.com,
+ duoming@zju.edu.cn, minipli@grsecurity.net, yajun.deng@linux.dev,
+ stern@rowland.harvard.edu, gregkh@linuxfoundation.org,
+ christophe.jaillet@wanadoo.fr, linux-wireless@vger.kernel.org,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, brcm80211@lists.linux.dev,
+ brcm80211-dev-list.pdl@broadcom.com
+References: <20240816020635.1273911-1-jacobe.zang@wesion.com>
+ <20240816020635.1273911-4-jacobe.zang@wesion.com>
 Content-Language: en-US
-In-Reply-To: <877ccgd7re.fsf@toke.dk>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nasanex01b.na.qualcomm.com (10.46.141.250)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: oX_0gPwsd6f-dAdRGHMLir2hI64zJ9fy
-X-Proofpoint-ORIG-GUID: oX_0gPwsd6f-dAdRGHMLir2hI64zJ9fy
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-16_08,2024-08-16_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- suspectscore=0 adultscore=0 malwarescore=0 spamscore=0 phishscore=0
- mlxlogscore=999 priorityscore=1501 clxscore=1011 impostorscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2408160105
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
+Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
+ 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
+In-Reply-To: <20240816020635.1273911-4-jacobe.zang@wesion.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 8/16/2024 4:31 AM, Toke Høiland-Jørgensen wrote:
-> Jeff Johnson <quic_jjohnson@quicinc.com> writes:
-> 
->> The current logic in ieee80211_convert_to_unicast() uses skb_clone()
->> to obtain an skb for each individual destination of a multicast
->> frame, and then updates the destination address in the cloned skb's
->> data buffer before placing that skb on the provided queue.
->>
->> This logic is flawed since skb_clone() shares the same data buffer
->> with the original and the cloned skb, and hence each time the
->> destination address is updated, it overwrites the previous destination
->> address in this shared buffer. As a result, due to the special handing
->> of the first valid destination, all of the skbs will eventually be
->> sent to that first destination.
-> 
-> Did you actually observe this happen in practice? ieee80211_change_da()
-> does an skb_ensure_writable() check on the Ethernet header before
-> writing it, so AFAICT it does not, in fact, overwrite the data of the
-> original frame.
+On 8/16/2024 4:06 AM, Jacobe Zang wrote:
+> WiFi modules often require 32kHz clock to function. Add support to
+> enable the clock to PCIe driver and move "brcm,bcm4329-fmac" check
+> to the top of brcmf_of_probe. Change function prototypes from void
+> to int and add appropriate errno's for return values that will be
+> send to bus when error occurred.
 
-I'm proxying this change for our internal team, and they have observed that
-unicast frames are not being sent to the separate STAs.
+Looks good to me. Not sure if I should Ack this as my SoB is there as 
+well. If that is not a problem than here it is:
 
-In response to your reply I went through the code again and it seems the
-manner in which this functionality fails isn't as it was described to me.
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 
-Instead this functionality fails because we'd fail on the first
-ieee80211_change_da() call and hence goto multicast and where only the
-original skb would be queued and transmitted as a multicast frame
-
-So the original logic is still faulty, only the actual faulty behavior is not
-being described correctly: instead of sending multiple unicast frames to the
-same STA we'd send a single multicast frame.
-
->> Fix this issue by using skb_copy() instead of skb_clone(). This will
->> result in a duplicate data buffer being allocated for each
->> destination, and hence each skb will be transmitted to the proper
->> destination.
-> 
-> Cf the above, it seems this change will just lead to more needless
-> copying.
-
-What other way is there to implement this multicast to unicast functionality?
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=ebceec860fc370b2f4c23e95c51daa932e047913
-
-All of this logic exists to support that feature.
-
-Also note MLO multicast uses the skb_copy() methodology as well.
-
-/jeff
+> Co-developed-by: Ondrej Jirman <megi@xff.cz>
+> Signed-off-by: Ondrej Jirman <megi@xff.cz>
+> Co-developed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Reviewed-by: Sai Krishna <saikrishnag@marvell.com>
+> Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
+> ---
+>   .../broadcom/brcm80211/brcmfmac/bcmsdh.c      |  4 +--
+>   .../broadcom/brcm80211/brcmfmac/common.c      |  3 +-
+>   .../wireless/broadcom/brcm80211/brcmfmac/of.c | 29 +++++++++++++------
+>   .../wireless/broadcom/brcm80211/brcmfmac/of.h |  9 +++---
+>   .../broadcom/brcm80211/brcmfmac/pcie.c        |  3 ++
+>   .../broadcom/brcm80211/brcmfmac/sdio.c        | 22 +++++++++-----
+>   .../broadcom/brcm80211/brcmfmac/usb.c         |  3 ++
+>   7 files changed, 49 insertions(+), 24 deletions(-)
 
