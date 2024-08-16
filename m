@@ -1,133 +1,97 @@
-Return-Path: <linux-wireless+bounces-11534-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11530-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C29DE95462E
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 11:51:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D143954612
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 11:48:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 773741F22266
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 09:51:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F69F1C2335A
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 09:48:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC3061714D6;
-	Fri, 16 Aug 2024 09:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 938BA16F0E1;
+	Fri, 16 Aug 2024 09:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="EqyWnft0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="puYwxbuU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB350171098
-	for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2024 09:50:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634551304AB;
+	Fri, 16 Aug 2024 09:48:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723801825; cv=none; b=DjG00ctmsP3yyG3Mou5d+H0WhbhPey3Xa+eg63cG6NY8skCMkaHjulGbe0F2zUAyttSNY+8wkcl4iCjBUDh9YD4JFQ5PPVHsS4f0Oy0BgABQQab4vV3BKY0pUVcZSGJUNa7VwOuNxhLONRRNBIPy5L+QcO+eMCmPUvoYpEF0kIU=
+	t=1723801688; cv=none; b=cx8J5tvBA20UVpoNjcmhbem0D7pHRhmK+qKYZZyeMpKNcJNlPDgxZexY1rjMZsbYIf9rCIHoE8EmWVhOhsCZCxJPpnOHoi/pik3M2xs5YdUN0JNauXHBbiVulEgbH9TfVp4Ru4uVYHBKOX87Bkxj/0O1DphCYvbT26bB3nwaVLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723801825; c=relaxed/simple;
-	bh=NEu2vdVxQ+/oMb0Wc2Y1OvuNERNhgaPt0K8q9MSyQI8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oVnEFTFQfJoyqbxr0cKjSvA+FQGr+tkkhQVjimrzJY2Psx4O+iCnXy/SOdgHS7GitcD18uxMYo228X2Xs/8oiUyHUPmcvkbcTVpvYzFcaqffe9nLBdelxLh21B+LNdHYdLAeMWaqXhk+VieyMUsmbJijMmI2ErJMaRiSL2lVCpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=EqyWnft0; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: f0a6015c5bb411ef8b96093e013ec31c-20240816
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=0P8Q5aPYJ95Nkv+yhaexcDyfyP79mJeFOtrPENogz6Q=;
-	b=EqyWnft0RiMIsj3XBm14MaK/F1noCLqhD9XdKVqYF19pyD4LmWuVqsimDzxBmzCMYRcWkvPO4TRuNgNhpVfD4FSlLTNYoCpWrgynR1+gcpJ6HKfqusR69gMByuuyth31wHYgB8TvQ7XmY7pVFDv1+Dn5fFtpXx5Mzez8SKXODlM=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.41,REQID:573665e9-e62f-4544-85f2-3b559ea1748e,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6dc6a47,CLOUDID:78c6b6c1-acff-4a0f-9582-14bcdf4ed7e0,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
-	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: f0a6015c5bb411ef8b96093e013ec31c-20240816
-Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw02.mediatek.com
-	(envelope-from <shayne.chen@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 503935617; Fri, 16 Aug 2024 17:50:16 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Fri, 16 Aug 2024 17:50:16 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Fri, 16 Aug 2024 17:50:16 +0800
-From: Shayne Chen <shayne.chen@mediatek.com>
-To: Felix Fietkau <nbd@nbd.name>
-CC: linux-wireless <linux-wireless@vger.kernel.org>, Lorenzo Bianconi
-	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Evelyn Tsai
-	<evelyn.tsai@mediatek.com>, linux-mediatek
-	<linux-mediatek@lists.infradead.org>, Michael-CY Lee
-	<michael-cy.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH 12/12] wifi: mt76: mt7996: set IEEE80211_KEY_FLAG_GENERATE_MMIE for other ciphers
-Date: Fri, 16 Aug 2024 17:46:35 +0800
-Message-ID: <20240816094635.2391-11-shayne.chen@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20240816094635.2391-1-shayne.chen@mediatek.com>
-References: <20240816094635.2391-1-shayne.chen@mediatek.com>
+	s=arc-20240116; t=1723801688; c=relaxed/simple;
+	bh=WBtWprX0VlBj06J/MiqwicXG54rhOqMHrRkLdcGPLfo=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=Xsvz5/4FjLeyI3avGc7KwySoP50BC5n5ikFyFCcy3l0+amIxhIFie7SoDV3QFbN1+a9xH+WscIVs4IEZyB8kpUs1e6LRdA/mCHOLTuCYApaHoUkxQIYgeVwrVV6afKzCH2khe74yFio1cfgfUAh3mshVN6JYzsjnu0e81Ae8aSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=puYwxbuU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E88F7C32782;
+	Fri, 16 Aug 2024 09:48:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723801687;
+	bh=WBtWprX0VlBj06J/MiqwicXG54rhOqMHrRkLdcGPLfo=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=puYwxbuUDZo3m+h2/JGr6sLZHzWEAE/rHkuJmawOrfGbX0oZxPtM+hfmgHPZbT/P5
+	 3Fm2Md10vxziBrfWon+uzUC1GExWGJvtacCcjbeUHwB9HtrVdzaUnWeFNdjSZ7F1cN
+	 JKZcFVeUEhdDTmRTua4mCGxnhHl9LP9Tg9wbRJZeHHBP4FefmN/YdhGDAPT0NYra71
+	 TupWHo9FAev8GKjn6Kro6exDlsXBSiOgAvszukcyi8kotYfFXx9FPNQt+FPMYwgKTe
+	 B87XzYF5/ux4lnRBDnG8KMqyy8pfS17Q3ta0R2qVgxJ2tQ+wVEuAvtQ1nr8UwOi2P0
+	 8ZCUGgC758j6Q==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-AS-Result: No-10--6.424400-8.000000
-X-TMASE-MatchedRID: 72n23NsrtG5Dn01oiZfuY4Q6iEG+7EHnVNyumldWne3fc2Xd6VJ+yjFa
-	TRf5dTetdwvRxvSoxhzX3CBAz92EpWNvKIW9g24opvwZ9GmdwDNMkOX0UoduuQqiCYa6w8tvxjf
-	J+i+nbHSPvzCryM/S54Ay6p60ZV62fJ5/bZ6npdjKayT/BQTiGkbHfwjbIquItEKd2FZKuTfUvi
-	hDc8zGGPsVh7XWXFhv56vXtoWyuGHAvpLE+mvX8g==
-X-TM-AS-User-Approved-Sender: No
-X-TM-AS-User-Blocked-Sender: No
-X-TMASE-Result: 10--6.424400-8.000000
-X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-SNTS-SMTP: 854B1E48823A03FE6D506702CAEB90D599A40A29D76B55F8503079D1F7322EDF2000:8
-X-MTK: N
+Content-Transfer-Encoding: 7bit
+Subject: Re: wifi: mwifiex: duplicate static structs used in driver instances
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: 
+ <20240809-mwifiex-duplicate-static-structs-v1-1-6837b903b1a4@pengutronix.de>
+References: 
+ <20240809-mwifiex-duplicate-static-structs-v1-1-6837b903b1a4@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Brian Norris <briannorris@chromium.org>,
+ Francesco Dolcini <francesco@dolcini.it>,
+ Yogesh Ashok Powar <yogeshp@marvell.com>, Bing Zhao <bzhao@marvell.com>,
+ "John W. Linville" <linville@tuxdriver.com>,
+ Amitkumar Karwar <akarwar@marvell.com>, Avinash Patil <patila@marvell.com>,
+ Kiran Divekar <dkiran@marvell.com>, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel@pengutronix.de, stable@vger.kernel.org,
+ Sascha Hauer <s.hauer@pengutronix.de>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <172380168290.1353179.16302095751530116958.kvalo@kernel.org>
+Date: Fri, 16 Aug 2024 09:48:04 +0000 (UTC)
 
-From: Michael-CY Lee <michael-cy.lee@mediatek.com>
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-When beacon protection is enabled, FW checks MMIE tag & length in the
-beacon for every cipher mode. To pass the check, driver needs to set the
-key flag IEEE80211_KEY_GENERATE_MMIE to let mac80211 generate and
-initialize MMIE.
+> mwifiex_band_2ghz and mwifiex_band_5ghz are statically allocated, but
+> used and modified in driver instances. Duplicate them before using
+> them in driver instances so that different driver instances do not
+> influence each other.
+> 
+> This was observed on a board which has one PCIe and one SDIO mwifiex
+> adapter. It blew up in mwifiex_setup_ht_caps(). This was called with
+> the statically allocated struct which is modified in this function.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: d6bffe8bb520 ("mwifiex: support for creation of AP interface")
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> Acked-by: Brian Norris <briannorris@chromium.org>
 
-Signed-off-by: Michael-CY Lee <michael-cy.lee@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7996/main.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Patch applied to wireless.git, thanks.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 1ab2fb292266..d43bd5c2432e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -364,14 +364,14 @@ static int mt7996_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 	case WLAN_CIPHER_SUITE_SMS4:
- 		break;
- 	case WLAN_CIPHER_SUITE_AES_CMAC:
--		wcid_keyidx = &wcid->hw_key_idx2;
--		key->flags |= IEEE80211_KEY_FLAG_GENERATE_MMIE;
--		fallthrough;
- 	case WLAN_CIPHER_SUITE_BIP_CMAC_256:
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_128:
- 	case WLAN_CIPHER_SUITE_BIP_GMAC_256:
--		if (key->keyidx == 6 || key->keyidx == 7)
-+		if (key->keyidx == 6 || key->keyidx == 7) {
-+			wcid_keyidx = &wcid->hw_key_idx2;
-+			key->flags |= IEEE80211_KEY_FLAG_GENERATE_MMIE;
- 			break;
-+		}
- 		fallthrough;
- 	case WLAN_CIPHER_SUITE_WEP40:
- 	case WLAN_CIPHER_SUITE_WEP104:
+27ec3c57fcad wifi: mwifiex: duplicate static structs used in driver instances
+
 -- 
-2.39.2
+https://patchwork.kernel.org/project/linux-wireless/patch/20240809-mwifiex-duplicate-static-structs-v1-1-6837b903b1a4@pengutronix.de/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
 
