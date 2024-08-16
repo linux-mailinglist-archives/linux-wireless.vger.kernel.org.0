@@ -1,165 +1,103 @@
-Return-Path: <linux-wireless+bounces-11528-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11529-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD30B95452E
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 11:10:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B6CE95453C
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 11:13:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF9D71C23E11
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 09:10:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F08B286475
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 09:13:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A60313D52E;
-	Fri, 16 Aug 2024 09:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBF9013DDDF;
+	Fri, 16 Aug 2024 09:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="FeGL0h+s"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JOFg711Y"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53DF2139579
-	for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2024 09:10:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9891713DBBF;
+	Fri, 16 Aug 2024 09:12:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723799417; cv=none; b=kflCs+TRB44lK7jhI5qrRWH1Y7o7KcD8urgeuwWzy8n/5xyH2Bln0faMn1huBjXOoHse2DMwdpUm8UYsMl2NzHKMUCAODMvI2OYwz/xaErXNv8dcTwOgqrUjBa/gXaZ35R88y5cJqCBVimWj2O1odEB7wnMOBORDMN0kYJprjrk=
+	t=1723799568; cv=none; b=VMUCMxRAc+lN/eoGx7I2k8Iq/XjWnG4GECWBgIaTdEodA2hLNoYi+jfuSKCG4mZ9wIJXQb8ZZxS4NJNsUyLR9ZZH7vFQVbmJtDaiqfcXVCB9cKVVujynK4c6sf9INfZ6LeNMpXqzCwIdA0StA2YV+9geFJtfdK5bnwNJmOEFKDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723799417; c=relaxed/simple;
-	bh=+447AkOnS1uBqMb8FHGHUkrDqwuwBEyFMUSUD/t7gbU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uob+pckc0glU4i5sH3yoCBKA2KMesDwu6xM8h+R/Ln2s+NSc/lv+J8gdfNucYpu4RgfmNm6CT1YDiNf4neWSBeO/0oSAtKs/6JaQuAKfhvN/HVU5V5/ByZNFo/7NlKytBeqLgaNesSTRYTbFysrgAGUkpwH6vODcsC5TlAq/8Do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=FeGL0h+s; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-52f04c29588so2488316e87.3
-        for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2024 02:10:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1723799412; x=1724404212; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I+OEH4A1p3/H1CuxcdmLsuPBbfALhVq7kSh25EJu5bk=;
-        b=FeGL0h+stBW8BNGOQ1BL/H2ddn8AmxOvTFUTXm5D2Y3u78Oe7eICm+jYY+eqgK1IUt
-         TgRJ4pJ/nZmCixTCmWYuhtSuZ1wQRoYlMs8xyTXW0hreFpcehwjOcBk8zi5W1cdyRe0K
-         5D8Zk4vgcXqIvqBgyo3Sq/srBz48ik3h3RuOhMj0eI3CAgExMLvNtQyYdLMnZ2hV2c22
-         IbenbcX0/iimnmWpe+2eLP4fk9BWLLAONrvi4581MrzagLhWRaUimZnqh0xIJDmR7M8I
-         sIwZOYVeTN3V0DJVTJz3h9g6p6TloDV2I0VMDK+OU6dbfOIkzNG++536vtePoitPAnBB
-         dC5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723799412; x=1724404212;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=I+OEH4A1p3/H1CuxcdmLsuPBbfALhVq7kSh25EJu5bk=;
-        b=YFc/4HR97reZBlovPRRowEBDnkBjLLOge4F89YJ2Ux/Xq3LKIN0UCgABDalg9UA/eZ
-         EhmmfMDKqvjs1MltLQjnkTPOLHq/dHmHU9VMyGsVGplf+E2BRQAqpuJMJ/WCsVoVGeeZ
-         0ODhou8HAXXcY0tElxGeCw7WBQXyrcU+xobrmj/akq+zD6Z4Tj6gSbDzyF2Hix9UOZPB
-         wyUieLAG3TGtoD2f9PEfs2mYYReZjbmERSS76oVNmEwMT6Xi8N4PF9cMk67bbvnVJnp6
-         MduBQAwr5N7auXZFEtB4oSeIh5waBLofsvSwr7Sb5tUezXJRwUBzsAU+3lpnrqzjHBkf
-         /7ig==
-X-Forwarded-Encrypted: i=1; AJvYcCX0F/mAAXDLHhJPbfCa7fcsKPb54e459SDuYvF/k5WeaHdw6NWyudpzwYRiDxmFzSozJ4U2esEfCuRDJw+gAT9ETnmSWeMQY6sQ9AqztJw=
-X-Gm-Message-State: AOJu0Yx9b43L4JsyU6j3xF81sSnMqLSP7/lubVBCPUKEv6ZetqULbLkO
-	j6fgH0yyjLgPJCEQrUHKh3sSw1ZvbPB3UFj9bYahHZQsxD3yttXYDovas0JRB2mC9nmXczYKRoo
-	n2e4iG1W5pIMvP3i6eQT8rEQO98adxqczF+WxsQ==
-X-Google-Smtp-Source: AGHT+IFB3aIW7Bm+lnja7PhaLnwXaRYjuWrHIHMzFAXmCtoDzMvBJ6bByky6rPgRVOj2x6JwSAi/BLj6VPI7F5SZiP8=
-X-Received: by 2002:a05:6512:2806:b0:530:ae0a:ab7a with SMTP id
- 2adb3069b0e04-5331c6975abmr1399845e87.17.1723799411703; Fri, 16 Aug 2024
- 02:10:11 -0700 (PDT)
+	s=arc-20240116; t=1723799568; c=relaxed/simple;
+	bh=pE5KrhJEFY9/bCRrBwsiQIZ1HfJZEZWnZP+tor9EZ5I=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=WaBvWRuOaoKyFMdiKjfFyAuGwBCPDD7LrbUxYFilDdp3/IXt0Femg6UrZvslmEOcYJCAzp1kgp0xpQREHt9SD7dGUZOF3Aak/Cju5YDByCb45zHmSmAIks7PfGvAW/Pze011ZswfgQlIU8c+h4aZbwHLsPBOTK5L/ND1//8p9Gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JOFg711Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C7A3C4AF09;
+	Fri, 16 Aug 2024 09:12:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723799568;
+	bh=pE5KrhJEFY9/bCRrBwsiQIZ1HfJZEZWnZP+tor9EZ5I=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=JOFg711YWxgNq6qOJ1zg3vPBTyfziyukZMWg8y/NjOaW/eIEMsg5wZIQsKdlCjVs+
+	 XiV5/zKix6JGrbnOzNPFvsvtK8yE4CfxTzSEypXVe4Ton5wwvcdk45tzvMkATA0CRd
+	 rMBCMjgPOzrUFleWBNSzTtaXubAWz/6CWr5cmg2wT7DXjzX/kOe8RXJ2+Pctcl8cuA
+	 /bPvzhiMTz0qivwIXKOEQt8ZKrfIbf9w6DkGwGTndz7izbsVs9iNFjdzPP97GA0f5q
+	 DP7OXE8jdICIGlO1DSIRqfOvtHwv8MBzIT5jWtj9bG7Xge0RaJEfX+/8oaURe4EXY1
+	 rqjGRj9NV4k6g==
+From: Kalle Valo <kvalo@kernel.org>
+To: Philipp Stanner <pstanner@redhat.com>
+Cc: Giovanni Cabiddu <giovanni.cabiddu@intel.com>,  Herbert Xu
+ <herbert@gondor.apana.org.au>,  "David S. Miller" <davem@davemloft.net>,
+  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,  Jie Wang
+ <jie.wang@intel.com>,  Shashank Gupta <shashank.gupta@intel.com>,  Adam
+ Guerin <adam.guerin@intel.com>,  Tero Kristo
+ <tero.kristo@linux.intel.com>,  Boris Brezillon <bbrezillon@kernel.org>,
+  Arnaud Ebalard <arno@natisbad.org>,  Srujana Challa
+ <schalla@marvell.com>,  Nithin Dabilpuram <ndabilpuram@marvell.com>,
+  Bharat Bhushan <bbhushan2@marvell.com>,  Alexander Shishkin
+ <alexander.shishkin@linux.intel.com>,  Miri Korenblit
+ <miriam.rachel.korenblit@intel.com>,  Johannes Berg
+ <johannes.berg@intel.com>,  Gregory Greenman <gregory.greenman@intel.com>,
+  Emmanuel Grumbach <emmanuel.grumbach@intel.com>,  Yedidya Benshimol
+ <yedidya.ben.shimol@intel.com>,  Breno Leitao <leitao@debian.org>,
+  Jonathan Corbet <corbet@lwn.net>,  Bjorn Helgaas <bhelgaas@google.com>,
+  Mark Brown <broonie@kernel.org>,  David Lechner <dlechner@baylibre.com>,
+  Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+  Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>,  qat-linux@intel.com,
+  linux-crypto@vger.kernel.org,  linux-kernel@vger.kernel.org,
+  linux-wireless@vger.kernel.org,  linux-doc@vger.kernel.org,
+  linux-pci@vger.kernel.org
+Subject: Re: [PATCH v3 06/10] wifi: iwlwifi: replace deprecated PCI functions
+References: <20240816082304.14115-1-pstanner@redhat.com>
+	<20240816082304.14115-7-pstanner@redhat.com>
+Date: Fri, 16 Aug 2024 12:12:39 +0300
+In-Reply-To: <20240816082304.14115-7-pstanner@redhat.com> (Philipp Stanner's
+	message of "Fri, 16 Aug 2024 10:22:58 +0200")
+Message-ID: <875xs0ygoo.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240814082301.8091-1-brgl@bgdev.pl> <87a5hcyite.fsf@kernel.org>
-In-Reply-To: <87a5hcyite.fsf@kernel.org>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Fri, 16 Aug 2024 11:10:00 +0200
-Message-ID: <CAMRc=Mcr7E0dxG09_gYPxg57gYAS4j2+-3x9GCS3wOcM46O=NQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v2] dt-bindings: net: ath11k: document the inputs
- of the ath11k on WCN6855
-To: Kalle Valo <kvalo@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	ath11k@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Fri, Aug 16, 2024 at 10:26=E2=80=AFAM Kalle Valo <kvalo@kernel.org> wrot=
-e:
->
-> Bartosz Golaszewski <brgl@bgdev.pl> writes:
->
-> > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> >
-> > Describe the inputs from the PMU of the ath11k module on WCN6855.
-> >
-> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> > ---
-> > v1 -> v2:
-> > - update the example
-> >
-> >  .../net/wireless/qcom,ath11k-pci.yaml         | 29 +++++++++++++++++++
-> >  1 file changed, 29 insertions(+)
->
-> This goes to ath-next, not net-next.
->
-> > diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k=
--pci.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.=
-yaml
-> > index 8675d7d0215c..a71fdf05bc1e 100644
-> > --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.ya=
-ml
-> > +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.ya=
-ml
-> > @@ -50,6 +50,9 @@ properties:
-> >    vddrfa1p7-supply:
-> >      description: VDD_RFA_1P7 supply regulator handle
-> >
-> > +  vddrfa1p8-supply:
-> > +    description: VDD_RFA_1P8 supply regulator handle
-> > +
-> >    vddpcie0p9-supply:
-> >      description: VDD_PCIE_0P9 supply regulator handle
-> >
-> > @@ -77,6 +80,22 @@ allOf:
-> >          - vddrfa1p7-supply
-> >          - vddpcie0p9-supply
-> >          - vddpcie1p8-supply
-> > +  - if:
-> > +      properties:
-> > +        compatible:
-> > +          contains:
-> > +            const: pci17cb,1103
-> > +    then:
-> > +      required:
-> > +        - vddrfacmn-supply
-> > +        - vddaon-supply
-> > +        - vddwlcx-supply
-> > +        - vddwlmx-supply
-> > +        - vddrfa0p8-supply
-> > +        - vddrfa1p2-supply
-> > +        - vddrfa1p8-supply
-> > +        - vddpcie0p9-supply
-> > +        - vddpcie1p8-supply
->
-> Like we discussed before, shouldn't these supplies be optional as not
-> all modules need them?
->
+Philipp Stanner <pstanner@redhat.com> writes:
 
-The answer is still the same: the ATH11K inside a WCN6855 does - in
-fact - always need them. The fact that the X13s doesn't define them is
-bad representation of HW and I'm fixing it in a subsequent DTS patch.
-
-Bart
-
-> --
-> https://patchwork.kernel.org/project/linux-wireless/list/
+> pcim_iomap_table() and pcim_iomap_regions_request_all() have been
+> deprecated by the PCI subsystem in commit e354bb84a4c1 ("PCI: Deprecate
+> pcim_iomap_table(), pcim_iomap_regions_request_all()").
 >
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpa=
-tches
+> Replace these functions with their successors, pcim_iomap() and
+> pcim_request_all_regions().
+>
+> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+
+No response from Intel but looks good from my point of view:
+
+Acked-by: Kalle Valo <kvalo@kernel.org>
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
