@@ -1,262 +1,490 @@
-Return-Path: <linux-wireless+bounces-11509-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11510-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D1DB954135
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 07:32:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FA2C954145
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 07:43:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD0EF1F21D10
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 05:32:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABB0A1F248EA
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 05:43:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4011477107;
-	Fri, 16 Aug 2024 05:32:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C7FF7F460;
+	Fri, 16 Aug 2024 05:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="oMTSgH5z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OtipbV1F"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2068.outbound.protection.outlook.com [40.107.22.68])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDFCA28DC1;
-	Fri, 16 Aug 2024 05:32:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723786354; cv=fail; b=ZwaRHaVpBau3x+QmSBAdDfLZR7bBNxDl4SsLqwYxFKa3Lz5UGhI2zXtgryJT6GcwO4Yd1D+mUnI5maDX6pq3bOVfZElbNeQwfrqcM8P2dDZ6EZDGsuHHGN+SY8SvB4lkz1xbMTBIwDjQ23X/zsvCY5aZ7UVHkEWgB2qaHhttLAQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723786354; c=relaxed/simple;
-	bh=Yp87BxVTTCrbv1OnRnBxKZ2zK8EYH0wKMF5SEzWkSuw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=tKVaqKqOrQh3IdHCc6d4Umr8zx9/9CCxZKdXokKohHRmUfElv40MLqxjX+qdlztmqwz39xqH2eG6V1GZ3i0rsKS+ftyHmkSdiq4rrPI3pJpFf+ZTLcDfXlB0OUVxodByW3P3oPplgvF3610ABZGRtnyJD/cAH6jc90LYZYL5hhA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=oMTSgH5z; arc=fail smtp.client-ip=40.107.22.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dHRRjmgeN9pOr51XnsJcTDxQNxS5yYNqqbaLXhUGQIjoZlWh3UmdNysZf9x53Q3CCpxHITsafOC3VrtlNyj2m6bCqk7oYSAE4VLv2iuSfkrC+WA4BrKOylFd2+VshCDk9hXNxfjZrSmiU5bN6A0hn9L81a6twCCUd3aC919KYSQkbj2x0xWvtdppNU+SqPY97g4FVty5ZAHiPcj9DIakPOkg1wjfJBK465/5yXLW6BlD7uJLCIJ5cSrf7Qb9i6ubtbmbZkFyWiVwtX+FubFIgwO/1DT1R4PAVuRmczS4UMRvPLAdR4lLvc83Hfhffxo4ufdvNHxWU/BPP84uBqO4OA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Yp87BxVTTCrbv1OnRnBxKZ2zK8EYH0wKMF5SEzWkSuw=;
- b=a4pFpqhwymXJtlF28jdQFq0zJ9oGNVeqd09cAtya7Q9RItmU+xsWS/w1Q4TXdrrLdl5eyVT9ZRu4A8+NhXwyh+Ps91aLsHwXeEJu12agyc4erc0VElESqXgm9Voh1gxsHHjx3qxXVf/WiCafH6fWQioKpEaeR5esyhr54sY0SFTWnigqJJbPddUowuctb7vNPJThv0WVNlKPVYf5X7Tfg/+vEun6GZzHsskRNTOPwGHnh0Xmo+q7h6aeFs3rNyJSpVIE3HxFouOA4DdQyAn/mSe/+9yvFeaRQjNjTTwLmWIcFKgw8K09UXfOJcp4mFqEpSWF9KvrEObUk34FBrEhdg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Yp87BxVTTCrbv1OnRnBxKZ2zK8EYH0wKMF5SEzWkSuw=;
- b=oMTSgH5ze8f3Gf8TDdtwB6zGdvbMZnwEDiAUOiGpxtQ14m8JR8B8aWjR9Jf3bmAqVcdTgFoVwxR3dhNo6AjglCOqNpOj2Kd2tLwLpcFVkU0fzc0zsmHURY9o8HzccOPlr0IH9im99bo8RdqAeJ4dezqLIAXfdnup36e+zq+5hkVoMSl7JB3xD0zzpP39X9Zg9n7VWjx9S8qyH9i+/yeqne1D+llfV188MjWlkx2E6HjPekpmK89Rkokf+nGQ3TmJHGse9SnJjKyKCpy4Jl9Qa64ZZ5TKhBE7y1sGiyh03lx1PkevueSyhang1mEDiJnNUR4g8gRcwMmqEckaW0Chew==
-Received: from PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20)
- by PAXPR04MB8141.eurprd04.prod.outlook.com (2603:10a6:102:1bf::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.19; Fri, 16 Aug
- 2024 05:32:27 +0000
-Received: from PA4PR04MB9638.eurprd04.prod.outlook.com
- ([fe80::f950:3bb6:6848:2257]) by PA4PR04MB9638.eurprd04.prod.outlook.com
- ([fe80::f950:3bb6:6848:2257%5]) with mapi id 15.20.7875.016; Fri, 16 Aug 2024
- 05:32:27 +0000
-From: David Lin <yu-hao.lin@nxp.com>
-To: Kalle Valo <kvalo@kernel.org>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"johannes@sipsolutions.net" <johannes@sipsolutions.net>,
-	"briannorris@chromium.org" <briannorris@chromium.org>, "francesco@dolcini.it"
-	<francesco@dolcini.it>, Pete Hsieh <tsung-hsien.hsieh@nxp.com>
-Subject: RE: [EXT] Re: [PATCH v2 00/43] wifi: nxpwifi: create nxpwifi to
- support iw61x
-Thread-Topic: [EXT] Re: [PATCH v2 00/43] wifi: nxpwifi: create nxpwifi to
- support iw61x
-Thread-Index: AQHa6kDq7zFfRJGOz0Wel62W8Sr8T7ImJDCQgAH0TSuAAUy9AA==
-Date: Fri, 16 Aug 2024 05:32:27 +0000
-Message-ID:
- <PA4PR04MB9638824370878CB3BC426DBAD1812@PA4PR04MB9638.eurprd04.prod.outlook.com>
-References: <20240809094533.1660-1-yu-hao.lin@nxp.com>
-	<PA4PR04MB963858E759C8F61402B2275AD1872@PA4PR04MB9638.eurprd04.prod.outlook.com>
- <87frr6yvq0.fsf@kernel.org>
-In-Reply-To: <87frr6yvq0.fsf@kernel.org>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PA4PR04MB9638:EE_|PAXPR04MB8141:EE_
-x-ms-office365-filtering-correlation-id: c6f90ba3-1f03-4dba-39fc-08dcbdb4d0c1
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?XJM4d6jFx9ETa53/Sdbao7SSoKzXVBWQp9kc1TcHvasPN2Y4IRWAsvoFdCp2?=
- =?us-ascii?Q?04fLAO1R8MIAiOMSgEPrmTO0ZulgdZfKjBz3T2BSR2AwdzaCbBJkaZYWXioH?=
- =?us-ascii?Q?PyEqYFfPbJzeCuz7DJAeuBGv2WjUFdNiLscBah67bn7K0Gi482lhfUcYytrF?=
- =?us-ascii?Q?6yOKST+wQjQeC3m8kohdVSHln8RIxtMuicea2wiYZiXPqRGpJORJG+o3prmG?=
- =?us-ascii?Q?MqoFGHgBPG+YRAvkVUJxcWJ6fPwRdg9gitvcox5XxQjIpmyrvZ+dpxcrZ70c?=
- =?us-ascii?Q?2gO6i9WvLhhXhJ4w/1gMHW4zE+hTaXvljwC/tM1V/C9dVj1tSTMqv2UZ6jz1?=
- =?us-ascii?Q?fDWENd4JtalNacT8pcyp9RwflTKIDmLGaxQk7MmAZrOvcy0iS5TFNBmmpRZX?=
- =?us-ascii?Q?fau9f15TPmpczrt5p2/iwGEluv4Xm/yUzi4QHtQZFwaN4zjGEm4S/dnjTl2W?=
- =?us-ascii?Q?OHEzHMYBlG7Ie14qLVMm/p1OL842e58lnM1Rmdm2C5lcUaWC/429ix1vwe5I?=
- =?us-ascii?Q?LgUG/niGMMEs+gZg2hZeaqLuIajMTEFXPw3oqtcPrnUoBLp0kIjSU+0OLDhy?=
- =?us-ascii?Q?5ys0UKTcQntJJkFnH8u3nKjb5V7BICIfgJX5JQohdH0LScGeFdoEArxZC8zk?=
- =?us-ascii?Q?+LaqoKO/Il+jjXW5BzAqtc01DaHEydUGyFIzOkcvVtsRn+w5sdYM6+XVAHPU?=
- =?us-ascii?Q?NVt6YMFlkPtj56vNZUCpdzAT5QgZ8EhhHN5736mjZZhSFUEEqdxNTOti/GlL?=
- =?us-ascii?Q?+EBhb+KgOom8oEZifaMAqfupD3Pvc25DU8xbFdbN9aiGrkB/FdMI3DWcIT3x?=
- =?us-ascii?Q?4NQv0d39zHj7R+WIdJTWp6L1eqtl2fFX/ZAN9Tc6nuafucvZ0v5D4N0aL8aP?=
- =?us-ascii?Q?7FCWWpNnI4B/el0TVtdAjUj5ugtj+5jixwlHOMcjbTEKTIvWdicfR4gn331T?=
- =?us-ascii?Q?IbpEYtWRZc75bpF5Ml/m9OwKqR3UlxAvR2W9VQJo49/xwLCRue15pDAz4q9+?=
- =?us-ascii?Q?4zJON5hehoXtPhcVsyjYeI0dx9uTrox/19tdRjVbxTIAsu8Jisaum/mi2UEp?=
- =?us-ascii?Q?/QDeotD7TQxXqwX7ur5CGUCq1ZRjuzoFoOIeOpf0B7gNr8adfR8uwUHExQVa?=
- =?us-ascii?Q?1yAR9uQYTPH5z29L/g6fl1WwYrxZ+8dNbqkA9gA0Ks2qOGNBjaZ4kUW2URuW?=
- =?us-ascii?Q?CX/kW8YtaifVnoKSswNpZJqWthMHmiX6kaMkFqm0nw44vv1prX2j367ufot0?=
- =?us-ascii?Q?A/nCUzjUDj+5X3r/08ZTSaqyRlCNWjZke4kGG0jujOIZjGhaj9eMT4/ehxRe?=
- =?us-ascii?Q?5kTSKZhyULY6AzgkSL63A4HqESlKwIFLhF7tBKyjqMs+nkaR54y+6naNt9by?=
- =?us-ascii?Q?bMnd86OwlczpVp1656XrS5gvEhGWtSDgXIgYZKDeqJEUK4howg=3D=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?s4zN0a+Jzeuj7goy02ra6/eviw86jmJWTRo9XICRYVMLbF0tj1CfjMWaEh/P?=
- =?us-ascii?Q?NUMKzG5PpqxwY/wINxrPYXIr73YBOuyju5IoZ3ZEfeCE1TT5P2Nsf+T6jTpC?=
- =?us-ascii?Q?cGk0Mnm7gzwGnCkjM6hNmnxdpk1sacOf4hsivEwxkUelk8Rwlys5F10NFlwq?=
- =?us-ascii?Q?Srj08EkIVA6emFdLcoQ5zHfC5x3ET/CLbDCj0XS+sLTgCun72IaSONTMSumw?=
- =?us-ascii?Q?3LQbtvGqRFrCtcSn9IWTmDhPOlWDBgYGiBXQsiJ58dxqLvaXvFN9Qv/QnRbz?=
- =?us-ascii?Q?x25wUmSRJEd1LaXy4PK4rrqK/uwibrakUAebKJDBMqYbfGU+2HvRC7ardXTf?=
- =?us-ascii?Q?Y+KEkkLUD4IHLnf2Ws5X1L1Su8ARtA4W+s6vH+GcfKMO8PoQVBW1pLXVsQC9?=
- =?us-ascii?Q?8msiDZlfi7rjoH7xVUKzsu9sQuEifzLBIfp+DLClkzp673OnrPmNZCyydwex?=
- =?us-ascii?Q?A0cegTpOT2ueGPaNwyZzoaJUQDJfMvlDbC4w/5WfREgtO7Rgy6Qq1DCNM2/Z?=
- =?us-ascii?Q?B1HXXKqjMWKSDbbgIy5sCDB8nyjNN4n0lU7MooysXXhfvGUQI+SYDbH+xI1f?=
- =?us-ascii?Q?40Ou9iiJ/4zf1bGonV/jdLA+621dvaCcxSHy11XxxqkZLJ34bvpwRfjijUb/?=
- =?us-ascii?Q?JFKTphYOn92OvvWr4PBmFWn7Y6ZV4npFFBYgubU90fQ6+h5MCnCqVjbdLQc6?=
- =?us-ascii?Q?fUe2nbClF1eSCTeHFNGVy9nwA2ihCX3iHoW9asBeMDGJF0o5QoAg8jAGyE1d?=
- =?us-ascii?Q?rjgdzJVV8FKWJ3ePiak9RVWVnsLYhfAI4FhDarMJeI8exqy+3JnXVIw9CXS4?=
- =?us-ascii?Q?ecJHRKKa8DXXH9L3UjqHPuqre5KHwJ2qaweN48F0BxbW0vQ/1aib7uqu7I5W?=
- =?us-ascii?Q?cup1Q/Vj/63k+11KXn5rZbYHqbc+mRb8+eNYk3jrhmzsCgCLyW9bQaaGGPl6?=
- =?us-ascii?Q?iICHV+awIEnvCQ1ZlKoqA9Z+82yDUev5cRVjGPZPWuFamffK7u+jaY5T4Hp9?=
- =?us-ascii?Q?kHYlB+EE3bfwaNq0qGNUs7vldiAFTfKCY5bk6dcRhLCngY9a45MoSRKzgtZv?=
- =?us-ascii?Q?rnMxXBTV4W1wXBtzmKEPcHepGPgbBCqf8Oe+4N81Jedsxs9w6BcYnwkgMb8l?=
- =?us-ascii?Q?DXKYrTGIRp93VWnD3ju4Vz/CqbYJimq/Is5RLbtvoeBv6iIzPQ5hv2u7okgz?=
- =?us-ascii?Q?Cwe9MaKi7Z2aaP3OZz6gIhjGBshZO9h04dh+ACfX/fpbHfO4uIKLxjUYHB1V?=
- =?us-ascii?Q?PYmEdPAYITOINAzfWTrPVwZ9fFU4l3NySnqA3TI6isTuOMVUNCyKjrAMD6fo?=
- =?us-ascii?Q?L3DD7gzUhPqJHzgXbPpNX2VCRZEYldMBp4m6EFmq5oFPZBR9k+uJuZOTosxN?=
- =?us-ascii?Q?LnLGWm80bzwzXNbI1RHUrHGpniMTkJS9eZgkwnwXxB044TrbcP3eUzY4Nv9q?=
- =?us-ascii?Q?eX6C0SuYtdVeyCm5swbL2PHK0/VhH2jIhA4oowr0tzlaOc6i5CXknkZdfTZ0?=
- =?us-ascii?Q?0NT4eqtfxztByW3VHF87ZcxAGF3LrgIpMOcvgCbBOQhR+cBi9cfStNdxSKTS?=
- =?us-ascii?Q?Rse1y8ZWnFeD7Os0Z6x5nWBT2ga5NWVH755YHc45?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EACA47DA98
+	for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2024 05:42:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723786970; cv=none; b=o2glHicc8FCL1q0HckfxTZn8VXtaOutJGBuuAefjIucAqwW+U30Vrc5KFsmqpoMqg715VTNN9tOmYASmsuKbR24ogfgRJLVgA8h9SCXU6oL+xgSbUlp7X6/z2vdAjRiBBkpmUpeSt068DeOWzQU6BJwT2UfoE0GTTj5mygWJ3tc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723786970; c=relaxed/simple;
+	bh=ZUJ9OQpZMNZejBqmlBPk7iYU5SODnrxPnx8msjf4TdI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Hqjj2Y3yAnhFoU9g/YzhjYdunypgcC/37Z+5X0A5Q0udUZql3MmoWLrOpV8ASYkB9NT6m8FpeYniZKZY0gJxI3P6F8R/cL/I520XlaOTUtNZwSk8npORVtAllIALyrfg24hbKJ7VkdTy53B41hWg10a993fkFWHR5z5BZdiXDvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OtipbV1F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A7BC32782;
+	Fri, 16 Aug 2024 05:42:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723786969;
+	bh=ZUJ9OQpZMNZejBqmlBPk7iYU5SODnrxPnx8msjf4TdI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=OtipbV1F+4zlq2SCNVqMIygSbQgD4sb2BwfrGPMzQk9jCf43E6nQ29FfLcZ92H9to
+	 mKoWO70ke2MLnwMqpFbn48y7uPiQALHACTkf0QOhuvpA7l5Jjq5F0ao+0UlNtEuJ3Y
+	 I5KtLyRk4atxWP3qzqafq5w3tGmhKmd/1hwNAIjYHL4iiRD6A566VH0pIP3yQD62hC
+	 +616zdqlzpd3Ly7iZ52ixm8SebAny6eT8gURWjYLemQplDsVlKNzJbmD33zHZ/z5Fo
+	 Vqgr8Q3s7wVo9hEdbE5G7Z/vdQpHnHMzJXRr8fyS/jtHc/K6t1omCABm1PYCNA2GtY
+	 a/tx011suKivw==
+Message-ID: <6a740dee-464a-4a10-9c25-ee6f0d22b279@kernel.org>
+Date: Fri, 16 Aug 2024 07:42:45 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9638.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c6f90ba3-1f03-4dba-39fc-08dcbdb4d0c1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Aug 2024 05:32:27.3348
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: H7afjgVTo+3enJ7IoNYoDwm+D4KIEv3I84tk1mbO4wFAP4woLnjMJy6PJ8Uv9UXTm2/SuuTZ4Q7g9r2+wYrK5g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8141
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 01/18] dt-bindings: net: wireless: describe the ath12k
+ AHB module
+To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>, ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+References: <20240814094323.3927603-1-quic_rajkbhag@quicinc.com>
+ <20240814094323.3927603-2-quic_rajkbhag@quicinc.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240814094323.3927603-2-quic_rajkbhag@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> From: Kalle Valo <kvalo@kernel.org>
-> Sent: Thursday, August 15, 2024 5:36 PM
-> To: David Lin <yu-hao.lin@nxp.com>
-> Cc: linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org;
-> johannes@sipsolutions.net; briannorris@chromium.org;
-> francesco@dolcini.it; Pete Hsieh <tsung-hsien.hsieh@nxp.com>
-> Subject: [EXT] Re: [PATCH v2 00/43] wifi: nxpwifi: create nxpwifi to supp=
-ort
-> iw61x
->=20
-> David Lin <yu-hao.lin@nxp.com> writes:
->=20
-> > I found Nxpwifi patch v2 is put in "Deferred" state quickly.
->=20
-> The way I use patchwork states is described here:
->=20
-> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fwirel=
-es
-> s.wiki.kernel.org%2Fen%2Fdevelopers%2Fdocumentation%2Fsubmittingpatch
-> es%23checking_state_of_patches_from_patchwork&data=3D05%7C02%7Cyu-ha
-> o.lin%40nxp.com%7C8d360234b61d4e2c13e108dcbd0da0a4%7C686ea1d3bc
-> 2b4c6fa92cd99c5c301635%7C0%7C0%7C638593113436356863%7CUnknown
-> %7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haW
-> wiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=3D1XA1Ax66zhnU72efN0wAghLJ
-> %2F3DR1%2B8PAxXkiHphA%2FY%3D&reserved=3D0
->=20
-> Basically I try to follow the "Inbox Zero" method and keep the amount of
-> patches in New state (my "inbox") low and the Deferred state is my todo l=
-ist.
->=20
-> > Patch v2 is mainly to address the comments from Johannes and it
-> > actually took quite some efforts. We understand there are areas to
-> > improve and we are committed to continue enhance/maintain the driver.
-> >
-> > Could you let me know your plan for reviewing Nxpwifi?
->=20
-> Reviewing new drivers take a lot of time, at the moment I'm following wha=
-t
-> other reviewers say before I'll look at it myself. The process is so slow=
- and
-> patience is needed.
+On 14/08/2024 11:43, Raj Kumar Bhagat wrote:
+> Add device-tree bindings for the ATH12K module found in the IPQ5332
+> device.
+> 
+> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
 
-Understood.
+<form letter>
+Please use scripts/get_maintainers.pl to get a list of necessary people
+and lists to CC. It might happen, that command when run on an older
+kernel, gives you outdated entries. Therefore please be sure you base
+your patches on recent Linux kernel.
 
->=20
-> The last thing I want to see that once the driver is accepted NXP disappe=
-ars
-> and we end up having an unmaintained driver. Way too many companies do
-> that.
->=20
+Tools like b4 or scripts/get_maintainer.pl provide you proper list of
+people, so fix your workflow. Tools might also fail if you work on some
+ancient tree (don't, instead use mainline) or work on fork of kernel
+(don't, instead use mainline). Just use b4 and everything should be
+fine, although remember about `b4 prep --auto-to-cc` if you added new
+patches to the patchset.
 
-Yes, we are committed to maintaining nxpwifi.
+You missed at least devicetree list (maybe more), so this won't be
+tested by automated tooling. Performing review on untested code might be
+a waste of time.
 
-> > Is there anything we can do to move this forward?
->=20
-> Yes, get involved with the community and help us, don't just expect that =
-we
-> do everything for you gratis. Especially helping Brian with mwifiex
-> review/testing helps us (we get a better driver) and also helps you (you =
-learn
-> how the community works and you gain trust in the community).
->=20
+Please kindly resend and include all necessary To/Cc entries.
+</form letter>
 
-Yes, we will continue to help to maintain mwifiex, also we will like to inv=
-olve and learn how
-the community works.
+> ---
+>  .../net/wireless/qcom,ath12k-ahb.yaml         | 325 ++++++++++++++++++
+>  1 file changed, 325 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/wireless/qcom,ath12k-ahb.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-ahb.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-ahb.yaml
+> new file mode 100644
+> index 000000000000..8cecc50b6341
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-ahb.yaml
+> @@ -0,0 +1,325 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +# Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/wireless/qcom,ath12k-ahb.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Qualcomm Technologies ath12k wireless devices (AHB)
+> +
+> +maintainers:
+> +  - Kalle Valo <kvalo@kernel.org>
+> +  - Jeff Johnson <jjohnson@kernel.org>
+> +
+> +description:
+> +  Qualcomm Technologies IEEE 802.11be AHB devices.
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - qcom,ipq5332-wifi
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  clocks:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+> +  clock-names:
+> +    minItems: 1
+> +    maxItems: 2
+> +
+> +  interrupts:
+> +    minItems: 32
+> +    maxItems: 56
+> +
+> +  interrupt-names:
+> +    minItems: 32
+> +    maxItems: 56
+> +
+> +  memory-region:
+> +    minItems: 1
+> +    description:
+> +      phandle to a node describing reserved memory (System RAM memory)
+> +      used by ath12k firmware (see bindings/reserved-memory/reserved-memory.txt)
+> +
+> +  qcom,bdf-addr:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description:
+> +      System RAM memory address reserved for board data.
+> +
+> +  qcom,board_id:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description:
+> +      Board id value, it identifies the variant of ath12k WiFi device.
 
-> An excellent example is Realtek. Few years back Realtek was not involved
-> with upstream development at all. But now Ping is doing an awesome job
-> with maintaining ALL Realtek drivers, including the old drivers, and I ev=
-en
-> trust him so much that I pull directly from this tree. This is what NXP s=
-hould
-> aim for.
->=20
-> --
-> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fpatch=
-w
-> ork.kernel.org%2Fproject%2Flinux-wireless%2Flist%2F&data=3D05%7C02%7Cyu-
-> hao.lin%40nxp.com%7C8d360234b61d4e2c13e108dcbd0da0a4%7C686ea1d3
-> bc2b4c6fa92cd99c5c301635%7C0%7C0%7C638593113436367796%7CUnknow
-> n%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1ha
-> WwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=3D4ly%2Bien1%2FscxRSdEdN0C
-> hvRMH%2Bh8kbYfEKbjxWyqodw%3D&reserved=3D0
->=20
-> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fwirel=
-es
-> s.wiki.kernel.org%2Fen%2Fdevelopers%2Fdocumentation%2Fsubmittingpatch
-> es&data=3D05%7C02%7Cyu-hao.lin%40nxp.com%7C8d360234b61d4e2c13e108
-> dcbd0da0a4%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C638593
-> 113436374405%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJ
-> QIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=3Dva
-> i2UN%2BKu2I5wKfmUoL8LEk7qBXmIuIK0eB4rtwoRDs%3D&reserved=3D0
+Please do not upstream whatever you have in your vendor tree... You even
+copied its style! There is no such property in upstream.
 
-Thanks for the information.
+NAK, you are duplicating compatibles.
 
-Thanks,
-David
+
+
+> +
+> +  qcom,rproc:
+> +    $ref: /schemas/types.yaml#/definitions/phandle
+> +    description:
+> +      DT entry of a WCSS node. WCSS node is the child node of q6 remoteproc driver.
+> +      (see bindings/remoteproc/qcom,multipd-pil.yaml)
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - memory-region
+> +  - qcom,board_id
+> +  - qcom,rproc
+> +
+> +additionalProperties: false
+> +
+> +allOf:
+> +  - $ref: ieee80211.yaml#
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - qcom,ipq5332-wifi
+
+Why? You have only one variant, why this if?
+> +    then:
+> +      properties:
+> +        clocks:
+> +          items:
+> +            - description: gcc_xo_clk used for copy engine
+> +            - description: gcc_im_sleep_clk used for q6.
+> +
+> +        clock-names:
+> +          items:
+> +            - const: gcc_xo_clk
+> +            - const: gcc_im_sleep_clk
+> +
+> +        interrupts:
+> +          items:
+> +            - description: misc-pulse1 interrupt events
+> +            - description: misc-latch interrupt events
+> +            - description: sw exception interrupt events
+> +            - description: interrupt event for ring CE0
+> +            - description: interrupt event for ring CE1
+> +            - description: interrupt event for ring CE2
+> +            - description: interrupt event for ring CE3
+> +            - description: interrupt event for ring CE4
+> +            - description: interrupt event for ring CE5
+> +            - description: interrupt event for ring CE6
+> +            - description: interrupt event for ring CE7
+> +            - description: interrupt event for ring CE8
+> +            - description: interrupt event for ring CE9
+> +            - description: interrupt event for ring CE10
+> +            - description: interrupt event for ring CE11
+> +            - description: interrupt event for ring host2wbm-desc-feed
+> +            - description: interrupt event for ring host2reo-re-injection
+> +            - description: interrupt event for ring host2reo-command
+> +            - description: interrupt event for ring host2rxdma-monitor-ring1
+> +            - description: interrupt event for ring reo2ost-exception
+> +            - description: interrupt event for ring wbm2host-rx-release
+> +            - description: interrupt event for ring reo2host-status
+> +            - description: interrupt event for ring reo2host-destination-ring4
+> +            - description: interrupt event for ring reo2host-destination-ring3
+> +            - description: interrupt event for ring reo2host-destination-ring2
+> +            - description: interrupt event for ring reo2host-destination-ring1
+> +            - description: interrupt event for ring rxdma2host-monitor-destination-mac3
+> +            - description: interrupt event for ring rxdma2host-monitor-destination-mac2
+> +            - description: interrupt event for ring rxdma2host-monitor-destination-mac1
+> +            - description: interrupt event for ring host2rxdma-host-buf-ring-mac3
+> +            - description: interrupt event for ring host2rxdma-host-buf-ring-mac2
+> +            - description: interrupt event for ring host2rxdma-host-buf-ring-mac1
+> +            - description: interrupt event for ring host2tcl-input-ring4
+> +            - description: interrupt event for ring host2tcl-input-ring3
+> +            - description: interrupt event for ring host2tcl-input-ring2
+> +            - description: interrupt event for ring host2tcl-input-ring1
+> +            - description: interrupt event for ring wbm2host-tx-completions-ring4
+> +            - description: interrupt event for ring wbm2host-tx-completions-ring3
+> +            - description: interrupt event for ring wbm2host-tx-completions-ring2
+> +            - description: interrupt event for ring wbm2host-tx-completions-ring1
+> +            - description: interrupt event for ring host2tx-monitor-ring1
+> +            - description: interrupt event for ring txmon2host-monitor-destination-mac3
+> +            - description: interrupt event for ring txmon2host-monitor-destination-mac2
+> +            - description: interrupt event for ring txmon2host-monitor-destination-mac1
+> +            - description: interrupt event for umac_reset
+> +        interrupt-names:
+> +          items:
+> +            - const: misc-pulse1
+> +            - const: misc-latch
+> +            - const: sw-exception
+> +            - const: ce0
+> +            - const: ce1
+> +            - const: ce2
+> +            - const: ce3
+> +            - const: ce4
+> +            - const: ce5
+> +            - const: ce6
+> +            - const: ce7
+> +            - const: ce8
+> +            - const: ce9
+> +            - const: ce10
+> +            - const: ce11
+> +            - const: host2wbm-desc-feed
+> +            - const: host2reo-re-injection
+> +            - const: host2reo-command
+> +            - const: host2rxdma-monitor-ring1
+> +            - const: reo2ost-exception
+> +            - const: wbm2host-rx-release
+> +            - const: reo2host-status
+> +            - const: reo2host-destination-ring4
+> +            - const: reo2host-destination-ring3
+> +            - const: reo2host-destination-ring2
+> +            - const: reo2host-destination-ring1
+> +            - const: rxdma2host-monitor-destination-mac3
+> +            - const: rxdma2host-monitor-destination-mac2
+> +            - const: rxdma2host-monitor-destination-mac1
+> +            - const: host2rxdma-host-buf-ring-mac3
+> +            - const: host2rxdma-host-buf-ring-mac2
+> +            - const: host2rxdma-host-buf-ring-mac1
+> +            - const: host2tcl-input-ring4
+> +            - const: host2tcl-input-ring3
+> +            - const: host2tcl-input-ring2
+> +            - const: host2tcl-input-ring1
+> +            - const: wbm2host-tx-completions-ring4
+> +            - const: wbm2host-tx-completions-ring3
+> +            - const: wbm2host-tx-completions-ring2
+> +            - const: wbm2host-tx-completions-ring1
+> +            - const: host2tx-monitor-ring1
+> +            - const: txmon2host-monitor-destination-mac3
+> +            - const: txmon2host-monitor-destination-mac2
+> +            - const: txmon2host-monitor-destination-mac1
+> +            - const: umac_reset
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - qcom,ipq5332-wifi
+> +    then:
+> +      required:
+> +        - clocks
+> +        - clock-names
+> +        - interrupts
+> +        - interrupt-names
+> +        - qcom,bdf-addr
+> +
+> +examples:
+> +  - |
+> +
+> +    #include <dt-bindings/interrupt-controller/arm-gic.h>
+> +    #include <dt-bindings/clock/qcom,ipq5332-gcc.h>
+> +
+> +    reserved-memory {
+> +        #address-cells = <2>;
+> +        #size-cells = <2>;
+> +
+> +        q6_region: wcnss@4a900000 {
+> +            no-map;
+> +            reg = <0x0 0x4a900000 0x0 0x02300000>;
+> +        };
+> +
+> +        m3_dump: m3_dump@4cc00000 {
+> +            no-map;
+> +            reg = <0x0 0x4CC00000 0x0 0x100000>;
+> +        };
+> +    };
+
+Drop
+
+> +
+> +    wifi0: wifi@c0000000 {
+> +        compatible = "qcom,ipq5332-wifi";
+> +        reg = <0xc000000 0x1000000>;
+> +        clocks = <&gcc GCC_XO_CLK>,
+> +                 <&gcc GCC_IM_SLEEP_CLK>;
+> +        clock-names = "gcc_xo_clk",
+> +                      "gcc_im_sleep_clk";
+> +        interrupts = <GIC_SPI 559 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 560 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 561 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 422 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 423 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 424 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 425 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 426 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 427 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 428 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 429 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 430 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 431 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 432 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 433 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 491 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 495 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 493 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 544 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 457 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 466 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 497 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 454 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 453 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 452 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 451 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 488 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 488 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 484 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 554 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 554 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 549 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 507 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 500 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 499 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 498 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 450 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 449 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 448 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 447 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 543 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 486 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 486 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 482 IRQ_TYPE_EDGE_RISING>,
+> +                     <GIC_SPI 419 IRQ_TYPE_EDGE_RISING>;
+> +        interrupt-names = "misc-pulse1",
+> +                          "misc-latch",
+> +                          "sw-exception",
+> +                          "ce0",
+> +                          "ce1",
+> +                          "ce2",
+> +                          "ce3",
+> +                          "ce4",
+> +                          "ce5",
+> +                          "ce6",
+> +                          "ce7",
+> +                          "ce8",
+> +                          "ce9",
+> +                          "ce10",
+> +                          "ce11",
+> +                          "host2wbm-desc-feed",
+> +                          "host2reo-re-injection",
+> +                          "host2reo-command",
+> +                          "host2rxdma-monitor-ring1",
+> +                          "reo2ost-exception",
+> +                          "wbm2host-rx-release",
+> +                          "reo2host-status",
+> +                          "reo2host-destination-ring4",
+> +                          "reo2host-destination-ring3",
+> +                          "reo2host-destination-ring2",
+> +                          "reo2host-destination-ring1",
+> +                          "rxdma2host-monitor-destination-mac3",
+> +                          "rxdma2host-monitor-destination-mac2",
+> +                          "rxdma2host-monitor-destination-mac1",
+> +                          "host2rxdma-host-buf-ring-mac3",
+> +                          "host2rxdma-host-buf-ring-mac2",
+> +                          "host2rxdma-host-buf-ring-mac1",
+> +                          "host2tcl-input-ring4",
+> +                          "host2tcl-input-ring3",
+> +                          "host2tcl-input-ring2",
+> +                          "host2tcl-input-ring1",
+> +                          "wbm2host-tx-completions-ring4",
+> +                          "wbm2host-tx-completions-ring3",
+> +                          "wbm2host-tx-completions-ring2",
+> +                          "wbm2host-tx-completions-ring1",
+> +                          "host2tx-monitor-ring1",
+> +                          "txmon2host-monitor-destination-mac3",
+> +                          "txmon2host-monitor-destination-mac2",
+> +                          "txmon2host-monitor-destination-mac1",
+> +                          "umac_reset";
+> +
+> +        memory-region = <&q6_region>;
+> +        qcom,bdf-addr = <0x4B500000>;
+> +        qcom,board_id = <0x12>;
+> +        qcom,rproc = <&q6_wcss_pd1>;
+> +        status = "okay";
+
+Drop
+
+> +    };
+
+Best regards,
+Krzysztof
+
 
