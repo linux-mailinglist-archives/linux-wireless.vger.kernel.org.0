@@ -1,142 +1,130 @@
-Return-Path: <linux-wireless+bounces-11545-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11546-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 141FF9546A4
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 12:20:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A24A954816
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 13:31:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF5472890CD
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 10:20:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03E841F231B2
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 11:31:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056E517BEB5;
-	Fri, 16 Aug 2024 10:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56BD312D1EA;
+	Fri, 16 Aug 2024 11:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="VthUs09B"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BTA1Cice"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2234518FDC2
-	for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2024 10:19:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF2718D649
+	for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2024 11:31:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723803575; cv=none; b=C8RzUlVQM2gBdkCmAofTO1pnYVquAa6gYSDct5ra38crglGAFP942i18sJUJX469eCYSmYJ47MOd7A54r75V34wEx9p7eRHZDSyP+MsTsawOcf65Psxh55VkUvrCSs2C7Otowmevd1wjpzcCfhgAMbrdwl5qmyvB8YXoTao/uJA=
+	t=1723807869; cv=none; b=W5ehI4N0VlzpV6ID2m/us7vanUU5SX+WzUSPlUYqtX558Lh2+kDYhDanybrICpriTRNSBrdPahRYyjUN1vATqmYO5vG5aq189ky57j3nNuLUsan9ULdaC/4IzQruX/RVEXMsNxrYWKftXcYuCPl3m8GgD+J2fHwKw4K/2f2aCiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723803575; c=relaxed/simple;
-	bh=ZIv186wF3ofHqLNddfUNSNaW1NBxcO2OXUunj5qbqhU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=FJ3hda7NPTJK2b3+P2fQfqxzYF4Rn+CVcQ7ZaW8Pni7OSEiCa51XBWki2uBNkESgZoiho6p/A6C2daUGpZN04vJKA+KAOaJ3PHy5Vp18FZx3DSZN4+sxEMcIpiVpAIYjU8p3VrWUhLDzU7n90vDz0SGW1bcMrvdM2Fpws+p8Zps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=VthUs09B; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47GA7ju9025407;
-	Fri, 16 Aug 2024 10:19:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	2bXmBZoME2JecUQT1ZwYTHkL8uy0wUMEYQBHtc8Ayp8=; b=VthUs09Bt70AhD7j
-	ChrrXFuoKVOchM5+oWmaKf3ANwm5YjjZU1Q8Fw+2NoaL/ZBdvK8u4j8eCItgVKH+
-	ZlTGTF3cYAxrABRE7IZFZTlW9nuSZdvr/xJ1BWNrZssUNDTrpZm9S+TXP3v+OQKX
-	7sW2plbyVCfZuoISCJU7jUpxWpCcR1QMTyy51Hjhc3TujlIUZzPrf9+U0wS2DWr/
-	fY/MsWjAt4RsuIMVLuzk7kZaNeAAI5FhVo9JA0FZqW2tIQi4vFYT6L41LOIdXjv4
-	zSfat6LB8u0VyJrNHEY2FzUgateHkGfpGHwmgsS3OVjvC3KQw8NxsZBpnsFovTlt
-	yUT+nQ==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 411s5phh3m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 16 Aug 2024 10:19:29 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47GAJTCi006218
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 16 Aug 2024 10:19:29 GMT
-Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 16 Aug
- 2024 03:19:28 -0700
-Message-ID: <54fac081-7d70-4d31-9f2a-07f5d75d675d@quicinc.com>
-Date: Fri, 16 Aug 2024 18:19:26 +0800
+	s=arc-20240116; t=1723807869; c=relaxed/simple;
+	bh=1bktqQayWYWtMAKqssvWuw4y7zQFT4lfZb54Csz+S70=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=cfxFTORoPvLMzzFDIvPAC6zJgc8m4VqVB/if+yZHuUJ1102XW7Kz5HNkXsVIS3G0MyddeasQtWJR2sjHpZ1/08a+mynPDbJNm6HZWW+o5gi7ZwPeXZ9d+03DcbFGX/0hYuKvDGaVyOHIvhyD7qJi9C96vn3KgbdusOMPjEgOC3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BTA1Cice; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1723807866;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1bktqQayWYWtMAKqssvWuw4y7zQFT4lfZb54Csz+S70=;
+	b=BTA1CicesdoeBZfvBi/GX3WIjMnlu+PPMbNr2Jh5hoPfxBS7A6n68dxdlQ4lpM1kPUzOWZ
+	rlt8P3axtssCw9b+umnHbttUsSBAaCHo+Gq8KimrWe75Egz+wxhgnCYIvd8o8blTYOacno
+	ORE7uD2OToZI7dfGNAzgG8P5K3tYwnU=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-625-eVDnxqY7On6N_mfkUi0hEg-1; Fri, 16 Aug 2024 07:31:04 -0400
+X-MC-Unique: eVDnxqY7On6N_mfkUi0hEg-1
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-36848f30d39so1023496f8f.3
+        for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2024 04:31:04 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723807863; x=1724412663;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1bktqQayWYWtMAKqssvWuw4y7zQFT4lfZb54Csz+S70=;
+        b=a0r4N6OUQCQdJeRcxN4FRBwGeWU9oAC2dv658SqYbfmj214e9VWngNbQYiRYP9F5Jk
+         bKkgDWLL3s8Jikxi34gteqdvd4xLOt+PzIJEKuTkre5Z2j0R0nsfLB1aZwT8XkSyfO5U
+         GbMGiaV97LvG6NGb2mtidtAu7lww+Uo6lTmm1ZjMIGOTmNFEv3lq02sVgivUAiS1lI27
+         XCxAGn7eEIuheBN3oRQ8Icgb5oRqhfFfmK/oVA+jzufxNZ6T9hLtLBMvt/bk1yHQPaDc
+         ZBPpaZK3no0prAMkA86zBjHNqGJxNCLTeGl9O+Xf88hbDEGV48vzTiS0a/yi/6wV2shR
+         ohoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWjWia+NXc3UHso/UL4hrWRdk695pQB0XSo+7VE54qi9XPjvUugDUYRSvA6zfXRUuiDjW43DUEn+ogqrNsKpTH5dyi6m/RxHIYSdfjazQc=
+X-Gm-Message-State: AOJu0Yx7I1Z5LXlHFYtAabhV1xakU4C7zcUHkYFHqjsdMPlGW5WaL9uV
+	3TOFMD1whfHC1irrfOYMFjcsWL+xaHI7q+Ru0bKGvlVsJO+Q9czndgPCjtNn9OdIoUKDfi46gp+
+	3tl745rVxq/U/mSiirvqd6VX7ZEEeLM3O0XrdRexDXnEoABRKIVgQQIIkUcHoxjhg
+X-Received: by 2002:a5d:5110:0:b0:34d:ae98:4e7 with SMTP id ffacd0b85a97d-3719469531fmr1542917f8f.41.1723807863421;
+        Fri, 16 Aug 2024 04:31:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGSxwNIUjnAJ8rcUcO6moPhGgsuq5H2/SGprZmmZkrEska1ZBtlsqGNAmMt0ivJktdwkOTeew==
+X-Received: by 2002:a5d:5110:0:b0:34d:ae98:4e7 with SMTP id ffacd0b85a97d-3719469531fmr1542903f8f.41.1723807862844;
+        Fri, 16 Aug 2024 04:31:02 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429ded7dae0sm74202835e9.44.2024.08.16.04.31.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Aug 2024 04:31:02 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id DD75114AE084; Fri, 16 Aug 2024 13:31:01 +0200 (CEST)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>, Johannes Berg
+ <johannes@sipsolutions.net>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Michael Braun <michael-dev@fami-braun.de>
+Cc: Harsh Kumar Bijlani <hbijlani@qti.qualcomm.com>, Kalyan Tallapragada
+ <ktallapr@qti.qualcomm.com>, Jyothi Chukkapalli
+ <jchukkap@qti.qualcomm.com>, Anirban Sirkhell <anirban@qti.qualcomm.com>,
+ Johannes Berg <johannes.berg@intel.com>, linux-wireless@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ath12k@lists.infradead.org, Jeff Johnson <quic_jjohnson@quicinc.com>
+Subject: Re: [PATCH] wifi: mac80211: Fix ieee80211_convert_to_unicast() logic
+In-Reply-To: <20240815-ieee80211_convert_to_unicast-v1-1-648f0c195474@quicinc.com>
+References: <20240815-ieee80211_convert_to_unicast-v1-1-648f0c195474@quicinc.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date: Fri, 16 Aug 2024 13:31:01 +0200
+Message-ID: <877ccgd7re.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: ath10k "failed to install key for vdev 0 peer <mac>: -110"
-To: James Prestwood <prestwoj@gmail.com>,
-        "open list:MEDIATEK MT76 WIRELESS
- LAN DRIVER" <linux-wireless@vger.kernel.org>,
-        <ath10k@lists.infradead.org>
-References: <e780560a-86eb-4189-ab5d-3bed3ee5825e@gmail.com>
-Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <e780560a-86eb-4189-ab5d-3bed3ee5825e@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: Ra5GBaB39CWGM-uwwpqi-qOzvBkqN_8F
-X-Proofpoint-ORIG-GUID: Ra5GBaB39CWGM-uwwpqi-qOzvBkqN_8F
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-16_02,2024-08-15_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxscore=0
- mlxlogscore=999 suspectscore=0 lowpriorityscore=0 clxscore=1011
- bulkscore=0 phishscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2408160075
+Content-Type: text/plain
 
+Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
+> The current logic in ieee80211_convert_to_unicast() uses skb_clone()
+> to obtain an skb for each individual destination of a multicast
+> frame, and then updates the destination address in the cloned skb's
+> data buffer before placing that skb on the provided queue.
+>
+> This logic is flawed since skb_clone() shares the same data buffer
+> with the original and the cloned skb, and hence each time the
+> destination address is updated, it overwrites the previous destination
+> address in this shared buffer. As a result, due to the special handing
+> of the first valid destination, all of the skbs will eventually be
+> sent to that first destination.
 
-On 7/12/2024 9:11 PM, James Prestwood wrote:
-> Hi,
-> 
-> I've seen this error mentioned on random forum posts, but its always associated with a kernel crash/warning or some very obvious negative behavior. I've noticed this occasionally and at one location very frequently during FT roaming, specifically just after CMD_ASSOCIATE is issued. For our company run networks I'm not seeing any negative behavior apart from a 3 second delay in sending the re-association frame since the kernel waits for this timeout. But we have some networks our clients run on that we do not own (different vendor), and we are seeing association timeouts after this error occurs and in some cases the AP is sending a deauthentication with reason code 8 instead of replying with a reassociation reply and an error status, which is quite odd.
-> 
-> We are chasing down this with the vendor of these APs as well, but the behavior always happens after we see this key removal failure/timeout on the client side. So it would appear there is potentially a problem on both the client and AP. My guess is _something_ about the re-association frame changes when this error is encountered, but I cannot see how that would be the case. We are working to get PCAPs now, but its through a 3rd party, so that timing is out of my control.
-> 
-> From the kernel code this error would appear innocuous, the old key is failing to be removed but it gets immediately replaced by the new key. And we don't see that addition failing. Am I understanding that logic correctly? I.e. this logic:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/net/mac80211/key.c#n503
-> 
-> Below are a few kernel logs of the issue happening, some with the deauth being sent by the AP, some with just timeouts:
-> 
-> --- No deauth frame sent, just association timeouts after the error ---
-> 
-> Jul 11 00:05:30 kernel: wlan0: disconnect from AP <previous BSS> for new assoc to <new BSS>
-> Jul 11 00:05:33 kernel: ath10k_pci 0000:02:00.0: failed to install key for vdev 0 peer <previous BSS>: -110
-> Jul 11 00:05:33 kernel: wlan0: failed to remove key (0, <previous BSS>) from hardware (-110)
-> Jul 11 00:05:33 kernel: wlan0: associate with <new BSS> (try 1/3)
-> Jul 11 00:05:33 kernel: wlan0: associate with <new BSS> (try 2/3)
-> Jul 11 00:05:33 kernel: wlan0: associate with <new BSS> (try 3/3)
-> Jul 11 00:05:33 kernel: wlan0: association with <new BSS> timed out
-> Jul 11 00:05:36 kernel: wlan0: authenticate with <new BSS>
-> Jul 11 00:05:36 kernel: wlan0: send auth to <new BSS>a (try 1/3)
-> Jul 11 00:05:36 kernel: wlan0: authenticated
-> Jul 11 00:05:36 kernel: wlan0: associate with <new BSS> (try 1/3)
-> Jul 11 00:05:36 kernel: wlan0: RX AssocResp from <new BSS> (capab=0x1111 status=0 aid=16)
-> Jul 11 00:05:36 kernel: wlan0: associated
-> 
-> --- Deauth frame sent amidst the association timeouts ---
-> 
-> Jul 11 00:43:18 kernel: wlan0: disconnect from AP <previous BSS> for new assoc to <new BSS>
-> Jul 11 00:43:21 kernel: ath10k_pci 0000:02:00.0: failed to install key for vdev 0 peer <previous BSS>: -110
-> Jul 11 00:43:21 kernel: wlan0: failed to remove key (0, <previous BSS>) from hardware (-110)
-> Jul 11 00:43:21 kernel: wlan0: associate with <new BSS> (try 1/3)
-> Jul 11 00:43:21 kernel: wlan0: deauthenticated from <new BSS> while associating (Reason: 8=DISASSOC_STA_HAS_LEFT)
-> Jul 11 00:43:24 kernel: wlan0: authenticate with <new BSS>
-> Jul 11 00:43:24 kernel: wlan0: send auth to <new BSS> (try 1/3)
-> Jul 11 00:43:24 kernel: wlan0: authenticated
-> Jul 11 00:43:24 kernel: wlan0: associate with <new BSS> (try 1/3)
-> Jul 11 00:43:24 kernel: wlan0: RX AssocResp from <new BSS> (capab=0x1111 status=0 aid=101)
-> Jul 11 00:43:24 kernel: wlan0: associated
-> 
-Hi James, this is QCA6174, right? could you also share firmware version?
+Did you actually observe this happen in practice? ieee80211_change_da()
+does an skb_ensure_writable() check on the Ethernet header before
+writing it, so AFAICT it does not, in fact, overwrite the data of the
+original frame.
 
-> 
+> Fix this issue by using skb_copy() instead of skb_clone(). This will
+> result in a duplicate data buffer being allocated for each
+> destination, and hence each skb will be transmitted to the proper
+> destination.
+
+Cf the above, it seems this change will just lead to more needless
+copying.
+
+-Toke
+
 
