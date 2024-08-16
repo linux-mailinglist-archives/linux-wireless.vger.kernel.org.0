@@ -1,58 +1,58 @@
-Return-Path: <linux-wireless+bounces-11532-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11535-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F101595462C
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 11:51:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F46095462F
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 11:51:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6E19285DB6
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 09:51:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED1731F22213
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 09:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E5FF16F0D2;
-	Fri, 16 Aug 2024 09:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFC161714D7;
+	Fri, 16 Aug 2024 09:50:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="MhQxnBrI"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="cmy24cYx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203A815B102
-	for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2024 09:50:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E2C16F26F
+	for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2024 09:50:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723801823; cv=none; b=ig6oYlVgCeoUTqjk4TSmvZGUrCP4NiksA1b5KMjt1hM0TLsWcA1udElVtk0+JU4VVStwwGBgVWsFfaLW4uuuimkG1ifO5O43AGPMahqnfz0U2eM5s8bO9qIlYdO4qgWmOq2C3TbZWtVZPZG0HKElelVbMH7k86CljoYJgbigeYE=
+	t=1723801825; cv=none; b=APzceOUuIAgL5t3Z7iu/ytpZVrAG3HZNTGIBBdDgal0DEscgBWk3sX9Mkt/uecqCqdsufdxhmYpBSuKem2g81KkwoAY+yovD65mWyNk7Iio3iTqmC15e1zEkIXFSbFQYCxkMq8W4f6JhvDZxQ56dddmtbCPp9wYUCa72F+gl4CA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723801823; c=relaxed/simple;
-	bh=F+NdsPwnM9dmzi+rqmdG6mzvGr9a/8fAhmk23RXdvgg=;
+	s=arc-20240116; t=1723801825; c=relaxed/simple;
+	bh=KJihDMEuPjGVxFZ0FAEr3z2T4Gd8eBYlzrom6JBOrl0=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c3j13FdRtbKtNav/jXp0tiSz/AaQouzGKik64JZdhsYGF700+KEC+zNY0sQAKIr5+/LbQjnjRS8liIUrmiajJOQTcJM3ceSAfg9tLOn0XlvtgNA2LCTFMs0tl3uR3o+jV+PUdF6SCElNIpuhn2aiG4+rGfMpDGWBPdsSxS4b6Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=MhQxnBrI; arc=none smtp.client-ip=210.61.82.184
+	 MIME-Version:Content-Type; b=ZyE1RcCjIn5iN8GqUnyPqHcRZUNe86GfybG6rC+0HxnIudbTz2tw/mtkFlgLXukLKnU9WUXxvnfzzfWXyh6bClN90IGddAtUV8zbksW/m7wmtuGF8cQ3dV9U7/PEk68nU8zEDwsnvcQqV3Y7wxl1/1MWg7qZCAiH2vqFGiUAbfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=cmy24cYx; arc=none smtp.client-ip=60.244.123.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: f00b99285bb411ef8b96093e013ec31c-20240816
+X-UUID: ef59c13a5bb411ef8593d301e5c8a9c0-20240816
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=DHtJQXl9I4VE1DNLkw9ZHfypQqZaoP+abQZ/1/h9Hwg=;
-	b=MhQxnBrIH5c+hO5pQoniUloaJD0vwy2hoiAvhJTwPjY/DicV5akHtGtIytDnWBdRvRdH42/4b743xhDxjJYLsn+oNqu1fxOILM9d2iUaPEnE7lRZ+eVUrS5b+ujdBPPxEh1vlQJQz8jZgsVYongFpxqkUdMne5TA21DhBMTnVaw=;
+	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=Jf3A24yvH8Wm1I7P4jjPt3Wwa2CzEZoNMFRqzd1/XCc=;
+	b=cmy24cYxsXnCbVJ257z8jQpABqNJh/Eyf+cxo6FQL3R2aTSqJ6OkJO56aoAflprq62aZL6B6hTLrrA/uhk/uJBnS2/oIfDlWEa4OaHVWyOwmsxOUCH5eGiNBRgA41jbdJ+qmVtwGGW9PjjRPibMGaRZvtXzxJHhKYvJvdkW85nI=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.41,REQID:376e4f5a-d8ea-485f-b09c-23f7a66a7eb2,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:6dc6a47,CLOUDID:0bad403f-6019-4002-9080-12f7f4711092,B
+X-CID-O-INFO: VERSION:1.1.41,REQID:7070f8eb-4ad3-4d9f-953d-d8f1cf329ca6,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:6dc6a47,CLOUDID:55c6b6c1-acff-4a0f-9582-14bcdf4ed7e0,B
 	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
 	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
 	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: f00b99285bb411ef8b96093e013ec31c-20240816
-Received: from mtkmbs14n2.mediatek.inc [(172.21.101.76)] by mailgw02.mediatek.com
+X-UUID: ef59c13a5bb411ef8593d301e5c8a9c0-20240816
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw01.mediatek.com
 	(envelope-from <shayne.chen@mediatek.com>)
 	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 991457903; Fri, 16 Aug 2024 17:50:15 +0800
+	with ESMTP id 1442285021; Fri, 16 Aug 2024 17:50:13 +0800
 Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs11n1.mediatek.inc (172.21.101.185) with Microsoft SMTP Server
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
  15.2.1118.26; Fri, 16 Aug 2024 17:50:15 +0800
 Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
@@ -65,9 +65,9 @@ CC: linux-wireless <linux-wireless@vger.kernel.org>, Lorenzo Bianconi
 	<evelyn.tsai@mediatek.com>, linux-mediatek
 	<linux-mediatek@lists.infradead.org>, Howard Hsu
 	<howard-yh.hsu@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH 08/12] wifi: mt76: mt7996: fix EHT beamforming capability check
-Date: Fri, 16 Aug 2024 17:46:31 +0800
-Message-ID: <20240816094635.2391-7-shayne.chen@mediatek.com>
+Subject: [PATCH 09/12] wifi: mt76: mt7996: set correct value in beamforming mcu command for mt7992
+Date: Fri, 16 Aug 2024 17:46:32 +0800
+Message-ID: <20240816094635.2391-8-shayne.chen@mediatek.com>
 X-Mailer: git-send-email 2.18.0
 In-Reply-To: <20240816094635.2391-1-shayne.chen@mediatek.com>
 References: <20240816094635.2391-1-shayne.chen@mediatek.com>
@@ -82,33 +82,31 @@ X-MTK: N
 
 From: Howard Hsu <howard-yh.hsu@mediatek.com>
 
-If a VIF acts as a beamformer, it should check peer's beamformee
-capability, and vice versa.
+Configure correct bf number and bitmap in beamforming mcu command for
+mt7992 chipsets, which only support dual-band.
 
-Fixes: ba01944adee9 ("wifi: mt76: mt7996: add EHT beamforming support")
 Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
 Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index e68724e54013..daef014954d0 100644
+index daef014954d0..238b1f78ff7c 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -1429,10 +1429,10 @@ mt7996_is_ebf_supported(struct mt7996_phy *phy, struct ieee80211_vif *vif,
+@@ -3923,8 +3923,9 @@ int mt7996_mcu_set_txbf(struct mt7996_dev *dev, u8 action)
  
- 		if (bfee)
- 			return vif->bss_conf.eht_su_beamformee &&
--			       EHT_PHY(CAP0_SU_BEAMFORMEE, pe->phy_cap_info[0]);
-+			       EHT_PHY(CAP0_SU_BEAMFORMER, pe->phy_cap_info[0]);
- 		else
- 			return vif->bss_conf.eht_su_beamformer &&
--			       EHT_PHY(CAP0_SU_BEAMFORMER, pe->phy_cap_info[0]);
-+			       EHT_PHY(CAP0_SU_BEAMFORMEE, pe->phy_cap_info[0]);
+ 		tlv = mt7996_mcu_add_uni_tlv(skb, action, sizeof(*req_mod_en));
+ 		req_mod_en = (struct bf_mod_en_ctrl *)tlv;
+-		req_mod_en->bf_num = 3;
+-		req_mod_en->bf_bitmap = GENMASK(2, 0);
++		req_mod_en->bf_num = mt7996_band_valid(dev, MT_BAND2) ? 3 : 2;
++		req_mod_en->bf_bitmap = mt7996_band_valid(dev, MT_BAND2) ?
++					GENMASK(2, 0) : GENMASK(1, 0);
+ 		break;
  	}
- 
- 	if (sta->deflink.he_cap.has_he) {
+ 	default:
 -- 
 2.39.2
 
