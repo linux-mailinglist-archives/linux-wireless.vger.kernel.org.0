@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-11511-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11512-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEBE0954146
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 07:44:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F88C954147
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 07:44:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B086B23A21
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 05:44:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84A471C210C3
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 05:44:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8195077115;
-	Fri, 16 Aug 2024 05:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5487EF10;
+	Fri, 16 Aug 2024 05:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lF1yzI1b"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lDc1DmHp"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B15F770F1
-	for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2024 05:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391EF770F1
+	for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2024 05:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723787054; cv=none; b=GgE/GQTddF5VXo8ru1Eh9fRuke0JLauzlX7DSZ9ZBezcHkiZ8ru9ClLsf5rQLTTNyh56sBSPlpgP0xwPZYvsBRyq/4WmnNFh6pf1K3o1VK15nQznZXnZMnmaY58ccgAE16Z1AkjCTxtzc4S8g0mKxMtV0Tq1XoB+eDMU/CO5tR0=
+	t=1723787061; cv=none; b=dMW/B4FHA2wWFqyvdFRzVwRbFQmfIy66MKYbXO2fHZqa79c/xKQNqwLkt0MykBpqYa5+npGwUO5mSl2v23uSzfqF3oY3KZbhfpKOIuGFKjMJSZcnZ/Ge1S9dMdGaxQ23d2DaGeLjs8wEcGAbXcDqvGmzGlnpsBryWcAV9H9qJGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723787054; c=relaxed/simple;
-	bh=hsph4kAXV+4AbfHS4AFCIRAyx77EJYF0EIGfOFfk7Sc=;
+	s=arc-20240116; t=1723787061; c=relaxed/simple;
+	bh=qi9OoUi7XRpT1E7MS+2WAzcwoACaKXuN/fUb5erHvbk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rlP3H5+mlZLj8e67KxoX1R4DKSt1H7UXHZQRA+kKu3N1Hq9ofIiOFKKrtJjxpWsZt0dNbNPa37lus9NmY9QQPzGkMl2lani5EBV/C0ww6QW8y6CO+6OLPrKI6pqzVakXkQxDZ0UqjALiwLiiZb3wiT1VtRX7p5W8l2PMuNNkEDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lF1yzI1b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A61DC32782;
-	Fri, 16 Aug 2024 05:44:12 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=BFomfEtsgXqyvWAjEDsMLn+Ke/pw9XCt53TrAG+8To4TxBjHKMZShddYcbOBy9/CPHwy0kshe6XNm8u+4vS1PtSDw6/TbrJGc1B+nprvrW6zuZqbOpEwtOF7t+r408gvmmz3mxGCnn9kQY/YVF44ZeyHe6G5sa3TG+/D/QNwxGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lDc1DmHp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39CE4C4AF12;
+	Fri, 16 Aug 2024 05:44:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723787053;
-	bh=hsph4kAXV+4AbfHS4AFCIRAyx77EJYF0EIGfOFfk7Sc=;
+	s=k20201202; t=1723787060;
+	bh=qi9OoUi7XRpT1E7MS+2WAzcwoACaKXuN/fUb5erHvbk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lF1yzI1b8mHMC0ox1x6txGkelZ8mmwxHOHu5Txw5iG+uO+0AE0Odd6r6/05B8T7MB
-	 KH1AP+JHEWo65SDeL5EZ3ei6cRJGyIHQcVCdAGyAzb/W1MrIfqbXwENnXPPrQnxbdJ
-	 esegQ9fQb5W+vjSbucTUdH9utK6qIPooHa2LZQp9q5aP4XCR+V3fJUzEgMJlhnMXY3
-	 iQF9unYqgQvv+YP8DFG+uRmbp334+vUwWfqCKRL8uuPMY9zP1bcihfYCVurm/bjocL
-	 /y+3j26Z4sxUOAgdgxhQ56z/yu+Kd3aC6ynrD87gwnQ08VwF2tO7i8hb2UQHzbLrym
-	 VGZzHFujU5dBA==
-Message-ID: <f8cd9c3d-47e1-4709-9334-78e4790acef0@kernel.org>
-Date: Fri, 16 Aug 2024 07:44:09 +0200
+	b=lDc1DmHpzjfRBKwG4U6PMhDdcuBXTgSv4QgbP/xF45GmnJSPd48tXzxP0iQG8bbok
+	 Lv/+gVSAeFWLlhz8JCHNqfY2NmyOkYxJf5yFNA8s1EHh/PpxjbPXVsmJUMe3wCtC5e
+	 GJka6ujN3uH0fClWKNSokwONR4aLaJPJgV6NfNfEMSSf/mk6JKZeUNZ3s/41w9rM3F
+	 VsA3VeLocewicpuugJbGN+VVQRXKoWoG7kYu6SDkon/j1wMfFjTbXOnFgSqadOzpVp
+	 2XIbabYL22lG7NzFCPd7NAqB4Y4U8VcvQsn5KHuBCIDdTtND9aYKm0jAZeG5iaZJWO
+	 3J37p0RTXUdVQ==
+Message-ID: <6c56b162-11c8-4798-918b-95a7a8d99a46@kernel.org>
+Date: Fri, 16 Aug 2024 07:44:18 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 01/18] dt-bindings: net: wireless: describe the ath12k
- AHB module
+Subject: Re: [RFC PATCH 02/18] arm64: dts: qcom: add wifi node for IPQ5332
+ based RDP441
 To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>, ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org
 References: <20240814094323.3927603-1-quic_rajkbhag@quicinc.com>
- <20240814094323.3927603-2-quic_rajkbhag@quicinc.com>
+ <20240814094323.3927603-3-quic_rajkbhag@quicinc.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -101,17 +101,51 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240814094323.3927603-2-quic_rajkbhag@quicinc.com>
+In-Reply-To: <20240814094323.3927603-3-quic_rajkbhag@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 14/08/2024 11:43, Raj Kumar Bhagat wrote:
-> +  qcom,bdf-addr:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description:
-> +      System RAM memory address reserved for board data.
+> +
+> +	/*                 Default Profile
+> +	 * +============+==============+=====================+
+> +	 * |            |              |                     |
+> +	 * | Region     | Start Offset |       Size          |
+> +	 * |            |              |                     |
+> +	 * +------------+--------------+---------------------+
+> +	 * |            |              |                     |
+> +	 * |            |              |                     |
+> +	 * |            |              |                     |
+> +	 * | WLAN Q6    |  0x4A900000  |       35MB          |
+> +	 * |            |              |                     |
+> +	 * |            |              |                     |
+> +	 * +------------+--------------+---------------------+
+> +	 * | M3 Dump    |  0x4CC00000  |       1MB           |
+> +	 * +============+==============+=====================+
+> +	 * |                                                 |
+> +	 * |                                                 |
+> +	 * |                                                 |
+> +	 * |            Rest of memory for Linux             |
+> +	 * |                                                 |
+> +	 * |                                                 |
+> +	 * |                                                 |
+> +	 * +=================================================+
+> +	 */
+> +
+> +	reserved-memory {
+> +		#address-cells = <2>;
+> +		#size-cells = <2>;
+> +		ranges;
+> +
+> +		q6_region: wcnss@4a900000 {
+> +			no-map;
+> +			reg = <0x0 0x4a900000 0x0 0x02300000>;
+> +		};
+> +
+> +		m3_dump: m3_dump@4cc00000 {
 
-Also drop. We do not store RAM offsets in DT.
+Follow DTS coding style.
+
 
 Best regards,
 Krzysztof
