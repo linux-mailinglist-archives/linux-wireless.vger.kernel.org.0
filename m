@@ -1,58 +1,58 @@
-Return-Path: <linux-wireless+bounces-11536-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11539-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A786E954631
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 11:51:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 041D1954635
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 11:51:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5067B284C6E
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 09:51:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FCA21F226DE
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 09:51:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36110175D32;
-	Fri, 16 Aug 2024 09:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F4C176251;
+	Fri, 16 Aug 2024 09:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="mMvdUXzA"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="UannrS8m"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30BF01714BB
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E75E171E49
 	for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2024 09:50:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723801827; cv=none; b=BLqD+vIEs+9HVM4pQohuiWkA1h2xka5PrMs4wANzzp9KdLYqaDodbHSGmFBHgwJSB3PWp6AMHudIsMPuZmt982WH4Za8f4N8E3D0zjYeajEXXvu0AXEowL2QeK0DwU8SX+73Fv0fQARnsxvqRkfB/ApLzwtfisgylQoox+oTm0M=
+	t=1723801828; cv=none; b=VhC0M4XN2TPOq7tzB9opl0GYXNvedGd+PjrHiiNnD3AgyhGEBEGcxq5ZsoVWO3trDst0NpSm5zgg5dRCzoSXltIhSzCfktWomc0FkosOOdw5FnxLBoFpgG+elVYbkQ6cXzV9NX0GGtKEYDljcoKGrxvCepy86Z7IC5adxTc0CmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723801827; c=relaxed/simple;
-	bh=lQHwPwby+ftfXmYYR5pfcTxP9lDuPuMKlTcmuwi5JG8=;
+	s=arc-20240116; t=1723801828; c=relaxed/simple;
+	bh=r5Vqb3ec8Sm1BzgDzJEgZoiiZIzhuKJ7PwfjlSuRsew=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KDqisqwLXudi8cTFwH6tHMHVfKLj/UgftIJeR4Zd4edGwYNMpkhMf4tq4BSZc2wt4FhMv0M49SJFR+SgZf2BJ2lQI0FPjTu8ywfRpBo4l5GBrIXu02aC5hsD0HNtEwcEcEOEhI/X/9B/Ri++dORtrDyi4JRl+ePcONg8bxQHeTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=mMvdUXzA; arc=none smtp.client-ip=60.244.123.138
+	 MIME-Version:Content-Type; b=HyxMEGebT/ttu9VBOf2U609CAnwTRPi1cVqpQfEYyjLep7r/Cr4cVYzYyZAsswzl0Mwwn9CYgrIYjLAUD6E2ldfpwkcEBavJW0XBRe9GpQlylwYE5ZUy82MDZanHw9BDQVFQBvTYUQjW9QfKnrHPW7Bsx7bTnuKXp+7k7Ion9V8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=UannrS8m; arc=none smtp.client-ip=60.244.123.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: ef58c5965bb411ef8593d301e5c8a9c0-20240816
+X-UUID: ef7471ec5bb411ef8593d301e5c8a9c0-20240816
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=3ac/CoJAvnZ57l4lpWdjj1Y8Wm4d7QoaRRF8O7x0jEo=;
-	b=mMvdUXzAgWy7imQRkUQ7vNCyQlcCMz0y5+wLVKct4RF04Jwk6HOsUJx/HTs9kOjYu+3as6sQQPP6n/S1i6ULDfiZBbETv60pe2aTHI47FPuFmo07IU/1iMKTkhjLvpq4H7LanXXme74IMlFm73OAZ9InHnjFowjbRFltCv0auec=;
+	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=ptRPaWl1szcKHuHfagd2krGpBPW8GYQu7WsNVr49tGU=;
+	b=UannrS8masHA3SqvD1uYKBBVX9MogQkJtjicthAGnlvOzA3Y4ZzI9Dbh0eDpnaf0nLCBoGafaz7HEn1/NPCKtWTMJRMwSSkKWBGS48K5AiUbIsgbE9SrfW4hqPDz1TWmPQAgdAginGLS81GCdThztMsY0qyn3ucJ4pHdEb4I3IY=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.41,REQID:6c9ca8a2-ba48-4d69-a15b-8183cebb6451,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-5
-X-CID-META: VersionHash:6dc6a47,CLOUDID:56c6b6c1-acff-4a0f-9582-14bcdf4ed7e0,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
-	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
+X-CID-O-INFO: VERSION:1.1.41,REQID:03d75b50-f933-4ee5-a175-af1bd190e68d,IP:0,U
+	RL:0,TC:0,Content:55,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:55
+X-CID-META: VersionHash:6dc6a47,CLOUDID:6360b1fe-77bb-433c-b174-ffb8012693b0,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:801|102,TC:nil,Content:4|8,EDM:-3,IP
+	:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,
+	LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: ef58c5965bb411ef8593d301e5c8a9c0-20240816
-Received: from mtkmbs09n2.mediatek.inc [(172.21.101.94)] by mailgw01.mediatek.com
+X-UUID: ef7471ec5bb411ef8593d301e5c8a9c0-20240816
+Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw01.mediatek.com
 	(envelope-from <shayne.chen@mediatek.com>)
 	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 902171879; Fri, 16 Aug 2024 17:50:13 +0800
+	with ESMTP id 998693602; Fri, 16 Aug 2024 17:50:14 +0800
 Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs10n1.mediatek.inc (172.21.101.34) with Microsoft SMTP Server
+ MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
  15.2.1118.26; Fri, 16 Aug 2024 17:50:15 +0800
 Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
@@ -63,11 +63,11 @@ To: Felix Fietkau <nbd@nbd.name>
 CC: linux-wireless <linux-wireless@vger.kernel.org>, Lorenzo Bianconi
 	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Evelyn Tsai
 	<evelyn.tsai@mediatek.com>, linux-mediatek
-	<linux-mediatek@lists.infradead.org>, Peter Chiu
-	<chui-hao.chiu@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>
-Subject: [PATCH 05/12] wifi: mt76: mt7996: advertize beacon_int_min_gcd
-Date: Fri, 16 Aug 2024 17:46:28 +0800
-Message-ID: <20240816094635.2391-4-shayne.chen@mediatek.com>
+	<linux-mediatek@lists.infradead.org>, Howard Hsu
+	<howard-yh.hsu@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>
+Subject: [PATCH 06/12] wifi: mt76: mt7996: fix HE and EHT beamforming capabilities
+Date: Fri, 16 Aug 2024 17:46:29 +0800
+Message-ID: <20240816094635.2391-5-shayne.chen@mediatek.com>
 X-Mailer: git-send-email 2.18.0
 In-Reply-To: <20240816094635.2391-1-shayne.chen@mediatek.com>
 References: <20240816094635.2391-1-shayne.chen@mediatek.com>
@@ -79,42 +79,160 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-AS-Result: No-10--4.436600-8.000000
-X-TMASE-MatchedRID: hJoPGlKDQFkVAKRaMHqjDj+qcn/TbYs0Xs5nqGvDCfOFAnvBzkQqV/9T
-	oIqmlx19ThbvLLI8RvNI3Y0ZCr7oV+a9R6LXDub0ngIgpj8eDcBpkajQR5gb3savT21DsLD/UEh
-	Wy9W70AHCttcwYNipXxf2ukFm4ENtlNViJYwGR5xLkSe5Uzq3PwzUb5WmzuH2dr83lAQ2WkSqne
-	Bcz+h3ZtKryvPV5ZMDiumysd8Ts3NrUlhyhVbKc6Uwz4WJNe+7dmtRsRmKkASJZPT2ZDPuzPD2Q
-	fzMDLjho65UufHcDvg=
+X-TM-AS-Result: No-10--2.682400-8.000000
+X-TMASE-MatchedRID: ptJ0KTv/UXDPvAv72Y9dJfmF8IFnUmgvMZm0+sEE9mup+RClYacCxuLg
+	gUiYkYyHa/XjyNax2z/bHihwcxI1hDI0UzRdrW2o4RtSDjG+z7CuiRuR9mCaupFghxqVuczoRtt
+	YY7T3bpME1SjWqrnJaAaxDKyiq5EE9X41s3bshlbil2r2x2PwtX0tCKdnhB589yM15V5aWpj6C0
+	ePs7A07fhmFHnZFzVqX/q4nAaH3d9FtN+OtStsdivB5Acdtotx5afv4NZF1Ed1aXxxoCpt4SWqf
+	Vt6gRAMK6qLPEKJ3H8ZZTTAb7IQTdV9NPlsHF6RSZrfNhP3sgUBh9AgBSEFrJm+YJspVvj2xkvr
+	HlT8euJ0YHKn7N1oOA==
 X-TM-AS-User-Approved-Sender: No
 X-TM-AS-User-Blocked-Sender: No
-X-TMASE-Result: 10--4.436600-8.000000
+X-TMASE-Result: 10--2.682400-8.000000
 X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-SNTS-SMTP: 395214C32238876138A90FB0F373515F65F97686783533E8248EBBD7D12D06B62000:8
+X-TM-SNTS-SMTP:
+	F7DE47DD94AE57FBFADD57BFA68EF01070F16F67C46BD5D2956621662FB6C6082000:8
 X-MTK: N
 
-From: Peter Chiu <chui-hao.chiu@mediatek.com>
+From: Howard Hsu <howard-yh.hsu@mediatek.com>
 
-Advertize beacon_int_min_gcd as 100 to allow setting different beacon
-intervals on different interfaces.
+Fix HE and EHT beamforming capabilities for different bands and
+interface types.
 
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Fixes: 348533eb968d ("wifi: mt76: mt7996: add EHT capability init")
+Signed-off-by: Howard Hsu <howard-yh.hsu@mediatek.com>
 Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/init.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../net/wireless/mediatek/mt76/mt7996/init.c  | 65 ++++++++++++-------
+ 1 file changed, 43 insertions(+), 22 deletions(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-index 283df84f1b43..4d6157e49b16 100644
+index 4d6157e49b16..7e7e42b54c2e 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
-@@ -42,6 +42,7 @@ static const struct ieee80211_iface_combination if_comb[] = {
- 				       BIT(NL80211_CHAN_WIDTH_40) |
- 				       BIT(NL80211_CHAN_WIDTH_80) |
- 				       BIT(NL80211_CHAN_WIDTH_160),
-+		.beacon_int_min_gcd = 100,
- 	}
- };
+@@ -1012,8 +1012,6 @@ mt7996_set_stream_he_txbf_caps(struct mt7996_phy *phy,
+ 		return;
  
+ 	elem->phy_cap_info[3] |= IEEE80211_HE_PHY_CAP3_SU_BEAMFORMER;
+-	if (vif == NL80211_IFTYPE_AP)
+-		elem->phy_cap_info[4] |= IEEE80211_HE_PHY_CAP4_MU_BEAMFORMER;
+ 
+ 	c = FIELD_PREP(IEEE80211_HE_PHY_CAP5_BEAMFORMEE_NUM_SND_DIM_UNDER_80MHZ_MASK,
+ 		       sts - 1) |
+@@ -1021,6 +1019,11 @@ mt7996_set_stream_he_txbf_caps(struct mt7996_phy *phy,
+ 		       sts - 1);
+ 	elem->phy_cap_info[5] |= c;
+ 
++	if (vif != NL80211_IFTYPE_AP)
++		return;
++
++	elem->phy_cap_info[4] |= IEEE80211_HE_PHY_CAP4_MU_BEAMFORMER;
++
+ 	c = IEEE80211_HE_PHY_CAP6_TRIG_SU_BEAMFORMING_FB |
+ 	    IEEE80211_HE_PHY_CAP6_TRIG_MU_BEAMFORMING_PARTIAL_BW_FB;
+ 	elem->phy_cap_info[6] |= c;
+@@ -1180,7 +1183,6 @@ mt7996_init_eht_caps(struct mt7996_phy *phy, enum nl80211_band band,
+ 		IEEE80211_EHT_MAC_CAP0_OM_CONTROL;
+ 
+ 	eht_cap_elem->phy_cap_info[0] =
+-		IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ |
+ 		IEEE80211_EHT_PHY_CAP0_NDP_4_EHT_LFT_32_GI |
+ 		IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMER |
+ 		IEEE80211_EHT_PHY_CAP0_SU_BEAMFORMEE;
+@@ -1194,30 +1196,36 @@ mt7996_init_eht_caps(struct mt7996_phy *phy, enum nl80211_band band,
+ 		u8_encode_bits(u8_get_bits(val, GENMASK(2, 1)),
+ 			       IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_80MHZ_MASK) |
+ 		u8_encode_bits(val,
+-			       IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_160MHZ_MASK) |
+-		u8_encode_bits(val,
+-			       IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_320MHZ_MASK);
++			       IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_160MHZ_MASK);
+ 
+ 	eht_cap_elem->phy_cap_info[2] =
+ 		u8_encode_bits(sts - 1, IEEE80211_EHT_PHY_CAP2_SOUNDING_DIM_80MHZ_MASK) |
+-		u8_encode_bits(sts - 1, IEEE80211_EHT_PHY_CAP2_SOUNDING_DIM_160MHZ_MASK) |
+-		u8_encode_bits(sts - 1, IEEE80211_EHT_PHY_CAP2_SOUNDING_DIM_320MHZ_MASK);
++		u8_encode_bits(sts - 1, IEEE80211_EHT_PHY_CAP2_SOUNDING_DIM_160MHZ_MASK);
++
++	if (band == NL80211_BAND_6GHZ) {
++		eht_cap_elem->phy_cap_info[0] |=
++			IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ;
++
++		eht_cap_elem->phy_cap_info[1] |=
++			u8_encode_bits(val,
++				       IEEE80211_EHT_PHY_CAP1_BEAMFORMEE_SS_320MHZ_MASK);
++
++		eht_cap_elem->phy_cap_info[2] |=
++			u8_encode_bits(sts - 1,
++				       IEEE80211_EHT_PHY_CAP2_SOUNDING_DIM_320MHZ_MASK);
++	}
+ 
+ 	eht_cap_elem->phy_cap_info[3] =
+ 		IEEE80211_EHT_PHY_CAP3_NG_16_SU_FEEDBACK |
+ 		IEEE80211_EHT_PHY_CAP3_NG_16_MU_FEEDBACK |
+ 		IEEE80211_EHT_PHY_CAP3_CODEBOOK_4_2_SU_FDBK |
+-		IEEE80211_EHT_PHY_CAP3_CODEBOOK_7_5_MU_FDBK |
+-		IEEE80211_EHT_PHY_CAP3_TRIG_SU_BF_FDBK |
+-		IEEE80211_EHT_PHY_CAP3_TRIG_MU_BF_PART_BW_FDBK |
+-		IEEE80211_EHT_PHY_CAP3_TRIG_CQI_FDBK;
++		IEEE80211_EHT_PHY_CAP3_CODEBOOK_7_5_MU_FDBK;
+ 
+ 	eht_cap_elem->phy_cap_info[4] =
+ 		u8_encode_bits(min_t(int, sts - 1, 2),
+ 			       IEEE80211_EHT_PHY_CAP4_MAX_NC_MASK);
+ 
+ 	eht_cap_elem->phy_cap_info[5] =
+-		IEEE80211_EHT_PHY_CAP5_NON_TRIG_CQI_FEEDBACK |
+ 		u8_encode_bits(IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL_PKT_PAD_16US,
+ 			       IEEE80211_EHT_PHY_CAP5_COMMON_NOMINAL_PKT_PAD_MASK) |
+ 		u8_encode_bits(u8_get_bits(0x11, GENMASK(1, 0)),
+@@ -1231,14 +1239,6 @@ mt7996_init_eht_caps(struct mt7996_phy *phy, enum nl80211_band band,
+ 			       IEEE80211_EHT_PHY_CAP6_MAX_NUM_SUPP_EHT_LTF_MASK) |
+ 		u8_encode_bits(val, IEEE80211_EHT_PHY_CAP6_MCS15_SUPP_MASK);
+ 
+-	eht_cap_elem->phy_cap_info[7] =
+-		IEEE80211_EHT_PHY_CAP7_NON_OFDMA_UL_MU_MIMO_80MHZ |
+-		IEEE80211_EHT_PHY_CAP7_NON_OFDMA_UL_MU_MIMO_160MHZ |
+-		IEEE80211_EHT_PHY_CAP7_NON_OFDMA_UL_MU_MIMO_320MHZ |
+-		IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_80MHZ |
+-		IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_160MHZ |
+-		IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_320MHZ;
+-
+ 	val = u8_encode_bits(nss, IEEE80211_EHT_MCS_NSS_RX) |
+ 	      u8_encode_bits(nss, IEEE80211_EHT_MCS_NSS_TX);
+ #define SET_EHT_MAX_NSS(_bw, _val) do {				\
+@@ -1249,8 +1249,29 @@ mt7996_init_eht_caps(struct mt7996_phy *phy, enum nl80211_band band,
+ 
+ 	SET_EHT_MAX_NSS(80, val);
+ 	SET_EHT_MAX_NSS(160, val);
+-	SET_EHT_MAX_NSS(320, val);
++	if (band == NL80211_BAND_6GHZ)
++		SET_EHT_MAX_NSS(320, val);
+ #undef SET_EHT_MAX_NSS
++
++	if (iftype != NL80211_IFTYPE_AP)
++		return;
++
++	eht_cap_elem->phy_cap_info[3] |=
++		IEEE80211_EHT_PHY_CAP3_TRIG_SU_BF_FDBK |
++		IEEE80211_EHT_PHY_CAP3_TRIG_MU_BF_PART_BW_FDBK;
++
++	eht_cap_elem->phy_cap_info[7] =
++		IEEE80211_EHT_PHY_CAP7_NON_OFDMA_UL_MU_MIMO_80MHZ |
++		IEEE80211_EHT_PHY_CAP7_NON_OFDMA_UL_MU_MIMO_160MHZ |
++		IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_80MHZ |
++		IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_160MHZ;
++
++	if (band != NL80211_BAND_6GHZ)
++		return;
++
++	eht_cap_elem->phy_cap_info[7] |=
++		IEEE80211_EHT_PHY_CAP7_NON_OFDMA_UL_MU_MIMO_320MHZ |
++		IEEE80211_EHT_PHY_CAP7_MU_BEAMFORMER_320MHZ;
+ }
+ 
+ static void
 -- 
 2.39.2
 
