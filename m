@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-11512-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11513-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F88C954147
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 07:44:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72C8A95414F
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 07:47:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84A471C210C3
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 05:44:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DA361C21238
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 05:47:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5487EF10;
-	Fri, 16 Aug 2024 05:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4B2C2837B;
+	Fri, 16 Aug 2024 05:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lDc1DmHp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t9duNJnV"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391EF770F1
-	for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2024 05:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADFE13C24
+	for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2024 05:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723787061; cv=none; b=dMW/B4FHA2wWFqyvdFRzVwRbFQmfIy66MKYbXO2fHZqa79c/xKQNqwLkt0MykBpqYa5+npGwUO5mSl2v23uSzfqF3oY3KZbhfpKOIuGFKjMJSZcnZ/Ge1S9dMdGaxQ23d2DaGeLjs8wEcGAbXcDqvGmzGlnpsBryWcAV9H9qJGg=
+	t=1723787275; cv=none; b=XV1i4wv4CgAvNTX9J/yREc2AQz0QUJhGcU8TFIg7FlWZI8Rmn+iVAfDZLKthwUHEoLAX+RhD2vxXon9NyCbmjWTKPaa1NnHEXnVsVq24fOlQl+5O5fTwVp2kTSRRAp71PizCqSGpvSlWvXPOsVqIrXKHjODUSK3/FCxJ21NE+as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723787061; c=relaxed/simple;
-	bh=qi9OoUi7XRpT1E7MS+2WAzcwoACaKXuN/fUb5erHvbk=;
+	s=arc-20240116; t=1723787275; c=relaxed/simple;
+	bh=92a7aBdQFq48BVB/sYWG26/IpMudoG1+WVLK0hzRr10=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BFomfEtsgXqyvWAjEDsMLn+Ke/pw9XCt53TrAG+8To4TxBjHKMZShddYcbOBy9/CPHwy0kshe6XNm8u+4vS1PtSDw6/TbrJGc1B+nprvrW6zuZqbOpEwtOF7t+r408gvmmz3mxGCnn9kQY/YVF44ZeyHe6G5sa3TG+/D/QNwxGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lDc1DmHp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39CE4C4AF12;
-	Fri, 16 Aug 2024 05:44:18 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=nktwICVlinfvwFfOx54BNBH1kRhHRG+X1QWCxwlz90byzuz5DPGXx6X+9PlL5p4U3bUd8hhamRjy5nZqOMdCgRyKHZwe5e974yY0GTCqJdSGfUdh9p+eqK3NQdHWGb1XGz+3u2A+Yq4gUSlk20yrivVzO21PKh3veTTQUyO2/lE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t9duNJnV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9649C32782;
+	Fri, 16 Aug 2024 05:47:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723787060;
-	bh=qi9OoUi7XRpT1E7MS+2WAzcwoACaKXuN/fUb5erHvbk=;
+	s=k20201202; t=1723787275;
+	bh=92a7aBdQFq48BVB/sYWG26/IpMudoG1+WVLK0hzRr10=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lDc1DmHpzjfRBKwG4U6PMhDdcuBXTgSv4QgbP/xF45GmnJSPd48tXzxP0iQG8bbok
-	 Lv/+gVSAeFWLlhz8JCHNqfY2NmyOkYxJf5yFNA8s1EHh/PpxjbPXVsmJUMe3wCtC5e
-	 GJka6ujN3uH0fClWKNSokwONR4aLaJPJgV6NfNfEMSSf/mk6JKZeUNZ3s/41w9rM3F
-	 VsA3VeLocewicpuugJbGN+VVQRXKoWoG7kYu6SDkon/j1wMfFjTbXOnFgSqadOzpVp
-	 2XIbabYL22lG7NzFCPd7NAqB4Y4U8VcvQsn5KHuBCIDdTtND9aYKm0jAZeG5iaZJWO
-	 3J37p0RTXUdVQ==
-Message-ID: <6c56b162-11c8-4798-918b-95a7a8d99a46@kernel.org>
-Date: Fri, 16 Aug 2024 07:44:18 +0200
+	b=t9duNJnVJ7P+DH+b6l+JT8NGnj1S2iEeUGZjJkMf6el9Sme+1InBdtqaR1Bra4LOm
+	 CyYpDdl1cu5Sj962h5bHs3rxy4aJThbevEkrEBKbq8pB6lF2q5OlGZdnmCD49uzsXj
+	 6Iut8iDT7+PiMm4rxmIIFBGxL0zDZGKgOqG0Qw92nZupfn/b14ZgwacVZ0AVbpdWvy
+	 AL0Cp1uT57GLZ5Aaw+03mgRZHiSfXRvyKo2P6jXNUAyVJ/KhIGHDlI364li7xGafz9
+	 pX2AfWObB0RYIwF7RvKJwK9o1THCM+auvpvwfUFk25gIns5gkUjlXR5rQGxFZMnTul
+	 1aTzHb449esDg==
+Message-ID: <68e114c3-0f0b-42a0-9397-69f8bc6d8f5b@kernel.org>
+Date: Fri, 16 Aug 2024 07:47:50 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,12 +50,13 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 02/18] arm64: dts: qcom: add wifi node for IPQ5332
- based RDP441
+Subject: Re: [RFC PATCH 17/18] wifi: ath12k: add AHB driver support for
+ IPQ5332
 To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>, ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org, Balamurugan S
+ <quic_bselvara@quicinc.com>, P Praneesh <quic_ppranees@quicinc.com>
 References: <20240814094323.3927603-1-quic_rajkbhag@quicinc.com>
- <20240814094323.3927603-3-quic_rajkbhag@quicinc.com>
+ <20240814094323.3927603-18-quic_rajkbhag@quicinc.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -101,50 +102,199 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240814094323.3927603-3-quic_rajkbhag@quicinc.com>
+In-Reply-To: <20240814094323.3927603-18-quic_rajkbhag@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 14/08/2024 11:43, Raj Kumar Bhagat wrote:
-> +
-> +	/*                 Default Profile
-> +	 * +============+==============+=====================+
-> +	 * |            |              |                     |
-> +	 * | Region     | Start Offset |       Size          |
-> +	 * |            |              |                     |
-> +	 * +------------+--------------+---------------------+
-> +	 * |            |              |                     |
-> +	 * |            |              |                     |
-> +	 * |            |              |                     |
-> +	 * | WLAN Q6    |  0x4A900000  |       35MB          |
-> +	 * |            |              |                     |
-> +	 * |            |              |                     |
-> +	 * +------------+--------------+---------------------+
-> +	 * | M3 Dump    |  0x4CC00000  |       1MB           |
-> +	 * +============+==============+=====================+
-> +	 * |                                                 |
-> +	 * |                                                 |
-> +	 * |                                                 |
-> +	 * |            Rest of memory for Linux             |
-> +	 * |                                                 |
-> +	 * |                                                 |
-> +	 * |                                                 |
-> +	 * +=================================================+
-> +	 */
-> +
-> +	reserved-memory {
-> +		#address-cells = <2>;
-> +		#size-cells = <2>;
-> +		ranges;
-> +
-> +		q6_region: wcnss@4a900000 {
-> +			no-map;
-> +			reg = <0x0 0x4a900000 0x0 0x02300000>;
-> +		};
-> +
-> +		m3_dump: m3_dump@4cc00000 {
+> From: Balamurugan S <quic_bselvara@quicinc.com>
+> 
+> Add Initial Ath12k AHB driver support for IPQ5332. IPQ5332 is AHB
+> based IEEE802.11be 2 GHz 2x2 WiFi device.
+> 
+> Tested-on: IPQ5332 hw1.0 AHB WLAN.WBE.1.3.1-00130-QCAHKSWPL_SILICONZ-1
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00210-QCAHKSWPL_SILICONZ-1
+> 
+> Signed-off-by: Balamurugan S <quic_bselvara@quicinc.com>
+> Co-developed-by: P Praneesh <quic_ppranees@quicinc.com>
+> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+> Co-developed-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+> ---
 
-Follow DTS coding style.
+...
+
+
+> +
+> +	of_id = of_match_device(ath12k_ahb_of_match, &pdev->dev);
+> +	if (!of_id) {
+> +		dev_err(&pdev->dev, "Failed to find matching device tree id\n");
+> +		return -EINVAL;
+> +	}
+> +
+> +	hw_rev = (enum ath12k_hw_rev)of_id->data;
+
+Just use wrapper to get match data.
+> +
+> +	switch (hw_rev) {
+> +	case ATH12K_HW_IPQ5332_HW10:
+> +		hif_ops = &ath12k_ahb_hif_ops_ipq5332;
+> +		break;
+> +	default:
+> +		dev_err(&pdev->dev, "Unsupported device type %d\n", hw_rev);
+> +		return -EOPNOTSUPP;
+> +	}
+> +
+> +	ret = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32));
+> +	if (ret) {
+> +		dev_err(&pdev->dev, "Failed to set 32-bit consistent dma\n");
+> +		return ret;
+> +	}
+> +
+> +	ab = ath12k_core_alloc(&pdev->dev, sizeof(struct ath12k_ahb),
+> +			       ATH12K_BUS_AHB);
+> +	if (!ab) {
+> +		dev_err(&pdev->dev, "failed to allocate ath12k base\n");
+> +		return -ENOMEM;
+> +	}
+> +
+> +	ab->hif.ops = hif_ops;
+> +	ab->pdev = pdev;
+> +	ab->hw_rev = hw_rev;
+> +	platform_set_drvdata(pdev, ab);
+> +
+> +	/* Set fixed_mem_region to true for platforms that support fixed memory
+> +	 * reservation from DT. If memory is reserved from DT for FW, ath12k driver
+> +	 * need not to allocate memory.
+> +	 */
+> +	if (!of_property_read_u32(ab->dev->of_node, "memory-region", &addr)) {
+> +		set_bit(ATH12K_FLAG_FIXED_MEM_REGION, &ab->dev_flags);
+> +		mem_node = of_find_node_by_name(NULL, "mlo_global_mem_0");
+> +		if (!mem_node)
+> +			ab->mlo_capable_flags = 0;
+> +	}
+> +
+> +	ret = ath12k_core_pre_init(ab);
+> +	if (ret)
+> +		goto err_core_free;
+> +
+> +	ret = ath12k_ahb_resource_init(ab);
+> +	if (ret)
+> +		goto err_core_free;
+> +
+> +	ret = ath12k_hal_srng_init(ab);
+> +	if (ret)
+> +		goto err_resource_deinit;
+> +
+> +	ret = ath12k_ce_alloc_pipes(ab);
+> +	if (ret) {
+> +		ath12k_err(ab, "failed to allocate ce pipes: %d\n", ret);
+> +		goto err_hal_srng_deinit;
+> +	}
+> +
+> +	ath12k_ahb_init_qmi_ce_config(ab);
+> +
+> +	ret = ath12k_core_get_rproc(ab);
+> +	if (ret) {
+> +		ath12k_err(ab, "failed to get rproc: %d\n", ret);
+> +		goto err_ce_free;
+> +	}
+> +
+> +	ret = ath12k_ahb_config_irq(ab);
+> +	if (ret) {
+> +		ath12k_err(ab, "failed to configure irq: %d\n", ret);
+> +		goto err_ce_free;
+> +	}
+> +
+> +	ret = ath12k_core_init(ab);
+> +	if (ret) {
+> +		ath12k_err(ab, "failed to init core: %d\n", ret);
+> +		goto err_ce_free;
+> +	}
+> +
+> +	return 0;
+> +
+> +err_ce_free:
+> +	ath12k_ce_free_pipes(ab);
+> +
+> +err_hal_srng_deinit:
+> +	ath12k_hal_srng_deinit(ab);
+> +
+> +err_resource_deinit:
+> +	ath12k_ahb_resource_deinit(ab);
+> +
+> +err_core_free:
+> +	ath12k_core_free(ab);
+> +	platform_set_drvdata(pdev, NULL);
+> +
+> +	return ret;
+> +}
+> +
+> +static void ath12k_ahb_remove_prepare(struct ath12k_base *ab)
+> +{
+> +	unsigned long left;
+> +
+> +	if (test_bit(ATH12K_FLAG_RECOVERY, &ab->dev_flags)) {
+> +		left = wait_for_completion_timeout(&ab->driver_recovery,
+> +						   ATH12K_AHB_RECOVERY_TIMEOUT);
+> +		if (!left)
+> +			ath12k_warn(ab, "failed to receive recovery response completion\n");
+> +	}
+> +
+> +	set_bit(ATH12K_FLAG_UNREGISTERING, &ab->dev_flags);
+> +	cancel_work_sync(&ab->restart_work);
+> +	cancel_work_sync(&ab->qmi.event_work);
+> +}
+> +
+> +static void ath12k_ahb_free_resources(struct ath12k_base *ab)
+> +{
+> +	struct platform_device *pdev = ab->pdev;
+> +
+> +	ath12k_ahb_free_irq(ab);
+> +	ath12k_hal_srng_deinit(ab);
+> +	ath12k_ce_free_pipes(ab);
+> +	ath12k_ahb_resource_deinit(ab);
+> +	ath12k_core_free(ab);
+> +	platform_set_drvdata(pdev, NULL);
+> +}
+> +
+> +static void ath12k_ahb_remove(struct platform_device *pdev)
+> +{
+> +	struct ath12k_base *ab = platform_get_drvdata(pdev);
+> +
+> +	if (test_bit(ATH12K_FLAG_QMI_FAIL, &ab->dev_flags)) {
+> +		ath12k_ahb_power_down(ab, false);
+> +		ath12k_qmi_deinit_service(ab);
+> +		goto qmi_fail;
+> +	}
+> +
+> +	ath12k_ahb_remove_prepare(ab);
+> +	ath12k_core_deinit(ab);
+> +
+> +qmi_fail:
+> +	ath12k_ahb_free_resources(ab);
+> +}
+> +
+> +static void ath12k_ahb_shutdown(struct platform_device *pdev)
+> +{
+> +	struct ath12k_base *ab = platform_get_drvdata(pdev);
+> +
+> +	/* platform shutdown() & remove() are mutually exclusive.
+> +	 * remove() is invoked during rmmod & shutdown() during
+> +	 * system reboot/shutdown.
+> +	 */
+> +	ath12k_ahb_remove_prepare(ab);
+> +
+> +	if (!(test_bit(ATH12K_FLAG_REGISTERED, &ab->dev_flags)))
+> +		goto free_resources;
+> +
+> +	ath12k_core_deinit(ab);
+> +
+> +free_resources:
+> +	ath12k_ahb_free_resources(ab);
+
+Why? It's shutdown, we do not care about cleanup. Why do you need this
+shutdown callback in the first place?
 
 
 Best regards,
