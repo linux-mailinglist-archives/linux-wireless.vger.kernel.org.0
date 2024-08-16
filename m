@@ -1,337 +1,262 @@
-Return-Path: <linux-wireless+bounces-11508-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11509-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BAF7953F52
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 04:08:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D1DB954135
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 07:32:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D814D28835F
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 02:08:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD0EF1F21D10
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 05:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FB5E8063C;
-	Fri, 16 Aug 2024 02:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4011477107;
+	Fri, 16 Aug 2024 05:32:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="oMTSgH5z"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from APC01-SG2-obe.outbound.protection.outlook.com (mail-sgaapc01on2133.outbound.protection.outlook.com [40.107.215.133])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2068.outbound.protection.outlook.com [40.107.22.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1E97E112;
-	Fri, 16 Aug 2024 02:07:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.215.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDFCA28DC1;
+	Fri, 16 Aug 2024 05:32:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.68
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723774024; cv=fail; b=U670HacxFzB7Lyz9h+HRZfnAyefH81MTh7XtBFV1g0TWNByChRVRSfNw3Weh2ELUzdAfw0mqCp4OPgjRx83ohWliTedlfGJRjlC0PBmWLCukeD+zLl21JNs7ofGyjcsfsNOrmDd+nQBEuHJ3D3WtikZt3qX3HDWcjtqM0j/3CDQ=
+	t=1723786354; cv=fail; b=ZwaRHaVpBau3x+QmSBAdDfLZR7bBNxDl4SsLqwYxFKa3Lz5UGhI2zXtgryJT6GcwO4Yd1D+mUnI5maDX6pq3bOVfZElbNeQwfrqcM8P2dDZ6EZDGsuHHGN+SY8SvB4lkz1xbMTBIwDjQ23X/zsvCY5aZ7UVHkEWgB2qaHhttLAQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723774024; c=relaxed/simple;
-	bh=z/JMI1ioorJsC5rpgzgpHUYttwWsJh+gThzg/mM6S6Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VdX1xiPOxb4PaSQ3QLfIh9gRu6zIydUhin3L9sRspsXrbdlE7vurRmfcmfaHBFcjTbtTPiHc5BLZxxB5xfvGxsWPIdMRmcUbaCH4LP2Oj5mjf8+hBoaJzLT0aJvf3RmYXpOFTMAbiVodsdlvRS9xOD7lOaEXdKcn9bvvyV9CVT0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wesion.com; spf=pass smtp.mailfrom=wesion.com; arc=fail smtp.client-ip=40.107.215.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=wesion.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wesion.com
+	s=arc-20240116; t=1723786354; c=relaxed/simple;
+	bh=Yp87BxVTTCrbv1OnRnBxKZ2zK8EYH0wKMF5SEzWkSuw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=tKVaqKqOrQh3IdHCc6d4Umr8zx9/9CCxZKdXokKohHRmUfElv40MLqxjX+qdlztmqwz39xqH2eG6V1GZ3i0rsKS+ftyHmkSdiq4rrPI3pJpFf+ZTLcDfXlB0OUVxodByW3P3oPplgvF3610ABZGRtnyJD/cAH6jc90LYZYL5hhA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=oMTSgH5z; arc=fail smtp.client-ip=40.107.22.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cv8UBn5qlQYpG7Bvj2DYPzoIQx+ZdPsZMjieLxWHSnbHkkQ7UL3TwS0M+IIYmgtHzXmOUtM66DSNFxgJWy0Z0gD06iQonjWRHdF9Cd2/hLoVrfk3mxR4Fespq1g3QZ9+5hgX9D3DDzneozdx1O/t9Ep4jUq33x5y1E9qJbMyktolWWdWh8OCr/iYiLo1Su4i0vtKYBd+zjaRoeC9kGzKcpVwa1MzOWT5w5KSyTeAKQYGThTjIZDmAfPfu0StlYUY2slCwg+kEQAqzLoJ3DIVZ+9SzulALEIrCitaYmZh3hUeqWrWC5dwjBEbkrqxf7E24A7ZMQVt0v0c5HCpiDa5Eg==
+ b=dHRRjmgeN9pOr51XnsJcTDxQNxS5yYNqqbaLXhUGQIjoZlWh3UmdNysZf9x53Q3CCpxHITsafOC3VrtlNyj2m6bCqk7oYSAE4VLv2iuSfkrC+WA4BrKOylFd2+VshCDk9hXNxfjZrSmiU5bN6A0hn9L81a6twCCUd3aC919KYSQkbj2x0xWvtdppNU+SqPY97g4FVty5ZAHiPcj9DIakPOkg1wjfJBK465/5yXLW6BlD7uJLCIJ5cSrf7Qb9i6ubtbmbZkFyWiVwtX+FubFIgwO/1DT1R4PAVuRmczS4UMRvPLAdR4lLvc83Hfhffxo4ufdvNHxWU/BPP84uBqO4OA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ZWqN2d2WV5H3rjNNY/SuBA/Is/G4XlfllfCP+MEOJRA=;
- b=OSUNcSlJeu7g6M09PQq+fzl7tJOPPW5JQrWRKm9XMJVlev3x2IrPHA5PGl4gGS3HqMjiMJYxOseJIzUumt1NOSdYGquxyusvT3hBUNbIwVKwgm6oeRUYXXr5pIlCbmVk0Ie2FBN2sCIPka2wxbcT79otvyyWITmE0rt4f9d8rGA9vtdCnZFMpOTfFY4/3lcp9TEIqSdCKvbx/H4wIpURSUayMFJEYoEz2yQlrTtO5zqu0dNfSYmLquof2AFNEl38hWPDbKbeCBOcKAIkGzf4zyCQBqFK+Xye+UbDQOAi6qRzljLjJvnw4NMkbdC61TvL2iM2ns2i+8FLBXcr/TGKbw==
+ bh=Yp87BxVTTCrbv1OnRnBxKZ2zK8EYH0wKMF5SEzWkSuw=;
+ b=a4pFpqhwymXJtlF28jdQFq0zJ9oGNVeqd09cAtya7Q9RItmU+xsWS/w1Q4TXdrrLdl5eyVT9ZRu4A8+NhXwyh+Ps91aLsHwXeEJu12agyc4erc0VElESqXgm9Voh1gxsHHjx3qxXVf/WiCafH6fWQioKpEaeR5esyhr54sY0SFTWnigqJJbPddUowuctb7vNPJThv0WVNlKPVYf5X7Tfg/+vEun6GZzHsskRNTOPwGHnh0Xmo+q7h6aeFs3rNyJSpVIE3HxFouOA4DdQyAn/mSe/+9yvFeaRQjNjTTwLmWIcFKgw8K09UXfOJcp4mFqEpSWF9KvrEObUk34FBrEhdg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=wesion.com; dmarc=pass action=none header.from=wesion.com;
- dkim=pass header.d=wesion.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=wesion.com;
-Received: from TYZPR03MB7001.apcprd03.prod.outlook.com (2603:1096:400:26a::14)
- by SEZPR03MB7444.apcprd03.prod.outlook.com (2603:1096:101:129::5) with
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Yp87BxVTTCrbv1OnRnBxKZ2zK8EYH0wKMF5SEzWkSuw=;
+ b=oMTSgH5ze8f3Gf8TDdtwB6zGdvbMZnwEDiAUOiGpxtQ14m8JR8B8aWjR9Jf3bmAqVcdTgFoVwxR3dhNo6AjglCOqNpOj2Kd2tLwLpcFVkU0fzc0zsmHURY9o8HzccOPlr0IH9im99bo8RdqAeJ4dezqLIAXfdnup36e+zq+5hkVoMSl7JB3xD0zzpP39X9Zg9n7VWjx9S8qyH9i+/yeqne1D+llfV188MjWlkx2E6HjPekpmK89Rkokf+nGQ3TmJHGse9SnJjKyKCpy4Jl9Qa64ZZ5TKhBE7y1sGiyh03lx1PkevueSyhang1mEDiJnNUR4g8gRcwMmqEckaW0Chew==
+Received: from PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20)
+ by PAXPR04MB8141.eurprd04.prod.outlook.com (2603:10a6:102:1bf::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.19; Fri, 16 Aug
- 2024 02:07:00 +0000
-Received: from TYZPR03MB7001.apcprd03.prod.outlook.com
- ([fe80::78dd:5e68:1a9c:36c0]) by TYZPR03MB7001.apcprd03.prod.outlook.com
- ([fe80::78dd:5e68:1a9c:36c0%4]) with mapi id 15.20.7875.016; Fri, 16 Aug 2024
- 02:07:00 +0000
-From: Jacobe Zang <jacobe.zang@wesion.com>
-To: arend.vanspriel@broadcom.com,
-	kvalo@kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	saikrishnag@marvell.com,
-	megi@xff.cz,
-	bhelgaas@google.com,
-	duoming@zju.edu.cn,
-	minipli@grsecurity.net,
-	yajun.deng@linux.dev,
-	stern@rowland.harvard.edu,
-	gregkh@linuxfoundation.org,
-	christophe.jaillet@wanadoo.fr,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com,
-	Jacobe Zang <jacobe.zang@wesion.com>
-Subject: [PATCH v11 4/4] wifi: brcmfmac: add flag for random seed during firmware download
-Date: Fri, 16 Aug 2024 10:06:35 +0800
-Message-Id: <20240816020635.1273911-5-jacobe.zang@wesion.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240816020635.1273911-1-jacobe.zang@wesion.com>
-References: <20240816020635.1273911-1-jacobe.zang@wesion.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR02CA0050.apcprd02.prod.outlook.com
- (2603:1096:4:196::11) To TYZPR03MB7001.apcprd03.prod.outlook.com
- (2603:1096:400:26a::14)
+ 2024 05:32:27 +0000
+Received: from PA4PR04MB9638.eurprd04.prod.outlook.com
+ ([fe80::f950:3bb6:6848:2257]) by PA4PR04MB9638.eurprd04.prod.outlook.com
+ ([fe80::f950:3bb6:6848:2257%5]) with mapi id 15.20.7875.016; Fri, 16 Aug 2024
+ 05:32:27 +0000
+From: David Lin <yu-hao.lin@nxp.com>
+To: Kalle Valo <kvalo@kernel.org>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+	"briannorris@chromium.org" <briannorris@chromium.org>, "francesco@dolcini.it"
+	<francesco@dolcini.it>, Pete Hsieh <tsung-hsien.hsieh@nxp.com>
+Subject: RE: [EXT] Re: [PATCH v2 00/43] wifi: nxpwifi: create nxpwifi to
+ support iw61x
+Thread-Topic: [EXT] Re: [PATCH v2 00/43] wifi: nxpwifi: create nxpwifi to
+ support iw61x
+Thread-Index: AQHa6kDq7zFfRJGOz0Wel62W8Sr8T7ImJDCQgAH0TSuAAUy9AA==
+Date: Fri, 16 Aug 2024 05:32:27 +0000
+Message-ID:
+ <PA4PR04MB9638824370878CB3BC426DBAD1812@PA4PR04MB9638.eurprd04.prod.outlook.com>
+References: <20240809094533.1660-1-yu-hao.lin@nxp.com>
+	<PA4PR04MB963858E759C8F61402B2275AD1872@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <87frr6yvq0.fsf@kernel.org>
+In-Reply-To: <87frr6yvq0.fsf@kernel.org>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PA4PR04MB9638:EE_|PAXPR04MB8141:EE_
+x-ms-office365-filtering-correlation-id: c6f90ba3-1f03-4dba-39fc-08dcbdb4d0c1
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?XJM4d6jFx9ETa53/Sdbao7SSoKzXVBWQp9kc1TcHvasPN2Y4IRWAsvoFdCp2?=
+ =?us-ascii?Q?04fLAO1R8MIAiOMSgEPrmTO0ZulgdZfKjBz3T2BSR2AwdzaCbBJkaZYWXioH?=
+ =?us-ascii?Q?PyEqYFfPbJzeCuz7DJAeuBGv2WjUFdNiLscBah67bn7K0Gi482lhfUcYytrF?=
+ =?us-ascii?Q?6yOKST+wQjQeC3m8kohdVSHln8RIxtMuicea2wiYZiXPqRGpJORJG+o3prmG?=
+ =?us-ascii?Q?MqoFGHgBPG+YRAvkVUJxcWJ6fPwRdg9gitvcox5XxQjIpmyrvZ+dpxcrZ70c?=
+ =?us-ascii?Q?2gO6i9WvLhhXhJ4w/1gMHW4zE+hTaXvljwC/tM1V/C9dVj1tSTMqv2UZ6jz1?=
+ =?us-ascii?Q?fDWENd4JtalNacT8pcyp9RwflTKIDmLGaxQk7MmAZrOvcy0iS5TFNBmmpRZX?=
+ =?us-ascii?Q?fau9f15TPmpczrt5p2/iwGEluv4Xm/yUzi4QHtQZFwaN4zjGEm4S/dnjTl2W?=
+ =?us-ascii?Q?OHEzHMYBlG7Ie14qLVMm/p1OL842e58lnM1Rmdm2C5lcUaWC/429ix1vwe5I?=
+ =?us-ascii?Q?LgUG/niGMMEs+gZg2hZeaqLuIajMTEFXPw3oqtcPrnUoBLp0kIjSU+0OLDhy?=
+ =?us-ascii?Q?5ys0UKTcQntJJkFnH8u3nKjb5V7BICIfgJX5JQohdH0LScGeFdoEArxZC8zk?=
+ =?us-ascii?Q?+LaqoKO/Il+jjXW5BzAqtc01DaHEydUGyFIzOkcvVtsRn+w5sdYM6+XVAHPU?=
+ =?us-ascii?Q?NVt6YMFlkPtj56vNZUCpdzAT5QgZ8EhhHN5736mjZZhSFUEEqdxNTOti/GlL?=
+ =?us-ascii?Q?+EBhb+KgOom8oEZifaMAqfupD3Pvc25DU8xbFdbN9aiGrkB/FdMI3DWcIT3x?=
+ =?us-ascii?Q?4NQv0d39zHj7R+WIdJTWp6L1eqtl2fFX/ZAN9Tc6nuafucvZ0v5D4N0aL8aP?=
+ =?us-ascii?Q?7FCWWpNnI4B/el0TVtdAjUj5ugtj+5jixwlHOMcjbTEKTIvWdicfR4gn331T?=
+ =?us-ascii?Q?IbpEYtWRZc75bpF5Ml/m9OwKqR3UlxAvR2W9VQJo49/xwLCRue15pDAz4q9+?=
+ =?us-ascii?Q?4zJON5hehoXtPhcVsyjYeI0dx9uTrox/19tdRjVbxTIAsu8Jisaum/mi2UEp?=
+ =?us-ascii?Q?/QDeotD7TQxXqwX7ur5CGUCq1ZRjuzoFoOIeOpf0B7gNr8adfR8uwUHExQVa?=
+ =?us-ascii?Q?1yAR9uQYTPH5z29L/g6fl1WwYrxZ+8dNbqkA9gA0Ks2qOGNBjaZ4kUW2URuW?=
+ =?us-ascii?Q?CX/kW8YtaifVnoKSswNpZJqWthMHmiX6kaMkFqm0nw44vv1prX2j367ufot0?=
+ =?us-ascii?Q?A/nCUzjUDj+5X3r/08ZTSaqyRlCNWjZke4kGG0jujOIZjGhaj9eMT4/ehxRe?=
+ =?us-ascii?Q?5kTSKZhyULY6AzgkSL63A4HqESlKwIFLhF7tBKyjqMs+nkaR54y+6naNt9by?=
+ =?us-ascii?Q?bMnd86OwlczpVp1656XrS5gvEhGWtSDgXIgYZKDeqJEUK4howg=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?s4zN0a+Jzeuj7goy02ra6/eviw86jmJWTRo9XICRYVMLbF0tj1CfjMWaEh/P?=
+ =?us-ascii?Q?NUMKzG5PpqxwY/wINxrPYXIr73YBOuyju5IoZ3ZEfeCE1TT5P2Nsf+T6jTpC?=
+ =?us-ascii?Q?cGk0Mnm7gzwGnCkjM6hNmnxdpk1sacOf4hsivEwxkUelk8Rwlys5F10NFlwq?=
+ =?us-ascii?Q?Srj08EkIVA6emFdLcoQ5zHfC5x3ET/CLbDCj0XS+sLTgCun72IaSONTMSumw?=
+ =?us-ascii?Q?3LQbtvGqRFrCtcSn9IWTmDhPOlWDBgYGiBXQsiJ58dxqLvaXvFN9Qv/QnRbz?=
+ =?us-ascii?Q?x25wUmSRJEd1LaXy4PK4rrqK/uwibrakUAebKJDBMqYbfGU+2HvRC7ardXTf?=
+ =?us-ascii?Q?Y+KEkkLUD4IHLnf2Ws5X1L1Su8ARtA4W+s6vH+GcfKMO8PoQVBW1pLXVsQC9?=
+ =?us-ascii?Q?8msiDZlfi7rjoH7xVUKzsu9sQuEifzLBIfp+DLClkzp673OnrPmNZCyydwex?=
+ =?us-ascii?Q?A0cegTpOT2ueGPaNwyZzoaJUQDJfMvlDbC4w/5WfREgtO7Rgy6Qq1DCNM2/Z?=
+ =?us-ascii?Q?B1HXXKqjMWKSDbbgIy5sCDB8nyjNN4n0lU7MooysXXhfvGUQI+SYDbH+xI1f?=
+ =?us-ascii?Q?40Ou9iiJ/4zf1bGonV/jdLA+621dvaCcxSHy11XxxqkZLJ34bvpwRfjijUb/?=
+ =?us-ascii?Q?JFKTphYOn92OvvWr4PBmFWn7Y6ZV4npFFBYgubU90fQ6+h5MCnCqVjbdLQc6?=
+ =?us-ascii?Q?fUe2nbClF1eSCTeHFNGVy9nwA2ihCX3iHoW9asBeMDGJF0o5QoAg8jAGyE1d?=
+ =?us-ascii?Q?rjgdzJVV8FKWJ3ePiak9RVWVnsLYhfAI4FhDarMJeI8exqy+3JnXVIw9CXS4?=
+ =?us-ascii?Q?ecJHRKKa8DXXH9L3UjqHPuqre5KHwJ2qaweN48F0BxbW0vQ/1aib7uqu7I5W?=
+ =?us-ascii?Q?cup1Q/Vj/63k+11KXn5rZbYHqbc+mRb8+eNYk3jrhmzsCgCLyW9bQaaGGPl6?=
+ =?us-ascii?Q?iICHV+awIEnvCQ1ZlKoqA9Z+82yDUev5cRVjGPZPWuFamffK7u+jaY5T4Hp9?=
+ =?us-ascii?Q?kHYlB+EE3bfwaNq0qGNUs7vldiAFTfKCY5bk6dcRhLCngY9a45MoSRKzgtZv?=
+ =?us-ascii?Q?rnMxXBTV4W1wXBtzmKEPcHepGPgbBCqf8Oe+4N81Jedsxs9w6BcYnwkgMb8l?=
+ =?us-ascii?Q?DXKYrTGIRp93VWnD3ju4Vz/CqbYJimq/Is5RLbtvoeBv6iIzPQ5hv2u7okgz?=
+ =?us-ascii?Q?Cwe9MaKi7Z2aaP3OZz6gIhjGBshZO9h04dh+ACfX/fpbHfO4uIKLxjUYHB1V?=
+ =?us-ascii?Q?PYmEdPAYITOINAzfWTrPVwZ9fFU4l3NySnqA3TI6isTuOMVUNCyKjrAMD6fo?=
+ =?us-ascii?Q?L3DD7gzUhPqJHzgXbPpNX2VCRZEYldMBp4m6EFmq5oFPZBR9k+uJuZOTosxN?=
+ =?us-ascii?Q?LnLGWm80bzwzXNbI1RHUrHGpniMTkJS9eZgkwnwXxB044TrbcP3eUzY4Nv9q?=
+ =?us-ascii?Q?eX6C0SuYtdVeyCm5swbL2PHK0/VhH2jIhA4oowr0tzlaOc6i5CXknkZdfTZ0?=
+ =?us-ascii?Q?0NT4eqtfxztByW3VHF87ZcxAGF3LrgIpMOcvgCbBOQhR+cBi9cfStNdxSKTS?=
+ =?us-ascii?Q?Rse1y8ZWnFeD7Os0Z6x5nWBT2ga5NWVH755YHc45?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYZPR03MB7001:EE_|SEZPR03MB7444:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1dde7f6b-34b9-41df-0541-08dcbd981d83
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|52116014|1800799024|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Gmoyu6ThTKt60rTAFvM8dRxpmMnzshJ12MKnKRp0cV3Gofo9hMrn/6qbBKST?=
- =?us-ascii?Q?ltfX5sn0HebUuQIF3MzuioAXeLMyf81QIr/SY2f9vRkfvtbf/Bj5rnBm4zxs?=
- =?us-ascii?Q?pVVveXnJR5t53x5m+raz32QadO1iUCzjjF/ivS1JzBMbCs2KcwpIz8d8mqOZ?=
- =?us-ascii?Q?61EMVnewhzLI3U+C4GEDeP4A2QVq9xkN3MtJnLhouXYvZSXGvFv3AhtxQcFs?=
- =?us-ascii?Q?uiYFpGC55zT7XsE/s03Yce+jWF9pubWZsJS5kXIA7X97TzIB6LZJ+FvZr4MD?=
- =?us-ascii?Q?dVPTbGaTYAbcGitPHNzqU13PQ5DySy+MbezJUQUSZZ/dCWynrH6DEvECntMI?=
- =?us-ascii?Q?Yr5qBaPkBji1g6KUF3rjwL2G5Vifnf/uV3J2Jntjlr79DL1DXJKgOtz/HX36?=
- =?us-ascii?Q?QT0v4JziBVKCtLVbIm3QcsvNFePjxfN5+sudPpnKs4wd+gteb0qQGpzWKb+2?=
- =?us-ascii?Q?VC7qYD7bHmFrwZrYNj+wD+hTf4Q1vhnBw+rpCCMBLV2QbHPVVD5Y/D/CeRhK?=
- =?us-ascii?Q?zvtp2TWv+ApPsasplzVAJ9YykTikjpsrZvk/hKys+LiVKav3AYhG01dbdckO?=
- =?us-ascii?Q?x34T3UzeGtlDtmwWvyUVoQ0bIOdmZ37Ix1xJjNY5ljkktxl467LPXVx/JTKc?=
- =?us-ascii?Q?up7XJ0qtDTCgXzb0ONE2HY6/T0nHvd3piMYTrFn2o3J47+wgHNW64IKe+ASd?=
- =?us-ascii?Q?svWitETT0nh7TR88CrrSOaQhKdKz+9BhOSUJocL2XLoE8gWflLuvo+iNls03?=
- =?us-ascii?Q?TsbAHirfpD9L1D2tlpE+mDsfGyFD2FwguD8mTBmuV1+Ii3QEXVKtNK+64RA1?=
- =?us-ascii?Q?XUuSZjq9YA2J7kojYOWIiwIpMEfsrpi+VRl3ngozNikWf+kP/usvvzwozF+X?=
- =?us-ascii?Q?GxSqxhtd4n37gixXOffRXWGMLC8sIZE3dY5ned3m+kSgTK5hhCK0DdGVArXv?=
- =?us-ascii?Q?MlfBNMqNzBCqSrUYxlsK3WGhokCScdxd1NRi4QjlbWCdBHMCM7T2UO8Myt1d?=
- =?us-ascii?Q?vdnomVWyCeAZ26HqEQKjN8/IKp6Nnj4Y5JT2dRmQIjaYeCrOLV1u2MHHlwfd?=
- =?us-ascii?Q?beXXWCLCMmVoj/v6jNsR8QzbsXmcXLHDOMDFjY47UfjtwixvbZ+74/W14i/t?=
- =?us-ascii?Q?SNYDP5THeOvKRZk83xYKnprLLHpOSeJxc4bitE4POc7x/LeMVB/xeaxKGwtJ?=
- =?us-ascii?Q?BNm0RIADRdM0RM4AwyUjGk7HOzNiruJBc3/LDa2uoFszDGaNFCRyUsoomj+X?=
- =?us-ascii?Q?Fz9I0NWuXDLMmmjQBD7q6uL0jW3MfbTZyp6ge7sMFYLCBFJLNuPGSxjGea3y?=
- =?us-ascii?Q?HJBI6b63QfrozBnUliq2OhqSxx9ncRlMT2VA1TfsmMN2JZKdTaQy83HEHG2s?=
- =?us-ascii?Q?1GJ6sLIzRKzQIk5XoLSzDFIPDcSR5erF9/VYHG/fHdG6WJXN5w=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYZPR03MB7001.apcprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(52116014)(1800799024)(376014)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Xs7thqapfbVSBmCasRY1Y/LWbcmfTMnM3PYVmGrG2tDhNMtToWKgIx7r6v85?=
- =?us-ascii?Q?0cDfU49a3l5jfhyGk1L+0xpT/vueM/AHi/NaacCDZSr9WERkdmOdALsDHSxQ?=
- =?us-ascii?Q?UDpVodNJQyaVwQ9f2da2YWMxave7dVcDo1ZcWZzl/LsfPSqjm9SsuZu8Is4H?=
- =?us-ascii?Q?R/MIoEnMiyttAyBoX3SQFm843nibZHgWYft6RiBmOeukCRBdswWN+lgk9z9W?=
- =?us-ascii?Q?p7nIvQFdxWWCgEz49Cnp42+XE+RbbGvjCqf0UYkPnWNDsAk5EGIyHwcnnIR0?=
- =?us-ascii?Q?V/IFIsBdv48FMVhJzSfdI4WbNzFrBG17JXVN5ADSpQXhE68EDXSTuz1Gko/D?=
- =?us-ascii?Q?3yuuk7YGts6JsCX5wmKwD0ntmfUAn7U9BsrVXF0yY340Gmvggbbp+fN0iCAn?=
- =?us-ascii?Q?vMEhK7Npbak1Zvcusej1OhGSAvBkQYsFuM26qR0rOR+CBZZIRLgItM/115Lq?=
- =?us-ascii?Q?+YQg5Hh9D4ybHcloAC9NakwYZrXd7ke/je9fTx9uZtRll3TJRWd8VADxevU4?=
- =?us-ascii?Q?vR3Fhq9uqssf+yQ9DpQvvoXzwbFiIL2LoXFJcCy+tGeJHPsAGEHEDE7eXgip?=
- =?us-ascii?Q?G5HyVzb7JP+c7Fj48mUO9w98IkSJ76UmFsK1PE8CFygCgkJNXUugvmuP4X52?=
- =?us-ascii?Q?PysSjm77XLxvXj2VdCOacGnCEhO+gSIKM2OXAtSLHpcxOnsIsFK3p765IxSt?=
- =?us-ascii?Q?O3LbdkvY8x4CIeCVPIr7gdKW1qdRO5wKf2zbLgR6tvmaNpLqRqdt9lsjgTy6?=
- =?us-ascii?Q?No9/XmvE2Csxj5eZmsit0tXV2HirQxbd2i0Fb7Ut2fav0HO/1wWSLH5PpmL4?=
- =?us-ascii?Q?1FEq3OHKyYuUTni3DE2dMe5AwbWWxeTBQcF8aaPO73/3i8bR+JWgTQyKyYxU?=
- =?us-ascii?Q?Rwkr0LOVRjc0cHPh5Me4UxXWjOlBz/r5wSHPKLhrolbfM3qy6K8rgQVP9Sqd?=
- =?us-ascii?Q?xBcvLB+6sEyjG6qmMkWQAsM7EDqKalQdWuU6HNSal2Q7ns77qcmoLXRhkdFK?=
- =?us-ascii?Q?LYX7J3Y6lPa3QItrUpsK7Q/AVHM0Hga4K1o4suYF3jOdrsDrx+MnQzZtIisu?=
- =?us-ascii?Q?fPNylf+0WE4WKGaEHa8N6y3KhZALUbIuGhRWDXC1wDHa77TGhedId4yIakkK?=
- =?us-ascii?Q?ttYD2HORburSxAH5cM7Tx8YFkkFhzOTHNzbwYcoV87BBlCzWtfByUi2sCR6C?=
- =?us-ascii?Q?0nmPsoigSbisWZBLwgaC/tEN56L5foGJFfODwpqKyZE0z/sBbTpviQBCx5ej?=
- =?us-ascii?Q?6x+FTfrDy4vAaJSkilQ6wqmcLCMECHNtjkPbY9d3CejLQbSPrGB+y4vuzZQ9?=
- =?us-ascii?Q?L2ItjFXtkKpZBPsnJJ0WtSybSxwPhHfvYxkrkcHqlGcs7CtOrcblwAtzKXXP?=
- =?us-ascii?Q?myGnuf21YrfDg3MG6V+e2JZFUNpbE3l1eNQs0NiNw5CnpQCgR2UbOB++fjOZ?=
- =?us-ascii?Q?Tbdd9J43SBCqbToaJKOWP9UReAFLSAxNL3jv/27+MFMucONpy1NHPs/fEawh?=
- =?us-ascii?Q?5kAcdiZiKnUoeYYbf/qFwvkGCrQdwrvGvL3yjBk/GGt7r75Cs4Dzo5R1pzmE?=
- =?us-ascii?Q?Frgmx7VVdvFdt6vXEWMCPXXBhAxWRfOkbhbjq/RC?=
-X-OriginatorOrg: wesion.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1dde7f6b-34b9-41df-0541-08dcbd981d83
-X-MS-Exchange-CrossTenant-AuthSource: TYZPR03MB7001.apcprd03.prod.outlook.com
+X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Aug 2024 02:07:00.8732
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9638.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c6f90ba3-1f03-4dba-39fc-08dcbdb4d0c1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Aug 2024 05:32:27.3348
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 2dc3bd76-7ac2-4780-a5b7-6c6cc6b5af9b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OoyuqEHcBV6ncxWk0xOAfShzgTFeqOrgqNJEKy6MKnaN0yeHNLW+4/eQ/fzS5HIZDBXulPh8dLn7SfGrmgafFg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEZPR03MB7444
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: H7afjgVTo+3enJ7IoNYoDwm+D4KIEv3I84tk1mbO4wFAP4woLnjMJy6PJ8Uv9UXTm2/SuuTZ4Q7g9r2+wYrK5g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8141
 
-Providing the random seed to firmware was tied to the fact that the
-device has a valid OTP, which worked for some Apple chips. However,
-it turns out the BCM43752 device also needs the random seed in order
-to get firmware running. Suspect it is simply tied to the firmware
-branch used for the device. Introducing a mechanism to allow setting
-it for a device through the device table.
+> From: Kalle Valo <kvalo@kernel.org>
+> Sent: Thursday, August 15, 2024 5:36 PM
+> To: David Lin <yu-hao.lin@nxp.com>
+> Cc: linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org;
+> johannes@sipsolutions.net; briannorris@chromium.org;
+> francesco@dolcini.it; Pete Hsieh <tsung-hsien.hsieh@nxp.com>
+> Subject: [EXT] Re: [PATCH v2 00/43] wifi: nxpwifi: create nxpwifi to supp=
+ort
+> iw61x
+>=20
+> David Lin <yu-hao.lin@nxp.com> writes:
+>=20
+> > I found Nxpwifi patch v2 is put in "Deferred" state quickly.
+>=20
+> The way I use patchwork states is described here:
+>=20
+> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fwirel=
+es
+> s.wiki.kernel.org%2Fen%2Fdevelopers%2Fdocumentation%2Fsubmittingpatch
+> es%23checking_state_of_patches_from_patchwork&data=3D05%7C02%7Cyu-ha
+> o.lin%40nxp.com%7C8d360234b61d4e2c13e108dcbd0da0a4%7C686ea1d3bc
+> 2b4c6fa92cd99c5c301635%7C0%7C0%7C638593113436356863%7CUnknown
+> %7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haW
+> wiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=3D1XA1Ax66zhnU72efN0wAghLJ
+> %2F3DR1%2B8PAxXkiHphA%2FY%3D&reserved=3D0
+>=20
+> Basically I try to follow the "Inbox Zero" method and keep the amount of
+> patches in New state (my "inbox") low and the Deferred state is my todo l=
+ist.
+>=20
+> > Patch v2 is mainly to address the comments from Johannes and it
+> > actually took quite some efforts. We understand there are areas to
+> > improve and we are committed to continue enhance/maintain the driver.
+> >
+> > Could you let me know your plan for reviewing Nxpwifi?
+>=20
+> Reviewing new drivers take a lot of time, at the moment I'm following wha=
+t
+> other reviewers say before I'll look at it myself. The process is so slow=
+ and
+> patience is needed.
 
-Co-developed-by: Ondrej Jirman <megi@xff.cz>
-Signed-off-by: Ondrej Jirman <megi@xff.cz>
-Co-developed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
----
- .../broadcom/brcm80211/brcmfmac/pcie.c        | 52 ++++++++++++++++---
- .../broadcom/brcm80211/include/brcm_hw_ids.h  |  2 +
- 2 files changed, 46 insertions(+), 8 deletions(-)
+Understood.
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-index c34405a6d38b8..e88fa4cd62a1d 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-@@ -66,6 +66,7 @@ BRCMF_FW_DEF(4365C, "brcmfmac4365c-pcie");
- BRCMF_FW_DEF(4366B, "brcmfmac4366b-pcie");
- BRCMF_FW_DEF(4366C, "brcmfmac4366c-pcie");
- BRCMF_FW_DEF(4371, "brcmfmac4371-pcie");
-+BRCMF_FW_CLM_DEF(43752, "brcmfmac43752-pcie");
- BRCMF_FW_CLM_DEF(4377B3, "brcmfmac4377b3-pcie");
- BRCMF_FW_CLM_DEF(4378B1, "brcmfmac4378b1-pcie");
- BRCMF_FW_CLM_DEF(4378B3, "brcmfmac4378b3-pcie");
-@@ -104,6 +105,7 @@ static const struct brcmf_firmware_mapping brcmf_pcie_fwnames[] = {
- 	BRCMF_FW_ENTRY(BRCM_CC_43664_CHIP_ID, 0xFFFFFFF0, 4366C),
- 	BRCMF_FW_ENTRY(BRCM_CC_43666_CHIP_ID, 0xFFFFFFF0, 4366C),
- 	BRCMF_FW_ENTRY(BRCM_CC_4371_CHIP_ID, 0xFFFFFFFF, 4371),
-+	BRCMF_FW_ENTRY(BRCM_CC_43752_CHIP_ID, 0xFFFFFFFF, 43752),
- 	BRCMF_FW_ENTRY(BRCM_CC_4377_CHIP_ID, 0xFFFFFFFF, 4377B3), /* revision ID 4 */
- 	BRCMF_FW_ENTRY(BRCM_CC_4378_CHIP_ID, 0x0000000F, 4378B1), /* revision ID 3 */
- 	BRCMF_FW_ENTRY(BRCM_CC_4378_CHIP_ID, 0xFFFFFFE0, 4378B3), /* revision ID 5 */
-@@ -358,6 +360,7 @@ struct brcmf_pciedev_info {
- 			  u16 value);
- 	struct brcmf_mp_device *settings;
- 	struct brcmf_otp_params otp;
-+	bool fwseed;
- #ifdef DEBUG
- 	u32 console_interval;
- 	bool console_active;
-@@ -1720,14 +1723,14 @@ static int brcmf_pcie_download_fw_nvram(struct brcmf_pciedev_info *devinfo,
- 		memcpy_toio(devinfo->tcm + address, nvram, nvram_len);
- 		brcmf_fw_nvram_free(nvram);
- 
--		if (devinfo->otp.valid) {
-+		if (devinfo->fwseed) {
- 			size_t rand_len = BRCMF_RANDOM_SEED_LENGTH;
- 			struct brcmf_random_seed_footer footer = {
- 				.length = cpu_to_le32(rand_len),
- 				.magic = cpu_to_le32(BRCMF_RANDOM_SEED_MAGIC),
- 			};
- 
--			/* Some Apple chips/firmwares expect a buffer of random
-+			/* Some chips/firmwares expect a buffer of random
- 			 * data to be present before NVRAM
- 			 */
- 			brcmf_dbg(PCIE, "Download random seed\n");
-@@ -2399,6 +2402,37 @@ static void brcmf_pcie_debugfs_create(struct device *dev)
- }
- #endif
- 
-+struct brcmf_pcie_drvdata {
-+	enum brcmf_fwvendor vendor;
-+	bool fw_seed;
-+};
-+
-+enum {
-+	BRCMF_DRVDATA_CYW,
-+	BRCMF_DRVDATA_BCA,
-+	BRCMF_DRVDATA_WCC,
-+	BRCMF_DRVDATA_WCC_SEED,
-+};
-+
-+static const struct brcmf_pcie_drvdata drvdata[] = {
-+	[BRCMF_DRVDATA_CYW] = {
-+		.vendor = BRCMF_FWVENDOR_CYW,
-+		.fw_seed = false,
-+	},
-+	[BRCMF_DRVDATA_BCA] = {
-+		.vendor = BRCMF_FWVENDOR_BCA,
-+		.fw_seed = false,
-+	},
-+	[BRCMF_DRVDATA_WCC] = {
-+		.vendor = BRCMF_FWVENDOR_WCC,
-+		.fw_seed = false,
-+	},
-+	[BRCMF_DRVDATA_WCC_SEED] = {
-+		.vendor = BRCMF_FWVENDOR_WCC,
-+		.fw_seed = true,
-+	},
-+};
-+
- /* Forward declaration for pci_match_id() call */
- static const struct pci_device_id brcmf_pcie_devid_table[];
- 
-@@ -2480,9 +2514,10 @@ brcmf_pcie_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	bus->bus_priv.pcie = pcie_bus_dev;
- 	bus->ops = &brcmf_pcie_bus_ops;
- 	bus->proto_type = BRCMF_PROTO_MSGBUF;
--	bus->fwvid = id->driver_data;
- 	bus->chip = devinfo->coreid;
- 	bus->wowl_supported = pci_pme_capable(pdev, PCI_D3hot);
-+	bus->fwvid = drvdata[id->driver_data].vendor;
-+	devinfo->fwseed = drvdata[id->driver_data].fw_seed;
- 	dev_set_drvdata(&pdev->dev, bus);
- 
- 	ret = brcmf_alloc(&devinfo->pdev->dev, devinfo->settings);
-@@ -2668,14 +2703,14 @@ static const struct dev_pm_ops brcmf_pciedrvr_pm = {
- 		BRCM_PCIE_VENDOR_ID_BROADCOM, (dev_id), \
- 		PCI_ANY_ID, PCI_ANY_ID, \
- 		PCI_CLASS_NETWORK_OTHER << 8, 0xffff00, \
--		BRCMF_FWVENDOR_ ## fw_vend \
-+		BRCMF_DRVDATA_ ## fw_vend \
- 	}
- #define BRCMF_PCIE_DEVICE_SUB(dev_id, subvend, subdev, fw_vend) \
- 	{ \
- 		BRCM_PCIE_VENDOR_ID_BROADCOM, (dev_id), \
- 		(subvend), (subdev), \
- 		PCI_CLASS_NETWORK_OTHER << 8, 0xffff00, \
--		BRCMF_FWVENDOR_ ## fw_vend \
-+		BRCMF_DRVDATA_ ## fw_vend \
- 	}
- 
- static const struct pci_device_id brcmf_pcie_devid_table[] = {
-@@ -2703,9 +2738,10 @@ static const struct pci_device_id brcmf_pcie_devid_table[] = {
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4366_5G_DEVICE_ID, BCA),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_4371_DEVICE_ID, WCC),
- 	BRCMF_PCIE_DEVICE(BRCM_PCIE_43596_DEVICE_ID, CYW),
--	BRCMF_PCIE_DEVICE(BRCM_PCIE_4377_DEVICE_ID, WCC),
--	BRCMF_PCIE_DEVICE(BRCM_PCIE_4378_DEVICE_ID, WCC),
--	BRCMF_PCIE_DEVICE(BRCM_PCIE_4387_DEVICE_ID, WCC),
-+	BRCMF_PCIE_DEVICE(BRCM_PCIE_4377_DEVICE_ID, WCC_SEED),
-+	BRCMF_PCIE_DEVICE(BRCM_PCIE_4378_DEVICE_ID, WCC_SEED),
-+	BRCMF_PCIE_DEVICE(BRCM_PCIE_4387_DEVICE_ID, WCC_SEED),
-+	BRCMF_PCIE_DEVICE(BRCM_PCIE_43752_DEVICE_ID, WCC_SEED),
- 
- 	{ /* end: all zeroes */ }
- };
-diff --git a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-index 44684bf1b9acc..c1e22c589d85e 100644
---- a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
-@@ -52,6 +52,7 @@
- #define BRCM_CC_43664_CHIP_ID		43664
- #define BRCM_CC_43666_CHIP_ID		43666
- #define BRCM_CC_4371_CHIP_ID		0x4371
-+#define BRCM_CC_43752_CHIP_ID		43752
- #define BRCM_CC_4377_CHIP_ID		0x4377
- #define BRCM_CC_4378_CHIP_ID		0x4378
- #define BRCM_CC_4387_CHIP_ID		0x4387
-@@ -94,6 +95,7 @@
- #define BRCM_PCIE_4366_5G_DEVICE_ID	0x43c5
- #define BRCM_PCIE_4371_DEVICE_ID	0x440d
- #define BRCM_PCIE_43596_DEVICE_ID	0x4415
-+#define BRCM_PCIE_43752_DEVICE_ID	0x449d
- #define BRCM_PCIE_4377_DEVICE_ID	0x4488
- #define BRCM_PCIE_4378_DEVICE_ID	0x4425
- #define BRCM_PCIE_4387_DEVICE_ID	0x4433
--- 
-2.34.1
+>=20
+> The last thing I want to see that once the driver is accepted NXP disappe=
+ars
+> and we end up having an unmaintained driver. Way too many companies do
+> that.
+>=20
 
+Yes, we are committed to maintaining nxpwifi.
+
+> > Is there anything we can do to move this forward?
+>=20
+> Yes, get involved with the community and help us, don't just expect that =
+we
+> do everything for you gratis. Especially helping Brian with mwifiex
+> review/testing helps us (we get a better driver) and also helps you (you =
+learn
+> how the community works and you gain trust in the community).
+>=20
+
+Yes, we will continue to help to maintain mwifiex, also we will like to inv=
+olve and learn how
+the community works.
+
+> An excellent example is Realtek. Few years back Realtek was not involved
+> with upstream development at all. But now Ping is doing an awesome job
+> with maintaining ALL Realtek drivers, including the old drivers, and I ev=
+en
+> trust him so much that I pull directly from this tree. This is what NXP s=
+hould
+> aim for.
+>=20
+> --
+> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fpatch=
+w
+> ork.kernel.org%2Fproject%2Flinux-wireless%2Flist%2F&data=3D05%7C02%7Cyu-
+> hao.lin%40nxp.com%7C8d360234b61d4e2c13e108dcbd0da0a4%7C686ea1d3
+> bc2b4c6fa92cd99c5c301635%7C0%7C0%7C638593113436367796%7CUnknow
+> n%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1ha
+> WwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=3D4ly%2Bien1%2FscxRSdEdN0C
+> hvRMH%2Bh8kbYfEKbjxWyqodw%3D&reserved=3D0
+>=20
+> https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fwirel=
+es
+> s.wiki.kernel.org%2Fen%2Fdevelopers%2Fdocumentation%2Fsubmittingpatch
+> es&data=3D05%7C02%7Cyu-hao.lin%40nxp.com%7C8d360234b61d4e2c13e108
+> dcbd0da0a4%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C638593
+> 113436374405%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJ
+> QIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=3Dva
+> i2UN%2BKu2I5wKfmUoL8LEk7qBXmIuIK0eB4rtwoRDs%3D&reserved=3D0
+
+Thanks for the information.
+
+Thanks,
+David
 
