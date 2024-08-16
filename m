@@ -1,34 +1,34 @@
-Return-Path: <linux-wireless+bounces-11571-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11576-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11985955015
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 19:36:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1478195506D
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 19:59:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 673D7B2575C
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 17:36:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 397441C222A3
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 17:59:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA9CF1BE22D;
-	Fri, 16 Aug 2024 17:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C22180034;
+	Fri, 16 Aug 2024 17:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="kcWYx8fh"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="qdHBOa+I"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1681C0DCC
-	for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2024 17:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5528E1BDAA0
+	for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2024 17:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723829744; cv=none; b=qR+jq9DBCsxeG384qyOg0XaoU711WTHK41+0JRgoAT8IUstFO/w2JqfRf5GReliochG0rKfyBzScvAGZJyyhNy3YmMuClJz9ujtPFfQgqvfVxH7aw86OrNaPZxC4BuxAcGNLnY36by4Yh7Vo0vzKBfXrRwgvG/4xXqjkGXwLJJk=
+	t=1723831055; cv=none; b=MMNGbtmRoBO9Hu8f73v+YTUMe38jf3WgI3k26r8pVqmKQB1Rs9SlBh12W9r43FjoLA6T3uaVQ8lWRH3wcoi8Nko8lG5LN9I50MQiTLrYLMlIjx+WN3lSZXejgDy5B1JN4oh0KU35jtthhEUh3dzij9rv2Yp6jti10bLuTcNDtPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723829744; c=relaxed/simple;
-	bh=IlYzzxtq5fy7uhAzu5u2JVtEeiB5FRAlWMCBrqssWac=;
+	s=arc-20240116; t=1723831055; c=relaxed/simple;
+	bh=1pG44B0zOaStYsmLKk0+XP4L8J1KZBASCDcAOiraXWs=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VxU+t0q98U4osqi+msJNNtPm5/Z48hVoKGEmy3StAK9YbWQ8NO9uFq7Lm2QAhQlanHipOSWvRblosdCermtiLwy0Feh/0yS5ePFFREHTjwB0LPAXyBxy1VJh007Hqqmkd9kv5bZig6Wy5P39JhZTy++k0EARlo3LFXihzZSN7do=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=kcWYx8fh; arc=none smtp.client-ip=46.4.11.11
+	 MIME-Version; b=E4EOo0Tn2C8NqLvSMTyvWuq5nQDfnxzYRlVfeLkF4ufr1xrOIwUgcFqt7lv1TLGthgXQJ1Cq/KLL7JnplbtQqAhGTzxR+LWw1q/aNJ2U7L+BM4LrBDcUDHqQMRFaq6NTib9OA5wUHSdl0YKAIavfrJ61kIG8AMav5GE90NG3DGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=qdHBOa+I; arc=none smtp.client-ip=46.4.11.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
@@ -37,21 +37,21 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=OmdGPetB4G83SjQzABQ2lRbTLyOc/EyD59Q72rTeCq0=; b=kcWYx8fhvsuCaOJihHETeOXzJK
-	DhheToQfYMMAtNGmqi+V95r5vaQUNtixXp1Sz+vyF4hZ0U5HffrvD0GXfCJEAYRpapTZQnf2cQZk7
-	r2paqe/Yxzk4LwpTUwE+zRZJ7OJuZNo42czwjwNGlbNt4rlWxYWkH/DZ8iV2K3tS8Hxo=;
+	bh=9VfOBJIzT/AHJUaINHIwHFUoKF3g+tDfXDgkBYeX++0=; b=qdHBOa+IZaliJdp5H0HEo3xGvB
+	h8WOCWGgxijViVkyxeBiU0KMGrkTZ1LS1tFmWIot5i6f0TlSbv0tb1NSjl5pT+oVTmK+T3CTpkTP1
+	ioDF6CV5+EWhd5Hs3ka/7spWvB7XyAGI64MRHswPpqn0wl2IIAB+2mk4F7BX0wx9Y4mA=;
 Received: from p54ae95e7.dip0.t-ipconnect.de ([84.174.149.231] helo=localhost.localdomain)
 	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
 	(Exim 4.96)
 	(envelope-from <nbd@nbd.name>)
-	id 1sf0rS-000ObE-0Z
+	id 1sf0rS-000ObE-2I
 	for linux-wireless@vger.kernel.org;
 	Fri, 16 Aug 2024 19:35:38 +0200
 From: Felix Fietkau <nbd@nbd.name>
 To: linux-wireless@vger.kernel.org
-Subject: [PATCH 10/16] wifi: mt76: connac: add support for passing connection state directly
-Date: Fri, 16 Aug 2024 19:35:23 +0200
-Message-ID: <20240816173529.17873-10-nbd@nbd.name>
+Subject: [PATCH 12/16] wifi: mt76: mt7915: use mac80211 .sta_state op
+Date: Fri, 16 Aug 2024 19:35:25 +0200
+Message-ID: <20240816173529.17873-12-nbd@nbd.name>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240816173529.17873-1-nbd@nbd.name>
 References: <20240816173529.17873-1-nbd@nbd.name>
@@ -63,174 +63,389 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Preparation for improvements to sta handling. No functional changes.
+Allows adding stations before assoc, though they are not passed to the
+firmware yet at that point.
 
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c |  4 +++-
- .../wireless/mediatek/mt76/mt76_connac_mcu.c    | 17 ++++++++---------
- .../wireless/mediatek/mt76/mt76_connac_mcu.h    |  2 +-
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c |  4 +++-
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c |  5 ++++-
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c |  4 +++-
- 6 files changed, 22 insertions(+), 14 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mac80211.c |  3 +-
+ drivers/net/wireless/mediatek/mt76/mt76.h     | 16 +++
+ .../net/wireless/mediatek/mt76/mt7915/main.c  | 98 ++++++++++++-------
+ .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 10 +-
+ .../net/wireless/mediatek/mt76/mt7915/mmio.c  |  1 +
+ .../wireless/mediatek/mt76/mt7915/mt7915.h    |  4 +-
+ .../wireless/mediatek/mt76/mt7915/testmode.c  |  4 +-
+ drivers/net/wireless/mediatek/mt76/tx.c       |  3 +
+ 8 files changed, 94 insertions(+), 45 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index 3b57d967190a..f6eb9939c3e2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -847,6 +847,7 @@ mt7615_mcu_wtbl_sta_add(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 	struct wtbl_req_hdr *wtbl_hdr;
- 	struct mt7615_sta *msta;
- 	bool new_entry = true;
-+	int conn_state;
- 	int cmd, err;
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index 9d5561f44134..7aefc9182b36 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -1458,7 +1458,8 @@ mt76_sta_add(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 			continue;
  
- 	msta = sta ? (struct mt7615_sta *)sta->drv_priv : &mvif->sta;
-@@ -863,8 +864,9 @@ mt7615_mcu_wtbl_sta_add(struct mt7615_phy *phy, struct ieee80211_vif *vif,
- 		else
- 			mvif->sta_added = true;
+ 		mtxq = (struct mt76_txq *)sta->txq[i]->drv_priv;
+-		mtxq->wcid = wcid->idx;
++		if (!mtxq->wcid)
++			mtxq->wcid = wcid->idx;
  	}
-+	conn_state = enable ? CONN_STATE_PORT_SECURE : CONN_STATE_DISCONNECT;
- 	mt76_connac_mcu_sta_basic_tlv(&dev->mt76, sskb, vif, link_sta,
--				      enable, new_entry);
-+				      conn_state, new_entry);
- 	if (enable && sta)
- 		mt76_connac_mcu_sta_tlv(phy->mt76, sskb, sta, vif, 0,
- 					MT76_STA_INFO_STATE_ASSOC);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 4dce03ddbfa4..7afb9ac30ab9 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -371,7 +371,7 @@ EXPORT_SYMBOL_GPL(mt76_connac_mcu_bss_omac_tlv);
- void mt76_connac_mcu_sta_basic_tlv(struct mt76_dev *dev, struct sk_buff *skb,
- 				   struct ieee80211_vif *vif,
- 				   struct ieee80211_link_sta *link_sta,
--				   bool enable, bool newly)
-+				   int conn_state, bool newly)
+ 
+ 	ewma_signal_init(&wcid->rssi);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index f1cd9dc86b42..5dca8f0cd760 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -1262,6 +1262,22 @@ mtxq_to_txq(struct mt76_txq *mtxq)
+ 	return container_of(ptr, struct ieee80211_txq, drv_priv);
+ }
+ 
++static inline void
++mt76_sta_set_txq_wcid(struct ieee80211_sta *sta, int idx)
++{
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(sta->txq); i++) {
++		struct mt76_txq *mtxq;
++
++		if (!sta->txq[i])
++			continue;
++
++		mtxq = (struct mt76_txq *)sta->txq[i]->drv_priv;
++		mtxq->wcid = idx;
++	}
++}
++
+ static inline struct ieee80211_sta *
+ wcid_to_sta(struct mt76_wcid *wcid)
  {
- 	struct sta_rec_basic *basic;
- 	struct tlv *tlv;
-@@ -382,13 +382,9 @@ void mt76_connac_mcu_sta_basic_tlv(struct mt76_dev *dev, struct sk_buff *skb,
- 	basic = (struct sta_rec_basic *)tlv;
- 	basic->extra_info = cpu_to_le16(EXTRA_INFO_VER);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index 34af1ea16ada..ac8924f9209c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -274,7 +274,7 @@ static int mt7915_add_interface(struct ieee80211_hw *hw,
+ 	memset(&mvif->cap, -1, sizeof(mvif->cap));
  
--	if (enable) {
--		if (newly)
--			basic->extra_info |= cpu_to_le16(EXTRA_INFO_NEW);
--		basic->conn_state = CONN_STATE_PORT_SECURE;
--	} else {
--		basic->conn_state = CONN_STATE_DISCONNECT;
--	}
-+	if (newly && conn_state != CONN_STATE_DISCONNECT)
-+		basic->extra_info |= cpu_to_le16(EXTRA_INFO_NEW);
-+	basic->conn_state = conn_state;
+ 	mt7915_mcu_add_bss_info(phy, vif, true);
+-	mt7915_mcu_add_sta(dev, vif, NULL, true);
++	mt7915_mcu_add_sta(dev, vif, NULL, CONN_STATE_PORT_SECURE, true);
+ 	rcu_assign_pointer(dev->mt76.wcid[idx], &mvif->sta.wcid);
  
- 	if (!link_sta) {
- 		basic->conn_type = cpu_to_le32(CONNECTION_INFRA_BC);
-@@ -1051,15 +1047,18 @@ int mt76_connac_mcu_sta_cmd(struct mt76_phy *phy,
- 	struct wtbl_req_hdr *wtbl_hdr;
- 	struct tlv *sta_wtbl;
- 	struct sk_buff *skb;
-+	int conn_state;
+ out:
+@@ -293,7 +293,7 @@ static void mt7915_remove_interface(struct ieee80211_hw *hw,
+ 	int idx = msta->wcid.idx;
  
- 	skb = mt76_connac_mcu_alloc_sta_req(dev, mvif, info->wcid);
- 	if (IS_ERR(skb))
- 		return PTR_ERR(skb);
+ 	mt7915_mcu_add_bss_info(phy, vif, false);
+-	mt7915_mcu_add_sta(dev, vif, NULL, false);
++	mt7915_mcu_add_sta(dev, vif, NULL, CONN_STATE_DISCONNECT, true);
  
-+	conn_state = info->enable ? CONN_STATE_PORT_SECURE :
-+				    CONN_STATE_DISCONNECT;
- 	link_sta = info->sta ? &info->sta->deflink : NULL;
- 	if (info->sta || !info->offload_fw)
- 		mt76_connac_mcu_sta_basic_tlv(dev, skb, info->vif,
--					      link_sta, info->enable,
-+					      link_sta, conn_state,
- 					      info->newly);
- 	if (info->sta && info->enable)
- 		mt76_connac_mcu_sta_tlv(phy, skb, info->sta,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index 4242d436de26..e04ae7eddb01 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -1898,7 +1898,7 @@ int mt76_connac_mcu_set_vif_ps(struct mt76_dev *dev, struct ieee80211_vif *vif);
- void mt76_connac_mcu_sta_basic_tlv(struct mt76_dev *dev, struct sk_buff *skb,
- 				   struct ieee80211_vif *vif,
- 				   struct ieee80211_link_sta *link_sta,
--				   bool enable, bool newly);
-+				   int state, bool newly);
- void mt76_connac_mcu_wtbl_generic_tlv(struct mt76_dev *dev, struct sk_buff *skb,
- 				      struct ieee80211_vif *vif,
- 				      struct ieee80211_sta *sta, void *sta_wtbl,
+ 	mutex_lock(&dev->mt76.mutex);
+ 	mt76_testmode_reset(phy->mt76, true);
+@@ -365,6 +365,9 @@ static int mt7915_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+ 	int idx = key->keyidx;
+ 	int err = 0;
+ 
++	if (sta && !wcid->sta)
++		return -EOPNOTSUPP;
++
+ 	/* The hardware does not support per-STA RX GTK, fallback
+ 	 * to software mode for these.
+ 	 */
+@@ -622,7 +625,7 @@ static void mt7915_bss_info_changed(struct ieee80211_hw *hw,
+ 	if (set_bss_info == 1)
+ 		mt7915_mcu_add_bss_info(phy, vif, true);
+ 	if (set_sta == 1)
+-		mt7915_mcu_add_sta(dev, vif, NULL, true);
++		mt7915_mcu_add_sta(dev, vif, NULL, CONN_STATE_PORT_SECURE, true);
+ 
+ 	if (changed & BSS_CHANGED_ERP_CTS_PROT)
+ 		mt7915_mac_enable_rtscts(dev, vif, info->use_cts_prot);
+@@ -657,7 +660,7 @@ static void mt7915_bss_info_changed(struct ieee80211_hw *hw,
+ 	if (set_bss_info == 0)
+ 		mt7915_mcu_add_bss_info(phy, vif, false);
+ 	if (set_sta == 0)
+-		mt7915_mcu_add_sta(dev, vif, NULL, false);
++		mt7915_mcu_add_sta(dev, vif, NULL, CONN_STATE_DISCONNECT, true);
+ 
+ 	mutex_unlock(&dev->mt76.mutex);
+ }
+@@ -695,7 +698,7 @@ mt7915_start_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	err = mt7915_mcu_add_bss_info(phy, vif, true);
+ 	if (err)
+ 		goto out;
+-	err = mt7915_mcu_add_sta(dev, vif, NULL, true);
++	err = mt7915_mcu_add_sta(dev, vif, NULL, CONN_STATE_PORT_SECURE, true);
+ out:
+ 	mutex_unlock(&dev->mt76.mutex);
+ 
+@@ -709,7 +712,7 @@ mt7915_stop_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	struct mt7915_dev *dev = mt7915_hw_dev(hw);
+ 
+ 	mutex_lock(&dev->mt76.mutex);
+-	mt7915_mcu_add_sta(dev, vif, NULL, false);
++	mt7915_mcu_add_sta(dev, vif, NULL, CONN_STATE_DISCONNECT, true);
+ 	mutex_unlock(&dev->mt76.mutex);
+ }
+ 
+@@ -732,8 +735,7 @@ int mt7915_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ 	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
+ 	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
+ 	bool ext_phy = mvif->phy != &dev->phy;
+-	int ret, idx;
+-	u32 addr;
++	int idx;
+ 
+ 	idx = mt76_wcid_alloc(dev->mt76.wcid_mask, MT7915_WTBL_STA);
+ 	if (idx < 0)
+@@ -742,7 +744,6 @@ int mt7915_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ 	INIT_LIST_HEAD(&msta->rc_list);
+ 	INIT_LIST_HEAD(&msta->wcid.poll_list);
+ 	msta->vif = mvif;
+-	msta->wcid.sta = 1;
+ 	msta->wcid.idx = idx;
+ 	msta->wcid.phy_idx = ext_phy;
+ 	msta->wcid.tx_info |= MT_WCID_TX_INFO_SET;
+@@ -752,15 +753,49 @@ int mt7915_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ 
+ 	mt7915_mac_wtbl_update(dev, idx,
+ 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
++	mt76_sta_set_txq_wcid(sta, mvif->sta.wcid.idx);
+ 
+-	ret = mt7915_mcu_add_sta(dev, vif, sta, true);
+-	if (ret)
+-		return ret;
++	return 0;
++}
+ 
+-	addr = mt7915_mac_wtbl_lmac_addr(dev, msta->wcid.idx, 30);
+-	mt76_rmw_field(dev, addr, GENMASK(7, 0), 0xa0);
++int mt7915_mac_sta_event(struct mt76_dev *mdev, struct ieee80211_vif *vif,
++			 struct ieee80211_sta *sta, enum mt76_sta_event ev)
++{
++	struct mt7915_dev *dev = container_of(mdev, struct mt7915_dev, mt76);
++	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
++	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
++	u32 addr;
++	int ret;
+ 
+-	return mt7915_mcu_add_rate_ctrl(dev, vif, sta, false);
++	switch (ev) {
++	case MT76_STA_EVENT_ASSOC:
++		ret = mt7915_mcu_add_sta(dev, vif, sta, CONN_STATE_CONNECT, true);
++		if (ret)
++			return ret;
++
++		addr = mt7915_mac_wtbl_lmac_addr(dev, msta->wcid.idx, 30);
++		mt76_rmw_field(dev, addr, GENMASK(7, 0), 0xa0);
++
++		ret = mt7915_mcu_add_rate_ctrl(dev, vif, sta, false);
++		if (ret)
++			return ret;
++
++		msta->wcid.sta = 1;
++		mt76_sta_set_txq_wcid(sta, msta->wcid.idx);
++
++		return 0;
++
++	case MT76_STA_EVENT_AUTHORIZE:
++		return mt7915_mcu_add_sta(dev, vif, sta, CONN_STATE_PORT_SECURE, false);
++
++	case MT76_STA_EVENT_DISASSOC:
++		mt7915_mcu_add_sta(dev, vif, sta, CONN_STATE_DISCONNECT, false);
++		mt76_sta_set_txq_wcid(sta, mvif->sta.wcid.idx);
++		msta->wcid.sta = 0;
++		return 0;
++	}
++
++	return 0;
+ }
+ 
+ void mt7915_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+@@ -770,8 +805,6 @@ void mt7915_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ 	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
+ 	int i;
+ 
+-	mt7915_mcu_add_sta(dev, vif, sta, false);
+-
+ 	mt7915_mac_wtbl_update(dev, msta->wcid.idx,
+ 			       MT_WTBL_UPDATE_ADM_COUNT_CLEAR);
+ 
+@@ -803,7 +836,7 @@ static void mt7915_tx(struct ieee80211_hw *hw,
+ 		wcid = &sta->wcid;
+ 	}
+ 
+-	if (vif && !control->sta) {
++	if (vif && !wcid->sta) {
+ 		struct mt7915_vif *mvif;
+ 
+ 		mvif = (struct mt7915_vif *)vif->drv_priv;
+@@ -884,22 +917,6 @@ mt7915_ampdu_action(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	return ret;
+ }
+ 
+-static int
+-mt7915_sta_add(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+-	       struct ieee80211_sta *sta)
+-{
+-	return mt76_sta_state(hw, vif, sta, IEEE80211_STA_NOTEXIST,
+-			      IEEE80211_STA_NONE);
+-}
+-
+-static int
+-mt7915_sta_remove(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+-		  struct ieee80211_sta *sta)
+-{
+-	return mt76_sta_state(hw, vif, sta, IEEE80211_STA_NONE,
+-			      IEEE80211_STA_NOTEXIST);
+-}
+-
+ static int
+ mt7915_get_stats(struct ieee80211_hw *hw,
+ 		 struct ieee80211_low_level_stats *stats)
+@@ -1153,6 +1170,10 @@ static void mt7915_sta_rc_update(struct ieee80211_hw *hw,
+ {
+ 	struct mt7915_phy *phy = mt7915_hw_phy(hw);
+ 	struct mt7915_dev *dev = phy->dev;
++	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
++
++	if (!msta->wcid.sta)
++		return;
+ 
+ 	mt7915_sta_rc_work(&changed, sta);
+ 	ieee80211_queue_work(hw, &dev->rc_work);
+@@ -1191,6 +1212,9 @@ static void mt7915_sta_set_4addr(struct ieee80211_hw *hw,
+ 	struct mt7915_dev *dev = mt7915_hw_dev(hw);
+ 	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
+ 
++	if (!msta->wcid.sta)
++		return;
++
+ 	if (enabled)
+ 		set_bit(MT_WCID_FLAG_4ADDR, &msta->wcid.flags);
+ 	else
+@@ -1207,6 +1231,9 @@ static void mt7915_sta_set_decap_offload(struct ieee80211_hw *hw,
+ 	struct mt7915_dev *dev = mt7915_hw_dev(hw);
+ 	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
+ 
++	if (!msta->wcid.sta)
++		return;
++
+ 	if (enabled)
+ 		set_bit(MT_WCID_FLAG_HDR_TRANS, &msta->wcid.flags);
+ 	else
+@@ -1665,8 +1692,7 @@ const struct ieee80211_ops mt7915_ops = {
+ 	.bss_info_changed = mt7915_bss_info_changed,
+ 	.start_ap = mt7915_start_ap,
+ 	.stop_ap = mt7915_stop_ap,
+-	.sta_add = mt7915_sta_add,
+-	.sta_remove = mt7915_sta_remove,
++	.sta_state = mt76_sta_state,
+ 	.sta_pre_rcu_remove = mt76_sta_pre_rcu_remove,
+ 	.sta_rc_update = mt7915_sta_rc_update,
+ 	.set_key = mt7915_set_key,
 diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 43f1a45b34ab..10de8b994e2e 100644
+index 10de8b994e2e..7abf6cacdaae 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -1663,6 +1663,7 @@ int mt7915_mcu_add_sta(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+@@ -1657,13 +1657,12 @@ mt7915_mcu_add_group(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+ }
+ 
+ int mt7915_mcu_add_sta(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+-		       struct ieee80211_sta *sta, bool enable)
++		       struct ieee80211_sta *sta, int conn_state, bool newly)
+ {
+ 	struct mt7915_vif *mvif = (struct mt7915_vif *)vif->drv_priv;
  	struct ieee80211_link_sta *link_sta;
  	struct mt7915_sta *msta;
  	struct sk_buff *skb;
-+	int conn_state;
+-	int conn_state;
  	int ret;
  
  	msta = sta ? (struct mt7915_sta *)sta->drv_priv : &mvif->sta;
-@@ -1674,7 +1675,8 @@ int mt7915_mcu_add_sta(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+@@ -1675,10 +1674,9 @@ int mt7915_mcu_add_sta(struct mt7915_dev *dev, struct ieee80211_vif *vif,
  		return PTR_ERR(skb);
  
  	/* starec basic */
--	mt76_connac_mcu_sta_basic_tlv(&dev->mt76, skb, vif, link_sta, enable,
-+	conn_state = enable ? CONN_STATE_PORT_SECURE : CONN_STATE_DISCONNECT;
-+	mt76_connac_mcu_sta_basic_tlv(&dev->mt76, skb, vif, link_sta, conn_state,
- 				      !rcu_access_pointer(dev->mt76.wcid[msta->wcid.idx]));
- 	if (!enable)
- 		goto out;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 9dc22fbe25d3..473ed54e8710 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -1770,16 +1770,19 @@ mt7925_mcu_sta_cmd(struct mt76_phy *phy,
- 	struct mt76_vif *mvif = (struct mt76_vif *)info->vif->drv_priv;
- 	struct mt76_dev *dev = phy->dev;
- 	struct sk_buff *skb;
-+	int conn_state;
- 
- 	skb = __mt76_connac_mcu_alloc_sta_req(dev, mvif, info->wcid,
- 					      MT7925_STA_UPDATE_MAX_SIZE);
- 	if (IS_ERR(skb))
- 		return PTR_ERR(skb);
- 
-+	conn_state = info->enable ? CONN_STATE_PORT_SECURE :
-+				    CONN_STATE_DISCONNECT;
- 	if (info->link_sta)
- 		mt76_connac_mcu_sta_basic_tlv(dev, skb, info->vif,
- 					      info->link_sta,
--					      info->enable, info->newly);
-+					      conn_state, info->newly);
- 	if (info->link_sta && info->enable) {
- 		mt7925_mcu_sta_phy_tlv(skb, info->vif, info->link_sta);
- 		mt7925_mcu_sta_ht_tlv(skb, info->link_sta);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index a1a0df43e1cd..caa0ff619475 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -2163,6 +2163,7 @@ int mt7996_mcu_add_sta(struct mt7996_dev *dev, struct ieee80211_vif *vif,
- 	struct ieee80211_link_sta *link_sta;
- 	struct mt7996_sta *msta;
- 	struct sk_buff *skb;
-+	int conn_state;
- 	int ret;
- 
- 	msta = sta ? (struct mt7996_sta *)sta->drv_priv : &mvif->sta;
-@@ -2175,8 +2176,9 @@ int mt7996_mcu_add_sta(struct mt7996_dev *dev, struct ieee80211_vif *vif,
- 		return PTR_ERR(skb);
- 
- 	/* starec basic */
-+	conn_state = enable ? CONN_STATE_PORT_SECURE : CONN_STATE_DISCONNECT;
- 	mt76_connac_mcu_sta_basic_tlv(&dev->mt76, skb, vif, link_sta,
--				      enable, newly);
+-	conn_state = enable ? CONN_STATE_PORT_SECURE : CONN_STATE_DISCONNECT;
+-	mt76_connac_mcu_sta_basic_tlv(&dev->mt76, skb, vif, link_sta, conn_state,
+-				      !rcu_access_pointer(dev->mt76.wcid[msta->wcid.idx]));
+-	if (!enable)
++	mt76_connac_mcu_sta_basic_tlv(&dev->mt76, skb, vif, link_sta,
 +				      conn_state, newly);
- 
- 	if (!enable)
++	if (conn_state == CONN_STATE_DISCONNECT)
  		goto out;
+ 
+ 	/* tag order is in accordance with firmware dependency. */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+index ec7cf57521d9..44e112b8b5b3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mmio.c
+@@ -927,6 +927,7 @@ struct mt7915_dev *mt7915_mmio_probe(struct device *pdev,
+ 		.rx_check = mt7915_rx_check,
+ 		.rx_poll_complete = mt7915_rx_poll_complete,
+ 		.sta_add = mt7915_mac_sta_add,
++		.sta_event = mt7915_mac_sta_event,
+ 		.sta_remove = mt7915_mac_sta_remove,
+ 		.update_survey = mt7915_update_channel,
+ 		.set_channel = mt7915_set_channel,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index 712471c2a8e9..ac0b1f0eb27c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -444,7 +444,7 @@ int mt7915_mcu_add_dev_info(struct mt7915_phy *phy,
+ int mt7915_mcu_add_bss_info(struct mt7915_phy *phy,
+ 			    struct ieee80211_vif *vif, int enable);
+ int mt7915_mcu_add_sta(struct mt7915_dev *dev, struct ieee80211_vif *vif,
+-		       struct ieee80211_sta *sta, bool enable);
++		       struct ieee80211_sta *sta, int conn_state, bool newly);
+ int mt7915_mcu_add_tx_ba(struct mt7915_dev *dev,
+ 			 struct ieee80211_ampdu_params *params,
+ 			 bool add);
+@@ -560,6 +560,8 @@ void mt7915_mac_write_txwi(struct mt76_dev *dev, __le32 *txwi,
+ void mt7915_mac_set_timing(struct mt7915_phy *phy);
+ int mt7915_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ 		       struct ieee80211_sta *sta);
++int mt7915_mac_sta_event(struct mt76_dev *mdev, struct ieee80211_vif *vif,
++			 struct ieee80211_sta *sta, enum mt76_sta_event ev);
+ void mt7915_mac_sta_remove(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+ 			   struct ieee80211_sta *sta);
+ void mt7915_mac_work(struct work_struct *work);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
+index 1ed8e77eb549..d534fff5c952 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/testmode.c
+@@ -404,6 +404,7 @@ static void
+ mt7915_tm_init(struct mt7915_phy *phy, bool en)
+ {
+ 	struct mt7915_dev *dev = phy->dev;
++	int state;
+ 
+ 	if (!test_bit(MT76_STATE_RUNNING, &phy->mt76->state))
+ 		return;
+@@ -415,7 +416,8 @@ mt7915_tm_init(struct mt7915_phy *phy, bool en)
+ 	mt7915_tm_set_trx(phy, TM_MAC_TXRX, !en);
+ 
+ 	mt7915_mcu_add_bss_info(phy, phy->monitor_vif, en);
+-	mt7915_mcu_add_sta(dev, phy->monitor_vif, NULL, en);
++	state = en ? CONN_STATE_PORT_SECURE : CONN_STATE_DISCONNECT;
++	mt7915_mcu_add_sta(dev, phy->monitor_vif, NULL, state, true);
+ 
+ 	if (!en)
+ 		mt7915_tm_set_tam_arb(phy, en, 0);
+diff --git a/drivers/net/wireless/mediatek/mt76/tx.c b/drivers/net/wireless/mediatek/mt76/tx.c
+index 1d61d3c62fbb..5f6fb5e3ec5b 100644
+--- a/drivers/net/wireless/mediatek/mt76/tx.c
++++ b/drivers/net/wireless/mediatek/mt76/tx.c
+@@ -313,6 +313,9 @@ __mt76_tx_queue_skb(struct mt76_phy *phy, int qid, struct sk_buff *skb,
+ 		return idx;
+ 
+ 	wcid = (struct mt76_wcid *)sta->drv_priv;
++	if (!wcid->sta)
++		return idx;
++
+ 	q->entry[idx].wcid = wcid->idx;
+ 
+ 	if (!non_aql)
 -- 
 2.44.0
 
