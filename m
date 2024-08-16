@@ -1,91 +1,134 @@
-Return-Path: <linux-wireless+bounces-11557-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11558-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2DE7954925
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 14:51:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79E7B954C4B
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 16:24:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5826D1F24873
-	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 12:51:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02B06B2263C
+	for <lists+linux-wireless@lfdr.de>; Fri, 16 Aug 2024 14:24:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B40A71741D2;
-	Fri, 16 Aug 2024 12:51:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I0f7K4hh"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A2761A2C35;
+	Fri, 16 Aug 2024 14:24:31 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909B4156F34
-	for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2024 12:51:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089C285270
+	for <linux-wireless@vger.kernel.org>; Fri, 16 Aug 2024 14:24:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723812663; cv=none; b=ZjTtclqFcuzMxj/QZg3YfOUSkj88S4gbVga/xoxzk7MwYjf8u7Jt0NiRJLCISkX8XJyp3wKuFg97E3LroGcjbjO2uux5s5k8UnRT+1UWjZh6/50FqVFjTeAQtxDrbnPu6j2CPjoLbxtSXgv7eN5BL0SqjkT82NwKDqgFhnfyZD4=
+	t=1723818271; cv=none; b=uNXX33JV3DsF6pksvwj0iCDPO+jY03RAmo/I1+U+PXveuqrT4uxx/pbaP3/84ySw2Xp04P4XLgGlAiX0EVKy9xVK3muulh5w0/DRSoaWNfC2Y2q9FZK+qxgaxeuX48pEWvQRV+Qui3uFfxMRSXqvT15HAWytTRYv9zRk+ivxLBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723812663; c=relaxed/simple;
-	bh=MiOdLaJrIHX/U0klBs4LeuRqSpQio/Q7tX2UQHZcKdA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=J3mRF8sCeISXS47uDYKYfb4F2kTcmQj1pIkVPFLBu7nyuRa+FM1mcPzIjXYYjxZNBea6y/ZB8bwA9louOKfSFNhvMbyCWNfolUbHN384/XXquRzFTmr8A/WF3RxvSNiTooqVX6dgw4OA36sAABw+yKH/wdL8flxiS1ztEBMFAMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I0f7K4hh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C632C32782;
-	Fri, 16 Aug 2024 12:51:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723812663;
-	bh=MiOdLaJrIHX/U0klBs4LeuRqSpQio/Q7tX2UQHZcKdA=;
-	h=From:Date:Subject:To:Cc:From;
-	b=I0f7K4hheRSJEObgmWRc9S0fLZYo7tomaB801tmQAK9OAJB7jszIHf7NcKqRMlaBq
-	 kAMurQRYz2GVqtCgdfp0CdRqF1ER4K4RP8WKfHunk4yUW3Gi45mw05I4Mao+OC/Yiw
-	 d3vtRglIzbQ4JjKs/GXkq/i0S/+2v5R+5vQiVJrjI+MzjF3IHv25N990Y52tisMRHe
-	 uWDfVbQG60cFVrlP87C/ZDFa02FpsbLRDWjwRtmMvydlSxEbH9sAeOnYS2cmH7sHQf
-	 mgXVPbVJeQhqfGgsGjbZzcdYyNczkm3ZyWE4sUJWgLD9rmi0XnP3R5q1KdOjRP1Cyq
-	 s2HGfgP09j1bA==
-From: Simon Horman <horms@kernel.org>
-Date: Fri, 16 Aug 2024 13:50:58 +0100
-Subject: [PATCH] MAINTAINERS: Add net-cw1200.h to NETWORKING DRIVERS
- (WIRELESS) section
+	s=arc-20240116; t=1723818271; c=relaxed/simple;
+	bh=aoY2IcLLuPhJSY+lwOSnO2cpaPaskquNCjLWNK8ruxc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=sVju23BjMoecCj9c3+7g6lHY5ZMnegZALV1WHzIJ3HbKNgrnoCoAoUtCXNUSw+aMbx2ZMvWsegPnJFS18eYyrLO6YgixQ9VATAo05NHIwJzglpEL4jjtdxdspWEyDrdb8MLTF1HO2doNmKzaHTSjE+bYwAHr5FhQDwQGTIK4Y4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
+Received: from localhost (p200300c59701d290000000000000032b.dip0.t-ipconnect.de [IPv6:2003:c5:9701:d290::32b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.simonwunderlich.de (Postfix) with ESMTPSA id BC7C2FA131;
+	Fri, 16 Aug 2024 16:24:20 +0200 (CEST)
+From: Issam Hamdi <ih@simonwunderlich.de>
+To: quic_jjohnson@quicinc.com
+Cc: ih@simonwunderlich.de,
+	johannes@sipsolutions.net,
+	kvalo@kernel.org,
+	linux-wireless@vger.kernel.org,
+	lkp@intel.com,
+	llvm@lists.linux.dev,
+	mathias.kretschmer@fit.fraunhofer.de,
+	oe-kbuild-all@lists.linux.dev
+Subject: [PATCH v3] wifi: cfg80211: Set the channel definition for the different Wi-Fi modes when starting CAC
+Date: Fri, 16 Aug 2024 16:24:18 +0200
+Message-Id: <20240816142418.3381951-1-ih@simonwunderlich.de>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <9809b165-8d25-4984-a1dd-6fca28f1dda9@quicinc.com>
+References: <9809b165-8d25-4984-a1dd-6fca28f1dda9@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240816-wifi-mnt-v1-1-3fb3bf5d44aa@kernel.org>
-X-B4-Tracking: v=1; b=H4sIADFLv2YC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDC0Mz3fLMtEzd3LwSXbO0NCOjVKNEyxTTNCWg8oKi1LTMCrBR0bG1tQB
- sU9O5WgAAAA==
-To: Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org
-X-Mailer: b4 0.14.0
+Content-Transfer-Encoding: 8bit
 
-This is part of an effort [1] to assign a section in MAINTAINERS to header
-files that relate to Networking. In this case the files with "net" in
-their name.
+When starting CAC in a mode other than AP mode, it return a
+"WARNING: CPU: 0 PID: 63 at cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]"
+caused by the chandef.chan being null at the end of CAC.
 
-[1] https://lore.kernel.org/netdev/20240816-net-mnt-v1-0-ef946b47ced4@kernel.org/
+Solution: Ensure the channel definition is set for the different modes
+when starting CAC to avoid getting a NULL 'chan' at the end of CAC.
 
-It seems that net-cw1200.h is included by CW1200 Wireless drivers, and
-thus that NETWORKING DRIVERS (WIRELESS) is the most relevant section for
-this file.
+ Call Trace:
+  ? show_regs.part.0+0x14/0x16
+  ? __warn+0x67/0xc0
+  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
+  ? report_bug+0xa7/0x130
+  ? exc_overflow+0x30/0x30
+  ? handle_bug+0x27/0x50
+  ? exc_invalid_op+0x18/0x60
+  ? handle_exception+0xf6/0xf6
+  ? exc_overflow+0x30/0x30
+  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
+  ? exc_overflow+0x30/0x30
+  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
+  ? regulatory_propagate_dfs_state.cold+0x1b/0x4c [cfg80211]
+  ? cfg80211_propagate_cac_done_wk+0x1a/0x30 [cfg80211]
+  ? process_one_work+0x165/0x280
+  ? worker_thread+0x120/0x3f0
+  ? kthread+0xc2/0xf0
+  ? process_one_work+0x280/0x280
+  ? kthread_complete_and_exit+0x20/0x20
+  ? ret_from_fork+0x19/0x24
 
-Signed-off-by: Simon Horman <horms@kernel.org>
+Reported-by: Kretschmer Mathias <mathias.kretschmer@fit.fraunhofer.de>
+Signed-off-by: Issam Hamdi <ih@simonwunderlich.de>
 ---
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+v2: update the subject
+v3: update the second Signed-off-by to Reported-by
+---
+ net/wireless/nl80211.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 8766f3e5e87e..028884a31640 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -15896,6 +15896,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git
- F:	Documentation/devicetree/bindings/net/wireless/
- F:	drivers/net/wireless/
-+F:	include/linux/platform_data/net-cw1200.h
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 7397a372c78e..36ae2594753e 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -10143,7 +10143,23 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
  
- NETWORKING [DSA]
- M:	Andrew Lunn <andrew@lunn.ch>
+ 	err = rdev_start_radar_detection(rdev, dev, &chandef, cac_time_ms);
+ 	if (!err) {
+-		wdev->links[0].ap.chandef = chandef;
++		switch (wdev->iftype) {
++		case NL80211_IFTYPE_MESH_POINT:
++			wdev->u.mesh.chandef = chandef;
++			break;
++		case NL80211_IFTYPE_ADHOC:
++			wdev->u.ibss.chandef = chandef;
++			break;
++		case NL80211_IFTYPE_OCB:
++			wdev->u.ocb.chandef = chandef;
++			break;
++		case NL80211_IFTYPE_AP:
++		case NL80211_IFTYPE_P2P_GO:
++			wdev->links[0].ap.chandef = chandef;
++			break;
++		default:
++			break;
++		}
+ 		wdev->cac_started = true;
+ 		wdev->cac_start_time = jiffies;
+ 		wdev->cac_time_ms = cac_time_ms;
+
+base-commit: cc32e9fb380d8afdbf3486d7063d5520bfb0f071
+-- 
+2.39.2
 
 
