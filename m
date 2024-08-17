@@ -1,377 +1,233 @@
-Return-Path: <linux-wireless+bounces-11582-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11583-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CBB3955769
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Aug 2024 13:29:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D64E495595A
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Aug 2024 21:12:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44676282394
-	for <lists+linux-wireless@lfdr.de>; Sat, 17 Aug 2024 11:29:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90DF72829BC
+	for <lists+linux-wireless@lfdr.de>; Sat, 17 Aug 2024 19:12:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 625B3146019;
-	Sat, 17 Aug 2024 11:29:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UIFw7frP"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCBC715539A;
+	Sat, 17 Aug 2024 19:12:21 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f72.google.com (mail-io1-f72.google.com [209.85.166.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E980148855
-	for <linux-wireless@vger.kernel.org>; Sat, 17 Aug 2024 11:29:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045C12770E
+	for <linux-wireless@vger.kernel.org>; Sat, 17 Aug 2024 19:12:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723894179; cv=none; b=JJitd5JpV74iaX4T6J77BRd5AiASxzmm0H8dv2Yw0JM1DcTZs7xdGd4t0PEk8cnJ7bZ3TekQA+IH+xOWbD9JX2qXlaYSJubvqda6AEvs8ric9tPEf9jEX905MIy0Cw/fcdYvxB+EF1VOZcZWFrLymMDhVfsIsElo6imZ7IB3zYE=
+	t=1723921941; cv=none; b=RwdpQqncuptNDEc8RmnumiLLIjlga9bbX+k9xn0HTr6/Ha8tKzlqFt0xagneu57gjyDb4PGTq//40yRjRbXSdkTOhYI9ochf/Hxe2kaaOmDecrSShbtnfPG+epFdZksE7FCiGEW+aqZuGkUEUn79Vi591vbeWZHacYBLglsCTW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723894179; c=relaxed/simple;
-	bh=u010KjlnQYLezDAMBhDpm+eDuKXcqhs7+k4mWLMGN2U=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=os34XyRAoCEHQpb+0XOQm0SnHfq5B9qso4mMejQVogsdz2QIWAnXYs8snfYA66pdIBCQWoHI4SpAvmXqrXrHxS9qwK8lPmkT5De62RS8x9ac+FARMrp4q/Y+9FdvgunAyNFUHYUW4aiT/s+fforZgPo61BpUM/AJaSvZ0jU7lQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UIFw7frP; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723894176; x=1755430176;
-  h=date:from:to:cc:subject:message-id;
-  bh=u010KjlnQYLezDAMBhDpm+eDuKXcqhs7+k4mWLMGN2U=;
-  b=UIFw7frPWdULf4B9mVEi3nFF14pW7WL+i4YKUsmPYushXAPanYcYK7Eo
-   2HoA3d10feyZCHnSVeEpHvT++mbHN30goZ2TP8OzKXHgJZ/rj+pAZrzto
-   cPtQwhsdaEWrN9MJXPI1q/uHdh1aP/1KbU68V9WAV/mPEWFdk3x92QZTN
-   GwAymeJQCFMP9cc6qeXSBMHV+rmCib3bpEuAeo/zw0TNL9xXFHIDuOkZN
-   b6ybtCnJVW6addN7MvtpZP0qSAO/Ke8a8obvONWfiWzkRQzYoNROFQz7Y
-   QiuOZVY00VkVdREjU0VT85Ql8yykctvaEFMVYJ9JzAPUKAvLxFEeZE8yn
-   A==;
-X-CSE-ConnectionGUID: 7Ok1gqlDTue3N+zTT0musQ==
-X-CSE-MsgGUID: ogI0t78gRCK/eUYLRNSHTw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11166"; a="33328883"
-X-IronPort-AV: E=Sophos;i="6.10,154,1719903600"; 
-   d="scan'208";a="33328883"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Aug 2024 04:29:36 -0700
-X-CSE-ConnectionGUID: IzlQ/NpLROmN3MiVpQIakA==
-X-CSE-MsgGUID: QEWjgv/lRByHGORoR1JZEQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,154,1719903600"; 
-   d="scan'208";a="59763155"
-Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 17 Aug 2024 04:29:34 -0700
-Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sfHch-0007Oc-39;
-	Sat, 17 Aug 2024 11:29:31 +0000
-Date: Sat, 17 Aug 2024 19:28:55 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- daaf0dd0398d5e93b7304f35184ca182ed583681
-Message-ID: <202408171952.w1ERyq4U-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1723921941; c=relaxed/simple;
+	bh=2blOF0KfiMK8U6H4ERCzY5ZT5I8lnCEfrvSQMtyIblw=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=UgIiCnqEOtEUjFiSVUDQAHcnZE1l4nr/AIw3q+jTb5BMI3at1lCTAdnS2KdRjeHeJ8zKEmrjJJXnsCCVAOP0qJzNaijRgjycEpYDzS+x1R97RhoODIYS6var01EKrTo4DwLc5Gt9vDfjx2v3KEWwSG4J9/FVhfVyNaiaSMGa80Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f72.google.com with SMTP id ca18e2360f4ac-824c925d120so290821939f.3
+        for <linux-wireless@vger.kernel.org>; Sat, 17 Aug 2024 12:12:19 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723921939; x=1724526739;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=cFD6qD3rW7rnczddHSWMIFzVoUEuhzzFjSw0LeSwMMw=;
+        b=Bw0QtbPZgCKYFtVhdLZX9b2PlbHi3rHD11AvlHrXTjhBzAb8e3SMMa+iC//qkiSKFC
+         Wn0W6k8dB9/oXDRT1Q2l025V4o5kxwd0WN+GFX408GbUmAOT1GAq6dPEZucUQz1uVnk4
+         6/wlGWJFtmZcJn7mx3ecpvZ9uu0Xm7ymYJqWoPFRQq93Fu/cCLYjwEaIWNCrjF5W7keO
+         v7uPOwOxl7PYYpGfee6QEMpH5yzZBymOkR49wzanKmQ66zcikMC+8HsiIueTRqClhcbr
+         Avj/9X2KIGF6VZFD0wvEn1NX5cuOj7HbcVK/V66I3j+qO4LRM75WdgI2Tl2wJNlHD8fy
+         7ijA==
+X-Forwarded-Encrypted: i=1; AJvYcCUkLzbw6Jy9rKeaS9p5aJI+R8q0cRXHHBpJ7a0AM89bvIvxxV0GhVI4x4ayvoxMk63On7WG+r8snHd+LOXRso3PlZrKGBC+SC0YiLhbI+I=
+X-Gm-Message-State: AOJu0YzNAlbfvczkFKCdHjAWIDUX+hHF2uOIANm0tHCOeGVm0aBhktXR
+	ZpakdAAKRwebjwV8QFh1Qc5CCfsB42zVgKjJUW1ZK/OjdLoXDrWLFamOewskT7mtD/QXI6v3bC4
+	8rRTM16ruhVZgPmD9lDk3KsI0yffWWxJXDXiQ3CCy+hTTWXu0VXRQT3s=
+X-Google-Smtp-Source: AGHT+IF0wTvBx1DMrk6Zb/Z59M/+HgGT2o0S3T1WngXZACmjCkagJp73hpLQvL3Bi6CLsFNA74eNSgCwZfZqJFshrZNqrbnkO9S7
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-Received: by 2002:a05:6638:2182:b0:4c2:7f96:6f4 with SMTP id
+ 8926c6da1cb9f-4cce16d0113mr300497173.4.1723921939086; Sat, 17 Aug 2024
+ 12:12:19 -0700 (PDT)
+Date: Sat, 17 Aug 2024 12:12:19 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000ccd0fc061fe5dab8@google.com>
+Subject: [syzbot] [wireless?] KASAN: slab-out-of-bounds Read in
+ cfg80211_wext_freq (2)
+From: syzbot <syzbot+ad5a1b5c1c112c61fc6f@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, johannes@sipsolutions.net, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: daaf0dd0398d5e93b7304f35184ca182ed583681  wifi: mwifiex: keep mwifiex_cfg80211_ops constant
+Hello,
 
-elapsed time: 1447m
+syzbot found the following issue on:
 
-configs tested: 283
-configs skipped: 9
+HEAD commit:    8867bbd4a056 mm: arm64: Fix the out-of-bounds issue in con..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
+console output: https://syzkaller.appspot.com/x/log.txt?x=159bd409980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=1bc88a9f65787e86
+dashboard link: https://syzkaller.appspot.com/bug?extid=ad5a1b5c1c112c61fc6f
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+userspace arch: arm64
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Unfortunately, I don't have any reproducer for this issue yet.
 
-tested configs:
-alpha                             allnoconfig   gcc-13.2.0
-alpha                             allnoconfig   gcc-13.3.0
-alpha                            allyesconfig   gcc-13.3.0
-alpha                               defconfig   gcc-13.2.0
-alpha                               defconfig   gcc-13.3.0
-arc                              allmodconfig   gcc-13.2.0
-arc                               allnoconfig   gcc-13.2.0
-arc                              allyesconfig   gcc-13.2.0
-arc                          axs103_defconfig   gcc-13.2.0
-arc                                 defconfig   gcc-13.2.0
-arc                            hsdk_defconfig   gcc-13.2.0
-arc                   randconfig-001-20240817   gcc-13.2.0
-arc                   randconfig-002-20240817   gcc-13.2.0
-arc                        vdk_hs38_defconfig   gcc-13.2.0
-arm                              allmodconfig   gcc-13.2.0
-arm                              allmodconfig   gcc-14.1.0
-arm                               allnoconfig   clang-20
-arm                               allnoconfig   gcc-13.2.0
-arm                              allyesconfig   gcc-13.2.0
-arm                              allyesconfig   gcc-14.1.0
-arm                        clps711x_defconfig   gcc-13.2.0
-arm                                 defconfig   clang-14
-arm                          ep93xx_defconfig   clang-14
-arm                         lpc32xx_defconfig   gcc-13.2.0
-arm                        multi_v5_defconfig   gcc-13.2.0
-arm                        multi_v5_defconfig   gcc-14.1.0
-arm                       omap2plus_defconfig   gcc-14.1.0
-arm                          pxa3xx_defconfig   clang-20
-arm                   randconfig-001-20240817   gcc-13.2.0
-arm                   randconfig-001-20240817   gcc-14.1.0
-arm                   randconfig-002-20240817   clang-20
-arm                   randconfig-002-20240817   gcc-13.2.0
-arm                   randconfig-003-20240817   clang-20
-arm                   randconfig-003-20240817   gcc-13.2.0
-arm                   randconfig-004-20240817   gcc-13.2.0
-arm                   randconfig-004-20240817   gcc-14.1.0
-arm                         s3c6400_defconfig   gcc-13.2.0
-arm                       spear13xx_defconfig   gcc-13.2.0
-arm                           spitz_defconfig   gcc-14.1.0
-arm64                            allmodconfig   clang-20
-arm64                            allmodconfig   gcc-13.2.0
-arm64                             allnoconfig   gcc-13.2.0
-arm64                             allnoconfig   gcc-14.1.0
-arm64                               defconfig   gcc-13.2.0
-arm64                               defconfig   gcc-14.1.0
-arm64                 randconfig-001-20240817   clang-20
-arm64                 randconfig-001-20240817   gcc-13.2.0
-arm64                 randconfig-002-20240817   gcc-13.2.0
-arm64                 randconfig-002-20240817   gcc-14.1.0
-arm64                 randconfig-003-20240817   gcc-13.2.0
-arm64                 randconfig-003-20240817   gcc-14.1.0
-arm64                 randconfig-004-20240817   gcc-13.2.0
-arm64                 randconfig-004-20240817   gcc-14.1.0
-csky                              allnoconfig   gcc-13.2.0
-csky                              allnoconfig   gcc-14.1.0
-csky                                defconfig   gcc-13.2.0
-csky                                defconfig   gcc-14.1.0
-csky                  randconfig-001-20240817   gcc-13.2.0
-csky                  randconfig-001-20240817   gcc-14.1.0
-csky                  randconfig-002-20240817   gcc-13.2.0
-csky                  randconfig-002-20240817   gcc-14.1.0
-hexagon                          allmodconfig   clang-20
-hexagon                           allnoconfig   clang-20
-hexagon                          allyesconfig   clang-20
-hexagon                             defconfig   clang-20
-hexagon               randconfig-001-20240817   clang-20
-hexagon               randconfig-002-20240817   clang-20
-i386                             allmodconfig   clang-18
-i386                             allmodconfig   gcc-12
-i386                              allnoconfig   clang-18
-i386                              allnoconfig   gcc-12
-i386                             allyesconfig   clang-18
-i386                             allyesconfig   gcc-12
-i386         buildonly-randconfig-001-20240816   gcc-12
-i386         buildonly-randconfig-001-20240817   gcc-12
-i386         buildonly-randconfig-002-20240816   clang-18
-i386         buildonly-randconfig-002-20240817   gcc-12
-i386         buildonly-randconfig-003-20240816   clang-18
-i386         buildonly-randconfig-003-20240817   gcc-12
-i386         buildonly-randconfig-004-20240816   clang-18
-i386         buildonly-randconfig-004-20240817   gcc-12
-i386         buildonly-randconfig-005-20240816   gcc-11
-i386         buildonly-randconfig-005-20240817   gcc-12
-i386         buildonly-randconfig-006-20240816   gcc-12
-i386         buildonly-randconfig-006-20240817   gcc-12
-i386                                defconfig   clang-18
-i386                  randconfig-001-20240816   clang-18
-i386                  randconfig-001-20240817   gcc-12
-i386                  randconfig-002-20240816   gcc-12
-i386                  randconfig-002-20240817   gcc-12
-i386                  randconfig-003-20240816   gcc-11
-i386                  randconfig-003-20240817   gcc-12
-i386                  randconfig-004-20240816   gcc-12
-i386                  randconfig-004-20240817   gcc-12
-i386                  randconfig-005-20240816   clang-18
-i386                  randconfig-005-20240817   gcc-12
-i386                  randconfig-006-20240816   gcc-11
-i386                  randconfig-006-20240817   gcc-12
-i386                  randconfig-011-20240816   gcc-12
-i386                  randconfig-011-20240817   gcc-12
-i386                  randconfig-012-20240816   clang-18
-i386                  randconfig-012-20240817   gcc-12
-i386                  randconfig-013-20240816   clang-18
-i386                  randconfig-013-20240817   gcc-12
-i386                  randconfig-014-20240816   gcc-12
-i386                  randconfig-014-20240817   gcc-12
-i386                  randconfig-015-20240816   gcc-12
-i386                  randconfig-015-20240817   gcc-12
-i386                  randconfig-016-20240816   gcc-12
-i386                  randconfig-016-20240817   gcc-12
-loongarch                        allmodconfig   gcc-14.1.0
-loongarch                         allnoconfig   gcc-13.2.0
-loongarch                         allnoconfig   gcc-14.1.0
-loongarch                           defconfig   gcc-13.2.0
-loongarch                           defconfig   gcc-14.1.0
-loongarch             randconfig-001-20240817   gcc-13.2.0
-loongarch             randconfig-001-20240817   gcc-14.1.0
-loongarch             randconfig-002-20240817   gcc-13.2.0
-loongarch             randconfig-002-20240817   gcc-14.1.0
-m68k                             allmodconfig   gcc-14.1.0
-m68k                              allnoconfig   gcc-13.2.0
-m68k                              allnoconfig   gcc-14.1.0
-m68k                             allyesconfig   gcc-14.1.0
-m68k                          amiga_defconfig   gcc-14.1.0
-m68k                                defconfig   gcc-13.2.0
-m68k                                defconfig   gcc-14.1.0
-m68k                        mvme147_defconfig   gcc-13.2.0
-m68k                           sun3_defconfig   gcc-14.1.0
-microblaze                       allmodconfig   gcc-14.1.0
-microblaze                        allnoconfig   gcc-13.2.0
-microblaze                        allnoconfig   gcc-14.1.0
-microblaze                       allyesconfig   gcc-14.1.0
-microblaze                          defconfig   gcc-13.2.0
-microblaze                          defconfig   gcc-14.1.0
-mips                              allnoconfig   gcc-13.2.0
-mips                              allnoconfig   gcc-14.1.0
-mips                  cavium_octeon_defconfig   gcc-13.2.0
-mips                          eyeq5_defconfig   gcc-13.2.0
-mips                           ip28_defconfig   gcc-13.2.0
-mips                           jazz_defconfig   gcc-13.2.0
-mips                           rs90_defconfig   gcc-13.2.0
-mips                   sb1250_swarm_defconfig   gcc-14.1.0
-nios2                             allnoconfig   gcc-13.2.0
-nios2                             allnoconfig   gcc-14.1.0
-nios2                               defconfig   gcc-13.2.0
-nios2                               defconfig   gcc-14.1.0
-nios2                 randconfig-001-20240817   gcc-13.2.0
-nios2                 randconfig-001-20240817   gcc-14.1.0
-nios2                 randconfig-002-20240817   gcc-13.2.0
-nios2                 randconfig-002-20240817   gcc-14.1.0
-openrisc                         alldefconfig   gcc-14.1.0
-openrisc                          allnoconfig   gcc-14.1.0
-openrisc                         allyesconfig   gcc-14.1.0
-openrisc                            defconfig   gcc-14.1.0
-parisc                           allmodconfig   gcc-14.1.0
-parisc                            allnoconfig   gcc-14.1.0
-parisc                           allyesconfig   gcc-14.1.0
-parisc                              defconfig   gcc-14.1.0
-parisc                randconfig-001-20240817   gcc-13.2.0
-parisc                randconfig-001-20240817   gcc-14.1.0
-parisc                randconfig-002-20240817   gcc-13.2.0
-parisc                randconfig-002-20240817   gcc-14.1.0
-parisc64                            defconfig   gcc-13.2.0
-parisc64                            defconfig   gcc-14.1.0
-powerpc                          allmodconfig   gcc-14.1.0
-powerpc                           allnoconfig   gcc-14.1.0
-powerpc                          allyesconfig   clang-20
-powerpc                          allyesconfig   gcc-14.1.0
-powerpc                       maple_defconfig   clang-20
-powerpc                     mpc512x_defconfig   gcc-13.2.0
-powerpc               randconfig-001-20240817   clang-14
-powerpc               randconfig-001-20240817   gcc-13.2.0
-powerpc               randconfig-002-20240817   gcc-13.2.0
-powerpc               randconfig-002-20240817   gcc-14.1.0
-powerpc                     skiroot_defconfig   gcc-13.2.0
-powerpc64             randconfig-001-20240817   gcc-13.2.0
-powerpc64             randconfig-001-20240817   gcc-14.1.0
-powerpc64             randconfig-002-20240817   clang-16
-powerpc64             randconfig-002-20240817   gcc-13.2.0
-powerpc64             randconfig-003-20240817   clang-20
-powerpc64             randconfig-003-20240817   gcc-13.2.0
-riscv                            allmodconfig   clang-20
-riscv                            allmodconfig   gcc-14.1.0
-riscv                             allnoconfig   gcc-14.1.0
-riscv                            allyesconfig   clang-20
-riscv                            allyesconfig   gcc-14.1.0
-riscv                               defconfig   clang-20
-riscv                               defconfig   gcc-14.1.0
-riscv                 randconfig-001-20240817   gcc-13.2.0
-riscv                 randconfig-001-20240817   gcc-14.1.0
-riscv                 randconfig-002-20240817   clang-17
-riscv                 randconfig-002-20240817   gcc-13.2.0
-s390                             allmodconfig   clang-20
-s390                              allnoconfig   clang-20
-s390                             allyesconfig   clang-20
-s390                             allyesconfig   gcc-14.1.0
-s390                                defconfig   clang-20
-s390                                defconfig   gcc-14.1.0
-s390                  randconfig-001-20240817   gcc-13.2.0
-s390                  randconfig-001-20240817   gcc-14.1.0
-s390                  randconfig-002-20240817   clang-20
-s390                  randconfig-002-20240817   gcc-13.2.0
-sh                               allmodconfig   gcc-14.1.0
-sh                                allnoconfig   gcc-13.2.0
-sh                                allnoconfig   gcc-14.1.0
-sh                               allyesconfig   gcc-14.1.0
-sh                         ap325rxa_defconfig   gcc-14.1.0
-sh                                  defconfig   gcc-14.1.0
-sh                    randconfig-001-20240817   gcc-13.2.0
-sh                    randconfig-001-20240817   gcc-14.1.0
-sh                    randconfig-002-20240817   gcc-13.2.0
-sh                    randconfig-002-20240817   gcc-14.1.0
-sh                           se7343_defconfig   gcc-14.1.0
-sh                           se7751_defconfig   gcc-14.1.0
-sh                             sh03_defconfig   gcc-13.2.0
-sh                           sh2007_defconfig   gcc-13.2.0
-sh                     sh7710voipgw_defconfig   gcc-14.1.0
-sh                  sh7785lcr_32bit_defconfig   gcc-14.1.0
-sparc                            allmodconfig   gcc-14.1.0
-sparc64                             defconfig   gcc-14.1.0
-sparc64               randconfig-001-20240817   gcc-13.2.0
-sparc64               randconfig-001-20240817   gcc-14.1.0
-sparc64               randconfig-002-20240817   gcc-13.2.0
-sparc64               randconfig-002-20240817   gcc-14.1.0
-um                               allmodconfig   clang-20
-um                               allmodconfig   gcc-13.3.0
-um                                allnoconfig   clang-17
-um                               allyesconfig   gcc-12
-um                               allyesconfig   gcc-13.3.0
-um                                  defconfig   clang-20
-um                                  defconfig   gcc-14.1.0
-um                             i386_defconfig   gcc-12
-um                             i386_defconfig   gcc-14.1.0
-um                    randconfig-001-20240817   gcc-12
-um                    randconfig-001-20240817   gcc-13.2.0
-um                    randconfig-002-20240817   gcc-12
-um                    randconfig-002-20240817   gcc-13.2.0
-um                           x86_64_defconfig   clang-15
-um                           x86_64_defconfig   gcc-14.1.0
-x86_64                            allnoconfig   clang-18
-x86_64                           allyesconfig   clang-18
-x86_64       buildonly-randconfig-001-20240817   gcc-12
-x86_64       buildonly-randconfig-002-20240817   gcc-12
-x86_64       buildonly-randconfig-003-20240817   gcc-11
-x86_64       buildonly-randconfig-003-20240817   gcc-12
-x86_64       buildonly-randconfig-004-20240817   gcc-12
-x86_64       buildonly-randconfig-005-20240817   gcc-12
-x86_64       buildonly-randconfig-006-20240817   clang-18
-x86_64                              defconfig   clang-18
-x86_64                              defconfig   gcc-11
-x86_64                randconfig-001-20240817   clang-18
-x86_64                randconfig-001-20240817   gcc-12
-x86_64                randconfig-002-20240817   clang-18
-x86_64                randconfig-002-20240817   gcc-12
-x86_64                randconfig-003-20240817   gcc-12
-x86_64                randconfig-004-20240817   gcc-12
-x86_64                randconfig-005-20240817   clang-18
-x86_64                randconfig-005-20240817   gcc-12
-x86_64                randconfig-006-20240817   clang-18
-x86_64                randconfig-006-20240817   gcc-12
-x86_64                randconfig-011-20240817   clang-18
-x86_64                randconfig-011-20240817   gcc-12
-x86_64                randconfig-012-20240817   clang-18
-x86_64                randconfig-012-20240817   gcc-12
-x86_64                randconfig-013-20240817   gcc-12
-x86_64                randconfig-014-20240817   gcc-12
-x86_64                randconfig-015-20240817   gcc-12
-x86_64                randconfig-016-20240817   gcc-12
-x86_64                randconfig-071-20240817   gcc-12
-x86_64                randconfig-072-20240817   gcc-12
-x86_64                randconfig-073-20240817   clang-18
-x86_64                randconfig-073-20240817   gcc-12
-x86_64                randconfig-074-20240817   gcc-12
-x86_64                randconfig-075-20240817   gcc-12
-x86_64                randconfig-076-20240817   gcc-12
-x86_64                          rhel-8.3-rust   clang-18
-xtensa                            allnoconfig   gcc-13.2.0
-xtensa                            allnoconfig   gcc-14.1.0
-xtensa                       common_defconfig   gcc-14.1.0
-xtensa                randconfig-001-20240817   gcc-13.2.0
-xtensa                randconfig-001-20240817   gcc-14.1.0
-xtensa                randconfig-002-20240817   gcc-13.2.0
-xtensa                randconfig-002-20240817   gcc-14.1.0
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/5ef30d34e749/disk-8867bbd4.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/a21c2389ebfb/vmlinux-8867bbd4.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/9720b12c3f99/Image-8867bbd4.gz.xz
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+ad5a1b5c1c112c61fc6f@syzkaller.appspotmail.com
+
+==================================================================
+BUG: KASAN: slab-out-of-bounds in cfg80211_wext_freq+0x170/0x1ac net/wireless/wext-compat.c:238
+Read of size 2 at addr ffff0000cbece140 by task syz.3.369/7789
+
+CPU: 1 PID: 7789 Comm: syz.3.369 Tainted: G        W          6.10.0-rc2-syzkaller-g8867bbd4a056 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/27/2024
+Call trace:
+ dump_backtrace+0x1b8/0x1e4 arch/arm64/kernel/stacktrace.c:317
+ show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:324
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xe4/0x150 lib/dump_stack.c:114
+ print_address_description mm/kasan/report.c:377 [inline]
+ print_report+0x198/0x538 mm/kasan/report.c:488
+ kasan_report+0xd8/0x138 mm/kasan/report.c:601
+ __asan_report_load2_noabort+0x20/0x2c mm/kasan/report_generic.c:379
+ cfg80211_wext_freq+0x170/0x1ac net/wireless/wext-compat.c:238
+ cfg80211_wext_siwscan+0x438/0xef0 net/wireless/scan.c:3447
+ ioctl_standard_iw_point+0x7f0/0xdc4 net/wireless/wext-core.c:867
+ ioctl_standard_call+0xcc/0x264 net/wireless/wext-core.c:1052
+ wext_ioctl_dispatch+0x1b4/0x534 net/wireless/wext-core.c:1016
+ wext_handle_ioctl+0x1f8/0x3f4 net/wireless/wext-core.c:1077
+ sock_ioctl+0x15c/0x838 net/socket.c:1275
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:907 [inline]
+ __se_sys_ioctl fs/ioctl.c:893 [inline]
+ __arm64_sys_ioctl+0x14c/0x1c8 fs/ioctl.c:893
+ __invoke_syscall arch/arm64/kernel/syscall.c:34 [inline]
+ invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:48
+ el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:133
+ do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:152
+ el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:712
+ el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:730
+ el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
+
+Allocated by task 7789:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x40/0x78 mm/kasan/common.c:68
+ kasan_save_alloc_info+0x40/0x50 mm/kasan/generic.c:565
+ poison_kmalloc_redzone mm/kasan/common.c:370 [inline]
+ __kasan_kmalloc+0xac/0xc4 mm/kasan/common.c:387
+ kasan_kmalloc include/linux/kasan.h:211 [inline]
+ __do_kmalloc_node mm/slub.c:4121 [inline]
+ __kmalloc_noprof+0x2a0/0x494 mm/slub.c:4134
+ kmalloc_noprof include/linux/slab.h:664 [inline]
+ kzalloc_noprof include/linux/slab.h:778 [inline]
+ ioctl_standard_iw_point+0x3b8/0xdc4 net/wireless/wext-core.c:828
+ ioctl_standard_call+0xcc/0x264 net/wireless/wext-core.c:1052
+ wext_ioctl_dispatch+0x1b4/0x534 net/wireless/wext-core.c:1016
+ wext_handle_ioctl+0x1f8/0x3f4 net/wireless/wext-core.c:1077
+ sock_ioctl+0x15c/0x838 net/socket.c:1275
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:907 [inline]
+ __se_sys_ioctl fs/ioctl.c:893 [inline]
+ __arm64_sys_ioctl+0x14c/0x1c8 fs/ioctl.c:893
+ __invoke_syscall arch/arm64/kernel/syscall.c:34 [inline]
+ invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:48
+ el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:133
+ do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:152
+ el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:712
+ el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:730
+ el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
+
+The buggy address belongs to the object at ffff0000cbece000
+ which belongs to the cache kmalloc-512 of size 512
+The buggy address is located 4 bytes to the right of
+ allocated 316-byte region [ffff0000cbece000, ffff0000cbece13c)
+
+The buggy address belongs to the physical page:
+page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x10becc
+head: order:2 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+anon flags: 0x5ffc00000000040(head|node=0|zone=2|lastcpupid=0x7ff)
+page_type: 0xffffefff(slab)
+raw: 05ffc00000000040 ffff0000c0001c80 0000000000000000 dead000000000001
+raw: 0000000000000000 0000000080100010 00000001ffffefff 0000000000000000
+head: 05ffc00000000040 ffff0000c0001c80 0000000000000000 dead000000000001
+head: 0000000000000000 0000000080100010 00000001ffffefff 0000000000000000
+head: 05ffc00000000002 fffffdffc32fb301 ffffffffffffffff 0000000000000000
+head: 0000000000000004 0000000000000000 00000000ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ ffff0000cbece000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ffff0000cbece080: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+>ffff0000cbece100: 00 00 00 00 00 00 00 04 fc fc fc fc fc fc fc fc
+                                           ^
+ ffff0000cbece180: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ ffff0000cbece200: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+==================================================================
+------------[ cut here ]------------
+UBSAN: array-index-out-of-bounds in net/wireless/scan.c:3445:8
+index 33 is out of range for type 'struct iw_freq[32]'
+CPU: 1 PID: 7789 Comm: syz.3.369 Tainted: G    B   W          6.10.0-rc2-syzkaller-g8867bbd4a056 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/27/2024
+Call trace:
+ dump_backtrace+0x1b8/0x1e4 arch/arm64/kernel/stacktrace.c:317
+ show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:324
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xe4/0x150 lib/dump_stack.c:114
+ dump_stack+0x1c/0x28 lib/dump_stack.c:123
+ ubsan_epilogue lib/ubsan.c:231 [inline]
+ __ubsan_handle_out_of_bounds+0xf8/0x148 lib/ubsan.c:429
+ cfg80211_wext_siwscan+0x4a8/0xef0 net/wireless/scan.c:3445
+ ioctl_standard_iw_point+0x7f0/0xdc4 net/wireless/wext-core.c:867
+ ioctl_standard_call+0xcc/0x264 net/wireless/wext-core.c:1052
+ wext_ioctl_dispatch+0x1b4/0x534 net/wireless/wext-core.c:1016
+ wext_handle_ioctl+0x1f8/0x3f4 net/wireless/wext-core.c:1077
+ sock_ioctl+0x15c/0x838 net/socket.c:1275
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:907 [inline]
+ __se_sys_ioctl fs/ioctl.c:893 [inline]
+ __arm64_sys_ioctl+0x14c/0x1c8 fs/ioctl.c:893
+ __invoke_syscall arch/arm64/kernel/syscall.c:34 [inline]
+ invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:48
+ el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:133
+ do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:152
+ el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:712
+ el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:730
+ el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
+---[ end trace ]---
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
