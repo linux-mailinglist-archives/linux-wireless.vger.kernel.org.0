@@ -1,116 +1,145 @@
-Return-Path: <linux-wireless+bounces-11625-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11624-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14C2895721C
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 19:27:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FCCA957188
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 19:08:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C03CE1F24E90
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 17:27:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3A691F236F5
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 17:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B1617BB13;
-	Mon, 19 Aug 2024 17:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B3B187FED;
+	Mon, 19 Aug 2024 17:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="JNERJ4sR"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b="HjpYOp9z"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-op-o14.zoho.com (sender4-op-o14.zoho.com [136.143.188.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC7EB176233
-	for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2024 17:27:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724088453; cv=none; b=t6xvuEfC5xjVTZ2VCZpexMZl0UYricxfgNl1iZiI9gA/NzilZrlQZe1dXSQRLZ22nt841pvEODZloq1cdwW/gM/OsDvgDOVCsaghktZGQrYrE5U8TT+e657PZ2yUks+88heQ3hAhwgDxtHf/J6xsHDYw5yO5iK0B0jzQmI9LFSo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724088453; c=relaxed/simple;
-	bh=hTfwFKXYoARyydlpwnLuxqntQd77HK/80uMH9D3P2Zg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QLipW/gg+yw9DA8Va0+0/rLY2ryJbW9F9dGuw8dYSKEPkGCcW+gXQeA9HDDL2VZIMQRpcVzBSPEJpn4Wmt5AJx8Y+ZjU/epyNRaxadCr2fwBMOrRvEZaaLImjkwYkczoGxIvfh0WVwGhSZ+CLdlrCF9OAUkGcYR6unTGLX8BAHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=JNERJ4sR; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 60288889C3;
-	Mon, 19 Aug 2024 19:27:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1724088450;
-	bh=7gc151XOf+lmvySRQy5rZURSjAIrtYF4N3ANDzi7s+g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JNERJ4sR1kVvUTFSwHW0cTnzQ0XKFwE8dmTS0dSjhlvdv/w5aIEOQctOL07Rfu8vj
-	 UWbZcYE3pUYg4RuaqijwO3i79/p9w0UJQBMQ55Ldn4qaQyrrfyiw+Zu/VF5gC6ERKK
-	 WXZlXAx97vHZCIkDps0Z0TGt3Bjj1qZjfLATmxj2g/j8TDMCYneHF5jVZayrcj7oCO
-	 2ga+FHaKVXu2wkAyTsukN9HoPS2KQ4OdPNlrMV64PpJeqdHK1ISSYk7lAAjEGvPxoJ
-	 Zvs4tQz6LK4+pPXuSx8pxABhJIJ7v8V0l+M/sEagyc0xrwJxvUQ8WJfe01Lc1RR+iB
-	 G3P4x8jmKASMQ==
-Message-ID: <c95f64f1-3ebb-41ca-a935-51c1efa1256a@denx.de>
-Date: Mon, 19 Aug 2024 18:17:37 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108AF48CFC;
+	Mon, 19 Aug 2024 17:04:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724087069; cv=pass; b=jMdD2yEVQYFSAraJ6gi8cbD6ZQRAe0gt3HVivDTJXcKFOOVLpS/jrEGrOkiUIcyl3Oz9pUPTd06sz7qKDf+cczQnxRGGKSFcPZUhAYVCAIRxqQrYnBdoJdIWabU4VLM0HHLr8V1Mvk8GiniK3nqLkVwdTnGK1ExTe0wm9hg3nVo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724087069; c=relaxed/simple;
+	bh=tvnBfqvPBRx+HDhCZhrrAy5UEzQvPjK5237fBaCqoVU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=GKhMB9NuybmAffIq5mkxvbIi9WliIVzi7E/t3vAv47PxawCZgPBvWH+sBlvhfZuI6TgsVGXOLdTe4yZD1f09Asag7kplVnLAAtx6VjoPlG/ilWc8ife2B4AEOSVmwjCKUHKiptr/SqojptDn6v1VKSy1wng1eyy1u10q5qsdUGg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b=HjpYOp9z; arc=pass smtp.client-ip=136.143.188.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1724087022; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=n8uWCyB2elCluMJc278Nj13KMcZui0X3ZOO1H8htDvDly4zVwcZmPTja4DRogrv1m7coF5FuMzBPlaNGgdKXUaxNIyyzrgnoLZ/a9+SXkQaZKuCz8HC7se6peeXS8TAs/8rIa8IBDgNmCcoQy7jOgsg42fnD6n8zwkS8IytECDI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1724087022; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=tvnBfqvPBRx+HDhCZhrrAy5UEzQvPjK5237fBaCqoVU=; 
+	b=Sb+Ut17tdpEUH5QwvchUTtzM3nGb3h0uJ+13RWci//0gsE/6tEWxcqiCLcmF+rH42Ha5afAe+eLs9OAh+67edlTfH5cAgnJifVAr2W9MIG9f/5rIMrrsUhjouV9qdweJLt+WQuFjeiOPbRvMwqeLPFz94COYVGCyyWX3V2PpzGU=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=sebastian.reichel@collabora.com;
+	dmarc=pass header.from=<sebastian.reichel@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1724087022;
+	s=zohomail; d=collabora.com; i=sebastian.reichel@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=tvnBfqvPBRx+HDhCZhrrAy5UEzQvPjK5237fBaCqoVU=;
+	b=HjpYOp9zsUV49NoOMAqnIKdMup1IV7jYjX9XXTerc7pA0z6dPminm2YS/59p2p89
+	Ok18E1GugjteLGxlUrNyIeNzOTpqve7f7AVNFc2m56ymMmOmgcIV3f/dGYcQu2k650J
+	+O/SfV72GdDQkC7XhnXZxMf0CU5OgKlfBkYTIsaA=
+Received: by mx.zohomail.com with SMTPS id 1724087019835273.7787678036623;
+	Mon, 19 Aug 2024 10:03:39 -0700 (PDT)
+Received: by jupiter.universe (Postfix, from userid 1000)
+	id 03A8B4800E2; Mon, 19 Aug 2024 18:42:43 +0200 (CEST)
+Date: Mon, 19 Aug 2024 18:42:43 +0200
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
+To: jacobe.zang@wesion.com
+Cc: arend.vanspriel@broadcom.com, bhelgaas@google.com, 
+	brcm80211-dev-list.pdl@broadcom.com, brcm80211@lists.linux.dev, christophe.jaillet@wanadoo.fr, 
+	conor+dt@kernel.org, davem@davemloft.net, devicetree@vger.kernel.org, 
+	duoming@zju.edu.cn, edumazet@google.com, gregkh@linuxfoundation.org, 
+	krzk+dt@kernel.org, kuba@kernel.org, kvalo@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, megi@xff.cz, minipli@grsecurity.net, netdev@vger.kernel.org, 
+	pabeni@redhat.com, robh@kernel.org, saikrishnag@marvell.com, 
+	stern@rowland.harvard.edu, yajun.deng@linux.dev
+Subject: Re: [PATCH v11 0/4] Add AP6275P wireless support
+Message-ID: <uzmj5w6byisfguatjyy2ibo6zbn7w52bg2abgf7egych7usv6j@ec4xdmaofach>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] wifi: brcmfmac: add support for TRX firmware download
-To: Arend Van Spriel <arend.vanspriel@broadcom.com>,
- Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, Chung-Hsien Hsu
- <stanley.hsu@cypress.com>, Chung-Hsien Hsu <chung-hsien.hsu@infineon.com>,
- "Dr. David Alan Gilbert" <linux@treblig.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Carter Chen <carter.chen@infineon.com>,
- Duoming Zhou <duoming@zju.edu.cn>, Erick Archer <erick.archer@outlook.com>,
- Kees Cook <kees@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Mathias Krause <minipli@grsecurity.net>, Matthias Brugger
- <mbrugger@suse.com>, Owen Huang <Owen.Huang@infineon.com>,
- Ulf Hansson <ulf.hansson@linaro.org>, brcm80211-dev-list.pdl@broadcom.com,
- brcm80211@lists.linux.dev
-References: <20240818201533.89669-1-marex@denx.de> <871q2ky3zm.fsf@kernel.org>
- <1916b572558.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <1916b572558.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="of7hfoh4fqko6jig"
+Content-Disposition: inline
+In-Reply-To: <20240816020635.1273911-1-jacobe.zang@wesion.com>
+X-Zoho-Virus-Status: 1
+X-Zoho-AV-Stamp: zmail-av-1.3.1/224.30.53
+X-ZohoMailClient: External
 
-On 8/19/24 5:52 PM, Arend Van Spriel wrote:
+
+--of7hfoh4fqko6jig
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
 Hi,
 
->>> Add support to download TRX firmware for PCIe and SDIO.
->>>
->>> Signed-off-by: Chung-Hsien Hsu <chung-hsien.hsu@infineon.com>
->>> Signed-off-by: Marek Vasut <marex@denx.de> # Upport to current 
->>> linux-next
->>
->> The commit message should answer to the question 'Why?'. What's TRX
->> firmware and why do we need it?
-> 
-> I looked over the patches, but did not sit down to comment on this.
+I tested this on RK3588 EVB1 and the driver is working fine. The DT
+bindings are not correct, though:
 
-Thanks, it is real nice that someone who is actually familiar with the 
-hardware jumped in. I only upported the patches from infineon downstream.
+linux/arch/arm64/boot/dts/rockchip/rk3588-evb1-v10.dtb: wifi@0,0:
+compatible: 'oneOf' conditional failed, one must be fixed:
 
-> The 
-> TRX firmware format allows multiple images and possibly compression. Not 
-> sure if Infineon is using all this functionality. This is probably 
-> needed for 55572 device support (patch 2/2). Turns out this device has a 
-> bootloader that the driver has to talk with and that is probably where 
-> this TRX support comes from. Not something I considered to happen for 
-> SDIO and PCIe devices. There is always a puzzle to solve ;-)
-> 
-> Also noticed a random seed is provided to firmware. This already there 
-> for apple chips so it should be looked at whether that code can be 
-> shared. I will follow up.
+['pci14e4,449d', 'brcm,bcm4329-fmac'] is too long
+'pci14e4,449d' is not one of ['brcm,bcm43143-fmac', 'brcm,bcm4341b0-fmac',
+'brcm,bcm4341b4-fmac', 'brcm,bcm4341b5-fmac', 'brcm,bcm4329-fmac',
+'brcm,bcm4330-fmac', 'brcm,bcm4334-fmac', 'brcm,bcm43340-fmac',
+'brcm,bcm4335-fmac', 'brcm,bcm43362-fmac', 'brcm,bcm4339-fmac',
+'brcm,bcm43430a0-fmac', 'brcm,bcm43430a1-fmac', 'brcm,bcm43455-fmac',
+'brcm,bcm43456-fmac', 'brcm,bcm4354-fmac', 'brcm,bcm4356-fmac',
+'brcm,bcm4359-fmac', 'brcm,bcm4366-fmac', 'cypress,cyw4373-fmac',
+'cypress,cyw43012-fmac', 'infineon,cyw43439-fmac']
+=66rom schema $id: http://devicetree.org/schemas/net/wireless/brcm,bcm4329-=
+fmac.yaml#
 
-I did notice just now there is some TRX support for USB broadcom devices ?
+It's easy to see the problem in the binding. It does not expect a
+fallback string after the PCI ID based compatible. Either the
+pci14e4,449d entry must be added to the first enum in the binding,
+which has the fallback compatible, or the fallback compatible
+should not be added to DTS.
+
+If the fallback compatible is missing in DTS, the compatible check in
+brcmf_of_probe() fails and the lpo clock is not requested resulting
+in the firmware startup failing. So that would require further
+driver changes.
+
+Greetings,
+
+-- Sebastian
+
+--of7hfoh4fqko6jig
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmbDdf4ACgkQ2O7X88g7
++pr5KRAAjDSIh+I777ZC2eOvfPG2PAsPfp+nGcsq2aP34vzqdrUy9Q7Rd9CDPPGX
+7J5O5w7rLfSEHMRr8E6YaRtnDprVP3eLOKBriQQpfjRhcK9jv5CDjAHk7xkD80ya
+k6B1k8pWaQ/OMJwCcFpZUyFs6WJZebEieOphbGXuPc81wLt7b8K19MFVXvd5CkuQ
+dLLtdwNv0fjEw5rmGbLostKvW2b5QohkqRQDIip3VbK1mg9yKV/oqyvZtS0/YNob
+gyqdI4GTzAwqayM+M28tQuaB/oAAqDNjTRHefPmNzGfbO2Ls8/nL1s3div+ckh0z
+YEb0wKj23EjR2CslSYJWmkpG71w+sMdQ+ViPaxDCiD2r4plk7GLEQG0tpHr/Amgf
+FnpJsNRtyaxdDdOsV2GCj9Y+n8k3M8S9z7FSszCqboDvIMvDx2kcnbKPqA3aPAiM
+c5rb6iIwggiTqCxF1qBZbg7LGMZK4V19/5+Ifjg2+nKtlfepyvky9Hmka5SHp0Ep
+dHJj1sZiW4qBy3mDfiqMyLaNR/NFq5z4XrwOBmT47ThjuV/SfUsGOeF1ZHapnDOi
+gQcnZjkxafVeMvWCVTiyZBg4V38Daxp4hQJx37WyPFgWQr/1GA8gyK9bOH4bjz8R
+9IpWzOlAhFgTRCGodl1GFD298gUSPv7CzGIpIIiURZpEHbdzFP8=
+=jdlM
+-----END PGP SIGNATURE-----
+
+--of7hfoh4fqko6jig--
 
