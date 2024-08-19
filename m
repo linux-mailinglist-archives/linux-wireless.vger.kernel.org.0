@@ -1,134 +1,112 @@
-Return-Path: <linux-wireless+bounces-11613-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11614-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDEBA956764
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 11:45:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1B319568BF
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 12:50:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73C131F25565
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 09:45:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3947C1C21A2C
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 10:50:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A3115E5AB;
-	Mon, 19 Aug 2024 09:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A32415DBC6;
+	Mon, 19 Aug 2024 10:49:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="a3smlCVt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J0Pf+vdd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8186215B55D
-	for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2024 09:45:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E92161911;
+	Mon, 19 Aug 2024 10:49:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724060744; cv=none; b=On6uF1drpz+7BlwGdy7TU4Q/FlCoLLLF9HbO5LgfTyX4u90yDNgcDlCHn1irLixz+7ekzF7hdKqanoScJnSY/40qqC33sZxFvnKDKfppbskakQjNpRV0zSu03OzzS5R8gIGMMK/bg0EDshCrb8Ju2iKkrRkuP2UJRoW0PG43nfY=
+	t=1724064596; cv=none; b=LrN+vUCTk3krCoaT6ydS7btT6LsqlBa2UDyHR2ns1CIY9ndNe088Fnyx7+PDMGZ++b2Tb1W6JJ7akbJUmLd7H4RjJ9lyyqi2x+KbYnoHO5CjDaE9OZzeWh4aeiXLMuSIGTaAcxdcJ7ONEd5V4M2c4xixr0mKDU0Gbb8vuzmVUco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724060744; c=relaxed/simple;
-	bh=B+alG2Qup606pPK8ehr4sycAgxGXVlTtyxls+7hSTPY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=f756DY++gwYLWEdC3J16SGm9il8TrJomehp27xThwHnUjNY4vbNgehcYKEYCpOFkVn32HEEOJXmqOj9itzpTpluYrvnFeLMPsUkoAMMdqqVm07FL8hGa6CANKO0cJj31JXny+BVXxFyV8WavRHeGhVMmlIue7UUL2OMwxVRl/e8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=a3smlCVt; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47INtaZt021043;
-	Mon, 19 Aug 2024 09:45:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	qSqwjhjjlmrKrc9ShaVdfdrNUt0XxZncU4eoCgLdrRA=; b=a3smlCVtnC75jaaN
-	kwUfnoxvRjpuwSDgpmPs/tfpiqf0XqJOwHzm9MutXoJv2q2To2Muy4uU/7Nxlbl1
-	YL3BoVx9dQ+LAro+MdTWZcMeJ8IO+z7oaYrkuYRo5EDSxeRlb4eyxSDYnvq8XhJP
-	BXGd5O8Fk1IvmWir1uzI9lWbe6TTT39HawcOlamkBQcfokuGy5HGoax+pRhMw0nG
-	sn8W8WP+OsGT9ybTlAN4bdAqrzyt6MGpdGrxkgGP2Rw40R/fi2DbSk3glHE+HBWc
-	RXrk9L64x9LVE6K6K2MbydZB4BqAl+KNVYIlH2XmfTYTOhzki+CdfIFZaczkjpRO
-	739xxQ==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 412k6gbq6b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Aug 2024 09:45:38 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47J9jagR025362
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Aug 2024 09:45:36 GMT
-Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 19 Aug
- 2024 02:45:35 -0700
-Message-ID: <e49b05be-7fdd-4007-9137-e46703812fa1@quicinc.com>
-Date: Mon, 19 Aug 2024 17:45:33 +0800
+	s=arc-20240116; t=1724064596; c=relaxed/simple;
+	bh=ejSnJSpZeJIHl/Wxrcnk77OEbJf52ZUES1NcfmT3oCQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MXg4aWaTOAmgvaErJbesdoiVMpb4OgfVlEfc+mePCUBsOO8jgPDOrOlus/z9elF2b/ZAX96Vimq3WVmtL7uoh+7p15S/XVWWwqClY6Rpri2qhmXJS0Q3qLws9lD9JLYesd6TmnGuIWvNaxsWBt3Uxw6ymR9BIynWEAy0n8Ig/ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J0Pf+vdd; arc=none smtp.client-ip=209.85.166.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-io1-f42.google.com with SMTP id ca18e2360f4ac-8251e23eaebso6802139f.3;
+        Mon, 19 Aug 2024 03:49:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724064594; x=1724669394; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=L6r5TjXljmBlpCGH6gaZQoVB7sULh0ZU8/sd0GXa27M=;
+        b=J0Pf+vdd1cylNYIDOWKu2E8f3B3TTamfSk6iDLTvmT27b/Ia25MY1u1iXyE5z9UKR4
+         iTmKgVEdwV6IRCMXwLoDYya7vF0vEg2ANLVJnI+ePzHElZSvilBELk577cU+pl55neAF
+         VDinHmnjpPAues2QJfTK32bbp2QWgZtlI/Hq3Ul+gGMq2OFQPSdA8c4KMka46bE00XMc
+         ZmuaaZDR9kt1j4QC1t4d5viSIzUqEhijPIk3Qxvd81NFU26srU8+1FAT5nRPDT3N7Gr1
+         We1JkCDWLlIGGFdsjfpxwZmtlKota/P6ThSdbxRSJ4QcwPpnOlRa/0eGB7wAxJeP+Z8K
+         bO7Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724064594; x=1724669394;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=L6r5TjXljmBlpCGH6gaZQoVB7sULh0ZU8/sd0GXa27M=;
+        b=LmYR29Uevc4uQ66AmwKxikbEIMixhCXoQ8LVAJBwUOskqx/HRW3xKt024J9XByVIOC
+         y4TXsJqi2SmmrRmf/R3yBii5rqqbtaKCxBYV8Ai1VUIRrVrew2tOWUmXm/Nl6x0q7zE5
+         1wDP/VtrmqZkkB33mr58ZUX+WkXRw26xhfq+aqM/ebZN8cJPtLfp2pBfhQbkrZ+IKGvt
+         Jm+FQNrkzqdkTsnDOWJQ/XlN4r7w8kKL64CBWYIDqGt0e7qM9BXBFdmQft3EalcXrFYZ
+         AkwJcyT8OzUZT0e/Wi0S27F/HZ0+dqzTwPsiC7k/Vt0t+9pxXHbUxKsX+RtoFSfhABsL
+         qoDg==
+X-Forwarded-Encrypted: i=1; AJvYcCXmTfdCYyw/y4Hp8D4lc166297yVS4AsTNWoiXxr/sqoYM8TAuAPa0vLA45ICWqFeJbzmJyF0aVC3W3STLZRNPL6XzrPskzE5EdqYquGv1MzZ/bkmCEK6W81H5nMcCoXE9W7RX5xdacGxfsKvYQnVzmPFask3Cz1W+Sp6v/rglO+zbci/nhpFw=
+X-Gm-Message-State: AOJu0Yz0he3ptuxnXFIUSLoUfied5fMkH2423aMn8E7kWzFFjVIb+uok
+	DR1lGDuRTtJ5nVScfbCi124DdxBbM3eAJjS4VF0tjR+2itePX4pq4RIUXTgP5cd4b+Pxw4Rg4jr
+	qyqsEQIrqi4GnadyKFXPzjt5a+w==
+X-Google-Smtp-Source: AGHT+IFTNzLwiLc8D+K9WXfFP3/4W5slIKwubxgBS37z967zTlcM5145Xmkb3hQMUyxDqeZl5gsiW/pD6c5S0TfSWgg=
+X-Received: by 2002:a05:6602:2d94:b0:824:d6ed:e479 with SMTP id
+ ca18e2360f4ac-824f266b92emr1021026539f.7.1724064593843; Mon, 19 Aug 2024
+ 03:49:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] wifi: ath10k: fix invalid VHT parameters
-To: James Prestwood <prestwoj@gmail.com>, <ath10k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240711020344.98040-1-quic_bqiang@quicinc.com>
- <603104a7-a1ea-43c2-b0d5-fd4e46a27fe6@gmail.com>
- <64c8a9c6-9da7-4e25-9245-490c9e7e21d2@gmail.com>
-Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <64c8a9c6-9da7-4e25-9245-490c9e7e21d2@gmail.com>
+References: <2024080359-getaway-concave-623e@gregkh> <20240814055816.2786467-1-wirelessdonghack@gmail.com>
+ <91e19cf3-216b-48ac-a93d-f920dd2a7668@rowland.harvard.edu>
+In-Reply-To: <91e19cf3-216b-48ac-a93d-f920dd2a7668@rowland.harvard.edu>
+From: color Ice <wirelessdonghack@gmail.com>
+Date: Mon, 19 Aug 2024 18:49:42 +0800
+Message-ID: <CAOV16XEsgkLWz3rOQsAdve-qKsPEDw-QxJNoo4hJfXdLnowHfw@mail.gmail.com>
+Subject: Re: Ubuntu RT2X00 WIFI USB Driver Kernel NULL pointer
+ Dereference&Use-After-Free Vulnerability
+To: Alan Stern <stern@rowland.harvard.edu>
+Cc: gregkh@linuxfoundation.org, kvalo@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	mark.esler@canonical.com, stf_xl@wp.pl, tytso@mit.edu
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 6sffpklpysCBA8KUPg2F0TL4rGLskuR4
-X-Proofpoint-GUID: 6sffpklpysCBA8KUPg2F0TL4rGLskuR4
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-19_08,2024-08-19_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- clxscore=1015 priorityscore=1501 adultscore=0 bulkscore=0 malwarescore=0
- impostorscore=0 spamscore=0 mlxlogscore=999 suspectscore=0 phishscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2408190066
+Content-Transfer-Encoding: quoted-printable
 
+How is the patch development progressing? We would like to conduct a
+full verification test. It=E2=80=99s possible that many drivers have this
+issue, so you could try a simple fix, and we=E2=80=99ll see how it works.
+Recently, we tested some embedded devices where the operating systems,
+due to automated operations involving WiFi drivers, had UDEV rules
+built-in or granted significant permissions to USB. This allows the
+PoC to cause a kernel crash without needing root or sudo.
 
-
-On 8/14/2024 11:46 PM, James Prestwood wrote:
-> Hi Baochen,
-> 
-> On 7/15/24 5:38 AM, James Prestwood wrote:
->> Hi Baochen,
->>
->> I've compiled both changes and so far those messages are gone.
->>
->> Tested-By: James Prestwood <prestwoj@gmail.com> # on QCA6174 hw3.2
-> 
-> I just noticed another one actually:
-> 
-> invalid vht params rate 585 100kbps nss 1 mcs 4
-Ah :(
-
-James, could you share some info about this? like hardware target, firmware version, AP model, and any specific steps to hit this.
-
-> 
-> Thanks,
-> 
-> James
-> 
->>
->> On 7/10/24 7:03 PM, Baochen Qiang wrote:
->>> supported_vht_mcs_rate_nss1 and supported_vht_mcs_rate_nss2 in host do not
->>> align with firmware's definitions, resulting in some warnings. Fix them.
->>>
->>> Baochen Qiang (2):
->>>    wifi: ath10k: fix invalid VHT parameters in
->>>      supported_vht_mcs_rate_nss1
->>>    wifi: ath10k: fix invalid VHT parameters in
->>>      supported_vht_mcs_rate_nss2
->>>
->>>   drivers/net/wireless/ath/ath10k/mac.c | 4 ++--
->>>   1 file changed, 2 insertions(+), 2 deletions(-)
->>>
->>>
->>> base-commit: db1ce56e6e1d395dd42a3cd6332a871d9be59c45
+Alan Stern <stern@rowland.harvard.edu> =E4=BA=8E2024=E5=B9=B48=E6=9C=8814=
+=E6=97=A5=E5=91=A8=E4=B8=89 22:55=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Wed, Aug 14, 2024 at 01:58:16PM +0800, LidongLI wrote:
+> >
+> > Dear
+> >
+> >
+> >
+> > When will the patch be released? We are waiting to test it.
+>
+> Sorry it's taking so long.  I have been extremely busy with other things
+> during the last few weeks and have not had any time to work on this.
+>
+> Alan Stern
 
