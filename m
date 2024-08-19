@@ -1,270 +1,134 @@
-Return-Path: <linux-wireless+bounces-11612-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11613-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F7E9566BE
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 11:20:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDEBA956764
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 11:45:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FC341C219AA
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 09:19:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73C131F25565
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 09:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23091157A5A;
-	Mon, 19 Aug 2024 09:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A3115E5AB;
+	Mon, 19 Aug 2024 09:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="Dtvz6Btw"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="a3smlCVt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD4915C125
-	for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2024 09:18:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8186215B55D
+	for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2024 09:45:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724059098; cv=none; b=el6KuSB+ougGcvxSBMJbCrr4PIQSmkiL4ecFPfBb9oKeYL0VkaPzEwhzumZkpSAxajWEpKe/RRpr9yPZv8aoQ1dCG++X9nOnnKwJpVRS5X7D4/gXwYa2A6l7leVBZi7sJC6j9JNUF6Y/IA5H3sGe97SFSbEqEty1iZcMPg3bx5k=
+	t=1724060744; cv=none; b=On6uF1drpz+7BlwGdy7TU4Q/FlCoLLLF9HbO5LgfTyX4u90yDNgcDlCHn1irLixz+7ekzF7hdKqanoScJnSY/40qqC33sZxFvnKDKfppbskakQjNpRV0zSu03OzzS5R8gIGMMK/bg0EDshCrb8Ju2iKkrRkuP2UJRoW0PG43nfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724059098; c=relaxed/simple;
-	bh=nsZKIbz1hXfD7PYJjBMANxd3i4q1uOh5JXRxCdvOu/8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y63+IPMt5Kt/wnuD/XE87Z9ndySHbBgB9e0WNrlG3HOB7sT7YPcH7hp8qJrYbP1RGQnpUmlDWr0P35FyLiautnD8gBoPt2NEldZWSk3eUtQZ/joNrqPvMgCmqgooUPTdZqK0MW+rg6E42sDt8Kx4K+VHVYBb9FioPTu+Y4DDorM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=Dtvz6Btw; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 47J9IDD204126206, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1724059093; bh=nsZKIbz1hXfD7PYJjBMANxd3i4q1uOh5JXRxCdvOu/8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=Dtvz6Btwv4kkvYdh98cFJ3QhKrsOcTFHCOMDOVQIPpmfQSUPLRSi9XF3vUfLXaqnu
-	 YyoEUjihRmUPyjvtka7pZHP24Q51uVrX8h4l6Ah2mrytortUzq7Wygh5ZWBI7umYcQ
-	 e7vS1l2WxyqkAwk1pD9nR4typ3cBX8GPNxZHBR1xl9UHY1mHuIKadWC5JL7HzGoJbJ
-	 S6Z6Oz+0kfHrZ+ExdpSHaaSqvn8bsa3rb7+tO749evsEsdXdAHlmlmE5p7bjPzb49z
-	 tmij4IxNvm3Sty0xiynkVW1ykDEipjt6NzJ0wNL1JFvVEgvicv2g3x8RP9iS4CbJo4
-	 hjDK8DPmioV0A==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 47J9IDD204126206
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2024 17:18:13 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 19 Aug 2024 17:18:14 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 19 Aug
- 2024 17:18:13 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <kevin_yang@realtek.com>
-Subject: [PATCH 8/8] wifi: rtw89: introduce chip support link number and driver MLO capability
-Date: Mon, 19 Aug 2024 17:17:24 +0800
-Message-ID: <20240819091724.33730-9-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240819091724.33730-1-pkshih@realtek.com>
-References: <20240819091724.33730-1-pkshih@realtek.com>
+	s=arc-20240116; t=1724060744; c=relaxed/simple;
+	bh=B+alG2Qup606pPK8ehr4sycAgxGXVlTtyxls+7hSTPY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=f756DY++gwYLWEdC3J16SGm9il8TrJomehp27xThwHnUjNY4vbNgehcYKEYCpOFkVn32HEEOJXmqOj9itzpTpluYrvnFeLMPsUkoAMMdqqVm07FL8hGa6CANKO0cJj31JXny+BVXxFyV8WavRHeGhVMmlIue7UUL2OMwxVRl/e8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=a3smlCVt; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47INtaZt021043;
+	Mon, 19 Aug 2024 09:45:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	qSqwjhjjlmrKrc9ShaVdfdrNUt0XxZncU4eoCgLdrRA=; b=a3smlCVtnC75jaaN
+	kwUfnoxvRjpuwSDgpmPs/tfpiqf0XqJOwHzm9MutXoJv2q2To2Muy4uU/7Nxlbl1
+	YL3BoVx9dQ+LAro+MdTWZcMeJ8IO+z7oaYrkuYRo5EDSxeRlb4eyxSDYnvq8XhJP
+	BXGd5O8Fk1IvmWir1uzI9lWbe6TTT39HawcOlamkBQcfokuGy5HGoax+pRhMw0nG
+	sn8W8WP+OsGT9ybTlAN4bdAqrzyt6MGpdGrxkgGP2Rw40R/fi2DbSk3glHE+HBWc
+	RXrk9L64x9LVE6K6K2MbydZB4BqAl+KNVYIlH2XmfTYTOhzki+CdfIFZaczkjpRO
+	739xxQ==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 412k6gbq6b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Aug 2024 09:45:38 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47J9jagR025362
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Aug 2024 09:45:36 GMT
+Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 19 Aug
+ 2024 02:45:35 -0700
+Message-ID: <e49b05be-7fdd-4007-9137-e46703812fa1@quicinc.com>
+Date: Mon, 19 Aug 2024 17:45:33 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] wifi: ath10k: fix invalid VHT parameters
+To: James Prestwood <prestwoj@gmail.com>, <ath10k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240711020344.98040-1-quic_bqiang@quicinc.com>
+ <603104a7-a1ea-43c2-b0d5-fd4e46a27fe6@gmail.com>
+ <64c8a9c6-9da7-4e25-9245-490c9e7e21d2@gmail.com>
+Content-Language: en-US
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+In-Reply-To: <64c8a9c6-9da7-4e25-9245-490c9e7e21d2@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 6sffpklpysCBA8KUPg2F0TL4rGLskuR4
+X-Proofpoint-GUID: 6sffpklpysCBA8KUPg2F0TL4rGLskuR4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-19_08,2024-08-19_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ clxscore=1015 priorityscore=1501 adultscore=0 bulkscore=0 malwarescore=0
+ impostorscore=0 spamscore=0 mlxlogscore=999 suspectscore=0 phishscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408190066
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-Configure supported link number by chip. And, introduce driver capability
-flag for MLO. Driver should depend on runtime FW features and chip info to
-determine whether to set the MLO capability flag or not. Once the MLO flag
-is set, driver will consider/register/initialize things for MLO usages.
 
-However, we just add the driver MLO capability flag ahead and don't really
-set it. Then, we can start to tweak driver architecture for MLO. Some code
-should depend on this flag. And after tweaking driver architecture is done,
-we will set it based on runtime conditions as mentioned above.
+On 8/14/2024 11:46 PM, James Prestwood wrote:
+> Hi Baochen,
+> 
+> On 7/15/24 5:38 AM, James Prestwood wrote:
+>> Hi Baochen,
+>>
+>> I've compiled both changes and so far those messages are gone.
+>>
+>> Tested-By: James Prestwood <prestwoj@gmail.com> # on QCA6174 hw3.2
+> 
+> I just noticed another one actually:
+> 
+> invalid vht params rate 585 100kbps nss 1 mcs 4
+Ah :(
 
-Besides, MLD number supported by HW should be
-	chip supported mac_id number / chip supported link number
-Without driver MLO capability flag, we allocate stations based on supported
-mac_id number. With driver MLO capability flag, we allocate stations based
-on supported MLD number.
+James, could you share some info about this? like hardware target, firmware version, AP model, and any specific steps to hit this.
 
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/core.c     | 24 +++++++++++++++++--
- drivers/net/wireless/realtek/rtw89/core.h     |  2 ++
- drivers/net/wireless/realtek/rtw89/rtw8851b.c |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8852a.c |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8852b.c |  1 +
- .../net/wireless/realtek/rtw89/rtw8852bt.c    |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8852c.c |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8922a.c |  1 +
- 8 files changed, 30 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 9aa64ce85678..9d38b586441e 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -4263,9 +4263,14 @@ void rtw89_core_stop(struct rtw89_dev *rtwdev)
- u8 rtw89_acquire_mac_id(struct rtw89_dev *rtwdev)
- {
- 	const struct rtw89_chip_info *chip = rtwdev->chip;
--	u8 mac_id_num = chip->support_macid_num;
-+	u8 mac_id_num;
- 	u8 mac_id;
- 
-+	if (rtwdev->support_mlo)
-+		mac_id_num = chip->support_macid_num / chip->support_link_num;
-+	else
-+		mac_id_num = chip->support_macid_num;
-+
- 	mac_id = find_first_zero_bit(rtwdev->mac_id_map, mac_id_num);
- 	if (mac_id == mac_id_num)
- 		return RTW89_MAX_MAC_ID_NUM;
-@@ -4681,6 +4686,9 @@ static int rtw89_core_register_hw(struct rtw89_dev *rtwdev)
- 	if (chip->chip_gen == RTW89_CHIP_BE)
- 		hw->wiphy->flags |= WIPHY_FLAG_DISABLE_WEXT;
- 
-+	if (rtwdev->support_mlo)
-+		hw->wiphy->flags |= WIPHY_FLAG_SUPPORTS_MLO;
-+
- 	hw->wiphy->features |= NL80211_FEATURE_SCAN_RANDOM_MAC_ADDR;
- 
- 	hw->wiphy->max_scan_ssids = RTW89_SCANOFLD_MAX_SSID;
-@@ -4781,6 +4789,7 @@ struct rtw89_dev *rtw89_alloc_ieee80211_hw(struct device *device,
- 	struct ieee80211_ops *ops;
- 	u32 driver_data_size;
- 	int fw_format = -1;
-+	bool support_mlo;
- 	bool no_chanctx;
- 
- 	firmware = rtw89_early_fw_feature_recognize(device, chip, &early_fw, &fw_format);
-@@ -4809,6 +4818,14 @@ struct rtw89_dev *rtw89_alloc_ieee80211_hw(struct device *device,
- 	if (!hw)
- 		goto err;
- 
-+	/* TODO: When driver MLO arch. is done, determine whether to support MLO
-+	 * according to the following conditions.
-+	 * 1. run with chanctx_ops
-+	 * 2. chip->support_link_num != 0
-+	 * 3. FW feature supports AP_LINK_PS
-+	 */
-+	support_mlo = false;
-+
- 	hw->wiphy->iface_combinations = rtw89_iface_combs;
- 
- 	if (no_chanctx || chip->support_chanctx_num == 1)
-@@ -4823,9 +4840,12 @@ struct rtw89_dev *rtw89_alloc_ieee80211_hw(struct device *device,
- 	rtwdev->chip = chip;
- 	rtwdev->fw.req.firmware = firmware;
- 	rtwdev->fw.fw_format = fw_format;
-+	rtwdev->support_mlo = support_mlo;
- 
--	rtw89_debug(rtwdev, RTW89_DBG_FW, "probe driver %s chanctx\n",
-+	rtw89_debug(rtwdev, RTW89_DBG_CHAN, "probe driver %s chanctx\n",
- 		    no_chanctx ? "without" : "with");
-+	rtw89_debug(rtwdev, RTW89_DBG_CHAN, "probe driver %s MLO cap\n",
-+		    support_mlo ? "with" : "without");
- 
- 	return rtwdev;
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 0ac77376e130..93b463659a3c 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -4181,6 +4181,7 @@ struct rtw89_chip_info {
- 	u8 wde_qempty_mgq_grpsel;
- 	u32 rf_base_addr[2];
- 	u8 support_macid_num;
-+	u8 support_link_num;
- 	u8 support_chanctx_num;
- 	u8 support_bands;
- 	u16 support_bandwidths;
-@@ -5424,6 +5425,7 @@ struct rtw89_dev {
- 	const struct ieee80211_ops *ops;
- 
- 	bool dbcc_en;
-+	bool support_mlo;
- 	enum rtw89_mlo_dbcc_mode mlo_dbcc_mode;
- 	struct rtw89_hw_scan_info scan_info;
- 	const struct rtw89_chip_info *chip;
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851b.c b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-index c2fa8e270a4b..6dc07edd18a2 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851b.c
-@@ -2465,6 +2465,7 @@ const struct rtw89_chip_info rtw8851b_chip_info = {
- 	.dig_regs		= &rtw8851b_dig_regs,
- 	.tssi_dbw_table		= NULL,
- 	.support_macid_num	= RTW89_MAX_MAC_ID_NUM,
-+	.support_link_num	= 0,
- 	.support_chanctx_num	= 0,
- 	.support_rnr		= false,
- 	.support_bands		= BIT(NL80211_BAND_2GHZ) |
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a.c b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-index 1034d8b29f5d..5eadb0cba29c 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852a.c
-@@ -2183,6 +2183,7 @@ const struct rtw89_chip_info rtw8852a_chip_info = {
- 	.dig_regs		= &rtw8852a_dig_regs,
- 	.tssi_dbw_table		= NULL,
- 	.support_macid_num	= RTW89_MAX_MAC_ID_NUM,
-+	.support_link_num	= 0,
- 	.support_chanctx_num	= 1,
- 	.support_rnr		= false,
- 	.support_bands		= BIT(NL80211_BAND_2GHZ) |
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b.c b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-index 4a4e825302ea..b7e92ce9256b 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852b.c
-@@ -820,6 +820,7 @@ const struct rtw89_chip_info rtw8852b_chip_info = {
- 	.dig_regs		= &rtw8852b_dig_regs,
- 	.tssi_dbw_table		= NULL,
- 	.support_macid_num	= RTW89_MAX_MAC_ID_NUM,
-+	.support_link_num	= 0,
- 	.support_chanctx_num	= 0,
- 	.support_rnr		= false,
- 	.support_bands		= BIT(NL80211_BAND_2GHZ) |
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bt.c b/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
-index f7d133ac34de..52a76d2646e9 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852bt.c
-@@ -753,6 +753,7 @@ const struct rtw89_chip_info rtw8852bt_chip_info = {
- 	.dig_regs		= &rtw8852bt_dig_regs,
- 	.tssi_dbw_table		= NULL,
- 	.support_macid_num	= RTW89_MAX_MAC_ID_NUM,
-+	.support_link_num       = 0,
- 	.support_chanctx_num	= 1,
- 	.support_rnr		= false,
- 	.support_bands		= BIT(NL80211_BAND_2GHZ) |
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852c.c b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-index d4adab43f4f2..4a7eaebcdddc 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852c.c
-@@ -2961,6 +2961,7 @@ const struct rtw89_chip_info rtw8852c_chip_info = {
- 	.dig_regs		= &rtw8852c_dig_regs,
- 	.tssi_dbw_table		= &rtw89_8852c_tssi_dbw_table,
- 	.support_macid_num	= RTW89_MAX_MAC_ID_NUM,
-+	.support_link_num	= 0,
- 	.support_chanctx_num	= 2,
- 	.support_rnr		= false,
- 	.support_bands		= BIT(NL80211_BAND_2GHZ) |
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922a.c b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-index 85bdeeda95de..3387989299c9 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-@@ -2621,6 +2621,7 @@ const struct rtw89_chip_info rtw8922a_chip_info = {
- 	.dig_regs		= &rtw8922a_dig_regs,
- 	.tssi_dbw_table		= NULL,
- 	.support_macid_num	= 32,
-+	.support_link_num	= 2,
- 	.support_chanctx_num	= 2,
- 	.support_rnr		= true,
- 	.support_bands		= BIT(NL80211_BAND_2GHZ) |
--- 
-2.25.1
-
+> 
+> Thanks,
+> 
+> James
+> 
+>>
+>> On 7/10/24 7:03 PM, Baochen Qiang wrote:
+>>> supported_vht_mcs_rate_nss1 and supported_vht_mcs_rate_nss2 in host do not
+>>> align with firmware's definitions, resulting in some warnings. Fix them.
+>>>
+>>> Baochen Qiang (2):
+>>>    wifi: ath10k: fix invalid VHT parameters in
+>>>      supported_vht_mcs_rate_nss1
+>>>    wifi: ath10k: fix invalid VHT parameters in
+>>>      supported_vht_mcs_rate_nss2
+>>>
+>>>   drivers/net/wireless/ath/ath10k/mac.c | 4 ++--
+>>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>>
+>>>
+>>> base-commit: db1ce56e6e1d395dd42a3cd6332a871d9be59c45
 
