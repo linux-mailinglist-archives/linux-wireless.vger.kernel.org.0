@@ -1,81 +1,81 @@
-Return-Path: <linux-wireless+bounces-11638-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11639-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 756AD9576C2
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 23:45:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3E8F9576C5
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 23:46:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30167284C04
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 21:45:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F4AC284C14
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 21:46:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C66E1DC48E;
-	Mon, 19 Aug 2024 21:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 382571DF665;
+	Mon, 19 Aug 2024 21:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KxZlKOCY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NDUg9yru"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
+Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E98F1DC468;
-	Mon, 19 Aug 2024 21:45:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C351DD3A3;
+	Mon, 19 Aug 2024 21:45:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724103928; cv=none; b=V34+HBJQ/RYjcOfFDDySZjb6ooGXP5WGVUer5PerOXzGNLHa/BiCYYGRE7pYFx5Q/dbqnqrUxbNaDC4EXSYl85F5YZd/iXHs1ptoVnV5eBTaPLI1dqHRgp5OZSHuD6gyWUO1ezXbV7smEJVgj5R5LalkGFCIDkzR7de2HwP7WIA=
+	t=1724103931; cv=none; b=S9C58sHZWyflYOzZFAZRK30R+9vQZR2fnAakeko4sq2VsnUQBBiMEieUVVkK5v0Z+TWu2wnSVOyG5u/BqZgUBQSbwi2PaEWCYXeV7g8IbREOQ9RXARg42QJ4tccUXD04ROWBBGjvjAhnIDMwxLevUNVLe1Yh4VUqS3YiK3MHT7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724103928; c=relaxed/simple;
-	bh=1ZIX8HLw9Lylu+1ABelTVuQD5aYVhZQF6TKBZqYICOY=;
+	s=arc-20240116; t=1724103931; c=relaxed/simple;
+	bh=Oa+1kc2c4IF2nr+g9Ni3tlSFwt9ny2drF1n9mJIIwAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pmDjvil7OVbnVDLSrTjQ2XTRu76PfPMhJYzcnh24Tf9rD/Unin4U+iD2kTWAAWIQU+/5O5bbNHxeZ0/gYVgjckCduNWGbB/Y2f+wn1V7R0aBkWsU8kqPlxAVLMPskXdMXfkLQ7msJJhDn5YZSwbA2vDbQF/dWrOR+fjNcEdXY4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KxZlKOCY; arc=none smtp.client-ip=209.85.221.178
+	 MIME-Version:Content-Type; b=TBQc2c3rtZZITKXGU504L/PFLp5pTSE3RhwdDdSnS/9uS+WfTwZ2/3UVTf3KtQgJ6QCwdq0IlneYMd5NliMiRTu2dGCOpaUmM0Wiu5hIGbuNmUtv6k72Am9MnyGnMH+XlXwqnw2wGsCTn99Y5uC7W0ue+QcvzcopiA7P+wP/vKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NDUg9yru; arc=none smtp.client-ip=209.85.221.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-4f6b612fad4so1634326e0c.0;
-        Mon, 19 Aug 2024 14:45:26 -0700 (PDT)
+Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-4f6d01961a7so1597893e0c.2;
+        Mon, 19 Aug 2024 14:45:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724103926; x=1724708726; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1724103928; x=1724708728; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hJvsvZ9AilC7U7j8ILfRWsNQMKDz18Ta5023IDmqwaA=;
-        b=KxZlKOCYcc1VTrwRtufmN65Y4o7cocZwR37gCkXKOa2BE/n10wcv6yietzkeCdsr8r
-         fxJAGDUItsMwqq2Wb63qKZbSp2YFDuTNGNkYOlRzqXJgqGad97fA/Bv4LDqFSbeG3hj9
-         me81UR1ERTK3hFuv0sDNjtQrMsEZJ3KEhXzq5xvlPjbaERJvshy0ERkbxfRJ3zcOhKEu
-         FTeSmNtfDgqdUiu8Jmtauoe3UWUB15mYkr+pALFsvQzxba+HaWJD8k4CVMtYe3aYUCSg
-         xuvkPzZg3X7phLnrmSAvmwYWbAHT6M0uZO3tY/rBFVs476/WPdaIvJ0rJmrhGCuoIHa4
-         X7Yg==
+        bh=VLWgzRU2c1+iaemRuNKcFJqB7h3pyEwAcIfZNRs/RAc=;
+        b=NDUg9yrue5tqal0K+UoCqUXHZT6BiiUmjsYs2lUTNYDvZI7qPV2AtnwqP4CgX2jIy9
+         xgzvxzcVcEQ420U2wvysWqfneNGZXIlZZ1QWKoMMgyH6XMWnQdeUSD/jOSRDDqxgLekW
+         ayfIsiPSfZ5egnH6CJZ3bGeIbRJ+nPzfZPdxvYT4ry5TbLlHsE5a9/aC8pp9nRGcwIOM
+         b8571N41UdGiISIyWcmpj1v+2ePRbpnoyQunLeh8l5UUGxWENqL4JfkA03CViLQZJ09j
+         UN2L+9wbHw7lvxNojUjsZQyhL88D3i4bqpbdiXMkyHd0n7EUvMmCKJ2ESWZVds/bfruO
+         JJ0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724103926; x=1724708726;
+        d=1e100.net; s=20230601; t=1724103928; x=1724708728;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hJvsvZ9AilC7U7j8ILfRWsNQMKDz18Ta5023IDmqwaA=;
-        b=F3NowLkX7aTXhnr8HIOddPOrrck98/eonkyxHyMV7QoqFMc1ScpzgOleZosWAuX7ih
-         2HplqzsIvqSRr5BGqTmXvfRQwjNVK8ssuD0fnk3xjEkKiKsBuRd94GzFnJwPRYgU7+wm
-         vlv4D3LLLrIjr7Asxf3hoC2xV5BBilAq+5zXJb66XaOZuJZEHfOZEqg4lqeWSZosVZM8
-         ibpNIwDE8NhFeRFhPgZHRl8yLfVtOKO3ez56pfrn5P6TI/w0VmGFYRL37sUknmdPfhbI
-         54E+3uvoKZ1pUG1zdVPvwCH5jlync1JzRkTRGN25wE2MEp+euWEHgtmUrIvwiS//MDWR
-         ldWw==
-X-Forwarded-Encrypted: i=1; AJvYcCW2iLJxr0P7m7xt4G0WIEqeEt8bdamICJ5ezF7kRnP9Gq7j9lZA5v1gl9BRPohDV3bnnJ0O7ORAl60TlqbjE9wsEOkPwxOXHsvclKTF
-X-Gm-Message-State: AOJu0YztpEU+Wk9XQWOo3hxpGx2eeL7MwgQFgR1fBsrftk0+vdRribA3
-	P5aX6OudhTPkhBvfxGIgZlYjV5Qhc85Cny7+QC4+gZHsNPORxcQW9sy0hSBh
-X-Google-Smtp-Source: AGHT+IEh2E2MZwX5ERJAt3jMC+7WO8f8ibbeyg7radwZNkVzufSrJv1c2KbQOAdQ1ylKqmQYv0x4gA==
-X-Received: by 2002:a05:6122:1d51:b0:4f2:a974:29e5 with SMTP id 71dfb90a1353d-4fc6c580866mr15202937e0c.1.1724103925708;
-        Mon, 19 Aug 2024 14:45:25 -0700 (PDT)
+        bh=VLWgzRU2c1+iaemRuNKcFJqB7h3pyEwAcIfZNRs/RAc=;
+        b=TxMOV4qWIC3t6kD8hTOn773I0aqqQQIWCEiPhFkpSPwDOEK5iWOkfoGboSSjH/mHEV
+         2Mo48MuCoG3FxhJkGiMT8Bqy6qeSvW9P1YdGG230lYlnTmFoFThfyaPAKun+2/E6JyH+
+         Zp97sik9ZKNouauEUXPqZQ/1/zisIKS9G4UnLNIKHbWe4UbhsrihJ8bSrfqEP6RoLPt4
+         B4hqWTsrp1GzYma/u/LXx3Wr33D5s3IawGmfrhL6oGNskmfgnjeQgosiPYlQzKB/zNdw
+         4h9rTu77lr5BtyRss2muiGjElfcx6Z+K+ttaS5nxAc9AQuuE7IRE+y9Gjc63VJRF/46t
+         Vf2A==
+X-Forwarded-Encrypted: i=1; AJvYcCUjTvWACCw/ELEKoByT3qFlagrHrILyHbXPY8A4b6vwQu5YSB1NmFNS0PCzVrTpqqLmfyv/gOvlYFgidWpIKFXEFdi7hS/9i3ql/ckq
+X-Gm-Message-State: AOJu0Yz3vhFE5l9WJS4riMUfYE8sUClXTOgJ7/vGLIpfofqdipElzZRp
+	6a5mJilklqH67CgrHVJq3PfmVcSBKgwaP9sdoQmeGhZPVXIQkVUWBIy1pjel
+X-Google-Smtp-Source: AGHT+IG91aYPonuoxZkAZr4YT3abtl+VlKqqICbOlpd3gTxoG85MUKnM7/XV0ZKLcgz63N0K336rSA==
+X-Received: by 2002:a05:6122:8c3:b0:4f2:ea44:fd36 with SMTP id 71dfb90a1353d-4fcd886dc3dmr722488e0c.0.1724103928462;
+        Mon, 19 Aug 2024 14:45:28 -0700 (PDT)
 Received: from fedora.. ([2800:e6:4001:fca7:b7e8:4418:a953:72f2])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-4fc5b9c872fsm1230429e0c.46.2024.08.19.14.45.24
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-4fc5b9c872fsm1230429e0c.46.2024.08.19.14.45.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Aug 2024 14:45:25 -0700 (PDT)
+        Mon, 19 Aug 2024 14:45:28 -0700 (PDT)
 From: =?UTF-8?q?Juan=20Jos=C3=A9=20Arboleda?= <soyjuanarbol@gmail.com>
 To: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: miriam.rachel.korenblit@intel.com,
 	kvalo@kernel.org,
 	=?UTF-8?q?Juan=20Jos=C3=A9=20Arboleda?= <soyjuanarbol@gmail.com>
-Subject: [PATCH v2 1/3] iwlwifi: mvm: Improve code style in pointer declarations
-Date: Mon, 19 Aug 2024 16:45:18 -0500
-Message-ID: <10b6d4945675cada713e819f7bd6782a66a1c0d2.1724103043.git.soyjuanarbol@gmail.com>
+Subject: [PATCH v2 2/3] iwlwifi: mvm: Enclose multi-statement macro in a do while
+Date: Mon, 19 Aug 2024 16:45:19 -0500
+Message-ID: <61d25f02322b875dd9eb37ea992dc62be7c75840.1724103043.git.soyjuanarbol@gmail.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <cover.1724103043.git.soyjuanarbol@gmail.com>
 References: <cover.1724103043.git.soyjuanarbol@gmail.com>
@@ -88,39 +88,39 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The changes ensure that there is a space between the `u8` type and the
-`*` character as preferred by the guidelines.
+This patch encloses the `CHECK_BW` macro inside a do while as
+preferred by the guidelines.
 
 This change is purely stylistic and do not affect the functionality
 of the code.
 
 Signed-off-by: Juan José Arboleda <soyjuanarbol@gmail.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/power.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/power.c b/drivers/net/wireless/intel/iwlwifi/mvm/power.c
-index bc363e8427e4..a386b315e52f 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/power.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/power.c
-@@ -567,7 +567,7 @@ struct iwl_power_vifs {
- 	bool monitor_active;
- };
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+index 1a210d0c22b3..6366779ccaf2 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c
+@@ -1043,10 +1043,13 @@ iwl_mvm_decode_he_phy_ru_alloc(struct iwl_mvm_rx_phy_data *phy_data,
+ 			cpu_to_le16(IEEE80211_RADIOTAP_HE_DATA2_PRISEC_80_SEC);
  
--static void iwl_mvm_power_disable_pm_iterator(void *_data, u8* mac,
-+static void iwl_mvm_power_disable_pm_iterator(void *_data, u8 *mac,
- 					      struct ieee80211_vif *vif)
- {
- 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
-@@ -575,7 +575,7 @@ static void iwl_mvm_power_disable_pm_iterator(void *_data, u8* mac,
- 	mvmvif->pm_enabled = false;
- }
- 
--static void iwl_mvm_power_ps_disabled_iterator(void *_data, u8* mac,
-+static void iwl_mvm_power_ps_disabled_iterator(void *_data, u8 *mac,
- 					       struct ieee80211_vif *vif)
- {
- 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+ #define CHECK_BW(bw) \
+-	BUILD_BUG_ON(IEEE80211_RADIOTAP_HE_MU_FLAGS2_BW_FROM_SIG_A_BW_ ## bw ## MHZ != \
+-		     RATE_MCS_CHAN_WIDTH_##bw >> RATE_MCS_CHAN_WIDTH_POS); \
+-	BUILD_BUG_ON(IEEE80211_RADIOTAP_HE_DATA6_TB_PPDU_BW_ ## bw ## MHZ != \
+-		     RATE_MCS_CHAN_WIDTH_##bw >> RATE_MCS_CHAN_WIDTH_POS)
++	do { \
++		BUILD_BUG_ON(IEEE80211_RADIOTAP_HE_MU_FLAGS2_BW_FROM_SIG_A_BW_ ## bw ## MHZ != \
++			     RATE_MCS_CHAN_WIDTH_##bw >> RATE_MCS_CHAN_WIDTH_POS); \
++		BUILD_BUG_ON(IEEE80211_RADIOTAP_HE_DATA6_TB_PPDU_BW_ ## bw ## MHZ != \
++			     RATE_MCS_CHAN_WIDTH_##bw >> RATE_MCS_CHAN_WIDTH_POS); \
++	} while (0)
++
+ 	CHECK_BW(20);
+ 	CHECK_BW(40);
+ 	CHECK_BW(80);
 -- 
 2.46.0
 
