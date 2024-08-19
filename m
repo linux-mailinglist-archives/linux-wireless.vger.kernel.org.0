@@ -1,65 +1,64 @@
-Return-Path: <linux-wireless+bounces-11603-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11604-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00E6D95661B
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 10:55:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ACEE9566AA
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 11:18:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7702DB22CE8
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 08:55:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FDBCB24419
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 09:18:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F0515B107;
-	Mon, 19 Aug 2024 08:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFACC15D5A1;
+	Mon, 19 Aug 2024 09:17:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="YU+1Juk0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F119947A;
-	Mon, 19 Aug 2024 08:55:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C0C15CD60
+	for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2024 09:17:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724057719; cv=none; b=Ts/1ECPXWv/GVVE6InC2zlArQVfxPetv/6o7zmRtXnFqaDa2ijo3IItTdsxK9pceD7jk0zQCMLKe0GH6FkLSpxEry/LhTtzaMPJ1tTXlQrpfgpqLdHfM66xYjUcnv2KeUuMALIeI4rLyfdpDYTb2hNw/9XobM6+l1s2NPF5fV5M=
+	t=1724059060; cv=none; b=CoZKRpLfl275XGQUJcaa5eVFfofSBeCUgWDyQSlE1auFH7L0RpxlSUn3vwjdmNDOlC1g8b4oURx7GHl3yUeebipRiQ8pn2jxU+/jT1UBNMa/BJ4MZcUFSpYAkY52jjQVGnhATMQksl1VxiWgMRw/CBXFpILoYahWgW6XiFLUYt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724057719; c=relaxed/simple;
-	bh=BZ+tG3sPqkdp1r8WVl3AmA1qeUmicg7w7NSIoJ6H0IM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gR/Xe4Y8JnmfYbisuGQkVu8GQpwI3V534I0JtVsAHeW/k3rIEDVNzv8Zp9mVqStVSuEmG+0Mug+Fiq+hdrG6hsHzjQ69pwkq56st0vMzJj3TijqoS7saRFAZltFFg9TQcUoEFR0eZ+QDAca0nrpERI3ay4Bz8pz+oDKlkkYYKw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowAA3XQBaCMNmOqISCA--.43879S2;
-	Mon, 19 Aug 2024 16:55:00 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: nbd@nbd.name,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	kvalo@kernel.org,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	chui-hao.chiu@mediatek.com,
-	howard-yh.hsu@mediatek.com,
-	StanleyYP.Wang@mediatek.com,
-	benjamin-jw.lin@mediatek.com,
-	allen.ye@mediatek.com,
-	chank.chen@mediatek.com,
-	meichia.chiu@mediatek.com,
-	Bo.Jiao@mediatek.com,
-	evelyn.tsai@mediatek.com,
-	Money.Wang@mediatek.com,
-	akpm@linux-foundation.org
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH RESEND] wifi: mt76: mt7996: fix NULL pointer dereference in mt7996_mcu_sta_bfer_he
-Date: Mon, 19 Aug 2024 16:54:49 +0800
-Message-Id: <20240819085449.1013279-1-make24@iscas.ac.cn>
+	s=arc-20240116; t=1724059060; c=relaxed/simple;
+	bh=gpYcAn/ieuljSvStirnDBU+8gSXgoPXNbQtKusVUKlc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=W7OEiXCCN5m8DgW2nfw0OWVjgtl39YY8clSVxWmbPYLfZ1dsskHArxT/1dT8+R+FOjy2UQJc76dhIdpRnyl72lNqnQyx1soaMYo9bXt0Ibtmm+35s0jCBdU3SjuwYXztocvv7WyYQWIvuBF4qyp0/GXArEzkmMO4KtUN6YwYRsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=YU+1Juk0; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 47J9HY7r84125995, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1724059054; bh=gpYcAn/ieuljSvStirnDBU+8gSXgoPXNbQtKusVUKlc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=YU+1Juk0q531UogorXwBEfhsBMy7lKCHfMU/nLqdj6bQ6XnfgAz2ibxyPHJk/k9M8
+	 lavNBi/fpItjxIWJMcSZFFcGPAnQaX61U/fcpk+cls2gUsJtpcR96VaJgvRjwiyluW
+	 n71kAKC84o/zLncK2bfD7mWZalRCta9jfu//pw5+mRBKiiCjxv1waFlbgCTngJ1dki
+	 eWNwYMOrFxr1lcwal/OR+c76noB+MTd5hRVRmGjNvjQiifdbdMM0nCyOclXlSS5vJA
+	 WF77oFgr26sR2hM4tWjB7zprGgZK3wzDZxccRs1UImoNKSa1z7LLn8kmvdOj4ATyXi
+	 1XIqt/TlD8rfw==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 47J9HY7r84125995
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2024 17:17:34 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 19 Aug 2024 17:17:34 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 19 Aug
+ 2024 17:17:34 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+CC: <kevin_yang@realtek.com>
+Subject: [PATCH 0/8] wifi: rtw89: use and propagate chanctx properly
+Date: Mon, 19 Aug 2024 17:17:16 +0800
+Message-ID: <20240819091724.33730-1-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -68,51 +67,58 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAA3XQBaCMNmOqISCA--.43879S2
-X-Coremail-Antispam: 1UD129KBjvdXoWruw4DZw1UtrWxKF1xJr13Jwb_yoWDXrXE9r
-	n29FnIqw48Kw48Kr429wnxuryay3ykZF97Gay5tayfta97J3yUZF1IvFn3Ar13uFn7ZF1U
-	J3ZrJFy0y395WjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbS8FF20E14v26ryj6rWUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
-	Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x
-	0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
-	7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcV
-	C0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF
-	04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7
-	CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0pRNAwsUUUUU=
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-Fix the NULL pointer dereference in mt7996_mcu_sta_bfer_he
-routine adding an sta interface to the mt7996 driver.
+Previously rtw89 hardcode the chanctx to single one, because it only
+support one channel at once. Now we are going to support MLO that
+we want to support more than one chanctx at the same time, so adjust
+the code to propagate chanctx to callee.
 
-Found by code review.
+The last patch is to add a flag 'support_mlo", which value is decided
+at probe stage, and then we can use this flag as clue how to configure
+hardware corresponding to operating modes.
 
-Cc: stable@vger.kernel.org
-Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 3 +++
- 1 file changed, 3 insertions(+)
+Zong-Zhe Yang (8):
+  wifi: rtw89: pass chan to rfk_band_changed()
+  wifi: rtw89: 8851b: use right chanctx whenever possible in RFK flow
+  wifi: rtw89: 8852a: use right chanctx whenever possible in RFK flow
+  wifi: rtw89: 8852bx: use right chanctx whenever possible in RFK flow
+  wifi: rtw89: 8852c: use right chanctx whenever possible in RFK flow
+  wifi: rtw89: 8922a: use right chanctx whenever possible in RFK flow
+  wifi: rtw89: rename roc_entity_idx to roc_chanctx_idx
+  wifi: rtw89: introduce chip support link number and driver MLO
+    capability
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 2e4fa9f48dfb..cba28d8d5562 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -1544,6 +1544,9 @@ mt7996_mcu_sta_bfer_he(struct ieee80211_sta *sta, struct ieee80211_vif *vif,
- 	u8 nss_mcs = mt7996_mcu_get_sta_nss(mcs_map);
- 	u8 snd_dim, sts;
- 
-+	if (!vc)
-+		return;
-+
- 	bf->tx_mode = MT_PHY_TYPE_HE_SU;
- 
- 	mt7996_mcu_sta_sounding_rate(bf);
+ drivers/net/wireless/realtek/rtw89/chan.c     |  12 +-
+ drivers/net/wireless/realtek/rtw89/core.c     |  30 +-
+ drivers/net/wireless/realtek/rtw89/core.h     |  14 +-
+ drivers/net/wireless/realtek/rtw89/fw.c       |  25 +-
+ drivers/net/wireless/realtek/rtw89/fw.h       |  17 +-
+ drivers/net/wireless/realtek/rtw89/phy.c      |  18 +-
+ drivers/net/wireless/realtek/rtw89/phy.h      |   6 +
+ drivers/net/wireless/realtek/rtw89/rtw8851b.c |  19 +-
+ .../net/wireless/realtek/rtw89/rtw8851b_rfk.c | 138 +++++----
+ .../net/wireless/realtek/rtw89/rtw8851b_rfk.h |  18 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852a.c |  27 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852a.h |   4 +-
+ .../net/wireless/realtek/rtw89/rtw8852a_rfk.c | 292 ++++++++++--------
+ .../net/wireless/realtek/rtw89/rtw8852a_rfk.h |  17 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852b.c |  21 +-
+ .../wireless/realtek/rtw89/rtw8852b_common.c  |  15 +-
+ .../wireless/realtek/rtw89/rtw8852b_common.h  |  15 +-
+ .../net/wireless/realtek/rtw89/rtw8852b_rfk.c | 211 +++++++------
+ .../net/wireless/realtek/rtw89/rtw8852b_rfk.h |  20 +-
+ .../net/wireless/realtek/rtw89/rtw8852bt.c    |  29 +-
+ .../wireless/realtek/rtw89/rtw8852bt_rfk.c    | 188 +++++------
+ .../wireless/realtek/rtw89/rtw8852bt_rfk.h    |  20 +-
+ drivers/net/wireless/realtek/rtw89/rtw8852c.c |  19 +-
+ .../net/wireless/realtek/rtw89/rtw8852c_rfk.c | 162 +++++-----
+ .../net/wireless/realtek/rtw89/rtw8852c_rfk.h |  17 +-
+ drivers/net/wireless/realtek/rtw89/rtw8922a.c |  26 +-
+ 26 files changed, 766 insertions(+), 614 deletions(-)
+
 -- 
 2.25.1
 
