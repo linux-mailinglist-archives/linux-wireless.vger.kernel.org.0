@@ -1,312 +1,139 @@
-Return-Path: <linux-wireless+bounces-11596-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11597-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3B5E956142
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 04:53:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06BC495614A
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 05:00:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 149C3B216DF
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 02:53:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B15E31F2173B
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 03:00:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331D14594A;
-	Mon, 19 Aug 2024 02:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03ECD4594D;
+	Mon, 19 Aug 2024 02:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="jerGQoQC"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="PUlDlIb9"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669E2381C2
-	for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2024 02:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01AB2947A
+	for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2024 02:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724035981; cv=none; b=TYFQqQLY6tsnvAx0gqKONreaLxt4DrpzYXSKlBKwrK6/kSanjhS68nTg9Vvj2HmDcvs9Zf1W5eQx0fPn1ckfNsy/Bnv0Svnk5EyFOCYT+/sWHQ+nhhcwczo+ZDLiNgxnr+dbL55fFgyHVJgI7ag6OHbZ9bIKr5lGhHr2LVdJTuA=
+	t=1724036396; cv=none; b=d5+YZbtKmk+2ndHUTlwPV+OVomuBCosYIZH7+FLteNWFHk0E4ITnERtXgqQ42jI9XkOnGQEcVSy8VgmvNTGVLBRR4trCoYcna82ih3jiLjoIoEbCiOte5YG3RhFYmrg8xPpK0Sl8eaU4e3dcR9CzqhHHjQarb2r7IWRfT0UbqU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724035981; c=relaxed/simple;
-	bh=ZN96AwL2KsBQqu0cIFeHRYHxE7NB+f8wSAU2QFiwhQo=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=j06NeG6U2twXAdjPPGpBiEUb3NXaHYqE6HlNFuGblR3kaOfy0pa08TZ33O3rUFtZbN5NaPQSbtTSboOIXsh44D99+KEVSNlbKR91foONkijmKLPQ4jX6DFOOUsL6X7UdUi4kU+kg63lCkx6/01uVK/efdZ0JBiX2xmAc86rXmk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=jerGQoQC; arc=none smtp.client-ip=211.75.126.72
+	s=arc-20240116; t=1724036396; c=relaxed/simple;
+	bh=4uMF4RDLI+gpuW82ZyVWygy9dNL6YwRjObVxjU7Il1E=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=gV5j4pjBU0TiD7aJEVqSvLwnmlYalleiUqSsnAVigMXLGKSK8BijErkMVchN+MyiKENY2kPxU7YVqBkyw2JitESZ+57vtfi73dkmlF1j7Zza9YJ55U3qBz84H3UncVOTOU/iiRjxh0u70hyWwsGqAmen8BixG1t0ro5pQ82WeeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=PUlDlIb9; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 47J2qrh073762440, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 47J2xP8413767497, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1724035973; bh=ZN96AwL2KsBQqu0cIFeHRYHxE7NB+f8wSAU2QFiwhQo=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=jerGQoQC1m7gS28kPEKMTy+8vW+NT9Jhalatgl0RASDNPsT/CoVPt0WnhNtACiZkF
-	 wP/Pkfeofn5QGIEx+FAELJbfQaDsVDMkBOoEYeSSaHs/egGUuokzmx8Re/VdZv6f+e
-	 GOSNpUXySAGEo92tFeFW9/Ivwv0Rix/+i9VO11YF+XRc/d49NW7TvuicocrLSQFCHJ
-	 HQteXKTbXqvjEeUBEbApfkuufsiY1B/t/qtxnPd4hmYAaUWoBRgWCY1ISe6eul/Kp7
-	 t/2fezdVFp0fFs+6CUfwJvkOFm5rwwcLWf5y5F9xffDJk20bUIfuhGZyb9S8suKCQt
-	 TaSljmD8p0CaQ==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 47J2qrh073762440
+	t=1724036365; bh=4uMF4RDLI+gpuW82ZyVWygy9dNL6YwRjObVxjU7Il1E=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=PUlDlIb9xZVZZ0DUbwPjqHZW+UEnv5rGtQ0/CVcm247uY49pcklZPdGGUyerQmD1G
+	 Xm/isFyuNBzFdtSXVbfOvYelO6VzsRplulWzuWe1bhfxXc3/hJu0OyTRSXiRf4ZOdu
+	 PFufHoc0oNT1OnMy/Nq+K/6MYuiR/hBw/DZcvJhY29bFdzH/mADjxZ4Vd+Nu0q2/SX
+	 QYz0YGIa6EQTxx/GAn+VR94x9YbtAnYSVnn7UE8/FmUMwX8KBf+JEFc96mO2QaGK+x
+	 sH5F/5npEFYqRPTEaIIaVmcKa9esk62Gh7MoJPz6y2H0LC7jlZGKHag4Ycrt3+OS4k
+	 Y3u5voe2NDVcg==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 47J2xP8413767497
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 19 Aug 2024 10:52:53 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+	Mon, 19 Aug 2024 10:59:25 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 19 Aug 2024 10:52:53 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 19 Aug
- 2024 10:52:53 +0800
+ 15.1.2507.39; Mon, 19 Aug 2024 10:59:25 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Mon, 19 Aug 2024 10:59:25 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
+ 15.01.2507.035; Mon, 19 Aug 2024 10:59:25 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <rtl8821cerfe2@gmail.com>
-Subject: [PATCH] wifi: rtw88: assign mac_id for vif/sta and update to TX desc
-Date: Mon, 19 Aug 2024 10:52:48 +0800
-Message-ID: <20240819025248.17939-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+To: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
+        Bitterblue Smith
+	<rtl8821cerfe2@gmail.com>
+CC: Sascha Hauer <sha@pengutronix.de>,
+        Martin Blumenstingl
+	<martin.blumenstingl@googlemail.com>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH 2/2] wifi: rtw88: Avoid using macid 0 in AP mode
+Thread-Topic: [PATCH 2/2] wifi: rtw88: Avoid using macid 0 in AP mode
+Thread-Index: AQHa4UC4lZ9xsp59ME2YErnRO2fzALIO0JLQ///mdQCAAUpa0IAAPgYAgAxlZgCAEV8d8A==
+Date: Mon, 19 Aug 2024 02:59:24 +0000
+Message-ID: <e8d3c81a47de44e1ba7df08b9de826ee@realtek.com>
+References: <9174a776-4771-4351-85fa-476e240d8ace@gmail.com>
+ <e4be0a75-43b2-4ae5-9aab-5c4a88e78097@gmail.com>
+ <9356af89520243ccacc0be72b8b03252@realtek.com>
+ <4f052989-5fb9-4c5c-950e-a3d34e6499ab@gmail.com>
+ <d21bc7a0fac8413b9cc443288924ec7b@realtek.com>
+ <91d03fa7-5af0-4ec5-a52c-c2c060e11d4d@gmail.com>
+ <6d1667d2-c86f-4b80-bb32-9ba01164480b@maciej.szmigiero.name>
+In-Reply-To: <6d1667d2-c86f-4b80-bb32-9ba01164480b@maciej.szmigiero.name>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-A mac_id as an instance in firmware has to be assigned for each station
-including AP and connected stations. Firmware will use the mac_id to
-control TX rate and do statistics.
-
-Assignment rule is to assign mac_id to each vif when adding vif.
-For station mode, sta->mac_id will reuse vif->mac_id. For AP mode,
-dynamically allocate an sta->mac_id to a station, and vif->mac_id is
-used to send broadcast/multicast packets which are not belong to
-a station. For example,
-
-                  vif->mac_id      sta->mac_id
-vif0 (STA mode)        0               0
-vif1 (AP mode)         1               2...
-
-By the way, remove unused RTW_BC_MC_MACID, which was planed to send
-broadcast/multicast packets on fixed mac_id.
-
-Tested-on RTL8822CE with STA + AP SCC mode.
-
-Link: https://lore.kernel.org/linux-wireless/e4be0a75-43b2-4ae5-9aab-5c4a88e78097@gmail.com/
-Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw88/mac80211.c | 13 ++++++--
- drivers/net/wireless/realtek/rtw88/main.c     | 30 ++++++++-----------
- drivers/net/wireless/realtek/rtw88/main.h     | 14 +++++++--
- drivers/net/wireless/realtek/rtw88/tx.c       | 11 +++++--
- drivers/net/wireless/realtek/rtw88/tx.h       |  1 +
- 5 files changed, 44 insertions(+), 25 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
-index 63326b352738..b39e90fb66b4 100644
---- a/drivers/net/wireless/realtek/rtw88/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
-@@ -167,6 +167,12 @@ static int rtw_ops_add_interface(struct ieee80211_hw *hw,
- 
- 	mutex_lock(&rtwdev->mutex);
- 
-+	rtwvif->mac_id = rtw_acquire_macid(rtwdev);
-+	if (rtwvif->mac_id >= RTW_MAX_MAC_ID_NUM) {
-+		mutex_unlock(&rtwdev->mutex);
-+		return -ENOSPC;
-+	}
-+
- 	port = find_first_zero_bit(rtwdev->hw_port, RTW_PORT_NUM);
- 	if (port >= RTW_PORT_NUM) {
- 		mutex_unlock(&rtwdev->mutex);
-@@ -214,7 +220,8 @@ static int rtw_ops_add_interface(struct ieee80211_hw *hw,
- 
- 	mutex_unlock(&rtwdev->mutex);
- 
--	rtw_dbg(rtwdev, RTW_DBG_STATE, "start vif %pM on port %d\n", vif->addr, rtwvif->port);
-+	rtw_dbg(rtwdev, RTW_DBG_STATE, "start vif %pM mac_id %d on port %d\n",
-+		vif->addr, rtwvif->mac_id, rtwvif->port);
- 	return 0;
- }
- 
-@@ -225,7 +232,8 @@ static void rtw_ops_remove_interface(struct ieee80211_hw *hw,
- 	struct rtw_vif *rtwvif = (struct rtw_vif *)vif->drv_priv;
- 	u32 config = 0;
- 
--	rtw_dbg(rtwdev, RTW_DBG_STATE, "stop vif %pM on port %d\n", vif->addr, rtwvif->port);
-+	rtw_dbg(rtwdev, RTW_DBG_STATE, "stop vif %pM mac_id %d on port %d\n",
-+		vif->addr, rtwvif->mac_id, rtwvif->port);
- 
- 	mutex_lock(&rtwdev->mutex);
- 
-@@ -242,6 +250,7 @@ static void rtw_ops_remove_interface(struct ieee80211_hw *hw,
- 	config |= PORT_SET_BCN_CTRL;
- 	rtw_vif_port_config(rtwdev, rtwvif, config);
- 	clear_bit(rtwvif->port, rtwdev->hw_port);
-+	rtw_release_macid(rtwdev, rtwvif->mac_id);
- 	rtw_recalc_lps(rtwdev, NULL);
- 
- 	mutex_unlock(&rtwdev->mutex);
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index b0c9b0ff7017..bbdef38c7e34 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -311,17 +311,6 @@ static void rtw_ips_work(struct work_struct *work)
- 	mutex_unlock(&rtwdev->mutex);
- }
- 
--static u8 rtw_acquire_macid(struct rtw_dev *rtwdev)
--{
--	unsigned long mac_id;
--
--	mac_id = find_first_zero_bit(rtwdev->mac_id_map, RTW_MAX_MAC_ID_NUM);
--	if (mac_id < RTW_MAX_MAC_ID_NUM)
--		set_bit(mac_id, rtwdev->mac_id_map);
--
--	return mac_id;
--}
--
- static void rtw_sta_rc_work(struct work_struct *work)
- {
- 	struct rtw_sta_info *si = container_of(work, struct rtw_sta_info,
-@@ -340,12 +329,14 @@ int rtw_sta_add(struct rtw_dev *rtwdev, struct ieee80211_sta *sta,
- 	struct rtw_vif *rtwvif = (struct rtw_vif *)vif->drv_priv;
- 	int i;
- 
--	si->mac_id = rtw_acquire_macid(rtwdev);
--	if (si->mac_id >= RTW_MAX_MAC_ID_NUM)
--		return -ENOSPC;
-+	if (vif->type == NL80211_IFTYPE_STATION) {
-+		si->mac_id = rtwvif->mac_id;
-+	} else {
-+		si->mac_id = rtw_acquire_macid(rtwdev);
-+		if (si->mac_id >= RTW_MAX_MAC_ID_NUM)
-+			return -ENOSPC;
-+	}
- 
--	if (vif->type == NL80211_IFTYPE_STATION && vif->cfg.assoc == 0)
--		rtwvif->mac_id = si->mac_id;
- 	si->rtwdev = rtwdev;
- 	si->sta = sta;
- 	si->vif = vif;
-@@ -370,11 +361,13 @@ void rtw_sta_remove(struct rtw_dev *rtwdev, struct ieee80211_sta *sta,
- 		    bool fw_exist)
- {
- 	struct rtw_sta_info *si = (struct rtw_sta_info *)sta->drv_priv;
-+	struct ieee80211_vif *vif = si->vif;
- 	int i;
- 
- 	cancel_work_sync(&si->rc_work);
- 
--	rtw_release_macid(rtwdev, si->mac_id);
-+	if (vif->type != NL80211_IFTYPE_STATION)
-+		rtw_release_macid(rtwdev, si->mac_id);
- 	if (fw_exist)
- 		rtw_fw_media_status_report(rtwdev, si->mac_id, false);
- 
-@@ -614,6 +607,8 @@ static void rtw_reset_vif_iter(void *data, u8 *mac, struct ieee80211_vif *vif)
- 	rtw_bf_disassoc(rtwdev, vif, NULL);
- 	rtw_vif_assoc_changed(rtwvif, NULL);
- 	rtw_txq_cleanup(rtwdev, vif->txq);
-+
-+	rtw_release_macid(rtwdev, rtwvif->mac_id);
- }
- 
- void rtw_fw_recovery(struct rtw_dev *rtwdev)
-@@ -2139,7 +2134,6 @@ int rtw_core_init(struct rtw_dev *rtwdev)
- 	rtwdev->sec.total_cam_num = 32;
- 	rtwdev->hal.current_channel = 1;
- 	rtwdev->dm_info.fix_rate = U8_MAX;
--	set_bit(RTW_BC_MC_MACID, rtwdev->mac_id_map);
- 
- 	rtw_stats_init(rtwdev);
- 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index 12b564ad3a58..945117afe143 100644
---- a/drivers/net/wireless/realtek/rtw88/main.h
-+++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -742,7 +742,6 @@ struct rtw_txq {
- 	unsigned long flags;
- };
- 
--#define RTW_BC_MC_MACID 1
- DECLARE_EWMA(rssi, 10, 16);
- 
- struct rtw_sta_info {
-@@ -805,7 +804,7 @@ struct rtw_bf_info {
- struct rtw_vif {
- 	enum rtw_net_type net_type;
- 	u16 aid;
--	u8 mac_id; /* for STA mode only */
-+	u8 mac_id;
- 	u8 mac_addr[ETH_ALEN];
- 	u8 bssid[ETH_ALEN];
- 	u8 port;
-@@ -2131,6 +2130,17 @@ static inline bool rtw_chip_has_tx_stbc(struct rtw_dev *rtwdev)
- 	return rtwdev->chip->tx_stbc;
- }
- 
-+static inline u8 rtw_acquire_macid(struct rtw_dev *rtwdev)
-+{
-+	unsigned long mac_id;
-+
-+	mac_id = find_first_zero_bit(rtwdev->mac_id_map, RTW_MAX_MAC_ID_NUM);
-+	if (mac_id < RTW_MAX_MAC_ID_NUM)
-+		set_bit(mac_id, rtwdev->mac_id_map);
-+
-+	return mac_id;
-+}
-+
- static inline void rtw_release_macid(struct rtw_dev *rtwdev, u8 mac_id)
- {
- 	clear_bit(mac_id, rtwdev->mac_id_map);
-diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wireless/realtek/rtw88/tx.c
-index c02ac673be32..dae7ca148865 100644
---- a/drivers/net/wireless/realtek/rtw88/tx.c
-+++ b/drivers/net/wireless/realtek/rtw88/tx.c
-@@ -46,7 +46,8 @@ void rtw_tx_fill_tx_desc(struct rtw_tx_pkt_info *pkt_info, struct sk_buff *skb)
- 		      le32_encode_bits(pkt_info->ls, RTW_TX_DESC_W0_LS) |
- 		      le32_encode_bits(pkt_info->dis_qselseq, RTW_TX_DESC_W0_DISQSELSEQ);
- 
--	tx_desc->w1 = le32_encode_bits(pkt_info->qsel, RTW_TX_DESC_W1_QSEL) |
-+	tx_desc->w1 = le32_encode_bits(pkt_info->mac_id, RTW_TX_DESC_W1_MACID) |
-+		      le32_encode_bits(pkt_info->qsel, RTW_TX_DESC_W1_QSEL) |
- 		      le32_encode_bits(pkt_info->rate_id, RTW_TX_DESC_W1_RATE_ID) |
- 		      le32_encode_bits(pkt_info->sec_type, RTW_TX_DESC_W1_SEC_TYPE) |
- 		      le32_encode_bits(pkt_info->pkt_offset, RTW_TX_DESC_W1_PKT_OFFSET) |
-@@ -401,14 +402,18 @@ void rtw_tx_pkt_info_update(struct rtw_dev *rtwdev,
- 	const struct rtw_chip_info *chip = rtwdev->chip;
- 	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
- 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
-+	struct ieee80211_vif *vif = info->control.vif;
- 	struct rtw_sta_info *si;
--	struct ieee80211_vif *vif = NULL;
-+	struct rtw_vif *rtwvif;
- 	__le16 fc = hdr->frame_control;
- 	bool bmc;
- 
- 	if (sta) {
- 		si = (struct rtw_sta_info *)sta->drv_priv;
--		vif = si->vif;
-+		pkt_info->mac_id = si->mac_id;
-+	} else if (vif) {
-+		rtwvif = (struct rtw_vif *)vif->drv_priv;
-+		pkt_info->mac_id = rtwvif->mac_id;
- 	}
- 
- 	if (ieee80211_is_mgmt(fc) || ieee80211_is_nullfunc(fc))
-diff --git a/drivers/net/wireless/realtek/rtw88/tx.h b/drivers/net/wireless/realtek/rtw88/tx.h
-index 324189606257..3d544fd7f60f 100644
---- a/drivers/net/wireless/realtek/rtw88/tx.h
-+++ b/drivers/net/wireless/realtek/rtw88/tx.h
-@@ -27,6 +27,7 @@ struct rtw_tx_desc {
- #define RTW_TX_DESC_W0_BMC BIT(24)
- #define RTW_TX_DESC_W0_LS BIT(26)
- #define RTW_TX_DESC_W0_DISQSELSEQ BIT(31)
-+#define RTW_TX_DESC_W1_MACID GENMASK(7, 0)
- #define RTW_TX_DESC_W1_QSEL GENMASK(12, 8)
- #define RTW_TX_DESC_W1_RATE_ID GENMASK(20, 16)
- #define RTW_TX_DESC_W1_SEC_TYPE GENMASK(23, 22)
--- 
-2.25.1
-
+TWFjaWVqIFMuIFN6bWlnaWVybyA8bWFpbEBtYWNpZWouc3ptaWdpZXJvLm5hbWU+IHdyb3RlOg0K
+PiBPbiAzMS4wNy4yMDI0IDE0OjIwLCBCaXR0ZXJibHVlIFNtaXRoIHdyb3RlOg0KPiA+IE9uIDMx
+LzA3LzIwMjQgMDM6NDcsIFBpbmctS2UgU2hpaCB3cm90ZToNCj4gPj4gQml0dGVyYmx1ZSBTbWl0
+aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiA+Pj4gT24gMzAvMDcvMjAyNCAw
+OTozMywgUGluZy1LZSBTaGloIHdyb3RlOg0KPiA+Pj4+IEJpdHRlcmJsdWUgU21pdGggPHJ0bDg4
+MjFjZXJmZTJAZ21haWwuY29tPiB3cm90ZToNCj4gPj4+Pj4NCj4gPj4+Pj4gSW4gQVAgbW9kZSwg
+dGhlIGZpcm13YXJlIHN0b3BzIHRyYW5zbWl0dGluZyBiZWFjb25zIGlmIGl0IHJlY2VpdmVzDQo+
+ID4+Pj4+IEgyQ19DTURfUkFfSU5GTyBmb3IgbWFjaWQgMC4NCj4gPj4+Pj4NCj4gPj4+Pj4gTGVh
+dmUgbWFjaWQgMCB1bnVzZWQgaW4gQVAgbW9kZS4gTWFjaWQgMSBpcyBhbHJlYWR5IHJlc2VydmVk
+IGZvcg0KPiA+Pj4+PiBicm9hZGNhc3QvbXVsdGljYXN0LiBBc3NpZ24gbWFjaWQgMiB0byB0aGUg
+Zmlyc3QgY29ubmVjdGVkIGNsaWVudC4NCj4gPj4+Pg0KPiA+Pj4+IFNlZW1pbmdseSB3ZSBtaXNz
+ZWQgdG8gc2V0IG1hY19pZCBpbiBUWCBkZXNjIGZvciBhIGxvbmcgdGltZS4NCj4gPj4+Pg0KPiA+
+Pj4+ICsjZGVmaW5lIFJUV19UWF9ERVNDX1cxX01BQ0lEIEdFTk1BU0soNywgMCkNCj4gPj4+PiAg
+ICNkZWZpbmUgUlRXX1RYX0RFU0NfVzFfUVNFTCBHRU5NQVNLKDEyLCA4KQ0KPiA+Pj4+ICAgI2Rl
+ZmluZSBSVFdfVFhfREVTQ19XMV9SQVRFX0lEIEdFTk1BU0soMjAsIDE2KQ0KPiA+Pj4+DQo+ID4+
+Pj4gVGhlIG1hY19pZCBzaG91bGQgYmUgZnJvbSBydHd2aWYtPm1hY19pZCBvciBzaS0+bWFjX2lk
+IGFjY29yZGluZyB0bw0KPiA+Pj4+IG9wZXJhdGluZyBtb2RlIGFuZCByb2xlLg0KPiA+Pj4+DQo+
+ID4+Pj4gQW5kIEkgc3VwcG9zZSBtYWNfaWQgYXNzaWdubWVudCBmb3IgQVAgaXMgbWFjX2lkIDAg
+Zm9yIGJyb2FkY2FzdC9tdWx0aWNhc3QsIGFuZA0KPiA+Pj4+IG90aGVyIG1hY19pZCBjYW4gYmUg
+dXNlZCBieSBjb25uZWN0ZWQgc3RhdGlvbnMgcmVndWxhcmx5Lg0KPiA+Pj4+DQo+ID4+Pg0KPiA+
+Pj4gV2hhdCBhYm91dCB0aGUgY29uY3VycmVudCBBUCArIHN0YXRpb24gc2NlbmFyaW8/IFdpbGwg
+dGhlDQo+ID4+PiBzdGF0aW9uIHZpZiB1c2UgdGhlIG5leHQgYXZhaWxhYmxlIG1hY2lkLCB3aGF0
+ZXZlciB0aGF0IGlzPw0KPiA+Pj4gSnVzdCB3b25kZXJpbmcsIEkgZG9uJ3QgdXNlIGNvbmN1cnJl
+bnQgbW9kZS4NCj4gPj4NCj4gPj4gTXkgYmFzaWMgaWRlYSBpcyB0byBhc3NpZ24gbWFjX2lkIHRv
+IGVhY2ggdmlmIHdoZW4gYWRkaW5nIHZpZi4gRm9yIHN0YXRpb24gbW9kZSwNCj4gPj4gc3RhLT5t
+YWNfaWQgd2lsbCByZXVzZSB2aWYtPm1hY19pZC4gRm9yIEFQIG1vZGUsIEkgd2lsbCBkeW5hbWlj
+YWxseSBhbGxvY2F0ZSBhbg0KPiA+PiBzdGEtPm1hY19pZCB0byBhIHN0YXRpb24sIGFuZCB2aWYt
+Pm1hY19pZCBpcyB0byBzZW5kIGJyb2FkY2FzdC9tdWx0aWNhc3QgcGFja2V0cw0KPiA+PiB0aGF0
+IGFyZSBub3QgYmVsb25nIHRvIGEgc3RhLiBGb3IgZXhhbXBsZSwNCj4gPj4NCj4gPj4gICAgICAg
+ICAgICAgICAgICAgIHZpZi0+bWFjX2lkICAgICAgc3RhLT5tYWNfaWQNCj4gPj4gdmlmMCAoU1RB
+IG1vZGUpICAgICAgICAwICAgICAgICAgICAgICAgMA0KPiA+PiB2aWYxIChBUCBtb2RlKSAgICAg
+ICAgIDEgICAgICAgICAgICAgICAyLi4uDQo+ID4+DQo+ID4+DQo+ID4+Pg0KPiA+Pj4gQWxzbywg
+ZG8geW91IG1lYW4gdGhhdCB5b3Ugd2lsbCBkbyBhbGwgdGhpcz8gSXQncyBub3QgY2xlYXIgdG8g
+bWUuDQo+ID4+DQo+ID4+IEkgY2FuIGRvIGl0LiBPciBhcmUgeW91IGludGVyZXN0ZWQgaW4gdGhp
+cz8NCj4gPj4NCj4gPg0KPiA+IE5vLCBubywgaXQncyBhbGwgeW91cnMuIDopDQo+ID4NCj4gDQo+
+IEl0IHdvdWxkIGJlIG5pY2UgdG8gaGF2ZSBlaXRoZXIgdGhpcyBzdWJtaXR0ZWQgZml4IG9yIGFs
+dGVybmF0aXZlIG9uZSBtZXJnZWQgc29vbg0KPiBzaW5jZSB0aGUgQVAgbW9kZSBpcyBjb21wbGV0
+ZWx5IGJyb2tlbiBvdGhlcndpc2UgKGF0IGxlYXN0IG9uIFJUTDg4MjFDVSkuDQoNCkkgaGF2ZSBz
+ZW50IGEgcGF0Y2ggWzJdIHRvIHJlcGxhY2UgdGhpcyBvbmUsIGJ1dCBzdGlsbCBuZWVkcw0KcGF0
+Y2ggMS8yICJ3aWZpOiBydHc4ODogRml4IFVTQiBkZXZpY2VzIG5vdCB0cmFuc21pdHRpbmcgYmVh
+Y29ucyIuIFsxXQ0KDQpJIGhhdmUgdGVzdGVkIFsxXSArIFsyXSBjYW4gd29yayBvbiBQQ0kgZGV2
+aWNlcy4NCkNhbiBhbnlvbmUgaGVscCB0byB0ZXN0IGlmIFsxXSArIFsyXSBhbHNvIHdvcmtzIG9u
+IFVTQiBkZXZpY2VzPw0KDQpbMV0gaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvbGludXgtd2lyZWxl
+c3MvOTE3NGE3NzYtNDc3MS00MzUxLTg1ZmEtNDc2ZTI0MGQ4YWNlQGdtYWlsLmNvbS8NClsyXSBo
+dHRwczovL2xvcmUua2VybmVsLm9yZy9saW51eC13aXJlbGVzcy8yMDI0MDgxOTAyNTI0OC4xNzkz
+OS0xLXBrc2hpaEByZWFsdGVrLmNvbS9ULyN1DQoNCg0KDQo=
 
