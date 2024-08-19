@@ -1,104 +1,90 @@
-Return-Path: <linux-wireless+bounces-11620-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11621-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3D7D956D18
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 16:23:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 483BD956D6D
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 16:36:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FBB71F25DD8
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 14:23:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C1891C2247A
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 14:36:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B608D16D4F2;
-	Mon, 19 Aug 2024 14:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691D416D314;
+	Mon, 19 Aug 2024 14:36:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="onjy1EW0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KhTYBgDz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5682716D4D7
-	for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2024 14:23:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC1E15F336;
+	Mon, 19 Aug 2024 14:36:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724077389; cv=none; b=kCt0wMVssR8hAlqKmV3vdEte6qMPn0bSmUZ6R/tYMjmYyECvj+F+U4y3iXVHOqxoieSh7TSBiCoAe5Lkgej0lrofibxao5JIdtTc4Wg2ff4CoNClZ9WfOYSEUwypkgmOA09kWbZ+SHupqkZnF3UAwVFPAEvOpU0/SHWb5Emo0AU=
+	t=1724078164; cv=none; b=ts136+Y7qDNZfd1Woz2Ix/6/QXVgesYW1Xk5X3XBlryKXeP5i5o60CeVhLrua37NpyhHtly0A4pcwroE88H8yslYESAyc6GstQ7xkP8TiF71ysdaUxgLkuTkaiVrN5COIX7QHuSESuQvOpQls+QYF1f7dWxySamRW769Z0C6xCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724077389; c=relaxed/simple;
-	bh=cfPZIvkFj39IEfSq8vlZ2wpc7MZksqoeS+wQBPZsjpY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GoRbRMPRz0/O330Feifpz/o+EyFfAWFPAt9MvtSI7m0Zb2U3CYK0j5K4mT/A9TZw20e3a5oXjjCbvw/dPoC0bZUzFj146gS3wYMSCJZ9FTHTX/UMOYP3xNjSPmxcPzWZRW6pu1R5Xrk9BDLV1xTpselAaf48+lRItA0uR7avkEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=onjy1EW0; arc=none smtp.client-ip=67.231.154.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 8C8C2B80067;
-	Mon, 19 Aug 2024 14:22:58 +0000 (UTC)
-Received: from [192.168.1.23] (unknown [98.97.39.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id B1BEE13C2B0;
-	Mon, 19 Aug 2024 07:22:56 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com B1BEE13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1724077377;
-	bh=cfPZIvkFj39IEfSq8vlZ2wpc7MZksqoeS+wQBPZsjpY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=onjy1EW0eXhEV1SrGJ0hB+d5/MigRmJtJLOooyRv++lPX3tcVnBILg8QY3L8BYsaD
-	 18K1ix0NATMyNyC8qwbvmZDs0NZoSlfOa8aJNlspj9Yzxna5CmZFpqyZyq+QOdROxQ
-	 KGvl+0So8KfgHPUbRpWMNK0QDtrC1I1Z20Zd3rpw=
-Message-ID: <9e60638a-d85f-4c35-9370-8b42e96d1526@candelatech.com>
-Date: Mon, 19 Aug 2024 07:22:56 -0700
+	s=arc-20240116; t=1724078164; c=relaxed/simple;
+	bh=lOhVDAbDSbamnoXSZGytjq4rcSZI6pRdUdlaop0BxTk=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=bVj+a0Bmxo06xRUWcwdKjDKIDgs5JMJjR8rZa0gVQ+i1TN7sG8CU5/GDaUEM2iaQFXgtH+wC4mHDbdyinVYh/TxQwtNzH8uiu+KupqMZChUBcX6wKuvFhOArhUXcrTnx2RHQ5TNkoKWZzlijo0SuPFbiEPFDJNv1Nnjib6X38Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KhTYBgDz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A29CBC32782;
+	Mon, 19 Aug 2024 14:35:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724078163;
+	bh=lOhVDAbDSbamnoXSZGytjq4rcSZI6pRdUdlaop0BxTk=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=KhTYBgDzbrSs4l90WaKYic8RY5F/Sgy9acPi/QyNOGe2IQ3d9n8njIK3DyIcmba1M
+	 iqWIBUv/iX0fso0CTOCpCBaModyf7xgwX1/cNxRe4HGgjqhq81NErlcWK3iK9pU+m8
+	 rOZ0SlLCb0PVyngp5Evf/ec24bN4pAUSssXMci9OaYN5M5GrMQ/Yl3VrBIPq4107s6
+	 OB82u33Ww15nLnNPXfRpB6lnGtlqCPcILDgHBDCJh5i1GchXlJ5/o4om8sQ73Pn+4I
+	 neo5LeaH5QHjBWqQmHsxmK/9+41ZoCfYkXQ293uMYKWavdyjOD5K9F5elt4CteT88a
+	 cAQzMhz1Eub+w==
+From: Kalle Valo <kvalo@kernel.org>
+To: Marek Vasut <marex@denx.de>
+Cc: linux-wireless@vger.kernel.org,  Chung-Hsien Hsu
+ <stanley.hsu@cypress.com>,  Chung-Hsien Hsu
+ <chung-hsien.hsu@infineon.com>,  "Dr. David Alan Gilbert"
+ <linux@treblig.org>,  "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+  =?utf-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>,  Arend van Spriel
+ <arend.vanspriel@broadcom.com>,  Bjorn Helgaas <bhelgaas@google.com>,
+  Carter Chen <carter.chen@infineon.com>,  Duoming Zhou
+ <duoming@zju.edu.cn>,  Erick Archer <erick.archer@outlook.com>,  Kees Cook
+ <kees@kernel.org>,  Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+  Mathias Krause <minipli@grsecurity.net>,  Matthias Brugger
+ <mbrugger@suse.com>,  Owen Huang <Owen.Huang@infineon.com>,  Ulf Hansson
+ <ulf.hansson@linaro.org>,  brcm80211-dev-list.pdl@broadcom.com,
+  brcm80211@lists.linux.dev
+Subject: Re: [PATCH 1/2] wifi: brcmfmac: add support for TRX firmware download
+References: <20240818201533.89669-1-marex@denx.de>
+Date: Mon, 19 Aug 2024 17:35:57 +0300
+In-Reply-To: <20240818201533.89669-1-marex@denx.de> (Marek Vasut's message of
+	"Sun, 18 Aug 2024 22:12:25 +0200")
+Message-ID: <871q2ky3zm.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/12] wifi: mt76: mt7996: set correct beamformee SS
- capability
-To: Shayne Chen <shayne.chen@mediatek.com>, Felix Fietkau <nbd@nbd.name>
-Cc: linux-wireless <linux-wireless@vger.kernel.org>,
- Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>,
- Evelyn Tsai <evelyn.tsai@mediatek.com>,
- linux-mediatek <linux-mediatek@lists.infradead.org>,
- Howard Hsu <howard-yh.hsu@mediatek.com>
-References: <20240816094635.2391-1-shayne.chen@mediatek.com>
- <20240816094635.2391-6-shayne.chen@mediatek.com>
-Content-Language: en-MW
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <20240816094635.2391-6-shayne.chen@mediatek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1724077379-TIxF0z-F69XC
-X-MDID-O:
- us5;at1;1724077379;TIxF0z-F69XC;<greearb@candelatech.com>;6b0fc91aa4a2e8bb560701e503333c57
+Content-Type: text/plain
 
-On 8/16/24 02:46, Shayne Chen wrote:
-> From: Howard Hsu <howard-yh.hsu@mediatek.com>
-> 
-> According to IEEE P802.11be/D6.0 Table 9-417n, beamformee SS field stands
-> for the maximum number of spatial streams that the STA can receive in an
-> EHT sounding NDP minus 1, and the minimum value of this field is 3.
-> 
-> This value indicates the decoding capability of a beamformee, which is
-> independent of current antenna settings. Correct the value for mt7996
-> and mt7992 chipsets based on their HW capability.
+Marek Vasut <marex@denx.de> writes:
 
-I thought that if user sets a specific number of antennas, the code should
-act as if that were the number of physical antennas, so this change seems
-wrong to me.
+> From: Chung-Hsien Hsu <stanley.hsu@cypress.com>
+>
+> Add support to download TRX firmware for PCIe and SDIO.
+>
+> Signed-off-by: Chung-Hsien Hsu <chung-hsien.hsu@infineon.com>
+> Signed-off-by: Marek Vasut <marex@denx.de> # Upport to current linux-next
 
-What use-case is this patch attempting to fix?
-
-Thanks,
-Ben
+The commit message should answer to the question 'Why?'. What's TRX
+firmware and why do we need it?
 
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
