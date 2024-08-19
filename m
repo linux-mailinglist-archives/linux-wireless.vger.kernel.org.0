@@ -1,74 +1,73 @@
-Return-Path: <linux-wireless+bounces-11629-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11630-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18E02957270
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 19:53:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C0289572B7
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 20:10:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 548031C2317D
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 17:53:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA1B028339F
+	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 18:10:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A769116132E;
-	Mon, 19 Aug 2024 17:53:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3634188CC8;
+	Mon, 19 Aug 2024 18:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SpD8qDvL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hL8h4ipd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10981D531
-	for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2024 17:53:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B119184535
+	for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2024 18:09:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724090018; cv=none; b=VbULurcFO9ZW9dV1qJNuRpcSJx6csIicZtZKzkt7oY0CihALul8N5ioAuMAOQgNWmi0+U3BHfvX9r6TlVZRj9uNtfhejmnZGgaP1qduq9TAZlzpwXH0GyzWSn8KWfhzRDM+X7j4RO8JARpaJEVZesvhDH7LF1nAPEBQmt7xGEuk=
+	t=1724091000; cv=none; b=WOG2ql0MO5wBhmsUkFg7/H5S97xAn/7KuEeywxGYovWBXtIcD9BP6gxgMjQfCu9I46jETKrcL1I0WUqMijrfyqUvhMFoJrlTFdwr+kbuGGayCjrs1mn5AaSOeyMt34ksTmWA3K/DpOSndJgcg4F2y/3ac68gFunEhLJr+lMBoc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724090018; c=relaxed/simple;
-	bh=Vr6cK37SZMFdy35NeULBBokyBcqiRYDxKCJLqfI7tlA=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:References:
-	 In-Reply-To:Content-Type; b=U7jWRk4paolyc9q9c+pGhoaJnf/jNMT7ujS1HOEr3Q0R2zdb5i72LH9ZZoRLWpMDvxhDMKp/7pzczkuqWH3X2bKlsTgUUmj+rg3q615DlhuqG2TccCNZ1wiFcardM2EE6b6oH2Nlgy8O69nZEoDwFKHuFhs1rlM8rRfw8cH+xyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SpD8qDvL; arc=none smtp.client-ip=209.85.218.42
+	s=arc-20240116; t=1724091000; c=relaxed/simple;
+	bh=63+2QdlkyCN9L4q2CWGrCg16BE2JGVrtWcOW4JVfiag=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XiJUGb2+fn2r/hzCqWkdeKdFoK/6l7tYOoN+F1VhBNayDwyXrTV1fwol7GgoUItJrQjqYavgr7KYzBgef7um/55g2TOdm6FBy+WagbOEZzR7ClCtzIdDPhUbpbc1dZjnaEg4RL2NFn9pAdWuZ7B/hxm5ijEVrII7Ghoc5lyMD30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hL8h4ipd; arc=none smtp.client-ip=209.85.160.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a7a94478a4eso977634466b.1
-        for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2024 10:53:36 -0700 (PDT)
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-44fdcd7a622so24961641cf.0
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2024 11:09:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724090015; x=1724694815; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:subject:from:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xvpNoqTP1hHlhIUaTS2P2h9C9DvZFu/E/brW9FaoFWg=;
-        b=SpD8qDvL412VrDnEBnmthmFZCgJQ5fthB+ykloGHUyEyhUfQ5pVM6JJVG88sGzFan0
-         k/He3zt5IdUqFSvCqtlWZg1yiVFP2bMdXdzYg+YllfSo295xNV7WK7buX63sJQhMkBQj
-         2i8rtOb3HvC+WpULZndd2CYAkpSpEeIfR8Az5vZPw7rNWSrTP3D2NQ4bw0WDgmaE+kzx
-         +zEDYAmFAarAdLAUp7aNk20SrP1SbAoI+dw9R6aCloVi+yo8kbDMQqO3dKBJuk0e0Uua
-         MoxiLoaj9Hoh9FxiChEoH/hDZYqEMwpRc7iqO4tgY9XSEYePOaEcQS0Oibvfu5U+aviJ
-         xKxA==
+        d=gmail.com; s=20230601; t=1724090998; x=1724695798; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=J0LwJQr3msiysrr5pQWOHrBaffwI03B4P+ZJn5xGSP4=;
+        b=hL8h4ipd7e8SxWJXGjg+2mRAxysVGIx9wowCrmaFw2PJYprvOzbl1VM/hoRkHScPMe
+         EXr7r30nD6MLnMvaWEswynTbqJ1GwFF2UzPEhQ/iGzJ73HLpou1xcs3o4S1QNGE/yI1g
+         WrA048zn9hbO0+QALT8l6JciEy9W4FzO39+E0g3q+N4wIfiSaaXFSL0qSsWN+F+JEORP
+         HjF0n1ITmtQmC1WPaBmVbwOSdfQ3ac0TN0wmftvgTo0IdKtym7VNMPsiELc5tDXHq5ui
+         AK+oJSzJYTzie4v/pY5TztBRlyrRA90o99/cvYKTV1hjKkjIht1HQsoS6RgGZ0udx5AL
+         bgZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724090015; x=1724694815;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:subject:from:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1724090998; x=1724695798;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xvpNoqTP1hHlhIUaTS2P2h9C9DvZFu/E/brW9FaoFWg=;
-        b=Jfq+JoTJUfoiylQYYz6k2jeamOwxufrb0FW81NnmoO4ZXaUn6HyBC0RFQYnNgOFr1q
-         KN1oIucqX30hHw2k87LbnQ8ssCNDDC0BWb+3lYReuWlyvnY4n9LwXoZI2xiPe2Ejpot5
-         XqGDZq0AoL0qZgu+QvYZ0FYzT4B8ygjDCY0ZgPdyQmknqGGf6weg+T+Gap1zWKTJXKVb
-         nrZctW9W4zhgutQBurmFBk2XqF6YrtJIV1ThMNHLA8+MlJe8HCxPMr1e6PuT1hG/KH9H
-         /ItbfZEpYam5BWrmiewHW0HFeoerSv7KjGlv6zvXQBg7oAYDLnAGMVkQz5L6LMzYHO7w
-         zu5w==
-X-Forwarded-Encrypted: i=1; AJvYcCUuzbrg73PuF+wh4jV35D6V7RzCf/qmvltoBW4fEyeg08cpK1Ih7hHhkczjHEGYaC0O8S8dUwsi0WjfCTBdhZUTCX9Eod6MG1fHU0KCQRU=
-X-Gm-Message-State: AOJu0YzR2nomhfqC/uqBV+juoVsS0l+Vh3fablt4nhMJUw306jVavfAx
-	HLeTZliZDfqw/tGflq9bDSNauY473RkVTil8TkOUkH4rV8aBM1ak
-X-Google-Smtp-Source: AGHT+IFayOniONOgs0W870khZVhy8ecB0xz/FXttULqqcEQcw2nlBsH6EDsVrBiFo0Pe5FyOld32lQ==
-X-Received: by 2002:a17:907:2d8d:b0:a7a:b561:356d with SMTP id a640c23a62f3a-a8643ffb894mr40651466b.26.1724090015047;
-        Mon, 19 Aug 2024 10:53:35 -0700 (PDT)
-Received: from [192.168.0.50] ([79.119.240.114])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a83838cfe70sm655863466b.75.2024.08.19.10.53.34
+        bh=J0LwJQr3msiysrr5pQWOHrBaffwI03B4P+ZJn5xGSP4=;
+        b=rjg/R7ovr6sLMJ2nF1EgC37Go2hTxdF/PHTMU0UaJVDPxEwDZEnpRjpqe7bugIdOKU
+         1BO3Lvi0gmcU3/tw7oEj4BgCkBRejB1bIZB852h4QlMYB+zm96uBl9MMMT8FRsbrBmWB
+         B4TuwWms9fl6Fw8Og8tPnD3mpUabD0pujRLswI5UeyK3d97Q6EacQtVPAYK1uAh3gW1i
+         8HrLafxSF6LE2wp3oQdC9tWzWKBAJplu1gtjQf3R4J8lBrSDzrt8CjsmzDPcV6jVgPRc
+         ASQJvjsTVpoIJExAdGzRxzffYTAnxfmssfRBu8ZIQfW2oUcgkq0x1mU2OAohanVzia67
+         IQNQ==
+X-Gm-Message-State: AOJu0YzyYFUxD+TdVuUTvSwThOtSMFDoqy0JizvX1ns4f1z4M05YZccn
+	LeVEkRLOAokoh3CyP+Gge6ebQ5tc6WJMzWViT4VO4MFHumQVLP2v
+X-Google-Smtp-Source: AGHT+IH3+QlTCvvPI2bIAaqp1+Yqeb33oJ1jrQ7ZGCg2XGiyOZJlCc77gjXxJdooZTP+muRDaCc+cA==
+X-Received: by 2002:a05:622a:5913:b0:453:17f1:eb8b with SMTP id d75a77b69052e-453743a96a9mr155808021cf.43.1724090997863;
+        Mon, 19 Aug 2024 11:09:57 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id d75a77b69052e-45369fd9e9bsm42344461cf.13.2024.08.19.11.09.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Aug 2024 10:53:34 -0700 (PDT)
-Message-ID: <a01b31f6-d33d-4763-9742-e22a1f975277@gmail.com>
-Date: Mon, 19 Aug 2024 20:53:33 +0300
+        Mon, 19 Aug 2024 11:09:56 -0700 (PDT)
+Message-ID: <b04c01e5-3e60-4b0b-8984-9d6e0782f5af@gmail.com>
+Date: Mon, 19 Aug 2024 11:09:50 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -76,56 +75,71 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: Re: [PATCH 05/20] wifi: rtw88: Allow rtw_chip_info.ltecoex_addr to be
- NULL
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <ade57ca1-444f-49e2-b49e-f4b9da65b2cc@gmail.com>
- <6d4194e2-8c8c-4d37-9b44-aada8d1d519f@gmail.com>
- <eb32692b42db48d2a05bd4feac9a814c@realtek.com>
+Subject: Re: [PATCH 1/2] wifi: brcmfmac: add support for TRX firmware download
+To: Marek Vasut <marex@denx.de>,
+ Arend Van Spriel <arend.vanspriel@broadcom.com>,
+ Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, Chung-Hsien Hsu
+ <stanley.hsu@cypress.com>, Chung-Hsien Hsu <chung-hsien.hsu@infineon.com>,
+ "Dr. David Alan Gilbert" <linux@treblig.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
+ Bjorn Helgaas <bhelgaas@google.com>, Carter Chen <carter.chen@infineon.com>,
+ Duoming Zhou <duoming@zju.edu.cn>, Erick Archer <erick.archer@outlook.com>,
+ Kees Cook <kees@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ Mathias Krause <minipli@grsecurity.net>, Matthias Brugger
+ <mbrugger@suse.com>, Owen Huang <Owen.Huang@infineon.com>,
+ Ulf Hansson <ulf.hansson@linaro.org>, brcm80211-dev-list.pdl@broadcom.com,
+ brcm80211@lists.linux.dev
+References: <20240818201533.89669-1-marex@denx.de> <871q2ky3zm.fsf@kernel.org>
+ <1916b572558.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <c95f64f1-3ebb-41ca-a935-51c1efa1256a@denx.de>
 Content-Language: en-US
-In-Reply-To: <eb32692b42db48d2a05bd4feac9a814c@realtek.com>
-Content-Type: text/plain; charset=UTF-8
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <c95f64f1-3ebb-41ca-a935-51c1efa1256a@denx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 15/08/2024 09:33, Ping-Ke Shih wrote:
-> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->> RTL8821A doesn't have this. Trying to use it results in error messages,
->> so don't try if ltecoex_addr is NULL.
+On 8/19/24 09:17, Marek Vasut wrote:
+> On 8/19/24 5:52 PM, Arend Van Spriel wrote:
 > 
-> In short term, it is fine to avoid these messages, but we need BT-coexistence
-> for RTL8821A if we want better user experience with BT.
+> Hi,
 > 
+>>>> Add support to download TRX firmware for PCIe and SDIO.
+>>>>
+>>>> Signed-off-by: Chung-Hsien Hsu <chung-hsien.hsu@infineon.com>
+>>>> Signed-off-by: Marek Vasut <marex@denx.de> # Upport to current 
+>>>> linux-next
+>>>
+>>> The commit message should answer to the question 'Why?'. What's TRX
+>>> firmware and why do we need it?
 >>
->> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>> I looked over the patches, but did not sit down to comment on this.
 > 
+> Thanks, it is real nice that someone who is actually familiar with the 
+> hardware jumped in. I only upported the patches from infineon downstream.
 > 
-> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
+>> The TRX firmware format allows multiple images and possibly 
+>> compression. Not sure if Infineon is using all this functionality. 
+>> This is probably needed for 55572 device support (patch 2/2). Turns 
+>> out this device has a bootloader that the driver has to talk with and 
+>> that is probably where this TRX support comes from. Not something I 
+>> considered to happen for SDIO and PCIe devices. There is always a 
+>> puzzle to solve ;-)
+>>
+>> Also noticed a random seed is provided to firmware. This already there 
+>> for apple chips so it should be looked at whether that code can be 
+>> shared. I will follow up.
 > 
+> I did notice just now there is some TRX support for USB broadcom devices ?
 > 
 
-I wasn't able to find this LTE stuff in the btc folder:
-https://github.com/morrownr/8821au-20210708/tree/main/hal/btc
+TRX is a format that is also used for partitioning flash devices, so 
+there is probably some room for making a common header:
 
-I did what I could to make the coexistence work, and it does.
-I used my Bluetooth headphones for several days, listening to
-music and watching videos. There is only a problem with the
-wifi speeds with one router.
+./Documentation/devicetree/bindings/mtd/partitions/brcm,trx.txt/drivers/mtd/parsers/parser_trx.c
+-- 
+Florian
 
-With ISP's HG6544C router:
-Official driver: 3/5 Mbps.
-rtw88: a bit more, but not steady at all. Not enough to watch
-a 1080p Youtube video.
-
-With my D-Link Eagle R32 router running Openwrt, on the same
-channel:
-Official driver: 6/10 Mbps.
-rtw88: download starts around 30, climbs to 50 / upload is 10
-Mbps. I can watch a 1080p Youtube video.
-
-The music doesn't cut out during any speed tests.
-
-I also tested transferring files to and from my phone. I don't
-have other types of devices to test.
 
