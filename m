@@ -1,182 +1,158 @@
-Return-Path: <linux-wireless+bounces-11642-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11643-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DDD9957761
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2024 00:23:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B8F9957A2D
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2024 02:00:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3D7D2835B5
-	for <lists+linux-wireless@lfdr.de>; Mon, 19 Aug 2024 22:23:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90AEAB223B1
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2024 00:00:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D56851DC46C;
-	Mon, 19 Aug 2024 22:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91A871E3CBB;
+	Mon, 19 Aug 2024 23:59:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="BuZeGlNT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6D915A843;
-	Mon, 19 Aug 2024 22:23:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A0D16133C
+	for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2024 23:59:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724106196; cv=none; b=f1HRgkfZB2QYftrk/rkWmWMa6QXLfgh+8J5tRfNCwzxY7QONc7luHC9vPhDlzq3ZrwTYizbi7yz5aCXEY4FFx1MzCC3LvoP7nIthCGvR5mKHGfGGAOajwoYNIXcA1HFsUkXcJctaixxtwxIxsVHi6eEqyRRZRRjRPCO9hDznUU8=
+	t=1724111990; cv=none; b=d/+auDgBCpXinSyQxRjQwt66LB5fXlGE/pGh9b6N5hGG3BrKTdu2sygHttmn9grr0u8iJtPSsJ9h4UZXfLQRpdAdtZRy1HayI4N+tMOZeE/9wuCGSY+TT6Ttft/bOckAFKMoTPd5lC+oarr5Z7e6lA7ZgkxSUwzUmY6yhyQjVYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724106196; c=relaxed/simple;
-	bh=tz4yofYq+XhKDOjLrjsV/Hw50t1cBVsD7gcCCQwHLdI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nCD/nfHd7oaW1Rs4uAXQmro3Kmd44Xgi6cpOQlVHbrhqA5JVELggYZWdATqMtM0ppZqv0j3NIsi8ZxWics0hFxj6cudKHwqs9qUuXqt6WXdUFouitbvdq+f4HMwpfa6r0dDrqDKmlOb79KXFp4WS8xpFONBIzRzW5X9W5XlPxx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F6A8C32782;
-	Mon, 19 Aug 2024 22:23:15 +0000 (UTC)
-Date: Mon, 19 Aug 2024 18:23:40 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- netdev@vger.kernel.org, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v5 0/4] tracing: improve symbolic printing
-Message-ID: <20240819182340.3bd23d67@gandalf.local.home>
-In-Reply-To: <20240614081956.19832-6-johannes@sipsolutions.net>
-References: <20240614081956.19832-6-johannes@sipsolutions.net>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1724111990; c=relaxed/simple;
+	bh=bYGkLaGQIKKpIurG7KT++3ABazri0PYOu/DJ7PB8sgQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TD+uB2Xkqdyv8F++hyWSbMzFtYf79bX6Woj1GlgdzRpYLuHFEbX0/gvSxM0Nzrt4lkr2DBXYdT40EF9HlVnIOo1vfuh2oY5cl6kROKtdiNe0PEh8PmkeRgNbF0ywAEWyC/Mk4FUsV9FFdvnDtF0CBi6H8+V5+YptS29yvdvIuRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=BuZeGlNT; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2d3c08541cdso3588467a91.2
+        for <linux-wireless@vger.kernel.org>; Mon, 19 Aug 2024 16:59:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1724111987; x=1724716787; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=WjABo7s3VKOBABg1ESnYjtcKOR4+Ado7alcRhqBh7E8=;
+        b=BuZeGlNTjQIsRAlZO+hJKgR77LbpB31ApwZ4nqT2AxZsbOfBcRD23nXCvm3kDTokYo
+         i5qF2A6F9zprAchoa6xF3ywQKxrxbjpGxVKwmCLf4RqpyECr83WMsOTMUn79cfooVyDO
+         EPgk7URSPnevuRxlI1eyMoCh0tyc/ZbApxKFU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724111987; x=1724716787;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WjABo7s3VKOBABg1ESnYjtcKOR4+Ado7alcRhqBh7E8=;
+        b=rWfk1sHuLGyzRQy7ny/ZAgzXeB5KHC3UsqrEDGuEWPBpKWHGm9yhZFEe+W7F6dmIeq
+         ubqfwP0ti7dL2b4w4rObGEPvbUKXKTw/Y4uuvSB6PSoy3P7tvVue+DJUYXdVC7naZ5EH
+         M/YIOfabY5WbE1z8bUEvUTeFu3oHlqsT0AW8P0M9St7hIT4PZMpHgwXCwi0h7N3pFwaT
+         /YXkbJkEBm7wtxiktTqLxrUXUSUlLoaZercTm2GujK/+G8s5MnQQpCmTnc9j+BFFjFSH
+         riJO/BEXPG4vUGOjHAqIBduQkc/9g0AdYrKLfBLv9RTjVCksCh+Re73Z0zd6MCYdpywv
+         cLyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUpdI46Kq1btZoGejpNz14UPJ2DlABQnIvFAY+KAsqjM9QpjwBVxTZ4mxfx5HujBhiFonsZe9z9dF5tfLauiA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9v5RCn+Zv2Ef+PvqGpKEY3joOHzIkFeXdrpL8BafeVI473kA/
+	pP/bcddl0CMYQ8GldSJeewtpVyN3zVquM5j78JazYfMp/dZAoliJZWfZugp07g==
+X-Google-Smtp-Source: AGHT+IFSEcFmKUg3XiTqxX1M+k4JhQXhtjsl3FmnrLps51L58VtAENMFX3m5ZUuTFgjG76CV4pxDyA==
+X-Received: by 2002:a17:90a:4d82:b0:2d1:bf48:e767 with SMTP id 98e67ed59e1d1-2d5c0ea8a13mr723064a91.29.1724111987241;
+        Mon, 19 Aug 2024 16:59:47 -0700 (PDT)
+Received: from localhost ([2a00:79e0:2e14:7:917:3d68:a539:4ba4])
+        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-2d3c8839392sm9451229a91.56.2024.08.19.16.59.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Aug 2024 16:59:46 -0700 (PDT)
+Date: Mon, 19 Aug 2024 16:59:44 -0700
+From: Brian Norris <briannorris@chromium.org>
+To: Frank Li <Frank.Li@nxp.com>
+Cc: Kalle Valo <kvalo@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"open list:NETWORKING DRIVERS (WIRELESS)" <linux-wireless@vger.kernel.org>,
+	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>,
+	"open list:OPEN FIRMWARE AND FLATTENED DEVICE TREE BINDINGS" <devicetree@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>, imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/1] dt-bindings: net: wireless: convert
+ marvel-8xxx.txt to yaml format
+Message-ID: <ZsPccHaCMRgbNk4L@google.com>
+References: <20240816171203.143486-1-Frank.Li@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240816171203.143486-1-Frank.Li@nxp.com>
 
+Hi Frank,
 
-Hi Johannes,
+On Fri, Aug 16, 2024 at 01:12:01PM -0400, Frank Li wrote:
+> Convert binding doc marvel-8xxx.txt to yaml format.
+> Additional change:
+> - Remove marvell,caldata_00_txpwrlimit_2g_cfg_set in example.
+> - Remove mmc related property in example.
+> - Add wakeup-source property.
+> - Remove vmmc-supply and mmc-pwrseq.
+> 
+> Fix below warning:
+> arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dtb: /soc@0/bus@30800000/mmc@30b40000/wifi@1:
+> failed to match any schema with compatible: ['marvell,sd8997']
+> 
+> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+> ---
+> Change from v1 to v2
+> - Add Brian Norris <briannorris@chromium.org as maintainer
+> - Remove vmmc-supply and mmc-pwrseq
+> - Add wakeup-source
+> - rename to marvell,sd8787.yaml by using one compatible string, suggestted
+> by conor dooley at other binding doc convert review
+> ---
+>  .../bindings/net/wireless/marvell,sd8787.yaml | 93 +++++++++++++++++++
+>  .../bindings/net/wireless/marvell-8xxx.txt    | 70 --------------
+>  2 files changed, 93 insertions(+), 70 deletions(-)
+>  create mode 100644 Documentation/devicetree/bindings/net/wireless/marvell,sd8787.yaml
+>  delete mode 100644 Documentation/devicetree/bindings/net/wireless/marvell-8xxx.txt
+> 
+> diff --git a/Documentation/devicetree/bindings/net/wireless/marvell,sd8787.yaml b/Documentation/devicetree/bindings/net/wireless/marvell,sd8787.yaml
+> new file mode 100644
+> index 0000000000000..c6647672b7b1e
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/wireless/marvell,sd8787.yaml
+> @@ -0,0 +1,93 @@
 
-I finally got around to testing your patches.
+> +  marvell,caldata-txpwrlimit-5g-sub0:
+> +    $ref: /schemas/types.yaml#/definitions/uint8-array
+> +    description: Calibration data for sub-band 0 in the 5GHz band..
 
-I did the following:
+You have an extra period in this line.
 
- # cat /sys/kernel/tracing/events/*/*/format
+> +  marvell,caldata-txpwrlimit-5g-sub1:
+> +    $ref: /schemas/types.yaml#/definitions/uint8-array
+> +    description: Calibration data for sub-band 1 in the 5GHz band..
 
-and hit this:
+Same.
 
-BUG: unable to handle page fault for address: ffffffff8e6333d0
-#PF: supervisor read access in kernel mode
-#PF: error_code(0x0000) - not-present page
-PGD 183c40067 P4D 183c40067 PUD 183c41063 PMD 1003ef063 PTE 800ffffe7b9cc062
-Oops: Oops: 0000 [#1] PREEMPT SMP PTI
-CPU: 7 UID: 0 PID: 893 Comm: cat Not tainted 6.11.0-rc4-test-00004-g4ce2836f008b #56 68afcee1248519f8b3b088836c40746e4a6b69d3
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:f_show (kernel/trace/trace_events.c:1601 kernel/trace/trace_events.c:1651 kernel/trace/trace_events.c:1689)
-Code: 33 63 8e 48 2d d0 33 63 8e 48 c1 f8 03 85 c0 74 67 89 c0 4c 89 c3 49 8d 04 c0 48 89 04 24 eb 0a 48 83 c3 08 48 39 1c 24 74 4e <4c> 8b 3b 4d 85 ff 74 ee 49 8b 45 10 48 8b 00 49 39 07 75 e2 49 8b
-All code
-========
-   0:   33 63 8e                xor    -0x72(%rbx),%esp
-   3:   48 2d d0 33 63 8e       sub    $0xffffffff8e6333d0,%rax
-   9:   48 c1 f8 03             sar    $0x3,%rax
-   d:   85 c0                   test   %eax,%eax
-   f:   74 67                   je     0x78
-  11:   89 c0                   mov    %eax,%eax
-  13:   4c 89 c3                mov    %r8,%rbx
-  16:   49 8d 04 c0             lea    (%r8,%rax,8),%rax
-  1a:   48 89 04 24             mov    %rax,(%rsp)
-  1e:   eb 0a                   jmp    0x2a
-  20:   48 83 c3 08             add    $0x8,%rbx
-  24:   48 39 1c 24             cmp    %rbx,(%rsp)
-  28:   74 4e                   je     0x78
-  2a:*  4c 8b 3b                mov    (%rbx),%r15              <-- trapping instruction
-  2d:   4d 85 ff                test   %r15,%r15
-  30:   74 ee                   je     0x20
-  32:   49 8b 45 10             mov    0x10(%r13),%rax
-  36:   48 8b 00                mov    (%rax),%rax
-  39:   49 39 07                cmp    %rax,(%r15)
-  3c:   75 e2                   jne    0x20
-  3e:   49                      rex.WB
-  3f:   8b                      .byte 0x8b
+> +    maxItems: 688
+> +
+> +  marvell,caldata-txpwrlimit-5g-sub2:
+> +    $ref: /schemas/types.yaml#/definitions/uint8-array
+> +    description: Calibration data for sub-band 2 in the 5GHz band..
 
-Code starting with the faulting instruction
-===========================================
-   0:   4c 8b 3b                mov    (%rbx),%r15
-   3:   4d 85 ff                test   %r15,%r15
-   6:   74 ee                   je     0xfffffffffffffff6
-   8:   49 8b 45 10             mov    0x10(%r13),%rax
-   c:   48 8b 00                mov    (%rax),%rax
-   f:   49 39 07                cmp    %rax,(%r15)
-  12:   75 e2                   jne    0xfffffffffffffff6
-  14:   49                      rex.WB
-  15:   8b                      .byte 0x8b
-RSP: 0018:ffffb43981457ca8 EFLAGS: 00010202
-RAX: ffffffff8e6333e0 RBX: ffffffff8e6333d0 RCX: 00000000000002cd
-RDX: ffff942b4b0bd000 RSI: 000000000000006e RDI: ffff942b42f9cc30
-RBP: ffff942b42f9cc30 R08: ffffffff8e6333d0 R09: 63696c6f626d7973
-R10: 735f746e6972705f R11: 2863696c6f626d79 R12: 0000000000000000
-R13: ffffffff8de44880 R14: ffffffff8de44516 R15: ffffffff8de44515
-FS:  00007f556c562740(0000) GS:ffff942cbdfc0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffffff8e6333d0 CR3: 000000010a1d0006 CR4: 0000000000170ef0
-Call Trace:
-<TASK>
-? __die (arch/x86/kernel/dumpstack.c:421 arch/x86/kernel/dumpstack.c:434)
-? page_fault_oops (arch/x86/mm/fault.c:715)
-? search_module_extables (kernel/module/main.c:3280)
-? search_bpf_extables (kernel/bpf/core.c:799)
-? exc_page_fault (arch/x86/mm/fault.c:1198 arch/x86/mm/fault.c:1479 arch/x86/mm/fault.c:1539)
-? asm_exc_page_fault (arch/x86/include/asm/idtentry.h:623)
-? f_show (kernel/trace/trace_events.c:1601 kernel/trace/trace_events.c:1651 kernel/trace/trace_events.c:1689)
-? f_show (kernel/trace/trace_events.c:1623 kernel/trace/trace_events.c:1689)
-seq_read_iter (fs/seq_file.c:273)
-seq_read (fs/seq_file.c:163)
-vfs_read (fs/read_write.c:474)
-? __handle_mm_fault (mm/memory.c:3945 mm/memory.c:5521 mm/memory.c:5664)
-ksys_read (fs/read_write.c:619)
-do_syscall_64 (arch/x86/entry/common.c:52 (discriminator 1) arch/x86/entry/common.c:83 (discriminator 1))
-? handle_mm_fault (mm/memory.c:5744 (discriminator 1) mm/memory.c:5840 (discriminator 1))
-? exc_page_fault (arch/x86/mm/fault.c:1342 arch/x86/mm/fault.c:1481 arch/x86/mm/fault.c:1539)
-? irqentry_exit_to_user_mode (arch/x86/include/asm/entry-common.h:57 (discriminator 1) include/linux/entry-common.h:330 (discriminator 1) kernel/entry/common.c:231 (discriminator 1))
-entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-RIP: 0033:0x7f556c65ca5d
-Code: 31 c0 e9 c6 fe ff ff 50 48 8d 3d a6 60 0a 00 e8 a9 08 02 00 66 0f 1f 84 00 00 00 00 00 80 3d 81 3b 0e 00 00 74 17 31 c0 0f 05 <48> 3d 00 f0 ff ff 77 5b c3 66 2e 0f 1f 84 00 00 00 00 00 48 83 ec
-All code
-========
-   0:   31 c0                   xor    %eax,%eax
-   2:   e9 c6 fe ff ff          jmp    0xfffffffffffffecd
-   7:   50                      push   %rax
-   8:   48 8d 3d a6 60 0a 00    lea    0xa60a6(%rip),%rdi        # 0xa60b5
-   f:   e8 a9 08 02 00          call   0x208bd
-  14:   66 0f 1f 84 00 00 00    nopw   0x0(%rax,%rax,1)
-  1b:   00 00
-  1d:   80 3d 81 3b 0e 00 00    cmpb   $0x0,0xe3b81(%rip)        # 0xe3ba5
-  24:   74 17                   je     0x3d
-  26:   31 c0                   xor    %eax,%eax
-  28:   0f 05                   syscall
-  2a:*  48 3d 00 f0 ff ff       cmp    $0xfffffffffffff000,%rax         <-- trapping instruction
-  30:   77 5b                   ja     0x8d
-  32:   c3                      ret
-  33:   66 2e 0f 1f 84 00 00    cs nopw 0x0(%rax,%rax,1)
-  3a:   00 00 00
-  3d:   48                      rex.W
-  3e:   83                      .byte 0x83 
-  3f:   ec                      in     (%dx),%al
+Same.
 
-Code starting with the faulting instruction
-===========================================
-   0:   48 3d 00 f0 ff ff       cmp    $0xfffffffffffff000,%rax
-   6:   77 5b                   ja     0x63
-   8:   c3                      ret
-   9:   66 2e 0f 1f 84 00 00    cs nopw 0x0(%rax,%rax,1)
-  10:   00 00 00
-  13:   48                      rex.W
-  14:   83                      .byte 0x83 
-  15:   ec                      in     (%dx),%al
-RSP: 002b:00007ffc88ecb878 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007f556c65ca5d
-RDX: 0000000000020000 RSI: 00007f556c541000 RDI: 0000000000000003
-RBP: 0000000000020000 R08: 00000000ffffffff R09: 0000000000000000
-R10: 0000000000000022 R11: 0000000000000246 R12: 00007f556c541000
-R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000000000
-</TASK>
-Modules linked in: snd_hda_intel snd_intel_dspcfg snd_intel_sdw_acpi snd_hda_codec snd_hwdep snd_hda_core
-CR2: ffffffff8e6333d0
----[ end trace 0000000000000000 ]---
+Otherwise, this looks good to me, so feel free to carry my:
 
--- Steve
+Acked-by: Brian Norris <briannorris@chromium.org>
+
+(Sometimes Kalle will make trivial fixes like this when applying. I'm
+not sure if that means you should send v3 anyway, or see if he'll apply
+this on his own soon enough.)
+
+Brian
 
