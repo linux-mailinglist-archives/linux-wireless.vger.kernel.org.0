@@ -1,74 +1,74 @@
-Return-Path: <linux-wireless+bounces-11714-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11715-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A894C958FDC
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2024 23:44:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F38649590F5
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 01:15:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31BBFB21135
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2024 21:44:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56519B21A63
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2024 23:15:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35DF845008;
-	Tue, 20 Aug 2024 21:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FD21E86E;
+	Tue, 20 Aug 2024 23:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CxbVCUkd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="miZGLx0q"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F7128FA
-	for <linux-wireless@vger.kernel.org>; Tue, 20 Aug 2024 21:44:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F553107A0
+	for <linux-wireless@vger.kernel.org>; Tue, 20 Aug 2024 23:15:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724190262; cv=none; b=FeFW+OBelQiqcBobHMkoHFW+sz7jQqZMlNfR41BsWk8IBSuiEvXFGMGhxLzwHwovpSK8T1Qj+8u5BFtX6WewsVFZPSPmfJ6IcLPikb2Y1DwomPDeykGao9vO4V1qia0vfzH9cJDy4XWwgxlHyGuJx4eG142sEgo6hkXNAjsfqvE=
+	t=1724195745; cv=none; b=BczfjT3Q0XjOG0UyVlzUuHWWvNR/ILOg4FWiaKmaKFiEOkLs+HFsM119+hEg6c7vAqIkA0cJCMQJhVomcdSA5X0/kWPQk7g3IA5fUhRsq7f1x062YsrmbsEC/eOsDFA0eHaRMkgXYfuGA0mvMJozf0Ownjy2LO6+TxEeiMtkYzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724190262; c=relaxed/simple;
-	bh=ZfDnJNdbjYY1MPAZDjjdwqhR98lkI3q4RihDEfYiATw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=KfgWdR/JBNAu8GgtSCX3wIAEM+y64XQ3PzTQWLw1Wk9A0lwm046OEGlNqGaEq3mqXhUWvZs7dSASCEqG+PAqaUz4R4qWq8fB0japLwR75Gmx1BKgOx/Rp6Q/XBiyisTeofioQ6deg0QGfjv4e7iDNzPWL/delT5Kj2LDxqMia9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CxbVCUkd; arc=none smtp.client-ip=209.85.208.48
+	s=arc-20240116; t=1724195745; c=relaxed/simple;
+	bh=Qrrwpb7t0tQS5gvx0SWzT2RiMFzDe5hOSHiMF0Tti1I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=K87PkqQyJbPgOGqeTIqjpUGsX6pXgMSjwW8Vz9kDD1aiET4oEK8Y4g0i/Q30sPoes9hQfc5gqgYj8+bXpmORWt7mBJbj2lS+NlFM+QWuStXatYJTZi75fSsbi1l1J6r1iADNbv4y51HdYZHsv6WHfNCF86zAPmLfgh9hlDHOyFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=miZGLx0q; arc=none smtp.client-ip=209.85.218.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5bef295a429so3500704a12.2
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Aug 2024 14:44:20 -0700 (PDT)
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a7d26c2297eso696865066b.2
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Aug 2024 16:15:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724190259; x=1724795059; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1724195741; x=1724800541; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ctPp+aa27vNG+TjacFaAY1wjyjO+YrEk8WzcUMxQ8CU=;
-        b=CxbVCUkdhR3VfHNfQY4Cetud/hUIu2BDYT419M6PCJeksASTglFYp5WjqJdJ24aos9
-         NWOf4JxF4pAP50aOfudqep4fploTQPNFzQ51QsF0OD3oMPRT69fM3EnpPuiKS0mIWy1b
-         5Dx/TdnGje52p02uJW+bHn0obzXm7J5kWr0Ob/cTrbh9lV1JljSmanAGockam8i2UjW1
-         KY3azgALDmyfSF2hwsX3KoWBJVkzNZ3Ku6A2xXR14sEid5KxpdXCaD/XlUIGhxqNZ4i0
-         zIZRBIwnBcgeLs1SquG4mONUvkBAvb6IhF97/DGE8EetmvY3JcnRq66WaTaM1hJUlEBX
-         Bzqg==
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yxRKaNNkg8Y2u8EPYsViDaa3XX2+h5Qdakgju7O2rF4=;
+        b=miZGLx0qmLZ/CH8DXTK931ZAfmI6D3trWhzu0awk+ukltlqSgkS9VgG4Rm49WVCP4C
+         iwydrHJR1rWCFlm/m4nR3m/UwOmncpZNGBBvWVHlFTDeMJWkLUB7p8OkLbU1XznwvUre
+         3SSU1OeeFstBPDneMhewjrEpUMHpVj6sYEgc/GhspTnwaEbsC/u8+Z+KIAXfcwdU/mN7
+         zSwmdUvGLC1FyHmdzCq7qIHPkhakWbWanGDFWPJJtZZMYA8L4QYsMnf/7Nx8cFIKiHU4
+         FfEDwtTiAjWibxqyf4lUa5+orI9FARDFZnq1LBwSaqoby1UPH4bEsJaRi4v8ty/wxecv
+         demw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724190259; x=1724795059;
+        d=1e100.net; s=20230601; t=1724195741; x=1724800541;
         h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ctPp+aa27vNG+TjacFaAY1wjyjO+YrEk8WzcUMxQ8CU=;
-        b=w/hEVKiCDSRh9vi3N5Ne8wI5d/+Bmr3aHJt7o83tV8LaYgOVX+nRmKSsyUPFtk9oPE
-         Oqz51L5gBSaZQfejMNjq6sVkxcliQXzn7AdvaKw6RU45o9vklHSgPBVOCKwHPqkQVsuK
-         ZO4FzGEukw2RwRn0W32ukXzlhI4RzJ0RT2YwseZqIUaAoyKpucuHvHiW4MSYLniBF1Zg
-         AKJfyv+kSdzN5LOKgpUItBW2gmnXipv7FimS3+nvQRAlHoztGmDwGEPraC3kTapzGmbA
-         CqhEbVN9/hI/8zK20vaTBbXag32RB3atkiPbYmi3/tsAEoQO+1ZzUty9Wmc1wB+FXbMm
-         r+oA==
-X-Forwarded-Encrypted: i=1; AJvYcCXIiV9A499OzipLwLsoRhcgJoSyU88X4/+MCoYHRzZg53dphKc2JQdw3kifb18VeFu33hA1qrbhF9m9BwlPSw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzD5bNm48oXaNSy3uzDIavTDh+esQ0UDdA+c9glRxiJ/lpbgdzQ
-	alaNEqWZnzNC0jRU2eTn3hvURT4Pi+U3F1a0KiaMOwlL8Eh7cRkA
-X-Google-Smtp-Source: AGHT+IFyYqY5LQUDiHrQ16bmY23azf8PK0i4LlA3kl+qiO2Nw5DhPZfuT7GOd+bmdmYU8Q51znqQ4w==
-X-Received: by 2002:a05:6402:280f:b0:5a1:cab1:fbd0 with SMTP id 4fb4d7f45d1cf-5bf1f0a4206mr221230a12.5.1724190258302;
-        Tue, 20 Aug 2024 14:44:18 -0700 (PDT)
+        bh=yxRKaNNkg8Y2u8EPYsViDaa3XX2+h5Qdakgju7O2rF4=;
+        b=uNbM+FunO90XLZjXT0Fdujmpb8jNkSZJ/34igCu7IiH9E8AX3B7cYavV0UWO5VLrWR
+         I/1MSAXUJk0eG7FYN9wlZBlUmLD00ggsk3I5diwVeSRQDg/WGdFvVwR4TFm1o6tud3YP
+         SVFn7N+l7YXhHa0Ra/vGDoA5CiycND2iVuqsXa0ov4nwGwNwZqSap+5E6C73TbOsOfat
+         mK59tDIQ0Z/OdNOcn0DRAmfurKHjNhosx5oyjb1gDDomk7vkWSMOePDxPOFypeD5wp1l
+         PSLyu8XyfikWT8/FF8nRY7ghudlaj5nIcJ2ZXjir3gI2Tc6LowZ+VRy/+VHg31czbLAm
+         eArw==
+X-Forwarded-Encrypted: i=1; AJvYcCUMb45LbsmkV5GSiZEcPjrcAfuax7+VSk4vAj4sUhjrlnlQltq3kg6XHX78i/QDOAGGGMGD/lEPNitejFB9dg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCCMzZGtboeFNwL+Mn62DLEo4b9UHBlE3OcxZ39GICiYVf5RLt
+	R00isD3tGJpejBWJH7ix0EfxsWjoIgORDbJxHsM5mkDzwez3bX8b
+X-Google-Smtp-Source: AGHT+IG6e9HYpJWTDndHBeYy5tSnf8WdRJ3eT/hcemMSJdEV50RAYS1eMTtdkmytGdTCjlNP8oQpPg==
+X-Received: by 2002:a17:907:3ea1:b0:a80:f358:5d55 with SMTP id a640c23a62f3a-a866f3429bbmr31109566b.33.1724195741056;
+        Tue, 20 Aug 2024 16:15:41 -0700 (PDT)
 Received: from [192.168.0.50] ([79.119.240.114])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5bebc081cf5sm7197685a12.90.2024.08.20.14.44.17
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a838394652dsm823994366b.149.2024.08.20.16.15.39
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Aug 2024 14:44:17 -0700 (PDT)
-Message-ID: <d06c7a5f-c773-45a6-98f2-30fb1d0dde94@gmail.com>
-Date: Wed, 21 Aug 2024 00:44:16 +0300
+        Tue, 20 Aug 2024 16:15:40 -0700 (PDT)
+Message-ID: <c7d69a0c-ee74-4186-8d71-526be0d7ef9d@gmail.com>
+Date: Wed, 21 Aug 2024 02:15:38 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -76,72 +76,51 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/20] wifi: rtw88: Allow different C2H RA report sizes
+Subject: Re: [PATCH 2/2] wifi: rtw88: Avoid using macid 0 in AP mode
 To: Ping-Ke Shih <pkshih@realtek.com>,
+ "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Cc: Sascha Hauer <sha@pengutronix.de>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
  "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <ade57ca1-444f-49e2-b49e-f4b9da65b2cc@gmail.com>
- <e0de25fc-8742-4899-854e-7cbd93aaa582@gmail.com>
- <6071028680d14afa8e0eed84821f51c6@realtek.com>
- <4b7181e4-d235-4c02-8b8e-dbafbf38fa93@gmail.com>
- <840cb519e99047a5a8f3ca4a12a3fcee@realtek.com>
+References: <9174a776-4771-4351-85fa-476e240d8ace@gmail.com>
+ <e4be0a75-43b2-4ae5-9aab-5c4a88e78097@gmail.com>
+ <9356af89520243ccacc0be72b8b03252@realtek.com>
+ <4f052989-5fb9-4c5c-950e-a3d34e6499ab@gmail.com>
+ <d21bc7a0fac8413b9cc443288924ec7b@realtek.com>
+ <91d03fa7-5af0-4ec5-a52c-c2c060e11d4d@gmail.com>
+ <6d1667d2-c86f-4b80-bb32-9ba01164480b@maciej.szmigiero.name>
+ <e8d3c81a47de44e1ba7df08b9de826ee@realtek.com>
+ <1377b2e9-4da2-45cb-86f5-5b80fe5ab025@maciej.szmigiero.name>
+ <3e2d32e473204471af1814aa2ce26bcb@realtek.com>
 Content-Language: en-US
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <840cb519e99047a5a8f3ca4a12a3fcee@realtek.com>
+In-Reply-To: <3e2d32e473204471af1814aa2ce26bcb@realtek.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 20/08/2024 04:10, Ping-Ke Shih wrote:
-> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->> On 15/08/2024 09:14, Ping-Ke Shih wrote:
->>> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->>>> The RTL8821AU and RTL8812AU have smaller RA report size, only 4 bytes.
->>>> Avoid the "invalid ra report c2h length" error.
->>>>
->>>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
->>>> ---
->>>>  drivers/net/wireless/realtek/rtw88/fw.c       | 8 ++++++--
->>>>  drivers/net/wireless/realtek/rtw88/main.h     | 1 +
->>>>  drivers/net/wireless/realtek/rtw88/rtw8703b.c | 1 +
->>>>  drivers/net/wireless/realtek/rtw88/rtw8723d.c | 1 +
->>>>  drivers/net/wireless/realtek/rtw88/rtw8821c.c | 1 +
->>>>  drivers/net/wireless/realtek/rtw88/rtw8822b.c | 1 +
->>>>  drivers/net/wireless/realtek/rtw88/rtw8822c.c | 1 +
->>>>  7 files changed, 12 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
->>>> index 782f3776e0a0..ac53e3e30af0 100644
->>>> --- a/drivers/net/wireless/realtek/rtw88/fw.c
->>>> +++ b/drivers/net/wireless/realtek/rtw88/fw.c
->>>> @@ -157,7 +157,10 @@ static void rtw_fw_ra_report_iter(void *data, struct ieee80211_sta *sta)
->>>>
->>>>         rate = GET_RA_REPORT_RATE(ra_data->payload);
->>>>         sgi = GET_RA_REPORT_SGI(ra_data->payload);
->>>> -       bw = GET_RA_REPORT_BW(ra_data->payload);
->>>> +       if (si->rtwdev->chip->c2h_ra_report_size < 7)
->>>
->>> Explicitly specify '== 4' for the case of RTL8821AU and RTL8812AU.
->>>
->>>> +               bw = si->bw_mode;
->>>> +       else
->>>> +               bw = GET_RA_REPORT_BW(ra_data->payload);
->>>>
->>>
->>>
+On 20/08/2024 03:34, Ping-Ke Shih wrote:
+> Hi Bitterblue,
+> 
+> Maciej S. Szmigiero <mail@maciej.szmigiero.name> wrote:
+>> I tested these patches on USB RTL8821CU and can confirm that the AP mode seems to
+>> work as good with your patch [2] as it did with the Bitterblue's one.
 >>
->> Would that make sense? I check for less than 7 because the size
->> has to be at least 7 in order to access payload[6] (GET_RA_REPORT_BW).
+>> The only issue with either your or Bitterblue's patches is that I occasionally get the
+>> following messages in the kernel log in the AP mode:
+>>> kernel: [T1234] rtw_8821cu 4-1.2:1.2: error beacon valid
+>>> kernel: [T1234] rtw_8821cu 4-1.2:1.2: failed to download drv rsvd page
+>>> kernel: [T1234] rtw_8821cu 4-1.2:1.2: failed to download beacon
+>>
+>> Around the time these messages are logged ping RTT of a connected (battery powered)
+>> STA climbs into multiple seconds range so I guess there might be something wrong
+>> with beacon DTIM update here.
 > 
-> As you did "WARN(length < rtwdev->chip->c2h_ra_report_size)", I assume you
-> expect "< 7" cases is only for coming chips RTL8821AU and RTL8812AU.
+> Can you also see this in your side? It seems like download beacon for change of DTIM
+> might be failed occasionally. 
 > 
-> Maybe explicitly specifying chips ID would be easier to understand:
->         if (chip == RTL8821A || chip == RTL8812A)
->                bw = si->bw_mode;
->         else
->                bw = GET_RA_REPORT_BW(ra_data->payload);
-> 
-> That's why I want "== 4". (but it seems implicitly not explicitly though.)
+> Ping-Ke
 > 
 
-I just checked, the RA report size of RTL8814AU is 6.
+Yes, I have seen it with RTL8812AU. It only fails sometimes.
+I don't know what is wrong.
 
