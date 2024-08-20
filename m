@@ -1,70 +1,69 @@
-Return-Path: <linux-wireless+bounces-11658-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11659-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B9AD9583CA
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2024 12:12:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C26BD9583CC
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2024 12:13:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE88B1C24679
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2024 10:12:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5EFB1B22AE8
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2024 10:13:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12AB018CC0E;
-	Tue, 20 Aug 2024 10:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C7A718DF89;
+	Tue, 20 Aug 2024 10:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="g93AtGvW"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="C2dZyN5u"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2683B18D651
-	for <linux-wireless@vger.kernel.org>; Tue, 20 Aug 2024 10:12:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1475818D647
+	for <linux-wireless@vger.kernel.org>; Tue, 20 Aug 2024 10:12:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724148753; cv=none; b=rH1oYCHHBizwAixP5F5cLBAWtY8ILionVrWoUZoQgC6ji/hYOFYSOLqShcp4BeiQUtv+8Bdez5OjWap80k6MmQFTWMV+ic0XuGpNbEgSYXYU/AP8j+nHLzIo4/vIx20l6jkJX6KUIKdlUpIpaK6IVbMqnNB5Fvr7iOy+JsGdMa0=
+	t=1724148754; cv=none; b=IyP/FlDYT/LW0mz5mDJJ1BeavnVPXEMjDwaIrwO8J7vAhykh8MlPpd7Q4TXMR2kniUAqW8A+RYF/Uoebhq9xUxpMvt8MIYFtf1IuRf7lJr/YEX8VHGZi3vNp0q48hAQhjCOOkFO11u7ZhBCCmLLEgmXF459PqD5Gbpq8zUj9x94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724148753; c=relaxed/simple;
-	bh=VewtWXS49rpJWHjz1uJir39tVL9jfwaiGXaUkx0zaPI=;
+	s=arc-20240116; t=1724148754; c=relaxed/simple;
+	bh=W644OxWrT67qvyKAGwS0o5Px/YgwCYVCIzFvJEpdSXo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NSq+F58Hx4UOGcR8Mdtg4vrepr8AAm808CEA7BIPFPmA5rm2xJsAiQnNoBj89kwSpZTP9k1+YX+wrqvC2RPZdusHQtxprpDhIH5FQlhO0+C0vVR/ccOhNp/Q2F0xIQsAsBTdAOeZFTFrf7BQS6bM7D1eVGGxpNkXDZvmKSKE+nI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=g93AtGvW; arc=none smtp.client-ip=209.85.210.175
+	 MIME-Version; b=byeAaHM2B7jLFrG2poYj3yA14QpFUevIsWPyTdeKjn8LhX7YreGwDTrUgQK+u0PiTrphoDQzTBQ17lH9OqTgE1E5axMFzDNFNO6pekukn7IZnd1jmt+FFse3qDNTeA6r45wvOklgfTp5Q345odmPpMJzXLKsP0a7Pdo89kGNtfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=C2dZyN5u; arc=none smtp.client-ip=209.85.210.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-70d162eef54so3413542b3a.3
-        for <linux-wireless@vger.kernel.org>; Tue, 20 Aug 2024 03:12:29 -0700 (PDT)
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-70ea2f25bfaso3898813b3a.1
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Aug 2024 03:12:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1724148749; x=1724753549; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1724148752; x=1724753552; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8kIAhfjDAT0axAt0+BwPuqQ3ky4+ehVgWPUi5t/CRCY=;
-        b=g93AtGvW8/VZO6aNeqrOG+t08+BT6XpfXmcfyOtfT8+A5Lj/owgyDI6xwI6cZ56NkL
-         9UazQ+aDYC8XXsYnLg6Qva+NepMBg2BN9X3COQHIUdWTHmJ6h1aOBc8/g2AptahG8hCu
-         vO5IH5IF/1OT53Y7A1fGdJQvX0FeHQNiCYIV4=
+        bh=st/i+sGXRsN4w3kxPextDmUHrJmeWMOfYodvp9lM/R0=;
+        b=C2dZyN5uRJ7SPGdaHJJHxQXdeckW0udq3WfAjZPFHWnp6dnfqRD1aUOZpOyPp1DIOp
+         m00m9Sla3wf6V1Vj3UwiJmlcItNSWLI46SHzDi59afl4IJkRVB1MKkbt87bjVoRa1Di1
+         lc4UzZzPSG9j7QqiSFP6MkRU5EKD/kTcqxkfg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724148749; x=1724753549;
+        d=1e100.net; s=20230601; t=1724148752; x=1724753552;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8kIAhfjDAT0axAt0+BwPuqQ3ky4+ehVgWPUi5t/CRCY=;
-        b=b7YPYelnNOYZN8s10idgTzwv0bKmDICoIMkjUPUHUNSPZcGGObdfABjkVZwEGXJfaI
-         ye4hz4J8UsrpQM0BWygFTyEoFQxFS5z1NO/Nrn6E1MgBo8XbfK6qpXXGo3ofXdFNq7oj
-         ygvDcftt8BncnN9zThFZVhEPH8oylV2snMF6FkFC+1knQwxdpC7G9fqeJHkAlxV6xwDE
-         9Nh2Ut4OegAcZRycIOUY/tm31R+wERD3QKIgqyN7+KCC/pqNus40dl9olrGUV0zTclC7
-         OuMo/N1klhR70ZUUKJbUJhLTJ5xSRLcZh5NvqsuN3/zgl/tLg0nTje6kyNxAuVOrzrlT
-         3xZA==
-X-Forwarded-Encrypted: i=1; AJvYcCVa8HsIjE8+7c3HI9k+BZ/1TNySw6nl5OSvEv3a5H03hiNErsuAxCMeSKcaVVfNHtUg01oFXq7hQ1NyWtKSz9FM6DnBK8XTISwlBl7ulWo=
-X-Gm-Message-State: AOJu0Yzjx8M4vAXTn8bzLIfTAy0UIok81m/Nnsg2myBGsuMR7YKnHIdV
-	rLhLz/bbwSCl/kMQJxki1th0APD38tEEQ485/4rCl/VT68hNifft87qNhXxmCeeJDhRjrAqmyf3
-	Z8w==
-X-Google-Smtp-Source: AGHT+IFn+Oek7Agv106ZiUW5dAmUwXfOggJfDPRWsSst4ULyviFLXwjGXgAlAEpvMq4hMh5bAPWL7w==
-X-Received: by 2002:a05:6a21:318b:b0:1c6:fbc4:7a02 with SMTP id adf61e73a8af0-1c905060b59mr14542718637.44.1724148749225;
-        Tue, 20 Aug 2024 03:12:29 -0700 (PDT)
+        bh=st/i+sGXRsN4w3kxPextDmUHrJmeWMOfYodvp9lM/R0=;
+        b=HhLIgOndbv1PUjcxnOL4r5OfpXlObnsOCqKlcEBuAVuoWy8WITzz4guY1T2bOFIta0
+         sf5XCCZ1rThCwDx3UPBT9TovJAWimPWlqpdhqZ4/MbztE12h2IggROo3BSDnuwnguuMa
+         1Asb1OeQCzFfWnY/aBpyIV4GpNr1mhU4AN2G3UVPLofYLlxINh5tqEZ2AVSfAnetCCmc
+         5ZYUn7dNAo20WHwA3EQJ1ZscjACgcwMxk6vz/2fkWvouhkfQiuLzmoai81rjcBtezGGX
+         xoDDUF1Ui6CoI0rd0vUqI5ytheIPUl2fO6JEDJFzOx98bBpxwf/YB1q0TpZaIQ5wVFPH
+         97wg==
+X-Forwarded-Encrypted: i=1; AJvYcCV6uCIIe4a8s1GlZr/LWQf2erGyLQnStSK1RQ0GuO2v9rhtzgQNXXY4LxW5Se4M+FBfXdu6gmI4GKrvjju8zJVezVV9pFqRAxiBEamI544=
+X-Gm-Message-State: AOJu0YywYAHiK28bvF5UPQZks9RHPmSO0OdHsPSyNkjnohj6RAB+gsbm
+	jedGJn2a8MjWJBU/0snFkM48lKB6WL6F0dUjYiucbKt2hoc0XaQ8XnftIM+sSw==
+X-Google-Smtp-Source: AGHT+IFRvQW8NsQ+qPYeONdzztKRefuQZmv777XGiLSXepx7b8zuT6dl3melnSswYK9JmHYmoWB2Ew==
+X-Received: by 2002:a05:6a21:3115:b0:1c0:f1c9:6835 with SMTP id adf61e73a8af0-1c90505887amr13980615637.51.1724148752214;
+        Tue, 20 Aug 2024 03:12:32 -0700 (PDT)
 Received: from bld-bun-02.bun.broadcom.net ([192.19.176.227])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-713f3c35cf0sm3111052b3a.173.2024.08.20.03.12.26
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-713f3c35cf0sm3111052b3a.173.2024.08.20.03.12.29
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 20 Aug 2024 03:12:28 -0700 (PDT)
+        Tue, 20 Aug 2024 03:12:31 -0700 (PDT)
 From: Arend van Spriel <arend.vanspriel@broadcom.com>
 To: Kalle Valo <kvalo@kernel.org>,
 	Hector Martin <marcan@marcan.st>,
@@ -74,9 +73,9 @@ Cc: devicetree@vger.kernel.org,
 	brcm80211@lists.linux.dev,
 	asahi@lists.linux.dev,
 	Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: [PATCH 1/2] dt-bindings: wireless: restore constraint for brcm,bcm4329-fmac compatible property
-Date: Tue, 20 Aug 2024 12:12:15 +0200
-Message-Id: <20240820101216.355012-2-arend.vanspriel@broadcom.com>
+Subject: [PATCH 2/2] arm64: boot: apple: fixup wifi device specification
+Date: Tue, 20 Aug 2024 12:12:16 +0200
+Message-Id: <20240820101216.355012-3-arend.vanspriel@broadcom.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20240820101216.355012-1-arend.vanspriel@broadcom.com>
 References: <20240820101216.355012-1-arend.vanspriel@broadcom.com>
@@ -88,62 +87,57 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-When extending the bindings for Apple PCIe devices the compatible property
-specification was changed. However, it was changed such that for these
-devices it was no longer necessary to have "brcm,bcm4329-fmac" listed as
-string in the compatible list property as it was before that extension.
-This patch restores that constraint.
+Align with the corrected device tree bindings in brcm,bcm4329-fmac.yaml
+which imposes a constraint that the compatible should have the string
+"brcm,bcm4329-fmac".
 
 Fixes: e2e37224e8b3 ("dt-bindings: net: bcm4329-fmac: Add Apple properties & chips")
 Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 ---
- .../net/wireless/brcm,bcm4329-fmac.yaml       | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ arch/arm64/boot/dts/apple/t8103-jxxx.dtsi | 2 +-
+ arch/arm64/boot/dts/apple/t8112-j413.dts  | 2 +-
+ arch/arm64/boot/dts/apple/t8112-j493.dts  | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-index e564f20d8f41..47f90446322f 100644
---- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-+++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml
-@@ -7,7 +7,7 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
- title: Broadcom BCM4329 family fullmac wireless SDIO/PCIE devices
- 
- maintainers:
--  - Arend van Spriel <arend@broadcom.com>
-+  - Arend van Spriel <arend.vanspriel@broadcom.com>
- 
- description:
-   The Broadcom Single chip MAC part for the BCM4329 family and
-@@ -27,7 +27,6 @@ properties:
-               - brcm,bcm4341b0-fmac
-               - brcm,bcm4341b4-fmac
-               - brcm,bcm4341b5-fmac
--              - brcm,bcm4329-fmac
-               - brcm,bcm4330-fmac
-               - brcm,bcm4334-fmac
-               - brcm,bcm43340-fmac
-@@ -46,13 +45,15 @@ properties:
-               - cypress,cyw43012-fmac
-               - infineon,cyw43439-fmac
-           - const: brcm,bcm4329-fmac
--      - enum:
--          - brcm,bcm4329-fmac
--          - pci14e4,43dc  # BCM4355
--          - pci14e4,4464  # BCM4364
--          - pci14e4,4488  # BCM4377
--          - pci14e4,4425  # BCM4378
--          - pci14e4,4433  # BCM4387
-+    - items:
-+          - enum:
-+              - pci14e4,43dc  # BCM4355
-+              - pci14e4,4464  # BCM4364
-+              - pci14e4,4488  # BCM4377
-+              - pci14e4,4425  # BCM4378
-+              - pci14e4,4433  # BCM4387
-+          - const: brcm,bcm4329-fmac
-+    - const: brcm,bcm4329-fmac
- 
-   reg:
-     description: SDIO function number for the device (for most cases
+diff --git a/arch/arm64/boot/dts/apple/t8103-jxxx.dtsi b/arch/arm64/boot/dts/apple/t8103-jxxx.dtsi
+index 5988a4eb6efa..4b021626d469 100644
+--- a/arch/arm64/boot/dts/apple/t8103-jxxx.dtsi
++++ b/arch/arm64/boot/dts/apple/t8103-jxxx.dtsi
+@@ -72,7 +72,7 @@ hpm1: usb-pd@3f {
+ &port00 {
+ 	bus-range = <1 1>;
+ 	wifi0: network@0,0 {
+-		compatible = "pci14e4,4425";
++		compatible = "pci14e4,4425", "brcm,bcm4329-fmac";
+ 		reg = <0x10000 0x0 0x0 0x0 0x0>;
+ 		/* To be filled by the loader */
+ 		local-mac-address = [00 00 00 00 00 00];
+diff --git a/arch/arm64/boot/dts/apple/t8112-j413.dts b/arch/arm64/boot/dts/apple/t8112-j413.dts
+index 6f69658623bf..df2a63d8dd5e 100644
+--- a/arch/arm64/boot/dts/apple/t8112-j413.dts
++++ b/arch/arm64/boot/dts/apple/t8112-j413.dts
+@@ -43,7 +43,7 @@ led-0 {
+ &port00 {
+ 	bus-range = <1 1>;
+ 	wifi0: wifi@0,0 {
+-		compatible = "pci14e4,4433";
++		compatible = "pci14e4,4433", "brcm,bcm4329-fmac";
+ 		reg = <0x10000 0x0 0x0 0x0 0x0>;
+ 		/* To be filled by the loader */
+ 		local-mac-address = [00 10 18 00 00 10];
+diff --git a/arch/arm64/boot/dts/apple/t8112-j493.dts b/arch/arm64/boot/dts/apple/t8112-j493.dts
+index 0ad908349f55..5f3453e109b8 100644
+--- a/arch/arm64/boot/dts/apple/t8112-j493.dts
++++ b/arch/arm64/boot/dts/apple/t8112-j493.dts
+@@ -43,7 +43,7 @@ led-0 {
+ &port00 {
+ 	bus-range = <1 1>;
+ 	wifi0: wifi@0,0 {
+-		compatible = "pci14e4,4425";
++		compatible = "pci14e4,4425", "brcm,bcm4329-fmac";
+ 		reg = <0x10000 0x0 0x0 0x0 0x0>;
+ 		/* To be filled by the loader */
+ 		local-mac-address = [00 00 00 00 00 00];
 -- 
 2.32.0
 
