@@ -1,144 +1,145 @@
-Return-Path: <linux-wireless+bounces-11652-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11653-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D57EB95818A
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2024 10:59:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A6779581F1
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2024 11:18:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93B612821D6
-	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2024 08:59:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DC021C20A63
+	for <lists+linux-wireless@lfdr.de>; Tue, 20 Aug 2024 09:18:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6870718A933;
-	Tue, 20 Aug 2024 08:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 284E818B468;
+	Tue, 20 Aug 2024 09:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="NPQTC7v7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MIOPiq+V"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B3418A928
-	for <linux-wireless@vger.kernel.org>; Tue, 20 Aug 2024 08:59:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6CF418A95B;
+	Tue, 20 Aug 2024 09:17:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724144368; cv=none; b=kY4LqO320uR4NE9HQkiQ9dOjYEcTcCiGQPxFtEbVpDXTL/qz762TpwWugSdAf8eGN1VsOzAAKV5r3VDxgaVo16DVdIgQaoZUDg9gIPNeueB/jPxCkIKttHn6qTxvRJQq6M4ISrkgDI9V/Ef3LIZt/Yl+z80zk2yyocGEgL18nqA=
+	t=1724145477; cv=none; b=Z1hXmkUEBU7DfhpGeoVEuO78JKQ7zADxo7wkEFjtJa/lTxAIbIAo3JXWa2RNDNhenCk0mecj4kby++/RSFXSlfOrkCpVz/cHrgMNaSMHlqjrvUZ7LqyL5DRzVV7s6pAv+hY/TydDX3+YXSn1uswLnCnplDOwiAVnztHVuusQpKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724144368; c=relaxed/simple;
-	bh=RjeixHYVLHHf45eXa/OFpm6POVOyDrf2UJ/lLn54E4g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AzTKleQOET4KZd8gvB0pfETW4qp5KLyI7j1kWro3LSpcXIqSD8Xrg8wZgxn5z/WTpl0dQXSkw58xfkX3w6SzEnseGzcjwrvjpRuVgIkKkHI5rR1kwwiPRNvG/xQAGEG7yKu902rMo5JRu4AqiinME7qwz2gy6cD5MKBlNc86z/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=NPQTC7v7; arc=none smtp.client-ip=91.218.175.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <99567c3c-1f45-4a3f-a739-b35f014127b5@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1724144363;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=deFt1RItMiAcKZnzOmo0EZwe3WAWajcCcK+fbFD3Z4w=;
-	b=NPQTC7v7xZvvAsgOKfBRVGfrY+h0BK8SRZUG3Qqyg/Mrrs2RiEHEsGIX2hjmqzSvvnDyEp
-	GFHqYOprrhxyNSc2kgWnJrZn3KdBf2GZp2vlxNjfd/Xw+F/eVOTjGZ7a0HrzhotWNronHD
-	/veoxk0i37Ea3CVWE/u9h9Oj+JHVJVc=
-Date: Tue, 20 Aug 2024 09:59:19 +0100
+	s=arc-20240116; t=1724145477; c=relaxed/simple;
+	bh=D1PblbAhDtG6zJFqDLsx5Mo/b+pVrfHqprGLRoQp7jQ=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=gOdfveig0k7YcrEDez6Gu3h3jH1pd/zUS3UY06GC4GA9KnvG0LYK4meEx+qYvNs7SzDOFB5fSogP1fdY3EQQ8XbqJIPnCCFLlWunAaQVDXcDFj3e8editQc0uUqYKdfAwdVFtugnUi+mct7TEbN11YgKEe0E7sxg62xol5t5J5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MIOPiq+V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C558FC4AF0B;
+	Tue, 20 Aug 2024 09:17:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724145476;
+	bh=D1PblbAhDtG6zJFqDLsx5Mo/b+pVrfHqprGLRoQp7jQ=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=MIOPiq+VjVknGOfFscs8z9icMzZJT62JmZJS9BR75KMj4V2ds5+4ObHiuwPzMBTAB
+	 NVK58WTPXrQ0/hyiK9+Lwq+JbDGW3mHkSvDN8pC4Jr9sZG7kC3uvk4Y7WX4u2TpPZO
+	 DPzRGpj6ndUeBuBdeYmA4kdTJraf4PD5SN0BXqn8xqsnOonJppt3m6C4CgsKkcGaN2
+	 ECVxXu9440DPvn3XJsJo0HOBRX2sZEDA8TOGfQ3VJeEGRs8emp26jOc3Rl++5q5K9z
+	 /oFLSXGf/n0eSjLYacul4N4+JaNti5sPIgMdsyoTDlpo2wyZDcuzk02EjTm1nZ8o42
+	 Hmz436P9x5kaQ==
+From: Kalle Valo <kvalo@kernel.org>
+To: Brian Norris <briannorris@chromium.org>
+Cc: Frank Li <Frank.Li@nxp.com>,  "David S. Miller" <davem@davemloft.net>,
+  Eric Dumazet <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,
+  Paolo Abeni <pabeni@redhat.com>,  Rob Herring <robh@kernel.org>,
+  Krzysztof Kozlowski <krzk+dt@kernel.org>,  Conor Dooley
+ <conor+dt@kernel.org>,  "open list:NETWORKING DRIVERS (WIRELESS)"
+ <linux-wireless@vger.kernel.org>,  "open list:NETWORKING DRIVERS"
+ <netdev@vger.kernel.org>,  "open list:OPEN FIRMWARE AND FLATTENED DEVICE
+ TREE BINDINGS" <devicetree@vger.kernel.org>,  open list
+ <linux-kernel@vger.kernel.org>,  imx@lists.linux.dev
+Subject: Re: [PATCH v2 1/1] dt-bindings: net: wireless: convert
+ marvel-8xxx.txt to yaml format
+References: <20240816171203.143486-1-Frank.Li@nxp.com>
+	<ZsPccHaCMRgbNk4L@google.com>
+Date: Tue, 20 Aug 2024 12:17:51 +0300
+In-Reply-To: <ZsPccHaCMRgbNk4L@google.com> (Brian Norris's message of "Mon, 19
+	Aug 2024 16:59:44 -0700")
+Message-ID: <87seuzwo1s.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [net/wireless] Question about `cfg80211_conn_scan` func: misuse
- of __counted_by
-To: Haoyu Li <lihaoyu499@gmail.com>
-Cc: netdev@vger.kernel.org, Johannes Berg <johannes@sipsolutions.net>,
- "David S. Miller" <davem@davemloft.net>, linux-wireless@vger.kernel.org,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Jakub Kicinski <kuba@kernel.org>
-References: <CAPbMC760=5UeaU2wwNZkBMi2ZMVhr2GQgG+VkM8Z7zNbt-FtTA@mail.gmail.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <CAPbMC760=5UeaU2wwNZkBMi2ZMVhr2GQgG+VkM8Z7zNbt-FtTA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain
 
-On 19/08/2024 20:19, Haoyu Li wrote:
-> Dear Linux Developers for NETWORKING and CFG80211/NL80211,
-> 
-> We are curious about the use of `struct cfg80211_scan_request *request`
-> in function `cfg80211_conn_scan`.
-> The definition of `struct cfg80211_scan_request` is at
-> https://elixir.bootlin.com/linux/v6.10.6/source/include/net/cfg80211.h#L2675.
-> ```
-> struct cfg80211_scan_request {
-> struct cfg80211_ssid *ssids;
-> int n_ssids;
-> u32 n_channels;
-> const u8 *ie;
-> size_t ie_len;
-> u16 duration;
-> bool duration_mandatory;
-> u32 flags;
-> 
-> u32 rates[NUM_NL80211_BANDS];
-> 
-> struct wireless_dev *wdev;
-> 
-> u8 mac_addr[ETH_ALEN] __aligned(2);
-> u8 mac_addr_mask[ETH_ALEN] __aligned(2);
-> u8 bssid[ETH_ALEN] __aligned(2);
-> 
-> /* internal */
-> struct wiphy *wiphy;
-> unsigned long scan_start;
-> struct cfg80211_scan_info info;
-> bool notified;
-> bool no_cck;
-> bool scan_6ghz;
-> u32 n_6ghz_params;
-> struct cfg80211_scan_6ghz_params *scan_6ghz_params;
-> s8 tsf_report_link_id;
-> 
-> /* keep last */
-> struct ieee80211_channel *channels[] __counted_by(n_channels);
-> };
-> ```
-> 
-> Our question is: The `channels` member of `struct
-> cfg80211_scan_request` is annotated
-> with "__counted_by", which means the array size is indicated by
-> `n_channels`. Only if we set `n_channels` before accessing
-> `channels[i]`, the flexible
-> member `hws` can be properly bounds-checked at run-time when enabling
-> CONFIG_UBSAN_BOUNDS and CONFIG_FORTIFY_SOURCE. Or there will be a
-> warning from each array access that is prior to the initialization
-> because the number of elements is zero.
-> 
-> In function `cfg80211_conn_scan` at
-> https://elixir.bootlin.com/linux/v6.10.6/source/net/wireless/sme.c#L117,
-> we think it's needed to relocate `request->n_channels = n_channels` before
-> accessing `request->channels[...]`.
-> 
-> Here is a fix example of a similar situation :
-> https://lore.kernel.org/stable/20240613113225.898955993@linuxfoundation.org/.
-> 
-> Please kindly correct us if we missed any key information. Looking
-> forward to your response!
+Brian Norris <briannorris@chromium.org> writes:
 
-You are quite right that the case when (wdev->conn->params.channel !=
-NULL) should initialize n_channels to 1 first.
+> Hi Frank,
+>
+> On Fri, Aug 16, 2024 at 01:12:01PM -0400, Frank Li wrote:
+>> Convert binding doc marvel-8xxx.txt to yaml format.
+>> Additional change:
+>> - Remove marvell,caldata_00_txpwrlimit_2g_cfg_set in example.
+>> - Remove mmc related property in example.
+>> - Add wakeup-source property.
+>> - Remove vmmc-supply and mmc-pwrseq.
+>> 
+>> Fix below warning:
+>> arch/arm64/boot/dts/freescale/imx8mp-beacon-kit.dtb: /soc@0/bus@30800000/mmc@30b40000/wifi@1:
+>> failed to match any schema with compatible: ['marvell,sd8997']
+>> 
+>> Signed-off-by: Frank Li <Frank.Li@nxp.com>
+>> ---
+>> Change from v1 to v2
+>> - Add Brian Norris <briannorris@chromium.org as maintainer
+>> - Remove vmmc-supply and mmc-pwrseq
+>> - Add wakeup-source
+>> - rename to marvell,sd8787.yaml by using one compatible string, suggestted
+>> by conor dooley at other binding doc convert review
+>> ---
+>>  .../bindings/net/wireless/marvell,sd8787.yaml | 93 +++++++++++++++++++
+>>  .../bindings/net/wireless/marvell-8xxx.txt    | 70 --------------
+>>  2 files changed, 93 insertions(+), 70 deletions(-)
+>>  create mode 100644 Documentation/devicetree/bindings/net/wireless/marvell,sd8787.yaml
+>>  delete mode 100644 Documentation/devicetree/bindings/net/wireless/marvell-8xxx.txt
+>> 
+>> diff --git a/Documentation/devicetree/bindings/net/wireless/marvell,sd8787.yaml b/Documentation/devicetree/bindings/net/wireless/marvell,sd8787.yaml
+>> new file mode 100644
+>> index 0000000000000..c6647672b7b1e
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/net/wireless/marvell,sd8787.yaml
+>> @@ -0,0 +1,93 @@
+>
+>> +  marvell,caldata-txpwrlimit-5g-sub0:
+>> +    $ref: /schemas/types.yaml#/definitions/uint8-array
+>> +    description: Calibration data for sub-band 0 in the 5GHz band..
+>
+> You have an extra period in this line.
+>
+>> +  marvell,caldata-txpwrlimit-5g-sub1:
+>> +    $ref: /schemas/types.yaml#/definitions/uint8-array
+>> +    description: Calibration data for sub-band 1 in the 5GHz band..
+>
+> Same.
+>
+>> +    maxItems: 688
+>> +
+>> +  marvell,caldata-txpwrlimit-5g-sub2:
+>> +    $ref: /schemas/types.yaml#/definitions/uint8-array
+>> +    description: Calibration data for sub-band 2 in the 5GHz band..
+>
+> Same.
+>
+> Otherwise, this looks good to me, so feel free to carry my:
+>
+> Acked-by: Brian Norris <briannorris@chromium.org>
+>
+> (Sometimes Kalle will make trivial fixes like this when applying. I'm
+> not sure if that means you should send v3 anyway, or see if he'll apply
+> this on his own soon enough.)
 
-The other question is if it's legal to take address beyond the end of
-array. I'm talking about
-request->ssids = (void *)&request->channels[n_channels];
-But you can easily check it yourself with pretty simple program.
+For wireless-next patches I can easily edit commit messages but not the
+actual patch, so please send v3.
 
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-
-> Best,
-> Haoyu Li
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
