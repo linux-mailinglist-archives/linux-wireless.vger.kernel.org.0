@@ -1,157 +1,110 @@
-Return-Path: <linux-wireless+bounces-11752-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11753-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4C7E95A189
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 17:38:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B50FA95A340
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 18:56:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E81731C22687
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 15:38:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC9F71C213FC
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 16:56:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF2F14EC7F;
-	Wed, 21 Aug 2024 15:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25E7615098E;
+	Wed, 21 Aug 2024 16:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VnEpLudF"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mZMv/hQL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C85A14EC7C
-	for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2024 15:37:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878A41AF4CC
+	for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2024 16:56:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724254656; cv=none; b=HXBpjyDwEhnd2+j8dt4A4f/cuXao9qUt1gyq1772VxNivaJhzN/UyaO7gz4v5PjAB2H7N4Wx6swWeQQNBWv3jQxqMgYM+CPTDGwi6qglHQhhtwc7AxmRLviQH4XxGxUbzIUj4MhexM3zM921feWAbYrit8oBDt6PXEaMi9inVUk=
+	t=1724259365; cv=none; b=F+W3u4pCHiJifFHYl/NcvK8I1TCxRDZMUoDnykMISv/NAKcszChMsp6NxGe/rRGp3MwKS2PIizDPkwUKacQywGhic53EtlmXq2weQuTIEgxugMGLVZ4d44ACoRPO4kl7acBd8hFv/GWW2KJPKjzfpCNgXkTEyfYn3bsGfOTdd8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724254656; c=relaxed/simple;
-	bh=hc1QliZ+Mc1C+sQ0pZCAmEAaGgIxjNk7WBgmSijLWD0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QOrQgJDaHz8CFh2exKS44as9tsxq2jaRz3Q6ELDGoZYlBd5oOI0TR2hHhLOy1RLihRthhsIpeL3BnB5udnBCfy6NdSwAJI3wBQipH0Q3MmpatmZI5NSOnEsd0Hkpg55XAp0i2h8xMO6d+mz0JZdkZrhzQZmlNoI7YO9gNY0P57g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VnEpLudF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E14CC32786;
-	Wed, 21 Aug 2024 15:37:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724254655;
-	bh=hc1QliZ+Mc1C+sQ0pZCAmEAaGgIxjNk7WBgmSijLWD0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VnEpLudFFkbuN8hJwwMT0nEkDpH5bQjmsj56rKIWk5QQa5GuFxeBs5nAfoPszaEsn
-	 FQJTT7ZOGaTUFiWG8kzvCuhbPHqUxy6JclHetOCfaOqdw7R/S4jJWE37h/BolL7fPv
-	 FacsIEy94EEwOYC2J4uGQpaXNGMQPX2CpyTu+Fszwc43LGaM/ZbrLVPYjy0XlXmoC2
-	 SPd/hOvlxSHQDnPpcfVRulyPcxMkEH4/BFiSN6k2fHDX+98wJwzdPmbCKDjBVNFxpx
-	 PyaMB3TA8bddX06yRafejjTFIv+SeuZ0b5OW/gT9z4J1us3SUypH0EISbkzZKam+zQ
-	 ooTPSBCHDf0lw==
-From: Kalle Valo <kvalo@kernel.org>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH RFC 4/4] wifi: ath12k: convert struct ath12k_sta::update_wk to use struct wiphy_work
-Date: Wed, 21 Aug 2024 18:37:28 +0300
-Message-Id: <20240821153728.2121600-5-kvalo@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240821153728.2121600-1-kvalo@kernel.org>
-References: <20240821153728.2121600-1-kvalo@kernel.org>
+	s=arc-20240116; t=1724259365; c=relaxed/simple;
+	bh=3hDvwKRFc9Bx68QN+OXSesV5BvtspGp/eJuYhuFew3c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=b6yYxhvTY0yyDlTvtNTc2jIDYaLkrJcWLSx5R+hAfpz9aulYyUZFuQv1Ak6YjT25PDpsJwdTvZjK/sgFowY69j0nirayDZiX0QB2qEvNDpKtLeHTBETXbwAGEsuCofh/j8/VbxABtO2wse7a+hmOOHHVS/8bi+gBS25ynLxqJ34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mZMv/hQL; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47LC4MBv004713;
+	Wed, 21 Aug 2024 16:55:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	P96IDu99mJPZI9Kvf4dTHrJ7IuC5XQUSJPfedBEbBWo=; b=mZMv/hQLVnA5oZYO
+	P8zmUzPMORRwx7uNtXA54VthVw0UIpJ2G6OdVFYWMBJNHFCVdrwAOne8xblohLLv
+	y5soorHKrJZ2Z2z9tmzNBBXV/4SWoBAG5iwdWPFDlWOydxO175H0U+7tVR+he1vD
+	oPb4o+ZPx9BfYKJ8A7vpRkvOsYttPRvoqvWbviH3saReaFQeJskpQEkDwDeWlKrz
+	dZMcVpM4+/clKfpw6uZwncjjxolxjv5rNjqeWE+6ortpFS3T1pZXiwO5TY5bHU9B
+	3szHgqhGOMYy+l3REAVN4EetzbsqS0TGkao5IZIb+9h3PqsRetaUru8jjKCI26Y1
+	wY0l3A==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 414v5cc7w9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 21 Aug 2024 16:55:57 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47LGtuNL013085
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 21 Aug 2024 16:55:56 GMT
+Received: from [10.111.179.139] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 21 Aug
+ 2024 09:55:55 -0700
+Message-ID: <5ae832c0-8395-4d9b-a226-04255682c6d3@quicinc.com>
+Date: Wed, 21 Aug 2024 09:55:55 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 2/4] wifi: ath12k: cleanup unneeded labels
+To: Kalle Valo <kvalo@kernel.org>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240821153728.2121600-1-kvalo@kernel.org>
+ <20240821153728.2121600-3-kvalo@kernel.org>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <20240821153728.2121600-3-kvalo@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: HVL60o7_TLSvGn6_Lvhl0hCcravD3S6X
+X-Proofpoint-ORIG-GUID: HVL60o7_TLSvGn6_Lvhl0hCcravD3S6X
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-21_11,2024-08-19_03,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
+ spamscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0 impostorscore=0
+ phishscore=0 priorityscore=1501 clxscore=1015 malwarescore=0
+ mlxlogscore=780 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408210123
 
-From: Kalle Valo <quic_kvalo@quicinc.com>
+On 8/21/2024 8:37 AM, Kalle Valo wrote:
+> From: Kalle Valo <quic_kvalo@quicinc.com>
+> 
+> After removing the conf_mutex in the previous patch there are no unnecessary
 
-As ath12k is now converted to use wiphy lock we can convert
-ath12k_sta_rc_update_wk() to use wiphy_work_queue(). This is just for
-consistency.
+nit: s/ no / now /
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/core.h |  2 +-
- drivers/net/wireless/ath/ath12k/mac.c  | 17 +++++++++--------
- 2 files changed, 10 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 7fad2150d9bd..cc28185be650 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -445,7 +445,7 @@ struct ath12k_sta {
- 	u32 smps;
- 	enum hal_pn_type pn_type;
- 
--	struct work_struct update_wk;
-+	struct wiphy_work update_wk;
- 	struct rate_info txrate;
- 	struct rate_info last_txrate;
- 	u64 rx_duration;
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 80db9004cdd7..8bf7b026f8e4 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -4258,9 +4258,9 @@ static int ath12k_station_disassoc(struct ath12k *ar,
- 	return 0;
- }
- 
--static void ath12k_sta_rc_update_wk(struct work_struct *wk)
-+static void ath12k_sta_rc_update_wk(struct wiphy *wiphy, struct wiphy_work *work)
- {
--	struct ath12k *ar;
-+	struct ath12k *ar = wiphy_priv(wiphy);
- 	struct ath12k_vif *arvif;
- 	struct ath12k_sta *arsta;
- 	struct ieee80211_sta *sta;
-@@ -4274,10 +4274,11 @@ static void ath12k_sta_rc_update_wk(struct work_struct *wk)
- 	struct ath12k_wmi_peer_assoc_arg peer_arg;
- 	enum wmi_phy_mode peer_phymode;
- 
--	arsta = container_of(wk, struct ath12k_sta, update_wk);
-+	lockdep_assert_wiphy(wiphy);
-+
-+	arsta = container_of(work, struct ath12k_sta, update_wk);
- 	sta = container_of((void *)arsta, struct ieee80211_sta, drv_priv);
- 	arvif = arsta->arvif;
--	ar = arvif->ar;
- 
- 	if (WARN_ON(ath12k_mac_vif_chan(arvif->vif, &def)))
- 		return;
-@@ -4571,7 +4572,7 @@ static int ath12k_mac_op_sta_state(struct ieee80211_hw *hw,
- 	/* cancel must be done outside the mutex to avoid deadlock */
- 	if ((old_state == IEEE80211_STA_NONE &&
- 	     new_state == IEEE80211_STA_NOTEXIST))
--		cancel_work_sync(&arsta->update_wk);
-+		wiphy_work_cancel(hw->wiphy, &arsta->update_wk);
- 
- 	ar = ath12k_get_ar_by_vif(hw, vif);
- 	if (!ar) {
-@@ -4585,7 +4586,7 @@ static int ath12k_mac_op_sta_state(struct ieee80211_hw *hw,
- 	    new_state == IEEE80211_STA_NONE) {
- 		memset(arsta, 0, sizeof(*arsta));
- 		arsta->arvif = arvif;
--		INIT_WORK(&arsta->update_wk, ath12k_sta_rc_update_wk);
-+		wiphy_work_init(&arsta->update_wk, ath12k_sta_rc_update_wk);
- 
- 		ret = ath12k_mac_station_add(ar, vif, sta);
- 		if (ret)
-@@ -4792,7 +4793,7 @@ static void ath12k_mac_op_sta_rc_update(struct ieee80211_hw *hw,
- 
- 	spin_unlock_bh(&ar->data_lock);
- 
--	ieee80211_queue_work(hw, &arsta->update_wk);
-+	wiphy_work_queue(hw->wiphy, &arsta->update_wk);
- }
- 
- static int ath12k_conf_tx_uapsd(struct ath12k_vif *arvif,
-@@ -8065,7 +8066,7 @@ static void ath12k_mac_set_bitrate_mask_iter(void *data,
- 	arsta->changed |= IEEE80211_RC_SUPP_RATES_CHANGED;
- 	spin_unlock_bh(&ar->data_lock);
- 
--	ieee80211_queue_work(ath12k_ar_to_hw(ar), &arsta->update_wk);
-+	wiphy_work_queue(ath12k_ar_to_hw(ar)->wiphy, &arsta->update_wk);
- }
- 
- static void ath12k_mac_disable_peer_fixed_rate(void *data,
--- 
-2.39.2
+> labels in mac.c. Sparse also warns one instance of it:
+> 
+> drivers/net/wireless/ath/ath12k/mac.c:6635:1: warning: statement expected after label
+> 
+> Remove the labels and instead use directly return.
+> 
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 
