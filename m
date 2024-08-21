@@ -1,52 +1,52 @@
-Return-Path: <linux-wireless+bounces-11751-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11752-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE7D995A188
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 17:37:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4C7E95A189
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 17:38:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B07A282EC5
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 15:37:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E81731C22687
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 15:38:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1463E14E2D4;
-	Wed, 21 Aug 2024 15:37:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF2F14EC7F;
+	Wed, 21 Aug 2024 15:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EPPTfZ2l"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VnEpLudF"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E591014E2C9
-	for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2024 15:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C85A14EC7C
+	for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2024 15:37:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724254655; cv=none; b=reSx5iO/Ws2NJ+1gVb6qVSX5W1jH8UiHnUQtBql6q0cZKWtba1FhxhYhYJo/d34iJY/fOIxPJoe65FueRr4j/bOo9e1eqzbYWVUT5YMBExLGsb15CNwDg+3PoRgYPKa7Hx+1PrFB9Q/wiEulKPnEYs5laVe175fKJAjleOC9dn8=
+	t=1724254656; cv=none; b=HXBpjyDwEhnd2+j8dt4A4f/cuXao9qUt1gyq1772VxNivaJhzN/UyaO7gz4v5PjAB2H7N4Wx6swWeQQNBWv3jQxqMgYM+CPTDGwi6qglHQhhtwc7AxmRLviQH4XxGxUbzIUj4MhexM3zM921feWAbYrit8oBDt6PXEaMi9inVUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724254655; c=relaxed/simple;
-	bh=yI+XTxfRTeCU0R+EJ6nKBT0kQiUN1oBcf83r56C2ztE=;
+	s=arc-20240116; t=1724254656; c=relaxed/simple;
+	bh=hc1QliZ+Mc1C+sQ0pZCAmEAaGgIxjNk7WBgmSijLWD0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=l/KsjGYbzuiVD1rMPMOLmQzOYQCp6AXNpT3fYH+o4WgzbgYxICvpiRDaYww1LJO8IeUktu/zzYGD4+gxOrOHDtFmvr789k+dVS/4v4qF9QfC8QMFyXrvxOeQAlIORz7XlSGi1UueqE+2z78HoW86Bw0qrcBfBwFAneCKc3qKtG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EPPTfZ2l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 309F1C4AF09;
-	Wed, 21 Aug 2024 15:37:34 +0000 (UTC)
+	 MIME-Version; b=QOrQgJDaHz8CFh2exKS44as9tsxq2jaRz3Q6ELDGoZYlBd5oOI0TR2hHhLOy1RLihRthhsIpeL3BnB5udnBCfy6NdSwAJI3wBQipH0Q3MmpatmZI5NSOnEsd0Hkpg55XAp0i2h8xMO6d+mz0JZdkZrhzQZmlNoI7YO9gNY0P57g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VnEpLudF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E14CC32786;
+	Wed, 21 Aug 2024 15:37:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724254654;
-	bh=yI+XTxfRTeCU0R+EJ6nKBT0kQiUN1oBcf83r56C2ztE=;
+	s=k20201202; t=1724254655;
+	bh=hc1QliZ+Mc1C+sQ0pZCAmEAaGgIxjNk7WBgmSijLWD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EPPTfZ2lbMdeQ3aX+X0dWZ81vrJTa3VmJLWFUaQDvyj/5IUqnj8bU/9eI9No0OeSe
-	 cmMrBSijO6pEnqzgJkljPGuyh0ou0eoJf2rL21CgKKqyPNgdk9HHHPWFFcJLiL2MId
-	 r1JABW3GOk2rkOakuQqDguRSUuV0kCUFFVaYh2c3Iy7axzUoJxC2kYwqtniyVnotTL
-	 VuaP2FFH9CqYkv6UjQKC511jNZOvlV0oCDic89O6MYj/9pcplotlKF1kmKspw5BQfN
-	 ne1VMbtg3r8Dg0i/f6QVEl+fCzDCkSez+oAUoX5Pdls0BOn1gB+dB0BVhGwePjipLf
-	 l9bspKnstX5Rw==
+	b=VnEpLudFFkbuN8hJwwMT0nEkDpH5bQjmsj56rKIWk5QQa5GuFxeBs5nAfoPszaEsn
+	 FQJTT7ZOGaTUFiWG8kzvCuhbPHqUxy6JclHetOCfaOqdw7R/S4jJWE37h/BolL7fPv
+	 FacsIEy94EEwOYC2J4uGQpaXNGMQPX2CpyTu+Fszwc43LGaM/ZbrLVPYjy0XlXmoC2
+	 SPd/hOvlxSHQDnPpcfVRulyPcxMkEH4/BFiSN6k2fHDX+98wJwzdPmbCKDjBVNFxpx
+	 PyaMB3TA8bddX06yRafejjTFIv+SeuZ0b5OW/gT9z4J1us3SUypH0EISbkzZKam+zQ
+	 ooTPSBCHDf0lw==
 From: Kalle Valo <kvalo@kernel.org>
 To: ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH RFC 3/4] wifi: ath12k: ath12k_mac_op_set_key(): remove exit label
-Date: Wed, 21 Aug 2024 18:37:27 +0300
-Message-Id: <20240821153728.2121600-4-kvalo@kernel.org>
+Subject: [PATCH RFC 4/4] wifi: ath12k: convert struct ath12k_sta::update_wk to use struct wiphy_work
+Date: Wed, 21 Aug 2024 18:37:28 +0300
+Message-Id: <20240821153728.2121600-5-kvalo@kernel.org>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240821153728.2121600-1-kvalo@kernel.org>
 References: <20240821153728.2121600-1-kvalo@kernel.org>
@@ -60,77 +60,97 @@ Content-Transfer-Encoding: 8bit
 
 From: Kalle Valo <quic_kvalo@quicinc.com>
 
-In ath12k_mac_op_set_key() removing the exit label was a bit more complex as
-checkpatch complained about the unnecessary else branch after a return. So
-remove the else branch and remove now the unncessary ret initialisation.
+As ath12k is now converted to use wiphy lock we can convert
+ath12k_sta_rc_update_wk() to use wiphy_work_queue(). This is just for
+consistency.
 
 Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+ drivers/net/wireless/ath/ath12k/core.h |  2 +-
+ drivers/net/wireless/ath/ath12k/mac.c  | 17 +++++++++--------
+ 2 files changed, 10 insertions(+), 9 deletions(-)
 
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index 7fad2150d9bd..cc28185be650 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -445,7 +445,7 @@ struct ath12k_sta {
+ 	u32 smps;
+ 	enum hal_pn_type pn_type;
+ 
+-	struct work_struct update_wk;
++	struct wiphy_work update_wk;
+ 	struct rate_info txrate;
+ 	struct rate_info last_txrate;
+ 	u64 rx_duration;
 diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index a9d37a59a8c2..80db9004cdd7 100644
+index 80db9004cdd7..8bf7b026f8e4 100644
 --- a/drivers/net/wireless/ath/ath12k/mac.c
 +++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -3942,7 +3942,7 @@ static int ath12k_mac_set_key(struct ath12k *ar, enum set_key_cmd cmd,
- 	struct ath12k_peer *peer;
- 	struct ath12k_sta *arsta;
- 	const u8 *peer_addr;
--	int ret = 0;
-+	int ret;
- 	u32 flags = 0;
- 
- 	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
-@@ -3970,14 +3970,13 @@ static int ath12k_mac_set_key(struct ath12k *ar, enum set_key_cmd cmd,
- 		if (cmd == SET_KEY) {
- 			ath12k_warn(ab, "cannot install key for non-existent peer %pM\n",
- 				    peer_addr);
--			ret = -EOPNOTSUPP;
--			goto exit;
--		} else {
--			/* if the peer doesn't exist there is no key to disable
--			 * anymore
--			 */
--			goto exit;
-+			return -EOPNOTSUPP;
- 		}
-+
-+		/* if the peer doesn't exist there is no key to disable
-+		 * anymore
-+		 */
-+		return 0;
- 	}
- 
- 	if (key->flags & IEEE80211_KEY_FLAG_PAIRWISE)
-@@ -3988,13 +3987,13 @@ static int ath12k_mac_set_key(struct ath12k *ar, enum set_key_cmd cmd,
- 	ret = ath12k_install_key(arvif, key, cmd, peer_addr, flags);
- 	if (ret) {
- 		ath12k_warn(ab, "ath12k_install_key failed (%d)\n", ret);
--		goto exit;
-+		return ret;
- 	}
- 
- 	ret = ath12k_dp_rx_peer_pn_replay_config(arvif, peer_addr, cmd, key);
- 	if (ret) {
- 		ath12k_warn(ab, "failed to offload PN replay detection %d\n", ret);
--		goto exit;
-+		return ret;
- 	}
- 
- 	spin_lock_bh(&ab->base_lock);
-@@ -4040,8 +4039,7 @@ static int ath12k_mac_set_key(struct ath12k *ar, enum set_key_cmd cmd,
- 
- 	spin_unlock_bh(&ab->base_lock);
- 
--exit:
--	return ret;
-+	return 0;
+@@ -4258,9 +4258,9 @@ static int ath12k_station_disassoc(struct ath12k *ar,
+ 	return 0;
  }
  
- static int ath12k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
+-static void ath12k_sta_rc_update_wk(struct work_struct *wk)
++static void ath12k_sta_rc_update_wk(struct wiphy *wiphy, struct wiphy_work *work)
+ {
+-	struct ath12k *ar;
++	struct ath12k *ar = wiphy_priv(wiphy);
+ 	struct ath12k_vif *arvif;
+ 	struct ath12k_sta *arsta;
+ 	struct ieee80211_sta *sta;
+@@ -4274,10 +4274,11 @@ static void ath12k_sta_rc_update_wk(struct work_struct *wk)
+ 	struct ath12k_wmi_peer_assoc_arg peer_arg;
+ 	enum wmi_phy_mode peer_phymode;
+ 
+-	arsta = container_of(wk, struct ath12k_sta, update_wk);
++	lockdep_assert_wiphy(wiphy);
++
++	arsta = container_of(work, struct ath12k_sta, update_wk);
+ 	sta = container_of((void *)arsta, struct ieee80211_sta, drv_priv);
+ 	arvif = arsta->arvif;
+-	ar = arvif->ar;
+ 
+ 	if (WARN_ON(ath12k_mac_vif_chan(arvif->vif, &def)))
+ 		return;
+@@ -4571,7 +4572,7 @@ static int ath12k_mac_op_sta_state(struct ieee80211_hw *hw,
+ 	/* cancel must be done outside the mutex to avoid deadlock */
+ 	if ((old_state == IEEE80211_STA_NONE &&
+ 	     new_state == IEEE80211_STA_NOTEXIST))
+-		cancel_work_sync(&arsta->update_wk);
++		wiphy_work_cancel(hw->wiphy, &arsta->update_wk);
+ 
+ 	ar = ath12k_get_ar_by_vif(hw, vif);
+ 	if (!ar) {
+@@ -4585,7 +4586,7 @@ static int ath12k_mac_op_sta_state(struct ieee80211_hw *hw,
+ 	    new_state == IEEE80211_STA_NONE) {
+ 		memset(arsta, 0, sizeof(*arsta));
+ 		arsta->arvif = arvif;
+-		INIT_WORK(&arsta->update_wk, ath12k_sta_rc_update_wk);
++		wiphy_work_init(&arsta->update_wk, ath12k_sta_rc_update_wk);
+ 
+ 		ret = ath12k_mac_station_add(ar, vif, sta);
+ 		if (ret)
+@@ -4792,7 +4793,7 @@ static void ath12k_mac_op_sta_rc_update(struct ieee80211_hw *hw,
+ 
+ 	spin_unlock_bh(&ar->data_lock);
+ 
+-	ieee80211_queue_work(hw, &arsta->update_wk);
++	wiphy_work_queue(hw->wiphy, &arsta->update_wk);
+ }
+ 
+ static int ath12k_conf_tx_uapsd(struct ath12k_vif *arvif,
+@@ -8065,7 +8066,7 @@ static void ath12k_mac_set_bitrate_mask_iter(void *data,
+ 	arsta->changed |= IEEE80211_RC_SUPP_RATES_CHANGED;
+ 	spin_unlock_bh(&ar->data_lock);
+ 
+-	ieee80211_queue_work(ath12k_ar_to_hw(ar), &arsta->update_wk);
++	wiphy_work_queue(ath12k_ar_to_hw(ar)->wiphy, &arsta->update_wk);
+ }
+ 
+ static void ath12k_mac_disable_peer_fixed_rate(void *data,
 -- 
 2.39.2
 
