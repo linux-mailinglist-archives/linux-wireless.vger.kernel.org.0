@@ -1,92 +1,106 @@
-Return-Path: <linux-wireless+bounces-11734-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11741-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3140F95989C
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 12:55:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15C1E959AA6
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 13:49:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87324B22E61
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 10:55:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9078283287
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 11:49:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189FE1C2DAD;
-	Wed, 21 Aug 2024 09:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C63391B81BE;
+	Wed, 21 Aug 2024 11:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Hv1LJmd7"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="pIB7siZR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-13.smtpout.orange.fr [80.12.242.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D950B1E6165
-	for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2024 09:16:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C974F168498;
+	Wed, 21 Aug 2024 11:30:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724231770; cv=none; b=kPhJGGcCd+PUMdtBZUsG3mXDu6YTgnrNZpEbbO3HmNVC3IpuOeUHKjeQ63I5U0mhfCqd/YcIW+lOc/Ad3P63RC96vOhrj0+q7oIzZDWnsaHSo6Jxi0DM+HQfCPHb/wgqu9D96E/0mWPyIo/ak3Z5vLmu6QnPUMwoJCOT0wHnyss=
+	t=1724239835; cv=none; b=reNYk/CnYn2ygXWxw6BCE0dACZprHdBIOTKYjHDf+PSJtQQMMeK+1UCxxNJlKryQ++GPzRkGj0TJWE9I8CQ7Ij2IMQBL91ES57QvS4H/Auqa9Q2yvJVCiBzeFw6ioRylOLLzz3QlWJlWPJClW2vhtLb4ard5MXhst3f3RzMm0Js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724231770; c=relaxed/simple;
-	bh=Xp2VmvKHO4q0zrH+xBcCeIKoEe9o4elGaOHCdrpei1Q=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HLJRNMLCv1Yayc0Vmm6WS5v1fTfCqxO0Gbtvr96RnXqlo38Y60kkl6ZxlrzjgJVwMocT+qxr3KuxoosodSzheMkLnVvb33w0fevN6jL9YVVmvWkHux8B3FqEHDbmgcwHclGOwRpvjgtUBkNYBTuAKqQw+E+jDByWjy3TGbNaWyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Hv1LJmd7; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=Xp2VmvKHO4q0zrH+xBcCeIKoEe9o4elGaOHCdrpei1Q=;
-	t=1724231767; x=1725441367; b=Hv1LJmd7GVUEB5M21nROYsnMO3ihrcr8ZUFF5X8ndfg1dNv
-	UjbtQZdFIQZW2u7txOJ4DtcRHcG0Zhq9Yqus6PTWbxKaOWpVH6DQ0+mCF4mEqBcCZeJ7LZvjsfIFb
-	qSGPIIyBa9NV6RRuLZuIa1INFRJID7Modur92syfXjayqWfZ3gF+1Nd3hk225qqdZD81At2RFnxON
-	Q1u0qFbKkBLjpAmCl4JPseJI0GqjvMs6LtrYXdx1bdycI0CAm9mpmpKs6GLiH/7ofNVokOD0Zq6oP
-	x+XmAC1v/hWn5/YSRTdjGsEMtEBENGepHZLOLPukzGg1jpm55eXK5RTxhOXeVH4Q==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1sghRl-0000000Aduc-1ZlL;
-	Wed, 21 Aug 2024 11:16:05 +0200
-Message-ID: <c4beca76eee7303af22a9bae67d00fea0efa3b50.camel@sipsolutions.net>
-Subject: Re: [PATCH 1/1] wifi: mac80211: Fix 320 MHz max TPE field parsing.
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Rory Little <rory@candelatech.com>
-Cc: linux-wireless@vger.kernel.org
-Date: Wed, 21 Aug 2024 11:16:04 +0200
-In-Reply-To: <20240812213728.1799255-1-rory@candelatech.com>
-References: <20240812213728.1799255-1-rory@candelatech.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+	s=arc-20240116; t=1724239835; c=relaxed/simple;
+	bh=NnNvsxyWcRj3O1A7fNzZ9XFqOT38NMcRo/mHN+7t0Xc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PH8LYFIsb69z72YUvoe7hBwbfNAJivLW9Al/uQVw0aebk8ehPGKtemP2ima44oc0GpM249pMIeCO3rjiIN8bxb++XmSTwG7Dd+ac4tr/AWSPCfOIOTX7qyP4PhGxV69Ncpg2NDteTsb+zEgpd4xTBGCzqQSgnuy7lCE8S+InK6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=pIB7siZR; arc=none smtp.client-ip=80.12.242.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from [192.168.1.37] ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id ghnVs26uaZ40aghnVsZF43; Wed, 21 Aug 2024 11:38:35 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1724233115;
+	bh=Wdrcu38FW2G18isblm4VJFaWrtnjTfc4dm7+9ibbplw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=pIB7siZRuTxLQ3YemXleH3+QSe0QcFJa8iCeyoYuz+gHG+xu1DtMZgNV2CmSxEAMb
+	 KPbnJp9nzrm63csL8EGo7aCWke0PSFtJikOj8qTbOFFiJ41B0NpeKlMwL7YxyGBw9W
+	 3Li3wo0ugLC9FlU3OmqT1z/btCv5gb78ykKEC0EL7gb79hBU9lswaj8LIJ5dNpAfnk
+	 HGK4AWyKWYOah6TNgiP4VhRufVFNI79KIpbEIS44ZOsMf/DjKxvBzuyBrJA9oniq2L
+	 EDg66qzCzEvg3pA0+1ZqOLvuLH+PAbz5vOhoAQstUDW1Mo6A4Dr+ceanOge92jcpMu
+	 hxtPJXCaP+TMA==
+X-ME-Helo: [192.168.1.37]
+X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
+X-ME-Date: Wed, 21 Aug 2024 11:38:35 +0200
+X-ME-IP: 90.11.132.44
+Message-ID: <8316e533-241a-49ef-aac1-07ff01bf489f@wanadoo.fr>
+Date: Wed, 21 Aug 2024 11:38:31 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] net: wireless: Use kmemdup_array instead of kmemdup
+ for multiple allocation
+To: Yu Jiaoliang <yujiaoliang@vivo.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: opensource.kernel@vivo.com
+References: <20240821072410.4065645-1-yujiaoliang@vivo.com>
+Content-Language: en-US, fr-FR
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20240821072410.4065645-1-yujiaoliang@vivo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, 2024-08-12 at 14:37 -0700, Rory Little wrote:
-> Transmit Power Count will be one less than the number of HE fields, so
-> if we do find an extension field, its index will be this number, plus
-> one, rather than two.
->=20
-> This fixes an issue noted in the iwlmvm driver, where clients
-> associated at 320 MHz had degraded performance.
->=20
-> Fixes: 584b4bfff5ce ("wifi: mac80211: pass parsed TPE data to drivers")
-> Signed-off-by: Rory Little <rory@candelatech.com>
+Le 21/08/2024 à 09:24, Yu Jiaoliang a écrit :
+> Let the kememdup_array() take care about multiplication and possible
+> overflows.
+> 
+> Signed-off-by: Yu Jiaoliang <yujiaoliang@vivo.com>
 > ---
->=20
-> We noticed and recently reported a 20-30% drop in transmit throughput on =
-BE200
-> radios, and have identified the issue as being that the TPE sent to the
-> firmware did not match the TPE reported by the AP. The fault appears to b=
-e an
-> off-by-one error in IE parsing logic. This patch fixes that error.
->=20
+>   net/wireless/util.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/wireless/util.c b/net/wireless/util.c
+> index 9a7c3adc8a3b..6cf19dda5d2a 100644
+> --- a/net/wireless/util.c
+> +++ b/net/wireless/util.c
+> @@ -2435,8 +2435,8 @@ int cfg80211_iter_combinations(struct wiphy *wiphy,
+>   		if (params->num_different_channels > c->num_different_channels)
+>   			continue;
+>   
+> -		limits = kmemdup(c->limits, sizeof(limits[0]) * c->n_limits,
+> -				 GFP_KERNEL);
+> +		limits = kmemdup_array(c->limits, c->n_limits, sizeof(limits[0]),
 
-This should be equivalent to my previous fix 5f12dd57a071 ("wifi:
-mac80211: correct EHT EIRP TPE parsing")
+Maybe sizeof(*limits) would be a more usual pattern?
 
-johannes
+CJ
+
+> +				       GFP_KERNEL);
+>   		if (!limits)
+>   			return -ENOMEM;
+>   
+
 
