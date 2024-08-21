@@ -1,107 +1,122 @@
-Return-Path: <linux-wireless+bounces-11742-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11743-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF3CF959AB5
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 13:51:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C39B959B46
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 14:08:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 920812812A0
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 11:51:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 527391F225B0
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 12:08:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96BD31662F8;
-	Wed, 21 Aug 2024 11:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D5914B979;
+	Wed, 21 Aug 2024 12:08:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="lL7c/10f"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-26.smtpout.orange.fr [80.12.242.26])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3807C155307
-	for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2024 11:33:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B7621D1305;
+	Wed, 21 Aug 2024 12:08:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.26
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724240003; cv=none; b=slFlhTOzdyIANQAvwRYujKpq0hHuGHppsXj/2Zh3mnnb5fCN+FEeqTh+mt8429A8aSnPQSqA77xdye/LNaZpVovKbE0mlSCh7kZXLC5Q0JMGtXbS+RmmpRpwP4GoM2s0f8yX9LTJNZZX4NI5x2uXy4i4tBYle5YunU0c1UIdfwM=
+	t=1724242132; cv=none; b=WQJUyVPbN4VcaYl458gjEypZtmzyEQAKtdC+maaW7zOHiX//prvMiUwHb+S+4nce/LsC8ar/QjmV+dci1fgYES3dOzkHr7RB1h9XGgHjnV/OHPrpueuU4O3OTRWtyLJzv6CVrA1oWmO5SVxc7KEEUa3vBmSCKCinVrGhObw7WHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724240003; c=relaxed/simple;
-	bh=HhmDhHLFWbrm9gNwj7yxa11vICPIvCxKsV9cs46JC9o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wo6bP8lOH8cN9PtZnds8tyiWYsBk4It86+qaGFXDh7LiUBDxVF2CnATn2CiKLpjbxTv2KZJNBa4FCYz5Dc6M7K0Qd4MTNywFyhqctV4zLUvk93+ECm+ZZvSOpqYyWeu1SrdeZnSQmgk6rJFzN2nZRW/p5U/6kds6pBLnSxnbdxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sgjaY-0006LO-EH; Wed, 21 Aug 2024 13:33:18 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sgjaY-001zwn-0m; Wed, 21 Aug 2024 13:33:18 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sgjaX-00FVWO-2y;
-	Wed, 21 Aug 2024 13:33:17 +0200
-Date: Wed, 21 Aug 2024 13:33:17 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Brian Norris <briannorris@chromium.org>, Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel@pengutronix.de
-Subject: Re: [PATCH 00/31] wifi: mwifiex: cleanup driver
-Message-ID: <ZsXQfQQkdVk3HKjG@pengutronix.de>
-References: <20240820-mwifiex-cleanup-v1-0-320d8de4a4b7@pengutronix.de>
- <1B5E3131-0595-47A8-BB8E-14B7B6C3FA7F@dolcini.it>
+	s=arc-20240116; t=1724242132; c=relaxed/simple;
+	bh=dbe4R2RH0+1sKJgg7eyP6A1jmv60YMmn98/QNoWzjVA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uEn45CizjVQJURp2RAemy7j/J/nfHrfMXL46LKYDleMHolFfF8EtvNcPjQkjonNnXInVPTxLRAmw9Wuv+wFzr7hKZu8z/1FTv025C9vGkrbDsLgANlNEJHeGilwwsVSTFyzKwlHde86zFzwER8DlxDKMD7RpJvGwk7yV0D+glT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=lL7c/10f; arc=none smtp.client-ip=80.12.242.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from [192.168.1.37] ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id gk8rsJdOxbNNsgk8rslcHN; Wed, 21 Aug 2024 14:08:48 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1724242128;
+	bh=8d0PHFEsYGqdYcAk4Zd+FDA5jBt+ta/EhSh+bgONbM4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=lL7c/10fbRpVHzqiq3ccePD1+sBQ+u0AjUfgzfq+XD11F0fKwDwKnuoX9Xwmd4vIS
+	 hiUEg725rc6Dgb1xlGcpCjHFDbfP0MzkZt4L7AZNnKurA2ZKpPDuwUIyJ1k4G/oRTE
+	 OZiwDFrvoXywlTpKs9hngJa+hgwMkcRue+1Hv2+vJsYiTJsqWAR1r7ZxMrDxNUuZ4+
+	 TVwS7t8HhkVPcwp2hcuqNd6OOr43YrQMEnC+rQehK2DSktBvQ60QZ7Dg+x+iP6/Hkj
+	 yQAJpL3RmkyRpJFPqBUQaJkhvgLv0Rrea/KNCHU4CyHsUreFHvSW2RQDM/WIzzbNPD
+	 pGkJ4Ov0RvILg==
+X-ME-Helo: [192.168.1.37]
+X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
+X-ME-Date: Wed, 21 Aug 2024 14:08:48 +0200
+X-ME-IP: 90.11.132.44
+Message-ID: <9a5de847-0913-420d-8cb0-35d95376ae5b@wanadoo.fr>
+Date: Wed, 21 Aug 2024 14:08:45 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1B5E3131-0595-47A8-BB8E-14B7B6C3FA7F@dolcini.it>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] wifi: cfg80211: Use kmemdup_array instead of kmemdup
+ for multiple allocation
+To: Yu Jiaoliang <yujiaoliang@vivo.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: opensource.kernel@vivo.com
+References: <20240821111250.591558-1-yujiaoliang@vivo.com>
+Content-Language: en-US, fr-FR
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20240821111250.591558-1-yujiaoliang@vivo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 20, 2024 at 03:34:12PM +0200, Francesco Dolcini wrote:
-> Hello Sasha,
-> thanks for the patches.
+Le 21/08/2024 à 13:12, Yu Jiaoliang a écrit :
+> Let the kememdup_array() take care about multiplication and possible
+> overflows.
 > 
-> Il 20 agosto 2024 13:55:25 CEST, Sascha Hauer <s.hauer@pengutronix.de> ha scritto:
-> >This series has a bunch of cleanup and bugfix patches for the mwifiex
-> >driver
+> v2:
+> -Change sizeof(limits[0]) to sizeof(*limits)
+> -Fix title prefix
+
+Hi,
+
+this kind of information about differences between versions is usually 
+below the ---.
+
 > 
+> Signed-off-by: Yu Jiaoliang <yujiaoliang@vivo.com>
+> Reviewed-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+
+It is not because someone makes a comment on a patch that you should 
+automatically add a R-b tag.
+
+> Reviewed-by: Kalle Valo <kvalo@kernel.org>
+> ---
+>   net/wireless/util.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> > 24 files changed, 365 insertions(+), 729 deletions(-)
-> 
-> I had a quick look at the series, and it looks fine to me, I'll try to
-> have a proper look in the next couple of weeks. What I wonder is
-> what's the risk of introducing some subtle bugs because of firmware
-> differences, what device/firmware combination were you able to test?
+> diff --git a/net/wireless/util.c b/net/wireless/util.c
+> index 9a7c3adc8a3b..e7c1ac2a0f2d 100644
+> --- a/net/wireless/util.c
+> +++ b/net/wireless/util.c
+> @@ -2435,8 +2435,8 @@ int cfg80211_iter_combinations(struct wiphy *wiphy,
+>   		if (params->num_different_channels > c->num_different_channels)
+>   			continue;
+>   
+> -		limits = kmemdup(c->limits, sizeof(limits[0]) * c->n_limits,
+> -				 GFP_KERNEL);
+> +		limits = kmemdup_array(c->limits, c->n_limits, sizeof(*limits),
+> +				       GFP_KERNEL);
+>   		if (!limits)
+>   			return -ENOMEM;
+>   
 
-I tested this on a SD8978 aka iw416 SDIO card.
+Reviewed-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-I just tested this on a IW61x SDIO card (mainline support for this one
-still in my queue) and it didn't work, I'll investigate.
+Now you can add my R-b :).
 
-Other than that I also have a PCIe card I'll test this on next time.
-
-I don't know there firmware versions currently, but I used the latest
-ones available in linux-firmware.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+CJ
 
