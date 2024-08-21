@@ -1,112 +1,167 @@
-Return-Path: <linux-wireless+bounces-11766-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11767-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB42395A684
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 23:24:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0F0195A68C
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 23:26:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 183F11C22589
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 21:24:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 182881C20DB7
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 21:26:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBDF01779A4;
-	Wed, 21 Aug 2024 21:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C1D67405A;
+	Wed, 21 Aug 2024 21:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XBfwm/Ad"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="e2srs40r"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7FC13B297;
-	Wed, 21 Aug 2024 21:23:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02047175D34
+	for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2024 21:26:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724275434; cv=none; b=W0mjudWcK4trmVjz+yyswx6uULxmqHBqhjoagSxQEtrIHrzCwF6dpbaKIpPSrNacg/lWB42yojzoOK8HbZpgPwUinNbskn+eMP6LOH2GGJge4EdIw7AbLIYARe8JBuPU0J6cKdCzFfP2zpCei/URuyc4rYCtnVbGCLVOvsOV/SM=
+	t=1724275566; cv=none; b=ecMEHR01P13qNwk+3QAq0JvHTN7bACqMSJdy6l1EITtLakm/OUWwEHOnP7w9dhePT6pJL9JkI6Ra8tWuOPZoO+6dBho1a9CcCsiJFyOp5iTvIT9ihJH79BoLTfA7OZvTqfAHEZFH6+O08Nm1Byab0Gr+4O1QokJIvFjeXC7cxrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724275434; c=relaxed/simple;
-	bh=PzLqGHvOXwyQLTg41anHtMxB0A7b4fkuaaKAj8ko3cg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=P4DZjy/JYsj2hTaZ3QWqPIxu5IFhbY2T8YKG3VUyUVYfnZnk303fxWOhf7NyWFIdeSYGDOG+djbR8rw41HJw1nLfmPXoRvwEXa6sbfuoGVgS3sQ4fG6CBz2BwQl+P8YSOJ7pguvrZpK260gAqdsyDBXrl46MnOzzT8Cx50aAxI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XBfwm/Ad; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 852E3C4AF0E;
-	Wed, 21 Aug 2024 21:23:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724275434;
-	bh=PzLqGHvOXwyQLTg41anHtMxB0A7b4fkuaaKAj8ko3cg=;
-	h=Date:From:To:Cc:Subject:From;
-	b=XBfwm/Ad2XGco1F1AbKBrDg8sGhv6ECLhpjFQ+0UfMT/JhtU/URGvBt/04QcSkCef
-	 IArAwA8+q13w3k6U7b6MwDjxJ/kweJI0HuHRgizDG6PhyHy+ektI/E3OpOy155EVq0
-	 8vpYK9wMW0+M8+7DVA2pul9UU93b6yKQ9lS0t45CtWkeOvv5zV6nCI+E0qpSE4mMlI
-	 jfnAbbBtL6DMAVrwXP8voc1/buEtT5SYw9Tk1vp97c+J0GZUYOEeuDU5PXxekR0VYH
-	 AwNk3OI7JsCUTsq5ocQz/oeZo0bKZd3Tp9gKFwqjmt5dE83u8VspeXnNK4xJbUNDXE
-	 X0vf1DdB+9CAA==
-Date: Wed, 21 Aug 2024 15:23:51 -0600
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To: Brian Norris <briannorris@chromium.org>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Kalle Valo <kvalo@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH][next] wifi: mwifiex: Fix memcpy() field-spanning write
- warning in mwifiex_cmd_802_11_scan_ext()
-Message-ID: <ZsZa5xRcsLq9D+RX@elsanto>
+	s=arc-20240116; t=1724275566; c=relaxed/simple;
+	bh=jqI5uPtkQOCuHuZx0IKYUp40Xka6BvRF4D+HCb/dws0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rxhdjMin3NkB/igh4KvjX+zMby6ThnPWLxmBEqCso00Uz/OiHHMfnDFdSPX6yeNausXGIbkodmspMPO5R7g4/4uxfiIzDvVWb5oRLinkEquSmSLQ8YWomTo+J7nOft9iAtdW476SGnsDuzwKWnz2VwNd86/5GxaLebOkvyGQNuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=e2srs40r; arc=none smtp.client-ip=44.202.169.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
+Received: from eig-obgw-6001a.ext.cloudfilter.net ([10.0.30.140])
+	by cmsmtp with ESMTPS
+	id geO4sDQbKnNFGgsq6s6iwc; Wed, 21 Aug 2024 21:25:58 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id gsq5sLq5kZlJQgsq5sF3hO; Wed, 21 Aug 2024 21:25:57 +0000
+X-Authority-Analysis: v=2.4 cv=DMBE4DNb c=1 sm=1 tr=0 ts=66c65b65
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=frY+GlAHrI6frpeK1MvySw==:17
+ a=IkcTkHD0fZMA:10 a=yoJbH4e0A30A:10 a=VwQbUJbxAAAA:8 a=fvnvuae_TkRx4EM278wA:9
+ a=QEXdDO2ut3YA:10 a=AjGcO6oz07-iQ99wixmX:22 a=Xt_RvD8W3m28Mn_h3AK8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=59nlnOmbwxXF7SPkM/tf0B08dO77gGtbNswEQSGJ8uE=; b=e2srs40r0TGWPoBDcKoSZFLbzu
+	evrOHUuEkKa2s8+qH53UQq9wrZkFLc7ytsrDiPIppt3+jfIpmLNrxjJPi9/vZrwiPOnxrKGav1zkQ
+	Pg+06QLya3Ed5iyxC3wRrdaCLaZemjBjmF+DeUP5BNh9P+6cP9YphuLRuOCACOyeUsIg2AGvTuC7q
+	V+v0ALHkZZd4TP8g2GMkMgJPSOwz8BbiYG7T5xRVoAr8Q0Jo4GdEUr8SBkqTCUkKo7VG7J2bhw8iM
+	3FouKCoMsyzjPvI61hgWsHWhiCwHbLrWmhB7D75IsC9OfsKyLmreOe5dAdf8I9VWaaBDA2H+ilyoE
+	iNSkwO/w==;
+Received: from [201.172.173.139] (port=56500 helo=[192.168.15.5])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1sgsq2-0021C5-2U;
+	Wed, 21 Aug 2024 16:25:54 -0500
+Message-ID: <0627c008-a3f9-4b2e-a3b9-72c6a1a287b0@embeddedor.com>
+Date: Wed, 21 Aug 2024 15:25:52 -0600
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH][next] wifi: mwifiex: Replace one-element arrays with
+ flexible-array members
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Amitkumar Karwar <amitkarwar@gmail.com>,
+ Ganapathi Bhat <ganapathi017@gmail.com>,
+ Sharvari Harisangam <sharvari.harisangam@nxp.com>,
+ Xinming Hu <huxinming820@gmail.com>, Kalle Valo <kvalo@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+References: <Y9xkECG3uTZ6T1dN@work> <ZsZNgfnEwOcPdCly@black.fi.intel.com>
+ <93b3f91a-baa4-48e1-b3eb-01f738fa8fc1@embeddedor.com>
+ <ZsZWxnfy21CpOLoR@smile.fi.intel.com>
+Content-Language: en-US
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <ZsZWxnfy21CpOLoR@smile.fi.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 201.172.173.139
+X-Source-L: No
+X-Exim-ID: 1sgsq2-0021C5-2U
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.15.5]) [201.172.173.139]:56500
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 4
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfAYFdt2avJpsjjgvvJnoETz7tPzrGKoJC/rLpiedrp1n409Y2J27dOkQWtOZD/xHvHFRla//ee9uwk4TJMJzjYm53TUG8Yi1SZhHjr+Gyo/PEdvwCo0f
+ GH2189kFWKZ16/3n0zf8gMU1oZSvznvBhJoKesd9QKwfkmi9uKbkV1Bm40kmQjdsoiMMxMdfLluYiRnp1781pSeX10XRN0hmdybM9+L6iuc3lethcSxU7PX9
 
-Replace one-element array with a flexible-array member in
-`struct host_cmd_ds_802_11_scan_ext`.
 
-With this, fix the following warning:
 
-elo 16 17:51:58 surfacebook kernel: ------------[ cut here ]------------
-elo 16 17:51:58 surfacebook kernel: memcpy: detected field-spanning write (size 243) of single field "ext_scan->tlv_buffer" at drivers/net/wireless/marvell/mwifiex/scan.c:2239 (size 1)
-elo 16 17:51:58 surfacebook kernel: WARNING: CPU: 0 PID: 498 at drivers/net/wireless/marvell/mwifiex/scan.c:2239 mwifiex_cmd_802_11_scan_ext+0x83/0x90 [mwifiex]
+On 21/08/24 15:06, Andy Shevchenko wrote:
+> On Wed, Aug 21, 2024 at 02:59:34PM -0600, Gustavo A. R. Silva wrote:
+>> On 21/08/24 14:26, Andy Shevchenko wrote:
+>>> On Thu, Feb 02, 2023 at 07:32:00PM -0600, Gustavo A. R. Silva wrote:
+>>>> One-element arrays are deprecated, and we are replacing them with flexible
+>>>> array members instead. So, replace one-element arrays with flexible-array
+>>>> members in multiple structures.
+>>>>
+>>>> This helps with the ongoing efforts to tighten the FORTIFY_SOURCE
+>>>> routines on memcpy() and help us make progress towards globally
+>>>> enabling -fstrict-flex-arrays=3 [1].
+>>>>
+>>>> This results in no differences in binary output.
+>>>
+>>> Sorry for blast from the past, but I have a question here.
+>>>
+>>> This change seems converts many of the flexible arrays in this driver.
+>>> But what's behind this one?
+>>>
+>>> struct host_cmd_ds_802_11_scan_ext {
+>>>           u32   reserved;
+>>>           u8    tlv_buffer[1];
+>>> } __packed;
+>>>
+>>>
+>>> AFAIU this needs also some care. On the real machine I have got this
+>>>
+>>> elo 16 17:51:58 surfacebook kernel: ------------[ cut here ]------------
+>>> elo 16 17:51:58 surfacebook kernel: memcpy: detected field-spanning write (size 243) of single field "ext_scan->tlv_buffer" at drivers/net/wireless/marvell/mwifiex/scan.c:2239 (size 1)
+>>> elo 16 17:51:58 surfacebook kernel: WARNING: CPU: 0 PID: 498 at drivers/net/wireless/marvell/mwifiex/scan.c:2239 mwifiex_cmd_802_11_scan_ext+0x83/0x90 [mwifiex]
+>>>
+>>> which leads to
+>>>
+>>>           memcpy(ext_scan->tlv_buffer, scan_cfg->tlv_buf, scan_cfg->tlv_buf_len);
+>>>
+>>> but the code allocates 2k or more for the command buffer, so this seems
+>>> quite enough for 243 bytes.
+>>>
+>>
+>> I think this would do it:
+> 
+> Thank you for the prompt respond! Can you send it as a formal patch?
+> Or do you want me to test it first? (If the second one, it might take
+> weeks as this is my home laptop that I don't reboot too often. I think
+> it's can be sent anyway.)
+> 
 
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Closes: https://lore.kernel.org/linux-hardening/ZsZNgfnEwOcPdCly@black.fi.intel.com/
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
- drivers/net/wireless/marvell/mwifiex/fw.h   | 2 +-
- drivers/net/wireless/marvell/mwifiex/scan.c | 3 +--
- 2 files changed, 2 insertions(+), 3 deletions(-)
+Done:
+https://lore.kernel.org/linux-hardening/ZsZa5xRcsLq9D+RX@elsanto/
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
-index e91def0afa14..d03129d5d24e 100644
---- a/drivers/net/wireless/marvell/mwifiex/fw.h
-+++ b/drivers/net/wireless/marvell/mwifiex/fw.h
-@@ -1627,7 +1627,7 @@ struct host_cmd_ds_802_11_scan_rsp {
- 
- struct host_cmd_ds_802_11_scan_ext {
- 	u32   reserved;
--	u8    tlv_buffer[1];
-+	u8    tlv_buffer[];
- } __packed;
- 
- struct mwifiex_ie_types_bss_mode {
-diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
-index e782d652cb93..f7153472e2a2 100644
---- a/drivers/net/wireless/marvell/mwifiex/scan.c
-+++ b/drivers/net/wireless/marvell/mwifiex/scan.c
-@@ -2536,8 +2536,7 @@ int mwifiex_ret_802_11_scan_ext(struct mwifiex_private *priv,
- 	ext_scan_resp = &resp->params.ext_scan;
- 
- 	tlv = (void *)ext_scan_resp->tlv_buffer;
--	buf_left = le16_to_cpu(resp->size) - (sizeof(*ext_scan_resp) + S_DS_GEN
--					      - 1);
-+	buf_left = le16_to_cpu(resp->size) - (sizeof(*ext_scan_resp) + S_DS_GEN);
- 
- 	while (buf_left >= sizeof(struct mwifiex_ie_types_header)) {
- 		type = le16_to_cpu(tlv->type);
--- 
-2.34.1
-
+Thanks for reporting this. :)
+--
+Gustavo
 
