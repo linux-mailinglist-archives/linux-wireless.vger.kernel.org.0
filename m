@@ -1,144 +1,83 @@
-Return-Path: <linux-wireless+bounces-11754-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11755-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3377495A382
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 19:05:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D215195A3C1
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 19:20:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0BE6284D59
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 17:05:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CC1A1F214EC
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 17:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35DD01B1D52;
-	Wed, 21 Aug 2024 17:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254781494D1;
+	Wed, 21 Aug 2024 17:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KZFTfG9o"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="yRfk3/aZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F18B1509A2
-	for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2024 17:05:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731AF1B2EC5
+	for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2024 17:20:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724259954; cv=none; b=faaTSiIJqNSLT4Lpl3ZfD3opuPqVIqB61dnDnR8hUQWRwroNAh+xjADtmHsOyNhJGbG097lMy3rhi/8MPRBk1UQ5qlSswnx130rhmztutKPgbFozBOr/0uprQ/1RBvy6ElHLRM7uoPUg2ia4+0XVdrcXjne4QvnvY4UzXvu5o5A=
+	t=1724260811; cv=none; b=QTI4nKLHLmMdgfZF+W9xt0XQg4IVWnSjWxzggJLjKuBL1fKU+cdzw+9ve21zqWha9/Whk1a/IgLBdIcX3UDP4I3nZ7B/gVutj/5+3yXGZzN0vKA6MXPX8pb5HWrKgAfyb4xhZQ7K8I2vu4US1qCqfkoaRGp4aQ2fMptjTlTvAJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724259954; c=relaxed/simple;
-	bh=w7DH4E2u2UxerHQ/AnM4C9fznTJsDWAhCGMMJS5PY7E=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=WJjA3xfSS+1TlHCP816YVFRNDHQY5LlfeH6gv6WaHnlbzEN8eIXM/RvXf5zavUiMn+Twuj6sVazVh+0PNlWBEryNPyWjCz1XdL/zQy+mFNpwjEGW6ktCtQ7dFc3lj0wxzQUNfJr1bQ/t7Da/+icEjigd7l8gzV/ius+YoNtcIns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KZFTfG9o; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-202146e9538so48193485ad.3
-        for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2024 10:05:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724259950; x=1724864750; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=F8DQru6UN8dJs60jykvyzxdgZb0RXRlNWrUteqGq0t4=;
-        b=KZFTfG9oLERKq1M23AmFSLpASwMeh0LF0XHzcg8ELqNGIMVGekjAzUqWTvaI98mVQP
-         MeBgEzjz2bVctM06mkjmEnjsKYFrVlImZWXiQ4GRf6XU40GsOFTMaL2Hh5sfvdYctIkX
-         3r8Q8htHntTftwkuT9h5v7fryyx6pw5K4YJQdg6nAaJ9/qT1nU+Fy+3Bh5pMdxW23lNt
-         wfu8tSW2iw9sJEUsDHudBIBOjGbtu8GJNaUhZ9RyhtvXCBCMbd6P0O/7PksukaVd/Yp7
-         20wyjcn3qhIPhRLZvmPe34kzD8zncqraFC4kydn+BMfBCRwknDa+iPGGHuPejw86KMdq
-         pWzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724259950; x=1724864750;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=F8DQru6UN8dJs60jykvyzxdgZb0RXRlNWrUteqGq0t4=;
-        b=bxjWes2xGWjeG5PIvt1Eh7i7GYuOmuR/nboUrqmxCVJsQuxoMPaWqJNk1rbOf27UJf
-         7Q9pfbq3wF+6XCr/WrXAgCS0ghf0wNqNqUlirK0pi3Z7/i89zFoAC0vws7zdIQEP8hS3
-         Phai2BQzor/ah5QBdrXRHhUFdNBkw94zKYsVvSwLN+So6zz7espLWFe9sQQtiSuLTULX
-         48ea1U0Xp5+TzkzbyrfMZKbNsBzjFgsubMJ4VgGHhIuXioKqT9nM6WhJyl8B1sDosy9u
-         SSHGs1nmo49taEm30zp9xYNXzzEsYZn2W0LMX6Wo+CaY8zHoVcwnsiMGXmI9lIfx18ou
-         uV8A==
-X-Gm-Message-State: AOJu0Yw8tRYZl5AsFnzsRowvHcf2ngyhsrXxz5S1ArIp8YuJgYPG8alN
-	9/yC787/UcP/er0+uYx26HZs04ybE/JM7c7nqpdRXJESO0ZMhUzAX9zCFw==
-X-Google-Smtp-Source: AGHT+IEU75GWPV4RspaE673U+0qloLAUcZdlAdfIsvIszG9477jSA7GQmXkyDPRT3LwXfbtcmYgLzA==
-X-Received: by 2002:a17:902:ecd0:b0:202:20bf:461c with SMTP id d9443c01a7336-20367d3b7ffmr34862695ad.31.1724259949927;
-        Wed, 21 Aug 2024 10:05:49 -0700 (PDT)
-Received: from [10.100.121.195] ([152.193.78.90])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-201f03756ebsm96099035ad.158.2024.08.21.10.05.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Aug 2024 10:05:49 -0700 (PDT)
-Message-ID: <45445d1b-7e0c-4c6e-b8c7-17098586d861@gmail.com>
-Date: Wed, 21 Aug 2024 10:05:46 -0700
+	s=arc-20240116; t=1724260811; c=relaxed/simple;
+	bh=X0fRHqAIwPrPoseC/nVXINOpetMAuF+hvY/6MX6iIWY=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=tKNZ+jbzCe0IdPNfnZ1SzwkNY9463bJY1XRhmvSpikDKzscUoRHYUnWkUeq6D6hF+jJxD/xJTcCxpJP2Aw34qEhyvqEJ+WpDUyB6PDZ9gYdPxMJo/mhntyBxDZiaKeBr26JuG7Y+8eVOU9RJAcAXd/SqsV61QpiMzlkURrvGvQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=yRfk3/aZ; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=JrSqzDct6naNhYKkMWoPVa7Redj5XZraa4GKg9pZnL8=;
+	t=1724260809; x=1725470409; b=yRfk3/aZ0W6H8uJ+FmZfzUnvfZOuENi/y0WVsujYOf9x9B7
+	mcSYSAUGode2k54hLadcE5Tj0lm0eW8WGbfkc+jcmXBOM12/iyiuh3Q73QfLbTarQJ/VjjMnNYZUK
+	EdzIRN4Flnhv00Z0WtBglG2FtxmN3KLMuOW1QtBGIvI3D2k72FOV5/3bVg2FSKs7ajuxAbdJJysYK
+	XOfh3tYHJmBqoDbmQ1DhDQDo0vo2cAF9UCxoxdt/eUWmacu/HodBUYNCJPT32XL4s7DN7YSN7del/
+	Y+aQ4spHFQ0TyQ15zL+yJ1MHEtWmb90n6i887+F+jh0zCi6AlxbjZLH/CHFNYOzA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1sgp0A-0000000BDCq-1sxc;
+	Wed, 21 Aug 2024 19:20:06 +0200
+Message-ID: <1605f1b7d2267444370af84c37a3856f6b158c71.camel@sipsolutions.net>
+Subject: Re: [PATCH RFC 2/4] wifi: ath12k: cleanup unneeded labels
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Kalle Valo <kvalo@kernel.org>, ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+Date: Wed, 21 Aug 2024 19:20:05 +0200
+In-Reply-To: <20240821153728.2121600-3-kvalo@kernel.org>
+References: <20240821153728.2121600-1-kvalo@kernel.org>
+	 <20240821153728.2121600-3-kvalo@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: ath11k WCN6855 seems to have incorrect regulatory info for US
- DFS-FCC (no 6ghz)
-From: James Prestwood <prestwoj@gmail.com>
-To: "open list:MEDIATEK MT76 WIRELESS LAN DRIVER"
- <linux-wireless@vger.kernel.org>
-Cc: "ath11k@lists.infradead.org" <ath11k@lists.infradead.org>
-References: <3b8c7d73-3e2e-471a-8434-61322a5746fa@gmail.com>
-Content-Language: en-US
-In-Reply-To: <3b8c7d73-3e2e-471a-8434-61322a5746fa@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-On 8/20/24 12:05 PM, James Prestwood wrote:
-> Hi,
->
-> I'm using the latest firmware for ath11k [1], WCN6855 hw2.1, and so 
-> far I guess we've been lucky that the regdom has always been set to 
-> 00, which apparently allows 6ghz. But recently we have seen the regdom 
-> get set to US and it then has 6ghz disabled:
->
-> phy#0 (self-managed)
-> country US: DFS-FCC
->     (2402 - 2472 @ 40), (6, 30), (N/A)
->     (5170 - 5250 @ 80), (6, 24), (N/A), AUTO-BW
->     (5250 - 5330 @ 80), (6, 24), (0 ms), DFS, AUTO-BW
->     (5490 - 5730 @ 160), (6, 24), (0 ms), DFS, AUTO-BW
->     (5735 - 5855 @ 80), (6, 30), (N/A), AUTO-BW
->     (5855 - 5925 @ 40), (6, 30), (N/A), NO-OUTDOOR, AUTO-BW
->
-> I have updated the regulatory.db from wireless-regdb.git as well, and 
-> updated all the firmware (including regdb.bin) to the latest 
-> available. According to the wireless-regdb tree, US: DFS-FCC _should_ 
-> allow 6ghz [2]:
->
-> Is there something I'm missing here?
->
-> Thanks,
->
-> James
->
-> [1] 
-> https://git.codelinaro.org/clo/ath-firmware/ath11k-firmware/-/tree/main/WCN6855?ref_type=heads
->
-> [2] 
-> https://git.kernel.org/pub/scm/linux/kernel/git/wens/wireless-regdb.git/tree/db.txt#n1895
->
-It appears the issue was actually at the driver level. Updating to 
-kernel 6.8 seems to reflect the correct regulatory domain rules, at 
-least with US: DFS-FCC. Might have something to do a commit [1], which 
-was sent a few months after 6.2 was released, which is what I've been 
-using prior.
+On Wed, 2024-08-21 at 18:37 +0300, Kalle Valo wrote:
+>=20
+>  	/* TODO: Recalc radar detection */
+> -
+> -unlock:
+>  }
 
-I now see the expected frequency ranges for US: DFS-FCC:
+I guess this is the sparse warning, but I think this is an error at
+least in clang without removing the label or putting a ; after the
+label, so you might want to fix it in the same patch.
 
-phy#0 (self-managed)
-country US: DFS-FCC
-     (2402 - 2472 @ 40), (6, 30), (N/A)
-     (5170 - 5250 @ 80), (6, 24), (N/A), AUTO-BW
-     (5250 - 5330 @ 80), (6, 24), (0 ms), DFS, AUTO-BW
-     (5490 - 5730 @ 160), (6, 24), (0 ms), DFS, AUTO-BW
-     (5735 - 5855 @ 80), (6, 30), (N/A), AUTO-BW
-     (5855 - 5925 @ 40), (6, 30), (N/A), NO-OUTDOOR, AUTO-BW
-     (5925 - 7125 @ 160), (N/A, 24), (N/A), NO-OUTDOOR, AUTO-BW
+johannes
 
-[1] https://www.spinics.net/lists/linux-wireless/msg236203.html
 
 
