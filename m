@@ -1,100 +1,88 @@
-Return-Path: <linux-wireless+bounces-11747-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11748-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A68E2959F4C
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 16:07:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40D0395A185
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 17:37:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5585A1F22C00
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 14:07:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC01B1F2337D
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 15:37:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0776E1AD5CE;
-	Wed, 21 Aug 2024 14:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E729B13D8B2;
+	Wed, 21 Aug 2024 15:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ilMiZ4j+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W6xRkVJ7"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D3B19992E;
-	Wed, 21 Aug 2024 14:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3DAF136342
+	for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2024 15:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724249237; cv=none; b=vCE06c6/6K/NKmTp32bz/gduYZWi1cbzbrkjBDcepCanF1zDZpfB8js/gouH/91DpDIk2I0eJ/aUDU7pZUHRPZcLlS8T84BMkFPRJYAsxFIwKpK4MOpO8pDo5rRxMmvPtZRMg1Ya3NrsHDyDUbuqanbH4zwEMG6Aet0qLa0AFQ8=
+	t=1724254653; cv=none; b=j07Op5kBFtwafqZs14SdczzSrV95UZ2Qsou4AUijNmdd5UvKhENI6MxBY5W/y3PGEGmX8H7OWTCCVMW5VCUZcobJeMZwSn0D8vwTtCVCOn/L8+j87tvaB/2gyhsdwDreXGyo5GggN3rSReLaRlWztFkcmIR1CLjtgq4GsufupFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724249237; c=relaxed/simple;
-	bh=rwV2Ym9YJJlsH5AituA1MObz8M1TbPmkdjV1mr25zv0=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=kGCxpyCXhOOntpBC9TAkWQRx0tPWW3GWjXUTEFfnw8YwDtveFS29nkSqK/V7QO88DdEl5UqAg+0ZFl+wG3PFJqIovJ3OdfGw8fG/8NrTZyQ8qHl/FSPMcURhB5AoYYs8vZzyWie0oQdIA5nbHIJ3RNzo7YFeX4PNdP1FgJhPiME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ilMiZ4j+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1049DC32781;
-	Wed, 21 Aug 2024 14:07:15 +0000 (UTC)
+	s=arc-20240116; t=1724254653; c=relaxed/simple;
+	bh=4NQy9XYDVAd7OXQxaogt82tT/li3qf+oGJKMYNomv64=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ke8ojDmhh64HmQmSe1iusOqAiTIxKmM6Se22kZQsPAeowNthdx0G0RpCspIfJnl5vUf+aCz75C4uSCCiEMAMzHJRf6789IkmTPhxIUh26acbbBtODPWlF3R5afVqQX5BUlMyDStwlPSCTDkTcSI8daQPb1w/AziShYu/2LJZ5m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W6xRkVJ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8550C32781;
+	Wed, 21 Aug 2024 15:37:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724249237;
-	bh=rwV2Ym9YJJlsH5AituA1MObz8M1TbPmkdjV1mr25zv0=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=ilMiZ4j+7uU0dcxrFtSKnC/E4rsgwZDvcSlDQD9hVJdjPbBs0e+epISz3ppyBME98
-	 t/p/DFvnvoghTL70JLY4aQbtjnhz4Thq4lyknQqs4Ihj2DV5BKjKPWIIMWT2hVOL25
-	 cUfjB+0Us1he+GzthfNlJZiYMqp86NWI40ilE4753rvufnwppqdAxG+FhaXQMtiIVx
-	 PAW2CUm4EdpOsyryl5HIKzXh4MrnuERkHM62e1yx05rZmgJ9OS13O9WIPjYCAFX9ov
-	 lsiRIaAb5ygyLfF59tj+2KIDpIJQDAg/FC7HRx/blrgfThFR6+rjPF5gm8/WO4OFTD
-	 5V8SxSyXwSgpw==
+	s=k20201202; t=1724254651;
+	bh=4NQy9XYDVAd7OXQxaogt82tT/li3qf+oGJKMYNomv64=;
+	h=From:To:Cc:Subject:Date:From;
+	b=W6xRkVJ7l8Q0xWW7T2qQngBwINrrvKU2roKCNGUa02cujlukfP0/eZwHJZn0K3/ZX
+	 sR3EZWCDRAhxKd+tRdjPRdgfZhcYFPsGgXa6c1Gp9lgwQFWeRaMpEWhphVVDPCtPNn
+	 BlwFzlKso1Sk0355VPGtRGtEHYi3jf+hwZS/KJoesGIIXtN6SrIrbmyFjeE2jrdIsw
+	 VxYihy9B2B2+BmQunx5aEdY4fnL1OtF1wdfVoE4d/1dsr8W/VDcoho6bmCXUdE5b1H
+	 GYes8A7yjylC8xDPabozYOKjU2yBGXHJzNocEBrDXaLDrQnHkDbd3RXGsRZTLh4XUj
+	 op2LaN0VBgbsg==
 From: Kalle Valo <kvalo@kernel.org>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Brian Norris <briannorris@chromium.org>,  Francesco Dolcini
- <francesco@dolcini.it>,  linux-wireless@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  kernel@pengutronix.de
-Subject: Re: [PATCH 00/31] wifi: mwifiex: cleanup driver
-References: <20240820-mwifiex-cleanup-v1-0-320d8de4a4b7@pengutronix.de>
-	<87o75nw0oh.fsf@kernel.org> <ZsXLrEXiPke1RUw2@pengutronix.de>
-Date: Wed, 21 Aug 2024 17:07:14 +0300
-In-Reply-To: <ZsXLrEXiPke1RUw2@pengutronix.de> (Sascha Hauer's message of
-	"Wed, 21 Aug 2024 13:12:44 +0200")
-Message-ID: <87bk1mvujx.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+To: ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH RFC 0/4] wifi: ath12k: switch to using wiphy_lock()
+Date: Wed, 21 Aug 2024 18:37:24 +0300
+Message-Id: <20240821153728.2121600-1-kvalo@kernel.org>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-Sascha Hauer <s.hauer@pengutronix.de> writes:
+From: Kalle Valo <quic_kvalo@quicinc.com>
 
-> On Tue, Aug 20, 2024 at 08:42:38PM +0300, Kalle Valo wrote:
->> Sascha Hauer <s.hauer@pengutronix.de> writes:
->> 
->> > This series has a bunch of cleanup and bugfix patches for the mwifiex
->> > driver.
->> >
->> 
->> [...]
->> 
->> > ---
->> > Sascha Hauer (31):
->> 
->> BTW 30 patches is a lot to review. A good rule of thumb is to have max
->> 12 patches per patchset, maybe a bit more if the patches are small.
->> Splitting this into two patchsets would make it a lot more pleasent for
->> the reviewers.
->
-> Ok, I'll split up this series into smaller chunks. Be prepared there are
-> more to come
+Convert all uses of struct ath12k::conf_mutex to use struct wiphy::mtx, which
+is already used by mac80211, and remove conf_mutex from ath12k. This way we
+have one mutex less in ath12k and simpler locking design.
 
-Awesome, keep them coming! 
+I'm submitting this as RFC as I have only tested these patches and need
+to investigate how this affects MLO implementation.
 
-> this driver is really full of cruft...
+Kalle Valo (4):
+  wifi: ath12k: switch to using wiphy_lock() and remove ar->conf_mutex
+  wifi: ath12k: cleanup unneeded labels
+  wifi: ath12k: ath12k_mac_op_set_key(): remove exit label
+  wifi: ath12k: convert struct ath12k_sta::update_wk to use struct
+    wiphy_work
 
-Honestly I have not not looked at the driver in detail but that's what
-everyone are saying. So I appreciate you doing this. And I wish NXP
-would help you in the effort, this a great way to learn how things work
-in upstream.
+ drivers/net/wireless/ath/ath12k/core.c        |   6 +-
+ drivers/net/wireless/ath/ath12k/core.h        |   7 +-
+ drivers/net/wireless/ath/ath12k/debugfs.c     |   4 +-
+ .../wireless/ath/ath12k/debugfs_htt_stats.c   |  26 +-
+ drivers/net/wireless/ath/ath12k/mac.c         | 366 +++++++-----------
+ drivers/net/wireless/ath/ath12k/peer.c        |   6 +-
+ drivers/net/wireless/ath/ath12k/wow.c         |  29 +-
+ 7 files changed, 187 insertions(+), 257 deletions(-)
 
+
+base-commit: a38ef6438cb9017b7f0a6a8978355aeb02742a62
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.39.2
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
