@@ -1,86 +1,58 @@
-Return-Path: <linux-wireless+bounces-11765-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11766-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CF2395A652
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 23:06:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB42395A684
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 23:24:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CAE21F21E67
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 21:06:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 183F11C22589
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 21:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 975BA170A2A;
-	Wed, 21 Aug 2024 21:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBDF01779A4;
+	Wed, 21 Aug 2024 21:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BP6njGY2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XBfwm/Ad"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDBD7405A;
-	Wed, 21 Aug 2024 21:06:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7FC13B297;
+	Wed, 21 Aug 2024 21:23:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724274411; cv=none; b=aLmteEqmGTykBWWR+9sEIT+5X2SlfF9tidnBQQ7uuh3rZbPVVPIPU0RGGjdYkWFaLVliM/cxB5kx9ekZrO7bmEvCBkNGpzkihp0MfnjNOLwic836kz7wYXxIqJB5v+/swVDEgQoo1seJJoq7BVwx5AhCf5lGGi6joOXPOnpRhOc=
+	t=1724275434; cv=none; b=W0mjudWcK4trmVjz+yyswx6uULxmqHBqhjoagSxQEtrIHrzCwF6dpbaKIpPSrNacg/lWB42yojzoOK8HbZpgPwUinNbskn+eMP6LOH2GGJge4EdIw7AbLIYARe8JBuPU0J6cKdCzFfP2zpCei/URuyc4rYCtnVbGCLVOvsOV/SM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724274411; c=relaxed/simple;
-	bh=SOwHPJJRqFYK0tUXJ5zHDMl8r8w+xSOxczRgPHBQ+0I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Mnso3HPseOKi2V9HFfb++mw1yQeNXNQvCKvbvCjLjFSa6xQMpWCZGP5pmCBqk8jQRpyLMX8EBmnPi05DyaU5VSFTi3mWPD5t1R+WhyEQIm/vjmmR287/Cz85c71LIPbGzYELSf5BfSVKkdg9cxkyxp3TK0ZVo9TRX7ZvclCz3LM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BP6njGY2; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724274410; x=1755810410;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=SOwHPJJRqFYK0tUXJ5zHDMl8r8w+xSOxczRgPHBQ+0I=;
-  b=BP6njGY2k8N9ZwujbgSsTKky49GZkWLHjkiouEpi4iknXDv9XrXAN2Mx
-   j9G1IxSSyybcOvD1wGqkf7WJlRcfZKS72AkhrzWia+Om3/cy8LjRiTVUD
-   1aDWh+KxFOWrdc5dLNzL9ojOPX3R5xB8evRPO66x4VwI9E2ABUx5329Ej
-   THvZokW9N8aiFaPpQM4ppxMA6PbNvC3H49HZKctn34Og736KxFkDBsf2w
-   9dJXJXzV91LE/a4ypGXwRum3EDR8k/mNKi8p49Gwk7LqBT7OLoBK9mkMs
-   moyLA8HG9eoERTI1I7fhQHsVZ3d4uSX+3Zg4iBU6FwXnfKbKXzkw1MRqS
-   Q==;
-X-CSE-ConnectionGUID: M2FuLOhlQ3yMHUwJItRJ4Q==
-X-CSE-MsgGUID: NI2jNDoKQS2cTo6jcasXyA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11171"; a="13142368"
-X-IronPort-AV: E=Sophos;i="6.10,165,1719903600"; 
-   d="scan'208";a="13142368"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2024 14:06:49 -0700
-X-CSE-ConnectionGUID: LvVA9yNYRPOpDxGkiG6EGg==
-X-CSE-MsgGUID: m2M1DmySQaarIwYzAWexAw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,165,1719903600"; 
-   d="scan'208";a="66041794"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2024 14:06:46 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1sgsX0-00000000Ejk-1GtH;
-	Thu, 22 Aug 2024 00:06:14 +0300
-Date: Thu, 22 Aug 2024 00:06:14 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Amitkumar Karwar <amitkarwar@gmail.com>,
-	Ganapathi Bhat <ganapathi017@gmail.com>,
-	Sharvari Harisangam <sharvari.harisangam@nxp.com>,
-	Xinming Hu <huxinming820@gmail.com>, Kalle Valo <kvalo@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH][next] wifi: mwifiex: Replace one-element arrays with
- flexible-array members
-Message-ID: <ZsZWxnfy21CpOLoR@smile.fi.intel.com>
-References: <Y9xkECG3uTZ6T1dN@work>
- <ZsZNgfnEwOcPdCly@black.fi.intel.com>
- <93b3f91a-baa4-48e1-b3eb-01f738fa8fc1@embeddedor.com>
+	s=arc-20240116; t=1724275434; c=relaxed/simple;
+	bh=PzLqGHvOXwyQLTg41anHtMxB0A7b4fkuaaKAj8ko3cg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=P4DZjy/JYsj2hTaZ3QWqPIxu5IFhbY2T8YKG3VUyUVYfnZnk303fxWOhf7NyWFIdeSYGDOG+djbR8rw41HJw1nLfmPXoRvwEXa6sbfuoGVgS3sQ4fG6CBz2BwQl+P8YSOJ7pguvrZpK260gAqdsyDBXrl46MnOzzT8Cx50aAxI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XBfwm/Ad; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 852E3C4AF0E;
+	Wed, 21 Aug 2024 21:23:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724275434;
+	bh=PzLqGHvOXwyQLTg41anHtMxB0A7b4fkuaaKAj8ko3cg=;
+	h=Date:From:To:Cc:Subject:From;
+	b=XBfwm/Ad2XGco1F1AbKBrDg8sGhv6ECLhpjFQ+0UfMT/JhtU/URGvBt/04QcSkCef
+	 IArAwA8+q13w3k6U7b6MwDjxJ/kweJI0HuHRgizDG6PhyHy+ektI/E3OpOy155EVq0
+	 8vpYK9wMW0+M8+7DVA2pul9UU93b6yKQ9lS0t45CtWkeOvv5zV6nCI+E0qpSE4mMlI
+	 jfnAbbBtL6DMAVrwXP8voc1/buEtT5SYw9Tk1vp97c+J0GZUYOEeuDU5PXxekR0VYH
+	 AwNk3OI7JsCUTsq5ocQz/oeZo0bKZd3Tp9gKFwqjmt5dE83u8VspeXnNK4xJbUNDXE
+	 X0vf1DdB+9CAA==
+Date: Wed, 21 Aug 2024 15:23:51 -0600
+From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To: Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Kalle Valo <kvalo@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH][next] wifi: mwifiex: Fix memcpy() field-spanning write
+ warning in mwifiex_cmd_802_11_scan_ext()
+Message-ID: <ZsZa5xRcsLq9D+RX@elsanto>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -89,57 +61,52 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <93b3f91a-baa4-48e1-b3eb-01f738fa8fc1@embeddedor.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Wed, Aug 21, 2024 at 02:59:34PM -0600, Gustavo A. R. Silva wrote:
-> On 21/08/24 14:26, Andy Shevchenko wrote:
-> > On Thu, Feb 02, 2023 at 07:32:00PM -0600, Gustavo A. R. Silva wrote:
-> > > One-element arrays are deprecated, and we are replacing them with flexible
-> > > array members instead. So, replace one-element arrays with flexible-array
-> > > members in multiple structures.
-> > > 
-> > > This helps with the ongoing efforts to tighten the FORTIFY_SOURCE
-> > > routines on memcpy() and help us make progress towards globally
-> > > enabling -fstrict-flex-arrays=3 [1].
-> > > 
-> > > This results in no differences in binary output.
-> > 
-> > Sorry for blast from the past, but I have a question here.
-> > 
-> > This change seems converts many of the flexible arrays in this driver.
-> > But what's behind this one?
-> > 
-> > struct host_cmd_ds_802_11_scan_ext {
-> >          u32   reserved;
-> >          u8    tlv_buffer[1];
-> > } __packed;
-> > 
-> > 
-> > AFAIU this needs also some care. On the real machine I have got this
-> > 
-> > elo 16 17:51:58 surfacebook kernel: ------------[ cut here ]------------
-> > elo 16 17:51:58 surfacebook kernel: memcpy: detected field-spanning write (size 243) of single field "ext_scan->tlv_buffer" at drivers/net/wireless/marvell/mwifiex/scan.c:2239 (size 1)
-> > elo 16 17:51:58 surfacebook kernel: WARNING: CPU: 0 PID: 498 at drivers/net/wireless/marvell/mwifiex/scan.c:2239 mwifiex_cmd_802_11_scan_ext+0x83/0x90 [mwifiex]
-> > 
-> > which leads to
-> > 
-> >          memcpy(ext_scan->tlv_buffer, scan_cfg->tlv_buf, scan_cfg->tlv_buf_len);
-> > 
-> > but the code allocates 2k or more for the command buffer, so this seems
-> > quite enough for 243 bytes.
-> > 
-> 
-> I think this would do it:
+Replace one-element array with a flexible-array member in
+`struct host_cmd_ds_802_11_scan_ext`.
 
-Thank you for the prompt respond! Can you send it as a formal patch?
-Or do you want me to test it first? (If the second one, it might take
-weeks as this is my home laptop that I don't reboot too often. I think
-it's can be sent anyway.)
+With this, fix the following warning:
 
+elo 16 17:51:58 surfacebook kernel: ------------[ cut here ]------------
+elo 16 17:51:58 surfacebook kernel: memcpy: detected field-spanning write (size 243) of single field "ext_scan->tlv_buffer" at drivers/net/wireless/marvell/mwifiex/scan.c:2239 (size 1)
+elo 16 17:51:58 surfacebook kernel: WARNING: CPU: 0 PID: 498 at drivers/net/wireless/marvell/mwifiex/scan.c:2239 mwifiex_cmd_802_11_scan_ext+0x83/0x90 [mwifiex]
+
+Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Closes: https://lore.kernel.org/linux-hardening/ZsZNgfnEwOcPdCly@black.fi.intel.com/
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+---
+ drivers/net/wireless/marvell/mwifiex/fw.h   | 2 +-
+ drivers/net/wireless/marvell/mwifiex/scan.c | 3 +--
+ 2 files changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
+index e91def0afa14..d03129d5d24e 100644
+--- a/drivers/net/wireless/marvell/mwifiex/fw.h
++++ b/drivers/net/wireless/marvell/mwifiex/fw.h
+@@ -1627,7 +1627,7 @@ struct host_cmd_ds_802_11_scan_rsp {
+ 
+ struct host_cmd_ds_802_11_scan_ext {
+ 	u32   reserved;
+-	u8    tlv_buffer[1];
++	u8    tlv_buffer[];
+ } __packed;
+ 
+ struct mwifiex_ie_types_bss_mode {
+diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
+index e782d652cb93..f7153472e2a2 100644
+--- a/drivers/net/wireless/marvell/mwifiex/scan.c
++++ b/drivers/net/wireless/marvell/mwifiex/scan.c
+@@ -2536,8 +2536,7 @@ int mwifiex_ret_802_11_scan_ext(struct mwifiex_private *priv,
+ 	ext_scan_resp = &resp->params.ext_scan;
+ 
+ 	tlv = (void *)ext_scan_resp->tlv_buffer;
+-	buf_left = le16_to_cpu(resp->size) - (sizeof(*ext_scan_resp) + S_DS_GEN
+-					      - 1);
++	buf_left = le16_to_cpu(resp->size) - (sizeof(*ext_scan_resp) + S_DS_GEN);
+ 
+ 	while (buf_left >= sizeof(struct mwifiex_ie_types_header)) {
+ 		type = le16_to_cpu(tlv->type);
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.34.1
 
 
