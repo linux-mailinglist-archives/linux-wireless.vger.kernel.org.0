@@ -1,96 +1,100 @@
-Return-Path: <linux-wireless+bounces-11746-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11747-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5270E959F45
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 16:06:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A68E2959F4C
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 16:07:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E317282863
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 14:06:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5585A1F22C00
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 14:07:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4001AF4EE;
-	Wed, 21 Aug 2024 14:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0776E1AD5CE;
+	Wed, 21 Aug 2024 14:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KdGfy99k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ilMiZ4j+"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127711AF4D3;
-	Wed, 21 Aug 2024 14:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D3B19992E;
+	Wed, 21 Aug 2024 14:07:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724249164; cv=none; b=dRA1LVpQh7P8LFndfIh7iKGetzMP79JO19BDQy1VNMA/NqWk8LVJtztN333u1++EKYEe2HSO5eqYmuamb3YgZ5u5ZyMYYkKJt26rR/o6UEgibeI+OUgc4e0LFOVZGge6Z1mH5v3pIE97Wd1evNr8P/71yR+roWeJsSzID9Ow2Co=
+	t=1724249237; cv=none; b=vCE06c6/6K/NKmTp32bz/gduYZWi1cbzbrkjBDcepCanF1zDZpfB8js/gouH/91DpDIk2I0eJ/aUDU7pZUHRPZcLlS8T84BMkFPRJYAsxFIwKpK4MOpO8pDo5rRxMmvPtZRMg1Ya3NrsHDyDUbuqanbH4zwEMG6Aet0qLa0AFQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724249164; c=relaxed/simple;
-	bh=OupUKgDix1Aqr3zi3FS/NJ/qh5GuwXL1qcjGy7ucROc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PPb5j7Gx6IH4hN862wrBt8uxiX6u9Ct2wVNXc7Sy04/8p37P0fvyoS84v/oejfnhmoUKW4NFLR0Oon+RuRnF1pVXVY452PlwyACvpx8l1q8BkkBmZ0/r9OVxJAEIjU3KTK6MCH+yousqcOCZVXQL0veIyWkyf0Ln+rt8K12Fb/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KdGfy99k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19848C32781;
-	Wed, 21 Aug 2024 14:06:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724249163;
-	bh=OupUKgDix1Aqr3zi3FS/NJ/qh5GuwXL1qcjGy7ucROc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KdGfy99kVEc5kLY88y0BjKR7uoOnoihZLogWULGzyhcMjrDxUKN6MUJ3HltR9/9af
-	 IGVFQxQ+zXp9SRQihUjVKPpHubWm6zEo6e1tX0hsmVo7X53u/wjrn/O5i9uAcyV5/i
-	 k+kJP3OityZyhIGgFqUnyFFn4YF9NceoMub0eWWo=
-Date: Wed, 21 Aug 2024 22:06:00 +0800
-From: Greg KH <gregkh@linuxfoundation.org>
-To: color Ice <wirelessdonghack@gmail.com>
-Cc: Alan Stern <stern@rowland.harvard.edu>, kvalo@kernel.org,
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
-	linux-wireless@vger.kernel.org, mark.esler@canonical.com,
-	stf_xl@wp.pl, tytso@mit.edu
-Subject: Re: Ubuntu RT2X00 WIFI USB Driver Kernel NULL pointer
- Dereference&Use-After-Free Vulnerability
-Message-ID: <2024082106-flagman-plausible-cb40@gregkh>
-References: <2024080359-getaway-concave-623e@gregkh>
- <20240814055816.2786467-1-wirelessdonghack@gmail.com>
- <91e19cf3-216b-48ac-a93d-f920dd2a7668@rowland.harvard.edu>
- <CAOV16XEsgkLWz3rOQsAdve-qKsPEDw-QxJNoo4hJfXdLnowHfw@mail.gmail.com>
- <2024081946-designate-dioxide-c59d@gregkh>
- <CAOV16XFYeWdT4tSpLWoE+pCVsNERXKJQCJvJovrfsgMn1PMzbA@mail.gmail.com>
- <2024081904-encircle-crayon-8d16@gregkh>
- <CAOV16XEjJT6Oe7PX7HjqEaT5tpX0MqTOZy6=akEKFhtk0emOzg@mail.gmail.com>
+	s=arc-20240116; t=1724249237; c=relaxed/simple;
+	bh=rwV2Ym9YJJlsH5AituA1MObz8M1TbPmkdjV1mr25zv0=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=kGCxpyCXhOOntpBC9TAkWQRx0tPWW3GWjXUTEFfnw8YwDtveFS29nkSqK/V7QO88DdEl5UqAg+0ZFl+wG3PFJqIovJ3OdfGw8fG/8NrTZyQ8qHl/FSPMcURhB5AoYYs8vZzyWie0oQdIA5nbHIJ3RNzo7YFeX4PNdP1FgJhPiME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ilMiZ4j+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1049DC32781;
+	Wed, 21 Aug 2024 14:07:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724249237;
+	bh=rwV2Ym9YJJlsH5AituA1MObz8M1TbPmkdjV1mr25zv0=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=ilMiZ4j+7uU0dcxrFtSKnC/E4rsgwZDvcSlDQD9hVJdjPbBs0e+epISz3ppyBME98
+	 t/p/DFvnvoghTL70JLY4aQbtjnhz4Thq4lyknQqs4Ihj2DV5BKjKPWIIMWT2hVOL25
+	 cUfjB+0Us1he+GzthfNlJZiYMqp86NWI40ilE4753rvufnwppqdAxG+FhaXQMtiIVx
+	 PAW2CUm4EdpOsyryl5HIKzXh4MrnuERkHM62e1yx05rZmgJ9OS13O9WIPjYCAFX9ov
+	 lsiRIaAb5ygyLfF59tj+2KIDpIJQDAg/FC7HRx/blrgfThFR6+rjPF5gm8/WO4OFTD
+	 5V8SxSyXwSgpw==
+From: Kalle Valo <kvalo@kernel.org>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Brian Norris <briannorris@chromium.org>,  Francesco Dolcini
+ <francesco@dolcini.it>,  linux-wireless@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  kernel@pengutronix.de
+Subject: Re: [PATCH 00/31] wifi: mwifiex: cleanup driver
+References: <20240820-mwifiex-cleanup-v1-0-320d8de4a4b7@pengutronix.de>
+	<87o75nw0oh.fsf@kernel.org> <ZsXLrEXiPke1RUw2@pengutronix.de>
+Date: Wed, 21 Aug 2024 17:07:14 +0300
+In-Reply-To: <ZsXLrEXiPke1RUw2@pengutronix.de> (Sascha Hauer's message of
+	"Wed, 21 Aug 2024 13:12:44 +0200")
+Message-ID: <87bk1mvujx.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOV16XEjJT6Oe7PX7HjqEaT5tpX0MqTOZy6=akEKFhtk0emOzg@mail.gmail.com>
+Content-Type: text/plain
 
-On Wed, Aug 21, 2024 at 04:25:36PM +0800, color Ice wrote:
-> Dear Ubuntu Team,
+Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-We are not affiliated with Ubuntu at all, sorry.  Please be kind.
+> On Tue, Aug 20, 2024 at 08:42:38PM +0300, Kalle Valo wrote:
+>> Sascha Hauer <s.hauer@pengutronix.de> writes:
+>> 
+>> > This series has a bunch of cleanup and bugfix patches for the mwifiex
+>> > driver.
+>> >
+>> 
+>> [...]
+>> 
+>> > ---
+>> > Sascha Hauer (31):
+>> 
+>> BTW 30 patches is a lot to review. A good rule of thumb is to have max
+>> 12 patches per patchset, maybe a bit more if the patches are small.
+>> Splitting this into two patchsets would make it a lot more pleasent for
+>> the reviewers.
+>
+> Ok, I'll split up this series into smaller chunks. Be prepared there are
+> more to come
 
-> I have encountered a race condition issue in the RT2X00 driver,
-> specifically related to the function rt2x00usb_work_rxdone. The issue
-> manifests as a kernel NULL pointer dereference, which causes the
-> system to crash. Below is the detailed analysis and my suggestions for
-> addressing the issue.
-> 
-> Problem Analysis
+Awesome, keep them coming! 
 
-<snip>
+> this driver is really full of cruft...
 
-This mostly looks like it was created with chatgpt or something like
-that, please do not send us things like that.
+Honestly I have not not looked at the driver in detail but that's what
+everyone are saying. So I appreciate you doing this. And I wish NXP
+would help you in the effort, this a great way to learn how things work
+in upstream.
 
-Again, work with your professor at school who has assigned you this task
-to complete it, don't force us to do the work for you :)
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-If we get a chance, we'll look at it, but note it's way down the
-priority list for most of us.
-
-thanks,
-
-greg k-h
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
