@@ -1,63 +1,73 @@
-Return-Path: <linux-wireless+bounces-11753-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11754-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B50FA95A340
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 18:56:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3377495A382
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 19:05:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC9F71C213FC
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 16:56:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0BE6284D59
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 17:05:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25E7615098E;
-	Wed, 21 Aug 2024 16:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35DD01B1D52;
+	Wed, 21 Aug 2024 17:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mZMv/hQL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KZFTfG9o"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878A41AF4CC
-	for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2024 16:56:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F18B1509A2
+	for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2024 17:05:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724259365; cv=none; b=F+W3u4pCHiJifFHYl/NcvK8I1TCxRDZMUoDnykMISv/NAKcszChMsp6NxGe/rRGp3MwKS2PIizDPkwUKacQywGhic53EtlmXq2weQuTIEgxugMGLVZ4d44ACoRPO4kl7acBd8hFv/GWW2KJPKjzfpCNgXkTEyfYn3bsGfOTdd8c=
+	t=1724259954; cv=none; b=faaTSiIJqNSLT4Lpl3ZfD3opuPqVIqB61dnDnR8hUQWRwroNAh+xjADtmHsOyNhJGbG097lMy3rhi/8MPRBk1UQ5qlSswnx130rhmztutKPgbFozBOr/0uprQ/1RBvy6ElHLRM7uoPUg2ia4+0XVdrcXjne4QvnvY4UzXvu5o5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724259365; c=relaxed/simple;
-	bh=3hDvwKRFc9Bx68QN+OXSesV5BvtspGp/eJuYhuFew3c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=b6yYxhvTY0yyDlTvtNTc2jIDYaLkrJcWLSx5R+hAfpz9aulYyUZFuQv1Ak6YjT25PDpsJwdTvZjK/sgFowY69j0nirayDZiX0QB2qEvNDpKtLeHTBETXbwAGEsuCofh/j8/VbxABtO2wse7a+hmOOHHVS/8bi+gBS25ynLxqJ34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mZMv/hQL; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47LC4MBv004713;
-	Wed, 21 Aug 2024 16:55:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	P96IDu99mJPZI9Kvf4dTHrJ7IuC5XQUSJPfedBEbBWo=; b=mZMv/hQLVnA5oZYO
-	P8zmUzPMORRwx7uNtXA54VthVw0UIpJ2G6OdVFYWMBJNHFCVdrwAOne8xblohLLv
-	y5soorHKrJZ2Z2z9tmzNBBXV/4SWoBAG5iwdWPFDlWOydxO175H0U+7tVR+he1vD
-	oPb4o+ZPx9BfYKJ8A7vpRkvOsYttPRvoqvWbviH3saReaFQeJskpQEkDwDeWlKrz
-	dZMcVpM4+/clKfpw6uZwncjjxolxjv5rNjqeWE+6ortpFS3T1pZXiwO5TY5bHU9B
-	3szHgqhGOMYy+l3REAVN4EetzbsqS0TGkao5IZIb+9h3PqsRetaUru8jjKCI26Y1
-	wY0l3A==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 414v5cc7w9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 Aug 2024 16:55:57 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47LGtuNL013085
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 21 Aug 2024 16:55:56 GMT
-Received: from [10.111.179.139] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 21 Aug
- 2024 09:55:55 -0700
-Message-ID: <5ae832c0-8395-4d9b-a226-04255682c6d3@quicinc.com>
-Date: Wed, 21 Aug 2024 09:55:55 -0700
+	s=arc-20240116; t=1724259954; c=relaxed/simple;
+	bh=w7DH4E2u2UxerHQ/AnM4C9fznTJsDWAhCGMMJS5PY7E=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=WJjA3xfSS+1TlHCP816YVFRNDHQY5LlfeH6gv6WaHnlbzEN8eIXM/RvXf5zavUiMn+Twuj6sVazVh+0PNlWBEryNPyWjCz1XdL/zQy+mFNpwjEGW6ktCtQ7dFc3lj0wxzQUNfJr1bQ/t7Da/+icEjigd7l8gzV/ius+YoNtcIns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KZFTfG9o; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-202146e9538so48193485ad.3
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2024 10:05:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724259950; x=1724864750; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=F8DQru6UN8dJs60jykvyzxdgZb0RXRlNWrUteqGq0t4=;
+        b=KZFTfG9oLERKq1M23AmFSLpASwMeh0LF0XHzcg8ELqNGIMVGekjAzUqWTvaI98mVQP
+         MeBgEzjz2bVctM06mkjmEnjsKYFrVlImZWXiQ4GRf6XU40GsOFTMaL2Hh5sfvdYctIkX
+         3r8Q8htHntTftwkuT9h5v7fryyx6pw5K4YJQdg6nAaJ9/qT1nU+Fy+3Bh5pMdxW23lNt
+         wfu8tSW2iw9sJEUsDHudBIBOjGbtu8GJNaUhZ9RyhtvXCBCMbd6P0O/7PksukaVd/Yp7
+         20wyjcn3qhIPhRLZvmPe34kzD8zncqraFC4kydn+BMfBCRwknDa+iPGGHuPejw86KMdq
+         pWzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724259950; x=1724864750;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=F8DQru6UN8dJs60jykvyzxdgZb0RXRlNWrUteqGq0t4=;
+        b=bxjWes2xGWjeG5PIvt1Eh7i7GYuOmuR/nboUrqmxCVJsQuxoMPaWqJNk1rbOf27UJf
+         7Q9pfbq3wF+6XCr/WrXAgCS0ghf0wNqNqUlirK0pi3Z7/i89zFoAC0vws7zdIQEP8hS3
+         Phai2BQzor/ah5QBdrXRHhUFdNBkw94zKYsVvSwLN+So6zz7espLWFe9sQQtiSuLTULX
+         48ea1U0Xp5+TzkzbyrfMZKbNsBzjFgsubMJ4VgGHhIuXioKqT9nM6WhJyl8B1sDosy9u
+         SSHGs1nmo49taEm30zp9xYNXzzEsYZn2W0LMX6Wo+CaY8zHoVcwnsiMGXmI9lIfx18ou
+         uV8A==
+X-Gm-Message-State: AOJu0Yw8tRYZl5AsFnzsRowvHcf2ngyhsrXxz5S1ArIp8YuJgYPG8alN
+	9/yC787/UcP/er0+uYx26HZs04ybE/JM7c7nqpdRXJESO0ZMhUzAX9zCFw==
+X-Google-Smtp-Source: AGHT+IEU75GWPV4RspaE673U+0qloLAUcZdlAdfIsvIszG9477jSA7GQmXkyDPRT3LwXfbtcmYgLzA==
+X-Received: by 2002:a17:902:ecd0:b0:202:20bf:461c with SMTP id d9443c01a7336-20367d3b7ffmr34862695ad.31.1724259949927;
+        Wed, 21 Aug 2024 10:05:49 -0700 (PDT)
+Received: from [10.100.121.195] ([152.193.78.90])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-201f03756ebsm96099035ad.158.2024.08.21.10.05.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Aug 2024 10:05:49 -0700 (PDT)
+Message-ID: <45445d1b-7e0c-4c6e-b8c7-17098586d861@gmail.com>
+Date: Wed, 21 Aug 2024 10:05:46 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,46 +75,70 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 2/4] wifi: ath12k: cleanup unneeded labels
-To: Kalle Valo <kvalo@kernel.org>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240821153728.2121600-1-kvalo@kernel.org>
- <20240821153728.2121600-3-kvalo@kernel.org>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Subject: Re: ath11k WCN6855 seems to have incorrect regulatory info for US
+ DFS-FCC (no 6ghz)
+From: James Prestwood <prestwoj@gmail.com>
+To: "open list:MEDIATEK MT76 WIRELESS LAN DRIVER"
+ <linux-wireless@vger.kernel.org>
+Cc: "ath11k@lists.infradead.org" <ath11k@lists.infradead.org>
+References: <3b8c7d73-3e2e-471a-8434-61322a5746fa@gmail.com>
 Content-Language: en-US
-In-Reply-To: <20240821153728.2121600-3-kvalo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: HVL60o7_TLSvGn6_Lvhl0hCcravD3S6X
-X-Proofpoint-ORIG-GUID: HVL60o7_TLSvGn6_Lvhl0hCcravD3S6X
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-21_11,2024-08-19_03,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
- spamscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0 impostorscore=0
- phishscore=0 priorityscore=1501 clxscore=1015 malwarescore=0
- mlxlogscore=780 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2408210123
+In-Reply-To: <3b8c7d73-3e2e-471a-8434-61322a5746fa@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 8/21/2024 8:37 AM, Kalle Valo wrote:
-> From: Kalle Valo <quic_kvalo@quicinc.com>
-> 
-> After removing the conf_mutex in the previous patch there are no unnecessary
+On 8/20/24 12:05 PM, James Prestwood wrote:
+> Hi,
+>
+> I'm using the latest firmware for ath11k [1], WCN6855 hw2.1, and so 
+> far I guess we've been lucky that the regdom has always been set to 
+> 00, which apparently allows 6ghz. But recently we have seen the regdom 
+> get set to US and it then has 6ghz disabled:
+>
+> phy#0 (self-managed)
+> country US: DFS-FCC
+>     (2402 - 2472 @ 40), (6, 30), (N/A)
+>     (5170 - 5250 @ 80), (6, 24), (N/A), AUTO-BW
+>     (5250 - 5330 @ 80), (6, 24), (0 ms), DFS, AUTO-BW
+>     (5490 - 5730 @ 160), (6, 24), (0 ms), DFS, AUTO-BW
+>     (5735 - 5855 @ 80), (6, 30), (N/A), AUTO-BW
+>     (5855 - 5925 @ 40), (6, 30), (N/A), NO-OUTDOOR, AUTO-BW
+>
+> I have updated the regulatory.db from wireless-regdb.git as well, and 
+> updated all the firmware (including regdb.bin) to the latest 
+> available. According to the wireless-regdb tree, US: DFS-FCC _should_ 
+> allow 6ghz [2]:
+>
+> Is there something I'm missing here?
+>
+> Thanks,
+>
+> James
+>
+> [1] 
+> https://git.codelinaro.org/clo/ath-firmware/ath11k-firmware/-/tree/main/WCN6855?ref_type=heads
+>
+> [2] 
+> https://git.kernel.org/pub/scm/linux/kernel/git/wens/wireless-regdb.git/tree/db.txt#n1895
+>
+It appears the issue was actually at the driver level. Updating to 
+kernel 6.8 seems to reflect the correct regulatory domain rules, at 
+least with US: DFS-FCC. Might have something to do a commit [1], which 
+was sent a few months after 6.2 was released, which is what I've been 
+using prior.
 
-nit: s/ no / now /
+I now see the expected frequency ranges for US: DFS-FCC:
 
-> labels in mac.c. Sparse also warns one instance of it:
-> 
-> drivers/net/wireless/ath/ath12k/mac.c:6635:1: warning: statement expected after label
-> 
-> Remove the labels and instead use directly return.
-> 
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-> 
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+phy#0 (self-managed)
+country US: DFS-FCC
+     (2402 - 2472 @ 40), (6, 30), (N/A)
+     (5170 - 5250 @ 80), (6, 24), (N/A), AUTO-BW
+     (5250 - 5330 @ 80), (6, 24), (0 ms), DFS, AUTO-BW
+     (5490 - 5730 @ 160), (6, 24), (0 ms), DFS, AUTO-BW
+     (5735 - 5855 @ 80), (6, 30), (N/A), AUTO-BW
+     (5855 - 5925 @ 40), (6, 30), (N/A), NO-OUTDOOR, AUTO-BW
+     (5925 - 7125 @ 160), (N/A, 24), (N/A), NO-OUTDOOR, AUTO-BW
+
+[1] https://www.spinics.net/lists/linux-wireless/msg236203.html
 
 
