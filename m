@@ -1,55 +1,72 @@
-Return-Path: <linux-wireless+bounces-11743-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11744-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C39B959B46
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 14:08:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB93F959E36
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 15:11:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 527391F225B0
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 12:08:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4573BB22C34
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 13:11:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D5914B979;
-	Wed, 21 Aug 2024 12:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FCC6192D9C;
+	Wed, 21 Aug 2024 13:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="lL7c/10f"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hkEitXiX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-26.smtpout.orange.fr [80.12.242.26])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B7621D1305;
-	Wed, 21 Aug 2024 12:08:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61A3199939
+	for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2024 13:11:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724242132; cv=none; b=WQJUyVPbN4VcaYl458gjEypZtmzyEQAKtdC+maaW7zOHiX//prvMiUwHb+S+4nce/LsC8ar/QjmV+dci1fgYES3dOzkHr7RB1h9XGgHjnV/OHPrpueuU4O3OTRWtyLJzv6CVrA1oWmO5SVxc7KEEUa3vBmSCKCinVrGhObw7WHU=
+	t=1724245870; cv=none; b=gm2CiWi+jQCETgavJQTewuFdpiXhv+EcGuQ+0zEqwj1b2LLYNi4WDuR2gfTjiuSrtTo6a51xyvkYOadiePVCKbLKFhC5Sn33lh3WR14Tsi2gfY3GnT+pGwhQ/r8GI1tQfPWgkwv6gMle5Zon2TfQJdzshMXVhGE2YORCl+UIWRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724242132; c=relaxed/simple;
-	bh=dbe4R2RH0+1sKJgg7eyP6A1jmv60YMmn98/QNoWzjVA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uEn45CizjVQJURp2RAemy7j/J/nfHrfMXL46LKYDleMHolFfF8EtvNcPjQkjonNnXInVPTxLRAmw9Wuv+wFzr7hKZu8z/1FTv025C9vGkrbDsLgANlNEJHeGilwwsVSTFyzKwlHde86zFzwER8DlxDKMD7RpJvGwk7yV0D+glT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=lL7c/10f; arc=none smtp.client-ip=80.12.242.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [192.168.1.37] ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id gk8rsJdOxbNNsgk8rslcHN; Wed, 21 Aug 2024 14:08:48 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1724242128;
-	bh=8d0PHFEsYGqdYcAk4Zd+FDA5jBt+ta/EhSh+bgONbM4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=lL7c/10fbRpVHzqiq3ccePD1+sBQ+u0AjUfgzfq+XD11F0fKwDwKnuoX9Xwmd4vIS
-	 hiUEg725rc6Dgb1xlGcpCjHFDbfP0MzkZt4L7AZNnKurA2ZKpPDuwUIyJ1k4G/oRTE
-	 OZiwDFrvoXywlTpKs9hngJa+hgwMkcRue+1Hv2+vJsYiTJsqWAR1r7ZxMrDxNUuZ4+
-	 TVwS7t8HhkVPcwp2hcuqNd6OOr43YrQMEnC+rQehK2DSktBvQ60QZ7Dg+x+iP6/Hkj
-	 yQAJpL3RmkyRpJFPqBUQaJkhvgLv0Rrea/KNCHU4CyHsUreFHvSW2RQDM/WIzzbNPD
-	 pGkJ4Ov0RvILg==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Wed, 21 Aug 2024 14:08:48 +0200
-X-ME-IP: 90.11.132.44
-Message-ID: <9a5de847-0913-420d-8cb0-35d95376ae5b@wanadoo.fr>
-Date: Wed, 21 Aug 2024 14:08:45 +0200
+	s=arc-20240116; t=1724245870; c=relaxed/simple;
+	bh=yKrWgSvrw7rXrSG2YXIc+mUm8jHfiMjfFHr8X7c3lqA=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=jWJAaaVQVjDZLGRSSgighRyjYcqg+eH7gS5EN1x0/8jm2E2B//PFGu+tScTnrFQH8sIDfpWDCqhkjK5mUNar/rvdt7PAieWSZAR8w+v0O3uqIYcyJvzGQQHuy3mrVZm0mNqfDNGNuKu7QlvdRZ1drlD+yrawE9tbBTDzoTQFJ7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hkEitXiX; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a8647056026so234868066b.0
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2024 06:11:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724245867; x=1724850667; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-language:cc:to:subject:from
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LTnowNxLgQDXngdT2ho0supNXficugR1TOkRkefXIdQ=;
+        b=hkEitXiXhJuMmXUsAlJxwVB6wBEq1N2yztsljEfHk4FkiGs5YkB3FGlJQt1k4r/Nzr
+         8/XJ2aDg3oYN5NjARENbaB0fDwPAfNZnRQEQ1LZ+/9W1r8kduIgYt8wqxSS+zceBuKg5
+         GTPNgq8Wh+3yVM2LRVhDaFR/J41EQbOtjH9tyIqeRVxgU6adm3fgqA3WSb+fZzOfttBU
+         sPEHpHlUBosdA9B09rMFxnF4tENK/hBLDjo9Jbifdbbc0f0zs2NtDD4E6KAUN6yzGLM3
+         DVrLNbZZm56slIG2Y7uHlZBwHWChA1e9hfcNj/Unq6gli4iIedq63hwgAp88RUsM1jCl
+         01qw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724245867; x=1724850667;
+        h=content-transfer-encoding:content-language:cc:to:subject:from
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=LTnowNxLgQDXngdT2ho0supNXficugR1TOkRkefXIdQ=;
+        b=IaAbxBLeTCjB5bj20L6dNV41iJaDMjxoSJtoWROO4Ve1uMaq/XMBEbWTegp/1jfrAq
+         6w3EOe7LOKKKec2e4Yue2+0/CWZATahUgqbU0GCytHNyqt4CQlKBrv3COpm/NdJnPZdU
+         RSLXYHHR953zHzVkSVrF9BpEg6XPysONIW58YeTxjTSoGGNkmDxzTfGl6Nhj3m1/Km9O
+         uUuWwDpt6xTnSdVMWn2/9QVciRYHqgMUZFYuwNBEvDQKMxTEE1qH41aGQScfPWr0PMQi
+         tLSYJPAe0AY3nsXqB45Kjt56QrWaXa0NBsHQMLNBD48Xdtued3x6TRhgG0EuR6N2VUIq
+         R/UA==
+X-Gm-Message-State: AOJu0YwKi/u7q5BHM47JeA0+Eox2qII8TCl2Gmuj7BgxcM//9A/sisft
+	7n0dQnnhjLZjq2AWWudsNA+IeT2nWA5UI630e8ffj69Bao0eoOjlSK+LKw==
+X-Google-Smtp-Source: AGHT+IEBSN4Az+S1PtZlFqwnyK/s/x/Mm+bHZz0wFeNtC6IYhNRkWeXGCIQN2SfoY8s4oj3j6byreQ==
+X-Received: by 2002:a17:907:f70e:b0:a7a:d093:f843 with SMTP id a640c23a62f3a-a866f9cabbfmr170967466b.63.1724245866564;
+        Wed, 21 Aug 2024 06:11:06 -0700 (PDT)
+Received: from [192.168.0.50] ([79.119.240.114])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a83839356fasm894782566b.124.2024.08.21.06.11.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Aug 2024 06:11:06 -0700 (PDT)
+Message-ID: <49de73b5-698f-4865-ab63-100e28dfc4a1@gmail.com>
+Date: Wed, 21 Aug 2024 16:11:03 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -57,66 +74,66 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: cfg80211: Use kmemdup_array instead of kmemdup
- for multiple allocation
-To: Yu Jiaoliang <yujiaoliang@vivo.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: opensource.kernel@vivo.com
-References: <20240821111250.591558-1-yujiaoliang@vivo.com>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20240821111250.591558-1-yujiaoliang@vivo.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH v2] wifi: rtw88: Fix USB/SDIO devices not transmitting beacons
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>, Sascha Hauer <sha@pengutronix.de>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Le 21/08/2024 à 13:12, Yu Jiaoliang a écrit :
-> Let the kememdup_array() take care about multiplication and possible
-> overflows.
-> 
-> v2:
-> -Change sizeof(limits[0]) to sizeof(*limits)
-> -Fix title prefix
+All USB devices supported by rtw88 have the same problem: they don't
+transmit beacons in AP mode. (Some?) SDIO devices are also affected.
+The cause appears to be clearing BIT_EN_BCNQ_DL of REG_FWHW_TXQ_CTRL
+before uploading the beacon reserved page, so don't clear the bit for
+USB and SDIO devices.
 
-Hi,
+Tested with RTL8811CU and RTL8723DU.
 
-this kind of information about differences between versions is usually 
-below the ---.
+Cc: <stable@vger.kernel.org> # 6.6.x
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+---
+v2:
+ - Only clear BIT_EN_BCNQ_DL for PCIE devices:
+   https://lore.kernel.org/linux-wireless/CAP8xZ6n8utvFJCmTwnRzFccRkZZzk+R5Bf69UArbbzd4Ev9aRQ@mail.gmail.com/
+ - Update the commit message.
+---
+ drivers/net/wireless/realtek/rtw88/fw.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-> 
-> Signed-off-by: Yu Jiaoliang <yujiaoliang@vivo.com>
-> Reviewed-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
+index ab7d414d0ba6..b9b0114e253b 100644
+--- a/drivers/net/wireless/realtek/rtw88/fw.c
++++ b/drivers/net/wireless/realtek/rtw88/fw.c
+@@ -1468,10 +1468,12 @@ int rtw_fw_write_data_rsvd_page(struct rtw_dev *rtwdev, u16 pg_addr,
+ 	val |= BIT_ENSWBCN >> 8;
+ 	rtw_write8(rtwdev, REG_CR + 1, val);
+ 
+-	val = rtw_read8(rtwdev, REG_FWHW_TXQ_CTRL + 2);
+-	bckp[1] = val;
+-	val &= ~(BIT_EN_BCNQ_DL >> 16);
+-	rtw_write8(rtwdev, REG_FWHW_TXQ_CTRL + 2, val);
++	if (rtw_hci_type(rtwdev) == RTW_HCI_TYPE_PCIE) {
++		val = rtw_read8(rtwdev, REG_FWHW_TXQ_CTRL + 2);
++		bckp[1] = val;
++		val &= ~(BIT_EN_BCNQ_DL >> 16);
++		rtw_write8(rtwdev, REG_FWHW_TXQ_CTRL + 2, val);
++	}
+ 
+ 	ret = rtw_hci_write_data_rsvd_page(rtwdev, buf, size);
+ 	if (ret) {
+@@ -1496,7 +1498,8 @@ int rtw_fw_write_data_rsvd_page(struct rtw_dev *rtwdev, u16 pg_addr,
+ 	rsvd_pg_head = rtwdev->fifo.rsvd_boundary;
+ 	rtw_write16(rtwdev, REG_FIFOPAGE_CTRL_2,
+ 		    rsvd_pg_head | BIT_BCN_VALID_V1);
+-	rtw_write8(rtwdev, REG_FWHW_TXQ_CTRL + 2, bckp[1]);
++	if (rtw_hci_type(rtwdev) == RTW_HCI_TYPE_PCIE)
++		rtw_write8(rtwdev, REG_FWHW_TXQ_CTRL + 2, bckp[1]);
+ 	rtw_write8(rtwdev, REG_CR + 1, bckp[0]);
+ 
+ 	return ret;
+-- 
+2.46.0
 
-It is not because someone makes a comment on a patch that you should 
-automatically add a R-b tag.
-
-> Reviewed-by: Kalle Valo <kvalo@kernel.org>
-> ---
->   net/wireless/util.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/wireless/util.c b/net/wireless/util.c
-> index 9a7c3adc8a3b..e7c1ac2a0f2d 100644
-> --- a/net/wireless/util.c
-> +++ b/net/wireless/util.c
-> @@ -2435,8 +2435,8 @@ int cfg80211_iter_combinations(struct wiphy *wiphy,
->   		if (params->num_different_channels > c->num_different_channels)
->   			continue;
->   
-> -		limits = kmemdup(c->limits, sizeof(limits[0]) * c->n_limits,
-> -				 GFP_KERNEL);
-> +		limits = kmemdup_array(c->limits, c->n_limits, sizeof(*limits),
-> +				       GFP_KERNEL);
->   		if (!limits)
->   			return -ENOMEM;
->   
-
-Reviewed-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-
-Now you can add my R-b :).
-
-CJ
 
