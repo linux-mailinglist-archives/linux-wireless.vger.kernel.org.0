@@ -1,103 +1,127 @@
-Return-Path: <linux-wireless+bounces-11718-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11719-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44C55959369
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 05:46:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99CAE95943E
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 07:48:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3D4B1F23AEA
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 03:46:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 587902847A3
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 05:48:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06EE8208D0;
-	Wed, 21 Aug 2024 03:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753A01547D4;
+	Wed, 21 Aug 2024 05:48:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="szMUpwLA"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="TqWuK6zk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE4418E34F;
-	Wed, 21 Aug 2024 03:46:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D39F1667F1
+	for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2024 05:48:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724212008; cv=none; b=SmXDwGkKiBCNRd0Ji5q43qRyavoHfF3XG9fireYN1eiqLY4DvVTBUPbB+Pn+jFgWitGm01RctboH5L3nT2k7bBwiqztc1cXOIIfucUH5fyWAuT0uMJRHNApyJJYNnpACdpRIL32SLPLszuHW19bvULl+zGPUSFc6WhtSWQxgh0Y=
+	t=1724219312; cv=none; b=TACHdSnSmVu84nglIZWQ2b13ZH5yg2fmSvNLlLsUs11XCkSDCwZQDtD4S997wZ5JO83Wa1KpgqLuFa8fpY2x3wlq8XOF7MQnFBFbrnq/DPFjCn+HSS62u1d2k/gP+//bzxAZFesh65odlfFIk0lNnPpCq6BYs7nFsge/ZkpwsSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724212008; c=relaxed/simple;
-	bh=R3jVslqYcebjFefTUBHMZ9itwtoJ/PWvlbJZcxu13D8=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=K8MU/OIfPhlYmzPf6v0NJytCItC4lsKjHqRTzFn+6DYP3zgt20FvionHOiq8HZJ7nIMw8ziHOgaEXH3SNRNk+vyUJoEMDUsSkhidGFRaebnwFYnkQaOxyLpTDxV7wqNhNg0un0mpCK/9OlxU3i0kGhSCEMN84fcVyVBBkNhhCgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=szMUpwLA; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 47L3grRP32250940, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1724211773; bh=R3jVslqYcebjFefTUBHMZ9itwtoJ/PWvlbJZcxu13D8=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=szMUpwLAzUOkxHlVrGYbu47MyInj4zZzLOFmI7XMMr69r0TUCVlbkSYbkcD0rejzj
-	 523hmkS9QoHQCuKXUpvEjKnaAEW5P7RxMah3Mxk03+GWJ2lj1TeV/S0dNOKEIkqO1u
-	 Ut6TBMKilR/hXBR9uPQLf6ZrNTM9Ij/c0gzOCi6hjuGGM2QZeNy3XSTASbjnrqjlmZ
-	 m+f6cWhxh+Ri9EpPG/WKET66XxoR1b2YjuNcMXiH9cZRevcsbdD/tfKHJUZ7tr+RVh
-	 KUZKZEVR3nsm1HGFgQEEwy9Mcw4hI/UpvED1OmOHe1JiKxw8GDk2xf4LHCWDZUkNK9
-	 LyA958pXkeH4A==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 47L3grRP32250940
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 21 Aug 2024 11:42:53 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 21 Aug 2024 11:42:54 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 21 Aug 2024 11:42:53 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
- RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
- 15.01.2507.035; Wed, 21 Aug 2024 11:42:53 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Jinjie Ruan <ruanjinjie@huawei.com>,
-        "arend.vanspriel@broadcom.com"
-	<arend.vanspriel@broadcom.com>,
-        "kvalo@kernel.org" <kvalo@kernel.org>,
-        "johannes.berg@intel.com" <johannes.berg@intel.com>,
-        "emmanuel.grumbach@intel.com" <emmanuel.grumbach@intel.com>,
-        "erick.archer@outlook.com" <erick.archer@outlook.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "brcm80211@lists.linux.dev" <brcm80211@lists.linux.dev>,
-        "brcm80211-dev-list.pdl@broadcom.com" <brcm80211-dev-list.pdl@broadcom.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH -next] wifi: mac80211: Use kvmemdup to simplify the code
-Thread-Topic: [PATCH -next] wifi: mac80211: Use kvmemdup to simplify the code
-Thread-Index: AQHa83GEvlUD1o2kZE2cQXXHd/yI9rIxEPdA
-Date: Wed, 21 Aug 2024 03:42:53 +0000
-Message-ID: <af2157863e684ab3b4a9d345e26b3408@realtek.com>
-References: <20240821023325.2077399-1-ruanjinjie@huawei.com>
+	s=arc-20240116; t=1724219312; c=relaxed/simple;
+	bh=J8x2jVHv24gpsGk/rvne1vdojygWNGLZKnDuhBA0KeQ=;
+	h=From:To:Date:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=mlrDYf7ZPrbgN1L0TdVYCjRcJ4C2NFUIsUOkMReQsJx6Qk2DlsoKkc+kcbe0Q4yEhIeMRHYE2+Bby6+u5cmC5D4WoPH16OLJ+Vnf8Lo7aagnwuYx++cXZ6AUnWJr8GthUfJvq4NgUhwJWx1uxpI9AwrIqGQMdWoEuU9L70abjUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=TqWuK6zk; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3717ff2358eso3364793f8f.1
+        for <linux-wireless@vger.kernel.org>; Tue, 20 Aug 2024 22:48:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1724219309; x=1724824109; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:to:from:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=nP3ueLvKs0/bHziLfGaK4Ey7cdFOtLdT2RqpBOJBVJE=;
+        b=TqWuK6zkqVvFGC1BHMq+zP0OjQc7E3mEtmSLCNnMRRPRhXyIavkEFQPmf2JJRV6FC/
+         iNbbUPEofsD0CF6MaNToMNtMjTgKLo/UP+0igZ+Jjvzm0yJxzJXttKPyn9g8+5JqkLO+
+         Ge+dJdP8GFoCTrutT53wNBdXh7va1JCg+3n+s=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724219309; x=1724824109;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:to:from:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nP3ueLvKs0/bHziLfGaK4Ey7cdFOtLdT2RqpBOJBVJE=;
+        b=VxNnN40dQw1FR3GCMvkgWMYrxwCYdpEfhrAYBSOMTyAULp07Xfm3PTkDrI48AyBg48
+         Un8eSlsJqy2JzhhOaM1/joO5gipzcygn7Q7Pywg37Y+OIQ/K2QhT+oU474+l97rkAc1l
+         MKhjTinu3yLvT53T9zp2Ahv56DxCvosmcDvbfdY+j1beQNL70IqVSr0lsFBqeb1E4Vwb
+         xECVC+Z+ili/5i8qgh2mKAUaimzrUgwENNSo8fzl1EFk9Bj5NUU41erF9w7c5IHgQCbi
+         NcNcxqepq7cl5zT5qyiEK0r3GRfEicwg3zNWup93qRnovfsId3YDzfaec3yxVTg70vTi
+         LJyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUt7aTZLbq11mcU6ECeleGN39ac6rIOmRCZiABRN3UtdGNuLNkAKIWiLlH3JH11khCLiXtgw5jEDRIcujoK5A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxHpcPqmMaNNcs39QsIOz4tcfHetwv/lhsTqRWkSpy4096rCyKz
+	kXff37zEpdcgbxkrUXZJPzoezA+sGb+L+3PMUSZuV7KgJw423mttAPMU0/GWkg==
+X-Google-Smtp-Source: AGHT+IF9gb11komyzhf6yHRSBm6Bx0StIFXfTyJUrS6do+skd7QbjRTWFyt+VW82Aiajp3akvAAfJw==
+X-Received: by 2002:a05:6000:4593:b0:368:7583:54c7 with SMTP id ffacd0b85a97d-372fd576901mr551215f8f.8.1724219308299;
+        Tue, 20 Aug 2024 22:48:28 -0700 (PDT)
+Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8383947187sm847323366b.166.2024.08.20.22.48.27
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 20 Aug 2024 22:48:27 -0700 (PDT)
+From: Arend Van Spriel <arend.vanspriel@broadcom.com>
+To: Jinjie Ruan <ruanjinjie@huawei.com>, <kvalo@kernel.org>, <johannes.berg@intel.com>, <emmanuel.grumbach@intel.com>, <erick.archer@outlook.com>, <linux-wireless@vger.kernel.org>, <brcm80211@lists.linux.dev>, <brcm80211-dev-list.pdl@broadcom.com>, <linux-kernel@vger.kernel.org>
+Date: Wed, 21 Aug 2024 07:48:27 +0200
+Message-ID: <191737a8900.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
 In-Reply-To: <20240821023325.2077399-1-ruanjinjie@huawei.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+References: <20240821023325.2077399-1-ruanjinjie@huawei.com>
+User-Agent: AquaMail/1.51.5 (build: 105105504)
+Subject: Re: [PATCH -next] wifi: mac80211: Use kvmemdup to simplify the code
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; format=flowed; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 
-Jinjie Ruan <ruanjinjie@huawei.com> wrote:
->=20
+On August 21, 2024 4:26:17 AM Jinjie Ruan <ruanjinjie@huawei.com> wrote:
+
 > Use kvmemdup instead of kvmalloc() + memcpy() to simplify the code.
->=20
+>
 > No functional change.
->=20
+
+Comment below...
+
 > Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 > ---
->  drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c | 3 +--
+> drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c | 3 +--
+> 1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c 
+> b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
+> index d86f28b8bc60..7717d7764d2d 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
+> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
+> @@ -1611,10 +1611,9 @@ int brcms_ucode_init_buf(struct brcms_info *wl, void 
+> **pbuf, u32 idx)
+>  if (le32_to_cpu(hdr->idx) == idx) {
+>  pdata = wl->fw.fw_bin[i]->data +
+>  le32_to_cpu(hdr->offset);
+> - *pbuf = kvmalloc(len, GFP_KERNEL);
+> + *pbuf = kvmemdup(pdata, len, GFP_KERNEL);
+>  if (*pbuf == NULL)
+>  goto fail;
 
-Subject prefix should be "wifi: brcmsmac:".
+This is the only jump to fail: so instead simply return here with -ENOMEM 
+and remove the fail: label.
+
+Regards,
+Arend
+
+> - memcpy(*pbuf, pdata, len);
+>  return 0;
+>  }
+>  }
+> --
+> 2.34.1
+
 
 
 
