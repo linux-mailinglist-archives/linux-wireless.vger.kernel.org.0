@@ -1,181 +1,217 @@
-Return-Path: <linux-wireless+bounces-11728-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11729-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D529B95972F
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 11:37:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D73095975B
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 11:47:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77563281335
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 09:37:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B6471F21012
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 09:47:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C89A91B3B3D;
-	Wed, 21 Aug 2024 08:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A37015C139;
+	Wed, 21 Aug 2024 08:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b="Ty7KSoNg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rs8Pmv5Z"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from APC01-TYZ-obe.outbound.protection.outlook.com (mail-tyzapc01on2067.outbound.protection.outlook.com [40.107.117.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f54.google.com (mail-io1-f54.google.com [209.85.166.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91821B3B3A;
-	Wed, 21 Aug 2024 08:24:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.117.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724228646; cv=fail; b=q4KhUMoVL6myp/XVd6OQjJMPpTV242ERfXtkMMoUTHfppwULFHjr7OpDkBP5/h2WSC3I9grwlFS5CFd2P9kI1v2rAon8HNlsKhwhxP8tebEpQ9CPJhaO9Yu0tPtqC6gpsber5/W+bbDCTQi5/I0UjYAUZ79Nm12UcplKSTu3s7g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724228646; c=relaxed/simple;
-	bh=+pz7RFZ/INiP9v/4TXwcslRGm9cRrM8iVILgCFC1RTE=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=dp57dm4Vrg8DIzRqOBJsQNPqsNBMVmwTRN9QeWJojMfTr0Dj5wsxPyzpUd0YVHOR0Oa+eeJ2uWtQ5IJeUCm/jyz1PakhhpMSX40aGg3QmazZHkQEzNfsRJdw3GBJYgcYq/EefHfvf5WTBn2RMrxhTood3E2g8I4/0apgQXwthQM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com; spf=pass smtp.mailfrom=vivo.com; dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b=Ty7KSoNg; arc=fail smtp.client-ip=40.107.117.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vivo.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=U61lyE9Rp7tunEbC5ne3iOehi5RvuP8hqPA9+l05ksXDE7CCnkUsfdScO8MagKw+5DXhXYZNZFA2Z4HQIPvSavuJmH15Gy/DWt7vSNE1/ne8zFl6y/hxkOwtJAqgLGFab4v/ShlvChC+We7UjcQ/ZofRuDQByT0zo5DdfwdUx8uG4+wg0X2NxeIszrxLWMFllbj17MZGq89nsBV/5spA2VqfvZtf0jnSYe7uY+pBG823vyHEFdL3kA76TXhVQUvBUIUTPpXXD86nggxYkmDkKE1U23gbfniyaAVfOpLmmZa4E6PaqG9s0QW5a+brTj5vlysYxUn0AtI25NwgffTD/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0p6QXMM1OYggoSlXDzctKQAD8JfdqbCwORdkZrGlzwA=;
- b=Qphw/9eqNEwSxVJydto9dWO6VSRBycA/SSmEfBWBfz/IHOIsHy1kZeuWGtQiE9jT+0O6WDrh0PjQDe9rp0QG7c5gPzU4cmX3ghzp3tsnNwYwRNL+3T7bcbk9eLQCQ+JKoHkyivvkPAtzKeIaJ1dWRrANOtynQBCsJRutn0m+LZR8vID76lBvCHgrik0PFn4ajChrEx1DbtFWR72zBWxx3N14UUq6zwAUameJi1GgXnKw8HfGMcNHii0asm+p8HovX4VwOiy11ujxxdLQL1AkoByd/uDDlwEJ4EOtut/i6urPMuUSrVLBZ7nwzQA4IwM3nHMN3ghNwa7j/kC32hwY3A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0p6QXMM1OYggoSlXDzctKQAD8JfdqbCwORdkZrGlzwA=;
- b=Ty7KSoNgK2t1hC3iwNPwZKTXmC2Pi5MoU+o60xSFaHHfKXgk2fiSt+EFVbkeE4tTuLVeUXGyU2wBbSNd6xzhgH8r/PZ1FCsxGNhkPebA3sv/IhkElz0Z4Lp4UhvqYwwH+a387cJnPQxUyMavPSfTZxAP9NPXDUtxiy9b8PfNiXkgNBZ3tTQGE9cYqz5DBaipapbHfEb7xj+7nyB9BXpKF3eOl+3PMwhBsaCqkhioj8UEbycHD4OT+Qm2y9dCc5ZO3dTg0XjlxiWXbnV9BZQyr8yCDAha80WEDL/6WFwwRciDQm63FWNfwP3P8TREPXIxBzq1ctLbvwCfSgDU+yR/Uw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-Received: from TYZPR06MB6263.apcprd06.prod.outlook.com (2603:1096:400:33d::14)
- by TYSPR06MB6315.apcprd06.prod.outlook.com (2603:1096:400:40f::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.27; Wed, 21 Aug
- 2024 08:23:59 +0000
-Received: from TYZPR06MB6263.apcprd06.prod.outlook.com
- ([fe80::bd8:d8ed:8dd5:3268]) by TYZPR06MB6263.apcprd06.prod.outlook.com
- ([fe80::bd8:d8ed:8dd5:3268%6]) with mapi id 15.20.7875.019; Wed, 21 Aug 2024
- 08:23:59 +0000
-From: Yang Ruibin <11162571@vivo.com>
-To: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Yang Ruibin <11162571@vivo.com>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: opensource.kernel@vivo.com
-Subject: [PATCH v1] drivers:mei:Fix the NULL vs IS_ERR() bug for debugfs_create_dir()
-Date: Wed, 21 Aug 2024 04:23:42 -0400
-Message-Id: <20240821082348.13026-1-11162571@vivo.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TYCPR01CA0163.jpnprd01.prod.outlook.com
- (2603:1096:400:2b1::8) To TYZPR06MB6263.apcprd06.prod.outlook.com
- (2603:1096:400:33d::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F6E1CDFB3;
+	Wed, 21 Aug 2024 08:25:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724228750; cv=none; b=LwozO8TyVj1vvb4fTfK2ZETEojKfE57L3+MFgdDyn7Fwh7Rddrzho8eHBLvVu9ivoDXZfnJSHQQ76gIRHeGekDXoSy1WE07pxRuSkYLYLQSgtgKVh0q3UDUIW2QBqOMx5FlUu/0iQrVBq3U9XzL1944vZD8xlZx4CPBmAO8ey6I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724228750; c=relaxed/simple;
+	bh=EdzeupSGGvl1TZEs83iqfDc4cvZFxHBoh8FJ0Eh1G8Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=W7CdjZ7YUEOt+qVSS9tPuaje8mS3lg2mQCXmqejM0MRFBdMF+FG19BFWIDyB3WqyXKbAnHHHhULMZ53lUo8mUn8lvcO1y1nbQGX+5RMZaw7B2gWW8RQC/31w5J/k2rrIsR+k3rQkwNsN68i/eug8hVZVmBc5qpQjtpONMTJWFRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rs8Pmv5Z; arc=none smtp.client-ip=209.85.166.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-io1-f54.google.com with SMTP id ca18e2360f4ac-81f96eaa02aso347970939f.2;
+        Wed, 21 Aug 2024 01:25:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724228748; x=1724833548; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QtDQjm8iV4cdUO+HD94R4GQWnETA3Pr7CL8RG8TNuww=;
+        b=Rs8Pmv5ZBd/m3E9MjSiZ0w+iix2i1fFTIsNAJ0nPBbPJIjAGDqBM7yJnIzsk3StPsy
+         5H7D5laxFNDP9sZFq998T7/ewMc2bOjWzMUywH12/kJhbXUPm48yCo1bBupWdDTI1Gvc
+         4M3ZijYaFdi1wbpmdxqUSiJiGukcs//J4Uk8SuPrOdZjA+yVJdhMG8I4mAJSfW327i9m
+         EPD5Npee3OzkRmuHvtB4dBa3FuqCdpu3IJ+V+74mvYjwkqo1t0vrfm2XAEpI5BhFIGS6
+         0whZz6rBKWs7By8VHCZkaMDAl5WqjQwkRP87/BUSSoRqkI+EuM3TpaZaZeyNtFBqtMDe
+         lU2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724228748; x=1724833548;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QtDQjm8iV4cdUO+HD94R4GQWnETA3Pr7CL8RG8TNuww=;
+        b=k0S4OUevo1ABLFVbckLUl+Kzu5oE/TScTdo3R9KJz2nWzpKMVYVxygWoZDse+/GTC2
+         BxiJusVCCgwIjX2oXUF6yDetXBy/zXNN313Ef1I+95a1xN7DUgSHAmFj7sDLrf4LATaj
+         DmCZtzalWbvBD9T7xAAlMwaa3WeyTVISvr5KNdm/3IRX4orh5WgcYssXPgymWHGeEqtH
+         mCy2hFG0smoJF0q2azbD+M8fRHEBGqU4OjzzK231XpP63XNP/SrMhyiTyguiJybc9chw
+         XYHWUoxldvqgeQba8Co1xFLqKH/Y6HcTxHhWbgxw1v5OEr5aTpOFgyeX1ZDaVT2NkOf0
+         rLXw==
+X-Forwarded-Encrypted: i=1; AJvYcCUPnJi4mPQtdIitTnCuc//7WKmn+SWdxyZaOFLwIxbiNno8uxHK/ZZvwyY9fHc4RToT165/6XLUgfbFXTI=@vger.kernel.org, AJvYcCW3YASVtJh4BnNMgYxOxZPxgtgg7p+1leZl8D+ujxlgZ0ImlfiCAgZ5WewxTEMNSMadpoEQR3jrJlqfk2CM/zA=@vger.kernel.org, AJvYcCXgDqk9kt4xJOhWW4vJ0unuep91Fd8zJynibqWT75ZfYWp0jLUTU535DCWCMZKHIdB6p6SNnbxDkhzt@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzge4nBl01Ar8nYLjHJ3ll+7TUgVwImUF58sofeLQY59qJQwEBy
+	5HQDOLr9HKXXXyXs/pevkcH8R2PwVeC92oOtKeG6Iga9RANqEowcXhhorkaTSGeAv4Byx7ou2/Y
+	72I+/MN7663wBUpKpIga1gbMUoA==
+X-Google-Smtp-Source: AGHT+IFZ7B3clZToa0llT69FQPt3YfkKJq6le9aPzsukagic2r195jKWwzuhWEAszXEMwA2BFpru2eSaWeSwWE/qbaA=
+X-Received: by 2002:a05:6602:14d5:b0:81f:9df7:40d with SMTP id
+ ca18e2360f4ac-82531a2bb22mr166091439f.17.1724228747366; Wed, 21 Aug 2024
+ 01:25:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYZPR06MB6263:EE_|TYSPR06MB6315:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4f88b682-f18b-495c-2313-08dcc1ba9aff
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|52116014|376014|38350700014|81742002;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ueWL30EoLazCznBNqYbcTDYH6IP4NnXGBC6vOc3WCqoBwaLsJR9TyMODXCcr?=
- =?us-ascii?Q?yILeDoa4HIrWdFcIMCafPM3IUSV8SKYSif70EAaJnonnYOviFOtpRpBKBGqn?=
- =?us-ascii?Q?TAkYnQc1Eb5S06rwdCJeeAJTIa46d/fR0PljfuIOwrFuYSEDa03X9K+wvIHg?=
- =?us-ascii?Q?bPvvxiRhvr8Wj/w+tkSE9oxEyiIZP28EnR/q1BTudXTF/BISd7pmKlOPF6NU?=
- =?us-ascii?Q?JQ/AGl/7p2mhqJGbDvXYGMFFTwuoIGprjQTjIrzkO7/LiQLtqsODMblYD3nR?=
- =?us-ascii?Q?12Kw1eeMeJocjP+FrADC6FvN52AIpAltwUQM+vZXzH6+qA9YhiHDgNU2Qv0u?=
- =?us-ascii?Q?frx0qklErU+/VUAriVtfvthbqGN3kwnjWPMv0pJkSo1ZVidhdN+7MZeDEuyF?=
- =?us-ascii?Q?vU7RsPc8TGs5IdoHoteDCqVLsbIBsTxphfvrWl/gTrtkb2KhvZijqi2c5iaf?=
- =?us-ascii?Q?bumhjf+gi6j5CqoaJa0/7gB6EHCEuFpD6ds5ag77BI2t/BZhbBkGmM4uyzW0?=
- =?us-ascii?Q?YqFnW01MVCpPhYdirrZo9gciW64xgiF+TfAZgcptEEAcp/7pthtO8ZBfZax6?=
- =?us-ascii?Q?vxF8N4LikkNok6gKmFxNJxvBYdLCLK/egNAA4R50hsIpMDOZIls8CJ3pSxbu?=
- =?us-ascii?Q?3t9r2h/PPb+PN3k0LLTlWoFOia59r+ICtP5OgvB2AWDY/fL2/z2aDNE+ssNO?=
- =?us-ascii?Q?FppYrJpG1NSA0agSqMMxXYpkRDk6kxbkSnsUetC1LQnPISrLHmJqNhpQccDg?=
- =?us-ascii?Q?I85gKR8sLav8xCteOhXey5Ia0hb3GRsPBi/5dv9tnsEQI1zM6iW4rymbUd51?=
- =?us-ascii?Q?p3SBl229qfpjFQwX/DhOVHH5LlGXxePxdSuyaGRpQUzgOa6TMDYWeoYqkX72?=
- =?us-ascii?Q?4iEm4VTklgYYS0eFtfVltPwdBKxW3j0k8oWb9JNSVftE3VsQmsIKuLd1V1Fy?=
- =?us-ascii?Q?+PaR7VYAoFtPZd/euEGeeDQQNCglUAL4aLh3LalTVCrIGuczx5QQWBVg8Y0D?=
- =?us-ascii?Q?gLeqLS4QJWSidJ+tufBnnHqiTNcBmt18+g4o6f+3VQBn18KlsaRqTIUB34gI?=
- =?us-ascii?Q?VFA0WozcgB5cpKaYjHXZQmduZsuPgSRsXZhXo77qlWHfjMtYCnDYYGpF5wcc?=
- =?us-ascii?Q?TKxgEDEu1legR4/6WmYfullCXiO3TlV8njEQpn6rKBl1Sw62MVnnuIDGbufL?=
- =?us-ascii?Q?dOmCEOpUokHkAmeBSNzt988MBLNxZkvHSo6+QEgBDt0BsKHiUtQWK/aVT/7f?=
- =?us-ascii?Q?gVNYUVeOkGMjSvf9Evy6znjYsjWMkdVOGXFCdIZt9uem0lTEf11iBEfRCP18?=
- =?us-ascii?Q?Wl5hw5zDr5WUKG1isp5jLwj7DheCMNx5n2SZOCMuWBwjc6WhvdVg0xDZ6H5M?=
- =?us-ascii?Q?yTaqPFy17CJOV6Ix8GLijTONaJuefMHg2BN9HctQAajAO+Jjg7wM6OHSJUyO?=
- =?us-ascii?Q?2aBHpiPW7ps=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYZPR06MB6263.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(376014)(38350700014)(81742002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?NpLDW6Wg+mV770iqP/XDHjABxlqXY6nLytJjaIn65lGD8QC3uX/lHawXdvbT?=
- =?us-ascii?Q?8qgBruNj8eV2MiTMhF5J/d3hA73FnMnOdPgxThgPrxATlSO6W4GXG2wMHUXK?=
- =?us-ascii?Q?CAbF2dgkPBXJeMhICoEqh+TK9zVpBxo3eBPYP74SbWK+ZZ0+PVO9yRcs4Ury?=
- =?us-ascii?Q?o/W7zZlp7aPLeiH5w0GLDmapx7O/rv/Ie1y4emsDbDIuZu92N56RwXtEcumE?=
- =?us-ascii?Q?6euFEbA9cKSDgb/IDkLRRgpEqHMFr3SRab35ExlpKuCvT59dCwi2TrcfDLFN?=
- =?us-ascii?Q?Le86iaI48S7PMw2opIxJ4kU/RVW9EdvptbjDp0K9HstS/GgUu3wid2CS2ktv?=
- =?us-ascii?Q?K3ovwtsRmZd26QTTtOUe96TvQlHWxBJ45iJ3eOPwgBpJ9Vtm24nnFKnOpCai?=
- =?us-ascii?Q?Dp82ZKesJgV4qAHja7RxNWQrQkZipVhqzhxU2qB/0xE6i/ZwO/4seSkBT7fN?=
- =?us-ascii?Q?JwoebuEIfeGDINs+WdwSllkkoBnYXIruIN/1vu5nfPFImx/EWOs0P91GHBua?=
- =?us-ascii?Q?Taatodwjqw3dizFi61hm6Zqjdr9Qp47Qd96b1AAeM8oL/1yQiiJfhPHGZbwf?=
- =?us-ascii?Q?RB/pfVw4Ry1MP2JlG1McyU8C2v9KaFl2kG/vSyAGGhPQsLHU3d6CMNhK0E5P?=
- =?us-ascii?Q?3n8EC3Jch7lfsbtWK1NB1XY2BkXPNea6Uu9FR/u6lHvCeoindFa6CpffYMIV?=
- =?us-ascii?Q?IawYPzERA3ePDXkv90i6xT+YxlXuAANPxoCXEkC8fMmr75JITqem1AwPgAo4?=
- =?us-ascii?Q?bh50WRqWZe0gJpADBVQdQy5IG+ftqZyYA0zWYbQo9cENYeHE1Ta+z03oAST3?=
- =?us-ascii?Q?EwxP1r3E6boqO6Z5TIxiqDPyJe4RCi2pD1w8r6P0YjMdGau1hCOjY3NvZTzv?=
- =?us-ascii?Q?QZLsxxXpIeXHrZ7KxYX0MoZiLakGHzXUC/vlVklHJy0DjnRee/QcItVq4jJR?=
- =?us-ascii?Q?QjXPSwbAS5zQo4zbSB/7as9YLET2v7uYkmtG8i+4SGbCI4cTwClJfM/NXAZH?=
- =?us-ascii?Q?r0ECKWvCjMEdVQWIsoacyORpjbOoxadK0VsIZmSwX97BzlHXcCzaeY1mADyh?=
- =?us-ascii?Q?hsjzMJ9VUCCuqsZEmBdxWTHdXH18hNXQLpjEIeK5X62X4HPhvIi491JP+gi8?=
- =?us-ascii?Q?lGUfqw1gbxeFY4pZ2XW9v2z2+VKpF8jjP+KxtiVUpRX9e1vZzcMB6I7reJIw?=
- =?us-ascii?Q?9Zk1UMLf/aXiDoKPS+TOzsMlRUQzkaAdMNsQxTliZkoV59HogIuJkLjKzjdG?=
- =?us-ascii?Q?3NiKeK8VVRIuPoZwJQ9JzbfHUKi4BjW6hdIhKviHaOZVmANnPlowytpLnUaZ?=
- =?us-ascii?Q?+Lt8GWu5O+ep5Gg3S0a4IHUHUbzrOEesTiJ/4TJ0AzXgsoyCEgB4j0o+7YTH?=
- =?us-ascii?Q?t5M2/JAeflvk5RlFcpm8agj0ecWex1stVzwjZsf4gawmtMckgIulH4oXHTDb?=
- =?us-ascii?Q?LoGUI8JL7b1eD4XmZf5N6qFsHokSlsI7RC3DXrQegGhwP5s/lpxYyG2cAOGX?=
- =?us-ascii?Q?ymnfcbLZCFwXh4FHJT6vLvVaPIQQCFPQfNgBmvJSkzQnIJy+ES8qJxy6WqUK?=
- =?us-ascii?Q?TlPfgeoqIafR0kGC33iJYD68NKf+L+/OrK+3M34K?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4f88b682-f18b-495c-2313-08dcc1ba9aff
-X-MS-Exchange-CrossTenant-AuthSource: TYZPR06MB6263.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2024 08:23:59.0182
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wtbWC9ZRgB1darc+rXEAizHFHmWIQ007uST5fAlGWxWp51lP7KzlThr77FbCqokeyr4+GjBZwTgmZoteMbbvWg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYSPR06MB6315
+References: <2024080359-getaway-concave-623e@gregkh> <20240814055816.2786467-1-wirelessdonghack@gmail.com>
+ <91e19cf3-216b-48ac-a93d-f920dd2a7668@rowland.harvard.edu>
+ <CAOV16XEsgkLWz3rOQsAdve-qKsPEDw-QxJNoo4hJfXdLnowHfw@mail.gmail.com>
+ <2024081946-designate-dioxide-c59d@gregkh> <CAOV16XFYeWdT4tSpLWoE+pCVsNERXKJQCJvJovrfsgMn1PMzbA@mail.gmail.com>
+ <2024081904-encircle-crayon-8d16@gregkh>
+In-Reply-To: <2024081904-encircle-crayon-8d16@gregkh>
+From: color Ice <wirelessdonghack@gmail.com>
+Date: Wed, 21 Aug 2024 16:25:36 +0800
+Message-ID: <CAOV16XEjJT6Oe7PX7HjqEaT5tpX0MqTOZy6=akEKFhtk0emOzg@mail.gmail.com>
+Subject: Re: Ubuntu RT2X00 WIFI USB Driver Kernel NULL pointer
+ Dereference&Use-After-Free Vulnerability
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Alan Stern <stern@rowland.harvard.edu>, kvalo@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, mark.esler@canonical.com, stf_xl@wp.pl, 
+	tytso@mit.edu
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The debugfs_create_dir() function returns error pointers.
-It never returns NULL. So use IS_ERR() to check it.
+Dear Ubuntu Team,
 
-Signed-off-by: Yang Ruibin <11162571@vivo.com>
----
- drivers/net/wireless/intel/iwlwifi/mei/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+We have analyzed the issue, but due to our limited time and ability to
+create a fix, we are unable to submit a patch directly. However, we
+can provide some ideas to assist you in generating a fix that we can
+then test.
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mei/main.c b/drivers/net/wireless/intel/iwlwifi/mei/main.c
-index 1dd9106c6513..d0438f9a9ab8 100644
---- a/drivers/net/wireless/intel/iwlwifi/mei/main.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mei/main.c
-@@ -1894,7 +1894,7 @@ static void iwl_mei_dbgfs_register(struct iwl_mei *mei)
- {
- 	mei->dbgfs_dir = debugfs_create_dir(KBUILD_MODNAME, NULL);
- 
--	if (!mei->dbgfs_dir)
-+	if (IS_ERR(mei->dbgfs_dir))
- 		return;
- 
- 	debugfs_create_ulong("status", S_IRUSR,
--- 
-2.34.1
+I have encountered a race condition issue in the RT2X00 driver,
+specifically related to the function rt2x00usb_work_rxdone. The issue
+manifests as a kernel NULL pointer dereference, which causes the
+system to crash. Below is the detailed analysis and my suggestions for
+addressing the issue.
 
+Problem Analysis
+
+The kernel panic log indicates that the crash occurs due to a NULL
+pointer dereference at the following location:
+
+[ 371.258315] BUG: kernel NULL pointer dereference, address: 00000000000000=
+38
+[ 371.258339] CPU: 8 PID: 144 Comm: kworker/u40:2 Not tainted
+6.8.0-40-generic #40~22.04.2-Ubuntu
+[ 371.258346] Workqueue: phy23 rt2x00usb_work_rxdone [rt2x00usb]
+
+The root cause appears to be a race condition where multiple threads
+may simultaneously access and modify shared resources without proper
+synchronization. Specifically, it seems that the pointer being
+accessed in rt2x00usb_work_rxdone is not consistently initialized
+before being used, leading to the NULL pointer dereference.
+
+Suggestions for Fix
+
+Introduce Locking Mechanisms: To prevent concurrent access to shared
+resources, I recommend introducing locking mechanisms such as spinlock
+or mutex. This would ensure that only one thread can access the
+critical section at a time, thereby avoiding race conditions.
+
+Pointer Validity Check: Before dereferencing any pointer, it's
+essential to check whether the pointer is valid (i.e., not NULL). If
+the pointer is invalid, the function should safely return without
+proceeding further.
+
+Retry and Delay Mechanism: If a critical resource is not yet
+initialized or is in an unexpected state, implementing a retry
+mechanism with delays could help avoid crashes. Additionally, more
+debug information should be logged in case of failure to assist in
+diagnosing the issue.
+
+Code Review: A comprehensive code review focusing on areas where
+hardware resources and multithreading operations intersect could
+reveal other potential race conditions. Identifying and addressing
+these issues proactively would enhance the driver=E2=80=99s robustness.
+
+Example Code Snippet
+
+While I cannot provide a complete patch, here is an example of how the
+suggested changes could be implemented:
+
+
+void rt2x00usb_work_rxdone(struct work_struct *work)
+{
+    struct rt2x00_dev *rt2x00dev =3D container_of(work, struct
+rt2x00_dev, rxdone_work);
+    unsigned long flags;
+    void *data;
+
+    // Lock to protect shared resources
+    spin_lock_irqsave(&rt2x00dev->irq_lock, flags);
+
+    data =3D rt2x00usb_get_rx_data(rt2x00dev);
+    if (!data) {
+        // Unlock and return if data is not valid
+        spin_unlock_irqrestore(&rt2x00dev->irq_lock, flags);
+        return;
+    }
+
+    // Process the data
+    ...
+
+    // Unlock after processing
+    spin_unlock_irqrestore(&rt2x00dev->irq_lock, flags);
+}
+
+
+This snippet shows how to introduce a spinlock to protect shared
+resources and ensure that the pointer is valid before dereferencing
+it.
+
+Conclusion
+
+In conclusion, the race condition in the RT2X00 driver is likely
+caused by insufficient synchronization between threads. By adding
+proper locking mechanisms, pointer validity checks, and retry
+mechanisms, this issue can be mitigated. I hope these suggestions will
+assist in resolving the problem. If you require further assistance or
+additional information
+
+Greg KH <gregkh@linuxfoundation.org> =E4=BA=8E2024=E5=B9=B48=E6=9C=8820=E6=
+=97=A5=E5=91=A8=E4=BA=8C 01:43=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Mon, Aug 19, 2024 at 11:11:10PM +0800, color Ice wrote:
+> > On some TP-Link routers or routers running OpenWrt, as well as Raspberr=
+y Pi
+> > devices with a headless setup and BeagleBone boards, certain USB
+> > configurations are required by default. These devices typically grant
+> > higher permissions to USB by default. Therefore, on certain devices, I =
+can
+> > run a PoC without using sudo. This explains why there are some inherent
+> > risk scenarios when declaring this vulnerability, as there are many Lin=
+ux
+> > distributions applied to different embedded devices.
+>
+> I suggest filing bugs with those distros/system images so that they
+> properly remove the ability for users to reset any random USB device
+> this way.  If any user can disconnect any driver from any device, that's
+> not a good system...
+>
+> Also, why not dig into the code and try to come up with a fix while
+> waiting?  The code is all there for everyone to read and resolve, that
+> way you get the proper credit for fixing the issue as well.
+>
+> thanks,
+>
+> greg k-h
 
