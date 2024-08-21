@@ -1,190 +1,190 @@
-Return-Path: <linux-wireless+bounces-11738-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11739-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45A39959A65
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 13:43:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 545EA959A67
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 13:44:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B03B1C22418
-	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 11:43:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9AF9281B75
+	for <lists+linux-wireless@lfdr.de>; Wed, 21 Aug 2024 11:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3987F1CC88B;
-	Wed, 21 Aug 2024 11:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0205F1CC8BF;
+	Wed, 21 Aug 2024 11:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b="ktt/GqEd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RfxFLps9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from APC01-PSA-obe.outbound.protection.outlook.com (mail-psaapc01on2088.outbound.protection.outlook.com [40.107.255.88])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B8451C4EC6;
-	Wed, 21 Aug 2024 11:13:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.255.88
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724238787; cv=fail; b=dv9FmjSR4j6lz25ocf8NHjXMCp3gU+KVxbstV7nznEh+r1xwo+fW/9XeiPNzqeMIEs+IFgAa6zxMewFup5qXTjyvG1+EoiX3Wy2a3oX9oobNn0Yehhs9zE5sdMi9d+kaI9tHLpX1JrOUU+cwa9XjvF5LjQcFxLhvTtL41h0a7ws=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724238787; c=relaxed/simple;
-	bh=qObZnPU2AyoIS8UcHaQoRdi16GAtNfxNDzUZ0AGZXOI=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=GMSsXdbm1pFDOP+sLLzxNoHlK/Cbh6jzJ9QD+DJ5DjeHyidCePOkj1Ke9q7Xmc6PZviPgW+esglR1YmHxBojTQo6ANw6YYhpPSG2jKwr57zFMQVkdTdiGD9liwBDSvcnGLmHKEuNm+w90CZwZJ2ofR9ye/mRuCJ+NtAPaSjka9Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com; spf=pass smtp.mailfrom=vivo.com; dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b=ktt/GqEd; arc=fail smtp.client-ip=40.107.255.88
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vivo.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xX6BZIhU3Ceqhct+PD62E21LlI9OeZB5B9g7qE0jc7T/KuiLAG6skUDM7BZ+R2eZvzrECxYw2fFtP/cIeRlEAtToSwTSaALSCd2FnDC40nbNtZxG1LSlzSLJQomkFBhDPWR1vQgZJUaXc0J6Gbrxm8GQkcyqP9r6sAvmA8S21ul/s6m55WNP1JmlAx6TfLxKrbEXu381rJbDjUf7qT9RqhDoKvMtCD4FdSPkFYtR92LtGJzxcgVlfy76AproK4OGag9ZGGgREQ6vu7lN3ILCccpbrmajCO/XI53HmC95X4FYKIp5fsDevayuDCRIEWrSQc+YIte11MZdYj8aELaLZw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4lRytfToAng3MrnaXk/Nn2BwpDvURTlDuqPhOtyfe7U=;
- b=f0vEmqmlEIutPXi4lP+c3aFvk2heZXMtpYpx00WY2vyk9IVGwClvPJvemlS+uC+sqgCrTssnsU6RT29zmiXBi/u/Z9u+tKMZUZvDIOl+QoVk3npvexFexeG5XWH55kPz6YDc463eRHBgwzWrxkrT+hXhwS6AeGXTEK8kls3xi+uwSd3anREojC5Gps1cBoq7p2+Td/RMTailW1Hbk5g4s0JE87HQuqo852R+Qs22gcdma39B2QYFCN8CW9Q3wwigDaZS+XMEODsEbGVDTpZelZnEST8u/fwS8kayuHnSRD2usi5aIWxLl3E2ooZq3quKVYltatlKhrCKhEqCida/Aw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
- dkim=pass header.d=vivo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4lRytfToAng3MrnaXk/Nn2BwpDvURTlDuqPhOtyfe7U=;
- b=ktt/GqEdFECRTO5STtUu+dwA+pdijntamMYuOFHIXGRph5rqY2bkzprioifS2WRFPYIwlxepmNSdn3lUFfUOtN7oxUmYmpP2tGMaP4I369Yq4ZHzOmiRGsFezIMvB4A8ESHtXmBZwtY/jPSUXWvsjh9vmmTnjmK3O+qAyHyQn8rKyCdQAqVeTAI5K70xtHeAhoECtucSjVPz1kAXMiUHWBmR4GcFZgk6QjnbOvdw9DEENtpCIoW95i9ybF5Zw7V6/118Vul4H5eyEQEX8au2flJ35rVIjLZBWBCRwURsfbwniFonrr5cwbeBhzQxqkTULApCH8jQ+smfA+irOQP3lw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vivo.com;
-Received: from TYZPR06MB4461.apcprd06.prod.outlook.com (2603:1096:400:82::8)
- by SEYPR06MB6539.apcprd06.prod.outlook.com (2603:1096:101:172::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.21; Wed, 21 Aug
- 2024 11:13:02 +0000
-Received: from TYZPR06MB4461.apcprd06.prod.outlook.com
- ([fe80::9c62:d1f5:ede3:1b70]) by TYZPR06MB4461.apcprd06.prod.outlook.com
- ([fe80::9c62:d1f5:ede3:1b70%6]) with mapi id 15.20.7875.023; Wed, 21 Aug 2024
- 11:13:02 +0000
-From: Yu Jiaoliang <yujiaoliang@vivo.com>
-To: Johannes Berg <johannes@sipsolutions.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: opensource.kernel@vivo.com
-Subject: [PATCH v2] wifi: cfg80211: Use kmemdup_array instead of kmemdup for multiple allocation
-Date: Wed, 21 Aug 2024 19:12:50 +0800
-Message-Id: <20240821111250.591558-1-yujiaoliang@vivo.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: TYAPR01CA0122.jpnprd01.prod.outlook.com
- (2603:1096:404:2d::14) To TYZPR06MB4461.apcprd06.prod.outlook.com
- (2603:1096:400:82::8)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23FCB1CCEC3
+	for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2024 11:13:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724238806; cv=none; b=KqKVyG+DAGlIQAjU9V1N/pjppPyOUOKDi8DRi6KvTz1NkVOjrfcWMuFJmV/GNXD9ThJMF39271nTYDLdnxGFwf4USDKJB/QBjwFq2GXN+4RG4yJGCo8LDSiKl2pUIuLVF3q8a9LI2t/rH9y65oEkbnT49SmWFotq4lKtHNaE+TQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724238806; c=relaxed/simple;
+	bh=03rrp94btuiPKWG0/E+KNGEZF7nZyYDuHb32ok6+sdk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=j4bCUX4vUoj2T6OcVNC7BhifA3oBxhVBSo5bNDc4guC1mC+exaytTlWAvFSKYkM4Yql4uzW1+F8ZZKbDASr4h/A4ygmAeocuxseWJQMqS9YJp4OAm+lfwhkHW/AnZWHyJfGGablY7CijoyAxTnjSsrwoE7MRHqyYJa1VLU1xSI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RfxFLps9; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a7a81bd549eso541763566b.3
+        for <linux-wireless@vger.kernel.org>; Wed, 21 Aug 2024 04:13:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724238802; x=1724843602; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=laLQ01fVVa5NKVN44D62AoURNz2vvYO19bm5UpRhVrk=;
+        b=RfxFLps9jQqWiOLsSuU5yCe84ZEOx1S5W6FbZYS+t6NoI1WU2RXG6MsMytXOAIGBFX
+         lpOuRfihLJItEcc5+//vpkiD5KKXKhLkvvwWPlJxtklNK8ob4sjME+KiLOPWWpUmci5Y
+         gTW1VYefmusHS6Sz+uVecuastBWyeNLVHAsSnVJxgkB3BU50cbR1hyWNQkcrNZeWfx7w
+         pJajB9B3oYGP/yqs5HN6nVYbujOUEE8rZvtIgdeQohPuGdEbTQ4ii9Cg8HZoQ6uho9ZJ
+         kLn/EOCMFqgjuhDbtqupjXu6yYMI8j2MVb88MoTI29RjsNGXL2LSGONbgZiOJIOdeM6/
+         EvRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724238802; x=1724843602;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=laLQ01fVVa5NKVN44D62AoURNz2vvYO19bm5UpRhVrk=;
+        b=U0yg6UZc+fKvg8ljuDkWHghbfGSe7Kw1nFyAmq2uPJZJIs+gEzZgUq34YDCTyh7xGP
+         uD0/3yUXs6+kWiK5vjhpGpBfFwMmzuvusFBvWeslZ7rF6dikLdmw727+Wr+CR139nXy6
+         8DviSnUabBQ/OZ2G4zjpvHGCTwGkW68jcMlIJgaGoLC5IfP6+Izbny9Y7jQNATj4qaKy
+         CVJNBHvJ4HYVgDlN1XeG7lUevOws5LcGwZyqgom3KrACoaLvqVptU288wcuPnb7mbNuN
+         y9aZ81hCUBiVtfoOHesZ2/EF+YVZdfJfCtkjCMUYIFE6fMhjPdG4wo3KykJzUzXI8W+W
+         Ivlw==
+X-Forwarded-Encrypted: i=1; AJvYcCXSYBdkqrSIvLwVWY1CCnOY7YTemiPb70C+vwtfd4HFrgXl4G1ZIiUSmimC0HpYSJXvV5kIJhadGP3a8B6PUw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yws+Y7ul+iGKh+q9Z8t/sPCRhIWabV6kgnoOZhMhy+c5ZhVehin
+	pufL/0Fh7MGi3RgDUhcMv+GL1l+Yy8Pcq3nsr59ufdcHt/9nBOOAjcTV4g==
+X-Google-Smtp-Source: AGHT+IFx3hzBRseHFgp68tCXuYSX1+vR9OOJA48PmJU+YDj/2stWKfD+KUfN00D2U7/20ACI5DxHiw==
+X-Received: by 2002:a17:907:9726:b0:a86:8169:f3d6 with SMTP id a640c23a62f3a-a86816a205cmr37960566b.49.1724238801868;
+        Wed, 21 Aug 2024 04:13:21 -0700 (PDT)
+Received: from [192.168.0.50] ([79.119.240.114])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a866ade6321sm103387566b.184.2024.08.21.04.13.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 21 Aug 2024 04:13:21 -0700 (PDT)
+Message-ID: <73accc26-15ee-43d9-bad2-061c42b76e0e@gmail.com>
+Date: Wed, 21 Aug 2024 14:13:19 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYZPR06MB4461:EE_|SEYPR06MB6539:EE_
-X-MS-Office365-Filtering-Correlation-Id: c9aad3e1-f355-493e-f898-08dcc1d2390a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|52116014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?AT+Gg75kT1FVaQMnC9YYAYVYpEeNzZLiKY6Lt2g37XUdPFDYh/yi4QbJQJsp?=
- =?us-ascii?Q?t955R2ZQSHn+giUYTAFsH/LAnJ/U8h51c8S2eZ7ug7IFQy2gjC9X44Y2HPCm?=
- =?us-ascii?Q?uqiUkLRU84M2g0QayNUoM5NlOpOUuMvonQMw7Wx4edMv2oBlOxOrjNMcrk+5?=
- =?us-ascii?Q?+CpPzjPYyNW6KOjnX7JBFLxAs4Gqf8BL6Izu+N4dsQiFxYLDyA8BwZwt3fMV?=
- =?us-ascii?Q?vdnrKip/yS4MDN7lUt26Sq6UgW8ne1CF7pkiO5AOmFGY1IBaWVGvm1zusqkF?=
- =?us-ascii?Q?Q0g6wbMUUjEZDMLE2uSRWwVGOSPNNc7DNFzsE/jEKgBal8nGJcd94JKj7qC1?=
- =?us-ascii?Q?HEs9FwADgPYL1pd1q9Vth58vQLhz9js3QvyPUmbOulZPWsgKSbL3ia6UzoxD?=
- =?us-ascii?Q?rVMrJ2hFxuslfq6LIfWgj0xYCoJNcJphjTeZFLPDpFzPgQzGvl5IWv2aWdTp?=
- =?us-ascii?Q?pF++7CfQDxcRxp0SiU+mYUij33GCo8cYy2n1jQFRqGcLXVUzP5Y/P5cMl0o0?=
- =?us-ascii?Q?64Z3fc4Shk/Y7nQQCzZ7tAoFEdRV4t474PJQdi5pQXS0cDrGpdIuvusTb3/M?=
- =?us-ascii?Q?nfiZns6fFkUN4eispkvn+cxPYQu9W8uDy0ljTQYOCcGxIhX+tMnVmlF9hArt?=
- =?us-ascii?Q?LElsJoTXj5Ge9WxJX6bpQ8lFbC37WfcVJvMDhFjR5VvKFfFR06Q+yFe3ELKP?=
- =?us-ascii?Q?Wnj5NdyvM1SCOiGI+kM/dgwj7lT+ex+R1Ay9b7JEdl9+W0AI6zUc8ZEoQh/N?=
- =?us-ascii?Q?mhYmQ2rl0MMM12sRYUYLDnx4s3U3jwNQyJC5I5PZs8dtf2I94fSlZkwtCBJy?=
- =?us-ascii?Q?1/XLmB1ADale9eKGv9tkuPnrkIAqgb+TafcQtjeGQZGzOML2gv63YFcHnXd/?=
- =?us-ascii?Q?L3kwkaPXplawJVUBgbPwi6X0gbZ+WCw0kaxwgM4c4E5+Eb43G74H/6Dt980r?=
- =?us-ascii?Q?YJIPyakTicForBEDcbv/b2jnFYOTzHTioKqP0i7azRQ6fnBCtrEYAPtEXPT2?=
- =?us-ascii?Q?89lhr+Xq1FWfMt1SuqLT0lEkv5cULjBwqKqX44VcpDiYJmeYnL14SRvGkOeD?=
- =?us-ascii?Q?qxUGGPJUAgeZbCk5tW5yWdYZA9JKO5TWwKx16WbtTgcUsjAPiP0L9JQ1ndwU?=
- =?us-ascii?Q?KV8labpSLC1CXmofKM2RRGRv1z8JlxNj9hykvhCD7nj+e7XeRIo5qub4A2ct?=
- =?us-ascii?Q?s5cw74nguj/PRkAmWAPbyAwPWfiuCGp/GogkRvlrHT8Qg7/JzpxqJUeFYntV?=
- =?us-ascii?Q?8cu31w3jZ1z+4VtRK/xxuGDEt63s5R6wA4GL4EhH9iz5tCghMwucFN0oU/gT?=
- =?us-ascii?Q?1X/o71ym1/1MBOTW+dQf4OTfih4f0P2EXYjnH1O/tZCqynB9jCynbixd01Ic?=
- =?us-ascii?Q?sePGrp41Xb4n9ZFgLWM9o2BXdV9ov8CbKUAZNeJmHqtERsVOfg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYZPR06MB4461.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(52116014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?0rlkhvZY6BJv/7MBdfxE5n9qZvD37eUHRgNHcRREb3l1vOoEZRi17s7/W8C7?=
- =?us-ascii?Q?XrM6snlGbMMkVRoy0oskrd/Dnmr47pJadK4vNki8RQ9GTorWfcN94ZTFS8rq?=
- =?us-ascii?Q?hjBB2bhMWxo2YexuUgwoJt7f7Lu31absHxj83hrDPKEYiS494IL5x6qtIDMg?=
- =?us-ascii?Q?l1UqRMxK+oamOG4Fk4/glvhiVHnYjweDD9fgRguGfepCfDP2e4i4sSeAW4Yn?=
- =?us-ascii?Q?gsTzBt0rUe9AguRt+L+Gvscv5Wlgp/r+8mWQ9b8bZntbHpJGkmGpi4sQlfKK?=
- =?us-ascii?Q?xy2VdkcbRHGH29EXfelZ9UxZ1Y/N7DA5fVPenFMseZuvrdlZkrIHbzxbIzs5?=
- =?us-ascii?Q?VvloQ2SCjC9eS8JuACzaGDpgZLaLaYCHN0m94Uk12sMe5753NEzIwyQMttIX?=
- =?us-ascii?Q?f3SecGLqs4mreXgs50KG4uSNjlu3asXF2UkZ0doZxVLMpMbXeNnqUKPYXJ8s?=
- =?us-ascii?Q?j7RM5qiFFvO2QCdl8R9zxP3OUgpzHOTNGOo5Aj/MmP+gKk+KYB6MWJQ5Jfs/?=
- =?us-ascii?Q?7pv/9K+8aap2e7tWqhpX/23MRRmZ+v6R5HScKqtKM7cdKPgc3T/Yh7QFgdll?=
- =?us-ascii?Q?TbcUPl9BgMccM2VGEEwtAIkKHof1yD6F03/2vC/lfG5Wm0nr3NA7+k3OMFf9?=
- =?us-ascii?Q?tYoMyxSLeyuRuujP8/1CLeaxjwxz71p1VwPp/tLi8EfIclaZocb6SXIBs3qv?=
- =?us-ascii?Q?MwWBCjBA8qB4AAhGNOdLdJQctk+zDZqqf/H/csU2lbBUJ8IqNt9VJqZ/Njpm?=
- =?us-ascii?Q?MrBJtyOUocbmAlg9x5aQ9+vhm8UtY7hT21yYSzrYaVeu8zxxoHaKXUHePkFw?=
- =?us-ascii?Q?kQPJ1WNyQxcL6U6v3paQJwt+WU8Y2meAKSOcWHO+feknx8dsABdDlnDUV7LZ?=
- =?us-ascii?Q?zM+juwi/DHgUbR9M3EJqFev6DUBQArgs78sVgMSPS+d+cN0FB1D6vq2OgiHr?=
- =?us-ascii?Q?6O3YkeaQYF4HO+GdFLc0bwXBjeDsKmMCcBMSEheAZx8p4xAUQDECSIFvU7hw?=
- =?us-ascii?Q?8GxX9pScUWIeZ9C6Kzz12YwmXXvfNFJeVZk8b4wgCBYZi2JnU+St3zSBJ8Cg?=
- =?us-ascii?Q?bcN1hGDEj8kTMjjlz5kTOYscSoM3MFwTojcDhxskGfHonnOpsM9U+7V+qUX9?=
- =?us-ascii?Q?MrD/sr1/v0vwLy22Yd3FwwcR0yvVUSRRWyoqIQup9MwKLnZreNfZT9zN4xzV?=
- =?us-ascii?Q?pxh13HNIcVI7f6WxeXKJvSHiR5sYWmDjpOjm6+8TsCVAiAh13e22qr1NJd1O?=
- =?us-ascii?Q?GJGY2/+LoNjrJfHM7G7NUxrlpbYb50i6NPtzPc5fLHESHUZEkWBQDSf+dojg?=
- =?us-ascii?Q?JXTzFq51gAPTdoUY1dmyTRnfznwj+EEiNqvxCvyGwqvELUlK2SfSmvhESeRh?=
- =?us-ascii?Q?e7WF0nEHlo21VpAN/mSHmwYaQW/fL83YBb6Rc9LRFSqLLcIymKrKRY9lIJnR?=
- =?us-ascii?Q?Eh2VcPdqJ2iKDZWNAi0oLWF61sP0bTPJI/YEeS0HEl66C+ZijBbn/tlKW9iG?=
- =?us-ascii?Q?iqHH/S+Z9Ex8dpzFQROtWJruiM4yIfzO1HrxY452f5pAPnw60ntDFlkJP2a8?=
- =?us-ascii?Q?hy8Jywu48ArwvueJADuENLwZ/jwuc/JCxB1wwjng?=
-X-OriginatorOrg: vivo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c9aad3e1-f355-493e-f898-08dcc1d2390a
-X-MS-Exchange-CrossTenant-AuthSource: TYZPR06MB4461.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2024 11:13:02.5475
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ylQSGm/K+/i/WcqXHXUOv+fQmnH0ugliYsE/+gzehyOdMEen+mSXz6DFTo9KvKZ7on21/N544DMNzDWHWcXbXg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEYPR06MB6539
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 03/20] wifi: rtw88: Allow different C2H RA report sizes
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+References: <ade57ca1-444f-49e2-b49e-f4b9da65b2cc@gmail.com>
+ <e0de25fc-8742-4899-854e-7cbd93aaa582@gmail.com>
+ <6071028680d14afa8e0eed84821f51c6@realtek.com>
+ <4b7181e4-d235-4c02-8b8e-dbafbf38fa93@gmail.com>
+ <840cb519e99047a5a8f3ca4a12a3fcee@realtek.com>
+ <d06c7a5f-c773-45a6-98f2-30fb1d0dde94@gmail.com>
+ <9456919959d94b548750f78a371f204e@realtek.com>
+Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <9456919959d94b548750f78a371f204e@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Let the kememdup_array() take care about multiplication and possible
-overflows.
+On 21/08/2024 03:31, Ping-Ke Shih wrote:
+> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>> On 20/08/2024 04:10, Ping-Ke Shih wrote:
+>>> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>>>> On 15/08/2024 09:14, Ping-Ke Shih wrote:
+>>>>> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>>>>>> The RTL8821AU and RTL8812AU have smaller RA report size, only 4 bytes.
+>>>>>> Avoid the "invalid ra report c2h length" error.
+>>>>>>
+>>>>>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>>>>>> ---
+>>>>>>  drivers/net/wireless/realtek/rtw88/fw.c       | 8 ++++++--
+>>>>>>  drivers/net/wireless/realtek/rtw88/main.h     | 1 +
+>>>>>>  drivers/net/wireless/realtek/rtw88/rtw8703b.c | 1 +
+>>>>>>  drivers/net/wireless/realtek/rtw88/rtw8723d.c | 1 +
+>>>>>>  drivers/net/wireless/realtek/rtw88/rtw8821c.c | 1 +
+>>>>>>  drivers/net/wireless/realtek/rtw88/rtw8822b.c | 1 +
+>>>>>>  drivers/net/wireless/realtek/rtw88/rtw8822c.c | 1 +
+>>>>>>  7 files changed, 12 insertions(+), 2 deletions(-)
+>>>>>>
+>>>>>> diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
+>>>>>> index 782f3776e0a0..ac53e3e30af0 100644
+>>>>>> --- a/drivers/net/wireless/realtek/rtw88/fw.c
+>>>>>> +++ b/drivers/net/wireless/realtek/rtw88/fw.c
+>>>>>> @@ -157,7 +157,10 @@ static void rtw_fw_ra_report_iter(void *data, struct ieee80211_sta *sta)
+>>>>>>
+>>>>>>         rate = GET_RA_REPORT_RATE(ra_data->payload);
+>>>>>>         sgi = GET_RA_REPORT_SGI(ra_data->payload);
+>>>>>> -       bw = GET_RA_REPORT_BW(ra_data->payload);
+>>>>>> +       if (si->rtwdev->chip->c2h_ra_report_size < 7)
+>>>>>
+>>>>> Explicitly specify '== 4' for the case of RTL8821AU and RTL8812AU.
+>>>>>
+>>>>>> +               bw = si->bw_mode;
+>>>>>> +       else
+>>>>>> +               bw = GET_RA_REPORT_BW(ra_data->payload);
+>>>>>>
+>>>>>
+>>>>>
+>>>>
+>>>> Would that make sense? I check for less than 7 because the size
+>>>> has to be at least 7 in order to access payload[6] (GET_RA_REPORT_BW).
+>>>
+>>> As you did "WARN(length < rtwdev->chip->c2h_ra_report_size)", I assume you
+>>> expect "< 7" cases is only for coming chips RTL8821AU and RTL8812AU.
+>>>
+>>> Maybe explicitly specifying chips ID would be easier to understand:
+>>>         if (chip == RTL8821A || chip == RTL8812A)
+>>>                bw = si->bw_mode;
+>>>         else
+>>>                bw = GET_RA_REPORT_BW(ra_data->payload);
+>>>
+>>> That's why I want "== 4". (but it seems implicitly not explicitly though.)
+>>>
+>>
+>> I just checked, the RA report size of RTL8814AU is 6.
+> 
+> Could you also check if the report format is compatible?
+> I mean definition of first 4 bytes are the same for all chips? and
+> definition of first 6 bytes are the same for RTL8814AU and current
+> exiting chips?
+> 
+> By the way, I think we should struct with w0, w1, ... fields instead.
+>     struct rtw_ra_report {
+>         __le32 w0;
+>         __le32 w1;
+>         __le32 w2;
+>         __le32 w3;
+>         __le32 w4;
+>         __le32 w5;
+>         __le32 w6;
+>     } __packed;
+> 
+> Then, we can be easier to avoid accessing out of range. GET_RA_REPORT_BW()
+> hides something, no help to read the code. 
+> 
 
-v2:
--Change sizeof(limits[0]) to sizeof(*limits)
--Fix title prefix
+The report format looks compatible.
 
-Signed-off-by: Yu Jiaoliang <yujiaoliang@vivo.com>
-Reviewed-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Kalle Valo <kvalo@kernel.org>
----
- net/wireless/util.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I'm not sure how a struct with __le32 members would help here.
+I agree that the current macros hide things. We could access payload
+directly. The variable names already make it clear what each byte is:
 
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index 9a7c3adc8a3b..e7c1ac2a0f2d 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -2435,8 +2435,8 @@ int cfg80211_iter_combinations(struct wiphy *wiphy,
- 		if (params->num_different_channels > c->num_different_channels)
- 			continue;
- 
--		limits = kmemdup(c->limits, sizeof(limits[0]) * c->n_limits,
--				 GFP_KERNEL);
-+		limits = kmemdup_array(c->limits, c->n_limits, sizeof(*limits),
-+				       GFP_KERNEL);
- 		if (!limits)
- 			return -ENOMEM;
- 
--- 
-2.34.1
+	mac_id = ra_data->payload[1];
+	if (si->mac_id != mac_id)
+		return;
 
+	si->ra_report.txrate.flags = 0;
+
+	rate = u8_get_bits(ra_data->payload[0], GENMASK(6, 0));
+	sgi = u8_get_bits(ra_data->payload[0], BIT(7));
+	if (si->rtwdev->chip->c2h_ra_report_size >= 7)
+		bw = ra_data->payload[6];
+	else
+		bw = si->bw_mode;
 
