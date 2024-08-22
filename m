@@ -1,79 +1,80 @@
-Return-Path: <linux-wireless+bounces-11813-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11814-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F7C195BDBB
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 19:50:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2677695BDD4
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 19:58:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADD311F24A66
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 17:50:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4170B24DC6
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 17:58:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3EA1CF2AC;
-	Thu, 22 Aug 2024 17:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A5B18D64F;
+	Thu, 22 Aug 2024 17:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="HdmhTDMH"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="IZ4jB7EL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138761C9DFF
-	for <linux-wireless@vger.kernel.org>; Thu, 22 Aug 2024 17:50:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6071CF286
+	for <linux-wireless@vger.kernel.org>; Thu, 22 Aug 2024 17:58:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724349028; cv=none; b=PCRUCJDKaOEZOAfhSWoTTOa0HwLji7flcvzdn3x4W+3Wp5Q9isnj27Sbp3K3VxgAYFZZSIKIBjYSEEEvqRV5CAuV3VB/yR+hY6GSk3Zd9EKz77o5pem+ulqpewvvOuYGzo/rZLQZYoX6T6UWPDhxJgE0niog5OK0AEiXS/QG5Mc=
+	t=1724349516; cv=none; b=O9mqNCOmZRjls3/rnTIBeuWjmxHR9T/uzA3RxJVTmXrL4mcJU0ZoYF4S0lOMa4VDqVidWuj/qiMr6yVvhvQXKh+cmwtSujWIWoaYaG2SVUFY5GYalR6BrbJ2djR31ZqS+sdBz7lyjnEH3W0blA6MySO9KG9GzReyj6FGceJxTNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724349028; c=relaxed/simple;
-	bh=dvjLhd87vCdRo/xiVsfDDYj5ouJ7dOsDPOl5m/jQnB8=;
+	s=arc-20240116; t=1724349516; c=relaxed/simple;
+	bh=S73uaUA0DW8CttN/Jhtd1B233vB6M3ngjcc3vgt+v/U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bN9PTLjEkIWdkkB8rSI6PzlQFXeGHIZJF1EXibHgC6VFjGjMznFkcC2jk3uetOhfrDKcVKWaGJJVD6jEFRqRvIp2VRK8WFrJf7mDHQDxkRJ4aRoQ4NYRrMm/0zdKaOa1rRHljXpdInLdcqwaGaUtv5LQU44jHtOcatHJW8TzVWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=HdmhTDMH; arc=none smtp.client-ip=209.85.210.182
+	 Content-Type:Content-Disposition:In-Reply-To; b=CimSaSHYNFjI31VpwNho28KCwWbAVjv0nTMKqq3qZ+88eazZK6t98OCl+okHxg0TEtl/qd2yP4M6W6LnaXWyw4wpT9IVvPIXIUaRM5QwyBpm9USkDMeWZOs3SWIRnLpVVkerCtYjFZmv7bC7Gr1RCitVU6AcYGb0QA4mrCOa/hE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=IZ4jB7EL; arc=none smtp.client-ip=209.85.215.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-70cec4aa1e4so839431b3a.1
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Aug 2024 10:50:25 -0700 (PDT)
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-7cd835872ceso794217a12.3
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Aug 2024 10:58:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1724349025; x=1724953825; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1724349514; x=1724954314; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tCVHnlO2pIa86JaK5QjGr85qfeXpWfBdUE9lyP9m+/o=;
-        b=HdmhTDMHdO0Cld6OncFcPIZAjg/uddeimxjulI3Ld4XVDE5G+5872NDI0wXrAVpx51
-         uGbPsNkdAXEOyZfWZNgTi//CDbasczllkNQiMCBZ0gblO9nFUTXxjfYLfVyJVB4Aq7n7
-         owSWzVTi64B+XpCgePSRh/V277TT/NWvHyv9Q=
+        bh=6aXl0P5+cZPWz0CJSmKBVPNCrelta2lMo8G0fOIDW74=;
+        b=IZ4jB7ELFfR+JOeCXRJumpolI7xWgHqQDn6V8nZu1mlKxl/nIk6kbcIGlXictm6kNq
+         N9/r9PmgYKOWZRH9D+m2SwuSxUZtLBbjWDmwdCKAtlmqDryIVMO1P2meROOb3TQ1U54o
+         q8o4F8crSjnVyNGw108ohCC7mm/A7PR/TvZn8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724349025; x=1724953825;
+        d=1e100.net; s=20230601; t=1724349514; x=1724954314;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tCVHnlO2pIa86JaK5QjGr85qfeXpWfBdUE9lyP9m+/o=;
-        b=l7BstrcTD/E8e9176jxuQB9aKeZkPEB24bn3ed36ZT0gJS5eHBLVclisrYgM+NJo4E
-         /hhGFxTTWdEZGBVF6wS68Ilz4xWpoCjRaQyZ2fQ4DHm5eAwMlwwvigLsbpVb4l4F0C+Y
-         6sV8hav/Bt4p0ufO/x/xaZZjYlZVkVbRqe4nuU6UKUS51zxKe95jk7fNAKH9TCKTDm03
-         HR1Ed2YXLVaw8CqSYBqPLMOZ2xAGBiIO83CsVNCQNkbQ3LZ8Ojz1RjtBodRqfxgp4er1
-         cXAph/5B4tdny9p45i29/D5zzh3lkLvqVzv2QRUt7/65j3huQdOTQRYh1QotHpVM9Ndb
-         QsNg==
-X-Forwarded-Encrypted: i=1; AJvYcCU1B+3283Tj0YIJ+Px3StDLKYs7FrZciZDK4gJJzExRxQ9yNAFOU4UMvXYTcZbDvoeclCklpQRz2zwibsLjUg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyaAOItf+9tn22vnXEqZrUsTHwesybMd7wTcdMv5opPuhl7Fhy5
-	htQhgitb77zlk+bEhT7hLchRM9Ww7w2aFTOmaYyMMBW/yJ8168GzzexEXB308g==
-X-Google-Smtp-Source: AGHT+IGfoGIJeQ5mwpQoLfvcD1BDbE9Q0hdoNktosEIXDb7FIO+5WC0W5xfEfFjtY5088xV28XfHJg==
-X-Received: by 2002:a05:6a21:3418:b0:1c6:f043:693f with SMTP id adf61e73a8af0-1cada054f37mr7146439637.17.1724349025477;
-        Thu, 22 Aug 2024 10:50:25 -0700 (PDT)
+        bh=6aXl0P5+cZPWz0CJSmKBVPNCrelta2lMo8G0fOIDW74=;
+        b=gKFqrLnjoXe2rWB/jSjkhoGYIcf2aJDOMKeL6qLjw/G97JZdGbo5YKEMnWGMzfLncO
+         3ax+fWsrzKNWiq3vr1uiuKVQTMl4zZwRYwk7TKExSfGAqL8b6pysjnMcMdHZoK7lgqZn
+         LFaPI6TMZzVSHLCSLSZYTKPJ55e4Og22EPKG6MLsgMb3uAkOqD2fDKF+lxlZtzkMHr7R
+         gZCsm6iYwHd/Il5e/BqfBWcyS3IL2pV0Ik0hyhC5EZzjWkvvsMGfMeQPAjCKo1OfFPpC
+         6ouPrxw+0yfzBftKITfVBFslOoAypCNLLcRkKY2ktUAJdqGEbbj00RbKi9KjiKHt/jvn
+         qOIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWwP17hsvOH8DJs0yF2XOJV3SlH3/773Ku+1lAoNyuVWNrCRDC159tFYwvL1sGLyZoIc5dX1Xn6xX6SJhQ8nQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyClkq4sltQQoy6aHkhMX3dieQQs8/7D+Wf7H+/b6E3kBBjUKk2
+	cJPB1k/1XkJLevKM9q41BZlask+Xu8rOpwBOVObTuLFQwM/cJykjTog9hByHHHBBR3TUMt9R2sg
+	=
+X-Google-Smtp-Source: AGHT+IHRCAtfbv2wW3c5v+2i+dD3SGwv1uIaS3D1NnMthKKsznW2OPiT8cq1knA2oMx203qjIZrdww==
+X-Received: by 2002:a17:90a:634b:b0:2d3:c303:fe14 with SMTP id 98e67ed59e1d1-2d5ea2caf9dmr6288794a91.40.1724349514149;
+        Thu, 22 Aug 2024 10:58:34 -0700 (PDT)
 Received: from localhost ([2a00:79e0:2e14:7:414c:5b44:2fea:fb6e])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-7143577090fsm1537422b3a.137.2024.08.22.10.50.24
+        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-2d5eba287e7sm4473583a91.34.2024.08.22.10.58.33
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Aug 2024 10:50:25 -0700 (PDT)
-Date: Thu, 22 Aug 2024 10:50:24 -0700
+        Thu, 22 Aug 2024 10:58:33 -0700 (PDT)
+Date: Thu, 22 Aug 2024 10:58:32 -0700
 From: Brian Norris <briannorris@chromium.org>
-To: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Francesco Dolcini <francesco@dolcini.it>, Kalle Valo <kvalo@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: Re: [PATCH][next] wifi: mwifiex: Fix memcpy() field-spanning write
- warning in mwifiex_cmd_802_11_scan_ext()
-Message-ID: <Zsd6YE6z5CNWQocz@google.com>
-References: <ZsZa5xRcsLq9D+RX@elsanto>
+	kernel@pengutronix.de
+Subject: Re: [PATCH 01/31] wifi: mwifiex: remove unnecessary checks for valid
+ priv
+Message-ID: <Zsd8SPnKKJrdJj9W@google.com>
+References: <20240820-mwifiex-cleanup-v1-0-320d8de4a4b7@pengutronix.de>
+ <20240820-mwifiex-cleanup-v1-1-320d8de4a4b7@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -82,21 +83,17 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZsZa5xRcsLq9D+RX@elsanto>
+In-Reply-To: <20240820-mwifiex-cleanup-v1-1-320d8de4a4b7@pengutronix.de>
 
-On Wed, Aug 21, 2024 at 03:23:51PM -0600, Gustavo A. R. Silva wrote:
-> Replace one-element array with a flexible-array member in
-> `struct host_cmd_ds_802_11_scan_ext`.
+On Tue, Aug 20, 2024 at 01:55:26PM +0200, Sascha Hauer wrote:
+> The pointers in adapter->priv[] are allocated in mwifiex_register().
+> With an allocation failed the function will return an error and
+> driver initialization is aborted. This makes all checks for valid
+> priv pointers unnecessary throughout the driver. In many places
+> the pointers are assumed to be valid without checks, this patch
+> removes the remaining checks.
 > 
-> With this, fix the following warning:
-> 
-> elo 16 17:51:58 surfacebook kernel: ------------[ cut here ]------------
-> elo 16 17:51:58 surfacebook kernel: memcpy: detected field-spanning write (size 243) of single field "ext_scan->tlv_buffer" at drivers/net/wireless/marvell/mwifiex/scan.c:2239 (size 1)
-> elo 16 17:51:58 surfacebook kernel: WARNING: CPU: 0 PID: 498 at drivers/net/wireless/marvell/mwifiex/scan.c:2239 mwifiex_cmd_802_11_scan_ext+0x83/0x90 [mwifiex]
-> 
-> Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Closes: https://lore.kernel.org/linux-hardening/ZsZNgfnEwOcPdCly@black.fi.intel.com/
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-Acked-by: Brian Norris <briannorris@chromium.org>
+You already submitted this one separately, and it has now been merged.
 
