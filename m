@@ -1,58 +1,78 @@
-Return-Path: <linux-wireless+bounces-11804-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11805-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8E9495B57B
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 14:56:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E86EF95B685
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 15:25:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D97B01C23378
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 12:56:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23D721C23714
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 13:25:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B1401C9DDB;
-	Thu, 22 Aug 2024 12:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143171CB31C;
+	Thu, 22 Aug 2024 13:24:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HhqxQj7r"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716CB1C9429
-	for <linux-wireless@vger.kernel.org>; Thu, 22 Aug 2024 12:56:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2BB1C9ED7;
+	Thu, 22 Aug 2024 13:24:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724331390; cv=none; b=rpmfiJUff+mWnjeAPjTzhY0sKYpbHmPnZMXZMzur63IutZHYyXCtjoKXNgJTmsQ/19ojODg58kNy6ZZKrFYb7dV6VRPsWmFdgzAp6pnxc7yp/pXn+pO6ACJryMsRwySjmLFO22qXDUKTWodHa5LGHILX2vQvU/79LcCR/jok2e4=
+	t=1724333090; cv=none; b=aumW4aLxK6dr6kBqBaCmUOLSECV8yijkWSW8/OqhLekKU7rZJBLVjDhr0AR9jHFvxQsojxYEDLvIgs1W4K3AobEXXCtNyv5WtmmxNMhcoa3RDzv/8Oz0wVqY6j4pS1JwUcA68r33PRpXnny3QD8QWTWeHQHyWYMuA39Bid+7quM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724331390; c=relaxed/simple;
-	bh=VvngIUKtbPcRiyndIMGrmlcDBJTAHeu5snYICi/jOIU=;
+	s=arc-20240116; t=1724333090; c=relaxed/simple;
+	bh=hMKTAFPMmnp5ENGpfIiTVO92Kxs1Ls8UZuBvyv6u6KA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o+UB1MU16SU6KqssH1uCCywMiZfU0G2mmclpknUWIlJYfQIo1GhiHipWkaWKCbcErigkHK0JT47WHRe993DrXPJvYBRzufwe3pYtEDGRSRcRrkrwHUnrAvgks3BlhPBRU94sxhXtChgJ6fQnlJawDRj4D6fo+AkKMwoju/4Oevg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sh7MY-00051F-O0; Thu, 22 Aug 2024 14:56:26 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sh7MX-002Fme-Rr; Thu, 22 Aug 2024 14:56:25 +0200
-Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sh7MX-007vXj-2Y;
-	Thu, 22 Aug 2024 14:56:25 +0200
-Date: Thu, 22 Aug 2024 14:56:25 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: David Lin <yu-hao.lin@nxp.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kvalo@kernel.org, johannes@sipsolutions.net,
-	briannorris@chromium.org, francesco@dolcini.it,
-	tsung-hsien.hsieh@nxp.com, kernel@pengutronix.de
-Subject: Re: [PATCH v2 00/43] wifi: nxpwifi: create nxpwifi to support iw61x
-Message-ID: <Zsc1efkBHDXdZtfJ@pengutronix.de>
-References: <20240809094533.1660-1-yu-hao.lin@nxp.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=ChTkaJWqjl44FZj5Rcf0a/FKG/HVu+2r/RzGxxH9qcTbBJLzwItYnUUhWiKFjSpdaRDYgO0whlLYYmKAhJaNmTxa3j/8kwD4/+oW2pxdAuHKvq0YeakFGzYaLrpf4h8++/74Fq0kZ+JWoUT9/z1rVkjvXogmf8nQtk/aSo+KKR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HhqxQj7r; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1724333088; x=1755869088;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=hMKTAFPMmnp5ENGpfIiTVO92Kxs1Ls8UZuBvyv6u6KA=;
+  b=HhqxQj7rwDahoVuVpjlvWkcrpk39tb+03h9Dn4PR7MmbOlMwXMqjcZwu
+   lJwLXnAunPNBa6yihlADvCXSaC7oHOVh58j01Sb7AC9CNDJqILw9hmjf7
+   SU4OeytI1DW6Y78DfiCFEd1EUBz1TsUiba2PHtmgfx2NlhLcJ603JgAlo
+   Yf3KrAoGnmf/J0TfoDGDtY4gmcv5uY7SftkJLhI5Ifbczic6pmFNccmhl
+   j2GaT+1ur/lojDPJjZPM/KGJNwoHMqI3wiX3hlt8H8cpYOFVtvw/6Cw5h
+   cL1X4CPeSZTNvfrlI77VrVG7daqukkJQCj51PWOdiR6aj4umVEGHLRW4t
+   A==;
+X-CSE-ConnectionGUID: q5gDb6TsRBuEveF95PECFw==
+X-CSE-MsgGUID: okOYYW7DSNiDyNTyHuphdw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11172"; a="22614292"
+X-IronPort-AV: E=Sophos;i="6.10,167,1719903600"; 
+   d="scan'208";a="22614292"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2024 06:24:47 -0700
+X-CSE-ConnectionGUID: NjfhMLZNRSWmH0Sokx28yQ==
+X-CSE-MsgGUID: NR8tqyPZTBOZ7ScQOTO1OA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,167,1719903600"; 
+   d="scan'208";a="61596395"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2024 06:24:46 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1sh7nv-00000000SjU-2eDK;
+	Thu, 22 Aug 2024 16:24:43 +0300
+Date: Thu, 22 Aug 2024 16:24:43 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Cc: Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH][next] wifi: mwifiex: Fix memcpy() field-spanning write
+ warning in mwifiex_cmd_802_11_scan_ext()
+Message-ID: <Zsc8G-c6xW982XLU@smile.fi.intel.com>
+References: <ZsZa5xRcsLq9D+RX@elsanto>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -61,74 +81,26 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240809094533.1660-1-yu-hao.lin@nxp.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+In-Reply-To: <ZsZa5xRcsLq9D+RX@elsanto>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Fri, Aug 09, 2024 at 05:44:50PM +0800, David Lin wrote:
-> This series adds support for IW61x which is a new family of 2.4/5 GHz
-> dual-band 1x1 Wi-Fi 6, Bluetooth/Bluetooth Low Energy 5.2 and 15.4
-> tri-radio single chip by NXP. These devices support 20/40/80MHz
-> single spatial stream in both STA and AP mode. Communication to the
-> IW61x is done via SDIO interface
+On Wed, Aug 21, 2024 at 03:23:51PM -0600, Gustavo A. R. Silva wrote:
+> Replace one-element array with a flexible-array member in
+> `struct host_cmd_ds_802_11_scan_ext`.
 > 
-> This driver is a derivative of existing Mwifiex [1] and based on similar
-> full-MAC architecture [2]. It has been tested with i.MX8M Mini evaluation
-> kits in both AP and STA mode.
+> With this, fix the following warning:
 > 
-> All code passes sparse and checkpatch
-> 
-> Data sheet (require registration):
-> https://www.nxp.com/products/wireless-connectivity/wi-fi-plus-bluetooth-
-> plus-802-15-4/2-4-5-ghz-dual-band-1x1-wi-fi-6-802-11ax-plus-bluetooth-5-
-> 4-plus-802-15-4-tri-radio-solution:IW612
-> 
-> Known gaps to be addressed in the following patches,
->   - Enable 11ax capabilities. This initial patch support up to 11ac.
->   - Support DFS channel. This initial patch doesn't support DFS channel in
->     both AP/STA mode.
-> 
-> This patch is presented as a request for comment with the intention of being
-> made into a patch after initial feedbacks are addressed
-> 
-> [1] We had considered adding IW61x to mwifiex driver, however due to
->     FW architecture, host command interface and supported features are
->     significantly different, we have to create the new nxpwifi driver.
->     Subsequent NXP chipsets will be added and sustained in this new driver.
+> elo 16 17:51:58 surfacebook kernel: ------------[ cut here ]------------
+> elo 16 17:51:58 surfacebook kernel: memcpy: detected field-spanning write (size 243) of single field "ext_scan->tlv_buffer" at drivers/net/wireless/marvell/mwifiex/scan.c:2239 (size 1)
+> elo 16 17:51:58 surfacebook kernel: WARNING: CPU: 0 PID: 498 at drivers/net/wireless/marvell/mwifiex/scan.c:2239 mwifiex_cmd_802_11_scan_ext+0x83/0x90 [mwifiex]
 
-I added IW61x support to the mwifiex driver and besides the VDLL
-handling which must be added I didn't notice any differences. There
-might be other differences, but I doubt that these can't be integrated
-into the mwifiex driver.
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Honestly I don't think adding a new driver is a good ideai, given how big
-wifi drivers are and how limited the review bandwidth is.
-
-What we'll end up with is that we'll receive the same patches for both
-drivers, or worse, only for one driver while the other stays unpatched.
-
-I even found some of the bugs and deficiencies I am just fixing for the
-mwifiex driver in the nxpwifi driver as well. So please direct your
-effort to improving the existing driver rather than putting more burden
-to the maintainers by adding a new driver. I am sure this is the faster
-path to get the necessary changes upstream, plus users of the mwifiex
-driver will profit from these changes as well.
-
-Of course I don't have to decide this. The wifi maintainer(s) will have
-the final word, but these are my 2 cents on this topic.
-
-Sascha
-
+Thank you!
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+With Best Regards,
+Andy Shevchenko
+
+
 
