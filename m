@@ -1,124 +1,119 @@
-Return-Path: <linux-wireless+bounces-11797-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11798-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A7F195B33C
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 12:53:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 884B395B3A5
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 13:17:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F36E1B23425
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 10:53:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EC641F214C6
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 11:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B4F714A4F1;
-	Thu, 22 Aug 2024 10:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE491C173F;
+	Thu, 22 Aug 2024 11:17:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="THJbabcw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0639117F4EC
-	for <linux-wireless@vger.kernel.org>; Thu, 22 Aug 2024 10:53:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085D11C1730
+	for <linux-wireless@vger.kernel.org>; Thu, 22 Aug 2024 11:17:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724323995; cv=none; b=KJ2Vwa8i5kMImfUtALvL9gCuVcAoZgzWN0QLAsXXAYuKcvlKWATnTaQPAVJrHAASNHiWmUg0Gx0AmqglbkKdLScOMmWG4a0K9UwbHJ/HjzUHAm9wRLbvMrSnYt0bOFoyedRT4PduL0nU6SkY+Z3EmLyEqEVwe3bsn4C+QrZ4Cx0=
+	t=1724325437; cv=none; b=tPZf2+G8BuZ53fdOP9mx/1Fu1MS68ibYowy6lRMrYJc8mZS8aC/KY3ufAdP+9lovqy4DR7jgJvfSOZXWG4A5D3V1KI+nl/ZkvorjijDfANNqMEZshAfdBChxN2k1IHYxOCOnWIxQUzDJvNooR/nyt8EZeg43BY5jQ5moS+arqEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724323995; c=relaxed/simple;
-	bh=sQOdsfZF/NazDQhP/OQAo187eK9B8ObIDLTIoidHfx4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IWicW3RFROj/CY8mVy6/Y3cQyBkie8e/WsI7SQhj6zDTMAKdoqL1nRlIIS09157gopUFZtlP+2PJupUgOvLPBzTdeAkhrdYu2EiCNtZEGTydRq8BC5pRHPbrNFwRnNjYDQHhY+c4i2XrllVnn3+F8smtiHG4jwiRqqOi3RHQoF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1sh5RC-0005Mn-3R; Thu, 22 Aug 2024 12:53:06 +0200
-Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1sh5RB-002ELB-AK; Thu, 22 Aug 2024 12:53:05 +0200
-Received: from pengutronix.de (pd9e5994e.dip0.t-ipconnect.de [217.229.153.78])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 22B4C324871;
-	Thu, 22 Aug 2024 10:44:35 +0000 (UTC)
-Date: Thu, 22 Aug 2024 12:44:34 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: David Lin <yu-hao.lin@nxp.com>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>, 
-	Brian Norris <briannorris@chromium.org>, Francesco Dolcini <francesco@dolcini.it>, 
-	Kalle Valo <kvalo@kernel.org>, 
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"kernel@pengutronix.de" <kernel@pengutronix.de>
-Subject: Re: RE: [EXT] [PATCH 10/31] wifi: mwifiex: fix indention
-Message-ID: <20240822-clever-caracara-of-drizzle-d56d0e-mkl@pengutronix.de>
-References: <20240820-mwifiex-cleanup-v1-0-320d8de4a4b7@pengutronix.de>
- <20240820-mwifiex-cleanup-v1-10-320d8de4a4b7@pengutronix.de>
- <PA4PR04MB96382C0635603A51371C0E23D18F2@PA4PR04MB9638.eurprd04.prod.outlook.com>
- <20240822-gay-myrtle-tarantula-bae0e0-mkl@pengutronix.de>
+	s=arc-20240116; t=1724325437; c=relaxed/simple;
+	bh=q6nA+xULn1IKnQ25AEemK++PTuEK3oiJ89ePjZL2ASY=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=TqS1kFdrzY/naD89ksd6YicOnkVBqD/Nv85xaNTEIRyJhWgHCh+HQ8lLvOfMtLBqDaIwMW1bBK6oY7y2G45J4Ux0hH3vIVK6hhIk9DJtRgCPmbFngBPLyK/mXOWlI1yRwRk1NFlLYPcaAT+zWpurrY+cI9c5PGTyAMUMX08Udhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=THJbabcw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C4B9C32782;
+	Thu, 22 Aug 2024 11:17:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724325436;
+	bh=q6nA+xULn1IKnQ25AEemK++PTuEK3oiJ89ePjZL2ASY=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=THJbabcw7PmRrS6KFY8aT4EY4FpcJukzShgbi2Q5qMHZg592AblJqaLRgb17hIodQ
+	 5IhJwsLToIXs6nKLmL478qiP32fQe3nzLqrQ7FL4LC5KPWtnXhC0EpKQa2XOrGV/UX
+	 5FZZ4M5ci/SfvkjoV8uRyrMYFtpK6sL02jgVsatgQRucZPdQorTCEv5uJoopqF5fFT
+	 glo2mitgtGO8KJ6ieQZ34JfMpmCiY+BAEHQppFN7CP44aVzNSMbsr9ycQ79K+zXhEv
+	 S5wU+Cjx3j7phQnJ9pkg9uqgFS/+cg27S9d1ZTuPxu3VigD6jHURa/FcL7zPQR/ABk
+	 piEnIznB8pqXA==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="lxmmtxri4kik5hni"
-Content-Disposition: inline
-In-Reply-To: <20240822-gay-myrtle-tarantula-bae0e0-mkl@pengutronix.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH ath-current] wifi: ath11k: fix NULL pointer dereference in
+ ath11k_mac_get_eirp_power()
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240813083808.9224-1-quic_bqiang@quicinc.com>
+References: <20240813083808.9224-1-quic_bqiang@quicinc.com>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+ <quic_bqiang@quicinc.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <172432543412.2365229.4521966986927365757.kvalo@kernel.org>
+Date: Thu, 22 Aug 2024 11:17:15 +0000 (UTC)
 
+Baochen Qiang <quic_bqiang@quicinc.com> wrote:
 
---lxmmtxri4kik5hni
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Commit 39dc8b8ea387 ("wifi: mac80211: pass parsed TPE data to drivers") breaks
+> ath11k, leading to kernel crash:
+> 
+> BUG: kernel NULL pointer dereference, address: 0000000000000018
+> RIP: 0010:ath11k_mac_get_eirp_power.isra.0+0x5b/0x80 [ath11k]
+> Call Trace:
+>  <TASK>
+>  ath11k_mac_fill_reg_tpc_info+0x3d6/0x800 [ath11k]
+>  ath11k_mac_vdev_start_restart+0x412/0x4d0 [ath11k]
+>  ath11k_mac_op_sta_state+0x7bc/0xbb0 [ath11k]
+>  drv_sta_state+0xf1/0x5f0 [mac80211]
+>  sta_info_insert_rcu+0x28d/0x530 [mac80211]
+>  sta_info_insert+0xf/0x20 [mac80211]
+>  ieee80211_prep_connection+0x3b4/0x4c0 [mac80211]
+>  ieee80211_mgd_auth+0x363/0x600 [mac80211]
+> 
+> The issue scenario is, AP advertises power spectral density (PSD) values in its
+> transmit power envelope (TPE) IE and supports 160 MHz bandwidth in 6 GHz. When
+> connecting to this AP, in ath11k_mac_parse_tx_pwr_env(), the local variable
+> psd is true and then reg_tpc_info.num_pwr_levels is set to 8 due to 160 MHz
+> bandwidth. Note here ath11k fails to set reg_tpc_info.is_psd_power as TRUE due
+> to above commit. Then in ath11k_mac_fill_reg_tpc_info(), for each of the 8
+> power levels, for a PSD channel, ath11k_mac_get_psd_channel() is expected to
+> be called to get required information. However due to invalid
+> reg_tpc_info.is_psd_power, it is ath11k_mac_get_eirp_power() that gets called
+> and passed with pwr_lvl_idx as one of the arguments. Note this function
+> implicitly requires pwr_lvl_idx to be no more than 3. So when pwr_lvl_idx is
+> larger than that ath11k_mac_get_seg_freq() returns invalid center frequency,
+> with which as the input ieee80211_get_channel() returns NULL, then kernel
+> crashes due to NULL pointer dereference.
+> 
+> Fix it by setting reg_tpc_info.is_psd_power properly.
+> 
+> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
+> 
+> Fixes: 39dc8b8ea387 ("wifi: mac80211: pass parsed TPE data to drivers")
+> Reported-by: Mikko Tiihonen <mikko.tiihonen@iki.fi>
+> Tested-by: Mikko Tiihonen <mikko.tiihonen@iki.fi>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219131
+> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-On 22.08.2024 11:53:25, Marc Kleine-Budde wrote:
-> On 22.08.2024 09:36:29, David Lin wrote:
-> > I wonder we still need patch for indent issue here? If so I am sure we
-> > will need a bunch of similar patches which I don't think really help
-> > improve mwifiex quality
->=20
-> mwifiex is the best mainline driver we have for these devices.
->=20
-> > Actually in its successor Nxpwifi (currently under review), we have
-> > cleaned up all indent, and checkpatch errors/warnings/checks.
->=20
-> Public review?
+Patch applied to ath-current branch of ath.git, thanks.
 
-Found it:
-https://lore.kernel.org/all/20240809094533.1660-1-yu-hao.lin@nxp.com/
+9abf199943a6 wifi: ath11k: fix NULL pointer dereference in ath11k_mac_get_eirp_power()
 
-Marc
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20240813083808.9224-1-quic_bqiang@quicinc.com/
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+https://docs.kernel.org/process/submitting-patches.html
 
---lxmmtxri4kik5hni
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmbHFo8ACgkQKDiiPnot
-vG/bvgf8DaPnCJxuHqvkBU3lcM9WlGZEdp6nAvrrnAOZLesx1OlePO0xIxScMfAB
-HUSRIyRE/mbZTCZJ9i/K/Wmw8wYXDTtJGpH++83sXE+WCCU4Gkn1YABMw6uJz0rp
-eFZ4qnhTgcghpoOG9MjRv8gHRQ6ZlxIWLD6CD7eJ7Suu/uPdfZdtg76zpGUFybz/
-ezG0h2txl4xTRvAK7GuXpwxldJ3vrHGrvWapO5F626ywMNIIP0gPrAqYZ9teMPb1
-nrmv+0GbgpB2xVP3Pc4CqWCkk5VyiXMpXx47N70jfInwnJ6kXu4sPaEj37Pf7arR
-ynKmNPJhen90Y+nHBQ9voHlslp5sNQ==
-=YZ2v
------END PGP SIGNATURE-----
-
---lxmmtxri4kik5hni--
 
