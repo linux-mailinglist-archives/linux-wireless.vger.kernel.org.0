@@ -1,78 +1,79 @@
-Return-Path: <linux-wireless+bounces-11812-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11813-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0097095BDA8
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 19:46:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F7C195BDBB
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 19:50:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DFFF1C21FB7
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 17:46:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADD311F24A66
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 17:50:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3773D1CCECC;
-	Thu, 22 Aug 2024 17:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3EA1CF2AC;
+	Thu, 22 Aug 2024 17:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="gb2MnRyM"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="HdmhTDMH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07CA1CB138
-	for <linux-wireless@vger.kernel.org>; Thu, 22 Aug 2024 17:46:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138761C9DFF
+	for <linux-wireless@vger.kernel.org>; Thu, 22 Aug 2024 17:50:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724348793; cv=none; b=i8FeCzYdz/tVCoi0vbqR2AUTpYbsryUAW5YjHKADruURfwsDTigNQgRlurn9gY2ueYPxjXmDtZA1TVYeWT/ZrUgFNym29Dw0l4A1ozF+ijxq3oNK7z71IYky75VfDK+gVFJrIdet/tt4Mcx8/61ExP85wSqTYbfWiXpyaOkzfrg=
+	t=1724349028; cv=none; b=PCRUCJDKaOEZOAfhSWoTTOa0HwLji7flcvzdn3x4W+3Wp5Q9isnj27Sbp3K3VxgAYFZZSIKIBjYSEEEvqRV5CAuV3VB/yR+hY6GSk3Zd9EKz77o5pem+ulqpewvvOuYGzo/rZLQZYoX6T6UWPDhxJgE0niog5OK0AEiXS/QG5Mc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724348793; c=relaxed/simple;
-	bh=7Cg4Cb79uBvSL9Q/CzeY8cde8LpE8z/qbnsP+4Iz4VU=;
+	s=arc-20240116; t=1724349028; c=relaxed/simple;
+	bh=dvjLhd87vCdRo/xiVsfDDYj5ouJ7dOsDPOl5m/jQnB8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NsbUlYEOOzzjYRRFczgLkFyr/LQt4YHuPozmTfo/cIotFix7KotezXQRxzCyNZcLfNTyDpAwBp0dlciJqXM5Xkehf74ae7FZkKOJD1UdJ+nQszh2mHP+z7uvehIAosH6m0kSdqq6iOOVux2+DQ2Q+nCmCaqH9Cb6NGaQgKr/qvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=gb2MnRyM; arc=none smtp.client-ip=209.85.214.172
+	 Content-Type:Content-Disposition:In-Reply-To; b=bN9PTLjEkIWdkkB8rSI6PzlQFXeGHIZJF1EXibHgC6VFjGjMznFkcC2jk3uetOhfrDKcVKWaGJJVD6jEFRqRvIp2VRK8WFrJf7mDHQDxkRJ4aRoQ4NYRrMm/0zdKaOa1rRHljXpdInLdcqwaGaUtv5LQU44jHtOcatHJW8TzVWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=HdmhTDMH; arc=none smtp.client-ip=209.85.210.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-201fae21398so8746225ad.1
-        for <linux-wireless@vger.kernel.org>; Thu, 22 Aug 2024 10:46:31 -0700 (PDT)
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-70cec4aa1e4so839431b3a.1
+        for <linux-wireless@vger.kernel.org>; Thu, 22 Aug 2024 10:50:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1724348791; x=1724953591; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1724349025; x=1724953825; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YPxtm48V/PPdhN8wSURGWZ+5uOKyuKnvjhxgqACifgk=;
-        b=gb2MnRyMXS9yyc40FkOAsWofNWnip6HLoNLAXtze/10YgrRm0rExZmJGlR5cUK3pn7
-         dEax3+J5pxWhD//1eeu1gijbeU/CYCs2JEpfwHAC2xjNbPLWJ6gXNecDNtZZGoqbDrgp
-         bYHlYuIwKPNY2IWFyg3wnBDOuLOcEStAhLs2s=
+        bh=tCVHnlO2pIa86JaK5QjGr85qfeXpWfBdUE9lyP9m+/o=;
+        b=HdmhTDMHdO0Cld6OncFcPIZAjg/uddeimxjulI3Ld4XVDE5G+5872NDI0wXrAVpx51
+         uGbPsNkdAXEOyZfWZNgTi//CDbasczllkNQiMCBZ0gblO9nFUTXxjfYLfVyJVB4Aq7n7
+         owSWzVTi64B+XpCgePSRh/V277TT/NWvHyv9Q=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724348791; x=1724953591;
+        d=1e100.net; s=20230601; t=1724349025; x=1724953825;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YPxtm48V/PPdhN8wSURGWZ+5uOKyuKnvjhxgqACifgk=;
-        b=ZI3xG6chNsugELSqYhUJX5CTt/OythOBac9aFPaLVvfGkVFb5UD2IKnBHn6WrK8bse
-         Mi1MQ0m8PR+6goHKrNMnJUbWT/J0KtMl9dsLTmBv3C5ne0lV69EcRrtCaB7/UU+Ti9I1
-         8cPmcVM8m8UIUdH5/r6S1SyaBA43UheP10lSZYyNDzy0+QjoEdJc4G1bPZGZ+c3avLiD
-         ZBOgc8yYDIIJm167ZeJFqBQOCXohqEUqXn/KgCkOnlmTcMsMGnVe69bcZtvCCSMjGauj
-         IgeQztcMRrynOm1IYkIHSKsRbSw70J0sVgP9Arm0vvJUYuMVhBe8B6eMnJH5OQhDsOg0
-         x2sw==
-X-Forwarded-Encrypted: i=1; AJvYcCUpXKTLXC+Z7YyAbP5YVnP5M10a6r6HubyL0EOY57t+7QyywCumKAR0Yvyzv0+VJL3pXz0gs37UkqajCrUiaw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyj+FUBwC6FyRk6sAESPEV5OHkrBL+vxCJDAMvCbPAaM6P0nJmX
-	zsuwCn7V1leUsnfuvv88Z5RTTT1IkqBJN5tHoKjHrFI9StknJi3XEc46Yrmh6A==
-X-Google-Smtp-Source: AGHT+IEHvyAehqf/sUVvhH1XQLyhGtO7mHKAv+wdaxRKZtKrVcP//nm5YXV4qVZAoJjlfxKJ5ELPZg==
-X-Received: by 2002:a17:902:e812:b0:1fd:9c2d:2f27 with SMTP id d9443c01a7336-20367d2b1b9mr71582405ad.24.1724348791138;
-        Thu, 22 Aug 2024 10:46:31 -0700 (PDT)
+        bh=tCVHnlO2pIa86JaK5QjGr85qfeXpWfBdUE9lyP9m+/o=;
+        b=l7BstrcTD/E8e9176jxuQB9aKeZkPEB24bn3ed36ZT0gJS5eHBLVclisrYgM+NJo4E
+         /hhGFxTTWdEZGBVF6wS68Ilz4xWpoCjRaQyZ2fQ4DHm5eAwMlwwvigLsbpVb4l4F0C+Y
+         6sV8hav/Bt4p0ufO/x/xaZZjYlZVkVbRqe4nuU6UKUS51zxKe95jk7fNAKH9TCKTDm03
+         HR1Ed2YXLVaw8CqSYBqPLMOZ2xAGBiIO83CsVNCQNkbQ3LZ8Ojz1RjtBodRqfxgp4er1
+         cXAph/5B4tdny9p45i29/D5zzh3lkLvqVzv2QRUt7/65j3huQdOTQRYh1QotHpVM9Ndb
+         QsNg==
+X-Forwarded-Encrypted: i=1; AJvYcCU1B+3283Tj0YIJ+Px3StDLKYs7FrZciZDK4gJJzExRxQ9yNAFOU4UMvXYTcZbDvoeclCklpQRz2zwibsLjUg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyaAOItf+9tn22vnXEqZrUsTHwesybMd7wTcdMv5opPuhl7Fhy5
+	htQhgitb77zlk+bEhT7hLchRM9Ww7w2aFTOmaYyMMBW/yJ8168GzzexEXB308g==
+X-Google-Smtp-Source: AGHT+IGfoGIJeQ5mwpQoLfvcD1BDbE9Q0hdoNktosEIXDb7FIO+5WC0W5xfEfFjtY5088xV28XfHJg==
+X-Received: by 2002:a05:6a21:3418:b0:1c6:f043:693f with SMTP id adf61e73a8af0-1cada054f37mr7146439637.17.1724349025477;
+        Thu, 22 Aug 2024 10:50:25 -0700 (PDT)
 Received: from localhost ([2a00:79e0:2e14:7:414c:5b44:2fea:fb6e])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-203855dc28bsm15269055ad.133.2024.08.22.10.46.30
+        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-7143577090fsm1537422b3a.137.2024.08.22.10.50.24
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Aug 2024 10:46:30 -0700 (PDT)
-Date: Thu, 22 Aug 2024 10:46:29 -0700
+        Thu, 22 Aug 2024 10:50:25 -0700 (PDT)
+Date: Thu, 22 Aug 2024 10:50:24 -0700
 From: Brian Norris <briannorris@chromium.org>
-To: Chen Yufan <chenyufan@vivo.com>
+To: "Gustavo A. R. Silva" <gustavoars@kernel.org>
 Cc: Francesco Dolcini <francesco@dolcini.it>, Kalle Valo <kvalo@kernel.org>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	opensource.kernel@vivo.com
-Subject: Re: [PATCH v2] wifi: mwifiex: Convert to use jiffies macro
-Message-ID: <Zsd5ddqiIgxaEPKs@google.com>
-References: <20240822102906.141488-1-chenyufan@vivo.com>
+	linux-hardening@vger.kernel.org
+Subject: Re: [PATCH][next] wifi: mwifiex: Fix memcpy() field-spanning write
+ warning in mwifiex_cmd_802_11_scan_ext()
+Message-ID: <Zsd6YE6z5CNWQocz@google.com>
+References: <ZsZa5xRcsLq9D+RX@elsanto>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -81,42 +82,21 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240822102906.141488-1-chenyufan@vivo.com>
+In-Reply-To: <ZsZa5xRcsLq9D+RX@elsanto>
 
-On Thu, Aug 22, 2024 at 06:29:04PM +0800, Chen Yufan wrote:
-> Use time_after macro instead of using
-> jiffies directly to handle wraparound.
-> The modifications made compared to the previous version are as follows:
-> 1. Added a typecast to unsigned long for rssi_jiffies
-> to resolve the compilation error.
-
-Can we just change the type in mwifiex_auto_tdls_peer::rssi_jiffies?
-Fewer casts is generally better.
-
-Brian
-
+On Wed, Aug 21, 2024 at 03:23:51PM -0600, Gustavo A. R. Silva wrote:
+> Replace one-element array with a flexible-array member in
+> `struct host_cmd_ds_802_11_scan_ext`.
 > 
-> Signed-off-by: Chen Yufan <chenyufan@vivo.com>
-> ---
->  drivers/net/wireless/marvell/mwifiex/tdls.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> With this, fix the following warning:
 > 
-> diff --git a/drivers/net/wireless/marvell/mwifiex/tdls.c b/drivers/net/wireless/marvell/mwifiex/tdls.c
-> index 6c60621b6..e48e8affd 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/tdls.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/tdls.c
-> @@ -1439,8 +1439,8 @@ void mwifiex_check_auto_tdls(struct timer_list *t)
->  
->  	spin_lock_bh(&priv->auto_tdls_lock);
->  	list_for_each_entry(tdls_peer, &priv->auto_tdls_list, list) {
-> -		if ((jiffies - tdls_peer->rssi_jiffies) >
-> -		    (MWIFIEX_AUTO_TDLS_IDLE_TIME * HZ)) {
-> +		if (time_after(jiffies, (unsigned long)tdls_peer->rssi_jiffies +
-> +					 MWIFIEX_AUTO_TDLS_IDLE_TIME * HZ)) {
->  			tdls_peer->rssi = 0;
->  			tdls_peer->do_discover = true;
->  			priv->check_tdls_tx = true;
-> -- 
-> 2.39.0
+> elo 16 17:51:58 surfacebook kernel: ------------[ cut here ]------------
+> elo 16 17:51:58 surfacebook kernel: memcpy: detected field-spanning write (size 243) of single field "ext_scan->tlv_buffer" at drivers/net/wireless/marvell/mwifiex/scan.c:2239 (size 1)
+> elo 16 17:51:58 surfacebook kernel: WARNING: CPU: 0 PID: 498 at drivers/net/wireless/marvell/mwifiex/scan.c:2239 mwifiex_cmd_802_11_scan_ext+0x83/0x90 [mwifiex]
 > 
+> Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Closes: https://lore.kernel.org/linux-hardening/ZsZNgfnEwOcPdCly@black.fi.intel.com/
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+
+Acked-by: Brian Norris <briannorris@chromium.org>
 
