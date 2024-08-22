@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-11790-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11791-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EA9295B103
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 10:59:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3382095B10B
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 11:00:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A1991C22B2D
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 08:59:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E513D282539
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 09:00:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43B46170853;
-	Thu, 22 Aug 2024 08:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D24015C156;
+	Thu, 22 Aug 2024 09:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mtGcUdh3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LcpPMgCv"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2AC16DEDF;
-	Thu, 22 Aug 2024 08:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E77B1CFB9;
+	Thu, 22 Aug 2024 09:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724317190; cv=none; b=k9qvAHrr11U238p9CdBXg+TEc7Ad0Hi2ba4XA3vW4wBqBBFnp4Qph60/Uw2uwegyyzyIV3CUYHY15iHvzr2VIJAguxGT/TIPd60XfL0zrXe3/qr294yff0EX1fIw/DkZhR3KarruszcwBkGVUSgnLI+tWByTdvCsF3gh/8UoNxU=
+	t=1724317233; cv=none; b=GHe5VF7GvNyo8LTTe19yQyeNjhK6+Fnss1NYdE27c0nev1Bdc0hcH3pzXMa42dX6XA0u8eSb8tXSfWBc0LNvvElUEN0rZEXYcy8eW5eGYOiJjr3RGJo3dYCecKLQXNx3BWp+HiX87nzhUejl68HsvyGi/AJPsJRF8PH0+IMTJ1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724317190; c=relaxed/simple;
-	bh=6fPHVZW9Wl5MBlZ31WLLPB+2/SdWlcpVd1n5Ao7R3D0=;
+	s=arc-20240116; t=1724317233; c=relaxed/simple;
+	bh=DTKmkZCfsT6mqM6ng6WdvHgR2q9ReddZ1ktwO8MCYkE=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=ShsQ2CP2/vfGVZFamh6mSq3EAZFghh9Vkze30c6R36cgemeTANZcOhQslVWS1uB2dhuwph2LKCjM3col4Rg3hNO52RjcXEY36C/OEssF2HSAVm9BMJwMzn11eCSuyQ/nmreFupKMnhZ8zHiV5//bTASmCQY6+d73YvmOnU89l0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mtGcUdh3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F545C4AF09;
-	Thu, 22 Aug 2024 08:59:44 +0000 (UTC)
+	 Cc:Message-ID:Date; b=juRV+HTkIx/NBp6DB/NdXssZB1vvFaqUtfTxukaguOQ//iUwSj5RgF4NeZiwhYatB1/SfPwzpb6VdDE0Neia0cbhPKGEYyVJAf5fWAwqG/MsZljfmg+lQscmy+J158++M0m9bxcjIN6AVBbHILR8dmqCa59WmtQ1UMDIwnI5ASs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LcpPMgCv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8935AC4AF0B;
+	Thu, 22 Aug 2024 09:00:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724317189;
-	bh=6fPHVZW9Wl5MBlZ31WLLPB+2/SdWlcpVd1n5Ao7R3D0=;
+	s=k20201202; t=1724317232;
+	bh=DTKmkZCfsT6mqM6ng6WdvHgR2q9ReddZ1ktwO8MCYkE=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=mtGcUdh3FeNAFmY6+9OYrE0l+cei2CTF7LHHhtjK2eR6jjh7Vcdi8g8MlRpb41CN7
-	 cZrtrKMsces6P865auobuLLB3sKlPdnGtM7MOcRWOGVfLwJjN+utXCOyNTNfbzjDb5
-	 HWm2fSHa7xy8YTOzNp9gqJPYplbc1Qcv7lgbPTAIeH+lZVZZ9LcWspbpXFl0jocSM6
-	 XzGQzkhMEGUTaB69+6zKn8aqtNdqSy3vGgQrxSgymZtGRB+vBWynMxJ8JyF2rtIz9w
-	 OU7up2fvbfWC5aXFYoFdUaNEpTtsMZWmNK6SE0fE7jzdwoM1bduonK8/l7Xle/7/ka
-	 Rj13DObKI6uAQ==
+	b=LcpPMgCvgs6HYzca5AdXgCT186sdoQNV3w+dl9C4qcjmzLzoLGg+iKLxf6p9HQ6x7
+	 F0H2d7s96K3XZfIk45EgVwsfuM1HXD/dbxKmeer4LBBHpRsClc+F+hNkGHEocQz60K
+	 2cFUGo0NuWSkUMoPgSSuGIXUQXZWeMDV39oV9wSqQfl/U/JU41DsQFt33QcRsqyUJX
+	 LXdtWPgEBrgBdKcnFGK6ZK5m5X6nUoS4Krp26BVk4o7W8ZlbWvwmbQQlmY18XW6t3W
+	 Y4osOFBlOLLKPoRR07bzI75v9bn343mqIOMMvLmR7Dki9ilxJ10WNpNkHV18ks+7Lt
+	 olLDV0OU3mkhw==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,68 +49,38 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v11 1/4] dt-bindings: net: wireless: brcm4329-fmac: add
- pci14e4,449d
+Subject: Re: [PATCH] wifi: mwifiex: remove unnecessary checks for valid priv
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240816020635.1273911-2-jacobe.zang@wesion.com>
-References: <20240816020635.1273911-2-jacobe.zang@wesion.com>
-To: Jacobe Zang <jacobe.zang@wesion.com>
-Cc: arend.vanspriel@broadcom.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, saikrishnag@marvell.com, megi@xff.cz,
- bhelgaas@google.com, duoming@zju.edu.cn, minipli@grsecurity.net,
- yajun.deng@linux.dev, stern@rowland.harvard.edu, gregkh@linuxfoundation.org,
- christophe.jaillet@wanadoo.fr, linux-wireless@vger.kernel.org,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, brcm80211@lists.linux.dev,
- brcm80211-dev-list.pdl@broadcom.com, Jacobe Zang <jacobe.zang@wesion.com>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+In-Reply-To: 
+ <20240816-mwifiex-remove-priv-checks-v1-1-6dd6553e8ed9@pengutronix.de>
+References: 
+ <20240816-mwifiex-remove-priv-checks-v1-1-6dd6553e8ed9@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Brian Norris <briannorris@chromium.org>,
+ Francesco Dolcini <francesco@dolcini.it>, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Sascha Hauer <s.hauer@pengutronix.de>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <172431718274.2217900.9766315386587933045.kvalo@kernel.org>
-Date: Thu, 22 Aug 2024 08:59:44 +0000 (UTC)
+Message-ID: <172431722965.2217900.9384549285038078950.kvalo@kernel.org>
+Date: Thu, 22 Aug 2024 09:00:31 +0000 (UTC)
 
-Jacobe Zang <jacobe.zang@wesion.com> wrote:
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-> It's the device id used by AP6275P which is the Wi-Fi module
-> used by Rockchip's RK3588 evaluation board and also used in
-> some other RK3588 boards.
+> The pointers in adapter->priv[] are allocated in mwifiex_register().
+> With an allocation failed the function will return an error and
+> driver initialization is aborted. This makes all checks for valid
+> priv pointers unnecessary throughout the driver. In many places
+> the pointers are assumed to be valid without checks, this patch
+> removes the remaining checks.
 > 
-> Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Acked-by: Brian Norris <briannorris@chromium.org>
 
-Fails to apply, please rebase on top of wireless-next.
+Patch applied to wireless-next.git, thanks.
 
-Recorded preimage for 'drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c'
-Recorded preimage for 'drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c'
-error: Failed to merge in the changes.
-hint: Use 'git am --show-current-patch=diff' to see the failed patch
-Applying: wifi: brcmfmac: Add optional lpo clock enable support
-Using index info to reconstruct a base tree...
-M	drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-M	drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-M	drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-M	drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-M	drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-Falling back to patching base and 3-way merge...
-Auto-merging drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-Auto-merging drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-CONFLICT (content): Merge conflict in drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-Auto-merging drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-Auto-merging drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-CONFLICT (content): Merge conflict in drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-Auto-merging drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-Patch failed at 0001 wifi: brcmfmac: Add optional lpo clock enable support
-
-4 patches set to Changes Requested.
-
-13765357 [v11,1/4] dt-bindings: net: wireless: brcm4329-fmac: add pci14e4,449d
-13765358 [v11,2/4] dt-bindings: net: wireless: brcm4329-fmac: add clock description for AP6275P
-13765359 [v11,3/4] wifi: brcmfmac: Add optional lpo clock enable support
-13765360 [v11,4/4] wifi: brcmfmac: add flag for random seed during firmware download
+67a72043aa2e wifi: mwifiex: remove unnecessary checks for valid priv
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240816020635.1273911-2-jacobe.zang@wesion.com/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240816-mwifiex-remove-priv-checks-v1-1-6dd6553e8ed9@pengutronix.de/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
