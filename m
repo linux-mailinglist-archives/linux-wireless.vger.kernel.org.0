@@ -1,134 +1,313 @@
-Return-Path: <linux-wireless+bounces-11800-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11801-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF4B295B49D
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 14:07:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C49295B4B7
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 14:10:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DC01B23FAA
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 12:07:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1E361C22EE7
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 12:10:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB1C1C9DDC;
-	Thu, 22 Aug 2024 12:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B2B1C93DB;
+	Thu, 22 Aug 2024 12:10:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="p1EE1/Sx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D351C9429
-	for <linux-wireless@vger.kernel.org>; Thu, 22 Aug 2024 12:05:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E871C93C9;
+	Thu, 22 Aug 2024 12:10:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724328330; cv=none; b=LtIUVBUeXmpTQXg0REOTDddTzXaQ9A1MAJjWmfWy4nxrHqtLOt+AOwgwznZIW7hv5wt+Q/RWDjgO/Cv10dm+OgxlWG6X5DmGJWwRsNThOi9/xXTzaU1encSMEyFppGJTWqNnk68VZdvZojupYVlSE6xZag+vNZ8np6aWQfqkUoA=
+	t=1724328636; cv=none; b=GuXvv4NeM40IsNCV/m973JrDMkYTrecQYWRwqIYUZQM6hzC/83iVSIBF7u/xB0HJGD20+ZsEnO/Rq7z38aHWjNvC4RFriIieye65Jx4/9a1g/+9StDDJbROEzz8/Me0cJGOf+rf/cvmP7mcayFWAX7LWYBsc7lUQyvLeUUhjYL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724328330; c=relaxed/simple;
-	bh=sRjg4Hbw8XmUSTcUYKi2RffU9tTcSQR2LO9nIL6UDis=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E6y+UYjVUwI7H7fzhNSyBOG9oQhjr2pchb+DjEADHP+uKphKCF6CLmz0kfseFP5x4P8YVs0ahVF9QPIRrB89hgHgodfraCa5UKCJAEIKlZwGiesLzDKgJQAn45XhC7rctDeehz3KBV4n3qZWgQILgrADv1RpKE5jy2Fev7JoKd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1sh6Z9-0007no-Pi; Thu, 22 Aug 2024 14:05:23 +0200
-Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1sh6Z8-002F62-Sx; Thu, 22 Aug 2024 14:05:22 +0200
-Received: from pengutronix.de (pd9e5994e.dip0.t-ipconnect.de [217.229.153.78])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 8AFA432497E;
-	Thu, 22 Aug 2024 12:05:22 +0000 (UTC)
-Date: Thu, 22 Aug 2024 14:05:22 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: David Lin <yu-hao.lin@nxp.com>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>, 
-	Brian Norris <briannorris@chromium.org>, Francesco Dolcini <francesco@dolcini.it>, 
-	Kalle Valo <kvalo@kernel.org>, 
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"kernel@pengutronix.de" <kernel@pengutronix.de>
-Subject: Re: RE: RE: [EXT] [PATCH 10/31] wifi: mwifiex: fix indention
-Message-ID: <20240822-brainy-liberal-toucan-bc498c-mkl@pengutronix.de>
-References: <20240820-mwifiex-cleanup-v1-0-320d8de4a4b7@pengutronix.de>
- <20240820-mwifiex-cleanup-v1-10-320d8de4a4b7@pengutronix.de>
- <PA4PR04MB96382C0635603A51371C0E23D18F2@PA4PR04MB9638.eurprd04.prod.outlook.com>
- <20240822-gay-myrtle-tarantula-bae0e0-mkl@pengutronix.de>
- <PA4PR04MB9638C8D68F0F71C17E903DDAD18F2@PA4PR04MB9638.eurprd04.prod.outlook.com>
+	s=arc-20240116; t=1724328636; c=relaxed/simple;
+	bh=Eqs5aJUrX030Wb7akJ+hJ7s+60DDzMm03GCV8YQDW8A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=d4tl2xyh9Wc5VuW/p+zHpQpppGu0cRYPskYeUeZv7/Lc9d1jkIj3HVUoEJ50hw1c40unJ0HBb8lTTsCF3adC+KLiqy5bhR/0c+d/fguho36LFMjCXawPamnO5YzMiDgnWgCq8IaNb6Bg8Q6u1ebGABRbz2PQII4AHGov1PFzul4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=p1EE1/Sx; arc=none smtp.client-ip=217.70.183.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5AD4D1C0006;
+	Thu, 22 Aug 2024 12:10:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1724328626;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IA2jpiRqv2jkOr6vAQ5LkEUg6XJ95e5T7MH6yDvbU/o=;
+	b=p1EE1/SxXmWpsoKR0zk9qAucc7Ze7gcXR8RUxXr6Hxl9R0esEDJl95DnHk56A+0NhxUAyQ
+	GVod+0YXGXa0ezKJnoXB3ryRltWy1xxIqft07OF4YAV9HlO/8B6EUBf/5mUKVtDTeAd/Zg
+	jCIzzcI6gQigSFua2753+gtBq+tszc+WUwwF2iIG9/M/xqKXXD/rQvSvMDSwwrUOJHeJUe
+	r65E/bPYq36O3fCH7Zg1Bh7rNY15nX2r1eH/OqikGC19GY90DXBZ2rMUdf7nW48fY95St5
+	XzRDWTuQRGgLtb3I2wg98uDoXuqOPvVc2l8rA9i6hCDrd3ImgDwQxd6HusN7tA==
+Message-ID: <bbaf1b15-2d0e-4699-91cc-17fa7a18559b@bootlin.com>
+Date: Thu, 22 Aug 2024 14:10:25 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="stss5vizbnrqvxu3"
-Content-Disposition: inline
-In-Reply-To: <PA4PR04MB9638C8D68F0F71C17E903DDAD18F2@PA4PR04MB9638.eurprd04.prod.outlook.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] wifi: wilc1000: Add WILC3000 support
+To: Marek Vasut <marex@denx.de>, linux-wireless@vger.kernel.org
+Cc: Ajay Singh <ajay.kathat@microchip.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Adham Abozaeid <adham.abozaeid@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Conor Dooley
+ <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+ netdev@vger.kernel.org, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <20240821184356.163816-1-marex@denx.de>
+ <20240821184356.163816-2-marex@denx.de>
+From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20240821184356.163816-2-marex@denx.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: alexis.lothore@bootlin.com
 
+Hello Marek,
 
---stss5vizbnrqvxu3
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I was coincidentally working on adding wilc3000 support upstream too. My work is
+also based on downstream tree, so my comments will likely reflect the reworks I
+was doing or intended to do.
+For the record, I have some wilc1000 and wilc3000 modules, in both  sdio and spi
+setups.
 
-On 22.08.2024 11:59:55, David Lin wrote:
-> > From: Marc Kleine-Budde <mkl@pengutronix.de>
-> > Sent: Thursday, August 22, 2024 5:53 PM
-> > To: David Lin <yu-hao.lin@nxp.com>
-> > Cc: Sascha Hauer <s.hauer@pengutronix.de>; Brian Norris
-> > <briannorris@chromium.org>; Francesco Dolcini <francesco@dolcini.it>;
-> > Kalle Valo <kvalo@kernel.org>; linux-wireless@vger.kernel.org;
-> > linux-kernel@vger.kernel.org; kernel@pengutronix.de
-> > Subject: Re: RE: [EXT] [PATCH 10/31] wifi: mwifiex: fix indention
-> >=20
-> > On 22.08.2024 09:36:29, David Lin wrote:
-> > > I wonder we still need patch for indent issue here? If so I am sure we
-> > > will need a bunch of similar patches which I don't think really help
-> > > improve mwifiex quality
-> >=20
-> > mwifiex is the best mainline driver we have for these devices.
-> >=20
->=20
-> Yes, we will continue to fix bugs of mwifiex just like we added the
-> WPA3 support for it.
+On 8/21/24 20:42, Marek Vasut wrote:
+> From: Ajay Singh <ajay.kathat@microchip.com>
 
-Why do you think 2 drivers are easier to handle/support/maintain/...
-than 1 driver, especially given the low available review bandwidth?
+[...]
 
-regards,
-Marc
+>  	if (!resume) {
+> -		ret = wilc_sdio_read_reg(wilc, WILC_CHIPID, &chipid);
+> -		if (ret) {
+> -			dev_err(&func->dev, "Fail cmd read chip id...\n");
+> +		chipid = wilc_get_chipid(wilc, true);
+> +		if (is_wilc3000(chipid)) {
+> +			wilc->chip = WILC_3000;
+> +		} else if (is_wilc1000(chipid)) {
+> +			wilc->chip = WILC_1000;
+> +		} else {
+> +			dev_err(&func->dev, "Unsupported chipid: %x\n", chipid);
+>  			return ret;
+>  		}
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+I wonder if this additional enum (enum wilc_chip_type)  is really useful. We
+already store the raw chipid, which just needs to be masked to know about the
+device type. We should likely store one or the other but not both, otherwise we
+may just risk to create desync without really saving useful info.
 
---stss5vizbnrqvxu3
-Content-Type: application/pgp-signature; name="signature.asc"
+Also, this change makes wilc1000-sdio failing to build as module (missing symbol
+export on wilc_get_chipid)
 
------BEGIN PGP SIGNATURE-----
+[...]
 
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmbHKX8ACgkQKDiiPnot
-vG9wkQf9F6vKJT0xmAB+kOkKNUxB3qVf8c29av7suMe7+KvnkDeltCpn+UD0mxjx
-meC6xia2OwT0eIRu3M6/ErqYW+vX7ssLmO16RQ3OlX6z2xrjLzLONYuQ0WthgI+P
-n1BgJCcu8+wqAUnhgqA6BWYm83/Br79nmeF/0nX6AnZ+gNQeZ4iGLgxIRqOUoEtJ
-eiEmwuN29EwQKV/tetQ1hpKAS8dVB9CTqu0pCY5KP07s0tHg2bQp8h+dhu67Vx05
-mtf46VNfuS85hpNcCWAMwm2xahzdmmJ2zLwTvJDdjjTVd43CWF7fFlhzW5/cK5po
-r4WjkJB5jHgzmvI4C2tN2F6GDCJpHQ==
-=P8Gx
------END PGP SIGNATURE-----
+> -	/* select VMM table 0 */
+> -	if (val & SEL_VMM_TBL0)
+> -		reg |= BIT(5);
+> -	/* select VMM table 1 */
+> -	if (val & SEL_VMM_TBL1)
+> -		reg |= BIT(6);
+> -	/* enable VMM */
+> -	if (val & EN_VMM)
+> -		reg |= BIT(7);
+> +	if (wilc->chip == WILC_1000) {
 
---stss5vizbnrqvxu3--
+wilc1000 should likely remain the default/fallback ?
+
+[...]
+
+> @@ -1232,10 +1234,7 @@ static int wilc_validate_chipid(struct wilc *wilc)
+>  		dev_err(&spi->dev, "Fail cmd read chip id...\n");
+>  		return ret;
+>  	}
+> -	if (!is_wilc1000(chipid)) {
+> -		dev_err(&spi->dev, "Unknown chip id 0x%x\n", chipid);
+> -		return -ENODEV;
+> -	}
+> +
+
+Instead of dropping any filtering (and then making the function name become
+irrelevant), why not ensuring that it is at least either a wilc1000 or a wilc3000 ?
+
+>  	return 0;
+>  }
+>  
+> diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
+> index 533939e71534a..a7cc8c0ea5de4 100644
+> --- a/drivers/net/wireless/microchip/wilc1000/wlan.c
+> +++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
+> @@ -555,7 +555,7 @@ static struct rxq_entry_t *wilc_wlan_rxq_remove(struct wilc *wilc)
+>  	return rqe;
+>  }
+
+[...]
+
+> +static int chip_allow_sleep_wilc3000(struct wilc *wilc)
+> +{
+> +	u32 reg = 0;
+> +	int ret;
+> +	const struct wilc_hif_func *hif_func = wilc->hif_func;
+> +
+> +	if (wilc->io_type == WILC_HIF_SDIO) {
+> +		ret = hif_func->hif_read_reg(wilc, WILC_SDIO_WAKEUP_REG, &reg);
+> +		if (ret)
+> +			return ret;
+> +		ret = hif_func->hif_write_reg(wilc, WILC_SDIO_WAKEUP_REG,
+> +					      reg & ~WILC_SDIO_WAKEUP_BIT);
+> +		if (ret)
+> +			return ret;
+> +	} else {
+> +		ret = hif_func->hif_read_reg(wilc, WILC_SPI_WAKEUP_REG, &reg);
+> +		if (ret)
+> +			return ret;
+> +		ret = hif_func->hif_write_reg(wilc, WILC_SPI_WAKEUP_REG,
+> +					      reg & ~WILC_SPI_WAKEUP_BIT);
+> +		if (ret)
+> +			return ret;
+>  	}
+> +	return 0;
+> +}
+> +
+> +void chip_allow_sleep(struct wilc *wilc)
+> +{
+> +	if (wilc->chip == WILC_1000)
+> +		chip_allow_sleep_wilc1000(wilc);
+> +	else
+> +		chip_allow_sleep_wilc3000(wilc);
+>  }
+>  EXPORT_SYMBOL_GPL(chip_allow_sleep);
+>  
+> -void chip_wakeup(struct wilc *wilc)
+> +static void chip_wakeup_wilc1000(struct wilc *wilc)
+>  {
+>  	u32 ret = 0;
+>  	u32 clk_status_val = 0, trials = 0;
+> @@ -627,15 +662,15 @@ void chip_wakeup(struct wilc *wilc)
+>  	if (wilc->io_type == WILC_HIF_SDIO) {
+>  		wakeup_reg = WILC_SDIO_WAKEUP_REG;
+>  		wakeup_bit = WILC_SDIO_WAKEUP_BIT;
+> -		clk_status_reg = WILC_SDIO_CLK_STATUS_REG;
+> -		clk_status_bit = WILC_SDIO_CLK_STATUS_BIT;
+> +		clk_status_reg = WILC1000_SDIO_CLK_STATUS_REG;
+> +		clk_status_bit = WILC1000_SDIO_CLK_STATUS_BIT;
+>  		from_host_to_fw_reg = WILC_SDIO_HOST_TO_FW_REG;
+>  		from_host_to_fw_bit = WILC_SDIO_HOST_TO_FW_BIT;
+>  	} else {
+>  		wakeup_reg = WILC_SPI_WAKEUP_REG;
+>  		wakeup_bit = WILC_SPI_WAKEUP_BIT;
+> -		clk_status_reg = WILC_SPI_CLK_STATUS_REG;
+> -		clk_status_bit = WILC_SPI_CLK_STATUS_BIT;
+> +		clk_status_reg = WILC1000_SPI_CLK_STATUS_REG;
+> +		clk_status_bit = WILC1000_SPI_CLK_STATUS_BIT;
+>  		from_host_to_fw_reg = WILC_SPI_HOST_TO_FW_REG;
+>  		from_host_to_fw_bit = WILC_SPI_HOST_TO_FW_BIT;
+>  	}
+> @@ -674,12 +709,80 @@ void chip_wakeup(struct wilc *wilc)
+>  	if (wilc->io_type == WILC_HIF_SPI)
+>  		wilc->hif_func->hif_reset(wilc);
+>  }
+> +
+> +static void chip_wakeup_wilc3000(struct wilc *wilc)
+> +{
+> +	u32 wakeup_reg_val, clk_status_reg_val, trials = 0;
+> +	u32 wakeup_reg, wakeup_bit;
+> +	u32 clk_status_reg, clk_status_bit;
+> +	int wake_seq_trials = 5;
+> +	const struct wilc_hif_func *hif_func = wilc->hif_func;
+> +
+> +	if (wilc->io_type == WILC_HIF_SDIO) {
+> +		wakeup_reg = WILC_SDIO_WAKEUP_REG;
+> +		wakeup_bit = WILC_SDIO_WAKEUP_BIT;
+> +		clk_status_reg = WILC3000_SDIO_CLK_STATUS_REG;
+> +		clk_status_bit = WILC3000_SDIO_CLK_STATUS_BIT;
+> +	} else {
+> +		wakeup_reg = WILC_SPI_WAKEUP_REG;
+> +		wakeup_bit = WILC_SPI_WAKEUP_BIT;
+> +		clk_status_reg = WILC3000_SPI_CLK_STATUS_REG;
+> +		clk_status_bit = WILC3000_SPI_CLK_STATUS_BIT;
+> +	}
+> +
+> +	hif_func->hif_read_reg(wilc, wakeup_reg, &wakeup_reg_val);
+> +	do {
+> +		hif_func->hif_write_reg(wilc, wakeup_reg, wakeup_reg_val |
+> +							  wakeup_bit);
+> +		/* Check the clock status */
+> +		hif_func->hif_read_reg(wilc, clk_status_reg,
+> +				       &clk_status_reg_val);
+> +
+> +		/* In case of clocks off, wait 1ms, and check it again.
+> +		 * if still off, wait for another 1ms, for a total wait of 3ms.
+> +		 * If still off, redo the wake up sequence
+> +		 */
+> +		while ((clk_status_reg_val & clk_status_bit) == 0 &&
+> +		       (++trials % 4) != 0) {
+> +			/* Wait for the chip to stabilize*/
+> +			usleep_range(1000, 1100);
+> +
+> +			/* Make sure chip is awake. This is an extra step that
+> +			 * can be removed later to avoid the bus access
+> +			 * overhead
+> +			 */
+> +			hif_func->hif_read_reg(wilc, clk_status_reg,
+> +					       &clk_status_reg_val);
+> +		}
+> +		/* in case of failure, Reset the wakeup bit to introduce a new
+> +		 * edge on the next loop
+> +		 */
+> +		if ((clk_status_reg_val & clk_status_bit) == 0) {
+> +			hif_func->hif_write_reg(wilc, wakeup_reg,
+> +						wakeup_reg_val & (~wakeup_bit));
+> +			/* added wait before wakeup sequence retry */
+> +			usleep_range(200, 300);
+> +		}
+> +	} while ((clk_status_reg_val & clk_status_bit) == 0 && wake_seq_trials-- > 0);
+> +	if (!wake_seq_trials)
+> +		dev_err(wilc->dev, "clocks still OFF. Wake up failed\n");
+> +}
+> +
+> +void chip_wakeup(struct wilc *wilc)
+> +{
+> +	if (wilc->chip == WILC_1000)
+> +		chip_wakeup_wilc1000(wilc);
+> +	else
+> +		chip_wakeup_wilc3000(wilc);
+> +}
+>  EXPORT_SYMBOL_GPL(chip_wakeup);
+
+This new support makes a few places in wlan.c, netdev.c and in bus files
+(sdio.c, spi.c) install (sometimes big) branches on the device type (chip init,
+sleep, wakeup, read interrupt, clear interrupt, txq handling, etc), because the
+registers are different, the masks are different, the number of involved
+registers may not be the same, wilc3000 may need more operations to perform the
+same thing... I feel like it will make it harder in the long run to maintain the
+driver, especially if some new variants are added later. Those branches tend to
+show that some operations in those files are too specific to the targeted
+device. I was examining the possibility to start creating device-type specific
+files (wilc1000.c, wilc3000.c) and move those operations as "device-specific"
+ops. Then wlan/netdev would call those chip-specific ops, which in turn may call
+the hif_func ops. It may need some rework in the bus files to fit this new
+hierarchy, but it may allow to keep netdev and wlan unaware of the device type,
+and since wilc3000 has bluetooth, it may also make it easier to introduce the
+corresponding support later. What do you think about it ? Ajay, any opinion on
+this ?
+
+Thanks,
+
+Alexis
+
+-- 
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
