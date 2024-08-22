@@ -1,106 +1,138 @@
-Return-Path: <linux-wireless+bounces-11807-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11808-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2D4F95B9FF
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 17:24:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8922B95BC6F
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 18:50:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EB0B1C20D3F
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 15:24:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7DB61C23008
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 16:50:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDC2D2D05E;
-	Thu, 22 Aug 2024 15:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC4E71CDA23;
+	Thu, 22 Aug 2024 16:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="BvI3y5kh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C4K59aSi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565681CC899
-	for <linux-wireless@vger.kernel.org>; Thu, 22 Aug 2024 15:24:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C098B182DF;
+	Thu, 22 Aug 2024 16:50:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724340257; cv=none; b=LT5Gad7vrLOS35anB1il1DAVs+oR5NGUIUuu7157hCHNIWFCnhVUK5q/oYlN40Muc4phzGpP/PSSSegeeyioAOYeB0nm41nbkiZoSDN2eaj/yAlzVZRtZ+5VgFYpXSHz7T8ViUrRFqah1MCTnLGmuaMPjV+shd87f/+7tieEz4M=
+	t=1724345413; cv=none; b=BQELr2mlgaL1Kwl/+4LA9RvWckGh6HeSrTSDAfas9J/r4siyE6TmWZayp18ykSdmkdN89CkSvRfkC0785SRPCF6E/qNhoTM9C2VzkmxlJRmghPw2fHxqaTJvlMByvoCRvAmpCpG5V43HGNbUbhPlACB9RzO2Z+sHIbnEwxj3xNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724340257; c=relaxed/simple;
-	bh=ifbdnDJW70+jw6bx/lsmpC2xoyRoOWyXmUWG0zvUBxg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lt6IAMKivZ4EkNXFgooj0vpkh98gwaGsvCSCAM3amCDSrWKCIt0dw5vosW2G37pXkonljZjq9ecxZEkK63n8PqUqkkIcp7/1ElMjDaUjw0D2Hu8UxyoaK2g9fpam7SoGw1aozRNrUesFTIdX1PL4AKID0HUGdHO04ITqGevL7WU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=BvI3y5kh; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 39D4A88B23;
-	Thu, 22 Aug 2024 17:24:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1724340249;
-	bh=RACoWArEhJL9Q0Mv0jj8WLbXpHtBHRU+ZVaHNzkMKu8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BvI3y5khqEftd8/OwffBZxNrngIrxyTPwhEtkkoC8kn+RYjslzyftP+Mbzl+3RVaG
-	 mqnXNyR28Rvp3LyMYK4og3bRUvRL/+6Cn0kBpJTuKhaskKqvc/KrWpYK1AjHuVA9Ek
-	 q5lAzp6RNRRYOYdLoo12iDvCxm39IllNpMFZiTm0PJZEkHBOde84urAZ7ZbCsLJUhw
-	 5he1aY0u2dnu1ijN5XJg9PXW0bG6ZPiKIp7gq8o7j30HLK4Xii5fTeq05Egs+eiFpQ
-	 k37u1IedS/83mIpzSZhKVOCIpv4YMwS41U9nIFpvhqO6nNBwJo1cpndmZDxg0uHk/b
-	 U92FocWwiUW3g==
-Message-ID: <6129cf7b-59bb-440f-a277-69af63168e87@denx.de>
-Date: Thu, 22 Aug 2024 17:15:18 +0200
+	s=arc-20240116; t=1724345413; c=relaxed/simple;
+	bh=+fNrTItCT2YwGN+dojlHcg8wSI5mEQWYNR8QSA6wH8A=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=BYc2ADQ1cUYmnLBjwyLLQuWWG3NtIEJXSQwWgYLiu+XugKRp9+tZyvIIC138mysFNHe+8Rkl67Q+q8RfzZbc+jGLGsI1qXxPrvdc8gqidHCr8kouyZwBMfoPqB8wYEGtdaHlQ5uPU99S+v5IwTQkgagJgjh15TLKG66NSW7UvfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C4K59aSi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD69CC4AF0F;
+	Thu, 22 Aug 2024 16:50:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724345413;
+	bh=+fNrTItCT2YwGN+dojlHcg8wSI5mEQWYNR8QSA6wH8A=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=C4K59aSinf7Nds94klrGvAj7XbveK9nhD9+YPIZcrhQt0XDARKVvYbm8YycxSTcRz
+	 dlkkFQqwGUlsIHD8w1CpiOQuAIYOwxedeMXs+SeWyklLe10NDOOp39VXZ5YEyt4G/9
+	 nK839XUKK3IW8Fx3sp53XeLPsOQAu/Y6bPI3gYmSgfuytNHmHQkEXcK817VWeWb3ct
+	 ZFSuKCR54xd78exXaX+y6+z+ds0dpZq9tqpal1lMrvRAZQeiPt1/A0kAoFQjKEfSLg
+	 gNtQLNrkR8Cr+k5dA3ODvt760gkncNUeO5VGOgmLU6kYzTDrmqpi5Np64pd+7q4YoP
+	 bcNPc8qA/TOIw==
+From: Kalle Valo <kvalo@kernel.org>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>,  Jeff Johnson
+ <jjohnson@kernel.org>,  <linux-wireless@vger.kernel.org>,
+  <ath11k@lists.infradead.org>,  <linux-kernel@vger.kernel.org>,
+  <linux-hardening@vger.kernel.org>
+Subject: Re: [PATCH][next] wifi: ath11k: Avoid
+ -Wflex-array-member-not-at-end warnings
+References: <ZrZB3Rjswe0ZXtug@cute>
+	<8d31adac-fd43-4cf9-8fc8-655b359a573c@quicinc.com>
+Date: Thu, 22 Aug 2024 19:50:09 +0300
+In-Reply-To: <8d31adac-fd43-4cf9-8fc8-655b359a573c@quicinc.com> (Jeff
+	Johnson's message of "Fri, 9 Aug 2024 19:21:10 -0700")
+Message-ID: <871q2gwlha.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] wifi: brcmfmac: add support for TRX firmware download
-To: Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, Chung-Hsien Hsu
- <stanley.hsu@cypress.com>, Chung-Hsien Hsu <chung-hsien.hsu@infineon.com>,
- "Dr. David Alan Gilbert" <linux@treblig.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
- Arend van Spriel <arend.vanspriel@broadcom.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Carter Chen <carter.chen@infineon.com>,
- Duoming Zhou <duoming@zju.edu.cn>, Erick Archer <erick.archer@outlook.com>,
- Kees Cook <kees@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Mathias Krause <minipli@grsecurity.net>, Matthias Brugger
- <mbrugger@suse.com>, Owen Huang <Owen.Huang@infineon.com>,
- Ulf Hansson <ulf.hansson@linaro.org>, brcm80211-dev-list.pdl@broadcom.com,
- brcm80211@lists.linux.dev
-References: <20240818201533.89669-1-marex@denx.de>
- <172431581868.2154344.15348672155352447310.kvalo@kernel.org>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <172431581868.2154344.15348672155352447310.kvalo@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain
 
-On 8/22/24 10:37 AM, Kalle Valo wrote:
-> Marek Vasut <marex@denx.de> wrote:
-> 
->> From: Chung-Hsien Hsu <stanley.hsu@cypress.com>
->>
->> Add support to download TRX firmware for PCIe and SDIO.
->>
->> Signed-off-by: Chung-Hsien Hsu <chung-hsien.hsu@infineon.com>
->> Signed-off-by: Marek Vasut <marex@denx.de> # Upport to current linux-next
-> 
-> Please fix the review comments, also Ping's comment that from and s-o-b
-> needs to match.
+Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
-I have most of the changes addressed locally already.
+> On 8/9/2024 9:20 AM, Gustavo A. R. Silva wrote:
+>
+>> -Wflex-array-member-not-at-end was introduced in GCC-14, and we are
+>> getting ready to enable it, globally.
+>> 
+>> Move the conflicting declaration to the end of the structure. Notice
+>> that `struct ieee80211_chanctx_conf` is a flexible structure --a
+>> structure that contains a flexible-array member.
+>> 
+>> Also, remove a couple of unused structures.
+>> 
+>> Fix the following warnings:
+>> drivers/net/wireless/ath/ath11k/core.h:409:39: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+>> drivers/net/wireless/ath/ath11k/dp.h:1309:24: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+>> drivers/net/wireless/ath/ath11k/dp.h:1368:24: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+>> 
+>> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+>> ---
+>>  drivers/net/wireless/ath/ath11k/core.h |  4 +++-
+>>  drivers/net/wireless/ath/ath11k/dp.h   | 23 -----------------------
+>>  2 files changed, 3 insertions(+), 24 deletions(-)
+>> 
+>> diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+>> index df24f0e409af..e283415dccf3 100644
+>> --- a/drivers/net/wireless/ath/ath11k/core.h
+>> +++ b/drivers/net/wireless/ath/ath11k/core.h
+>> @@ -406,11 +406,13 @@ struct ath11k_vif {
+>>  	bool wpaie_present;
+>>  	bool bcca_zero_sent;
+>>  	bool do_not_send_tmpl;
+>> -	struct ieee80211_chanctx_conf chanctx;
+>>  	struct ath11k_arp_ns_offload arp_ns_offload;
+>>  	struct ath11k_rekey_data rekey_data;
+>>  
+>>  	struct ath11k_reg_tpc_power_info reg_tpc_info;
+>> +
+>> +	/* Must be last - ends in a flexible-array member. */
+>> +	struct ieee80211_chanctx_conf chanctx;
+>
+> there is something illogical about this since the vif is allocated using
+> sizeof() and hence there will never be memory allocated for the flexible
+> array, and it is assigned using either struct assignment or memcpy using the
+> struct size which (fortunately) would not transfer the flexible array contents:
+> 		arvif->chanctx = *ctx;
+>
+> 		memcpy(&arvif->chanctx, ctx, sizeof(*ctx));
+>
+> since ath11k doesn't actually use the drv_priv[] I guess this change is OK, it
+> is just strange to me.
+>
+> also makes me wonder why ath11k keeps a copy of the chanctx instead of just
+> getting it from the underlying ieee80211_link_data. but that is outside the
+> scope of this discussion.
 
-Regarding the SoB line, do I update the commit Author email (because 
-that would make more sense, cypress got assimilated into infineon) or 
-the SoB line email to the "old" cypress email address ?
+Yeah, this doesn't look right. I don't think a driver should be copying
+struct ieee80211_chanctx_conf like that. I think I'll add a comment
+about this to the code:
 
-I am still hoping to get a bit more input on the TRX firmware handling 
-from Arend ... or maybe there is no further feedback ?
+/* FIXME: Driver should not copy struct ieee80211_chanctx_conf,
+ * especially because it has a flexible array. Find a better way.
+ */
+
+Thoughts?
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+https://docs.kernel.org/process/submitting-patches.html
 
