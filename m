@@ -1,338 +1,167 @@
-Return-Path: <linux-wireless+bounces-11768-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11769-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 611E295A8D1
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 02:26:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5572D95A8EC
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 02:33:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBC0DB22CAC
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 00:26:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BA7F283580
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 00:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DADA89461;
-	Thu, 22 Aug 2024 00:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A76231D130C;
+	Thu, 22 Aug 2024 00:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dcrOz4t/"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="DmzFIA88"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E4325661;
-	Thu, 22 Aug 2024 00:26:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B781A6FB9
+	for <linux-wireless@vger.kernel.org>; Thu, 22 Aug 2024 00:33:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724286389; cv=none; b=peVgQCdelgmes5Y8XBtFxcPvLotEs+yzSi2Gdh6v+WS65zcT//Ch6xgrulkn9XX72yKmFlJD98tDRpHTda14p6ehsF8iRBlzXgCs87Reqympx+ZcyvMYhNSmGO2taLl4iJIwn9RGCOiWtAIlZjUx3nyoQUARTYvwoPB2vkn8C/Y=
+	t=1724286817; cv=none; b=sypHBFadnkuziyFw113RHE4iDWfstZgUqr/V+YW5r9//gb/YtRbY3GhU1jbxd40DAz/2d6E7nKsJ/2u3j5h/Unby57z6lAmbSYnYerpL0KAMOr9AGw935/GHsD4Tup35X8jed1qWcKRLpIvTgObXa1fIBUn6k40jkups9gRM/+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724286389; c=relaxed/simple;
-	bh=sbaExOJNUa3u/kFBfMA5JdWqNWYBSpyn5r+f72RsFoY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=j8m3AmsbGQpGSs6amRnhCuEUqHwR3t4QvrLp0wbT/lbOd+6bhcGxxlcL391jrbE2sRA2BxmODTbQ3H1+zt3uI+Ncn39ThuP6qUiFjgxm7kZ2uocXmSsj7VfQcKBgTYm0z2rm4ZeETzQUwYXE7LWmSt/SRUDE9cJ+udyXUECAiJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dcrOz4t/; arc=none smtp.client-ip=209.85.128.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-6b4432b541aso2773857b3.1;
-        Wed, 21 Aug 2024 17:26:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724286387; x=1724891187; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yygxy+SswvTalGTzXLF9xOU7VfSvEWj/WAnP+sa6pLQ=;
-        b=dcrOz4t/Jfo68vkwaSVWoyjAE1Bt+9sSrTXFcB06HS9obfAw+AXB1oqepwPBcvY+fh
-         KtnBU5VldGU6N6gKYaNA5nmQMrX3uWd6SoaQygtdaSbdwaOBZT1h6eyzdcy1qgpTmiA7
-         E/gUZCp68kY2c7bwze1V9UcsQqQfT0LnNtfWsAWBA+/E1pboN27S343D3ZBHD5vcNg/9
-         m0OldVpWLVZCypZxQ+9SVQHne+rnSnxQQ+dC0axVFKVKijV7voJ//DxDek3GOMnxX0bz
-         Z10hSff0eEoH0ijmKPUTuJltioNVjOer5Kd1HXtCbi62X/PcnrOx/J/qQYvZUb/l7ih2
-         Y/rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724286387; x=1724891187;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yygxy+SswvTalGTzXLF9xOU7VfSvEWj/WAnP+sa6pLQ=;
-        b=FIF1OSFYzYGW8eoDqLjoNeDsnDTOljOEPS80ttD2rzXsbngNazM1rAkMKR+l1POEB2
-         b7Ue7dn6RGe2iweym1vBaXFUAUHqj+qxk7SvI9pDrD+Dd6jz48movsDHCYa8cG4DSJDe
-         w4eAlA1Iryj0SVxw1aqxqUV7QBQyG9T3q6tpTQQ0twPk7fNX26XemkNUxdmU/RkR031u
-         K2c6l5mw5EgD8de0qip4lhaOQaqAzTHKt/uUT+EmWKjIVahgjuH3oCYeq2IngOdGJ/zJ
-         QEWzm6eAe8vKk+M5tae0nr+EZbATqU6pBKojMn9CIo1BMMT4ktcXCqgQ1jSpkfjWGXrT
-         St8g==
-X-Forwarded-Encrypted: i=1; AJvYcCV50EUDiJgATwsQy/uQVAuzZRpG45Q3kxLq/7K0GsAgtPs/9nSzncJOLRts6luJu6lpUZg83Uf3fPjYTJATz28=@vger.kernel.org, AJvYcCXuVY5H+UotNFk8cz0nKt/XhZt6TOp0kGSLvcOsxHQdEov/GeO7YeHeVIlQ7083Q5JtosxF491z8h4j@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYzJUYWyTjudU8MjzqC3nURn3RGxJPG45qnJCLrorZTe/mHI/S
-	xGoZiIWm+KBcqWUMitpOPsC9vGd4IBA5IcgStnzC4SMB6GnzSJRm2HO8fZP7D5HM86IMveNzIkR
-	1Ab2lvaOwffL0EBlkkBvJkdSdY/s=
-X-Google-Smtp-Source: AGHT+IFHWv8m2dGCwdLvgaOkJlgTnvi/SA3k6TMvgah+tUzw9I7WiOv51zfqWgdB3bIHvytzPn4RPv0uIDiv6SkBxIM=
-X-Received: by 2002:a05:690c:288f:b0:62a:530:472f with SMTP id
- 00721157ae682-6c09fa8b1b1mr43824207b3.32.1724286386825; Wed, 21 Aug 2024
- 17:26:26 -0700 (PDT)
+	s=arc-20240116; t=1724286817; c=relaxed/simple;
+	bh=Ek3+ccZKfGcd1f6V1VK69rK/jyVpY/TbXFzofisSZG0=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=aFJW1yUCkzcL7W87vg8RPb1bWar7GwxM8xce4yKSlrbq6//L2kwUVzG/EESVtXd3GLOAhLejGMvHoNFE8B2gQ7Kq/e1/WPZ9sVQZNHDwVfjlzcOozwCZQubyI0qR8cutVNwJTPX3Nr6HoCbuDi0CgTwfjHjdN9atcCvDbDQFLU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=DmzFIA88; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 47M0XT1i83318418, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1724286809; bh=Ek3+ccZKfGcd1f6V1VK69rK/jyVpY/TbXFzofisSZG0=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=DmzFIA88R19p/+uXitwzhtNSr/u9e8lQ/HbtHEnrdemNVjAaNxJLs3wS3WhcBgOHM
+	 4KWQVkodT922m0LvTjqVic+XBCIBQCaSHM1dxdt9K4K2opTAB88XXLX3yMwvFC5l7s
+	 S/RYd0rSMZqHQmF7jgP+fFIM53ZpGk+9pQRMdL21DRaoEJs3Gi3mIpl4xw9bl5LWeo
+	 nPwWk00V7AcmxCZVbd5n1l4J9RvqGp+qnnwZNE/gcM1PGCx0iM+5ihYzqi/gUGXY2u
+	 UY0FPTl03dkF5EKrWv9EXtctuj0IojyR1ESuKxjMY1Q3AIMiNjBbFwzDqGvEB0A3Wf
+	 OmWxjhhCsIZOg==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 47M0XT1i83318418
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 22 Aug 2024 08:33:29 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 22 Aug 2024 08:33:30 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 22 Aug 2024 08:33:29 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
+ 15.01.2507.035; Thu, 22 Aug 2024 08:33:29 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH 03/20] wifi: rtw88: Allow different C2H RA report sizes
+Thread-Topic: [PATCH 03/20] wifi: rtw88: Allow different C2H RA report sizes
+Thread-Index: AQHa7DDGvlj44vDEDUaIMp+2n642+LIn28NggAaGugCAAPvpQIAA11EAgACyXKCAAC+wgIABZMUQ
+Date: Thu, 22 Aug 2024 00:33:29 +0000
+Message-ID: <423f1f602b52464499c38459bd19cc84@realtek.com>
+References: <ade57ca1-444f-49e2-b49e-f4b9da65b2cc@gmail.com>
+ <e0de25fc-8742-4899-854e-7cbd93aaa582@gmail.com>
+ <6071028680d14afa8e0eed84821f51c6@realtek.com>
+ <4b7181e4-d235-4c02-8b8e-dbafbf38fa93@gmail.com>
+ <840cb519e99047a5a8f3ca4a12a3fcee@realtek.com>
+ <d06c7a5f-c773-45a6-98f2-30fb1d0dde94@gmail.com>
+ <9456919959d94b548750f78a371f204e@realtek.com>
+ <73accc26-15ee-43d9-bad2-061c42b76e0e@gmail.com>
+In-Reply-To: <73accc26-15ee-43d9-bad2-061c42b76e0e@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240820101216.355012-1-arend.vanspriel@broadcom.com>
- <20240820101216.355012-2-arend.vanspriel@broadcom.com> <mbvhz3wosnykejgs65es2sfedxoevysbqu3jxmpgdze2b2tl6o@grx4mxas2bmf>
- <7881c303-bef1-403a-aa70-30d33558f57f@kernel.org> <6777d425-b27f-43d0-ba81-b36ac0b8f929@broadcom.com>
- <0b639d04-af33-44b0-a556-40decff683c5@kernel.org> <3ed394a3-2b5e-4096-b090-c805657585a3@kernel.org>
- <f7c17dff-fd64-4769-9fc4-7ff929a2c5d8@broadcom.com> <931f4acc-6fb5-4f0d-9e37-b945de2e7349@kernel.org>
-In-Reply-To: <931f4acc-6fb5-4f0d-9e37-b945de2e7349@kernel.org>
-From: Julian Calaby <julian.calaby@gmail.com>
-Date: Thu, 22 Aug 2024 10:26:15 +1000
-Message-ID: <CAGRGNgWeuJ4Y4AwvDQWw9nZ=tVCsaqVnmeyD+ywT4c4+LmmXCw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings: wireless: restore constraint for
- brcm,bcm4329-fmac compatible property
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Arend van Spriel <arend.vanspriel@broadcom.com>, Kalle Valo <kvalo@kernel.org>, 
-	Hector Martin <marcan@marcan.st>, Krzysztof Kozlowski <krzk+dt@kernel.org>, devicetree@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev, 
-	asahi@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-Hi Krzysztof, Arend,
-
-On Wed, Aug 21, 2024 at 4:46=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.or=
-g> wrote:
->
-> On 20/08/2024 21:29, Arend van Spriel wrote:
-> > On August 20, 2024 5:51:03 PM Krzysztof Kozlowski <krzk@kernel.org> wro=
-te:
-> >
-> >> On 20/08/2024 17:36, Krzysztof Kozlowski wrote:
-> >>> On 20/08/2024 14:50, Arend van Spriel wrote:
-> >>>> On 8/20/2024 1:39 PM, Krzysztof Kozlowski wrote:
-> >>>>> On 20/08/2024 13:27, Krzysztof Kozlowski wrote:
-> >>>>>> On Tue, Aug 20, 2024 at 12:12:15PM +0200, Arend van Spriel wrote:
-> >>>>>>> When extending the bindings for Apple PCIe devices the compatible=
- property
-> >>>>>>> specification was changed. However, it was changed such that for =
-these
-> >>>>>>> devices it was no longer necessary to have "brcm,bcm4329-fmac" li=
-sted as
-> >>>>>>> string in the compatible list property as it was before that exte=
-nsion.
-> >>>>>>
-> >>>>>> Apart that this was never tested... That statement is not true. Lo=
-ok at
-> >>>>>> "fixed" commit - it is not doing like that at all.
-> >>>>>>
-> >>>>>> I don't understand the reasoning.
-> >>>>>>
-> >>>>>>> This patch restores that constraint.
-> >>>>>>>
-> >>>>>>> Fixes: e2e37224e8b3 ("dt-bindings: net: bcm4329-fmac: Add Apple p=
-roperties
-> >>>>>>> & chips")
-> >>>>>>> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> >>>>>>> ---
-> >>>>>>> .../net/wireless/brcm,bcm4329-fmac.yaml       | 19 ++++++++++----=
------
-> >>>>>>> 1 file changed, 10 insertions(+), 9 deletions(-)
-> >>>>>>>
-> >>>>>>> diff --git
-> >>>>>>> a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fma=
-c.yaml
-> >>>>>>> b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329-fma=
-c.yaml
-> >>>>>>> index e564f20d8f41..47f90446322f 100644
-> >>>>>>> --- a/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329=
--fmac.yaml
-> >>>>>>> +++ b/Documentation/devicetree/bindings/net/wireless/brcm,bcm4329=
--fmac.yaml
-> >>>>>>> @@ -7,7 +7,7 @@ $schema: http://devicetree.org/meta-schemas/core.=
-yaml#
-> >>>>>>> title: Broadcom BCM4329 family fullmac wireless SDIO/PCIE devices
-> >>>>>>>
-> >>>>>>> maintainers:
-> >>>>>>> -  - Arend van Spriel <arend@broadcom.com>
-> >>>>>>> +  - Arend van Spriel <arend.vanspriel@broadcom.com>
-> >>>>>>>
-> >>>>>>> description:
-> >>>>>>> The Broadcom Single chip MAC part for the BCM4329 family and
-> >>>>>>> @@ -27,7 +27,6 @@ properties:
-> >>>>>>>            - brcm,bcm4341b0-fmac
-> >>>>>>>            - brcm,bcm4341b4-fmac
-> >>>>>>>            - brcm,bcm4341b5-fmac
-> >>>>>>> -              - brcm,bcm4329-fmac
-> >>>>>>>            - brcm,bcm4330-fmac
-> >>>>>>>            - brcm,bcm4334-fmac
-> >>>>>>>            - brcm,bcm43340-fmac
-> >>>>>>> @@ -46,13 +45,15 @@ properties:
-> >>>>>>>            - cypress,cyw43012-fmac
-> >>>>>>>            - infineon,cyw43439-fmac
-> >>>>>>>        - const: brcm,bcm4329-fmac
-> >>>>>>> -      - enum:
-> >>>>>>> -          - brcm,bcm4329-fmac
-> >>>>>>> -          - pci14e4,43dc  # BCM4355
-> >>>>>>> -          - pci14e4,4464  # BCM4364
-> >>>>>>> -          - pci14e4,4488  # BCM4377
-> >>>>>>> -          - pci14e4,4425  # BCM4378
-> >>>>>>> -          - pci14e4,4433  # BCM4387
-> >>>>>>> +    - items:
-> >>>>>>> +          - enum:
-> >>>>>>> +              - pci14e4,43dc  # BCM4355
-> >>>>>>> +              - pci14e4,4464  # BCM4364
-> >>>>>>> +              - pci14e4,4488  # BCM4377
-> >>>>>>> +              - pci14e4,4425  # BCM4378
-> >>>>>>> +              - pci14e4,4433  # BCM4387
-> >>>>>>> +          - const: brcm,bcm4329-fmac
-> >>>>>>> +    - const: brcm,bcm4329-fmac
-> >>>>>>
-> >>>>>> And this does not make sense... You claim that some constrained wa=
-s
-> >>>>>> droppped and you re-add it, but in fact you still add the same cod=
-e as
-> >>>>>> it was before.
-> >>>>>>
-> >>>>>> NAK.
-> >>>>>
-> >>>>> Ah, the last "const" actually makes sense, I missed that.
-> >>>>>
-> >>>>> Commit still however lacks rationale why these devices are compatib=
-le.
-> >>>>> Plus existing rationale that e2e37224e8b3 changed something is enti=
-rely
-> >>>>> WRONG. It changed nothing. ZERO. It only added new devices, which w=
-as
-> >>>>> claimed are not compatible with brcm,bcm4329-fmac.
-> >>>>
-> >>>> So is that claim true? What does it mean that these new devices are =
-not
-> >>>> compatible. If they are they should be in a separate binding or the
-> >>>
-> >>> Whether binding is separate or not, is just way of organizing things.
-> >>>
-> >>>> applicable properties for these devices should be made conditional.
-> >>>
-> >>> Could be if they are not applicable.
-> >>>
-> >>>>
-> >>>>> Now if you claim that original commit which said "these devices are=
- not
-> >>>>> compatible with brcm,bcm4329-fmac", then please provide arguments, =
-not
-> >>>>> just say "other commit did something". It did nothing...
-> >>>>
-> >>>> Not entirely true. Indeed new devices were added for which no
-> >>>> "brcm,bcm4329-fmac" string is required in the compatible property. A=
-lso
-> >>>> the commit added new properties for these new devices. Now in my opi=
-nion
-> >>>> a driver should not use these properties without a "compatible" chec=
-k.
-> >>>> Hope we can agree to that. However, the driver patch for supporting =
-the
-> >>>
-> >>> Sorry, I don't follow. Why the driver would need to check for compati=
-ble?
-> >>>
-> >>>> binding change does no such thing. So if we leave the binding as it
-> >>>> currently is the driver will have to check if compatible has any of =
-the
-> >>>> listed PCI IDs before processing the properties. As all properties o=
-ld
-> >>>
-> >>> Why driver needs to check it? Are these properties not valid?
-> >
-> > How would the driver know other than the compatible property? The node
-> > with properties is delivered by the bus driver. If that comes with
-> > guarantees about validity than that's great.
->
-> I still do not follow what is the problem being addressed by driver
-> needing to check.
->
-> >
-> >>>
-> >>>
-> >>>> and new are marked as optional I can not come up with an argument th=
-at
-> >>>> these new devices are *not* compatible with brcm,bcm4329-fmac.
-> >>>
-> >>> Compatibility is expressed by implementing same programming interfasc=
-e
-> >>> (or its subset) thus being able to bind via fallback and correctly
-> >>> operate in given SW.
-> >
-> > This exactly what I mean to say (and apparently fail to do so ;-s ).
-> >
-> >>> I don't know whether that's the case here, so rephrasing my earlier
-> >>> comments - the commit msg should focus on this aspect and tell that
-> >>> devices are fully compatible, thus they should use fallback.
-> >>>
-> >>> Quick look at drivers told me that not - they are not compatible...
-> >
-> > Okay. That puts use in different corner of the arena. Can you elaborate
-> > how you come to that assessment? Is that based on the fact that some of
-> > the properties are SDIO-only?
->
-> The simplest: because they do not use the same match/bind code. Plus PCI
-> devices never used half of brcmf_of_probe(). Although that's more of a
-> reason these are significantly different.
->
-> >
-> >>>
-> >> Another thing is that calling SDIO and PCI devices compatible is quite=
- a
-> >> stretch... Clearly hardware-wise they are very different and Linux doe=
-s
-> >> not use the same interfaces to match/bind them.
-> >
-> > These are wifi devices which hardware-wise are 95% the same. If you fin=
-d
-> > the block diagram with IP cores for these devices (enough google result=
-s
-> > to find some) you can see they sometimes even have both PCI and SDIO
-> > block on-chip although only one is used so they can be considered 100%
-> > the same. In both cases the bus driver will attach the DT node to the
-> > binding device.
->
-> I understand they are similar, but it does not matter if that is 95% or
-> even 99% if the interface is different. Linux cannot use these devices
-> through the same interface. However if you claim it can, then please
-> write appropriate commit msg.
->
-> My entire objection hare started not because I believe these are not
-> compatible (although based on different buses I believe they are not
-> compatible), but because the argument was about that other commit. That
-> argument is not correct to make the change. Correct argument to make the
-> change could be: These devices are compatible, because of foo and bar.
-
-A way to put it might be something like:
-
-Almost all Broadcom wireless chipsets, some Broadcom ethernet chipsets
-and most Broadcom-derived Infineon and Cypress wireless chipsets share
-the same rough layout:
-
-System bus -> bus glue logic -> internal bus -> RF chipset(s)
-
-Previous generations had separate drivers for the bus glue logic and
-then probed the internal bus for the RF chipset(s), however in the
-current generation that separation is mostly just a historical
-artifact and abstraction layer.
-
-The firmwares for all WiFi chipsets in this generation also provide
-fundamentally identical interfaces with any differences either probed
-at runtime or derived from data in the firmware. As such, once the
-glue logic is abstracted away, all chipsets of this generation are
-fundamentally identical from a software perspective. Therefore the
-only data needed to use one of these chipsets is the type of bus to
-select the glue logic driver and the firmware to load which is derived
-from the vendor and product IDs.
-
-The only real hardware differences between different chipsets are that
-some have external interrupt lines or additional clocks and I'm not
-sure if hooking those up is actually mandatory.
-
-Thanks,
-
-Julian Calaby
-
-
-
---
-Julian Calaby
-
-Email: julian.calaby@gmail.com
-Profile: http://www.google.com/profiles/julian.calaby/
+Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBPbiAy
+MS8wOC8yMDI0IDAzOjMxLCBQaW5nLUtlIFNoaWggd3JvdGU6DQo+ID4gQml0dGVyYmx1ZSBTbWl0
+aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiA+PiBPbiAyMC8wOC8yMDI0IDA0
+OjEwLCBQaW5nLUtlIFNoaWggd3JvdGU6DQo+ID4+PiBCaXR0ZXJibHVlIFNtaXRoIDxydGw4ODIx
+Y2VyZmUyQGdtYWlsLmNvbT4gd3JvdGU6DQo+ID4+Pj4gT24gMTUvMDgvMjAyNCAwOToxNCwgUGlu
+Zy1LZSBTaGloIHdyb3RlOg0KPiA+Pj4+PiBCaXR0ZXJibHVlIFNtaXRoIDxydGw4ODIxY2VyZmUy
+QGdtYWlsLmNvbT4gd3JvdGU6DQo+ID4+Pj4+PiBUaGUgUlRMODgyMUFVIGFuZCBSVEw4ODEyQVUg
+aGF2ZSBzbWFsbGVyIFJBIHJlcG9ydCBzaXplLCBvbmx5IDQgYnl0ZXMuDQo+ID4+Pj4+PiBBdm9p
+ZCB0aGUgImludmFsaWQgcmEgcmVwb3J0IGMyaCBsZW5ndGgiIGVycm9yLg0KPiA+Pj4+Pj4NCj4g
+Pj4+Pj4+IFNpZ25lZC1vZmYtYnk6IEJpdHRlcmJsdWUgU21pdGggPHJ0bDg4MjFjZXJmZTJAZ21h
+aWwuY29tPg0KPiA+Pj4+Pj4gLS0tDQo+ID4+Pj4+PiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVh
+bHRlay9ydHc4OC9mdy5jICAgICAgIHwgOCArKysrKystLQ0KPiA+Pj4+Pj4gIGRyaXZlcnMvbmV0
+L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvbWFpbi5oICAgICB8IDEgKw0KPiA+Pj4+Pj4gIGRyaXZl
+cnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcnR3ODcwM2IuYyB8IDEgKw0KPiA+Pj4+Pj4g
+IGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcnR3ODcyM2QuYyB8IDEgKw0KPiA+
+Pj4+Pj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcnR3ODgyMWMuYyB8IDEg
+Kw0KPiA+Pj4+Pj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcnR3ODgyMmIu
+YyB8IDEgKw0KPiA+Pj4+Pj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvcnR3
+ODgyMmMuYyB8IDEgKw0KPiA+Pj4+Pj4gIDcgZmlsZXMgY2hhbmdlZCwgMTIgaW5zZXJ0aW9ucygr
+KSwgMiBkZWxldGlvbnMoLSkNCj4gPj4+Pj4+DQo+ID4+Pj4+PiBkaWZmIC0tZ2l0IGEvZHJpdmVy
+cy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC9mdy5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
+cmVhbHRlay9ydHc4OC9mdy5jDQo+ID4+Pj4+PiBpbmRleCA3ODJmMzc3NmUwYTAuLmFjNTNlM2Uz
+MGFmMCAxMDA2NDQNCj4gPj4+Pj4+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsv
+cnR3ODgvZncuYw0KPiA+Pj4+Pj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9y
+dHc4OC9mdy5jDQo+ID4+Pj4+PiBAQCAtMTU3LDcgKzE1NywxMCBAQCBzdGF0aWMgdm9pZCBydHdf
+ZndfcmFfcmVwb3J0X2l0ZXIodm9pZCAqZGF0YSwgc3RydWN0IGllZWU4MDIxMV9zdGEgKnN0YSkN
+Cj4gPj4+Pj4+DQo+ID4+Pj4+PiAgICAgICAgIHJhdGUgPSBHRVRfUkFfUkVQT1JUX1JBVEUocmFf
+ZGF0YS0+cGF5bG9hZCk7DQo+ID4+Pj4+PiAgICAgICAgIHNnaSA9IEdFVF9SQV9SRVBPUlRfU0dJ
+KHJhX2RhdGEtPnBheWxvYWQpOw0KPiA+Pj4+Pj4gLSAgICAgICBidyA9IEdFVF9SQV9SRVBPUlRf
+QlcocmFfZGF0YS0+cGF5bG9hZCk7DQo+ID4+Pj4+PiArICAgICAgIGlmIChzaS0+cnR3ZGV2LT5j
+aGlwLT5jMmhfcmFfcmVwb3J0X3NpemUgPCA3KQ0KPiA+Pj4+Pg0KPiA+Pj4+PiBFeHBsaWNpdGx5
+IHNwZWNpZnkgJz09IDQnIGZvciB0aGUgY2FzZSBvZiBSVEw4ODIxQVUgYW5kIFJUTDg4MTJBVS4N
+Cj4gPj4+Pj4NCj4gPj4+Pj4+ICsgICAgICAgICAgICAgICBidyA9IHNpLT5id19tb2RlOw0KPiA+
+Pj4+Pj4gKyAgICAgICBlbHNlDQo+ID4+Pj4+PiArICAgICAgICAgICAgICAgYncgPSBHRVRfUkFf
+UkVQT1JUX0JXKHJhX2RhdGEtPnBheWxvYWQpOw0KPiA+Pj4+Pj4NCj4gPj4+Pj4NCj4gPj4+Pj4N
+Cj4gPj4+Pg0KPiA+Pj4+IFdvdWxkIHRoYXQgbWFrZSBzZW5zZT8gSSBjaGVjayBmb3IgbGVzcyB0
+aGFuIDcgYmVjYXVzZSB0aGUgc2l6ZQ0KPiA+Pj4+IGhhcyB0byBiZSBhdCBsZWFzdCA3IGluIG9y
+ZGVyIHRvIGFjY2VzcyBwYXlsb2FkWzZdIChHRVRfUkFfUkVQT1JUX0JXKS4NCj4gPj4+DQo+ID4+
+PiBBcyB5b3UgZGlkICJXQVJOKGxlbmd0aCA8IHJ0d2Rldi0+Y2hpcC0+YzJoX3JhX3JlcG9ydF9z
+aXplKSIsIEkgYXNzdW1lIHlvdQ0KPiA+Pj4gZXhwZWN0ICI8IDciIGNhc2VzIGlzIG9ubHkgZm9y
+IGNvbWluZyBjaGlwcyBSVEw4ODIxQVUgYW5kIFJUTDg4MTJBVS4NCj4gPj4+DQo+ID4+PiBNYXli
+ZSBleHBsaWNpdGx5IHNwZWNpZnlpbmcgY2hpcHMgSUQgd291bGQgYmUgZWFzaWVyIHRvIHVuZGVy
+c3RhbmQ6DQo+ID4+PiAgICAgICAgIGlmIChjaGlwID09IFJUTDg4MjFBIHx8IGNoaXAgPT0gUlRM
+ODgxMkEpDQo+ID4+PiAgICAgICAgICAgICAgICBidyA9IHNpLT5id19tb2RlOw0KPiA+Pj4gICAg
+ICAgICBlbHNlDQo+ID4+PiAgICAgICAgICAgICAgICBidyA9IEdFVF9SQV9SRVBPUlRfQlcocmFf
+ZGF0YS0+cGF5bG9hZCk7DQo+ID4+Pg0KPiA+Pj4gVGhhdCdzIHdoeSBJIHdhbnQgIj09IDQiLiAo
+YnV0IGl0IHNlZW1zIGltcGxpY2l0bHkgbm90IGV4cGxpY2l0bHkgdGhvdWdoLikNCj4gPj4+DQo+
+ID4+DQo+ID4+IEkganVzdCBjaGVja2VkLCB0aGUgUkEgcmVwb3J0IHNpemUgb2YgUlRMODgxNEFV
+IGlzIDYuDQo+ID4NCj4gPiBDb3VsZCB5b3UgYWxzbyBjaGVjayBpZiB0aGUgcmVwb3J0IGZvcm1h
+dCBpcyBjb21wYXRpYmxlPw0KPiA+IEkgbWVhbiBkZWZpbml0aW9uIG9mIGZpcnN0IDQgYnl0ZXMg
+YXJlIHRoZSBzYW1lIGZvciBhbGwgY2hpcHM/IGFuZA0KPiA+IGRlZmluaXRpb24gb2YgZmlyc3Qg
+NiBieXRlcyBhcmUgdGhlIHNhbWUgZm9yIFJUTDg4MTRBVSBhbmQgY3VycmVudA0KPiA+IGV4aXRp
+bmcgY2hpcHM/DQo+ID4NCj4gPiBCeSB0aGUgd2F5LCBJIHRoaW5rIHdlIHNob3VsZCBzdHJ1Y3Qg
+d2l0aCB3MCwgdzEsIC4uLiBmaWVsZHMgaW5zdGVhZC4NCj4gPiAgICAgc3RydWN0IHJ0d19yYV9y
+ZXBvcnQgew0KPiA+ICAgICAgICAgX19sZTMyIHcwOw0KPiA+ICAgICAgICAgX19sZTMyIHcxOw0K
+PiA+ICAgICAgICAgX19sZTMyIHcyOw0KPiA+ICAgICAgICAgX19sZTMyIHczOw0KPiA+ICAgICAg
+ICAgX19sZTMyIHc0Ow0KPiA+ICAgICAgICAgX19sZTMyIHc1Ow0KPiA+ICAgICAgICAgX19sZTMy
+IHc2Ow0KPiA+ICAgICB9IF9fcGFja2VkOw0KPiA+DQo+ID4gVGhlbiwgd2UgY2FuIGJlIGVhc2ll
+ciB0byBhdm9pZCBhY2Nlc3Npbmcgb3V0IG9mIHJhbmdlLiBHRVRfUkFfUkVQT1JUX0JXKCkNCj4g
+PiBoaWRlcyBzb21ldGhpbmcsIG5vIGhlbHAgdG8gcmVhZCB0aGUgY29kZS4NCj4gPg0KPiANCj4g
+VGhlIHJlcG9ydCBmb3JtYXQgbG9va3MgY29tcGF0aWJsZS4NCj4gDQo+IEknbSBub3Qgc3VyZSBo
+b3cgYSBzdHJ1Y3Qgd2l0aCBfX2xlMzIgbWVtYmVycyB3b3VsZCBoZWxwIGhlcmUuDQo+IEkgYWdy
+ZWUgdGhhdCB0aGUgY3VycmVudCBtYWNyb3MgaGlkZSB0aGluZ3MuIFdlIGNvdWxkIGFjY2VzcyBw
+YXlsb2FkDQo+IGRpcmVjdGx5LiBUaGUgdmFyaWFibGUgbmFtZXMgYWxyZWFkeSBtYWtlIGl0IGNs
+ZWFyIHdoYXQgZWFjaCBieXRlIGlzOg0KPiANCj4gICAgICAgICBtYWNfaWQgPSByYV9kYXRhLT5w
+YXlsb2FkWzFdOw0KPiAgICAgICAgIGlmIChzaS0+bWFjX2lkICE9IG1hY19pZCkNCj4gICAgICAg
+ICAgICAgICAgIHJldHVybjsNCj4gDQo+ICAgICAgICAgc2ktPnJhX3JlcG9ydC50eHJhdGUuZmxh
+Z3MgPSAwOw0KPiANCj4gICAgICAgICByYXRlID0gdThfZ2V0X2JpdHMocmFfZGF0YS0+cGF5bG9h
+ZFswXSwgR0VOTUFTSyg2LCAwKSk7DQo+ICAgICAgICAgc2dpID0gdThfZ2V0X2JpdHMocmFfZGF0
+YS0+cGF5bG9hZFswXSwgQklUKDcpKTsNCj4gICAgICAgICBpZiAoc2ktPnJ0d2Rldi0+Y2hpcC0+
+YzJoX3JhX3JlcG9ydF9zaXplID49IDcpDQo+ICAgICAgICAgICAgICAgICBidyA9IHJhX2RhdGEt
+PnBheWxvYWRbNl07DQo+ICAgICAgICAgZWxzZQ0KPiAgICAgICAgICAgICAgICAgYncgPSBzaS0+
+YndfbW9kZTsNCg0KWWVzLCB0aGlzIGlzIGFsc28gY2xlYXIgdG8gbWUgdG8gYXZvaWQgYWNjZXNz
+aW5nIG91dCBvZiByYW5nZS4gDQpBbm90aGVyIGFkdmFudGFnZSBvZiBhIHN0cnVjdCBpcyB0byBl
+eHBsaWNpdGx5IHRlbGwgdXMgdGhlIHRvdGFsIHNpemUgb2YgYQ0KQzJIIGV2ZW50Lg0KDQoNCg==
 
