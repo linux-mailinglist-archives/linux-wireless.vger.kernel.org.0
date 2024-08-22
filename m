@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-11789-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11790-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E562095B0C0
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 10:42:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EA9295B103
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 10:59:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5122AB24478
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 08:42:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A1991C22B2D
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 08:59:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7954E17B4EC;
-	Thu, 22 Aug 2024 08:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43B46170853;
+	Thu, 22 Aug 2024 08:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fucd5aE+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mtGcUdh3"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E9B215855A;
-	Thu, 22 Aug 2024 08:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2AC16DEDF;
+	Thu, 22 Aug 2024 08:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724316109; cv=none; b=Q2GMb9+2wiqd9uMzIP+me8CMLmeJhZvwS5aUfpAphPHbdFZ4wjrtRsy/zX0QRnXFjCvhAUafzPDMfDypj0WyncFXWGqAJ5CuePiId93aoAWtd2UBrF+pwRrwrkj+MgM276usi1+U7/A6GyXKPMydOwjJAckc/opaYbkpRS9aAtU=
+	t=1724317190; cv=none; b=k9qvAHrr11U238p9CdBXg+TEc7Ad0Hi2ba4XA3vW4wBqBBFnp4Qph60/Uw2uwegyyzyIV3CUYHY15iHvzr2VIJAguxGT/TIPd60XfL0zrXe3/qr294yff0EX1fIw/DkZhR3KarruszcwBkGVUSgnLI+tWByTdvCsF3gh/8UoNxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724316109; c=relaxed/simple;
-	bh=xFzOdzJN39N76WVAyxTbnW6oFSCY9ft8H8of/4mE5Vo=;
+	s=arc-20240116; t=1724317190; c=relaxed/simple;
+	bh=6fPHVZW9Wl5MBlZ31WLLPB+2/SdWlcpVd1n5Ao7R3D0=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=rrrrPlST/V4FobriProIpqYqi9pfFWErMJt5kB4UhAIhRMagpm1Nko+MRp3YwNjnrVT3eekj2XeT/r3SgWhJjGDTd1kSmwUaVrYiy/XBq7bUu8f5Jk023Q/r67cT+u5O/eqWy6ZUiWBG9q+h1un/yAZEXz1LtxudZUfu79dFmC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fucd5aE+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58322C4AF0C;
-	Thu, 22 Aug 2024 08:41:46 +0000 (UTC)
+	 Cc:Message-ID:Date; b=ShsQ2CP2/vfGVZFamh6mSq3EAZFghh9Vkze30c6R36cgemeTANZcOhQslVWS1uB2dhuwph2LKCjM3col4Rg3hNO52RjcXEY36C/OEssF2HSAVm9BMJwMzn11eCSuyQ/nmreFupKMnhZ8zHiV5//bTASmCQY6+d73YvmOnU89l0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mtGcUdh3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F545C4AF09;
+	Thu, 22 Aug 2024 08:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724316108;
-	bh=xFzOdzJN39N76WVAyxTbnW6oFSCY9ft8H8of/4mE5Vo=;
+	s=k20201202; t=1724317189;
+	bh=6fPHVZW9Wl5MBlZ31WLLPB+2/SdWlcpVd1n5Ao7R3D0=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=fucd5aE+vz/qzWOpx6pBqfnwKjStrFYkVl0tLHpD/42meBVXsnxAySz8xhghJ54e4
-	 Ul0I0JMQH+5BiSCft4e2XZWuQHD4CLLUN5UtKRygnXDJlGKAj/ZzmNze/DcpJ9UIhT
-	 o+W2sfRh+NEiK5cXVoImRQahGCcyD9bKvNY4Pg6G7iaexRojlaDb3oAilTZn7CPpg+
-	 jRrtkKhW+49FxJcUoxS0eY7Ymi0Y3QyGsOJwjiXBUxlgrcBBDOmb0892oSg7Vbi5Se
-	 XI8bDC9s1m/0SJGm9j5/kHUgwEkiwpw6vxuBlBYv7GYvMsKzAmuyLHYP0MX4hnJK+v
-	 OlTwcUSbRlZXQ==
+	b=mtGcUdh3FeNAFmY6+9OYrE0l+cei2CTF7LHHhtjK2eR6jjh7Vcdi8g8MlRpb41CN7
+	 cZrtrKMsces6P865auobuLLB3sKlPdnGtM7MOcRWOGVfLwJjN+utXCOyNTNfbzjDb5
+	 HWm2fSHa7xy8YTOzNp9gqJPYplbc1Qcv7lgbPTAIeH+lZVZZ9LcWspbpXFl0jocSM6
+	 XzGQzkhMEGUTaB69+6zKn8aqtNdqSy3vGgQrxSgymZtGRB+vBWynMxJ8JyF2rtIz9w
+	 OU7up2fvbfWC5aXFYoFdUaNEpTtsMZWmNK6SE0fE7jzdwoM1bduonK8/l7Xle/7/ka
+	 Rj13DObKI6uAQ==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,43 +49,68 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: mwifiex: Fix uninitialized variable in
- mwifiex_cfg80211_authenticate()
+Subject: Re: [PATCH v11 1/4] dt-bindings: net: wireless: brcm4329-fmac: add
+ pci14e4,449d
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <d7d043b2-95d5-4e1d-b340-5d7330053ac6@stanley.mountain>
-References: <d7d043b2-95d5-4e1d-b340-5d7330053ac6@stanley.mountain>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: David Lin <yu-hao.lin@nxp.com>, Brian Norris <briannorris@chromium.org>,
- Francesco Dolcini <francesco@dolcini.it>,
- Johannes Berg <johannes.berg@intel.com>,
- Aloka Dixit <quic_alokad@quicinc.com>, Sascha Hauer <s.hauer@pengutronix.de>,
- Rafael Beims <rafael.beims@toradex.com>, Ruan Jinjie <ruanjinjie@huawei.com>,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel-janitors@vger.kernel.org
+In-Reply-To: <20240816020635.1273911-2-jacobe.zang@wesion.com>
+References: <20240816020635.1273911-2-jacobe.zang@wesion.com>
+To: Jacobe Zang <jacobe.zang@wesion.com>
+Cc: arend.vanspriel@broadcom.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, saikrishnag@marvell.com, megi@xff.cz,
+ bhelgaas@google.com, duoming@zju.edu.cn, minipli@grsecurity.net,
+ yajun.deng@linux.dev, stern@rowland.harvard.edu, gregkh@linuxfoundation.org,
+ christophe.jaillet@wanadoo.fr, linux-wireless@vger.kernel.org,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, brcm80211@lists.linux.dev,
+ brcm80211-dev-list.pdl@broadcom.com, Jacobe Zang <jacobe.zang@wesion.com>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <172431610439.2217900.17742585529305793068.kvalo@kernel.org>
-Date: Thu, 22 Aug 2024 08:41:46 +0000 (UTC)
+Message-ID: <172431718274.2217900.9766315386587933045.kvalo@kernel.org>
+Date: Thu, 22 Aug 2024 08:59:44 +0000 (UTC)
 
-Dan Carpenter <dan.carpenter@linaro.org> wrote:
+Jacobe Zang <jacobe.zang@wesion.com> wrote:
 
-> Smatch complains that:
+> It's the device id used by AP6275P which is the Wi-Fi module
+> used by Rockchip's RK3588 evaluation board and also used in
+> some other RK3588 boards.
 > 
->     drivers/net/wireless/marvell/mwifiex/cfg80211.c:4408 mwifiex_cfg80211_authenticate()
->     error: uninitialized symbol 'varptr'.
-> 
-> It's a check for NULL, but "varptr" is either non-NULL or uninitialized.
-> Initialize it to NULL.
-> 
-> Fixes: 36995892c271 ("wifi: mwifiex: add host mlme for client mode")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Acked-by: Brian Norris <briannorris@chromium.org>
+> Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
 
-Patch applied to wireless-next.git, thanks.
+Fails to apply, please rebase on top of wireless-next.
 
-c9f4c1ec6972 wifi: mwifiex: Fix uninitialized variable in mwifiex_cfg80211_authenticate()
+Recorded preimage for 'drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c'
+Recorded preimage for 'drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c'
+error: Failed to merge in the changes.
+hint: Use 'git am --show-current-patch=diff' to see the failed patch
+Applying: wifi: brcmfmac: Add optional lpo clock enable support
+Using index info to reconstruct a base tree...
+M	drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+M	drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+M	drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+M	drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+M	drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+Falling back to patching base and 3-way merge...
+Auto-merging drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+Auto-merging drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+CONFLICT (content): Merge conflict in drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+Auto-merging drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+Auto-merging drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+CONFLICT (content): Merge conflict in drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+Auto-merging drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+Patch failed at 0001 wifi: brcmfmac: Add optional lpo clock enable support
+
+4 patches set to Changes Requested.
+
+13765357 [v11,1/4] dt-bindings: net: wireless: brcm4329-fmac: add pci14e4,449d
+13765358 [v11,2/4] dt-bindings: net: wireless: brcm4329-fmac: add clock description for AP6275P
+13765359 [v11,3/4] wifi: brcmfmac: Add optional lpo clock enable support
+13765360 [v11,4/4] wifi: brcmfmac: add flag for random seed during firmware download
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/d7d043b2-95d5-4e1d-b340-5d7330053ac6@stanley.mountain/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240816020635.1273911-2-jacobe.zang@wesion.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
