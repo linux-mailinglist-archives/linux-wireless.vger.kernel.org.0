@@ -1,133 +1,134 @@
-Return-Path: <linux-wireless+bounces-11803-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11804-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DAD595B4E0
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 14:20:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8E9495B57B
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 14:56:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 710AE1C20DB0
-	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 12:20:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D97B01C23378
+	for <lists+linux-wireless@lfdr.de>; Thu, 22 Aug 2024 12:56:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6392B1C9458;
-	Thu, 22 Aug 2024 12:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B1401C9DDB;
+	Thu, 22 Aug 2024 12:56:31 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C3A137143
-	for <linux-wireless@vger.kernel.org>; Thu, 22 Aug 2024 12:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716CB1C9429
+	for <linux-wireless@vger.kernel.org>; Thu, 22 Aug 2024 12:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724329220; cv=none; b=WtoH/rr1+nPO3JnEX1s1E9NdhGOSx5gR7/LL0Eam48RWCbDcxaZbsF91XshtaDKM/fm4ANayabL3VrnUrVj4DlqLQ9WkH7whNtBZ8chzlp61fKSrCP6IPbbdKcsdAxRwXHKaVJKojWjEpiFe9v1OzF6gcjcaAU0ln6PyUl0yhYI=
+	t=1724331390; cv=none; b=rpmfiJUff+mWnjeAPjTzhY0sKYpbHmPnZMXZMzur63IutZHYyXCtjoKXNgJTmsQ/19ojODg58kNy6ZZKrFYb7dV6VRPsWmFdgzAp6pnxc7yp/pXn+pO6ACJryMsRwySjmLFO22qXDUKTWodHa5LGHILX2vQvU/79LcCR/jok2e4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724329220; c=relaxed/simple;
-	bh=BUaGhDKugO8KmJcMu6yG5efX9QIwQvWnMGEzBPRTyGI=;
+	s=arc-20240116; t=1724331390; c=relaxed/simple;
+	bh=VvngIUKtbPcRiyndIMGrmlcDBJTAHeu5snYICi/jOIU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gNPcSrlFRbObBInTUBLWwI/109qaA4vRNUCn19VmrpI6afvWDzlLmC1PuPrfJKiO6nguniYXcPNOhE9uDkqtkSooLH2CGOE14ohfj1NF970kb3BsZRWqPn0Tg8WV5SfVQmqvN0KlstCq0wugmSgbViS+YyU18mRRdEp8/fKXJqI=
+	 Content-Type:Content-Disposition:In-Reply-To; b=o+UB1MU16SU6KqssH1uCCywMiZfU0G2mmclpknUWIlJYfQIo1GhiHipWkaWKCbcErigkHK0JT47WHRe993DrXPJvYBRzufwe3pYtEDGRSRcRrkrwHUnrAvgks3BlhPBRU94sxhXtChgJ6fQnlJawDRj4D6fo+AkKMwoju/4Oevg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1sh6nU-0001ow-0R; Thu, 22 Aug 2024 14:20:12 +0200
-Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sh7MY-00051F-O0; Thu, 22 Aug 2024 14:56:26 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1sh6nT-002FNW-6r; Thu, 22 Aug 2024 14:20:11 +0200
-Received: from pengutronix.de (pd9e5994e.dip0.t-ipconnect.de [217.229.153.78])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id D93CA3249CC;
-	Thu, 22 Aug 2024 12:20:10 +0000 (UTC)
-Date: Thu, 22 Aug 2024 14:20:10 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+	(envelope-from <sha@pengutronix.de>)
+	id 1sh7MX-002Fme-Rr; Thu, 22 Aug 2024 14:56:25 +0200
+Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sh7MX-007vXj-2Y;
+	Thu, 22 Aug 2024 14:56:25 +0200
+Date: Thu, 22 Aug 2024 14:56:25 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
 To: David Lin <yu-hao.lin@nxp.com>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>, 
-	Brian Norris <briannorris@chromium.org>, Francesco Dolcini <francesco@dolcini.it>, 
-	Kalle Valo <kvalo@kernel.org>, 
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"kernel@pengutronix.de" <kernel@pengutronix.de>
-Subject: Re: RE: RE: RE: [EXT] [PATCH 10/31] wifi: mwifiex: fix indention
-Message-ID: <20240822-attentive-solemn-rat-13a85e-mkl@pengutronix.de>
-References: <20240820-mwifiex-cleanup-v1-0-320d8de4a4b7@pengutronix.de>
- <20240820-mwifiex-cleanup-v1-10-320d8de4a4b7@pengutronix.de>
- <PA4PR04MB96382C0635603A51371C0E23D18F2@PA4PR04MB9638.eurprd04.prod.outlook.com>
- <20240822-gay-myrtle-tarantula-bae0e0-mkl@pengutronix.de>
- <PA4PR04MB9638C8D68F0F71C17E903DDAD18F2@PA4PR04MB9638.eurprd04.prod.outlook.com>
- <20240822-brainy-liberal-toucan-bc498c-mkl@pengutronix.de>
- <PA4PR04MB963813C76F476449A5003FFCD18F2@PA4PR04MB9638.eurprd04.prod.outlook.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kvalo@kernel.org, johannes@sipsolutions.net,
+	briannorris@chromium.org, francesco@dolcini.it,
+	tsung-hsien.hsieh@nxp.com, kernel@pengutronix.de
+Subject: Re: [PATCH v2 00/43] wifi: nxpwifi: create nxpwifi to support iw61x
+Message-ID: <Zsc1efkBHDXdZtfJ@pengutronix.de>
+References: <20240809094533.1660-1-yu-hao.lin@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="stabsaq2vdo4glry"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <PA4PR04MB963813C76F476449A5003FFCD18F2@PA4PR04MB9638.eurprd04.prod.outlook.com>
+In-Reply-To: <20240809094533.1660-1-yu-hao.lin@nxp.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Mail-From: sha@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
+On Fri, Aug 09, 2024 at 05:44:50PM +0800, David Lin wrote:
+> This series adds support for IW61x which is a new family of 2.4/5 GHz
+> dual-band 1x1 Wi-Fi 6, Bluetooth/Bluetooth Low Energy 5.2 and 15.4
+> tri-radio single chip by NXP. These devices support 20/40/80MHz
+> single spatial stream in both STA and AP mode. Communication to the
+> IW61x is done via SDIO interface
+> 
+> This driver is a derivative of existing Mwifiex [1] and based on similar
+> full-MAC architecture [2]. It has been tested with i.MX8M Mini evaluation
+> kits in both AP and STA mode.
+> 
+> All code passes sparse and checkpatch
+> 
+> Data sheet (require registration):
+> https://www.nxp.com/products/wireless-connectivity/wi-fi-plus-bluetooth-
+> plus-802-15-4/2-4-5-ghz-dual-band-1x1-wi-fi-6-802-11ax-plus-bluetooth-5-
+> 4-plus-802-15-4-tri-radio-solution:IW612
+> 
+> Known gaps to be addressed in the following patches,
+>   - Enable 11ax capabilities. This initial patch support up to 11ac.
+>   - Support DFS channel. This initial patch doesn't support DFS channel in
+>     both AP/STA mode.
+> 
+> This patch is presented as a request for comment with the intention of being
+> made into a patch after initial feedbacks are addressed
+> 
+> [1] We had considered adding IW61x to mwifiex driver, however due to
+>     FW architecture, host command interface and supported features are
+>     significantly different, we have to create the new nxpwifi driver.
+>     Subsequent NXP chipsets will be added and sustained in this new driver.
 
---stabsaq2vdo4glry
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I added IW61x support to the mwifiex driver and besides the VDLL
+handling which must be added I didn't notice any differences. There
+might be other differences, but I doubt that these can't be integrated
+into the mwifiex driver.
 
-On 22.08.2024 12:11:15, David Lin wrote:
-> > Why do you think 2 drivers are easier to handle/support/maintain/...
-> > than 1 driver, especially given the low available review bandwidth?
-> >=20
->=20
-> Nxpwifi is used to support new NXP WiFi chips. You can check the commit m=
-essage of Nxpwifi to
-> know the reason why we need a new driver to support new NXP WiFi chips.
+Honestly I don't think adding a new driver is a good ideai, given how big
+wifi drivers are and how limited the review bandwidth is.
 
-FTR:
+What we'll end up with is that we'll receive the same patches for both
+drivers, or worse, only for one driver while the other stays unpatched.
 
-https://lore.kernel.org/all/20240809094533.1660-1-yu-hao.lin@nxp.com/
+I even found some of the bugs and deficiencies I am just fixing for the
+mwifiex driver in the nxpwifi driver as well. So please direct your
+effort to improving the existing driver rather than putting more burden
+to the maintainers by adding a new driver. I am sure this is the faster
+path to get the necessary changes upstream, plus users of the mwifiex
+driver will profit from these changes as well.
 
->> [1] We had considered adding IW61x to mwifiex driver, however due to
->>     FW architecture, host command interface and supported features are
->>     significantly different, we have to create the new nxpwifi driver.
->>     Subsequent NXP chipsets will be added and sustained in this new driv=
-er.
+Of course I don't have to decide this. The wifi maintainer(s) will have
+the final word, but these are my 2 cents on this topic.
 
-Thanks for the clarification.
+Sascha
 
-regards,
-Marc
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---stabsaq2vdo4glry
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmbHLPcACgkQKDiiPnot
-vG+J4gf+IEXO+QAQVMqrjhoe6SJq11AT5ZT+0VfCWfc/cnKSt5J/qPyINKQSpNFX
-y/ONVGx388jCSpujPpcmuyHgzyZRx1phYBSIoGPKCq3ZnPZ4pgLvQLgnwJP22rET
-nMkY48c+8CcaAvDuVpwUtcIsWXtGlb3qUNwf8HixneB/rnqiKG5B41H+1rYt6D+B
-K69MwkOvNcnCZWARkw4M8Wp7drUHyabXdi1e/l+ugRrwJMRgKqzXi+tBvNNEdI6E
-giMDbn7C6aZJPagFWSuQ/FRA7eHLqZahrUy7CX+E8JdcRJxj6IhVkXLS8f4jjecs
-RULd3GGaTRPqab+zERzlY6VUzV35vg==
-=Ej8p
------END PGP SIGNATURE-----
-
---stabsaq2vdo4glry--
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
