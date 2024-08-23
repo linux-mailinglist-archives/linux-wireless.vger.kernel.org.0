@@ -1,107 +1,154 @@
-Return-Path: <linux-wireless+bounces-11824-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11825-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AA8F95C50D
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Aug 2024 07:56:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 400DF95C52E
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Aug 2024 08:11:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 158FE1F25463
-	for <lists+linux-wireless@lfdr.de>; Fri, 23 Aug 2024 05:56:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC77B284432
+	for <lists+linux-wireless@lfdr.de>; Fri, 23 Aug 2024 06:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE52254720;
-	Fri, 23 Aug 2024 05:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D246F30C;
+	Fri, 23 Aug 2024 06:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ugVotz1p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="URLhT2TU"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D47D5464B;
-	Fri, 23 Aug 2024 05:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA00357CA6;
+	Fri, 23 Aug 2024 06:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724392575; cv=none; b=IlaMYb1jUnaTkZo6rlGGgHAVfJJOfaex+6RVoS3ESVxhhjW4gib+MglBf/x/aWMBlObfocwnuxYWAlEPKnkiVwiCSn3EcmgRj7si1clSs/XMp/J5W1iGgDe3f0Np8nwulYWUk5kUoP8bOqCm+QLggVEQQm3GBjbHJHiPl1UgkIQ=
+	t=1724393457; cv=none; b=lM0M/bW+UuC5n0Wg0rOBHKkTkfaOQaop3RoJOyIyRn1lRjmoolJ/2B6K7imVNPGHk6jx1H6QNNDYKLPvcRTyz2db4EYNuw+LP4RbBlKPsQHg8Qz7RufgIeWyrgYhDNRsB92m9lgp9WxT8vByNxrHbVOqUcaqxLJf2jsgbRKVx/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724392575; c=relaxed/simple;
-	bh=5LiBOirHa4/3WcTTbqSgaXl3F8Z0uPmHwxXkUB6akuE=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=aAHz0Lpc5nZhMC30rJRK/UVoHW3b5semgR3euHgC9ap+ouQFyyHOZ23HkE8YxDxEKs+iOoYMmrUTIEa/G67hw7jBVlF5hvPqbbhEQ1wSWXjWp5VbCtzT7odU964woUxdQKHjqSWHTiDYE/XWxZRZRYCEUj1V59xdV8orJU9EvUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ugVotz1p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 491B6C32786;
-	Fri, 23 Aug 2024 05:56:13 +0000 (UTC)
+	s=arc-20240116; t=1724393457; c=relaxed/simple;
+	bh=GgTRe1j1dYYnmWj0lPD0688gdnIvxvqvWXPfj37La2Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MTFiXiTSU0ESrAEyuXnY5j/jkmw9tK1UYOmZBQl9Jm00z/e2dXaeu7WMcrXKTKlkClHO20Uner62k2DJWKRx43bbw8yMQ0VhlCVjN0yimUfwq/PjKb0GAQMaENlNr1j/e1G0YHkKfzkrdYMNIEql3k0NwP8tk2Gc94mDxvwz79g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=URLhT2TU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 983EDC32786;
+	Fri, 23 Aug 2024 06:10:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724392575;
-	bh=5LiBOirHa4/3WcTTbqSgaXl3F8Z0uPmHwxXkUB6akuE=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=ugVotz1pO0bTIKXbwo3pZOknV+SfLRU1t3YBPX52rov6OiME9yG+BKscP4MaWLUxL
-	 hC/4WMOmDJaS+o6hBOReRuop3Uc+9PSnjmL1Q62TL0VizLRUySeyWcXwJV+3cBUy+F
-	 y40uuq8Nhp5WgC8E1tTijL6OCQr4MEz41zNP8PPFozln+WlKv7OCw3PGJ5zKKmcg4a
-	 b3pNilqqGGGWSrblgScI4mroPY/msXVhR/UwRUe3GzYWRTaPFmnm5stjV0sDJ4pIdV
-	 KSq2n76HOTs+AWvVtzMRXBRGV8ZY/C9EzIzRwjtgWpn+7/x0EqlsxTE5K1pRiWj7Kb
-	 RgyqtytnueDtg==
-From: Kalle Valo <kvalo@kernel.org>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: dan.carpenter@linaro.org,  benjamin.berg@intel.com,
-  daniel.gabay@intel.com,  gregory.greenman@intel.com,
-  johannes.berg@intel.com,  linux-kernel@vger.kernel.org,
-  linux-wireless@vger.kernel.org,  miriam.rachel.korenblit@intel.com
-Subject: Re: [PATCH RESEND] wifi: iwlwifi: mvm: fix an error code in
- iwl_mvm_alloc_sta_after_restart()
-References: <575625da-60bc-4444-a5f3-a7acf925f1e5@suswa.mountain>
-	<20240823030423.1781977-1-make24@iscas.ac.cn>
-Date: Fri, 23 Aug 2024 08:56:11 +0300
-In-Reply-To: <20240823030423.1781977-1-make24@iscas.ac.cn> (Ma Ke's message of
-	"Fri, 23 Aug 2024 11:04:23 +0800")
-Message-ID: <87wmk7vl38.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=k20201202; t=1724393456;
+	bh=GgTRe1j1dYYnmWj0lPD0688gdnIvxvqvWXPfj37La2Y=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=URLhT2TUPUuRqTmcvLV4NMkbknqbMg2IZ6eZhzUQAr0ZD4jA05rYkOIV95e8tssro
+	 7fUOJKuJ9aq/ZvDvDyXfglaGJ85gIoFsOyGWMjSglI6Oxnw8Ig4RIu256GbucXx0vb
+	 mpIcumyIiqERaBsASFfkmSCcfmI7tFeIujp0ii8kG69Iwrqh3l1tPkdJP89MUGh4s0
+	 Y+wJALlIfxyt2RnLiXkJkfAK6gcCHFjkIfUWyfBuIvk6OyB5L4/I4bKQGkGx1emPfX
+	 mrUK0WPlSw920vrARz0BbP6Awk0RmH2c9CmwQsW+aEBoOoa5+kqWQgzxi7MCW7ywzw
+	 EmMaa+TdHIaOw==
+Message-ID: <bfd89207-5dd5-4b89-bd54-aa490d34c590@kernel.org>
+Date: Fri, 23 Aug 2024 08:10:49 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: wireless: wilc1000: Document WILC3000
+ compatible string
+To: Marek Vasut <marex@denx.de>
+Cc: linux-wireless@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ Adham Abozaeid <adham.abozaeid@microchip.com>,
+ Ajay Singh <ajay.kathat@microchip.com>,
+ =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Conor Dooley
+ <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20240821184356.163816-1-marex@denx.de>
+ <ztc4h7rgsli2jltrdgu5twnma6dbbt3kbbbo3i4eevb3whkqkv@oabtuskiz7km>
+ <8031c3ef-3b16-4200-83aa-0776bdfa8b45@denx.de>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <8031c3ef-3b16-4200-83aa-0776bdfa8b45@denx.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Ma Ke <make24@iscas.ac.cn> writes:
+On 23/08/2024 03:38, Marek Vasut wrote:
+> On 8/22/24 10:07 AM, Krzysztof Kozlowski wrote:
+> 
+> Hi,
+> 
+>>> diff --git a/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml b/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml
+>>> index 2460ccc082371..1bf3496c21e64 100644
+>>> --- a/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml
+>>> +++ b/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml
+>>> @@ -16,7 +16,9 @@ description:
+>>>   
+>>>   properties:
+>>>     compatible:
+>>> -    const: microchip,wilc1000
+>>> +    enum:
+>>> +      - microchip,wilc1000
+>>> +      - microchip,wilc3000
+>>
+>> Your driver change suggests device type is fully auto-detectable
+> 
+> It seems that way, yes.
+> 
+>> , thus
+>> they are compatible.
+> 
+> I _think_ the hardware is internally somewhat different, the WILC1000 is 
+> WiFi-only device and the WILC3000 has some extra Bluetooth part (which 
+> is currently not supported).
+> 
+> Maybe a fallback compatible string would be better here ?
 
-> Dan Carpenter<dan.carpenter@linaro.org> wrote:.
->> The Subject says RESEND but doesn't explain why you are resending..
->> You probably meant v2, but again it needs an explanation..
->> .
->> On Fri, Aug 02, 2024 at 12:27:40PM +0800, Ma Ke wrote:.
->> > This error path should return -EINVAL instead of success..
->> .
->> Why do you feel that way?  Have you tested it?  What is the user visible.
->> effect of this bug?.
->> .
->> I slightly feel hypocritical because I have send lots of commit messages.
->> with exactly this commit message.  The difference is that I only send.
->> really easy patches where it's obvious what the intent was.  A normal.
->> kernel developer wouldn't need to leave their email client or view any.
->> outside information to see that my patch is correct.  If a patch is not.
->> dead easy, I normally just report it.  (Sometimes I report dead easy.
->> bugs as well because I am lazy and maybe it's the end of my work day.
->> or whatever)..
->> .
->> This patch on the other hand is more subtle and it's not clear why the.
->> continue statements changed into returns..
->> .
->> regards,.
->> dan carpenter.
-> Thank you for your response to the vulnerability I submitted. Yes, we .
-> believe there is a similar issue. As described in [1], it gets pointers .
-> which are handled under the protection mechanism. If the path is error, it .
-> should return -EINVAL directly instead of success.
+Yes, that's what I meant by compatibility. 3000 followed by 1000.
 
-The commit message should explain _why_ it should return an error.
-Currently there's no explanation neither in the commit message or in
-your email.
+Best regards,
+Krzysztof
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-https://docs.kernel.org/process/submitting-patches.html
 
