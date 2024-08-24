@@ -1,125 +1,80 @@
-Return-Path: <linux-wireless+bounces-11887-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11888-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B99F395DE2A
-	for <lists+linux-wireless@lfdr.de>; Sat, 24 Aug 2024 15:49:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BFC095DF32
+	for <lists+linux-wireless@lfdr.de>; Sat, 24 Aug 2024 19:32:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9C581C21004
-	for <lists+linux-wireless@lfdr.de>; Sat, 24 Aug 2024 13:49:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 125A0282A3A
+	for <lists+linux-wireless@lfdr.de>; Sat, 24 Aug 2024 17:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3CC715098F;
-	Sat, 24 Aug 2024 13:48:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="QNgck6oO"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845B214A85;
+	Sat, 24 Aug 2024 17:32:06 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout08.hostingdiscounter.nl (mailout08.hostingdiscounter.nl [91.217.57.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4419C376E9;
-	Sat, 24 Aug 2024 13:48:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E8A15D1
+	for <linux-wireless@vger.kernel.org>; Sat, 24 Aug 2024 17:31:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.217.57.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724507337; cv=none; b=u6EqtV9ic5XvnSJvycervBmelIgmExUoiv9m+dl99Aw4NFHOJm3BrSgkMj0yvwH3ZPluTOSn0fM3iCCWE2OQmuAucKaXK/T46LqxSbrMZG0I7YxLXtZKTTXXXDHjfyJwh2aMVz/utwiOXi/0iEv0o3NwJ5KKwB8HzkHTlejToCM=
+	t=1724520726; cv=none; b=Yfm0YCKpG0/3Bbc37YfzpYOn3dvQRP9wfaoNpzvOcaBQMUhXWgeHBba4y4U+qAdrzF8m9ItzhZOT9RUU94i5sXzKoJRVoBbgcIeBOc93prpARHp5k4SVtSCefXOXj5pFYwHMmGpy8oLDGc3NSa9n06XO+oV/uONgohPc2PJd2MU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724507337; c=relaxed/simple;
-	bh=bMpwfF99z3Y4gYG5ywp24cpVC5QDZU9WU0GT2cEtTYA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o92drh/SUS6WMpwCExCyQ7VjlGbAzXm5CY0ICZsq8QyoBXJTQo6eq0XpY1Og8xuWIoomeHvZAvVzmKkGqtPtAs7YvCTfmliqLD6Icm4WiTSg9bmiREs5AJdn555I0hvK6oxHuDMExSPmdHmfvZS19rp0RW4cH618LGHHy8LXUUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=QNgck6oO; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id EB81E1FCC4;
-	Sat, 24 Aug 2024 15:48:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1724507324;
-	bh=LCGuYpwiP/UsbuMuxfXNSyWc/GZn//vKkpAVuorNXEY=; h=From:To:Subject;
-	b=QNgck6oOT6zubxXartsETaXT5i7JTl8V7HeXnKSaLYdFVb3cozFxs6gP5s1rpOX+/
-	 ITU+zNg9+FMsXNb/32pFBSwbFWl2Dyx5IoKZTT2yHlc59WheDRtkAGIv61Fipd1n99
-	 PWjGQL2JNfU52uLxfURsGUBAhTCHSiQSs7vJEwkN0IQPU9ASxii+oLbI1Myagy/9XZ
-	 QGdSlT+wYWWPMNzdF6aQbh622sAC3AAw/hf1xQrGoVKvFkdFC8tMPl/j8BeRPQ+LKa
-	 4MGc7tno14AH/yZV3YF/9TWA9MZ1CZ1GlYGpJTFqHngR/uNsoAQWu+yCqcXuprYLEd
-	 2i6a6l76o2Pqg==
-Date: Sat, 24 Aug 2024 15:48:39 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Sascha Hauer <s.hauer@pengutronix.de>, David Lin <yu-hao.lin@nxp.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kvalo@kernel.org, johannes@sipsolutions.net,
-	briannorris@chromium.org, francesco@dolcini.it,
-	tsung-hsien.hsieh@nxp.com, kernel@pengutronix.de
-Subject: Re: [PATCH v2 00/43] wifi: nxpwifi: create nxpwifi to support iw61x
-Message-ID: <20240824134839.GA21315@francesco-nb>
-References: <20240809094533.1660-1-yu-hao.lin@nxp.com>
- <Zsc1efkBHDXdZtfJ@pengutronix.de>
+	s=arc-20240116; t=1724520726; c=relaxed/simple;
+	bh=tC1UnAvbA+GLygfELoXMYeX2l9uFG341v7WIkawTa1Y=;
+	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=e2GviTC/ryp3/DxNGMv+aNWlYHgQbFr3Keuf9yW3x7CEuE9unqoGMKOw94mw7gzs3HHWQkusmJFXATxH2+6AVE0JPYtM+gHdoQTkPrGOsS1qb+YYMEw3/OmqFTW+LZR3cX4h9xHcrLdSQBHMs1bayn6nD1/Jsf8m6oLQIupICyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zeilsteenfilm.nl; spf=pass smtp.mailfrom=zeilsteenfilm.nl; arc=none smtp.client-ip=91.217.57.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zeilsteenfilm.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zeilsteenfilm.nl
+Received: from localhost (localhost [127.0.0.1])
+	by mailout08.hostingdiscounter.nl (Postfix) with ESMTP id A550D20E;
+	Sat, 24 Aug 2024 19:31:57 +0200 (CEST)
+X-Virus-Scanned: Debian amavisd-new at mailout08.hostingdiscounter.nl
+Received: from mailout08.hostingdiscounter.nl ([127.0.0.1])
+	by localhost (mailout08.hostingdiscounter.nl [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id ZEC5viERz33h; Sat, 24 Aug 2024 19:31:52 +0200 (CEST)
+Received: from mail226.hostingdiscounter.nl (mail226.hostingdiscounter.nl [IPv6:2a00:1478:20:0:7:770:0:1])
+	by mailout08.hostingdiscounter.nl (Postfix) with ESMTPS;
+	Sat, 24 Aug 2024 19:31:52 +0200 (CEST)
+Received: from smtpclient.apple (unknown [45.85.220.52])
+	by mail226.hostingdiscounter.nl (Postfix) with ESMTPSA id E59CF5E434;
+	Sat, 24 Aug 2024 19:31:51 +0200 (CEST)
+From: Herman Zeilstra <herman@zeilsteenfilm.nl>
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zsc1efkBHDXdZtfJ@pengutronix.de>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3696.80.82.1.1\))
+Subject: RE: wil6210: low level sector API
+Message-Id: <B15D4C08-31DF-4418-BD1D-FFEC66BBD2E9@zeilsteenfilm.nl>
+Date: Sat, 24 Aug 2024 19:31:50 +0200
+Cc: daviddean166@gmail.com,
+ linux-wireless@vger.kernel.org
+To: dlansky@codeaurora.org
+X-Mailer: Apple Mail (2.3696.80.82.1.1)
 
-On Thu, Aug 22, 2024 at 02:56:25PM +0200, Sascha Hauer wrote:
-> On Fri, Aug 09, 2024 at 05:44:50PM +0800, David Lin wrote:
-> > This series adds support for IW61x which is a new family of 2.4/5 GHz
-> > dual-band 1x1 Wi-Fi 6, Bluetooth/Bluetooth Low Energy 5.2 and 15.4
-> > tri-radio single chip by NXP. These devices support 20/40/80MHz
-> > single spatial stream in both STA and AP mode. Communication to the
-> > IW61x is done via SDIO interface
-> > 
-> > This driver is a derivative of existing Mwifiex [1] and based on similar
-> > full-MAC architecture [2]. It has been tested with i.MX8M Mini evaluation
-> > kits in both AP and STA mode.
-> > 
-> > All code passes sparse and checkpatch
-> > 
-> > Data sheet (require registration):
-> > https://www.nxp.com/products/wireless-connectivity/wi-fi-plus-bluetooth-
-> > plus-802-15-4/2-4-5-ghz-dual-band-1x1-wi-fi-6-802-11ax-plus-bluetooth-5-
-> > 4-plus-802-15-4-tri-radio-solution:IW612
-> > 
-> > Known gaps to be addressed in the following patches,
-> >   - Enable 11ax capabilities. This initial patch support up to 11ac.
-> >   - Support DFS channel. This initial patch doesn't support DFS channel in
-> >     both AP/STA mode.
-> > 
-> > This patch is presented as a request for comment with the intention of being
-> > made into a patch after initial feedbacks are addressed
-> > 
-> > [1] We had considered adding IW61x to mwifiex driver, however due to
-> >     FW architecture, host command interface and supported features are
-> >     significantly different, we have to create the new nxpwifi driver.
-> >     Subsequent NXP chipsets will be added and sustained in this new driver.
-> 
-> I added IW61x support to the mwifiex driver and besides the VDLL
-> handling which must be added I didn't notice any differences. There
-> might be other differences, but I doubt that these can't be integrated
-> into the mwifiex driver.
+Hello Dedy and David,
 
-Maybe you can share an RFC patch with what you currently have available
-to support IW61x within the current mwifiex driver?
+How can I call WMI commands in the code of the driver or from terminal =
+to get the active TX and RX sector info?
 
-Given what David @NXP wrote here
+I would love to use the beam tx and rx info of the wil6210.
+Tried all sorts of debug options to get the sector info in the source =
+but with no luck.
 
-> > [1] We had considered adding IW61x to mwifiex driver, however due to
-> >     FW architecture, host command interface and supported features are
-> >     significantly different, we have to create the new nxpwifi driver.
+I do get the debug text but not able to get the sector info out in the =
+kernel log.=20
+Placed debug lines everywhere I found secter commands in the cfg80211.c =
+of the source of the driver.=20
 
-David, given the code, he should be able to highlight the limitation of
-such approach and hopefully we can find a good path forward?
 
-One of the challenges with the current mwifiex driver is that it
-supports quite a few wireless devices, and any new addition must be done
-in such a way to not break the old stuff. Not to mention the "Odd Fixes"
-maintenance status of the driver, quoting Brian: "My only interest in
-mwifiex is in making sure existing hardware (especially those used on
-Chromebooks) doesn't get significantly worse.".
+Many thanks
 
-Francesco
-
+Herman=20=
 
