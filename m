@@ -1,76 +1,54 @@
-Return-Path: <linux-wireless+bounces-11889-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11890-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3503E95DFC8
-	for <lists+linux-wireless@lfdr.de>; Sat, 24 Aug 2024 21:18:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B9D995E009
+	for <lists+linux-wireless@lfdr.de>; Sat, 24 Aug 2024 23:35:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B59B31F22F1A
-	for <lists+linux-wireless@lfdr.de>; Sat, 24 Aug 2024 19:18:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 212851F21B7A
+	for <lists+linux-wireless@lfdr.de>; Sat, 24 Aug 2024 21:35:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05FDB56742;
-	Sat, 24 Aug 2024 19:18:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F11D7DA9C;
+	Sat, 24 Aug 2024 21:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d6L6seli"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="DfxGp94y"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 745DE14A85
-	for <linux-wireless@vger.kernel.org>; Sat, 24 Aug 2024 19:18:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F588A94A;
+	Sat, 24 Aug 2024 21:35:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724527116; cv=none; b=lZ8emBV80NyZ8gm3D4cV2Qp7lpf/7ZpWzokR0wK8iQWrsk1QyjHiGytIf1aoELRaYwNfR6repnqD/VpAxlu1byZS6XiyUQYnJmVM3m2tFY0XI9YAe/uJJ0HGaq2YjDsEEElGki8sevm2blMjepu2F4xts8492MnqpN8f+p7j6UA=
+	t=1724535303; cv=none; b=hw4Q6NBLsKMAPhALK/a4tUJH0xEBBUPYzjY9F9ly1yKShK5SWLc6LDOGisQ5gz5/iyAJuulf6esPjfMQEBja0+/P3uAED9oppET+iPfB/mxyZA3xApERG8squHvnLzSfaHD+d/lIqDofILz4IjMIhP3SRyxb4CJNr3w+k3dSYf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724527116; c=relaxed/simple;
-	bh=HpWeafV2F5Hjsl8GMNPzY/4hNJW9alCS0GcPboH5bfs=;
-	h=From:Message-ID:Date:MIME-Version:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=K1T1+lihbexcPNnRuheAlnUstA1Y50qV4alFAqEC3TCMHRHGcVDa6vywQ8syz+6C7i9c4pCdfyy8thVrsoshZJaW7dBmjs+7QFkY+qDzmSR83kZGp1NKPK+HrklKmKXPcdFLAEOoV+oSEtuJIp+qhCda4sZTKadaNXxhVaBPWKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d6L6seli; arc=none smtp.client-ip=209.85.210.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-709428a9469so2896035a34.3
-        for <linux-wireless@vger.kernel.org>; Sat, 24 Aug 2024 12:18:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724527114; x=1725131914; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=aZn3T3TMp54nUloXbXnxjQ0Ru/RTXJEf7kHaHIFc6Ng=;
-        b=d6L6seliwNJbud2Dsv8xhHS4oSy0G1NeWuYRb2QVlNZ6VTA/e5Zeu1yY4O2TP0Giqr
-         5K1VP7A8jPum1sb6yFQJp1isDdyxzW1n+ZjpZ3uFCaVQScdRZ+x9m1TtKOWKHWZWEKry
-         8F9kty2lRUMjPeF7JgDXT+N+3KSq604u7KYpoRhr8tr3RrrQ7vk/gaZVZ5O0762rCvAK
-         JgJKo34k/9Qgt6nOx5rLpO6TC+EpCIKeEQ04UsfeV+GFnsh5rehaH1M+dA6xRlkb2p2C
-         wVG2g7SL6ni2te9tao5uJ5pAfTBoRM4IZIZzCZeZSBoWFONW0Dy1SF6EmY4qL4DvoM+D
-         ndvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724527114; x=1725131914;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:user-agent:mime-version:date:message-id:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aZn3T3TMp54nUloXbXnxjQ0Ru/RTXJEf7kHaHIFc6Ng=;
-        b=dX6weH/1ydVmhRlDafHoWocRP4BPGBKkiefMI5Vtta9V2/5n5Rs6JEY5xXbXACjft8
-         zytp5jzFuvHhHMXMz7UnHe0UbG8HkKnHVedfgP57XwQIB0Uz2rvhFdQsGB6S46HcEMt/
-         meFpvsfHXVhPbJ3TK/SmJjBx2X/Q4NiwNsS/nI+2aVlzQ9EEWU5exEKyr/o1k4YU7ZKY
-         qJ0zt9/Movpa/ahQoSdKUWudF99EyEjhugufY8UZpLVuV1nzZO2o7T0FmKrfg9xYsww1
-         03rZ50EAk9XkoqsAXGm72Db11PNgfPZctEnmDcgtlc/EN40twF0GZcvyusBs+yWUlIIB
-         6uzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVUWoR6sZZ/nzrEp8tqsnRlXRyR9lpqTO5ptXz0m2Np+zwcvQcXt9P7TS3P/2YWaYCNcU46vbDTSg2BPlbang==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5Ryn9YWE341XNqEwwtq4NutdFpx5wylvl5ycnfHW57w9fS2/c
-	H4z9YCeJ3ySdvEMvv26aAqFxZEq/c43GjBk2wcbYFuWaxpJon5YK
-X-Google-Smtp-Source: AGHT+IG2rgsVwJntp+zHu54ZMj5RMzdgO7wHYHSDgd/hzAmdHT+qIc7TaNasisFgM65lve2ZH4Ha3g==
-X-Received: by 2002:a05:6808:1815:b0:3da:d8b9:6e56 with SMTP id 5614622812f47-3de2a8867e3mr7717423b6e.15.1724527114115;
-        Sat, 24 Aug 2024 12:18:34 -0700 (PDT)
-Received: from ?IPV6:2600:8804:8c40:89::28e? ([2600:8804:8c40:89::28e])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3de225c52a6sm1307462b6e.44.2024.08.24.12.18.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 24 Aug 2024 12:18:33 -0700 (PDT)
-From: Nick Morrow <usbwifi2024@gmail.com>
-X-Google-Original-From: Nick Morrow <USBWiFi2024@gmail.com>
-Message-ID: <db84ee3a-1aed-4721-ac27-8c6d116979bf@gmail.com>
-Date: Sat, 24 Aug 2024 14:18:33 -0500
+	s=arc-20240116; t=1724535303; c=relaxed/simple;
+	bh=05h4flYVxYVmDr5sJI4fGsGtV6KOkCLCZzt3EJ1tz/U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UeIgTVjtJ+rs9YvNFH8lsNmDHktE06ZsaQAcglOk5OAaSfYYx6b0MbsPzncOdKJb4jWvztPs6GVn6fYoEyrGO69olEd/8SpPjSlzyOU1n8L5thNjCNQvRGZ0vGx3YXgBQ0eCzfDesrzLU1GMzlmhMPtJWhI3Un08YOq4r7eHgDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=DfxGp94y; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 558E78877E;
+	Sat, 24 Aug 2024 23:34:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1724535293;
+	bh=ajQwuj+W+LQ2qCUTuDOWr6FOmcNHRSVOPqLao3goEEg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=DfxGp94yy2tTS59G96xZA7+vK7VpoKG6Ig/Yqt1rb2JYvDvyIw0+wyhGbzrLv8Ao8
+	 oCH/Z5VolzlLkek2lG6FJqvR8znfREcVlMOo8Ev7UitnxYhUBDncvH3JOaaJ9Ek0bj
+	 cwPBLkNBggKwz5IaIB8oJRePfXXPiUO+yudA+o6HKlg/V+0Y5P0MAXmHxMvPtTZZfj
+	 Fp6rMIWy7qmjL70WV/9o+RrwWmJulz/OeBtOl1RkJ/myvVRZVnqSLZkubDMcFqQP7R
+	 +hSLiUpFYvwV6hfGuBfjy70ID9SoonGCYmw86X49FX6s3omF+7558KW0bmeTONq6oY
+	 z5Hqo6YAeNCTQ==
+Message-ID: <5e972d13-357c-41a1-ab5f-95b898ea154b@denx.de>
+Date: Sat, 24 Aug 2024 23:18:52 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -78,65 +56,80 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2] linux-firmware: Add firmware for RTL8812AU device
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-firmware@kernel.org" <linux-firmware@kernel.org>
-Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <f815d748-6578-441e-b61e-0a220d45e168@gmail.com>
- <774a7dd01718448da4048e966f5430f1@realtek.com>
+Subject: Re: [PATCH v2 2/4] wifi: wilc1000: Fold wilc_get_chipid() into wlan.c
+To: Simon Horman <horms@kernel.org>
+Cc: linux-wireless@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+ Adham Abozaeid <adham.abozaeid@microchip.com>,
+ Ajay Singh <ajay.kathat@microchip.com>,
+ =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Conor Dooley
+ <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+ netdev@vger.kernel.org, Dan Carpenter <dan.carpenter@linaro.org>
+References: <20240823161131.94305-1-marex@denx.de>
+ <20240823161131.94305-2-marex@denx.de> <20240823174630.GD2164@kernel.org>
+ <006098a3-efb5-4bf3-a28c-20702597feaa@denx.de>
+ <20240824124430.GI2164@kernel.org>
 Content-Language: en-US
-In-Reply-To: <774a7dd01718448da4048e966f5430f1@realtek.com>
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <20240824124430.GI2164@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On 8/22/24 19:58, Ping-Ke Shih wrote:
-> +linux-wireless
+On 8/24/24 2:44 PM, Simon Horman wrote:
+> + Dan
 > 
-> Hi Nick,
-> 
-> Please always Cc linux-wireless for rtw88 firmware.
-> 
-> And subject prefix would be "rtw88: ..."
-
-Hi Ping-Ke, I am trying to resolve what you are asking for vs. the instructions at linux-firmware. Should the subject for V3 be:
-
-  [PATCH V3] linux-firmware: rtw88: Add firmware for RTL8812AU device
-
-> 
-> Nick Morrow <usbwifi2024@gmail.com> wrote:
->> This firmware was extracted from the  20210708 - v5.13.6-23 release of
->> the vendor driver for this device and is believed to be the latest
->> release by Realtek. Testing of the new driver has been accomplished
->> using this firmware. Numerous testers have been involved.
+> On Fri, Aug 23, 2024 at 10:38:59PM +0200, Marek Vasut wrote:
+>> On 8/23/24 7:46 PM, Simon Horman wrote:
+>>> On Fri, Aug 23, 2024 at 06:08:57PM +0200, Marek Vasut wrote:
+>>>> Do not use wilc_get_chipid() outside of wlan.c . Instead, call
+>>>> wilc_get_chipid() right after the SDIO/SPI interface has been
+>>>> initialized to cache the device chipid, and then use the cached
+>>>> chipid throughout the driver. Make wilc_get_chipid() static and
+>>>> remove its prototype from wlan.h .
+>>>>
+>>>> Signed-off-by: Marek Vasut <marex@denx.de>
+>>>
+>>> ...
+>>>
+>>>> diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
+>>>
+>>> ...
+>>>
+>>>> @@ -1535,9 +1537,18 @@ int wilc_wlan_init(struct net_device *dev)
+>>>>    	if (!wilc->hif_func->hif_is_init(wilc)) {
+>>>>    		acquire_bus(wilc, WILC_BUS_ACQUIRE_ONLY);
+>>>>    		ret = wilc->hif_func->hif_init(wilc, false);
+>>>> +		if (!ret)
+>>>> +			chipid = wilc_get_chipid(wilc);
+>>>>    		release_bus(wilc, WILC_BUS_RELEASE_ONLY);
+>>>>    		if (ret)
+>>>>    			goto fail;
+>>>> +
+>>>> +		if (!is_wilc1000(chipid)) {
+>>>> +			netdev_err(dev, "Unsupported chipid: %x\n", chipid);
+>>>> +			return -EINVAL;
+>>>
+>>> Hi Marek,
+>>>
+>>> Should this unwind as is the case elsewhere in this function?
 >>
->> Signed-off-by: Nick Morrow <USBWiFi2024@gmail.com>
->> ---
->> v2:
->>     - No change. Resubmitted now that the driver is in review.
->> ---
->>    WHENCE                |   1 +
->>    rtw88/README          |   3 +++
->>    rtw88/rtw8812a_fw.bin | Bin 0 -> 27030 bytes
->>    3 files changed, 4 insertions(+)
->>    create mode 100644 rtw88/rtw8812a_fw.bin
+>> It should, will fix in V3, thanks.
 >>
->> diff --git a/WHENCE b/WHENCE
->> index 8aebe56b..d6bd4814 100644
->> --- a/WHENCE
->> +++ b/WHENCE
->> @@ -3270,6 +3270,7 @@ Licence: Redistributable. See LICENCE.rtlwifi_firmware.txt for details.
->>    Driver: rtw88 - Realtek 802.11ac WLAN driver for RTL8822BE and RTL8822CE
+>>> 			ret = -EINVAL;
+>>> 			goto fail;
+>>>
+>>> Flagged by Smatch.
 >>
->>    Info: Sent to Larry Finger by Realtek engineer Yan-Hsuan Chuang <yhchuang@realtek.com>
->> +File: rtw88/rtw8812a_fw.bin
->>    File: rtw88/rtw8821a_fw.bin
+>> What's the trick here ?
 > 
-> I failed to apply this patch, even this textual part.
+> Smatch is here. I don't think there is much of a trick other than running it :)
 > 
-> Two leading spaces before "File: rtw88/rtw8821a_fw.bin", but actually this
-> should be only one. Not sure what is wrong.
+> https://github.com/error27/smatch
 
-I am carefully going over this patch again... while preparing a new version of the patch. I do not recall editing the line that has two leading spaces.
-
+Thanks !
 
