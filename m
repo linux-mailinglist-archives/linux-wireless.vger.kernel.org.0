@@ -1,67 +1,59 @@
-Return-Path: <linux-wireless+bounces-11886-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11887-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 991E595DDDF
-	for <lists+linux-wireless@lfdr.de>; Sat, 24 Aug 2024 14:44:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B99F395DE2A
+	for <lists+linux-wireless@lfdr.de>; Sat, 24 Aug 2024 15:49:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09258B218C2
-	for <lists+linux-wireless@lfdr.de>; Sat, 24 Aug 2024 12:44:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9C581C21004
+	for <lists+linux-wireless@lfdr.de>; Sat, 24 Aug 2024 13:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA5B158DD4;
-	Sat, 24 Aug 2024 12:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3CC715098F;
+	Sat, 24 Aug 2024 13:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NEnYNkxJ"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="QNgck6oO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7E4835894;
-	Sat, 24 Aug 2024 12:44:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4419C376E9;
+	Sat, 24 Aug 2024 13:48:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724503477; cv=none; b=nbbSMBN1RZ3w2n7rKi0nclOB65cFgIAVif6LYNM0bxyh1p75CAZRp2aS6swEA7XRCySRpEO0H66HsEdemoBq7RzCy1m4QuLRxXi1CURAoT0czUUofM2XP5pJqq1qw9AO5JzdVO3AEpEsFLIP4PyNzqJRnyNwbW0DYg5DgMvTmMc=
+	t=1724507337; cv=none; b=u6EqtV9ic5XvnSJvycervBmelIgmExUoiv9m+dl99Aw4NFHOJm3BrSgkMj0yvwH3ZPluTOSn0fM3iCCWE2OQmuAucKaXK/T46LqxSbrMZG0I7YxLXtZKTTXXXDHjfyJwh2aMVz/utwiOXi/0iEv0o3NwJ5KKwB8HzkHTlejToCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724503477; c=relaxed/simple;
-	bh=HwGCxWy4npt+HfgezYvNZsi2kj7gEaqEmWDYyQwaltc=;
+	s=arc-20240116; t=1724507337; c=relaxed/simple;
+	bh=bMpwfF99z3Y4gYG5ywp24cpVC5QDZU9WU0GT2cEtTYA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dji7bMtvtkcHSM47aVqy4rhEgemor5cAVaWsWb8/FrHM5pYHVS/O9wJMhjONVOZdUHjMiLCOlVhSfNHS78WBvDGl5feVcI6T2KhTSYqTr0reL1LHbQMZi3i0329ggX9mm7fuEkjllOoKOldp3QL+/06gpD3T3pXralkAcVs0ZRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NEnYNkxJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 304A8C32781;
-	Sat, 24 Aug 2024 12:44:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724503476;
-	bh=HwGCxWy4npt+HfgezYvNZsi2kj7gEaqEmWDYyQwaltc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NEnYNkxJUy5bWVypMzGV03seYcNHt9LzFWbg7Xw6cdccqAqngsoQjSHriOfE4CRp5
-	 uZlMLg+r47xeMeEIfecQNxpjd7oXmS1nEtw0/bxTCn03CvU9KxAoGawd89sA0nlF8h
-	 Ilyd7N4ykBgtqwASitxVwN8EFS5jYExma1sOGw+cqdzMlOByM0bK2aZMyxJWW45PrL
-	 e8CKp9tRa9DJ1D0kr4xi/gxk1ZuOGxbtvDNMFiEBkfhmJLtlCivjujwXZ7g03KVjNx
-	 ZiT6rZC8OaFQoerHicv0oUhCmu1IvC/MmvTWowbY8rYSe7POp6McyGS0mY2JlKe1JC
-	 GGebLkxAvjghA==
-Date: Sat, 24 Aug 2024 13:44:30 +0100
-From: Simon Horman <horms@kernel.org>
-To: Marek Vasut <marex@denx.de>
-Cc: linux-wireless@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-	Adham Abozaeid <adham.abozaeid@microchip.com>,
-	Ajay Singh <ajay.kathat@microchip.com>,
-	Alexis =?utf-8?Q?Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
-	devicetree@vger.kernel.org, netdev@vger.kernel.org,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: Re: [PATCH v2 2/4] wifi: wilc1000: Fold wilc_get_chipid() into wlan.c
-Message-ID: <20240824124430.GI2164@kernel.org>
-References: <20240823161131.94305-1-marex@denx.de>
- <20240823161131.94305-2-marex@denx.de>
- <20240823174630.GD2164@kernel.org>
- <006098a3-efb5-4bf3-a28c-20702597feaa@denx.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=o92drh/SUS6WMpwCExCyQ7VjlGbAzXm5CY0ICZsq8QyoBXJTQo6eq0XpY1Og8xuWIoomeHvZAvVzmKkGqtPtAs7YvCTfmliqLD6Icm4WiTSg9bmiREs5AJdn555I0hvK6oxHuDMExSPmdHmfvZS19rp0RW4cH618LGHHy8LXUUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=QNgck6oO; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id EB81E1FCC4;
+	Sat, 24 Aug 2024 15:48:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1724507324;
+	bh=LCGuYpwiP/UsbuMuxfXNSyWc/GZn//vKkpAVuorNXEY=; h=From:To:Subject;
+	b=QNgck6oOT6zubxXartsETaXT5i7JTl8V7HeXnKSaLYdFVb3cozFxs6gP5s1rpOX+/
+	 ITU+zNg9+FMsXNb/32pFBSwbFWl2Dyx5IoKZTT2yHlc59WheDRtkAGIv61Fipd1n99
+	 PWjGQL2JNfU52uLxfURsGUBAhTCHSiQSs7vJEwkN0IQPU9ASxii+oLbI1Myagy/9XZ
+	 QGdSlT+wYWWPMNzdF6aQbh622sAC3AAw/hf1xQrGoVKvFkdFC8tMPl/j8BeRPQ+LKa
+	 4MGc7tno14AH/yZV3YF/9TWA9MZ1CZ1GlYGpJTFqHngR/uNsoAQWu+yCqcXuprYLEd
+	 2i6a6l76o2Pqg==
+Date: Sat, 24 Aug 2024 15:48:39 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Sascha Hauer <s.hauer@pengutronix.de>, David Lin <yu-hao.lin@nxp.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kvalo@kernel.org, johannes@sipsolutions.net,
+	briannorris@chromium.org, francesco@dolcini.it,
+	tsung-hsien.hsieh@nxp.com, kernel@pengutronix.de
+Subject: Re: [PATCH v2 00/43] wifi: nxpwifi: create nxpwifi to support iw61x
+Message-ID: <20240824134839.GA21315@francesco-nb>
+References: <20240809094533.1660-1-yu-hao.lin@nxp.com>
+ <Zsc1efkBHDXdZtfJ@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -70,55 +62,64 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <006098a3-efb5-4bf3-a28c-20702597feaa@denx.de>
+In-Reply-To: <Zsc1efkBHDXdZtfJ@pengutronix.de>
 
-+ Dan
-
-On Fri, Aug 23, 2024 at 10:38:59PM +0200, Marek Vasut wrote:
-> On 8/23/24 7:46 PM, Simon Horman wrote:
-> > On Fri, Aug 23, 2024 at 06:08:57PM +0200, Marek Vasut wrote:
-> > > Do not use wilc_get_chipid() outside of wlan.c . Instead, call
-> > > wilc_get_chipid() right after the SDIO/SPI interface has been
-> > > initialized to cache the device chipid, and then use the cached
-> > > chipid throughout the driver. Make wilc_get_chipid() static and
-> > > remove its prototype from wlan.h .
-> > > 
-> > > Signed-off-by: Marek Vasut <marex@denx.de>
+On Thu, Aug 22, 2024 at 02:56:25PM +0200, Sascha Hauer wrote:
+> On Fri, Aug 09, 2024 at 05:44:50PM +0800, David Lin wrote:
+> > This series adds support for IW61x which is a new family of 2.4/5 GHz
+> > dual-band 1x1 Wi-Fi 6, Bluetooth/Bluetooth Low Energy 5.2 and 15.4
+> > tri-radio single chip by NXP. These devices support 20/40/80MHz
+> > single spatial stream in both STA and AP mode. Communication to the
+> > IW61x is done via SDIO interface
 > > 
-> > ...
+> > This driver is a derivative of existing Mwifiex [1] and based on similar
+> > full-MAC architecture [2]. It has been tested with i.MX8M Mini evaluation
+> > kits in both AP and STA mode.
 > > 
-> > > diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
+> > All code passes sparse and checkpatch
 > > 
-> > ...
+> > Data sheet (require registration):
+> > https://www.nxp.com/products/wireless-connectivity/wi-fi-plus-bluetooth-
+> > plus-802-15-4/2-4-5-ghz-dual-band-1x1-wi-fi-6-802-11ax-plus-bluetooth-5-
+> > 4-plus-802-15-4-tri-radio-solution:IW612
 > > 
-> > > @@ -1535,9 +1537,18 @@ int wilc_wlan_init(struct net_device *dev)
-> > >   	if (!wilc->hif_func->hif_is_init(wilc)) {
-> > >   		acquire_bus(wilc, WILC_BUS_ACQUIRE_ONLY);
-> > >   		ret = wilc->hif_func->hif_init(wilc, false);
-> > > +		if (!ret)
-> > > +			chipid = wilc_get_chipid(wilc);
-> > >   		release_bus(wilc, WILC_BUS_RELEASE_ONLY);
-> > >   		if (ret)
-> > >   			goto fail;
-> > > +
-> > > +		if (!is_wilc1000(chipid)) {
-> > > +			netdev_err(dev, "Unsupported chipid: %x\n", chipid);
-> > > +			return -EINVAL;
+> > Known gaps to be addressed in the following patches,
+> >   - Enable 11ax capabilities. This initial patch support up to 11ac.
+> >   - Support DFS channel. This initial patch doesn't support DFS channel in
+> >     both AP/STA mode.
 > > 
-> > Hi Marek,
+> > This patch is presented as a request for comment with the intention of being
+> > made into a patch after initial feedbacks are addressed
 > > 
-> > Should this unwind as is the case elsewhere in this function?
+> > [1] We had considered adding IW61x to mwifiex driver, however due to
+> >     FW architecture, host command interface and supported features are
+> >     significantly different, we have to create the new nxpwifi driver.
+> >     Subsequent NXP chipsets will be added and sustained in this new driver.
 > 
-> It should, will fix in V3, thanks.
-> 
-> > 			ret = -EINVAL;
-> > 			goto fail;
-> > 
-> > Flagged by Smatch.
-> 
-> What's the trick here ?
+> I added IW61x support to the mwifiex driver and besides the VDLL
+> handling which must be added I didn't notice any differences. There
+> might be other differences, but I doubt that these can't be integrated
+> into the mwifiex driver.
 
-Smatch is here. I don't think there is much of a trick other than running it :)
+Maybe you can share an RFC patch with what you currently have available
+to support IW61x within the current mwifiex driver?
 
-https://github.com/error27/smatch
+Given what David @NXP wrote here
+
+> > [1] We had considered adding IW61x to mwifiex driver, however due to
+> >     FW architecture, host command interface and supported features are
+> >     significantly different, we have to create the new nxpwifi driver.
+
+David, given the code, he should be able to highlight the limitation of
+such approach and hopefully we can find a good path forward?
+
+One of the challenges with the current mwifiex driver is that it
+supports quite a few wireless devices, and any new addition must be done
+in such a way to not break the old stuff. Not to mention the "Odd Fixes"
+maintenance status of the driver, quoting Brian: "My only interest in
+mwifiex is in making sure existing hardware (especially those used on
+Chromebooks) doesn't get significantly worse.".
+
+Francesco
+
 
