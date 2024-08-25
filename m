@@ -1,72 +1,72 @@
-Return-Path: <linux-wireless+bounces-11903-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11904-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5086195E3FD
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Aug 2024 16:50:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADE3395E411
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Aug 2024 17:08:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67A592819BC
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Aug 2024 14:50:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D5D4B210D9
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Aug 2024 15:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F45154430;
-	Sun, 25 Aug 2024 14:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9131D14EC71;
+	Sun, 25 Aug 2024 15:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fRJDv/4L"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UHN4f1rA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50941DFCB;
-	Sun, 25 Aug 2024 14:50:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA9F4A2C;
+	Sun, 25 Aug 2024 15:07:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724597438; cv=none; b=JHTuHkgrwGHnGxl5S2Diylr5L1Nq04kpqrIQKul4oeUT/HnVqn3ChzPKDENfWfy+AoBQ8hiXqviZZc7h8sEIfCz/3OP1v35Okm+4Jwl7D/+Vy2DBHNAmyRhpJVgve8my+WHoVY9o0Bm4sUra298745UR9KdVw+dKc1acMzkYJRo=
+	t=1724598480; cv=none; b=TYuyZWW25V8s9Q+TpEJ/tKeJfDVUknrv7zORtoSi+U2Qz3vXv4vjsjrUVj8tdNUx+ebA+9U1e2Ca4hNUo7fXbLYhg2v9OLEUPwx0yk26NCTBpnCNYp5CiFuqVuvHiVBBV4xLDt8l8GAoqJPYo5YVJ4zV2+bnh0FO3Vfr4KsvlSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724597438; c=relaxed/simple;
-	bh=ofQC/npSaoeKCg1WWe+IXgcVsQuPhBagALgMIZywEA8=;
+	s=arc-20240116; t=1724598480; c=relaxed/simple;
+	bh=E2KfPsMx9/krn9sQQXLE317a7aD2b/xv9eZtmAKq9qE=;
 	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=AUaLlyLRiBPqPxBjGrPPMT8kS6eCj9Di3WYsYnvgUPJ2FIlpt0CK7PvPaZFp76sIQ0P7pAvvpwPISq9eY4kN/p9Qg4FVaLAtTpMaZcAg3Taf7612HNoo9l30rOLtmMKmBDg2QOoj9rqprRKNoF2FwVrzZ/ItfqePugum7C2mI6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fRJDv/4L; arc=none smtp.client-ip=209.85.167.42
+	 In-Reply-To:Content-Type; b=sIF0xSMbtgU/4bMxjP3l/P4bh2YDPr8Zcc1JyjsqZIyr+7FWFQs2QophZrJPVC3ay5wlr6EW68bCt4+ZYx+WYhmTHKOpSvNZqajwvXMosXzQHahaGstAlOR8UP0ygJhlewVPjAVyb89lK6Oi8QXrz/jrldjrNyhnTeYM8M2WqoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UHN4f1rA; arc=none smtp.client-ip=209.85.208.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-52fcc56c882so3337548e87.0;
-        Sun, 25 Aug 2024 07:50:36 -0700 (PDT)
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2f409c87b07so39074701fa.0;
+        Sun, 25 Aug 2024 08:07:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724597435; x=1725202235; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1724598477; x=1725203277; darn=vger.kernel.org;
         h=content-transfer-encoding:content-language:in-reply-to:mime-version
          :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Pc8FY73VtyRg3FAE2t6D99RHE0efb9mn6142+5HwO4c=;
-        b=fRJDv/4Lpt1SZREuJ7rKvEToQmyIZ2ta31UZVEA13jsWq2ve+bQBu7qtysA8RhNFvf
-         TD36rV2YaTmj4bjeETPz3pAENy48UYGgMtdR9lODdhLSht1Ae38HbS/ugXE7UVzhacci
-         1GAoVSXaMOmB+cDF+xzYB9oER7uWkBvAKSLiWwa0BR9kqS0wWOVEtZEEgX+S5VdZ5V1K
-         K9m06fflkY3T6CyDqiDqna6kcl1uVDsDZEkmfwCazncwfBLsu1qBfinKncOsf393mvpO
-         Nc5n1EDsWMVOu9s+ZOkUdpHmSu/aKYmVhmobw2THgdjQEl+KVdxD3b5gDHHUtIWsZnzg
-         T5Ew==
+        bh=KJA3gEepVj2td8pDnx4GWLdE+Es2EQrzZZB6Knm3YPM=;
+        b=UHN4f1rAX17BNQRbjbHlqzuKtUXlr38h6ZNgtVyVMIZdAOBVfcBlkNH2S3gRyLop9A
+         MC6+59/4Xgqz6db5zYC1rbgDYRWqsoGeQl+hczbs704rAJLc1JCl8xVIhSr0D5ES1nZU
+         RfkpIa0MvXEGoAgB2ZE7oXbHNa9QjepPDf6Sbd9Aksi2aWqHRAne4B9GYGkHwRm7bAx0
+         d9sA/8+siJYDXJErjfCge3eR2BjoCwgu6k45AReou0g0dPZRZt2zqBaZK6m98HjGM5AV
+         mEP1TEuoOGZKeqg3PHFIBDcmICW1b1xcgB/dIIxwEjuIiPiMnh5DWkKyzFYvaImKwOgL
+         Bnrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724597435; x=1725202235;
+        d=1e100.net; s=20230601; t=1724598477; x=1725203277;
         h=content-transfer-encoding:content-language:in-reply-to:mime-version
          :user-agent:date:message-id:from:references:cc:to:subject
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Pc8FY73VtyRg3FAE2t6D99RHE0efb9mn6142+5HwO4c=;
-        b=svIm2e79QZpZOK/cNMmGaHkLF5my0ewj/fQqyhGx4kamjox84p4EpMxufMHIqkW6MT
-         4Uvofua2okSHoCk51XATY7l/TyTC+Azbjv24ffXxqnDzAqWcbUpJwa6Ud4oJhB4DmSvS
-         aYtXdctWiqrepG8Bq3ejal/lhIqybtGydDxtGgnXrGhtJ8r8l0PAkLiSPQbxW5O6Uex0
-         zYdk6TFhnA8PU207oIMwkhTwB7lTIWeSE7hkmMFibz+b83aTgQOOTef1nFCRi6iz5/kt
-         PO8hMtv7XhAMg8u2KiReR5R+9axnfGD4QG+YUMXPcfgBTLlQ3wpJ3mspQD6lOCenOvT4
-         /Zmw==
-X-Forwarded-Encrypted: i=1; AJvYcCU3ZFKpyalD6Gf+tcWJNxycoyFDjBTCQW8GrhiKuKraveJBaOjesMNoHrYDG/bfv2s6EL/sXmaG@vger.kernel.org, AJvYcCWBZxOeu9eoJJlRoM2HhBPv/DuhAGIqv1ostbRHRAvcGuCJpJ0uO+EY/HBQxvIs1TKFp+nYIUIT/IxMXgg=@vger.kernel.org, AJvYcCXCHZLbO1TexdAxzaphzVdTSO93XgN4ipZdm38e7enjVNyoI5O5P9H5sSK3sV4yoBLmA/HWjtyz9/1qw278jow=@vger.kernel.org, AJvYcCXuM76WWvjS+zXGNpmQaEyaJ/zdrjxKP7K+V8zsvXeYTGUK+IkexgLH9OkqO8IQmtnr5gdkKZRWwKmp@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYZoXD4fJ6C3dqKRdJCgUpR7QI+BVU+WYGKEEviiq5m9R8hL/S
-	n7U7NFuA43t0TChgmpCRVfj3vyhGm9EpAJ5pkKDjc9J56lhP6A3H
-X-Google-Smtp-Source: AGHT+IH0/xfVzdRZjblK8KE69idqy4lw8tIafTxYwXC+VouljoNyroV0VA7MSy/dmO5QfZ/a6ulqbg==
-X-Received: by 2002:a05:6512:3e1a:b0:533:4322:d03e with SMTP id 2adb3069b0e04-5334cbaf0c2mr4162339e87.25.1724597434273;
-        Sun, 25 Aug 2024 07:50:34 -0700 (PDT)
+        bh=KJA3gEepVj2td8pDnx4GWLdE+Es2EQrzZZB6Knm3YPM=;
+        b=MeGitWl4um9/av8ffv3562yB0Kn1s8Yh3n/rbzBR9/cn9E2fDtauMcbIjyl7OHh4Go
+         yUikzU4APyPCRCiAOmD6MiQK1yz8hBLxIFNIEyg033ipnrtrBRw7lzOJv9nk4vcewcSr
+         Z7bIPEHSdA1m8RJq2WUXfpo1/PDQaX4HF2XTSml+adhkO0Zn9d9S5sErPrGQ/G0EWETF
+         sXKa7uN8UaP+7MucBWrJLOXAMqr3zrNp1ABWSVIkGz5C0z82Dq2eKH44zNPiEYbso+Br
+         IeCtXC3kTk17La1+q9BR2NvKEWO4LVwR3h7fyarQbl1uAhlXuGOYfkH0BIxpBbgac2EW
+         lscw==
+X-Forwarded-Encrypted: i=1; AJvYcCV2xqkuruaM+l2nMQNq6SDrlRGyMH/YR1F94CuXmuZs7lLMBohmoTAkHjxC/JAGJ+/HPPS1yQlb@vger.kernel.org, AJvYcCVQyEno2To1m/J13rgvXiXD/PYqMGDE3R6ByP5JXlEFieihQWixQDqr6aMTP9Tmpo4+t9cdg5+crwWQ@vger.kernel.org, AJvYcCWESdZ6c388vIUOMT0dPn6Y9uVgJ0yjsb/P4nHwDCM5gnxnaOnQKeRR99Whi1pllQVwAQJaHhc7VnRirxsUC6Q=@vger.kernel.org, AJvYcCXY3/WGI/3wkj6bQHjiqxEi/E6xwq9xa6528MLzP6wUBeuSN/ZsUZelN1yL1tTmxaA5JcjVo36Vkl+hN/U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQFYfpiF6iNG4WNFavaYu59CzK9BbwGCuxGymr6o6ticBuVTOf
+	8EJfYBkBkH9Hway4PSSaqXVfuYMZO/r/0447TjFbl58C/F22iDbJ2vvpgg==
+X-Google-Smtp-Source: AGHT+IHpkC7d8estHfyZBfpIZjGWgmNKTMMXdFj70Eip15DyJVsvfVpqtflUw2cXGih5vH91I5BpWw==
+X-Received: by 2002:a05:6512:2391:b0:52c:dbe7:cfd5 with SMTP id 2adb3069b0e04-53438783e02mr4250933e87.32.1724598476369;
+        Sun, 25 Aug 2024 08:07:56 -0700 (PDT)
 Received: from [192.168.1.105] ([31.173.80.155])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5334ea2937bsm1214687e87.42.2024.08.25.07.50.33
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5334ea59279sm1180968e87.147.2024.08.25.08.07.55
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 25 Aug 2024 07:50:33 -0700 (PDT)
+        Sun, 25 Aug 2024 08:07:56 -0700 (PDT)
 Subject: Re: [PATCH V2] wifi: ath6kl: Replace ath6kl_usb_submit_ctrl_in with
  usb_control_msg_recv
 To: Edward Adam Davis <eadavis@qq.com>
@@ -78,8 +78,8 @@ Cc: gregkh@linuxfoundation.org, kvalo@kernel.org,
 References: <tencent_1D9967CEC6D952EC86530991EED86ED70C06@qq.com>
  <tencent_F0CB92D8867509922ED02ED5CCA4E7D2C606@qq.com>
 From: Sergei Shtylyov <sergei.shtylyov@gmail.com>
-Message-ID: <580b93ac-58a0-6489-ad84-be6bdf98f7e6@gmail.com>
-Date: Sun, 25 Aug 2024 17:50:30 +0300
+Message-ID: <67c25a14-4ce9-e848-05f5-d6955fc8ba71@gmail.com>
+Date: Sun, 25 Aug 2024 18:07:54 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.10.1
 Precedence: bulk
@@ -92,6 +92,10 @@ In-Reply-To: <tencent_F0CB92D8867509922ED02ED5CCA4E7D2C606@qq.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+
+Hello!
+
+   Oops, sent a wrong draft... :-/
 
 On 8/25/24 5:21 PM, Edward Adam Davis wrote:
 
@@ -117,8 +121,9 @@ On 8/25/24 5:21 PM, Edward Adam Davis wrote:
 > -	ret = ath6kl_usb_submit_ctrl_in(ar_usb,
 > -					ATH6KL_USB_CONTROL_REQ_RECV_BMI_RESP,
 > -					0, 0, buf, len);
-	ret = usb_control_msg_recv(ar_usb->udev, 0, ATH6KL_USB_CONTROL_REQ_RECV_BMI_RESP,
-				 USB_DIR_IN | USB_TYPE_VENDOR |
+> +	ret = usb_control_msg_recv(ar_usb->udev, 0, ATH6KL_USB_CONTROL_REQ_RECV_BMI_RESP,
+> +				 USB_DIR_IN | USB_TYPE_VENDOR |
+
 
    Strange alignment style... If you're not going to reuse the old style,
 why this trailing space before USB_DIR_IN?
