@@ -1,143 +1,140 @@
-Return-Path: <linux-wireless+bounces-11899-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11900-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D87E195E30A
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Aug 2024 13:26:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98ED895E393
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Aug 2024 15:19:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1922A1C20C92
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Aug 2024 11:26:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C93E2819A7
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Aug 2024 13:19:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6049613DBB6;
-	Sun, 25 Aug 2024 11:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA71015443F;
+	Sun, 25 Aug 2024 13:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFBP60fv"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Qjubs+18"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07730801;
-	Sun, 25 Aug 2024 11:25:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAFF95464E
+	for <linux-wireless@vger.kernel.org>; Sun, 25 Aug 2024 13:19:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724585160; cv=none; b=CbSWd0esTatnnMXm0+LkWxu/DnCRifDMtszjkNrRWob0uQa5k/zFznldNcKDd7f5xzXBQXUPmt/GaS0t0C9F71FcT2AMTjvUDGzZ46zBN9sK8Tyet/6aju0D0G84ge+HM1r0Aayf29UQ+bju9o5MoQ4il/2UVJIPUooPP/fMy3U=
+	t=1724591972; cv=none; b=B6GNqLvxuVZqqVI5O3eQ+7TSgLqoPzENtnGdga7zcPaXubeR4IR18IMH85hsTy2NmkBDtOMFgZ1hthLrWcsd5nD+XxOCN9mYWyyF9KgcAnDKcCq+X96DvA/eV6vFF5vAMciF6paQFdZuda7WX3WndSP++AuVLDk5CyCxFHIgXhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724585160; c=relaxed/simple;
-	bh=mfY+835+6x4vd1sUirZL47mKpUKMMBG2vJ2EWL/D5Es=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZYGJ89aiwPfMlNcOB7ApjLXZiOKt28gcN9e9g318m5ky/cOHNoM2B/yO25Tr3JMBeVMnR5R3k66gTdW4j+G+tPxBPE0RtfaRxbKU9RgEDLbFVLt9rSkr2Wldoylq3pGnO6ACP8zSTsP/kDaYEGp93TbRlpJhVJXhnllxSlgJObg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFBP60fv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38F6EC32782;
-	Sun, 25 Aug 2024 11:25:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724585159;
-	bh=mfY+835+6x4vd1sUirZL47mKpUKMMBG2vJ2EWL/D5Es=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IFBP60fvvTM0yH3/4f8Zpvpw2+W6JEY5ZhEr/8378rri9RxzMpV1PrfN+sL7z95/4
-	 +KfRL8smkGwuirbzYisJQrOA63FxZkv69hE8LFM9S8fLyO14Qy3RiCgxxOB9QfCdjd
-	 NGlE46m2oBN5MOzrDHcxCjYmX6TgDxMLZWbuktJk=
-Date: Sun, 25 Aug 2024 13:25:56 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Edward Adam Davis <eadavis@qq.com>
-Cc: kvalo@kernel.org, linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com,
-	syzkaller-bugs@googlegroups.com
-Subject: Re: [PATCH] wifi: ath6kl: Check that the read operation returns a
- data length of 0
-Message-ID: <2024082501-tiling-prelaw-38d7@gregkh>
-References: <2024082554-manatee-ashamed-12d5@gregkh>
- <tencent_89BAE8BB0933D89E1D1BD94B891BBD257208@qq.com>
+	s=arc-20240116; t=1724591972; c=relaxed/simple;
+	bh=8p+g2F4j/irnUuWLk9wAFcIimCjZHaUVQUI4HAdIsJI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cvmeVrSxOP8LStWCcIc0k2XQTETPDp0N+eooHr8TK7yfcxI06oG0OZZ041qr0BS83NrLsGXd4vzCCCCdqBbxiy3NyJjxk5+3w2u4HJeM5HJhkdn6tTsZA2PPMmRvnv63r+OGG8QSZj11Y5RySsEgP6iF5thXf/ewtbRRtwafi1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Qjubs+18; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1724591969;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Rp8G6qDMo1ZV9tsh/r13/jvaPvi4RD1NsdRYxXubRE4=;
+	b=Qjubs+18fsivN9q1U8McMOBZBBvP6BHmWDgP/4gI3bnWuerEaJ04Xu4CpcvpGg2OfWCRx7
+	/B98CInFgR7yaRdPu9TQyaliB0p2s0hqJ9NuiUfYqtBwQFrn7ysGLzG66ML7quGDT8Uefp
+	mxGTriId7U35m96oBjjiXI+fzSCFmZU=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-612-qKiT2DDrM7WXsrx48XD1Zg-1; Sun,
+ 25 Aug 2024 09:19:26 -0400
+X-MC-Unique: qKiT2DDrM7WXsrx48XD1Zg-1
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D2A941955BF2;
+	Sun, 25 Aug 2024 13:19:24 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.39.192.45])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2FA7719560A3;
+	Sun, 25 Aug 2024 13:19:21 +0000 (UTC)
+From: Hans de Goede <hdegoede@redhat.com>
+To: Johannes Berg <johannes@sipsolutions.net>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH] net: rfkill: gpio: Do not load on Lenovo Yoga Tab 3 Pro YT3-X90
+Date: Sun, 25 Aug 2024 15:19:16 +0200
+Message-ID: <20240825131916.6388-1-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <tencent_89BAE8BB0933D89E1D1BD94B891BBD257208@qq.com>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Sun, Aug 25, 2024 at 06:09:45PM +0800, Edward Adam Davis wrote:
-> On Sun, 25 Aug 2024 10:34:00 +0200, Greg KH wrote:
-> > On Sun, Aug 25, 2024 at 04:14:17PM +0800, Edward Adam Davis wrote:
-> > > On Sun, 25 Aug 2024 09:25:37 +0200, Greg KH wrote:
-> > > > > If the data length returned by the device is 0, the read operation
-> > > > > should be considered a failure.
-> > > > >
-> > > > > Reported-and-tested-by: syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com
-> > > > > Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-> > > > > ---
-> > > > >  drivers/net/wireless/ath/ath6kl/usb.c | 3 +++
-> > > > >  1 file changed, 3 insertions(+)
-> > > > >
-> > > > > diff --git a/drivers/net/wireless/ath/ath6kl/usb.c b/drivers/net/wireless/ath/ath6kl/usb.c
-> > > > > index 5220809841a6..2a89bab81b24 100644
-> > > > > --- a/drivers/net/wireless/ath/ath6kl/usb.c
-> > > > > +++ b/drivers/net/wireless/ath/ath6kl/usb.c
-> > > > > @@ -1034,6 +1034,9 @@ static int ath6kl_usb_bmi_read(struct ath6kl *ar, u8 *buf, u32 len)
-> > > > >  		ath6kl_err("Unable to read the bmi data from the device: %d\n",
-> > > > >  			   ret);
-> > > > >  		return ret;
-> > > > > +	} else {
-> > > > > +		ath6kl_err("Actual read the bmi data length is 0 from the device\n");
-> > > > > +		return -EIO;
-> > > >
-> > > > Close, but not quite there.  ath6kl_usb_submit_ctrl_in() needs to verify
-> > > > that the actual amount of data was read that was asked for.  If a short
-> > > > read happens (or a long one), then an error needs to propagate out, not
-> > > > just 0.  See the "note:" line in that function for what needs to be
-> > > > properly checked.
-> > > >
-> > > > hope this helps,
-> > > Thanks for your analysis.
-> > > I have carefully read your analysis and I am not sure if the following
-> > > understanding is appropriate:
-> > > diff --git a/drivers/net/wireless/ath/ath6kl/usb.c b/drivers/net/wireless/ath/ath6kl/usb.c
-> > > index 2a89bab81b24..35884316a8c8 100644
-> > > --- a/drivers/net/wireless/ath/ath6kl/usb.c
-> > > +++ b/drivers/net/wireless/ath/ath6kl/usb.c
-> > > @@ -932,6 +932,15 @@ static int ath6kl_usb_submit_ctrl_in(struct ath6kl_usb *ar_usb,
-> > >
-> > >         kfree(buf);
-> > 
-> > First off, this should be using usb_control_msg_send() instead of having
-> > to roll their own buffer handling, right?
-> I couldn't figure it out with what you said. 
+The Lenovo Yoga Tab 3 Pro YT3-X90 has a non functional "BCM4752" ACPI
+device, which uses GPIO resources which are actually necessary / used
+for the sound (codec, speaker amplifier) on the Lenovo Yoga Tab 3 Pro.
 
-Meaning this kfree() should not be needed if you use
-usb_control_msg_send() (nor the allocation above it.)
+If the rfkill-gpio driver loads before the sound drivers do the sound
+drivers fail to load because the GPIOs are already claimed.
 
-> ath6kl_usb_submit_ctrl_in() is similar to usb_control_msg_send(),
-> both calling usb_control_msg() to communicate with USB devices.
+Add a DMI based deny list with the Lenovo Yoga Tab 3 Pro on there and
+make rfkill_gpio_probe() exit with -ENODEV for devices on the DMI based
+deny list.
 
-Yes, it's close, but not quite the same.
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+---
+ net/rfkill/rfkill-gpio.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-> In the current issue, when executing an ATH6KL_USB_CONTROL_REQ_RECV_BMI_RESP
-> read request, the length of the data returned from the device is 0, which
-> is different from the expected length of the data to be read, resulting in
-> a warning.
-> 
-> ath6kl_usb_submit_ctrl_in()--->
-> 	usb_control_msg()--->
-> 		usb_internal_control_msg()
-> 
-> usb_internal_control_msg() will return the length of the data returned from
-> the device, usb_control_msg() return the length too, so in ath6kl_usb_submit_ctrl_in(),
-> we can filter out incorrect data lengths by judging the value of ret, such
-> as ret != Size situation.
+diff --git a/net/rfkill/rfkill-gpio.c b/net/rfkill/rfkill-gpio.c
+index 84529886c2e6..c268c2b011f4 100644
+--- a/net/rfkill/rfkill-gpio.c
++++ b/net/rfkill/rfkill-gpio.c
+@@ -3,6 +3,7 @@
+  * Copyright (c) 2011, NVIDIA Corporation.
+  */
+ 
++#include <linux/dmi.h>
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+@@ -72,6 +73,20 @@ static int rfkill_gpio_acpi_probe(struct device *dev,
+ 	return devm_acpi_dev_add_driver_gpios(dev, acpi_rfkill_default_gpios);
+ }
+ 
++/* List of DMI matches for devices on which rfkill-gpio should not load,
++ * to avoid firmware bugs.
++ */
++static const struct dmi_system_id rfkill_gpio_deny_table[] = {
++	{
++		/* Lenovo Yoga Tab 3 Pro YT3-X90, bogus "BCM4752" device in DSDT */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
++			DMI_MATCH(DMI_PRODUCT_VERSION, "Blade3-10A-001"),
++		},
++	},
++	{ }
++};
++
+ static int rfkill_gpio_probe(struct platform_device *pdev)
+ {
+ 	struct rfkill_gpio_data *rfkill;
+@@ -81,6 +96,9 @@ static int rfkill_gpio_probe(struct platform_device *pdev)
+ 	const char *type_name;
+ 	int ret;
+ 
++	if (dmi_check_system(rfkill_gpio_deny_table))
++		return -ENODEV;
++
+ 	rfkill = devm_kzalloc(&pdev->dev, sizeof(*rfkill), GFP_KERNEL);
+ 	if (!rfkill)
+ 		return -ENOMEM;
+-- 
+2.46.0
 
-Then just do that type of check for that type of read request in the
-code that does that call, not 2-3 layers deeper, no need for making this
-more complex than needed.
-
-Try removing both of these functions and just call usb functions
-directly.
-
-thanks,
-
-greg k-h
 
