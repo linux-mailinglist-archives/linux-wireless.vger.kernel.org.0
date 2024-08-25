@@ -1,70 +1,71 @@
-Return-Path: <linux-wireless+bounces-11909-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11910-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58FF595E445
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Aug 2024 18:17:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAE9E95E446
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Aug 2024 18:17:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 612621C20A0A
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Aug 2024 16:17:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 406C1B20F58
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Aug 2024 16:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CBE015B108;
-	Sun, 25 Aug 2024 16:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A34F16F262;
+	Sun, 25 Aug 2024 16:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e9N0/NO+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UjHeTsgM"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9BFD16BE1C
-	for <linux-wireless@vger.kernel.org>; Sun, 25 Aug 2024 16:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C6816EC0E
+	for <linux-wireless@vger.kernel.org>; Sun, 25 Aug 2024 16:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724602651; cv=none; b=H6x42MyWUli2hjCsYRWrQq0Smn2nCPm55S1jRc3jC/z0FPGqp7dYX/FWvj2mF4lJm2cko7cm3qh+ljmP59AiOFZTTqGJHqblCPOa+bMpfWmDVOVg+oCXSrYW4mGJXJKmtG0v9wMleXN72j0Nr2cMZK7oU8yWNUjsYStTeNXKlOI=
+	t=1724602652; cv=none; b=VVQq38twtkhAuakPN+w2/0VGrto0Kh0XEUOo99fq2ftNwyNDY6Mrc0F0ygGvTTnfkisXTFR6qDw8hyuaolwC4WVduCVuj+vkYoUPaeUYbK5baVdtxpqzwqLDLSypr5EZfVnDeHuAdFT7BDL8dO0XPipChqNu++1SG80H81j76+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724602651; c=relaxed/simple;
-	bh=UETGaDT7mDaLgwscxlnaZu2HAsMYoP0Ni2SvwHqlz5Y=;
+	s=arc-20240116; t=1724602652; c=relaxed/simple;
+	bh=fJKK3Ij6AJ65NLokDieLiXU7tz2fTPxoxhuX1jQXE/w=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jw/tqUEKQmlBRSCTs/1QO6YAfzQqUPAFsm2WnU9PCevO+dN+1lVfQ4W27HKxa6HNaBap1NptX60ogEukKv8l0AgyVkdMuKyeL/SLv+R9o/eW4FpxcCi3jtnZwqDxZdssNBTMXTmAzBjwjtGPIsJmzcMdlWSWPBEQ4kI50IowdgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e9N0/NO+; arc=none smtp.client-ip=192.198.163.18
+	 MIME-Version; b=Idh0NbS0yBNigG9qP/Rar2rjPQfFYk5x7ddSMjUF+cNiN6kOWmESaCKCH1XlIlrs7i7J2NXNpPvWuwgvSGDkSxRQCy9WfN7K/Pb0J7WN5oDmd3gSOIvZXioQzVkzAxTXH0OT2na3nHWyvkk3j7JSJqhbe8UZkiLueeAzOKR0zAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UjHeTsgM; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724602649; x=1756138649;
+  t=1724602651; x=1756138651;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=UETGaDT7mDaLgwscxlnaZu2HAsMYoP0Ni2SvwHqlz5Y=;
-  b=e9N0/NO+G22JvNRI9ZmNUgH+UNiSSA7Zt6w/LFudXsfvQ7HMlEg7oigw
-   XEsVNbabN+G5EWVh353nMG+qTTIB5IModcRK3UnI6r4yvu5qDAPNNG2Fn
-   ht6Uj/6AO7jg3Mhqkdp+xGmTIwdpTHW6JGb0HuIlv5k12pD2MpreSjfLA
-   chPGI5tH1fDIibX9yPMsZSMMFj3x3Y0QTTQiIqJKJihvSc7AYXUkoLFDE
-   4NViIJ+0CTaxGIvVS0cri1khBmFm2vjYLa8gm0OCp/eYhmts8liGki08H
-   7Um+51tKZMvzHJnljVPJwkZjlLlQMw7h5womhyemGTtHMNbmKw6aJnhcm
-   A==;
-X-CSE-ConnectionGUID: C2ULjcRTTmi9dxK3wcwZTg==
-X-CSE-MsgGUID: pwzx+vczQKmTxZTyjxRWQA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11175"; a="22544123"
+  bh=fJKK3Ij6AJ65NLokDieLiXU7tz2fTPxoxhuX1jQXE/w=;
+  b=UjHeTsgM+gsthK1lWpvYVzeO4BQ3qMwcmgE2Y1QRfsC/RDzhMKJ3nkzh
+   75wjrNkWVj7aQIgop4VFrrwfJntBSRUvFVu2NzDKtPmcXBsG+Z2v/abha
+   qLSM70bcjoXlLBSLUC89FTzQc76fwywiysuZvtQsev3T8ZAHMvVb3P3+z
+   nalqEZaOSAc5lnK+tFEF9JmfkIOqNeVgsOrU/9PiaTEAYLFsbkfMSPXIH
+   0Db7a/NFeNdGGoHSOmP7MHxovnGRJVJzK3CXh8mvzbfuBCSrGE4xOjP35
+   4PaWdZqY53SdTjpegaEthVZvvbnZwYoQGhMwFf9+iaWx3Uo4CIFc/V+Lx
+   g==;
+X-CSE-ConnectionGUID: FjLsm8BaRO6bMDvmXhjCKg==
+X-CSE-MsgGUID: /TDvRmgGQ1yJ5lT+pcLFcw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11175"; a="22544125"
 X-IronPort-AV: E=Sophos;i="6.10,175,1719903600"; 
-   d="scan'208";a="22544123"
+   d="scan'208";a="22544125"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2024 09:17:29 -0700
-X-CSE-ConnectionGUID: cSN7O//rQWW3gUmxa4Gsiw==
-X-CSE-MsgGUID: XcNr48+dShSAoZu0pAnTbQ==
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2024 09:17:30 -0700
+X-CSE-ConnectionGUID: 9U2E7YmHSzOsOkTRkjpXcQ==
+X-CSE-MsgGUID: 4eUK4lJMQea6Eh5ctP1s5w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.10,175,1719903600"; 
-   d="scan'208";a="62999738"
+   d="scan'208";a="62999741"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2024 09:17:27 -0700
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2024 09:17:29 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH 04/13] wifi: iwlwifi: mvm: don't wait for tx queues if firmware is dead
-Date: Sun, 25 Aug 2024 19:17:04 +0300
-Message-Id: <20240825191257.a7cbd794cee9.I44a739fbd4ffcc46b83844dd1c7b2eb0c7b270f6@changeid>
+	Daniel Gabay <daniel.gabay@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>
+Subject: [PATCH 05/13] wifi: iwlwifi: mvm: fix iwl_mvm_scan_fits() calculation
+Date: Sun, 25 Aug 2024 19:17:05 +0300
+Message-Id: <20240825191257.7db825442fd2.I99f4d6587709de02072fd57957ec7472331c6b1d@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240825161713.3547021-1-miriam.rachel.korenblit@intel.com>
 References: <20240825161713.3547021-1-miriam.rachel.korenblit@intel.com>
@@ -77,49 +78,69 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Daniel Gabay <daniel.gabay@intel.com>
 
-There is a WARNING in iwl_trans_wait_tx_queues_empty() which we hit it's
-become a WARNING.
-The problem is that we can't expect anything from the firmware after
-it's declared dead.
-Don't call iwl_trans_wait_tx_queues_empty() in this case. While it could
-be a good idea to stop the flow earlier, the flush functions do some
-maintenance work that is not related to the firmware, so keep that part
-of the code running even when the firmware is not running.
+The calculation should consider also the 6GHz IE's len, fix that.
+In addition, in iwl_mvm_sched_scan_start() the scan_fits helper is
+called only in case non_psc_incldued is true, but it should be called
+regardless, fix that as well.
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 23 ++++++++++---------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 7236ff7277ce..5544426dfd1a 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -5818,6 +5818,10 @@ static void iwl_mvm_flush_no_vif(struct iwl_mvm *mvm, u32 queues, bool drop)
- 	int i;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index 8e0df31f1b3e..ecd9d301e88b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -837,8 +837,8 @@ static inline bool iwl_mvm_scan_fits(struct iwl_mvm *mvm, int n_ssids,
+ 	return ((n_ssids <= PROBE_OPTION_MAX) &&
+ 		(n_channels <= mvm->fw->ucode_capa.n_scan_channels) &
+ 		(ies->common_ie_len +
+-		 ies->len[NL80211_BAND_2GHZ] +
+-		 ies->len[NL80211_BAND_5GHZ] <=
++		 ies->len[NL80211_BAND_2GHZ] + ies->len[NL80211_BAND_5GHZ] +
++		 ies->len[NL80211_BAND_6GHZ] <=
+ 		 iwl_mvm_max_scan_ie_fw_cmd_room(mvm)));
+ }
  
- 	if (!iwl_mvm_has_new_tx_api(mvm)) {
-+		/* we can't ask the firmware anything if it is dead */
-+		if (test_bit(IWL_MVM_STATUS_HW_RESTART_REQUESTED,
-+			     &mvm->status))
-+			return;
- 		if (drop) {
- 			guard(mvm)(mvm);
- 			iwl_mvm_flush_tx_path(mvm,
-@@ -5911,8 +5915,11 @@ void iwl_mvm_mac_flush(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+@@ -3168,18 +3168,16 @@ int iwl_mvm_sched_scan_start(struct iwl_mvm *mvm,
+ 		params.n_channels = j;
+ 	}
  
- 	/* this can take a while, and we may need/want other operations
- 	 * to succeed while doing this, so do it without the mutex held
-+	 * If the firmware is dead, this can't work...
- 	 */
--	if (!drop && !iwl_mvm_has_new_tx_api(mvm))
-+	if (!drop && !iwl_mvm_has_new_tx_api(mvm) &&
-+	    !test_bit(IWL_MVM_STATUS_HW_RESTART_REQUESTED,
-+		      &mvm->status))
- 		iwl_trans_wait_tx_queues_empty(mvm->trans, msk);
+-	if (non_psc_included &&
+-	    !iwl_mvm_scan_fits(mvm, req->n_ssids, ies, params.n_channels)) {
+-		kfree(params.channels);
+-		return -ENOBUFS;
++	if (!iwl_mvm_scan_fits(mvm, req->n_ssids, ies, params.n_channels)) {
++		ret = -ENOBUFS;
++		goto out;
+ 	}
+ 
+ 	uid = iwl_mvm_build_scan_cmd(mvm, vif, &hcmd, &params, type);
+-
+-	if (non_psc_included)
+-		kfree(params.channels);
+-	if (uid < 0)
+-		return uid;
++	if (uid < 0) {
++		ret = uid;
++		goto out;
++	}
+ 
+ 	ret = iwl_mvm_send_cmd(mvm, &hcmd);
+ 	if (!ret) {
+@@ -3197,6 +3195,9 @@ int iwl_mvm_sched_scan_start(struct iwl_mvm *mvm,
+ 		mvm->sched_scan_pass_all = SCHED_SCAN_PASS_ALL_DISABLED;
+ 	}
+ 
++out:
++	if (non_psc_included)
++		kfree(params.channels);
+ 	return ret;
  }
  
 -- 
