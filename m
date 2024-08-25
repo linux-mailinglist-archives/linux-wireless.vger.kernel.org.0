@@ -1,71 +1,71 @@
-Return-Path: <linux-wireless+bounces-11910-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11911-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAE9E95E446
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Aug 2024 18:17:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A370D95E447
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Aug 2024 18:17:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 406C1B20F58
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Aug 2024 16:17:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2DD9CB210C5
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Aug 2024 16:17:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A34F16F262;
-	Sun, 25 Aug 2024 16:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3574416EC0E;
+	Sun, 25 Aug 2024 16:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UjHeTsgM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Kgjc60X9"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C6816EC0E
-	for <linux-wireless@vger.kernel.org>; Sun, 25 Aug 2024 16:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A3E16BE1C
+	for <linux-wireless@vger.kernel.org>; Sun, 25 Aug 2024 16:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724602652; cv=none; b=VVQq38twtkhAuakPN+w2/0VGrto0Kh0XEUOo99fq2ftNwyNDY6Mrc0F0ygGvTTnfkisXTFR6qDw8hyuaolwC4WVduCVuj+vkYoUPaeUYbK5baVdtxpqzwqLDLSypr5EZfVnDeHuAdFT7BDL8dO0XPipChqNu++1SG80H81j76+0=
+	t=1724602654; cv=none; b=Ka+8OOGLnCbYS0aqKx/IhTRnpJ5l7EZ3HW1LwgSRTfhIdnc7cFOeJIwOSDFdMSn8azJ5AsRHNYS8Ig8MEDz8CltfU1KX9ImrvHo/4td0TDyXH98wxeN818/UtzKM89shAtahaVwXBYyKaZnxYrXzjAEMt+CWkkNPeCPG0Zl9oLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724602652; c=relaxed/simple;
-	bh=fJKK3Ij6AJ65NLokDieLiXU7tz2fTPxoxhuX1jQXE/w=;
+	s=arc-20240116; t=1724602654; c=relaxed/simple;
+	bh=xU/utmda3HNrCa4+yZJC1EmRsSH7D/LKzvY7RUz0cWk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Idh0NbS0yBNigG9qP/Rar2rjPQfFYk5x7ddSMjUF+cNiN6kOWmESaCKCH1XlIlrs7i7J2NXNpPvWuwgvSGDkSxRQCy9WfN7K/Pb0J7WN5oDmd3gSOIvZXioQzVkzAxTXH0OT2na3nHWyvkk3j7JSJqhbe8UZkiLueeAzOKR0zAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UjHeTsgM; arc=none smtp.client-ip=192.198.163.18
+	 MIME-Version; b=NEYb6zRsp0NakClzhMLML28cG2myWg5tWy1NIsJHBnXjy2lVQ3isZr3qtTLQu3i3b5zhHCcXK0dx9WmBKCI5JIBDD5KRroD/9MTTrp+bnU/m7SY9B2XvRyLFDsxUxbr2vYXdPbCyOLf8JrZvu2+JSdX1irjP0L7eWMyVLj8eOi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Kgjc60X9; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724602651; x=1756138651;
+  t=1724602652; x=1756138652;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=fJKK3Ij6AJ65NLokDieLiXU7tz2fTPxoxhuX1jQXE/w=;
-  b=UjHeTsgM+gsthK1lWpvYVzeO4BQ3qMwcmgE2Y1QRfsC/RDzhMKJ3nkzh
-   75wjrNkWVj7aQIgop4VFrrwfJntBSRUvFVu2NzDKtPmcXBsG+Z2v/abha
-   qLSM70bcjoXlLBSLUC89FTzQc76fwywiysuZvtQsev3T8ZAHMvVb3P3+z
-   nalqEZaOSAc5lnK+tFEF9JmfkIOqNeVgsOrU/9PiaTEAYLFsbkfMSPXIH
-   0Db7a/NFeNdGGoHSOmP7MHxovnGRJVJzK3CXh8mvzbfuBCSrGE4xOjP35
-   4PaWdZqY53SdTjpegaEthVZvvbnZwYoQGhMwFf9+iaWx3Uo4CIFc/V+Lx
-   g==;
-X-CSE-ConnectionGUID: FjLsm8BaRO6bMDvmXhjCKg==
-X-CSE-MsgGUID: /TDvRmgGQ1yJ5lT+pcLFcw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11175"; a="22544125"
+  bh=xU/utmda3HNrCa4+yZJC1EmRsSH7D/LKzvY7RUz0cWk=;
+  b=Kgjc60X9OLJ9sJOpG7YCafe9vf57v3w+RIWqBHCwXmHoHRTFKv/MAARF
+   0PfF1WZWwg7zv0Du4cjp6bGFWaABG/7Bh7DMpHNdDJJr+nBSDUYSJXvSc
+   eHiDhqamQfFw5O9nZOsV7oyocIPCTqrK3vpotszYYxQ66mIkFpitrciLq
+   xZjlqdkP4TVcDoTIw08tvyDBTohWH2+bDGu4ExX9D0fX37rCg14bWO1Sr
+   5Qb0kzxqdXcSL2Db6AVn+mvQPJLUsoL0hBVSv2fh9EVfmPxgCmq93MyaS
+   evuA1NWu/SeYj4jGE2wM4V+1oA0eOqg3HFXrf79BkLHfUZmNxofwN1U6a
+   A==;
+X-CSE-ConnectionGUID: +DGvjm8hT4amsd02+7ghDw==
+X-CSE-MsgGUID: emFN3YSvScGPcLLyPyKcIw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11175"; a="22544127"
 X-IronPort-AV: E=Sophos;i="6.10,175,1719903600"; 
-   d="scan'208";a="22544125"
+   d="scan'208";a="22544127"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2024 09:17:30 -0700
-X-CSE-ConnectionGUID: 9U2E7YmHSzOsOkTRkjpXcQ==
-X-CSE-MsgGUID: 4eUK4lJMQea6Eh5ctP1s5w==
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2024 09:17:32 -0700
+X-CSE-ConnectionGUID: jjk3bUemQjqJvMW49+KGTA==
+X-CSE-MsgGUID: viVKQj7aT0a4mFQZ2fXXlg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.10,175,1719903600"; 
-   d="scan'208";a="62999741"
+   d="scan'208";a="62999745"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2024 09:17:29 -0700
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2024 09:17:30 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Daniel Gabay <daniel.gabay@intel.com>,
 	Ilan Peer <ilan.peer@intel.com>
-Subject: [PATCH 05/13] wifi: iwlwifi: mvm: fix iwl_mvm_scan_fits() calculation
-Date: Sun, 25 Aug 2024 19:17:05 +0300
-Message-Id: <20240825191257.7db825442fd2.I99f4d6587709de02072fd57957ec7472331c6b1d@changeid>
+Subject: [PATCH 06/13] wifi: iwlwifi: mvm: fix iwl_mvm_max_scan_ie_fw_cmd_room()
+Date: Sun, 25 Aug 2024 19:17:06 +0300
+Message-Id: <20240825191257.e710ce446b7f.I2715c6742e9c3d160e2ba41bc4b35de370d2ce34@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240825161713.3547021-1-miriam.rachel.korenblit@intel.com>
 References: <20240825161713.3547021-1-miriam.rachel.korenblit@intel.com>
@@ -80,69 +80,49 @@ Content-Transfer-Encoding: 8bit
 
 From: Daniel Gabay <daniel.gabay@intel.com>
 
-The calculation should consider also the 6GHz IE's len, fix that.
-In addition, in iwl_mvm_sched_scan_start() the scan_fits helper is
-called only in case non_psc_incldued is true, but it should be called
-regardless, fix that as well.
+Driver creates also the WFA TPC element, consider that in the
+calculation.
 
 Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
 Reviewed-by: Ilan Peer <ilan.peer@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 23 ++++++++++---------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index 8e0df31f1b3e..ecd9d301e88b 100644
+index ecd9d301e88b..bae6aec8295c 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -837,8 +837,8 @@ static inline bool iwl_mvm_scan_fits(struct iwl_mvm *mvm, int n_ssids,
- 	return ((n_ssids <= PROBE_OPTION_MAX) &&
- 		(n_channels <= mvm->fw->ucode_capa.n_scan_channels) &
- 		(ies->common_ie_len +
--		 ies->len[NL80211_BAND_2GHZ] +
--		 ies->len[NL80211_BAND_5GHZ] <=
-+		 ies->len[NL80211_BAND_2GHZ] + ies->len[NL80211_BAND_5GHZ] +
-+		 ies->len[NL80211_BAND_6GHZ] <=
- 		 iwl_mvm_max_scan_ie_fw_cmd_room(mvm)));
+@@ -48,6 +48,8 @@
+ /* Number of iterations on the channel for mei filtered scan */
+ #define IWL_MEI_SCAN_NUM_ITER	5U
+ 
++#define WFA_TPC_IE_LEN	9
++
+ struct iwl_mvm_scan_timing_params {
+ 	u32 suspend_time;
+ 	u32 max_out_time;
+@@ -303,8 +305,8 @@ static int iwl_mvm_max_scan_ie_fw_cmd_room(struct iwl_mvm *mvm)
+ 
+ 	max_probe_len = SCAN_OFFLOAD_PROBE_REQ_SIZE;
+ 
+-	/* we create the 802.11 header and SSID element */
+-	max_probe_len -= 24 + 2;
++	/* we create the 802.11 header SSID element and WFA TPC element */
++	max_probe_len -= 24 + 2 + WFA_TPC_IE_LEN;
+ 
+ 	/* DS parameter set element is added on 2.4GHZ band if required */
+ 	if (iwl_mvm_rrm_scan_needed(mvm))
+@@ -731,8 +733,6 @@ static u8 *iwl_mvm_copy_and_insert_ds_elem(struct iwl_mvm *mvm, const u8 *ies,
+ 	return newpos;
  }
  
-@@ -3168,18 +3168,16 @@ int iwl_mvm_sched_scan_start(struct iwl_mvm *mvm,
- 		params.n_channels = j;
- 	}
- 
--	if (non_psc_included &&
--	    !iwl_mvm_scan_fits(mvm, req->n_ssids, ies, params.n_channels)) {
--		kfree(params.channels);
--		return -ENOBUFS;
-+	if (!iwl_mvm_scan_fits(mvm, req->n_ssids, ies, params.n_channels)) {
-+		ret = -ENOBUFS;
-+		goto out;
- 	}
- 
- 	uid = iwl_mvm_build_scan_cmd(mvm, vif, &hcmd, &params, type);
+-#define WFA_TPC_IE_LEN	9
 -
--	if (non_psc_included)
--		kfree(params.channels);
--	if (uid < 0)
--		return uid;
-+	if (uid < 0) {
-+		ret = uid;
-+		goto out;
-+	}
- 
- 	ret = iwl_mvm_send_cmd(mvm, &hcmd);
- 	if (!ret) {
-@@ -3197,6 +3195,9 @@ int iwl_mvm_sched_scan_start(struct iwl_mvm *mvm,
- 		mvm->sched_scan_pass_all = SCHED_SCAN_PASS_ALL_DISABLED;
- 	}
- 
-+out:
-+	if (non_psc_included)
-+		kfree(params.channels);
- 	return ret;
- }
- 
+ static void iwl_mvm_add_tpc_report_ie(u8 *pos)
+ {
+ 	pos[0] = WLAN_EID_VENDOR_SPECIFIC;
 -- 
 2.34.1
 
