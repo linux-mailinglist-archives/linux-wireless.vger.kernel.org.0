@@ -1,71 +1,70 @@
-Return-Path: <linux-wireless+bounces-11912-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11913-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58A4E95E448
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Aug 2024 18:17:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D324395E449
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Aug 2024 18:18:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2737281989
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Aug 2024 16:17:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 115011C20978
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Aug 2024 16:18:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52213156F3C;
-	Sun, 25 Aug 2024 16:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B30D17084C;
+	Sun, 25 Aug 2024 16:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HqBnmmVW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jZoulE0G"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325F5155742
-	for <linux-wireless@vger.kernel.org>; Sun, 25 Aug 2024 16:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B57932119
+	for <linux-wireless@vger.kernel.org>; Sun, 25 Aug 2024 16:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724602656; cv=none; b=I9a0ZCSmh8LvGuLQT42lcVIWXUfW5OCkMDf6a+kPVDqDNAgkgy2MtjmGqfCOf67Q3/Z6UWWigqx1cGEWmUEwlWp5rK5zS87cju/ISehk3gVgklvUFAt5GhCnCrhJYuGJ3g+/ERTYwwwEQbnh+W0yH5tYBpYjMXeWZq2Ng4gsWfE=
+	t=1724602657; cv=none; b=MCwhErgCEOR+91tkaZ98MudqJ+jGYFq0JZemoHjC29EFJVo7a9IgWHq8ywEffann1/GkQDNjkybCirI7b8EkD8D4lrlG7hIOXNquwKPgDSKeWBl2m3ud4EtMeZd1jlSo2YjUzdjLD3Twtvkc1zbcHkYAjteKM+nLmC22JijT0lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724602656; c=relaxed/simple;
-	bh=E4eSGNBPOD2JYsEtUgEpWR17PVDKPzLnqyParV2+7ZE=;
+	s=arc-20240116; t=1724602657; c=relaxed/simple;
+	bh=RyZV9UQsRGjtKkBm7cGAZaaQCuyDdF1zAQ4mBQORxGU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qrOvMnAQmCrH7U7IJOFhZFp2OAYwmFWd/S08MR/+kIWuLrE9JfFBQHevX72osJihacVGvHhUFYS1JYxXnCALnP9kUbHRB9tsTesXNe/kl23pUZFVZ3wzGQxG4cei/B1V+lTpPbtopoIOho+h0QEZGKkSFYfm5Yku5eNeG7spyJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HqBnmmVW; arc=none smtp.client-ip=192.198.163.18
+	 MIME-Version; b=sMHmdcvtGemJbF9EfxpXK9cjcQsoIv5yCb7N8i71Ei34Rm5bEelcSDC9dNKYvxkIJ87R5VhLbFZj872m6cWrDAIZWh0rUtoghXZtlVKt6zrm2UsTlRrL9flZ18V5PDPmJWBCddHvl6tHnhkfnVadyesff2FtvJPDUvkvB2g40gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jZoulE0G; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724602654; x=1756138654;
+  t=1724602655; x=1756138655;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=E4eSGNBPOD2JYsEtUgEpWR17PVDKPzLnqyParV2+7ZE=;
-  b=HqBnmmVWSMbl/BbS/bnkXYUSHXNOa7uDbGvyk3HC/o3K2OBgVUg5ucZ3
-   tRzKnTJxCFomHYWGXQf5gnJTEKpRqUXWlVGuQNi9e73nAD0FavzwnjK3a
-   CTZFTeLg4HFD++3GUePnQs6IhRDtQySoyVo1rZNXl/U/qtPDBLY8RYOlX
-   gmlWrBF5kVO23Uw5l2gGZqzanmyZgntlJwatu1M5Hw+1FP5wGOxdf1mxz
-   V31QpwuOcLas7gscvwBgGxicAv6i82g2EcfFCczBBNA1IJSxP5Z4WJqV7
-   JD6Q7+rl3IhU7Cw9y90ooP6rn16CC4GpMQnTW1aQXbjRus1y27xaM8dhm
+  bh=RyZV9UQsRGjtKkBm7cGAZaaQCuyDdF1zAQ4mBQORxGU=;
+  b=jZoulE0GyrGELcsFujeHxEMUP0UMCQWVFSqm8nW8lmgM7yXYHLVQz9Ue
+   7Y5Xvhyxh9upWBuVGTzaqoXIB1jEclG02HZBSdqvrVB5ygDscBMZlQAOW
+   myDRx4rMDLwuwngg2aOtRlFRzpDCzR6l3jGTVDn5WLtZy64j4Kp+UWf+2
+   9Dn0RHtcH/QJI+TZL6FELcem6CZoFhQsKj2Ji3jd+Qxd6FGxhr9UuJblb
+   2YasklxKCAgVi5sqIrzanMxe0yPt3+nJXHYQI4gupK0db5j/jBRAO7Hl/
+   i+G+nFujDvFHC+suWX12Fmlfy9I7ARR3PG1sR0slE5/wRtymdUcDgH/Tu
    w==;
-X-CSE-ConnectionGUID: TUU452BtQtm7FJKP+xoGGA==
-X-CSE-MsgGUID: 7BtFmIaWTBWgS2EnBKXkLQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11175"; a="22544129"
+X-CSE-ConnectionGUID: RuQJmindRcyX4oRDAZBARQ==
+X-CSE-MsgGUID: EXv4LTUqQdKw23Xi2dCKHg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11175"; a="22544132"
 X-IronPort-AV: E=Sophos;i="6.10,175,1719903600"; 
-   d="scan'208";a="22544129"
+   d="scan'208";a="22544132"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2024 09:17:34 -0700
-X-CSE-ConnectionGUID: /W5ypF8ISl6JetdEb+4d8w==
-X-CSE-MsgGUID: 70Oa70ZNQ2qWzquGXl0TMA==
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2024 09:17:35 -0700
+X-CSE-ConnectionGUID: d4QTzOSMQauYx2m4WI9p4Q==
+X-CSE-MsgGUID: GwLi499rT6am1m0jSzGuGA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.10,175,1719903600"; 
-   d="scan'208";a="62999749"
+   d="scan'208";a="62999754"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2024 09:17:32 -0700
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2024 09:17:34 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>
-Subject: [PATCH 07/13] wifi: iwlwifi: mvm: take the mutex before running link selection
-Date: Sun, 25 Aug 2024 19:17:07 +0300
-Message-Id: <20240825191257.0cacecd5db1e.Iaca38a078592b69bdd06549daf63408ccf1810e4@changeid>
+	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Subject: [PATCH 08/13] wifi: iwlwifi: fw: fix wgds rev 3 exact size
+Date: Sun, 25 Aug 2024 19:17:08 +0300
+Message-Id: <20240825191257.cc71dfc67ec3.Ic27ee15ac6128b275c210b6de88f2145bd83ca7b@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240825161713.3547021-1-miriam.rachel.korenblit@intel.com>
 References: <20240825161713.3547021-1-miriam.rachel.korenblit@intel.com>
@@ -78,40 +77,54 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-iwl_mvm_select_links is called by the link selection worker and it
-requires the mutex.
-Take it in the link selection worker.
-This logic used to run from iwl_mvm_rx_umac_scan_complete_notif which
-had the mvm->mutex held. This was changed to run in a worker holding the
-wiphy mutex, but we also need the mvm->mutex.
+Check size of WGDS revision 3 is equal to 8 entries size with some header,
+but doesn't dependent of no of entries. Check that no of entries
+should lie between min and max.
 
-Fixes: 2e194efa3809 ("wifi: iwlwifi: mvm: Fix race in scan completion")
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Fixes: 97f8a3d1610b ("iwlwifi: ACPI: support revision 3 WGDS tables")
+Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index 1cc5667340e8..d809742528af 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -1198,10 +1198,12 @@ static void iwl_mvm_trig_link_selection(struct wiphy *wiphy,
- 	struct iwl_mvm *mvm =
- 		container_of(wk, struct iwl_mvm, trig_link_selection_wk);
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+index 79774c8c7ff4..8c8880b44827 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+@@ -725,22 +725,25 @@ int iwl_acpi_get_wgds_table(struct iwl_fw_runtime *fwrt)
+ 				entry = &wifi_pkg->package.elements[entry_idx];
+ 				entry_idx++;
+ 				if (entry->type != ACPI_TYPE_INTEGER ||
+-				    entry->integer.value > num_profiles) {
++				    entry->integer.value > num_profiles ||
++				    entry->integer.value <
++					rev_data[idx].min_profiles) {
+ 					ret = -EINVAL;
+ 					goto out_free;
+ 				}
+-				num_profiles = entry->integer.value;
  
-+	mutex_lock(&mvm->mutex);
- 	ieee80211_iterate_active_interfaces(mvm->hw,
- 					    IEEE80211_IFACE_ITER_NORMAL,
- 					    iwl_mvm_find_link_selection_vif,
- 					    NULL);
-+	mutex_unlock(&mvm->mutex);
- }
- 
- static struct iwl_op_mode *
+ 				/*
+-				 * this also validates >= min_profiles since we
+-				 * otherwise wouldn't have gotten the data when
+-				 * looking up in ACPI
++				 * Check to see if we received package count
++				 * same as max # of profiles
+ 				 */
+ 				if (wifi_pkg->package.count !=
+ 				    hdr_size + profile_size * num_profiles) {
+ 					ret = -EINVAL;
+ 					goto out_free;
+ 				}
++
++				/* Number of valid profiles */
++				num_profiles = entry->integer.value;
+ 			}
+ 			goto read_table;
+ 		}
 -- 
 2.34.1
 
