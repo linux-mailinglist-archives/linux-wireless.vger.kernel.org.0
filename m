@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-11916-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11917-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 815D395E44B
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Aug 2024 18:18:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3739195E44D
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Aug 2024 18:18:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B39C01C20A51
-	for <lists+linux-wireless@lfdr.de>; Sun, 25 Aug 2024 16:18:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4206B21084
+	for <lists+linux-wireless@lfdr.de>; Sun, 25 Aug 2024 16:18:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB3421714B4;
-	Sun, 25 Aug 2024 16:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08AA01684A5;
+	Sun, 25 Aug 2024 16:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="COPdr7XU"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xo3HEi6k"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076741684A5
-	for <linux-wireless@vger.kernel.org>; Sun, 25 Aug 2024 16:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850171714B2
+	for <linux-wireless@vger.kernel.org>; Sun, 25 Aug 2024 16:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724602661; cv=none; b=hPd9RR3Vx+AC1FshHsqxcEHMoQKzHgIadGn351XmQi93FNZRr3GokSQqozMlovTA6NLfA+m2iIa2Lh8aMKxq4XZI1KrUQIltZ67aJ9bTo3atzOpcSe16UwPJw+S/GVJoXy274azDvh3mQX/tBHlTDaR0TY6sWLOg/zYErwrHIjY=
+	t=1724602662; cv=none; b=l7EYRaWtN+tlEsekG/SWgXCGDwoye41l3xP6zfvYsBmRNehgo6HXzajluaUDHqmIECKfRTJolCJpOGOhY67DlK0K/s7bTEnI5DB7tyluaMzJZrPAxWUYLtHdayQ1ykploEb4g/dOKgOkJqJgXCH+glwn4wEGU5WHebe2xgTAIms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724602661; c=relaxed/simple;
-	bh=OTD20n4QXpcTpqMfiY0mToN8nzrgchIfV9FgB7V//Qg=;
+	s=arc-20240116; t=1724602662; c=relaxed/simple;
+	bh=dukzQzawHxZkgtSzm9gPMQY9ZXrl7MkzY+TNt63181s=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HS1QD9VcFx4tRSjsubyRqJMzyD4FNg0BCv93XrvweAkXKek3wQAMorpp1QK39Mhsx1PW9q44dwyGqRe2zzB6U5emN4sOnsg0ex1C3zMdJQhfE+pb5D3TDFZsY12QqwPqcqI3BENfWl4d+qxPoHXga/m9yLiKC+QJYmAyx9AlKnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=COPdr7XU; arc=none smtp.client-ip=192.198.163.18
+	 MIME-Version; b=a7CfFa8t/lYJwdRj8+QJHlgCnHCqjdnGEhbd5DWIXbMOJwMiQTvBVRWm08sI+1Ukztk8EE9+fteKnpTKrysRhbraVmpJMWwpwmRV8jaVAiC//7FFD7mbdM58j0XLqJMXl7ff1I5VXdCL1OvZ2eSl5z8fbKrx2Ua2DFaqcSRVAAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xo3HEi6k; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724602660; x=1756138660;
+  t=1724602661; x=1756138661;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=OTD20n4QXpcTpqMfiY0mToN8nzrgchIfV9FgB7V//Qg=;
-  b=COPdr7XU6ip3wOasXWhLR5+hddHhLj9ITRlrx26mh7sg0rQL+aI851vN
-   iJ3ow/9X6AiwbHiFpFI69UEReH2TpKyY3q2isFwDAWYIugDjyga5si5IL
-   BvaUnY2esyUmcYtbQ3ASv8SFIfWA9CFUwuExKNSLRAAqNQcptxvj2e/c3
-   auvEPZ9ATwrF8khYtAmgImhxjwfIIP8ZQ2htisZM81ze+QfMEwN5raKnl
-   awUqiA0OTUuZCVgzA9lF5MlletOHT5BANRYHKK4ujgppLHX7QVBK9vjaL
-   hzqUBDjOLEQrfUECLXxBgvvYkjOZOs5PsPFHg4nQO9JJXjlgiDM18x5LS
+  bh=dukzQzawHxZkgtSzm9gPMQY9ZXrl7MkzY+TNt63181s=;
+  b=Xo3HEi6krH6ONf+jWDhKBLRqX+g0hqw5wehBrtWHv1OMv35/+A5Xd4sW
+   748g6vqFfKaePlKSPLqgR1PJQNgYGFzILbcbfYgA2eHTwZPt23aKo0Hzy
+   hFCGS21ScBFv2C86ElHemf+ZHMo/GXp35HDQI6P+tw+75J1wvcgGQLL+H
+   1R/NKfN3HYkJHtmxh/oUytiWSRDkbnFNv+2ueo13EqaRuhlMDv3EXKXmc
+   nunKsNQuSZw2zNeAyVYScRPm6NdQQQpB4/T1udUwIKzurBaWIj0EseLh6
+   P409zejGXaW8I66bANxNvmrj/RgnPg6Bn6yc50UrT5hOG61XyvMpAD2zx
    Q==;
-X-CSE-ConnectionGUID: L7c5w1iTQseZ9JBlMlgUrw==
-X-CSE-MsgGUID: Nikdf4fwQTKX5T+RYXfNAQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11175"; a="22544140"
+X-CSE-ConnectionGUID: VllcbxGsS3igOMdnFckBhQ==
+X-CSE-MsgGUID: ihVo1UwiT1ifMWLA40xpug==
+X-IronPort-AV: E=McAfee;i="6700,10204,11175"; a="22544143"
 X-IronPort-AV: E=Sophos;i="6.10,175,1719903600"; 
-   d="scan'208";a="22544140"
+   d="scan'208";a="22544143"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2024 09:17:39 -0700
-X-CSE-ConnectionGUID: A0q0/0PSRoiJMoI+JEiYCg==
-X-CSE-MsgGUID: TKOnKOC6RMSj5iD1/SNjpw==
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2024 09:17:41 -0700
+X-CSE-ConnectionGUID: y2iDyjkWRRyTf99HIflZ2w==
+X-CSE-MsgGUID: ZVuGyhhzRqCOys9KtFEVrA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.10,175,1719903600"; 
-   d="scan'208";a="62999768"
+   d="scan'208";a="62999772"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2024 09:17:38 -0700
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2024 09:17:39 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH 11/13] wifi: iwlwifi: mvm: allow ESR when we the ROC expires
-Date: Sun, 25 Aug 2024 19:17:11 +0300
-Message-Id: <20240825191257.8f8765f359cc.I16fcd6198072d422ff36dce68070aafaf011f4c1@changeid>
+	Avraham Stern <avraham.stern@intel.com>
+Subject: [PATCH 12/13] wifi: iwlwifi: mvm: allow 6 GHz channels in MLO scan
+Date: Sun, 25 Aug 2024 19:17:12 +0300
+Message-Id: <20240825191257.04807f8213b2.Idd09d4366df92a74853649c1a520b7f0f752d1ac@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240825161713.3547021-1-miriam.rachel.korenblit@intel.com>
 References: <20240825161713.3547021-1-miriam.rachel.korenblit@intel.com>
@@ -77,46 +77,44 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Avraham Stern <avraham.stern@intel.com>
 
-We forgot to release the ROC reason for ESR prevention when the remain
-on channel expires.
-Add this.
+MLO internal scan may include 6 GHz channels. Since the 6 GHz scan
+indication is not set, the channel flags are set incorrectly, which
+leads to a firmware assert.
+Since the MLO scan may include 6 GHz and non 6 GHz channels in one
+request, add support for non-PSC 6 GHz channels (PSC channels are
+already supported) when the 6 GHz indication is not set.
 
-Fixes: a1efeb823084 ("wifi: iwlwifi: mvm: Block EMLSR when a p2p/softAP vif is active")
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Fixes: 38b3998dfba3 ("wifi: iwlwifi: mvm: Introduce internal MLO passive scan")
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/mvm/time-event.c    | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-index a8c42ce3b630..72fa7ac86516 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-@@ -114,16 +114,14 @@ static void iwl_mvm_cleanup_roc(struct iwl_mvm *mvm)
- 		iwl_mvm_flush_sta(mvm, mvm->aux_sta.sta_id,
- 				  mvm->aux_sta.tfd_queue_msk);
- 
--		if (mvm->mld_api_is_used) {
--			iwl_mvm_mld_rm_aux_sta(mvm);
--			mutex_unlock(&mvm->mutex);
--			return;
--		}
--
- 		/* In newer version of this command an aux station is added only
- 		 * in cases of dedicated tx queue and need to be removed in end
--		 * of use */
--		if (iwl_mvm_has_new_station_api(mvm->fw))
-+		 * of use. For the even newer mld api, use the appropriate
-+		 * function.
-+		 */
-+		if (mvm->mld_api_is_used)
-+			iwl_mvm_mld_rm_aux_sta(mvm);
-+		else if (iwl_mvm_has_new_station_api(mvm->fw))
- 			iwl_mvm_rm_aux_sta(mvm);
- 	}
- 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index bae6aec8295c..1cc9c426bb15 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -1659,6 +1659,17 @@ iwl_mvm_umac_scan_cfg_channels_v7(struct iwl_mvm *mvm,
+ 		cfg->v2.channel_num = channels[i]->hw_value;
+ 		if (cfg80211_channel_is_psc(channels[i]))
+ 			cfg->flags = 0;
++
++		if (band == NL80211_BAND_6GHZ) {
++			/* 6 GHz channels should only appear in a scan request
++			 * that has scan_6ghz set. The only exception is MLO
++			 * scan, which has to be passive.
++			 */
++			WARN_ON_ONCE(cfg->flags != 0);
++			cfg->flags =
++				cpu_to_le32(IWL_UHB_CHAN_CFG_FLAG_FORCE_PASSIVE);
++		}
++
+ 		cfg->v2.iter_count = 1;
+ 		cfg->v2.iter_interval = 0;
+ 		if (version < 17)
 -- 
 2.34.1
 
