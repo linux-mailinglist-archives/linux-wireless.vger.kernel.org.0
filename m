@@ -1,44 +1,44 @@
-Return-Path: <linux-wireless+bounces-11989-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11990-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0DA995F27C
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 15:12:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B408F95F282
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 15:13:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 284BBB21CAD
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 13:12:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DDE51F22B6B
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 13:13:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F157F17BEC1;
-	Mon, 26 Aug 2024 13:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C8F9185933;
+	Mon, 26 Aug 2024 13:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ay/V7/Ai"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zxlu1qTZ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA4EF1E519;
-	Mon, 26 Aug 2024 13:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC8917A5BE;
+	Mon, 26 Aug 2024 13:12:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724677937; cv=none; b=SHLaPL+4CE9Kq2UksWKmJXeR2Dhxc7Uzu72eArQbN3+1XsHYo3+S3xHMWCtOVmUF/cgUFEjuzk3W914MB+7mqaY3Y79oKFUoepxQRx/Xztm5fj2xsypAbZ3oBoCFXk4hyVWmtaUIDbMFkxSz1IHkcYikH14tjUMvZMCjSUNbnhs=
+	t=1724677965; cv=none; b=CNHgqd1J565B2nAYjObFJTeCZIzKLSktyEQHej440zwq39G8GtZHH/Xp14fLhPJJ3waD/853nIP0QGrqAUcMh5CX+Vs6sj/TxMjqjiW3RKDYEUDafocVy02LQeY8DAhMh2EO7qd1/UQmkzhAWnT7Lu0+ZI0lF6wfM8bDw7JsPWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724677937; c=relaxed/simple;
-	bh=2Hwc0rlUSM7yZPSibAcCUtm/BA1aKxtEQmG6ERlsGHI=;
+	s=arc-20240116; t=1724677965; c=relaxed/simple;
+	bh=ALoyF9ulJjuvVQuI6CucHC2wH9xiZ0r0yZsweviQ2zU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sD+bhJ7vB4xHye/Q0bU8BmMR7fTDiPOSoiMlXysG0yNQFQHyTkm4JEELl4C8mqTUGPMQCaO+aeOWpWfjPTqkaR9ClNeRXQGLSylmS6oTTxEo3PVrqiLA4hjwBkRHpgllozu2s3Z7mhT3ohmwnhjvfuPXnkJowU3bm4l9Io+VLog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ay/V7/Ai; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080D6C5E8A6;
-	Mon, 26 Aug 2024 13:12:16 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=pgfcB8NfAW1gDSDxmMNKdpCkOlbZeuxa2SYZJuWd24BqaFMmsclRUbSLRFYSWIT6obDA5msPla7ymPtN5zYP1rfs1hH6GzYK7C3KZ0OJ2UH9SyaTIHJ5qnU6z2LWWYzxcWYpkG82wZjaNfvG4Dz5K3f+76u7EZI/S5O2NZh3OYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zxlu1qTZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83BAEC8CDC3;
+	Mon, 26 Aug 2024 13:12:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724677937;
-	bh=2Hwc0rlUSM7yZPSibAcCUtm/BA1aKxtEQmG6ERlsGHI=;
+	s=korg; t=1724677964;
+	bh=ALoyF9ulJjuvVQuI6CucHC2wH9xiZ0r0yZsweviQ2zU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ay/V7/AinftTTAO6O36jLK1UzgGW3+ab6Tn87cJIZj6yLUdx/awwevwjbhOA9w0c8
-	 gZHHUZ6zkdosLGLsWJRnVTL7e/SuwkxXP5STG5MvCIUX3SXgObnD8TLE9+KcX5O4fF
-	 3viLZyhpAEo5H0atnKGpVUPShK/xTgLqm5eYU5Os=
-Date: Mon, 26 Aug 2024 15:12:14 +0200
+	b=zxlu1qTZX2t15uZcs5YzKeyO71kqgUWVS4+RTSJQvbWEZKRMGzQmlAEhg1oDWlkLy
+	 B87mHCaAsf/Tet2A04ZpAC5HsRycVmo3VuBALF9xOqtrgjyuMoJrnxBU6jU8HPYtew
+	 qjP++hG0nzTNpFTr7n1mTSxjcUY1rKZJ8xPpaI3A=
+Date: Mon, 26 Aug 2024 15:12:42 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Edward Adam Davis <eadavis@qq.com>
 Cc: kvalo@kernel.org, linux-kernel@vger.kernel.org,
@@ -48,7 +48,7 @@ Cc: kvalo@kernel.org, linux-kernel@vger.kernel.org,
 	syzkaller-bugs@googlegroups.com
 Subject: Re: [PATCH V4 1/2] wifi: ath6kl: Replace ath6kl_usb_submit_ctrl_in
  with usb_control_msg_recv
-Message-ID: <2024082651-boring-friend-cee3@gregkh>
+Message-ID: <2024082625-quarters-proofread-1e97@gregkh>
 References: <2024082631-upward-zips-f7b8@gregkh>
  <tencent_A037749680365C4BCC750776D566183C4509@qq.com>
 Precedence: bulk
@@ -68,18 +68,7 @@ On Mon, Aug 26, 2024 at 08:29:56PM +0800, Edward Adam Davis wrote:
 > 
 > usb_control_msg_recv() handles the abnormal length of the returned data,
 > so using it directly can fix this warning.
-> 
-> Reported-by: syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com
-> Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-> ---
-> V4: Adjust indentation style
-> 
 
-Please list all of the version changes here.
+what warning?
 
-Also, I got 2 copies of this, did something go wrong on your side?
-
-thanks,
-
-greg k-h
 
