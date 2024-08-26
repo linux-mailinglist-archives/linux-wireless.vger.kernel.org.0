@@ -1,132 +1,97 @@
-Return-Path: <linux-wireless+bounces-11957-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11958-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A38C695ECB1
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 11:07:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1870495ECDA
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 11:16:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 580FE1F218BB
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 09:07:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D23CE280E33
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 09:16:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E99A14374C;
-	Mon, 26 Aug 2024 09:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56AA913A88D;
+	Mon, 26 Aug 2024 09:16:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="MSRrRMOr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6A31422D5
-	for <linux-wireless@vger.kernel.org>; Mon, 26 Aug 2024 09:07:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE758172A
+	for <linux-wireless@vger.kernel.org>; Mon, 26 Aug 2024 09:15:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724663231; cv=none; b=Qprnp84AAaYountYs3JVf1q9oF4hsvQdTebAp2YC93TmIJspCgRx1rG8rPcIZgMQfYd1SmHC5ARXh3NdOULAKoEB9NYO1jcqWE03fy91TPQ756eJZWqI1dIVW09qMImP2+YIgbPuLOGBOW5M3C2zPSwQZ7Z8W4jInMogHSDHDzs=
+	t=1724663760; cv=none; b=C4Q7dvwnyuLFqL8xId4NfSh9KVguZXyBW//23vTxC91KmEnpwux/6kBvoaQ9DHyOBOAoSCRy8vvW8byXgjSIVWbpAsxD8LxRNC7CYnVwZO7Rzm8U2joBfVwUASBa+oNRcMd6nBoEMgztRnDqW03F2A1Ie4aktyJayQ6kvvVy62I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724663231; c=relaxed/simple;
-	bh=VYcpTxpZ8oA8e1PlWGOKIV6M0wWDxeEsIXyzKs/3vNo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kg4wG58fXTUD58XNBe49zbAuHWCSRu150B1fnMeYD87Rxsove9PPU3WiZkjxQehvfTvPXzA3mQ6vGHs+EdZ0xkgTbHECPA3DWUDYitfmmQmubS9A0k8mZjBAujdU8FFmn+TqFxguEGI4e9j7USZncMGrsMVULtPPJsTPx0pq0dQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1siVgm-0005di-Hd; Mon, 26 Aug 2024 11:07:04 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1siVgm-0039P3-2Q; Mon, 26 Aug 2024 11:07:04 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1siVgl-0070tM-35;
-	Mon, 26 Aug 2024 11:07:03 +0200
-Date: Mon, 26 Aug 2024 11:07:03 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Brian Norris <briannorris@chromium.org>
-Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-	Francesco Dolcini <francesco@dolcini.it>, kernel@pengutronix.de,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 03/31] wifi: mwifiex: drop HostCmd_CMD_802_11_MAC_ADDRESS
- response handling
-Message-ID: <ZsxFt19nQs4D7Q7t@pengutronix.de>
-References: <20240820-mwifiex-cleanup-v1-0-320d8de4a4b7@pengutronix.de>
- <20240820-mwifiex-cleanup-v1-3-320d8de4a4b7@pengutronix.de>
- <Zsd-ZxscUBmf0xsu@google.com>
+	s=arc-20240116; t=1724663760; c=relaxed/simple;
+	bh=aGnEOPyTMJ53HZRp+PKrxy6tGI+Yrk+UCCHo8Tzocqk=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Cg2VoUVFg6B/+DU7IRaogDZv9Ct2PdJuhJZFMJpMafSbcvRzzJ/9MSzFnWNshWuOiGZhJLGOkL3WWZzuRZwYYIM9qgsS1JqKvr1Hstt83gvulJaZ76+wYT+CzZH7pdkf4FgrcdIdOXRokqYMLEnz3exu/8hGS6p9TegkqL/97Qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=MSRrRMOr; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 47Q9FnZ023835024, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1724663749; bh=aGnEOPyTMJ53HZRp+PKrxy6tGI+Yrk+UCCHo8Tzocqk=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:Content-ID:
+	 Content-Transfer-Encoding:MIME-Version;
+	b=MSRrRMOr07cis+zdzpMIif0jvxtRVReebWuOnoxIN5CQLIHLnfa06cfnEkBY9blfE
+	 KbFkOSGq6XXyihQ0tdS132vOKY8NGEaFjxTYEYXs7O5lS3ybzp7PSp+E2lMllFQXFD
+	 zFZY3rx1Tih2lWMSBrlKez42qycAPDlpfWGXN0QwVGOyuG1G1XuZYd+Vf2cl+rBbHg
+	 z7D70zBZGO1ShSjkGv/uCR0nuoFbCJEL609luQ6EPUDVSqZoyIwZeLJUNfXC6NwAZi
+	 1rRrjAjWu8TeLVkgcTTIYkLgB/C2dZAb6L4nXoVJGnLYRT1HWVmI3uStg5iPzHX+8f
+	 4d6IwWXM8XeZg==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 47Q9FnZ023835024
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 26 Aug 2024 17:15:49 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 26 Aug 2024 17:15:50 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Mon, 26 Aug 2024 17:15:49 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
+ 15.01.2507.035; Mon, 26 Aug 2024 17:15:49 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: "linux-firmware@kernel.org" <linux-firmware@kernel.org>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Timlee
+	<timlee@realtek.com>
+Subject: pull request: rtw89: 8922a: add fw format-1 v0.35.41.0
+Thread-Topic: pull request: rtw89: 8922a: add fw format-1 v0.35.41.0
+Thread-Index: AQHa95iKKucNNGeuZkaQj3P1dSVrJw==
+Date: Mon, 26 Aug 2024 09:15:49 +0000
+Message-ID: <f5079de6ec52bbd97fd0deaf2df58f8b13e364b7.camel@realtek.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+user-agent: Evolution 3.36.1-2 
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <FF9470385B7A8646902366DC144292F6@realtek.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zsd-ZxscUBmf0xsu@google.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-On Thu, Aug 22, 2024 at 11:07:35AM -0700, Brian Norris wrote:
-> Hi Sascha,
-> 
-> On Tue, Aug 20, 2024 at 01:55:28PM +0200, Sascha Hauer wrote:
-> > The command response handler copies the new MAC address over to
-> > priv->curr_addr. The same is done in the code issuing the call
-> > already, so drop the unnecessary HostCmd_CMD_802_11_MAC_ADDRESS
-> > handling.
-> 
-> It took a bit to figure out what you meant here -- I guess you're
-> referring to mwifiex_set_mac_address()? It could help to document what
-> you mean.
-
-Ok, I can clarify this a bit when sending this next time.
-
-Right now what we have is:
-
-1) mwifiex_set_mac_address() sets priv->curr_addr to the desired new MAC
-   address
-2) mwifiex_cmd_802_11_mac_address() (called from mwifiex_send_cmd())
-   constructs the HostCmd_CMD_802_11_MAC_ADDRESS command, using the MAC
-   address in priv->curr_addr
-3) mwifiex_ret_802_11_mac_address(), called from the response handler,
-   sets priv->curr_addr to the MAC address received with the command
-   response, which of course is the same as we initially copied there
-   in step 1), which makes 3) redundant and unnecessary
-
-> 
-> I'm also a bit torn; this command API ostensibly has a (unused so far,
-> for this command) HostCmd_ACT_GEN_GET mode, in which case this *is*
-> important.
-> 
-> If anything, I might consider dropping some of the handling in
-> mwifiex_set_mac_address(), because it seems to presume (and then has to
-> undo for failure) behavior of the underlying command.
-
-What we could do instead of dropping 3) is:
-
-1) pass the new MAC address in the data_buf argument to
-   mwifiex_send_cmd()
-2) instead of priv->curr_addr use data_buf in
-   mwifiex_cmd_802_11_mac_address()
-
-With this the response handler would still set priv->curr_addr in case
-the command went through successfully. No need to undo priv->curr_addr
-to the previous MAC address in case the command failed.
-
-Sounds good to me. Is that where you aiming at?
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+SGksDQoNCkFkZCBmaXJtd2FyZSB2MC4zNS40MS4wIG9mIHJ0dzg5IGRyaXZlciBmb3IgODkyMkEu
+DQoNClRoYW5rIHlvdQ0KUGluZy1LZQ0KDQotLS0NClRoZSBmb2xsb3dpbmcgY2hhbmdlcyBzaW5j
+ZSBjb21taXQgMmNkYzExYTdiM2JmMDYwNDJmMWZiMTc5ZmExNzc1ZmRlMzgxNDkxZjoNCg0KICBN
+ZXJnZSBicmFuY2ggJ210NzkyNScgaW50byAnbWFpbicgKDIwMjQtMDgtMjMgMTE6MzE6MDkgKzAw
+MDApDQoNCmFyZSBhdmFpbGFibGUgaW4gdGhlIEdpdCByZXBvc2l0b3J5IGF0Og0KDQogIGh0dHBz
+Oi8vZ2l0aHViLmNvbS9wa3NoaWgvbGludXgtZmlybXdhcmUuZ2l0IHRhZ3MvcnR3LWZ3LTIwMjQt
+MDgtMjYNCg0KZm9yIHlvdSB0byBmZXRjaCBjaGFuZ2VzIHVwIHRvIDgwZmEzM2I5NGE5MWExZTQ1
+NjcxZThmY2Q4ZTgwYjllZmVkNDc4MzQ6DQoNCiAgcnR3ODk6IDg5MjJhOiBhZGQgZncgZm9ybWF0
+LTEgdjAuMzUuNDEuMCAoMjAyNC0wOC0yNiAxNzowODowMCArMDgwMCkNCg0KLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KQ2hp
+bi1ZZW4gTGVlICgxKToNCiAgICAgIHJ0dzg5OiA4OTIyYTogYWRkIGZ3IGZvcm1hdC0xIHYwLjM1
+LjQxLjANCg0KIFdIRU5DRSAgICAgICAgICAgICAgICAgIHwgICAxICsNCiBydHc4OS9ydHc4OTIy
+YV9mdy0xLmJpbiB8IEJpbiAwIC0+IDE1ODM0MzQgYnl0ZXMNCiAyIGZpbGVzIGNoYW5nZWQsIDEg
+aW5zZXJ0aW9uKCspDQogY3JlYXRlIG1vZGUgMTAwNjQ0IHJ0dzg5L3J0dzg5MjJhX2Z3LTEuYmlu
+DQoNCg==
 
