@@ -1,206 +1,105 @@
-Return-Path: <linux-wireless+bounces-11941-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11942-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88F4795E9CF
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 09:01:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B2B95EA5B
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 09:27:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14BDC1F21497
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 07:01:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 805F5B211D3
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 07:27:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C0536AF2;
-	Mon, 26 Aug 2024 07:01:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="o7Ec7lIq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8E0D12D75C;
+	Mon, 26 Aug 2024 07:27:10 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ACB984FA0
-	for <linux-wireless@vger.kernel.org>; Mon, 26 Aug 2024 07:01:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A4E12C54D
+	for <linux-wireless@vger.kernel.org>; Mon, 26 Aug 2024 07:27:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724655711; cv=none; b=q6ifdaAPefDPX6g8R+thlI4/I1muVVsw4dbaoc14hVgKKCHtmrBUxUjanRGDLoadtK32H1COl5oLv2RbhTa+LgfVw02aUMPEPxdkkBEl6ZX1UXcI6zw89HZvSl5xisMx7qIf0YCpgkP0Ha84B+ZMCkQjhlJz0qefnhbqMFjDPXo=
+	t=1724657230; cv=none; b=iKHAJThsenV111UK2HeGDdR/FVZ6Ege4Y6YSHN6x6UVHq45KIS5dxzhQyAeqT39PG0Q9wLtcDXA4YN/hy7roVx0YtsHMQSP3eH/E8mVTe0+P+mUSc8l5FwJszEdHhU8QqJxsnWVVhpZIOUB3tQM5U7zkoCoQtEC8emOd5ZO6SZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724655711; c=relaxed/simple;
-	bh=soBUuYI6ZLm71P7WLh4LC31KMgg0Qjo9i4sEGfUmChc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TVgvX+q+17a7GdS0dRUlNPkhipgl1BxbmZNB0kO3tlkAzoDMzoPuIFTHwwmhQwKSO4Th4N6QHIesD3wmPdqHv7o0Cxatl/vE2ivYfQshA0twiMVBeh/U/niQKiCdnjc7rmHdY0MxqpRpTr88hoKSpSQbdsUsGRx0QiRrpLXlDpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=o7Ec7lIq; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7141b04e7a3so3261425b3a.3
-        for <linux-wireless@vger.kernel.org>; Mon, 26 Aug 2024 00:01:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1724655709; x=1725260509; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=VG/saQQ5iHGoFIIQv7ApO+CzdPsxdfU6dBnZhjjs/f4=;
-        b=o7Ec7lIquOEvqPIzZ95AyG5/7QiGC25CZ7qBrMStxrSHPgon69j3GJCZUkKM/RH2lz
-         H/vMUq3jKW4b3s9azQBPVGQ8j6jOw20V5JR+bEmmlALtCifk9pHZlfqNa/MVHXeQv6FW
-         b3iCfRQgjUTKA0g5ncUk3ThRsPw8dYqysJhif6Fl2UGg/yYgG38zFn8nsc0v9KhVKwHG
-         z31Lpd1QZnIrxphL5BJ2cxu5tbWVNkRCvc0S7PXP+8hGEja+VTA+X8iGb8pHTUHOKII3
-         ESJ2MV7TNCEBjzeXjle1AhkZ0blbXj4XIVeEmPv60YdNNOdKv/b05Kc2cYPwuj+S7yMs
-         r6Ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724655709; x=1725260509;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VG/saQQ5iHGoFIIQv7ApO+CzdPsxdfU6dBnZhjjs/f4=;
-        b=bf1cY7cj/5iYeZy2+j5rr+4Y84Wok5wnLTX+gklIwM2dxcmQ37GxsqsKH2R17rtlWf
-         +l8FbAYKi/pGKvFg7G9uAhgySYb1LJ2DBEZ+dAHIzD0N1xEVjqGiQyVLJigtLIQoFyYD
-         Rs8TbwJI6ETJR6xZHUywRfqFrq1n2Rm/Gpfrqcnt0kCfLyKSbab3XCKSNfyswPO9dey7
-         PjiVZauGnJ99NzwWSFol4xkhqPOG/sSLZNMR9k5/gVLSA9NxvxdBD1ghwxu5WM5JqF7T
-         eDRhA8IYAKykKmaY3XTh2z9mpCdsaHixngqd7fZQdxg4H++boms62pE8EnNIvlzdyliS
-         0sEA==
-X-Forwarded-Encrypted: i=1; AJvYcCVkQbApeLoI2rwRxZ0ya/EchXR4wxUkfUdIIPq9S6PXUB1SdNQHQ0VY3jRBtl8vIKa/Hr+H42oD8RLugZF9+A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwcXjM3ywKvvA4nscXV3/m/vnf1VO9MgbcexKixXX9KBM8x6ITM
-	775BD8XKUuEcuL5MDcEjc+xBwlGyvhId/dlGI0ZBIRVIudrGtKLM8a1h6RNwOA==
-X-Google-Smtp-Source: AGHT+IFGIR6y4xQ2gR1n7QV7ZGej510G4EA/KhOh+F8qAhhrMZfBhUIO3179V98yc6fCEadsR5WUKg==
-X-Received: by 2002:a05:6a00:918b:b0:70d:2b95:d9cd with SMTP id d2e1a72fcca58-714457d35c7mr9989372b3a.16.1724655707102;
-        Mon, 26 Aug 2024 00:01:47 -0700 (PDT)
-Received: from thinkpad ([220.158.156.53])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71434230696sm6740544b3a.10.2024.08.26.00.01.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Aug 2024 00:01:46 -0700 (PDT)
-Date: Mon, 26 Aug 2024 12:31:43 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Baochen Qiang <quic_bqiang@quicinc.com>
-Cc: kvalo@kernel.org, jjohnson@kernel.org, linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] wifi: ath11k: Set IRQ affinity hint after requesting
- all shared IRQs
-Message-ID: <20240826070143.ejd6vuorseogmdfe@thinkpad>
-References: <20240823155502.57333-1-manivannan.sadhasivam@linaro.org>
- <20240823155502.57333-2-manivannan.sadhasivam@linaro.org>
- <d3ceaead-5619-4413-acce-64567c08fb27@quicinc.com>
+	s=arc-20240116; t=1724657230; c=relaxed/simple;
+	bh=RPce0U/YUpPYjEp4lRO4eYswbyRtkfoz8XO+AxXbLPw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pR3kLtE52KI5xnoMdip4B0TrkzTJpBVhCrC/bu6OsFQCS9laKoeDtf3xfHbOnV/HUjz0R4Z2j7eWTgvL2JBNs3s9HCcUYxrQ7tk2s3NMZi4LhhYRC7/b0wilmkmi/tNk5m1fcH2Is5mW/Vcg+8ZPRTfHR+nMg4xhk0CQzhuty2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1siU7p-0005HP-SI; Mon, 26 Aug 2024 09:26:53 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1siU7p-0038Eo-1E; Mon, 26 Aug 2024 09:26:53 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1siU7o-000hSF-2y;
+	Mon, 26 Aug 2024 09:26:52 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: Calvin Owens <calvin@wbinvd.org>,
+	Brian Norris <briannorris@chromium.org>,
+	Kalle Valo <kvalo@kernel.org>,
+	David Lin <yu-hao.lin@nxp.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel@pengutronix.de,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [RFC PATCH 0/4] mwifiex: add support for iw61x
+Date: Mon, 26 Aug 2024 09:26:44 +0200
+Message-Id: <20240826072648.167004-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <d3ceaead-5619-4413-acce-64567c08fb27@quicinc.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: s.hauer@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-On Mon, Aug 26, 2024 at 11:04:41AM +0800, Baochen Qiang wrote:
-> 
-> 
-> On 8/23/2024 11:55 PM, Manivannan Sadhasivam wrote:
+This series adds support for the iw61x chips to the mwifiex driver.
+There are a few things to address, hence the RFC status. See the commit
+messages for details. The series is based on wireless-next/main.
 
-[...]
+I am sending this now since people requested it here [1], but as it's
+out now feel free to leave your comments to the issues mentioned (or
+others I haven't mentioned ;)
 
-> > The warning is due to not clearing the affinity hint before freeing the
-> > IRQ.
-> > 
-> > So to fix this, let's set the IRQ affinity hint after requesting all the
-> > shared IRQ. This will make sure that the affinity hint gets cleared in the
-> > error path before freeing the IRQ.
-> if you check 39564b475ac5 ("wifi: ath11k: fix boot failure with one MSI vector") you would see that the hint is set before requesting any IRQ for a purpose.
-> 
+[1] https://lore.kernel.org/all/20240809094533.1660-1-yu-hao.lin@nxp.com/
 
-Ok, thanks for sharing the history. However, commit 39564b475ac5 looks confusing
-to me. It asserts that changing the IRQ affinity changes the MSI vector
-programmed to the device, but I've never heard of that behavior. IRQ affinity
-change is supposed to only change the CPU mask for the IRQ.
+Sascha
 
-For confirming my suspicion, I added the debug print in pci_write_msg_msi() and
-I can see that it is only getting called once during pci_alloc_irq_vectors().
 
-Moreover with my series, WLAN is working fine on QCA6390 with a shared vector:
+Sascha Hauer (4):
+  wifi: mwifiex: release firmware at remove time
+  wifi: mwifiex: handle VDLL
+  wifi: mwifiex: wait longer for SDIO card status
+  mwifiex: add iw61x support
 
-213:       6766          0          0          0          0          0          0          0   PCI-MSI 524288 Edge      bhi, mhi, mhi, ce0, ce1, ce2, ce3, ce5, ce7, ce8, DP_EXT_IRQ, DP_EXT_IRQ, DP_EXT_IRQ, DP_EXT_IRQ, DP_EXT_IRQ, DP_EXT_IRQ, DP_EX
-T_IRQ, DP_EXT_IRQ, DP_EXT_IRQ, DP_EXT_IRQ
-
-So I think the issue fixed by 39564b475ac5 should be reinvestigated.
-
-- Mani
-
-> > 
-> > Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-05266-QCAHSTSWPLZ_V2_TO_X86-1
-> > 
-> > Cc: Baochen Qiang <quic_bqiang@quicinc.com>
-> > Fixes: e94b07493da3 ("ath11k: Set IRQ affinity to CPU0 in case of one MSI vector")
-> > Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> > ---
-> >  drivers/net/wireless/ath/ath11k/pci.c | 24 ++++++++++++------------
-> >  1 file changed, 12 insertions(+), 12 deletions(-)
-> > 
-> > diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
-> > index 8d63b84d1261..0c22e18e65c7 100644
-> > --- a/drivers/net/wireless/ath/ath11k/pci.c
-> > +++ b/drivers/net/wireless/ath/ath11k/pci.c
-> > @@ -886,16 +886,10 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
-> >  	if (ret)
-> >  		goto err_pci_disable_msi;
-> >  
-> > -	ret = ath11k_pci_set_irq_affinity_hint(ab_pci, cpumask_of(0));
-> > -	if (ret) {
-> > -		ath11k_err(ab, "failed to set irq affinity %d\n", ret);
-> > -		goto err_pci_disable_msi;
-> > -	}
-> > -
-> >  	ret = ath11k_mhi_register(ab_pci);
-> >  	if (ret) {
-> >  		ath11k_err(ab, "failed to register mhi: %d\n", ret);
-> > -		goto err_irq_affinity_cleanup;
-> > +		goto err_pci_disable_msi;
-> >  	}
-> >  
-> >  	ret = ath11k_hal_srng_init(ab);
-> > @@ -916,6 +910,12 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
-> >  		goto err_ce_free;
-> >  	}
-> >  
-> > +	ret = ath11k_pci_set_irq_affinity_hint(ab_pci, cpumask_of(0));
-> > +	if (ret) {
-> > +		ath11k_err(ab, "failed to set irq affinity %d\n", ret);
-> > +		goto err_free_irq;
-> > +	}
-> > +
-> >  	/* kernel may allocate a dummy vector before request_irq and
-> >  	 * then allocate a real vector when request_irq is called.
-> >  	 * So get msi_data here again to avoid spurious interrupt
-> > @@ -924,17 +924,20 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
-> >  	ret = ath11k_pci_config_msi_data(ab_pci);
-> >  	if (ret) {
-> >  		ath11k_err(ab, "failed to config msi_data: %d\n", ret);
-> > -		goto err_free_irq;
-> > +		goto err_irq_affinity_cleanup;
-> >  	}
-> >  
-> >  	ret = ath11k_core_init(ab);
-> >  	if (ret) {
-> >  		ath11k_err(ab, "failed to init core: %d\n", ret);
-> > -		goto err_free_irq;
-> > +		goto err_irq_affinity_cleanup;
-> >  	}
-> >  	ath11k_qmi_fwreset_from_cold_boot(ab);
-> >  	return 0;
-> >  
-> > +err_irq_affinity_cleanup:
-> > +	ath11k_pci_set_irq_affinity_hint(ab_pci, NULL);
-> > +
-> >  err_free_irq:
-> >  	ath11k_pcic_free_irq(ab);
-> >  
-> > @@ -947,9 +950,6 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
-> >  err_mhi_unregister:
-> >  	ath11k_mhi_unregister(ab_pci);
-> >  
-> > -err_irq_affinity_cleanup:
-> > -	ath11k_pci_set_irq_affinity_hint(ab_pci, NULL);
-> > -
-> >  err_pci_disable_msi:
-> >  	ath11k_pci_free_msi(ab_pci);
-> >  
+ drivers/net/wireless/marvell/mwifiex/cmdevt.c | 86 +++++++++++++++++++
+ drivers/net/wireless/marvell/mwifiex/fw.h     | 16 ++++
+ drivers/net/wireless/marvell/mwifiex/main.c   |  9 +-
+ drivers/net/wireless/marvell/mwifiex/main.h   |  4 +
+ drivers/net/wireless/marvell/mwifiex/sdio.c   | 81 ++++++++++++++++-
+ drivers/net/wireless/marvell/mwifiex/sdio.h   |  3 +
+ .../net/wireless/marvell/mwifiex/sta_event.c  |  4 +
+ .../net/wireless/marvell/mwifiex/uap_event.c  |  4 +
+ include/linux/mmc/sdio_ids.h                  |  3 +
+ 9 files changed, 205 insertions(+), 5 deletions(-)
 
 -- 
-மணிவண்ணன் சதாசிவம்
+2.39.2
+
 
