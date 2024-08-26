@@ -1,101 +1,111 @@
-Return-Path: <linux-wireless+bounces-11962-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11961-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7394595EDEF
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 12:00:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2932C95EDCA
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 11:56:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5F481C21738
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 10:00:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D969F284876
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 09:56:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4539442AA0;
-	Mon, 26 Aug 2024 10:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0351146588;
+	Mon, 26 Aug 2024 09:56:05 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07BC9145B1F
-	for <linux-wireless@vger.kernel.org>; Mon, 26 Aug 2024 10:00:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E96F145A01;
+	Mon, 26 Aug 2024 09:56:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724666430; cv=none; b=D7b05n/Goja59KxaSl89XVPT6IitbiC7bZmD3A5xglQbMWCBtrRQ6S+ZAz/97lKpQ05bx/W8CS18OtXhbj1JllXywbdilgUH6X2jSPWXS9u7vUNFEm8pSDfI4DxvVBckWbK20w4aOzJ++ToMzxmfmT3/IEU4NheJEbY3eS8OT2I=
+	t=1724666165; cv=none; b=nTqisFI1jyqegiRKvnrHx0eXRSkwvRNivXlKiNnSSHdoS11AmTYeox/xlrAUTFkWaeZPNjp8J/ugNLIy++DY05jjlhyKZ0tqBp6n64lWfIQ1wJHEWo1OiWaJwtdgaPlKvY3mOeWZppSKSzH58wTD15Ht9D+K/pkgpr67oq2T6js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724666430; c=relaxed/simple;
-	bh=09jhWOnkxDVfb8Yz6zOonjn5P+Qcq8OhpPg6YtP1234=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=psssEWtn8wqrMqF3i8lA52lDJ9SqNqRjSaCQvEgEouHaPb437GDtTBm2EzS0tRserczDFUqi+mwP/IQ966Se78lPYkb8Dxm3S8qYhTGECGahvdP6pHRUeNzL8A2frgIvXIFBfN5VjxXjewyDzUYkAKde4JCnWP9Wq4fcys5vs0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
-Received: from [IPV6:2003:c5:9714:6a90::32b] (p200300C597146a90000000000000032B.dip0.t-ipconnect.de [IPv6:2003:c5:9714:6a90::32b])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 05C07FA131;
-	Mon, 26 Aug 2024 11:51:04 +0200 (CEST)
-Message-ID: <a2a5e90a-4a24-4c83-9bfe-43b4e32cf73c@simonwunderlich.de>
-Date: Mon, 26 Aug 2024 11:51:03 +0200
+	s=arc-20240116; t=1724666165; c=relaxed/simple;
+	bh=wsAv2DCs81Krot2H6B+GkuNI1BslfDtsdnmozEw5rcU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=n8sAK9FAKCMpgbN5P5OAfSG1TjQYtVcih0s/UM4FzJU3jceCAYevoOfeItpTVIoRFxvFURUqwZ9oMlEf5wJK712uTh2Eadj/rQ7b/ICAovt/NUDvGfAzFYvKd4JqTBYtDHKQJfl3lq9cxYpGbBDOsI9TboCWGbhT1DcCQt/sGYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-01 (Coremail) with SMTP id qwCowACnr0sYUcxmptCfCg--.39812S2;
+	Mon, 26 Aug 2024 17:55:46 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: nbd@nbd.name,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	kvalo@kernel.org,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	mingyen.hsieh@mediatek.com,
+	deren.wu@mediatek.com,
+	make24@iscas.ac.cn,
+	ruanjinjie@huawei.com,
+	greearb@candelatech.com
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	stable@vger.kernel.org
+Subject: [PATCH] wifi: mt76: mt7921: Check devm_kasprintf() returned value
+Date: Mon, 26 Aug 2024 17:55:35 +0800
+Message-Id: <20240826095535.2603538-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] wifi: cfg80211: Set the channel definition for the
- different Wi-Fi modes when starting CAC
-Content-Language: en-US
-To: Johannes Berg <johannes@sipsolutions.net>, quic_jjohnson@quicinc.com
-Cc: kvalo@kernel.org, linux-wireless@vger.kernel.org, lkp@intel.com,
- llvm@lists.linux.dev, mathias.kretschmer@fit.fraunhofer.de,
- oe-kbuild-all@lists.linux.dev
-References: <9809b165-8d25-4984-a1dd-6fca28f1dda9@quicinc.com>
- <20240816142418.3381951-1-ih@simonwunderlich.de>
- <6a9916848826a07ca41f1170e1d20cda9e798872.camel@sipsolutions.net>
-From: Hamdi Issam <ih@simonwunderlich.de>
-In-Reply-To: <6a9916848826a07ca41f1170e1d20cda9e798872.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowACnr0sYUcxmptCfCg--.39812S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrKFW7ZFW5Ww13Zw4xXFWxCrg_yoWDAFbEgr
+	409rn7XryrGFn8Kr42yry3CrW2kaykZr18XFsxtrWrJrWxGrWUur93Zrn8J392k397uryU
+	urn0kFy8uws8ZjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbfAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
+	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7V
+	AKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
+	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6x
+	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
+	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
+	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7sRiSfO3UUUUU==
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-Hello,
+devm_kasprintf() can return a NULL pointer on failure but this returned
+value is not checked. Fix this lack and check the returned value.
 
-On 8/23/24 12:42, Johannes Berg wrote:
-> On Fri, 2024-08-16 at 16:24 +0200, Issam Hamdi wrote:
->> @@ -10143,7 +10143,23 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
->>   
->>   	err = rdev_start_radar_detection(rdev, dev, &chandef, cac_time_ms);
->>   	if (!err) {
->> -		wdev->links[0].ap.chandef = chandef;
->> +		switch (wdev->iftype) {
->> +		case NL80211_IFTYPE_MESH_POINT:
->> +			wdev->u.mesh.chandef = chandef;
->> +			break;
->> +		case NL80211_IFTYPE_ADHOC:
->> +			wdev->u.ibss.chandef = chandef;
->> +			break;
->> +		case NL80211_IFTYPE_OCB:
->> +			wdev->u.ocb.chandef = chandef;
->> +			break;
->>
-> OCB cannot even get to this code given earlier conditions, why are you
-> adding it here?
+Found by code review.
 
-Actually I didn't test it with OCB mode, I added the check on the 
-different modes to make sure that the function "wdev_chandef" return a 
-no NULL chandef for the different modes.
+Cc: stable@vger.kernel.org
+Fixes: 6ae39b7c7ed4 ("wifi: mt76: mt7921: Support temp sensor")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/net/wireless/mediatek/mt76/mt7921/init.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-I will remove the check on the OCB mode, if it will impact other 
-implementation.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+index ef0c721d26e3..5ab395d9d93e 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+@@ -52,6 +52,8 @@ static int mt7921_thermal_init(struct mt792x_phy *phy)
+ 
+ 	name = devm_kasprintf(&wiphy->dev, GFP_KERNEL, "mt7921_%s",
+ 			      wiphy_name(wiphy));
++	if (!name)
++		return -ENOMEM;
+ 
+ 	hwmon = devm_hwmon_device_register_with_groups(&wiphy->dev, name, phy,
+ 						       mt7921_hwmon_groups);
+-- 
+2.25.1
 
->
-> I guess this should conflict:
->
-> https://lore.kernel.org/linux-wireless/20240711035147.1896538-1-quic_adisi@quicinc.com/
->
-> but it's probably not too hard to resolve that.
->
-> johannes
-Issam
 
