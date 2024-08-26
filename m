@@ -1,113 +1,176 @@
-Return-Path: <linux-wireless+bounces-11963-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11964-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A0F295EE09
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 12:06:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9798295EE55
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 12:17:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16A2E284F43
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 10:06:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1987C1F22E38
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 10:17:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F519146585;
-	Mon, 26 Aug 2024 10:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B459814900F;
+	Mon, 26 Aug 2024 10:17:32 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00FCC804;
-	Mon, 26 Aug 2024 10:06:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D4F514830F
+	for <linux-wireless@vger.kernel.org>; Mon, 26 Aug 2024 10:17:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724666811; cv=none; b=XZXC0sMiyf1TtWKv8GMyipKvdmcz55d5DekOED2QlFtYin6Rl2nLQe/AWC0kEzD4Vaomx3eh57leuNwNDUdTAWJ7ruOv6CunWvZwqt4sS5cBCEgGuJ3dsYDtpPqKkZc1uSDOmDAhxkIw3ZWBb6xMJhqm4un85pDASq5YGIR807w=
+	t=1724667452; cv=none; b=bWBGrJx/AmZ1VUrDnxyLdR6tda4m8fg9LFU4hDvZi2oKaLSUuAfi4bzTrlwjVijDYG8wtVGoEYT8Nzj137KHSG4P71gr0rt98WFCaKPcbStji1vipbg81aTl425XRRZC3sXIVIPq4Y+MirNtN+j9bPsG+1vZaElLS/4S1yEkOfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724666811; c=relaxed/simple;
-	bh=c7iGIBmPQ0+X5ed9jb4ofzKU/5N8V6B+VMyfLL4JSoc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oJQPqSTYf0hi7p3gHOZ1v6Vab5zZ8bY1luIaXepMc+yJ5WtnIaf01gQUpwpy1VBKktdvBhQfTU7Ield1Dg/RYUnOacVbgDJs40uSPhmB3L938GW9WtMtZs/0zl4NOcU73tZvHVlvTkjCJ1/nMQ75WMSdwjXH6wh4VUbSaf1tHeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-01 (Coremail) with SMTP id qwCowAC3v0ubU8xmAXKgCg--.13784S2;
-	Mon, 26 Aug 2024 18:06:32 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: nbd@nbd.name,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	kvalo@kernel.org,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	allen.ye@mediatek.com,
-	johannes.berg@intel.com,
-	chui-hao.chiu@mediatek.com,
-	ruanjinjie@huawei.com,
-	make24@iscas.ac.cn,
-	howard-yh.hsu@mediatek.com,
-	greearb@candelatech.com
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	stable@vger.kernel.org
-Subject: [PATCH] mt76: mt7915: check devm_kasprintf() returned value
-Date: Mon, 26 Aug 2024 18:06:18 +0800
-Message-Id: <20240826100618.2605161-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1724667452; c=relaxed/simple;
+	bh=+1sSYTJpR0WMXuTFjr+JO8ZWGztuKrRMT2yUDdMrNi0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ShTUyXeOSGTslcT7rbRHVC/peQP+WajzLarVz6u0CwtfQfp8sSOBuEc3ashI/oQW2qzoiJ8Ch/5zeffVCulOvqm15jJuBzgKLcnHRA4p6uFZsnmfqihmFV9GUBkviY9MVJz4Sy0ZDbTOzwhk0MU4wPXJW6xH/6jWZrpdgAsFUSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1siWmp-0007gb-3w; Mon, 26 Aug 2024 12:17:23 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1siWmo-003AFu-A3; Mon, 26 Aug 2024 12:17:22 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1siWmo-0072PO-0e;
+	Mon, 26 Aug 2024 12:17:22 +0200
+Date: Mon, 26 Aug 2024 12:17:22 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: David Lin <yu-hao.lin@nxp.com>
+Cc: Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Kalle Valo <kvalo@kernel.org>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>,
+	Pete Hsieh <tsung-hsien.hsieh@nxp.com>
+Subject: Re: [EXT] [PATCH 10/31] wifi: mwifiex: fix indention
+Message-ID: <ZsxWMgqgUfRXro0Q@pengutronix.de>
+References: <20240820-mwifiex-cleanup-v1-0-320d8de4a4b7@pengutronix.de>
+ <20240820-mwifiex-cleanup-v1-10-320d8de4a4b7@pengutronix.de>
+ <PA4PR04MB96382C0635603A51371C0E23D18F2@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <ZsxM198_t04j6OMo@pengutronix.de>
+ <PA4PR04MB96386A441739C4D35683512FD18B2@PA4PR04MB9638.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAC3v0ubU8xmAXKgCg--.13784S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrKFW7ZFW5Ww13Zw4xXFWxCrg_yoWDAFbEgr
-	W8Zrn3GFyrGwn0kr47Cry3Cryaya4kZF1kJ393trW5GrW8AFW7WryfZrn8J397Cws29r15
-	Gwn8AryrZ398ujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbfAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
-	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8Jw
-	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
-	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7V
-	AKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
-	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6x
-	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
-	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
-	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7sRRH7K3UUUUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <PA4PR04MB96386A441739C4D35683512FD18B2@PA4PR04MB9638.eurprd04.prod.outlook.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-devm_kasprintf() can return a NULL pointer on failure but this returned
-value is not checked. Fix this lack and check the returned value.
+On Mon, Aug 26, 2024 at 09:48:38AM +0000, David Lin wrote:
+> > From: Sascha Hauer <s.hauer@pengutronix.de>
+> > Sent: Monday, August 26, 2024 5:37 PM
+> > To: David Lin <yu-hao.lin@nxp.com>
+> > Cc: Brian Norris <briannorris@chromium.org>; Francesco Dolcini
+> > <francesco@dolcini.it>; Kalle Valo <kvalo@kernel.org>;
+> > linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org;
+> > kernel@pengutronix.de
+> > Subject: Re: [EXT] [PATCH 10/31] wifi: mwifiex: fix indention
+> > 
+> > Caution: This is an external email. Please take care when clicking links or
+> > opening attachments. When in doubt, report the message using the 'Report
+> > this email' button
+> > 
+> > 
+> > On Thu, Aug 22, 2024 at 09:36:29AM +0000, David Lin wrote:
+> > > > From: Sascha Hauer <s.hauer@pengutronix.de>
+> > > > Sent: Tuesday, August 20, 2024 7:56 PM
+> > > > To: Brian Norris <briannorris@chromium.org>; Francesco Dolcini
+> > > > <francesco@dolcini.it>; Kalle Valo <kvalo@kernel.org>
+> > > > Cc: linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org;
+> > > > kernel@pengutronix.de; Sascha Hauer <s.hauer@pengutronix.de>
+> > > > Subject: [EXT] [PATCH 10/31] wifi: mwifiex: fix indention
+> > > >
+> > > > Align multiline if() under the opening brace.
+> > > >
+> > > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > > > ---
+> > > >  drivers/net/wireless/marvell/mwifiex/wmm.c | 12 ++++++------
+> > > >  1 file changed, 6 insertions(+), 6 deletions(-)
+> > > >
+> > > > diff --git a/drivers/net/wireless/marvell/mwifiex/wmm.c
+> > > > b/drivers/net/wireless/marvell/mwifiex/wmm.c
+> > > > index bcb61dab7dc86..1b1222c73728f 100644
+> > > > --- a/drivers/net/wireless/marvell/mwifiex/wmm.c
+> > > > +++ b/drivers/net/wireless/marvell/mwifiex/wmm.c
+> > > > @@ -1428,13 +1428,13 @@ mwifiex_dequeue_tx_packet(struct
+> > > > mwifiex_adapter *adapter)
+> > > >         }
+> > > >
+> > > >         if (!ptr->is_11n_enabled ||
+> > > > -               ptr->ba_status ||
+> > > > -               priv->wps.session_enable) {
+> > > > +           ptr->ba_status ||
+> > > > +           priv->wps.session_enable) {
+> > > >                 if (ptr->is_11n_enabled &&
+> > > > -                       ptr->ba_status &&
+> > > > -                       ptr->amsdu_in_ampdu &&
+> > > > -                       mwifiex_is_amsdu_allowed(priv, tid) &&
+> > > > -                       mwifiex_is_11n_aggragation_possible(priv,
+> > ptr,
+> > > > +                   ptr->ba_status &&
+> > > > +                   ptr->amsdu_in_ampdu &&
+> > > > +                   mwifiex_is_amsdu_allowed(priv, tid) &&
+> > > > +                   mwifiex_is_11n_aggragation_possible(priv, ptr,
+> > > >
+> > > > adapter->tx_buf_size))
+> > > >                         mwifiex_11n_aggregate_pkt(priv, ptr,
+> > ptr_index);
+> > > >                         /* ra_list_spinlock has been freed in
+> > > >
+> > > > --
+> > > > 2.39.2
+> > > >
+> > >
+> > > I wonder we still need patch for indent issue here? If so I am sure we
+> > > will need a bunch of similar patches which I don't think really help
+> > > improve mwifiex quality
+> > >
+> > > Actually in its successor Nxpwifi (currently under review), we have
+> > > cleaned up all indent, and checkpatch errors/warnings/checks.
+> > 
+> > BTW you advertised nxpwifi not as a successor to mwifiex, but as the driver to
+> > be used for new chips. This means we still have to deal with the mwifiex driver
+> > in the future to support the old chips, so even if nxpwifi is merged it still makes
+> > sense to clean up mwifiex.
+> > 
+> > Sascha
+> > 
+> 
+> Just like what I listed for the errors/warning/checks of Mwifiex running with checkpatch.
+> Mwifiex has so many issues. As the driver will only support legacy devices and the state of
+> it is "Odd fixes", It is better to fix really bugs of Mwifiex instead of cleanup it.
 
-Found by code review.
+The way you use "legacy" is from a silicon vendors perspective. Many
+real users only start to use a chip when it's already legacy for the
+silicon vendor.
 
-Cc: stable@vger.kernel.org
-Fixes: 6ae39b7c7ed4 ("wifi: mt76: mt7921: Support temp sensor")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- drivers/net/wireless/mediatek/mt76/mt7915/init.c | 2 ++
- 1 file changed, 2 insertions(+)
+Sascha
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index a978f434dc5e..7bc3b4cd3592 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -194,6 +194,8 @@ static int mt7915_thermal_init(struct mt7915_phy *phy)
- 
- 	name = devm_kasprintf(&wiphy->dev, GFP_KERNEL, "mt7915_%s",
- 			      wiphy_name(wiphy));
-+	if (!name)
-+		return -ENOMEM;
- 
- 	cdev = thermal_cooling_device_register(name, phy, &mt7915_thermal_ops);
- 	if (!IS_ERR(cdev)) {
 -- 
-2.25.1
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
