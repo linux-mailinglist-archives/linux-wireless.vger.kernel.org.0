@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-12008-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12009-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C712695FD86
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 00:52:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A331D95FDA6
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 01:04:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF2BF1C2206B
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 22:52:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57DA7282ECA
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 23:04:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E1A19DF64;
-	Mon, 26 Aug 2024 22:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B403149E0B;
+	Mon, 26 Aug 2024 23:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="XkW6CcXY"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="Qjlcbgv/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from out203-205-221-202.mail.qq.com (out203-205-221-202.mail.qq.com [203.205.221.202])
+Received: from out203-205-221-221.mail.qq.com (out203-205-221-221.mail.qq.com [203.205.221.221])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B57519ADBE;
-	Mon, 26 Aug 2024 22:51:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB7942AA0;
+	Mon, 26 Aug 2024 23:04:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724712677; cv=none; b=gTQV9HeB4Qz79Ok1YCc9CvyAqKc6t4qHg9QEQoEKiblTMv59Lna2Ed00Dg+oMDG63bGhWLHG4ZMcf+Xnk5uwBac6xDiONC5tK4xQ+0DqFKiMzn+286fDMZDmfEH5T6ZJg0Ss6PXIoaJ5PHfERMznu5fQMx7iiF/Un2R8rK6n6Ow=
+	t=1724713479; cv=none; b=GtNLu/X97SnNyArhLYLhZW73fQmBG8gQVbaUdiYpCPM8+vODQnHBr8pzCiD0a6qmI+ZjH0S+1yj1IqCwTC8Sz2rSJxqarRA1pO9YmLg2kE8mE/ra99obO4s9lgLZrqAJwRNvt+3nSUt6Gi7uqa8vjeqithbuYuu8X0/ytVIDWB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724712677; c=relaxed/simple;
-	bh=vwxylYhqYzDcwD8VntoswCnq6jYCY0GwTMnoqPsNrFk=;
+	s=arc-20240116; t=1724713479; c=relaxed/simple;
+	bh=LWoF7d+MwsK8D33tMYWg7z3vjj8wjFqHa2l3bCLL++U=;
 	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=T8mR9AmjuqLjAmaXjPQL/nRH9V4jVopbi5dGLHYVEif3PEY2tZ/LKj/8pgZyJfXMQo3awVFXei6ZRza0/hv5oKP/xGlLC1o9XZm32hUSBlQvW4wFdm5Tm128jWxLOz6ugtRYkZquYOt/t4K7ARs23B0nOBRlmBWjowbwJdLTchg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=XkW6CcXY; arc=none smtp.client-ip=203.205.221.202
+	 MIME-Version; b=bIZxnHnTldcQpBkzUtyIFgDkKb7bert/tE9acwX9fpktf+p45zgzGjmnbP0rZ3xdFDP8valRrOK8XZUguIIFNcHL3YflP+KTU6W+7a7BdsrnqMxsdWmnfwiHEdylBlMa5Ym96LLx7peXfWHX4VC8GzChr+5jsWMI3kJJSyvtZ3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=Qjlcbgv/; arc=none smtp.client-ip=203.205.221.221
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1724712671; bh=efQry0do+stVDVzIBy/a+KnkSgRUN/Tp1juVU/tLaiI=;
+	t=1724713473; bh=BJQ7PYbry8STGQrWKtDLgyffi+mn2fW5YEfdrsCq4Jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XkW6CcXYfSCg4KyWSNPv5U6vNBWQJybzi5cNds+DUDVi7XoTohY2hEhSRPSpiobL1
-	 jEeEewiUrCVWBdr2+6KOWwg6O1TJOVZDzpdTMaI9oaXrWfYp4onQApQb50cCXmTUgl
-	 Bqh39USOJbljbM3Lv7PEMu1SJZy32nJum0T+LMwA=
+	b=Qjlcbgv/ZIKG3g0DIuYBHJt07bLiIjnK3VY3DrL+cjBeaqLcO13q/CyBD1DW6SJdQ
+	 B9Yy7xJYhHrji8kxFy30yd2x6vP8o4sDPV1P7aKFHRxrB71AEvCW2qON2zFsOdIwij
+	 eFH/EyMuuKyVfEAIW2Mpl8acMFX+f5hjkgdi6Zjk=
 Received: from pek-lxu-l1.wrs.com ([111.198.225.4])
 	by newxmesmtplogicsvrszc19-0.qq.com (NewEsmtp) with SMTP
 	id CC78C68C; Tue, 27 Aug 2024 06:51:07 +0800
-X-QQ-mid: xmsmtpt1724712667t60kv7uhh
-Message-ID: <tencent_A51B8725EABA04BB2A33BC9E1E1B2E4B0508@qq.com>
-X-QQ-XMAILINFO: MllZffuBkEb5pYkZwEBzGaWEwpFRl4rltLTzryB4XVDEIlx8mFQGAr4Aup1tKy
-	 A6BDPh0eEbwgH5l4SXq0KOWNHpR1JNhWSMgSi07KKCgc3kdBoLT344oLLrgEsLJ9UQIMPBKXYBlj
-	 ETGrE9z4GqX3m7p/XFU/+Pmn3WNwHFvngnOQhIPQg0VwCdnhZWY1db7pHr7efQPRGgXk5h9Kf0ab
-	 LKHH3ajOg6GZnI7PF5zegQkbjOsA01p1uoUA92vbqGpWjRuW/2+UyHOqp9DKbBDEeQ2u2itV8PO0
-	 YQ0XMMaCo5sovj1WLb08X5YBHe1xv34gAUb+E7YAXM0LDF5PgELUUOYRYcG5Vl6PioGvGxQscE5a
-	 8Ilc3bRbZaEsV+xvLlGY10gh9bnGOIlD5Dvxfmd08CdT6yDi/O5bZRXoesGVU9vcVIp8TH3+sJDP
-	 ul4eWYuVHfmR0rVFTPT8iCpm7h4rpomPBIQjyekeoZDcZ6049TAq+oX6VsLfBMKXqkB3VIfxL8Eh
-	 nPJ0Sy5/HCdyeVIMAdOCEuNQWd4ZDWZ+GQuC5+W+FS+KewjXScO6IYLW4LrQ9x0neZ/RpNkwWqZ8
-	 s/e0z3F02cEc4x3jQpI9Oh0b2snaJvB0KxEeOwibzAhFxW7wRrEZ+U6N2bEIX5VAfnPx1/0MN+CG
-	 1Jo+2qvn3AKBxJsQtubJDKc+z8foW/PXaeQS14lBMUHqYdqRmA7TJC4xmCHFgKcpBH6zQR+hCTEa
-	 Sb96u0pnLy6TAUWfhVHuNuY0Pcsn5QMWM6EJeoN5AyzH+w3p32j/gCmiksn8Gltw9sX1K0kYvQ8+
-	 ijzwiBE+ukPFDErQsJda4eqacmDXYI7m8maUsZtmDP3lxdvxiEutYbBSFzUnWFZ1S+cJqPTyKV+X
-	 trm6FjAj7OsEk9Wq+uv/BX3gwbJbBTs2l6pHqhjQSqbq3QPV4k4XuFtZRzCpQbBbvNXwD7lhuxwq
-	 TO5G3oZ7EkQUmdJDIb8s7sG85pAev7z9iIsiOMhs5pfy2q2R+4+3TQ2NzUU6kXGBndLBpXR9lR9V
-	 6tdoyTgcHalZVt16E+h7l2kk4loQA=
-X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
+X-QQ-mid: xmsmtpt1724712670t7ofo6x5b
+Message-ID: <tencent_59F76EFB4C8B67EA86DA92C5065949996E06@qq.com>
+X-QQ-XMAILINFO: NEoGzTA04D+5asKIVdFTBV8Xr9PlBlV/LIYO8oMAR7q70ff1Qq8uEGirSL9T9p
+	 wkaVUxAHgPW/Z88IJ1z39oEK6xS/GzXfieTAelECnbgjW7gxu6bRYQL1+HKYxhWdBCilepkTs0AL
+	 B7yaU3Nxft3qpr7TafxVDbBsPF5rrLXSPnhwgZU3DuwUCKnL9FK4klbC9DW2pVR4rxYjm4mQv9xe
+	 hfi35OGMgvnCm6zh/dL+GJSRNmLn73/EBAnnht4r77qUONy/sAyHhjtNl+RReVFViyazn749Mi4U
+	 WlfqVL/dpWo/EhcDgPnhdu8q/H50MTTS4REEfzWQ9kxL5qHqLN3LIjAkF2IzB+uJeKWz3QjlyHWq
+	 t1g43ei+E5p3L40PkY6LP4rEPT713wh8eoM/fw/x3H6zBCmrKEJ35i3XZADxLXLUxjZcFqVHjG8X
+	 voWzDoyTr9O2BtNwWtMxOLZVOy2WzuXpHS6Frgls2iRh9kBJR6Wbhp3ohtDaum5AAfii7miUuNb8
+	 D6yVLHAKaqDopmtSDAG+vXRQwCbPwLP/X1Xqoon8QKrEpwe1ROglqc8KZ/TMrjcDuM65EgoYXLKi
+	 RHNz5vr1V6O5Fx16ImxP0RGkLS3MqDjEsFDsXiVvNM3myhd4tD6aSA6pq7r3LT2yuQ7RTZ89jJ8a
+	 816b1XCJvBIppgI653CBA7W8FWYs+bMhu3vbA2kq4lNaxk/uqtMN8ttP889F3UICtrJWfPyhEdl8
+	 B0GMsTAr71yTE/qyHQf2PM8mHZ6/mh2DxyDdpbya35lXYuorKS16qE7NSvvpmNmAaqAuUEs8I2dO
+	 McpPVwzCUGY5fxFjmZXkK7AufBsHU0EQzD6dyjuVnLszpo+bXvt1mrORdjAEczVmwf6N1CtrZdaZ
+	 Avcqs/Kx1O7OtFGN1JHYOmD+wXB398t7Sc+Bs5hFd85jRY1fv2vxMQcOCVwOSU1sUC7iFwp4nswV
+	 p64oV5bZwKE2dM53wTXtkVPAOkTfaUs3E4sdg4rNVMa3BvZhBZGXZAXe1kNWCoEHAv6yuQda6e5/
+	 /D83fWNmgzJ46Yl+D5tcota4rJIcSZB7iDDeNSynv+oGVDHna7
+X-QQ-XMRINFO: M/715EihBoGSf6IYSX1iLFg=
 From: Edward Adam Davis <eadavis@qq.com>
 To: kvalo@kernel.org
 Cc: eadavis@qq.com,
@@ -68,12 +68,13 @@ Cc: eadavis@qq.com,
 	netdev@vger.kernel.org,
 	syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com,
 	syzkaller-bugs@googlegroups.com
-Subject: [PATCH V6 1/2] wifi: ath6kl: Replace ath6kl_usb_submit_ctrl_in with usb_control_msg_recv
-Date: Tue, 27 Aug 2024 06:51:08 +0800
-X-OQ-MSGID: <20240826225107.2817092-3-eadavis@qq.com>
+Subject: [PATCH V6 2/2] wifi: ath6kl: remove ath6kl_usb_submit_ctrl_in
+Date: Tue, 27 Aug 2024 06:51:09 +0800
+X-OQ-MSGID: <20240826225107.2817092-4-eadavis@qq.com>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <87jzg3uy40.fsf@kernel.org>
+In-Reply-To: <20240826225107.2817092-3-eadavis@qq.com>
 References: <87jzg3uy40.fsf@kernel.org>
+ <20240826225107.2817092-3-eadavis@qq.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -87,41 +88,73 @@ the length of the data read from the device is not equal to the len, and
 such missing judgments will result in subsequent code using incorrect data.
 
 usb_control_msg_recv() handles the abnormal length of the returned data,
-so using it directly can fix "target's targ_info doesn't match the host's
-targ_info" warning in ath6kl_bmi_get_target_info.
+so using it directly.
 
 Note: Compile tested only, not tested on hardware, only tested on QEMU.
 
-Reported-by: syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com
+Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Edward Adam Davis <eadavis@qq.com>
 ---
-V1 -> V2: Directly using USB functions
-V2 -> V3: Adjust indentation style
-V3 -> V4: Adjust indentation style
-V4 -> V5: Update comments, add warning info
-V5 -> V6: Update comments
-
- drivers/net/wireless/ath/ath6kl/usb.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath6kl/usb.c | 39 +++------------------------
+ 1 file changed, 3 insertions(+), 36 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath6kl/usb.c b/drivers/net/wireless/ath/ath6kl/usb.c
-index 5220809841a6..0458b5a078e1 100644
+index 0458b5a078e1..1a5fb2561fef 100644
 --- a/drivers/net/wireless/ath/ath6kl/usb.c
 +++ b/drivers/net/wireless/ath/ath6kl/usb.c
-@@ -1027,9 +1027,10 @@ static int ath6kl_usb_bmi_read(struct ath6kl *ar, u8 *buf, u32 len)
- 	int ret;
+@@ -901,40 +901,6 @@ static int ath6kl_usb_submit_ctrl_out(struct ath6kl_usb *ar_usb,
+ 	return 0;
+ }
+ 
+-static int ath6kl_usb_submit_ctrl_in(struct ath6kl_usb *ar_usb,
+-				  u8 req, u16 value, u16 index, void *data,
+-				  u32 size)
+-{
+-	u8 *buf = NULL;
+-	int ret;
+-
+-	if (size > 0) {
+-		buf = kmalloc(size, GFP_KERNEL);
+-		if (buf == NULL)
+-			return -ENOMEM;
+-	}
+-
+-	/* note: if successful returns number of bytes transfered */
+-	ret = usb_control_msg(ar_usb->udev,
+-				 usb_rcvctrlpipe(ar_usb->udev, 0),
+-				 req,
+-				 USB_DIR_IN | USB_TYPE_VENDOR |
+-				 USB_RECIP_DEVICE, value, index, buf,
+-				 size, 2000);
+-
+-	if (ret < 0) {
+-		ath6kl_warn("Failed to read usb control message: %d\n", ret);
+-		kfree(buf);
+-		return ret;
+-	}
+-
+-	memcpy((u8 *) data, buf, size);
+-
+-	kfree(buf);
+-
+-	return 0;
+-}
+-
+ static int ath6kl_usb_ctrl_msg_exchange(struct ath6kl_usb *ar_usb,
+ 				     u8 req_val, u8 *req_buf, u32 req_len,
+ 				     u8 resp_val, u8 *resp_buf, u32 *resp_len)
+@@ -954,8 +920,9 @@ static int ath6kl_usb_ctrl_msg_exchange(struct ath6kl_usb *ar_usb,
+ 	}
  
  	/* get response */
--	ret = ath6kl_usb_submit_ctrl_in(ar_usb,
--					ATH6KL_USB_CONTROL_REQ_RECV_BMI_RESP,
--					0, 0, buf, len);
-+	ret = usb_control_msg_recv(ar_usb->udev, 0,
-+				   ATH6KL_USB_CONTROL_REQ_RECV_BMI_RESP,
+-	ret = ath6kl_usb_submit_ctrl_in(ar_usb, resp_val, 0, 0,
+-					resp_buf, *resp_len);
++	ret = usb_control_msg_recv(ar_usb->udev, 0, resp_val,
 +				   USB_DIR_IN | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
-+				   0, 0, buf, len, 2000, GFP_KERNEL);
- 	if (ret) {
- 		ath6kl_err("Unable to read the bmi data from the device: %d\n",
- 			   ret);
++				   0, 0, resp_buf, *resp_len, 2000, GFP_KERNEL);
+ 
+ 	return ret;
+ }
 -- 
 2.43.0
 
