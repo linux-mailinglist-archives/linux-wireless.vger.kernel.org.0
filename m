@@ -1,97 +1,145 @@
-Return-Path: <linux-wireless+bounces-11958-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11959-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1870495ECDA
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 11:16:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D18195ED79
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 11:38:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D23CE280E33
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 09:16:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC3DB283E32
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 09:38:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56AA913A88D;
-	Mon, 26 Aug 2024 09:16:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="MSRrRMOr"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB8FE145359;
+	Mon, 26 Aug 2024 09:37:35 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE758172A
-	for <linux-wireless@vger.kernel.org>; Mon, 26 Aug 2024 09:15:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998A8143C70
+	for <linux-wireless@vger.kernel.org>; Mon, 26 Aug 2024 09:37:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724663760; cv=none; b=C4Q7dvwnyuLFqL8xId4NfSh9KVguZXyBW//23vTxC91KmEnpwux/6kBvoaQ9DHyOBOAoSCRy8vvW8byXgjSIVWbpAsxD8LxRNC7CYnVwZO7Rzm8U2joBfVwUASBa+oNRcMd6nBoEMgztRnDqW03F2A1Ie4aktyJayQ6kvvVy62I=
+	t=1724665055; cv=none; b=lVh8x9amQUkFjjBz2rRc7IQb+/s9K9eYKeVn1soUi/EeIOlyNKayLBnK+E+HE9Qz+44qHZ8b5Z2YJ+I83f8UzkUrVBWgJQ/GwACPfcirPAxtLutdVXsbFwaA1nsleNMm+K1PdNwlB6G/5OhGvxQio1swdcnmUAb2vFxaWjg8T4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724663760; c=relaxed/simple;
-	bh=aGnEOPyTMJ53HZRp+PKrxy6tGI+Yrk+UCCHo8Tzocqk=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Cg2VoUVFg6B/+DU7IRaogDZv9Ct2PdJuhJZFMJpMafSbcvRzzJ/9MSzFnWNshWuOiGZhJLGOkL3WWZzuRZwYYIM9qgsS1JqKvr1Hstt83gvulJaZ76+wYT+CzZH7pdkf4FgrcdIdOXRokqYMLEnz3exu/8hGS6p9TegkqL/97Qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=MSRrRMOr; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 47Q9FnZ023835024, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1724663749; bh=aGnEOPyTMJ53HZRp+PKrxy6tGI+Yrk+UCCHo8Tzocqk=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:Content-ID:
-	 Content-Transfer-Encoding:MIME-Version;
-	b=MSRrRMOr07cis+zdzpMIif0jvxtRVReebWuOnoxIN5CQLIHLnfa06cfnEkBY9blfE
-	 KbFkOSGq6XXyihQ0tdS132vOKY8NGEaFjxTYEYXs7O5lS3ybzp7PSp+E2lMllFQXFD
-	 zFZY3rx1Tih2lWMSBrlKez42qycAPDlpfWGXN0QwVGOyuG1G1XuZYd+Vf2cl+rBbHg
-	 z7D70zBZGO1ShSjkGv/uCR0nuoFbCJEL609luQ6EPUDVSqZoyIwZeLJUNfXC6NwAZi
-	 1rRrjAjWu8TeLVkgcTTIYkLgB/C2dZAb6L4nXoVJGnLYRT1HWVmI3uStg5iPzHX+8f
-	 4d6IwWXM8XeZg==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 47Q9FnZ023835024
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 26 Aug 2024 17:15:49 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 26 Aug 2024 17:15:50 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 26 Aug 2024 17:15:49 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
- RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
- 15.01.2507.035; Mon, 26 Aug 2024 17:15:49 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: "linux-firmware@kernel.org" <linux-firmware@kernel.org>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        Timlee
-	<timlee@realtek.com>
-Subject: pull request: rtw89: 8922a: add fw format-1 v0.35.41.0
-Thread-Topic: pull request: rtw89: 8922a: add fw format-1 v0.35.41.0
-Thread-Index: AQHa95iKKucNNGeuZkaQj3P1dSVrJw==
-Date: Mon, 26 Aug 2024 09:15:49 +0000
-Message-ID: <f5079de6ec52bbd97fd0deaf2df58f8b13e364b7.camel@realtek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-user-agent: Evolution 3.36.1-2 
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <FF9470385B7A8646902366DC144292F6@realtek.com>
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1724665055; c=relaxed/simple;
+	bh=zbyx3IHFvIHZrVQn/7bcMygv/q2i8BjblbMgub8L0L4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=stTKN35IxuDif66sM4N140nrJY+focYkfIvGsz3A/nJcfAR/DO5wSOlYFdrvsAgnCYV8L+vvp1MIkvpLl9P4vGCL8zxCmAowzXtBaPc9AUubROrfB+98UwBGAuM+mj1vuiDzN+cHTyAlQL4Pq+2/Y6WfEKEkMxZHswlYja6Pptc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1siWAC-0000XJ-Ho; Mon, 26 Aug 2024 11:37:28 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1siWAB-0039gG-Tx; Mon, 26 Aug 2024 11:37:27 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1siWAB-0071na-2e;
+	Mon, 26 Aug 2024 11:37:27 +0200
+Date: Mon, 26 Aug 2024 11:37:27 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: David Lin <yu-hao.lin@nxp.com>
+Cc: Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Kalle Valo <kvalo@kernel.org>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>
+Subject: Re: [EXT] [PATCH 10/31] wifi: mwifiex: fix indention
+Message-ID: <ZsxM198_t04j6OMo@pengutronix.de>
+References: <20240820-mwifiex-cleanup-v1-0-320d8de4a4b7@pengutronix.de>
+ <20240820-mwifiex-cleanup-v1-10-320d8de4a4b7@pengutronix.de>
+ <PA4PR04MB96382C0635603A51371C0E23D18F2@PA4PR04MB9638.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <PA4PR04MB96382C0635603A51371C0E23D18F2@PA4PR04MB9638.eurprd04.prod.outlook.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-SGksDQoNCkFkZCBmaXJtd2FyZSB2MC4zNS40MS4wIG9mIHJ0dzg5IGRyaXZlciBmb3IgODkyMkEu
-DQoNClRoYW5rIHlvdQ0KUGluZy1LZQ0KDQotLS0NClRoZSBmb2xsb3dpbmcgY2hhbmdlcyBzaW5j
-ZSBjb21taXQgMmNkYzExYTdiM2JmMDYwNDJmMWZiMTc5ZmExNzc1ZmRlMzgxNDkxZjoNCg0KICBN
-ZXJnZSBicmFuY2ggJ210NzkyNScgaW50byAnbWFpbicgKDIwMjQtMDgtMjMgMTE6MzE6MDkgKzAw
-MDApDQoNCmFyZSBhdmFpbGFibGUgaW4gdGhlIEdpdCByZXBvc2l0b3J5IGF0Og0KDQogIGh0dHBz
-Oi8vZ2l0aHViLmNvbS9wa3NoaWgvbGludXgtZmlybXdhcmUuZ2l0IHRhZ3MvcnR3LWZ3LTIwMjQt
-MDgtMjYNCg0KZm9yIHlvdSB0byBmZXRjaCBjaGFuZ2VzIHVwIHRvIDgwZmEzM2I5NGE5MWExZTQ1
-NjcxZThmY2Q4ZTgwYjllZmVkNDc4MzQ6DQoNCiAgcnR3ODk6IDg5MjJhOiBhZGQgZncgZm9ybWF0
-LTEgdjAuMzUuNDEuMCAoMjAyNC0wOC0yNiAxNzowODowMCArMDgwMCkNCg0KLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KQ2hp
-bi1ZZW4gTGVlICgxKToNCiAgICAgIHJ0dzg5OiA4OTIyYTogYWRkIGZ3IGZvcm1hdC0xIHYwLjM1
-LjQxLjANCg0KIFdIRU5DRSAgICAgICAgICAgICAgICAgIHwgICAxICsNCiBydHc4OS9ydHc4OTIy
-YV9mdy0xLmJpbiB8IEJpbiAwIC0+IDE1ODM0MzQgYnl0ZXMNCiAyIGZpbGVzIGNoYW5nZWQsIDEg
-aW5zZXJ0aW9uKCspDQogY3JlYXRlIG1vZGUgMTAwNjQ0IHJ0dzg5L3J0dzg5MjJhX2Z3LTEuYmlu
-DQoNCg==
+On Thu, Aug 22, 2024 at 09:36:29AM +0000, David Lin wrote:
+> > From: Sascha Hauer <s.hauer@pengutronix.de>
+> > Sent: Tuesday, August 20, 2024 7:56 PM
+> > To: Brian Norris <briannorris@chromium.org>; Francesco Dolcini
+> > <francesco@dolcini.it>; Kalle Valo <kvalo@kernel.org>
+> > Cc: linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org;
+> > kernel@pengutronix.de; Sascha Hauer <s.hauer@pengutronix.de>
+> > Subject: [EXT] [PATCH 10/31] wifi: mwifiex: fix indention 
+> > 
+> > Align multiline if() under the opening brace.
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> >  drivers/net/wireless/marvell/mwifiex/wmm.c | 12 ++++++------
+> >  1 file changed, 6 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/drivers/net/wireless/marvell/mwifiex/wmm.c
+> > b/drivers/net/wireless/marvell/mwifiex/wmm.c
+> > index bcb61dab7dc86..1b1222c73728f 100644
+> > --- a/drivers/net/wireless/marvell/mwifiex/wmm.c
+> > +++ b/drivers/net/wireless/marvell/mwifiex/wmm.c
+> > @@ -1428,13 +1428,13 @@ mwifiex_dequeue_tx_packet(struct
+> > mwifiex_adapter *adapter)
+> >         }
+> > 
+> >         if (!ptr->is_11n_enabled ||
+> > -               ptr->ba_status ||
+> > -               priv->wps.session_enable) {
+> > +           ptr->ba_status ||
+> > +           priv->wps.session_enable) {
+> >                 if (ptr->is_11n_enabled &&
+> > -                       ptr->ba_status &&
+> > -                       ptr->amsdu_in_ampdu &&
+> > -                       mwifiex_is_amsdu_allowed(priv, tid) &&
+> > -                       mwifiex_is_11n_aggragation_possible(priv, ptr,
+> > +                   ptr->ba_status &&
+> > +                   ptr->amsdu_in_ampdu &&
+> > +                   mwifiex_is_amsdu_allowed(priv, tid) &&
+> > +                   mwifiex_is_11n_aggragation_possible(priv, ptr,
+> > 
+> > adapter->tx_buf_size))
+> >                         mwifiex_11n_aggregate_pkt(priv, ptr, ptr_index);
+> >                         /* ra_list_spinlock has been freed in
+> > 
+> > --
+> > 2.39.2
+> > 
+> 
+> I wonder we still need patch for indent issue here? If so I am sure we
+> will need a bunch of similar patches which I don't think really help
+> improve mwifiex quality
+> 
+> Actually in its successor Nxpwifi (currently under review), we have
+> cleaned up all indent, and checkpatch errors/warnings/checks.
+
+BTW you advertised nxpwifi not as a successor to mwifiex, but as the
+driver to be used for new chips. This means we still have to deal with
+the mwifiex driver in the future to support the old chips, so even if
+nxpwifi is merged it still makes sense to clean up mwifiex.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
