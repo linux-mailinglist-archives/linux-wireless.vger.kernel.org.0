@@ -1,159 +1,98 @@
-Return-Path: <linux-wireless+bounces-11994-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11995-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D915695F454
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 16:49:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9571095F483
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 17:01:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 827471F2260F
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 14:49:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3271B21208
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 15:01:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C6118D639;
-	Mon, 26 Aug 2024 14:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6F9F189BA2;
+	Mon, 26 Aug 2024 15:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="M9J34480"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tFl3mBqI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from xmbg9.mail.qq.com (xmbg9.mail.qq.com [81.69.217.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9175E1925A4;
-	Mon, 26 Aug 2024 14:49:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.69.217.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CE01CD25;
+	Mon, 26 Aug 2024 15:01:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724683749; cv=none; b=mhyIldG7hqo7N3qV/EwHM6qc2FxsZz2HgLeX7EaRw04LrxF9J3ZsBNuOwCfxlpZwTtziVm257u9GpicLdc7TpW9BK3LxlQOVTiNXyhIOdYE+HI/GDxh9xpEGGIlimBI21J855RuqE5lRs+LcI4RShmjgVaSe5Ljj/RDn8mImNr4=
+	t=1724684499; cv=none; b=YTTEAQMPa0xHBxiINsKx1HksKpvQ0gzFiQOuvqlSKgVTVZMh1U88SvAAiU81kAj5QetEIeZloDdtbHPzrdUHiwMciCMYB4jZJYwMfqNMK0SpKI2O97IznPhFwmmLPbsK3aXbW1HPwHMdBN/8qLa4dPRmYpi6z+SIN5liS1GFhLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724683749; c=relaxed/simple;
-	bh=scIlDt3bJxc6xjtCfFWzsD60sMCU7dzjdhlTShv6odY=;
-	h=Message-ID:From:To:Cc:Subject:Date:In-Reply-To:References:
-	 MIME-Version; b=sOP9zgmKhrWtHbKoqUo6Dpys19Gz+lg5ogLcYPurZ+7Magh24RuJDPASgqBdkc+Mn3fU/I9TKoZUZKp5FopNajmZ56R5FmhnI3By+BwfshkHR15r0JpKMZoHSFn6JCaf+Ktcvp0jaqhF4o8H7mI2IrKtvjBR+QoTg3IzKk+G/Dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=M9J34480; arc=none smtp.client-ip=81.69.217.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1724683737; bh=4MNoqgFAOdi2a+l9olqRlqs76QuNfFgvKzCU8S9eMFE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=M9J344809lRip64V04r7u2HHtiow2rclBETBBHtc+tpcMLhghECfEHMoHxwmDQ7f+
-	 zPqv3qcrZsVCLV+EZwcSV4/2tZppTv4xl5medn7H52JmE+aKy1VrdOqRv5ooHsGEo0
-	 oT/gbQi8cmDaPQpi2ecaQQGuohezlGp8UHtttirg=
-Received: from pek-lxu-l1.wrs.com ([111.198.225.4])
-	by newxmesmtplogicsvrszb16-1.qq.com (NewEsmtp) with SMTP
-	id 778048C4; Mon, 26 Aug 2024 20:29:56 +0800
-X-QQ-mid: xmsmtpt1724675398txss294ka
-Message-ID: <tencent_6E58783A6D402D596E509598E92AED2ACE0A@qq.com>
-X-QQ-XMAILINFO: ObFHHlrAm440+Li0ed4Ju/KdFISCzgiyIsZhE32LhdfS6NJT3itGqxVFPomip9
-	 /qyEM7g0WqB2UycGjeHyIyXbCB4Pn7dMYfQJcvQltwxZG9EKGrtGvOoA+QfXK7Po31jCw77irgR8
-	 93dOZrOnGPOc+IehOlSLEyhBT3IzyGKA/PC7iLkx1Ajg4v18GbZraiFawlo4TWEkl9NaePI71h/T
-	 UGNBJ6oBVarMRxFq2YZa+ClPJfTPMGsdPcl/hUPt3q2WY9OeRdTBLOlev9ZiS3AdP5BH+EyWtSeL
-	 9oQVqc84ukE9OGdE8/Eo/iOJ9QNR0XNHFLs6khZVtSdjusJkSIvYsvPXliGS32HzbxwvRgfhDPyI
-	 FENgToFynVhykRlg8ws9nwAW4rxIIZTQlTELdxWl+NLMLNl0NYPX2EdvXq/QN4qOe4oNYtBKjwm9
-	 9COBA9TlmeUaHsq75Mi5rDSPcTDJUs9EGRf0dZWjBgnedmRNxlmH5nr8zv2Mujuinu0Fgbv7qQXE
-	 Ndb6XAypeqSZ1N2UvPP9XZtwDII7WNz9Lh6TgP9WFx7J7WQKHdR5k4kidP0BQMwxtzS/9y21miD3
-	 s5cFluMyZ9ORTvRv2TdsLCBqCxtzxaEeIURk+HNTMbpxSk3k2bMitdjSmb0LpyIgVGcEl9RV0TQj
-	 AyfK30UjFMFqu21YK8hnJdUgTAy1cqKJBfaa+VsRe12CeD00W5zzfWoVCZOO0i7McZaK/4dxDjWe
-	 XPYkmtbXt/CbnD2eNoWQKSzBfaBvqfpQWqjN02WO0RMr2lRpJXZ6IYQbs+gS0kHn/PeojiMFr6z/
-	 L5A8sxD1IGF2Fl8hwUh1QR8yrYm4tzd0HsKJ6kX9CvlffeLEtsto6Rcnw+4lxr77nJ+pqiZicZXo
-	 NAMDdkfauLwuSrWbTw/gD/P5pi7fqXbItfAAAYyZPYvU3mpb5C4M9+2OBbcrrGb7bLZpoM3TOICg
-	 4yRQ2LcOfozQX8lw6DhQ==
-X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
-From: Edward Adam Davis <eadavis@qq.com>
-To: gregkh@linuxfoundation.org
-Cc: eadavis@qq.com,
-	kvalo@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	sergei.shtylyov@gmail.com,
-	syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com,
-	syzkaller-bugs@googlegroups.com
-Subject: [PATCH V4 2/2] wifi: ath6kl: remove ath6kl_usb_submit_ctrl_in
-Date: Mon, 26 Aug 2024 20:29:57 +0800
-X-OQ-MSGID: <20240826122955.2674569-4-eadavis@qq.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240826122955.2674569-3-eadavis@qq.com>
-References: <2024082631-upward-zips-f7b8@gregkh>
- <20240826122955.2674569-3-eadavis@qq.com>
+	s=arc-20240116; t=1724684499; c=relaxed/simple;
+	bh=7+sDG1ieaSjQRgA3TjmKJayTJNuyCoDila3FWzk87+E=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=vGtsJrK79qjAKcC3ws3MMx/MIjifjiB3XlRh1SjArtM9MHCwqfq6g3yB1lGzNF2aKdJFqkR3+cEVhGFJuiSeYta4ehk3yoX8Oaq9weghiJDQamdVs+smHZ4txTzMw9x65wBj/jZ/vYm349RWaBsFj1XQuRSpf0MpuyVd0ruS+qM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tFl3mBqI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51B2EC4FE9C;
+	Mon, 26 Aug 2024 15:01:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724684499;
+	bh=7+sDG1ieaSjQRgA3TjmKJayTJNuyCoDila3FWzk87+E=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=tFl3mBqIpAvbEhwLFfu75ii4g9JGAayzRx6Qb0RgjH48NbplXr7uzqsXakDLWqSTS
+	 xm3NpmasW8OgMe0W8z643dufLgrdvtXv+MMkYffE5V5BVeBFYLtaY/QZSh0gvWbsj0
+	 1gYnb7+GyWJXA19TsuKoL/dyIYJvqwh3FtZZU7kbKVUx9JYaOu9G7mMmLSNlf6eGeh
+	 TanxOS8MGrylx9J048j4tvx+3uuFxd/O3hN4nhoO8+TYGgrcGkXmD8nI7J91fWf5GV
+	 d+Lwqk7Z3wrbrzRM8Goxr0bWctbNZjGq1YdFFkPLRUvgzT4GBQ1qcuG/XXrRMbCe1Q
+	 p5f5lzcIvs8Ww==
+From: Kalle Valo <kvalo@kernel.org>
+To: Edward Adam Davis <eadavis@qq.com>
+Cc: gregkh@linuxfoundation.org,  linux-kernel@vger.kernel.org,
+  linux-usb@vger.kernel.org,  linux-wireless@vger.kernel.org,
+  netdev@vger.kernel.org,
+  syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com,
+  syzkaller-bugs@googlegroups.com
+Subject: Re: [PATCH V2] wifi: ath6kl: Replace ath6kl_usb_submit_ctrl_in with
+ usb_control_msg_recv
+References: <87seurfr3r.fsf@kernel.org>
+	<tencent_5CE6CD937FE377496123A8A454F77F977805@qq.com>
+Date: Mon, 26 Aug 2024 18:01:35 +0300
+In-Reply-To: <tencent_5CE6CD937FE377496123A8A454F77F977805@qq.com> (Edward
+	Adam Davis's message of "Mon, 26 Aug 2024 21:06:16 +0800")
+Message-ID: <87jzg3uy40.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-ath6kl_usb_submit_ctrl_in() did not take into account the situation where
-the length of the data read from the device is not equal to the len, and
-such missing judgments will result in subsequent code using incorrect data.
+Edward Adam Davis <eadavis@qq.com> writes:
 
-usb_control_msg_recv() handles the abnormal length of the returned data,
-so using it directly.
+> On Mon, 26 Aug 2024 14:42:00 +0300, Kalle Valo wrote:
+>> > ath6kl_usb_submit_ctrl_in() did not take into account the situation where
+>> > the length of the data read from the device is not equal to the len, and
+>> > such missing judgments will result in subsequent code using incorrect data.
+>> >
+>> > usb_control_msg_recv() handles the abnormal length of the returned data,
+>> > so using it directly can fix this warning.
+>> >
+>> > Reported-by: syzbot+92c6dd14aaa230be6855@syzkaller.appspotmail.com
+>> > Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+>> 
+>> Did you test this on real ath6kl hardware?
+>
+> I don't have ath6kl hardware, I have only tested it on a virtual machine.
 
-Suggested-by: Greg KH <gregkh@linuxfoundation.org>
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
----
- drivers/net/wireless/ath/ath6kl/usb.c | 39 +++------------------------
- 1 file changed, 3 insertions(+), 36 deletions(-)
+Virtual machine? I guess you mean syzbot? That gives no assurance if
+this works on a real device or not. Please add to the commit message
+"Compile tested only" so that we know it's untested.
 
-diff --git a/drivers/net/wireless/ath/ath6kl/usb.c b/drivers/net/wireless/ath/ath6kl/usb.c
-index 0458b5a078e1..b1fc66d823b8 100644
---- a/drivers/net/wireless/ath/ath6kl/usb.c
-+++ b/drivers/net/wireless/ath/ath6kl/usb.c
-@@ -901,40 +901,6 @@ static int ath6kl_usb_submit_ctrl_out(struct ath6kl_usb *ar_usb,
- 	return 0;
- }
- 
--static int ath6kl_usb_submit_ctrl_in(struct ath6kl_usb *ar_usb,
--				  u8 req, u16 value, u16 index, void *data,
--				  u32 size)
--{
--	u8 *buf = NULL;
--	int ret;
--
--	if (size > 0) {
--		buf = kmalloc(size, GFP_KERNEL);
--		if (buf == NULL)
--			return -ENOMEM;
--	}
--
--	/* note: if successful returns number of bytes transfered */
--	ret = usb_control_msg(ar_usb->udev,
--				 usb_rcvctrlpipe(ar_usb->udev, 0),
--				 req,
--				 USB_DIR_IN | USB_TYPE_VENDOR |
--				 USB_RECIP_DEVICE, value, index, buf,
--				 size, 2000);
--
--	if (ret < 0) {
--		ath6kl_warn("Failed to read usb control message: %d\n", ret);
--		kfree(buf);
--		return ret;
--	}
--
--	memcpy((u8 *) data, buf, size);
--
--	kfree(buf);
--
--	return 0;
--}
--
- static int ath6kl_usb_ctrl_msg_exchange(struct ath6kl_usb *ar_usb,
- 				     u8 req_val, u8 *req_buf, u32 req_len,
- 				     u8 resp_val, u8 *resp_buf, u32 *resp_len)
-@@ -954,8 +920,9 @@ static int ath6kl_usb_ctrl_msg_exchange(struct ath6kl_usb *ar_usb,
- 	}
- 
- 	/* get response */
--	ret = ath6kl_usb_submit_ctrl_in(ar_usb, resp_val, 0, 0,
--					resp_buf, *resp_len);
-+	ret = usb_control_msg_recv(ar_usb->udev, 0, resp_val,
-+				USB_DIR_IN | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
-+				0, 0, resp_buf, *resp_len, 2000, GFP_KERNEL);
- 
- 	return ret;
- }
+And I have to warn that in wireless we are very reluctant to take syzbot
+fixes which have not been tested on real hardware, they have caused
+problems in the past.
+
 -- 
-2.43.0
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+https://docs.kernel.org/process/submitting-patches.html
 
