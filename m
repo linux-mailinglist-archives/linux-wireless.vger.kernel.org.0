@@ -1,251 +1,190 @@
-Return-Path: <linux-wireless+bounces-11931-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11932-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49D6E95E72C
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 05:05:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD14095E741
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 05:18:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88668B20841
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 03:05:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08AA41C20858
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 03:18:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3A4E8C1F;
-	Mon, 26 Aug 2024 03:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992B71F5FE;
+	Mon, 26 Aug 2024 03:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="PW4Z4JtH"
+	dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b="QfMkhgqq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from APC01-TYZ-obe.outbound.protection.outlook.com (mail-tyzapc01on2067.outbound.protection.outlook.com [40.107.117.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3FB618C36;
-	Mon, 26 Aug 2024 03:05:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724641502; cv=none; b=VW/bGPTHiZdQmqxZy/TQNTKHjUQGLzKqGM0Dh+i3hyBY3T+XWwxhRzkKxpdxbVlhsAoYh4s6geUP1qsAcoW5dpLxjcIl/JAVEgjs8lv5w3PN0ar1DCO6BLTHhVnhR6S3QAyTXx2Ib2QMPm+ghpwk879tdHhy1oDCPh7jKkdVjpY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724641502; c=relaxed/simple;
-	bh=vNScu6jJTCQXpVIQSsaj1iqFQ9TuTkIvMclsz22HBUc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=qdI0E2e2jsFlHYAuO+3hjivG75mUGQlq0XLyQX8ZT45TRQ1VOg5Rpdz9mvTm30a1mYFLo63kPsaAh+WZhGooqc8tE/yOFORZZrLxencgPC/HyoUyiJJU/e5US7Ux5LLMO+fqUMrKOPHb1zn+lmNjtisPURINZHt8mvZXsErIo1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=PW4Z4JtH; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47PNdsPH027007;
-	Mon, 26 Aug 2024 03:04:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	aizQnuz/qzViwPkiNWxfqvDhyuY/B2cAggz0wcFedkU=; b=PW4Z4JtHyi891lXn
-	Cd1oWAjES0EpLhKS32XYlAxOPxForjC8/VUrVuDydKde/XR3Q7RkDRJbBVq6g6ud
-	eaJUbghVvuxt2+JvNFZ0qf9xvVbwHFttTJt8J+uyScwR3iAuJMuW6faUtK9P904H
-	JXCAefViEPhqNezUpRQPX5zKTwDBU1jJ7yDmdu7eVDbSZEpdVLhmTt/rlsc0t9Cv
-	04G5NBS7ecxevv3t6sRv797ZTq8yXOuvYN65wiZ6qCkWFNkiZlXUtXFBhlE7ag1v
-	Zv5YHB0uNyySWrVemde1OcEnkXQPJ5Zm8Kje7/nGxNtWlTPDtwSls0PW8F11QT7J
-	DvhQQg==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41796kt9sg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 26 Aug 2024 03:04:46 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47Q34jo5009812
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 26 Aug 2024 03:04:45 GMT
-Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Sun, 25 Aug
- 2024 20:04:43 -0700
-Message-ID: <d3ceaead-5619-4413-acce-64567c08fb27@quicinc.com>
-Date: Mon, 26 Aug 2024 11:04:41 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00704BE6F;
+	Mon, 26 Aug 2024 03:18:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.117.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724642314; cv=fail; b=i3DQjNhUBcSUOPZg+JchkrcZhQKOQnewEndyJPTj8rI8NrUrzOWX5xpHeVUirJh8ajmuR/1kL8YFG2WzHHloGC590Bl8aHLnEoJiOYTaiMi7F3J0+Efg+X9HFp/8m/evGFd+IMrDN0M9wsWCB2I3pfz0JhtFaMCV/Qi6EYZPB1M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724642314; c=relaxed/simple;
+	bh=amFjZFUU6KI2rcEZNd2Eq3fNoQYGN6/UGYUBTFFxJ1g=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=rdum+PpKlcZt3/dF/pJXKHE8/sGvxUKpljRxkhbEDcY1K46M2pYrV/gO7K5dVJcI2ed503Gug/i2vcXBL6k49oAQ/f70yhuUXZjIw769hpAQXpoTAe62W2Q2eMxUhZP6y9fb1oSUdK9EVr+IwZDD3UCzch0LtkVrqUFupa7VVhw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com; spf=pass smtp.mailfrom=vivo.com; dkim=pass (2048-bit key) header.d=vivo.com header.i=@vivo.com header.b=QfMkhgqq; arc=fail smtp.client-ip=40.107.117.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vivo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vivo.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=USZR/QLw5VqsYhdwsmnNNGP9m5AgraB57VuXT8IYX+WkqHv0wB38L/HtpEUPNh30ND8m4Em/Y8L31f8QOx7/9jhv+h56nVqcGO9nDB4CcWgh31muO7D1FwvTSKJs3GsdVj4RqWcVglzA9UH09HecBbXvQCsDlmvOdOTZ/UxrfcLPa15gSYcdPGrJfdH9PYvYNCywbluWirVPn0ejcdzCAd8I31MapdDmZtqMTMTqAhL0y1Nq0pZBlTJPFVyNm4A9XYFqAdhq+MeLH3ND3nsmF/m5yKhvMr5NhZRANFUGEA90dsA41NUQ7sXP8SfX+lP9ZnohFL0pIhmwMm/UMbL0xg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=amFjZFUU6KI2rcEZNd2Eq3fNoQYGN6/UGYUBTFFxJ1g=;
+ b=qBm7yUT96xHgXo+6C83TCzVXAYZOJ5lGQVyp2RqN9Ug17madXqaKlUaMjSIBGolPuNcR0+80pQCvDYFnr2GzyzralnZplYxJw4rYzq3jGvCO5tPZaILOYh0fWm9xBy4eFhld+/x68TdBNQGZuZceILxhWMi0q4s1r8StXSpAqAZFCApL63O/f9n1x5HrDHgon+rlPawHNJ+tbhvnZMOtueJRCSxgIlDxaYt7b2a/ksUVzyDNNbtu44aWPA7r+cjXmQ3IIjVQdm+jgMAXwgYsfcevZTXfBKuZRvoAddKuu9cPVtgs9eTKaZ37kYNV4LP1Y5hM5HkbssgTxN9g+3aZaw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vivo.com; dmarc=pass action=none header.from=vivo.com;
+ dkim=pass header.d=vivo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vivo.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=amFjZFUU6KI2rcEZNd2Eq3fNoQYGN6/UGYUBTFFxJ1g=;
+ b=QfMkhgqqXQ7RfbS3/RHiCjaMDIqW1C0+RQ5qr1hchSLPDenLYfKDJuigl+gb8DTKgWBM4LIuKw070byC0/YESeTQA2U9z0z2R3y+oyY+45I94waZgQGndoC3tAgB8XW9dX76HZvTl2b33UHWGCJtjcgD9MKqi8CNvkFkL9k4X7hDuXQT4MZZdxHhLL6IGoeSZXFiAGlEcIWp4QBSsyzlO6eHM1hIe5XQ5DJJpK5P81tOSjnKUKpuoPmrGchrJy0gCUjHU/jA+zjDegc9BWCwyN3kwOIbpeoIQy99ntx9QyuUsCtcuKxxJeuN4ml2s3UhTdfgI8xzOZQjGtPB2MvLjQ==
+Received: from KL1PR0601MB5487.apcprd06.prod.outlook.com
+ (2603:1096:820:bf::14) by TYZPR06MB5321.apcprd06.prod.outlook.com
+ (2603:1096:400:1f3::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.24; Mon, 26 Aug
+ 2024 03:18:29 +0000
+Received: from KL1PR0601MB5487.apcprd06.prod.outlook.com
+ ([fe80::2129:59e5:6c67:311f]) by KL1PR0601MB5487.apcprd06.prod.outlook.com
+ ([fe80::2129:59e5:6c67:311f%7]) with mapi id 15.20.7897.021; Mon, 26 Aug 2024
+ 03:18:28 +0000
+From: =?utf-8?B?6ZmI546J5Yeh?= <chenyufan@vivo.com>
+To: Brian Norris <briannorris@chromium.org>, =?utf-8?B?6ZmI546J5Yeh?=
+	<chenyufan@vivo.com>
+CC: Francesco Dolcini <francesco@dolcini.it>, Kalle Valo <kvalo@kernel.org>,
+	Stephen Rothwell <sfr@canb.auug.org.au>, "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, opensource.kernel
+	<opensource.kernel@vivo.com>
+Subject: Re: [PATCH v3] wifi: mwifiex: Convert to use jiffies macro
+Thread-Topic: [PATCH v3] wifi: mwifiex: Convert to use jiffies macro
+Thread-Index: AQHa9SqYZncsAF2R3kSaGF+n1/k8QrI1EdYAgAPREIA=
+Date: Mon, 26 Aug 2024 03:18:28 +0000
+Message-ID: <c2ae3b1b-d654-47f3-8520-888bdaea873c@vivo.com>
+References: <20240823070320.430753-1-chenyufan@vivo.com>
+ <ZsjAZJjBvjGLkG7f@google.com>
+In-Reply-To: <ZsjAZJjBvjGLkG7f@google.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=vivo.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: KL1PR0601MB5487:EE_|TYZPR06MB5321:EE_
+x-ms-office365-filtering-correlation-id: d4eb9e83-5459-4bf6-41b6-08dcc57dc11c
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?utf-8?B?a2hGa1p5aCtLaFhIVnVJa3UveGxDNFBEZkpCb1ZlY09OQWhpZWdPWWw3RXRx?=
+ =?utf-8?B?VnBKQ2V5aTRrc3AydVFlaGpua282LzJYRElnd1dlZVJRZFJQS2xRWE1Fc1Fw?=
+ =?utf-8?B?M1p6dUxYam5PMDhCKytjZWxOTmxmY21QNVV0Smw5dVRvbThzUnlHSUQ2VDNS?=
+ =?utf-8?B?aGtJSCttZndGWC9qTjg3eEdWSDRiSVRGaHR0V1VjamhKeXc5OERpbFVNUzFn?=
+ =?utf-8?B?cWJzY0p3aERrRzBDeTZEWVBLOWdpV2FsekticDlCTWN3SnMrYjdSMlZLUHJw?=
+ =?utf-8?B?aXlvb3N6T0dTUXN4bTVRQXlDN2lSbENLQXFXbHdKUG5maFAzNEZPMjgrVVhs?=
+ =?utf-8?B?R0VrWHAyZi8xSDBsd0pVNUp4anJtUUQ1MHlJcG1WQmtBL3dDZnNMa280M0RS?=
+ =?utf-8?B?bDhhN3lvbmk1Z0ZGOGlTSUg3SHZER29FQnR2ZSthV1JqZGRYb1NscVBXVHBy?=
+ =?utf-8?B?b0hsWng4UXdka1BOdVhqa1pnUmhldWRsREd4L0dOcHE1dTluTU9uaDN1bVRH?=
+ =?utf-8?B?T3hzcXBKN2EwbjluM2w1NFNBN2NMdjFiUkVtc2VQOFNvSEVFczVzNjV0UUgx?=
+ =?utf-8?B?elI2emRheDFHR25JaFRRc3VucmpLbWQ0UWF3dXE1NHI4L1h4dXhsaloxcUFE?=
+ =?utf-8?B?ajYrRVJkQkkzYXE0ODhReUErVzRpdlhJaWxTMVNnU3Njald4Qkk1b2V4bDlX?=
+ =?utf-8?B?T0N1aUI4ZVA3eWZZZFRvTjk3WWxoWFdWVER6U2piNTFmdTVlKzdYNGdhZDFK?=
+ =?utf-8?B?Sm9MaDd1Y2x3TFV1cHBYVGJJc3RYVDgyaDBBRWpHZlJVM1krazVPSEtBZERI?=
+ =?utf-8?B?V1ZxT0FsRXZINUFveUFSbjc0T1JxbTZGc0x2RTFRRVY0bHIzdmsxVjZaMFNC?=
+ =?utf-8?B?QzZEZ1ZKOUhRZWIySUYrdVZIZUpDbVhMRy8xanBNWmtGNGNHWmlVMDJMUURM?=
+ =?utf-8?B?MEVIRUJ1VDVuZnBWdkdJbTlCSXhSS2JoeUZXS1RhSnZmUTczRnJseE5TeTEw?=
+ =?utf-8?B?ekhOVUVNUnpBRkpzTWFSOHpLNFJMQzZrdDhvM2V3YlA2dGlDdDRBRnNxR3Rz?=
+ =?utf-8?B?WW13dmh1NEF2OTJTQW1jOWprek9uK0xFWDBTUjJqWXd4VmJJcWRYK0c5NWJy?=
+ =?utf-8?B?NkVzeXZ3NVFzSEQ2YzdxZ2NKTG9ZQk1GWXcrMXhlYkRNc2hOdVJLV1lrMXQv?=
+ =?utf-8?B?djQ4eUVwT1B4VDNVcVQwbUVzYXhJcTdjMUtHSlpmdnV0czJscmZrYTJWVCtU?=
+ =?utf-8?B?WjVhRVM5b0FEMG9WanpKT1piMW9USGh5WUJBY3Ntc2VpaC9WclFJT0x4TzNS?=
+ =?utf-8?B?ZHo5ZjRxc0ZNQ3M5VnFlTU1ZUmNENDZ2RjhndGZzTFJnL2dHWDd4NnBWYTkv?=
+ =?utf-8?B?ZmVBc21KN2Y2dlBZWDNnQ0h0bW1RYVhYV0dBRXN0RkduNHRpWmFnRDVjWVdQ?=
+ =?utf-8?B?MnhjNTh1cklNTG9kcGtDZlVnbWpSZldUNHUyK2lQMHJiWnFjSmxOL29mNnhz?=
+ =?utf-8?B?bUVGYnRzTGRxR3lZQWFISzV5M00vTDBxUXNLSFRQR3FESXkwS1FBazF2N2dh?=
+ =?utf-8?B?U0dSbVoxb1NpV2pvckJRa0xXMFpRNDEzRytBTGhWRlZ6RXpvNk5mcUN1OFQ0?=
+ =?utf-8?B?WFFRVGVFaXo5UnFNeWJQOVc2WmtNdUV6cW81WGJPN1MvNXhHazRldE51RFNU?=
+ =?utf-8?B?dDhYbmFaZTRHdDdWTVlTTFFLNm5FTXJPZGhscVJjQURZaDh2UWs2cHlyc056?=
+ =?utf-8?B?MllkYU9qTzB6NE03R0c3a2wrZjVqT2wzRGkyWElVeHJrSUxNemhhVlNMZ1Z2?=
+ =?utf-8?B?YWh1YjJUVE9Wb2hwVTJ3VDZsUndMZ1hpNEwrL21DZzl6bm0xeWpKTHJwOW9Z?=
+ =?utf-8?B?VzFBejcxT0FXMHVQOW4xSGtqU1RWZUwwVGg1TUlpRURJbEE9PQ==?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:zh-cn;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:KL1PR0601MB5487.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?c1RWSGZ0UGFDYzVLcVFEYWcvVTIyV3lWdmxFOTJsbSt2M0MvdjBOTkNOT3FR?=
+ =?utf-8?B?YnN5YVZYbTFHRVZ0ZWxwMkVweGZBYjUzdURWenhhS1JaV0xQRi90RkpOWGJV?=
+ =?utf-8?B?eXQzaUhHVGlmb3d2K2RBS2pXOFYwYjFVRU1OcTJZdzRqOEtFV0Y4V1VxZjNV?=
+ =?utf-8?B?RjNvZFNmSjFrdjJmcFlSSmNvdmdvbDN1am5FVWpzQ2ZLaGxYMmlTbURvaGdW?=
+ =?utf-8?B?Y05TSEtWM1paWVVHNUIzUWo3LzZUTENTTTZsd1VIRllTc0M4ZUZwOG9wNjli?=
+ =?utf-8?B?dXRIUzdyTFlmTEJXUWl3K0FWbHhRMXVJNzhmcE9PWGdSYlNlVWsrd2pCRTk1?=
+ =?utf-8?B?QzFrTVozakZLdVlqVmtmOGlYRVBkcHVrVEN2Y0VoNk5OaTQ1NHpwOTY3STJr?=
+ =?utf-8?B?b3UzSjc4ZEJ1QWVzekIzV2d2U0ZYSjViR1ZBeXNRUWdwN0xEN3NudDQvcGxm?=
+ =?utf-8?B?U1VId2paQnV6YlFwY2FQcjkveUhZMzBqTlBDdDFwbDRmbmxJZm42WHhiVFpl?=
+ =?utf-8?B?ODJPWnN1VXIxTmVzcHNOMUtMbUV3a0QxRWs3NGhFWE5tRmRXalpodE91bWRW?=
+ =?utf-8?B?RnBXVEtoVkFrL0ovdkRqSVlnTnd4bkhaYjJOMVFRV3NxbjViSlhIYXdiU2hk?=
+ =?utf-8?B?R1BrYTIxSU1VcmIxZXp6aGFwRGVYQ1ZUVEFIbUhVTXBRcEszK3VFanI0QmQw?=
+ =?utf-8?B?ZmxLMC9NOGc0NUUzSVR0a2VTb3VocnJJRkR1MmVSMDFvWlM2RENWZWJsN0VL?=
+ =?utf-8?B?RGFrbHFKbTlzZ0tFVy81MEtaSWs0VEZWL3dmSnNhSVM0OG52RU9PL2dZNXF6?=
+ =?utf-8?B?elpMd25rVUpUcnRvbkxSakJlQSs1RTRzU0orVUlSUU1adEZoTks1WVVOWnZG?=
+ =?utf-8?B?bnc1TXlsdFcyYUltZDlGa0hLOUNNaXgzOGpSQVcxODBTY282NVBZQ1BwUFhh?=
+ =?utf-8?B?Mmc0YUFDKzZ4REZka1BENUwxVnYySlk5TDczMW9jbWhhYzB1VkJxS0d2N0tB?=
+ =?utf-8?B?NjhFRXkwWmVQY1Bjd0pNN0ZWOXN6SVBiK2s0ZGlnS3IzVXQxcG42VjBuTFBS?=
+ =?utf-8?B?OWJZTnJHMlNYWGZPM3g5VjZ4Qk4yNW1BU3ZvWWgxMEt0TGN4enM4UWQxVjND?=
+ =?utf-8?B?Q1FaS3VGUXIyT28xUTBIdWVDYkhSYUk1bGx1Q21VeUZsbFAvaE9TTlhaNHZv?=
+ =?utf-8?B?WWtKOTFncTdMOEVaV2RhcXk0WEZTNEprQzJxTlFCVys1bjBmblVtNm1Hc3Rq?=
+ =?utf-8?B?QUhpM3ZpTDh3ZUNaak5FeHo4OXBieGpmbnFWM2tpMnF0TFR0UlpCWSszaEQ3?=
+ =?utf-8?B?cGdEMTE5SDhlYVMzSUJzQlFwV2FSaW94bmZiOTRqWGlHVm5sNnV0UTZGZnFz?=
+ =?utf-8?B?M1lYcjFrckR1NXg2bTVmKzk1ejNma05EUW1qeTBLdFVvZmZrR0w5VmpWWURi?=
+ =?utf-8?B?aUV5cFdRdTRDMWNldzhBOUc0V1orY204VE5ucnZobWxadW9aVDZsNlZGVjlh?=
+ =?utf-8?B?RS9JelBNOXdNdU1KTmtkMUFnN3NSOUJvQTBxSjdMQ2ZZQWVvWVJlV3d5aTFs?=
+ =?utf-8?B?empxeFIybnJWUXR2czBab0xnY2ZKYVZ1UjBMeHZsRWdERGd4SlZtSDFMVlVE?=
+ =?utf-8?B?Z1hMTlVzenFSYW1EUkFlZ0tiUDRZL0RGdnZFNlRDSkt5ekZVTlVkNkh0dGti?=
+ =?utf-8?B?NVpZbUdsSzZYWjJuYmRoUlNlaEhFeE9KY2MyTEZPb3MyVjUwQ2lVTTF3eTRr?=
+ =?utf-8?B?cURhZnZxWVg2bm8zV1BISTdwVHV4cmo2ZW51a05ZKzEzNnlnZmZRQVZGUCt3?=
+ =?utf-8?B?d3lhampsRFRnMzNvdjhrQjNaSFM4RTIvUjFNdVcrVE1qRGVVSDB5Z2dxUFha?=
+ =?utf-8?B?UFlUWUQvZ2VzTzdXdklQUHc0R0dWT29YcTZQaE9NelBhSW9lZkZlRFdHenIy?=
+ =?utf-8?B?YzVDSDZzZ3J2Y091b2hrbmQxcW9MUEl3V3BaMHpORExsN1g5T0RicFo0NFE2?=
+ =?utf-8?B?NUNERWJkSjd2bC8rdHl2Q0V5RUJ6R2xpZE1zSWtMSjluTVFNWU1WNk9vcTZW?=
+ =?utf-8?B?bEVaNXdid3lmeTJya3lUcjlnZ3BoeXlrL2txcnlIdUIzNTJONVJXb1FpRVBn?=
+ =?utf-8?Q?zluc=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <D45540B9F1B22E4786B688FF663567FB@apcprd06.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] wifi: ath11k: Set IRQ affinity hint after requesting
- all shared IRQs
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        <kvalo@kernel.org>, <jjohnson@kernel.org>
-CC: <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20240823155502.57333-1-manivannan.sadhasivam@linaro.org>
- <20240823155502.57333-2-manivannan.sadhasivam@linaro.org>
-Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <20240823155502.57333-2-manivannan.sadhasivam@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: l7ApslopMnCS61v-ZRsFfZUBR7eAYbFx
-X-Proofpoint-ORIG-GUID: l7ApslopMnCS61v-ZRsFfZUBR7eAYbFx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-25_20,2024-08-23_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- malwarescore=0 impostorscore=0 phishscore=0 adultscore=0
- priorityscore=1501 lowpriorityscore=0 suspectscore=0 bulkscore=0
- spamscore=0 clxscore=1011 mlxscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2407110000 definitions=main-2408260023
+X-OriginatorOrg: vivo.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: KL1PR0601MB5487.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d4eb9e83-5459-4bf6-41b6-08dcc57dc11c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Aug 2024 03:18:28.0694
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 923e42dc-48d5-4cbe-b582-1a797a6412ed
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: jyPC8bxf7awKJGe2TCp+GxhW4Qo/48aOwsoEkhSTZmAMfyqRQqq2brU7ArEbR6afVAtzzEBI4hEmz2NN8LON4Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYZPR06MB5321
 
-
-
-On 8/23/2024 11:55 PM, Manivannan Sadhasivam wrote:
-> If a shared IRQ is used by the driver due to platform limitation, then the
-> IRQ affinity hint is set right after the allocation of IRQ vectors in
-> ath11k_pci_alloc_msi(). This does no harm unless one of the functions
-> requesting the IRQ fails and attempt to free the IRQ. This results in the
-> below warning:
-> 
-> [   29.804276] ath11k_pci 0000:01:00.0: failed to power up mhi: -110
-> [   29.810564] ath11k_pci 0000:01:00.0: failed to start mhi: -110
-> [   29.816566] ath11k_pci 0000:01:00.0: failed to power up :-110
-> [   29.847202] ath11k_pci 0000:01:00.0: failed to create soc core: -110
-> [   29.853735] ath11k_pci 0000:01:00.0: failed to init core: -110
-> [   29.859745] ------------[ cut here ]------------
-> [   29.864486] WARNING: CPU: 7 PID: 349 at kernel/irq/manage.c:1929 free_irq+0x278/0x29c
-> [   29.872529] Modules linked in: snd_soc_hdmi_codec ath11k_pci(+) venus_dec venus_enc ath11k videobuf2_dma_contig videobuf2_memops nb7vpq904m lontium_lt9611uxc mcp251xfd mac80211 can_dev libarc4 hci_uart
->  btqca btbcm ax88179_178a usbnet option leds_qcom_lpg usb_wwan led_class_multicolor usbserial crct10dif_ce qcom_pmic_tcpm tcpm venus_core aux_hpd_bridge qcom_spmi_adc_tm5 v4l2_mem2mem qcom_pon qcom_spmi_a
-> dc5 videobuf2_v4l2 bluetooth videobuf2_common msm qcom_spmi_temp_alarm rtc_pm8xxx qcom_vadc_common ocmem snd_soc_sm8250 gpu_sched snd_soc_qcom_sdw videodev drm_exec phy_qcom_qmp_combo drm_display_helper s
-> nd_soc_qcom_common qcom_stats mc i2c_qcom_geni llcc_qcom spi_geni_qcom drm_dp_aux_bus aux_bridge icc_bwmon typec qcom_rng coresight_stm coresight_tmc coresight_replicator stm_core coresight_funnel soundwi
-> re_qcom qrtr pci_pwrctl_pwrseq qcrypto pci_pwrctl_core soundwire_bus snd_soc_lpass_va_macro pinctrl_sm8250_lpass_lpi snd_soc_lpass_wsa_macro authenc lpass_gfm_sm8250 coresight slimbus pinctrl_lpass_lpi
-> [   29.872610]  snd_soc_lpass_macro_common qcom_q6v5_pas libdes qcom_pil_info qcom_q6v5 qcom_sysmon qcom_common pwrseq_qcom_wcn qcom_glink_smem mdt_loader pwrseq_core icc_osm_l3 qmi_helpers qcom_wdt socin
-> fo display_connector drm_kms_helper cfg80211 rfkill fuse drm backlight ip_tables x_tables ipv6
-> [   29.990067] CPU: 7 UID: 0 PID: 349 Comm: (udev-worker) Not tainted 6.11-rc4 #50
-> [   29.997564] Hardware name: Qualcomm Technologies, Inc. Robotics RB5 (DT)
-> [   30.004446] pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> [   30.011591] pc : free_irq+0x278/0x29c
-> [   30.015355] lr : free_irq+0xb4/0x29c
-> [   30.019030] sp : ffff800081f236e0
-> [   30.022441] x29: ffff800081f236e0 x28: ffff64630d260000 x27: ffffd8d89a8c3458
-> [   30.029764] x26: ffff64630d26ac00 x25: 00000000000000d6 x24: ffff6463029c58dc
-> [   30.037086] x23: ffff6463029c5990 x22: ffff64630d261c58 x21: 0000000000000000
-> [   30.044408] x20: ffff646301431c00 x19: ffff6463029c5800 x18: 0000000000000010
-> [   30.051730] x17: 0000000000010108 x16: ffffd8d8f1d8b840 x15: 0763072007740769
-> [   30.059051] x14: 000000000000030d x13: ffff646306b35ae8 x12: ffffd8d8f3852b80
-> [   30.066374] x11: ffff646306b356c0 x10: 0000000000000000 x9 : 00000000000000d6
-> [   30.073696] x8 : 000000000000000f x7 : 1fffec8c605626a1 x6 : ffffd8d8f2e602b8
-> [   30.081017] x5 : 0000000000000030 x4 : ffff646302b13580 x3 : ffff646301431c98
-> [   30.088339] x2 : 0000000000200880 x1 : ffff646301431c00 x0 : ffffd8d8f2b2c1b8
-> [   30.095662] Call trace:
-> [   30.098183]  free_irq+0x278/0x29c
-> [   30.101595]  ath11k_pcic_free_irq+0x70/0x10c [ath11k]
-> [   30.106800]  ath11k_pci_probe+0x800/0x820 [ath11k_pci]
-> [   30.112081]  local_pci_probe+0x40/0xbc
-> [   30.115934]  pci_device_probe+0x1d4/0x1e8
-> [   30.120049]  really_probe+0xbc/0x268
-> [   30.123727]  __driver_probe_device+0x78/0x12c
-> [   30.128204]  driver_probe_device+0x40/0x11c
-> [   30.132505]  __driver_attach+0x74/0x124
-> [   30.136445]  bus_for_each_dev+0x78/0xe0
-> [   30.140383]  driver_attach+0x24/0x30
-> [   30.144059]  bus_add_driver+0xe4/0x208
-> [   30.147910]  driver_register+0x60/0x128
-> [   30.151849]  __pci_register_driver+0x44/0x50
-> [   30.156238]  ath11k_pci_init+0x2c/0x6c [ath11k_pci]
-> [   30.161242]  do_one_initcall+0x70/0x1b8
-> [   30.165182]  do_init_module+0x5c/0x1f0
-> [   30.169034]  load_module+0x19f0/0x1abc
-> [   30.172884]  init_module_from_file+0x88/0xc8
-> [   30.177273]  __arm64_sys_finit_module+0x1c4/0x2b0
-> [   30.182102]  invoke_syscall+0x44/0x100
-> [   30.185953]  el0_svc_common.constprop.0+0xc0/0xe0
-> [   30.190783]  do_el0_svc+0x1c/0x28
-> [   30.194196]  el0_svc+0x34/0xdc
-> [   30.197335]  el0t_64_sync_handler+0xc0/0xc4
-> [   30.201635]  el0t_64_sync+0x190/0x194
-> [   30.205399] ---[ end trace 0000000000000000 ]---
-> [   30.432731] ath11k_pci 0000:01:00.0: probe with driver ath11k_pci failed with error -110
-> 
-> The warning is due to not clearing the affinity hint before freeing the
-> IRQ.
-> 
-> So to fix this, let's set the IRQ affinity hint after requesting all the
-> shared IRQ. This will make sure that the affinity hint gets cleared in the
-> error path before freeing the IRQ.
-if you check 39564b475ac5 ("wifi: ath11k: fix boot failure with one MSI vector") you would see that the hint is set before requesting any IRQ for a purpose.
-
-> 
-> Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-05266-QCAHSTSWPLZ_V2_TO_X86-1
-> 
-> Cc: Baochen Qiang <quic_bqiang@quicinc.com>
-> Fixes: e94b07493da3 ("ath11k: Set IRQ affinity to CPU0 in case of one MSI vector")
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> ---
->  drivers/net/wireless/ath/ath11k/pci.c | 24 ++++++++++++------------
->  1 file changed, 12 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
-> index 8d63b84d1261..0c22e18e65c7 100644
-> --- a/drivers/net/wireless/ath/ath11k/pci.c
-> +++ b/drivers/net/wireless/ath/ath11k/pci.c
-> @@ -886,16 +886,10 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
->  	if (ret)
->  		goto err_pci_disable_msi;
->  
-> -	ret = ath11k_pci_set_irq_affinity_hint(ab_pci, cpumask_of(0));
-> -	if (ret) {
-> -		ath11k_err(ab, "failed to set irq affinity %d\n", ret);
-> -		goto err_pci_disable_msi;
-> -	}
-> -
->  	ret = ath11k_mhi_register(ab_pci);
->  	if (ret) {
->  		ath11k_err(ab, "failed to register mhi: %d\n", ret);
-> -		goto err_irq_affinity_cleanup;
-> +		goto err_pci_disable_msi;
->  	}
->  
->  	ret = ath11k_hal_srng_init(ab);
-> @@ -916,6 +910,12 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
->  		goto err_ce_free;
->  	}
->  
-> +	ret = ath11k_pci_set_irq_affinity_hint(ab_pci, cpumask_of(0));
-> +	if (ret) {
-> +		ath11k_err(ab, "failed to set irq affinity %d\n", ret);
-> +		goto err_free_irq;
-> +	}
-> +
->  	/* kernel may allocate a dummy vector before request_irq and
->  	 * then allocate a real vector when request_irq is called.
->  	 * So get msi_data here again to avoid spurious interrupt
-> @@ -924,17 +924,20 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
->  	ret = ath11k_pci_config_msi_data(ab_pci);
->  	if (ret) {
->  		ath11k_err(ab, "failed to config msi_data: %d\n", ret);
-> -		goto err_free_irq;
-> +		goto err_irq_affinity_cleanup;
->  	}
->  
->  	ret = ath11k_core_init(ab);
->  	if (ret) {
->  		ath11k_err(ab, "failed to init core: %d\n", ret);
-> -		goto err_free_irq;
-> +		goto err_irq_affinity_cleanup;
->  	}
->  	ath11k_qmi_fwreset_from_cold_boot(ab);
->  	return 0;
->  
-> +err_irq_affinity_cleanup:
-> +	ath11k_pci_set_irq_affinity_hint(ab_pci, NULL);
-> +
->  err_free_irq:
->  	ath11k_pcic_free_irq(ab);
->  
-> @@ -947,9 +950,6 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
->  err_mhi_unregister:
->  	ath11k_mhi_unregister(ab_pci);
->  
-> -err_irq_affinity_cleanup:
-> -	ath11k_pci_set_irq_affinity_hint(ab_pci, NULL);
-> -
->  err_pci_disable_msi:
->  	ath11k_pci_free_msi(ab_pci);
->  
+5ZyoIDIwMjQvOC8yNCAxOjAxLCBCcmlhbiBOb3JyaXMg5YaZ6YGTOg0KPiBPbiBGcmksIEF1ZyAy
+MywgMjAyNCBhdCAwMzowMzoxOVBNICswODAwLCBDaGVuIFl1ZmFuIHdyb3RlOg0KPj4gVXNlIHRp
+bWVfYWZ0ZXIgbWFjcm8gaW5zdGVhZCBvZiB1c2luZw0KPj4gamlmZmllcyBkaXJlY3RseSB0byBo
+YW5kbGUgd3JhcGFyb3VuZC4NCj4+IFRoZSBtb2RpZmljYXRpb25zIG1hZGUgY29tcGFyZWQgdG8g
+dGhlIHByZXZpb3VzIHZlcnNpb24gYXJlIGFzIGZvbGxvd3M6DQo+PiAxLiBjaGFuZ2UgdGhlIHR5
+cGUgb2YgbXdpZmlleF9hdXRvX3RkbHNfcGVlcjo6cnNzaV9qaWZmaWVzIHRvDQo+PiB1bnNpZ25l
+ZCBsb25nLg0KPj4NCj4+IFNpZ25lZC1vZmYtYnk6IENoZW4gWXVmYW4gPGNoZW55dWZhbkB2aXZv
+LmNvbT4NCj4gQ2hhbmdlbG9nIHF1ZXN0aW9ucyBhc2lkZSwgdGhpcyBsb29rcyBmaW5lIHRvIG1l
+Og0KPg0KPiBBY2tlZC1ieTogQnJpYW4gTm9ycmlzIDxicmlhbm5vcnJpc0BjaHJvbWl1bS5vcmc+
+DQoNClRoYW5rcywgSSB3aWxsIHBheSBhdHRlbnRpb24gdG8gdGhpcyBxdWVzdGlvbiBuZXh0IHRp
+bWUuDQoNCi1DaGVuDQoNCg0K
 
