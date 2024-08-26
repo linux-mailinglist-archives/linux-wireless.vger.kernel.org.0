@@ -1,128 +1,219 @@
-Return-Path: <linux-wireless+bounces-11947-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-11948-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 820FE95EAB8
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 09:43:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7FE195EABC
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 09:44:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E6A92896E3
-	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 07:43:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 562581F216EA
+	for <lists+linux-wireless@lfdr.de>; Mon, 26 Aug 2024 07:44:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE343139CE9;
-	Mon, 26 Aug 2024 07:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5C6D139CFC;
+	Mon, 26 Aug 2024 07:44:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Iy2MmbaQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A7785654
-	for <linux-wireless@vger.kernel.org>; Mon, 26 Aug 2024 07:43:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F0685654;
+	Mon, 26 Aug 2024 07:44:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724658185; cv=none; b=U3RtUHH0BjQsqzBdfWv4m88osJED+CXR8PMmgyth0XKh8gVAGh5yWobHzC6wI/Y3ZeEhu7/oIqC7gv9+8/m7yxy1vwWGEVgEsu2hQiGIWDQjwmSnxMuwXErJ37eWqxnzwCcFZwFbCpDhGsUOp2bVdnzomUWzUvF6JkdrgX5UT/8=
+	t=1724658290; cv=none; b=kLioVdUzYXKqEbMwZYq109MbKGDEYYUnIwKXPNR2HnFkgyvM6oPdVNPv2JdzSW/YgR3exl38jmZcfoGi2/oOInzY2pK0/AsvW1ZW0X9xip7EepcE+O9AeSi6bZ+fRawNxs72Mw2/ev4++45DKVA5xz1+Vx0Hr1hV/KlT3yh4n/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724658185; c=relaxed/simple;
-	bh=UuFnM833sZHAtd5I23V8mgAJ7A1r9IgMzyY+EAQUmlU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P0t1Xe1OEBhWeuMlUg4RrOS9p/CA6KssPjOgsfrF0ysxU0MREwgn5MJyNlgM0M8aHfmZY4Cg6NFDaffnrNiZI8HWnvXp4TPlpcqueW3YnG8GA6mAGuZ3jelAvPACN2sH0xC6KGn09RB5nFZpnYyiHB5e6YZPssu5+I7c5SDhRS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1siUNS-0006LC-ET; Mon, 26 Aug 2024 09:43:02 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1siUNR-0038OV-JG; Mon, 26 Aug 2024 09:43:01 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1siUNR-006xYj-1Z;
-	Mon, 26 Aug 2024 09:43:01 +0200
-Date: Mon, 26 Aug 2024 09:43:01 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: David Lin <yu-hao.lin@nxp.com>, linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kvalo@kernel.org,
-	johannes@sipsolutions.net, briannorris@chromium.org,
-	tsung-hsien.hsieh@nxp.com, kernel@pengutronix.de
-Subject: Re: [PATCH v2 00/43] wifi: nxpwifi: create nxpwifi to support iw61x
-Message-ID: <ZswyBSyDC8it95Zt@pengutronix.de>
-References: <20240809094533.1660-1-yu-hao.lin@nxp.com>
- <Zsc1efkBHDXdZtfJ@pengutronix.de>
- <20240824134839.GA21315@francesco-nb>
+	s=arc-20240116; t=1724658290; c=relaxed/simple;
+	bh=mFCyXF9RIT3BfuxQITKG4+gybhWmW25JaO1vwdN+664=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ZAMC+9I69bnYqTHWqSkX/Hu1TT+6fvEQAU+U5JiOpsmQwWAB/a6ByyLWZpsr8w74G/FvXXB9iUjz/d045oZOELRfFzZFdt62JCL9QDqgBRlpzMU0uYmISOmlv0iByDCQJQn/J7TY6iZKnFYNxGH+AhwTxG0gDyKm3Se/mEKNiMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Iy2MmbaQ; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47Q0R3ZF008206;
+	Mon, 26 Aug 2024 07:44:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	7oYkUV5ASS9hlhzaDIw+nRplvB4HQ/LLZ9O4q8rWFlk=; b=Iy2MmbaQe1a9Z4Vy
+	9R3z/L9HnwY7AHxlklWzSFEdor0SW5y+atF+vdxpyTRWt2lSAzlnuGFEulrsgf0L
+	EllFI4B0vlh4LldG53qigSQnNPPiK56fse8VLk5lXijJXhhXyJEBA45lacvQSnOb
+	lHYFJxvdsqrGqK/m17pKJmecPAwTFwWzK7YcK2ou76Itd/CCvK0WzTxNFOUnAJQo
+	RB/v6fEGvJV1yQhwNJrUIk3a/keDdsiU2uQG8jqdxEqY+t1ieVgls3Nkr+P7soeD
+	WuXnnsRl/0nPGatO2No72gQNAHVWGTJ3RsTJH+B6PK140feUVgoiH+Agmq7wRBIz
+	999y6A==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4179antv3x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 Aug 2024 07:44:42 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47Q7ig7e021506
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 Aug 2024 07:44:42 GMT
+Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 26 Aug
+ 2024 00:44:40 -0700
+Message-ID: <b3247591-d917-450a-9364-97a5a4f9a030@quicinc.com>
+Date: Mon, 26 Aug 2024 15:44:38 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240824134839.GA21315@francesco-nb>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] wifi: ath11k: Set IRQ affinity hint after requesting
+ all shared IRQs
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+CC: <kvalo@kernel.org>, <jjohnson@kernel.org>,
+        <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20240823155502.57333-1-manivannan.sadhasivam@linaro.org>
+ <20240823155502.57333-2-manivannan.sadhasivam@linaro.org>
+ <d3ceaead-5619-4413-acce-64567c08fb27@quicinc.com>
+ <20240826070143.ejd6vuorseogmdfe@thinkpad>
+Content-Language: en-US
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+In-Reply-To: <20240826070143.ejd6vuorseogmdfe@thinkpad>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 4q-YRT6t2D4787U_Cqz7T1uNQR1asJh5
+X-Proofpoint-ORIG-GUID: 4q-YRT6t2D4787U_Cqz7T1uNQR1asJh5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-26_04,2024-08-23_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 impostorscore=0
+ phishscore=0 suspectscore=0 mlxlogscore=999 clxscore=1015 malwarescore=0
+ bulkscore=0 lowpriorityscore=0 spamscore=0 mlxscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
+ definitions=main-2408260061
 
-On Sat, Aug 24, 2024 at 03:48:39PM +0200, Francesco Dolcini wrote:
-> On Thu, Aug 22, 2024 at 02:56:25PM +0200, Sascha Hauer wrote:
-> > On Fri, Aug 09, 2024 at 05:44:50PM +0800, David Lin wrote:
-> > > This series adds support for IW61x which is a new family of 2.4/5 GHz
-> > > dual-band 1x1 Wi-Fi 6, Bluetooth/Bluetooth Low Energy 5.2 and 15.4
-> > > tri-radio single chip by NXP. These devices support 20/40/80MHz
-> > > single spatial stream in both STA and AP mode. Communication to the
-> > > IW61x is done via SDIO interface
-> > > 
-> > > This driver is a derivative of existing Mwifiex [1] and based on similar
-> > > full-MAC architecture [2]. It has been tested with i.MX8M Mini evaluation
-> > > kits in both AP and STA mode.
-> > > 
-> > > All code passes sparse and checkpatch
-> > > 
-> > > Data sheet (require registration):
-> > > https://www.nxp.com/products/wireless-connectivity/wi-fi-plus-bluetooth-
-> > > plus-802-15-4/2-4-5-ghz-dual-band-1x1-wi-fi-6-802-11ax-plus-bluetooth-5-
-> > > 4-plus-802-15-4-tri-radio-solution:IW612
-> > > 
-> > > Known gaps to be addressed in the following patches,
-> > >   - Enable 11ax capabilities. This initial patch support up to 11ac.
-> > >   - Support DFS channel. This initial patch doesn't support DFS channel in
-> > >     both AP/STA mode.
-> > > 
-> > > This patch is presented as a request for comment with the intention of being
-> > > made into a patch after initial feedbacks are addressed
-> > > 
-> > > [1] We had considered adding IW61x to mwifiex driver, however due to
-> > >     FW architecture, host command interface and supported features are
-> > >     significantly different, we have to create the new nxpwifi driver.
-> > >     Subsequent NXP chipsets will be added and sustained in this new driver.
-> > 
-> > I added IW61x support to the mwifiex driver and besides the VDLL
-> > handling which must be added I didn't notice any differences. There
-> > might be other differences, but I doubt that these can't be integrated
-> > into the mwifiex driver.
+
+
+On 8/26/2024 3:01 PM, Manivannan Sadhasivam wrote:
+> On Mon, Aug 26, 2024 at 11:04:41AM +0800, Baochen Qiang wrote:
+>>
+>>
+>> On 8/23/2024 11:55 PM, Manivannan Sadhasivam wrote:
 > 
-> Maybe you can share an RFC patch with what you currently have available
-> to support IW61x within the current mwifiex driver?
+> [...]
+> 
+>>> The warning is due to not clearing the affinity hint before freeing the
+>>> IRQ.
+>>>
+>>> So to fix this, let's set the IRQ affinity hint after requesting all the
+>>> shared IRQ. This will make sure that the affinity hint gets cleared in the
+>>> error path before freeing the IRQ.
+>> if you check 39564b475ac5 ("wifi: ath11k: fix boot failure with one MSI vector") you would see that the hint is set before requesting any IRQ for a purpose.
+>>
+> 
+> Ok, thanks for sharing the history. However, commit 39564b475ac5 looks confusing
+> to me. It asserts that changing the IRQ affinity changes the MSI vector
+> programmed to the device, but I've never heard of that behavior. IRQ affinity
+> change is supposed to only change the CPU mask for the IRQ.
+vector has to be changed, or how does kernel change the target CPU of a certain IRQ? On x86 platform, this is done by apic_set_affinity().
 
-I just did, see:
+> 
+> For confirming my suspicion, I added the debug print in pci_write_msg_msi() and
+> I can see that it is only getting called once during pci_alloc_irq_vectors().
+> 
+> Moreover with my series, WLAN is working fine on QCA6390 with a shared vector:
+> 
+> 213:       6766          0          0          0          0          0          0          0   PCI-MSI 524288 Edge      bhi, mhi, mhi, ce0, ce1, ce2, ce3, ce5, ce7, ce8, DP_EXT_IRQ, DP_EXT_IRQ, DP_EXT_IRQ, DP_EXT_IRQ, DP_EXT_IRQ, DP_EXT_IRQ, DP_EX
+> T_IRQ, DP_EXT_IRQ, DP_EXT_IRQ, DP_EXT_IRQ
+> 
+That is because kernel allocates a vector targeting CPU0 at the very fist time, which is exactly what we want by setting IRQ affinity. So there is no need to change vector any more, and therefore you saw only one print of pci_write_msg_msi(). above interrupt counter is a direct evidence to such guess: all interrupts received on CPU0.
 
-https://lore.kernel.org/linux-wireless/20240826072648.167004-1-s.hauer@pengutronix.de/
+Actually the issue mentioned in commit 39564b475ac5 happens randomly. But whenever it happens, you could see interrupts received on CPUs other than 0.
 
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> So I think the issue fixed by 39564b475ac5 should be reinvestigated.
+> 
+> - Mani
+> 
+>>>
+>>> Tested-on: QCA6390 hw2.0 PCI WLAN.HST.1.0.1-05266-QCAHSTSWPLZ_V2_TO_X86-1
+>>>
+>>> Cc: Baochen Qiang <quic_bqiang@quicinc.com>
+>>> Fixes: e94b07493da3 ("ath11k: Set IRQ affinity to CPU0 in case of one MSI vector")
+>>> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+>>> ---
+>>>  drivers/net/wireless/ath/ath11k/pci.c | 24 ++++++++++++------------
+>>>  1 file changed, 12 insertions(+), 12 deletions(-)
+>>>
+>>> diff --git a/drivers/net/wireless/ath/ath11k/pci.c b/drivers/net/wireless/ath/ath11k/pci.c
+>>> index 8d63b84d1261..0c22e18e65c7 100644
+>>> --- a/drivers/net/wireless/ath/ath11k/pci.c
+>>> +++ b/drivers/net/wireless/ath/ath11k/pci.c
+>>> @@ -886,16 +886,10 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
+>>>  	if (ret)
+>>>  		goto err_pci_disable_msi;
+>>>  
+>>> -	ret = ath11k_pci_set_irq_affinity_hint(ab_pci, cpumask_of(0));
+>>> -	if (ret) {
+>>> -		ath11k_err(ab, "failed to set irq affinity %d\n", ret);
+>>> -		goto err_pci_disable_msi;
+>>> -	}
+>>> -
+>>>  	ret = ath11k_mhi_register(ab_pci);
+>>>  	if (ret) {
+>>>  		ath11k_err(ab, "failed to register mhi: %d\n", ret);
+>>> -		goto err_irq_affinity_cleanup;
+>>> +		goto err_pci_disable_msi;
+>>>  	}
+>>>  
+>>>  	ret = ath11k_hal_srng_init(ab);
+>>> @@ -916,6 +910,12 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
+>>>  		goto err_ce_free;
+>>>  	}
+>>>  
+>>> +	ret = ath11k_pci_set_irq_affinity_hint(ab_pci, cpumask_of(0));
+>>> +	if (ret) {
+>>> +		ath11k_err(ab, "failed to set irq affinity %d\n", ret);
+>>> +		goto err_free_irq;
+>>> +	}
+>>> +
+>>>  	/* kernel may allocate a dummy vector before request_irq and
+>>>  	 * then allocate a real vector when request_irq is called.
+>>>  	 * So get msi_data here again to avoid spurious interrupt
+>>> @@ -924,17 +924,20 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
+>>>  	ret = ath11k_pci_config_msi_data(ab_pci);
+>>>  	if (ret) {
+>>>  		ath11k_err(ab, "failed to config msi_data: %d\n", ret);
+>>> -		goto err_free_irq;
+>>> +		goto err_irq_affinity_cleanup;
+>>>  	}
+>>>  
+>>>  	ret = ath11k_core_init(ab);
+>>>  	if (ret) {
+>>>  		ath11k_err(ab, "failed to init core: %d\n", ret);
+>>> -		goto err_free_irq;
+>>> +		goto err_irq_affinity_cleanup;
+>>>  	}
+>>>  	ath11k_qmi_fwreset_from_cold_boot(ab);
+>>>  	return 0;
+>>>  
+>>> +err_irq_affinity_cleanup:
+>>> +	ath11k_pci_set_irq_affinity_hint(ab_pci, NULL);
+>>> +
+>>>  err_free_irq:
+>>>  	ath11k_pcic_free_irq(ab);
+>>>  
+>>> @@ -947,9 +950,6 @@ static int ath11k_pci_probe(struct pci_dev *pdev,
+>>>  err_mhi_unregister:
+>>>  	ath11k_mhi_unregister(ab_pci);
+>>>  
+>>> -err_irq_affinity_cleanup:
+>>> -	ath11k_pci_set_irq_affinity_hint(ab_pci, NULL);
+>>> -
+>>>  err_pci_disable_msi:
+>>>  	ath11k_pci_free_msi(ab_pci);
+>>>  
+> 
 
