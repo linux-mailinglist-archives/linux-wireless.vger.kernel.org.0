@@ -1,137 +1,166 @@
-Return-Path: <linux-wireless+bounces-12029-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12030-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAE25960412
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 10:12:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B0BB960420
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 10:14:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 711292838C8
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 08:12:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F67A1F23980
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 08:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3228118756A;
-	Tue, 27 Aug 2024 08:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82AB189917;
+	Tue, 27 Aug 2024 08:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="fv6mrZYy"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="TZhC9m4J"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906721547C5;
-	Tue, 27 Aug 2024 08:12:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD33418859D;
+	Tue, 27 Aug 2024 08:14:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724746352; cv=none; b=XxOp1n833OLseORc8dc2kbtGbSQHmmbHr+/fwA9nxsKh3Mg23c8PCCOrSymlgOcmobOe3PJ23rN9dCm8lfW8Xq0HPSqM3kRBH0Op6y5viOmNZI3F8edJ+kOeetd09oseLqUfTcGTQOhxnkPSNHsg56Y0J/3wDd4cd9Sr/zbfhj0=
+	t=1724746475; cv=none; b=HFoA9CBuXVt/cNZ23XffHhNQHNASCgAQDDhToFIJwufuFoLL4sLf848pCuwsTv+kk1Bf+c/cKEmZbrGILZUQK0y5D1VVPrrqZ8LuLdkOWCA/EH90882gqbuZgakUp5QJ7iIiuRuuZwb5+hOBNX9mvaE+9KRXuxSO1yNpFBbranw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724746352; c=relaxed/simple;
-	bh=9BqyGH8iAhe32SVuitbdCgtpdlnjGAHT4QTJcbWTgCc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OW6ouWHsUtkt3IpyriGyeuyhB+/G9OH+mV0bucyGqDy2ONkSGMSgwAhLWjHg73Hl9I3dtJennu9exlQREcguXXxE8ndg5xJoAVzuF76Jp6iSZr9uvS8eLG8+rdIz270kCGrs7V3uPBw1BhgfWlC6ews0cURN2QpYWb3IbfQ+gy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=fv6mrZYy; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=bL+QrbENSMemW12aF0eJeo0zf2iwnZiHHlBbEDCmT6I=;
-	t=1724746350; x=1725955950; b=fv6mrZYye3jaEjhM/Spyd1TG2Bhur/IbLZYELiXZ61EiPMt
-	P9MCVnQIKElbW2DyeMlll/PyiNfaFsuJ9cNVmq1QO6HL5uKkD/0USgeKARpp7IdzCcxO/y19XUyAc
-	nYZ40PJOi3QInvZmfvNtmPmBVKB36K8FAeB+S66/kmw/8SXDwcRU68tFSnIv3uW22jSOU6gmitnLF
-	92G7eAUFTsy1q8A+o6BxGckYpLcpgkxSLxzlCXUo4NBaF4ajDecKrImZLc3P+xPegBU3efkik2sm/
-	DCV5oWUqEfau34SPYKwuofcMpmfjxjRC3S80aTaaR08mW3mD4fd0PTF/w78OWVvw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1sirJT-00000004SPU-39aB;
-	Tue, 27 Aug 2024 10:12:27 +0200
-Message-ID: <3ddcf25ba09bf99c973c46ef1944c079be2753eb.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: wireless: fix more UBSAN noise in
- cfg80211_conn_scan()
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: Kees Cook <kees@kernel.org>, linux-wireless@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, lvc-project@linuxtesting.org
-Date: Tue, 27 Aug 2024 10:12:26 +0200
-In-Reply-To: <20240716174011.236849-1-dmantipov@yandex.ru>
-References: <20240716174011.236849-1-dmantipov@yandex.ru>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+	s=arc-20240116; t=1724746475; c=relaxed/simple;
+	bh=x6G+5+IJ7a72Cq5SOq6HjDFgUyiWiy0Jha7aSlSvAkA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TDNKz3g+KGkFf2arTBwzvHOU9RYkx1gCSpUts+ASrE5t4VegTiP2PA9l3qq9/DwJnBwWo1znchegIpEd2mhl1fHUNQN+BP47X1cyxcMLKuROWNTkfa6V477g5ndIE16YEWOkhtz1f0f6PssB3FRD93Uhoum8Z+0nFun6f7ukIPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=TZhC9m4J; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id EFB3260003;
+	Tue, 27 Aug 2024 08:14:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1724746471;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HHeCSHZ34Mwia/PNi9Y8v1uhIR9u/g7fFvQSmjPs83E=;
+	b=TZhC9m4JfAtaAvP4/EVLb8PP+yuqfze5JokhB09Nxiu6sqYKKkldBWKYrlT/JwDY7ahRfd
+	VRfS1a7lQIq0R1Fd9/qm6TPJaGXQj8sk4B2avgYDFf06qMG7UxG7dALJ77OfVIcqOBXLsK
+	WLhEGBxv2eDHjf9PwrTqcmeq7PEccEZ/aLYKiUAwX3GCDUpc50ZwlJQP0HSD/3SvNBRC+S
+	4rWaN07xV1if/05fU2j63YTVPzh3hjafdFBJTF7IFBlrGO5r3oSk3ye/VQrU56xMEFq4xA
+	TaJJvBc8Tfl+BIrH4h0ORlx5pqV5FaePKnpZHDdeZPXVQl8fofdWCyO1mrRHiw==
+Message-ID: <9bc68261-9d5a-463c-82e8-c7a630dda79e@bootlin.com>
+Date: Tue, 27 Aug 2024 10:14:29 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/4] wifi: wilc1000: Fold
+ chip_allow_sleep()/chip_wakeup() into wlan.c
+To: Marek Vasut <marex@denx.de>, linux-wireless@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Adham Abozaeid <adham.abozaeid@microchip.com>,
+ Ajay Singh <ajay.kathat@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Conor Dooley
+ <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20240823161131.94305-1-marex@denx.de>
+ <20240823161131.94305-3-marex@denx.de>
+From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20240823161131.94305-3-marex@denx.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: alexis.lothore@bootlin.com
 
-Hmm.
+On 8/23/24 18:08, Marek Vasut wrote:
+> Neither chip_allow_sleep()/chip_wakeup() is used outside of wlan.c .
+> Make both functions static and remove both the exported symbol and
+> entries from wlan.h .
+> 
+> Make chip_allow_sleep() return error code in preparation for the
+> follow up patches.
+> 
+> Move acquire_bus() and release_bus() to avoid forward declaration
+> of chip_allow_sleep()/chip_wakeup().
+> 
+> Signed-off-by: Marek Vasut <marex@denx.de>
+> ---
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Adham Abozaeid <adham.abozaeid@microchip.com>
+> Cc: Ajay Singh <ajay.kathat@microchip.com>
+> Cc: Alexis Lothoré <alexis.lothore@bootlin.com>
+> Cc: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+> Cc: Conor Dooley <conor+dt@kernel.org>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Kalle Valo <kvalo@kernel.org>
+> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+> Cc: Marek Vasut <marex@denx.de>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: Rob Herring <robh@kernel.org>
+> Cc: devicetree@vger.kernel.org
+> Cc: linux-wireless@vger.kernel.org
+> Cc: netdev@vger.kernel.org
+> ---
+> V2: New patch
+> ---
+>  .../net/wireless/microchip/wilc1000/wlan.c    | 47 +++++++++----------
+>  .../net/wireless/microchip/wilc1000/wlan.h    |  2 -
+>  2 files changed, 23 insertions(+), 26 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
+> index 1aab2f2dc159f..5fbba6876bd07 100644
+> --- a/drivers/net/wireless/microchip/wilc1000/wlan.c
+> +++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
+> @@ -12,20 +12,6 @@
+>  
+>  #define WAKE_UP_TRIAL_RETRY		10000
+>  
+> -static inline void acquire_bus(struct wilc *wilc, enum bus_acquire acquire)
+> -{
+> -	mutex_lock(&wilc->hif_cs);
+> -	if (acquire == WILC_BUS_ACQUIRE_AND_WAKEUP && wilc->power_save_mode)
+> -		chip_wakeup(wilc);
+> -}
+> -
+> -static inline void release_bus(struct wilc *wilc, enum bus_release release)
+> -{
+> -	if (release == WILC_BUS_RELEASE_ALLOW_SLEEP && wilc->power_save_mode)
+> -		chip_allow_sleep(wilc);
+> -	mutex_unlock(&wilc->hif_cs);
+> -}
+> -
+>  static void wilc_wlan_txq_remove(struct wilc *wilc, u8 q_num,
+>  				 struct txq_entry_t *tqe)
+>  {
+> @@ -555,7 +541,7 @@ static struct rxq_entry_t *wilc_wlan_rxq_remove(struct wilc *wilc)
+>  	return rqe;
+>  }
+>  
+> -void chip_allow_sleep(struct wilc *wilc)
+> +static int chip_allow_sleep(struct wilc *wilc)
+>  {
+>  	u32 reg = 0;
+>  	const struct wilc_hif_func *hif_func = wilc->hif_func;
+> @@ -584,7 +570,7 @@ void chip_allow_sleep(struct wilc *wilc)
+>  	while (--trials) {
+>  		ret = hif_func->hif_read_reg(wilc, to_host_from_fw_reg, &reg);
+>  		if (ret)
+> -			return;
+> +			return ret;
 
-On Tue, 2024-07-16 at 20:40 +0300, Dmitry Antipov wrote:
-> diff --git a/net/wireless/sme.c b/net/wireless/sme.c
-> index a8ad55f11133..f5da45331847 100644
-> --- a/net/wireless/sme.c
-> +++ b/net/wireless/sme.c
-> @@ -77,12 +77,16 @@ static int cfg80211_conn_scan(struct wireless_dev *wd=
-ev)
->  	else
->  		n_channels =3D ieee80211_get_num_supported_channels(wdev->wiphy);
-> =20
-> -	request =3D kzalloc(sizeof(*request) + sizeof(request->ssids[0]) +
-> -			  sizeof(request->channels[0]) * n_channels,
-> -			  GFP_KERNEL);
-> +	request =3D kzalloc(struct_size(request, channels, n_channels) +
-> +			  sizeof(request->ssids[0]), GFP_KERNEL);
+Forwarding error codes sounds like a good idea, but neither this patch nor the
+next one is reading the return value from any chip_allow_sleep[XXX] function, so
+it does not bring much value.
 
-That makes sense, sure.
+Alexis
 
->  	if (!request)
->  		return -ENOMEM;
-> =20
-> +	/* None of the channels are actually set
-> +	 * up but let UBSAN know the boundaries.
-> +	 */
-> +	request->n_channels =3D n_channels;
+-- 
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
-Also makes sense, so we tell it how many we allocated early.
-
-Note netdev we dropped the special comment style requirement, so
-wouldn't mind
-
- /*
-  * None of ...
-  * ...
-  */
-
-here either.
-
-> +
->  	if (wdev->conn->params.channel) {
->  		enum nl80211_band band =3D wdev->conn->params.channel->band;
->  		struct ieee80211_supported_band *sband =3D
-> @@ -112,9 +116,9 @@ static int cfg80211_conn_scan(struct wireless_dev *wd=
-ev)
->  			}
->  			request->rates[band] =3D (1 << bands->n_bitrates) - 1;
->  		}
-> -		n_channels =3D i;
-> +		request->n_channels =3D i;
-
-So this tells it how many were actually used, in this branch, makes
-sense.
-
-Functionally, all of this seems OK.
-
-However,
-
->  	request->ssids =3D (void *)&request->channels[n_channels];
-
-is this not checked? I mean, if you have n_channels=3D5 and then take
-&channels[5] I can see how that makes sense, but arguably the compiler
-might complain if you have &channels[10] for an array you told it has 5
-entries?
-
-johannes
 
