@@ -1,88 +1,79 @@
-Return-Path: <linux-wireless+bounces-12064-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12065-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F5DD960937
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 13:45:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D6B996095C
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 13:56:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D08E628118D
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 11:45:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FE991C2245E
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 11:56:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2651A00C9;
-	Tue, 27 Aug 2024 11:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A481419E825;
+	Tue, 27 Aug 2024 11:56:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uwvqaVWm"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="zw6b7p1B"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 587C219FA72
-	for <linux-wireless@vger.kernel.org>; Tue, 27 Aug 2024 11:45:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A470A139580;
+	Tue, 27 Aug 2024 11:56:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724759126; cv=none; b=lmydfv5tDR4oOhWfZWm6gMtqijfZjGo+wZG3Txw3+LRi8MeBb9GbzRzQ4GID8MVICwZnjK23ZpsAQhWWCOS72jKr7SzzLh0GLEZ7wkdvmbUAm+QPwLJ68mtrXxzTJC0umyBSn7RTk/iAOO9OOhogj/5jY85fQ/TwlkgZ/ht4lf4=
+	t=1724759768; cv=none; b=EQ7I0wn5YAb/47EZXsfxekUfIXZEVRas1mcNAR+RrIcNYG8V9Mn0EdQymK8ojwTqrAk4EhmnYpP7Z8FEZ2ZomCKlmTRqgGd5B0E6g5Nu188qB4Ob6J0X3cQgazTVZ2zH02/AhLNytEqcsc3MvCNgpG8YgcHaGRoowFILRjnKqqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724759126; c=relaxed/simple;
-	bh=P2RbAb44MrCKiyQ65QKa4zsMh7kX9jbcaXngW1O/Izw=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=PmapkHTruzdglWKGtT+bF8FqD77hsDX6NPqUX07vKG6WRRyXTfWfBCoh9r3RbpSg/hlTB070cLbOEJ3/oBaLXV25Nskc0zyMZdZMrXCNApz4/XKdlAxXv9KnDrblgMKaRlNsFhVIrUbUR85Q+K1qQ6fsUK39HEd+82plTIuRgvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uwvqaVWm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1135C6104D;
-	Tue, 27 Aug 2024 11:45:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724759123;
-	bh=P2RbAb44MrCKiyQ65QKa4zsMh7kX9jbcaXngW1O/Izw=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=uwvqaVWmcn/LTPL/u6n1CZPirGd9f+Vyd5bTfw5QNrFVafG3NByiS8yiYfo/US0D+
-	 JJqAz+hAHPtzs1N43g9SVe5Ld9792Vats3kRFRSj6fbFcutlqtmzRFK8Q9KGDsezbS
-	 mD1ljxrWh6QeqR/teaL/rSBOA/aywEXlgdybeIe1hacfzs9yRV/4T8f0cv+pgiDiS/
-	 QOiUecraM0/OYH15VuG/Qe5uf5JlOPKqVelB09zpp79cSMCB/ydjKGI/AzlBdshwHB
-	 ugmhglN0lWT7ogFrt/L9JorqycnIVRekvezo6v5mRjRSJw1BWgjaqV1dejzbGqj0UE
-	 gAiWnRsD1JbFw==
-From: Kalle Valo <kvalo@kernel.org>
-To: Kavita Kavita <quic_kkavita@quicinc.com>
-Cc: <johannes@sipsolutions.net>,  <linux-wireless@vger.kernel.org>,
-  <quic_mpaluri@quicinc.com>
-Subject: Re: [PATCH] wifi: cfg80211: skip regulatory checks when the channel
- is punctured
-References: <20240826123341.5405-1-quic_kkavita@quicinc.com>
-	<87cylvf6k5.fsf@kernel.org>
-	<1cb1976c-ef81-4f9f-8bf5-bc48195855dc@quicinc.com>
-Date: Tue, 27 Aug 2024 14:45:21 +0300
-In-Reply-To: <1cb1976c-ef81-4f9f-8bf5-bc48195855dc@quicinc.com> (Kavita
-	Kavita's message of "Tue, 27 Aug 2024 14:58:58 +0530")
-Message-ID: <87wmk2dwa6.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1724759768; c=relaxed/simple;
+	bh=a5ZV9Z0+/DuwbgA21cGCMJWVPlMG8o4hKX+L8T0B3bI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IfM0flIiEFW++ZlmIwa4TGZ9zKkMYRN6Qm836OSYG9BiI79xiva0nCdXNEDgGetQ5cgAemGQD4xkBh83Eek0RelvYg6a1jEMKo6vf78i6xQGt1E3Dnpo/8iW/LEjdLrNOGEEmfV5+gYUx4rIZkppyl94w2EJYPtzYfTfG6lFavs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=zw6b7p1B; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from gaggiata.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 51D6B21AE5;
+	Tue, 27 Aug 2024 13:55:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1724759752;
+	bh=CafeksWBlGGflx2ww0XuQ7ArLYM/LkByOh8sKeK4ecw=;
+	h=Received:From:To:Subject;
+	b=zw6b7p1BGB2U3GGDPqTkpk6gSPF6RNOifttVHFPCgAWHACBw/iF2VXALaimn5CRPF
+	 uYczt9ZJJgAmVMBE6132c0ZDrTfYwgQTnUHlDkM8/psirM+50me1MJaXGbdAGekvyP
+	 wTTptFc1wGr5M88HOTxM/5bhrwKJXesmsAQuP7zJk52EdnFyE80LM2nElf8fC4fs7I
+	 fiXllFxzr9vEUK46BPLkIgfWa/10+e1D+Oq50zuv4bOCE2Z8bdNtgnO+Z0OQjkHAC5
+	 PNQ5JvqlsjAxMXtFaJSPE3aVSdo9wkmNkwQtuM/PiAfrGhxJPplFJfjKum55OU40Tc
+	 2hpmFQ6U/1mEw==
+Received: by gaggiata.pivistrello.it (Postfix, from userid 1000)
+	id 06E807F84D; Tue, 27 Aug 2024 13:55:51 +0200 (CEST)
+Date: Tue, 27 Aug 2024 13:55:51 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Brian Norris <briannorris@chromium.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 01/12] wifi: mwifiex: add missing locking
+Message-ID: <Zs2-x6nuAzKvKfng@gaggiata.pivistrello.it>
+References: <20240826-mwifiex-cleanup-1-v1-0-56e6f8e056ec@pengutronix.de>
+ <20240826-mwifiex-cleanup-1-v1-1-56e6f8e056ec@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240826-mwifiex-cleanup-1-v1-1-56e6f8e056ec@pengutronix.de>
 
-Kavita Kavita <quic_kkavita@quicinc.com> writes:
+On Mon, Aug 26, 2024 at 01:01:22PM +0200, Sascha Hauer wrote:
+> cfg80211_rx_assoc_resp() and cfg80211_rx_mlme_mgmt() need to be called
+> with the wiphy locked, so lock it before calling these functions.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-> On 8/27/2024 12:35 AM, Kalle Valo wrote:
->> Kavita Kavita <quic_kkavita@quicinc.com> writes:
->> 
->>>
->>> Co-developed-by: Manaswini Paluri <quic_mpaluri@quicinc.com>
->>> Signed-off-by: Manaswini Paluri <quic_mpaluri@quicinc.com>
->>> Signed-off-by: Kavita Kavita <quic_kkavita@quicinc.com>
->>
->> Kavita, is your first and last name really the same? Just trying to
->> verify that s-o-b is correct.
->
-> Yes, My first name is same as last name.
+Fixes: 36995892c271 ("wifi: mwifiex: add host mlme for client mode")
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Thanks for confirming, you have a cool name :)
-
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
