@@ -1,168 +1,152 @@
-Return-Path: <linux-wireless+bounces-12086-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12075-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EC28961472
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 18:43:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C52EB96140F
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 18:28:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71DE31C236A0
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 16:43:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 750721F23F43
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 16:28:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BB161D0DC3;
-	Tue, 27 Aug 2024 16:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F7D31C9458;
+	Tue, 27 Aug 2024 16:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="chyUhqSa"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="D0lUOB7I"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DBB41CFEBF;
-	Tue, 27 Aug 2024 16:42:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B39331C7B6F
+	for <linux-wireless@vger.kernel.org>; Tue, 27 Aug 2024 16:28:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724776969; cv=none; b=FiBp2gU5BAF8Z1yRKN4UXg7umEZR9jVKV7oJJ7R6lQzLWKMDmmi1ZOHmR71Vbe/3jPcW7p7K3nU9PDY6kmsw1WxfSDpKD9p0EeV8HihYJT5o/S4b2O9BVfAPD6Oi2YjN7eXIVSLk/SUtnhboypNvXaUxJIte5Nk2YIvFnT3TLyI=
+	t=1724776132; cv=none; b=kzjSFoeEXXWPxRo0Pbm6KLcjuWGvA52Nvx2C+7TGNCaKgx1FksHLYH8Hyl8fCQeg7zmAAGu6Z7PkKENFs20TBsXboYl6fCyr2yarfkp6hMXlSC0tqII3A4GJuaO0v8QrGe+z2oH8SBoYBO6TGJj/62hjA2gvmMMiWjFQuiEgrLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724776969; c=relaxed/simple;
-	bh=HPy3ALIiO1wCS/D7rT7UzNZ5k1S/ejGlOuVDEfJ77AU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c48sw0l+JMqXrQyqtaSVskGpXq5Z69+0XKiPuYAJtHs6+mihWdzHldFMjN3mBMPZaYNM+FRwT4OLgQLlcsGcUYLvzr0jzOEkjXe3R5gFPeIJ7lKTwXlzkiQvSKoOxX85j4GfL2WxoB1QaCPz2LtDzELjJ6afasN3w+Br7DVuT/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=chyUhqSa; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	s=arc-20240116; t=1724776132; c=relaxed/simple;
+	bh=CKcEtqGM2HxI2mjdsYMB9OUr+er0Y54QouzS432aVQ0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=m6U3EKe1rqg9TYXYB5Skk+oQiZppiPzhUO/kmmGtWftc+3Y89mVL4baTaOEfZoCm7p1bSU0kEKXIWy0edFCKJS3tGo6F4CcoeP+6qi1gQX4gj5edwrtbHHTLk8kgLUsdXZ0R4s61hJOdWZTPAVf2ftqP4e1SdHnqn9etrqe5BLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=D0lUOB7I; arc=none smtp.client-ip=148.163.129.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id B9C19340068;
+	Tue, 27 Aug 2024 16:28:48 +0000 (UTC)
+Received: from [192.168.100.159] (unknown [50.251.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id A9FA288800;
-	Tue, 27 Aug 2024 18:42:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1724776964;
-	bh=2Pru0i9hS0n0Y7bDLs5WE3vUDIpbPXq0ksg4TfCIXS0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=chyUhqSav3qnAJ0CeQix5SbGrAHL0/DED1297lUnGHNXZ3mvu2kUN3RCXohFVsO7M
-	 nUaHvcxMeSGRh2edyBsTS3R0bI4qgmT6DDvjUv9QzgDj5WKSEtKR8lbjUD/eemaYj5
-	 A04YvkcqPIJIMrznb00bRHv1VvqB34Lfro+JbJIn6hjWen85xz1r4aPBaLk5U28tdt
-	 FkRtsYhpHG2lCcghKPLfPFirffXWNQGZLDwIFvH90pn3aG8TNNrTgjsmOm14VMqpKo
-	 UMANvRG9NMjhrEhpU0g6BtOTaP2/aBTaZ23yUvfHuigtDORC/3LfdKVpFwk1BjTwUt
-	 /gmemLo8n2vNQ==
-Message-ID: <23f8f3c4-31c8-4971-b914-3b36fc0b446b@denx.de>
-Date: Tue, 27 Aug 2024 18:23:58 +0200
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 3217F13C2B0;
+	Tue, 27 Aug 2024 09:28:46 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 3217F13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1724776126;
+	bh=CKcEtqGM2HxI2mjdsYMB9OUr+er0Y54QouzS432aVQ0=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=D0lUOB7IOMf+/UFf5D7j/67z03NpL5hoAA7UXjsolUhJe3W02kufJ1vkl4csKTjzX
+	 DtjQ8cHs3TvQHmwwt7ZdljpgpVLyEZaca3tS1Zg0MUX+Sog2cx+5IF7w5NE9VHjAEK
+	 NLoHWEIH4P+krJQvEv5r6gRzG9dVbmJZBRkzUOyk=
+Message-ID: <41008ac0-ca36-b19f-c3a4-61f54ce2d2f7@candelatech.com>
+Date: Tue, 27 Aug 2024 09:28:45 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] wifi: wilc1000: Fold
- chip_allow_sleep()/chip_wakeup() into wlan.c
-To: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
- linux-wireless@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
- Adham Abozaeid <adham.abozaeid@microchip.com>,
- Ajay Singh <ajay.kathat@microchip.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Conor Dooley
- <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20240823161131.94305-1-marex@denx.de>
- <20240823161131.94305-3-marex@denx.de>
- <9bc68261-9d5a-463c-82e8-c7a630dda79e@bootlin.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: Per MLO link TX stats
 Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <9bc68261-9d5a-463c-82e8-c7a630dda79e@bootlin.com>
+To: Johannes Berg <johannes@sipsolutions.net>,
+ linux-wireless <linux-wireless@vger.kernel.org>
+References: <c896c0d6-b43f-ba6d-336a-eca15c60529f@candelatech.com>
+ <7ccb9c8ccb0dd16539ac064a35d6bf6b31d0bf0d.camel@sipsolutions.net>
+ <e5c3265a-3411-39b4-f4c4-40f3937c96fb@candelatech.com>
+ <9093726e308d0a26e8afe2323a865d222e48fe61.camel@sipsolutions.net>
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <9093726e308d0a26e8afe2323a865d222e48fe61.camel@sipsolutions.net>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Transfer-Encoding: 7bit
+X-MDID: 1724776129-ayzjUIl0Onp9
+X-MDID-O:
+ us5;ut7;1724776129;ayzjUIl0Onp9;<greearb@candelatech.com>;b42792dba290a1257c3f0aaf1c60b0ff
 
-On 8/27/24 10:14 AM, Alexis Lothoré wrote:
-> On 8/23/24 18:08, Marek Vasut wrote:
->> Neither chip_allow_sleep()/chip_wakeup() is used outside of wlan.c .
->> Make both functions static and remove both the exported symbol and
->> entries from wlan.h .
+On 8/27/24 09:20, Johannes Berg wrote:
+> On Tue, 2024-08-27 at 09:12 -0700, Ben Greear wrote:
 >>
->> Make chip_allow_sleep() return error code in preparation for the
->> follow up patches.
->>
->> Move acquire_bus() and release_bus() to avoid forward declaration
->> of chip_allow_sleep()/chip_wakeup().
->>
->> Signed-off-by: Marek Vasut <marex@denx.de>
->> ---
->> Cc: "David S. Miller" <davem@davemloft.net>
->> Cc: Adham Abozaeid <adham.abozaeid@microchip.com>
->> Cc: Ajay Singh <ajay.kathat@microchip.com>
->> Cc: Alexis Lothoré <alexis.lothore@bootlin.com>
->> Cc: Claudiu Beznea <claudiu.beznea@tuxon.dev>
->> Cc: Conor Dooley <conor+dt@kernel.org>
->> Cc: Eric Dumazet <edumazet@google.com>
->> Cc: Jakub Kicinski <kuba@kernel.org>
->> Cc: Kalle Valo <kvalo@kernel.org>
->> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
->> Cc: Marek Vasut <marex@denx.de>
->> Cc: Paolo Abeni <pabeni@redhat.com>
->> Cc: Rob Herring <robh@kernel.org>
->> Cc: devicetree@vger.kernel.org
->> Cc: linux-wireless@vger.kernel.org
->> Cc: netdev@vger.kernel.org
->> ---
->> V2: New patch
->> ---
->>   .../net/wireless/microchip/wilc1000/wlan.c    | 47 +++++++++----------
->>   .../net/wireless/microchip/wilc1000/wlan.h    |  2 -
->>   2 files changed, 23 insertions(+), 26 deletions(-)
->>
->> diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
->> index 1aab2f2dc159f..5fbba6876bd07 100644
->> --- a/drivers/net/wireless/microchip/wilc1000/wlan.c
->> +++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
->> @@ -12,20 +12,6 @@
->>   
->>   #define WAKE_UP_TRIAL_RETRY		10000
->>   
->> -static inline void acquire_bus(struct wilc *wilc, enum bus_acquire acquire)
->> -{
->> -	mutex_lock(&wilc->hif_cs);
->> -	if (acquire == WILC_BUS_ACQUIRE_AND_WAKEUP && wilc->power_save_mode)
->> -		chip_wakeup(wilc);
->> -}
->> -
->> -static inline void release_bus(struct wilc *wilc, enum bus_release release)
->> -{
->> -	if (release == WILC_BUS_RELEASE_ALLOW_SLEEP && wilc->power_save_mode)
->> -		chip_allow_sleep(wilc);
->> -	mutex_unlock(&wilc->hif_cs);
->> -}
->> -
->>   static void wilc_wlan_txq_remove(struct wilc *wilc, u8 q_num,
->>   				 struct txq_entry_t *tqe)
->>   {
->> @@ -555,7 +541,7 @@ static struct rxq_entry_t *wilc_wlan_rxq_remove(struct wilc *wilc)
->>   	return rqe;
->>   }
->>   
->> -void chip_allow_sleep(struct wilc *wilc)
->> +static int chip_allow_sleep(struct wilc *wilc)
->>   {
->>   	u32 reg = 0;
->>   	const struct wilc_hif_func *hif_func = wilc->hif_func;
->> @@ -584,7 +570,7 @@ void chip_allow_sleep(struct wilc *wilc)
->>   	while (--trials) {
->>   		ret = hif_func->hif_read_reg(wilc, to_host_from_fw_reg, &reg);
->>   		if (ret)
->> -			return;
->> +			return ret;
+>> When be200 goes into eMLSR mode, both 5 and 6Ghz links are shown as active, so at least
+>> you cannot use 'active link' to reliably update stats.
 > 
-> Forwarding error codes sounds like a good idea, but neither this patch nor the
-> next one is reading the return value from any chip_allow_sleep[XXX] function, so
-> it does not bring much value.
+> Sure, not active link - but there's an LMAC bit somewhere ... Ah, it's
+> not documented, it's actually documented *differently*, but it should be
+> bit 31 in len_n_flags in struct iwl_rx_packet.
+> 
+> Given the LMAC ID on the TX response notification we should know which
+> LMAC transmitted it, and then I think it's a simple mapping to the
+> active link. But I haven't actually really tried it.
 
-I will add a follow up patch to this one which adds the error handling, 
-since there is a lot of it to propagate the errors through. It will be 
-in V3.
+If you can share a patch that documents this bit (like 0 means 5Ghz and 1 means 6Ghz??)
+then we can try it out.
+
+And maybe your idea for how to report it in tx-status too since that will touch
+mac80211?
+
+>>>> In the case where there is a single active link, then I can hack something together
+>>>> that should be at least mostly right, but that won't fix any future radio that can
+>>>> do 2+ active links.
+>>>>
+>>>> Any suggestions for best path forward on this?
+>>>
+>>> I really think we also need to do some work on the API/cfg80211 level,
+>>> and have link station statistics in cfg80211 instead of full station,
+>>> and then combine them to (older) userspace in cfg80211, i.e. if
+>>> userspace doesn't request broken out per-link statistics. There's
+>>> probably a bunch of work here, and I only have a vague idea of how it
+>>> should be done...
+>>
+>> I think first step is to get the driver(s) able to report the link-id in
+>> the tx-status.  After that, mac80211 can gather the stats.
+> 
+> Yeah, that makes sense, at least partially that's needed. I suspect that
+> also we need to extend the API down to the sta_statistics call though to
+> return per-link statistics, e.g. the TX bitrate would seem should be
+> reported per link, and that's done through that call now I believe.
+
+Yes.  At least at cfg80211 level, I think we should be able to query all
+link stats in a single call into mac80211.  Down in mac80211, then per-link
+stats structs appears to be how things are done now and seems like a good
+solution.
+
+> 
+>> I hacked
+>> tx/rx link stats into mac80211 ethtool (for first 3 links), but it is still not reliable since
+>> mac80211 doesn't know the actual tx link id.
+> 
+> Right.
+> 
+>> After that, then certainly I'd be happy to have per-link stats available,
+>> and combining them in cfg80211 seems like a fine idea as well.  Some things
+>> that don't combine well (rssi, link rates, etc) would take a bit of kludging
+>> if trying to provide a single 'sta' view of stats.
+> 
+> True, some can't just be added up and we'd have to find a sane different
+> "best" view, perhaps for rates it'd be the better of the two or the sum
+> if only reporting the bitrate, or better of the RSSI, etc. Case by case,
+> I guess.
+
+I'd suggest using highest active band when we have no better option for
+summing/combining.
+
+Thanks,
+Ben
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
+
 
