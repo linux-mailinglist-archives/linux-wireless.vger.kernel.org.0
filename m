@@ -1,120 +1,123 @@
-Return-Path: <linux-wireless+bounces-12017-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12018-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B8A396019A
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 08:27:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A0B7960297
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 08:57:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E56F1C20DAD
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 06:27:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCDE71C224FC
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 06:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D4B14B06A;
-	Tue, 27 Aug 2024 06:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0558B15383F;
+	Tue, 27 Aug 2024 06:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V7SCRrUw"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KQN2FAjV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A845146596;
-	Tue, 27 Aug 2024 06:26:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3637F14A4F5;
+	Tue, 27 Aug 2024 06:57:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724740007; cv=none; b=GI10kAeiGKg7X86tcyZUNHA2hHGPivJUcMMKiA+e15EzdHwh3ZxltW8yQqCZ7KQWbdZ1TxDpBdcbzNCerDN1AK0LfARBTxzW9S5ZQD9NdA2UEjod+pdSqwH+mRS7KpoBdzsZsQN7zkXbSZXq3fv3PiQnEx+nv1TGof8JTIM+YtI=
+	t=1724741846; cv=none; b=QmERAenLelPDJYLZ3rtFBEYnrgUi9pGIVg3tiT7hdag/UACE3bvkuXjfBMdnlI5od3bqcnDLURTUY5ecx2N170K6HsIw151cqS5h7VN6NcypSkmXwbIhCmemECA8xc5WhWns/8qhsx6DMcvph1vDRomI6svD9JVauqqCZV58IBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724740007; c=relaxed/simple;
-	bh=jNfRUmdqKJgP/Ct4LLn/ZaSO+4IPIoj6zIdHnKM2eBQ=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=aCpPeH/6WUT1kXfO48UUV5X/O6hzfFaxh+cvWCcwWZOqHPWhj4u98ay0flqYZYJcTRhB60rxFuUfUsXMVkf/b7uTBXq6B0zUsZysSCgI9pgzi7QQrCd5Dll7ToYGO4j+0Nb3DJiu/q+3ucg73NunQ3D90H11vjPI5+xij4G7s58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V7SCRrUw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C14A7C567C7;
-	Tue, 27 Aug 2024 06:26:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724740006;
-	bh=jNfRUmdqKJgP/Ct4LLn/ZaSO+4IPIoj6zIdHnKM2eBQ=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=V7SCRrUwtwy+ws3yCqYXbc/TZBXIC3GnchjIHOT4mt7m7WB5wYmh8rqFXxMMJcHUo
-	 RdL/xtlWBnh2vwOvNBTK/aYEgXB3wvo+zqmk5DVwRlSNh4CKe0V8uD3WiD/PjCvJep
-	 oCHnEE50DJQH+gi+6CulY6RqgL4QFL6dUL61gGYUketYHEuEeXSzjvUn/yWGRviD4u
-	 XiJjTWzm10pUs2ux9MUvzrl4josuGzu9Yj7bQxRwGPxjMY8kuONAFeSxC+SctT3iYq
-	 KbfQkJaFSeBcOAwXiHoGNTFVp9bpB91u6zD2CKn10FtKl4NqfjMeGw6/C7T9IobWx4
-	 AQc6CqLgTARcA==
-From: Kalle Valo <kvalo@kernel.org>
-To: David Wang <00107082@163.com>
-Cc: miriam.rachel.korenblit@intel.com,  johannes.berg@intel.com,
-  gregory.greenman@intel.com,  pagadala.yesu.anjaneyulu@intel.com,
-  dan.carpenter@linaro.org,  daniel.gabay@intel.com,
-  linux-wireless@vger.kernel.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wifi: iwlwifi: acpi/dsm: cache error retcode for
- iwl_acpi_get_dsm
-References: <20240827005114.4950-1-00107082@163.com>
-Date: Tue, 27 Aug 2024 09:26:42 +0300
-In-Reply-To: <20240827005114.4950-1-00107082@163.com> (David Wang's message of
-	"Tue, 27 Aug 2024 08:51:14 +0800")
-Message-ID: <871q2afplp.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1724741846; c=relaxed/simple;
+	bh=ejaaGyUZt9TQMNogW9ifZ2hr4r8r75F/LuFBrZERRF4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JLkBJjKMABN1fdUn59TtMfWGkGom8SDmBli5wSvMTVKSGEiR31L0D5StRfdS/1rBT2H8DYrx1I26oyAn6kkxFAXqrYGff+XPjp0cP4GWpZdKz5cbsIHKRwmVKqfbk8Tl4ZpaycOdNcXoD4pPliqaugiyYCX6Mwd/DoioRFPHa+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KQN2FAjV; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1724741845; x=1756277845;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ejaaGyUZt9TQMNogW9ifZ2hr4r8r75F/LuFBrZERRF4=;
+  b=KQN2FAjV2a6FI1zQhS3bGryHQZkJ5X3K81dMOYtbJbeAjIbFzrmy2nvh
+   8gf9CtVPRN+j5b89Ggvh64QDigUFZMv7mju9WEhAJq2ZHRBkfT0gLwfjf
+   FEjpEjv5RhIlJm3X3toDVWeNxocshV4hX+2dwldk+duJbIzZZ5r2l4S8I
+   6ded9QFfkKeBYaKFCtSzR0GSJrfyMCnbgCzkWElFS63BZpwHAHIPVzujC
+   6AZvf8vtNEgWSzla1osTcZJCIncFUMO6dhpBWC+5c4sxv/61YM3CizlNh
+   Hj64ZP/PQhnPZ9iqJqXjdrgnpCZYT7nYaSDtQ7nbZANHhmmt/vFgi/E8B
+   w==;
+X-CSE-ConnectionGUID: 2ZscmJ8/T4iWI2bt5LQVfw==
+X-CSE-MsgGUID: sVwwPiZaTeWkyF9NgvNq7w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11176"; a="33765527"
+X-IronPort-AV: E=Sophos;i="6.10,179,1719903600"; 
+   d="scan'208";a="33765527"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2024 23:57:07 -0700
+X-CSE-ConnectionGUID: AEJLZ/4FRk2B9S0w+vcuIg==
+X-CSE-MsgGUID: dKi0tfu7Ti+I5CC9H1Vuag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,179,1719903600"; 
+   d="scan'208";a="93505651"
+Received: from mev-dev.igk.intel.com ([10.237.112.144])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2024 23:57:05 -0700
+Date: Tue, 27 Aug 2024 08:55:08 +0200
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: Shen Lichuan <shenlichuan@vivo.com>
+Cc: johannes@sipsolutions.net, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	opensource.kernel@vivo.com
+Subject: Re: [PATCH v1] wifi: mac80211: use kmemdup_array instead of kmemdup
+ for multiple allocation
+Message-ID: <Zs14TDFqER2Sub4W@mev-dev.igk.intel.com>
+References: <20240827035652.33558-1-shenlichuan@vivo.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240827035652.33558-1-shenlichuan@vivo.com>
 
-David Wang <00107082@163.com> writes:
-
-> On some HW, acpi _DSM query would failed for iwlwifi device
-> and everytime when network is reactiaved (boot,
-> suspend/resume, manually restart network, etc.),
-> bunch of kernel warning shows up together:
->   ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
->   ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
->   ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
->   ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
->   ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
->   ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
->   ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
->   ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
-> since iwlwifi would make 8 acpi/dsm queries for lari config.
-> But for iwlwifi, it is safe to cache the _DSM errors,
-> since it is not possible to correct it without upgrading BIOS.
-> With this patch, those kernel warnings would only show up once when
-> booting the system and unnecessary acpi/dsm queries are avoid.
->
-> Signed-off-by: David Wang <00107082@163.com>
+On Tue, Aug 27, 2024 at 11:56:52AM +0800, Shen Lichuan wrote:
+> Let the kmemdup_array() take care about multiplication
+> and possible overflows.
+> 
+> Using kmemdup_array() is more appropriate and makes the code
+> easier to audit.
+> 
+> Signed-off-by: Shen Lichuan <shenlichuan@vivo.com>
 > ---
->  drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 7 +++++++
->  1 file changed, 7 insertions(+)
->
-> diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-> index 79774c8c7ff4..3f98f522daac 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
-> @@ -30,6 +30,8 @@ static const size_t acpi_dsm_size[DSM_FUNC_NUM_FUNCS] = {
->  	[DSM_FUNC_ENABLE_11BE] =		sizeof(u32),
->  };
+>  net/mac80211/main.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+> index a3104b6ea6f0..f16ebad36a83 100644
+> --- a/net/mac80211/main.c
+> +++ b/net/mac80211/main.c
+> @@ -1051,9 +1051,9 @@ static int ieee80211_init_cipher_suites(struct ieee80211_local *local)
+>  			return 0;
 >  
-> +static int acpi_dsm_func_retcode[DSM_FUNC_NUM_FUNCS] = {0};
-> +
->  static int iwl_acpi_get_handle(struct device *dev, acpi_string method,
->  			       acpi_handle *ret_handle)
->  {
-> @@ -169,6 +171,10 @@ int iwl_acpi_get_dsm(struct iwl_fw_runtime *fwrt,
->  	if (WARN_ON(func >= ARRAY_SIZE(acpi_dsm_size)))
->  		return -EINVAL;
+>  		/* Driver provides cipher suites, but we need to exclude WEP */
+> -		suites = kmemdup(local->hw.wiphy->cipher_suites,
+> -				 sizeof(u32) * local->hw.wiphy->n_cipher_suites,
+> -				 GFP_KERNEL);
+> +		suites = kmemdup_array(local->hw.wiphy->cipher_suites,
+> +				       local->hw.wiphy->n_cipher_suites, sizeof(u32),
+You can move sizeof(u32) to the next line to not exceed 80 lines.
+
+> +				       GFP_KERNEL);
+>  		if (!suites)
+>  			return -ENOMEM;
 >  
-> +	/* If HW return an error once, do not bother try again. */
-> +	if (acpi_dsm_func_retcode[func])
-> +		return acpi_dsm_func_retcode[func];
 
-Static variables are usually avoided because they are problematic if
-there are multiple iwlwifi devices on the same host. Should the error
-message be just removed entirely?
+Otherwise:
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Thanks,
+Michal
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> -- 
+> 2.17.1
+> 
 
