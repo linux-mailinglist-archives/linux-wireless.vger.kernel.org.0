@@ -1,79 +1,113 @@
-Return-Path: <linux-wireless+bounces-12065-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12066-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D6B996095C
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 13:56:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF2B5960A34
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 14:28:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FE991C2245E
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 11:56:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37F85B233BA
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 12:28:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A481419E825;
-	Tue, 27 Aug 2024 11:56:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="zw6b7p1B"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A9B419FA7E;
+	Tue, 27 Aug 2024 12:27:39 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A470A139580;
-	Tue, 27 Aug 2024 11:56:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEBDD19FA8A;
+	Tue, 27 Aug 2024 12:27:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724759768; cv=none; b=EQ7I0wn5YAb/47EZXsfxekUfIXZEVRas1mcNAR+RrIcNYG8V9Mn0EdQymK8ojwTqrAk4EhmnYpP7Z8FEZ2ZomCKlmTRqgGd5B0E6g5Nu188qB4Ob6J0X3cQgazTVZ2zH02/AhLNytEqcsc3MvCNgpG8YgcHaGRoowFILRjnKqqs=
+	t=1724761659; cv=none; b=Wj49M5+koEeBg4WGrT4VPdUhvREWii4q0wCMUMgYRYewDtpoT7V4vG9Sj/2scVd5zMf/2NPduvHyLtxqzKvJyqmaXivRKUvRDc0zI7DLszy1y1Z2kD4+A7KYXorBj/nycHLAP3SuPTZkzKTh3ve0Ihul3iF6RP78z9ocaQuus5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724759768; c=relaxed/simple;
-	bh=a5ZV9Z0+/DuwbgA21cGCMJWVPlMG8o4hKX+L8T0B3bI=;
+	s=arc-20240116; t=1724761659; c=relaxed/simple;
+	bh=LeXt/vBqDdXsVT9es4rU6NCTbbEFAxFI3QplTGehT0c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IfM0flIiEFW++ZlmIwa4TGZ9zKkMYRN6Qm836OSYG9BiI79xiva0nCdXNEDgGetQ5cgAemGQD4xkBh83Eek0RelvYg6a1jEMKo6vf78i6xQGt1E3Dnpo/8iW/LEjdLrNOGEEmfV5+gYUx4rIZkppyl94w2EJYPtzYfTfG6lFavs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=zw6b7p1B; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from gaggiata.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 51D6B21AE5;
-	Tue, 27 Aug 2024 13:55:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1724759752;
-	bh=CafeksWBlGGflx2ww0XuQ7ArLYM/LkByOh8sKeK4ecw=;
-	h=Received:From:To:Subject;
-	b=zw6b7p1BGB2U3GGDPqTkpk6gSPF6RNOifttVHFPCgAWHACBw/iF2VXALaimn5CRPF
-	 uYczt9ZJJgAmVMBE6132c0ZDrTfYwgQTnUHlDkM8/psirM+50me1MJaXGbdAGekvyP
-	 wTTptFc1wGr5M88HOTxM/5bhrwKJXesmsAQuP7zJk52EdnFyE80LM2nElf8fC4fs7I
-	 fiXllFxzr9vEUK46BPLkIgfWa/10+e1D+Oq50zuv4bOCE2Z8bdNtgnO+Z0OQjkHAC5
-	 PNQ5JvqlsjAxMXtFaJSPE3aVSdo9wkmNkwQtuM/PiAfrGhxJPplFJfjKum55OU40Tc
-	 2hpmFQ6U/1mEw==
-Received: by gaggiata.pivistrello.it (Postfix, from userid 1000)
-	id 06E807F84D; Tue, 27 Aug 2024 13:55:51 +0200 (CEST)
-Date: Tue, 27 Aug 2024 13:55:51 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Brian Norris <briannorris@chromium.org>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 01/12] wifi: mwifiex: add missing locking
-Message-ID: <Zs2-x6nuAzKvKfng@gaggiata.pivistrello.it>
-References: <20240826-mwifiex-cleanup-1-v1-0-56e6f8e056ec@pengutronix.de>
- <20240826-mwifiex-cleanup-1-v1-1-56e6f8e056ec@pengutronix.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=a/t5VhnL4/Tzi2aEVYO1pTh9PfY0U1YemSxZUzFD5+nvANSYMmlX+4X8O3BPU9O6Fo36qs8KD+c5R+VyMneZUkakcPCsTuxtu7JY+mK33oK+cvMfWg+akvXDdB2qn5xELbie8i6u+oiyys5LpM2RmOEnQZcdSWVZ4caP0gLu5h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 380821C009E; Tue, 27 Aug 2024 14:27:36 +0200 (CEST)
+Date: Tue, 27 Aug 2024 14:27:35 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>, kvalo@kernel.org,
+	jjohnson@kernel.org, linux-wireless@vger.kernel.org,
+	ath11k@lists.infradead.org
+Subject: Re: [PATCH AUTOSEL 6.1 21/61] wifi: ath11k: initialize 'ret' in
+ ath11k_qmi_load_file_target_mem()
+Message-ID: <Zs3GN2FH4uzzMEFY@duo.ucw.cz>
+References: <20240801002803.3935985-1-sashal@kernel.org>
+ <20240801002803.3935985-21-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="HldkCQvBm5fG8i0J"
+Content-Disposition: inline
+In-Reply-To: <20240801002803.3935985-21-sashal@kernel.org>
+
+
+--HldkCQvBm5fG8i0J
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240826-mwifiex-cleanup-1-v1-1-56e6f8e056ec@pengutronix.de>
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 26, 2024 at 01:01:22PM +0200, Sascha Hauer wrote:
-> cfg80211_rx_assoc_resp() and cfg80211_rx_mlme_mgmt() need to be called
-> with the wiphy locked, so lock it before calling these functions.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Hi!
 
-Fixes: 36995892c271 ("wifi: mwifiex: add host mlme for client mode")
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> [ Upstream commit 199f149e97dc7be80e5eed4b232529c1d1aa8055 ]
+>=20
+> smatch flagged the following issue:
+>=20
+> drivers/net/wireless/ath/ath11k/qmi.c:2401 ath11k_qmi_load_file_target_me=
+m() error: uninitialized symbol 'ret'.
+>=20
+> The reality is that 'ret' is initialized in every path through
+> ath11k_qmi_load_file_target_mem() except one, the case where the input
+> 'len' is 0, and hence the "while (remaining)" loop is never entered.
+> But to make sure this case is also handled, add an initializer to the
+> declaration of 'ret'.
+>=20
+> No functional changes, compile tested only.
 
+Just a cleanup. Does not match -stable rules.
+
+Best regards,
+							Pavel
+						=09
+> +++ b/drivers/net/wireless/ath/ath11k/qmi.c
+> @@ -2293,7 +2293,7 @@ static int ath11k_qmi_load_file_target_mem(struct a=
+th11k_base *ab,
+>  	struct qmi_txn txn;
+>  	const u8 *temp =3D data;
+>  	void __iomem *bdf_addr =3D NULL;
+> -	int ret;
+> +	int ret =3D 0;
+>  	u32 remaining =3D len;
+> =20
+>  	req =3D kzalloc(sizeof(*req), GFP_KERNEL);
+
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--HldkCQvBm5fG8i0J
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZs3GNwAKCRAw5/Bqldv6
+8kiMAJ4gB7fc1FbbwRzBA4C9ElhfyH8CYwCeM0c4ux7PN2ixW6KMksB6oTRfXkw=
+=T0fI
+-----END PGP SIGNATURE-----
+
+--HldkCQvBm5fG8i0J--
 
