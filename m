@@ -1,60 +1,59 @@
-Return-Path: <linux-wireless+bounces-12070-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12071-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4491C96133E
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 17:51:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 080E2961369
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 17:57:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE0361F21FCE
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 15:51:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64DABB22C8B
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 15:57:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57E81C93A3;
-	Tue, 27 Aug 2024 15:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 386AA1C6F5A;
+	Tue, 27 Aug 2024 15:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="e8xNCrmw"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ZZ7u2f1e"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7698B1C57B1
-	for <linux-wireless@vger.kernel.org>; Tue, 27 Aug 2024 15:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E20364A
+	for <linux-wireless@vger.kernel.org>; Tue, 27 Aug 2024 15:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724773868; cv=none; b=HgGLeygUit75Wtajl3Lv3DT8+1axsETYNV8S/cs9hHIbdPI6kATnY3xtC6eBNPLjT+qBOkmY/Ptnw4WTHVSp02uxhyOnwnMJhx1s3iZ6qPg3a/mKoKLNeEjewyq0OOgK5MKczg3PZwvQZWf1Dz16/+UWn9YfRUF4IKd70UoUkns=
+	t=1724774218; cv=none; b=mciHbGVf29N2+58Pvmfj+8G6uTfi2QUkEsCgGclUH8TuRKDRF2jjV10qOjhDdWYpA90HhpKYtGvzvQIKlhYsos8cbNderUgF/aho7uRSNjcy4yzwsXzOm3vh6tUAemjGd3On1EfYMZNeyBi5B8NKfWqKNxu+KjksnFjozjGIQys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724773868; c=relaxed/simple;
-	bh=YA41laJCh1u/LcqkTiTGdlZaky9USGb8R2hoUh9zBWc=;
+	s=arc-20240116; t=1724774218; c=relaxed/simple;
+	bh=pgCHzt6Y0cMJ2Pevil3gY+QPZjwopUWKiYr0ptYka3k=;
 	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Tiz/X4mjPv+/9/jAFwJf4nkjKO72mBbdy5vZ3pRuR3k1Rj9EPJsX6C0CW8bR7WR/p5r84cq6lbq2XmkWzGJsZemwRtIPSYdbP3gp2WJh9xxJM70O1HRmGwnc+c6Yidrx4iSRrfcd+TSDtTOCVBqVmtG9OEaB5zkS6kUF2hufU8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=e8xNCrmw; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=Z+ZHG4fydhGxzerCsshqVRKMZe1aRYzZChlcTru3O/s0fc2rhO6b+ObxmqqakSUnCkey83Ap641TReLuiLeQePk2cYWz/kZCUkzyl8tkv+y7NDV7UL3r5EJKuCzrHHJKCfZoc8fqPnGp0evRQFdWBYgJQ8SakwSlf3AOY/fP9RI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ZZ7u2f1e; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
 	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=BMG5ZHed9MJUbHIIqaZMfRKy6fBXmXCfporxolLhWx4=;
-	t=1724773865; x=1725983465; b=e8xNCrmwHg46EwkjpO7MnIBws42wEbiTIxhFpMT57R2VgLT
-	JfBBTqRk/9Sf3lzZIh3Km/U4q1D2FWTeqq/h1Fz0siQ9+hQWUdhgRp4O8E8IIywmyrJZ37Jv9HbZD
-	qjzv+tUk9c1uMk8pn/Yu2n/mTitL1AV4RlQLnaNjiL66zIslcjXKSoPRDLLBwwYrSTUFpIpmbcZbX
-	Y07FF0FL0AgXeaS09Xhq0SDBY+INJbHIwGHXboQfdBXr7Dn9YwmV37I32PV8vKnrdiKcGgukHKrVk
-	vDmov2eaeode//wdVVLKz538JsBLJAcqccRmByB0dKrIkt266X75x0panLD1JAow==;
+	Resent-Cc:Resent-Message-ID; bh=oMlpNk/3oYYu+0JQsrcKC7pkmJbIAfM6XBbjgv6XNrA=;
+	t=1724774216; x=1725983816; b=ZZ7u2f1eSmsHmUkTk84R1gxhqp2pnFZypLgzVr0yuDSBGwN
+	7x7oRuxc9knSjv21yLmEwHcpXDVw/wf07R3py1Ftthp7EiNj8NfVBdP4JYQcZC/UqgGrbzodTHP7g
+	dwTySibYsEd0ZVRU36jYVIsT1JO6sEv9lADo1y+7jN8+LWGpNru8zcnBRzoiUr3o3I+JTwhcdejK2
+	CTofh0/cV4nefTCZzsUbLaDngshwDsQvvYutJzZQlHlyfpZt02wSFw4TI33nFOtMcfYuT3nmWkVMu
+	Qno0IZlf/fj3M8IF350tnoeMvYqooECmrHaY9UWi+Fbpar0+Get1d57tjeWnvEaQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1siyTG-0000000508C-2EKT;
-	Tue, 27 Aug 2024 17:51:02 +0200
-Message-ID: <4c6891c3bf91876a6ad64849b5bb7624ed5a0305.camel@sipsolutions.net>
-Subject: Re: HACK/RFC: Fix link_sta->rx_nss == 0 in iwlwifi upon eMLSR link
- change.
+	id 1siyYv-000000050Zr-3f2X;
+	Tue, 27 Aug 2024 17:56:54 +0200
+Message-ID: <7ccb9c8ccb0dd16539ac064a35d6bf6b31d0bf0d.camel@sipsolutions.net>
+Subject: Re: Per MLO link TX stats
 From: Johannes Berg <johannes@sipsolutions.net>
 To: Ben Greear <greearb@candelatech.com>, linux-wireless
 	 <linux-wireless@vger.kernel.org>
-Date: Tue, 27 Aug 2024 17:51:01 +0200
-In-Reply-To: <d42ef01b-996b-a645-d59e-f3dec5a974a9@candelatech.com>
-References: <d42ef01b-996b-a645-d59e-f3dec5a974a9@candelatech.com>
+Date: Tue, 27 Aug 2024 17:56:53 +0200
+In-Reply-To: <c896c0d6-b43f-ba6d-336a-eca15c60529f@candelatech.com>
+References: <c896c0d6-b43f-ba6d-336a-eca15c60529f@candelatech.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
@@ -66,42 +65,41 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Tue, 2024-07-16 at 16:25 -0700, Ben Greear wrote:
-> While poking around at some instability and poor performance seen in down=
-load
-> direction, I noticed that the rate-ctrl was probably set incorrectly in
-> the iwlwifi driver due to link_sta->rx_nss being zero when changing activ=
-e link
-> to the secondary link (the one we didn't originally associate with).
+On Fri, 2024-07-12 at 10:52 -0700, Ben Greear wrote:
+> Hello,
 >=20
-> After debugging, I found that the hack below will make this problem
-> go away.  I sincerely doubt this is the correct approach, but I'm not
-> sure how it is all supposed to work in the first place.
+> I've been trying to get better per MLO link stats.  I see that the rx pat=
+h
+> stats are there, but in the tx path, I do not see anything other than 'de=
+flink'
+> getting updated.
 
-Andrei came up with this, which does seem better, but probably wouldn't
-address the AP side:
+Yeah, nobody really cared too much about statistics yet. I know. Sorry.
+Not much time to work on it either now.
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index d624c51d0bd1..8d32adf7502d 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -5744,6 +5744,7 @@ static bool ieee80211_assoc_success(struct ieee80211_=
-sub_if_data *sdata,
- 		}
-=20
- 		if (link_id !=3D assoc_data->assoc_link_id) {
-+			ieee80211_sta_init_nss(link_sta);
- 			err =3D ieee80211_sta_activate_link(sta, link_id);
- 			if (err)
- 				goto out_err;
+> And, at least with iwlwifi, I cannot find any way to actually see what li=
+nk-id
+> was used to transmit a frame in the tx status callbacks (or anywhere else=
+ I looked).
 
-Care to test it?
+You can probably derive that from the band for iwlwifi, since it only
+supports one active link on each 2.4 / 5 / 6 GHz if at all. And the band
+I guess you'd get from the LMAC ID or something. Should be in there
+somewhere... IOW, I think it's possible, but I'm also not entirely sure
+how we'd do it.
 
-In general I think we should probably remove the call to
-ieee80211_sta_init_nss() from rate_control_rate_init() and call it
-explicitly wherever needed, since with MLO we require offloaded rate
-control and rate_control_rate_init() doesn't really do anything (except
-this for the deflink, which is then questionable)
+> In the case where there is a single active link, then I can hack somethin=
+g together
+> that should be at least mostly right, but that won't fix any future radio=
+ that can
+> do 2+ active links.
+>=20
+> Any suggestions for best path forward on this?
 
-johannes
+I really think we also need to do some work on the API/cfg80211 level,
+and have link station statistics in cfg80211 instead of full station,
+and then combine them to (older) userspace in cfg80211, i.e. if
+userspace doesn't request broken out per-link statistics. There's
+probably a bunch of work here, and I only have a vague idea of how it
+should be done...
 
