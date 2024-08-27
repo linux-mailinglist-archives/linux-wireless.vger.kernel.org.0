@@ -1,134 +1,161 @@
-Return-Path: <linux-wireless+bounces-12090-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12091-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A90C961661
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 20:07:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13B5C9616B8
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 20:18:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 512EB28911D
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 18:07:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0C711F25A6A
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 18:18:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A391D2788;
-	Tue, 27 Aug 2024 18:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E9653C08A;
+	Tue, 27 Aug 2024 18:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="kbJe23aj"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="cW22avvq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazolkn19010010.outbound.protection.outlook.com [52.103.66.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0AD1CFEB7
-	for <linux-wireless@vger.kernel.org>; Tue, 27 Aug 2024 18:05:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.66.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724781930; cv=fail; b=VyxRBWRHSGs2N5TEOoqxn9KUe/CBqnnuINIJQURvykoSVgMSd8xBiFhWlkmJH8ixklI6y3KZ8jDSyhOphoMazk3A1+Pr9HULNkSK+XilYq8YskJiOn7iJg0S2WpyfZxmdQeiNK2ru3RQB0RRbcS1/F8tz8aKN6IA2GVXl/YJ+Ns=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724781930; c=relaxed/simple;
-	bh=+nDNhut0ZmtxlGG4ydsU+UaqQZnwzCkFTvMXCwOdppk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Q+tJkl3gamh7JHRvl7kyrWo9LO1pZ0HXzWsLzCZtnocTz9hIoV92IOIF73hf+flkX9Vw5+Qn+chOIY2pLFLkuU1WSy3n63oA5RuiJlrTijAzNER/0E4oRjFMgr/ax+kukjL/OP23UaavFC1le51sccpOMrg5DEcMpK7w5SQZXMQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=kbJe23aj; arc=fail smtp.client-ip=52.103.66.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XCPzANsbG8YJWbUTdCqMsBS7hzTV05LGGgWugpIXGwAlGozQ22UXOdcR6UOclO4qKE4e/iX83teq3+uZs/pUHQzZxg72kYONnguIwNTg6PlCN7lvtvJzKZKCD7D3sqbiZsuNTCJCZpFej82jm6xQHz26iNGKxBBvE5J2FWxAN39VFaudDEXFHYfY5vUss9XdzCphRql2JZTKDNjIpIuhrHQdGdJ87GZNb6HgMJiVfIUkxKSQBfwLcvQbcueD16A7taL5bFdgHux1q0cA88M3q15ybt4MadSRHftQuwgp2d5re57NRrd1OjdnmQDjBbmHmJxk4Ux2L5Djgt7op0/3Fg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+nDNhut0ZmtxlGG4ydsU+UaqQZnwzCkFTvMXCwOdppk=;
- b=PvqJELE5oB9Sgu48/gEP4wywfpr9Zi0R73LOhYfKbD+uC7IZzOqkxuQXeWEzYLPJPJZCacgmPjuPcp6VHo814am8+wSK3xwj9XjBitAlRwwbLhfy8s60VmBDgGPuCcDga6pZzIgn5Uji868f6bivifc655c969H6MeWlYpxsO6bK7ZhcWD+eE0ELWPmNrrpzgIlCAW/CFQImI7MB7m+jvXcUJ7fqfwQBSgQ8ISpHY+3DeO1jANSVyMFcFt2hMKU4PPK6hXmRJcz/E2O3KFjdli5Oa8St6+DSLCUBfQcYylsdQCooLPsspZWcHGtHGdsXzSWyVUiNEfOssWxfMjq/3Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+nDNhut0ZmtxlGG4ydsU+UaqQZnwzCkFTvMXCwOdppk=;
- b=kbJe23ajR0ONytLh+Z91HNLcFfahTuvR+5NlTvSidnR2pmVgrBb41T1BPMoIjKyhog9YkylN270Mv7TyS9dC7vOh54nlk0kNR94neF8buRMVL/CDCQAFWi3eh0NiVUcQMml+hZva7cXMCkfh88eXBEyM4sjkJsCQ447qtC5PjO4SuEGEyba37NLnPgDJdTutzbiJU92JAz0Alr4xUS7BVst05L1sDQuQd5urBWrPMCeLclKr3lWK/0x5X4lmkrmRLeOEZ5oI3YNzuqxA5Mk/vLS1k6Juca/Jkqj+VyQ3UlHyhfDTv+d0GHfy5ZCcTm87ql3iBAwf0uKusSDXrFKd/A==
-Received: from TYAP286MB0746.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:85::11)
- by TYWP286MB2761.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:24d::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.26; Tue, 27 Aug
- 2024 18:05:10 +0000
-Received: from TYAP286MB0746.JPNP286.PROD.OUTLOOK.COM
- ([fe80::1672:339f:cd51:afdd]) by TYAP286MB0746.JPNP286.PROD.OUTLOOK.COM
- ([fe80::1672:339f:cd51:afdd%4]) with mapi id 15.20.7897.021; Tue, 27 Aug 2024
- 18:05:09 +0000
-From: Shiji Yang <yangshiji66@outlook.com>
-To: nbd@nbd.name
-Cc: linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2 05/24] wifi: mt76: partially move channel change code to core
-Date: Wed, 28 Aug 2024 02:02:39 +0800
-Message-ID:
- <TYAP286MB07467C718A0428E8D6F0B0EDBC942@TYAP286MB0746.JPNP286.PROD.OUTLOOK.COM>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240827093011.18621-5-nbd@nbd.name>
-References: <20240827093011.18621-5-nbd@nbd.name>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-TMN: [NSnXakTA2oxOKinUu6L8DTbvwxGByW0M]
-X-ClientProxiedBy: SG3P274CA0015.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::27)
- To TYAP286MB0746.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:85::11)
-X-Microsoft-Original-Message-ID:
- <20240827180239.1148-1-yangshiji66@outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D53D1D3655
+	for <linux-wireless@vger.kernel.org>; Tue, 27 Aug 2024 18:17:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724782644; cv=none; b=sq256h6s0aL5Vq73Oj5vJNm/eMljjUUpmqEj7whAAcfu9hAye+4f2KmnAIdbDKsqAB6ddlm+5utiuWjhivHNesVXbQdrjqlWd0KSG1pLhV9GtY1RO1Ot0EOgTx1Je6iwwRmFc3oaxW68HEWwW6ECvKcUQBOBKE7c+WGeeJOLreA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724782644; c=relaxed/simple;
+	bh=ff5YF/bxgtB9P+QVmHeYYNv/2Vy+acX/6Wsqv6t9DoY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=ZQjpAU1sWgkRKCEMg4Pg/e+2YjVWAz2O0lffMhkS1qx+8YPg2VwFf2GF1R4mOWSck/LPM5VIy+zLbcXNW2/RsefUclm8kT2bevWlU7T+5yBfwlmRc9dqGqztWW74NmzbZZZT3U+K2Xc0WrW5iYR5vKS8AojQ6LXsTgKJukyyXRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=cW22avvq; arc=none smtp.client-ip=148.163.129.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 9D253C008E;
+	Tue, 27 Aug 2024 18:17:14 +0000 (UTC)
+Received: from [192.168.100.159] (unknown [50.251.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id BD81513C2B0;
+	Tue, 27 Aug 2024 11:17:10 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com BD81513C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1724782630;
+	bh=ff5YF/bxgtB9P+QVmHeYYNv/2Vy+acX/6Wsqv6t9DoY=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=cW22avvqxqlO+gEIkjpuZMEYkF7c1UQ3RETOo97w3pH8/GY5W8kzASjnbLROm5uvm
+	 5eURo9HpXEiniWs4s3Vhwo9kxjCbThGO2Iu56ezWxdUgm4W6gOUaJ5+P2VXEz5GCDH
+	 jtdzd2oe08toNKBgWIoEH0fdZyMij0xbWaY4xv40=
+Message-ID: <dd2c0158-775f-f876-6962-dba30d0bd16c@candelatech.com>
+Date: Tue, 27 Aug 2024 11:17:10 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYAP286MB0746:EE_|TYWP286MB2761:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5da3853a-609a-4cf1-8146-08dcc6c2c9ef
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|15080799006|8060799006|5072599009|19110799003|461199028|3412199025|4302099013|440099028|1602099012;
-X-Microsoft-Antispam-Message-Info:
-	X8k/3n9jtJG2mgBfabm96cNB/0wOC9kBNvtCwbP467aMQZ6mLybOhXx+NLM4Vhmx3Mot/U8HHSFWMoqkh316voP83sOAdPI1aKCeBAlZVbmFdKxLdhAk5IzyYp8bxLV9Pbx+BFWGBoYZGZRoDKvRr7LtV8thfl3xewrN+V5tSLBiceKZ1drPnHwJTckFqJeXuV2HdJZ3fpgpp5IUvI3Xamf0izALbV5ocgbwL0jpT8AmfPQauF30Rdbyiu17e9bpn+Btuz5z7L49ZB76mAbm9CLrumx0JZmUckZvBpP1H/GjiNWOaCq2Qk05eJp2Q8xGelQmPkU3OJF8Fbd9OW470E1+J0M1fFv5brtED7g3YSmoWMGx5qeJlLNRHiRC+n7+Ek2jmHVzYWkBFbQPwCFdSW5AvkbqCj2S+mPsitHctTDEx/l8QT4jS8JAKCTIFbRiXlpOfXa80HS0T3h1D4ySaBLINRqbed306VHn9SoOlyXrKIXCdj3bHqC6cGLIo9C2yK1Qfy/55B2fZbBTG7WtFJ6k9St3gUlgOR233rYoTadcw21wKO2pxEjtEmdUFbM36Nen0IQwGMU8kjj2PA7fqPYX189QTAItOEJs+Xgl0UNcGHRIopL1LfAJJNB4xlqZ/mEmq7MfrDQrln2ISlhWEBS+sS0sl6rxehY5Fkh2ExbPOD/cjDVLt5mWAafaTY6t9b9dWp27PqFQiF6Vwow3knGVYIMH6FirKeh8mE5VYUdBFgA5VK+2aJdi/fRC1N3LW5xcTF63Oo2hxcF/1qTdYquwjia+k1eRxnwBNaxFw5xLCqmHZ6MY+MDyAxCl5Iew
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?K0/gazUcFtagOsOZ0rLSFnzfp4qp1bYtYm4yC8Or2e9vlQGkhjdW1hTqQryh?=
- =?us-ascii?Q?okwWmdxUEQsyRSaTTTeXYBACAGPP4eG/VDBJurn3Wr9W2lTShRffMpfRdHek?=
- =?us-ascii?Q?wgtqOki/Pk9ypGcdrqunhfu2d89fAsFXZYe4rhyy/e4g92z7wHgNbRE2Isv5?=
- =?us-ascii?Q?uqVkN/UWqPcI59pp8O0nXgTXC5sG68mFflkvVQpyCb8xkMWWpjRg03unpygb?=
- =?us-ascii?Q?130R909ElCpcckHWWcd9rROrVY6yKIsZm52DI769kRb9GQ3JaqLtoo55ZWYM?=
- =?us-ascii?Q?wAsuNfkeu5rPurT/9IMdv/O6y3H8tA1LspRD2RxYbLnoCceWGITpx6o8WYqT?=
- =?us-ascii?Q?Luyk7RVP4kCGJAljYpFZEoEUDZFoZ3zZjgJu18Ddp5aFcm9+AhguuzS4hj/7?=
- =?us-ascii?Q?2DOGwgmAY34nbzvr1+dtnQPobPy1/WZv+NTZ2FsZOiAK5B9TPbp0p7phpeaM?=
- =?us-ascii?Q?ISEOkegzj8UbMvycIWsn5GKPtNhwx818Zh7/SMLZ7Hhbea1RbvKkR4UTt77n?=
- =?us-ascii?Q?fab7FHLHB46v7LKkuyN8y5MZqgOSTYkXmB52AuxF3SHD7ZaOZ7QUrkLzceZh?=
- =?us-ascii?Q?bA63X7SMVN5lfu2/FZM42JcrCLWv5oRk6mYqihAsRIYjde9vIC0mh+ZyrjYv?=
- =?us-ascii?Q?wOM7V0Byvv8MnS+64QGcUtXbVGrY77XefzUjOoZJTLbW7FybO7vAErF2uOsp?=
- =?us-ascii?Q?0/rbZwIbUFoTho5MmaTVEXIk8uZ3s9JeKp8wMMdErH4Cj/NJahNArwZJP8hq?=
- =?us-ascii?Q?Et/LBq1JUFN8WJy+kbyFwLWC0oe64F8wirctJKo10kfwYN4xYY0qD2UKbZum?=
- =?us-ascii?Q?Q/6ZTPohXW5c264rJkRtV3Ui9yS8hRjJYVich0grqCb6ldgglYhS29M1hvjg?=
- =?us-ascii?Q?Qc7a6aagUWqdkpCAp6EuyYeTaqQsqa6WGdh1zB+hdLa6Lr1DeUjv7FRS0jU7?=
- =?us-ascii?Q?NkoBUpRxoXlSFIf/6n3SGy+hLCFWevLeRZopnAkV+qicaQFRbrzYi6MT3+LH?=
- =?us-ascii?Q?wxceVet49ix+H9aJMYymQbiuQM1f2b0SXiY5A6Aa+zV9f+meU9sGR/2k42qH?=
- =?us-ascii?Q?eHlSr8e+/OcVNalDfwrThU0W+2cfakztgGE+8K4suWe+wYCZY5a9lSrZxHmI?=
- =?us-ascii?Q?wh81aCAXBh9DAd/jCov34UKA7/PtLKQH4fEXsde7q0BzuRhFokl1G8IS/CAU?=
- =?us-ascii?Q?StfU8GfkEt9RMsiGjjmTe663ka8Sa96Tx5hmRcC8QdOoarmhMoc0R8mg6LQ?=
- =?us-ascii?Q?=3D?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5da3853a-609a-4cf1-8146-08dcc6c2c9ef
-X-MS-Exchange-CrossTenant-AuthSource: TYAP286MB0746.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2024 18:05:09.8495
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYWP286MB2761
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: Per MLO link TX stats
+Content-Language: en-US
+To: Johannes Berg <johannes@sipsolutions.net>,
+ linux-wireless <linux-wireless@vger.kernel.org>
+References: <c896c0d6-b43f-ba6d-336a-eca15c60529f@candelatech.com>
+ <7ccb9c8ccb0dd16539ac064a35d6bf6b31d0bf0d.camel@sipsolutions.net>
+ <e5c3265a-3411-39b4-f4c4-40f3937c96fb@candelatech.com>
+ <9093726e308d0a26e8afe2323a865d222e48fe61.camel@sipsolutions.net>
+ <41008ac0-ca36-b19f-c3a4-61f54ce2d2f7@candelatech.com>
+ <b00a52947670f45c0764d33ea093c90b825fcdab.camel@sipsolutions.net>
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <b00a52947670f45c0764d33ea093c90b825fcdab.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MDID: 1724782635-qgIFAsz76pfj
+X-MDID-O:
+ us5;ut7;1724782635;qgIFAsz76pfj;<greearb@candelatech.com>;b42792dba290a1257c3f0aaf1c60b0ff
 
-Hi, Felix
+On 8/27/24 09:41, Johannes Berg wrote:
+> On Tue, 2024-08-27 at 09:28 -0700, Ben Greear wrote:
+>> On 8/27/24 09:20, Johannes Berg wrote:
+>>> On Tue, 2024-08-27 at 09:12 -0700, Ben Greear wrote:
+>>>>
+>>>> When be200 goes into eMLSR mode, both 5 and 6Ghz links are shown as active, so at least
+>>>> you cannot use 'active link' to reliably update stats.
+>>>
+>>> Sure, not active link - but there's an LMAC bit somewhere ... Ah, it's
+>>> not documented, it's actually documented *differently*, but it should be
+>>> bit 31 in len_n_flags in struct iwl_rx_packet.
+>>>
+>>> Given the LMAC ID on the TX response notification we should know which
+>>> LMAC transmitted it, and then I think it's a simple mapping to the
+>>> active link. But I haven't actually really tried it.
+>>
+>> If you can share a patch that documents this bit (like 0 means 5Ghz and 1 means 6Ghz??)
+>> then we can try it out.
+> 
+> I think yes, 5 GHz should be on LMAC 0 and 6 GHz on LMAC 1, and that's
+> the only case where we can have two active links simultaneously.
+> 
+> There's still a race though, when we change the active links while
+> transmitting, not sure how to handle that.
+> 
+> Oh wait, it's simpler than that - we have the STA pointer in there
+> already (see iwl_mvm_rx_tx_cmd_single and iwl_mvm_rx_tx_cmd_agg), but
+> since we get that from the FW STA ID, we obviously also know the *link*
+> STA since the FW STA IDs are per link, so we can just go from there to
+> the link ID directly.
+> 
+> link_sta = rcu_dereference(mvm->fw_id_to_link_sta[notif->sta_id]);
+> 
+> link_sta->link_id
+> 
+>> And maybe your idea for how to report it in tx-status too since that will touch
+>> mac80211?
+> 
+> I hadn't really thought about that ... I guess we could use the
+> IEEE80211_TX_CTRL_MLO_LINK space also for status? It's already filled to
+> the link ID by mac80211 for TX if the frame must go out on a specific
+> link (or 0xF otherwise which is an invalid link ID anyway.)
 
-This patch broke the MT7610E. After this patch[1], the client
-cannot connect to the MT7610 AP on OpenWrt. There is no error
-log output. BTW, MT7612E still works fine.
+So, something like this (compile tested only at this point)?
 
-[1] https://github.com/openwrt/mt76/commit/b80c997b3ff6f3e32fd729dc1c97709da5779fa1
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+index e7cb6dcde182..92f7d0d34421 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+@@ -1963,6 +1963,9 @@ static void iwl_mvm_rx_tx_cmd_single(struct iwl_mvm *mvm,
+         u8 lq_color;
+         u16 next_reclaimed, seq_ctl;
+         bool is_ndp = false;
++       struct ieee80211_link_sta *link_sta;
++
++       link_sta = rcu_dereference(mvm->fw_id_to_link_sta[sta_id]);
 
-Regards,
-Shiji Yang
+         __skb_queue_head_init(&skbs);
+
+@@ -1989,6 +1992,10 @@ static void iwl_mvm_rx_tx_cmd_single(struct iwl_mvm *mvm,
+
+                 memset(&info->status, 0, sizeof(info->status));
+                 info->flags &= ~(IEEE80211_TX_STAT_ACK | IEEE80211_TX_STAT_TX_FILTERED);
++               if (link_sta) {
++                       info->control.flags &= ~(u32_encode_bits(0xF, IEEE80211_TX_CTRL_MLO_LINK));
++                       info->control.flags |= u32_encode_bits(link_sta->link_id, IEEE80211_TX_CTRL_MLO_LINK);
++               }
+
+                 /* inform mac80211 about what happened with the frame */
+                 switch (status & TX_STATUS_MSK) {
+
+And something similar for the agg path....
+
+Thanks,
+Ben
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
+
 
