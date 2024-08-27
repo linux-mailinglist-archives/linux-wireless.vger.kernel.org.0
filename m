@@ -1,105 +1,131 @@
-Return-Path: <linux-wireless+bounces-12071-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12083-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 080E2961369
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 17:57:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6D45961469
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 18:43:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64DABB22C8B
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 15:57:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7665B28328D
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 16:43:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 386AA1C6F5A;
-	Tue, 27 Aug 2024 15:56:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9104F1CDFCE;
+	Tue, 27 Aug 2024 16:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ZZ7u2f1e"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="H+a47Emi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E20364A
-	for <linux-wireless@vger.kernel.org>; Tue, 27 Aug 2024 15:56:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7561803D
+	for <linux-wireless@vger.kernel.org>; Tue, 27 Aug 2024 16:42:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724774218; cv=none; b=mciHbGVf29N2+58Pvmfj+8G6uTfi2QUkEsCgGclUH8TuRKDRF2jjV10qOjhDdWYpA90HhpKYtGvzvQIKlhYsos8cbNderUgF/aho7uRSNjcy4yzwsXzOm3vh6tUAemjGd3On1EfYMZNeyBi5B8NKfWqKNxu+KjksnFjozjGIQys=
+	t=1724776965; cv=none; b=LS977o8ABZJ9jW9Vkm8HeC2g+iNKLrO1tLuoZe1E6/LXrSrxGkGEdyR1tENWYiw/SorbjZzSmq6kbsF04v3W9OxTuDj2XK52CBuv1f/K84m7/IoJfG9JokYTWLCJ8N3TN5hclCFVG5e+IhvoK1zEXs3jWikAhyJj7UyMrY6FoE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724774218; c=relaxed/simple;
-	bh=pgCHzt6Y0cMJ2Pevil3gY+QPZjwopUWKiYr0ptYka3k=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Z+ZHG4fydhGxzerCsshqVRKMZe1aRYzZChlcTru3O/s0fc2rhO6b+ObxmqqakSUnCkey83Ap641TReLuiLeQePk2cYWz/kZCUkzyl8tkv+y7NDV7UL3r5EJKuCzrHHJKCfZoc8fqPnGp0evRQFdWBYgJQ8SakwSlf3AOY/fP9RI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ZZ7u2f1e; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=oMlpNk/3oYYu+0JQsrcKC7pkmJbIAfM6XBbjgv6XNrA=;
-	t=1724774216; x=1725983816; b=ZZ7u2f1eSmsHmUkTk84R1gxhqp2pnFZypLgzVr0yuDSBGwN
-	7x7oRuxc9knSjv21yLmEwHcpXDVw/wf07R3py1Ftthp7EiNj8NfVBdP4JYQcZC/UqgGrbzodTHP7g
-	dwTySibYsEd0ZVRU36jYVIsT1JO6sEv9lADo1y+7jN8+LWGpNru8zcnBRzoiUr3o3I+JTwhcdejK2
-	CTofh0/cV4nefTCZzsUbLaDngshwDsQvvYutJzZQlHlyfpZt02wSFw4TI33nFOtMcfYuT3nmWkVMu
-	Qno0IZlf/fj3M8IF350tnoeMvYqooECmrHaY9UWi+Fbpar0+Get1d57tjeWnvEaQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1siyYv-000000050Zr-3f2X;
-	Tue, 27 Aug 2024 17:56:54 +0200
-Message-ID: <7ccb9c8ccb0dd16539ac064a35d6bf6b31d0bf0d.camel@sipsolutions.net>
-Subject: Re: Per MLO link TX stats
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Ben Greear <greearb@candelatech.com>, linux-wireless
-	 <linux-wireless@vger.kernel.org>
-Date: Tue, 27 Aug 2024 17:56:53 +0200
-In-Reply-To: <c896c0d6-b43f-ba6d-336a-eca15c60529f@candelatech.com>
-References: <c896c0d6-b43f-ba6d-336a-eca15c60529f@candelatech.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+	s=arc-20240116; t=1724776965; c=relaxed/simple;
+	bh=aWwuJTJ/hM30qHYLASs4Mn9NPQ2ERBhrpF/JuxNkxzw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VQM3xTqFS3l4hoC1xzCzmqp3B3evEaXHIlUg8FO+yKPaw34Vl68bMxjuS4Rq0R8udbRC6KqXw531qsshHB6S/1Ke/ZmQk5YhFOer+UirHnTVI3te1grkadgNenccM9bzYvYwOfWs7uR6u6UAn6TAOCJVULMpQ1wPd3a6mamstvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=H+a47Emi; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id D03BE886E5;
+	Tue, 27 Aug 2024 18:42:41 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1724776962;
+	bh=CVBcbsjk1/R0CtCN8+IqERc4hhAdmez/fkFa/Ow6mCI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=H+a47Emi6xhfe1kaPZq7QdidxN6wwHNJr+lNpbigET3lVOh9PhQ9gyexIYAorEFJ0
+	 xtjrRxzyvefZrjCZZWnozgCeShzF9S2+T5hz75GL8MvG+Q2xm8cZAMNNTYV5brVwVm
+	 TgieM6Debfp+a/xi7is61eKzIZxOT3VQBPgM8wSwk7UdnOn3ksyeviR85+GhgSTjH/
+	 bJlH3wjcpJXih8+3dzY1Jy8yHOoEQpPB03YWa3XVZsJeS5p4vpdU+AJugVJ+rXkDrZ
+	 bA30zgskUdNlzT0x6X7GpsZFOq1RJNtiNzBny8hJUy4Vj/hUi1+BWesjMPKu5cpPFs
+	 E6YQld2ughHeg==
+Message-ID: <60a52cac-964e-40d6-aa96-7bbf34d9c4ac@denx.de>
+Date: Tue, 27 Aug 2024 17:20:51 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: wilc1000: Keep slot powered on during
+ suspend/resume
+To: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+ linux-wireless@vger.kernel.org
+Cc: Ajay Singh <ajay.kathat@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Kalle Valo <kvalo@kernel.org>
+References: <20240821183823.163268-1-marex@denx.de>
+ <a9e673b1-43f3-4341-a035-3e1265b8a544@bootlin.com>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <a9e673b1-43f3-4341-a035-3e1265b8a544@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On Fri, 2024-07-12 at 10:52 -0700, Ben Greear wrote:
-> Hello,
->=20
-> I've been trying to get better per MLO link stats.  I see that the rx pat=
-h
-> stats are there, but in the tx path, I do not see anything other than 'de=
-flink'
-> getting updated.
+On 8/27/24 11:53 AM, Alexis Lothoré wrote:
 
-Yeah, nobody really cared too much about statistics yet. I know. Sorry.
-Not much time to work on it either now.
+Hi,
 
-> And, at least with iwlwifi, I cannot find any way to actually see what li=
-nk-id
-> was used to transmit a frame in the tx status callbacks (or anywhere else=
- I looked).
+>> diff --git a/drivers/net/wireless/microchip/wilc1000/sdio.c b/drivers/net/wireless/microchip/wilc1000/sdio.c
+>> index 683a35c682a8f..41122199d51eb 100644
+>> --- a/drivers/net/wireless/microchip/wilc1000/sdio.c
+>> +++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
+>> @@ -973,7 +973,6 @@ static int wilc_sdio_suspend(struct device *dev)
+>>   {
+>>   	struct sdio_func *func = dev_to_sdio_func(dev);
+>>   	struct wilc *wilc = sdio_get_drvdata(func);
+>> -	int ret;
+>>   
+>>   	dev_info(dev, "sdio suspend\n");
+>>   
+>> @@ -987,13 +986,7 @@ static int wilc_sdio_suspend(struct device *dev)
+>>   
+>>   	wilc_sdio_disable_interrupt(wilc);
+>>   
+>> -	ret = wilc_sdio_reset(wilc);
+>> -	if (ret) {
+>> -		dev_err(&func->dev, "Fail reset sdio\n");
+>> -		return ret;
+>> -	}
+>> -
+>> -	return 0;
+>> +	return sdio_set_host_pm_flags(func, MMC_PM_KEEP_POWER);
+>>   }
+> 
+> This change breaks suspend/resume on my wilc1000 setup (sama5d2 wlsom evk +
+> wilc1000 sd):
+> 
+> # echo mem > /sys/power/state
+> PM: suspend entry (deep)
+> Filesystems sync: 0.055 seconds
+> Freezing user space processes
+> Freezing user space processes completed (elapsed 0.018 seconds)
+> OOM killer disabled.
+> Freezing remaining freezable tasks
+> Freezing remaining freezable tasks completed (elapsed 0.006 seconds)
+> wilc1000_sdio mmc0:0001:1: sdio suspend
+> wilc1000_sdio mmc0:0001:1: PM: dpm_run_callback(): pm_generic_suspend returns -22
+> wilc1000_sdio mmc0:0001:1: PM: failed to suspend async: error -22
+> PM: Some devices failed to suspend, or early wake event detected
+> OOM killer enabled.
+> Restarting tasks ... done.
+> random: crng reseeded on system resumption
+> PM: suspend exit
+> sh: write error: Invalid argument
+> 
+> But I have to dig more to really understand the root cause.
 
-You can probably derive that from the band for iwlwifi, since it only
-supports one active link on each 2.4 / 5 / 6 GHz if at all. And the band
-I guess you'd get from the LMAC ID or something. Should be in there
-somewhere... IOW, I think it's possible, but I'm also not entirely sure
-how we'd do it.
-
-> In the case where there is a single active link, then I can hack somethin=
-g together
-> that should be at least mostly right, but that won't fix any future radio=
- that can
-> do 2+ active links.
->=20
-> Any suggestions for best path forward on this?
-
-I really think we also need to do some work on the API/cfg80211 level,
-and have link station statistics in cfg80211 instead of full station,
-and then combine them to (older) userspace in cfg80211, i.e. if
-userspace doesn't request broken out per-link statistics. There's
-probably a bunch of work here, and I only have a vague idea of how it
-should be done...
+Does your MMC controller struct mmc_host set .pm_caps |= 
+MMC_PM_KEEP_POWER ? Maybe that's the problem, that the controller does 
+not set these PM caps ?
 
