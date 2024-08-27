@@ -1,92 +1,107 @@
-Return-Path: <linux-wireless+bounces-12069-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12070-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AFDB960D9E
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 16:31:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4491C96133E
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 17:51:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC296284E72
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 14:31:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE0361F21FCE
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 15:51:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDD951C4ED8;
-	Tue, 27 Aug 2024 14:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B57E81C93A3;
+	Tue, 27 Aug 2024 15:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CR51SEQW"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="e8xNCrmw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC781A08A3;
-	Tue, 27 Aug 2024 14:31:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7698B1C57B1
+	for <linux-wireless@vger.kernel.org>; Tue, 27 Aug 2024 15:51:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724769102; cv=none; b=gotq42/p2NtE3fEa96vbou3GzMt35nzUfRHdqcWBX+ZcGTERO09MUrYE6jJ0Y868Qroj2Coppehxcc4NVFvB88VNaTd+qtZfXDWNDGD1sY9YkMH4OkwkaDBgaU4nC9HD4vwsVAhLY0KsvnaQETqHgmv7RBbWqo2sFH1ZyWP6HQA=
+	t=1724773868; cv=none; b=HgGLeygUit75Wtajl3Lv3DT8+1axsETYNV8S/cs9hHIbdPI6kATnY3xtC6eBNPLjT+qBOkmY/Ptnw4WTHVSp02uxhyOnwnMJhx1s3iZ6qPg3a/mKoKLNeEjewyq0OOgK5MKczg3PZwvQZWf1Dz16/+UWn9YfRUF4IKd70UoUkns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724769102; c=relaxed/simple;
-	bh=jPW5CeXWol8SdzTNVQSXpa6WgMRABIvFBwXD85nKydg=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=LbQnSIObUHasqwrxMU6AFCHdh09TCkYtUuYCyT8dzla04D+Run4d/gCBfnCLzxgMG/FhRe18CJF0qQMVdTQSBId8ROXYoC6SsNc+I97zh3WlEmMIMFZP1fh9U9sYrN75oXXgQ0Mo6ThP5WvyEXyNmsR9TKSejDKZjljG1bt/wd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CR51SEQW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F5CC4AF52;
-	Tue, 27 Aug 2024 14:31:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724769102;
-	bh=jPW5CeXWol8SdzTNVQSXpa6WgMRABIvFBwXD85nKydg=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=CR51SEQWCzFdwGlPxDcKz4Gl7UMMKEEG6+xV2kZ/5VauRsdfO+JTGHDUHETVbfW+v
-	 i7L5nPZ+DUfQqhSNvi9vzmGZk70RBURcEZy+ITaXI/ZF8fBnzpuUXEQKJg5Vk3JgDb
-	 ehz4JBvE/vSkz/jdrDyVG5PoEui1xGj8QeywqRwn1cHcEhmfdfYvnVWPEO4lBkmH/a
-	 j0A1ML67VcwUcpyw3JPUVbJL0/kgVFaXOFi8O0ZdAag2pr5IXzAfxQidwM+UlT/Uw2
-	 /s2MST3G9tntcOySE8nfddON9s9TxQlvCD5VV3Q4gUWX5AMs7SjCVIC7jmFFREq8VY
-	 Hu3Zm4NvCDhsw==
-From: Kalle Valo <kvalo@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Hongbo Li <lihongbo22@huawei.com>,  <johannes@sipsolutions.net>,
-  <davem@davemloft.net>,  <edumazet@google.com>,  <pabeni@redhat.com>,
-  <allison.henderson@oracle.com>,  <dsahern@kernel.org>,
-  <pshelar@ovn.org>,  <linux-wireless@vger.kernel.org>,
-  <netdev@vger.kernel.org>,  <rds-devel@oss.oracle.com>,
-  <dccp@vger.kernel.org>,  <dev@openvswitch.org>,
-  <linux-afs@lists.infradead.org>
-Subject: Re: [PATCH net-next 0/8] Use max/min to simplify the code
-References: <20240824074033.2134514-1-lihongbo22@huawei.com>
-	<20240826144404.03fce39c@kernel.org>
-	<4a92bb68-7fe7-4bf2-885f-e07b06ea82aa@huawei.com>
-	<878qwifub5.fsf@kernel.org> <20240827070347.4bf3a284@kernel.org>
-Date: Tue, 27 Aug 2024 17:31:36 +0300
-In-Reply-To: <20240827070347.4bf3a284@kernel.org> (Jakub Kicinski's message of
-	"Tue, 27 Aug 2024 07:03:47 -0700")
-Message-ID: <877cc2ujef.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1724773868; c=relaxed/simple;
+	bh=YA41laJCh1u/LcqkTiTGdlZaky9USGb8R2hoUh9zBWc=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Tiz/X4mjPv+/9/jAFwJf4nkjKO72mBbdy5vZ3pRuR3k1Rj9EPJsX6C0CW8bR7WR/p5r84cq6lbq2XmkWzGJsZemwRtIPSYdbP3gp2WJh9xxJM70O1HRmGwnc+c6Yidrx4iSRrfcd+TSDtTOCVBqVmtG9OEaB5zkS6kUF2hufU8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=e8xNCrmw; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=BMG5ZHed9MJUbHIIqaZMfRKy6fBXmXCfporxolLhWx4=;
+	t=1724773865; x=1725983465; b=e8xNCrmwHg46EwkjpO7MnIBws42wEbiTIxhFpMT57R2VgLT
+	JfBBTqRk/9Sf3lzZIh3Km/U4q1D2FWTeqq/h1Fz0siQ9+hQWUdhgRp4O8E8IIywmyrJZ37Jv9HbZD
+	qjzv+tUk9c1uMk8pn/Yu2n/mTitL1AV4RlQLnaNjiL66zIslcjXKSoPRDLLBwwYrSTUFpIpmbcZbX
+	Y07FF0FL0AgXeaS09Xhq0SDBY+INJbHIwGHXboQfdBXr7Dn9YwmV37I32PV8vKnrdiKcGgukHKrVk
+	vDmov2eaeode//wdVVLKz538JsBLJAcqccRmByB0dKrIkt266X75x0panLD1JAow==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1siyTG-0000000508C-2EKT;
+	Tue, 27 Aug 2024 17:51:02 +0200
+Message-ID: <4c6891c3bf91876a6ad64849b5bb7624ed5a0305.camel@sipsolutions.net>
+Subject: Re: HACK/RFC: Fix link_sta->rx_nss == 0 in iwlwifi upon eMLSR link
+ change.
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Ben Greear <greearb@candelatech.com>, linux-wireless
+	 <linux-wireless@vger.kernel.org>
+Date: Tue, 27 Aug 2024 17:51:01 +0200
+In-Reply-To: <d42ef01b-996b-a645-d59e-f3dec5a974a9@candelatech.com>
+References: <d42ef01b-996b-a645-d59e-f3dec5a974a9@candelatech.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-malware-bazaar: not-scanned
 
-Jakub Kicinski <kuba@kernel.org> writes:
+On Tue, 2024-07-16 at 16:25 -0700, Ben Greear wrote:
+> While poking around at some instability and poor performance seen in down=
+load
+> direction, I noticed that the rate-ctrl was probably set incorrectly in
+> the iwlwifi driver due to link_sta->rx_nss being zero when changing activ=
+e link
+> to the secondary link (the one we didn't originally associate with).
+>=20
+> After debugging, I found that the hack below will make this problem
+> go away.  I sincerely doubt this is the correct approach, but I'm not
+> sure how it is all supposed to work in the first place.
 
-> On Tue, 27 Aug 2024 07:45:02 +0300 Kalle Valo wrote:
->> > Do you mean some patches will go to other branches (such as mac80211)?  
->> 
->> Jakub means that your patchset had compilation errors, see the red on
->> patchwork:
->> 
->> https://patchwork.kernel.org/project/netdevbpf/list/?series=882901&state=*&order=date
->
-> FWIW I prefer not to point noobs to the patchwork checks, lest they
-> think it's a public CI and they can fling broken code at the list :(
+Andrei came up with this, which does seem better, but probably wouldn't
+address the AP side:
 
-Good point, that's definitely what we do not want. I'll keep this in
-mind.
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index d624c51d0bd1..8d32adf7502d 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -5744,6 +5744,7 @@ static bool ieee80211_assoc_success(struct ieee80211_=
+sub_if_data *sdata,
+ 		}
+=20
+ 		if (link_id !=3D assoc_data->assoc_link_id) {
++			ieee80211_sta_init_nss(link_sta);
+ 			err =3D ieee80211_sta_activate_link(sta, link_id);
+ 			if (err)
+ 				goto out_err;
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Care to test it?
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-https://docs.kernel.org/process/submitting-patches.html
+In general I think we should probably remove the call to
+ieee80211_sta_init_nss() from rate_control_rate_init() and call it
+explicitly wherever needed, since with MLO we require offloaded rate
+control and rate_control_rate_init() doesn't really do anything (except
+this for the deflink, which is then questionable)
+
+johannes
 
