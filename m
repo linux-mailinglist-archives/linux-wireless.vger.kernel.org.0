@@ -1,124 +1,123 @@
-Return-Path: <linux-wireless+bounces-12023-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12024-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39EAC960335
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 09:35:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86E3A960353
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 09:39:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CA601C20F89
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 07:35:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 321EE1F2302C
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 07:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF20E156C49;
-	Tue, 27 Aug 2024 07:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594A6155CB0;
+	Tue, 27 Aug 2024 07:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=163.com header.i=@163.com header.b="hk7IiyAP"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="k4f9p3H9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D38712F5B1;
-	Tue, 27 Aug 2024 07:35:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF57D153BF6;
+	Tue, 27 Aug 2024 07:39:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724744105; cv=none; b=YohGEonqNqE4m2966wvU6XkDOQi57pKeDOtR/CWjXkI9wQvFGkbFqIWgHt2fm1UYgowFBq2M1Sa8VW42xcWXArmk8eyspqsldc9ufYhMSop4IV/kZvMnuUvGI0autBmBZp+/vzYeUmBlA6rzlfuNYEaVCDVzLwVN+7rlEO/mqFM=
+	t=1724744351; cv=none; b=GBMkfA0g1a1gFnKq61rKCK9Ib5DLeC83h3U99+vOMBf8dNJGp1o+xSy+pOsqCZ4Of48dR63IE2ZybfjUYSzjeHS1h3lxI+XHgeRNHKmornjJFjrdQcRRY2tHvqx8VnsKp368DYh6WEsv8axtI76/ffm4yoLvFVJ/Kw2BxUpBRMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724744105; c=relaxed/simple;
-	bh=SQrtQXwfSCQ/wfiVHxw8cV/z3ueJTE1OXJDhsMY6Bm0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID; b=OhVar05UOELlCuRvwbIwXjXT/rtpvokF5CebMftbbyjPHlCJAbu1LXRZnn+0SV2JxHdUyIgaoumMQX21rnJOImG5Ne86pZg/KzRKULzbn1qySBzCFHpf8fwf4Y3NI7XzQX1m7BuGbP19dyGlOii/cClNidmgSROgWeXJg1eTBFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=fail (1024-bit key) header.d=163.com header.i=@163.com header.b=hk7IiyAP reason="signature verification failed"; arc=none smtp.client-ip=117.135.210.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Date:From:Subject:Content-Type:MIME-Version:
-	Message-ID; bh=6yDorCpR3hyCOKQ208KL/yDdTBLn9b/agsmTLgOTroY=; b=h
-	k7IiyAPGei1oLahXWZkTpXkS6+xXXIbx4KXEKLE1AE2+Vhl8bvRWmJLOS6MlEiMX
-	MLqcK4yulRoVrU2fT+fnvxVyPCdCXm4ZxrNqRMzsaPv5iep2kQ2kipfuB07f+gp5
-	k3az8MLSuhk5wIoHios19J/TbRClaiq1z4d3HRdyRw=
-Received: from 00107082$163.com ( [111.35.190.113] ) by
- ajax-webmail-wmsvr-40-115 (Coremail) ; Tue, 27 Aug 2024 15:34:34 +0800
- (CST)
-Date: Tue, 27 Aug 2024 15:34:34 +0800 (CST)
-From: "David Wang" <00107082@163.com>
-To: "Kalle Valo" <kvalo@kernel.org>
-Cc: miriam.rachel.korenblit@intel.com, johannes.berg@intel.com, 
-	gregory.greenman@intel.com, pagadala.yesu.anjaneyulu@intel.com, 
-	dan.carpenter@linaro.org, daniel.gabay@intel.com, 
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wifi: iwlwifi: acpi/dsm: cache error retcode for
- iwl_acpi_get_dsm
-X-Priority: 3
-X-Mailer: Coremail Webmail Server Version XT5.0.14 build 20240801(9da12a7b)
- Copyright (c) 2002-2024 www.mailtech.cn 163com
-In-Reply-To: <871q2afplp.fsf@kernel.org>
-References: <20240827005114.4950-1-00107082@163.com>
- <871q2afplp.fsf@kernel.org>
-X-NTES-SC: AL_Qu2ZBvufu0gs4iOQY+kZnEYQheY4XMKyuPkg1YJXOp80pCTQ6wwNY3tsBnLY+tCLLAGmtByXQhdl0MBCUZVGYKi3doYaIkyz3snGFqhROR0g
-Content-Transfer-Encoding: base64
-Content-Type: text/plain; charset=GBK
+	s=arc-20240116; t=1724744351; c=relaxed/simple;
+	bh=ImzuVf95Bocj6jkgM4cI4Tk28E5n2Hx1GlzRLG/8IY8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=uBEURnmXCDJ68APbdPSAxGfB/zRIQYwJq0CUYOgTmyH2RL/Hi1meomYyfbSZAgdo2VznlYDKQnR2qF4CpDO7NKO/LDiTbiz1xfXVRlLmIXe30iLTSJoC1Bb9NjUNJ08zU1VrY7/olmBSa7y2j9a7U94pioiC+rWcHXisZThipYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=k4f9p3H9; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=yPuQJto6HhcFhEBv3siWTsS5wLOUCfRP2SoLejN+VrU=;
+	t=1724744349; x=1725953949; b=k4f9p3H9pdl+IBW1YwCUp5eu3E1lv6evOzbegchZQakZW5S
+	2SYpLla1X5WCb6K/rbFK65FG5xKe296PMwaMS3qma7vFKCfsYozw4unfYauhQIA0P/EwAhJ3MXh/v
+	LerKtM/ZFtgpsdfS0L15JatgwjsC7eAqBW7J44T8URQPJ4Ka6LPU1uV+6Oo6dK9ro6YoYgN/Vb78X
+	a1aK67gTr446jL+Y9gOqfkFl4A8UoJmRLWx+k5rwmeNhpysbLiM+M4QSYy3pGNQ2Kd9UmqNCEOz3c
+	zP33d9TvkAcYkkmrz9v3QETg10DbAOuPtiWU85qOdQEhGOLbTHDmpBy13e5c7B/A==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1siqn7-00000004QEO-2OdY;
+	Tue, 27 Aug 2024 09:39:01 +0200
+Message-ID: <4967a09d4c00532148aacd7dc4b5e21902ef7721.camel@sipsolutions.net>
+Subject: Re: [PATCH -next v2] wifi: mac80211: use max to simplify the code
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Hongbo Li <lihongbo22@huawei.com>, davem@davemloft.net,
+ edumazet@google.com,  kuba@kernel.org, pabeni@redhat.com, kvalo@kernel.org
+Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Date: Tue, 27 Aug 2024 09:39:00 +0200
+In-Reply-To: <82523993-61c8-4c03-8826-61da9081d3ba@huawei.com>
+References: <20240827030302.1006179-1-lihongbo22@huawei.com>
+	 <d5f495b67fe6bf128e7a51b9fcfe11f70c9b66ae.camel@sipsolutions.net>
+	 <82523993-61c8-4c03-8826-61da9081d3ba@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <b7cfbd0.678e.19192c20498.Coremail.00107082@163.com>
-X-Coremail-Locale: zh_CN
-X-CM-TRANSID:_____wD3H6OLgc1mAnJHAA--.21131W
-X-CM-SenderInfo: qqqrilqqysqiywtou0bp/1tbiqRVIqmVOCd2mtQADsx
-X-Coremail-Antispam: 1U5529EdanIXcx71UUUUU7vcSsGvfC2KfnxnUU==
+X-malware-bazaar: not-scanned
 
-CkF0IDIwMjQtMDgtMjcgMTQ6MjY6NDIsICJLYWxsZSBWYWxvIiA8a3ZhbG9Aa2VybmVsLm9yZz4g
-d3JvdGU6Cj5EYXZpZCBXYW5nIDwwMDEwNzA4MkAxNjMuY29tPiB3cml0ZXM6Cj4KPj4gT24gc29t
-ZSBIVywgYWNwaSBfRFNNIHF1ZXJ5IHdvdWxkIGZhaWxlZCBmb3IgaXdsd2lmaSBkZXZpY2UKPj4g
-YW5kIGV2ZXJ5dGltZSB3aGVuIG5ldHdvcmsgaXMgcmVhY3RpYXZlZCAoYm9vdCwKPj4gc3VzcGVu
-ZC9yZXN1bWUsIG1hbnVhbGx5IHJlc3RhcnQgbmV0d29yaywgZXRjLiksCj4+IGJ1bmNoIG9mIGtl
-cm5lbCB3YXJuaW5nIHNob3dzIHVwIHRvZ2V0aGVyOgo+PiAgIEFDUEk6IFw6IGZhaWxlZCB0byBl
-dmFsdWF0ZSBfRFNNIGJmMDIxMmYyLTc4OGYtYzY0ZC1hNWIzLTFmNzM4ZTI4NWFkZSAoMHgxMDAx
-KQo+PiAgIEFDUEk6IFw6IGZhaWxlZCB0byBldmFsdWF0ZSBfRFNNIGJmMDIxMmYyLTc4OGYtYzY0
-ZC1hNWIzLTFmNzM4ZTI4NWFkZSAoMHgxMDAxKQo+PiAgIEFDUEk6IFw6IGZhaWxlZCB0byBldmFs
-dWF0ZSBfRFNNIGJmMDIxMmYyLTc4OGYtYzY0ZC1hNWIzLTFmNzM4ZTI4NWFkZSAoMHgxMDAxKQo+
-PiAgIEFDUEk6IFw6IGZhaWxlZCB0byBldmFsdWF0ZSBfRFNNIGJmMDIxMmYyLTc4OGYtYzY0ZC1h
-NWIzLTFmNzM4ZTI4NWFkZSAoMHgxMDAxKQo+PiAgIEFDUEk6IFw6IGZhaWxlZCB0byBldmFsdWF0
-ZSBfRFNNIGJmMDIxMmYyLTc4OGYtYzY0ZC1hNWIzLTFmNzM4ZTI4NWFkZSAoMHgxMDAxKQo+PiAg
-IEFDUEk6IFw6IGZhaWxlZCB0byBldmFsdWF0ZSBfRFNNIGJmMDIxMmYyLTc4OGYtYzY0ZC1hNWIz
-LTFmNzM4ZTI4NWFkZSAoMHgxMDAxKQo+PiAgIEFDUEk6IFw6IGZhaWxlZCB0byBldmFsdWF0ZSBf
-RFNNIGJmMDIxMmYyLTc4OGYtYzY0ZC1hNWIzLTFmNzM4ZTI4NWFkZSAoMHgxMDAxKQo+PiAgIEFD
-UEk6IFw6IGZhaWxlZCB0byBldmFsdWF0ZSBfRFNNIGJmMDIxMmYyLTc4OGYtYzY0ZC1hNWIzLTFm
-NzM4ZTI4NWFkZSAoMHgxMDAxKQo+PiBzaW5jZSBpd2x3aWZpIHdvdWxkIG1ha2UgOCBhY3BpL2Rz
-bSBxdWVyaWVzIGZvciBsYXJpIGNvbmZpZy4KPj4gQnV0IGZvciBpd2x3aWZpLCBpdCBpcyBzYWZl
-IHRvIGNhY2hlIHRoZSBfRFNNIGVycm9ycywKPj4gc2luY2UgaXQgaXMgbm90IHBvc3NpYmxlIHRv
-IGNvcnJlY3QgaXQgd2l0aG91dCB1cGdyYWRpbmcgQklPUy4KPj4gV2l0aCB0aGlzIHBhdGNoLCB0
-aG9zZSBrZXJuZWwgd2FybmluZ3Mgd291bGQgb25seSBzaG93IHVwIG9uY2Ugd2hlbgo+PiBib290
-aW5nIHRoZSBzeXN0ZW0gYW5kIHVubmVjZXNzYXJ5IGFjcGkvZHNtIHF1ZXJpZXMgYXJlIGF2b2lk
-Lgo+Pgo+PiBTaWduZWQtb2ZmLWJ5OiBEYXZpZCBXYW5nIDwwMDEwNzA4MkAxNjMuY29tPgo+PiAt
-LS0KPj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNzL2ludGVsL2l3bHdpZmkvZncvYWNwaS5jIHwgNyAr
-KysrKysrCj4+ICAxIGZpbGUgY2hhbmdlZCwgNyBpbnNlcnRpb25zKCspCj4+Cj4+IGRpZmYgLS1n
-aXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9pbnRlbC9pd2x3aWZpL2Z3L2FjcGkuYyBiL2RyaXZl
-cnMvbmV0L3dpcmVsZXNzL2ludGVsL2l3bHdpZmkvZncvYWNwaS5jCj4+IGluZGV4IDc5Nzc0Yzhj
-N2ZmNC4uM2Y5OGY1MjJkYWFjIDEwMDY0NAo+PiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9p
-bnRlbC9pd2x3aWZpL2Z3L2FjcGkuYwo+PiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9pbnRl
-bC9pd2x3aWZpL2Z3L2FjcGkuYwo+PiBAQCAtMzAsNiArMzAsOCBAQCBzdGF0aWMgY29uc3Qgc2l6
-ZV90IGFjcGlfZHNtX3NpemVbRFNNX0ZVTkNfTlVNX0ZVTkNTXSA9IHsKPj4gIAlbRFNNX0ZVTkNf
-RU5BQkxFXzExQkVdID0JCXNpemVvZih1MzIpLAo+PiAgfTsKPj4gIAo+PiArc3RhdGljIGludCBh
-Y3BpX2RzbV9mdW5jX3JldGNvZGVbRFNNX0ZVTkNfTlVNX0ZVTkNTXSA9IHswfTsKPj4gKwo+PiAg
-c3RhdGljIGludCBpd2xfYWNwaV9nZXRfaGFuZGxlKHN0cnVjdCBkZXZpY2UgKmRldiwgYWNwaV9z
-dHJpbmcgbWV0aG9kLAo+PiAgCQkJICAgICAgIGFjcGlfaGFuZGxlICpyZXRfaGFuZGxlKQo+PiAg
-ewo+PiBAQCAtMTY5LDYgKzE3MSwxMCBAQCBpbnQgaXdsX2FjcGlfZ2V0X2RzbShzdHJ1Y3QgaXds
-X2Z3X3J1bnRpbWUgKmZ3cnQsCj4+ICAJaWYgKFdBUk5fT04oZnVuYyA+PSBBUlJBWV9TSVpFKGFj
-cGlfZHNtX3NpemUpKSkKPj4gIAkJcmV0dXJuIC1FSU5WQUw7Cj4+ICAKPj4gKwkvKiBJZiBIVyBy
-ZXR1cm4gYW4gZXJyb3Igb25jZSwgZG8gbm90IGJvdGhlciB0cnkgYWdhaW4uICovCj4+ICsJaWYg
-KGFjcGlfZHNtX2Z1bmNfcmV0Y29kZVtmdW5jXSkKPj4gKwkJcmV0dXJuIGFjcGlfZHNtX2Z1bmNf
-cmV0Y29kZVtmdW5jXTsKPgo+U3RhdGljIHZhcmlhYmxlcyBhcmUgdXN1YWxseSBhdm9pZGVkIGJl
-Y2F1c2UgdGhleSBhcmUgcHJvYmxlbWF0aWMgaWYKPnRoZXJlIGFyZSBtdWx0aXBsZSBpd2x3aWZp
-IGRldmljZXMgb24gdGhlIHNhbWUgaG9zdC4gU2hvdWxkIHRoZSBlcnJvcgo+bWVzc2FnZSBiZSBq
-dXN0IHJlbW92ZWQgZW50aXJlbHk/CgpUaGFua3MgZm9yIHRoZSByZXZpZXd+ClllcCwgIHlvdSdy
-ZSBxdWl0ZSByaWdodCEgSSBkaWQgbm90IGNvbnNpZGVyIG11bHRpcGxlIGl3bHdpZmkgZGV2aWNl
-cy4KClRoZSByZXBlYXRlZCBlcnJvciBtZXNzYWdlcyByZWFsbHkgYm90aGVyICBtZSwgIGJ1dCB0
-aGV5IGFyZSBmcm9tIGFjcGkgZHJpdmVyLCBJIGRvbid0IHRoaW5rIGl0IGNhbiBiZSByZW1vdmVk
-ICBlbnRpcmVseS4uLi4KCldvdWxkIG1vdmluZyB0aGUgY2FjaGUgaW50byBkZXZpY2Ugc3RydWN0
-dXJlIGFjY2VwdGFibGU/CgoKVGhhbmtzCkRhdmlkIAoKPgo+LS0gCj5odHRwczovL3BhdGNod29y
-ay5rZXJuZWwub3JnL3Byb2plY3QvbGludXgtd2lyZWxlc3MvbGlzdC8KPgo+aHR0cHM6Ly93aXJl
-bGVzcy53aWtpLmtlcm5lbC5vcmcvZW4vZGV2ZWxvcGVycy9kb2N1bWVudGF0aW9uL3N1Ym1pdHRp
-bmdwYXRjaGVzCg==
+On Tue, 2024-08-27 at 15:29 +0800, Hongbo Li wrote:
+>=20
+> On 2024/8/27 15:25, Johannes Berg wrote:
+> > On Tue, 2024-08-27 at 11:03 +0800, Hongbo Li wrote:
+> > > The following Coccinelle/coccicheck warning reported by
+> > > minmax.cocci:
+> > >      WARNING opportunity for max()
+> >=20
+> > Yeah well, maybe sometimes we shouldn't blindly follow tools ...
+> >=20
+> > > Let's use max() to simplify the code and fix the warning.
+> >=20
+> > You should explain why.
+> >=20
+> > I think only one out of four changes in this patch is correct,
+> > semantically.
+> >=20
+> You mean sometimes we should keep the variable type in comparison?
+
+No, I just don't think these are semantically calculations of a maximum,
+even if they look that way.
+
+That's why I asked: Why are you making this change? It looks like you're
+making this change just because you want coccicheck to be silent here.
+But that's *really* not a good reason! Don't do that, ever, *think*
+about the changes you're making too.
+
+We should consider the primary consumer of the code to be *people*, not
+the compiler or tools like coccicheck. And for *people*, applying max()
+to a link ID makes no sense. It's a link ID, not any kind of value that
+applying max() to makes any sense.
+In contrast, for the timeout value there that you changed, that _does_
+make sense: it clearly wants to take the longer of the two durations.
+
+
+So then why do we have patterns that look like max(0, link_id)? That's
+because we treat -1 as a special value indicating "no link, but for the
+whole sta/vif/...", "don't care about the link" or "MLD not used"
+(depending on the context). Internally in the code, however, we use 0
+for non-MLD to simplify older drivers and internal logic.
+
+That's why we end up with "link_id >=3D 0 ? link_id : 0" in some places.
+But it's fundamentally not max() even though it looks like it. Replacing
+it with max() does this a disservice.
+
+Now arguably open-coding it often (though three perhaps isn't often, but
+I'm surprised it's only three times) maybe isn't a great idea either,
+but then that should be solved differently.
+
+So yeah, please think about changes, don't make them blindly.
+
+johannes
 
