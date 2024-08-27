@@ -1,84 +1,93 @@
-Return-Path: <linux-wireless+bounces-12020-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12021-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6D989602F9
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 09:25:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D17219602FE
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 09:26:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EB661F21C13
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 07:25:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2E4F1C2223E
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 07:26:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B964414F9FF;
-	Tue, 27 Aug 2024 07:25:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 588FD15350B;
+	Tue, 27 Aug 2024 07:25:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="sI/9j7bI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pp29kis8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F381834CDD;
-	Tue, 27 Aug 2024 07:25:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3109514F125
+	for <linux-wireless@vger.kernel.org>; Tue, 27 Aug 2024 07:25:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724743519; cv=none; b=CzrquXABso3RufIaC+O3CIHr9+cl0kxVSrkCOdwVyUZIsx/dfUSTy6+sV0sf1a7RB9x/J456RSPGtUXk7FDwAwJq5qSXSyhMX+avGCdBCxSpn2cX+jyvdqv61sVLZv0Zazxm5oVIDrjGqB2B48cP2zT/Fz7R3hiLJA9tUROwvdQ=
+	t=1724743557; cv=none; b=UKQvMCYXtNvU6hoTKxrFWFuccO3thmtP1974WyffU2iGmn/R0ucnUd2cgLCnx9d15XFWPIbmAzCjTuvWe+zSP9fmNwoTWnU9W8gb6qYwQrUkaC+fTzWqmICGi+cIrb++QsCU0bYFZycSbHWPuFe/7nYB0WO8MMNivSV0LiOOOdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724743519; c=relaxed/simple;
-	bh=lFu8Xy0AadSA83deTBUNRaPIxmGztI0Kt/toGETt0Vw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=N2Bw9IwP9N2ALT+WoL0Sth3ooSvbFwP9ANDKlrpldlOnwxVlIk5TdmDIR81Kg8xD15pbRs+o/YtK7gULRCw557Z5JRWaqhOh8QVzdfmDMlJa0MzqriQLSyLUozoGqNUIODVEpON6IajdRddDbtYhgeHY5XlXBWdtVaWFQVKAp2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=sI/9j7bI; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=ouPPEsM5lFbFHUfqqzQ96D0RrlBvg+Eh6eaOM1zINbY=;
-	t=1724743518; x=1725953118; b=sI/9j7bIdvIYkRuZJl5xv9XYgG1OezEtArmExCWDbyERNlF
-	7QetUpeZF0RXhkKKxvN4ILgWf1qBRv8rO03SmtJbsCczSjptuTQuzzhhLhju4LYQ56kGGCJWYAI57
-	1pRx0Z+wUZQinVaQLV9NNqkUVWm1dAsy9i7t0Jmvb5r3+DRwJFgK65bnlK9Qr7hSHZnu2f69jFl+9
-	aVsZHq8eL5ly/0Qm3SHS+m8NOrazMGGTJqtiK9WTxu74Uv0Hb5KLsRsU42M36iLkRK5BLtEawnKzu
-	Uca7qnczom5pikMo22Rxwa1hpfTeiQoXvMoWR4wu7JXuSPegsmv94TqQB3SXodIw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1siqZf-00000004PMq-0lpI;
-	Tue, 27 Aug 2024 09:25:07 +0200
-Message-ID: <d5f495b67fe6bf128e7a51b9fcfe11f70c9b66ae.camel@sipsolutions.net>
-Subject: Re: [PATCH -next v2] wifi: mac80211: use max to simplify the code
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Hongbo Li <lihongbo22@huawei.com>, davem@davemloft.net,
- edumazet@google.com,  kuba@kernel.org, pabeni@redhat.com, kvalo@kernel.org
-Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Date: Tue, 27 Aug 2024 09:25:06 +0200
-In-Reply-To: <20240827030302.1006179-1-lihongbo22@huawei.com>
-References: <20240827030302.1006179-1-lihongbo22@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+	s=arc-20240116; t=1724743557; c=relaxed/simple;
+	bh=UxIqPjbE7yc2BSiMKNN58LGK55SZ+G7dzpy1yF5nK6Y=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=JjbMHUrbzPGdKjclJYv3ma1sNWeydhvQRawKH9vQ41Gy5cHCunAnosAdz2UjQoPSLMZbG1xLx2QDFo7RitwKSMM/QcH797Fo1tsvYQKQf1Lq2q8MFHurBMAZj+w6iF9VXZMkshim9aCS7UmMmt7i23K8cVbDfC56RglupBD+WNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pp29kis8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7B09C8B7A0;
+	Tue, 27 Aug 2024 07:25:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724743556;
+	bh=UxIqPjbE7yc2BSiMKNN58LGK55SZ+G7dzpy1yF5nK6Y=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=pp29kis8SwjoE4Rz3yn4HB7huYcr9vqqp9T+mr/VobH5QLCCgLZ3+OiZm7KWO7q1Z
+	 lxsKOOzQKMEng9/GVjHj0C5+J1MRLhL9jsRi+7cdGnR7sIAeqyz67Dj8bEKWOdnc9k
+	 saXRXR9ygB+ULqVKF8P3+xbb3BiguJWFJWAyTYSDCi9YMg+zgYdqwbqavc+ODNSk7t
+	 v8tdKoGydOeLNHGL+7e/3E0kR2eFZN4cqby7Z50NY006hscbjfO986CarBGqmLCTYo
+	 TU+0dgsU5Pistq/lxmPi4Fm/M+991yG6zCTPrYtUvTeVdSGAPZKz/hrIphvtz8nKDl
+	 fsAtpyhh8Ss0A==
+From: Kalle Valo <kvalo@kernel.org>
+To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 1/3] wifi: ath12k: Introduce iface combination cleanup
+ helper
+References: <20240814103423.3980958-2-quic_periyasa@quicinc.com>
+	<172434561175.2469785.10367608474646125650.kvalo@kernel.org>
+	<68bf6f43-d851-f2a5-54db-61538cfb46ce@quicinc.com>
+Date: Tue, 27 Aug 2024 10:25:53 +0300
+In-Reply-To: <68bf6f43-d851-f2a5-54db-61538cfb46ce@quicinc.com> (Karthikeyan
+	Periyasamy's message of "Mon, 26 Aug 2024 11:34:16 +0530")
+Message-ID: <87frqqv33y.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain
 
-On Tue, 2024-08-27 at 11:03 +0800, Hongbo Li wrote:
-> The following Coccinelle/coccicheck warning reported by
-> minmax.cocci:
->     WARNING opportunity for max()
+Karthikeyan Periyasamy <quic_periyasa@quicinc.com> writes:
 
-Yeah well, maybe sometimes we shouldn't blindly follow tools ...
+> On 8/22/2024 10:23 PM, Kalle Valo wrote:
+>> Karthikeyan Periyasamy <quic_periyasa@quicinc.com> wrote:
+>> 
+>>> Introduce a cleanup helper function to avoid redundant code for iface
+>>> combination cleanup. Remove the cleanup code from
+>>> ath12k_mac_hw_unregister() and ath12k_mac_hw_register() and replace it
+>>> with new cleanup helper function.
+>>>
+>>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00188-QCAHKSWPL_SILICONZ-1
+>>> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00183-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
+>>>
+>>> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+>>> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+>>> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+>> I'll drop this patchset because of MLO cleanup.
+>
+> This change not related to MLO dependency. Its a basic to group
+> multiple radio under a wiphy.
 
-> Let's use max() to simplify the code and fix the warning.
+Ok, but it's still good to look at this together with rest of the MLO patches.
 
-You should explain why.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-I think only one out of four changes in this patch is correct,
-semantically.
-
-johannes
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+https://docs.kernel.org/process/submitting-patches.html
 
