@@ -1,53 +1,63 @@
-Return-Path: <linux-wireless+bounces-12093-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12094-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DB16961719
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 20:37:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B731961727
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 20:44:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AFF3288A86
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 18:37:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 371D1285457
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 18:44:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B3BB1D2F53;
-	Tue, 27 Aug 2024 18:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80DD91D27A0;
+	Tue, 27 Aug 2024 18:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="ZoR8/0cw"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="gkYO+EM9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from nbd.name (nbd.name [46.4.11.11])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58BDB7D405
-	for <linux-wireless@vger.kernel.org>; Tue, 27 Aug 2024 18:37:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAEED1D2796
+	for <linux-wireless@vger.kernel.org>; Tue, 27 Aug 2024 18:44:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724783853; cv=none; b=tKaLbXvQe/o8bJb94F0jBfrFkY+xFPzlrAUgM9OJRo7WtTVV22OvIhKzY/fOPox0XmrAtRBFI2nmgT0RNM0qESXGiz4d5qR7hp+RDEucwpQLeShkA/pROWxtPlWgm51oO2Fz4Lgl1f/vyL9hUfyvdxJd6CcTG+L6JGRHb9LVmDI=
+	t=1724784259; cv=none; b=KV8Kt4nfuHFFvAECyvXtdC0UP8RSR0xJfnXMZ/BuQ8Pl7DXzKnQzyynNphfEdzc/BYEO1Cxzd0icPJ/cwLi+auU+U3+oBriEXzVdcPdQ7hBNEcDeqVU9hc2DQfYkfh7ujkEmKmIuE7IN8DemoajWd6XWcYvFKGsjmk1W902GByY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724783853; c=relaxed/simple;
-	bh=2naRzF8rHf+VqlFTLIFy9Bo3DeClloTYnDQoHQGW/vM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KErifwPRrA9bM9oW7dPXEMFQ5Yw72SXfcVVwSg51oap2DuZ6R+jkUdQmLT4vVWrVzaUUxs9K4cJ+vRMIb4ypdYkCWY0wN9JWd51p1vm9IbYw0GACKwS4iDXbPB1QErz9TcKzM7OswYjm0fjB3hIXDx2epS6wJAqwadHC+MPOlOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=ZoR8/0cw; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=CgHVj2NMsXDRpot4G40K74Q2QKJyTw0otHTks+LAWA4=; b=ZoR8/0cwJebzjOHhWbs7F13iYB
-	NYNNfy9quFFJHp2FFTZ2AkL5Op3J8m6jzwymbmM6SBLUjU+FGLq7MHYFUSgJJb5Xxdh0Mp1tcSMXq
-	rE6bERMra85nGDxNYLRDgDYMVcAH66r1Ved1heodWJ0ljNMVFvxC6E9ZWBfARr9xRiRY=;
-Received: from p200300da77101f3b483c598ed537b183.dip0.t-ipconnect.de ([2003:da:7710:1f3b:483c:598e:d537:b183] helo=nf.local)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1sj14L-004hiO-1c;
-	Tue, 27 Aug 2024 20:37:29 +0200
-Message-ID: <3f880bab-17d8-4a8a-aef6-c7ed005420f7@nbd.name>
-Date: Tue, 27 Aug 2024 20:37:28 +0200
+	s=arc-20240116; t=1724784259; c=relaxed/simple;
+	bh=viMrpIrdCoZPeXADjBPuwf3I41NoSHprJ4p8f6Qhw+8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=AP3QSe1B78MRegf2sN5vyifq+wW9YnACkpO/nkzBaRWe4ZpRHnBxTE1VIGmPkiHfymyitbQ7BauHLX/gNNiK0RU+dITSvv6JCop/2PbkaV78yVXgc1nMYNkhaJXD3qZKVbkObusXBAtTEvHDrDrYoOBQy4I7Szk8VpjClXZOMRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=gkYO+EM9; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47RIW049006778;
+	Tue, 27 Aug 2024 18:44:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	fC0jJDJtTRqUxjGP/7OaeumAAzb4kvo2TisV2+5BPgM=; b=gkYO+EM96s5C1s6e
+	JVXMYU9ocf7ISjwJ2cQd6Kop3uvxPW2rldrCiyIAvh62guA70uD6wuhzTlebvvno
+	tQYvKXPCwpVgeOhz2fmSbYYspmBKhxRBWBWYnqcPDJFf82jde1d6VnYC5z8s6bhn
+	9TN9R/oU9hlGrdWjbONNqHy5CLAK+CRuApt2eFdeBzmsZ8q1TLuhn08GOERNw8u4
+	8sKg3TZVKCHvYDnnaZkIfpiEFxFlR1CjWd/ePdN3TaM0OtGhOdlS7H4YZKJqO+wM
+	uKCJxBkCM/Gg6lNDAS+sJXtQPqRxUi8xUboaj6ifDooc6H0fFiiAL+MGe1LPuHMq
+	CuhHFg==
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41796kyvrt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Aug 2024 18:44:13 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47RIiCJ7027156
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 27 Aug 2024 18:44:12 GMT
+Received: from [10.50.6.47] (10.80.80.8) by nasanex01a.na.qualcomm.com
+ (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 27 Aug
+ 2024 11:44:11 -0700
+Message-ID: <8da37f46-4d3d-413c-a172-b6e18f2f26ef@quicinc.com>
+Date: Wed, 28 Aug 2024 00:14:08 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -55,55 +65,61 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 05/24] wifi: mt76: partially move channel change code
- to core
-To: Shiji Yang <yangshiji66@outlook.com>
-Cc: linux-wireless@vger.kernel.org
-References: <20240827093011.18621-5-nbd@nbd.name>
- <TYAP286MB07467C718A0428E8D6F0B0EDBC942@TYAP286MB0746.JPNP286.PROD.OUTLOOK.COM>
-From: Felix Fietkau <nbd@nbd.name>
+Subject: Re: [PATCH RFC v4 1/2] wifi: cfg80211/mac80211: Introduce nl80211
+ commands to support MLD link removal offload
 Content-Language: en-US
-Autocrypt: addr=nbd@nbd.name; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
- cL98efvrjdstUfTCP2pfetyN
-In-Reply-To: <TYAP286MB07467C718A0428E8D6F0B0EDBC942@TYAP286MB0746.JPNP286.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Johannes Berg <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>,
+        Rameshkumar Sundaram
+	<quic_ramess@quicinc.com>
+References: <20240807034521.2091751-1-quic_mdharane@quicinc.com>
+ <20240807034521.2091751-2-quic_mdharane@quicinc.com>
+ <f7b60c2f8239974431227029118b269988a300c5.camel@sipsolutions.net>
+From: Manish Dharanenthiran <quic_mdharane@quicinc.com>
+In-Reply-To: <f7b60c2f8239974431227029118b269988a300c5.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: -A75jQsuTTv5J7Uk3RujlROmJ_ynKVm_
+X-Proofpoint-ORIG-GUID: -A75jQsuTTv5J7Uk3RujlROmJ_ynKVm_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-27_10,2024-08-27_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=561
+ malwarescore=0 impostorscore=0 phishscore=0 adultscore=0
+ priorityscore=1501 lowpriorityscore=0 suspectscore=0 bulkscore=0
+ spamscore=0 clxscore=1011 mlxscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2407110000 definitions=main-2408270139
 
-On 27.08.24 20:02, Shiji Yang wrote:
-> Hi, Felix
+
+
+On 8/21/2024 2:31 PM, Johannes Berg wrote:
 > 
-> This patch broke the MT7610E. After this patch[1], the client
-> cannot connect to the MT7610 AP on OpenWrt. There is no error
-> log output. BTW, MT7612E still works fine.
+>> +/**
+>> + * cfg80211_update_link_reconfig_remove_update - Inform userspace about
+>> + *	the removal status of link which is scheduled for removal
+>> + * @dev: the device on which the operation is requested
+>> + * @link_id: Link which is undergoing removal
+>> + * @tbtt_count: Current tbtt_count to be updated.
+>> + * @tsf: Beacon's timestamp value
+>> + * @cmd: Inform started or completed action to userspace based on the value
 > 
-> [1] https://github.com/openwrt/mt76/commit/b80c997b3ff6f3e32fd729dc1c97709da5779fa1
+> Might be nicer here to wrap (some of) the many args into a struct?
+> 
+Sure, will group them into struct.
 
-Thanks for reporting. Could you please test if this fixes the issue?
-https://nbd.name/p/55035e55
+> I also don't see a need for a return value (and you didn't document it)
+> 
+> johannes
+> 
 
-Thanks,
+I thought the return value will be useful in any error or unsupported 
+cases, will rethink the approach and if return value is needed, will 
+document that.
 
-- Felix
-
+Regards
+Manish Dharanenthiran
 
