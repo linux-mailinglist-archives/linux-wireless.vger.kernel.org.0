@@ -1,34 +1,34 @@
-Return-Path: <linux-wireless+bounces-12041-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12038-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70853960599
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 11:30:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B7BF960596
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 11:30:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CAFB8B22DB8
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 09:30:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28C6C28478F
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 09:30:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD9E819D8A2;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DFC019D08C;
 	Tue, 27 Aug 2024 09:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="AtdfIEeM"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="oI0ZhqbE"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE12713BAE4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0CF7641E
 	for <linux-wireless@vger.kernel.org>; Tue, 27 Aug 2024 09:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724751024; cv=none; b=CXgxPK9ywgQUGMyLPg5uB/62UhkYEXKfAORfFyg6JkJXhnXlpJ0mG1ednzmNTUyrvonQ/0hqAFuAf50D0riQ4Dz5j74vL6C+2Cw7ICCTgUaHWw5R0MhSgM+CO6B1k3HNajb5isRY/o2svEd1/+6X64RFfwWLHm8H+USXqUE/4s0=
+	t=1724751024; cv=none; b=fRYStQH9OLqWahNZkx68sNV/KdLpOlmX5wGv3CR93sROhbYmxC1GLXcIJxdCFQ25/w7+cLQ7y1bFPGZdoK8Epn9x8ETvM8L6cYbucwoB0NZoNCYO3umQFg4HQDqaISPdhcHsNDjxZNGgdDGbv2+lSXFf/jofgQO/6Bxc8zS1ecw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1724751024; c=relaxed/simple;
-	bh=Hxr6xP5ZLYb4U5T0pFH2Mcmr2788ZnIyHHb54Cm1o24=;
+	bh=xI2rwj1lf8VSFKA1jpsJ2XadJVnUyw3svHJOQtwkc30=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oHoYs5LRUJipq/sNpjI2wnS268CRmdvpwYk6p24VTk+1OPdXGDCXiYbJUXsREA22Jije6vGR7NWMQlpwGiuUsTqJyTEPhiBv7h08I5w6+/vBloXB9McbyZ0t1aQQGUa/8oaNUAGlUuOHfnCehPjt5ZXx0hcTIJwhfQnOmA+iCbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=AtdfIEeM; arc=none smtp.client-ip=46.4.11.11
+	 MIME-Version; b=kgHjc/4NIqHhJVwAUNv3IVdwwhcPn1gSeM0BzqAmZO2RS1tJbTAkxXM8ZV4++NDHYFAjjkBweoWLaX8h/+OPbTEwlftU15PKDuKJJP0OTiI9tGunHI+N4YyUpZrotmHex0UUN6A4Vx5NdZSABdPbAyH9wAfZ4fgl+r5uvkQuRX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=oI0ZhqbE; arc=none smtp.client-ip=46.4.11.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
@@ -37,21 +37,21 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=7uGSrdo1hzeHNs4Iw1DBEPNqG/sXW5MvKA16zQYyQ9E=; b=AtdfIEeMMqpgJpO4XbbCyaCSDW
-	cGlG/PvWhJe/bdASCCf68RQi1/XkppQSkPevXOITXeOQrDgNApfI0KjeMXxjcbKfLC/vrCm8AWhhP
-	dc3WgYTU7vEfVaFk5fW9s5YB1scFx+KdC37wSsU1bIYftl7KiorbI2UZGORnSK2GdUXE=;
+	bh=4kbIclQ91zel2F0DJG0FsaAHDYkWeV6/ig3aWSY9/ME=; b=oI0ZhqbEbqnP577EaVgWe1SJDM
+	tBcnnuf0Dcd5lMoGkxzt7gLhIYEJLGk/MK0itvibaFgl+6zXESJVbDUSiDDj5IMNr+w5d3ydOuwx3
+	NszxGTUVWTCKkfoEjYV/DH8wvNBd9X6q7n1WIQnBzFAKmZKLz6L48HnGHuSY8J8U0WQs=;
 Received: from p57a6f9a5.dip0.t-ipconnect.de ([87.166.249.165] helo=localhost.localdomain)
 	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
 	(Exim 4.96)
 	(envelope-from <nbd@nbd.name>)
-	id 1sisWj-004Ww8-2O
+	id 1sisWj-004Ww8-36
 	for linux-wireless@vger.kernel.org;
-	Tue, 27 Aug 2024 11:30:13 +0200
+	Tue, 27 Aug 2024 11:30:14 +0200
 From: Felix Fietkau <nbd@nbd.name>
 To: linux-wireless@vger.kernel.org
-Subject: [PATCH v2 02/24] wifi: mt76: mt7603: fix reading target power from eeprom
-Date: Tue, 27 Aug 2024 11:29:49 +0200
-Message-ID: <20240827093011.18621-2-nbd@nbd.name>
+Subject: [PATCH v2 03/24] wifi: mt76: mt7603: initialize chainmask
+Date: Tue, 27 Aug 2024 11:29:50 +0200
+Message-ID: <20240827093011.18621-3-nbd@nbd.name>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240827093011.18621-1-nbd@nbd.name>
 References: <20240827093011.18621-1-nbd@nbd.name>
@@ -63,33 +63,25 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-If the ext-PA target power is unset, fall back to the standard EEPROM value.
+Fixes reported tx power by accounting for the combined output
 
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- drivers/net/wireless/mediatek/mt76/mt7603/init.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/init.c b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
-index 6c55c72f28a2..f84c9a06af75 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/init.c
-@@ -456,11 +456,13 @@ mt7603_init_txpower(struct mt7603_dev *dev,
- 	int target_power = eeprom[MT_EE_TX_POWER_0_START_2G + 2] & ~BIT(7);
- 	u8 *rate_power = &eeprom[MT_EE_TX_POWER_CCK];
- 	bool ext_pa = eeprom[MT_EE_NIC_CONF_0 + 1] & BIT(1);
-+	u8 ext_pa_pwr;
- 	int max_offset, cur_offset;
- 	int i;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c
+index d951cb81df83..f5a6b03bc61d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c
+@@ -181,6 +181,7 @@ int mt7603_eeprom_init(struct mt7603_dev *dev)
+ 	    is_mt7688(dev))
+ 		dev->mphy.antenna_mask = 1;
  
--	if (ext_pa && is_mt7603(dev))
--		target_power = eeprom[MT_EE_TX_POWER_TSSI_OFF] & ~BIT(7);
-+	ext_pa_pwr = eeprom[MT_EE_TX_POWER_TSSI_OFF];
-+	if (ext_pa && is_mt7603(dev) && ext_pa_pwr != 0 && ext_pa_pwr != 0xff)
-+		target_power = ext_pa_pwr & ~BIT(7);
++	dev->mphy.chainmask = dev->mphy.antenna_mask;
+ 	mt76_eeprom_override(&dev->mphy);
  
- 	if (target_power & BIT(6))
- 		target_power = -(target_power & GENMASK(5, 0));
+ 	return 0;
 -- 
 2.46.0
 
