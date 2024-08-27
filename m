@@ -1,122 +1,142 @@
-Return-Path: <linux-wireless+bounces-12067-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12068-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 387F4960CEB
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 16:04:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 831BE960D22
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 16:09:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7483CB27B76
-	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 14:03:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D4E81F24400
+	for <lists+linux-wireless@lfdr.de>; Tue, 27 Aug 2024 14:09:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2257E1C2DD8;
-	Tue, 27 Aug 2024 14:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ACD21C4621;
+	Tue, 27 Aug 2024 14:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cBk6IEpl"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="rmQu0rt7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0801E487;
-	Tue, 27 Aug 2024 14:03:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14EF73466;
+	Tue, 27 Aug 2024 14:07:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724767430; cv=none; b=ezMiqSAbrlvc+BOvOOs8lwGAhlwlLj5+nVSShLeKw7iu2kUM9FegLjYWhlgpd4jrsS0Zfk5XA24xiuvLAgE9l/xn/OvViaCdr5N39l4rHV8EovZaj8qYMwP1XlXNAUBMEO7LP2ENgh320qbx63li6i/XI078ucNmIlrQ5BwoEA4=
+	t=1724767636; cv=none; b=nfECdMzfHrI37mapv8ahcc7SNpAATFqhvrE0jIW36MTuYcRWY2KDFJ0mnrb6Ouxq07bXZ1ScSzJmc6OYt/cQNTmoXNmLCZd5Wk/lLUF3x86D1MzNWbsjFJ6yWG4uYv0c2ngIVpvukqvJpGLvredwKMKA2e6u7mvyRIhxywHUHIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724767430; c=relaxed/simple;
-	bh=HSil7PMrXBywMPhgEu6QpS5TfQeHIBuVv32WKKd7Cok=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ErkHSfSBsBxJJn/MQ1jlm84zSxSbKBVmw0dIBzz+ET8GFveTzDk5irnCy9heohkb2DqBC+aoUPZ+ozTsS3/aRG9Sv331BRhOPYidP9l6VxtnrPaSa/0InUo/vOvacTrHdyCdYnMSvg0i/x2cLfxA1FD95DbV44Hxp5qN71Rhqrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cBk6IEpl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1997C61050;
-	Tue, 27 Aug 2024 14:03:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724767429;
-	bh=HSil7PMrXBywMPhgEu6QpS5TfQeHIBuVv32WKKd7Cok=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=cBk6IEplgFuwFiriIePAGg0qudmq7Ghn7Ib/5m0z1lEQO67hohck2AkLE0Nc0fONh
-	 5j8mOQuqDEhalBzP8+HHj2QzTbJCsxoGqTMdMM8l65SUxcIk6eIDvOJr4QgG4AriYu
-	 t7QpeB6f20Mrced5ouDCRNGQCrO0XkDmZ7QBwqoPeii3w8zlI5K5Q38kUYaPbn/grt
-	 5ooUy5hU0R30QiU1KOIDXSnz9FmYTB+WG0BOinRC04fq7++1W8t6J9gWRnkMC1QBZK
-	 gWTdvVSxBQAsgmbNmIKQNmH7AdxmHhnIhWb+NFKyxL+aTZZou9iom6GNQdNX5M3OfI
-	 jw+zEXg5p8WsA==
-Date: Tue, 27 Aug 2024 07:03:47 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Hongbo Li <lihongbo22@huawei.com>, <johannes@sipsolutions.net>,
- <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
- <allison.henderson@oracle.com>, <dsahern@kernel.org>, <pshelar@ovn.org>,
- <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
- <rds-devel@oss.oracle.com>, <dccp@vger.kernel.org>, <dev@openvswitch.org>,
- <linux-afs@lists.infradead.org>
-Subject: Re: [PATCH net-next 0/8] Use max/min to simplify the code
-Message-ID: <20240827070347.4bf3a284@kernel.org>
-In-Reply-To: <878qwifub5.fsf@kernel.org>
-References: <20240824074033.2134514-1-lihongbo22@huawei.com>
-	<20240826144404.03fce39c@kernel.org>
-	<4a92bb68-7fe7-4bf2-885f-e07b06ea82aa@huawei.com>
-	<878qwifub5.fsf@kernel.org>
+	s=arc-20240116; t=1724767636; c=relaxed/simple;
+	bh=BvTWNfqaZi3sKno+OEdrssKIAJOJKR8uvoVVAM/Y/EM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FqUXTScx20gwUpSfJCF2KY+OV0Aktj3GnJwPursgYK+HVM6cFxIIwrCJAJ/kvxuKl1InbTdkwycjmvohl/mBYXJIhaGzw4NfEethM+QMjXflFdaOLnO4+dbBAJ8KCb24gOEtk66HGvJXfjJ8x8MomjXAd9n6rrbpKYCnzfmmTS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=rmQu0rt7; arc=none smtp.client-ip=67.231.154.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 1761B80067;
+	Tue, 27 Aug 2024 14:07:05 +0000 (UTC)
+Received: from [192.168.1.23] (unknown [98.97.32.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 684C213C2B0;
+	Tue, 27 Aug 2024 07:07:02 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 684C213C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1724767622;
+	bh=BvTWNfqaZi3sKno+OEdrssKIAJOJKR8uvoVVAM/Y/EM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=rmQu0rt7ur9cDJlmIx0aS4/5muESJeFtgMmOadc/n5BAxnlW/OhB8KnJhMisu7dDs
+	 sNyzRJ45eMTTc1dWUK4k8IPQhiHr2w7BYdc3H0e7xII4MDfMwsLT3Eg+HLfDsMedGD
+	 JwxEFJPSRF+PPQPI8HDXs1JX72OMxGtFxrWTXKGo=
+Message-ID: <c6b03c0c-7730-46fc-80d3-0c5d8dea4534@candelatech.com>
+Date: Tue, 27 Aug 2024 07:07:02 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: iwlwifi: acpi/dsm: cache error retcode for
+ iwl_acpi_get_dsm
+To: Kalle Valo <kvalo@kernel.org>, David Wang <00107082@163.com>
+Cc: miriam.rachel.korenblit@intel.com, johannes.berg@intel.com,
+ gregory.greenman@intel.com, pagadala.yesu.anjaneyulu@intel.com,
+ dan.carpenter@linaro.org, daniel.gabay@intel.com,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240827005114.4950-1-00107082@163.com>
+ <871q2afplp.fsf@kernel.org>
+Content-Language: en-MW
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <871q2afplp.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MDID: 1724767627-EBOlna--rhvL
+X-MDID-O:
+ us5;at1;1724767627;EBOlna--rhvL;<greearb@candelatech.com>;6bc33b0a102533f075ec50fd94efbfef
 
-On Tue, 27 Aug 2024 07:45:02 +0300 Kalle Valo wrote:
-> > Do you mean some patches will go to other branches (such as mac80211)? =
-=20
->=20
-> Jakub means that your patchset had compilation errors, see the red on
-> patchwork:
->=20
-> https://patchwork.kernel.org/project/netdevbpf/list/?series=3D882901&stat=
-e=3D*&order=3Ddate
+On 8/26/24 23:26, Kalle Valo wrote:
+> David Wang <00107082@163.com> writes:
+> 
+>> On some HW, acpi _DSM query would failed for iwlwifi device
+>> and everytime when network is reactiaved (boot,
+>> suspend/resume, manually restart network, etc.),
+>> bunch of kernel warning shows up together:
+>>    ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
+>>    ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
+>>    ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
+>>    ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
+>>    ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
+>>    ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
+>>    ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
+>>    ACPI: \: failed to evaluate _DSM bf0212f2-788f-c64d-a5b3-1f738e285ade (0x1001)
+>> since iwlwifi would make 8 acpi/dsm queries for lari config.
+>> But for iwlwifi, it is safe to cache the _DSM errors,
+>> since it is not possible to correct it without upgrading BIOS.
+>> With this patch, those kernel warnings would only show up once when
+>> booting the system and unnecessary acpi/dsm queries are avoid.
+>>
+>> Signed-off-by: David Wang <00107082@163.com>
+>> ---
+>>   drivers/net/wireless/intel/iwlwifi/fw/acpi.c | 7 +++++++
+>>   1 file changed, 7 insertions(+)
+>>
+>> diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+>> index 79774c8c7ff4..3f98f522daac 100644
+>> --- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+>> +++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+>> @@ -30,6 +30,8 @@ static const size_t acpi_dsm_size[DSM_FUNC_NUM_FUNCS] = {
+>>   	[DSM_FUNC_ENABLE_11BE] =		sizeof(u32),
+>>   };
+>>   
+>> +static int acpi_dsm_func_retcode[DSM_FUNC_NUM_FUNCS] = {0};
+>> +
+>>   static int iwl_acpi_get_handle(struct device *dev, acpi_string method,
+>>   			       acpi_handle *ret_handle)
+>>   {
+>> @@ -169,6 +171,10 @@ int iwl_acpi_get_dsm(struct iwl_fw_runtime *fwrt,
+>>   	if (WARN_ON(func >= ARRAY_SIZE(acpi_dsm_size)))
+>>   		return -EINVAL;
+>>   
+>> +	/* If HW return an error once, do not bother try again. */
+>> +	if (acpi_dsm_func_retcode[func])
+>> +		return acpi_dsm_func_retcode[func];
+> 
+> Static variables are usually avoided because they are problematic if
+> there are multiple iwlwifi devices on the same host. Should the error
+> message be just removed entirely?
 
-FWIW I prefer not to point noobs to the patchwork checks, lest they
-think it's a public CI and they can fling broken code at the list :(
-But yes, in case "code doesn't build" needs a further explanation:
+In this particular case, probably static would be best since it would not
+be helpful to see the duplicated errors for each individual interface anyway?
 
-net/core/pktgen.c: In function =E2=80=98pktgen_finalize_skb=E2=80=99:
-./../include/linux/compiler_types.h:510:45: error: call to =E2=80=98__compi=
-letime_assert_928=E2=80=99 declared with attribute error: min(datalen/frags=
-, ((1UL) << 12)) signedness error
-  510 |         _compiletime_assert(condition, msg, __compiletime_assert_, =
-__COUNTER__)
-      |                                             ^
-./../include/linux/compiler_types.h:491:25: note: in definition of macro =
-=E2=80=98__compiletime_assert=E2=80=99
-  491 |                         prefix ## suffix();                        =
-     \
-      |                         ^~~~~~
-./../include/linux/compiler_types.h:510:9: note: in expansion of macro =E2=
-=80=98_compiletime_assert=E2=80=99
-  510 |         _compiletime_assert(condition, msg, __compiletime_assert_, =
-__COUNTER__)
-      |         ^~~~~~~~~~~~~~~~~~~
-../include/linux/build_bug.h:39:37: note: in expansion of macro =E2=80=98co=
-mpiletime_assert=E2=80=99
-   39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-      |                                     ^~~~~~~~~~~~~~~~~~
-../include/linux/minmax.h:100:9: note: in expansion of macro =E2=80=98BUILD=
-_BUG_ON_MSG=E2=80=99
-  100 |         BUILD_BUG_ON_MSG(!__types_ok(x,y,ux,uy),        \
-      |         ^~~~~~~~~~~~~~~~
-../include/linux/minmax.h:105:9: note: in expansion of macro =E2=80=98__car=
-eful_cmp_once=E2=80=99
-  105 |         __careful_cmp_once(op, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y=
-_))
-      |         ^~~~~~~~~~~~~~~~~~
-../include/linux/minmax.h:129:25: note: in expansion of macro =E2=80=98__ca=
-reful_cmp=E2=80=99
-  129 | #define min(x, y)       __careful_cmp(min, x, y)
-      |                         ^~~~~~~~~~~~~
-../net/core/pktgen.c:2796:28: note: in expansion of macro =E2=80=98min=E2=
-=80=99
- 2796 |                 frag_len =3D min(datalen/frags, PAGE_SIZE);
-      |                            ^~~
-make[5]: *** [../scripts/Makefile.build:244: net/core/pktgen.o] Error 1
+But also, I'm fine with just making the warning go away entirely.
+
+Thanks,
+Ben
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
 
