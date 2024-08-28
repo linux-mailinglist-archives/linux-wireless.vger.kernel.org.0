@@ -1,61 +1,60 @@
-Return-Path: <linux-wireless+bounces-12154-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12155-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D74DC962501
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 12:33:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82546962540
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 12:50:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C194B22124
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 10:33:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 397FE1F23240
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 10:50:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2AEB160783;
-	Wed, 28 Aug 2024 10:33:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47FE815C15B;
+	Wed, 28 Aug 2024 10:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="thBljPJu"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="q6b20qn3"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385D616C6A8
-	for <linux-wireless@vger.kernel.org>; Wed, 28 Aug 2024 10:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50275A79B
+	for <linux-wireless@vger.kernel.org>; Wed, 28 Aug 2024 10:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724841197; cv=none; b=rIymcpQaKSKfNoUu3d2eGqKHDbbD2Eb0QGziJSZ/xBKObFM3DQbC5y+csFODsi1DdMYWkpTk10iQUApzeVDanNvkoztw7eEcQeJZyAongQuIpliZR7fO3586+RYTLZwrwPA35+oQs7aF1zad1BkUvwGdBU8cMXEAfIkjSW3q4o4=
+	t=1724842202; cv=none; b=fkV8s3ZTGL4+ohNcsYxoavErVeYWM+caTrHD4apAAD6QnEPL44Z7ODdorB4nV8cWZuOldy+goZClKcsPq95bbB2yazCeuJtJbJxHVG3e8zLI0PeD9fEcUdqISHS/Qx9B8DsKLSYNKqczzoX4M4JB3RNy+8DPcDX3yLVHx2hWlFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724841197; c=relaxed/simple;
-	bh=6uPWgnrsx7LZ6AZs5YB50pYMtCSFJUF4hdiEwyES0LE=;
+	s=arc-20240116; t=1724842202; c=relaxed/simple;
+	bh=m3lk68im/N0rY8mMHqVHl3slS+p7e3jKLOGc+h0Tn08=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XC+Ho8z8Zo6Uho3Vi+sjchdW/z7kmj+g8Yptr5L0dDuZahNHS7JuXRSc7eZo9qh2leUwNpCvgQyXBb8W4Tm4V5HmIL3ODkxelVncqEi4gAbCbTybgAkmLTUnUmmoz0d7I+uvyBxIoLHsr4bOTUInQx2aG92razd0SgEyiVEdcQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=thBljPJu; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=GRwDVQfOiji0e3cnDPfwmL2R25R+PRJnWfmh6fisVho8upS09LgfwNrEjxw90YDWoEbQ/h7f3EqtvMKwrTzYCuPkqtXYSZsMOuipNnVjAMtTbwZOB5tC6l3boC43XC0IS45Aviu02mF5rE67QjXmAG9Fg2DrtFVobm+5GHhB/h4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=q6b20qn3; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=pzn5S3hzcXDwgn4xANFI56Lp0/1AzeLTwKf9sHqZTPs=;
-	t=1724841196; x=1726050796; b=thBljPJuK/sq1ywUoNk4hnPFqARHVdgkY3vmchzWP+x+1rR
-	tlebjonmV+kq90B1+R3zPlh2ZbJtkmU8KoVxlUw+K0hTSDoXI727HQAwYuLdXeNDAL234zBoiLo+c
-	K+iIHdrM29PIlDMGrIUCjnu9kUR406cpMh+Xat0IOaN1zuERiMrhUcxiLMVfcUl3CbqCCzpEsC23O
-	aU60PzDm1kzmkhXW207RgaUubivtb4p3EYXmQ0++ep0bcYfXvp2bAqS4seeZDn4VXd9bkYZO+9U0L
-	i8r1SNJ1YZ3awMQTtIgl1976rjrBNpenW61jW3wl9IqPEBj2b2IYYRan4I+lvq7w==;
+	Resent-Cc:Resent-Message-ID; bh=m3lk68im/N0rY8mMHqVHl3slS+p7e3jKLOGc+h0Tn08=;
+	t=1724842200; x=1726051800; b=q6b20qn3G7NX4LGROrjjFKb123mHIIVxjEVEJCMJQZW5i7o
+	nWcV3TT1xrlX/wuhMX6eDMgM64mA3HFQiGPY8aTQv7HcAwr8eAqnozlCiFlaVpqIDtmQPpXqifN4y
+	D9l0sZOOzyH4flhIbDHE6vzSSKoxkQ1d1kptkXudDQ4TkJX8g1spBTWLcofgbDrCL454V05ICIGax
+	PG40fRcB8QMYV2m/piTCUJWw0N3VbGJzFcisZSBJP19UhLs8LdkJ99idXm7O32nQqNYuNP7hSNtBP
+	KH/lahSTkgAjzW3hU2a83zGaNtX0AC4UhMkPrzYrqVj6iolX5nCrCL9Kug0ZK2Pw==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1sjFzF-00000006xgI-06gt;
-	Wed, 28 Aug 2024 12:33:13 +0200
-Message-ID: <5c099cda2015594d23f29635d77adf9db5744a15.camel@sipsolutions.net>
-Subject: Re: [PATCH v3 8/8] wifi: mac80211: handle
- ieee80211_radar_detected() for MLO
+	id 1sjGFR-00000006z3H-23nv;
+	Wed, 28 Aug 2024 12:49:57 +0200
+Message-ID: <d2ca7bdd57bb4d90e4b76846afb75dbc3bb9bd59.camel@sipsolutions.net>
+Subject: Re: [PATCH v2] wifi: cfg80211: check radio iface combination for
+ multi radio per wiphy
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Aditya Kumar Singh <quic_adisi@quicinc.com>
+To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 Cc: linux-wireless@vger.kernel.org
-Date: Wed, 28 Aug 2024 12:33:12 +0200
-In-Reply-To: <20240711035147.1896538-9-quic_adisi@quicinc.com>
-References: <20240711035147.1896538-1-quic_adisi@quicinc.com>
-	 <20240711035147.1896538-9-quic_adisi@quicinc.com>
+Date: Wed, 28 Aug 2024 12:49:56 +0200
+In-Reply-To: <20240813055917.2320582-1-quic_periyasa@quicinc.com>
+References: <20240813055917.2320582-1-quic_periyasa@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
@@ -67,80 +66,33 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Thu, 2024-07-11 at 09:21 +0530, Aditya Kumar Singh wrote:
->=20
->   * In the worker, go over all the contexts again and for all such contex=
-t
->     which is marked with radar detected, add it to a local linked list.
+Hi,
 
-Why is the local list needed first?
+So ... I don't think this is correct, for multiple reasons.
 
-> +++ b/include/net/mac80211.h
-> @@ -257,6 +257,7 @@ struct ieee80211_chan_req {
->   *	after RTS/CTS handshake to receive SMPS MIMO transmissions;
->   *	this will always be >=3D @rx_chains_static.
->   * @radar_enabled: whether radar detection is enabled on this channel.
-> + * @radar_detected: whether radar got detected on this channel.
->   * @drv_priv: data area for driver use, will always be aligned to
->   *	sizeof(void *), size is determined in hw information.
->   */
-> @@ -269,6 +270,7 @@ struct ieee80211_chanctx_conf {
->  	u8 rx_chains_static, rx_chains_dynamic;
-> =20
->  	bool radar_enabled;
-> +	bool radar_detected;
+One, you're completely removing *any* validation of the (global)
+interface combinations in case per-radio interface combinations are
+present. This is clearly not desirable. You're arguing the DFS vs.
+multi-channel check shouldn't be done, but that doesn't imply removing
+all checks entirely.
 
-I'm not sure why you're adding this to the driver visible part of the
-chanctx, I don't think that really makes sense since setting it must be
-done by mac80211 through the API function to trigger all the work?
+Secondly, I'm not convinced that the DFS vs. multi-channel check should
+actually be removed, though I'll admit that this may be a bit
+questionable. My argument would be something like this: The global
+interface combinations exist to let existing software (that isn't aware
+of multi-radio yet) continue functioning as-is. Since it is not radio-
+aware, multi-channel can mean many different things to it, including the
+ability to use say two 2.4 GHz channels at the same time, by time-
+sharing. This is e.g. used to support concurrent P2P-GO and (BSS) client
+today. But DFS capability on this is broken, since you're not on the
+correct channel all the time, hence the check.
 
-> +++ b/net/mac80211/ieee80211_i.h
-> @@ -1329,6 +1329,11 @@ enum mac80211_scan_state {
-> =20
->  DECLARE_STATIC_KEY_FALSE(aql_disable);
-> =20
-> +struct radar_info {
-> +	struct list_head list;
-> +	struct cfg80211_chan_def chandef;
-> +};
-
-If it _really_ is needed this can be local to the C file.
-
-> +	INIT_LIST_HEAD(&radar_info_list);
-
-but really, why?
-
->  	list_for_each_entry(ctx, &local->chanctx_list, list) {
->  		if (ctx->replace_state =3D=3D IEEE80211_CHANCTX_REPLACES_OTHER)
->  			continue;
-> =20
-> -		num_chanctx++;
-> -		chandef =3D ctx->conf.def;
-> +		if (ctx->conf.radar_detected) {
-> +			ctx->conf.radar_detected =3D false;
-> +			num_chanctx++;
-> +
-> +			radar_info =3D kzalloc(sizeof(*radar_info), GFP_KERNEL);
-> +			if (WARN_ON(!radar_info))
-> +				continue;
-
-that clearly shouldn't be a WARN_ON,
-
-> +
-> +			INIT_LIST_HEAD(&radar_info->list);
-> +			radar_info->chandef =3D ctx->conf.def;
-> +			list_add_tail(&radar_info->list, &radar_info_list);
-
-but I also don't really see why you couldn't just call
-cfg80211_radar_event() here.
-
-> +	if (num_chanctx > 1) {
-> +		/* XXX: multi-channel is not supported yet in case of non-MLO */
-> +		if (WARN_ON(!(wiphy->flags & WIPHY_FLAG_SUPPORTS_MLO)))
-> +			trigger_event =3D false;
-> +	}
-
-I don't see how that'd happen in the first place?
+Therefore, I think this patch is entirely wrong, and you need to
+advertise only a lowest common denominator on the global interface
+combinations (where the num_different_channels is actually possible to
+support on each individual radio, since no band separating is implied by
+it).
 
 johannes
+
 
