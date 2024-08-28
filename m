@@ -1,153 +1,160 @@
-Return-Path: <linux-wireless+bounces-12131-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12133-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D431962224
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 10:17:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 218B296222C
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 10:18:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8084A1C23038
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 08:17:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 792C11F21FB7
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 08:18:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 740A515ADA6;
-	Wed, 28 Aug 2024 08:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 198BB15B103;
+	Wed, 28 Aug 2024 08:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b="eJZPsx1R"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LGrHmquO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.4])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C9215B966;
-	Wed, 28 Aug 2024 08:17:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87506156C76;
+	Wed, 28 Aug 2024 08:18:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724833065; cv=none; b=RjpO6Fz3sp/fl4NY4o2ICproFpoRYupttey70OXCU961FUE2PvHq/MW2GX775DQU1rH/Yg0q0XyV6D9zREyLD/4BNSzi/cIH6kfY2sDd9Y1LFbRMrWsSv5QcxDCiTxmU/tBuVEq3axtC5kkw54WGhsa7fwqVO8VdIjuW0TGPTh0=
+	t=1724833135; cv=none; b=rvGClujkgby0DilW2SAzwcVbGlwwV0jirRryvcyMGVz/KecTeE/Q3zEByvEF8sRwAiXIABmxqFAQJcDArII1OgtiBvwqST2TzDhuVErlnfwzi+b6r9Ui4ijz6M/DpUqnHVwrDBCAyNOjnVYd67FMTW6aFjhZHbOXMwcgTx5A50c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724833065; c=relaxed/simple;
-	bh=g8G3n2oC9BGSDr5dj4Ln70/JKkFb0GSJhpHopVzdlu0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UggavNw61R0RaXLcTZ2cxx0FJtHlhpaVzv+0EJ5EK3VXV5m9jpuKUySHdGwI9omlOvfWJ1asd0Gg2WEv//lPF6VaSZDo4wF6KeNQtFyhy5SFesq4/idP4UfsfEWnp7l+3/YId78SgXvTdVBep9c/RZZeCNbR3YgaciCxYY+SxM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=spasswolf@web.de header.b=eJZPsx1R; arc=none smtp.client-ip=212.227.15.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1724833043; x=1725437843; i=spasswolf@web.de;
-	bh=HJ9gN2dyG0tELFDyIaVWwxco35Ny0zFkmQvcfIA5lIw=;
-	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
-	 References:Content-Type:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=eJZPsx1RySSUEgyds5+XOD9GkIHMzH6AYc4WK5/9l8p7j2cF/hzP1qw9xgOticWr
-	 CyVT5dUiVAPT1tASK3b7RszrWNCbIhdZdnm/RZOefeRR25bcs4ZTJK3WtOO9pj3PQ
-	 fHGP9o+0V5ZqLn58ztF3m1QIkkSDlfKX962aaUz+3R+gk0hvv24V9x9N+Ltw3+BBF
-	 3uvZyHbFtM5fp/TR3H5rd0b1OMZ9a2F0/fqGvyVTgxxx6ug5dPIaiPh49N+rDxfMq
-	 Ooa/Snb2/6dEvWqC4GYvevwl1YsahaNDencN9yvAg/Frh3zKsALI8q0ZgmhbIP08T
-	 uproA0TRoHJ2Avp1lQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.0.101] ([84.119.92.193]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1N9cLR-1s4bg73m1F-00wkGg; Wed, 28
- Aug 2024 10:17:22 +0200
-Message-ID: <980698e0d6dfa1e0043edfed6e174ff17705e053.camel@web.de>
-Subject: Re: [PATCH] wifi: mt76: mt7921: fix null pointer access in
- mt792x_mac_link_bss_remove
-From: Bert Karwatzki <spasswolf@web.de>
-To: Mike Lothian <mike@fireburn.co.uk>
-Cc: Linux regressions mailing list <regressions@lists.linux.dev>, 
-	sean.wang@kernel.org, nbd@nbd.name, lorenzo.bianconi@redhat.com, 
-	sean.wang@mediatek.com, deren.wu@mediatek.com, mingyen.hsieh@mediatek.com, 
-	linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org, 
-	spasswolf@web.de
-Date: Wed, 28 Aug 2024 10:17:20 +0200
-In-Reply-To: <CAHbf0-HYi=x11bc-sMJFbZ4cbkdphMYQ_hjzD_wrPvJevVwyYg@mail.gmail.com>
-References: <20240718234633.12737-1-sean.wang@kernel.org>
-	 <0124ff39-7d63-49f8-bacd-3a40ce37ec4d@leemhuis.info>
-	 <CAHbf0-Hn=ZyYpk7bS1yLK7K3ZpfWKgt3-t=c9Nhdj3Ov3H84mQ@mail.gmail.com>
-	 <f7197c55d059cc8ddbf6c3def16dc414c5ec0b42.camel@web.de>
-	 <CAHbf0-EBHERbxPGakY4-1jTQWqGqua3F0OYZjxcakdemJ5Soqw@mail.gmail.com>
-	 <51e80bde6e3f3256ecdea2e5260463341e65578e.camel@web.de>
-	 <CAHbf0-HYi=x11bc-sMJFbZ4cbkdphMYQ_hjzD_wrPvJevVwyYg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.53.2-1 
+	s=arc-20240116; t=1724833135; c=relaxed/simple;
+	bh=67B6v/6kWDCPcgu7Pcf8hglMBU4sht72HbJJzGDX+hM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h0JJzD6Dl1IZGwANrX+IbfBwCCn5bD806xnem8fd11s+m1PTCkYD1kNb8+tMgG9b8ucj7RxRs66so9YPROgQumm8wlnfAxq9pq6Md+YitPf9clltM+B45ClEV13jYwblFJF8d3rBwd9kjgCmkf1pKsodm092V8dHK3M1ON//p5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LGrHmquO; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1724833132; x=1756369132;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=67B6v/6kWDCPcgu7Pcf8hglMBU4sht72HbJJzGDX+hM=;
+  b=LGrHmquOn5zT9TVFHIU4sxfg1UM5XkQb4kaNytYQL7UsN0xpED2iBDLY
+   RYJ6DjZqGAFczZdm3+0k17z1+V7yvO1/crpnEgon2A4C8Nb1roZa7Mbbo
+   GIbF4EuWD4PkVYqzDinEZGyRRsfs0aO2LL7Zmo6Hr0mr0ld2UKr+T6CuB
+   lvP5Df0qozQXmQeE2yidEWKix2JkXjBywkt9T2OZAPcqgOqqW0GiRDBkp
+   ROfbDKvNUlmgxE2XZHj8MlnZnUMm+oLhxqNKyO7eHXhk7ib6U/M99ZMEW
+   YPBqfHFpvkR6KJLEeEDZVVpYiz+HxUtTqndGOGNwwEJVRKnXdGZ8HHxSt
+   g==;
+X-CSE-ConnectionGUID: aYzC4WEDRtqg929oIcwbHw==
+X-CSE-MsgGUID: MF6627CcTSmr7Pqid5IbtA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11177"; a="27116297"
+X-IronPort-AV: E=Sophos;i="6.10,182,1719903600"; 
+   d="scan'208";a="27116297"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2024 01:18:49 -0700
+X-CSE-ConnectionGUID: /m5d2NY2SqGMdEIBjX52gw==
+X-CSE-MsgGUID: EXNrMRjESJuptaz/EpjDPQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,182,1719903600"; 
+   d="scan'208";a="63141243"
+Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 28 Aug 2024 01:18:46 -0700
+Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sjDt5-000KeU-2Q;
+	Wed, 28 Aug 2024 08:18:43 +0000
+Date: Wed, 28 Aug 2024 16:17:50 +0800
+From: kernel test robot <lkp@intel.com>
+To: Hongbo Li <lihongbo22@huawei.com>, johannes@sipsolutions.net,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, allison.henderson@oracle.com, dsahern@kernel.org,
+	pshelar@ovn.org
+Cc: oe-kbuild-all@lists.linux.dev, linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org, rds-devel@oss.oracle.com,
+	dccp@vger.kernel.org, dev@openvswitch.org,
+	linux-afs@lists.infradead.org, lihongbo22@huawei.com
+Subject: Re: [PATCH net-next 4/8] net/core: Use min()/max() to simplify the
+ code
+Message-ID: <202408281628.FtNGguag-lkp@intel.com>
+References: <20240824074033.2134514-5-lihongbo22@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:6oZ+XXROi7lRrCqTGJQrAaf7+UZos3uRqJi6w9SfVRwy3Ai+6+X
- VzH1v1dTV1y4A0Cl5+yWA5cmtgmRpW2t5ytde1rRiTN9cNqTtss/hmQucySD9gu+k15mH3a
- BZfb7GJYdp3aB8FgVb/GySZpvBBrCMi73kG/vIIt3bxxzHK1Y0Qn8yi4Ezt+szteelBQZOg
- mtdxWhT5F6uPFlxVtsD4Q==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:O3/Xpm7KHVc=;ysiL236UkqiGFos3wisn3TRiVc6
- GhTDxBq0Djzm9fPbS0xNeJwtQrVvhB+vRwQNb6+N/fdcROdszFTxugwasFNfn4gQAvpDHIcJL
- aoIzqHw/2Iq71Da21fBh6DQbs425oHcSYLxsSomUFn5nEA35tVwQalsycTkTRastmIYw7GzTs
- sQPwQvFdXoyGKmCeLhg2+Uw1kQkeQhh6l5uwiJ6zZ97VZikxqjvpQlBFFJlwg67rg4rTdUVaM
- 8unT1Dmg/w2jMtpii8YDXpSttgDPAu5YqTsFlwtNEBKScvCRPqnU9iP7HKyUlX9sOQW2W8rd5
- 7M6+408V9i6vBIE2doqJnqhkh72gpvX7VsCQ2btld3Ei+OLoYggLWXUnoG51YgyUpOWCGaHIn
- PnzdQV78WJP0kUM6KKirPCW3WGGDvenxBpBxLHzDhXFSE1a7ILHjh5O7U52Twda60xTB5Hr47
- AdNaNlsOGbHGzPzbY67EGUs4JVY2QVd3FIU9ygMCgFPOejMpZZuc1ZH21sfRGcLQUV6P4Dr0p
- Ocx4qBHM9KS/scxnIWNGOXufot7PegDlWDe5MgealQf1EHwUD1oYliMNBencoiFllqqyCZ5yj
- uKj7Y4JRXiImOu8ydcWY1K/YqCaR947FgBTy3L7r2RRp0wJSdojLTqJQ7Q/Z3LsVwuHXoRmbV
- 80kcM4n6eCWWWvCsCjObQCKlPCoynUMTefRV9q9cFgMhhao6j/vaagnCDFNwHO/BhWl6Lq0cO
- d1Cx5UbRetKYW2fFL297XAm8D8/dHzu9XK9WHk8gPRq9B+zqBlN2rBi9Zb339xR/CLsSLjSrC
- edKkU4Y2rApJYpGJ4b35RZwg==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240824074033.2134514-5-lihongbo22@huawei.com>
 
-Am Mittwoch, dem 28.08.2024 um 00:38 +0100 schrieb Mike Lothian:
-> But not the follow on fix which fixes suspend...
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> index 2e6268cb06c0..a85c19da77e5 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> @@ -1182,7 +1182,7 @@ static void mt7921_ipv6_addr_change(struct
-> ieee80211_hw *hw,
->       struct inet6_dev *idev)
->  {
->   struct mt792x_vif *mvif =3D (struct mt792x_vif *)vif->drv_priv;
-> - struct mt792x_dev *dev =3D mvif->phy->dev;
-> + struct mt792x_dev *dev =3D mt792x_hw_dev(hw);
->   struct inet6_ifaddr *ifa;
->   struct in6_addr ns_addrs[IEEE80211_BSS_ARP_ADDR_LIST_LEN];
->   struct sk_buff *skb;
-> @@ -1205,6 +1205,9 @@ static void mt7921_ipv6_addr_change(struct
-> ieee80211_hw *hw,
->   },
->   };
->
-> + if (!mvif->phy)
-> + return;
-> +
->   read_lock_bh(&idev->lock);
->   list_for_each_entry(ifa, &idev->addr_list, if_list) {
->   if (ifa->flags & IFA_F_TENTATIVE)
->
-> > > >
-> >
+Hi Hongbo,
 
-That is interesting (or odd) because suspend (s2idle) works for me in next=
--
-20240827 on this hardware:
+kernel test robot noticed the following build errors:
 
-04:00.0 Network controller [0280]: MEDIATEK Corp. MT7921K (RZ608) Wi-Fi 6E=
- 80MHz
-[14c3:0608]
+[auto build test ERROR on net-next/main]
 
-are you using a different model?
+url:    https://github.com/intel-lab-lkp/linux/commits/Hongbo-Li/net-mac80211-use-max-to-simplify-the-code/20240826-154029
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20240824074033.2134514-5-lihongbo22%40huawei.com
+patch subject: [PATCH net-next 4/8] net/core: Use min()/max() to simplify the code
+config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20240828/202408281628.FtNGguag-lkp@intel.com/config)
+compiler: powerpc64-linux-gcc (GCC) 14.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240828/202408281628.FtNGguag-lkp@intel.com/reproduce)
 
-[  272.780054] [    T848] wlp4s0: deauthenticating from 54:67:51:3d:a2:d2 =
-by
-local choice (Reason: 3=3DDEAUTH_LEAVING)
-[  273.067438] [   T3437] PM: suspend entry (s2idle)
-[  273.151140] [   T3437] Filesystems sync: 0.083 seconds
-[  273.157029] [   T3437] Freezing user space processes
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202408281628.FtNGguag-lkp@intel.com/
 
-Can your the post the backtrace of your error (when commit 479ffee68d59c59=
-9f is
-applied)?
+All errors (new ones prefixed by >>):
 
-Bert Karwatzki
+   In file included from <command-line>:
+   net/core/pktgen.c: In function 'pktgen_finalize_skb':
+>> include/linux/compiler_types.h:510:45: error: call to '__compiletime_assert_991' declared with attribute error: min(datalen/frags, (1UL << 16)) signedness error
+     510 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |                                             ^
+   include/linux/compiler_types.h:491:25: note: in definition of macro '__compiletime_assert'
+     491 |                         prefix ## suffix();                             \
+         |                         ^~~~~~
+   include/linux/compiler_types.h:510:9: note: in expansion of macro '_compiletime_assert'
+     510 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |         ^~~~~~~~~~~~~~~~~~~
+   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
+      39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+         |                                     ^~~~~~~~~~~~~~~~~~
+   include/linux/minmax.h:100:9: note: in expansion of macro 'BUILD_BUG_ON_MSG'
+     100 |         BUILD_BUG_ON_MSG(!__types_ok(x,y,ux,uy),        \
+         |         ^~~~~~~~~~~~~~~~
+   include/linux/minmax.h:105:9: note: in expansion of macro '__careful_cmp_once'
+     105 |         __careful_cmp_once(op, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
+         |         ^~~~~~~~~~~~~~~~~~
+   include/linux/minmax.h:129:25: note: in expansion of macro '__careful_cmp'
+     129 | #define min(x, y)       __careful_cmp(min, x, y)
+         |                         ^~~~~~~~~~~~~
+   net/core/pktgen.c:2796:28: note: in expansion of macro 'min'
+    2796 |                 frag_len = min(datalen/frags, PAGE_SIZE);
+         |                            ^~~
+
+
+vim +/__compiletime_assert_991 +510 include/linux/compiler_types.h
+
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  496  
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  497  #define _compiletime_assert(condition, msg, prefix, suffix) \
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  498  	__compiletime_assert(condition, msg, prefix, suffix)
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  499  
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  500  /**
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  501   * compiletime_assert - break build and emit msg if condition is false
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  502   * @condition: a compile-time constant condition to check
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  503   * @msg:       a message to emit if condition is false
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  504   *
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  505   * In tradition of POSIX assert, this macro will break the build if the
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  506   * supplied condition is *false*, emitting the supplied error message if the
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  507   * compiler has support to do so.
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  508   */
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  509  #define compiletime_assert(condition, msg) \
+eb5c2d4b45e3d2 Will Deacon 2020-07-21 @510  	_compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+eb5c2d4b45e3d2 Will Deacon 2020-07-21  511  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
