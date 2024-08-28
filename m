@@ -1,175 +1,277 @@
-Return-Path: <linux-wireless+bounces-12117-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12118-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A10D9620CC
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 09:23:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03D58962160
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 09:38:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1DA2B23CE6
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 07:22:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF930281468
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 07:38:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA6C158552;
-	Wed, 28 Aug 2024 07:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8CBC1607A7;
+	Wed, 28 Aug 2024 07:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="C5Vma1X7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H2ar1Yok"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8E70158848
-	for <linux-wireless@vger.kernel.org>; Wed, 28 Aug 2024 07:19:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C1715F3E6;
+	Wed, 28 Aug 2024 07:36:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724829557; cv=none; b=ahx/dNISaOeXVcQzlg6p9TLbktzTbILcKkRyCQ2jmW/S7eJTB8fO82+MWedOBfmKN3rouq1zA5p1pZmxaPnQPNy9wDe8122531UA04ExXMah949Gxl5aVkC4nUlLE3/QGofxJBI4vbyts3LSWJdOt6S/zck2SJUDikNwKWae4zU=
+	t=1724830611; cv=none; b=AzCHQndHG4tzVrHL2wF/X+x/YTGeKa1ACEV8IrkQDMcfRH1HFZbxiYWkvP01RklDf3Equo3hiqTlgXEKjLVekxs2xNYSVtSUrwz7xtRUF2rnLqwqRjpDTnTKsf5cmb5NX2IcP7BZprIuZ0O9WG/c5gDeTvXfsFEhJYhwBFKIOiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724829557; c=relaxed/simple;
-	bh=2JAHRlpNhbel6e5TtRGYtCFzWJsfiSSfUJL1bWUXpS0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kgZkQdmFZ/e2+CKtOhDbnXv6uzAiTe3WH+79F6/g/HXtTy16aGN7fOmoHH2oMukBFgb4nI91hpjxobyAwRAU9zIZA2OvlMyy+qS6V2in4emg1iP+M1LSCCb5Du5A0UZvpZqE9B8QnxHp9+ez0hrZb/EzNCAKBZuiB2YK6+YbQ7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=C5Vma1X7; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=mFGHJEbOELDvc/L7FUxcmiha1LNirMx4mGdSAlBb6Rw=;
-	t=1724829555; x=1726039155; b=C5Vma1X7bkC77o92z47XZPB9yRZ5jX9NytL4bnDriqkbxBC
-	N5ghxfrJvBNwzDPEFdLyaawBY0kJKPKzl/SIOsMqUW5erJRt9+EIO0UchpO6Ml7gwvGX6bhMDBuAV
-	T8dfbKJuWHx5+zyL8kmaRPk8/cIisXJKOYakbYrKG9fZvtGPPBMQnaA3nLi7k5JmjQrJn07XvjI5P
-	7NmVsyCVhKUjkOhau+nQM8wbrPJ5tyvDq6SZ3fgkkChMIsyFcgsLjoPUcNP/jBy+Y40Y9gQbqrgDw
-	bi9qkR5xjqseY8JxfffKzORN0syXttq9pDUqprOTYKN7PRyv8vkFmymZcS4YAbKQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1sjCxO-00000006fRn-2oMN;
-	Wed, 28 Aug 2024 09:19:06 +0200
-Message-ID: <25391c67947d47c4cb75e89664a882905e125863.camel@sipsolutions.net>
-Subject: Re: WiFi constantly changes association
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: linux-wireless@vger.kernel.org, hostap@lists.infradead.org
-Date: Wed, 28 Aug 2024 09:19:05 +0200
-In-Reply-To: <9cd7bc93-090a-4fcd-9af1-af6ff108064b@rowland.harvard.edu>
-References: <eb86cf20-2b1b-4871-82a4-441ba81752dc@rowland.harvard.edu>
-	 <9f32e4ff8b59f137208d99c40fd166f81e8de4bc.camel@sipsolutions.net>
-	 <52752800050fdd10e3d883cb4870624455d1b34e.camel@sipsolutions.net>
-	 <9cd7bc93-090a-4fcd-9af1-af6ff108064b@rowland.harvard.edu>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+	s=arc-20240116; t=1724830611; c=relaxed/simple;
+	bh=/xq+keQ9L4ZNt85CyDSNycADysq9RCBUiBxhtxa/Iwk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k7B7Pqc62m+pvxfblADHDc9bcUPu8PxUFqZpUiu8XNKD5/i358YzGAM3QdB3sQdrx6EY8Tj1yv92f0xeoSioOEaafDMAqg1igVO8ludvFM8ILJBmXHwxZfoQF3uX5aErje0QIOYnFRBW5F1GdYuLM+d4m+msgH22dEvzDj3Ue9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H2ar1Yok; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1724830610; x=1756366610;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/xq+keQ9L4ZNt85CyDSNycADysq9RCBUiBxhtxa/Iwk=;
+  b=H2ar1Yok25pi+Kjooqsv1UczyAUUlNoP8bWM4FBSDuXXlf2rKPyeXym4
+   jqA6UcFci2qzgKZnw1yoSHKHKABImBJ9G6xqR3YWbq+wSCmvrLs/2AZ/a
+   qhbdbcU7IYn7pKk5IEuQ9B0RaLELQ32DVviI7p8ft/0FhNHvQ6IJ2XDhE
+   0nX990KVtMq6JUOpAcr0cTQPt0Btt1zVS1vt5Ov5sOvW9TmaVrjv38CN7
+   x64pK57CAiOF74wYbPiYiDBt0/n/qPXcdYv2zkPLDZsEQwNeT6Z0o4M3L
+   9ReesIR2X04F0GLeIhk+DVHkaeEE4lKHasXeN76D/IN3npLtSjt844LhP
+   Q==;
+X-CSE-ConnectionGUID: 2o/aJOm2S6anlSvglcOjhA==
+X-CSE-MsgGUID: oAsKtUhtT++quR74AO8GTw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11177"; a="23505455"
+X-IronPort-AV: E=Sophos;i="6.10,182,1719903600"; 
+   d="scan'208";a="23505455"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Aug 2024 00:36:49 -0700
+X-CSE-ConnectionGUID: FA6h6co/QC6+TreJRX3JCw==
+X-CSE-MsgGUID: rt6KCRb7RfqPS0cb8yUseA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,182,1719903600"; 
+   d="scan'208";a="63475108"
+Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 28 Aug 2024 00:36:45 -0700
+Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sjDEQ-000Kbk-0Y;
+	Wed, 28 Aug 2024 07:36:42 +0000
+Date: Wed, 28 Aug 2024 15:36:28 +0800
+From: kernel test robot <lkp@intel.com>
+To: Hongbo Li <lihongbo22@huawei.com>, johannes@sipsolutions.net,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, allison.henderson@oracle.com, dsahern@kernel.org,
+	pshelar@ovn.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+	rds-devel@oss.oracle.com, dccp@vger.kernel.org, dev@openvswitch.org,
+	linux-afs@lists.infradead.org, lihongbo22@huawei.com
+Subject: Re: [PATCH net-next 4/8] net/core: Use min()/max() to simplify the
+ code
+Message-ID: <202408281516.thVNxpEo-lkp@intel.com>
+References: <20240824074033.2134514-5-lihongbo22@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240824074033.2134514-5-lihongbo22@huawei.com>
 
-On Tue, 2024-08-27 at 15:09 -0400, Alan Stern wrote:
->=20
-> Well, I'd prefer to avoid unnecessary roaming because of the short=20
-> interruptions in service that it causes.
+Hi Hongbo,
 
-Right, but the interruptions for you are much longer because it _fails_.
-Perhaps wpa_supplicant should remember that, and not attempt to use FT
-when it keeps failing.
+kernel test robot noticed the following build errors:
 
-> Below is an extract from the system log for a period of about two=20
-> minutes, running with wpa_supplicant's -dd option set for verbose=20
-> debugging.  As of the start of the extract, the system had been=20
-> associated with an AP for about five minutes.  The log shows a few=20
-> spontaneous reassociations and some errors.  I hardly understand any of=
-=20
-> it, so thanks for your efforts to make sense of what it shows.
+[auto build test ERROR on net-next/main]
 
-I'm not sure I understand it either ... I don't see anything that
-_caused_ the roaming.
+url:    https://github.com/intel-lab-lkp/linux/commits/Hongbo-Li/net-mac80211-use-max-to-simplify-the-code/20240826-154029
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20240824074033.2134514-5-lihongbo22%40huawei.com
+patch subject: [PATCH net-next 4/8] net/core: Use min()/max() to simplify the code
+config: hexagon-allmodconfig (https://download.01.org/0day-ci/archive/20240828/202408281516.thVNxpEo-lkp@intel.com/config)
+compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project 08e5a1de8227512d4774a534b91cb2353cef6284)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240828/202408281516.thVNxpEo-lkp@intel.com/reproduce)
 
-> [snip]
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202408281516.thVNxpEo-lkp@intel.com/
 
-I'll skip that since I don't know if it's complete, or what came before.
-There are some failed transitions there, but eventually it's connected
-again:
+All errors (new ones prefixed by >>):
 
-> Aug 27 14:49:06 strephon kernel: wlan0: associated
-> Aug 27 14:49:06 strephon wpa_supplicant[5906]: wlan0: Associated with 48:=
-b4:c3:81:b1:a0
-> Aug 27 14:49:06 strephon wpa_supplicant[5906]: wlan0: CTRL-EVENT-EAP-STAR=
-TED EAP authentication started
-> Aug 27 14:49:06 strephon wpa_supplicant[5906]: wlan0: CTRL-EVENT-SUBNET-S=
-TATUS-UPDATE status=3D0
-> Aug 27 14:49:06 strephon NetworkManager[978]: <info>  [1724784546.5694] d=
-evice (wlan0): supplicant interface state: associating -> associated
-> Aug 27 14:49:06 strephon NetworkManager[978]: <info>  [1724784546.5695] d=
-evice (p2p-dev-wlan0): supplicant management interface state: associating -=
-> associated
-> Aug 27 14:49:06 strephon wpa_supplicant[5906]: wlan0: CTRL-EVENT-EAP-PROP=
-OSED-METHOD vendor=3D0 method=3D13
-> ...
-> Aug 27 14:49:06 strephon NetworkManager[978]: <info>  [1724784546.8164] d=
-evice (wlan0): supplicant interface state: associated -> 4way_handshake
-> Aug 27 14:49:06 strephon NetworkManager[978]: <info>  [1724784546.8165] d=
-evice (p2p-dev-wlan0): supplicant management interface state: associated ->=
- 4way_handshake
-> Aug 27 14:49:06 strephon kernel: iwlwifi 0000:72:00.0: Unhandled alg: 0x7=
-07
-> Aug 27 14:49:06 strephon wpa_supplicant[5906]: wlan0: WPA: Key negotiatio=
-n completed with 48:b4:c3:81:b1:a0 [PTK=3DCCMP GTK=3DCCMP]
-> Aug 27 14:49:06 strephon wpa_supplicant[5906]: wlan0: CTRL-EVENT-CONNECTE=
-D - Connection to 48:b4:c3:81:b1:a0 completed [id=3D1 id_str=3D]
-> Aug 27 14:49:06 strephon NetworkManager[978]: <info>  [1724784546.8649] d=
-evice (wlan0): supplicant interface state: 4way_handshake -> completed
+   In file included from net/core/pktgen.c:126:
+   In file included from include/linux/ptrace.h:10:
+   In file included from include/linux/pid_namespace.h:7:
+   In file included from include/linux/mm.h:2228:
+   include/linux/vmstat.h:517:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
+     517 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
+         |                               ~~~~~~~~~~~ ^ ~~~
+   In file included from net/core/pktgen.c:129:
+   In file included from include/linux/interrupt.h:11:
+   In file included from include/linux/hardirq.h:11:
+   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
+   In file included from include/asm-generic/hardirq.h:17:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:14:
+   In file included from arch/hexagon/include/asm/io.h:328:
+   include/asm-generic/io.h:548:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     548 |         val = __raw_readb(PCI_IOBASE + addr);
+         |                           ~~~~~~~~~~ ^
+   include/asm-generic/io.h:561:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     561 |         val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded from macro '__le16_to_cpu'
+      37 | #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
+         |                                                   ^
+   In file included from net/core/pktgen.c:129:
+   In file included from include/linux/interrupt.h:11:
+   In file included from include/linux/hardirq.h:11:
+   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
+   In file included from include/asm-generic/hardirq.h:17:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:14:
+   In file included from arch/hexagon/include/asm/io.h:328:
+   include/asm-generic/io.h:574:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     574 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded from macro '__le32_to_cpu'
+      35 | #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
+         |                                                   ^
+   In file included from net/core/pktgen.c:129:
+   In file included from include/linux/interrupt.h:11:
+   In file included from include/linux/hardirq.h:11:
+   In file included from ./arch/hexagon/include/generated/asm/hardirq.h:1:
+   In file included from include/asm-generic/hardirq.h:17:
+   In file included from include/linux/irq.h:20:
+   In file included from include/linux/io.h:14:
+   In file included from arch/hexagon/include/asm/io.h:328:
+   include/asm-generic/io.h:585:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     585 |         __raw_writeb(value, PCI_IOBASE + addr);
+         |                             ~~~~~~~~~~ ^
+   include/asm-generic/io.h:595:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     595 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+   include/asm-generic/io.h:605:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     605 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+>> net/core/pktgen.c:2796:14: error: call to '__compiletime_assert_743' declared with 'error' attribute: min(datalen/frags, (1UL << 12)) signedness error
+    2796 |                 frag_len = min(datalen/frags, PAGE_SIZE);
+         |                            ^
+   include/linux/minmax.h:129:19: note: expanded from macro 'min'
+     129 | #define min(x, y)       __careful_cmp(min, x, y)
+         |                         ^
+   include/linux/minmax.h:105:2: note: expanded from macro '__careful_cmp'
+     105 |         __careful_cmp_once(op, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
+         |         ^
+   include/linux/minmax.h:100:2: note: expanded from macro '__careful_cmp_once'
+     100 |         BUILD_BUG_ON_MSG(!__types_ok(x,y,ux,uy),        \
+         |         ^
+   note: (skipping 2 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
+   include/linux/compiler_types.h:498:2: note: expanded from macro '_compiletime_assert'
+     498 |         __compiletime_assert(condition, msg, prefix, suffix)
+         |         ^
+   include/linux/compiler_types.h:491:4: note: expanded from macro '__compiletime_assert'
+     491 |                         prefix ## suffix();                             \
+         |                         ^
+   <scratch space>:6:1: note: expanded from here
+       6 | __compiletime_assert_743
+         | ^
+   7 warnings and 1 error generated.
 
-Now it's fully connected.
 
-> Aug 27 14:49:06 strephon wpa_supplicant[5906]: wlan0: CTRL-EVENT-SIGNAL-C=
-HANGE above=3D0 signal=3D-68 noise=3D9999 txrate=3D29200
-> Aug 27 14:49:06 strephon NetworkManager[978]: <info>  [1724784546.8660] d=
-evice (wlan0): ip:dhcp4: restarting
-> Aug 27 14:49:06 strephon NetworkManager[978]: <info>  [1724784546.8660] d=
-hcp4 (wlan0): canceled DHCP transaction
-> Aug 27 14:49:06 strephon NetworkManager[978]: <info>  [1724784546.8660] d=
-hcp4 (wlan0): activation: beginning transaction (timeout in 45 seconds)
-> Aug 27 14:49:06 strephon NetworkManager[978]: <info>  [1724784546.8660] d=
-hcp4 (wlan0): state changed no lease
-> Aug 27 14:49:06 strephon NetworkManager[978]: <info>  [1724784546.8661] d=
-hcp4 (wlan0): activation: beginning transaction (timeout in 45 seconds)
-> Aug 27 14:49:06 strephon NetworkManager[978]: <info>  [1724784546.8661] d=
-evice (p2p-dev-wlan0): supplicant management interface state: 4way_handshak=
-e -> completed
-> Aug 27 14:49:06 strephon NetworkManager[978]: <info>  [1724784546.9397] d=
-hcp4 (wlan0): state changed new lease, address=3D10.250.66.194, acd pending
-> Aug 27 14:49:06 strephon NetworkManager[978]: <info>  [1724784546.9401] d=
-hcp4 (wlan0): state changed new lease, address=3D10.250.66.194
+vim +2796 net/core/pktgen.c
 
-and also with DHCP from NetworkManager now.
+  2769	
+  2770	static void pktgen_finalize_skb(struct pktgen_dev *pkt_dev, struct sk_buff *skb,
+  2771					int datalen)
+  2772	{
+  2773		struct timespec64 timestamp;
+  2774		struct pktgen_hdr *pgh;
+  2775	
+  2776		pgh = skb_put(skb, sizeof(*pgh));
+  2777		datalen -= sizeof(*pgh);
+  2778	
+  2779		if (pkt_dev->nfrags <= 0) {
+  2780			skb_put_zero(skb, datalen);
+  2781		} else {
+  2782			int frags = pkt_dev->nfrags;
+  2783			int i, len;
+  2784			int frag_len;
+  2785	
+  2786	
+  2787			if (frags > MAX_SKB_FRAGS)
+  2788				frags = MAX_SKB_FRAGS;
+  2789			len = datalen - frags * PAGE_SIZE;
+  2790			if (len > 0) {
+  2791				skb_put_zero(skb, len);
+  2792				datalen = frags * PAGE_SIZE;
+  2793			}
+  2794	
+  2795			i = 0;
+> 2796			frag_len = min(datalen/frags, PAGE_SIZE);
+  2797			while (datalen > 0) {
+  2798				if (unlikely(!pkt_dev->page)) {
+  2799					int node = numa_node_id();
+  2800	
+  2801					if (pkt_dev->node >= 0 && (pkt_dev->flags & F_NODE))
+  2802						node = pkt_dev->node;
+  2803					pkt_dev->page = alloc_pages_node(node, GFP_KERNEL | __GFP_ZERO, 0);
+  2804					if (!pkt_dev->page)
+  2805						break;
+  2806				}
+  2807				get_page(pkt_dev->page);
+  2808	
+  2809				/*last fragment, fill rest of data*/
+  2810				if (i == (frags - 1))
+  2811					skb_frag_fill_page_desc(&skb_shinfo(skb)->frags[i],
+  2812								pkt_dev->page, 0,
+  2813								min(datalen, PAGE_SIZE));
+  2814				else
+  2815					skb_frag_fill_page_desc(&skb_shinfo(skb)->frags[i],
+  2816								pkt_dev->page, 0, frag_len);
+  2817	
+  2818				datalen -= skb_frag_size(&skb_shinfo(skb)->frags[i]);
+  2819				skb->len += skb_frag_size(&skb_shinfo(skb)->frags[i]);
+  2820				skb->data_len += skb_frag_size(&skb_shinfo(skb)->frags[i]);
+  2821				i++;
+  2822				skb_shinfo(skb)->nr_frags = i;
+  2823			}
+  2824		}
+  2825	
+  2826		/* Stamp the time, and sequence number,
+  2827		 * convert them to network byte order
+  2828		 */
+  2829		pgh->pgh_magic = htonl(PKTGEN_MAGIC);
+  2830		pgh->seq_num = htonl(pkt_dev->seq_num);
+  2831	
+  2832		if (pkt_dev->flags & F_NO_TIMESTAMP) {
+  2833			pgh->tv_sec = 0;
+  2834			pgh->tv_usec = 0;
+  2835		} else {
+  2836			/*
+  2837			 * pgh->tv_sec wraps in y2106 when interpreted as unsigned
+  2838			 * as done by wireshark, or y2038 when interpreted as signed.
+  2839			 * This is probably harmless, but if anyone wants to improve
+  2840			 * it, we could introduce a variant that puts 64-bit nanoseconds
+  2841			 * into the respective header bytes.
+  2842			 * This would also be slightly faster to read.
+  2843			 */
+  2844			ktime_get_real_ts64(&timestamp);
+  2845			pgh->tv_sec = htonl(timestamp.tv_sec);
+  2846			pgh->tv_usec = htonl(timestamp.tv_nsec / NSEC_PER_USEC);
+  2847		}
+  2848	}
+  2849	
 
-> Aug 27 14:49:06 strephon systemd[1]: Starting NetworkManager-dispatcher.s=
-ervice - Network Manager Script Dispatcher Service...
-> Aug 27 14:49:06 strephon systemd[1]: Started NetworkManager-dispatcher.se=
-rvice - Network Manager Script Dispatcher Service.
-> Aug 27 14:49:17 strephon systemd[1]: NetworkManager-dispatcher.service: D=
-eactivated successfully.
-> Aug 27 14:49:41 strephon wpa_supplicant[5906]: wlan0: PMKSA-CACHE-ADDED 4=
-8:b4:c3:80:58:a1 1
-> Aug 27 14:49:41 strephon wpa_supplicant[5906]: wlan0: PMKSA-CACHE-ADDED 4=
-8:b4:c3:81:c8:e2 1
-> Aug 27 14:49:41 strephon wpa_supplicant[5906]: wlan0: SME: Trying to auth=
-enticate with 48:b4:c3:81:b8:03 (SSID=3D'Harvard Secure' freq=3D6215 MHz)
-> Aug 27 14:49:41 strephon kernel: wlan0: disconnect from AP 48:b4:c3:81:b1=
-:a0 for new auth to 48:b4:c3:81:b8:03
-> Aug 27 14:49:41 strephon kernel: wlan0: authenticate with 48:b4:c3:81:b8:=
-03 (local address=3D3e:de:7e:33:e6:22)
-> Aug 27 14:49:41 strephon kernel: wlan0: send auth to 48:b4:c3:81:b8:03 (t=
-ry 1/3)
-
-But I don't know what causes this? Maybe a higher debug level would show
-something here? But also I don't know too much about wpa_supplicant
-behaviour, so perhaps someone on the list can chime in what might've
-caused it to decide to roam here.
-
-johannes
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
