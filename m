@@ -1,121 +1,98 @@
-Return-Path: <linux-wireless+bounces-12148-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12146-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF7939622CF
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 10:52:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ABAA9622C7
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 10:52:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EBE41C243FF
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 08:52:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35B71286C4F
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 08:52:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F8015CD4A;
-	Wed, 28 Aug 2024 08:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C14C1607AC;
+	Wed, 28 Aug 2024 08:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=w1.fi header.i=@w1.fi header.b="W0+CVSkc"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pI/IV7//"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.w1.fi (mail.w1.fi [212.71.239.96])
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E28D515B12A
-	for <linux-wireless@vger.kernel.org>; Wed, 28 Aug 2024 08:51:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.71.239.96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B7C15E5B7;
+	Wed, 28 Aug 2024 08:50:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724835072; cv=none; b=FHD8WjVVGrGyr0hQRbClaREcwrvD52o8U2bn3T3IoPi6J276gz1EteQ2jkMLtuuv4Oxh+lXxVyMPHqCA+f9A32PxVvC4TRiHuUoyJk7mWa7Zxt7C3NNXmK0duyT43Jb2ECNx6YXlO/Cx8XdqRy5II9vsXwyg5EIgOuCcCW3hMqE=
+	t=1724835034; cv=none; b=N6I2X2TkrOx8ek3uZGz+FF9bBf/XwWC0uJdLyd2m8U//UQ+MwfpmXu+yy0elvifzvhUee3rPnoCBBGdbvmbiOZzDouLZIqsOodXLNDYSR8VCsaAlm2Q2W3G6i3UUWIdt13GUUVdqpSbGF5A/IMaA8+pbB9fy0B0ufLys+FfHDjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724835072; c=relaxed/simple;
-	bh=Q1XZ0wlkhbLl65+rtGUZ4JkoYZ3+W2MKU5sYnZveBIk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eeYN+A75q1D7wFw19T7bmxvpVxjhfVbaAJyWRwEYOJ1oOiEhZE055KvveyUzqy65tyAqufDwhwnSdif6izYsNpEszB40Bam2zKbgmoxhzeaG/N++kZaycYF1YFEaiYVM47LpSf0/TQn/4b2IeDNbrgVo4tDt5XXpdAVZyee1myQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=w1.fi; spf=pass smtp.mailfrom=w1.fi; dkim=pass (2048-bit key) header.d=w1.fi header.i=@w1.fi header.b=W0+CVSkc; arc=none smtp.client-ip=212.71.239.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=w1.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w1.fi
-Received: from localhost (localhost [127.0.0.1])
-	by mail.w1.fi (Postfix) with ESMTP id 5BDA911B7B;
-	Wed, 28 Aug 2024 08:51:08 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at w1.fi
-Received: from mail.w1.fi ([127.0.0.1])
-	by localhost (mail.w1.fi [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id FNE6e9g8VPJl; Wed, 28 Aug 2024 08:50:15 +0000 (UTC)
-Received: by jm (sSMTP sendmail emulation); Wed, 28 Aug 2024 11:50:13 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=w1.fi; s=default;
-	t=1724835015; bh=Q1XZ0wlkhbLl65+rtGUZ4JkoYZ3+W2MKU5sYnZveBIk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=W0+CVSkcGjpiQ3EZ5ZAPUrNsofTDNM/vmUCm9dTnYAo8Udy++aJsvtmyhTcO/AEZh
-	 7djEDgWK/U7K1422kJRVEv8NALdgxOkA7XEHlyuYpP/K6dpHnDlXjLDIC9MOFLhm8Q
-	 Eb+/X8z5OvV7pN/f1kpaHe1T1f0T+lLzHUi3SC7Cyj/hlpWTk33nEpnV1ZXZ4+OjtY
-	 Sjf54VVcgFDaPWfM8aUGDOZLaifcc/rLLe/NYn6fLPaFNHy5vyoF8N1l/L410W6Jdn
-	 vq1jVpDZhhU3AAttvcIZDFNHLuetKjlRJgoX5N5ukNBf4srB6lTRW0bbKJv0Xf6/QZ
-	 9egrCl/F2nroQ==
-Date: Wed, 28 Aug 2024 11:50:13 +0300
-From: Jouni Malinen <j@w1.fi>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Alan Stern <stern@rowland.harvard.edu>, linux-wireless@vger.kernel.org,
-	hostap@lists.infradead.org
-Subject: Re: WiFi constantly changes association
-Message-ID: <Zs7kxVAHmCaeOxSH@w1.fi>
-References: <eb86cf20-2b1b-4871-82a4-441ba81752dc@rowland.harvard.edu>
- <9f32e4ff8b59f137208d99c40fd166f81e8de4bc.camel@sipsolutions.net>
- <52752800050fdd10e3d883cb4870624455d1b34e.camel@sipsolutions.net>
- <9cd7bc93-090a-4fcd-9af1-af6ff108064b@rowland.harvard.edu>
- <25391c67947d47c4cb75e89664a882905e125863.camel@sipsolutions.net>
- <Zs7WegloyrfZdRu9@w1.fi>
- <f6ea69035f7ff32edc2575765641689e469f764a.camel@sipsolutions.net>
+	s=arc-20240116; t=1724835034; c=relaxed/simple;
+	bh=IQ+8b6ezJHQknQ+4JKSeRiRsQwuKp0tKlK4ZBgpIXjM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=C+R6Gqx/LFNzL73i8ywBbT1ssAbiU1tjW6nPPDDAlAeOw6YxYrqYQpK4G1PKbrNY0jstQAz7lMZ1Wt5YSF9wCJlWu0BOT6LfqjyhleGcF9tn02BTIJIJJg6RwG/0rnrIFPPuJ54X4q2f5lIXm/X0TQJOLJ1ldl8dnj6i3omtRtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pI/IV7//; arc=none smtp.client-ip=217.70.183.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 05E0A24000D;
+	Wed, 28 Aug 2024 08:50:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1724835029;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nEsEUXDUXUejO/Je6E+NCRRmChvWVykVcGk2OFYncmU=;
+	b=pI/IV7//hsNshLXrSCUJSCwoPe55ouJt5dt9e9Q81WrPAPJKFdsOdjuhTEkcFxDF0LZRoE
+	nv4RPohhJ4htaWM4SbKNy2oW5Nw6zfH+hmc4tJMiNpKm1Oc+wyzemeA3spBrfmxysWSSYf
+	3AX8OPCXcmx1t5uJmHJnabZIUBsllOD8DDusyky3RBpSgwdvuR+NAqzIBAVsw8sv8SkDPi
+	4sckv/sJiUepYJEUAfqVx4Pa8RH8uOIb5zmBkyHBedmusD1It03mAnD7oLh7hrTZ0EaiMc
+	XH1JV/kW+WaWZ9y4d2sg8RSO9x76pKDscrMRrOOtb7JJxjo9zCf2Vzfv5W0zaQ==
+Message-ID: <8082fffa-28b0-4d50-ac4e-e053649696c5@bootlin.com>
+Date: Wed, 28 Aug 2024 10:50:27 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f6ea69035f7ff32edc2575765641689e469f764a.camel@sipsolutions.net>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/5] wifi: wilc1000: Fold
+ chip_allow_sleep()/chip_wakeup() into wlan.c
+To: Marek Vasut <marex@denx.de>, linux-wireless@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Adham Abozaeid <adham.abozaeid@microchip.com>,
+ Ajay Singh <ajay.kathat@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Conor Dooley
+ <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20240827164042.53698-1-marex@denx.de>
+ <20240827164042.53698-3-marex@denx.de>
+From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20240827164042.53698-3-marex@denx.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: alexis.lothore@bootlin.com
 
-On Wed, Aug 28, 2024 at 09:55:09AM +0200, Johannes Berg wrote:
-> But for example:
+On 8/27/24 18:37, Marek Vasut wrote:
+> Neither chip_allow_sleep()/chip_wakeup() is used outside of wlan.c .
+> Make both functions static and remove both the exported symbol and
+> entries from wlan.h .
 > 
-> > wpa_supplicant[5906]: wlan0: FT: RSNE mismatch between Beacon/ProbeResp and FT protocol Reassociation Response frame
+> Make chip_allow_sleep() return error code in preparation for the
+> follow up patches.
 > 
-> is something that perhaps could result in an FT-blocklist or something
-> for the BSSID in question, or perhaps even the whole network since it's
-> likely to be a single controller/unified installation or so.
+> Move acquire_bus() and release_bus() to avoid forward declaration
+> of chip_allow_sleep()/chip_wakeup().
+> 
+> Signed-off-by: Marek Vasut <marex@denx.de>
 
-Somehow I managed to miss then entry.. This is something that I'd be
-quite interested in getting more details for since this seems to show a
-clear interoperability issue with the FT reassociation implementation
-between the AP and the STA.. I'd like to see the full wpa_supplicant
-debug sequence that started from selecting the AP and how it resulted in
-this mismatch.
-
-Is there any idea which AP devices are used in the network? It is
-clearly misbehaving if the wpa_supplicant debug log entries are accurate
-on what RSNE values it uses:
-
-RSNE in Beacon/ProbeResp - hexdump(len=32): 30 1e 01 00 00 0f ac 04 01 00 00 0f ac 04 02 00 00 0f ac 05 00 0f ac 03 e8 00 00 00 00 0f ac 06
-RSNE in FT protocol Reassociation Response frame - hexdump(len=44): 30 2a 01 00 00 0f ac 04 01 00 00 0f ac 04 02 00 00 0f ac 01 00 0f ac 03 e8 00 01 00 ff 84 62 84 5a a3 06 82 4f b4 2d 43 36 76 87 4b
-
-It is expected to add the PMKID entry for FT, but the AP changed its
-list of AKM suites (!?) and removed the group management cipher suite.
-Such changes are not allowed and the STA has to stop since those would
-be a clear indication of an active downgrade attack. While
-wpa_supplicant could in theory prevent FT attempts with this AP for some
-time from the view point of interoperability workarounds, I'm not
-exactly happy about such a change since it could make it easier to
-perform various attacks.
-
-As far as the AKM suite lists are concerned, the RSNE from scan results
-indicated 00-0F-AC:5 (802.1X with SHA-256) and 00-0F-AC:3 (FT with
-802.1X) while the RSNE from Reassocation Response frame indicated
-00-0F-AC:1 (802.1X with SHA-1) and 00-0F-AC:3 (FT with 802.1X). This
-feels really strange. Either the AP has a really broken FT
-implementation or something has messed up with scan results.. Since this
-attempt is on the 6 GHz band, I'm assuming the AP has other BSSs on the
-2.4 and 5 GHz bands and it might be possible that there are differences
-in which AKMs are enabled on different bands. That would be a bit
-strange configuration of the AP, but still, possible. It would be nice
-to get full scan results that show the RSNE values from all bands.
+Reviewed-by: Alexis Lothoré <alexis.lothore@bootlin.com>
 
 -- 
-Jouni Malinen                                            PGP id EFC895FA
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
