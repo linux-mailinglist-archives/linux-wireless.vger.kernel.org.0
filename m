@@ -1,137 +1,130 @@
-Return-Path: <linux-wireless+bounces-12128-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12127-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 087C69621EA
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 09:58:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 748FB9621D7
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 09:55:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2F0A1F2618F
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 07:58:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A748A1C22313
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 07:55:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF57415853A;
-	Wed, 28 Aug 2024 07:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B515A157A67;
+	Wed, 28 Aug 2024 07:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=w1.fi header.i=@w1.fi header.b="IGLoHxpQ"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="GN2T5Qgi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.w1.fi (mail.w1.fi [212.71.239.96])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27FD515B122
-	for <linux-wireless@vger.kernel.org>; Wed, 28 Aug 2024 07:58:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.71.239.96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C6B14D6EB
+	for <linux-wireless@vger.kernel.org>; Wed, 28 Aug 2024 07:55:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724831890; cv=none; b=Mdu4k3AVqaB1Pds/7FdyvV0r3JhgVjlvscSB2Aa+iOagkNUyh1AJxGuShk6AACaAzLMkj99pwHnprV8WMzlFnjb5q1jsXY3SkliCb6Gp6yTk6hqLpOu7xw3h7arY9nPF2X/OZRJBE5okWAVE6fzBtdtSETE1LWKQBt9LgriWQhc=
+	t=1724831715; cv=none; b=XII0rSkZnwiKRl9w7YK8DPOGNDsZMMbtli4ABQYuDS/I6HQtM0ZdbOs9g5h89Y/Wuw0Dx++dxVShDah3H7XXFuU0WXU67s3wGA2sKSG1q6rhIpwRvcw+rKESgW6qn1jPnXIrm2Yhza0zMPtK6UfF6FUIzQpv1+lO7qSOBHFkYvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724831890; c=relaxed/simple;
-	bh=LIQRNli3CllbOGaGJ54BgGgTcZ+YlPlQWmX0Z5C/3uc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ep8eMWBhFSa8/L88ZFnXxbYfKHJr9vw9kHUd51lpirKoBIkPfJiFusMlvoUGscIkqGoAaxwvySBEU6Gbxdq6EiqhHezHVKMBO3WnqTa8ITBemGypbHU2Xc2rRsE3eE3KLG1WO2bFjgBgRIPWUeRWN8lEJ+n3Je+IwavdBxES3vU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=w1.fi; spf=pass smtp.mailfrom=w1.fi; dkim=pass (2048-bit key) header.d=w1.fi header.i=@w1.fi header.b=IGLoHxpQ; arc=none smtp.client-ip=212.71.239.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=w1.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w1.fi
-Received: from localhost (localhost [127.0.0.1])
-	by mail.w1.fi (Postfix) with ESMTP id 391AF11B51;
-	Wed, 28 Aug 2024 07:49:54 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at w1.fi
-Received: from mail.w1.fi ([127.0.0.1])
-	by localhost (mail.w1.fi [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id SRAMAlCFpuJl; Wed, 28 Aug 2024 07:49:17 +0000 (UTC)
-Received: by jm (sSMTP sendmail emulation); Wed, 28 Aug 2024 10:49:14 +0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=w1.fi; s=default;
-	t=1724831357; bh=LIQRNli3CllbOGaGJ54BgGgTcZ+YlPlQWmX0Z5C/3uc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=IGLoHxpQAXvbOBW5pKulr/J/RuNGgiWC+FjTMoEf0zXNYIo58RoyoYMmQzhqZG61x
-	 kqUfOMbi0ZrKIGjbnN3Wa8IY0NKb8Wxd7TSk7BcYAB4rpcSfXC6qowfVsBtpHkjuom
-	 Urhe/DJMawyxVa2GRhjB8RFCCdy2bG+ZvmPNdH5UCjhClOokn4xadka3O5phC79A3l
-	 dozJTC+k4XgkvQmBBCOLv+AYtn+nGd3PewSPr4VBn7enBLHuBVg6vvUtaAxyUMySxy
-	 kPlB3ZF5V0xRBopDteHimRQnuDmFz+ZTq6hwXzJf0Ayl1ts/1VeYCXiOLyWUkXiUPd
-	 YvEKbNufwum1Q==
-Date: Wed, 28 Aug 2024 10:49:14 +0300
-From: Jouni Malinen <j@w1.fi>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Alan Stern <stern@rowland.harvard.edu>, linux-wireless@vger.kernel.org,
-	hostap@lists.infradead.org
+	s=arc-20240116; t=1724831715; c=relaxed/simple;
+	bh=aa0u6ZgIzNcYGaUfXluLI4+Bk0MX7EKAtwXb7Hh2HZc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=P11N0ZU7UJKVn16uucpzZNvkuN+AJKUfcpvbNm3Lj6BC8ZYX77NWqmyNjfYaoDC0YgiH5lLK5BxD0wU9g9Jw5m7yPmd+yQqWQEk+D4HL9JmCcy+dABSkgMTxlfsGakoKEdmHQrxm/Lo1AVDtq5Vj2LxfB906ibNfs9/oRPTaHJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=GN2T5Qgi; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=v2tfz6MlM3n1VDfF5b7ZS7VEZ7qaR9IYCgyWHLVm2nA=;
+	t=1724831714; x=1726041314; b=GN2T5QgihQ59wYf9sjjRZuBTR0sKylzYeAZNkSbS0F7JpUx
+	Cm2gE3QEQGZSKGXORYrjdpNtIOBQeSQbQqBn7+fmqWoUeYfzVwbW1zxMh7Fj35HZiBaWAesI0iW52
+	Ds/+Cz+EI6d3rFyzWQKGA7AME+GkibeN01EZ+GeriuEjLEbutVMuqCdF2TJPfysu2ET3LbEYQhkvA
+	pCCkPNk37YC3Oi/xsG5CvOqvLOywWwPzQf15jkgEAPgdvFtMZTWlqoUxYOW6vbyuLcJB3/iJb/Bvf
+	vUys3f1pIKpuKDKMUwJE7qpgy9Ms2SuhcaQ/AgoXYJTbUZCz67YN3OqqWDFwbsnQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1sjDWI-00000006ihs-3bCk;
+	Wed, 28 Aug 2024 09:55:11 +0200
+Message-ID: <f6ea69035f7ff32edc2575765641689e469f764a.camel@sipsolutions.net>
 Subject: Re: WiFi constantly changes association
-Message-ID: <Zs7WegloyrfZdRu9@w1.fi>
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Jouni Malinen <j@w1.fi>
+Cc: Alan Stern <stern@rowland.harvard.edu>, linux-wireless@vger.kernel.org, 
+	hostap@lists.infradead.org
+Date: Wed, 28 Aug 2024 09:55:09 +0200
+In-Reply-To: <Zs7WegloyrfZdRu9@w1.fi>
 References: <eb86cf20-2b1b-4871-82a4-441ba81752dc@rowland.harvard.edu>
- <9f32e4ff8b59f137208d99c40fd166f81e8de4bc.camel@sipsolutions.net>
- <52752800050fdd10e3d883cb4870624455d1b34e.camel@sipsolutions.net>
- <9cd7bc93-090a-4fcd-9af1-af6ff108064b@rowland.harvard.edu>
- <25391c67947d47c4cb75e89664a882905e125863.camel@sipsolutions.net>
+	 <9f32e4ff8b59f137208d99c40fd166f81e8de4bc.camel@sipsolutions.net>
+	 <52752800050fdd10e3d883cb4870624455d1b34e.camel@sipsolutions.net>
+	 <9cd7bc93-090a-4fcd-9af1-af6ff108064b@rowland.harvard.edu>
+	 <25391c67947d47c4cb75e89664a882905e125863.camel@sipsolutions.net>
+	 <Zs7WegloyrfZdRu9@w1.fi>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <25391c67947d47c4cb75e89664a882905e125863.camel@sipsolutions.net>
+X-malware-bazaar: not-scanned
 
-On Wed, Aug 28, 2024 at 09:19:05AM +0200, Johannes Berg wrote:
-> On Tue, 2024-08-27 at 15:09 -0400, Alan Stern wrote:
-> > Well, I'd prefer to avoid unnecessary roaming because of the short 
-> > interruptions in service that it causes.
-> 
-> Right, but the interruptions for you are much longer because it _fails_.
-> Perhaps wpa_supplicant should remember that, and not attempt to use FT
-> when it keeps failing.
+On Wed, 2024-08-28 at 10:49 +0300, Jouni Malinen wrote:
+> On Wed, Aug 28, 2024 at 09:19:05AM +0200, Johannes Berg wrote:
+> > On Tue, 2024-08-27 at 15:09 -0400, Alan Stern wrote:
+> > > Well, I'd prefer to avoid unnecessary roaming because of the short=
+=20
+> > > interruptions in service that it causes.
+> >=20
+> > Right, but the interruptions for you are much longer because it _fails_=
+.
+> > Perhaps wpa_supplicant should remember that, and not attempt to use FT
+> > when it keeps failing.
+>=20
+> That depends on what exactly is failing..
 
-That depends on what exactly is failing.. I did not bother going through
-all the details of the debug log since it seemed to be missing
-something. I did notice one of the APs using comeback mechanism which is
-a sign of the STA having an older entry on it and PMF being used. That
-is actually not a failure but part of the expected behavior for
-protecting against disconnection attacks. One would need to have a full
-log from the first initial connection to the point of a failed
-reassociation. Ideally, I'd like to see that from wpa_supplicant stdout
-with -ddt on the command line instead of syslog.
+Agree.
 
-> > Below is an extract from the system log for a period of about two 
-> > minutes, running with wpa_supplicant's -dd option set for verbose 
-> > debugging.  As of the start of the extract, the system had been 
-> > associated with an AP for about five minutes.  The log shows a few 
-> > spontaneous reassociations and some errors.  I hardly understand any of 
-> > it, so thanks for your efforts to make sense of what it shows.
-> 
-> I'm not sure I understand it either ... I don't see anything that
-> _caused_ the roaming.
+>  I did not bother going through
+> all the details of the debug log since it seemed to be missing
+> something.
 
-Indeed. That log is not sufficient to debug this.
+Also seems that way, yes, though not sure why.
 
-> > Aug 27 14:49:06 strephon systemd[1]: Starting NetworkManager-dispatcher.service - Network Manager Script Dispatcher Service...
-> > Aug 27 14:49:06 strephon systemd[1]: Started NetworkManager-dispatcher.service - Network Manager Script Dispatcher Service.
-> > Aug 27 14:49:17 strephon systemd[1]: NetworkManager-dispatcher.service: Deactivated successfully.
-> > Aug 27 14:49:41 strephon wpa_supplicant[5906]: wlan0: PMKSA-CACHE-ADDED 48:b4:c3:80:58:a1 1
-> > Aug 27 14:49:41 strephon wpa_supplicant[5906]: wlan0: PMKSA-CACHE-ADDED 48:b4:c3:81:c8:e2 1
-> > Aug 27 14:49:41 strephon wpa_supplicant[5906]: wlan0: SME: Trying to authenticate with 48:b4:c3:81:b8:03 (SSID='Harvard Secure' freq=6215 MHz)
-> > Aug 27 14:49:41 strephon kernel: wlan0: disconnect from AP 48:b4:c3:81:b1:a0 for new auth to 48:b4:c3:81:b8:03
-> > Aug 27 14:49:41 strephon kernel: wlan0: authenticate with 48:b4:c3:81:b8:03 (local address=3e:de:7e:33:e6:22)
-> > Aug 27 14:49:41 strephon kernel: wlan0: send auth to 48:b4:c3:81:b8:03 (try 1/3)
-> 
-> But I don't know what causes this? Maybe a higher debug level would show
-> something here? But also I don't know too much about wpa_supplicant
-> behaviour, so perhaps someone on the list can chime in what might've
-> caused it to decide to roam here.
+But for example:
 
-This is clearly missing entries. Maybe something in syslog is filtering
-things out? Like I noted above, debug log directly from wpa_supplicant
-stdout would be better way of getting a complete log in a form that
-could be analyzed without having to guess what exactly happened in this
-type of a case.
+> wpa_supplicant[5906]: wlan0: FT: RSNE mismatch between Beacon/ProbeResp a=
+nd FT protocol Reassociation Response frame
 
-Something external(?) seemed to do some management of the PMKSA cache
-here. It is not what that is. If it is NetworkManager through the
-wpa_supplicant D-Bus interface, it is possible that wpa_supplicant does
-not log all the details in its debug log. If that is indeed the case, I
-would recommend testing this with NM disabled or with a closer look at
-NM debug log to see what it is trying to do here. Adding PMKSA cache
-entries should not result in roaming, but removing them could if
-something is removing the currently used PMKSA entry. I'd expect
-wpa_supplicant debug log to include more detaild about that, though.
+is something that perhaps could result in an FT-blocklist or something
+for the BSSID in question, or perhaps even the whole network since it's
+likely to be a single controller/unified installation or so.
 
--- 
-Jouni Malinen                                            PGP id EFC895FA
+> I did notice one of the APs using comeback mechanism which is
+> a sign of the STA having an older entry on it and PMF being used. That
+> is actually not a failure but part of the expected behavior for
+> protecting against disconnection attacks. One would need to have a full
+> log from the first initial connection to the point of a failed
+> reassociation.=C2=A0
+
+True.
+
+> Ideally, I'd like to see that from wpa_supplicant stdout
+> with -ddt on the command line instead of syslog.
+
+Right ... That needs more arguments to integrate with NetworkManager (or
+configuration to have at least dbus), but I'm not sure how exactly
+that'd work and how you'd stop the system one.
+
+Actually if it's with systemd then that/journal will log everything from
+the stdout/stderr, just not necessarily in the syslog - so perhaps
+adding -t in addition to -dd and then using
+
+	journalctl -u wpa_supplicant
+
+would work.
+
+johannes
 
