@@ -1,108 +1,107 @@
-Return-Path: <linux-wireless+bounces-12174-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12175-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4694E962ADB
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 16:54:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 026E5962BE6
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 17:17:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCF86B2340F
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 14:54:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEC31285DD7
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 15:17:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C9381A2557;
-	Wed, 28 Aug 2024 14:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3081D1A4AD7;
+	Wed, 28 Aug 2024 15:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uVu5dJ8M"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="fUbZQBpK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDA71A08CB;
-	Wed, 28 Aug 2024 14:53:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 899441A3BCF
+	for <linux-wireless@vger.kernel.org>; Wed, 28 Aug 2024 15:15:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724856836; cv=none; b=jdHIU1HLH7HEPCiPUA+1F6kfROekFqvQPVu5wGS2y+Mqqz1Wju2yFHA/5iZH+QLZw9RF0EZMIJ3xoRn9RS99RH1s5L/6KdM49UJZisRF5WubjagP8WkiNbdN0xRgQOzjQLh9K82nYxvcf3yRq5LPgGbDR5cr/tl5PxULGhcI/2I=
+	t=1724858139; cv=none; b=pCWxXNNCpTX6mWfE1fos8mk/HueoVFwLEOmUa7IpWvtp1SVsmr9sF2grrpaJZDD+DO2Ghl64ySEBC9R7eeJFFWfRDfHzwVzMAiwZ55FUak84UNLyLrS8u2fPlw1WKtejygkoSzyV7ZfeYavCWkeHTgkuBDsnnMFoOvPh4Hfm7Q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724856836; c=relaxed/simple;
-	bh=PBEPGqLR8W67wqTgV4duHrB8dd1jHssYs3wnL6pRvuk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ufTLSSFx9HuXVS3VKlefjK+XwMId2Fui8TFSA85BQxiQHEkLCV1H1ylJdL5GxGfF7y1gO0SMB3iuWIyYpOgWoEu8s0+br6VyNHspoeM3zhuo1EI4aCVLrxOor5tcYQAqueGbeEv6lb6JKOUTrSpckTdFBGqBM0XSOPNI/ht+J3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uVu5dJ8M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41934C4CEC0;
-	Wed, 28 Aug 2024 14:53:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724856835;
-	bh=PBEPGqLR8W67wqTgV4duHrB8dd1jHssYs3wnL6pRvuk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uVu5dJ8MsKoc6ut6ZXPE83dPH3NzU9mjG9y7WZSZWA+nx4LTYyHtioivJTa70tMcM
-	 LpfNLviG3Lg2ViP81bmOKbkC88mVYlCTjRLq4u3pUac1xm6URdCRc/zydBx/6el5ER
-	 Tahu/OtqjWRXnLXrt2VNKd8hAv+ER6AiaEXwCKiGH7m1fut7BUPF/XToeD7sZzRaM5
-	 mzDQ+Q41gDfbDmqa+/WUzqCQso3z1WABESx8/Q9HkyAJiuYrSRon9l+onGa3iy4ech
-	 mu+A4qBPPFVmU3eli/59X4GAytjOFc765utBVzZWFDTEoAopXCI61z03jqRZphrCQY
-	 XZmvIR2MYYO6A==
-Date: Wed, 28 Aug 2024 15:53:48 +0100
-From: Simon Horman <horms@kernel.org>
-To: Jacobe Zang <jacobe.zang@wesion.com>
-Cc: arend.vanspriel@broadcom.com, kvalo@kernel.org, marcan@marcan.st,
-	sven@svenpeter.dev, alyssa@rosenzweig.io, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	saikrishnag@marvell.com, megi@xff.cz, bhelgaas@google.com,
-	duoming@zju.edu.cn, minipli@grsecurity.net, yajun.deng@linux.dev,
-	stern@rowland.harvard.edu, gregkh@linuxfoundation.org,
-	christophe.jaillet@wanadoo.fr, linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
-	nick@khadas.com
-Subject: Re: [PATCH v12 4/5] wifi: brcmfmac: Add optional lpo clock enable
- support
-Message-ID: <20240828145348.GO1368797@kernel.org>
-References: <20240828034915.969383-1-jacobe.zang@wesion.com>
- <20240828034915.969383-5-jacobe.zang@wesion.com>
+	s=arc-20240116; t=1724858139; c=relaxed/simple;
+	bh=a0z6lBlmdnd7+IIz6OHPyjCw/REF9bRa9vagPVp1tH8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=uXWB948glprn2BdL4Fj2arjM1GknkEByjbBdNNZLsmx2jWPS7li6nFFjAlPaRDKb9UyoCXDeiJjgOseucm982Z4XDVUDamJWYxtIt6DAFzBYJgpeQailLyeqOhEgIlruEAQmljmXqHQSThPiHPaP9+1BrNrY4EtiIzHiSD6Qw+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=fUbZQBpK; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47SBHSc6009010;
+	Wed, 28 Aug 2024 15:15:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	fz+jyOUHiqicb0q5TClyvt2Yxf+WHzOKQwY7LgY+Ep4=; b=fUbZQBpKXEJXXnzE
+	8tDvYIuIJEmxN7g3FJ26yb3ZDer3M/s/z9VwQEXuWFmzfktfNIAVr/mZV+oOFPIE
+	RaqPwmQUVF5QnSTy4n/h/El7A1L+LvQBPm6vqANfCpR4k8vh51djc/rd73mRbp7z
+	/lD7J+3/BDuhMFhezUlZxW04qJJCuHBHL3fLZXWYg7KjvFFvhAB0lSqhN0FTCTE2
+	ILS21oZLbnE3sFGUduh2g4FFABiprODqSAGHVRvjrmfZ6yVWrH/Uhz+rCgwRFoda
+	vpMINK143Fzl6U+t8OxToDK4PFAe1skFme6qnZUGmnFI1YKEEVoLbqzKiazR4dP3
+	aaaF8Q==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 419px5j6rg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 28 Aug 2024 15:15:30 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47SFFFNw005701
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 28 Aug 2024 15:15:15 GMT
+Received: from [10.227.110.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 28 Aug
+ 2024 08:15:14 -0700
+Message-ID: <6c525c85-1439-4a5c-aacd-f094dd882180@quicinc.com>
+Date: Wed, 28 Aug 2024 08:15:14 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240828034915.969383-5-jacobe.zang@wesion.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath11k: enable fw_wmi_diag_event hw param for
+ WCN6750
+To: Balaji Pothunoori <quic_bpothuno@quicinc.com>,
+        <ath11k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240828103043.2413-1-quic_bpothuno@quicinc.com>
+Content-Language: en-US
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20240828103043.2413-1-quic_bpothuno@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: xTIcptSioBqdMBYmmYc0IaakWYsxvmj0
+X-Proofpoint-GUID: xTIcptSioBqdMBYmmYc0IaakWYsxvmj0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-28_05,2024-08-27_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 clxscore=1011
+ adultscore=0 suspectscore=0 lowpriorityscore=0 mlxlogscore=843 spamscore=0
+ priorityscore=1501 bulkscore=0 mlxscore=0 malwarescore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
+ definitions=main-2408280110
 
-On Wed, Aug 28, 2024 at 11:49:14AM +0800, Jacobe Zang wrote:
-> WiFi modules often require 32kHz clock to function. Add support to
-> enable the clock to PCIe driver and move "brcm,bcm4329-fmac" check
-> to the top of brcmf_of_probe. Change function prototypes from void
-> to int and add appropriate errno's for return values that will be
-> send to bus when error occurred.
+On 8/28/2024 3:30 AM, Balaji Pothunoori wrote:
+> WCN6750 firmware sends the log messages via WMI_DIAG_EVENTID only
+> when the host driver enables the same via QMI_WLANFW_WLAN_INI_REQ_V01
+> QMI message. This is further controlled via fw_wmi_diag_event.
+> Hence set this flag to true for the firmware to send the logs.
+> These logs are further collected in the user space through
+> the trace infrastructure.
 > 
-> Co-developed-by: Ondrej Jirman <megi@xff.cz>
-> Signed-off-by: Ondrej Jirman <megi@xff.cz>
-> Co-developed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Reviewed-by: Sai Krishna <saikrishnag@marvell.com>
-> Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
+> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.2.0.c2-00233-QCAMSLSWPLZ-1
+> 
+> Signed-off-by: Balaji Pothunoori <quic_bpothuno@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-...
-
-> @@ -4452,7 +4454,9 @@ struct brcmf_sdio *brcmf_sdio_probe(struct brcmf_sdio_dev *sdiodev)
->  	/* Allocate private bus interface state */
->  	bus = kzalloc(sizeof(*bus), GFP_ATOMIC);
->  	if (!bus)
-> +		ret = -ENOMEM;
->  		goto fail;
-> +	}
->  
-
-Perhaps a local change didn't make it into git, or something like that.
-But this does not compile.
-
->  	bus->sdiodev = sdiodev;
->  	sdiodev->bus = bus;
-
-...
-
--- 
-pw-bot: cr
 
