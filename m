@@ -1,167 +1,118 @@
-Return-Path: <linux-wireless+bounces-12152-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12153-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 700629624AF
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 12:21:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A52A9624F4
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 12:32:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E224285E7D
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 10:21:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1D98B2233E
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 10:31:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F7A916A934;
-	Wed, 28 Aug 2024 10:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FBB715445E;
+	Wed, 28 Aug 2024 10:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="u1SZGUK9"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="m6Az41Gl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE76D166F3A
-	for <linux-wireless@vger.kernel.org>; Wed, 28 Aug 2024 10:21:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02B3157490
+	for <linux-wireless@vger.kernel.org>; Wed, 28 Aug 2024 10:31:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724840481; cv=none; b=btBe39bjm4xLHoZctsUwHPSQ8sK5EPWZkSvbtWg7OoLeM7+nPrViL7xqrFwwmvDFB/JLv3uvmno1Kf21G5kOroH6Fq8kTN8K0dLl1Fy4wwwsVt2auHNyBbjE/B9OUZ11ALfP2xv832LtlkDZeyZ9GCJYCBFYzxzJPF5X7F/wNvo=
+	t=1724841109; cv=none; b=Nr8lqJu1jqPYmMhtdL3cvP/1dAG8zPFyncw8X8cSq8/wE9LNQyu29cmjXJMPAFS4EZFsAWWOAQVpXDvZbFI4EXDyTNGW5eVEvzuzzsUrpXQv+N0xpToXwskxdXFPcMu6ZYy6B3J+y9TrvAI7H9C/9ReKUxTdrBIZ1Hp6R0P9PgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724840481; c=relaxed/simple;
-	bh=mYcgzghzmsUgmnhSFtlsrOG8bCl8Pns+pxXhyI4HHuE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=p747QjmBkD7Xqmas2MTeLpi5Kbc1AixqXdvUKVbETboSDwV+4/1rsJ1jwiRcLelNtHBaGsx4S1nMP7j5a+ok4vUiFaWktC3C2mM7SlFHVg/oBZqH+c+44Tu1XIiPG5BXjCaZPfOUIZOhz1tqlKLYQMZLrCythRPtKL3JulDaNqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=u1SZGUK9; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=zMeG3LV1wRFPeX/MYE54BMbd2ZfvJ9vGfcFeHpdRbXU=;
-	t=1724840479; x=1726050079; b=u1SZGUK9kqNXmT07MEgVmd+7m1QAOb0CNrrhc9M440/vPAE
-	Y9Y/+12cc3dcBwrWsLaHGIZp5h7JU8maLlTD1+kQSeIW5FyuaOUFT/8JZrpe1nkOuDen3vDCGy0Xv
-	Vtj5gflgmtJnGe+rtpUi1Ae7H4AysCr8sZX7KjzFmvkrUlI6NhCgw6V1W8TRtFhqcigo47eg5HSEA
-	gDdxWjLUwum3k8tDBKPeIBr9Rwh+0LaCZgh/prYqKV6hYm4MEqH3J71Jtj2FGOTX5tlO1tLcbDWzC
-	7UN9qDkbJmI+dt6AzSUOk2xMmeaNop2eaLj3CWSNDu6BeaEPdGR/q3DEn19snVlQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1sjFng-00000006wYE-0t7s;
-	Wed, 28 Aug 2024 12:21:16 +0200
-Message-ID: <cfc85dc7bf175cc4237d9d1423b0101b9162f727.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: cfg80211: skip regulatory checks when the channel
- is punctured
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Kavita Kavita <quic_kkavita@quicinc.com>
-Cc: linux-wireless@vger.kernel.org, quic_mpaluri@quicinc.com, Aditya Kumar
- Singh <quic_adisi@quicinc.com>
-Date: Wed, 28 Aug 2024 12:21:14 +0200
-In-Reply-To: <20240826123341.5405-1-quic_kkavita@quicinc.com>
-References: <20240826123341.5405-1-quic_kkavita@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+	s=arc-20240116; t=1724841109; c=relaxed/simple;
+	bh=k7A8lvQdZwiCncrzmvmZPif1DKQXI9+dxdKcHg/ol4U=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=r2vmFAKTg96q/kj1SOczKAepM51AkxwdR64OS5t+nLm70jgX3uKTq8DOutdBvfuGXopKQdjWLJFEw593Dm/sUngJ/W5TPk/1NtSkUEL+17FVUvP3YAUmEGEbzJamY6k5mkZwhxpcqSybMj119P8zAnFpG9uleRlsfaRSYYJb2P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=m6Az41Gl; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47RLaJkI018472;
+	Wed, 28 Aug 2024 10:31:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-type:date:from:message-id:mime-version:subject:to; s=
+	qcppdkim1; bh=9EeD85IakjAuYppGv5vgPSKu6GDWaXAcXSCdg/hNl18=; b=m6
+	Az41GlC1QjlOT1/VsgTNEMi9hrA7FXZ7ANuumlAHfpRPuI0N+Qs1PJqjCTHoRJa4
+	uXHwDRNqRwJ/V6hCb0iupQ/gvPVtHi9uqpcqqLNo8zklRnRJkBCIYZDdG+Y4wf5s
+	4SzcujyoWcGW70UsO0JZwxlGm3WyYekbaEImEWif2x7Z4ZC2V4R+K0tFKstMGfFJ
+	ZZafK40BPiwoWVyzUHTdrzgz7FEbdgEj90bMGuoVLcT0tdJ5NdCPb/Odh6V8zmVd
+	d1V780su+bMYXgvBIviAzuFCzJS8m5OOh9ENZTOcLKZrySR3v2sqKxbNDyeRGFSY
+	EyuPU9I0BVUVzPrKVX2g==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 419pv09f51-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 28 Aug 2024 10:31:42 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47SAVfb2010730
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 28 Aug 2024 10:31:41 GMT
+Received: from hu-bpothuno-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Wed, 28 Aug 2024 03:31:39 -0700
+From: Balaji Pothunoori <quic_bpothuno@quicinc.com>
+To: <ath11k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Balaji Pothunoori
+	<quic_bpothuno@quicinc.com>
+Subject: [PATCH] wifi: ath11k: enable fw_wmi_diag_event hw param for WCN6750
+Date: Wed, 28 Aug 2024 16:00:43 +0530
+Message-ID: <20240828103043.2413-1-quic_bpothuno@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: OMN3aDhdVyyOnRX_lvAiDf15JW1-cdJ_
+X-Proofpoint-ORIG-GUID: OMN3aDhdVyyOnRX_lvAiDf15JW1-cdJ_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-28_03,2024-08-27_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1015
+ priorityscore=1501 impostorscore=0 suspectscore=0 lowpriorityscore=0
+ malwarescore=0 spamscore=0 mlxlogscore=999 mlxscore=0 bulkscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408280075
 
-On Mon, 2024-08-26 at 18:03 +0530, Kavita Kavita wrote:
-> The kernel performs several regulatory checks for AP mode in
-> nl80211/cfg80211. These checks include radar detection,
-> verification of whether the sub-channel is disabled, and
-> an examination to determine if the channel is a DFS channel
-> (both DFS usable and DFS available). These checks are
-> performed across a frequency range, examining each sub-channel.
->=20
-> However, these checks are also performed on frequencies that
-> have been punctured, which should not be examined as they are
-> not in use.
+WCN6750 firmware sends the log messages via WMI_DIAG_EVENTID only
+when the host driver enables the same via QMI_WLANFW_WLAN_INI_REQ_V01
+QMI message. This is further controlled via fw_wmi_diag_event.
+Hence set this flag to true for the firmware to send the logs.
+These logs are further collected in the user space through
+the trace infrastructure.
 
-Makes sense.
+Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.2.0.c2-00233-QCAMSLSWPLZ-1
 
-> This leads to the issue where the AP stops because one of
-> the 20 MHz sub-channels is disabled or radar detected on
-> the channel, even when the sub-channel is punctured.
+Signed-off-by: Balaji Pothunoori <quic_bpothuno@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I'm curious, how did that even happen? How did it detect radar on a
-punctured channel in the first place?
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 03187df26000..6bc10cbb493e 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -616,7 +616,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.supports_dynamic_smps_6ghz = false,
+ 		.alloc_cacheable_memory = false,
+ 		.supports_rssi_stats = true,
+-		.fw_wmi_diag_event = false,
++		.fw_wmi_diag_event = true,
+ 		.current_cc_support = true,
+ 		.dbr_debug_support = false,
+ 		.global_reset = false,
+-- 
+2.17.1
 
-Or are you saying it was detected before, but you say "the AP stops"
-rather than "the AP fails to start"?
-
-However, this possibly also points to something that's missing in this
-patch and/or Aditya's patchset: if we do radar detection with a chandef
-that's already punctured, we don't know that all the subchannels were
-actually radar-free, and shouldn't mark them accordingly.
-
-I think it'd make sense to incorporate that here as well, could you do
-that?
-
-> @@ -781,7 +784,7 @@ int cfg80211_chandef_dfs_required(struct wiphy *wiphy=
-,
-> =20
->  		ret =3D cfg80211_get_chans_dfs_required(wiphy,
->  					MHZ_TO_KHZ(chandef->center_freq2),
-> -					width, iftype);
-> +					width, chandef->punctured, iftype);
-
-This isn't really right: center_freq2 is for 80+80 which cannot use
-puncturing, certainly cannot use puncturing in the secondary 80. It's
-probably not strictly wrong either since 80+80 cannot be legal with
-puncturing in the first place, but this really should just pass 0 I'd
-think.
-
-> @@ -868,7 +877,7 @@ bool cfg80211_chandef_dfs_usable(struct wiphy *wiphy,
->  		WARN_ON(!chandef->center_freq2);
->  		r2 =3D cfg80211_get_chans_dfs_usable(wiphy,
->  					MHZ_TO_KHZ(chandef->center_freq2),
-> -					width);
-> +					width, chandef->punctured);
-
-same here
-
-> @@ -1113,7 +1128,7 @@ static bool cfg80211_chandef_dfs_available(struct w=
-iphy *wiphy,
->  		WARN_ON(!chandef->center_freq2);
->  		r =3D cfg80211_get_chans_dfs_available(wiphy,
->  					MHZ_TO_KHZ(chandef->center_freq2),
-> -					width);
-> +					width, chandef->punctured);
-
-and here, obviously
-
-> @@ -1139,6 +1155,12 @@ static unsigned int cfg80211_get_chans_dfs_cac_tim=
-e(struct wiphy *wiphy,
->  		if (!c)
->  			return 0;
-> =20
-> +		if (punctured & 1) {
-> +			punctured >>=3D 1;
-> +			continue;
-> +		}
-> +		punctured >>=3D 1;
-> +
->  		if (c->flags & IEEE80211_CHAN_DISABLED)
->  			return 0;
-
-We have this pattern a lot! I think perhaps we should add a kind of
-for_each_subchannel() macro?
-
-Perhaps even iterate subchannels of a chandef including center_freq2,
-though I'm not sure how we'd arrange that...
-
-Something like cfg80211_wdev_on_sub_chan() also seems to need to take
-puncturing into account and could be rewritten with such a helper.
-
-#define for_each_subchannel(chandef, subchan)
-  for (subchan =3D ieee80211_next_subchan(chandef, NULL);
-       subchan;
-       subchan =3D ieee80211_next_subchan(chandef, subchan))
-
-or so, with ieee80211_next_subchan() containing some necessary iteration
-logic?
-
-johannes
 
