@@ -1,153 +1,167 @@
-Return-Path: <linux-wireless+bounces-12151-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12152-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9A4D96243D
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 12:02:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 700629624AF
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 12:21:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE64F1C20BE7
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 10:02:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E224285E7D
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 10:21:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222BA167DB8;
-	Wed, 28 Aug 2024 10:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F7A916A934;
+	Wed, 28 Aug 2024 10:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="vaYSXZ85"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="u1SZGUK9"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A07B16B39D;
-	Wed, 28 Aug 2024 10:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE76D166F3A
+	for <linux-wireless@vger.kernel.org>; Wed, 28 Aug 2024 10:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724839318; cv=none; b=e0qgPtTSagGH6XHN5GQqakVgFsJYQnanUlrw669u7b3bCWv5y47aKHBOkZtnM/3M++rlekzFc98+2IhJw0hCwgqwDm1TNWu7FxnyyBvuFXn7Dw+t3vtvsof2pbwkgSDbByEDFEJIEokBhzNkusHHwPEH/kAXDH7YKmOaV4J/ZRU=
+	t=1724840481; cv=none; b=btBe39bjm4xLHoZctsUwHPSQ8sK5EPWZkSvbtWg7OoLeM7+nPrViL7xqrFwwmvDFB/JLv3uvmno1Kf21G5kOroH6Fq8kTN8K0dLl1Fy4wwwsVt2auHNyBbjE/B9OUZ11ALfP2xv832LtlkDZeyZ9GCJYCBFYzxzJPF5X7F/wNvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724839318; c=relaxed/simple;
-	bh=7qKCrIUJj0rGaHD/WvCEQNJDmi65tOclIB7KMednsp8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mf0+8bTMX9vz2g4AekSkJURPZBMjQzhZDYJWSrr17yXvKjCgoIribskP+NB0IPXhVQV0z9rZyU+dMbpKTS0asi1rbufqwNhVvXY8B2yvnHUGAMJfo7IYCXudGMmB180AlOgyH1xByBhxHYRykGqOg/Puiff9IpFQdJwMpTQ2cbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=vaYSXZ85; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1724840481; c=relaxed/simple;
+	bh=mYcgzghzmsUgmnhSFtlsrOG8bCl8Pns+pxXhyI4HHuE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=p747QjmBkD7Xqmas2MTeLpi5Kbc1AixqXdvUKVbETboSDwV+4/1rsJ1jwiRcLelNtHBaGsx4S1nMP7j5a+ok4vUiFaWktC3C2mM7SlFHVg/oBZqH+c+44Tu1XIiPG5BXjCaZPfOUIZOhz1tqlKLYQMZLrCythRPtKL3JulDaNqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=u1SZGUK9; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=kPI0YVoHpejAxcdCD4ytxcFYvbXg3psJnbpC3IIlACI=; t=1724839316; x=1726048916; 
-	b=vaYSXZ85xHU7Y7qMTZA9bGN/Fp/P335Vgcj/4PCFQ7SDVZ/MILNSX15AkI1ROGrEuS+jFBnu+Hr
-	eZsPjdF0iqiFa5SRvIo/SmjfqfhnUkB2pc1lgO7Isr53xZQMYd6v/VhZNNoY/u/2Ose5Ogn6n1PcV
-	aZygm5TCHDLTGHNtkxltoeYF/RGZ+InHOOM2NJ9GmTC2kMe3kW6F+4hBxvJ+BUY2/+mqpI1cEbf7Y
-	EC9jEqgWwv6OHfBnbvUVLT3mh47mIKwd81MRzHVAzJr29BzEtYoBb2rvr7bSTkKAnmIbqcehCQHxQ
-	AkdCXLnHZ4TnJjjS1YMGRQnpelf+LSgNI0sg==;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=zMeG3LV1wRFPeX/MYE54BMbd2ZfvJ9vGfcFeHpdRbXU=;
+	t=1724840479; x=1726050079; b=u1SZGUK9kqNXmT07MEgVmd+7m1QAOb0CNrrhc9M440/vPAE
+	Y9Y/+12cc3dcBwrWsLaHGIZp5h7JU8maLlTD1+kQSeIW5FyuaOUFT/8JZrpe1nkOuDen3vDCGy0Xv
+	Vtj5gflgmtJnGe+rtpUi1Ae7H4AysCr8sZX7KjzFmvkrUlI6NhCgw6V1W8TRtFhqcigo47eg5HSEA
+	gDdxWjLUwum3k8tDBKPeIBr9Rwh+0LaCZgh/prYqKV6hYm4MEqH3J71Jtj2FGOTX5tlO1tLcbDWzC
+	7UN9qDkbJmI+dt6AzSUOk2xMmeaNop2eaLj3CWSNDu6BeaEPdGR/q3DEn19snVlQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1sjFUv-00000006uqN-31eQ;
-	Wed, 28 Aug 2024 12:01:53 +0200
+	id 1sjFng-00000006wYE-0t7s;
+	Wed, 28 Aug 2024 12:21:16 +0200
+Message-ID: <cfc85dc7bf175cc4237d9d1423b0101b9162f727.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: cfg80211: skip regulatory checks when the channel
+ is punctured
 From: Johannes Berg <johannes@sipsolutions.net>
-To: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Subject: pull-request: wireless-2024-08-28
-Date: Wed, 28 Aug 2024 12:00:33 +0200
-Message-ID: <20240828100151.23662-3-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.46.0
+To: Kavita Kavita <quic_kkavita@quicinc.com>
+Cc: linux-wireless@vger.kernel.org, quic_mpaluri@quicinc.com, Aditya Kumar
+ Singh <quic_adisi@quicinc.com>
+Date: Wed, 28 Aug 2024 12:21:14 +0200
+In-Reply-To: <20240826123341.5405-1-quic_kkavita@quicinc.com>
+References: <20240826123341.5405-1-quic_kkavita@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-Hi,
+On Mon, 2024-08-26 at 18:03 +0530, Kavita Kavita wrote:
+> The kernel performs several regulatory checks for AP mode in
+> nl80211/cfg80211. These checks include radar detection,
+> verification of whether the sub-channel is disabled, and
+> an examination to determine if the channel is a DFS channel
+> (both DFS usable and DFS available). These checks are
+> performed across a frequency range, examining each sub-channel.
+>=20
+> However, these checks are also performed on frequencies that
+> have been punctured, which should not be examined as they are
+> not in use.
 
-Sorry this is a bit bigger and/or later than I'd hoped
-for, pretty much everyone involved was on vacation for
-some time. Still nothing earth shattering here, just
-quite a few iwlwifi fixes.
+Makes sense.
 
-Please pull and let us know if there's any problem.
+> This leads to the issue where the AP stops because one of
+> the 20 MHz sub-channels is disabled or radar detected on
+> the channel, even when the sub-channel is punctured.
 
-Thanks,
+I'm curious, how did that even happen? How did it detect radar on a
+punctured channel in the first place?
+
+Or are you saying it was detected before, but you say "the AP stops"
+rather than "the AP fails to start"?
+
+However, this possibly also points to something that's missing in this
+patch and/or Aditya's patchset: if we do radar detection with a chandef
+that's already punctured, we don't know that all the subchannels were
+actually radar-free, and shouldn't mark them accordingly.
+
+I think it'd make sense to incorporate that here as well, could you do
+that?
+
+> @@ -781,7 +784,7 @@ int cfg80211_chandef_dfs_required(struct wiphy *wiphy=
+,
+> =20
+>  		ret =3D cfg80211_get_chans_dfs_required(wiphy,
+>  					MHZ_TO_KHZ(chandef->center_freq2),
+> -					width, iftype);
+> +					width, chandef->punctured, iftype);
+
+This isn't really right: center_freq2 is for 80+80 which cannot use
+puncturing, certainly cannot use puncturing in the secondary 80. It's
+probably not strictly wrong either since 80+80 cannot be legal with
+puncturing in the first place, but this really should just pass 0 I'd
+think.
+
+> @@ -868,7 +877,7 @@ bool cfg80211_chandef_dfs_usable(struct wiphy *wiphy,
+>  		WARN_ON(!chandef->center_freq2);
+>  		r2 =3D cfg80211_get_chans_dfs_usable(wiphy,
+>  					MHZ_TO_KHZ(chandef->center_freq2),
+> -					width);
+> +					width, chandef->punctured);
+
+same here
+
+> @@ -1113,7 +1128,7 @@ static bool cfg80211_chandef_dfs_available(struct w=
+iphy *wiphy,
+>  		WARN_ON(!chandef->center_freq2);
+>  		r =3D cfg80211_get_chans_dfs_available(wiphy,
+>  					MHZ_TO_KHZ(chandef->center_freq2),
+> -					width);
+> +					width, chandef->punctured);
+
+and here, obviously
+
+> @@ -1139,6 +1155,12 @@ static unsigned int cfg80211_get_chans_dfs_cac_tim=
+e(struct wiphy *wiphy,
+>  		if (!c)
+>  			return 0;
+> =20
+> +		if (punctured & 1) {
+> +			punctured >>=3D 1;
+> +			continue;
+> +		}
+> +		punctured >>=3D 1;
+> +
+>  		if (c->flags & IEEE80211_CHAN_DISABLED)
+>  			return 0;
+
+We have this pattern a lot! I think perhaps we should add a kind of
+for_each_subchannel() macro?
+
+Perhaps even iterate subchannels of a chandef including center_freq2,
+though I'm not sure how we'd arrange that...
+
+Something like cfg80211_wdev_on_sub_chan() also seems to need to take
+puncturing into account and could be rewritten with such a helper.
+
+#define for_each_subchannel(chandef, subchan)
+  for (subchan =3D ieee80211_next_subchan(chandef, NULL);
+       subchan;
+       subchan =3D ieee80211_next_subchan(chandef, subchan))
+
+or so, with ieee80211_next_subchan() containing some necessary iteration
+logic?
+
 johannes
-
-
-
-The following changes since commit e37a9184f27084b891d3617723b9410f8fcaff99:
-
-  Merge tag 'ath-current-20240812' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath (2024-08-13 12:51:21 +0300)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2024-08-28
-
-for you to fetch changes up to 094513f8a2fbddee51b055d8035f995551f98fce:
-
-  wifi: iwlwifi: clear trans->state earlier upon error (2024-08-27 09:54:24 +0200)
-
-----------------------------------------------------------------
-Regressions:
- * wfx: fix for open network connection
- * iwlwifi: fix for hibernate (due to fast resume feature)
- * iwlwifi: fix for a few warnings that were recently added
-   (had previously been messages not warnings)
-
-Previously broken:
- * mwifiex: fix static structures used for per-device data
- * iwlwifi: some harmless FW related messages were tagged
-   too high priority
- * iwlwifi: scan buffers weren't checked correctly
- * mac80211: SKB leak on beacon error path
- * iwlwifi: fix ACPI table interop with certain BIOSes
- * iwlwifi: fix locking for link selection
- * mac80211: fix SSID comparison in beacon validation
-
-----------------------------------------------------------------
-Alexander Sverdlin (1):
-      wifi: wfx: repair open network AP mode
-
-Anjaneyulu (1):
-      wifi: iwlwifi: fw: fix wgds rev 3 exact size
-
-Avraham Stern (1):
-      wifi: iwlwifi: mvm: allow 6 GHz channels in MLO scan
-
-Benjamin Berg (1):
-      wifi: iwlwifi: lower message level for FW buffer destination
-
-Daniel Gabay (3):
-      wifi: mac80211: fix beacon SSID mismatch handling
-      wifi: iwlwifi: mvm: fix iwl_mvm_scan_fits() calculation
-      wifi: iwlwifi: mvm: fix iwl_mvm_max_scan_ie_fw_cmd_room()
-
-Dmitry Antipov (1):
-      wifi: mac80211: free skb on error path in ieee80211_beacon_get_ap()
-
-Emmanuel Grumbach (5):
-      wifi: iwlwifi: mvm: fix hibernation
-      wifi: iwlwifi: mvm: take the mutex before running link selection
-      wifi: iwlwifi: mvm: pause TCM when the firmware is stopped
-      wifi: iwlwifi: mvm: don't wait for tx queues if firmware is dead
-      wifi: iwlwifi: clear trans->state earlier upon error
-
-Sascha Hauer (1):
-      wifi: mwifiex: duplicate static structs used in driver instances
-
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c       | 13 ++++---
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c        |  2 +-
- drivers/net/wireless/intel/iwlwifi/iwl-op-mode.h   | 12 +++++++
- drivers/net/wireless/intel/iwlwifi/iwl-trans.h     |  2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c        | 10 ++++++
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c  |  9 ++++-
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c       | 21 ++++++++++-
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c      | 42 ++++++++++++++--------
- .../wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c   |  3 +-
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c      | 41 +++++++++++++++++++--
- drivers/net/wireless/marvell/mwifiex/cfg80211.c    | 32 +++++++++++++----
- drivers/net/wireless/silabs/wfx/sta.c              |  5 ++-
- net/mac80211/mlme.c                                |  2 +-
- net/mac80211/tx.c                                  |  4 ++-
- 14 files changed, 161 insertions(+), 37 deletions(-)
 
