@@ -1,62 +1,65 @@
-Return-Path: <linux-wireless+bounces-12164-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12165-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C569F962725
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 14:33:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E60679627B5
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 14:50:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FD332850A4
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 12:33:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2104285743
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 12:50:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D99016C6AD;
-	Wed, 28 Aug 2024 12:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73513176259;
+	Wed, 28 Aug 2024 12:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="C7/67SW7"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="IL/tdCc5"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE7916BE11
-	for <linux-wireless@vger.kernel.org>; Wed, 28 Aug 2024 12:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8EF217BEBD
+	for <linux-wireless@vger.kernel.org>; Wed, 28 Aug 2024 12:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724848432; cv=none; b=OWjrJKWfh1ZsfggG41QMmWd8noDtJenfH/UjSUp5ptFLNndjYoTGFma/JWi+I4s742xI8Z11nFmw1pe+joyeCRMJvQ8zUOGEw2Mg6IgI3eQ1K291/I9bVopoF8gYB6NuDB6VbBDGIq8Nz4qajXTPuiduNtUfs/Qcc0rkAT7wOow=
+	t=1724849417; cv=none; b=jNecaRqa9vZ8ScF4TTHKQ/Ks5fYJxkA4y4R+aiyoS5prLbW1+PtdQuFmVn+EbNa2j4t+XWYYsY8JcJuI9TmDo4mG2CcefbnbV/GZlgQQH4A1pTT/geTW+msTxtOLzI5KhltG23ZTqcYL1M94+gCmPMeueJJLGEzj1HZZ+CpdW3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724848432; c=relaxed/simple;
-	bh=0zzSRsj/gdZfT5mDTKAItdcP16hs9+FVdSpVjYGP/n4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=TTLfPAn8s12yogE0Nwb5LuX+bndLF9cz86SYTLeRQGg7tvet5tdbRPgUuMF1fBI9N32kCSoN+cSMNuuVmHk8Zyo2NYY654wMOmNiK98mZJKVUXpw1KDoO+8leA97lN07/XdGUWFAjxpUpMPaUBmOOJCA9oderjk5S9ks1ttKNgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=C7/67SW7; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1724849417; c=relaxed/simple;
+	bh=cKhY9q81DBrkTS9eaFJw29GHmQ1H7WsfsC56dvcWLa0=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=uvhWSQdUFz8IqX9w4HVAtK/dMHHXtZ79+z8ZfJy2oxy+QM3lCSEXhPv5PMfPQVGORXcl40/ne3lhWzo6W4r2HfxycPYFek+mLUcxF7gb812lM7k2VlGKFTfmP73g9he5P6PN+Y83z7lMjp1qGWGgb576maDxS9YfIaZ68IBp8BA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=IL/tdCc5; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=0zzSRsj/gdZfT5mDTKAItdcP16hs9+FVdSpVjYGP/n4=;
-	t=1724848431; x=1726058031; b=C7/67SW7t99QTzxCGbGo/lCI6in4jfCPnAHZivQk4lx+34P
-	+rS9uzDL2L3neo7us9x6FHjUC4bMNtzEWkMgSss8IS7fJfmtrHM/RXkNM1f+hIJdeRYl/0/uKQlTg
-	mmhYiHVQ4MP3NnbBDnffPd2fZKg+LlUhGUng2PBUVRYl7jq8lt5DaIHyj2QHETlndNGajOGLT6T2p
-	K/gRQVMIsuWBexKX61fWPXcfZZnK/QKjHmOkNa1DspIEUF11fiEgFkDT1byFyHcyuqGDo3GsFNDwD
-	j1g+Y8C8wyVgIj386TmIwY/DX+4CvR8adNNkepXJ9bnFXbhCAk/5KPj5shzt0sBQ==;
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=q8ZDO/aFjSvjFmlFlPuwznqLCAgIs0LMpxVuAK3AHXE=;
+	t=1724849416; x=1726059016; b=IL/tdCc5pxh+gYqIenDBNP1BDcrbudGnycIAN+bkFcgt0aa
+	0WwumGc8gyPyt1Rk0647mAfYmsjEpTK7cVCYaeCLnCSKOhLN4LzwxiTU/bTfSGvJiLbyHOg+9bgij
+	ABHDEIhSWPG+4fYmtbfwGHxBDztCFEXAnwMTBewINwoAbtMmOYQjLmBdsWewLqrEO4YsR2eBVp8I4
+	Tk4XnGb6/nGxEiT6kfpiunlK2YpKPT+XobVi5SHkhV/iZDh/pFlPgR2Rjgux0lJE3FcX/+mwlPeSm
+	EpGgBYzR+c+xUzGMWa3Bk7cMbO5oc7Tn4Uq61pDgsYXWcTNQrPU6WLY/IFZzv/+w==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.97)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1sjHrv-000000077d1-20dA;
-	Wed, 28 Aug 2024 14:33:47 +0200
-Message-ID: <b8fa2b9bb687ce3df711b494ab577dce6df9b193.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: mac80211: override HE/EHT capabilities if NSS is
- zero
+	id 1sjI7p-000000078sP-12d7;
+	Wed, 28 Aug 2024 14:50:13 +0200
+Message-ID: <fc7fd346ae0bf141385125c03410e428a972012f.camel@sipsolutions.net>
+Subject: Re: Per MLO link TX stats
 From: Johannes Berg <johannes@sipsolutions.net>
-To: Ajith C <quic_ajithc@quicinc.com>
-Cc: linux-wireless@vger.kernel.org
-Date: Wed, 28 Aug 2024 14:33:46 +0200
-In-Reply-To: <c700b251-8300-4d58-be9d-7f78057d84ac@quicinc.com>
-References: <20240807041933.3196761-1-quic_ajithc@quicinc.com>
-	 <30ec97d6ecfc4bf83fbd1477c0dba255bce9e6fa.camel@sipsolutions.net>
-	 <c700b251-8300-4d58-be9d-7f78057d84ac@quicinc.com>
+To: Ben Greear <greearb@candelatech.com>, linux-wireless
+	 <linux-wireless@vger.kernel.org>
+Date: Wed, 28 Aug 2024 14:50:12 +0200
+In-Reply-To: <dd2c0158-775f-f876-6962-dba30d0bd16c@candelatech.com>
+References: <c896c0d6-b43f-ba6d-336a-eca15c60529f@candelatech.com>
+	 <7ccb9c8ccb0dd16539ac064a35d6bf6b31d0bf0d.camel@sipsolutions.net>
+	 <e5c3265a-3411-39b4-f4c4-40f3937c96fb@candelatech.com>
+	 <9093726e308d0a26e8afe2323a865d222e48fe61.camel@sipsolutions.net>
+	 <41008ac0-ca36-b19f-c3a4-61f54ce2d2f7@candelatech.com>
+	 <b00a52947670f45c0764d33ea093c90b825fcdab.camel@sipsolutions.net>
+	 <dd2c0158-775f-f876-6962-dba30d0bd16c@candelatech.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
@@ -68,38 +71,22 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Fri, 2024-08-23 at 18:55 +0530, Ajith C wrote:
+On Tue, 2024-08-27 at 11:17 -0700, Ben Greear wrote:
 >=20
-> I=E2=80=99ve noticed that stations are sending association requests with =
-zeros
-> in the EHT-MCS and NSS fields. According to draft 6.0 (Table 9-417p),
-> a value of zero is allowed for NSS to indicate =E2=80=98Not supported.=E2=
-=80=99
-> Therefore, I believe we shouldn=E2=80=99t consider these as invalid reque=
-sts.
+> So, something like this (compile tested only at this point)?
 
-OK, that sounds different...
+Something like, yeah.
 
-> Additionally, since other lower bandwidths are supported, I thought
-> it would be more appropriate to select the next available bandwidth
-> rather than dropping the request.
+But also need to define that mac80211 actually consumes that value on TX
+status etc., so this isn't really the first thing to do.
 
-I'm not sure I see why. You're talking about ieee80211_sta_cap_rx_bw(),
-and if the STA says it has a certain capability we should probably
-believe it?
+> +               if (link_sta) {
+> +                       info->control.flags &=3D ~(u32_encode_bits(0xF, I=
+EEE80211_TX_CTRL_MLO_LINK));
 
-Munging the capabilities there seems pretty wrong, and *especially*
-doing it if it e.g. has no RX or TX for a given bandwidth - I guess in
-theory then it's possible that it's saying it can receive but won't
-transmit (which we should probably not care about), or it can transmit
-but not receive (which should impact rate control).
-
-It doesn't seem right to assume that it will not use say 160 MHz if it
-doesn't have RX MCS/NSS support for 160 MHz, I'd say? Or only has
-partial support, for some NSSes?
-
-It seems you should solve whatever problem you have here in rate control
-instead, but I'm not even sure what problem you have.
+don't really need the encode-bits here since the mask is already 4 bits
+:)
 
 johannes
+
 
