@@ -1,47 +1,47 @@
-Return-Path: <linux-wireless+bounces-12169-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12170-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08F5096294E
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 15:53:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2411A962984
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 15:59:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A06D1C21C6B
-	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 13:53:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5911285B0D
+	for <lists+linux-wireless@lfdr.de>; Wed, 28 Aug 2024 13:59:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C873018787C;
-	Wed, 28 Aug 2024 13:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CA23187FF6;
+	Wed, 28 Aug 2024 13:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YkcmiH+s"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EtKEU8jw"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BFB186E4C;
-	Wed, 28 Aug 2024 13:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40300187848;
+	Wed, 28 Aug 2024 13:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724853226; cv=none; b=CQcX+eP0xtqPbsiMldkaYTDwYzbDtRUqMLMFWgzP4GEbX2G7FJX0tt8LkZLXf0EuCHfvWK4dn422UshQj48koK6z6wFkWR3dtZ0iYxJ8LSLldDNaBNZbWtib8NrXN7hDwUDzvHdP8w+ci7x+gPXfh8gVUOuKUn/LK1N+J+1WHcY=
+	t=1724853549; cv=none; b=bRp5ZTdYBSLMoZzVemBmnDdZwtDrgJe+MjGwDo3xrhmenJGzcyg42LeWSjkZFUFLbraWxk5XiKLHA6pN1c51lBmDC63maQat7e73t14U8rIQtV0AqkjPv6BLtNfhkaTBnNAC/kLiYZ9fX3b5ARZ4uymLATzBEIhxCpadHSpD228=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724853226; c=relaxed/simple;
-	bh=uQhv+PNgrmTou4nKOaSWCbDq0tsirKSailGjmpqVubs=;
+	s=arc-20240116; t=1724853549; c=relaxed/simple;
+	bh=0Ih6JqhtfhWIczTuRqzqPA5LNSm0PTuhsCjp28AbAKQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lykRLRJX/lEpdk9lulaaZXNlsJ3OV5pK7Kj5Sh062RGeAYiup1x1og7Dhr4jjk0BlZ/2BzTjE9YLB5dB/Ny2A7uZwY6Dz54Y3uZvpJ3tJkPv0ZexcGGJDHMqZiWdbJpDZxIY1zJVg5Ff4rSunuliER38M4kgRzPcC3IYqqqwEGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YkcmiH+s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CB4AC98EC6;
-	Wed, 28 Aug 2024 13:53:43 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=WZC6w78G6aU08ZXdPBvu+LlsuXD+S/2c+JjaeAV6LccbIcZDdq0i+9qYPnbbli1N2ZiXFS3U05MHKChykliB/7dvocB8911IALABKPANlS35wWLjORybBvTrQPt/hQIVgf7tFbDuHsTf9yDgDHArOztuqUHERT7zoLlaDjfGzW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EtKEU8jw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D44BEC98ED2;
+	Wed, 28 Aug 2024 13:59:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724853226;
-	bh=uQhv+PNgrmTou4nKOaSWCbDq0tsirKSailGjmpqVubs=;
+	s=k20201202; t=1724853548;
+	bh=0Ih6JqhtfhWIczTuRqzqPA5LNSm0PTuhsCjp28AbAKQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YkcmiH+s+5n6OLE88+mS/D8TkaO30rjgPh/nmp2a4eTWOuzJDU2fVQtVg3mqr1HLt
-	 Nsf7VLke3eyLCBGwWx5aBBz/MBH0M9MTuWCdpgqNP1BeSPsTpfTmFj1YJ4NIOVWsBy
-	 40+72UHjf8O6p7oNiWjYeeGMVQMJ/RzENhSWLZ1W9R8gA/tYnx+XhUFAc0nH8g1NgL
-	 8WFpH1hAGfn0INm3IXclniCGAwYE5grdlS+uGsYRMwnTDOGwkSmfhWoXbn4piQDvId
-	 HG1LOcNDxkv2g7tOc/SFpFxb9F0N7VruG9JSd7QPvkQ++JpohU5/toea4NEJQ/o7/U
-	 3HjOiaf/Ndk5g==
-Date: Wed, 28 Aug 2024 14:53:10 +0100
+	b=EtKEU8jwDHDYSEqcJKew0sb6EWebEoDflAuToyxP/rP1TSBF8alY4WEXPjoCGccJT
+	 MdGUZqVc0zo7vnPugyefgeD/Am+OrT3cuEMqwiY29RLOWELW3l+emLpF+675sHP2ao
+	 oHL9G12ZNdSOaGTBVWtQ2cA644FHOvXf8V+gtUnmvCGfHAvq8qggU6wNhzXJqXPfdN
+	 DqxHGzN9w0Tdc5DgsxBUaEear/BLhQWJz5hTx7/TvKnaxE78Vv72w1G21Od3x1wwal
+	 I6K9EAVskG/k+YvnzhBHVDFMSPNp5Os7lNInx8/vB0nmLJutiRcIIJJexmcnhnyj5W
+	 wWq+KPaMiLLdQ==
+Date: Wed, 28 Aug 2024 14:59:03 +0100
 From: Simon Horman <horms@kernel.org>
 To: Hongbo Li <lihongbo22@huawei.com>
 Cc: johannes@sipsolutions.net, davem@davemloft.net, edumazet@google.com,
@@ -50,10 +50,11 @@ Cc: johannes@sipsolutions.net, davem@davemloft.net, edumazet@google.com,
 	netdev@vger.kernel.org, rds-devel@oss.oracle.com,
 	dccp@vger.kernel.org, dev@openvswitch.org,
 	linux-afs@lists.infradead.org
-Subject: Re: [PATCH net-next 2/8] net/rds: Use max() to simplify the code
-Message-ID: <20240828135310.GC1368797@kernel.org>
+Subject: Re: [PATCH net-next 4/8] net/core: Use min()/max() to simplify the
+ code
+Message-ID: <20240828135903.GD1368797@kernel.org>
 References: <20240824074033.2134514-1-lihongbo22@huawei.com>
- <20240824074033.2134514-3-lihongbo22@huawei.com>
+ <20240824074033.2134514-5-lihongbo22@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -62,52 +63,30 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240824074033.2134514-3-lihongbo22@huawei.com>
+In-Reply-To: <20240824074033.2134514-5-lihongbo22@huawei.com>
 
-On Sat, Aug 24, 2024 at 03:40:27PM +0800, Hongbo Li wrote:
-> The target if-else can be replaced with max().
+On Sat, Aug 24, 2024 at 03:40:29PM +0800, Hongbo Li wrote:
+> Let's use min()/max() to simplify the code and fix the
+> Coccinelle/coccicheck warning.
 > 
 > Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
-> ---
->  net/rds/info.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
-> 
-> diff --git a/net/rds/info.c b/net/rds/info.c
-> index b6b46a8214a0..8558b0a466b4 100644
-> --- a/net/rds/info.c
-> +++ b/net/rds/info.c
-> @@ -194,10 +194,7 @@ int rds_info_getsockopt(struct socket *sock, int optname, char __user *optval,
->  	}
->  	ret = pin_user_pages_fast(start, nr_pages, FOLL_WRITE, pages);
->  	if (ret != nr_pages) {
-> -		if (ret > 0)
-> -			nr_pages = ret;
-> -		else
-> -			nr_pages = 0;
-> +		nr_pages = max(ret, 0);
 
-Along the same lines as Johannes Berg's comment on a different patch [1]
-I think that there is a subtle but important difference, semantically,
-between max() and that the existing code does, for which the best
-description I can think of is setting a floor on the value.
+...
 
-Other than Johannes's comment, and now mine here, I think you will find
-that, if you search the netdev ML, you will find this point being made
-consistently, at least over the past year.
+> diff --git a/net/core/sock.c b/net/core/sock.c
+> index bbe4c58470c3..c9910f48903f 100644
+> --- a/net/core/sock.c
+> +++ b/net/core/sock.c
+> @@ -3800,7 +3800,7 @@ int sock_prot_inuse_get(struct net *net, struct proto *prot)
+>  	for_each_possible_cpu(cpu)
+>  		res += per_cpu_ptr(net->core.prot_inuse, cpu)->val[idx];
+>  
+> -	return res >= 0 ? res : 0;
+> +	return max(res, 0);
+>  }
+>  EXPORT_SYMBOL_GPL(sock_prot_inuse_get);
 
-And yes, we understand that mathematically max() is doing the right thing.
-But that is not the point that is being made here.
+As per my comment on 2/8 [*], I think you should drop this hunk.
 
-I suggest dropping this patch.
-And any others like it.
-
-[1] https://lore.kernel.org/all/d5f495b67fe6bf128e7a51b9fcfe11f70c9b66ae.camel@sipsolutions.net/
-
->  		ret = -EAGAIN; /* XXX ? */
->  		goto out;
->  	}
-> -- 
-> 2.34.1
-> 
-> 
+[*] https://lore.kernel.org/all/20240828135310.GC1368797@kernel.org/
 
