@@ -1,62 +1,76 @@
-Return-Path: <linux-wireless+bounces-12203-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12204-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0948B963EA0
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Aug 2024 10:33:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC705963EE8
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Aug 2024 10:44:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2D811F2518C
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Aug 2024 08:33:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B8C61F23217
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Aug 2024 08:44:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6125D18CC11;
-	Thu, 29 Aug 2024 08:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA5B189B9D;
+	Thu, 29 Aug 2024 08:44:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="pTnEpfHp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CAA743154;
-	Thu, 29 Aug 2024 08:30:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A993915C13B
+	for <linux-wireless@vger.kernel.org>; Thu, 29 Aug 2024 08:44:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724920257; cv=none; b=Y2TEqwbTKy1PQiAWKLqeyOq3/897oLZ4PSrwSYxVl4/uiDB8i4/lNa4JIy1V508aC4ombbdRj43y5orylwr0GoZPdUp53JMBiZW+W+kjtIOlFeAqfyLQDNIZ+nV+LsNQ23do+yx0XGpGfsed7JD1hPjbJPaXu/qTqkciEt7yaCo=
+	t=1724921067; cv=none; b=QQKYN3jbm9tk/Oj90Qh2VE7r3ChGQFHncuScKgw+5jVMaELi/yUuFr3WFs7NMktOEIkVWHzOIUd8pdNjH6BufMsytMnLf5Uc0Mo1WggKhj8Xm3Qb5SnXPTMrJRs++GWHf1zgfaFVvrGB1HzN+OQkxhRvlyMlrlVXLaYJnljzoy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724920257; c=relaxed/simple;
-	bh=jmQoHidF+pqSdlMEJDvQ5iPil4CrsAlQ/9Bauya5xLc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=h9mQIk+RdX6AtpT4Ch9ehLToY5iFpVk+uTUAa/3+BGZQ7VNjIgg0AEUTNJlxl8ndjggJ/V4cSlVfXG4qKZ+OTYKBYtzIswakHnXOE8/F+ql/vI0EnHt1FvQ8Bh9seUYsNcm/hw9LQiYfhiGsi0yu8450XyYqII2VXKwVbJeVd3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-05 (Coremail) with SMTP id zQCowAB34UCjMdBm6R02Cw--.14213S2;
-	Thu, 29 Aug 2024 16:30:35 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: nbd@nbd.name,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	kvalo@kernel.org,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	chui-hao.chiu@mediatek.com,
-	howard-yh.hsu@mediatek.com,
-	StanleyYP.Wang@mediatek.com,
-	benjamin-jw.lin@mediatek.com,
-	allen.ye@mediatek.com,
-	chank.chen@mediatek.com,
-	meichia.chiu@mediatek.com
+	s=arc-20240116; t=1724921067; c=relaxed/simple;
+	bh=M9SyX15b88tgoaAGd3OsBOde6ll7WVlDzb1YmLdndXs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=s4qp2EVHXtowDvobaQ1JtG2GHX7ukT7D7/fxeSroITmr6WtZWeIbUwJik+zPBzztC0kmcyOLqEsKQlnIG9wzZqfUd+NwAoSVYSLeBLEuI0DP8364XYnLR0NA6sEJg289HtQ1iTLH/p7hr2HiElNTBjxTfGy5FvnVnw4AUqVdDFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=pTnEpfHp; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47T8IoPO003416;
+	Thu, 29 Aug 2024 08:44:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=XLcLOdG8Ov8LVUAi8KltLGD30AHzlsYsx2K
+	gqDQrB2U=; b=pTnEpfHpMt5zZjzrNb4XMSk87Wjw8rMDFievZphZr7uUQzoUyi6
+	3MDUYNWl86dKlt4E+AL7guj6O5pZpXuhIR/PjOwDSB1zb293kfobfVIhlywIvcG+
+	HJYjx3d7lBx43HI3Dmr/jk+LEIQBFXg4QR6L1nP52Xi7jg8xCVONsmUKgHeZ9KvE
+	O1xinjOqsjB7SpxpynVQvgb7QBunJaLJ2NPcgtW15+QmvEOTP++eOJGBrPh4lxmf
+	aasSVdTl0zFB4Twl0VbsboD4Z1kmcaVKzZO2KyLE2hBHJr0IVvPbmOscGuMFgbCa
+	/vCqp7ET4z7XgOlpT4oa5/RW/OI72V9tVTw==
+Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 419putvk4t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Aug 2024 08:44:21 +0000 (GMT)
+Received: from pps.filterd (APBLRPPMTA01.qualcomm.com [127.0.0.1])
+	by APBLRPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 47T8iIWh008418;
+	Thu, 29 Aug 2024 08:44:18 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 4178kmc8y2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Aug 2024 08:44:18 +0000
+Received: from APBLRPPMTA01.qualcomm.com (APBLRPPMTA01.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 47T8iImK008412;
+	Thu, 29 Aug 2024 08:44:18 GMT
+Received: from hu-devc-blr-u22-a.qualcomm.com (hu-rgnanase-blr.qualcomm.com [10.190.106.79])
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 47T8iIY6008411
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Aug 2024 08:44:18 +0000
+Received: by hu-devc-blr-u22-a.qualcomm.com (Postfix, from userid 2378837)
+	id 58B5741144; Thu, 29 Aug 2024 14:14:17 +0530 (+0530)
+From: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+To: ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] wifi: mt76: mt7996: fix NULL pointer dereference in mt7996_mcu_sta_bfer_eht
-Date: Thu, 29 Aug 2024 16:30:26 +0800
-Message-Id: <20240829083026.3195359-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+        Dinesh Karthikeyan <quic_dinek@quicinc.com>,
+        Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+Subject: [PATCH] wifi: ath12k: Add support to simulate firmware crash
+Date: Thu, 29 Aug 2024 14:14:11 +0530
+Message-Id: <20240829084411.3521261-1-quic_rgnanase@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -64,51 +78,173 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAB34UCjMdBm6R02Cw--.14213S2
-X-Coremail-Antispam: 1UD129KBjvdXoWruw4fGryfuF17KFW5ZF18Xwb_yoWfAwc_ur
-	1Ivrn3Jw40gw45Kr47ZwsxuryYkaykZF97Gay5tayfJa9rAFWUWF1Svas3Ar9xCFn7ZF1U
-	Jw1DJFyFvrZ3XjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbSkFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
-	6F4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r
-	xl6s0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28Icx
-	kI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
-	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42
-	IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY
-	6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aV
-	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7sRiSfO3UUUUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: hyrjN-el_Izze-4sz97aOYT2svDcLAL8
+X-Proofpoint-GUID: hyrjN-el_Izze-4sz97aOYT2svDcLAL8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-29_02,2024-08-29_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ mlxlogscore=999 suspectscore=0 phishscore=0 spamscore=0 bulkscore=0
+ clxscore=1011 mlxscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408290064
 
-Fix the NULL pointer dereference in mt7996_mcu_sta_bfer_eht.
+From: Dinesh Karthikeyan <quic_dinek@quicinc.com>
 
-Found by code review.
+Add debugfs support to simulate firmware crash to test firmware restart.
 
-Cc: stable@vger.kernel.org
-Fixes: ba01944adee9 ("wifi: mt76: mt7996: add EHT beamforming support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Usage:
+-----
+echo assert > /sys/kernel/debug/ath12k/pci-0000\:58\:00.0/simulate_fw_crash
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Signed-off-by: Dinesh Karthikeyan <quic_dinek@quicinc.com>
+Signed-off-by: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 3 +++
- 1 file changed, 3 insertions(+)
+Depends-On: [PATCH v5] wifi: ath12k: Add firmware coredump collection support
+Link: https://lore.kernel.org/linux-wireless/f77ed82f-299b-4f99-bc83-39c053b8042b@quicinc.com/
+---
+ drivers/net/wireless/ath/ath12k/debugfs.c | 76 +++++++++++++++++++++++
+ drivers/net/wireless/ath/ath12k/debugfs.h |  4 ++
+ drivers/net/wireless/ath/ath12k/mac.c     |  2 +
+ 3 files changed, 82 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 2e4fa9f48dfb..d0fe2505ddbf 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -1605,6 +1605,9 @@ mt7996_mcu_sta_bfer_eht(struct ieee80211_sta *sta, struct ieee80211_vif *vif,
- 				 IEEE80211_EHT_MCS_NSS_RX) - 1;
- 	u8 snd_dim, sts;
+diff --git a/drivers/net/wireless/ath/ath12k/debugfs.c b/drivers/net/wireless/ath/ath12k/debugfs.c
+index 2a977c36af00..4d1cd4d5e3df 100644
+--- a/drivers/net/wireless/ath/ath12k/debugfs.c
++++ b/drivers/net/wireless/ath/ath12k/debugfs.c
+@@ -6,6 +6,7 @@
  
-+	if (!vc)
-+		return;
+ #include "core.h"
+ #include "debugfs.h"
++#include "debug.h"
+ #include "debugfs_htt_stats.h"
+ 
+ static ssize_t ath12k_write_simulate_radar(struct file *file,
+@@ -31,6 +32,81 @@ static const struct file_operations fops_simulate_radar = {
+ 	.open = simple_open
+ };
+ 
++static ssize_t ath12k_read_simulate_fw_crash(struct file *file,
++					     char __user *user_buf,
++					     size_t count, loff_t *ppos)
++{
++	const char buf[] =
++		 "To simulate firmware crash write one of the keywords to this file:\n"
++		 "`assert` - send WMI_FORCE_FW_HANG_CMDID to firmware to cause assert.\n";
 +
- 	bf->tx_mode = MT_PHY_TYPE_EHT_MU;
++	return simple_read_from_buffer(user_buf, count, ppos, buf, strlen(buf));
++}
++
++static ssize_t ath12k_write_simulate_fw_crash(struct file *file,
++					      const char __user *user_buf,
++					      size_t count, loff_t *ppos)
++{
++	struct ath12k_base *ab = file->private_data;
++	struct ath12k_pdev *pdev;
++	struct ath12k *ar = NULL;
++	char buf[32] = {0};
++	int i, ret;
++	ssize_t rc;
++
++	/* filter partial writes and invalid commands */
++	if (*ppos != 0 || count >= sizeof(buf) || count == 0)
++		return -EINVAL;
++
++	rc = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, user_buf, count);
++	if (rc < 0)
++		return rc;
++
++	/* drop the possible '\n' from the end */
++	if (buf[*ppos - 1] == '\n')
++		buf[*ppos - 1] = '\0';
++
++	for (i = 0; i < ab->num_radios; i++) {
++		pdev = &ab->pdevs[i];
++		ar = pdev->ar;
++		if (ar)
++			break;
++	}
++
++	if (!ar)
++		return -ENETDOWN;
++
++	if (!strcmp(buf, "assert")) {
++		ath12k_info(ab, "simulating firmware assert crash\n");
++		ret = ath12k_wmi_force_fw_hang_cmd(ar,
++						   ATH12K_WMI_FW_HANG_ASSERT_TYPE,
++						   ATH12K_WMI_FW_HANG_DELAY);
++	} else {
++		return -EINVAL;
++	}
++
++	if (ret) {
++		ath12k_warn(ab, "failed to simulate firmware crash: %d\n", ret);
++		return ret;
++	}
++
++	return count;
++}
++
++static const struct file_operations fops_simulate_fw_crash = {
++	.read = ath12k_read_simulate_fw_crash,
++	.write = ath12k_write_simulate_fw_crash,
++	.open = simple_open,
++	.owner = THIS_MODULE,
++	.llseek = default_llseek,
++};
++
++void ath12k_debugfs_pdev_create(struct ath12k_base *ab)
++{
++	debugfs_create_file("simulate_fw_crash", 0600, ab->debugfs_soc, ab,
++			    &fops_simulate_fw_crash);
++}
++
+ void ath12k_debugfs_soc_create(struct ath12k_base *ab)
+ {
+ 	bool dput_needed;
+diff --git a/drivers/net/wireless/ath/ath12k/debugfs.h b/drivers/net/wireless/ath/ath12k/debugfs.h
+index 8d64ba03aa9a..4b59906c03d6 100644
+--- a/drivers/net/wireless/ath/ath12k/debugfs.h
++++ b/drivers/net/wireless/ath/ath12k/debugfs.h
+@@ -12,6 +12,7 @@ void ath12k_debugfs_soc_create(struct ath12k_base *ab);
+ void ath12k_debugfs_soc_destroy(struct ath12k_base *ab);
+ void ath12k_debugfs_register(struct ath12k *ar);
+ void ath12k_debugfs_unregister(struct ath12k *ar);
++void ath12k_debugfs_pdev_create(struct ath12k_base *ab);
+ #else
+ static inline void ath12k_debugfs_soc_create(struct ath12k_base *ab)
+ {
+@@ -29,6 +30,9 @@ static inline void ath12k_debugfs_unregister(struct ath12k *ar)
+ {
+ }
  
- 	mt7996_mcu_sta_sounding_rate(bf);
++static inline void ath12k_debugfs_pdev_create(struct ath12k_base *ab)
++{
++}
+ #endif /* CONFIG_ATH12K_DEBUGFS */
+ 
+ #endif /* _ATH12K_DEBUGFS_H_ */
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 137394c36460..8947ca308dbb 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -9347,6 +9347,8 @@ int ath12k_mac_register(struct ath12k_base *ab)
+ 	if (test_bit(ATH12K_FLAG_REGISTERED, &ab->dev_flags))
+ 		return 0;
+ 
++	ath12k_debugfs_pdev_create(ab);
++
+ 	/* Initialize channel counters frequency value in hertz */
+ 	ab->cc_freq_hz = 320000;
+ 	ab->free_vdev_map = (1LL << (ab->num_radios * TARGET_NUM_VDEVS)) - 1;
 -- 
-2.25.1
+2.34.1
 
 
