@@ -1,175 +1,127 @@
-Return-Path: <linux-wireless+bounces-12207-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12208-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 874BA964A66
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Aug 2024 17:44:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7788964AEE
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Aug 2024 18:03:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A80E31C22560
-	for <lists+linux-wireless@lfdr.de>; Thu, 29 Aug 2024 15:44:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA6521C20FD4
+	for <lists+linux-wireless@lfdr.de>; Thu, 29 Aug 2024 16:03:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A25A1B29AB;
-	Thu, 29 Aug 2024 15:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F961AD3E2;
+	Thu, 29 Aug 2024 16:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="nl+rgtxP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gZfsrnMM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6BD1A01CA
-	for <linux-wireless@vger.kernel.org>; Thu, 29 Aug 2024 15:44:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 148C81A7062
+	for <linux-wireless@vger.kernel.org>; Thu, 29 Aug 2024 16:03:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724946277; cv=none; b=lmsKpbjfX/SnmnwMo58l7xQPQ6xvb1vTBef80gGnOPuOY+IxChpen/zNa/o1/fxBgxJtnbUge5pNMKj6INbvIE/aDBuI06TAi9nD/TE8FrRSMtVAtVhCivcLfz1TXh1LyC505itqReIxGs8n05b8SbCHsss2anx1cL/G4pBoZX0=
+	t=1724947407; cv=none; b=Swvr2QzUCyS6+ylXgJCalqeLs3iZU8zoV7PPHFMHMGaRTgvIyZXpLftsPv7/4mjFLpk6vo0zynV74GKJMfh6lf8Whl4dslLWaAPeUur4K8aJ+X1tkaKvhm9s9PyLgt0Ok5acZ2Ji820se1D85poAyU9NGGZlR3oC8YMk4EJMpWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724946277; c=relaxed/simple;
-	bh=ZTb+OT2bkEBVU8WbacnjMAx2elU+4rW1WHiD7gmZCGw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cVoX32WweXXWqH1EUYws5fQakSVPeC0THJt2c4/iC3JrHM6POryhaNeGjPQV3MwSAMZCp/yS32KTj3SBaKDYLt8YpxMQJoGVS24b1LfWOUxzRUlcaXT5CzEM7Yu0ISb+PXdTkqdtM9USzjZmPu6uFaKNdnM1wX9xPhwZVa07yJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=nl+rgtxP; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id F23C688C6A;
-	Thu, 29 Aug 2024 17:44:32 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1724946273;
-	bh=e0FxXAPZizxFTGTgImErnWgjteCt0ZaQPYTqVBLqblk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nl+rgtxPIAtJm6ijwTmUbMhfMDwzWaTr4wkvWyFXcqfIq0g/chgCIrIaSv6tCsSVU
-	 NIqLXbD2INcrArhUArUnbL5qk3Fu6vFIHMcwd2W6+Z2T4sxPNdOwp6J0I7MZA23JIV
-	 rWVdDGeKfhxi9yTkuNOYd2DWgVoyzkcKZly5MiizK/zcPXTsE9ER3XTumLbRd5ARlT
-	 EWRmhETvtp0CwLPsovgN6MefwdpBJi4iSifM+fYJ7Y+FLakjYT0Nike5mpWSgCyWDq
-	 uOaM92ryIVdis8UkqYa1wor8vfI+5k1mA2LPvMg/LswqswT1L+IrF8s6GoDPfRIqFS
-	 PisenOCAqRKVA==
-Message-ID: <12b79e2b-08ca-4ba0-8abb-6f1d0be65b3c@denx.de>
-Date: Thu, 29 Aug 2024 17:38:12 +0200
+	s=arc-20240116; t=1724947407; c=relaxed/simple;
+	bh=53YNKfgte+24/t/dorec3jtfFV/G2QTfF3vy/1JfTqY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=JHzu6LnpUoZiHsrpUMl58aK7p6nt7ugzjk7Gfq38cIqacpdtzj6RTpR7SFVemzqjODPqH65xsTx5M8x2cuRu0fx3Jvh4aaPyeOa1yCW4KIjTr2EVbG6LhWoUUJE/IHMryZ3b2L6EFYAcxSLhmCs7k/lTJufAVJWQSrnEW7mEwic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gZfsrnMM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B0DC4CEC1;
+	Thu, 29 Aug 2024 16:03:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724947406;
+	bh=53YNKfgte+24/t/dorec3jtfFV/G2QTfF3vy/1JfTqY=;
+	h=From:Date:Subject:To:Cc:From;
+	b=gZfsrnMMSOoehJATSLyJCjhydNwi3gygTQyzJ7C2IIsPwf96DTeoMRARA0wC2aQ4M
+	 s4Q9zkvubVuN7mXKQkFMd3LTpXMQInVAavLTGCNZzIjqkiSv8RBH09QHdd/twhl7Ir
+	 Ma4O2KEN8ydHJm5nf5r8X1lzK8k1D1Rg3ZmfivrseINh4SFtPL6Pzs+8wwk8Pg6W6n
+	 aK36MdIPIuymMvO4jM/DMRivB9M2QvFEqe2LzILN1m62vA0FfyjGnQ8FH9/O6SZEHV
+	 eeB9O4j6u+T0GVr0241YUVh48gECsT8aygc/+Ka8wFwtSJk4d6PeA9QK5vbcY83wbB
+	 ICEop13fDWUPA==
+From: Simon Horman <horms@kernel.org>
+Date: Thu, 29 Aug 2024 17:03:23 +0100
+Subject: [PATCH] wifi: cfg80211: wext: Correct spelling in iw_handler.h
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: wilc1000: Keep slot powered on during
- suspend/resume
-To: Ajay.Kathat@microchip.com, alexis.lothore@bootlin.com,
- linux-wireless@vger.kernel.org
-Cc: claudiu.beznea@tuxon.dev, kvalo@kernel.org
-References: <20240821183823.163268-1-marex@denx.de>
- <a9e673b1-43f3-4341-a035-3e1265b8a544@bootlin.com>
- <60a52cac-964e-40d6-aa96-7bbf34d9c4ac@denx.de>
- <63266019-bbf0-4f26-9700-e0303a892b2b@bootlin.com>
- <0518770b-8975-4681-a32e-e82f540d9a73@microchip.com>
- <5229bc7c-564d-4195-a6ff-579dbe5c3a49@denx.de>
- <ae40b138-77ad-4044-9448-784be6964195@microchip.com>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <ae40b138-77ad-4044-9448-784be6964195@microchip.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240829-wifi-spell-v1-1-e0a8855482a9@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAMqb0GYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDCyNL3fLMtEzd4oLUnBxd4zRLE6Nkc1NzC0tzJaCGgqLUtMwKsGHRsbW
+ 1AP2MBKxcAAAA
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org
+X-Mailer: b4 0.14.0
 
-On 8/29/24 7:51 AM, Ajay.Kathat@microchip.com wrote:
+Correct spelling in iw_handler.h.
+As reported by codespell.
 
-Hi,
+Signed-off-by: Simon Horman <horms@kernel.org>
+---
+ include/net/iw_handler.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
->> This patch assures the chip does not get power-cycled during
->> suspend/resume cycle, which makes it lose state (and firmware), so the
->> chip is unusable after resume without this patch.
->>
-> 
-> During host suspend, the firmware doesn't get power-cycled and also doesn't
-> forward the frames to the host.
+diff --git a/include/net/iw_handler.h b/include/net/iw_handler.h
+index b2cf243ebe44..f7f4c2a79b9e 100644
+--- a/include/net/iw_handler.h
++++ b/include/net/iw_handler.h
+@@ -23,7 +23,7 @@
+  * to handle wireless statistics.
+  *
+  * The initial APIs served us well and has proven a reasonably good design.
+- * However, there is a few shortcommings :
++ * However, there is a few shortcomings :
+  *	o No events, everything is a request to the driver.
+  *	o Large ioctl function in driver with gigantic switch statement
+  *	  (i.e. spaghetti code).
+@@ -38,13 +38,13 @@
+  * -------------------------------
+  * The new driver API is just a bunch of standard functions (handlers),
+  * each handling a specific Wireless Extension. The driver just export
+- * the list of handler it supports, and those will be called apropriately.
++ * the list of handler it supports, and those will be called appropriately.
+  *
+  * I tried to keep the main advantage of the previous API (simplicity,
+  * efficiency and light weight), and also I provide a good dose of backward
+  * compatibility (most structures are the same, driver can use both API
+  * simultaneously, ...).
+- * Hopefully, I've also addressed the shortcomming of the initial API.
++ * Hopefully, I've also addressed the shortcoming of the initial API.
+  *
+  * The advantage of the new API are :
+  *	o Handling of Extensions in driver broken in small contained functions
+@@ -84,7 +84,7 @@
+ 
+ /* ---------------------- THE IMPLEMENTATION ---------------------- */
+ /*
+- * Some of the choice I've made are pretty controversials. Defining an
++ * Some of the choice I've made are pretty controversial. Defining an
+  * API is very much weighting compromises. This goes into some of the
+  * details and the thinking behind the implementation.
+  *
+@@ -140,7 +140,7 @@
+  * example to distinguish setting max rate and basic rate), I would
+  * break the prototype. Using iwreq_data is more flexible.
+  * 3) Also, the above form is not generic (see above).
+- * 4) I don't expect driver developper using the wrong field of the
++ * 4) I don't expect driver developer using the wrong field of the
+  * union (Doh !), so static typechecking doesn't add much value.
+  * 5) Lastly, you can skip the union by doing :
+  *	static int mydriver_ioctl_setrate(struct net_device *dev,
+@@ -459,7 +459,7 @@ int iw_handler_get_thrspy(struct net_device *dev, struct iw_request_info *info,
+ void wireless_spy_update(struct net_device *dev, unsigned char *address,
+ 			 struct iw_quality *wstats);
+ 
+-/************************* INLINE FUNTIONS *************************/
++/************************* INLINE FUNCTIONS *************************/
+ /*
+  * Function that are so simple that it's more efficient inlining them
+  */
 
-If the slot is powered OFF, which it currently can be, then the entire 
-WILC gets power-cycled.
-
-> 1. Without this patch, is the station getting disconnected from the AP during
-> the suspend state? Does a rescan and reconnect help to resume the connection
-> with the AP?
-
-Rescan doesn't work because there is no firmware in the WILC.
-
-> 2. With this patch, does the ping to the station work during the suspend state?
-
-I haven't tested this, but that's unlikely because the host is 
-suspended. Still, that's not really the point here, the point is that 
-the whole WILC gets powered off during suspend/resume without this 
-patch. At least on STM32MP15xx it is, maybe on the Atmel controller it 
-is not, but we cannot depend on that.
-
-> AFAIR, during host suspend, the firmware continues to run without passing
-> frames to the host unless 'wowlan' is enabled.
-> 
-> There is another scenario. Let's assume a host that wants to go to suspend
-> (power save mode) without caring about the WiFi status, i.e., it is okay to
-> reconnect with the AP if required (anyway, the AP may disconnect the station
-> based on inactivity timeout) or have to re-trigger the DHCP request again. But
-> with this change, the driver would block the host from entering suspend mode.
-> 
-> How about adding an 'if' check for host pm_caps before calling
-> sdio_set_host_pm_flags(func, MMC_PM_KEEP_POWER)? In that case, it will only
-> request when configured by the host platform.
-
-Since this driver does not reload the firmware into the card on resume, 
-the card has to be kept powered on during suspend/resume cycle. The card 
-can NOT be powered off during suspend/resume cycle, otherwise the 
-firmware is lost.
-
-Without this flag, the card may be powered off during suspend/resume 
-cycle. It possibly does not happen on the Atmel controller, but it does 
-on the STM32MP15xx ARM MMCI one.
-
-Now, since the card does consume about the same amount of power whether 
-it is powered OFF or whether it is powered ON but suspended, I opt for 
-the later option -- keep the card powered ON, suspend it, and that's 
-what this patch does. This also allows us to support WoWlan then.
-
->>> It may be that when the
->>> power consumption was measured,the WILC suspend state is not enabled because
->>> of MMC controller pm_caps in the test setup.
->>>
->>> I think it is better to have a generic patch for any host which has
->>> MMC_PM_KEEP_POWER capabilities defined or not. With proposed patch, driver
->>> will not allow the host to go into the suspend state when MMC_PM_KEEP_POWER is
->>> not set in PM caps. I think, sdio_set_host_pm_flags() should only be called if
->>> MMC_PM_KEEP_POWER is defined in the host.
->>
->> To retain firmware in the chip, the chip must not be powered off during
->> suspend/resume, which is what this patch assures. Without this patch,
->> the controller may power off the slot during suspend/resume and the WILC
->> will lose firmware and be unusable after resume.
->>
->>> Actually, WILC can support suspend mode with or without this host
->>> capabilities. For SDIO, the host can be wake-up using the external IRQ GPIO
->>> (uses out-of-band, instead of in-band interrupt) on WILC.
->>>
->>> To test wake-on-wlan(wowlan) in suspend mode, the IRQ pin from WILC should be
->>> connected with the host that will help to interrupt/wake the host when any
->>> WiFi packet arrives. Without 'wowlan' enabled in suspend mode, the host should
->>> be allowed to go into suspend mode but it can't be wake-up by WiFi packets.
->>> All the packets will be dropped in the firmware in suspend state.
->>>
->>> WILC supports only ANY option for wowlan. So, after connecting the IRQ line
->>> with host, the below commands can be used to test "wowlan" in suspend state.
->>>
->>>
->>> #  iw phy <phyname> wowlan enable any
->>> #  echo mem > /sys/power/state
->>
->> If the WILC is powered off because the slot is powered off, WILC cannot
->> resume anything.
-> 
-> I think, the wilc firmware should resume but the connection with AP may get
-> closed. Additional commands to scan and reconnect with AP may be required that
-> should work without downloading the firmware to wilc chip again.
-
-Currently, the slot may get powered off and then there is no firmware.
 
