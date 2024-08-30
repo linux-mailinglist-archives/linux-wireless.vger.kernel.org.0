@@ -1,59 +1,59 @@
-Return-Path: <linux-wireless+bounces-12247-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12248-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 863299659A1
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2024 10:11:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F64E9659CB
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2024 10:14:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B28B81C20EED
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2024 08:11:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 160B7286F12
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2024 08:14:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAE42166F3F;
-	Fri, 30 Aug 2024 08:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CF2116C685;
+	Fri, 30 Aug 2024 08:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="Acrgp50l"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="r7ctkKkY"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6ABF16726E;
-	Fri, 30 Aug 2024 08:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C995B16BE02;
+	Fri, 30 Aug 2024 08:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725005482; cv=none; b=flljD9ncViGPSR9xqER54QlCiBJ8e1KVCXABOmOJ0zsKVELJUKq5xqdcECKLIQDGlKa/eQOTk3vgWDpPqvyElOD/qqwdGarMoffK0AivNNVnhjnRrcWnE0wPr13kZFdVWuuUyVfNz+Nfbj+R3cwzTF+Qtgb3YcQjC0Vk2Lb9nCU=
+	t=1725005579; cv=none; b=j8UAlxcH+hwe2i8jjCf8WUSwhRgyvHMKyaS2Hgcq/A8UP9epEIiUXQLvCjrwpp8F4fTOzUORketA6QqI76udJs6yBtm4CqMRjzFHKh9jqQXYBV1lRqDIlQAUFGCoID011u5Pj/BG41afJ+bf1/mzAGRD3YDHpW0v6ITpRVqsrpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725005482; c=relaxed/simple;
-	bh=rd3nISwAehWjdOcs1GVJg4MzXQbtEid0uaCFsHgCbmY=;
+	s=arc-20240116; t=1725005579; c=relaxed/simple;
+	bh=v3DB7/wfkuj2OXRpDZqsy5JFYbQMU6MuQaoFr8qCt/g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=czEvOnnaLSKGUozlqWsqGdQGkt9cSj8nSf9ZZ9IYNUeo/kT2+iC6KfDHyzuF2ONtpqR4UbJQa2BbA4TQqPYEggHltIXqreuI4ZwmqBX+NQtFbW8UnJbEJ01M890IjbpahjBMd8BPGZ+Cmxg8fNEtjah9XBhb9V98JllaQiMMz8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=Acrgp50l; arc=none smtp.client-ip=217.194.8.81
+	 Content-Type:Content-Disposition:In-Reply-To; b=X7VxW4VZGaSygzaupwsDgbm3wyjuhw9G6pehhtLDtsXliiLOnWd64XVzKtOJUAgd4C1m5Q0hMb9QbRg+sfqOoWztG7E1hW+HOEi+OVS3VA7atfuNfGPIhOCReKf1lVr+GHR+X/ihGudUaJHgSOkqH8DI6bc2OmZh3woWKqbgGdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=r7ctkKkY; arc=none smtp.client-ip=217.194.8.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
 Received: from gaggiata.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id BDC8B21155;
-	Fri, 30 Aug 2024 10:11:17 +0200 (CEST)
+	by mail11.truemail.it (Postfix) with ESMTPA id D04AB21155;
+	Fri, 30 Aug 2024 10:12:54 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1725005477;
-	bh=rd3nISwAehWjdOcs1GVJg4MzXQbtEid0uaCFsHgCbmY=;
+	s=default; t=1725005574;
+	bh=fiD5XQzLCAeAEkNXH//mXB8vAMuGfPbI0F9peufA/ss=;
 	h=Received:From:To:Subject;
-	b=Acrgp50lJsxzVAaBE3d6LNoZgXVaSsHn0MQno3hOnpIMUbdkXF8Z8h6ANkcTE9Npt
-	 SYPTysUNhn2G6TFTmmjxmloANGV/+XDFPbB2SG6dGzuIFnPweFQFi3fCAqfYW4aq7a
-	 bRFbE90kvgOkNoKuevl7X4/GxVQfDoDEUCwmQ4FcPnsotxbLUgzwFuJLCsk1cfVdTJ
-	 CiGTynWhaY4Rn/mdq4WLMIOHzTYAztDCpsvVzGbq2gAdJUZxyRI2GWdTUv1LfnY8G8
-	 W9gQ1BKp3Ig52TZIHBXtsKBezcFfI6b8hUsCV1UCK3d87ISaKV7MgdvnISl588W2LI
-	 vRvOXuF4bTqXw==
+	b=r7ctkKkYVxvuai87H+EJpBu1XXbhtGY9dhGEWZXh/oEZResaGPQ3cWvbrZK6bBcvc
+	 T7q/sLrgC0Qog5PpUUpUtbXG1eyQHe4BM8ft0lxl8V++Poj5Q+O3FY88jhJJC5KdAf
+	 td4F/eK5/MejW+9f3pD5pZIBxJvDxLto10eD3INlpdcvNRvaf7lTjpeg78DsMilAG6
+	 qVNaB9g/fKi1BIADyoWj/qiq0xZ5FibRYRjWaien7kCuCOyzHtB8S3Xelw1MXYhuPM
+	 DWXIsak5SCxo+aJ1fcCGeIQ0R03Qo1kkVCdrxbWXOrKMVru0uzmOrojNIDKsIi1und
+	 aukWfUl7MUwKA==
 Received: by gaggiata.pivistrello.it (Postfix, from userid 1000)
-	id 741B87FCD4; Fri, 30 Aug 2024 10:11:17 +0200 (CEST)
-Date: Fri, 30 Aug 2024 10:11:17 +0200
+	id 7C32D7FCE6; Fri, 30 Aug 2024 10:12:54 +0200 (CEST)
+Date: Fri, 30 Aug 2024 10:12:54 +0200
 From: Francesco Dolcini <francesco@dolcini.it>
-To: David Lin <yu-hao.lin@nxp.com>
+To: David Lin <yu-hao.lin@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>
 Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
 	briannorris@chromium.org, kvalo@kernel.org, francesco@dolcini.it,
 	tsung-hsien.hsieh@nxp.com
 Subject: Re: [PATCH] wifi: mwifiex: fix firmware crash for AP DFS mode
-Message-ID: <ZtF-pbt6-wXWe3zb@gaggiata.pivistrello.it>
+Message-ID: <ZtF_BnSHrrm15IY2@gaggiata.pivistrello.it>
 References: <20240830080719.826142-1-yu-hao.lin@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -65,14 +65,17 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20240830080719.826142-1-yu-hao.lin@nxp.com>
 
++Sascha
+
 On Fri, Aug 30, 2024 at 04:07:19PM +0800, David Lin wrote:
 > Firmware crashes when AP works on a DFS channel and radar detection occurs.
 > This patch fixes the issue, also add "fake_radar_detect" entry to mimic
 > radar detection for testing purpose.
+> 
+> Signed-off-by: David Lin <yu-hao.lin@nxp.com>
 
-Is this issue generic or specific to some firmware version or Wi-Fi device?
+Sascha: FYI, given you are working on this driver lately.
 
 Francesco
-
 
 
