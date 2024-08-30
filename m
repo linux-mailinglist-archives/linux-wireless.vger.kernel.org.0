@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-12232-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12233-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F6B965755
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2024 08:09:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3C5D965756
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2024 08:09:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECECF1C22CE9
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2024 06:09:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C85C1F24F7A
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2024 06:09:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1E12145FE5;
-	Fri, 30 Aug 2024 06:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C403148827;
+	Fri, 30 Aug 2024 06:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="VyuFISjN"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Tnw7Ep9I"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8E114D6FC
-	for <linux-wireless@vger.kernel.org>; Fri, 30 Aug 2024 06:09:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C78914D6FC
+	for <linux-wireless@vger.kernel.org>; Fri, 30 Aug 2024 06:09:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724998184; cv=none; b=L3JNdTQFqjP8W5ugtC/Q7PpZVYHWDJXN6xVggjAttiQ6wryRbz4xCFgnClEV6kbNnavSHtLai36XnEPsdIRztv9Vyw3blwDRvXooEU8z0L9mjsK+bZcXqHf9FtJZD1T1t4Q0Ga/t9LoRlu3QtWpPq4X4vi5oVtUrrvFhu2ZCYuw=
+	t=1724998187; cv=none; b=SgsQxscRKFItT0MCPcqERAVgZbIvpNQLVPCTJ/XMOoeNHKgZHMWR8JVUjqhnfqQKEKv0eceHb/HT3dm9JY6tkJUE2l0IcZFFOmjpUStG0uPc88aZTM0HV62Fb7Os2ZChPytK7H+ROoc9Wo/SRkHqR5tyygLrY08/rTY5suxya0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724998184; c=relaxed/simple;
-	bh=ro+rmJp7eF+rhtuChD9dt2guwl1hshmu2MZylceZ7+0=;
+	s=arc-20240116; t=1724998187; c=relaxed/simple;
+	bh=zkLAkb1nTfqNgGdJtc1gUbkky9UrsB/ORpd3FP0TySs=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hti0LV2JOCjhNd4ggI+1KqpfRRDZN7PfX4X8ZSCIWb7SPOGf9s5uEh6KaPFc3UQe7Z+EAn38ZDaNlUdZ1dDLZNHf+UVUgXPmXgR1ZiXTD0yGSMPtiDq03DFlclmxWNJq97vifA3kh2BIYHQtpocnSnrS0M2Jw/ZzYH2rSk4Dldg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=VyuFISjN; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version:Content-Type; b=lNmNBpKGRBoGz6vXgWREIGYHOHMqIJNOn41UNqOFM0nG7IMfwoYp4LYqx7T5BANswAeDGLWUFXeh9wxpx9RjgkCkJZ2m0O7XH32kpQhwMab7eDdSOh26Us6mTusyW5zu2VafgOvgjcK4GI7LX/SxuM8BGOWA70D8rqU7xIg084c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Tnw7Ep9I; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47TGtepJ023072;
-	Fri, 30 Aug 2024 06:09:39 GMT
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47TGkRKY006314;
+	Fri, 30 Aug 2024 06:09:40 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	8K6Cs7iasS8xugY9HCizwIeISSlLEmtr+HLzCFl0vxE=; b=VyuFISjNLbep+0xg
-	mkVU4Al7+vG30TXh3kqM4VXOEyqlYgR0NeKo/rgMH3/XYUnvWa4WXWwNcWj3NO0/
-	DOyqG3gjFZSmTBYU3hveDGEW2LHaD4PGpuOq7VpSFAUJUdCsIwBs9Q3p6GY4y8fb
-	LBkpSpgM5kbyQwQmxV1fqFW5y54Ug9Yvmfot/4AwtIjqf9evfA8NL7Qy7fU9WGEN
-	a5DIZH5Aq8iiyx/9QjNv1sG9gdBEZCRl6J+YbVmAi3xhJqTvuvKlfPQMh55nR/zC
-	h8xxpxAjeysFIATQH7JBH1oZRDhkKfMHbsljpyOmzadc2647VxUBfxefIrs8pv5b
-	6mvnhA==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41a612nhs3-1
+	vyydDZF4diJD/3AJVLQuRvbHf/UWvXyuKC1a0l/Qgus=; b=Tnw7Ep9IErtEt0qo
+	8IB3Q7+O8DNFVe/eODoTa395TX6ixgYgb6tUNchC+knIrbRfmhdStnH+owBwA6Qi
+	V68mXwZt91zt9PiDkZNvZyxvh8mfrbWuTShriIIexcDvpXkwoa4xK/Pef8LwdCuX
+	qIRMDDYReaj3l0gB6VnzKl7HsVH5aadRWLaakaT/912Uv6/qUVchPd7cwqbBHur1
+	Me4hsLKCf/2OC+hkEdbp0ZldPvnOzKBnsaujkdURfp7m6kbazxgGHhR07ATITVbW
+	rASRpcfFVoWuerqyGoR/v1qHOjjh8B1VvpsPBZJY9MSzXz911sOu/7Gt1JIwhb/E
+	RGRQnQ==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 419putypet-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 30 Aug 2024 06:09:39 +0000 (GMT)
+	Fri, 30 Aug 2024 06:09:40 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47U69cc8011707
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47U69d1T020065
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 30 Aug 2024 06:09:38 GMT
+	Fri, 30 Aug 2024 06:09:39 GMT
 Received: from hu-adisi-blr.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Thu, 29 Aug 2024 23:09:36 -0700
+ 15.2.1544.9; Thu, 29 Aug 2024 23:09:38 -0700
 From: Aditya Kumar Singh <quic_adisi@quicinc.com>
 To: <johannes@sipsolutions.net>
 CC: <linux-wireless@vger.kernel.org>,
         Aditya Kumar Singh
 	<quic_adisi@quicinc.com>
-Subject: [PATCH v4 2/8] wifi: mac80211: remove label usage in ieee80211_start_radar_detection()
-Date: Fri, 30 Aug 2024 11:39:12 +0530
-Message-ID: <20240830060918.2418701-3-quic_adisi@quicinc.com>
+Subject: [PATCH v4 3/8] wifi: trace: unlink rdev_end_cac trace event from wiphy_netdev_evt class
+Date: Fri, 30 Aug 2024 11:39:13 +0530
+Message-ID: <20240830060918.2418701-4-quic_adisi@quicinc.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240830060918.2418701-1-quic_adisi@quicinc.com>
 References: <20240830060918.2418701-1-quic_adisi@quicinc.com>
@@ -79,64 +79,56 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: u_uuGsjcCf-bkoKVV6wbwYrRxsOyBKgP
-X-Proofpoint-ORIG-GUID: u_uuGsjcCf-bkoKVV6wbwYrRxsOyBKgP
+X-Proofpoint-ORIG-GUID: uxSZZQk0p4nsbkEgDvl0KNQE2h4f5jUg
+X-Proofpoint-GUID: uxSZZQk0p4nsbkEgDvl0KNQE2h4f5jUg
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-08-30_02,2024-08-29_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
- phishscore=0 spamscore=0 mlxlogscore=999 adultscore=0 impostorscore=0
- mlxscore=0 suspectscore=0 bulkscore=0 lowpriorityscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ mlxlogscore=793 suspectscore=0 phishscore=0 spamscore=0 bulkscore=0
+ clxscore=1015 mlxscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2407110000 definitions=main-2408300043
 
-After locks rework [1], ieee80211_start_radar_detection() function is no
-longer acquiring any lock as such explicitly. Hence, it is not unlocking
-anything as well. However, label "out_unlock" is still used which creates
-confusion. Also, now there is no need of goto label as such.
+rdev_end_cac trace event is linked with wiphy_netdev_evt event class.
+There is no option to pass link ID currently to wiphy_netdev_evt class.
+A subsequent change would pass link ID to rdev_end_cac event and hence
+it can no longer derive the event class from wiphy_netdev_evt.
 
-Get rid of the goto logic and use direct return statements.
-
-[1]: https://lore.kernel.org/all/20230828135928.b1c6efffe9ad.I4aec875e25abc9ef0b5ad1e70b5747fd483fbd3c@changeid/
+Therefore, unlink rdev_end_cac event from wiphy_netdev_evt and define it's
+own independent trace event. Link ID would be passed in subsequent change.
 
 Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
 ---
- net/mac80211/cfg.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ net/wireless/trace.h | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 8b4f32c01701..363dc33103d6 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -3468,10 +3468,8 @@ static int ieee80211_start_radar_detection(struct wiphy *wiphy,
+diff --git a/net/wireless/trace.h b/net/wireless/trace.h
+index 5c26f065bd68..7fc7de9bcc34 100644
+--- a/net/wireless/trace.h
++++ b/net/wireless/trace.h
+@@ -805,9 +805,18 @@ DEFINE_EVENT(wiphy_netdev_evt, rdev_flush_pmksa,
+ 	TP_ARGS(wiphy, netdev)
+ );
  
- 	lockdep_assert_wiphy(local->hw.wiphy);
+-DEFINE_EVENT(wiphy_netdev_evt, rdev_end_cac,
+-	     TP_PROTO(struct wiphy *wiphy, struct net_device *netdev),
+-	     TP_ARGS(wiphy, netdev)
++TRACE_EVENT(rdev_end_cac,
++	TP_PROTO(struct wiphy *wiphy, struct net_device *netdev),
++	TP_ARGS(wiphy, netdev),
++	TP_STRUCT__entry(
++		WIPHY_ENTRY
++		NETDEV_ENTRY
++	),
++	TP_fast_assign(
++		WIPHY_ASSIGN;
++		NETDEV_ASSIGN;
++	),
++	TP_printk(WIPHY_PR_FMT ", " NETDEV_PR_FMT, WIPHY_PR_ARG, NETDEV_PR_ARG)
+ );
  
--	if (!list_empty(&local->roc_list) || local->scanning) {
--		err = -EBUSY;
--		goto out_unlock;
--	}
-+	if (!list_empty(&local->roc_list) || local->scanning)
-+		return -EBUSY;
- 
- 	/* whatever, but channel contexts should not complain about that one */
- 	sdata->deflink.smps_mode = IEEE80211_SMPS_OFF;
-@@ -3480,13 +3478,12 @@ static int ieee80211_start_radar_detection(struct wiphy *wiphy,
- 	err = ieee80211_link_use_channel(&sdata->deflink, &chanreq,
- 					 IEEE80211_CHANCTX_SHARED);
- 	if (err)
--		goto out_unlock;
-+		return err;
- 
- 	wiphy_delayed_work_queue(wiphy, &sdata->deflink.dfs_cac_timer_work,
- 				 msecs_to_jiffies(cac_time_ms));
- 
-- out_unlock:
--	return err;
-+	return 0;
- }
- 
- static void ieee80211_end_cac(struct wiphy *wiphy,
+ DECLARE_EVENT_CLASS(station_add_change,
 -- 
 2.34.1
 
