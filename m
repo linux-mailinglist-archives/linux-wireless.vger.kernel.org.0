@@ -1,121 +1,102 @@
-Return-Path: <linux-wireless+bounces-12268-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12269-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F851966669
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2024 18:02:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E54096670B
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2024 18:35:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29DDD1F265D2
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2024 16:02:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B117A284E81
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2024 16:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C3311B5ED2;
-	Fri, 30 Aug 2024 16:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC7114A4DF;
+	Fri, 30 Aug 2024 16:35:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="jZAtzviA"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="dtdolGEx";
+	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="Rh4Hr1jQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from e3i110.smtp2go.com (e3i110.smtp2go.com [158.120.84.110])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE1E1A2C35;
-	Fri, 30 Aug 2024 16:01:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB8413BAE2
+	for <linux-wireless@vger.kernel.org>; Fri, 30 Aug 2024 16:35:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.84.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725033712; cv=none; b=jiACe9yAkZ86e+9aMNBe6mlcppyAn0CcW8kHz6GECV1opwZQ5X/VAOIYyEJL+wqd1He9hJ77dugUWPzfP5KEmHADKwQ8pcDbsPG6O6i+Zh5fiv5hz9fGfojgIMdCaeXDD9VNUIGprX+lWaYSESCrWqdRZuidXB0NKz8gHaTw/QI=
+	t=1725035737; cv=none; b=nQMFMP7ALyy3AeUYj1nA0gC9gTpEujDJFbIvMdlrc6+Mo014qVbwweT0sOWid/eqXu9qrPCqBnndkXhAatKNv+eK+puHV5M0ofvPHkaB/57DSwW6oSgMlrpbJyfRijCjtCi8YmPV7Xt3ZBPY6MCjarJKoVo/DVIXUGuhmKKfn8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725033712; c=relaxed/simple;
-	bh=16lj0Ja7gHILLEZora4E65v9tQ3y4iAKP3+Kl60/RSg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=OmIZAaFAp+/EhZSlaGyUluUSMNMWiP4uuR5J1vWFzPEqr/6s7a195OO4ppkMVrz9v6y1qFgtUwK60j/WugAwPXWVqpHxFCWNfLDl1r5FjbaUeVll7rfn4CS8mQwxl+UDGyJb4bG2868UbGW6Xr1shGq8yS2BJ9pvnpqe67r8M+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=jZAtzviA; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47UEttMM011674;
-	Fri, 30 Aug 2024 16:01:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	fZ6BleY6hJxhqNSKGHouVM4VvjSsw9CDGQREuyoil4U=; b=jZAtzviAb4NjNWR8
-	5llO2FoqPCfsZXwpNcLCfvqor0OpeXwtBviJySKVJZEO8Oy827/+QDjdBDQhPbe/
-	T63Zib5JO1WjFlS8Jj06OOt0mRZl9zm1fnkvnAF0VFqbXMiyXwG4sC59JdalfrYH
-	DMHJkmuuT1iBuiMWJXxCedS6nLWsRAARe9PX2a2YvazD0aIZ8wHUIpr9QIE+P9kW
-	iYNHxB1LL56M50Qt7JTQ033GF+y4GiAsnfDd6IflJVuRH6r4ZMlHZFOL+hoCE5Jf
-	qGpyS/pIWsxoQ7ovQYY8jXoHPNak8lGHcr34ASfPNFSEWfwXMrggb0KhTLUnEmJ4
-	uuo0KQ==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 419pv0sk4m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 30 Aug 2024 16:01:38 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47UG1bt1030541
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 30 Aug 2024 16:01:37 GMT
-Received: from [10.111.180.95] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 30 Aug
- 2024 09:01:36 -0700
-Message-ID: <29bf2e9c-ca24-46d1-93e4-3b3f3f812705@quicinc.com>
-Date: Fri, 30 Aug 2024 09:01:36 -0700
+	s=arc-20240116; t=1725035737; c=relaxed/simple;
+	bh=LmxirJlfnOsptE+isNTt5/FBE5gu9GL4B/w8zRlweyA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qFlztBBsDwLJHr1509P/JswZDilqLcSkpxlWDF5w0cAjcZpYBSFU3BLAeIIp3mV3bBlXDLgJgjOV6/t78QSt4WTMaYKM7HXpSLAxIlFV31oW1yJ6VhLdG4y0IGr+UT6touywCOTlMfYKxQpCwAo4rU3mIzkdem6ZTitCzKK+qg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=pass (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=dtdolGEx; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=Rh4Hr1jQ; arc=none smtp.client-ip=158.120.84.110
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpservice.net;
+ i=@smtpservice.net; q=dns/txt; s=a1-4; t=1725034823; h=feedback-id :
+ x-smtpcorp-track : date : message-id : to : subject : from : reply-to
+ : sender : list-unsubscribe : list-unsubscribe-post;
+ bh=n40eqImWNJaJ1eZyhml6lDvg7HoUmFqBfkd7fEOtuGA=;
+ b=dtdolGEx0K/4qcf1lKE3AHOsHt+r/sOcon+OFSGZYw3iypgobO7IRCFAD9wdsQSDNIDBE
+ SNfhCpWBpIH82C6W9aMYN0XdJkjVgUI9Kffgv0u5V6Si4rjTH4Rzqs8auxgcNRmc4b4iiBm
+ vvrhurgHmOVxGiQb8+qnrorsltGaxOkBGupLHJW9wGM64Frne0sRe4fvpkbwJwq8T8Wq3sX
+ y7e38Nmw8WcGhvFyTfZCAXOcSa/WqlHrYh50acmVnijcT11us16aUWk5dhSNyEG2jbQ5ekG
+ XYkDc6D/TU+YikbHq38aUkmcWTGWsoRB9m8t6c54k54iVn7mvLHUO5Kg9UUQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
+ i=@triplefau.lt; q=dns/txt; s=s510616; t=1725034823; h=from : subject
+ : to : message-id : date;
+ bh=n40eqImWNJaJ1eZyhml6lDvg7HoUmFqBfkd7fEOtuGA=;
+ b=Rh4Hr1jQP7wfrX75/ENxzq74ngtu2g1thOkYPskFWCK87cYAfRmz2iBiGgr+cMFZJB512
+ kTgqeEK7mfTJP0Khxw+B9TVoRkJ4WvFAePWYe1csiloxfUdXRYilMVTXKj8xZhfdTyho8MU
+ IJ+k70eh/hC0AKS1WUNJwVtLxcN+e7/PaRQzSqJOg0FM/VtkF/669C7/B4mabOqUVHi3fH5
+ FcdsCf4f5B50Q2a6PvlRdjlIRED+IpABl0AWidFGS1zLErze0wDF+KT3/1uL5w+otJOD+W5
+ IvHO7BAYeF/isAYBIU+0L81fvwT+UhfDPj5Iy1TrkwuuAjbbMthfkT3u5W7g==
+Received: from [10.12.239.196] (helo=localhost)
+	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97.1-S2G)
+	(envelope-from <repk@triplefau.lt>)
+	id 1sk4MG-4o5NDgrw4Fa-nsAO;
+	Fri, 30 Aug 2024 16:20:20 +0000
+Date: Fri, 30 Aug 2024 18:21:50 +0200
+From: Remi Pommarel <repk@triplefau.lt>
+To: Nicolas Escande <nico.escande@gmail.com>
+Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] wifi: ath12k: move txbaddr/rxbaddr into struct ath12k_dp
+Message-ID: <ZtHxnk0weaxYUIwZ@pilgrim>
+References: <20240830081942.3623380-1-nico.escande@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ath11k: Fix potential RCU dereference issue in
- ath11k_debugfs_htt_ext_stats_handler
-To: Jiawei Ye <jiawei.ye@foxmail.com>, <kvalo@kernel.org>,
-        <jjohnson@kernel.org>, <corbet@lwn.net>
-CC: <linux-wireless@vger.kernel.org>, <ath11k@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-References: <tencent_A64CA96B962349E369B349EA01EBC53C3505@qq.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Content-Language: en-US
-In-Reply-To: <tencent_A64CA96B962349E369B349EA01EBC53C3505@qq.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: ARulsQs3EzcXSvTL9NRtBApJhL6BoHhr
-X-Proofpoint-ORIG-GUID: ARulsQs3EzcXSvTL9NRtBApJhL6BoHhr
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-30_10,2024-08-30_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- mlxlogscore=737 bulkscore=0 impostorscore=0 phishscore=0 clxscore=1011
- mlxscore=0 spamscore=0 suspectscore=0 malwarescore=0 adultscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2408300122
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240830081942.3623380-1-nico.escande@gmail.com>
+X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
+Feedback-ID: 510616m:510616apGKSTK:510616su41D9LAPX
+X-smtpcorp-track: 15zYQ3KWAbul.9LGn4OZxyeQl.a7LHAgWroYp
 
-On 8/30/2024 5:02 AM, Jiawei Ye wrote:
-> In the `ath11k_debugfs_htt_ext_stats_handler` function, the `ar` pointer
-> obtained via RCU lock is accessed after the RCU read-side critical
-> section might be unlocked. According to RCU usage rules, this is illegal.
-> Reusing this pointer can lead to unpredictable behavior, including
-> accessing memory that has been updated or causing use-after-free issues.
-> The `ath12k_debugfs_htt_ext_stats_handler` function in the
-> `drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c` file provides a good
-> example to follow for addressing this issue.
+Hi Nicolas,
+
+On Fri, Aug 30, 2024 at 10:19:42AM +0200, Nicolas Escande wrote:
+> Those two fields are used to store the per SPT page of tx/rx descriptors send to
+> the firmware for cookie conversion. Right now they are in struct ath12k_spt_info
+> which means they are duplicated PPT page times while we only need one instance
+> of them. This works for now as we always use the first spt_info as a global
+> storage for all PPT pages.
 > 
-> This possible bug was identified using a static analysis tool developed
-> by myself, specifically designed to detect RCU-related issues.
+> Let's move them into struct ath12k_dp where they belong, alongside of the
+> spt_info array they are tied to, to avoid waisting a good bit of memory.
 > 
-> To address this issue, the RCU read lock is now kept until all accesses
-> to the `ar` pointer are completed. A `goto exit` statement is introduced
-> to ensure that the RCU read unlock is called appropriately, regardless of
-> the function's exit path.
+> Tested-on: QCN9274 hw2.0 PCI CI_WLAN.WBE.1.3-03283.1-QCAHKSWPL_SILICONZ-2
+> 
+> Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
 
-This analysis is incorrect since ar is not an RCU-protected structure
+Looks good to me. For what it worth:
 
-The rcu_read_lock() is required internally within
-ath11k_mac_get_ar_by_pdev_id() when retrieving the RCU-protected pdev pointer.
+Reviewed-by: Remi Pommarel <repk@triplefau.lt>
 
-So NAK this patch.
-
-
+-- 
+Remi
 
