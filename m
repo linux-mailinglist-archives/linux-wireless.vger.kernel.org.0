@@ -1,136 +1,127 @@
-Return-Path: <linux-wireless+bounces-12264-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12265-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A69E6966154
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2024 14:06:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 873B5966601
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2024 17:47:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 504571F21061
-	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2024 12:06:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA2221C20D3C
+	for <lists+linux-wireless@lfdr.de>; Fri, 30 Aug 2024 15:47:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D639319992C;
-	Fri, 30 Aug 2024 12:06:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 921C31B81A7;
+	Fri, 30 Aug 2024 15:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="MWzljtrn"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="YTox0qKS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from out203-205-221-210.mail.qq.com (out203-205-221-210.mail.qq.com [203.205.221.210])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357721917C8;
-	Fri, 30 Aug 2024 12:06:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED54B1B6552
+	for <linux-wireless@vger.kernel.org>; Fri, 30 Aug 2024 15:46:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725019569; cv=none; b=mMyzeeeAg5Po5w95kBBsGJVrwy7jqrusmpj0SJxBgBNmVBmjN6ec2c8LRkOyy+kpK11GI9syWwi3tBMI1iDitb7+xcuOEikUWf+bmLyFeoWTGK8is5TFrVp9+LHnC0dUVeqQbJl3ct1/saix1ykHw1FTEkb6uQ2/bK9Na3YH8kM=
+	t=1725032819; cv=none; b=uxvGwZzAdSkZhSFROxUbX777/ahVyOC0usEY3cd7UZCtD1XLE/cYyElFEwmo9OxWd1uKzzPV2v/w436Tx667DlYp0Hhj2Qo0Y+FyMDatoo4fnzThgrGXAqAf/gCNqgajM+g9OTbK1HthBvaGm83iYV+khj/QngizRFhLjg+QVVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725019569; c=relaxed/simple;
-	bh=vExsAHAoGllOr1t2tx2Hu9Hx8Zr9OFpwTAEbV5uIQKI=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=KFGCua45jvSgJ6at0J1BrlyE07W0rat2eeTV+OUCuJlYs590Fpa0VntoaEsSRRmFh3Szf4Ah1oUNORq4FbMBFjBnRoFARIbm/Yn6JvX9YNlh7xJ+gfc9vGBJkCfej8Zjc7h1V4ErIfW4lgprysGQcykGboxlZdk2Cgt4Cz9LqjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=MWzljtrn; arc=none smtp.client-ip=203.205.221.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1725019557;
-	bh=OA1aR3D6P1yKqxLc97SjhIL90dq/6HD+PrvzA+JcrbM=;
-	h=From:To:Cc:Subject:Date;
-	b=MWzljtrnq74Ov4lDNkBlbDjH0kc+IdRrvSDrKHMpC/UHwJwVIvaJpeBYAWfopBS91
-	 /BMpZCJ+MzKOa8dZjo/TaKUgIcoDPYXPqo4zQkOiKyReuH+saE7JTfyLQQmwY/OJeM
-	 MYfQKVEkpI2hgQr2w7d+TYj9zQYKu4GYg8dSOGRc=
-Received: from localhost.localdomain ([114.246.200.160])
-	by newxmesmtplogicsvrszc5-2.qq.com (NewEsmtp) with SMTP
-	id 9B9724D; Fri, 30 Aug 2024 20:02:27 +0800
-X-QQ-mid: xmsmtpt1725019347t06pasczv
-Message-ID: <tencent_A64CA96B962349E369B349EA01EBC53C3505@qq.com>
-X-QQ-XMAILINFO: NC4p7XQIBeahN2F7hMEA1AVw+JUb7RBJt6sTjs23qCy/OS5FN4fOGKhiTx4KdQ
-	 D/HZi7E1nEusnimX1P2/8k+Iy9G6z1dD4iTIDMtCCN6aHgXGwUFTQ8h1Wn9aB1zsY9+TNABMdVxo
-	 hPjy2LfueW00uXt2E8iRr0wbOayJ5VoWbhEXFqwJa4hHdparD3tlPlgvvFFhd1+vCl16Ss5st04P
-	 tFHhUMPS27Iay60LoGHeoM2JyT4/JHdKNqcK1tueNLcxX3N7gkX6nYN32U3MSVN8vvrtWqNq+rr3
-	 UzCOkyxGIxDJsqe2No5yd4GthrX7VXZsWqkK4dnX4NQRMTWbYDKGCN+D8A0WaqzBYgpV8B+a8AHy
-	 C0+lhohDqukjNq521opqeX2yRaRY89KBJlda+U+n14DFty6SrHUa6uKOquSRAy0+ru2Dw+EdLGxu
-	 tgFyG6BHEhzXWdq0fsZhVzS2Tlp/BrJaUE4A2MUaeyIjte1xhXN8YneNKpbuXz0E3lcPC8bbzKbr
-	 gx585I2MAD2KvQGIv77trrQqHq+VNH+N01SbHsLKw5Q278JSivg4d2K6nigIk6tO0OnunRW3PopU
-	 mEV2vq++QWfyx5OXlJFIPQC5J0XvL/oe2KyTZxe94RLYpaLIMsoueVDek4LNlDT3lTSg+F+BVbYX
-	 b3zNum3vklVkwlJDEFs3bMzI51CNSjNyOj5hRz0gyukHw1lRv1rAgw4bbwzLaZRIRAzWkR3agmq9
-	 EhJCWS8S6EJFbgvhHVnkHLTO7EW6gpyCi3bis/kyEZgzi4MUU3p0MTmQ/DoGQIum8ZeIHYfv7I28
-	 ipTZ/ZZgJlnyUyF1+AipASAhbEaSJovXl+V0Q3xZmA5TPU8FhZ6VGRGQQokGxsAa95VqLtEfBzoL
-	 vggH5WA65f4rMyRglkwinvFLBWbcv7d8bt8sE20cA8376QBO3mR5EmulFrTMUAF7HZXwfErQSboq
-	 MJfsrvtKapFaF33B2TWB/k3fN6CdPlpir7OSdy2D9Kj5Nf09uUpWyoPUWS7TdE+SehLoZt7Y5Ttb
-	 xgSltRo4UtXARiGDilj9e8W1f4E2DhcRjdpjvLlaebE1eubDuaa/awcioNQIo=
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
-From: Jiawei Ye <jiawei.ye@foxmail.com>
-To: kvalo@kernel.org,
-	jjohnson@kernel.org,
-	corbet@lwn.net
-Cc: linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ath11k: Fix potential RCU dereference issue in ath11k_debugfs_htt_ext_stats_handler
-Date: Fri, 30 Aug 2024 12:02:27 +0000
-X-OQ-MSGID: <20240830120227.1025690-1-jiawei.ye@foxmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1725032819; c=relaxed/simple;
+	bh=WY1/0XEZGTq7vVs7hzr45rTHW7XvoRA6Z2XEmFY9JQA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=bUD4AZ26pZA6C2YvoMi7u7KJVg7OHHm/JLNyEAYeWUebSdEpRZyXrIgimb6udwiOkpUu5bFK1VX9qMzUuNbD3oDkY1wwTnXjiQ/742nsrnV/EC78uhRritG6w30BcAANu+09WQLCxooqMec9FJm8AeEX6DIa029KyQJto3wu//I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=YTox0qKS; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47UFHHxI026726;
+	Fri, 30 Aug 2024 15:46:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	baFyKabD15U73SdQO8S2i0WKyu6HhFQ9NuAcYFga/Nk=; b=YTox0qKSoLQgU35o
+	nMQvPWULQ6Tb7q/0ht0zwXMcnneJCexsSIOmhPVfTTRRO6Z3pUMdBWDBp2bWs9qt
+	9LRuzTSTZcAvNSnpJJDGMmsdNXfrfG2NP+4Vw8bv0l6CHoKNcQxsNjoulGhzHp5Y
+	iHZ48yl04y0xj/dKfOjhcN41D8VRSac1zgtSqTa5l4XNsbhx1At0TynlCxAGhHSA
+	HNqmuuQAFbPD4kXBP1XT8SE5IFSh0xK8GdSSE5Sz+iIE9Hi6KtwgjB6P9CiyFOsc
+	sX3ck4p2PuEr7J9bN7rf0iDX78g1svt02RPd8jtHCqlwOCl6sW9d5aqthfZsnvho
+	/AtHuw==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41a612qapm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 30 Aug 2024 15:46:53 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47UFkqHa025314
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 30 Aug 2024 15:46:52 GMT
+Received: from [10.111.180.95] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 30 Aug
+ 2024 08:46:52 -0700
+Message-ID: <891d2bc3-9ace-4fed-92e3-192d8126c5c6@quicinc.com>
+Date: Fri, 30 Aug 2024 08:46:51 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH ath-current 2/2] Revert "wifi: ath11k: support
+ hibernation"
+To: Baochen Qiang <quic_bqiang@quicinc.com>, <ath11k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240830073420.5790-1-quic_bqiang@quicinc.com>
+ <20240830073420.5790-3-quic_bqiang@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <20240830073420.5790-3-quic_bqiang@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: P3z8TrqwlLK-NQgyQjZBRrbb26rY6VI-
+X-Proofpoint-ORIG-GUID: P3z8TrqwlLK-NQgyQjZBRrbb26rY6VI-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-30_10,2024-08-30_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
+ phishscore=0 spamscore=0 mlxlogscore=489 adultscore=0 impostorscore=0
+ mlxscore=0 suspectscore=0 bulkscore=0 lowpriorityscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408300120
 
-In the `ath11k_debugfs_htt_ext_stats_handler` function, the `ar` pointer
-obtained via RCU lock is accessed after the RCU read-side critical
-section might be unlocked. According to RCU usage rules, this is illegal.
-Reusing this pointer can lead to unpredictable behavior, including
-accessing memory that has been updated or causing use-after-free issues.
-The `ath12k_debugfs_htt_ext_stats_handler` function in the
-`drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c` file provides a good
-example to follow for addressing this issue.
+On 8/30/2024 12:34 AM, Baochen Qiang wrote:
+> This reverts commit 166a490f59ac10340ee5330e51c15188ce2a7f8f.
+> 
+> We get report [1][2] that this commit breaks system suspend on some specific
 
-This possible bug was identified using a static analysis tool developed
-by myself, specifically designed to detect RCU-related issues.
+since we have Closes tags I don't think we need these separate references.
+Just start with "There are several reports that this commit..."
 
-To address this issue, the RCU read lock is now kept until all accesses
-to the `ar` pointer are completed. A `goto exit` statement is introduced
-to ensure that the RCU read unlock is called appropriately, regardless of
-the function's exit path.
+> Lenovo platforms. Since there is no fix available, for now revert this commit
+> to make suspend work again on those platforms.
+> 
+> [1] https://bugzilla.kernel.org/show_bug.cgi?id=219196
+> [2] https://bugzilla.redhat.com/show_bug.cgi?id=2301921
+> 
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219196
+> Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2301921
 
-Signed-off-by: Jiawei Ye <jiawei.ye@foxmail.com>
----
- drivers/net/wireless/ath/ath11k/debugfs_htt_stats.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+I think we need to add
+Fixes: 166a490f59ac ("wifi: ath11k: support hibernation")
+Cc: stable@vger.kernel.org # 6.10.x: <hash>: Revert "wifi: ath11k: restore
+country code during resume"
 
-diff --git a/drivers/net/wireless/ath/ath11k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath11k/debugfs_htt_stats.c
-index 870e86a31bf8..325377e00818 100644
---- a/drivers/net/wireless/ath/ath11k/debugfs_htt_stats.c
-+++ b/drivers/net/wireless/ath/ath11k/debugfs_htt_stats.c
-@@ -4572,15 +4572,14 @@ void ath11k_debugfs_htt_ext_stats_handler(struct ath11k_base *ab,
- 	pdev_id = FIELD_GET(HTT_STATS_COOKIE_LSB, cookie);
- 	rcu_read_lock();
- 	ar = ath11k_mac_get_ar_by_pdev_id(ab, pdev_id);
--	rcu_read_unlock();
- 	if (!ar) {
- 		ath11k_warn(ab, "failed to get ar for pdev_id %d\n", pdev_id);
--		return;
-+		goto exit;
- 	}
- 
- 	stats_req = ar->debug.htt_stats.stats_req;
- 	if (!stats_req)
--		return;
-+		goto exit;
- 
- 	spin_lock_bh(&ar->debug.htt_stats.lock);
- 
-@@ -4599,6 +4598,8 @@ void ath11k_debugfs_htt_ext_stats_handler(struct ath11k_base *ab,
- 
- 	if (send_completion)
- 		complete(&stats_req->cmpln);
-+exit:
-+	rcu_read_unlock();
- }
- 
- static ssize_t ath11k_read_htt_stats_type(struct file *file,
--- 
-2.34.1
+(Won't be able to add the hash until after Kalle commits that precursor patch)
+https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+
+I suspect Kalle can make these changes directly in his workspace when he is
+staging this series for ath-current
+
+> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+
+With those addressed,
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
 
