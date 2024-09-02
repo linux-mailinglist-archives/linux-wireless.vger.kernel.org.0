@@ -1,159 +1,166 @@
-Return-Path: <linux-wireless+bounces-12326-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12327-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38CE396819F
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Sep 2024 10:23:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07A9D96820B
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Sep 2024 10:34:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2E922828A8
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Sep 2024 08:23:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26E471C22141
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Sep 2024 08:34:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF5481865EB;
-	Mon,  2 Sep 2024 08:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B5B161310;
+	Mon,  2 Sep 2024 08:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AK3VOUg8"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="ufI/dgqz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B5917C9B3
-	for <linux-wireless@vger.kernel.org>; Mon,  2 Sep 2024 08:23:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78873176AC3
+	for <linux-wireless@vger.kernel.org>; Mon,  2 Sep 2024 08:34:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725265408; cv=none; b=RYdM+XQ3bbRzbZpyVXMJpCV7RT1qFkvNACGUIag5lzTBNZTJ5hxL3Cr2sDC6rxmb+xs+0EjyNtZVP9YYs8BTeF2OaFMV6VEjZP4SCWmM8gxC3cs6fUWyNfSMp5C0ebgYEfzzQ+tWPKCbpTR2eV6G5N/OvMooAWP99lplzgBYLmA=
+	t=1725266063; cv=none; b=lgXn+5frKI5o49Bmq3/I5yLqWznDfBzNHc+1tGcqk3k0mMYwDKOOubmojR7RfM/Xx+3n13z/4LAUdALA28q3M65GdTs/1b25BPjyfsgJUWU0hGtGO/bmVajLjnS9EP/pFX+ZgZVcAHD9DR0MvPFWbeFl+clP+ZjvK+dW2rF1Qus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725265408; c=relaxed/simple;
-	bh=HJ4GjbSZuWFNZE/yKSJBC3oWVdFz5FgDZ486Om5wrXU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=s6ItJ0qiVjnzw2aJga6W7FMHnPrpYNdFw/8KwQZ3KM6Fxj58Z/koj8RMaczqpwbKoCc5Amq9Ax8QYYxPV8sqy1oe7Qv3WS9hr0Tf8gpx3Ozt+sQwH7+i4RW/xoLkcAmQefNf4dDasD+BVS/8CWQSrFJs6vfqo8UmaRSKXm4g9g8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AK3VOUg8; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-7176645e440so10464b3a.1
-        for <linux-wireless@vger.kernel.org>; Mon, 02 Sep 2024 01:23:26 -0700 (PDT)
+	s=arc-20240116; t=1725266063; c=relaxed/simple;
+	bh=txgND3gwVKn6mjB+PMDD7QdLkXKhRLtMsD4C90K0ZC0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hng+/sAWd1skIziN32TxzjhyOSLQfsGfomC8Tbwedk7GsZPs9NQxPyj9Z2hzWorMRW8XlBhM0XwgjgEPgj1uSroZeJIVYxSHXzFq1ferqAOHMUQTRCTcEVw+MGABAHrcfhR02L6uVV51CIuFRWTecJc8zFIwIo2I6KzNjvPJkUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=ufI/dgqz; arc=none smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2f50966c469so44042401fa.3
+        for <linux-wireless@vger.kernel.org>; Mon, 02 Sep 2024 01:34:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725265406; x=1725870206; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1725266059; x=1725870859; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fBHYtqdNFmbRMMdOEczGdY8Jt3MbUklrVgbDj1ZJqgY=;
-        b=AK3VOUg8NvyN/VRQLJMZ9qaMHivlXO4iJ1a7v6iMh22BFyB+KGVpK7r1EqIRM+FWjz
-         2UwunISbdGQrmGIQrVFNTh4oSLDSCqx3vRQKhfLHGmsjdjVFAd6oKaFrFxHiJ/+AlM/D
-         g6xAKpuG9oqmmuZRL/u5BT1P4+pSsShPo1J6Rbqeb2HSxVYxyrusIZS6Zln17VxNYO1+
-         FTqB4B7Do5aY5XNv0evELWnTPZXzvxOxopOtUtYNQJXxFXznVLn0//I963whwbx1nRdt
-         c61QQn0cLjcRy2aVRf2VQuWmp5BNwhzFrw88lxHImGnV1JaiHfUfffqDowJAjXzgYbfj
-         zlkQ==
+        bh=VG1MaX9Wixqm8LX4jVIjxRtWDElDhiE8Ho1xpB08+bA=;
+        b=ufI/dgqzjBePBCsR1bnDU8O03jxZPZ3AlZ0Pz8zipgMY5lbHchbtJqeLNUMM/A6b+i
+         1BbSnwvEqnCNk4nEiQbqxoI+2l0ZmIK+q5C5kCV8XkqaIthD3iaXdniqDbchCaznUlXu
+         2XS8izELJLhjKBX2aYb3uvRmz5NwXQ810A5ZmdOhmvrKMhWofPEZRF3j6n1pP7pMHtR/
+         u/cnYRwVKQ3v/TRlQnwpI82b9xMgGjFLTZeairNND6/VUgUhj1svBI8HoA8Gfwt2xX6c
+         bOYfi4ufpvr3HO6cDNCW5t84BBlorpAjOWzfZviw3XbiUuYr6GU50WpibpDtALv+Y6yh
+         9ZNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725265406; x=1725870206;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1725266059; x=1725870859;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fBHYtqdNFmbRMMdOEczGdY8Jt3MbUklrVgbDj1ZJqgY=;
-        b=RSGlkm/0TOyTNd1u02hgcL/r2BpvHbc+uqTuv9GjVe4zkBassavF7+SbIqm1xqCCRV
-         nnZDGEfLTsIiyR08kzFfJYxf1PhQvlJsY3bdh3wxT1o/77oZnZX8YyfHqeQ+/XljlVBP
-         bRWui9CMhRJpipfBCf65p7NKEAz8BOI93eOZQw3b4ONwLuiuWSmzZuuFef4Zbv8g7oQr
-         28Cf5Zku5MxRg18ZPJX/SLK3279kMS6g6CHvd9wjZeviBsje39xLSdBaVR7h6gM4w4kc
-         M0YsK8ljDfzEB5S3u4C3TS4Xu6YuA1qQpYlaYWexNQsxwv23MYZxS/aoz921gGrs94qN
-         Y92g==
-X-Gm-Message-State: AOJu0YymIDiJM3vr7firNQj/IAWmGtwj2z2jZS8we767HsV9o+8OLobQ
-	p/orYmbrNdJF345+jVHlF5cVXOXTDB/8DxXi+5P74a9vOv6AK9YZME0ncRof
-X-Google-Smtp-Source: AGHT+IFN1LVZKAOiL+yucTIly4eSo/pCrDR7ephnARiP3qFKI3765q22Js5BjEQfX+qiH3DD1SQvdg==
-X-Received: by 2002:a05:6a00:9160:b0:714:1a71:cb0a with SMTP id d2e1a72fcca58-715e101f8camr22541075b3a.10.1725265405654;
-        Mon, 02 Sep 2024 01:23:25 -0700 (PDT)
-Received: from localhost.localdomain (59-124-166-19.hinet-ip.hinet.net. [59.124.166.19])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-715e56d8827sm6376370b3a.161.2024.09.02.01.23.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Sep 2024 01:23:25 -0700 (PDT)
-From: Ping-Ke Shih <pkshih@gmail.com>
-To: wens@kernel.org
-Cc: linux-wireless@vger.kernel.org,
-	wireless-regdb@lists.infradead.org
-Subject: [PATCH v2 4/4] wireless-regdb: Update regulatory info for Honduras (HN) for 2023
-Date: Mon,  2 Sep 2024 16:23:04 +0800
-Message-Id: <20240902082304.52326-4-pkshih@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240902082304.52326-1-pkshih@gmail.com>
-References: <20240902082304.52326-1-pkshih@gmail.com>
+        bh=VG1MaX9Wixqm8LX4jVIjxRtWDElDhiE8Ho1xpB08+bA=;
+        b=vl+osvjPe/uI6vjoq7h9DHID/jHp5SlM0YJtMqUklogpZ/jgcEDQulVTWWgd46AGjQ
+         q+TAswPxxUfePBGqNtkKDw+GIQOAvXNVKsbVBXYpb8/B43csi9PNY9IyA+bK7zAFJFvQ
+         ZSTj/67FNlRD1MZ8kogm51rphJrtUrXK4XOobOesoIiRMqRBh7HyawqJrhI4UY3AV9EO
+         6xFbEyhadB6blINV/jcVwjmlsfn3qANHobnbY7R3M/zEw7LyMP/KEEvXSlY8TkqzInrM
+         xyR8+ofLuBaY87t4370eZawGG7PRd4EUZh9+zMjQsz1iJjMqh/KIowMltE6l+gtwr42B
+         e/Gw==
+X-Forwarded-Encrypted: i=1; AJvYcCVHG1Vp3aNcwCfzt2UTWmwCWZI7zFbqKZL5S93NjwCDUQJy6BK9CCvqaduv0YAXRRjYShpg5kjcseGXXDc4dA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcJBJOPjI/mKFfdKMcItGexS4T749vnic9b4RdZT8n2ptkKAeE
+	hUAifBMn0uTVkByRRK3FXyrqAb+giXj30A7VDVETIxjtmRwMyh+il45JZcLAzLcCQnxtuXgklZ+
+	SN3Jfoft4p7gcP+RYuIHLVH4Baq7K4OnQ4F4CSw==
+X-Google-Smtp-Source: AGHT+IFZPkz+zpegGiynrc/uuNxJ0ov4qqo022LeyJfV540+XBhmrJitjFwxWZA+2HM3HGR7rldq/MxJvLLQLrQlwh0=
+X-Received: by 2002:a2e:e0a:0:b0:2f5:136d:89ef with SMTP id
+ 38308e7fff4ca-2f629063f04mr32120871fa.22.1725266058091; Mon, 02 Sep 2024
+ 01:34:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240814082301.8091-1-brgl@bgdev.pl> <87a5hcyite.fsf@kernel.org> <CAMRc=Mcr7E0dxG09_gYPxg57gYAS4j2+-3x9GCS3wOcM46O=NQ@mail.gmail.com>
+In-Reply-To: <CAMRc=Mcr7E0dxG09_gYPxg57gYAS4j2+-3x9GCS3wOcM46O=NQ@mail.gmail.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Mon, 2 Sep 2024 10:34:07 +0200
+Message-ID: <CAMRc=MeuB1yhENHXqLxRf8xFNm7dYvjLisa7zsd6_2ov_OPw3g@mail.gmail.com>
+Subject: Re: [PATCH net-next v2] dt-bindings: net: ath11k: document the inputs
+ of the ath11k on WCN6855
+To: Kalle Valo <kvalo@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	ath11k@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+On Fri, Aug 16, 2024 at 11:10=E2=80=AFAM Bartosz Golaszewski <brgl@bgdev.pl=
+> wrote:
+>
+> On Fri, Aug 16, 2024 at 10:26=E2=80=AFAM Kalle Valo <kvalo@kernel.org> wr=
+ote:
+> >
+> > Bartosz Golaszewski <brgl@bgdev.pl> writes:
+> >
+> > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > >
+> > > Describe the inputs from the PMU of the ath11k module on WCN6855.
+> > >
+> > > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > > ---
+> > > v1 -> v2:
+> > > - update the example
+> > >
+> > >  .../net/wireless/qcom,ath11k-pci.yaml         | 29 +++++++++++++++++=
+++
+> > >  1 file changed, 29 insertions(+)
+> >
+> > This goes to ath-next, not net-next.
+> >
+> > > diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath1=
+1k-pci.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pc=
+i.yaml
+> > > index 8675d7d0215c..a71fdf05bc1e 100644
+> > > --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.=
+yaml
+> > > +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath11k-pci.=
+yaml
+> > > @@ -50,6 +50,9 @@ properties:
+> > >    vddrfa1p7-supply:
+> > >      description: VDD_RFA_1P7 supply regulator handle
+> > >
+> > > +  vddrfa1p8-supply:
+> > > +    description: VDD_RFA_1P8 supply regulator handle
+> > > +
+> > >    vddpcie0p9-supply:
+> > >      description: VDD_PCIE_0P9 supply regulator handle
+> > >
+> > > @@ -77,6 +80,22 @@ allOf:
+> > >          - vddrfa1p7-supply
+> > >          - vddpcie0p9-supply
+> > >          - vddpcie1p8-supply
+> > > +  - if:
+> > > +      properties:
+> > > +        compatible:
+> > > +          contains:
+> > > +            const: pci17cb,1103
+> > > +    then:
+> > > +      required:
+> > > +        - vddrfacmn-supply
+> > > +        - vddaon-supply
+> > > +        - vddwlcx-supply
+> > > +        - vddwlmx-supply
+> > > +        - vddrfa0p8-supply
+> > > +        - vddrfa1p2-supply
+> > > +        - vddrfa1p8-supply
+> > > +        - vddpcie0p9-supply
+> > > +        - vddpcie1p8-supply
+> >
+> > Like we discussed before, shouldn't these supplies be optional as not
+> > all modules need them?
+> >
+>
+> The answer is still the same: the ATH11K inside a WCN6855 does - in
+> fact - always need them. The fact that the X13s doesn't define them is
+> bad representation of HW and I'm fixing it in a subsequent DTS patch.
+>
 
-Honduras, Telecommunication Commission (CONATEL) modified national note
-HND40A on 2023 [1], which Wireless Access System/Radio Local Area Network
-(WAS/RLAN) have a general license to operate in frequency ranges:
+Gentle ping.
 
- * 902 - 928 MHz
- * 2400 - 2483.5 MHz
- * 5150 - 5250 MHz
- * 5250 - 5350 MHz
- * 5470 - 5725 MHz
- * 5725 - 5850 MHz
- * 5925 - 6425 MHz (*)
-   - By [3] clause 65, "maximum power spectral density for low power indoor
-     client devices in this band is 6 dB below the limit for access
-     points (or -1 dBm/MHz based on the adopted PSD limit)."
-     Then, 12 dBm is adopted.
-   - By [3] section 15.407 General technical requirements, (d) Operational
-     restrictions for 6 GHz U-NII devices, (5), "an exception exists for
-     transmitting brief messages to an access point when attempting to
-     join its network after detecting a signal that confirms that
-     an access point is operating on a particular channel."
-     Then, NO-IR flag is set.
- * 24.05 - 24.25 GHz
- * 57 - 71 GHz (*)
-   - By [4] footer 952, "limits the average EIRP of 60 GHz transmitters to
-     40 dBm and the peak EIRP to 43 dBm."
-     Then, 40 dBm is adopted.
-
-Article 5 of resolution NR006/23 [2] mentioned Recognition of Standards and
-International Standards including FCC, which limits and ranges of FCC are
-used due to lack of limits [1], but only newly add freqnecy ranges marked
-by asterisk (*).
-
-[1] https://www.conatel.gob.hn/doc/Regulacion/resoluciones/2023/NR05-23.pdf
-[2] https://www.conatel.gob.hn/doc/Regulacion/resoluciones/2023/NR006-23.pdf
-[3] https://www.federalregister.gov/documents/2020/05/26/2020-11236/unlicensed-use-of-the-6ghz-band
-[4] https://docs.fcc.gov/public/attachments/FCC-16-89A1.pdf
-
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
-v2:
-  - add FCC source references for 5925 - 6425 MHz and 57 - 71 GHz, and
-    update commit messages accordingly.
----
- db.txt | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/db.txt b/db.txt
-index 0be933c86c8a..c7341b5596dc 100644
---- a/db.txt
-+++ b/db.txt
-@@ -819,12 +819,16 @@ country HK: DFS-ETSI
- 	(5730 - 5850 @ 80), (36)
- 	(5925 - 6425 @ 160), (14)
- 
-+# Source:
-+# https://www.conatel.gob.hn/doc/Regulacion/resoluciones/2023/NR05-23.pdf
- country HN: DFS-FCC
- 	(2402 - 2482 @ 40), (20)
- 	(5170 - 5250 @ 80), (17), AUTO-BW
- 	(5250 - 5330 @ 80), (24), DFS, AUTO-BW
- 	(5490 - 5730 @ 160), (24), DFS
- 	(5735 - 5835 @ 80), (30)
-+	(5925 - 6425 @ 320), (12), NO-OUTDOOR, NO-IR
-+	(57240 - 71000 @ 2160), (40)
- 
- country HR: DFS-ETSI
- # HR as part of EU/CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893)
--- 
-2.25.1
-
+Bart
 
