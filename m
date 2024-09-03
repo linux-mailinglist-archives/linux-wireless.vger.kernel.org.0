@@ -1,61 +1,62 @@
-Return-Path: <linux-wireless+bounces-12440-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12441-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3063296A996
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 23:06:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD7DE96A999
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 23:06:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E314628A786
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 21:06:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FE961F2512A
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 21:06:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D89DD1E00B4;
-	Tue,  3 Sep 2024 20:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA141EBFFF;
+	Tue,  3 Sep 2024 20:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iO0HGyyL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uB3e1+81"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE4511E00B3;
-	Tue,  3 Sep 2024 20:49:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E84AF1EBFEF;
+	Tue,  3 Sep 2024 20:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725396543; cv=none; b=fMiHX5UMoyfAe0vh9iToxEpuUdo3PwQunWnQxIV/dCHP/VVIc0KZkWCHIGi6e1HtliLcU1I4qDCD8qoYbZeNe6U9YxzchHCyG0Tk4Pt3wdeh3n/vxm56QmZ5cGZf0sISg239ZK/F5gqEdIE5/ObjUFzJhbcGbsjHm8G0btLxMNU=
+	t=1725396548; cv=none; b=UQyx9Yt2aggJs/tS92Q7rmJ3c3yQ0Nw7S9l0y7zI10cDsSlW9nvcdKnDTy7xuK7TAYk9o3d2E3LjAOgObFfl0pGw6o0VKdIBX7JkWrS5iRG1O9VXDIGBgTl2Qw11WYRQ40VaSHmX2wO0oOnJBAO7AuRxOH4sKWh4NN44GJuvR90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725396543; c=relaxed/simple;
-	bh=C1hdTBqi1CQKXIDW4NVretcVSsxRArCO0Ef/KfTkxP4=;
+	s=arc-20240116; t=1725396548; c=relaxed/simple;
+	bh=koPg4FsuJLXLOj/LyBsLg9vfenIvI4R3R2Piew6V4Cw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P/skzVSLUExCblhW62lNc48JiJrc+OELxejjgfqJz8nn7PYabjUg+g/KkEzV5TYCDgTcvVpzDrnFermifT8YlScl9vH6Z1ebQpgRPq8eJ7BvOpR9cMg2nMLb3vZuzixpKu3/rbWafW7aoKRplMKQqsSiNp9h45aVT1MIO9TduC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iO0HGyyL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EACCC4CECC;
-	Tue,  3 Sep 2024 20:49:01 +0000 (UTC)
+	 MIME-Version; b=D9UdlYSC7zZiqO3/ANfCzVBG4/w1Fi0wdrSCKX86F8EtNwB51epfF/ZEibsIxBZ1h69JWohu7q/TVvmPEXZ8FztVrOSURUlNnqnKPSg3bF6hKZLmz56CMUKUjqFl6QS1bPk/R1qUoQMMMpcHcnTNY8v125pDDN8TGEmiluNbEYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uB3e1+81; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB3CC4CEC5;
+	Tue,  3 Sep 2024 20:49:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725396543;
-	bh=C1hdTBqi1CQKXIDW4NVretcVSsxRArCO0Ef/KfTkxP4=;
+	s=k20201202; t=1725396547;
+	bh=koPg4FsuJLXLOj/LyBsLg9vfenIvI4R3R2Piew6V4Cw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iO0HGyyLkGqcHoKU1YMJv5PqkkmreLWF+l/pb5vcmbKQ34qXz6MM0drD8sTd2PSXF
-	 NEnElHBHYkFneuNjGGCs82TqPkEXFrH0zZZ+EPUDJl0H/ay9SAIFJUX7Dg8IAf4npw
-	 Z1w6MVtn2lFSQrYyMRbtwedUyqOl8FUNCWhPxZiO49SSea4HDZ2ik8lrI6hLKq8G7w
-	 QIWyxbI3s3uulJJIXQo/VanUKUlQ+PqKQ5P1PF2XWOCdZ1sWM7GWNrBl82dWNLdHaP
-	 yJvrpsfXEwnoykLwC80XGBv4WeSRGBv9JZFwTDQnZSRLUwRJ33lpLFh2uPZh4C9tBQ
-	 WJ85e2QATXdwQ==
+	b=uB3e1+81Yb1alysHIbSSBoPf50Q4dXGhJ3dWYHdItn/Z0IAw+TtoIPavfMWfnyro8
+	 4xfWq9IulpIAkNqIx4C3k/6klkuNT5jqolRDAwiWWKeVJF3fnPtRMCAF8P4M+K0wbD
+	 yfb6lwloBW3o8rjpuYn5dRtWhcj1Xzs1MA244YuV1CE957+X2q1PSYNbpvOlvYw4xO
+	 dOXtUexNzwHMXkyuBUJg+gPB6MQP+Er1nmh8e3lIBoNvz51bqyipBZLDmJ7qH2DK/V
+	 gKDGd3iDwfWdljyvyq9V5JCHitVDWhpl91w6sq4PaRHy7m8uJ3lHNi9iWWJVp5xVAf
+	 QdKvt26nI0ZKA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Daniel Gabay <daniel.gabay@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
+Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	kvalo@kernel.org,
-	ayala.beker@intel.com,
+	gregory.greenman@intel.com,
+	ilan.peer@intel.com,
+	shaul.triebitz@intel.com,
 	benjamin.berg@intel.com,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 5/6] wifi: iwlwifi: mvm: fix iwl_mvm_max_scan_ie_fw_cmd_room()
-Date: Tue,  3 Sep 2024 15:29:25 -0400
-Message-ID: <20240903192937.1109185-5-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 6/6] wifi: iwlwifi: mvm: don't wait for tx queues if firmware is dead
+Date: Tue,  3 Sep 2024 15:29:26 -0400
+Message-ID: <20240903192937.1109185-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240903192937.1109185-1-sashal@kernel.org>
 References: <20240903192937.1109185-1-sashal@kernel.org>
@@ -70,56 +71,58 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.320
 Content-Transfer-Encoding: 8bit
 
-From: Daniel Gabay <daniel.gabay@intel.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit 916a5d9c5354c426220a0a6533a5e8ea1287d6ea ]
+[ Upstream commit 3a84454f5204718ca5b4ad2c1f0bf2031e2403d1 ]
 
-Driver creates also the WFA TPC element, consider that in the
-calculation.
+There is a WARNING in iwl_trans_wait_tx_queues_empty() (that was
+recently converted from just a message), that can be hit if we
+wait for TX queues to become empty after firmware died. Clearly,
+we can't expect anything from the firmware after it's declared dead.
 
-Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Don't call iwl_trans_wait_tx_queues_empty() in this case. While it could
+be a good idea to stop the flow earlier, the flush functions do some
+maintenance work that is not related to the firmware, so keep that part
+of the code running even when the firmware is not running.
+
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240825191257.e710ce446b7f.I2715c6742e9c3d160e2ba41bc4b35de370d2ce34@changeid
+Link: https://patch.msgid.link/20240825191257.a7cbd794cee9.I44a739fbd4ffcc46b83844dd1c7b2eb0c7b270f6@changeid
+[edit commit message]
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index 16b614cc16ab5..940018a1f0ee7 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -91,6 +91,8 @@
- /* adaptive dwell default APs number in social channels (1, 6, 11) */
- #define IWL_SCAN_ADWELL_DEFAULT_N_APS_SOCIAL 10
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 3f37fb64e71c2..3c00a737c4b34 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -4326,6 +4326,10 @@ static void iwl_mvm_flush_no_vif(struct iwl_mvm *mvm, u32 queues, bool drop)
+ 	int i;
  
-+#define WFA_TPC_IE_LEN	9
-+
- struct iwl_mvm_scan_timing_params {
- 	u32 suspend_time;
- 	u32 max_out_time;
-@@ -328,8 +330,8 @@ static int iwl_mvm_max_scan_ie_fw_cmd_room(struct iwl_mvm *mvm)
+ 	if (!iwl_mvm_has_new_tx_api(mvm)) {
++		/* we can't ask the firmware anything if it is dead */
++		if (test_bit(IWL_MVM_STATUS_HW_RESTART_REQUESTED,
++			     &mvm->status))
++			return;
+ 		if (drop) {
+ 			mutex_lock(&mvm->mutex);
+ 			iwl_mvm_flush_tx_path(mvm,
+@@ -4407,8 +4411,11 @@ static void iwl_mvm_mac_flush(struct ieee80211_hw *hw,
  
- 	max_probe_len = SCAN_OFFLOAD_PROBE_REQ_SIZE;
- 
--	/* we create the 802.11 header and SSID element */
--	max_probe_len -= 24 + 2;
-+	/* we create the 802.11 header SSID element and WFA TPC element */
-+	max_probe_len -= 24 + 2 + WFA_TPC_IE_LEN;
- 
- 	/* DS parameter set element is added on 2.4GHZ band if required */
- 	if (iwl_mvm_rrm_scan_needed(mvm))
-@@ -727,8 +729,6 @@ static u8 *iwl_mvm_copy_and_insert_ds_elem(struct iwl_mvm *mvm, const u8 *ies,
- 	return newpos;
+ 	/* this can take a while, and we may need/want other operations
+ 	 * to succeed while doing this, so do it without the mutex held
++	 * If the firmware is dead, this can't work...
+ 	 */
+-	if (!drop && !iwl_mvm_has_new_tx_api(mvm))
++	if (!drop && !iwl_mvm_has_new_tx_api(mvm) &&
++	    !test_bit(IWL_MVM_STATUS_HW_RESTART_REQUESTED,
++		      &mvm->status))
+ 		iwl_trans_wait_tx_queues_empty(mvm->trans, msk);
  }
  
--#define WFA_TPC_IE_LEN	9
--
- static void iwl_mvm_add_tpc_report_ie(u8 *pos)
- {
- 	pos[0] = WLAN_EID_VENDOR_SPECIFIC;
 -- 
 2.43.0
 
