@@ -1,129 +1,163 @@
-Return-Path: <linux-wireless+bounces-12441-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12408-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD7DE96A999
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 23:06:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF84796A765
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 21:32:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FE961F2512A
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 21:06:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C54328400E
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 19:32:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DA141EBFFF;
-	Tue,  3 Sep 2024 20:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FAD11D7E4E;
+	Tue,  3 Sep 2024 19:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uB3e1+81"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="lZ77E8Fx"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E84AF1EBFEF;
-	Tue,  3 Sep 2024 20:49:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CC41D7E48;
+	Tue,  3 Sep 2024 19:32:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725396548; cv=none; b=UQyx9Yt2aggJs/tS92Q7rmJ3c3yQ0Nw7S9l0y7zI10cDsSlW9nvcdKnDTy7xuK7TAYk9o3d2E3LjAOgObFfl0pGw6o0VKdIBX7JkWrS5iRG1O9VXDIGBgTl2Qw11WYRQ40VaSHmX2wO0oOnJBAO7AuRxOH4sKWh4NN44GJuvR90=
+	t=1725391933; cv=none; b=jI9pF7NHtJvFLqRtmgvCqK3lJJOoMkroJTk3auWep6YXbaXgJNPyL11TmbsrzHxNR57DIt1U8IcokdkT2iK0otnYSoglCnrxdJ9nxBleJIaX2P3B5o2JIGY2JtMbevDzQSBBOUh8GlatiWCSaunxeHVcC26EZJCHU3ieWTmEays=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725396548; c=relaxed/simple;
-	bh=koPg4FsuJLXLOj/LyBsLg9vfenIvI4R3R2Piew6V4Cw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D9UdlYSC7zZiqO3/ANfCzVBG4/w1Fi0wdrSCKX86F8EtNwB51epfF/ZEibsIxBZ1h69JWohu7q/TVvmPEXZ8FztVrOSURUlNnqnKPSg3bF6hKZLmz56CMUKUjqFl6QS1bPk/R1qUoQMMMpcHcnTNY8v125pDDN8TGEmiluNbEYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uB3e1+81; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB3CC4CEC5;
-	Tue,  3 Sep 2024 20:49:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725396547;
-	bh=koPg4FsuJLXLOj/LyBsLg9vfenIvI4R3R2Piew6V4Cw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uB3e1+81Yb1alysHIbSSBoPf50Q4dXGhJ3dWYHdItn/Z0IAw+TtoIPavfMWfnyro8
-	 4xfWq9IulpIAkNqIx4C3k/6klkuNT5jqolRDAwiWWKeVJF3fnPtRMCAF8P4M+K0wbD
-	 yfb6lwloBW3o8rjpuYn5dRtWhcj1Xzs1MA244YuV1CE957+X2q1PSYNbpvOlvYw4xO
-	 dOXtUexNzwHMXkyuBUJg+gPB6MQP+Er1nmh8e3lIBoNvz51bqyipBZLDmJ7qH2DK/V
-	 gKDGd3iDwfWdljyvyq9V5JCHitVDWhpl91w6sq4PaRHy7m8uJ3lHNi9iWWJVp5xVAf
-	 QdKvt26nI0ZKA==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	gregory.greenman@intel.com,
-	ilan.peer@intel.com,
-	shaul.triebitz@intel.com,
-	benjamin.berg@intel.com,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 6/6] wifi: iwlwifi: mvm: don't wait for tx queues if firmware is dead
-Date: Tue,  3 Sep 2024 15:29:26 -0400
-Message-ID: <20240903192937.1109185-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240903192937.1109185-1-sashal@kernel.org>
-References: <20240903192937.1109185-1-sashal@kernel.org>
+	s=arc-20240116; t=1725391933; c=relaxed/simple;
+	bh=8MLINbjMjqhdCMB4oHAJTmm2kpqKjua9hh+xhjX/6rY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WWBXOOdykD5Q3ZT/VXn8L7wxYZ9EU0TbBNitYxKsFy0ZB2KT/ySB8XLqMbtCzMW7xJDEM633UH/AfDwVeNpFRZuUDxu6MMY+mK+BlihVd1mhp5I4F35XLqbQf91HIYbSeIvlHJ0St6pdzLEOC2qu3/PQKhFO/oJ5WLI73olU0Ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=lZ77E8Fx; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 77B8B88327;
+	Tue,  3 Sep 2024 21:32:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1725391928;
+	bh=wAAGGYTcJTdpi12h28wfzT/1+6+AXdlZu8G4suh51LQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=lZ77E8FxWp7XsQ0t0sCuLVsNCo3zYdstE9SpyH/codX9JZWniDiVYtPiIxzdleJ1V
+	 0aEf+eWlKzRyREzdSCP/PbeKbC0jt+WpQs5y4k8e1OON17VkVnUp+1d9hLgwsiqIQB
+	 yF7GaK0/8lf9mO/vXonSX+KEimur/Wp2a8iLSOVorOS34p8VpqqCCMxcc9Fbq0CUUm
+	 OEhcJ9g0DiGaqXRz04D3QFyQwrbeouqtZ2wFI/SJjPj53AFLLZ55PVvDzB3RHcpn+d
+	 zWoxvEbb2KDw2XGThEwssXIaYu/lnNxWaalB2idUR91RsCnBTsNCaYDG1Z0xsNlsol
+	 LN+mKzFkRJFjw==
+Message-ID: <57a7eac4-23c7-42ac-ade5-233c24a288c6@denx.de>
+Date: Tue, 3 Sep 2024 21:30:28 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.320
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/5] dt-bindings: wireless: wilc1000: Document WILC3000
+ compatible string
+To: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+ linux-wireless@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Adham Abozaeid <adham.abozaeid@microchip.com>,
+ Ajay Singh <ajay.kathat@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Conor Dooley
+ <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20240829004510.178016-1-marex@denx.de>
+ <52e7b6d2-5d31-4ae1-bf1d-44e63a22774d@bootlin.com>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <52e7b6d2-5d31-4ae1-bf1d-44e63a22774d@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+On 9/3/24 6:09 PM, Alexis Lothoré wrote:
+> Hello everyone,
 
-[ Upstream commit 3a84454f5204718ca5b4ad2c1f0bf2031e2403d1 ]
+Hi,
 
-There is a WARNING in iwl_trans_wait_tx_queues_empty() (that was
-recently converted from just a message), that can be hit if we
-wait for TX queues to become empty after firmware died. Clearly,
-we can't expect anything from the firmware after it's declared dead.
+> On 8/29/24 02:44, Marek Vasut wrote:
+>> Document compatible string for the WILC3000 chip. The chip is similar
+>> to WILC1000, except that the register layout is slightly different and
+>> it does not support WPA3/SAE.
+>>
+>> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>> Signed-off-by: Marek Vasut <marex@denx.de>
+> 
+> [...]
+> 
+>>   .../bindings/net/wireless/microchip,wilc1000.yaml           | 6 +++++-
+>>   1 file changed, 5 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml b/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml
+>> index 2460ccc082371..5d40f22765bb6 100644
+>> --- a/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml
+>> +++ b/Documentation/devicetree/bindings/net/wireless/microchip,wilc1000.yaml
+>> @@ -16,7 +16,11 @@ description:
+>>   
+>>   properties:
+>>     compatible:
+>> -    const: microchip,wilc1000
+>> +    oneOf:
+>> +      - items:
+>> +          - const: microchip,wilc3000
+>> +          - const: microchip,wilc1000
+>> +      - const: microchip,wilc1000
+>>   
+>>     reg: true
+> 
+> Following this series first revision, I have been taking a look at how to
+> implement bluetooth feature for wilc3000 (the chip supports Bluetooth LE through
+> a separated UART, see [1]), and I am facing some constraints. I feel like the
+> possible solutions would conflict with this new binding, so even if I am a bit
+> late to the party, I would like to expose the issue before the binding is merged
+> in case we can find something which would allow to add bluetooth support without
+> too much pain after the wlan part.
+> 
+> Downstream driver currently does not implement bluetooth as a standard bluetooth
+> driver (module in drivers/bluetooth, registering a HCI device) but only performs
+> a minimal set of operations directly in the wlan part ([2]). Getting a version
+> valid for upstream would need the following points to be addressed:
+> 1. despite being controlled from a serial port for nominal operations, the
+> bluetooth part also depends on the "wlan" bus (spi or sdio) for initialization
+> 2. yet init steps are not performed on any kind of subsystem ops but through
+> writes to a custom chardev
+> 3. the driver does not register itself a hci interface, it is expected to be
+> done by userspace (hciattach).
+> 
+> It is only after those 3 steps that the chip can be used with standard hci
+> commands over serial port. IMHO 1 is the biggest point, because it means that
+> **a bluetooth driver for wilc3000 needs access to the bus used by wlan part**
+> (so only describing the bluetooth part of the chip as a child node of an uart
+> controller is not enough). Aside from bus access, I also expect some
+> interactions between bluetooth and wifi (eg: power management, sleep/wakeup)
 
-Don't call iwl_trans_wait_tx_queues_empty() in this case. While it could
-be a good idea to stop the flow earlier, the flush functions do some
-maintenance work that is not related to the firmware, so keep that part
-of the code running even when the firmware is not running.
+Just a quick idea -- what about having a phandle to the BT UART node in 
+the wilc3000 node ? Then the wilc driver can check if the phandle is 
+available and valid, and attach the BT part to the UART, while also 
+doing all the necessary power sequencing and bus accesses via SDIO/SPI.
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240825191257.a7cbd794cee9.I44a739fbd4ffcc46b83844dd1c7b2eb0c7b270f6@changeid
-[edit commit message]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+Like this:
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 3f37fb64e71c2..3c00a737c4b34 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -4326,6 +4326,10 @@ static void iwl_mvm_flush_no_vif(struct iwl_mvm *mvm, u32 queues, bool drop)
- 	int i;
- 
- 	if (!iwl_mvm_has_new_tx_api(mvm)) {
-+		/* we can't ask the firmware anything if it is dead */
-+		if (test_bit(IWL_MVM_STATUS_HW_RESTART_REQUESTED,
-+			     &mvm->status))
-+			return;
- 		if (drop) {
- 			mutex_lock(&mvm->mutex);
- 			iwl_mvm_flush_tx_path(mvm,
-@@ -4407,8 +4411,11 @@ static void iwl_mvm_mac_flush(struct ieee80211_hw *hw,
- 
- 	/* this can take a while, and we may need/want other operations
- 	 * to succeed while doing this, so do it without the mutex held
-+	 * If the firmware is dead, this can't work...
- 	 */
--	if (!drop && !iwl_mvm_has_new_tx_api(mvm))
-+	if (!drop && !iwl_mvm_has_new_tx_api(mvm) &&
-+	    !test_bit(IWL_MVM_STATUS_HW_RESTART_REQUESTED,
-+		      &mvm->status))
- 		iwl_trans_wait_tx_queues_empty(mvm->trans, msk);
- }
- 
--- 
-2.43.0
+&uart10 {
+   status = "okay";
+};
 
+&mmc20 {
+   ...
+   wifi@0 {
+     compatible = "microchip,wilc1000";
+     microchip,bt-uart = <&uart10>; // OPTIONAL
+     ...
+   };
+};
 
