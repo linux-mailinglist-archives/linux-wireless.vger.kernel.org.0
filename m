@@ -1,109 +1,153 @@
-Return-Path: <linux-wireless+bounces-12369-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12370-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC610969610
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 09:51:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C411969622
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 09:52:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 720CEB23652
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 07:51:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F4A2B24336
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 07:52:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD5521D61A3;
-	Tue,  3 Sep 2024 07:51:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PO3adIGD"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D7B61D6DCE;
+	Tue,  3 Sep 2024 07:52:15 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832B11865F0;
-	Tue,  3 Sep 2024 07:51:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84CEF200101
+	for <linux-wireless@vger.kernel.org>; Tue,  3 Sep 2024 07:52:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725349860; cv=none; b=cZEePB1xeW9KnCvGD7vzrM5vpTHtrWz3iulzkBk1GLfxeAAJsxdI5Nobql+B1rAhE45lVoEVm1ZFd7XBwvCdFwWWrfrycmy5PVj/vwp8hsGsiy0t3j6Ngcb6gdQ7SVeA78x4SLsuIF/8DP19jMoLj4prnFwKVPUTDqNfqnsib34=
+	t=1725349935; cv=none; b=NoIkdygeiDYwLwOntDhy44sIqLyvaBNj5GelqSlTVEj7hdGe1KayisLM7Ay2z8jAw27US/vYHjb2PjmI2AwWZf+mKRh5sOpqwuXUwrfqUJml16qbrYnQ0j+S+HPfE10Y+Eb/LRgQcNntto/d8VZCy2oD15PJok66FzPXDITkMxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725349860; c=relaxed/simple;
-	bh=enMEnSyK0jNHPU7yp7IVPrx6oVxfPhkG/5GIYZ4dcKg=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=IT/JtTwCSAw6BmI8dOo91s2qzN5I5gCbvyDIjhFCKrVP3YWyOy7jv0BzSNoBdQFVwymlmFD000c6SjnPRx4V1806UqyPovfPaRVKIHWLrsz5/DLvIttOv0+wWoraiFhfkOZxImhg1JO8CIk7DdcR3VZoyiVM+HSKVvnwhTow8Y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PO3adIGD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74599C4CEC5;
-	Tue,  3 Sep 2024 07:50:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725349860;
-	bh=enMEnSyK0jNHPU7yp7IVPrx6oVxfPhkG/5GIYZ4dcKg=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=PO3adIGD9QXcaLxsn+UYkxTFEniu9l4gE1ID45KjMX3yLkH5DazB0u1IBB4d8vzLd
-	 l/5Fwl56gGpveG03eWt1WQIQ6p0u20PAR8qsqMsWDFDjeWnjFgGB4yB8ZntUoCyOYk
-	 i1+EQxTEc6gtNRk1puU0jPx9BWXqfdunZoZ0ergRNWaqwnEHL5xHi1KHsIv+qHZc85
-	 omyj9bce8K6nzb1MAWzf5BhEH6LvF2uxfoINz0TUt+DwPYibmNnq3U6fpx8Lbbch+5
-	 5irOVssMvG9hSRB0/kkowIxiu22jDabPJAvw/Pw/5ooAs73F4bifl/MVu3exXaWGme
-	 Picnt1dGInvMg==
-From: Kalle Valo <kvalo@kernel.org>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: nbd@nbd.name,  lorenzo@kernel.org,  ryder.lee@mediatek.com,
-  shayne.chen@mediatek.com,  sean.wang@mediatek.com,
-  matthias.bgg@gmail.com,  angelogioacchino.delregno@collabora.com,
-  mingyen.hsieh@mediatek.com,  deren.wu@mediatek.com,
-  ruanjinjie@huawei.com,  greearb@candelatech.com,
-  akpm@linux-foundation.org,  linux-wireless@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  linux-arm-kernel@lists.infradead.org,
-  linux-mediatek@lists.infradead.org,  stable@vger.kernel.org
-Subject: Re: [PATCH RESEND] wifi: mt76: mt7921: Check devm_kasprintf()
- returned value
-References: <20240903014455.4144536-1-make24@iscas.ac.cn>
-Date: Tue, 03 Sep 2024 10:50:54 +0300
-In-Reply-To: <20240903014455.4144536-1-make24@iscas.ac.cn> (Ma Ke's message of
-	"Tue, 3 Sep 2024 09:44:55 +0800")
-Message-ID: <87wmjtjhup.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1725349935; c=relaxed/simple;
+	bh=VqLr+yy1XoO4L1Pd40Z3oz29G7U1Fbe0JlTSv+JMgL4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=alcLY4ApFWN20K/NLnMwCQGLTITgTmos+28ORwftDA4lKCYEICo8rJxJKGMst/zLhqyDy3bGuQJZdQv7cE7ZZVEPNfwcSv3rTu1LNcm8MJU8OZPJX9CWuoJxaMOMCE+Y2KkzKvai4Hh7VF79zJ4oYvj7k51yGSlsZMkxn0K+Tjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1slOKf-0005vN-2O; Tue, 03 Sep 2024 09:52:09 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1slOKe-0058G8-BL; Tue, 03 Sep 2024 09:52:08 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1slOKe-004NAj-0k;
+	Tue, 03 Sep 2024 09:52:08 +0200
+Date: Tue, 3 Sep 2024 09:52:08 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: David Lin <yu-hao.lin@nxp.com>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+	Calvin Owens <calvin@wbinvd.org>,
+	Brian Norris <briannorris@chromium.org>,
+	Kalle Valo <kvalo@kernel.org>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>
+Subject: Re: [EXT] [RFC PATCH 0/4] mwifiex: add support for iw61x
+Message-ID: <ZtbAKPP7tIexefd3@pengutronix.de>
+References: <ZtVd3__wfm6EOOgH@pengutronix.de>
+ <PA4PR04MB9638CF45263E713203A53EF7D1922@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <ZtVtPJSsIr9eIFWv@pengutronix.de>
+ <PA4PR04MB9638ED8FA48E352F7246127AD1922@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <ZtW5fFocfr9_WgGD@pengutronix.de>
+ <PA4PR04MB963814F85BBA6DD39F516469D1932@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <ZtatnHp_7FBSSpko@pengutronix.de>
+ <DU0PR04MB9636EF4BC137C95F70594E9DD1932@DU0PR04MB9636.eurprd04.prod.outlook.com>
+ <Zta63ltdVl_UcX9R@pengutronix.de>
+ <DU0PR04MB96367FEE321C1F269278EA4DD1932@DU0PR04MB9636.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DU0PR04MB96367FEE321C1F269278EA4DD1932@DU0PR04MB9636.eurprd04.prod.outlook.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-Ma Ke <make24@iscas.ac.cn> writes:
+On Tue, Sep 03, 2024 at 07:35:59AM +0000, David Lin wrote:
+> > From: Sascha Hauer <s.hauer@pengutronix.de>
+> > Sent: Tuesday, September 3, 2024 3:30 PM
+> > To: David Lin <yu-hao.lin@nxp.com>
+> > Cc: Francesco Dolcini <francesco@dolcini.it>; Calvin Owens
+> > <calvin@wbinvd.org>; Brian Norris <briannorris@chromium.org>; Kalle Valo
+> > <kvalo@kernel.org>; linux-wireless@vger.kernel.org;
+> > linux-kernel@vger.kernel.org; kernel@pengutronix.de
+> > Subject: Re: [EXT] [RFC PATCH 0/4] mwifiex: add support for iw61x
+> > 
+> > Caution: This is an external email. Please take care when clicking links or
+> > opening attachments. When in doubt, report the message using the 'Report
+> > this email' button
+> > 
+> > 
+> > On Tue, Sep 03, 2024 at 06:39:15AM +0000, David Lin wrote:
+> > > > > > > Not only this code segment. In fact, you did not add VDLL data
+> > > > > > > patch support
+> > > > > > to sdio.c.
+> > > > > > > If you try to add the code and do test, you will know what is
+> > > > > > > missing in your
+> > > > > > code.
+> > > > > >
+> > > > > > Could you point me to the code you mean?
+> > > > > >
+> > > > > > Sascha
+> > > > > >
+> > > > >
+> > > > > I only know the porting VDLL code in nxpwifi.
+> > > >
+> > > > Yes, and I asked for a pointer to that code, some function name, or
+> > > > file/line or whatever, because I looked at the nxpwifi driver and
+> > > > don't know what you mean with "VDLL data patch support" in sdio.c.
+> > > >
+> > > > Sascha
+> > > >
+> > >
+> > > It is better for you to check MXM driver. It is the same as Mwifiex which
+> > support all SDIO modes.
+> > 
+> > Now I am confused. You said:
+> > 
+> > > In fact, you did not add VDLL data patch support to sdio.c
+> > 
+> > I was under the assumption that the nxpwifi driver that you specifically posted
+> > for the iw61x chipset should contain this code. Isn't that the case?
+> > 
+> > BTW did you really mean "VDLL data patch" or did you mean "VDLL data
+> > path"?
+> > 
+> 
+> Sorry VDLL data path.
+> You did not add the code to support this new SDIO data type in your patch.
+> 
+> Please check MXM driver which supports all SDIO modes.
 
-> devm_kasprintf() can return a NULL pointer on failure but this returned
-> value is not checked. Fix this lack and check the returned value.
->
-> Found by code review.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 6ae39b7c7ed4 ("wifi: mt76: mt7921: Support temp sensor")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7921/init.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> index ef0c721d26e3..5ab395d9d93e 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> @@ -52,6 +52,8 @@ static int mt7921_thermal_init(struct mt792x_phy *phy)
->  
->  	name = devm_kasprintf(&wiphy->dev, GFP_KERNEL, "mt7921_%s",
->  			      wiphy_name(wiphy));
-> +	if (!name)
-> +		return -ENOMEM;
->  
->  	hwmon = devm_hwmon_device_register_with_groups(&wiphy->dev, name, phy,
->  						       mt7921_hwmon_groups);
+But why? The nxpwifi driver is much closer to the mwifiex driver and
+much better readable, so I would rather pick the missing pieces from
+there.
 
-You sent the previous version of this on August 26th:
-
-https://patchwork.kernel.org/project/linux-wireless/patch/20240826095535.2603538-1-make24@iscas.ac.cn/
-
-Please stop spamming like this and understand that maintainers are busy.
+Sascha
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-https://docs.kernel.org/process/submitting-patches.html
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
