@@ -1,104 +1,85 @@
-Return-Path: <linux-wireless+bounces-12388-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12389-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE594969CC4
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 14:02:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23EDD96A0D7
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 16:39:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7893C1F24346
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 12:02:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85B76B2160E
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 14:39:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79A4D1B12C9;
-	Tue,  3 Sep 2024 12:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B718613D531;
+	Tue,  3 Sep 2024 14:39:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hyPBWZPD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CF81A42D6;
-	Tue,  3 Sep 2024 12:02:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9F11CA69B;
+	Tue,  3 Sep 2024 14:39:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725364976; cv=none; b=pLMdLTh0cWIShK2r2cXbKCi1l41jIjC5gMyJ7yvfqNKQBbt1OnyohfhP6+OYZryijhcM6zQ5E8PyFm642g5BVSiN6j4TEqSIZSYm/stWRyBQygZfK0lAEvZeWZ1LXDzCTeus+8zSwIkz0XDyp0W6f9UbSvMnn0wzRNivNW9LklY=
+	t=1725374385; cv=none; b=d4LMLiJbTyjatOOEzg0uKnZAvzyD264JIid7HJxkb07eQwMrXIhz2jW1I8leZqEIH15jyg7qGl4kxVxa741tH8jimjUcw7Xq43qyxPv+d/vrHTugkbh20H2rTrOU9nyjqNTE2/qwcQXHNhi1y9oFVVoQYGlF58gVwxxac1O4T7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725364976; c=relaxed/simple;
-	bh=CdkPZCW7AZCqwheqnCFrVjTPRPnUge6Ii1ZRfWJZeX0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gmeOgpOgA+zOC9UVa2rPJFjwPzEsP411IocHnbjoqvthxuJMjwRcrGgCrDxG5R8eWP9xjXxG5yZ5wKsz9Z+2FupvtJRtNsCdurT9WBkPbqyUwhh206Hrx47O/Giz5o+ACfGY98TaPAbHLLwZDAODKm9aO1tfeNdPAJCjElmzI8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4WykkV2vGQzyR09;
-	Tue,  3 Sep 2024 20:01:54 +0800 (CST)
-Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id D06C01800A7;
-	Tue,  3 Sep 2024 20:02:50 +0800 (CST)
-Received: from huawei.com (10.175.101.6) by dggpemf500002.china.huawei.com
- (7.185.36.57) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 3 Sep
- 2024 20:02:50 +0800
-From: Yue Haibing <yuehaibing@huawei.com>
-To: <kvalo@kernel.org>, <yuehaibing@huawei.com>
-CC: <libertas-dev@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH] wifi: libertas: Cleanup unused declarations
-Date: Tue, 3 Sep 2024 19:58:11 +0800
-Message-ID: <20240903115811.958692-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1725374385; c=relaxed/simple;
+	bh=D9Cdv5s5uqz98UZ38zDPKTwaHhmtDL/60jvVsg3/qPA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MbQfXU147fGB54f3JR6s7JifjHgSE5xf55lY6i/frqAFrNezlYbSWc6AXcP7DOxpQb8RH9kqnNknUmW0+fG6s3j9fGKWm7VfDUd2rYORdsuxX/1J55wklYAPaYcx6BuMuCAk8B4uXTBf41+MOc5FvbWdvflDkCiyRYPEKten4Lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hyPBWZPD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1F48C4CEC4;
+	Tue,  3 Sep 2024 14:39:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725374385;
+	bh=D9Cdv5s5uqz98UZ38zDPKTwaHhmtDL/60jvVsg3/qPA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hyPBWZPDeICY9ZBtXSc7LSZtnnn18oNHYc3kNzVVj4ZF8b+0opmKhC80/kVyTTJox
+	 8soqTepKaf2TPia5hcdQit0VzzeRrtEP86sZO+qIQRRzdrVuur11qUNX2imBKT7hJQ
+	 xCS/ctKh/L01UWhhXNbPx7bMHOrxP5LLGapGGIJE1ShcSi9Hz54TTn7LdvTSWAKvsO
+	 QNArc8AfDXTS7/11r+m+RiFpvrl3ezBNZEaXpQdb5qr/0zYRCbCScmP6mh/7ymrJKc
+	 SFnnk2jRuCRHydK24y37jZhLxHATNhv6Jf7G86I8BcMpJEhTtoQvQ2A6C8r4KC0O6b
+	 Osp/1o0/B0mdQ==
+Date: Tue, 3 Sep 2024 09:39:43 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: nico@fluxnic.net, pabeni@redhat.com, daniel@ffwll.ch,
+	davem@davemloft.net, kuba@kernel.org, olteanv@gmail.com,
+	saravanak@google.com, andriy.shevchenko@linux.intel.com,
+	linux-kernel@vger.kernel.org, mripard@kernel.org,
+	edumazet@google.com, netdev@vger.kernel.org,
+	brcm80211-dev-list.pdl@broadcom.com, f.fainelli@gmail.com,
+	linux-wireless@vger.kernel.org, airlied@gmail.com,
+	linus.walleij@linaro.org, brcm80211@lists.linux.dev, andrew@lunn.ch,
+	devicetree@vger.kernel.org, linux@armlinux.org.uk,
+	alsi@bang-olufsen.dk, tzimmermann@suse.de, kvalo@kernel.org,
+	arend.vanspriel@broadcom.com, maarten.lankhorst@linux.intel.com
+Subject: Re: [PATCH v1 7/7] of/irq: Make use of irq_get_trigger_type()
+Message-ID: <172537438003.978249.2559307502514402788.robh@kernel.org>
+References: <20240902225534.130383-1-vassilisamir@gmail.com>
+ <20240902225534.130383-8-vassilisamir@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpemf500002.china.huawei.com (7.185.36.57)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240902225534.130383-8-vassilisamir@gmail.com>
 
-There is no caller and implementation in tree.
 
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
----
- drivers/net/wireless/marvell/libertas/cmd.h            | 5 -----
- drivers/net/wireless/marvell/libertas_tf/libertas_tf.h | 3 ---
- 2 files changed, 8 deletions(-)
+On Tue, 03 Sep 2024 00:55:34 +0200, Vasileios Amoiridis wrote:
+> Convert irqd_get_trigger_type(irq_get_irq_data(irq)) cases to the more
+> simple irq_get_trigger_type(irq).
+> 
+> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+> ---
+>  drivers/of/irq.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
 
-diff --git a/drivers/net/wireless/marvell/libertas/cmd.h b/drivers/net/wireless/marvell/libertas/cmd.h
-index 3c193074662b..d7be232f5739 100644
---- a/drivers/net/wireless/marvell/libertas/cmd.h
-+++ b/drivers/net/wireless/marvell/libertas/cmd.h
-@@ -116,11 +116,6 @@ int lbs_set_power_adapt_cfg(struct lbs_private *priv, int enable, int8_t p0,
- int lbs_set_tpc_cfg(struct lbs_private *priv, int enable, int8_t p0, int8_t p1,
- 		int8_t p2, int usesnr);
- 
--int lbs_set_data_rate(struct lbs_private *priv, u8 rate);
--
--int lbs_cmd_802_11_rate_adapt_rateset(struct lbs_private *priv,
--				      uint16_t cmd_action);
--
- int lbs_set_tx_power(struct lbs_private *priv, s16 dbm);
- 
- int lbs_set_deep_sleep(struct lbs_private *priv, int deep_sleep);
-diff --git a/drivers/net/wireless/marvell/libertas_tf/libertas_tf.h b/drivers/net/wireless/marvell/libertas_tf/libertas_tf.h
-index 631b5da09f86..a5d4c09fb918 100644
---- a/drivers/net/wireless/marvell/libertas_tf/libertas_tf.h
-+++ b/drivers/net/wireless/marvell/libertas_tf/libertas_tf.h
-@@ -484,12 +484,9 @@ void lbtf_complete_command(struct lbtf_private *priv, struct cmd_ctrl_node *cmd,
- void lbtf_cmd_response_rx(struct lbtf_private *priv);
- 
- /* main.c */
--struct chan_freq_power *lbtf_get_region_cfp_table(u8 region,
--	int *cfp_no);
- struct lbtf_private *lbtf_add_card(void *card, struct device *dmdev,
- 				   const struct lbtf_ops *ops);
- int lbtf_remove_card(struct lbtf_private *priv);
--int lbtf_start_card(struct lbtf_private *priv);
- int lbtf_rx(struct lbtf_private *priv, struct sk_buff *skb);
- void lbtf_send_tx_feedback(struct lbtf_private *priv, u8 retrycnt, u8 fail);
- void lbtf_bcn_sent(struct lbtf_private *priv);
--- 
-2.34.1
+Applied, thanks!
 
 
