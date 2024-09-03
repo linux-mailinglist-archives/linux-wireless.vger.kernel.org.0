@@ -1,100 +1,83 @@
-Return-Path: <linux-wireless+bounces-12383-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12384-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3615969AD3
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 12:53:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B99D4969AFC
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 12:56:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 027BE1C239AD
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 10:53:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E48721C2365E
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 10:56:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605011C62A6;
-	Tue,  3 Sep 2024 10:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F16531B12D0;
+	Tue,  3 Sep 2024 10:53:36 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B921C768B;
-	Tue,  3 Sep 2024 10:52:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD901B12C5
+	for <linux-wireless@vger.kernel.org>; Tue,  3 Sep 2024 10:53:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725360775; cv=none; b=JfjEeeDLa5qvkv4WAyETaKCRL4MGx1tudY2gxpoOEKa8t+ExhUBUpdyH3E+bRbrCvZE3v+UorL47DDKPNHNsG9cL56EjW4dzqMXiDeAnUynM6+GzNYN7V3zhzFsRRmXoIWqsjmf+i4Sko3zrJ7xsw65PathJtr48JOA+3mveXXI=
+	t=1725360816; cv=none; b=ryllQHgPMo8JTw5RnWRxOrZUu2M/H4PQ4cTDvTVzVBE+5G31VcPOxkL8qZrB+QLJa/mDsZxt7U/I1JrH7it8M1itOxiwEGOHHNQCY7uuzMsHgjPu4p32k9UcGDWX9yDeguI5eepQePI/DnxGNP10NnTEcPCQ+Q2CDX26HhYZKyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725360775; c=relaxed/simple;
-	bh=TCa9XECvj6a95ytuCJ/rfxMfMjBBJHeKZNA431XrJLI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Kz6e6P1ZqtitgvrOXZjbbNeDv9SA/PYNRaOHTEj4CyRU4Vn/b57tKG21vifQPgzIDi5FmGWgM5kyUaFnoBUFYR9g7c7W3lCE3tHe4Mfai08655O0oBbD7WNQtyOQKk3WHPJU+z/owuNGlM2Fyj8mWunAtXeT4RMtty1F3hGMHOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
+	s=arc-20240116; t=1725360816; c=relaxed/simple;
+	bh=4dBUev4Zn36bnH1+LjpIgPLws1TWN0/Mu9Xq2Dp3C6Q=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=i+6LaY80hHE5qI8J+MBSpP7x3/MJ6XYGM025qPEKIPEtLMQTq9DZTu7rm6HyckGBhYQfFuS408glEIdbsUPxPpCUglpdYhESaqjttUjXk1dV19Nz05wFv8l8oimlKIGJmRbkHgPxDgx2dgTKy0Jr9ASeaGOw1Y1OgvcwknwznaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4Wyj9k0Zx5z145xm;
-	Tue,  3 Sep 2024 18:51:54 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Wyj7f0CRXz1HJ2v;
+	Tue,  3 Sep 2024 18:50:06 +0800 (CST)
 Received: from kwepemd500012.china.huawei.com (unknown [7.221.188.25])
-	by mail.maildlp.com (Postfix) with ESMTPS id 262C31800FE;
-	Tue,  3 Sep 2024 18:52:50 +0800 (CST)
-Received: from [10.67.111.176] (10.67.111.176) by
- kwepemd500012.china.huawei.com (7.221.188.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.34; Tue, 3 Sep 2024 18:52:49 +0800
-Message-ID: <021d4b46-a559-4047-a6ca-98e30fd3e6b3@huawei.com>
-Date: Tue, 3 Sep 2024 18:52:48 +0800
+	by mail.maildlp.com (Postfix) with ESMTPS id 65EE31A016C;
+	Tue,  3 Sep 2024 18:53:32 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by kwepemd500012.china.huawei.com
+ (7.221.188.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.34; Tue, 3 Sep
+ 2024 18:53:31 +0800
+From: Li Zetao <lizetao1@huawei.com>
+To: <ajay.kathat@microchip.com>, <claudiu.beznea@tuxon.dev>,
+	<kvalo@kernel.org>
+CC: <lizetao1@huawei.com>, <linux-wireless@vger.kernel.org>
+Subject: [PATCH wireless-next 0/2] wifi: Convert using devm_clk_get_optional_enabled()
+Date: Tue, 3 Sep 2024 19:02:03 +0800
+Message-ID: <20240903110205.4127706-1-lizetao1@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 11/12] wifi: wilc1000: Convert using
- devm_clk_get_optional_enabled() in wilc_sdio_probe()
-To: Kalle Valo <kvalo@kernel.org>
-CC: <florian.fainelli@broadcom.com>, <andrew@lunn.ch>, <olteanv@gmail.com>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <wens@csie.org>, <jernej.skrabec@gmail.com>,
-	<samuel@sholland.org>, <heiko@sntech.de>, <yisen.zhuang@huawei.com>,
-	<salil.mehta@huawei.com>, <hauke@hauke-m.de>, <alexandre.torgue@foss.st.com>,
-	<joabreu@synopsys.com>, <mcoquelin.stm32@gmail.com>, <wellslutw@gmail.com>,
-	<radhey.shyam.pandey@amd.com>, <michal.simek@amd.com>,
-	<ajay.kathat@microchip.com>, <claudiu.beznea@tuxon.dev>,
-	<u.kleine-koenig@pengutronix.de>, <jacky_chou@aspeedtech.com>,
-	<netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-sunxi@lists.linux.dev>, <linux-rockchip@lists.infradead.org>,
-	<linux-stm32@st-md-mailman.stormreply.com>, <linux-wireless@vger.kernel.org>
-References: <20240831021334.1907921-1-lizetao1@huawei.com>
- <20240831021334.1907921-12-lizetao1@huawei.com> <87a5gqko2q.fsf@kernel.org>
-From: Li Zetao <lizetao1@huawei.com>
-In-Reply-To: <87a5gqko2q.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggpeml500005.china.huawei.com (7.185.36.59) To
+Content-Type: text/plain
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
  kwepemd500012.china.huawei.com (7.221.188.25)
 
-Hi,
+There are many examples[1][2] of clk resource leakage in LTS. The
+reason is that developers need to maintain the allocation and release
+of clk resources themselves, but this will increase the burden on
+developers. Using the API related to devm_clk_get_*_enable ensures
+that the life cycle of clk is consistent with that of the device,
+reducing the risk of unreleased resources like clk.
 
-在 2024/9/3 0:38, Kalle Valo 写道:
-> Li Zetao <lizetao1@huawei.com> writes:
-> 
->> Use devm_clk_get_optional_enabled() instead of devm_clk_get_optional() +
->> clk_prepare_enable(), which can make the clk consistent with the device
->> life cycle and reduce the risk of unreleased clk resources. Since the
->> device framework has automatically released the clk resource, there is
->> no need to execute clk_disable_unprepare(clk) on the error path, drop
->> the clk_disable_unprepare label, and the original error process can change
->> to dispose_irq.
->>
->> Signed-off-by: Li Zetao <lizetao1@huawei.com>
->> ---
->>   drivers/net/wireless/microchip/wilc1000/sdio.c | 10 +++-------
->>   1 file changed, 3 insertions(+), 7 deletions(-)
-> 
-> wifi patches (patches 11 and 12) go via wireless-next, please submit
-> those separately.
-Ok, I will resend those separately.
-> 
+[1]: https://lore.kernel.org/all/20240812160128.338041191@linuxfoundation.org/
+[2]: https://lore.kernel.org/all/20240812160135.992451065@linuxfoundation.org/
 
-Thanks,
-Li Zetao.
+Li Zetao (2):
+  wifi: wilc1000: Convert using devm_clk_get_optional_enabled() in
+    wilc_sdio_probe()
+  wifi: wilc1000: Convert using devm_clk_get_optional_enabled() in
+    wilc_bus_probe()
+
+ drivers/net/wireless/microchip/wilc1000/sdio.c | 10 +++-------
+ drivers/net/wireless/microchip/wilc1000/spi.c  |  5 +----
+ 2 files changed, 4 insertions(+), 11 deletions(-)
+
+-- 
+2.34.1
+
 
