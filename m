@@ -1,141 +1,112 @@
-Return-Path: <linux-wireless+bounces-12393-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12394-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EF6F96A12F
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 16:51:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEA3796A171
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 16:59:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2B4A1C24032
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 14:51:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 69E80B25430
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 14:59:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EE91143748;
-	Tue,  3 Sep 2024 14:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7C891684A5;
+	Tue,  3 Sep 2024 14:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="QGfCVQ0m"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e0fEm3h/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.164])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE93A6F30D
-	for <linux-wireless@vger.kernel.org>; Tue,  3 Sep 2024 14:51:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.164
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD4013DBBE;
+	Tue,  3 Sep 2024 14:59:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725375101; cv=none; b=iJVzZ+2DfRJ9dmVTZqtKXCFvXSm2mkGooUo31uGo72MoAizYZv/tPF0bPqP3l660kT9XZEXZRYk5ldvVB+a8XEJg1+tl+rmQcqlwcG6HveEnsHLuGNug53KwIAomT4KraFTiT0h5RtfXWMFznnNC0+NcDAUpF+UtoBgdNlE0A5M=
+	t=1725375565; cv=none; b=aAIgB2vU6QVqvYUBuDv3as5gevBhR+KrydiP2idEhEj5l/2kO91ud96O8Ry5gYU5u3xK5/L88b+lCASn7jEsHwQZkQctpwLWK5JBvOdGjQ6o1r+BoCK/Dsz3n5JbDaVJaE0hbBMznXkOiYgCRbiLSUR8XKL8THLuDDb1ehqXn3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725375101; c=relaxed/simple;
-	bh=D54QX1mvUQVKucrQq/TTEA6iIPNzqgFe91z8M6mxs9s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
-	 In-Reply-To:Content-Type; b=USM1/QZpdydwH1VgRSArs7JgcwGFDh0vrflaZ5kiBCb/rBFkpcD5DRaaInC30bjZarCjRwpsWx5BfocYlKF0700NY3s8J42NAFBkZXGnOXBVS30QgNmCTf4+QH4zameQdXd2T6Tdqxkg7tuVA5uKnbjDkdwy15zYT5pGFo8i8Wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=QGfCVQ0m; arc=none smtp.client-ip=67.231.154.164
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
-	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 9F7A6503F71
-	for <linux-wireless@vger.kernel.org>; Tue,  3 Sep 2024 14:51:37 +0000 (UTC)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id CD7FE240074;
-	Tue,  3 Sep 2024 14:51:29 +0000 (UTC)
-Received: from [192.168.1.23] (unknown [98.97.43.109])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 26B3313C2B0;
-	Tue,  3 Sep 2024 07:51:29 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 26B3313C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1725375089;
-	bh=D54QX1mvUQVKucrQq/TTEA6iIPNzqgFe91z8M6mxs9s=;
-	h=Date:Subject:To:References:Cc:From:In-Reply-To:From;
-	b=QGfCVQ0mi8KyOpGwhyyONok5+k2xSFiQE5xSYON/Yu9l0jwZj4bH3ejv+dxT6KEvG
-	 zKu6mJbmHqmVznZJ63ch/4GRqO2UMar/O3jl1ImEc5efQr8d1ZKj+OmQyeuBuuaurv
-	 Cfy7BZDgluFzaWJGGMe15K40wxHYkO3FQf/jov2E=
-Message-ID: <759d8d29-4ffe-434c-aeac-a8c59703c058@candelatech.com>
-Date: Tue, 3 Sep 2024 07:51:28 -0700
+	s=arc-20240116; t=1725375565; c=relaxed/simple;
+	bh=Uj/bj+aMeseWyuoqf9Z4Fj1Khz5w5nI0phGG8JGDfxY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e8NJiIygt1cn1TiVmbYdNYJBQDjHUzJZRs8o0cTjnLZipMOyuCoYN5YI4mTO2TWw+8Zstv63wSfokRSRODQVL9R/R2fpmEjt6oRkwTMtG2ZqXzE/+cf6tVkyyNT57qO/aZLoHOSnK10o+oG4/nN1JgflI64oqL1KSOsrw0NE3NU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e0fEm3h/; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725375564; x=1756911564;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Uj/bj+aMeseWyuoqf9Z4Fj1Khz5w5nI0phGG8JGDfxY=;
+  b=e0fEm3h/HvDm9vDCw1Zto3iOpOZl9F/wahfhGV9Wh4+TT2jIXV4NAxAQ
+   I6q062+Buo1G3IFsrTLJ2HFyZ8WyLnwOx3JYF1rB/O+6tAF3W2F9EgIDH
+   KneyCVoJt0Fwm0Qi+AggrF9e6roUXtjIXf/K5I3jT3HdgpEeHxMXyuJnb
+   2IDI87d8td4ytq8cXWoZF9P5Jf11jAeDYEKEsM3BsTcSVfTwp8fGX/dgr
+   GdTx/GmIdtAeOld81oaB3V15OTU5DwV7VvvvUmnb9hXhJMCOmSMPnrBig
+   2bfXMGsdJgh+OL5snRZcL0+TL6Xz/fxiWsCVjg85QVuLr3ZwTu6DVXwNH
+   g==;
+X-CSE-ConnectionGUID: ypgA+7NMT0iL6j+s7zzRVQ==
+X-CSE-MsgGUID: 3pvgxQVzSredmghNlJsirQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11184"; a="41474853"
+X-IronPort-AV: E=Sophos;i="6.10,199,1719903600"; 
+   d="scan'208";a="41474853"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 07:59:24 -0700
+X-CSE-ConnectionGUID: 6HGTB+h+TEu2438Hwul7dw==
+X-CSE-MsgGUID: qZhtsFsVR06mrzCAQHoN3w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,199,1719903600"; 
+   d="scan'208";a="69567174"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmviesa004.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 07:59:17 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1slUzj-00000004kDE-1Vwy;
+	Tue, 03 Sep 2024 17:58:59 +0300
+Date: Tue, 3 Sep 2024 17:58:59 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, nico@fluxnic.net,
+	pabeni@redhat.com, daniel@ffwll.ch, davem@davemloft.net,
+	kuba@kernel.org, olteanv@gmail.com, saravanak@google.com,
+	linux-kernel@vger.kernel.org, mripard@kernel.org,
+	edumazet@google.com, netdev@vger.kernel.org,
+	brcm80211-dev-list.pdl@broadcom.com, f.fainelli@gmail.com,
+	linux-wireless@vger.kernel.org, airlied@gmail.com,
+	linus.walleij@linaro.org, brcm80211@lists.linux.dev, andrew@lunn.ch,
+	devicetree@vger.kernel.org, linux@armlinux.org.uk,
+	alsi@bang-olufsen.dk, tzimmermann@suse.de, kvalo@kernel.org,
+	arend.vanspriel@broadcom.com, maarten.lankhorst@linux.intel.com
+Subject: Re: [PATCH v1 7/7] of/irq: Make use of irq_get_trigger_type()
+Message-ID: <ZtckM-uRzxAnS15o@smile.fi.intel.com>
+References: <20240902225534.130383-1-vassilisamir@gmail.com>
+ <20240902225534.130383-8-vassilisamir@gmail.com>
+ <172537438003.978249.2559307502514402788.robh@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/2] wifi: mac80211: Assign tx-stats to the proper
- link.
-To: Johannes Berg <johannes@sipsolutions.net>
-References: <20240828155458.1990497-1-greearb@candelatech.com>
- <20240828155458.1990497-2-greearb@candelatech.com>
- <ff685160d8d3c09db31fc8a77963eae2b0eca5b3.camel@sipsolutions.net>
-Content-Language: en-MW
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <ff685160d8d3c09db31fc8a77963eae2b0eca5b3.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1725375090-9tfEY8AXY-KB
-X-MDID-O:
- us5;at1;1725375090;9tfEY8AXY-KB;<greearb@candelatech.com>;b42792dba290a1257c3f0aaf1c60b0ff
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <172537438003.978249.2559307502514402788.robh@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On 9/3/24 03:13, Johannes Berg wrote:
-> On Wed, 2024-08-28 at 08:54 -0700, greearb@candelatech.com wrote:
->> From: Ben Greear <greearb@candelatech.com>
->>
->> For drivers that can report the tx link-id, account tx
->> stats against that link.  If we cannot determine tx link,
->> then use deflink.
-> 
-> Strictly speaking, that's not what happens, since the link bits in the
-> SKB CB might be set on outgoing frames, and then will still be there on
-> the status.
+On Tue, Sep 03, 2024 at 09:39:43AM -0500, Rob Herring (Arm) wrote:
+> On Tue, 03 Sep 2024 00:55:34 +0200, Vasileios Amoiridis wrote:
 
-Ok, I can update description to mention that.
+...
 
-> Also using deflink is totally useless for MLO, so maybe just don't do
-> anything at all? But might be simpler to just do deflink and document
-> that the driver must set this? But not sure that really works so well
-> for drivers now.
+> Applied, thanks!
 
-The stats used to all go to deflink, so that seems a good default, and should
-work w/out MLO being enabled.
+It was fast :-)
 
->> +static struct link_sta_info*
->> +ieee80211_get_tx_link_sta(struct sta_info *sta, struct ieee80211_tx_info *info)
->> +{
->> +	u8 link_id = u32_get_bits(info->control.flags, IEEE80211_TX_CTRL_MLO_LINK);
->> +	struct link_sta_info *l_sta_info;
-> 
-> We usually call that 'link_sta' ...
-
-Yeah, and other similar things are also called link_sta too, which I find confusing.
-But I will change it back to be link_sta everywhere I am making changes.
-
-> 
->> @@ -48,6 +65,7 @@ static void ieee80211_handle_filtered_frame(struct ieee80211_local *local,
->>   	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
->>   	struct ieee80211_hdr *hdr = (void *)skb->data;
->>   	int ac;
->> +	struct link_sta_info *link_sta = ieee80211_get_tx_link_sta(sta, info);
-> 
-> and even you do, please be consistent with existing code and yourself.
-> 
->>
->> +		link_sta = ieee80211_get_tx_link_sta(sta, info);
-> 
-> Does it really make sense to keep repeating this, rather than passing an
-> argument?
-
-Ok, happy to pass this into the handlers.
-
-Thanks,
-Ben
-
-> 
-> johannes
-> 
+Vasileios, consider my previous comment as a material for followup,
+if Rob likes the idea.
 
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+With Best Regards,
+Andy Shevchenko
+
 
 
