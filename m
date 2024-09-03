@@ -1,62 +1,62 @@
-Return-Path: <linux-wireless+bounces-12415-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12416-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5058496A8D0
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 22:47:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FE2E96A8D4
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 22:47:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 060631F24FC2
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 20:47:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72BAF1C23CAB
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 20:47:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E47501DEFCD;
-	Tue,  3 Sep 2024 20:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5D891DEFF8;
+	Tue,  3 Sep 2024 20:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GzZt+kYs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GmwUfN1n"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B88141DEFC1;
-	Tue,  3 Sep 2024 20:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A24E1DEFF1;
+	Tue,  3 Sep 2024 20:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725396177; cv=none; b=Nxh65QGUr+eP6RPjPOW4ipj2Y4tlWMvo8qJPbttVHoFGAHTOqqu/nKD2woVjQXqhbKTbznoZgRdgz5A4H5kDAXC/M+zjnTzpJfU7T3OJYKNBRGBzfKWaD57X2vVsHutATlhUdWkuWz5zTBKhJUcx/IsPi2TkKMTPax9Sb6gyW0g=
+	t=1725396180; cv=none; b=jQ/aVoVqfVfVjAsFyqqYuEObr/ukW9jim4k4FJWSJwdIRroRrIdYcSdPzUUr7SdU9eoDH6AvouISnWVQSVPQFpkO6XtUcBeKPqiwD8OkQfPOG69/YcgJhONeEKwaxlNfuYx60KsQ1PdPz0vs8dsaLqKatCOt/pk5gsn19kg2qas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725396177; c=relaxed/simple;
-	bh=NC0RD9xL56A/MqyBEqX/6EJmzNUsauOsFsoC6gOZo+k=;
+	s=arc-20240116; t=1725396180; c=relaxed/simple;
+	bh=tXAkq7HVw7ZJwdHtvDp4WV9gc9Vg8sJLrSdr6EehPG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D6t9oaQ5p8yIEryYO2LVRZcTND4P12TY1ambbhYqDk0XTr/r35LdJq6K41uahV/6nk2JlFgGuP/299fTyxe/gj5Ytn5/k0k+AolFAp/KQxMTGpMKHIHYj6XdfS8s96mhie1jcMhhdjNLymi3xl/OS0s0TFyAUvfvSCnGwgvAZts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GzZt+kYs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE2BDC4CEC8;
-	Tue,  3 Sep 2024 20:42:55 +0000 (UTC)
+	 MIME-Version; b=dTLz5TomikFgRM+ny5osUFi7USh+ifY4SK0AUNKZ8IcdThTsAA/tA7wqReIb2lLb6Hz0SESb78n5ZauKxJX6qSdCWBcrJEMXTw+LSjRwFDILODQsEhtbn0CYmHr2m34l1mSm0PvB0C9y9A1Aeb1usuNQEoaiew5WRukCTElOLm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GmwUfN1n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD184C4CEC4;
+	Tue,  3 Sep 2024 20:42:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725396177;
-	bh=NC0RD9xL56A/MqyBEqX/6EJmzNUsauOsFsoC6gOZo+k=;
+	s=k20201202; t=1725396179;
+	bh=tXAkq7HVw7ZJwdHtvDp4WV9gc9Vg8sJLrSdr6EehPG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GzZt+kYsGJ3YuAUIqGS2ZQO/gn+7vb05A2OQIqeIOMg7ppymken7JPRN+dWghowwg
-	 nFhblKJs5bEcbdN3qnhCqyKtSg8SAB+AgfL2gs8vSMfqUt3QHaKRODRh50nuS2iAHe
-	 0RXNOPLXPtsIVTBHEVswKrocyOgOhU8we+VQGPFPfOaE5fwhdFjDa4AFlXFmf4JJ/2
-	 dOK72Tu7S9Ny9iJHtuCd9A6rKDctp0u9U1skFnGwP56rGCt3o9YMG+qx+FYzoiO2ZN
-	 Mz4jupXaV0Wh3cNpzYo56Qt+M8tus3LO4BL0jIXTvAe9Kcl2hoi/mDDZSVL+rUZuin
-	 ogFu8+CMPxBpg==
+	b=GmwUfN1ntd8YHNyh9AXjTGX1NcI63cTUoHNoSnj/4TxURX68LRLge0p10116U7txM
+	 m+qYWyl2ogphuTcwHPoSev5pCYz5m2dX9/7A4qB0oJqA5Jk8TMjuICibbGOBCAhL0E
+	 v6H+XujX4bZqhsAvAoizXaRM4Argh9fXJTv4Q9VF2zZg6qFHEqiRIEjc58JFtWDw7x
+	 nr39CbsKP71KkloiOS4zTpsidEzC3qlmr9t6VTeiTpYsq7Opw8LVank/SGt6PvGaaB
+	 lHYpR0b2jI7vDTSG59bHlivHIBupvI+VA+5kQxWpN0TwvBjuPOwhmd4Sar0kpOKaGR
+	 JEUkrLelqczew==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+Cc: Dmitry Antipov <dmantipov@yandex.ru>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	gregory.greenman@intel.com,
-	ilan.peer@intel.com,
-	shaul.triebitz@intel.com,
-	benjamin.berg@intel.com,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 20/22] wifi: iwlwifi: mvm: don't wait for tx queues if firmware is dead
-Date: Tue,  3 Sep 2024 15:22:07 -0400
-Message-ID: <20240903192243.1107016-20-sashal@kernel.org>
+	johannes@sipsolutions.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 21/22] wifi: mac80211: free skb on error path in ieee80211_beacon_get_ap()
+Date: Tue,  3 Sep 2024 15:22:08 -0400
+Message-ID: <20240903192243.1107016-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240903192243.1107016-1-sashal@kernel.org>
 References: <20240903192243.1107016-1-sashal@kernel.org>
@@ -71,58 +71,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.7
 Content-Transfer-Encoding: 8bit
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 3a84454f5204718ca5b4ad2c1f0bf2031e2403d1 ]
+[ Upstream commit 786c5be9ac29a39b6f37f1fdd2ea59d0fe35d525 ]
 
-There is a WARNING in iwl_trans_wait_tx_queues_empty() (that was
-recently converted from just a message), that can be hit if we
-wait for TX queues to become empty after firmware died. Clearly,
-we can't expect anything from the firmware after it's declared dead.
+In 'ieee80211_beacon_get_ap()', free allocated skb in case of error
+returned by 'ieee80211_beacon_protect()'. Compile tested only.
 
-Don't call iwl_trans_wait_tx_queues_empty() in this case. While it could
-be a good idea to stop the flow earlier, the flush functions do some
-maintenance work that is not related to the firmware, so keep that part
-of the code running even when the firmware is not running.
-
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240825191257.a7cbd794cee9.I44a739fbd4ffcc46b83844dd1c7b2eb0c7b270f6@changeid
-[edit commit message]
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://patch.msgid.link/20240805142035.227847-1-dmantipov@yandex.ru
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ net/mac80211/tx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 259afecd1a98d..83551d962a46c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -5819,6 +5819,10 @@ static void iwl_mvm_flush_no_vif(struct iwl_mvm *mvm, u32 queues, bool drop)
- 	int i;
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index edba4a31844fb..bca7b341dd772 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -5348,8 +5348,10 @@ ieee80211_beacon_get_ap(struct ieee80211_hw *hw,
+ 	if (beacon->tail)
+ 		skb_put_data(skb, beacon->tail, beacon->tail_len);
  
- 	if (!iwl_mvm_has_new_tx_api(mvm)) {
-+		/* we can't ask the firmware anything if it is dead */
-+		if (test_bit(IWL_MVM_STATUS_HW_RESTART_REQUESTED,
-+			     &mvm->status))
-+			return;
- 		if (drop) {
- 			mutex_lock(&mvm->mutex);
- 			iwl_mvm_flush_tx_path(mvm,
-@@ -5914,8 +5918,11 @@ void iwl_mvm_mac_flush(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+-	if (ieee80211_beacon_protect(skb, local, sdata, link) < 0)
++	if (ieee80211_beacon_protect(skb, local, sdata, link) < 0) {
++		dev_kfree_skb(skb);
+ 		return NULL;
++	}
  
- 	/* this can take a while, and we may need/want other operations
- 	 * to succeed while doing this, so do it without the mutex held
-+	 * If the firmware is dead, this can't work...
- 	 */
--	if (!drop && !iwl_mvm_has_new_tx_api(mvm))
-+	if (!drop && !iwl_mvm_has_new_tx_api(mvm) &&
-+	    !test_bit(IWL_MVM_STATUS_HW_RESTART_REQUESTED,
-+		      &mvm->status))
- 		iwl_trans_wait_tx_queues_empty(mvm->trans, msk);
- }
- 
+ 	ieee80211_beacon_get_finish(hw, vif, link, offs, beacon, skb,
+ 				    chanctx_conf, csa_off_base);
 -- 
 2.43.0
 
