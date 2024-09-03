@@ -1,62 +1,62 @@
-Return-Path: <linux-wireless+bounces-12429-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12430-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8308696A93A
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 22:56:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72CA496A93D
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 22:57:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42D99280617
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 20:56:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 245211F22AFB
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 20:57:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96D71DC189;
-	Tue,  3 Sep 2024 20:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F25A126BE4;
+	Tue,  3 Sep 2024 20:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nz+7cDmk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qsiWNk74"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A83E71DC180;
-	Tue,  3 Sep 2024 20:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DA71DC180;
+	Tue,  3 Sep 2024 20:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725396364; cv=none; b=JkjL/Z/bgO8YEGCSCH45adYZ7rH8lEkvPT0xnDKqYVezVr218e74iUoo7STKvNWWJXbteS//WiZWCl1KNhbrvSAxeKfgw1sNj3YeLNfK5g0cYl9Cupf3Q7tCIXC6lUl1xaF419seJZYdcuNwbcucV9fsTWHrNXiE6RvRmxrGmso=
+	t=1725396368; cv=none; b=KIOfpAyNLW22IaMECV5amStwtjUB5I84S145PoYGMv9EK+rZ+JxRd5aly0R/poZvx8eoXY95ZsmHQyJy3a6zjer0YPQnOexLIXpG3VusmQcQbP3NDnbyPLTQFcFGgMDNgaNkOQhRBbrlW7nodUrvXYrf6xEuuKUkKnzbfZ76pPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725396364; c=relaxed/simple;
-	bh=UOAgV6cqqvyA0Re+bKu1FyExngkvUIdeS1svWUweu9M=;
+	s=arc-20240116; t=1725396368; c=relaxed/simple;
+	bh=CmAtWw5v//pH52kvneRSXBRTibgAWkwaCvHgIwTjY1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rxlx2JQrs1y0OwN4DRaIe95K3reqdvB0sO4ZNgzZniiHGMkeYkeuLP4ihSagpvM/tASj2pvROqqdomY2dhsDM/Yyivnvde0+QGIfTO0k24F7uevmTT/B+TR8mR9rnV0zLuoUDdSCxrtQsB+62Y/FEZOaLekDR/D75uc/GipApwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nz+7cDmk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED53C4CECB;
-	Tue,  3 Sep 2024 20:46:03 +0000 (UTC)
+	 MIME-Version; b=k5/QLZNwCB6Z/tZXoicXBUvrXE9VbKqTY32SQ5bhuq9ZcCN+/Smw20A+Zv+Lcp9340AFvt035UMGNVDr4J07ImpS6DYMXeWF0A1RaukU7gUTEPXeBIoppmUVlLhrxZhHoThiAqPjD9B9VJO5aNcJDcjlclRjLUZMFW766VGUY5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qsiWNk74; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96CCC4CEC5;
+	Tue,  3 Sep 2024 20:46:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725396364;
-	bh=UOAgV6cqqvyA0Re+bKu1FyExngkvUIdeS1svWUweu9M=;
+	s=k20201202; t=1725396368;
+	bh=CmAtWw5v//pH52kvneRSXBRTibgAWkwaCvHgIwTjY1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nz+7cDmkBZwL0aczaSYu+sRHQNq9K9Pd9J4jMao2PkurlPRXaBsfzwd4c2HH4Va15
-	 bglwI+R76eegZUVZ6Oi1qscvCu5+woTqII3krFSPODsg5lpEyEAvhKB9kVfAHbhxyp
-	 apY+xgCu2el3+NIVGcEQXmaPJEbl7INS19dESgc6awtHt47EzE92N86/kj+YFC3BA3
-	 B67mXpBUxMjpzTFwSiL2tmOXnJyppVab+SnCpCh0MOWcsmFT0sCE+sQNk1IY1/xlQO
-	 12KFcmXzLJYwY2zQp4JH1MtCjSuq1+8E+qMuDKitnAhj5J7ddL6q6rQ1fFJAP/BmCU
-	 eFGSuTZeI46aQ==
+	b=qsiWNk74uJtYdSgFJhWH//+gKyz+SgfuXi3/XICo6ybKvE8j+UcPCSAyQ34wiKC8f
+	 iKcptcvic4MljqKL4VHjONF1VJbMNIBPqEmPYAF/NOlea0AuZYx/phqYX5VCcxB1l2
+	 Q3UYoHK9FPJcyV3p1/uf2gjDgTL2wcbFSqD+MfLEnTYofnceXdU5xEkJf6WXf9fzvD
+	 28M0/5eSNNgJCgOfmG9mU8u6ssOl5EQZAQjs3kACCqmy0GHCjoNqvowfiIgKsVpLRf
+	 X/I+R3PCfXIxZPWvVapt6hZINTMfM2/J/0HBnSeZYttEglWrGN8V3SyHS8FMfCbFXJ
+	 AQpxzlpQiDzvg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dmitry Antipov <dmantipov@yandex.ru>,
+Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 16/17] wifi: mac80211: free skb on error path in ieee80211_beacon_get_ap()
-Date: Tue,  3 Sep 2024 15:25:30 -0400
-Message-ID: <20240903192600.1108046-16-sashal@kernel.org>
+	kvalo@kernel.org,
+	gregory.greenman@intel.com,
+	daniel.gabay@intel.com,
+	yedidya.ben.shimol@intel.com,
+	justinstitt@google.com,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 17/17] wifi: iwlwifi: clear trans->state earlier upon error
+Date: Tue,  3 Sep 2024 15:25:31 -0400
+Message-ID: <20240903192600.1108046-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240903192600.1108046-1-sashal@kernel.org>
 References: <20240903192600.1108046-1-sashal@kernel.org>
@@ -71,37 +71,70 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.107
 Content-Transfer-Encoding: 8bit
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit 786c5be9ac29a39b6f37f1fdd2ea59d0fe35d525 ]
+[ Upstream commit 094513f8a2fbddee51b055d8035f995551f98fce ]
 
-In 'ieee80211_beacon_get_ap()', free allocated skb in case of error
-returned by 'ieee80211_beacon_protect()'. Compile tested only.
+When the firmware crashes, we first told the op_mode and only then,
+changed the transport's state. This is a problem if the op_mode's
+nic_error() handler needs to send a host command: it'll see that the
+transport's state still reflects that the firmware is alive.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://patch.msgid.link/20240805142035.227847-1-dmantipov@yandex.ru
+Today, this has no consequences since we set the STATUS_FW_ERROR bit and
+that will prevent sending host commands. iwl_fw_dbg_stop_restart_recording
+looks at this bit to know not to send a host command for example.
+
+To fix the hibernation, we needed to reset the firmware without having
+an error and checking STATUS_FW_ERROR to see whether the firmware is
+alive will no longer hold, so this change is necessary as well.
+
+Change the flow a bit.
+Change trans->state before calling the op_mode's nic_error() method and
+check trans->state instead of STATUS_FW_ERROR. This will keep the
+current behavior of iwl_fw_dbg_stop_restart_recording upon firmware
+error, and it'll allow us to call iwl_fw_dbg_stop_restart_recording
+safely even if STATUS_FW_ERROR is clear, but yet, the firmware is not
+alive.
+
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240825191257.9d7427fbdfd7.Ia056ca57029a382c921d6f7b6a6b28fc480f2f22@changeid
+[I missed this was a dependency for the hibernation fix, changed
+ the commit message a bit accordingly]
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/tx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c    | 2 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 419baf8efddea..0685ae2ea64eb 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -5196,8 +5196,10 @@ ieee80211_beacon_get_ap(struct ieee80211_hw *hw,
- 	if (beacon->tail)
- 		skb_put_data(skb, beacon->tail, beacon->tail_len);
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index 3b0ed1cdfa11e..7fadaec777cea 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -3131,7 +3131,7 @@ void iwl_fw_dbg_stop_restart_recording(struct iwl_fw_runtime *fwrt,
+ {
+ 	int ret __maybe_unused = 0;
  
--	if (ieee80211_beacon_protect(skb, local, sdata, link) < 0)
-+	if (ieee80211_beacon_protect(skb, local, sdata, link) < 0) {
-+		dev_kfree_skb(skb);
- 		return NULL;
-+	}
+-	if (test_bit(STATUS_FW_ERROR, &fwrt->trans->status))
++	if (!iwl_trans_fw_running(fwrt->trans))
+ 		return;
  
- 	ieee80211_beacon_get_finish(hw, vif, link, offs, beacon, skb,
- 				    chanctx_conf, csa_off_base);
+ 	if (fw_has_capa(&fwrt->fw->ucode_capa,
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+index 70022cadee35b..ad29663a356be 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
+@@ -1472,8 +1472,8 @@ static inline void iwl_trans_fw_error(struct iwl_trans *trans, bool sync)
+ 
+ 	/* prevent double restarts due to the same erroneous FW */
+ 	if (!test_and_set_bit(STATUS_FW_ERROR, &trans->status)) {
+-		iwl_op_mode_nic_error(trans->op_mode, sync);
+ 		trans->state = IWL_TRANS_NO_FW;
++		iwl_op_mode_nic_error(trans->op_mode, sync);
+ 	}
+ }
+ 
 -- 
 2.43.0
 
