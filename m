@@ -1,110 +1,68 @@
-Return-Path: <linux-wireless+bounces-12360-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12361-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A0D69692F1
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 06:56:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D1B79693B3
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 08:33:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C706F1F23BA0
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 04:56:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AC47284542
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 06:33:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91CAD1CDFCD;
-	Tue,  3 Sep 2024 04:56:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="lrRrLrd5";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="kkgRwXxK"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E2EE2E3EB;
+	Tue,  3 Sep 2024 06:33:16 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from flow5-smtp.messagingengine.com (flow5-smtp.messagingengine.com [103.168.172.140])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722C02904;
-	Tue,  3 Sep 2024 04:56:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E7A1D0DE6
+	for <linux-wireless@vger.kernel.org>; Tue,  3 Sep 2024 06:33:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725339366; cv=none; b=rXw/MhW4gQRugbXi+4pFM0lO0wRZFPehP4IpbYwR49EC3IoaO/IE58Msv3y5eAARtspE65d4xtUSNVI+S+PATpYnJz7qevJFfeSqaL1YA+68JVuHNKxSp9VR2AK01gFEGNekFSe/P0txUo6dDI90fr4rnSM+//7NVxWiVkg9y1Y=
+	t=1725345195; cv=none; b=MLWsiklL9ZLhb/mt/0ELejlz0Ps6/TXHreqtaArYlhRRorPAkv5BnchnSSjUzS6DnggVgQT/8XxfX+AyXzVi3okP55i2Ff734gGJSKibe5ZVBXPPbAVcuH1SqngTZweUHHmxSK7RCPSJxIU+IK85WSwt9mIW30ibkf4fVqE7PI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725339366; c=relaxed/simple;
-	bh=6QgKRJ5Pc9xgqkDF9sMaV53v4Fz99GqqxpewHhlftzU=;
+	s=arc-20240116; t=1725345195; c=relaxed/simple;
+	bh=bWTYGSEkN+qEPafiZXabnURnos5QBjb8WnYA9NzgsqY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PToHOUBm1UFS1BviX1ai1zsvD5225UMzOs+zr/iW0v55njnUEci8KsuCxYXlOVNzUAQakSCZY5WQCKnRlOa/TCagPn986h+BBtPU6uyk5iga/fpTUnKSd9a/Mx7ZlWZrmSWa6MaIDhfftr6TetAOQ9n6EQsoIUyhtmxSISv1fXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=lrRrLrd5; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=kkgRwXxK; arc=none smtp.client-ip=103.168.172.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-08.internal (phl-compute-08.nyi.internal [10.202.2.48])
-	by mailflow.nyi.internal (Postfix) with ESMTP id 6E99B200212;
-	Tue,  3 Sep 2024 00:55:59 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-08.internal (MEProxy); Tue, 03 Sep 2024 00:55:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1725339359; x=1725346559; bh=QaXgD3nnEB
-	f2FvN2o3oUkR2SpAKFJSDAPnp60cmG00M=; b=lrRrLrd5xSbH/ug6+KlAeIfBcR
-	qaQYhdGGV7g5qvomtuPvVCMlau0MKsFqfRc879wODFXaTZBZ/8QYTrmCO/6Yfpov
-	2ofD83p+Sx+1eM4rBcMiOnuOtYgX6NZqA7lqQ9ea6PLfY8fORimsjINWuFPFpg9w
-	nlrqOjfEMj8USskrW7U4iI+8fc5w4dBYU4TXmS6uw3npwQdgzbH6AD3aLaeBwN+i
-	nCOWnv5OCd6SaeCEN9mTkU/75o1nd/x0LRTNXgL9CCbe/aSLwnJvatF9R+Oxzxe3
-	pnQDJGCpME7OqAK9Ls1KWjwrTLgtcTTICWodNuDF+Flp0WugvWvWaPXVNGvw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1725339359; x=1725346559; bh=QaXgD3nnEBf2FvN2o3oUkR2SpAKF
-	JSDAPnp60cmG00M=; b=kkgRwXxKqXV4hca5Mw/+wTzndZFnOTrZVr5Yy5gSzUcN
-	l/Frz31dZBhO8irg8IrtIv8IUC8O+bGi7H+JS2I8VYCHwzTCUx8IiP9fHkSiFGJv
-	VxG+nPvPgjQBJW0InT1DKfDC+Qxrg3qNI50htHB8evCNGDSx4Y5LDD4yKvT/3r1V
-	5h5v2DJmeN3PlAisV2E1EPdB4dtKQrHIVHEOA4kSA7lQH7/cTVQQYlYpftnuJe/S
-	Mn5bIWK/wo3+LVK+Ws0RopxFA8dOMjLo9efsrIVhWClubstfR2RamDzUTzWvbidG
-	7Xv+gdG3LGqwddh44BV6gWO/z1kKQwsnS2uhV6Oahw==
-X-ME-Sender: <xms:3pbWZkZlMyT8nw3X75H33sZYTuBLrC2qifWq9WD_djnoYfCmXyhlCw>
-    <xme:3pbWZvYeXe-W_dw6QF1ChUzuwLRcmQ7EPqLqGaslQy4vdlg_VsX7Rnmg9ROs3-uVA
-    IW0HI9l_ifYiQ>
-X-ME-Received: <xmr:3pbWZu-Kn2oarZ8_9Ow94znknYYSJ9cGVsBC0eSNUTNqsPkrViiznZL2cnR9dzZFZw7RyeepUkvC_kFAqiQI10MUsueiXng_U3D_Dw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudehgedgleduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrf
-    grthhtvghrnhepheegvdevvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefh
-    gfehkeetnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epghhrvghgsehkrhhorghhrdgtohhmpdhnsggprhgtphhtthhopeegkedpmhhouggvpehs
-    mhhtphhouhhtpdhrtghpthhtohepmhgrkhgvvdegsehishgtrghsrdgrtgdrtghnpdhrtg
-    hpthhtohepnhgsugesnhgsugdrnhgrmhgvpdhrtghpthhtoheplhhorhgvnhiioheskhgv
-    rhhnvghlrdhorhhgpdhrtghpthhtoheprhihuggvrhdrlhgvvgesmhgvughirghtvghkrd
-    gtohhmpdhrtghpthhtohepshhhrgihnhgvrdgthhgvnhesmhgvughirghtvghkrdgtohhm
-    pdhrtghpthhtohepshgvrghnrdifrghnghesmhgvughirghtvghkrdgtohhmpdhrtghpth
-    htohepkhhvrghloheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhgrthhthhhirghs
-    rdgsghhgsehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghnghgvlhhoghhiohgrtggthh
-    hinhhordguvghlrhgvghhnohestgholhhlrggsohhrrgdrtghomh
-X-ME-Proxy: <xmx:3pbWZupN-FcNMwfx2JqME2u1giu4qg3Knb8zOft___manRJ7U81gCA>
-    <xmx:3pbWZvostYbpJjibu84wEbU76J0ekjMUe3kGMLFc0Icz6nSJHJj9RQ>
-    <xmx:3pbWZsRe6-QfWiv-rn4CV96o3PV6tnGlWHsb91TvFygcH64qTChGPA>
-    <xmx:3pbWZvoCqbYWRGd-lJbR7yyo4QovcSguYwsB9V73AVlGZNw2wTnPgg>
-    <xmx:35bWZqHQxUchp1_GGGk2zcsVFWLUDcR1HYI8TELq0TunTNpuIIxF_hxh>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 3 Sep 2024 00:55:57 -0400 (EDT)
-Date: Tue, 3 Sep 2024 06:55:55 +0200
-From: Greg KH <greg@kroah.com>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com, sean.wang@mediatek.com, kvalo@kernel.org,
-	matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
-	chui-hao.chiu@mediatek.com, howard-yh.hsu@mediatek.com,
-	StanleyYP.Wang@mediatek.com, benjamin-jw.lin@mediatek.com,
-	allen.ye@mediatek.com, chank.chen@mediatek.com,
-	meichia.chiu@mediatek.com, Money.Wang@mediatek.com,
-	Bo.Jiao@mediatek.com, akpm@linux-foundation.org,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH RESEND] wifi: mt76: mt7996: fix NULL pointer dereference
- in mt7996_mcu_sta_bfer_he
-Message-ID: <2024090332-waged-yummy-296b@gregkh>
-References: <20240903013913.4143602-1-make24@iscas.ac.cn>
+	 Content-Type:Content-Disposition:In-Reply-To; b=e33PaPyTDMNN2Rol2JotbNIVM4fjf+tg5zsE6Tvkeck4Equ1wp46rvISrbgDz3E42UPMnz5T54LVXp2HWPcpTDxASAevBbjjBDfuhEA0YS1wEWHd3UM3SHr7MW3L9FAbj3i9gzkWWlFxuB8PB/kDQaw2u1dcZN+m2TiG4G+8Wy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1slN65-0002jB-HH; Tue, 03 Sep 2024 08:33:01 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1slN64-0057Lz-5G; Tue, 03 Sep 2024 08:33:00 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1slN64-004Lui-08;
+	Tue, 03 Sep 2024 08:33:00 +0200
+Date: Tue, 3 Sep 2024 08:33:00 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: David Lin <yu-hao.lin@nxp.com>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+	Calvin Owens <calvin@wbinvd.org>,
+	Brian Norris <briannorris@chromium.org>,
+	Kalle Valo <kvalo@kernel.org>,
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>
+Subject: Re: [EXT] [RFC PATCH 0/4] mwifiex: add support for iw61x
+Message-ID: <ZtatnHp_7FBSSpko@pengutronix.de>
+References: <20240826072648.167004-1-s.hauer@pengutronix.de>
+ <PA4PR04MB9638016F363BFF87D62B70D1D1922@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <ZtVd3__wfm6EOOgH@pengutronix.de>
+ <PA4PR04MB9638CF45263E713203A53EF7D1922@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <ZtVtPJSsIr9eIFWv@pengutronix.de>
+ <PA4PR04MB9638ED8FA48E352F7246127AD1922@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <ZtW5fFocfr9_WgGD@pengutronix.de>
+ <PA4PR04MB963814F85BBA6DD39F516469D1932@PA4PR04MB9638.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -113,37 +71,87 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240903013913.4143602-1-make24@iscas.ac.cn>
+In-Reply-To: <PA4PR04MB963814F85BBA6DD39F516469D1932@PA4PR04MB9638.eurprd04.prod.outlook.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-On Tue, Sep 03, 2024 at 09:39:13AM +0800, Ma Ke wrote:
-> Fix the NULL pointer dereference in mt7996_mcu_sta_bfer_he
-> routine adding an sta interface to the mt7996 driver.
+On Tue, Sep 03, 2024 at 01:51:46AM +0000, David Lin wrote:
+> > From: Sascha Hauer <s.hauer@pengutronix.de>
+> > Sent: Monday, September 2, 2024 9:11 PM
+> > To: David Lin <yu-hao.lin@nxp.com>
+> > Cc: Francesco Dolcini <francesco@dolcini.it>; Calvin Owens
+> > <calvin@wbinvd.org>; Brian Norris <briannorris@chromium.org>; Kalle Valo
+> > <kvalo@kernel.org>; linux-wireless@vger.kernel.org;
+> > linux-kernel@vger.kernel.org; kernel@pengutronix.de
+> > Subject: Re: [EXT] [RFC PATCH 0/4] mwifiex: add support for iw61x
+> > 
+> > > > > > > >
+> > > > > > > > Sascha
+> > > > > > > >
+> > > > > > > >
+> > > > > > > > Sascha Hauer (4):
+> > > > > > > >   wifi: mwifiex: release firmware at remove time
+> > > > > > > >   wifi: mwifiex: handle VDLL
+> > > > > > > >   wifi: mwifiex: wait longer for SDIO card status
+> > > > > > > >   mwifiex: add iw61x support
+> > > > > > > >
+> > > > > > > >  drivers/net/wireless/marvell/mwifiex/cmdevt.c | 86
+> > > > > > +++++++++++++++++++
+> > > > > > > >  drivers/net/wireless/marvell/mwifiex/fw.h     | 16 ++++
+> > > > > > > >  drivers/net/wireless/marvell/mwifiex/main.c   |  9 +-
+> > > > > > > >  drivers/net/wireless/marvell/mwifiex/main.h   |  4 +
+> > > > > > > >  drivers/net/wireless/marvell/mwifiex/sdio.c   | 81
+> > > > ++++++++++++++++-
+> > > > > > > >  drivers/net/wireless/marvell/mwifiex/sdio.h   |  3 +
+> > > > > > > >  .../net/wireless/marvell/mwifiex/sta_event.c  |  4
+> > > > > > > > +  .../net/wireless/marvell/mwifiex/uap_event.c  |  4 +
+> > > > > > > >  include/linux/mmc/sdio_ids.h                  |  3 +
+> > > > > > > >  9 files changed, 205 insertions(+), 5 deletions(-)
+> > > > > > > >
+> > > > > > > > --
+> > > > The VDLL support in the downstream driver supports a case when a
+> > > > VDLL event comes in while a command is being sent. I catched this
+> > > > with this
+> > > > test:
+> > > >
+> > > >         if (adapter->cmd_sent) {
+> > > >                 mwifiex_dbg(adapter, MSG, "%s: adapter is busy\n",
+> > > > __func__);
+> > > >                 return -EBUSY;
+> > > >         }
+> > > >
+> > > > The downstream driver defers handling of the VDLL event to the main
+> > > > process in this case. I haven't implemented this case in my patch
+> > > > because I wasn't able to trigger it, but is this the case you are referring to?
+> > > >
+> > >
+> > > Not only this code segment. In fact, you did not add VDLL data patch support
+> > to sdio.c.
+> > > If you try to add the code and do test, you will know what is missing in your
+> > code.
+> > 
+> > Could you point me to the code you mean?
+> > 
+> > Sascha
+> > 
 > 
-> Found by code review.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-> index 2e4fa9f48dfb..cba28d8d5562 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-> @@ -1544,6 +1544,9 @@ mt7996_mcu_sta_bfer_he(struct ieee80211_sta *sta, struct ieee80211_vif *vif,
->  	u8 nss_mcs = mt7996_mcu_get_sta_nss(mcs_map);
->  	u8 snd_dim, sts;
->  
-> +	if (!vc)
-> +		return;
+> I only know the porting VDLL code in nxpwifi.
 
-Why is this the only place you are checking the return value of
-mt76_connac_get_he_phy_cap()?  Either fix them all in this driver or
-none as obviously it can not fail :(
+Yes, and I asked for a pointer to that code, some function name, or
+file/line or whatever, because I looked at the nxpwifi driver and don't
+know what you mean with "VDLL data patch support" in sdio.c.
 
-thanks,
+Sascha
 
-greg k-h
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
