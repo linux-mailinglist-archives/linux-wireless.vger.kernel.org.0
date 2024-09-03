@@ -1,61 +1,62 @@
-Return-Path: <linux-wireless+bounces-12436-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12437-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C579596A972
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 23:02:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D106E96A974
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 23:03:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33C5CB24A5C
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 21:02:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E2BB287182
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 21:03:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7B671D79AD;
-	Tue,  3 Sep 2024 20:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 497791E9DDF;
+	Tue,  3 Sep 2024 20:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pnTOSs3u"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zdv6KO4P"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBCC1E974E;
-	Tue,  3 Sep 2024 20:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B3A41E9DDC;
+	Tue,  3 Sep 2024 20:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725396471; cv=none; b=bzWZnv7gtdzTPOzjKVkYSt+WG71moKIhapd7RSUZlyreyVA62YaYbGZzPRlg23sGPZ7IOetRZQiObggTcvl7zAVKXbY5SwXdsBK7nh3B7B55hTw4nfLJWOq0MDRLNWg5E04Va5ClFsk6c47thc/gDazRTZCg37/DzR2Yxi06pt4=
+	t=1725396476; cv=none; b=F4o/AwXFd+jpahSuOrthghXK64O/TWT+cz6IP2NEtHTOIequJ3qifETG3OLv52gzTTylE1NNITBy1MJ36I0d6z2IgPFsbKENnAeWD0wBlzoKft5TV81r7mIlrY8HniHZ8nV1Uwrh/ye+Iid4E/XX7Lc/YIHFC4awzK+OXT+fZ94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725396471; c=relaxed/simple;
-	bh=+jOhbuIzUGAYMO7CmA8QYLO1aUmswmbfAOUxoe25ewE=;
+	s=arc-20240116; t=1725396476; c=relaxed/simple;
+	bh=uaEvcWWAGQyOMlI25WEvlbOI0juAyI/bwMtYZb8maoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KNXTsht2OteA8BgaKz3Eh7QHKDUhoYh92sg7y/Orv43pPl5ktBpzriVmPXIEHlzAwL3YjJ0QMUpwJDegMLsBMargwGb6O3Ak2jXNLurlved/duhainogEi5s4k3xcX+BaTnalfiFdM6mb73x4VLuIPumg/AqAiHZz/wPHGlOaHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pnTOSs3u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 510EFC4CEC5;
-	Tue,  3 Sep 2024 20:47:50 +0000 (UTC)
+	 MIME-Version; b=iLYNCF+BIThsu0QwE/q+kwqVg03HgluT9yxkwbCn96otj/ifsUUJzm4mZAsr2o0TLrNelhBrHll7dEppWQqLMhUYH6E6EDT7UHPB9sCGz1tXWT+d0sJ1gedLtnqBbUM8IRFPP6AlRYVgDNNy5LmeFP/T09wYwGLqbLwXx+QKZbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zdv6KO4P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42768C4CEC5;
+	Tue,  3 Sep 2024 20:47:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725396471;
-	bh=+jOhbuIzUGAYMO7CmA8QYLO1aUmswmbfAOUxoe25ewE=;
+	s=k20201202; t=1725396475;
+	bh=uaEvcWWAGQyOMlI25WEvlbOI0juAyI/bwMtYZb8maoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pnTOSs3uFliLgM2154pRERx7mVZLjwco9ksDpSUbn06QQz6e1U+wMTahgfugq1I5q
-	 tA4tGvFjUcoufIrMNUMxJK7uqkYIuDz56J+NPN1b6ga3WChi+bJ1DRWvmmCSXOvVc7
-	 OIncU52xgg76jo6Ix2q4XiBo6Nou/Os27WbtfXYrQrOw9jxppC4/0G+4VAN1ObPbOX
-	 yUpFuBoWqfhFbui66iP9Um6/RZ3HK9PNQHWZ6V78t08i6Q9XDO4r4DQmdLM9bBKK4e
-	 ES6Ey2Kh3tWe0RaoemwJt9FlWkDoB2jlaQPTsCgvhfysFnGd+PeXBUth3Zrv7B8C0O
-	 torUmpyHsMfmQ==
+	b=Zdv6KO4PvtIO/uf44Op0DoUZn3PRHQgk5BMXIRrmGKJ8IF4KTjq9lJ0YaFAGfQwYE
+	 ClGLH8ZnIxY1RVrEt4GzhSS4iKLK79F/6cEkZFpONpth5nDadt1OKFCQvpGhh2+gmH
+	 7pzj2JKoCiUAORoyXRfNQhUvW+kQFoSujUh7QTSG/RP7FgcSy4t5PSz+9jxjsv9OlZ
+	 F0i+JCCfYnuumSCWC0XrDfD+ikWjIJJNmTooSc6k7oAJTovr35ZX8belbCJVtqbBNW
+	 tVh6TtWMlXv6rBJuz/lZkZNeQE2rx24M4sQWFeRb/+k7ocqCw6RyT4we0VAHdOWTJp
+	 K2Ac+K8su+Fcw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Benjamin Berg <benjamin.berg@intel.com>,
-	Len Brown <lenb@kernel.org>,
+Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	kvalo@kernel.org,
-	daniel.gabay@intel.com,
-	ofer.kimelman@intel.com,
+	gregory.greenman@intel.com,
+	ilan.peer@intel.com,
+	shaul.triebitz@intel.com,
+	benjamin.berg@intel.com,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 7/8] wifi: iwlwifi: lower message level for FW buffer destination
-Date: Tue,  3 Sep 2024 15:27:57 -0400
-Message-ID: <20240903192815.1108754-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 8/8] wifi: iwlwifi: mvm: don't wait for tx queues if firmware is dead
+Date: Tue,  3 Sep 2024 15:27:58 -0400
+Message-ID: <20240903192815.1108754-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240903192815.1108754-1-sashal@kernel.org>
 References: <20240903192815.1108754-1-sashal@kernel.org>
@@ -70,39 +71,58 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.224
 Content-Transfer-Encoding: 8bit
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit f8a129c1e10256c785164ed5efa5d17d45fbd81b ]
+[ Upstream commit 3a84454f5204718ca5b4ad2c1f0bf2031e2403d1 ]
 
-An invalid buffer destination is not a problem for the driver and it
-does not make sense to report it with the KERN_ERR message level. As
-such, change the message to use IWL_DEBUG_FW.
+There is a WARNING in iwl_trans_wait_tx_queues_empty() (that was
+recently converted from just a message), that can be hit if we
+wait for TX queues to become empty after firmware died. Clearly,
+we can't expect anything from the firmware after it's declared dead.
 
-Reported-by: Len Brown <lenb@kernel.org>
-Closes: https://lore.kernel.org/r/CAJvTdKkcxJss=DM2sxgv_MR5BeZ4_OC-3ad6tA40TYH2yqHCWw@mail.gmail.com
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Don't call iwl_trans_wait_tx_queues_empty() in this case. While it could
+be a good idea to stop the flow earlier, the flush functions do some
+maintenance work that is not related to the firmware, so keep that part
+of the code running even when the firmware is not running.
+
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240825191257.20abf78f05bc.Ifbcecc2ae9fb40b9698302507dcba8b922c8d856@changeid
+Link: https://patch.msgid.link/20240825191257.a7cbd794cee9.I44a739fbd4ffcc46b83844dd1c7b2eb0c7b270f6@changeid
+[edit commit message]
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
-index 56f63f5f5dd34..2afa5c91bc76b 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
-@@ -111,7 +111,8 @@ iwl_pcie_ctxt_info_dbg_enable(struct iwl_trans *trans,
- 		}
- 		break;
- 	default:
--		IWL_ERR(trans, "WRT: Invalid buffer destination\n");
-+		IWL_DEBUG_FW(trans, "WRT: Invalid buffer destination (%d)\n",
-+			     le32_to_cpu(fw_mon_cfg->buf_location));
- 	}
- out:
- 	if (dbg_flags)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 08008b0c0637c..fa784d8352901 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -4747,6 +4747,10 @@ static void iwl_mvm_flush_no_vif(struct iwl_mvm *mvm, u32 queues, bool drop)
+ 	int i;
+ 
+ 	if (!iwl_mvm_has_new_tx_api(mvm)) {
++		/* we can't ask the firmware anything if it is dead */
++		if (test_bit(IWL_MVM_STATUS_HW_RESTART_REQUESTED,
++			     &mvm->status))
++			return;
+ 		if (drop) {
+ 			mutex_lock(&mvm->mutex);
+ 			iwl_mvm_flush_tx_path(mvm,
+@@ -4828,8 +4832,11 @@ static void iwl_mvm_mac_flush(struct ieee80211_hw *hw,
+ 
+ 	/* this can take a while, and we may need/want other operations
+ 	 * to succeed while doing this, so do it without the mutex held
++	 * If the firmware is dead, this can't work...
+ 	 */
+-	if (!drop && !iwl_mvm_has_new_tx_api(mvm))
++	if (!drop && !iwl_mvm_has_new_tx_api(mvm) &&
++	    !test_bit(IWL_MVM_STATUS_HW_RESTART_REQUESTED,
++		      &mvm->status))
+ 		iwl_trans_wait_tx_queues_empty(mvm->trans, msk);
+ }
+ 
 -- 
 2.43.0
 
