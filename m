@@ -1,36 +1,36 @@
-Return-Path: <linux-wireless+bounces-12356-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12357-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63ED896910A
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 03:45:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A588D969113
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 03:50:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8ECAE1C22701
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 01:45:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D83691C227A6
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 01:50:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACDAC33CD2;
-	Tue,  3 Sep 2024 01:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85031CCECE;
+	Tue,  3 Sep 2024 01:50:18 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB37B1A4E6B;
-	Tue,  3 Sep 2024 01:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B49D33CD2;
+	Tue,  3 Sep 2024 01:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725327920; cv=none; b=ktP+tKntbP7Bhvx/CTffmaj73+SvTNiqOQGlLBSHYhd0NMfE30Nz4FlVrSYwSjrhn2dyZLR/pfjzsPRYs2HSk23Et2jJ8DZE5oYeZaqE2xBpFzRZpaapgNSE/j2ivOOa/8Tb6S5yTSH5t2eRtaSd7EwQVIMYcr1/WMQZ8wPKe3Q=
+	t=1725328218; cv=none; b=PzgmtAMUmwGr9z8yC8MJqq0lRj++zI+PhQ0G0/8IWTZYfCqYh5Y9ZAKJg39vTsxNSVXEG29ZAgrtPpDsEf4p16uoDAmH8NxLlGTH+Yai35nk1iA3KdxwAJcNI6ffnf8GFhA+FWyVjvgxzGVF0WRQW3CPK0UopQ/LXEa8fWV7uFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725327920; c=relaxed/simple;
-	bh=wsAv2DCs81Krot2H6B+GkuNI1BslfDtsdnmozEw5rcU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nBs/wuoov/drxvbvyie9doFHzoXkOKqftNnhmALy9jVK++7VoBtXAM+rfXQnwsHX4/9MIJZg1USBzVW6J8xtQ7IHuz5AWA+uZ4Ol+qdqVDUG/24yCze1cNrdwqcCCPsnJHehNLG651nYTfABifUT2UEBK2jkiV0HMza8bhxZSJY=
+	s=arc-20240116; t=1725328218; c=relaxed/simple;
+	bh=c7iGIBmPQ0+X5ed9jb4ofzKU/5N8V6B+VMyfLL4JSoc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Rla34cmNkkfWpCJCyukMyyTaCkJqOIrJLQ/tc9ItlAtPaAYpek/4n+HCiJd8Q+3XZ1eGOfEdQ1tEIJN+gqPzAc4NeFgOn95rLuR1Fn4KJKSpiZB5TgvCYTUuV+qfA7+JtWevGcAemBpBZk8SaLA4LnT8vb2SjFFMooY2kcVWPjs=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-01 (Coremail) with SMTP id qwCowAC3aKgaatZmIuKyAA--.34549S2;
-	Tue, 03 Sep 2024 09:45:05 +0800 (CST)
+	by APP-01 (Coremail) with SMTP id qwCowACHj6NIa9Zm_wqzAA--.29549S2;
+	Tue, 03 Sep 2024 09:50:01 +0800 (CST)
 From: Ma Ke <make24@iscas.ac.cn>
 To: nbd@nbd.name,
 	lorenzo@kernel.org,
@@ -40,10 +40,11 @@ To: nbd@nbd.name,
 	kvalo@kernel.org,
 	matthias.bgg@gmail.com,
 	angelogioacchino.delregno@collabora.com,
-	mingyen.hsieh@mediatek.com,
-	deren.wu@mediatek.com,
-	make24@iscas.ac.cn,
+	johannes.berg@intel.com,
 	ruanjinjie@huawei.com,
+	make24@iscas.ac.cn,
+	howard-yh.hsu@mediatek.com,
+	chui-hao.chiu@mediatek.com,
 	greearb@candelatech.com,
 	akpm@linux-foundation.org
 Cc: linux-wireless@vger.kernel.org,
@@ -51,9 +52,9 @@ Cc: linux-wireless@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linux-mediatek@lists.infradead.org,
 	stable@vger.kernel.org
-Subject: [PATCH RESEND] wifi: mt76: mt7921: Check devm_kasprintf() returned value
-Date: Tue,  3 Sep 2024 09:44:55 +0800
-Message-Id: <20240903014455.4144536-1-make24@iscas.ac.cn>
+Subject: [PATCH RESEND] mt76: mt7915: check devm_kasprintf() returned value
+Date: Tue,  3 Sep 2024 09:49:55 +0800
+Message-Id: <20240903014955.4145423-1-make24@iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -62,10 +63,10 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAC3aKgaatZmIuKyAA--.34549S2
+X-CM-TRANSID:qwCowACHj6NIa9Zm_wqzAA--.29549S2
 X-Coremail-Antispam: 1UD129KBjvdXoWrKFW7ZFW5Ww13Zw4xXFWxCrg_yoWDAFbEgr
-	409rn7XryrGFn8Kr42yry3CrW2kaykZr18XFsxtrWrJrWxGrWUur93Zrn8J392k397uryU
-	urn0kFy8uws8ZjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	W8Zrn3GFyrGwn0kr47Cry3Cryaya4kZF1kJ393trW5GrW8AFW7WryfZrn8J397Cws29r15
+	Gwn8AryrZ398ujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
 	9fnUUIcSsGvfJTRUUUbh8FF20E14v26ryj6rWUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
 	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
 	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
@@ -90,22 +91,22 @@ Cc: stable@vger.kernel.org
 Fixes: 6ae39b7c7ed4 ("wifi: mt76: mt7921: Support temp sensor")
 Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/init.c | 2 ++
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index ef0c721d26e3..5ab395d9d93e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -52,6 +52,8 @@ static int mt7921_thermal_init(struct mt792x_phy *phy)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index a978f434dc5e..7bc3b4cd3592 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -194,6 +194,8 @@ static int mt7915_thermal_init(struct mt7915_phy *phy)
  
- 	name = devm_kasprintf(&wiphy->dev, GFP_KERNEL, "mt7921_%s",
+ 	name = devm_kasprintf(&wiphy->dev, GFP_KERNEL, "mt7915_%s",
  			      wiphy_name(wiphy));
 +	if (!name)
 +		return -ENOMEM;
  
- 	hwmon = devm_hwmon_device_register_with_groups(&wiphy->dev, name, phy,
- 						       mt7921_hwmon_groups);
+ 	cdev = thermal_cooling_device_register(name, phy, &mt7915_thermal_ops);
+ 	if (!IS_ERR(cdev)) {
 -- 
 2.25.1
 
