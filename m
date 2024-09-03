@@ -1,131 +1,204 @@
-Return-Path: <linux-wireless+bounces-12395-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12396-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A639C96A2EA
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 17:36:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86D3E96A357
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 17:52:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE26BB26EC7
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 15:35:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0910F1F21F43
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 15:52:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54C1316F8EF;
-	Tue,  3 Sep 2024 15:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5160188A1F;
+	Tue,  3 Sep 2024 15:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="SYqheX2h"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="N/KIvPUs"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B3218890C
-	for <linux-wireless@vger.kernel.org>; Tue,  3 Sep 2024 15:35:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D12B1885A2
+	for <linux-wireless@vger.kernel.org>; Tue,  3 Sep 2024 15:52:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725377740; cv=none; b=aaxR5sei2vFiGRBNl9N0l9RlDwiCSMWRgXeCezHA+ze5HvEnptrsvJjJ6Xd/hq4RDh9KJzERUh9D6vPq4/MkhIXNlMZD1Si/1LuLV23tEmFaeJKmPcvd49fI+qXuj7fPpzqdhfhWNVUKTpApkWyZj1abRc5i+HBPgpy/QOQgeEQ=
+	t=1725378746; cv=none; b=Yw7p4yNHjVng/W4kp5CKUyocotMcEjciBZVQddsZE0s9dKbveXWzu7I8jKmN8qsuxjiyMsHgglm/888ZR0h/8Bdji8/TrrktQCxDntwVS8di7P9Ep1qAZZLS3fYBKgLdavogu/OUVWDY0U/eETkQNijjbYRTurPe0TRy5462P0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725377740; c=relaxed/simple;
-	bh=/PYLIKbNlqHDrOIslLF07+W8xRWRF+qr/rE0Cx2KJmg=;
-	h=Message-ID:Date:MIME-Version:From:To:CC:Subject:Content-Type; b=BqXjve3ObF9SKlGUshnWHICiAhzEqfWnxbULSbeMEIygfFKy7vQ7IblhvX1ExlbcrJtmsQzXKQJOYw/zwy7ruWPepsSbM7dqR0HAnls6XRUUpj88y3Fbfct36O9P4R6pFTUmboanb0VEUK/b5LEJSmdEMBHDyO79GFodZSiKxwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=SYqheX2h; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 483BWBIP028129;
-	Tue, 3 Sep 2024 15:35:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=GTtRFXUdKiuqNiu7gVBEbg
-	8Hx8FJe/fi91/4XyGN214=; b=SYqheX2h726YAT8/SqnchmJElBmtRBpnA3gVom
-	2pXr6KT4Kdia2hYx00LyO4zTp3m7ArFALcd6NyNXyzQTOAk7kkAd2CwHoFR/M9BC
-	DjubjMvaBqTK20aYPjdf2XybxT9hxKqnKbCa7IIZgGFEo3N3DVt7PB36hzs3KB5O
-	MDlzfKog4+YMzRvaaScHbWQBXE2ToPo6rAm7AlnfdwSrip9avXIoA3LWeFZBjE8C
-	u2BCUmWCwyfA2O7pJIiRW9roKRiXXS2Br7nRtOE21DQMFknLxRJqMARkmtp5OmWc
-	Jbke3HhCvGvMCrGMVzrF68uqagj+3XB7gaND9RQcTNtiPmow==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41bvbkfqq9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Sep 2024 15:35:08 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 483FZ7Ex005357
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 3 Sep 2024 15:35:07 GMT
-Received: from [10.111.180.250] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 3 Sep 2024
- 08:35:07 -0700
-Message-ID: <8a9375eb-3205-4a78-a8c1-bd85df106ec9@quicinc.com>
-Date: Tue, 3 Sep 2024 08:35:06 -0700
+	s=arc-20240116; t=1725378746; c=relaxed/simple;
+	bh=hT2ARd2B5jXaFHA/22ApPc30vh73M73KfxEL3R+0Rqs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xg1GLTiFeRKFoBIo3Gy5q5sz9XO7BSEVOAT0lJXCqRSfBRAKFTKAsK/AIbXWFh+ilNLKPSBvNljzBf4tOKfjpue1q8QVLwa7vVoPf12u3RAi3oFxeJZF/EvV6LOcdxtLRQJ5gB9HoFkmOjH6Rt4TI5kMBCdf/wDMT4UwX6Vizwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=N/KIvPUs; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a8a1d78e7b0so159523066b.3
+        for <linux-wireless@vger.kernel.org>; Tue, 03 Sep 2024 08:52:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725378742; x=1725983542; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=DuEfnvjjt6m1/doYMjeYKF5Vb/dLCWma3sPSNO69eh8=;
+        b=N/KIvPUsav4dNfjuiy4gWwAaDuUkL4Sd8Yy+TPinpTeg0WpahMZ9FGbA38rbJMNbY2
+         iyOLkLpfu4yuDwGsSTrffT8V1iBwMdmaVPRxKzihl/1WjNFPpz3UoghU9BVy3DoxPgZ7
+         l2tB9TBj9CzCfgYEVn/fshj9Jfza9dh1ThbLJ6OKOk4pNRBRcto93tekNgfQZySjJo3q
+         TEFYGjLus7e/I/1NYkfBk8amiBMTTyoCZde4UkzgliGhA/x3NG/dSf4JbQ3vXr8Ej42n
+         gfu6rVfcwx33AHup6NiDSyWBiM8rlZ9Q78gUWKWFW8L/y2dxxaR8JeaiEbMtV1XVz/IM
+         hjoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725378742; x=1725983542;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DuEfnvjjt6m1/doYMjeYKF5Vb/dLCWma3sPSNO69eh8=;
+        b=nYd4tUSzGQRhsTmaqjWtQou2opEc5ApX7jWM6MiRpRmeecjettxXmcse8s3Hp0TV4T
+         50/X9chfaPQLwQs1ixOd1xm+rP+Tl3oGUtfWEDNryFirvZKCIPUJe2596WNaTfCpk2xC
+         wp8Oren2+IGE0iGIIfMaWvs1hONg/uz6wR+QymYcdeBCeAh8L3EzcEgPat76h5fkswv+
+         Htwuw2NyLQUE1aGvB2774h+KPCSx2Vh3wil7Wy+k8AYz3Et22ez8seiKgmP7a57CcCQg
+         nzxlB2YhRS/oWTB2S5HYRhB0iX4Vky2hjAczdVVs7ZxODnzWSWVvZy6/8+7NzAF6CT9a
+         riaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU/gDnD8uxywbxlrCg1BbWhcoj6KXQzNsG4kLA7rxTTEPsPHfcrQD9+CYjODusu/qUJCOER33NToQcAVBBDtg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZYKAecS5ii3S8Fgb49qqn7cxBZL/4felQNdLn0n30UcQBHY4D
+	oSMBpv63gda2LMPYjTjD5OMTY81sD37a2rKxTe1uxhD/K+ECK9JzJHOI/wgGex0=
+X-Google-Smtp-Source: AGHT+IGX8n0w2RrQgN7NxW87zoP0ZbH3F+TZlJRkbLUatpnJln6Op8KzPk3dbNz6NHkJ9YOZ5PBNdQ==
+X-Received: by 2002:a17:907:86a9:b0:a86:73cb:99ef with SMTP id a640c23a62f3a-a89faf0fc8dmr584529166b.39.1725378742211;
+        Tue, 03 Sep 2024 08:52:22 -0700 (PDT)
+Received: from localhost (p5dc68f76.dip0.t-ipconnect.de. [93.198.143.118])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8988feb2a3sm701051566b.3.2024.09.03.08.52.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Sep 2024 08:52:21 -0700 (PDT)
+Date: Tue, 3 Sep 2024 17:52:20 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Li Zetao <lizetao1@huawei.com>
+Cc: florian.fainelli@broadcom.com, andrew@lunn.ch, olteanv@gmail.com, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	wens@csie.org, jernej.skrabec@gmail.com, samuel@sholland.org, heiko@sntech.de, 
+	yisen.zhuang@huawei.com, salil.mehta@huawei.com, hauke@hauke-m.de, 
+	alexandre.torgue@foss.st.com, joabreu@synopsys.com, mcoquelin.stm32@gmail.com, 
+	wellslutw@gmail.com, radhey.shyam.pandey@amd.com, michal.simek@amd.com, 
+	ajay.kathat@microchip.com, claudiu.beznea@tuxon.dev, kvalo@kernel.org, 
+	jacky_chou@aspeedtech.com, netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-sunxi@lists.linux.dev, linux-rockchip@lists.infradead.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-wireless@vger.kernel.org
+Subject: Re: [PATCH net-next 05/12] net: ftgmac100: Convert using
+ devm_clk_get_enabled() in ftgmac100_setup_clk()
+Message-ID: <7mfqy5mcwxrppb25j57za7jzk6d5llexfgnngl66tle3ic32yy@63cj63tsh3xh>
+References: <20240831021334.1907921-1-lizetao1@huawei.com>
+ <20240831021334.1907921-6-lizetao1@huawei.com>
+ <nyfm5mxrrvfeu7s25qzjxbatvgnppq7exmca3sccmm6lz7nxan@xxsdgcrueoen>
+ <0becf4e0-2f66-4c26-b0b3-59ee232eaaef@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <ath10k@lists.infradead.org>, <ath11k@lists.infradead.org>,
-        <ath12k@lists.infradead.org>, <quic_jjohnson@quicinc.com>,
-        <quic_kvalo@quicinc.com>
-Subject: pull-request: ath-current-20240903
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 1Q3TZxKd_18OmTZB7ZXE6qbn8s5oQl1u
-X-Proofpoint-GUID: 1Q3TZxKd_18OmTZB7ZXE6qbn8s5oQl1u
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-03_03,2024-09-03_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- adultscore=0 suspectscore=0 phishscore=0 lowpriorityscore=0 mlxscore=0
- impostorscore=0 malwarescore=0 bulkscore=0 spamscore=0 clxscore=1011
- mlxlogscore=557 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2409030127
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="se74eiqu42ro53lu"
+Content-Disposition: inline
+In-Reply-To: <0becf4e0-2f66-4c26-b0b3-59ee232eaaef@huawei.com>
 
-The following changes since commit 38055789d15155109b41602ad719d770af507030:
 
-  wifi: ath12k: use 128 bytes aligned iova in transmit path for WCN7850 (2024-08-05 12:28:07 +0300)
+--se74eiqu42ro53lu
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-are available in the Git repository at:
+Hello,
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git tags/ath-current-20240903
+On Tue, Sep 03, 2024 at 06:46:48PM +0800, Li Zetao wrote:
+> =E5=9C=A8 2024/9/3 16:09, Uwe Kleine-K=C3=B6nig =E5=86=99=E9=81=93:
+> > On Sat, Aug 31, 2024 at 10:13:27AM +0800, Li Zetao wrote:
+> > > Use devm_clk_get_enabled() instead of devm_clk_get() +
+> > > clk_prepare_enable(), which can make the clk consistent with the devi=
+ce
+> > > life cycle and reduce the risk of unreleased clk resources. Since the
+> > > device framework has automatically released the clk resource, there is
+> > > no need to execute clk_disable_unprepare(clk) on the error path, drop
+> > > the cleanup_clk label, and the original error process can return dire=
+ctly.
+> > >=20
+> > > Signed-off-by: Li Zetao <lizetao1@huawei.com>
+> > > ---
+> > >   drivers/net/ethernet/faraday/ftgmac100.c | 27 ++++++---------------=
+---
+> > >   1 file changed, 7 insertions(+), 20 deletions(-)
+> > >=20
+> > > diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/e=
+thernet/faraday/ftgmac100.c
+> > > index 4c546c3aef0f..eb57c822c5ac 100644
+> > > --- a/drivers/net/ethernet/faraday/ftgmac100.c
+> > > +++ b/drivers/net/ethernet/faraday/ftgmac100.c
+> > > @@ -1752,13 +1752,10 @@ static int ftgmac100_setup_clk(struct ftgmac1=
+00 *priv)
+> > >   	struct clk *clk;
+> > >   	int rc;
+> > > -	clk =3D devm_clk_get(priv->dev, NULL /* MACCLK */);
+> > > +	clk =3D devm_clk_get_enabled(priv->dev, NULL /* MACCLK */);
+> > >   	if (IS_ERR(clk))
+> > >   		return PTR_ERR(clk);
+> > >   	priv->clk =3D clk;
+> > > -	rc =3D clk_prepare_enable(priv->clk);
+> > > -	if (rc)
+> > > -		return rc;
+> > >   	/* Aspeed specifies a 100MHz clock is required for up to
+> > >   	 * 1000Mbit link speeds. As NCSI is limited to 100Mbit, 25MHz
+> > > @@ -1767,21 +1764,17 @@ static int ftgmac100_setup_clk(struct ftgmac1=
+00 *priv)
+> > >   	rc =3D clk_set_rate(priv->clk, priv->use_ncsi ? FTGMAC_25MHZ :
+> > >   			  FTGMAC_100MHZ);
+> > >   	if (rc)
+> > > -		goto cleanup_clk;
+> > > +		return rc;
+> > >   	/* RCLK is for RMII, typically used for NCSI. Optional because it'=
+s not
+> > >   	 * necessary if it's the AST2400 MAC, or the MAC is configured for
+> > >   	 * RGMII, or the controller is not an ASPEED-based controller.
+> > >   	 */
+> > > -	priv->rclk =3D devm_clk_get_optional(priv->dev, "RCLK");
+> > > -	rc =3D clk_prepare_enable(priv->rclk);
+> > > -	if (!rc)
+> > > -		return 0;
+> > > +	priv->rclk =3D devm_clk_get_optional_enabled(priv->dev, "RCLK");
+> > > +	if (IS_ERR(priv->rclk))
+> > > +		return PTR_ERR(priv->rclk);
+> > > -cleanup_clk:
+> > > -	clk_disable_unprepare(priv->clk);
+> > > -
+> > > -	return rc;
+> > > +	return 0;
+> >=20
+> > You're changing semantics here. Before your patch ftgmac100_setup_clk()
+> > was left with priv->clk disabled; now you keep it enabled.
+> Before my patch, ftgmac100_setup_clk() was only left with priv->clk disab=
+led
+> when error occurs, and was left with priv->clk enabled when no error occu=
+rs
+> because when enabling priv->rclk successfully, it will return 0 directly,
+> and when enabling priv->rclk failed, it will disable priv->clk.
+>=20
+> It turns out that the code logic is a bit counter-intuitive, but the
+> readability has been improved after adjustments.
 
-for you to fetch changes up to 2f833e8948d6c88a3a257d4e426c9897b4907d5a:
+Indeed. This is IMHO worth mentioning in the commit log to prevent the
+next reviewer stumble over the same code construct.
 
-  Revert "wifi: ath11k: support hibernation" (2024-09-02 19:33:00 +0300)
+Best regards
+Uwe
 
-----------------------------------------------------------------
-ath.git patches for v6.11-rc7
+--se74eiqu42ro53lu
+Content-Type: application/pgp-signature; name="signature.asc"
 
-We have three patch which address two issues in the ath11k driver
-which should be addressed for 6.11-rc7:
+-----BEGIN PGP SIGNATURE-----
 
-One patch fixes a NULL pointer dereference while parsing transmit
-power envelope (TPE) information, and the other two patches revert the
-hibernation support since it is interfering with suspend on some
-platforms. Note the cause of the suspend wakeups is still being
-investigated, and it is hoped this can be addressed and hibernation
-support can be restored in the near future.
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmbXMLEACgkQj4D7WH0S
+/k5L/wf9Gs22UgHjYPS/+O96Cu4w4UcP3q7nPHpOoDSXi2BXtkrd7ABWKXFV2G9v
+0DkiId7UylOmQ86aa7znTZywltkTX8AItXV6lq02kZPov3/57jw8RcpHRc694mrH
+PxmFxBPFAtoh5SlzCoBzgViqv+dfxcd9r4yniENbBn1gH2j1SH/XsJRypXr8PaUy
+HHvPiIhlO4ylM2U3QM3ojnUNGER5I5Oq2Ge8PYhd7B118KogrbcAlMm52+cN+Emt
+M+kDaR5zXhRN/Xlknj3YnVNtzyYxfF6iNjOLSVQue1CxjbsHXwYWt+gUMwZ9U7mi
+M/GMHgxWenCtKXfzEgHtrXqAzvSsNA==
+=H+qA
+-----END PGP SIGNATURE-----
 
-----------------------------------------------------------------
-Baochen Qiang (3):
-      wifi: ath11k: fix NULL pointer dereference in ath11k_mac_get_eirp_power()
-      Revert "wifi: ath11k: restore country code during resume"
-      Revert "wifi: ath11k: support hibernation"
-
- drivers/net/wireless/ath/ath11k/ahb.c  |   4 +-
- drivers/net/wireless/ath/ath11k/core.c | 115 +++++++++------------------------
- drivers/net/wireless/ath/ath11k/core.h |   4 --
- drivers/net/wireless/ath/ath11k/hif.h  |  12 +---
- drivers/net/wireless/ath/ath11k/mac.c  |   1 +
- drivers/net/wireless/ath/ath11k/mhi.c  |  12 +---
- drivers/net/wireless/ath/ath11k/mhi.h  |   3 +-
- drivers/net/wireless/ath/ath11k/pci.c  |  44 ++-----------
- drivers/net/wireless/ath/ath11k/qmi.c  |   2 +-
- 9 files changed, 49 insertions(+), 148 deletions(-)
+--se74eiqu42ro53lu--
 
