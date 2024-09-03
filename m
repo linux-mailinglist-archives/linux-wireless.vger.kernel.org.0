@@ -1,118 +1,114 @@
-Return-Path: <linux-wireless+bounces-12391-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12392-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B040F96A115
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 16:47:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 670B396A11D
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 16:48:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 596621F264ED
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 14:47:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F415328BD10
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 14:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D508514A4E0;
-	Tue,  3 Sep 2024 14:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741C31547F9;
+	Tue,  3 Sep 2024 14:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qfs7ZYZo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LjeUp7VR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0EA4153BE4
-	for <linux-wireless@vger.kernel.org>; Tue,  3 Sep 2024 14:47:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022BE13D8BF;
+	Tue,  3 Sep 2024 14:48:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725374866; cv=none; b=Dq4gdyfOnVy1sAaQNGiT9E6vM0kyu+phG3Gq8SPaqQKlcJdIFzIi5GHK2/dqc6hnnZVSTQz/qYqmiYE/h2OhI7Vt3g3JNLepz3pG5z3nQZzenFHtDLlfLYL1I2dBOgfJQHcjm33ZBfz/rgz4BC6OWmEAnUGUpUDF9F2GNvA2mYs=
+	t=1725374932; cv=none; b=gPlIizwnUhdsRoKpuJA6NsxpIdpiuiS0vsQoSebeulHnudMYCa3/FQJ/vt/X8luI+Y1LDjkBCnRZCk9n/apwtgqyBQT4kWehj778SobEKLswLwNecVvZtYC56vqerWtMidYfcqhAAjd06BqDVYkELyf1skgwFRYt2uno/srRSAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725374866; c=relaxed/simple;
-	bh=s0qNyF8Z0L2RIYLiNDrEXtPAa6gWe40+lDGzeOQdiK8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S71dxVBS3hwvHPeREQrXoQCaAhrLqEaaJVaK/DdhR4PukL6EtYoSah/pVnhayMJ6FQ9pTtaLh3RVPV1K2BWVkRzyzwBNX0tfjJp0yrvCoMUMVqfWOJZmcRhgVPAPqfxZAsdEyCpirPZ2IRkwezm7Ztmxay7LXmlOn+nLFs2dzY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qfs7ZYZo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47094C4CEC9
-	for <linux-wireless@vger.kernel.org>; Tue,  3 Sep 2024 14:47:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725374866;
-	bh=s0qNyF8Z0L2RIYLiNDrEXtPAa6gWe40+lDGzeOQdiK8=;
-	h=References:In-Reply-To:From:Date:Subject:To:List-Id:Cc:From;
-	b=Qfs7ZYZoELaqff2wInrDbw8CGiFqpGy5gMjNDId9vzv1cWC4sWPuc1az/Em5LqHBm
-	 BdIp5aDMJucrzG8sdQqSHTLDG0p9BMuAkoAWgYvMwO9RrUIq0EPTiauWZGUXrq7H2W
-	 2hbglOWxlAyodvAhHFFK1QUrVcLLRE74mIYIv8BLxeQsyOsR9nRdFrhqZXgRBw9+Y+
-	 7hdhwIQOJUrDEBUpNG5k1Kjw4S2QuB4RBzIbMKDdqPNO2aSEXTYpZWmkNqB0RYswBR
-	 8+qNLYYb6agf+piik5WpSZSWsaG1FOrndQKCPYZBXbzg6Y4VePeIJjILS4Ro8hKuGP
-	 b6f0soinorp4w==
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-6d74ff7216eso18763907b3.1
-        for <linux-wireless@vger.kernel.org>; Tue, 03 Sep 2024 07:47:46 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWHojnxjRaNvEdW9P702B9N/QerHTyQU8+fXXFlWpgcbaEYYAe9Dzn/nkHzHv+GC8kGlhkF1IuLFbNd9DWVrQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnbySNE/L5e1SpPD+Izi63Ril1W4/1WQ2NmX9NAKh6nVoNiF8x
-	+6PHCMmuyoAIAHXpoN1wV29U1XId9Dl4LEtIF37iOcJit/BtSLQ4VaaYATCfF0jmj8yu0+4t6hK
-	UXihSsSsh80DTwhBHdYRRnf3tP/A=
-X-Google-Smtp-Source: AGHT+IGmaP9BZ7tNhCzK5ZmT/pxf5wR0cHZ6gHfjqAkqJ4GKH+UKpeV3xtl/RHlSRE4O+beoVCJ9pfTzeTvPmazgh5c=
-X-Received: by 2002:a05:690c:3245:b0:6b0:a6f0:b0da with SMTP id
- 00721157ae682-6d40f340af9mr126775307b3.12.1725374865447; Tue, 03 Sep 2024
- 07:47:45 -0700 (PDT)
+	s=arc-20240116; t=1725374932; c=relaxed/simple;
+	bh=Je2vmDY5FCSKlkQhUOJpUDBKbPavcaXLxF8qTKqwiI8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f/FSRipmZljW+8h7L55WaJ1Ubyu+zrFdhOPMvQ670m2c9JndxA6pGuhDbu7svvLMFWAvs0lGKN4B4quCNnMKe8bzAz2ARDySrrjYOVso8sh0v0z2FPxoorutvKLv4VAtrPYb5YcxoXxBZl74fC9moPz21rQDRuSLdPM0FCYA5Aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LjeUp7VR; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725374931; x=1756910931;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Je2vmDY5FCSKlkQhUOJpUDBKbPavcaXLxF8qTKqwiI8=;
+  b=LjeUp7VRrd86nHlE6NwyYdhqckEmHI6A+1S9K6wmCJHRDHQh5giT4OWE
+   mXXfr+90gsKiXvEg5pgMz4eUaxC6cVPpMWVRWQFLF8X7eVYpy5tII/Maz
+   tzqim/1psQ9DYAge/2sCXJOlwoJAX5e4WWxtCtESaHde3NQBaNuXQBkgZ
+   hnQh8Mssn6pRucj9pNA3ehtshnFXfW9uPj6ICtV3ThOlcynsEKrgpEdUb
+   6DqH0PwJjG1UZO4k3nm4s2xt8rgQg93V0dDyAjwBWgO6br8hg0qp6bP3O
+   awgqdT3O2gRkdAmYLyv5DBI4BHqKevcMrb/zTvOcpJj80QrlSitTFQ4JA
+   Q==;
+X-CSE-ConnectionGUID: M64T8/GYRdeYsEB9FmIIvw==
+X-CSE-MsgGUID: wZlWUrbAThW8AEo7DuWZdw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11184"; a="23844849"
+X-IronPort-AV: E=Sophos;i="6.10,199,1719903600"; 
+   d="scan'208";a="23844849"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 07:48:49 -0700
+X-CSE-ConnectionGUID: 50vhjylPRlSYoSZBfZ1nBQ==
+X-CSE-MsgGUID: bJ4GT7Y9Qw2+1ddljY2c4A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,199,1719903600"; 
+   d="scan'208";a="65293586"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2024 07:48:44 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1slUpj-00000004k23-3JOV;
+	Tue, 03 Sep 2024 17:48:39 +0300
+Date: Tue, 3 Sep 2024 17:48:39 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: linux@armlinux.org.uk, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
+	daniel@ffwll.ch, linus.walleij@linaro.org, alsi@bang-olufsen.dk,
+	andrew@lunn.ch, f.fainelli@gmail.com, olteanv@gmail.com,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, nico@fluxnic.net, arend.vanspriel@broadcom.com,
+	kvalo@kernel.org, robh@kernel.org, saravanak@google.com,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com, devicetree@vger.kernel.org
+Subject: Re: [PATCH v1 7/7] of/irq: Make use of irq_get_trigger_type()
+Message-ID: <Ztchx4c2v78eGkYy@smile.fi.intel.com>
+References: <20240902225534.130383-1-vassilisamir@gmail.com>
+ <20240902225534.130383-8-vassilisamir@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <MW5PR11MB5810E786AA5A366E2DD412ACA3932@MW5PR11MB5810.namprd11.prod.outlook.com>
-In-Reply-To: <MW5PR11MB5810E786AA5A366E2DD412ACA3932@MW5PR11MB5810.namprd11.prod.outlook.com>
-From: Josh Boyer <jwboyer@kernel.org>
-Date: Tue, 3 Sep 2024 10:47:33 -0400
-X-Gmail-Original-Message-ID: <CA+5PVA6EOXPTb0dQwyV9q1-bqmdfp5_OHqEwaALG0PTwRk+i+g@mail.gmail.com>
-Message-ID: <CA+5PVA6EOXPTb0dQwyV9q1-bqmdfp5_OHqEwaALG0PTwRk+i+g@mail.gmail.com>
-Subject: Re: pull request: iwlwifi firmware updates 2024-09-03
-To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>
-Cc: "linux-firmware@kernel.org" <linux-firmware@kernel.org>, Wireless <linux-wireless@vger.kernel.org>, 
-	"kyle@infradead.org" <kyle@infradead.org>, "Hutchings, Ben" <ben@decadent.org.uk>, 
-	"Ben Ami, Golan" <golan.ben.ami@intel.com>, "Yang, You-Sheng" <vicamo.yang@canonical.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240902225534.130383-8-vassilisamir@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue, Sep 3, 2024 at 10:23=E2=80=AFAM Korenblit, Miriam Rachel
-<miriam.rachel.korenblit@intel.com> wrote:
->
-> Hi,
->
->
->
-> This contains the new firmware for Bz devices.
->
->
->
-> Please pull or let me know if there are any issues.
->
->
->
-> --
->
-> Thanks,
->
-> Miri
->
->
->
-> The following changes since commit a0ff525ced1ebcaae1ace6c4a431242c39667c=
-ba:
->
->
->
->   Merge branch 'rtl81261-3' into 'main' (2024-09-03 11:24:33 +0000)
->
->
->
-> are available in the Git repository at:
->
->
->
->   http://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/linux-firmware.g=
-it tags/iwlwifi-fw-2024-09-03
+On Tue, Sep 03, 2024 at 12:55:34AM +0200, Vasileios Amoiridis wrote:
+> Convert irqd_get_trigger_type(irq_get_irq_data(irq)) cases to the more
+> simple irq_get_trigger_type(irq).
 
-Merged and pushed out.
+...
 
-https://gitlab.com/kernel-firmware/linux-firmware/-/merge_requests/288
+>  		r->start = r->end = irq;
+> -		r->flags = IORESOURCE_IRQ | irqd_get_trigger_type(irq_get_irq_data(irq));
+> +		r->flags = IORESOURCE_IRQ | irq_get_trigger_type(irq);
+>  		r->name = name ? name : of_node_full_name(dev);
 
-josh
+As per previous patch this can be utilised to
+
+		*r = DEFINE_RES_IRQ_NAMED(irq, name ?: of_node_full_name(dev));
+		r->flags |= irq_get_trigger_type(irq);
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 
