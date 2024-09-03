@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-12402-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12403-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13F6496A682
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 20:30:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D8F596A691
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 20:31:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F609B21A5C
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 18:30:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 242D71F24AE6
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Sep 2024 18:31:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C23E18BC22;
-	Tue,  3 Sep 2024 18:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E87081917CD;
+	Tue,  3 Sep 2024 18:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="neI9Bcwt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MJr2Hou4"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC23188935
-	for <linux-wireless@vger.kernel.org>; Tue,  3 Sep 2024 18:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40BE1917C8
+	for <linux-wireless@vger.kernel.org>; Tue,  3 Sep 2024 18:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725388229; cv=none; b=mvanPfCdI/Gmm0VFJJGVEG+ZU3hNCA4pDoZKtY4SBnBZxq5rSU19+eoxe9zLjTbVdnhY9ohvWiqODI4haMKXlC32UVVnREYsYRq2e/gES+5vLryPqbQb60vUou/Io+uo/U5JvklFLoTfzpe5Ji+vcoV7xcXwTyjmwzZhLbiSBOg=
+	t=1725388271; cv=none; b=oBtD3LIMiRACrsYJBCTrPOBLZsQh90Tq9i/CadDTm3e66oQElgNhBQMMO+jyNtlLq0fZ6Pt2ZiDhw77Z5/EGfjduk8ThFTBFQBLkT++yEwH0XWkxx2He4PUZh07CNn093ijBSMHfr0mP2F4Wg018qebBIi8bqIuXOLAQhyrqNnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725388229; c=relaxed/simple;
-	bh=75Vy5rNwDeuOmcTDiD2C9ihSyhxBpv8ckqq12FHc59Q=;
+	s=arc-20240116; t=1725388271; c=relaxed/simple;
+	bh=N9YEb8TB8fmWgBH6JBK4OmgxvqEtTUPPSue2kicF8h4=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=g/8p6p0XATiJqe67ASsRZvrB2hJYes6tRSJ69MJNM9Xag25NtyuZUwtgH3X2KrSeKZhENAuo6f1mqQkefyanBcimFpBwxX2QcLfDUPq7vlb26+ZfoXXwmPeCXCnJ+y+xM3YkSz6ZJyAGuHtg5+pDPdYHOXCZv96+cAvovOpKwEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=neI9Bcwt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26E39C4CEC4;
-	Tue,  3 Sep 2024 18:30:26 +0000 (UTC)
+	 Cc:Message-ID:Date; b=MEvGQg16PT8y6Y9m4HJLsHTltQU28wnh18cRa+jc0tOXDrHoC4/P6CeyLdHS0pIxkrbYiLX1uzvjVfFlG6I7KrKQhlyn42KtQySJ7Z2xsaZvI+lBpJz9LRdRIvv2J9m6oKI+iAlkUu09WMXkvu/GdGv5mz92xEa7am2lMDbE4Wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MJr2Hou4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D300C4CEC4;
+	Tue,  3 Sep 2024 18:31:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725388228;
-	bh=75Vy5rNwDeuOmcTDiD2C9ihSyhxBpv8ckqq12FHc59Q=;
+	s=k20201202; t=1725388271;
+	bh=N9YEb8TB8fmWgBH6JBK4OmgxvqEtTUPPSue2kicF8h4=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=neI9BcwtPBvMRvkVmFDvS5TF/d2woc5bzegmsTzZVAf+vtBuW1KTu/tOQLFleA6hs
-	 ql/Fgi/n6/yR0tGkiIISi3AqyLnkEjQNYbNNcrZhmwoR3y5lfQf1GuZOZclxqli/4G
-	 pfNY3fuDPJ7Cw/YQLNhrAUSi2MyjidCmO+qrV/fFeAlyc+78S9mgOcbQIkklWNOXUH
-	 NskBNLmPJ04Zg439iWW8RmPBtpAxfSvsZ7WuaAdId23zYap6KFeedIYakGDSvxbtO/
-	 TwOTp8F9inEDXS2aRpMWNGJydOUtEtVMDJqLuBIx2h0Kiyu8XrYa3XEFCSUM7Vu9Xt
-	 OOjGthPamHrNw==
+	b=MJr2Hou4qRNHBvDHL1iUa1j3RNWUoi5F1MER3MmlqqL9e7WJ7ytxRcCaoOTCQvmGu
+	 Xbo6kSmNxSSF3afKX6Twg4QhxDyR8Q4meNCNIMAVwlZ4xdD83vCOxlXTc41GIiFZvi
+	 527qxGQUexs5X+JVczdaX7xwfLnrDmqyjDYrj+wvZxd2GE2zFoaRg839VmrWA1t2xZ
+	 5li45AEy3D5ZrQJSowRTBfUdfNUfV3PbXkEe3HNfmyBkKHgvB71lwr9wn9meHrUskS
+	 Nfh5Izn9EImFgFk58PK0o7j19DJJepqTZ2wRnFVn+/b88E/wuAfsy/jo5g0OwPs44I
+	 uOm/j2TZRiWew==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,41 +49,35 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] wifi: wilc1000: Do not operate uninitialized hardware
- during
- suspend/resume
+Subject: Re: [PATCH] wifi: wilc1000: Re-enable RTC clock on resume
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240821183639.163187-1-marex@denx.de>
-References: <20240821183639.163187-1-marex@denx.de>
+In-Reply-To: <20240821183717.163235-1-marex@denx.de>
+References: <20240821183717.163235-1-marex@denx.de>
 To: Marek Vasut <marex@denx.de>
 Cc: linux-wireless@vger.kernel.org, Marek Vasut <marex@denx.de>,
  Ajay Singh <ajay.kathat@microchip.com>,
  =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
  Claudiu Beznea <claudiu.beznea@tuxon.dev>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <172538822543.1029035.11272187710732129942.kvalo@kernel.org>
-Date: Tue,  3 Sep 2024 18:30:26 +0000 (UTC)
+Message-ID: <172538826800.1029035.9364345182481936321.kvalo@kernel.org>
+Date: Tue,  3 Sep 2024 18:31:09 +0000 (UTC)
 
 Marek Vasut <marex@denx.de> wrote:
 
-> In case the hardware is not initialized, do not operate it during
-> suspend/resume cycle, the hardware is already off so there is no
-> reason to access it.
-> 
-> In fact, wilc_sdio_enable_interrupt() in the resume callback does
-> interfere with the same call when initializing the hardware after
-> resume and makes such initialization after resume fail. Fix this
-> by not operating uninitialized hardware during suspend/resume.
+> The wilc_sdio_suspend() does clk_disable_unprepare() on rtc_clk clock,
+> make sure wilc_sdio_resume() does matching clk_prepare_enable(), else
+> any suspend/resume cycle leads to clock disable/enable imbalance. Fix
+> the imbalance.
 > 
 > Signed-off-by: Marek Vasut <marex@denx.de>
 > Reviewed-by: Alexis Lothoré <alexis.lothore@bootlin.com>
 
 Patch applied to wireless-next.git, thanks.
 
-b0dc7018477e wifi: wilc1000: Do not operate uninitialized hardware during suspend/resume
+0c896eceb5f3 wifi: wilc1000: Re-enable RTC clock on resume
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240821183639.163187-1-marex@denx.de/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240821183717.163235-1-marex@denx.de/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 https://docs.kernel.org/process/submitting-patches.html
