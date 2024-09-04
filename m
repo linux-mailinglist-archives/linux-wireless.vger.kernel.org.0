@@ -1,90 +1,130 @@
-Return-Path: <linux-wireless+bounces-12487-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12488-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38F6596C125
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 16:48:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF96096C136
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 16:50:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E89532883B1
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 14:48:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED110B26E29
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 14:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512B81DC183;
-	Wed,  4 Sep 2024 14:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCCE61DA615;
+	Wed,  4 Sep 2024 14:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b3018xlu"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="iNKaXNDn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295951DB53C;
-	Wed,  4 Sep 2024 14:48:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BDEB39FFE;
+	Wed,  4 Sep 2024 14:50:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725461305; cv=none; b=XzMd+0OLmqWPp/nUtQBFcSzQLzHf8pZ9DICpcGRnmbQulMNV8mt7lIM7PYIQkDerX1e65u1z6WJ/Omc29MYJhliBPVV5arWkhsgz2y2fjtTwAuVS3hR1HLnDhJkRPNt2z6sfWsYkPS1vMZ9r8BAz02267bDoQl5qo9cYp9rh86I=
+	t=1725461435; cv=none; b=BEgjU62aSm5gs/c81fNYfDloS+dgCLmKopVC5KuaPMpTaysKU4k0wK0I4PJprIZtdT0aLsXdKOJIxaJ4G5gAJMVWuOBthF8176VmQOj0YkF9z1tCffHyl7dg+4SE/mMJBfHlVz+EnAGmTA0+S2xy+IkaDYcV7KOnre9rd+owRS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725461305; c=relaxed/simple;
-	bh=aSgyay04rukkSKGyNBhfbxPLHP5fFfaqSa1WJf5ZLLc=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=tBIIKgTQ5wq6xFNnnB0RRYCbldFpNuZ7yBEvIqlCCKIS/bjiNEMIVo8jeEJ7bauiZ8OaaSAKESjHT3MgqP1V8a8Zesb8A2QnI82m1yTTM5Ec+RIg/MpMzux7qNf8LuFurEN09XG+UwAaY2gNatq1fzOtTtyhsXISi9P/qezvGjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b3018xlu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63793C4CEC6;
-	Wed,  4 Sep 2024 14:48:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725461303;
-	bh=aSgyay04rukkSKGyNBhfbxPLHP5fFfaqSa1WJf5ZLLc=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=b3018xlu7QLwoY8krfOJEpp46QB0pBmlOkn5EtTAJeb5aEZCAi7RDgN2RvCv/APQv
-	 7gTc9+IiF8duZDpW8td8kZdTzc70iFf65C0Gzvb9/MMb1W88wcC73DwWqL9YsEbp9x
-	 64m38WOwjO+7Cwc8XIDdjRd5Gn/Nf6MWE5CEDOnRrm7T8cUOI0+hyLDtqEoEV/AA8I
-	 eFdWdzcn+GRluvBxxR6rBrYWxaQH1hi4LI/YyJYldJaISP5G/Yc+58Hl/XTG0IMaFI
-	 THdGawCOnativ+acb2RiTt/dF/vzTbHOTxC20f+v1+LT1QEe5t2dc8jAbxdu8TT1Mj
-	 e9obJEKbU5hJg==
-From: Kalle Valo <kvalo@kernel.org>
-To: Paul Menzel <pmenzel@molgen.mpg.de>
-Cc: Baochen Qiang <quic_bqiang@quicinc.com>,  James Prestwood
- <prestwoj@gmail.com>,  linux-wireless@vger.kernel.org,
-  ath10k@lists.infradead.org,  LKML <linux-kernel@vger.kernel.org>
-Subject: Re: failed to remove key (0, ce:ce:1e:27:bb:e0) from hardware
- (-110) (ETIMEDOUT)
-References: <d8253ab3-f4f0-40fd-a550-d75eef121b56@molgen.mpg.de>
-Date: Wed, 04 Sep 2024 17:48:20 +0300
-In-Reply-To: <d8253ab3-f4f0-40fd-a550-d75eef121b56@molgen.mpg.de> (Paul
-	Menzel's message of "Wed, 4 Sep 2024 12:45:01 +0200")
-Message-ID: <87bk13jwzv.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1725461435; c=relaxed/simple;
+	bh=3UH2MGIc69EzoDjDvmh0oiShPsI4FSr09ftxk5ooSUk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l3pty/iqFFLpDjgTvtFXRv8kkWJzSQl/QqMDF6wOKnii+9WRNPiuLZz6Hoz6EC2TewjXXQl7mvCuPlyJbBaPWrbHHReS1g6SzsfpIiq+LiVcd0kJj38tceOivCHwW5k4sZFMpRYUe1w3ctVZHIJ/nUIduE/IercA91ycVByNT18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=iNKaXNDn; arc=none smtp.client-ip=217.70.183.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 1FD3260004;
+	Wed,  4 Sep 2024 14:50:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1725461431;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BLUKnub7c6Pf6UqSOzCbAefXAF8dAI8Q6zzQzb7RfpQ=;
+	b=iNKaXNDnwXWQV4mGTniiCGtNJeGRptGqQs4MuwjLOKqMaIG1AiNBWuF57IqSLkJnb+Ez/n
+	7mV/IYMkIhy9/E2WHJzYMobmCAOe97rrS1nft6tvGR7Pdr1wDL+5DWqqmv6O1fUj9zMpIM
+	GoxOcE3PzebWuzgOO7or/YozKsQMHERREmsTuHlI2MJ1KO+F61UrDtatiMSTjh6Rj//sS1
+	UpFFxLRR95OR/PwWOWyIGHOiLKHgXyYc3TOxk40fIKZ5FK1MMZjQimWbp9ZUA7hhQxkY8p
+	f6dFrIuevjNs/Bxm8ajSadLqAfK+G20MSrAAye9s221ukbvCmI/qPSwxxd/CNw==
+Message-ID: <95ae0eb6-72ec-4261-b9e1-8ee3e831452e@bootlin.com>
+Date: Wed, 4 Sep 2024 16:50:29 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/5] dt-bindings: wireless: wilc1000: Document WILC3000
+ compatible string
+To: Marek Vasut <marex@denx.de>, linux-wireless@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Adham Abozaeid <adham.abozaeid@microchip.com>,
+ Ajay Singh <ajay.kathat@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Conor Dooley
+ <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20240829004510.178016-1-marex@denx.de>
+ <52e7b6d2-5d31-4ae1-bf1d-44e63a22774d@bootlin.com>
+ <57a7eac4-23c7-42ac-ade5-233c24a288c6@denx.de>
+From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <57a7eac4-23c7-42ac-ade5-233c24a288c6@denx.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: alexis.lothore@bootlin.com
 
-Paul Menzel <pmenzel@molgen.mpg.de> writes:
+Hello Marek,
 
-> Dear Linux folks,
->
->
-> Linux 6.11-rc6+ logged the warning below when resuming from ACPI S3
-> (or unloading and loading the `ath10k_core`/`ath10k_pci` modules)
-> having been connected to an AVM network:
->
->     wlp58s0: failed to remove key (0, ce:ce:1e:27:bb:e0) from hardware
->     (-110)
->
-> Error code 110 is the value for ETIMEDOUT. I saw James patch [1], and
-> applied it, and the error is still there (as exepected).
->
-> Can the warning be improved so the user know, which component is at fault?
+On 9/3/24 21:30, Marek Vasut wrote:
+> On 9/3/24 6:09 PM, Alexis Lothoré wrote:
 
-The warning comes from mac80211 and it already contains your network
-interface name (wlp58s0). What else would you want to see?
+[...]
+
+>> It is only after those 3 steps that the chip can be used with standard hci
+>> commands over serial port. IMHO 1 is the biggest point, because it means that
+>> **a bluetooth driver for wilc3000 needs access to the bus used by wlan part**
+>> (so only describing the bluetooth part of the chip as a child node of an uart
+>> controller is not enough). Aside from bus access, I also expect some
+>> interactions between bluetooth and wifi (eg: power management, sleep/wakeup)
+> 
+> Just a quick idea -- what about having a phandle to the BT UART node in the
+> wilc3000 node ? Then the wilc driver can check if the phandle is available and
+> valid, and attach the BT part to the UART, while also doing all the necessary
+> power sequencing and bus accesses via SDIO/SPI.
+> 
+> Like this:
+> 
+> &uart10 {
+>   status = "okay";
+> };
+> 
+> &mmc20 {
+>   ...
+>   wifi@0 {
+>     compatible = "microchip,wilc1000";
+>     microchip,bt-uart = <&uart10>; // OPTIONAL
+>     ...
+>   };
+> };
+
+I thought about something like this too, indeed (but somehow inverted, a
+reference to wilc node in the bt node under uart, to allow the bluetooth part to
+ask wilc to perform operations over sdio/spi). The design would likely be
+simpler in this case, but some internal discussions with colleagues raised some
+concerns, for example with power management (but Krzysztof's suggestion about
+power sequencing may help with this).
+
+Thanks,
+
+Alexis
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-https://docs.kernel.org/process/submitting-patches.html
 
