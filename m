@@ -1,75 +1,75 @@
-Return-Path: <linux-wireless+bounces-12468-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12469-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B34096B5AD
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 11:00:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF65B96B5BB
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 11:01:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBC8F283A91
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 09:00:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A10428463E
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 09:01:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5B519750B;
-	Wed,  4 Sep 2024 09:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E4E41CDFDC;
+	Wed,  4 Sep 2024 09:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BVgYHbWl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IAYGXF11"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7624BA27;
-	Wed,  4 Sep 2024 08:59:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27621CDA2D;
+	Wed,  4 Sep 2024 09:00:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725440401; cv=none; b=a0nQvyFnZZHrL1MojWddQG9njIjA8LoyF4s/GaPy5OUNdMrtWM4za2iQfsh5f0wPonWdDMD3XZwkky2gAeLOfmTPpFIybcLSzFKFFe8qmHXFPhH6Y16T1VDGFpjx3vuPS0Ukt6dkLHupIheMVIe6eL0OknDRxl4WFMKQidBp9zU=
+	t=1725440432; cv=none; b=OmblQbqsqNQ9mw7JXcDJ1SKUUKNLR+r79FDiqixeK7iaLIvPNQolnsH/9GzOg+/J/R+++XFqWH+ETnOIxmKy4zH93MX5mUDR6LAX0MUuQyWlaDqDJziCAhiFI++2zJT0JONUw8TARLY5/EdH7FfbYBJcWmdSjLpvcMZ0yHlNXdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725440401; c=relaxed/simple;
-	bh=+G2usgn4a+EGpk3Mm4DFdRwFN0xwQO5uU5+f3cz4bKA=;
+	s=arc-20240116; t=1725440432; c=relaxed/simple;
+	bh=DmSbgFEJfyXc5l1S0wrl47FI2LdMhVBHo8RFVw75fyE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tXg5YmUzC4MLk5x4hBJFUIQyTEr0u4a3iNeAR4Jk4/Hd87AcsOEmxSNbVvL/Z3gN9oxrfK+Edo81NoqcYcGPwokc6GmZFrJYgmODZlv32auFtV3BUDFI+6w9VvqNMG56YA5IKWZmRBHAEDf0I6AtrFBpxfP/EcRPL69mHfGK8yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BVgYHbWl; arc=none smtp.client-ip=209.85.128.54
+	 In-Reply-To:Content-Type; b=u7yXO+8WNZsJCURxx9lDVvNnpvXdpwPQC9C3Nxn75Oh3lds8PalzpL4S/l72PWg1/s9zCR4T4l9rJIaRy1CiQ2M0PjvgHhZMByqsYAwFDe3TugfSsbqtCYDFK6sjkJ8YxiWo0i7Go71OJXBOTNLfQ0vuZqoggWHgd9QrRtz90KU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IAYGXF11; arc=none smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4280ca0791bso54331985e9.1;
-        Wed, 04 Sep 2024 01:59:59 -0700 (PDT)
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-42bbf138477so40256595e9.2;
+        Wed, 04 Sep 2024 02:00:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725440398; x=1726045198; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1725440429; x=1726045229; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=4F1EGCjC7Ig/iohj+d8dfMJ/hszHiORISM5N/rkuWTw=;
-        b=BVgYHbWl45XbDf/moD5B9y1I/qkDxk4mlgnx/y2Bkh0CqA1BDMv/KCw3GTNruy9fIo
-         1tRX2XL5s2elT4EP5Y2AZ75nFMDHfzypBFTz3PUlX0tjdUt2Lalrj4r7039djpxR3MzV
-         umvw1UK/TL5+3WuqSfzTE/TJQO04bEk6whyqlQFJt0ZCWqFYRizFT92mBdy3qpW0eRzt
-         K1GpqC9IGX4QA6/xstSBVR5SsNAveRKiG02OyQgs0Xd3Bwsum7fIwbl3Q7ZbWd/7/WGo
-         lNFx2E8CldYIL5kz9KYs1ylbC5Ce1iRCnksirjKTWjtRsjGBL11iiRuQE4hBCzhwzVYM
-         rmKw==
+        bh=Vy90VFulS8e/nyhzi0U0xOoN1F9n1Y4+P2Hnc5uXLeE=;
+        b=IAYGXF11cmGEygyNHupn6Eb2KAP4ImBjUNjGkB+3AMbHZVPWvn8b711zXxFKS7UesE
+         WBD4uJsqPNoZBeMe1XyqFCkoThLq7tpnFaSuE6wDS82W2DtyFFywIMXholiXOIR7euwi
+         +2eBUbv1+27QqHgc7KYgzPHLCJ6a3K93k+11BI/j8DKbCiJQDGEhWkPgBtQvmMr1uuuc
+         YarsZzzsQmAut1OAY/vawO7TDtrlAedGeCSRRn1hzxrjOlPgt4AtnDYSwXgLTRQKQxjY
+         VROpOKUAOgkeyPMCsW/XYRQ6toSBMPq1zuiyrygP5zFWR5lqyvBsQP95QGbTl9AFPeBa
+         hkow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725440398; x=1726045198;
+        d=1e100.net; s=20230601; t=1725440429; x=1726045229;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4F1EGCjC7Ig/iohj+d8dfMJ/hszHiORISM5N/rkuWTw=;
-        b=tuaRWXZWDDhSa3Z2zYOF0fxyMkPz2L/xB/cmcTTUq/ZkBRi0pALGPizclGkGgg9++J
-         Ten4FDYXYbE6irrJK8XukU3vcHnDdDo4fv9ZKXE+b6fY7LKjbbCz+qy5L+ikMbI273Rn
-         XyVOP0chhMFwJRz28fPdKYDztbX/uysIA/OghT+RQ7QushOd79WywKH6qk8Man/zPtrB
-         wiuBOYUolYUkr8xK/dSiPVlSdy8HX8m0d9gQ9fkw+N39+vK12VqDxWUa8HAYGXV7DZZG
-         cmYiTPJMld1VqcDb+IguhRIszaBZx8OOY/t5cBT81zgvaWq9NwiffbOXlJfSxB1d2mo0
-         Qv9w==
-X-Forwarded-Encrypted: i=1; AJvYcCWW38YMy6dekzTNZZ8yOgfY+FxsXIHtmXoSA5EhWDd6XfLnf2Yl2cJ1ZMC3rRpRgtRyLju2ebt7UmPZMiU=@vger.kernel.org, AJvYcCWnrZAdr6tR5+PeeHUIrCe6Geo2eFLi2eDZCt53KXPanrsM2C7ZXnWlGMLEQewp7XSfK76D5p7x@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzKsl0s9gw9rOY0Srsqk5390IKKCxhGcsy+OigMAFgJO5pL5vp
-	CIj3ycVtWUI6983temDyEuk1ARzu1UfqoKWUg5sEepj8kKToGwD1
-X-Google-Smtp-Source: AGHT+IEGftMYPNkw/FmcSACDFkJgVxkXL0fkXDxQ94ugLPxET1a6Q/gWIxS0tgGbWMwIDlsgEN2Gzg==
-X-Received: by 2002:a05:600c:3b22:b0:428:2502:75b5 with SMTP id 5b1f17b1804b1-42c8de79fefmr24571655e9.11.1725440397749;
-        Wed, 04 Sep 2024 01:59:57 -0700 (PDT)
+        bh=Vy90VFulS8e/nyhzi0U0xOoN1F9n1Y4+P2Hnc5uXLeE=;
+        b=mX4OXin5RxB3ggPif0ueEd4/IkBeUo3lRCX7Oc4Ny0RqecTcs1WS7GHYVofTgNob8j
+         R71CqwpG1RR1CpoipOtvkSQyUt5qO7ei9z0obfLCPYTXEdPOjSgKj+rYNe53PDqdpCgL
+         PrBh753mkgzfmIVQhCVUfRNV9Pd0IVdzzXLZxh6MNra0pFiafDfG4U9rjPymXHgIWmSt
+         1LTpe3ozVju5M+tLcNCXIFOcL8fdqAFwWADOINmfjve7+tsWIGqguWC1lWOdm+nnfKMI
+         +t3QmIai09E2rQhC1XX/G3UlC9snxTVeFpD8PKtnBUZk8WVvL2fIhugWQhSZNE0IvSUl
+         yx0g==
+X-Forwarded-Encrypted: i=1; AJvYcCUXQmw1GoNswdSSyZUG0mIwXn7DnEYCcaJrbPP4WPmxUtfwEUsoduYC5HU+61Mwln4iIfSnXv3e@vger.kernel.org, AJvYcCUnBTE3ukPSS9Xu64X9YCEe4DlAiYbYc1iZW2P7pJZJxWYTBvPhWcn5xWOgrgaEP7fB225rIwRDIaT3Zts=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvUiLGKnGzgg0itOtrEOL0O+l1f2Us3m1+PzeDbg2Emti2m/ME
+	2+m2lBCm8aTxQc7yJspkUE7F3RXcFvLod5H5BJUsMYKBE0Zyw99B
+X-Google-Smtp-Source: AGHT+IEtlT/yGsPphh+1fUhiEvpB+7pooR/GcaT/vc+N+I6fSNITQKA/Tm7hayaCxE8vwNZ1yEM4fA==
+X-Received: by 2002:a05:600c:1c06:b0:42b:b594:4a8c with SMTP id 5b1f17b1804b1-42c881030dcmr49127195e9.27.1725440429094;
+        Wed, 04 Sep 2024 02:00:29 -0700 (PDT)
 Received: from [192.168.0.20] ([148.56.230.39])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42bba3f2875sm178104535e9.41.2024.09.04.01.59.55
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42bb6e274ccsm200917995e9.37.2024.09.04.02.00.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Sep 2024 01:59:56 -0700 (PDT)
-Message-ID: <84bab711-7666-4766-8c25-b8b0e44f182e@gmail.com>
-Date: Wed, 4 Sep 2024 10:59:53 +0200
+        Wed, 04 Sep 2024 02:00:28 -0700 (PDT)
+Message-ID: <f48db1ae-23e2-4587-a4ab-3844d0822194@gmail.com>
+Date: Wed, 4 Sep 2024 11:00:24 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -77,18 +77,17 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND] mt76: mt7915: check devm_kasprintf() returned
- value
+Subject: Re: [PATCH RESEND] wifi: mt76: mt7921: Check devm_kasprintf()
+ returned value
 To: Ma Ke <make24@iscas.ac.cn>, nbd@nbd.name, lorenzo@kernel.org,
  ryder.lee@mediatek.com, shayne.chen@mediatek.com, sean.wang@mediatek.com,
  kvalo@kernel.org, angelogioacchino.delregno@collabora.com,
- johannes.berg@intel.com, ruanjinjie@huawei.com, howard-yh.hsu@mediatek.com,
- chui-hao.chiu@mediatek.com, greearb@candelatech.com,
- akpm@linux-foundation.org
+ mingyen.hsieh@mediatek.com, deren.wu@mediatek.com, ruanjinjie@huawei.com,
+ greearb@candelatech.com, akpm@linux-foundation.org
 Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
  stable@vger.kernel.org
-References: <20240903014955.4145423-1-make24@iscas.ac.cn>
+References: <20240903014455.4144536-1-make24@iscas.ac.cn>
 Content-Language: en-US, ca-ES, es-ES
 From: Matthias Brugger <matthias.bgg@gmail.com>
 Autocrypt: addr=matthias.bgg@gmail.com; keydata=
@@ -134,13 +133,13 @@ Autocrypt: addr=matthias.bgg@gmail.com; keydata=
  +zFJv9fVUpo/bjePOL4PMP1y+PYrp4PmPmRwoklBpy1ep8m8XURv46fGUHUEIsTwPWs2Q87k
  7vjYyrcyAOarX2X5pvMQvpAMADGf2Z3wrCsDdG25w2HztweUNd9QEprtJG8GNNzMOD4cQ82T
  a7eGvPWPeXauWJDLVR9jHtWT9Ot3BQgmApLxACvwvD1a69jaFKov28SPHxUCQ9Y1Y/Ct
-In-Reply-To: <20240903014955.4145423-1-make24@iscas.ac.cn>
+In-Reply-To: <20240903014455.4144536-1-make24@iscas.ac.cn>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 
 
-On 03/09/2024 03:49, Ma Ke wrote:
+On 03/09/2024 03:44, Ma Ke wrote:
 > devm_kasprintf() can return a NULL pointer on failure but this returned
 > value is not checked. Fix this lack and check the returned value.
 > 
@@ -150,23 +149,23 @@ On 03/09/2024 03:49, Ma Ke wrote:
 > Fixes: 6ae39b7c7ed4 ("wifi: mt76: mt7921: Support temp sensor")
 > Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 
-Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+Reviwed-by: Matthias Brugger <matthias.bgg@gmail.com>
 
 > ---
->   drivers/net/wireless/mediatek/mt76/mt7915/init.c | 2 ++
+>   drivers/net/wireless/mediatek/mt76/mt7921/init.c | 2 ++
 >   1 file changed, 2 insertions(+)
 > 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-> index a978f434dc5e..7bc3b4cd3592 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-> @@ -194,6 +194,8 @@ static int mt7915_thermal_init(struct mt7915_phy *phy)
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+> index ef0c721d26e3..5ab395d9d93e 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
+> @@ -52,6 +52,8 @@ static int mt7921_thermal_init(struct mt792x_phy *phy)
 >   
->   	name = devm_kasprintf(&wiphy->dev, GFP_KERNEL, "mt7915_%s",
+>   	name = devm_kasprintf(&wiphy->dev, GFP_KERNEL, "mt7921_%s",
 >   			      wiphy_name(wiphy));
 > +	if (!name)
 > +		return -ENOMEM;
 >   
->   	cdev = thermal_cooling_device_register(name, phy, &mt7915_thermal_ops);
->   	if (!IS_ERR(cdev)) {
+>   	hwmon = devm_hwmon_device_register_with_groups(&wiphy->dev, name, phy,
+>   						       mt7921_hwmon_groups);
 
