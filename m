@@ -1,180 +1,195 @@
-Return-Path: <linux-wireless+bounces-12451-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12452-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1044896AF7A
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 05:34:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDBAF96B054
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 07:08:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACFD01F25AE0
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 03:34:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E554B24389
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 05:08:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0513355C0A;
-	Wed,  4 Sep 2024 03:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00803433C8;
+	Wed,  4 Sep 2024 05:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="nUtyybbK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jTbAbcya"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635224317B
-	for <linux-wireless@vger.kernel.org>; Wed,  4 Sep 2024 03:33:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2E32A1BF
+	for <linux-wireless@vger.kernel.org>; Wed,  4 Sep 2024 05:08:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725420831; cv=none; b=RxMvuy8+Osp4tDJxT9PlGzMe0A8M4qjlALKvIkw/Ve3YmGxiNQic71+oqwJYXuaIgjkfU6etu/CTpGm6g/JM0kcqRXJORp895S1UyHO32JV+kiws1A4wTy9upv2D7AFxQYxBh2BBTuuDUGGKl1XzpY/DqbcNyQJ9zsFwP5X6ttY=
+	t=1725426529; cv=none; b=qd9xBbwUrUnlTYkS/PhBfSj7MZAzM1Fz5/I6ypkNHmpMJMSH5x5AfpImaAf4g1u1gBkG7bUK2lmA6B2YUfpnACmq2x/2vc4NVbdUKJIKIHixSsXBfxz4gqWMXLbhn/UBZw4DyDI1tCv1zdGPPt3/JGUGtjWjsZ5DbRbnU9Ko3kM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725420831; c=relaxed/simple;
-	bh=PbV+YnfUOCdRoOjL+kaUu8z9vT8q2y+wGxHFEZZc30s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Ue2chg8wQmQWjedo/4A1Q4QAb8HL0u67hsEPcCjRSGK+ucxVnMpgUEnqbhWznaZy9xvFUe/HItvc52cNFNYXMJ+um86wb3BV1iKeDaFj1BnsY9XfXz11EyVAuJi5cGg6ROpoBpz2p8H57n4AekGFqhYL6dAew0TA+rR3v5Pcodk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=nUtyybbK; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 483MHPN7009070;
-	Wed, 4 Sep 2024 03:33:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	/XOi+71l1suPEy2i4K6lysLNdTzQ7AvH3OMnUliGvf4=; b=nUtyybbK5Ely0/h9
-	Spb9tu4rYPNU0VNwq0MaXczZY2erVeP/qQ8VLKc5nbwFGB7icA8UqhOuZS/daEHJ
-	MGGR5vuIiEt/p5qnYzHiTIPcmFRdCwdM/JlH1jMiEnAQLoa4GjaCTK1MJNxwRcEA
-	Lmmm93pgFg00tEDNWX+UMBwY+6Tmk6qVc8HxK6JpMdNkCbToWuMAoL3NNbnHe3D4
-	l1aoLPDJub/6GRnmCtnHWP3MpbshH0p5o05i+i6LniPZByxKkoDrD+psqgjq4DZM
-	pWfiHTyrhEAHomGlBKgJpb++J1rSeG49l1TXUJya2ynT77hbpE3Y0oIHduXF5OTn
-	OwrjYg==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41bu8ush0c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Sep 2024 03:33:33 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4843XWnS004111
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 4 Sep 2024 03:33:32 GMT
-Received: from [10.216.27.52] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 3 Sep 2024
- 20:33:31 -0700
-Message-ID: <6446af26-4605-4f76-9c09-2d40e3919e5b@quicinc.com>
-Date: Wed, 4 Sep 2024 09:03:27 +0530
+	s=arc-20240116; t=1725426529; c=relaxed/simple;
+	bh=/RrsMGJVFzO4lIWG4KeNCzOLrC+x9LR/jZfLf+XMhnM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gxCu+iRSEcVnlJ1dfVeqR+Bu7IfNp2AVE3iNPoBJLI5ErPZ4TauJoJYT8FovnIUtyMUHF2WZPg/2swhSEJ6N9A8onJrIaDLTKu0+x51FNrnVS2Wk9grfROop8AiRZvvQjh8O+Asp7T2Zh2mxG28Z82CnA80LU/zP7J50k+UI0b8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jTbAbcya; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a86b46c4831so698065466b.1
+        for <linux-wireless@vger.kernel.org>; Tue, 03 Sep 2024 22:08:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725426526; x=1726031326; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=avL8mOO62vjNFMqqKGoxcJZeevfPDxVOotwDzcMmWcw=;
+        b=jTbAbcyaHaYGbSUAokAA9DF5O0LP7eCjx3GB/6p5Ve8HRzQSLaoGwu7lxGMpqZhoIx
+         2Z/kr+NOa+c5oqlT4uIMn/o2ydpyLzQZdN5Q0cYir0vE5/nu64jK7hiqzQI5q7vvBtuT
+         jdBG3f2MXRMvGaVnmW1sRz/2BPt9VmlwV0/25ZpoBHnuisqmxQUmcrzVN9fbzd1Rs9ba
+         MSTgelwWS0yuHRf97W/zEea2Chzcdj2+X9a3YPeKLg4VRTBDQWkvaVU0TkVg/SHx2W86
+         9L+3bzjQj6iK/J/FUde494rGG3uwU0CW1aEY8i8Ec7Er2ZYdIEhCSKW6o+aaaUxtBnjB
+         TZ9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725426526; x=1726031326;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=avL8mOO62vjNFMqqKGoxcJZeevfPDxVOotwDzcMmWcw=;
+        b=w6MJX/khGHPUHs+gIhHG+E8sY8IfKaH6stw28kTYzHhJzG9Gp2XQIkaw+QDTABNuev
+         x8dythMsrv8XZ7IQVll1sDPwjENSPyM4VaARE0qcoO+N+qoCelryruvYWV34pPkEPy9L
+         JSOLyBJwaqdUw6i3fqTPaCsCQ1SfmxMVAcXeAhccQDScsjamplkZAf8jpi1AEWKUzjzL
+         +YV9uy9L129TsB3vD/SG0Yb6t81FRLgB8GKMutHZVn/IaeTJQ36PuHahKZIJeYeosNHd
+         j24x0tKm3H0Jczy67FNKVHyuGQmgR9LzrJwK4zad/8FXuC6Hq9sVGPQPnrLMkQ2AcvQT
+         O25A==
+X-Forwarded-Encrypted: i=1; AJvYcCXJ9AAZ1xWPBf7NkBGcxk2SGr7eUVtEVFg7rm6quV8IpQyVY2rTelZwUDEYSH57HjZKhHVBHlJu45bWKxeTOg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLsJH8y8r0wKboBhvA4dKkaWPtKzQ+Q0THm2HgpNGJLPR2P98A
+	MkTJg0Y7HaxJrgz990ulqPKlQK+k+eeSJ+CCHptwvqjS4ZFZzUV983rgo3dPlkunbKk5DG7p+cj
+	JC4VJHTWfuJgXAZckpfSNPbgwDJ0=
+X-Google-Smtp-Source: AGHT+IGXqNAJ9aXtoywYwJuAXbJLTkD+p2ntac6RUSI7KpEbTsKXg98pZgtoHmMOAFLsPuTQh+j+qO63AixkNGi38uw=
+X-Received: by 2002:a17:907:12cd:b0:a89:f171:8dc0 with SMTP id
+ a640c23a62f3a-a89f171926fmr477284566b.11.1725426526087; Tue, 03 Sep 2024
+ 22:08:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 8/8] wifi: mac80211: handle ieee80211_radar_detected()
- for MLO
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240902064847.2506090-1-quic_adisi@quicinc.com>
- <20240902064847.2506090-9-quic_adisi@quicinc.com>
- <807fe0b60e727ea927cb12a75f874698a1798723.camel@sipsolutions.net>
-Content-Language: en-US
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
-In-Reply-To: <807fe0b60e727ea927cb12a75f874698a1798723.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: AF05Mi0-VUjv18qpeJscIqGGprtvUF-M
-X-Proofpoint-GUID: AF05Mi0-VUjv18qpeJscIqGGprtvUF-M
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-04_01,2024-09-03_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- impostorscore=0 malwarescore=0 lowpriorityscore=0 suspectscore=0
- priorityscore=1501 adultscore=0 clxscore=1015 mlxscore=0 spamscore=0
- mlxlogscore=557 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2409040025
+References: <LO0P123MB4057D6C2F6FEFF335B30EE7CD6BF2@LO0P123MB4057.GBRP123.PROD.OUTLOOK.COM>
+ <LO0P123MB4057122D4C7D07C7114F5ABED6BF2@LO0P123MB4057.GBRP123.PROD.OUTLOOK.COM>
+ <be53813c-3edc-4734-b59d-83f43f14ea91@quicinc.com> <LO0P123MB4057C3085F445434F5E87B3AD6872@LO0P123MB4057.GBRP123.PROD.OUTLOOK.COM>
+ <26bb8ec7-7170-4a09-ada3-c7c753c16e87@quicinc.com> <LO0P123MB40573F46A6D63145363C6B13D6812@LO0P123MB4057.GBRP123.PROD.OUTLOOK.COM>
+ <cfe8e314-a28b-4ea3-85b2-9f5b4ac2db09@quicinc.com> <LO0P123MB405769E063E48B0F7AE18C5FD68C2@LO0P123MB4057.GBRP123.PROD.OUTLOOK.COM>
+ <LO0P123MB4057E823BDB7B9ECCCD75840D6972@LO0P123MB4057.GBRP123.PROD.OUTLOOK.COM>
+ <a6c609fc-150b-4779-b3f6-dddbd6ce93dc@quicinc.com> <LO0P123MB40578A6CEC43AEFE301F9ED8D6912@LO0P123MB4057.GBRP123.PROD.OUTLOOK.COM>
+ <86bc1623-8845-43fa-9aad-a8a6066b1448@quicinc.com> <LO0P123MB4057266AFF389FA69FDC84B8D6922@LO0P123MB4057.GBRP123.PROD.OUTLOOK.COM>
+ <fb455a66-b29b-4eb0-984c-254f9a1c5626@quicinc.com> <LO0P123MB40578B26075CD4C9C66D144BD6932@LO0P123MB4057.GBRP123.PROD.OUTLOOK.COM>
+ <871q21kwk8.fsf@kernel.org> <CAFED-j=i+jZwtFVzoiqXrVAubmDdxhqqVpAPSCRPMPoa6G_chQ@mail.gmail.com>
+ <87seuhjbfn.fsf@kernel.org> <LO0P123MB4057552A6B51BCC3C75A0013D6932@LO0P123MB4057.GBRP123.PROD.OUTLOOK.COM>
+In-Reply-To: <LO0P123MB4057552A6B51BCC3C75A0013D6932@LO0P123MB4057.GBRP123.PROD.OUTLOOK.COM>
+From: Janusz Dziedzic <janusz.dziedzic@gmail.com>
+Date: Wed, 4 Sep 2024 07:08:35 +0200
+Message-ID: <CAFED-jnkQRV-_cfSuuOG5YxhA0O6Pxw7GyNyZ3AYoC+-Txn5yw@mail.gmail.com>
+Subject: Re: wcn7850 issues
+To: david Atkins <david@3adesign.co.uk>
+Cc: Kalle Valo <kvalo@kernel.org>, Baochen Qiang <quic_bqiang@quicinc.com>, 
+	"ath12k@lists.infradead.org" <ath12k@lists.infradead.org>, 
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 9/3/24 15:34, Johannes Berg wrote:
-> On Mon, 2024-09-02 at 12:18 +0530, Aditya Kumar Singh wrote:
->>
->> @@ -3482,7 +3487,18 @@ void ieee80211_dfs_cac_cancel(struct ieee80211_local *local)
->>   		     link_id++) {
->>   			link_data = sdata_dereference(sdata->link[link_id],
->>   						      sdata);
->> -			if (!link_data)
->> +			link_conf =
->> +				rcu_dereference(sdata->vif.link_conf[link_id]);
->> +			if (!link_data || !link_conf)
->> +				continue;
-> 
-> Can you not use link_data->conf?
+wt., 3 wrz 2024 o 23:15 david Atkins <david@3adesign.co.uk> napisa=C5=82(a)=
+:
+>
+> > > wt., 3 wrz 2024 o 09:47 Kalle Valo <kvalo@kernel.org> napisa=C5=82(a)=
+:
+> > >>
+> > >> + linux-wireless
+> > >>
+> > >> david Atkins <david@3adesign.co.uk> writes:
+> > >>
+> > >> > ...
+> > >> >> >>>         Ext Tag: EHT Operation (802.11be D3.0)
+> > >> >> >>>             Ext Tag length: 8 (Tag len: 9)
+> > >> >> >>>             Ext Tag Number: EHT Operation (802.11be D3.0) (10=
+6)
+> > >> >> >>>             EHT Operation Parameters: 0x01, EHT Operation
+> > >> >> >>> Information
+> > >> >> Present
+> > >> >> >>>                 .... ...1 =3D EHT Operation Information Prese=
+nt: True
+> > >> >> >>>                 .... ..0. =3D Disabled Subchannel Bitmap Pres=
+ent: False
+> > >> >> >>>                 .... .0.. =3D EHT Default PE Duration: False
+> > >> >> >>>                 .... 0... =3D Group Addressed BU Indication L=
+imit: False
+> > >> >> >>>                 ..00 .... =3D Group Addressed BU Indication E=
+xponent: 0
+> > >> >> >>>                 00.. .... =3D Reserved: 0x0
+> > >> >> >>>             Basic EHT-MCS And Nss Set: 0x44444444
+> > >> >> >>>             Control: 0x02, Channel Width: 80 MHz EHT BSS band=
+width
+> > >> >> >>>                 .... .010 =3D Channel Width: 80 MHz EHT BSS b=
+andwidth (2)
+> > >> >> >>>                 0000 0... =3D Reserved: 0x00
+> > >> >> >>>
+> > >> >> >>> Are you saying the ath12k driver does not support these
+> > >> >> >>> features? If not can
+> > >> >> >> you clarify the issue so I can raise with the AP team.
+> > >> >> >>>
+> > >> >> >> ath12k/WCN7850 supports EHT, but with NSS only 2. Here the AP
+> > >> >> >> requires NSS to be no less than 4, that is why EHT connection =
+was
+> > disabled.
+> > >> >> >
+> > >> >> > Which field is requiring NSS of 4, I'm only seeing a maximum of
+> > >> >> > 4, the
+> > >> >> Qualcomm windows driver will connect to the same AP, we had
+> > >> >> assumed that that ath12k would do the same.
+> > >> >> Basic EHT-MCS And Nss Set: 0x44444444
+> > >> >
+> > >> > My understanding of the spec is that there are maximum numbers of
+> > >> > streams though, are you saying the AP has to advertise 0x22222222
+> > >> > which would then prevent a 4x4 client (say an extender) from
+> > >> > connecting with 4 streams? I note that the Qualcomm windows driver
+> > >> > for Hamilton works with the AP and an Intel BE200 also works both
+> > >> > of which will be in at most 2x2
+> > >>
+> > >> Did you test Intel BE200 with the Windows driver? Johannes mentioned
+> > >> that ieee80211_verify_sta_eht_mcs_support() in mac80211 checks this
+> > >> so I would assume that iwlwifi also behaves like ath12k.
+> > >
+> > > Yes, this is AP issue - hostapd fix required - advertise 0x11111 ...
+> > > In other case station  < 4nss will drop to HE only.
+> >
+> > Thanks. And Johannes pointed out that you had even discussed about this
+> > before:
+> >
+> > https://lore.kernel.org/linux-wireless/CAFED-jk8pJheJEViESnE54f-
+> > K+JgRMiWoiCSa0GBt=3DRKaCn7sw@mail.gmail.com/
+> >
+>
+> So this
+>
+> Basic EHT-MCS And Nss Set: 0x44444444
+>
+> Should be 0x11111111 ? and it defines the minimum number of streams neede=
+d to connect?
+>
+> This the defines the max streams ?
+>
+>             Supported EHT-MCS and NSS Set
+>                 EHT-MCS Map (BW <=3D 80MHz): 0x444444
+>                     .... .... .... .... .... 0100 =3D Rx Max Nss That Sup=
+ports EHT-MCS 0-9: 4
+>                     .... .... .... .... 0100 .... =3D Tx Max Nss That Sup=
+ports EHT-MCS 0-9: 4
+>                     .... .... .... 0100 .... .... =3D Rx Max Nss That Sup=
+ports EHT-MCS 10-11: 4
+>                     .... .... 0100 .... .... .... =3D Tx Max Nss That Sup=
+ports EHT-MCS 10-11: 4
+>                     .... 0100 .... .... .... .... =3D Rx Max Nss That Sup=
+ports EHT-MCS 12-13: 4
+>                     0100 .... .... .... .... .... =3D Tx Max Nss That Sup=
+ports EHT-MCS 12-13: 4
+>
+You mix different things:
 
-Yeah, can use. Will do so in next version.
-
-> 
->> +			chanctx_conf =
->> +				rcu_dereference_protected(link_conf->chanctx_conf,
->> +					  lockdep_is_held(&local->hw.wiphy->mtx));
-> 
-> sdata_dereference or wiphy_dereference or whatever, please don't open-
-> code it.
-> 
-
-Sure.
-
-
->> +			if (!chanctx_conf)
->> +				continue;
-> 
-> This changes the previous behaviour, is that OK?
-
-As in? The only behavior change is previously, cac_cancel() will cancel 
-all CACs going on all sdata's. However, with MLO, if let's say link X on 
-MLD A detects radar, why link B on MLD Y should also cancel the radar?
-
-> 
->> +			if (ctx && &ctx->conf != chanctx_conf)
->>   				continue;
-> 
-> You don't even need the check if you have this though.
-
-Sure. Will remove.
-
-> 
->> @@ -3491,11 +3507,6 @@ void ieee80211_dfs_cac_cancel(struct ieee80211_local *local)
->>   			if (!sdata->wdev.links[link_id].cac_started)
->>   				continue;
->>   
->> -			link_conf =
->> -				rcu_dereference(sdata->vif.link_conf[link_id]);
->> -			if (!link_conf)
->> -				continue;
-> 
-> Actually link_data->conf comment already applies to an earlier patch
-> then, and it might be better to just remove the link_conf entirely, and
-> call the link_data just "link" like in more places. That's in patch 6
-> already.
-
-Sure, will edit patch 6 first and then this.
-
-> 
->> +static void
->> +ieee80211_radar_mark_chan_ctx_iterator(struct ieee80211_hw *hw,
->> +				       struct ieee80211_chanctx_conf *chanctx_conf,
->> +				       void *data)
->> +{
->> +	struct ieee80211_chanctx *ctx =
->> +		container_of(chanctx_conf, struct ieee80211_chanctx,
->> +			     conf);
->> +	struct ieee80211_chanctx_conf *itr_data =
->> +		(struct ieee80211_chanctx_conf *)data;
-> 
-> The cast isn't needed. But you don't even really need the "itr_data"
-> variable since you never dereference it.
-
-That's true but we are using it to compare it. If we don't type cast 
-then pointer comparison later would be problematic right?
-
-
--- 
-Aditya
-
+Supported EHT-MCS and NSS set  vs Basic EHT-MCS And Nss Set
 
