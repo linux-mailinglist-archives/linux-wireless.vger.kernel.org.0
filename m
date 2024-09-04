@@ -1,140 +1,135 @@
-Return-Path: <linux-wireless+bounces-12472-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12473-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4280B96B791
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 11:58:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A84F896B8DB
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 12:46:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F30A82811E3
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 09:58:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB7CC1C21425
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 10:46:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A2031CEE91;
-	Wed,  4 Sep 2024 09:58:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FuNI7zCo"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C73C1865F0;
+	Wed,  4 Sep 2024 10:46:29 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C98A1CCEE4
-	for <linux-wireless@vger.kernel.org>; Wed,  4 Sep 2024 09:58:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9952B635;
+	Wed,  4 Sep 2024 10:46:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725443933; cv=none; b=FdFoMchgqphTT+U4hSj+GuAwqHe6HVbi4jY2FMPIr8ihkY7yMjpen4XCHTZZnip5pxF0KzOpPQ41OCrGBruOOp4Dkb3duoPLgZL1UwsZopb7wV9YrHw/Ql9QqW1oA7vL0fZbu1QMXz/zLAYu4+tMaRmcpkCJYxF5OFZRXBPeyNE=
+	t=1725446789; cv=none; b=QpwfgHFhKNY1Xsx5LwPDWH6yHlT/gaiHGFF81XxTN6dBqEO8A9Gr0iH7848MDaZwPQXfy9TVDTFRRE5fDX/WCk9myy6RTeGg8wu1u9uiWCqlcvczH4VdZnCEjPb1gGZTFzf/k+mdn5nTDYaao10/HwtxdWU24/y6tpCqIufn8X0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725443933; c=relaxed/simple;
-	bh=EMDoobwsPaa3IPRKFEtLexd0apW8zHwtICnY0Msbmdg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I3IyGcdPNN4GqqxrCKrsYc2iTWJIpUJhs6+mXAC74bPcTBrAaBUCDHRaVBblNAS5DdJWvKOxSawjBS9beRVuXvfAZNknUzV/8CF2LHhnJaqs5dOafdyyedqqcIrOZ+tlEF9pf49C1QitwnKvdsVN8Fo8OBcsLjYunFEDa0byoiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FuNI7zCo; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5c3c34e3c39so505376a12.2
-        for <linux-wireless@vger.kernel.org>; Wed, 04 Sep 2024 02:58:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1725443930; x=1726048730; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=u49hiZ4JFDTsCsznJsWvuznonlfqBLResqj2DwZmV/k=;
-        b=FuNI7zCoJfXp4Eh/hgopLVyXGCJuyRUzU+9zmcrroDk0PDC/e32DihE6Z8GnyYYisB
-         PHNxQ/4teq2nKpEB8tkuwigzFuwYGpUDCl9+ied/kwHUQ++b3zRdXGOxww20KjqeTckj
-         U2laTG9rbOdFMc5vnD6oZenxjyD+mBNShLR92CfUD2/kdWN4gIgOWHhCSaka5mzODZ8U
-         A29flla9FAP57/sZZZAohyvbpBdGQzp7y+3qNfuBCQc/SFYM6O2hNjLgTjWKzjsF3J7D
-         Eid+yPb/xxfwVej1HBBPfrd/qp6dN9BK3IgXw65mXTf8ztnfCmeqXU501AqfjNt3e+Us
-         1SeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725443930; x=1726048730;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=u49hiZ4JFDTsCsznJsWvuznonlfqBLResqj2DwZmV/k=;
-        b=X8ohKJejR5owl6bpJlX7KSk+ESRatURxlVI5zzSP2t0uS5RNdmrg2Ota6ncNTxqn9g
-         PmdBKp7QysGJiVT8Ogs1dbBWFmdd6ZbvF4XzbAULvOYK61bRrnAva/Q9Z7/Pp2NJlNUl
-         fG1uTeYqBF7PBiCBcqp3UTNxNnkw48IZY5Ini5RH0v7/jDdKeJeaLHyqp42UjSZReytJ
-         oWny+i8/hoJmf9LEaj8a39PZMbLbrUbiJr3wIMEv/X4sc0gDSaYk28LoAsFww0xTA/bV
-         ZD86n2KCLSi+aCvGMVWPoSm8iUefBvDkQc/9gJXIlVaOPnEbgK7fuaR4lpJkdQ/tJfXm
-         6Urw==
-X-Forwarded-Encrypted: i=1; AJvYcCVM+RfWkVk+9KcSy+RhBbEf3NTOtczYsFT2Zacs9xoxCCWdTd8NZDYtO6qQfBOvT5iZDpdZLD00b25O/K7Oqg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxrFGLoU63x5u6KgzSuidIBEFfvhA033sbG6gDyMsSR/YYSb3Nq
-	PCcpg+ce0ePaFfHO6suYGd+y/Upj4k2teVCRadp0mhtGLFTARj/6at7dgP5UXik=
-X-Google-Smtp-Source: AGHT+IFT+NniqAPvFhaZv5wvnEdU/zPZtYur5crrxcjBp71lAN2FPFXmfpieiwjHhyHvSVmRM9p8hQ==
-X-Received: by 2002:a17:907:8687:b0:a86:ac91:a571 with SMTP id a640c23a62f3a-a89a38221cbmr1169012566b.56.1725443929635;
-        Wed, 04 Sep 2024 02:58:49 -0700 (PDT)
-Received: from lion.caleb.rex.connolly.tech ([2a02:8109:aa0d:be00::a253])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a89891d5d03sm803171666b.143.2024.09.04.02.58.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Sep 2024 02:58:49 -0700 (PDT)
-From: Caleb Connolly <caleb.connolly@linaro.org>
-To: Jeff Johnson <jjohnson@kernel.org>,
-	Kalle Valo <kvalo@kernel.org>
-Cc: Caleb Connolly <caleb.connolly@linaro.org>,
-	linux-arm-msm@vger.kernel.org,
-	ath11k@lists.infradead.org,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH] ath11k: allow missing memory-regions
-Date: Wed,  4 Sep 2024 11:57:41 +0200
-Message-ID: <20240904095815.1572186-2-caleb.connolly@linaro.org>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1725446789; c=relaxed/simple;
+	bh=C3kWlcL2V1tdfmYpVEgH9f7Fwg9KCEu5d35QHW3LQu0=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=JKMn/1xPP/YQjeJzD+lqloOU+xEMjdGlUvr8wQ3SiUbuQquOVqO80Sv2r8vBCibQhlN/Ut/ZySxAr+G1YYMzrfRpnDtOyPHSptxmTps8dMxkT20Kps26UXmUEDdAcAvMR7Eiq73axWOOFoSme9ar3o+r7X6Gh//O+QdeXL2EeRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [192.168.179.80] (p54b6ff28.dip0.t-ipconnect.de [84.182.255.40])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 8E5BA61BA1843;
+	Wed,  4 Sep 2024 12:45:34 +0200 (CEST)
+Message-ID: <d8253ab3-f4f0-40fd-a550-d75eef121b56@molgen.mpg.de>
+Date: Wed, 4 Sep 2024 12:45:01 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+Subject: failed to remove key (0, ce:ce:1e:27:bb:e0) from hardware (-110)
+ (ETIMEDOUT)
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Baochen Qiang <quic_bqiang@quicinc.com>,
+ James Prestwood <prestwoj@gmail.com>, linux-wireless@vger.kernel.org,
+ ath10k@lists.infradead.org, LKML <linux-kernel@vger.kernel.org>
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On SC7280 platforms which are running with TrustZone, it is not
-necessary to manually map the memory regions used by the wifi hardware.
-However, ath11k will currently fail to load unless both memory regions
-are specified.
+Dear Linux folks,
 
-This breaks wifi on the rb3gen2 which only specifies the firmware memory
-region and does not use the CE region.
 
-Adjust the order of operations in ath11k_ahb_fw_resources_init() to
-check for the wifi-firmware subnode before attempting to parse the
-memory regions.
+Linux 6.11-rc6+ logged the warning below when resuming from ACPI S3 (or 
+unloading and loading the `ath10k_core`/`ath10k_pci` modules) having 
+been connected to an AVM network:
 
-Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
----
-Cc: linux-arm-msm@vger.kernel.org
----
- drivers/net/wireless/ath/ath11k/ahb.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+     wlp58s0: failed to remove key (0, ce:ce:1e:27:bb:e0) from hardware 
+(-110)
 
-diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
-index 634d385fd9ad..e24f8da565db 100644
---- a/drivers/net/wireless/ath/ath11k/ahb.c
-+++ b/drivers/net/wireless/ath/ath11k/ahb.c
-@@ -999,20 +999,20 @@ static int ath11k_ahb_fw_resources_init(struct ath11k_base *ab)
- 	 */
- 	if (!ab->hw_params.fixed_fw_mem)
- 		return 0;
- 
--	ret = ath11k_ahb_setup_msa_resources(ab);
--	if (ret) {
--		ath11k_err(ab, "failed to setup msa resources\n");
--		return ret;
--	}
--
- 	node = of_get_child_by_name(host_dev->of_node, "wifi-firmware");
- 	if (!node) {
- 		ab_ahb->fw.use_tz = true;
- 		return 0;
- 	}
- 
-+	ret = ath11k_ahb_setup_msa_resources(ab);
-+	if (ret) {
-+		ath11k_err(ab, "failed to setup msa resources\n");
-+		return ret;
-+	}
-+
- 	info.fwnode = &node->fwnode;
- 	info.parent = host_dev;
- 	info.name = node->name;
- 	info.dma_mask = DMA_BIT_MASK(32);
--- 
-2.46.0
+Error code 110 is the value for ETIMEDOUT. I saw James patch [1], and 
+applied it, and the error is still there (as exepected).
 
+Can the warning be improved so the user know, which component is at fault?
+
+
+Kind regards,
+
+Paul
+
+
+[1]: https://lore.kernel.org/all/20240814164507.996303-1-prestwoj@gmail.com/
+
+```
+Sep 04 07:21:38.469669 abreu kernel: Linux version 
+6.11.0-rc6-00027-ga91d08fcc356 (build@bohemianrhapsody.molgen.mpg.de) 
+(gcc (Debian 14.2.0-4) 14.2.0, GNU ld (GNU Binutils for Debian) 2.43.1) 
+#294 SMP PREEMPT_DYNAMIC Tue Sep  3 23:01:18 CEST 2024
+Sep 04 07:21:38.469718 abreu kernel: Command line: 
+BOOT_IMAGE=/vmlinuz-6.11.0-rc6-00027-ga91d08fcc356 
+root=UUID=32e29882-d94d-4a92-9ee4-4d03002bfa29 ro quiet pci=noaer 
+mem_sleep_default=deep log_buf_len=8M cryptomgr.notests
+[…]
+Sep 04 12:34:55.826218 abreu sudo[25874]:  pmenzel : TTY=pts/7 ; 
+PWD=/home/pmenzel ; USER=root ; COMMAND=/usr/sbin/modprobe ath10k_pci
+Sep 04 12:34:55.828046 abreu sudo[25874]: pam_unix(sudo:session): 
+session opened for user root(uid=0) by pmenzel(uid=5272)
+Sep 04 12:34:55.869839 abreu kernel: ath10k_pci 0000:3a:00.0: pci irq 
+msi oper_irq_mode 2 irq_mode 0 reset_mode 0
+Sep 04 12:34:56.005202 abreu sudo[25874]: pam_unix(sudo:session): 
+session closed for user root
+Sep 04 12:34:56.161706 abreu kernel: ath10k_pci 0000:3a:00.0: qca6174 
+hw3.2 target 0x05030000 chip_id 0x00340aff sub 1a56:1535
+Sep 04 12:34:56.162591 abreu kernel: ath10k_pci 0000:3a:00.0: kconfig 
+debug 0 debugfs 0 tracing 0 dfs 0 testmode 0
+Sep 04 12:34:56.163115 abreu kernel: ath10k_pci 0000:3a:00.0: firmware 
+ver WLAN.RM.4.4.1-00309- api 6 features wowlan,ignore-otp,mfp crc32 0793bcf2
+Sep 04 12:34:56.241683 abreu kernel: ath10k_pci 0000:3a:00.0: board_file 
+api 2 bmi_id N/A crc32 d2863f91
+Sep 04 12:34:56.333784 abreu kernel: ath10k_pci 0000:3a:00.0: htt-ver 
+3.87 wmi-op 4 htt-op 3 cal otp max-sta 32 raw 0 hwcrypto 1
+Sep 04 12:34:56.417649 abreu kernel: ath: EEPROM regdomain: 0x6c
+Sep 04 12:34:56.417919 abreu kernel: ath: EEPROM indicates we should 
+expect a direct regpair map
+Sep 04 12:34:56.418022 abreu kernel: ath: Country alpha2 being used: 00
+Sep 04 12:34:56.418114 abreu kernel: ath: Regpair used: 0x6c
+Sep 04 12:34:56.422440 abreu NetworkManager[610]: <info> 
+[1725446096.4223] device (wlan0): driver supports Access Point (AP) mode
+[…]
+Sep 04 12:35:12.042484 abreu wpa_supplicant[618]: wlp58s0: WPA: Group 
+rekeying completed with ce:ce:1e:27:bb:e0 [GTK=CCMP]
+Sep 04 12:35:21.800998 abreu sudo[25953]:  pmenzel : TTY=pts/7 ; 
+PWD=/home/pmenzel ; USER=root ; COMMAND=/usr/sbin/modprobe -r ath10k_pci
+Sep 04 12:35:21.803733 abreu sudo[25953]: pam_unix(sudo:session): 
+session opened for user root(uid=0) by pmenzel(uid=5272)
+Sep 04 12:35:21.881668 abreu kernel: wlp58s0: deauthenticating from 
+ce:ce:1e:27:bb:e0 by local choice (Reason: 3=DEAUTH_LEAVING)
+Sep 04 12:35:22.905717 abreu kernel: ath10k_pci 0000:3a:00.0: failed to 
+install key for vdev 0 peer ce:ce:1e:27:bb:e0: -110
+Sep 04 12:35:22.906604 abreu kernel: wlp58s0: failed to remove key (0, 
+ce:ce:1e:27:bb:e0) from hardware (-110)
+Sep 04 12:35:22.908927 abreu wpa_supplicant[618]: wlp58s0: 
+CTRL-EVENT-DISCONNECTED bssid=ce:ce:1e:27:bb:e0 reason=3 locally_generated=1
+Sep 04 12:35:22.908995 abreu wpa_supplicant[618]: BSSID 
+ce:ce:1e:27:bb:e0 ignore list count incremented to 2, ignoring for 10 
+seconds
+```
 
