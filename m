@@ -1,63 +1,54 @@
-Return-Path: <linux-wireless+bounces-12504-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12505-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F44D96C5EF
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 20:03:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6529296C5FC
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 20:08:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFB421F21C96
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 18:03:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DE731F22EFE
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 18:08:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA981DCB10;
-	Wed,  4 Sep 2024 18:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 639201E1324;
+	Wed,  4 Sep 2024 18:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Idvd2Oye"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="MHnz3neW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE882AE9F
-	for <linux-wireless@vger.kernel.org>; Wed,  4 Sep 2024 18:03:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED7E2AE9F;
+	Wed,  4 Sep 2024 18:08:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725472996; cv=none; b=G8nqvc1uAyNy8fNhdtYBpyScd97P6lgEJ4TqlnPv3TOvd7rby8vF1/d82ZuZ8Rs7l7JZAgB96sKNzOHDpZ3Ej8X74aZtyM3SMuzE9Jl/9obrZaYNKb5zZJEGXn0bx3zsBITlAk+uqd94ITrMu4U8dXHHlBt1v9sEvXNGSnVzXOI=
+	t=1725473311; cv=none; b=ZbXh5O89hZ3UbPeNoO12Voj94T9u4Kz//K3s3f+saOxysghbByIxsBN051Im4K6AUNx9sZ7jh4l9rwnG4yY4U0FnbQ5GS/x4ALTbWTjcYv0c/0v5ap5lpdqWTB5KG4xvPTocnbYwgsHA4QF1NGG9lYvflMYrWvMRsvdsy3YSlVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725472996; c=relaxed/simple;
-	bh=GwoikESulHieke+ZZ3u1T9GKQEUNZaqojuv8zsIy/kY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=icdB61XLhE4t+h6hamO6rxxxsVN04eyh5+2SV9v1btL6c6Jz/2NaMNRXa4n6Eno9vcQ/WMNWAGvdsePJuofW/q5ljzl5zFWiTvuWNKVi6UkUE0YgGnaJkryseoQ9Qt7myEf0dU/G88Sq8fz22u5g24cex0RBj+C7n0bpYGbkabc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Idvd2Oye; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 484A8DXH032324;
-	Wed, 4 Sep 2024 18:03:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	C+mCS5lP2ka/cVdgoQuM49qHg/bVva8yppVEpMU9C64=; b=Idvd2OyegE9AIgHS
-	RL9MGsFCMiKzVDzphu1j/aNUC1uYoHKkeTXnwSrpsPx8G2S8diPqlIeqODJBJ/00
-	hBXnWSSLAvArySmRCYreb/nTn0yNI2d/wLno2VDQI9qchwq2omAU3kVOebWMviuC
-	huybo/6Hpdpso+i+DFwcGytMqyaQNBNQkQUkDyAM1BASbF9GKwkXNVaatISwNlnM
-	xJqwx8vdpYs4i4w3OHnWSem4BlOQMih/3cExeZwZ+Hm5YrVgpMWnXdf1p6nASMUW
-	lLteyuSMtXwLLlTCxYiZd8MGhyYxpdCCGn3Og5oCzUkJWGcWZxjCGwrV5jkuPxFF
-	E3AvRA==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41drqe5x00-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 04 Sep 2024 18:03:10 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 484I39Zv023736
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 4 Sep 2024 18:03:09 GMT
-Received: from [10.111.180.250] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 4 Sep 2024
- 11:03:08 -0700
-Message-ID: <22978701-ca79-4e90-8ceb-16bdaf230e8f@quicinc.com>
-Date: Wed, 4 Sep 2024 11:03:08 -0700
+	s=arc-20240116; t=1725473311; c=relaxed/simple;
+	bh=Crs52THU8yXegVqfzdcrWE1nNmneQ2UQDe+hTPfQh1M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=I1o9OTQgGCzekxklsn+F4b7P8Xnt0BBP15urEEfG50b1hJka36MelPzpnBUzmJvevqPPYtCSgh7J3KINcrLO6wqLU3sIh/epa9lm8ml7T/c5gdS7+TbZyNTYY/8gBC8DaxLUw6Mr3i2B5i+uq0mCK9knpUjM59Z88xdL6mgKyiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=MHnz3neW; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id B9D0888B67;
+	Wed,  4 Sep 2024 20:08:20 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1725473302;
+	bh=L18sf0D+NFLPea49QaTj6x+Tw7vEHatae6RqHf4EagU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MHnz3neWlfnxeOV9Xw46uLobn1Bnc104W0Lm3DX6ZnWYVpzABX3kAHuZImk+2b3mD
+	 5vI7fINA0tVbwvBDXhv+uDstOAWHRNgTfOK6Gc1KwVbvZcDEsBXpZEWZgUoAud70xp
+	 1/Tkbe7c0VN5REww/K9yNTDfdMzdZ8eZg3BndE3YCvTqoU7tJq279jST1vLddsKeqG
+	 32NVIBcDJKVohxmnysYHYnv9HdzLy4HmdeblUs9FkSaGUvTHTdW+kVdu7p9q/jZ6Br
+	 KWYZb0iR17gvRWSXgspu/l0++2rS9UN3pn911TSkHsJZSk9AfIw0teFTeT8ZehaFLk
+	 g9Jyd+54WjCuQ==
+Message-ID: <6d73f3da-315b-485c-a1d5-03d5ea378922@denx.de>
+Date: Wed, 4 Sep 2024 19:45:44 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,97 +56,71 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: ath10k "failed to install key for vdev 0 peer <mac>: -110"
-To: James Prestwood <prestwoj@gmail.com>,
-        Baochen Qiang
-	<quic_bqiang@quicinc.com>,
-        <linux-wireless@vger.kernel.org>, <ath10k@lists.infradead.org>
-References: <e780560a-86eb-4189-ab5d-3bed3ee5825e@gmail.com>
- <54fac081-7d70-4d31-9f2a-07f5d75d675d@quicinc.com>
- <ea2e7c62-f6e9-4cba-ae81-19fc9abed8b7@gmail.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Subject: Re: [PATCH v4 1/5] dt-bindings: wireless: wilc1000: Document WILC3000
+ compatible string
+To: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+ linux-wireless@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Adham Abozaeid <adham.abozaeid@microchip.com>,
+ Ajay Singh <ajay.kathat@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Conor Dooley
+ <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20240829004510.178016-1-marex@denx.de>
+ <52e7b6d2-5d31-4ae1-bf1d-44e63a22774d@bootlin.com>
+ <57a7eac4-23c7-42ac-ade5-233c24a288c6@denx.de>
+ <95ae0eb6-72ec-4261-b9e1-8ee3e831452e@bootlin.com>
 Content-Language: en-US
-In-Reply-To: <ea2e7c62-f6e9-4cba-ae81-19fc9abed8b7@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <95ae0eb6-72ec-4261-b9e1-8ee3e831452e@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: nJvYYzMD0tTqY_RH4fatu06C_eJ7caP8
-X-Proofpoint-ORIG-GUID: nJvYYzMD0tTqY_RH4fatu06C_eJ7caP8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-04_15,2024-09-04_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
- phishscore=0 adultscore=0 suspectscore=0 priorityscore=1501 clxscore=1011
- impostorscore=0 spamscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
- definitions=main-2409040135
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On 8/16/2024 5:04 AM, James Prestwood wrote:
-> Hi Baochen,
-> 
-> On 8/16/24 3:19 AM, Baochen Qiang wrote:
+On 9/4/24 4:50 PM, Alexis Lothoré wrote:
+> Hello Marek,
+
+Hi,
+
+>>> It is only after those 3 steps that the chip can be used with standard hci
+>>> commands over serial port. IMHO 1 is the biggest point, because it means that
+>>> **a bluetooth driver for wilc3000 needs access to the bus used by wlan part**
+>>> (so only describing the bluetooth part of the chip as a child node of an uart
+>>> controller is not enough). Aside from bus access, I also expect some
+>>> interactions between bluetooth and wifi (eg: power management, sleep/wakeup)
 >>
->> On 7/12/2024 9:11 PM, James Prestwood wrote:
->>> Hi,
->>>
->>> I've seen this error mentioned on random forum posts, but its always associated with a kernel crash/warning or some very obvious negative behavior. I've noticed this occasionally and at one location very frequently during FT roaming, specifically just after CMD_ASSOCIATE is issued. For our company run networks I'm not seeing any negative behavior apart from a 3 second delay in sending the re-association frame since the kernel waits for this timeout. But we have some networks our clients run on that we do not own (different vendor), and we are seeing association timeouts after this error occurs and in some cases the AP is sending a deauthentication with reason code 8 instead of replying with a reassociation reply and an error status, which is quite odd.
->>>
->>> We are chasing down this with the vendor of these APs as well, but the behavior always happens after we see this key removal failure/timeout on the client side. So it would appear there is potentially a problem on both the client and AP. My guess is _something_ about the re-association frame changes when this error is encountered, but I cannot see how that would be the case. We are working to get PCAPs now, but its through a 3rd party, so that timing is out of my control.
->>>
->>>  From the kernel code this error would appear innocuous, the old key is failing to be removed but it gets immediately replaced by the new key. And we don't see that addition failing. Am I understanding that logic correctly? I.e. this logic:
->>>
->>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/net/mac80211/key.c#n503
->>>
->>> Below are a few kernel logs of the issue happening, some with the deauth being sent by the AP, some with just timeouts:
->>>
->>> --- No deauth frame sent, just association timeouts after the error ---
->>>
->>> Jul 11 00:05:30 kernel: wlan0: disconnect from AP <previous BSS> for new assoc to <new BSS>
->>> Jul 11 00:05:33 kernel: ath10k_pci 0000:02:00.0: failed to install key for vdev 0 peer <previous BSS>: -110
->>> Jul 11 00:05:33 kernel: wlan0: failed to remove key (0, <previous BSS>) from hardware (-110)
->>> Jul 11 00:05:33 kernel: wlan0: associate with <new BSS> (try 1/3)
->>> Jul 11 00:05:33 kernel: wlan0: associate with <new BSS> (try 2/3)
->>> Jul 11 00:05:33 kernel: wlan0: associate with <new BSS> (try 3/3)
->>> Jul 11 00:05:33 kernel: wlan0: association with <new BSS> timed out
->>> Jul 11 00:05:36 kernel: wlan0: authenticate with <new BSS>
->>> Jul 11 00:05:36 kernel: wlan0: send auth to <new BSS>a (try 1/3)
->>> Jul 11 00:05:36 kernel: wlan0: authenticated
->>> Jul 11 00:05:36 kernel: wlan0: associate with <new BSS> (try 1/3)
->>> Jul 11 00:05:36 kernel: wlan0: RX AssocResp from <new BSS> (capab=0x1111 status=0 aid=16)
->>> Jul 11 00:05:36 kernel: wlan0: associated
->>>
->>> --- Deauth frame sent amidst the association timeouts ---
->>>
->>> Jul 11 00:43:18 kernel: wlan0: disconnect from AP <previous BSS> for new assoc to <new BSS>
->>> Jul 11 00:43:21 kernel: ath10k_pci 0000:02:00.0: failed to install key for vdev 0 peer <previous BSS>: -110
->>> Jul 11 00:43:21 kernel: wlan0: failed to remove key (0, <previous BSS>) from hardware (-110)
->>> Jul 11 00:43:21 kernel: wlan0: associate with <new BSS> (try 1/3)
->>> Jul 11 00:43:21 kernel: wlan0: deauthenticated from <new BSS> while associating (Reason: 8=DISASSOC_STA_HAS_LEFT)
->>> Jul 11 00:43:24 kernel: wlan0: authenticate with <new BSS>
->>> Jul 11 00:43:24 kernel: wlan0: send auth to <new BSS> (try 1/3)
->>> Jul 11 00:43:24 kernel: wlan0: authenticated
->>> Jul 11 00:43:24 kernel: wlan0: associate with <new BSS> (try 1/3)
->>> Jul 11 00:43:24 kernel: wlan0: RX AssocResp from <new BSS> (capab=0x1111 status=0 aid=101)
->>> Jul 11 00:43:24 kernel: wlan0: associated
->>>
->> Hi James, this is QCA6174, right? could you also share firmware version?
+>> Just a quick idea -- what about having a phandle to the BT UART node in the
+>> wilc3000 node ? Then the wilc driver can check if the phandle is available and
+>> valid, and attach the BT part to the UART, while also doing all the necessary
+>> power sequencing and bus accesses via SDIO/SPI.
+>>
+>> Like this:
+>>
+>> &uart10 {
+>>    status = "okay";
+>> };
+>>
+>> &mmc20 {
+>>    ...
+>>    wifi@0 {
+>>      compatible = "microchip,wilc1000";
+>>      microchip,bt-uart = <&uart10>; // OPTIONAL
+>>      ...
+>>    };
+>> };
 > 
-> Yep, using:
-> 
-> qca6174 hw3.2 target 0x05030000 chip_id 0x00340aff sub 1dac:0261
-> firmware ver WLAN.RM.4.4.1-00288- api 6 features wowlan,ignore-otp,mfp 
-> crc32 bf907c7c
-> 
-> I did try in one instance the latest firmware, 309, and still saw the 
-> same behavior but 288 is what all our devices are running.
-> 
-> Thanks,
-> 
-> James
+> I thought about something like this too, indeed (but somehow inverted, a
+> reference to wilc node in the bt node under uart, to allow the bluetooth part to
+> ask wilc to perform operations over sdio/spi). The design would likely be
+> simpler in this case, but some internal discussions with colleagues raised some
+> concerns, for example with power management (but Krzysztof's suggestion about
+> power sequencing may help with this).
 
-Baochen, are you looking more into this? Would prefer to fix the root cause
-rather than take "[RFC 0/1] wifi: ath10k: improvement on key removal failure"
+Maybe switching the current WILC power management to runtime PM would 
+simplify things greatly ?
 
