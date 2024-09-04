@@ -1,121 +1,94 @@
-Return-Path: <linux-wireless+bounces-12462-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12463-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED9EE96B391
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 09:54:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8A9B96B3E5
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 10:05:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B0E41C248F5
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 07:54:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95F8E28131C
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 08:05:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77005155751;
-	Wed,  4 Sep 2024 07:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33DDB176FA2;
+	Wed,  4 Sep 2024 08:05:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uTxmW4/5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798F3154C09;
-	Wed,  4 Sep 2024 07:53:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057FF15099D
+	for <linux-wireless@vger.kernel.org>; Wed,  4 Sep 2024 08:05:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725436404; cv=none; b=ixfFF8pp3Ag9xgH2uJLwPh/LSP9fcYT2Cx4dkoD8h/WbJfCKRIGRalVH1Y+FjAttBPIBDif5o5zVTYL/eXmOszvbiq1Y8z8DNjD5RyczRwhYPK73YVrflzaAa5EJhQdHUc4WOm/ZxL8C8tv6B09fokVDBrXOvG19TC+4YdMP/To=
+	t=1725437137; cv=none; b=uv5uZ2na8U6EtJBYnT2hswsEev9VahcxT8Slnx/k57dhj2qfEjtAfqEFkoO0PsmXkP6a1eeNvefw97Z9xvyXEO60zjHx1Y3L7xRVOH/7Q6gpDa8Mquy5ZKYJ5SDjFqBj+fsUOisnhPb+2ShITC2l6lrlichy1h2LFPr0vRUaGPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725436404; c=relaxed/simple;
-	bh=9YVSl3Ct5tIWYZ8sVcOucsvy4DaQHnWGMJrURp+UFVA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rVHE4cNGBToVElOAGRaI4nTdOnS5p09P5UGhxoTE0GMLtxulKiasndBf7fUiDKAG6upeLDqd/3hKJM95XEHlhByq/wkamDd91z0acU3vO/WbfJ4XtFOqBMURqrfJFYuj1+DBw81wecFYYJlMjspPD++1N8w1PbYmTjCIAWTRXjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost (unknown [124.16.138.129])
-	by APP-05 (Coremail) with SMTP id zQCowAB3f+voEdhmno8mAQ--.4888S2;
-	Wed, 04 Sep 2024 15:53:12 +0800 (CST)
-From: Chen Ni <nichen@iscas.ac.cn>
-To: nbd@nbd.name,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	kvalo@kernel.org,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	deren.wu@mediatek.com,
-	mingyen.hsieh@mediatek.com
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Chen Ni <nichen@iscas.ac.cn>
-Subject: [PATCH] wifi: mt76: mt7925: convert comma to semicolon
-Date: Wed,  4 Sep 2024 15:52:13 +0800
-Message-Id: <20240904075213.1352976-1-nichen@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1725437137; c=relaxed/simple;
+	bh=5oioWBL4GnXhrAnuJK34nTYd8tgLtRoIQVtQnty79lE=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=nQ0ad9LSQAfomHEDIJTevaMPYI0EUc7xG6TLm4Ye+xfgL0N9R3vZpVW4jHAsgWfc9NQPdWP7pbd61lRYcINAb5ymA59f8UxnpXndjdERoT/I8/WoYWJpgxvRClXgfQ5pbZyZPHb8dWZt4ngGC3vx7KAAtxPv4vwI6+fw2hwNv0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uTxmW4/5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922C3C4CEC2;
+	Wed,  4 Sep 2024 08:05:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725437135;
+	bh=5oioWBL4GnXhrAnuJK34nTYd8tgLtRoIQVtQnty79lE=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=uTxmW4/5Tivl1Lw5GkBHz8geIm+sUn0PypgvlewV44as/ORvt65YkogsAOqwM90Fv
+	 W7m78vJJVJfwidvAkNzHwKY+8SsHPVfvM8b/YQJDOIthdLCB0fo0rCqEM5btfHBVH5
+	 pq6lQ5fiMF2dtE1MicL40wRFq5wTMkh3qhuKwWvVbil0Y7HcG39ydTQVXt/UEDjm9e
+	 MVNKXtQPLAwWDmvNQcZ7TMeBkD93SJ5EBrIAGXILrhTEoGmalbn/gpUa9fwSiSYG4u
+	 H8w86ptMQic10we4F34GJkfZ/kezqN5/Ey8PrnN4nGI0iMtQWBjD2v0jIaqBjG6HI/
+	 bfamSxkgjhhTw==
+From: Kalle Valo <kvalo@kernel.org>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: linux-wireless@vger.kernel.org,  toke@toke.dk,  nbd@nbd.name
+Subject: Re: [PATCH] wireless: ath9k: eeprom: remove platform data
+References: <20240903202713.471489-1-rosenp@gmail.com>
+Date: Wed, 04 Sep 2024 11:05:32 +0300
+In-Reply-To: <20240903202713.471489-1-rosenp@gmail.com> (Rosen Penev's message
+	of "Tue, 3 Sep 2024 13:27:13 -0700")
+Message-ID: <87jzfrkfn7.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAB3f+voEdhmno8mAQ--.4888S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7KF17ur4DKrWUZF4ktF1xGrg_yoW8Ar4DpF
-	W8G3yjyr1UJ3Zxt3Z5XanxCFsxZan5C3WfKrZYq3s5Zw1kAF1xAFy7Ja4UJryDAFWIka12
-	gr4FqryrXw43urJanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBY14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r
-	xl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
-	6xIIjxv20xvE14v26r1q6rW5McIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7xkEbV
-	WUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7Cj
-	xVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67AK6r4xMxAIw28IcxkI7V
-	AKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
-	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6x
-	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
-	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
-	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbkR67UUUUU==
-X-CM-SenderInfo: xqlfxv3q6l2u1dvotugofq/
+Content-Type: text/plain
 
-Replace comma between expressions with semicolons.
+Rosen Penev <rosenp@gmail.com> writes:
 
-Using a ',' in place of a ';' can have unintended side effects.
-Although that is not the case here, it is seems best to use ';'
-unless ',' is intended.
+> There are no more board files defining platform data for this driver and
+> eeprom support through NVMEM has already been implemented. No need to
+> keep this old functionality around.
+>
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> ---
+>  As an aside, the last user of this functionality downstream in OpenWrt
+>  has been removed: https://github.com/openwrt/openwrt/commit/7ac8279bd
+>
+>  drivers/net/wireless/ath/ath9k/eeprom.c | 12 ------------
+>  1 file changed, 12 deletions(-)
+>
+> diff --git a/drivers/net/wireless/ath/ath9k/eeprom.c b/drivers/net/wireless/ath/ath9k/eeprom.c
+> index efb7889142d4..df58dc02e104 100644
+> --- a/drivers/net/wireless/ath/ath9k/eeprom.c
+> +++ b/drivers/net/wireless/ath/ath9k/eeprom.c
+> @@ -15,7 +15,6 @@
+>   */
+>  
+>  #include "hw.h"
+> -#include <linux/ath9k_platform.h>
 
-Found by inspection.
-No functional change intended.
-Compile tested only.
+What about the file include/linux/ath9k_platform.h? That should be also
+removed, right?
 
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
----
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 9dc22fbe25d3..82c5a8def344 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -2171,12 +2171,12 @@ void mt7925_mcu_bss_rlm_tlv(struct sk_buff *skb, struct mt76_phy *phy,
- 
- 	tlv = mt76_connac_mcu_add_tlv(skb, UNI_BSS_INFO_RLM, sizeof(*req));
- 	req = (struct bss_rlm_tlv *)tlv;
--	req->control_channel = chandef->chan->hw_value,
--	req->center_chan = ieee80211_frequency_to_channel(freq1),
--	req->center_chan2 = ieee80211_frequency_to_channel(freq2),
--	req->tx_streams = hweight8(phy->antenna_mask),
--	req->ht_op_info = 4, /* set HT 40M allowed */
--	req->rx_streams = hweight8(phy->antenna_mask),
-+	req->control_channel = chandef->chan->hw_value;
-+	req->center_chan = ieee80211_frequency_to_channel(freq1);
-+	req->center_chan2 = ieee80211_frequency_to_channel(freq2);
-+	req->tx_streams = hweight8(phy->antenna_mask);
-+	req->ht_op_info = 4; /* set HT 40M allowed */
-+	req->rx_streams = hweight8(phy->antenna_mask);
- 	req->band = band;
- 
- 	switch (chandef->width) {
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+https://docs.kernel.org/process/submitting-patches.html
 
