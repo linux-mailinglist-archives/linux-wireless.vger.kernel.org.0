@@ -1,101 +1,140 @@
-Return-Path: <linux-wireless+bounces-12471-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12472-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 319EE96B6DF
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 11:37:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4280B96B791
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 11:58:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF3E7B2BC01
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 09:30:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F30A82811E3
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 09:58:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62E321CF2BC;
-	Wed,  4 Sep 2024 09:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A2031CEE91;
+	Wed,  4 Sep 2024 09:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="vrDsAfXg"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="FuNI7zCo"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B103B1CCEF2
-	for <linux-wireless@vger.kernel.org>; Wed,  4 Sep 2024 09:30:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C98A1CCEE4
+	for <linux-wireless@vger.kernel.org>; Wed,  4 Sep 2024 09:58:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725442202; cv=none; b=Dak3dup7iUg16ULz2GYnmNv+MTgpWw2pR3kSdQX8XORRE1CFXIR6kqrboA4rvCKysJuCMzJ00JFqonZsrQwfKreX1pO7xVUuFjaFAzcdSeWFjpds8iHPUGFmNlZ9DnvlWd9pG73dGoadNZFo2lxyteEKhehmTTbEJirRneGjJG8=
+	t=1725443933; cv=none; b=FdFoMchgqphTT+U4hSj+GuAwqHe6HVbi4jY2FMPIr8ihkY7yMjpen4XCHTZZnip5pxF0KzOpPQ41OCrGBruOOp4Dkb3duoPLgZL1UwsZopb7wV9YrHw/Ql9QqW1oA7vL0fZbu1QMXz/zLAYu4+tMaRmcpkCJYxF5OFZRXBPeyNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725442202; c=relaxed/simple;
-	bh=Rv7e/eoaMoQb4k7jiYJ9YlmB6O8BqlzXVXNWjf3vFzo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tX0JNv40hgdwN6SyHGsCYuhYLKwMxnu9gvWWyJyc/5EUThVt9ag3IHQtouobvY6gLktNLw9fO06808HTPm4ms1JQrvoH4uxYbPB+GesUU4v6+bnNZKdtfYLIdFT2JubP3I7nlsk0U9zCv94kl0rA0Un9n7Z8npUReJpNupeb4xA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=vrDsAfXg; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=QHwdImZwMaVc4O1Fs/2dN8M1RWteS+aWLr57hgj/EfU=;
-	t=1725442200; x=1726651800; b=vrDsAfXgbZRCf2ZQrKaaHOGWiKNNTnla9WnWFKzaDA9BIWL
-	+dxzjKQEJ4PzNEf6PeM+9YNdUVsLQQrwosIp2izUmg/o4Jgx7XCJEyn4hJpWQO7LH+nSS9Pp5Nlbn
-	zcJDapLNDpveg+HONs+wSTD9bFFTGedt2jrZIB3vgeKWizrtHX86HPzs/6obXrHH5yNVIULONukHr
-	Wka/zYsEzRN9bCgNHQT2hIjA2Hz+5hCeUc6rkMKFyy/Yhot9JWduo+P1PbhNVo5YaWl0c2WsplMT7
-	lVUpYI/vAvptqk69L/TXv7jYzco7EK/P12j5eA2eChV/FJP2PShZRulPCtCTcOCA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1slmKq-00000004Z9a-39p8;
-	Wed, 04 Sep 2024 11:29:56 +0200
-Message-ID: <df96a65701b5c72d78805b7f7c518670ae794f2b.camel@sipsolutions.net>
-Subject: Re: [PATCH v4] wifi: mac80211: introduce EHT rate support in AQL
- airtime
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Mingyen Hsieh <mingyen.hsieh@mediatek.com>, jonas.gorski@gmail.com
-Cc: deren.wu@mediatek.com, Sean.Wang@mediatek.com, Soul.Huang@mediatek.com, 
- Leon.Yen@mediatek.com, Michael.Lo@mediatek.com, Eric-SY.Chang@mediatek.com,
-  km.lin@mediatek.com, robin.chiu@mediatek.com, ch.yeh@mediatek.com, 
- posh.sun@mediatek.com, Quan.Zhou@mediatek.com, Ryder.Lee@mediatek.com, 
- Shayne.Chen@mediatek.com, linux-wireless@vger.kernel.org, 
- linux-mediatek@lists.infradead.org, Bo Jiao <Bo.Jiao@mediatek.com>
-Date: Wed, 04 Sep 2024 11:29:55 +0200
-In-Reply-To: <20240904091749.7311-1-mingyen.hsieh@mediatek.com>
-References: <20240904091749.7311-1-mingyen.hsieh@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+	s=arc-20240116; t=1725443933; c=relaxed/simple;
+	bh=EMDoobwsPaa3IPRKFEtLexd0apW8zHwtICnY0Msbmdg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I3IyGcdPNN4GqqxrCKrsYc2iTWJIpUJhs6+mXAC74bPcTBrAaBUCDHRaVBblNAS5DdJWvKOxSawjBS9beRVuXvfAZNknUzV/8CF2LHhnJaqs5dOafdyyedqqcIrOZ+tlEF9pf49C1QitwnKvdsVN8Fo8OBcsLjYunFEDa0byoiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=FuNI7zCo; arc=none smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5c3c34e3c39so505376a12.2
+        for <linux-wireless@vger.kernel.org>; Wed, 04 Sep 2024 02:58:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1725443930; x=1726048730; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=u49hiZ4JFDTsCsznJsWvuznonlfqBLResqj2DwZmV/k=;
+        b=FuNI7zCoJfXp4Eh/hgopLVyXGCJuyRUzU+9zmcrroDk0PDC/e32DihE6Z8GnyYYisB
+         PHNxQ/4teq2nKpEB8tkuwigzFuwYGpUDCl9+ied/kwHUQ++b3zRdXGOxww20KjqeTckj
+         U2laTG9rbOdFMc5vnD6oZenxjyD+mBNShLR92CfUD2/kdWN4gIgOWHhCSaka5mzODZ8U
+         A29flla9FAP57/sZZZAohyvbpBdGQzp7y+3qNfuBCQc/SFYM6O2hNjLgTjWKzjsF3J7D
+         Eid+yPb/xxfwVej1HBBPfrd/qp6dN9BK3IgXw65mXTf8ztnfCmeqXU501AqfjNt3e+Us
+         1SeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725443930; x=1726048730;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=u49hiZ4JFDTsCsznJsWvuznonlfqBLResqj2DwZmV/k=;
+        b=X8ohKJejR5owl6bpJlX7KSk+ESRatURxlVI5zzSP2t0uS5RNdmrg2Ota6ncNTxqn9g
+         PmdBKp7QysGJiVT8Ogs1dbBWFmdd6ZbvF4XzbAULvOYK61bRrnAva/Q9Z7/Pp2NJlNUl
+         fG1uTeYqBF7PBiCBcqp3UTNxNnkw48IZY5Ini5RH0v7/jDdKeJeaLHyqp42UjSZReytJ
+         oWny+i8/hoJmf9LEaj8a39PZMbLbrUbiJr3wIMEv/X4sc0gDSaYk28LoAsFww0xTA/bV
+         ZD86n2KCLSi+aCvGMVWPoSm8iUefBvDkQc/9gJXIlVaOPnEbgK7fuaR4lpJkdQ/tJfXm
+         6Urw==
+X-Forwarded-Encrypted: i=1; AJvYcCVM+RfWkVk+9KcSy+RhBbEf3NTOtczYsFT2Zacs9xoxCCWdTd8NZDYtO6qQfBOvT5iZDpdZLD00b25O/K7Oqg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxrFGLoU63x5u6KgzSuidIBEFfvhA033sbG6gDyMsSR/YYSb3Nq
+	PCcpg+ce0ePaFfHO6suYGd+y/Upj4k2teVCRadp0mhtGLFTARj/6at7dgP5UXik=
+X-Google-Smtp-Source: AGHT+IFT+NniqAPvFhaZv5wvnEdU/zPZtYur5crrxcjBp71lAN2FPFXmfpieiwjHhyHvSVmRM9p8hQ==
+X-Received: by 2002:a17:907:8687:b0:a86:ac91:a571 with SMTP id a640c23a62f3a-a89a38221cbmr1169012566b.56.1725443929635;
+        Wed, 04 Sep 2024 02:58:49 -0700 (PDT)
+Received: from lion.caleb.rex.connolly.tech ([2a02:8109:aa0d:be00::a253])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a89891d5d03sm803171666b.143.2024.09.04.02.58.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Sep 2024 02:58:49 -0700 (PDT)
+From: Caleb Connolly <caleb.connolly@linaro.org>
+To: Jeff Johnson <jjohnson@kernel.org>,
+	Kalle Valo <kvalo@kernel.org>
+Cc: Caleb Connolly <caleb.connolly@linaro.org>,
+	linux-arm-msm@vger.kernel.org,
+	ath11k@lists.infradead.org,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH] ath11k: allow missing memory-regions
+Date: Wed,  4 Sep 2024 11:57:41 +0200
+Message-ID: <20240904095815.1572186-2-caleb.connolly@linaro.org>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
 
-On Wed, 2024-09-04 at 17:17 +0800, Mingyen Hsieh wrote:
->=20
-> @@ -443,13 +549,18 @@ static u32 ieee80211_get_rate_duration(struct ieee8=
-0211_hw *hw,
->  		idx =3D status->rate_idx;
->  		group =3D HE_GROUP_IDX(streams, status->he_gi, bw);
->  		break;
-> +	case RX_ENC_EHT:
-> +		streams =3D status->nss;
-> +		idx =3D status->rate_idx;
-> +		group =3D EHT_GROUP_IDX(streams, status->eht.gi, bw);
-> +		break;
->  	default:
->  		WARN_ON_ONCE(1);
->  		return 0;
->  	}
-> =20
-> -	if (WARN_ON_ONCE((status->encoding !=3D RX_ENC_HE && streams > 4) ||
-> -			 (status->encoding =3D=3D RX_ENC_HE && streams > 8)))
-> +	if (WARN_ON_ONCE((status->encoding > RX_ENC_HE && streams > 8) ||
+On SC7280 platforms which are running with TrustZone, it is not
+necessary to manually map the memory regions used by the wifi hardware.
+However, ath11k will currently fail to load unless both memory regions
+are specified.
 
-That should've been >=3D, but I feel like it might be better to move the
-warning as multiple warnings into the switch statement now? The > and <
-here also makes it vulnerable to reordering, which is probably not going
-to happen, but why put the trap here?
+This breaks wifi on the rb3gen2 which only specifies the firmware memory
+region and does not use the CE region.
 
-johannes
+Adjust the order of operations in ath11k_ahb_fw_resources_init() to
+check for the wifi-firmware subnode before attempting to parse the
+memory regions.
+
+Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+---
+Cc: linux-arm-msm@vger.kernel.org
+---
+ drivers/net/wireless/ath/ath11k/ahb.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
+index 634d385fd9ad..e24f8da565db 100644
+--- a/drivers/net/wireless/ath/ath11k/ahb.c
++++ b/drivers/net/wireless/ath/ath11k/ahb.c
+@@ -999,20 +999,20 @@ static int ath11k_ahb_fw_resources_init(struct ath11k_base *ab)
+ 	 */
+ 	if (!ab->hw_params.fixed_fw_mem)
+ 		return 0;
+ 
+-	ret = ath11k_ahb_setup_msa_resources(ab);
+-	if (ret) {
+-		ath11k_err(ab, "failed to setup msa resources\n");
+-		return ret;
+-	}
+-
+ 	node = of_get_child_by_name(host_dev->of_node, "wifi-firmware");
+ 	if (!node) {
+ 		ab_ahb->fw.use_tz = true;
+ 		return 0;
+ 	}
+ 
++	ret = ath11k_ahb_setup_msa_resources(ab);
++	if (ret) {
++		ath11k_err(ab, "failed to setup msa resources\n");
++		return ret;
++	}
++
+ 	info.fwnode = &node->fwnode;
+ 	info.parent = host_dev;
+ 	info.name = node->name;
+ 	info.dma_mask = DMA_BIT_MASK(32);
+-- 
+2.46.0
+
 
