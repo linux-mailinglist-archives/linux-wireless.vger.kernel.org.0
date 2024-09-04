@@ -1,136 +1,161 @@
-Return-Path: <linux-wireless+bounces-12503-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12504-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD1DC96C5D5
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 19:56:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F44D96C5EF
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 20:03:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69034282618
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 17:56:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFB421F21C96
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 18:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE3C1E00AF;
-	Wed,  4 Sep 2024 17:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA981DCB10;
+	Wed,  4 Sep 2024 18:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a/UUQEDu"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Idvd2Oye"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 147132AE9F
-	for <linux-wireless@vger.kernel.org>; Wed,  4 Sep 2024 17:56:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE882AE9F
+	for <linux-wireless@vger.kernel.org>; Wed,  4 Sep 2024 18:03:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725472595; cv=none; b=jdX8Qm/wDcDpD38OSTBdOc1R75Nm6eJQGFI0vPh1OaPqbL8HHFQQY9l1EnZz1ZJXKzLK1WcsD4GcqWwGFrgtSkXzIGA5sKdWrBXeTOC6V9aM4DnJRiidBrH08cNsdg9Z9whIMKlOrtpYRah0NREdnwkvO78w/yOQEIbHvWli/jo=
+	t=1725472996; cv=none; b=G8nqvc1uAyNy8fNhdtYBpyScd97P6lgEJ4TqlnPv3TOvd7rby8vF1/d82ZuZ8Rs7l7JZAgB96sKNzOHDpZ3Ej8X74aZtyM3SMuzE9Jl/9obrZaYNKb5zZJEGXn0bx3zsBITlAk+uqd94ITrMu4U8dXHHlBt1v9sEvXNGSnVzXOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725472595; c=relaxed/simple;
-	bh=QP+35boC58dZQW5aezYQ4w2Uoo9i6aylPAPmkWj12PY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Q6wqFY211MW93mwSK2S5ZfwHHOGqGDNsrYGrgyLiB4g8rb4MlAhVNvXKBgotDEc28BPTQyGaSw+/IBh+j+K8xYOqLHz7OxxVTPZEbSLncmsxPpG4WKQE8WZ+/oWkOQvHMuHyjmvGkha13XkHW9YRPtLAw+D7iPPJ0oSFcsvqOkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a/UUQEDu; arc=none smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-6b747f2e2b7so62224147b3.3
-        for <linux-wireless@vger.kernel.org>; Wed, 04 Sep 2024 10:56:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725472593; x=1726077393; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mqURZJQezutpVkqJ5Iu+2X9yBKxiRkGJ3io0ZuY1FyI=;
-        b=a/UUQEDuorAn/Yb2BT+e4ryFol+6Mr9tBqJ18DjSF9mYqkA3BfZKRvalzl5xTkeQlR
-         /6CEXScJGGYltcHA4kl86xCmc61fUVxECc0pNdLbQRgNP/2QRS1Gr2Dcp44FPB2ICv2r
-         2HxSS8JP5uc6BqcMY6Gt26skrFsQyE3or54XgEXDZ8mXdI1+0kM68n5ZEh6WiDI32OPn
-         v0hWg6/MJahpY/N/mt9b2bnd9KV44vO6TsUy+E/5tdIVDHUH/IO6R8ShjayGKa0l4Ow+
-         6PwJGGFj4ApAQx/S/e7+2zfbxDXGpVBMX5vvrWRAtJpzC/u4CgE772f64tR5dkzdOT6u
-         dIyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725472593; x=1726077393;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mqURZJQezutpVkqJ5Iu+2X9yBKxiRkGJ3io0ZuY1FyI=;
-        b=LEGawiJ6FtvAy59z/Kn2qoQ+/x+TDpAOhoarTvSbdgnh1LlUBypYDYrwvHsrrxgTMl
-         VT5psJD8uwSbm7y/tLq9RpcH/6IKBACUo2JOfjlpkFEksDKrcVBKjRn9A7w4H+gGJ6OE
-         UWFEN+5+1lDz6YdKlN6g6tgtJxPpxXb17jcgt7bJyR+W/INB2A/Qd2JDx0Ur/Tote9rn
-         c2Ey9QqXpY+mR+qhBo/B+lOwryGX/rUrOBCIQr2ogmbNu2bxAWfB1FmEtM++mLG9dlmj
-         p1FtSrDGjcf7C947mxwbV59w5RMyNWkziP/MGLyUIv8U8GDXO2cVDuLfuKM71X7jAlsc
-         YBXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCULlAEHNivuz4HPkpvZFUcYWbyw3TUz3jptGS/aL9xEVfPMI+r5RdJ8ENUuoaL9rbcnVM9SJ9jyYdTcu4Nyuw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywq5bxI9RH7hJVdXqP/0j2xeZRRBTorVcR/FUbSmTvPl2extDNG
-	GQcn6orHmlWfAs4mn8dqEEtEBzX+JAVkUGnoQR0/WCEY9saDPYaMuDnhuBXMBw2UX98Lx21P5et
-	j2TZNOCTiof2NzTmYeJrQpSL5vjI=
-X-Google-Smtp-Source: AGHT+IHSUX8H7W6ahhg0FJtXjvil8VtDylan5zsutIn+Yazw9sMHMA4GBQ52RbZ6usTVcP1ovSb+GpGhtsluRE+Eap4=
-X-Received: by 2002:a05:690c:389:b0:646:fe8e:f03b with SMTP id
- 00721157ae682-6d40ec605f0mr193145587b3.2.1725472593020; Wed, 04 Sep 2024
- 10:56:33 -0700 (PDT)
+	s=arc-20240116; t=1725472996; c=relaxed/simple;
+	bh=GwoikESulHieke+ZZ3u1T9GKQEUNZaqojuv8zsIy/kY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=icdB61XLhE4t+h6hamO6rxxxsVN04eyh5+2SV9v1btL6c6Jz/2NaMNRXa4n6Eno9vcQ/WMNWAGvdsePJuofW/q5ljzl5zFWiTvuWNKVi6UkUE0YgGnaJkryseoQ9Qt7myEf0dU/G88Sq8fz22u5g24cex0RBj+C7n0bpYGbkabc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Idvd2Oye; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 484A8DXH032324;
+	Wed, 4 Sep 2024 18:03:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	C+mCS5lP2ka/cVdgoQuM49qHg/bVva8yppVEpMU9C64=; b=Idvd2OyegE9AIgHS
+	RL9MGsFCMiKzVDzphu1j/aNUC1uYoHKkeTXnwSrpsPx8G2S8diPqlIeqODJBJ/00
+	hBXnWSSLAvArySmRCYreb/nTn0yNI2d/wLno2VDQI9qchwq2omAU3kVOebWMviuC
+	huybo/6Hpdpso+i+DFwcGytMqyaQNBNQkQUkDyAM1BASbF9GKwkXNVaatISwNlnM
+	xJqwx8vdpYs4i4w3OHnWSem4BlOQMih/3cExeZwZ+Hm5YrVgpMWnXdf1p6nASMUW
+	lLteyuSMtXwLLlTCxYiZd8MGhyYxpdCCGn3Og5oCzUkJWGcWZxjCGwrV5jkuPxFF
+	E3AvRA==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41drqe5x00-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 04 Sep 2024 18:03:10 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 484I39Zv023736
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 4 Sep 2024 18:03:09 GMT
+Received: from [10.111.180.250] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 4 Sep 2024
+ 11:03:08 -0700
+Message-ID: <22978701-ca79-4e90-8ceb-16bdaf230e8f@quicinc.com>
+Date: Wed, 4 Sep 2024 11:03:08 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240903202713.471489-1-rosenp@gmail.com> <87jzfrkfn7.fsf@kernel.org>
- <0bab22f0-e5a4-49ac-8265-910ae9380add@quicinc.com>
-In-Reply-To: <0bab22f0-e5a4-49ac-8265-910ae9380add@quicinc.com>
-From: Rosen Penev <rosenp@gmail.com>
-Date: Wed, 4 Sep 2024 10:56:21 -0700
-Message-ID: <CAKxU2N9QDRieOco0VRjTMQW2ywM-mOJp_vTyg+v_SKSBTPf+1g@mail.gmail.com>
-Subject: Re: [PATCH] wireless: ath9k: eeprom: remove platform data
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org, toke@toke.dk, 
-	nbd@nbd.name
+User-Agent: Mozilla Thunderbird
+Subject: Re: ath10k "failed to install key for vdev 0 peer <mac>: -110"
+To: James Prestwood <prestwoj@gmail.com>,
+        Baochen Qiang
+	<quic_bqiang@quicinc.com>,
+        <linux-wireless@vger.kernel.org>, <ath10k@lists.infradead.org>
+References: <e780560a-86eb-4189-ab5d-3bed3ee5825e@gmail.com>
+ <54fac081-7d70-4d31-9f2a-07f5d75d675d@quicinc.com>
+ <ea2e7c62-f6e9-4cba-ae81-19fc9abed8b7@gmail.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <ea2e7c62-f6e9-4cba-ae81-19fc9abed8b7@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: nJvYYzMD0tTqY_RH4fatu06C_eJ7caP8
+X-Proofpoint-ORIG-GUID: nJvYYzMD0tTqY_RH4fatu06C_eJ7caP8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-04_15,2024-09-04_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
+ phishscore=0 adultscore=0 suspectscore=0 priorityscore=1501 clxscore=1011
+ impostorscore=0 spamscore=0 mlxlogscore=999 bulkscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
+ definitions=main-2409040135
 
-On Wed, Sep 4, 2024 at 7:53=E2=80=AFAM Jeff Johnson <quic_jjohnson@quicinc.=
-com> wrote:
->
-> On 9/4/2024 1:05 AM, Kalle Valo wrote:
-> > Rosen Penev <rosenp@gmail.com> writes:
-> >
-> >> There are no more board files defining platform data for this driver a=
-nd
-> >> eeprom support through NVMEM has already been implemented. No need to
-> >> keep this old functionality around.
-> >>
-> >> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> >> ---
-> >>  As an aside, the last user of this functionality downstream in OpenWr=
-t
-> >>  has been removed: https://github.com/openwrt/openwrt/commit/7ac8279bd
-> >>
-> >>  drivers/net/wireless/ath/ath9k/eeprom.c | 12 ------------
-> >>  1 file changed, 12 deletions(-)
-> >>
-> >> diff --git a/drivers/net/wireless/ath/ath9k/eeprom.c b/drivers/net/wir=
-eless/ath/ath9k/eeprom.c
-> >> index efb7889142d4..df58dc02e104 100644
-> >> --- a/drivers/net/wireless/ath/ath9k/eeprom.c
-> >> +++ b/drivers/net/wireless/ath/ath9k/eeprom.c
-> >> @@ -15,7 +15,6 @@
-> >>   */
-> >>
-> >>  #include "hw.h"
-> >> -#include <linux/ath9k_platform.h>
-> >
-> > What about the file include/linux/ath9k_platform.h? That should be also
-> > removed, right?
->
-> That file is still used by other functionality (see init.c, btcoex.c)
-> But seems that at a minimum unused eeprom-related stuff should be removed=
- from
-> struct ath9k_platform_data.
-That's why I kept my changes to a minimum. I don't yet want to axe the
-other stuff. OpenWrt has a ton of non upstreamed patches for ath9k,
-some probably relying on ath9k_platform_data. I need to do real
-careful analysis to remove the rest.
->
-> Please review that all of the platform-related code in init.c is still ne=
-eded,
-> especially code related to eeprom support.
->
-> /jeff
->
+On 8/16/2024 5:04 AM, James Prestwood wrote:
+> Hi Baochen,
+> 
+> On 8/16/24 3:19 AM, Baochen Qiang wrote:
+>>
+>> On 7/12/2024 9:11 PM, James Prestwood wrote:
+>>> Hi,
+>>>
+>>> I've seen this error mentioned on random forum posts, but its always associated with a kernel crash/warning or some very obvious negative behavior. I've noticed this occasionally and at one location very frequently during FT roaming, specifically just after CMD_ASSOCIATE is issued. For our company run networks I'm not seeing any negative behavior apart from a 3 second delay in sending the re-association frame since the kernel waits for this timeout. But we have some networks our clients run on that we do not own (different vendor), and we are seeing association timeouts after this error occurs and in some cases the AP is sending a deauthentication with reason code 8 instead of replying with a reassociation reply and an error status, which is quite odd.
+>>>
+>>> We are chasing down this with the vendor of these APs as well, but the behavior always happens after we see this key removal failure/timeout on the client side. So it would appear there is potentially a problem on both the client and AP. My guess is _something_ about the re-association frame changes when this error is encountered, but I cannot see how that would be the case. We are working to get PCAPs now, but its through a 3rd party, so that timing is out of my control.
+>>>
+>>>  From the kernel code this error would appear innocuous, the old key is failing to be removed but it gets immediately replaced by the new key. And we don't see that addition failing. Am I understanding that logic correctly? I.e. this logic:
+>>>
+>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/net/mac80211/key.c#n503
+>>>
+>>> Below are a few kernel logs of the issue happening, some with the deauth being sent by the AP, some with just timeouts:
+>>>
+>>> --- No deauth frame sent, just association timeouts after the error ---
+>>>
+>>> Jul 11 00:05:30 kernel: wlan0: disconnect from AP <previous BSS> for new assoc to <new BSS>
+>>> Jul 11 00:05:33 kernel: ath10k_pci 0000:02:00.0: failed to install key for vdev 0 peer <previous BSS>: -110
+>>> Jul 11 00:05:33 kernel: wlan0: failed to remove key (0, <previous BSS>) from hardware (-110)
+>>> Jul 11 00:05:33 kernel: wlan0: associate with <new BSS> (try 1/3)
+>>> Jul 11 00:05:33 kernel: wlan0: associate with <new BSS> (try 2/3)
+>>> Jul 11 00:05:33 kernel: wlan0: associate with <new BSS> (try 3/3)
+>>> Jul 11 00:05:33 kernel: wlan0: association with <new BSS> timed out
+>>> Jul 11 00:05:36 kernel: wlan0: authenticate with <new BSS>
+>>> Jul 11 00:05:36 kernel: wlan0: send auth to <new BSS>a (try 1/3)
+>>> Jul 11 00:05:36 kernel: wlan0: authenticated
+>>> Jul 11 00:05:36 kernel: wlan0: associate with <new BSS> (try 1/3)
+>>> Jul 11 00:05:36 kernel: wlan0: RX AssocResp from <new BSS> (capab=0x1111 status=0 aid=16)
+>>> Jul 11 00:05:36 kernel: wlan0: associated
+>>>
+>>> --- Deauth frame sent amidst the association timeouts ---
+>>>
+>>> Jul 11 00:43:18 kernel: wlan0: disconnect from AP <previous BSS> for new assoc to <new BSS>
+>>> Jul 11 00:43:21 kernel: ath10k_pci 0000:02:00.0: failed to install key for vdev 0 peer <previous BSS>: -110
+>>> Jul 11 00:43:21 kernel: wlan0: failed to remove key (0, <previous BSS>) from hardware (-110)
+>>> Jul 11 00:43:21 kernel: wlan0: associate with <new BSS> (try 1/3)
+>>> Jul 11 00:43:21 kernel: wlan0: deauthenticated from <new BSS> while associating (Reason: 8=DISASSOC_STA_HAS_LEFT)
+>>> Jul 11 00:43:24 kernel: wlan0: authenticate with <new BSS>
+>>> Jul 11 00:43:24 kernel: wlan0: send auth to <new BSS> (try 1/3)
+>>> Jul 11 00:43:24 kernel: wlan0: authenticated
+>>> Jul 11 00:43:24 kernel: wlan0: associate with <new BSS> (try 1/3)
+>>> Jul 11 00:43:24 kernel: wlan0: RX AssocResp from <new BSS> (capab=0x1111 status=0 aid=101)
+>>> Jul 11 00:43:24 kernel: wlan0: associated
+>>>
+>> Hi James, this is QCA6174, right? could you also share firmware version?
+> 
+> Yep, using:
+> 
+> qca6174 hw3.2 target 0x05030000 chip_id 0x00340aff sub 1dac:0261
+> firmware ver WLAN.RM.4.4.1-00288- api 6 features wowlan,ignore-otp,mfp 
+> crc32 bf907c7c
+> 
+> I did try in one instance the latest firmware, 309, and still saw the 
+> same behavior but 288 is what all our devices are running.
+> 
+> Thanks,
+> 
+> James
+
+Baochen, are you looking more into this? Would prefer to fix the root cause
+rather than take "[RFC 0/1] wifi: ath10k: improvement on key removal failure"
 
