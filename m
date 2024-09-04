@@ -1,78 +1,110 @@
-Return-Path: <linux-wireless+bounces-12459-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12460-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CB1C96B30E
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 09:40:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 525DE96B34A
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 09:49:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C595C1F20EF8
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 07:40:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1F4D1F26715
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Sep 2024 07:49:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F0EB1465A0;
-	Wed,  4 Sep 2024 07:40:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="tE1YzAPa"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC4C4148833;
+	Wed,  4 Sep 2024 07:48:15 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FE84AEF5
-	for <linux-wireless@vger.kernel.org>; Wed,  4 Sep 2024 07:40:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122FE146588;
+	Wed,  4 Sep 2024 07:48:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725435652; cv=none; b=eDFRGH1vfHw4e0rT6McIO2ex/VNu1EK/20AHYH4u+7NNbC1eOEekpUedxxi/Crqc4p+i4SdgQLaK4ljc5wBqU8pGv+l9DfmhtawmgvbSxFOOHGG94/Vlfekrp3y2Vqv5JZo2VyWf3cIS2D83Ot30EDpmD3Jh1y83wHL5R56kdPg=
+	t=1725436095; cv=none; b=hm8WuoNgHWrEjQMMEolCYbTUakHaF72aVx9DQr05KeYlIo4j1nfpO1+34LSe2w8ctF7RMtdx08G09cmiVOHTTCtuqPfRUXAyxUmR4PbWh0xgt7aQo2Sa539fgvXjBiRewxhH+rX9AzJ1MXRpUMHW4cgOuEXJo2xsNIKOI1tZZFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725435652; c=relaxed/simple;
-	bh=i/oo5r+dd7j/SVZ0d5Yf6oNgdOH2FlqcUdUeco08E4Q=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ECCSv7gfbeNNBbX187cbce5lGKb9ht1WgdI4VTfXx2Cc25SfrDdBGTsbgpKe5i3zwuATsORE5zrpWN1BRg5b//Ztf2E5PHynUcW8TTxxtmF1xEAiZR1xgq3FbsWtL6aKXdtK4EIdGSt8ClMdWjma46iff1jv8CXlMmZCDa6Jw6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=tE1YzAPa; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=i/oo5r+dd7j/SVZ0d5Yf6oNgdOH2FlqcUdUeco08E4Q=;
-	t=1725435651; x=1726645251; b=tE1YzAPai+bTV5tuZl0ddqm16//noLVifkjS/ueNoHFwRD7
-	xebmYu7cK+IP28mYuzKTWvHI8knTlbUXAUWIwfJDyq+ceJC6YFDh2h+tUTferMQc+vVrH5xgS2tu3
-	T0rCVx9bJNFohBYl80C1gKFCXZ3IvAolR/4Z7orXagCh0vHpOVIQBsMExac9hVSmkazDhRd8njS/5
-	9PFl1sUzUKeJx7D7ke9BSRb3Cd5ehJs+jqj3llKwhnIJfBDUMGWDMuqkbC41vlbdN6EEYidN8Losz
-	9tqVNkz296rnHtnux15fbk2XQj9GalPAlS4UDw9plGNFKYahJThLJm/gKVFNIoBg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1slkdD-00000004Px0-2yGb;
-	Wed, 04 Sep 2024 09:40:47 +0200
-Message-ID: <037a8342a820c9be41ba367280df4f448e741c05.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: cfg80211: Avoid RCU debug splat in
- __cfg80211_bss_update error paths
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Veerendranath Jakkam <quic_vjakkam@quicinc.com>
-Cc: linux-wireless@vger.kernel.org
-Date: Wed, 04 Sep 2024 09:40:45 +0200
-In-Reply-To: <20240904015520.3571295-1-quic_vjakkam@quicinc.com>
-References: <20240904015520.3571295-1-quic_vjakkam@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+	s=arc-20240116; t=1725436095; c=relaxed/simple;
+	bh=jPUHbEFRlioacszj1Y1QLmf9zGOBWuwFLQ3AY59fBGE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RBi1gOlXKdp7Pu2LvhAX0kUwUL1HqzfcaWW3FEz0yaAuKG8AD05Xf3pk403EuLQ/3pfwLCzVLnO5SNQkIN0MxQfcD5UgP63+aYwajGoOPmDc0LOYcaSy6buPprQWZdTkxrH9dfYMowAjhhackh7/rF5vAUBmnPOpaprq3/uA8es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost (unknown [124.16.138.129])
+	by APP-05 (Coremail) with SMTP id zQCowABHLiGXENhmb0EmAQ--.3968S2;
+	Wed, 04 Sep 2024 15:47:35 +0800 (CST)
+From: Chen Ni <nichen@iscas.ac.cn>
+To: arend.vanspriel@broadcom.com,
+	kvalo@kernel.org,
+	johannes.berg@intel.com,
+	kees@kernel.org,
+	a@bayrepo.ru,
+	wsa+renesas@sang-engineering.com,
+	quic_alokad@quicinc.com,
+	marcan@marcan.st,
+	j@jannau.net
+Cc: linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com,
+	linux-kernel@vger.kernel.org,
+	Chen Ni <nichen@iscas.ac.cn>
+Subject: [PATCH] wifi: brcmfmac: cfg80211: Convert comma to semicolon
+Date: Wed,  4 Sep 2024 15:46:37 +0800
+Message-Id: <20240904074637.1352864-1-nichen@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowABHLiGXENhmb0EmAQ--.3968S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Gr4rCw4kuw4kuw1xGrW3ZFb_yoW8Jryrpr
+	W8Xa4qyF1UWws8Ka1fKFs7Aa4rtanxGas2k3yjyas3uFyDXr18Ja1v9Fy3Wr1kAr4Iyay2
+	9Fs0qFnrXrsxGrJanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBY14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r
+	xl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj
+	6xIIjxv20xvE14v26r126r1DMcIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7xkEbV
+	WUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7Cj
+	xVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67AK6r4xMxAIw28IcxkI7V
+	AKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
+	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6x
+	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
+	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
+	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbp6wtUUUUU==
+X-CM-SenderInfo: xqlfxv3q6l2u1dvotugofq/
 
-On Wed, 2024-09-04 at 07:25 +0530, Veerendranath Jakkam wrote:
-> Add rcu_read_lock() and rcu_read_unlock() to avoid suspicious
-> rcu_dereference_check warnings in __cfg80211_bss_update error paths.
+Replace comma between expressions with semicolons.
 
-I don't think that's right. Every other path here just uses
-rcu_access_pointer(), and we own the 'tmp' at this point, so that seems
-correct.
+Using a ',' in place of a ';' can have unintended side effects.
+Although that is not the case here, it is seems best to use ';'
+unless ',' is intended.
 
-johannes
+Found by inspection.
+No functional change intended.
+Compile tested only.
+
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index 815f6b3c79fc..349aa3439502 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -1135,7 +1135,7 @@ static void brcmf_escan_prep(struct brcmf_cfg80211_info *cfg,
+ 		offset = offsetof(struct brcmf_scan_params_v2_le, channel_list) +
+ 				n_channels * sizeof(u16);
+ 		offset = roundup(offset, sizeof(u32));
+-		length += sizeof(ssid_le) * n_ssids,
++		length += sizeof(ssid_le) * n_ssids;
+ 		ptr = (char *)params_le + offset;
+ 		for (i = 0; i < n_ssids; i++) {
+ 			memset(&ssid_le, 0, sizeof(ssid_le));
+-- 
+2.25.1
+
 
