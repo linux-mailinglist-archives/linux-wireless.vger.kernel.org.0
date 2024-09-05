@@ -1,167 +1,109 @@
-Return-Path: <linux-wireless+bounces-12515-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12516-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2B2E96CC5A
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 03:46:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D806896CC5D
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 03:48:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED81B1C2219E
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 01:46:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A599B2252A
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 01:48:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB1948F6E;
-	Thu,  5 Sep 2024 01:46:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="IoFFljiQ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42AC7946F;
+	Thu,  5 Sep 2024 01:48:18 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2451E2107
-	for <linux-wireless@vger.kernel.org>; Thu,  5 Sep 2024 01:46:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03A514F70;
+	Thu,  5 Sep 2024 01:48:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725500774; cv=none; b=rZDorHFOppw+Uyoew16iAKnUvjX0fMA6uPb35tWVTG/XyYgMKgrtTHQwKN97cRHa0uqLtMg+u1EaqlHPLgGvH9SDVzndXQlyyyrB84FqepcC1giy/VYEk9f2T/EWCWJ7UKwyRPbGKv3kKhDXokJACfEY/rxiuQHKruA3dDK08Qw=
+	t=1725500898; cv=none; b=UQCF8qElraovLGJ0SmstypQP8rha5/7heeC6O2bxmF8KaL8xGOAb1VuEPItFvwszGMkP7OSkGoUfCfVg4TTwrUYxP8oHNCi/+GwHLHp+cv21W9FdkjForyP6UyipR2D+glLcOE0Fv9Z0EIn9Qqz//jAREROwSW3I/yoq1RFL7HQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725500774; c=relaxed/simple;
-	bh=AK1Tci0X0IO/makHuMjJhgSAMzXtGLnTUtICRr+gudE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Sv+/XeZIl2iVZ/OPR4IK0zH+uOs8MVQDLntNFG427/kQAXisv8JbjnubvBOnOMM0Cb3snehE9G9ConyL5Az0MEwyE7l3ThdD9HtG4JczX0YqD54xPawRIaIJoKqir+3RHdxyAS7QdziYWWZPP+ff6e1w5rBNKL5Y6uZfHmzrL8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=IoFFljiQ; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 484HF77o010438;
-	Thu, 5 Sep 2024 01:46:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	s/RwYRmOMmQcWlVM9kRYbKtqlwrmBph4nhg9C97KGvw=; b=IoFFljiQcpMqqAq6
-	8FlxIWKclYwQRZHAUCNY2DR+sxtCQyCmsnGPBgDM+k7KqpmrYGEDX2ifUWvSdbdo
-	9fE29fnK0O2S8P3iq1bKD6xZuQJPWkl4g+xX9TEEzv5u6Bj8fk4VD6SU+vF56f0a
-	YVrGD+6/WK7taQwa6e5drlKooCkJgb6lXhRxBjhsekgZlVey9eamYYAvpvLKKf+3
-	mYjkrEuJsyCO43XhNH37r+DzTQqrxFM+rIgilPlSLkE2K9Kw6vMZ7S//EbuLsffs
-	eTGfuhQ2NcoD4AceQj+fENrqOIkamG0snSmxP0MpgiyHs4leOe3Dnkrz6SleO+sl
-	lCZ7NA==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41e0bhnq79-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Sep 2024 01:46:08 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4851k7Rn008205
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 5 Sep 2024 01:46:07 GMT
-Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 4 Sep 2024
- 18:46:05 -0700
-Message-ID: <dda85730-3f19-490e-bb0f-99b13511c062@quicinc.com>
-Date: Thu, 5 Sep 2024 09:46:04 +0800
+	s=arc-20240116; t=1725500898; c=relaxed/simple;
+	bh=PYxlj9GqBR4bKUNRXNy5ayykwZH2h6m7UH5oHyX601c=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FeULGCPd10BqAzeiZPWbh99fGShQwg3SN7sQo9HsK2Y3bXEPiD7yVpifDEnQjIJAxtId22zmzvjtFt9gxo4+sj45YoEqzOnhGuCuveVJrs/sY2WOpQnHDZouJ5FDCtbBak6G7y4OjahTBinISusZQLnP4UqJSADoSEBrys56XV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-05 (Coremail) with SMTP id zQCowACniurODdlmV_dXAQ--.16946S2;
+	Thu, 05 Sep 2024 09:48:01 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: nbd@nbd.name,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	kvalo@kernel.org,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	ruanjinjie@huawei.com,
+	make24@iscas.ac.cn
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	stable@vger.kernel.org
+Subject: [PATCH] mt76: mt7615: check devm_kasprintf() returned value
+Date: Thu,  5 Sep 2024 09:47:53 +0800
+Message-Id: <20240905014753.353271-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: ath10k "failed to install key for vdev 0 peer <mac>: -110"
-To: Jeff Johnson <quic_jjohnson@quicinc.com>,
-        James Prestwood
-	<prestwoj@gmail.com>,
-        <linux-wireless@vger.kernel.org>, <ath10k@lists.infradead.org>
-References: <e780560a-86eb-4189-ab5d-3bed3ee5825e@gmail.com>
- <54fac081-7d70-4d31-9f2a-07f5d75d675d@quicinc.com>
- <ea2e7c62-f6e9-4cba-ae81-19fc9abed8b7@gmail.com>
- <22978701-ca79-4e90-8ceb-16bdaf230e8f@quicinc.com>
-Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <22978701-ca79-4e90-8ceb-16bdaf230e8f@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: ai_R2xX_xuaCRiuux9B6R4ps1s270Yrf
-X-Proofpoint-GUID: ai_R2xX_xuaCRiuux9B6R4ps1s270Yrf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-04_22,2024-09-04_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- priorityscore=1501 suspectscore=0 adultscore=0 bulkscore=0 malwarescore=0
- spamscore=0 lowpriorityscore=0 clxscore=1015 impostorscore=0 mlxscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2409050012
+X-CM-TRANSID:zQCowACniurODdlmV_dXAQ--.16946S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrKFW7ZFW5Ww13ZFWkKryrXrb_yoWDtrg_WF
+	4kZr93tryrGrn5Kr4ayryakryFkaykZF97Jr4ft3yfKrW7GrWDuryfArnxJ3yDG3s2vr1j
+	qF1DAFy8Zw4YvjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbSxFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4UJV
+	WxJr1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
+	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
+	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2
+	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
+	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
+	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
+	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
+	kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUOmhFUUUUU
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
+devm_kasprintf() can return a NULL pointer on failure but this returned
+value is not checked. Fix this lack and check the returned value.
 
+Found by code review.
 
-On 9/5/2024 2:03 AM, Jeff Johnson wrote:
-> On 8/16/2024 5:04 AM, James Prestwood wrote:
->> Hi Baochen,
->>
->> On 8/16/24 3:19 AM, Baochen Qiang wrote:
->>>
->>> On 7/12/2024 9:11 PM, James Prestwood wrote:
->>>> Hi,
->>>>
->>>> I've seen this error mentioned on random forum posts, but its always associated with a kernel crash/warning or some very obvious negative behavior. I've noticed this occasionally and at one location very frequently during FT roaming, specifically just after CMD_ASSOCIATE is issued. For our company run networks I'm not seeing any negative behavior apart from a 3 second delay in sending the re-association frame since the kernel waits for this timeout. But we have some networks our clients run on that we do not own (different vendor), and we are seeing association timeouts after this error occurs and in some cases the AP is sending a deauthentication with reason code 8 instead of replying with a reassociation reply and an error status, which is quite odd.
->>>>
->>>> We are chasing down this with the vendor of these APs as well, but the behavior always happens after we see this key removal failure/timeout on the client side. So it would appear there is potentially a problem on both the client and AP. My guess is _something_ about the re-association frame changes when this error is encountered, but I cannot see how that would be the case. We are working to get PCAPs now, but its through a 3rd party, so that timing is out of my control.
->>>>
->>>>  From the kernel code this error would appear innocuous, the old key is failing to be removed but it gets immediately replaced by the new key. And we don't see that addition failing. Am I understanding that logic correctly? I.e. this logic:
->>>>
->>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/net/mac80211/key.c#n503
->>>>
->>>> Below are a few kernel logs of the issue happening, some with the deauth being sent by the AP, some with just timeouts:
->>>>
->>>> --- No deauth frame sent, just association timeouts after the error ---
->>>>
->>>> Jul 11 00:05:30 kernel: wlan0: disconnect from AP <previous BSS> for new assoc to <new BSS>
->>>> Jul 11 00:05:33 kernel: ath10k_pci 0000:02:00.0: failed to install key for vdev 0 peer <previous BSS>: -110
->>>> Jul 11 00:05:33 kernel: wlan0: failed to remove key (0, <previous BSS>) from hardware (-110)
->>>> Jul 11 00:05:33 kernel: wlan0: associate with <new BSS> (try 1/3)
->>>> Jul 11 00:05:33 kernel: wlan0: associate with <new BSS> (try 2/3)
->>>> Jul 11 00:05:33 kernel: wlan0: associate with <new BSS> (try 3/3)
->>>> Jul 11 00:05:33 kernel: wlan0: association with <new BSS> timed out
->>>> Jul 11 00:05:36 kernel: wlan0: authenticate with <new BSS>
->>>> Jul 11 00:05:36 kernel: wlan0: send auth to <new BSS>a (try 1/3)
->>>> Jul 11 00:05:36 kernel: wlan0: authenticated
->>>> Jul 11 00:05:36 kernel: wlan0: associate with <new BSS> (try 1/3)
->>>> Jul 11 00:05:36 kernel: wlan0: RX AssocResp from <new BSS> (capab=0x1111 status=0 aid=16)
->>>> Jul 11 00:05:36 kernel: wlan0: associated
->>>>
->>>> --- Deauth frame sent amidst the association timeouts ---
->>>>
->>>> Jul 11 00:43:18 kernel: wlan0: disconnect from AP <previous BSS> for new assoc to <new BSS>
->>>> Jul 11 00:43:21 kernel: ath10k_pci 0000:02:00.0: failed to install key for vdev 0 peer <previous BSS>: -110
->>>> Jul 11 00:43:21 kernel: wlan0: failed to remove key (0, <previous BSS>) from hardware (-110)
->>>> Jul 11 00:43:21 kernel: wlan0: associate with <new BSS> (try 1/3)
->>>> Jul 11 00:43:21 kernel: wlan0: deauthenticated from <new BSS> while associating (Reason: 8=DISASSOC_STA_HAS_LEFT)
->>>> Jul 11 00:43:24 kernel: wlan0: authenticate with <new BSS>
->>>> Jul 11 00:43:24 kernel: wlan0: send auth to <new BSS> (try 1/3)
->>>> Jul 11 00:43:24 kernel: wlan0: authenticated
->>>> Jul 11 00:43:24 kernel: wlan0: associate with <new BSS> (try 1/3)
->>>> Jul 11 00:43:24 kernel: wlan0: RX AssocResp from <new BSS> (capab=0x1111 status=0 aid=101)
->>>> Jul 11 00:43:24 kernel: wlan0: associated
->>>>
->>> Hi James, this is QCA6174, right? could you also share firmware version?
->>
->> Yep, using:
->>
->> qca6174 hw3.2 target 0x05030000 chip_id 0x00340aff sub 1dac:0261
->> firmware ver WLAN.RM.4.4.1-00288- api 6 features wowlan,ignore-otp,mfp 
->> crc32 bf907c7c
->>
->> I did try in one instance the latest firmware, 309, and still saw the 
->> same behavior but 288 is what all our devices are running.
->>
->> Thanks,
->>
->> James
-> 
-> Baochen, are you looking more into this? Would prefer to fix the root cause
-> rather than take "[RFC 0/1] wifi: ath10k: improvement on key removal failure"
-I asked CST team to try to reproduce this issue such that we can get firmware dump for debug further. What I got is that CST team is currently busy at other critical schedules and they are planning to debug this ath10k issue after those schedules get finished.
+Cc: stable@vger.kernel.org
+Fixes: 0bb4e9187ea4 ("mt76: mt7615: fix hwmon temp sensor mem use-after-free")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/net/wireless/mediatek/mt76/mt7615/init.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+index f7722f67db57..0b9ebdcda221 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
+@@ -56,6 +56,9 @@ int mt7615_thermal_init(struct mt7615_dev *dev)
+ 
+ 	name = devm_kasprintf(&wiphy->dev, GFP_KERNEL, "mt7615_%s",
+ 			      wiphy_name(wiphy));
++	if (!name)
++		return -ENOMEM;
++
+ 	hwmon = devm_hwmon_device_register_with_groups(&wiphy->dev, name, dev,
+ 						       mt7615_hwmon_groups);
+ 	return PTR_ERR_OR_ZERO(hwmon);
+-- 
+2.25.1
 
 
