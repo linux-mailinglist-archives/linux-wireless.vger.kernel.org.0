@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-12562-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12563-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 449C996E51A
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 23:29:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E78196E51B
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 23:31:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FCE81C22DD0
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 21:29:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE5461F2416C
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 21:31:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D94CE181CE1;
-	Thu,  5 Sep 2024 21:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF631957E1;
+	Thu,  5 Sep 2024 21:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IlxZnA3n"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j3gCUveH"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B447214F121
-	for <linux-wireless@vger.kernel.org>; Thu,  5 Sep 2024 21:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9DCF19409A
+	for <linux-wireless@vger.kernel.org>; Thu,  5 Sep 2024 21:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725571786; cv=none; b=Y2/rAsDSN0S050RS1g/jhDeLIzqoPw4buFb6NijlTNDiuh62oJj38ObdW+HxSiz8rs05UVdnOuK3lEEEneEGNPnZ2sY2KLcAWdRpSbPevwA/wd3WCpwYmBJp+D2/+cOWkZcXKOyYzm1Mbi7XcgY7/26qywYyML8tMmS54n7vye4=
+	t=1725571855; cv=none; b=fNYLjNVkC72kbUJyj2iaO1ig2+cG/v0asZH0sU7Opf9IhXJSn0M4rSsPFFBorBLTN2D/qBT9jsEqwlz3T82CB35vfe6OaG5EzzO+bFqVac1iZ4DDZjT/M+Srxvs6OoyCyutKZwQUEWqQGk01VhpwBJ8Fx/xkmCP/ix7Mt0BhMwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725571786; c=relaxed/simple;
-	bh=U6dOxKfu/HIu7qxtYAn6cZ9RKRkTliDoTUYZK1UHyKA=;
+	s=arc-20240116; t=1725571855; c=relaxed/simple;
+	bh=rOym0ciApV2InfGYqlnUXtHC/kvlRWJrXnqU5JLJY3U=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AwE3jBvVjGpgzj/aBwNTd3/4v12kqGKdRRju5T3zW/R7JCcBwyMEueV59jM62dnLnlM1iLPAlWioEzIPvA2TpEYEhnOBLGOpDrbSGM4V0K1sn2FIkvHmGvidSe1j8qZXL/ZgfVwaCrDXAbD28XUKAlaK44UMbc+XwY11dnAuR0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IlxZnA3n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E170C4CEC3;
-	Thu,  5 Sep 2024 21:29:43 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=dig47qYxGsz/rX4EF2Ir0zZndShZ8/XLlZZVQXX/I0PJ8Y5tIvoxYQVdZloy/5dgNnQEt4ohCixOffIZ5nwd1KM3I4BZEFSLQaJE2ilSS46sqRZwprHV35cy8EkuMogLOi1Hmie2pc/VJd/+ylSGYQs5x+7+WBAehincVjdzwHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j3gCUveH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62F5C4CEC3;
+	Thu,  5 Sep 2024 21:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725571786;
-	bh=U6dOxKfu/HIu7qxtYAn6cZ9RKRkTliDoTUYZK1UHyKA=;
+	s=k20201202; t=1725571855;
+	bh=rOym0ciApV2InfGYqlnUXtHC/kvlRWJrXnqU5JLJY3U=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=IlxZnA3nSJ9ep9hL4MgHrCmZpLd2hq8EAkV2PVhY5TlKoM8LNEP1xYF/wePhkim5j
-	 U2MEs0gpt+vvFPDYxiJY+kG3bGsx2ytd2Kbgce1gzImqIadT8m+MpAOrAUQxGIYp8N
-	 7k9RHiU0F9fryTXffJpMAkXO/5rblNp7WuWayS8uaXbgb727Ap1V6Izww7dn/dxg0p
-	 toxMaYYT/+JkIgwH57S5Lrb/irsovOQApSM9Taje8LDaziXlthzmuRQi2hFJkyC4Cc
-	 +keYl0YFgxXZhqhiUHCcrMS4f5q1zfUFcmPSvoRbJRLnUP64THOKza3YdclMugwMYL
-	 5Rfv1tHPaIXsw==
-Message-ID: <b666cc28-af93-4b7b-a446-adf3d1ef0fe0@kernel.org>
-Date: Thu, 5 Sep 2024 23:29:40 +0200
+	b=j3gCUveHKx07BWYpc2Yt30RYBkzWDJdg+uH4lRUH9+0F6AxKiKc24ssISsNhcREs3
+	 6lesgy6NjiHmTn571bH1rBIsU9XRqwM5uUp0HAPnaLDv+DGynBg3oo9zFnUTUsqmxW
+	 czs3Yu7rWB3W5CvjAmMruPK7bFbitFcxNYWWDI+q+qDfjPgCp7UeG3IkHXFaxewGFF
+	 R3NjsLJKSUe11Ijkntr+4Rhwy85EYH/UK4TOpkfaBM6RbehXWcgGOSpSQxpJmP/wNA
+	 U94AL6NEbDlSJy2Mu1AwZQPtNCaatCGaTX6TodoDCmwsUX987w+oOL6plsdZ6P6l+7
+	 1RhaEzjcXtJwA==
+Message-ID: <30042de9-c966-4e05-85f1-a346710389b5@kernel.org>
+Date: Thu, 5 Sep 2024 23:30:50 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,11 +50,11 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] dt-bindings: net: wireless: ath9k: add new options
+Subject: Re: [PATCH 3/5] wifi: ath9k: add extra options to of_init
 To: Rosen Penev <rosenp@gmail.com>, linux-wireless@vger.kernel.org
 Cc: kvalo@kernel.org, toke@toke.dk, nbd@nbd.name, yangshiji66@outlook.com
 References: <20240905180928.382090-1-rosenp@gmail.com>
- <20240905180928.382090-5-rosenp@gmail.com>
+ <20240905180928.382090-4-rosenp@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -100,56 +100,56 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240905180928.382090-5-rosenp@gmail.com>
+In-Reply-To: <20240905180928.382090-4-rosenp@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 05/09/2024 20:09, Rosen Penev wrote:
-> These platform_data options are now available for OF.
-
-This explains nothing. Describe the hardware, not driver.
-
+> This is in preparation for removing platform_data support from ath9k.
+> Except for led-active-high, these are already present downstream in
+> OpenWrt and never upstreamed.
 > 
+> For tx_gain_buffalo, just set it based on the device. The flag was made
+> for a single device. Instead of adding an extra option, just look for
+> the compatible string.
+> 
+
+Bindings are before users.
+
 > Signed-off-by: Rosen Penev <rosenp@gmail.com>
-
-<form letter>
-Please use scripts/get_maintainers.pl to get a list of necessary people
-and lists to CC. It might happen, that command when run on an older
-kernel, gives you outdated entries. Therefore please be sure you base
-your patches on recent Linux kernel.
-
-Tools like b4 or scripts/get_maintainer.pl provide you proper list of
-people, so fix your workflow. Tools might also fail if you work on some
-ancient tree (don't, instead use mainline) or work on fork of kernel
-(don't, instead use mainline). Just use b4 and everything should be
-fine, although remember about `b4 prep --auto-to-cc` if you added new
-patches to the patchset.
-
-You missed at least devicetree list (maybe more), so this won't be
-tested by automated tooling. Performing review on untested code might be
-a waste of time.
-
-Please kindly resend and include all necessary To/Cc entries.
-</form letter>
-
 > ---
->  .../devicetree/bindings/net/wireless/qca,ath9k.yaml  | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
+>  drivers/net/wireless/ath/ath9k/init.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
-> index 0e5412cff2bc..5c293d558a94 100644
-> --- a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
-> +++ b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
-> @@ -44,6 +44,16 @@ properties:
+> diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wireless/ath/ath9k/init.c
+> index 7fad7e75af6a..88db51ec7e55 100644
+> --- a/drivers/net/wireless/ath/ath9k/init.c
+> +++ b/drivers/net/wireless/ath/ath9k/init.c
+> @@ -670,6 +670,7 @@ static int ath9k_of_init(struct ath_softc *sc)
+>  	struct ath_common *common = ath9k_hw_common(ah);
+>  	enum ath_bus_type bus_type = common->bus_ops->ath_bus_type;
+>  	char eeprom_name[100];
+> +	u8 led_pin;
+>  	int ret;
 >  
->    ieee80211-freq-limit: true
+>  	if (!of_device_is_available(np))
+> @@ -691,6 +692,12 @@ static int ath9k_of_init(struct ath_softc *sc)
+>  		ah->ah_flags |= AH_NO_EEP_SWAP;
+>  	}
 >  
-> +  qca,led-active-high:
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    description:
-> +      Indicates that the LED pin is active high instead of low
+> +	if (!of_property_read_u8(np, "qca,led-pin", &led_pin))
+> +		ah->led_pin = led_pin;
+> +
+> +	ah->config.led_active_high = of_property_read_bool(np, "qca,led-active-high");
+> +	ah->config.tx_gain_buffalo = of_device_is_compatible(np, "buffalo,wzr-hp-g450h");
 
-Where is DTS user of it?
+There is no such compatible.
+
+Please run scripts/checkpatch.pl and fix reported warnings. Then please
+run `scripts/checkpatch.pl --strict` and (probably) fix more warnings.
+Some warnings can be ignored, especially from --strict run, but the code
+here looks like it needs a fix. Feel free to get in touch if the warning
+is not clear.
 
 Best regards,
 Krzysztof
