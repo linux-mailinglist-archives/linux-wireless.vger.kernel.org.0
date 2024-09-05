@@ -1,56 +1,66 @@
-Return-Path: <linux-wireless+bounces-12516-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12517-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D806896CC5D
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 03:48:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D4E96CCAE
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 04:36:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A599B2252A
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 01:48:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D478E1C220B5
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 02:36:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42AC7946F;
-	Thu,  5 Sep 2024 01:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4751321A3;
+	Thu,  5 Sep 2024 02:36:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="VZ3Ngtw+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03A514F70;
-	Thu,  5 Sep 2024 01:48:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B5D1FDA
+	for <linux-wireless@vger.kernel.org>; Thu,  5 Sep 2024 02:36:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725500898; cv=none; b=UQCF8qElraovLGJ0SmstypQP8rha5/7heeC6O2bxmF8KaL8xGOAb1VuEPItFvwszGMkP7OSkGoUfCfVg4TTwrUYxP8oHNCi/+GwHLHp+cv21W9FdkjForyP6UyipR2D+glLcOE0Fv9Z0EIn9Qqz//jAREROwSW3I/yoq1RFL7HQ=
+	t=1725503777; cv=none; b=dTNpvDJDoBubI3BJT/OJOBVYnAxvJX7ps2MqoKgDCHgK8yrSm++Imgq9hNuZkySmencpPwmAqNejvotIgaIu837fyYU9PDY42Y74W4NOTq723QrYSbUNG538hvAGC0Zm3mNV/56ADn0tSn0fhPUUiZYV5vkRQh1dRHQ42vquSc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725500898; c=relaxed/simple;
-	bh=PYxlj9GqBR4bKUNRXNy5ayykwZH2h6m7UH5oHyX601c=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FeULGCPd10BqAzeiZPWbh99fGShQwg3SN7sQo9HsK2Y3bXEPiD7yVpifDEnQjIJAxtId22zmzvjtFt9gxo4+sj45YoEqzOnhGuCuveVJrs/sY2WOpQnHDZouJ5FDCtbBak6G7y4OjahTBinISusZQLnP4UqJSADoSEBrys56XV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-05 (Coremail) with SMTP id zQCowACniurODdlmV_dXAQ--.16946S2;
-	Thu, 05 Sep 2024 09:48:01 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: nbd@nbd.name,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	kvalo@kernel.org,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	ruanjinjie@huawei.com,
-	make24@iscas.ac.cn
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	stable@vger.kernel.org
-Subject: [PATCH] mt76: mt7615: check devm_kasprintf() returned value
-Date: Thu,  5 Sep 2024 09:47:53 +0800
-Message-Id: <20240905014753.353271-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1725503777; c=relaxed/simple;
+	bh=4B4cJECYdUTBTZp6AquBxM/08vic2x6basW7XEACBGQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oYGqpVJ5h/FSXXSIT0M8rtlddSpAojww2jcRe3lOS/w2wVessujBlFHuGxsbA7lacHa49lWnBsqtVPgUoigOBcZU/X5M9RYBYcN8NCzRxn4idn2hcTWaCP1GYT3E7YI8X2MDy17XpEO74Cz3xHPfXhhBjFFG+o2kGoashVGaWn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=VZ3Ngtw+; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4850e3fQ014645;
+	Thu, 5 Sep 2024 02:36:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=E/8N2PgWE5PGwxAEvKnVK9
+	s+98xuAZorkeqnN4f5N9s=; b=VZ3Ngtw+9AzEMVbswDsKtQiHqZuOi1PgPuf5zO
+	GPIYlr5JB+HicOG3iaxmHBiya+2bkMKxoEoWeVqB04KK985l50/k0LjqqPY7L3AK
+	lzW22o4W8+2RFJFHeb6bJlHwDHqI94i5ckO/+tgTStlA/fYQ7IMY6kmBY9CTrQjc
+	KEXiZZa5XpxUtMx30U5zlWqCjIUYSay2ja29eUwQ+eUBsLejQjQETwMYRprQlF7j
+	DtixdvQJivfhajsq7EikcvKmrmB4gZziD9dOgcydk89aB+xoFaw8lsU2Eel8ywWA
+	HczJn/FyZXTDZx2SgXgVkJGL4xelnCcXXDTUd+4KH2uUV55A==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41dt69ennb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 05 Sep 2024 02:36:10 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4852a9uE017221
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 5 Sep 2024 02:36:09 GMT
+Received: from kangyang.ap.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Wed, 4 Sep 2024 19:36:08 -0700
+From: Kang Yang <quic_kangyang@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, <quic_kangyang@quicinc.com>
+Subject: [PATCH v3 0/4] wifi: ath12k: add 11d scan offload support and handle country code for WCN7850
+Date: Thu, 5 Sep 2024 10:35:07 +0800
+Message-ID: <20240905023511.362-1-quic_kangyang@quicinc.com>
+X-Mailer: git-send-email 2.34.1.windows.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -58,52 +68,68 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowACniurODdlmV_dXAQ--.16946S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrKFW7ZFW5Ww13ZFWkKryrXrb_yoWDtrg_WF
-	4kZr93tryrGrn5Kr4ayryakryFkaykZF97Jr4ft3yfKrW7GrWDuryfArnxJ3yDG3s2vr1j
-	qF1DAFy8Zw4YvjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbSxFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4UJV
-	WxJr1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
-	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2
-	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
-	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
-	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
-	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
-	kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUOmhFUUUUU
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: q1ESeDmkPx07Ppfh2MOg1kqwMcroQsvl
+X-Proofpoint-ORIG-GUID: q1ESeDmkPx07Ppfh2MOg1kqwMcroQsvl
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-05_01,2024-09-04_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ suspectscore=0 bulkscore=0 mlxlogscore=866 mlxscore=0 lowpriorityscore=0
+ phishscore=0 priorityscore=1501 malwarescore=0 adultscore=0 spamscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2409050018
 
-devm_kasprintf() can return a NULL pointer on failure but this returned
-value is not checked. Fix this lack and check the returned value.
+From: Kang Yang <kangyang@qti-qualcomm.corp-partner.google.com>
 
-Found by code review.
+This patch-set is mainly does four things:
+1. Add handler to send WMI_SET_CURRENT_COUNTRY_CMDID to firmware.
+2. Implement 11d scan offload, and report country code to firmware by
+WMI command WMI_SET_CURRENT_COUNTRY_CMDID.
+3. Use WMI_SET_CURRENT_COUNTRY_CMDID to set country code for WCN7850.
+4. Store country code, and update it to firmware after device recovery.
 
-Cc: stable@vger.kernel.org
-Fixes: 0bb4e9187ea4 ("mt76: mt7615: fix hwmon temp sensor mem use-after-free")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- drivers/net/wireless/mediatek/mt76/mt7615/init.c | 3 +++
- 1 file changed, 3 insertions(+)
+With this patch-set, WCN7850 can do 11d offload scan and update country
+code to firmware successfully.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/init.c b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-index f7722f67db57..0b9ebdcda221 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/init.c
-@@ -56,6 +56,9 @@ int mt7615_thermal_init(struct mt7615_dev *dev)
- 
- 	name = devm_kasprintf(&wiphy->dev, GFP_KERNEL, "mt7615_%s",
- 			      wiphy_name(wiphy));
-+	if (!name)
-+		return -ENOMEM;
-+
- 	hwmon = devm_hwmon_device_register_with_groups(&wiphy->dev, name, dev,
- 						       mt7615_hwmon_groups);
- 	return PTR_ERR_OR_ZERO(hwmon);
+Note: This patch-set is an old patch-set in public review written by
+Wen Gong. Just continue sending it for him.
+Link: https://patchwork.kernel.org/project/linux-wireless/cover/20230914090746.23560-1-quic_wgong@quicinc.com/
+
+v3:
+    1. use wiphy::mtx lock instead of adding a new lock(patch#2).
+    2. rename struct according to wmi naming convention(patch#1, #2).
+    3. update copyright in reg.h
+    4. modifiy patch#3, #4 due to struct name change.
+v2: change per Jeff.
+    1. change alpha2 length from 3 to 2.
+    2. change wmi_11d_new_cc_ev to wmi_11d_new_cc_event.
+
+Wen Gong (4):
+  wifi: ath12k: add configure country code for WCN7850
+  wifi: ath12k: add 11d scan offload support
+  wifi: ath12k: use correct WMI command to set country code for WCN7850
+  wifi: ath12k: store and send country code to firmware after recovery
+
+ drivers/net/wireless/ath/ath12k/core.c |  34 ++++-
+ drivers/net/wireless/ath/ath12k/core.h |  17 +++
+ drivers/net/wireless/ath/ath12k/hw.c   |   3 +
+ drivers/net/wireless/ath/ath12k/hw.h   |   1 +
+ drivers/net/wireless/ath/ath12k/mac.c  | 167 ++++++++++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/mac.h  |   7 ++
+ drivers/net/wireless/ath/ath12k/reg.c  |  70 ++++++++---
+ drivers/net/wireless/ath/ath12k/reg.h  |   4 +-
+ drivers/net/wireless/ath/ath12k/wmi.c  | 158 ++++++++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/wmi.h  |  38 ++++++
+ 10 files changed, 477 insertions(+), 22 deletions(-)
+
+
+base-commit: ec6d091977c2c19283e39f27529b100cc17a3320
 -- 
-2.25.1
+2.34.1
 
 
