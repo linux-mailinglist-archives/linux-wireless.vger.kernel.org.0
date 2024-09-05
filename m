@@ -1,105 +1,138 @@
-Return-Path: <linux-wireless+bounces-12528-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12529-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 985E296D75C
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 13:40:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFFC196D7D9
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 14:05:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58335287BF9
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 11:40:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96C8A1F223B5
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 12:05:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECCE7199E9D;
-	Thu,  5 Sep 2024 11:40:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98FDF199EA2;
+	Thu,  5 Sep 2024 12:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="rnhg0Bb4"
+	dkim=pass (2048-bit key) header.d=email.cz header.i=@email.cz header.b="ANa+UOff"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mxe.seznam.cz (mxe.seznam.cz [77.75.78.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9DC192D72
-	for <linux-wireless@vger.kernel.org>; Thu,  5 Sep 2024 11:40:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7693D1991B0
+	for <linux-wireless@vger.kernel.org>; Thu,  5 Sep 2024 12:05:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.75.78.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725536405; cv=none; b=nvawaPI7A8rgzvjB7gI1R+mHf5mq2ybdZPuvMjwY8esA9dF0FYfeUAkpPonHYANqIL8r086Hb8rJ7xjCvvhZ/KjlyeyrEFN6iUlOXkIiiDFZex+1zRjqsxa+3D7hCazlAYXT67/5epwc/TdVd8Sbal30fbBmTeQBHkhVFTpDJ50=
+	t=1725537931; cv=none; b=GS3NZpai56i1M0guOSzSwoVwWu2Mcc2lsn71YzwJq0yoNQ9Urh/5PcwpPLP9HbLxNQKfEjMRunR7dxLPDyIy0qmzNlwopSpNE3yKmdW7Kr/Wuq7JFYmVZ1H0kBZUZsHblXZX+T2tL6naepKmDoH1Z8jstHpaIJ5DCaHkJe8ZIs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725536405; c=relaxed/simple;
-	bh=zrVvUahKZA1Ly+gFFCpv1OrY4hxvtMfOO87dPXkzcrQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=khSgIqOhJ17SS6gxXrmkPIy//GXZYnJyVsBE0AoICRupB4oGk6iv46Up9Yt6pMqf2sOVVri8m0wNnixoWOMgK6R+Pvkm5deXLdaaGeLAVqLIB8q+P/ZoJVsa4qqpIscgTD9h/Qfabze6r7veV0JyHfrPXEwtb21TYwoOK0xHpXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=rnhg0Bb4; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5356aa9a0afso1070348e87.2
-        for <linux-wireless@vger.kernel.org>; Thu, 05 Sep 2024 04:40:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1725536402; x=1726141202; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zrVvUahKZA1Ly+gFFCpv1OrY4hxvtMfOO87dPXkzcrQ=;
-        b=rnhg0Bb4ttm4Yx1kIQrFVRXhXF3V0gqGlfHAA2LxxRYAL+gQM8mpw0XP1Tc3PKjUpw
-         9GCOPrdY6BAVdRT7Hq+PGSXTt3nKAVcGxZtSmilfyq6MHo/E0Dmr1aNcKYyMO83L4+Vd
-         t4HJkeRCINjEEchOZrGGoEa3A/wqLe71wlLakHxm7lKqxNnLVlXlbX9UMe1kOfg3rbct
-         e3V8YbEsxR4yEvFnvDSVV5loUzeYFap49xUSGL0lKz2+xt70ACxTvHS7Ky5s3IzoGlcN
-         HaeyyxZp3W7ewMcCpXFXwYPVHF+Eazj0EonDroz9Lwuj1Sj5OcaVTe8I29DPPI1qMp6k
-         8Avw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725536402; x=1726141202;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zrVvUahKZA1Ly+gFFCpv1OrY4hxvtMfOO87dPXkzcrQ=;
-        b=GvpeoHJYDzrVSp9aFdIS65STh8oZE8voajG3ACVwr6pr7MZxp9TQ/hxkHHDa3i/9Hq
-         lJYJkvK+KQqHgXNVXUQ3uf4D7yU0yBo3RVfiMOhGYN/ub2xfsjNnG6U5hq2KacmpSOFh
-         xH44/kqy+CYgrnIJd14X06EsQ35xYxTVgCPz/eiXqTNPM1FB7zTvIpN49r6WbFWmIY2C
-         OhyLguWJpnhzwwxHbbv4ggGy8SDp9aoAep3bT6on/NjUgHwXQ5kgqGa3jwz5Kq2EVMYB
-         clizCrASwEmxRCppefZqTs+8HKjJCxh5lUzwOVhuxlwtYvrO1/VK94DVMxwMi7I1hc3h
-         eW4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXYJh7415icE2xcHBgzSQhlWSXOs4NAj12+VJBkSJFG9Hut4fiIVhlKab+W0gHGploV2FrG/vzhvIcpMdCiXg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJyxQx3WmtqbB39TZWJFJMcIekWUqO2tvogojcanJS2DDdkfF6
-	nsPRa2Rl4YV4n0rimwzrGAriPYKA71/CZYq72oXD/h9KDTWcLt3KIs8NWidGFPnpa4rMBB82CbZ
-	N36H6Wy2/U5/m3Dkil3Nv8Mu7UdWTwR6xcmOsjg==
-X-Google-Smtp-Source: AGHT+IEwZ/cUzkI93E/6LKm6cGyhHb8XA9AkNg8OpqoeSXVfyucD7/JsivArkGPITQJzkXL5zLtM+8AMY4ZU3v65zm0=
-X-Received: by 2002:a05:6512:108b:b0:52c:df83:a740 with SMTP id
- 2adb3069b0e04-53546b54df6mr16785064e87.30.1725536402123; Thu, 05 Sep 2024
- 04:40:02 -0700 (PDT)
+	s=arc-20240116; t=1725537931; c=relaxed/simple;
+	bh=OT6rQ4ajoJhbQLwuHd0zXwykg9wjWRnN6xyDbWW7zUI=;
+	h=From:To:Cc:Subject:Date:Message-Id:Mime-Version:Content-Type; b=Q5op7frAOA4jdDMHfGsJ/TaM8CjR3p48vjamNoaSqHz3U7L0HCMxJOg3ilkicbVpDknNysuo5z5CMD99TjyV7CxmBUU/PybTLlEAsm+3OeDdp/bi26dguavLajQq9PCD/vWuDYQT/0/hN1idAnKXos7SjCqFQsvFNUSroLXfWdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=email.cz; spf=pass smtp.mailfrom=email.cz; dkim=pass (2048-bit key) header.d=email.cz header.i=@email.cz header.b=ANa+UOff; arc=none smtp.client-ip=77.75.78.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=email.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=email.cz
+Received: from email.seznam.cz
+	by smtpc-mxe-7df5484c66-k4bzx
+	(smtpc-mxe-7df5484c66-k4bzx [2a02:598:64:8a00::1000:ad2])
+	id 76a754988853e6327629da80;
+	Thu, 05 Sep 2024 14:05:25 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=email.cz;
+	s=szn20221014; t=1725537925;
+	bh=2Gu2NyeDCYj06j54dTeLW+R2cmUPtkfhps4/Gm0KUr8=;
+	h=Received:From:To:Cc:Subject:Date:Message-Id:Mime-Version:X-Mailer:
+	 Content-Type:Content-Transfer-Encoding;
+	b=ANa+UOffxyhHplIrYttAPAHBrHS7j9wentL5+8ZbGZ0PytDdLHDdq0HeIi8ISFNYo
+	 HNcLDqgtDKP2LriifMVaxqIJ/96THV5RMab7e1X/B1E0Lr7Urn0xVZBHGYL0HcbO0J
+	 wl6kgpcNJbhcyNm3cC4l7xLIKprpHzHjyqyw6PiAQ1ryyDJX06WlKB8ShhxUqVtoaO
+	 LTDjPw6XESAD9NaEra6qjKyFzfpCdFQ3YNCUoo1wBE0PrdyviI1X8EJcruRLdvulLv
+	 gZLhVaCQH7JsGKPhEQ8ssgLfpAffrYrHfpkyWvtdHCpnIpwxs1o+i9guOsdrnNC9VD
+	 qdPKUnkvNcoaA==
+Received: from 215-143.ktuo.cz (215-143.ktuo.cz [82.144.143.215])
+	by email.seznam.cz (szn-UNKNOWN-unknown) with HTTP;
+	Thu, 05 Sep 2024 14:03:35 +0200 (CEST)
+From: "Tomas Paukrt" <tomaspaukrt@email.cz>
+To: <ath10k@lists.infradead.org>
+Cc: <linux-wireless@vger.kernel.org>
+Subject: [PATCH] wifi: ath10k: add hw_params for Atheros QCA9377-7 
+Date: Thu, 05 Sep 2024 14:03:35 +0200 (CEST)
+Message-Id: <5b0.ZbQt.6HOR0C2EfXi.1csPuN@seznam.cz>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240902225534.130383-1-vassilisamir@gmail.com> <20240902225534.130383-4-vassilisamir@gmail.com>
-In-Reply-To: <20240902225534.130383-4-vassilisamir@gmail.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Thu, 5 Sep 2024 13:39:50 +0200
-Message-ID: <CACRpkdbjUe6aM0nHvEEEWaT1AG9kieiUuTx0M6G12Pnsvgcd6w@mail.gmail.com>
-Subject: Re: [PATCH v1 3/7] net: dsa: realtek: rtl8366rb: Make use of irq_get_trigger_type()
-To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: linux@armlinux.org.uk, maarten.lankhorst@linux.intel.com, 
-	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch, 
-	alsi@bang-olufsen.dk, andrew@lunn.ch, f.fainelli@gmail.com, olteanv@gmail.com, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	nico@fluxnic.net, arend.vanspriel@broadcom.com, kvalo@kernel.org, 
-	robh@kernel.org, saravanak@google.com, andriy.shevchenko@linux.intel.com, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev, 
-	brcm80211-dev-list.pdl@broadcom.com, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (szn-mime-2.1.61)
+X-Mailer: szn-UNKNOWN-unknown
+Content-Type: text/plain;
+	charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 3, 2024 at 12:55=E2=80=AFAM Vasileios Amoiridis
-<vassilisamir@gmail.com> wrote:
+Add hw_params for modules based on Atheros QCA9377-7 chipset like
+8devices BLUE bean or SparkLAN WUBQ-159ACN.
 
-> Convert irqd_get_trigger_type(irq_get_irq_data(irq)) cases to the more
-> simple irq_get_trigger_type(irq).
->
-> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Tested-on: QCA9377 hw1.1 USB 0.0.0.111
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Tomas Paukrt <tomaspaukrt@email.cz>
+---
+ drivers/net/wireless/ath/ath10k/core.c | 42 +++++++++++++++++++++++++++++=
++++++
+ 1 file changed, 42 insertions(+)
 
-Yours,
-Linus Walleij
+diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless=
+/ath/ath10k/core.c
+index b329428..e2ababf 100644
+--- a/drivers/net/wireless/ath/ath10k/core.c
++++ b/drivers/net/wireless/ath/ath10k/core.c
+@@ -629,6 +629,48 @@ static const struct ath10k_hw_params ath10k_hw_params=
+_list[] =3D {
+ 	},
+ 	{
+ 		.id =3D QCA9377_HW_1_1_DEV_VERSION,
++		.dev_id =3D 0x9378,
++		.bus =3D ATH10K_BUS_USB,
++		.name =3D "qca9377 hw1.1 usb",
++		.patch_load_addr =3D QCA9377_HW_1_0_PATCH_LOAD_ADDR,
++		.uart_pin =3D 6,
++		.otp_exe_param =3D 0,
++		.channel_counters_freq_hz =3D 88000,
++		.max_probe_resp_desc_thres =3D 0,
++		.cal_data_len =3D 8124,
++		.fw =3D {
++			.dir =3D QCA9377_HW_1_0_FW_DIR,
++			.board_size =3D QCA9377_BOARD_DATA_SZ,
++			.board_ext_size =3D QCA9377_BOARD_EXT_DATA_SZ,
++		},
++		.rx_desc_ops =3D &qca988x_rx_desc_ops,
++		.hw_ops =3D &qca6174_ops,
++		.hw_clk =3D qca6174_clk,
++		.target_cpu_freq =3D 176000000,
++		.decap_align_bytes =3D 4,
++		.spectral_bin_discard =3D 0,
++		.spectral_bin_offset =3D 0,
++		.vht160_mcs_rx_highest =3D 0,
++		.vht160_mcs_tx_highest =3D 0,
++		.n_cipher_suites =3D 8,
++		.ast_skid_limit =3D 0x10,
++		.num_wds_entries =3D 0x20,
++		.target_64bit =3D false,
++		.rx_ring_fill_level =3D HTT_RX_RING_FILL_LEVEL,
++		.shadow_reg_support =3D false,
++		.rri_on_ddr =3D false,
++		.hw_filter_reset_required =3D true,
++		.fw_diag_ce_download =3D false,
++		.credit_size_workaround =3D false,
++		.tx_stats_over_pktlog =3D false,
++		.dynamic_sar_support =3D false,
++		.hw_restart_disconnect =3D false,
++		.use_fw_tx_credits =3D true,
++		.delay_unmap_buffer =3D false,
++		.mcast_frame_registration =3D false,
++	},
++	{
++		.id =3D QCA9377_HW_1_1_DEV_VERSION,
+ 		.dev_id =3D QCA9377_1_0_DEVICE_ID,
+ 		.bus =3D ATH10K_BUS_SDIO,
+ 		.name =3D "qca9377 hw1.1 sdio",
+-- 
+2.7.4
+ 
 
