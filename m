@@ -1,138 +1,243 @@
-Return-Path: <linux-wireless+bounces-12529-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12530-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFFC196D7D9
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 14:05:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 582D696D988
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 14:59:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96C8A1F223B5
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 12:05:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A9004B20F63
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 12:59:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98FDF199EA2;
-	Thu,  5 Sep 2024 12:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A99C19B5BB;
+	Thu,  5 Sep 2024 12:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=email.cz header.i=@email.cz header.b="ANa+UOff"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="CD+/pCk5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mxe.seznam.cz (mxe.seznam.cz [77.75.78.34])
+Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7693D1991B0
-	for <linux-wireless@vger.kernel.org>; Thu,  5 Sep 2024 12:05:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.75.78.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E89189BB5;
+	Thu,  5 Sep 2024 12:59:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725537931; cv=none; b=GS3NZpai56i1M0guOSzSwoVwWu2Mcc2lsn71YzwJq0yoNQ9Urh/5PcwpPLP9HbLxNQKfEjMRunR7dxLPDyIy0qmzNlwopSpNE3yKmdW7Kr/Wuq7JFYmVZ1H0kBZUZsHblXZX+T2tL6naepKmDoH1Z8jstHpaIJ5DCaHkJe8ZIs4=
+	t=1725541176; cv=none; b=bnIYjvTjmN3/ROpXZWDCU484DmsqYI1WJhjH+3BjYREhSglDsXbnf9TnNbcJR/J99b12waKbhIDPNe46aH0znIGsvqhrMnaxcQI5PoHQeZw7a84UNXOYCbUAHshv/q2Q66EbMvGlcSPTXw6snczbl159JQZkB9yhpaSBQAkrWOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725537931; c=relaxed/simple;
-	bh=OT6rQ4ajoJhbQLwuHd0zXwykg9wjWRnN6xyDbWW7zUI=;
-	h=From:To:Cc:Subject:Date:Message-Id:Mime-Version:Content-Type; b=Q5op7frAOA4jdDMHfGsJ/TaM8CjR3p48vjamNoaSqHz3U7L0HCMxJOg3ilkicbVpDknNysuo5z5CMD99TjyV7CxmBUU/PybTLlEAsm+3OeDdp/bi26dguavLajQq9PCD/vWuDYQT/0/hN1idAnKXos7SjCqFQsvFNUSroLXfWdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=email.cz; spf=pass smtp.mailfrom=email.cz; dkim=pass (2048-bit key) header.d=email.cz header.i=@email.cz header.b=ANa+UOff; arc=none smtp.client-ip=77.75.78.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=email.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=email.cz
-Received: from email.seznam.cz
-	by smtpc-mxe-7df5484c66-k4bzx
-	(smtpc-mxe-7df5484c66-k4bzx [2a02:598:64:8a00::1000:ad2])
-	id 76a754988853e6327629da80;
-	Thu, 05 Sep 2024 14:05:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=email.cz;
-	s=szn20221014; t=1725537925;
-	bh=2Gu2NyeDCYj06j54dTeLW+R2cmUPtkfhps4/Gm0KUr8=;
-	h=Received:From:To:Cc:Subject:Date:Message-Id:Mime-Version:X-Mailer:
-	 Content-Type:Content-Transfer-Encoding;
-	b=ANa+UOffxyhHplIrYttAPAHBrHS7j9wentL5+8ZbGZ0PytDdLHDdq0HeIi8ISFNYo
-	 HNcLDqgtDKP2LriifMVaxqIJ/96THV5RMab7e1X/B1E0Lr7Urn0xVZBHGYL0HcbO0J
-	 wl6kgpcNJbhcyNm3cC4l7xLIKprpHzHjyqyw6PiAQ1ryyDJX06WlKB8ShhxUqVtoaO
-	 LTDjPw6XESAD9NaEra6qjKyFzfpCdFQ3YNCUoo1wBE0PrdyviI1X8EJcruRLdvulLv
-	 gZLhVaCQH7JsGKPhEQ8ssgLfpAffrYrHfpkyWvtdHCpnIpwxs1o+i9guOsdrnNC9VD
-	 qdPKUnkvNcoaA==
-Received: from 215-143.ktuo.cz (215-143.ktuo.cz [82.144.143.215])
-	by email.seznam.cz (szn-UNKNOWN-unknown) with HTTP;
-	Thu, 05 Sep 2024 14:03:35 +0200 (CEST)
-From: "Tomas Paukrt" <tomaspaukrt@email.cz>
-To: <ath10k@lists.infradead.org>
-Cc: <linux-wireless@vger.kernel.org>
-Subject: [PATCH] wifi: ath10k: add hw_params for Atheros QCA9377-7 
-Date: Thu, 05 Sep 2024 14:03:35 +0200 (CEST)
-Message-Id: <5b0.ZbQt.6HOR0C2EfXi.1csPuN@seznam.cz>
+	s=arc-20240116; t=1725541176; c=relaxed/simple;
+	bh=U8KsPidIOseHcU9fJbkYzs1/1HWUJ+Su99UJG+hwyHk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WuLGg0SiUeomfUKM/d42mdSjgz+zxPwFGIPQLKb21+bespDCC3sU1olThFMHskH2j15RAJQY5Qs69bpfkw3gXfD+bGdF95vbB1hxAjRTtRwyb0nuWA0rBD3cO+vDeG7PL3WB5jQjQRF2IxeN/mfV3TurUCOdeoQ13F5FyOOsC0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=CD+/pCk5; arc=none smtp.client-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=ZAq/WJxRl2xBJIxFJpgtsT4PJFM/lj/rAoqJbf9U0sA=; b=CD+/pCk5mtH51Q16lJ4sroXiZs
+	I6R3hgwZZzlSWkq9EP5RDAEf+R2m6QBmuEaDqRZlhqW1iru/OffZH96DdDtO/RB06oLGuVQe4Ji76
+	46HWpIYojIOQdyuzhsWozqMGZ5mcH9vd/o37J3lNAwKT7O0jiA4i1Z3ygc7jelnSPPgQ=;
+Received: from p4ff1376f.dip0.t-ipconnect.de ([79.241.55.111] helo=nf.local)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96)
+	(envelope-from <nbd@nbd.name>)
+	id 1smBeZ-009Esk-2q;
+	Thu, 05 Sep 2024 14:31:59 +0200
+Message-ID: <49a385d0-9ffc-468f-b7de-83abfa1e18f0@nbd.name>
+Date: Thu, 5 Sep 2024 14:31:58 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (szn-mime-2.1.61)
-X-Mailer: szn-UNKNOWN-unknown
-Content-Type: text/plain;
-	charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6] wifi: mt76: mt7915: add wds support when wed is
+ enabled
+To: Shengyu Qu <wiagn233@outlook.com>, lorenzo@kernel.org,
+ ryder.lee@mediatek.com, shayne.chen@mediatek.com, sean.wang@mediatek.com,
+ kvalo@kernel.org, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, daniel@makrotopia.org,
+ miriam.rachel.korenblit@intel.com, money.wang@mediatek.com,
+ StanleyYP.Wang@mediatek.com, meichia.chiu@mediatek.com,
+ chui-hao.chiu@mediatek.com, johannes.berg@intel.com, quic_adisi@quicinc.com,
+ sujuan.chen@mediatek.com, allen.ye@mediatek.com,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+Cc: Bo Jiao <bo.jiao@mediatek.com>
+References: <TY3P286MB26111E4DB0841A176DF8E44E98BE2@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
+From: Felix Fietkau <nbd@nbd.name>
+Content-Language: en-US
+Autocrypt: addr=nbd@nbd.name; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
+ cL98efvrjdstUfTCP2pfetyN
+In-Reply-To: <TY3P286MB26111E4DB0841A176DF8E44E98BE2@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Add hw_params for modules based on Atheros QCA9377-7 chipset like
-8devices BLUE bean or SparkLAN WUBQ-159ACN.
+On 05.08.24 14:43, Shengyu Qu wrote:
+> The current WED only supports 256 wcid, whereas mt7986 can support up to
+> 512 entries, so firmware provides a rule to get sta_info by DA when wcid
+> is set to 0x3ff by txd. Also, WED provides a register to overwrite txd
+> wcid, that is, wcid[9:8] can be overwritten by 0x3 and wcid[7:0] is set
+> to 0xff by host driver.
+> 
+> However, firmware is unable to get sta_info from DA as DA != RA for
+> 4addr cases, so firmware and wifi host driver both use wcid (256 - 271)
+> and (768 ~ 783) for sync up to get correct sta_info.
+> 
+> Currently WDS+WED config is completely broken on MT7986/7981 devices if
+> without this patch.
+> 
+> Tested-by: Sujuan Chen <sujuan.chen@mediatek.com>
+> Co-developed-by: Bo Jiao <bo.jiao@mediatek.com>
+> Signed-off-by: Bo Jiao <bo.jiao@mediatek.com>
+> Signed-off-by: Sujuan Chen <sujuan.chen@mediatek.com>
+> Signed-off-by: Shengyu Qu <wiagn233@outlook.com>
+> ---
+> Changes since v1:
+>   - Drop duplicate setting in mmio
+>   - Reduce the patch size by redefining mt76_wcid_alloc
+> Changes since v2:
+>   - Rework wds wcid getting flow
+> Changes since v3:
+>   - Rebase to next-20240703
+>   - Sync with downstream patch
+> Changes since v4:
+>   - Rebase to next-20240802
+> Changes since v5:
+>   - Fixed build test error reported by robot
+>   - Rebase to next-20240805
+> ---
+>   drivers/net/wireless/mediatek/mt76/mt76.h     |  9 +++++
+>   .../net/wireless/mediatek/mt76/mt7915/main.c  | 32 ++++++++++++++--
+>   .../net/wireless/mediatek/mt76/mt7915/mcu.c   | 18 +++++++--
+>   .../net/wireless/mediatek/mt76/mt7915/mcu.h   |  1 +
+>   drivers/net/wireless/mediatek/mt76/util.c     | 37 +++++++++++++++++--
+>   drivers/net/wireless/mediatek/mt76/util.h     |  7 +++-
+>   6 files changed, 93 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+> index 4a58a78d5ed25..1186a4998faff 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt76.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+> @@ -28,6 +28,9 @@
+>   
+>   #define MT76_TOKEN_FREE_THR	64
+>   
+> +#define MT76_WED_WDS_MIN    256
+> +#define MT76_WED_WDS_MAX    272
+> +
+>   #define MT_QFLAG_WED_RING	GENMASK(1, 0)
+>   #define MT_QFLAG_WED_TYPE	GENMASK(4, 2)
+>   #define MT_QFLAG_WED		BIT(5)
+> @@ -71,6 +74,12 @@ enum mt76_wed_type {
+>   	MT76_WED_RRO_Q_IND,
+>   };
+>   
+> +enum mt76_wed_state {
+> +	MT76_WED_DEFAULT,
+> +	MT76_WED_ACTIVE,
+> +	MT76_WED_WDS_ACTIVE,
+> +};
+> +
+>   struct mt76_bus_ops {
+>   	u32 (*rr)(struct mt76_dev *dev, u32 offset);
+>   	void (*wr)(struct mt76_dev *dev, u32 offset, u32 val);
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+> index 049223df9beb1..dc4d87e004a0f 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+> @@ -745,8 +745,15 @@ int mt7915_mac_sta_add(struct mt76_dev *mdev, struct ieee80211_vif *vif,
+>   	bool ext_phy = mvif->phy != &dev->phy;
+>   	int ret, idx;
+>   	u32 addr;
+> +	u8 flags = MT76_WED_DEFAULT;
+>   
+> -	idx = mt76_wcid_alloc(dev->mt76.wcid_mask, MT7915_WTBL_STA);
+> +	if (mtk_wed_device_active(&dev->mt76.mmio.wed) &&
+> +	    !is_mt7915(&dev->mt76)) {
+> +		flags = test_bit(MT_WCID_FLAG_4ADDR, &msta->wcid.flags) ?
+> +		       MT76_WED_WDS_ACTIVE : MT76_WED_ACTIVE;
+> +	}
+> +
+> +	idx = __mt76_wcid_alloc(mdev->wcid_mask, MT7915_WTBL_STA, flags);
+>   	if (idx < 0)
+>   		return -ENOSPC;
+>   
 
-Tested-on: QCA9377 hw1.1 USB 0.0.0.111
+I'd prefer to replace the mt76_wcid_alloc flags argument with an 
+explicit start offset argument.
 
-Signed-off-by: Tomas Paukrt <tomaspaukrt@email.cz>
----
- drivers/net/wireless/ath/ath10k/core.c | 42 +++++++++++++++++++++++++++++=
-+++++
- 1 file changed, 42 insertions(+)
+> @@ -1201,12 +1208,27 @@ static void mt7915_sta_set_4addr(struct ieee80211_hw *hw,
+>   {
+>   	struct mt7915_dev *dev = mt7915_hw_dev(hw);
+>   	struct mt7915_sta *msta = (struct mt7915_sta *)sta->drv_priv;
+> +	int min = MT76_WED_WDS_MIN, max = MT76_WED_WDS_MAX;
+>   
+>   	if (enabled)
+>   		set_bit(MT_WCID_FLAG_4ADDR, &msta->wcid.flags);
+>   	else
+>   		clear_bit(MT_WCID_FLAG_4ADDR, &msta->wcid.flags);
+>   
+> +	if (mtk_wed_device_active(&dev->mt76.mmio.wed) &&
+> +	    !is_mt7915(&dev->mt76) &&
+> +	    (msta->wcid.idx < min || msta->wcid.idx > max - 1)) {
+> +		struct ieee80211_sta *pre_sta;
+> +
+> +		pre_sta = kzalloc(sizeof(*sta) + sizeof(*msta), GFP_KERNEL);
+> +		mt76_sta_pre_rcu_remove(hw, vif, sta);
+> +		memmove(pre_sta, sta, sizeof(*sta) + sizeof(*msta));
+> +		mt7915_sta_add(hw, vif, sta);
+> +		synchronize_rcu();
+> +		mt7915_sta_remove(hw, vif, pre_sta);
+> +		kfree(pre_sta);
+> +	}
+> +
+>   	mt76_connac_mcu_wtbl_update_hdr_trans(&dev->mt76, vif, sta);
+>   }
+>  
+In order to update the code based on my latest changes and to fix 
+potential race conditions on tx/rx packets during the transition, please 
+change to this order:
 
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless=
-/ath/ath10k/core.c
-index b329428..e2ababf 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -629,6 +629,48 @@ static const struct ath10k_hw_params ath10k_hw_params=
-_list[] =3D {
- 	},
- 	{
- 		.id =3D QCA9377_HW_1_1_DEV_VERSION,
-+		.dev_id =3D 0x9378,
-+		.bus =3D ATH10K_BUS_USB,
-+		.name =3D "qca9377 hw1.1 usb",
-+		.patch_load_addr =3D QCA9377_HW_1_0_PATCH_LOAD_ADDR,
-+		.uart_pin =3D 6,
-+		.otp_exe_param =3D 0,
-+		.channel_counters_freq_hz =3D 88000,
-+		.max_probe_resp_desc_thres =3D 0,
-+		.cal_data_len =3D 8124,
-+		.fw =3D {
-+			.dir =3D QCA9377_HW_1_0_FW_DIR,
-+			.board_size =3D QCA9377_BOARD_DATA_SZ,
-+			.board_ext_size =3D QCA9377_BOARD_EXT_DATA_SZ,
-+		},
-+		.rx_desc_ops =3D &qca988x_rx_desc_ops,
-+		.hw_ops =3D &qca6174_ops,
-+		.hw_clk =3D qca6174_clk,
-+		.target_cpu_freq =3D 176000000,
-+		.decap_align_bytes =3D 4,
-+		.spectral_bin_discard =3D 0,
-+		.spectral_bin_offset =3D 0,
-+		.vht160_mcs_rx_highest =3D 0,
-+		.vht160_mcs_tx_highest =3D 0,
-+		.n_cipher_suites =3D 8,
-+		.ast_skid_limit =3D 0x10,
-+		.num_wds_entries =3D 0x20,
-+		.target_64bit =3D false,
-+		.rx_ring_fill_level =3D HTT_RX_RING_FILL_LEVEL,
-+		.shadow_reg_support =3D false,
-+		.rri_on_ddr =3D false,
-+		.hw_filter_reset_required =3D true,
-+		.fw_diag_ce_download =3D false,
-+		.credit_size_workaround =3D false,
-+		.tx_stats_over_pktlog =3D false,
-+		.dynamic_sar_support =3D false,
-+		.hw_restart_disconnect =3D false,
-+		.use_fw_tx_credits =3D true,
-+		.delay_unmap_buffer =3D false,
-+		.mcast_frame_registration =3D false,
-+	},
-+	{
-+		.id =3D QCA9377_HW_1_1_DEV_VERSION,
- 		.dev_id =3D QCA9377_1_0_DEVICE_ID,
- 		.bus =3D ATH10K_BUS_SDIO,
- 		.name =3D "qca9377 hw1.1 sdio",
--- 
-2.7.4
- 
+1. copy the sta
+2. allocate a new wcid
+3. change the wcid index in the copied sta to the newly allocated wcid
+4. call mcu functions on the duplicate sta for creating the new sta entry.
+5. use rcu_assign_pointer to point dev->wcid[new_idx] at &msta->wcid
+6. swap wcid index between real sta and duplicated sta
+7. rcu_assign_pointer(dev->wcid[orig_idx], NULL)
+8. synchronize_rcu()
+9. call mcu functions to delete the duplicate sta's entry (points to old 
+wcid after the swap)
+10. free the duplicated sta
+
+This should allow mgmt tx/rx to work while the sta is being migrated to 
+the new wcid entry.
+
+- Felix
 
