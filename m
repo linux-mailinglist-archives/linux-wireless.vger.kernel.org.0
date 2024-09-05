@@ -1,68 +1,60 @@
-Return-Path: <linux-wireless+bounces-12524-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12525-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4B5C96CFC6
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 08:51:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 570CB96CFE9
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 09:01:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72400B2111C
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 06:51:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9F0EB219C7
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 07:01:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4394418BC24;
-	Thu,  5 Sep 2024 06:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F81179647;
+	Thu,  5 Sep 2024 07:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=email.cz header.i=@email.cz header.b="egRCfIG/"
+	dkim=pass (2048-bit key) header.d=email.cz header.i=@email.cz header.b="oRiRy1fm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mxe.seznam.cz (mxe.seznam.cz [77.75.78.34])
+Received: from mxc.seznam.cz (mxc.seznam.cz [77.75.79.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53C9189F30
-	for <linux-wireless@vger.kernel.org>; Thu,  5 Sep 2024 06:51:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.75.78.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70CAA14EC4B
+	for <linux-wireless@vger.kernel.org>; Thu,  5 Sep 2024 07:01:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.75.79.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725519104; cv=none; b=KEyWeS9u+RBIYzqj/999PwyYdEbrHgMnqK+toZ6D+hEAyAkO0lVnefTgGHIa/aoGgBh3/GX529hMyIQAlQx1PFsf1Gz0KPAPxOb4/8PGMVbduRHLOvPYMj7VGQ2XDn31g7bG3t68Xtoje24jVaedjZGsR0nt8UZgyHdN2DMBAHo=
+	t=1725519710; cv=none; b=CDd6Tla1J9NxSbKMj7RLpeiz/BFQKhcMMP8hAEV+v4zRYdabvDk+HFAivSuuamLSZTcu1c5eqeYkpbNJP1f09Ro3jNyhSYH4YMSrKEw97cXaoNDUcJAxvj3i1Fu3+5r2vNFHA2+LNvvnJ4BPeM/0zYXuz7xtKeAajIWrCCplcwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725519104; c=relaxed/simple;
-	bh=SPEXJ11irYRAyq6tL80mDE86hNqcdZC9xTUPXWo2ksI=;
-	h=From:To:Cc:Subject:Date:Message-Id:References:In-Reply-To:
-	 Mime-Version:Content-Type; b=ahdhqkjt47+Ngnn5G2G5LvX4mimTp5yY0xO4EGEvOIUOlJ9VvxWFb1mnWmirnnZ40NAGzXKcCeYFIRglDe5EacSwNwkqg2JmCFoqQuKaECTwflOzU6HdLP7Vh8bM5KN1VBNyjIOliZ5OZ3lehI7fVKUDGWfwfefXQOvPMbM+HkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=email.cz; spf=pass smtp.mailfrom=email.cz; dkim=pass (2048-bit key) header.d=email.cz header.i=@email.cz header.b=egRCfIG/; arc=none smtp.client-ip=77.75.78.34
+	s=arc-20240116; t=1725519710; c=relaxed/simple;
+	bh=W1+MwjoVoluw7QfmKw1jVOX80+0+njswzZcAg5w7SGY=;
+	h=From:To:Cc:Subject:Date:Message-Id:Mime-Version:Content-Type; b=D9NbZqA3el0Z97u+ED17RI/gtHkZMuo30Nko3KHC0LDXrLxP1BYnBWIq/CxaZHygPkkBbZf1yyW0bB+bXlLgmDLbpJ9txJBXx3UG4zNv+Fyy56lIYf85EA6y+hPHqPDeA0+IuJnuj7etCtI112Vr0leOEMAwWkIOJrJyvpj90/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=email.cz; spf=pass smtp.mailfrom=email.cz; dkim=pass (2048-bit key) header.d=email.cz header.i=@email.cz header.b=oRiRy1fm; arc=none smtp.client-ip=77.75.79.23
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=email.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=email.cz
 Received: from email.seznam.cz
-	by smtpc-mxe-85b96b7dcc-v4qq7
-	(smtpc-mxe-85b96b7dcc-v4qq7 [2a02:598:128:8a00::1000:aa2])
-	id 65a92bf99b5d99536527a5e1;
-	Thu, 05 Sep 2024 08:51:22 +0200 (CEST)
+	by smtpc-mxc-5574d8dd45-2x2p7
+	(smtpc-mxc-5574d8dd45-2x2p7 [2a02:598:64:8a00::1000:42b])
+	id 471497d7b9e0257d479a19cf;
+	Thu, 05 Sep 2024 09:01:39 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=email.cz;
-	s=szn20221014; t=1725519082;
-	bh=8xXH12nHQz7aEzM4VNnK8tIHRlyWLQsZTm3oQymSIk0=;
-	h=Received:From:To:Cc:Subject:Date:Message-Id:References:
-	 In-Reply-To:Mime-Version:X-Mailer:Content-Type:
-	 Content-Transfer-Encoding;
-	b=egRCfIG/ie+S3drdGOWJmP3gzh30oOo6oKpwiJJHCmgMzBhhCJwVp5eeNzPbV6R6+
-	 yV2w48S5PNgogrmD8WDM3vZTlghGGMJQpCj2F/19o6oZRSTQMIafQvJ5lh1VkRyivZ
-	 S4WIxYRRNdFOzuDoLKwZEKNCSqBlrZls2Y/GgeAgfCYJ1XtBpQ1NSYlK+svxmun764
-	 7I/2EEafhXJN8sHfBnVb3ulSdQq9w+qwzTiStWWlWhKq8JsfQbG43+2K5wVEvM5fMd
-	 p9WHNTFbOsu5lmLpMjHyV1YHGZ+SLblc6mX7/0kgJcXnvDIUhwbVAUMbJkKOS5WodP
-	 08/1gYp6I8g4Q==
+	s=szn20221014; t=1725519699;
+	bh=SZaUZJvsdIWhS1K/dgwL2jdjDotmUTvANn02yFr4oHI=;
+	h=Received:From:To:Cc:Subject:Date:Message-Id:Mime-Version:X-Mailer:
+	 Content-Type:Content-Transfer-Encoding;
+	b=oRiRy1fmyxQ5OF7DrSNBB/VgKDqCCH+WcdITga2Wma1bjjIteXJXshwTqRRRvGOlF
+	 2TlkaUtT690MId+WKUjuy0QANFeAupocY4C5fylSV9V66EJlgoREfVv+9PQUhNj3Iy
+	 DDcZaFZ2qvu6FMIPggTDBVGO1+if7qiVHCA0VM5Wn3Yk6i6TfettYN0r5xAzmgPGkv
+	 mBrbSKNNUbdugu6GgnhXb8vrLToNdEf3gOj815zRUMW37pIPqPNY+CnPcKe4xgzE4J
+	 0uk1WfMp6IxeP6Z92fkuN56oKoZk8BwXHKuMy0fBBSuqft7tn+UhZStucZnV2fYkwI
+	 UjaDueVAPdGYA==
 Received: from 215-143.ktuo.cz (215-143.ktuo.cz [82.144.143.215])
 	by email.seznam.cz (szn-UNKNOWN-unknown) with HTTP;
-	Thu, 05 Sep 2024 08:51:21 +0200 (CEST)
+	Thu, 05 Sep 2024 08:59:45 +0200 (CEST)
 From: "Tomas Paukrt" <tomaspaukrt@email.cz>
-To: "Jeff Johnson" <quic_jjohnson@quicinc.com>
-Cc: <linux-wireless@vger.kernel.org>,
-	<ath10k@lists.infradead.org>
-Subject: Re: [PATCH] wifi: ath10k: add USB device ID for Atheros QCA9377-7
-Date: Thu, 05 Sep 2024 08:51:20 +0200 (CEST)
-Message-Id: <5J1.Zbdp.2t{MJKBvQ7h.1csLJe@seznam.cz>
-References: <22t.ZbsX.5bWREDtSGGB.1cqQpF@seznam.cz>
-	<8b7d9777-e239-4173-bec5-607e15b98130@quicinc.com>
-	<56o.Zbc9.7x3xmPitckT.1csARP@seznam.cz>
-	<c9f1100c-b34a-4d77-bfbe-1e20cf4143ef@quicinc.com>
-In-Reply-To: <c9f1100c-b34a-4d77-bfbe-1e20cf4143ef@quicinc.com>
+To: <ath10k@lists.infradead.org>
+Cc: <linux-wireless@vger.kernel.org>
+Subject: [PATCH v2] wifi: ath10k: add USB device ID for Atheros QCA9377-7 
+Date: Thu, 05 Sep 2024 08:59:45 +0200 (CEST)
+Message-Id: <5Jj.Zbdh.4ausKfY}jbL.1csLRX@seznam.cz>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -74,26 +66,31 @@ Content-Type: text/plain;
 	charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-> Ah, my good friend qcacld-2.0.
->
-> I'd expect to see something written to kmsg, but not sure it is there fo=
-r USB.
->
-> for QMI there is: 
-> 		ath10k_info(ar, "qmi fw_version 0x%x fw_build_timestamp %s fw_build_id=
- %s",
-> 			    qmi->fw_version, qmi->fw_build_timestamp, qmi->fw_build_id);
+Add USB device ID for modules based of Atheros QCA9377-7 chipset like
+8devices BLUE bean or SparkLAN WUBQ-159ACN.
 
-> but looking at past ath10k USB changes I only see:
->     Tested-on: QCA9377 hw1.0 USB 1.0.0.299
+Tested-on: QCA9377 hw1.1 USB 0.0.0.111
 
-> So I guess what you have is OK since this just allows you to be probed a=
-nyway
-> so that is actually independent of firmware version.
+Signed-off-by: Tomas Paukrt <tomaspaukrt@email.cz>
+---
+ drivers/net/wireless/ath/ath10k/usb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-I cross-compiled the qcacld-2.0 driver and it printed this:
-
-Host SW:4.5.25.50, FW:0.0.0.111, HW:QCA93x7_REV1_1
-
-It looks like that 8devices is using their own firmware numbering.
+diff --git a/drivers/net/wireless/ath/ath10k/usb.c b/drivers/net/wireless/=
+ath/ath10k/usb.c
+index 3b51b7f..60441ff 100644
+--- a/drivers/net/wireless/ath/ath10k/usb.c
++++ b/drivers/net/wireless/ath/ath10k/usb.c
+@@ -1106,6 +1106,7 @@ static int ath10k_usb_pm_resume(struct usb_interface=
+ *interface)
+ 
+ /* table of devices that work with this driver */
+ static struct usb_device_id ath10k_usb_ids[] =3D {
++	{USB_DEVICE(0x0cf3, 0x9378)}, /* Atheros QCA9377-7 */
+ 	{USB_DEVICE(0x13b1, 0x0042)}, /* Linksys WUSB6100M */
+ 	{ /* Terminating entry */ },
+ };
+-- 
+2.7.4
+ 
 
