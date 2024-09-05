@@ -1,124 +1,105 @@
-Return-Path: <linux-wireless+bounces-12533-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12534-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D20F96DD43
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 17:07:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1CD796DECE
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 17:48:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F1C91C2244C
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 15:07:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEB0028460F
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 15:48:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8C539FC5;
-	Thu,  5 Sep 2024 15:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F02C91A01DB;
+	Thu,  5 Sep 2024 15:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="vRTFRtqy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HOXtCC74"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward204d.mail.yandex.net (forward204d.mail.yandex.net [178.154.239.217])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302E62F870;
-	Thu,  5 Sep 2024 15:04:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.217
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B773D1A01D0;
+	Thu,  5 Sep 2024 15:47:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725548698; cv=none; b=K8f9YV6WvcQtss4ACQp6wjSNt0Fe1OOnh4o1wgw+xZSpPBiUOhoC4yZounxLJd7hUDSPh+x77BioDlhOV9lzKPYVwpZ7LICNXJvKehQFptiijp1VATLzGt0Pb4K8o89wlN17JgoqAMGxVvTU8vygKIfaQ0+GOf2buNCcJ+6M2c0=
+	t=1725551234; cv=none; b=BaaGUbHLHpcTRicGWw958VF87tk4yxArG2H59KY2FbRkaujjXS1FLCIrIFYIzcWivox7OkzFjhPwodka8plhrpyADr0BGN/MoF2wRoxDsu0UpCIwzhd/ElyjrO5YqRYGuXM2Lf+F24m4YPIkgH2V1QpGIDGjnvJZu9sggxDydzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725548698; c=relaxed/simple;
-	bh=vruifMt9jJV41i0HP2Eom4MO7+B2BqcVmvMVRs8z1rA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ri8JmBH3RE64/XCUejPDIen5Auf3J1c4AkQDx8Nsn8d9OYX9XoMq4sr/zlptAfgkqFrZlqgPEWJ07wxYpdeypRwL2fiEnELRlhu4TrunWC1FaRiwW9h/9bIub+SYlqYHZ1MKVfrWM1aukAELm8LVekNxHdxJQSilq+uT9ZaKINU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=vRTFRtqy; arc=none smtp.client-ip=178.154.239.217
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from forward100d.mail.yandex.net (forward100d.mail.yandex.net [IPv6:2a02:6b8:c41:1300:1:45:d181:d100])
-	by forward204d.mail.yandex.net (Yandex) with ESMTPS id CDFCB616B4;
-	Thu,  5 Sep 2024 18:04:51 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-42.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-42.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:4749:0:640:7137:0])
-	by forward100d.mail.yandex.net (Yandex) with ESMTPS id D2B72608EC;
-	Thu,  5 Sep 2024 18:04:43 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-42.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id g4fVLnGMoeA0-s7lnmQ6c;
-	Thu, 05 Sep 2024 18:04:42 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1725548682; bh=BRAkwj4fTjxySbhtRhCHYyGmhowE49Q+BsiYDKJ038E=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=vRTFRtqy/YpKJ9h4hL/hN3PnssvFkz382LJM3s+6FW1MyI2KlPeNlRtByh6Tx2Tnk
-	 nG/k/8ah6diAKXN7LUl/pfuS+jS7SZxQpTee9cB5AD+YbaRPqn40sXRAE2hJ0qUWxH
-	 lV7GPyvVzBaCJGJzUY7HeiT+CdvfrdVHLnQFF+ng=
-Authentication-Results: mail-nwsmtp-smtp-production-main-42.klg.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Dmitry Antipov <dmantipov@yandex.ru>
-To: Johannes Berg <johannes.berg@intel.com>
-Cc: Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	Kees Cook <kees@kernel.org>,
-	linux-hardening@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: cfg80211: fix UBSAN noise in cfg80211_wext_siwscan()
-Date: Thu,  5 Sep 2024 18:04:00 +0300
-Message-ID: <20240905150400.126386-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1725551234; c=relaxed/simple;
+	bh=EAnWPkg+5+GfGadRDWc4j55kZwjPEaiqdZ04TSPhyos=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=jZoyPH1e5WG1/4fCojL2T+j0bcxNEMIrL/+isbC8LHownDWg0Kr9sCUwpWrZfnGRTdG0tjIdOEKu2TWHKyqKC1g1wnl8XsnFYSm0t0pTwgPTHSmv8k6/1CMjtgb0Xg3sAMpjqPMfOld/x0xnW/xuTLWG8h/D5fXvUvZbkA3fmlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HOXtCC74; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 165F8C4CEC3;
+	Thu,  5 Sep 2024 15:47:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725551234;
+	bh=EAnWPkg+5+GfGadRDWc4j55kZwjPEaiqdZ04TSPhyos=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=HOXtCC74HGrL730QZmOaBJtnFJEObt0esD22qKWieMiWmCIZv1EIusQv3CuAdLftm
+	 FfM5xsYk7cxqk0TR3X0VVe0JOv63+s3k65JqPegMz0YeBbYesr64f7gNLSH3V+lXVM
+	 ZlXLV3FXD4A/kB2ZP4YhthlwH7MFA3YHqZlbQrMySYOopoaHxFlIRHy32c9Tc9sGoQ
+	 xyuoV0j//LEbTfOtYSFItG247fuA9/Ay2Kvo+fEERs/w/GHRPk/qb68QVM9EjyrPT0
+	 L+sXiWp1PRjS4U7RvUoB43gxKTwDaKzVkJUAir0YbTs9RMQtsFT7T1ulEPtzK1skHL
+	 0Vc1C7ncqcXhQ==
+From: Kalle Valo <kvalo@kernel.org>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: "David S . Miller" <davem@davemloft.net>,  Eric Dumazet
+ <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni
+ <pabeni@redhat.com>,  Rob Herring <robh@kernel.org>,  Krzysztof Kozlowski
+ <krzk+dt@kernel.org>,  Conor Dooley <conor+dt@kernel.org>,  Jeff Johnson
+ <jjohnson@kernel.org>,  linux-wireless@vger.kernel.org,
+  netdev@vger.kernel.org,  devicetree@vger.kernel.org,
+  ath11k@lists.infradead.org,  linux-kernel@vger.kernel.org,  Bartosz
+ Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH net-next v2] dt-bindings: net: ath11k: document the
+ inputs of the ath11k on WCN6855
+References: <20240814082301.8091-1-brgl@bgdev.pl> <87a5hcyite.fsf@kernel.org>
+	<CAMRc=Mcr7E0dxG09_gYPxg57gYAS4j2+-3x9GCS3wOcM46O=NQ@mail.gmail.com>
+Date: Thu, 05 Sep 2024 18:47:09 +0300
+In-Reply-To: <CAMRc=Mcr7E0dxG09_gYPxg57gYAS4j2+-3x9GCS3wOcM46O=NQ@mail.gmail.com>
+	(Bartosz Golaszewski's message of "Fri, 16 Aug 2024 11:10:00 +0200")
+Message-ID: <87y146ayrm.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Looking at https://syzkaller.appspot.com/bug?extid=1a3986bbd3169c307819
-and running reproducer with CONFIG_UBSAN_BOUNDS, I've noticed the
-following:
+Bartosz Golaszewski <brgl@bgdev.pl> writes:
 
-[ T4985] UBSAN: array-index-out-of-bounds in net/wireless/scan.c:3479:25
-[ T4985] index 164 is out of range for type 'struct ieee80211_channel *[]'
-<...skipped...>
-[ T4985] Call Trace:
-[ T4985]  <TASK>
-[ T4985]  dump_stack_lvl+0x1c2/0x2a0
-[ T4985]  ? __pfx_dump_stack_lvl+0x10/0x10
-[ T4985]  ? __pfx__printk+0x10/0x10
-[ T4985]  __ubsan_handle_out_of_bounds+0x127/0x150
-[ T4985]  cfg80211_wext_siwscan+0x11a4/0x1260
-<...the rest is not too useful...>
+>> > +  - if:
+>> > +      properties:
+>> > +        compatible:
+>> > +          contains:
+>> > +            const: pci17cb,1103
+>> > +    then:
+>> > +      required:
+>> > +        - vddrfacmn-supply
+>> > +        - vddaon-supply
+>> > +        - vddwlcx-supply
+>> > +        - vddwlmx-supply
+>> > +        - vddrfa0p8-supply
+>> > +        - vddrfa1p2-supply
+>> > +        - vddrfa1p8-supply
+>> > +        - vddpcie0p9-supply
+>> > +        - vddpcie1p8-supply
+>>
+>> Like we discussed before, shouldn't these supplies be optional as not
+>> all modules need them?
+>>
+>
+> The answer is still the same: the ATH11K inside a WCN6855 does - in
+> fact - always need them. The fact that the X13s doesn't define them is
+> bad representation of HW and I'm fixing it in a subsequent DTS patch.
 
-Even if we do 'creq->n_channels = n_channels' before 'creq->ssids =
-(void *)&creq->channels[n_channels]', UBSAN treats the latter as
-off-by-one error. Fix this by using pointer arithmetic rather than
-an expression with explicit array indexing and use convenient
-'struct_size()' to simplify the math here and in 'kzalloc()' above.
+But, like we discussed earlier, M.2 boards don't need these so I think
+this should be optional.
 
-Fixes: 5ba63533bbf6 ("cfg80211: fix alignment problem in scan request")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- net/wireless/scan.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 64eeed82d43d..d747d5f63278 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -3467,8 +3467,8 @@ int cfg80211_wext_siwscan(struct net_device *dev,
- 		n_channels = ieee80211_get_num_supported_channels(wiphy);
- 	}
- 
--	creq = kzalloc(sizeof(*creq) + sizeof(struct cfg80211_ssid) +
--		       n_channels * sizeof(void *),
-+	creq = kzalloc(struct_size(creq, channels, n_channels)
-+		       + sizeof(struct cfg80211_ssid),
- 		       GFP_ATOMIC);
- 	if (!creq)
- 		return -ENOMEM;
-@@ -3476,7 +3476,7 @@ int cfg80211_wext_siwscan(struct net_device *dev,
- 	creq->wiphy = wiphy;
- 	creq->wdev = dev->ieee80211_ptr;
- 	/* SSIDs come after channels */
--	creq->ssids = (void *)&creq->channels[n_channels];
-+	creq->ssids = (void *)creq + struct_size(creq, channels, n_channels);
- 	creq->n_channels = n_channels;
- 	creq->n_ssids = 1;
- 	creq->scan_start = jiffies;
 -- 
-2.46.0
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
