@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-12565-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12566-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D01096E5C7
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2024 00:35:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A17B696E5CD
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2024 00:39:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F6C01C2387A
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 22:35:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E9591F211B7
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 22:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC84A189523;
-	Thu,  5 Sep 2024 22:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DCED172BDF;
+	Thu,  5 Sep 2024 22:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lLfxRo+V"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Atpx5GmO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C4E915532A
-	for <linux-wireless@vger.kernel.org>; Thu,  5 Sep 2024 22:35:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3341482E9
+	for <linux-wireless@vger.kernel.org>; Thu,  5 Sep 2024 22:39:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725575750; cv=none; b=nQr2OA5lI+iDPBZi08JZsVAr0rVratv9tVVp7IA6sgxOzmjgrFsH7WqoZZZV6cPqSJNbGkQn4nuvj8OxSeJNmdvSbmU2TbAvK7vHbKSV8tj3p1SeKIiH6LYvCoMJ3s84PdDLgLkeFJrgRRh9DXnYEEp7F+bJbbrki4sJ0zEU7u4=
+	t=1725575952; cv=none; b=D4SkS//P+/AqaMpWebr8VzJ80DKW0lkesAr8D0db3R7eadqc0WFXbzZFGAyR4VchlQywAthv/piRrgv44SxAV4bZsHGJHqiPJshaVUf80XRESQyw1OnrVm/u6kKRGN/E0mnTU+U9xuhJuAGxxAllqqKaIaSOQf6bh+gx2yFp4uU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725575750; c=relaxed/simple;
-	bh=UZHmDinizFIDh95B0A2Sg6NTBLlsjCyAbEywTGN5Zq4=;
+	s=arc-20240116; t=1725575952; c=relaxed/simple;
+	bh=rF2wQyt5UWraoIwmGIw4No1N86YRqfWyUeG0X25CYnI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WV5Mymkncwap1RrHgYUQpWSjNRc1dpe/5mgtEBEhXC/ox9cgdnyUx4LDFVeavykqLvlV6AsyK+kxhwBOR5Q+idN+EaLlpmD7iZ5tVDQ55RVRGBrZ7aK71HvltIpC6zYbkizDQg39MQyr/7maqdmDof/ahs5/9X3G1KAPZ9CGUn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lLfxRo+V; arc=none smtp.client-ip=209.85.128.178
+	 To:Cc:Content-Type; b=a3eqRBhTreQ+CpdiW9G4xrdmJd1yhtojGFEl4b6MPFHccg3T1/0U4ep5Ui1SCa2y6LPr9enEbno6MH4NpiVEFSIcuwnQYzFABfe2U/i1lkuVLRJ3PEP/MMDQ77VscMsDOvwhzJ1nUglDa4eKq3xEDumREQYUIbtAaXSiFmqCEJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Atpx5GmO; arc=none smtp.client-ip=209.85.128.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-6d49cec2a5dso13218697b3.3
-        for <linux-wireless@vger.kernel.org>; Thu, 05 Sep 2024 15:35:49 -0700 (PDT)
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-6b747f2e2b7so12904577b3.3
+        for <linux-wireless@vger.kernel.org>; Thu, 05 Sep 2024 15:39:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725575748; x=1726180548; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1725575949; x=1726180749; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bn1ebOYlgroaRlLYiPmVa2EP4EIz6ffz6K6YGQniFck=;
-        b=lLfxRo+V65r0tKDlsG9HGsDMqwE1hub/GDgk1ZD7WyS4mjbwplIRV/96psFKfpqbEz
-         UAFzXjwX4EsE1EIV6FwmAekBjZC/hE/48k4HuX7ecHe4dgZFYtuA90mOpueIYS66hseN
-         NWuizFR9nroqZcDMMbHtkTzlObRf5jWcmzzHVWNmgUYRRhAwopug5ZQVndaH0smTqeeZ
-         fUY9cQd52e8To+4SWp+xvU/vOmKQ7Yi9Nn3pl75V8XqpNta4L4JQzOdSPTlv8XZv2tR1
-         Pq9+fO15TKfOspZWMssDMe/gMvK3dEDA/0F/JFxoO5vyFHR2wENYYYg+LY4gxIkWSdl2
-         B4Jg==
+        bh=b0OAHEq3sv75cS7Lstzjh4q3L/8G89AHDcHIHkaHfi4=;
+        b=Atpx5GmOT8MaHRCk5lmK77iu9MWvWbI2Y9rR0qLPuxnv/MQwytXgxZsFiHaF7adwuY
+         AhxuTM4xIE7s0yGDU47NSZT8SyaOqJd0dbRjWBR1/nJr2LSWCgsgazC+HhQqf4jKGVdx
+         zsWYFtfLh+lnBV2A2EThBqDNLO0LyKorvyw855ddPkRLGv+k0C0XypqJernnj4RqNIjh
+         GzCaho/0fEhCRZQv4kCHU5rkY0rbFAJSXR8FVdoENAocSHNvfmAGhn6j1ENUhvj7frMU
+         Q8ffkl4CEzgrp9hFaew1Z3xA3bM9hfE+vY0MZaJx1UPaZ02ZENt2fDu/Bjq3sOTLPJWd
+         as1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725575748; x=1726180548;
+        d=1e100.net; s=20230601; t=1725575949; x=1726180749;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=bn1ebOYlgroaRlLYiPmVa2EP4EIz6ffz6K6YGQniFck=;
-        b=uv8GTho0q8xfjwZsi3ffoas7QLY+mPEw7Arq87/xQhi6/+gaoMrPnTMsGUS00KVU5D
-         8ya8hF05cEx/BVSYoixeAXVCBUQkjOkWq0a5PhJWayOHbTn/jST/T08lCCVSWMadqI/C
-         AYw8wrAV7k3GS7h1JHEEGAqmc3TO+CNP3Woe8JUvgwhSzdXy2wyfgsiaLdpwWWR7NlwW
-         zpcONd7XrIjMhoVPDxFrmeIRAtrp4r+breiRVd0nDoicX8zl3H14od744TnN4flFS/S9
-         b+3ZYhLviTv3vBimQFyWY+Wrjf9bZTtvY+pSAS67uc3nRKYEWh5Fx85is1215Q8p63/u
-         Pcfg==
-X-Gm-Message-State: AOJu0Yxq4B2gn3ejbXGCkmouI3bjMxuhKdRB/pC899dE+KU/26uNLpDx
-	UmpfFrWlaLfCMJtooxeRg3Q1iVcGcBRKE/7Bl7lCA6YGHgqMXwATKMiS69ljt6xnN049SSfP6kl
-	h1wgjzxiumXD94NOD8/ztIC+rUDQ=
-X-Google-Smtp-Source: AGHT+IG29txRbw4UajX2F0xT7gjcDo559xTWdWKovQTzx09VzSj5bKkh0NI1O5LpP7jHKvR7PN4aqIEFR+YtfAQH8UI=
-X-Received: by 2002:a05:690c:660e:b0:6b3:a6ff:769b with SMTP id
- 00721157ae682-6db44a6477bmr9159527b3.0.1725575748300; Thu, 05 Sep 2024
- 15:35:48 -0700 (PDT)
+        bh=b0OAHEq3sv75cS7Lstzjh4q3L/8G89AHDcHIHkaHfi4=;
+        b=pC+w6+cJxluQV/RKJpjHvmO/oz7NN/u0/XmdeX3B+Hr4OOOFk9eqNHpGm+b5ihWyS2
+         2U1rUI1N+9tpzATI7dCK0eLnAhOzhTwE53n+mnG+sq992XgtgzLpT+B0c/Xu5z4HJ8wQ
+         ZaFjHXOnMOhkTTry8R6o6HDG4BiVu1gMvrH7h/Phky8Sxfg4fHk440NUMuac1ItbgNBa
+         8qoZoXFwNfNCxWlKnLWQYrrTYCzLbinAj+AxMSMLRxG5KChIvYiUjdOk8uAFyzS5/yKj
+         bSoKwdQcWUkUIe2xw42YfVEDDbthixKj3DStxPgjcwTMSZnvj+9W1oHjDBOPWnKjP0NF
+         qHPw==
+X-Gm-Message-State: AOJu0Yyl6Kvw5XRLsoEWx2rUty0XxnLMZPTuUYzoP+EDOzVCAZEQMx7Z
+	8vazK+rhf8rhw5/YKN8Y70vVUdJqS+YJZT4rz8UOO4asdGbmne78TpDJKBkgmrd+zjAuqrwF9kk
+	1+nwJOG5hkJrwoqhGn8zEArb71oE=
+X-Google-Smtp-Source: AGHT+IHhoP/gvqgj4l4xozy24+yyUVilL4eTfxbpqPxzO3W0ESHehLVwxgrdMpgIIx8vLgRHvJ6ESYvlqAYkBBq0EUI=
+X-Received: by 2002:a05:690c:6202:b0:6ad:9550:7617 with SMTP id
+ 00721157ae682-6db4516c9c0mr8952127b3.32.1725575949630; Thu, 05 Sep 2024
+ 15:39:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -71,11 +71,11 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20240905180928.382090-1-rosenp@gmail.com> <20240905180928.382090-5-rosenp@gmail.com>
- <b666cc28-af93-4b7b-a446-adf3d1ef0fe0@kernel.org>
-In-Reply-To: <b666cc28-af93-4b7b-a446-adf3d1ef0fe0@kernel.org>
+ <7f37f43b-4728-42e4-848d-b8dbaf1dd13e@kernel.org>
+In-Reply-To: <7f37f43b-4728-42e4-848d-b8dbaf1dd13e@kernel.org>
 From: Rosen Penev <rosenp@gmail.com>
-Date: Thu, 5 Sep 2024 15:35:37 -0700
-Message-ID: <CAKxU2N_nAor8SjzSH2_0ch3Sp1XScP64DK6Ni6j-2wa8nBrMUw@mail.gmail.com>
+Date: Thu, 5 Sep 2024 15:38:58 -0700
+Message-ID: <CAKxU2N_3w_m6V=6PXsJpzJz1WJPvQgLtcPDSsenf=_iH0fQtsA@mail.gmail.com>
 Subject: Re: [PATCH 4/5] dt-bindings: net: wireless: ath9k: add new options
 To: Krzysztof Kozlowski <krzk@kernel.org>
 Cc: linux-wireless@vger.kernel.org, kvalo@kernel.org, toke@toke.dk, 
@@ -83,38 +83,13 @@ Cc: linux-wireless@vger.kernel.org, kvalo@kernel.org, toke@toke.dk,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 5, 2024 at 2:29=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.org=
+On Thu, Sep 5, 2024 at 2:33=E2=80=AFPM Krzysztof Kozlowski <krzk@kernel.org=
 > wrote:
 >
 > On 05/09/2024 20:09, Rosen Penev wrote:
 > > These platform_data options are now available for OF.
->
-> This explains nothing. Describe the hardware, not driver.
->
 > >
 > > Signed-off-by: Rosen Penev <rosenp@gmail.com>
->
-> <form letter>
-> Please use scripts/get_maintainers.pl to get a list of necessary people
-> and lists to CC. It might happen, that command when run on an older
-> kernel, gives you outdated entries. Therefore please be sure you base
-> your patches on recent Linux kernel.
->
-> Tools like b4 or scripts/get_maintainer.pl provide you proper list of
-> people, so fix your workflow. Tools might also fail if you work on some
-> ancient tree (don't, instead use mainline) or work on fork of kernel
-> (don't, instead use mainline). Just use b4 and everything should be
-> fine, although remember about `b4 prep --auto-to-cc` if you added new
-> patches to the patchset.
->
-> You missed at least devicetree list (maybe more), so this won't be
-> tested by automated tooling. Performing review on untested code might be
-> a waste of time.
->
-> Please kindly resend and include all necessary To/Cc entries.
-Will do.
-> </form letter>
->
 > > ---
 > >  .../devicetree/bindings/net/wireless/qca,ath9k.yaml  | 12 ++++++++++++
 > >  1 file changed, 12 insertions(+)
@@ -132,16 +107,15 @@ aml b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
 > > +    $ref: /schemas/types.yaml#/definitions/flag
 > > +    description:
 > > +      Indicates that the LED pin is active high instead of low
+> > +
+> > +  qca,led-pin:
 >
-> Where is DTS user of it?
-None at this time. There are only downstream users.
+> So this all looks like re-inventing standard GPIOs, at least for devices
+> using GPIOLIB. Your commit msg needs proper rationale.
+git grep led_classdev_register drivers/net/wireless/ | wc -l
+16
 
-This maps to the led_active_high in ath9k_platform_device , which gets
-removed in a subsequent commit.
-
-drivers/net/wireless/mediatek/mt76/mac80211.c uses led-sources as the
-name for the same purpose. Maybe rename?
-
+Both old and new drivers register their own GPIO devices to control LEDs.
 >
 > Best regards,
 > Krzysztof
