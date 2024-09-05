@@ -1,148 +1,139 @@
-Return-Path: <linux-wireless+bounces-12522-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12523-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8515B96CDFD
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 06:30:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D84A96CEB7
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 07:46:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 426FC284A53
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 04:30:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25730287C15
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 05:46:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD8514F11E;
-	Thu,  5 Sep 2024 04:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76EF615623A;
+	Thu,  5 Sep 2024 05:46:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="B27AVMej"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l9H9buq9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BBB1494DB
-	for <linux-wireless@vger.kernel.org>; Thu,  5 Sep 2024 04:30:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52ADC15444E
+	for <linux-wireless@vger.kernel.org>; Thu,  5 Sep 2024 05:46:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725510606; cv=none; b=t55YZaYOursVzR/A7Ef9I9N+piKDqVjKMwSkBNsfnaraQSW631J1U4ZGuQTwjRj+LDxmBEN3C9QDpuZXjeYEGM2zXzuMqgiV501lLelgs/o9HTIL/7AjcwSmaPVpb2gpnuV58z8vE7d0h2IsCV/LeryOk2UgkfoS9BbMiw8voL8=
+	t=1725515204; cv=none; b=bcbDjfKNyKGjpJ+zj+yDt8BqfxEwauqcrp3vD6zCcFcbE/DlFgfx26DFCBPk+Qaxo1XvzcP7xrlrVS7MDHJJpM6gDi/m0GCwiCSqpJIbYs6fRyO+JhSSHrh/ll9cYJxrNmOkjIkD8Llb3pmpRH+lFXIMpsBeIpimgQixlxx/OMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725510606; c=relaxed/simple;
-	bh=PzOw19qFCiJT4BysDjWzRMJRvSFfMMCoOvJPtz8hfw4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=f9SW1wxB18vqIpntI0pjCEwDKUsUVgZQGESVDd1DTKkD7VeVu0ZQEhB+cTqcLexFj93ONgKeIJ1uhEk/zAERMajGitAswWu+bwxmxx+EuVKumQykUWFQxnW1oF07TWG2Q4bLnm46nU5xW8a4w/zKMnna5ZIolo4xwZung1zDzac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=B27AVMej; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4851889A015575;
-	Thu, 5 Sep 2024 04:29:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=iLjqw6FfBNC3kuKuW+BgZ49dqvDK5rZy7V6
-	Yh+gTADE=; b=B27AVMejFJ0DXxwiGjToXwCuRetgRkCyMbdx71pEHIsB7UE+cni
-	Qmd1+9i9zPVGYg7cVpKvmHu5+VqjTf5OBfloaRgcqFXZpQdQwx9vrOu6uhPhHxb4
-	1o2QnWKCPZrFDY1JLsbzepqWGN8LgH3O+nz4ZNwoSO8zWtYAadmxYduhipi87Tpq
-	11YsjD6Nkh+VjRmSnLdsF8QXaxbgkCZ+N04gOxR81jK1c/LadTNglF5pmNIVmqZZ
-	6zATrGiVcCxS404OUu10D0QkRgNi2w8/ViSWab6XxrgP3CEtF4gdd8fjTtk6DdL6
-	11lmEWF0D9Q5lM/XsHA11VnNXN2pCnYpk3g==
-Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41dt69evy3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Sep 2024 04:29:59 +0000 (GMT)
-Received: from pps.filterd (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 4854TuL4029891;
-	Thu, 5 Sep 2024 04:29:56 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 41bv8mhndg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Sep 2024 04:29:56 +0000
-Received: from APBLRPPMTA02.qualcomm.com (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4854TtsY029882;
-	Thu, 5 Sep 2024 04:29:55 GMT
-Received: from hu-devc-blr-u22-a.qualcomm.com (hu-rgnanase-blr.qualcomm.com [10.190.106.79])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 4854TtBd029881
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Sep 2024 04:29:55 +0000
-Received: by hu-devc-blr-u22-a.qualcomm.com (Postfix, from userid 2378837)
-	id EEBB84114A; Thu,  5 Sep 2024 09:59:54 +0530 (+0530)
-From: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org,
-        Ramya Gnanasekar <quic_rgnanase@quicinc.com>
-Subject: [PATCH] wifi: ath12k: Skip Rx TID cleanup for self peer
-Date: Thu,  5 Sep 2024 09:58:51 +0530
-Message-Id: <20240905042851.2282306-1-quic_rgnanase@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1725515204; c=relaxed/simple;
+	bh=I5la2qJUZmJh0tM0I6WdoHI7heSjPMrxJibOfF1doq4=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=aNu0JQs7lb4XQc/7wUGJlNyiarYDaJ+3cpgXYwsloVhrLNm/Dh4IOmSUn+s5M315jaCAZOVMQiesn+mzRyT7QoQhJiNT2FvKXGOmwn3id3MPRZ8GukrZQvpcjmiUptGiQIKPg73wBaojP4yd6mk86faYBFFAbKs7DpjxSyOshCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l9H9buq9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A0FC4CEC4;
+	Thu,  5 Sep 2024 05:46:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725515203;
+	bh=I5la2qJUZmJh0tM0I6WdoHI7heSjPMrxJibOfF1doq4=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=l9H9buq9bJ567dD+7dZ0BTLwDQ5IEY0H5Ovh7nRvuHiwwijPaXnCLRH+JilHy8+bL
+	 voW6wgtLZ+hlUvYOn7YurQOQVa8Qzt/drMyrq8vPVDc8PCTM7J31b8wN6CVG9uSONI
+	 V0h+ENtN8i3Koi01aGNxsxrLgtn3Irflhor2+qM1jJLnORxsZuNZzpOYxKQI+HLgof
+	 fpV50WLNElCrV3u/k1380GP8L0luElsLmQ4f+GNLHtay2P22IJvFGeozxMn7vTnbVs
+	 WrmaGD9URC3wXntuMuJv2Lh8DbNCW31NwMFE2cNGCVTwBDVu31jEFfI8n/shDpC6UQ
+	 8rF/cQsmx4TPw==
+From: Kalle Valo <kvalo@kernel.org>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,
+  linux-wireless@vger.kernel.org,  toke@toke.dk,  nbd@nbd.name
+Subject: Re: [PATCH] wireless: ath9k: eeprom: remove platform data
+References: <20240903202713.471489-1-rosenp@gmail.com>
+	<87jzfrkfn7.fsf@kernel.org>
+	<0bab22f0-e5a4-49ac-8265-910ae9380add@quicinc.com>
+	<CAKxU2N9QDRieOco0VRjTMQW2ywM-mOJp_vTyg+v_SKSBTPf+1g@mail.gmail.com>
+	<CAKxU2N_VKU2cMpPS0y7JJkuCzAimUP=h885RA58WqCB1CZj8ag@mail.gmail.com>
+Date: Thu, 05 Sep 2024 08:46:40 +0300
+In-Reply-To: <CAKxU2N_VKU2cMpPS0y7JJkuCzAimUP=h885RA58WqCB1CZj8ag@mail.gmail.com>
+	(Rosen Penev's message of "Wed, 4 Sep 2024 16:53:01 -0700")
+Message-ID: <87bk12d54v.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: MC0SKehR3U0oh5qxYhjRklMpB7Ic3mMj
-X-Proofpoint-ORIG-GUID: MC0SKehR3U0oh5qxYhjRklMpB7Ic3mMj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-05_03,2024-09-04_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- suspectscore=0 bulkscore=0 mlxlogscore=836 mlxscore=0 lowpriorityscore=0
- phishscore=0 priorityscore=1501 malwarescore=0 adultscore=0 spamscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2409050030
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-During peer create, dp setup for the peer is done where Rx TID is
-updated for all the TIDs. Peer object for self peer will not go through
-dp setup.
+Rosen Penev <rosenp@gmail.com> writes:
 
-When core halts, dp cleanup is done for all the peers. While cleanup,
-rx_tid::ab is accessed which causes below stack trace for self peer.
+> On Wed, Sep 4, 2024 at 10:56=E2=80=AFAM Rosen Penev <rosenp@gmail.com> wr=
+ote:
+>
+>>
+>> On Wed, Sep 4, 2024 at 7:53=E2=80=AFAM Jeff Johnson <quic_jjohnson@quici=
+nc.com> wrote:
+>> >
+>> > On 9/4/2024 1:05 AM, Kalle Valo wrote:
+>> > > Rosen Penev <rosenp@gmail.com> writes:
+>> > >
+>> > >> There are no more board files defining platform data for this drive=
+r and
+>> > >> eeprom support through NVMEM has already been implemented. No need =
+to
+>> > >> keep this old functionality around.
+>> > >>
+>> > >> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+>> > >> ---
+>> > >>  As an aside, the last user of this functionality downstream in Ope=
+nWrt
+>> > >>  has been removed: https://github.com/openwrt/openwrt/commit/7ac827=
+9bd
+>> > >>
+>> > >>  drivers/net/wireless/ath/ath9k/eeprom.c | 12 ------------
+>> > >>  1 file changed, 12 deletions(-)
+>> > >>
+>> > >> diff --git a/drivers/net/wireless/ath/ath9k/eeprom.c b/drivers/net/=
+wireless/ath/ath9k/eeprom.c
+>> > >> index efb7889142d4..df58dc02e104 100644
+>> > >> --- a/drivers/net/wireless/ath/ath9k/eeprom.c
+>> > >> +++ b/drivers/net/wireless/ath/ath9k/eeprom.c
+>> > >> @@ -15,7 +15,6 @@
+>> > >>   */
+>> > >>
+>> > >>  #include "hw.h"
+>> > >> -#include <linux/ath9k_platform.h>
+>> > >
+>> > > What about the file include/linux/ath9k_platform.h? That should be a=
+lso
+>> > > removed, right?
+>> >
+>> > That file is still used by other functionality (see init.c, btcoex.c)
+>> > But seems that at a minimum unused eeprom-related stuff should be remo=
+ved from
+>> > struct ath9k_platform_data.
+>> That's why I kept my changes to a minimum. I don't yet want to axe the
+>> other stuff. OpenWrt has a ton of non upstreamed patches for ath9k,
+>> some probably relying on ath9k_platform_data. I need to do real
+>> careful analysis to remove the rest.
+>> >
+>> > Please review that all of the platform-related code in init.c is still=
+ needed,
+>> > especially code related to eeprom support.
+>
+> That's handled with nvmem and OF (if applicable).
+>
+> Anyway, I split up the removal in 4 patches. of_init needs some extra
+> functionality to match platform_device.
+>
+> Does Documentation need to go in its own commit?
 
-WARNING: CPU: 6 PID: 12297 at drivers/net/wireless/ath/ath12k/dp_rx.c:851
-Call Trace:
-__warn+0x7b/0x1a0
-ath12k_dp_rx_frags_cleanup+0xd2/0xe0 [ath12k]
-report_bug+0x10b/0x200
-handle_bug+0x3f/0x70
-exc_invalid_op+0x13/0x60
-asm_exc_invalid_op+0x16/0x20
-ath12k_dp_rx_frags_cleanup+0xd2/0xe0 [ath12k]
-ath12k_dp_rx_frags_cleanup+0xca/0xe0 [ath12k]
-ath12k_dp_rx_peer_tid_cleanup+0x39/0xa0 [ath12k]
-ath12k_mac_peer_cleanup_all+0x61/0x100 [ath12k]
-ath12k_core_halt+0x3b/0x100 [ath12k]
-ath12k_core_reset+0x494/0x4c0 [ath12k]
+I don't know what Documentation changes you are doing but usually it's
+good to make changes to Documentation in separate patches.
 
-sta object in peer will be updated when remote peer is created. Hence
-use peer::sta to detect the self peer and skip the cleanup.
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-
-Signed-off-by: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/mac.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 8106297f0bc1..3949bef1db3c 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -917,7 +917,9 @@ void ath12k_mac_peer_cleanup_all(struct ath12k *ar)
- 
- 	spin_lock_bh(&ab->base_lock);
- 	list_for_each_entry_safe(peer, tmp, &ab->peers, list) {
--		ath12k_dp_rx_peer_tid_cleanup(ar, peer);
-+		/* Skip Rx TID cleanup for self peer */
-+		if (peer->sta)
-+			ath12k_dp_rx_peer_tid_cleanup(ar, peer);
- 		list_del(&peer->list);
- 		kfree(peer);
- 	}
--- 
-2.17.1
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
 
