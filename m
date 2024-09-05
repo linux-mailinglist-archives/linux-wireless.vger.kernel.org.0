@@ -1,79 +1,83 @@
-Return-Path: <linux-wireless+bounces-12545-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12546-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4BEF96E198
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 20:09:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42FEE96E199
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 20:09:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84BF31C23CC0
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 18:09:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 451BB1C23AA4
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 18:09:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E10C115B562;
-	Thu,  5 Sep 2024 18:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C2C617ADFC;
+	Thu,  5 Sep 2024 18:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nar21GLB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZHa1M8e4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7824817ADE7
-	for <linux-wireless@vger.kernel.org>; Thu,  5 Sep 2024 18:09:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192B715ADB4
+	for <linux-wireless@vger.kernel.org>; Thu,  5 Sep 2024 18:09:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725559774; cv=none; b=UG/jhFW1qi456IaBeNZIsOox5PAplfKgHSqcZxZUbsGrS5lIQkldlD/JM4p9qE0s4DsNGWpviOMB1aO6qdKBF2pGlkvvxIf+9TdDN2Nb5qR9yje3C31+ky9DtQdLbGxQb46onnLGvqLBsvk4mpDh9N5yv9Ooscm6+9zn/ClhMKs=
+	t=1725559775; cv=none; b=DB0Fc2bZvg7uqXNmZ8TzEPfU+1G5T58SC9nIMreS/Puljw0w43fWigghr/ItES47ys+nrAdqdjN7LUDzcu3S4XbgD9MOa3ccNr8ZQ8yJsUQWxdq3hFNJdapTp4upfOecyErl7a05MfzvWk0pBisY9hhFkny9KJCdgzLqTM3EkmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725559774; c=relaxed/simple;
-	bh=Mf/KRL8f8J0USP53Ooo13Yd4DU6ikFUJaiQnuno6sDA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PQeQBf/yOYBNUruDiI1l4V63JU7QGkTSe6jQZexRzDy8n8sQpLR0GmY+knL/gyDVEzSSgTIslaafUxJCy6/UtzwOkQLwuReJFEZlvlCDL929mKx8AjE7dgHlK3e++ZbnZ6KXdUQmU9jfBTzXP7Oa4j3XizUvZy9Ld5rwqLkP328=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nar21GLB; arc=none smtp.client-ip=209.85.210.176
+	s=arc-20240116; t=1725559775; c=relaxed/simple;
+	bh=WnvyFFK3cuKEwdYAd9S+ApvA6FKMM6oYN4T0bScrlTY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EvArzPejWZLpcKSqot7ne7L0Ou4KlOZnmctNgRsJlwEGzK8sarEEC2G/Tfj7vKHQR1duaGm+SknnE6LT2Ti6DAd4oetditpkRdkg1sdVPKSX6jfYyAmxgTqVt5z6t3h1c8rqq2E/L4hKv4p8cYIpYx1Z8eFbDcInAUmziscWbcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZHa1M8e4; arc=none smtp.client-ip=209.85.210.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7184a7c8a45so221817b3a.0
-        for <linux-wireless@vger.kernel.org>; Thu, 05 Sep 2024 11:09:32 -0700 (PDT)
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-71798661a52so364952b3a.0
+        for <linux-wireless@vger.kernel.org>; Thu, 05 Sep 2024 11:09:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725559771; x=1726164571; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=sYRZSZGnk2rFODEJdwSyDPgiMlEj96Nr3+wdwx30Hjo=;
-        b=nar21GLBPL+05FLqvJed8FsHenWArL27c87dlO0jcVipHq72XRb20B1v8F+sKHfOx6
-         7Kk8PaoMwDz8fidoOVEEPZfBgjjMesan9nDt64LNGz09jeGALOJs0BG28BL/VNoRw88m
-         FuTUQxJhICcuhimM++mEf/PhZiZ7f1JaQ1aM3/fWgobVaefMXnOnLL18XE06DoJ9bY1m
-         B20YnblBSVcv8nUxr7ExMA8rHKlByFGBMO8h4PdyAOtw3AL/v1AhBCmUNfLwrFdKOruy
-         b9xQQa35W1SOROjryBTez+t8kxRe2Ld3gm+pKubGWvS7Q3qHsFq6if1YeBqln3oev0ZI
-         DLFQ==
+        d=gmail.com; s=20230601; t=1725559773; x=1726164573; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+tOAE5lYXIqswc9ysrQaHFWZw9vsI1EIllIjuF/U03w=;
+        b=ZHa1M8e4HeXbNj8KBhp/enTNDpUx6Bj4wLiAJY8DYo4XuGwlWBPlihms2r4PUYIKNt
+         ODAhaApJph6jWNgiegDVYCz+fIxZF2XA+nIpkys157H0ZiuVNerlCJIxoOjcvNxF/MBK
+         k6eNyX/r3pejip5e5cCwrRpa6nip3/JFUL0P17zqxHh+7LK+zJDsu3bc3P5U8baWV1mw
+         qX8i0NnGfqd+0caoL1j2fb3/BAy9Yp/VM2TG7QCfImLcr3tGf9jU8KWNiyVHS8GJHUzf
+         xTvzOayUQsIwx1CgchpXUwi0rsmMz2jq/i4C+7rnWWBPsx8eQoYtOQy6n3DTPLrL0SeC
+         0knw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725559771; x=1726164571;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sYRZSZGnk2rFODEJdwSyDPgiMlEj96Nr3+wdwx30Hjo=;
-        b=st/G8ODvZQrwy//eg99N55J847y4m343PI9tE6xcf1Kf+AWdSNndYR0LPHYvsXjjYm
-         j8HaNuiUsfdu4g/8oJDzJalgYFTwRHOKxSMdfY6R5tc8fSVBhikvfBwQL/bfBTBe39xc
-         gSzAz8njMZUhDp9PjUlo8eS0KFm995GyWK2ZUTjBvJTL0R+vpPRgczrKESAGwP6ed6fs
-         ulnOfor6l608f6j3lr2JKz40Gq6Mp4dY/BBkMlJ/rX9E2KN4FSkfAADESPt00V+cyU8A
-         YHULrTXu5T3hemHrbngONQJiRG4ZuAfLoQM9VfnwlzDInuDWNJvc2dA3rlEpsTOHDYql
-         WwHg==
-X-Gm-Message-State: AOJu0Yzcm+NA8tQ2AbzL9E3qUNtc9Cl2k5Y7br8d42exq40kU6Z1j4Wu
-	68cUQv3munNdM/37ltkWv2Gb1umO9Q14C4F206ey3lh1pY7FRo7lUGkcbLfZ
-X-Google-Smtp-Source: AGHT+IFiu2NUtFbm1NBqr+cNNbBGccL0mAyZHZRtiU6RnTBeP7zAa/Zz9Qe3RZ1xlWCfsP+OnYxDAg==
-X-Received: by 2002:a05:6a21:e8b:b0:1c8:9749:a4c1 with SMTP id adf61e73a8af0-1cece5e2f92mr17721581637.49.1725559771518;
-        Thu, 05 Sep 2024 11:09:31 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1725559773; x=1726164573;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+tOAE5lYXIqswc9ysrQaHFWZw9vsI1EIllIjuF/U03w=;
+        b=VtoDxl2g5/2JurF6Jf9mQTBfiHQy16SEXGaOO9VEvb3m0Y2Mw1A2SulyBazV0/f+nS
+         nwyU+x20Yk9fLOM+1fXDSQeeU9w1tfnvW4G7igqFz4lCH1U7qeTTdICLKRU9K7w8CdyV
+         ZsYXTLj3GNP/kWcpt7lF3Zi/BIlaFp12l2BMB9pOFDVTm90a05LnZvvU62xhXL0U2NrV
+         GxS13RfYOgnoKJ8mguL9EAl3yZE4TeZvjBxLymH13HbVuPMFiVMHsoV8CgJfDY9dcBIz
+         cgx0xnCV7XMEcCheInczGAPdLLFHfe/mEqQIXNJQyUNgZ64hwd9jb3pj28BYilkGZ27f
+         ODgQ==
+X-Gm-Message-State: AOJu0YzmbYWSSrQj1lUq2IToCVTY9TjhmIbl1qHXa8zkRKmTM2xZGDGh
+	VJ3ldznzo8i5V2ZchXjZe5T7Wyh3jobSrTkjkoBw3YGl8H3BBCmEyeSNNyq4
+X-Google-Smtp-Source: AGHT+IH3IzLhKfsPjAk+qOnTf1LbneGTEZ+vsBONanMaJIpnbrF4Em6dptWCHd7HIfWnc7Z2WJGz1w==
+X-Received: by 2002:a05:6a00:cca:b0:704:151d:dcce with SMTP id d2e1a72fcca58-718d5341f04mr234236b3a.5.1725559773086;
+        Thu, 05 Sep 2024 11:09:33 -0700 (PDT)
 Received: from ryzen.lan ([2601:644:8200:dab8::a86])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7177858bfd5sm3485199b3a.133.2024.09.05.11.09.29
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7177858bfd5sm3485199b3a.133.2024.09.05.11.09.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Sep 2024 11:09:30 -0700 (PDT)
+        Thu, 05 Sep 2024 11:09:32 -0700 (PDT)
 From: Rosen Penev <rosenp@gmail.com>
 To: linux-wireless@vger.kernel.org
 Cc: kvalo@kernel.org,
 	toke@toke.dk,
 	nbd@nbd.name,
 	yangshiji66@outlook.com
-Subject: [PATCH 0/5] wifi: ath9k: remove platform_data support
-Date: Thu,  5 Sep 2024 11:09:23 -0700
-Message-ID: <20240905180928.382090-1-rosenp@gmail.com>
+Subject: [PATCH 1/5] wifi: ath9k: eeprom: remove platform data
+Date: Thu,  5 Sep 2024 11:09:24 -0700
+Message-ID: <20240905180928.382090-2-rosenp@gmail.com>
 X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20240905180928.382090-1-rosenp@gmail.com>
+References: <20240905180928.382090-1-rosenp@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -82,27 +86,58 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series removes platform_data support as it's deprecated, unused,
-and replaced by OF. Some OF bindings were added to match (improve?) OF
-support in ath9k compared to platform_data.
+There are no more board files defining platform data for this driver and
+eeprom support through NVMEM has already been implemented. No need to
+keep this old functionality around.
 
-Rosen Penev (5):
-  wifi: ath9k: eeprom: remove platform data
-  wifi: ath9k: btcoex: remove platform_data
-  wifi: ath9k: add extra options to of_init
-  dt-bindings: net: wireless: ath9k: add new options
-  wifi: ath9k: remove ath9k_platform_data
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+---
+ drivers/net/wireless/ath/ath9k/eeprom.c | 12 ------------
+ 1 file changed, 12 deletions(-)
 
- .../bindings/net/wireless/qca,ath9k.yaml      | 12 ++++
- .../wireless/ath/ath9k/ath9k_pci_owl_loader.c |  1 -
- drivers/net/wireless/ath/ath9k/btcoex.c       | 16 +----
- drivers/net/wireless/ath/ath9k/eeprom.c       | 12 ----
- drivers/net/wireless/ath/ath9k/hw.c           |  2 +-
- drivers/net/wireless/ath/ath9k/init.c         | 59 +++----------------
- include/linux/ath9k_platform.h                | 51 ----------------
- 7 files changed, 25 insertions(+), 128 deletions(-)
- delete mode 100644 include/linux/ath9k_platform.h
-
+diff --git a/drivers/net/wireless/ath/ath9k/eeprom.c b/drivers/net/wireless/ath/ath9k/eeprom.c
+index efb7889142d4..df58dc02e104 100644
+--- a/drivers/net/wireless/ath/ath9k/eeprom.c
++++ b/drivers/net/wireless/ath/ath9k/eeprom.c
+@@ -15,7 +15,6 @@
+  */
+ 
+ #include "hw.h"
+-#include <linux/ath9k_platform.h>
+ 
+ void ath9k_hw_analog_shift_regwrite(struct ath_hw *ah, u32 reg, u32 val)
+ {
+@@ -119,14 +118,6 @@ static bool ath9k_hw_nvram_read_array(u16 *blob, size_t blob_size,
+ 	return true;
+ }
+ 
+-static bool ath9k_hw_nvram_read_pdata(struct ath9k_platform_data *pdata,
+-				      off_t offset, u16 *data)
+-{
+-	return ath9k_hw_nvram_read_array(pdata->eeprom_data,
+-					 ARRAY_SIZE(pdata->eeprom_data),
+-					 offset, data);
+-}
+-
+ static bool ath9k_hw_nvram_read_firmware(const struct firmware *eeprom_blob,
+ 					 off_t offset, u16 *data)
+ {
+@@ -146,15 +137,12 @@ static bool ath9k_hw_nvram_read_nvmem(struct ath_hw *ah, off_t offset,
+ bool ath9k_hw_nvram_read(struct ath_hw *ah, u32 off, u16 *data)
+ {
+ 	struct ath_common *common = ath9k_hw_common(ah);
+-	struct ath9k_platform_data *pdata = ah->dev->platform_data;
+ 	bool ret;
+ 
+ 	if (ah->nvmem_blob)
+ 		ret = ath9k_hw_nvram_read_nvmem(ah, off, data);
+ 	else if (ah->eeprom_blob)
+ 		ret = ath9k_hw_nvram_read_firmware(ah->eeprom_blob, off, data);
+-	else if (pdata && !pdata->use_eeprom)
+-		ret = ath9k_hw_nvram_read_pdata(pdata, off, data);
+ 	else
+ 		ret = common->bus_ops->eeprom_read(common, off, data);
+ 
 -- 
 2.46.0
 
