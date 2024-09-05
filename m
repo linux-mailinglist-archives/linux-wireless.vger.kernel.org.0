@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-12563-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12564-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E78196E51B
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 23:31:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF9CB96E51F
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 23:33:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE5461F2416C
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 21:31:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97BF4287645
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 21:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF631957E1;
-	Thu,  5 Sep 2024 21:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E59E519414A;
+	Thu,  5 Sep 2024 21:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j3gCUveH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BYsJPb3O"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9DCF19409A
-	for <linux-wireless@vger.kernel.org>; Thu,  5 Sep 2024 21:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C142E15687C
+	for <linux-wireless@vger.kernel.org>; Thu,  5 Sep 2024 21:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725571855; cv=none; b=fNYLjNVkC72kbUJyj2iaO1ig2+cG/v0asZH0sU7Opf9IhXJSn0M4rSsPFFBorBLTN2D/qBT9jsEqwlz3T82CB35vfe6OaG5EzzO+bFqVac1iZ4DDZjT/M+Srxvs6OoyCyutKZwQUEWqQGk01VhpwBJ8Fx/xkmCP/ix7Mt0BhMwY=
+	t=1725572012; cv=none; b=jw4bSWvxVsEyXgw7AH/8SzHUORvqIzB3Un46sxX9gV+AHCAAZ16kT0jN3FhWh8isCe8UyUHT3xHQDjdkXNmpMiMtasIjOclxkv+AqASShBwip6zox9JZJMJGzRN1lahGJqxHveG+5CTte8qgxNgbnCXNmkx0oEI71zOUoCc0Noo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725571855; c=relaxed/simple;
-	bh=rOym0ciApV2InfGYqlnUXtHC/kvlRWJrXnqU5JLJY3U=;
+	s=arc-20240116; t=1725572012; c=relaxed/simple;
+	bh=iiaGBpDloSf0QxL01z6G8f+QxRw+aBw9kb9DMMfb4GY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dig47qYxGsz/rX4EF2Ir0zZndShZ8/XLlZZVQXX/I0PJ8Y5tIvoxYQVdZloy/5dgNnQEt4ohCixOffIZ5nwd1KM3I4BZEFSLQaJE2ilSS46sqRZwprHV35cy8EkuMogLOi1Hmie2pc/VJd/+ylSGYQs5x+7+WBAehincVjdzwHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j3gCUveH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62F5C4CEC3;
-	Thu,  5 Sep 2024 21:30:52 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=LhPrrdZKZbouth/3noeJfeWKA71E5+l621b421GpOYTvdMO2tJqBlBeGficAy/0V/BfxA5INJ/xGOFQXjWZHasINWaenT4bLNSPuMkaRyEhIdY3GEUabpBMAGodro5DLINC3pY3nb9I7h3wSCS9PrRZBcJw9ifSHGwnzrolO+DU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BYsJPb3O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94337C4CEC3;
+	Thu,  5 Sep 2024 21:33:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725571855;
-	bh=rOym0ciApV2InfGYqlnUXtHC/kvlRWJrXnqU5JLJY3U=;
+	s=k20201202; t=1725572011;
+	bh=iiaGBpDloSf0QxL01z6G8f+QxRw+aBw9kb9DMMfb4GY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=j3gCUveHKx07BWYpc2Yt30RYBkzWDJdg+uH4lRUH9+0F6AxKiKc24ssISsNhcREs3
-	 6lesgy6NjiHmTn571bH1rBIsU9XRqwM5uUp0HAPnaLDv+DGynBg3oo9zFnUTUsqmxW
-	 czs3Yu7rWB3W5CvjAmMruPK7bFbitFcxNYWWDI+q+qDfjPgCp7UeG3IkHXFaxewGFF
-	 R3NjsLJKSUe11Ijkntr+4Rhwy85EYH/UK4TOpkfaBM6RbehXWcgGOSpSQxpJmP/wNA
-	 U94AL6NEbDlSJy2Mu1AwZQPtNCaatCGaTX6TodoDCmwsUX987w+oOL6plsdZ6P6l+7
-	 1RhaEzjcXtJwA==
-Message-ID: <30042de9-c966-4e05-85f1-a346710389b5@kernel.org>
-Date: Thu, 5 Sep 2024 23:30:50 +0200
+	b=BYsJPb3OFLmwqPgiABZs9P9iJZDbsMDY7w1aspkrAakyM4+vS5x6SjdrxFqqXzJ67
+	 9fuR3cAVIFbYwX62kSfNkdzHS0/wx+mUBXi/I1q50nyIuIahYIvV2UMLmqpO7YYVq+
+	 xXJEkYaBaEyQt20BxPQHTSfeRmuVer/36wMKDm40XaWNUx1xCLqpbhsFF8SzaY29Cz
+	 +QYVrGBT4RTpnka0uorupKWE8HoVvS7W1q2BE89E7sJjokwsbnM8KMVRFDWSdeEDRj
+	 YvEFm7p9AEfvX2+u3+PWndFWkdfoO+UEccQ3mhzPyx7OciadOUhYiNV6yzPrh0ixwT
+	 szyfw8MXznUBw==
+Message-ID: <7f37f43b-4728-42e4-848d-b8dbaf1dd13e@kernel.org>
+Date: Thu, 5 Sep 2024 23:33:25 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,11 +50,11 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/5] wifi: ath9k: add extra options to of_init
+Subject: Re: [PATCH 4/5] dt-bindings: net: wireless: ath9k: add new options
 To: Rosen Penev <rosenp@gmail.com>, linux-wireless@vger.kernel.org
 Cc: kvalo@kernel.org, toke@toke.dk, nbd@nbd.name, yangshiji66@outlook.com
 References: <20240905180928.382090-1-rosenp@gmail.com>
- <20240905180928.382090-4-rosenp@gmail.com>
+ <20240905180928.382090-5-rosenp@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -100,56 +100,35 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240905180928.382090-4-rosenp@gmail.com>
+In-Reply-To: <20240905180928.382090-5-rosenp@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 05/09/2024 20:09, Rosen Penev wrote:
-> This is in preparation for removing platform_data support from ath9k.
-> Except for led-active-high, these are already present downstream in
-> OpenWrt and never upstreamed.
+> These platform_data options are now available for OF.
 > 
-> For tx_gain_buffalo, just set it based on the device. The flag was made
-> for a single device. Instead of adding an extra option, just look for
-> the compatible string.
-> 
-
-Bindings are before users.
-
 > Signed-off-by: Rosen Penev <rosenp@gmail.com>
 > ---
->  drivers/net/wireless/ath/ath9k/init.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+>  .../devicetree/bindings/net/wireless/qca,ath9k.yaml  | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 > 
-> diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wireless/ath/ath9k/init.c
-> index 7fad7e75af6a..88db51ec7e55 100644
-> --- a/drivers/net/wireless/ath/ath9k/init.c
-> +++ b/drivers/net/wireless/ath/ath9k/init.c
-> @@ -670,6 +670,7 @@ static int ath9k_of_init(struct ath_softc *sc)
->  	struct ath_common *common = ath9k_hw_common(ah);
->  	enum ath_bus_type bus_type = common->bus_ops->ath_bus_type;
->  	char eeprom_name[100];
-> +	u8 led_pin;
->  	int ret;
+> diff --git a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+> index 0e5412cff2bc..5c293d558a94 100644
+> --- a/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+> +++ b/Documentation/devicetree/bindings/net/wireless/qca,ath9k.yaml
+> @@ -44,6 +44,16 @@ properties:
 >  
->  	if (!of_device_is_available(np))
-> @@ -691,6 +692,12 @@ static int ath9k_of_init(struct ath_softc *sc)
->  		ah->ah_flags |= AH_NO_EEP_SWAP;
->  	}
+>    ieee80211-freq-limit: true
 >  
-> +	if (!of_property_read_u8(np, "qca,led-pin", &led_pin))
-> +		ah->led_pin = led_pin;
+> +  qca,led-active-high:
+> +    $ref: /schemas/types.yaml#/definitions/flag
+> +    description:
+> +      Indicates that the LED pin is active high instead of low
 > +
-> +	ah->config.led_active_high = of_property_read_bool(np, "qca,led-active-high");
-> +	ah->config.tx_gain_buffalo = of_device_is_compatible(np, "buffalo,wzr-hp-g450h");
+> +  qca,led-pin:
 
-There is no such compatible.
-
-Please run scripts/checkpatch.pl and fix reported warnings. Then please
-run `scripts/checkpatch.pl --strict` and (probably) fix more warnings.
-Some warnings can be ignored, especially from --strict run, but the code
-here looks like it needs a fix. Feel free to get in touch if the warning
-is not clear.
+So this all looks like re-inventing standard GPIOs, at least for devices
+using GPIOLIB. Your commit msg needs proper rationale.
 
 Best regards,
 Krzysztof
