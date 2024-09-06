@@ -1,102 +1,133 @@
-Return-Path: <linux-wireless+bounces-12572-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12573-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B729296E700
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2024 02:54:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84A0096E78D
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2024 04:09:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BD6D286C49
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2024 00:54:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B10DD1C22EBE
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2024 02:09:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6834818638;
-	Fri,  6 Sep 2024 00:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3603F335BA;
+	Fri,  6 Sep 2024 02:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="NGb9wE0v"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="aSYVqzDB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0311799F
-	for <linux-wireless@vger.kernel.org>; Fri,  6 Sep 2024 00:53:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5991732C8E
+	for <linux-wireless@vger.kernel.org>; Fri,  6 Sep 2024 02:08:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725584033; cv=none; b=mCUM8GXPROLY1AolrwNArTh5O0jiDiLJ8t3yjhS2Z4g7QXFoE6BIeLsnZ9o7U/lp2sF4jx7uM8fyv5jsOhImopBDMImIXCKhHCZAYw9/AJl6xJKpj5iALd1oIx3BXHL+HGdBWqZSar+dZ/a6nNVCmFyMxyaym6zb9dyIhJ7m37c=
+	t=1725588535; cv=none; b=Bb1L5ASkv+BhyKxX+rji+o5k6uKlVEU/LObAcXgo6GFax7o+I2De22pWdOwgmnWN04wA+rt3WzOVuHYfiX+x+f6tjJENbSAOy5ZbDb0aCljTgHIZnwHX6hFjZO/TmfaO5yVqP2RbK+ZO8//ibsUPZhZxz1uazSJHosCSddMDVYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725584033; c=relaxed/simple;
-	bh=JpQnGUQOrM/0SRFrxLuAl9yZgoiUN3r9dMJk8tMenxE=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=LNxZxmRiCiYaILInKHCKYPmVs8RrwkQJGLWVncim3PLqQ1LJL/Hx6xbQLhl9GlL7gm35r5WP9cKMEp+fdkSM6u500J83PLVzfb8ETZ0roYR4lRZkrUaaYR30Ql10KYtSE/wbycifr22/wjXHUnLRftkyuiVEnQwhpOxI+X/JCtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=NGb9wE0v; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4860rhxsF237460, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1725584023; bh=JpQnGUQOrM/0SRFrxLuAl9yZgoiUN3r9dMJk8tMenxE=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=NGb9wE0vHO1/dZjiCQ9xnPb1cXMozKPeZv0AIAueMtpVNJlEi968vMPkAT6XcktT/
-	 9PE1mWoqr2LXsRcwzAB3iZ9LN7o6LbfzfD2EH38IKMDk/5jUh9tMulY1sl0FnYDVlo
-	 Ckb/YuK0aJ9I8nKWHq1FxR0i/QBJd2xqQ91YtG1zKxWmZ5uK/WzXcol6BO89domW/R
-	 vHP4SU1kjb3uyHB1ympZvHQxGy6xeVKWbYvcltThfmpw4dH4FwdiIHtZiF82BjWbrC
-	 9gc0C0cUqDs4cD2Pv7YpL7jqnL2g1apgA9nrh/r75naR/FSGZ7Sl737roVDRTji6jG
-	 m/zIwFGGN8TKQ==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 4860rhxsF237460
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 6 Sep 2024 08:53:43 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 6 Sep 2024 08:53:44 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 6 Sep 2024 08:53:43 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
- RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
- 15.01.2507.035; Fri, 6 Sep 2024 08:53:43 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Eli DeCampo <eli@decampo.org>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>
-Subject: RE: RTW89 Driver Issues
-Thread-Topic: RTW89 Driver Issues
-Thread-Index: AQHa/8qGG4LZF5jXvUKFmROmayiRrrJJ7AeA
-Date: Fri, 6 Sep 2024 00:53:43 +0000
-Message-ID: <2973bb92992d4911a100854300060449@realtek.com>
-References: <CAGCFnVBNNLgyKp_FLnvMiMnkAtwXrQbgot96Zmb_FeZNXFu+ew@mail.gmail.com>
-In-Reply-To: <CAGCFnVBNNLgyKp_FLnvMiMnkAtwXrQbgot96Zmb_FeZNXFu+ew@mail.gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1725588535; c=relaxed/simple;
+	bh=iDukbhPkxZgAmYVUUywr9pVGGkRRMmsk3q4c4qB6ZDU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=GmoYAMawTqmVlcfeFiM3SqEjHuaL4TlsoiMdPipKwDGMA7KsDqwsSuGjia9Sl8hvZh4xlB6vs5xQZwZNvFesBYya4RTIl+DLhV+U/JuWmx2bQx+zPsOYZ1qkNhvt9yuiXmi/O8lGyLZ94jcN5xOt55woLY/GXl0n58SS5yzaW8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=aSYVqzDB; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 485IQlpB008896;
+	Fri, 6 Sep 2024 02:08:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	9ByX8dWgLyyDLB0irOMULjt7eqTDhlWWdMhSFOnG2Ms=; b=aSYVqzDB8Cb+DTsb
+	aTkHiJvIow4jlYJJOJHV6579P5LIeH40dMyC0AQQE4BdujEaeYTmk/Nbrle/qzAr
+	d4fEg6RjcmDO2rtUmXDSgItkgWt3r47qr4uyAm7ldA2d9BFJv8OmseRMUW79+qsw
+	JnqPo2mv/k1IUcNi3MrPKSRt6Klq769Cd/kqHXOe5xpsIO2WAtHkxtbyLRoFivre
+	GI+osPGtSyA7v7NvUP5cbEu0lhmSuouCzQwjzNd1GgQc6TJMgdx8UsZFWQX1hUxJ
+	rl8btsG5qczecTH55bcGxPecgzJsnJtb2ClbRqchcU4WLICP5tyYKQfbrHv0Syjy
+	77hBoQ==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41fhx20sm9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Sep 2024 02:08:45 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48628i7I016868
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 6 Sep 2024 02:08:44 GMT
+Received: from [10.231.194.79] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 5 Sep 2024
+ 19:08:42 -0700
+Message-ID: <0daaf053-0b27-43ab-bd3b-634b25b40f25@quicinc.com>
+Date: Fri, 6 Sep 2024 10:08:37 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath11k: support DBS and DFS compatibility
+To: Jeff Johnson <quic_jjohnson@quicinc.com>, <kvalo@kernel.org>
+CC: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20240829064420.3074140-1-quic_yuzha@quicinc.com>
+ <1e53e441-7539-4db3-89f2-3563667e2cff@quicinc.com>
+Content-Language: en-US
+From: "Yu Zhang (Yuriy)" <quic_yuzha@quicinc.com>
+In-Reply-To: <1e53e441-7539-4db3-89f2-3563667e2cff@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: Q7JkPU3aBGJjUFeVOqku8OJ5mkz3Wd1k
+X-Proofpoint-GUID: Q7JkPU3aBGJjUFeVOqku8OJ5mkz3Wd1k
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-05_17,2024-09-05_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 phishscore=0
+ lowpriorityscore=0 malwarescore=0 clxscore=1015 spamscore=0 bulkscore=0
+ suspectscore=0 mlxlogscore=554 priorityscore=1501 mlxscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409060015
 
-RWxpIERlQ2FtcG8gPGVsaUBkZWNhbXBvLm9yZz4gd3JvdGU6DQoNCj4gU2VwIDA1IDE1OjIxOjUz
-IENvbXBvb3Blci12MiBOZXR3b3JrTWFuYWdlcls4NzZdOiA8aW5mbz4NCj4gWzE3MjU1NjQxMTMu
-ODA5OV0gZGV2aWNlICh3bHAxczApOiBzdXBwbGljYW50IGludGVyZmFjZSBzdGF0ZToNCj4gZGlz
-Y29ubmVjdGVkIC0+IGF1dGhlbnRpY2F0aW5nDQo+IFNlcCAwNSAxNToyMTo1MyBDb21wb29wZXIt
-djIgTmV0d29ya01hbmFnZXJbODc2XTogPGluZm8+DQo+IFsxNzI1NTY0MTEzLjgxMDBdIGRldmlj
-ZSAocDJwLWRldi13bHAxczApOiBzdXBwbGljYW50IG1hbmFnZW1lbnQNCj4gaW50ZXJmYWNlIHN0
-YXRlOiBkaXNjb25uZWN0ZWQgLT4gYXV0aGVudGljYXRpbmcNCj4gU2VwIDA1IDE1OjIxOjUzIENv
-bXBvb3Blci12MiBOZXR3b3JrTWFuYWdlcls4NzZdOiA8aW5mbz4NCj4gWzE3MjU1NjQxMTMuODEw
-MF0gZGV2aWNlICh3bHAxczApOiBzdXBwbGljYW50IGludGVyZmFjZSBzdGF0ZToNCj4gYXV0aGVu
-dGljYXRpbmcgLT4gZGlzY29ubmVjdGVkDQo+IFNlcCAwNSAxNToyMTo1MyBDb21wb29wZXItdjIg
-TmV0d29ya01hbmFnZXJbODc2XTogPGluZm8+DQo+IFsxNzI1NTY0MTEzLjgxMDBdIGRldmljZSAo
-cDJwLWRldi13bHAxczApOiBzdXBwbGljYW50IG1hbmFnZW1lbnQNCj4gaW50ZXJmYWNlIHN0YXRl
-OiBhdXRoZW50aWNhdGluZyAtPiBkaXNjb25uZWN0ZWQNCg0KSXQgbG9va3MgbGlrZSBOZXR3b3Jr
-TWFuZ2VyIGNvbnRyb2wgdHdvIGludGVyZmFjZXMgZGVyaXZlZCBmcm9tIHdscDFzMC4gDQpTdWdn
-ZXN0IHRvIHNpbXBseSB0aGUgdXNlIGNhc2UgdG8gaWRlbnRpZnkgcHJvYmxlbS4gUGxlYXNlIHR1
-cm4gb2ZmDQpOZXR3b3JrTWFuYWdlciBhbmQgdXNlICdpdyB3bHAxczAgc2NhbicgY29tbWFuZCB0
-byBzZWUgaWYgeW91IGNhbiBzZWUNCmFueSBBUC4gSWYgeWVzLCB0cnkgJ2l3IHdscDFzMCBjb25u
-ZWN0IEFQX1NTSUQnIHRvIGNvbm5lY3QgYSBub24tc2VjdXJlIEFQLg0KDQpUaGUgZG1lc2cgbG9n
-IHNob3VsZCBiZSBjb2xsZWN0ZWQgYWZ0ZXIgdHJ5aW5nIGNvbm5lY3Rpb24uIFRoZW4gd2UgY2Fu
-DQpzZWUgaG93IHRoZSBkcml2ZXIgZ29lcyB3cm9uZy4NCg0KUGluZy1LZQ0KDQo=
+
+
+On 9/6/2024 2:59 AM, Jeff Johnson wrote:
+> On 8/28/2024 11:44 PM, Yu Zhang(Yuriy) wrote:
+>> Now some chips which support 'support_dual_stations' will enable DBS,
+>> but will disable DFS. Restructure the ath11k_mac_setup_iface_combinations
+>> function to support DBS and DFS compatibility.
+>>
+>> About 'support_dual_station' feature can refer:
+>> https://msgid.link/20230714023801.2621802-2-quic_cjhuang@quicinc.com
+>>
+>> Add a ieee80211_iface_combination to support DBS and DFS compatibility,
+>> one combination can support DFS(same with non dual sta), another
+>> combination can support DBS. When running different scenarios that will
+>> use different ieee80211_iface_combination due to mac80211 will go through
+>> all of possible interface combinations.
+>>
+>> In addition, maximum number of interfaces of these types should be total
+>> allowed in this group.
+>>
+>> The chips affected are:
+>>
+>>   QCA6390 hw2.0
+>>   WCN6855 hw2.0
+>>   WCN6855 hw2.1
+>>
+>> Other chips are not affected.
+>>
+>> Tested-on: WCN6855 WLAN.HSP.1.1-04402-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1.
+> 
+> nit: should include the hw type tested on, see:
+> <https://wireless.wiki.kernel.org/en/users/drivers/ath11k/submittingpatches#tested-on_tag>
+> 
+> if you can reply with that, Kalle can update the patch in the pending branch
+> 
+
+Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.1.0.1-00410-QCAHKSWPL_SILICONZ-2
+Tested-on: IPQ6018 hw1.0 AHB WLAN.HK.2.1.0.1-01161-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN6855 WLAN.HSP.1.1-04402-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1
+
 
