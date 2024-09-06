@@ -1,167 +1,267 @@
-Return-Path: <linux-wireless+bounces-12590-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12591-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EE8296EC75
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2024 09:48:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEF3396EE6C
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2024 10:43:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9BA7289872
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2024 07:48:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98196284A5E
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2024 08:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F6D156641;
-	Fri,  6 Sep 2024 07:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CFB6155741;
+	Fri,  6 Sep 2024 08:42:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="FwzpELgo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z5g4yKxK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D28314D29A
-	for <linux-wireless@vger.kernel.org>; Fri,  6 Sep 2024 07:44:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7478E15278E
+	for <linux-wireless@vger.kernel.org>; Fri,  6 Sep 2024 08:42:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725608688; cv=none; b=renclo4w3u8uS8bOyrtgaYQd/sPkzpTuE6bpRhZZydSt3IzfVBOqpFGORElX3ssm8YG5L7epmbfkoFrh0i0BaEYpmr1Kc+pCuvgKWoebTo8Xmv2ecd7Jr8eM38Jc3+O+WcMB1JeaYB4NIirE/FKicDdWjqv1F3SzmQsj771xnqI=
+	t=1725612177; cv=none; b=j4xJwiRBGfGicwdcxZdD+bC2kEQ1k5ycw9V79HXMUHjS4SsQOGg143RNekWqdLA1Y25Hqjj2VD/+/YZu6gGRJaQDXDXkIiE369ubGSsNcfFKmTtJS7eJiFMGl0t+mPI6Rsk0PzTutFuKvIkvRgguWf3tUgWEJoZdu2USvWs7Z9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725608688; c=relaxed/simple;
-	bh=07b0IMeSMwgMzjCtM2DsBnr3riDLhDHjvKXOx8+lQuQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=O8+3eQLdvGwDI0cBfhhUhVepoMXVXw4hDWq5RmKzU6Yzx/a37uKX97An4Lr8+EIpIHBTq0DCUhHkt7OwxUBUBXbrB+CbxLVGxdCP74jTOLJKPZvZme2CAkOvnaTUFrcNzWWHdM9lY0rQ/s0xAX9HRT8bGEAXM+7zk4cjkY30oG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=FwzpELgo; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2f74e468aa8so15944331fa.1
-        for <linux-wireless@vger.kernel.org>; Fri, 06 Sep 2024 00:44:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1725608685; x=1726213485; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=g2iWgb97T7hXzF6zuXBGICV8UKLvinMfR+RbHOd+dQ4=;
-        b=FwzpELgoHJC9THi2bUeB2ndw3/6JOEDtdFAJALrB4oexXzw3rdvVi8LhcapOZ/Udvq
-         rqP9rF+tp8Lq6rR3C+EZ0xnYjAeiD90B/cqBpnABujIyYUQ/hnuJ3sb16LmNNKsjm37M
-         e93Iu6rnKhX6fH9KYD3f/rTs/uo8lTtrilq32E68dE2fwRN7T2PHNTrjbgt42aDlOntz
-         lP6prAedjWVPtCPIxwSFOYhHGH93+m6nDwSlFtPcxNCJVHVtSiNRL8y+s3NQAJySKAls
-         duYqvWFNMjoy5Bo21iVIPl/l9vEQFJzUg2aEReOh1DlGaES0i29XtimxmhLKte2lCZM8
-         J4Qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725608685; x=1726213485;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=g2iWgb97T7hXzF6zuXBGICV8UKLvinMfR+RbHOd+dQ4=;
-        b=nDKszI0NIap/83XAH4Qw2FCKmVo5xnRoSsKP5iS23VS5AejV3F5K9bJ180jZaBNQTi
-         QYNz0ZaD7PPJWm4B/FmgvRWpnuJPeD/xTiCh9FryY9ZBfIm3Z1op8PLqoU9dEeHOMGxV
-         wv7dQfd7Db+lYgh/bs7/ibJLgrt2lRenWNCPpsUi3WGTkKekHaH/RLGpYpYFZg3FC0qn
-         7/DuLAUX40oyH04MhANjJLA3TWPGYtAd6AgfNj/b23VEH36aZL73zwM+zsUFejv0t34w
-         somi2vPwis7YBFSj5WZfTFl4X1yQ8zSJuK4/+Ugg1XRDuLQzlPoDlzTjyCjBxruDOvUN
-         K4yQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWjrJUcvLVbUS0hBb+VeAne6XYFCDkBBSOXLKwSvgYDYaBK+c7h4qsrgrSZkm8E62o2RfMQZnzuZjdt9fMyQA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNs67Ll/rv9hSyLmfVZwC/RJhQvfugVIjojaphBlra8mw6w2Ea
-	+fClPLKzw5JKgiwOXE2pgPvxH8aCT5G7epZzBMf4idfG7sH9K32n7J9TF84l98us3VojPgGERCA
-	Z8GZ5Qr+NDCSwRMaBCnLfRbXafqLilOfW4bGzDw==
-X-Google-Smtp-Source: AGHT+IELjdXPrNR2ftHe5XllcZ3pyQfKCzq7O/b2xjHbW9q9Q4+MDzmZTA0vD6TNGPaxV5kp8/BSGDK9jb01VsONIG4=
-X-Received: by 2002:a2e:819:0:b0:2f7:4c9d:7a87 with SMTP id
- 38308e7fff4ca-2f75232641cmr10706661fa.21.1725608683728; Fri, 06 Sep 2024
- 00:44:43 -0700 (PDT)
+	s=arc-20240116; t=1725612177; c=relaxed/simple;
+	bh=v76YgH4LWbdPsITzsdkvL86EOBWkVoAoIlXrcdFtZ5w=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=gLuCxsKlWtXT+mb7GKe63RGtu/+loMKP7Y4N/Dztnym4B+MCl0Ljupib7xNaI75N7Z1+tmkslUXKCEOb8Z6aqeqA0QPnHMAteLeqOZ1vN+JDIea54pj86RtmnTNUpN2R8g/Eqze5Dz8i8uYroneiQ7gRy++awGmvwSWStdNow8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z5g4yKxK; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725612175; x=1757148175;
+  h=date:from:to:cc:subject:message-id;
+  bh=v76YgH4LWbdPsITzsdkvL86EOBWkVoAoIlXrcdFtZ5w=;
+  b=Z5g4yKxK1khkqtHEqIt16JVbMl2h0wIVhEeIYr7PI0L40/w8ZOm8ue1T
+   p5S47N449akZd0Xdl1Ti3cGQ+2jOM86ORsgzjJlxptr0fPwjKuGBsWbs7
+   pzV2pirGceO5U8rM0Urgqk2ur1zs3dVJFCcQzNiTqyETLzib72lNTCl2O
+   upyk1/ZuHipRcCU4U8stvW1KA7jm9yB2XH5GDe5gkis2zp6V+zoFlAk+K
+   IN3lankf95tjgtzFzmTNax7lz9dmj+S78+MlrZ3q6NB99TsXt0ZXLkZjI
+   95j1ovNdczJvwr48h9kUg7105zcetvA0Y2Djf9JOTD7oA4ZmmmxorxIja
+   w==;
+X-CSE-ConnectionGUID: Dmo3N0tpRsa82rirKGVZsA==
+X-CSE-MsgGUID: tYQZidaRSSicON/ZAeautQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11186"; a="41845331"
+X-IronPort-AV: E=Sophos;i="6.10,207,1719903600"; 
+   d="scan'208";a="41845331"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2024 01:42:54 -0700
+X-CSE-ConnectionGUID: j3ZcbtoHTDS/EMFmINkrbg==
+X-CSE-MsgGUID: gSl3xDmhTpm/jc9jPaFcrA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,207,1719903600"; 
+   d="scan'208";a="96605192"
+Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 06 Sep 2024 01:42:53 -0700
+Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1smUYM-000Asd-2v;
+	Fri, 06 Sep 2024 08:42:50 +0000
+Date: Fri, 06 Sep 2024 16:41:55 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+ Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
+Subject: [wireless-next:main] BUILD SUCCESS
+ 43b7724487109368363bb5cda034b3f600278d14
+Message-ID: <202409061652.BKrlZ6Sc-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240814082301.8091-1-brgl@bgdev.pl> <87a5hcyite.fsf@kernel.org>
- <CAMRc=Mcr7E0dxG09_gYPxg57gYAS4j2+-3x9GCS3wOcM46O=NQ@mail.gmail.com>
- <87y146ayrm.fsf@kernel.org> <CAMRc=Mfes+=59WP8dcMsiUApqjsFrY9iVFEdKU6FbTKAFP1k_A@mail.gmail.com>
- <878qw6hs4s.fsf@kernel.org>
-In-Reply-To: <878qw6hs4s.fsf@kernel.org>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Fri, 6 Sep 2024 09:44:32 +0200
-Message-ID: <CAMRc=Mc_Qy6-Rgsw_uOweUXtoiZGMR0D22Ou9nXUJDDdPCZqLw@mail.gmail.com>
-Subject: Re: [PATCH net-next v2] dt-bindings: net: ath11k: document the inputs
- of the ath11k on WCN6855
-To: Kalle Valo <kvalo@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	ath11k@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 5, 2024 at 8:28=E2=80=AFPM Kalle Valo <kvalo@kernel.org> wrote:
->
-> Bartosz Golaszewski <brgl@bgdev.pl> writes:
->
-> > On Thu, Sep 5, 2024 at 5:47=E2=80=AFPM Kalle Valo <kvalo@kernel.org> wr=
-ote:
-> >>
-> >> Bartosz Golaszewski <brgl@bgdev.pl> writes:
-> >>
-> >> >> > +  - if:
-> >> >> > +      properties:
-> >> >> > +        compatible:
-> >> >> > +          contains:
-> >> >> > +            const: pci17cb,1103
-> >> >> > +    then:
-> >> >> > +      required:
-> >> >> > +        - vddrfacmn-supply
-> >> >> > +        - vddaon-supply
-> >> >> > +        - vddwlcx-supply
-> >> >> > +        - vddwlmx-supply
-> >> >> > +        - vddrfa0p8-supply
-> >> >> > +        - vddrfa1p2-supply
-> >> >> > +        - vddrfa1p8-supply
-> >> >> > +        - vddpcie0p9-supply
-> >> >> > +        - vddpcie1p8-supply
-> >> >>
-> >> >> Like we discussed before, shouldn't these supplies be optional as n=
-ot
-> >> >> all modules need them?
-> >> >>
-> >> >
-> >> > The answer is still the same: the ATH11K inside a WCN6855 does - in
-> >> > fact - always need them. The fact that the X13s doesn't define them =
-is
-> >> > bad representation of HW and I'm fixing it in a subsequent DTS patch=
-.
-> >>
-> >> But, like we discussed earlier, M.2 boards don't need these so I think
-> >> this should be optional.
-> >>
-> >
-> > If they are truly dynamic, plug-and-play M.2 boards then they
-> > shouldn't need any description in device-tree. If they are M.2 sockets
-> > that use custom, vendor-specific pins (like what is the case on
-> > sc8280xp-crd and X13s) then the HW they carry needs to be described
-> > correctly. We've discussed that before.
->
-> Sigh. Please reread the previous discussion. In some cases we need to
-> set qcom,ath11k-calibration-variant even for M.2 boards.
->
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: 43b7724487109368363bb5cda034b3f600278d14  Merge tag 'wireless-next-2024-09-04' of git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next
 
-Maybe instead of posting patronizing comments and forcing me to
-reiterate all my previous points, you should reread the discussion as
-well?
+elapsed time: 1859m
 
-DT describes hardware and the WNC6855 package is composed of several
-modules which we represent as separate DT nodes - currently: PMU,
-WLAN, Bluetooth. The WLAN module takes inputs from the PMU so it
-*DOES* need the supplies. The fact that you only want to specify the
-qcom,ath11k-calibration-variant property is irrelevant because the HW
-is what it is. Device-tree source is not a configuration file - it's a
-description of hardware.
+configs tested: 173
+configs skipped: 7
 
-For upstream - if you're using the WCN6855, you must specify the
-inputs for the WLAN module so it's only fair they be described as
-"required". For out-of-tree DTS I couldn't care less.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-You are not correct saying that "M.2 boards don't need these" because
-as a matter of fact: the WLAN module on your M.2 card takes these
-inputs from the PMU inside the WCN6855 package.
+tested configs:
+alpha                             allnoconfig   gcc-14.1.0
+alpha                            allyesconfig   clang-20
+alpha                               defconfig   gcc-14.1.0
+arc                              allmodconfig   clang-20
+arc                               allnoconfig   gcc-14.1.0
+arc                              allyesconfig   clang-20
+arc                                 defconfig   gcc-14.1.0
+arc                   randconfig-001-20240906   clang-20
+arc                   randconfig-002-20240906   clang-20
+arm                              allmodconfig   clang-20
+arm                               allnoconfig   gcc-14.1.0
+arm                              allyesconfig   clang-20
+arm                         bcm2835_defconfig   clang-20
+arm                                 defconfig   gcc-14.1.0
+arm                      footbridge_defconfig   clang-20
+arm                         nhk8815_defconfig   clang-20
+arm                   randconfig-001-20240906   clang-20
+arm                   randconfig-002-20240906   clang-20
+arm                   randconfig-003-20240906   clang-20
+arm                   randconfig-004-20240906   clang-20
+arm                         s5pv210_defconfig   clang-20
+arm64                            allmodconfig   clang-20
+arm64                             allnoconfig   gcc-14.1.0
+arm64                               defconfig   gcc-14.1.0
+arm64                 randconfig-001-20240906   clang-20
+arm64                 randconfig-002-20240906   clang-20
+arm64                 randconfig-003-20240906   clang-20
+arm64                 randconfig-004-20240906   clang-20
+csky                              allnoconfig   gcc-14.1.0
+csky                                defconfig   gcc-14.1.0
+csky                  randconfig-001-20240906   clang-20
+csky                  randconfig-002-20240906   clang-20
+hexagon                          allmodconfig   clang-20
+hexagon                           allnoconfig   gcc-14.1.0
+hexagon                          allyesconfig   clang-20
+hexagon                             defconfig   gcc-14.1.0
+hexagon               randconfig-001-20240906   clang-20
+hexagon               randconfig-002-20240906   clang-20
+i386                             allmodconfig   clang-18
+i386                             allmodconfig   gcc-12
+i386                              allnoconfig   clang-18
+i386                              allnoconfig   gcc-12
+i386                             allyesconfig   clang-18
+i386                             allyesconfig   gcc-12
+i386         buildonly-randconfig-001-20240906   gcc-12
+i386         buildonly-randconfig-002-20240906   gcc-12
+i386         buildonly-randconfig-003-20240906   gcc-12
+i386         buildonly-randconfig-004-20240906   gcc-12
+i386         buildonly-randconfig-005-20240906   gcc-12
+i386         buildonly-randconfig-006-20240906   gcc-12
+i386                                defconfig   clang-18
+i386                  randconfig-001-20240906   gcc-12
+i386                  randconfig-002-20240906   gcc-12
+i386                  randconfig-003-20240906   gcc-12
+i386                  randconfig-004-20240906   gcc-12
+i386                  randconfig-005-20240906   gcc-12
+i386                  randconfig-006-20240906   gcc-12
+i386                  randconfig-011-20240906   gcc-12
+i386                  randconfig-012-20240906   gcc-12
+i386                  randconfig-013-20240906   gcc-12
+i386                  randconfig-014-20240906   gcc-12
+i386                  randconfig-015-20240906   gcc-12
+i386                  randconfig-016-20240906   gcc-12
+loongarch                        allmodconfig   gcc-14.1.0
+loongarch                         allnoconfig   gcc-14.1.0
+loongarch                           defconfig   gcc-14.1.0
+loongarch             randconfig-001-20240906   clang-20
+loongarch             randconfig-002-20240906   clang-20
+m68k                             allmodconfig   gcc-14.1.0
+m68k                              allnoconfig   gcc-14.1.0
+m68k                             allyesconfig   gcc-14.1.0
+m68k                                defconfig   gcc-14.1.0
+microblaze                       allmodconfig   gcc-14.1.0
+microblaze                        allnoconfig   gcc-14.1.0
+microblaze                       allyesconfig   gcc-14.1.0
+microblaze                          defconfig   gcc-14.1.0
+mips                              allnoconfig   gcc-14.1.0
+nios2                             allnoconfig   gcc-14.1.0
+nios2                               defconfig   gcc-14.1.0
+nios2                 randconfig-001-20240906   clang-20
+nios2                 randconfig-002-20240906   clang-20
+openrisc                          allnoconfig   clang-20
+openrisc                         allyesconfig   gcc-14.1.0
+openrisc                            defconfig   gcc-12
+parisc                           allmodconfig   gcc-14.1.0
+parisc                            allnoconfig   clang-20
+parisc                           allyesconfig   gcc-14.1.0
+parisc                              defconfig   gcc-12
+parisc                randconfig-001-20240906   clang-20
+parisc                randconfig-002-20240906   clang-20
+parisc64                            defconfig   gcc-14.1.0
+powerpc                          allmodconfig   gcc-14.1.0
+powerpc                           allnoconfig   clang-20
+powerpc                          allyesconfig   gcc-14.1.0
+powerpc                      arches_defconfig   clang-20
+powerpc                   bluestone_defconfig   clang-20
+powerpc                 linkstation_defconfig   clang-20
+powerpc                 mpc8315_rdb_defconfig   clang-20
+powerpc                      ppc44x_defconfig   clang-20
+powerpc               randconfig-002-20240906   clang-20
+powerpc               randconfig-003-20240906   clang-20
+powerpc                      tqm8xx_defconfig   clang-20
+powerpc64             randconfig-001-20240906   clang-20
+powerpc64             randconfig-002-20240906   clang-20
+powerpc64             randconfig-003-20240906   clang-20
+riscv                             allnoconfig   clang-20
+riscv                            allyesconfig   gcc-14.1.0
+riscv                               defconfig   gcc-12
+riscv                 randconfig-001-20240906   clang-20
+riscv                 randconfig-002-20240906   clang-20
+s390                             allmodconfig   gcc-14.1.0
+s390                              allnoconfig   clang-20
+s390                             allyesconfig   gcc-14.1.0
+s390                                defconfig   gcc-12
+s390                  randconfig-001-20240906   clang-20
+s390                  randconfig-002-20240906   clang-20
+sh                               allmodconfig   gcc-14.1.0
+sh                                allnoconfig   gcc-14.1.0
+sh                               allyesconfig   gcc-14.1.0
+sh                                  defconfig   gcc-12
+sh                          landisk_defconfig   clang-20
+sh                    randconfig-001-20240906   clang-20
+sh                    randconfig-002-20240906   clang-20
+sh                          sdk7780_defconfig   clang-20
+sh                             sh03_defconfig   clang-20
+sh                     sh7710voipgw_defconfig   clang-20
+sh                            titan_defconfig   clang-20
+sparc                            allmodconfig   gcc-14.1.0
+sparc64                             defconfig   gcc-12
+sparc64               randconfig-001-20240906   clang-20
+sparc64               randconfig-002-20240906   clang-20
+um                               allmodconfig   clang-20
+um                                allnoconfig   clang-20
+um                               allyesconfig   clang-20
+um                                  defconfig   gcc-12
+um                             i386_defconfig   gcc-12
+um                    randconfig-001-20240906   clang-20
+um                    randconfig-002-20240906   clang-20
+um                           x86_64_defconfig   gcc-12
+x86_64                            allnoconfig   clang-18
+x86_64                           allyesconfig   clang-18
+x86_64       buildonly-randconfig-001-20240906   clang-18
+x86_64       buildonly-randconfig-002-20240906   clang-18
+x86_64       buildonly-randconfig-003-20240906   clang-18
+x86_64       buildonly-randconfig-004-20240906   clang-18
+x86_64       buildonly-randconfig-005-20240906   clang-18
+x86_64       buildonly-randconfig-006-20240906   clang-18
+x86_64                              defconfig   clang-18
+x86_64                              defconfig   gcc-11
+x86_64                                  kexec   gcc-12
+x86_64                randconfig-001-20240906   clang-18
+x86_64                randconfig-002-20240906   clang-18
+x86_64                randconfig-003-20240906   clang-18
+x86_64                randconfig-004-20240906   clang-18
+x86_64                randconfig-005-20240906   clang-18
+x86_64                randconfig-006-20240906   clang-18
+x86_64                randconfig-011-20240906   clang-18
+x86_64                randconfig-012-20240906   clang-18
+x86_64                randconfig-013-20240906   clang-18
+x86_64                randconfig-014-20240906   clang-18
+x86_64                randconfig-015-20240906   clang-18
+x86_64                randconfig-016-20240906   clang-18
+x86_64                randconfig-071-20240906   clang-18
+x86_64                randconfig-072-20240906   clang-18
+x86_64                randconfig-073-20240906   clang-18
+x86_64                randconfig-074-20240906   clang-18
+x86_64                randconfig-075-20240906   clang-18
+x86_64                randconfig-076-20240906   clang-18
+x86_64                          rhel-8.3-rust   clang-18
+x86_64                               rhel-8.3   gcc-12
+xtensa                            allnoconfig   gcc-14.1.0
+xtensa                randconfig-001-20240906   clang-20
+xtensa                randconfig-002-20240906   clang-20
 
-Bartosz
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
