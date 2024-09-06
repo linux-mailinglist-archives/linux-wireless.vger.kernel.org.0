@@ -1,59 +1,80 @@
-Return-Path: <linux-wireless+bounces-12598-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12599-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAAFD96F463
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2024 14:37:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3EA996F6A1
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2024 16:25:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D7841F258B8
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2024 12:37:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2DC8287036
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2024 14:25:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B09A31C8FA6;
-	Fri,  6 Sep 2024 12:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0ACD1D0DD7;
+	Fri,  6 Sep 2024 14:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="GCt8yy/I"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yc3+GYHL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward100d.mail.yandex.net (forward100d.mail.yandex.net [178.154.239.211])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14DA1CDFB8
-	for <linux-wireless@vger.kernel.org>; Fri,  6 Sep 2024 12:37:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.211
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6F01D0DDF;
+	Fri,  6 Sep 2024 14:24:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725626227; cv=none; b=L1egzD4nRoFGzgxLGcIv0e/uKUkaVuE8cJhqbEGB+NxHTynEIdOPIMvLuOGHiAmemzLp0IwJHiOUTMiR0fpGSme/hkzLy5dGFBKuCBMhLaZ+vPK3LzXbH+dSJXQNvJyu6eU1CSsde9Q/+S+1IMiRlPkdEZ6gPYBMBEluzDz5wrs=
+	t=1725632699; cv=none; b=E5nMdJD67M2RmI7mXyl2+30k5qhmqFmsUuehKbZFEcU1NCfG/0yw7OtaS2aHdZ0rMbzdmoXHWWffnAxzfvPs1VwheKl9yUXYYxbhe1eK+3wasb7VoaSNSQwKDPULStFLo1zyNeZFVUSU0+mXz1e4E/pOFKWPdHWG/EmHwyF43xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725626227; c=relaxed/simple;
-	bh=e1e6UOcVrCeaB6pUGwrBPbYKWDopeDWvTIX3al8LCws=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R5OZRn/T9maRA5mnNacFKdm1AG5R/MaqudmhM2hXDrXetJ+uTRf6GAYIBgGoUAc+KAvTEQ1HCD9sQ0bPXtht7W9C1W97cLGY5blGrScZOpqcnX4WFBSrsEvfPf8CwrB9V77RmQKMdA+YYxT5eo/iyZNAlXvBOM8bBdUPQyVccpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=GCt8yy/I; arc=none smtp.client-ip=178.154.239.211
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from mail-nwsmtp-smtp-production-main-45.klg.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-45.klg.yp-c.yandex.net [IPv6:2a02:6b8:c42:70a1:0:640:6c31:0])
-	by forward100d.mail.yandex.net (Yandex) with ESMTPS id D9B326092C;
-	Fri,  6 Sep 2024 15:37:01 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-45.klg.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 0bdknLGZxW20-e0MxgnIV;
-	Fri, 06 Sep 2024 15:37:01 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1725626221; bh=o0LbJvBAtMxCq3N3jkwW7hW7zr665lTtZWCzoykbKZI=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=GCt8yy/IssOgwlm+CKOlZlWgxi0afBGyZU9Bu4ePLhbO1cvS79khHeJGwhX44c4qL
-	 fbauQMVMw8LiNrlCZq/Abz1ZQRVRHXON3zbFjWra1dujW2JMnzjjpqTf8xIhgympsy
-	 zSUEyE1KEf5VzX0yfX91iKU+52vzJXoiymHliPv8=
-Authentication-Results: mail-nwsmtp-smtp-production-main-45.klg.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Dmitry Antipov <dmantipov@yandex.ru>
-To: Johannes Berg <johannes.berg@intel.com>
-Cc: Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	syzbot+1a3986bbd3169c307819@syzkaller.appspotmail.com
-Subject: [PATCH] wifi: mac80211: use two-phase skb reclamation in ieee80211_do_stop()
-Date: Fri,  6 Sep 2024 15:31:51 +0300
-Message-ID: <20240906123151.351647-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1725632699; c=relaxed/simple;
+	bh=Ae/E+HwwnrmVtMR5Ie0tM3RoV8FviaM5rFcynKwfpe0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qBlycqgIxiFzECGwpBOB/VMtmF30w6vVTTZ/ur5ZAD0xoDS3O4GJJ7OoFxKPdTyWgJ3wE9//T2Jnrk+hLuD7XmbeY+m4oPchXOGV1e0uQc7KMmoVLy1U5OdngKSyay/HSNbx23OnS1qEVsGBuRTuFlet/iNHAvCSsiqWOAkRO4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yc3+GYHL; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2053616fa36so21720595ad.0;
+        Fri, 06 Sep 2024 07:24:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725632698; x=1726237498; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MJoi1jywiZO+XvKJEVuaNemlL/axteDLk0qoQjK504s=;
+        b=Yc3+GYHLfqkbkUfzf0SPtyTZSurltNjs2HCZBL41kR4nkgU8BtqSJE9l+gqPQvK0p6
+         f22PSUWZ6vhA2LpNRqz8wG1HUVRIMBXAPro/qwfTu0tgKrt8dE4iXeby96RvwKw3L2dg
+         k48cogLFPb0ZRa47QEhcxYCNfB/Gf3+AqjHFRCvoOHDhTZERkNklcWAFjku63VuaSeCc
+         E4X8wuxRIYHOnd/ByP7ODsE58sjVxqimi+FI56HksphRLwALgm+1l0FyIpWs9eEu4CWK
+         CEiYlxulqB0XbXRfs6mL/XfWaBb1nxa3NHreB7Wn2vBrgZTAX/8kWQ8F4+vQF/0NBRQR
+         0qDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725632698; x=1726237498;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MJoi1jywiZO+XvKJEVuaNemlL/axteDLk0qoQjK504s=;
+        b=nWGe4KcqHk2OqPteWKVHfedW4Ojv1WJsQPGr4ZHJX7da6QzlPqzwnH9RQdt9U0KWuq
+         Zm8Ojl2sNeyYaOzOBHSjG7EiNeKHx2rJt+NqAEzX460Peb9YNSgKSflEEOeDHIa+Frre
+         S8VA4qZkkTftWeGpqsU2IjMe21jLPzs3ssR9att61OlJaU4Upa5znqTC7XOL40Joo3z1
+         C+KbZqTS+H9LBJK5V7vqqDTlioT3cHmR5bUND/JCCvNKl4+77g625MobrxZHuAY1TrrP
+         zjoU/whgmrq3OQedZmMW+Eitwzg/VencykOaCcvewgjf9polLakTGR2HhGl+OVizlFeU
+         cDlA==
+X-Forwarded-Encrypted: i=1; AJvYcCU0UGwxL6o4k6vCenMH0mwQhnzRWASMoLNkVVlRFqqFiaINhNosEXN0y4NA9ix43wu64KXYc1KUhhdyBLU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzh4BJ6CDNO+2AlsL6POHd7qi6DFqbgRI6b/js3fV7wsurgKuSS
+	XZgV2HZHHK6Kf6V8E0BtPj0o/D3Ly19DaPOdibP/BjqSbUF5SYKIBb3ZKIlI
+X-Google-Smtp-Source: AGHT+IEnEyzMjgrIIevOgy8FqtHozXZCGYN6NYb6jc8MdPwzrLM0zHeS6FOL5luf4H+7eMWsltRXOQ==
+X-Received: by 2002:a17:902:d58d:b0:206:994b:6d53 with SMTP id d9443c01a7336-206994b6f3emr145549645ad.30.1725632697490;
+        Fri, 06 Sep 2024 07:24:57 -0700 (PDT)
+Received: from kernelexploit-virtual-machine.localdomain ([121.185.186.233])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-206aea530casm43740605ad.184.2024.09.06.07.24.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Sep 2024 07:24:57 -0700 (PDT)
+From: Jeongjun Park <aha310510@gmail.com>
+To: toke@toke.dk,
+	kvalo@kernel.org
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jeongjun Park <aha310510@gmail.com>
+Subject: [PATCH] wifi: ath9k: add range check for conn_rsp_epid in htc_connect_service()
+Date: Fri,  6 Sep 2024 23:24:52 +0900
+Message-Id: <20240906142452.144525-1-aha310510@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -62,95 +83,45 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Since '__dev_queue_xmit()' should be called with interrupts enabled,
-the following backtrace:
+I found the following bug in my fuzzer:
 
-ieee80211_do_stop()
- ...
- spin_lock_irqsave(&local->queue_stop_reason_lock, flags)
- ...
- ieee80211_free_txskb()
-  ieee80211_report_used_skb()
-   ieee80211_report_ack_skb()
-    cfg80211_mgmt_tx_status_ext()
-     nl80211_frame_tx_status()
-      genlmsg_multicast_netns()
-       genlmsg_multicast_netns_filtered()
-        nlmsg_multicast_filtered()
-	 netlink_broadcast_filtered()
-	  do_one_broadcast()
-	   netlink_broadcast_deliver()
-	    __netlink_sendskb()
-	     netlink_deliver_tap()
-	      __netlink_deliver_tap_skb()
-	       dev_queue_xmit()
-	        __dev_queue_xmit() ; with IRQS disabled
- ...
- spin_unlock_irqrestore(&local->queue_stop_reason_lock, flags)
+  UBSAN: array-index-out-of-bounds in drivers/net/wireless/ath/ath9k/htc_hst.c:26:51
+  index 255 is out of range for type 'htc_endpoint [22]'
+  CPU: 0 UID: 0 PID: 8 Comm: kworker/0:0 Not tainted 6.11.0-rc6-dirty #14
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+  Workqueue: events request_firmware_work_func
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x180/0x1b0
+   __ubsan_handle_out_of_bounds+0xd4/0x130
+   htc_issue_send.constprop.0+0x20c/0x230
+   ? _raw_spin_unlock_irqrestore+0x3c/0x70
+   ath9k_wmi_cmd+0x41d/0x610
+   ? mark_held_locks+0x9f/0xe0
+   ...
 
-issues the warning (as reported by syzbot reproducer):
+Since this bug has been confirmed to be caused by insufficient verification 
+of conn_rsp_epid, I think it would be appropriate to add a range check for 
+conn_rsp_epid to htc_connect_service() to prevent the bug from occurring.
 
-WARNING: CPU: 2 PID: 5128 at kernel/softirq.c:362 __local_bh_enable_ip+0xc3/0x120
-
-Fix this by implementing a two-phase skb reclamation in
-'ieee80211_do_stop()', where actual work is performed
-outside of a section with interrupts disabled.
-
-Fixes: 5061b0c2b906 ("mac80211: cooperate more with network namespaces")
-Reported-by: syzbot+1a3986bbd3169c307819@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1a3986bbd3169c307819
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
 ---
- net/mac80211/iface.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath9k/htc_hst.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index b4ad66af3af3..f735e41560a3 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -462,6 +462,7 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
- {
- 	struct ieee80211_local *local = sdata->local;
- 	unsigned long flags;
-+	struct sk_buff_head freeq;
- 	struct sk_buff *skb, *tmp;
- 	u32 hw_reconf_flags = 0;
- 	int i, flushed;
-@@ -637,18 +638,32 @@ static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_do
- 		skb_queue_purge(&sdata->status_queue);
+diff --git a/drivers/net/wireless/ath/ath9k/htc_hst.c b/drivers/net/wireless/ath/ath9k/htc_hst.c
+index eb631fd3336d..aedba5f79bfb 100644
+--- a/drivers/net/wireless/ath/ath9k/htc_hst.c
++++ b/drivers/net/wireless/ath/ath9k/htc_hst.c
+@@ -293,6 +293,8 @@ int htc_connect_service(struct htc_target *target,
+ 			service_connreq->service_id);
+ 		return -ETIMEDOUT;
  	}
++	if (target->conn_rsp_epid < 0 || target->conn_rsp_epid >= ENDPOINT_MAX) 
++		return -EINVAL;
  
-+	/*
-+	 * Since ieee80211_free_txskb() may issue __dev_queue_xmit()
-+	 * which should be called with interrupts enabled, reclamation
-+	 * is done in two phases:
-+	 */
-+	__skb_queue_head_init(&freeq);
-+
-+	/* unlink from local queues... */
- 	spin_lock_irqsave(&local->queue_stop_reason_lock, flags);
- 	for (i = 0; i < IEEE80211_MAX_QUEUES; i++) {
- 		skb_queue_walk_safe(&local->pending[i], skb, tmp) {
- 			struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
- 			if (info->control.vif == &sdata->vif) {
- 				__skb_unlink(skb, &local->pending[i]);
--				ieee80211_free_txskb(&local->hw, skb);
-+				__skb_queue_tail(&freeq, skb);
- 			}
- 		}
- 	}
- 	spin_unlock_irqrestore(&local->queue_stop_reason_lock, flags);
- 
-+	/* ... and perform actual reclamation with interrupts enabled. */
-+	skb_queue_walk_safe(&freeq, skb, tmp) {
-+		__skb_unlink(skb, &freeq);
-+		ieee80211_free_txskb(&local->hw, skb);
-+	}
-+
- 	if (sdata->vif.type == NL80211_IFTYPE_AP_VLAN)
- 		ieee80211_txq_remove_vlan(local, sdata);
- 
--- 
-2.46.0
-
+ 	*conn_rsp_epid = target->conn_rsp_epid;
+ 	return 0;
+--
 
