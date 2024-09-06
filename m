@@ -1,69 +1,69 @@
-Return-Path: <linux-wireless+bounces-12586-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12584-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70CC196EAE2
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2024 08:45:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B7496EAE0
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2024 08:45:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29A49284BC9
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2024 06:45:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AE5D1F250D1
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2024 06:45:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B15143C63;
-	Fri,  6 Sep 2024 06:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F3114B942;
+	Fri,  6 Sep 2024 06:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="SJtYrj/Z"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="osbjis92"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962661411DE
-	for <linux-wireless@vger.kernel.org>; Fri,  6 Sep 2024 06:45:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E320214883B
+	for <linux-wireless@vger.kernel.org>; Fri,  6 Sep 2024 06:45:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725605105; cv=none; b=uqdV/+VOJY3DSwA9OwMmMwc5WuTnmydj/v+YDe6+u75qbxI1SfVGmRsTFvl9Ptikglxk6yM2YPOHP9LK4U7poQbaMcFaVNLxDbryoUDYA4J1zdfFS/UP7j40DV3JVfKV4M8PldOnxVHcpD67fuqikh78Tjp2jMBra3cMLYdZyyQ=
+	t=1725605104; cv=none; b=SONvMnzAvDMnSrP+0mz2+/jwOkxdX8QcjiUB1f2EufgU20XhJCvCKrSwCSKkkEr7bIjXW89P4ynYLjda7saZmXTkClYn2pJIjNFFI8xoQvGwUbZ6kaPa3PL6FKx4mr+IH2xspLcmuP8KwuIEQXgCFuX9GDGqeb1FZF1ojoIb9SU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725605105; c=relaxed/simple;
-	bh=mi0j3jRCszXuAmTRCu6CA7/gvY+GnkH5Busx87UO5Aw=;
+	s=arc-20240116; t=1725605104; c=relaxed/simple;
+	bh=OKh3xt9jAlVtZkv1GdT47GbIQBG93OvNVo4f6r7sXIw=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bb4eai69Ov18/JZWX19bc4t1gB8ilgQb8nZHpRiHxP54N66W5WnZdPDVV/whsrDxjXM5+99Dl334PplmXIR4YJHyzPIhNGbpyunDlF0UIFgrgx0++Gxppc7GTTYG9xByEj2KTTg9PxjU3ZqYhJqW+JSoe3k+OIWt5QmnKDgS0kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=SJtYrj/Z; arc=none smtp.client-ip=205.220.168.131
+	 MIME-Version:Content-Type; b=d7H/C61JPayUjLIyNTidZo3ULg6vLqnf+RPoIa6GNNqaSpCaE0JyUkiEq4OR2CSwsvUn1czaN+TZpju5SZ/UU8cM1ikZ61a3U2I0gKCny84PYjBiqM+HF9bbnhhUW81cywvyPiGHXBF3lBMRNAk8yLa4dYoreUJpcdN2476T3xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=osbjis92; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 485IQ4Xg028299;
-	Fri, 6 Sep 2024 06:44:56 GMT
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 485IV7nv024609;
+	Fri, 6 Sep 2024 06:44:58 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	EyFcu8rSrv7blSej1lK28y93o1qGOwrr9zZxKBk7J1o=; b=SJtYrj/ZIGgvhKQZ
-	kf0kPabOe6m9l99ARFGGMRHwy1E+GXW3I73UbrGF6eqBWU8jKNU4o60EE4Kv2sy1
-	8IKUpFNAQH2VbnPKJuWno+w9Ms1OIXnkCdiPs6cWGHD1qfss8yOhZnvDtzWftDKg
-	kV08YsuP+TMQ3GmTXYUobqTsPWPW0cGbDoE6heSkUZHJFTGS8venf0L+mrCPS1z7
-	VTUqN9P77F4X7TsWmZyFR8H0XyxfSppCpaUgfhxppADqfjdoFex4FPnvENgrttAk
-	F1BC5aFl5UxnVIwCsfB8DhQNRGzom/qxp5Tbs2a1e4/LbbJoxv2kz0XkwHtZ442H
-	Gxwgdw==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41fhwu1bm8-1
+	6SYMfrgmgLZsgx38hPZh2h7ZmIsC7a7Z7aOKTBZkGiw=; b=osbjis929o+sQg84
+	lAdb/zkLFUKxy6WpOKCh/lLd5xcIOl5p+PfBr2xaTZ3qfPS45vBR3Jz6LP2pOyXl
+	goZhjwyYCON8pH32HnwfCM94JYE9zRk6HMEQJ/2nx8gy5g5wqPO6qI0rI6JM+d3J
+	h5XOwVoiEWIIg0WLZBw+xwnzF9BgylVKhVm+O6As3bfwzG1W01mgwflF6Z3Fz5BV
+	23w0MocH+0zYQ1bJEPsduJcSL7p5h9M2Uc0GTOY7M9DI1fA5TEGy9x6gYU6xJHFx
+	Ok8GpoPgGgKjN9iEuX0xjhCLaV1zfIyBEP9EANGRH8DsUqhNRzOlcjEi83Dh+5mc
+	bzECsw==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41fj09sbm8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Sep 2024 06:44:55 +0000 (GMT)
+	Fri, 06 Sep 2024 06:44:58 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4866itQF018413
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4866ivsi001323
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 6 Sep 2024 06:44:55 GMT
+	Fri, 6 Sep 2024 06:44:57 GMT
 Received: from hu-adisi-blr.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Thu, 5 Sep 2024 23:44:53 -0700
+ 15.2.1544.9; Thu, 5 Sep 2024 23:44:55 -0700
 From: Aditya Kumar Singh <quic_adisi@quicinc.com>
 To: <johannes@sipsolutions.net>
 CC: <linux-wireless@vger.kernel.org>,
         Aditya Kumar Singh
 	<quic_adisi@quicinc.com>
-Subject: [PATCH v6 6/8] wifi: mac80211: handle DFS per link
-Date: Fri, 6 Sep 2024 12:14:24 +0530
-Message-ID: <20240906064426.2101315-7-quic_adisi@quicinc.com>
+Subject: [PATCH v6 7/8] wifi: cfg80211/mac80211: use proper link ID for DFS
+Date: Fri, 6 Sep 2024 12:14:25 +0530
+Message-ID: <20240906064426.2101315-8-quic_adisi@quicinc.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240906064426.2101315-1-quic_adisi@quicinc.com>
 References: <20240906064426.2101315-1-quic_adisi@quicinc.com>
@@ -79,156 +79,195 @@ X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 8Imdrf5X_swjIi_68OprBwKYC1_w6y0U
-X-Proofpoint-GUID: 8Imdrf5X_swjIi_68OprBwKYC1_w6y0U
+X-Proofpoint-GUID: DFUxcfCsiCGY6Bbj9Kvykj_ZwGIi288C
+X-Proofpoint-ORIG-GUID: DFUxcfCsiCGY6Bbj9Kvykj_ZwGIi288C
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-05_17,2024-09-05_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- bulkscore=0 priorityscore=1501 clxscore=1015 impostorscore=0 spamscore=0
- mlxscore=0 malwarescore=0 suspectscore=0 mlxlogscore=999 adultscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ impostorscore=0 malwarescore=0 mlxscore=0 bulkscore=0 spamscore=0
+ suspectscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0 phishscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2408220000 definitions=main-2409060048
 
-In order to support DFS with MLO, handle the link ID now passed from
-cfg80211, adjust the code to do everything per link and call the
-notifications to cfg80211 correctly.
+Now that all APIs have support to handle DFS per link, use proper link ID
+instead of 0.
 
 Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
 ---
- net/mac80211/cfg.c  | 26 ++++++++++++++++++--------
- net/mac80211/link.c | 10 ++++++++++
- net/mac80211/util.c | 28 +++++++++++++++++++---------
- 3 files changed, 47 insertions(+), 17 deletions(-)
+ net/mac80211/cfg.c     |  6 +++---
+ net/mac80211/mlme.c    |  4 ++--
+ net/mac80211/scan.c    |  6 ++++--
+ net/wireless/mlme.c    | 10 +++++-----
+ net/wireless/nl80211.c | 15 ++++++++-------
+ 5 files changed, 22 insertions(+), 19 deletions(-)
 
 diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 67dd780530fb..57e66c671e2e 100644
+index 57e66c671e2e..847304a3a29a 100644
 --- a/net/mac80211/cfg.c
 +++ b/net/mac80211/cfg.c
-@@ -3467,6 +3467,7 @@ static int ieee80211_start_radar_detection(struct wiphy *wiphy,
- 	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
- 	struct ieee80211_chan_req chanreq = { .oper = *chandef };
- 	struct ieee80211_local *local = sdata->local;
-+	struct ieee80211_link_data *link_data;
- 	int err;
+@@ -1662,12 +1662,12 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev,
+ 	ieee80211_link_info_change_notify(sdata, link,
+ 					  BSS_CHANGED_BEACON_ENABLED);
  
- 	lockdep_assert_wiphy(local->hw.wiphy);
-@@ -3474,16 +3475,20 @@ static int ieee80211_start_radar_detection(struct wiphy *wiphy,
+-	if (sdata->wdev.links[0].cac_started) {
++	if (sdata->wdev.links[link_id].cac_started) {
+ 		chandef = link_conf->chanreq.oper;
+ 		wiphy_delayed_work_cancel(wiphy, &link->dfs_cac_timer_work);
+ 		cfg80211_cac_event(sdata->dev, &chandef,
+ 				   NL80211_RADAR_CAC_ABORTED,
+-				   GFP_KERNEL, 0);
++				   GFP_KERNEL, link_id);
+ 	}
+ 
+ 	drv_stop_ap(sdata->local, sdata, link_conf);
+@@ -3968,7 +3968,7 @@ __ieee80211_channel_switch(struct wiphy *wiphy, struct net_device *dev,
  	if (!list_empty(&local->roc_list) || local->scanning)
  		return -EBUSY;
  
-+	link_data = sdata_dereference(sdata->link[link_id], sdata);
-+	if (!link_data)
-+		return -ENOLINK;
-+
- 	/* whatever, but channel contexts should not complain about that one */
--	sdata->deflink.smps_mode = IEEE80211_SMPS_OFF;
--	sdata->deflink.needed_rx_chains = local->rx_chains;
-+	link_data->smps_mode = IEEE80211_SMPS_OFF;
-+	link_data->needed_rx_chains = local->rx_chains;
+-	if (sdata->wdev.links[0].cac_started)
++	if (sdata->wdev.links[link_id].cac_started)
+ 		return -EBUSY;
  
--	err = ieee80211_link_use_channel(&sdata->deflink, &chanreq,
-+	err = ieee80211_link_use_channel(link_data, &chanreq,
- 					 IEEE80211_CHANCTX_SHARED);
- 	if (err)
- 		return err;
+ 	if (WARN_ON(link_id >= IEEE80211_MLD_MAX_NUM_LINKS))
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 715709860fdd..735e78adb0db 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -3039,11 +3039,11 @@ void ieee80211_dfs_cac_timer_work(struct wiphy *wiphy, struct wiphy_work *work)
  
--	wiphy_delayed_work_queue(wiphy, &sdata->deflink.dfs_cac_timer_work,
-+	wiphy_delayed_work_queue(wiphy, &link_data->dfs_cac_timer_work,
- 				 msecs_to_jiffies(cac_time_ms));
+ 	lockdep_assert_wiphy(sdata->local->hw.wiphy);
  
- 	return 0;
-@@ -3494,16 +3499,21 @@ static void ieee80211_end_cac(struct wiphy *wiphy,
- {
- 	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
- 	struct ieee80211_local *local = sdata->local;
-+	struct ieee80211_link_data *link_data;
- 
- 	lockdep_assert_wiphy(local->hw.wiphy);
- 
- 	list_for_each_entry(sdata, &local->interfaces, list) {
-+		link_data = sdata_dereference(sdata->link[link_id], sdata);
-+		if (!link_data)
-+			continue;
-+
- 		wiphy_delayed_work_cancel(wiphy,
--					  &sdata->deflink.dfs_cac_timer_work);
-+					  &link_data->dfs_cac_timer_work);
- 
--		if (sdata->wdev.links[0].cac_started) {
--			ieee80211_link_release_channel(&sdata->deflink);
--			sdata->wdev.links[0].cac_started = false;
-+		if (sdata->wdev.links[link_id].cac_started) {
-+			ieee80211_link_release_channel(link_data);
-+			sdata->wdev.links[link_id].cac_started = false;
- 		}
+-	if (sdata->wdev.links[0].cac_started) {
++	if (sdata->wdev.links[link->link_id].cac_started) {
+ 		ieee80211_link_release_channel(link);
+ 		cfg80211_cac_event(sdata->dev, &chandef,
+ 				   NL80211_RADAR_CAC_FINISHED,
+-				   GFP_KERNEL, 0);
++				   GFP_KERNEL, link->link_id);
  	}
  }
-diff --git a/net/mac80211/link.c b/net/mac80211/link.c
-index b4378969cbf1..0bbac64d5fa0 100644
---- a/net/mac80211/link.c
-+++ b/net/mac80211/link.c
-@@ -77,6 +77,16 @@ void ieee80211_link_stop(struct ieee80211_link_data *link)
- 			  &link->color_change_finalize_work);
- 	wiphy_work_cancel(link->sdata->local->hw.wiphy,
- 			  &link->csa.finalize_work);
-+
-+	if (link->sdata->wdev.links[link->link_id].cac_started) {
-+		wiphy_delayed_work_cancel(link->sdata->local->hw.wiphy,
-+					  &link->dfs_cac_timer_work);
-+		cfg80211_cac_event(link->sdata->dev,
-+				   &link->conf->chanreq.oper,
-+				   NL80211_RADAR_CAC_ABORTED,
-+				   GFP_KERNEL, link->link_id);
-+	}
-+
- 	ieee80211_link_release_channel(link);
- }
  
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index c4fd60fbcfd4..2e37d2639074 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -3471,20 +3471,30 @@ void ieee80211_dfs_cac_cancel(struct ieee80211_local *local)
+diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
+index 6735620378f4..adb88c06b598 100644
+--- a/net/mac80211/scan.c
++++ b/net/mac80211/scan.c
+@@ -575,6 +575,7 @@ static bool __ieee80211_can_leave_ch(struct ieee80211_sub_if_data *sdata)
  {
- 	struct ieee80211_sub_if_data *sdata;
- 	struct cfg80211_chan_def chandef;
-+	struct ieee80211_link_data *link;
+ 	struct ieee80211_local *local = sdata->local;
+ 	struct ieee80211_sub_if_data *sdata_iter;
 +	unsigned int link_id;
  
  	lockdep_assert_wiphy(local->hw.wiphy);
  
- 	list_for_each_entry(sdata, &local->interfaces, list) {
--		wiphy_delayed_work_cancel(local->hw.wiphy,
--					  &sdata->deflink.dfs_cac_timer_work);
--
--		if (sdata->wdev.links[0].cac_started) {
--			chandef = sdata->vif.bss_conf.chanreq.oper;
--			ieee80211_link_release_channel(&sdata->deflink);
--			cfg80211_cac_event(sdata->dev,
--					   &chandef,
-+		for (link_id = 0; link_id < IEEE80211_MLD_MAX_NUM_LINKS;
-+		     link_id++) {
-+			link = sdata_dereference(sdata->link[link_id],
-+						 sdata);
-+			if (!link)
-+				continue;
-+
-+			wiphy_delayed_work_cancel(local->hw.wiphy,
-+						  &link->dfs_cac_timer_work);
-+
-+			if (!sdata->wdev.links[link_id].cac_started)
-+				continue;
-+
-+			chandef = link->conf->chanreq.oper;
-+			ieee80211_link_release_channel(link);
-+			cfg80211_cac_event(sdata->dev, &chandef,
- 					   NL80211_RADAR_CAC_ABORTED,
--					   GFP_KERNEL, 0);
-+					   GFP_KERNEL, link_id);
+@@ -585,8 +586,9 @@ static bool __ieee80211_can_leave_ch(struct ieee80211_sub_if_data *sdata)
+ 		return false;
+ 
+ 	list_for_each_entry(sdata_iter, &local->interfaces, list) {
+-		if (sdata_iter->wdev.links[0].cac_started)
+-			return false;
++		for_each_valid_link(&sdata_iter->wdev, link_id)
++			if (sdata_iter->wdev.links[link_id].cac_started)
++				return false;
+ 	}
+ 
+ 	return true;
+diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
+index 115c8cd28aaf..4dac81854721 100644
+--- a/net/wireless/mlme.c
++++ b/net/wireless/mlme.c
+@@ -1124,14 +1124,14 @@ void cfg80211_cac_event(struct net_device *netdev,
+ 
+ 	trace_cfg80211_cac_event(netdev, event, link_id);
+ 
+-	if (WARN_ON(!wdev->links[0].cac_started &&
++	if (WARN_ON(!wdev->links[link_id].cac_started &&
+ 		    event != NL80211_RADAR_CAC_STARTED))
+ 		return;
+ 
+ 	switch (event) {
+ 	case NL80211_RADAR_CAC_FINISHED:
+-		timeout = wdev->links[0].cac_start_time +
+-			  msecs_to_jiffies(wdev->links[0].cac_time_ms);
++		timeout = wdev->links[link_id].cac_start_time +
++			  msecs_to_jiffies(wdev->links[link_id].cac_time_ms);
+ 		WARN_ON(!time_after_eq(jiffies, timeout));
+ 		cfg80211_set_dfs_state(wiphy, chandef, NL80211_DFS_AVAILABLE);
+ 		memcpy(&rdev->cac_done_chandef, chandef,
+@@ -1140,10 +1140,10 @@ void cfg80211_cac_event(struct net_device *netdev,
+ 		cfg80211_sched_dfs_chan_update(rdev);
+ 		fallthrough;
+ 	case NL80211_RADAR_CAC_ABORTED:
+-		wdev->links[0].cac_started = false;
++		wdev->links[link_id].cac_started = false;
+ 		break;
+ 	case NL80211_RADAR_CAC_STARTED:
+-		wdev->links[0].cac_started = true;
++		wdev->links[link_id].cac_started = true;
+ 		break;
+ 	default:
+ 		WARN_ON(1);
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 46000376c939..8b2c92dfdcbc 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -6066,7 +6066,7 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ 	if (!rdev->ops->start_ap)
+ 		return -EOPNOTSUPP;
+ 
+-	if (wdev->links[0].cac_started)
++	if (wdev->links[link_id].cac_started)
+ 		return -EBUSY;
+ 
+ 	if (wdev->links[link_id].ap.beacon_interval)
+@@ -10072,6 +10072,7 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
+ 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
+ 	struct net_device *dev = info->user_ptr[1];
+ 	struct wireless_dev *wdev = dev->ieee80211_ptr;
++	int link_id = nl80211_link_id(info->attrs);
+ 	struct wiphy *wiphy = wdev->wiphy;
+ 	struct cfg80211_chan_def chandef;
+ 	enum nl80211_dfs_regions dfs_region;
+@@ -10126,7 +10127,7 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
+ 		 * can not already beacon
+ 		 */
+ 		if (wdev->valid_links &&
+-		    !wdev->links[0].ap.beacon_interval) {
++		    !wdev->links[link_id].ap.beacon_interval) {
+ 			/* nothing */
+ 		} else {
+ 			err = -EBUSY;
+@@ -10134,7 +10135,7 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
  		}
  	}
- }
+ 
+-	if (wdev->links[0].cac_started) {
++	if (wdev->links[link_id].cac_started) {
+ 		err = -EBUSY;
+ 		goto unlock;
+ 	}
+@@ -10155,7 +10156,7 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
+ 		cac_time_ms = IEEE80211_DFS_MIN_CAC_TIME_MS;
+ 
+ 	err = rdev_start_radar_detection(rdev, dev, &chandef, cac_time_ms,
+-					 0);
++					 link_id);
+ 	if (!err) {
+ 		switch (wdev->iftype) {
+ 		case NL80211_IFTYPE_AP:
+@@ -10171,9 +10172,9 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
+ 		default:
+ 			break;
+ 		}
+-		wdev->links[0].cac_started = true;
+-		wdev->links[0].cac_start_time = jiffies;
+-		wdev->links[0].cac_time_ms = cac_time_ms;
++		wdev->links[link_id].cac_started = true;
++		wdev->links[link_id].cac_start_time = jiffies;
++		wdev->links[link_id].cac_time_ms = cac_time_ms;
+ 	}
+ unlock:
+ 	wiphy_unlock(wiphy);
 -- 
 2.34.1
 
