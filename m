@@ -1,79 +1,249 @@
-Return-Path: <linux-wireless+bounces-12596-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12597-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EBCF96F3B6
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2024 13:55:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D97196F43F
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2024 14:25:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CEA1B26221
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2024 11:55:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B52D41F254B6
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2024 12:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36E1A1CBE82;
-	Fri,  6 Sep 2024 11:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49B61CCB4F;
+	Fri,  6 Sep 2024 12:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="RJVWJl1n"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="EumkokTm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F4317C9B;
-	Fri,  6 Sep 2024 11:54:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EA3B1CCB3F
+	for <linux-wireless@vger.kernel.org>; Fri,  6 Sep 2024 12:24:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725623671; cv=none; b=Xr83EvDIC71BC6DQiTCfOkSWqsFlvx7sbdqr6G9JCZfmVK8tpZF99Zd6bVVq7UliwmoHjMFRJYJ8z+uIVnCeAUx2fbffqZZiyRgtKC2x5KteF32WtM9M+l4MNh2M/+vH8PPJYMslJND0pR+EvlIZAh4EEeD4viqcFI87N8LGt3M=
+	t=1725625497; cv=none; b=tJQZeuf9l2vDrey9nu6icGrkF1ZI4J+jwbCVuZp+gBnkm8hJTESn8Zyv08u+YoPzslaRIZW543mwMitBRQj7UETNA/WxLZmmQYKsHOHW2ltUuzufAV+YQrYPfd//fE4EyBvp00/oXQMXZxBrE6e5l1tF0sR9f8MDEy75gaV5hIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725623671; c=relaxed/simple;
-	bh=DH9K55Kya4maLwmGGYmVVeSg1a2KAD998l95BnomRcM=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CPrSUhOn23QsRQcASXONJ5fXAdABjNCQRR79DmZQw3HMh25AaQx+OFOAEhpPcDMpYRMDkzZcAVYgAe6cg9NZIzUiIUcBLSfTX9X14b43g7VI/jVeywq7YZwFGfhhlt5e2qzTSB6UElD1AIQ68Avg1K7onIU5Xxz2gjEkCqGvkzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=RJVWJl1n; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=DH9K55Kya4maLwmGGYmVVeSg1a2KAD998l95BnomRcM=;
-	t=1725623669; x=1726833269; b=RJVWJl1nw3YmBCkzhCC+tCi5bN6gNtDqfkr30muArwXUhG6
-	e+rAMn7hB3lUETctfsdyqVNrd5VopnvCNbU57bRTBRkM5qH6+0uzlO/qq6J7m5oiMab0R4dpgLpku
-	LxEwGqsFgi5mR2zBRG0eyJInVQimqRxqupQtft7QO263ldrkVNomp4Jr+GObiyhZA+DYq5UMTEL8u
-	PLwldNWYUNFcPLNd/hk7PKs6SJCboth0SBqUTAgrPx1t2NeWUJJkyYxzjLXoc0A1r2Gl11Rt9AiZy
-	0TlmDGz2Y3TCBHp6EudyKC6/lH8+4d7rpIE4Zlw2sBkSbwwACv1mSHZve4rWUfoA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1smXXe-0000000A4Dh-0Dik;
-	Fri, 06 Sep 2024 13:54:18 +0200
-Message-ID: <3a907615d3c32c8af08a0c70b5bc008cfe910eda.camel@sipsolutions.net>
-Subject: Re: [PATCH] lib80211: Use ERR_CAST() to return
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Rohit Chavan <roheetchavan@gmail.com>, "David S. Miller"
-	 <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	 <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Date: Fri, 06 Sep 2024 13:54:17 +0200
-In-Reply-To: <20240906114455.730559-1-roheetchavan@gmail.com>
-References: <20240906114455.730559-1-roheetchavan@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+	s=arc-20240116; t=1725625497; c=relaxed/simple;
+	bh=sH0MjilTUoZiVNCiSHg0hRxpZgDz7CyAgb6DnYSvYCY=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=joS78Z0QMYPGlkNs+7bjX1A/pAPv7jNilaTHnfRjlbrl6uVbrTGW79lpKicxGxWN9T9kQouLOGN24h0cCwlRhAfzvqlBRUR2/cY3K2YlMFJCFIhzfkDnmKP1WS3i8atHGys7Txj0mBy5cNbddJ0k/TCTOpXlwrIUffoZKgrCmg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=EumkokTm; arc=none smtp.client-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:Content-Type:Cc:To:Subject:From:
+	MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=UeVj3OJbAitVw0zDs067PLqnjqt8AkCsE13z9eXNxT0=; b=EumkokTmSVcsPyAdJbw4hnKMzv
+	9GR2rgb4kEoaJp4VAl05n6WFhMRc/S/kErNMwj80NgECfQmgngO0cLTEt9CBtgxnKce4dYjtI+ZBj
+	NDhcXjTmT0HpeymQyNDtU8r1FJoUpD3esmO5+EBHkRHbu35wIdRC40Ww+Dyyf5Opk/v0=;
+Received: from p4ff1376f.dip0.t-ipconnect.de ([79.241.55.111] helo=nf.local)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96)
+	(envelope-from <nbd@nbd.name>)
+	id 1smY1F-009ew9-04;
+	Fri, 06 Sep 2024 14:24:53 +0200
+Message-ID: <af5f43c3-915c-4db9-9b90-52f596a3de7e@nbd.name>
+Date: Fri, 6 Sep 2024 14:24:52 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+From: Felix Fietkau <nbd@nbd.name>
+Subject: pull request: mt76 2024-09-06 v2
+To: Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless <linux-wireless@vger.kernel.org>
+Content-Language: en-US
+Autocrypt: addr=nbd@nbd.name; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
+ cL98efvrjdstUfTCP2pfetyN
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Fri, 2024-09-06 at 17:14 +0530, Rohit Chavan wrote:
-> Using ERR_CAST() is more reasonable and safer, When it is necessary
-> to convert the type of an error pointer and return it.
->=20
+Hi Kalle,
 
-What? Why? What's the point?
+Here's an update for my pull request for 6.12. It fixes a compile
+error reported by the kernel test robot.
 
-johannes
+- Felix
+
+The following changes since commit 43b7724487109368363bb5cda034b3f600278d14:
+
+   Merge tag 'wireless-next-2024-09-04' of git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next (2024-09-04 17:20:14 -0700)
+
+are available in the Git repository at:
+
+   https://github.com/nbd168/wireless tags/mt76-for-kvalo-2024-09-06
+
+for you to fetch changes up to 6bba05d651ef77f2c3f3c67b9ace093fee4e01e1:
+
+   wifi: mt76: mt7925: replace chan config with extend txpower config for clc (2024-09-06 14:23:08 +0200)
+
+----------------------------------------------------------------
+mt76 patches for 6.12
+
+- fixes
+- mt7915 .sta_state support
+- mt7915 hardware restart improvements
+
+----------------------------------------------------------------
+Benjamin Lin (3):
+       wifi: mt76: connac: add IEEE 802.11 fragmentation support for mt7996
+       wifi: mt76: connac: add support for IEEE 802.11 fragmentation
+       wifi: mt76: mt7915: add dummy HW offload of IEEE 802.11 fragmentation
+
+Bjørn Mork (1):
+       wifi: mt76: mt7915: fix oops on non-dbdc mt7986
+
+Chen Ni (1):
+       wifi: mt76: mt7925: convert comma to semicolon
+
+Felix Fietkau (21):
+       wifi: mt76: mt7603: fix mixed declarations and code
+       wifi: mt76: mt7603: fix reading target power from eeprom
+       wifi: mt76: mt7603: initialize chainmask
+       wifi: mt76: fix mt76_get_rate
+       wifi: mt76: partially move channel change code to core
+       wifi: mt76: add separate tx scheduling queue for off-channel tx
+       wifi: mt76: mt7915: disable tx worker during tx BA session enable/disable
+       wifi: mt76: mt7915: allocate vif wcid in the same range as stations
+       wifi: mt76: connac: add support for passing connection state directly
+       wifi: mt76: change .sta_assoc callback to .sta_event
+       wifi: mt76: mt7915: use mac80211 .sta_state op
+       wifi: mt76: mt7915: set MT76_MCU_RESET early in mt7915_mac_full_reset
+       wifi: mt76: mt7915: retry mcu messages
+       wifi: mt76: mt7915: reset the device after MCU timeout
+       wifi: mt76: mt7915: hold dev->mt76.mutex while disabling tx worker
+       wifi: mt76: connac: move mt7615_mcu_del_wtbl_all to connac
+       wifi: mt76: mt7915: improve hardware restart reliability
+       wifi: mt76: shrink mt76_queue_buf
+       wifi: mt76: mt7915: always query station rx rate from firmware
+       wifi: mt76: mt7996: fix uninitialized TLV data
+       wifi: mt76: mt7915: avoid long MCU command timeouts during SER
+
+Gustavo A. R. Silva (1):
+       wifi: mt76: Avoid multiple -Wflex-array-member-not-at-end warnings
+
+Howard Hsu (5):
+       wifi: mt76: mt7996: fix HE and EHT beamforming capabilities
+       wifi: mt76: mt7996: set correct beamformee SS capability
+       wifi: mt76: mt7996: fix EHT beamforming capability check
+       wifi: mt76: mt7996: set correct value in beamforming mcu command for mt7992
+       wifi: mt76: mt7915: fix rx filter setting for bfee functionality
+
+Ma Ke (4):
+       wifi: mt76: mt7996: fix NULL pointer dereference in mt7996_mcu_sta_bfer_he
+       wifi: mt76: mt7915: check devm_kasprintf() returned value
+       wifi: mt76: mt7921: Check devm_kasprintf() returned value
+       wifi: mt76: mt7615: check devm_kasprintf() returned value
+
+Michael Lo (1):
+       wifi: mt76: mt7925: fix a potential association failure upon resuming
+
+Michael-CY Lee (1):
+       wifi: mt76: mt7996: set IEEE80211_KEY_FLAG_GENERATE_MMIE for other ciphers
+
+Ming Yen Hsieh (3):
+       wifi: mt76: mt7921: fix wrong UNII-4 freq range check for the channel usage
+       wifi: mt76: mt7925: fix a potential array-index-out-of-bounds issue for clc
+       wifi: mt76: mt7925: replace chan config with extend txpower config for clc
+
+Peter Chiu (5):
+       wifi: mt76: mt7996: use hweight16 to get correct tx antenna
+       wifi: mt76: mt7996: fix traffic delay when switching back to working channel
+       wifi: mt76: mt7996: fix wmm set of station interface to 3
+       wifi: mt76: mt7996: advertize beacon_int_min_gcd
+       wifi: mt76: connac: fix checksum offload fields of connac3 RXD
+
+Rex Lu (1):
+       wifi: mt76: mt7996: fix handling mbss enable/disable
+
+  drivers/net/wireless/mediatek/mt76/mac80211.c         |  66 ++++++++++++++++++++++++++++++++++++++++++++++++-------------
+  drivers/net/wireless/mediatek/mt76/mcu.c              |  20 +++++++++++++++++++
+  drivers/net/wireless/mediatek/mt76/mt76.h             |  25 ++++++++++++++++++-----
+  drivers/net/wireless/mediatek/mt76/mt7603/beacon.c    |   2 +-
+  drivers/net/wireless/mediatek/mt76/mt7603/dma.c       |   4 ++--
+  drivers/net/wireless/mediatek/mt76/mt7603/eeprom.c    |   1 +
+  drivers/net/wireless/mediatek/mt76/mt7603/init.c      |   9 ++++++---
+  drivers/net/wireless/mediatek/mt76/mt7603/main.c      |  41 ++++++++++++++++----------------------
+  drivers/net/wireless/mediatek/mt76/mt7603/mt7603.h    |   5 +++--
+  drivers/net/wireless/mediatek/mt76/mt7615/init.c      |   5 ++++-
+  drivers/net/wireless/mediatek/mt76/mt7615/main.c      |  27 +++++++------------------
+  drivers/net/wireless/mediatek/mt76/mt7615/mcu.c       |  16 ++++-----------
+  drivers/net/wireless/mediatek/mt76/mt7615/mmio.c      |   1 +
+  drivers/net/wireless/mediatek/mt76/mt7615/mt7615.h    |   3 +--
+  drivers/net/wireless/mediatek/mt76/mt7615/sdio.c      |   1 +
+  drivers/net/wireless/mediatek/mt76/mt7615/testmode.c  |   2 +-
+  drivers/net/wireless/mediatek/mt76/mt7615/usb.c       |   1 +
+  drivers/net/wireless/mediatek/mt76/mt76_connac2_mac.h |   7 +++++++
+  drivers/net/wireless/mediatek/mt76/mt76_connac3_mac.h |  11 +++++++++--
+  drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c  |  10 +++++++++-
+  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c  |  30 ++++++++++++++++++----------
+  drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h  |  28 +++++++++++++++-----------
+  drivers/net/wireless/mediatek/mt76/mt76x0/main.c      |  21 +++++++++-----------
+  drivers/net/wireless/mediatek/mt76/mt76x0/mt76x0.h    |   1 +
+  drivers/net/wireless/mediatek/mt76/mt76x0/pci.c       |   1 +
+  drivers/net/wireless/mediatek/mt76/mt76x0/usb.c       |   1 +
+  drivers/net/wireless/mediatek/mt76/mt76x02_mmio.c     |   2 +-
+  drivers/net/wireless/mediatek/mt76/mt76x02_usb_core.c |   5 +----
+  drivers/net/wireless/mediatek/mt76/mt76x2/mt76x2.h    |   2 ++
+  drivers/net/wireless/mediatek/mt76/mt76x2/pci.c       |   1 +
+  drivers/net/wireless/mediatek/mt76/mt76x2/pci_main.c  |  25 +++++++----------------
+  drivers/net/wireless/mediatek/mt76/mt76x2/usb.c       |   1 +
+  drivers/net/wireless/mediatek/mt76/mt76x2/usb_main.c  |  25 +++++------------------
+  drivers/net/wireless/mediatek/mt76/mt7915/init.c      |   3 +++
+  drivers/net/wireless/mediatek/mt76/mt7915/mac.c       |  37 +++++++++++++++++++++-------------
+  drivers/net/wireless/mediatek/mt76/mt7915/main.c      | 154 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--------------------------------------------------------
+  drivers/net/wireless/mediatek/mt76/mt7915/mcu.c       |  54 +++++++++++++++++++++++++++++++-------------------
+  drivers/net/wireless/mediatek/mt76/mt7915/mcu.h       |   8 ++++----
+  drivers/net/wireless/mediatek/mt76/mt7915/mmio.c      |   2 ++
+  drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h    |   6 ++++--
+  drivers/net/wireless/mediatek/mt76/mt7915/testmode.c  |   6 ++++--
+  drivers/net/wireless/mediatek/mt76/mt7921/init.c      |   4 +++-
+  drivers/net/wireless/mediatek/mt76/mt7921/main.c      |  34 ++++++++++++++-----------------
+  drivers/net/wireless/mediatek/mt76/mt7921/mcu.c       |   2 +-
+  drivers/net/wireless/mediatek/mt76/mt7921/mt7921.h    |   5 +++--
+  drivers/net/wireless/mediatek/mt76/mt7921/pci.c       |   3 ++-
+  drivers/net/wireless/mediatek/mt76/mt7921/sdio.c      |   3 ++-
+  drivers/net/wireless/mediatek/mt76/mt7921/usb.c       |   3 ++-
+  drivers/net/wireless/mediatek/mt76/mt7925/mac.c       |   5 ++---
+  drivers/net/wireless/mediatek/mt76/mt7925/main.c      |  36 ++++++++++++++++++++++++---------
+  drivers/net/wireless/mediatek/mt76/mt7925/mcu.c       |  20 ++++++++++++-------
+  drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h    |   5 +++--
+  drivers/net/wireless/mediatek/mt76/mt7925/pci.c       |   4 +++-
+  drivers/net/wireless/mediatek/mt76/mt7925/usb.c       |   2 +-
+  drivers/net/wireless/mediatek/mt76/mt792x.h           |   2 +-
+  drivers/net/wireless/mediatek/mt76/mt7996/init.c      |  89 +++++++++++++++++++++++++++++++++++++++++++++++++++++++--------------------------
+  drivers/net/wireless/mediatek/mt76/mt7996/mac.c       |  17 ++++++++++++----
+  drivers/net/wireless/mediatek/mt76/mt7996/main.c      |  37 ++++++++++++----------------------
+  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c       |  26 ++++++++++++++----------
+  drivers/net/wireless/mediatek/mt76/mt7996/mmio.c      |   1 +
+  drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h    |   2 +-
+  drivers/net/wireless/mediatek/mt76/tx.c               |  62 ++++++++++++++++++++++++++++++++++++---------------------
+  62 files changed, 624 insertions(+), 408 deletions(-)
 
