@@ -1,112 +1,102 @@
-Return-Path: <linux-wireless+bounces-12571-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12572-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6861E96E669
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2024 01:39:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B729296E700
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2024 02:54:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94E2D1C2323E
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Sep 2024 23:39:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BD6D286C49
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Sep 2024 00:54:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9AF1B4C2E;
-	Thu,  5 Sep 2024 23:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6834818638;
+	Fri,  6 Sep 2024 00:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="pCd2DdyJ"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="NGb9wE0v"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA7B1B9842
-	for <linux-wireless@vger.kernel.org>; Thu,  5 Sep 2024 23:39:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0311799F
+	for <linux-wireless@vger.kernel.org>; Fri,  6 Sep 2024 00:53:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725579568; cv=none; b=KN47HpnHhWFbTvFuSCRHN0YuJjWe1I6R96WROoG6gKYrhWXuh5XdM/KP/DROdmJiwQ6JX9WvfGXQG/JdWchCRvsgXfeuIHYOoIJRljxrZlOjIPnyRDgs3ou3UzZ0MkOL9aCPgjc11sWXc0RQ/Kx2YjKjcEKfCEtp1TlPL0EyNUs=
+	t=1725584033; cv=none; b=mCUM8GXPROLY1AolrwNArTh5O0jiDiLJ8t3yjhS2Z4g7QXFoE6BIeLsnZ9o7U/lp2sF4jx7uM8fyv5jsOhImopBDMImIXCKhHCZAYw9/AJl6xJKpj5iALd1oIx3BXHL+HGdBWqZSar+dZ/a6nNVCmFyMxyaym6zb9dyIhJ7m37c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725579568; c=relaxed/simple;
-	bh=kK8gHhJVRkc5E+HOzEcQUteF+VUpsbtCOdaQBE+EjdA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=GerKWcliDQVJ9TUd3XvhMkZs7VW7KZgnZKSxcZMUGrqqCS8fMSXS174Slhmrzb7Ddo6pllUeePX9lHgE/zcioJ+TB4cUEy/IIdlUDoJ+KR3ePTyGo+t7VvENc+M1D8aVFkWqMCONuCe2o5eox/ZP4ZlMHii/ehzSEgK9yVk7CZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=pCd2DdyJ; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 485LuDSG018213;
-	Thu, 5 Sep 2024 23:39:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	fSgMPN1c02raEzlgzGBazhQOzmSp38Je+Fm2RQX34uA=; b=pCd2DdyJMs54SWKv
-	xRpodZ1jx5h5XAnlGib6y/ZKcb9Du9X0XDy7momFX9fDWVOXqEe3i0h80xGx8WVM
-	vn6SU9ctXP5C15hWQKATgq2N8jf8TquGNUSVFgKBq/ZdfScETIsvCLO9Rn+aEM3k
-	x4mbI+SNXpLMcOyapwy5dMD3XNZIfkm/C5qFblRL1AcRmKba0LZv6SS6uCH26BHc
-	QOfG0ITz46Mni2mOTn6TDTtD5sEdrP7cdZFSdSiYory9EfEOseZHTrbNaS2pczmS
-	HNu3qACiA2CIJsnzX9UHrHqJX+UFe4ybw64S55nDqle/Fe+KAIVZlHiWMbEVZWoA
-	wrgYhQ==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41fj09rhbx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Sep 2024 23:39:23 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 485NdMQr018741
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 5 Sep 2024 23:39:22 GMT
-Received: from [10.111.181.108] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 5 Sep 2024
- 16:39:22 -0700
-Message-ID: <4343b13f-e549-487b-86f8-b2e72db663a9@quicinc.com>
-Date: Thu, 5 Sep 2024 16:39:22 -0700
+	s=arc-20240116; t=1725584033; c=relaxed/simple;
+	bh=JpQnGUQOrM/0SRFrxLuAl9yZgoiUN3r9dMJk8tMenxE=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=LNxZxmRiCiYaILInKHCKYPmVs8RrwkQJGLWVncim3PLqQ1LJL/Hx6xbQLhl9GlL7gm35r5WP9cKMEp+fdkSM6u500J83PLVzfb8ETZ0roYR4lRZkrUaaYR30Ql10KYtSE/wbycifr22/wjXHUnLRftkyuiVEnQwhpOxI+X/JCtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=NGb9wE0v; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4860rhxsF237460, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1725584023; bh=JpQnGUQOrM/0SRFrxLuAl9yZgoiUN3r9dMJk8tMenxE=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=NGb9wE0vHO1/dZjiCQ9xnPb1cXMozKPeZv0AIAueMtpVNJlEi968vMPkAT6XcktT/
+	 9PE1mWoqr2LXsRcwzAB3iZ9LN7o6LbfzfD2EH38IKMDk/5jUh9tMulY1sl0FnYDVlo
+	 Ckb/YuK0aJ9I8nKWHq1FxR0i/QBJd2xqQ91YtG1zKxWmZ5uK/WzXcol6BO89domW/R
+	 vHP4SU1kjb3uyHB1ympZvHQxGy6xeVKWbYvcltThfmpw4dH4FwdiIHtZiF82BjWbrC
+	 9gc0C0cUqDs4cD2Pv7YpL7jqnL2g1apgA9nrh/r75naR/FSGZ7Sl737roVDRTji6jG
+	 m/zIwFGGN8TKQ==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.02/5.92) with ESMTPS id 4860rhxsF237460
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 6 Sep 2024 08:53:43 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 6 Sep 2024 08:53:44 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 6 Sep 2024 08:53:43 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
+ 15.01.2507.035; Fri, 6 Sep 2024 08:53:43 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Eli DeCampo <eli@decampo.org>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>
+Subject: RE: RTW89 Driver Issues
+Thread-Topic: RTW89 Driver Issues
+Thread-Index: AQHa/8qGG4LZF5jXvUKFmROmayiRrrJJ7AeA
+Date: Fri, 6 Sep 2024 00:53:43 +0000
+Message-ID: <2973bb92992d4911a100854300060449@realtek.com>
+References: <CAGCFnVBNNLgyKp_FLnvMiMnkAtwXrQbgot96Zmb_FeZNXFu+ew@mail.gmail.com>
+In-Reply-To: <CAGCFnVBNNLgyKp_FLnvMiMnkAtwXrQbgot96Zmb_FeZNXFu+ew@mail.gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/4] wifi: ath12k: store and send country code to
- firmware after recovery
-To: Kang Yang <quic_kangyang@quicinc.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240905023511.362-1-quic_kangyang@quicinc.com>
- <20240905023511.362-5-quic_kangyang@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Content-Language: en-US
-In-Reply-To: <20240905023511.362-5-quic_kangyang@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: F9sZbwTFB4BYwe9F3AghPjVPM1x8H9Nv
-X-Proofpoint-ORIG-GUID: F9sZbwTFB4BYwe9F3AghPjVPM1x8H9Nv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-05_17,2024-09-05_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=876
- impostorscore=0 malwarescore=0 mlxscore=0 bulkscore=0 spamscore=0
- suspectscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0 phishscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2408220000 definitions=main-2409050177
 
-On 9/4/2024 7:35 PM, Kang Yang wrote:
-> From: Wen Gong <quic_wgong@quicinc.com>
-> 
-> Currently ath12k does not send the country code to firmware after device
-> recovery. As a result the country code will be the default one which
-> is reported from firmware. Country code is important, so ath12k also
-> need to restore it to the value which was used before recovery.
-> 
-> This is only needed for platforms which support the current_cc_support
-> hardware parameter.
-> 
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-> 
-> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
-> Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-
-
+RWxpIERlQ2FtcG8gPGVsaUBkZWNhbXBvLm9yZz4gd3JvdGU6DQoNCj4gU2VwIDA1IDE1OjIxOjUz
+IENvbXBvb3Blci12MiBOZXR3b3JrTWFuYWdlcls4NzZdOiA8aW5mbz4NCj4gWzE3MjU1NjQxMTMu
+ODA5OV0gZGV2aWNlICh3bHAxczApOiBzdXBwbGljYW50IGludGVyZmFjZSBzdGF0ZToNCj4gZGlz
+Y29ubmVjdGVkIC0+IGF1dGhlbnRpY2F0aW5nDQo+IFNlcCAwNSAxNToyMTo1MyBDb21wb29wZXIt
+djIgTmV0d29ya01hbmFnZXJbODc2XTogPGluZm8+DQo+IFsxNzI1NTY0MTEzLjgxMDBdIGRldmlj
+ZSAocDJwLWRldi13bHAxczApOiBzdXBwbGljYW50IG1hbmFnZW1lbnQNCj4gaW50ZXJmYWNlIHN0
+YXRlOiBkaXNjb25uZWN0ZWQgLT4gYXV0aGVudGljYXRpbmcNCj4gU2VwIDA1IDE1OjIxOjUzIENv
+bXBvb3Blci12MiBOZXR3b3JrTWFuYWdlcls4NzZdOiA8aW5mbz4NCj4gWzE3MjU1NjQxMTMuODEw
+MF0gZGV2aWNlICh3bHAxczApOiBzdXBwbGljYW50IGludGVyZmFjZSBzdGF0ZToNCj4gYXV0aGVu
+dGljYXRpbmcgLT4gZGlzY29ubmVjdGVkDQo+IFNlcCAwNSAxNToyMTo1MyBDb21wb29wZXItdjIg
+TmV0d29ya01hbmFnZXJbODc2XTogPGluZm8+DQo+IFsxNzI1NTY0MTEzLjgxMDBdIGRldmljZSAo
+cDJwLWRldi13bHAxczApOiBzdXBwbGljYW50IG1hbmFnZW1lbnQNCj4gaW50ZXJmYWNlIHN0YXRl
+OiBhdXRoZW50aWNhdGluZyAtPiBkaXNjb25uZWN0ZWQNCg0KSXQgbG9va3MgbGlrZSBOZXR3b3Jr
+TWFuZ2VyIGNvbnRyb2wgdHdvIGludGVyZmFjZXMgZGVyaXZlZCBmcm9tIHdscDFzMC4gDQpTdWdn
+ZXN0IHRvIHNpbXBseSB0aGUgdXNlIGNhc2UgdG8gaWRlbnRpZnkgcHJvYmxlbS4gUGxlYXNlIHR1
+cm4gb2ZmDQpOZXR3b3JrTWFuYWdlciBhbmQgdXNlICdpdyB3bHAxczAgc2NhbicgY29tbWFuZCB0
+byBzZWUgaWYgeW91IGNhbiBzZWUNCmFueSBBUC4gSWYgeWVzLCB0cnkgJ2l3IHdscDFzMCBjb25u
+ZWN0IEFQX1NTSUQnIHRvIGNvbm5lY3QgYSBub24tc2VjdXJlIEFQLg0KDQpUaGUgZG1lc2cgbG9n
+IHNob3VsZCBiZSBjb2xsZWN0ZWQgYWZ0ZXIgdHJ5aW5nIGNvbm5lY3Rpb24uIFRoZW4gd2UgY2Fu
+DQpzZWUgaG93IHRoZSBkcml2ZXIgZ29lcyB3cm9uZy4NCg0KUGluZy1LZQ0KDQo=
 
