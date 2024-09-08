@@ -1,454 +1,373 @@
-Return-Path: <linux-wireless+bounces-12635-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12636-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 996A69708BD
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Sep 2024 18:27:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEEA39709D2
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 Sep 2024 22:55:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E2EB01F21481
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Sep 2024 16:27:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3235F1F21B88
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 Sep 2024 20:55:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86CF6170A19;
-	Sun,  8 Sep 2024 16:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA9B31741E8;
+	Sun,  8 Sep 2024 20:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="p1Xmkzw9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EBTBn176"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from TY3P286CU002.outbound.protection.outlook.com (mail-japaneastazolkn19010012.outbound.protection.outlook.com [52.103.43.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2F61C01;
-	Sun,  8 Sep 2024 16:27:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.43.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725812861; cv=fail; b=ov7FUoG3Xc9aEOpPbqaI3GzroLfxIlh1j3e2cEddL/iEI1KugkXOglgYJI9T4EBjGUFLtYI+gnmGKMkwui48vDyWfBXeBqGNRDBvLdIZE5+2nFIklFqjhNCyI1LW3yxESPFZiMAG1Bnf9s2UCDfMXvDNqBubBev041TB9tOYl1g=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725812861; c=relaxed/simple;
-	bh=BLcutWmtr5vkXeG+9l/PGziyi3VwMsQNuLSo7kcIRhc=;
-	h=Message-ID:Date:Cc:Subject:To:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Su1uMoYQ++pqKQG+W9R3Iv+SJdOXIrcp9OZQ9ZKri1xw6OUHIy0QO6rLimgPdU67E5eVvJMuDZeMlCbYN00rI1Vrf/1TGZX81Is8ZGRDRnrJCqOBMHH2R0AjjFNAvwRf5sO2LmmJ6zTXCAMEh4v1fWorJZDuCiJrpGp987n0KOY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=p1Xmkzw9; arc=fail smtp.client-ip=52.103.43.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bxxEkX13b3XoWhLENJWQDPMO9UX7flko4BnhcUYbVH3/hC3cctC46YIC1KOgxZ+7W5UykeR815RbJbTYpNN7Zu72oNUUsyutYCGeEKQcyCPzgYGPcRHY3p6m2JjLKT4oXBGzj85JqMu0Bo1fTostR+fEr7cM7tVMABtCrqZRWa0ERLdiRmsqRh40nMboejuoQPtNFlqR4QIv8zyAey72ohUaI/HLmCPEvdduX+kaoZelWVa/DqrYm7eiy1+mHxpOxGzNytMKwpG6ZbEUgif7fBJGtbucBfz6pO1I55mjuqrPGeUZt8FgRKcosK8Rpzy9NMNiIS0CNbk/IBCtbUzLYA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BLcutWmtr5vkXeG+9l/PGziyi3VwMsQNuLSo7kcIRhc=;
- b=p6PFraFbCXXid/ZqlqnNoG+1hvyzG71yO+du6LOhk4HVeHNDBS1kLUxgjuh5dGDsABxpEh9YKbNt6EKgY41TjGYXqbOubXrIXsoqFC5oELA2Z5rWFkPELXNpgvKQe/fE9a223Gb0tLIpWuZm2ze35rojgKRELrGmz0JXDEBRDXixM2tVN5xMf7DMH/CsiP3Y+pn8ExBe8pUns9KTrh3y77iQJkK1teiImLIkNWsOtOurrR4R80GcS/tdpKSHvcX1DRxg0uQCiy6qiB2cGdU8Pg69usHi1cANW8ug6wWvT5zuwdxp8VGy9TWL2fd0on6pQ2YtLbeUCT/vb5G/DtBMVg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=BLcutWmtr5vkXeG+9l/PGziyi3VwMsQNuLSo7kcIRhc=;
- b=p1Xmkzw9A5fGbyTNBNAXCeh1jaJlKAXEWrHQeNCgodERQ28dWJ2ZeJlmUD49vYhgGMsmC9rO3mMKsdCQYLXOCbt9oOnXCKy57VSCC8BMSBm/5WF3TEt+UOV+VWqkLlOskL7sm3PUa+P+DxZpKGfbh3PBIkLstpxsQlDEvW53EpECyTCRfoJtfQI0l76JZNcoa4btovVHU8rfyCCZXe0G6r2A817+sSUyz4YpPdoL6Y4emHhE2I/PiGbuKgmQUwbJ4/oqOB3xbeVzB91qob2io08uI4hknySdZZ5kkUPidZGEDsBxztFjBg8pbRMI02bX+P2DRQQKnKlz1pXGnh4JxA==
-Received: from TYCPR01MB8437.jpnprd01.prod.outlook.com (2603:1096:400:156::5)
- by TYCPR01MB6656.jpnprd01.prod.outlook.com (2603:1096:400:9d::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.23; Sun, 8 Sep
- 2024 16:27:34 +0000
-Received: from TYCPR01MB8437.jpnprd01.prod.outlook.com
- ([fe80::83e7:751f:f3af:768f]) by TYCPR01MB8437.jpnprd01.prod.outlook.com
- ([fe80::83e7:751f:f3af:768f%4]) with mapi id 15.20.7939.017; Sun, 8 Sep 2024
- 16:27:34 +0000
-Message-ID:
- <TYCPR01MB843742DF3BB41BAC3B97C3C998982@TYCPR01MB8437.jpnprd01.prod.outlook.com>
-Date: Mon, 9 Sep 2024 00:27:26 +0800
-User-Agent: Mozilla Thunderbird
-Cc: wiagn233@outlook.com, Bo Jiao <bo.jiao@mediatek.com>
-Subject: Re: [PATCH v6] wifi: mt76: mt7915: add wds support when wed is
- enabled
-To: Felix Fietkau <nbd@nbd.name>, lorenzo@kernel.org, ryder.lee@mediatek.com,
- shayne.chen@mediatek.com, sean.wang@mediatek.com, kvalo@kernel.org,
- matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
- daniel@makrotopia.org, miriam.rachel.korenblit@intel.com,
- money.wang@mediatek.com, StanleyYP.Wang@mediatek.com,
- meichia.chiu@mediatek.com, chui-hao.chiu@mediatek.com,
- johannes.berg@intel.com, quic_adisi@quicinc.com, sujuan.chen@mediatek.com,
- allen.ye@mediatek.com, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-References: <TY3P286MB26111E4DB0841A176DF8E44E98BE2@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
- <49a385d0-9ffc-468f-b7de-83abfa1e18f0@nbd.name>
-From: Shengyu Qu <wiagn233@outlook.com>
-Content-Language: en-US
-Autocrypt: addr=wiagn233@outlook.com; keydata=
- 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
-In-Reply-To: <49a385d0-9ffc-468f-b7de-83abfa1e18f0@nbd.name>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------x09HX8310UIXVZ0Fbaj6Xqla"
-X-TMN:
- [rrt61Q9uAD2Jpc1wU0iPsO98FQGH8AIfxfM2e9Db+lOXUTMKuiNLd1G9p8aKwCBkzBjNotJKX68=]
-X-ClientProxiedBy: SG2PR02CA0079.apcprd02.prod.outlook.com
- (2603:1096:4:90::19) To TYCPR01MB8437.jpnprd01.prod.outlook.com
- (2603:1096:400:156::5)
-X-Microsoft-Original-Message-ID:
- <596701c5-7124-4816-a8f6-47b09a3778d2@outlook.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F93B2B9CD
+	for <linux-wireless@vger.kernel.org>; Sun,  8 Sep 2024 20:55:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725828911; cv=none; b=VRXRoYItiI/LH7WUjvj2rY0ZUPRZLl51zE30nzZqdrmFVSmf1/shPLiHGgUTHMkfAcsuEpc3QuQAGzMu6Sg9gGhUV37Y6+RsudP67/U2Qw+NNMhd0+QOvQDOJlVzDYVPS6f2UqJsS3ftz7elTrW+8L/AwC4QIeEuRpkbIZpJUww=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725828911; c=relaxed/simple;
+	bh=0uGF+JiiH76bouRpGBO2IRWe4EDO4tfUibanfEJEoQM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l2cfYxMQBbufYX0XHFOVngB8aEPsWddzlWr44Q+iogRX2oY1CGWoHzAfHvMVNDvGEbYus4+xjkeDxPh6Kgc/SdCZIGOQ1FwtllYF4FvtR+EeOHYH+lZKtrZBvIanh/P1WdkLtapNXaFTY6Gn7anMPloOhVjkguAePWN0bSZWsko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EBTBn176; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-42cb8dac900so1285795e9.3
+        for <linux-wireless@vger.kernel.org>; Sun, 08 Sep 2024 13:55:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725828908; x=1726433708; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=czDgOOlIt6DrhvJwJhqTih6mPCUHpwHgA2H3c9eCM3w=;
+        b=EBTBn176dpbyfO+ab3p22X0+XiEaQp14stSNbxaJn2IP3+54lqchgWmKP2JSjV+/Pj
+         jvcTjleCkCUa2JxCS7v4ArCFSfP332uYEf7Yo/DrZalbdgXLUoMQPNdDyDPZfYQH/I4x
+         GOZX0c++TadbSvkMc7sVwBCDpMEKHTPa9nLxCR72znHOmy77lZfs0s0DExbvedg5KnAr
+         Z+GmV+J+dRQu5XBvBAlSMYSOo5QTSZj+B5A19qAMwjFtl0THFu6Z/FwdUvtMfTysww0e
+         GcGONVUVBH7NBrX7X6Gwp+Lt1bl6Lq8jrw/s1h++3TnSjdg1NCD+Nvg2aizlq/OaQTe2
+         uwjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725828908; x=1726433708;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=czDgOOlIt6DrhvJwJhqTih6mPCUHpwHgA2H3c9eCM3w=;
+        b=nNzCwD4+usy8mmLglEeNruFTIZRAKflQgs0ldWP7C7IIdwLq4SLdG7e8dm2wT7Dt3b
+         OUomeUUuKS5hNGOOQdpEQHmDsvULMb1OIvazLr7MuoJzxSg19euFJ55Xs1+/8MJ45+yK
+         psDWkjhtP0S4zbKxJlFYtpGuzlCDXSkt41mk1wHpa3bd4ROXkbttPtKnaO7tZEU0Gg2D
+         cKVl6+2FsLO2N0gNROyCf9nug1iPQSJqAxr9ckFlxoyXXL5F9TqfVsPwTrxsP9xuQj3j
+         +uhS7toB5TgzSotssYos+kV8IXB4tLxfQVugI/hwTs7PGyWSEV01LypGN/XgVVfOmilt
+         aOYg==
+X-Gm-Message-State: AOJu0YyUGwfoiUGc9dBtve2ZkHk9Qf0qaAtBSy9vNSqZ8qxp+BqAlrZN
+	EEdv2WLIBRU32fA3jqqiaZMWCGLe0I5giQTZSSjMZBnSPewt7/43MNMt+5HJdIk=
+X-Google-Smtp-Source: AGHT+IFkYvRcUvlCGSg+B5CRlQqhyVmUTFURPUGwdyDY3RKqEy2JWSwqvl/KYWSc/cGMjH/IQ71wCw==
+X-Received: by 2002:a05:600c:5248:b0:42c:b23f:7ba5 with SMTP id 5b1f17b1804b1-42cb23f7d26mr27422195e9.10.1725828907328;
+        Sun, 08 Sep 2024 13:55:07 -0700 (PDT)
+Received: from debian.local ([2a0a:ef40:c56:fd01:3715:1975:8d7:6033])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-378956d363asm4227732f8f.72.2024.09.08.13.55.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Sep 2024 13:55:06 -0700 (PDT)
+Date: Sun, 8 Sep 2024 21:55:04 +0100
+From: Chris Bainbridge <chris.bainbridge@gmail.com>
+To: "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"kvalo@kernel.org" <kvalo@kernel.org>,
+	"Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>,
+	"Berg, Johannes" <johannes.berg@intel.com>,
+	"benjamin@sipsolutions.net" <benjamin@sipsolutions.net>,
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>
+Subject: Re: [REGRESSION] iwlwifi resume error, bisected
+Message-ID: <Zt4PKMCp_FTx3kac@debian.local>
+References: <CAP-bSRbMbZe9LCE15SCbYNTGZjE_xiAm29qzO_WNVjHsJ6oyyg@mail.gmail.com>
+ <9ada34661b93fa5dfe3b0c66816a62c1a27f22a3.camel@intel.com>
+ <CAP-bSRZm4CyxY1VdtWvZRcfLMwc3njd3OTSd446Q5dcSfjJY=Q@mail.gmail.com>
+ <d59125316423abd2f67e1c111eb54d083b7cc014.camel@intel.com>
+ <d3a83162570aaede579ecde64e00350ce1e6b452.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TYCPR01MB8437:EE_|TYCPR01MB6656:EE_
-X-MS-Office365-Filtering-Correlation-Id: f4d55af7-7267-4f4b-9e09-08dcd0232482
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|15080799006|461199028|6092099012|19110799003|5072599009|8060799006|3412199025|440099028|1710799026;
-X-Microsoft-Antispam-Message-Info:
-	YoUZ8CtxpqOv2z0sWqd6Rj+k+Hg05BVf4ZKqgGaOktwvRMar8X96Jfl8sbYJ0F85RVRiyT8n2enev9b+0FwKK6pEanJlFgRXJHVxmDMjeq4/4baYfibOktoVjBQG5v04vVo5hUO2L9VBU7kOzGMJGBSQOoIVo6traMKfAt0vbvdQStYwVori+Tf3A8vSU4czpS64SynUiSUn+jzZAWnwDEf/RcdaYeVjumJSoS3wYOvXDfUpgmzs5qAiXIuQJ0GaWOBnVP7sx98o/6eAHUahYD0CT9P02PIGUdqSbk+KpwB5lqciZ8u4wkOl/JkeHZkjluHHthVof+8nMg3FYu4qI61EclD8GIEAVb16RkxiZ67rhkI2tmA0y2QnSUFuO2hoTbnUzZQ+3GDR3cOa5BwT4tiIEr+CksFu/F69LSo3uMBupZioP36c7HhCeZcHuuwB2Nxuof9n7vV6UnJOFi5gxVFHHDzeVUCuA1Lp/b/N28CqwWV//nUtbAP4FiDcr6Qy08YsQqq8dEsBl6a7qK8QTDF+KbuZxfopX6zsoiaiaAmQNwUUu4dG1FnFt1/dm8I+UVYo7crp43+/nrjYh+/pBGX5L6fx9OFdg/rNfaIHof+lMqxbjEdTSnXTfRUgoMuRYIrNOVPfGFigJryKw0jJ8yfncy5u1BHvReywvnBoy3HKNTZJkizHUrXD8y1MANKDyVGw6lb7FxFMejgFG4lZSf8gCDC/TfoG0Mn/1/lWl1wLkdUS1JqcMEjrOfFItcLBwctY1K7NU4UhvZ+EYcaVnQ==
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?SExOcmg1Wm55YlRzcVlGSjJ2bEE3dnpXNG5SU2FRMHlDWXpyUkxFc1pVSWE4?=
- =?utf-8?B?K1NETmg5blZUeHJQNm5jOHltSDJnN0JpNm9nNWkzM3QvbWZSMi9URWREUTBX?=
- =?utf-8?B?bHhiS0tWdlhjY0NLZ25ZR0grVy9qeVE4OThCWWs0amh0NkZDS2Z4TkdOVW95?=
- =?utf-8?B?Q3hpN01WT0VWSldNRjRMZzlRQnBtOEVhZk5adFBWK2t3cjQ4TDFuOW9Sb1Bm?=
- =?utf-8?B?Vit4MDdqK2lNaFlad2VWT3l3OGkrc3cwS1JobmlSVWg5aDVrUVc3VlhZZktq?=
- =?utf-8?B?RGRDd3kyS1Bad2RaOGt2NDFUS3U1OU41dlVEMnE5c1ZTR1U2UXdCbW5jWDdU?=
- =?utf-8?B?T1p4dFNsSjRjUlBlcWc5RkpESHV4VVdKd0k3TnVJZSsyYjBZS1JOQk9nNjlU?=
- =?utf-8?B?VkYxUEh5N1V6TkFUWEx4bVZCRlB1cVZlcEVYUUZqdXlrN3M2SE9ZUnVCajFv?=
- =?utf-8?B?YS83VmhJaGRmbDZDajhHWU00NlVSYkhvQ1RjRE1KaWc0SExsanFlN0xKNE5T?=
- =?utf-8?B?TW1nSzZuSGp1eVNnSWVlOWNPanZkYTROUzVBTm4vdDV6Q3pLV29SSHQzWjZU?=
- =?utf-8?B?N3ZTVWhZTWo4R3VKNm5LMDJKTjhsOWswWjE4MlVYdXE4azl1TS80TnM5dC9H?=
- =?utf-8?B?OFZTdXFqWm5TTmhabzlTMHoyMGNoQVpSWkdBSnZiQUowNDJ4UEZCMkJOM3JV?=
- =?utf-8?B?OUVLMUVCUHlKNnVsZ01sTyttcExiQU1TM3NDSkRlS1FKM2lKSzVobEU0aTM3?=
- =?utf-8?B?SkljSmJHZnRNbGZGUUttYmd3QTBtMFpaNGp5bzNhRWJUTEpwdUNPczlNUWg3?=
- =?utf-8?B?bG5iWERoVkRTblJxdlVHeHpyUmwrZk5UYTJOSGNhemd4a1FXZThlZG83cUJP?=
- =?utf-8?B?elFUVkVKbVVmVk4vTlpDMTgydVBtc1o0NjF0N0I1Y2hyVURSSktFRzNDMnJz?=
- =?utf-8?B?RDJNSVJLaHo4cnhuaDM3TE9SMVREb1F1b1YwUzRHZ25CRnhzK0xyNC9Ec01E?=
- =?utf-8?B?SG9icmNkcHdWcGlSL05PSGEwM095Q1llWkg4bHlsRWRHdlBIUGYySnJjK2NG?=
- =?utf-8?B?dTZuaUVsZHR1YWk2cEVtN1FyOVNFZnN3NUdrNjdEL2grY0RiNzhVMmRrSlB4?=
- =?utf-8?B?ODVob0xvOENhQmJ0Q09nUlkvbVA3ZnRlT1VnMWFTUmZoenhvREl1aHU0aWFG?=
- =?utf-8?B?WWM4aWhWYXBjcmtFaEtNeVpWdWg2MDhudlVZd0tBK3dDcS9JMkFSTHhWSWZz?=
- =?utf-8?B?YVBNYnhhTUxNbmVxbnlJMzZYTUFUdVNRenNSUVREc0g0TWkyb2tXRUN6T1RC?=
- =?utf-8?B?K0NMMjRZOHF3ODZORFN3d3YzQUF5bHk3dkVWYUtEQ2hVZlNaK281UTR2LzJC?=
- =?utf-8?B?ekc4V1FkMWRCK2FuWUljdzRZVzFwYllRSjlhTnJqQ3M4R3FYZGdhSjJDOFR1?=
- =?utf-8?B?QVZXckJkOUFoSXI1MmZuSHRoNzQ4dHlxVmR2dDV4U082QW5iL0NHMmc5QjBv?=
- =?utf-8?B?QU9vZGphcjN0d1pBek1LVXJ6K0ZFazh2aU12TDhWRVczVXlCWndlL3RURjBv?=
- =?utf-8?B?U1o5QlYzYWg0RFJCNGduZEVBdU56b1FRRGZoRGhRZUtMYTRqSlFNTFhoc3Jw?=
- =?utf-8?B?NWN1S1k4dytSRExScHE2Tjg3UXdYdEIrVUtBakp1SE93WDJkK0pZOFlSS21N?=
- =?utf-8?B?cHltSmNJQ21nM084dEd5NUF3QytYbTk4Wk9udkpOSU1xQ1NJM3lMbExaa0Nq?=
- =?utf-8?Q?UG0iHEcsCdMya5eRNc=3D?=
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f4d55af7-7267-4f4b-9e09-08dcd0232482
-X-MS-Exchange-CrossTenant-AuthSource: TYCPR01MB8437.jpnprd01.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2024 16:27:33.9702
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCPR01MB6656
-
---------------x09HX8310UIXVZ0Fbaj6Xqla
-Content-Type: multipart/mixed; boundary="------------69YFU4p5XAK0QuipuOTwnhuL";
- protected-headers="v1"
-From: Shengyu Qu <wiagn233@outlook.com>
-To: Felix Fietkau <nbd@nbd.name>, lorenzo@kernel.org, ryder.lee@mediatek.com,
- shayne.chen@mediatek.com, sean.wang@mediatek.com, kvalo@kernel.org,
- matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
- daniel@makrotopia.org, miriam.rachel.korenblit@intel.com,
- money.wang@mediatek.com, StanleyYP.Wang@mediatek.com,
- meichia.chiu@mediatek.com, chui-hao.chiu@mediatek.com,
- johannes.berg@intel.com, quic_adisi@quicinc.com, sujuan.chen@mediatek.com,
- allen.ye@mediatek.com, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Cc: wiagn233@outlook.com, Bo Jiao <bo.jiao@mediatek.com>
-Message-ID: <596701c5-7124-4816-a8f6-47b09a3778d2@outlook.com>
-Subject: Re: [PATCH v6] wifi: mt76: mt7915: add wds support when wed is
- enabled
-References: <TY3P286MB26111E4DB0841A176DF8E44E98BE2@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
- <49a385d0-9ffc-468f-b7de-83abfa1e18f0@nbd.name>
-In-Reply-To: <49a385d0-9ffc-468f-b7de-83abfa1e18f0@nbd.name>
-
---------------69YFU4p5XAK0QuipuOTwnhuL
-Content-Type: multipart/mixed; boundary="------------yVG84NTR8Ja4xvcSxG273z68"
-
---------------yVG84NTR8Ja4xvcSxG273z68
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-
-Pj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL21lZGlhdGVrL210NzYvbXQ3
-OTE1L21haW4uYyANCj4+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9t
-dDc5MTUvbWFpbi5jDQo+PiBpbmRleCAwNDkyMjNkZjliZWIxLi5kYzRkODdlMDA0YTBmIDEw
-MDY0NA0KPj4gLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvbWVkaWF0ZWsvbXQ3Ni9tdDc5
-MTUvbWFpbi5jDQo+PiArKysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9tZWRpYXRlay9tdDc2
-L210NzkxNS9tYWluLmMNCj4+IEBAIC03NDUsOCArNzQ1LDE1IEBAIGludCBtdDc5MTVfbWFj
-X3N0YV9hZGQoc3RydWN0IG10NzZfZGV2ICptZGV2LCANCj4+IHN0cnVjdCBpZWVlODAyMTFf
-dmlmICp2aWYsDQo+PiDCoMKgwqDCoMKgIGJvb2wgZXh0X3BoeSA9IG12aWYtPnBoeSAhPSAm
-ZGV2LT5waHk7DQo+PiDCoMKgwqDCoMKgIGludCByZXQsIGlkeDsNCj4+IMKgwqDCoMKgwqAg
-dTMyIGFkZHI7DQo+PiArwqDCoMKgIHU4IGZsYWdzID0gTVQ3Nl9XRURfREVGQVVMVDsNCj4+
-IC3CoMKgwqAgaWR4ID0gbXQ3Nl93Y2lkX2FsbG9jKGRldi0+bXQ3Ni53Y2lkX21hc2ssIE1U
-NzkxNV9XVEJMX1NUQSk7DQo+PiArwqDCoMKgIGlmIChtdGtfd2VkX2RldmljZV9hY3RpdmUo
-JmRldi0+bXQ3Ni5tbWlvLndlZCkgJiYNCj4+ICvCoMKgwqDCoMKgwqDCoCAhaXNfbXQ3OTE1
-KCZkZXYtPm10NzYpKSB7DQo+PiArwqDCoMKgwqDCoMKgwqAgZmxhZ3MgPSB0ZXN0X2JpdChN
-VF9XQ0lEX0ZMQUdfNEFERFIsICZtc3RhLT53Y2lkLmZsYWdzKSA/DQo+PiArwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoCBNVDc2X1dFRF9XRFNfQUNUSVZFIDogTVQ3Nl9XRURfQUNU
-SVZFOw0KPj4gK8KgwqDCoCB9DQo+PiArDQo+PiArwqDCoMKgIGlkeCA9IF9fbXQ3Nl93Y2lk
-X2FsbG9jKG1kZXYtPndjaWRfbWFzaywgTVQ3OTE1X1dUQkxfU1RBLCBmbGFncyk7DQo+PiDC
-oMKgwqDCoMKgIGlmIChpZHggPCAwKQ0KPj4gwqDCoMKgwqDCoMKgwqDCoMKgIHJldHVybiAt
-RU5PU1BDOw0KPiANCj4gSSdkIHByZWZlciB0byByZXBsYWNlIHRoZSBtdDc2X3djaWRfYWxs
-b2MgZmxhZ3MgYXJndW1lbnQgd2l0aCBhbiANCj4gZXhwbGljaXQgc3RhcnQgb2Zmc2V0IGFy
-Z3VtZW50Lg0KDQpIaSBGZWxpeCwNCg0KSSdtIG5vdCByZWFsbHkgZmFtaWxpYXIgd2l0aCBt
-dDc2IGNvZGUsIGp1c3QgYSBlbnRodXNpYXN0IHRoYXQgd2FudHMgdG8NCm1ha2UgV0RTK1dF
-RCB3b3JraW5nLiBTbyBJJ20gbm90IHN1cmUgaG93IHRvIGRvIHRoaXMgY29ycmVjdGx5Li4u
-IE1heWJlDQppdCdzIGJldHRlciBmb3IgeW91IHRvIHRha2Ugb3ZlciB0aGlzIHBhdGNoLCBz
-b3JyeS4NCg0KPj4gQEAgLTEyMDEsMTIgKzEyMDgsMjcgQEAgc3RhdGljIHZvaWQgbXQ3OTE1
-X3N0YV9zZXRfNGFkZHIoc3RydWN0IA0KPj4gaWVlZTgwMjExX2h3ICpodywNCj4+IMKgIHsN
-Cj4+IMKgwqDCoMKgwqAgc3RydWN0IG10NzkxNV9kZXYgKmRldiA9IG10NzkxNV9od19kZXYo
-aHcpOw0KPj4gwqDCoMKgwqDCoCBzdHJ1Y3QgbXQ3OTE1X3N0YSAqbXN0YSA9IChzdHJ1Y3Qg
-bXQ3OTE1X3N0YSAqKXN0YS0+ZHJ2X3ByaXY7DQo+PiArwqDCoMKgIGludCBtaW4gPSBNVDc2
-X1dFRF9XRFNfTUlOLCBtYXggPSBNVDc2X1dFRF9XRFNfTUFYOw0KPj4gwqDCoMKgwqDCoCBp
-ZiAoZW5hYmxlZCkNCj4+IMKgwqDCoMKgwqDCoMKgwqDCoCBzZXRfYml0KE1UX1dDSURfRkxB
-R180QUREUiwgJm1zdGEtPndjaWQuZmxhZ3MpOw0KPj4gwqDCoMKgwqDCoCBlbHNlDQo+PiDC
-oMKgwqDCoMKgwqDCoMKgwqAgY2xlYXJfYml0KE1UX1dDSURfRkxBR180QUREUiwgJm1zdGEt
-PndjaWQuZmxhZ3MpOw0KPj4gK8KgwqDCoCBpZiAobXRrX3dlZF9kZXZpY2VfYWN0aXZlKCZk
-ZXYtPm10NzYubW1pby53ZWQpICYmDQo+PiArwqDCoMKgwqDCoMKgwqAgIWlzX210NzkxNSgm
-ZGV2LT5tdDc2KSAmJg0KPj4gK8KgwqDCoMKgwqDCoMKgIChtc3RhLT53Y2lkLmlkeCA8IG1p
-biB8fCBtc3RhLT53Y2lkLmlkeCA+IG1heCAtIDEpKSB7DQo+PiArwqDCoMKgwqDCoMKgwqAg
-c3RydWN0IGllZWU4MDIxMV9zdGEgKnByZV9zdGE7DQo+PiArDQo+PiArwqDCoMKgwqDCoMKg
-wqAgcHJlX3N0YSA9IGt6YWxsb2Moc2l6ZW9mKCpzdGEpICsgc2l6ZW9mKCptc3RhKSwgR0ZQ
-X0tFUk5FTCk7DQo+PiArwqDCoMKgwqDCoMKgwqAgbXQ3Nl9zdGFfcHJlX3JjdV9yZW1vdmUo
-aHcsIHZpZiwgc3RhKTsNCj4+ICvCoMKgwqDCoMKgwqDCoCBtZW1tb3ZlKHByZV9zdGEsIHN0
-YSwgc2l6ZW9mKCpzdGEpICsgc2l6ZW9mKCptc3RhKSk7DQo+PiArwqDCoMKgwqDCoMKgwqAg
-bXQ3OTE1X3N0YV9hZGQoaHcsIHZpZiwgc3RhKTsNCj4+ICvCoMKgwqDCoMKgwqDCoCBzeW5j
-aHJvbml6ZV9yY3UoKTsNCj4+ICvCoMKgwqDCoMKgwqDCoCBtdDc5MTVfc3RhX3JlbW92ZSho
-dywgdmlmLCBwcmVfc3RhKTsNCj4+ICvCoMKgwqDCoMKgwqDCoCBrZnJlZShwcmVfc3RhKTsN
-Cj4+ICvCoMKgwqAgfQ0KPj4gKw0KPj4gwqDCoMKgwqDCoCBtdDc2X2Nvbm5hY19tY3Vfd3Ri
-bF91cGRhdGVfaGRyX3RyYW5zKCZkZXYtPm10NzYsIHZpZiwgc3RhKTsNCj4+IMKgIH0NCj4+
-DQo+IEluIG9yZGVyIHRvIHVwZGF0ZSB0aGUgY29kZSBiYXNlZCBvbiBteSBsYXRlc3QgY2hh
-bmdlcyBhbmQgdG8gZml4IA0KPiBwb3RlbnRpYWwgcmFjZSBjb25kaXRpb25zIG9uIHR4L3J4
-IHBhY2tldHMgZHVyaW5nIHRoZSB0cmFuc2l0aW9uLCBwbGVhc2UgDQo+IGNoYW5nZSB0byB0
-aGlzIG9yZGVyOg0KPiANCj4gMS4gY29weSB0aGUgc3RhDQo+IDIuIGFsbG9jYXRlIGEgbmV3
-IHdjaWQNCj4gMy4gY2hhbmdlIHRoZSB3Y2lkIGluZGV4IGluIHRoZSBjb3BpZWQgc3RhIHRv
-IHRoZSBuZXdseSBhbGxvY2F0ZWQgd2NpZA0KPiA0LiBjYWxsIG1jdSBmdW5jdGlvbnMgb24g
-dGhlIGR1cGxpY2F0ZSBzdGEgZm9yIGNyZWF0aW5nIHRoZSBuZXcgc3RhIGVudHJ5Lg0KPiA1
-LiB1c2UgcmN1X2Fzc2lnbl9wb2ludGVyIHRvIHBvaW50IGRldi0+d2NpZFtuZXdfaWR4XSBh
-dCAmbXN0YS0+d2NpZA0KPiA2LiBzd2FwIHdjaWQgaW5kZXggYmV0d2VlbiByZWFsIHN0YSBh
-bmQgZHVwbGljYXRlZCBzdGENCj4gNy4gcmN1X2Fzc2lnbl9wb2ludGVyKGRldi0+d2NpZFtv
-cmlnX2lkeF0sIE5VTEwpDQo+IDguIHN5bmNocm9uaXplX3JjdSgpDQo+IDkuIGNhbGwgbWN1
-IGZ1bmN0aW9ucyB0byBkZWxldGUgdGhlIGR1cGxpY2F0ZSBzdGEncyBlbnRyeSAocG9pbnRz
-IHRvIG9sZCANCj4gd2NpZCBhZnRlciB0aGUgc3dhcCkNCj4gMTAuIGZyZWUgdGhlIGR1cGxp
-Y2F0ZWQgc3RhDQoNCk5vdywgdGhlIG10NzkxNV9zdGFfc2V0XzRhZGRyIGZ1bmN0aW9uIGxv
-b2tzIGxpa2UgdGhpcyhfX210NzZfd2NpZF9hbGxvYw0Kbm90IG1vZGlmaWVkKSwgZG8geW91
-IHRoaW5rIGl0J3MgYWNjZXB0YWJsZT8NCg0Kc3RhdGljIHZvaWQgbXQ3OTE1X3N0YV9zZXRf
-NGFkZHIoc3RydWN0IGllZWU4MDIxMV9odyAqaHcsDQoJCQkJIHN0cnVjdCBpZWVlODAyMTFf
-dmlmICp2aWYsDQoJCQkJIHN0cnVjdCBpZWVlODAyMTFfc3RhICpzdGEsDQoJCQkJIGJvb2wg
-ZW5hYmxlZCkNCnsNCglzdHJ1Y3QgbXQ3OTE1X2RldiAqZGV2ID0gbXQ3OTE1X2h3X2Rldiho
-dyk7DQoJc3RydWN0IG10NzkxNV9zdGEgKm1zdGEgPSAoc3RydWN0IG10NzkxNV9zdGEgKilz
-dGEtPmRydl9wcml2Ow0KCWludCBtaW4gPSBNVDc2X1dFRF9XRFNfTUlOLCBtYXggPSBNVDc2
-X1dFRF9XRFNfTUFYOw0KCXN0cnVjdCBpZWVlODAyMTFfc3RhICpwcmVfc3RhOw0KCXU4IGZs
-YWdzID0gTVQ3Nl9XRURfREVGQVVMVDsNCglpbnQgdGVtcF9pZHg7DQoNCglpZiAoZW5hYmxl
-ZCkNCgkJc2V0X2JpdChNVF9XQ0lEX0ZMQUdfNEFERFIsICZtc3RhLT53Y2lkLmZsYWdzKTsN
-CgllbHNlDQoJCWNsZWFyX2JpdChNVF9XQ0lEX0ZMQUdfNEFERFIsICZtc3RhLT53Y2lkLmZs
-YWdzKTsNCg0KCWlmICghbXN0YS0+d2NpZC5zdGEpDQoJCXJldHVybjsNCg0KCWlmIChtdGtf
-d2VkX2RldmljZV9hY3RpdmUoJmRldi0+bXQ3Ni5tbWlvLndlZCkgJiYNCgkgICAgIWlzX210
-NzkxNSgmZGV2LT5tdDc2KSAmJg0KCSAgICAobXN0YS0+d2NpZC5pZHggPCBtaW4gfHwgbXN0
-YS0+d2NpZC5pZHggPiBtYXggLSAxKSkgew0KCQlwcmVfc3RhID0ga3phbGxvYyhzaXplb2Yo
-KnN0YSkgKyBzaXplb2YoKm1zdGEpLCBHRlBfS0VSTkVMKTsNCgkJbWVtbW92ZShwcmVfc3Rh
-LCBzdGEsIHNpemVvZigqc3RhKSArIHNpemVvZigqbXN0YSkpOw0KCQlpZiAobXRrX3dlZF9k
-ZXZpY2VfYWN0aXZlKCZkZXYtPm10NzYubW1pby53ZWQpICYmDQoJCQkhaXNfbXQ3OTE1KCZk
-ZXYtPm10NzYpKSB7DQoJCQlmbGFncyA9IHRlc3RfYml0KE1UX1dDSURfRkxBR180QUREUiwg
-Jm1zdGEtPndjaWQuZmxhZ3MpID8NCgkJCQlNVDc2X1dFRF9XRFNfQUNUSVZFIDogTVQ3Nl9X
-RURfQUNUSVZFOw0KCQl9DQoNCgkJdGVtcF9pZHggPSBfX210NzZfd2NpZF9hbGxvYyhtZGV2
-LT53Y2lkX21hc2ssIE1UNzkxNV9XVEJMX1NUQSwgZmxhZ3MpOw0KCQkoKHN0cnVjdCBtdDc5
-MTVfc3RhICopcHJlX3N0YS0+ZHJ2X3ByaXYpLT53Y2lkLmlkeCA9IHRlbXBfaWR4Ow0KCQlt
-dDc5MTVfc3RhX2FkZChodywgdmlmLCBwcmVfc3RhKTsNCgkJcmN1X2Fzc2lnbl9wb2ludGVy
-KGRldi0+bXQ3Ni53Y2lkW3RlbXBfaWR4XSwgJm1zdGEtPndjaWQpOw0KCQl0ZW1wX2lkeCA9
-IG1zdGEtPndjaWQuaWR4Ow0KCQltc3RhLT53Y2lkLmlkeCA9ICgoc3RydWN0IG10NzkxNV9z
-dGEgKilwcmVfc3RhLT5kcnZfcHJpdiktPndjaWQuaWR4Ow0KCQkoKHN0cnVjdCBtdDc5MTVf
-c3RhICopcHJlX3N0YS0+ZHJ2X3ByaXYpLT53Y2lkLmlkeCA9IHRlbXBfaWR4Ow0KCQlyY3Vf
-YXNzaWduX3BvaW50ZXIoZGV2LT5tdDc2LndjaWRbdGVtcF9pZHhdLCBOVUxMKTsNCgkJc3lu
-Y2hyb25pemVfcmN1KCk7DQoJCW10NzkxNV9zdGFfcmVtb3ZlKGh3LCB2aWYsIHByZV9zdGEp
-Ow0KCQlrZnJlZShwcmVfc3RhKTsNCgl9DQoNCgltdDc2X2Nvbm5hY19tY3Vfd3RibF91cGRh
-dGVfaGRyX3RyYW5zKCZkZXYtPm10NzYsIHZpZiwgc3RhKTsNCn0NCg0KQmVzdCByZWdhcmRz
-LA0KU2hlbmd5dQ0KDQo+IFRoaXMgc2hvdWxkIGFsbG93IG1nbXQgdHgvcnggdG8gd29yayB3
-aGlsZSB0aGUgc3RhIGlzIGJlaW5nIG1pZ3JhdGVkIHRvIA0KPiB0aGUgbmV3IHdjaWQgZW50
-cnkuDQo+IA0KPiAtIEZlbGl4DQo=
---------------yVG84NTR8Ja4xvcSxG273z68
-Content-Type: application/pgp-keys; name="OpenPGP_0xE3520CC91929C8E7.asc"
-Content-Disposition: attachment; filename="OpenPGP_0xE3520CC91929C8E7.asc"
-Content-Description: OpenPGP public key
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <d3a83162570aaede579ecde64e00350ce1e6b452.camel@intel.com>
 
------BEGIN PGP PUBLIC KEY BLOCK-----
+On Sun, Sep 08, 2024 at 10:54:09AM +0000, Grumbach, Emmanuel wrote:
+>=20
+> Strike that.
+>=20
+> Can you please take the patch in attached instead?
 
-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
-lMSoVV3z1s8dA1DK95ykSdIFtVZT
-=3Dr4B8
------END PGP PUBLIC KEY BLOCK-----
+Sure, the error with v6.11-rc6+patch is:
 
---------------yVG84NTR8Ja4xvcSxG273z68--
-
---------------69YFU4p5XAK0QuipuOTwnhuL--
-
---------------x09HX8310UIXVZ0Fbaj6Xqla
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-wsF5BAABCAAjFiEET/yoGP3p5Zl+RKVuX75KBAfJsRkFAmbd0G8FAwAAAAAACgkQX75KBAfJsRlA
-NQ//aA68tEIhEUtD3QzXOvh2zhJuhB3H2xlhWxkcyIH1MP93nv7xNDL7SksjxcbWnOSof+9QLeLi
-wO7SzAUN+lgI7eqlQ2U9anynHgJpzTasy+wnbRMMs2RwyOY2Wm6e9l/AL85OrWWLIYacgsq+fUFY
-4lyETurtjZkOwjsugnilFFSjSlbhPxTmZCMd3tfGCDLbjMvE3aJz9eZUZgzVZTQoKUOsgW4WNJ24
-qvH/xBDctRDUX+lJ4zDTH0+4vItmX1WqT1WWV2uOtYCY5WDu4LvaZbCzTbO4VCu2L7Xxor5aXwkn
-DTAJsgDyHlsBdf3ErgPFRSOQVkxbjIzmLtvOjUNrRUZC65RMFNRelcsSTpNdZ6r8O4qewAzic2hu
-uF8/QnlqMXXWIm7yqBHqtSbpDVvqasyVNcH02Nx7K2TxticDB6UM71OipSJEY+2YYKmUgjxkt5tB
-Li/nUNyioxY2y6wijATq42cMO+DQ2Lhfn0laeb+/Z0w0p0N9POvwpOIO6C5GE///hcMZ85QkXg69
-9WVPyX1w3WGtnSMsUpIdX1CnYJxv9V3nQfQoTj6hli8JahJ0OLvLsYIiK7Ept1BLeeientq5bO+J
-0FP9cfznGpQvMa6ygKz89HNgOY+VU0EHxsgYBs6cvvQhoTUbnLjNgzvMuR2QYUFsQmeMGejfjOSW
-1x8=
-=LcOb
------END PGP SIGNATURE-----
-
---------------x09HX8310UIXVZ0Fbaj6Xqla--
+[   63.289157] ------------[ cut here ]------------
+[   63.289168] Timeout waiting for hardware access (CSR_GP_CNTRL 0x08040008)
+[   63.289213] WARNING: CPU: 11 PID: 861 at drivers/net/wireless/intel/iwlw=
+ifi/pcie/trans.c:2247 __iwl_trans_pcie_grab_nic_access+0x197/0x1a0 [iwlwifi]
+[   63.289233] Modules linked in: rfcomm xt_conntrack nft_chain_nat xt_MASQ=
+UERADE nf_nat nf_conntrack_netlink nf_conntrack nf_defrag_ipv6 nf_defrag_ip=
+v4 xfrm_user xfrm_algo xt_addrtype nft_compat nf_tables nfnetlink br_netfil=
+ter bridge stp llc nvme_fabrics ccm snd_seq_dummy snd_hrtimer snd_seq overl=
+ay qrtr cmac algif_hash algif_skcipher af_alg bnep binfmt_misc snd_soc_dmic=
+ snd_acp3x_rn snd_acp3x_pdm_dma snd_sof_amd_rembrandt snd_sof_amd_renoir sn=
+d_sof_amd_acp snd_sof_pci snd_sof_xtensa_dsp iwlmvm snd_sof snd_hda_codec_r=
+ealtek snd_sof_utils intel_rapl_msr snd_hda_codec_generic intel_rapl_common=
+ snd_hda_scodec_component snd_hda_codec_hdmi snd_soc_core mac80211 snd_comp=
+ress btusb snd_pci_ps btrtl snd_rpl_pci_acp6x snd_acp_pci btintel libarc4 s=
+nd_acp_legacy_common snd_hda_intel kvm_amd snd_usb_audio snd_pci_acp6x btbc=
+m btmtk snd_intel_dspcfg snd_ctl_led snd_pci_acp5x snd_hda_codec kvm snd_us=
+bmidi_lib uvcvideo snd_ump videobuf2_vmalloc videobuf2_memops ee1004 snd_hw=
+dep snd_rawmidi uvc snd_hda_core snd_seq_device rapl
+[   63.289293]  videobuf2_v4l2 snd_rn_pci_acp3x hp_wmi sparse_keymap snd_pc=
+m snd_acp_config iwlwifi platform_profile pcspkr videodev snd_soc_acpi snd_=
+timer wmi_bmof bluetooth videobuf2_common ucsi_acpi sp5100_tco k10temp snd_=
+pci_acp3x snd cfg80211 typec_ucsi mc soundcore ccp typec amd_pmc acpi_tad i=
+nput_leds joydev serio_raw mac_hid msr parport_pc ppdev lp parport efi_psto=
+re dmi_sysfs ip_tables x_tables autofs4 btrfs blake2b_generic libcrc32c xor=
+ raid6_pq usbmouse hid_microsoft ff_memless usbkbd dm_crypt hid_cmedia r815=
+3_ecm cdc_ether usbnet r8152 mii usbhid uas usb_storage amdgpu i2c_algo_bit=
+ drm_ttm_helper ttm drm_exec nvme drm_suballoc_helper amdxcp hid_multitouch=
+ drm_buddy nvme_core video gpu_sched xhci_pci hid_generic crct10dif_pclmul =
+crc32_pclmul polyval_clmulni polyval_generic ghash_clmulni_intel drm_displa=
+y_helper amd_sfh xhci_pci_renesas nvme_auth i2c_hid_acpi i2c_piix4 i2c_hid =
+i2c_smbus hid wmi aesni_intel crypto_simd cryptd
+[   63.289360] CPU: 11 UID: 0 PID: 861 Comm: kworker/u64:11 Not tainted 6.1=
+1.0-rc6-dirty #188
+[   63.289362] Hardware name: HP HP Pavilion Aero Laptop 13-be0xxx/8916, BI=
+OS F.12 04/11/2023
+[   63.289364] Workqueue: async async_run_entry_fn
+[   63.289370] RIP: 0010:__iwl_trans_pcie_grab_nic_access+0x197/0x1a0 [iwlw=
+ifi]
+[   63.289379] Code: e4 31 c0 e9 6f ff ff ff 31 f6 48 89 df e8 f1 fc ff ff =
+eb e5 44 89 e6 48 c7 c7 d8 e9 dd c1 c6 05 3b f2 02 00 01 e8 09 c8 b6 e3 <0f=
+> 0b eb 93 0f 1f 44 00 00 0f 1f 44 00 00 55 be 00 02 00 00 48 89
+[   63.289381] RSP: 0018:ffff9db243a37a38 EFLAGS: 00010246
+[   63.289383] RAX: 0000000000000000 RBX: ffff8ce309198028 RCX: 00000000000=
+00000
+[   63.289384] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 00000000000=
+00000
+[   63.289385] RBP: ffff9db243a37a60 R08: 0000000000000000 R09: 00000000000=
+00000
+[   63.289386] R10: 0000000000000000 R11: 0000000000000000 R12: 00000000080=
+40008
+[   63.289387] R13: 0000000000000000 R14: ffff8ce309199e30 R15: 00000000000=
+00011
+[   63.289388] FS:  0000000000000000(0000) GS:ffff8ce60e780000(0000) knlGS:=
+0000000000000000
+[   63.289389] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   63.289390] CR2: 00007cedb4dc5180 CR3: 0000000147658000 CR4: 0000000000f=
+50ef0
+[   63.289391] PKRU: 55555554
+[   63.289392] Call Trace:
+[   63.289393]  <TASK>
+[   63.289395]  ? show_regs+0x68/0x80
+[   63.289399]  ? __warn+0x8e/0x1b0
+[   63.289404]  ? __iwl_trans_pcie_grab_nic_access+0x197/0x1a0 [iwlwifi]
+[   63.289413]  ? report_bug+0x17e/0x1b0
+[   63.289419]  ? handle_bug+0x46/0x80
+[   63.289423]  ? exc_invalid_op+0x18/0x80
+[   63.289424]  ? asm_exc_invalid_op+0x1b/0x20
+[   63.289431]  ? __iwl_trans_pcie_grab_nic_access+0x197/0x1a0 [iwlwifi]
+[   63.289440]  ? __iwl_trans_pcie_grab_nic_access+0x197/0x1a0 [iwlwifi]
+[   63.289448]  ? iwl_trans_pcie_grab_nic_access+0x1b/0x50 [iwlwifi]
+[   63.289457]  iwl_trans_pcie_grab_nic_access+0x2b/0x50 [iwlwifi]
+[   63.289465]  _iwl_trans_grab_nic_access+0xe/0x20 [iwlwifi]
+[   63.289475]  iwl_trans_pcie_read_mem+0x47/0x150 [iwlwifi]
+[   63.289485]  iwl_trans_read_mem+0xe/0x20 [iwlwifi]
+[   63.289495]  iwl_mvm_check_rt_status+0xbb/0x160 [iwlmvm]
+[   63.289511]  iwl_mvm_fast_resume+0xa3/0x1b6 [iwlmvm]
+[   63.289521]  __iwl_mvm_mac_start+0xfe/0x2d0 [iwlmvm]
+[   63.289530]  iwl_mvm_mac_start+0x59/0xf0 [iwlmvm]
+[   63.289541]  drv_start+0x85/0x170 [mac80211]
+[   63.289580]  ieee80211_reconfig+0xe1/0x1ed0 [mac80211]
+[   63.289607]  ? trace_contention_end+0x7a/0xb0
+[   63.289612]  ? __mutex_lock+0x123/0x830
+[   63.289619]  ? cfg80211_bss_age+0x55/0x70 [cfg80211]
+[   63.289661]  ? rtnl_lock+0x17/0x20
+[   63.289665]  ? wiphy_resume+0x62/0x1e0 [cfg80211]
+[   63.289686]  ieee80211_resume+0x55/0x70 [mac80211]
+[   63.289710]  wiphy_resume+0xbc/0x1e0 [cfg80211]
+[   63.289729]  ? wiphy_suspend+0x170/0x170 [cfg80211]
+[   63.289747]  dpm_run_callback+0x5b/0x110
+[   63.289753]  device_resume+0xc7/0x2d0
+[   63.289756]  async_resume+0x1d/0x40
+[   63.289758]  async_run_entry_fn+0x2d/0x120
+[   63.289760]  process_one_work+0x210/0x730
+[   63.289766]  worker_thread+0x193/0x340
+[   63.289769]  ? apply_wqattrs_cleanup.part.0+0xc0/0xc0
+[   63.289771]  kthread+0xf3/0x120
+[   63.289774]  ? kthread_insert_work_sanity_check+0x60/0x60
+[   63.289776]  ret_from_fork+0x40/0x70
+[   63.289779]  ? kthread_insert_work_sanity_check+0x60/0x60
+[   63.289781]  ret_from_fork_asm+0x11/0x20
+[   63.289787]  </TASK>
+[   63.289788] irq event stamp: 13936
+[   63.289789] hardirqs last  enabled at (13942): [<ffffffffa59acfba>] cons=
+ole_unlock+0x14a/0x170
+[   63.289792] hardirqs last disabled at (13947): [<ffffffffa59acf9f>] cons=
+ole_unlock+0x12f/0x170
+[   63.289794] softirqs last  enabled at (12300): [<ffffffffc1998a95>] cfg8=
+0211_bss_age+0x55/0x70 [cfg80211]
+[   63.289813] softirqs last disabled at (12302): [<ffffffffc1d7afab>] iwl_=
+trans_pcie_grab_nic_access+0x1b/0x50 [iwlwifi]
+[   63.289823] ---[ end trace 0000000000000000 ]---
+[   63.289826] iwlwifi 0000:01:00.0: iwlwifi transaction failed, dumping re=
+gisters
+[   63.289828] iwlwifi 0000:01:00.0: iwlwifi device config registers:
+[   63.290275] iwlwifi 0000:01:00.0: 00000000: 27258086 00100406 0280001a 0=
+0000010 fcf00004 00000000 00000000 00000000
+[   63.290277] iwlwifi 0000:01:00.0: 00000020: 00000000 00000000 00000000 0=
+0248086 00000000 000000c8 00000000 000001ff
+[   63.290278] iwlwifi 0000:01:00.0: 00000040: 00028010 10008ec0 00100c1f 0=
+545e812 10120142 00000000 00000000 00000000
+[   63.290279] iwlwifi 0000:01:00.0: 00000060: 00000000 00080812 00000405 0=
+0000006 00000002 00000000 00000000 00000000
+[   63.290280] iwlwifi 0000:01:00.0: 00000080: 800f0011 00002000 00003000 0=
+0000000 00000000 00000000 00000000 00000000
+[   63.290281] iwlwifi 0000:01:00.0: 000000a0: 00000000 00000000 00000000 0=
+0000000 00000000 00000000 00000000 00000000
+[   63.290282] iwlwifi 0000:01:00.0: 000000c0: 00000000 00000000 c823d001 0=
+d000008 00804005 00000000 00000000 00000000
+[   63.290284] iwlwifi 0000:01:00.0: 000000e0: 00000000 00000000 00000000 0=
+0000000 00000000 00000000 00000000 00000000
+[   63.290285] iwlwifi 0000:01:00.0: 00000100: 14c10001 00000000 00000000 0=
+0462031 00000000 00002000 00000000 00000000
+[   63.290286] iwlwifi 0000:01:00.0: 00000120: 00000000 00000000 00000000 0=
+0000000 00000000 00000000 00000000 00000000
+[   63.290287] iwlwifi 0000:01:00.0: 00000140: 14c00000 ff000000 000000ff 1=
+5410018 10011001 0001001e 00481e1f 40b6000f
+[   63.290288] iwlwifi 0000:01:00.0: iwlwifi device memory mapped registers:
+[   63.290533] iwlwifi 0000:01:00.0: 00000000: 40880000 00000000 00000000 0=
+0000000 00000000 00000000 00000000 00000000
+[   63.290534] iwlwifi 0000:01:00.0: 00000020: 00000011 08040008 00000420 d=
+55555d5 d55555d5 d55555d5 80008040 041f0042
+[   63.290594] iwlwifi 0000:01:00.0: iwlwifi device AER capability structur=
+e:
+[   63.290663] iwlwifi 0000:01:00.0: 00000000: 14c10001 00000000 00000000 0=
+0462031 00000000 00002000 00000000 00000000
+[   63.290664] iwlwifi 0000:01:00.0: 00000020: 00000000 00000000 00000000
+[   63.290665] iwlwifi 0000:01:00.0: iwlwifi parent port (0000:00:02.2) con=
+fig registers:
+[   63.290798] iwlwifi 0000:00:02.2: 00000000: 16341022 00100407 06040000 0=
+0810010 00000000 00000000 00010100 000001f1
+[   63.290799] iwlwifi 0000:00:02.2: 00000020: fcf0fcf0 0001fff1 00000000 0=
+0000000 00000000 00000050 00000000 001200ff
+[   63.290800] iwlwifi 0000:00:02.2: 00000040: 00000000 00000000 00000000 0=
+0000000 c8035801 00000000 0142a010 00008022
+[   63.290801] iwlwifi 0000:00:02.2: 00000060: 00002910 05737813 30120042 0=
+0042580 01400000 00010018 00000000 007019bf
+[   63.290803] iwlwifi 0000:00:02.2: 00000080: 00000406 0000000e 00010002 0=
+0000000 00000000 00000000 00000000 00000000
+[   63.290804] iwlwifi 0000:00:02.2: 000000a0: 0081c005 fee00000 00000000 0=
+0000000 00000000 00000000 00000000 00000000
+[   63.290805] iwlwifi 0000:00:02.2: 000000c0: 0000c80d 14531022 a8030008 0=
+0000000 00000000 00000000 00000000 00000000
+[   63.290806] iwlwifi 0000:00:02.2: 000000e0: 00000000 00000000 00000000 0=
+0000000 00000000 00000000 00000000 00000000
+[   63.290807] iwlwifi 0000:00:02.2: 00000100: 2701000b 01010001 00000000 0=
+0000000 00000000 00000000 00000000 00000000
+[   63.290808] iwlwifi 0000:00:02.2: 00000120: 00000000 00000000 00000000 0=
+0000000 00000000 00000000 00000000 00000000
+[   63.290809] iwlwifi 0000:00:02.2: 00000140: 00000000 00000000 00000000 0=
+0000000 00000000 00000000 00000000 00000000
+[   63.290810] iwlwifi 0000:00:02.2: 00000160: 00000000 00000000 00000000 0=
+0000000 00000000 00000000 00000000 00000000
+[   63.290811] iwlwifi 0000:00:02.2: 00000180: 00000000 00000000 00000000 0=
+0000000 00000000 00000000 00000000 00000000
+[   63.290812] iwlwifi 0000:00:02.2: 000001a0: 00000000 00000000 00000000 0=
+0000000 00000000 00000000 00000000 00000000
+[   63.290813] iwlwifi 0000:00:02.2: 000001c0: 00000000 00000000 00000000 0=
+0000000 00000000 00000000 00000000 00000000
+[   63.290814] iwlwifi 0000:00:02.2: 000001e0: 00000000 00000000 00000000 0=
+0000000 00000000 00000000 00000000 00000000
+[   63.290815] iwlwifi 0000:00:02.2: 00000200: 00000000 00000000 00000000
+[   63.290857] iwlwifi 0000:01:00.0: iwl_mvm_check_rt_status failed, device=
+ is gone during suspend
+[   63.644257] iwlwifi 0000:01:00.0: HW error, resetting before reading
+[   63.650214] iwlwifi 0000:01:00.0: Start IWL Error Log Dump:
+[   63.650216] iwlwifi 0000:01:00.0: Transport status: 0x00000042, valid: -=
+469787919
+[   63.650219] iwlwifi 0000:01:00.0: Loaded firmware version: 89.202a2f7b.0=
+ ty-a0-gf-a0-89.ucode
+[   63.650222] iwlwifi 0000:01:00.0: 0xD7DF3FD8 | ADVANCED_SYSASSERT       =
+  =20
+[   63.650224] iwlwifi 0000:01:00.0: 0xBBDDA603 | trm_hw_status0
+[   63.650226] iwlwifi 0000:01:00.0: 0x56FBF22F | trm_hw_status1
+[   63.650228] iwlwifi 0000:01:00.0: 0xBE17FF9E | branchlink2
+[   63.650230] iwlwifi 0000:01:00.0: 0x7F363EDB | interruptlink1
+[   63.650232] iwlwifi 0000:01:00.0: 0xDBD3159E | interruptlink2
+[   63.650233] iwlwifi 0000:01:00.0: 0x172F3A94 | data1
+[   63.650235] iwlwifi 0000:01:00.0: 0x9BF71489 | data2
+[   63.650236] iwlwifi 0000:01:00.0: 0xC92FF43C | data3
+[   63.650238] iwlwifi 0000:01:00.0: 0xF88C4ACB | beacon time
+[   63.650240] iwlwifi 0000:01:00.0: 0x53527DA5 | tsf low
+[   63.650241] iwlwifi 0000:01:00.0: 0x5CBA38FC | tsf hi
+[   63.650243] iwlwifi 0000:01:00.0: 0xFFF79FED | time gp1
+[   63.650244] iwlwifi 0000:01:00.0: 0xAD3B101D | time gp2
+[   63.650246] iwlwifi 0000:01:00.0: 0xB148E1EB | uCode revision type
+[   63.650248] iwlwifi 0000:01:00.0: 0xDCFBF5F3 | uCode version major
+[   63.650249] iwlwifi 0000:01:00.0: 0xF837C970 | uCode version minor
+[   63.650251] iwlwifi 0000:01:00.0: 0x43C37AEF | hw version
+[   63.650252] iwlwifi 0000:01:00.0: 0xEE224593 | board version
+[   63.650254] iwlwifi 0000:01:00.0: 0xF63DB3A8 | hcmd
+[   63.650256] iwlwifi 0000:01:00.0: 0x9FCD276E | isr0
+[   63.650257] iwlwifi 0000:01:00.0: 0x4F7CFEDF | isr1
+[   63.650259] iwlwifi 0000:01:00.0: 0xBF29DF97 | isr2
+[   63.650260] iwlwifi 0000:01:00.0: 0x33533328 | isr3
+[   63.650262] iwlwifi 0000:01:00.0: 0x38419101 | isr4
+[   63.650264] iwlwifi 0000:01:00.0: 0x643244C7 | last cmd Id
+[   63.650265] iwlwifi 0000:01:00.0: 0x71514BC3 | wait_event
+[   63.650267] iwlwifi 0000:01:00.0: 0xF4210485 | l2p_control
+[   63.650268] iwlwifi 0000:01:00.0: 0x020026F9 | l2p_duration
+[   63.650270] iwlwifi 0000:01:00.0: 0x50A43120 | l2p_mhvalid
+[   63.650272] iwlwifi 0000:01:00.0: 0xE9812900 | l2p_addr_match
+[   63.650273] iwlwifi 0000:01:00.0: 0x89488353 | lmpm_pmg_sel
+[   63.650275] iwlwifi 0000:01:00.0: 0x12170048 | timestamp
+[   63.650276] iwlwifi 0000:01:00.0: 0x04D922CA | flow_handler
+[   63.650585] iwlwifi 0000:01:00.0: Start IWL Error Log Dump:
+[   63.650586] iwlwifi 0000:01:00.0: Transport status: 0x00000042, valid: 8=
+55094539
+[   63.650588] iwlwifi 0000:01:00.0: 0xF58DFA0C | ADVANCED_SYSASSERT
+[   63.650590] iwlwifi 0000:01:00.0: 0xEFEDF773 | umac branchlink1
+[   63.650592] iwlwifi 0000:01:00.0: 0x5E2AAECF | umac branchlink2
+[   63.650594] iwlwifi 0000:01:00.0: 0xFF55EE2F | umac interruptlink1
+[   63.650595] iwlwifi 0000:01:00.0: 0xF65CE077 | umac interruptlink2
+[   63.650597] iwlwifi 0000:01:00.0: 0x5EFFE16D | umac data1
+[   63.650598] iwlwifi 0000:01:00.0: 0x8C7E5FDE | umac data2
+[   63.650599] iwlwifi 0000:01:00.0: 0x3D930F84 | umac data3
+[   63.650599] iwlwifi 0000:01:00.0: 0x60937FFB | umac major
+[   63.650600] iwlwifi 0000:01:00.0: 0xA9DFBAD6 | umac minor
+[   63.650601] iwlwifi 0000:01:00.0: 0xFB5FE976 | frame pointer
+[   63.650602] iwlwifi 0000:01:00.0: 0xC31FFE75 | stack pointer
+[   63.650603] iwlwifi 0000:01:00.0: 0xAEE7C3C7 | last host cmd
+[   63.650604] iwlwifi 0000:01:00.0: 0xFDD3EBFB | isr status reg
+[   63.650882] iwlwifi 0000:01:00.0: IML/ROM dump:
+[   63.650883] iwlwifi 0000:01:00.0: 0x00000000 | IML/ROM error/state
+[   63.650981] iwlwifi 0000:01:00.0: 0x00000000 | IML/ROM data1
+[   63.651039] iwlwifi 0000:01:00.0: 0x00000090 | IML/ROM WFPM_AUTH_KEY_0
+[   63.651138] iwlwifi 0000:01:00.0: Fseq Registers:
+[   63.651141] iwlwifi 0000:01:00.0: 0x60000000 | FSEQ_ERROR_CODE
+[   63.651186] iwlwifi 0000:01:00.0: 0x80440007 | FSEQ_TOP_INIT_VERSION
+[   63.651232] iwlwifi 0000:01:00.0: 0x00080009 | FSEQ_CNVIO_INIT_VERSION
+[   63.651278] iwlwifi 0000:01:00.0: 0x0000A652 | FSEQ_OTP_VERSION
+[   63.651323] iwlwifi 0000:01:00.0: 0x00000002 | FSEQ_TOP_CONTENT_VERSION
+[   63.651367] iwlwifi 0000:01:00.0: 0x4552414E | FSEQ_ALIVE_TOKEN
+[   63.651370] iwlwifi 0000:01:00.0: 0x00400410 | FSEQ_CNVI_ID
+[   63.651414] iwlwifi 0000:01:00.0: 0x00400410 | FSEQ_CNVR_ID
+[   63.651459] iwlwifi 0000:01:00.0: 0x00400410 | CNVI_AUX_MISC_CHIP
+[   63.651506] iwlwifi 0000:01:00.0: 0x00400410 | CNVR_AUX_MISC_CHIP
+[   63.651511] iwlwifi 0000:01:00.0: 0x00009061 | CNVR_SCU_SD_REGS_SD_REG_D=
+IG_DCDC_VTRIM
+[   63.651560] iwlwifi 0000:01:00.0: 0x00000061 | CNVR_SCU_SD_REGS_SD_REG_A=
+CTIVE_VDIG_MIRROR
+[   63.651605] iwlwifi 0000:01:00.0: 0x00080009 | FSEQ_PREV_CNVIO_INIT_VERS=
+ION
+[   63.651608] iwlwifi 0000:01:00.0: 0x00440007 | FSEQ_WIFI_FSEQ_VERSION
+[   63.651611] iwlwifi 0000:01:00.0: 0x00440007 | FSEQ_BT_FSEQ_VERSION
+[   63.651614] iwlwifi 0000:01:00.0: 0x000000E6 | FSEQ_CLASS_TP_VERSION
+[   63.651717] iwlwifi 0000:01:00.0: UMAC CURRENT PC: 0xc00c0000
+[   63.651761] iwlwifi 0000:01:00.0: LMAC1 CURRENT PC: 0x0
+[   63.651765] iwlwifi 0000:01:00.0: WRT: Collecting data: ini trigger 4 fi=
+red (delay=3D0ms).
 
