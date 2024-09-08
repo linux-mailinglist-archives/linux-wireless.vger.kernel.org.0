@@ -1,260 +1,253 @@
-Return-Path: <linux-wireless+bounces-12631-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12632-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0EED9704B3
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Sep 2024 03:38:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F3669705E3
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 Sep 2024 10:53:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C5A7282BF8
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Sep 2024 01:38:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29E3A1F21B28
+	for <lists+linux-wireless@lfdr.de>; Sun,  8 Sep 2024 08:53:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A4C12B71;
-	Sun,  8 Sep 2024 01:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060434204E;
+	Sun,  8 Sep 2024 08:53:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kaechele.ca header.i=@kaechele.ca header.b="A7L4Y+FZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fMtyN63A"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.kaechele.ca (mail.kaechele.ca [54.39.219.105])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15E1AD58;
-	Sun,  8 Sep 2024 01:38:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.39.219.105
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725759487; cv=none; b=jlnig0lQ5Yk990WBznd5IqwcgRVGwCVBJ0cNzbkUWonF0EsmaV+A6NbfjYEM/0nMkXPplIio2UAusTe0DiwiaJvT6Fet9dU01fm3kF/qN4IS019Iosugq2RQyPjQdlMCqPiypYlTV51KopSiWNwnz1d0ZIsC2LuP4NVxqLhNfF8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725759487; c=relaxed/simple;
-	bh=cKur2q1H4Fp8CU1WwGO5kiQmlLK0EZaG7F+Q1MIAcMk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tGv7f1qcDvQQ692fjAsz9SlR0v3UBGkLYR0hIgWPMJHG3cyOpjBh0GimdQ4DNKAXOikPK5DIo5kVlT+6552339K7ElHmsP2lwKV60WJVWfxd0uPmsADcrgsQWucspSnLYyUJsK+DBoQ3SFMx3pL91K2Ys4hrHOJYu5R+ln9gl08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaechele.ca; spf=pass smtp.mailfrom=kaechele.ca; dkim=pass (1024-bit key) header.d=kaechele.ca header.i=@kaechele.ca header.b=A7L4Y+FZ; arc=none smtp.client-ip=54.39.219.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaechele.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaechele.ca
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7B7E3C006E;
-	Sat,  7 Sep 2024 21:34:19 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaechele.ca; s=201907;
-	t=1725759259; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=8JhlNFjotRe07qdRg8Zljx1TcJ9iAGtjWJxLaciU8lA=;
-	b=A7L4Y+FZTZLlVHhkCu7ZKrizMxZwdm/Hc2V4DdVozR5La6FUwmCQUiE0v4hmCWzDinI661
-	GSQVyBrWMgJ5CSmXyL5+fGvnFA7PowhK9v/W41fKas4O2zb7Cu56ujPcKGyfxpUGyks8ol
-	vlDDyAVLbnQ6LITJo1PeJD6o4XBeEbo=
-From: Felix Kaechele <felix@kaechele.ca>
-To: ath10k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org,
-	linux-mmc@vger.kernel.org
-Subject: [PATCH v2 2/2] wifi: ath10k: add support for QCA9379 hw1.0 SDIO
-Date: Sat,  7 Sep 2024 21:32:44 -0400
-Message-ID: <20240908013244.496382-3-felix@kaechele.ca>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240908013244.496382-1-felix@kaechele.ca>
-References: <20240908013244.496382-1-felix@kaechele.ca>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEFC85FBB1
+	for <linux-wireless@vger.kernel.org>; Sun,  8 Sep 2024 08:53:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725785587; cv=fail; b=R60F+f4SWR0zM0lHuSwj786yHxWSoE/T48XlNNqbRFFIpNsZMuM9s72v+2bD46Bagnd7sOeQCMUrWkEFCuriwtqqr8u9SmYAuxQN0GqjGEvS5HpKc0SgEwNQVH960BX09KlFw9Q7jevYRLt3WgzipiLYUc4H8UpGsj4DZBUgqRo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725785587; c=relaxed/simple;
+	bh=2ujnO40VvIdmqtqibgDkoLg/PJxV9QYXgoKkcVJytBo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=TagTskKWNEbZVCwt/+1SrdIjW4PNi5lvjdMxUy87zXjUg7QQ1sS7HveFG2/mk7CUhjJ3iWXJYkvDUJakj1dJmoDNdPMnZh19dnz+/xYmdKOEF+E7jy4pLZkMvxXCUk5kBTmaGWaVL5sGgGzUT12zAUkJ/CJBWudx8z5ORAgWYmk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fMtyN63A; arc=fail smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725785585; x=1757321585;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=2ujnO40VvIdmqtqibgDkoLg/PJxV9QYXgoKkcVJytBo=;
+  b=fMtyN63AnAgt/5PlI6Q4pdSfV81mmYJLsblFQaImZLpDbV18KBxoMdZu
+   hj060Qk4IdrJQkuwS6Ke0QsFebJbAYQHMxI6t0qBaI5cQ2O1h0gDQA2TS
+   M1Q9vPYZ6TAEo5y40e+W9f0MmzQtQTLiZiY26XaumV9Ti4BctRi887BOg
+   SHjeO538EpFXtbhM8QH+hA3aY4WUraXqhgtPG75UMWi5S3U4V/AbIRuCi
+   dUys6Wt/wPn7PA4V7NiH6WcSWPQnKSmkzg2tkad5cMTiP0isrpTM/N6Fz
+   gACrbZHv2Az19reHP461+9QjfkxvGkRzzIr+qLmGg/79QbUjMEQVeDBgD
+   A==;
+X-CSE-ConnectionGUID: im9cb/QnQIC30fVs+bnpIw==
+X-CSE-MsgGUID: kSotcox8Tg62fZFb0TZN2Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11188"; a="35842354"
+X-IronPort-AV: E=Sophos;i="6.10,212,1719903600"; 
+   d="scan'208";a="35842354"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2024 01:53:04 -0700
+X-CSE-ConnectionGUID: Jnh/unWYRdiRAShe/maBcw==
+X-CSE-MsgGUID: NPCJ5kclRm+VnOr6DRwcmA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,212,1719903600"; 
+   d="scan'208";a="71178584"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by orviesa005.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 08 Sep 2024 01:53:05 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Sun, 8 Sep 2024 01:53:04 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Sun, 8 Sep 2024 01:53:04 -0700
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.100)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Sun, 8 Sep 2024 01:53:03 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nc0cfCCjFKDsyXoIZCx+BeNg6qQQs+sxusQzYZozNuTMapqzvD/VVXu4S4FbKqJpNl7aipiypBmUYKTMtEJGSNt6NEb1r5ERakz5WuaWyk5Vw1q74W0MJoxaOnuieA6ZcjHTsh8C5TSgNQ+kPsZWi3EpUS4X5H7WdqCBLrvc0ffQb9Vr28YthJk9Kt7HtB7QdZAfC618VuxVO6K7jalfg5QaKW+dNRhdxcBKIZwBjYMe4Iyvhxk2YS5qTbTrLSABMlhEpS+OMqtswaHZnLe7Elfs/+byeOnZ1v1djVcCPogr0RwKl9g4RknvlkzxJ+5qjOHncQ3pyjuo5McRE/TXgA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2ujnO40VvIdmqtqibgDkoLg/PJxV9QYXgoKkcVJytBo=;
+ b=DKYRvcMOlSC4URJ+ENi351LxeiixKZo7IfDfaeoYSE30hXZmV2o6bqK31L75oJA/4Ddff7Yabr//YtJNrJDrQPS/g0eSZjUT3Mz4Fo1u2Eqen0i3qXN3bpsJVNGqY3VMkrR874lI3J+cVqVviCoMck3nKT6KemULdkRRVgdMkLsneDMB5oqREPlu3TsVzPAd7X3lfIm0hIAzaligIruYamJfhTmkZjWJed5apfRIaUrLVBrdUU+uSevqScnurXaCBNLVY1qq2DGScbp1Dj/PLd2t3QFirruKOUsSgUepltgchrPapicnixkytc51RsGvW5NBOT8g5uAOEDTKWjUHIA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SA1PR11MB5825.namprd11.prod.outlook.com (2603:10b6:806:234::5)
+ by CY8PR11MB7339.namprd11.prod.outlook.com (2603:10b6:930:9f::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.27; Sun, 8 Sep
+ 2024 08:53:01 +0000
+Received: from SA1PR11MB5825.namprd11.prod.outlook.com
+ ([fe80::41f9:e955:b104:4c0b]) by SA1PR11MB5825.namprd11.prod.outlook.com
+ ([fe80::41f9:e955:b104:4c0b%4]) with mapi id 15.20.7918.024; Sun, 8 Sep 2024
+ 08:53:01 +0000
+From: "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>
+To: "chris.bainbridge@gmail.com" <chris.bainbridge@gmail.com>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"kvalo@kernel.org" <kvalo@kernel.org>, "Korenblit, Miriam Rachel"
+	<miriam.rachel.korenblit@intel.com>, "Berg, Johannes"
+	<johannes.berg@intel.com>, "benjamin@sipsolutions.net"
+	<benjamin@sipsolutions.net>, "regressions@lists.linux.dev"
+	<regressions@lists.linux.dev>
+Subject: Re: [REGRESSION] iwlwifi resume error, bisected
+Thread-Topic: [REGRESSION] iwlwifi resume error, bisected
+Thread-Index: AQHbASid0CU63h7wCU2RsueU4ZEG+rJMpxoAgAAufYCAAMEcgA==
+Date: Sun, 8 Sep 2024 08:53:01 +0000
+Message-ID: <d59125316423abd2f67e1c111eb54d083b7cc014.camel@intel.com>
+References: <CAP-bSRbMbZe9LCE15SCbYNTGZjE_xiAm29qzO_WNVjHsJ6oyyg@mail.gmail.com>
+	 <9ada34661b93fa5dfe3b0c66816a62c1a27f22a3.camel@intel.com>
+	 <CAP-bSRZm4CyxY1VdtWvZRcfLMwc3njd3OTSd446Q5dcSfjJY=Q@mail.gmail.com>
+In-Reply-To: <CAP-bSRZm4CyxY1VdtWvZRcfLMwc3njd3OTSd446Q5dcSfjJY=Q@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA1PR11MB5825:EE_|CY8PR11MB7339:EE_
+x-ms-office365-filtering-correlation-id: 3d9f6aa4-f19c-408a-0caa-08dccfe3a551
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info: =?utf-8?B?Ukx2WG9qRHFOdnlLWWxPaFRYTm1NYThIUGxPZkF1anJyMU5WUGRXNVlaTFND?=
+ =?utf-8?B?WGpyNXY4Rmg3THJvUHRxRzd0UTdzdnFFUWR1Kyt2WVIwNU16aVBhbHgvZ3M0?=
+ =?utf-8?B?V0xlK1M3N3c2dFhENmthTkpWdG5zUk1HcnNYTnBsOFZ6by83RGdDN29jcjZB?=
+ =?utf-8?B?NVphV3dMVjN4RGs2UVhTdWM3dnQ1cW5UQUZ4REZocHc5elRyakVUeXpWZHZn?=
+ =?utf-8?B?YTZxbFdteXYrbmc3Y0VNUmNmSkFQNWZIeW5nTWUxZjQxcHJYd0xYN0RwOEJ2?=
+ =?utf-8?B?M2lJdXliOXczbjd1QS9BbFcrbzY0RkhITEh0WWpJMTVRbngzSi9kVlovRXZU?=
+ =?utf-8?B?Sk9zaEI1KzFYbkJrN05BVjV1TEYraGxMamRqdUo4K3NmYWJwWTJzREhzTmRs?=
+ =?utf-8?B?YXQreDJCbDRSQ1FLUzMycVdwZ3d0bXljY0R0YnZJaWw5Tm9aRlFzQWg3cEdB?=
+ =?utf-8?B?YWp0SWJ0KzA3T0ZNcWVZL2JKbjUraHBPbjZmTmVtT2lnQTlJbmZSemJEQmtZ?=
+ =?utf-8?B?TllZblRGSUJJNXZtWFdVWlJVZ2FLTDBPRU9QWjlPaTlqZVNGR1lpSGkxd2xx?=
+ =?utf-8?B?aEFmYWhicGZDSCtLZUhvZDBabFFESERmc000Q2NnbHBTd0ZlV0lGa3IwdVlx?=
+ =?utf-8?B?bCtrdG5TQXN0SldOREF5c2hsRTFGVGhKOUl3eGFJTDFHRks3eGY0WUFmRWx1?=
+ =?utf-8?B?TnVJZ0JpOE1QV0NQbGtwcUhCeFdmVEh0QUd2d2xMTUloeGwvK2w5Y1lXYzUv?=
+ =?utf-8?B?YmhJNG5xM2NyWkFEaDA4TGgxbkoxZWl5cnVoWFFBY0luK3JVZmFSVEdLcURp?=
+ =?utf-8?B?SjRZTVh2bE5zcFc1N1F1NDRTWjF6dXlab09JdlBPNnpCZHBqVE5rZm9jMVJs?=
+ =?utf-8?B?ZjlLbUhDdTViMmlSMmFJNFdlOXpXQ3hjdHFEMkFQL3YyOFZyUkFuNlRXQlVQ?=
+ =?utf-8?B?MlB6R3ByaXhwd1BaYjFHVjEvQVp1UjZCTkRkRXdiY2VJQUFNRVlHSEpuZHZV?=
+ =?utf-8?B?TldnTm1kb0VPUUF2aTBjNHdBUzVtMnd0SEF0QkZ3QjREUVc0TVd3VVdmRkZq?=
+ =?utf-8?B?RGtUNVJrN2NjLzBIUTI2OVlyc1cvNUM2QzNGVEdlWElONjdLQlRyTXE3eXZV?=
+ =?utf-8?B?L1V1aTI0SVFEb0MrZWl0d08zR1NaVzRBa2xxLzhoMXZBM2VCbC9yOVZXT1dW?=
+ =?utf-8?B?QVdnZVcrVnNLQ2lPT3lvVUZjVzE0OWJUL3BpNEdVYXJ4N2d5ZEdVNnFSSHB4?=
+ =?utf-8?B?VFZaeUhhS1FsK1pqMWphRi9PTmV5ZHlMU3U0eGcvY3JhUFhKTXI0eGVPMFp4?=
+ =?utf-8?B?WHFwM203NEtob1NLQWUwcno3cEZVOVYzMUxpTC96blQ3S1RaZGQxdW5MdkNz?=
+ =?utf-8?B?eFVmbHNaMFM3S0lEMEc4N0p4V0xSYVo1cW1PbjhxVnkvNno3MlE4UFl0U1FQ?=
+ =?utf-8?B?M2NBS2lrckR0RXhLMjhQUnh3WEV6YVZhdC8xWm5EV3JEZ25ScTFzb2RGSk5R?=
+ =?utf-8?B?MmlDdkpPVkRXcWdSc0lBY0R6UnlNdkoxeWc1MWUwQ0tDVm9oR3RjdzNScFNr?=
+ =?utf-8?B?YVEyRTJuVTV4SER5RStONlQrNVZOM3RaTjNGcVJNNUlhR3haZFBScnp5b1dO?=
+ =?utf-8?B?WXFaenVyTjY3OG9PVTliVVY3eldhak9BY0FqYkM3SlRTZ0Fvbm11UmwyNXho?=
+ =?utf-8?B?YkFreE91Skg2UWp4Zy9UcG5SemoxWGdTNXlyV3RKenBMMHM3QUxZcHZubWZz?=
+ =?utf-8?B?bXRLWDh5TDJ4LzhDUXBEM0h0NjBoT055bCs0ZkkyLzB0bUQvSWp6b3dQNFFs?=
+ =?utf-8?B?Tk1zUWhJaGhucUtRRWJNZEFEVXN0cEhtd0p1NlhnSFlzT0ZUcDVJVFVvTWhI?=
+ =?utf-8?B?dy84UVk1bnJaV3hKL1JPUEdXUGd5Tzc3Vjk2c1pwN04wc0hTM29OazE3Sld4?=
+ =?utf-8?Q?2X+rufAJWuk=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR11MB5825.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?RWRzYkRtMStCS0pSSlpBbktFcmsyT01EL3NTZ3RNY202VUx2TlFlUzc5VVVr?=
+ =?utf-8?B?WlZpODlyeXhJcVVaMlZvRmdQcGxCZUpWOTJCV3BGVU9wWXZ0Q0wwWXMzYUQ4?=
+ =?utf-8?B?Z1RRWnF5MTJrREZ0MmQ0a2hiYWw3NnRycWJFS1prUEs1M3F0eUFRNUIzWEFT?=
+ =?utf-8?B?dHdRKzAvOTN1ZzBpak1wVjRmbVExalFiNDczZStWb3N5S1dpYmhSOCt2cXN3?=
+ =?utf-8?B?dC9mYXRUWld4ZkFPS3RNdEh2T1pSRTExQWtMQUREU0IvK2hZZDhsMWNoN0R5?=
+ =?utf-8?B?T1lZbjhGOGlsZmRRbnk1L3NTSHFZV0pXMDBOL0JjZVoxN2Y5MDI3QVk5amlG?=
+ =?utf-8?B?VHAzYnFxZ3N2NXZEV3NlQWhxWnNnZDdtSmozb1ZRTHQwOTJidzFkS0RhUmwy?=
+ =?utf-8?B?RFYrQ29STmtnbzBXbmZqb3JjdzZLS0t4SW1uTXpOdThjZzNWZU9wcXJSblI2?=
+ =?utf-8?B?ZWhBc0NPam9HcEhBNG0vSDl2eXRheC9rVXpoK2h4QmFkUTkwTCtqYmRPWjB2?=
+ =?utf-8?B?cVk4SFVOKzJEZVZaWHAwRHI1NU52WDU4MUtITG9mQ1pyUXVIMk9ma0lycXFU?=
+ =?utf-8?B?OWdPcUE4NDBoWWYwZjRVeXlpWWg3VVg2QzQ3QnFOeWFrZWh4SFhwNE1PMC9w?=
+ =?utf-8?B?Q1pta1k4NjhTcFdndVdrUWNSVzFNTjBFMG1QSFk5N0FBcU4wNk9kUE9aMmRr?=
+ =?utf-8?B?dG9pZ1NqTmZRdHNUZzhOZ2gza2tSYjVGRmVTRjFOOGwwWXB5QW1SekVoNUdm?=
+ =?utf-8?B?QWtsR2lVcFdoUWZvQWNvOGdXQVFmY3FXM2UzdmhBdDhVWjM4VWhnQmtuRzFP?=
+ =?utf-8?B?dTgxUnFiOUN4anQvTmM0eHVMWDlaTmJnb2UrODNGUTljV2ZiR3VNN3JTU1VY?=
+ =?utf-8?B?c24yMUFYb1B5RldCOUFKcmF5cWxqQVlLM3BjMjdkQi9rdTB1VFZOZ3MveW9y?=
+ =?utf-8?B?VzhQaE94Y0hkVTVFWDdZdVN5WG1hSStzckwrL3krbmUzWkdrSW5LeXZQNXIy?=
+ =?utf-8?B?M1cwTE1QVlZpbTNtM2hBVDI0ckVGZTR0VUNsVUk5SC9vdG1MdFlEbk9MYlkv?=
+ =?utf-8?B?ckRjUjgyb2d6OW56d3V5RTd1MkpWcUZaUlQzelVVQUFmaDRJM0RhQzlEL1NB?=
+ =?utf-8?B?bjliVzF4VHFXNWFIdWhSNTl4SUpVTnUvYXJaUXd6cXpoNU1mVTdhY2x3aEpx?=
+ =?utf-8?B?eC8yWG9nV2YzMnhQK1B6bTIvTHdLT1grMGhmaEJjelBBN2wzWjNNWDE0UU40?=
+ =?utf-8?B?ZWtwczE3Y3lML3Z1WEwwb1BGdTVQZTlOWHoxTWk2b3E0VUR0bldiTGRubFJB?=
+ =?utf-8?B?UlQvbmxLNEhqcWxRWU1FdGxIRmRCNjY0eUpNbXB4c09QNGhSc1FxbFRPQTRM?=
+ =?utf-8?B?SGwrSGlkMThUdTRIeXZoOUswSXlISWc4NE1HVmw1STZ2VTJqWHdrcU9kQXBV?=
+ =?utf-8?B?b0ZJNTJnaG5UeUU4akoxaWJuNEhLS2ppL2dEQ3NYUE5OSENOelhZUk1UWEtX?=
+ =?utf-8?B?Q05xamVPOWRBZktzTEZteW8xUE5mV0sxeHpPc3VjZ2xTcDBwcnpDYnV5TThN?=
+ =?utf-8?B?RDRFUzNuOHZJRjMweEx4c0szTXpnb21yNk9tdlpJZzU5TURVNnNEbnZnVlBl?=
+ =?utf-8?B?N3lkSVdzcEh4S1ZuNWVXN0toTWVSemQzV1lvZzcxTnR0NFp1dW9IMjZsRlVM?=
+ =?utf-8?B?UDZYRUhScWtseDhVTnhYWEpWalBicjJZdGVXZVNQbHJGd0p1Z3R1N0VhN1Mx?=
+ =?utf-8?B?elpJZVZyVU9kSjhhbThxTmZhelFmb1I1bWdSSVUzeEVtNXlBZzU4dHMwN3Fa?=
+ =?utf-8?B?T2E0TnZXdWtXbHBLL1Ixa3gxYVVFUEd5RXBLN3g3em9xTmk2Nk5MLzhFOXpT?=
+ =?utf-8?B?QVM0R3BPTW15b1dnRGF0blVCQWE2dHphR3JZMVNLVUd6YlRMSXdQY2xBZzBZ?=
+ =?utf-8?B?NDBZNG1NZEdEdlZBSnBBcTg0OWZxNWYvdjBDUW5rVys4QTNOVk1jbEZzMEFG?=
+ =?utf-8?B?UzNwclBiMjhBc3UwZUNHVFE2OEdSZ01LdExJWEpQbElXVUVhUVVPeEhhanRL?=
+ =?utf-8?B?UG1lenpleXMxM05Id2ZhUFhFK3Joc1c4bkRtWE1IamhJQ1oyQmhFWUZ5Vk1H?=
+ =?utf-8?B?OWlzNHd2M01iY3JFYXdNUUVCN0VDRGtrZVdLNCt0dm9BdWNYdE5kWnZ2Wkc2?=
+ =?utf-8?Q?GioglQVXE9BXLdcQdxqNiuc=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <0C177ADF2F9C6F43B081736671E3EB8B@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB5825.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3d9f6aa4-f19c-408a-0caa-08dccfe3a551
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Sep 2024 08:53:01.7580
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: b8EQRys/LjA5TdKyjgWL0sXYlpDHgpPNcMvkJwLz5jrJJ90vt7rWXytcbx6Xx3VyXxgV32lPF2Wi69CuvPMckCjjdBwvnDFw7uEU7hi2AzA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR11MB7339
+X-OriginatorOrg: intel.com
 
-This adds support for the QCA9379-3 SDIO SoC. It is part of the
-QCA6174 SDIO family.
-
-While the device is generally working, there are some remaining issues:
-- the card will perform a full reconnect upon expiry of the Group Key
-  renewal interval
-- rx rates are not reported correctly (i.e. always show as 6.0 MBit/s)
-
-More debugging would need to be done on these, preferably by people with
-access to proper documentation.
-
-This change was tested on a device that uses a LITEON WCBN3510A module.
-The module was tested in WPA2 and WPA3 Personal scenarios using iperf3.
-Performance was comparable to the same device using the vendor driver in
-the same environment.
-
-Tested-on: QCA9379 hw1.0 SDIO WLAN.NPL.1.6-00163-QCANPLSWPZ-1
-
-Signed-off-by: Felix Kaechele <felix@kaechele.ca>
----
- drivers/net/wireless/ath/ath10k/core.c      | 37 +++++++++++++++++++++
- drivers/net/wireless/ath/ath10k/hw.h        | 10 ++++++
- drivers/net/wireless/ath/ath10k/pci.c       |  2 ++
- drivers/net/wireless/ath/ath10k/sdio.c      |  5 ++-
- drivers/net/wireless/ath/ath10k/targaddrs.h |  3 ++
- 5 files changed, 56 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath10k/core.c b/drivers/net/wireless/ath/ath10k/core.c
-index b3294287bce1..32d5d4be8830 100644
---- a/drivers/net/wireless/ath/ath10k/core.c
-+++ b/drivers/net/wireless/ath/ath10k/core.c
-@@ -661,6 +661,42 @@ static const struct ath10k_hw_params ath10k_hw_params_list[] = {
- 		.delay_unmap_buffer = false,
- 		.mcast_frame_registration = false,
- 	},
-+	{
-+		.id = QCA9379_HW_1_0_DEV_VERSION,
-+		.dev_id = QCA9379_1_0_DEVICE_ID,
-+		.bus = ATH10K_BUS_SDIO,
-+		.name = "qca9379 hw1.0 sdio",
-+		.patch_load_addr = QCA9379_HW_1_0_PATCH_LOAD_ADDR,
-+		.uart_pin = 19,
-+		.otp_exe_param = 0,
-+		.channel_counters_freq_hz = 88000,
-+		.max_probe_resp_desc_thres = 0,
-+		.cal_data_len = 0,
-+		.fw = {
-+			.dir = QCA9379_HW_1_0_FW_DIR,
-+			.board_size = QCA9379_BOARD_DATA_SZ,
-+			.board_ext_size = QCA9379_BOARD_EXT_DATA_SZ,
-+		},
-+		.rx_desc_ops = &qca988x_rx_desc_ops,
-+		.hw_ops = &qca6174_sdio_ops,
-+		.hw_clk = qca6174_clk,
-+		.target_cpu_freq = 176000000,
-+		.decap_align_bytes = 4,
-+		.n_cipher_suites = 8,
-+		.num_peers = 10,
-+		.ast_skid_limit = 0x10,
-+		.num_wds_entries = 0x20,
-+		.uart_pin_workaround = true,
-+		.tx_stats_over_pktlog = false,
-+		.credit_size_workaround = true,
-+		.bmi_large_size_download = true,
-+		.supports_peer_stats_info = false,
-+		.dynamic_sar_support = false,
-+		.hw_restart_disconnect = false,
-+		.use_fw_tx_credits = true,
-+		.delay_unmap_buffer = false,
-+		.mcast_frame_registration = false,
-+	},
- 	{
- 		.id = QCA4019_HW_1_0_DEV_VERSION,
- 		.dev_id = 0,
-@@ -3602,6 +3638,7 @@ struct ath10k *ath10k_core_create(size_t priv_size, struct device *dev,
- 		break;
- 	case ATH10K_HW_QCA6174:
- 	case ATH10K_HW_QCA9377:
-+	case ATH10K_HW_QCA9379:
- 		ar->regs = &qca6174_regs;
- 		ar->hw_ce_regs = &qcax_ce_regs;
- 		ar->hw_values = &qca6174_values;
-diff --git a/drivers/net/wireless/ath/ath10k/hw.h b/drivers/net/wireless/ath/ath10k/hw.h
-index 442091c6dfd2..419fa1888e75 100644
---- a/drivers/net/wireless/ath/ath10k/hw.h
-+++ b/drivers/net/wireless/ath/ath10k/hw.h
-@@ -30,6 +30,7 @@ enum ath10k_bus {
- #define QCA9888_2_0_DEVICE_ID	(0x0056)
- #define QCA9984_1_0_DEVICE_ID	(0x0046)
- #define QCA9377_1_0_DEVICE_ID   (0x0042)
-+#define QCA9379_1_0_DEVICE_ID   (0x0042)
- #define QCA9887_1_0_DEVICE_ID   (0x0050)
- 
- /* QCA988X 1.0 definitions (unsupported) */
-@@ -59,6 +60,9 @@ enum ath10k_bus {
- #define QCA9377_HW_1_0_DEV_VERSION	0x05020000
- #define QCA9377_HW_1_1_DEV_VERSION	0x05020001
- 
-+/* QCA9379 target BMI version signatures */
-+#define QCA9379_HW_1_0_DEV_VERSION	0x05040000
-+
- enum qca6174_pci_rev {
- 	QCA6174_PCI_REV_1_1 = 0x11,
- 	QCA6174_PCI_REV_1_3 = 0x13,
-@@ -115,6 +119,10 @@ enum qca9377_chip_id_rev {
- #define QCA9377_HW_1_0_FW_DIR          ATH10K_FW_DIR "/QCA9377/hw1.0"
- #define QCA9377_HW_1_0_PATCH_LOAD_ADDR	0x1234
- 
-+/* QCA9379 1.0 definitions */
-+#define QCA9379_HW_1_0_FW_DIR		ATH10K_FW_DIR "/QCA9379/hw1.0"
-+#define QCA9379_HW_1_0_PATCH_LOAD_ADDR	0x1234
-+
- /* QCA4019 1.0 definitions */
- #define QCA4019_HW_1_0_DEV_VERSION     0x01000000
- #define QCA4019_HW_1_0_FW_DIR          ATH10K_FW_DIR "/QCA4019/hw1.0"
-@@ -230,6 +238,7 @@ enum ath10k_hw_rev {
- 	ATH10K_HW_QCA9888,
- 	ATH10K_HW_QCA9984,
- 	ATH10K_HW_QCA9377,
-+	ATH10K_HW_QCA9379,
- 	ATH10K_HW_QCA4019,
- 	ATH10K_HW_QCA9887,
- 	ATH10K_HW_WCN3990,
-@@ -401,6 +410,7 @@ int ath10k_hw_diag_fast_download(struct ath10k *ar,
- #define QCA_REV_9888(ar) ((ar)->hw_rev == ATH10K_HW_QCA9888)
- #define QCA_REV_9984(ar) ((ar)->hw_rev == ATH10K_HW_QCA9984)
- #define QCA_REV_9377(ar) ((ar)->hw_rev == ATH10K_HW_QCA9377)
-+#define QCA_REV_9379(ar) ((ar)->hw_rev == ATH10K_HW_QCA9379)
- #define QCA_REV_40XX(ar) ((ar)->hw_rev == ATH10K_HW_QCA4019)
- #define QCA_REV_WCN3990(ar) ((ar)->hw_rev == ATH10K_HW_WCN3990)
- 
-diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
-index c52a16f8078f..6fee3d52d808 100644
---- a/drivers/net/wireless/ath/ath10k/pci.c
-+++ b/drivers/net/wireless/ath/ath10k/pci.c
-@@ -1899,6 +1899,7 @@ void ath10k_pci_irq_msi_fw_mask(struct ath10k *ar)
- 		 *  to mask irq/MSI.
- 		 */
- 		break;
-+	case ATH10K_HW_QCA9379:
- 	case ATH10K_HW_WCN3990:
- 		break;
- 	}
-@@ -1927,6 +1928,7 @@ static void ath10k_pci_irq_msi_fw_unmask(struct ath10k *ar)
- 		 *  to unmask irq/MSI.
- 		 */
- 		break;
-+	case ATH10K_HW_QCA9379:
- 	case ATH10K_HW_WCN3990:
- 		break;
- 	}
-diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
-index 08a6f36a6be9..24123d23ad5a 100644
---- a/drivers/net/wireless/ath/ath10k/sdio.c
-+++ b/drivers/net/wireless/ath/ath10k/sdio.c
-@@ -1105,6 +1105,7 @@ static void ath10k_sdio_set_mbox_info(struct ath10k *ar)
- 				ATH10K_HIF_MBOX0_EXT_WIDTH_ROME_2_0;
- 		break;
- 	case (SDIO_DEVICE_ID_ATHEROS_QCA9377 & 0x0F00):
-+	case (SDIO_DEVICE_ID_ATHEROS_QCA9379 & 0x0F00):
- 		mbox_info->ext_info[0].htc_ext_sz =
- 			ATH10K_HIF_MBOX0_EXT_WIDTH_ROME_2_0;
- 		break;
-@@ -2597,7 +2598,8 @@ static int ath10k_sdio_probe(struct sdio_func *func,
- 
- 	dev_id_base = (id->device & 0x0F00);
- 	if (dev_id_base != (SDIO_DEVICE_ID_ATHEROS_AR6005 & 0x0F00) &&
--	    dev_id_base != (SDIO_DEVICE_ID_ATHEROS_QCA9377 & 0x0F00)) {
-+	    dev_id_base != (SDIO_DEVICE_ID_ATHEROS_QCA9377 & 0x0F00) &&
-+	    dev_id_base != (SDIO_DEVICE_ID_ATHEROS_QCA9379 & 0x0F00)) {
- 		ret = -ENODEV;
- 		ath10k_err(ar, "unsupported device id %u (0x%x)\n",
- 			   dev_id_base, id->device);
-@@ -2656,6 +2658,7 @@ static void ath10k_sdio_remove(struct sdio_func *func)
- static const struct sdio_device_id ath10k_sdio_devices[] = {
- 	{SDIO_DEVICE(SDIO_VENDOR_ID_ATHEROS, SDIO_DEVICE_ID_ATHEROS_AR6005)},
- 	{SDIO_DEVICE(SDIO_VENDOR_ID_ATHEROS, SDIO_DEVICE_ID_ATHEROS_QCA9377)},
-+	{SDIO_DEVICE(SDIO_VENDOR_ID_ATHEROS, SDIO_DEVICE_ID_ATHEROS_QCA9379)},
- 	{},
- };
- 
-diff --git a/drivers/net/wireless/ath/ath10k/targaddrs.h b/drivers/net/wireless/ath/ath10k/targaddrs.h
-index ba37e6c7ced0..1a0f71126683 100644
---- a/drivers/net/wireless/ath/ath10k/targaddrs.h
-+++ b/drivers/net/wireless/ath/ath10k/targaddrs.h
-@@ -481,6 +481,9 @@ struct host_interest {
- #define QCA9377_BOARD_DATA_SZ     QCA6174_BOARD_DATA_SZ
- #define QCA9377_BOARD_EXT_DATA_SZ 0
- 
-+#define QCA9379_BOARD_DATA_SZ     QCA6174_BOARD_DATA_SZ
-+#define QCA9379_BOARD_EXT_DATA_SZ 0
-+
- #define QCA99X0_BOARD_DATA_SZ	  12288
- #define QCA99X0_BOARD_EXT_DATA_SZ 0
- 
--- 
-2.46.0
-
+T24gU2F0LCAyMDI0LTA5LTA3IGF0IDIyOjIxICswMTAwLCBDaHJpcyBCYWluYnJpZGdlIHdyb3Rl
+Og0KPiBPbiBTYXQsIDcgU2VwdCAyMDI0IGF0IDE5OjM1LCBHcnVtYmFjaCwgRW1tYW51ZWwNCj4g
+PGVtbWFudWVsLmdydW1iYWNoQGludGVsLmNvbT4gd3JvdGU6DQo+ID4gDQo+ID4gQ2FuIHlvdSBw
+bGVhc2UgdHJ5IHRvIGFkZDoNCj4gPiBodHRwczovL2dpdC5rZXJuZWwub3JnL3B1Yi9zY20vbGlu
+dXgva2VybmVsL2dpdC93aXJlbGVzcy93aXJlbGVzcy5naXQvY29tbWl0Lz9pZD0wOTQ1MTNmOGEy
+ZmJkZGVlNTFiMDU1ZDgwMzVmOTk1NTUxZjk4ZmNlDQo+ID4gaHR0cHM6Ly9naXQua2VybmVsLm9y
+Zy9wdWIvc2NtL2xpbnV4L2tlcm5lbC9naXQvd2lyZWxlc3Mvd2lyZWxlc3MuZ2l0L2NvbW1pdC8/
+aWQ9Y2IzNDdiZDI5ZDBkMTA2MjEzYTBjZjRmODZiNzJkZmZkMDhkMzQ1NA0KPiA+IA0KPiA+IGFu
+ZCBsZXQgbWUga25vdyBpZiB0aGluZ3Mgd29yayBhZ2FpbiBmb3IgeW91Pw0KPiANCj4gQm90aCBv
+ZiB0aG9zZSBwYXRjaGVzIGFyZSBhbHJlYWR5IGluIHY2LjExLXJjNiAod2hpY2ggaGFzIHRoZSBl
+cnJvcikuDQoNCkNhbiB5b3UgcGxlYXNlIHRyeSB0byBhcHBseSB0aGlzOg0KDQpkaWZmIC0tZ2l0
+IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvaW50ZWwvaXdsd2lmaS9wY2llL3RyYW5zLmMNCmIvZHJp
+dmVycy9uZXQvd2lyZWxlc3MvaW50ZWwvaXdsd2lmaS9wY2llL3RyYW5zLmMNCmluZGV4IDE4MjJl
+MjJiN2MwYS4uNDU0ZWIxMTU1ODgxIDEwMDY0NA0KLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3Mv
+aW50ZWwvaXdsd2lmaS9wY2llL3RyYW5zLmMNCisrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL2lu
+dGVsL2l3bHdpZmkvcGNpZS90cmFucy5jDQpAQCAtMTY5Nyw2ICsxNjk3LDggQEAgaW50IGl3bF90
+cmFuc19wY2llX2QzX3Jlc3VtZShzdHJ1Y3QgaXdsX3RyYW5zICp0cmFucywNCiBvdXQ6DQogICAg
+ICAgIGlmICgqc3RhdHVzID09IElXTF9EM19TVEFUVVNfQUxJVkUpDQogICAgICAgICAgICAgICAg
+cmV0ID0gaXdsX3BjaWVfZDNfaGFuZHNoYWtlKHRyYW5zLCBmYWxzZSk7DQorICAgICAgIGVsc2UN
+CisgICAgICAgICAgICAgICB0cmFucy0+c3RhdGUgPSBJV0xfVFJBTlNfTk9fRlc7DQogDQogICAg
+ICAgIHJldHVybiByZXQ7DQogfQ0KDQpJdCBzaG91bGQgZml4IHRoZSBsYXN0IHBhcnQgb2YgdGhl
+IGVycm9yIHlvdSBwYXN0ZWQ6DQoNClsgIDEwMy41MTIxMjJdIGl3bHdpZmkgMDAwMDowMTowMC4w
+OiBIYXJkd2FyZSBlcnJvciBkZXRlY3RlZC4gUmVzdGFydGluZy4NClsgIDEwMy41MTIzMzBdIGl3
+bHdpZmkgMDAwMDowMTowMC4wOiBTdGFydCBJV0wgRXJyb3IgTG9nIER1bXA6DQpbICAxMDMuNTEy
+MzMxXSBpd2x3aWZpIDAwMDA6MDE6MDAuMDogVHJhbnNwb3J0IHN0YXR1czogMHgwMDAwMDA0Qg0K
+DQpZb3UnbGwgc3RpbGwgaGF2ZSB0aGUgZmlyc3QgcGFydCBidXQgSSBleHBlY3QgV2lGaSB0byB3
+b3JrLg0KSSdtIHN0aWxsIGNoZWNraW5nIGludGVybmFsbHkgd2hhdCB3ZSBuZWVkIHRvIGRvIGhl
+cmUuDQoNClRoYW5rcyBmb3IgeW91ciByZXBvcnQgYW5kIGJpc2VjdGlvbiENCg0KPiANCj4gPiBC
+VFcgLSBJIGFzc3VtZSB0aGF0IHlvdXIgc3lzdGVtIGlzIGNvbmZpZ3VyZWQgbm90IHRvIHBvd2Vy
+IHRoZSBXTEFOIGRldmljZSBpZiB0aGUgcG93ZXIgY29yZCBpcw0KPiA+IG5vdA0KPiA+IGNvbm5l
+Y3RlZCBhbmQgdGhlIHN5c3RlbSBpcyBzdXNwZW5kZWQ/DQo+IA0KPiBUaGlzIGlzIGEgSFAgbGFw
+dG9wIHdpdGggZGVmYXVsdCBCSU9TIHNldHRpbmdzLiBJdCdzIHBvc3NpYmxlIHRoYXQgdGhlDQo+
+IEhQIEJJT1MgdHVybnMgb2ZmIHRoZSB3aWZpIHdoZW4gc3VzcGVuZGVkIG9uIGJhdHRlcnkgcG93
+ZXIsIGJ1dCBJDQo+IGhhdmVuJ3QgZXhwbGljaXRseSBjb25maWd1cmVkIGFueXRoaW5nIHJlbGF0
+ZWQgdG8gV0xBTiBwb3dlciAoSSBkb24ndA0KPiBzZWUgYW55IEJJT1Mgc2V0dGluZ3MgZm9yIHRo
+YXQpLCBhbmQgdGhlIGtlcm5lbCBpcyBydW5uaW5nIHdpdGgNCj4gZGVmYXVsdCBwYXJhbWV0ZXJz
+Lg0KDQpJIHNlZS4gVGhhbmtzLg0KDQo=
 
