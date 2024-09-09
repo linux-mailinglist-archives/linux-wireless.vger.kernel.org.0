@@ -1,373 +1,224 @@
-Return-Path: <linux-wireless+bounces-12636-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12637-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEEA39709D2
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Sep 2024 22:55:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB454970AB5
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 02:10:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3235F1F21B88
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Sep 2024 20:55:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 052F21C215C8
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 00:10:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA9B31741E8;
-	Sun,  8 Sep 2024 20:55:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EBTBn176"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9006F33FE;
+	Mon,  9 Sep 2024 00:10:27 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-il1-f206.google.com (mail-il1-f206.google.com [209.85.166.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F93B2B9CD
-	for <linux-wireless@vger.kernel.org>; Sun,  8 Sep 2024 20:55:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCED029B0
+	for <linux-wireless@vger.kernel.org>; Mon,  9 Sep 2024 00:10:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725828911; cv=none; b=VRXRoYItiI/LH7WUjvj2rY0ZUPRZLl51zE30nzZqdrmFVSmf1/shPLiHGgUTHMkfAcsuEpc3QuQAGzMu6Sg9gGhUV37Y6+RsudP67/U2Qw+NNMhd0+QOvQDOJlVzDYVPS6f2UqJsS3ftz7elTrW+8L/AwC4QIeEuRpkbIZpJUww=
+	t=1725840627; cv=none; b=QLuoS5eWS+c3V5p+x4gIGqCZD3zi/YW8TDGHZXFwEpN/N3E3sQanhvz85YBE54z522KYq94FuWmguYNgXO8yep1+aQvnOObw4218hbOBQFXI45HvyAmjOCTBOfaXPysj5vyyVe4WWbF55iau/0nmlZKf4J3W2vX7QSO+xmBhNz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725828911; c=relaxed/simple;
-	bh=0uGF+JiiH76bouRpGBO2IRWe4EDO4tfUibanfEJEoQM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=l2cfYxMQBbufYX0XHFOVngB8aEPsWddzlWr44Q+iogRX2oY1CGWoHzAfHvMVNDvGEbYus4+xjkeDxPh6Kgc/SdCZIGOQ1FwtllYF4FvtR+EeOHYH+lZKtrZBvIanh/P1WdkLtapNXaFTY6Gn7anMPloOhVjkguAePWN0bSZWsko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EBTBn176; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-42cb8dac900so1285795e9.3
-        for <linux-wireless@vger.kernel.org>; Sun, 08 Sep 2024 13:55:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725828908; x=1726433708; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=czDgOOlIt6DrhvJwJhqTih6mPCUHpwHgA2H3c9eCM3w=;
-        b=EBTBn176dpbyfO+ab3p22X0+XiEaQp14stSNbxaJn2IP3+54lqchgWmKP2JSjV+/Pj
-         jvcTjleCkCUa2JxCS7v4ArCFSfP332uYEf7Yo/DrZalbdgXLUoMQPNdDyDPZfYQH/I4x
-         GOZX0c++TadbSvkMc7sVwBCDpMEKHTPa9nLxCR72znHOmy77lZfs0s0DExbvedg5KnAr
-         Z+GmV+J+dRQu5XBvBAlSMYSOo5QTSZj+B5A19qAMwjFtl0THFu6Z/FwdUvtMfTysww0e
-         GcGONVUVBH7NBrX7X6Gwp+Lt1bl6Lq8jrw/s1h++3TnSjdg1NCD+Nvg2aizlq/OaQTe2
-         uwjw==
+	s=arc-20240116; t=1725840627; c=relaxed/simple;
+	bh=gdXA8mdv9/Wt2N4JT/taEM5Rjv7oKk9dwwaTJGj93h4=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=cI1CKb68VFPEOzHfnpJ2JxAK8YRp2ARwyJ6wuYE83zjOOBafa/KN7dTAlMyPE1cjAX01RxjDtrhUredYmxRipWnMUb4B6gSviiCTMd/Mjz/ZmITGIpPYjxwBwkcc3JGYA12QNes5ALdvFzxUnvOx6cECKeX7qZII/1mQM/Nvba4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f206.google.com with SMTP id e9e14a558f8ab-39d2c44422eso60135575ab.2
+        for <linux-wireless@vger.kernel.org>; Sun, 08 Sep 2024 17:10:25 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725828908; x=1726433708;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=czDgOOlIt6DrhvJwJhqTih6mPCUHpwHgA2H3c9eCM3w=;
-        b=nNzCwD4+usy8mmLglEeNruFTIZRAKflQgs0ldWP7C7IIdwLq4SLdG7e8dm2wT7Dt3b
-         OUomeUUuKS5hNGOOQdpEQHmDsvULMb1OIvazLr7MuoJzxSg19euFJ55Xs1+/8MJ45+yK
-         psDWkjhtP0S4zbKxJlFYtpGuzlCDXSkt41mk1wHpa3bd4ROXkbttPtKnaO7tZEU0Gg2D
-         cKVl6+2FsLO2N0gNROyCf9nug1iPQSJqAxr9ckFlxoyXXL5F9TqfVsPwTrxsP9xuQj3j
-         +uhS7toB5TgzSotssYos+kV8IXB4tLxfQVugI/hwTs7PGyWSEV01LypGN/XgVVfOmilt
-         aOYg==
-X-Gm-Message-State: AOJu0YyUGwfoiUGc9dBtve2ZkHk9Qf0qaAtBSy9vNSqZ8qxp+BqAlrZN
-	EEdv2WLIBRU32fA3jqqiaZMWCGLe0I5giQTZSSjMZBnSPewt7/43MNMt+5HJdIk=
-X-Google-Smtp-Source: AGHT+IFkYvRcUvlCGSg+B5CRlQqhyVmUTFURPUGwdyDY3RKqEy2JWSwqvl/KYWSc/cGMjH/IQ71wCw==
-X-Received: by 2002:a05:600c:5248:b0:42c:b23f:7ba5 with SMTP id 5b1f17b1804b1-42cb23f7d26mr27422195e9.10.1725828907328;
-        Sun, 08 Sep 2024 13:55:07 -0700 (PDT)
-Received: from debian.local ([2a0a:ef40:c56:fd01:3715:1975:8d7:6033])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-378956d363asm4227732f8f.72.2024.09.08.13.55.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Sep 2024 13:55:06 -0700 (PDT)
-Date: Sun, 8 Sep 2024 21:55:04 +0100
-From: Chris Bainbridge <chris.bainbridge@gmail.com>
-To: "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"kvalo@kernel.org" <kvalo@kernel.org>,
-	"Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>,
-	"Berg, Johannes" <johannes.berg@intel.com>,
-	"benjamin@sipsolutions.net" <benjamin@sipsolutions.net>,
-	"regressions@lists.linux.dev" <regressions@lists.linux.dev>
-Subject: Re: [REGRESSION] iwlwifi resume error, bisected
-Message-ID: <Zt4PKMCp_FTx3kac@debian.local>
-References: <CAP-bSRbMbZe9LCE15SCbYNTGZjE_xiAm29qzO_WNVjHsJ6oyyg@mail.gmail.com>
- <9ada34661b93fa5dfe3b0c66816a62c1a27f22a3.camel@intel.com>
- <CAP-bSRZm4CyxY1VdtWvZRcfLMwc3njd3OTSd446Q5dcSfjJY=Q@mail.gmail.com>
- <d59125316423abd2f67e1c111eb54d083b7cc014.camel@intel.com>
- <d3a83162570aaede579ecde64e00350ce1e6b452.camel@intel.com>
+        d=1e100.net; s=20230601; t=1725840625; x=1726445425;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8YMGwHLqSidkmjKDWpogpRqKoOdeBh1Yx5Vlies0YHU=;
+        b=MppW5fcGPzekdGE096bC59PzkhF5Wd0SPYOdb3tYZ98TZmy+L8f1YUWRDAfxmSsU93
+         R5PQdgA6yYXFTv9DF/wXP3IbwNJaiiMiuaNJ8a3del16ALWPKN2zFxYTac6VUmPOZrOm
+         Il+P2g8B0KnDfNJXBvr/+FPh5co9gbKUdbgoVag4mo9o9t9I0i0bLPyFwIy2ptHqRHft
+         Bq3GF91VFbFWoE8v55Q0KfvfXT6zxvqLC8RpuPRhawmLSh0jG0KAu0om3C9wVxXmNDe6
+         rHsTUBcJdTD5I5kj/u8O7WFpBu5gqt4O0lTwMpQo+agjYCbUwZ/oTIwEsHGGyprhVu8+
+         NzkA==
+X-Forwarded-Encrypted: i=1; AJvYcCWKYYudAy+8TRK+x4Z4cPjllAwuIVuatFcDlMxOkTbLQCymqiAmZZ1gbK/kVTBS+Xn2nQUImG/KEQTgiP1YpQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCfF2p1L+CiUy5aOtbWNIc/7tIC8zRcWX/4NN0o8NfPVaT1suP
+	Wh0J5riA/DGErIfFpj9QnV65y2NI8J0BS6jAgWT2U1/6nzXgzIdQKn07eEmWXhz0cYSmfeEIdZj
+	F2S1QPn06YeFXmkW4/ZMDA+tfDeGzw8ThxpyuxmXm0nMhAHP/72bf/WM=
+X-Google-Smtp-Source: AGHT+IH00w4Kg+tsfr8fLDMpUFza9Z96V2kwo2YniuJyIWsjrr7eS/chyIEuZyk1h1BmK7ZkMmRNdbeQ381GjimXyHDX7Q2uI7GU
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <d3a83162570aaede579ecde64e00350ce1e6b452.camel@intel.com>
+X-Received: by 2002:a05:6e02:1aa4:b0:397:6dfc:993a with SMTP id
+ e9e14a558f8ab-3a04f0fdd80mr115191015ab.21.1725840624880; Sun, 08 Sep 2024
+ 17:10:24 -0700 (PDT)
+Date: Sun, 08 Sep 2024 17:10:24 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <00000000000062a2960621a49519@google.com>
+Subject: [syzbot] [wireless?] WARNING in ieee80211_rx_list (3)
+From: syzbot <syzbot+b4aa2b672b18f1d4dc5f@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, johannes@sipsolutions.net, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Sun, Sep 08, 2024 at 10:54:09AM +0000, Grumbach, Emmanuel wrote:
->=20
-> Strike that.
->=20
-> Can you please take the patch in attached instead?
+Hello,
 
-Sure, the error with v6.11-rc6+patch is:
+syzbot found the following issue on:
 
-[   63.289157] ------------[ cut here ]------------
-[   63.289168] Timeout waiting for hardware access (CSR_GP_CNTRL 0x08040008)
-[   63.289213] WARNING: CPU: 11 PID: 861 at drivers/net/wireless/intel/iwlw=
-ifi/pcie/trans.c:2247 __iwl_trans_pcie_grab_nic_access+0x197/0x1a0 [iwlwifi]
-[   63.289233] Modules linked in: rfcomm xt_conntrack nft_chain_nat xt_MASQ=
-UERADE nf_nat nf_conntrack_netlink nf_conntrack nf_defrag_ipv6 nf_defrag_ip=
-v4 xfrm_user xfrm_algo xt_addrtype nft_compat nf_tables nfnetlink br_netfil=
-ter bridge stp llc nvme_fabrics ccm snd_seq_dummy snd_hrtimer snd_seq overl=
-ay qrtr cmac algif_hash algif_skcipher af_alg bnep binfmt_misc snd_soc_dmic=
- snd_acp3x_rn snd_acp3x_pdm_dma snd_sof_amd_rembrandt snd_sof_amd_renoir sn=
-d_sof_amd_acp snd_sof_pci snd_sof_xtensa_dsp iwlmvm snd_sof snd_hda_codec_r=
-ealtek snd_sof_utils intel_rapl_msr snd_hda_codec_generic intel_rapl_common=
- snd_hda_scodec_component snd_hda_codec_hdmi snd_soc_core mac80211 snd_comp=
-ress btusb snd_pci_ps btrtl snd_rpl_pci_acp6x snd_acp_pci btintel libarc4 s=
-nd_acp_legacy_common snd_hda_intel kvm_amd snd_usb_audio snd_pci_acp6x btbc=
-m btmtk snd_intel_dspcfg snd_ctl_led snd_pci_acp5x snd_hda_codec kvm snd_us=
-bmidi_lib uvcvideo snd_ump videobuf2_vmalloc videobuf2_memops ee1004 snd_hw=
-dep snd_rawmidi uvc snd_hda_core snd_seq_device rapl
-[   63.289293]  videobuf2_v4l2 snd_rn_pci_acp3x hp_wmi sparse_keymap snd_pc=
-m snd_acp_config iwlwifi platform_profile pcspkr videodev snd_soc_acpi snd_=
-timer wmi_bmof bluetooth videobuf2_common ucsi_acpi sp5100_tco k10temp snd_=
-pci_acp3x snd cfg80211 typec_ucsi mc soundcore ccp typec amd_pmc acpi_tad i=
-nput_leds joydev serio_raw mac_hid msr parport_pc ppdev lp parport efi_psto=
-re dmi_sysfs ip_tables x_tables autofs4 btrfs blake2b_generic libcrc32c xor=
- raid6_pq usbmouse hid_microsoft ff_memless usbkbd dm_crypt hid_cmedia r815=
-3_ecm cdc_ether usbnet r8152 mii usbhid uas usb_storage amdgpu i2c_algo_bit=
- drm_ttm_helper ttm drm_exec nvme drm_suballoc_helper amdxcp hid_multitouch=
- drm_buddy nvme_core video gpu_sched xhci_pci hid_generic crct10dif_pclmul =
-crc32_pclmul polyval_clmulni polyval_generic ghash_clmulni_intel drm_displa=
-y_helper amd_sfh xhci_pci_renesas nvme_auth i2c_hid_acpi i2c_piix4 i2c_hid =
-i2c_smbus hid wmi aesni_intel crypto_simd cryptd
-[   63.289360] CPU: 11 UID: 0 PID: 861 Comm: kworker/u64:11 Not tainted 6.1=
-1.0-rc6-dirty #188
-[   63.289362] Hardware name: HP HP Pavilion Aero Laptop 13-be0xxx/8916, BI=
-OS F.12 04/11/2023
-[   63.289364] Workqueue: async async_run_entry_fn
-[   63.289370] RIP: 0010:__iwl_trans_pcie_grab_nic_access+0x197/0x1a0 [iwlw=
-ifi]
-[   63.289379] Code: e4 31 c0 e9 6f ff ff ff 31 f6 48 89 df e8 f1 fc ff ff =
-eb e5 44 89 e6 48 c7 c7 d8 e9 dd c1 c6 05 3b f2 02 00 01 e8 09 c8 b6 e3 <0f=
-> 0b eb 93 0f 1f 44 00 00 0f 1f 44 00 00 55 be 00 02 00 00 48 89
-[   63.289381] RSP: 0018:ffff9db243a37a38 EFLAGS: 00010246
-[   63.289383] RAX: 0000000000000000 RBX: ffff8ce309198028 RCX: 00000000000=
-00000
-[   63.289384] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 00000000000=
-00000
-[   63.289385] RBP: ffff9db243a37a60 R08: 0000000000000000 R09: 00000000000=
-00000
-[   63.289386] R10: 0000000000000000 R11: 0000000000000000 R12: 00000000080=
-40008
-[   63.289387] R13: 0000000000000000 R14: ffff8ce309199e30 R15: 00000000000=
-00011
-[   63.289388] FS:  0000000000000000(0000) GS:ffff8ce60e780000(0000) knlGS:=
-0000000000000000
-[   63.289389] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   63.289390] CR2: 00007cedb4dc5180 CR3: 0000000147658000 CR4: 0000000000f=
-50ef0
-[   63.289391] PKRU: 55555554
-[   63.289392] Call Trace:
-[   63.289393]  <TASK>
-[   63.289395]  ? show_regs+0x68/0x80
-[   63.289399]  ? __warn+0x8e/0x1b0
-[   63.289404]  ? __iwl_trans_pcie_grab_nic_access+0x197/0x1a0 [iwlwifi]
-[   63.289413]  ? report_bug+0x17e/0x1b0
-[   63.289419]  ? handle_bug+0x46/0x80
-[   63.289423]  ? exc_invalid_op+0x18/0x80
-[   63.289424]  ? asm_exc_invalid_op+0x1b/0x20
-[   63.289431]  ? __iwl_trans_pcie_grab_nic_access+0x197/0x1a0 [iwlwifi]
-[   63.289440]  ? __iwl_trans_pcie_grab_nic_access+0x197/0x1a0 [iwlwifi]
-[   63.289448]  ? iwl_trans_pcie_grab_nic_access+0x1b/0x50 [iwlwifi]
-[   63.289457]  iwl_trans_pcie_grab_nic_access+0x2b/0x50 [iwlwifi]
-[   63.289465]  _iwl_trans_grab_nic_access+0xe/0x20 [iwlwifi]
-[   63.289475]  iwl_trans_pcie_read_mem+0x47/0x150 [iwlwifi]
-[   63.289485]  iwl_trans_read_mem+0xe/0x20 [iwlwifi]
-[   63.289495]  iwl_mvm_check_rt_status+0xbb/0x160 [iwlmvm]
-[   63.289511]  iwl_mvm_fast_resume+0xa3/0x1b6 [iwlmvm]
-[   63.289521]  __iwl_mvm_mac_start+0xfe/0x2d0 [iwlmvm]
-[   63.289530]  iwl_mvm_mac_start+0x59/0xf0 [iwlmvm]
-[   63.289541]  drv_start+0x85/0x170 [mac80211]
-[   63.289580]  ieee80211_reconfig+0xe1/0x1ed0 [mac80211]
-[   63.289607]  ? trace_contention_end+0x7a/0xb0
-[   63.289612]  ? __mutex_lock+0x123/0x830
-[   63.289619]  ? cfg80211_bss_age+0x55/0x70 [cfg80211]
-[   63.289661]  ? rtnl_lock+0x17/0x20
-[   63.289665]  ? wiphy_resume+0x62/0x1e0 [cfg80211]
-[   63.289686]  ieee80211_resume+0x55/0x70 [mac80211]
-[   63.289710]  wiphy_resume+0xbc/0x1e0 [cfg80211]
-[   63.289729]  ? wiphy_suspend+0x170/0x170 [cfg80211]
-[   63.289747]  dpm_run_callback+0x5b/0x110
-[   63.289753]  device_resume+0xc7/0x2d0
-[   63.289756]  async_resume+0x1d/0x40
-[   63.289758]  async_run_entry_fn+0x2d/0x120
-[   63.289760]  process_one_work+0x210/0x730
-[   63.289766]  worker_thread+0x193/0x340
-[   63.289769]  ? apply_wqattrs_cleanup.part.0+0xc0/0xc0
-[   63.289771]  kthread+0xf3/0x120
-[   63.289774]  ? kthread_insert_work_sanity_check+0x60/0x60
-[   63.289776]  ret_from_fork+0x40/0x70
-[   63.289779]  ? kthread_insert_work_sanity_check+0x60/0x60
-[   63.289781]  ret_from_fork_asm+0x11/0x20
-[   63.289787]  </TASK>
-[   63.289788] irq event stamp: 13936
-[   63.289789] hardirqs last  enabled at (13942): [<ffffffffa59acfba>] cons=
-ole_unlock+0x14a/0x170
-[   63.289792] hardirqs last disabled at (13947): [<ffffffffa59acf9f>] cons=
-ole_unlock+0x12f/0x170
-[   63.289794] softirqs last  enabled at (12300): [<ffffffffc1998a95>] cfg8=
-0211_bss_age+0x55/0x70 [cfg80211]
-[   63.289813] softirqs last disabled at (12302): [<ffffffffc1d7afab>] iwl_=
-trans_pcie_grab_nic_access+0x1b/0x50 [iwlwifi]
-[   63.289823] ---[ end trace 0000000000000000 ]---
-[   63.289826] iwlwifi 0000:01:00.0: iwlwifi transaction failed, dumping re=
-gisters
-[   63.289828] iwlwifi 0000:01:00.0: iwlwifi device config registers:
-[   63.290275] iwlwifi 0000:01:00.0: 00000000: 27258086 00100406 0280001a 0=
-0000010 fcf00004 00000000 00000000 00000000
-[   63.290277] iwlwifi 0000:01:00.0: 00000020: 00000000 00000000 00000000 0=
-0248086 00000000 000000c8 00000000 000001ff
-[   63.290278] iwlwifi 0000:01:00.0: 00000040: 00028010 10008ec0 00100c1f 0=
-545e812 10120142 00000000 00000000 00000000
-[   63.290279] iwlwifi 0000:01:00.0: 00000060: 00000000 00080812 00000405 0=
-0000006 00000002 00000000 00000000 00000000
-[   63.290280] iwlwifi 0000:01:00.0: 00000080: 800f0011 00002000 00003000 0=
-0000000 00000000 00000000 00000000 00000000
-[   63.290281] iwlwifi 0000:01:00.0: 000000a0: 00000000 00000000 00000000 0=
-0000000 00000000 00000000 00000000 00000000
-[   63.290282] iwlwifi 0000:01:00.0: 000000c0: 00000000 00000000 c823d001 0=
-d000008 00804005 00000000 00000000 00000000
-[   63.290284] iwlwifi 0000:01:00.0: 000000e0: 00000000 00000000 00000000 0=
-0000000 00000000 00000000 00000000 00000000
-[   63.290285] iwlwifi 0000:01:00.0: 00000100: 14c10001 00000000 00000000 0=
-0462031 00000000 00002000 00000000 00000000
-[   63.290286] iwlwifi 0000:01:00.0: 00000120: 00000000 00000000 00000000 0=
-0000000 00000000 00000000 00000000 00000000
-[   63.290287] iwlwifi 0000:01:00.0: 00000140: 14c00000 ff000000 000000ff 1=
-5410018 10011001 0001001e 00481e1f 40b6000f
-[   63.290288] iwlwifi 0000:01:00.0: iwlwifi device memory mapped registers:
-[   63.290533] iwlwifi 0000:01:00.0: 00000000: 40880000 00000000 00000000 0=
-0000000 00000000 00000000 00000000 00000000
-[   63.290534] iwlwifi 0000:01:00.0: 00000020: 00000011 08040008 00000420 d=
-55555d5 d55555d5 d55555d5 80008040 041f0042
-[   63.290594] iwlwifi 0000:01:00.0: iwlwifi device AER capability structur=
-e:
-[   63.290663] iwlwifi 0000:01:00.0: 00000000: 14c10001 00000000 00000000 0=
-0462031 00000000 00002000 00000000 00000000
-[   63.290664] iwlwifi 0000:01:00.0: 00000020: 00000000 00000000 00000000
-[   63.290665] iwlwifi 0000:01:00.0: iwlwifi parent port (0000:00:02.2) con=
-fig registers:
-[   63.290798] iwlwifi 0000:00:02.2: 00000000: 16341022 00100407 06040000 0=
-0810010 00000000 00000000 00010100 000001f1
-[   63.290799] iwlwifi 0000:00:02.2: 00000020: fcf0fcf0 0001fff1 00000000 0=
-0000000 00000000 00000050 00000000 001200ff
-[   63.290800] iwlwifi 0000:00:02.2: 00000040: 00000000 00000000 00000000 0=
-0000000 c8035801 00000000 0142a010 00008022
-[   63.290801] iwlwifi 0000:00:02.2: 00000060: 00002910 05737813 30120042 0=
-0042580 01400000 00010018 00000000 007019bf
-[   63.290803] iwlwifi 0000:00:02.2: 00000080: 00000406 0000000e 00010002 0=
-0000000 00000000 00000000 00000000 00000000
-[   63.290804] iwlwifi 0000:00:02.2: 000000a0: 0081c005 fee00000 00000000 0=
-0000000 00000000 00000000 00000000 00000000
-[   63.290805] iwlwifi 0000:00:02.2: 000000c0: 0000c80d 14531022 a8030008 0=
-0000000 00000000 00000000 00000000 00000000
-[   63.290806] iwlwifi 0000:00:02.2: 000000e0: 00000000 00000000 00000000 0=
-0000000 00000000 00000000 00000000 00000000
-[   63.290807] iwlwifi 0000:00:02.2: 00000100: 2701000b 01010001 00000000 0=
-0000000 00000000 00000000 00000000 00000000
-[   63.290808] iwlwifi 0000:00:02.2: 00000120: 00000000 00000000 00000000 0=
-0000000 00000000 00000000 00000000 00000000
-[   63.290809] iwlwifi 0000:00:02.2: 00000140: 00000000 00000000 00000000 0=
-0000000 00000000 00000000 00000000 00000000
-[   63.290810] iwlwifi 0000:00:02.2: 00000160: 00000000 00000000 00000000 0=
-0000000 00000000 00000000 00000000 00000000
-[   63.290811] iwlwifi 0000:00:02.2: 00000180: 00000000 00000000 00000000 0=
-0000000 00000000 00000000 00000000 00000000
-[   63.290812] iwlwifi 0000:00:02.2: 000001a0: 00000000 00000000 00000000 0=
-0000000 00000000 00000000 00000000 00000000
-[   63.290813] iwlwifi 0000:00:02.2: 000001c0: 00000000 00000000 00000000 0=
-0000000 00000000 00000000 00000000 00000000
-[   63.290814] iwlwifi 0000:00:02.2: 000001e0: 00000000 00000000 00000000 0=
-0000000 00000000 00000000 00000000 00000000
-[   63.290815] iwlwifi 0000:00:02.2: 00000200: 00000000 00000000 00000000
-[   63.290857] iwlwifi 0000:01:00.0: iwl_mvm_check_rt_status failed, device=
- is gone during suspend
-[   63.644257] iwlwifi 0000:01:00.0: HW error, resetting before reading
-[   63.650214] iwlwifi 0000:01:00.0: Start IWL Error Log Dump:
-[   63.650216] iwlwifi 0000:01:00.0: Transport status: 0x00000042, valid: -=
-469787919
-[   63.650219] iwlwifi 0000:01:00.0: Loaded firmware version: 89.202a2f7b.0=
- ty-a0-gf-a0-89.ucode
-[   63.650222] iwlwifi 0000:01:00.0: 0xD7DF3FD8 | ADVANCED_SYSASSERT       =
-  =20
-[   63.650224] iwlwifi 0000:01:00.0: 0xBBDDA603 | trm_hw_status0
-[   63.650226] iwlwifi 0000:01:00.0: 0x56FBF22F | trm_hw_status1
-[   63.650228] iwlwifi 0000:01:00.0: 0xBE17FF9E | branchlink2
-[   63.650230] iwlwifi 0000:01:00.0: 0x7F363EDB | interruptlink1
-[   63.650232] iwlwifi 0000:01:00.0: 0xDBD3159E | interruptlink2
-[   63.650233] iwlwifi 0000:01:00.0: 0x172F3A94 | data1
-[   63.650235] iwlwifi 0000:01:00.0: 0x9BF71489 | data2
-[   63.650236] iwlwifi 0000:01:00.0: 0xC92FF43C | data3
-[   63.650238] iwlwifi 0000:01:00.0: 0xF88C4ACB | beacon time
-[   63.650240] iwlwifi 0000:01:00.0: 0x53527DA5 | tsf low
-[   63.650241] iwlwifi 0000:01:00.0: 0x5CBA38FC | tsf hi
-[   63.650243] iwlwifi 0000:01:00.0: 0xFFF79FED | time gp1
-[   63.650244] iwlwifi 0000:01:00.0: 0xAD3B101D | time gp2
-[   63.650246] iwlwifi 0000:01:00.0: 0xB148E1EB | uCode revision type
-[   63.650248] iwlwifi 0000:01:00.0: 0xDCFBF5F3 | uCode version major
-[   63.650249] iwlwifi 0000:01:00.0: 0xF837C970 | uCode version minor
-[   63.650251] iwlwifi 0000:01:00.0: 0x43C37AEF | hw version
-[   63.650252] iwlwifi 0000:01:00.0: 0xEE224593 | board version
-[   63.650254] iwlwifi 0000:01:00.0: 0xF63DB3A8 | hcmd
-[   63.650256] iwlwifi 0000:01:00.0: 0x9FCD276E | isr0
-[   63.650257] iwlwifi 0000:01:00.0: 0x4F7CFEDF | isr1
-[   63.650259] iwlwifi 0000:01:00.0: 0xBF29DF97 | isr2
-[   63.650260] iwlwifi 0000:01:00.0: 0x33533328 | isr3
-[   63.650262] iwlwifi 0000:01:00.0: 0x38419101 | isr4
-[   63.650264] iwlwifi 0000:01:00.0: 0x643244C7 | last cmd Id
-[   63.650265] iwlwifi 0000:01:00.0: 0x71514BC3 | wait_event
-[   63.650267] iwlwifi 0000:01:00.0: 0xF4210485 | l2p_control
-[   63.650268] iwlwifi 0000:01:00.0: 0x020026F9 | l2p_duration
-[   63.650270] iwlwifi 0000:01:00.0: 0x50A43120 | l2p_mhvalid
-[   63.650272] iwlwifi 0000:01:00.0: 0xE9812900 | l2p_addr_match
-[   63.650273] iwlwifi 0000:01:00.0: 0x89488353 | lmpm_pmg_sel
-[   63.650275] iwlwifi 0000:01:00.0: 0x12170048 | timestamp
-[   63.650276] iwlwifi 0000:01:00.0: 0x04D922CA | flow_handler
-[   63.650585] iwlwifi 0000:01:00.0: Start IWL Error Log Dump:
-[   63.650586] iwlwifi 0000:01:00.0: Transport status: 0x00000042, valid: 8=
-55094539
-[   63.650588] iwlwifi 0000:01:00.0: 0xF58DFA0C | ADVANCED_SYSASSERT
-[   63.650590] iwlwifi 0000:01:00.0: 0xEFEDF773 | umac branchlink1
-[   63.650592] iwlwifi 0000:01:00.0: 0x5E2AAECF | umac branchlink2
-[   63.650594] iwlwifi 0000:01:00.0: 0xFF55EE2F | umac interruptlink1
-[   63.650595] iwlwifi 0000:01:00.0: 0xF65CE077 | umac interruptlink2
-[   63.650597] iwlwifi 0000:01:00.0: 0x5EFFE16D | umac data1
-[   63.650598] iwlwifi 0000:01:00.0: 0x8C7E5FDE | umac data2
-[   63.650599] iwlwifi 0000:01:00.0: 0x3D930F84 | umac data3
-[   63.650599] iwlwifi 0000:01:00.0: 0x60937FFB | umac major
-[   63.650600] iwlwifi 0000:01:00.0: 0xA9DFBAD6 | umac minor
-[   63.650601] iwlwifi 0000:01:00.0: 0xFB5FE976 | frame pointer
-[   63.650602] iwlwifi 0000:01:00.0: 0xC31FFE75 | stack pointer
-[   63.650603] iwlwifi 0000:01:00.0: 0xAEE7C3C7 | last host cmd
-[   63.650604] iwlwifi 0000:01:00.0: 0xFDD3EBFB | isr status reg
-[   63.650882] iwlwifi 0000:01:00.0: IML/ROM dump:
-[   63.650883] iwlwifi 0000:01:00.0: 0x00000000 | IML/ROM error/state
-[   63.650981] iwlwifi 0000:01:00.0: 0x00000000 | IML/ROM data1
-[   63.651039] iwlwifi 0000:01:00.0: 0x00000090 | IML/ROM WFPM_AUTH_KEY_0
-[   63.651138] iwlwifi 0000:01:00.0: Fseq Registers:
-[   63.651141] iwlwifi 0000:01:00.0: 0x60000000 | FSEQ_ERROR_CODE
-[   63.651186] iwlwifi 0000:01:00.0: 0x80440007 | FSEQ_TOP_INIT_VERSION
-[   63.651232] iwlwifi 0000:01:00.0: 0x00080009 | FSEQ_CNVIO_INIT_VERSION
-[   63.651278] iwlwifi 0000:01:00.0: 0x0000A652 | FSEQ_OTP_VERSION
-[   63.651323] iwlwifi 0000:01:00.0: 0x00000002 | FSEQ_TOP_CONTENT_VERSION
-[   63.651367] iwlwifi 0000:01:00.0: 0x4552414E | FSEQ_ALIVE_TOKEN
-[   63.651370] iwlwifi 0000:01:00.0: 0x00400410 | FSEQ_CNVI_ID
-[   63.651414] iwlwifi 0000:01:00.0: 0x00400410 | FSEQ_CNVR_ID
-[   63.651459] iwlwifi 0000:01:00.0: 0x00400410 | CNVI_AUX_MISC_CHIP
-[   63.651506] iwlwifi 0000:01:00.0: 0x00400410 | CNVR_AUX_MISC_CHIP
-[   63.651511] iwlwifi 0000:01:00.0: 0x00009061 | CNVR_SCU_SD_REGS_SD_REG_D=
-IG_DCDC_VTRIM
-[   63.651560] iwlwifi 0000:01:00.0: 0x00000061 | CNVR_SCU_SD_REGS_SD_REG_A=
-CTIVE_VDIG_MIRROR
-[   63.651605] iwlwifi 0000:01:00.0: 0x00080009 | FSEQ_PREV_CNVIO_INIT_VERS=
-ION
-[   63.651608] iwlwifi 0000:01:00.0: 0x00440007 | FSEQ_WIFI_FSEQ_VERSION
-[   63.651611] iwlwifi 0000:01:00.0: 0x00440007 | FSEQ_BT_FSEQ_VERSION
-[   63.651614] iwlwifi 0000:01:00.0: 0x000000E6 | FSEQ_CLASS_TP_VERSION
-[   63.651717] iwlwifi 0000:01:00.0: UMAC CURRENT PC: 0xc00c0000
-[   63.651761] iwlwifi 0000:01:00.0: LMAC1 CURRENT PC: 0x0
-[   63.651765] iwlwifi 0000:01:00.0: WRT: Collecting data: ini trigger 4 fi=
-red (delay=3D0ms).
+HEAD commit:    b6ecc6620376 net: mana: Fix error handling in mana_create_..
+git tree:       net
+console output: https://syzkaller.appspot.com/x/log.txt?x=15b5ecab980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=996585887acdadb3
+dashboard link: https://syzkaller.appspot.com/bug?extid=b4aa2b672b18f1d4dc5f
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/c4574f06e044/disk-b6ecc662.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/305e39881a39/vmlinux-b6ecc662.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/14c5c8efb32e/bzImage-b6ecc662.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+b4aa2b672b18f1d4dc5f@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 14994 at net/mac80211/rx.c:5375 ieee80211_rx_list+0x2a07/0x3780 net/mac80211/rx.c:5375
+Modules linked in:
+CPU: 1 UID: 0 PID: 14994 Comm: syz.0.2232 Not tainted 6.11.0-rc5-syzkaller-00192-gb6ecc6620376 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
+RIP: 0010:ieee80211_rx_list+0x2a07/0x3780 net/mac80211/rx.c:5375
+Code: 90 e9 21 da ff ff e8 f8 1e 64 f6 e9 17 da ff ff e8 ee 1e 64 f6 e9 0d da ff ff e8 e4 1e 64 f6 e9 03 da ff ff e8 da 1e 64 f6 90 <0f> 0b 90 e9 f5 d9 ff ff e8 cc 1e 64 f6 31 c0 48 89 44 24 60 e9 e5
+RSP: 0018:ffffc90000a189a0 EFLAGS: 00010246
+RAX: ffffffff8b2f6d56 RBX: 0000000000000000 RCX: ffff888061fc8000
+RDX: 0000000000000100 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffffc90000a18bf0 R08: ffffffff8b2f4592 R09: 1ffffffff283c708
+R10: dffffc0000000000 R11: fffffbfff283c709 R12: dffffc0000000000
+R13: ffff88806d804640 R14: ffff88805f0c0e40 R15: ffff88805f0c30c8
+FS:  0000000000000000(0000) GS:ffff8880b8900000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f251b600020 CR3: 000000006190e000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <IRQ>
+ ieee80211_rx_napi+0x18a/0x3c0 net/mac80211/rx.c:5485
+ ieee80211_rx include/net/mac80211.h:5124 [inline]
+ ieee80211_handle_queued_frames+0xe7/0x1e0 net/mac80211/main.c:439
+ tasklet_action_common+0x321/0x4d0 kernel/softirq.c:785
+ handle_softirqs+0x2c4/0x970 kernel/softirq.c:554
+ __do_softirq kernel/softirq.c:588 [inline]
+ invoke_softirq kernel/softirq.c:428 [inline]
+ __irq_exit_rcu+0xf4/0x1c0 kernel/softirq.c:637
+ irq_exit_rcu+0x9/0x30 kernel/softirq.c:649
+ instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1043 [inline]
+ sysvec_apic_timer_interrupt+0xa6/0xc0 arch/x86/kernel/apic/apic.c:1043
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:702
+RIP: 0010:__sanitizer_cov_trace_pc+0x0/0x70 kernel/kcov.c:209
+Code: 89 fb e8 23 00 00 00 48 8b 3d dc 76 96 0c 48 89 de 5b e9 83 9d 5b 00 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 <f3> 0f 1e fa 48 8b 04 24 65 48 8b 0c 25 00 d7 03 00 65 8b 15 c0 4a
+RSP: 0018:ffffc900039bf290 EFLAGS: 00000246
+RAX: 0000000000000000 RBX: ffffea0001c6b388 RCX: ffff888061fc8000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: 0000000000013115 R08: ffffffff81ea2868 R09: 1ffffd400038d678
+R10: dffffc0000000000 R11: fffff9400038d679 R12: ffffea0001c6b3c0
+R13: ffffea0001c6b3c0 R14: 0000000000000001 R15: 0000000000000000
+ arch_static_branch arch/x86/include/asm/jump_label.h:27 [inline]
+ page_fixed_fake_head include/linux/page-flags.h:203 [inline]
+ _compound_head include/linux/page-flags.h:244 [inline]
+ __folio_rmap_sanity_checks+0x11f/0x670 include/linux/rmap.h:216
+ __folio_remove_rmap mm/rmap.c:1518 [inline]
+ folio_remove_rmap_ptes+0x3d/0x490 mm/rmap.c:1599
+ zap_present_folio_ptes mm/memory.c:1517 [inline]
+ zap_present_ptes mm/memory.c:1576 [inline]
+ zap_pte_range mm/memory.c:1618 [inline]
+ zap_pmd_range mm/memory.c:1736 [inline]
+ zap_pud_range mm/memory.c:1765 [inline]
+ zap_p4d_range mm/memory.c:1786 [inline]
+ unmap_page_range+0x1b93/0x42c0 mm/memory.c:1807
+ unmap_vmas+0x3cc/0x5f0 mm/memory.c:1897
+ exit_mmap+0x264/0xc80 mm/mmap.c:3412
+ __mmput+0x115/0x390 kernel/fork.c:1345
+ exit_mm+0x220/0x310 kernel/exit.c:571
+ do_exit+0x9b2/0x27f0 kernel/exit.c:869
+ do_group_exit+0x207/0x2c0 kernel/exit.c:1031
+ get_signal+0x16a1/0x1740 kernel/signal.c:2917
+ arch_do_signal_or_restart+0x96/0x860 arch/x86/kernel/signal.c:310
+ exit_to_user_mode_loop kernel/entry/common.c:111 [inline]
+ exit_to_user_mode_prepare include/linux/entry-common.h:328 [inline]
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
+ syscall_exit_to_user_mode+0xc9/0x370 kernel/entry/common.c:218
+ do_syscall_64+0x100/0x230 arch/x86/entry/common.c:89
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f6654f7cef9
+Code: Unable to access opcode bytes at 0x7f6654f7cecf.
+RSP: 002b:00007f6655e5b0e8 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
+RAX: fffffffffffffe00 RBX: 00007f6655135f88 RCX: 00007f6654f7cef9
+RDX: 0000000000000000 RSI: 0000000000000080 RDI: 00007f6655135f88
+RBP: 00007f6655135f80 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007f6655135f8c
+R13: 0000000000000000 R14: 00007fffa4ac5d00 R15: 00007fffa4ac5de8
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	89 fb                	mov    %edi,%ebx
+   2:	e8 23 00 00 00       	call   0x2a
+   7:	48 8b 3d dc 76 96 0c 	mov    0xc9676dc(%rip),%rdi        # 0xc9676ea
+   e:	48 89 de             	mov    %rbx,%rsi
+  11:	5b                   	pop    %rbx
+  12:	e9 83 9d 5b 00       	jmp    0x5b9d9a
+  17:	0f 1f 00             	nopl   (%rax)
+  1a:	90                   	nop
+  1b:	90                   	nop
+  1c:	90                   	nop
+  1d:	90                   	nop
+  1e:	90                   	nop
+  1f:	90                   	nop
+  20:	90                   	nop
+  21:	90                   	nop
+  22:	90                   	nop
+  23:	90                   	nop
+  24:	90                   	nop
+  25:	90                   	nop
+  26:	90                   	nop
+  27:	90                   	nop
+  28:	90                   	nop
+  29:	90                   	nop
+* 2a:	f3 0f 1e fa          	endbr64 <-- trapping instruction
+  2e:	48 8b 04 24          	mov    (%rsp),%rax
+  32:	65 48 8b 0c 25 00 d7 	mov    %gs:0x3d700,%rcx
+  39:	03 00
+  3b:	65                   	gs
+  3c:	8b                   	.byte 0x8b
+  3d:	15                   	.byte 0x15
+  3e:	c0                   	.byte 0xc0
+  3f:	4a                   	rex.WX
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
