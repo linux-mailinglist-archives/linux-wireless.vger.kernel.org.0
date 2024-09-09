@@ -1,117 +1,119 @@
-Return-Path: <linux-wireless+bounces-12709-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12710-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88116972422
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 23:03:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53C0897242C
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 23:05:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04471B227D9
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 21:03:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2C1FB22606
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 21:05:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2600A6AB8;
-	Mon,  9 Sep 2024 21:03:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WJ1i2tw9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A199E18B481;
+	Mon,  9 Sep 2024 21:05:38 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E6C4178CC8
-	for <linux-wireless@vger.kernel.org>; Mon,  9 Sep 2024 21:03:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D202189BB6
+	for <linux-wireless@vger.kernel.org>; Mon,  9 Sep 2024 21:05:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725915824; cv=none; b=PX8z4lLRaWTG3QRVq6i9pz3W1AvhqU51gqegs6lM7D8iE0SMGoOTPQiLHfzzSS8g6yptj92JbiyeWCGIj6T9clJhd8SiHjr4P2q4tb0TNuDyqts9+Srhp61f3G07rrAnhlyCeqa/Yu6p/5tkUQbqIYbhKYEpOKKjqLKZwlyRTcA=
+	t=1725915938; cv=none; b=KAkO6V1BvUdpjxEMD/9Dw41lnYzI+9o0z1jcjI3Gb8AADYEZpY3L0tyFK8Qx1KhCBs7X2puOmaI+kEGsP6QZE95hHGHF1e2ypjDQxVukFWfSX2QLaVYT5FS6cWhJozgEAEDTHSZbgNI/8lRUIhuI7VY88n8DQptH8CEAman3tVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725915824; c=relaxed/simple;
-	bh=kPZkZbhZJwYAMzzUbCZ4THsZ8GpHkz/92/0BokPESZ8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=maLIHGMitZ40TGk53iy/sG5MKzL/FJDqnR5762F9GI6I/9YMB1aGFZ1pziYuKqZ8gpkVk0eoYKljkqIusj9oo1t0uuJIxEnWyd69pRn/U32u7njCEUSKlJwyYz42KTqulmSfByJ6nw7T3rfc3cEkqAh0HOJeWYigU3+SK1jz4dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WJ1i2tw9; arc=none smtp.client-ip=209.85.128.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-6d3f017f80eso43367187b3.1
-        for <linux-wireless@vger.kernel.org>; Mon, 09 Sep 2024 14:03:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725915821; x=1726520621; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=kPZkZbhZJwYAMzzUbCZ4THsZ8GpHkz/92/0BokPESZ8=;
-        b=WJ1i2tw9wXPZJLiV9xO/nJaedmZ+LmUSq6dlaIaKhECXEl4eknUrt8Fkt/RAbNyXIo
-         fpTOXz1vptNh7+GFiX11ZrVr/Sb/bfqFez2Hyp0A7VozoRYNWboIHjWEH1Ww9/oDsmoH
-         92B7Fj3bPDfy5S5Gqg2B4Rm/P69eXOgxiVcUVBHnjnwfvw0W6PXrCwnE/oRWOCcRN2jl
-         T/ACtP2Mm2qUaRYUs/RgWKyYVOlR909hCCb7aMduZiVFyGUntbK/D+mzwbAGlAzD25mk
-         XxFHPkjgsXaLiDXgSCx/YAMVQTHgTtj+N9kAJKfI54/aEiFumRbxYy/mUm5o57jLH9Pe
-         5cBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725915821; x=1726520621;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kPZkZbhZJwYAMzzUbCZ4THsZ8GpHkz/92/0BokPESZ8=;
-        b=mqRSPj16GY9uRE6gQz73SD/OfSjVuTZqobOPN0JPcdnigOWmJm/BVDudJTutckyACY
-         S/tDjKXpIs/ce94kY4n4h/dvxKGLFmtsgSOY94RNhaYzUe0LB6+vg53KxIVXhb1If2gR
-         AH0V53VL6kFIcKvreO6HpkgUhlGJf70QppFIqbf7X+IRJDhz7Q4nGGaDwJu98j801UbH
-         L7yWCQav6os0QIGe+kZ0NH2uk7OLgkNdM0CMjUzWTH/eeCGv7CovWhEgvM4X9P5R7N0X
-         qavt5SHR54WOHUZ3Nl60kuE2lPMNIfaKMBwzlHNBJNvimaV7eF+ryC4Dt/R+hSUtYQqO
-         oipA==
-X-Gm-Message-State: AOJu0YxbrO5jG521is8ac47mFkKsX1TDqVU+FzZUNBLYYR18yBEEhs/u
-	ygQykz5/nhqIbsdVmAc2i7rsSXOraxVLfNWVNn9ru4Tqqv2dQEYWf04fbysV2ttpSJizJ24U3Fx
-	3AAZvTabfVjaPpEZyo4BlmZKcjZI=
-X-Google-Smtp-Source: AGHT+IFeCRkJtK2cCGzEFwaKQD5FP7VZYmZry96zQ5u2k62UkXW1CFVn/YEXOpqeKhmvGcxaL7bYqdhiaj5kI21t+8E=
-X-Received: by 2002:a05:690c:67c1:b0:6d9:90f3:1a79 with SMTP id
- 00721157ae682-6db451544f3mr165321137b3.32.1725915821450; Mon, 09 Sep 2024
- 14:03:41 -0700 (PDT)
+	s=arc-20240116; t=1725915938; c=relaxed/simple;
+	bh=GWRWkD0vD0rEcpyDcklSB5fPJ3NDtRFkOg790q8QuJU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X/kAMjzB6msV/iPIeMOeEVGr8NSerlne/Qrg8VnkZ9qE6/72t94LxZdQxR0gBxMoVHadJC6Qw9qlEv0L9qxV/vAeiPDtMoAXJ2z6coI5usHR5pGmR4SEqGELdKqnxL10noW8GD1Ovwt4XZXa9BK1iEyqfcuIkICHUOjzYzsSRdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1snlZf-0002Dt-Ks; Mon, 09 Sep 2024 23:05:27 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1snlZe-006jwG-Ff; Mon, 09 Sep 2024 23:05:26 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1snlZe-00FolA-1F;
+	Mon, 09 Sep 2024 23:05:26 +0200
+Date: Mon, 9 Sep 2024 23:05:26 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: David Lin <yu-hao.lin@nxp.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	briannorris@chromium.org, kvalo@kernel.org, francesco@dolcini.it,
+	tsung-hsien.hsieh@nxp.com
+Subject: Re: [PATCH v2] wifi: mwifiex: avoid AP and STA running on different
+ channel
+Message-ID: <Zt9jFpyptX_ftH-p@pengutronix.de>
+References: <20240902084311.2607-1-yu-hao.lin@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAP-bSRbMbZe9LCE15SCbYNTGZjE_xiAm29qzO_WNVjHsJ6oyyg@mail.gmail.com>
- <9ada34661b93fa5dfe3b0c66816a62c1a27f22a3.camel@intel.com>
- <CAP-bSRZm4CyxY1VdtWvZRcfLMwc3njd3OTSd446Q5dcSfjJY=Q@mail.gmail.com>
- <d59125316423abd2f67e1c111eb54d083b7cc014.camel@intel.com>
- <d3a83162570aaede579ecde64e00350ce1e6b452.camel@intel.com>
- <Zt4PKMCp_FTx3kac@debian.local> <cd2ec07a08c9a51e0dfa5be70b35d39e5cc5e577.camel@intel.com>
- <CAP-bSRbmKvaoU662XtgjaPaOwR7fHZaJyrYxkpT=DfuCxwsJ4w@mail.gmail.com> <5b372558da9aed3a33e466970a64a5eda8f82454.camel@intel.com>
-In-Reply-To: <5b372558da9aed3a33e466970a64a5eda8f82454.camel@intel.com>
-From: Chris Bainbridge <chris.bainbridge@gmail.com>
-Date: Mon, 9 Sep 2024 22:03:30 +0100
-Message-ID: <CAP-bSRYNQVbzP6WNBMe2Ak_7w9b-=tXQ-9ktgK5XvoU4LFX2zg@mail.gmail.com>
-Subject: Re: [REGRESSION] iwlwifi resume error, bisected
-To: "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, "kvalo@kernel.org" <kvalo@kernel.org>, 
-	"Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>, 
-	"Berg, Johannes" <johannes.berg@intel.com>, 
-	"benjamin@sipsolutions.net" <benjamin@sipsolutions.net>, 
-	"regressions@lists.linux.dev" <regressions@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240902084311.2607-1-yu-hao.lin@nxp.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-On Mon, 9 Sept 2024 at 20:40, Grumbach, Emmanuel
-<emmanuel.grumbach@intel.com> wrote:
->
-> On Mon, 2024-09-09 at 17:16 +0100, Chris Bainbridge wrote:
-> > On Mon, 9 Sept 2024 at 04:08, Grumbach, Emmanuel
-> > <emmanuel.grumbach@intel.com> wrote:
-> > >
-> > > On Sun, 2024-09-08 at 21:55 +0100, Chris Bainbridge wrote:
-> > > > On Sun, Sep 08, 2024 at 10:54:09AM +0000, Grumbach, Emmanuel wrote:
-> > > > >
-> > > > > Strike that.
-> > > > >
-> > > > > Can you please take the patch in attached instead?
-> > > >
-> > > > Sure, the error with v6.11-rc6+patch is:
-> > >
-> > > I expected that, but is wifi functional after resume?
-> > > Not having wifi after resume is one thing.
-> > > Having wifi but with lots of garbage in the logs is another thing.
-> >
-> > Yes, wifi is working after resume.
->
-> Does it work without my patch?
+On Mon, Sep 02, 2024 at 04:43:11PM +0800, David Lin wrote:
+> Current firmware doesn't support AP and STA running on different
+> channels simultaneously.
+> FW crash would occur in such case.
+> This patch avoids the issue by disabling AP and STA to run on
+> different channels.
+> 
+> Signed-off-by: David Lin <yu-hao.lin@nxp.com>
+> ---
+> 
+> v2:
+>    - clean up code.
+> 
+> ---
+>  .../net/wireless/marvell/mwifiex/cfg80211.c   | 17 ++++---
+>  drivers/net/wireless/marvell/mwifiex/util.c   | 44 +++++++++++++++++++
+>  drivers/net/wireless/marvell/mwifiex/util.h   | 13 ++++++
+>  3 files changed, 69 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> index 722ead51e912..3dbcab463445 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> @@ -781,11 +781,9 @@ mwifiex_cfg80211_set_wiphy_params(struct wiphy *wiphy, u32 changed)
+>  		break;
+>  
+>  	case MWIFIEX_BSS_ROLE_STA:
+> -		if (priv->media_connected) {
+> -			mwifiex_dbg(adapter, ERROR,
+> -				    "cannot change wiphy params when connected");
+> -			return -EINVAL;
+> -		}
+> +		if (priv->media_connected)
+> +			break;
 
-Yes.
+This hunk seems unrelated to this patch. If this is needed then it
+deserves an extra patch along with an explanation why this is necessary.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
