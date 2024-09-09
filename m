@@ -1,58 +1,59 @@
-Return-Path: <linux-wireless+bounces-12647-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12648-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C9349712CA
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 11:01:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59B599712F7
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 11:08:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C80991C22319
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 09:01:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 172B82877A6
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 09:08:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A952E1B2507;
-	Mon,  9 Sep 2024 09:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CF131B29D7;
+	Mon,  9 Sep 2024 09:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K5YHHcDu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QfvJjYSe"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE2D1AC88E;
-	Mon,  9 Sep 2024 09:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCECC1B29D6
+	for <linux-wireless@vger.kernel.org>; Mon,  9 Sep 2024 09:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725872480; cv=none; b=V7WfgGU1iDGRyQc4aiqtBWmusybghC/L0k+bA0dIyKuGTXCBs3dVuIPcTBU9KO5TQtydWx1RIifeQEIsWZKH7edIL4GYZli733nb5EFdofROu34LZVppRKUq9O8vgeL/D+TvY0IvxA9wy063h6WZ+3j0ecYLUU7Y+R5sniznOOU=
+	t=1725872881; cv=none; b=OjAnPDzH30PRS30bqJoC+rSWRhmb4yHSSoScVwmVI1eMVUgod20K1FxdpF37l94tWinHGawUWX0giX/AKgz75g+vh8T5oSytZHK1eyTa52rjc+Dz199V/ciC6YN3KgNFfGel5h6Milqjh1zcG2sh6ZNwS4XBN8pqhSokPp3Xp7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725872480; c=relaxed/simple;
-	bh=4d9kNtPYicQpBDwPC3UVFcQ+JcCZq+LdEgthPNhOu4U=;
+	s=arc-20240116; t=1725872881; c=relaxed/simple;
+	bh=aMXIYRngvNW5mNgwQ1XXr2MOsadY5DrTWID8JdS5+40=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=Dly9KFl7CfyLNhHPz/goejSYTWkaFGw2DM6AbSyLyMZnoSLGeBtiIPJRjFGOqVUdJW/NIh1V2HzVd6n8KozPRIuXYoGGiYM/C7o+NOBxMbevW/sxR+amBGDtgXU5rsoYiLnewHmCDjr95w+xwBuOGEME2csE/6G3zS+JK/7jt/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K5YHHcDu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A442DC4CEC8;
-	Mon,  9 Sep 2024 09:01:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TCp3BXRuDTciuXRgZBAqi02d6Gv8uyfBzMyri+k6X1zHZDKVkki6FjWMdckhCi5HvPROXJV6FxyI/Pa6nXTEoszQXu+vr1qEdRO7ytJ5t9B15xJKk1x1ElXImhHAfsNgKHuE+LTXgNu0gRWXhd6nbaLMqRvmBHuIlUEvZqfhqwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QfvJjYSe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF05C4CEC6;
+	Mon,  9 Sep 2024 09:08:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725872480;
-	bh=4d9kNtPYicQpBDwPC3UVFcQ+JcCZq+LdEgthPNhOu4U=;
+	s=k20201202; t=1725872881;
+	bh=aMXIYRngvNW5mNgwQ1XXr2MOsadY5DrTWID8JdS5+40=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=K5YHHcDuf7FUVpd+cokb79EzUJ68K6X6euqr/DgSBXNtX00rncScPRJGeUmn4WCIc
-	 BakduMd2qwp3nuIFxx+a56jUD3X3u7CLQXOCZ3RJL9FKOmvNqIQb839eSP7cj82NCh
-	 139Z8FUupDwIUF7DuoA9W6aTvJIlzJNlEYk9aA8oqlrV7fpwtmngH2sHDD4rXTxo74
-	 jPue54+VyZSCgTNWTG6eVhLszQHoPk7rOmY8aDdj4eBddrpY89VeycoaFBPpJtazhQ
-	 laQoxCqsjQv8KLk3iWpIvCbUo0mspJRqZT2Qcjc08r+aJh5sD8XB9KVmssQVmRar4I
-	 inXx0UzMEl8cQ==
+	b=QfvJjYSe92yYekweG8olMivv0KOalcSzNq6yaikJeYh5DQqVErTdh/5igBcgzlHtl
+	 4FDwtyNWpz7hOHF4tVDVvIQx9TlDT508VbZy6M12gE4MUKirq2yM/OfKj5+8pjOH/U
+	 Sds1bbclhiHhGC00pbXlgInaKkkH+cO/xLhiIMxfrOglc46h62RTYMUKoyk3b/yohw
+	 S2hgYIJFQeSihEprMIiM2o1YitTVub1TejcVBO9HJqx0IkRsejnWzEQbdDz/c2UykK
+	 61LqqqLpySLjRE3rkc+93KSBNZJ0JUew23MvbH+H3vuk6XXEPHkizwJsODfRiu4hsi
+	 N8Jmg1sQV+3rQ==
 From: Kalle Valo <kvalo@kernel.org>
-To: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: Johannes Berg <johannes.berg@intel.com>,
-  linux-wireless@vger.kernel.org,  Kees Cook <kees@kernel.org>,
-  linux-hardening@vger.kernel.org,  lvc-project@linuxtesting.org
-Subject: Re: [PATCH] wifi: wireless: fix two more possible UBSAN-detected
- off-by-one errors
-References: <20240909082348.1080511-1-dmantipov@yandex.ru>
-Date: Mon, 09 Sep 2024 12:01:16 +0300
-In-Reply-To: <20240909082348.1080511-1-dmantipov@yandex.ru> (Dmitry Antipov's
-	message of "Mon, 9 Sep 2024 11:23:48 +0300")
-Message-ID: <87r09tgq03.fsf@kernel.org>
+To: "Nicolas Escande" <nico.escande@gmail.com>
+Cc: "Santhosh Ramesh" <quic_santrame@quicinc.com>,
+  <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>,
+  "Sathishkumar Muruganandam" <quic_murugana@quicinc.com>
+Subject: Re: [PATCH] wifi: ath12k: fix tx power, max reg power update to
+ firmware
+References: <20240909073049.3423035-1-quic_santrame@quicinc.com>
+	<D41LUTO0MIC3.12475D2J3VNX3@gmail.com>
+Date: Mon, 09 Sep 2024 12:07:58 +0300
+In-Reply-To: <D41LUTO0MIC3.12475D2J3VNX3@gmail.com> (Nicolas Escande's message
+	of "Mon, 09 Sep 2024 10:20:02 +0200")
+Message-ID: <87mskhgpox.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -62,19 +63,34 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Dmitry Antipov <dmantipov@yandex.ru> writes:
+"Nicolas Escande" <nico.escande@gmail.com> writes:
 
-> Although not reproduced in practice, these two cases may be
-> considered by UBSAN as off-by-one errors. So fix them in the
-> same way as in commit a26a5107bc52 ("wifi: cfg80211: fix UBSAN
-> noise in cfg80211_wext_siwscan()").
+> On Mon Sep 9, 2024 at 9:30 AM CEST, Santhosh Ramesh wrote:
 >
-> Fixes: 807f8a8c3004 ("cfg80211/nl80211: add support for scheduled scans")
-> Fixes: 5ba63533bbf6 ("cfg80211: fix alignment problem in scan request")
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> [...]
+>
+>> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+>> index 137394c36460..6d7a005d83b4 100644
+>> --- a/drivers/net/wireless/ath/ath12k/mac.c
+>> +++ b/drivers/net/wireless/ath/ath12k/mac.c
+>> @@ -7217,9 +7217,9 @@ ath12k_mac_vdev_start_restart(struct ath12k_vif *arvif,
+>>  							chandef->chan->band,
+>>  							arvif->vif->type);
+>>  	arg.min_power = 0;
+>> -	arg.max_power = chandef->chan->max_power * 2;
+>> -	arg.max_reg_power = chandef->chan->max_reg_power * 2;
+>> -	arg.max_antenna_gain = chandef->chan->max_antenna_gain * 2;
+>> +	arg.max_power = chandef->chan->max_power;
+>> +	arg.max_reg_power = chandef->chan->max_reg_power;
+>> +	arg.max_antenna_gain = chandef->chan->max_antenna_gain;
+>>  
+>
+> For what it's worth, I already got a similar patch from QCA a few month ago, and
+> it fixed some tx power problems when scanning so I know there is truth in this.
 
-The title prefix should be "wifi: cfg80211:", not sure if Johannes can
-fix that or not.
+What hardware and what firmware did you use? The firmware branches can
+behave differently so whenever testing something it's good to include
+that info.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
