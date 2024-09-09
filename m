@@ -1,729 +1,233 @@
-Return-Path: <linux-wireless+bounces-12698-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12699-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 074A39722C7
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 21:32:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D059F9722EA
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 21:40:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11B591C21C68
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 19:32:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 006701C22D75
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 19:40:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA63918C028;
-	Mon,  9 Sep 2024 19:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0567189B99;
+	Mon,  9 Sep 2024 19:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="QTctq5D8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fufAA3D6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB8E18B492;
-	Mon,  9 Sep 2024 19:31:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725910268; cv=none; b=EdqJD3MOhhVqGuWcSmaw3/6OxbkpJ46mmDkcwyFY25cAkx/cBGN9URyda55G47NsgfllsLyYGFipgokQnd4a1Mud/fNiEVS1CxCbmRS7CBzC7eC6jsFW383CSHIZVQVrHb+arYjh7I2Yq163FFYy5HAwjhnirf7cUDoqgV+uqeY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725910268; c=relaxed/simple;
-	bh=nvXizIiqOf7I+SzM9WTXDgKTzw5Iljmjj9lnwlEWMZA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AvuHhV6PSeJMgLgJUaO4wwXkNLb5nxjqTMNdapYMrWz5qT+DCjNS0JdVtfxuZxuteoTPtBOLlIHHeruGSoZmZJ/h4XbGXUmiKCkGHBonUCID0rRPQPiJa2eizcv9BZ6jUuN8quLJrrML9P3E4BkjlgjTwfo3LYlVOV2Jq+c56TE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=QTctq5D8; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 10C4388E29;
-	Mon,  9 Sep 2024 21:30:57 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1725910257;
-	bh=ZoK1aPHncaDxjtG3N1VH/GZiCM3jCVdNgFf37PwGU1M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QTctq5D8YgqaO1womLjc2y4uCduMJcSNjLCVU7RHBeqEdUY81mNqHcOTy8+0ck0B8
-	 +7o/Q2qjk4kzJQHBxkdBtPi8l5zktdR+5cLjscag18So5ABs6gCgQAoANFDqJ/s9zR
-	 co7DtwSbWKWOHt7lckL2PE25rAzZTJIM0dLvGcxz/OMbQJjJtJ3f7m07iaG6hrNc49
-	 ba17ojNfxBzc+RraVlVjCCHo3FHyt91WnlqXOEAH/JZYfx37nY8AT4eo2SdSr8k2hR
-	 FrmrBuoS0V98mv+o2YgmAWAnMy5gOm+f+sunMj8BISkoOWiCBSymQM+ukuHmugORou
-	 Y8dbNFRRngjcw==
-From: Marek Vasut <marex@denx.de>
-To: linux-wireless@vger.kernel.org
-Cc: Ajay Singh <ajay.kathat@microchip.com>,
-	Marek Vasut <marex@denx.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Adham Abozaeid <adham.abozaeid@microchip.com>,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kalle Valo <kvalo@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	devicetree@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH v5 9/9] wifi: wilc1000: Add WILC3000 support
-Date: Mon,  9 Sep 2024 21:29:50 +0200
-Message-ID: <20240909193035.69823-9-marex@denx.de>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240909193035.69823-1-marex@denx.de>
-References: <20240909193035.69823-1-marex@denx.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B66518A6B7
+	for <linux-wireless@vger.kernel.org>; Mon,  9 Sep 2024 19:39:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725910774; cv=fail; b=ucYkH48r6JJSZYPigrREQ8tqFwhqgjDLYzQtXdrn3vZAGejuUjISFLQkfTblYZOS73QHIjKjLV8Z7MA1TnR5363Bfdl3ZA4/tntTWtsIdviEOtTGInx2zA3e5lzKo4pxrSgcWLO55nU2MLOSw3tksNianPKnJJHL4pzq3kBbJQU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725910774; c=relaxed/simple;
+	bh=3U2Yq+mmu9MNUIvSRxhhedM5DsLnQxv/24vAvdMyTto=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=lS2c2y80jVNt39lfPZlwrt0hnoNXoMxhQk9zo1cL07JXHpYbWTUIRJmt0vaHk6Q3Lrkz6y1rqgr/P/DNbBRnmkKna/PtnV5zn/bnQMQy1IgI8EKkVkzWWiV9PK42c3YTDX1xmXB8vC8P834G2dTwYz7ifOq+5hLfBVSPuW6Z+UY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fufAA3D6; arc=fail smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725910774; x=1757446774;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:content-transfer-encoding:
+   mime-version;
+  bh=3U2Yq+mmu9MNUIvSRxhhedM5DsLnQxv/24vAvdMyTto=;
+  b=fufAA3D6NygKJlhuBIQ8bitk1YEeV/+EgrfElBgxPJdHt59tvEfbiZBP
+   uHjC/J4esNoAeG+wCZFUsGKRQNwLkNIfo17ztofxYn3UOn4ViSwEzGvwL
+   SwBJ3CUWtmMQ3nVzUVp7emlPldywsex5IPIY8ca7loefZJFjEWFGPGmZd
+   TZlQoFL1AwAtzWybX3y9/d6UtRtPBndXMLGWDVyiXChBJFWdW/MZmAGg4
+   1R/3hfsYCXh8h+384L+XJwbO5BK6UlZDq3yfqU/5A6eEDS6fS1sK5Req1
+   4ONZVcK8bgcaOKTK6UfMX+pr9DY7Zq+NbFpndbEAguhAohkwTYxKxQMDl
+   Q==;
+X-CSE-ConnectionGUID: EbaV4nDdRzybQ62L90URhQ==
+X-CSE-MsgGUID: tL+tjqGeSc6pOQ1sX4Bq9Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11190"; a="28513293"
+X-IronPort-AV: E=Sophos;i="6.10,215,1719903600"; 
+   d="scan'208";a="28513293"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 12:39:20 -0700
+X-CSE-ConnectionGUID: 4m8VRtunRTKhmnqky8MTew==
+X-CSE-MsgGUID: LuAdeR4aQFqNbm3iVb4ECQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,215,1719903600"; 
+   d="scan'208";a="97584111"
+Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 09 Sep 2024 12:39:20 -0700
+Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Mon, 9 Sep 2024 12:39:19 -0700
+Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Mon, 9 Sep 2024 12:39:19 -0700
+Received: from NAM02-BN1-obe.outbound.protection.outlook.com (104.47.51.41) by
+ edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 9 Sep 2024 12:39:19 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BJFM9aR127lGaoYx/hXx7o4X8hI7og+2nse0OIZ79vNqk+pdcINmuqyRNPrKLRaOwxkzGyB4O6QB0arg3B57EjqYgf7LZT5n66o2BLFiKlCiQGpq/Bz58+/Fqz5SCVSlIevUQT94OSwPjuidhQwwLxr82S7ugo+bKtJGjRCwrLLKNGbag4BiqSuousfsO+IvbDd+GzacxtnOUe65NL0umI9wUebzc9olL/DxBPCl2v5XytuK93/+5tR2BQklglTeWcYA6wS4yHNOByqjNvdCRyMy/YwejXu7MlUxNHLJd1WapPlmmPC9/CHynmzb56QMqSLR5Ve/8TI3COWLmkBDaA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3U2Yq+mmu9MNUIvSRxhhedM5DsLnQxv/24vAvdMyTto=;
+ b=e0erPJ/oRnlgx3CxeYtIgq/A1u711iYMY+DPO7rzs1b9823wyli8E+EZczkkrqHUSlzyZBRtRe1b/kZRz+uHWktd1lRMyEs2lIDlijgdsuaKp5ow2Y6hfJLuJMJYCc6Kr40FO89AdEVKH9PCKznSdPs/uuzUmOwUvwrojdv5/UY4jjxghwCt604KH72ejRUScu5SbW21rg8ACRNvVD9/rpaOjAB0C1v0LkyFLUckT4aprt5gddxhZJJTfddvJ1rKaxxJIkI+Iaup30Fe55o7VNUY1GB+j910dOZfpqnZ6+3GcRHGUoOIc924R5gEL/v5uvpeMp3XEa6gJGN019F5MQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SA1PR11MB5825.namprd11.prod.outlook.com (2603:10b6:806:234::5)
+ by SA1PR11MB6686.namprd11.prod.outlook.com (2603:10b6:806:259::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.25; Mon, 9 Sep
+ 2024 19:39:16 +0000
+Received: from SA1PR11MB5825.namprd11.prod.outlook.com
+ ([fe80::41f9:e955:b104:4c0b]) by SA1PR11MB5825.namprd11.prod.outlook.com
+ ([fe80::41f9:e955:b104:4c0b%4]) with mapi id 15.20.7918.024; Mon, 9 Sep 2024
+ 19:39:16 +0000
+From: "Grumbach, Emmanuel" <emmanuel.grumbach@intel.com>
+To: "chris.bainbridge@gmail.com" <chris.bainbridge@gmail.com>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"kvalo@kernel.org" <kvalo@kernel.org>, "Korenblit, Miriam Rachel"
+	<miriam.rachel.korenblit@intel.com>, "Berg, Johannes"
+	<johannes.berg@intel.com>, "benjamin@sipsolutions.net"
+	<benjamin@sipsolutions.net>, "regressions@lists.linux.dev"
+	<regressions@lists.linux.dev>
+Subject: Re: [REGRESSION] iwlwifi resume error, bisected
+Thread-Topic: [REGRESSION] iwlwifi resume error, bisected
+Thread-Index: AQHbASid0CU63h7wCU2RsueU4ZEG+rJMpxoAgAAufYCAAMEcgIAAIYgAgACoNQCAAGgqgIAA3DaAgAA4xoA=
+Date: Mon, 9 Sep 2024 19:39:16 +0000
+Message-ID: <5b372558da9aed3a33e466970a64a5eda8f82454.camel@intel.com>
+References: <CAP-bSRbMbZe9LCE15SCbYNTGZjE_xiAm29qzO_WNVjHsJ6oyyg@mail.gmail.com>
+	 <9ada34661b93fa5dfe3b0c66816a62c1a27f22a3.camel@intel.com>
+	 <CAP-bSRZm4CyxY1VdtWvZRcfLMwc3njd3OTSd446Q5dcSfjJY=Q@mail.gmail.com>
+	 <d59125316423abd2f67e1c111eb54d083b7cc014.camel@intel.com>
+	 <d3a83162570aaede579ecde64e00350ce1e6b452.camel@intel.com>
+	 <Zt4PKMCp_FTx3kac@debian.local>
+	 <cd2ec07a08c9a51e0dfa5be70b35d39e5cc5e577.camel@intel.com>
+	 <CAP-bSRbmKvaoU662XtgjaPaOwR7fHZaJyrYxkpT=DfuCxwsJ4w@mail.gmail.com>
+In-Reply-To: <CAP-bSRbmKvaoU662XtgjaPaOwR7fHZaJyrYxkpT=DfuCxwsJ4w@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+user-agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA1PR11MB5825:EE_|SA1PR11MB6686:EE_
+x-ms-office365-filtering-correlation-id: e2aa9a56-a038-4757-7720-08dcd1071741
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|1800799024|38070700018;
+x-microsoft-antispam-message-info: =?utf-8?B?SDh3bDVjUi9oWGlnSVlkS3luTmJLNzRZZ2dyVjdxQVYxZU93dUN5YnlDTGVm?=
+ =?utf-8?B?Tk01cDdVSXo1dlJaaDFtY283c1BRZ3JGTkFrMW90VUwzZjJVbHlyUWZMb0Z1?=
+ =?utf-8?B?QTB3dmlqTlJ5c3lmSHpjOHZTK05Ca1pkeElmTHFDT1JTaUROejJLK3RwOTVK?=
+ =?utf-8?B?L2ZYT3FrdzVreVhuMXMreS85VUdJNGZtdmRmckh2bjBhMWN2b3FReGtVdnB6?=
+ =?utf-8?B?N0ttdzJST1JuUlV2eGhXVnc2d0dUbFphbEEwTFBOU2hMTHdMK01Bb0RwUmhH?=
+ =?utf-8?B?d2FsZnBzRXBMK0hLRkZzSW9IMlA1Sjg2aEI2VGwramtwNEhhYVJvM285akhp?=
+ =?utf-8?B?V1BtUDR1K1NwMndvMytLUDZ6c3BNNHNLVWY5a1QwMDBBSWxRc0REd1U1aTZq?=
+ =?utf-8?B?S0JpeS9kdTRhSjliY1doY3JHZEQ1UVM3T3NFc25iT3M4Z2tPblJIb3NHZkY1?=
+ =?utf-8?B?ZElsTEtDWnNwZW1CamlCNWRadXRDMDdjaGRxWENtZm9Sc3F4LzRRKzJVRlNU?=
+ =?utf-8?B?QVJ6V1lld1ZhMjdFSlhlL2l3dkdrVmtTS3UraWFEcUZRSUdTYnAyRVZ0UFE2?=
+ =?utf-8?B?WGNuTE9NNUhMYURaVXFrbk1yRCswMDhhR0wzS1N0UEtuN0ZtNnBEbjlIUVE1?=
+ =?utf-8?B?bmNERUxjQjFJeEZRRFBINGpad1ptTlJpMExUYVo5QjFTbkR4TlNKcExud3g1?=
+ =?utf-8?B?NU9vbXQzRThkRjhNdWlKcGYxNTI4TldNRk1zK3I1ZkE3TCtlZ2ZpUDc0WHBT?=
+ =?utf-8?B?dWowc0M2anlTeUtmTlBQWDhPVzZJU0I0MEFqTEkvVUQ3QUxQUUhHQi9KQWVS?=
+ =?utf-8?B?Y1doQjM1T2NaR1dBZVZYclI3NTVJS1NYSjQvQlZXQ2JidkYzOTdHcVh6d29V?=
+ =?utf-8?B?Nmw0UnozMjlwcWdpZjNNZUhOVFVYRTVWSFZCOUpWMUhEdHdybk5RbEIvc1VL?=
+ =?utf-8?B?d1RpTDVMUmx0NUhpRStGQWs1alBiTHVNM3pIWmZPamEwcUlmVGZoYkRpVG1Z?=
+ =?utf-8?B?c0hWWGJnUDJ5Tk01aUp6eWpQUkIzazgzL0N4WCswbHMxcUZzU3JsaVl0cllQ?=
+ =?utf-8?B?TXNEejhLK3JPd1lmTHNrYnlMcDVLWHM2ZExYcVg4dnJxTytHVm1ZZHRmb284?=
+ =?utf-8?B?NjA1M21BQUJUWG9OeVhoTUhGaGE1eXRCN0tWZkpUcDVTbGVJNVBRRTNYeG0w?=
+ =?utf-8?B?NW0vQzJTRWYrQnNya2tpQThUSHpkR0RHRG9Md3cwdFByYmtWRXBXTHdEYWFJ?=
+ =?utf-8?B?TUdRM2F3cUtQQ2lZYU5MT2JESTFIOERwUVRmcnZlQU9sa1dRYnNxSmN1c01u?=
+ =?utf-8?B?d3Q3NWs0ZGRJK2lPM2cvMVNleTNzc08zQlBQR1o0VnJ3YTBGVzQzS2NwSm53?=
+ =?utf-8?B?ZjBIQ3VvL0JPVk9MNk1JUzJ4SVBaaW94L2tUWjhsMTZ2VHlYbnNwczJ6TVVp?=
+ =?utf-8?B?dW1abXkxNElXQWcrYUxSbnNGQlE1KzlkYk85eHFXaTNXMzBIQUhTSmdRQTlW?=
+ =?utf-8?B?U2JpaDFxUytjZXJ0VmZYdzdvZ3hXbGdtMW02dUNPV3Y5NmgreWpCOVBmNGs0?=
+ =?utf-8?B?ak1rTlpZdEJMU2JRWGpmZi9EeUgvQWY5aCtmSzErVnJsMUlKYWRHRTFzMmRi?=
+ =?utf-8?B?aVltSlBoMkRPSzdlTWNLa2JzLzlqSFdKcStYb2xBRXA1VFMrQUJIQSs0MVBC?=
+ =?utf-8?B?d29Pb3JhaFhFUFZmWStPTnBOYytiZlFxK3l6WE9Ib2RHK2FUMlJiVmljejdF?=
+ =?utf-8?B?dFFYMzdDa3c1eERjUHNVMkN5NmQ2VUUyUWFCdmxkS3gwOE9ZQS82NkhRaFJH?=
+ =?utf-8?B?ckk2MHNUbVdFaUNKUi95WkMwNXN1T053MzhmK1oxV1k4UlB1SDNUcUNOR0x0?=
+ =?utf-8?B?VUdrclRYUk8vR0FTY2xtR1RmeTFUenoxdW0yQUcyTHFhNHc9PQ==?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR11MB5825.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?aHZFRUU4N001c2hjZ0VXdUVQKzlLU2hXTlg2K09jSE9tWEhkWm93K0xhT1ZB?=
+ =?utf-8?B?a0RFdDVaR0hvdXRram5EREVMSXBVTjh4V0R0dlV4M05VLzBoMHlKZE1qS24z?=
+ =?utf-8?B?a3E2ak5oK3F4VSs0Vko1SUNROHVnQnE2TnZuT1VJc0RuS3FVS1dIaFl6TGxJ?=
+ =?utf-8?B?ZWczVXUrQVV3TzAxUlBQam8vYzBSdGJqdDBhSzJ2cjFaazQ4eEh6SFByWWs4?=
+ =?utf-8?B?WWN6Umh2L1lRYnJlSG9ramtWU2ZkNTdqbVZjNVlXYWhlMWYrTit0UXFlY3hm?=
+ =?utf-8?B?QU0wcE93eUk3TmpRMUlpQXYwNENSMDRkakxRMmpNdUpYbStsL2d1MWd2WTdK?=
+ =?utf-8?B?SlVjZDlZOEt0VW1BZWtlUStjZ1hoY0pQdUVYL2ZJRUtCZGVPSU5LRmJyblg4?=
+ =?utf-8?B?Uk1HZll2TzFFaFFXaWk0YkVXNkIrU3hocXRDWFVIaWlhRlhrT2QwVXN6ZldO?=
+ =?utf-8?B?c284b2Jwa00ydHVDSTJkRHllSFhQQ3FoNnRyR1QwNVNLK1Y2eGdRZkxQQzhK?=
+ =?utf-8?B?VDNWS0pEcTkrT2tORjh0T1hkdFl2M1RHeVJQWGxKdWpKc2lJTkdsdGVSSU1B?=
+ =?utf-8?B?UlVzTzJia1BOQ3hnZWV0K1NvQk5BZVBNVVpqb2wyTGtNUzRndUhEckEvK3o5?=
+ =?utf-8?B?Q3ZCajdLakNPSndRdCtsMG01MFFvbVVlbGJRSUZ5aTNJSGttSzMrd1RKTTRZ?=
+ =?utf-8?B?dGIxSzdCN251QTU4U3BuM2ZtZ29mdGRqY3Zhd05pZ2hXZXJTZUNHNTF3d1M4?=
+ =?utf-8?B?VTNPeHhmdWRsNzB4TWdIaHcwWWdjZTN0d2U4dnNtNUg3dllsSk1xSFhYYkIv?=
+ =?utf-8?B?d1NCcjUvTmJxZWwyeTlhc0Y1YXRyVFdCT0JGSklXaEpJSUJYRVhDRTNkb244?=
+ =?utf-8?B?bmUreXM3YTh3Z0hDdmlacHpGYmJ4SzhMVnFIc1NmMHByRkhleEUwY2Q1Qnhj?=
+ =?utf-8?B?aTFnekg0YjRNYmhIUzlXSTIzTnRDZVJmd20vMTlKZTc4cXBob3oyZE1oQ0dn?=
+ =?utf-8?B?QkFrK2M0TjI1elZqWUgyMTZwWTNKK2U1aHhIcFo5OFNROWhLT1d0ZUFSbWgy?=
+ =?utf-8?B?a01xY0dPNXhZNnJSVjJrV1hQT2RzbEtiR2Z6ckFMZjhDeWd1MllBS3pNd0s5?=
+ =?utf-8?B?OUsyYXF3aFQxQmhwbk1yb0NSbWZTcTdnK2xZdkFHZm4yNGRoZWxueUZ6S3Er?=
+ =?utf-8?B?c0lKZXg2aHp5RjRzYWZIeDg3clNvOEQ5V3dmL0U4NzJGTWVZN2lkdEJsRXY0?=
+ =?utf-8?B?L0FKOFNBQU8rSnAzQlJMZEY0Y0JXelQzVlNCejdKUjAwSHhxblJpamFBYTdQ?=
+ =?utf-8?B?cFZWQXlSYVdDRHhOc1VUd0hmUzBCeFgxajJycXNHWG9BNnVmT2x2S044cElL?=
+ =?utf-8?B?WU9PdURIdTlWcFF0YStMb1VYTHFHRVczM05Fcml3dU5Yc1BCR20ybWIwbDh4?=
+ =?utf-8?B?aFlISVBlZmJZUDQ5QTBscXV3NXJUUWRIZGptbjdpODBWdTMxRmlFMHhCK3V5?=
+ =?utf-8?B?TFFPd3c4OXQ1eDRkZjNiK3Q0UTVZTkpGSmZzdVZrdXdXVnpoRnNIRWd0MXVU?=
+ =?utf-8?B?Vk43ZEw3Wm96RFRUTlAyd2dXajJRMmFuQU9YS2dBaTUxQzJpSFpKV1VSQjlW?=
+ =?utf-8?B?cG5Dam9mdWFjZWFKTklSSXNIeU1tcEN1bm15RGlRQmk2cDZDRDROUlJjc0Vo?=
+ =?utf-8?B?dkJPYXBpRVc5eG9aUSswZ3hpdUNkZjdxOC85YjlMYlhuZStnejh6VkFhdXc4?=
+ =?utf-8?B?cGYxS3BqQUZGVWpoM2twRDdSK2RDUC9YQ2ppbHBlWm5qbmNsNlByVlluTHJO?=
+ =?utf-8?B?Yys5S1pzZnd0UVVLTFBlQnVESUlsTDFVazNmVmovbnJUa01hWURBQkd4T25x?=
+ =?utf-8?B?TXk1TUJUVElqZnJPeFRkS0pUOW5FVUN0eTJqOXdLM0I5QlBmTW1uRE9DOUp4?=
+ =?utf-8?B?aTBXSDN1QzQ2ZnNvdnNFM2tEK3dDWW8yZWpDbDBvczdPMHZtODBpMDE3T2No?=
+ =?utf-8?B?T0lHaG5oTmRNMkZYOHBod1RKZGVSdzVXaVN1Tkg2dmFZbTlKTEVEenBlNlYw?=
+ =?utf-8?B?dzVGc2diR21XV1R0bmNXd1BnVlBVNXBDUktNa25VazdrK1RJQTNHY2l1Wmcr?=
+ =?utf-8?B?M0RDUGM3MWdyeHVycE9IdnhvSjNvYy9XTmdqZmZIeld2NzJtV0x4S3lsNWZI?=
+ =?utf-8?Q?KP6O5vN70kGXWcrttdzloDk=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <EB0FB9F8DC07714892F55B03BE9083BC@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR11MB5825.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e2aa9a56-a038-4757-7720-08dcd1071741
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Sep 2024 19:39:16.4355
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: LGCk15Y3AUGFyAnGchNC1spPgowQXopA+uUYYrGYCoOyHNrCumNVRlrYc9A1GSLtfRR1VrcTYRQBVVvxkeSAHPA+Xp4BQ5MMZaaGeXaUS0I=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB6686
+X-OriginatorOrg: intel.com
 
-From: Ajay Singh <ajay.kathat@microchip.com>
-
-Add support for the WILC3000 chip. The chip is similar to WILC1000,
-except that the register layout is slightly different and it does
-not support WPA3/SAE.
-
-Signed-off-by: Ajay Singh <ajay.kathat@microchip.com>
-Signed-off-by: Marek Vasut <marex@denx.de>
----
-Note: Squashed and updated from the following downstream patches:
-wifi: wilc1000: wilc3000 support added
-wifi: wilc1000: wilc3000 interrupt handling
-wifi: wilc1000: wilc3000 added chip wake and sleep support
-wifi: wilc1000: wilc3000 FW file sepecific changes
----
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Adham Abozaeid <adham.abozaeid@microchip.com>
-Cc: Ajay Singh <ajay.kathat@microchip.com>
-Cc: Alexis Lothoré <alexis.lothore@bootlin.com>
-Cc: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Rob Herring <robh@kernel.org>
-Cc: devicetree@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Cc: netdev@vger.kernel.org
----
-V2: - Return -EINVAL in wilc_sdio_init() if chip ID is not supported
-    - Dispose of wilc_chip_type, replace with is_wilc1000()/is_wilc3000()
-    - Remove wilc3000 DT compatible string handling, match on wilc1000 only,
-      the device type can be auto-detected based on chipID
-V3: - Define and use WILC3000_BOOTROM_STATUS and WILC3000_CORTUS_BOOT_REGISTER_2
-V4: - Fix up after dropping wilc_get_chipid() in netdev.c in 2/5
-V5: - Advertise WPA3/SAE to userspace only on WILC1000 in wilc_create_wiphy()
----
- .../wireless/microchip/wilc1000/cfg80211.c    |   4 +-
- .../net/wireless/microchip/wilc1000/netdev.c  |  27 ++-
- .../net/wireless/microchip/wilc1000/sdio.c    |  62 ++++-
- drivers/net/wireless/microchip/wilc1000/spi.c |   2 +-
- .../net/wireless/microchip/wilc1000/wlan.c    | 220 +++++++++++++++---
- .../net/wireless/microchip/wilc1000/wlan.h    |  45 +++-
- 6 files changed, 298 insertions(+), 62 deletions(-)
-
-diff --git a/drivers/net/wireless/microchip/wilc1000/cfg80211.c b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-index 30015c5920467..cdb4b0bbeab3b 100644
---- a/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-+++ b/drivers/net/wireless/microchip/wilc1000/cfg80211.c
-@@ -1856,7 +1856,9 @@ EXPORT_SYMBOL_GPL(wilc_cfg80211_init);
- 
- int wilc_cfg80211_register(struct wilc *wilc)
- {
--	wilc->wiphy->features |= NL80211_FEATURE_SAE;
-+	/* WPA3/SAE supported only on WILC1000 */
-+	if (is_wilc1000(wilc->chipid))
-+		wilc->wiphy->features |= NL80211_FEATURE_SAE;
- 
- 	return wiphy_register(wilc->wiphy);
- }
-diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net/wireless/microchip/wilc1000/netdev.c
-index 086e70d833e06..178f3241cef9f 100644
---- a/drivers/net/wireless/microchip/wilc1000/netdev.c
-+++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
-@@ -23,6 +23,12 @@
- #define __WILC1000_FW(api)		WILC1000_FW_PREFIX #api ".bin"
- #define WILC1000_FW(api)		__WILC1000_FW(api)
- 
-+#define WILC3000_API_VER		1
-+
-+#define WILC3000_FW_PREFIX		"atmel/wilc3000_wifi_firmware-"
-+#define __WILC3000_FW(api)		WILC3000_FW_PREFIX #api ".bin"
-+#define WILC3000_FW(api)		__WILC3000_FW(api)
-+
- static irqreturn_t isr_uh_routine(int irq, void *user_data)
- {
- 	struct wilc *wilc = user_data;
-@@ -196,19 +202,23 @@ static int wilc_wlan_get_firmware(struct net_device *dev)
- 	struct wilc_vif *vif = netdev_priv(dev);
- 	struct wilc *wilc = vif->wilc;
- 	const struct firmware *wilc_fw;
-+	char *firmware;
- 	int ret;
- 
--	if (!is_wilc1000(wilc->chipid))
-+	if (is_wilc1000(wilc->chipid))
-+		firmware = WILC1000_FW(WILC1000_API_VER);
-+	else if (is_wilc3000(wilc->chipid))
-+		firmware = WILC3000_FW(WILC3000_API_VER);
-+	else
- 		return -EINVAL;
- 
--	netdev_info(dev, "WILC1000 loading firmware [%s]\n",
-+	netdev_info(dev, "WILC%d loading firmware [%s]\n",
-+		    is_wilc1000(wilc->chipid) ? 1000 : 3000,
- 		    WILC1000_FW(WILC1000_API_VER));
- 
--	ret = request_firmware(&wilc_fw, WILC1000_FW(WILC1000_API_VER),
--			       wilc->dev);
-+	ret = request_firmware(&wilc_fw, firmware, wilc->dev);
- 	if (ret != 0) {
--		netdev_err(dev, "%s - firmware not available\n",
--			   WILC1000_FW(WILC1000_API_VER));
-+		netdev_err(dev, "%s - firmware not available\n", firmware);
- 		return -EINVAL;
- 	}
- 	wilc->firmware = wilc_fw;
-@@ -233,7 +243,7 @@ static int wilc_start_firmware(struct net_device *dev)
- 	return 0;
- }
- 
--static int wilc1000_firmware_download(struct net_device *dev)
-+static int wilc_firmware_download(struct net_device *dev)
- {
- 	struct wilc_vif *vif = netdev_priv(dev);
- 	struct wilc *wilc = vif->wilc;
-@@ -528,7 +538,7 @@ static int wilc_wlan_initialize(struct net_device *dev, struct wilc_vif *vif)
- 		if (ret)
- 			goto fail_irq_enable;
- 
--		ret = wilc1000_firmware_download(dev);
-+		ret = wilc_firmware_download(dev);
- 		if (ret)
- 			goto fail_irq_enable;
- 
-@@ -1014,3 +1024,4 @@ EXPORT_SYMBOL_GPL(wilc_netdev_ifc_init);
- MODULE_DESCRIPTION("Atmel WILC1000 core wireless driver");
- MODULE_LICENSE("GPL");
- MODULE_FIRMWARE(WILC1000_FW(WILC1000_API_VER));
-+MODULE_FIRMWARE(WILC3000_FW(WILC3000_API_VER));
-diff --git a/drivers/net/wireless/microchip/wilc1000/sdio.c b/drivers/net/wireless/microchip/wilc1000/sdio.c
-index 0240f66e70bc1..6b52e95a17187 100644
---- a/drivers/net/wireless/microchip/wilc1000/sdio.c
-+++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
-@@ -806,13 +806,19 @@ static int wilc_sdio_read_int(struct wilc *wilc, u32 *int_status)
- 		cmd.address = WILC_SDIO_EXT_IRQ_FLAG_REG;
- 	} else {
- 		cmd.function = 0;
--		cmd.address = WILC_SDIO_IRQ_FLAG_REG;
-+		cmd.address = is_wilc1000(wilc->chipid) ?
-+			      WILC1000_SDIO_IRQ_FLAG_REG :
-+			      WILC3000_SDIO_IRQ_FLAG_REG;
- 	}
- 	cmd.raw = 0;
- 	cmd.read_write = 0;
- 	cmd.data = 0;
- 	wilc_sdio_cmd52(wilc, &cmd);
- 	irq_flags = cmd.data;
-+
-+	if (sdio_priv->irq_gpio)
-+		irq_flags &= is_wilc1000(wilc->chipid) ? 0x1f : 0x0f;
-+
- 	tmp |= FIELD_PREP(IRG_FLAGS_MASK, cmd.data);
- 
- 	if (FIELD_GET(UNHANDLED_IRQ_MASK, irq_flags))
-@@ -834,22 +840,56 @@ static int wilc_sdio_clear_int_ext(struct wilc *wilc, u32 val)
- 	if (sdio_priv->irq_gpio)
- 		reg = val & (BIT(MAX_NUM_INT) - 1);
- 
--	/* select VMM table 0 */
--	if (val & SEL_VMM_TBL0)
--		reg |= BIT(5);
--	/* select VMM table 1 */
--	if (val & SEL_VMM_TBL1)
--		reg |= BIT(6);
--	/* enable VMM */
--	if (val & EN_VMM)
--		reg |= BIT(7);
-+	if (is_wilc1000(wilc->chipid)) {
-+		/* select VMM table 0 */
-+		if (val & SEL_VMM_TBL0)
-+			reg |= BIT(5);
-+		/* select VMM table 1 */
-+		if (val & SEL_VMM_TBL1)
-+			reg |= BIT(6);
-+		/* enable VMM */
-+		if (val & EN_VMM)
-+			reg |= BIT(7);
-+	} else {
-+		if (sdio_priv->irq_gpio && reg) {
-+			struct sdio_cmd52 cmd;
-+
-+			cmd.read_write = 1;
-+			cmd.function = 0;
-+			cmd.raw = 0;
-+			cmd.address = WILC3000_SDIO_IRQ_FLAG_REG;
-+			cmd.data = reg;
-+
-+			ret = wilc_sdio_cmd52(wilc, &cmd);
-+			if (ret) {
-+				dev_err(&func->dev,
-+					"Failed cmd52, set 0xfe data (%d) ...\n",
-+					__LINE__);
-+				return ret;
-+			}
-+		}
-+
-+		reg = 0;
-+		/* select VMM table 0 */
-+		if (val & SEL_VMM_TBL0)
-+			reg |= BIT(0);
-+		/* select VMM table 1 */
-+		if (val & SEL_VMM_TBL1)
-+			reg |= BIT(1);
-+		/* enable VMM */
-+		if (val & EN_VMM)
-+			reg |= BIT(2);
-+	}
-+
- 	if (reg) {
- 		struct sdio_cmd52 cmd;
- 
- 		cmd.read_write = 1;
- 		cmd.function = 0;
- 		cmd.raw = 0;
--		cmd.address = WILC_SDIO_IRQ_CLEAR_FLAG_REG;
-+		cmd.address = is_wilc1000(wilc->chipid) ?
-+			      WILC1000_SDIO_IRQ_CLEAR_FLAG_REG :
-+			      WILC3000_SDIO_VMM_TBL_CTRL_REG;
- 		cmd.data = reg;
- 
- 		ret = wilc_sdio_cmd52(wilc, &cmd);
-diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
-index edc518c3b0253..ad837d2b7af67 100644
---- a/drivers/net/wireless/microchip/wilc1000/spi.c
-+++ b/drivers/net/wireless/microchip/wilc1000/spi.c
-@@ -1236,7 +1236,7 @@ static int wilc_validate_chipid(struct wilc *wilc)
- 		dev_err(&spi->dev, "Fail cmd read chip id...\n");
- 		return ret;
- 	}
--	if (!is_wilc1000(chipid)) {
-+	if (!is_wilc1000(chipid) && !is_wilc3000(chipid)) {
- 		dev_err(&spi->dev, "Unknown chip id 0x%x\n", chipid);
- 		return -ENODEV;
- 	}
-diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index 1aab8eca58169..0c0f78b97ba3f 100644
---- a/drivers/net/wireless/microchip/wilc1000/wlan.c
-+++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -541,7 +541,7 @@ static struct rxq_entry_t *wilc_wlan_rxq_remove(struct wilc *wilc)
- 	return rqe;
- }
- 
--static int chip_allow_sleep(struct wilc *wilc)
-+static int chip_allow_sleep_wilc1000(struct wilc *wilc)
- {
- 	u32 reg = 0;
- 	const struct wilc_hif_func *hif_func = wilc->hif_func;
-@@ -601,7 +601,41 @@ static int chip_allow_sleep(struct wilc *wilc)
- 	return 0;
- }
- 
--static int chip_wakeup(struct wilc *wilc)
-+static int chip_allow_sleep_wilc3000(struct wilc *wilc)
-+{
-+	u32 reg = 0;
-+	int ret;
-+	const struct wilc_hif_func *hif_func = wilc->hif_func;
-+
-+	if (wilc->io_type == WILC_HIF_SDIO) {
-+		ret = hif_func->hif_read_reg(wilc, WILC_SDIO_WAKEUP_REG, &reg);
-+		if (ret)
-+			return ret;
-+		ret = hif_func->hif_write_reg(wilc, WILC_SDIO_WAKEUP_REG,
-+					      reg & ~WILC_SDIO_WAKEUP_BIT);
-+		if (ret)
-+			return ret;
-+	} else {
-+		ret = hif_func->hif_read_reg(wilc, WILC_SPI_WAKEUP_REG, &reg);
-+		if (ret)
-+			return ret;
-+		ret = hif_func->hif_write_reg(wilc, WILC_SPI_WAKEUP_REG,
-+					      reg & ~WILC_SPI_WAKEUP_BIT);
-+		if (ret)
-+			return ret;
-+	}
-+	return 0;
-+}
-+
-+static int chip_allow_sleep(struct wilc *wilc)
-+{
-+	if (is_wilc1000(wilc->chipid))
-+		return chip_allow_sleep_wilc1000(wilc);
-+	else
-+		return chip_allow_sleep_wilc3000(wilc);
-+}
-+
-+static int chip_wakeup_wilc1000(struct wilc *wilc)
- {
- 	u32 ret = 0;
- 	u32 clk_status_val = 0, trials = 0;
-@@ -613,15 +647,15 @@ static int chip_wakeup(struct wilc *wilc)
- 	if (wilc->io_type == WILC_HIF_SDIO) {
- 		wakeup_reg = WILC_SDIO_WAKEUP_REG;
- 		wakeup_bit = WILC_SDIO_WAKEUP_BIT;
--		clk_status_reg = WILC_SDIO_CLK_STATUS_REG;
--		clk_status_bit = WILC_SDIO_CLK_STATUS_BIT;
-+		clk_status_reg = WILC1000_SDIO_CLK_STATUS_REG;
-+		clk_status_bit = WILC1000_SDIO_CLK_STATUS_BIT;
- 		from_host_to_fw_reg = WILC_SDIO_HOST_TO_FW_REG;
- 		from_host_to_fw_bit = WILC_SDIO_HOST_TO_FW_BIT;
- 	} else {
- 		wakeup_reg = WILC_SPI_WAKEUP_REG;
- 		wakeup_bit = WILC_SPI_WAKEUP_BIT;
--		clk_status_reg = WILC_SPI_CLK_STATUS_REG;
--		clk_status_bit = WILC_SPI_CLK_STATUS_BIT;
-+		clk_status_reg = WILC1000_SPI_CLK_STATUS_REG;
-+		clk_status_bit = WILC1000_SPI_CLK_STATUS_BIT;
- 		from_host_to_fw_reg = WILC_SPI_HOST_TO_FW_REG;
- 		from_host_to_fw_bit = WILC_SPI_HOST_TO_FW_BIT;
- 	}
-@@ -663,6 +697,74 @@ static int chip_wakeup(struct wilc *wilc)
- 	return 0;
- }
- 
-+static int chip_wakeup_wilc3000(struct wilc *wilc)
-+{
-+	u32 wakeup_reg_val, clk_status_reg_val, trials = 0;
-+	u32 wakeup_reg, wakeup_bit;
-+	u32 clk_status_reg, clk_status_bit;
-+	int wake_seq_trials = 5;
-+	const struct wilc_hif_func *hif_func = wilc->hif_func;
-+
-+	if (wilc->io_type == WILC_HIF_SDIO) {
-+		wakeup_reg = WILC_SDIO_WAKEUP_REG;
-+		wakeup_bit = WILC_SDIO_WAKEUP_BIT;
-+		clk_status_reg = WILC3000_SDIO_CLK_STATUS_REG;
-+		clk_status_bit = WILC3000_SDIO_CLK_STATUS_BIT;
-+	} else {
-+		wakeup_reg = WILC_SPI_WAKEUP_REG;
-+		wakeup_bit = WILC_SPI_WAKEUP_BIT;
-+		clk_status_reg = WILC3000_SPI_CLK_STATUS_REG;
-+		clk_status_bit = WILC3000_SPI_CLK_STATUS_BIT;
-+	}
-+
-+	hif_func->hif_read_reg(wilc, wakeup_reg, &wakeup_reg_val);
-+	do {
-+		hif_func->hif_write_reg(wilc, wakeup_reg, wakeup_reg_val |
-+							  wakeup_bit);
-+		/* Check the clock status */
-+		hif_func->hif_read_reg(wilc, clk_status_reg,
-+				       &clk_status_reg_val);
-+
-+		/* In case of clocks off, wait 1ms, and check it again.
-+		 * if still off, wait for another 1ms, for a total wait of 3ms.
-+		 * If still off, redo the wake up sequence
-+		 */
-+		while ((clk_status_reg_val & clk_status_bit) == 0 &&
-+		       (++trials % 4) != 0) {
-+			/* Wait for the chip to stabilize*/
-+			usleep_range(1000, 1100);
-+
-+			/* Make sure chip is awake. This is an extra step that
-+			 * can be removed later to avoid the bus access
-+			 * overhead
-+			 */
-+			hif_func->hif_read_reg(wilc, clk_status_reg,
-+					       &clk_status_reg_val);
-+		}
-+		/* in case of failure, Reset the wakeup bit to introduce a new
-+		 * edge on the next loop
-+		 */
-+		if ((clk_status_reg_val & clk_status_bit) == 0) {
-+			hif_func->hif_write_reg(wilc, wakeup_reg,
-+						wakeup_reg_val & (~wakeup_bit));
-+			/* added wait before wakeup sequence retry */
-+			usleep_range(200, 300);
-+		}
-+	} while ((clk_status_reg_val & clk_status_bit) == 0 && wake_seq_trials-- > 0);
-+	if (!wake_seq_trials)
-+		dev_err(wilc->dev, "clocks still OFF. Wake up failed\n");
-+
-+	return 0;
-+}
-+
-+static int chip_wakeup(struct wilc *wilc)
-+{
-+	if (is_wilc1000(wilc->chipid))
-+		return chip_wakeup_wilc1000(wilc);
-+	else
-+		return chip_wakeup_wilc3000(wilc);
-+}
-+
- static inline int acquire_bus(struct wilc *wilc, enum bus_acquire acquire)
- {
- 	int ret = 0;
-@@ -695,7 +797,9 @@ int host_wakeup_notify(struct wilc *wilc)
- 	if (ret)
- 		return ret;
- 
--	wilc->hif_func->hif_write_reg(wilc, WILC_CORTUS_INTERRUPT_2, 1);
-+	wilc->hif_func->hif_write_reg(wilc, is_wilc1000(wilc->chipid) ?
-+					    WILC1000_CORTUS_INTERRUPT_2 :
-+					    WILC3000_CORTUS_INTERRUPT_2, 1);
- 	return release_bus(wilc, WILC_BUS_RELEASE_ALLOW_SLEEP);
- }
- EXPORT_SYMBOL_GPL(host_wakeup_notify);
-@@ -707,7 +811,9 @@ int host_sleep_notify(struct wilc *wilc)
- 	if (ret)
- 		return ret;
- 
--	wilc->hif_func->hif_write_reg(wilc, WILC_CORTUS_INTERRUPT_1, 1);
-+	wilc->hif_func->hif_write_reg(wilc, is_wilc1000(wilc->chipid) ?
-+					    WILC1000_CORTUS_INTERRUPT_1 :
-+					    WILC3000_CORTUS_INTERRUPT_1, 1);
- 	return release_bus(wilc, WILC_BUS_RELEASE_ALLOW_SLEEP);
- }
- EXPORT_SYMBOL_GPL(host_sleep_notify);
-@@ -842,19 +948,45 @@ int wilc_wlan_handle_txq(struct wilc *wilc, u32 *txq_count)
- 		if (ret)
- 			break;
- 
--		ret = func->hif_write_reg(wilc, WILC_HOST_VMM_CTL, 0x2);
--		if (ret)
--			break;
-+		if (is_wilc1000(wilc->chipid)) {
-+			ret = func->hif_write_reg(wilc, WILC_HOST_VMM_CTL, 0x2);
-+			if (ret)
-+				break;
- 
--		do {
--			ret = func->hif_read_reg(wilc, WILC_HOST_VMM_CTL, &reg);
-+			do {
-+				ret = func->hif_read_reg(wilc, WILC_HOST_VMM_CTL, &reg);
-+				if (ret)
-+					break;
-+				if (FIELD_GET(WILC_VMM_ENTRY_AVAILABLE, reg)) {
-+					entries = FIELD_GET(WILC_VMM_ENTRY_COUNT, reg);
-+					break;
-+				}
-+			} while (--timeout);
-+		} else {
-+			ret = func->hif_write_reg(wilc, WILC_HOST_VMM_CTL, 0);
- 			if (ret)
- 				break;
--			if (FIELD_GET(WILC_VMM_ENTRY_AVAILABLE, reg)) {
--				entries = FIELD_GET(WILC_VMM_ENTRY_COUNT, reg);
-+
-+			/* interrupt firmware */
-+			ret = func->hif_write_reg(wilc, WILC_CORTUS_INTERRUPT_BASE, 1);
-+			if (ret)
- 				break;
--			}
--		} while (--timeout);
-+
-+			do {
-+				ret = func->hif_read_reg(wilc, WILC_CORTUS_INTERRUPT_BASE, &reg);
-+				if (ret)
-+					break;
-+				if (reg == 0) {
-+					/* Get the entries */
-+					ret = func->hif_read_reg(wilc, WILC_HOST_VMM_CTL, &reg);
-+					if (ret)
-+						break;
-+
-+					entries = FIELD_GET(WILC_VMM_ENTRY_COUNT, reg);
-+					break;
-+				}
-+			} while (--timeout);
-+		}
- 		if (timeout <= 0) {
- 			ret = func->hif_write_reg(wilc, WILC_HOST_VMM_CTL, 0x0);
- 			break;
-@@ -1212,6 +1344,9 @@ int wilc_wlan_start(struct wilc *wilc)
- 	if (wilc->io_type == WILC_HIF_SDIO && wilc->dev_irq_num)
- 		reg |= WILC_HAVE_SDIO_IRQ_GPIO;
- 
-+	if (is_wilc3000(wilc->chipid))
-+		reg |= WILC_HAVE_SLEEP_CLK_SRC_RTC;
-+
- 	ret = wilc->hif_func->hif_write_reg(wilc, WILC_GP_REG_1, reg);
- 	if (ret)
- 		goto release;
-@@ -1462,21 +1597,25 @@ int wilc_get_chipid(struct wilc *wilc)
- 	u32 rfrevid = 0;
- 
- 	if (wilc->chipid == 0) {
--		wilc->hif_func->hif_read_reg(wilc, WILC_CHIPID, &chipid);
--		wilc->hif_func->hif_read_reg(wilc, WILC_RF_REVISION_ID,
--					     &rfrevid);
--		if (!is_wilc1000(chipid)) {
--			wilc->chipid = 0;
--			return -EINVAL;
--		}
--		if (chipid == WILC_1000_BASE_ID_2A) { /* 0x1002A0 */
--			if (rfrevid != 0x1)
--				chipid = WILC_1000_BASE_ID_2A_REV1;
--		} else if (chipid == WILC_1000_BASE_ID_2B) { /* 0x1002B0 */
--			if (rfrevid == 0x4)
--				chipid = WILC_1000_BASE_ID_2B_REV1;
--			else if (rfrevid != 0x3)
--				chipid = WILC_1000_BASE_ID_2B_REV2;
-+		wilc->hif_func->hif_read_reg(wilc, WILC3000_CHIP_ID, &chipid);
-+		if (!is_wilc3000(chipid)) {
-+			wilc->hif_func->hif_read_reg(wilc, WILC_CHIPID, &chipid);
-+			wilc->hif_func->hif_read_reg(wilc, WILC_RF_REVISION_ID,
-+						     &rfrevid);
-+
-+			if (!is_wilc1000(chipid)) {
-+				wilc->chipid = 0;
-+				return -EINVAL;
-+			}
-+			if (chipid == WILC_1000_BASE_ID_2A) { /* 0x1002A0 */
-+				if (rfrevid != 0x1)
-+					chipid = WILC_1000_BASE_ID_2A_REV1;
-+			} else if (chipid == WILC_1000_BASE_ID_2B) { /* 0x1002B0 */
-+				if (rfrevid == 0x4)
-+					chipid = WILC_1000_BASE_ID_2B_REV1;
-+				else if (rfrevid != 0x3)
-+					chipid = WILC_1000_BASE_ID_2B_REV2;
-+			}
- 		}
- 
- 		wilc->chipid = chipid;
-@@ -1525,6 +1664,21 @@ static int init_chip(struct net_device *dev)
- 		}
- 	}
- 
-+	if (is_wilc3000(wilc->chipid)) {
-+		ret = wilc->hif_func->hif_read_reg(wilc, WILC3000_BOOTROM_STATUS, &reg);
-+		if (ret) {
-+			netdev_err(dev, "failed to read WILC3000 BootROM status register\n");
-+			goto release;
-+		}
-+
-+		ret = wilc->hif_func->hif_write_reg(wilc, WILC3000_CORTUS_BOOT_REGISTER_2,
-+						    WILC_CORTUS_BOOT_FROM_IRAM);
-+		if (ret) {
-+			netdev_err(dev, "failed to write WILC3000 Boot register\n");
-+			goto release;
-+		}
-+	}
-+
- release:
- 	rv = release_bus(wilc, WILC_BUS_RELEASE_ALLOW_SLEEP);
- 
-@@ -1606,7 +1760,7 @@ int wilc_wlan_init(struct net_device *dev)
- 		if (ret)
- 			goto fail;
- 
--		if (!is_wilc1000(wilc->chipid)) {
-+		if (!is_wilc1000(wilc->chipid) && !is_wilc3000(wilc->chipid)) {
- 			netdev_err(dev, "Unsupported chipid: %x\n", wilc->chipid);
- 			ret = -EINVAL;
- 			goto fail;
-diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.h b/drivers/net/wireless/microchip/wilc1000/wlan.h
-index 552590823e444..b9e7f9222eadd 100644
---- a/drivers/net/wireless/microchip/wilc1000/wlan.h
-+++ b/drivers/net/wireless/microchip/wilc1000/wlan.h
-@@ -96,8 +96,14 @@
- #define WILC_SPI_WAKEUP_REG		0x1
- #define WILC_SPI_WAKEUP_BIT		BIT(1)
- 
--#define WILC_SPI_CLK_STATUS_REG        0x0f
--#define WILC_SPI_CLK_STATUS_BIT        BIT(2)
-+/* WILC1000 specific */
-+#define WILC1000_SPI_CLK_STATUS_REG	0x0f
-+#define WILC1000_SPI_CLK_STATUS_BIT	BIT(2)
-+
-+/* WILC3000 specific */
-+#define WILC3000_SPI_CLK_STATUS_REG	0x13
-+#define WILC3000_SPI_CLK_STATUS_BIT	BIT(2)
-+
- #define WILC_SPI_HOST_TO_FW_REG		0x0b
- #define WILC_SPI_HOST_TO_FW_BIT		BIT(0)
- 
-@@ -123,14 +129,24 @@
- #define WILC_SDIO_WAKEUP_REG		0xf0
- #define WILC_SDIO_WAKEUP_BIT		BIT(0)
- 
--#define WILC_SDIO_CLK_STATUS_REG	0xf1
--#define WILC_SDIO_CLK_STATUS_BIT	BIT(0)
-+/* WILC1000 */
-+#define WILC1000_SDIO_CLK_STATUS_REG	0xf1
-+#define WILC1000_SDIO_CLK_STATUS_BIT	BIT(0)
-+
-+#define WILC1000_SDIO_IRQ_FLAG_REG	0xf7
-+#define WILC1000_SDIO_IRQ_CLEAR_FLAG_REG	0xf8
-+
-+/* WILC3000 specific */
-+#define WILC3000_SDIO_CLK_STATUS_REG	0xf0 /* clk & wakeup are on same reg */
-+#define WILC3000_SDIO_CLK_STATUS_BIT	BIT(4)
-+
-+#define WILC3000_SDIO_VMM_TBL_CTRL_REG	0xf1
-+#define WILC3000_SDIO_IRQ_FLAG_REG	0xfe
- 
-+/* Common vendor specific CCCR register */
- #define WILC_SDIO_INTERRUPT_DATA_SZ_REG	0xf2 /* Read size (2 bytes) */
- 
- #define WILC_SDIO_VMM_TBL_CTRL_REG	0xf6
--#define WILC_SDIO_IRQ_FLAG_REG		0xf7
--#define WILC_SDIO_IRQ_CLEAR_FLAG_REG	0xf8
- 
- #define WILC_SDIO_HOST_TO_FW_REG	0xfa
- #define WILC_SDIO_HOST_TO_FW_BIT	BIT(0)
-@@ -172,8 +188,11 @@
- #define WILC_HAVE_USE_IRQ_AS_HOST_WAKE	BIT(8)
- 
- #define WILC_CORTUS_INTERRUPT_BASE	0x10A8
--#define WILC_CORTUS_INTERRUPT_1		(WILC_CORTUS_INTERRUPT_BASE + 0x4)
--#define WILC_CORTUS_INTERRUPT_2		(WILC_CORTUS_INTERRUPT_BASE + 0x8)
-+#define WILC1000_CORTUS_INTERRUPT_1	(WILC_CORTUS_INTERRUPT_BASE + 0x4)
-+#define WILC3000_CORTUS_INTERRUPT_1	(WILC_CORTUS_INTERRUPT_BASE + 0x14)
-+
-+#define WILC1000_CORTUS_INTERRUPT_2	(WILC_CORTUS_INTERRUPT_BASE + 0x8)
-+#define WILC3000_CORTUS_INTERRUPT_2	(WILC_CORTUS_INTERRUPT_BASE + 0x18)
- 
- /* tx control register 1 to 4 for RX */
- #define WILC_REG_4_TO_1_RX		0x1e1c
-@@ -183,6 +202,9 @@
- 
- #define WILC_CORTUS_RESET_MUX_SEL	0x1118
- #define WILC_CORTUS_BOOT_REGISTER	0xc0000
-+#define WILC3000_BOOTROM_STATUS		0x207ac
-+#define WILC3000_CORTUS_BOOT_REGISTER_2	0x4f0000
-+#define WILC3000_CHIP_ID		0x3b0000
- 
- #define WILC_CORTUS_BOOT_FROM_IRAM	0x71
- 
-@@ -195,6 +217,8 @@
- #define WILC_1000_BASE_ID_2B_REV1	(WILC_1000_BASE_ID_2B + 1)
- #define WILC_1000_BASE_ID_2B_REV2	(WILC_1000_BASE_ID_2B + 2)
- 
-+#define WILC_3000_BASE_ID		0x300000
-+
- #define WILC_CHIP_REV_FIELD		GENMASK(11, 0)
- 
- /********************************************
-@@ -413,6 +437,11 @@ static inline bool is_wilc1000(u32 id)
- 	return (id & (~WILC_CHIP_REV_FIELD)) == WILC_1000_BASE_ID;
- }
- 
-+static inline bool is_wilc3000(u32 id)
-+{
-+	return (id & (~WILC_CHIP_REV_FIELD)) == WILC_3000_BASE_ID;
-+}
-+
- int wilc_wlan_firmware_download(struct wilc *wilc, const u8 *buffer,
- 				u32 buffer_size);
- int wilc_wlan_start(struct wilc *wilc);
--- 
-2.45.2
-
+T24gTW9uLCAyMDI0LTA5LTA5IGF0IDE3OjE2ICswMTAwLCBDaHJpcyBCYWluYnJpZGdlIHdyb3Rl
+Og0KPiBPbiBNb24sIDkgU2VwdCAyMDI0IGF0IDA0OjA4LCBHcnVtYmFjaCwgRW1tYW51ZWwNCj4g
+PGVtbWFudWVsLmdydW1iYWNoQGludGVsLmNvbT4gd3JvdGU6DQo+ID4gDQo+ID4gT24gU3VuLCAy
+MDI0LTA5LTA4IGF0IDIxOjU1ICswMTAwLCBDaHJpcyBCYWluYnJpZGdlIHdyb3RlOg0KPiA+ID4g
+T24gU3VuLCBTZXAgMDgsIDIwMjQgYXQgMTA6NTQ6MDlBTSArMDAwMCwgR3J1bWJhY2gsIEVtbWFu
+dWVsIHdyb3RlOg0KPiA+ID4gPiANCj4gPiA+ID4gU3RyaWtlIHRoYXQuDQo+ID4gPiA+IA0KPiA+
+ID4gPiBDYW4geW91IHBsZWFzZSB0YWtlIHRoZSBwYXRjaCBpbiBhdHRhY2hlZCBpbnN0ZWFkPw0K
+PiA+ID4gDQo+ID4gPiBTdXJlLCB0aGUgZXJyb3Igd2l0aCB2Ni4xMS1yYzYrcGF0Y2ggaXM6DQo+
+ID4gDQo+ID4gSSBleHBlY3RlZCB0aGF0LCBidXQgaXMgd2lmaSBmdW5jdGlvbmFsIGFmdGVyIHJl
+c3VtZT8NCj4gPiBOb3QgaGF2aW5nIHdpZmkgYWZ0ZXIgcmVzdW1lIGlzIG9uZSB0aGluZy4NCj4g
+PiBIYXZpbmcgd2lmaSBidXQgd2l0aCBsb3RzIG9mIGdhcmJhZ2UgaW4gdGhlIGxvZ3MgaXMgYW5v
+dGhlciB0aGluZy4NCj4gDQo+IFllcywgd2lmaSBpcyB3b3JraW5nIGFmdGVyIHJlc3VtZS4NCg0K
+RG9lcyBpdCB3b3JrIHdpdGhvdXQgbXkgcGF0Y2g/DQoNCg==
 
