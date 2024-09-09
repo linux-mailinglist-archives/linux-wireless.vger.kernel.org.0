@@ -1,126 +1,163 @@
-Return-Path: <linux-wireless+bounces-12705-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12706-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCFDF9723C0
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 22:33:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAD6D972404
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 22:55:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23284B22443
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 20:33:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED7691C21E42
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 20:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73CEF18A6AB;
-	Mon,  9 Sep 2024 20:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A46F18A948;
+	Mon,  9 Sep 2024 20:55:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="qzrb3Bc0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655BE189F45
-	for <linux-wireless@vger.kernel.org>; Mon,  9 Sep 2024 20:33:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7EEA18A937;
+	Mon,  9 Sep 2024 20:55:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725914010; cv=none; b=fITKMTHvY5IR1AvwTEABIYSEb/cmu+b6IC+k0beufgn4oxh0QuH3E1Wku9g51epMpo8+LxZzXvuDRJ7PDz6o7yutnA+K4Rz53fL802wh7S6C9Y7KdAeWLszdnjGwFB7I7A3afgPXbNdRjrKbmeMnmIH6dHdfC/+bG8KikcVmVf8=
+	t=1725915336; cv=none; b=Od6jutp+Uuz1urfpS6DP94p3lb2FH+d9jowgEfXf4NF9rzMEWODAMTcOdH7uE7B1EKyJKViPn93cCd9dxDHBHNCJ0j+aMWDdCymZFNcOxCPbhtVUpvKbikqfxaaCO8hc+/1U3YCZnt9zO3Y0XNo3aUnKJuGfWqfDq7+m7vNB+Mk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725914010; c=relaxed/simple;
-	bh=VGLIIRn1nVAec8poWKYBfG+HxzfdtU61H0cDNFIcwGI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NJZZtanI1+K1mFL8qsXYGetzp90owxgH5/XCWnMq3b/y4G+qhDBa4+x1BEdvt82rJSh7z7X+QQPJ35iZSUHd4IziPak2l/yizjea5C+FVjNnjO7zq8WRzc8M6jikKoJWDgU8nT/MDD2r80s8B36zuctnfvEvw7NRUp1/2fBvm6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1snl4g-0002X6-Ns; Mon, 09 Sep 2024 22:33:26 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1snl4f-006jgi-Ug; Mon, 09 Sep 2024 22:33:25 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1snl4f-00FoVQ-2j;
-	Mon, 09 Sep 2024 22:33:25 +0200
-Date: Mon, 9 Sep 2024 22:33:25 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: David Lin <yu-hao.lin@nxp.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"briannorris@chromium.org" <briannorris@chromium.org>,
-	"kvalo@kernel.org" <kvalo@kernel.org>,
-	"francesco@dolcini.it" <francesco@dolcini.it>,
-	Pete Hsieh <tsung-hsien.hsieh@nxp.com>
-Subject: Re: [EXT] Re: [PATCH v2] wifi: mwifiex: avoid AP and STA running on
- different channel
-Message-ID: <Zt9blTxk88Opujsk@pengutronix.de>
-References: <20240902084311.2607-1-yu-hao.lin@nxp.com>
- <ZtWHhSQlPVMekW1I@pengutronix.de>
- <PA4PR04MB9638EC10C0B656B750D922ADD1922@PA4PR04MB9638.eurprd04.prod.outlook.com>
+	s=arc-20240116; t=1725915336; c=relaxed/simple;
+	bh=VeBte4Hk/bSsPKA+NLFx686zngoHrq/S/DH0gseidn0=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=QVcbZ9ettkNTNaw96Qv5lRnyVkBx6JkGSx0PS17Lkm0SaBTR5D/e7d0J6n6R8QTEqsBbUgfdudqWnP5yBMpEfcoQVbEGlDuW35XISa0q9L2B0pTRgqfS53Bb7EMtfJj08XgxYAh0hAiBZFhwaIAge5rb033sgpI4PcKCiSWwsiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=qzrb3Bc0; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from [127.0.0.1] (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 1EFBA1F9CA;
+	Mon,  9 Sep 2024 22:55:29 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1725915329;
+	bh=ha+UjDZ4cSJCf/e8Vp6EQ5ssSEtu7b+FJNVTZqCXUqM=; h=From:To:Subject;
+	b=qzrb3Bc0qXYqaiFv9IL1EwHsC01fNlIEm/uPBFRxGV+9KrzEDnrcadQDZmPjquvWO
+	 +xTJjzs0Kt7xDCNJtA/EgmiN9jPTZZx6PekGezEaFb6V6M+Q0fBMoGEwWGCOV+jeqg
+	 bw1u2iV64+FjxQzkn5pBzz86RRF6Ir/zUUNrn6aKQRTtDUDpVkrfF/Kv88s+8wuVTI
+	 ZYJTU5mznOvZc4v9hd5NsiU9Fx1iwdI3hyqXi2UFQMkAHjRyO9mah9rE8UOk4LRDf8
+	 3xDd47HJ6lxPA3GGC+BKhbKxQKdoSDzv1k31+Eh/NZv2jpd8N+gq/H+3n/nD7FJycs
+	 44rs4NLSXegrg==
+Date: Mon, 09 Sep 2024 22:55:27 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+CC: Brian Norris <briannorris@chromium.org>, Kalle Valo <kvalo@kernel.org>,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_11/12=5D_wifi=3A_mwifiex=3A_mov?=
+ =?US-ASCII?Q?e_common_settings_out_of_switch/case?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <Zt9Y1fe-Q9cHY_s5@pengutronix.de>
+References: <20240826-mwifiex-cleanup-1-v1-0-56e6f8e056ec@pengutronix.de> <20240826-mwifiex-cleanup-1-v1-11-56e6f8e056ec@pengutronix.de> <Zt8rv-nOERIac4T9@gaggiata.pivistrello.it> <Zt9Y1fe-Q9cHY_s5@pengutronix.de>
+Message-ID: <A4592F41-FC96-4F0A-B6B3-911683773833@dolcini.it>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <PA4PR04MB9638EC10C0B656B750D922ADD1922@PA4PR04MB9638.eurprd04.prod.outlook.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 02, 2024 at 10:35:01AM +0000, David Lin wrote:
-> > From: Sascha Hauer <s.hauer@pengutronix.de>
-> > Sent: Monday, September 2, 2024 5:38 PM
-> > To: David Lin <yu-hao.lin@nxp.com>
-> > Cc: linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org;
-> > briannorris@chromium.org; kvalo@kernel.org; francesco@dolcini.it; Pete
-> > Hsieh <tsung-hsien.hsieh@nxp.com>
-> > Subject: [EXT] Re: [PATCH v2] wifi: mwifiex: avoid AP and STA running on
-> > different channel
-> >
-> > On Mon, Sep 02, 2024 at 04:43:11PM +0800, David Lin wrote:
-> > > Current firmware doesn't support AP and STA running on different
-> > > channels simultaneously.
-> >
-> > As mentioned here:
-> >
-> > https://lore.kern/
-> > el.org%2Fall%2FZtGnWC7SPHt7Vbbp%40pengutronix.de%2F&data=05%7C02%
-> > 7Cyu-hao.lin%40nxp.com%7Cce9b7d4e417c41113c7d08dccb32fc49%7C686ea
-> > 1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C638608667089710854%7CUnkn
-> > own%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1h
-> > aWwiLCJXVCI6Mn0%3D%7C0%7C%7C%7C&sdata=nMZO565xCUO%2BwxD4tIfi
-> > w6cGyYrinaEsi7XLfqyxgXg%3D&reserved=0
-> >
-> > AP and STA can indeed have different channels when DRCS is enabled, so I
-> > think you have to check this in your patch.
-> >
-> > Maybe the same question here again: Wouldn't it make sense to enable DRCS
-> > by default?
-> >
-> > Sascha
-> >
-> 
-> I will look into DRCS support later after current tasks on hand.
-> This patch is a quick fix to avoid firmware crash in the specific scenario.
+Il 9 settembre 2024 22:21:41 CEST, Sascha Hauer <s=2Ehauer@pengutronix=2Ede=
+> ha scritto:
+>On Mon, Sep 09, 2024 at 07:09:19PM +0200, Francesco Dolcini wrote:
+>> On Mon, Aug 26, 2024 at 01:01:32PM +0200, Sascha Hauer wrote:
+>> > In mwifiex_add_virtual_intf() several settings done in a switch/case
+>> > are the same in all cases=2E Move them out of the switch/case to
+>> > deduplicate the code=2E
+>> >=20
+>> > Signed-off-by: Sascha Hauer <s=2Ehauer@pengutronix=2Ede>
+>> > ---
+>> >  drivers/net/wireless/marvell/mwifiex/cfg80211=2Ec | 16 +++++--------=
+---
+>> >  1 file changed, 5 insertions(+), 11 deletions(-)
+>> >=20
+>> > diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211=2Ec b/driv=
+ers/net/wireless/marvell/mwifiex/cfg80211=2Ec
+>> > index 8746943c17788=2E=2E2ce54a3fc32f8 100644
+>> > --- a/drivers/net/wireless/marvell/mwifiex/cfg80211=2Ec
+>> > +++ b/drivers/net/wireless/marvell/mwifiex/cfg80211=2Ec
+>> > @@ -3005,7 +3005,6 @@ struct wireless_dev *mwifiex_add_virtual_intf(s=
+truct wiphy *wiphy,
+>> >  			return ERR_PTR(-EFAULT);
+>> >  		}
+>> > =20
+>> > -		priv->wdev=2Ewiphy =3D wiphy;
+>> >  		priv->wdev=2Eiftype =3D NL80211_IFTYPE_STATION;
+>> > =20
+>> >  		if (type =3D=3D NL80211_IFTYPE_UNSPECIFIED)
+>> > @@ -3014,8 +3013,6 @@ struct wireless_dev *mwifiex_add_virtual_intf(s=
+truct wiphy *wiphy,
+>> >  			priv->bss_mode =3D type;
+>> > =20
+>> >  		priv->bss_type =3D MWIFIEX_BSS_TYPE_STA;
+>> > -		priv->frame_type =3D MWIFIEX_DATA_FRAME_TYPE_ETH_II;
+>> > -		priv->bss_priority =3D 0;
+>> >  		priv->bss_role =3D MWIFIEX_BSS_ROLE_STA;
+>> > =20
+>> >  		break;
+>> > @@ -3035,14 +3032,10 @@ struct wireless_dev *mwifiex_add_virtual_intf=
+(struct wiphy *wiphy,
+>> >  			return ERR_PTR(-EFAULT);
+>> >  		}
+>> > =20
+>> > -		priv->wdev=2Ewiphy =3D wiphy;
+>> >  		priv->wdev=2Eiftype =3D NL80211_IFTYPE_AP;
+>> > =20
+>> >  		priv->bss_type =3D MWIFIEX_BSS_TYPE_UAP;
+>> > -		priv->frame_type =3D MWIFIEX_DATA_FRAME_TYPE_ETH_II;
+>> > -		priv->bss_priority =3D 0;
+>> >  		priv->bss_role =3D MWIFIEX_BSS_ROLE_UAP;
+>> > -		priv->bss_started =3D 0;
+>> >  		priv->bss_mode =3D type;
+>> > =20
+>> >  		break;
+>> > @@ -3062,7 +3055,6 @@ struct wireless_dev *mwifiex_add_virtual_intf(s=
+truct wiphy *wiphy,
+>> >  			return ERR_PTR(-EFAULT);
+>> >  		}
+>> > =20
+>> > -		priv->wdev=2Ewiphy =3D wiphy;
+>> >  		/* At start-up, wpa_supplicant tries to change the interface
+>> >  		 * to NL80211_IFTYPE_STATION if it is not managed mode=2E
+>> >  		 */
+>> > @@ -3075,10 +3067,7 @@ struct wireless_dev *mwifiex_add_virtual_intf(=
+struct wiphy *wiphy,
+>> >  		 */
+>> >  		priv->bss_type =3D MWIFIEX_BSS_TYPE_P2P;
+>> > =20
+>> > -		priv->frame_type =3D MWIFIEX_DATA_FRAME_TYPE_ETH_II;
+>> > -		priv->bss_priority =3D 0;
+>> >  		priv->bss_role =3D MWIFIEX_BSS_ROLE_STA;
+>> > -		priv->bss_started =3D 0;
+>> > =20
+>> >  		if (mwifiex_cfg80211_init_p2p_client(priv)) {
+>> >  			memset(&priv->wdev, 0, sizeof(priv->wdev));
+>> > @@ -3092,6 +3081,11 @@ struct wireless_dev *mwifiex_add_virtual_intf(=
+struct wiphy *wiphy,
+>> >  		return ERR_PTR(-EINVAL);
+>> >  	}
+>> > =20
+>> > +	priv->wdev=2Ewiphy =3D wiphy;
+>> > +	priv->bss_priority =3D 0;
+>> > +	priv->bss_started =3D 0;
+>>=20
+>> This was not set before in all the 3 cases=2E Irrelevant? Worth checkin=
+g and/or
+>> mentioning in the commit message?
+>
+>bss_started is only used in AP mode, its value is irrelevant in station
+>or adhoc mode=2E I'll add that to the commit message=2E
 
-With DRCS support enabled AP and STA actually can run on different
-channels with the current code. You are breaking this scenario with this
-patch.
+ack=2E
 
-Sascha
+With this clarified in the commit message adds my reviewed-by
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
