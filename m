@@ -1,52 +1,52 @@
-Return-Path: <linux-wireless+bounces-12692-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12690-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3172B9722B5
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 21:31:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDC689722AF
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 21:31:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74F2AB23716
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 19:31:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E29961C227FF
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 19:31:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969D218A6CD;
-	Mon,  9 Sep 2024 19:31:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA6E189907;
+	Mon,  9 Sep 2024 19:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="frr+wnxa"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="LG4IeG2n"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3EC1F95E;
-	Mon,  9 Sep 2024 19:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529A654278;
+	Mon,  9 Sep 2024 19:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725910260; cv=none; b=rxDKlssGTshwOSXdHhLUEtptdPESMN1g7edNijZ32NH8ZaYbRDJhYzuO0J3fsScnk4RUbtvQprv1Tu9yD+aOsBxixoYSiqFFYK0aV60/Vcynk3pV+5S+/KrnS6xcOU2DedK99qjzvHCzfB4A5d4hv3CNuedBiVygh3O9UiGw5z0=
+	t=1725910258; cv=none; b=ELTN9D7+4579J3svsompwNtyXb0kfydb7T1BI2/WVOH245rguOS74qJZl+EjOrM+OxU8ZUKaZVnyq/IvdiiuYt6UEOvxg1k9GU2GuCFZFYlbXkPTpoLCAPMU+hJJC2U2I5iTa44kIZ78VD6uEnKW0qlybpAEZcpK3S03OfchZ4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725910260; c=relaxed/simple;
-	bh=iokOo+PhBlIaVNErkupMtXloPRh2USm37KWLTzanwdE=;
+	s=arc-20240116; t=1725910258; c=relaxed/simple;
+	bh=qr56DtYrHdgiZV3g/LYYA83yl2OUOV6K9evFrYVfxrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X7ZqmNer/iJPg8WZE6I3/YjjHlKFD0oT9FnGNGZdx3RpwRA/3Z0eLIV1gSZBNxvKtpiMp2igObt6N9nskym7liXquoKPI91wPMZr1uGelObAefj1R9ICHoyU7LhmjpEgFBACZYzq19Q9mHWN9j2Zn7V+svuX6n5FNWfV/lJFjMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=frr+wnxa; arc=none smtp.client-ip=85.214.62.61
+	 MIME-Version:Content-Type; b=HoNjl/6iJDz2YVOgjrlPNWzn6eoGs2Jb7rWoDxLtABKgarE/RRS7vBQRPXbnzcJxv/Zs3bc//IbbezJiCYVQj0XapgniBe4RHeypei0z6/6az1OIdEvLfx6K+TfA4MwUoFHNTbOOU/3LBvw7zGnISO6Xk9XxEtAOpnt4FhrQF4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=LG4IeG2n; arc=none smtp.client-ip=85.214.62.61
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
 Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
 	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id AEC4A889C9;
-	Mon,  9 Sep 2024 21:30:53 +0200 (CEST)
+	by phobos.denx.de (Postfix) with ESMTPSA id 2FC2E88E14;
+	Mon,  9 Sep 2024 21:30:54 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
 	s=phobos-20191101; t=1725910254;
-	bh=Ppjknz8vACyetV9qeYp1OK3LmMJOUwsD5yzT8dQtZ+w=;
+	bh=/XXpCFsK+/vXumao/BTZm/NVu5PoJrUWn4nPaw2TDaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=frr+wnxaL8wodN8PG4js5g+Tbf8hL2YaDDtCIHDCSUzxo+O7R5Z0g7Za8IEjycHYL
-	 DjTuT9OTY09UzDC+dYsj8x0jO2awBR1uaPoEXBgbLn4SdxFgwajepFfkLCqyRX/bcp
-	 xoUhzQaLOABUr17A/6z2aQUciEBczJNeargC+4VuoI9z3v6g9in2aLuZ1kQc5xkkt7
-	 fBcVDR1GhFkaV573XIulT6tnkONWLa2F4t43XVDJJ8faTGkFE2jtYCCEiohsjSTNbN
-	 YzakP07J75dr307iTr/fY0Zsr175hU6lViCE3YOz2vkJ+sqrsmMyfadOZRZB4am/Vl
-	 OxBZnF05aibwQ==
+	b=LG4IeG2n96Xndwu4pZz1AemrEIq+l6/PNgKS53gxcFL0CsZSDFvHsRaX6dgvaB7P9
+	 Mn8WPtGfwU7v3eRpEUFuR69aCw7kZrztlRGVtXJo/+lR5zR0OgDqYMAxGc7eGmnbQ9
+	 J98AfVM/97nVlrJ7ukY9l1b9L2W36Z4SNRA1BqJwHlg8Hwg2FCAHbD2guU9cVka8er
+	 1MlCkXmCJ47BL++dWa/tnZcO8lHOg0Str3/JVHS45dqM4wgydoZ+arRUx6VtdhbQdg
+	 ATcSoqTSuv2/3iA69qPrYYEULJs1pZ3KsMw0/mnOIC/BtWBC+coqrpf4YzTCu2HHjp
+	 sEyFVgChz5AWQ==
 From: Marek Vasut <marex@denx.de>
 To: linux-wireless@vger.kernel.org
 Cc: Marek Vasut <marex@denx.de>,
@@ -64,9 +64,9 @@ Cc: Marek Vasut <marex@denx.de>,
 	Rob Herring <robh@kernel.org>,
 	devicetree@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH v5 2/9] wifi: wilc1000: Fold wilc_get_chipid() into wlan.c
-Date: Mon,  9 Sep 2024 21:29:43 +0200
-Message-ID: <20240909193035.69823-2-marex@denx.de>
+Subject: [PATCH v5 3/9] wifi: wilc1000: Fold chip_allow_sleep()/chip_wakeup() into wlan.c
+Date: Mon,  9 Sep 2024 21:29:44 +0200
+Message-ID: <20240909193035.69823-3-marex@denx.de>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240909193035.69823-1-marex@denx.de>
 References: <20240909193035.69823-1-marex@denx.de>
@@ -81,12 +81,15 @@ Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
 X-Virus-Status: Clean
 
-Do not use wilc_get_chipid() outside of wlan.c . Instead, call
-wilc_get_chipid() right after the SDIO/SPI interface has been
-initialized to cache the device chipid, and then use the cached
-chipid throughout the driver. Make wilc_get_chipid() static and
-remove its prototype from wlan.h . Make wilc_get_chipid() return
-a proper return value instead of a chipid.
+Neither chip_allow_sleep()/chip_wakeup() is used outside of wlan.c .
+Make both functions static and remove both the exported symbol and
+entries from wlan.h .
+
+Make chip_allow_sleep() return error code in preparation for the
+follow up patches.
+
+Move acquire_bus() and release_bus() to avoid forward declaration
+of chip_allow_sleep()/chip_wakeup().
 
 Reviewed-by: Alexis Lothoré <alexis.lothore@bootlin.com>
 Signed-off-by: Marek Vasut <marex@denx.de>
@@ -108,193 +111,128 @@ Cc: linux-wireless@vger.kernel.org
 Cc: netdev@vger.kernel.org
 ---
 V2: New patch
-V3: - Undo setup in wilc_wlan_init() if chip is neither wilc1000 or wilc3000
-    - Make wilc_get_chipid() return proper return value
-V4: - Drop wilc_get_chipid() from netdev.c
-    - Add RB from Alexis
+V3: No change
+V4: Add RB from Alexis
 V5: No change
 ---
- .../net/wireless/microchip/wilc1000/netdev.c  |  6 +-
- .../net/wireless/microchip/wilc1000/sdio.c    | 13 ----
- .../net/wireless/microchip/wilc1000/wlan.c    | 74 +++++++++++--------
- .../net/wireless/microchip/wilc1000/wlan.h    |  1 -
- 4 files changed, 46 insertions(+), 48 deletions(-)
+ .../net/wireless/microchip/wilc1000/wlan.c    | 47 +++++++++----------
+ .../net/wireless/microchip/wilc1000/wlan.h    |  2 -
+ 2 files changed, 23 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net/wireless/microchip/wilc1000/netdev.c
-index 9ecf3fb29b558..086e70d833e06 100644
---- a/drivers/net/wireless/microchip/wilc1000/netdev.c
-+++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
-@@ -195,13 +195,13 @@ static int wilc_wlan_get_firmware(struct net_device *dev)
- {
- 	struct wilc_vif *vif = netdev_priv(dev);
- 	struct wilc *wilc = vif->wilc;
--	int chip_id;
- 	const struct firmware *wilc_fw;
- 	int ret;
- 
--	chip_id = wilc_get_chipid(wilc, false);
-+	if (!is_wilc1000(wilc->chipid))
-+		return -EINVAL;
- 
--	netdev_info(dev, "ChipID [%x] loading firmware [%s]\n", chip_id,
-+	netdev_info(dev, "WILC1000 loading firmware [%s]\n",
- 		    WILC1000_FW(WILC1000_API_VER));
- 
- 	ret = request_firmware(&wilc_fw, WILC1000_FW(WILC1000_API_VER),
-diff --git a/drivers/net/wireless/microchip/wilc1000/sdio.c b/drivers/net/wireless/microchip/wilc1000/sdio.c
-index 41122199d51eb..90357c89ae29b 100644
---- a/drivers/net/wireless/microchip/wilc1000/sdio.c
-+++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
-@@ -671,7 +671,6 @@ static int wilc_sdio_init(struct wilc *wilc, bool resume)
- 	struct wilc_sdio *sdio_priv = wilc->bus_data;
- 	struct sdio_cmd52 cmd;
- 	int loop, ret;
--	u32 chipid;
- 
- 	/**
- 	 *      function 0 csa enable
-@@ -760,18 +759,6 @@ static int wilc_sdio_init(struct wilc *wilc, bool resume)
- 		return ret;
- 	}
- 
--	/**
--	 *      make sure can read back chip id correctly
--	 **/
--	if (!resume) {
--		ret = wilc_sdio_read_reg(wilc, WILC_CHIPID, &chipid);
--		if (ret) {
--			dev_err(&func->dev, "Fail cmd read chip id...\n");
--			return ret;
--		}
--		dev_err(&func->dev, "chipid (%08x)\n", chipid);
--	}
--
- 	sdio_priv->isinit = true;
- 	return 0;
- }
 diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net/wireless/microchip/wilc1000/wlan.c
-index 533939e71534a..5b7dd37267de0 100644
+index 5b7dd37267de0..d228c5df82628 100644
 --- a/drivers/net/wireless/microchip/wilc1000/wlan.c
 +++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
-@@ -1402,9 +1402,37 @@ int wilc_send_config_pkt(struct wilc_vif *vif, u8 mode, struct wid *wids,
- 	return ret;
- }
+@@ -12,20 +12,6 @@
  
-+static int wilc_get_chipid(struct wilc *wilc)
-+{
-+	u32 chipid = 0;
-+	u32 rfrevid = 0;
-+
-+	if (wilc->chipid == 0) {
-+		wilc->hif_func->hif_read_reg(wilc, WILC_CHIPID, &chipid);
-+		wilc->hif_func->hif_read_reg(wilc, WILC_RF_REVISION_ID,
-+					     &rfrevid);
-+		if (!is_wilc1000(chipid)) {
-+			wilc->chipid = 0;
-+			return -EINVAL;
-+		}
-+		if (chipid == WILC_1000_BASE_ID_2A) { /* 0x1002A0 */
-+			if (rfrevid != 0x1)
-+				chipid = WILC_1000_BASE_ID_2A_REV1;
-+		} else if (chipid == WILC_1000_BASE_ID_2B) { /* 0x1002B0 */
-+			if (rfrevid == 0x4)
-+				chipid = WILC_1000_BASE_ID_2B_REV1;
-+			else if (rfrevid != 0x3)
-+				chipid = WILC_1000_BASE_ID_2B_REV2;
-+		}
-+
-+		wilc->chipid = chipid;
-+	}
-+
-+	return 0;
-+}
-+
- static int init_chip(struct net_device *dev)
- {
--	u32 chipid;
- 	u32 reg;
- 	int ret = 0;
- 	struct wilc_vif *vif = netdev_priv(dev);
-@@ -1412,9 +1440,11 @@ static int init_chip(struct net_device *dev)
+ #define WAKE_UP_TRIAL_RETRY		10000
  
- 	acquire_bus(wilc, WILC_BUS_ACQUIRE_AND_WAKEUP);
- 
--	chipid = wilc_get_chipid(wilc, true);
-+	ret = wilc_get_chipid(wilc);
-+	if (ret)
-+		goto release;
- 
--	if ((chipid & 0xfff) != 0xa0) {
-+	if ((wilc->chipid & 0xfff) != 0xa0) {
- 		ret = wilc->hif_func->hif_read_reg(wilc,
- 						   WILC_CORTUS_RESET_MUX_SEL,
- 						   &reg);
-@@ -1445,34 +1475,6 @@ static int init_chip(struct net_device *dev)
- 	return ret;
- }
- 
--u32 wilc_get_chipid(struct wilc *wilc, bool update)
+-static inline void acquire_bus(struct wilc *wilc, enum bus_acquire acquire)
 -{
--	u32 chipid = 0;
--	u32 rfrevid = 0;
--
--	if (wilc->chipid == 0 || update) {
--		wilc->hif_func->hif_read_reg(wilc, WILC_CHIPID, &chipid);
--		wilc->hif_func->hif_read_reg(wilc, WILC_RF_REVISION_ID,
--					     &rfrevid);
--		if (!is_wilc1000(chipid)) {
--			wilc->chipid = 0;
--			return wilc->chipid;
--		}
--		if (chipid == WILC_1000_BASE_ID_2A) { /* 0x1002A0 */
--			if (rfrevid != 0x1)
--				chipid = WILC_1000_BASE_ID_2A_REV1;
--		} else if (chipid == WILC_1000_BASE_ID_2B) { /* 0x1002B0 */
--			if (rfrevid == 0x4)
--				chipid = WILC_1000_BASE_ID_2B_REV1;
--			else if (rfrevid != 0x3)
--				chipid = WILC_1000_BASE_ID_2B_REV2;
--		}
--
--		wilc->chipid = chipid;
--	}
--	return wilc->chipid;
+-	mutex_lock(&wilc->hif_cs);
+-	if (acquire == WILC_BUS_ACQUIRE_AND_WAKEUP && wilc->power_save_mode)
+-		chip_wakeup(wilc);
 -}
 -
- int wilc_load_mac_from_nv(struct wilc *wl)
+-static inline void release_bus(struct wilc *wilc, enum bus_release release)
+-{
+-	if (release == WILC_BUS_RELEASE_ALLOW_SLEEP && wilc->power_save_mode)
+-		chip_allow_sleep(wilc);
+-	mutex_unlock(&wilc->hif_cs);
+-}
+-
+ static void wilc_wlan_txq_remove(struct wilc *wilc, u8 q_num,
+ 				 struct txq_entry_t *tqe)
  {
- 	int ret = -EINVAL;
-@@ -1535,9 +1537,19 @@ int wilc_wlan_init(struct net_device *dev)
- 	if (!wilc->hif_func->hif_is_init(wilc)) {
- 		acquire_bus(wilc, WILC_BUS_ACQUIRE_ONLY);
- 		ret = wilc->hif_func->hif_init(wilc, false);
-+		if (!ret)
-+			ret = wilc_get_chipid(wilc);
- 		release_bus(wilc, WILC_BUS_RELEASE_ONLY);
+@@ -555,7 +541,7 @@ static struct rxq_entry_t *wilc_wlan_rxq_remove(struct wilc *wilc)
+ 	return rqe;
+ }
+ 
+-void chip_allow_sleep(struct wilc *wilc)
++static int chip_allow_sleep(struct wilc *wilc)
+ {
+ 	u32 reg = 0;
+ 	const struct wilc_hif_func *hif_func = wilc->hif_func;
+@@ -584,7 +570,7 @@ void chip_allow_sleep(struct wilc *wilc)
+ 	while (--trials) {
+ 		ret = hif_func->hif_read_reg(wilc, to_host_from_fw_reg, &reg);
  		if (ret)
- 			goto fail;
-+
-+		if (!is_wilc1000(wilc->chipid)) {
-+			netdev_err(dev, "Unsupported chipid: %x\n", wilc->chipid);
-+			ret = -EINVAL;
-+			goto fail;
-+		}
-+
-+		netdev_dbg(dev, "chipid (%08x)\n", wilc->chipid);
+-			return;
++			return ret;
+ 		if ((reg & to_host_from_fw_bit) == 0)
+ 			break;
+ 	}
+@@ -594,28 +580,28 @@ void chip_allow_sleep(struct wilc *wilc)
+ 	/* Clear bit 1 */
+ 	ret = hif_func->hif_read_reg(wilc, wakeup_reg, &reg);
+ 	if (ret)
+-		return;
++		return ret;
+ 	if (reg & wakeup_bit) {
+ 		reg &= ~wakeup_bit;
+ 		ret = hif_func->hif_write_reg(wilc, wakeup_reg, reg);
+ 		if (ret)
+-			return;
++			return ret;
  	}
  
- 	if (!wilc->vmm_table)
+ 	ret = hif_func->hif_read_reg(wilc, from_host_to_fw_reg, &reg);
+ 	if (ret)
+-		return;
++		return ret;
+ 	if (reg & from_host_to_fw_bit) {
+ 		reg &= ~from_host_to_fw_bit;
+ 		ret = hif_func->hif_write_reg(wilc, from_host_to_fw_reg, reg);
+ 		if (ret)
+-			return;
+-
++			return ret;
+ 	}
++
++	return 0;
+ }
+-EXPORT_SYMBOL_GPL(chip_allow_sleep);
+ 
+-void chip_wakeup(struct wilc *wilc)
++static void chip_wakeup(struct wilc *wilc)
+ {
+ 	u32 ret = 0;
+ 	u32 clk_status_val = 0, trials = 0;
+@@ -674,7 +660,20 @@ void chip_wakeup(struct wilc *wilc)
+ 	if (wilc->io_type == WILC_HIF_SPI)
+ 		wilc->hif_func->hif_reset(wilc);
+ }
+-EXPORT_SYMBOL_GPL(chip_wakeup);
++
++static inline void acquire_bus(struct wilc *wilc, enum bus_acquire acquire)
++{
++	mutex_lock(&wilc->hif_cs);
++	if (acquire == WILC_BUS_ACQUIRE_AND_WAKEUP && wilc->power_save_mode)
++		chip_wakeup(wilc);
++}
++
++static inline void release_bus(struct wilc *wilc, enum bus_release release)
++{
++	if (release == WILC_BUS_RELEASE_ALLOW_SLEEP && wilc->power_save_mode)
++		chip_allow_sleep(wilc);
++	mutex_unlock(&wilc->hif_cs);
++}
+ 
+ void host_wakeup_notify(struct wilc *wilc)
+ {
 diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.h b/drivers/net/wireless/microchip/wilc1000/wlan.h
-index dd2fb3c2f06a2..ae187192a79c6 100644
+index ae187192a79c6..e75a5c8aaecec 100644
 --- a/drivers/net/wireless/microchip/wilc1000/wlan.h
 +++ b/drivers/net/wireless/microchip/wilc1000/wlan.h
-@@ -443,6 +443,5 @@ void chip_wakeup(struct wilc *wilc);
+@@ -438,8 +438,6 @@ void wilc_wfi_p2p_rx(struct wilc_vif *vif, u8 *buff, u32 size);
+ bool wilc_wfi_mgmt_frame_rx(struct wilc_vif *vif, u8 *buff, u32 size);
+ void host_wakeup_notify(struct wilc *wilc);
+ void host_sleep_notify(struct wilc *wilc);
+-void chip_allow_sleep(struct wilc *wilc);
+-void chip_wakeup(struct wilc *wilc);
  int wilc_send_config_pkt(struct wilc_vif *vif, u8 mode, struct wid *wids,
  			 u32 count);
  int wilc_wlan_init(struct net_device *dev);
--u32 wilc_get_chipid(struct wilc *wilc, bool update);
- int wilc_load_mac_from_nv(struct wilc *wilc);
- #endif
 -- 
 2.45.2
 
