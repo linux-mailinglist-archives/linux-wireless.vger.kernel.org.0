@@ -1,44 +1,44 @@
-Return-Path: <linux-wireless+bounces-12673-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12674-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BED8B971AE5
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 15:24:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEDC1971AE8
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 15:24:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A36AB23E88
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 13:24:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 448C0B24BFD
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Sep 2024 13:24:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B75941BBBFB;
-	Mon,  9 Sep 2024 13:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E3231BC09A;
+	Mon,  9 Sep 2024 13:21:48 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60621BAEF5;
-	Mon,  9 Sep 2024 13:21:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3C61BB6AD;
+	Mon,  9 Sep 2024 13:21:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725888107; cv=none; b=IKAjw9FoXC+tqEVfIldZ0C1suTRIzI5x6Wbep00V9LuWRdJ6aDqITj4vjdcUYO5Bt/D7yzNDvFznXnTeKKHW2lCGFPzEAQ6+JTqbeke4BrVzJYk/gcTElWEk0z4qGJKp/3xYvU6sDQ6+V/H/xpBVErMF8rEGsePSto7xpDRLRho=
+	t=1725888108; cv=none; b=t5LBE5ya5OyLvcoyiNEHyp0HCKNf5DC9DpSnHejQBtaKlCC5KK4q0uVc0k3aUhDhnzFA2MRragOxvjfvZqGLH9r7twARbjs1dG0RvjEUszZ7GSD3j1+GrnNxjI+bCTh+Z9TW1jW2hWOlq+5gWvVhB0/K87iIl5QSJoQdGpXiMPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725888107; c=relaxed/simple;
-	bh=OjOBMtyXfkSW3qj3O90yZ4kigGKcUZxmqVj8CQ/3fsg=;
+	s=arc-20240116; t=1725888108; c=relaxed/simple;
+	bh=5qAplfjO5BTwpTFUSvjsNZB/HBHHyjg9WiC9zF4R/aI=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tVmujVOSxmReYubsaBMrthw9OtCmlU0tvHxd62DxLY6RBCByreTFBXqNjRRJTiSr8U/FReehzcALGK9hp9QD2YEJ/8hORVHTcypvOOfsswpPAkIuzyXpRTcABlZIegTvWVzNP786VERd8zvv3bKk5VQFAf6CVtuK532JRoxZIJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
+	 MIME-Version:Content-Type; b=jfkED0MP0gkn2nmbA2Fl5m5RYpakwKOLLTyC4RQMpQ7sHJgDR9CDUUaNMTPUubDatAvYnKuqxAv5aayhpqBjZ3ao5QoWkj3trba3ajiRlHSlxNJ0YJpKsZO43xLhyl7gjTS9lepC1u7wEceoMAltB1iBJQA7InqbKKqMsykCwwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4X2SCn5w3nz1xxBY;
-	Mon,  9 Sep 2024 21:21:41 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4X2SCK2mZ9z2Dc1B;
+	Mon,  9 Sep 2024 21:21:17 +0800 (CST)
 Received: from kwepemh500013.china.huawei.com (unknown [7.202.181.146])
-	by mail.maildlp.com (Postfix) with ESMTPS id 6BC7E1400DC;
-	Mon,  9 Sep 2024 21:21:43 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 43029180041;
+	Mon,  9 Sep 2024 21:21:44 +0800 (CST)
 Received: from huawei.com (10.90.53.73) by kwepemh500013.china.huawei.com
  (7.202.181.146) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 9 Sep
- 2024 21:21:42 +0800
+ 2024 21:21:43 +0800
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<pabeni@redhat.com>, <claudiu.manoil@nxp.com>, <vladimir.oltean@nxp.com>,
@@ -53,9 +53,9 @@ To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
 	<liuxuenetmail@gmail.com>, <netdev@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <oss-drivers@corigine.com>,
 	<linux-wpan@vger.kernel.org>, <linux-wireless@vger.kernel.org>
-Subject: [PATCH 6/7] wifi: mwifiex: Use IRQF_NO_AUTOEN flag in request_irq()
-Date: Mon, 9 Sep 2024 21:30:33 +0800
-Message-ID: <20240909133034.1296930-7-ruanjinjie@huawei.com>
+Subject: [PATCH 7/7] wifi: wl1251: Use IRQF_NO_AUTOEN flag in request_irq()
+Date: Mon, 9 Sep 2024 21:30:34 +0800
+Message-ID: <20240909133034.1296930-8-ruanjinjie@huawei.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240909133034.1296930-1-ruanjinjie@huawei.com>
 References: <20240909133034.1296930-1-ruanjinjie@huawei.com>
@@ -70,37 +70,35 @@ Content-Type: text/plain
 X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
  kwepemh500013.china.huawei.com (7.202.181.146)
 
-disable_irq() after request_irq() still has a time gap in which
-interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
-disable IRQ auto-enable when request IRQ.
+As commit cbe16f35bee6 ("genirq: Add IRQF_NO_AUTOEN for request_irq/nmi()")
+said, the code below is subobtimal. IRQF_NO_AUTOEN flag can be used by
+drivers to request_irq(). It prevents the automatic enabling of the
+requested interrupt in the same safe way. With that the usage can be
+simplified and corrected.
+
+	irq_set_status_flags(irq, IRQ_NOAUTOEN);
+	request_irq(dev, irq...);
 
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
 ---
- drivers/net/wireless/marvell/mwifiex/main.c | 4 ++--
+ drivers/net/wireless/ti/wl1251/sdio.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/main.c b/drivers/net/wireless/marvell/mwifiex/main.c
-index d99127dc466e..6c60a4c21a31 100644
---- a/drivers/net/wireless/marvell/mwifiex/main.c
-+++ b/drivers/net/wireless/marvell/mwifiex/main.c
-@@ -1633,7 +1633,8 @@ static void mwifiex_probe_of(struct mwifiex_adapter *adapter)
+diff --git a/drivers/net/wireless/ti/wl1251/sdio.c b/drivers/net/wireless/ti/wl1251/sdio.c
+index c705081249d6..b45050243129 100644
+--- a/drivers/net/wireless/ti/wl1251/sdio.c
++++ b/drivers/net/wireless/ti/wl1251/sdio.c
+@@ -233,8 +233,8 @@ static int wl1251_sdio_probe(struct sdio_func *func,
  	}
  
- 	ret = devm_request_irq(dev, adapter->irq_wakeup,
--			       mwifiex_irq_wakeup_handler, IRQF_TRIGGER_LOW,
-+			       mwifiex_irq_wakeup_handler,
-+			       IRQF_TRIGGER_LOW | IRQF_NO_AUTOEN,
- 			       "wifi_wake", adapter);
- 	if (ret) {
- 		dev_err(dev, "Failed to request irq_wakeup %d (%d)\n",
-@@ -1641,7 +1642,6 @@ static void mwifiex_probe_of(struct mwifiex_adapter *adapter)
- 		goto err_exit;
- 	}
- 
--	disable_irq(adapter->irq_wakeup);
- 	if (device_init_wakeup(dev, true)) {
- 		dev_err(dev, "fail to init wakeup for mwifiex\n");
- 		goto err_exit;
+ 	if (wl->irq) {
+-		irq_set_status_flags(wl->irq, IRQ_NOAUTOEN);
+-		ret = request_irq(wl->irq, wl1251_line_irq, 0, "wl1251", wl);
++		ret = request_irq(wl->irq, wl1251_line_irq, IRQF_NO_AUTOEN,
++				  "wl1251", wl);
+ 		if (ret < 0) {
+ 			wl1251_error("request_irq() failed: %d", ret);
+ 			goto disable;
 -- 
 2.34.1
 
