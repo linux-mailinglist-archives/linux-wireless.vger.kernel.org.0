@@ -1,54 +1,57 @@
-Return-Path: <linux-wireless+bounces-12754-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12753-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D0EB9735A7
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 12:54:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD596973575
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 12:49:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF6C71C21135
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 10:54:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDFDE1C25115
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 10:49:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678D917C220;
-	Tue, 10 Sep 2024 10:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04CD818C002;
+	Tue, 10 Sep 2024 10:49:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="BR24SVdG"
+	dkim=pass (2048-bit key) header.d=datenfreihafen.org header.i=@datenfreihafen.org header.b="BSKZ3agC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from proxima.lasnet.de (proxima.lasnet.de [78.47.171.185])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D049D5381A;
-	Tue, 10 Sep 2024 10:54:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D2F1C8DF;
+	Tue, 10 Sep 2024 10:49:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.47.171.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965693; cv=none; b=Ez7FMWooIHE6KzJZkGH14pvg4uYzLc8zboxnNcVKg4rvc8cZ+Rspsbkbs5saSM9rRFXYnZTZi6HdlyJ1PtwbjkUJAtAONcmrM3h0YGqF8kY+I7eqMcvppI4khr7dAI+bJfsG8n2Y8ivrQJXbznfOEJkiqG20mutNRvrHc/sWgA0=
+	t=1725965376; cv=none; b=LsVR8FtQYSWcTe8lH/JmchCilxpwxF4jdsZ/8fb3wX7UQ99qPSnQZxySb5y3S4DJ06Tz/N7UR7CTJnoaDaIQszYGW5GYI6olOHu0FkOBjeUA2t5t8+rIMbvlY8OO34xhOjkfLnT4rsi5JC4bvL7bDt25U0T/Ele6vCCQCCvOD1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965693; c=relaxed/simple;
-	bh=Wh+owzRCtjJxHLGFaI5wLRWKWVcggyAybw6Eyx2lcng=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Eak674zQkE2rtMM2cKiD/xII5tXoNqLs2pmXtTWXDeLAVsbaSIjlavQd2cWYdk4dTmdGpelVCVj4gbzmu1dvkUfmK5B29E0fU6V6X+6cpuYEvqqZMbpBrx+hgOzqNSJmRJ3XQjC4lYXLoz7zgI4/Tkybl/HaDsF7LIDK3jVgDMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=BR24SVdG; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	s=arc-20240116; t=1725965376; c=relaxed/simple;
+	bh=4h9ugKqamWguH6j/Qqkh5uCQAVj+/GDplf6he6MaF4M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=h5w3BnxKunl3NAaUOWepOYCJfIkPl66aZYXIxMH+KT7MykSOT8cTIEgyLPRvSfOzBtcSvr/Qh/bNuXv+2UGOgRr6CrVZeftVNz0qmmSn0yW73FfrS0oLvgG1V/MZzfXrMM9MowjQ+LQ0Bn+49CnKofrE5xCDi59Ovovxw5K4sC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=datenfreihafen.org; spf=pass smtp.mailfrom=datenfreihafen.org; dkim=pass (2048-bit key) header.d=datenfreihafen.org header.i=@datenfreihafen.org header.b=BSKZ3agC; arc=none smtp.client-ip=78.47.171.185
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=datenfreihafen.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=datenfreihafen.org
+Received: from [192.168.2.107] (unknown [45.118.184.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 666B688F86;
-	Tue, 10 Sep 2024 12:54:48 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1725965690;
-	bh=qoaKpe8hmZdXvzj3KdwHJhDf5BJ8aJPHolFz1r34tCI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=BR24SVdGaBvfhqXIeXNufheEmEPyT6Ph2a4hA/0NoIl6PC0YBO8A8q9twKZSRRFY7
-	 kwbtwguSZMrCh2KKcExaAir5U6GJaJsXayzVFvmQIGnhFWhFwnYqrd1wImPmb+sT70
-	 hE5pInkFG9s7tOmemPU331PBT+mh0GnRk8kHCzVW6aPc6mmDqyQuQW3D9EINx6aa6Z
-	 9ilvNHXrUvNbept55vrWFRHPxjqraBtdjmBehsBlu+fffBRjtchhrXHGgII3CY/MKy
-	 +kZ2L1FdGolWpPKLIoxg8ANq++yTTxNyfa7n7wzHtkRj84kAXuRWHnBApMQ0529k58
-	 WZv195s1WlgiA==
-Message-ID: <25704805-b98a-43ac-b54e-2857b12e1574@denx.de>
-Date: Tue, 10 Sep 2024 12:49:05 +0200
+	(Authenticated sender: stefan@datenfreihafen.org)
+	by proxima.lasnet.de (Postfix) with ESMTPSA id 65B8AC04EC;
+	Tue, 10 Sep 2024 12:49:28 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=datenfreihafen.org;
+	s=2021; t=1725965369;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=F4Njp4aZmAUi+ZgiJdMyb8GGh61pN9VCyJUoqbzXl1U=;
+	b=BSKZ3agC4GpavxSIHoc/ZoYIB6yBE8Kwp4xzIlpt1EgbCaWjRRucXutcGpi9ZBYNQMkc17
+	xZgmGcDOEr/Qw5ikntGCiq2JVvVt4yuNF2bae8oygxsvG4xdbkHGMIXj3dv0FoH3lW7e5E
+	Mz2Gs9DWSMPQG9Cu+1uRjf3BEkzqTp9bhYTURDLIBy16p9DUvXaoR4wPrvIAbXkJvySXgM
+	tlMkZvsBPl17hgYSSzN8Mtp/iU0bMWjz8Loc5QPLXm0gtx3+LKZFuoVitSQ7L20xgvX09S
+	y/k1ahmrogEDp8oZry3tIF8WQ+6Qut7c9rI+QuAGybu5jZs+DA4r74vKxWUAWQ==
+Message-ID: <75bfcd83-4b71-4fee-a560-5ca112e6fbb0@datenfreihafen.org>
+Date: Tue, 10 Sep 2024 12:49:28 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -56,35 +59,70 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 6/9] wifi: wilc1000: Remove cmd53_buf() allocation
-To: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+Subject: Re: [PATCH 4/7] net: ieee802154: mcr20a: Use IRQF_NO_AUTOEN flag in
+ request_irq()
+To: Jinjie Ruan <ruanjinjie@huawei.com>, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, louis.peens@corigine.com,
+ alex.aring@gmail.com, miquel.raynal@bootlin.com, chunkeey@googlemail.com,
+ kvalo@kernel.org, briannorris@chromium.org, francesco@dolcini.it,
+ set_pte_at@outlook.com, damien.lemoal@opensource.wdc.com,
+ mpe@ellerman.id.au, horms@kernel.org, yinjun.zhang@corigine.com,
+ fei.qin@corigine.com, johannes.berg@intel.com, ryno.swart@corigine.com,
+ krzysztof.kozlowski@linaro.org, leitao@debian.org, liuxuenetmail@gmail.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ oss-drivers@corigine.com, linux-wpan@vger.kernel.org,
  linux-wireless@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
- Adham Abozaeid <adham.abozaeid@microchip.com>,
- Ajay Singh <ajay.kathat@microchip.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Conor Dooley
- <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20240909193035.69823-1-marex@denx.de>
- <20240909193035.69823-6-marex@denx.de>
- <9602d2a7-8397-425a-b567-bc06422d89ec@bootlin.com>
+References: <20240909133034.1296930-1-ruanjinjie@huawei.com>
+ <20240909133034.1296930-5-ruanjinjie@huawei.com>
 Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <9602d2a7-8397-425a-b567-bc06422d89ec@bootlin.com>
+From: Stefan Schmidt <stefan@datenfreihafen.org>
+In-Reply-To: <20240909133034.1296930-5-ruanjinjie@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Transfer-Encoding: 7bit
 
-On 9/10/24 11:47 AM, Alexis Lothoré wrote:
-> On 9/9/24 21:29, Marek Vasut wrote:
->> The cmd53_buf is a 4 byte buffer, embed it into the struct wilc_sdio.
+Hello Jinjie Ruan.
+
+On 9/9/24 3:30 PM, Jinjie Ruan wrote:
+> disable_irq() after request_irq() still has a time gap in which
+> interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
+> disable IRQ auto-enable when request IRQ.
 > 
-> Is this change really desirable ? I mean, looking at git log, it looks like this
-> kzalloc is voluntary, for usage with DMA (see [1] as initial fix and [2] as the
-> final patch which has landed in the driver)
-It is unrelated to the series, so I'll just drop it for now.
+> Fixes: 8c6ad9cc5157 ("ieee802154: Add NXP MCR20A IEEE 802.15.4 transceiver driver")
+> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+> ---
+>   drivers/net/ieee802154/mcr20a.c | 5 +----
+>   1 file changed, 1 insertion(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/ieee802154/mcr20a.c b/drivers/net/ieee802154/mcr20a.c
+> index 433fb5839203..020d392a98b6 100644
+> --- a/drivers/net/ieee802154/mcr20a.c
+> +++ b/drivers/net/ieee802154/mcr20a.c
+> @@ -1302,16 +1302,13 @@ mcr20a_probe(struct spi_device *spi)
+>   		irq_type = IRQF_TRIGGER_FALLING;
+>   
+>   	ret = devm_request_irq(&spi->dev, spi->irq, mcr20a_irq_isr,
+> -			       irq_type, dev_name(&spi->dev), lp);
+> +			       irq_type | IRQF_NO_AUTOEN, dev_name(&spi->dev), lp);
+>   	if (ret) {
+>   		dev_err(&spi->dev, "could not request_irq for mcr20a\n");
+>   		ret = -ENODEV;
+>   		goto free_dev;
+>   	}
+>   
+> -	/* disable_irq by default and wait for starting hardware */
+> -	disable_irq(spi->irq);
+> -
+>   	ret = ieee802154_register_hw(hw);
+>   	if (ret) {
+>   		dev_crit(&spi->dev, "ieee802154_register_hw failed\n");
+
+
+Dave, Eric, Jakub, if you are taking them into net/net-next directly 
+here is my ack (and Miquel's review as well).
+
+Acked-by: Stefan Schmidt <stefan@datenfreihafen.org>
+
+regards
+Stefan Schmidt
 
