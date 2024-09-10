@@ -1,213 +1,152 @@
-Return-Path: <linux-wireless+bounces-12770-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12771-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6505C974334
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 21:11:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3942974425
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 22:40:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8D4F1F25988
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 19:11:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B06D28818A
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 20:40:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 419A31A38F4;
-	Tue, 10 Sep 2024 19:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D0DB1A7074;
+	Tue, 10 Sep 2024 20:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AH7kVL++"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="O5TT0uFA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7BC208A5
-	for <linux-wireless@vger.kernel.org>; Tue, 10 Sep 2024 19:11:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81B8197A6B;
+	Tue, 10 Sep 2024 20:40:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725995464; cv=none; b=NseO8QPltl9JCUQ5UtwkNUT85WN6Ge6MJVIsRBXYS6frWx85Am3RQUKfPODA5y/RimtqAp2eQ2bM/Q18wQE/uy+Gi4Njifx46Ie5WMFUUIDNcR6kSLmqsHABr3v0YU2JNqvk9GVCHE3cj2HItf1F6MmCUX5h6jJqVTYF3N5YfBA=
+	t=1726000816; cv=none; b=tf10kQKoX4ZPHuKvhQX34CGD/Vg+fyQZKP86HFS3bL3aV7n/nazrdB1XEctMpJbQBSzoqO5kXqjGm+wkaikXzMgjLamL0iMBG+6LCQUJpzr335jNSoJcKT5MJbOTsI8wmvqczGs2+kEscR9FPplIlIlRkTXa6Fp5TI3yn5qja/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725995464; c=relaxed/simple;
-	bh=5sSeKaiQL7ULgXefxZEt3IvwNbZV9QDPvSwyXpn/2BE=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=Y36vnG/XE8/PFN8y/51o4zcB8I8xvfnoM4IGbR6ZZn7Dg8f+I0cmxPT4u9yIq+0C7D3xjC9/UPEmS4Cu2oVHQmxonPaG5rwbqMHVKBosOhrAymfrHU85hT/zJccaaNM6oQF70ZS+5yHU3YNSGzAhSvvd1u1qhXUmdtmqPT4HdKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AH7kVL++; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725995462; x=1757531462;
-  h=date:from:to:cc:subject:message-id;
-  bh=5sSeKaiQL7ULgXefxZEt3IvwNbZV9QDPvSwyXpn/2BE=;
-  b=AH7kVL++As5cD3ib2jNZpU9wH+HVbR0WGmb2YXzGUL2Tel7P3H194zax
-   k1S1wrespu1zD1af6QC+mFiTMITiqW+pOPOFvwc88K1KiGW+HSzk1hGlw
-   THzdyItnb3RtNTJCe2YEmszEEVReOjMWt67ynLrTBNCBN4vFxVgsfuRPl
-   Al8PXootNYym87oEiGGI0LMC1I1SYDXBrZm2b15eCWJ/B1OJcfSoqv0DE
-   dW0TRsLxb4rvhOx3CcRKvcuw029TwAAuz1SrGBCV6Pym1RCW2y8Gv80Xg
-   hF4KDJ1RWeMaUAmV1r5Zl3+loQ1JXrDmjuIqxsydUdPldWXfrYiIYbjRe
-   w==;
-X-CSE-ConnectionGUID: /kwQJ/DtQeiPu2zQSZNEKw==
-X-CSE-MsgGUID: cfImiAXwROKRIngfBSgdPA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11191"; a="24925799"
-X-IronPort-AV: E=Sophos;i="6.10,218,1719903600"; 
-   d="scan'208";a="24925799"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2024 12:11:01 -0700
-X-CSE-ConnectionGUID: HBCRr7+dQA+XD+ysgM81PQ==
-X-CSE-MsgGUID: 6VqmYn46SYOY1dUlwuTTvQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,218,1719903600"; 
-   d="scan'208";a="90407919"
-Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 10 Sep 2024 12:11:01 -0700
-Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1so6GQ-0002Vo-1Q;
-	Tue, 10 Sep 2024 19:10:58 +0000
-Date: Wed, 11 Sep 2024 03:10:42 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- fe57beb026ef5f9614adfa23ee6f3c21faede2cf
-Message-ID: <202409110339.8pk7WE7k-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1726000816; c=relaxed/simple;
+	bh=zen7WDNeO31dhz4+IfbTkr5Qw+vuV26ucn//PvOQFAM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=aajvbEoVrtvJX5fhSInzmSReZ52lLt/iobsK5lCrj/yNQ4jKeKCZQp9S8fEisa1FHcg+N7mwYt++Fa2jEEQqRNOUrAmHJtZQ31Gk2E5cfNnxq0EGXSAyn7r3RBUA9QRkHU4Jn4lE7VoYO57OhxDNSPDQAMh7LA3/DQ1hDAUSq6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=O5TT0uFA; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48AF3Ngk023787;
+	Tue, 10 Sep 2024 20:40:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=V6DJ9sOOSOXMHDWh431m9C
+	ToIoOW32pG61L9XfIH8uo=; b=O5TT0uFAUd8dw11S7GoB27AeEviYVeBamyy4hp
+	3jwcRNG3D7EIgugAx/ogBIvh87vbySazebIQC0mFd61+MPRh7Q3QQO9m1f5D3SMv
+	nGhep1tATOILB0XLcjLnXutJrM/plnTMdzIPgbX/0QYbtox98rkM8TaLNIIKDMQw
+	kawGMiBP+CbCFPhhtgQlWLIf0rWvN6TnFR+VRAKFVFO6Hk+jFZTVWPt5MX+pTsJJ
+	QbgLqi9O6Eg7DLpUKyntSgIZFA2cq8BReJzXwUcQ6iVQtol+vlYuCszbE4PrUcoC
+	bFTJsgOxFsbjPhdB/v9Y+wwCoxz5k2GhGHWup3cLLZOQHhSg==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41gy6p79mr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 10 Sep 2024 20:40:04 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48AKe49s011038
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 10 Sep 2024 20:40:04 GMT
+Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 10 Sep
+ 2024 13:40:03 -0700
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Date: Tue, 10 Sep 2024 13:40:03 -0700
+Subject: [PATCH] wifi: mac80211: constify
+ ieee80211_ie_build_{he,eht}_oper() chandef
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20240910-wireless-utils-constify-v1-1-e59947bcb3c3@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIAKKu4GYC/4WOQQ6CMBBFr2K6dkyLNFpX3sOwoGWQSaBopyCEc
+ HcLC7cu3+K9/xfBGAhZ3A6LCDgSU+8TqONBuKb0TwSqEotMZrk0SsKHArbIDEOklsH1niPVMyg
+ 0lbZSn1HXItmvgDVNe/lRJLYlI9hQetdsvV/G4xShK8lvUkMc+zDvb0a1qf+HRwUKrMlMpvVFy
+ /x6fw/kyLuT6ztRrOv6BQfZwx7lAAAA
+To: Johannes Berg <johannes@sipsolutions.net>,
+        "David S. Miller"
+	<davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>
+CC: <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>
+X-Mailer: b4 0.14.0
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: O9tBipnOqVpIAtBmE6ZGkrF1ma29V1EK
+X-Proofpoint-GUID: O9tBipnOqVpIAtBmE6ZGkrF1ma29V1EK
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 adultscore=0
+ bulkscore=0 lowpriorityscore=0 mlxlogscore=989 spamscore=0 phishscore=0
+ impostorscore=0 suspectscore=0 mlxscore=0 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409100153
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: fe57beb026ef5f9614adfa23ee6f3c21faede2cf  Merge tag 'ath-next-20240909' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath
+The chandef parameter passed to ieee80211_ie_build_he_oper() and
+ieee80211_ie_build_eht_oper is read-only. Since it is never modified,
+add the const qualifier to this parameter. This makes these consistent
+with ieee80211_ie_build_ht_oper() and ieee80211_ie_build_vht_oper().
 
-elapsed time: 1463m
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+---
+ net/mac80211/ieee80211_i.h | 4 ++--
+ net/mac80211/util.c        | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-configs tested: 119
-configs skipped: 3
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 4f0390918b60..3f4d2773b828 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -2545,8 +2545,8 @@ u8 *ieee80211_ie_build_vht_cap(u8 *pos, struct ieee80211_sta_vht_cap *vht_cap,
+ u8 *ieee80211_ie_build_vht_oper(u8 *pos, struct ieee80211_sta_vht_cap *vht_cap,
+ 				const struct cfg80211_chan_def *chandef);
+ u8 ieee80211_ie_len_he_cap(struct ieee80211_sub_if_data *sdata);
+-u8 *ieee80211_ie_build_he_oper(u8 *pos, struct cfg80211_chan_def *chandef);
+-u8 *ieee80211_ie_build_eht_oper(u8 *pos, struct cfg80211_chan_def *chandef,
++u8 *ieee80211_ie_build_he_oper(u8 *pos, const struct cfg80211_chan_def *chandef);
++u8 *ieee80211_ie_build_eht_oper(u8 *pos, const struct cfg80211_chan_def *chandef,
+ 				const struct ieee80211_sta_eht_cap *eht_cap);
+ int ieee80211_parse_bitrates(enum nl80211_chan_width width,
+ 			     const struct ieee80211_supported_band *sband,
+diff --git a/net/mac80211/util.c b/net/mac80211/util.c
+index f94faa86ba8a..f0db60878321 100644
+--- a/net/mac80211/util.c
++++ b/net/mac80211/util.c
+@@ -2752,7 +2752,7 @@ u8 *ieee80211_ie_build_vht_oper(u8 *pos, struct ieee80211_sta_vht_cap *vht_cap,
+ 	return pos + sizeof(struct ieee80211_vht_operation);
+ }
+ 
+-u8 *ieee80211_ie_build_he_oper(u8 *pos, struct cfg80211_chan_def *chandef)
++u8 *ieee80211_ie_build_he_oper(u8 *pos, const struct cfg80211_chan_def *chandef)
+ {
+ 	struct ieee80211_he_operation *he_oper;
+ 	struct ieee80211_he_6ghz_oper *he_6ghz_op;
+@@ -2844,7 +2844,7 @@ u8 *ieee80211_ie_build_he_oper(u8 *pos, struct cfg80211_chan_def *chandef)
+ 	return pos;
+ }
+ 
+-u8 *ieee80211_ie_build_eht_oper(u8 *pos, struct cfg80211_chan_def *chandef,
++u8 *ieee80211_ie_build_eht_oper(u8 *pos, const struct cfg80211_chan_def *chandef,
+ 				const struct ieee80211_sta_eht_cap *eht_cap)
+ 
+ {
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+---
+base-commit: fe57beb026ef5f9614adfa23ee6f3c21faede2cf
+change-id: 20240910-wireless-utils-constify-1e9d5b053e5f
 
-tested configs:
-alpha                             allnoconfig   gcc-14.1.0
-alpha                            allyesconfig   clang-20
-alpha                               defconfig   gcc-14.1.0
-arc                              allmodconfig   clang-20
-arc                               allnoconfig   gcc-14.1.0
-arc                              allyesconfig   clang-20
-arc                                 defconfig   gcc-14.1.0
-arc                     haps_hs_smp_defconfig   gcc-14.1.0
-arm                              allmodconfig   clang-20
-arm                               allnoconfig   gcc-14.1.0
-arm                              allyesconfig   clang-20
-arm                                 defconfig   gcc-14.1.0
-arm                         orion5x_defconfig   gcc-14.1.0
-arm                        spear3xx_defconfig   gcc-14.1.0
-arm64                            allmodconfig   clang-20
-arm64                             allnoconfig   gcc-14.1.0
-arm64                               defconfig   gcc-14.1.0
-csky                              allnoconfig   gcc-14.1.0
-csky                                defconfig   gcc-14.1.0
-hexagon                          allmodconfig   clang-20
-hexagon                           allnoconfig   gcc-14.1.0
-hexagon                          allyesconfig   clang-20
-hexagon                             defconfig   gcc-14.1.0
-i386                             allmodconfig   clang-18
-i386                             allmodconfig   gcc-12
-i386                              allnoconfig   clang-18
-i386                              allnoconfig   gcc-12
-i386                             allyesconfig   clang-18
-i386                             allyesconfig   gcc-12
-i386         buildonly-randconfig-001-20240910   gcc-12
-i386         buildonly-randconfig-002-20240910   gcc-12
-i386         buildonly-randconfig-003-20240910   gcc-12
-i386         buildonly-randconfig-004-20240910   clang-18
-i386         buildonly-randconfig-005-20240910   clang-18
-i386         buildonly-randconfig-006-20240910   gcc-12
-i386                                defconfig   clang-18
-i386                  randconfig-001-20240910   gcc-12
-i386                  randconfig-002-20240910   gcc-12
-i386                  randconfig-003-20240910   gcc-12
-i386                  randconfig-004-20240910   gcc-12
-i386                  randconfig-005-20240910   gcc-12
-i386                  randconfig-006-20240910   clang-18
-i386                  randconfig-011-20240910   gcc-12
-i386                  randconfig-012-20240910   clang-18
-i386                  randconfig-013-20240910   clang-18
-i386                  randconfig-014-20240910   gcc-12
-i386                  randconfig-015-20240910   gcc-12
-i386                  randconfig-016-20240910   clang-18
-loongarch                        allmodconfig   gcc-14.1.0
-loongarch                         allnoconfig   gcc-14.1.0
-loongarch                           defconfig   gcc-14.1.0
-m68k                             allmodconfig   gcc-14.1.0
-m68k                              allnoconfig   gcc-14.1.0
-m68k                             allyesconfig   gcc-14.1.0
-m68k                       bvme6000_defconfig   gcc-14.1.0
-m68k                                defconfig   gcc-14.1.0
-m68k                       m5275evb_defconfig   gcc-14.1.0
-m68k                            mac_defconfig   gcc-14.1.0
-microblaze                       allmodconfig   gcc-14.1.0
-microblaze                        allnoconfig   gcc-14.1.0
-microblaze                       allyesconfig   gcc-14.1.0
-microblaze                          defconfig   gcc-14.1.0
-mips                              allnoconfig   gcc-14.1.0
-mips                      loongson3_defconfig   gcc-14.1.0
-nios2                             allnoconfig   gcc-14.1.0
-nios2                               defconfig   gcc-14.1.0
-openrisc                          allnoconfig   clang-20
-openrisc                          allnoconfig   gcc-14.1.0
-openrisc                         allyesconfig   gcc-14.1.0
-openrisc                            defconfig   gcc-12
-parisc                           allmodconfig   gcc-14.1.0
-parisc                            allnoconfig   clang-20
-parisc                            allnoconfig   gcc-14.1.0
-parisc                           allyesconfig   gcc-14.1.0
-parisc                              defconfig   gcc-12
-parisc64                         alldefconfig   gcc-14.1.0
-parisc64                            defconfig   gcc-14.1.0
-powerpc                          allmodconfig   gcc-14.1.0
-powerpc                           allnoconfig   clang-20
-powerpc                           allnoconfig   gcc-14.1.0
-powerpc                          allyesconfig   gcc-14.1.0
-powerpc                     ep8248e_defconfig   gcc-14.1.0
-powerpc                     mpc5200_defconfig   gcc-14.1.0
-powerpc                 mpc832x_rdb_defconfig   gcc-14.1.0
-powerpc               mpc834x_itxgp_defconfig   gcc-14.1.0
-riscv                            allmodconfig   gcc-14.1.0
-riscv                             allnoconfig   clang-20
-riscv                             allnoconfig   gcc-14.1.0
-riscv                            allyesconfig   gcc-14.1.0
-riscv                               defconfig   gcc-12
-s390                             allmodconfig   clang-20
-s390                             allmodconfig   gcc-14.1.0
-s390                              allnoconfig   clang-20
-s390                             allyesconfig   gcc-14.1.0
-s390                                defconfig   gcc-12
-sh                               allmodconfig   gcc-14.1.0
-sh                                allnoconfig   gcc-14.1.0
-sh                               allyesconfig   gcc-14.1.0
-sh                                  defconfig   gcc-12
-sh                          rsk7264_defconfig   gcc-14.1.0
-sh                           se7721_defconfig   gcc-14.1.0
-sh                   sh7770_generic_defconfig   gcc-14.1.0
-sh                            titan_defconfig   gcc-14.1.0
-sparc                            allmodconfig   gcc-14.1.0
-sparc64                             defconfig   gcc-12
-um                               allmodconfig   clang-20
-um                                allnoconfig   clang-17
-um                                allnoconfig   clang-20
-um                               allyesconfig   clang-20
-um                                  defconfig   gcc-12
-um                             i386_defconfig   gcc-12
-um                           x86_64_defconfig   gcc-12
-x86_64                            allnoconfig   clang-18
-x86_64                           allyesconfig   clang-18
-x86_64                              defconfig   clang-18
-x86_64                              defconfig   gcc-11
-x86_64                          rhel-8.3-rust   clang-18
-xtensa                            allnoconfig   gcc-14.1.0
-xtensa                  audio_kc705_defconfig   gcc-14.1.0
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
