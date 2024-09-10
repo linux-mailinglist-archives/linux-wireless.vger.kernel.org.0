@@ -1,31 +1,31 @@
-Return-Path: <linux-wireless+bounces-12732-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12733-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B4F2972B55
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 10:00:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 166CA972BA6
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 10:11:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F28F1C241C6
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 08:00:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA872289CC2
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 08:11:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7CB18594B;
-	Tue, 10 Sep 2024 08:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3E0418953C;
+	Tue, 10 Sep 2024 08:07:50 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51922184535
-	for <linux-wireless@vger.kernel.org>; Tue, 10 Sep 2024 08:00:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1040317D372
+	for <linux-wireless@vger.kernel.org>; Tue, 10 Sep 2024 08:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725955210; cv=none; b=HgTP9Ibt6E723zlzw2LSdNW7+NysEAu1Gzzwg1kiQ27FvC7H83Eflxf5n+MzpeNoYYaMNTtTWEhrUGKHdnmjyCClX31TwnUTtPSVkv6OGWK516UF6n+XMkfiAKT+VxVaKCeJ+lIAf5fNn5ckOep9Tx1EFKo5UefQKz9bevAoi2E=
+	t=1725955670; cv=none; b=tcvlAhPbV6M6A5aIduTEmIe5hhcG6U7HBiN1oiZUjCVEmkSJ1BB6uSG/5upzf6Tk82tVV175Lz3hBAqghn6B6Lvp+k4e3NlXfWhpCmQMEN/UHbvcsoBRHcZ43PpXgGtWFnzELxcNy0BKO2yz8XkQaaAFjFLctoQA/UIKzPLHw5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725955210; c=relaxed/simple;
-	bh=ytAmbQ1x+TiIm5oeXyvdBICN/MBkFuOTui8/cLRy3XY=;
+	s=arc-20240116; t=1725955670; c=relaxed/simple;
+	bh=BKkT3RJmcj3E+Mdk3g6XAbSxZHyYge7jhjGkMX7RO/Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B839chWV+yNoLSAVhpgSqA36HX1GQzhzHMup9dW8v8H91W061ApZVNhPHLcHwTPbCT8Z4IraspP5ECC5Sf2ogYoMUAQcVjlivq+aPIQh4crE5PjNSFt02yHwPRsHLVdAgvY8zNHZD42byuISld2DdWG6OA0pTBtAPOszT9lAmHE=
+	 Content-Type:Content-Disposition:In-Reply-To; b=iNsARuyaLk33vmMU778MN7s/fiU6/rDI9DBXGCGsLkmiosx18ze3EUBs5/Yzy/T3Y/dSrgR9jRgI6aZe4yDB5eeVbsYwjk7zcLvonbacdF6O0OfxOsV/5vQ6EfOWhOI7Sw0/sH917PYlUGL6klCZ7S+duMbEcQBnQhq1JCByZBc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -33,17 +33,17 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1snvnA-00039d-Lp; Tue, 10 Sep 2024 10:00:04 +0200
+	id 1snvud-0006vM-Be; Tue, 10 Sep 2024 10:07:47 +0200
 Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1snvn9-006qUF-Rh; Tue, 10 Sep 2024 10:00:03 +0200
+	id 1snvuc-006qbo-Ga; Tue, 10 Sep 2024 10:07:46 +0200
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1snvn9-00HXhP-2Q;
-	Tue, 10 Sep 2024 10:00:03 +0200
-Date: Tue, 10 Sep 2024 10:00:03 +0200
+	id 1snvuc-00HXnH-1K;
+	Tue, 10 Sep 2024 10:07:46 +0200
+Date: Tue, 10 Sep 2024 10:07:46 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: David Lin <yu-hao.lin@nxp.com>
 Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
@@ -54,10 +54,17 @@ Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
 	Pete Hsieh <tsung-hsien.hsieh@nxp.com>
 Subject: Re: [EXT] Re: [PATCH v2] wifi: mwifiex: avoid AP and STA running on
  different channel
-Message-ID: <Zt_8gwj6GnV_yZ1Z@pengutronix.de>
-References: <20240902084311.2607-1-yu-hao.lin@nxp.com>
- <Zt9jFpyptX_ftH-p@pengutronix.de>
- <PA4PR04MB9638EA984DB5F2FDAEA3B873D19A2@PA4PR04MB9638.eurprd04.prod.outlook.com>
+Message-ID: <Zt_-Uo7AyMmrnXnJ@pengutronix.de>
+References: <ZtWHhSQlPVMekW1I@pengutronix.de>
+ <PA4PR04MB9638EC10C0B656B750D922ADD1922@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <Zt9blTxk88Opujsk@pengutronix.de>
+ <PA4PR04MB963813D69B4D87B7147704A5D19A2@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <Zt_fZEJyiCyanf7X@pengutronix.de>
+ <PA4PR04MB9638C8978D9C6360A9B214E4D19A2@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <Zt_h_mW4nFWKu2SI@pengutronix.de>
+ <PA4PR04MB96389B2CC16060957878D0D3D19A2@PA4PR04MB9638.eurprd04.prod.outlook.com>
+ <Zt_zkxGsY2X-8-4z@pengutronix.de>
+ <PA4PR04MB9638D57A9623D1B33C802EF9D19A2@PA4PR04MB9638.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -66,7 +73,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <PA4PR04MB9638EA984DB5F2FDAEA3B873D19A2@PA4PR04MB9638.eurprd04.prod.outlook.com>
+In-Reply-To: <PA4PR04MB9638D57A9623D1B33C802EF9D19A2@PA4PR04MB9638.eurprd04.prod.outlook.com>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -76,14 +83,14 @@ X-SA-Exim-Mail-From: sha@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-On Tue, Sep 10, 2024 at 01:52:02AM +0000, David Lin wrote:
+On Tue, Sep 10, 2024 at 07:28:29AM +0000, David Lin wrote:
 > > From: Sascha Hauer <s.hauer@pengutronix.de>
-> > Sent: Tuesday, September 10, 2024 5:05 AM
+> > Sent: Tuesday, September 10, 2024 3:22 PM
 > > To: David Lin <yu-hao.lin@nxp.com>
 > > Cc: linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org;
 > > briannorris@chromium.org; kvalo@kernel.org; francesco@dolcini.it; Pete
 > > Hsieh <tsung-hsien.hsieh@nxp.com>
-> > Subject: [EXT] Re: [PATCH v2] wifi: mwifiex: avoid AP and STA running on
+> > Subject: Re: [EXT] Re: [PATCH v2] wifi: mwifiex: avoid AP and STA running on
 > > different channel
 > > 
 > > Caution: This is an external email. Please take care when clicking links or
@@ -91,112 +98,65 @@ On Tue, Sep 10, 2024 at 01:52:02AM +0000, David Lin wrote:
 > > this email' button
 > > 
 > > 
-> > On Mon, Sep 02, 2024 at 04:43:11PM +0800, David Lin wrote:
-> > > Current firmware doesn't support AP and STA running on different
-> > > channels simultaneously.
-> > > FW crash would occur in such case.
-> > > This patch avoids the issue by disabling AP and STA to run on
-> > > different channels.
+> > On Tue, Sep 10, 2024 at 06:18:57AM +0000, David Lin wrote:
+> > > > > > > > With DRCS support enabled AP and STA actually can run on
+> > > > > > > > different channels with the current code. You are breaking
+> > > > > > > > this scenario with this
+> > > > > > patch.
+> > > > > > > >
+> > > > > > > > Sascha
+> > > > > > > >
+> > > > > > >
+> > > > > > > DRCS will be checked in the future.
+> > > > > >
+> > > > > > By future you mean v3 of this patch?
+> > > > > >
+> > > > > > Sascha
+> > > > > >
+> > > > >
+> > > > > No schedule now.
+> > > >
+> > > > I am getting confused now. You want us to abandon my patch in favour
+> > > > of yours, but you have no plans to update your patch to avoid a
+> > > > regression that you introduce with your patch?
+> > > >
+> > > > Sascha
+> > > >
 > > >
-> > > Signed-off-by: David Lin <yu-hao.lin@nxp.com>
-> > > ---
+> > > My patch resolves the same issue as your patch. But your patch can't
+> > > let AP and STA run on the same channel if some wiphy parameters are
+> > > set.
 > > >
-> > > v2:
-> > >    - clean up code.
-> > >
-> > > ---
-> > >  .../net/wireless/marvell/mwifiex/cfg80211.c   | 17 ++++---
-> > >  drivers/net/wireless/marvell/mwifiex/util.c   | 44 +++++++++++++++++++
-> > >  drivers/net/wireless/marvell/mwifiex/util.h   | 13 ++++++
-> > >  3 files changed, 69 insertions(+), 5 deletions(-)
-> > >
-> > > diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-> > > b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-> > > index 722ead51e912..3dbcab463445 100644
-> > > --- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-> > > +++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-> > > @@ -781,11 +781,9 @@ mwifiex_cfg80211_set_wiphy_params(struct wiphy
-> > *wiphy, u32 changed)
-> > >               break;
-> > >
-> > >       case MWIFIEX_BSS_ROLE_STA:
-> > > -             if (priv->media_connected) {
-> > > -                     mwifiex_dbg(adapter, ERROR,
-> > > -                                 "cannot change wiphy params
-> > when connected");
-> > > -                     return -EINVAL;
-> > > -             }
-> > > +             if (priv->media_connected)
-> > > +                     break;
+> > > I wonder did you test your patch?
 > > 
-> > This hunk seems unrelated to this patch. If this is needed then it deserves an
-> > extra patch along with an explanation why this is necessary.
+> > I finally see what you mean with "some wiphy parameters are set".
+> > I did test my patch and I didn't run into this issue, because I haven't set
+> > anything like rts_threshold in my config.
+> > 
+> > Nevertheless what I am trying to tell you in this thread is: Your patch
+> > introduces a regression and needs an update.
+> > 
+> > It's not about my patch or your patch, both are currently not suitable for
+> > inclusion and the question is: will you update your patch?
 > > 
 > > Sascha
 > > 
 > 
-> Without this hunk, AP and STA can't run on the same channel if some
-> wiphy parameters are setting.
+> Without DRCS, this patch can avoid firmware crash and this is the
+> current plan for Mwifiex.  It won't affect any existing features.
 
-Ok, I now see where you are aiming at. Here's the problematic function:
+What I am trying to tell you: Your patch fixes one thing and breaks
+another.
 
-> static int
-> mwifiex_cfg80211_set_wiphy_params(struct wiphy *wiphy, u32 changed)
-> {
-> 	...
-> 
-> 	priv = mwifiex_get_priv(adapter, MWIFIEX_BSS_ROLE_ANY);
-> 
-> 	switch (priv->bss_role) {
-> 	case MWIFIEX_BSS_ROLE_UAP:
-> 		if (priv->bss_started) {
-> 			mwifiex_dbg(adapter, ERROR,
-> 				    "cannot change wiphy params when bss started");
-> 			return -EINVAL;
-> 		}
-> 
-> 		...
-> 		mwifiex_send_cmd(priv, HostCmd_CMD_UAP_SYS_CONFIG, ...);
-> 
-> 		break;
-> 	case MWIFIEX_BSS_ROLE_STA:
-> 		if (priv->media_connected) {
-> 			mwifiex_dbg(adapter, ERROR,
-> 				    "cannot change wiphy params when connected");
-> 			return -EINVAL;
-> 		}
-> 
-> 		...
-> 		mwifiex_send_cmd(priv, HostCmd_CMD_802_11_SNMP_MIB, ...);
-> 
-> 		break;
-> 	}
-> 
-> 	return 0;
-> }
+The current mwifiex driver *does* support DRCS when enabled with the
+drcs=1 module parameter. With DRCS enabled the current driver *can*
+successfully run an Accesspoint on one channel and a station on another
+channel. You are breaking this with your patch.
 
-This function is for setting wiphy params like rts_threshold and others.
+Your mwifiex_is_channel_setting_allowable() needs this:
 
-mwifiex_get_priv(adapter, MWIFIEX_BSS_ROLE_ANY) returns the first
-priv which by default is in station mode. Now if you start priv0 in
-station mode, then afterwards start priv1 in AP mode *and* have
-rts_threshold = xy in your config, then you run into the
-"cannot change wiphy params when connected" case.
-
-I really wonder if the settings done in this function are per priv or
-per adapter. Is there one rts_threshold setting in a mwifiex chip or are
-there multiple (per vif/priv)?
-
-If it's a global setting, then why are we interested in the
-media_connected state of one specific priv? Shouldn't we check all
-privs?
-
-If it's a setting per priv, then why do we choose the same priv
-everytime in this function?
-
-Either way, this function looks fishy and changing it should be done
-with an explanation, just dropping the error message and returning
-success is not enough.
+        if (adapter->drcs_enabled)
+		return true;
 
 Sascha
 
