@@ -1,122 +1,119 @@
-Return-Path: <linux-wireless+bounces-12756-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12757-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10BCC97365F
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 13:39:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 555EA973665
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 13:46:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD6341F24D08
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 11:39:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E17221F25AD2
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 11:46:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3DFD17BEC8;
-	Tue, 10 Sep 2024 11:39:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="o+Fo7BfD"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51522189BA4;
+	Tue, 10 Sep 2024 11:46:26 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2929818EFC6
-	for <linux-wireless@vger.kernel.org>; Tue, 10 Sep 2024 11:39:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8821B17799F;
+	Tue, 10 Sep 2024 11:46:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725968386; cv=none; b=UzVOcdllSnR+B63n4GYI6OIzbIbstXS5U6TU5TrBBGDFSXaKbOriz+CUBF24vN/5srOaJg1/G4IONIzwZkcN7Wxr+y5alC+dGlQwLsUVFk0hmgSU1OP6uCi0D4EV+gjtWhNLjQEmLXtQ9yd7M3AVyybZZSJgTXMPBuTcFyFx2xY=
+	t=1725968786; cv=none; b=TpKDmU4k1alZojan5SErDkX9P4ZdLXrGX/8FCoTEeY7qpLp4v41nBEKE523z0iRqdrYDGiNa99A6bShpyWeoCX6j8AZNJqzc+642+xA37yPOx1ZaZtGRtGcuunJghWOX92HQBwg06ZQuyYK3PYNMgmxmLKZ+olc0IaM31SZcl3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725968386; c=relaxed/simple;
-	bh=H19oh/kdlyHs/RbvJ09CpAZPgU8fXXtgzBBJMWoqArI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a2xpXOb46XvOQe6hHqAcleMUUY1TK55QMhgBTW9Clp4ZN4p4W0loW7JFb7/8Fkw0LMt7CjZXh4vaJVdm20wSVEmyV2i4PoMCcR9T+PtH9+hOnAO37ljv7LQeO93l/fRUkT8HkbuZymcACrAmkubplVrC0imIZ8Gl/wZf4kT4bPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=o+Fo7BfD; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1725968381;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NXq+ZcFe+uGF0qCrxYiYGxfjiCAC1RobJ6ZdNP4DdEY=;
-	b=o+Fo7BfDSVouUSQY03qg/6AK+OlXK3bfrIHp1yKtYB7K8ErGjrCXk31FwDVBJnMle/PugM
-	0dn+8zS/4GAoqnfkWr1/JMmfUp8hebpCreiu7nZy9iVej8EeJ8AaiqX/CLlfEzhoHqyJCm
-	zckQNnWNXsc51WacwLyPsHgPPCO0fgA=
-From: Sven Eckelmann <sven@narfation.org>
-To: ath11k@lists.infradead.org
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>, ath11k@lists.infradead.org,
- ath10k <ath10k@lists.infradead.org>, ath12k <ath12k@lists.infradead.org>,
- linux-wireless <linux-wireless@vger.kernel.org>,
- Robert Marko <robert.marko@sartura.hr>, Kalle Valo <kvalo@kernel.org>
-Subject: Re: New staging repos for ath1*k firmware
-Date: Tue, 10 Sep 2024 13:39:36 +0200
-Message-ID: <2248097.72vocr9iq0@ripper>
-In-Reply-To: <87h6ang8v3.fsf@kernel.org>
-References:
- <bac97f31-4a70-4c4c-8179-4ede0b32f869@quicinc.com>
- <3772134.MHq7AAxBmi@ripper> <87h6ang8v3.fsf@kernel.org>
+	s=arc-20240116; t=1725968786; c=relaxed/simple;
+	bh=O4bdGN4itFRdrEchX6jrIZMLRZVHhoa0rJ9xkGwid6U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=cA7+OzN1WYOX2BmUBpQf6iAi0EflB72ohYJOf8vVUu79a4EkTY6oZPuwfh3xjzuH17kBQy4miScrqu+KPzC11mwBFSt0gaPKgS0RuUkJRHTzFBIvfdElXTXvZH9zhtkB3onLmriUF3KY8s5Q743JM+u0FE6PULsy2XWG0J6f7S0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4X322m1WsRz2Dbyy;
+	Tue, 10 Sep 2024 19:45:52 +0800 (CST)
+Received: from kwepemh500013.china.huawei.com (unknown [7.202.181.146])
+	by mail.maildlp.com (Postfix) with ESMTPS id 4D2A61A0188;
+	Tue, 10 Sep 2024 19:46:20 +0800 (CST)
+Received: from [10.67.109.254] (10.67.109.254) by
+ kwepemh500013.china.huawei.com (7.202.181.146) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 10 Sep 2024 19:46:19 +0800
+Message-ID: <22f16fbc-c370-9ca2-dc6c-5ed0ee4f3007@huawei.com>
+Date: Tue, 10 Sep 2024 19:46:18 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart2659000.7s5MMGUR32";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
-
---nextPart2659000.7s5MMGUR32
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-To: ath11k@lists.infradead.org
-Subject: Re: New staging repos for ath1*k firmware
-Date: Tue, 10 Sep 2024 13:39:36 +0200
-Message-ID: <2248097.72vocr9iq0@ripper>
-In-Reply-To: <87h6ang8v3.fsf@kernel.org>
-MIME-Version: 1.0
-
-On Tuesday, 10 September 2024 11:23:44 CEST Kalle Valo wrote:
-> As there are so many different branches I have lost track, do you have a
-> list of missing firmware updates? We could try to push for updates on
-> our own end as well.
-
-Afaik, ath10k is missing various security updates - but I don't know the 
-firmware version which has these security updates.
-
-ath11k is missing the 2.9.0.1 release - which seems to be still required to 
-get various APs working correctly (without a crash). Maybe Robert Marko has 
-the newest firmware version (not the file - the version) somewhere.
-
-Afaik, there are even newer ath11k versions - for example for IPQ9574 (which 
-is completely missing at the moment in the repositories).
-
-For the completely missing ones, I've submitted following list to QCA:
-
-* ath11k/IPQ5018_QCN6122 (that might be rather complicated due to the way how 
-  QCA designed this)
-* ath11k/IPQ5018_QCN6122_QCN6122 (that might be rather complicated due to the 
-  way how QCA designed this)
-* ath11k/IPQ9574
-* ath12k/IPQ5322
-* ath12k/IPQ5322_QCN6432_QCN6432 (sounds a little bit like the QCN6122 
-  situation)
-* ath12k/QCN9274
-
-Kind regards,
-	Sven
---nextPart2659000.7s5MMGUR32
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCZuAv+AAKCRBND3cr0xT1
-yzNMAP4vOWz42pBBdfOi7bFUKqGG5FMHqf+B0fLQbv2d2diGhgEAkyF9prdNC8k0
-RX1aJrl/aoFbyY944ujcUZwra+h5ew4=
-=2o8c
------END PGP SIGNATURE-----
-
---nextPart2659000.7s5MMGUR32--
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.0
+Subject: Re: [PATCH 0/7] net: Use IRQF_NO_AUTOEN flag in request_irq()
+Content-Language: en-US
+To: Kalle Valo <kvalo@kernel.org>
+CC: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <claudiu.manoil@nxp.com>, <vladimir.oltean@nxp.com>,
+	<louis.peens@corigine.com>, <stefan@datenfreihafen.org>,
+	<alex.aring@gmail.com>, <miquel.raynal@bootlin.com>,
+	<chunkeey@googlemail.com>, <briannorris@chromium.org>,
+	<francesco@dolcini.it>, <set_pte_at@outlook.com>,
+	<damien.lemoal@opensource.wdc.com>, <mpe@ellerman.id.au>, <horms@kernel.org>,
+	<yinjun.zhang@corigine.com>, <fei.qin@corigine.com>,
+	<johannes.berg@intel.com>, <ryno.swart@corigine.com>,
+	<krzysztof.kozlowski@linaro.org>, <leitao@debian.org>,
+	<liuxuenetmail@gmail.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <oss-drivers@corigine.com>,
+	<linux-wpan@vger.kernel.org>, <linux-wireless@vger.kernel.org>
+References: <20240909133034.1296930-1-ruanjinjie@huawei.com>
+ <87seu8c2n7.fsf@kernel.org>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+In-Reply-To: <87seu8c2n7.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ kwepemh500013.china.huawei.com (7.202.181.146)
 
 
 
+On 2024/9/9 22:39, Kalle Valo wrote:
+> Jinjie Ruan <ruanjinjie@huawei.com> writes:
+> 
+>> As commit cbe16f35bee6 ("genirq: Add IRQF_NO_AUTOEN for request_irq/nmi()")
+>> said, reqeust_irq() and then disable_irq() is unsafe.
+>>
+>> And the code below is subobtimal:
+>> 	 irq_set_status_flags(irq, IRQ_NOAUTOEN);
+>> 	 request_irq(dev, irq...);
+>>
+>> IRQF_NO_AUTOEN flag can be used by drivers to request_irq(). It prevents
+>> the automatic enabling of the requested interrupt in the same safe way.
+>> With that the usage can be simplified and corrected.
+>>
+>> Only compile-tested.
+>>
+>> Jinjie Ruan (7):
+>>   net: apple: bmac: Use IRQF_NO_AUTOEN flag in request_irq()
+>>   net: enetc: Use IRQF_NO_AUTOEN flag in request_irq()
+>>   nfp: Use IRQF_NO_AUTOEN flag in request_irq()
+>>   net: ieee802154: mcr20a: Use IRQF_NO_AUTOEN flag in request_irq()
+>>   wifi: p54: Use IRQF_NO_AUTOEN flag in request_irq()
+>>   wifi: mwifiex: Use IRQF_NO_AUTOEN flag in request_irq()
+>>   wifi: wl1251: Use IRQF_NO_AUTOEN flag in request_irq()
+>>
+>>  drivers/net/ethernet/apple/bmac.c                   | 3 +--
+>>  drivers/net/ethernet/freescale/enetc/enetc.c        | 3 +--
+>>  drivers/net/ethernet/netronome/nfp/nfp_net_common.c | 5 ++---
+>>  drivers/net/ieee802154/mcr20a.c                     | 5 +----
+>>  drivers/net/wireless/intersil/p54/p54spi.c          | 4 +---
+>>  drivers/net/wireless/marvell/mwifiex/main.c         | 4 ++--
+>>  drivers/net/wireless/ti/wl1251/sdio.c               | 4 ++--
+>>  7 files changed, 10 insertions(+), 18 deletions(-)
+> 
+> Wireless patches go to wireless-next, please submit them in a separate
+> patchset.
+
+Thank you very much!
+
+> 
 
