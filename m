@@ -1,143 +1,122 @@
-Return-Path: <linux-wireless+bounces-12755-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12756-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 556979735A9
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 12:55:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10BCC97365F
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 13:39:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1664128DC8E
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 10:55:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD6341F24D08
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 11:39:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01B5018C003;
-	Tue, 10 Sep 2024 10:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3DFD17BEC8;
+	Tue, 10 Sep 2024 11:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="sQtFE6T6"
+	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="o+Fo7BfD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D84178367;
-	Tue, 10 Sep 2024 10:54:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2929818EFC6
+	for <linux-wireless@vger.kernel.org>; Tue, 10 Sep 2024 11:39:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965694; cv=none; b=dyGM5LcOTwxyLpxHcq9bVbfptF+vljNXbMAeHDDaX7Qob5RkmM4W83lsGbwZUuZOaz/1OtD0l+Fvrj06i5G9oDva8Ip4v/FHLnSi3ZtLEdrkrUgSPraZbwE//O/I3+up6Qjehj09H9Zib1/JUF0Uk640bVQiVql4NH3hXg1RVSs=
+	t=1725968386; cv=none; b=UzVOcdllSnR+B63n4GYI6OIzbIbstXS5U6TU5TrBBGDFSXaKbOriz+CUBF24vN/5srOaJg1/G4IONIzwZkcN7Wxr+y5alC+dGlQwLsUVFk0hmgSU1OP6uCi0D4EV+gjtWhNLjQEmLXtQ9yd7M3AVyybZZSJgTXMPBuTcFyFx2xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965694; c=relaxed/simple;
-	bh=nTshTYXDuoRsJjBDBn9k4Vfdcx08sJyuyY/rUgJxXAM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=br5QOJy/LjyMKKQHOKNsyRzUOV/dGER1ZEpW9C+ha8J5VMp90nlgdV9dgAlKDsAHRMlFPRD7ah1KV9jX69FmpiUC3fwr+kpStuOev0p0DayHfHj4SbCQ90tRmg1AtnjzKu+Y9XC83mGubxSSI7Cr1QL9qBESId41dsSLmq+y/Os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=sQtFE6T6; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 56C5189038;
-	Tue, 10 Sep 2024 12:54:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1725965691;
-	bh=H9Pt/1b3LY4StMRpPEsQErPs1e6om5K3JEvYE7BLC0g=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sQtFE6T6oTdvf2r1z42sRsmVIj6a2PjCBkQfolqg3JrFdzWxEaahaHErOy0zUbsot
-	 8LqE5TrYZjF8Dt4uLBlbadjJtgejjuurB4I8C5ko3atLJ/gzjLGDg1UAnKSMPhekFh
-	 a9IsBfG9zeo40vXRaP3GeNEpKMGI1nCFiUH7zP1Il1FPTYf1X9L6E9kfTe6jm53tj0
-	 EAJ0Yrcm1U3z9WKMBuXDVdsEp/kKUaX/5toEHqNc9XUYC0RWWjoqylXawFoBabswpP
-	 rL9ML6v2XC3YuWxG5PzzSmepa7eowe0GaR5xa5CPYs0L1QRAX9skmyE36fZuVOY85z
-	 s9hraZCaMxwLQ==
-Message-ID: <7a938ca9-8099-4901-9f05-c3347c38fc53@denx.de>
-Date: Tue, 10 Sep 2024 12:53:02 +0200
+	s=arc-20240116; t=1725968386; c=relaxed/simple;
+	bh=H19oh/kdlyHs/RbvJ09CpAZPgU8fXXtgzBBJMWoqArI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=a2xpXOb46XvOQe6hHqAcleMUUY1TK55QMhgBTW9Clp4ZN4p4W0loW7JFb7/8Fkw0LMt7CjZXh4vaJVdm20wSVEmyV2i4PoMCcR9T+PtH9+hOnAO37ljv7LQeO93l/fRUkT8HkbuZymcACrAmkubplVrC0imIZ8Gl/wZf4kT4bPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=o+Fo7BfD; arc=none smtp.client-ip=213.160.73.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+	s=20121; t=1725968381;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NXq+ZcFe+uGF0qCrxYiYGxfjiCAC1RobJ6ZdNP4DdEY=;
+	b=o+Fo7BfDSVouUSQY03qg/6AK+OlXK3bfrIHp1yKtYB7K8ErGjrCXk31FwDVBJnMle/PugM
+	0dn+8zS/4GAoqnfkWr1/JMmfUp8hebpCreiu7nZy9iVej8EeJ8AaiqX/CLlfEzhoHqyJCm
+	zckQNnWNXsc51WacwLyPsHgPPCO0fgA=
+From: Sven Eckelmann <sven@narfation.org>
+To: ath11k@lists.infradead.org
+Cc: Jeff Johnson <quic_jjohnson@quicinc.com>, ath11k@lists.infradead.org,
+ ath10k <ath10k@lists.infradead.org>, ath12k <ath12k@lists.infradead.org>,
+ linux-wireless <linux-wireless@vger.kernel.org>,
+ Robert Marko <robert.marko@sartura.hr>, Kalle Valo <kvalo@kernel.org>
+Subject: Re: New staging repos for ath1*k firmware
+Date: Tue, 10 Sep 2024 13:39:36 +0200
+Message-ID: <2248097.72vocr9iq0@ripper>
+In-Reply-To: <87h6ang8v3.fsf@kernel.org>
+References:
+ <bac97f31-4a70-4c4c-8179-4ede0b32f869@quicinc.com>
+ <3772134.MHq7AAxBmi@ripper> <87h6ang8v3.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 8/9] wifi: wilc1000: Register wiphy after reading out
- chipid
-To: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
- linux-wireless@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
- Adham Abozaeid <adham.abozaeid@microchip.com>,
- Ajay Singh <ajay.kathat@microchip.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Conor Dooley
- <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20240909193035.69823-1-marex@denx.de>
- <20240909193035.69823-8-marex@denx.de>
- <769f1405-62fc-4457-a958-b644c706140f@bootlin.com>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <769f1405-62fc-4457-a958-b644c706140f@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: multipart/signed; boundary="nextPart2659000.7s5MMGUR32";
+ micalg="pgp-sha512"; protocol="application/pgp-signature"
 
-On 9/10/24 12:08 PM, Alexis Lothoré wrote:
-> On 9/9/24 21:29, Marek Vasut wrote:
->> Register wiphy after reading out chipid, so the chipid can be
->> used to determine chip features and not advertise WPA3/SAE
->> support to userspace on WILC3000. Note that wilc_netdev_cleanup()
->> will deregister the wiphy in fail path.
->>
->> Signed-off-by: Marek Vasut <marex@denx.de>
-> 
-> [...]
-> 
->> @@ -1804,14 +1803,8 @@ static struct wilc *wilc_create_wiphy(struct device *dev)
->>   				BIT(NL80211_IFTYPE_P2P_GO) |
->>   				BIT(NL80211_IFTYPE_P2P_CLIENT);
->>   	wiphy->flags |= WIPHY_FLAG_HAS_REMAIN_ON_CHANNEL;
->> -	wiphy->features |= NL80211_FEATURE_SAE;
->>   	set_wiphy_dev(wiphy, dev);
->>   	wl->wiphy = wiphy;
->> -	ret = wiphy_register(wiphy);
->> -	if (ret) {
->> -		wiphy_free(wiphy);
->> -		return NULL;
->> -	}
-> 
-> If I am reading the patch correctly, there are still some failure paths in
-> wilc_cfg80211_init which try to call wiphy_unregister on the (not registered
-> anymore in there) wphy.
->>   	return wl;
->>   }
->>   
->> @@ -1861,6 +1854,14 @@ int wilc_cfg80211_init(struct wilc **wilc, struct device *dev, int io_type,
->>   }
->>   EXPORT_SYMBOL_GPL(wilc_cfg80211_init);
->>   
->> +int wilc_cfg80211_register(struct wilc *wilc)
->> +{
->> +	wilc->wiphy->features |= NL80211_FEATURE_SAE;
-> 
-> Even if I get the general need, it feels weird to have parts of the wphy init
-> performed in wilc_create_wiphy, and some parts (the features field) here.
-> Wouldn't it work to just move wilc_create_wiphy content here, since wphy will
-> not be usable anyway before eventually registering it ?
-That's what I thought initially too, but look closely at 
-wilc_create_wiphy():
+--nextPart2659000.7s5MMGUR32
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
+From: Sven Eckelmann <sven@narfation.org>
+To: ath11k@lists.infradead.org
+Subject: Re: New staging repos for ath1*k firmware
+Date: Tue, 10 Sep 2024 13:39:36 +0200
+Message-ID: <2248097.72vocr9iq0@ripper>
+In-Reply-To: <87h6ang8v3.fsf@kernel.org>
+MIME-Version: 1.0
 
-struct wilc *wilc_create_wiphy(struct device *dev)
-{
-...
-struct wiphy *wiphy;
-struct wilc *wl;
-...
-wiphy = wiphy_new(&wilc_cfg80211_ops, sizeof(*wl));
-...
-wl = wiphy_priv(wiphy); // <----------- HERE , *wl is struct wilc
-...
-return wl;
-}
+On Tuesday, 10 September 2024 11:23:44 CEST Kalle Valo wrote:
+> As there are so many different branches I have lost track, do you have a
+> list of missing firmware updates? We could try to push for updates on
+> our own end as well.
 
-That 'struct wilc' is allocated as part of wiphy_new() and used all 
-around the place before we reach wiphy_register() much later on.
+Afaik, ath10k is missing various security updates - but I don't know the 
+firmware version which has these security updates.
+
+ath11k is missing the 2.9.0.1 release - which seems to be still required to 
+get various APs working correctly (without a crash). Maybe Robert Marko has 
+the newest firmware version (not the file - the version) somewhere.
+
+Afaik, there are even newer ath11k versions - for example for IPQ9574 (which 
+is completely missing at the moment in the repositories).
+
+For the completely missing ones, I've submitted following list to QCA:
+
+* ath11k/IPQ5018_QCN6122 (that might be rather complicated due to the way how 
+  QCA designed this)
+* ath11k/IPQ5018_QCN6122_QCN6122 (that might be rather complicated due to the 
+  way how QCA designed this)
+* ath11k/IPQ9574
+* ath12k/IPQ5322
+* ath12k/IPQ5322_QCN6432_QCN6432 (sounds a little bit like the QCN6122 
+  situation)
+* ath12k/QCN9274
+
+Kind regards,
+	Sven
+--nextPart2659000.7s5MMGUR32
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCZuAv+AAKCRBND3cr0xT1
+yzNMAP4vOWz42pBBdfOi7bFUKqGG5FMHqf+B0fLQbv2d2diGhgEAkyF9prdNC8k0
+RX1aJrl/aoFbyY944ujcUZwra+h5ew4=
+=2o8c
+-----END PGP SIGNATURE-----
+
+--nextPart2659000.7s5MMGUR32--
+
+
+
 
