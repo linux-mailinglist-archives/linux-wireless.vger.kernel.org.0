@@ -1,92 +1,89 @@
-Return-Path: <linux-wireless+bounces-12743-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12744-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 889A7972D6D
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 11:23:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F805972D91
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 11:26:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11013B23C56
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 09:23:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDEEE1C21015
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 09:26:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101E2187857;
-	Tue, 10 Sep 2024 09:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25406188CC6;
+	Tue, 10 Sep 2024 09:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L9oS43Th"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="FATnzlXB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0AAF1862B8
-	for <linux-wireless@vger.kernel.org>; Tue, 10 Sep 2024 09:23:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F074188CCB;
+	Tue, 10 Sep 2024 09:25:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725960229; cv=none; b=VcMkLI+0M68uyG4xd0+ougU8eiHj7BVJtnMQrotIwq9GrS6RpHIGXyqhrg/xE3Mf5kALE7rmR5QQmjHYnIYGrVUkcmBMNhg5kNJVa0GN65oUp/aatUXnvc81gTrsPTqELxqLY59RMlzmnnE64+5BtA0cC9aulIoxctRejpH3KaY=
+	t=1725960331; cv=none; b=GeDKqMKybhtmumPMkpUcvdWcAapzPNq7IwfDbsIiYPxsf+cl8QgXl/G8LkJqnwzpwXmkFG/QVAvdLxmu1QV7QTZRW7y47ncI/6cXsC9pMrUPPD+RYDzsF0PAaETrpYpbn7c5lHFXx//1FPo5o0bXjINx+dHYc0O1rnpUiQNQI0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725960229; c=relaxed/simple;
-	bh=tJP9GHCMCIAfr4hsxjN4iN1wAuceXtlv1/bK0SLhwJE=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=HYSUJmbXYC3inV5sxkC60kbtyu8DOq2x8ryNhZmjchhH+Ym0dGJFFehUnTSXw7/O4LSox0iojP1TmKG2rKQNxSBoicN64dwbU6C+n3Tpvo8xJsXUtQVmaUdMcxDFq9hv0VTvwwLxJJNmmWPr4fVepusKj12rAWM0jzM5LNXK+W8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L9oS43Th; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7670C4CEC3;
-	Tue, 10 Sep 2024 09:23:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725960228;
-	bh=tJP9GHCMCIAfr4hsxjN4iN1wAuceXtlv1/bK0SLhwJE=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=L9oS43ThCEcb8eQF0g8LE/Fhr0uKEWS3EQtrWaSQKrBQrgxUtjC8QWiMQ+tYTsQu3
-	 rurft+KIjLgnVgl4llTBSugBuo26vMMPUPaFoHO59JU8QlV8QmXmgrp7kD2QZ6sUz9
-	 ssCYJGNLbdq6dwg/zg6CKQqLviY8/xLoh+ifOh1N3l/WptFOT3+4tmfEG3ttWFTewn
-	 pNjB5K6oTFl9Lr/bmIe11L77vll+6GIKNV9Vu8qi4BiNl/MRWUgFARcP+JLzu3OKUo
-	 5MqnqnbkoCs5oGScZXXXntKbam8c7vhfgqkyLNbY8G1JAozGG9fdwWcBnNX0Rxi4wy
-	 eiZgbVHpErhaA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Sven Eckelmann <sven@narfation.org>
-Cc: Jeff Johnson <quic_jjohnson@quicinc.com>,  ath11k@lists.infradead.org,
-  ath10k <ath10k@lists.infradead.org>,  ath12k
- <ath12k@lists.infradead.org>,  linux-wireless
- <linux-wireless@vger.kernel.org>, Robert Marko <robert.marko@sartura.hr>
-Subject: Re: New staging repos for ath1*k firmware
-References: <bac97f31-4a70-4c4c-8179-4ede0b32f869@quicinc.com>
-	<CA+HBbNFQ+25u_PK2j3vYtiCZwv+shVAVeAHKqQCwhyCopORt4Q@mail.gmail.com>
-	<3772134.MHq7AAxBmi@ripper>
-Date: Tue, 10 Sep 2024 12:23:44 +0300
-In-Reply-To: <3772134.MHq7AAxBmi@ripper> (Sven Eckelmann's message of "Tue, 10
-	Sep 2024 11:00:52 +0200")
-Message-ID: <87h6ang8v3.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1725960331; c=relaxed/simple;
+	bh=D8dBIueGzesLGGRk3hZwyBzr/bbPBQNnsJH5SJOAP+M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aLdAizKJi2ArlCMRqPYMBV8LsgkpOEx5R3ECFOh4QFkWP27X2AtjN3PT7DVC/mO0CKWyc1pXZ71FXC9wOOyicD43Qr4IXv820kd1CYG/loRGvdoe9/GSfQg+Sx0Ifj5ivc2kNc/gFd58JlRFRo9jjxlJ+y5Js5QviMpBM4tYtsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=FATnzlXB; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 3E2371BF205;
+	Tue, 10 Sep 2024 09:25:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1725960326;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ObNOhCefIHiYjtUxb2YhyjH2bCENh8h6kLyNWuK5el4=;
+	b=FATnzlXBRX92xxwLWic/BIduiLah08DGCvSnpMuqYm+tD5JZDwz6b2/F/jDeQZgcxXKA8/
+	0OO/3jH6qbvsimn6PqP6oJMFbkvlN61i0hjb+IpEw9wbzBfLHqWBSTUAJlxDatj4P/Gr6q
+	TtOqPCiKtzUkO3DuMmVoxZszVaVjQikNX7wM8kjmvdHYA5rcfR/wWmYmPrCmI9HO/y7F3A
+	fi586sbQt9LBxOWv1X88AaaZ1BiPBVYWEMyJX67ZfOMoUmlyS8n9D/jQvcvwRseL9WeC1P
+	OM5cr7CM0ZPdTIJrIp3KcEmnunmtEn/Fihd16SB/VoL4U+/XGROWmdRWx/MqGw==
+Message-ID: <5b07e049-6e06-4290-abf4-8c542b76c47c@bootlin.com>
+Date: Tue, 10 Sep 2024 11:25:24 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 5/9] wifi: wilc1000: Fold wilc_create_wiphy() into
+ cfg80211.c
+To: Marek Vasut <marex@denx.de>, linux-wireless@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Adham Abozaeid <adham.abozaeid@microchip.com>,
+ Ajay Singh <ajay.kathat@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Conor Dooley
+ <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20240909193035.69823-1-marex@denx.de>
+ <20240909193035.69823-5-marex@denx.de>
+From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20240909193035.69823-5-marex@denx.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: alexis.lothore@bootlin.com
 
-Sven Eckelmann <sven@narfation.org> writes:
-
-> On Thursday, 7 March 2024 09:39:26 CEST Robert Marko wrote:
->> Can I please ask for IPQ6018 firmware to be updated to 2.9.0.1 as well?
->> 
->
-> I've asked them via their support platform. They closed the ticket after Jeff 
-> uploaded the 2.7.0.1 firmware (which was given to him by the firmware team).
->
-> I will ask again...
->
-> (Btw. thanks to Jeff and Kalle for managing the new firmware repositories - I 
-> just hope that you get better input from the firmware teams)
-
-Thanks, this is not easy but we are trying to improve. It's just that
-the progress is so slow that it's really frustrating.
-
-As there are so many different branches I have lost track, do you have a
-list of missing firmware updates? We could try to push for updates on
-our own end as well.
+On 9/9/24 21:29, Marek Vasut wrote:
+> The wilc_create_wiphy() is not used outside of cfg80211.c .
+> Make the function static and remove its entry from cfg80211.h
+> 
+> Signed-off-by: Marek Vasut <marex@denx.deReviewed-by: Alexis Lothoré <alexis.lothore@bootlin.com>
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
