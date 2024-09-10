@@ -1,174 +1,97 @@
-Return-Path: <linux-wireless+bounces-12752-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12749-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2E909734A8
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 12:41:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D4439732CA
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 12:26:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7DE9B272BC
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 10:36:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A2F9B22750
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 10:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C51819005B;
-	Tue, 10 Sep 2024 10:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09DB019415D;
+	Tue, 10 Sep 2024 10:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qNar1SuX"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="r84AtY2E"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FBB6188CDC;
-	Tue, 10 Sep 2024 10:33:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C6A1922F1;
+	Tue, 10 Sep 2024 10:18:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964388; cv=none; b=POfGplrM2c5QZDW6oBVz2Hjn7+tzI9iZF0TeO75uEGdXGzcxPZ/1C6SSH5thKAuSYX2DbXrUZRscMZqePgxyCv6FJJOlJs6E71Puu6CxIikdJh7mE2P0IhULoHjav7YHacZApAMKLCpctpcOZhoYp1/rKEZa+glbYeABIcWiy9A=
+	t=1725963520; cv=none; b=p5JGP7+irwLf98fRKaiQRUZG+SIh6uYfvGjxUvkPFfoHoooqjRmfION0KwfAVAKraJx2t8ikZAIm4lVVESaw5jKra6kwC3LvtNfg9DXKXrc9Dq/ze357vGvQvSxL91Z55iA6RlNoShv8FwHf4kk0db8sM82Txi74T4sIrlHOxF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964388; c=relaxed/simple;
-	bh=7D3jwrpP96Q5K7nglHD06YqlF5QzetIjOyhn7/Q2ols=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h3nU2MO24EEndneQnMXfvUc2Fzaf/kz791WNrw/zDbAoVP6/Ro+x9kfPynAEKIU+bvQughkn3C+RGvc8pDmJeDwZFpR9gOGtaJ0woLcHp5hyAcPz2DnFvZ5+TklcpUegtLYEt1dW4b2citpwDs34pwcBb2PWvKxZYlESigpflRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qNar1SuX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87B74C4CEC6;
-	Tue, 10 Sep 2024 10:33:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964387;
-	bh=7D3jwrpP96Q5K7nglHD06YqlF5QzetIjOyhn7/Q2ols=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qNar1SuX/8qC21E1JTJpp48JmTSlq7M4pWAhvuJeB0ufVDS+y7YNufqbxG3YcgYK5
-	 ueCjwxAw7ZujIOyJMGdk2Qb/4xQN2+Tt7hV2T/TrzpTR0iabFYxp3JRAtaCuXPbT1n
-	 HNFFgUPOaSxPstIx2fjtjTUD/3AQ+kkF0EKyPiRY=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	=?UTF-8?q?Marcin=20=C5=9Alusarz?= <mslusarz@renau.com>,
-	Tim K <tpkuester@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Larry Finger <Larry.Finger@lwfinger.net>,
-	Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 148/269] wifi: rtw88: usb: schedule rx work after everything is set up
-Date: Tue, 10 Sep 2024 11:32:15 +0200
-Message-ID: <20240910092613.493714797@linuxfoundation.org>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1725963520; c=relaxed/simple;
+	bh=BytnPY46mnPRDlB8ROZftu1Csx92PsKunJhrjNZ8cYk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qoPd3YkyENJ5N5VRCIIde2atoArRvk8S7XFpZ79Q53phqKu08AgVMC/h7S+ieU4brxD/2mUXhjDCAU6w6IRka0GWLndIKjgUKyZ80L0nm7h3UfmkJYNh1Fb/L68Pso407Ve7+8FgEBHbnPH7/YAAHl3ccuAxVLzAL6m9kMV2s0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=r84AtY2E; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 0468E88F5F;
+	Tue, 10 Sep 2024 12:18:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1725963512;
+	bh=ziKQobiBowH8lBD7d0jJWzB9mGazXQuMiiUtscv86V4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=r84AtY2EzH6Et5nkj+QJ8IikvqlGOCB7SLOFRg+dfCrFZQYyrMCRrtgU5uEcVTIxz
+	 dkdePWg97mUE9VunxI65jprc6i9CLaNyxa/AlqLC0o9LA99pw9EELOEFvUvbuQJyzM
+	 CAuvuCigb68XubUhGtYz4A2WQIHgVc2WtXskdSq9HfeFiINoQYjrkibbUVpserFoxc
+	 lFTns48qX1JloYXOWjiW2EcbYBd8hMGh5nJaN33Jx9G9yRHn27oc2f39ajE8ynzr60
+	 9/zBk/oPuEDbKbkS5mWOaKrKzK/jlDSjMvtxrtSldrl6JRUegQ6WwIdym3YZEQ3nj8
+	 bEaQPq+WDeLYw==
+Message-ID: <3f576f28-2ef4-4f00-9c01-38837ee6b3d6@denx.de>
+Date: Tue, 10 Sep 2024 11:45:08 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 4/9] wifi: wilc1000: Fill in missing error handling
+To: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+ linux-wireless@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Adham Abozaeid <adham.abozaeid@microchip.com>,
+ Ajay Singh <ajay.kathat@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Conor Dooley
+ <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20240909193035.69823-1-marex@denx.de>
+ <20240909193035.69823-4-marex@denx.de>
+ <5ae8121f-8ead-4d7e-9fbd-417c273474e5@bootlin.com>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <5ae8121f-8ead-4d7e-9fbd-417c273474e5@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+On 9/10/24 11:13 AM, Alexis Lothoré wrote:
+> On 9/9/24 21:29, Marek Vasut wrote:
+>> Add error handling to chip_wakeup() and propagate the errors throughout
+>> the entire driver. Add error handling to acquire_bus()/release_bus() and
+>> host_sleep_notify()/host_wakeup_notify() functions as a result as well.
+>> Fill the error handling to all call sites.
+> 
+> Out of curiosity, what tree/branch are you using as a base for this series ? I
+> wanted to pull it locally to also test it on wilc1000, but it fails to apply
+> this patch, and the failure points to a conflict with one of my patch which has
+> been merged quite some time ago in wireless-next:
+> https://lore.kernel.org/all/20240613-wilc_suspend-v1-4-c2f766d0988c@bootlin.com/
+next-20240909 with this extra patch:
 
-------------------
-
-From: Marcin Ślusarz <mslusarz@renau.com>
-
-[ Upstream commit adc539784c98a7cc602cbf557debfc2e7b9be8b3 ]
-
-Right now it's possible to hit NULL pointer dereference in
-rtw_rx_fill_rx_status on hw object and/or its fields because
-initialization routine can start getting USB replies before
-rtw_dev is fully setup.
-
-The stack trace looks like this:
-
-rtw_rx_fill_rx_status
-rtw8821c_query_rx_desc
-rtw_usb_rx_handler
-...
-queue_work
-rtw_usb_read_port_complete
-...
-usb_submit_urb
-rtw_usb_rx_resubmit
-rtw_usb_init_rx
-rtw_usb_probe
-
-So while we do the async stuff rtw_usb_probe continues and calls
-rtw_register_hw, which does all kinds of initialization (e.g.
-via ieee80211_register_hw) that rtw_rx_fill_rx_status relies on.
-
-Fix this by moving the first usb_submit_urb after everything
-is set up.
-
-For me, this bug manifested as:
-[    8.893177] rtw_8821cu 1-1:1.2: band wrong, packet dropped
-[    8.910904] rtw_8821cu 1-1:1.2: hw->conf.chandef.chan NULL in rtw_rx_fill_rx_status
-because I'm using Larry's backport of rtw88 driver with the NULL
-checks in rtw_rx_fill_rx_status.
-
-Link: https://lore.kernel.org/linux-wireless/CA+shoWQ7P49jhQasofDcTdQhiuarPTjYEDa--NiVVx494WcuQw@mail.gmail.com/
-Signed-off-by: Marcin Ślusarz <mslusarz@renau.com>
-Cc: Tim K <tpkuester@gmail.com>
-Cc: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Larry Finger <Larry.Finger@lwfinger.net>
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20240528110246.477321-1-marcin.slusarz@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/realtek/rtw88/usb.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
-index efd0c2915a05..04a64afcbf8a 100644
---- a/drivers/net/wireless/realtek/rtw88/usb.c
-+++ b/drivers/net/wireless/realtek/rtw88/usb.c
-@@ -742,7 +742,6 @@ static struct rtw_hci_ops rtw_usb_ops = {
- static int rtw_usb_init_rx(struct rtw_dev *rtwdev)
- {
- 	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
--	int i;
- 
- 	rtwusb->rxwq = create_singlethread_workqueue("rtw88_usb: rx wq");
- 	if (!rtwusb->rxwq) {
-@@ -754,13 +753,19 @@ static int rtw_usb_init_rx(struct rtw_dev *rtwdev)
- 
- 	INIT_WORK(&rtwusb->rx_work, rtw_usb_rx_handler);
- 
-+	return 0;
-+}
-+
-+static void rtw_usb_setup_rx(struct rtw_dev *rtwdev)
-+{
-+	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
-+	int i;
-+
- 	for (i = 0; i < RTW_USB_RXCB_NUM; i++) {
- 		struct rx_usb_ctrl_block *rxcb = &rtwusb->rx_cb[i];
- 
- 		rtw_usb_rx_resubmit(rtwusb, rxcb);
- 	}
--
--	return 0;
- }
- 
- static void rtw_usb_deinit_rx(struct rtw_dev *rtwdev)
-@@ -897,6 +902,8 @@ int rtw_usb_probe(struct usb_interface *intf, const struct usb_device_id *id)
- 		goto err_destroy_rxwq;
- 	}
- 
-+	rtw_usb_setup_rx(rtwdev);
-+
- 	return 0;
- 
- err_destroy_rxwq:
--- 
-2.43.0
-
-
-
+wifi: wilc1000: Keep slot powered on during suspend/resume
 
