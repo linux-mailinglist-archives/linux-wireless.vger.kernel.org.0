@@ -1,99 +1,208 @@
-Return-Path: <linux-wireless+bounces-12731-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12732-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEB14972ADA
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 09:33:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B4F2972B55
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 10:00:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED7941C23F4D
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 07:33:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F28F1C241C6
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 08:00:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55F3B17DFE3;
-	Tue, 10 Sep 2024 07:33:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="f8eRsMDi"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7CB18594B;
+	Tue, 10 Sep 2024 08:00:10 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38CAF17D36A;
-	Tue, 10 Sep 2024 07:33:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51922184535
+	for <linux-wireless@vger.kernel.org>; Tue, 10 Sep 2024 08:00:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725953586; cv=none; b=Ui78YaEQhVmNHftazQbjDxhAmiH7abnDF/AVCNAlvYq8G4fheUJgL5U+P4FG/SvB3soSqLj59L189cEQb0SEg4bC3gWRrSkLdUfM1GZrwd6INzZ+w67pgUxCR4hF0kyeyIXoyNwv/q6NDrWoAiRva3pGZcJdQXVnL6geXt2PrZA=
+	t=1725955210; cv=none; b=HgTP9Ibt6E723zlzw2LSdNW7+NysEAu1Gzzwg1kiQ27FvC7H83Eflxf5n+MzpeNoYYaMNTtTWEhrUGKHdnmjyCClX31TwnUTtPSVkv6OGWK516UF6n+XMkfiAKT+VxVaKCeJ+lIAf5fNn5ckOep9Tx1EFKo5UefQKz9bevAoi2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725953586; c=relaxed/simple;
-	bh=nxWRbMPcPT8DxZ6rLJCDCedHg5P5qBOshhja50/iaqM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TdfOGXuWkzrMlF/bv2X78+7mfEeK13BwCYCHOWRn17gt9jmPwjBoM46/wWzUMA8UL4g6AK0KCTS9Y0LPKsPnEsTnP3Q3R2hSG2w9DYJuhd8f7b5GnFKg2w99fzFRp8r2c4SolfRxy6N5s+ul+7fCVfNCt/YZGVKDQWPq/+kJVYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=f8eRsMDi; arc=none smtp.client-ip=217.70.183.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 24A621C0003;
-	Tue, 10 Sep 2024 07:32:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1725953581;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nxWRbMPcPT8DxZ6rLJCDCedHg5P5qBOshhja50/iaqM=;
-	b=f8eRsMDi3Xe49ZZwYx8gG1NtFsh6+O/22ApWQbL8NWdeX3tLXgwETdKiXt2rysY4RQi4lD
-	C13r7LSjg+9dQNQWFHWcdGsF8sSw4p0K52qyIp0e0M0sQ5WP2QPeoc+FigcYAM48u3ILdF
-	tYaF3zIoxOUOKXjo9sJ5arT5d8mdhW0ENBmmbDugA7eYYVCSivO4tL8X8R3cNxN7GNc9fF
-	AZ44I2znp1F9tcmYCnmKWfHFvRsK9ru5/ufu0SKC4HJZzLGauRcOU4/tnW0b7pXODzxEBo
-	z68W6zJvIbYwO9wU9EQ4B+EUN6kGL3fyt7SB5/LEk0JOh1F2u+GJKloNxriDvQ==
-Date: Tue, 10 Sep 2024 09:32:58 +0200
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
- <pabeni@redhat.com>, <claudiu.manoil@nxp.com>, <vladimir.oltean@nxp.com>,
- <louis.peens@corigine.com>, <stefan@datenfreihafen.org>,
- <alex.aring@gmail.com>, <chunkeey@googlemail.com>, <kvalo@kernel.org>,
- <briannorris@chromium.org>, <francesco@dolcini.it>,
- <set_pte_at@outlook.com>, <damien.lemoal@opensource.wdc.com>,
- <mpe@ellerman.id.au>, <horms@kernel.org>, <yinjun.zhang@corigine.com>,
- <fei.qin@corigine.com>, <johannes.berg@intel.com>,
- <ryno.swart@corigine.com>, <krzysztof.kozlowski@linaro.org>,
- <leitao@debian.org>, <liuxuenetmail@gmail.com>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <oss-drivers@corigine.com>,
- <linux-wpan@vger.kernel.org>, <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 4/7] net: ieee802154: mcr20a: Use IRQF_NO_AUTOEN flag in
- request_irq()
-Message-ID: <20240910093258.358a6d85@xps-13>
-In-Reply-To: <20240909133034.1296930-5-ruanjinjie@huawei.com>
-References: <20240909133034.1296930-1-ruanjinjie@huawei.com>
-	<20240909133034.1296930-5-ruanjinjie@huawei.com>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1725955210; c=relaxed/simple;
+	bh=ytAmbQ1x+TiIm5oeXyvdBICN/MBkFuOTui8/cLRy3XY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B839chWV+yNoLSAVhpgSqA36HX1GQzhzHMup9dW8v8H91W061ApZVNhPHLcHwTPbCT8Z4IraspP5ECC5Sf2ogYoMUAQcVjlivq+aPIQh4crE5PjNSFt02yHwPRsHLVdAgvY8zNHZD42byuISld2DdWG6OA0pTBtAPOszT9lAmHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1snvnA-00039d-Lp; Tue, 10 Sep 2024 10:00:04 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1snvn9-006qUF-Rh; Tue, 10 Sep 2024 10:00:03 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1snvn9-00HXhP-2Q;
+	Tue, 10 Sep 2024 10:00:03 +0200
+Date: Tue, 10 Sep 2024 10:00:03 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: David Lin <yu-hao.lin@nxp.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"briannorris@chromium.org" <briannorris@chromium.org>,
+	"kvalo@kernel.org" <kvalo@kernel.org>,
+	"francesco@dolcini.it" <francesco@dolcini.it>,
+	Pete Hsieh <tsung-hsien.hsieh@nxp.com>
+Subject: Re: [EXT] Re: [PATCH v2] wifi: mwifiex: avoid AP and STA running on
+ different channel
+Message-ID: <Zt_8gwj6GnV_yZ1Z@pengutronix.de>
+References: <20240902084311.2607-1-yu-hao.lin@nxp.com>
+ <Zt9jFpyptX_ftH-p@pengutronix.de>
+ <PA4PR04MB9638EA984DB5F2FDAEA3B873D19A2@PA4PR04MB9638.eurprd04.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <PA4PR04MB9638EA984DB5F2FDAEA3B873D19A2@PA4PR04MB9638.eurprd04.prod.outlook.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-Hi Jinjie,
+On Tue, Sep 10, 2024 at 01:52:02AM +0000, David Lin wrote:
+> > From: Sascha Hauer <s.hauer@pengutronix.de>
+> > Sent: Tuesday, September 10, 2024 5:05 AM
+> > To: David Lin <yu-hao.lin@nxp.com>
+> > Cc: linux-wireless@vger.kernel.org; linux-kernel@vger.kernel.org;
+> > briannorris@chromium.org; kvalo@kernel.org; francesco@dolcini.it; Pete
+> > Hsieh <tsung-hsien.hsieh@nxp.com>
+> > Subject: [EXT] Re: [PATCH v2] wifi: mwifiex: avoid AP and STA running on
+> > different channel
+> > 
+> > Caution: This is an external email. Please take care when clicking links or
+> > opening attachments. When in doubt, report the message using the 'Report
+> > this email' button
+> > 
+> > 
+> > On Mon, Sep 02, 2024 at 04:43:11PM +0800, David Lin wrote:
+> > > Current firmware doesn't support AP and STA running on different
+> > > channels simultaneously.
+> > > FW crash would occur in such case.
+> > > This patch avoids the issue by disabling AP and STA to run on
+> > > different channels.
+> > >
+> > > Signed-off-by: David Lin <yu-hao.lin@nxp.com>
+> > > ---
+> > >
+> > > v2:
+> > >    - clean up code.
+> > >
+> > > ---
+> > >  .../net/wireless/marvell/mwifiex/cfg80211.c   | 17 ++++---
+> > >  drivers/net/wireless/marvell/mwifiex/util.c   | 44 +++++++++++++++++++
+> > >  drivers/net/wireless/marvell/mwifiex/util.h   | 13 ++++++
+> > >  3 files changed, 69 insertions(+), 5 deletions(-)
+> > >
+> > > diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> > > b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> > > index 722ead51e912..3dbcab463445 100644
+> > > --- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> > > +++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> > > @@ -781,11 +781,9 @@ mwifiex_cfg80211_set_wiphy_params(struct wiphy
+> > *wiphy, u32 changed)
+> > >               break;
+> > >
+> > >       case MWIFIEX_BSS_ROLE_STA:
+> > > -             if (priv->media_connected) {
+> > > -                     mwifiex_dbg(adapter, ERROR,
+> > > -                                 "cannot change wiphy params
+> > when connected");
+> > > -                     return -EINVAL;
+> > > -             }
+> > > +             if (priv->media_connected)
+> > > +                     break;
+> > 
+> > This hunk seems unrelated to this patch. If this is needed then it deserves an
+> > extra patch along with an explanation why this is necessary.
+> > 
+> > Sascha
+> > 
+> 
+> Without this hunk, AP and STA can't run on the same channel if some
+> wiphy parameters are setting.
 
-ruanjinjie@huawei.com wrote on Mon, 9 Sep 2024 21:30:31 +0800:
+Ok, I now see where you are aiming at. Here's the problematic function:
 
-> disable_irq() after request_irq() still has a time gap in which
-> interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
-> disable IRQ auto-enable when request IRQ.
->=20
-> Fixes: 8c6ad9cc5157 ("ieee802154: Add NXP MCR20A IEEE 802.15.4 transceive=
-r driver")
-> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+> static int
+> mwifiex_cfg80211_set_wiphy_params(struct wiphy *wiphy, u32 changed)
+> {
+> 	...
+> 
+> 	priv = mwifiex_get_priv(adapter, MWIFIEX_BSS_ROLE_ANY);
+> 
+> 	switch (priv->bss_role) {
+> 	case MWIFIEX_BSS_ROLE_UAP:
+> 		if (priv->bss_started) {
+> 			mwifiex_dbg(adapter, ERROR,
+> 				    "cannot change wiphy params when bss started");
+> 			return -EINVAL;
+> 		}
+> 
+> 		...
+> 		mwifiex_send_cmd(priv, HostCmd_CMD_UAP_SYS_CONFIG, ...);
+> 
+> 		break;
+> 	case MWIFIEX_BSS_ROLE_STA:
+> 		if (priv->media_connected) {
+> 			mwifiex_dbg(adapter, ERROR,
+> 				    "cannot change wiphy params when connected");
+> 			return -EINVAL;
+> 		}
+> 
+> 		...
+> 		mwifiex_send_cmd(priv, HostCmd_CMD_802_11_SNMP_MIB, ...);
+> 
+> 		break;
+> 	}
+> 
+> 	return 0;
+> }
 
-This one could go through wpan(-next), but otherwise:
+This function is for setting wiphy params like rts_threshold and others.
 
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+mwifiex_get_priv(adapter, MWIFIEX_BSS_ROLE_ANY) returns the first
+priv which by default is in station mode. Now if you start priv0 in
+station mode, then afterwards start priv1 in AP mode *and* have
+rts_threshold = xy in your config, then you run into the
+"cannot change wiphy params when connected" case.
 
-Thanks,
-Miqu=C3=A8l
+I really wonder if the settings done in this function are per priv or
+per adapter. Is there one rts_threshold setting in a mwifiex chip or are
+there multiple (per vif/priv)?
+
+If it's a global setting, then why are we interested in the
+media_connected state of one specific priv? Shouldn't we check all
+privs?
+
+If it's a setting per priv, then why do we choose the same priv
+everytime in this function?
+
+Either way, this function looks fishy and changing it should be done
+with an explanation, just dropping the error message and returning
+success is not enough.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
