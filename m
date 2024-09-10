@@ -1,122 +1,92 @@
-Return-Path: <linux-wireless+bounces-12760-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12761-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67A9D97376E
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 14:33:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC05F973771
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 14:34:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11E711F211A1
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 12:33:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A8321C23FC3
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Sep 2024 12:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0CAA190676;
-	Tue, 10 Sep 2024 12:33:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="dvBN11br"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DAE11917C4;
+	Tue, 10 Sep 2024 12:34:21 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855E21862B8;
-	Tue, 10 Sep 2024 12:33:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93E4718C002;
+	Tue, 10 Sep 2024 12:34:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725971634; cv=none; b=HzJtxYyoPt3UfNRU2ytfQl+MIvfJC2eZRyItPkdi7YjUmAvFPN2z0Ov/mrj8y+dYNVAQZlzkTDZ8IwllED5BAn4auZy3fSPN3xgWIgD9rdNDBM2nWlb0tDvODdUA3aNG5i4ZNfOUBNcPK2a2CYWXaZurKgkjvn2OEIShlid9k04=
+	t=1725971661; cv=none; b=EB6Dw0qk7LuRNZUHtFI+06elnCh+j7rzJC0HXmZ96F9fIx9wBd6TV2C3EAXjqnA2ePErENH/jsrlJOvDluTKTdB77iYZR+HvN3R6DXFyWScyup/JJzr1I4kZXNEm0JrQCcU2xpiWjxQWRT1WUKf2VX8kJpGbNvjhYk7ww3WgCXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725971634; c=relaxed/simple;
-	bh=HuWj02VIN8Ocf8mbmtc1L+Bn3PmRey727QcI9q3Y6XE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=vDC73zI/2nKaAErUmmOfHJ9U006YBKeyMb4BTCRe0X75Ksz2Ci7iHdJMXpWj/DpNRtIYkF51iF6fD8Xifwr03NRc2TLtNxEhrsOIdqpBwx/IYZ2Pp28V4kxFMEpensTbVec+tNCMXbwuJh1xNWf/2or9En3SWZ2GcmxYKaBcmOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=dvBN11br; arc=none smtp.client-ip=217.70.183.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 99A6C60006;
-	Tue, 10 Sep 2024 12:33:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1725971625;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6f4Np0cokaH3gxapqx1PNtK4LPPwRh70Qjvz4BkTjXk=;
-	b=dvBN11brAErEHv09m7cbuwh5HER71BmxS/ZkXlRlxAngW5e4ZfV/qsreGFOgFKUh6pXHq+
-	cwaNEaMpJ0O8xXwWn+A9mrwV5WVOZYLOnZqNQhLZJolYUwRa3bZgg6a2Af7x8PBPi/zpd+
-	o+oIQtffxgujc9LcKMgiD5ZQBRwY+TzYt2C2gKjOt98LM4dnLiimONbcjODe6Jo+kM9U3d
-	+Ti8fmnY0y92ga5d/Oivrlpzm2yTLz6ZnZabLn/9VrXSaGBzXz7Qb1KDP3I2oqnugsG/Bz
-	onda+m98m2r+rinBCE+T5S0TPgqw+Qf8X/7IHNyCnJTf6Eh1FsWx3DwKuxZ/wQ==
-Message-ID: <bdc95cac-b64e-44a7-ab52-bff5dcb81b2d@bootlin.com>
-Date: Tue, 10 Sep 2024 14:33:44 +0200
+	s=arc-20240116; t=1725971661; c=relaxed/simple;
+	bh=K85PMxn9HYgYf8DC9w76B88UKSX5Pc3De2uallcJgnU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=u/0wrEdQotVJQBHeR3Pga0msQWwDzNzjBn9PQV0wahLP3ATz2JVHbYso1mWvkcWP+1q5uqMaefaOsSNkCE00e8WZjaUytUJQ9RATbcD0AVX9IinXD7KdktXKv1woUi+owUOUVCH0p6VcyEUPGQdjOYHBvd0MHiTIVLRj0zPQhLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4X336W26WKz20nms;
+	Tue, 10 Sep 2024 20:34:11 +0800 (CST)
+Received: from kwepemh500013.china.huawei.com (unknown [7.202.181.146])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3DE6C140138;
+	Tue, 10 Sep 2024 20:34:16 +0800 (CST)
+Received: from huawei.com (10.90.53.73) by kwepemh500013.china.huawei.com
+ (7.202.181.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 10 Sep
+ 2024 20:34:15 +0800
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+To: <chunkeey@googlemail.com>, <kvalo@kernel.org>, <briannorris@chromium.org>,
+	<francesco@dolcini.it>, <krzysztof.kozlowski@linaro.org>,
+	<leitao@debian.org>, <linville@tuxdriver.com>, <rajatja@google.com>,
+	<linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: <ruanjinjie@huawei.com>
+Subject: [PATCH wireless v2 0/3] wifi: Use IRQF_NO_AUTOEN flag in request_irq()
+Date: Tue, 10 Sep 2024 20:43:11 +0800
+Message-ID: <20240910124314.698896-1-ruanjinjie@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 8/9] wifi: wilc1000: Register wiphy after reading out
- chipid
-To: Marek Vasut <marex@denx.de>, linux-wireless@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
- Adham Abozaeid <adham.abozaeid@microchip.com>,
- Ajay Singh <ajay.kathat@microchip.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Conor Dooley
- <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20240909193035.69823-1-marex@denx.de>
- <20240909193035.69823-8-marex@denx.de>
- <769f1405-62fc-4457-a958-b644c706140f@bootlin.com>
- <7a938ca9-8099-4901-9f05-c3347c38fc53@denx.de>
-From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <7a938ca9-8099-4901-9f05-c3347c38fc53@denx.de>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: alexis.lothore@bootlin.com
+Content-Type: text/plain
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ kwepemh500013.china.huawei.com (7.202.181.146)
 
-On 9/10/24 12:53, Marek Vasut wrote:
-> On 9/10/24 12:08 PM, Alexis Lothoré wrote:
->> On 9/9/24 21:29, Marek Vasut wrote:
+As commit cbe16f35bee6 ("genirq: Add IRQF_NO_AUTOEN for request_irq/nmi()")
+said, reqeust_irq() and then disable_irq() is unsafe.
 
-[...]
+And the code below is subobtimal:
+	 irq_set_status_flags(irq, IRQ_NOAUTOEN);
+	 request_irq(dev, irq...);
 
->>>   EXPORT_SYMBOL_GPL(wilc_cfg80211_init);
->>>   +int wilc_cfg80211_register(struct wilc *wilc)
->>> +{
->>> +    wilc->wiphy->features |= NL80211_FEATURE_SAE;
->>
->> Even if I get the general need, it feels weird to have parts of the wphy init
->> performed in wilc_create_wiphy, and some parts (the features field) here.
->> Wouldn't it work to just move wilc_create_wiphy content here, since wphy will
->> not be usable anyway before eventually registering it ?
-> That's what I thought initially too, but look closely at wilc_create_wiphy():
-> 
-> struct wilc *wilc_create_wiphy(struct device *dev)
-> {
-> ...
-> struct wiphy *wiphy;
-> struct wilc *wl;
-> ...
-> wiphy = wiphy_new(&wilc_cfg80211_ops, sizeof(*wl));
-> ...
-> wl = wiphy_priv(wiphy); // <----------- HERE , *wl is struct wilc
-> ...
-> return wl;
-> }
-> 
-> That 'struct wilc' is allocated as part of wiphy_new() and used all around the
-> place before we reach wiphy_register() much later on.
+IRQF_NO_AUTOEN flag can be used by drivers to request_irq(). It prevents
+the automatic enabling of the requested interrupt in the same safe way.
+With that the usage can be simplified and corrected.
 
-Meh, true. We could still let any part affecting the struct wilc in
-wilc_create_wiphy, and move any wphy configuration in wilc_cfg80211_register,
-but then I am not sure anymore if it makes things better.
+Only compile-tested.
+
+Changes in v2:
+- wireless prefixed subject and submit them in a separate patchset.
+- Add fix tag.
+
+Jinjie Ruan (3):
+  wifi: p54: Use IRQF_NO_AUTOEN flag in request_irq()
+  wifi: mwifiex: Use IRQF_NO_AUTOEN flag in request_irq()
+  wifi: wl1251: Use IRQF_NO_AUTOEN flag in request_irq()
+
+ drivers/net/wireless/intersil/p54/p54spi.c  | 4 +---
+ drivers/net/wireless/marvell/mwifiex/main.c | 4 ++--
+ drivers/net/wireless/ti/wl1251/sdio.c       | 4 ++--
+ 3 files changed, 5 insertions(+), 7 deletions(-)
 
 -- 
-Alexis Lothoré, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
 
 
