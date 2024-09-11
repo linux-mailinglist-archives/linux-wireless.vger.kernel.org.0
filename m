@@ -1,98 +1,122 @@
-Return-Path: <linux-wireless+bounces-12797-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12798-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BD209757C9
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2024 18:00:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26328975AC8
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2024 21:19:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 459B61F21CFF
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2024 16:00:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D60EB22FE3
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Sep 2024 19:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8808E33986;
-	Wed, 11 Sep 2024 16:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D9461AD9CF;
+	Wed, 11 Sep 2024 19:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="UAbnea+E"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="BryHhaZT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2FA538DC0
-	for <linux-wireless@vger.kernel.org>; Wed, 11 Sep 2024 16:00:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02121885A8
+	for <linux-wireless@vger.kernel.org>; Wed, 11 Sep 2024 19:18:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726070435; cv=none; b=Vy0xWrgv3m0rArcXFsJ1a6zaR8RH3AoTEnNjbTfwzU1F7ZYZcNQQLHgy4OF368l44MC3Tkmt7MZvyjf9TKMyJRz1ds8hHVE6Isd7Zhdcw+d2XKVbCLiGyFlxGvvcDlOQUhv8Il9jxSfi0ldJUKy2ptm6zfeJ2+MtjJtafnxKVCs=
+	t=1726082340; cv=none; b=aNa8143oq0K/46qaez4STtaKv7NqAc/H+6ZvsSh2Qkz5Oa86M6dXo5AFtJFDQ4TnKO7XrR9w9+9W0um/V7W/PSFMSorqHGX0c0XZXJz1aTD/lVh+RmMthhFEsAhYDRj4yXxWNhdJOoFxNCDsZ51pxWTSdYyRtH3WN6PUCZ3DQmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726070435; c=relaxed/simple;
-	bh=0iBJlVkdJTVNH/dTaH2AMDRd1BkRaHhXHrReBrPuvBo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QIbFai0Mbplm3kkhyls8bd+Evg6UcXz9q+5cNYkmwMcxKyJizHa5SvvSK9h7aagz+NGS+gtEA/L3oCfk6biGjxWbpXUeY60R7yjgYnuZN0/kckf95HhL52vgN8tejIUI6T2cjP3G+MUl3zdVqpnPLFLVNvAxI35Is5OjffWAsf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=UAbnea+E; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=0iBJlVkdJTVNH/dTaH2AMDRd1BkRaHhXHrReBrPuvBo=;
-	t=1726070434; x=1727280034; b=UAbnea+Ed5e409lnWuFVDvDIy2hjO7/Y0IQyZWBWJ2PUByT
-	pLlIMfNl0YXXw8c6ATJJGZQtmRvp7ccFhtkcFSyrvr1PWKBT4N4rjBaXD7NaOde3XBhKWI/JibaUA
-	PgyPiMNG1UxD/NISdT3D6IgO0KGpaed0CciKx+YyBeSAZn3Lbob/ihFM9FyUfAO9A8TWRMnscx0K4
-	6PQfJz3WvfQcCMwz/R6d+1TOoLETyoSep6H3AQtNHyt/P5JsuD9hiO4w9JMLLYHm3f6XhnK02lyA6
-	GrPt9qOwbLau4M2akpS+MB2fS+EJQpQhOIexqKU1kg/NAmJYsEFyS5cySDjYz64g==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1soPld-000000097PK-2pYB;
-	Wed, 11 Sep 2024 18:00:29 +0200
-Message-ID: <d880275455b93c92a0f8d0e59169a22433d815ba.camel@sipsolutions.net>
-Subject: Re: [PATCH v3] wifi: cfg80211: check radio iface combination for
- multi radio per wiphy
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Felix Fietkau <nbd@nbd.name>, Karthikeyan Periyasamy
-	 <quic_periyasa@quicinc.com>
-Cc: linux-wireless@vger.kernel.org
-Date: Wed, 11 Sep 2024 18:00:28 +0200
-In-Reply-To: <3d2d9a9e-43ee-46f5-bf66-6227ce6bdfd7@nbd.name>
-References: <20240904112928.2924508-1-quic_periyasa@quicinc.com>
-	 <e77b379d48db796d199030ce904f8ed44ed679e5.camel@sipsolutions.net>
-	 <b7769f15-b0ef-fb61-8622-fc8bdc7339cc@quicinc.com>
-	 <dfd252e8c553c5501eb97042325d9009be14faed.camel@sipsolutions.net>
-	 <0d800949-d43a-2172-6aa7-5d0069d3b88a@quicinc.com>
-	 <36d111a1118349a86946bfdbc55e8fcbf3720fbc.camel@sipsolutions.net>
-	 <a588beba-ddeb-445a-abff-cfb3f6a41a63@quicinc.com>
-	 <7ddb082fc1a1886f343e4c0233a24221932edb64.camel@sipsolutions.net>
-	 <3d2d9a9e-43ee-46f5-bf66-6227ce6bdfd7@nbd.name>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+	s=arc-20240116; t=1726082340; c=relaxed/simple;
+	bh=sDGHHQvc1w/U7n43eqLr9VMOozQdegjAqtxdGjCgsZo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=PSYX+knN73Z7oGVU0xqAAWgZertwY+JiAS1GUfLwTviRGm/wcw9dYfH7tWXROgHXaY4TAdVZqphkS7P0GJ6FEuO5Tf6/hdhlg1UN340dGzyW+2emP52sPA+/hGpmUWfq6gPyaXEa+xW+ESjvYRGOnKfQoX1PeTEqV1woiTeRMHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=BryHhaZT; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48BEltaX008643;
+	Wed, 11 Sep 2024 19:18:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	x0fFCbqLviOcKIuRISyLtYIUYll/QaQPmbfvi4zhJKU=; b=BryHhaZToImmG/gb
+	HJAm5FnFef0ukKuxnvi3WUKJTTpK/sJeYtBLEt4fe/XhsWvVE+tEEshor2nBn4uC
+	9xMChjZgywR+lCyYvS3RH4j00w+u35cJjWc0wdpoYsoYl73Hm2ynGzHJ07MN7B1v
+	9IIBwTH7pCbNfTfgsz07OSn0Gb+60UBVhuyevFFILOdEkns8f47mpOQNGaf30Cer
+	3jZzlPnmSfda9bKqiQCzdDlbo1xs8Hv3skuhaK4u8YtvfnZko1XnCVQPtvA8x7WG
+	vvCnG8GfPxQX+VJ7WGDqmM+OluFoVsINl+vPVAlK3xdOzCjtlRFU6ejM5Uh98+m9
+	p2ZpWw==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41he5e20x3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 11 Sep 2024 19:18:46 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48BJIgKj005145
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 11 Sep 2024 19:18:42 GMT
+Received: from [10.111.181.177] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 11 Sep
+ 2024 12:18:41 -0700
+Message-ID: <4dd46a07-4896-433f-8e03-2cea28c255c2@quicinc.com>
+Date: Wed, 11 Sep 2024 12:18:41 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: New staging repos for ath1*k firmware
+To: Sven Eckelmann <sven@narfation.org>, <ath11k@lists.infradead.org>
+CC: ath10k <ath10k@lists.infradead.org>, ath12k <ath12k@lists.infradead.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Robert Marko
+	<robert.marko@sartura.hr>, Kalle Valo <kvalo@kernel.org>
+References: <bac97f31-4a70-4c4c-8179-4ede0b32f869@quicinc.com>
+ <3772134.MHq7AAxBmi@ripper> <87h6ang8v3.fsf@kernel.org>
+ <2248097.72vocr9iq0@ripper>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <2248097.72vocr9iq0@ripper>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: wf7W8AIzynEdZL5L1inQIZoIK3ucZgp6
+X-Proofpoint-GUID: wf7W8AIzynEdZL5L1inQIZoIK3ucZgp6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1011
+ priorityscore=1501 suspectscore=0 lowpriorityscore=0 impostorscore=0
+ malwarescore=0 mlxscore=0 phishscore=0 bulkscore=0 adultscore=0
+ mlxlogscore=885 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409110148
 
-On Wed, 2024-09-11 at 17:58 +0200, Felix Fietkau wrote:
-> >=20
-> > We still need the part of the patch that calls the validation on each
-> > radio, but it shouldn't be different from the global one. If you could
-> > make that patch I'd appreciate it.
->=20
-> It's implemented the way we discussed it back when this topic came up.=
-=20
-> Legacy user space gets the ifcomb data from the first radio for=20
-> compatibility. The actual global ifcomb data is reported in a new attribu=
-te.
->=20
+On 9/10/2024 4:39 AM, Sven Eckelmann wrote:
+...
+> For the completely missing ones, I've submitted following list to QCA:
+> 
+> * ath11k/IPQ5018_QCN6122 (that might be rather complicated due to the way how 
+>   QCA designed this)
+> * ath11k/IPQ5018_QCN6122_QCN6122 (that might be rather complicated due to the 
+>   way how QCA designed this)
+> * ath11k/IPQ9574
+> * ath12k/IPQ5322
+> * ath12k/IPQ5322_QCN6432_QCN6432 (sounds a little bit like the QCN6122 
+>   situation)
 
-Hah, I forgot about that. Then that means we _do_ need to relax the
-validation in this case, but I guess needs to come with a big comment
-saying how the driver-global !=3D nl80211 global ...
+I'm looking into the above. For the ath12k ones I suspect we are actually
+waiting for the platform support to land in the upstream kernel, which has
+some dependencies. See the current IPQ5322 RFC:
 
-Sorry!
+https://lore.kernel.org/all/20240814094323.3927603-1-quic_rajkbhag@quicinc.com/
 
-johannes
+> * ath12k/QCN9274
+
+Does this help:
+https://git.codelinaro.org/clo/ath-firmware/ath12k-firmware/-/commit/5d154d1a7f1059bf96b1127573e5b87f68538df8
+
+/jeff
 
