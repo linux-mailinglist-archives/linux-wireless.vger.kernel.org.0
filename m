@@ -1,146 +1,113 @@
-Return-Path: <linux-wireless+bounces-12813-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12814-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D735976B39
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Sep 2024 15:53:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BBA9976BE8
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Sep 2024 16:24:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 958A6B21C85
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Sep 2024 13:53:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD47BB21D39
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Sep 2024 14:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBEBD1AED55;
-	Thu, 12 Sep 2024 13:53:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QoWTZglg"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9461F1AD9CB;
+	Thu, 12 Sep 2024 14:24:31 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F80F19FA91;
-	Thu, 12 Sep 2024 13:53:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F06F190482
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Sep 2024 14:24:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726149220; cv=none; b=nl0z9Npddb2N4Elg/hv8R6XULFDHZbh7WMzQ391qL5q25ou2pbS7YlVkA4ylaJqiytwsdbU2RbLWNFhnCdnlgjJVg6t0JCK7l4fp5xxJsXa5iyHn1xYGvKgI8KZYwPpJSAYTJJx6BjZcXkd/TQTfbk1w5frGY9Y5WeCzWS7yNUw=
+	t=1726151071; cv=none; b=E9aCvReIDz72KTQMM/e29Y5jNAjR+ySlV5DA7ZXYPdZry4k9Od4LNaHPLrwBErhJvI7jp5Y+Ocn8ljsAO32ctmFG5cCRhVM9FLGercaPu83OQkP5eLHs/CJH8j3vnSGAxXEkc34Npj4XmH4aHbeKkePoIkA3QAVthmnd02ghMQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726149220; c=relaxed/simple;
-	bh=zrZNPt5QonukQny2WMS7XcM8c81dAvEiuCu94Zb0S5k=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=ot9eyDOH1crMfDDwnrRqFnQ7Ab3PvLw9iJOc8on+o6qufLJiWfELsL1svKZDGYmihfPE9JaWYzwFi4EAT5d2q+U9gAK6LHJLBPHZi7nQKZPexDq+YpJy1QnAa/qHVfMcwSdLOuZmGO4/V5jo4UurYlDr/yGrVGI2JaeysnP71rY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QoWTZglg; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-374c84dcc90so720764f8f.1;
-        Thu, 12 Sep 2024 06:53:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726149217; x=1726754017; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=tnrCWFAarNQ9FhphdRh3bfMZwRdSY8tJKESHBkiSHo0=;
-        b=QoWTZglgPH67iuUJC3xZecbKKmTkw4aOrFuvlc23zibmqE16htRZAi+n9NdPuvD5lV
-         BRxctdFp2ZcWXpZ4Gx6MoAIBFJkDmGYQ7JRIr6wzDlNzaIWmroTJKSlxlpNCfwXZFAbk
-         6zj8Qtolxf+SDCd4JUviscZMmrJspGbr7sMQosZ0c71Fwelr0Pf8apuc7LyKt0FoQips
-         zUgJdDUZfkpukMdoPza3z3ufmrbYRp7QYU0y7gEoEqtvorPjWUz7lVsHwaaen9FVkuU/
-         r1SZznr3sNiIeetP7SlGlG0rmpPrCMk/1UeLXGjOD8RrN2stHdDwNomwmjyCnhmdQ+RV
-         /dyg==
+	s=arc-20240116; t=1726151071; c=relaxed/simple;
+	bh=K7rEH5qYX0Elm7IC8BbIy1pVnj+AeI1J+4BNBcJrNQA=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=BmluZgH67U3MZWOGlymsRfM/qhUmOYg/jlZWhTGjsOOgNrw+UfaOobdZ23ZJPRJcsArFONrOFUxl3FPPZhfSNSWJUVJvQY9CKbYxfl4YSW5BeDNpgooZyGqJoY7qzSHLxZ790BRM+fGUBDS+1vSk/KwbVOPR6570fWGf9LVEaqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3a0629ed658so14527905ab.1
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Sep 2024 07:24:29 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726149217; x=1726754017;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tnrCWFAarNQ9FhphdRh3bfMZwRdSY8tJKESHBkiSHo0=;
-        b=a5WffU5Y/SMl9w70+OLgdmD9kxmsgYi9qLfZO/cGQjlhObgFwnCMEQtzI/4UAgWRi9
-         AE13yfKwSE4+RAf1vRWtfhNsGNhGCA2KJ23NxQ0NTW2P0pJX4+baSSoxQPNs8E+6n7py
-         oVqpTENspvta59jb1ISiRnz90gxwCVydim8iI3wr+iagoHpJtVZR76TQ8mRscmb+qtNp
-         L0exPgqzVNymx0XU1Tqx9ftL6WVpRqS1tlyQdIGp6RbONDS0O5Z9KTw+gzSSEtuAEzGo
-         950tlRTRdMI/y5Uw7QUe+0V+2PWB6Agy0jBfwKUcwDjPeJYhplN/Qiv/n8hsC/BQglNl
-         3axA==
-X-Forwarded-Encrypted: i=1; AJvYcCULIXkIokdiaeEZ3vscKBGZiV9xh2uW9UvzhzCl0LW3OqP235awm2xBkq80/X87pNofMNOl3+76NHRzSvD3TtE=@vger.kernel.org, AJvYcCVvuXtFajfsU1wd0BQU5YKJc3WT2a2QgRyBhGhZybW/9i5Mzl7le3LMA4pvDs4QAQoCEhx+ZWqC0/c3nB0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6b6vgSD4JVbjS5/kAi0OE63ZssMEzgZGDzH+yvDjPI5o/gSoB
-	U4K7DJQraLQov9QMgR8/KKxU/i+3loKErWQ3w0S59dYgQiSmj3iU
-X-Google-Smtp-Source: AGHT+IH0nkooPLIJ3P85N3obDRyVnvq3Vt55M2xXwEhBSW0gfYXhX1dJVuzwwz0IJ+DI6MNuoJQmKw==
-X-Received: by 2002:a5d:5747:0:b0:374:c4e2:3cad with SMTP id ffacd0b85a97d-378c2d5b237mr1525655f8f.52.1726149217282;
-        Thu, 12 Sep 2024 06:53:37 -0700 (PDT)
-Received: from localhost (craw-09-b2-v4wan-169726-cust2117.vm24.cable.virginm.net. [92.238.24.70])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-378956653d1sm14430067f8f.33.2024.09.12.06.53.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Sep 2024 06:53:36 -0700 (PDT)
-From: Colin Ian King <colin.i.king@gmail.com>
-To: Ping-Ke Shih <pkshih@realtek.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	linux-wireless@vger.kernel.org
-Cc: kernel-janitors@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH][next] wifi: rtlwifi: make read-only arrays static const
-Date: Thu, 12 Sep 2024 14:53:35 +0100
-Message-Id: <20240912135335.590464-1-colin.i.king@gmail.com>
-X-Mailer: git-send-email 2.39.2
+        d=1e100.net; s=20230601; t=1726151069; x=1726755869;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BcodMDARtg5q8rY7YVLhjjqRo/SOtRdhBndQsSIEwVo=;
+        b=qV/4zaH5Pz/Nyj+4Uf6LxusvMiWQCsDhfNPv5/xXdVk/yukp0p5IamKTMzkFgpbbcA
+         KfaY/m9uLst7KnLFYU7BflN8mmT/JnkmIJo7F8vWw7HhszRHFhVu//VFHZ09X7+qXPjY
+         UF6Qh0SnAWO6U6bt11hxXe/pXVQ2x7NMZZ+U83f34Ae05n0XajsqeCw4QIDM0BHcvwsU
+         w/1nqGSOMvxZHjZuIvgLqsNuzsiJvgTuOa1jSfxGaUcTnTkQSKgjI9iz7aaBRPQ3HEnZ
+         95NIldhMVcEY0k6AUQhsPXwx+ghi+sIt5x6vHg0YiKQJT/ez7rvGu2ImS51+3DCP6LQy
+         vo6w==
+X-Forwarded-Encrypted: i=1; AJvYcCVfr7Q7TiR3tuPcDCnxJYNkudDFRpSwS2oH+Spa3jIoJ+Y6ILLKb+98lGWG+gRR9BI1GjF4M1McwlLnC/bzJg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywta1jVjNhOykjj9qqXzd3yiBPC41pStgmO60ceI4NRxLn5epW8
+	eRxr8tftAHk10dOiyXEmb7FZMeZ5CVg1Afw2RXTwiG+j7An6WRqgTyYsrEgi0qskeKUW2PGwuG3
+	e+Kw5Q6QP7gfGZC2zBHFhnTEUCwCf8C/yn5fDoeB0OUVUuxnWmqSGdyE=
+X-Google-Smtp-Source: AGHT+IEdL7uhb4g4phrP2I0ij5S1wqHsFVilkFydHnWkzAqWblt2ZYsam8xuhJ9OdpS14Hgoe9VH3UGfouYwBsD/wcEdxSKkDzJ3
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6e02:1747:b0:39f:58f9:8d7c with SMTP id
+ e9e14a558f8ab-3a084958fadmr24310285ab.26.1726151069178; Thu, 12 Sep 2024
+ 07:24:29 -0700 (PDT)
+Date: Thu, 12 Sep 2024 07:24:29 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <0000000000004eac7a0621ecdda7@google.com>
+Subject: [syzbot] Monthly wireless report (Sep 2024)
+From: syzbot <syzbot+listdf434a578949274ad9b5@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Don't populate the read-only arrays params, toshiba_smid1, toshiba_smid2,
-samsung_smid and lenovo_smid on the stack at run time, instead make them
-static const.
+Hello wireless maintainers/developers,
 
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+This is a 31-day syzbot report for the wireless subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/wireless
+
+During the period, 3 new issues were detected and 0 were fixed.
+In total, 34 issues are still open and 140 have been fixed so far.
+
+Some of the still happening issues:
+
+Ref  Crashes Repro Title
+<1>  27179   Yes   WARNING in __ieee80211_beacon_get
+                   https://syzkaller.appspot.com/bug?extid=18c783c5cf6a781e3e2c
+<2>  5657    Yes   WARNING in __cfg80211_ibss_joined (2)
+                   https://syzkaller.appspot.com/bug?extid=7f064ba1704c2466e36d
+<3>  1724    Yes   WARNING in ath6kl_bmi_get_target_info (2)
+                   https://syzkaller.appspot.com/bug?extid=92c6dd14aaa230be6855
+<4>  1132    Yes   WARNING in ieee80211_start_next_roc
+                   https://syzkaller.appspot.com/bug?extid=c3a167b5615df4ccd7fb
+<5>  1129    Yes   WARNING in rate_control_rate_init (3)
+                   https://syzkaller.appspot.com/bug?extid=9bdc0c5998ab45b05030
+<6>  568     Yes   WARNING in plfxlc_mac_release
+                   https://syzkaller.appspot.com/bug?extid=51a42f7c2e399392ea82
+<7>  285     No    INFO: task hung in rfkill_global_led_trigger_worker (3)
+                   https://syzkaller.appspot.com/bug?extid=50499e163bfa302dfe7b
+<8>  109     Yes   WARNING in ieee80211_free_ack_frame (2)
+                   https://syzkaller.appspot.com/bug?extid=ac648b0525be1feba506
+<9>  75      No    INFO: task hung in ath9k_hif_usb_firmware_cb (3)
+                   https://syzkaller.appspot.com/bug?extid=e9b1ff41aa6a7ebf9640
+<10> 52      Yes   WARNING in minstrel_ht_update_caps
+                   https://syzkaller.appspot.com/bug?extid=d805aca692aded25f888
+
 ---
- .../wireless/realtek/rtlwifi/rtl8723be/hw.c    | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/hw.c b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/hw.c
-index 0e77de1baaf8..bcfc53af4c1a 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8723be/hw.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723be/hw.c
-@@ -2040,31 +2040,33 @@ static void _rtl8723be_read_adapter_info(struct ieee80211_hw *hw,
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 	struct rtl_efuse *rtlefuse = rtl_efuse(rtl_priv(hw));
- 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
--	int params[] = {RTL8723BE_EEPROM_ID, EEPROM_VID, EEPROM_DID,
--			EEPROM_SVID, EEPROM_SMID, EEPROM_MAC_ADDR,
--			EEPROM_CHANNELPLAN, EEPROM_VERSION, EEPROM_CUSTOMER_ID,
--			COUNTRY_CODE_WORLD_WIDE_13};
-+	static const int params[] = {
-+		RTL8723BE_EEPROM_ID, EEPROM_VID, EEPROM_DID,
-+		EEPROM_SVID, EEPROM_SMID, EEPROM_MAC_ADDR,
-+		EEPROM_CHANNELPLAN, EEPROM_VERSION, EEPROM_CUSTOMER_ID,
-+		COUNTRY_CODE_WORLD_WIDE_13
-+	};
- 	u8 *hwinfo;
- 	int i;
- 	bool is_toshiba_smid1 = false;
- 	bool is_toshiba_smid2 = false;
- 	bool is_samsung_smid = false;
- 	bool is_lenovo_smid = false;
--	u16 toshiba_smid1[] = {
-+	static const u16 toshiba_smid1[] = {
- 		0x6151, 0x6152, 0x6154, 0x6155, 0x6177, 0x6178, 0x6179, 0x6180,
- 		0x7151, 0x7152, 0x7154, 0x7155, 0x7177, 0x7178, 0x7179, 0x7180,
- 		0x8151, 0x8152, 0x8154, 0x8155, 0x8181, 0x8182, 0x8184, 0x8185,
- 		0x9151, 0x9152, 0x9154, 0x9155, 0x9181, 0x9182, 0x9184, 0x9185
- 	};
--	u16 toshiba_smid2[] = {
-+	static const u16 toshiba_smid2[] = {
- 		0x6181, 0x6184, 0x6185, 0x7181, 0x7182, 0x7184, 0x7185, 0x8181,
- 		0x8182, 0x8184, 0x8185, 0x9181, 0x9182, 0x9184, 0x9185
- 	};
--	u16 samsung_smid[] = {
-+	static const u16 samsung_smid[] = {
- 		0x6191, 0x6192, 0x6193, 0x7191, 0x7192, 0x7193, 0x8191, 0x8192,
- 		0x8193, 0x9191, 0x9192, 0x9193
- 	};
--	u16 lenovo_smid[] = {
-+	static const u16 lenovo_smid[] = {
- 		0x8195, 0x9195, 0x7194, 0x8200, 0x8201, 0x8202, 0x9199, 0x9200
- 	};
- 
--- 
-2.39.2
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
 
