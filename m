@@ -1,108 +1,98 @@
-Return-Path: <linux-wireless+bounces-12807-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12808-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 147E4975EED
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Sep 2024 04:33:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA49797617E
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Sep 2024 08:28:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 672E0B235BB
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Sep 2024 02:33:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89F14283C12
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Sep 2024 06:28:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C5A92CCAA;
-	Thu, 12 Sep 2024 02:33:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8EC0188A00;
+	Thu, 12 Sep 2024 06:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="I+yM0KMH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hlEqGkHs"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7030C250EC;
-	Thu, 12 Sep 2024 02:33:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F89188910;
+	Thu, 12 Sep 2024 06:28:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726108396; cv=none; b=Ju1sH+uUJfFDEVDTS/NH6Nd0ohGMfAjic/kCMSKdRgvpJ8lS2EThgBesh7QUTP42V966BDg9dtIuGFw6SFSpuyQ6TKuVvkf4PXO6LXk2wpxZMt+lbCXAqH6+mhfw8DncrJ9uEo4GHJiRPldhfILZo5DVBz6OW+ua+ji1/rZRUe0=
+	t=1726122490; cv=none; b=vGthHrrEwr6opPgNwwzJj4InMbyfxIMXZ33uwdSrdNT+HKEjO8nGYRhmOmOB4+M4roZSSuJsFtCgngor/RMaU/C1MeuVf2GKe4VIbWsRzVjHnExnq7UFcvDLx73I9TyOXp0MVwoNYprGos29BYD63yC+f3/zsy6+QlAvRoF8w9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726108396; c=relaxed/simple;
-	bh=RqdZqomXAwCyOm15Ifcp/0ilFc9KF41m0H52KNmV10Q=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=jTCs6X4i2FobI5Bqa1BPsJXFPbXlP1tFMIb2VC8OtXMTFmHqgjgVbKnsZHGH/K82BJnc4LoAnr0gho8CCFj8N3WLlemkwMpT558U87+9vAERhEiHXiKCChqI9KkLJs35hLxCyfckGRx8QB5K/JG4+A1KChAX7/fXwn3zAyORDjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=I+yM0KMH; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 48C2X85A0541259, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1726108388; bh=RqdZqomXAwCyOm15Ifcp/0ilFc9KF41m0H52KNmV10Q=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=I+yM0KMH5jRw/B85Bv+PRWrVrIJsJqB8SS7a0FhoWW+UFGxC8b9tt0xmBczBerC/p
-	 ikm9N8mqXNqIJhr6M3t6GHqD7PwxZjKSwiqZQzZpN9Tk9haHBbzcETq23g99NjB5y3
-	 l7tPYd1Ep4DmSCQHhngC5RSmsGOPtezL2UwepNudELABFse5X8MjwEp/TmxC1M3zv6
-	 0PqspJutBWiXIN1tU13MS2RvD/wjvdkgwHDiwEDFxRcvv/6AoE/w37thTy+8U3Pqq7
-	 6/gVe3QIWXdHzR+JOUV74SJpI4cxTJBTdD+vxFfWJlxSG9Get2m8e3tUL+hbBdPwE9
-	 DqwP1jgjw/Srg==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.05/5.92) with ESMTPS id 48C2X85A0541259
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 12 Sep 2024 10:33:08 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 12 Sep 2024 10:33:08 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 12 Sep 2024 10:33:08 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
- RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
- 15.01.2507.035; Thu, 12 Sep 2024 10:33:08 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: pull-request: wireless-next-2024-09-11
-Thread-Topic: pull-request: wireless-next-2024-09-11
-Thread-Index: AQHbBCaF/9K30GyQfUOAvskhRTD9drJSiJ+AgACjYo7//3uwgIAAAHyAgADGoYA=
-Date: Thu, 12 Sep 2024 02:33:08 +0000
-Message-ID: <0b6a69a39d6b463da41c5a83b747e4cd@realtek.com>
+	s=arc-20240116; t=1726122490; c=relaxed/simple;
+	bh=MjQ4E1MdMZz5nmkOxdl7He+3j4kR0BpCjX0PWe777WY=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=qy91Icr/ZvrsQTpq+rYjpAzWon4D+gc26+3jKAMwv6WO7z6rxcjuWKNVOjSC2GCxkEiKHSLywQOH/EQcjr3YuhXYdW5N0KWjweRg1NvxYMx00zIbv55nRscKoU9P6rbhLKBgjymFV5bfTlohPtNmdNg2kvnIngk39BmrGVxogMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hlEqGkHs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34F88C4CEC3;
+	Thu, 12 Sep 2024 06:28:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726122490;
+	bh=MjQ4E1MdMZz5nmkOxdl7He+3j4kR0BpCjX0PWe777WY=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=hlEqGkHsNvxElPbuaF9AHV7rcqRJCkvoWBBA8BmKXYPs6NPSbko9YXMYLDVZ2WX7I
+	 AA3PjxwMqyuxQ+ocbyOZwUsVk/RDz9iws0s8T9B2gWOtemcH61SqXpur31e6m536tm
+	 DKhCG3AZcnwJE/JIL4USe7Qp2z+vxAx5wWMN9kvTEnyh2xlEmTlsA3Ur+XYgkuq49L
+	 8PIlA5dOSnQRNveoR6/DUgpkiiWRbVmn2fYB7DgJdue8A3gVEifzLwD9aDbcHOro5W
+	 9bmv6lxKlItyqrzwgK3emF/UxvpkdV+9zBujvCyIrXDssB+C4+Y58U4JDbi2Tc/CVx
+	 gcuUqIsQp8BSw==
+From: Kalle Valo <kvalo@kernel.org>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: Jakub Kicinski <kuba@kernel.org>,  "netdev@vger.kernel.org"
+ <netdev@vger.kernel.org>,  "linux-wireless@vger.kernel.org"
+ <linux-wireless@vger.kernel.org>
+Subject: Re: pull-request: wireless-next-2024-09-11
 References: <20240911084147.A205DC4AF0F@smtp.kernel.org>
-	<20240911134521.7f510329@kernel.org>	<87ikv1bz8e.fsf@kernel.org>
-	<20240911153633.7a01a6c7@kernel.org> <20240911153817.0c150bc6@kernel.org>
-In-Reply-To: <20240911153817.0c150bc6@kernel.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	<20240911134521.7f510329@kernel.org> <87ikv1bz8e.fsf@kernel.org>
+	<20240911153633.7a01a6c7@kernel.org>
+	<20240911153817.0c150bc6@kernel.org>
+	<0b6a69a39d6b463da41c5a83b747e4cd@realtek.com>
+Date: Thu, 12 Sep 2024 09:28:07 +0300
+In-Reply-To: <0b6a69a39d6b463da41c5a83b747e4cd@realtek.com> (Ping-Ke Shih's
+	message of "Thu, 12 Sep 2024 02:33:08 +0000")
+Message-ID: <878qvxfkso.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain
 
-Jakub Kicinski <kuba@kernel.org> wrote:
-> On Wed, 11 Sep 2024 15:36:33 -0700 Jakub Kicinski wrote:
-> > > What's the deadline for these? Do you need the fixes tomorrow or can =
-it
-> > > wait a week or two?
-> >
-> > It can wait, half of them are old anyway
->=20
-> Oh, that's because they are in staging :) I missed that.
-> But anyway, I don't think that a harmless, single compiler,
-> W=3D1 warning is a blocker.
+Ping-Ke Shih <pkshih@realtek.com> writes:
 
-I have fixed warnings of "wifi: rtw89" by [1]. For staging code, I use anot=
-her
-patchset [2] to fix it.
+> Jakub Kicinski <kuba@kernel.org> wrote:
+>> On Wed, 11 Sep 2024 15:36:33 -0700 Jakub Kicinski wrote:
+>> > > What's the deadline for these? Do you need the fixes tomorrow or can it
+>> > > wait a week or two?
+>> >
+>> > It can wait, half of them are old anyway
+>> 
+>> Oh, that's because they are in staging :) I missed that.
+>> But anyway, I don't think that a harmless, single compiler,
+>> W=1 warning is a blocker.
 
-I'm not sure [1] should go wireless or rtw tree. Please guide me. Thanks.=20
+Ok, we'll send the rtw89 fix in the normal wireless pull request,
+hopefully before the merge window closes.
 
-[1] https://lore.kernel.org/linux-wireless/20240912021626.10494-1-pkshih@re=
-altek.com/T/#u
-[2] https://lore.kernel.org/linux-staging/20240912022522.10715-1-pkshih@rea=
-ltek.com/T/#t
+> I have fixed warnings of "wifi: rtw89" by [1]. For staging code, I use another
+> patchset [2] to fix it.
 
+Oh wow, that was quick. We have 24/7 watch around the world :) Thanks Ping!
 
+> I'm not sure [1] should go wireless or rtw tree. Please guide me. Thanks. 
+
+Let's queue the rtw89 fix for wireless so that the quick goes to net
+tree soon. So please assign it to me on patchwork.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
