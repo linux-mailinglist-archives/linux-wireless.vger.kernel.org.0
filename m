@@ -1,74 +1,46 @@
-Return-Path: <linux-wireless+bounces-12817-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12818-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D348976E4F
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Sep 2024 17:59:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB371976F96
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Sep 2024 19:31:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E70DB2339F
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Sep 2024 15:59:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFDF31C23C9F
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Sep 2024 17:31:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D625154C0B;
-	Thu, 12 Sep 2024 15:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B236113DBBC;
+	Thu, 12 Sep 2024 17:31:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J35agp4o"
+	dkim=pass (2048-bit key) header.d=jetfuse.net header.i=@jetfuse.net header.b="KtAzzfjZ";
+	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="uwjimFSm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7871BB68F
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Sep 2024 15:59:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE8213FD99
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Sep 2024 17:31:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726156763; cv=none; b=A+dd5TUeT/yugCbBykVGDrhf46r+2U1hCnoa8WOVJpWTxc90RFZu90F/DSWPbXV9oi43gj6shU01ydg2lk7MycpkwnPua6cde19oKNnI5VipS2YpTs7p9hwsS3LmycAxoM+krKCJYjTg2FJlPQV2PsjdpQsHbSlWj5z6jerEACg=
+	t=1726162268; cv=none; b=B9OPfxfeNdK2Cp3KWiVUrbU4c9ZwlpPHh85d4+vNald0oCsDccASB2GzY4XHffgOlzo8kyrbEmOSaWM9oO9QneXau0khMRkFPa1iuYL4mHcZiLNf5ygGI+jdG7x88jGxPhPj4OR7qXeqFO4ttNjm5uUAMKgIC/iOwULepAgPymg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726156763; c=relaxed/simple;
-	bh=cUVAmOKS+GzNzNME+uCoWVNZmnZ5yeUjLuhOHB0ni7g=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:References:
-	 In-Reply-To:Content-Type; b=kvksMVD6sLs602doq7zuYrXyOKzMeoFaGmzd3a2zo/XsX8rMFflmN7f06LvSOZZySuUUUcIrQnJ4Hl8P5VwTR3SolqE2TV+A5d9H7iXhyQ5kcZj/fjrEErseF5a2aWTxE0pso5AY5c/1WqjHZN9MN/HCcHmvrPToAi/nL2+9Xpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J35agp4o; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4280ca0791bso10755885e9.1
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Sep 2024 08:59:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726156760; x=1726761560; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:subject:from:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gWQAPYnnOGbsN8xsMGALK7LYG7mcRPMFo06DpDTU8r4=;
-        b=J35agp4orNm0cLgNdZXiWQnFvyt6e4AlZPZBBqQScXxhvJcjQ6kXGSLM6yI/1sS3UU
-         9QtIuxHLEhDE8dFJaTJHpSZIZMjXrr/iP04WlVKJex4ObaRlJXrb3W7ijodUCbAdSqKB
-         hxqk+S8tHIXxMcxIEUfcJkPCNqPlxAxbZi77t5AKsbXZrTtsr4WiKRHCfZuvxPPd3Y4f
-         S1mLy5mq6zVgSEDMlGaqfYzjKpVNoKc3wIJiMpMBsxR0++9YgIXiSd575DThRNFuYlo3
-         6MA0w+DNSxK1k7VU8osS3+AEtGAJc6nbmO5fxJBxnxpYfGs4LTVvS8x8AcDIqxll5xAB
-         BqPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726156760; x=1726761560;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:subject:from:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gWQAPYnnOGbsN8xsMGALK7LYG7mcRPMFo06DpDTU8r4=;
-        b=cc4Y/LsjbbHuUlyRudNPFelWYj34jHE1e0+2yU7KQPlxjVeY5L6lOSOvnK1Pk6oQYI
-         53vUlJc9C3OOp2FAS4UgF09LjqtONfydgmbmTTosUEXpQU7dO3hel7Yu/XPbJy2yq3I1
-         VXLrz21zJ9c+r5alZcGyYWt0IxFylgjkuTf/ozlkIsfIefywTrtYuSYIA9HrrZpwSsUB
-         rAHotNvLmMbCb8Xsmf1J4qudOMtiJ6k7GimoZgQgOQgjHdBoQtph11CDOFGVG6W5K4UY
-         C3WFxH7ywUAN5yJgx5JJouqx9oS/K1Q6dgOPXhQOR5n/35gaiJ0lQos9dVTbVwRc6aXS
-         s0/g==
-X-Forwarded-Encrypted: i=1; AJvYcCV2ehYafRJCaxejj1/tSXEYpEVH7AS+ASgxJv1voMlLdXzMZgk7nLDq9E2DUxwb4PdRDB+o5kTiQ3ySPXfiXA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzl73BjJWNlygFuZx9drrUQUh+SstMYiSVd8N4cmYYN3VtMUStp
-	UVXCN9uxsBCyegaD64G7yn02tmxOzEsBRSimFvkw8RnqvoqbseFH
-X-Google-Smtp-Source: AGHT+IH7bfo2JBMMTGS0lCNOyO0nkcvmeq+7ONTfC8oHlWwK+fIQYTopP0G6tYtHSe3zqLzPhGgPmQ==
-X-Received: by 2002:a05:6000:1247:b0:374:c29f:8ddc with SMTP id ffacd0b85a97d-378c2d638bemr2154407f8f.40.1726156758818;
-        Thu, 12 Sep 2024 08:59:18 -0700 (PDT)
-Received: from [192.168.1.50] ([79.119.240.114])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37895665ba0sm14781551f8f.48.2024.09.12.08.59.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Sep 2024 08:59:18 -0700 (PDT)
-Message-ID: <bebaa40a-1c7a-4b1e-99cd-7c7aac7c76f4@gmail.com>
-Date: Thu, 12 Sep 2024 18:59:16 +0300
+	s=arc-20240116; t=1726162268; c=relaxed/simple;
+	bh=SNd83MDOfxlk9aCiapH/wW7QnyyLhjPHUBEZU1te800=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=honJ1dboSefeuI1x2mD4INEgx93v5WIQ6ladTxpEDXQFmehrboyOrSWJ3WYZWs57KRnmldKp5aQqB8ulawlQiV3hqJlMiVxdOEKBD2WLqQ4EGHUJGukzyVqpgzn+CjpPZCpT6XQvhMSpvUzdglx2x/rXSveE5DsKEgNkDicawSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=jetfuse.net; spf=pass smtp.mailfrom=jetfuse.net; dkim=pass (2048-bit key) header.d=jetfuse.net header.i=@jetfuse.net header.b=KtAzzfjZ; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=uwjimFSm; arc=none smtp.client-ip=34.202.193.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=jetfuse.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jetfuse.net
+DKIM-Signature: a=rsa-sha256; b=KtAzzfjZnwElh7FGs/c07imw6kazuKlpc+3vJiHM0Nm6E1Z4mR0zWzJUHJZ8NXs5At21Ob0UWROxGW2iwZ3e154+N6fQWUsVdbc5tRueU4Vup1JiCzkqtaP+Z2h4cR9+/IwAmfKNAiXDhJdPfj2eBCmfGwaToOC7KGaWwttQjvWZtHF+hAFdD0TzA3GT5aTqW1QCljU6Xk2UqwFxdz5JTxvEq2+26K/xd7NKI96mlwhbTMTdPNuC1oYa3+lYj/3t965lgYYXgONWMSIOOpr+DF/CbIymhwNhSC1PsNf6JeLb5VsQ2YaGjvcnuraxLPoEdRQf1EqWTTpwMC3Wqxh6ww==; s=purelymail2; d=jetfuse.net; v=1; bh=SNd83MDOfxlk9aCiapH/wW7QnyyLhjPHUBEZU1te800=; h=Received:Date:Subject:To:From;
+DKIM-Signature: a=rsa-sha256; b=uwjimFSmB7VQouhL7X9osZxgNAJ1cIKFR2+VQLgaQuemc0Jt6cbHz2lRVYDaOPBIMSxhmoiMGRnQ0SX+YYEDdhYUNjXGQjydEY/BVLcuC05vubcuv9JDr7QbrHRptVa3BYBn/7lGh62kN92PJCXTLrB5VasmHUwUvy1pGvJrCXDaKEN7HUJ4kTkA/vcvAikUK77gWHMbwIqQpS46WnkSiB+pqKpZNRO8CFNFtjJIQWWv0cTtOhSPjfiAKLesQrRgTTyrjMvEnFxVDgC3wN4Y53DV17jFLPOY2TWCN+RZP3BTxSktjIZg2LbYjTvkeiLcmZy8Hbmd5Pw8GfHkVq0MeQ==; s=purelymail2; d=purelymail.com; v=1; bh=SNd83MDOfxlk9aCiapH/wW7QnyyLhjPHUBEZU1te800=; h=Feedback-ID:Received:Date:Subject:To:From;
+Feedback-ID: 6582:1600:null:purelymail
+X-Pm-Original-To: linux-wireless@vger.kernel.org
+Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id -1334534472;
+          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+          Thu, 12 Sep 2024 17:30:43 +0000 (UTC)
+Message-ID: <576a9e32-e1cf-478f-999a-7ef3849d714e@jetfuse.net>
+Date: Thu, 12 Sep 2024 12:30:42 -0500
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -76,228 +48,141 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: Re: [PATCH 18/20] wifi: rtw88: Add rtw8821a.{c,h}
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <ade57ca1-444f-49e2-b49e-f4b9da65b2cc@gmail.com>
- <f25d00ab-4481-4540-956b-bc1028a501e1@gmail.com>
- <e365c61d730d4f49915b543dcb0063d5@realtek.com>
- <dafaac0c-fb55-4406-b8ff-69aa66d3fd06@gmail.com>
- <1aca96c68f914f90b6d1baf8780e6ce4@realtek.com>
+Subject: Re: [PATCH] wifi: iwlegacy: Fix "field-spanning write" warning in
+ il_enqueue_hcmd()
+To: Stanislaw Gruszka <stf_xl@wp.pl>, Ben Hutchings <ben@decadent.org.uk>
+Cc: linux-wireless@vger.kernel.org,
+ =?UTF-8?Q?Martin-=C3=89ric_Racine?= <martin-eric.racine@iki.fi>
+References: <ZuIhQRi/791vlUhE@decadent.org.uk> <20240912083959.GA132706@wp.pl>
 Content-Language: en-US
-In-Reply-To: <1aca96c68f914f90b6d1baf8780e6ce4@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Brandon Nielsen <nielsenb@jetfuse.net>
+In-Reply-To: <20240912083959.GA132706@wp.pl>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-MIME-Autoconverted: from 8bit to quoted-printable by Purelymail
 
-On 10/09/2024 05:30, Ping-Ke Shih wrote:
-> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->> On 16/08/2024 09:06, Ping-Ke Shih wrote:
->>> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->>>> +       pkt_stat->phy_status = GET_RX_DESC_PHYST(rx_desc);
->>>> +       pkt_stat->icv_err = GET_RX_DESC_ICV_ERR(rx_desc);
->>>> +       pkt_stat->crc_err = GET_RX_DESC_CRC32(rx_desc);
->>>> +       pkt_stat->decrypted = !GET_RX_DESC_SWDEC(rx_desc) &&
->>>> +                             GET_RX_DESC_ENC_TYPE(rx_desc) != RX_DESC_ENC_NONE;
->>>> +       pkt_stat->is_c2h = GET_RX_DESC_C2H(rx_desc);
->>>> +       pkt_stat->pkt_len = GET_RX_DESC_PKT_LEN(rx_desc);
->>>> +       pkt_stat->drv_info_sz = GET_RX_DESC_DRV_INFO_SIZE(rx_desc);
->>>> +       pkt_stat->shift = GET_RX_DESC_SHIFT(rx_desc);
->>>> +       pkt_stat->rate = GET_RX_DESC_RX_RATE(rx_desc);
->>>> +       pkt_stat->cam_id = GET_RX_DESC_MACID(rx_desc);
->>>> +       pkt_stat->ppdu_cnt = 0;
->>>> +       pkt_stat->tsf_low = GET_RX_DESC_TSFL(rx_desc);
->>>> +       pkt_stat->bw = GET_RX_DESC_BW(rx_desc);
->>>
->>> More and more chips use these macros. Please add a patch using struct to
->>> access these fields. More, query_rx_desc() are very similar across chips,
->>> please move them to mac.c or phy.c as a common function.
->>>
+On 9/12/24 3:39 AM, Stanislaw Gruszka wrote:
+> On Thu, Sep 12, 2024 at 01:01:21AM +0200, Ben Hutchings wrote:
+>> iwlegacy uses command buffers with a payload size of 320
+>> bytes (default) or 4092 bytes (huge).  The struct il_device_cmd type
+>> describes the default buffers and there is no separate type describing
+>> the huge buffers.
 >>
->> Why not rx.c?
-> 
-> Also fine to me.
-> 
->>> Can you collect undefined register addresses? I can try to lookup them in one go.
->>>
+>> The il_enqueue_hcmd() function works with both default and huge
+>> buffers, and has a memcpy() to the buffer payload.  The size of
+>> this copy may exceed 320 bytes when using a huge buffer, which
+>> now results in a run-time warning:
 >>
->> Here are the addresses I could find and a few bits/bit masks:
+>>      memcpy: detected field-spanning write (size 1014) of single field "=
+&out_cmd->cmd.payload" at drivers/net/wireless/intel/iwlegacy/common.c:3170=
+ (size 320)
 >>
->> 0x765
-> 
-> #define REG_GNT_BT 0x765
-> #define BIT_PTA_SW_CTL GENMASK(4, 3)
-> 
->> 0x90c
-> 
-> #define REG_DAC_RSTB 0x90c
-> 
->> 0x978
->>         31, 0x03ff8000, 0x000007ff
->> 0x97c
->>         31
->> 0x980
->> 0x984
-> 
-> #define REG_IQK_COM00 0x978
-> #define REG_IQK_COM32 0x97c
-> #define REG_IQK_COM64 0x980
-> #define REG_IQK_COM96 0x984
-> 
->> 0xa0a
-> 
-> #define REG_CCK_PD_TH 0xa0a
-> 
->> 0xc00
->>         0xf
->> 0xe00
-> 
-> #define REG_3WIRE_SWA 0xc00
-> #define REG_3WIRE_SWB 0xe00
-> 
-> (0xc00 page for path A, 0xe00 page for path B)
-> 
-
-Previously, you called 0xe00 REG_HSSI_WRITE_B. Are both names correct?
-(I'm not sure why I put 0xc00 and 0xe00 on the list if you already gave
-them a name.)
-
->> 0xc5c
->> 0xe5c
->>         GENMASK(26, 24)
-> 
-> #define REG_CK_MONHA 0xc5c
-> #define REG_CK_MONHB 0xe5c
-> 
->> 0xce8
->>         31, 0x3fff0000
->> 0xee8
-> 
-> #define REG_INTPO_SETA 0xce8
-> #define REG_INTPO_SETB 0xee8
-> 
->> 0xd00
->>         10, 11, 12, 0x07ff0000
-> 
-> #define REG_IQKA_END 0xd00
-> 
->> 0xd40
->>         10, 11, 12
-> 
-> #define REG_IQKB_END 0xd40
-> 
->>         GENMASK(26, 24)
->> 0xe80
-> 
-> #define REG_TXTONEB 0xe80
-> 
->> 0xe84
-> 
-> #define REG_RXTONEB 0xe84
-> 
->> 0xe88
-> 
-> #define REG_TXPITMB 0xe88
-> 
->> 0xe8c
-> 
-> #define REG_RXPITMB 0xe8c
-> 
->> 0xe90
-> 
-> #define REG_PREDISTB 0xe90
-> 
-
-I put 0xe90 on the list by mistake. We already have a name for it
-in the official driver:
-
-./include/Hal8812PhyReg.h:66:#define rB_LSSIWrite_Jaguar                        0xe90 /* RF write addr */
-
-I translated that as REG_LSSI_WRITE_B. Is REG_PREDISTB also a valid
-name? Do we need both names?
-
->>         7
->> 0xe94
-> 
-> #define REG_INIDLYB 0xe94
-> 
->>         0
->> 0xec4
->>         18, 29
-> 
-> 
-> #define REG_BPBDB 0xec4
-> 
->> 0xec8
->>         29
-> 
-> #define REG_PHYTXONB 0xec8
-> 
-
-Some of these names are very different from their counterparts
-from page C. In your previous email you said:
-
-> I think we can reuse existing definitions:
->
-> rtw8723x.h:#define REG_OFDM_0_XA_TX_IQ_IMBALANCE        0x0c80
-> rtw8703b.h:#define REG_OFDM0_A_TX_AFE 0x0c84
-> rtw8723x.h:#define REG_OFDM_0_XB_TX_IQ_IMBALANCE        0x0c88
->
-> #define REG_TSSI_TRK_SW 0xc8c
->
-> rtw8821a.h:#define REG_TXAGCIDX                         0xc94
-
-Can we reuse these definitions?
-
->> 0xecc
-> 
-> #define REG_IQKYB 0xecc
-> 
->> 0xed4
-> 
-> #define REG_IQKXB 0xed4
-> 
->> 0xf008
->>         3, 4
->> 0xf050
-> 
-> I can't find these two, but just follow comments above.
-> 
-> #define REG_USB_MOD 0xf008
-> #define REG_USB3_RXITV 0xf050
-> 
-> 
+>> To fix this:
 >>
->> And some RF registers: 0x8, 0x58, 0x65, 0x8f
+>> - Define a new struct type for huge buffers, with a correctly sized
+>>    payload field
+>> - When using a huge buffer in il_enqueue_hcmd(), cast the command
+>>    buffer pointer to that type when looking up the payload field
 >>
-> 
-> #define RF_DTXLOK	0x08 (already existing)
-> #define RF_TXMOD	0x58
-> #define RF_TXA_PREPAD 0x65
-> #define RF_RXBB2 0x8f 
-> 
-> 
->> [...]
->>
->>>> +
->>>> +const struct rtw_chip_info rtw8812a_hw_spec = {
->>>
->>> Is it possible moving 8812a to individual file?
->>> Since you have rtw8812au.c and rtw8821au.c.
->>>
->>
->> I think it is possible. But most of the code is common to both chips.
->> Only the IQ calibration could be moved.
-> 
-> Yep, depend on how much IQK code echo chip has.
-> 
+>> Reported-by: Martin-=C3=89ric Racine <martin-eric.racine@iki.fi>
+>> References: https://bugs.debian.org/1062421
+>> References: https://bugzilla.kernel.org/show_bug.cgi?id=3D219124
+>> Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+>> Fixes: 54d9469bc515 ("fortify: Add run-time WARN for cross-field memcpy(=
+)")
+>> Tested-by: Martin-=C3=89ric Racine <martin-eric.racine@iki.fi>
+>> Tested-by: Brandon Nielsen <nielsenb@jetfuse.net>
+>=20
+> I proposed diffrent fix for this here:
+> https://lore.kernel.org/linux-wireless/20240520073210.GA693073@wp.pl/
+> but never get feedback if it works on real HW.
+> So I prefer this one, sice it was tested.
+>=20
+> Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+>=20
+> Martin-=C3=89ric and Brandon, could you plase also test patch from
+> https://lore.kernel.org/linux-wireless/Zr2gxERA3RL3EwRe@elsanto/
+> if it does not break the driver?
+>=20
 
-The IQ calibration for RTL8812AU is about 700 lines.
+As far as I can tell nothing breaks with that additional patch applied.
 
+> Thanks
+> Stanislaw
+>=20
+>> ---
+>>   drivers/net/wireless/intel/iwlegacy/common.c | 13 ++++++++++++-
+>>   drivers/net/wireless/intel/iwlegacy/common.h | 12 ++++++++++++
+>>   2 files changed, 24 insertions(+), 1 deletion(-)
 >>
->> Another possibility is to move rtw8812au.c into rtw8821au.c and have
->> only one module handle both chips.
-> 
-> Prefer two modules as was. That is clear to people we have two chips. 
-> 
+>> diff --git a/drivers/net/wireless/intel/iwlegacy/common.c b/drivers/net/=
+wireless/intel/iwlegacy/common.c
+>> index 9d33a66a49b5..4616293ec0cf 100644
+>> --- a/drivers/net/wireless/intel/iwlegacy/common.c
+>> +++ b/drivers/net/wireless/intel/iwlegacy/common.c
+>> @@ -3122,6 +3122,7 @@ il_enqueue_hcmd(struct il_priv *il, struct il_host=
+_cmd *cmd)
+>>   =09struct il_cmd_meta *out_meta;
+>>   =09dma_addr_t phys_addr;
+>>   =09unsigned long flags;
+>> +=09u8 *out_payload;
+>>   =09u32 idx;
+>>   =09u16 fix_size;
+>>  =20
+>> @@ -3157,6 +3158,16 @@ il_enqueue_hcmd(struct il_priv *il, struct il_hos=
+t_cmd *cmd)
+>>   =09out_cmd =3D txq->cmd[idx];
+>>   =09out_meta =3D &txq->meta[idx];
+>>  =20
+>> +=09/* The payload is in the same place in regular and huge
+>> +=09 * command buffers, but we need to let the compiler know when
+>> +=09 * we're using a larger payload buffer to avoid "field-
+>> +=09 * spanning write" warnings at run-time for huge commands.
+>> +=09 */
+>> +=09if (cmd->flags & CMD_SIZE_HUGE)
+>> +=09=09out_payload =3D ((struct il_device_cmd_huge *)out_cmd)->cmd.paylo=
+ad;
+>> +=09else
+>> +=09=09out_payload =3D out_cmd->cmd.payload;
+>> +
+>>   =09if (WARN_ON(out_meta->flags & CMD_MAPPED)) {
+>>   =09=09spin_unlock_irqrestore(&il->hcmd_lock, flags);
+>>   =09=09return -ENOSPC;
+>> @@ -3170,7 +3181,7 @@ il_enqueue_hcmd(struct il_priv *il, struct il_host=
+_cmd *cmd)
+>>   =09=09out_meta->callback =3D cmd->callback;
+>>  =20
+>>   =09out_cmd->hdr.cmd =3D cmd->id;
+>> -=09memcpy(&out_cmd->cmd.payload, cmd->data, cmd->len);
+>> +=09memcpy(out_payload, cmd->data, cmd->len);
+>>  =20
+>>   =09/* At this point, the out_cmd now has all of the incoming cmd
+>>   =09 * information */
+>> diff --git a/drivers/net/wireless/intel/iwlegacy/common.h b/drivers/net/=
+wireless/intel/iwlegacy/common.h
+>> index 69687fcf963f..027dae5619a3 100644
+>> --- a/drivers/net/wireless/intel/iwlegacy/common.h
+>> +++ b/drivers/net/wireless/intel/iwlegacy/common.h
+>> @@ -560,6 +560,18 @@ struct il_device_cmd {
+>>  =20
+>>   #define TFD_MAX_PAYLOAD_SIZE (sizeof(struct il_device_cmd))
+>>  =20
+>> +/**
+>> + * struct il_device_cmd_huge
+>> + *
+>> + * For use when sending huge commands.
+>> + */
+>> +struct il_device_cmd_huge {
+>> +=09struct il_cmd_header hdr;=09/* uCode API */
+>> +=09union {
+>> +=09=09u8 payload[IL_MAX_CMD_SIZE - sizeof(struct il_cmd_header)];
+>> +=09} __packed cmd;
+>> +} __packed;
+>> +
+>>   struct il_host_cmd {
+>>   =09const void *data;
+>>   =09unsigned long reply_page;
+>=20
+>=20
+
 
