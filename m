@@ -1,55 +1,55 @@
-Return-Path: <linux-wireless+bounces-12853-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12854-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3717978744
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Sep 2024 19:54:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D5B97874A
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Sep 2024 19:56:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D491BB23C70
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Sep 2024 17:54:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9251281328
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Sep 2024 17:56:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE8A12C465;
-	Fri, 13 Sep 2024 17:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3139686131;
+	Fri, 13 Sep 2024 17:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="BCqFh9sI";
-	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="NKPDIjSs"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Di/JwXmF";
+	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="YOL70UOo"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from a7-48.smtp-out.eu-west-1.amazonses.com (a7-48.smtp-out.eu-west-1.amazonses.com [54.240.7.48])
+Received: from a7-42.smtp-out.eu-west-1.amazonses.com (a7-42.smtp-out.eu-west-1.amazonses.com [54.240.7.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D438F6A;
-	Fri, 13 Sep 2024 17:54:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.7.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9227E563;
+	Fri, 13 Sep 2024 17:56:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.7.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726250066; cv=none; b=iTmqwV8SP/QiCe24+Cte9+UySaQ7vLH4tQGo4w0nGvFN1d3/Op92hUBehPbZDjWAhfq0gU2GbmcRwUlmEaPZWDnzMSCZAcAvVlqsUUD07j2QIwiEBx9satcSpMt1IBzSy0Ytn1KCr3Ax6hkEGXzfy59kZyEqRayNBSf2j7VAo40=
+	t=1726250206; cv=none; b=bp2dgdNaSoQFOIXlUKx/rZfNmQY02Okkmebve9soDmhStZO5BGBFGyBsAVUTksXQ5V6ZKnidBu7VHFDGpu+EqGh2R5Qnbuxhlwd00LeWpOqjp6KSYnln1x/YqP7m9GJIjIwYwpM2tYPvPR6sPpn+4Xxckq3xzvZj9BbICWKwkaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726250066; c=relaxed/simple;
-	bh=v5nhcMbhFvs+wOS+fVmcrdClTmYxd97t3TBuVoJB04g=;
+	s=arc-20240116; t=1726250206; c=relaxed/simple;
+	bh=az4ZktDFrE5TgTvlrcCfwj/RIYM0HEZatbNxSRklh+w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IavdeoztQrLkVcb6LfEDhtu5UBljilQeNKdMF7i+eNXQ+k7cShGoFZS+9SLutrKvTGvCWvjZ/HRu9z49Ie6vyS/TmuvRNWadUpAVTPoornZjXffYLjm7I8423Z9cpZTuCIAktDLN59nBE+XzKJK8B1sALFJmbloiCTfbLtuP+yM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=amazonses.collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=BCqFh9sI; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=NKPDIjSs; arc=none smtp.client-ip=54.240.7.48
+	 Content-Type:Content-Disposition:In-Reply-To; b=GmrqI1Cz+OXxTH+xrNgpynG8egLx/AguYsl4Zej2Qn3gF00mTjAiFBVq2fOOOwp8zSRgJuYvYRreENwk2F41GdVbeqaKc3dwe740lP0wlY7bKZwLyr52JTC7pSncKh8D6KdV2jjEWuCCCKzLAvUXx1tJy5lQYczfTh3sqe9KE64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=amazonses.collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=Di/JwXmF; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=YOL70UOo; arc=none smtp.client-ip=54.240.7.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazonses.collabora.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=4232tfv5ebdrjdwkr5zzm7kytdkokgug; d=collabora.com; t=1726250062;
+	s=4232tfv5ebdrjdwkr5zzm7kytdkokgug; d=collabora.com; t=1726250202;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To;
-	bh=v5nhcMbhFvs+wOS+fVmcrdClTmYxd97t3TBuVoJB04g=;
-	b=BCqFh9sI5HeW31L31NnuxytM02DvOJS0nlTzxXNOu3Hqa6WwoxNKZVRebSwzB/C+
-	jmQXCFgUlg+pkFMNiPhZCHQmJD5am+jSQ3K10+k7MXzQs4MvTRcHw6l9C+nKwHxwZyv
-	S3bbMljl4WYEKlNIHlNiKYAzw7ywMJmRePXa2foK0/2SddIWzVSU5Uq8QbVu2TPkiXv
-	PGlVYMVPBDz/28SbX2nkrAVJBw0JNWXJEzDYDCdP6aVfG363i2ee3Wmwr0lK+A7lfZa
-	H12ZdhGZsjtQ1KoVhHpjXMrQRVPGCXLf9EgIHfwolWyjdADukgs47h41iF3NIClexw9
-	R/gqHP5l3w==
+	bh=az4ZktDFrE5TgTvlrcCfwj/RIYM0HEZatbNxSRklh+w=;
+	b=Di/JwXmF/SJcAnKO8D6cAL2CBT9am0orNDFrj0txVP6AwtPc2me+4uTL/LpsMuu1
+	Xq0757YIlpmmpmAoUcUR7UYBJaIcPRlkTER+CF+F+m8sJdaesgYTDrwl6Qau6l85Qby
+	bBQ1g+aOPwfZrfcEMQKBC/XowbkmKQdmhQDx/t1wYuu4IHp6xKHAKhSdE7ve4t8cUSy
+	T5bXGJWyy+4c+DIv/Ys90fSzTt2mxAtmGopV5JkHLKnPZOadZ48El4XCeazvcPlK3ZS
+	SgJIn9ZcEfSlIlPjL+e1+xXZrGeawpMQALYFvh1SYmt/LcQLDg17+A+b6rOY71MNPtm
+	uMIlsEE0yw==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=uku4taia5b5tsbglxyj6zym32efj7xqv; d=amazonses.com; t=1726250062;
+	s=uku4taia5b5tsbglxyj6zym32efj7xqv; d=amazonses.com; t=1726250202;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Feedback-ID;
-	bh=v5nhcMbhFvs+wOS+fVmcrdClTmYxd97t3TBuVoJB04g=;
-	b=NKPDIjSsifDQBwVQ8HYsuBfC+0decN8grAa6F1ftTxxs5EJvWA+27I7W/li33ego
-	OhFzk7YydUXJRU2P3UJnzzKu4EFbyvKLM2tyegQnfpQnE5yOI5AXSMqPJKDrerazk7e
-	vQa4b5Hrg4Po3yh+G46o9alsNgn0tXhY70Cf2PKM=
-Date: Fri, 13 Sep 2024 17:54:22 +0000
+	bh=az4ZktDFrE5TgTvlrcCfwj/RIYM0HEZatbNxSRklh+w=;
+	b=YOL70UOo692aR5WV8EoRAyLS8cUkDZG+3JUOaEHm1ZFKG0NILHBlFcG/MBro5iSt
+	RBCZMKSU76gJakfI50VpojoPgFTKBA/57DYt1Enk83SpY90hlrl0rp6TLsdz9UCXn1h
+	dH4ja0d3tTRsJBb3KEj5U1YzLF3lzv1pYLdc1C7w=
+Date: Fri, 13 Sep 2024 17:56:42 +0000
 From: Sebastian Reichel <sebastian.reichel@collabora.com>
 To: Jacobe Zang <jacobe.zang@wesion.com>
 Cc: Kalle Valo <kvalo@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
@@ -61,13 +61,12 @@ Cc: Kalle Valo <kvalo@kernel.org>, "David S. Miller" <davem@davemloft.net>,
 	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com, 
-	nick@khadas.com, Ondrej Jirman <megi@xff.cz>, 
-	Sai Krishna <saikrishnag@marvell.com>
-Subject: Re: [PATCH v14 3/4] wifi: brcmfmac: Add optional lpo clock enable
- support
-Message-ID: <01020191ec859278-672a5f9e-d8c5-4e0c-a319-7208f95580a0-000000@eu-west-1.amazonses.com>
+	nick@khadas.com, Ondrej Jirman <megi@xff.cz>
+Subject: Re: [PATCH v14 4/4] wifi: brcmfmac: add flag for random seed during
+ firmware download
+Message-ID: <01020191ec87b457-619e709d-46d1-4c57-b3df-d4e6fd13db5d-000000@eu-west-1.amazonses.com>
 References: <20240910-wireless-mainline-v14-0-9d80fea5326d@wesion.com>
- <20240910-wireless-mainline-v14-3-9d80fea5326d@wesion.com>
+ <20240910-wireless-mainline-v14-4-9d80fea5326d@wesion.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,32 +74,32 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="lrsqblrh4qi5cddb"
+	protocol="application/pgp-signature"; boundary="zwbcc5564rrrwrd7"
 Content-Disposition: inline
-In-Reply-To: <20240910-wireless-mainline-v14-3-9d80fea5326d@wesion.com>
+In-Reply-To: <20240910-wireless-mainline-v14-4-9d80fea5326d@wesion.com>
 Feedback-ID: ::1.eu-west-1.YpP9ZbxnARFfy3Cb5pfsLd/pdsXBCNK0KEM7HforL4k=:AmazonSES
-X-SES-Outgoing: 2024.09.13-54.240.7.48
+X-SES-Outgoing: 2024.09.13-54.240.7.42
 
 
---lrsqblrh4qi5cddb
+--zwbcc5564rrrwrd7
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi,
 
-On Tue, Sep 10, 2024 at 11:04:13AM GMT, Jacobe Zang wrote:
-> WiFi modules often require 32kHz clock to function. Add support to
-> enable the clock to PCIe driver and move "brcm,bcm4329-fmac" check
-> to the top of brcmf_of_probe. Change function prototypes from void
-> to int and add appropriate errno's for return values that will be
-> send to bus when error occurred.
+On Tue, Sep 10, 2024 at 11:04:14AM GMT, Jacobe Zang wrote:
+> Providing the random seed to firmware was tied to the fact that the
+> device has a valid OTP, which worked for some Apple chips. However,
+> it turns out the BCM43752 device also needs the random seed in order
+> to get firmware running. Suspect it is simply tied to the firmware
+> branch used for the device. Introducing a mechanism to allow setting
+> it for a device through the device table.
 >=20
 > Co-developed-by: Ondrej Jirman <megi@xff.cz>
 > Signed-off-by: Ondrej Jirman <megi@xff.cz>
 > Co-developed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 > Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Reviewed-by: Sai Krishna <saikrishnag@marvell.com>
 > Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
 > ---
 
@@ -112,318 +111,193 @@ Greetings,
 
 -- Sebastian
 
->  .../wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c  |  4 ++--
->  .../wireless/broadcom/brcm80211/brcmfmac/common.c  |  3 ++-
->  .../net/wireless/broadcom/brcm80211/brcmfmac/of.c  | 25 ++++++++++++++++=
-------
->  .../net/wireless/broadcom/brcm80211/brcmfmac/of.h  |  9 ++++----
->  .../wireless/broadcom/brcm80211/brcmfmac/pcie.c    |  3 +++
->  .../wireless/broadcom/brcm80211/brcmfmac/sdio.c    | 22 ++++++++++++----=
----
->  .../net/wireless/broadcom/brcm80211/brcmfmac/usb.c |  3 +++
->  7 files changed, 47 insertions(+), 22 deletions(-)
+>  .../wireless/broadcom/brcm80211/brcmfmac/pcie.c    | 52 ++++++++++++++++=
+++----
+>  .../broadcom/brcm80211/include/brcm_hw_ids.h       |  2 +
+>  2 files changed, 46 insertions(+), 8 deletions(-)
 >=20
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/=
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> index d35262335eaf7..17f6b33beabd8 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
-> @@ -947,8 +947,8 @@ int brcmf_sdiod_probe(struct brcmf_sdio_dev *sdiodev)
-> =20
->  	/* try to attach to the target device */
->  	sdiodev->bus =3D brcmf_sdio_probe(sdiodev);
-> -	if (!sdiodev->bus) {
-> -		ret =3D -ENODEV;
-> +	if (IS_ERR(sdiodev->bus)) {
-> +		ret =3D PTR_ERR(sdiodev->bus);
->  		goto out;
->  	}
->  	brcmf_sdiod_host_fixup(sdiodev->func2->card->host);
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c b/=
-drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-> index b24faae35873d..58d50918dd177 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
-> @@ -561,7 +561,8 @@ struct brcmf_mp_device *brcmf_get_module_param(struct=
- device *dev,
->  	if (!found) {
->  		/* No platform data for this device, try OF and DMI data */
->  		brcmf_dmi_probe(settings, chip, chiprev);
-> -		brcmf_of_probe(dev, bus_type, settings);
-> +		if (brcmf_of_probe(dev, bus_type, settings) =3D=3D -EPROBE_DEFER)
-> +			return ERR_PTR(-EPROBE_DEFER);
->  		brcmf_acpi_probe(dev, bus_type, settings);
->  	}
->  	return settings;
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/driv=
-ers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-> index fe4f657561056..6d90be9529012 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-> @@ -6,6 +6,7 @@
->  #include <linux/of.h>
->  #include <linux/of_irq.h>
->  #include <linux/of_net.h>
-> +#include <linux/clk.h>
-> =20
->  #include <defs.h>
->  #include "debug.h"
-> @@ -65,12 +66,13 @@ static int brcmf_of_get_country_codes(struct device *=
-dev,
->  	return 0;
->  }
-> =20
-> -void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
-> -		    struct brcmf_mp_device *settings)
-> +int brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
-> +		   struct brcmf_mp_device *settings)
->  {
->  	struct brcmfmac_sdio_pd *sdio =3D &settings->bus.sdio;
->  	struct device_node *root, *np =3D dev->of_node;
->  	struct of_phandle_args oirq;
-> +	struct clk *clk;
->  	const char *prop;
->  	int irq;
->  	int err;
-> @@ -106,7 +108,7 @@ void brcmf_of_probe(struct device *dev, enum brcmf_bu=
-s_type bus_type,
->  		board_type =3D devm_kstrdup(dev, tmp, GFP_KERNEL);
->  		if (!board_type) {
->  			of_node_put(root);
-> -			return;
-> +			return 0;
->  		}
->  		strreplace(board_type, '/', '-');
->  		settings->board_type =3D board_type;
-> @@ -114,8 +116,15 @@ void brcmf_of_probe(struct device *dev, enum brcmf_b=
-us_type bus_type,
->  		of_node_put(root);
->  	}
-> =20
-> +	clk =3D devm_clk_get_optional_enabled(dev, "lpo");
-> +	if (IS_ERR(clk))
-> +		return PTR_ERR(clk);
-> +
-> +	brcmf_dbg(INFO, "%s LPO clock\n", clk ? "enable" : "no");
-> +	clk_set_rate(clk, 32768);
-> +
->  	if (!np || !of_device_is_compatible(np, "brcm,bcm4329-fmac"))
-> -		return;
-> +		return 0;
-> =20
->  	err =3D brcmf_of_get_country_codes(dev, settings);
->  	if (err)
-> @@ -124,23 +133,25 @@ void brcmf_of_probe(struct device *dev, enum brcmf_=
-bus_type bus_type,
->  	of_get_mac_address(np, settings->mac);
-> =20
->  	if (bus_type !=3D BRCMF_BUSTYPE_SDIO)
-> -		return;
-> +		return 0;
-> =20
->  	if (of_property_read_u32(np, "brcm,drive-strength", &val) =3D=3D 0)
->  		sdio->drive_strength =3D val;
-> =20
->  	/* make sure there are interrupts defined in the node */
->  	if (of_irq_parse_one(np, 0, &oirq))
-> -		return;
-> +		return 0;
-> =20
->  	irq =3D irq_create_of_mapping(&oirq);
->  	if (!irq) {
->  		brcmf_err("interrupt could not be mapped\n");
-> -		return;
-> +		return 0;
->  	}
->  	irqf =3D irqd_get_trigger_type(irq_get_irq_data(irq));
-> =20
->  	sdio->oob_irq_supported =3D true;
->  	sdio->oob_irq_nr =3D irq;
->  	sdio->oob_irq_flags =3D irqf;
-> +
-> +	return 0;
->  }
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.h b/driv=
-ers/net/wireless/broadcom/brcm80211/brcmfmac/of.h
-> index 10bf52253337e..ae124c73fc3b7 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.h
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.h
-> @@ -3,11 +3,12 @@
->   * Copyright (c) 2014 Broadcom Corporation
->   */
->  #ifdef CONFIG_OF
-> -void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
-> -		    struct brcmf_mp_device *settings);
-> +int brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
-> +		   struct brcmf_mp_device *settings);
->  #else
-> -static void brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_t=
-ype,
-> -			   struct brcmf_mp_device *settings)
-> +static int brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_ty=
-pe,
-> +			  struct brcmf_mp_device *settings)
->  {
-> +	return 0;
->  }
->  #endif /* CONFIG_OF */
 > diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/dr=
 ivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> index ce482a3877e90..190e8990618c5 100644
+> index 190e8990618c5..c0fdaa4dceda4 100644
 > --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
 > +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> @@ -2452,6 +2452,9 @@ brcmf_pcie_probe(struct pci_dev *pdev, const struct=
- pci_device_id *id)
->  		ret =3D -ENOMEM;
->  		goto fail;
->  	}
-> +	ret =3D PTR_ERR_OR_ZERO(devinfo->settings);
-> +	if (ret < 0)
-> +		goto fail;
+> @@ -66,6 +66,7 @@ BRCMF_FW_DEF(4365C, "brcmfmac4365c-pcie");
+>  BRCMF_FW_DEF(4366B, "brcmfmac4366b-pcie");
+>  BRCMF_FW_DEF(4366C, "brcmfmac4366c-pcie");
+>  BRCMF_FW_DEF(4371, "brcmfmac4371-pcie");
+> +BRCMF_FW_CLM_DEF(43752, "brcmfmac43752-pcie");
+>  BRCMF_FW_CLM_DEF(4377B3, "brcmfmac4377b3-pcie");
+>  BRCMF_FW_CLM_DEF(4378B1, "brcmfmac4378b1-pcie");
+>  BRCMF_FW_CLM_DEF(4378B3, "brcmfmac4378b3-pcie");
+> @@ -104,6 +105,7 @@ static const struct brcmf_firmware_mapping brcmf_pcie=
+_fwnames[] =3D {
+>  	BRCMF_FW_ENTRY(BRCM_CC_43664_CHIP_ID, 0xFFFFFFF0, 4366C),
+>  	BRCMF_FW_ENTRY(BRCM_CC_43666_CHIP_ID, 0xFFFFFFF0, 4366C),
+>  	BRCMF_FW_ENTRY(BRCM_CC_4371_CHIP_ID, 0xFFFFFFFF, 4371),
+> +	BRCMF_FW_ENTRY(BRCM_CC_43752_CHIP_ID, 0xFFFFFFFF, 43752),
+>  	BRCMF_FW_ENTRY(BRCM_CC_4377_CHIP_ID, 0xFFFFFFFF, 4377B3), /* revision I=
+D 4 */
+>  	BRCMF_FW_ENTRY(BRCM_CC_4378_CHIP_ID, 0x0000000F, 4378B1), /* revision I=
+D 3 */
+>  	BRCMF_FW_ENTRY(BRCM_CC_4378_CHIP_ID, 0xFFFFFFE0, 4378B3), /* revision I=
+D 5 */
+> @@ -353,6 +355,7 @@ struct brcmf_pciedev_info {
+>  			  u16 value);
+>  	struct brcmf_mp_device *settings;
+>  	struct brcmf_otp_params otp;
+> +	bool fwseed;
+>  #ifdef DEBUG
+>  	u32 console_interval;
+>  	bool console_active;
+> @@ -1715,14 +1718,14 @@ static int brcmf_pcie_download_fw_nvram(struct br=
+cmf_pciedev_info *devinfo,
+>  		memcpy_toio(devinfo->tcm + address, nvram, nvram_len);
+>  		brcmf_fw_nvram_free(nvram);
 > =20
->  	bus =3D kzalloc(sizeof(*bus), GFP_KERNEL);
->  	if (!bus) {
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/dr=
-ivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> index 1461dc453ac22..a9b4d560cbfc7 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
-> @@ -3943,7 +3943,7 @@ static const struct brcmf_buscore_ops brcmf_sdio_bu=
-score_ops =3D {
->  	.write32 =3D brcmf_sdio_buscore_write32,
+> -		if (devinfo->otp.valid) {
+> +		if (devinfo->fwseed) {
+>  			size_t rand_len =3D BRCMF_RANDOM_SEED_LENGTH;
+>  			struct brcmf_random_seed_footer footer =3D {
+>  				.length =3D cpu_to_le32(rand_len),
+>  				.magic =3D cpu_to_le32(BRCMF_RANDOM_SEED_MAGIC),
+>  			};
+> =20
+> -			/* Some Apple chips/firmwares expect a buffer of random
+> +			/* Some chips/firmwares expect a buffer of random
+>  			 * data to be present before NVRAM
+>  			 */
+>  			brcmf_dbg(PCIE, "Download random seed\n");
+> @@ -2394,6 +2397,37 @@ static void brcmf_pcie_debugfs_create(struct devic=
+e *dev)
+>  }
+>  #endif
+> =20
+> +struct brcmf_pcie_drvdata {
+> +	enum brcmf_fwvendor vendor;
+> +	bool fw_seed;
+> +};
+> +
+> +enum {
+> +	BRCMF_DRVDATA_CYW,
+> +	BRCMF_DRVDATA_BCA,
+> +	BRCMF_DRVDATA_WCC,
+> +	BRCMF_DRVDATA_WCC_SEED,
+> +};
+> +
+> +static const struct brcmf_pcie_drvdata drvdata[] =3D {
+> +	[BRCMF_DRVDATA_CYW] =3D {
+> +		.vendor =3D BRCMF_FWVENDOR_CYW,
+> +		.fw_seed =3D false,
+> +	},
+> +	[BRCMF_DRVDATA_BCA] =3D {
+> +		.vendor =3D BRCMF_FWVENDOR_BCA,
+> +		.fw_seed =3D false,
+> +	},
+> +	[BRCMF_DRVDATA_WCC] =3D {
+> +		.vendor =3D BRCMF_FWVENDOR_WCC,
+> +		.fw_seed =3D false,
+> +	},
+> +	[BRCMF_DRVDATA_WCC_SEED] =3D {
+> +		.vendor =3D BRCMF_FWVENDOR_WCC,
+> +		.fw_seed =3D true,
+> +	},
+> +};
+> +
+>  /* Forward declaration for pci_match_id() call */
+>  static const struct pci_device_id brcmf_pcie_devid_table[];
+> =20
+> @@ -2475,9 +2509,10 @@ brcmf_pcie_probe(struct pci_dev *pdev, const struc=
+t pci_device_id *id)
+>  	bus->bus_priv.pcie =3D pcie_bus_dev;
+>  	bus->ops =3D &brcmf_pcie_bus_ops;
+>  	bus->proto_type =3D BRCMF_PROTO_MSGBUF;
+> -	bus->fwvid =3D id->driver_data;
+>  	bus->chip =3D devinfo->coreid;
+>  	bus->wowl_supported =3D pci_pme_capable(pdev, PCI_D3hot);
+> +	bus->fwvid =3D drvdata[id->driver_data].vendor;
+> +	devinfo->fwseed =3D drvdata[id->driver_data].fw_seed;
+>  	dev_set_drvdata(&pdev->dev, bus);
+> =20
+>  	ret =3D brcmf_alloc(&devinfo->pdev->dev, devinfo->settings);
+> @@ -2663,14 +2698,14 @@ static const struct dev_pm_ops brcmf_pciedrvr_pm =
+=3D {
+>  		BRCM_PCIE_VENDOR_ID_BROADCOM, (dev_id), \
+>  		PCI_ANY_ID, PCI_ANY_ID, \
+>  		PCI_CLASS_NETWORK_OTHER << 8, 0xffff00, \
+> -		BRCMF_FWVENDOR_ ## fw_vend \
+> +		BRCMF_DRVDATA_ ## fw_vend \
+>  	}
+>  #define BRCMF_PCIE_DEVICE_SUB(dev_id, subvend, subdev, fw_vend) \
+>  	{ \
+>  		BRCM_PCIE_VENDOR_ID_BROADCOM, (dev_id), \
+>  		(subvend), (subdev), \
+>  		PCI_CLASS_NETWORK_OTHER << 8, 0xffff00, \
+> -		BRCMF_FWVENDOR_ ## fw_vend \
+> +		BRCMF_DRVDATA_ ## fw_vend \
+>  	}
+> =20
+>  static const struct pci_device_id brcmf_pcie_devid_table[] =3D {
+> @@ -2698,9 +2733,10 @@ static const struct pci_device_id brcmf_pcie_devid=
+_table[] =3D {
+>  	BRCMF_PCIE_DEVICE(BRCM_PCIE_4366_5G_DEVICE_ID, BCA),
+>  	BRCMF_PCIE_DEVICE(BRCM_PCIE_4371_DEVICE_ID, WCC),
+>  	BRCMF_PCIE_DEVICE(BRCM_PCIE_43596_DEVICE_ID, CYW),
+> -	BRCMF_PCIE_DEVICE(BRCM_PCIE_4377_DEVICE_ID, WCC),
+> -	BRCMF_PCIE_DEVICE(BRCM_PCIE_4378_DEVICE_ID, WCC),
+> -	BRCMF_PCIE_DEVICE(BRCM_PCIE_4387_DEVICE_ID, WCC),
+> +	BRCMF_PCIE_DEVICE(BRCM_PCIE_4377_DEVICE_ID, WCC_SEED),
+> +	BRCMF_PCIE_DEVICE(BRCM_PCIE_4378_DEVICE_ID, WCC_SEED),
+> +	BRCMF_PCIE_DEVICE(BRCM_PCIE_4387_DEVICE_ID, WCC_SEED),
+> +	BRCMF_PCIE_DEVICE(BRCM_PCIE_43752_DEVICE_ID, WCC_SEED),
+> =20
+>  	{ /* end: all zeroes */ }
 >  };
-> =20
-> -static bool
-> +static int
->  brcmf_sdio_probe_attach(struct brcmf_sdio *bus)
->  {
->  	struct brcmf_sdio_dev *sdiodev;
-> @@ -3953,6 +3953,7 @@ brcmf_sdio_probe_attach(struct brcmf_sdio *bus)
->  	u32 reg_val;
->  	u32 drivestrength;
->  	u32 enum_base;
-> +	int ret =3D -EBADE;
-> =20
->  	sdiodev =3D bus->sdiodev;
->  	sdio_claim_host(sdiodev->func1);
-> @@ -4001,8 +4002,9 @@ brcmf_sdio_probe_attach(struct brcmf_sdio *bus)
->  						   BRCMF_BUSTYPE_SDIO,
->  						   bus->ci->chip,
->  						   bus->ci->chiprev);
-> -	if (!sdiodev->settings) {
-> +	if (IS_ERR_OR_NULL(sdiodev->settings)) {
->  		brcmf_err("Failed to get device parameters\n");
-> +		ret =3D PTR_ERR_OR_ZERO(sdiodev->settings);
->  		goto fail;
->  	}
->  	/* platform specific configuration:
-> @@ -4071,7 +4073,7 @@ brcmf_sdio_probe_attach(struct brcmf_sdio *bus)
->  	/* allocate header buffer */
->  	bus->hdrbuf =3D kzalloc(MAX_HDR_READ + bus->head_align, GFP_KERNEL);
->  	if (!bus->hdrbuf)
-> -		return false;
-> +		return -ENOMEM;
->  	/* Locate an appropriately-aligned portion of hdrbuf */
->  	bus->rxhdr =3D (u8 *) roundup((unsigned long)&bus->hdrbuf[0],
->  				    bus->head_align);
-> @@ -4082,11 +4084,11 @@ brcmf_sdio_probe_attach(struct brcmf_sdio *bus)
->  	if (bus->poll)
->  		bus->pollrate =3D 1;
-> =20
-> -	return true;
-> +	return 0;
-> =20
->  fail:
->  	sdio_release_host(sdiodev->func1);
-> -	return false;
-> +	return ret;
->  }
-> =20
->  static int
-> @@ -4451,8 +4453,10 @@ struct brcmf_sdio *brcmf_sdio_probe(struct brcmf_s=
-dio_dev *sdiodev)
-> =20
->  	/* Allocate private bus interface state */
->  	bus =3D kzalloc(sizeof(*bus), GFP_ATOMIC);
-> -	if (!bus)
-> +	if (!bus) {
-> +		ret =3D -ENOMEM;
->  		goto fail;
-> +	}
-> =20
->  	bus->sdiodev =3D sdiodev;
->  	sdiodev->bus =3D bus;
-> @@ -4467,6 +4471,7 @@ struct brcmf_sdio *brcmf_sdio_probe(struct brcmf_sd=
-io_dev *sdiodev)
->  				     dev_name(&sdiodev->func1->dev));
->  	if (!wq) {
->  		brcmf_err("insufficient memory to create txworkqueue\n");
-> +		ret =3D -ENOMEM;
->  		goto fail;
->  	}
->  	brcmf_sdiod_freezer_count(sdiodev);
-> @@ -4474,7 +4479,8 @@ struct brcmf_sdio *brcmf_sdio_probe(struct brcmf_sd=
-io_dev *sdiodev)
->  	bus->brcmf_wq =3D wq;
-> =20
->  	/* attempt to attach to the dongle */
-> -	if (!(brcmf_sdio_probe_attach(bus))) {
-> +	ret =3D brcmf_sdio_probe_attach(bus);
-> +	if (ret < 0) {
->  		brcmf_err("brcmf_sdio_probe_attach failed\n");
->  		goto fail;
->  	}
-> @@ -4546,7 +4552,7 @@ struct brcmf_sdio *brcmf_sdio_probe(struct brcmf_sd=
-io_dev *sdiodev)
-> =20
->  fail:
->  	brcmf_sdio_remove(bus);
-> -	return NULL;
-> +	return ERR_PTR(ret);
->  }
-> =20
->  /* Detach and free everything */
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c b/dri=
-vers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-> index 8afbf529c7450..2821c27f317ee 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-> @@ -1272,6 +1272,9 @@ static int brcmf_usb_probe_cb(struct brcmf_usbdev_i=
-nfo *devinfo,
->  		ret =3D -ENOMEM;
->  		goto fail;
->  	}
-> +	ret =3D PTR_ERR_OR_ZERO(devinfo->settings);
-> +	if (ret < 0)
-> +		goto fail;
-> =20
->  	if (!brcmf_usb_dlneeded(devinfo)) {
->  		ret =3D brcmf_alloc(devinfo->dev, devinfo->settings);
+> diff --git a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.=
+h b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
+> index 44684bf1b9acc..c1e22c589d85e 100644
+> --- a/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
+> +++ b/drivers/net/wireless/broadcom/brcm80211/include/brcm_hw_ids.h
+> @@ -52,6 +52,7 @@
+>  #define BRCM_CC_43664_CHIP_ID		43664
+>  #define BRCM_CC_43666_CHIP_ID		43666
+>  #define BRCM_CC_4371_CHIP_ID		0x4371
+> +#define BRCM_CC_43752_CHIP_ID		43752
+>  #define BRCM_CC_4377_CHIP_ID		0x4377
+>  #define BRCM_CC_4378_CHIP_ID		0x4378
+>  #define BRCM_CC_4387_CHIP_ID		0x4387
+> @@ -94,6 +95,7 @@
+>  #define BRCM_PCIE_4366_5G_DEVICE_ID	0x43c5
+>  #define BRCM_PCIE_4371_DEVICE_ID	0x440d
+>  #define BRCM_PCIE_43596_DEVICE_ID	0x4415
+> +#define BRCM_PCIE_43752_DEVICE_ID	0x449d
+>  #define BRCM_PCIE_4377_DEVICE_ID	0x4488
+>  #define BRCM_PCIE_4378_DEVICE_ID	0x4425
+>  #define BRCM_PCIE_4387_DEVICE_ID	0x4433
 >=20
 > --=20
 > 2.34.1
 >=20
 >=20
 
---lrsqblrh4qi5cddb
+--zwbcc5564rrrwrd7
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmbkfEwACgkQ2O7X88g7
-+pq3Kw/9H8DXJ0rDkadHRCyfGdAK794X4LIJsYyNkiBnu/Q/SDZYmJLb9BiNZT/w
-oe4DMN0xuUpZVCvIDITGmtaltp3bWz2whVkII2Phb/XSkI5LHKyn3em2pUplEwaw
-+u3/Q0Ilii3/Z13Shc1BBmZKey+tM5gr9iZfyBGEntb5nXt+vFgB/gRRvxviFcs0
-TZKm33rNV6n5U1eF3OPAjj8fohHbzgB7rdAqpmP/3gd+7sIRIc4HT/b3vumxCszl
-wp2BvWbPD8EswFXGeAOCA6sDDwXDNhJRcKQpobU8zXzUWqb55/Qik716SsoDFsXD
-28H5Rebodd3FBHyjIumZ1w1lrRjeT0Hvt+BsG3b5giwksodekCmpcRb/QBu/3HlH
-EVqNvJWXKUUOdXxkd1PATO3m3JbywUyDTqLkv9sm9pb07leH+KXxkAJVElIDpaXv
-5Sc12761JylXwMcGIyFK3N5x6+fPzybyFgS3B0VT7ev4M5SaasfvlPK8JYkbUOFS
-MhP8vkJ70k5F/caOmW7lV1XaYktYMHPA4CQMNDk6TuWqVvns+7BJqfWZtyFSzhhy
-x7heAYFFlW38pTLvYDDky+cxsi4DNZ60pBqeRFdjnIOyeAAc+JZAo8Uz3cYYPfMF
-yNp4aqlfre/H8cgQWrh/mUryQgOoXOiB2UEk58ABZAj4aCHeZvY=
-=AN9W
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmbkfNgACgkQ2O7X88g7
++pq7OQ/+IdJA2aA8tgY4+FH+WP79mRil3jqsbZUoHSD74mEMrRuB/2RY2Mbq6B9H
+xPNo8Z7pCT01rZBr5ibXbk3MtJjmo5lqEQYtAH+TH7AgUisqIHIVyQEXFRswibQC
+IePUgrgW4T8fNyJbfwuuUy+x6ajfTmRkIpMwNLq6cd7X4m2ayeVsWjZvKSmh59U5
+5UDhNvY4QJbVkyBV5fXvwagIukZGLXZ9uhjo/JIKubPOCVTTEFbxNB7ZFkA+gTzO
+48+hcg7BK/fN/Qb0Eb81VIMG1koSx1h5q9EkHowyyLNrWzs0R+N9sq41HvbYNvY5
+IfUWPiagradIY5JyiOfibk0xKlb64j0nZ1er1GaD6EJmQVRhh7KRBoMX0xQGcn0K
+4YCAWmDcMhz303cLJkSIQSaF4Oj6ioF9ZGxAHuyz7C2QhqFPWRljzQ3oX8paDXaj
+mKwGvVDE528jtgpHB3MC9+EnnyjyQjO4vyeyYhqFrUNu23su76xivdYTJmnrikCH
+WDAETRO/RFBA6Z5b8q83C2kM36HIvgkNtwLb1tu+gcQ+94F0ymhzP7v4pLOQ09KJ
+XA47mMSvf2u5nqQNkSb37x4xfG2znVDEE8dsQ7TU+5QT3tII4EXKSWz8HBflDZ5r
+4PIfFHb+x5UpTNuFRvwikuYSzjUAwDVRg8T+PQ6WoSkCWsErP+A=
+=fYCg
 -----END PGP SIGNATURE-----
 
---lrsqblrh4qi5cddb--
+--zwbcc5564rrrwrd7--
 
