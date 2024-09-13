@@ -1,193 +1,113 @@
-Return-Path: <linux-wireless+bounces-12841-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12842-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B709A977C41
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Sep 2024 11:36:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE356977C76
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Sep 2024 11:43:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2E4F1C24AEE
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Sep 2024 09:36:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3408DB24AE1
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Sep 2024 09:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F3D1D7983;
-	Fri, 13 Sep 2024 09:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B82E11D6C6B;
+	Fri, 13 Sep 2024 09:43:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mZ/KImvz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E03B175D45;
-	Fri, 13 Sep 2024 09:35:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184901BD00C;
+	Fri, 13 Sep 2024 09:43:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726220159; cv=none; b=pwnTLeJbFnS3TxZlV8iym5tRfZqI6ECiNRvM2zR257xZaYmDLyjDDIjDyVaMZ1e2wCbxhukm+O/0UwcxI8DqVO2fBhcS8fvWbKyOp1uqkSU7ARz6pPcz+gi89rfltRHN+h4PislRIvb+AtqiJJVh9jr7UkflHnDwXK5mO9SBhbg=
+	t=1726220619; cv=none; b=LVnx7UdFDz/XF9OT/P4KNzSPa2ZZYlyCmyk+x5kz1PFUkS+0XMkSnI+cNGCWka4JqvcfshXu0Z6IeVnuAwDmSZT4UYNGm8BFEFNp7q+508zzf1Esc25O0D1f4LMz3GW31DOLHXwZ0I7zroMjRT7ecXYqfRjcEZMHCwmIJSigN10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726220159; c=relaxed/simple;
-	bh=Kq+ZW0trtXLDeahV2skxFysYfWalXik5sgiriea1S1s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=o0bX++E4YPY13b37aXb6CQJGcfvc34bfzdPndJn1GPkvAUUk3hik3uj1OnoqZRhu6djGCp4t36XkI92hGODs7S+Xv8CiLEEQoLFPkIULGZPvltZlbRC00oUV++LVh6jiJgq4dFM14yDpKBaL/GMRb4A57Q/RjwV2FYA1UZ57PHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4X4q0m4b9zz2CpYn;
-	Fri, 13 Sep 2024 17:35:20 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 79E181402CE;
-	Fri, 13 Sep 2024 17:35:52 +0800 (CST)
-Received: from [10.67.120.129] (10.67.120.129) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 13 Sep 2024 17:35:51 +0800
-Message-ID: <00c41a5b-6a5b-4ee1-b0e2-eae819e3cf3b@huawei.com>
-Date: Fri, 13 Sep 2024 17:35:51 +0800
+	s=arc-20240116; t=1726220619; c=relaxed/simple;
+	bh=NNM6NFpc00s5ibSztPzQ0f4egmjl3EyQzE/l2jhgxas=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rfixcjdbVWIgSMBMplpOJI9o7MUFO6uiCEcfze8/SmTjRWeGZY4b5khyP5UBz4MKRJlQrN2brKkkxgXnOuqZnv/K4p7R/GW2NR398VHJpWmZ6YHkmnC0ey8xvIRGxGoKPxkSKJ6NUXG2IQd9LghxPTWSA4HWLKyPwLBKotPelz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mZ/KImvz; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-42cb0f28bfbso17623675e9.1;
+        Fri, 13 Sep 2024 02:43:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726220615; x=1726825415; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=M+LszOSkNNFgaKX3BXxyztS0BS91MBez+e7KxoIOAVE=;
+        b=mZ/KImvznvN8x2P6qti7Sr7fXwFrca9w6Ovd2M7PcQDaZMKhMpjBuOcmr+kvHjOLQN
+         ELIZGKBl6pwH0BklWNZs23VCnuePVX39LELa5blMpjOIIwXsYHmQhxm11ixji7TylFiW
+         19FEYmCtKczFD1wqRHtHSivRVXErZsbyKYiWp2NvX04n6IqThdGqmyhpItzqfz/YexCa
+         7Lm+2mlJJSRgdeMu6GHCPHS/hpKWMvu/wnxIK6rOiuwaubHYqPzC3UH8hkCt9IGSFbFH
+         N5zUtPoQWbIOKj5iif01okBK5/4j2r7XVkJVvXWn+VgkJgGO9P74yHV8N7J7XHEVxBFx
+         rwIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726220615; x=1726825415;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=M+LszOSkNNFgaKX3BXxyztS0BS91MBez+e7KxoIOAVE=;
+        b=iGiJuYtmmbd71wRDkX47jN9losUWYodEkyzEiJDsuZLLRE0x3o4BzRLWYay94SV1Rb
+         REnrEkKxFFwW0ljlZEt+WBO/RFCKLrJglDLuBxNMYKRtgbVYZ9Hou550pJffVTxWO9hv
+         8dlkYHndAvq4F5oH/Eq4NUMHSUfVfzCYy3OBaeF3BTB0B9ecZwYDAkNypopEgo4m+nrj
+         asJDdYb47eyehgwh3I5DhXOWTjJ3jsYth7knhD+ITKbJpNQ8jGb/p5QdZVUQa2EuauNE
+         P6dT1MzLK1/HOt4eOu8s0qo0ZgFxz1/Li5FGmMjoz7/3rpsVrAR3cmDwvxAzJlRl+kIR
+         IXxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW2/g9sndMVHvlgk+QRcbg5oYNNVfzSq085waEEmrllstYQluQB9CsUYj/QdWLJz90WZEFcpiHLpPYzzPwB@vger.kernel.org, AJvYcCW4OD66GqmFO85CwM7/s0FQdNhwA7kkg95YubrYQV3Il7vSCuw0OmkA6Oy+esBlgafLUh+yyqDlrb2eE+L2WoQ=@vger.kernel.org, AJvYcCW5M7+9OL85NsuTfnpq/BEF26IKtcOlGMI4I8vN63z/V0Ysy5y2rtEDPJ54iH2nFnCDql0fuCm6He+CgEfMc4c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUgbdLt9/2CiDie305IjDM088ANNSUwj9EEwn4vwtgxWSCBteR
+	ARBAoLWn5C7zOsGsyBSNZ5I8BRXJbPgNdkvKFNVzXxonJMJo6rtL
+X-Google-Smtp-Source: AGHT+IGYG+SImZloXijYbltE5rVdzNdwV+Adbn8SFOU36KV8fBrL+SjzcQUp0Wnt1jy1zzV7zxVQGw==
+X-Received: by 2002:adf:b30e:0:b0:374:c33d:377b with SMTP id ffacd0b85a97d-378c2d5a7ddmr3562864f8f.45.1726220614583;
+        Fri, 13 Sep 2024 02:43:34 -0700 (PDT)
+Received: from void.void ([141.226.9.10])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37895649733sm16388057f8f.8.2024.09.13.02.43.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Sep 2024 02:43:34 -0700 (PDT)
+From: Andrew Kreimer <algonell@gmail.com>
+To: Loic Poulain <loic.poulain@linaro.org>,
+	Kalle Valo <kvalo@kernel.org>
+Cc: wcn36xx@lists.infradead.org,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Andrew Kreimer <algonell@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>
+Subject: [PATCH] wifi: wcn36xx: fix a typo
+Date: Fri, 13 Sep 2024 12:43:10 +0300
+Message-ID: <20240913094319.13718-1-algonell@gmail.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 2/2] page_pool: fix IOMMU crash when driver has already
- unbound
-To: Mina Almasry <almasrymina@google.com>
-CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<liuyonglong@huawei.com>, <fanghaiqing@huawei.com>, Robin Murphy
-	<robin.murphy@arm.com>, Alexander Duyck <alexander.duyck@gmail.com>, IOMMU
-	<iommu@lists.linux.dev>, Wei Fang <wei.fang@nxp.com>, Shenwei Wang
-	<shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Eric Dumazet
-	<edumazet@google.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek
- Kitszel <przemyslaw.kitszel@intel.com>, Alexander Lobakin
-	<aleksander.lobakin@intel.com>, Alexei Starovoitov <ast@kernel.org>, Daniel
- Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed
-	<saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq Toukan
-	<tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi
-	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen
-	<shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, Kalle Valo
-	<kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Andrew
- Morton <akpm@linux-foundation.org>, Ilias Apalodimas
-	<ilias.apalodimas@linaro.org>, <imx@lists.linux.dev>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<intel-wired-lan@lists.osuosl.org>, <bpf@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>,
-	<linux-mm@kvack.org>
-References: <20240912124514.2329991-1-linyunsheng@huawei.com>
- <20240912124514.2329991-3-linyunsheng@huawei.com>
- <CAHS8izPc8fy08mL1RJtnxiOvTx=Uk037Q5SKobC80jQocEKMJQ@mail.gmail.com>
-Content-Language: en-US
-From: Yunsheng Lin <linyunsheng@huawei.com>
-In-Reply-To: <CAHS8izPc8fy08mL1RJtnxiOvTx=Uk037Q5SKobC80jQocEKMJQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemf200006.china.huawei.com (7.185.36.61)
 
-On 2024/9/12 22:25, Mina Almasry wrote:
-> On Thu, Sep 12, 2024 at 5:51 AM Yunsheng Lin <linyunsheng@huawei.com> wrote:
->>
->> Networking driver with page_pool support may hand over page
->> still with dma mapping to network stack and try to reuse that
->> page after network stack is done with it and passes it back
->> to page_pool to avoid the penalty of dma mapping/unmapping.
->> With all the caching in the network stack, some pages may be
->> held in the network stack without returning to the page_pool
->> soon enough, and with VF disable causing the driver unbound,
->> the page_pool does not stop the driver from doing it's
->> unbounding work, instead page_pool uses workqueue to check
->> if there is some pages coming back from the network stack
->> periodically, if there is any, it will do the dma unmmapping
->> related cleanup work.
->>
->> As mentioned in [1], attempting DMA unmaps after the driver
->> has already unbound may leak resources or at worst corrupt
->> memory. Fundamentally, the page pool code cannot allow DMA
->> mappings to outlive the driver they belong to.
->>
->> Currently it seems there are at least two cases that the page
->> is not released fast enough causing dma unmmapping done after
->> driver has already unbound:
->> 1. ipv4 packet defragmentation timeout: this seems to cause
->>    delay up to 30 secs:
->>
->> 2. skb_defer_free_flush(): this may cause infinite delay if
->>    there is no triggering for net_rx_action().
->>
->> In order not to do the dma unmmapping after driver has already
->> unbound and stall the unloading of the networking driver, add
->> the pool->items array to record all the pages including the ones
->> which are handed over to network stack, so the page_pool can
->> do the dma unmmapping for those pages when page_pool_destroy()
->> is called.
->>
-> 
-> The approach in this patch is a bit complicated. I wonder if there is
-> something simpler that we can do. From reading the thread, it seems
-> the issue is that in __page_pool_release_page_dma we're calling
-> dma_unmap_page_attrs() on a pool->p.dev that has been deleted via
-> device_del, right?
-> 
-> Why not consider pool->p.dev unusable if pool->destroy_cnt > 0? I.e.
-> in __page_pool_release_page_dma, we can skip dma_unmap_page_attrs() if
-> destry_cnt > 0?
+Fix a typo in comments.
 
-The skipping is already done for __dma_sync_single_for_device() in this
-patch, but not for dma_unmap_page_attrs(), see the clearing of dma_sync
-in page_pool_destroy().
+Reported-by: Matthew Wilcox <willy@infradead.org>
+Signed-off-by: Andrew Kreimer <algonell@gmail.com>
+---
+ drivers/net/wireless/ath/wcn36xx/wcn36xx.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> 
-> More generally, probably any use of pool->p.dev may be invalid if
-> page_pool_destroy has been called. The call sites can be scrubbed for
-> latent bugs.
+diff --git a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
+index bccc27de848d..7ee79593cd23 100644
+--- a/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
++++ b/drivers/net/wireless/ath/wcn36xx/wcn36xx.h
+@@ -167,7 +167,7 @@ struct wcn36xx_vif {
+  * @dpu_desc_index: DPU descriptor index is returned from HW after config_sta
+  * call and is used in TX BD.
+  * @bss_sta_index: STA index is returned from HW after config_bss call and is
+- * used in both SMD channel and TX BD. See table bellow when it is used.
++ * used in both SMD channel and TX BD. See table below when it is used.
+  * @bss_dpu_desc_index: DPU descriptor index is returned from HW after
+  * config_bss call and is used in TX BD.
+  * ______________________________________________
+-- 
+2.46.0
 
-As mentioned in commit log, attempting DMA unmaps after the driver has
-already unbound may leak resources or at worst corrupt memory.
-The skipping only avoid corrupting memory, but not leaking resources, as
-there may be bounce buffer or iova resources before the dma mapping as my
-understanding.
-
-And when page_pool_destroy() is called, there is currently no way to
-tell if the device is going to be invalid or not.
-
-> 
-> The hard part is handling the concurrency. I'm not so sure we can fix
-> this without introducing some synchronization between the
-> page_pool_destroy seeing the device go away and the code paths using
-> the device. Are these being called from the fast paths? Jespers
-> benchmark can tell for sure if there is any impact on the fast path.
-
-It depends on what your definition of fast path here, there are three
-kinds of fast path for page pool as my understanding.
-
-For the first and second fast path, the synchronization cost is the
-rcu read lock overhead introduced in patch 1.
-
-For the third fast path when we need to refill from or flush to the
-page allocator, the added overhead is the page_pool_item_add() and
-page_pool_item_del() calling as my understanding.
-
-Will provide the performance data in the next version.
-
-> 
->> Note, the devmem patchset seems to make the bug harder to fix
->> and to backport too, this patch does not consider fixing the
->> case for devmem yet.
->>
-> 
-> FWIW from a quick look I did not see anything in this patch that is
-> extremely hard to port to netmem. AFAICT the issue is that you skipped
-> changing page_pool to page_pool_items in net_iov. Once that is done, I
-> think the rest should be straightforward.
-
-Does page_pool_item_uninit() need to handle 'netmem' case?
-
-How does the devmem handle the case net_iov being cached in network stack
-when the driver has already unbound? I am supposing there is a device for
-dma_buf_unmap_attachment_unlocked(), and is it possible that the device
-become invalid too when the driver has unbound? If yes, doesn't it have a
-similar problem as the case of normal page?
-
-> 
 
