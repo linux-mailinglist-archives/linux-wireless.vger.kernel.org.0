@@ -1,214 +1,110 @@
-Return-Path: <linux-wireless+bounces-12829-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12830-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A393977933
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Sep 2024 09:15:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FAF09779C0
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Sep 2024 09:35:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7438A28624C
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Sep 2024 07:15:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5916B1C22093
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Sep 2024 07:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2FEC19F419;
-	Fri, 13 Sep 2024 07:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 682E7143C40;
+	Fri, 13 Sep 2024 07:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="t6KsiQQM"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="ZYPWlN6X"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7F21BCA19
-	for <linux-wireless@vger.kernel.org>; Fri, 13 Sep 2024 07:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99D977107
+	for <linux-wireless@vger.kernel.org>; Fri, 13 Sep 2024 07:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726211678; cv=none; b=gB1UIXJVtlua29c+7rH+pXh5WQucZW+3rraykzp8wZySwovjch3hAJqncu+vyXro72iyF0wDUGzv2vazgPfnLy8C3a7cxLKstG9nLEcO7rvUzPrSupR82WW3xHQCYInPUKelHH7z9OWlys/4RmtAbgenqVwcC4MTE4Rg6av2tpY=
+	t=1726212900; cv=none; b=XbgNii6RpJnnqrVyNYWZd73XsA0mvxulKKXnzWkdRB/yztzeM5YOKn/0iXFBs9GXTT1XUVAConKuNqn7q94pkkrg0cWBeA+9PHUc+LEFIUOWZT/qSvHWp9fpcvUFbgEc10RdYTX3HF/R8f2xTaVUkoCA8+Mw+DRRNFkaMkJvWsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726211678; c=relaxed/simple;
-	bh=9AnAxz1IbxXjJ6dw12bPzG0mlzs6neAakNso/H07WjM=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uoLmLx5aICx1A+nxgtTrr+2qF8Ti4iU+fHiwe5RanEsIE/sOaQyiHYcUB2XPRSGFdiDbcr7gV6Xj+kMTVlbanqk4JW0k2rfrZCl9cvsd7OG1Xu4V/VljtlMICHYKrGU1aLY/6srCSK/1VOmUwaN2h9o6rDMchGOD2aLN9o7kt24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=t6KsiQQM; arc=none smtp.client-ip=211.75.126.72
+	s=arc-20240116; t=1726212900; c=relaxed/simple;
+	bh=GOtH+8RJl/wTD0A3yc7L1Pq5M80vBwfy9m7TADvt2Mc=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=JQxqd56wTdpMybcdnOEU5BSwIWIOC6YT7F80YX80ixJM+cjiHzZZkTRwgMdiMkfcieow7RZtHHYP1lFy1MSBOtaNGDNUivrXNhCQydR0vPd8N92qW0C8i/vC0MUHJjQktrVgvPWVRLRe2tbj+zeHcv0GY2/5irxGCKXHvwEj4AQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=ZYPWlN6X; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 48D7EXXr82542236, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 48D7Ypf862573885, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1726211673; bh=9AnAxz1IbxXjJ6dw12bPzG0mlzs6neAakNso/H07WjM=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=t6KsiQQMBOGisGiSRuEolSN74tWuaz20/dYO+CuXcQT4OYv/5XemQLgPiTZ8PGV59
-	 cWp/rH1mSENVo1Kf6+3SX3zffcLziftkV0asV9DIThBHU0UczKhWBdzaaudPKK7w4h
-	 ZvRU6Mv/OI+c86cBVnucZF/Anj/nXHdRbvZbzeXIKFXRJtm/klYTaklzMm0UKtPbI1
-	 IQTyLmdZwzS2JHsLS7kv+V0gjLRzT0/OMcxNIsdYhFBdoUtVTvPLmemj8GGLsF4M8l
-	 35B5vD0XOe6UwfR12JUEPel2h5rZd0Hg1xCqB9WL5fMZqrDdqoncHRqAALyydsxQEh
-	 9YhVIK11c7+ZQ==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.05/5.92) with ESMTPS id 48D7EXXr82542236
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Fri, 13 Sep 2024 15:14:33 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+	t=1726212891; bh=GOtH+8RJl/wTD0A3yc7L1Pq5M80vBwfy9m7TADvt2Mc=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:
+	 Content-Transfer-Encoding:MIME-Version;
+	b=ZYPWlN6XftbHWPoUCnD81BY6d+/3O2YeqNdh1rIIPH7/66VT+JpaSAgFyd2Yw+1gW
+	 +cUcTUWAVH9CXVss2d71sUldViBY9Sl554dWJ7wJ3WeV5tIsg10PPsGOnqlwtb4NAB
+	 dy53ISisfgpJGsy9UzO9Z7KrfdzCckhpjbOkR/cuvxtTMbvsNtIx7nziC5rPAWbVNN
+	 72ef75WnHeVoE0CFvHRZJURKI/YLNVn5y8l0zePGQxAuBNk3LgYmNXdc6Crm6P5vdj
+	 1qxMdOezxpkFQdjVL6Nw0NLt+cNdVysA5SR+PV3OPYQA6RNncUkk2WpPGKGjx/V6KB
+	 R+DQH5PhQ/kdA==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.05/5.92) with ESMTPS id 48D7Ypf862573885
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 13 Sep 2024 15:34:51 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 13 Sep 2024 15:14:33 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 13 Sep
- 2024 15:14:32 +0800
+ 15.1.2507.39; Fri, 13 Sep 2024 15:34:50 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 13 Sep 2024 15:34:50 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
+ 15.01.2507.035; Fri, 13 Sep 2024 15:34:50 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-Subject: [PATCH 5/5] wifi: rtw89: rfk: update firmware debug log of DACK to v2
-Date: Fri, 13 Sep 2024 15:13:40 +0800
-Message-ID: <20240913071340.41822-6-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240913071340.41822-1-pkshih@realtek.com>
-References: <20240913071340.41822-1-pkshih@realtek.com>
+To: "linux-firmware@kernel.org" <linux-firmware@kernel.org>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        Timlee
+	<timlee@realtek.com>
+Subject: pull request: rtw89: 8922a: add fw format-2 v0.35.42.1
+Thread-Topic: pull request: rtw89: 8922a: add fw format-2 v0.35.42.1
+Thread-Index: AdsFrxRbFYw1/HcRTNWpL95YKBrH5g==
+Date: Fri, 13 Sep 2024 07:34:50 +0000
+Message-ID: <28a0ab5067a34a308c155f3ccc08790b@realtek.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-Update DACK (digital-to-analog converters calibration) log to v2 by
-firmware C2H events.
+Hi,
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Add rtw89 driver firmware for RTL8922A that firmware version is 0.35.42.1.
+
+Thank you
+Ping-Ke
+
 ---
- drivers/net/wireless/realtek/rtw89/fw.h  | 12 +++--
- drivers/net/wireless/realtek/rtw89/phy.c | 64 +++++++++++++++++-------
- 2 files changed, 56 insertions(+), 20 deletions(-)
+The following changes since commit b9daf8c33f02650b79bd1c61d61d6b1fae470e8b=
+:
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
-index bbf62950182a..5b8d83d90a4e 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.h
-+++ b/drivers/net/wireless/realtek/rtw89/fw.h
-@@ -4375,19 +4375,25 @@ struct rtw89_c2h_rf_dpk_rpt_log {
- 
- struct rtw89_c2h_rf_dack_rpt_log {
- 	u8 fwdack_ver;
--	u8 fwdack_rpt_ver;
-+	u8 fwdack_info_ver;
- 	u8 msbk_d[2][2][16];
- 	u8 dadck_d[2][2];
- 	u8 cdack_d[2][2][2];
--	__le16 addck2_d[2][2][2];
-+	u8 addck2_hd[2][2][2];
-+	u8 addck2_ld[2][2][2];
- 	u8 adgaink_d[2][2];
--	__le16 biask_d[2][2];
-+	u8 biask_hd[2][2];
-+	u8 biask_ld[2][2];
- 	u8 addck_timeout;
- 	u8 cdack_timeout;
- 	u8 dadck_timeout;
- 	u8 msbk_timeout;
- 	u8 adgaink_timeout;
-+	u8 wbadcdck_timeout;
-+	u8 drck_timeout;
- 	u8 dack_fail;
-+	u8 wbdck_d[2];
-+	u8 rck_d;
- } __packed;
- 
- struct rtw89_c2h_rf_rxdck_rpt_log {
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index ae404ca4e2ee..87719b22381d 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -2792,8 +2792,23 @@ static void rtw89_phy_c2h_rfk_rpt_log(struct rtw89_dev *rtwdev,
- 
- 		dack = content;
- 
--		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]ver=0x%x 0x%x\n",
--			    dack->fwdack_ver, dack->fwdack_rpt_ver);
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]FWDACK SUMMARY!!!!!\n");
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+			    "[DACK]FWDACK ver = 0x%x, FWDACK rpt_ver = 0x%x, driver rpt_ver = 0x%x\n",
-+			    dack->fwdack_ver, dack->fwdack_info_ver, 0x2);
-+
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+			    "[DACK]timeout code = [0x%x 0x%x 0x%x 0x%x 0x%x]\n",
-+			    dack->addck_timeout, dack->cdack_timeout, dack->dadck_timeout,
-+			    dack->adgaink_timeout, dack->msbk_timeout);
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+			    "[DACK]DACK fail = 0x%x\n", dack->dack_fail);
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+			    "[DACK]S0 WBADCK = [0x%x]\n", dack->wbdck_d[0]);
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+			    "[DACK]S1 WBADCK = [0x%x]\n", dack->wbdck_d[1]);
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK,
-+			    "[DACK]DRCK = [0x%x]\n", dack->rck_d);
- 		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]S0 CDACK ic = [0x%x, 0x%x]\n",
- 			    dack->cdack_d[0][0][0], dack->cdack_d[0][0][1]);
- 		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]S0 CDACK qc = [0x%x, 0x%x]\n",
-@@ -2804,13 +2819,17 @@ static void rtw89_phy_c2h_rfk_rpt_log(struct rtw89_dev *rtwdev,
- 			    dack->cdack_d[1][1][0], dack->cdack_d[1][1][1]);
- 
- 		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]S0 ADC_DCK ic = [0x%x, 0x%x]\n",
--			    dack->addck2_d[0][0][0], dack->addck2_d[0][0][1]);
-+			    ((u32)dack->addck2_hd[0][0][0] << 8) | dack->addck2_ld[0][0][0],
-+			    ((u32)dack->addck2_hd[0][0][1] << 8) | dack->addck2_ld[0][0][1]);
- 		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]S0 ADC_DCK qc = [0x%x, 0x%x]\n",
--			    dack->addck2_d[0][1][0], dack->addck2_d[0][1][1]);
-+			    ((u32)dack->addck2_hd[0][1][0] << 8) | dack->addck2_ld[0][1][0],
-+			    ((u32)dack->addck2_hd[0][1][1] << 8) | dack->addck2_ld[0][1][1]);
- 		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]S1 ADC_DCK ic = [0x%x, 0x%x]\n",
--			    dack->addck2_d[1][0][0], dack->addck2_d[1][0][1]);
-+			    ((u32)dack->addck2_hd[1][0][0] << 8) | dack->addck2_ld[1][0][0],
-+			    ((u32)dack->addck2_hd[1][0][1] << 8) | dack->addck2_ld[1][0][1]);
- 		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]S1 ADC_DCK qc = [0x%x, 0x%x]\n",
--			    dack->addck2_d[1][1][0], dack->addck2_d[1][1][1]);
-+			    ((u32)dack->addck2_hd[1][1][0] << 8) | dack->addck2_ld[1][1][0],
-+			    ((u32)dack->addck2_hd[1][1][1] << 8) | dack->addck2_ld[1][1][1]);
- 
- 		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]S0 ADC_GAINK ic = 0x%x, qc = 0x%x\n",
- 			    dack->adgaink_d[0][0], dack->adgaink_d[0][1]);
-@@ -2823,18 +2842,29 @@ static void rtw89_phy_c2h_rfk_rpt_log(struct rtw89_dev *rtwdev,
- 			    dack->dadck_d[1][0], dack->dadck_d[1][1]);
- 
- 		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]S0 biask iqc = 0x%x\n",
--			    dack->biask_d[0][0]);
-+			    ((u32)dack->biask_hd[0][0] << 8) | dack->biask_ld[0][0]);
- 		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]S1 biask iqc = 0x%x\n",
--			    dack->biask_d[1][0]);
--
--		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]S0 MSBK ic: %*ph\n",
--			    (int)sizeof(dack->msbk_d[0][0]), dack->msbk_d[0][0]);
--		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]S0 MSBK qc: %*ph\n",
--			    (int)sizeof(dack->msbk_d[0][1]), dack->msbk_d[0][1]);
--		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]S1 MSBK ic: %*ph\n",
--			    (int)sizeof(dack->msbk_d[1][0]), dack->msbk_d[1][0]);
--		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]S1 MSBK qc: %*ph\n",
--			    (int)sizeof(dack->msbk_d[1][1]), dack->msbk_d[1][1]);
-+			    ((u32)dack->biask_hd[1][0] << 8) | dack->biask_ld[1][0]);
-+
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]S0 MSBK ic:\n");
-+		for (i = 0; i < 0x10; i++)
-+			rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]0x%x\n",
-+				    dack->msbk_d[0][0][i]);
-+
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]S0 MSBK qc:\n");
-+		for (i = 0; i < 0x10; i++)
-+			rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]0x%x\n",
-+				    dack->msbk_d[0][1][i]);
-+
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]S1 MSBK ic:\n");
-+		for (i = 0; i < 0x10; i++)
-+			rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]0x%x\n",
-+				    dack->msbk_d[1][0][i]);
-+
-+		rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]S1 MSBK qc:\n");
-+		for (i = 0; i < 0x10; i++)
-+			rtw89_debug(rtwdev, RTW89_DBG_RFK, "[DACK]0x%x\n",
-+				    dack->msbk_d[1][1][i]);
- 		return;
- 	case RTW89_PHY_C2H_RFK_LOG_FUNC_RXDCK:
- 		if (len != sizeof(*rxdck))
--- 
-2.25.1
+  Merge branch 'amd-staging' into 'main' (2024-09-12 16:05:08 +0000)
+
+are available in the Git repository at:
+
+  https://github.com/pkshih/linux-firmware.git tags/rtw-fw-2024-09-13
+
+for you to fetch changes up to 5685e14f2a1cf8ce8ee2ab5883eb327c9c9c5d15:
+
+  rtw89: 8922a: add fw format-2 v0.35.42.1 (2024-09-13 15:28:58 +0800)
+
+----------------------------------------------------------------
+Chin-Yen Lee (1):
+      rtw89: 8922a: add fw format-2 v0.35.42.1
+
+ WHENCE                  |   1 +
+ rtw89/rtw8922a_fw-2.bin | Bin 0 -> 1586954 bytes
+ 2 files changed, 1 insertion(+)
+ create mode 100644 rtw89/rtw8922a_fw-2.bin
 
 
