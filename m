@@ -1,363 +1,333 @@
-Return-Path: <linux-wireless+bounces-12833-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12831-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7563977A94
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Sep 2024 10:05:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03C47977A77
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Sep 2024 10:02:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E36161C22609
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Sep 2024 08:05:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B58AB22497
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Sep 2024 08:02:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D20A21BD50A;
-	Fri, 13 Sep 2024 08:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5865840C03;
+	Fri, 13 Sep 2024 08:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="bYWejt3c"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="VQBkdKJO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward201d.mail.yandex.net (forward201d.mail.yandex.net [178.154.239.220])
+Received: from omta34.uswest2.a.cloudfilter.net (omta34.uswest2.a.cloudfilter.net [35.89.44.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51810155742
-	for <linux-wireless@vger.kernel.org>; Fri, 13 Sep 2024 08:05:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850D513D89D
+	for <linux-wireless@vger.kernel.org>; Fri, 13 Sep 2024 08:02:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726214732; cv=none; b=HoqznCtJZ1R5hf8aSaDaSo6+TpKwu2JayJjMDHp+86+wlH1cdklAXzADpMNYSZnsipYQ1c89RbKGNmdv/LkfBXvkM2e6/j7xHyxYu0YEsPvJueivX7WQXZiMUJqbWpiNDOcaN+DzCqLhHhjn5iKJowb9s9GG8gDC6IVqdnZlryI=
+	t=1726214533; cv=none; b=r3d7d8oScdoZWOj7sQD8SOdY7O3ugg4B8Z6R2/ZSw4gvBWD/KWt1umuLqIlgDpm7iqnS6C7J73QcD2i9d97IBdooFZGaFiIC6s720Fc/eo1kGV9A6BIABX/8cL+TmxKzzD/uz27WO1/SqqCBoUIz9pMozwE5Nc7dSF5uIBY1yVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726214732; c=relaxed/simple;
-	bh=ECAKnjhXqWGep6acZOOJZYESZRyO2ZufhA1agGexNdQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OhnsNLoq/40RJ4pTqoSz6BL/8RWVaYwOD3vnQWtZH+FbeweCf40ZCawyFvVBSnTbnZAzuiePFstMUYAixjjb92AUNiMoFTKF4iNQweABuqqiDFb7Ab345IsvmQG78r6Bg5542xIjzPxI5+OGOpNhLVLdCqyKx2jm0+J4UN6sIUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=bYWejt3c; arc=none smtp.client-ip=178.154.239.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from forward103d.mail.yandex.net (forward103d.mail.yandex.net [IPv6:2a02:6b8:c41:1300:1:45:d181:d103])
-	by forward201d.mail.yandex.net (Yandex) with ESMTPS id C61F56242C
-	for <linux-wireless@vger.kernel.org>; Fri, 13 Sep 2024 10:59:47 +0300 (MSK)
-Received: from mail-nwsmtp-smtp-production-main-91.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-91.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:1eaf:0:640:53c2:0])
-	by forward103d.mail.yandex.net (Yandex) with ESMTPS id 294F16004F;
-	Fri, 13 Sep 2024 10:59:40 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-91.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id cxfbq27OcW20-nKwnxh7i;
-	Fri, 13 Sep 2024 10:59:39 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1726214379; bh=0QWEtU4y+Xog9ayALt/tpz0W9As84vRW5dh0qC4TU9I=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=bYWejt3c4I21F0/3hLSMUK+lh74Q/58tJvB1UUO+ieTfsQG9JhR+RjZa4US9cIetH
-	 oaodmNMT1od+VASmoXK6O/4nzN9C8omD1qrSOEe+Ag7Hf2IF6nfVsx1YdXg9lDogf5
-	 nYWc4fi4wbEg2U3yAHk/z04NypeTI2g/R2D9BDSk=
-Authentication-Results: mail-nwsmtp-smtp-production-main-91.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Dmitry Antipov <dmantipov@yandex.ru>
-To: Johannes Berg <johannes.berg@intel.com>
-Cc: Kalle Valo <kvalo@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH] wifi: mac80211, cfg80211: miscellaneous spelling fixes
-Date: Fri, 13 Sep 2024 10:58:33 +0300
-Message-ID: <20240913075833.118491-1-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1726214533; c=relaxed/simple;
+	bh=5zN/nlkdigmowTno5aefO+FA6IRgH+F11im0EfqGZ9M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oSOBBxtbIPjUqGda58A1RqVLKRJ7hn8uOxhGpWuYnUO5Zrv1DWIUsC/XTHaGato8WlH3+8lfLHTeQ6FhNzi2Q+LcOPa8UJehuvR/wEge4Yle8Fr2uyQVhSu/+NJv/kQrTb3euqJV9aYUfzhsdSBvJVDkntRpotY45+R2ixCAg/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=VQBkdKJO; arc=none smtp.client-ip=35.89.44.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
+Received: from eig-obgw-6002a.ext.cloudfilter.net ([10.0.30.222])
+	by cmsmtp with ESMTPS
+	id oxVCsibXEVpzpp1Fjs5wyj; Fri, 13 Sep 2024 08:02:03 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id p1Fis1ljZX56wp1FisTwz5; Fri, 13 Sep 2024 08:02:02 +0000
+X-Authority-Analysis: v=2.4 cv=MY6nuI/f c=1 sm=1 tr=0 ts=66e3f17a
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=rpUMG24A1zG+UrzXDtAMsg==:17
+ a=IkcTkHD0fZMA:10 a=EaEq8P2WXUwA:10 a=7T7KSl7uo7wA:10 a=VwQbUJbxAAAA:8
+ a=aLwh8JLyV31UtTAnTHUA:9 a=QEXdDO2ut3YA:10 a=Xt_RvD8W3m28Mn_h3AK8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=Oq+rHKrgDWYswOs+o2qKxq1SVtxHkyDBarnNx1v0+ek=; b=VQBkdKJOS0dDpwAJ5SFGZOvc9T
+	arBxAuPCfMvmK4z7E85ntMXZw/G5HU9YjRPEm1HE6MdK5ZZFsYKEgkymCKW7KTMedYhYpBvxeV3Qb
+	zs0W61L3IU6yfE0bIbIPY+MrAHP7eKAF3w0ftwiFtjEzcILMfEpJR1DfsqXW1zzezf1keARg4vB2r
+	/xZhfHdMc61WDrQTRfpberEEv48qHl0O7hCH1nuMjBwnkAqePxnLtAZ7DgppbcVUNNquGfi+1/EAg
+	WRHoI+PTDSY35A4B9uEBCQ0AlukNCv9Kw3h5iHGhfgxiDBdjmv/GGYJ8+dVWrfPPXEaQg391Sfeqb
+	lPeo9daw==;
+Received: from [185.44.53.103] (port=49374 helo=[192.168.1.187])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1sp1Fh-003bEM-1q;
+	Fri, 13 Sep 2024 03:02:01 -0500
+Message-ID: <4caca5e1-c8ea-46dd-a6f2-532030a48454@embeddedor.com>
+Date: Fri, 13 Sep 2024 10:00:05 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH][next] wifi: iwlwifi: dvm: Avoid
+ -Wflex-array-member-not-at-end warnings
+To: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+ Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-hardening@vger.kernel.org
+References: <Zr5QR03+wyw571zd@elsanto>
+Content-Language: en-US
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <Zr5QR03+wyw571zd@elsanto>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 185.44.53.103
+X-Source-L: No
+X-Exim-ID: 1sp1Fh-003bEM-1q
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.1.187]) [185.44.53.103]:49374
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 3
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfPjhtsq4OjNkgBk6BZ64lyEFuWAUiW6MPJAZZfUBbStzbGwmWpOTfHhAY9mJ9SMbAQ9QMm+k4RuqR5ZPns6QVPzLDiz9JEdn31W7f8BTBcXMnYMnm1Hv
+ uDSwr1qhaeEjkK3R7YawJ1t4GyGiF7YXAbXXUlQYuyVXkMy5B09CkZjkyJofvB2JDh5s1KwehwBwu9AHmsHnOOYdwoaWcyggzAGVacMNg1xAz1U+31uDkGZK
 
-Correct spelling here and there as suggested by codespell.
+Hi all,
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- net/mac80211/agg-tx.c              | 2 +-
- net/mac80211/chan.c                | 4 ++--
- net/mac80211/ieee80211_i.h         | 2 +-
- net/mac80211/mesh.c                | 2 +-
- net/mac80211/mesh_plink.c          | 2 +-
- net/mac80211/mesh_sync.c           | 2 +-
- net/mac80211/rc80211_minstrel_ht.c | 2 +-
- net/mac80211/sta_info.h            | 2 +-
- net/mac80211/tkip.c                | 2 +-
- net/mac80211/tx.c                  | 2 +-
- net/mac80211/util.c                | 2 +-
- net/mac80211/vht.c                 | 4 ++--
- net/wireless/chan.c                | 2 +-
- net/wireless/nl80211.c             | 4 ++--
- net/wireless/radiotap.c            | 2 +-
- net/wireless/reg.c                 | 2 +-
- net/wireless/util.c                | 2 +-
- net/wireless/wext-compat.c         | 2 +-
- net/wireless/wext-core.c           | 2 +-
- 19 files changed, 22 insertions(+), 22 deletions(-)
+Friendly ping: who can take this, please? :)
 
-diff --git a/net/mac80211/agg-tx.c b/net/mac80211/agg-tx.c
-index 1c18b862ef8c..04cb45cfb310 100644
---- a/net/mac80211/agg-tx.c
-+++ b/net/mac80211/agg-tx.c
-@@ -797,7 +797,7 @@ void ieee80211_start_tx_ba_cb(struct sta_info *sta, int tid,
- 
- 	if (!test_bit(HT_AGG_STATE_SENT_ADDBA, &tid_tx->state)) {
- 		ieee80211_send_addba_with_timeout(sta, tid_tx);
--		/* RESPONSE_RECEIVED state whould trigger the flow again */
-+		/* RESPONSE_RECEIVED state would trigger the flow again */
- 		return;
- 	}
- 
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index cca6d14084d2..a155e418d26b 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -462,7 +462,7 @@ static void ieee80211_chan_bw_change(struct ieee80211_local *local,
- 				continue;
- 
- 			/* vif changed to narrow BW and narrow BW for station wasn't
--			 * requested or vise versa */
-+			 * requested or vice versa */
- 			if ((new_sta_bw < link_sta->pub->bandwidth) == !narrowed)
- 				continue;
- 
-@@ -1118,7 +1118,7 @@ ieee80211_replace_chanctx(struct ieee80211_local *local,
- 		 *
- 		 * Consider ctx1..3, link1..6, each ctx has 2 links. link1 and
- 		 * link2 from ctx1 request new different chandefs starting 2
--		 * in-place reserations with ctx4 and ctx5 replacing ctx1 and
-+		 * in-place reservations with ctx4 and ctx5 replacing ctx1 and
- 		 * ctx2 respectively. Next link5 and link6 from ctx3 reserve
- 		 * ctx4. If link3 and link4 remain on ctx2 as they are then this
- 		 * fails unless `replace_ctx` from ctx5 is replaced with ctx3.
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 4f0390918b60..269f51dd543e 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -2452,7 +2452,7 @@ static inline bool ieee80211_can_run_worker(struct ieee80211_local *local)
- 	/*
- 	 * If quiescing is set, we are racing with __ieee80211_suspend.
- 	 * __ieee80211_suspend flushes the workers after setting quiescing,
--	 * and we check quiescing / suspended before enqueing new workers.
-+	 * and we check quiescing / suspended before enqueuing new workers.
- 	 * We should abort the worker to avoid the races below.
- 	 */
- 	if (local->quiescing)
-diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
-index f94e4be0be12..0460102c8796 100644
---- a/net/mac80211/mesh.c
-+++ b/net/mac80211/mesh.c
-@@ -1482,7 +1482,7 @@ static void ieee80211_mesh_rx_bcn_presp(struct ieee80211_sub_if_data *sdata,
- 	if (!elems)
- 		return;
- 
--	/* ignore non-mesh or secure / unsecure mismatch */
-+	/* ignore non-mesh or secure / insecure mismatch */
- 	if ((!elems->mesh_id || !elems->mesh_config) ||
- 	    (elems->rsn && sdata->u.mesh.security == IEEE80211_MESH_SEC_NONE) ||
- 	    (!elems->rsn && sdata->u.mesh.security != IEEE80211_MESH_SEC_NONE))
-diff --git a/net/mac80211/mesh_plink.c b/net/mac80211/mesh_plink.c
-index 8f2b492a9fe9..42286aa3623c 100644
---- a/net/mac80211/mesh_plink.c
-+++ b/net/mac80211/mesh_plink.c
-@@ -667,7 +667,7 @@ void mesh_plink_timer(struct timer_list *t)
- 	/*
- 	 * This STA is valid because sta_info_destroy() will
- 	 * del_timer_sync() this timer after having made sure
--	 * it cannot be readded (by deleting the plink.)
-+	 * it cannot be re-added (by deleting the plink.)
- 	 */
- 	sta = mesh->plink_sta;
- 
-diff --git a/net/mac80211/mesh_sync.c b/net/mac80211/mesh_sync.c
-index 8cf3f395f52f..3a66b4cefca7 100644
---- a/net/mac80211/mesh_sync.c
-+++ b/net/mac80211/mesh_sync.c
-@@ -175,7 +175,7 @@ static void mesh_sync_offset_adjust_tsf(struct ieee80211_sub_if_data *sdata,
- 	spin_lock_bh(&ifmsh->sync_offset_lock);
- 
- 	if (ifmsh->sync_offset_clockdrift_max > TOFFSET_MINIMUM_ADJUSTMENT) {
--		/* Since ajusting the tsf here would
-+		/* Since adjusting the tsf here would
- 		 * require a possibly blocking call
- 		 * to the driver tsf setter, we punt
- 		 * the tsf adjustment to the mesh tasklet
-diff --git a/net/mac80211/rc80211_minstrel_ht.c b/net/mac80211/rc80211_minstrel_ht.c
-index 6bf3b4444a43..706cbc99f718 100644
---- a/net/mac80211/rc80211_minstrel_ht.c
-+++ b/net/mac80211/rc80211_minstrel_ht.c
-@@ -1053,7 +1053,7 @@ minstrel_ht_refill_sample_rates(struct minstrel_ht_sta *mi)
-  *  - max_prob_rate must use only one stream, as a tradeoff between delivery
-  *    probability and throughput during strong fluctuations
-  *  - as long as the max prob rate has a probability of more than 75%, pick
-- *    higher throughput rates, even if the probablity is a bit lower
-+ *    higher throughput rates, even if the probability is a bit lower
-  */
- static void
- minstrel_ht_update_stats(struct minstrel_priv *mp, struct minstrel_ht_sta *mi)
-diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
-index 9195d5a2de0a..9f89fb5bee37 100644
---- a/net/mac80211/sta_info.h
-+++ b/net/mac80211/sta_info.h
-@@ -169,7 +169,7 @@ struct sta_info;
-  * @buf_size: reorder buffer size at receiver
-  * @failed_bar_ssn: ssn of the last failed BAR tx attempt
-  * @bar_pending: BAR needs to be re-sent
-- * @amsdu: support A-MSDU withing A-MDPU
-+ * @amsdu: support A-MSDU within A-MDPU
-  * @ssn: starting sequence number of the session
-  *
-  * This structure's lifetime is managed by RCU, assignments to
-diff --git a/net/mac80211/tkip.c b/net/mac80211/tkip.c
-index e7f57bb18f6e..7aac84cec044 100644
---- a/net/mac80211/tkip.c
-+++ b/net/mac80211/tkip.c
-@@ -313,7 +313,7 @@ int ieee80211_tkip_decrypt_data(struct arc4_ctx *ctx,
- 		 * Record previously received IV, will be copied into the
- 		 * key information after MIC verification. It is possible
- 		 * that we don't catch replays of fragments but that's ok
--		 * because the Michael MIC verication will then fail.
-+		 * because the Michael MIC verification will then fail.
- 		 */
- 		*out_iv32 = iv32;
- 		*out_iv16 = iv16;
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index a9ee86982259..eedb2c5123ab 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -6214,7 +6214,7 @@ int ieee80211_tx_control_port(struct wiphy *wiphy, struct net_device *dev,
- 		goto start_xmit;
- 
- 	/* update QoS header to prioritize control port frames if possible,
--	 * priorization also happens for control port frames send over
-+	 * prioritization also happens for control port frames send over
- 	 * AF_PACKET
- 	 */
- 	rcu_read_lock();
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index f94faa86ba8a..bc5e61a1d41d 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -1010,7 +1010,7 @@ void ieee80211_set_wmm_default(struct ieee80211_link_data *link,
- 	else
- 		aCWmin = 15;
- 
--	/* Confiure old 802.11b/g medium access rules. */
-+	/* Configure old 802.11b/g medium access rules. */
- 	qparam.cw_max = aCWmax;
- 	qparam.cw_min = aCWmin;
- 	qparam.txop = 0;
-diff --git a/net/mac80211/vht.c b/net/mac80211/vht.c
-index bf6ef45af757..eafe47bf201a 100644
---- a/net/mac80211/vht.c
-+++ b/net/mac80211/vht.c
-@@ -280,10 +280,10 @@ ieee80211_vht_cap_ie_to_sta_vht_cap(struct ieee80211_sub_if_data *sdata,
- 	/*
- 	 * This is a workaround for VHT-enabled STAs which break the spec
- 	 * and have the VHT-MCS Rx map filled in with value 3 for all eight
--	 * spacial streams, an example is AR9462.
-+	 * spatial streams, an example is AR9462.
- 	 *
- 	 * As per spec, in section 22.1.1 Introduction to the VHT PHY
--	 * A VHT STA shall support at least single spactial stream VHT-MCSs
-+	 * A VHT STA shall support at least single spatial stream VHT-MCSs
- 	 * 0 to 7 (transmit and receive) in all supported channel widths.
- 	 */
- 	if (vht_cap->vht_mcs.rx_mcs_map == cpu_to_le16(0xFFFF)) {
-diff --git a/net/wireless/chan.c b/net/wireless/chan.c
-index e579d7e1425f..afd86f7c66ce 100644
---- a/net/wireless/chan.c
-+++ b/net/wireless/chan.c
-@@ -289,7 +289,7 @@ static bool cfg80211_valid_center_freq(u32 center,
- 
- 	/*
- 	 * Valid channels are packed from lowest frequency towards higher ones.
--	 * So test that the lower frequency alignes with one of these steps.
-+	 * So test that the lower frequency aligns with one of these steps.
- 	 */
- 	return (center - bw / 2 - 5945) % step == 0;
- }
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 9ab777e0bd4d..d51bcb4e9108 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -12446,7 +12446,7 @@ static int nl80211_del_pmksa(struct sk_buff *skb, struct genl_info *info)
- 	if (info->attrs[NL80211_ATTR_MAC]) {
- 		pmksa.bssid = nla_data(info->attrs[NL80211_ATTR_MAC]);
- 	} else if (info->attrs[NL80211_ATTR_SSID]) {
--		/* SSID based pmksa flush suppported only for FILS,
-+		/* SSID based pmksa flush supported only for FILS,
- 		 * OWE/SAE OFFLOAD cases
- 		 */
- 		if (info->attrs[NL80211_ATTR_FILS_CACHE_ID] &&
-@@ -15498,7 +15498,7 @@ static int nl80211_add_tx_ts(struct sk_buff *skb, struct genl_info *info)
- 	if (tsid >= IEEE80211_FIRST_TSPEC_TSID) {
- 		/* TODO: handle 802.11 TSPEC/admission control
- 		 * need more attributes for that (e.g. BA session requirement);
--		 * change the WMM adminssion test above to allow both then
-+		 * change the WMM admission test above to allow both then
- 		 */
- 		return -EINVAL;
- 	}
-diff --git a/net/wireless/radiotap.c b/net/wireless/radiotap.c
-index ae2e1a896461..619187e229b4 100644
---- a/net/wireless/radiotap.c
-+++ b/net/wireless/radiotap.c
-@@ -200,7 +200,7 @@ static void find_ns(struct ieee80211_radiotap_iterator *iterator,
-  * present fields.  @this_arg can be changed by the caller (eg,
-  * incremented to move inside a compound argument like
-  * IEEE80211_RADIOTAP_CHANNEL).  The args pointed to are in
-- * little-endian format whatever the endianess of your CPU.
-+ * little-endian format whatever the endianness of your CPU.
-  *
-  * Alignment Gotcha:
-  * You must take care when dereferencing iterator.this_arg
-diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-index 6489ba943a63..0086af33a38b 100644
---- a/net/wireless/reg.c
-+++ b/net/wireless/reg.c
-@@ -1147,7 +1147,7 @@ static const struct ieee80211_regdomain *reg_get_regdomain(struct wiphy *wiphy)
- 
- 	/*
- 	 * Follow the driver's regulatory domain, if present, unless a country
--	 * IE has been processed or a user wants to help complaince further
-+	 * IE has been processed or a user wants to help complaints further
- 	 */
- 	if (lr->initiator != NL80211_REGDOM_SET_BY_COUNTRY_IE &&
- 	    lr->initiator != NL80211_REGDOM_SET_BY_USER &&
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index f49b55724f83..93a9c32418a6 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -743,7 +743,7 @@ __ieee80211_amsdu_copy(struct sk_buff *skb, unsigned int hlen,
- 		return NULL;
- 
- 	/*
--	 * When reusing framents, copy some data to the head to simplify
-+	 * When reusing fragments, copy some data to the head to simplify
- 	 * ethernet header handling and speed up protocol header processing
- 	 * in the stack later.
- 	 */
-diff --git a/net/wireless/wext-compat.c b/net/wireless/wext-compat.c
-index 2371069f3c43..cd9f8f6e298b 100644
---- a/net/wireless/wext-compat.c
-+++ b/net/wireless/wext-compat.c
-@@ -1204,7 +1204,7 @@ static int cfg80211_wext_siwpower(struct net_device *dev,
- 		switch (wrq->flags & IW_POWER_MODE) {
- 		case IW_POWER_ON:       /* If not specified */
- 		case IW_POWER_MODE:     /* If set all mask */
--		case IW_POWER_ALL_R:    /* If explicitely state all */
-+		case IW_POWER_ALL_R:    /* If explicitly state all */
- 			ps = true;
- 			break;
- 		default:                /* Otherwise we ignore */
-diff --git a/net/wireless/wext-core.c b/net/wireless/wext-core.c
-index 838ad6541a17..3bb04b05c5ce 100644
---- a/net/wireless/wext-core.c
-+++ b/net/wireless/wext-core.c
-@@ -1159,7 +1159,7 @@ char *iwe_stream_add_event(struct iw_request_info *info, char *stream,
- 	/* Check if it's possible */
- 	if (likely((stream + event_len) < ends)) {
- 		iwe->len = event_len;
--		/* Beware of alignement issues on 64 bits */
-+		/* Beware of alignment issues on 64 bits */
- 		memcpy(stream, (char *) iwe, IW_EV_LCP_PK_LEN);
- 		memcpy(stream + lcp_len, &iwe->u,
- 		       event_len - lcp_len);
--- 
-2.46.0
+Thanks
+--
+Gustavo
 
+On 15/08/24 21:00, Gustavo A. R. Silva wrote:
+> -Wflex-array-member-not-at-end was introduced in GCC-14, and we are
+> getting ready to enable it, globally.
+> 
+> So, in order to avoid ending up with a flexible-array member in the
+> middle of multiple other structs, we use the `__struct_group()`
+> helper to create a new tagged `struct iwl_tx_cmd_hdr`. This structure
+> groups together all the members of the flexible `struct iwl_tx_cmd`
+> except the flexible array.
+> 
+> As a result, the array is effectively separated from the rest of the
+> members without modifying the memory layout of the flexible structure.
+> We then change the type of the middle struct members currently causing
+> trouble from `struct iwl_tx_cmd` to `struct iwl_tx_cmd_hdr`.
+> 
+> We also want to ensure that when new members need to be added to the
+> flexible structure, they are always included within the newly created
+> tagged struct. For this, we use `static_assert()`. This ensures that the
+> memory layout for both the flexible structure and the new tagged struct
+> is the same after any changes.
+> 
+> This approach avoids having to implement `struct iwl_tx_cmd_hdr`
+> as a completely separate structure, thus preventing having to maintain
+> two independent but basically identical structures, closing the door
+> to potential bugs in the future.
+> 
+> So, with these changes, fix the following warnings:
+> 
+> drivers/net/wireless/intel/iwlwifi/dvm/commands.h:2315:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> drivers/net/wireless/intel/iwlwifi/dvm/commands.h:2426:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> 
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> ---
+>   .../net/wireless/intel/iwlwifi/dvm/commands.h | 154 +++++++++---------
+>   1 file changed, 78 insertions(+), 76 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/commands.h b/drivers/net/wireless/intel/iwlwifi/dvm/commands.h
+> index 3f49c0bccb28..96ea6c8dfc89 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/dvm/commands.h
+> +++ b/drivers/net/wireless/intel/iwlwifi/dvm/commands.h
+> @@ -1180,85 +1180,87 @@ struct iwl_dram_scratch {
+>   } __packed;
+>   
+>   struct iwl_tx_cmd {
+> -	/*
+> -	 * MPDU byte count:
+> -	 * MAC header (24/26/30/32 bytes) + 2 bytes pad if 26/30 header size,
+> -	 * + 8 byte IV for CCM or TKIP (not used for WEP)
+> -	 * + Data payload
+> -	 * + 8-byte MIC (not used for CCM/WEP)
+> -	 * NOTE:  Does not include Tx command bytes, post-MAC pad bytes,
+> -	 *        MIC (CCM) 8 bytes, ICV (WEP/TKIP/CKIP) 4 bytes, CRC 4 bytes.i
+> -	 * Range: 14-2342 bytes.
+> -	 */
+> -	__le16 len;
+> -
+> -	/*
+> -	 * MPDU or MSDU byte count for next frame.
+> -	 * Used for fragmentation and bursting, but not 11n aggregation.
+> -	 * Same as "len", but for next frame.  Set to 0 if not applicable.
+> -	 */
+> -	__le16 next_frame_len;
+> -
+> -	__le32 tx_flags;	/* TX_CMD_FLG_* */
+> -
+> -	/* uCode may modify this field of the Tx command (in host DRAM!).
+> -	 * Driver must also set dram_lsb_ptr and dram_msb_ptr in this cmd. */
+> -	struct iwl_dram_scratch scratch;
+> -
+> -	/* Rate for *all* Tx attempts, if TX_CMD_FLG_STA_RATE_MSK is cleared. */
+> -	__le32 rate_n_flags;	/* RATE_MCS_* */
+> -
+> -	/* Index of destination station in uCode's station table */
+> -	u8 sta_id;
+> -
+> -	/* Type of security encryption:  CCM or TKIP */
+> -	u8 sec_ctl;		/* TX_CMD_SEC_* */
+> -
+> -	/*
+> -	 * Index into rate table (see REPLY_TX_LINK_QUALITY_CMD) for initial
+> -	 * Tx attempt, if TX_CMD_FLG_STA_RATE_MSK is set.  Normally "0" for
+> -	 * data frames, this field may be used to selectively reduce initial
+> -	 * rate (via non-0 value) for special frames (e.g. management), while
+> -	 * still supporting rate scaling for all frames.
+> -	 */
+> -	u8 initial_rate_index;
+> -	u8 reserved;
+> -	u8 key[16];
+> -	__le16 next_frame_flags;
+> -	__le16 reserved2;
+> -	union {
+> -		__le32 life_time;
+> -		__le32 attempt;
+> -	} stop_time;
+> -
+> -	/* Host DRAM physical address pointer to "scratch" in this command.
+> -	 * Must be dword aligned.  "0" in dram_lsb_ptr disables usage. */
+> -	__le32 dram_lsb_ptr;
+> -	u8 dram_msb_ptr;
+> -
+> -	u8 rts_retry_limit;	/*byte 50 */
+> -	u8 data_retry_limit;	/*byte 51 */
+> -	u8 tid_tspec;
+> -	union {
+> -		__le16 pm_frame_timeout;
+> -		__le16 attempt_duration;
+> -	} timeout;
+> -
+> -	/*
+> -	 * Duration of EDCA burst Tx Opportunity, in 32-usec units.
+> -	 * Set this if txop time is not specified by HCCA protocol (e.g. by AP).
+> -	 */
+> -	__le16 driver_txop;
+> -
+> +	/* New members MUST be added within the __struct_group() macro below. */
+> +	__struct_group(iwl_tx_cmd_hdr, __hdr, __packed,
+> +		/*
+> +		 * MPDU byte count:
+> +		 * MAC header (24/26/30/32 bytes) + 2 bytes pad if 26/30 header size,
+> +		 * + 8 byte IV for CCM or TKIP (not used for WEP)
+> +		 * + Data payload
+> +		 * + 8-byte MIC (not used for CCM/WEP)
+> +		 * NOTE:  Does not include Tx command bytes, post-MAC pad bytes,
+> +		 *        MIC (CCM) 8 bytes, ICV (WEP/TKIP/CKIP) 4 bytes, CRC 4 bytes.i
+> +		 * Range: 14-2342 bytes.
+> +		 */
+> +		__le16 len;
+> +
+> +		/*
+> +		 * MPDU or MSDU byte count for next frame.
+> +		 * Used for fragmentation and bursting, but not 11n aggregation.
+> +		 * Same as "len", but for next frame.  Set to 0 if not applicable.
+> +		 */
+> +		__le16 next_frame_len;
+> +
+> +		__le32 tx_flags;	/* TX_CMD_FLG_* */
+> +
+> +		/* uCode may modify this field of the Tx command (in host DRAM!).
+> +		 * Driver must also set dram_lsb_ptr and dram_msb_ptr in this cmd. */
+> +		struct iwl_dram_scratch scratch;
+> +
+> +		/* Rate for *all* Tx attempts, if TX_CMD_FLG_STA_RATE_MSK is cleared. */
+> +		__le32 rate_n_flags;	/* RATE_MCS_* */
+> +
+> +		/* Index of destination station in uCode's station table */
+> +		u8 sta_id;
+> +
+> +		/* Type of security encryption:  CCM or TKIP */
+> +		u8 sec_ctl;		/* TX_CMD_SEC_* */
+> +
+> +		/*
+> +		 * Index into rate table (see REPLY_TX_LINK_QUALITY_CMD) for initial
+> +		 * Tx attempt, if TX_CMD_FLG_STA_RATE_MSK is set.  Normally "0" for
+> +		 * data frames, this field may be used to selectively reduce initial
+> +		 * rate (via non-0 value) for special frames (e.g. management), while
+> +		 * still supporting rate scaling for all frames.
+> +		 */
+> +		u8 initial_rate_index;
+> +		u8 reserved;
+> +		u8 key[16];
+> +		__le16 next_frame_flags;
+> +		__le16 reserved2;
+> +		union {
+> +			__le32 life_time;
+> +			__le32 attempt;
+> +		} stop_time;
+> +
+> +		/* Host DRAM physical address pointer to "scratch" in this command.
+> +		 * Must be dword aligned.  "0" in dram_lsb_ptr disables usage. */
+> +		__le32 dram_lsb_ptr;
+> +		u8 dram_msb_ptr;
+> +
+> +		u8 rts_retry_limit;	/*byte 50 */
+> +		u8 data_retry_limit;	/*byte 51 */
+> +		u8 tid_tspec;
+> +		union {
+> +			__le16 pm_frame_timeout;
+> +			__le16 attempt_duration;
+> +		} timeout;
+> +
+> +		/*
+> +		 * Duration of EDCA burst Tx Opportunity, in 32-usec units.
+> +		 * Set this if txop time is not specified by HCCA protocol (e.g. by AP).
+> +		 */
+> +		__le16 driver_txop;
+> +
+> +	);
+>   	/*
+>   	 * MAC header goes here, followed by 2 bytes padding if MAC header
+>   	 * length is 26 or 30 bytes, followed by payload data
+>   	 */
+> -	union {
+> -		DECLARE_FLEX_ARRAY(u8, payload);
+> -		DECLARE_FLEX_ARRAY(struct ieee80211_hdr, hdr);
+> -	};
+> +	struct ieee80211_hdr hdr[];
+>   } __packed;
+> +static_assert(offsetof(struct iwl_tx_cmd, hdr) == sizeof(struct iwl_tx_cmd_hdr),
+> +	      "struct member likely outside of __struct_group()");
+>   
+>   /*
+>    * TX command response is sent after *agn* transmission attempts.
+> @@ -2312,7 +2314,7 @@ struct iwl_scan_cmd {
+>   
+>   	/* For active scans (set to all-0s for passive scans).
+>   	 * Does not include payload.  Must specify Tx rate; no rate scaling. */
+> -	struct iwl_tx_cmd tx_cmd;
+> +	struct iwl_tx_cmd_hdr tx_cmd;
+>   
+>   	/* For directed active scans (set to all-0s otherwise) */
+>   	struct iwl_ssid_ie direct_scan[PROBE_OPTION_MAX];
+> @@ -2423,7 +2425,7 @@ struct iwlagn_beacon_notif {
+>    */
+>   
+>   struct iwl_tx_beacon_cmd {
+> -	struct iwl_tx_cmd tx;
+> +	struct iwl_tx_cmd_hdr tx;
+>   	__le16 tim_idx;
+>   	u8 tim_size;
+>   	u8 reserved1;
 
