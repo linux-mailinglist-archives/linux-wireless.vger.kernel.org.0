@@ -1,126 +1,100 @@
-Return-Path: <linux-wireless+bounces-12864-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12865-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACAEC9794B1
-	for <lists+linux-wireless@lfdr.de>; Sun, 15 Sep 2024 08:05:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE8489794DD
+	for <lists+linux-wireless@lfdr.de>; Sun, 15 Sep 2024 08:49:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 529DB1F21F20
-	for <lists+linux-wireless@lfdr.de>; Sun, 15 Sep 2024 06:05:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97C421F22152
+	for <lists+linux-wireless@lfdr.de>; Sun, 15 Sep 2024 06:49:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36B62171CD;
-	Sun, 15 Sep 2024 06:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E230722F19;
+	Sun, 15 Sep 2024 06:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=s.l-h@gmx.de header.b="t8rupJw+"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Om/r6H0p"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B90C1B85D6
-	for <linux-wireless@vger.kernel.org>; Sun, 15 Sep 2024 06:04:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E111B1B977
+	for <linux-wireless@vger.kernel.org>; Sun, 15 Sep 2024 06:49:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726380302; cv=none; b=ty8XMmB9KTcb771zMc5XqPjxwBLdYXsteiOSxQswaubeZFzrWfzkoWICZouP0SNiTVjfIYPgHGBsApeZ08lRiRfgtBcPnA/aS0t86s9F49VvuiZtB0qYVg1Td8XSoPexlIN0AkKN9u0tWBuzjtsEeK8rPVUvnJpnp3D/PgCTsXw=
+	t=1726382961; cv=none; b=sBNichHliJ/3oNJKPpn2SngfXrIrO29JeIQvd7+LS3/Og/0tIIe6Dw9BHmeJwW9JsOoUgVqp8T3Zihb1qW71GFL7HXa2l41hLlQm6WMn34CIbb/JdS2K9UnIS2hxbvsbIyP+wRtvAY5zllZA4AsdpQsbhNrW8PMKM9EDw1IVwDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726380302; c=relaxed/simple;
-	bh=YiMl0W5EXLkUxP5ABOFYavI7SdjQSbcsdYIa8Z69k1o=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f8uxE9VzACaHHGivjAaJxx52uwiu9k6KXnXcYS+FfCjjlwAGZk/QZjDcCimH2LuLCaOpJAx3RTWeA2FImusudqBe63lu37o1tJoTnN+/nhhCP/zHlixxHRlADNrXkoOAcX4NwV4jA2kjc4KiB1BQLqmdJqp+LheAvTnkZxW7Dcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=s.l-h@gmx.de header.b=t8rupJw+; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1726380282; x=1726985082; i=s.l-h@gmx.de;
-	bh=EZQUJxgWj+1fZbuZcHYdmnmyQgBzO6Kw1/SDCTEJGFk=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:
-	 References:MIME-Version:Content-Type:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=t8rupJw++QbR4xmSW24WPxenUJpMT4E8UEKhnj9fCN3HKzvYbcUtNPT+9beI2LEK
-	 XP4HDO23aoyk14Ui19aXu9NCGVwu1cixOYovpuZqSNILjCPmPd+PlofJuV8Mylkij
-	 msK5Svb3R53zZN2jxcyYmyYuFH8CWPUkzwLodgtfrYKnDH8CGKDPhHV6xkX8Ep0l/
-	 nLbljUaaUJyqRrRhwDnIuPU0NUNmRbSfseurEhuiUwbN9sFj82ZmbcMsHIPyJkK9H
-	 FzwsULYEjwvCYstzgdZiHCOKMMakkzeBozjrMZcsNnrtIdOZCi9VNKm7D7UmVz5SW
-	 ff5ZjOv0HblJEwHUSw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from mir ([94.31.81.155]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MqJmF-1sBvlR1Op1-00hTUu; Sun, 15
- Sep 2024 08:04:42 +0200
-Date: Sun, 15 Sep 2024 08:04:34 +0200
-From: Stefan Lippers-Hollmann <s.l-h@gmx.de>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "chewitt@libreelec.tv" <chewitt@libreelec.tv>
-Subject: Re: [PATCH 1/3] wifi: rtlwifi: Move code from rtl8192de to
- rtl8192d-common
-Message-ID: <20240915080434.564d1c66@mir>
-In-Reply-To: <4c4aa8160119935e48f9da679b502f80da4c0fc7.camel@realtek.com>
-References: <e1922019-21eb-4013-a35f-0077167e92cf@gmail.com>
-	<20240313064917.527110c4@mir>
-	<4c4aa8160119935e48f9da679b502f80da4c0fc7.camel@realtek.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1726382961; c=relaxed/simple;
+	bh=UJ5k25ZV3lJdTTaM8tIb7kjVAGzanB8T92WEAesbG6o=;
+	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=Yfrj4sl0d4bbDRzH7b3///1s73KoCN7OdaNSHvkmBCxAzGauvvZPoazY0XByzKwxq/9Bk6yTMUzmTsnIIkHcXqdnsKAZNqdky5/kx6Xy/5nqxe/XhEcyELbMVQloz+pU7jTX1eYTZY1i097/ciwnGEQawBPyYW7e1ZRv0eoC1ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Om/r6H0p; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-7d4f8a1626cso1758491a12.3
+        for <linux-wireless@vger.kernel.org>; Sat, 14 Sep 2024 23:49:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1726382958; x=1726987758; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kWfnMMz7l99gAM3XlLaOGRiADmU0oeZX94hUcKz22ns=;
+        b=Om/r6H0pEKLa5GFt2wbh6MvTrDhjT0jZILEHwKwtBvcodSea3ikjAcKpso0nGeJEUN
+         ABy1c6Ivjfy12JF4GhmhXbF4/00bftyOn1pdqW4MOOkEeDeWnXE5jqIdwBHF7V0Agl7I
+         Vt7UAwYKh6h7sS911lkWzxmShiABxPX17F6bc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726382958; x=1726987758;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kWfnMMz7l99gAM3XlLaOGRiADmU0oeZX94hUcKz22ns=;
+        b=gPkGvyYtuU8IETnpTTeGVjIQMKsPUvJdC1ChOJpUwNNT3KBul/Hxqzcf9Tl9dUOF8B
+         cgwhveASACAy6I1r7Re7RUKOJ9C9CnDAYg7C6WFVdEssxvnBvtuMCVN04+lzVu/Pu7dw
+         B6arKy2ExoXHfQHuhERqPwgntJZnaS1QTiJwPG1EPWIOugRQCZYfxYnwAZMhXV3tsEqx
+         Q4f1dOtFcmB1ZdMXZOdddR9riLvIRd1/AzPtafeucfOGyheR+h429S5fzo50tzBjqVyr
+         2+b2RcvdiT2wPFdJuznOVXdjYm3yZqQ8LKdC+0NigbfCETbFZEG6VO8xdBTlm8sEFNew
+         TN5Q==
+X-Gm-Message-State: AOJu0YwRba5eCnVR9CE/NuW2kH8F17mDXdQUCIlZTZomt/1NWMySBeIJ
+	+5VhISJGj5ZUbP5LhP2n3wPWcJ+AY3/3JBG9OpKPn2pX7PxCRFpPxoc/y+CyAg==
+X-Google-Smtp-Source: AGHT+IFE3Rw0RCxoDKs6dsS7IG+u5rzl9WSQMtzPPbskf+XeDvZ7pl7wwvVVMCZwzpDSVtxvmCYueA==
+X-Received: by 2002:a17:90b:4f91:b0:2d3:cd27:c480 with SMTP id 98e67ed59e1d1-2dbb9f7d558mr11323825a91.33.1726382957920;
+        Sat, 14 Sep 2024 23:49:17 -0700 (PDT)
+Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2dbcfcbb42fsm2576910a91.4.2024.09.14.23.49.11
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sat, 14 Sep 2024 23:49:17 -0700 (PDT)
+From: Arend Van Spriel <arend.vanspriel@broadcom.com>
+To: Jacobe Zang <jacobe.zang@wesion.com>, Kalle Valo <kvalo@kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, van Spriel <arend@broadcom.com>
+CC: <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <brcm80211@lists.linux.dev>, <brcm80211-dev-list.pdl@broadcom.com>, <nick@khadas.com>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Date: Sun, 15 Sep 2024 08:49:09 +0200
+Message-ID: <191f4714288.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <20240910-wireless-mainline-v14-2-9d80fea5326d@wesion.com>
+References: <20240910-wireless-mainline-v14-0-9d80fea5326d@wesion.com>
+ <20240910-wireless-mainline-v14-2-9d80fea5326d@wesion.com>
+User-Agent: AquaMail/1.52.0 (build: 105200518)
+Subject: Re: [PATCH v14 2/4] dt-bindings: net: wireless: brcm4329-fmac: add clock description for AP6275P
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:iDX3kvRN7G3ZmdGLq+NancrrJ6L5nEr2SCsp71Zi9X2X9K8BZSm
- 6DwUg2nkeeKFzPu/+eHwclAVisCVlXTvULP9YKtg9e2YsvuFxCeaisuMi2HeWOSjc/ookPx
- KGlQG7pWbOA7tgTVru+vq1E5s1Gt1CwTw8bjzk3I1CG6aHIiDK1wJJve8JNnU/nHouBajNx
- khs7GbfqRMGwZWYB75irg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:tk5SIBzLBks=;/dtjt7UfLLugB5Nr5KUGRK3wDx+
- 12T6VX/4mqnkfaNzacdG1vuuofzqzT61UvGzm07Khtb0Z+v+cUtrfA16MAAliBU/JJrsbUCfS
- chK7X74hDJB8R/433T/I55h/ZDaJAqbA3SD/0fdt/ZP3rszQOmccjeNu0YYC6HIipRfJXRQoc
- WxaxtXtI2iusXdXc4WZKOH8ivDbx7xQAsZShc8kgrwWPSxks6pxWCYs1S9vFjyd4WiJfunOhQ
- YAIEXP1VOdHO1j0HO8tIKtBDK+2lmHQDMvcQa5C6cInfNtV8O0L7Q3VMS6QoaXIZo8zoRmNO3
- IYv+IkWOrVa0HviX2R4T925HIAy+Tnz7irqhCm4htHOgjM3ZovkobZzt8sYWYRv03WQBsRLrR
- 3ZsVdjdn5Yln7UXppHfl2cvF/0QOg+tAFSk4XGXUpj7lPLyhgyb+dLWmB1wA16rS83WaRyqle
- IVCObmz0VdqU0bh9EZMBR6f4y3UxHMNDxkJLZB8UZyAOjQEaK5UjHNVuXNavHgO2Xa/Pmq2Uc
- BCjDabA/nf7Ib+Wi+HG+fUBh1jNDHFvnpoOGH1WCR6mh9FFKJLA/M05+l8+3nunRIiAAsLD8Y
- 9czpombzYFgfSsEkgDmU4VMUnLaN9RJJQUOGsxRLwF9N/qZzWRGCHeGSMraVlPStUBxBBXwfW
- qK4+qy3nXd+HUYxdQurcfXAvSFeix4w7ykQQFpLoJQlWDZvYZaE9lxtHRbKU2D+qwwoetKIAv
- 3DVco5FR3hW8siikAcOGbicOAGJ4x/ysSTC2b+gEK0I9OU3eBxtDc7W8hHcL0M097cAGdcXGe
- e06t0dQ4olg8PXv+SgMGGw9Q==
+Content-Type: text/plain; format=flowed; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 
-Hi
+On September 10, 2024 5:05:46 AM Jacobe Zang <jacobe.zang@wesion.com> wrote:
 
-On 2024-03-13, Ping-Ke Shih wrote:
-> On Wed, 2024-03-13 at 06:49 +0100, Stefan Lippers-Hollmann wrote:
-> > On 2024-03-13, Bitterblue Smith wrote:
-> > > Create the new module rtl8192d-common and move some code into it fro=
-m
-> > > rtl8192de. Now the rtl8192de driver (PCI) and the new rtl8192du driv=
-er
-> > > (USB) can share some of the code.
-[...]
-> > Using the firmware from https://github.com/lwfinger/rtl8192du/,
-> > it would be great if someone could publish the necessary firmware
-> > to linux-firmware.
-> >
-> > MD5:
-> > abccba1e9bb456eb81dfc88502a56300  /lib/firmware/rtlwifi/rtl8192dufw.bi=
-n
-> >
-> > SHA256:
-> > 9b51f15642b7f2d41e8369d7df956f92333c09699d8a88039081a8bdc77242a1  /lib=
-/firmware/rtlwifi/rtl8192dufw.bin
+> Not only AP6275P Wi-Fi device but also all Broadcom wireless devices allow
+> external low power clock input. In DTS the clock as an optional choice in
+> the absence of an internal clock.
 >
-> I can do that after this patchset get merged.
+> Reviewed-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Signed-off-by: Jacobe Zang <jacobe.zang@wesion.com>
+> ---
+> .../devicetree/bindings/net/wireless/brcm,bcm4329-fmac.yaml       | 8 ++++++++
+> 1 file changed, 8 insertions(+)
 
-As kernel v6.11 premiering with rtl8192du (which works well) isn't that
-far away, I'll just drop a reminder about publishing the corresponding
-rtlwifi/rtl8192dufw.bin firmware image to linux-firmware.
 
-Regards
-	Stefan Lippers-Hollmann
-
-Post scriptum: Apologies if I missed a corresponding patch to
-               linux-firmware.git.
 
