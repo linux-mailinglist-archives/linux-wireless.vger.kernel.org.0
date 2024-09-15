@@ -1,75 +1,80 @@
-Return-Path: <linux-wireless+bounces-12869-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12870-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 637E19796F2
-	for <lists+linux-wireless@lfdr.de>; Sun, 15 Sep 2024 16:01:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FB599796F3
+	for <lists+linux-wireless@lfdr.de>; Sun, 15 Sep 2024 16:01:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26588282128
-	for <lists+linux-wireless@lfdr.de>; Sun, 15 Sep 2024 14:01:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94C031C20BC3
+	for <lists+linux-wireless@lfdr.de>; Sun, 15 Sep 2024 14:01:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C92D1C5789;
-	Sun, 15 Sep 2024 14:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D92C1C461B;
+	Sun, 15 Sep 2024 14:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Y17Baf67"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Nnjo04ES"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB5E335C7
-	for <linux-wireless@vger.kernel.org>; Sun, 15 Sep 2024 14:01:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA0A1C68AE
+	for <linux-wireless@vger.kernel.org>; Sun, 15 Sep 2024 14:01:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726408874; cv=none; b=g3qf0PnsTRcXhcfoYCHtHtQ4D2H3k0/i+KWylBZTGwp4fXyY6ekPERBV7pK86mD4Stxh+Gv2z5mzKJljaLklbOuif5yWRlQ3nx45+/PPml751BzAH57F+JE6fRO2QIrD0Ejn2AEhhCxsWgRxZBVAfUgQKj5eSGr9++RjmaYtG10=
+	t=1726408877; cv=none; b=d4tbQ+GQFGfLTEXFBkicV4i4P8BuKNxx0a1avQTb2ev7713unvv5SzGAQY2VcosrsWB0J+cGtP0gwsP5lOmH+EJVcw6grZWp9UvqdCU8TUt8zpxRYgUYXcjWPRLyMtkgH/u0soUR4ZtDag6ZIaXVKoNJO5A9Wn69wuxLdtlsn78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726408874; c=relaxed/simple;
-	bh=a+0uL7m0OC2siKcEU3XeOFMt04QXcrLXRC1IKqOBsZI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MxP76ueg9xSVPoKKuGyLagt3sh4aJSLMaD74Aj64j6dx8I2AWKu+sd4W8XTdu7Yf02l46YqHSN2rLMJtCy1dGPzSaSMIoz5Dw/SE2lwMss8W+9P57Sm+brTCeXlfnGcXsQPRqHwQg50vJ8Sa+0Jm677DPIJvp7HRETF0+j9KF6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Y17Baf67; arc=none smtp.client-ip=209.85.210.182
+	s=arc-20240116; t=1726408877; c=relaxed/simple;
+	bh=uml4cHpK+TwnhqE+ohbsC0AOKVfC+X6BSRenIOKNoH4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=ltlqLfmkCbbU2UgcJq/rYhHjziDg/29OCSn5CPwa3SYjudNsEWsttQpp24aR18Hgo864W+HI9mtZmiDX3HBMI3u18EVwUdV2h/zvSfJAYj1nI+9zeyxUeQ1PXwC8oT77b48YJEmhSK7R7QagO+MSnRJPq3R8INtg6Uqu0nXzKl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Nnjo04ES; arc=none smtp.client-ip=209.85.210.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7191ee537cbso2585636b3a.2
-        for <linux-wireless@vger.kernel.org>; Sun, 15 Sep 2024 07:01:12 -0700 (PDT)
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-718e3c98b5aso2430074b3a.0
+        for <linux-wireless@vger.kernel.org>; Sun, 15 Sep 2024 07:01:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1726408872; x=1727013672; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XzjXCELMn5sAp75jFiBMFegVOo/PxDiQoVaRfxu8460=;
-        b=Y17Baf67lGs7hA7gy+ywQ6WLzOE7C44EPl6TP3AoWpOCQrVdgNgeTb7OjItho5p6B2
-         NRGMoLyJ0CjOce4gzfkp0KB7KkQHOaPkvi0uxFNyhk4QOj03uSNOny8ca8fSYAnHA8Tg
-         7YDJQ/QpDFPfqnbQ8QFPBN2L0t6u7rdJc6Z94=
+        d=broadcom.com; s=google; t=1726408875; x=1727013675; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lGqo/vTlCHBqJgwS1IGoE7Tm+c5bmlo3zOENGIdDJO4=;
+        b=Nnjo04ESMOt3J5idzCL/rhliPy6/h91Ww3DQsDkOO2lJx5h9tmNBhIz7QIUYpH4LlT
+         p0DdL5BrQtzHITRsuU7Mw3konDJenua0dAgtJPo8/o7I4rzzfIXfsIFlyXBOImDyrlwI
+         TtpdsH9oUCCCOSZkL17cSqANxAKzBfURGeH0w=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726408872; x=1727013672;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XzjXCELMn5sAp75jFiBMFegVOo/PxDiQoVaRfxu8460=;
-        b=WlEyxivLreaGzw8ugkDvce7lQNoiSlynwUKrn3bxiboXqGLqioBPm1Wm2ATduTqbPr
-         WONi6ofMHtJudPE0+Fkp7Yo1gqSnwuRmtBdk+O9/o71zaY5GROInNtwMn4sk5wHGKXWN
-         GewNMp6x2DjmewmWBo0uaUJIDQ3udANs0smwoikb5LU6n5ihhodXrrqMQJYRpYViR6cY
-         xk6Jsk9MTX6Iwi+xc6MP+FC2bIm5yGkb6+dZ8rRASzTIcK4cO4XsAdnYVW/x/ryUnpDf
-         Ka+VXc2XyvsYS/96qGUW9gnJ7G39C0WEKCOkApC3AYXRY1y4QNoaUQH0izJdnyqcl/iZ
-         JOHA==
-X-Gm-Message-State: AOJu0YyNxMUhlmmiSwiA33FPpaCHsRp0mD+XiMnJVmdBaG4qBSg8o5Vs
-	F5r/LyXFSY9Inv62lapBjyFvQzdNUvRUSb8tvzizVdqsQobZQDlg4jchOIARYQ==
-X-Google-Smtp-Source: AGHT+IGQxzsRD+xIYHyePMLG931w0ChJOtyukmJq2dUqPEjupy3TUcIYWpdNBMHO7RBtVPZIwGQC9Q==
-X-Received: by 2002:a05:6a21:1698:b0:1d2:ba7c:d8cf with SMTP id adf61e73a8af0-1d2ba7cdebcmr4924670637.7.1726408871876;
-        Sun, 15 Sep 2024 07:01:11 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1726408875; x=1727013675;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lGqo/vTlCHBqJgwS1IGoE7Tm+c5bmlo3zOENGIdDJO4=;
+        b=fxr6eyzndGN1Y9MkH+6GEQAcLhANQ1egrhzzF/zxNufdfaBf+Anqyk/jYkUKt66zSH
+         bJs5miuVJE+ktbV4USeC7LMNT5HzcAQSK08St2ICEEQRmArp5HI1KrGLNvWWoo61XslV
+         lsI4nXIX3fdCPyK/JTlj4PqmzXFEo8IJ88ykY3ZeQ7Qp87uXro7jbEFVEsfSoAodSsII
+         Kax6+UqiI4yF37GH08DqkcZwJFZ3Rsjrx6WyhZX9wpnT/fiCw7nEvf7rPuTefX3dZ0mv
+         bNvgoLbWK6XZuzh5S3MjiTuiLB5zYeaqUiyLQCpbCDJKgIcZ0bT+vPTxorKx5mVVTp5i
+         lASg==
+X-Gm-Message-State: AOJu0YwATgSnA7ytshkbMTQ769sCiHTFbN/8fK2z4OfuDCg4RFg9YEJD
+	Eu1LB80PaZo93VlJ85PQesLmWcGmg/gAfkoyUTyq1iy1S35iFVVGTZHXWu7c0vxytR4s8fFy22r
+	YKQ==
+X-Google-Smtp-Source: AGHT+IEeGFR2t0Pe7Hg4eDIEWcCQAKVHqWlWjX8XtaDyO7yeUir5L6NwAr6Q3J4lDCXnZMt3875giw==
+X-Received: by 2002:a05:6a20:c916:b0:1d0:2531:ddb2 with SMTP id adf61e73a8af0-1d02531de2fmr15453413637.9.1726408874333;
+        Sun, 15 Sep 2024 07:01:14 -0700 (PDT)
 Received: from bld-bun-02.bun.broadcom.net ([192.19.176.227])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71944ab50d6sm2233511b3a.75.2024.09.15.07.01.09
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71944ab50d6sm2233511b3a.75.2024.09.15.07.01.12
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 15 Sep 2024 07:01:11 -0700 (PDT)
+        Sun, 15 Sep 2024 07:01:13 -0700 (PDT)
 From: Arend van Spriel <arend.vanspriel@broadcom.com>
 To: Kalle Valo <kvalo@kernel.org>
 Cc: linux-wireless@vger.kernel.org,
 	brcm80211@lists.linux.dev,
 	Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: [RFT 0/3] brcmfmac: external auth support for Infineon devices
-Date: Sun, 15 Sep 2024 16:00:46 +0200
-Message-Id: <20240915140049.181380-1-arend.vanspriel@broadcom.com>
+Subject: [RFT 1/3] wifi: brcmfmac: support per-vendor cfg80211 callbacks and firmware events
+Date: Sun, 15 Sep 2024 16:00:47 +0200
+Message-Id: <20240915140049.181380-2-arend.vanspriel@broadcom.com>
 X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20240915140049.181380-1-arend.vanspriel@broadcom.com>
+References: <20240915140049.181380-1-arend.vanspriel@broadcom.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -78,41 +83,114 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The Infineon chips support external authentication in station mode when
-firmware advertises it. The feature that must be present in firmware is
-sae_ext. This has been ported from Infineon repository and makes use of
-the per-vendor framework. It showcases how things can be organized per
-vendor to provide the functionality.
+Adding two vendor operations that can be used to provide per-vendor
+cfg80211 callbacks and per-vendor handlers for firmware events. These
+two are often related to handling interactions from user-space through
+nl80211. Exporting brcmf_fweh_register() for registering the per-vendor
+event handler callbacks. Some other exports for get event name string
+and allowing use of brcmf_dbg() in per-vendor module.
 
-Unfortunately, I have no Infineon device and firmware that makes use of
-external auth. Hence this is a request for testing for people who do
-before submitting as formal patch series. Before testing the firmware
-features can be checked through debugfs file 'fwcap' to assure the
-'sae_ext' feature is present.
+Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+---
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c     |  2 ++
+ .../broadcom/brcm80211/brcmfmac/common.c       |  1 +
+ .../broadcom/brcm80211/brcmfmac/core.c         |  2 ++
+ .../broadcom/brcm80211/brcmfmac/fweh.c         |  2 ++
+ .../broadcom/brcm80211/brcmfmac/fwvid.h        | 18 ++++++++++++++++++
+ 5 files changed, 25 insertions(+)
 
-Arend van Spriel (3):
-  wifi: brcmfmac: support per-vendor cfg80211 callbacks and firmware
-    events
-  wifi: brcmfmac: make per-vendor event map const
-  wifi: brcmfmac: cyw: support external SAE authentication in station
-    mode
-
- .../broadcom/brcm80211/brcmfmac/cfg80211.c    |  44 ++-
- .../broadcom/brcm80211/brcmfmac/cfg80211.h    |  25 ++
- .../broadcom/brcm80211/brcmfmac/common.c      |   1 +
- .../broadcom/brcm80211/brcmfmac/core.c        |   2 +
- .../broadcom/brcm80211/brcmfmac/cyw/core.c    | 308 ++++++++++++++++++
- .../brcm80211/brcmfmac/cyw/fwil_types.h       |  84 +++++
- .../broadcom/brcm80211/brcmfmac/feature.c     |   3 +-
- .../broadcom/brcm80211/brcmfmac/feature.h     |   4 +-
- .../broadcom/brcm80211/brcmfmac/fweh.c        |   7 +-
- .../broadcom/brcm80211/brcmfmac/fweh.h        |   8 +-
- .../broadcom/brcm80211/brcmfmac/fwvid.h       |  29 ++
- 11 files changed, 492 insertions(+), 23 deletions(-)
- create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/fwil_types.h
-
-
-base-commit: 34c44eb31de9cb7202ff070900463d6c706392c4
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index 349aa3439502..92e310f7f2ce 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -6752,6 +6752,8 @@ static void brcmf_register_event_handlers(struct brcmf_cfg80211_info *cfg)
+ 	brcmf_fweh_register(cfg->pub, BRCMF_E_PSK_SUP,
+ 			    brcmf_notify_connect_status);
+ 	brcmf_fweh_register(cfg->pub, BRCMF_E_RSSI, brcmf_notify_rssi);
++
++	brcmf_fwvid_register_event_handlers(cfg->pub);
+ }
+ 
+ static void brcmf_deinit_priv_mem(struct brcmf_cfg80211_info *cfg)
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+index b24faae35873..078fb404a0ed 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+@@ -491,6 +491,7 @@ void __brcmf_dbg(u32 level, const char *func, const char *fmt, ...)
+ 	trace_brcmf_dbg(level, func, &vaf);
+ 	va_end(args);
+ }
++BRCMF_EXPORT_SYMBOL_GPL(__brcmf_dbg);
+ #endif
+ 
+ static void brcmf_mp_attach(void)
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
+index df53dd1d7e74..b876c20e3af2 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
+@@ -1359,6 +1359,8 @@ int brcmf_attach(struct device *dev)
+ 	brcmf_fweh_register(drvr, BRCMF_E_PSM_WATCHDOG,
+ 			    brcmf_psm_watchdog_notify);
+ 
++	brcmf_fwvid_get_cfg80211_ops(drvr);
++
+ 	ret = brcmf_bus_started(drvr, drvr->ops);
+ 	if (ret != 0) {
+ 		bphy_err(drvr, "dongle is not responding: err=%d\n", ret);
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
+index f0b6a7607f16..4f76e812a860 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fweh.c
+@@ -75,6 +75,7 @@ const char *brcmf_fweh_event_name(enum brcmf_fweh_event_code code)
+ 	return "nodebug";
+ }
+ #endif
++BRCMF_EXPORT_SYMBOL_GPL(brcmf_fweh_event_name);
+ 
+ /**
+  * brcmf_fweh_queue_event() - create and queue event.
+@@ -405,6 +406,7 @@ int brcmf_fweh_register(struct brcmf_pub *drvr, enum brcmf_fweh_event_code code,
+ 		  brcmf_fweh_event_name(code));
+ 	return 0;
+ }
++BRCMF_EXPORT_SYMBOL_GPL(brcmf_fweh_register);
+ 
+ /**
+  * brcmf_fweh_unregister() - remove handler for given code.
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
+index e6ac9fc341bc..7fe78d41f291 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
+@@ -15,6 +15,8 @@ struct brcmf_fwvid_ops {
+ 	void (*feat_attach)(struct brcmf_if *ifp);
+ 	int (*set_sae_password)(struct brcmf_if *ifp, struct cfg80211_crypto_settings *crypto);
+ 	int (*alloc_fweh_info)(struct brcmf_pub *drvr);
++	void (*get_cfg80211_ops)(struct brcmf_pub *drvr);
++	void (*register_event_handlers)(struct brcmf_pub *drvr);
+ };
+ 
+ /* exported functions */
+@@ -56,4 +58,20 @@ static inline int brcmf_fwvid_alloc_fweh_info(struct brcmf_pub *drvr)
+ 	return drvr->vops->alloc_fweh_info(drvr);
+ }
+ 
++static inline void brcmf_fwvid_get_cfg80211_ops(struct brcmf_pub *drvr)
++{
++	if (!drvr->vops || !drvr->vops->get_cfg80211_ops)
++		return;
++
++	drvr->vops->get_cfg80211_ops(drvr);
++}
++
++static inline void brcmf_fwvid_register_event_handlers(struct brcmf_pub *drvr)
++{
++	if (!drvr->vops || !drvr->vops->register_event_handlers)
++		return;
++
++	drvr->vops->register_event_handlers(drvr);
++}
++
+ #endif /* FWVID_H_ */
 -- 
 2.32.0
 
