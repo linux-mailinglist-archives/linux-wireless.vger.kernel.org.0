@@ -1,139 +1,92 @@
-Return-Path: <linux-wireless+bounces-12891-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12892-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15217979F9A
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Sep 2024 12:44:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5630597A2B6
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Sep 2024 15:05:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50D7F1C21EDF
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Sep 2024 10:44:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 891631C20976
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Sep 2024 13:05:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F2413C67C;
-	Mon, 16 Sep 2024 10:43:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C297155725;
+	Mon, 16 Sep 2024 13:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="qEbuHz08";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="qYhd9qEU";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="qEbuHz08";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="qYhd9qEU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qajCUoRS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E9B14A4D6
-	for <linux-wireless@vger.kernel.org>; Mon, 16 Sep 2024 10:43:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD241553B7
+	for <linux-wireless@vger.kernel.org>; Mon, 16 Sep 2024 13:05:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726483437; cv=none; b=hsfWdcx0CgemiwnQ2BahWo9FtvS2qKeBk4IhP05g8HbxrXqjIFuWyieqoRp2vLnAw108wNXRNaPBaGhJrvwUpD+iSk/4HhULqcLwqHFeOXFzGLEbQxmomq8gqSPMP9HVn1xzHEX1ujvCTsr2ONB4Z6hnq5t/X856OB4hcUC9Ma0=
+	t=1726491949; cv=none; b=EOEC1eY4qv8GpZcJY9SiLIFGvD4bnl79ysqR47pTS9k7gOihSZcvrrd7ODH1dhjRhWwZIBGHGYwhkD4s7iGesMs9cYmNhNx8M2VT+j3hIz2Fm7oHd9OMFDSAI8A95nvVzY8fgQn3Rp7yvGSl7fqTVCj4gi2ovIUFcOntviBbA5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726483437; c=relaxed/simple;
-	bh=OTJapcO3POfDBlQ38IrATYyBovRijWEIGyWaTlfZ4Ow=;
-	h=Date:Message-ID:From:To:Cc:Subject:MIME-Version:Content-Type; b=Pbwbkg24yXje5W81lAwLxq2ily1m6eMwROsifP0IVed1yUh6DImGney9ZlcZugrSPRqYnJ5XxMz/5eE83zxxfn8fNkA5kxlSgs5Z6G93tk6Bz13YIHmI3xaZDx2ao8sukvlmblStM3Y97H3ITwFjjFG2W6y3aI92H4YFB37nPTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=qEbuHz08; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=qYhd9qEU; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=qEbuHz08; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=qYhd9qEU; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 9808C1F895;
-	Mon, 16 Sep 2024 10:43:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1726483434; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type;
-	bh=JCYpXAKohfIlW3x6QjmlkJ2Le5WznREgzJLuUnIdmt8=;
-	b=qEbuHz08WICnDRPYfdNIEtbgBqM5KQuM1/4JA214AlkuohasfHymoAIrP1NLKdiMGdq0JB
-	AE+DRwKbdjqlisOVCIh4SYfZOBJ7SK+3snGXePyVNd07COgi4jSuk/u5h6NUkPgiVB+UDC
-	4ac14rJkxpUuPU1qRI90v9xUes2O1Pc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1726483434;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type;
-	bh=JCYpXAKohfIlW3x6QjmlkJ2Le5WznREgzJLuUnIdmt8=;
-	b=qYhd9qEUa9VfmxA1TTvCExzRiTmd643voSZMrWvvHXNj1M8Xrc1X6N1zZFQ/w6QC3Opd8z
-	RUnxZLaEOzJGmiCQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1726483434; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type;
-	bh=JCYpXAKohfIlW3x6QjmlkJ2Le5WznREgzJLuUnIdmt8=;
-	b=qEbuHz08WICnDRPYfdNIEtbgBqM5KQuM1/4JA214AlkuohasfHymoAIrP1NLKdiMGdq0JB
-	AE+DRwKbdjqlisOVCIh4SYfZOBJ7SK+3snGXePyVNd07COgi4jSuk/u5h6NUkPgiVB+UDC
-	4ac14rJkxpUuPU1qRI90v9xUes2O1Pc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1726483434;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type;
-	bh=JCYpXAKohfIlW3x6QjmlkJ2Le5WznREgzJLuUnIdmt8=;
-	b=qYhd9qEUa9VfmxA1TTvCExzRiTmd643voSZMrWvvHXNj1M8Xrc1X6N1zZFQ/w6QC3Opd8z
-	RUnxZLaEOzJGmiCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 74C89139CE;
-	Mon, 16 Sep 2024 10:43:54 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id uKsCG+oL6GbpaQAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Mon, 16 Sep 2024 10:43:54 +0000
-Date: Mon, 16 Sep 2024 12:44:44 +0200
-Message-ID: <87bk0nc1yb.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Kalle Valo <kvalo@qca.qualcomm.com>
-Cc: ath12k@lists.infradead.org,
-    linux-wireless@vger.kernel.org
-Subject: ath12k firmware regression with update 82318c966fd1
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	s=arc-20240116; t=1726491949; c=relaxed/simple;
+	bh=RMwMLkJh3YIgZ/58xtZg63tgS5MnB+406c9amhG2MnA=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=paU5fg64SGzEmZLx91oXasIvQIeejh2RlKLXnd44EmzB65n3QmofctY5UlmaiDhIDb6AvzDDj7Nf9Z7giNTAZTwRBh8MYWXTNVw9qe1ygfTTHFACf4EUe985VhA/QdcxqGXK9HZ6g79anIvNcqa9ZnPDnzPb1fNpD2OPNPOnc6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qajCUoRS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D628C4CEC4;
+	Mon, 16 Sep 2024 13:05:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726491949;
+	bh=RMwMLkJh3YIgZ/58xtZg63tgS5MnB+406c9amhG2MnA=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=qajCUoRS4Mby7Nj3VPRNFWZ3UCjssfuHLsNKGUpvxwFjuV8LstG7mFzXGMbdq45jD
+	 ystXs78PB7W7Y2JpKB2eY0emgp93NWXal5kcvnKL17Bgqw2RNaUHvZvQuXV8HXDTmv
+	 lO3ZXMEA6YhSUJwDKgzdHm8Gac842ZdxNp4yJSHfXHWfrqGimSUS4/KT9aw/HvWHCD
+	 IXu1VYTkuASAlPlhdnbho/1/gZZKUHtytTNUub2sGIUm0nrRFVVaYv6duOJRjllsxr
+	 u/0unoBisSFkGBqxkSGMzc5S7cAewMynB+4U2h8XusWHgIrju1fGD+gB0WCJVZ+LXP
+	 XMCdfkEYMCgAg==
+From: Kalle Valo <kvalo@kernel.org>
+To: Takashi Iwai <tiwai@suse.de>
+Cc: ath12k@lists.infradead.org,  linux-wireless@vger.kernel.org
+Subject: Re: ath12k firmware regression with update 82318c966fd1
+References: <87bk0nc1yb.wl-tiwai@suse.de>
+Date: Mon, 16 Sep 2024 16:05:46 +0300
+In-Reply-To: <87bk0nc1yb.wl-tiwai@suse.de> (Takashi Iwai's message of "Mon, 16
+	Sep 2024 12:44:44 +0200")
+Message-ID: <875xqveok5.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCPT_COUNT_THREE(0.00)[3];
-	FROM_HAS_DN(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:url,suse.de:mid]
-X-Spam-Score: -3.30
-X-Spam-Flag: NO
+MIME-Version: 1.0
+Content-Type: text/plain
 
-Hi,
+Takashi Iwai <tiwai@suse.de> writes:
 
-it seems that the recent update of ath12k WCN7850 board-2.bin update
-broke WiFi on Lenovo Thinkpad 14 Gen 5 AMD.  Reverting to the older
-firmware seems fixing the issue.
+> it seems that the recent update of ath12k WCN7850 board-2.bin update
+> broke WiFi on Lenovo Thinkpad 14 Gen 5 AMD.  Reverting to the older
+> firmware seems fixing the issue.
 
-The report for openSUSE Tumbleweed is found at
-  https://bugzilla.suse.com/show_bug.cgi?id=1230596
-and for Arch
-  https://bbs.archlinux.org/viewtopic.php?id=299286
+Just to clarify, reverting to an older board-2.bin seems to fix the
+issue. (Board files are basically calibration data)
 
-Let me know if it's already handled in Qualcomm and the fix is
-expected shortly.  Otherwise I'll try to revert the change locally for
-TW as a temporary solution.
+> The report for openSUSE Tumbleweed is found at
+>   https://bugzilla.suse.com/show_bug.cgi?id=1230596
+> and for Arch
+>   https://bbs.archlinux.org/viewtopic.php?id=299286
 
+For easier tracking can someone file a bug to bugzilla.kernel.org? Also
+please include more information:
 
-thanks,
+https://wireless.wiki.kernel.org/en/users/drivers/ath12k/bugreport
 
-Takashi
+> Let me know if it's already handled in Qualcomm and the fix is
+> expected shortly.  Otherwise I'll try to revert the change locally for
+> TW as a temporary solution.
+
+This is the first time I'm hearing about this and to my knowledge there
+is not fix pending.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
