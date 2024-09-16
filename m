@@ -1,200 +1,610 @@
-Return-Path: <linux-wireless+bounces-12888-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12889-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 743C0979EE5
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Sep 2024 12:04:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C84B979F2D
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Sep 2024 12:21:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35E41281C7E
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Sep 2024 10:04:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C28B6281969
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Sep 2024 10:21:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD1F013CA9C;
-	Mon, 16 Sep 2024 10:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53BD14E2C0;
+	Mon, 16 Sep 2024 10:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b="Kg26IAC6";
-	dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b="GLUgEEhm"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=s.l-h@gmx.de header.b="f2kYwbDC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx07-0057a101.pphosted.com (mx07-0057a101.pphosted.com [205.220.184.10])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D0617C8D
-	for <linux-wireless@vger.kernel.org>; Mon, 16 Sep 2024 10:04:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.184.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726481087; cv=fail; b=d65xG8+cWIKS0MIVLBy+iZ6nWgwXacgQwA/RGFdPwitOt3fib6DxyoHNlbeLUW8m4VcsH6epOAFHcaxV+vLLnC+HOwAoifgFCOt7A3/0LyyFT9THpcKM2pSSIraOO9kUJUvPKiIZOAbyFXFzd4feHcAOsGSeOKiCdxJWpK2qb7M=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726481087; c=relaxed/simple;
-	bh=1NgUetmWGupJbH8UKr32AP3I1Jo17X5thIDTajuDJEQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:Content-Type:
-	 Content-Disposition:MIME-Version; b=ViXHjDdRj+JQyAJplBtpR9jv4V+Mz1nKmSAc3McQrNYBixyO3yRWwQiTr0Ju+KiS5h7VkBECbUyd1PIFMxHJMNKpS5TZqgOnZqrq37/aO5ii++sqazAbmAWoioXtwuCT+EjIUTbeLyc4qt0fz0+CpGsP/Y5qz4Q3Vmf/g95j5rE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=westermo.com; spf=pass smtp.mailfrom=westermo.com; dkim=pass (2048-bit key) header.d=westermo.com header.i=@westermo.com header.b=Kg26IAC6; dkim=pass (1024-bit key) header.d=beijerelectronicsab.onmicrosoft.com header.i=@beijerelectronicsab.onmicrosoft.com header.b=GLUgEEhm; arc=fail smtp.client-ip=205.220.184.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=westermo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=westermo.com
-Received: from pps.filterd (m0214197.ppops.net [127.0.0.1])
-	by mx07-0057a101.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48G9W3Pa012729;
-	Mon, 16 Sep 2024 11:44:27 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=westermo.com; h=
-	cc:content-type:date:from:message-id:mime-version:subject:to; s=
-	270620241; bh=1NgUetmWGupJbH8UKr32AP3I1Jo17X5thIDTajuDJEQ=; b=Kg
-	26IAC6YaItZi8VORBPIIRyQbUFGrsNQeOfdZD/8k4LsZ85KlzhQ/qumm6hP+8jfy
-	B1cNiZAXrM86/squTxaajkXaG7omgsF4Ubxfv1fAD9RM6Nu0QxLo7NBHfcpq6D8D
-	hQxzWiH7p1gFY/7bOssosUiJn4SMJnMV6v+JNQprHsfywn4qazObiCMaOS/NNSf0
-	4vjYhPVVMKoQ0DmMkx9mLhcJp3VtzIReRw5g/lZs2uXU526h1bclh/PJMTkAVADL
-	Nwn6+2Y/fCIVchiHWYxZoaG1R+R+2Z7+Z1vHH3yZc1ZVf9Kvyeo3MMxqKBFlsG+u
-	wGNsq+pi9l0i2VbhOmfg==
-Received: from eur05-am6-obe.outbound.protection.outlook.com (mail-am6eur05lp2107.outbound.protection.outlook.com [104.47.18.107])
-	by mx07-0057a101.pphosted.com (PPS) with ESMTPS id 41mxuda48g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Sep 2024 11:44:26 +0200 (MEST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ZLQLX8rEHskXTNeaYJHnrKEG45JV8mAP9ijHtzrs0EusLlDC/C2sq12VEbiCY7ZiqQ2pmCtk/Aug10JdCe/E8WA4zPYM4qQfEC26gSZJ/0a+YBsPJ0XVc7oRFh/30KwarfbQa19gRFT26cZCpu97onMH0edOCJxbxaSle+KkE9Da29xm+xnfYp6uAS21ho73Xu3YibCl9NpyjmxCXGy3JY6pj19eu3WgaZ0Tn3d7ictf03MKFn9PQjVV8qObllKyorNp77yME7q4ahrFZkqsSu4CQJyuL+D7L9ysnKM8vEl5bSGMNx+zTboYebLJ7FnOKZjBOqGXH0zd9saoWZjP2g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1NgUetmWGupJbH8UKr32AP3I1Jo17X5thIDTajuDJEQ=;
- b=dUbzrJnfenqtDYmzkm3O1JzOxOXdgpwbE1kJkN9w0oOAhDx9pmSsZuTK9u2TFdkV/ocegERtFCm47MZhwfs0qLOMoQ5oXMyQK4krHDGJpz14TWefBro/pdFHuF8r8yDEyLO48IV2q4XkyAfjwTt0l7qjeOAKtbm38E2sl2oEpx05weVwrNOZ4qnvyAmf37kcQ6Ll8ANM0CvFGKuPcKQYsrqBAs1f1/B119xsieFefIoBkZ4oFz05MAY4OYHaG97oiFQU1VrLkr2tywbcS/hzoQqexVA6VUbci5HQUGJp6vYmVgtIKvjZbC4lXGOvM5o1LTNro6bqWJiGeh5Sh7NVFg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=westermo.com; dmarc=pass action=none header.from=westermo.com;
- dkim=pass header.d=westermo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=beijerelectronicsab.onmicrosoft.com;
- s=selector1-beijerelectronicsab-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1NgUetmWGupJbH8UKr32AP3I1Jo17X5thIDTajuDJEQ=;
- b=GLUgEEhm2xEhnNyuTDgTWMSyOzw9h1AbESvyDv/DvyG2pkOBShFTIq5+bW1Iu1eiU//uir4cf67cwt6q3EcZSY2Wja91QzWm5MBZZk2k2vdcdqFBCv+neVAAkf9Uss6iOwDF5KQHW0ADpce/m8CaM4nF2IAdG9pIyp4E9+x3OS0=
-Received: from AS8P192MB1238.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:3cf::23)
- by AS4P192MB1839.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:51b::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.24; Mon, 16 Sep
- 2024 09:44:23 +0000
-Received: from AS8P192MB1238.EURP192.PROD.OUTLOOK.COM
- ([fe80::63f4:d454:dfd2:7971]) by AS8P192MB1238.EURP192.PROD.OUTLOOK.COM
- ([fe80::63f4:d454:dfd2:7971%5]) with mapi id 15.20.7962.022; Mon, 16 Sep 2024
- 09:44:23 +0000
-Date: Mon, 16 Sep 2024 11:44:20 +0200
-From: Alexander Wilhelm <alexander.wilhelm@westermo.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org
-Subject: Missing event
-Message-ID: <Zuf99G9733Ng41HE@FUE-ALEWI-WINX>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-ClientProxiedBy: GV2PEPF000045A4.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:158:401::40f) To AS8P192MB1238.EURP192.PROD.OUTLOOK.COM
- (2603:10a6:20b:3cf::23)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5144FA935
+	for <linux-wireless@vger.kernel.org>; Mon, 16 Sep 2024 10:21:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726482085; cv=none; b=cYX8oAabJ2HCqdZK4VSBJOsyEM/oglpcG12wzLhj8bTLpy2jEIz11N/0NyXEg5SYXPmQbqQNMalwUJ/LJ45duTXY3v0507skxQeDAG4zl2xtedevMU5pAjTRAUSc7CPSL82/JsaVcPdQ0shB6ZpQSIgwuktOwOjdhp/Zk/32CMo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726482085; c=relaxed/simple;
+	bh=rOcmnoe1FSxkCxkOprDoSHqeBErSJaOiByo1hVRwFv8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Pb8g5ywkmhbP9JByfObyZTE+pOdupWkdShVppFmDcc2+MswYYkmgx2RY5FTfU6E34FDcpIzyIWglepYoNM5vY6IEV9qLgQvAJTn3n0yMzuxvWEJYt4+6z+w09kLgNlPyTv4qbWw8P4Cxb2TjX3Kaam45wj6Ih5gL/ZlMTkJqNe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=s.l-h@gmx.de header.b=f2kYwbDC; arc=none smtp.client-ip=212.227.15.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1726482071; x=1727086871; i=s.l-h@gmx.de;
+	bh=kTCm+NXCEOV/Oem4vJO48DeGdxULj80Tpe8AqqiA0mo=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:In-Reply-To:
+	 References:MIME-Version:Content-Type:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=f2kYwbDClhHJhdiQihakXTO7DOZ77IKrnRAvSI5q600BVU8tfFRk1OQTOjIs/NB8
+	 ui8nL7IBA4K+4aHDWPMiFbQ6Pogj3qUKHArG2EJJSwuf+ClJBgXN9QxByOUVlV3sh
+	 Y2F/lxTNhtF83M4cBjB5l03Aml+oNKjpBdVEGZOzg9lXQjdFIo1wvtB9I63D5KGNC
+	 l/9jtKEhAhINnrwb4pL1cGAUa6HS8sPEBTwCFLC9qsTTU6kfDvj5J4EN2EvzghWpj
+	 49udgrCas4rt6SDKZXy6FYuSiXdDXsakEUk+PZXpLkkX4zj1592a3PV6unQ/NLKXw
+	 K5+ZdXsNtDyeAAMccA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from mir ([94.31.81.155]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MLzFr-1sYt7O2rUv-00YNCn; Mon, 16
+ Sep 2024 12:21:11 +0200
+Date: Mon, 16 Sep 2024 12:21:08 +0200
+From: Stefan Lippers-Hollmann <s.l-h@gmx.de>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "chewitt@libreelec.tv" <chewitt@libreelec.tv>
+Subject: Re: [PATCH 1/3] wifi: rtlwifi: Move code from rtl8192de to
+ rtl8192d-common
+Message-ID: <20240916122108.165d5741@mir>
+In-Reply-To: <f0900afbfbd54f5a9fae875e1cb53470@realtek.com>
+References: <e1922019-21eb-4013-a35f-0077167e92cf@gmail.com>
+	<20240313064917.527110c4@mir>
+	<4c4aa8160119935e48f9da679b502f80da4c0fc7.camel@realtek.com>
+	<20240915080434.564d1c66@mir>
+	<f0900afbfbd54f5a9fae875e1cb53470@realtek.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8P192MB1238:EE_|AS4P192MB1839:EE_
-X-MS-Office365-Filtering-Correlation-Id: c34826b3-bed4-442e-0025-08dcd634252d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?yiahiWMFkWZNK0z7IlH8Q4ZeuDLeWXJ307TqX4jJJWgdhIq6AN4DtKOpLaIL?=
- =?us-ascii?Q?+I1krNRGCXpqI7xr7v/j3eUQty8eSrezj3H6aLU7A8IbFtsANXBi3O9dobWo?=
- =?us-ascii?Q?kH/ZZGuPOAt7fdVvZQBe0WhtR2EbfXoOfiYaJGC2S+JaoK+hHtu/xxZqCsTW?=
- =?us-ascii?Q?dRsB2d8XOe//08dtYKtsyuUS1qGIHvEy9saPH05z4lKay9b+VVXKplxXUJIj?=
- =?us-ascii?Q?EnQ2APxUGViuDoF8PU36tg0FJGohx8VhbHXCxTIqI6om4Ez+mt3FvtVHWOYK?=
- =?us-ascii?Q?jxlrZAAQ7Wam8/789w1zLEPDXzegJGvFCiPGV4ZtUQYoL1eZAXqCrCEasiPL?=
- =?us-ascii?Q?LPkeXMGMhmPxUukCft7uaDeFYpmXTrACm/SmGcmdCT07Lk4FQiqjiAkYLhcK?=
- =?us-ascii?Q?5aKtxW2Z2V50HMiJFW6oM0FLozIp4SeL7bb9nMfHpEgkAs9sgdExjFxAKSLf?=
- =?us-ascii?Q?rMsFEYYoa9xLubcoSHNyoCGfwX6Ll93CuFDlALMp+1M0Yi28Y6fXvNqg/GDv?=
- =?us-ascii?Q?8NvMn/5FUU90QnkpLUzw1HVNhreu0Kj/n5KGHZJ7XFZUZRMKnCQDPAeHBhU/?=
- =?us-ascii?Q?994mcelZ8WnknX9AnmFQd4zlYe1ZbBBQ/kX76lM92ZjFNb63Og2c+VkDZDM8?=
- =?us-ascii?Q?AtkNTAsOnDG96ZpNElzi7KjFUR+janOCETAH/6MHG1fYW0qPKBHGWPtkLLCO?=
- =?us-ascii?Q?R+aUp2WL8BhKutLq7O+ypbjv3q+rGOKARLEa/2q7gFzaDF3TdBrjG/Q8YkNR?=
- =?us-ascii?Q?8x0rlY/qL3P5e2rPTslbu/pWFhZuxXhrTXHLIfoRMSOfmay9qfbz3kZ8Is5G?=
- =?us-ascii?Q?LWNprC/PGexqM5Gw5GDuIPLDtPZ89xnzPdgDDqPk0UqS057eAMmYF9kT84WB?=
- =?us-ascii?Q?qGFAsWGxtkEMospja0SXdaBhPYAK5e6QFHljJBN7EVzSPLyzSliT3IViqN81?=
- =?us-ascii?Q?0X7w8OOtUV7SGlfketaEXy/vRblkZMHnccPd96U7hmgos8BkUpa2tJXeocDl?=
- =?us-ascii?Q?JXOGSWTD5BxZClFPPeTOP62LqLMFdCHXmuuDsBfwyAfMBr80fM1r0OBIglvL?=
- =?us-ascii?Q?kruiOokkGZNyuB3l3XlbK1xjDSdBGJfHd+2M34HM8Dv9z0FyBpnsWlyJ55kZ?=
- =?us-ascii?Q?9EauUIQ00hFRTc8ZKB2TgwwidhjnAVt8pQWH7pK/ZA7K4Hs3vuFPXsTAk7P8?=
- =?us-ascii?Q?hTVG24V/TS8UTij9uCNVKClLfEeBzQnZj49yKWdqtkY/SoTFzy7VDZPfQGWH?=
- =?us-ascii?Q?peEHd8GtOOfYpFrgnOi4278rwsu8FWajR+fHUcxENQBAcD3jkhACd+cCwUYX?=
- =?us-ascii?Q?SdCf6hYCl8AlUHSHid4VShlqiz1CNHsRMmf+yNihoA8Jyw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8P192MB1238.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?JeN3TF9JVdwu6EeFSjGluj+DsQQEL2PH5eAWctRoCJOqrSOEBJtdXprkd8Sk?=
- =?us-ascii?Q?r+8OtdsyeIQbP8HkIJP2HpqmrhJxdit6GNRySrQ64QqAo+X8N/PM5qam+YQd?=
- =?us-ascii?Q?K3thZN3ETAwNCRYGHEa6ZXPmO9ATvdTgA69ZL5+2XUOmQfJp4wlGFg829p74?=
- =?us-ascii?Q?OUheRMHF2X/BLCxRTVtyLa4eY6W6TyjPqnh73eYCj25eA3ffz+1V7SCUM0kD?=
- =?us-ascii?Q?nhO1MngbwxwiicwNVzYDPJwyUxmgm5dYN7V3nIEAEB7uTr6z0XGnj26S1hXi?=
- =?us-ascii?Q?yISDFFqr/dSvuIEPJif/73atACzcfjXLEkj7xRcGYQdxltkgGlXiXmeT+JG9?=
- =?us-ascii?Q?CzHM7wAMAMfoj5nkKdDGlwR6sq0b2X5dgDyi/cln1pjl//2VWgTSMM9qx67D?=
- =?us-ascii?Q?AjBV2qpxVJXZnMW1YXSmudRGrouhewD2WXQDZLXgcLRwCFBIIcOXZdNbxG5N?=
- =?us-ascii?Q?x1yw1oRa+tjN3DlMEnxxSvfWVX/HCAIupup5vjF1PQHZ7TabG6gGAphHj6Sq?=
- =?us-ascii?Q?mymgqOve01p6/Vy0RkwOfz9MnxlXylAuEHuG1CSqYcAGVmqSRUgjlnnYcktn?=
- =?us-ascii?Q?d81J06aGDyR7v0x0jwX5ylhxEyEZi+7HHSBZNQj85S+WC9XZsGeMWYiT7Oly?=
- =?us-ascii?Q?vZIHxBZbbqBXCQlEGSxGJV1hrYx1jMf3XpxAu3PUizr3SMDdk3Wx+Me3GnKQ?=
- =?us-ascii?Q?4JyEctnKk/AUByrq0sQlXBYU7TWF/Jz7K8qa0Q38j0ANgIzwo5xbSFexSkIB?=
- =?us-ascii?Q?f3gTnIlr4iNDMg7sfZUhr9YAq3YEO4hq762G3WZcUiLph20NoJqVhmj9RhbU?=
- =?us-ascii?Q?Anlv0WWNcLa/vhDN441OZI3LNEaKJH8hJz/88sOMjfVs02SH07BXnpACwLkc?=
- =?us-ascii?Q?PVocvIWRQE4Cy4qAIGRCKmmmyh1Ee8aTUdFwM9kGsCVU4rA2eU5goQMyg9Ou?=
- =?us-ascii?Q?hj34UewEpiDnDjT7ROJwSOUiEWX0FEMs8//NByvQwnflAlZd5HpJxbCx5rNw?=
- =?us-ascii?Q?RX5TFZZAIJ9OgXkt2/Uu6HNNemeeT0mC79tvwwDIUDsEjW+Xt4e/QPLx0caT?=
- =?us-ascii?Q?H1K9kkp9q6A212CVijc0pDnVMFdpii2KNWNBvZJaByKbelumaON3tvcFvDfR?=
- =?us-ascii?Q?RA7L7tTNc2A65PdPfGlacZld9wGikaHYUun1PdYiZjjpqGswoF9Vnecbw6KW?=
- =?us-ascii?Q?gdtgM6790mcYf9edaGZGu3W8w6I17YKs6Z89aknRy6LFrokjLXi2C8kkZnkt?=
- =?us-ascii?Q?vVJcnOn8zB8X0Fapii4kM2GGOscOXVf10BHhnHVrasn2c2nj4GgIxt8EGsmo?=
- =?us-ascii?Q?JwiKjYLCkeoNt/gVtROzjBtnxFFvcJw5ei4Y8Abk8JeFsoisxivrcxaXd7a7?=
- =?us-ascii?Q?rlEEiewHnxv59j7XEP+7dtqVJX957435PZiXntAz7e6u0Hy1F+FmVvZZPMny?=
- =?us-ascii?Q?LTX2Yl1vX86OHNYQyXRZOGH3oD2FQd2xyPyeg3163HnoE/n8i0Rce/jpTQ1h?=
- =?us-ascii?Q?O9gkrExSK1Sy0UNKY4c07Hx2m4tDoFxDk7FamwIUbCk5/Cxm7OKNgbPUCpIp?=
- =?us-ascii?Q?2oQK9zsvLqJiOUMLxv0e/bHHHL1MHAvQZGMQ7Lbj?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	OJG95NXxiTQLHWNd3Mh1iRE7dqshrJePwUT+B3iAKQ2qgQxYt0AYS5o7Y+oLveTh76ivWPZrost1IKsb1lXWFf9tD1odjyVq8FJnx/cAADT1ezw+/iPAAjVQv3lYJfwSjvNMQMS4tgd5wB1JwsIeus5LZkmdm3hyRKaMcDuhAhA3tOzKXCmcO2YfjFIss0EqvqP2olg0j1otBjjpDmR9NeG0AySdnl7EAZMDFRsb3rxBRWMGgcaNaihSA7hwnaPLsHIExEJ2gBdCvV8YwdP/8URBT6A8KCAgZE3mTLNsGGdVApgd+ojm5byBHnD/NSTjF3T/gYyvvcger0OyaAXfQzdSN0bJxR7edhUUzuxQUmz8RuqJaSLXdpOAfMO1HhQyRQzqitpAn7kbPjpaM4SAP1cOVopmC8ZavNUILdaTT5JCTYqbC7a8mQuBMI2dCceALEyUuM1u0abgnRBetBHHUtFSzlEcJl+ajMfHoox/ENFsKghZPYQXg988jU0vXIuRPLBHcNjFH6InxmKsSyEkUUiQot03+JdfaeuGOBhKrFVYONCFUryA+irqsEeiNk2n0tZScpHdzlNyqCwEEqDfPdy//CzlD4yPi8WLZ1j8x5xUDFH3nkcFg08j2clCk05J
-X-OriginatorOrg: westermo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c34826b3-bed4-442e-0025-08dcd634252d
-X-MS-Exchange-CrossTenant-AuthSource: AS8P192MB1238.EURP192.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2024 09:44:23.1026
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4b2e9b91-de77-4ca7-8130-c80faee67059
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VdH4kBZpMzDT3sqoSkFaCgz6Gl0RiGCdXwmxblpEdXXgZsWp9lQiCADrBhDAIYJQoa6XVJ1le0Wt94k4/K0rlA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4P192MB1839
-X-MS-Exchange-CrossPremises-AuthSource: AS8P192MB1238.EURP192.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossPremises-AuthAs: Internal
-X-MS-Exchange-CrossPremises-AuthMechanism: 14
-X-MS-Exchange-CrossPremises-Mapi-Admin-Submission:
-X-MS-Exchange-CrossPremises-MessageSource: StoreDriver
-X-MS-Exchange-CrossPremises-BCC:
-X-MS-Exchange-CrossPremises-OriginalClientIPAddress: 104.151.95.196
-X-MS-Exchange-CrossPremises-TransportTrafficType: Email
-X-MS-Exchange-CrossPremises-Antispam-ScanContext:
-	DIR:Originating;SFV:NSPM;SKIP:0;
-X-MS-Exchange-CrossPremises-SCL: 1
-X-MS-Exchange-CrossPremises-Processed-By-Journaling: Journal Agent
-X-OrganizationHeadersPreserved: AS4P192MB1839.EURP192.PROD.OUTLOOK.COM
-X-Proofpoint-ORIG-GUID: iyqcthwLrGDgRdrZ8RZPNWniPewtYolA
-X-Authority-Analysis: v=2.4 cv=a/Bi9lSF c=1 sm=1 tr=0 ts=66e7fdfa cx=c_pps a=ow5/roAxt+uy2znxgqYcZQ==:117 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10 a=EaEq8P2WXUwA:10 a=0HJ-WiGSmKEA:10 a=8gLI3H-aZtYA:10 a=Jx3i5r_97kg0vaAqGMsA:9
- a=CjuIK1q_8ugA:10
-X-Proofpoint-GUID: iyqcthwLrGDgRdrZ8RZPNWniPewtYolA
+Content-Type: multipart/signed; boundary="Sig_/XTxqrbIuZ4a3D+P5vsQf0lI";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
+X-Provags-ID: V03:K1:ls0YHEsx5QaRreavLaCLJQgGNxmMUmuArsaPyHRKGe+OUS2AXod
+ EuA9E5B49KU8aQYL+uCk5Pi/ERvfV+3UrH1zO2g3MwJNx4H0Ej17LijdO5oFNh3Blmqpb9M
+ ee60gfqkxagmlut1oOxmrY1JET5dhY/NbK1pIz6Lf8c1X+Tgj7EXOVy8BmHeoZ0raKKSNMf
+ 5suPZycOlgyLa8XfOXfBA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:yXIzVrQez8U=;k16RIikY9RfP4xsvSU5+j+WBHyM
+ bbtJzO3TNPbTWl6zwdbGS1J6a4tnKrtpEgMq7nt0NktuKVsP1qZzv2azPK5JXUaWxz7nXD1LV
+ RB/Xg9ZpRex+JfEKpj5DBd2/B3PHzlQJ0K6PTMXp+OpEbSaHSa7kQGC53Q8yRAJp6LbqvU0SD
+ NlUhaUA1YGWzE34LMl7n7pINOyYv5uD/q6sAGGjBp7g+c7nPqcNPr5FBhItCEzzN/eHgzKLJN
+ 83AlLakfpxiAQfnv6MHN5Kx/M1A92v4TYOiE29pdjMsOA0vyPv0kmbWYjxpGlbWWAwc8JScm/
+ +FvZXb4fquoL3rW1zkBy8JUbSSYpOJpfJKSbO6j7YdfPH/l3NONVBjn5e6XIDLQygkdBbtYgT
+ padQkOZE1sKxchrAzGh9qLEvjNI0RRptxK8cAn0gJPujeoAYHzUCCibq3ZWLAMkIWhINkOYn+
+ iZDaozLEoWGVbPf6tQp1jz2aNmnYHwxBvhk/0TmDO5OQAw4uPBSqunJ7NStqZ2+LSFd+gLxwt
+ ezJfhV89DjuWY+sWVXUSrKEa3GJHNmQSxNoMZ9XAPLsrUTIg5UcWUv0E806jnzAQiHJORc0KX
+ zhrJG6DmG1Kp0vT8hctm9GY3tI9WyC6y21d1yrUqzEzlvzh5/xoJZcqP2YJaU+4WGp2A03xKO
+ sUVJXZlwHnYFUelPLtCmsH3CakRnwgGHuRev2An3cFthtnzHKv3buTvavhFImI3wSj7E9tD+A
+ 5Kn3PQ/7qiU0XAPXEsLlDIFqeRn+/TO3ST9317XRpW6pqn3HvDjHYJ2sfbiWRIG2TkDIdCSFQ
+ UxpSjNp69T1GT4WUpB/qmafw==
 
-Dear 'iw' developers,
+--Sig_/XTxqrbIuZ4a3D+P5vsQf0lI
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-I have the following problem: I wish to monitor CAC events via 'iw event'
-command. It works fine with radar detection and CAC completion, but I have never
-received the 'CAC started' event. Since I'm using the 'iw-tiny' version from
-OpenWRT I create a small patch to use the full 'iw' version, but it didn't help.
-The OpenWRT also uses the 'libnl-tiny' and I wonder if there could be a problem.
-On the other hand the 'hostapd' reports CAC starting events seen in logread.
-Where do I need to looking for my problem? Why can it be possible to lose the
-events somewhere?
+Hi
 
+On 2024-09-16, Ping-Ke Shih wrote:
+> Stefan Lippers-Hollmann <s.l-h@gmx.de> wrote:
+> > On 2024-03-13, Ping-Ke Shih wrote:
+> > > On Wed, 2024-03-13 at 06:49 +0100, Stefan Lippers-Hollmann wrote:
+> > > > On 2024-03-13, Bitterblue Smith wrote:
+> > > > > Create the new module rtl8192d-common and move some code into it =
+from
+> > > > > rtl8192de. Now the rtl8192de driver (PCI) and the new rtl8192du d=
+river
+> > > > > (USB) can share some of the code.
+> > [...]
+> > > > Using the firmware from https://github.com/lwfinger/rtl8192du/,
+> > > > it would be great if someone could publish the necessary firmware
+> > > > to linux-firmware.
+> > > >
+> > > > MD5:
+> > > > abccba1e9bb456eb81dfc88502a56300  /lib/firmware/rtlwifi/rtl8192dufw=
+.bin
+>=20
+> I found its version is 38 that is little bit older than [1] (version 39).=
+=20
+> Bitterblue has made a binary from [1] and I have verified the binary.=20
+> I will send this firmware days later because my previous firmware is
+> still under review.=20
 
-Best regards
-Alexander Wilhelm
+[...]
+
+> [1] https://github.com/lwfinger/rtl8192du/blob/master/hal/Hal8192DUHWImg.c
+
+Great, just a quick functionality check with this firmware (v39):
+
+MD5:
+18eb8791673dcc38b268ad19c92ba6a2 */lib/firmware/rtlwifi/rtl8192dufw.bin
+
+SHA256:
+710c4a28904b180e5a316a372e1038972102b2545909bc117c2455cf536e4490 */lib/firm=
+ware/rtlwifi/rtl8192dufw.bin
+
+Connects and works fine with kernel v6.11, using WPA3SAE over 5 GHz.
+
+[  202.941904] usb 3-5: new high-speed USB device number 5 using xhci_hcd
+[  203.070437] usb 3-5: New USB device found, idVendor=3D0bda, idProduct=3D=
+8194, bcdDevice=3D 0.00
+[  203.070453] usb 3-5: New USB device strings: Mfr=3D1, Product=3D2, Seria=
+lNumber=3D3
+[  203.070460] usb 3-5: Product: 802.11n NIC
+[  203.070464] usb 3-5: Manufacturer: Realtek
+[  203.070468] usb 3-5: SerialNumber: 00e04c000001
+[  203.220236] rtl_usb: rx_max_size 15360, rx_urb_num 8, in_ep 1
+[  203.220248] rtl8192du: Driver for Realtek RTL8192DU WLAN interface
+[  203.220249] rtl8192du: Loading firmware file rtlwifi/rtl8192dufw.bin
+[  203.220324] ieee80211 phy1: Selected rate control algorithm 'rtl_rc'
+[  203.220648] usbcore: registered new interface driver rtl8192du
+[  203.227708] rtl8192du 3-5:1.0 wlxXXXlocalMACXXX: renamed from wlan0
+[  230.852662] wlxXXXlocalMACXXX: authenticate with XXXAP1MACXXX (local add=
+ress=3DXXXlocalMACXXX)
+[  230.852670] wlxXXXlocalMACXXX: send auth to XXXAP1MACXXX (try 1/3)
+[  230.870370] wlxXXXlocalMACXXX: authenticate with XXXAP1MACXXX (local add=
+ress=3DXXXlocalMACXXX)
+[  230.870381] wlxXXXlocalMACXXX: send auth to XXXAP1MACXXX (try 1/3)
+[  230.873195] wlxXXXlocalMACXXX: authenticated
+[  230.874472] wlxXXXlocalMACXXX: associate with XXXAP1MACXXX (try 1/3)
+[  230.885511] wlxXXXlocalMACXXX: RX AssocResp from XXXAP1MACXXX (capab=3D0=
+x1511 status=3D0 aid=3D2)
+[  230.887245] wlxXXXlocalMACXXX: associated
+[  230.897180] wlxXXXlocalMACXXX: Limiting TX power to 23 (23 - 0) dBm as a=
+dvertised by XXXAP1MACXXX
+[  240.889472] wlxXXXlocalMACXXX: deauthenticating from XXXAP1MACXXX by loc=
+al choice (Reason: 3=3DDEAUTH_LEAVING)
+[  244.386457] wlxXXXlocalMACXXX: authenticate with XXXAP2MACXXX (local add=
+ress=3DXXXlocalMACXXX)
+[  244.386470] wlxXXXlocalMACXXX: send auth to XXXAP2MACXXX (try 1/3)
+[  244.397502] wlxXXXlocalMACXXX: authenticate with XXXAP2MACXXX (local add=
+ress=3DXXXlocalMACXXX)
+[  244.397515] wlxXXXlocalMACXXX: send auth to XXXAP2MACXXX (try 1/3)
+[  244.399226] wlxXXXlocalMACXXX: authenticated
+[  244.400306] wlxXXXlocalMACXXX: associate with XXXAP2MACXXX (try 1/3)
+[  244.407420] wlxXXXlocalMACXXX: RX AssocResp from XXXAP2MACXXX (capab=3D0=
+x1511 status=3D0 aid=3D3)
+[  244.408977] wlxXXXlocalMACXXX: associated
+[  244.461286] wlxXXXlocalMACXXX: Limiting TX power to 23 (23 - 0) dBm as a=
+dvertised by XXXAP2MACXXX
+
+(there is AP-side active bandsteering/ roaming at play)
+
+# wpa_cli -i wlxXXXlocalMACXXX status
+bssid=3DXXXAP2MACXXX
+freq=3D5260
+ssid=3DXXX
+id=3D4
+id_str=3DXXX
+mode=3Dstation
+wifi_generation=3D4
+pairwise_cipher=3DCCMP
+group_cipher=3DCCMP
+key_mgmt=3DSAE
+pmf=3D2
+mgmt_group_cipher=3DBIP
+sae_group=3D19
+sae_h2e=3D0
+sae_pk=3D0
+wpa_state=3DCOMPLETED
+p2p_device_address=3DXXXlocalMACXXX
+address=3DXXXlocalMACXXX
+uuid=3DXXXUUIDXXX
+
+$ iperf3 -c XXXremoteIPv6XXX
+Connecting to host XXXremoteIPv6XXX, port 5201
+[  5] local XXXlocalXXX port 45116 connected to XXXremoteIPv6XXX port 5201
+[ ID] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5]   0.00-1.00   sec  13.9 MBytes   116 Mbits/sec    0    441 KBytes    =
+  =20
+[  5]   1.00-2.00   sec  12.1 MBytes   102 Mbits/sec    0    471 KBytes    =
+  =20
+[  5]   2.00-3.00   sec  11.4 MBytes  95.4 Mbits/sec    0    471 KBytes    =
+  =20
+[  5]   3.00-4.00   sec  12.5 MBytes   105 Mbits/sec    0    604 KBytes    =
+  =20
+[  5]   4.00-5.00   sec  11.1 MBytes  93.3 Mbits/sec    0    604 KBytes    =
+  =20
+[  5]   5.00-6.00   sec  11.4 MBytes  95.4 Mbits/sec    0    604 KBytes    =
+  =20
+[  5]   6.00-7.00   sec  11.9 MBytes  99.6 Mbits/sec    0    637 KBytes    =
+  =20
+[  5]   7.00-8.00   sec  10.8 MBytes  90.2 Mbits/sec    0    637 KBytes    =
+  =20
+[  5]   8.00-9.00   sec  11.8 MBytes  98.6 Mbits/sec    0    637 KBytes    =
+  =20
+[  5]   9.00-10.00  sec  12.0 MBytes   101 Mbits/sec    0    722 KBytes    =
+  =20
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-10.00  sec   119 MBytes  99.6 Mbits/sec    0             sender
+[  5]   0.00-10.02  sec   116 MBytes  97.2 Mbits/sec                  recei=
+ver
+
+iperf Done.
+
+$ iperf3 -c XXXremoteIPv6XXX --reverse
+Connecting to host XXXremoteIPv6XXX, port 5201
+Reverse mode, remote host XXXremoteIPv6XXX is sending
+[  5] local XXXlocalXXX port 58256 connected to XXXremoteIPv6XXX port 5201
+[ ID] Interval           Transfer     Bitrate
+[  5]   0.00-1.00   sec  12.6 MBytes   106 Mbits/sec                 =20
+[  5]   1.00-2.00   sec  13.6 MBytes   114 Mbits/sec                 =20
+[  5]   2.00-3.00   sec  14.1 MBytes   118 Mbits/sec                 =20
+[  5]   3.00-4.00   sec  14.0 MBytes   117 Mbits/sec                 =20
+[  5]   4.00-5.00   sec  12.2 MBytes   103 Mbits/sec                 =20
+[  5]   5.00-6.00   sec  14.2 MBytes   120 Mbits/sec                 =20
+[  5]   6.00-7.00   sec  12.5 MBytes   105 Mbits/sec                 =20
+[  5]   7.00-8.00   sec  12.5 MBytes   105 Mbits/sec                 =20
+[  5]   8.00-9.00   sec  13.9 MBytes   116 Mbits/sec                 =20
+[  5]   9.00-10.00  sec  14.1 MBytes   118 Mbits/sec                 =20
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-10.01  sec   138 MBytes   116 Mbits/sec    0             sender
+[  5]   0.00-10.00  sec   134 MBytes   112 Mbits/sec                  recei=
+ver
+
+iperf Done.
+
+$ iperf3 -c XXXremoteIPv6XXX --bidir
+Connecting to host XXXremoteIPv6XXX, port 5201
+[  5] local XXXlocalXXX port 50634 connected to XXXremoteIPv6XXX port 5201
+[  7] local XXXlocalXXX port 50646 connected to XXXremoteIPv6XXX port 5201
+[ ID][Role] Interval           Transfer     Bitrate         Retr  Cwnd
+[  5][TX-C]   0.00-1.00   sec  6.25 MBytes  52.4 Mbits/sec    0    300 KByt=
+es      =20
+[  7][RX-C]   0.00-1.00   sec  7.00 MBytes  58.7 Mbits/sec                 =
+=20
+[  5][TX-C]   1.00-2.00   sec  3.88 MBytes  32.5 Mbits/sec    0    414 KByt=
+es      =20
+[  7][RX-C]   1.00-2.00   sec  10.1 MBytes  84.9 Mbits/sec                 =
+=20
+[  5][TX-C]   2.00-3.00   sec  1.88 MBytes  15.7 Mbits/sec    0    464 KByt=
+es      =20
+[  7][RX-C]   2.00-3.00   sec  12.4 MBytes   104 Mbits/sec                 =
+=20
+[  5][TX-C]   3.00-4.00   sec  1.88 MBytes  15.7 Mbits/sec    0    487 KByt=
+es      =20
+[  7][RX-C]   3.00-4.00   sec  12.2 MBytes   103 Mbits/sec                 =
+=20
+[  5][TX-C]   4.00-5.00   sec  2.38 MBytes  19.9 Mbits/sec    0    582 KByt=
+es      =20
+[  7][RX-C]   4.00-5.00   sec  10.9 MBytes  91.2 Mbits/sec                 =
+=20
+[  5][TX-C]   5.00-6.00   sec  0.00 Bytes  0.00 bits/sec    0    602 KBytes=
+      =20
+[  7][RX-C]   5.00-6.00   sec  10.2 MBytes  86.0 Mbits/sec                 =
+=20
+[  5][TX-C]   6.00-7.00   sec  1.50 MBytes  12.6 Mbits/sec    0    661 KByt=
+es      =20
+[  7][RX-C]   6.00-7.00   sec  10.6 MBytes  89.1 Mbits/sec                 =
+=20
+[  5][TX-C]   7.00-8.00   sec  1.38 MBytes  11.5 Mbits/sec    0    728 KByt=
+es      =20
+[  7][RX-C]   7.00-8.00   sec  11.5 MBytes  96.5 Mbits/sec                 =
+=20
+[  5][TX-C]   8.00-9.00   sec  1.38 MBytes  11.5 Mbits/sec    0    777 KByt=
+es      =20
+[  7][RX-C]   8.00-9.00   sec  10.4 MBytes  87.0 Mbits/sec                 =
+=20
+[  5][TX-C]   9.00-10.00  sec  1.38 MBytes  11.5 Mbits/sec    2    593 KByt=
+es      =20
+[  7][RX-C]   9.00-10.00  sec  11.1 MBytes  93.1 Mbits/sec                 =
+=20
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID][Role] Interval           Transfer     Bitrate         Retr
+[  5][TX-C]   0.00-10.00  sec  21.9 MBytes  18.3 Mbits/sec    2            =
+ sender
+[  5][TX-C]   0.00-10.02  sec  19.5 MBytes  16.3 Mbits/sec                 =
+ receiver
+[  7][RX-C]   0.00-10.00  sec   110 MBytes  92.7 Mbits/sec    0            =
+ sender
+[  7][RX-C]   0.00-10.02  sec   106 MBytes  89.2 Mbits/sec                 =
+ receiver
+
+iperf Done.
+
+# iw dev wlxXXXlocalMACXXX station dump
+Station XXXAP2MACXXX (on wlxXXXlocalMACXXX)
+        inactive time:  1 ms
+        rx bytes:       819594565
+        rx packets:     556734
+        tx bytes:       379056249
+        tx packets:     427613
+        tx retries:     0
+        tx failed:      0
+        beacon loss:    0
+        rx drop misc:   0
+        signal:         10 dBm
+        signal avg:     -66 dBm
+        tx bitrate:     300.0 MBit/s MCS 15 40MHz short GI
+        tx duration:    0 us
+        rx bitrate:     243.0 MBit/s MCS 14 40MHz
+        rx duration:    0 us
+        authorized:     yes
+        authenticated:  yes
+        associated:     yes
+        preamble:       long
+        WMM/WME:        yes
+        MFP:            yes
+        TDLS peer:      no
+        DTIM period:    3
+        beacon interval:100
+        short slot time:yes
+        connected time: 556 seconds
+        associated at [boottime]:       244.363s
+        associated at:  1726480574210 ms
+        current time:   1726481129874 ms
+
+# iw phy phy1 info
+Wiphy phy1
+        wiphy index: 1
+        max # scan SSIDs: 4
+        max scan IEs length: 2257 bytes
+        max # sched scan SSIDs: 0
+        max # match sets: 0
+        RTS threshold: 2347
+        Retry short limit: 7
+        Retry long limit: 4
+        Coverage class: 0 (up to 0m)
+        Device supports RSN-IBSS.
+        Supported Ciphers:
+                * WEP40 (00-0f-ac:1)
+                * WEP104 (00-0f-ac:5)
+                * TKIP (00-0f-ac:2)
+                * CCMP-128 (00-0f-ac:4)
+                * CCMP-256 (00-0f-ac:10)
+                * GCMP-128 (00-0f-ac:8)
+                * GCMP-256 (00-0f-ac:9)
+                * CMAC (00-0f-ac:6)
+                * CMAC-256 (00-0f-ac:13)
+                * GMAC-128 (00-0f-ac:11)
+                * GMAC-256 (00-0f-ac:12)
+        Available Antennas: TX 0 RX 0
+        Supported interface modes:
+                 * IBSS
+                 * managed
+                 * AP
+                 * AP/VLAN
+                 * monitor
+                 * mesh point
+                 * P2P-client
+                 * P2P-GO
+        Band 1:
+                Capabilities: 0x186e
+                        HT20/HT40
+                        SM Power Save disabled
+                        RX HT20 SGI
+                        RX HT40 SGI
+                        No RX STBC
+                        Max AMSDU length: 7935 bytes
+                        DSSS/CCK HT40
+                Maximum RX AMPDU length 65535 bytes (exponent: 0x003)
+                Minimum RX AMPDU time spacing: 16 usec (0x07)
+                HT Max RX data rate: 300 Mbps
+                HT TX/RX MCS rate indexes supported: 0-15, 32
+                Bitrates (non-HT):
+                        * 1.0 Mbps
+                        * 2.0 Mbps
+                        * 5.5 Mbps
+                        * 11.0 Mbps
+                        * 6.0 Mbps
+                        * 9.0 Mbps
+                        * 12.0 Mbps
+                        * 18.0 Mbps
+                        * 24.0 Mbps
+                        * 36.0 Mbps
+                        * 48.0 Mbps
+                        * 54.0 Mbps
+                Frequencies:
+                        * 2412.0 MHz [1] (20.0 dBm)
+                        * 2417.0 MHz [2] (20.0 dBm)
+                        * 2422.0 MHz [3] (20.0 dBm)
+                        * 2427.0 MHz [4] (20.0 dBm)
+                        * 2432.0 MHz [5] (20.0 dBm)
+                        * 2437.0 MHz [6] (20.0 dBm)
+                        * 2442.0 MHz [7] (20.0 dBm)
+                        * 2447.0 MHz [8] (20.0 dBm)
+                        * 2452.0 MHz [9] (20.0 dBm)
+                        * 2457.0 MHz [10] (20.0 dBm)
+                        * 2462.0 MHz [11] (20.0 dBm)
+                        * 2467.0 MHz [12] (20.0 dBm)
+                        * 2472.0 MHz [13] (20.0 dBm)
+                        * 2484.0 MHz [14] (disabled)
+        Band 2:
+                Capabilities: 0x186e
+                        HT20/HT40
+                        SM Power Save disabled
+                        RX HT20 SGI
+                        RX HT40 SGI
+                        No RX STBC
+                        Max AMSDU length: 7935 bytes
+                        DSSS/CCK HT40
+                Maximum RX AMPDU length 65535 bytes (exponent: 0x003)
+                Minimum RX AMPDU time spacing: 16 usec (0x07)
+                HT Max RX data rate: 300 Mbps
+                HT TX/RX MCS rate indexes supported: 0-15, 32
+                Bitrates (non-HT):
+                        * 6.0 Mbps
+                        * 9.0 Mbps
+                        * 12.0 Mbps
+                        * 18.0 Mbps
+                        * 24.0 Mbps
+                        * 36.0 Mbps
+                        * 48.0 Mbps
+                        * 54.0 Mbps
+                Frequencies:
+                        * 5180.0 MHz [36] (23.0 dBm)
+                        * 5200.0 MHz [40] (23.0 dBm)
+                        * 5220.0 MHz [44] (23.0 dBm)
+                        * 5240.0 MHz [48] (23.0 dBm)
+                        * 5260.0 MHz [52] (20.0 dBm) (no IR, radar detectio=
+n)
+                        * 5280.0 MHz [56] (20.0 dBm) (no IR, radar detectio=
+n)
+                        * 5300.0 MHz [60] (20.0 dBm) (no IR, radar detectio=
+n)
+                        * 5320.0 MHz [64] (20.0 dBm) (no IR, radar detectio=
+n)
+                        * 5500.0 MHz [100] (26.0 dBm) (no IR, radar detecti=
+on)
+                        * 5520.0 MHz [104] (26.0 dBm) (no IR, radar detecti=
+on)
+                        * 5540.0 MHz [108] (26.0 dBm) (no IR, radar detecti=
+on)
+                        * 5560.0 MHz [112] (26.0 dBm) (no IR, radar detecti=
+on)
+                        * 5580.0 MHz [116] (26.0 dBm) (no IR, radar detecti=
+on)
+                        * 5600.0 MHz [120] (26.0 dBm) (no IR, radar detecti=
+on)
+                        * 5620.0 MHz [124] (26.0 dBm) (no IR, radar detecti=
+on)
+                        * 5640.0 MHz [128] (26.0 dBm) (no IR, radar detecti=
+on)
+                        * 5660.0 MHz [132] (26.0 dBm) (no IR, radar detecti=
+on)
+                        * 5680.0 MHz [136] (26.0 dBm) (no IR, radar detecti=
+on)
+                        * 5700.0 MHz [140] (26.0 dBm) (no IR, radar detecti=
+on)
+                        * 5745.0 MHz [149] (13.0 dBm)
+                        * 5765.0 MHz [153] (13.0 dBm)
+                        * 5785.0 MHz [157] (13.0 dBm)
+                        * 5805.0 MHz [161] (13.0 dBm)
+                        * 5825.0 MHz [165] (13.0 dBm)
+        Supported commands:
+                 * new_interface
+                 * set_interface
+                 * new_key
+                 * start_ap
+                 * new_station
+                 * new_mpath
+                 * set_mesh_config
+                 * set_bss
+                 * authenticate
+                 * associate
+                 * deauthenticate
+                 * disassociate
+                 * join_ibss
+                 * join_mesh
+                 * remain_on_channel
+                 * set_tx_bitrate_mask
+                 * frame
+                 * frame_wait_cancel
+                 * set_wiphy_netns
+                 * set_channel
+                 * probe_client
+                 * set_noack_map
+                 * register_beacons
+                 * start_p2p_device
+                 * set_mcast_rate
+                 * testmode
+                 * connect
+                 * disconnect
+                 * set_qos_map
+                 * set_multicast_to_unicast
+        software interface modes (can always be added):
+                 * AP/VLAN
+                 * monitor
+        interface combinations are not supported
+        HT Capability overrides:
+                 * MCS: ff ff ff ff ff ff ff ff ff ff
+                 * maximum A-MSDU length
+                 * supported channel width
+                 * short GI for 40 MHz
+                 * max A-MPDU length exponent
+                 * min MPDU start spacing
+        Device supports TX status socket option.
+        Device supports HT-IBSS.
+        Device supports SAE with AUTHENTICATE command
+        Device supports low priority scan.
+        Device supports scan flush.
+        Device supports AP scan.
+        Device supports per-vif TX power setting
+        Driver supports full state transitions for AP/GO clients
+        Driver supports a userspace MPM
+        Device supports configuring vdev MAC-addr on create.
+        max # scan plans: 1
+        max scan plan interval: -1
+        max scan plan iterations: 0
+        Supported TX frame types:
+                 * IBSS: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80 0x90 =
+0xa0 0xb0 0xc0 0xd0 0xe0 0xf0
+                 * managed: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80 0x=
+90 0xa0 0xb0 0xc0 0xd0 0xe0 0xf0
+                 * AP: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80 0x90 0x=
+a0 0xb0 0xc0 0xd0 0xe0 0xf0
+                 * AP/VLAN: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80 0x=
+90 0xa0 0xb0 0xc0 0xd0 0xe0 0xf0
+                 * mesh point: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80=
+ 0x90 0xa0 0xb0 0xc0 0xd0 0xe0 0xf0
+                 * P2P-client: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80=
+ 0x90 0xa0 0xb0 0xc0 0xd0 0xe0 0xf0
+                 * P2P-GO: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80 0x9=
+0 0xa0 0xb0 0xc0 0xd0 0xe0 0xf0
+                 * P2P-device: 0x00 0x10 0x20 0x30 0x40 0x50 0x60 0x70 0x80=
+ 0x90 0xa0 0xb0 0xc0 0xd0 0xe0 0xf0
+        Supported RX frame types:
+                 * IBSS: 0x40 0xb0 0xc0 0xd0
+                 * managed: 0x40 0xb0 0xd0
+                 * AP: 0x00 0x20 0x40 0xa0 0xb0 0xc0 0xd0
+                 * AP/VLAN: 0x00 0x20 0x40 0xa0 0xb0 0xc0 0xd0
+                 * mesh point: 0xb0 0xc0 0xd0
+                 * P2P-client: 0x40 0xd0
+                 * P2P-GO: 0x00 0x20 0x40 0xa0 0xb0 0xc0 0xd0
+                 * P2P-device: 0x40 0xd0
+        Supported extended features:
+                * [ RRM ]: RRM
+                * [ FILS_STA ]: STA FILS (Fast Initial Link Setup)
+                * [ CONTROL_PORT_OVER_NL80211 ]: control port over nl80211
+                * [ TXQS ]: FQ-CoDel-enabled intermediate TXQs
+                * [ SCAN_RANDOM_SN ]: use random sequence numbers in scans
+                * [ SCAN_MIN_PREQ_CONTENT ]: use probe request with only ra=
+te IEs in scans
+                * [ CONTROL_PORT_NO_PREAUTH ]: disable pre-auth over nl8021=
+1 control port support
+                * [ DEL_IBSS_STA ]: deletion of IBSS station support
+                * [ SCAN_FREQ_KHZ ]: scan on kHz frequency support
+                * [ CONTROL_PORT_OVER_NL80211_TX_STATUS ]: tx status for nl=
+80211 control port support
+                * [ POWERED_ADDR_CHANGE ]: can change MAC address while up
+
+Regards
+	Stefan Lippers-Hollmann
+
+--Sig_/XTxqrbIuZ4a3D+P5vsQf0lI
+Content-Type: application/pgp-signature
+Content-Description: Digitale Signatur von OpenPGP
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEMQMcJCzZm4GSqVV4v+AtZbHRQu0FAmboBpQACgkQv+AtZbHR
+Qu2kthAAnyQNMTNoDT9ApyhJpPE8odR0lCtr1srYntEHT4VTxGz0vWDlFXdpa8s5
+Cke9rRwOAD6Dc6JuLDPvwJBJ78hJ4xuOSfgLaNcAJJGwNFn8agTxgjhJ1XXIzfAe
+lWpBGbZV4dz9ZZLUV8nIIjgonuZkfEsM/IjlzGqOQXMq64TBl7jP6ijs5LyNqKOZ
+Gj582I32t2MuQ4yaG+0AqqcFjKsRpnt49mNv/AtJtugW1GRRPLwpu+aZtu4p1Eyp
+x82MvEvngze4G9caBt/OOMSZaLGViw8VGcajQvrL/dvpALp8Gbbl0m8RKOZnazmo
+G9BjuS+mor0sgDDdC+Jd0QH9BTpE7Ds1D4FVKZreEK7dzkFNcR2M7AAh7DqLzE9y
+ONeAvQIQz4/m8A9N2DVzOwR7DKwx7ZRV/d72BRAO2MiB3LbIQD0b8wTi7n2z5wlw
+MXpBCdFqO50wcfk+3Fs6SRmkITkODBcWL19O3YSHtE7tJ2NKbEyk1jp2TvNU1BXR
+oykoNDDaChkqVUFKCPF1STlTEb6dMywCDuNXGi2XjlCcF64baIHnf0CoOemlMtOm
+4QvuFHe+cANN+bZ6NfN3wX+FPLyfq/teZO6aqGXYHysqYwFYum7bxw5WqfnWn8n5
+brIPv3QtXjrDX+dE5wdCQQDKLk6NkEdEVmt4p8DRMFA+pmdUaM0=
+=B35V
+-----END PGP SIGNATURE-----
+
+--Sig_/XTxqrbIuZ4a3D+P5vsQf0lI--
 
