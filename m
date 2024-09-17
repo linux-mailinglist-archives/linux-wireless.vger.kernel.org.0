@@ -1,139 +1,131 @@
-Return-Path: <linux-wireless+bounces-12921-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12922-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F34497B224
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2024 17:47:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC2D697B302
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2024 18:31:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDC97B2C296
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2024 15:47:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 842981F2287C
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2024 16:31:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6309717C233;
-	Tue, 17 Sep 2024 15:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23396183CB2;
+	Tue, 17 Sep 2024 16:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="ZuRJYk7n"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AfpwKYjf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8936183CB7
-	for <linux-wireless@vger.kernel.org>; Tue, 17 Sep 2024 15:27:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3925715B54F;
+	Tue, 17 Sep 2024 16:30:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726586827; cv=none; b=N1uS7NwytkbcnTpdPYxKjKG7uRB7JqEue/ubP/kKOeB16o5sPLRqeB5xryRUL+no3r/viy2GtsM5bSTV0ONRi0nBAKJ7ECz0WD/UTU3xv6d9XW8pOiJWs7QvdlnrynIKz7tWo7gtCp8qEH8AkEVzkJ1/vSovr/8GU55xpkW/5T8=
+	t=1726590662; cv=none; b=Sp7wpdsrHKGmkqiVp9KvUGZQIyLLtwG+jd86LA2Zt8uAPBDqXoQ1ib1Za9Jq868Ugx3G3EAFnpM2gFNCan64LW8Lk9GIie+zBA7PS0iO3PPJXpjuv/gJhGqLiJ67b9FKEMDaUo+NYXfEF2hDYjUzDfPNIx5GVCTFNSE8EYZTsis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726586827; c=relaxed/simple;
-	bh=kqCiNwF7fh1fXnAOdiB+Ejs046uzkWy4f5THcKiUW2c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gGU6paISv7SfesMjKblcTY5BWBN92xVMrT1ekW3RqRJlmnC2z72aX15EXYhaCEXRwbfY1H5AEadpC0cvuUHu9P+Tkwi3yrG9psnFg0pP6kGmCsqRkKen/IN5vPCcipemvakCA3YH5IY2kSoJMwd+6vefP/VJcKwX/36KDuk6Pd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=ZuRJYk7n; arc=none smtp.client-ip=148.163.129.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 9CA14780094;
-	Tue, 17 Sep 2024 15:26:54 +0000 (UTC)
-Received: from [192.168.1.23] (unknown [98.97.39.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 373FF13C2B0;
-	Tue, 17 Sep 2024 08:26:54 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 373FF13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1726586814;
-	bh=kqCiNwF7fh1fXnAOdiB+Ejs046uzkWy4f5THcKiUW2c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZuRJYk7nEeijnrZrVwrXIrNVez+EF+Nj75PzhTcWqepeU8yD5lEG1JBOJ/ELW5lDF
-	 7QoyK1VL3rHtuOkyKm2uJ1PSHtqIvMwn7ZRF0um/u3jOhbkLyX2Y/Kwnqe+Lrno+Rh
-	 xSrfdXciNhADXj5xo9rnsHYy3kRt91MiqRWEYcGU=
-Message-ID: <19eb0b33-fff2-493f-a7be-c9e890d0da83@candelatech.com>
-Date: Tue, 17 Sep 2024 08:26:53 -0700
+	s=arc-20240116; t=1726590662; c=relaxed/simple;
+	bh=T0xCbAguwVe8L3zNEYirqsW01OcDvzdTUFRziwZJH14=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=M1y0qApsmnR7GYxLJ62xS2BFMdPuz/9thqcoK0jtkkTZkMVR6uQgVj5rNSIcCaAlH3RV5eCkw3NFZ7cgw85RZi54MQXed9xJer9MY4LcRAYGziOxUer98V/I1cvvc9MeBGkk+hoWQj6p7Fb2SSEkPQj2cmD0SzU+qZe5pqZMaK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AfpwKYjf; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1726590660; x=1758126660;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=T0xCbAguwVe8L3zNEYirqsW01OcDvzdTUFRziwZJH14=;
+  b=AfpwKYjf1OYofDq7wimAxxzkIMqifWp4eM08PFO1hePTRR/Vy4dWFfPZ
+   ZbrbjLSFc7h4LMROKD6qfANCUtTBESuqpCR9GrJomtuYchZjhGaxY+ARq
+   8eig0tHfW5kp8DMLOEfzHsDAMPctwQYRmbyRWsODY4AIMNq7diT/5wV3P
+   ZLDudCELNdiPjIZulcXPKqLFzGjQaq/m40g+pSH00oUwYuMaagWSp5F12
+   6lEOR2kI9LWssgrHTgRzDpT7jVB2fHTSA8cpm1PkcwB5s8DnCxRyIJOzN
+   tW5+cO2Qh2C7AUaXq2xl19QJg3j43RISdMJ9bH/tb1CTdDcv/Bl8cXLku
+   A==;
+X-CSE-ConnectionGUID: n3gVHtPtTCWKuk6x/aVRKQ==
+X-CSE-MsgGUID: rZEsyTyTS5CdBlNilUfDXg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11198"; a="13560061"
+X-IronPort-AV: E=Sophos;i="6.10,235,1719903600"; 
+   d="scan'208";a="13560061"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2024 09:30:59 -0700
+X-CSE-ConnectionGUID: ahD0hZrcQO2ez3iJtGdOiw==
+X-CSE-MsgGUID: aW6W1bJsQNupTu5l7O00Vw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,235,1719903600"; 
+   d="scan'208";a="69114330"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2024 09:30:56 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1sqb6L-00000009sna-1A5j;
+	Tue, 17 Sep 2024 19:30:53 +0300
+Date: Tue, 17 Sep 2024 19:30:52 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Alper Nebi Yasak <alpernebiyasak@gmail.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	David Lin <yu-hao.lin@nxp.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Brian Norris <briannorris@chromium.org>,
+	Kalle Valo <kvalo@kernel.org>,
+	Francesco Dolcini <francesco@dolcini.it>,
+	Sascha Hauer <s.hauer@pengutronix.de>, Kees Cook <kees@kernel.org>,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: Re: [PATCH] wifi: mwifiex: Fix memcpy() field-spanning write warning
+ in mwifiex_config_scan()
+Message-ID: <ZumuvP3aHiHHzGjp@smile.fi.intel.com>
+References: <20240917150938.843879-1-alpernebiyasak@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 3/6] wifi: mac80211: notify driver about per-radio monitor
- enabled state
-To: Johannes Berg <johannes@sipsolutions.net>, Felix Fietkau <nbd@nbd.name>
-Cc: linux-wireless@vger.kernel.org
-References: <8b11fddca38ea82b48ebe93a898582e698069f14.camel@sipsolutions.net>
- <47BF11DD-ECD1-4314-AD1B-B58A99724DFB@nbd.name>
- <8a0cb794de71bab324bdc1bb68ba58488ab925b3.camel@sipsolutions.net>
-Content-Language: en-MW
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <8a0cb794de71bab324bdc1bb68ba58488ab925b3.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-MDID: 1726586817-FG5Jjza1zWaF
-X-MDID-O:
- us5;ut7;1726586817;FG5Jjza1zWaF;<greearb@candelatech.com>;20e01846ddffb15f370631a0b8aff2f7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240917150938.843879-1-alpernebiyasak@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On 9/17/24 01:13, Johannes Berg wrote:
-> On Fri, 2024-08-23 at 13:26 +0200, Felix Fietkau wrote:
->>
->>> On 23. Aug 2024, at 12:16, Johannes Berg <johannes@sipsolutions.net> wrote:
->>>
->>> ﻿On Mon, 2024-08-05 at 21:23 +0200, Felix Fietkau wrote:
->>>> This allows monitoring on one or more radios while minimizing performance
->>>> impact on the others.
->>>
->>> But why are you doing it this way? You could already solve this entirely
->>> with the driver by setting WANT_MONITOR_VIF and dealing with that, I'd
->>> think? At least after this series.
->>>
->>> I generally don't like hw->conf, it just hasn't really matched reality
->>> for years with all kinds of new concurrency capabilities. At the very
->>> least you'd have to write more text here to convince me that we want to
->>> add something to it ... :)
->>
->> I really don’t see how WANT_MONITOR_VIF helps. It seems completely unrelated to me, since it only creates a single driver visible vif, if there are no non-monitor vifs on the phy.
+On Tue, Sep 17, 2024 at 06:08:41PM +0300, Alper Nebi Yasak wrote:
+> Replace one-element array with a flexible-array member in `struct
+> mwifiex_ie_types_wildcard_ssid_params` to fix the following warning
+> on a MT8173 Chromebook (mt8173-elm-hana):
 > 
-> Well, it's true that it only creates one towards the driver, but that
-> one vif can also only be bound to a single channel context, and
-> therefore a single radio.
+> [  356.775250] ------------[ cut here ]------------
+> [  356.784543] memcpy: detected field-spanning write (size 6) of single field "wildcard_ssid_tlv->ssid" at drivers/net/wireless/marvell/mwifiex/scan.c:904 (size 1)
+> [  356.813403] WARNING: CPU: 3 PID: 742 at drivers/net/wireless/marvell/mwifiex/scan.c:904 mwifiex_scan_networks+0x4fc/0xf28 [mwifiex]
 > 
-> If we actually want(ed) to support monitoring on different radios
-> simultaneously we'd have to change mac80211 quite a bit, and probably
-> introduce multiple virtual monitor interfaces. Internally, we _always_
-> have it now, to be able to bind a channel context, so we'd actually need
-> multiple - one for each possible parallel channel.
+> The "(size 6)" above is exactly the length of the SSID of the network
+> this device was connected to. The source of the warning looks like:
+> 
+>     ssid_len = user_scan_in->ssid_list[i].ssid_len;
+>     [...]
+>     memcpy(wildcard_ssid_tlv->ssid,
+>            user_scan_in->ssid_list[i].ssid, ssid_len);
+> 
+> Also adjust a #define that uses sizeof() on this struct to keep the
+> value same as before.
 
-I definitely want to be able to sniff on the individual underlying channels,
-and not have the traffic from the different underlying radios mixed (unless
-specifically requesting that feature somehow).
+...
 
- From user-space perspective, having multiple monitor vifs seems the way
-to do this, as that is how it works now.
+>  #define WILDCARD_SSID_TLV_MAX_SIZE  \
+>  	(MWIFIEX_MAX_SSID_LIST_LENGTH *					\
+>  		(sizeof(struct mwifiex_ie_types_wildcard_ssid_params)	\
+> -			+ IEEE80211_MAX_SSID_LEN))
+> +			+ IEEE80211_MAX_SSID_LEN + 1))
+>  
 
-Thanks,
-Ben
+This hunk has to be carefully checked by wireless people. I'm not sure
+that we need  + 1 here.
 
-> So that's why I think having WANT_MONITOR_VIF helps - you can assume
-> today that only one chanctx can be used for monitoring, and once you
-> have the monitor vif in hand, you know which one it is. Therefore you
-> know which radio it is, and can adjust your offloads/etc. accordingly.
-> 
->> I want to be able to control, which radios I want to capture on, regardless of which vifs are already active on the same phy.
-> 
-> Sure.
-> 
->> A global monitor enable/disable status means that I can’t prevent monitor-incompatible offloads from being disabled on radios that I’m not monitoring on.
->>
-> 
-> Yeah I'd just say don't use that state, but the presence of the monitor
-> vif, and you can figure out which radio it's present on.
-> 
-> johannes
-> 
+Otherwise, LGTM.
 
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+With Best Regards,
+Andy Shevchenko
+
 
 
