@@ -1,101 +1,157 @@
-Return-Path: <linux-wireless+bounces-12904-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12905-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 654DE97AC3F
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2024 09:36:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E421D97AC8F
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2024 10:07:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CEEDBB2BD2D
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2024 07:36:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BA141F21173
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Sep 2024 08:07:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709D11482E2;
-	Tue, 17 Sep 2024 07:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C196414B948;
+	Tue, 17 Sep 2024 08:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kali.org header.i=@kali.org header.b="kf6jRO5S"
+	dkim=pass (2048-bit key) header.d=linuxmail.org header.i=cemunal@linuxmail.org header.b="kazVNQpY"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.com (mout.gmx.com [74.208.4.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7A507F477
-	for <linux-wireless@vger.kernel.org>; Tue, 17 Sep 2024 07:35:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E26B12F399
+	for <linux-wireless@vger.kernel.org>; Tue, 17 Sep 2024 08:07:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.208.4.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726558561; cv=none; b=YOU7LuPa7kcONKMVeXcN9ooSDTDVFKqqYXknuHCR+iV3HV3+wHO9Vrg5dIrwIV4ChJoBuRlstmQaOiFZrrYGeUaKRuFugL6WyamKt7MJGVD/TSQ3++J5xwJLM7mJ6lKVYr+DPR6yLApZS82mDnXl4u5JMvvh9BXjOB3Y7qC41Tg=
+	t=1726560425; cv=none; b=mHYUxtpDwkAdj0Srr2Sa/N70gkSPxzsQUD74+kuLLQow4rCho4nDpqvvZNjqiUeQ+dprtYKElQYTMAW98Xf5emD7jZWf/chlkj5ARqFCHS4Fbhsnwn1ikRrc+6cy/fcSvTz6TD11rjSBbLjpseDGH0H8CcHb6FaN9KUoEexsaK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726558561; c=relaxed/simple;
-	bh=biDMup2XPeaQwwinze++JiPkRnA72RkGr7r/hjf3XHw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JvbdhajVlKiPmsCA5brrF6WI+dSCvysL7PZAzEFbLRYZgtlPRuDKtQ6ZOdD9vlN/J1D5MtODJwvYv9HHj3oaK+S4GAjbbhgq85A4kxeH1Xkn3x+tc5fcTOQPx/P8nbzRINAVK3q0Q6Np4f/YDt9MDoExMC6NcwVA+3/2FTsmK+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kali.org; spf=pass smtp.mailfrom=kali.org; dkim=pass (2048-bit key) header.d=kali.org header.i=@kali.org header.b=kf6jRO5S; arc=none smtp.client-ip=209.85.210.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kali.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kali.org
-Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-710d5d9aac1so1979859a34.3
-        for <linux-wireless@vger.kernel.org>; Tue, 17 Sep 2024 00:35:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kali.org; s=google; t=1726558559; x=1727163359; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hXw1lYT02+0Vf8ziiUOEHjvxWnQaB5EzNlXNmrfYuRs=;
-        b=kf6jRO5SEinBTeJ8zUjTWFjE0BwATDtVtvNTgavzSMZlkgGx3VHM//RcVXL1VaWqS1
-         NbvnisRT/pSC9bIPFWiyujIb1eaK7nILIB8yOt2KAEQB0CNQS2J6FFB38OL+Yg4BMiIo
-         1O8aF1RWuurRWqTnsw/AbWsVRhu4CHGu0gDmpuTOqhViphYItBaegWvBt+pCd1hXaxTe
-         2V6N0/iwnyaDFNoPd05YxRDu/e1iiFvDckDJ/O0CjQ/3GRdMM1xQd4kXDmDIxSumufyW
-         MY9HGIwxMS/CklJwF/9NbASGQHmanYT1XjzE4tt9Bb0eV8LiH81BUe+auvkQUaN9adIF
-         YjbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726558559; x=1727163359;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hXw1lYT02+0Vf8ziiUOEHjvxWnQaB5EzNlXNmrfYuRs=;
-        b=OkC9w4osiEFPKffHBwGtHQFH7d7PEzXirl2o5YN3opSpSicNwIRp4KllTEYj8rlwV4
-         TBEYGJePCPIqOhia0WId11nZ6fD2PWG5nHHww0jmbNLNO7t05OdWG0Wqj478Hpj0GOAy
-         KH2r7/4Nf7tIG4d6LlqottpOFKUgzUqMXco3Srgb+NQlhGr/b9aS9rcvHC+2zLqJmsRv
-         8YpiWm10g+Mf7ZcIvDd0CNA2QYGQS9dqbZEu5JSh/ejX9tK4VG6vhNzkLAzdJnM+uX+S
-         XGPFyekqKojg7ApOlQbPnB68iBKXJNiaQpddmkMRsvAs4T8Ib1hqqp3FgLsL988ZXSEh
-         /ZlA==
-X-Forwarded-Encrypted: i=1; AJvYcCVJM8MGDqf5RTQd8C3uyi2bfOpNo8WFmgHTMVdUJwam/RBxMCWJFMX+kvmNcPH10ybKyLBQdmeq6P0vMpLkQQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYVsV7vHp0sSgBJPWd1Jac8p0v1nklYVhyHcVX/ElPKK79CoV6
-	R01wqHBu0qroJ9jfI8gYutW9dLDDrkOTe3UKYJeSrgjmPaLNFZLgzgKBH2Gfz7xmfZ7edvH7eGJ
-	cMZw=
-X-Google-Smtp-Source: AGHT+IEHp1vDwgtZRHoFKFLtTTznHVKZk9j9Bi+KqH9oQjhZyv/HzyXPI0TsB5c9yQz9Aw8c/pAT1g==
-X-Received: by 2002:a05:6830:620b:b0:710:f287:7182 with SMTP id 46e09a7af769-711094fc683mr10497896a34.6.1726558558918;
-        Tue, 17 Sep 2024 00:35:58 -0700 (PDT)
-Received: from localhost (104-48-214-220.lightspeed.snantx.sbcglobal.net. [104.48.214.220])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-71239e9fee0sm1398011a34.30.2024.09.17.00.35.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Sep 2024 00:35:57 -0700 (PDT)
-From: Steev Klimaszewski <steev@kali.org>
-To: kvalo@kernel.org
-Cc: ath11k@lists.infradead.org,
-	linux-wireless@vger.kernel.org,
-	quic_kangyang@quicinc.com,
-	Steev Klimaszewski <steev@kali.org>
-Subject: Re: [PATCH 0/2] wifi: ath11k: fix full monitor mode
-Date: Tue, 17 Sep 2024 02:35:47 -0500
-Message-ID: <20240917073547.99604-1-steev@kali.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <87ed5kaxxp.fsf@kernel.org>
-References: <87ed5kaxxp.fsf@kernel.org>
+	s=arc-20240116; t=1726560425; c=relaxed/simple;
+	bh=e9lHIGhqczaAF52j2KFKbV23wjbuk5Nbcg+qBvsOVAc=;
+	h=MIME-Version:Message-ID:From:To:Subject:Content-Type:Date; b=ZaGHcUPSScTTC5P+OUyV2R8S8uYU7WRkN4aZ0csAAoMEjyT8b1a0/xXXEHZFiNvgjlMhWKa5ZiacXM2iyCnSMMKD5Om584u+u/V3pbU7lu1HuvpurHIBR5EYwHZa0x7ibKyj2zioqtukpNqxY9fuZ4onRF0Dt5OEW5DJXMW5JRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=linuxmail.org; spf=pass smtp.mailfrom=linuxmail.org; dkim=pass (2048-bit key) header.d=linuxmail.org header.i=cemunal@linuxmail.org header.b=kazVNQpY; arc=none smtp.client-ip=74.208.4.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=linuxmail.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxmail.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxmail.org;
+	s=s1089575; t=1726560422; x=1727165222; i=cemunal@linuxmail.org;
+	bh=e9lHIGhqczaAF52j2KFKbV23wjbuk5Nbcg+qBvsOVAc=;
+	h=X-UI-Sender-Class:MIME-Version:Message-ID:From:To:Subject:
+	 Content-Type:Date:cc:content-transfer-encoding:content-type:date:
+	 from:message-id:mime-version:reply-to:subject:to;
+	b=kazVNQpY6T/8DSTuUyYET/VA0qbZotYR28LFFYodPY8eliPlY+U0jx3iQ12t1amU
+	 9Z0giOsblHej38rRLydzilMuAeLZAnp+y7fNGuX5kQYyxc5E+xhbPfmFIMJ2jT/dc
+	 3W+GLqe393v+YkCUkPhUttCn9OJlyX54JHogBrfQzOL4g5CbmT8IbENHjkZnglMly
+	 Gk9joBmAwb010vCATeYUA+XzSuYCRhXoL8bZCcqV6RxsrN6hh9ZJ3zNZJ//o/u1sP
+	 Hff99Y8NBCeEIt0Pc963vIRDzjpRMeE1Fo2Liv8R5cpxEJSGdw+DQYBpAsK3+MBxj
+	 z+iFNEibT3M07WviOQ==
+X-UI-Sender-Class: f2cb72be-343f-493d-8ec3-b1efb8d6185a
+Received: from [188.3.12.169] ([188.3.12.169]) by web-mail.mail.com
+ (3c-app-mailcom-lxa11.server.lan [10.76.45.12]) (via HTTP); Tue, 17 Sep
+ 2024 10:07:02 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <trinity-7a84c76b-e8b0-4da8-8f8c-07ad3485a23d-1726560422197@3c-app-mailcom-lxa11>
+From: =?UTF-8?Q?Cem_=C3=9CNAL?= <cemunal@linuxmail.org>
+To: linux-wireless@vger.kernel.org
+Subject: PCIe Bus Error from rtw_8821ce
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 17 Sep 2024 10:07:02 +0200
+Importance: normal
+Sensitivity: Normal
+X-Priority: 3
+X-Provags-ID: V03:K1:s/iK+1V8w+dmwU5lRDv5k8rjMwpdri/0Zrobv57FuQ9ZrL4KMDRj/GpmFBPm89RIPq54A
+ hcVBs28Ym8xVf0der1ynyLK/H1hJB+SEoXs8szvS6Z9d/tf28g21/5aFaMkcL0E2ZxLuszxgB3wL
+ pHtqTOZ3fcbtA5HcwPwV/pb420FGjdr/pzBsKFaaR66jUrLGYjaHL2pIaDg9xQvtTY3JlceAK4zd
+ ECC4yYY/6/iZy6cUGX8QAUOEagc7zOTa27mwrOFUKhnHqMGRcjA5/dfwiKf6I6mNiRxNmcipG0nm
+ 1w=
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:ccEVGq2Vrxk=;JhvDihWo65bzPSpvOjv0YL4d1Xv
+ iQ0dXF6VjDIVDUOz0Tnt3L9kZptvI2RiPBZzgpD/mariP0wmStAm9Lg2QqBxp3S2BLWQyvQdX
+ bYScjFR5RaVnBSWQM8SrEkFSOeOadp9H43YRHMAZ9nr0kTqx54FvE2TTQHTI/PPaxSvqnG3YH
+ qEJyVgDuz4nsj0/XA5DB1kbp6aWt0P8Pwrs6Aqr1Uwtekx+f/5uNaH7mRy16qcnimJb+DBTPa
+ mhpvZNgn5hM0KvcT0Pvz57nCBnBwqXbQkQftD734zh79vQ+o6MSJATeivKgj8uhXol9/UGlFz
+ ZQsZISXD74frM1I4agx/6yBnV8og9/h08xLHVHnQ78OVYdxzCHK9c2+T4gug+IX+2zYDIrnlh
+ W6iDPfocOx7NDMzUQR7FOJ8VpxZtKG6SH33pxK2rdb+UWqaqxRYZ8qnm5Yn/FQf4pUY5/VMXl
+ 4RNlI0UAhQBZNHWDPoSg4N01lQlbMfxmbsJLvKcedlkXGNjgD2lCC6FNaHPQtn7/v+Xd5gZlm
+ JBSBWwuuNSvFjitoKpGYPyYT5lSLakdti0zA3kGS6vpDJAJyuPsgIVT2vKKuP83joe6VAczf9
+ 8lVVyF15K43PYVynwz1St2VGYOXeXCzS0B9i8yV562mXIB6XjVd+ZfoK0E0d0HLd1PQQb57al
+ nkzWEM/PykQsD6go2Cr0Clhhvc+oK62p2RrKznh26Q==
 
-I would also like to know this.  I have a Thinkpad X13s with a WCN6855 in it,
-and I've tried going back to the .30 firmware:
+I am testing build-in kernel drivers for rtw_8821ce and getting same error logs only. Here is some info:
 
-ath11k_pci 0006:01:00.0: fw_version 0x1106996e fw_build_timestamp 2023-10-13 07:30 fw_build_id WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
+sudo lspci -v:
 
-and with your patchset applied, I'm still not able to create a monitor mode
-interface.  Is there additional patching needed on top and this is just a fix
-before that comes?
+02:00.0 Network controller: Realtek Semiconductor Co., Ltd. RTL8821CE 802.11ac PCIe Wireless Network Adapter
+Subsystem: AzureWave Device 3040
+Flags: bus master, fast devsel, latency 0, IRQ 130
+I/O ports at e000 [size=256]
+Memory at ef000000 (64-bit, non-prefetchable) [size=64K]
+Capabilities: [40] Power Management version 3
+Capabilities: [50] MSI: Enable+ Count=1/1 Maskable- 64bit+
+Capabilities: [70] Express Endpoint, IntMsgNum 0
+Capabilities: [100] Advanced Error Reporting
+Capabilities: [148] Device Serial Number 00-e0-4c-ff-fe-c8-21-01
+Capabilities: [158] Latency Tolerance Reporting
+Capabilities: [160] L1 PM Substates
+Capabilities: [170] Precision Time Measurement
+Capabilities: [17c] Vendor Specific Information: ID=0003 Rev=1 Len=054 <?>
+Kernel driver in use: rtw_8821ce
+Kernel modules: rtw88_8821ce
+__________
 
--- steev
+uname -r:
+
+6.10.9-200.fc40.x86_64
+__________
+
+sudo dmesg | grep rtw:
+
+[ 7.785903] rtw_8821ce 0000:02:00.0: enabling device (0000 -> 0003)
+[ 7.799541] rtw_8821ce 0000:02:00.0: Firmware version 24.11.0, H2C version 12
+[ 7.852418] rtw_8821ce 0000:02:00.0 wlp2s0: renamed from wlan0
+[ 143.722023] rtw_8821ce 0000:02:00.0: PCIe Bus Error: severity=Correctable, type=Physical Layer, (Receiver ID)
+[ 143.722043] rtw_8821ce 0000:02:00.0: device [10ec:c821] error status/mask=00000001/0000e000
+[ 143.722058] rtw_8821ce 0000:02:00.0: [ 0] RxErr (First)
+[ 161.626544] rtw_8821ce 0000:02:00.0: PCIe Bus Error: severity=Correctable, type=Physical Layer, (Receiver ID)
+[ 161.626558] rtw_8821ce 0000:02:00.0: device [10ec:c821] error status/mask=00000001/0000e000
+[ 161.626573] rtw_8821ce 0000:02:00.0: [ 0] RxErr (First)
+[ 270.552854] rtw_8821ce 0000:02:00.0: PCIe Bus Error: severity=Correctable, type=Physical Layer, (Receiver ID)
+[ 270.552863] rtw_8821ce 0000:02:00.0: device [10ec:c821] error status/mask=00000001/0000e000
+[ 270.552873] rtw_8821ce 0000:02:00.0: [ 0] RxErr (First)
+[ 395.381350] rtw_8821ce 0000:02:00.0: PCIe Bus Error: severity=Correctable, type=Physical Layer, (Receiver ID)
+[ 395.381354] rtw_8821ce 0000:02:00.0: device [10ec:c821] error status/mask=00000001/0000e000
+[ 395.381359] rtw_8821ce 0000:02:00.0: [ 0] RxErr (First)
+[ 658.591238] rtw_8821ce 0000:02:00.0: PCIe Bus Error: severity=Correctable, type=Physical Layer, (Receiver ID)
+[ 658.591248] rtw_8821ce 0000:02:00.0: device [10ec:c821] error status/mask=00000001/0000e000
+[ 658.591260] rtw_8821ce 0000:02:00.0: [ 0] RxErr (First)
+[ 898.787339] rtw_8821ce 0000:02:00.0: PCIe Bus Error: severity=Correctable, type=Physical Layer, (Receiver ID)
+[ 898.787347] rtw_8821ce 0000:02:00.0: device [10ec:c821] error status/mask=00000001/0000e000
+[ 898.787355] rtw_8821ce 0000:02:00.0: [ 0] RxErr (First)
+[ 929.845965] rtw_8821ce 0000:02:00.0: PCIe Bus Error: severity=Correctable, type=Physical Layer, (Receiver ID)
+[ 929.845969] rtw_8821ce 0000:02:00.0: device [10ec:c821] error status/mask=00000001/0000e000
+[ 929.845974] rtw_8821ce 0000:02:00.0: [ 0] RxErr (First)
+[ 1125.098219] rtw_8821ce 0000:02:00.0: PCIe Bus Error: severity=Correctable, type=Physical Layer, (Receiver ID)
+[ 1125.098230] rtw_8821ce 0000:02:00.0: device [10ec:c821] error status/mask=00000001/0000e000
+[ 1125.098244] rtw_8821ce 0000:02:00.0: [ 0] RxErr (First)
+[ 1243.387084] rtw_8821ce 0000:02:00.0: PCIe Bus Error: severity=Correctable, type=Physical Layer, (Receiver ID)
+[ 1243.387092] rtw_8821ce 0000:02:00.0: device [10ec:c821] error status/mask=00000001/0000e000
+[ 1243.387103] rtw_8821ce 0000:02:00.0: [ 0] RxErr (First)
+[ 1393.896592] rtw_8821ce 0000:02:00.0: PCIe Bus Error: severity=Correctable, type=Physical Layer, (Receiver ID)
+[ 1393.896605] rtw_8821ce 0000:02:00.0: device [10ec:c821] error status/mask=00000001/0000e000
+[ 1393.896619] rtw_8821ce 0000:02:00.0: [ 0] RxErr (First)
+[ 1401.173918] rtw_8821ce 0000:02:00.0: PCIe Bus Error: severity=Correctable, type=Physical Layer, (Receiver ID)
+[ 1401.173928] rtw_8821ce 0000:02:00.0: device [10ec:c821] error status/mask=00000001/0000e000
+[ 1401.173939] rtw_8821ce 0000:02:00.0: [ 0] RxErr (First)
+[ 1415.097037] rtw_8821ce 0000:02:00.0: PCIe Bus Error: severity=Correctable, type=Physical Layer, (Receiver ID)
+[ 1415.097046] rtw_8821ce 0000:02:00.0: device [10ec:c821] error status/mask=00000001/0000e000
+[ 1415.097058] rtw_8821ce 0000:02:00.0: [ 0] RxErr (First)
+__________
+
+Any fixes?
+
+Thanks.
+
+P.S. : The BIOS is up-to-date.
 
