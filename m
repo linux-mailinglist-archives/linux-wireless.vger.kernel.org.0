@@ -1,52 +1,52 @@
-Return-Path: <linux-wireless+bounces-12974-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12975-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8B7A97C001
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2024 20:11:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 304FF97C002
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2024 20:11:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC3CE1C20C9C
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2024 18:11:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECA862833A6
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2024 18:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB5441CA69A;
-	Wed, 18 Sep 2024 18:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D897E1CA697;
+	Wed, 18 Sep 2024 18:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LdQ0mBFX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UJCIKWvc"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75231CA697
-	for <linux-wireless@vger.kernel.org>; Wed, 18 Sep 2024 18:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46D21CA6A5
+	for <linux-wireless@vger.kernel.org>; Wed, 18 Sep 2024 18:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726683047; cv=none; b=PtBh5U2PsmW0JPiB/0GHHrgo0WMYTR9dSA4Nfsudv8BjgPqseWirDrLP5141+4+20aKhLoz/EXwPORa9RqkiNxaZYQScAVa330kTrU+/d/aFstKIplJK4IgPIxF6MNHkzbTOdQJ/lv1VIr/qJ8/byr7OAQ2L5kJLorHSiy0obDw=
+	t=1726683048; cv=none; b=MfwoJ/DA8FDVkXUGRsrxPumpolokeb/BPinbuP/Mv7ZGPRbA8u3R+4Oc63OiXKBGVdPWOCYJMsKdT7FY0572pwYy1zl6ZxjSdZL7YxtxG1E50PMiEW53er4hHs6Dx+kXrUfRTM0r1w6hn2rB5DkNc+YWEPV/hxrK9jAiA5d+lGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726683047; c=relaxed/simple;
-	bh=AoMSlwZzfikyMlKUVpUCwlvWlCDKYkUJj2DYDf62tcw=;
+	s=arc-20240116; t=1726683048; c=relaxed/simple;
+	bh=MWVesHo1qywTujYrfE4SGg4HnpXQDUExxEOEBYByavc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Js08nFGg/xURmlg6227WjYvr9Ff61ATnlO4IbbTg3ebcP27B9ftmHF/9aEuARq8mf/EhA+ieyMSwOQu3H4Kf38OwHx4HnJh1GsUZYODttiw2MQhy/6f8qLGHFw4dapkR3INpixPMczgiRVpGhY1pcw0B0Pa0VYkjMTGG5BebIxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LdQ0mBFX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D85C4CEC2;
-	Wed, 18 Sep 2024 18:10:46 +0000 (UTC)
+	 MIME-Version; b=fKrqmybCntga3euVWTppJan8vvyxfi4zHL8tK4FA4rqccysTc7jLpGH7Avf8AiDn7R2Ndl7GoxJ3nTl5z+r+0IfQlBtAg4UcGOTxNTB5DGxATjFZGtYrRTIXM5mo6IkODcUuFn9uKMhBQT772BLuEOArf3ijQB5W6T3polcUrqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UJCIKWvc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFD3C4CEC6;
+	Wed, 18 Sep 2024 18:10:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726683047;
-	bh=AoMSlwZzfikyMlKUVpUCwlvWlCDKYkUJj2DYDf62tcw=;
+	s=k20201202; t=1726683048;
+	bh=MWVesHo1qywTujYrfE4SGg4HnpXQDUExxEOEBYByavc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LdQ0mBFXcWX3uIHJVAgaI5cgNYUBijDDS4xg8WNbOOtjLsnRDLYGZV2WnUkKBUX+u
-	 F6vIrDCidWPuYqGirCKy8+aM1wQyjpXnWx9llI/c77mNYL+ctQbXIiqMcsNyCST66P
-	 OsbHP3tWIGEOm1a1KZCulQcluiAYCytCCui2ItQM+pvprPWCn1ZCiv7IlndubD0UaO
-	 ckqQtdM5j3Cb+T72NbL8f+l5TGpvw4qQApeE0VEAn7BBMdTzmkHqpEMebaIONVoyx4
-	 UAlLTdrBhHANBP/W1wcUafVjdS51cruhQr7raw98GZBMHmVB4zQyf5bSzPmMQtRSLF
-	 YuBK4/FJuCjHA==
+	b=UJCIKWvcW63HN8ENuaZciZcgnB8gzZYDjnAkN26w2SBoJAe2GFnE6XhCNhNXyehAd
+	 4Yl4sUOo4+Mp4hYaAGXsX8heSQD+ceNid2fcO3VYO5tqD4wehWnqWqjPIB6MFJJyZK
+	 hKjq90kxPX5TvnkghSd0aMROSlNJvAKRP8afE0fT5drm80EAvVHOmWXXJWQy1qE63c
+	 CxsRhSZ+sjOb8P7nJPYsedK6cPTx8kIxuB6M35W/HVrfnD2XGFisQG9j2ihrTmV+Ns
+	 AtQ1MSpvrlE5oVajIVVDyorIRib+kTJYvhHGjNAAdWVH960doxFef9IgoIZYL3Zlqw
+	 39w8mvSevY/DA==
 From: Kalle Valo <kvalo@kernel.org>
 To: ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH RFC v2 2/4] wifi: ath12k: cleanup unneeded labels
-Date: Wed, 18 Sep 2024 21:10:40 +0300
-Message-Id: <20240918181042.91891-3-kvalo@kernel.org>
+Subject: [PATCH RFC v2 3/4] wifi: ath12k: ath12k_mac_op_set_key(): remove exit label
+Date: Wed, 18 Sep 2024 21:10:41 +0300
+Message-Id: <20240918181042.91891-4-kvalo@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20240918181042.91891-1-kvalo@kernel.org>
 References: <20240918181042.91891-1-kvalo@kernel.org>
@@ -60,205 +60,77 @@ Content-Transfer-Encoding: 8bit
 
 From: Kalle Valo <quic_kvalo@quicinc.com>
 
-After removing the conf_mutex in the previous patch there are now unnecessary
-labels in mac.c. Sparse also warns one instance of it:
-
-drivers/net/wireless/ath/ath12k/mac.c:6635:1: warning: statement expected after label
-
-Remove the labels and instead use directly return.
+In ath12k_mac_op_set_key() removing the exit label was a bit more complex as
+checkpatch complained about the unnecessary else branch after a return. So
+remove the else branch and remove now the unncessary ret initialisation.
 
 Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 56 +++++++++++----------------
- 1 file changed, 22 insertions(+), 34 deletions(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index ed900fbef9d8..a9d37a59a8c2 100644
+index a9d37a59a8c2..80db9004cdd7 100644
 --- a/drivers/net/wireless/ath/ath12k/mac.c
 +++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -1279,24 +1279,23 @@ static int ath12k_mac_config(struct ath12k *ar, u32 changed)
- 		ar->monitor_conf_enabled = conf->flags & IEEE80211_CONF_MONITOR;
- 		if (ar->monitor_conf_enabled) {
- 			if (ar->monitor_vdev_created)
--				goto exit;
-+				return ret;
- 			ret = ath12k_mac_monitor_vdev_create(ar);
- 			if (ret)
--				goto exit;
-+				return ret;
- 			ret = ath12k_mac_monitor_start(ar);
- 			if (ret)
- 				goto err_mon_del;
- 		} else {
- 			if (!ar->monitor_vdev_created)
--				goto exit;
-+				return ret;
- 			ret = ath12k_mac_monitor_stop(ar);
- 			if (ret)
--				goto exit;
-+				return ret;
- 			ath12k_mac_monitor_vdev_delete(ar);
+@@ -3942,7 +3942,7 @@ static int ath12k_mac_set_key(struct ath12k *ar, enum set_key_cmd cmd,
+ 	struct ath12k_peer *peer;
+ 	struct ath12k_sta *arsta;
+ 	const u8 *peer_addr;
+-	int ret = 0;
++	int ret;
+ 	u32 flags = 0;
+ 
+ 	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
+@@ -3970,14 +3970,13 @@ static int ath12k_mac_set_key(struct ath12k *ar, enum set_key_cmd cmd,
+ 		if (cmd == SET_KEY) {
+ 			ath12k_warn(ab, "cannot install key for non-existent peer %pM\n",
+ 				    peer_addr);
+-			ret = -EOPNOTSUPP;
+-			goto exit;
+-		} else {
+-			/* if the peer doesn't exist there is no key to disable
+-			 * anymore
+-			 */
+-			goto exit;
++			return -EOPNOTSUPP;
  		}
- 	}
- 
--exit:
- 	return ret;
- 
- err_mon_del:
-@@ -4716,10 +4715,9 @@ static int ath12k_mac_op_sta_set_txpwr(struct ieee80211_hw *hw,
- 	if (ret) {
- 		ath12k_warn(ar->ab, "failed to set tx power for station ret: %d\n",
- 			    ret);
--		goto out;
-+		return ret;
- 	}
- 
--out:
- 	return ret;
- }
- 
-@@ -6472,7 +6470,7 @@ static int ath12k_mac_vdev_create(struct ath12k *ar, struct ieee80211_vif *vif)
- 	if (ret) {
- 		ath12k_warn(ab, "failed to create WMI vdev %d: %d\n",
- 			    arvif->vdev_id, ret);
--		goto err;
-+		return ret;
- 	}
- 
- 	ar->num_created_vdevs++;
-@@ -6589,13 +6587,13 @@ static int ath12k_mac_vdev_create(struct ath12k *ar, struct ieee80211_vif *vif)
- 		if (ret) {
- 			ath12k_warn(ar->ab, "failed to delete peer vdev_id %d addr %pM\n",
- 				    arvif->vdev_id, vif->addr);
--			goto err;
-+			return ret;
- 		}
- 
- 		ret = ath12k_wait_for_peer_delete_done(ar, arvif->vdev_id,
- 						       vif->addr);
- 		if (ret)
--			goto err;
-+			return ret;
- 
- 		ar->num_peers--;
- 	}
-@@ -7627,21 +7625,18 @@ ath12k_mac_op_assign_vif_chanctx(struct ieee80211_hw *hw,
- 	    arvif->vdev_type != WMI_VDEV_TYPE_MONITOR &&
- 	    !ath12k_peer_exist_by_vdev_id(ab, arvif->vdev_id)) {
- 		memcpy(&arvif->chanctx, ctx, sizeof(*ctx));
--		ret = 0;
--		goto out;
++
++		/* if the peer doesn't exist there is no key to disable
++		 * anymore
++		 */
 +		return 0;
  	}
  
--	if (WARN_ON(arvif->is_started)) {
--		ret = -EBUSY;
--		goto out;
--	}
-+	if (WARN_ON(arvif->is_started))
-+		return -EBUSY;
- 
- 	if (arvif->vdev_type == WMI_VDEV_TYPE_MONITOR) {
- 		ret = ath12k_mac_monitor_start(ar);
- 		if (ret)
--			goto out;
-+			return ret;
- 		arvif->is_started = true;
--		goto out;
-+		return ret;
- 	}
- 
- 	ret = ath12k_mac_vdev_start(arvif, ctx);
-@@ -7649,7 +7644,7 @@ ath12k_mac_op_assign_vif_chanctx(struct ieee80211_hw *hw,
- 		ath12k_warn(ab, "failed to start vdev %i addr %pM on freq %d: %d\n",
- 			    arvif->vdev_id, vif->addr,
- 			    ctx->def.chan->center_freq, ret);
--		goto out;
-+		return ret;
- 	}
- 
- 	if (arvif->vdev_type != WMI_VDEV_TYPE_MONITOR && ar->monitor_vdev_created)
-@@ -7659,7 +7654,6 @@ ath12k_mac_op_assign_vif_chanctx(struct ieee80211_hw *hw,
- 
- 	/* TODO: Setup ps and cts/rts protection */
- 
--out:
- 	return ret;
- }
- 
-@@ -8127,10 +8121,8 @@ ath12k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
- 	ldpc = !!(ar->ht_cap_info & WMI_HT_CAP_LDPC);
- 
- 	sgi = mask->control[band].gi;
--	if (sgi == NL80211_TXRATE_FORCE_LGI) {
--		ret = -EINVAL;
--		goto out;
--	}
-+	if (sgi == NL80211_TXRATE_FORCE_LGI)
-+		return -EINVAL;
- 
- 	/* mac80211 doesn't support sending a fixed HT/VHT MCS alone, rather it
- 	 * requires passing at least one of used basic rates along with them.
-@@ -8146,7 +8138,7 @@ ath12k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
- 		if (ret) {
- 			ath12k_warn(ar->ab, "failed to get single legacy rate for vdev %i: %d\n",
- 				    arvif->vdev_id, ret);
--			goto out;
-+			return ret;
- 		}
- 		ieee80211_iterate_stations_atomic(hw,
- 						  ath12k_mac_disable_peer_fixed_rate,
-@@ -8191,8 +8183,7 @@ ath12k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
- 			 */
- 			ath12k_warn(ar->ab,
- 				    "Setting more than one MCS Value in bitrate mask not supported\n");
--			ret = -EINVAL;
--			goto out;
-+			return -EINVAL;
- 		}
- 
- 		ieee80211_iterate_stations_atomic(hw,
-@@ -8211,7 +8202,6 @@ ath12k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
- 			    arvif->vdev_id, ret);
- 	}
- 
--out:
- 	return ret;
- }
- 
-@@ -8522,7 +8512,7 @@ static int ath12k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
- 	spin_unlock_bh(&ar->data_lock);
- 
- 	if (ret)
+ 	if (key->flags & IEEE80211_KEY_FLAG_PAIRWISE)
+@@ -3988,13 +3987,13 @@ static int ath12k_mac_set_key(struct ath12k *ar, enum set_key_cmd cmd,
+ 	ret = ath12k_install_key(arvif, key, cmd, peer_addr, flags);
+ 	if (ret) {
+ 		ath12k_warn(ab, "ath12k_install_key failed (%d)\n", ret);
 -		goto exit;
 +		return ret;
+ 	}
  
- 	scan_time_msec = hw->wiphy->max_remain_on_channel_duration * 2;
- 
-@@ -8531,10 +8521,8 @@ static int ath12k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
- 	arg.num_chan = 1;
- 	arg.chan_list = kcalloc(arg.num_chan, sizeof(*arg.chan_list),
- 				GFP_KERNEL);
--	if (!arg.chan_list) {
--		ret = -ENOMEM;
+ 	ret = ath12k_dp_rx_peer_pn_replay_config(arvif, peer_addr, cmd, key);
+ 	if (ret) {
+ 		ath12k_warn(ab, "failed to offload PN replay detection %d\n", ret);
 -		goto exit;
--	}
-+	if (!arg.chan_list)
-+		return -ENOMEM;
++		return ret;
+ 	}
  
- 	arg.vdev_id = arvif->vdev_id;
- 	arg.scan_id = ATH12K_SCAN_ID;
-@@ -8572,7 +8560,7 @@ static int ath12k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
+ 	spin_lock_bh(&ab->base_lock);
+@@ -4040,8 +4039,7 @@ static int ath12k_mac_set_key(struct ath12k *ar, enum set_key_cmd cmd,
  
- free_chan_list:
- 	kfree(arg.chan_list);
+ 	spin_unlock_bh(&ab->base_lock);
+ 
 -exit:
-+
- 	return ret;
+-	return ret;
++	return 0;
  }
  
+ static int ath12k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
 -- 
 2.39.5
 
