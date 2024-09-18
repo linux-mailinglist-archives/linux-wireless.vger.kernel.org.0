@@ -1,160 +1,123 @@
-Return-Path: <linux-wireless+bounces-12937-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12938-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C1F97B8D1
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2024 09:53:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BBED97B9A9
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2024 10:57:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 243B51C2122B
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2024 07:53:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24AC91F25755
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2024 08:57:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55F4974C08;
-	Wed, 18 Sep 2024 07:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA5017D373;
+	Wed, 18 Sep 2024 08:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=online.de header.i=dknueppel@online.de header.b="aZdRDiMY"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="MXrJIHO6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ECB4158219
-	for <linux-wireless@vger.kernel.org>; Wed, 18 Sep 2024 07:53:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C6B180A6A
+	for <linux-wireless@vger.kernel.org>; Wed, 18 Sep 2024 08:56:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726645996; cv=none; b=u7wfYen8JWsjb3GPkkv0qNy9HycldWtXNG4TXLW9PwPXwgdRcah+zaA+6Pb5m2aORv0rP9vhEXWZmBxjIvotW1jF2XIGUPgB0WUvhmRAKcQz3pFHvaBPJkD4T0JAQt6Js1rvzUKh9wnlhLzM+rNx995z0C1+JNY9jyW/w6En1co=
+	t=1726649794; cv=none; b=dqGft+iSctVtpUTWoGWpU1G+NyKPuzFTSZMPBMFFL4wYkwC/fczWbM6R5ibyEyznHZUBZWDViWjVBW7lpITDsrQWJSmFdx3ML15FEv9PJdY3JFgUpgjkzDpyT9MAfVBbO+FaHKCC/07wTAU4bY2F3pCDrkfdwTMT/IM2TKanYRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726645996; c=relaxed/simple;
-	bh=SHADO+5G+ctbY7oDTmbw1MAP9K+OoYNe6wqdch3z80Q=;
-	h=Date:MIME-Version:To:From:Subject:Content-Type:Message-ID; b=e8ExkSkZ+FMmLJ/2Wytlz9jCXsI089d9UMsP4sxC6f6L3UZzbElwNnryrEilKdfmI2MDARADXG2Svia89Dn+f6zsFE4hSBxweD8hoJxp3oToq5YwY4T4G0eEtBG3R3RPaaNtevjsumZHKzcGX9I0o4mQixckWaE5LQP4eF4pFVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=online.de; spf=pass smtp.mailfrom=online.de; dkim=pass (2048-bit key) header.d=online.de header.i=dknueppel@online.de header.b=aZdRDiMY; arc=none smtp.client-ip=212.227.126.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=online.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=online.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=online.de;
-	s=s42582890; t=1726645985; x=1727250785; i=dknueppel@online.de;
-	bh=SHADO+5G+ctbY7oDTmbw1MAP9K+OoYNe6wqdch3z80Q=;
-	h=X-UI-Sender-Class:Date:MIME-Version:To:From:Subject:Content-Type:
-	 Content-Transfer-Encoding:Message-ID:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=aZdRDiMYsNCscoV0+jghC4Csq0EFkEGmz2ENQc1AW3yQiwkZMmsCgrhgT6+Ew6OI
-	 pteexVLc8/qG7UNOieVn/BNYi4YUDFo1I356eI8+8Vew94x/6TT8sB31aopBLcxQC
-	 IJ3lxZivWvBtIZEJiD+19/kj1x4FewP+OkiRa37T1RfeCwF2ctC7JppYytdcPh/qy
-	 mOhxBOo2LUh+Sxsq5ICR6kJX4wC7BbleCxIkS74PaXaobPj9vEeWFMjRCVEFVoK94
-	 961BZa45CtcqeZQnjiBxWj8n/WdbdGBnamagwE9MklUyoosNCe7SqeiyDfJuruBbf
-	 XOEgUwqsnVG+NYIYsg==
-X-UI-Sender-Class: 6003b46c-3fee-4677-9b8b-2b628d989298
-Received: from xXx ([87.122.98.153]) by mrelayeu.kundenserver.de (mreue011
- [212.227.15.167]) with ESMTPSA (Nemesis) id 1N4hex-1rs1AM2KqF-0133W0 for
- <linux-wireless@vger.kernel.org>; Wed, 18 Sep 2024 09:53:05 +0200
-Authentication-Results: kalliope-7.home.xx;
-	auth=pass smtp.auth=dknueppel@home.xx smtp.mailfrom=dknueppel@home.xx
-Date: Wed, 18 Sep 2024 09:53:04 +0200
+	s=arc-20240116; t=1726649794; c=relaxed/simple;
+	bh=17ERSlRppoc382F8PgDa0/gUcfR+x2UiP6ZzLbSNjMc=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=X0oF7wwjr+0Dw8T4A0uMDGa6TdZtgJuzuxxGaZTYKIlt4uVvj2v4cAFCg6GcwZBtoneVbit38D9hO+Es/yNM4qJe3Bpx5Qe1T1yZ8uDHzlLFV2fUDHegw9RIHGQlFnBbHm0DLO4NOFD7af8aofPCFZE15vLIOVZ+cUJugbhL70A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=MXrJIHO6; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 48I8uMq551865612, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1726649782; bh=17ERSlRppoc382F8PgDa0/gUcfR+x2UiP6ZzLbSNjMc=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding;
+	b=MXrJIHO66HJkvB6rzCpFMD+yB4KdyuG7dvWN/p7ifoDpRtEvo63axd1z2LvSqGICR
+	 KqXoVgjhdcuND7zz7mwRPwxW8u9UbM+U8IZhMSwdJqiF4ybGo8xXLyiL6iukzOqGwA
+	 bc+sdLWVyRkm+GrXrHnpFHNWAVGB/I+z350bwFOiMCCGfLhn2U/Ghy9dCZ5KH9o8Dk
+	 WAqkBp91CXCMitS5/uz3aocQm/TVRkV8WZ9vv0J5cCRy+QjiZM+3QgTzS4uawTlo9E
+	 u7QlFYzEABgjWY9W1cqRaV6ci722A1PkGJhTQIMFLrFmbLKWnMCv7ckYYHCouwE3jY
+	 0d3RO7/xSh6cw==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.05/5.92) with ESMTPS id 48I8uMq551865612
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 18 Sep 2024 16:56:22 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 18 Sep 2024 16:56:22 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 18 Sep
+ 2024 16:56:22 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+CC: <mweissenbach@ignaz.org>
+Subject: [PATCH] wifi: rtw89: 8852be: add quirk to avoid PCI 36bit DMA for certain platforms
+Date: Wed, 18 Sep 2024 16:55:51 +0800
+Message-ID: <20240918085551.54611-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Language: en-US
-To: linux-wireless@vger.kernel.org
-From: Dieter Knueppel <dknueppel@online.de>
-Subject: ath12k - HTT timeout error with NCM86
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-3.10 / 6.00];
-	BAYES_HAM(-3.00)[99.98%];
-	MIME_GOOD(-0.10)[text/plain];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_COUNT_ZERO(0.00)[0];
-	RCPT_COUNT_ONE(0.00)[1];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	MIME_TRACE(0.00)[0:+]
-X-Rspamd-Action: no action
-X-Rspamd-Server: kalliope-7
-X-Rspamd-Queue-Id: 6B4A0439AD
-X-Spamd-Bar: ---
-Message-ID: <1N7iT4-1rv3yN2hUI-016bkv@mrelayeu.kundenserver.de>
-X-Provags-ID: V03:K1:WTlUVa3riEnkPdOJXsFsIqij9g2rKWpgJ3Yt2p3sWUQNGw1bZEv
- /Z+0BNQMzDTjytdDourZjlIQjFkhYtIIomISub3815FwM2yviJE6mfyvBC3B0DVLdiTkhsm
- Di4YKfUivmUE7Z6Xd9g2+PrENpU9GRz8EJam4x9amSuwDjTqMMQx3Mq2Oo0rS2buFQLC09E
- Ju2svTPhSzlY/w31mhnsw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:AIFI7BSEBk8=;opEjfR22cMmC3gEbTnImxig391U
- gZxgj7MZK2d99EljsDWwGuRn44lJstoir5VWV7zMVtHWrBLhilAP8UHtmKxIv5zhD4V7kvbeD
- ycQxYCiYPWBtWaVxT70vGL30QYYx8TeX/rE61uw+x0S1DumO8FHN/jBWVau8QIM3TUHwHTcFw
- loUIX46ngwVgHlRoF0cSCFiY4KvRRlf74uf7l1TQa77boZLPrEQgyZ8wLngjkvIVE49RksPh6
- umT2Xu2uHvOkeq0p3i46T5k6+RDO8OTdxEDd0idZl7CZAffAMRIVhyRfaYjZcW6XR4vE0iMrG
- p/B7ii26vaWZCV1W4PJ2qS6uzkQA81TEprs+/PVfBKP7tQMfNoyrA7jQ4RYP7bITXRNkHMIgr
- lqyTsoaAMjzkuzdaPvUKm2CkfzGPOrxi5paRHB7bYFS/DR1cRFWN5mY5ffNb83gX+PdPZ4k9T
- fYx+7i4Lv3KrEf8KzAIPtpzv3+XTOOMA/MfI3G9WilEyESh9NBsI6N1ATkVw6urGVPbhbC/1o
- dJAyKoMFBQ1wgvKNKUG+Ef0lr1oXcF4qt3N0w5Iom72CIm0qAyPN7mAj8UT4zRGgoJ+/v4e3C
- FpqrCVTaCTgL0HXB9mDKhzirRUDcziygyMnXi6zk06j8HmSazXd6c2GHacLER/BYAlyQsrBg2
- c1lavtBgysCWSmhqwwg6EyXZo61ZSAtF5UUZI2MdfCbO4KM1uxcexKudvnOnSx/wPEWeDLAJB
- fzAHsyxymYOKjEHC41EU/GRctFDZiwQyw==
+Content-Transfer-Encoding: base64
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-Dear developer team,
-
-I'm trying to get "MSI HERALD-BE NCM865" up and running within a kvm
-based VM on
-
-Ubuntu server 24.04.
-
- =C2=A0=C2=A0=C2=A0 08:00.0 Network controller: Qualcomm Technologies, Inc=
- WCN785x
-Wi-Fi 7(802.11be) 320MHz 2x2 [FastConnect 7800] (rev 01)
- =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Subsystem: Foxconn Internation=
-al, Inc. High Band Simultaneous
-Wireless Network Adapter
- =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Physical Slot: 0-8
- =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Control: I/O- Mem+ BusMaster+ =
-SpecCycle- MemWINV- VGASnoop-
-ParErr- Stepping- SERR+ FastB2B- DisINTx+
- =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Status: Cap+ 66MHz- UDF- FastB=
-2B- ParErr- DEVSEL=3Dfast >TAbort+
-<TAbort- <MAbort- >SERR- <PERR- INTx-
-
-With kernel versions 6.8 (coming with Ubuntu) as well as with versions
-up to 6.11 i get the
-
-below syslog outputs:
-
-ath12k_pci 0000:08:00.0: BAR 0 [mem 0xfda00000-0xfdbfffff 64bit]: assigned
-ath12k_pci 0000:08:00.0: MSI vectors: 1
-ath12k_pci 0000:08:00.0: Hardware name: wcn7850 hw2.0
-ath12k_pci 0000:08:00.0: qmi dma allocation failed (7077888 B type 1),
-will try later with small size
-ath12k_pci 0000:08:00.0: chip_id 0x2 chip_family 0x4 board_id 0xff
-soc_id 0x40170200
-ath12k_pci 0000:08:00.0: fw_version 0x100301e1 fw_build_timestamp
-2023-12-06 04:05 fw_build_id
-QC_IMAGE_VERSION_STRING=3DWLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILIC=
-ONZ-3
-ath12k_pci 0000:08:00.0: leaving PCI ASPM disabled to avoid MHI M2 problem=
-s
-ath12k_pci 0000:08:00.0: failed to receive control response completion,
-polling..
-ath12k_pci 0000:08:00.0: Service connect timeout
-ath12k_pci 0000:08:00.0: failed to connect to HTT: -110
-ath12k_pci 0000:08:00.0: failed to start core: -110
-
-I already searched for similar issues, w/o any success so far :-( Have i
-overlooked something?
-
-I would be glad for any advice.
-
-Thanks a lot,
-
-Dieter
-
-
-P.S. Earlier i gave "Gigabyte WC-WIFI7" a try, even with less success.
-Here i received an error "unknown HW type: 0xf".
-
-
-
+UlRMODg1MkJFIGhhcyBQQ0kgMzYtYml0IERNQSBpbnRlcm9wZXJhYmlsaXR5IHByb2JsZW0gb24g
+Y2VydGFpbgpwbGF0Zm9ybXMsIHNvIGFkZCBxdWlya3MgdG8gZXhjbHVkZSB0aGlzIGtpbmQgb2Yg
+cGxhdGZvcm1zLgoKT3RoZXJ3aXNlLCBmYWlsZWQgdG8gZG93bmxvYWQgZmlybXdhcmUsIGFuZCBX
+aUZpIGJlY29tZXMgdW51c2FibGUuCgpSZXBvcnRlZC1ieTogTWFyY2VsIFdlacOfZW5iYWNoIDxt
+d2Vpc3NlbmJhY2hAaWduYXoub3JnPgpDbG9zZXM6IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xp
+bnV4LXdpcmVsZXNzLzIwMjQwOTE4MDczMjM3LkhvcmRlLlZMdWVoMF9LYWlEdy05YXNFRWNkTTg0
+QGlnbmF6Lm9yZy9ULyNtMDdjNTY5NGRmMWFjYjE3M2E0MmUxYTBiYWI3YWMyMmJkMjMxYTJiOApT
+aWduZWQtb2ZmLWJ5OiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4KLS0tCiBkcml2
+ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L2NvcmUuaCAgICAgIHwgIDEgKwogZHJpdmVy
+cy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9wY2kuYyAgICAgICB8ICA0ICsrKysKIGRyaXZl
+cnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODkvcnR3ODg1MmJlLmMgfCAxNCArKysrKysrKysr
+KysrLQogMyBmaWxlcyBjaGFuZ2VkLCAxOCBpbnNlcnRpb25zKCspLCAxIGRlbGV0aW9uKC0pCgpk
+aWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9jb3JlLmggYi9k
+cml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L2NvcmUuaAppbmRleCA0ZWQ5MDM0ZmRi
+NDYuLmQzYjE0MGFjMGFhZSAxMDA2NDQKLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRl
+ay9ydHc4OS9jb3JlLmgKKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9j
+b3JlLmgKQEAgLTQ3MTAsNiArNDcxMCw3IEBAIGVudW0gcnR3ODlfZmxhZ3MgewogCiBlbnVtIHJ0
+dzg5X3F1aXJrcyB7CiAJUlRXODlfUVVJUktfUENJX0JFUiwKKwlSVFc4OV9RVUlSS19QQ0lfTk9f
+MzZCSVRfRE1BLAogCiAJTlVNX09GX1JUVzg5X1FVSVJLUywKIH07CmRpZmYgLS1naXQgYS9kcml2
+ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3BjaS5jIGIvZHJpdmVycy9uZXQvd2lyZWxl
+c3MvcmVhbHRlay9ydHc4OS9wY2kuYwppbmRleCAwMmFmZWIzYWNjZTQuLjAzZTNlMTdjOGE2NyAx
+MDA2NDQKLS0tIGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9wY2kuYworKysg
+Yi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3BjaS5jCkBAIC0zMDYxLDYgKzMw
+NjEsOSBAQCBzdGF0aWMgaW50IHJ0dzg5X3BjaV9zZXR1cF9tYXBwaW5nKHN0cnVjdCBydHc4OV9k
+ZXYgKnJ0d2RldiwKIAkJZ290byBlcnI7CiAJfQogCisJaWYgKHRlc3RfYml0KFJUVzg5X1FVSVJL
+X1BDSV9OT18zNkJJVF9ETUEsIHJ0d2Rldi0+cXVpcmtzKSkKKwkJZ290byBub18zNmJpdF9kbWE7
+CisKIAlyZXQgPSBkbWFfc2V0X21hc2tfYW5kX2NvaGVyZW50KCZwZGV2LT5kZXYsIERNQV9CSVRf
+TUFTSygzNikpOwogCWlmICghcmV0KSB7CiAJCXJ0d3BjaS0+ZW5hYmxlX2RhYyA9IHRydWU7CkBA
+IC0zMDc0LDYgKzMwNzcsNyBAQCBzdGF0aWMgaW50IHJ0dzg5X3BjaV9zZXR1cF9tYXBwaW5nKHN0
+cnVjdCBydHc4OV9kZXYgKnJ0d2RldiwKIAkJfQogCX0KIAorbm9fMzZiaXRfZG1hOgogCXJlc291
+cmNlX2xlbiA9IHBjaV9yZXNvdXJjZV9sZW4ocGRldiwgYmFyX2lkKTsKIAlydHdwY2ktPm1tYXAg
+PSBwY2lfaW9tYXAocGRldiwgYmFyX2lkLCByZXNvdXJjZV9sZW4pOwogCWlmICghcnR3cGNpLT5t
+bWFwKSB7CmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3J0
+dzg4NTJiZS5jIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9ydHc4ODUyYmUu
+YwppbmRleCBkOGY5ZDkyY2EwZmIuLjMzYTZhYWNhNWE0YiAxMDA2NDQKLS0tIGEvZHJpdmVycy9u
+ZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OS9ydHc4ODUyYmUuYworKysgYi9kcml2ZXJzL25ldC93
+aXJlbGVzcy9yZWFsdGVrL3J0dzg5L3J0dzg4NTJiZS5jCkBAIC02Miw5ICs2MiwyMSBAQCBzdGF0
+aWMgY29uc3Qgc3RydWN0IHJ0dzg5X3BjaV9pbmZvIHJ0dzg4NTJiX3BjaV9pbmZvID0gewogCS5y
+ZWNvZ25pemVfaW50cnMJPSBydHc4OV9wY2lfcmVjb2duaXplX2ludHJzLAogfTsKIAorc3RhdGlj
+IGNvbnN0IHN0cnVjdCBkbWlfc3lzdGVtX2lkIHJ0dzg4NTJiX3BjaV9xdWlya3NbXSA9IHsKKwl7
+CisJCS5pZGVudCA9ICJBU1VTVGVLIENPTVBVVEVSIElOQy4gVFVGIEdBTUlORyBCNTUwTS1QTFVT
+IiwKKwkJLm1hdGNoZXMgPSB7CisJCQlETUlfTUFUQ0goRE1JX0JPQVJEX1ZFTkRPUiwgIkFTVVNU
+ZUsgQ09NUFVURVIgSU5DLiIpLAorCQkJRE1JX01BVENIKERNSV9CT0FSRF9OQU1FLCAiVFVGIEdB
+TUlORyBCNTUwTS1QTFVTIiksCisJCX0sCisJCS5kcml2ZXJfZGF0YSA9ICh2b2lkICopUlRXODlf
+UVVJUktfUENJX05PXzM2QklUX0RNQSwKKwl9LAorCXt9LAorfTsKKwogc3RhdGljIGNvbnN0IHN0
+cnVjdCBydHc4OV9kcml2ZXJfaW5mbyBydHc4OV84ODUyYmVfaW5mbyA9IHsKIAkuY2hpcCA9ICZy
+dHc4ODUyYl9jaGlwX2luZm8sCi0JLnF1aXJrcyA9IE5VTEwsCisJLnF1aXJrcyA9IHJ0dzg4NTJi
+X3BjaV9xdWlya3MsCiAJLmJ1cyA9IHsKIAkJLnBjaSA9ICZydHc4ODUyYl9wY2lfaW5mbywKIAl9
+LAotLSAKMi4yNS4xCgo=
 
