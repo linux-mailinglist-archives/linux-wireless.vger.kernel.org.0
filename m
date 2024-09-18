@@ -1,97 +1,145 @@
-Return-Path: <linux-wireless+bounces-12939-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12941-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B24797B9BC
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2024 11:00:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92BA097BB54
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2024 13:11:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D138B2871C6
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2024 09:00:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AE311F25292
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2024 11:11:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF6DF1791EB;
-	Wed, 18 Sep 2024 09:00:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="L+F+53r/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C4D18B475;
+	Wed, 18 Sep 2024 11:10:40 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1405A178376;
-	Wed, 18 Sep 2024 09:00:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1256218A932
+	for <linux-wireless@vger.kernel.org>; Wed, 18 Sep 2024 11:10:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726650013; cv=none; b=TldVZCU8ycVdhUdv7R9J2By5n7l/OBBSCeTi4shED2QGVemWBtKwaiBsV3KDlcQQdc0VSf4Y7ncjt2FDqpBSq3vZXpshxAKmOkjJs31pvV8qzLFu2SA5b1MvU6CXet9AxYMUBggqDb++C6BpDDu1Ew6U2xrKF4V/NgUd4mxAUT0=
+	t=1726657840; cv=none; b=qnhzZGM/x1bGX5R+E+AW4wwLt687KAEQt6a1UjTJI9MwMkQId7SAZ2ydFY+nYBl9ZI8eBfPDWZpLTSurF2uA/hnDLsnFzE9ujHRwBdZdx0P1Y5Iyo1onVyJuSrkEACnLQeHBOd3YvZrtwYDENdJs+Juh/z+ZW7GhFTv8ej8jwOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726650013; c=relaxed/simple;
-	bh=zpWsjuIBWVAiCqX8yerATDfj5psK97U5Z6dT4Yxw4Tw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=gj/b6MZZFJ4E0yUhY3uj0bvcrQ/NOQTRSAUGmq3XdCZjzc470IK+FQpgKGTFrx+RY0pgS7XrVduv3aGjFIquxhDpHwzX6ZUR9plgbDYagRtSMA8UP0EeJBYaAFpXcC0JaokkTjWXRheS9V388D16kZgYIsBm9nE1mdY5Kl1ltAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=L+F+53r/; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 48I904cD41868928, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1726650005; bh=zpWsjuIBWVAiCqX8yerATDfj5psK97U5Z6dT4Yxw4Tw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=L+F+53r/PLprrq9jPOE4sNVVK0XsuTCcXfvVkCi9TFADZ+aOtg0wFcs0vrhoYbL3q
-	 ckr+N+bGpe/Jq3yePY2wF9HSOQWyIKU+nHEM+2IwnBlezMuztHwvgSjOGX0k/ZK9rk
-	 EFWUITonQXwtuThYFrb08DwF8ef+Kozi1HNIRGM5PlpMTNtblhQW33mHR7Z0X61wZi
-	 BiP5KBGYjR9Inw9XZuwrt5WoDArfRYRmWntPsrOP8V90yBQ/bH9Oapb3qWTFv/64hL
-	 Pj5l6Oktwv8UvPjg+mNg5yI3PbCM6FcNi7DnKwjkhNg4CD63wJXSvi/43C8WMLAJHZ
-	 SSS3Je5pSmSvA==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.05/5.92) with ESMTPS id 48I904cD41868928
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 18 Sep 2024 17:00:05 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 18 Sep 2024 17:00:05 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 18 Sep 2024 17:00:04 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
- RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
- 15.01.2507.035; Wed, 18 Sep 2024 17:00:04 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: =?utf-8?B?TWFyY2VsIFdlacOfZW5iYWNo?= <mweissenbach@ignaz.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-CC: "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: RTL8852BE wifi no longer working after 6.11 upgrade
-Thread-Topic: RTL8852BE wifi no longer working after 6.11 upgrade
-Thread-Index: AQHbCMemb6H6HxFviUGmiPt2/8qxPLJdDI+A//+Vo4CAAJ3wIA==
-Date: Wed, 18 Sep 2024 09:00:04 +0000
-Message-ID: <63a3ef5acd70454e9f8db114204e2e2d@realtek.com>
-References: <f755bbeb5bbb479f9142bf223e71102c@realtek.com>
- <20240918073237.Horde.VLueh0_KaiDw-9asEEcdM84@ignaz.org>
-In-Reply-To: <20240918073237.Horde.VLueh0_KaiDw-9asEEcdM84@ignaz.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1726657840; c=relaxed/simple;
+	bh=n48xJFwrYkO4gEryicwpdT0e8ci2y59ASdpSx8tDWgE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=UOpqhVpB3lgclEpmfbkq3MrLPXf2dUDhNoewJBBDjFSIhtbWJ2JZTmShH9B9EXpz8owxJYsbR5aDW/FzoZ52vCBfZnMOM9r+ZDOVTVCEFCVEbUBb7882aNCAoGO66n8VcWlu1t660d2ew6VSVftqTxsNJ8SV5HkHqOv0SjaV/Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sqsZs-0007wb-Ph; Wed, 18 Sep 2024 13:10:32 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sqsZr-008nT5-Dh; Wed, 18 Sep 2024 13:10:31 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sqsZr-0086AC-13;
+	Wed, 18 Sep 2024 13:10:31 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH v2 00/12] mwifiex: two fixes and cleanup
+Date: Wed, 18 Sep 2024 13:10:25 +0200
+Message-Id: <20240918-mwifiex-cleanup-1-v2-0-2d0597187d3c@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACG16mYC/32NQQ6CMBBFr0Jm7Zi2SiWuvIdhgWUKk2jbtIAY0
+ rtbOYCrn/eT//4GiSJTgmu1QaSFE3tXQB0qMGPnBkLuC4MS6iwapfH1Zsu0onlS5+aAEh+1ONX
+ mYjtrNZRdiGR53Z33tvDIafLxs18s8tf+sy0SBdaatG1IlDS3QG6Yp+gdr8eeoM05fwE1JswKt
+ wAAAA==
+To: Brian Norris <briannorris@chromium.org>, 
+ Francesco Dolcini <francesco@dolcini.it>, Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ David Lin <yu-hao.lin@nxp.com>, kernel@pengutronix.de, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Francesco Dolcini <francesco.dolcini@toradex.com>, stable@vger.kernel.org
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1726657831; l=2809;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=n48xJFwrYkO4gEryicwpdT0e8ci2y59ASdpSx8tDWgE=;
+ b=irMk4YppNqDW13IyhY/3LVje0KJTscQm6dDSO9e4q1cQXWz/WePV9EY9LC2wBYZHMekWUbM1O
+ KcHra0PKbn7BFFU4SWfpZzbb/b831QVcOnvFhgf3cN6/MjfOUaGsGlW
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: s.hauer@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-TWFyY2VsIFdlacOfZW5iYWNoIDxtd2Vpc3NlbmJhY2hAaWduYXoub3JnPiB3cm90ZToNCj4gU2V0
-dGluZyByZXQgdG8gLTEgZGlkIHRoZSBqb2IsIHdpZmkgd29ya3MgYWdhaW4gYXMgZXhwZWN0ZWQu
-DQo+IA0KPiBIZXJlIGlzIHRoZSBvdXRwdXQgb2YgZG1pZGVjb2RlDQo+IGh0dHBzOi8vaWduYXou
-b3JnL25leHRjbG91ZC9pbmRleC5waHAvcy90WmRqWVlkeWVXcEhQSDQNCj4gDQoNCkkgd3JvdGUg
-YSBxdWlyayBhY2NvcmRpbmcgdG8geW91ciBkbWlkZWNvZGUgWzFdLiBQbGVhc2UgdHJ5IGlmIHRo
-aXMgY2FuDQpzdGlsbCB3b3JrIHRvIHlvdS4gSWYgeWVzLCBwbGVhc2UgaGVscCB0byByZXBseSBh
-IFRlc3RlZC1ieSB0YWcgdGhlcmUuDQpUaGFua3MuIA0KDQpbMV0gaHR0cHM6Ly9sb3JlLmtlcm5l
-bC5vcmcvbGludXgtd2lyZWxlc3MvMjAyNDA5MTgwODU1NTEuNTQ2MTEtMS1wa3NoaWhAcmVhbHRl
-ay5jb20vVC8jdQ0KDQoNCg==
+These are a few patches broken out from [1]. Kalle requested to limit
+the number of patches per series to approximately 12 and Francesco to
+move the fixes to the front of the series, so here we go.
+
+First two patches are fixes. First one is for host mlme support which
+currently is in wireless-next, so no stable tag needed, second one has a
+stable tag.
+
+The remaining patches except the last one I have chosen to upstream
+first. I'll continue with the other patches after having this series
+in shape and merged.
+
+The last one is a new patch not included in [1].
+
+Sascha
+
+[1] https://lore.kernel.org/all/20240820-mwifiex-cleanup-v1-0-320d8de4a4b7@pengutronix.de/
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+Changes in v2:
+- Add refence to 7bff9c974e1a in commit message of "wifi: mwifiex: drop
+  asynchronous init waiting code"
+- Add extra sentence about bss_started in "wifi: mwifiex: move common
+  settings out of switch/case"
+- Kill now unused MWIFIEX_BSS_TYPE_ANY
+- Collect reviewed-by tags from Francesco Dolcini
+- Link to v1: https://lore.kernel.org/r/20240826-mwifiex-cleanup-1-v1-0-56e6f8e056ec@pengutronix.de
+
+---
+Sascha Hauer (12):
+      wifi: mwifiex: add missing locking
+      wifi: mwifiex: fix MAC address handling
+      wifi: mwifiex: deduplicate code in mwifiex_cmd_tx_rate_cfg()
+      wifi: mwifiex: use adapter as context pointer for mwifiex_hs_activated_event()
+      wifi: mwifiex: drop unnecessary initialization
+      wifi: mwifiex: make region_code_mapping_t const
+      wifi: mwifiex: pass adapter to mwifiex_dnld_cmd_to_fw()
+      wifi: mwifiex: simplify mwifiex_setup_ht_caps()
+      wifi: mwifiex: fix indention
+      wifi: mwifiex: make locally used function static
+      wifi: mwifiex: move common settings out of switch/case
+      wifi: mwifiex: drop asynchronous init waiting code
+
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c | 38 ++++------
+ drivers/net/wireless/marvell/mwifiex/cfp.c      |  4 +-
+ drivers/net/wireless/marvell/mwifiex/cmdevt.c   | 76 +++++++-------------
+ drivers/net/wireless/marvell/mwifiex/decl.h     |  1 -
+ drivers/net/wireless/marvell/mwifiex/init.c     | 19 ++---
+ drivers/net/wireless/marvell/mwifiex/main.c     | 94 +++++++++----------------
+ drivers/net/wireless/marvell/mwifiex/main.h     | 16 ++---
+ drivers/net/wireless/marvell/mwifiex/sta_cmd.c  | 49 ++++---------
+ drivers/net/wireless/marvell/mwifiex/txrx.c     |  3 +-
+ drivers/net/wireless/marvell/mwifiex/util.c     | 22 +-----
+ drivers/net/wireless/marvell/mwifiex/wmm.c      | 12 ++--
+ 11 files changed, 105 insertions(+), 229 deletions(-)
+---
+base-commit: 67a72043aa2e6f60f7bbe7bfa598ba168f16d04f
+change-id: 20240826-mwifiex-cleanup-1-b5035c7faff6
+
+Best regards,
+-- 
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
