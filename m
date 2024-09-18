@@ -1,110 +1,123 @@
-Return-Path: <linux-wireless+bounces-12978-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12979-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3FB097C050
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2024 21:10:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D4FA97C053
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2024 21:11:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D34331C210E7
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2024 19:10:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 327A4283BB3
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2024 19:11:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375071C9ECE;
-	Wed, 18 Sep 2024 19:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999181C9EDD;
+	Wed, 18 Sep 2024 19:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i8X29+MK"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Ani53wYF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76EE21AD410;
-	Wed, 18 Sep 2024 19:10:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D646A1C9848
+	for <linux-wireless@vger.kernel.org>; Wed, 18 Sep 2024 19:11:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726686617; cv=none; b=WA2al3DK7AGGnx7TvlTenYWJXDaFcAZLtgyzoE3tUFwZcx1aSRjhMIrocyFmraq2S/GWEz5ZphoqsLa07S+JHGRbbh0bfVurxsEfzwtH1iX1bu2RU+6iTGjo24W6YU1rtOIrVh3o0Lnjj5JVz4GuptzkesXRwd0ZfTQFafLeJGU=
+	t=1726686684; cv=none; b=Q1oz6iljhnzM7s4donUhxM3F6zQ22hvKzMLtlaU+B8MDSsHBNW2iTscnRgnz1Hld5AztTHkX7HRE58l831Sg4trHPKJYGPhnOE57Em/Uc6/aVxOJZd4d0nt2upVBpFaiWAwCU98DPxMLX4oIxNqkdfjYB9I3ZgeKkdNjvFnvv4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726686617; c=relaxed/simple;
-	bh=6uBWZyRSEQCjjsivuWfUNmDIPalqfMOcntpTzIqGDQg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MRs6QOxano32mh5iNohDgj/gtQsCq8g9fNt4M2j6mlvM+Ecj4YA5NtHb1pFIpZHMQckXLp5yltv4fNeZPK9TE9upEL9LfHq3vW1/TBSIdh8aC4Qs+x67kpTdQ8jtGIjpn6aTHv60It/B9gqF5bgk5ud/p6i614qwNkDNL3nGZkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i8X29+MK; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-42cb6f3a5bcso77585735e9.2;
-        Wed, 18 Sep 2024 12:10:15 -0700 (PDT)
+	s=arc-20240116; t=1726686684; c=relaxed/simple;
+	bh=YlDlfO6oppdnTcmtFzD9lV7M+eeempLwE8HAxjK3sdQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Yv558FDAkqxxMA9D6FQvT/SYdYkeY4lvmbPsVWUrQddu+FHHeHHio+zkJffd+vZDqhZCgwWbO+41C26yrwprAsICY0mbHaB+FvTWjsl79AswewZIQVh8HaRYWm0uPcClp4iRWw929GghW6uaRLMwlZBievYpqTyqn8eZvs+VjHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Ani53wYF; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7a9b049251eso3715185a.2
+        for <linux-wireless@vger.kernel.org>; Wed, 18 Sep 2024 12:11:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726686614; x=1727291414; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HAC3xJ+3d5SXUtRHdf7g5sE37Xuy0N1fP7sJsE452kU=;
-        b=i8X29+MKOj/BgR5BC7z7Www3RlpSgL+zDs1UG1Ejsy6Q0Rp7/a8mnHXasGqtDaCz6V
-         HoTAoUxGbhguDbP7ubtLl1iH6IRa6io8ywt5TxjW2jzjsANTEFR2ZuZmXXq1WftslJnv
-         xs1z6345l4k3s61IbJkiFM3P1sKl1V0L8aElcIA35wX/8F71Or82jnQcTFI0jQYXuoCh
-         rzIyUrsKch2JX36FaUID6OPo+xFloBK/mbM83ZsXSBqMPQYUCnMNbQTubDzSFcnlACPp
-         AgnSjeeKsBgbJwnGaV1v1gQvxmA6NR0cJY9amt9Zhk8P9+7JAmALWI1XZ8x240AIyn8X
-         bV3Q==
+        d=broadcom.com; s=google; t=1726686682; x=1727291482; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uBXNIld191O5zyOjokQ7vQg2NF4PyRalW9pITb/4A5Y=;
+        b=Ani53wYFKx8eDf1McC9+blUJEM8hQHdydPmNHk90g5Vz1yqm6wJPHjdEWRyjPixpA/
+         wVn+/gnpEHRuDGP90bTThNDZkNuusQyoYxamuFNEL8P5l88wL+YXCpp9load6xNZCY/D
+         rWEkWXTVzosi3koP8M1O/fIlwVYZwxw7Nz8s8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726686614; x=1727291414;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HAC3xJ+3d5SXUtRHdf7g5sE37Xuy0N1fP7sJsE452kU=;
-        b=NSeh3AMq6NsTA9bfp1ycqFy4UeJx2IIA9JOD0dF1SRT2b29wi6PIuy27CPScFH64K4
-         yteXiXv9R/y4/urpt7eOyFpCqRX5gAUxq4ELNalaR+Cx1W9Hc7Q4RjWDwu7KGMRYPu77
-         QFLlrMALezVY2o0nlP1xEWDqAEonLp6CS5x1AGHpQ+ixPaNdDSHOZRzZi0EOX9kg5If1
-         xnBzxGxt+a5XeOez6j/0fAF6vbvgwn6qvJ6fMvumwEqt/pfUiXelZbksbMK5gWgap1Ul
-         HrIfdtyh2Gq+aoivUnQeO+NUzGG2eP5vLNO1THhBtleM3xQI+iQtC3vCVV8cZFmKsVAF
-         x+rA==
-X-Forwarded-Encrypted: i=1; AJvYcCUIGd1M9VRkCQ4Pj8NPq5pAnJEAGO+68ZfDzrSsA9CY6Ri3p2ZDnIA1qPEwC6KHlk2hG5sC74LuUsPPrWPEJgQ=@vger.kernel.org, AJvYcCUd84poTXIyx3FongsP2u99N2g+9CIB5G4G9ewIv5H+NqRtZl9f2yMhTulhVemfgI2jOVTIs8NyIaulaxpc@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzy3veTHk12WFUWftHqzQHhGBtlMYpRYczWdw+zSXzj2qS83Ih0
-	WkS0SJtkzUrTXVD3eAZ94pydEj8bGfsrj2x+zNzjqGpEryndSRXSl7E6IHrc
-X-Google-Smtp-Source: AGHT+IEJTbPEYhEGC0uJs0AuNwrWiloKz22gfLRi26Yi8J8NRYg+F3Ux4Mh2t00Dfwz4bNQjZDd7OQ==
-X-Received: by 2002:adf:cd8b:0:b0:378:8f2f:905f with SMTP id ffacd0b85a97d-378d61d4d27mr15249317f8f.11.1726686613331;
-        Wed, 18 Sep 2024 12:10:13 -0700 (PDT)
-Received: from void.void ([37.46.46.21])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a90610966c1sm620835466b.36.2024.09.18.12.10.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Sep 2024 12:10:13 -0700 (PDT)
-Date: Wed, 18 Sep 2024 22:10:10 +0300
-From: Andrew Kreimer <algonell@gmail.com>
+        d=1e100.net; s=20230601; t=1726686682; x=1727291482;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uBXNIld191O5zyOjokQ7vQg2NF4PyRalW9pITb/4A5Y=;
+        b=lCqmkFTa+yhe6IcidobnA62geQKirXKC8EfUgshgTIzpA21CVgS/GB2vral2/zu13t
+         vQ+1s5vv7D1UxPvTDSCMh5WtqHVS8oAPal7Xx7luzbML98rvJAO0ONPL9Jc7TiioNXYZ
+         t69BeBbdpfff4qP29uiV/arEVYAEmA4SbGaiYVuI8vMFkP7d2I6Xd2b0qPy057yjs28z
+         Atj/57OwYjoc7Cm1rTaRmZzy33FXOhC+1G/IXKUoLYyc4FSVvnuGHx1svNGRbQ7d8vyV
+         g57+fgMqSRtuLRIdxZYDP3CVnp1vAY2r3lma4KoscDHKlKJ/MrIwWPFSQMoGB3nrDKkV
+         iSiw==
+X-Gm-Message-State: AOJu0Yy99tOVLBJmx+iG8FOWSlbHMb9dUOvwmjAMBO0/oEXEzTQXKfuz
+	TjE9UEMj0UecI0YKryUuyDYPisSeNIYMP4QxhOMDGqS5TfxIj+dLTkMXIk18Aw==
+X-Google-Smtp-Source: AGHT+IFytGm5v3MrxD8tbpqwSaaQU2+s/Ep8l2Re0UgFKnBOHSFmvMoYFLxSQLKhEV5P/YQMsaGEww==
+X-Received: by 2002:a05:620a:400b:b0:7a7:fef9:f608 with SMTP id af79cd13be357-7a9e5f878c3mr3488019685a.52.1726686681705;
+        Wed, 18 Sep 2024 12:11:21 -0700 (PDT)
+Received: from bld-bun-02.bun.broadcom.net ([192.19.176.227])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7acb08dae51sm2275885a.122.2024.09.18.12.11.20
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 18 Sep 2024 12:11:21 -0700 (PDT)
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
 To: Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Matthew Wilcox <willy@infradead.org>
-Subject: Re: [PATCH] wifi: ath6kl: fix typos
-Message-ID: <ZuslkoMklT_Fz2zy@void.void>
-References: <20240913094818.14456-1-algonell@gmail.com>
- <172667928257.4089263.8301674737892934391.kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev,
+	Arend van Spriel <arend.vanspriel@broadcom.com>
+Subject: [RFT v2 0/3] brcmfmac: external auth support for Infineon devices
+Date: Wed, 18 Sep 2024 21:11:06 +0200
+Message-Id: <20240918191109.41960-1-arend.vanspriel@broadcom.com>
+X-Mailer: git-send-email 2.32.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <172667928257.4089263.8301674737892934391.kvalo@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 18, 2024 at 05:08:03PM +0000, Kalle Valo wrote:
-> Andrew Kreimer <algonell@gmail.com> wrote:
-> 
-> > Fix typos in comments.
-> > 
-> > Reported-by: Matthew Wilcox <willy@infradead.org>
-> > Signed-off-by: Andrew Kreimer <algonell@gmail.com>
-> > Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-> 
-> Changed the title to:
-> 
-> wifi: ath6kl: fix typos in struct wmi_rssi_threshold_params_cmd and wmi_snr_threshold_params_cmd comments
-> 
-Thank you.
+The Infineon chips support external authentication in station mode when
+firmware advertises it. The feature that must be present in firmware is
+sae_ext. This has been ported from Infineon repository and makes use of
+the per-vendor framework. It showcases how things can be organized per
+vendor to provide the functionality.
 
-> -- 
-> https://patchwork.kernel.org/project/linux-wireless/patch/20240913094818.14456-1-algonell@gmail.com/
-> 
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-> https://docs.kernel.org/process/submitting-patches.html
-> 
+Unfortunately, I have no Infineon device and firmware that makes use of
+external auth. Hence this is a request for testing for people who do
+before submitting as formal patch series. Before testing the firmware
+features can be checked through debugfs file 'fwcap' to assure the
+'sae_ext' feature is present.
+
+Changes:
+  v2:
+	- address build issue reported by <lkp@intel.com>
+
+Arend van Spriel (3):
+  wifi: brcmfmac: support per-vendor cfg80211 callbacks and firmware
+    events
+  wifi: brcmfmac: make per-vendor event map const
+  wifi: brcmfmac: cyw: support external SAE authentication in station
+    mode
+
+ .../broadcom/brcm80211/brcmfmac/cfg80211.c    |  44 ++-
+ .../broadcom/brcm80211/brcmfmac/cfg80211.h    |  25 ++
+ .../broadcom/brcm80211/brcmfmac/common.c      |   1 +
+ .../broadcom/brcm80211/brcmfmac/core.c        |   2 +
+ .../broadcom/brcm80211/brcmfmac/cyw/core.c    | 308 ++++++++++++++++++
+ .../brcm80211/brcmfmac/cyw/fwil_types.h       |  84 +++++
+ .../broadcom/brcm80211/brcmfmac/feature.c     |   3 +-
+ .../broadcom/brcm80211/brcmfmac/feature.h     |   4 +-
+ .../broadcom/brcm80211/brcmfmac/fweh.c        |   7 +-
+ .../broadcom/brcm80211/brcmfmac/fweh.h        |   8 +-
+ .../broadcom/brcm80211/brcmfmac/fwvid.h       |  29 ++
+ 11 files changed, 492 insertions(+), 23 deletions(-)
+ create mode 100644 drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/fwil_types.h
+
+
+base-commit: 5a4d42c1688c88f3be6aef46b0ea6c32694cd2b8
+-- 
+2.32.0
+
 
