@@ -1,151 +1,111 @@
-Return-Path: <linux-wireless+bounces-12976-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12977-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD18797C003
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2024 20:11:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA34A97C04D
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2024 21:09:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74F122832F8
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2024 18:11:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8E9F1C21057
+	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2024 19:09:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C7AD1CA6B0;
-	Wed, 18 Sep 2024 18:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 214FF1C9EAB;
+	Wed, 18 Sep 2024 19:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eTCONex2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sj02ZxUN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666EE1CA6AB
-	for <linux-wireless@vger.kernel.org>; Wed, 18 Sep 2024 18:10:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D671C9848;
+	Wed, 18 Sep 2024 19:09:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726683049; cv=none; b=mJTr70KTuGhVk90bC42zuzAK4BH3wWdDNCLTyeOFgPB+TO6au/UjUOJuf0/AbsIzYhMc70r+Id7MZ0iltCkHSJwBrmQOuGCZS3PHYM/CWEVXAnNQQR1V88gIKOxoSWe/1yu09/zL2oRBUb9C5rCQOaAE5wlTgU9CSMq/g7Chp5Q=
+	t=1726686580; cv=none; b=OsDnfX40d/OD0v3nc156LkvX/3zJZefKXHMmVlqEqHLIPT+0WHSv+lOtCcopdSISCI9k9vf+LI9srz8+uq0AT79nIacHpruSrZu6tMvLlydPct0jaNe0XvZyMbc+vM8SO+c5NtXerb8X1hSeMRd2CKZvJHQloRTYQK+DEjjoNG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726683049; c=relaxed/simple;
-	bh=qUczHlsEy8fEkQChpwjpyaXMav5RgCU0UhYt5rStH64=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NqNTWOHJ0qeNvE9jINuDz1GMjT5tOezuwuwANzTYGoGCldqzD01CWBe1ssqHT+L/7GI7jBRHLChpfInXX7sT63p/DIcTlKxIcW5CwUGOF+EGx5Y11LLYgT5Iorgb8xFbbaPl3FqflamayYfiHDVITaGVrW1MV/D6jCuGFp5IP2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eTCONex2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACCFCC4CEC2;
-	Wed, 18 Sep 2024 18:10:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726683049;
-	bh=qUczHlsEy8fEkQChpwjpyaXMav5RgCU0UhYt5rStH64=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eTCONex2dRsmJt4SwrqfY/dnmYAS3Im+lomlfc2fMtqrPnPjRDFyBbiEDnVVWH0th
-	 KJx6H3PrgbVPzV/ZVfskiOBi3TnHhEy8pVu5OadC0PzNc/83kktLCoRCQY6XoJ1x2z
-	 NFf0NMlypSy22zzUDkbM/Yu9FMjAZOxDlhVvBbT7YHUdq4VmfJu/ivqER/vsNpZCia
-	 0giG2fs4CL64Uef/uZvqHJ+dRFMVe0NiRIO72C3Ppk4T9Bvyqc613VQqoaDU86Ms+z
-	 aF87/JtVh+CAFE9NpnGXR2ITYT9O9vCyVRw1vISlnyS/Q0g7sY12ov9VDm2fxiy81k
-	 HDdPIVUMbstVg==
-From: Kalle Valo <kvalo@kernel.org>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH RFC v2 4/4] wifi: ath12k: convert struct ath12k_sta::update_wk to use struct wiphy_work
-Date: Wed, 18 Sep 2024 21:10:42 +0300
-Message-Id: <20240918181042.91891-5-kvalo@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20240918181042.91891-1-kvalo@kernel.org>
-References: <20240918181042.91891-1-kvalo@kernel.org>
+	s=arc-20240116; t=1726686580; c=relaxed/simple;
+	bh=QPpFx0Q3zKnneD2ii8FC7UChFgp+otrhwFBO4M1w0U8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GrByxp7iHkdSXlIEvF2Xebm9XqVi6JHsuF4sXPygiYm8eJ8rp/b7Q3li/bxHcMmEUxmzBPjbcmlRWgl6NNIcSPUFcDa93OSPX6kHmod6YK2H3NdfomymxvUDO5W8U4O4g7Zgb7FabNoXL09NietnfxcGZMZWdy0Yc49zMV93pgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sj02ZxUN; arc=none smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5365a9574b6so47775e87.1;
+        Wed, 18 Sep 2024 12:09:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726686576; x=1727291376; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=iVtVjN7ESleHAw6Xqn4v8byziIaTNLaTeqcfWiwPJ1Q=;
+        b=Sj02ZxUNdW0Rl82JOCNaiSx/cNXaokvjf2dYYoLVh8wNrqJBDi79r39J+nheuhWLYW
+         /DQ9YmI1FbepihCLZ/LoOwmy4Dc638gCsbB0nVgoo95NG/JivizmSMF0bTW05IeFp6cA
+         eq2Bx1CrThZeqrxIIVI91rOtK8LJIQK1Q+FUr/bQZaLjwIX9krGgzh6Yz/cg/YnkQYvY
+         phiiXhvV4fVtliOUaoDAS/WF2K6QvhV/LQy52+Mhp4OS/dKIA26ZPCUb0Cdx9eUV57NN
+         OOrD2Sg8m7HHomxmlAM3Qs3KwfxBx0GEPgC71QcFjQn2C2UMZkl3r+BlhESmbCBmjFDh
+         +Gww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726686576; x=1727291376;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iVtVjN7ESleHAw6Xqn4v8byziIaTNLaTeqcfWiwPJ1Q=;
+        b=qZZw9x1cG6o/xuPdBYDha9meVF7smgjIJMtM+qsnw4mEEoFNs8VGVjL280KOHTgIz3
+         Od9cwHyNdTxt0e+kEyudnVQrxrEsRymKkKvc+BOaEPrsCqIusf+s6gPcxEZ2fx7aTLzJ
+         0x5Yce0ZIkqFxp8CUfsJE1ulSQ+CNkVce+xx+ZrsVGvHBcwbNeIMDHNPTs4tcNmZgIxV
+         OjUBbT3P2t2VFBKhM2wY/eymjNM8UoA+6niKJ2/cUqljOzXe1ea4OxDQwmy2jKUqFsmI
+         vIOVGyglglUnK0Sf3J6jgCHUOEPp/wmj/iKXfg4G+SUCHftZ0V4nT8TxFdW0rucxrdDn
+         GLBg==
+X-Forwarded-Encrypted: i=1; AJvYcCWedwAtIWCAyJfS1EjLMcbt8SZpLTQmaE2XgVeJCG4rLuBUh8TgTfKXCOuml30AY1ZXRTTETuIgQ/wZvWNrfow=@vger.kernel.org, AJvYcCWqnezn7G54mL8gy/FgGkuUlYnoLbR2FNJXGxhvqmHLvaxcYFecWpd+GzEux2e8vs0dRdW0LIkABiccr1aRt5Q=@vger.kernel.org, AJvYcCX4Hi5jiTn32didp/XP7pxuIVW5Efqzx1ryfnwqafpYU48av0FMm/QspCxZ8jmbLSKS4QSJcXrJHiBVEqaQ@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzk0lXasxGeSSMAOAs/ULdKYEagPm4FmXj9Leuvn9Rn3ErhStQf
+	dp7s9JDcljTfLuDbmS8F0Ymxh1ykGPmeYRJ2vTX8VoV7q4MovyZl
+X-Google-Smtp-Source: AGHT+IH4UUvSM6UbmwH34UJUS7NKgR1HZ30Q5WoW8wpvn/NMYyaAkRUvTTcGy8eMHUJH3StbRfSFaw==
+X-Received: by 2002:a05:6512:238b:b0:52e:932d:88ab with SMTP id 2adb3069b0e04-5367fee25a8mr15659135e87.23.1726686576008;
+        Wed, 18 Sep 2024 12:09:36 -0700 (PDT)
+Received: from void.void ([37.46.46.21])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9061330d48sm621347066b.207.2024.09.18.12.09.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Sep 2024 12:09:35 -0700 (PDT)
+Date: Wed, 18 Sep 2024 22:09:32 +0300
+From: Andrew Kreimer <algonell@gmail.com>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Loic Poulain <loic.poulain@linaro.org>, wcn36xx@lists.infradead.org,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Matthew Wilcox <willy@infradead.org>
+Subject: Re: [PATCH] wifi: wcn36xx: fix a typo
+Message-ID: <ZuslbC6xlP_fUFfi@void.void>
+References: <20240913094319.13718-1-algonell@gmail.com>
+ <172667909414.4089263.7060582994040911136.kvalo@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <172667909414.4089263.7060582994040911136.kvalo@kernel.org>
 
-From: Kalle Valo <quic_kvalo@quicinc.com>
+On Wed, Sep 18, 2024 at 05:04:55PM +0000, Kalle Valo wrote:
+> Andrew Kreimer <algonell@gmail.com> wrote:
+> 
+> > Fix a typo in comments.
+> > 
+> > Reported-by: Matthew Wilcox <willy@infradead.org>
+> > Signed-off-by: Andrew Kreimer <algonell@gmail.com>
+> > Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> 
+> The subject should be unique so in the pending branch I changed it to:
+> 
+Thank you.
 
-As ath12k is now converted to use wiphy lock we can convert
-ath12k_sta_rc_update_wk() to use wiphy_work_queue(). This is just for
-consistency.
-
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/core.h |  2 +-
- drivers/net/wireless/ath/ath12k/mac.c  | 14 ++++++++------
- 2 files changed, 9 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 7551494716b5..ebfc1e370acc 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -451,7 +451,7 @@ struct ath12k_sta {
- 	u32 smps;
- 	enum hal_pn_type pn_type;
- 
--	struct work_struct update_wk;
-+	struct wiphy_work update_wk;
- 	struct rate_info txrate;
- 	struct rate_info last_txrate;
- 	u64 rx_duration;
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 80db9004cdd7..e70b4212ae80 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -4258,7 +4258,7 @@ static int ath12k_station_disassoc(struct ath12k *ar,
- 	return 0;
- }
- 
--static void ath12k_sta_rc_update_wk(struct work_struct *wk)
-+static void ath12k_sta_rc_update_wk(struct wiphy *wiphy, struct wiphy_work *work)
- {
- 	struct ath12k *ar;
- 	struct ath12k_vif *arvif;
-@@ -4274,7 +4274,9 @@ static void ath12k_sta_rc_update_wk(struct work_struct *wk)
- 	struct ath12k_wmi_peer_assoc_arg peer_arg;
- 	enum wmi_phy_mode peer_phymode;
- 
--	arsta = container_of(wk, struct ath12k_sta, update_wk);
-+	lockdep_assert_wiphy(wiphy);
-+
-+	arsta = container_of(work, struct ath12k_sta, update_wk);
- 	sta = container_of((void *)arsta, struct ieee80211_sta, drv_priv);
- 	arvif = arsta->arvif;
- 	ar = arvif->ar;
-@@ -4571,7 +4573,7 @@ static int ath12k_mac_op_sta_state(struct ieee80211_hw *hw,
- 	/* cancel must be done outside the mutex to avoid deadlock */
- 	if ((old_state == IEEE80211_STA_NONE &&
- 	     new_state == IEEE80211_STA_NOTEXIST))
--		cancel_work_sync(&arsta->update_wk);
-+		wiphy_work_cancel(hw->wiphy, &arsta->update_wk);
- 
- 	ar = ath12k_get_ar_by_vif(hw, vif);
- 	if (!ar) {
-@@ -4585,7 +4587,7 @@ static int ath12k_mac_op_sta_state(struct ieee80211_hw *hw,
- 	    new_state == IEEE80211_STA_NONE) {
- 		memset(arsta, 0, sizeof(*arsta));
- 		arsta->arvif = arvif;
--		INIT_WORK(&arsta->update_wk, ath12k_sta_rc_update_wk);
-+		wiphy_work_init(&arsta->update_wk, ath12k_sta_rc_update_wk);
- 
- 		ret = ath12k_mac_station_add(ar, vif, sta);
- 		if (ret)
-@@ -4792,7 +4794,7 @@ static void ath12k_mac_op_sta_rc_update(struct ieee80211_hw *hw,
- 
- 	spin_unlock_bh(&ar->data_lock);
- 
--	ieee80211_queue_work(hw, &arsta->update_wk);
-+	wiphy_work_queue(hw->wiphy, &arsta->update_wk);
- }
- 
- static int ath12k_conf_tx_uapsd(struct ath12k_vif *arvif,
-@@ -8065,7 +8067,7 @@ static void ath12k_mac_set_bitrate_mask_iter(void *data,
- 	arsta->changed |= IEEE80211_RC_SUPP_RATES_CHANGED;
- 	spin_unlock_bh(&ar->data_lock);
- 
--	ieee80211_queue_work(ath12k_ar_to_hw(ar), &arsta->update_wk);
-+	wiphy_work_queue(ath12k_ar_to_hw(ar)->wiphy, &arsta->update_wk);
- }
- 
- static void ath12k_mac_disable_peer_fixed_rate(void *data,
--- 
-2.39.5
-
+> wifi: wcn36xx: fix a typo in struct wcn36xx_sta documentation
+> 
+> -- 
+> https://patchwork.kernel.org/project/linux-wireless/patch/20240913094319.13718-1-algonell@gmail.com/
+> 
+> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> https://docs.kernel.org/process/submitting-patches.html
+> 
 
