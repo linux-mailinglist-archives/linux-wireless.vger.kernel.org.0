@@ -1,127 +1,96 @@
-Return-Path: <linux-wireless+bounces-13000-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13001-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99C5997C4A3
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 09:06:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09D8E97C547
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 09:49:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C61A41C21F19
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 07:06:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3724B224F7
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 07:49:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E3DA1917E3;
-	Thu, 19 Sep 2024 07:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F6219882C;
+	Thu, 19 Sep 2024 07:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ILMwySEk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lc4q2SML"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2225383A9
-	for <linux-wireless@vger.kernel.org>; Thu, 19 Sep 2024 07:06:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C68F198822;
+	Thu, 19 Sep 2024 07:48:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726729587; cv=none; b=bbcwcChoRTzu8oYfavp1RdN0XzDqjVxoklD20AOibAdJ0k9rbM1NL9MKbUsxvIt4uXzrvL3ufgqruYdfgpdZNkI4NEmF2dVoNMo1CxnahrlOeFzLlSWCFKc7LJApmKJnqGsMAd8ZfK4Ntc5cytHEGcKBY857MZYXirk+N8VNXs4=
+	t=1726732127; cv=none; b=jA7v/LC4Dm5iKZ7KSQd9ftPZ/I+JJyftGevx8dkbfqbZR3K2WwVbKHb46te0k4ltp7S1cYFVuM3YEcb3o3gGIHaAdNVj2SHr5kEBtKTsbGJdo6+yLIZ3XTxq/5qxB7zNybcCjHLo32ehnPBZJXbc1JELO8jCzkNLa9OvCy1nBOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726729587; c=relaxed/simple;
-	bh=jNMlN/0gdNMwdZq7fVwvvNHKYd6/WVMzUP6n+AM1+oA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BXbX4k4pNKYkPZySnFOLna4qNT6Xprjk2cYoRPOD0XkiOchh3r1bsKp2EHFB7akX5HLeADKycJ7rggSzQp3JW41ZkMP62Zh3g6gvCbxCT3HD1c1fsQekUt9xKsSobGPFAM6MW2HECbEZyt+ay4pPQFLZdLIwfny9Le0m9OQ8pbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ILMwySEk; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=QAcwBEQlh8BzPu5oyXiEdaBTUkwwQtlV8qpAo1Ux/0A=;
-	t=1726729585; x=1727939185; b=ILMwySEkYr9YE1WGZ5G4omfOmRpUJdLrh5h5uNc+2V1p/RO
-	ftY1Tc8i1Y0PEVMUaIv/Gtll/d5RWPlHsmecNMKPD9TTxO2bOKjVppsbF4PkFgJJ2ChlBcUzzxsxd
-	k/7AUZvJ4r4+R2DPsl2EDg8zsJbA7bu3CF59axLRkW7x4STWIlDWod03d+m01XZxm/CvoCEVjVwX0
-	l5Ux5551ffOkXvS8elgm8rGvYslWqsbRGx05azto8ygB5Q7sPdF8hTGjbNLbe7kWEmjQ9WDEVpCGD
-	zkeql08+G2ttdcrn+v1Bu3QQ+r1XaQo5C48usMgNT+oFUKhYHL5rtIQyQxDnEKUw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1srBF8-00000003Qm1-0Qv5;
-	Thu, 19 Sep 2024 09:06:22 +0200
-Message-ID: <33ea3a62b4257b6ef789c30fa8f7bf7e9f1865b5.camel@sipsolutions.net>
-Subject: Re: [PATCH RFC v2 1/4] wifi: ath12k: switch to using wiphy_lock()
- and remove ar->conf_mutex
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Kalle Valo <kvalo@kernel.org>, ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-Date: Thu, 19 Sep 2024 09:06:21 +0200
-In-Reply-To: <20240918181042.91891-2-kvalo@kernel.org>
-References: <20240918181042.91891-1-kvalo@kernel.org>
-	 <20240918181042.91891-2-kvalo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+	s=arc-20240116; t=1726732127; c=relaxed/simple;
+	bh=5i1YXeZcMX46ZW9/4GfFPwm8EbpuGNMp3b6EfmSvDeI=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=r7eLI3tm3PauXAkUZIdnVVu3ZcEj55VF+UXgbuXPTU82v4d8z5Ua1tQZ+QpZi7X0CGuKK4PNo6Ru2T6360K+F7wxHNt+frIVRBHIxqY34Ogu+x0FrvG6n6CB/CEhvT0W9Zj2HvHm51ioXtp+rHWlrxgGOYzNRwUd9kCKrgAn3wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lc4q2SML; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B63F6C4CECF;
+	Thu, 19 Sep 2024 07:48:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726732126;
+	bh=5i1YXeZcMX46ZW9/4GfFPwm8EbpuGNMp3b6EfmSvDeI=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=Lc4q2SMLW7byQ3nu3pq6Ke7JkI84zZIi5tgrvBMxTozrFDt/cprQepzOCsji+dKY9
+	 X7FyF7gee3j75ZnwvleP4p7AJxqDfI5/iMRbU23K/BikE66k1aX3rqwsCsYlUEWKdQ
+	 FyywpazeYqTz0t/lxgtfKq4Rj4Lk0K0nxAhdIvaSvZwy10qd932Sh3NZ8Cxt+J72Mw
+	 PPLvqFAi+fKRXfD+8ZuW/rNiFX+ShQIMCmrO2w5VcAjO99l+w0Y0P5x0YYE2rHPM9e
+	 PkmPPfwmMjtOxmqu7mKEZe4b8FtFWeYCtTljKmoYnE1NMvDh3x7qsH7Q7PFTz+aOSS
+	 4wzKxa5YYqEAg==
+From: Kalle Valo <kvalo@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>,  "David S . Miller"
+ <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
+ Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,  Rob Herring
+ <robh@kernel.org>,  Krzysztof Kozlowski <krzk+dt@kernel.org>,  Conor
+ Dooley <conor+dt@kernel.org>,  Jeff Johnson <jjohnson@kernel.org>,
+  linux-wireless@vger.kernel.org,  netdev@vger.kernel.org,
+  devicetree@vger.kernel.org,  ath11k@lists.infradead.org,
+  linux-kernel@vger.kernel.org,  Bartosz Golaszewski
+ <bartosz.golaszewski@linaro.org>
+Subject: Re: [PATCH net-next v2] dt-bindings: net: ath11k: document the
+ inputs of the ath11k on WCN6855
+References: <20240814082301.8091-1-brgl@bgdev.pl>
+	<83c562e9-2add-4086-86e7-6e956d2ee70f@kernel.org>
+Date: Thu, 19 Sep 2024 10:48:41 +0300
+In-Reply-To: <83c562e9-2add-4086-86e7-6e956d2ee70f@kernel.org> (Krzysztof
+	Kozlowski's message of "Thu, 19 Sep 2024 08:55:36 +0200")
+Message-ID: <87msk49j8m.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain
 
-On Wed, 2024-09-18 at 21:10 +0300, Kalle Valo wrote:
->=20
-> There is now a new sparse warning, but to keep this long patch simple the
-> labels will be cleaned up in following patches:
->=20
-> drivers/net/wireless/ath/ath12k/mac.c:6635:1: warning: statement expected=
- after label
+Krzysztof Kozlowski <krzk@kernel.org> writes:
 
-I believe this is a compiler error on some compilers (in particular
-clang), so you probably need to combine patches a little bit.
+> On 14/08/2024 10:23, Bartosz Golaszewski wrote:
+>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>> 
+>> Describe the inputs from the PMU of the ath11k module on WCN6855.
+>> 
+>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>> ---
+>> v1 -> v2:
+>> - update the example
+>
+> I don't understand why this patch is no being picked up. The code
+> correct represents the piece of hardware. The supplies should be
+> required, because this one particular device - the one described in this
+> binding - cannot work without them.
 
-> +++ b/drivers/net/wireless/ath/ath12k/debugfs.c
-> @@ -15,14 +15,14 @@ static ssize_t ath12k_write_simulate_radar(struct fil=
-e *file,
->  	struct ath12k *ar =3D file->private_data;
->  	int ret;
-> =20
-> -	mutex_lock(&ar->conf_mutex);
-> +	wiphy_lock(ath12k_ar_to_hw(ar)->wiphy);
+I have already explained the situation. With supplies changed to
+optional I'm happy take the patch.
 
-I don't think this is an issue here, but I'm not sure if you're aware
-that in general, locking the wiphy mutex in some debugfs file handlers
-can lead to deadlocks, specifically if those files are later _removed_
-while holding the wiphy lock, as is e.g. the case for station, netdev
-and link debugfs files. For this, we have wiphy_locked_debugfs_read()
-and wiphy_locked_debugfs_write() [1].
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-[1] you are not required to understand how they are implemented ;-)
-
-> @@ -4310,7 +4301,7 @@ static void ath12k_sta_rc_update_wk(struct work_str=
-uct *wk)
-> =20
->  	spin_unlock_bh(&ar->data_lock);
-> =20
-> -	mutex_lock(&ar->conf_mutex);
-> +	wiphy_lock(ath12k_ar_to_hw(ar)->wiphy);
-
-Baochen already pointed out that you seem to not remove this later in
-patch 4, but in this patch alone you also introduce a bug (that lockdep
-should point out to you), which is that you cancel_work_sync() this in
-ath12k_mac_op_sta_state(), which clearly holds the wiphy mutex already.
-
-This causes a deadlock. It's fine after patch 4:
-
->  	/* cancel must be done outside the mutex to avoid deadlock */
->  	if ((old_state =3D=3D IEEE80211_STA_NONE &&
->  	     new_state =3D=3D IEEE80211_STA_NOTEXIST))
-> -		cancel_work_sync(&arsta->update_wk);
-> +		wiphy_work_cancel(hw->wiphy, &arsta->update_wk);
-
-since for wiphy work it's required to ca<ll it with the mutex held./
-
-You really should remove that comment too though, and perhaps then the
-code can be simplified by moving this to the later code also handling
-removal (none->notexist transition).
-
-johannes
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
