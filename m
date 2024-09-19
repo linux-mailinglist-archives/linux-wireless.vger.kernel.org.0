@@ -1,96 +1,90 @@
-Return-Path: <linux-wireless+bounces-13001-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13002-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09D8E97C547
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 09:49:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9BD797C5A0
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 10:13:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3724B224F7
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 07:49:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 601C91F23622
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 08:13:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F6219882C;
-	Thu, 19 Sep 2024 07:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7CF5198E90;
+	Thu, 19 Sep 2024 08:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lc4q2SML"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="gLjlamAp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C68F198822;
-	Thu, 19 Sep 2024 07:48:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E43198A29
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Sep 2024 08:13:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726732127; cv=none; b=jA7v/LC4Dm5iKZ7KSQd9ftPZ/I+JJyftGevx8dkbfqbZR3K2WwVbKHb46te0k4ltp7S1cYFVuM3YEcb3o3gGIHaAdNVj2SHr5kEBtKTsbGJdo6+yLIZ3XTxq/5qxB7zNybcCjHLo32ehnPBZJXbc1JELO8jCzkNLa9OvCy1nBOA=
+	t=1726733584; cv=none; b=k/AZDpxF/jlM2gYBXAF9MM93bBLxGoQHYmiaOqCuA7KQGbibS2L3v6PhnuDZUNSyTOtpQCI8rDw1us07S/QbDcXVJaE0/govB/jBdnyANdBS2chP+8kNB4AEdJRcXsTdO5A4m8+lb+VmX0m+hNWQCvmZwJegv2BnvRntQh4ctzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726732127; c=relaxed/simple;
-	bh=5i1YXeZcMX46ZW9/4GfFPwm8EbpuGNMp3b6EfmSvDeI=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=r7eLI3tm3PauXAkUZIdnVVu3ZcEj55VF+UXgbuXPTU82v4d8z5Ua1tQZ+QpZi7X0CGuKK4PNo6Ru2T6360K+F7wxHNt+frIVRBHIxqY34Ogu+x0FrvG6n6CB/CEhvT0W9Zj2HvHm51ioXtp+rHWlrxgGOYzNRwUd9kCKrgAn3wM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lc4q2SML; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B63F6C4CECF;
-	Thu, 19 Sep 2024 07:48:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726732126;
-	bh=5i1YXeZcMX46ZW9/4GfFPwm8EbpuGNMp3b6EfmSvDeI=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=Lc4q2SMLW7byQ3nu3pq6Ke7JkI84zZIi5tgrvBMxTozrFDt/cprQepzOCsji+dKY9
-	 X7FyF7gee3j75ZnwvleP4p7AJxqDfI5/iMRbU23K/BikE66k1aX3rqwsCsYlUEWKdQ
-	 FyywpazeYqTz0t/lxgtfKq4Rj4Lk0K0nxAhdIvaSvZwy10qd932Sh3NZ8Cxt+J72Mw
-	 PPLvqFAi+fKRXfD+8ZuW/rNiFX+ShQIMCmrO2w5VcAjO99l+w0Y0P5x0YYE2rHPM9e
-	 PkmPPfwmMjtOxmqu7mKEZe4b8FtFWeYCtTljKmoYnE1NMvDh3x7qsH7Q7PFTz+aOSS
-	 4wzKxa5YYqEAg==
-From: Kalle Valo <kvalo@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>,  "David S . Miller"
- <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
- Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,  Rob Herring
- <robh@kernel.org>,  Krzysztof Kozlowski <krzk+dt@kernel.org>,  Conor
- Dooley <conor+dt@kernel.org>,  Jeff Johnson <jjohnson@kernel.org>,
-  linux-wireless@vger.kernel.org,  netdev@vger.kernel.org,
-  devicetree@vger.kernel.org,  ath11k@lists.infradead.org,
-  linux-kernel@vger.kernel.org,  Bartosz Golaszewski
- <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH net-next v2] dt-bindings: net: ath11k: document the
- inputs of the ath11k on WCN6855
-References: <20240814082301.8091-1-brgl@bgdev.pl>
-	<83c562e9-2add-4086-86e7-6e956d2ee70f@kernel.org>
-Date: Thu, 19 Sep 2024 10:48:41 +0300
-In-Reply-To: <83c562e9-2add-4086-86e7-6e956d2ee70f@kernel.org> (Krzysztof
-	Kozlowski's message of "Thu, 19 Sep 2024 08:55:36 +0200")
-Message-ID: <87msk49j8m.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1726733584; c=relaxed/simple;
+	bh=ccWHVbckbJkbDWNw+b5gRYQHlgSFG2RbGKehmYDL9vA=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dtWmxRV1Kr+rUfdy0+LJGMbKdRm2KX08O7AxObKCXaQyxB8m2RX5d47aBW9LFnyr0acIzM2yh2VTzOc0YCEjiUUaq5R9qAl4dfVVJ29cVGrrhO22aogqumI2paC/16gUEK5IERBsuIwfNx0W2apsuT7tSjLZROL8rv1rdBgxvlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=gLjlamAp; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 48J8CwpU63453177, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1726733578; bh=ccWHVbckbJkbDWNw+b5gRYQHlgSFG2RbGKehmYDL9vA=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=gLjlamAp6cOWeyPoxKaZzw8hqK9FPi4bvkNoYmNPohlHrQTns9pZ19y2BNP2Tg8YI
+	 il5kdZKypzZYHAIo1brK9kDFbvI6GsKm+cS6bYB6d7pVSxKjmupIO+8754mGMRrShP
+	 huQ6bgDX5oCOzi4nLfFciLXmxGSF3m6IhKzDIjr0QYwI2ViFFXJXvvlzkdFf1zveMH
+	 TqTKxNBzYPVMN3wvCFPnzhJVssTPgz3dp0bw+l8qNgkAXPxLD7m3UD+/Wia4KKKHFt
+	 SvczfPIvRg7sWXTM1fNAw9o0xOiCA0XVfFL5RKZxlO2dcpjgdDRtTdEBCSKpO1fu0m
+	 SrAWdbFXFbaYw==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.05/5.92) with ESMTPS id 48J8CwpU63453177
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Sep 2024 16:12:58 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 19 Sep 2024 16:12:58 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 19 Sep
+ 2024 16:12:58 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+Subject: [PATCH 0/3] wifi: rtw89: fix some coverity warnings
+Date: Thu, 19 Sep 2024 16:12:13 +0800
+Message-ID: <20240919081216.28505-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-Krzysztof Kozlowski <krzk@kernel.org> writes:
+These warnings are minor because they could happen rarely or harmless,
+but worth to fix them.
 
-> On 14/08/2024 10:23, Bartosz Golaszewski wrote:
->> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->> 
->> Describe the inputs from the PMU of the ath11k module on WCN6855.
->> 
->> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->> ---
->> v1 -> v2:
->> - update the example
->
-> I don't understand why this patch is no being picked up. The code
-> correct represents the piece of hardware. The supplies should be
-> required, because this one particular device - the one described in this
-> binding - cannot work without them.
+Ping-Ke Shih (3):
+  wifi: rtw89: check return value of ieee80211_probereq_get() for RNR
+  wifi: rtw89: coex: initialize local .dbcc_2g_phy in _set_btg_ctrl()
+  wifi: rtw89: 8852c: rfk: remove unnecessary assignment of return value
+    of _dpk_dgain_read()
 
-I have already explained the situation. With supplies changed to
-optional I'm happy take the patch.
+ drivers/net/wireless/realtek/rtw89/coex.c         | 2 ++
+ drivers/net/wireless/realtek/rtw89/fw.c           | 3 +++
+ drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c | 2 +-
+ 3 files changed, 6 insertions(+), 1 deletion(-)
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.25.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
