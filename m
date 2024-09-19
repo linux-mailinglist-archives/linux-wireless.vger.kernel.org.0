@@ -1,63 +1,48 @@
-Return-Path: <linux-wireless+bounces-13025-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13026-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41E5897CE2E
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 21:43:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B56897CEAD
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 23:04:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB3F9B2216F
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 19:43:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E51B1C21E07
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 21:04:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60C083FBA5;
-	Thu, 19 Sep 2024 19:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375D9149E01;
+	Thu, 19 Sep 2024 21:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Hcc4vcFY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tMIiZugO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6992338F97;
-	Thu, 19 Sep 2024 19:43:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87C8143880;
+	Thu, 19 Sep 2024 21:04:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726775025; cv=none; b=ZE9tAqa7lX6cDuCws35dZb+m/xpaq2GO6PuMhNqnw46/fausnvegnjr3F7pdzok6So2kocYq4GI71OtZWUy/6FyegXLqi7eHj29GfTpYSFYLzZwJ81CfKhHGgbNRG5viG1xtODavCBhZdrCXxejpsJy8Nhj0V0Df1MxtiNxU4Wk=
+	t=1726779894; cv=none; b=ECFxxjIR2M4/5jUKYcuyDaX6fdnJ/Mr0vIhA9ZD9dnUq87baPtRX3uv0gqeWtYanIMSgu0uLO2P/Yl2NDJflQHy2QB5CWZjPZmuAOaTnZaKVdIE+tXZhBlxwTbM/S3WZGcqBvCncfdCjZPbR1G/nR8/LKc4sDCayr39MDOo68uE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726775025; c=relaxed/simple;
-	bh=iIUGqBVutVd6oF0LF19hUqsIY4P/WifAKVLLOc856qo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=QoVs35U+XL+cJa5ibQkavhozMrf1glC4CiD0SbiDxRS7pOqu8XduNRPINhA2b0c8zBzbsF2WGx9MhO56F9MosEAXhJeZGTFQQAYFePupX329/OqGix89VBrl+KtO+NZVc4zsFILmjlic8xx49k0pQ3/8zyhA4y+qCGWi4JQmPrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Hcc4vcFY; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48JJ3sqT022731;
-	Thu, 19 Sep 2024 19:42:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	2LlHmBuJhnI0mJjpFJ8fk1fOR2r24z0SUFaihPrgAoQ=; b=Hcc4vcFYbQIYhjj6
-	iBcPFWwQkS8GFeZB2HHMVTCp+bBaJ8V3Vfg/6l29gfqYq4kpw3AKclTt58jRxJeL
-	DMxApIzok6zVNZ/11uW5k/d+07jGnrsYsPKactkTGp4QEEIkTkLTjYZidyEMMI2I
-	BtD558yO6CbVJ2z4qkgrqNR6ew+f5wacw2mdnT1DxfZ1ioPK252buBoOrkMPvO4j
-	xJK59bcpOhaqL7bmyuI+G+vIP0lJOHQSE1/aV8KNvy7aULfYA3U23tWBLvKdP6DX
-	NiuH7CgwRp91NYpDw74zZknbiVeLsGSg6E8S1k6r/BJdFnAD0BGfEvuKEa9G4aRs
-	I5/s6w==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41n4gnxjsx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 19 Sep 2024 19:42:48 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48JJglDA002356
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 19 Sep 2024 19:42:47 GMT
-Received: from [10.111.182.77] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 19 Sep
- 2024 12:42:46 -0700
-Message-ID: <9ebea291-df1e-4d2d-8f86-9a089542d895@quicinc.com>
-Date: Thu, 19 Sep 2024 12:42:45 -0700
+	s=arc-20240116; t=1726779894; c=relaxed/simple;
+	bh=8rmdkhy7mle9GnzKV59Fez0ZiYJ5ItopN5knD5heul0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OtyYZc7s5Uxt8DM+T0cTTfhOMr3D9EHvO0SYMpgQDF1Ti6hwlyk9stQSEMjdC/zRdsllEovRTM3voQPeGjyGBad3gvWTWx8FkiKMRdJFC7vkefK+ql02oMk+vLEat5mHD3XD+lGVh8oA7aObgHbxWy+AhZK8kZ+td5+EUPcEagc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tMIiZugO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7DAEC4CEC4;
+	Thu, 19 Sep 2024 21:04:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726779893;
+	bh=8rmdkhy7mle9GnzKV59Fez0ZiYJ5ItopN5knD5heul0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=tMIiZugOhjzqgyUpW7HkIMb94kB3G/IoEOWJvEfIibHaCL2W6lxj/6dAy50ww3Upd
+	 5BuV7yd7+xf0LnJlLA6shnOsl4ybtmmnw4qRRAcxcVdTlQQO8CjzRoHuaAPl0cnLci
+	 KyO838TcaL8c8mfnqC3Fcz2LQ0BjvUfx2U9ux0XAeez0raNOeRSjsGu9186hqHSozD
+	 ekcF76hWo/vt3sl8iQ7tBHFkSTET2nmVrmZCljeeCkxJkkq5cSQY3mp+XWQ6e0oYMf
+	 Qo62AxytxEW4fp+yzCDxcmUUB+Wme/iNSXIqef4vFQ/XRD6jqsRg+/Yl4tOtEC8q6k
+	 c8Ol4+tfmgDUA==
+Message-ID: <0e8c7a7a-0e2a-42ec-adbc-b29f6a514517@kernel.org>
+Date: Thu, 19 Sep 2024 23:04:43 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,62 +50,85 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ath11k: modify null check logic in
- ath11k_ce_rx_post_pipe()
-To: Kalle Valo <kvalo@kernel.org>, Mikhail Lobanov <m.lobanov@rosalinux.ru>
-CC: Jeff Johnson <jjohnson@kernel.org>,
-        Govindaraj Saminathan
-	<quic_gsamin@quicinc.com>,
-        Miles Hu <milehu@codeaurora.org>,
-        Sven Eckelmann
-	<seckelmann@datto.com>,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        John
- Crispin <john@phrozen.org>, <linux-wireless@vger.kernel.org>,
-        <ath11k@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <lvc-project@linuxtesting.org>
-References: <20240909150824.28195-1-m.lobanov@rosalinux.ru>
- <172676437762.281449.1201751345434084726.kvalo@kernel.org>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Subject: Re: [PATCH net 2/2] page_pool: fix IOMMU crash when driver has
+ already unbound
+To: Yunsheng Lin <linyunsheng@huawei.com>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ liuyonglong@huawei.com, fanghaiqing@huawei.com, zhangkun09@huawei.com,
+ Robin Murphy <robin.murphy@arm.com>,
+ Alexander Duyck <alexander.duyck@gmail.com>, IOMMU <iommu@lists.linux.dev>,
+ Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
+ Clark Wang <xiaoning.wang@nxp.com>, Eric Dumazet <edumazet@google.com>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed
+ <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+ Tariq Toukan <tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>,
+ Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>,
+ Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>,
+ Kalle Valo <kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Andrew Morton <akpm@linux-foundation.org>, imx@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ intel-wired-lan@lists.osuosl.org, bpf@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ linux-mm@kvack.org
+References: <20240918111826.863596-1-linyunsheng@huawei.com>
+ <20240918111826.863596-3-linyunsheng@huawei.com>
+ <CAC_iWjK=G7Oo5=pN2QunhasgDC6NyC1L+96jigX7u9ad+PbYng@mail.gmail.com>
+ <894a3c2c-22f9-45b9-a82b-de7320066b42@kernel.org>
+ <cdfecd37-31d7-42d2-a8d8-92008285b42e@huawei.com>
 Content-Language: en-US
-In-Reply-To: <172676437762.281449.1201751345434084726.kvalo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: AK9etUJtDTTEjLSj3FxHT8qDWQpJHqA5
-X-Proofpoint-ORIG-GUID: AK9etUJtDTTEjLSj3FxHT8qDWQpJHqA5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 adultscore=0
- mlxlogscore=489 malwarescore=0 suspectscore=0 clxscore=1011 phishscore=0
- lowpriorityscore=0 bulkscore=0 impostorscore=0 priorityscore=1501
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2408220000 definitions=main-2409190132
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+In-Reply-To: <cdfecd37-31d7-42d2-a8d8-92008285b42e@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 9/19/2024 9:46 AM, Kalle Valo wrote:
-> Mikhail Lobanov <m.lobanov@rosalinux.ru> wrote:
-> 
->> The previous logic in ath11k_ce_rx_post_pipe() incorrectly required both 
->> dest_ring and status_ring to be NULL in order to exit the function. 
->> This caused the function to continue even if only one of the pointers 
->> was NULL, potentially leading to null pointer dereferences in 
->> ath11k_ce_rx_buf_enqueue_pipe().
->>
->> Fix the condition by modifying the logic so that the function returns 
->> early if either dest_ring or status_ring is NULL.
->>
->> Found by Linux Verification Center (linuxtesting.org) with SVACE.
->>
->> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
->> Signed-off-by: Mikhail Lobanov <m.lobanov@rosalinux.ru>
-> 
-> Jeff, what do you think?
-> 
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-(could have just s/||/&&/ but this change is also ok)
+
+On 19/09/2024 13.15, Yunsheng Lin wrote:
+> On 2024/9/19 17:42, Jesper Dangaard Brouer wrote:
+>>
+>> On 18/09/2024 19.06, Ilias Apalodimas wrote:
+>>>> In order not to do the dma unmmapping after driver has already
+>>>> unbound and stall the unloading of the networking driver, add
+>>>> the pool->items array to record all the pages including the ones
+>>>> which are handed over to network stack, so the page_pool can
+>>>> do the dma unmmapping for those pages when page_pool_destroy()
+>>>> is called.
+>>>
+>>> So, I was thinking of a very similar idea. But what do you mean by
+>>> "all"? The pages that are still in caches (slow or fast) of the pool
+>>> will be unmapped during page_pool_destroy().
+>>
+>> I really dislike this idea of having to keep track of all outstanding pages.
+>>
+>> I liked Jakub's idea of keeping the netdev around for longer.
+>>
+>> This is all related to destroying the struct device that have points to
+>> the DMA engine, right?
+> 
+> Yes, the problem seems to be that when device_del() is called, there is
+> no guarantee hw behind the 'struct device ' will be usable even if we
+> call get_device() on it.
+> 
+>>
+>> Why don't we add an API that allow netdev to "give" struct device to
+>> page_pool.  And then the page_poll will take over when we can safely
+>> free the stuct device?
+> 
+> By 'allow netdev to "give" struct device to page_pool', does it mean
+> page_pool become the driver for the device?
+> If yes, it seems that is similar to jakub's idea, as both seems to stall
+> the calling of device_del() by not returning when the driver unloading.
+
+Yes, this is what I mean. (That is why I mentioned Jakub's idea).
+
+
+> If no, it seems that the problem is still existed when the driver for
+> the device has unbound after device_del() is called.
 
