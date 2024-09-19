@@ -1,46 +1,72 @@
-Return-Path: <linux-wireless+bounces-13019-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13020-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E556D97C866
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 13:15:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3B0297C90B
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 14:21:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8822B2865AB
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 11:15:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 275FDB2163C
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 12:21:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CD5A19D09C;
-	Thu, 19 Sep 2024 11:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6270B19D8A9;
+	Thu, 19 Sep 2024 12:21:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kaHGlinT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C91319D88C;
-	Thu, 19 Sep 2024 11:15:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7AA719D897
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Sep 2024 12:21:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726744519; cv=none; b=fv8ApJ+36r9H5oyWVI7U5dlDoRGe6N9w8/wdB6Kwaf9Aj0AZuGpdSB9Nk2XyWwut3Gl971Ap2Gs6jNtqGCAJavY1VNMFxZjD3snH/azwZd4YvUkUYH2/ogrMjpPX/UwkNQYS8l+nUj96BPZ4IdQc0HqS4KSExsPYLz1a2iPhPSk=
+	t=1726748511; cv=none; b=QRqi8eb/rgNlRh/16t7V/Ihe5i7u54Txx8l2F3bSfgGV+eL7SQnRyn5RaBEkfvk+NssEE3sQA9w4Q+Cr5SRcl/13eiGy2AGTNf7ekdtNrRkjieOmnKwTVMv4IYNLeu4856D31B/5qAf+gbbaXqty/1a/jaUP/7A9cwlyqD1m5zA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726744519; c=relaxed/simple;
-	bh=RbDtzFY4xR7hRu6Pf3a1C6ue6w6zG+4Zddlf2w/ZKJ8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=RF8EFl6HhyI6J43zTf7oCZLC/15LLxZ20AQtsd9gUJPyZlRqAEYE+sGvJipyCdF014anUyVx1RfdiUVH04wIA9vld5jJ46zVoOm3I4+Bl1dQcRosPKEvCTbd76JfaR8P0JKM15fbe721tFqjDp5zeczckzyjIzDUJoWVvfT3E9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4X8XwS0qCqz2DcFV;
-	Thu, 19 Sep 2024 19:14:32 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id BC8361A016C;
-	Thu, 19 Sep 2024 19:15:11 +0800 (CST)
-Received: from [10.67.120.129] (10.67.120.129) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 19 Sep 2024 19:15:11 +0800
-Message-ID: <cdfecd37-31d7-42d2-a8d8-92008285b42e@huawei.com>
-Date: Thu, 19 Sep 2024 19:15:11 +0800
+	s=arc-20240116; t=1726748511; c=relaxed/simple;
+	bh=VPfkElCik4d45OOT9g7FIG1zTAtmYb1RupKiNY62OZQ=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=QOUMLJMB1ZuwB0jv50zonrDCsCUQ/CLIJcfl0hK4STR7zZ25GxKeTgHiuzGbkrM2iJU1GF+nBo7+s9zlxhhamN9i9pmJLkOr/LWw3e7ZkAu8QG0UljMMaAjiTG5umi5+HNmlKu6kgfvaWVR3rOP9wHrxz1jWRtCJWAXXjuPcmCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kaHGlinT; arc=none smtp.client-ip=209.85.222.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-7a9ae0e116cso77801185a.1
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Sep 2024 05:21:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726748508; x=1727353308; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/aPinBNpEQJmGkGlD8UKbnq3igt9GLhQ1nJTLZCt2t8=;
+        b=kaHGlinTpniRlUQdVqEw3MatTIJcf+X4t5Pn6+AUoO6oU3+843e87ned504yKLv8yT
+         qjwNTHXdYdSX4LzTkqh54cpJwFdfGoRA0k3yycRCk7L6dBLdDGKvK4iHpFR2j+tuRnK/
+         HjqNj6FXyvXcgyi4lW/rEPmWHzmSczfAJVKf48jSKw2NkcLDDa7IKku+p8EMw5XkgMCG
+         7Va31pHzBw3OKI5500QBQzv4RMzN4iaZrG7QEgzdQibd8P6yRMjlL1hKtO7z2jIEJkxs
+         KmMbAWR5QlpEDvgwI17TqAfiQbdUbw0SQfugxPigp0TV/Opi6k5qBjp9RmFhEoB3gFBG
+         U7Kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726748508; x=1727353308;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=/aPinBNpEQJmGkGlD8UKbnq3igt9GLhQ1nJTLZCt2t8=;
+        b=rt/y8Yy28bpfBGIH1YPcjsix9RQni06qTsUj5gbSoZEOqQeQgAJHM1B4ws69FFqAwq
+         Uvk191feEevlqWauE95qqSOSKJMZHo7Og6j8N6CVCyS6psoL0p0uXjSlLE+Eb0qG03ip
+         pwGSPQh+gdbhpnaBsd/hi+406wq3PVYhtgjQj42FWhd0xvGyYHKE9byjFUAX5SSnM2tc
+         cq3mSf1XCWG0BMYoaZvpX8F4PVz3NsG/L/qvBsrqqeDUZOlJiQ25Ndl2wl20J6bfoX8Z
+         uEIviP+4E2VzpnurIdzqcDiDd7yqTGowAedcuiqfX5uXSYbyqJWpF2NUPWVroaf585iU
+         u6Eg==
+X-Gm-Message-State: AOJu0YybShvFIsRVKjGMZe5Hq17lTijgm3OHziMkjFmFzsMzmQCnJla/
+	5no5vlJL3c2ljCX1Jf0tgrfL3Z47KfI1rD2w5KRaBbNj3RV9KzDErWzxZQ==
+X-Google-Smtp-Source: AGHT+IHmlJqFsWyU2FsvDsYsWVtepRrCPdLBdyxSiSA3TMcqUitL7XYEPTVYs6LXteGXk1D3u0Vg2w==
+X-Received: by 2002:a05:6214:4a89:b0:6c7:5e3c:ed4 with SMTP id 6a1803df08f44-6c75e3c0f9dmr38936096d6.32.1726748508322;
+        Thu, 19 Sep 2024 05:21:48 -0700 (PDT)
+Received: from [10.100.121.195] ([152.193.78.90])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45b1786961asm7059851cf.6.2024.09.19.05.21.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Sep 2024 05:21:47 -0700 (PDT)
+Message-ID: <eb41d8ec-c4f1-474e-a938-099f27aa94e3@gmail.com>
+Date: Thu, 19 Sep 2024 05:21:45 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -48,80 +74,47 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 2/2] page_pool: fix IOMMU crash when driver has
- already unbound
-To: Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas
-	<ilias.apalodimas@linaro.org>
-CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
-	<liuyonglong@huawei.com>, <fanghaiqing@huawei.com>, <zhangkun09@huawei.com>,
-	Robin Murphy <robin.murphy@arm.com>, Alexander Duyck
-	<alexander.duyck@gmail.com>, IOMMU <iommu@lists.linux.dev>, Wei Fang
-	<wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang
-	<xiaoning.wang@nxp.com>, Eric Dumazet <edumazet@google.com>, Tony Nguyen
-	<anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Alexei Starovoitov
-	<ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, John Fastabend
-	<john.fastabend@gmail.com>, Saeed Mahameed <saeedm@nvidia.com>, Leon
- Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Felix Fietkau
-	<nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee
-	<ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>, Sean Wang
-	<sean.wang@mediatek.com>, Kalle Valo <kvalo@kernel.org>, Matthias Brugger
-	<matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
-	<angelogioacchino.delregno@collabora.com>, Andrew Morton
-	<akpm@linux-foundation.org>, <imx@lists.linux.dev>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <intel-wired-lan@lists.osuosl.org>,
-	<bpf@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<linux-wireless@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mediatek@lists.infradead.org>, <linux-mm@kvack.org>
-References: <20240918111826.863596-1-linyunsheng@huawei.com>
- <20240918111826.863596-3-linyunsheng@huawei.com>
- <CAC_iWjK=G7Oo5=pN2QunhasgDC6NyC1L+96jigX7u9ad+PbYng@mail.gmail.com>
- <894a3c2c-22f9-45b9-a82b-de7320066b42@kernel.org>
 Content-Language: en-US
-From: Yunsheng Lin <linyunsheng@huawei.com>
-In-Reply-To: <894a3c2c-22f9-45b9-a82b-de7320066b42@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemf200006.china.huawei.com (7.185.36.61)
+To: "open list:MEDIATEK MT76 WIRELESS LAN DRIVER"
+ <linux-wireless@vger.kernel.org>
+Cc: "ath11k@lists.infradead.org" <ath11k@lists.infradead.org>
+From: James Prestwood <prestwoj@gmail.com>
+Subject: ath11k/WCN6855 neighbor report request made immediately after
+ connection gets no response (with MFP)
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 2024/9/19 17:42, Jesper Dangaard Brouer wrote:
-> 
-> On 18/09/2024 19.06, Ilias Apalodimas wrote:
->>> In order not to do the dma unmmapping after driver has already
->>> unbound and stall the unloading of the networking driver, add
->>> the pool->items array to record all the pages including the ones
->>> which are handed over to network stack, so the page_pool can
->>> do the dma unmmapping for those pages when page_pool_destroy()
->>> is called.
->>
->> So, I was thinking of a very similar idea. But what do you mean by
->> "all"? The pages that are still in caches (slow or fast) of the pool
->> will be unmapped during page_pool_destroy().
-> 
-> I really dislike this idea of having to keep track of all outstanding pages.
-> 
-> I liked Jakub's idea of keeping the netdev around for longer.
-> 
-> This is all related to destroying the struct device that have points to
-> the DMA engine, right?
+Hi,
 
-Yes, the problem seems to be that when device_del() is called, there is
-no guarantee hw behind the 'struct device ' will be usable even if we
-call get_device() on it.
+I noticed an issue when we started putting ath11k clients on a WPA3 
+network which seems to be related to the fact that management frame 
+protection is enabled (works fine on WPA2 no MFP). Immediately after an 
+initial association a neighbor report request goes out and we get no 
+response from the AP. After getting a PCAP in one case we noticed the 
+neighbor report request went out unencrypted, though still had the CCMP 
+IV parameter. The content of the request was the unencrypted request, 
+and something like 15 bytes of 0x00 padding. I will say, this initial 
+PCAP was made through the AP vendor so perhaps it automatically added 
+the right keys to decrypt the frame, this could be a red herring. I 
+tried on my home network and it was hit or miss, sometimes I would get a 
+response but sometimes I wouldn't, but I did see the frame was always 
+encrypted in my home network case though when adding the PMK directly in 
+wireshark I couldn't decrypt it, where on other hardware like iwlwifi I 
+could.
 
-> 
-> Why don't we add an API that allow netdev to "give" struct device to
-> page_pool.  And then the page_poll will take over when we can safely
-> free the stuct device?
+Some time after the connection neighbor reports work fine. I'm not sure 
+of a time frame or delay required that gets them working, but it makes 
+me suspect that ath11k doesn't have the keys fully added in the firmware 
+before userspace gets signaled as "connected". Running the same scenario 
+on ath10k or iwlwifi has no issues. This neighbor report request 
+immediately after connecting is IWD's default behavior, so its 
+relatively easy to test by just restarting IWD.
 
-By 'allow netdev to "give" struct device to page_pool', does it mean
-page_pool become the driver for the device?
-If yes, it seems that is similar to jakub's idea, as both seems to stall
-the calling of device_del() by not returning when the driver unloading.
-If no, it seems that the problem is still existed when the driver for
-the device has unbound after device_del() is called.
+Since the neighbor reports work fine after some time its not really a 
+critical issue but I wanted to bring it up just in case.
 
-> 
-> --Jesper
+Thanks,
+
+James
+
 
