@@ -1,104 +1,131 @@
-Return-Path: <linux-wireless+bounces-13010-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13011-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A293497C61F
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 10:46:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C02B497C676
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 10:59:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4D1C1C20D51
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 08:46:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4CFF9B22362
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 08:59:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68BBF15B0F2;
-	Thu, 19 Sep 2024 08:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A1D019922E;
+	Thu, 19 Sep 2024 08:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nJOsfAcB"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="wSOpN+V8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44EEDFC0E
-	for <linux-wireless@vger.kernel.org>; Thu, 19 Sep 2024 08:46:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD371991BB
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Sep 2024 08:59:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726735565; cv=none; b=CmS4I0ov5S5L1meNDsEaXbErfAFK0wGthHuXDxaqtf2IYpgrinP4/V7oFYIq/uC8zhlgOHm+TwPgFl+NSCoHY7PXkDQdxZ17FdS4OXyuENxTwqubDM3Kj4swWxdpTD712otNKDmBwxIDZRJrustIS5rd7/54K9mPFcbiab6X0iM=
+	t=1726736362; cv=none; b=MspxVpPlGikFjpxPTOq1xndJvhNJk7YnvRjDcE7hny3i9/rWgq2IJ9PELJ16OkauPu4agtbOKDrk8rknVeTCA/ph049muHR/WXzIMFgKTQJSFFJxfXhHxI4PuRWy6hM29+sOpF7wHym77xghWgpYIe6sABXcN1vmZjkSuKjn/Ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726735565; c=relaxed/simple;
-	bh=eCxU4p6XDvooiISyOMXib2zwRAh0WY5U75insDIZxrY=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=Ae7mi2ZpmFiVKuH5RFg/Zzl1BSdH3wv5v1hRN5LkEP7OCxLoHAlI6xuK54FI16v1Dzg1XPUbc4fI1YlS52A09RJYfHetpKpNgTqn13mlWB+UgBeVswmg18sfqShDf9xgvdACjxahQYa6SlbYTYER8WSN9+tgw4AG+Y/oclcEv8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nJOsfAcB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E54C4CEC4;
-	Thu, 19 Sep 2024 08:46:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726735565;
-	bh=eCxU4p6XDvooiISyOMXib2zwRAh0WY5U75insDIZxrY=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=nJOsfAcB3fYRd66m0gaPYsLaLp/RinqR1kwmkClEpWkaPW9/LgDJcvlSjAAz3ItVC
-	 Vo8oa3Cdh5OiM6w66CorSdibOQazbanjOJ0v2VwJFzS0a205tGsn4cyFWGow3T2ikY
-	 aMSvueuOzKUF0VyFigcLdXGanFenTV70aEXw6O2l7DMtregzLos9nSvhuy7xH6g41E
-	 tRIto8bkJnpDfBMp3Ql81wvZ0cucI4+VUbX/Ab5rxkWLmcac/jclo2Dypn3oA5J4A1
-	 lmqLW44HT/b/K7MpN63mBD929wkKO4ftKNT66JPj3cgci8jRnJyrA+4uzC8BVQZg9O
-	 XlsVqswQ9PQsg==
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1726736362; c=relaxed/simple;
+	bh=gELVqvyqcJInyr8E7hFzpzkNi+tcnEM+7zPPHqXS8a4=;
+	h=From:In-Reply-To:MIME-Version:References:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eRy32Onvwf6A2xt3BhLvVpR6PozEeT3ECLyrDiXs4XtlAwUspzRWLTuLuokkvC+CfHdtQsLhi9gl8XiJa4sr4vxRtplHyOg43Ci+DXvnawCF7nLXFYhDKYDS3i83hCPIJplBrsUaX705b6nq7IfMUWKweB5sOU2+nHoKMzEOu80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=wSOpN+V8; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-718816be6cbso448289b3a.1
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Sep 2024 01:59:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1726736360; x=1727341160; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:references:mime-version:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gELVqvyqcJInyr8E7hFzpzkNi+tcnEM+7zPPHqXS8a4=;
+        b=wSOpN+V8gFi0Mpkzw8xCb9Tl4fqma9+DcfEjcswbq9RGnuj6HGZbqLYYuBZBpL3wnb
+         mP2GH1M9z908073TNINTI3TGxKDRbQLU63ju35/sWymUoCXeZokQVjWRcqrAmBvGyrBU
+         93rN32wfNi71qrJMQqAtt0hx248gV4us+zofHmJbvbvLUGxwuZcJ8Ye9vIwaxN2anHaq
+         qm8V9zVPaYQOV5yRj5Ir34mzIxpO3GzxNZf6bHjkibph+WeTXSYNyIVDzyL9Rbd0coNi
+         Xn6rOSn/AWKm0OFfENgVSQ1xWNEqtIywmWP4+oI8GvMUDBtOrW/SiToQkpAadwmhZqpJ
+         y5jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726736360; x=1727341160;
+        h=cc:to:subject:message-id:date:references:mime-version:in-reply-to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gELVqvyqcJInyr8E7hFzpzkNi+tcnEM+7zPPHqXS8a4=;
+        b=n/nWn+tLeCaBDqqv+ZubkcIrXaR99zfj5jWd5NPo5l2ovIzhByv845u5OHOeZyCTXT
+         6fp+VMbXsVG/iMLtI3+dKngc6cEZcTRoH0GuX/vAn5QfVTOtecFzvbLZsI/QDSWGxqDX
+         CT26XktamhMWouFIlPP6HOWPXL4HvvwK2PJdMpott2eW0FDxp9c4v9xXrbWvxhNEKSf7
+         yjtLboDl7Q70Ltz+GMeAxxWJOhW/tHyKK5y+WT3/jnfClTlC6kHMQ7MIw+ysQ92rX8CV
+         UquDsmHL92eVI5vxRkxqEq+ETp5ebKG7rn6vizMYKYBHGWl2yeSh6MX8qhDJsqqa9eKT
+         b4mw==
+X-Forwarded-Encrypted: i=1; AJvYcCUqBX80bJwpdyfCC02J/xKhq8npP4lhbtt2/nt8DXSShzYT1LNR7rkJjqwQ+jbsgBxCBP828Wn2HbQwYxdFLA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqE+1nP0yaIp+NXAZiIqLJtiJEAfl+2YCggZSzBCww+o5+8VJn
+	qFDgvV5+IeNH5AxTB/7S/lMnk1eY0tMRxdOhgscZRNF8IHJFUIP7B+01Zgbuyu0h4DhwXZIraU/
+	SAwjiWBMr8a/MfPqzuibCasZnlajzM3hbhNIx7g==
+X-Google-Smtp-Source: AGHT+IGvZKhZ+sgK1EVS1v43hs165nAjaXCVBqA4ql8mlkaKawbV4Lhi2ui4b5YR+NQKc/pd5URgnIZnstCpvwceHIs=
+X-Received: by 2002:a05:6a00:c88:b0:717:fd98:4a6 with SMTP id
+ d2e1a72fcca58-71926082587mr37728842b3a.11.1726736359963; Thu, 19 Sep 2024
+ 01:59:19 -0700 (PDT)
+Received: from 969154062570 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 19 Sep 2024 03:59:17 -0500
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+In-Reply-To: <87msk49j8m.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] wifi: iwlegacy: Fix "field-spanning write" warning in
- il_enqueue_hcmd()
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <ZuIhQRi/791vlUhE@decadent.org.uk>
-References: <ZuIhQRi/791vlUhE@decadent.org.uk>
-To: Ben Hutchings <ben@decadent.org.uk>
-Cc: linux-wireless@vger.kernel.org, Stanislaw Gruszka <stf_xl@wp.pl>,
- =?iso-8859-1?q?Martin-=C9ric?= Racine <martin-eric.racine@iki.fi>,
- Brandon Nielsen <nielsenb@jetfuse.net>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <172673556244.134107.10464809786453477005.kvalo@kernel.org>
-Date: Thu, 19 Sep 2024 08:46:03 +0000 (UTC)
+References: <20240814082301.8091-1-brgl@bgdev.pl> <83c562e9-2add-4086-86e7-6e956d2ee70f@kernel.org>
+ <87msk49j8m.fsf@kernel.org>
+Date: Thu, 19 Sep 2024 03:59:17 -0500
+Message-ID: <CAMRc=McEWWm8N++4a5LMCAa0GWsQdi0KuSpj3ZuS_he=H0LP+w@mail.gmail.com>
+Subject: Re: [PATCH net-next v2] dt-bindings: net: ath11k: document the inputs
+ of the ath11k on WCN6855
+To: Kalle Valo <kvalo@kernel.org>, Arnd Bergmann <arnd@arndb.de>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	ath11k@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Krzysztof Kozlowski <krzk@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Ben Hutchings <ben@decadent.org.uk> wrote:
+On Thu, 19 Sep 2024 09:48:41 +0200, Kalle Valo <kvalo@kernel.org> said:
+> Krzysztof Kozlowski <krzk@kernel.org> writes:
+>
+>> On 14/08/2024 10:23, Bartosz Golaszewski wrote:
+>>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>>>
+>>> Describe the inputs from the PMU of the ath11k module on WCN6855.
+>>>
+>>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>>> ---
+>>> v1 -> v2:
+>>> - update the example
+>>
+>> I don't understand why this patch is no being picked up. The code
+>> correct represents the piece of hardware. The supplies should be
+>> required, because this one particular device - the one described in this
+>> binding - cannot work without them.
+>
+> I have already explained the situation. With supplies changed to
+> optional I'm happy take the patch.
+>
 
-> iwlegacy uses command buffers with a payload size of 320
-> bytes (default) or 4092 bytes (huge).  The struct il_device_cmd type
-> describes the default buffers and there is no separate type describing
-> the huge buffers.
-> 
-> The il_enqueue_hcmd() function works with both default and huge
-> buffers, and has a memcpy() to the buffer payload.  The size of
-> this copy may exceed 320 bytes when using a huge buffer, which
-> now results in a run-time warning:
-> 
->     memcpy: detected field-spanning write (size 1014) of single field "&out_cmd->cmd.payload" at drivers/net/wireless/intel/iwlegacy/common.c:3170 (size 320)
-> 
-> To fix this:
-> 
-> - Define a new struct type for huge buffers, with a correctly sized
->   payload field
-> - When using a huge buffer in il_enqueue_hcmd(), cast the command
->   buffer pointer to that type when looking up the payload field
-> 
-> Reported-by: Martin-Éric Racine <martin-eric.racine@iki.fi>
-> References: https://bugs.debian.org/1062421
-> References: https://bugzilla.kernel.org/show_bug.cgi?id=219124
-> Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
-> Fixes: 54d9469bc515 ("fortify: Add run-time WARN for cross-field memcpy()")
-> Tested-by: Martin-Éric Racine <martin-eric.racine@iki.fi>
-> Tested-by: Brandon Nielsen <nielsenb@jetfuse.net>
-> Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+No, silent NAKing and needless stalling is what you're doing. I responded to
+your last email with extensive clarifications. You're being told by the
+experts on the subject matter (Krzysztof and Conor) that the change is correct.
 
-Patch applied to wireless.git, thanks.
+The change has no functional impact on the driver code. It's also in line with
+commit 71839a929d9e ("dt-bindings: net: wireless: qcom,ath11k: describe the
+ath11k on QCA6390") under which we had literally the same discussion and that
+you ended up picking up after all.
 
-d4cdc46ca16a wifi: iwlegacy: Fix "field-spanning write" warning in il_enqueue_hcmd()
+Arnd: I've added you here to bring this to your attention because it's somewhat
+related to what we discussed yesterday. It's a change that is very much
+SoC-specific, that has trouble getting upstream due to the driver's maintainer
+unwilingness to accept it. Is this a case where a change to DT bindings should
+go through the SoC rather than the driver tree?
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/ZuIhQRi/791vlUhE@decadent.org.uk/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Best Regards,
+Bartosz Golaszewski
 
