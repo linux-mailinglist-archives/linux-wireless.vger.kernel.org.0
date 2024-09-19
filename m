@@ -1,147 +1,109 @@
-Return-Path: <linux-wireless+bounces-13007-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13008-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E23297C5B6
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 10:17:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E6C697C5D1
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 10:28:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 370FA1F2178B
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 08:17:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0DC71C20BB7
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 08:28:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA448198A29;
-	Thu, 19 Sep 2024 08:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916C2198A33;
+	Thu, 19 Sep 2024 08:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="uPRdmkOK"
+	dkim=pass (1024-bit key) header.d=wp.pl header.i=@wp.pl header.b="mCy+21T6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3473B791
-	for <linux-wireless@vger.kernel.org>; Thu, 19 Sep 2024 08:17:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14A1194C69
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Sep 2024 08:28:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726733844; cv=none; b=YTYSFJ9ZF1k2ti5cVVqzlv1QDXW1QlZtHH26zckucOw77MfB862MiJpj7KpM8BKZrdia/FzRXV+EgBO0ipL/JSuVpGsM0EuVs1ZcZpvYXi66co7nrxBBIADCR3pO1B6/Nk+p/zvkvA1iBK9gDLS3qERwMVqf9QpjM0vaBWeNDyg=
+	t=1726734502; cv=none; b=QLyaZQufCf7oOX5FmyxZ/I3wPonLYpi9HrWIh3ZRmGZpUujf2lir1gK3MJrlFp9preFaFYwH7xQ0qqT0b4H6JBdGtnQl6wEVs5NeZAsVfQ5TSF0DjbhXjXCCMCtPlklEBTcS9z9SLPSDbP/BYZzN8ammHLPS9TxEHf19I6ni9So=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726733844; c=relaxed/simple;
-	bh=L1s2sDAKqzhuVkCCvBXeJ75czH+Un1V0SEQLFILgFGA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dr8S9RVKdMcEPcwIBlwrWtK0/496+gMO0h/RFlCWSGPGOz7VsP5xAqG0uz2tl56k3jgyS+zMB+RuuH9OKupw63hvg3u4ZXVzdagQhI7ntxkdMGdWiQnYw3ojm5rCMQlF9E6txfcTJcXYUB3mnULojA1dKiQxowLfE4AuwansMFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=uPRdmkOK; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 94f4416e765f11efb66947d174671e26-20240919
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=a6TusFy2ir91gPNlwrF+20GciCGq3HpbhHGPX9zl1lg=;
-	b=uPRdmkOKdYGlQQceGVXt70X5GG5o/kQIVJ+5KAOXBJ3ELed9K7CumuPO8u0qmd6JEmJx0wVCWf/JmUO6EfHS3eo5GVnGqyr+IG+1QEJ/qk06b9Sge5YCFLUkS8iOHzp4jKpOfZlybT4lUW/jQiO0R/7c/VtLKZdTz8EGIVqkOJc=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.41,REQID:74865e71-fd5b-44cf-81b3-d143ce09d412,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-25
-X-CID-META: VersionHash:6dc6a47,CLOUDID:cc566fd0-7921-4900-88a1-3aef019a55ce,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: 94f4416e765f11efb66947d174671e26-20240919
-Received: from mtkmbs09n1.mediatek.inc [(172.21.101.35)] by mailgw01.mediatek.com
-	(envelope-from <mingyen.hsieh@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1396106471; Thu, 19 Sep 2024 16:17:16 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Thu, 19 Sep 2024 16:17:15 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Thu, 19 Sep 2024 16:17:15 +0800
-From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
-	<Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
-	<Michael.Lo@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-	<km.lin@mediatek.com>, <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
-	<posh.sun@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Hao Zhang
-	<hao.zhang.mediatek@gmail.com>, "allan . wang" <allan.wang@mediatek.com>,
-	Ming Yen Hsieh <MingYen.Hsieh@mediatek.com>
-Subject: [PATCH] wifi: mt76: mt792x: add P2P_DEVICE support
-Date: Thu, 19 Sep 2024 16:17:13 +0800
-Message-ID: <20240919081713.23787-1-mingyen.hsieh@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+	s=arc-20240116; t=1726734502; c=relaxed/simple;
+	bh=eLidqbtPzCspss3Nv9wE7e0mzTjcbb74vzaG77UOIi0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AC/sTBmU1wd+0JiMDhwT1AedivLwCL98yrMAkILH61NBv09bKqdxKx2ZlQpSPfzsp7UwjHfLjp3XsqeksWS59y8/6h1I+oHP6f1NDRm/OzFYCdMQGnbIDi2nUke2ofmZs4WJ1Z9fohcsOd0vQy+r8jCitbSvlmiZVzvBlN56B5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (1024-bit key) header.d=wp.pl header.i=@wp.pl header.b=mCy+21T6; arc=none smtp.client-ip=212.77.101.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
+Received: (wp-smtpd smtp.wp.pl 12433 invoked from network); 19 Sep 2024 10:28:09 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
+          t=1726734490; bh=1/dJQWT9p73cDbZAc6QNaH5u2sZ506MbkP/WzBejaUs=;
+          h=From:To:Cc:Subject;
+          b=mCy+21T6tauZxIe7HpY/uRFt4pj64PM1Eg5P/ywq2R3jUd9xWEZuznGP+HaANLJgc
+           zT7U/0r4qjdTqVn+FgbOR5n8QDrubsuTPT1rSlkv0q7QbJ1KfFz/X6hPnnQd0hNIay
+           ScMl6aDtc5Q06wl71UdyrTDmOVYRgnrX1n01zPVg=
+Received: from 89-64-14-248.dynamic.chello.pl (HELO localhost) (stf_xl@wp.pl@[89.64.14.248])
+          (envelope-sender <stf_xl@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <kvalo@kernel.org>; 19 Sep 2024 10:28:09 +0200
+Date: Thu, 19 Sep 2024 10:28:09 +0200
+From: Stanislaw Gruszka <stf_xl@wp.pl>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Ben Hutchings <ben@decadent.org.uk>, linux-wireless@vger.kernel.org,
+	=?iso-8859-1?Q?Martin-=C9ric?= Racine <martin-eric.racine@iki.fi>,
+	Brandon Nielsen <nielsenb@jetfuse.net>
+Subject: Re: [PATCH] wifi: iwlegacy: Fix "field-spanning write" warning in
+ il_enqueue_hcmd()
+Message-ID: <20240919082809.GA13162@wp.pl>
+References: <ZuIhQRi/791vlUhE@decadent.org.uk>
+ <172666715574.3996465.3960547479597216434.kvalo@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <172666715574.3996465.3960547479597216434.kvalo@kernel.org>
+X-WP-MailID: f2a40ae3715579129f9e7618afc9ee2a
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000000 [MeMR]                               
 
-From: Hao Zhang <hao.zhang.mediatek@gmail.com>
+On Wed, Sep 18, 2024 at 01:45:57PM +0000, Kalle Valo wrote:
+> Ben Hutchings <ben@decadent.org.uk> wrote:
+> 
+> > iwlegacy uses command buffers with a payload size of 320
+> > bytes (default) or 4092 bytes (huge).  The struct il_device_cmd type
+> > describes the default buffers and there is no separate type describing
+> > the huge buffers.
+> > 
+> > The il_enqueue_hcmd() function works with both default and huge
+> > buffers, and has a memcpy() to the buffer payload.  The size of
+> > this copy may exceed 320 bytes when using a huge buffer, which
+> > now results in a run-time warning:
+> > 
+> >     memcpy: detected field-spanning write (size 1014) of single field "&out_cmd->cmd.payload" at drivers/net/wireless/intel/iwlegacy/common.c:3170 (size 320)
+> > 
+> > To fix this:
+> > 
+> > - Define a new struct type for huge buffers, with a correctly sized
+> >   payload field
+> > - When using a huge buffer in il_enqueue_hcmd(), cast the command
+> >   buffer pointer to that type when looking up the payload field
+> > 
+> > Reported-by: Martin-Éric Racine <martin-eric.racine@iki.fi>
+> > References: https://bugs.debian.org/1062421
+> > References: https://bugzilla.kernel.org/show_bug.cgi?id=219124
+> > Signed-off-by: Ben Hutchings <ben@decadent.org.uk>
+> > Fixes: 54d9469bc515 ("fortify: Add run-time WARN for cross-field memcpy()")
+> > Tested-by: Martin-Éric Racine <martin-eric.racine@iki.fi>
+> > Tested-by: Brandon Nielsen <nielsenb@jetfuse.net>
+> > Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+> 
+> Should this patch go wireless tree for v6.12? As this is a regression I think
+> it should.
+It's not driver regression per se, just false positive warning when built
+with CONFIG_FORTIFY_SOURCE. But it should go to 6.12 IMHO as fix for
+the warning.
 
-Regist the NL80211_IFTYPE_P2P_DEVICE to support p2p device
-for mt792x chips
-
-Signed-off-by: Hao Zhang <hao.zhang.mediatek@gmail.com>
-Signed-off-by: allan.wang <allan.wang@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <MingYen.Hsieh@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 3 +++
- drivers/net/wireless/mediatek/mt76/mt792x_core.c     | 9 +++++++--
- 2 files changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 864246f94088..77f3e92d581a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -1202,6 +1202,9 @@ int mt76_connac_mcu_uni_add_dev(struct mt76_phy *phy,
- 	case NL80211_IFTYPE_STATION:
- 		basic_req.basic.conn_type = cpu_to_le32(CONNECTION_INFRA_STA);
- 		break;
-+	case NL80211_IFTYPE_P2P_DEVICE:
-+		basic_req.basic.conn_type = cpu_to_le32(CONNECTION_P2P_GO);
-+		break;
- 	case NL80211_IFTYPE_ADHOC:
- 		basic_req.basic.conn_type = cpu_to_le32(CONNECTION_IBSS_ADHOC);
- 		break;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-index 78fe37c2e07b..042aa8d1b6e7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-@@ -38,6 +38,10 @@ static const struct ieee80211_iface_limit if_limits_chanctx[] = {
- 		.max = 1,
- 		.types = BIT(NL80211_IFTYPE_AP) |
- 			 BIT(NL80211_IFTYPE_P2P_GO)
-+	},
-+	{
-+		.max = 1,
-+		.types = BIT(NL80211_IFTYPE_P2P_DEVICE)
- 	}
- };
- 
-@@ -45,7 +49,7 @@ static const struct ieee80211_iface_combination if_comb_chanctx[] = {
- 	{
- 		.limits = if_limits_chanctx,
- 		.n_limits = ARRAY_SIZE(if_limits_chanctx),
--		.max_interfaces = 2,
-+		.max_interfaces = 3,
- 		.num_different_channels = 2,
- 		.beacon_int_infra_match = false,
- 	}
-@@ -614,7 +618,8 @@ int mt792x_init_wiphy(struct ieee80211_hw *hw)
- 	wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION) |
- 				 BIT(NL80211_IFTYPE_AP) |
- 				 BIT(NL80211_IFTYPE_P2P_CLIENT) |
--				 BIT(NL80211_IFTYPE_P2P_GO);
-+				 BIT(NL80211_IFTYPE_P2P_GO) |
-+				 BIT(NL80211_IFTYPE_P2P_DEVICE);
- 	wiphy->max_remain_on_channel_duration = 5000;
- 	wiphy->max_scan_ie_len = MT76_CONNAC_SCAN_IE_LEN;
- 	wiphy->max_scan_ssids = 4;
--- 
-2.45.2
-
+Regards
+Stanislaw
 
