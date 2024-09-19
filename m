@@ -1,189 +1,90 @@
-Return-Path: <linux-wireless+bounces-12988-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-12993-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 220FD97C153
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2024 23:21:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A78697C252
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 02:19:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82A50B220D5
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Sep 2024 21:21:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00E551F22879
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 00:19:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37A481CA6AC;
-	Wed, 18 Sep 2024 21:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EE1C4A1B;
+	Thu, 19 Sep 2024 00:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="i4iTJD+Z"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="G57YO9pq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A44471CB32B
-	for <linux-wireless@vger.kernel.org>; Wed, 18 Sep 2024 21:21:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC1F4A1D
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Sep 2024 00:19:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726694476; cv=none; b=YnQUUZ4IfmLtgtYCtYRGhH8uRGd6VL74IRylGv6Ihb2PMO/n5UdfZlDk/m9w0OH4/sSsqULSz2lupiSTwXCPxc+73uK+OUjIEmCfPlNdrtzK2naXyiXAASPqonpnRBnyoIFwaE8zj8AHUqk5TAajedqpK9EnOaboX2XGYVbe0yI=
+	t=1726705152; cv=none; b=g1tqcXsycuD6j4N6SmAtShGNrF45oqY3MY8CEYnXQjlfdBe1kBgV94v1EoruNFjR/0E3l9zObrT1PBaW5ARLcqMx17b89GOS25Xp3yOjrsbbP9v5KgGFjZp0bpONcPwsV93tP6hMYVaAS3kEl4lFn/lLIgLnQd427u24Dz4Gd2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726694476; c=relaxed/simple;
-	bh=TAPBD6g5pYNuC8Odk6t6JkL8GvKdG9H30IPHTEgA7C0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=djAINL+wQRgQaGOI4fotrExnm1Yz5quwEW2I7s85hWLI3gB+HsjwPKWJypllDKm8W0FDcrsoZWFmOrfx0wJ5LIe+OtXJ4ijSG7xcJeGtgDXZ3hAA5ZBk/B+CD+g+NZ3c0mwkSKpUm5dUBPKi1+kJsPuVEwKeCmdMVj8QHSYMXPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=i4iTJD+Z; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48I9VJ15022098;
-	Wed, 18 Sep 2024 21:21:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	2gwv4CbPGErAHv9NWtZrCSVk7NoZpHzKz9tuTs+8dV4=; b=i4iTJD+ZMXDp8Ul8
-	HTo5IL/NLwS3mnlutEaaL+juUKm+wsFdl/BeMp9CC4H/sapolIhM4Zje9t3H9K0R
-	+z1OxQDEekvWrrfUlikEaUHjOEwQ4YKSPJ+1uAIrbbA3REWeW5z39IITJ3dGU05N
-	hnfPQEiFcPgDbFQv0Iaf434znv8rbOow6dc+M1E6EjpGd92Mq80BpsJqP8Ee0RUr
-	WO3rsws1kXzFs6ELsg/FmC3l6eG9A4z9SUxcZ7QqTaz8aPOAZS/lclN0cOJT7VgK
-	7UNPGoDoJhTmHEX17W/rQR8RiV8c0hMciOuB1sfI7H/1uGkEPMjmfIsEdBjQ/9oa
-	DDiHrg==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41n4hfk92c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Sep 2024 21:21:11 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48ILLA0u011397
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 18 Sep 2024 21:21:10 GMT
-Received: from ath12k-linux1.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+	s=arc-20240116; t=1726705152; c=relaxed/simple;
+	bh=AQi2Ggqld+lpgU/mKVxHfxsWW6Rai3onQ3XXuVVDmLU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=qxDjqprS5p8ZLARq4xjr3l8LayNPSosvKxIefeTGonaOUMwwnRn1wCdExuNheg0LWiu92MUnSx7nA4sRnwVR3lFUrJJ3eisPec0QXN6/2/c2IUbIyxNLBZWuPJ7XtG1rw1atE9e/jwkLeO+PMEOQ0l89cMrYOFfxvDT410ZWM0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=G57YO9pq; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 48J0J2xxC2905128, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1726705142; bh=AQi2Ggqld+lpgU/mKVxHfxsWW6Rai3onQ3XXuVVDmLU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=G57YO9pqB42wYlDAJrOf5CbVxUlLTBO+WsqYFzInaHK6Dx/5GgpL6m+sjd0hPQYXP
+	 YsAgI0ntKcSX3pYbVCEohrIL+X16vA0wm5fzcaXOfSvU6Gde/uNXZtx/kk1FruWv8b
+	 eHeaHYpnD+rdmSiKC0cHKkyG+13fumBEwzZpx1q+nF3OaxS3SCzll38z59hGcFcVIA
+	 2K07xwhzzJBMXEV6bbYx0XRdvjdRC0M8mTIde9XVDqraDgSeIq4WWWFY1KklwRG3oB
+	 I8jostNNAhQ6lpgTmOCLwo0tpdDM4LB+CgCcRNEXuhHKin240UznfZ1NQsGb0Kwfoe
+	 h9/Q5h17acQYA==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.05/5.92) with ESMTPS id 48J0J2xxC2905128
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 19 Sep 2024 08:19:02 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Wed, 18 Sep 2024 14:21:09 -0700
-From: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Pradeep Kumar Chitrapu
-	<quic_pradeepc@quicinc.com>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>
-Subject: [PATCH V8 9/9] wifi: ath12k: add extended NSS bandwidth support for 160 MHz
-Date: Wed, 18 Sep 2024 14:20:56 -0700
-Message-ID: <20240918212056.4137076-10-quic_pradeepc@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240918212056.4137076-1-quic_pradeepc@quicinc.com>
-References: <20240918212056.4137076-1-quic_pradeepc@quicinc.com>
+ 15.1.2507.39; Thu, 19 Sep 2024 08:19:02 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 19 Sep 2024 08:19:02 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
+ 15.01.2507.035; Thu, 19 Sep 2024 08:19:02 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: =?utf-8?B?Q2VtIMOcTkFM?= <cemunal@linuxmail.org>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: RE: RE: PCIe Bus Error from rtw_8821ce
+Thread-Topic: RE: RE: PCIe Bus Error from rtw_8821ce
+Thread-Index: AQHbCNiaV91dngQR6EiAODPVjiVajbJcwL+g///croCAAIoz8P//xIgAgAFUqsA=
+Date: Thu, 19 Sep 2024 00:19:02 +0000
+Message-ID: <ee1680e0f3e1460d8228ebecfd8e95b9@realtek.com>
+References: <trinity-7a84c76b-e8b0-4da8-8f8c-07ad3485a23d-1726560422197@3c-app-mailcom-lxa11>
+ <6d0fc72b21794f73a6017b467a102500@realtek.com>
+ <trinity-154f2ef3-0df7-4802-88fc-d2ddcfb70a52-1726643761105@3c-app-mailcom-lxa04>
+ <71107862cf8e451ca19c1dac72a51b4a@realtek.com>
+ <trinity-dd463594-7071-49e4-8e07-e6c885c189e3-1726660668932@3c-app-mailcom-lxa11>
+In-Reply-To: <trinity-dd463594-7071-49e4-8e07-e6c885c189e3-1726660668932@3c-app-mailcom-lxa11>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: Mta6b5FqdCLrvsiUf1WwMHFr8SiJUh5L
-X-Proofpoint-ORIG-GUID: Mta6b5FqdCLrvsiUf1WwMHFr8SiJUh5L
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- clxscore=1015 phishscore=0 malwarescore=0 mlxlogscore=999 mlxscore=0
- impostorscore=0 adultscore=0 suspectscore=0 lowpriorityscore=0 spamscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2408220000 definitions=main-2409180140
 
-Currently rx and tx MCS map for 160 MHz under HE capabilities
-are not updating properly, when 160 MHz is configured with NSS
-lesser than max NSS support. Fix this by utilizing
-nss_ratio_enabled and nss_ratio_info fields sent by firmware
-in service ready event.
-
-However, if firmware advertises EXT NSS BW support in VHT caps
-as 1(1x2) and when nss_ratio_info indicates 1:1, reset the EXT
-NSS BW Support in VHT caps to 0 which indicates 1x1. This is
-to avoid incorrectly choosing 1:2 NSS ratio when using the
-default VHT caps advertised by firmware.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/mac.c | 33 ++++++++++++++++++++++-----
- 1 file changed, 27 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 7af421107f79..ff036922f925 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -2474,8 +2474,10 @@ static void ath12k_peer_assoc_h_he(struct ath12k *ar,
- 	arg->peer_nss = min(sta->deflink.rx_nss, max_nss);
- 
- 	if (arg->peer_phymode == MODE_11AX_HE160) {
--		tx_nss = ath12k_get_nss_160mhz(ar, max_nss);
-+		tx_nss = ath12k_get_nss_160mhz(ar, ar->num_tx_chains);
- 		rx_nss = min(arg->peer_nss, tx_nss);
-+
-+		arg->peer_nss = min(sta->deflink.rx_nss, ar->num_rx_chains);
- 		arg->peer_bw_rxnss_override = ATH12K_BW_NSS_MAP_ENABLE;
- 
- 		if (!rx_nss) {
-@@ -5617,6 +5619,12 @@ ath12k_create_vht_cap(struct ath12k *ar, u32 rate_cap_tx_chainmask,
- 	vht_cap.vht_mcs.rx_mcs_map = cpu_to_le16(rxmcs_map);
- 	vht_cap.vht_mcs.tx_mcs_map = cpu_to_le16(txmcs_map);
- 
-+	/* Check if the HW supports 1:1 NSS ratio and reset
-+	 * EXT NSS BW Support field to 0 to indicate 1:1 ratio
-+	 */
-+	if (ar->pdev->cap.nss_ratio_info == WMI_NSS_RATIO_1_NSS)
-+		vht_cap.cap &= ~IEEE80211_VHT_CAP_EXT_NSS_BW_MASK;
-+
- 	return vht_cap;
- }
- 
-@@ -5799,11 +5807,12 @@ static void ath12k_mac_set_hemcsmap(struct ath12k *ar,
- 				    struct ieee80211_sta_he_cap *he_cap)
- {
- 	struct ieee80211_he_mcs_nss_supp *mcs_nss = &he_cap->he_mcs_nss_supp;
--	u16 txmcs_map, rxmcs_map;
-+	u8 maxtxnss_160 = ath12k_get_nss_160mhz(ar, ar->num_tx_chains);
-+	u8 maxrxnss_160 = ath12k_get_nss_160mhz(ar, ar->num_rx_chains);
-+	u16 txmcs_map_160 = 0, rxmcs_map_160 = 0;
-+	u16 txmcs_map = 0, rxmcs_map = 0;
- 	u32 i;
- 
--	rxmcs_map = 0;
--	txmcs_map = 0;
- 	for (i = 0; i < 8; i++) {
- 		if (i < ar->num_tx_chains &&
- 		    (ar->cfg_tx_chainmask >> cap->tx_chain_mask_shift) & BIT(i))
-@@ -5816,12 +5825,24 @@ static void ath12k_mac_set_hemcsmap(struct ath12k *ar,
- 			rxmcs_map |= IEEE80211_HE_MCS_SUPPORT_0_11 << (i * 2);
- 		else
- 			rxmcs_map |= IEEE80211_HE_MCS_NOT_SUPPORTED << (i * 2);
-+
-+		if (i < maxtxnss_160 &&
-+		    (ar->cfg_tx_chainmask >> cap->tx_chain_mask_shift) & BIT(i))
-+			txmcs_map_160 |= IEEE80211_HE_MCS_SUPPORT_0_11 << (i * 2);
-+		else
-+			txmcs_map_160 |= IEEE80211_HE_MCS_NOT_SUPPORTED << (i * 2);
-+
-+		if (i < maxrxnss_160 &&
-+		    (ar->cfg_tx_chainmask >> cap->tx_chain_mask_shift) & BIT(i))
-+			rxmcs_map_160 |= IEEE80211_HE_MCS_SUPPORT_0_11 << (i * 2);
-+		else
-+			rxmcs_map_160 |= IEEE80211_HE_MCS_NOT_SUPPORTED << (i * 2);
- 	}
- 
- 	mcs_nss->rx_mcs_80 = cpu_to_le16(rxmcs_map & 0xffff);
- 	mcs_nss->tx_mcs_80 = cpu_to_le16(txmcs_map & 0xffff);
--	mcs_nss->rx_mcs_160 = cpu_to_le16(rxmcs_map & 0xffff);
--	mcs_nss->tx_mcs_160 = cpu_to_le16(txmcs_map & 0xffff);
-+	mcs_nss->rx_mcs_160 = cpu_to_le16(rxmcs_map_160 & 0xffff);
-+	mcs_nss->tx_mcs_160 = cpu_to_le16(txmcs_map_160 & 0xffff);
- }
- 
- static void ath12k_mac_copy_he_cap(struct ath12k *ar,
--- 
-2.34.1
-
+Q2VtIMOcTkFMIDxjZW11bmFsQGxpbnV4bWFpbC5vcmc+IHdyb3RlOg0KPiANCj4gWWVzLCBjaGVj
+a2VkIGFuZCB0aGVpciB2YWx1ZXMgYXJlIHNldCBhcyAiWSIgYW5kIHRoZXJlIGlzIG5vIG9wdGlv
+bnMgYWJvdXQgUENJIHBvd2VyIHNhdmUgaW4gdGhlIEJJT1MuDQo+IA0KDQpBZGRpdGlvbmFsbHkg
+dHJ5IHRvIHR1cm4gb2ZmIFdpRmkgcG93ZXIgc2F2ZSBieSAnaXcgd2xhbjAgc2V0IHBvd2VyX3Nh
+dmUgb2ZmJy4NCg0KVGhpcyBpcyB0aGUgbGFzdCB0cnkgSSBoYXZlLiANCg0KDQo=
 
