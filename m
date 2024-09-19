@@ -1,129 +1,147 @@
-Return-Path: <linux-wireless+bounces-13006-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13007-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3600E97C5AF
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 10:15:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E23297C5B6
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 10:17:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C131E2818F9
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 08:15:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 370FA1F2178B
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Sep 2024 08:17:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADDF41CABA;
-	Thu, 19 Sep 2024 08:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA448198A29;
+	Thu, 19 Sep 2024 08:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b="KXaYadC+"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="uPRdmkOK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9E218C938
-	for <linux-wireless@vger.kernel.org>; Thu, 19 Sep 2024 08:15:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3473B791
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Sep 2024 08:17:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726733731; cv=none; b=Hm4Ssjj6OrlzC/JD4kJ7sWMsDUvr+LjLak5vlICrTlK0Q3wSz06fGv9pzTv9Y6bY20h6rB5L+L+ufhWnXIwBNoesdM5zbtZbwRUpkjDinRWag8g5TVADf/zCm1IT6rQRur4SLNZRFHoheWWelZWIAZVr2DsxSUq5N+Ibgri3Hik=
+	t=1726733844; cv=none; b=YTYSFJ9ZF1k2ti5cVVqzlv1QDXW1QlZtHH26zckucOw77MfB862MiJpj7KpM8BKZrdia/FzRXV+EgBO0ipL/JSuVpGsM0EuVs1ZcZpvYXi66co7nrxBBIADCR3pO1B6/Nk+p/zvkvA1iBK9gDLS3qERwMVqf9QpjM0vaBWeNDyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726733731; c=relaxed/simple;
-	bh=TQWjZ+duUUwF2sZYOa+ZbGQQiqu6lWRYNoxHECrnZiE=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To; b=MPUcNpQ8PbbTT0hU6XM7oS3w/qfx4UjPvqwZ70WHFltoWpbnaCZ9QLTqiSFwLk3W7gF36SLJDAFDAVVgl1ewvJP1o0a+mjWI7K+RzI5JEE4oUMdtAxT0XyRBR9deFayJVwyq4HQytxLIscki1svALxFmqXUZoNEFQw9Hlj9nTA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr; spf=pass smtp.mailfrom=freebox.fr; dkim=pass (2048-bit key) header.d=freebox-fr.20230601.gappssmtp.com header.i=@freebox-fr.20230601.gappssmtp.com header.b=KXaYadC+; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=freebox.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=freebox.fr
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-42cc8782869so4751105e9.2
-        for <linux-wireless@vger.kernel.org>; Thu, 19 Sep 2024 01:15:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=freebox-fr.20230601.gappssmtp.com; s=20230601; t=1726733725; x=1727338525; darn=vger.kernel.org;
-        h=to:from:subject:message-id:date:content-transfer-encoding
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ufV1ksORYrGcczHqQg6kaw9jx/02+oC1nfRvJmBFo+4=;
-        b=KXaYadC+305TVOuY7c08yEcZho/EjUUmQUGCX2raqp3Q1kZs3uS2Piw+RSZKhjbx6n
-         uoJmHwXWvotAfJRwU/p+ql0mH0krvsl3p8FKnj18bOcuPtl/ktbzkiNxnilu6/qQ3QiA
-         aR3lffyMWiv/risj2gGc8JhbFlhxWPxYZUaGISysGJf5umU5DPkdgimD+DNnV859ZOto
-         BwYIHkQHMXhA0f+b5NnYnFxCBZK1jS09WyjcvzLtwMGHoqfsoakNSmTEb3kNYbC58etx
-         aftrrDi3yazs2drYOHWizjcb3/cBipCLL2gkNzmU8d8W2HidtBDn5s21AF85K9b115uR
-         MUFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726733725; x=1727338525;
-        h=to:from:subject:message-id:date:content-transfer-encoding
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ufV1ksORYrGcczHqQg6kaw9jx/02+oC1nfRvJmBFo+4=;
-        b=fdSaPrMF+LJinmTMJ0UwBvtrhQ5EHKtIlFz1vvoA1T7clvQap3+j5nGc6Y4/m1dUAl
-         cM1mCGpcwADdbk2XVxc1kLDz1ncgu5rEPA7mOUHPQ+fCw/smQSSZyYretKFBHZZWktZK
-         AnrBCA4CMejPwVk2j3PmsCvRXLxHkc6f9xJ61CUGc83i/JCKq8FttWHofJwyRKNqSMCl
-         O/cyh6ASODQ9I/FZV1xWhgT8Bv+X7lH9yZC/TwcgjIsWYJXErDsrXeHB98dnhpBh1nr1
-         jkZRTiVMtOpjRi4w2qjVOmWlc8xa//ETR2H0HjK3odrkNUrEGOT+e/IAK7VAjY2S+8o+
-         DgjA==
-X-Gm-Message-State: AOJu0YwnwA+MwK8gD+GwT7F7WAD/bOlda7Gn+A+ufSkq3GgAYhiL5fzt
-	ZilliG0jpxCCGnbPDdPLRBFu1qwEHgKQkzsJvp+AAlQbKOJhrUnlE88ueFETHvws54xt14kzh5n
-	5
-X-Google-Smtp-Source: AGHT+IHJjzt5P8r2Ru/qlHCGbfV17wvUAAousfLn5zrp4YFjWCqnHzS43NY4Vwph9NxcIjmzcUE+dg==
-X-Received: by 2002:a05:600c:19c8:b0:42c:b187:bde9 with SMTP id 5b1f17b1804b1-42cdb579f3cmr193940075e9.30.1726733725495;
-        Thu, 19 Sep 2024 01:15:25 -0700 (PDT)
-Received: from localhost ([2a01:e0a:0:2100:21ef:6d50:511c:bd79])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e6bc2c4b8sm63940375e9.0.2024.09.19.01.15.24
-        for <linux-wireless@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Sep 2024 01:15:25 -0700 (PDT)
+	s=arc-20240116; t=1726733844; c=relaxed/simple;
+	bh=L1s2sDAKqzhuVkCCvBXeJ75czH+Un1V0SEQLFILgFGA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dr8S9RVKdMcEPcwIBlwrWtK0/496+gMO0h/RFlCWSGPGOz7VsP5xAqG0uz2tl56k3jgyS+zMB+RuuH9OKupw63hvg3u4ZXVzdagQhI7ntxkdMGdWiQnYw3ojm5rCMQlF9E6txfcTJcXYUB3mnULojA1dKiQxowLfE4AuwansMFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=uPRdmkOK; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 94f4416e765f11efb66947d174671e26-20240919
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=a6TusFy2ir91gPNlwrF+20GciCGq3HpbhHGPX9zl1lg=;
+	b=uPRdmkOKdYGlQQceGVXt70X5GG5o/kQIVJ+5KAOXBJ3ELed9K7CumuPO8u0qmd6JEmJx0wVCWf/JmUO6EfHS3eo5GVnGqyr+IG+1QEJ/qk06b9Sge5YCFLUkS8iOHzp4jKpOfZlybT4lUW/jQiO0R/7c/VtLKZdTz8EGIVqkOJc=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.41,REQID:74865e71-fd5b-44cf-81b3-d143ce09d412,IP:0,U
+	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-25
+X-CID-META: VersionHash:6dc6a47,CLOUDID:cc566fd0-7921-4900-88a1-3aef019a55ce,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
+X-UUID: 94f4416e765f11efb66947d174671e26-20240919
+Received: from mtkmbs09n1.mediatek.inc [(172.21.101.35)] by mailgw01.mediatek.com
+	(envelope-from <mingyen.hsieh@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1396106471; Thu, 19 Sep 2024 16:17:16 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Thu, 19 Sep 2024 16:17:15 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Thu, 19 Sep 2024 16:17:15 +0800
+From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
+	<Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
+	<Michael.Lo@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+	<km.lin@mediatek.com>, <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
+	<posh.sun@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
+	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>, Hao Zhang
+	<hao.zhang.mediatek@gmail.com>, "allan . wang" <allan.wang@mediatek.com>,
+	Ming Yen Hsieh <MingYen.Hsieh@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt792x: add P2P_DEVICE support
+Date: Thu, 19 Sep 2024 16:17:13 +0800
+Message-ID: <20240919081713.23787-1-mingyen.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 19 Sep 2024 10:15:24 +0200
-Message-Id: <D4A40Q44OAY2.W3SIF6UEPBUN@freebox.fr>
-Subject: Missing wiphy lock in ieee80211_color_collision_detection_work
-From: "Nicolas Escande" <nescande@freebox.fr>
-To: <linux-wireless@vger.kernel.org>
-X-Mailer: aerc 0.18.2-0-ge037c095a049
+MIME-Version: 1.0
+Content-Type: text/plain
 
-Hi guys,
+From: Hao Zhang <hao.zhang.mediatek@gmail.com>
 
-Running a pretty hacked up kernel under lockdep, I've had a few splats like=
- this
+Regist the NL80211_IFTYPE_P2P_DEVICE to support p2p device
+for mt792x chips
 
-	[   75.453180] Call trace:
-	[   75.455595]  cfg80211_bss_color_notify+0x220/0x260
-	[   75.460341]  ieee80211_color_collision_detection_work+0x4c/0x5c
-	[   75.466205]  process_one_work+0x434/0x6ec
-	[   75.470169]  worker_thread+0x9c/0x624
-	[   75.473794]  kthread+0x1a4/0x1ac
-	[   75.476987]  ret_from_fork+0x10/0x20
+Signed-off-by: Hao Zhang <hao.zhang.mediatek@gmail.com>
+Signed-off-by: allan.wang <allan.wang@mediatek.com>
+Signed-off-by: Ming Yen Hsieh <MingYen.Hsieh@mediatek.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c | 3 +++
+ drivers/net/wireless/mediatek/mt76/mt792x_core.c     | 9 +++++++--
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-Which shows we are calling cfg80211_obss_color_collision_notify and thus
-cfg80211_bss_color_notify from ieee80211_color_collision_detection_work wit=
-hout
-holding the wiphy's mtx.
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+index 864246f94088..77f3e92d581a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
+@@ -1202,6 +1202,9 @@ int mt76_connac_mcu_uni_add_dev(struct mt76_phy *phy,
+ 	case NL80211_IFTYPE_STATION:
+ 		basic_req.basic.conn_type = cpu_to_le32(CONNECTION_INFRA_STA);
+ 		break;
++	case NL80211_IFTYPE_P2P_DEVICE:
++		basic_req.basic.conn_type = cpu_to_le32(CONNECTION_P2P_GO);
++		break;
+ 	case NL80211_IFTYPE_ADHOC:
+ 		basic_req.basic.conn_type = cpu_to_le32(CONNECTION_IBSS_ADHOC);
+ 		break;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+index 78fe37c2e07b..042aa8d1b6e7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
++++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
+@@ -38,6 +38,10 @@ static const struct ieee80211_iface_limit if_limits_chanctx[] = {
+ 		.max = 1,
+ 		.types = BIT(NL80211_IFTYPE_AP) |
+ 			 BIT(NL80211_IFTYPE_P2P_GO)
++	},
++	{
++		.max = 1,
++		.types = BIT(NL80211_IFTYPE_P2P_DEVICE)
+ 	}
+ };
+ 
+@@ -45,7 +49,7 @@ static const struct ieee80211_iface_combination if_comb_chanctx[] = {
+ 	{
+ 		.limits = if_limits_chanctx,
+ 		.n_limits = ARRAY_SIZE(if_limits_chanctx),
+-		.max_interfaces = 2,
++		.max_interfaces = 3,
+ 		.num_different_channels = 2,
+ 		.beacon_int_infra_match = false,
+ 	}
+@@ -614,7 +618,8 @@ int mt792x_init_wiphy(struct ieee80211_hw *hw)
+ 	wiphy->interface_modes = BIT(NL80211_IFTYPE_STATION) |
+ 				 BIT(NL80211_IFTYPE_AP) |
+ 				 BIT(NL80211_IFTYPE_P2P_CLIENT) |
+-				 BIT(NL80211_IFTYPE_P2P_GO);
++				 BIT(NL80211_IFTYPE_P2P_GO) |
++				 BIT(NL80211_IFTYPE_P2P_DEVICE);
+ 	wiphy->max_remain_on_channel_duration = 5000;
+ 	wiphy->max_scan_ie_len = MT76_CONNAC_SCAN_IE_LEN;
+ 	wiphy->max_scan_ssids = 4;
+-- 
+2.45.2
 
-It seems that we should either explicitely lock the phy using something lik=
-e
-
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 847304a3a29a..481e1550cb21 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -4833,9 +4833,12 @@ void ieee80211_color_collision_detection_work(struct=
- work_struct *work)
- 		container_of(delayed_work, struct ieee80211_link_data,
- 			     color_collision_detect_work);
- 	struct ieee80211_sub_if_data *sdata =3D link->sdata;
-+	struct ieee80211_local *local =3D sdata->local;
-=20
-+	wiphy_lock(local->hw.wiphy);
- 	cfg80211_obss_color_collision_notify(sdata->dev, link->color_bitmap,
- 					     link->link_id);
-+	wiphy_unlock(local->hw.wiphy);
- }
-=20
- void ieee80211_color_change_finish(struct ieee80211_vif *vif, u8 link_id)
-
-Or switch to using the wiphy_work_queue infrastructure.
-
-Did I miss something ? Which one should we do ? I'm not sure of all the
-implications of switching to the wiphy work queue and why it did not get
-converted like the color_change_finalize_work stuff ?
 
