@@ -1,185 +1,224 @@
-Return-Path: <linux-wireless+bounces-13058-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13060-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FD3897D637
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2024 15:36:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 140E397D68B
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2024 16:01:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 94A88B225C3
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2024 13:36:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7D18285356
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2024 14:01:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424175464B;
-	Fri, 20 Sep 2024 13:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D3314264C;
+	Fri, 20 Sep 2024 14:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="wBM87z7K";
-	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="DPCoDpoX"
+	dkim=pass (1024-bit key) header.d=carrierzone.com header.i=@carrierzone.com header.b="vYsLL0oi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from e3i110.smtp2go.com (e3i110.smtp2go.com [158.120.84.110])
+Received: from mail36c25.carrierzone.com (mail36c25.carrierzone.com [64.29.147.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F50917A596
-	for <linux-wireless@vger.kernel.org>; Fri, 20 Sep 2024 13:36:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.84.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EEE1EA73
+	for <linux-wireless@vger.kernel.org>; Fri, 20 Sep 2024 14:01:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.29.147.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726839402; cv=none; b=RKXUSsqlP6sAdmIx2g8qAZWQqdnyxphiTWdyQMCcMvh4LiJTvxVztOgkrluaeM2C3x3OKx2aFAlsV4Xi3lyMWgIASKpHYsMtGtqWSesxvl+nOM1CD1SlY2aJtAme8ftEhfNYb8FSH2MGplX3iUgKbKybneGfjohrMQTnqn9Vw90=
+	t=1726840873; cv=none; b=Ms6b4wE+zp0M5l8vCDwb7//E6cKRDGtnt8DbBtaUzHcisx0R0Uu94a8ERU3KSsK6H9V72DbDGMoBdL40qPSKkWHCm9c++PnJRTrs/3fp3SyiKYIn4rUIwcKGwPg7ZwvtKt7NGSt+0f/c+N2PyP3ElMhB7Juu2vDXHdH8P2M0tmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726839402; c=relaxed/simple;
-	bh=zKapn1MEfXbLZKb+MKlyiE5vYu6r7GU7S+egIN23VgA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GfB74N3fU0gG+3FJ6lSLRSayZIDm5K9DacICZqBZqohLodEL6lY0UmPOtbIWPd+Jtq7a5k6Zt48JD+sLn6TuNVJhszDaPrvN9F363V767FYC/iVVa/T+Yx1Jr6ekSt3Y0YjiWHBTfJvmS8t8XPDh49UExOB/zVnKk4MMS/nZXSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=pass (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=wBM87z7K; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=DPCoDpoX; arc=none smtp.client-ip=158.120.84.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpservice.net;
- i=@smtpservice.net; q=dns/txt; s=a1-4; t=1726839396; h=feedback-id :
- x-smtpcorp-track : date : message-id : to : subject : from : reply-to
- : sender : list-unsubscribe : list-unsubscribe-post;
- bh=a0ozz8G1NbhVZuHy++9/DjMcRDPVnTTdtS6BEE4V8Lw=;
- b=wBM87z7KsnKq/jbC9qQLjNEcpUu8PFmiUhJHjx5nSJyMEbieJSCquQ4vrCzVn9eHlblHC
- gQxNqulSLI9sJrx4MIOwyz8qevjet+nP5hrG1bfMLA13aTN1uG9qCyJEvsO/gJpeMPSNfNS
- esaODoHIGaL0C/vKQeIXbFpifivXSz3s+VdejvIZGh12BE/u7ASC8SYjnB07ENflAhyl3ZY
- aopx99R9yJegLhALqZ7op1SmUZWbSB8oAE3faOwIMTlqPOhMdJg5MSCJ5Yg2a0pJwlvQWm0
- 9dVdiugOUGW/ZMxWzBl/15tf9cJXu1CQ1Zzq+b0MoDyNIxVatB2StN+2ddqA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
- i=@triplefau.lt; q=dns/txt; s=s510616; t=1726839396; h=from : subject
- : to : message-id : date;
- bh=a0ozz8G1NbhVZuHy++9/DjMcRDPVnTTdtS6BEE4V8Lw=;
- b=DPCoDpoX0AVC3CI0icNJ6A5LpqEKMqtS1pMFrsu/VoOdwbaqFHLIJESNJ5eplk30lvNsd
- WEaSO97z3XHVZalHtzr6MQjCjqdG/mRfjkgZqaIO+bPduLqa4wizjqnHBkPXpNxTcwTt1Fd
- 6TFXysMO8ka5xYHsP07iMRkBYVxLUVcfpYrmJbV88IXoPsNcc8xl6kHu8+3o1ya4T5/MU59
- RfLGp39GHCXmiBFgpEha0ZYiROoqffF7aiXKyqomNC+KtvEViLETBsD9p3YiKDWrVtcBSkd
- NEyzX5OsRVwQhAkDqwpKd4nWhgMZwXzH4rDP9AVSkuN7r0PmarzMtelml6yQ==
-Received: from [10.12.239.196] (helo=localhost)
-	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97.1-S2G)
-	(envelope-from <repk@triplefau.lt>)
-	id 1srdoE-FnQW0hPpZY5-l0Kh;
-	Fri, 20 Sep 2024 13:36:30 +0000
-Date: Fri, 20 Sep 2024 15:37:46 +0200
-From: Remi Pommarel <repk@triplefau.lt>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Nicolas Cavallari <Nicolas.Cavallari@green-communications.fr>,
-	Nicolas Escande <nescande@freebox.fr>,
-	linux-wireless@vger.kernel.org
-Subject: Re: Missing wiphy lock in ieee80211_color_collision_detection_work
-Message-ID: <Zu16qrtsLCfZT9Li@pilgrim>
-References: <D4A40Q44OAY2.W3SIF6UEPBUN@freebox.fr>
- <b9d5550c-8ac1-41d7-9abb-caa11f484064@green-communications.fr>
- <c48876507ec971c9195e468e6037cc251dcf2218.camel@sipsolutions.net>
- <Zu0yRl4iyfspa8AV@pilgrim>
- <Zu01VbjzUFYYjGJi@pilgrim>
- <f00e76b9425b10dbfe347f8d107bf6a044e81069.camel@sipsolutions.net>
- <Zu1ldqE5zneiHOeK@pilgrim>
- <Zu1mMZNxTIsYNH20@pilgrim>
- <13e473715fa721e0055464c1b5c78d47f969d74e.camel@sipsolutions.net>
+	s=arc-20240116; t=1726840873; c=relaxed/simple;
+	bh=VNyUJu6k3VnnIvnt9gW/+k4KpjjWXajxFGy2I2TqVKo=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CrgeRdMD4SW663SiFRO6aXhu/+hriqLhWJbuxvv/jTjpqUYVSGo62w12W4nH4TOTbZ5ZYgtUupDceLQ55uHbX30SY6A0+OnvujKOiqF4IQM62pLMbtqmkpySYYxZXKI3oJhBAt/GNl0vZcg9vn7/cUO5dCNNlxG33rvTQGFzziI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hindutool.com; spf=none smtp.mailfrom=hindutool.com; dkim=pass (1024-bit key) header.d=carrierzone.com header.i=@carrierzone.com header.b=vYsLL0oi; arc=none smtp.client-ip=64.29.147.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hindutool.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=hindutool.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=carrierzone.com;
+	s=mailmia; t=1726839696;
+	bh=VNyUJu6k3VnnIvnt9gW/+k4KpjjWXajxFGy2I2TqVKo=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References:Reply-to:From;
+	b=vYsLL0oijl0/8Bj3XkA8D0RTDnlv/SeIOCxlG15WR4omO+mZFJFr9cNN2fSwoyox3
+	 Tr1JLnMtphDXazXIhB35wDRjeNVX0SfcW8LWxGwsaYXN+AOtUbyMoR57S/UjcxHfpN
+	 /6XOq52okYmkjpAm0Wu4FGznrT3bHIVAk5HRQP9w=
+Feedback-ID:pgupta@hindutoo
+Received: from mail36c25.carrierzone.com (localhost [127.0.0.1])
+	by mail36c25.carrierzone.com (8.14.9/8.13.1) with ESMTP id 48KDfVhM094486
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Fri, 20 Sep 2024 13:41:31 +0000
+Received: (from webmail@localhost)
+	by mail36c25.carrierzone.com (8.14.9/8.12.2/Submit) id 48KDfUdJ094453;
+	Fri, 20 Sep 2024 09:41:30 -0400
+From: "pgupta@hindutool.com" <pgupta@hindutool.com>
+To: dknueppel@online.de, quic_jjohnson@quicinc.com,
+        linux-wireless@vger.kernel.org, ath12k@lists.infradead.org
+CC: 
+Subject: Re: ath12k - HTT timeout error with NCM86
+Date: Fri, 20 Sep 2024 09:41:30 -0400
+Message-ID: <1726839690.xnskyi9sg84wgsw4@mailapp03.register.com>
+In-Reply-To: <1920f9bd1b8.285f.40f506ff0c43803c7e4cd5785e25da93@hindutool.com>
+References: <14e17e9a-638b-4bfe-8a2a-99b524a20acf@home.xx>
+ <1MvJjz-1s0CoP3EEz-00rhmL@mrelayeu.kundenserver.de>
+ <7488ed13-82dd-4b41-97c7-5692cacfa631@quicinc.com>
+ <6d3f1f33-2a9a-4b62-a0a0-02e65bd1b461@quicinc.com>
+ <eb1c8576-bf2f-4ec0-8651-62e97446e940@home.xx>
+ <2271e7e8-2e25-42e5-a162-e79f65ee8798@home.xx>
+ <1N4h7p-1rrEib2AJr-01163u@mrelayeu.kundenserver.de>
+ <1920f9bd1b8.285f.40f506ff0c43803c7e4cd5785e25da93@hindutool.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <13e473715fa721e0055464c1b5c78d47f969d74e.camel@sipsolutions.net>
-X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
-Feedback-ID: 510616m:510616apGKSTK:510616sAf72yfO-O
-X-smtpcorp-track: HhRlOpGn_HI1.7eo_1Y5fbsIU.zUtwTQ-FJVd
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Image-Url: https://mailapp03.register.com/api/storage/pgupta@hindutool.com/profile/picture
+Reply-to: pgupta@hindutool.com
+X-VADE-SPAMSTATE: clean
+X-VADE-SPAMSCORE: 0
+X-VADE-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeeftddrudelfedgieekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecujffquffvqffrkfetpdfqfgfvpdfgpfggqdevvdehnecuuegrihhlohhuthemuceftddunecunecujfgurhephffvvefufffkjghfgggtgfhrsehtqhertddttdejnecuhfhrohhmpedfphhguhhpthgrsehhihhnughuthhoohhlrdgtohhmfdcuoehpghhuphhtrgeshhhinhguuhhtohholhdrtghomheqnecuggftrfgrthhtvghrnhepveejkedvieehtedvteejleefueffffeviedvheeiteeluddugfeuheffhfetveegnecuffhomhgrihhnpeifihdqtggrthdrrhhupdhkvghrnhgvlhdrohhrghenucfkphepuddvjedrtddrtddrudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhhvghlohepmhgrihhlfeeitgdvhedrtggrrhhrihgvrhiiohhnvgdrtghomhdpmhgrihhlfhhrohhmpehpghhuphhtrgeshhhinhguuhhtohholhdrtghomhdpnhgspghrtghpthhtohepgedprhgtphhtthhopegrthhhuddvkheslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehlihhnuhigqdifihhrvghlvghsshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehquhhitggpjhhjohhhnhhsohhnsehquhhitghinhgtrdgtohhmpdhrtghpthhtohepughknhhuvghpphgvlhesohhnlhhinhg!
+ vrdguvg
+X-Rspamd-Status: No, score=0.90
+X-Rspamd-Result: default: False [0.90 / 6.00];
+	FROM_DN_EQ_ADDR(1.00)[];
+	MIME_GOOD(-0.10)[text/plain];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_ONE(0.00)[1];
+	MIME_TRACE(0.00)[0:+];
+	FROM_EQ_ENVFROM(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	HAS_REPLYTO(0.00)[pgupta@hindutool.com];
+	TO_DN_NONE(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4]
+X-Origin-Country: Unknown
 
-On Fri, Sep 20, 2024 at 02:12:23PM +0200, Johannes Berg wrote:
-> On Fri, 2024-09-20 at 14:10 +0200, Remi Pommarel wrote:
-> > On Fri, Sep 20, 2024 at 02:07:19PM +0200, Remi Pommarel wrote:
-> > > On Fri, Sep 20, 2024 at 12:00:08PM +0200, Johannes Berg wrote:
-> > > > On Fri, 2024-09-20 at 10:41 +0200, Remi Pommarel wrote:
-> > > > > > I think using timer_pending(&link->color_collision_detect_work->timer)
-> > > > > > to replace delayed_work_pending(), even if the semantic is a bit
-> > > > > > different, would be ok to fulfill the rate limiting purpose.
-> > > > 
-> > > > I think you're right. We could as well check list_empty() or so, but it
-> > > > wouldn't make a big difference. As you say:
-> > > > 
-> > > > > > Having the
-> > > > > > same delayed_work_pending() semantics on wiphy work queue would require
-> > > > > > to take wiphy lock
-> > > > 
-> > > > To really have it known _precisely_, that's true.
-> > > > 
-> > > > > >  which seem a bit superfluous here.
-> > > > 
-> > > > It's actually simply also not possible - if we could sleep in
-> > > > ieee80211_obss_color_collision_notify() and take the wiphy mutex, we'd
-> > > > probably have done this completely differently :)
-> > > > 
-> > > > And a hypothetical wiphy_delayed_work_pending() API should therefore not
-> > > > be required to be called with the wiphy mutex held.
-> > > > 
-> > > > I think that perhaps we should add such a trivial inline instead of
-> > > > open-coding the timer_pending() check, but I'm not sure whether or not
-> > > > it should also check the list (i.e. check if timer has expired, but work
-> > > > hasn't started yet): on the one hand it seems more appropriate, and if
-> > > > actually holding the wiphy mutex it would in fact be completely correct,
-> > > > on the other hand maybe it encourages being sloppily thinking the return
-> > > > value is always perfect?
-> > > > 
-> > > > Right now I'd tend to have the check and document that it's only
-> > > > guaranteed when under the wiphy mutex.
-> > > 
-> > > I had this exact train of thought and was replying that I did agree on
-> > > that, and then I checked the other *_pending semantics for which I tend
-> > > to forget the details.
-> 
-> Haha, yes, no kidding.
-> 
-> > > IIUC timer_pending() and work_pending() can both
-> > > return false if callback is still running (or even not yet started).
-> > > Thus the hypothetical wiphy_work_pending() semantics could allow to
-> > > implement it using timer_pending().
-> > > 
-> > > Adding a list_empty() check while making it more "precise" does not make
-> > > it "perfect" (even if there is no clear notion of what perfection should
-> > > be here) even with wiphy lock held. Indeed if wiphy_work_pending() is
-> > > called precisely after delayed work timer has cleared its pending state
-> > > but before the callback (i.e wiphy_delayed_work_timer()) has added the
-> > > work in the list both !timer_pending() and list_empty(work->entry) would
-> > > be true. So there is a small window where wiphy_work_pending() wouldn't
-> > > be more precise than just checking timer_pending() as show below:
-> > > 
-> > >       CPU0                               CPU1
-> > >  expire_timers
-> > >    detach_timer
-> > >                                     wiphy_work_pending() -> return false
-> > >    timer->function
-> > >      wiphy_work_queue
-> > >        list_add_tail()
-> > >                                     wiphy_work_pending() -> return false
-> > 
-> > I meant wiphy_work_pending() -> return true here ^.
-> > 
-> Good point! The second call could even be before the list_add_tail and
-> still return false, so yeah, wiphy lock doesn't do anything.
-> 
-> But I guess we can live with both of these too, given sufficient
-> documentation :)
+I purchased my hw modules (2.4, 5, 6 GHz) from compex. They were not recogn=
+ized on my std Ubuntu 24.04 installation. According to compex the hw bit ne=
+eds to either be hard coded into the module or a software patch applied. Be=
+cause I am using all three modules in one machine (Dell R730xd) and using P=
+CIE to M.2 riser cables they had to hardcode the identification bit and I h=
+ad to send the modules back. I would ask your hardware manufacturer. I was =
+told that the encoding will vary depending on the use of the module.  You a=
+re right in that Wifi 7 has proved to be exceedingly difficult compared to =
+the wifi 5 router I built. I have almost given up myself but continue to fi=
+ght the good fight.
 
-Also, sorry for being bothersome, wiphy_delayed_work_queue() is not a
-genuine equivalent of queue_delayed_work() as the latter does not
-requeue work if already scheduled while the former does so effectively
-changing the delayed work deadline (very mod_delayed_work() alike).
+Cheers
 
-If we wanted to fix that, ieee80211_obss_color_collision_notify() would
-simply use wiphy_delayed_work_queue() directly. But other calls would
-have to be rechecked and switched to use wiphy_delayed_work_mod() if
-needed be.
+Prashant gupta
 
-> 
-> Agree also with Nicolas though that we could just ratelimit this
-> differently too, this was just a convenient way of achieving it with the
-> existing infrastructure.
 
-Yes that would work also but still need to convert into wiphy work the
-color collision work to avoid deadlock.
 
--- 
-Remi
+On September 20, 2024 6:17:01 PM Dieter Knueppel <dknueppel@online.de> wrot=
+e:
+=C2=A0
+I'm wondering, is this the correct mailing list for my questions?
+=C2=A0
+I know you are all working on best effort basis, but at least my
+questions related to supported HW shouldn't be too complicated to answer.
+=C2=A0
+The information I found so far are almost not existent, stone old,
+misleading or even proofed to be wrong (e.g.
+https://wikidevi.wi-cat.ru/Ath12k, 17cb:1107 equals HERALD-BE as well,
+not sure who maintains this page).
+=C2=A0
+I'm almost at the point moving back to my legacy HW.
+=C2=A0
+Anyway, I would still be very happy to receive any feedback :-)
+=C2=A0
+Thanks a lot,
+=C2=A0
+Dieter
+=C2=A0
+=C2=A0
+P.S.: Due to my background in mobile networks radio interface, i would
+have a good starting point to contribute myself. Unfortunately I'm
+involved in plenty of other things and don't have the time for another
+job :-(.
+=C2=A0
+=C2=A0
+=C2=A0
+=C2=A0
+=C2=A0
+Am 19.09.2024 um 11:41 schrieb Dieter Knueppel:
+Minor update:
+=C2=A0
+I just figured out, that even the physical machine with std. Ubuntu
+24.04 server (before the VM gets started and PCI device vanishes on
+PM) reports: "Unknown hardware version found for WCN7850: 0xf"
+=C2=A0
+Hence the earlier question, whether "MSI HERALD-BE" or "Gigabyte
+GC-WIFI7" is supported, seems still to be valid.
+=C2=A0
+=C2=A0
+Am 18.09.2024 um 19:54 schrieb Dieter Knueppel:
+Hi Jeff,
+=C2=A0
+thanks a lot for your update on ath11/ath12 related vfio support.
+=C2=A0
+That's actually bad news!
+=C2=A0
+Do you know whether vfio support vanished per accident or intention?
+=C2=A0
+I.e. I'm wondering on why the ath11 patch haven't made it into mainline?
+=C2=A0
+Assume there are no other 802.11be Chipsets supported by Linux, which
+can be used as AP within a VM?
+=C2=A0
+Kind regards,
+=C2=A0
+Dieter
+=C2=A0
+=C2=A0
+Am 18.09.2024 um 18:13 schrieb Jeff Johnson:
+Resend since I had a typo in the ath12k e-mail list
+=C2=A0
+On 9/18/2024 9:05 AM, Jeff Johnson wrote:
+On 9/18/2024 7:40 AM, Dieter Knueppel wrote:
+Dear developer team,
+=C2=A0
+I have to admit, the earlier post "HTT timeout error with NCM86"
+is my
+fault, sorry for causing confusion.
+=C2=A0
+Due to earlier tests with legacy cards, the PCIe slot was still
+forced
+to Gen2 :-(
+=C2=A0
+Putting it back to <auto>, with "MSI HERALD-BE", similar to "Gigabyte
+WC-WIFI7" i
+=C2=A0
+consistently get: "Unknown hardware version found for WCN7850: 0xf"
+=C2=A0
+Which nails down to the question whether any of these adapter is
+already
+supported?
+=C2=A0
+The M.2 NCM865 card as such seems to be supported.
+=C2=A0
+I'm wondering about the difference, as there seems to be no
+additional
+logic compiled
+=C2=A0
+on one of the two PCIe boards, just bit of glue logic.
+For better support on ath12k driver issues please include the
+ath12k driver
+list (I've added it to this reply).
+=C2=A0
+In your original e-mail you said:
+I'm trying to get "MSI HERALD-BE NCM865" up and running within a kvm
+The ath12k driver does not support running in a VM. Even prior
+ath11k-based
+hardware doesn't support it.
+=C2=A0
+For ath11k there are some manual steps that have made it work, so
+if you are
+adventurous you can try doing something similar with ath12k. Refer to:
+https://lore.kernel.org/all/adcb785e-4dc7-4c4a-b341-d53b72e13467@gmail.com/
+=C2=A0
+=C2=A0
+/jeff
+=C2=A0
+=C2=A0
 
