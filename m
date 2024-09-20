@@ -1,146 +1,222 @@
-Return-Path: <linux-wireless+bounces-13054-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13055-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A2C97D5A4
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2024 14:45:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A1FF97D5D0
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2024 14:51:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FAA1280CA7
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2024 12:45:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5774B2364A
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2024 12:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F23E21514DA;
-	Fri, 20 Sep 2024 12:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F49416A955;
+	Fri, 20 Sep 2024 12:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BEwDveRM"
+	dkim=pass (2048-bit key) header.d=online.de header.i=dknueppel@online.de header.b="CgPFfZe/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430F014F9D9
-	for <linux-wireless@vger.kernel.org>; Fri, 20 Sep 2024 12:44:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5957F16F0F0
+	for <linux-wireless@vger.kernel.org>; Fri, 20 Sep 2024 12:50:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726836296; cv=none; b=QWgCyKFo8KS+Sl0/IhWDcJQD4RmZ/1+g35N/YW/3aL8iZLfQwhfw0lNEoE59MFYkO4pjkP0iQJ3164HYD28kOokwKnEaACxbeJgB+Q1xG532HrlJKLqkGYKAvE/PZOjbh17OPhfAwAoB8xzvCcIagE/a99RPm0FseO+ZQ+lZqao=
+	t=1726836662; cv=none; b=gQlydFnLXEB1dXUXI242GHaHPWWT+gczMBEsTIvBoLJu2C1fsXQ787skFAfCPB3+WLEoscgsHk6I4Sfyo/lH8GPxHq6VGx7ZoOVy4vqshR7ohtko+UedcZUJh/gDZNUAi1Rce8pxht5vM5jbJf8I089T0z4AlXp4rZjLf7CRsMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726836296; c=relaxed/simple;
-	bh=cl5HxYihvTHMnRR1Qajd6WQjEFrLPxp6/Koau8koHHk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=jSniK4s7cgTIcM5OMrOh7o4zjLoO4Buv0l3WA3kl4xDz/5pfaB0MKcPjz2vnssbx6lL4bJ6qT/kFShFn6Vl4D7WNa6SSjFgFH9foSmYrVhi7O7uPTrB7aSoJ9e9lBOnHMYVcKKB7K3jgvCc7DDIcJLtVf3twQ3EoFaxfWiE9QYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BEwDveRM; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-42cba6cdf32so16815285e9.1
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Sep 2024 05:44:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726836293; x=1727441093; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=dnfEX5CV40feFY5JpnkcEd582X0LveuhJZSl5Y+eYf8=;
-        b=BEwDveRM4zjga0BSLVbzlYvYQGqebaj3Pz/SBXCjhqvPq+Z0ts5zMl7OFj1Kc4L82x
-         2JzIcxrTDYuzBcBIkaPCug/Jwzvam2RUUazQwPbUsEedYWr009LD2o+bRdpg1i4GaziI
-         83Nh1+r0zuuEGANE9vlsbb7KN9oNHGEkns1nbkX2+6ckBb0R2Ig/KmmxlTeD2FR9M2CC
-         BPGL9SXUYHTw0hV5WYB0JqqbSx36gfIzHOlZsYcQ9k4mqtho5zbJCD5Sloy3wW1+0euY
-         pG8DgWXn9k5hEdGfH5T8yg5mryXfrzQ/JB/YT9iRfcfQTzTJLuLeMFsOu1B0Y93FnI76
-         f0Mw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726836293; x=1727441093;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dnfEX5CV40feFY5JpnkcEd582X0LveuhJZSl5Y+eYf8=;
-        b=ozp+icBpzocpeap4kJRPhhmQY628cirF6YmbYcval9RoWwJv4aZrv0BGkKYURSfW2F
-         SZ4IhqaB7uMuKWrkyuPDBCV9IOtKZ4TkJM3vGu6hVHXLWXGLupHMaagH21Id/H23c4W0
-         uE+lE9ZRqQbTTGGMJvozKASynbZgsi4xLDbd6Fgy9tJQ/zBe18oOAqa5gBUhtVh2N++E
-         gasHYwbADm7H9a3F5O+7RKcWETMTOy/MbgYUoY0jhdT1P976Id/yGESjMY+fbQNW0U2/
-         D80K1GMYz6PNj/tCkUnvCobuX/+/2HcKYyW958/LtlR+pWQAAk8CBMbDxM5nGMP5q721
-         4Zyg==
-X-Forwarded-Encrypted: i=1; AJvYcCWteWpARpMhdj/4Oy46agme33cu7jIrU7nM/29kpZ1oJrwlRU+jinzhQnCLg7vFjot3VbV2flaZc07EF2PXsA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqIw0jt+zVBFxMl3KOFRD6of2tpUu9KpOlidFI29fIfGQzASAK
-	WXRNwIGwKJEnLliYGsVtrknNgivOCViPgut9E0eP+WE2wSFvbj+7
-X-Google-Smtp-Source: AGHT+IGW7mhydODS76OjipDx2sunxFo0s1+ipWmoPYekJoTzjxs4MSyEdliGl7w+bBSUgNnS1Qsksg==
-X-Received: by 2002:a05:6000:18ad:b0:371:9121:5642 with SMTP id ffacd0b85a97d-37a422bf182mr1953981f8f.30.1726836293267;
-        Fri, 20 Sep 2024 05:44:53 -0700 (PDT)
-Received: from [192.168.1.50] ([79.119.240.193])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e7543b0f9sm48821855e9.14.2024.09.20.05.44.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Sep 2024 05:44:52 -0700 (PDT)
-Message-ID: <052fd3f6-8c0d-4195-9f2a-cf3c87fcabe3@gmail.com>
-Date: Fri, 20 Sep 2024 15:44:50 +0300
+	s=arc-20240116; t=1726836662; c=relaxed/simple;
+	bh=Ita0D8YFfERtlRUbb5e1tlbXbt8U+n75gBzvQtgEr8M=;
+	h=Date:MIME-Version:Subject:From:To:References:In-Reply-To:
+	 Content-Type:Message-ID; b=N3jItVxn54tEJgoARcUswR13APqx1J5WQA6UhIuF/jamqDZNUV128XpPDl1G+YdDKlQ+oRq3VxCv8EGQW4PAxxdFa9I6GflH65iKaIjoFiwKFkefEMl43RU7+nzqKmtYe0+akcArSqUyqv5OU2CJ/GiNuL1KPgshbinzy9IrP1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=online.de; spf=pass smtp.mailfrom=online.de; dkim=pass (2048-bit key) header.d=online.de header.i=dknueppel@online.de header.b=CgPFfZe/; arc=none smtp.client-ip=217.72.192.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=online.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=online.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=online.de;
+	s=s42582890; t=1726836657; x=1727441457; i=dknueppel@online.de;
+	bh=Ita0D8YFfERtlRUbb5e1tlbXbt8U+n75gBzvQtgEr8M=;
+	h=X-UI-Sender-Class:Date:MIME-Version:Subject:From:To:References:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-ID:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=CgPFfZe/UEARQA0EYL1oxe6Qqfcn6QW88zPCHr7au5dvf52KGFnufCWsjj3482C/
+	 3YKDEt3kBrEcPRsJFjmD6jHeDb3WabfjVKoPos5vDiuPpokQBbH1Z8MR0+aI+Vqxd
+	 QIuTae7UQDsrMJGkFT2glz4MKdQ9ifByvjYDCJKRfmxK7KWJ9imFzRTyxwhMsDGVZ
+	 co2jTc5LZQDkC1SoUx4g6XkSv86mS0egmXOnYLZaZMXOJlCAGtDCKXVFGPBmNLkIy
+	 VLQbQnrPCag7RBHmDHxQ0Ydj1GBvCmYuxRQ/ybHNBPhOZjS1N76GEEdrvW18Giklc
+	 nW6BzUBXqZngjdp+hA==
+X-UI-Sender-Class: 6003b46c-3fee-4677-9b8b-2b628d989298
+Received: from xXx ([87.122.99.196]) by mrelayeu.kundenserver.de (mreue107
+ [212.227.15.183]) with ESMTPSA (Nemesis) id 1MXHBo-1sSmKS1zhe-00YM15; Fri, 20
+ Sep 2024 14:45:30 +0200
+Authentication-Results: kalliope-7.home.xx;
+	auth=pass smtp.auth=dknueppel@home.xx smtp.mailfrom=dknueppel@home.xx
+Date: Fri, 20 Sep 2024 14:45:29 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] wifi: rtw88: Parse the RX descriptor with a single
- function
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <dae7994f-3491-40de-b537-ebf68df084bb@gmail.com>
- <6efd784f-d07f-42c2-a84f-4beba2db25dc@gmail.com>
- <47452b48615a4c4699ac86ccf2ab1a19@realtek.com>
+Subject: Re: ath12k - HTT timeout error with NCM86
+From: Dieter Knueppel <dknueppel@online.de>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>,
+ Dieter Knueppel <dknueppel@online.de>, linux-wireless@vger.kernel.org,
+ "ath12k@lists.infradead.org" <ath12k@lists.infradead.org>
+References: <14e17e9a-638b-4bfe-8a2a-99b524a20acf@home.xx>
+ <1MvJjz-1s0CoP3EEz-00rhmL@mrelayeu.kundenserver.de>
+ <7488ed13-82dd-4b41-97c7-5692cacfa631@quicinc.com>
+ <6d3f1f33-2a9a-4b62-a0a0-02e65bd1b461@quicinc.com>
+ <eb1c8576-bf2f-4ec0-8651-62e97446e940@home.xx>
+ <2271e7e8-2e25-42e5-a162-e79f65ee8798@home.xx>
 Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <47452b48615a4c4699ac86ccf2ab1a19@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <2271e7e8-2e25-42e5-a162-e79f65ee8798@home.xx>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Bar: ---
+X-Spamd-Result: default: False [-3.10 / 6.00];
+	BAYES_HAM(-3.00)[99.99%];
+	MIME_GOOD(-0.10)[text/plain];
+	FROM_HAS_DN(0.00)[];
+	ARC_NA(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_ZERO(0.00)[0];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4]
+X-Rspamd-Action: no action
+X-Rspamd-Server: kalliope-7
+X-Rspamd-Queue-Id: BCE5E418A8
+Message-ID: <1N4h7p-1rrEib2AJr-01163u@mrelayeu.kundenserver.de>
+X-Provags-ID: V03:K1:rEGZ/OAO1ToqEMdc/aLHY7ydx4FhN9t+grX9lVgpojFhdC5OrMJ
+ up8KbENl+ISddgqJKg8JvX/ZhVncuvdEMxnMFLYIDFlxJs+NZbCi49WdBS1Kt96JlqYCi2v
+ PtoVA1WSJaqycFKlFmqHq9ZdDnR200gCNlgAp64jMYm3p1OWJ8rqmQRuD3aTOVjx3PJT8fm
+ 60VI2GVUSw+xlLv2atcJA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:MWjCRK0pw5A=;aMAX3JFVFsFYIAsEKz+wdiVdIjg
+ mEqZbGgPEwkBB5FnM0ji2AwOCaceQTeuitR5o10JRM0P/e+yTAmYx+V8N4AfiL1tx0dcx3e4P
+ NNJ5ZDRLC8R1h2Vb5UQnSy2k1aK+wQk8IZhmZvIwOaU7fiYEWqakW0L7pjLt26DElexcTczUV
+ 8IqmEpCNrQa+xcrEkSejGdA/vCk4MNC7WP+BY6FRnDxgvTenS/702aq6v/qktqU3z2XYdypbn
+ 8VyDXooAK2IHosCerhWr9dCbjWnga5j+s7eCh/PbXaPZYrUcjPqtaCMG//LQyxw/R6AWCHikE
+ vyz5CRnrl39Aolm73UjO35djPBnVMt28cfs0PeHrK8m5r9hQFJle/FBiar2RnbbWhA7CRJJB+
+ b4D98+f7Trdp+P6zDXY0kfeWV+ar6YQsHojLMr2TqmEqzj5HXL+tgtfK46GV7787aQrEtCqEC
+ zSekUSGBL0IWbkgT1n54p+7h/EiURw9u05gHvJN0auyb7ttAtl2/alRlJe5MDuYrVIdNggJ+E
+ VN92PEiRgz4CJ59R+IIogRyZzB4HHk2E3xT/L+1b2uYyTU/KpyE0H5k9LxY8gcU1gaYfdzevf
+ GKayqdzmHsOWI6yMwPt2vVdcu36/mUAGFfuBXral/lb6sRuyErsmkdr5Gyy7ZzcPjancD5Wys
+ LZAY+3LGHqeFQ2cOnxydia+3R5SRAuZwEl7uTtOPMvQkXfsXPMTRznkwny9gZSsdwJZj4bPlU
+ MPR3GagV2rVjj++IuCTwBbp95P9nGZMjg==
 
-On 20/09/2024 05:21, Ping-Ke Shih wrote:
-> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->> rtw8703b_query_rx_desc(), rtw8723d_query_rx_desc(),
->> rtw8821c_query_rx_desc(), rtw8822b_query_rx_desc(), and
->> rtw8822c_query_rx_desc() are almost identical, so replace them all with
->> a single function, rtw_rx_query_rx_desc().
+I'm wondering, is this the correct mailing list for my questions?
+
+I know you are all working on best effort basis, but at least my
+questions related to supported HW shouldn't be too complicated to answer.
+
+The information I found so far are almost not existent, stone old,
+misleading or even proofed to be wrong (e.g.
+https://wikidevi.wi-cat.ru/Ath12k, 17cb:1107 equals HERALD-BE as well,
+not sure who maintains this page).
+
+I'm almost at the point moving back to my legacy HW.
+
+Anyway, I would still be very happy to receive any feedback :-)
+
+Thanks a lot,
+
+Dieter
+
+
+P.S.: Due to my background in mobile networks radio interface, i would
+have a good starting point to contribute myself. Unfortunately I'm
+involved in plenty of other things and don't have the time for another
+job :-(.
+
+
+
+
+
+Am 19.09.2024 um 11:41 schrieb Dieter Knueppel:
+> Minor update:
+>
+> I just figured out, that even the physical machine with std. Ubuntu
+> 24.04 server (before the VM gets started and PCI device vanishes on
+> PM) reports: "Unknown hardware version found for WCN7850: 0xf"
+>
+> Hence the earlier question, whether "MSI HERALD-BE" or "Gigabyte
+> GC-WIFI7" is supported, seems still to be valid.
+>
+>
+> Am 18.09.2024 um 19:54 schrieb Dieter Knueppel:
+>> Hi Jeff,
 >>
->> Also, access the RX descriptor using a struct with __le32 members and
->> le32_get_bits().
-> 
-> I have tested this patch with RTL8723DE and RTL8822CE, and looks good.
-> Please also describe which chips you tested. 
-> 
-> [...]
-> 
->> -
->> -       pkt_stat->drv_info_sz *= RX_DRV_INFO_SZ_UNIT_8703B;
-> 
-> For now, RX_DRV_INFO_SZ_UNIT_8703B isn't used anymore. We can remove it.
-> 
-> [...]
-> 
->> +       .query_phy_status       = query_phy_status,
-> 
-> All existing chips use the same callback. Will it be different for coming chips?
-> 
-
-Yes, it will be different for the upcoming chips. (The existing
-chips also use different code, only the function name is the same.)
-
-> [...]
-> 
->> +
->> +void rtw_rx_query_rx_desc(struct rtw_dev *rtwdev, u8 *rx_desc8,
-> 
-> If you use 'void *' as type of rx_desc8, we can avoid most casting. 
-> 
-> 
->> +                         struct rtw_rx_pkt_stat *pkt_stat,
->> +                         struct ieee80211_rx_status *rx_status)
->> +{
->> +       struct rtw_rx_desc *rx_desc = (struct rtw_rx_desc *)rx_desc8;
-> 
-> like here. 
-> 
->> +
->> +       phy_status = rx_desc8 + desc_sz + pkt_stat->shift;
->> +       hdr = (struct ieee80211_hdr *)(phy_status + pkt_stat->drv_info_sz);
-> 
-> and here.
-> 
-> 
-> 
-
+>> thanks a lot for your update on ath11/ath12 related vfio support.
+>>
+>> That's actually bad news!
+>>
+>> Do you know whether vfio support vanished per accident or intention?
+>>
+>> I.e. I'm wondering on why the ath11 patch haven't made it into mainline=
+?
+>>
+>> Assume there are no other 802.11be Chipsets supported by Linux, which
+>> can be used as AP within a VM?
+>>
+>> Kind regards,
+>>
+>> Dieter
+>>
+>>
+>> Am 18.09.2024 um 18:13 schrieb Jeff Johnson:
+>>> Resend since I had a typo in the ath12k e-mail list
+>>>
+>>> On 9/18/2024 9:05 AM, Jeff Johnson wrote:
+>>>> On 9/18/2024 7:40 AM, Dieter Knueppel wrote:
+>>>>> Dear developer team,
+>>>>>
+>>>>> I have to admit, the earlier post "HTT timeout error with NCM86"
+>>>>> is my
+>>>>> fault, sorry for causing confusion.
+>>>>>
+>>>>> Due to earlier tests with legacy cards, the PCIe slot was still
+>>>>> forced
+>>>>> to Gen2 :-(
+>>>>>
+>>>>> Putting it back to <auto>, with "MSI HERALD-BE", similar to "Gigabyt=
+e
+>>>>> WC-WIFI7" i
+>>>>>
+>>>>> consistently get: "Unknown hardware version found for WCN7850: 0xf"
+>>>>>
+>>>>> Which nails down to the question whether any of these adapter is
+>>>>> already
+>>>>> supported?
+>>>>>
+>>>>> The M.2 NCM865 card as such seems to be supported.
+>>>>>
+>>>>> I'm wondering about the difference, as there seems to be no
+>>>>> additional
+>>>>> logic compiled
+>>>>>
+>>>>> on one of the two PCIe boards, just bit of glue logic.
+>>>> For better support on ath12k driver issues please include the
+>>>> ath12k driver
+>>>> list (I've added it to this reply).
+>>>>
+>>>> In your original e-mail you said:
+>>>>> I'm trying to get "MSI HERALD-BE NCM865" up and running within a kvm
+>>>> The ath12k driver does not support running in a VM. Even prior
+>>>> ath11k-based
+>>>> hardware doesn't support it.
+>>>>
+>>>> For ath11k there are some manual steps that have made it work, so
+>>>> if you are
+>>>> adventurous you can try doing something similar with ath12k. Refer to=
+:
+>>>> https://lore.kernel.org/all/adcb785e-4dc7-4c4a-b341-d53b72e13467@gmai=
+l.com/
+>>>>
+>>>>
+>>>> /jeff
+>>>>
 
