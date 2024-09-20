@@ -1,163 +1,163 @@
-Return-Path: <linux-wireless+bounces-13035-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13036-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE7197D0A1
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2024 06:44:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E2B997D0EE
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2024 07:30:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D951C1C2149E
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2024 04:44:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82D151C22F68
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Sep 2024 05:30:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7FF779C2;
-	Fri, 20 Sep 2024 04:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0146238DE5;
+	Fri, 20 Sep 2024 05:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mDfJ2M08"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jubUAuzW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE95422309
-	for <linux-wireless@vger.kernel.org>; Fri, 20 Sep 2024 04:43:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479502C1A2
+	for <linux-wireless@vger.kernel.org>; Fri, 20 Sep 2024 05:29:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726807438; cv=none; b=XJVrAN5lvrg9pYVyLH3CSXj9uG78uQJyamBeHawrW5FMDzyeTfdf1NgmPASfpy0iZauheD/3gS36aDOLpw8pEdtWB3PIo7VveIAcdYSkTzBMTYa4f0VsUop4D8zZIP90tJDSYEAAA5MzHo4lMTvrGbJgM2nW8EvKqrl339xCVwo=
+	t=1726810196; cv=none; b=BbZTpWHmAKnKTiUEfBdLwkStXTpoTJYN8Mar8ldYUWfIJxmzdG1c7Oaxe+ye+xPP2KvPYmMbR3iBA1hCVzXGkUCuyl+YTXcHGeTl+uWcdKaeCcSdFLJ0qNT+wRdEmntQLR249CpDW6sR9XmCe41QXqXUNArkMMjV1NJqifhnR3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726807438; c=relaxed/simple;
-	bh=KYz4gU9+UFrMDiMPGh487Js+k+3NIt1yrhEcEAi0INE=;
-	h=Message-ID:Date:MIME-Version:Subject:References:From:To:CC:
-	 In-Reply-To:Content-Type; b=eRemxlO1c5N11EhYP61J1abbRqdnQI8yTDTKPV0sZ+WZy4j/7g9ZkiEEgX20xYGGdXgMA44gkHguHUXfYDLX3VkTj/NoZOq8AE8OPtOozAyXMJC1LTS4ps3Ti7ypIWqqGo+4m+Zou5HweoYY1DvA1O5209M/2MFLRrNkNlzzgjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mDfJ2M08; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48JJ3rCK022695;
-	Fri, 20 Sep 2024 04:43:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	xpRWGD7dSGr/XgSvqmIAk4vXt7jhrYqUrp1WdW/shdY=; b=mDfJ2M08+XRVDHQe
-	FkK+LnjUNLr3kFsZVY86tLWuDtBdwIqyBm/8mxbjcTuJ+UoeNovFcK95Zs8bHnSt
-	VBjJADx+IHMci9A1yS3ZfaCFjogRHQYFceV7R8auG8IjQhNw6dsb47i51705QnFl
-	U9qHTJzqwUU0Hn4/XiHv6JEU0J0lEJ6cBn97w6OjHNnRy0PYEhjgkU7LiM/p06uC
-	Demnt7ogzzC5TInOqV1iNKNGHwjsVVM41Azy6bZkdt2NAhpQioDKOz34m0CLBmW8
-	w69bcWCB/KkZtnEiWsUE2JrI32E5Aq5hht8UcyqWeFobfx+FgloJiyNIgO7umgnD
-	8U7jaQ==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41n4gnyqd0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Sep 2024 04:43:50 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48K4hnhl026870
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Sep 2024 04:43:49 GMT
-Received: from [10.216.21.130] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 19 Sep
- 2024 21:43:47 -0700
-Message-ID: <51afbe69-e770-0344-6ca0-0fe5cd721d2d@quicinc.com>
-Date: Fri, 20 Sep 2024 10:13:43 +0530
+	s=arc-20240116; t=1726810196; c=relaxed/simple;
+	bh=GAE3MyN42Bi7seJDKASBKLuxuLfOYuGLe4r2lWvcD7w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PLXql9JFbWaD45ZZ+Chb+EzPr2DewUfj1+oECtSZJrgQpOshRi7PP2WV9N09v9nwmmccAsRpYtRgzr3SWg8qVQseiWX7WDrQ5XoQppgzN1nvZoggCvhvM3DgvdflyUQnuM+v5FnLl8PTTLkhYtn0XfVAHIX52oVV020d/+ONkP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jubUAuzW; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-20551eeba95so16305275ad.2
+        for <linux-wireless@vger.kernel.org>; Thu, 19 Sep 2024 22:29:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1726810194; x=1727414994; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=KlbRqa7nDF2on3envLfRNKR76Ma17jJTd9UlvPEe+/8=;
+        b=jubUAuzWuhuOI9ilTYQ6M6+Q9/DZ5XVhBC+oFJJpBTFaGXRGJfnMDjABw4kljiDbiw
+         34ANtRO6u9nKLH5empEE8NaCVNdNzxWMtGFvi2qWmWq9Go7yLSfbhUaANiCXI13y5sfZ
+         /jzSRg2Qr+5n2h6aAbW8CguXpwcVx79cZ8AJZkAhJSr757W0nxaFaHiCFsaEa7U+InIv
+         h0vQRH3yMfprdMfReVRZ6M4JnUlt9G4f6aY7aGqstPNQUDtUg6AqmC6xeSof78mnX6p1
+         mokovqlfkAqc+daW5PPeBhzE5PQBlHW5o60GvHr6qvCd71UkThBQpXNB6M/hJx9djYLK
+         CQSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726810194; x=1727414994;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KlbRqa7nDF2on3envLfRNKR76Ma17jJTd9UlvPEe+/8=;
+        b=lahT4Ey47Z4ToOLSrn5Lssm7AOixhYRLA/eaGlrKRKAyqJ9lK5kxoDM9ihhsIVhPA7
+         Yoc8uIqwe9P/1UaueeU3PDlauGcv+DO2Z9+KO519OQECGcvtMCRFF2coweZicWpR0bU6
+         mPxvDCQoeuveKbyp6QNRTPB4x/lIdb3olEliwoETqp+xMo4IcNoNgLx/2QMGfZqcP2T7
+         w+kTkdGcmQCDkH4t/czoXM1XjN2spwcYA1Yxi6nxpSI9qPiUJNri0ySnS+ftcSvgxVdt
+         TMnvdEHcc2mrqJNu4hpBu41Zy3QBikE+Kurig/dKdmphtlC6YVyqFJmGURTh2zu2WY/y
+         6pCg==
+X-Forwarded-Encrypted: i=1; AJvYcCUFPrZXB3D7U8VT0VN/IMhNql4th1Iolms7v4f7/m7yRwc9lfzCacfhdA73AFlRhqo2FrV3X/lkcViHljg0TQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz3YsLNVlAod0pwOdoEu/xn0BjuquRVNxM7rz115kYMjj+pd90C
+	y0Aw5v7OEeJdY+7ns9iYmZXj3eVCR+fKVDsQ9VoenJ0TP+kE8U9KiqcNuCgiAf+oZ++zo9Kj0dQ
+	HyBVbpeGFNnc7ONOPsUwKM0vGyrIf2/uMpnRGoA==
+X-Google-Smtp-Source: AGHT+IFXWjjSwUV/swiBcaoOWRQSWx9kHyL3ewiTd5ev59pob+f5VLbFm74ieex5x8O25zo1tfmYvjNJafp2P2Ogezc=
+X-Received: by 2002:a17:903:32c7:b0:206:ba7c:9f2e with SMTP id
+ d9443c01a7336-208d83b69f0mr25703685ad.25.1726810194586; Thu, 19 Sep 2024
+ 22:29:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [PATCH] wifi: ath12k: fix tx power, max reg power update to
- firmware
-Content-Language: en-US
-References: <D41LUTO0MIC3.12475D2J3VNX3@gmail.com>
- <93d580b4-cf7a-471f-8f3a-673d456f726f@quicinc.com>
-From: Santhosh Ramesh <quic_santrame@quicinc.com>
-To: Nicolas Escande <nico.escande@gmail.com>
-CC: <quic_santrame@quicinc.com>,
-        "ath12k@lists.infradead.org"
-	<ath12k@lists.infradead.org>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>,
-        <quic_murugana@quicinc.com>
-In-Reply-To: <93d580b4-cf7a-471f-8f3a-673d456f726f@quicinc.com>
+References: <20240918111826.863596-1-linyunsheng@huawei.com>
+ <20240918111826.863596-3-linyunsheng@huawei.com> <CAC_iWjK=G7Oo5=pN2QunhasgDC6NyC1L+96jigX7u9ad+PbYng@mail.gmail.com>
+ <894a3c2c-22f9-45b9-a82b-de7320066b42@kernel.org> <cdfecd37-31d7-42d2-a8d8-92008285b42e@huawei.com>
+ <0e8c7a7a-0e2a-42ec-adbc-b29f6a514517@kernel.org>
+In-Reply-To: <0e8c7a7a-0e2a-42ec-adbc-b29f6a514517@kernel.org>
+From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Date: Fri, 20 Sep 2024 08:29:18 +0300
+Message-ID: <CAC_iWj+3JvPY2oqVOdu0T1Wt6-ukoy=dLc72u1f55yY23uOTbA@mail.gmail.com>
+Subject: Re: [PATCH net 2/2] page_pool: fix IOMMU crash when driver has
+ already unbound
+To: Jesper Dangaard Brouer <hawk@kernel.org>
+Cc: Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, liuyonglong@huawei.com, fanghaiqing@huawei.com, 
+	zhangkun09@huawei.com, Robin Murphy <robin.murphy@arm.com>, 
+	Alexander Duyck <alexander.duyck@gmail.com>, IOMMU <iommu@lists.linux.dev>, 
+	Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
+	Clark Wang <xiaoning.wang@nxp.com>, Eric Dumazet <edumazet@google.com>, 
+	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+	Alexander Lobakin <aleksander.lobakin@intel.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, 
+	Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
+	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+	Kalle Valo <kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, imx@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, intel-wired-lan@lists.osuosl.org, 
+	bpf@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: QpTxwQbQwW6ru8-soRiXoLgkb5DZxSnA
-X-Proofpoint-ORIG-GUID: QpTxwQbQwW6ru8-soRiXoLgkb5DZxSnA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 adultscore=0
- mlxlogscore=638 malwarescore=0 suspectscore=0 clxscore=1011 phishscore=0
- lowpriorityscore=0 bulkscore=0 impostorscore=0 priorityscore=1501
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2408220000 definitions=main-2409200031
 
-"Nicolas Escande" <nico.escande@gmail.com> writes:
-> On Mon Sep 9, 2024 at 9:30 AM CEST, Santhosh Ramesh wrote:
-> 
-> [...]
-> 
->> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
->> index 137394c36460..6d7a005d83b4 100644
->> --- a/drivers/net/wireless/ath/ath12k/mac.c
->> +++ b/drivers/net/wireless/ath/ath12k/mac.c
->> @@ -7217,9 +7217,9 @@ ath12k_mac_vdev_start_restart(struct ath12k_vif *arvif,
->>  							chandef->chan->band,
->>  							arvif->vif->type);
->>  	arg.min_power = 0;
->> -	arg.max_power = chandef->chan->max_power * 2;
->> -	arg.max_reg_power = chandef->chan->max_reg_power * 2;
->> -	arg.max_antenna_gain = chandef->chan->max_antenna_gain * 2;
->> +	arg.max_power = chandef->chan->max_power;
->> +	arg.max_reg_power = chandef->chan->max_reg_power;
->> +	arg.max_antenna_gain = chandef->chan->max_antenna_gain;
->>  
-> 
-> For what it's worth, I already got a similar patch from QCA a few month ago, and
-> it fixed some tx power problems when scanning so I know there is truth in this.
-> 
->>  	arg.pref_tx_streams = ar->num_tx_chains;
->>  	arg.pref_rx_streams = ar->num_rx_chains;
->>
->> base-commit: 903aaf66edc97dd5b9e3118d19677291051a9c40
-> 
-> But there also was more in the patch:
-> 
-> diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-> index a97e1399eeed..87e3ae49afa5 100644
-> --- a/drivers/net/wireless/ath/ath12k/wmi.c
-> +++ b/drivers/net/wireless/ath/ath12k/wmi.c
-> @@ -2563,6 +2563,8 @@ int ath12k_wmi_send_scan_chan_list_cmd(struct ath12k *ar,
->  						  WMI_CHAN_REG_INFO1_REG_CLS);
->  			*reg2 |= le32_encode_bits(channel_arg->antennamax,
->  						  WMI_CHAN_REG_INFO2_ANT_MAX);
-> +			*reg2 |= le32_encode_bits(channel_arg->maxregpower,
-> +						  WMI_CHAN_REG_INFO2_MAX_TX_PWR);
->  
->  			ath12k_dbg(ar->ab, ATH12K_DBG_WMI,
->  				   "WMI chan scan list chan[%d] = %u, chan_info->info %8x\n",
-> 
-> It seems that ath11k has a similar piece of code in the equivalent function
-> ath11k_wmi_send_scan_chan_list_cmd . Isn't this needed ?
+Hi Jesper,
 
-This change is in a separate patch, which will be sent for public review soon.
+On Fri, 20 Sept 2024 at 00:04, Jesper Dangaard Brouer <hawk@kernel.org> wrote:
+>
+>
+>
+> On 19/09/2024 13.15, Yunsheng Lin wrote:
+> > On 2024/9/19 17:42, Jesper Dangaard Brouer wrote:
+> >>
+> >> On 18/09/2024 19.06, Ilias Apalodimas wrote:
+> >>>> In order not to do the dma unmmapping after driver has already
+> >>>> unbound and stall the unloading of the networking driver, add
+> >>>> the pool->items array to record all the pages including the ones
+> >>>> which are handed over to network stack, so the page_pool can
+> >>>> do the dma unmmapping for those pages when page_pool_destroy()
+> >>>> is called.
+> >>>
+> >>> So, I was thinking of a very similar idea. But what do you mean by
+> >>> "all"? The pages that are still in caches (slow or fast) of the pool
+> >>> will be unmapped during page_pool_destroy().
+> >>
+> >> I really dislike this idea of having to keep track of all outstanding pages.
+> >>
+> >> I liked Jakub's idea of keeping the netdev around for longer.
+> >>
+> >> This is all related to destroying the struct device that have points to
+> >> the DMA engine, right?
+> >
+> > Yes, the problem seems to be that when device_del() is called, there is
+> > no guarantee hw behind the 'struct device ' will be usable even if we
+> > call get_device() on it.
+> >
+> >>
+> >> Why don't we add an API that allow netdev to "give" struct device to
+> >> page_pool.  And then the page_poll will take over when we can safely
+> >> free the stuct device?
+> >
+> > By 'allow netdev to "give" struct device to page_pool', does it mean
+> > page_pool become the driver for the device?
+> > If yes, it seems that is similar to jakub's idea, as both seems to stall
+> > the calling of device_del() by not returning when the driver unloading.
+>
+> Yes, this is what I mean. (That is why I mentioned Jakub's idea).
 
-> 
-> Also I see that in ath12k/reg.c in ath12k_reg_update_chan_list we also send to
-> the firmware:
-> 			ch->maxpower = channel->max_power * 2;
-> 			ch->maxregpower = channel->max_reg_power * 2;
-> 			ch->antennamax = channel->max_antenna_gain * 2;
-> 
-> As it is in a different wmi message, I guess the units are different. 0.5 dBm
-> increment in struct ath12k_wmi_channel_arg right ? Or should we remove the '*2'
-> 
+Keeping track of inflight packets that need to be unmapped is
+certainly more complex. Delaying the netdevice destruction certainly
+solves the problem but there's a huge cost IMHO. Those devices might
+stay there forever and we have zero guarantees that the network stack
+will eventually release (and unmap) those packets. What happens in
+that case? The user basically has to reboot the entire machine, just
+because he tries to bring an interface down and up again.
 
-Yes, the firmware expects these values in 0.5 dBm increments, so we multiply 
-them by 2 in the ath12k_reg_update_chan_list function.
+Thanks
+/Ilias
+>
+>
+> > If no, it seems that the problem is still existed when the driver for
+> > the device has unbound after device_del() is called.
 
