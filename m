@@ -1,130 +1,277 @@
-Return-Path: <linux-wireless+bounces-13067-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13068-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B79CD97DBB5
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Sep 2024 06:56:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 031C497DCD5
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Sep 2024 12:29:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E71F1C21061
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Sep 2024 04:56:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 55513B2152A
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Sep 2024 10:29:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6CA31DA5E;
-	Sat, 21 Sep 2024 04:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C663E155C88;
+	Sat, 21 Sep 2024 10:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="tmZPrOlQ"
+	dkim=pass (2048-bit key) header.d=online.de header.i=dknueppel@online.de header.b="eeC0Zbu2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131B423D7
-	for <linux-wireless@vger.kernel.org>; Sat, 21 Sep 2024 04:56:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC66841C60
+	for <linux-wireless@vger.kernel.org>; Sat, 21 Sep 2024 10:29:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726894580; cv=none; b=p9cW1/40OcX4sEHYLDu9kON0VOmxi3d8Ff+O0SjoVKD7MSJpFBKT9JLS01Xl1WhFq4I1Z+lkl1pWtK+NN2kwy7Q+hpKzi+WCJJl49pzvuZs6Z091EL2L5R/dcMmWzzGzObLrcTSibsBOukBqLxu0oMVdYaPdd/U9jlMwlhqrEHA=
+	t=1726914549; cv=none; b=esIOtsk/5BR0/ofQ/x3YFRacb6USbCK7Z4TR7FxIykm85kQEm3h0CEUnLh7t30tDwg5trEuYrjvxVtS1W5i74rTIT34A86snFDXpgAxtOpbVQvjGDIIaKxwZRgHKLDi0wJeLaWhrS3jwSbSwBm5Aj/5A6yYPpY+/lUT5sGKrYH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726894580; c=relaxed/simple;
-	bh=Hn4fReQotENKNmRSfo2n2nLfnja9kCI0SETHuXmadRw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iri7HDfWr5hjQbpsQUhFVJ87x15QPyDVvBGLZA4dlqU8rzK2mrnPgmS19cRGmDHjGQ1iGQHmvu8OeB/40F+ZFrIGNoDCQ1bAypkiLkUsHsW45YjKfw2Zhwdy0T61rdK4Cr53icwweKL/sYRANook9KHNFmlFnZBO6btUXfJCJ7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=tmZPrOlQ; arc=none smtp.client-ip=209.85.167.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5365cf5de24so3474087e87.1
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Sep 2024 21:56:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1726894577; x=1727499377; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Hn4fReQotENKNmRSfo2n2nLfnja9kCI0SETHuXmadRw=;
-        b=tmZPrOlQ0qV/sAovR6H7NfVaU3693v2U6zrkzJvotvmnFeKCrPkIOOaPnN6gIBQuyV
-         xFq6+hX9SDh/grUAjhh7LaPt1qLqmSfa4BJJButZwzVobcVKBMBkw/t/XYJw9QAFihQj
-         jACngkda70jLOl/vH+A844P08cz2AgE5GlB4fFlOre96nj74w24Xj8cdlEJvXx0MRi1S
-         FKG5q5azo7NDmuurujbiuaI1Zh6t8wga3SH53S5SRM6EIoDibFRuJgjYueIABWfc4c8V
-         IzVmdWEk4Or0r5smfynbJravtmFkg5ZljLvi/7YGoV6Sd6CFApKIiuhnL8IOkjnXXz+W
-         3VkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726894577; x=1727499377;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Hn4fReQotENKNmRSfo2n2nLfnja9kCI0SETHuXmadRw=;
-        b=GySLwiiGdRmi9StFs9ieUI1exIIE4vBI9BRxJFyq/x4+VacWpvLWunHeQqdmOUgO89
-         b+WFMsfjv+UXCeoas5hEM2gkxOqGXDptz/ED67EVU/YB9FJgHBtLpertZK+N82bTA9J8
-         2t2DzDwS01+o1S/JGsV9aI7lpOmHNwNeOxU/C1u1pu50n69aP8vYsJveuFFAQfOxEwTF
-         YyJA9Lk3JCgaN6waJT0vhzAMszdK8kx54OxdVEvynbW44dT1yOvgy9keBxCMq1SkK0eQ
-         Pe9UVXE4N+9dNluh0e2zCe/WN67SVlqZPCV1rzWoWihzHw3u/Zt/0IQ5wW/fjKMfMSXP
-         1joQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVJJM2Mxh6izl6saTh2Vv2Sua+zv41yEqltrRGmMYIa2/afRCGczLPHbLdEGG5SWGB7NO1xFjw0bPOlcJI2hg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJ60/5uJTfHRcRa7ofSZzFBMNsyg1+5DJ4AYGbzZzITrMOZiOS
-	2YRvys/LtJbN/+ZhAlPzLc9DD3ifFkrHNKdurKSIKPSLuGfeKmXX5dDwsps4SANGKGywwS/IdeC
-	SZCGXL4fw2GNtNnaOHwZ8fYLrAXfXuqb2LYox9Q==
-X-Google-Smtp-Source: AGHT+IGA+v7LGeKCraVVm2W3WnYjYpCsEiYRqZiZBxxc6iUgx4AERJeZIH1YVuoDb+oq4aKfLjDqUP1XyHd4Vib/la0=
-X-Received: by 2002:a05:6512:158e:b0:52e:fdeb:9381 with SMTP id
- 2adb3069b0e04-536ad3d72c9mr2962459e87.43.1726894576446; Fri, 20 Sep 2024
- 21:56:16 -0700 (PDT)
+	s=arc-20240116; t=1726914549; c=relaxed/simple;
+	bh=EiidT7cZRp4UL7ltE+Sz8of/mJ4SvXrj7ks9eIl0P3s=;
+	h=Date:MIME-Version:Subject:To:References:From:In-Reply-To:
+	 Content-Type:Message-ID; b=OQydhFaxOzZHbVm7cmiOa6irYS7RYdlmYI9Ud2O4hINmjMha+XP1W31FwyRU1BhWj/ymoYJidrUmiUF0srLJd4lkxCUx3tWOlHzLS1iL6x1j+wh/aZFQLwtjNv3DDEzQrqf+5P1EaZEIsnbcb6mEOW0aLXr+s5R4j57OFtVgMA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=online.de; spf=pass smtp.mailfrom=online.de; dkim=pass (2048-bit key) header.d=online.de header.i=dknueppel@online.de header.b=eeC0Zbu2; arc=none smtp.client-ip=217.72.192.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=online.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=online.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=online.de;
+	s=s42582890; t=1726914519; x=1727519319; i=dknueppel@online.de;
+	bh=nroEnhjnvQNnCk8gNeOcxvGvp7KFXgRaHzfE/4hXkC0=;
+	h=X-UI-Sender-Class:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-ID:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=eeC0Zbu2F+dbW5B2TqhrMn05xw61Z6kUacoMtFE/g0MUMjs/wnt02ez94Y2wexQT
+	 AEoZysAgh7MGZsWPnrFMyabVMrST2TK4I2syW/JqkZFO0lUXZIv2UE0Q3pAYNZpDJ
+	 YFKXC+aGu7nQx6nx1tfeihPyZGxN3Ad+lTMSdDzKJeGSWXRS5TQ4IPBDlm6HqdJAW
+	 sbK3/wgI4g1gKOqaR5bFBdNuBtymzDWdTS4Nlql+ihWJ+ctArNXs2H6bBqfITNW2Y
+	 c240/CbxXRkrI20E3v8mlj3NuqIgEo990GSpMmFXB2WhzAlxRwq9NKOCQuyl+Ym//
+	 85sSdrzPrn6I0aRlDg==
+X-UI-Sender-Class: 6003b46c-3fee-4677-9b8b-2b628d989298
+Received: from xXx ([87.122.97.75]) by mrelayeu.kundenserver.de (mreue106
+ [212.227.15.183]) with ESMTPSA (Nemesis) id 1MeC5x-1sHEp73uul-00fUEe; Sat, 21
+ Sep 2024 12:28:38 +0200
+Authentication-Results: kalliope-7.home.xx;
+	auth=pass smtp.auth=dknueppel@home.xx smtp.mailfrom=dknueppel@home.xx
+Date: Sat, 21 Sep 2024 12:28:37 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240814082301.8091-1-brgl@bgdev.pl> <83c562e9-2add-4086-86e7-6e956d2ee70f@kernel.org>
- <87msk49j8m.fsf@kernel.org> <ed6aceb6-4954-43ad-b631-6c6fda209411@kernel.org>
- <87a5g2bz6j.fsf@kernel.org> <CAMRc=MeLick_+Czy5MhkX=SxVvR4WCmUZ8CQ5hQBVTe2fscCPg@mail.gmail.com>
- <b7fdafd6-5029-4b80-b264-11943740b354@quicinc.com>
-In-Reply-To: <b7fdafd6-5029-4b80-b264-11943740b354@quicinc.com>
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-Date: Sat, 21 Sep 2024 06:56:05 +0200
-Message-ID: <CAMRc=Mc2sbTrORZr4K4NgdyofNTipR1-QEqNK9mmNT=sd1myHQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v2] dt-bindings: net: ath11k: document the inputs
- of the ath11k on WCN6855
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: Kalle Valo <kvalo@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Jeff Johnson <jjohnson@kernel.org>, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	ath11k@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, Arnd Bergmann <arnd@arndb.de>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: ath12k - HTT timeout error with NCM86
+To: pgupta@hindutool.com, dknueppel@online.de, quic_jjohnson@quicinc.com,
+ linux-wireless@vger.kernel.org, ath12k@lists.infradead.org
+References: <14e17e9a-638b-4bfe-8a2a-99b524a20acf@home.xx>
+ <1MvJjz-1s0CoP3EEz-00rhmL@mrelayeu.kundenserver.de>
+ <7488ed13-82dd-4b41-97c7-5692cacfa631@quicinc.com>
+ <6d3f1f33-2a9a-4b62-a0a0-02e65bd1b461@quicinc.com>
+ <eb1c8576-bf2f-4ec0-8651-62e97446e940@home.xx>
+ <2271e7e8-2e25-42e5-a162-e79f65ee8798@home.xx>
+ <1N4h7p-1rrEib2AJr-01163u@mrelayeu.kundenserver.de>
+ <1920f9bd1b8.285f.40f506ff0c43803c7e4cd5785e25da93@hindutool.com>
+ <1726839690.xnskyi9sg84wgsw4@mailapp03.register.com>
+Content-Language: en-US
+From: Dieter Knueppel <dknueppel@online.de>
+In-Reply-To: <1726839690.xnskyi9sg84wgsw4@mailapp03.register.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
+X-Spamd-Bar: -------
+X-Spamd-Result: default: False [-7.10 / 6.00];
+	REPLY(-4.00)[];
+	BAYES_HAM(-3.00)[99.99%];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	RCVD_COUNT_ZERO(0.00)[0];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5]
+X-Rspamd-Action: no action
+X-Rspamd-Server: kalliope-7
+X-Rspamd-Queue-Id: 43D69418CC
+Message-ID: <1MGyl3-1snIOL45Y3-009Sn2@mrelayeu.kundenserver.de>
+X-Provags-ID: V03:K1:oRg55dOJqyl6Fa0363AqC9gHxikTKCeKcnyArx0AS3potAElr5T
+ zFKiH5i7fkyJVPHB1mxohIThD90KfvELq47lLIwPYTmB986I2mOegrrFBPV2wRIOyLoOp7i
+ S9BTdeCcKY1IYA+Qv4jVixmJGyUrb2FoB55MMywXBkasOScfCiEimuUMaevPaqAL3Aqt19/
+ IPB59iclcMjr95tqtHKoA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:OQVGFM2BloI=;LgdXCpo6DuZKUJnhRhw6VQgSBhI
+ gdx/BtYRmQtpwiONclTSuQebVXjnN74tsJpssyHXLI2WS7hnT1AdQJ13SAkcgPoi9+JWXw/HY
+ uLr0bcH8vmxrNVdcQD45nCx9/WTJzpmIVzTWGkBIMjwmt2fK4v4BiHJ/mqRuJd0XEtAPFMD8E
+ 6UPKP7mS11WoSsaBQCoE0gVdMUSfU60dHCIBTA5jSMwuzZu2uojT38Jk+fk6G2DlZP4CYa3Xv
+ /8M4djJfsILyxjWhm2SCaYI0tuuU9ZE0rY2gOdMOmzgJjPn+7A/9vLeM3wtqGy6fMcPza7EqP
+ yb03fKYk5cWDKQdHau9g0tyw2gMXJfbIHGzXrc6ck/A5jUasjjptWBgFOk4NCzwzTUEtET3QK
+ C+FYrund+4b0y2OoTfC1t598/X7SqtHDlN1dDlggUbid8d84dnJzYBRVxx+rTEJldUh7/uaT6
+ +i5Ke8CzHH8YsoHg2LpD1n/iy6dxgSU1bONPIQoy3zKx4NysClGjaGMOCB9+rY+qKqmnuPP1U
+ csbjYpZ8OZM8PVM+g0TQPQlUCOZ5/vdMhmNLOOOOAzrmICNicdekRSZgN0AWFDepMEVigEgFc
+ DPpkzUOosE/GCfNU9Tlpj3nhlTxiGQbkP5fDHzZ1SW6Ybv4bU0WMrYXzzv9Yn9hF7xOZWAU98
+ eCTS8Df0S0+T8jr02RAMqRstA1XAPHBdzuYOVobawu6nctIifxe3RgUEUrsFIde009Ksmi83+
+ iNToD9Y8mey2KEPtqrM6uZS7xzAHz7rEQ==
 
-On Fri, Sep 20, 2024 at 11:02=E2=80=AFPM Jeff Johnson <quic_jjohnson@quicin=
-c.com> wrote:
+Hi Prashant,
+
+thanks for confirmation and sharing my pain ;-)
+
+Earlier i patched the ath12k driver in HW detection, i.e. to not
+complain about version 0xf, but continue as if it would be version 2.
+
+Driver then crashed more deeper in the code. That might have been the
+case, due to missing ath12k vfio support.
+
+As my physical machine hosts a bunch of VMs, per design I keep this
+machine as slim as possible.
+
+Custom kernel or driver would break this design, hence i have to keep
+the adapter hosted within a VM.
+
+Up to now i had a QWA-AC2600 (with two QCA9984 onboard), perfect for
+dual band concurrent AP.
+
+Unfortunately newer kernel prevent pass through for this card, probably
+due to onboard PCI switch limitation (investigation ongoing as well).
+
+Now I'm looking in parallel for legacy PCE AC-88 adapter .. to be
+continued :-(
+
+Kind regards,
+
+Dieter
+
+
+
+
+
+Am 20.09.2024 um 15:41 schrieb pgupta@hindutool.com:
+> I purchased my hw modules (2.4, 5, 6 GHz) from compex. They were not rec=
+ognized on my std Ubuntu 24.04 installation. According to compex the hw bi=
+t needs to either be hard coded into the module or a software patch applie=
+d. Because I am using all three modules in one machine (Dell R730xd) and u=
+sing PCIE to M.2 riser cables they had to hardcode the identification bit =
+and I had to send the modules back. I would ask your hardware manufacturer=
+. I was told that the encoding will vary depending on the use of the modul=
+e.  You are right in that Wifi 7 has proved to be exceedingly difficult co=
+mpared to the wifi 5 router I built. I have almost given up myself but con=
+tinue to fight the good fight.
 >
-> >
-> > Let me give you an analogy: we don't really need to have always-on, fix=
-ed
-> > regulators in DTS. The drivers don't really need them. We do it for
-> > completeness of the HW description.
+> Cheers
 >
-> Again, since I'm a DT n00b:
-> Just to make sure I understand, you are saying that with this change any
-> existing .dts/.dtb files will still work with an updated driver, so the n=
-ew
-> properties are not required to be populated on existing devices.
+> Prashant gupta
 >
-
-There are no driver updates. No functional change.
-
-> However a new driver with support for these properties will utilize them =
-when
-> they are present, and the current ath11k .dts files will need to be updat=
-ed to
-> include these properties for pci17cb,1103, i.e. the following needs updat=
-ing:
-> arch/arm64/boot/dts/qcom/sc8280xp-lenovo-thinkpad-x13s.dts
-
-What new driver? The dts is being updated in a separate series[1]. It
-makes this platform use the new power sequencing subsystem for
-wcn6855. All other changes required to make it work are already
-upstream. There's no change to ath11k.
-
-Bart
-
-[1] https://lore.kernel.org/all/20240905122023.47251-1-brgl@bgdev.pl/
+>
+>
+> On September 20, 2024 6:17:01 PM Dieter Knueppel <dknueppel@online.de> w=
+rote:
+>
+> I'm wondering, is this the correct mailing list for my questions?
+>
+> I know you are all working on best effort basis, but at least my
+> questions related to supported HW shouldn't be too complicated to answer=
+.
+>
+> The information I found so far are almost not existent, stone old,
+> misleading or even proofed to be wrong (e.g.
+> https://wikidevi.wi-cat.ru/Ath12k, 17cb:1107 equals HERALD-BE as well,
+> not sure who maintains this page).
+>
+> I'm almost at the point moving back to my legacy HW.
+>
+> Anyway, I would still be very happy to receive any feedback :-)
+>
+> Thanks a lot,
+>
+> Dieter
+>
+>
+> P.S.: Due to my background in mobile networks radio interface, i would
+> have a good starting point to contribute myself. Unfortunately I'm
+> involved in plenty of other things and don't have the time for another
+> job :-(.
+>
+>
+>
+>
+>
+> Am 19.09.2024 um 11:41 schrieb Dieter Knueppel:
+> Minor update:
+>
+> I just figured out, that even the physical machine with std. Ubuntu
+> 24.04 server (before the VM gets started and PCI device vanishes on
+> PM) reports: "Unknown hardware version found for WCN7850: 0xf"
+>
+> Hence the earlier question, whether "MSI HERALD-BE" or "Gigabyte
+> GC-WIFI7" is supported, seems still to be valid.
+>
+>
+> Am 18.09.2024 um 19:54 schrieb Dieter Knueppel:
+> Hi Jeff,
+>
+> thanks a lot for your update on ath11/ath12 related vfio support.
+>
+> That's actually bad news!
+>
+> Do you know whether vfio support vanished per accident or intention?
+>
+> I.e. I'm wondering on why the ath11 patch haven't made it into mainline?
+>
+> Assume there are no other 802.11be Chipsets supported by Linux, which
+> can be used as AP within a VM?
+>
+> Kind regards,
+>
+> Dieter
+>
+>
+> Am 18.09.2024 um 18:13 schrieb Jeff Johnson:
+> Resend since I had a typo in the ath12k e-mail list
+>
+> On 9/18/2024 9:05 AM, Jeff Johnson wrote:
+> On 9/18/2024 7:40 AM, Dieter Knueppel wrote:
+> Dear developer team,
+>
+> I have to admit, the earlier post "HTT timeout error with NCM86"
+> is my
+> fault, sorry for causing confusion.
+>
+> Due to earlier tests with legacy cards, the PCIe slot was still
+> forced
+> to Gen2 :-(
+>
+> Putting it back to <auto>, with "MSI HERALD-BE", similar to "Gigabyte
+> WC-WIFI7" i
+>
+> consistently get: "Unknown hardware version found for WCN7850: 0xf"
+>
+> Which nails down to the question whether any of these adapter is
+> already
+> supported?
+>
+> The M.2 NCM865 card as such seems to be supported.
+>
+> I'm wondering about the difference, as there seems to be no
+> additional
+> logic compiled
+>
+> on one of the two PCIe boards, just bit of glue logic.
+> For better support on ath12k driver issues please include the
+> ath12k driver
+> list (I've added it to this reply).
+>
+> In your original e-mail you said:
+> I'm trying to get "MSI HERALD-BE NCM865" up and running within a kvm
+> The ath12k driver does not support running in a VM. Even prior
+> ath11k-based
+> hardware doesn't support it.
+>
+> For ath11k there are some manual steps that have made it work, so
+> if you are
+> adventurous you can try doing something similar with ath12k. Refer to:
+> https://lore.kernel.org/all/adcb785e-4dc7-4c4a-b341-d53b72e13467@gmail.c=
+om/
+>
+>
+> /jeff
+>
+>
 
