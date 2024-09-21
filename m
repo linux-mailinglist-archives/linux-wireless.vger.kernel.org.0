@@ -1,55 +1,54 @@
-Return-Path: <linux-wireless+bounces-13072-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13073-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7FDA97DD09
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Sep 2024 14:06:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19C4697DD76
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Sep 2024 16:43:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E353E1C20CFB
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Sep 2024 12:06:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE9931F21FB3
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Sep 2024 14:43:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1717D1547DA;
-	Sat, 21 Sep 2024 12:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D158816DED5;
+	Sat, 21 Sep 2024 14:43:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="krahBzQr"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="G5drAkqf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.14])
+Received: from mout.web.de (mout.web.de [212.227.15.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D771038FAD;
-	Sat, 21 Sep 2024 12:06:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF2CA47;
+	Sat, 21 Sep 2024 14:43:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726920391; cv=none; b=tpRfqGLiwbCOTRryzTF5KArABWGfUMzTPVnToAYEg6Sq58spPZQGgre3elXC7okxYAPAKcHh1U8C2aJb1R0KUlK5eN31vYgBu/7suXrXMUdq0pSLxlQJBFvFEvR2ylCxeZNLLUEFhholsZUcXz9IUc8LaILBWg4Ly5hO1tie7KQ=
+	t=1726929830; cv=none; b=WjEP6BZXj6HEA7+fqXrOe5gJc7Bz7BdKoIKgPaXuxDhfa6pqQtmiObWiArGNTt8QZkMJIyx5oFlqNlEy8jReiGOLmkNHWYGFB2eKUNNHNn9ICitzRCYHeaf9/2Ul3rzEV6gYgkBdYWKdSkct3fYwjMA63FlexJ09esYbxfGCpx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726920391; c=relaxed/simple;
-	bh=zr0gouvj17I6fBXXOtd2ymGKS+xiRy4XeRt48l60BIY=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=BEai0NCPdXKdoOrL9pXsbHuPKn5r5Dg7U4V09k1D/LNNK780LR3dK0535sKJJby3rqYMjq4AkOk66KM81cZmQK/EF+Q27icMAJwcFPB8gHlOoihQr6Rd4rukokHrkwzorAvBXg6RUfpgPrsXvnwz2vJha6JrI7aHtVI/3Wxx83g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=krahBzQr; arc=none smtp.client-ip=212.227.15.14
+	s=arc-20240116; t=1726929830; c=relaxed/simple;
+	bh=YymUbj4zzCEBemmQ4etvgd/sDwTI9w4pDoipO5vM0gc=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=unKW8Thfn0ds+nT1CukvR7zfHdVqVQuNBF5d+AB9yyYSsVdMw/abno7MjvBzIRj2bHS8rr9aKEmkAhh8e0bq9wt+JYE9SgUKPuMACl1VNGpdO0eqo0aVR0HjgkP18zDjHoGb3UE78ll5WXnrxAEab+OLapHHdnM/pMGLJ5UgtAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=G5drAkqf; arc=none smtp.client-ip=212.227.15.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1726920368; x=1727525168; i=markus.elfring@web.de;
-	bh=TK18ZHNWFJjXGBqBT4dkWADl7TFmWTlo5r5480j6deo=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:From:To:
-	 Cc:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	s=s29768273; t=1726929801; x=1727534601; i=markus.elfring@web.de;
+	bh=Ze5CkP7MQHmwCuO1XBfTk19h4/iqKy8mgsPeFXpqRQg=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:From:
+	 Subject:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
 	 mime-version:reply-to:subject:to;
-	b=krahBzQrlEQqIsS5yBasyazsIQhK8Ww/AwFRMiL3ajvBut54SdRh3IhAmmrcnLmG
-	 f2n+YSzNMQg3CmifnNiAjVoLrAizI4LBFQHiwVlP+EyCUaQ1dUxpxoeBZDsiJtld9
-	 Yl6vrK0q+9blpD8CEXjvNY05EpYaamkCNDyw2R6fKHohKQM1FjO4WtsTNXo0D/jnj
-	 LBMA1Z6gug3kNgizg0kVT5ZXFHoLpSK0/0/WiAWu4Sqm4zpBwNggqSQXi1vRZ066E
-	 DCSpedcIX0XtxumqkGKoS0pO5UYJQUHPRN0JUfNBr2h3m+4Z+DP0b7JQMSD3EEIa0
-	 RnwvK0Oo8iFxfxZ3CQ==
+	b=G5drAkqfR3T4Lzq/W+k4zvI48iRxKH9NhGenbapWZpTC+mRt3vs9RdVJcssk9Vk2
+	 u2kS4OSLTf8WNfhBPqoGf4VWPd3OWMXh34CrdaRs8TqyT37myKPPj2OM4OGgKPONM
+	 2+mjN73NJobh2mubr4SIZcvwj/9KK9PDDCTs9Kjk7ytbg4TbXGEuHGPvmHq5gp1lh
+	 8RxqzGLgSf2cKLnnXtzEhn/iI7AYjS05ub2B4wlpxj53vUsalO7Hy3VO4aID24YQC
+	 TgvLoaGMclKcymfy1SJHW+zPZHMgtJcLpy3arOot/FSx9J57l8voTfSjuv7A/kHd8
+	 4/NcLCjPtpgX6tGbMg==
 X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.91.95]) by smtp.web.de (mrweb006
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MUl9B-1sRtR31baT-00Osak; Sat, 21
- Sep 2024 14:06:08 +0200
-Message-ID: <33b08664-fa25-4cef-86b2-49f65b4369c9@web.de>
-Date: Sat, 21 Sep 2024 14:06:07 +0200
+Received: from [192.168.178.21] ([94.31.91.95]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MtPre-1rxA3C3fcE-014EHH; Sat, 21
+ Sep 2024 16:43:20 +0200
+Message-ID: <6658a046-9d4e-4f18-8405-f5dadcf410ee@web.de>
+Date: Sat, 21 Sep 2024 16:43:20 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -57,76 +56,116 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH 3/3] ath6kl: Reduce scopes for two variables in
- ath6kl_sdio_power_on()
-From: Markus Elfring <Markus.Elfring@web.de>
-To: linux-wireless@vger.kernel.org, James Minor <james.minor@ni.com>,
- Kalle Valo <kvalo@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- Steve deRosier <steve.derosier@lairdtech.com>,
- Julia Lawall <julia.lawall@inria.fr>
-References: <d5a19bb5-f940-4f07-9f98-c670d96cc839@web.de>
+To: ath11k@lists.infradead.org, ath12k@lists.infradead.org,
+ linux-wireless@vger.kernel.org, Jeff Johnson <jjohnson@kernel.org>,
+ Kalle Valo <kvalo@kernel.org>
 Content-Language: en-GB
-In-Reply-To: <d5a19bb5-f940-4f07-9f98-c670d96cc839@web.de>
+Cc: LKML <linux-kernel@vger.kernel.org>, Julia Lawall <julia.lawall@inria.fr>
+From: Markus Elfring <Markus.Elfring@web.de>
+Subject: [PATCH] wifi: ath: Use dev_kfree_skb_any(skb) call only once in three
+ functions
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:99V4E3mGFuvjnUZkMhWYuj/BeKN26mTx+uQu6VxiEI1CP8OfQ8c
- puhfxyJrZLsj4yqNsEL6q0grzKYo8p3C3q/zJ5UcAJOPY93y0WI1B5tLLq0niKBcbAbkBAJ
- tXZ9UKnYZzCMDnQ7beLyMEifzV4SZp0Jc51PIIlkQxSO7jgFL6dTz0y7vemfZgtclYpErR3
- 6DvK52caKuOWlWBaopYow==
+X-Provags-ID: V03:K1:y0mbzl/D0kDzSIz9D2uwsK9cknnXkWfSJZHPGL5XJMRJJAIdscy
+ +8DFodCZeGr6Wqe7bh7idUQQpYUkJhOR2atAs/O0QSaeUF8eg87hnkzt945WatRXdo1lzFW
+ hxGVI0XOwZnVnSWOl8Piok6njIJVA/QPmn5ZOL70Dxzw1D2Js+hET8+H5Ll1DCV8ojMUQje
+ hiC/6o05XlXklUeT5k14g==
 X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:fG7TVt/+ZC0=;kRVzu2eNJ1b31ZuzA6D0ZqV8FDh
- XavHzTx7p6cz/UALvWLtJZcr0CiWRlRZIarktZiOhtJt38mGJkGvQsZS0nHABs5ABHy4iT0yF
- vwwkirYMZvlkAGNqLIwMqQ9WUkheHKVS6H9v0MLteCJxBXZA4GGBUtLmB7fDVQuuQxEGHQmZk
- MBMZjdWADy7AJxvPtLNmTM9AaK6PLfY0RUzEsXpn07cdDs7Nncl+es20I2kjFZn4lVZGpXoqx
- EOjsUd0rG829Wx4rub81t4J/Gv0Rn7W7JvDSzUaujNTp95aJ92D+Lg2rYtkQuYsMJiDpp2qqG
- UAlZl0oVfpmBA8ozmYo+OeQ0AWPDd4xgjvuKFuxCpT8fC6OQaxYUhE+v+nCE1xcQVzKyyAXEJ
- nLLd9mMssQ2kA4CN7l6i8eSvjMCFKKmrtpOFNdgrho51dtQmO/QEUEOGEMpua1yVaTIE5n1KV
- YlREskaCuz3GGeRoezKEQbKFEA1lx0Bg43niRoV1j9/BqSrGsB4aTyRdPJsHtC5zylfUjJmDV
- oqNgKTQCAVKCNYKmFaffFalSAXi/TGmR722D1BGjDCY2NEtHTtNmkBT5Vf15I6y770nAQ0M2t
- J1TMYeGxITP7yRV38mZVL5Br8dOz0FHH4fQTLd2CyG9uN25VAZaB7qri+AT5BnteVxrgQw2/S
- kCjoFE0KO/iCDD8qNtWYms9knbaGO9ZUanVkc1CPYrlmfpJzwC+EBJ2DPnxHkXYE3oLiGZbNs
- jLuV5VmD61WqFVmEKhKelUGjyB1sdtoymTbrCLCkifTPhlaFBrjDC6ToHe/T1Yn5H0KAC1y9q
- 8dL7WApqdGKsKdStE3la1IjQ==
+UI-OutboundReport: notjunk:1;M01:P0:2UyM1PGgl5E=;0iXHIZBz4wWxEax5Cnp5LoA5N3L
+ ig9vOrQ27CnYRQczpkylS0WkR9ZigT+00f2fqrRj3Igps62vsdCdEvJ8fFYOBMSXuVAbYnb1O
+ ZbphnlosBXm3ZENoWjHQe/Q1B698OHtFjQ43OZJ7X5kEWJUGt0C5xA8pD2UHjyAFxpHc5LD+7
+ y5lYpprn72gOJAuURoMFo9p9XByK/2YGDPs8HL9rBtZ9vR1gbwCNpMqVDtPV6WVHQee1suBBG
+ DVWjKmTEeU3pz28r6ZsYOk8UAxw9n8uoD171QPtgvGv5K03Rmo5IqkQ2klJvQm2x3w24ad/hF
+ bBKaxp2HJW5jn1gClzdI1xnAlcfNKWVqrJZnPMkHqG+/vZvIyvGCmJNjHmJmMvoIAAuLet6vR
+ CHGuFM69WsvUGaC5iIK2PCMVIQe29R83TFr0F80QnbzXtJ0lE/5mAD9Ii4wYkjAt109/+MPa0
+ gYCCgSf4evynNpmrIswOSZb1izL8MGrGjxd79BZyQS5W1zso+nmOqAxTUYMg+DUri58vPOxch
+ YFo69Fe76byWPGJPklWs1hz2Q5Xx4YWeYU75f+jMIv2FrQqI2W3pPIElpwApW/fYh855c9lhe
+ hFXwtaDRzpOhdwE7Ukguq60UGeaIF9PQnU+ZRf0SiwIKxli2Vttj5JuvEWAYdHKExwGMNQ5ad
+ J3xOJkTsOrzhQQ4nTje15miz+mSMG6OVNfMNMgndEJ2tjbvJ/hxkxD9NoQkeS8Bo3skbwyqSm
+ elIvE5mxY2amLC20Sj6vpLL8SamElNcYSd9RJ31JhjTReDkvVnOW+2RUbxFL0xN8WnAKiBxZe
+ XF3/1GseKFM4oIS6S/WQdwjw==
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sat, 21 Sep 2024 13:30:48 +0200
+Date: Sat, 21 Sep 2024 16:32:09 +0200
 
-Adjust the definitions for the local variables "func" and "ret"
-so that the corresponding setting will be performed a bit later.
+A dev_kfree_skb_any(skb) call was immediately used after a return code
+check in three function implementations.
+Thus use such a function call only once instead directly before the checks=
+.
+
+This issue was transformed by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/net/wireless/ath/ath6kl/sdio.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath11k/dp_rx.c  | 6 ++----
+ drivers/net/wireless/ath/ath12k/dp_mon.c | 4 +---
+ drivers/net/wireless/ath/ath12k/dp_rx.c  | 6 ++----
+ 3 files changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath6kl/sdio.c b/drivers/net/wireless=
-/ath/ath6kl/sdio.c
-index e4d15cc9b36c..689f83f6bce5 100644
-=2D-- a/drivers/net/wireless/ath/ath6kl/sdio.c
-+++ b/drivers/net/wireless/ath/ath6kl/sdio.c
-@@ -503,17 +503,15 @@ static void ath6kl_sdio_irq_handler(struct sdio_func=
- *func)
- static int ath6kl_sdio_power_on(struct ath6kl *ar)
- {
- 	struct ath6kl_sdio *ar_sdio =3D ath6kl_sdio_priv(ar);
--	struct sdio_func *func =3D ar_sdio->func;
--	int ret =3D 0;
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireles=
+s/ath/ath11k/dp_rx.c
+index c087d8a0f5b2..eb8e5fbdd77a 100644
+=2D-- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -1808,11 +1808,9 @@ static int ath11k_dp_rx_msdu_coalesce(struct ath11k=
+ *ar,
+ 		/* Free up all buffers of the MSDU */
+ 		while ((skb =3D __skb_dequeue(msdu_list)) !=3D NULL) {
+ 			rxcb =3D ATH11K_SKB_RXCB(skb);
+-			if (!rxcb->is_continuation) {
+-				dev_kfree_skb_any(skb);
+-				break;
+-			}
+ 			dev_kfree_skb_any(skb);
++			if (!rxcb->is_continuation)
++				break;
+ 		}
+ 		return -ENOMEM;
+ 	}
+diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wirele=
+ss/ath/ath12k/dp_mon.c
+index 5c6749bc4039..21780f06b4ae 100644
+=2D-- a/drivers/net/wireless/ath/ath12k/dp_mon.c
++++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
+@@ -2102,16 +2102,14 @@ int ath12k_dp_mon_srng_process(struct ath12k *ar, =
+int mac_id, int *budget,
+ 								  skb, napi, ppdu_id);
 
- 	if (!ar_sdio->is_disabled)
- 		return 0;
-
- 	ath6kl_dbg(ATH6KL_DBG_BOOT, "sdio power on\n");
+ 			peer =3D ath12k_peer_find_by_id(ab, ppdu_info->peer_id);
 -
-+	struct sdio_func *func =3D ar_sdio->func;
- 	sdio_claim_host(func);
++			dev_kfree_skb_any(skb);
+ 			if (!peer || !peer->sta) {
+ 				ath12k_dbg(ab, ATH12K_DBG_DATA,
+ 					   "failed to find the peer with peer_id %d\n",
+ 					   ppdu_info->peer_id);
+-				dev_kfree_skb_any(skb);
+ 				continue;
+ 			}
 
--	ret =3D sdio_enable_func(func);
-+	int ret =3D sdio_enable_func(func);
- 	sdio_release_host(func);
- 	if (ret) {
- 		ath6kl_err("Unable to enable sdio func: %d)\n", ret);
+-			dev_kfree_skb_any(skb);
+ 			pmon->dest_skb_q[i] =3D NULL;
+ 		}
+
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireles=
+s/ath/ath12k/dp_rx.c
+index 91e3393f7b5f..c0b59ac247bf 100644
+=2D-- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -1804,11 +1804,9 @@ static int ath12k_dp_rx_msdu_coalesce(struct ath12k=
+ *ar,
+ 		/* Free up all buffers of the MSDU */
+ 		while ((skb =3D __skb_dequeue(msdu_list)) !=3D NULL) {
+ 			rxcb =3D ATH12K_SKB_RXCB(skb);
+-			if (!rxcb->is_continuation) {
+-				dev_kfree_skb_any(skb);
+-				break;
+-			}
+ 			dev_kfree_skb_any(skb);
++			if (!rxcb->is_continuation)
++				break;
+ 		}
+ 		return -ENOMEM;
+ 	}
 =2D-
 2.46.0
 
