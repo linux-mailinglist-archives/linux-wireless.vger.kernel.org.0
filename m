@@ -1,209 +1,203 @@
-Return-Path: <linux-wireless+bounces-13074-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13075-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3F4097DF7D
-	for <lists+linux-wireless@lfdr.de>; Sun, 22 Sep 2024 00:47:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C88797E421
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Sep 2024 01:08:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 002B21C20B00
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Sep 2024 22:47:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D9C81C2100D
+	for <lists+linux-wireless@lfdr.de>; Sun, 22 Sep 2024 23:08:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A0B126BFB;
-	Sat, 21 Sep 2024 22:47:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G6YED0GR"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE5467DA83;
+	Sun, 22 Sep 2024 23:08:23 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-io1-f70.google.com (mail-io1-f70.google.com [209.85.166.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97B023D7
-	for <linux-wireless@vger.kernel.org>; Sat, 21 Sep 2024 22:47:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04137762D7
+	for <linux-wireless@vger.kernel.org>; Sun, 22 Sep 2024 23:08:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726958867; cv=none; b=bXcaQ3qjaYYlkUdXw5+Vd1bVQFCrL5jxuuRCKcKOKZIYk8wU+ZDU8cUR4EbRpWQQD/jfQM2z/ZIntl1LiV7nGNulJdBcKWm+VvvcJLeN22XvDje9h1LFvmYbZ3sd+nzxscAZsm+I4V18x3uAVJuyHylQPGSoQBzTEaIxjDLJlwI=
+	t=1727046503; cv=none; b=nwlJO/eK/d1dETua7q94dGbblm2GpHzOlWRLdgUxSMdEjTOkJTv1mcLeU353T65G0nOprrGmy3KeCW3EtuoLNDsvBPgh/5i84rd3EcdVOKAADny3YnR6IIQvwrdsoV/xtpsNasqu6GMXX4atac6OavKBXR2qci5QJmo3C2eRWIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726958867; c=relaxed/simple;
-	bh=YX1t3aWdc+NiRBAgFcJmu5lUE5yuagRqyf9kO4YvLNI=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:References:
-	 In-Reply-To:Content-Type; b=eXsC6hINabp72XtrameI4WgTZwWThA2XHZyGX434gwDeiVKQF1Mgxtq9xpVLPdYvxhr6ftZ5yyDG1o3RRwztOdnfUtnYAFYkz+SSwxgkzxfzfDWTqOnAy0DD5IHDUNWI0YwhuohjeyTK/1nuuHd1CZaYF2UzelSG6UzNYI//s90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G6YED0GR; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-42cb6f3a5bcso39817205e9.2
-        for <linux-wireless@vger.kernel.org>; Sat, 21 Sep 2024 15:47:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726958864; x=1727563664; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:subject:from:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=stTZ41G3D1NYpDE5ov4MqOkutQdFJQRl3wa5bThTrOU=;
-        b=G6YED0GRmDeBMR8KpeVguZ3bfy3Q1RCp9upmZSTsAWSkzs3vUhIatU21K55OSl69zY
-         Ah/Pi8GKUwruDYBhvfu6ruqCNGZy9M928Gwng6Q7OUJ8rdB6xCrmfNmA5NWM8IbenM1n
-         so3ten77sE+op79mEZc7JANFgYHphwI0p04aFfVTn94LC+i5ektuvcTigq7d3EQUYfny
-         dvvujTZgnuzTBtViSqyyOmTHIVCY0i2UKl9vh4fkGvyG0yrHz41NAe8+sUZP9fvbFzv6
-         GGo30mHpldfSyhP0peo13G8s4gWncKv0j+mzTy9kYkLe0wAakKuOwG+zUbXKenvVD4+B
-         2hRA==
+	s=arc-20240116; t=1727046503; c=relaxed/simple;
+	bh=VEMKNRhtM8106fxnnmEHNXFe77uEvoQwoECzdjmjkBw=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=OBmrPMBBWD9je/fEFeUyUCQDKUABq3jvEFycl7aQxbsY5cto+Z51pYjtRgIrB33PoxOL/D0ckE5XTDHHTWX4J6DayBNx8avnj+qRmTcRQBfyig2HUmdj5zblnezh0LqQPJz2LmgjKQD3qvRn9Az7xAT6VCyXYYkPD7diddn50Nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f70.google.com with SMTP id ca18e2360f4ac-82aa94d4683so573574439f.3
+        for <linux-wireless@vger.kernel.org>; Sun, 22 Sep 2024 16:08:21 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726958864; x=1727563664;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:subject:from:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=stTZ41G3D1NYpDE5ov4MqOkutQdFJQRl3wa5bThTrOU=;
-        b=UJ2T0zX0V5vYxRoirFSZ9OYIMVRhBPXqQM/Q/jhZPcE/GNXAYMJKXUbDnKcjS9/ym+
-         RArpYt/GVpdw+d0eaEdp293Eu35CYnGfdHxF8aX/Gk7RxGvZqpvl2wxVSm3so44xT5cQ
-         SuM41tnD4mqxCI6KrSgBDfjTYCF1fCJbFa/kdAOJkcO061ql7jOVadDPAPwokZBzACDN
-         qJ5eyD06AOUB8vS7Qo+A/IrDkRSsLMH8bjbEGELvp2Gi1SO25RPE+L1pYUAgvZt+8v2y
-         JlT3R2uys991QWXX4cZPA2FuiBSWseXDFFHzdrrhslXqYO780H2yeszZmyFdJ30u5ojy
-         11mA==
-X-Forwarded-Encrypted: i=1; AJvYcCVQwGNclmhNaIQhaTwlydwNgEswyPfcY/8mM2BtByWKjncYGTzzLCgms5L7P671eq2uRfqBM4eCzS5DaEHY2Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyOH12QFgn7xyJcyFdFjS44EWLDD8cZqcmXUMdeaaUCsYI98xSB
-	VpmckVKgco/EYsNcS+CmLLpf81ClLHE0NpVLw3Uwfq5OzGlf9OO06OatbA==
-X-Google-Smtp-Source: AGHT+IEJy832+HF9bsKKRdaMrG9Icyj7XKGe+hcl6bK5p9f908tXuU+KgIRcHYJpyIVZUDpfKPTQtw==
-X-Received: by 2002:a5d:4804:0:b0:374:c6af:1658 with SMTP id ffacd0b85a97d-37a422535a5mr6524349f8f.1.1726958863773;
-        Sat, 21 Sep 2024 15:47:43 -0700 (PDT)
-Received: from [192.168.1.50] ([79.119.240.193])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-378e7805337sm20868221f8f.104.2024.09.21.15.47.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 21 Sep 2024 15:47:42 -0700 (PDT)
-Message-ID: <38553e79-6747-4ab3-9bf4-fa7f2af852cd@gmail.com>
-Date: Sun, 22 Sep 2024 01:47:40 +0300
+        d=1e100.net; s=20230601; t=1727046501; x=1727651301;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EKzSJ/WaGJM/ku5gQoaoOIrRJShwWPCCrXWi3XodAHg=;
+        b=Z6r9irOWfpPSkBPwnJriXBZYl/DiUjTFQRR1w4qdlMpZOGvSVNVYFm88RvbwkHHq7I
+         mnaNPq1vBXrgGiYH4r84vvjOL6se0yVckYg2JJiydEElL55PHU9KhAeNPxmLq71cUp6o
+         m4PVexKEwP+frNkgLg36mConfYIQ0/wX/AgGiLnkn7MpcrSfkgp3wiy5ESpQJD0WC0Y5
+         cOhn5YlUr3Irn6N8k2or8P0JqJ1GGWhGkNusHEMmanQa7IskI5R5iLWra7U563j8qm4k
+         X/lwIIcx7axK3FEfLF5rfRGhLvDN7VJ55fl9zXJte4sj2QbWn9+oCfgWtHXMg6g76PdC
+         Z5UA==
+X-Forwarded-Encrypted: i=1; AJvYcCXxzEEW6efbXlXBN6OYMbmV4xw+/1vhr17jrF390sjfvXTKJ74d7sFnJCx+0IJiI46d1nN6+nILIrKFp5gsGg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5jqteDbd3RsJHSA5NlnQUSiAkYVY9hXm9w/4QQIwAX4+vcsai
+	x5cifjLTpABFFDQp08kkjIMuQa/yFBwj0OiA+87yPrwdc7wl1Ks4Vt7qa6HPQjP81FznctBTFZY
+	zX8pvJiVeDLPjj/Tn7frbdOOlw4Fdh8AEh4pzA3wn7Lat+XXPd1q+wnw=
+X-Google-Smtp-Source: AGHT+IHLDjB33A3pCGradFc/31YGrEYQVjlq9w3rRdYgCR6dbgkKL+Q/KSRP1Azpj/pA/wl8TmwEnkv/vrmlh+E/PEOVEYYYUZ44
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: Re: [PATCH 18/20] wifi: rtw88: Add rtw8821a.{c,h}
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <ade57ca1-444f-49e2-b49e-f4b9da65b2cc@gmail.com>
- <f25d00ab-4481-4540-956b-bc1028a501e1@gmail.com>
- <e365c61d730d4f49915b543dcb0063d5@realtek.com>
- <dafaac0c-fb55-4406-b8ff-69aa66d3fd06@gmail.com>
- <1aca96c68f914f90b6d1baf8780e6ce4@realtek.com>
- <bebaa40a-1c7a-4b1e-99cd-7c7aac7c76f4@gmail.com>
- <f583e9470ca84234ad2e00f3a0371664@realtek.com>
-Content-Language: en-US
-In-Reply-To: <f583e9470ca84234ad2e00f3a0371664@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Received: by 2002:a92:c544:0:b0:3a0:91e7:67cc with SMTP id
+ e9e14a558f8ab-3a0c8ceecd2mr85137885ab.13.1727046501203; Sun, 22 Sep 2024
+ 16:08:21 -0700 (PDT)
+Date: Sun, 22 Sep 2024 16:08:21 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <66f0a365.050a0220.a27de.000a.GAE@google.com>
+Subject: [syzbot] [wireless?] KMSAN: uninit-value in ath9k_hif_usb_reg_in_cb
+From: syzbot <syzbot+e5388ea6d2de83957e35@syzkaller.appspotmail.com>
+To: kvalo@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com, toke@toke.dk
+Content-Type: text/plain; charset="UTF-8"
 
-On 13/09/2024 04:50, Ping-Ke Shih wrote:
->>>
->>> #define REG_3WIRE_SWA 0xc00
->>> #define REG_3WIRE_SWB 0xe00
->>>
->>> (0xc00 page for path A, 0xe00 page for path B)
->>>
->>
->> Previously, you called 0xe00 REG_HSSI_WRITE_B. Are both names correct?
->> (I'm not sure why I put 0xc00 and 0xe00 on the list if you already gave
->> them a name.)
-> 
-> In fact, there is no _formal_ names for PHY registers, so I gave names by
-> abbreviation name from RTL code. Previously I may reference to vendor
-> drivers instead. Just choose one you like. 
-> 
->>>> 0xe90
->>>
->>> #define REG_PREDISTB 0xe90
->>>
->>
->> I put 0xe90 on the list by mistake. We already have a name for it
->> in the official driver:
->>
->> ./include/Hal8812PhyReg.h:66:#define rB_LSSIWrite_Jaguar                        0xe90 /* RF write addr */
->>
->> I translated that as REG_LSSI_WRITE_B. Is REG_PREDISTB also a valid
->> name? Do we need both names?
-> 
-> For the use case of 0xe90 in rtw8812a_iqk_tx_fill():
-> 
->    rtw_write32_mask(rtwdev, 0xc90, BIT(7), 0x1);
-> 
-> "RF write addr" seems not reasonable. I suggest to define both for this case. 
-> 
-> 
->> Some of these names are very different from their counterparts
->> from page C. In your previous email you said:
->>
->>> I think we can reuse existing definitions:
->>>
->>> rtw8723x.h:#define REG_OFDM_0_XA_TX_IQ_IMBALANCE        0x0c80
->>> rtw8703b.h:#define REG_OFDM0_A_TX_AFE 0x0c84
->>> rtw8723x.h:#define REG_OFDM_0_XB_TX_IQ_IMBALANCE        0x0c88
->>>
->>> #define REG_TSSI_TRK_SW 0xc8c
->>>
->>> rtw8821a.h:#define REG_TXAGCIDX                         0xc94
->>
->> Can we reuse these definitions?
-> 
-> Yes. You can reuse existing first. For non-existing definition, use the names
-> I gave in this thread. 
-> 
-> Basically we can have two ways to have names. One is from vendor drivers, and
-> the other is from abbreviation name of RTL code, which bit name instead of
-> whole register name is given. Also I'm not very familiar with the functionality,
-> so I did just paste reasonable names for undefined magic numbers.
-> 
+Hello,
 
-I see. Thank you for the explanations.
+syzbot found the following issue on:
 
->>>>>> +
->>>>>> +const struct rtw_chip_info rtw8812a_hw_spec = {
->>>>>
->>>>> Is it possible moving 8812a to individual file?
->>>>> Since you have rtw8812au.c and rtw8821au.c.
->>>>>
->>>>
->>>> I think it is possible. But most of the code is common to both chips.
->>>> Only the IQ calibration could be moved.
->>>
->>> Yep, depend on how much IQK code echo chip has.
->>>
->>
->> The IQ calibration for RTL8812AU is about 700 lines.
-> 
-> rtw8812au  -----> (a) rtw8812a 
->                         |
->                         v
->                   (b) rtw8821a_common  (hard to give a name)
->                         ^
->                         |
-> rtw8821au  -----> (c) rtw8821a
-> 
-> Put all common code to (b). IQK code in (a) or (c). 
-> 
-> I feel you have thought above picture already. What are problems we will encounter?
-> Many export symbols? If so, how about below?
-> 
-> rtw8812au  -----> (1) rtw8812a 
->     +---------+
->               +-> (2) rtw8821a_common  (hard to give a name)
->     +---------+
-> rtw8821au  -----> (3) rtw8821a
-> 
-> Put rtw8812a_hw_spec and rtw8821a_hw_spec in (2). Only IQK code in (1) and (3)
-> respectively, and export IQK entry only. Does it work?
-> 
->
-For the name of the common module, I was thinking rtw88_88xxa.ko.
+HEAD commit:    bdf56c7580d2 Merge tag 'slab-for-6.12' of git://git.kernel..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=131524a9980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=b82e97dfbc92f0
+dashboard link: https://syzkaller.appspot.com/bug?extid=e5388ea6d2de83957e35
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
 
-I wonder, what is the goal? To put the code in separate kernel
-modules, or just separate files?
+Unfortunately, I don't have any reproducer for this issue yet.
 
-I think we can have rtw88xxa.c (common code), rtw8821a.c (IQK code,
-rtw8821a_hw_spec, bluetooth stuff), and rtw8812a.c (IQK code,
-rtw8812a_hw_spec, some efuse stuff, channel switching)... if these
-three files compile into a single module, rtw88_88xxa.ko.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/b415ca186bb1/disk-bdf56c75.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/4ce89ea52bab/vmlinux-bdf56c75.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/9f99c9bf1bec/bzImage-bdf56c75.xz
 
-If each file compiles into a module of its own, we have circular
-dependencies: rtw8821a_hw_spec -> common code -> IQK code.
-If *_hw_spec go in the common module, it still depends on both of
-the other two modules, so what use is it?
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+e5388ea6d2de83957e35@syzkaller.appspotmail.com
+
+=====================================================
+BUG: KMSAN: uninit-value in __skb_set_length include/linux/skbuff.h:3190 [inline]
+BUG: KMSAN: uninit-value in ath9k_hif_usb_reg_in_cb+0x84d/0x9b0 drivers/net/wireless/ath/ath9k/hif_usb.c:756
+ __skb_set_length include/linux/skbuff.h:3190 [inline]
+ ath9k_hif_usb_reg_in_cb+0x84d/0x9b0 drivers/net/wireless/ath/ath9k/hif_usb.c:756
+ __usb_hcd_giveback_urb+0x572/0x840 drivers/usb/core/hcd.c:1650
+ usb_hcd_giveback_urb+0x157/0x720 drivers/usb/core/hcd.c:1734
+ dummy_timer+0xd3f/0x6aa0 drivers/usb/gadget/udc/dummy_hcd.c:1987
+ __run_hrtimer kernel/time/hrtimer.c:1691 [inline]
+ __hrtimer_run_queues+0x564/0xe40 kernel/time/hrtimer.c:1755
+ hrtimer_interrupt+0x3ab/0x1490 kernel/time/hrtimer.c:1817
+ local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1026 [inline]
+ __sysvec_apic_timer_interrupt+0xa6/0x3a0 arch/x86/kernel/apic/apic.c:1043
+ instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1037 [inline]
+ sysvec_apic_timer_interrupt+0x7e/0x90 arch/x86/kernel/apic/apic.c:1037
+ asm_sysvec_apic_timer_interrupt+0x1f/0x30 arch/x86/include/asm/idtentry.h:702
+ __preempt_count_dec_and_test arch/x86/include/asm/preempt.h:94 [inline]
+ __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:152 [inline]
+ _raw_spin_unlock_irqrestore+0x33/0x60 kernel/locking/spinlock.c:194
+ spin_unlock_irqrestore include/linux/spinlock.h:406 [inline]
+ dummy_pullup+0x273/0x320 drivers/usb/gadget/udc/dummy_hcd.c:924
+ usb_gadget_disconnect_locked+0x1f8/0x5b0 drivers/usb/gadget/udc/core.c:777
+ gadget_unbind_driver+0xe6/0x5f0 drivers/usb/gadget/udc/core.c:1666
+ device_remove drivers/base/dd.c:566 [inline]
+ __device_release_driver drivers/base/dd.c:1272 [inline]
+ device_release_driver_internal+0x58a/0x990 drivers/base/dd.c:1295
+ driver_detach+0x360/0x540 drivers/base/dd.c:1358
+ bus_remove_driver+0x465/0x500 drivers/base/bus.c:742
+ driver_unregister+0x8d/0x100 drivers/base/driver.c:274
+ usb_gadget_unregister_driver+0x55/0xa0 drivers/usb/gadget/udc/core.c:1731
+ raw_release+0x1bc/0x400 drivers/usb/gadget/legacy/raw_gadget.c:462
+ __fput+0x32c/0x1120 fs/file_table.c:431
+ ____fput+0x25/0x30 fs/file_table.c:459
+ task_work_run+0x268/0x310 kernel/task_work.c:228
+ resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+ exit_to_user_mode_loop kernel/entry/common.c:114 [inline]
+ exit_to_user_mode_prepare include/linux/entry-common.h:328 [inline]
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
+ syscall_exit_to_user_mode+0xce/0x170 kernel/entry/common.c:218
+ do_syscall_64+0xda/0x1e0 arch/x86/entry/common.c:89
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Uninit was created at:
+ __alloc_pages_noprof+0x9d6/0xe70 mm/page_alloc.c:4725
+ alloc_pages_mpol_noprof+0x299/0x990 mm/mempolicy.c:2263
+ alloc_pages_noprof+0x1bf/0x1e0 mm/mempolicy.c:2343
+ alloc_slab_page mm/slub.c:2413 [inline]
+ allocate_slab+0x320/0x12c0 mm/slub.c:2579
+ new_slab mm/slub.c:2632 [inline]
+ ___slab_alloc+0x12ef/0x35e0 mm/slub.c:3819
+ __slab_alloc mm/slub.c:3909 [inline]
+ __slab_alloc_node mm/slub.c:3962 [inline]
+ slab_alloc_node mm/slub.c:4123 [inline]
+ kmem_cache_alloc_noprof+0x57a/0xb20 mm/slub.c:4142
+ skb_clone+0x303/0x550 net/core/skbuff.c:2084
+ dev_queue_xmit_nit+0x4d0/0x12a0 net/core/dev.c:2315
+ xmit_one net/core/dev.c:3584 [inline]
+ dev_hard_start_xmit+0x17d/0xa20 net/core/dev.c:3604
+ __dev_queue_xmit+0x3576/0x55e0 net/core/dev.c:4424
+ dev_queue_xmit include/linux/netdevice.h:3094 [inline]
+ neigh_connected_output+0x5a0/0x690 net/core/neighbour.c:1594
+ neigh_output include/net/neighbour.h:542 [inline]
+ ip6_finish_output2+0x2347/0x2ba0 net/ipv6/ip6_output.c:141
+ __ip6_finish_output net/ipv6/ip6_output.c:215 [inline]
+ ip6_finish_output+0xbb8/0x14b0 net/ipv6/ip6_output.c:226
+ NF_HOOK_COND include/linux/netfilter.h:303 [inline]
+ ip6_output+0x356/0x620 net/ipv6/ip6_output.c:247
+ dst_output include/net/dst.h:450 [inline]
+ NF_HOOK include/linux/netfilter.h:314 [inline]
+ ndisc_send_skb+0xb9f/0x14c0 net/ipv6/ndisc.c:511
+ ndisc_send_rs+0x97e/0xae0 net/ipv6/ndisc.c:721
+ addrconf_rs_timer+0x488/0x6f0 net/ipv6/addrconf.c:4042
+ call_timer_fn+0x49/0x580 kernel/time/timer.c:1794
+ expire_timers kernel/time/timer.c:1845 [inline]
+ __run_timers kernel/time/timer.c:2419 [inline]
+ __run_timer_base+0x84e/0xe90 kernel/time/timer.c:2430
+ run_timer_base kernel/time/timer.c:2439 [inline]
+ run_timer_softirq+0x3a/0x70 kernel/time/timer.c:2449
+ handle_softirqs+0x1a0/0x7c0 kernel/softirq.c:554
+ __do_softirq kernel/softirq.c:588 [inline]
+ invoke_softirq kernel/softirq.c:428 [inline]
+ __irq_exit_rcu+0x68/0x120 kernel/softirq.c:637
+ irq_exit_rcu+0x12/0x20 kernel/softirq.c:649
+ instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1037 [inline]
+ sysvec_apic_timer_interrupt+0x83/0x90 arch/x86/kernel/apic/apic.c:1037
+ asm_sysvec_apic_timer_interrupt+0x1f/0x30 arch/x86/include/asm/idtentry.h:702
+
+CPU: 0 UID: 0 PID: 7385 Comm: syz.1.489 Tainted: G        W          6.11.0-syzkaller-04744-gbdf56c7580d2 #0
+Tainted: [W]=WARN
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
+=====================================================
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
