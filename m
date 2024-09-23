@@ -1,146 +1,152 @@
-Return-Path: <linux-wireless+bounces-13089-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13090-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 199A397EFFC
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Sep 2024 19:52:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50C7297F094
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Sep 2024 20:26:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5C351F22064
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Sep 2024 17:52:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18D90282B59
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Sep 2024 18:26:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 814DC19F427;
-	Mon, 23 Sep 2024 17:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 248C31A073F;
+	Mon, 23 Sep 2024 18:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="kC5MLjS7"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="L9cnYoQG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72FB1EB44
-	for <linux-wireless@vger.kernel.org>; Mon, 23 Sep 2024 17:52:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6084519F41C;
+	Mon, 23 Sep 2024 18:22:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727113950; cv=none; b=XcotO2igbGc+Kg/GQwbnqb3JrnYr7rdwrCyS6eryin2vgd2epAKslpTK9dutsXYadKuQZkDrbl8irg946paZE2AsvVFWMfD+QFflE1rF1ZiOKgiXpAwOVRA+Vc8WWUj6P8cfYGOpQoxYqwiaaa5t3O6qxD/B0M/NfsQMbUo6KYs=
+	t=1727115734; cv=none; b=pZFkrkKKs6yVQJ/7PdYCPKgovcnvOaisVXrBNhPXmJz3CZe+bp1qtY0OkcS/zaOutPJzoDoWP/yYXKcGj8bZ1NIemhdQIiXIojFhJInm4Wq0Ycmm7+X7PSwlE9G8YMKtbkgCkHJ6765TrH6JDCtdNLRWblfg/oJYUJQdmT74oxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727113950; c=relaxed/simple;
-	bh=d012RvO8FEt4oNV/hdC2ORp0abycOdoKV3NqdL6MFLw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kIxQ1kvzF22N00LMiAfM13BdMK+wT/sjAhV5u5qqb4MWm0pgNwqeQflzRuaNlR7agCJ6yCWuhgo2yx8QBIq50dryKwvqiD/6nlGF9UUA7dnCbeY8u7QldnK2grsMsN7Np++KcTSdeOr0K71aDe3aJI9MtnppgtKu3Ex1AdGeiSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=kC5MLjS7; arc=none smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-45830ff5b70so37096471cf.1
-        for <linux-wireless@vger.kernel.org>; Mon, 23 Sep 2024 10:52:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1727113947; x=1727718747; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=d012RvO8FEt4oNV/hdC2ORp0abycOdoKV3NqdL6MFLw=;
-        b=kC5MLjS7vlx32L+CMo/vijxLpluIvZK6GFWocekev0UAgknUMOwkw6vZ2x/QAQxi/O
-         Bc214bhG7DWlIC6bp3btej9mimBmpj/ssPHpH804+PKmzn9qk0S9c7NKyr2t39X/i7Jy
-         dxzMGCDmis/JH40iEX0YCAOTCo6I0sXk1kY9UcOA3xFmDNEokZcut4Sy0w+4JpwcVOpC
-         V3R0IdkdSvljBaOrLoBYBzB4GrRwS3m98tA4BYkEUatuU8KPFuld/opufxvr05E5vgmZ
-         3A4I9bDmmafNkdK1HWGQa2EL19C3dO+81lZcYzGlxoxwnQYtmI3EBw5F0hD9W/4ZRUAs
-         pXPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727113947; x=1727718747;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=d012RvO8FEt4oNV/hdC2ORp0abycOdoKV3NqdL6MFLw=;
-        b=HfVOHGp46sHatH8NekV6McbHwbtTMM7uhev80uoSoOS2q8Fd+npQjB5igFNmYHP815
-         z21dknxgTfZm1Tf5LjL/6R37cLkXz9Pb12sqxV2EEoiYtg8wJCKtkwmHhO9AWbdzZzjS
-         vtyk9sWdMiQNzHtuKsky55KBzpmHAVzEAgoP2SOzbyC7ObTE/oyOmX+vZlm+NnHXYS0r
-         0Y+cXHJK9Raj9bwPC6pYqHQtckRZrWV3T74vXZzl2SCnQsKWeqLsQBa8+Tmlyx8kbpCG
-         sI//M60Cg52WHCaBB/mTkfFT80wEYh7ec+E8V0gFd8M8HBwq5W5I0H7Z4ujOCRII6yIB
-         tlSg==
-X-Forwarded-Encrypted: i=1; AJvYcCUGRG68P4SCdOnG7wcU9mJZBGUrdcRtU0YfmPhPyQGu5STw4I4ouoEtzJ+KiBnbPV0OE9D/y2MYdAqONzCutQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwrnYy8XCbLULBPniJVtUFkwzHBXqTUitMZibpPz1+BeMzXbkQy
-	cBJLaR0dPFNtRZOESB1k4TfskRLGGsXpyaV2emiqwbFN5AGm4yOmerwqK8PI3Zw=
-X-Google-Smtp-Source: AGHT+IHVrqHIowyi3PGsNMuzErMWdcwmU1SRIkTjY6Vp086kbtdmtvbVDAGc60f4mvoOr4wDyCS+5A==
-X-Received: by 2002:a05:622a:107:b0:458:35f7:3950 with SMTP id d75a77b69052e-45b226f380cmr178883201cf.17.1727113947576;
-        Mon, 23 Sep 2024 10:52:27 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-142-68-128-5.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.128.5])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45b17888cdbsm49348071cf.49.2024.09.23.10.52.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Sep 2024 10:52:26 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.95)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1ssnEY-000LlC-32;
-	Mon, 23 Sep 2024 14:52:26 -0300
-Date: Mon, 23 Sep 2024 14:52:26 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Yunsheng Lin <linyunsheng@huawei.com>
-Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>, davem@davemloft.net,
-	kuba@kernel.org, pabeni@redhat.com, liuyonglong@huawei.com,
-	fanghaiqing@huawei.com, zhangkun09@huawei.com,
-	Robin Murphy <robin.murphy@arm.com>,
-	Alexander Duyck <alexander.duyck@gmail.com>,
-	IOMMU <iommu@lists.linux.dev>, Wei Fang <wei.fang@nxp.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
-	Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>, Kalle Valo <kvalo@kernel.org>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Andrew Morton <akpm@linux-foundation.org>, imx@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org, bpf@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, linux-mm@kvack.org
-Subject: Re: [PATCH net 2/2] page_pool: fix IOMMU crash when driver has
- already unbound
-Message-ID: <20240923175226.GC9634@ziepe.ca>
-References: <20240918111826.863596-1-linyunsheng@huawei.com>
- <20240918111826.863596-3-linyunsheng@huawei.com>
- <CAC_iWjK=G7Oo5=pN2QunhasgDC6NyC1L+96jigX7u9ad+PbYng@mail.gmail.com>
- <894a3c2c-22f9-45b9-a82b-de7320066b42@kernel.org>
- <cdfecd37-31d7-42d2-a8d8-92008285b42e@huawei.com>
- <0e8c7a7a-0e2a-42ec-adbc-b29f6a514517@kernel.org>
- <CAC_iWj+3JvPY2oqVOdu0T1Wt6-ukoy=dLc72u1f55yY23uOTbA@mail.gmail.com>
- <2c5ccfff-6ab4-4aea-bff6-3679ff72cc9a@huawei.com>
+	s=arc-20240116; t=1727115734; c=relaxed/simple;
+	bh=9iY+4FM4+oIBVw73ti8BAWVWFWPB+mK/XcAHFHXLCmM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Qa0SwZZxR6jG0cjj4TwgwN5Q5ghYZV9fdHO3tBBD7n4x42u09amIQiAWynJiqB3rSQEzaL3DFZtUXtlCoB5jn3NwPElu5u8IuxBGdjZDKgjvpaAIS9yIz1y6GL1H/UMiY9d3KsfmGx/YI+NFmRx3582T5qloIerYz8FIhvAWvhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=L9cnYoQG; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48NAEPjI032714;
+	Mon, 23 Sep 2024 18:21:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	FfMvljWqolIkMjOU9A/mkoVjgPykveoXeX/hADfX+Pc=; b=L9cnYoQGDL9UqaUU
+	AxQo4O86R6kqhElq6foVWBvqnYv+r6RnruH5jwBmIx4F4F0gOVjJ66K3h5vnc/fZ
+	C0qw0XXqg2jmhfNv8WgpP72joZRmkcPxOHIwRayin3+lX9ab83V2n/h9z4ZR7qBK
+	X4rj+SFTxPuvMqtRE336IXaZvX1DQxw80BIJTYlmy6yEQzfIRTIVLSemydahltDq
+	BhwEpC+HbhfnsbNo8gF+sioy3v/oUX6khJuvRDW3V/EcxT4ryxNXK4TjZI3l59z4
+	ZoDVCu449saJsTNGaSsBv1FGBtDSSEI2+YuFC1QXbM8/vRc5eu4F7iNh1tJRK8kC
+	pWFZGw==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41sqe95mde-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Sep 2024 18:21:51 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48NILpn1031081
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Sep 2024 18:21:51 GMT
+Received: from [10.227.110.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 23 Sep
+ 2024 11:21:50 -0700
+Message-ID: <ca52f5a6-2f38-447c-a2b8-8404fffecaf2@quicinc.com>
+Date: Mon, 23 Sep 2024 11:21:50 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2c5ccfff-6ab4-4aea-bff6-3679ff72cc9a@huawei.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] ath6kl: Reduce scopes for two variables in
+ ath6kl_sdio_power_on()
+To: Markus Elfring <Markus.Elfring@web.de>, <linux-wireless@vger.kernel.org>,
+        Kalle Valo <kvalo@kernel.org>,
+        Krzysztof Kozlowski
+	<krzysztof.kozlowski@linaro.org>
+CC: LKML <linux-kernel@vger.kernel.org>, Julia Lawall <julia.lawall@inria.fr>,
+        Peter Zijlstra <peterz@infradead.org>
+References: <d5a19bb5-f940-4f07-9f98-c670d96cc839@web.de>
+ <33b08664-fa25-4cef-86b2-49f65b4369c9@web.de>
+ <80b820cd-9255-473e-8e4a-3e7d8612d876@quicinc.com>
+ <45f6c8a7-4021-483a-aa81-a836cd3fbcd8@web.de>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <45f6c8a7-4021-483a-aa81-a836cd3fbcd8@web.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 6DdNGXIIae8vwd42zLyoCwKECqZvpZuq
+X-Proofpoint-GUID: 6DdNGXIIae8vwd42zLyoCwKECqZvpZuq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ mlxlogscore=829 spamscore=0 lowpriorityscore=0 adultscore=0 mlxscore=0
+ suspectscore=0 malwarescore=0 phishscore=0 impostorscore=0 clxscore=1015
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409230135
 
-On Fri, Sep 20, 2024 at 02:14:02PM +0800, Yunsheng Lin wrote:
+On 9/23/2024 10:00 AM, Markus Elfring wrote:
+>>> Adjust the definitions for the local variables "func" and "ret"
+>>> so that the corresponding setting will be performed a bit later.
+> …
+>>> +++ b/drivers/net/wireless/ath/ath6kl/sdio.c
+>>> @@ -503,17 +503,15 @@ static void ath6kl_sdio_irq_handler(struct sdio_func *func)
+>>>  static int ath6kl_sdio_power_on(struct ath6kl *ar)
+>>>  {
+>>>  	struct ath6kl_sdio *ar_sdio = ath6kl_sdio_priv(ar);
+>>> -	struct sdio_func *func = ar_sdio->func;
+>>> -	int ret = 0;
+>>>
+>>>  	if (!ar_sdio->is_disabled)
+>>>  		return 0;
+>>>
+>>>  	ath6kl_dbg(ATH6KL_DBG_BOOT, "sdio power on\n");
+>>> -
+>>> +	struct sdio_func *func = ar_sdio->func;
+>>>  	sdio_claim_host(func);
+>>>
+>>> -	ret = sdio_enable_func(func);
+>>> +	int ret = sdio_enable_func(func);
+>>>  	sdio_release_host(func);
+>>>  	if (ret) {
+>>>  		ath6kl_err("Unable to enable sdio func: %d)\n", ret);
+>>> --
+>>> 2.46.0
+>>
+>> NAK
+>>
+>> no maintainer wants to spend time on patches like this which bring no real
+>> value to code that is not actively being maintained, and which violates the
+>> established understanding that, except under certain recently established
+>> criteria, declarations and code should not be interleaved.
+> …
+> 
+> Would you find other software design options more acceptable for further
+> collateral evolution?
+> 
+> 1. Additional compound statements (by using extra curly brackets)
+> 
+> 2. Moving a bit of source code into an additional function implementation
 
-> I am not sure what dose the API that allows netdev to "give" struct device
-> to page_pool look like or how to implement the API yet, but the obvious way
-> to stall the calling of device_del() is to wait for the inflight
-> page to
+I cannot speak for other maintainers, only myself. For myself I am far more
+interested in changes which fix actual errors or warnings, and far more
+interested in changes to code that is actually being widely used and where
+active development is occurring, as opposed to drivers that have no ongoing
+development and little deployment. At this time the ath.git maintainers are
+100% focused on the ath12k MLO feature, and anything other than bug fixes to
+ath12k or other ath drivers will be ignored.
 
-It is not device_del() you need to stall, but the remove() function of
-the device driver.
-
-Once all drivers have been unbound the DMA API can be reconfigured and
-all existing DMA mappings must be concluded before this happens,
-otherwise there will be problems.
-
-So, stalling something like unregister_netdevice() would be a better
-target - though stalling forever on driver unbind would not be
-acceptable.
-
-Jason
+/jeff
 
