@@ -1,139 +1,197 @@
-Return-Path: <linux-wireless+bounces-13080-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13081-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90F6297E5CE
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Sep 2024 07:58:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4407D97E64F
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Sep 2024 09:01:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 366ACB20BD1
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Sep 2024 05:58:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6718E1C20F5E
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Sep 2024 07:01:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59317747F;
-	Mon, 23 Sep 2024 05:58:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="kNBD9LZw"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98F093C485;
+	Mon, 23 Sep 2024 07:01:18 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB46171AF
-	for <linux-wireless@vger.kernel.org>; Mon, 23 Sep 2024 05:58:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC4129415;
+	Mon, 23 Sep 2024 07:01:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727071122; cv=none; b=Y8Q/4QsNnXOPLCPOQTkz/epM3xeD1q03JcjbUHzrxLueHjgSpYYHw5HUz+Zw82ZuouK5zzy9YzMj371Q+mRyFxNAf9iMXBxj3NdY47Gp+7t8TJXMTJY/dsih59A37q8MkVbNbVftGT/HAQQctZK7oJelTWHncaQNm6n7OqV7/Nk=
+	t=1727074878; cv=none; b=d7onMI5OYsOllY+FZl6bfknn47o8Wo8oPucGRd87TJYScgCf6N/JxNPy/u6Hq41KXNuFytgJctmGqPSqLPC4l+UOKoyoR+o9jGG1YFq8Z+GMPRsYPMw/unLWldxo7FagK+2hnrs4ZEbvgBfmZFwF+W40VWjtZ1qhT7F6j7jDXlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727071122; c=relaxed/simple;
-	bh=FKfY56rKJwemaI4jEx0Kpw3b9x4hGt1EYMrrnxNclYM=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=NJbUjhHUBo7phfsl8xnNUJ8Bokzg/t0ahpi+rAQaTpqWDahxUYYzCRETCeMKZMeuJnmWgjXU3U10LQEr/gLd0InQ748yR4cGk6S8gBonEJVLdGcjQUBDjZ6pgL8gd1RwqSSdCbVo1CZGyjpBfagaE4eyqCWgLXBpvRPzdKQsVWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=kNBD9LZw; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 48N5wZuV5861343, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1727071115; bh=FKfY56rKJwemaI4jEx0Kpw3b9x4hGt1EYMrrnxNclYM=;
-	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=kNBD9LZwOsSEfzs3jQ+jwWeyLcFyiY3EVGgUzhortnHbJyJBahg2Qt5pHus6eWWzr
-	 67q/e9xV8W13N8IEiuPpi1AZaYTbMl3g1bJbL4WqUuRWohohrtPBAlFr17PwCFNY8x
-	 Q7V/xuOqzoPn4j8Ic+lKD/k0j/FBk0cxfMopPXrxh5o68aCq1zXzIXw0hHO+x5en2S
-	 KvpJSDjJQbMCpUeJVyfA4NSjjD+CxGLiEJtZrkvxAYNdKSlsYKjl2aCmA/UCdITM3r
-	 fo5jI6+gq0LWjaO6dISlbJkHGHIr481Nk2bbOuErI+AJlJx52rxozyHQJIxhqK/jQo
-	 ZWy2oOTTzGE1A==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.05/5.92) with ESMTPS id 48N5wZuV5861343
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 23 Sep 2024 13:58:35 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+	s=arc-20240116; t=1727074878; c=relaxed/simple;
+	bh=CDHFNYRC/h6HRJUUrT6OvaZc1HSgkph1ZvzPrpmYm8I=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=PNAut2Pj3eWY2mH0VQ8UB1ig6zb2dWC5DMbpJKvtLIpqBO9ckpdZsbnf+RcHs/H+ot28wlHQDHFALorz2QZFOLYbjjTpw9ePkVWyZWu6+yxCsJWfd+xS6UqIah0LnSQMNJUNb9xq+fnqBb7lG/4u5oVI5U8z32JmieeQYje1APA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4XBv6L5xx7z1ymGS;
+	Mon, 23 Sep 2024 15:01:14 +0800 (CST)
+Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9CD3A1400F4;
+	Mon, 23 Sep 2024 15:01:13 +0800 (CST)
+Received: from [10.67.120.129] (10.67.120.129) by
+ dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 23 Sep 2024 13:58:36 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 23 Sep 2024 13:58:35 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
- RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
- 15.01.2507.035; Mon, 23 Sep 2024 13:58:35 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH 18/20] wifi: rtw88: Add rtw8821a.{c,h}
-Thread-Topic: [PATCH 18/20] wifi: rtw88: Add rtw8821a.{c,h}
-Thread-Index: AQHa7DKP0miyRAHIW0qWSqezSXaH97IpJM5AgBHQWoCAFW7yIIADltQAgAEjSvCADXPMAIACikGAgAAGIVA=
-Date: Mon, 23 Sep 2024 05:58:35 +0000
-Message-ID: <94abf678de114a3fa5450c1c9cf6f930@realtek.com>
-References: <ade57ca1-444f-49e2-b49e-f4b9da65b2cc@gmail.com>
- <f25d00ab-4481-4540-956b-bc1028a501e1@gmail.com>
- <e365c61d730d4f49915b543dcb0063d5@realtek.com>
- <dafaac0c-fb55-4406-b8ff-69aa66d3fd06@gmail.com>
- <1aca96c68f914f90b6d1baf8780e6ce4@realtek.com>
- <bebaa40a-1c7a-4b1e-99cd-7c7aac7c76f4@gmail.com>
- <f583e9470ca84234ad2e00f3a0371664@realtek.com>
- <38553e79-6747-4ab3-9bf4-fa7f2af852cd@gmail.com>
- <73de8e7135554ae9a0f7968780644515@realtek.com>
-In-Reply-To: <73de8e7135554ae9a0f7968780644515@realtek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ 15.2.1544.11; Mon, 23 Sep 2024 15:01:13 +0800
+Message-ID: <2fb8d278-62e0-4a81-a537-8f601f61e81d@huawei.com>
+Date: Mon, 23 Sep 2024 15:01:12 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 2/2] page_pool: fix IOMMU crash when driver has
+ already unbound
+From: Yunsheng Lin <linyunsheng@huawei.com>
+To: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<liuyonglong@huawei.com>, <fanghaiqing@huawei.com>, <zhangkun09@huawei.com>,
+	Robin Murphy <robin.murphy@arm.com>, Alexander Duyck
+	<alexander.duyck@gmail.com>, IOMMU <iommu@lists.linux.dev>, Wei Fang
+	<wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang
+	<xiaoning.wang@nxp.com>, Eric Dumazet <edumazet@google.com>, Tony Nguyen
+	<anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>, Alexei Starovoitov
+	<ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard
+ Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Saeed
+ Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq Toukan
+	<tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi
+	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen
+	<shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, Kalle Valo
+	<kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Andrew
+ Morton <akpm@linux-foundation.org>, <imx@lists.linux.dev>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<intel-wired-lan@lists.osuosl.org>, <bpf@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>,
+	<linux-mm@kvack.org>
+References: <20240918111826.863596-1-linyunsheng@huawei.com>
+ <20240918111826.863596-3-linyunsheng@huawei.com>
+ <CAC_iWjK=G7Oo5=pN2QunhasgDC6NyC1L+96jigX7u9ad+PbYng@mail.gmail.com>
+ <50a463d5-a5a1-422f-a4f7-d3587b12c265@huawei.com>
+Content-Language: en-US
+In-Reply-To: <50a463d5-a5a1-422f-a4f7-d3587b12c265@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemf200006.china.huawei.com (7.185.36.61)
 
-UGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+IHdyb3RlOg0KPiBCaXR0ZXJibHVlIFNt
-aXRoIDxydGw4ODIxY2VyZmUyQGdtYWlsLmNvbT4gd3JvdGU6DQo+ID4gPj4+Pj4+ICsNCj4gPiA+
-Pj4+Pj4gK2NvbnN0IHN0cnVjdCBydHdfY2hpcF9pbmZvIHJ0dzg4MTJhX2h3X3NwZWMgPSB7DQo+
-ID4gPj4+Pj4NCj4gPiA+Pj4+PiBJcyBpdCBwb3NzaWJsZSBtb3ZpbmcgODgxMmEgdG8gaW5kaXZp
-ZHVhbCBmaWxlPw0KPiA+ID4+Pj4+IFNpbmNlIHlvdSBoYXZlIHJ0dzg4MTJhdS5jIGFuZCBydHc4
-ODIxYXUuYy4NCj4gPiA+Pj4+Pg0KPiA+ID4+Pj4NCj4gPiA+Pj4+IEkgdGhpbmsgaXQgaXMgcG9z
-c2libGUuIEJ1dCBtb3N0IG9mIHRoZSBjb2RlIGlzIGNvbW1vbiB0byBib3RoIGNoaXBzLg0KPiA+
-ID4+Pj4gT25seSB0aGUgSVEgY2FsaWJyYXRpb24gY291bGQgYmUgbW92ZWQuDQo+ID4gPj4+DQo+
-ID4gPj4+IFllcCwgZGVwZW5kIG9uIGhvdyBtdWNoIElRSyBjb2RlIGVjaG8gY2hpcCBoYXMuDQo+
-ID4gPj4+DQo+ID4gPj4NCj4gPiA+PiBUaGUgSVEgY2FsaWJyYXRpb24gZm9yIFJUTDg4MTJBVSBp
-cyBhYm91dCA3MDAgbGluZXMuDQo+ID4gPg0KPiA+ID4gcnR3ODgxMmF1ICAtLS0tLT4gKGEpIHJ0
-dzg4MTJhDQo+ID4gPiAgICAgICAgICAgICAgICAgICAgICAgICB8DQo+ID4gPiAgICAgICAgICAg
-ICAgICAgICAgICAgICB2DQo+ID4gPiAgICAgICAgICAgICAgICAgICAoYikgcnR3ODgyMWFfY29t
-bW9uICAoaGFyZCB0byBnaXZlIGEgbmFtZSkNCj4gPiA+ICAgICAgICAgICAgICAgICAgICAgICAg
-IF4NCj4gPiA+ICAgICAgICAgICAgICAgICAgICAgICAgIHwNCj4gPiA+IHJ0dzg4MjFhdSAgLS0t
-LS0+IChjKSBydHc4ODIxYQ0KPiA+ID4NCj4gPiA+IFB1dCBhbGwgY29tbW9uIGNvZGUgdG8gKGIp
-LiBJUUsgY29kZSBpbiAoYSkgb3IgKGMpLg0KPiA+ID4NCj4gPiA+IEkgZmVlbCB5b3UgaGF2ZSB0
-aG91Z2h0IGFib3ZlIHBpY3R1cmUgYWxyZWFkeS4gV2hhdCBhcmUgcHJvYmxlbXMgd2Ugd2lsbCBl
-bmNvdW50ZXI/DQo+ID4gPiBNYW55IGV4cG9ydCBzeW1ib2xzPyBJZiBzbywgaG93IGFib3V0IGJl
-bG93Pw0KPiA+ID4NCj4gPiA+IHJ0dzg4MTJhdSAgLS0tLS0+ICgxKSBydHc4ODEyYQ0KPiA+ID4g
-ICAgICstLS0tLS0tLS0rDQo+ID4gPiAgICAgICAgICAgICAgICstPiAoMikgcnR3ODgyMWFfY29t
-bW9uICAoaGFyZCB0byBnaXZlIGEgbmFtZSkNCj4gPiA+ICAgICArLS0tLS0tLS0tKw0KPiA+ID4g
-cnR3ODgyMWF1ICAtLS0tLT4gKDMpIHJ0dzg4MjFhDQo+ID4gPg0KPiA+ID4gUHV0IHJ0dzg4MTJh
-X2h3X3NwZWMgYW5kIHJ0dzg4MjFhX2h3X3NwZWMgaW4gKDIpLiBPbmx5IElRSyBjb2RlIGluICgx
-KSBhbmQgKDMpDQo+ID4gPiByZXNwZWN0aXZlbHksIGFuZCBleHBvcnQgSVFLIGVudHJ5IG9ubHku
-IERvZXMgaXQgd29yaz8NCj4gPiA+DQo+ID4gPg0KPiA+IEZvciB0aGUgbmFtZSBvZiB0aGUgY29t
-bW9uIG1vZHVsZSwgSSB3YXMgdGhpbmtpbmcgcnR3ODhfODh4eGEua28uDQo+ID4NCj4gPiBJIHdv
-bmRlciwgd2hhdCBpcyB0aGUgZ29hbD8gVG8gcHV0IHRoZSBjb2RlIGluIHNlcGFyYXRlIGtlcm5l
-bA0KPiA+IG1vZHVsZXMsIG9yIGp1c3Qgc2VwYXJhdGUgZmlsZXM/DQo+IA0KPiBJIHdvdWxkIGxp
-a2UgdG8gcmVkdWNlIHJ1bnRpbWUgbWVtb3J5LiBBcyBJIGFza2VkLCBob3cgbWFueSBJUUsgY29k
-ZSBhcmUgZGlmZmVyZW50DQo+IGZyb20gdGhlbT8gSWYgeW91IGhhdmUgc2VwYXJhdGVkIGFuZCBj
-b21waWxlZCB0aGVtLCBjYW4geW91IHNoYXJlIHNpemUgYnkgdGhlDQo+IG91dHB1dCBvZiAnc2l6
-ZScgY29tbWFuZD8NCj4gDQo+ID4NCj4gPiBJIHRoaW5rIHdlIGNhbiBoYXZlIHJ0dzg4eHhhLmMg
-KGNvbW1vbiBjb2RlKSwgcnR3ODgyMWEuYyAoSVFLIGNvZGUsDQo+ID4gcnR3ODgyMWFfaHdfc3Bl
-YywgYmx1ZXRvb3RoIHN0dWZmKSwgYW5kIHJ0dzg4MTJhLmMgKElRSyBjb2RlLA0KPiA+IHJ0dzg4
-MTJhX2h3X3NwZWMsIHNvbWUgZWZ1c2Ugc3R1ZmYsIGNoYW5uZWwgc3dpdGNoaW5nKS4uLiBpZiB0
-aGVzZQ0KPiA+IHRocmVlIGZpbGVzIGNvbXBpbGUgaW50byBhIHNpbmdsZSBtb2R1bGUsIHJ0dzg4
-Xzg4eHhhLmtvLg0KPiA+DQo+ID4gSWYgZWFjaCBmaWxlIGNvbXBpbGVzIGludG8gYSBtb2R1bGUg
-b2YgaXRzIG93biwgd2UgaGF2ZSBjaXJjdWxhcg0KPiA+IGRlcGVuZGVuY2llczogcnR3ODgyMWFf
-aHdfc3BlYyAtPiBjb21tb24gY29kZSAtPiBJUUsgY29kZS4NCj4gPiBJZiAqX2h3X3NwZWMgZ28g
-aW4gdGhlIGNvbW1vbiBtb2R1bGUsIGl0IHN0aWxsIGRlcGVuZHMgb24gYm90aCBvZg0KPiA+IHRo
-ZSBvdGhlciB0d28gbW9kdWxlcywgc28gd2hhdCB1c2UgaXMgaXQ/DQo+IA0KPiBJZiB3ZSBoYXZl
-IGRlcGVuZGVuY3kgb2YgY29tbW9uIGNvZGUgLT4gSVFLIGNvZGUsIHdlIGNhbid0IHNhdmUgcnVu
-dGltZQ0KPiBtZW1vcnksIGJlY2F1c2UgY29tbW9uIGNvZGUgcmVmZXJlbmNlIHRvIGJvdGggSVFL
-IGNvZGUuIFNvIEkgZmVsdA0KPiBkZXBlbmRlbmN5IG9mIElRSyBjb2RlIHdvdWxkIGJlIHJ0dzg4
-MTJhdSAtLT4gSVFLIGNvZGUgYXMgYWJvdmUgc2Vjb25kDQo+IGRpYWdyYW0uDQo+IA0KPiBCdXQg
-aWYgdGhlIHdvcmsgaXMgY29tcGxpY2F0ZWQgYW5kIHNhdmUgZmV3IHJ1bnRpbWUgbWVtb3J5LCB3
-ZSBjYW4NCj4gdXNlIHNpbXBsZSBkZXNpZ24gYXMgY3VycmVudCBkaWQuDQo+IA0KDQpTb3JyeS4g
-Q29ycmVjdCB0eXBvLiAiLi4uIHNhdmUgZmV3IHJ1bnRpbWUgbWVtb3J5IC4uLiIgKHJlbW92ZSAn
-bm90JykNCg0KDQo=
+On 2024/9/19 18:54, Yunsheng Lin wrote:
+> On 2024/9/19 1:06, Ilias Apalodimas wrote:
+>> Hi Yunsheng,
+>>
+>> Thanks for looking into this!
+>>
+>> On Wed, 18 Sept 2024 at 14:24, Yunsheng Lin <linyunsheng@huawei.com> wrote:
+>>>
+>>> Networking driver with page_pool support may hand over page
+>>> still with dma mapping to network stack and try to reuse that
+>>> page after network stack is done with it and passes it back
+>>> to page_pool to avoid the penalty of dma mapping/unmapping.
+>>
+>> I think you can shorten this to "If recycling and DMA mapping are
+>> enabled during the pool creation"
+> 
+> I am not sure if I understand the 'recycling' part here. Is the
+> 'recycling' part referring to whether skb_mark_for_recycle() is
+> called to enable recycling for the skb? Is there still any driver
+> with page_pool support but doesn't call skb_mark_for_recycle()
+> when handing over page to network stack?
+> 
+> For the 'DMA mapping' part, as there is no space in 'struct
+> page' to track the inflight pages, so 'pp' in 'struct page'
+> is renamed to 'pp_item' to enable the tracking of inflight
+> page. I tried shortening this for 'pool->dma_map being false'
+> when coding, but it seems differentiating the same field in
+> 'struct page' doesn't make much sense according to 'pool->dma_map'
+> as it means we might need to add an union in 'struct page' for
+> that to work and add additional checking to decide if it is 'pp'
+> or 'pp_item'.
+> 
+>>
+>>> With all the caching in the network stack, some pages may be
+>>> held in the network stack without returning to the page_pool
+>>> soon enough, and with VF disable causing the driver unbound,
+>>> the page_pool does not stop the driver from doing it's
+>>> unbounding work, instead page_pool uses workqueue to check
+>>> if there is some pages coming back from the network stack
+>>> periodically, if there is any, it will do the dma unmmapping
+>>> related cleanup work.
+>>>
+>>> As mentioned in [1], attempting DMA unmaps after the driver
+>>> has already unbound may leak resources or at worst corrupt
+>>> memory. Fundamentally, the page pool code cannot allow DMA
+>>> mappings to outlive the driver they belong to.
+>>>
+>>> Currently it seems there are at least two cases that the page
+>>> is not released fast enough causing dma unmmapping done after
+>>> driver has already unbound:
+>>> 1. ipv4 packet defragmentation timeout: this seems to cause
+>>>    delay up to 30 secs:
+>>>
+>>> 2. skb_defer_free_flush(): this may cause infinite delay if
+>>>    there is no triggering for net_rx_action().
+>>>
+>>> In order not to do the dma unmmapping after driver has already
+>>> unbound and stall the unloading of the networking driver, add
+>>> the pool->items array to record all the pages including the ones
+>>> which are handed over to network stack, so the page_pool can
+>>> do the dma unmmapping for those pages when page_pool_destroy()
+>>> is called.
+>>
+>> So, I was thinking of a very similar idea. But what do you mean by
+>> "all"? The pages that are still in caches (slow or fast) of the pool
+>> will be unmapped during page_pool_destroy().
+> 
+> Yes, it includes the one in pool->alloc and pool->ring.
+
+It worths mentioning that there is a semantics changing here:
+Before this patch, there can be almost unlimited inflight pages used by
+driver and network stack, as page_pool doesn't really track those pages.
+After this patch, as we use a fixed-size pool->items array to track the
+inflight pages, the inflight pages is limited by the pool->items, currently
+the size of pool->items array is calculated as below in this patch:
+
++#define PAGE_POOL_MIN_ITEM_CNT	512
++	unsigned int item_cnt = (params->pool_size ? : 1024) +
++				PP_ALLOC_CACHE_SIZE + PAGE_POOL_MIN_ITEM_CNT;
+
+Personally I would consider it is an advantage to limit how many pages which
+are used by the driver and network stack, the problem seems to how to decide
+the limited number of page used by network stack so that performance is not
+impacted.
+
+> 
+>> Don't we 'just' need a list of the inflight packets and their pages or
+>> fragments? What we could do is go through that list and unmap these
+>> pages during page_pool_destroy().
+> 
+> The main reason for that is to avoid the overhead of page_pool_item_del()
+> and page_pool_item_add() when allocing/freeing page from/to pool->alloc
+> and pool->ring.
+> 
+> Yes, including the pages in pool->ring seems to make the pool->ring
+> somewhat duplicated, maybe we can remove pool->ring if we can make
+> and prove 'pool->items' is performing better than pool->ring in the
+> future?
+> 
+>>
+>> I'll have a closer look at the patch tomorrow
+> 
+> Thanks for the reviewing.
+> 
+>>
+>> Thanks!
+>> /Ilias
+>>
+> 
 
