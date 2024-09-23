@@ -1,144 +1,146 @@
-Return-Path: <linux-wireless+bounces-13088-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13089-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87D7E97EFB3
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Sep 2024 19:01:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 199A397EFFC
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Sep 2024 19:52:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 313761F22004
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Sep 2024 17:01:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5C351F22064
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Sep 2024 17:52:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A8701EEE4;
-	Mon, 23 Sep 2024 17:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 814DC19F427;
+	Mon, 23 Sep 2024 17:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="BBMXPvuU"
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="kC5MLjS7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D907C2629F;
-	Mon, 23 Sep 2024 17:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72FB1EB44
+	for <linux-wireless@vger.kernel.org>; Mon, 23 Sep 2024 17:52:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727110838; cv=none; b=tZeUeaOrQdAARwDhT1Wiu05/E/UNQEgDT1CfgdV6Z5/ob/ezQfS8m4n5i6LKwFYArGbRSV72YozaVtl+gKkIy9rrks+cGJ4e7QhtabD8jdxz87lO1wXwxQ7zTeplPO8p3q6t/qPufT2rLL2Qus+vLf6lWZmOVoCwtlIrBQLQJ/8=
+	t=1727113950; cv=none; b=XcotO2igbGc+Kg/GQwbnqb3JrnYr7rdwrCyS6eryin2vgd2epAKslpTK9dutsXYadKuQZkDrbl8irg946paZE2AsvVFWMfD+QFflE1rF1ZiOKgiXpAwOVRA+Vc8WWUj6P8cfYGOpQoxYqwiaaa5t3O6qxD/B0M/NfsQMbUo6KYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727110838; c=relaxed/simple;
-	bh=v+yxPs8GZWg6nkLoPwBWjRb8a1YmkY1GCLemw8pnWUs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oQG2/mx9eTRKbT/yjM0swTAsLbaJ2BdN6SOqf8voFZvNgif6H7HVGPE6VBb/oa/EUvpwppH1YLdj3vr051t6TdeGhdcdvlYbMxSrje6DRB8CnA9wGpL/mvI9NiI1ekpWBQvLOQxpkNwuom4Wmh34J7SPtOy1vRir3DTaaCqNmds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=BBMXPvuU; arc=none smtp.client-ip=212.227.17.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1727110807; x=1727715607; i=markus.elfring@web.de;
-	bh=q+VlKGwRDHTO+bOEiYO1KfMPblTtmzY+O1n5BAz3cc4=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=BBMXPvuUJVDwzgv6az3DHdD+mUYQSYeKkbF7duHFNHOgiw18X0An0jR9exzEjGot
-	 r7vT+0/ElA8R024ZP8rHvVQHa/qyTogXiEdNZfZyfJOnQYnsPKukmgv9XM40een8e
-	 gkPIDyPV72BsP63rwkQHUaL/hduBuCm/0L+7NwjsoLhwD+VRJXp4ylnVndNvJRB3T
-	 6uqw+k/ahTi7kAVyiulcIc5tysFpUcPwvBl0hdt1x3CV0pPl/YziEWe1KOhHNsVWH
-	 CeX0em+lQdLx9Ud0LSV078rephSU/UtHUdqGLBS/ooeP1R+rNZZv4ac+7AozTO64Q
-	 vTeJMEeJlOTonCdlsg==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.90.95]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MnFyI-1sBm6N1VDA-00ibs9; Mon, 23
- Sep 2024 19:00:07 +0200
-Message-ID: <45f6c8a7-4021-483a-aa81-a836cd3fbcd8@web.de>
-Date: Mon, 23 Sep 2024 19:00:05 +0200
+	s=arc-20240116; t=1727113950; c=relaxed/simple;
+	bh=d012RvO8FEt4oNV/hdC2ORp0abycOdoKV3NqdL6MFLw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kIxQ1kvzF22N00LMiAfM13BdMK+wT/sjAhV5u5qqb4MWm0pgNwqeQflzRuaNlR7agCJ6yCWuhgo2yx8QBIq50dryKwvqiD/6nlGF9UUA7dnCbeY8u7QldnK2grsMsN7Np++KcTSdeOr0K71aDe3aJI9MtnppgtKu3Ex1AdGeiSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=kC5MLjS7; arc=none smtp.client-ip=209.85.160.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-45830ff5b70so37096471cf.1
+        for <linux-wireless@vger.kernel.org>; Mon, 23 Sep 2024 10:52:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1727113947; x=1727718747; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=d012RvO8FEt4oNV/hdC2ORp0abycOdoKV3NqdL6MFLw=;
+        b=kC5MLjS7vlx32L+CMo/vijxLpluIvZK6GFWocekev0UAgknUMOwkw6vZ2x/QAQxi/O
+         Bc214bhG7DWlIC6bp3btej9mimBmpj/ssPHpH804+PKmzn9qk0S9c7NKyr2t39X/i7Jy
+         dxzMGCDmis/JH40iEX0YCAOTCo6I0sXk1kY9UcOA3xFmDNEokZcut4Sy0w+4JpwcVOpC
+         V3R0IdkdSvljBaOrLoBYBzB4GrRwS3m98tA4BYkEUatuU8KPFuld/opufxvr05E5vgmZ
+         3A4I9bDmmafNkdK1HWGQa2EL19C3dO+81lZcYzGlxoxwnQYtmI3EBw5F0hD9W/4ZRUAs
+         pXPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727113947; x=1727718747;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d012RvO8FEt4oNV/hdC2ORp0abycOdoKV3NqdL6MFLw=;
+        b=HfVOHGp46sHatH8NekV6McbHwbtTMM7uhev80uoSoOS2q8Fd+npQjB5igFNmYHP815
+         z21dknxgTfZm1Tf5LjL/6R37cLkXz9Pb12sqxV2EEoiYtg8wJCKtkwmHhO9AWbdzZzjS
+         vtyk9sWdMiQNzHtuKsky55KBzpmHAVzEAgoP2SOzbyC7ObTE/oyOmX+vZlm+NnHXYS0r
+         0Y+cXHJK9Raj9bwPC6pYqHQtckRZrWV3T74vXZzl2SCnQsKWeqLsQBa8+Tmlyx8kbpCG
+         sI//M60Cg52WHCaBB/mTkfFT80wEYh7ec+E8V0gFd8M8HBwq5W5I0H7Z4ujOCRII6yIB
+         tlSg==
+X-Forwarded-Encrypted: i=1; AJvYcCUGRG68P4SCdOnG7wcU9mJZBGUrdcRtU0YfmPhPyQGu5STw4I4ouoEtzJ+KiBnbPV0OE9D/y2MYdAqONzCutQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwrnYy8XCbLULBPniJVtUFkwzHBXqTUitMZibpPz1+BeMzXbkQy
+	cBJLaR0dPFNtRZOESB1k4TfskRLGGsXpyaV2emiqwbFN5AGm4yOmerwqK8PI3Zw=
+X-Google-Smtp-Source: AGHT+IHVrqHIowyi3PGsNMuzErMWdcwmU1SRIkTjY6Vp086kbtdmtvbVDAGc60f4mvoOr4wDyCS+5A==
+X-Received: by 2002:a05:622a:107:b0:458:35f7:3950 with SMTP id d75a77b69052e-45b226f380cmr178883201cf.17.1727113947576;
+        Mon, 23 Sep 2024 10:52:27 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-68-128-5.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.128.5])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45b17888cdbsm49348071cf.49.2024.09.23.10.52.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Sep 2024 10:52:26 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.95)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1ssnEY-000LlC-32;
+	Mon, 23 Sep 2024 14:52:26 -0300
+Date: Mon, 23 Sep 2024 14:52:26 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Yunsheng Lin <linyunsheng@huawei.com>
+Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>, davem@davemloft.net,
+	kuba@kernel.org, pabeni@redhat.com, liuyonglong@huawei.com,
+	fanghaiqing@huawei.com, zhangkun09@huawei.com,
+	Robin Murphy <robin.murphy@arm.com>,
+	Alexander Duyck <alexander.duyck@gmail.com>,
+	IOMMU <iommu@lists.linux.dev>, Wei Fang <wei.fang@nxp.com>,
+	Shenwei Wang <shenwei.wang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
+	Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
+	Ryder Lee <ryder.lee@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>, Kalle Valo <kvalo@kernel.org>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Andrew Morton <akpm@linux-foundation.org>, imx@lists.linux.dev,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org, bpf@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH net 2/2] page_pool: fix IOMMU crash when driver has
+ already unbound
+Message-ID: <20240923175226.GC9634@ziepe.ca>
+References: <20240918111826.863596-1-linyunsheng@huawei.com>
+ <20240918111826.863596-3-linyunsheng@huawei.com>
+ <CAC_iWjK=G7Oo5=pN2QunhasgDC6NyC1L+96jigX7u9ad+PbYng@mail.gmail.com>
+ <894a3c2c-22f9-45b9-a82b-de7320066b42@kernel.org>
+ <cdfecd37-31d7-42d2-a8d8-92008285b42e@huawei.com>
+ <0e8c7a7a-0e2a-42ec-adbc-b29f6a514517@kernel.org>
+ <CAC_iWj+3JvPY2oqVOdu0T1Wt6-ukoy=dLc72u1f55yY23uOTbA@mail.gmail.com>
+ <2c5ccfff-6ab4-4aea-bff6-3679ff72cc9a@huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] ath6kl: Reduce scopes for two variables in
- ath6kl_sdio_power_on()
-To: Jeff Johnson <quic_jjohnson@quicinc.com>, linux-wireless@vger.kernel.org,
- Kalle Valo <kvalo@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Julia Lawall
- <julia.lawall@inria.fr>, Peter Zijlstra <peterz@infradead.org>
-References: <d5a19bb5-f940-4f07-9f98-c670d96cc839@web.de>
- <33b08664-fa25-4cef-86b2-49f65b4369c9@web.de>
- <80b820cd-9255-473e-8e4a-3e7d8612d876@quicinc.com>
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <80b820cd-9255-473e-8e4a-3e7d8612d876@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:XDK6MwoVMWqJJGON/YSF3HHcH+Xhz28db+WaYrZBNH25hIHj4jT
- N/UpcCsqcGeD2odrBnHVvmU6x5Ys12u+a9YY/RC3q6LkqqdTPWig9T6X2RWQiEB5n06twWL
- jbUx7zWXEVG1ry1vPdK3nqY38g8wk3WeREbkr0S2QZdWfzxm92Y3tFqZK6caq7y/AFM4sGX
- M7EdTGGy5LnQkexBR+GGw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Q1IiIedNCjA=;Yj5YomPI5jtOX8SJdZnOlD+0aZA
- RMByUd5TrDN0aBgGo8bF2nyEjoXpweAitlGJB7k6lUXmbp44jjUpRXqFkoNDHRJeFOdEU3Owx
- BG0tzTOMUVNVm1rntoCUL5CLxd3++ME+Cz6vjrmG2OYjIDpQl/mWBAo1pUld2x/Dkvypqm75b
- 1505pzW5Ky/2WoMOdU4ixUKKq0MDVP+Fd/KPSYXgAbeD6pKE2tsOAgyB/0ULis5HhMuhMqDSK
- ab0b7wKFUW10zkKlkx9l+GteDgSx2tt81ZOWBa8qisMU0hmox62ISh49+YU1AV5AuRpwCOQkM
- +pgONpwqP2ZTpSuglMHNJ8VlRYiW8ypVhpQfxPE/6KK9CekRCBkL6Q8Pc1rPSWrGrwMdGN8Dy
- mExENObEf5kF6WXalrKfaismHJ9JAsUaSQnEMb+MNoYTOmjrqQH+25F2Qj2kn0yfy1beaRBJm
- 3HY9MzTlYrPdvukAg2XA+bEg3ecP7kY5IWkxgRrQioCChVDHMe813WaYQ/GxYlEtaOpygtkm7
- zOE3d8KrLPFiXmGof+CaPwn/axLQftxec6OGPeAkFB93e6wulZ3lq4IOiNtbUu9ni3D7zUyI4
- GvUs1W+AKo0G3QBPlpKDZgp4UfVeLY0vqNLrTnm0Ux338ibCVe01YAWviNrRXYDdJr1mjQtmw
- 0dadu6XXe6CJOEoFhl9zLjj1hiQu31BgzUrk/9A+eoElrjfL5xOfuaP0PwMGLZYsRkHbGwNJR
- OC9lfGdzMw80Pr5pq8ZT5Nr1k66j0jJAkF+Gl+UyS/yzy3qhAI9Qjg0zQsnoydOF1eBilERLN
- hzg9VZhoncAI2wjd/cTRAmCg==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2c5ccfff-6ab4-4aea-bff6-3679ff72cc9a@huawei.com>
 
->> Adjust the definitions for the local variables "func" and "ret"
->> so that the corresponding setting will be performed a bit later.
-=E2=80=A6
->> +++ b/drivers/net/wireless/ath/ath6kl/sdio.c
->> @@ -503,17 +503,15 @@ static void ath6kl_sdio_irq_handler(struct sdio_f=
-unc *func)
->>  static int ath6kl_sdio_power_on(struct ath6kl *ar)
->>  {
->>  	struct ath6kl_sdio *ar_sdio =3D ath6kl_sdio_priv(ar);
->> -	struct sdio_func *func =3D ar_sdio->func;
->> -	int ret =3D 0;
->>
->>  	if (!ar_sdio->is_disabled)
->>  		return 0;
->>
->>  	ath6kl_dbg(ATH6KL_DBG_BOOT, "sdio power on\n");
->> -
->> +	struct sdio_func *func =3D ar_sdio->func;
->>  	sdio_claim_host(func);
->>
->> -	ret =3D sdio_enable_func(func);
->> +	int ret =3D sdio_enable_func(func);
->>  	sdio_release_host(func);
->>  	if (ret) {
->>  		ath6kl_err("Unable to enable sdio func: %d)\n", ret);
->> --
->> 2.46.0
->
-> NAK
->
-> no maintainer wants to spend time on patches like this which bring no re=
-al
-> value to code that is not actively being maintained, and which violates =
-the
-> established understanding that, except under certain recently establishe=
-d
-> criteria, declarations and code should not be interleaved.
-=E2=80=A6
+On Fri, Sep 20, 2024 at 02:14:02PM +0800, Yunsheng Lin wrote:
 
-Would you find other software design options more acceptable for further
-collateral evolution?
+> I am not sure what dose the API that allows netdev to "give" struct device
+> to page_pool look like or how to implement the API yet, but the obvious way
+> to stall the calling of device_del() is to wait for the inflight
+> page to
 
-1. Additional compound statements (by using extra curly brackets)
+It is not device_del() you need to stall, but the remove() function of
+the device driver.
 
-2. Moving a bit of source code into an additional function implementation
+Once all drivers have been unbound the DMA API can be reconfigured and
+all existing DMA mappings must be concluded before this happens,
+otherwise there will be problems.
 
+So, stalling something like unregister_netdevice() would be a better
+target - though stalling forever on driver unbind would not be
+acceptable.
 
-Regards,
-Markus
+Jason
 
