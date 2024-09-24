@@ -1,87 +1,140 @@
-Return-Path: <linux-wireless+bounces-13120-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13121-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 427C09846D3
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2024 15:36:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EEF89849F6
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2024 18:47:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71F551C2165A
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2024 13:36:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC34C28277B
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2024 16:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1119D1A76CA;
-	Tue, 24 Sep 2024 13:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B66451AB6E2;
+	Tue, 24 Sep 2024 16:47:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gtAIDI5D"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="cYe7E0cH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2661A76B7;
-	Tue, 24 Sep 2024 13:35:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486291DFFB;
+	Tue, 24 Sep 2024 16:47:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727184960; cv=none; b=lT7zVqTj3w75y65sEf8eMUg/xznBQBiqmEV68TjJPcfjrC5cYpaOpPoTNcrHXs35VpAe8ntt4c4+nfYfdo5QTgcwAwD77+ZzsHZUObLtUEtofUmPbVSYZ/nncB+Oeh4zJoJquxnzfxTtBH4AVs6FEtlWNTCHIDWslOKpVG5WTbo=
+	t=1727196427; cv=none; b=PI4UtCkhruF7ogIcnsvXCFk+rpCOWQogVVmJURoAu7cmUbv6GKrwBBCkZ89ojpKs18XGcQyXSYq27ZnIzK1u+i2UajTwK54mwOKGnyhEhJKeUqriCgv6/uRMtpjABq/4qGtNcRMBVL1EyYG7Lmmq6731//dA89vbf26yikLnCSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727184960; c=relaxed/simple;
-	bh=dinX/iT1Opr1P6MZr6BPvNGWFitPhxJMZayjC+e8NhY=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=tENvkQOTw9OElXSQ63YumqjxN77rkpA9lqU4NOQzQ3PRxehRMOpycv5IpZEnM//7Ff0OO99mxqMUp+fgnWVSfzngeWVQVDSiW/d0/S6T3j6zGcCjnm0XLxCpBPVK7BZSqASzm/wNwdu6aXFUyf9lsU4WxBYagyDO1cG1CJjFxI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gtAIDI5D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F059C4CEC4;
-	Tue, 24 Sep 2024 13:35:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727184959;
-	bh=dinX/iT1Opr1P6MZr6BPvNGWFitPhxJMZayjC+e8NhY=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=gtAIDI5DkHemYKbW7TQQomCeE1xAh2Bc6uuhKV77mmvnItaeSPzgBz9gUVgHgLjBb
-	 d6qFUtmJDGwe9upvbSkdz0ci7lpdVnUjDDW75jXc+O91ypsF9nAM7bODEj8nn1T+Md
-	 ZVpEhRU6ueiGvQxUSxv84PmfhEveCr08CcVCqUaz2C/Cd43RdPGKn5zaKC2BQedyDY
-	 9FR1B0MiSuWpyrZmSDmw8lB2PXK0HSTftqU/oHMf8ciYQxbLk7ODtE7ARKqYEmu3PY
-	 Um81wmXiNLoH3nuS4f2nJhDTN7FGHDNT6EQbm1yIRh+FG3Mja27/O/c1Rbepirtv+/
-	 luYABbMy2AtqA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Arend Van Spriel <arend.vanspriel@broadcom.com>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>,  "John W . Linville"
- <linville@tuxdriver.com>,  Seth Forshee <sforshee@kernel.org>,
-  "Pieter-Paul Giesberts" <pieterpg@broadcom.com>,
-  <linux-wireless@vger.kernel.org>,  <brcm80211@lists.linux.dev>,
-  <brcm80211-dev-list.pdl@broadcom.com>,
-  <linux-trace-kernel@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] brcm80211: BRCM_TRACING should depend on TRACING
-References: <81a29b15eaacc1ac1fb421bdace9ac0c3385f40f.1727179742.git.geert@linux-m68k.org>
-	<19224165b90.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-Date: Tue, 24 Sep 2024 16:35:55 +0300
-In-Reply-To: <19224165b90.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-	(Arend Van Spriel's message of "Tue, 24 Sep 2024 14:51:38 +0200")
-Message-ID: <874j659nt0.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1727196427; c=relaxed/simple;
+	bh=V5hP6EhqqL1VB4vgcnWs8ptf/NEEpkNyPz1lOH4OJ5A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=CzMud8TsgDCtMmu7dXD0GDEMn/41Y3GsjHYaRnxZBOHqLCVoXBPE4ZKMFnO/WI019d/9jDFgXpSV1zl0KwdD8cW1BbvCUhs9ikKOb5SCI0RNdeJE6Nv98eDYOCc77ls0ThjinkrWAJiJRJ4lU+1+x5s2cV7g9aEvx0gumF2A5nM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=cYe7E0cH; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48O8tmP7001351;
+	Tue, 24 Sep 2024 16:46:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	RkdDY9gEmTPSGeBmDdPmUm8d9yq71EH6PpS8U/0msmg=; b=cYe7E0cHGJIJ3PAk
+	JacpGeIk75pVzzEqUn4/zEoWRhVMyuVQPQTnXCw9txb65K2jAG5ONGm0xBfabDXB
+	DGYnJZBU6p8hlO/I+8xfloMziAzR91gYDQaOtwvHSLO2+87WL5BXcyTA1cuT1Jlk
+	cL3lZ20NgYlZP8Qui894Sswjcr4GO1eY2RZ0OM1TA85qyETL47vtahfXbzQOmTVK
+	/CDsYrWFv2kwfSMhp64r7CzGd4fPSEFymwLq5U1+GlQPQ8b3aMcC6QXqRrsIB6Am
+	LfMgdNmff8oBNO8cN7iwSIhQyA23ma9Bjub3LIhhaYn4fwtnQ/2p9qlLkTci5s5R
+	YAU4Fg==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41sqakgy4r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 24 Sep 2024 16:46:45 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48OGkTJO008531
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 24 Sep 2024 16:46:29 GMT
+Received: from [10.111.183.86] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 24 Sep
+ 2024 09:46:27 -0700
+Message-ID: <312fa408-d385-4b90-b8f4-729af4a3ce65@quicinc.com>
+Date: Tue, 24 Sep 2024 09:46:27 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2] dt-bindings: net: ath11k: document the inputs
+ of the ath11k on WCN6855
+To: Krzysztof Kozlowski <krzk@kernel.org>,
+        Bartosz Golaszewski
+	<brgl@bgdev.pl>, Kalle Valo <kvalo@kernel.org>
+CC: "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni
+	<pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Jeff Johnson
+	<jjohnson@kernel.org>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <ath11k@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        Bartosz
+ Golaszewski <bartosz.golaszewski@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>
+References: <20240814082301.8091-1-brgl@bgdev.pl>
+ <83c562e9-2add-4086-86e7-6e956d2ee70f@kernel.org> <87msk49j8m.fsf@kernel.org>
+ <ed6aceb6-4954-43ad-b631-6c6fda209411@kernel.org> <87a5g2bz6j.fsf@kernel.org>
+ <CAMRc=MeLick_+Czy5MhkX=SxVvR4WCmUZ8CQ5hQBVTe2fscCPg@mail.gmail.com>
+ <b7fdafd6-5029-4b80-b264-11943740b354@quicinc.com>
+ <1e79d94e-2f83-4762-b126-ed865142f1ed@kernel.org>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <1e79d94e-2f83-4762-b126-ed865142f1ed@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: BXe6QtAmQNmkBdVuW9HOlyqTvxLGKz_H
+X-Proofpoint-GUID: BXe6QtAmQNmkBdVuW9HOlyqTvxLGKz_H
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 priorityscore=1501
+ bulkscore=0 impostorscore=0 suspectscore=0 phishscore=0 adultscore=0
+ clxscore=1011 malwarescore=0 lowpriorityscore=0 mlxlogscore=999
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409240120
 
-Arend Van Spriel <arend.vanspriel@broadcom.com> writes:
+On 9/24/2024 1:06 AM, Krzysztof Kozlowski wrote:
+> On 20/09/2024 23:02, Jeff Johnson wrote:
+>> Again, since I'm a DT n00b:
+>> Just to make sure I understand, you are saying that with this change any
+>> existing .dts/.dtb files will still work with an updated driver, so the new
+>> properties are not required to be populated on existing devices.
+> 
+> Did you folks rejected patches acked by DT maintainers on basis of not
+> understanding DT at all?
 
-> On September 24, 2024 2:09:35 PM Geert Uytterhoeven
-> <geert@linux-m68k.org> wrote:
->
->> When tracing is disabled, there is no point in asking the user about
->> enabling Broadcom wireless device tracing.
->>
->> Fixes: f5c4f10852d42012 ("brcm80211: Allow trace support to be
->> enabled separately from debug")
->
-> Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+I personally have not rejected any DT patches. Nor have I accepted any.
+I'm deferring to Kalle.
 
-I'm planning to take this to wireless and I'll add 'wifi:' to the title.
+>> However a new driver with support for these properties will utilize them when
+>> they are present, and the current ath11k .dts files will need to be updated to
+> 
+> It is not related to drivers at all. Nothing in this thread is related
+> to drivers.
+> 
+> Can we entirely drop the drivers from the discussion?
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+I brought up drivers since in the discussion there was concern that this DT
+change would potentially break existing devices that have a DTS that defines
+qcom,ath11k-calibration-variant, and I wanted clarification on that point.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+/jeff
 
