@@ -1,102 +1,101 @@
-Return-Path: <linux-wireless+bounces-13093-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13094-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D407B983AB2
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2024 03:13:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EC51983AC5
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2024 03:29:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3571528182A
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2024 01:13:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 424C51F2282E
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Sep 2024 01:29:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 708351B85DB;
-	Tue, 24 Sep 2024 01:13:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BACC38C;
+	Tue, 24 Sep 2024 01:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="LJWSZU4c"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="QcOiYXtI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A5818D
-	for <linux-wireless@vger.kernel.org>; Tue, 24 Sep 2024 01:13:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F5FC8CE
+	for <linux-wireless@vger.kernel.org>; Tue, 24 Sep 2024 01:29:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727140412; cv=none; b=onZvmV0IH+IWrqT1ED2YRwX17nrKhDL5Kg9RKHD6935Ak58rDqWN57ExKJ8EOE/c5sAcrSzPjU6Rj9qSiPKP1PVT7MpekKHB07jrHitzlvBz2sCWNmzwK+qZtPaiZjGG+mhfzapCiqYinf/9QhP+zH9ghOiom+4hLM1lh2PYbig=
+	t=1727141349; cv=none; b=p00b3xVdVzCvhSiPLai3Dq/i2ntMWiOS7Eicn4URZe1yB5Fc4dDuuQukBOtBJDSf6mDKQwvr/GmnEcqK8VSdA9VXOr1lPF/Qy6HaawX3wEbZD+5Glp4uLM7nLOe2Q/gsU0jDyoHjJ7//EFG7pBstfg8yYICySxuBNQemipQrbJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727140412; c=relaxed/simple;
-	bh=paVm5pvu/jyoHHp3yHQXwOjwCKdEe+dMXjrLLEDtcWw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=akdZC89dpZ64jd//fjUNzzth3SzJiXNqiTIz3UeJGIfCKPkJFgjNjq9OpZpz+qslwn8d6qnIza08p30lpbxkU6KHi7HF6xPCqIzl2yRkV1Kqvc02MQXeCuVGjwEeDOjhproI9RZcGUrFUfoXMKQwlkt/rnxK9Huo7vpibSpO1c8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=LJWSZU4c; arc=none smtp.client-ip=148.163.129.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 7A730A80061
-	for <linux-wireless@vger.kernel.org>; Tue, 24 Sep 2024 01:13:28 +0000 (UTC)
-Received: from ben-dt5.candelatech.com (unknown [50.251.239.81])
-	by mail3.candelatech.com (Postfix) with ESMTP id D2ED513C2B0;
-	Mon, 23 Sep 2024 18:13:27 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com D2ED513C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1727140407;
-	bh=paVm5pvu/jyoHHp3yHQXwOjwCKdEe+dMXjrLLEDtcWw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=LJWSZU4cdyDIwonOcdGnOY2S0kE8Kq/WGfT8t35le/WyIGnKig3yRDG7uHq1atY3R
-	 zC/x+3hMLdRBOvD6yFOc+0xBS8NOKOVJHQLicDc2YevOyoLfbI2eGENfxqH/jDjwpp
-	 u63Hlm5RFLvU3WP9IxRrEqOMxnGCaFgt5d33XIww=
-From: greearb@candelatech.com
-To: linux-wireless@vger.kernel.org
-Cc: Ben Greear <greearb@candelatech.com>
-Subject: [PATCH] wifi: mac80211:  Fix setting txpower with emulate_chanctx
-Date: Mon, 23 Sep 2024 18:13:25 -0700
-Message-ID: <20240924011325.1509103-1-greearb@candelatech.com>
-X-Mailer: git-send-email 2.42.0
+	s=arc-20240116; t=1727141349; c=relaxed/simple;
+	bh=Mk0GZqhrmZCq9dqMZwPLzrbg6bODCQdw/qzrcSUANlw=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date; b=Zhowt5uz3XNkFzNZxTXIMJBWt2xt9PlKsrpaUZoXAF8KkuK1KH6+nfshKfiokjOXUN8BXHO5f2ONqIln5va7szAAYp5oF3qB7xjVY0xgrbDGxICN3IyBbviI8OkzI0dokikde5t1luT6PJexwX8c+Si8YGprtKY4xeBWaTuPEVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=QcOiYXtI; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 48O1T30N02175668, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1727141343; bh=Mk0GZqhrmZCq9dqMZwPLzrbg6bODCQdw/qzrcSUANlw=;
+	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
+	 Content-Type:Message-ID:Date;
+	b=QcOiYXtIbnfiOgmikmQROV8kYcRyu6mxPramYoMCdjpx0+OD0EPy7pMjLLhtrUqDS
+	 zOfERv/YZYVRKAxf8i9yUUPOiDeIAZyTB3wcyjKJDOSpaDNQ3mby+EenJUz/axfxBU
+	 bKLymu5grZERSOqXAjQfpGjR4rOYTXNNhOe1Dbd1cJhHaxvvnqCdXXnGs0NiGjNOX3
+	 paGvLGJnqzTcsj4QLYkp6KTkGey3xhbKQuDuK8P0wxGmsAelB4V0++SWhR/DSCkOH3
+	 ggC6GUrF4lnKCaUtBtCMjBX0E3lR8o94bF8w11vvhoUcCdmjHIvc65E6TIEmHQEGlX
+	 1jpixwUYhnU+g==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.05/5.92) with ESMTPS id 48O1T30N02175668
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Tue, 24 Sep 2024 09:29:03 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 24 Sep 2024 09:29:03 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 24 Sep
+ 2024 09:29:02 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
+CC: <kevin_yang@realtek.com>
+Subject: Re: [PATCH 1/7] wifi: rtw89: rename rtw89_vif to rtw89_vif_link ahead for MLO
+In-Reply-To: <20240916053158.47350-2-pkshih@realtek.com>
+References: <20240916053158.47350-1-pkshih@realtek.com> <20240916053158.47350-2-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MDID: 1727140409-mDr-mHLWV9zm
-X-MDID-O:
- us5;ut7;1727140409;mDr-mHLWV9zm;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
+Content-Type: text/plain
+Message-ID: <89518cb0-9811-437e-b7d1-ab481ceb7756@RTEXMBS04.realtek.com.tw>
+Date: Tue, 24 Sep 2024 09:29:02 +0800
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-From: Ben Greear <greearb@candelatech.com>
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-Propagate hw conf into the driver when txpower changes
-and driver is emulating channel contexts.
+> From: Zong-Zhe Yang <kevin_yang@realtek.com>
+> 
+> This is an intermediate version that is separated from subsequent major
+> MLO changes, so some functions' namings are not really determined here.
+> e.g. struct rtw89_vif_link *vif_to_rtwvif_safe(struct ieee80211_vif *vif)
+> 
+> No logic is changed.
+> 
+> Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Signed-off-by: Ben Greear <greearb@candelatech.com>
+7 patch(es) applied to rtw-next branch of rtw.git, thanks.
+
+2f7dae17c48c wifi: rtw89: rename rtw89_vif to rtw89_vif_link ahead for MLO
+9ee282193440 wifi: rtw89: rename rtw89_sta to rtw89_sta_link ahead for MLO
+89bac818bbd2 wifi: rtw89: read bss_conf corresponding to the link
+04911c0fe874 wifi: rtw89: read link_sta corresponding to the link
+26d460e13f84 wifi: rtw89: refactor VIF related func ahead for MLO
+72e9457c1954 wifi: rtw89: refactor STA related func ahead for MLO
+aad0394e7a02 wifi: rtw89: tweak driver architecture for impending MLO support
+
 ---
- net/mac80211/cfg.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 842d3023c9c7..7e2aaae8398d 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -3102,6 +3102,7 @@ static int ieee80211_set_tx_power(struct wiphy *wiphy,
- 	enum nl80211_tx_power_setting txp_type = type;
- 	bool update_txp_type = false;
- 	bool has_monitor = false;
-+	int old_power = local->user_power_level;
- 
- 	lockdep_assert_wiphy(local->hw.wiphy);
- 
-@@ -3184,6 +3185,10 @@ static int ieee80211_set_tx_power(struct wiphy *wiphy,
- 		}
- 	}
- 
-+	if (local->emulate_chanctx &&
-+	    (old_power != local->user_power_level))
-+		ieee80211_hw_conf_chan(local);
-+
- 	return 0;
- }
- 
--- 
-2.42.0
+https://github.com/pkshih/rtw.git
 
 
