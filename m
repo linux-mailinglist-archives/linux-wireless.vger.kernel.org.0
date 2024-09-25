@@ -1,174 +1,98 @@
-Return-Path: <linux-wireless+bounces-13139-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13140-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D8C79852B5
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 07:58:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B806B9852DA
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 08:19:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3606A284483
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 05:58:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA43A1C20D75
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 06:19:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B735E155300;
-	Wed, 25 Sep 2024 05:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7930114F9E9;
+	Wed, 25 Sep 2024 06:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A80vH/kQ"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="s02RzJVN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DFB8647;
-	Wed, 25 Sep 2024 05:58:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E607D14C582;
+	Wed, 25 Sep 2024 06:19:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727243927; cv=none; b=SKcHVrO+D3CzygkEXMUWDko3gF8JeR08EW1x3J9QwudRplHwpyDw8n21SwrsElMm8GXYbEjYoQu7tlZV2qHeYcEg5YWocYg/UWiCkou2+RAAQmfeN2EApc7f8+6r5qiS0XdfAfQCnzq8HyaWZqkXnFpEs/XkIsm48Hyv88oWsCI=
+	t=1727245188; cv=none; b=Vd9zsj3e1zVj6VcOQF0Cu47OlD0DjDI6FhEIwq1hlVi8fD/BU+CnZGvFxdV1Kfrt6xhuJNCHZrA+S8od8i2bg/qeo75bUn4xhAhqWrJSEAVRCv2l/PujBvZWMYaVW1Iuj7wQWpWT4/8Y/xeBCYCf5aXX/1g8Y+8kdXb/7RKfGms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727243927; c=relaxed/simple;
-	bh=R5iO86c9PhBZIXFBuzoB9GO9RtZOAFqW+RKHK3yqFEo=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=I5aYQQADwfPxkZnEwXW5lrMn7XORmZ2NyBxWpCljlNANSP0zylsLXf6mcOAVgKJvu0HwlDflqaEEZJfeBK443zoGWErlBdv+cX09tVPrzPhF0CdRd77/FWI8FunxX4ugTKnamMjjkOuEjZY4FZLVsgCvatp5EGc9+1yLW58uB4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A80vH/kQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CCE1C4CEC3;
-	Wed, 25 Sep 2024 05:58:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727243927;
-	bh=R5iO86c9PhBZIXFBuzoB9GO9RtZOAFqW+RKHK3yqFEo=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=A80vH/kQJWCU74aJSDRYFOgMTTr0Tb2L6qd6VlJYJBMVXVKTJSX0NPs9v+ea7Co3N
-	 ROIFLvbErHcLPFiZbJWtXsVLAtXddNffbHXIW09pixr/Rz9MBm3YvZlwlIp5meNny4
-	 x8R0OYaCGkfh+X7BeacihYg7vH+0phu+Ee2RKC21brT0AUYc9bHVFcak2KgWs1hcxh
-	 KNKPWgJmT7SUafBDF8Op5n9ysqiWsTK31SfFmSI7e/xmfe/FY9i83/X1LL4j/cKidG
-	 YqxbA98sGTKr1A87g8/gTw+oRP8bLKyT6fHRsAgvZgoiVr/S5GHZ5ACKnueveP6iwL
-	 BuE/THconEoig==
-From: Kalle Valo <kvalo@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>,  "David S . Miller"
- <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
- Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,  Rob Herring
- <robh@kernel.org>,  Krzysztof Kozlowski <krzk+dt@kernel.org>,  Conor
- Dooley <conor+dt@kernel.org>,  Jeff Johnson <jjohnson@kernel.org>,
-  linux-wireless@vger.kernel.org,  netdev@vger.kernel.org,
-  devicetree@vger.kernel.org,  ath11k@lists.infradead.org,
-  linux-kernel@vger.kernel.org,  Bartosz Golaszewski
- <bartosz.golaszewski@linaro.org>,  Arnd Bergmann <arnd@arndb.de>
-Subject: Re: [PATCH net-next v2] dt-bindings: net: ath11k: document the
- inputs of the ath11k on WCN6855
-References: <20240814082301.8091-1-brgl@bgdev.pl>
-	<83c562e9-2add-4086-86e7-6e956d2ee70f@kernel.org>
-	<87msk49j8m.fsf@kernel.org>
-	<ed6aceb6-4954-43ad-b631-6c6fda209411@kernel.org>
-	<87a5g2bz6j.fsf@kernel.org>
-	<3ba2ce52-4da3-4066-baf0-5bab1a9f872a@kernel.org>
-Date: Wed, 25 Sep 2024 08:58:41 +0300
-In-Reply-To: <3ba2ce52-4da3-4066-baf0-5bab1a9f872a@kernel.org> (Krzysztof
-	Kozlowski's message of "Tue, 24 Sep 2024 10:04:59 +0200")
-Message-ID: <87zfnw8eb2.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1727245188; c=relaxed/simple;
+	bh=n9nDb3Wi4o/YeyVwY1aUIZSbkGwud/4Fwk8YQLrIdtg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ibTsOzSSps7BysIdMW8MKj8+gZodv5qsmAdfonCc0J5cs1IXYj3McV5rWt7RSB4Sd/3iZAHhuVUqrDH2Po83li4Ir117iRiaESGgT4/ESUSgZSTyhCaH0lhCuDpTT4cs8XGl4Ju64RHLokrNcUk0ebP/fZX8qEiy8r7MEYOSvmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=s02RzJVN; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=n9nDb3Wi4o/YeyVwY1aUIZSbkGwud/4Fwk8YQLrIdtg=;
+	t=1727245187; x=1728454787; b=s02RzJVNkSw6APTnUJBVU5qh/Npc6wdVpesMmSac+aeh357
+	8rbR/3siYfrY/4yvqzm6pncKbIWMc27GIiXgmj+buo6EjpcBCqTSA9b5LaVAIQeZctd37TiI7lhI9
+	3xEaCwLyyjGXn+ZhXA4c3xDKmzphqbbuvYxeFgxTTaY+Uhl5pwlUmIFV4zgYqKh9T5AnWy6oS7b1e
+	42fauzIz9jMwNjj1/Cx0KZC/rROwffkPxjIoFGUhb0HuuJ0M1PMd1W64A4V8UefSHdq9LHi/7HSJo
+	tt0Hr+J6Xz8sAjGmnjA2gGcV94cesxz9ONGOGlLQt9ttPg0O1ReMTrhNp0CGB4CQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1stLND-000000008go-0PBf;
+	Wed, 25 Sep 2024 08:19:39 +0200
+Message-ID: <13c3221f0cf2c5586dc34e8dcf6758c9e4e6cd4c.camel@sipsolutions.net>
+Subject: Re: rtw88: rtw8822cu: Kernel warning in cfg80211: disconnect_work
+ at net/wireless/core.h:231 on CPU 0
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Ping-Ke Shih <pkshih@realtek.com>, "petter@technux.se"
+ <petter@technux.se>,  "linux-wireless@vger.kernel.org"
+ <linux-wireless@vger.kernel.org>, stable@vger.kernel.org, Sasha Levin
+ <sashal@kernel.org>
+Cc: "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>,
+ "morrownr@gmail.com" <morrownr@gmail.com>, "s.hauer@pengutronix.de"
+ <s.hauer@pengutronix.de>
+Date: Wed, 25 Sep 2024 08:19:38 +0200
+In-Reply-To: <9d243087654c4f3492d0046b7444c6a6@realtek.com>
+References: <80de30f72595480a2e061dc462191c9f@technux.se>
+	 <9d243087654c4f3492d0046b7444c6a6@realtek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-malware-bazaar: not-scanned
 
-Krzysztof Kozlowski <krzk@kernel.org> writes:
+On Wed, 2024-09-25 at 03:30 +0000, Ping-Ke Shih wrote:
 
-> On 20/09/2024 08:45, Kalle Valo wrote:
->
->> Krzysztof Kozlowski <krzk@kernel.org> writes:
->> 
->>> On 19/09/2024 09:48, Kalle Valo wrote:
->>>> Krzysztof Kozlowski <krzk@kernel.org> writes:
->>>>
->>>>> On 14/08/2024 10:23, Bartosz Golaszewski wrote:
->>>>>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->>>>>>
->>>>>> Describe the inputs from the PMU of the ath11k module on WCN6855.
->>>>>>
->>>>>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
->>>>>> ---
->>>>>> v1 -> v2:
->>>>>> - update the example
->>>>>
->>>>> I don't understand why this patch is no being picked up. The code
->>>>> correct represents the piece of hardware. The supplies should be
->>>>> required, because this one particular device - the one described in this
->>>>> binding - cannot work without them.
->>>>
->>>> I have already explained the situation. With supplies changed to
->>>> optional I'm happy take the patch.
->>>
->>> You did not provide any relevant argument to this case. Your concerns
->>> described quite different case and are no applicable to DT based platforms.
->> 
->> Ok, I'll try to explain my concerns one more time. I'll try to be
->> thorough so will be a longer mail.
->> 
->> In ath11k we have board files, it's basically board/product specific
->> calibration data which is combined with the calibration data from chip's
->> OTP. Choosing the correct board file is essential as otherwise the
->> performance can be bad or the device doesn't work at all.
->> 
->> The board files are stored in board-2.bin file in /lib/firmware. ath11k
->> chooses the correct board file based on the information provided by the
->> ath11k firmware and then transfers the board file to firmware. From
->> board-2.bin the correct board file is search based on strings like this:
->> 
->> bus=pci,vendor=17cb,device=1103,subsystem-vendor=105b,subsystem-device=e0ca,qmi-chip-id=2,qmi-board-id=255
->> bus=pci,vendor=17cb,device=1103,subsystem-vendor=105b,subsystem-device=e0ca,qmi-chip-id=2,qmi-board-id=255,variant=HO_BNM
->> 
->> But the firmware does not always provide unique enough information for
->> choosing the correct board file and that's why we added the variant
->> property (the second example above). This variant property gives us the
->> means to name the board files uniquely and not have any conflicts. In
->> x86 systems we retrieve it from SMBIOS and in DT systems using
->> qcom,ath11k-calibration-variant property.
->> 
->> If WCN6855 supplies are marked as required, it means that we cannot use
->> qcom,ath11k-calibration-variant DT property anymore with WCN6855 M.2
->> boards. So if we have devices which don't provide unique information
->
-> No, it does not mean that.
->
->> then for those devices it's impossible to automatically to choose the
->> correct board file.
->
-> Anyway, only this device must be fully described, because you cannot
-> have pci17cb,1103 without these supplies. It's just electrically not
-> possible, according to our investigation.
 
-Yeah, you have been telling that all along. But on the contrary I have
-WCN6855 (pci17cb,1103) M.2 board which I installed to my NUC and they
-haven't needed any supplies (unless BIOS does something automatically).
-Also I have QCA6390 and WCN7850 M.2 boards, both which you claim needs
-the supplies, and they just work out-of-box as well. So I have a hard
-time trusting your spec and believing it's the ultimate authority. To me
-if reality and spec doesn't match, reality wins.
+> I think the cause is picking commit 268f84a82753=20
+> ("wifi: cfg80211: check wiphy mutex is held for wdev mutex"), and
+> cfg80211_is_all_idle() called by disconnect_work() uses wdev_lock()
+> but not wiphy_lock().=20
 
->> So based on this, to me the correct solution here is to make the
->> supplies optional so that qcom,ath11k-calibration-variant DT property
->> can continue to be used with WCN6855 M.2 boards.
->
-> WCN6855 can still do whatever they want. They are not restricted, not
-> limited. pci17cb,1103 must provide suppplies, because pci17cb,1103
-> cannot work without them.
+Yeah seems like a stable only problem (CC them), this is with kernel
+version 6.6.51-00141-ga1649b6f8ed6 according to the warning.
 
-Claiming that WCN6885 can still do whatever they want is confusing to me
-because WCN6855 is pci17cb,1103, there are no other ids. See
-ath11k/pci.c:
+> I'm not sure if we should simply revert the picked commit 268f84a82753
+> or should pick more commits.
 
-#define WCN6855_DEVICE_ID		0x1103
+I don't see why it was picked up in the first place, so I guess I'd say
+remove it. We won't want to redo the locking on a stable kernel, I'd
+think.
 
-{ PCI_VDEVICE(QCOM, WCN6855_DEVICE_ID) },
+> By the way, I think the latest kernel will not throw these messages.
 
-But this discussion is going circles and honestly is waste of time. I
-don't think the patch is right but I'll apply it anyway, let's deal with
-the problems if/when they come up.
+Agree, that seems unlikely.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+johannes
 
