@@ -1,98 +1,83 @@
-Return-Path: <linux-wireless+bounces-13140-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13141-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B806B9852DA
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 08:19:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A40C1985366
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 09:08:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA43A1C20D75
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 06:19:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B98B281D7D
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 07:08:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7930114F9E9;
-	Wed, 25 Sep 2024 06:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6B08154C08;
+	Wed, 25 Sep 2024 07:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="s02RzJVN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t8U4dPJw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E607D14C582;
-	Wed, 25 Sep 2024 06:19:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947C4132103;
+	Wed, 25 Sep 2024 07:08:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727245188; cv=none; b=Vd9zsj3e1zVj6VcOQF0Cu47OlD0DjDI6FhEIwq1hlVi8fD/BU+CnZGvFxdV1Kfrt6xhuJNCHZrA+S8od8i2bg/qeo75bUn4xhAhqWrJSEAVRCv2l/PujBvZWMYaVW1Iuj7wQWpWT4/8Y/xeBCYCf5aXX/1g8Y+8kdXb/7RKfGms=
+	t=1727248108; cv=none; b=h3sB62bkfkNkar3uapAOvD/LwrdPPg6pl4DNvQ4duqvE9TtwrDbuw1asO+b6oEQ840PYo47DHYHCFNBvOpcBfbX7TaJE+3q/5lWdSCe4j0NxhtMJqPjZPoTr59fA4uonwUpiSByD4sPvEK5U5oAdZ1PQRDzYT8bN9S9YhZsjDG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727245188; c=relaxed/simple;
-	bh=n9nDb3Wi4o/YeyVwY1aUIZSbkGwud/4Fwk8YQLrIdtg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ibTsOzSSps7BysIdMW8MKj8+gZodv5qsmAdfonCc0J5cs1IXYj3McV5rWt7RSB4Sd/3iZAHhuVUqrDH2Po83li4Ir117iRiaESGgT4/ESUSgZSTyhCaH0lhCuDpTT4cs8XGl4Ju64RHLokrNcUk0ebP/fZX8qEiy8r7MEYOSvmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=s02RzJVN; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=n9nDb3Wi4o/YeyVwY1aUIZSbkGwud/4Fwk8YQLrIdtg=;
-	t=1727245187; x=1728454787; b=s02RzJVNkSw6APTnUJBVU5qh/Npc6wdVpesMmSac+aeh357
-	8rbR/3siYfrY/4yvqzm6pncKbIWMc27GIiXgmj+buo6EjpcBCqTSA9b5LaVAIQeZctd37TiI7lhI9
-	3xEaCwLyyjGXn+ZhXA4c3xDKmzphqbbuvYxeFgxTTaY+Uhl5pwlUmIFV4zgYqKh9T5AnWy6oS7b1e
-	42fauzIz9jMwNjj1/Cx0KZC/rROwffkPxjIoFGUhb0HuuJ0M1PMd1W64A4V8UefSHdq9LHi/7HSJo
-	tt0Hr+J6Xz8sAjGmnjA2gGcV94cesxz9ONGOGlLQt9ttPg0O1ReMTrhNp0CGB4CQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1stLND-000000008go-0PBf;
-	Wed, 25 Sep 2024 08:19:39 +0200
-Message-ID: <13c3221f0cf2c5586dc34e8dcf6758c9e4e6cd4c.camel@sipsolutions.net>
-Subject: Re: rtw88: rtw8822cu: Kernel warning in cfg80211: disconnect_work
- at net/wireless/core.h:231 on CPU 0
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Ping-Ke Shih <pkshih@realtek.com>, "petter@technux.se"
- <petter@technux.se>,  "linux-wireless@vger.kernel.org"
- <linux-wireless@vger.kernel.org>, stable@vger.kernel.org, Sasha Levin
- <sashal@kernel.org>
-Cc: "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>,
- "morrownr@gmail.com" <morrownr@gmail.com>, "s.hauer@pengutronix.de"
- <s.hauer@pengutronix.de>
-Date: Wed, 25 Sep 2024 08:19:38 +0200
-In-Reply-To: <9d243087654c4f3492d0046b7444c6a6@realtek.com>
-References: <80de30f72595480a2e061dc462191c9f@technux.se>
-	 <9d243087654c4f3492d0046b7444c6a6@realtek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+	s=arc-20240116; t=1727248108; c=relaxed/simple;
+	bh=8C9zq1a496NalKgWmrzYn8bXqhj/Q05OOw+7Zz22H1w=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=KnD+R6Awt9AUmn3yGYkBhMKa/joPMtIRGjY1RYLL20F+SQQ6Fl+vnvXr5kRTB7w/KmTs4T0cAeyVvlPnOWUuvcIXEjWl2LQqY5jMvQg58Tb5fjGWUwy2M1pSTEAmkbDXQf3L3TQKD6pbcNWeHfBXEL7xh9kI/LYiQXjFc6MRRxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t8U4dPJw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 303DEC4CEC3;
+	Wed, 25 Sep 2024 07:08:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727248108;
+	bh=8C9zq1a496NalKgWmrzYn8bXqhj/Q05OOw+7Zz22H1w=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=t8U4dPJwqPVePK5ibIHYaUUfrJdlCelv6H/y687rQt6wyCNuhcAHJc6TjAh5Y9MKC
+	 xKtA1Qsvzjy7ds+LAP4atySalx5H/RfM+riSwuvKjr5uYn/SqzQ5F/3/NVkmBtUdcc
+	 DFyxBwaHD/lOwQDqX4FEGN9+G+ZRA4tw2LXj+Zuq0NAHNRwAOs6ev3SL0JO1mmsxpk
+	 BcTgms1h2rnf6dXE78EutsUqAUlNjmE94enSgB0pDdF2k6m5FnJnX/bP+WZNsgW0vM
+	 YaC00xT3EZCSsGRuCqwPqVowrFpB4ywM836hGWRTVnjpAxdSSwBhWh2sQoYqot7BRO
+	 cD7EJMcIcaxOg==
+From: Kalle Valo <kvalo@kernel.org>
+To: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>,  "David S . Miller"
+ <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
+ Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,
+  linux-wireless@vger.kernel.org,  netdev@vger.kernel.org,
+  linux-trace-kernel@vger.kernel.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] mac80211: MAC80211_MESSAGE_TRACING should depend on
+ TRACING
+References: <85bbe38ce0df13350f45714e2dc288cc70947a19.1727179690.git.geert@linux-m68k.org>
+Date: Wed, 25 Sep 2024 10:08:24 +0300
+In-Reply-To: <85bbe38ce0df13350f45714e2dc288cc70947a19.1727179690.git.geert@linux-m68k.org>
+	(Geert Uytterhoeven's message of "Tue, 24 Sep 2024 14:08:57 +0200")
+Message-ID: <87a5fw9pnb.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain
 
-On Wed, 2024-09-25 at 03:30 +0000, Ping-Ke Shih wrote:
+Geert Uytterhoeven <geert@linux-m68k.org> writes:
 
+> When tracing is disabled, there is no point in asking the user about
+> enabling tracing of all mac80211 debug messages.
+>
+> Fixes: 3fae0273168026ed ("mac80211: trace debug messages")
+> Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-> I think the cause is picking commit 268f84a82753=20
-> ("wifi: cfg80211: check wiphy mutex is held for wdev mutex"), and
-> cfg80211_is_all_idle() called by disconnect_work() uses wdev_lock()
-> but not wiphy_lock().=20
+mac80211 patches go to wireless tree, not net. Also 'wifi:' missing from
+subject but I suspect Johannes can fix that during commit, so no need to
+resend (I hope).
 
-Yeah seems like a stable only problem (CC them), this is with kernel
-version 6.6.51-00141-ga1649b6f8ed6 according to the warning.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-> I'm not sure if we should simply revert the picked commit 268f84a82753
-> or should pick more commits.
-
-I don't see why it was picked up in the first place, so I guess I'd say
-remove it. We won't want to redo the locking on a stable kernel, I'd
-think.
-
-> By the way, I think the latest kernel will not throw these messages.
-
-Agree, that seems unlikely.
-
-johannes
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
