@@ -1,60 +1,63 @@
-Return-Path: <linux-wireless+bounces-13181-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13182-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98174985CB3
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 14:52:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17752985CB7
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 14:53:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AC242868A1
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 12:52:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C31201F21C79
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 12:53:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F5821D2F5B;
-	Wed, 25 Sep 2024 12:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF12118A6C4;
+	Wed, 25 Sep 2024 12:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HAU5548L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kHANmOqD"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D141CC8B6;
-	Wed, 25 Sep 2024 12:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C622413D520;
+	Wed, 25 Sep 2024 12:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265612; cv=none; b=Kv/SJRV0SKfGSOH44Xt1zSopwMy2sbI9uuRBiq5ikD6MH6a20d19m7+60kd29zCaDvwAz25NgV4XzhgRRrt5DrWFeLWDn0UXDtz08e8gunSQNExfREC6vT+TysHl6rZBg9/hzlP15rRYzDmH/y/eHMrA5p5kWDQCFJMOyeaRDeU=
+	t=1727265622; cv=none; b=MM91RlDFYbFCI+9FAsmOjdApzAQhKmTrspwWcQw646nm+HAxiZFEaTXWrdTgLxciC/2hcNk0QyagjSCbJHp7sIJuzZffREA/4CxT3VciEk+THkzTXDGGfONS/XE6EqBkLrOjdVUtP7iOBolw2dx0txFc2hYXfGnmaXFyIW8P44o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265612; c=relaxed/simple;
-	bh=u0WGDzyHk2ozun13cuN+XFL+fQx79XzLs6qyjqdWpV4=;
+	s=arc-20240116; t=1727265622; c=relaxed/simple;
+	bh=y53wtsUn2HG6tdkyQ5fHyz1/mgyKQu04rLSXx2Rpm1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MOjCVMS6je+r6+QFuBHW8I+/JvwPZH7wQBJ5FG/o1HqNHefcMk0KvR6nkOzJZi/S9MFJQANBBwGpdRNkNPHUFfWZMi/PBs+OjMuuC2UYjc4AGHlCn8geyhftwJ16EPyWcX1rSOqIdd1G8LiRS9ElTxC4qdccJcKdFrrl8D8Mi5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HAU5548L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A30C4CEC3;
-	Wed, 25 Sep 2024 12:00:10 +0000 (UTC)
+	 MIME-Version; b=YyIp0KrRV8hfbQT1HAaWHfjFOYoW/eZOcDBjsq2moUuEgGBvl7RLlPnyJYLPp6utGDQXwJjjeN2Prr6Pv9kJIbqcjnC72pqTWVMpLeg26o5HJ7IQIwhkXWJ8WtIJU8Ovc32xmCPB8zaAKmvRPGi+QtSoackFGe8cDhFHQQJBD2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kHANmOqD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E59C4CECE;
+	Wed, 25 Sep 2024 12:00:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265612;
-	bh=u0WGDzyHk2ozun13cuN+XFL+fQx79XzLs6qyjqdWpV4=;
+	s=k20201202; t=1727265622;
+	bh=y53wtsUn2HG6tdkyQ5fHyz1/mgyKQu04rLSXx2Rpm1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HAU5548LAXi+YspB4G8rdwTVjFWU4I+8Wc54UqKpm4vhPgVFVKrPkpVP0v2hbL66+
-	 hwyt3rBjaOLt/3sEIWYXR/XRX8g36VNIE4bOGU2t0+24qCkefwKlRB9782jcjqI6NH
-	 mTdY7ZKVIcBvjiTwzXNzsRoC8SPVpJxR7RA9q+eFO3zYXymMDWNbkVQx0j+DL6O10Y
-	 DaOPQ7BABLyBVOOALMamO+UE2K3U3pyCpFqIHkWtX/6sF+1R8jtGQMw1nuW+MBAj1i
-	 kQ0h5ql+gIcMhNo8FXP5sEln/2wMahmotZnYc2hIbik3N6Mtfq5Bkxfy1SHvrJ5NZX
-	 FymmpuIVJM7iA==
+	b=kHANmOqDo4lNOS5vv5TJTKTXNwMd54YjrR6+jtmbPBkeWIoh26bPu32IeZJZKVLs4
+	 oCH8lQGZtRBSlvXBBngTkpKEcX9ReWJ4AZj2KOtOtH8CbA3W8e8WXJRfem83u/6Pwz
+	 VJ775qHRnrfyCjMYaI4s+KfzeJqxIYpNpfkM/E9NZxF6YIWBsdtaxNivqgcjUksOZx
+	 rOBwhPDK5GEGpVMXoPTEDY9j+TDaxYjPTe8ACVAe9xziXM3AlezyeKB3NHjghg0A4J
+	 qKMX4MxQh3c9Vgbuew9RzJp+QfcT0tcvZBxWfIbm4AN4qOAPZjTtlYcgvWr1d7+SFa
+	 RJBPF5/ppeD6A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
+Cc: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
 	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	kvalo@kernel.org,
 	gregory.greenman@intel.com,
-	ilan.peer@intel.com,
-	emmanuel.grumbach@intel.com,
+	dan.carpenter@linaro.org,
+	daniel.gabay@intel.com,
+	mukesh.sisodiya@intel.com,
+	arnd@arndb.de,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 049/197] wifi: iwlwifi: mvm: use correct key iteration
-Date: Wed, 25 Sep 2024 07:51:08 -0400
-Message-ID: <20240925115823.1303019-49-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 050/197] wifi: iwlwifi: allow only CN mcc from WRDD
+Date: Wed, 25 Sep 2024 07:51:09 -0400
+Message-ID: <20240925115823.1303019-50-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -69,59 +72,79 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-[ Upstream commit 4f1591d292277eec51d027405a92f0d4ef5e299e ]
+[ Upstream commit ff5aabe7c2a4a4b089a9ced0cb3d0e284963a7dd ]
 
-In the cases changed here, key iteration isn't done from
-an RCU critical section, but rather using the wiphy lock
-as protection. Therefore, just use ieee80211_iter_keys().
-The link switch case can therefore also use sync commands.
+Block other mcc expect CN from WRDD ACPI.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240729201718.69a2d18580c1.I2148e04d4b467d0b100beac8f7e449bfaaf775a5@changeid
+Link: https://patch.msgid.link/20240808232017.fe6ea7aa4b39.I86004687a2963fe26f990770aca103e2f5cb1628@changeid
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c       | 5 +++++
+ drivers/net/wireless/intel/iwlwifi/fw/regulatory.h | 2 ++
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.c       | 2 +-
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.h       | 2 --
+ 4 files changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
-index 8a38fc4b0b0f9..455f5f4175064 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
-@@ -144,7 +144,7 @@ static void iwl_mvm_mld_update_sta_key(struct ieee80211_hw *hw,
- 	if (sta != data->sta || key->link_id >= 0)
- 		return;
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+index ba9e656037a20..9b3d3405fb83d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/acpi.c
+@@ -356,6 +356,11 @@ int iwl_acpi_get_mcc(struct iwl_fw_runtime *fwrt, char *mcc)
+ 	}
  
--	err = iwl_mvm_send_cmd_pdu(mvm, cmd_id, CMD_ASYNC, sizeof(cmd), &cmd);
-+	err = iwl_mvm_send_cmd_pdu(mvm, cmd_id, 0, sizeof(cmd), &cmd);
+ 	mcc_val = wifi_pkg->package.elements[1].integer.value;
++	if (mcc_val != BIOS_MCC_CHINA) {
++		ret = -EINVAL;
++		IWL_DEBUG_RADIO(fwrt, "ACPI WRDD is supported only for CN\n");
++		goto out_free;
++	}
  
- 	if (err)
- 		data->err = err;
-@@ -162,8 +162,8 @@ int iwl_mvm_mld_update_sta_keys(struct iwl_mvm *mvm,
- 		.new_sta_mask = new_sta_mask,
- 	};
+ 	mcc[0] = (mcc_val >> 8) & 0xff;
+ 	mcc[1] = mcc_val & 0xff;
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
+index 633c9ad9af841..ecf482647617c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/regulatory.h
+@@ -45,6 +45,8 @@
+ #define IWL_WTAS_ENABLE_IEC_MSK	0x4
+ #define IWL_WTAS_USA_UHB_MSK		BIT(16)
  
--	ieee80211_iter_keys_rcu(mvm->hw, vif, iwl_mvm_mld_update_sta_key,
--				&data);
-+	ieee80211_iter_keys(mvm->hw, vif, iwl_mvm_mld_update_sta_key,
-+			    &data);
- 	return data.err;
- }
++#define BIOS_MCC_CHINA 0x434e
++
+ /*
+  * The profile for revision 2 is a superset of revision 1, which is in
+  * turn a superset of revision 0.  So we can store all revisions
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
+index fb982d4fe8510..2cf878f237ac6 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.c
+@@ -638,7 +638,7 @@ int iwl_uefi_get_mcc(struct iwl_fw_runtime *fwrt, char *mcc)
+ 		goto out;
+ 	}
  
-@@ -402,7 +402,7 @@ void iwl_mvm_sec_key_remove_ap(struct iwl_mvm *mvm,
- 	if (!sec_key_ver)
- 		return;
+-	if (data->mcc != UEFI_MCC_CHINA) {
++	if (data->mcc != BIOS_MCC_CHINA) {
+ 		ret = -EINVAL;
+ 		IWL_DEBUG_RADIO(fwrt, "UEFI WRDD is supported only for CN\n");
+ 		goto out;
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/uefi.h b/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
+index 1f8884ca8997c..e0ef981cd8f28 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/uefi.h
+@@ -149,8 +149,6 @@ struct uefi_cnv_var_splc {
+ 	u32 default_pwr_limit;
+ } __packed;
  
--	ieee80211_iter_keys_rcu(mvm->hw, vif,
--				iwl_mvm_sec_key_remove_ap_iter,
--				(void *)(uintptr_t)link_id);
-+	ieee80211_iter_keys(mvm->hw, vif,
-+			    iwl_mvm_sec_key_remove_ap_iter,
-+			    (void *)(uintptr_t)link_id);
- }
+-#define UEFI_MCC_CHINA 0x434e
+-
+ /* struct uefi_cnv_var_wrdd - WRDD table as defined in UEFI
+  * @revision: the revision of the table
+  * @mcc: country identifier as defined in ISO/IEC 3166-1 Alpha 2 code
 -- 
 2.43.0
 
