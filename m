@@ -1,68 +1,59 @@
-Return-Path: <linux-wireless+bounces-13176-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13177-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4100C985C63
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 14:46:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F966985C6B
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 14:47:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1225B2B0F2
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 12:45:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 562CD2882B9
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 12:47:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 955171AD40B;
-	Wed, 25 Sep 2024 11:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6301AD9CF;
+	Wed, 25 Sep 2024 11:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HDZKpS+w"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IuyzjiGV"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A12C1AD404;
-	Wed, 25 Sep 2024 11:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2423A1CF5EA;
+	Wed, 25 Sep 2024 11:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265559; cv=none; b=IVawEh++/RLx7NQUiHprW7IPbs20jTZl74/sTX9WvNVPmKymJZc9jwhQBwQv1dmk0WbUZTyfAvtEZxJ1TCmWxUurhSMhSSuZamkBnX7BaTuEutjKMP/hHi8h1KauIZMkAC34lMZ/3taog5O7/Jr9UtfFAjKOn6OUdNQZNCTZ77Q=
+	t=1727265573; cv=none; b=DQxDNaWzFLgaS6Fe5jWgBarHbcPsUFYWVnJSRGbjWb72a7oghLia28ouMZR4LCgaWAIxmKr7nGo4s1AHW6jJVfKlRcvgNMLGvkcrE2LiijJTDdgv3/VtPOUQ3NHcFxscjJkmXzLNihVYxW9oRhICfsBo8CmA3EfFlfgGRjfB4HQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265559; c=relaxed/simple;
-	bh=UTnyrC6+eQGfN6gBoDqD4hpWuNu1GAI4ICtRKrZvAu8=;
+	s=arc-20240116; t=1727265573; c=relaxed/simple;
+	bh=jFr7uu1TQUwZVhdUqJfZcFkq8Z+1od8tbXbQq+2lMHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ld+Vo+P9pCv0W9EDXq5Su6uY9lfxNv5skU5lvkCSTOFC076wCSzD/Xx5o54RfrP9eZBwj0wO+jvD3erGPGwgH08Ejezz9zKMUQ8f6WdL79oYxY886MW6kPWyuiUdYMjsKsyHUq8hsycWtl4iOH1sHILGOq9SyPCEN2mSS/RY68I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HDZKpS+w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBA4C4CEC3;
-	Wed, 25 Sep 2024 11:59:15 +0000 (UTC)
+	 MIME-Version; b=WvDHXQCLWZ8FAYtGWsXFyy9aaXzTOlibTr5c3oYLtquEUeGWjgDkxYX5tYz0keDea3FBzpZ3aAZBHxkvM3ntEE5YvxYSqthFv5bfFACP4E1h+pTtn9WjHmHGMXI3q8Umm+zm2hSW6G4yWotUlqY+Q2NAZOYWn/le7xAGEvmQxa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IuyzjiGV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D55C4CECF;
+	Wed, 25 Sep 2024 11:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265558;
-	bh=UTnyrC6+eQGfN6gBoDqD4hpWuNu1GAI4ICtRKrZvAu8=;
+	s=k20201202; t=1727265572;
+	bh=jFr7uu1TQUwZVhdUqJfZcFkq8Z+1od8tbXbQq+2lMHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HDZKpS+wby4zn/fV6ztuGh5wuzt95e/OOWuPqRxm2L56nAAp7oEaqGpA7Pd9JI7HQ
-	 71xr8eES2f/MikjMqaM9cJqiO9QYVRIu8dlPi0bKA4z0nAfi3FL2/HWYxRY025LLxt
-	 BXEvTrojmxtrbJhTO7gp2jQviFvTTZXT7fTFcHGl7pnFZmbtr45y86X9W+2jqBG48X
-	 JGPVZ3lyn9cO/AtByHEuyGJcfOdmJa8Fg6F4WE2+GJe6WEORvK75jjdkfFzCRLc4xc
-	 Dbbsuse2uiPY+upmSoW+EaEMABH3tiPsMBfVZnrv6ulD3cGBwSWXDCK+YFqLBKgWIx
-	 lpBKYpnl/mvnQ==
+	b=IuyzjiGVb5cHsiM6AiOn0Ahu4Xbq8shwKM9/rHHPde38kCzuwRGm8r/BNy92o8nT2
+	 AivqCrwlAZRkv6aYGcjct9T5TXAXkKsFOfSr2i+EOAKoKofDp0p02SZoAUxJH1okb5
+	 sPcKUp0Mns2/NeBia+PDYL6o981zf1x7Z1mg4sdtY8uXwPb9+SNWAd4lSrAxUphJys
+	 3nKYllsoR9nWv2hYC8vwdzOo3M+XPks/nRAUOsnPR2okcP+qxzBJJN4Qq5O9Wji+qs
+	 Vh5ocamQoVMQt5LtgF6QetDtbuFi/LeWRkOkwh2nb01JLNT2TziuZQpp7nb8qpZD/F
+	 ULV2/g8tmJvMA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Felix Fietkau <nbd@nbd.name>,
+Cc: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
 	kvalo@kernel.org,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	shayne.chen@mediatek.com,
-	chui-hao.chiu@mediatek.com,
-	meichia.chiu@mediatek.com,
-	johannes.berg@intel.com,
-	quic_adisi@quicinc.com,
-	sean.wang@mediatek.com,
+	jjohnson@kernel.org,
 	linux-wireless@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.10 021/197] wifi: mt76: mt7915: disable tx worker during tx BA session enable/disable
-Date: Wed, 25 Sep 2024 07:50:40 -0400
-Message-ID: <20240925115823.1303019-21-sashal@kernel.org>
+	ath12k@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.10 029/197] wifi: ath12k: fix array out-of-bound access in SoC stats
+Date: Wed, 25 Sep 2024 07:50:48 -0400
+Message-ID: <20240925115823.1303019-29-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -77,44 +68,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 
-[ Upstream commit 256cbd26fbafb30ba3314339106e5c594e9bd5f9 ]
+[ Upstream commit e106b7ad13c1d246adaa57df73edb8f8b8acb240 ]
 
-Avoids firmware race condition.
+Currently, the ath12k_soc_dp_stats::hal_reo_error array is defined with a
+maximum size of DP_REO_DST_RING_MAX. However, the ath12k_dp_rx_process()
+function access ath12k_soc_dp_stats::hal_reo_error using the REO
+destination SRNG ring ID, which is incorrect. SRNG ring ID differ from
+normal ring ID, and this usage leads to out-of-bounds array access. To
+fix this issue, modify ath12k_dp_rx_process() to use the normal ring ID
+directly instead of the SRNG ring ID to avoid out-of-bounds array access.
 
-Link: https://patch.msgid.link/20240827093011.18621-7-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://patch.msgid.link/20240704070811.4186543-2-quic_periyasa@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath12k/dp_rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 9599adf104b16..758249b20c222 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -690,13 +690,17 @@ int mt7915_mcu_add_tx_ba(struct mt7915_dev *dev,
- {
- 	struct mt7915_sta *msta = (struct mt7915_sta *)params->sta->drv_priv;
- 	struct mt7915_vif *mvif = msta->vif;
-+	int ret;
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index 3cdc4c51d6dfe..f8767496fa543 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -2702,7 +2702,7 @@ int ath12k_dp_rx_process(struct ath12k_base *ab, int ring_id,
+ 		if (push_reason !=
+ 		    HAL_REO_DEST_RING_PUSH_REASON_ROUTING_INSTRUCTION) {
+ 			dev_kfree_skb_any(msdu);
+-			ab->soc_stats.hal_reo_error[dp->reo_dst_ring[ring_id].ring_id]++;
++			ab->soc_stats.hal_reo_error[ring_id]++;
+ 			continue;
+ 		}
  
-+	mt76_worker_disable(&dev->mt76.tx_worker);
- 	if (enable && !params->amsdu)
- 		msta->wcid.amsdu = false;
-+	ret = mt76_connac_mcu_sta_ba(&dev->mt76, &mvif->mt76, params,
-+				     MCU_EXT_CMD(STA_REC_UPDATE),
-+				     enable, true);
-+	mt76_worker_enable(&dev->mt76.tx_worker);
- 
--	return mt76_connac_mcu_sta_ba(&dev->mt76, &mvif->mt76, params,
--				      MCU_EXT_CMD(STA_REC_UPDATE),
--				      enable, true);
-+	return ret;
- }
- 
- int mt7915_mcu_add_rx_ba(struct mt7915_dev *dev,
 -- 
 2.43.0
 
