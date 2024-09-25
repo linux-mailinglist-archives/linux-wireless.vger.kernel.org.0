@@ -1,162 +1,107 @@
-Return-Path: <linux-wireless+bounces-13169-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13170-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D892985AEB
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 14:16:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 454F2985C19
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 14:39:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AA3428213B
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 12:15:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 035D6287446
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 12:39:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2729A18FDB9;
-	Wed, 25 Sep 2024 11:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E7B18953F;
+	Wed, 25 Sep 2024 11:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="biwR2LcK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bIpQSq7x"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8B318FC74
-	for <linux-wireless@vger.kernel.org>; Wed, 25 Sep 2024 11:46:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F5E170A3E;
+	Wed, 25 Sep 2024 11:58:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727264776; cv=none; b=XhE4o1zpOmYglCGXEIXvTEzVv5Oe2i5ZX9E5WdL0s67CQ0yDsztS3UDuuphQTEUAJm00bOLM7lawV205YmDG39XdeeLVXTi/x3ugFtCfCOiLb+Mm3r5/gt5j0arIOyO5jqlSSS7mXn4l4gUlzApKl/tILLnlc6Ub1k8kh+Q7nBM=
+	t=1727265507; cv=none; b=qcDeNt505TqoRmWK0xOhUoyuowvkjQhgK6SRGqjsDyxzy78bKkT5T+/s7EKetvkcukRhJ0NyKVFdo74gOYx5AEsDsA0I4jt/nI2yzUJ/NzzWz+zD1K3mn4vI0ID/nxbx06tX0I1jpLfwsLb4iMd8AjF90QI4xBC1Jvw6O6dHSpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727264776; c=relaxed/simple;
-	bh=v9Ae7jmMHQFlMZbF32j43dVF7Z2aG+EUS6iAxFUVHpc=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=hCnEPRwiVooYqzN0CxJzPUM/LVFwaoQo8tKqxxgUguFIpxVJaopacrvUhvPw+DLafamlnVqOflETbO6gtf6W3nAfRq+0bw7UH/g28t/Ozl9ecTNHA8fnvLBoGVXZ/h3tQGgv2uB0onX/nxYtYwAV1sIW1QYs9lqhmAIy3zZVt4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=biwR2LcK; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-42cbc22e1c4so54241825e9.2
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Sep 2024 04:46:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727264772; x=1727869572; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-language:cc:to:subject:from
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9kSH3gAmDvaE0TWu0Zw1tqUtUV0KUVsDtyl6cBRmYm4=;
-        b=biwR2LcKsvTJakT56vf3OL+C26ggHnAotYzYzj8PY+ZKJkxVgKnEjFiFtTHobdApr/
-         SRIX5B1BFhr3piMb613B7eWjjQxJ60/RKqgNRNbEiEg2oOhot//bSL75W2psVR9pXdkA
-         nRYjcHTJVDPIZ7wj6czQYYMC8y/XFR5mL2UPanIw61J9pUcKvhFBjK+ShtGtTyYyf7+x
-         6I51FMHNcYjMTfTir2vF+nByVshyhd3opomoOv15xFtzh7Z7bprOFpTgYiK+xqkgw7dd
-         wYAgAj+lCTtOIdIGBA1c8D/AlApHzQ7GcmJXt4f1+shH5m7nDz6+LTkcrS8IYSwrs5tA
-         bywg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727264772; x=1727869572;
-        h=content-transfer-encoding:content-language:cc:to:subject:from
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=9kSH3gAmDvaE0TWu0Zw1tqUtUV0KUVsDtyl6cBRmYm4=;
-        b=R7BAbjqVfr2mpF8Gd5MarJZpAizLIywEb2hy2JRgRjIylc9XY25wUoWNbPclWMHWI+
-         GHftLaTcS63Sl75QrZ/t+qQfbqLLUPmaQ+C0qlQgpZOgcv3pE2aZ/f3/rShGZbj50LvE
-         xIjiTuNzoe+ow43wzPJXUhc2fXqTC6ep/fQLdfoJoPjOuB0raLN6EJFQlnp745ep3/gW
-         ug+1DpbkPKhHQeeeKrAWOpDr2vm/PN0Ero8KXlUA3jzNaQZVox9IrB/7kjNChjZjU6sW
-         bb6ElJQxxQO1pdiypTeUBWxYdPVgtFX+cTu4U68nTKjHODRjZmHAcwRKvouyjuQw3bIS
-         dk0w==
-X-Gm-Message-State: AOJu0Yz8DnYraYT0IunJF6qA+sa5PYWTHpFYJshCG+tAp0jKx244g8DO
-	IunLS8mk0lz7Zmx6Pc/2Tqpaj1wXubCxW1KdJ5nBoSlMpKeJx2jVLEc6vA==
-X-Google-Smtp-Source: AGHT+IE9bV1ugpIU4zBrLev1tRW11fTNLqfQ5ku0FKbvcZiGSSYCzAcLrVD7uGQmqQc0U8p75iHK5Q==
-X-Received: by 2002:a05:600c:3b87:b0:426:51dc:f6cd with SMTP id 5b1f17b1804b1-42e961173e8mr13054495e9.18.1727264772084;
-        Wed, 25 Sep 2024 04:46:12 -0700 (PDT)
-Received: from [192.168.1.50] ([79.119.240.193])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37cbc31f3ddsm3731628f8f.103.2024.09.25.04.46.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Sep 2024 04:46:11 -0700 (PDT)
-Message-ID: <6e7ecb47-7ea0-433a-a19f-05f88a2edf6b@gmail.com>
-Date: Wed, 25 Sep 2024 14:46:10 +0300
+	s=arc-20240116; t=1727265507; c=relaxed/simple;
+	bh=DHKg4G/Asx6z3gXHGGyKUwxi9cSsvXk2f1FXaNNbvXE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fnOXMNDJBydfvKHMOrtUyHgdq1KtdC+MlnSwjHWtYVoobsVQ5Nn5HK41tMqQHIoMIOI4DvjkW1P3z1gy7ULY/uLMxDIGMjr0x+ILodNz/CFtkbCC+K7HzgzT9cTK5vHLF3J7UQXkFrfJ2Wg4/hKKSOKnGIVJkqcX2qK0tRRIYfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bIpQSq7x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAC3FC4CEC7;
+	Wed, 25 Sep 2024 11:58:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727265506;
+	bh=DHKg4G/Asx6z3gXHGGyKUwxi9cSsvXk2f1FXaNNbvXE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=bIpQSq7xLVwQaRNvDVED3scuFjhCJj7tTdnC+U2jBWrEjq+fczreIyNqxLogobzLj
+	 CnWsmmYfOUYYP8uHU1nRwgMEB2rVrHaYZK2U4Kgf9ru1RqgM97ditagjsBmRbNGxRS
+	 jsa09p2LuoK3Rv6Gted35EEdlTzZHkRDI4oCcw3TR+X0ZBlRkoyXWE72UqbEiDcwwE
+	 56IgTwDs1MhI6wzu65+b2O8LopNZtPRrkcds4u25kRB5i3ZjRcXcMfBiABDJkEtZ6s
+	 6/ecJcdzWqXTXmCb3SfbEVC5qmnc6wOxq6GOGCVq7EnSCh5+pKy192f3GIBvGZf4G7
+	 yyjJrTYKCBGqA==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Dmitry Kandybka <d.kandybka@gmail.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>,
+	kvalo@kernel.org,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 001/197] wifi: ath9k: fix possible integer overflow in ath9k_get_et_stats()
+Date: Wed, 25 Sep 2024 07:50:20 -0400
+Message-ID: <20240925115823.1303019-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: rtw88: USB devices randomly stop receiving anything
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>
-Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.10.11
+Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Dmitry Kandybka <d.kandybka@gmail.com>
 
-I have this problem with RTL8811CU, RTL8723DU, RTL8811AU, RTL8812AU.
-I assume all USB devices are affected. If I have qBittorrent running,
-the wifi stops working after a few hours:
+[ Upstream commit 3f66f26703093886db81f0610b97a6794511917c ]
 
-Sep 24 00:48:21 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
-Sep 24 00:48:21 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-Sep 24 00:48:23 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
-Sep 24 00:48:23 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-Sep 24 00:48:25 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
-Sep 24 00:48:25 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-Sep 24 00:48:27 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
-Sep 24 00:48:27 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-Sep 24 00:48:29 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
-Sep 24 00:48:29 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-Sep 24 00:48:31 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
-Sep 24 00:48:31 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-Sep 24 00:48:33 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
-Sep 24 00:48:33 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-Sep 24 00:48:35 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
-Sep 24 00:48:35 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-Sep 24 00:48:37 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
-Sep 24 00:48:37 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-Sep 24 00:48:39 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
-Sep 24 00:48:39 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-Sep 24 00:48:41 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
-Sep 24 00:48:41 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-Sep 24 00:48:42 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-DISCONNECTED bssid=... reason=4 locally_generated=1
-Sep 24 00:48:42 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: Added BSSID ... into ignore list, ignoring for 10 seconds
-Sep 24 00:48:42 ideapad2 NetworkManager[433]: <info>  [1727128122.0377] device (wlp3s0f3u2i2): supplicant interface state: completed -> disconnected
-Sep 24 00:48:45 ideapad2 NetworkManager[433]: <info>  [1727128125.6030] device (wlp3s0f3u2i2): supplicant interface state: disconnected -> scanning
-Sep 24 00:48:47 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: Removed BSSID ... from ignore list (clear)
-Sep 24 00:48:47 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: SME: Trying to authenticate with ... (SSID='...' freq=2472 MHz)
-Sep 24 00:48:50 ideapad2 kernel: wlp3s0f3u2i2: authenticate with ... (local address=,,,)
-Sep 24 00:48:51 ideapad2 NetworkManager[433]: <info>  [1727128131.2488] device (wlp3s0f3u2i2): supplicant interface state: scanning -> authenticating
-Sep 24 00:48:51 ideapad2 kernel: wlp3s0f3u2i2: send auth to ... (try 1/3)
-Sep 24 00:48:51 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-Sep 24 00:48:52 ideapad2 kernel: wlp3s0f3u2i2: send auth to ... (try 2/3)
-Sep 24 00:48:52 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-Sep 24 00:48:53 ideapad2 kernel: wlp3s0f3u2i2: send auth to ... (try 3/3)
-Sep 24 00:48:53 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-Sep 24 00:48:54 ideapad2 kernel: wlp3s0f3u2i2: authentication with ... timed out
+In 'ath9k_get_et_stats()', promote TX stats counters to 'u64'
+to avoid possible integer overflow. Compile tested only.
 
-After this all scans return nothing. The chip is still alive,
-though. The LED blinks during the scans (it's hardware-controlled)
-and another device in monitor mode can see the probe requests.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-I confirmed that even C2H stop coming. I used aireplay-ng to send
-some authentication or association frames (can't remember) which
-require TX ACK report. I saw "failed to get tx report from firmware"
-and no C2H.
+Signed-off-by: Dmitry Kandybka <d.kandybka@gmail.com>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://patch.msgid.link/20240725111743.14422-1-d.kandybka@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/wireless/ath/ath9k/debug.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-While qBittorrent is needed to trigger this bug, simply downloading
-a random Linux iso did not do the job. "Other" torrents did. It's
-unclear why. Maybe it's uploading that triggers the bug.
+diff --git a/drivers/net/wireless/ath/ath9k/debug.c b/drivers/net/wireless/ath/ath9k/debug.c
+index d84e3ee7b5d90..886a102e5b025 100644
+--- a/drivers/net/wireless/ath/ath9k/debug.c
++++ b/drivers/net/wireless/ath/ath9k/debug.c
+@@ -1325,11 +1325,11 @@ void ath9k_get_et_stats(struct ieee80211_hw *hw,
+ 	struct ath_softc *sc = hw->priv;
+ 	int i = 0;
+ 
+-	data[i++] = (sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_pkts_all +
++	data[i++] = ((u64)sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_pkts_all +
+ 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BK)].tx_pkts_all +
+ 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VI)].tx_pkts_all +
+ 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VO)].tx_pkts_all);
+-	data[i++] = (sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_bytes_all +
++	data[i++] = ((u64)sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_bytes_all +
+ 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BK)].tx_bytes_all +
+ 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VI)].tx_bytes_all +
+ 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VO)].tx_bytes_all);
+-- 
+2.43.0
 
-I left iperf3 running all day and nothing happened. Only qBittorrent
-can break it.
-
-RTL8822CE doesn't have this problem. I can use qBittorrent with it
-just fine.
-
-I mounted debugfs and dumped the MAC registers during a scan using
-this command:
-
-for i in {00..20}; do sleep 0.5; cat /sys/kernel/debug/ieee80211/phy2/rtw88/mac_{0..7} > dead-$i.txt; done
-
-I thought maybe some RX URBs failed silently and rtw88 stopped
-sending them to the device (== stopped requesting data from it),
-but that's not the case. [1]
-
-I have the device in this state right now. Is there anything else
-I should look at?
-
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/drivers/net/wireless/realtek/rtw88/usb.c?h=v6.10.11&id=25eaef533bf3ccc6fee5067aac16f41f280e343e#n641
 
