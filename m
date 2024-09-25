@@ -1,59 +1,61 @@
-Return-Path: <linux-wireless+bounces-13172-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13173-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DF4E985C1E
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 14:39:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C73D5985C2D
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 14:41:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12816285B18
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 12:39:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 381A91F27D7D
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 12:41:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C96A01A303F;
-	Wed, 25 Sep 2024 11:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB1A91A4E6A;
+	Wed, 25 Sep 2024 11:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ed4eM4X8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="se38ClFK"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CDC918785E;
-	Wed, 25 Sep 2024 11:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF4B41A42B0;
+	Wed, 25 Sep 2024 11:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265512; cv=none; b=URjgORvTrS9MEvUZQDZ1lbgQ1z5bUkF0QRSySWekx5ZtES+6cG1h9zibyCNsV1j+QzewOQDB0Y/Df6TXd74RThOKreJLGpkccuJsr0VBIs5A/gJOd0CzMR38rSb98ENbC+X3zpkUxAv1x66tNpipfBWN+uC/2fmg79n/sXNY1Ow=
+	t=1727265527; cv=none; b=AX5cJST1/+PoKeBBg7FqcTAC4HP6HqlM0cqcHUtCoDbuS2rrSlQoVnAeG2H940G/G7MroiaYe7X+6i+E2m1OMty8YxBU/yZCYdaAXbIhPE36o/kOG0RhIhkDRC6V67Mj3a92/cNhFnRJgF04URNZlsXftu3OnyGpniEvuQWXtmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265512; c=relaxed/simple;
-	bh=04L9H7rILcMMC3wyWIRI4MWyb1bdq6z06FXZZkEPWok=;
+	s=arc-20240116; t=1727265527; c=relaxed/simple;
+	bh=/TAejdZrJVo0Wl88x9564A8aUJaoui2AL07HoFKZML4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nPnNVK3loxNbzP4q9GK35EWvDfE76057DwHmA7nBILJJiEfMHYY2sJEhLNQw8CZCXz1m7RNFydsdluZsU18d5vff2AfeFH6Kl6iMPJcQp2qjM74DiM1a2j8sElJnvVDZkV5xif1lki83Rl/660COvfO/shrOvyJTuFjiahjNOo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ed4eM4X8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 027A5C4CEC7;
-	Wed, 25 Sep 2024 11:58:28 +0000 (UTC)
+	 MIME-Version; b=Av7D3/OfsCPxq4Fju22CWcLe5aVq2D3IhfXX7MHtRF4mnyMU8+N7vi6WZnjpGzkuCAtYlG7Azlc2GEIYJq36yAwE+Ou1Se4chZBU9z5TPnJzfQvKJcNIFE6tVZ/VBAfFW1lDV63nm/9pIky2uQrVf8/+rTNQmHNLPVUqqu33+VM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=se38ClFK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F517C4CEC7;
+	Wed, 25 Sep 2024 11:58:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265510;
-	bh=04L9H7rILcMMC3wyWIRI4MWyb1bdq6z06FXZZkEPWok=;
+	s=k20201202; t=1727265527;
+	bh=/TAejdZrJVo0Wl88x9564A8aUJaoui2AL07HoFKZML4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ed4eM4X8F86IHk+BE1/nkQceRgAEhFKmOfj3J6vvAswwgkjBSJ1nDGKpd6uqzXxvK
-	 fiW4V1Xldm3CkGZV3Qe/HvfseKPZNmKmqygPogTbnU7Myd1xsEbLif204ESqQmkpGD
-	 JgF1f1MGSGkQ717Y7wUMFs5XKh3MebE+qjKkTyv/lMbZNdhQnX1qSAoFXStuNlDuWa
-	 ToF4dSYWhUupI1ufg64MQQcseHdc8IcDkEvw2AV0zoKFOqzZnmnyUd5vBNna+52kXd
-	 A3j7Bqjo0lKN4mRb4Yje/LvpvQhCa30QcxX0bZKvl9hxlbBVTSJwRjHE6XQmce6Lur
-	 nDtlTrbF8kfXw==
+	b=se38ClFKYh+S4uKsKdc3YQGaQoXiQiL60YT7nHKzn1KIMt1zAyhwk62HalTg0J1Eb
+	 hvzVPO4kGFx/82vqFcPdfcjmklfDdWBu56P3aPFiVjEjAc5uMOb7AZxiumDTMPldau
+	 hJkUxNj112Kxl6k/dLvnTLAVVBR2KnHl4dzow/2Ck9QOfxqvicu/+KnrY17km9uMoK
+	 Ou9grTD9kKAZJ5kEvHNUZ6+AiDcVCtGFP9WX3FLhDq8hDQ7IBxoxPwzMYcvItJtt7T
+	 XnB1VWJgiz6Dig9XQq6Xwdo2efJR+u+ljCsqjoxRjOi383l4EdK6r3kjagFjgB3eaf
+	 reX7Lh5ryZ1hQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	syzbot+98afa303be379af6cdb2@syzkaller.appspotmail.com,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+Cc: Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	toke@toke.dk,
 	kvalo@kernel.org,
+	benjamin.berg@intel.com,
+	daniel.gabay@intel.com,
+	ayala.beker@intel.com,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 003/197] wifi: ath9k_htc: Use __skb_set_length() for resetting urb before resubmit
-Date: Wed, 25 Sep 2024 07:50:22 -0400
-Message-ID: <20240925115823.1303019-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 008/197] wifi: iwlwifi: mvm: Fix a race in scan abort flow
+Date: Wed, 25 Sep 2024 07:50:27 -0400
+Message-ID: <20240925115823.1303019-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -63,59 +65,156 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Toke Høiland-Jørgensen <toke@redhat.com>
+From: Ilan Peer <ilan.peer@intel.com>
 
-[ Upstream commit 94745807f3ebd379f23865e6dab196f220664179 ]
+[ Upstream commit 87c1c28a9aa149489e1667f5754fc24f4973d2d0 ]
 
-Syzbot points out that skb_trim() has a sanity check on the existing length of
-the skb, which can be uninitialised in some error paths. The intent here is
-clearly just to reset the length to zero before resubmitting, so switch to
-calling __skb_set_length(skb, 0) directly. In addition, __skb_set_length()
-already contains a call to skb_reset_tail_pointer(), so remove the redundant
-call.
+When the upper layer requests to cancel an ongoing scan, a race
+is possible in which by the time the driver starts to handle the
+upper layers scan cancel flow, the FW already completed handling
+the scan request and the driver received the scan complete
+notification but still did not handle the notification. In such a
+case the FW will simply ignore the scan abort request coming from
+the driver, no notification would arrive from the FW and the entire
+abort flow would be considered a failure.
 
-The syzbot report came from ath9k_hif_usb_reg_in_cb(), but there's a similar
-usage of skb_trim() in ath9k_hif_usb_rx_cb(), change both while we're at it.
+To better handle this, check the status code returned by the FW for
+the scan abort command. In case the status indicates that
+no scan was aborted, complete the scan abort flow with success, i.e.,
+the scan was aborted, as the flow is expected to consume the scan
+complete notification.
 
-Reported-by: syzbot+98afa303be379af6cdb2@syzkaller.appspotmail.com
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://patch.msgid.link/20240812142447.12328-1-toke@toke.dk
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240825085558.483989d3baef.I3340556a222388504c6330b333360bf77d10f9e2@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/hif_usb.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ .../net/wireless/intel/iwlwifi/fw/api/scan.h  | 13 ++++++
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 42 +++++++++++++++----
+ 2 files changed, 47 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
-index 0c7841f952287..a3733c9b484e4 100644
---- a/drivers/net/wireless/ath/ath9k/hif_usb.c
-+++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
-@@ -716,8 +716,7 @@ static void ath9k_hif_usb_rx_cb(struct urb *urb)
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h b/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
+index 6684506f4fc48..6cf237850ea0c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/scan.h
+@@ -1132,6 +1132,19 @@ struct iwl_umac_scan_abort {
+ 	__le32 flags;
+ } __packed; /* SCAN_ABORT_CMD_UMAC_API_S_VER_1 */
+ 
++/**
++ * enum iwl_umac_scan_abort_status
++ *
++ * @IWL_UMAC_SCAN_ABORT_STATUS_SUCCESS: scan was successfully aborted
++ * @IWL_UMAC_SCAN_ABORT_STATUS_IN_PROGRESS: scan abort is in progress
++ * @IWL_UMAC_SCAN_ABORT_STATUS_NOT_FOUND: nothing to abort
++ */
++enum iwl_umac_scan_abort_status {
++	IWL_UMAC_SCAN_ABORT_STATUS_SUCCESS = 0,
++	IWL_UMAC_SCAN_ABORT_STATUS_IN_PROGRESS,
++	IWL_UMAC_SCAN_ABORT_STATUS_NOT_FOUND,
++};
++
+ /**
+  * struct iwl_umac_scan_complete
+  * @uid: scan id, &enum iwl_umac_scan_uid_offsets
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index 7615c91a55c62..c1a0e0071086c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -3312,13 +3312,23 @@ void iwl_mvm_rx_umac_scan_iter_complete_notif(struct iwl_mvm *mvm,
+ 		       mvm->scan_start);
+ }
+ 
+-static int iwl_mvm_umac_scan_abort(struct iwl_mvm *mvm, int type)
++static int iwl_mvm_umac_scan_abort(struct iwl_mvm *mvm, int type, bool *wait)
+ {
+-	struct iwl_umac_scan_abort cmd = {};
++	struct iwl_umac_scan_abort abort_cmd = {};
++	struct iwl_host_cmd cmd = {
++		.id = WIDE_ID(IWL_ALWAYS_LONG_GROUP, SCAN_ABORT_UMAC),
++		.len = { sizeof(abort_cmd), },
++		.data = { &abort_cmd, },
++		.flags = CMD_SEND_IN_RFKILL,
++	};
++
+ 	int uid, ret;
++	u32 status = IWL_UMAC_SCAN_ABORT_STATUS_NOT_FOUND;
+ 
+ 	lockdep_assert_held(&mvm->mutex);
+ 
++	*wait = true;
++
+ 	/* We should always get a valid index here, because we already
+ 	 * checked that this type of scan was running in the generic
+ 	 * code.
+@@ -3327,17 +3337,28 @@ static int iwl_mvm_umac_scan_abort(struct iwl_mvm *mvm, int type)
+ 	if (WARN_ON_ONCE(uid < 0))
+ 		return uid;
+ 
+-	cmd.uid = cpu_to_le32(uid);
++	abort_cmd.uid = cpu_to_le32(uid);
+ 
+ 	IWL_DEBUG_SCAN(mvm, "Sending scan abort, uid %u\n", uid);
+ 
+-	ret = iwl_mvm_send_cmd_pdu(mvm,
+-				   WIDE_ID(IWL_ALWAYS_LONG_GROUP, SCAN_ABORT_UMAC),
+-				   CMD_SEND_IN_RFKILL, sizeof(cmd), &cmd);
++	ret = iwl_mvm_send_cmd_status(mvm, &cmd, &status);
++
++	IWL_DEBUG_SCAN(mvm, "Scan abort: ret=%d, status=%u\n", ret, status);
+ 	if (!ret)
+ 		mvm->scan_uid_status[uid] = type << IWL_MVM_SCAN_STOPPING_SHIFT;
+ 
+-	IWL_DEBUG_SCAN(mvm, "Scan abort: ret=%d\n", ret);
++	/* Handle the case that the FW is no longer familiar with the scan that
++	 * is to be stopped. In such a case, it is expected that the scan
++	 * complete notification was already received but not yet processed.
++	 * In such a case, there is no need to wait for a scan complete
++	 * notification and the flow should continue similar to the case that
++	 * the scan was really aborted.
++	 */
++	if (status == IWL_UMAC_SCAN_ABORT_STATUS_NOT_FOUND) {
++		mvm->scan_uid_status[uid] = type << IWL_MVM_SCAN_STOPPING_SHIFT;
++		*wait = false;
++	}
++
+ 	return ret;
+ }
+ 
+@@ -3347,6 +3368,7 @@ static int iwl_mvm_scan_stop_wait(struct iwl_mvm *mvm, int type)
+ 	static const u16 scan_done_notif[] = { SCAN_COMPLETE_UMAC,
+ 					      SCAN_OFFLOAD_COMPLETE, };
+ 	int ret;
++	bool wait = true;
+ 
+ 	lockdep_assert_held(&mvm->mutex);
+ 
+@@ -3358,7 +3380,7 @@ static int iwl_mvm_scan_stop_wait(struct iwl_mvm *mvm, int type)
+ 	IWL_DEBUG_SCAN(mvm, "Preparing to stop scan, type %x\n", type);
+ 
+ 	if (fw_has_capa(&mvm->fw->ucode_capa, IWL_UCODE_TLV_CAPA_UMAC_SCAN))
+-		ret = iwl_mvm_umac_scan_abort(mvm, type);
++		ret = iwl_mvm_umac_scan_abort(mvm, type, &wait);
+ 	else
+ 		ret = iwl_mvm_lmac_scan_abort(mvm);
+ 
+@@ -3366,6 +3388,10 @@ static int iwl_mvm_scan_stop_wait(struct iwl_mvm *mvm, int type)
+ 		IWL_DEBUG_SCAN(mvm, "couldn't stop scan type %d\n", type);
+ 		iwl_remove_notification(&mvm->notif_wait, &wait_scan_done);
+ 		return ret;
++	} else if (!wait) {
++		IWL_DEBUG_SCAN(mvm, "no need to wait for scan type %d\n", type);
++		iwl_remove_notification(&mvm->notif_wait, &wait_scan_done);
++		return 0;
  	}
  
- resubmit:
--	skb_reset_tail_pointer(skb);
--	skb_trim(skb, 0);
-+	__skb_set_length(skb, 0);
- 
- 	usb_anchor_urb(urb, &hif_dev->rx_submitted);
- 	ret = usb_submit_urb(urb, GFP_ATOMIC);
-@@ -754,8 +753,7 @@ static void ath9k_hif_usb_reg_in_cb(struct urb *urb)
- 	case -ESHUTDOWN:
- 		goto free_skb;
- 	default:
--		skb_reset_tail_pointer(skb);
--		skb_trim(skb, 0);
-+		__skb_set_length(skb, 0);
- 
- 		goto resubmit;
- 	}
+ 	return iwl_wait_notification(&mvm->notif_wait, &wait_scan_done,
 -- 
 2.43.0
 
