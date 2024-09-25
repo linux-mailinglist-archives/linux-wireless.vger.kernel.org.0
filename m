@@ -1,129 +1,112 @@
-Return-Path: <linux-wireless+bounces-13205-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13207-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36BDF985F05
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 15:48:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B8A5986555
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 19:10:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F216F28ACC9
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 13:48:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5CBA2878D8
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 17:10:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6E7C1B07D9;
-	Wed, 25 Sep 2024 12:13:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GJW9zGr3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4202B4AEF2;
+	Wed, 25 Sep 2024 17:10:30 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bues.ch (bues.ch [80.190.117.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979921B07D7;
-	Wed, 25 Sep 2024 12:13:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0ACF4644E;
+	Wed, 25 Sep 2024 17:10:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.190.117.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266430; cv=none; b=GxAXEXBM23MKqPAKK3ofJNWjjhbZ0nN2k4PbdTsMsCoR271/djLKobiW23kskQ+bbWRObg1G6YCHzj0XD7nCsA8uz1GUQPdPlScKx/D3iSQaDDp08beNYVX4HF3F5O88PiokrZ5Q02s/SlWBOGlWmEbbf9q5P23/gnq4Y5M+ZMU=
+	t=1727284230; cv=none; b=imQk77dQ+ctFymzQ6+J/mNbJfrmYih74TxtzBxTzv38nCPecaVgmrH4i1SMhiGGKk3r3kfULm26kG+BLRkP81G983+6STjCq/rzVOyYDBd8toBUZOWY4Yvxk4Hh3Mg7s80+zkYZEODZsi42c4a/Y8Z07LzMLUWnlyQDzLTX60gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266430; c=relaxed/simple;
-	bh=9pfYlAgLwWtJ0bQCsbD+2e5EHHneINBPCQH6bPb+y8o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CzXvrdQW+c5pbBSWp8ar7EjuSISOzgrGzdCeT+2HgukjZLp+XZ64yX+3hN7oJ0cY0yMeTOXi8/reQM5iWcAftWyKM21nJEstFIkFPOjiJEFZGv8UwaTeXHG3tAYbqGl5MohKLI56hnzp/CAh8jc+GTrxeYA5tqwuh9DmnRdOd6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GJW9zGr3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19306C4CEC7;
-	Wed, 25 Sep 2024 12:13:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266430;
-	bh=9pfYlAgLwWtJ0bQCsbD+2e5EHHneINBPCQH6bPb+y8o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GJW9zGr3a6QI7yTsz4L9JxLBDvv+ojrby8OaLsgDHfrSccYwEcWSL169dg0fnkbcV
-	 P7WiMwdYNXSgjsXbaPxv4YiCvpeUgpjyuYn34hOiF7IRC51g4xB9i+9Utcrvl2pRkU
-	 9eZJox6H0AZNMtGBX8C2ulcASoEpabyA1UlpkcbLo/c3SHriH9bvWDn8RIHkqmiQ+O
-	 ogEjLHMZ6D9hqyx454PPugUaw+zl+927OuJXeD0N+1wtvDAFZjp4Pp+hFVKVDPUiJi
-	 YcezEyWVC5J0YfjifFpVvfdnRYZZ1gMs/jUOqPxM29TPq+4A/zXhCY3hgBgV4BAJ0z
-	 AjD7HlQMbsmug==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	kees@kernel.org,
-	yu-hao.lin@nxp.com,
-	dmantipov@yandex.ru,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 055/139] wifi: mwifiex: Fix memcpy() field-spanning write warning in mwifiex_cmd_802_11_scan_ext()
-Date: Wed, 25 Sep 2024 08:07:55 -0400
-Message-ID: <20240925121137.1307574-55-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240925121137.1307574-1-sashal@kernel.org>
-References: <20240925121137.1307574-1-sashal@kernel.org>
+	s=arc-20240116; t=1727284230; c=relaxed/simple;
+	bh=TOCt44VkqdV5ypGeTN0RwLGvfKEJvT3VeOGAWd3GSgU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BMIAyRDHoeyd2rdAvttVSpCy8Jf3FhIbvVkOKmlJlorPIFyeOX5s84YpEkSTGP9We7WMb/EftnB4E2FGNFa5i7kUqI6muEtbOxQ6yeWmD71hf9KRQO8hVStd0J3SeT94E1kKOZyoMNFbFPbi3+99JhIcb7I5CHHBGvwfC98lquo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bues.ch; spf=pass smtp.mailfrom=bues.ch; arc=none smtp.client-ip=80.190.117.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bues.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bues.ch
+Received: by bues.ch with esmtpsa (Exim 4.96)
+	(envelope-from <m@bues.ch>)
+	id 1stUrv-000900-0j;
+	Wed, 25 Sep 2024 18:27:58 +0200
+Date: Wed, 25 Sep 2024 18:27:39 +0200
+From: Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
+To: Markus Elfring <Markus.Elfring@web.de>
+Cc: linux-wireless@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] ssb: Call ssb_bus_may_powerdown(bus) only once in
+ ssb_bus_register()
+Message-ID: <20240925182739.5c9ca063@barney>
+In-Reply-To: <d6037759-4dc8-4cc7-922f-95739761d068@web.de>
+References: <d6037759-4dc8-4cc7-922f-95739761d068@web.de>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.52
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="Sig_/aNddZWZt3dx.2k1eFLmMqqG";
+ protocol="application/pgp-signature"; micalg=pgp-sha512
 
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+--Sig_/aNddZWZt3dx.2k1eFLmMqqG
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-[ Upstream commit 498365e52bebcbc36a93279fe7e9d6aec8479cee ]
+On Tue, 24 Sep 2024 21:33:49 +0200
+Markus Elfring <Markus.Elfring@web.de> wrote:
 
-Replace one-element array with a flexible-array member in
-`struct host_cmd_ds_802_11_scan_ext`.
+> diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
+> index aa6165e3db4a..458858b5472e 100644
+> --- a/drivers/ssb/main.c
+> +++ b/drivers/ssb/main.c
+> @@ -663,11 +663,9 @@ ssb_bus_register(struct ssb_bus *bus,
+>  	ssb_extif_init(&bus->extif);
+>  	ssb_mipscore_init(&bus->mipscore);
+>  	err =3D ssb_fetch_invariants(bus, get_invariants);
+> -	if (err) {
+> -		ssb_bus_may_powerdown(bus);
+> -		goto err_pcmcia_exit;
+> -	}
+>  	ssb_bus_may_powerdown(bus);
+> +	if (err)
+> +		goto err_pcmcia_exit;
+>=20
+>  	/* Queue it for attach.
+>  	 * See the comment at the ssb_is_early_boot definition.
 
-With this, fix the following warning:
 
-elo 16 17:51:58 surfacebook kernel: ------------[ cut here ]------------
-elo 16 17:51:58 surfacebook kernel: memcpy: detected field-spanning write (size 243) of single field "ext_scan->tlv_buffer" at drivers/net/wireless/marvell/mwifiex/scan.c:2239 (size 1)
-elo 16 17:51:58 surfacebook kernel: WARNING: CPU: 0 PID: 498 at drivers/net/wireless/marvell/mwifiex/scan.c:2239 mwifiex_cmd_802_11_scan_ext+0x83/0x90 [mwifiex]
+Acked-by: Michael B=C3=BCsch <m@bues.ch>
 
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Closes: https://lore.kernel.org/linux-hardening/ZsZNgfnEwOcPdCly@black.fi.intel.com/
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/ZsZa5xRcsLq9D+RX@elsanto
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/marvell/mwifiex/fw.h   | 2 +-
- drivers/net/wireless/marvell/mwifiex/scan.c | 3 +--
- 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
-index 62f3c9a52a1d5..a3be37526697b 100644
---- a/drivers/net/wireless/marvell/mwifiex/fw.h
-+++ b/drivers/net/wireless/marvell/mwifiex/fw.h
-@@ -1587,7 +1587,7 @@ struct host_cmd_ds_802_11_scan_rsp {
- 
- struct host_cmd_ds_802_11_scan_ext {
- 	u32   reserved;
--	u8    tlv_buffer[1];
-+	u8    tlv_buffer[];
- } __packed;
- 
- struct mwifiex_ie_types_bss_mode {
-diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
-index 72904c275461e..5be817d9854a6 100644
---- a/drivers/net/wireless/marvell/mwifiex/scan.c
-+++ b/drivers/net/wireless/marvell/mwifiex/scan.c
-@@ -2543,8 +2543,7 @@ int mwifiex_ret_802_11_scan_ext(struct mwifiex_private *priv,
- 	ext_scan_resp = &resp->params.ext_scan;
- 
- 	tlv = (void *)ext_scan_resp->tlv_buffer;
--	buf_left = le16_to_cpu(resp->size) - (sizeof(*ext_scan_resp) + S_DS_GEN
--					      - 1);
-+	buf_left = le16_to_cpu(resp->size) - (sizeof(*ext_scan_resp) + S_DS_GEN);
- 
- 	while (buf_left >= sizeof(struct mwifiex_ie_types_header)) {
- 		type = le16_to_cpu(tlv->type);
--- 
-2.43.0
+--=20
+Michael B=C3=BCsch
+https://bues.ch/
 
+--Sig_/aNddZWZt3dx.2k1eFLmMqqG
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAmb0OfsACgkQ9TK+HZCN
+iw4kQxAAtBtUTH+OXL//YvxKvG+B5e5GGj4AyXa8p2xzp9pmx4dV5/Vqgcjf2yUb
+AKkUy9Ox+YCGQspqm0LXTyyY9QPvEZlIa0SonUVuXLXvtWMs+BUjGAK8Sy2KG5Bn
+mXDKpYNVyGjT0KUgN5Y9/F8pDC1NTklIi4V4wK5LYUddDCwCW1nw2Oi6waAWCv05
+XtGYszGIw45F1VI8HscuRYjyzHsMXEubDAnO7WorQZpIBtqwZ8zT+a6x0RmkXYRW
+t6oZV5j6tqSa8uIU3p00MygF1yJIrGEkMAIWJW/JDLtpr3MKc5rGeml097WLq9PA
+etp9H5dUB0JwqlJK5/suRT1eLzhOa8qG9HfuY9wqU8CL7TNG6Ofo9xjFNpfOQlrW
+Sz1kb5DJEdg91UYgOZFlI0J2447F7diolLVDgpO/eaCZs1HDLCDqkr2fva8QBKCO
+vslCcvWA4+8FzyEZox3QR6KfirbStG58XMGRLkTUiR7haW3IC9dXQancrnqPwih1
+ARwDMBT4J35WRSyhaNCYfjCBhS25R04/EEByEx64Tj1UVGU70GBoSeclGynwiQ/5
+fRoOw8yPb4PzUq88LCVE8t0B8SzXa3YBU876Q05LIZ8HZPqsTU5i20B12AsQRMMl
+FKA8On5aef0MAGhQSuquZDgey91+G9jqvC4ygeVsVXLG2QVmlns=
+=dBdW
+-----END PGP SIGNATURE-----
+
+--Sig_/aNddZWZt3dx.2k1eFLmMqqG--
 
