@@ -1,62 +1,63 @@
-Return-Path: <linux-wireless+bounces-13174-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13175-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8223F985C30
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 14:41:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77347985C95
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 14:50:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CDA91F28017
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 12:41:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37402B2A675
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 12:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0110B1A7256;
-	Wed, 25 Sep 2024 11:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A68B1AAE15;
+	Wed, 25 Sep 2024 11:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l6HxcbVo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GQi2R0s6"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1A91A7255;
-	Wed, 25 Sep 2024 11:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E09E1A7ADF;
+	Wed, 25 Sep 2024 11:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265531; cv=none; b=Y0+wwAuTF0MS5z/trrJs9ZyBJQTZgOoZfK/daosSf62aLAWmWrpPDLeGTog3/S0HXV9OG1bDuHCU6q5YANeDw7VMqJaDT2yBS44I9ePVLxwLdpzp2vlOUZM7IW5GFEBLGn23zONXtPg+aoDKxeCwlMhhH3tEczLdlLWPqtk0xkA=
+	t=1727265534; cv=none; b=AU6ijL2KqHLf2qDRQ5k1qHZOJUItTupwcdd8/Cm+JoG/MRR4mu0D0Sr/Va09JgBiouCt6ABE528nH0tS9wzmX4U6i8X/9R5uGNrYz3TRf43GtNhAbN37NyRbr1k3ZJ1panZvc+srwqwkU9Jd2CntRKyhA05ixTZpceWwFy7rh1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265531; c=relaxed/simple;
-	bh=xqhiPfNbsdTOX77h3R6h5dXrLR5wSbzebAPGqP60tgI=;
+	s=arc-20240116; t=1727265534; c=relaxed/simple;
+	bh=+WpLYJ7yycQNIiw7VTHHHphEGCc9rZ9jaR0okjQ8PX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IFEkUyFadZje5LOg+R+iYYoRK/ibqI9aR3aXSNJAe3N140A7HAjDJnH6nueObxWUgpaEXdEYpAJdOAhcKfvLrgLAjccguUUrx2jjdksd8dtg1a4uAlLVU0mPjf/ns+6WDWfO+2J1D7Vn76vWiSZsAyKyM5Qj3TbvLdSEI69nC8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l6HxcbVo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFCB1C4CECD;
-	Wed, 25 Sep 2024 11:58:49 +0000 (UTC)
+	 MIME-Version; b=XKOS2qxO8KCrTIt6a2TxiA4FarvMDqnrrJ1jcJGMejLB6qYmDCqHIHPdU7Yuy4OLfZvNkZp9FHNUBXiHFJIdBXGhkDUTVuBKzJCOLR0AiPdPcxxlP7Zl26D/mrP0QsSSAvXDyJEWvNVEzf92Hvz2hzvZH3VjrRjNaQ1JM46Z/WM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GQi2R0s6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37988C4CEC7;
+	Wed, 25 Sep 2024 11:58:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265531;
-	bh=xqhiPfNbsdTOX77h3R6h5dXrLR5wSbzebAPGqP60tgI=;
+	s=k20201202; t=1727265533;
+	bh=+WpLYJ7yycQNIiw7VTHHHphEGCc9rZ9jaR0okjQ8PX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l6HxcbVonFYoU0aFQ5awyM1wPdgU3VK8xNBDm+ce3L9ONzv9/1b9eAMN6ZqjRtUgz
-	 h7noBuk0xx6uSozkA+6UKA6SBsTitmvxQI7t+h6tLTij5GWcI+syEEfexm9YWMRb2G
-	 LfDf+qQJq8ZYdJ5OEK5gSI1QaiKb0l5jUfhTzZ44lGcTpO9zfYMtD8+iPfBhuIWptS
-	 39LTbW8ZjiTKJo1iatLNKz9/tWl+OIKHhBpAIB/062bw7iInrugw72rwugs4o9+728
-	 OUiGjlD1jozSxVR3kvkWXm2Cyk+6N5Avr8Ajrqf4OilVYDG/j1gZBsrqR0G0J5SqOh
-	 SjI3XIGHc1hKw==
+	b=GQi2R0s68xaiqLRQZj+Td10r+yuyf4Pw0twYxPeWga5E4uyXVJJEXDtLPRsigsr8b
+	 PZYcK3V5GlDusGZ9QGCaTpfbB19Uu0rQbRIqYy8xzeQVB/nyQGphQR/0MVhiKAW5e3
+	 LzV5dHpAEROfgGO0w7fSp7K0kMFUkqkPVo/qtXYyzksISlGtUOi9+Ds0hcVlVYwKjm
+	 FlnXNtQceY0QUBP6Jj3PZ0Uy82UTCSgxUe8uhXrKzi+XaTh6McSKOm6Q2/TFYOgf7E
+	 hWCjYgFHe4jfx0v0GkjiCUsARL9WNsteowcS09C3AergaSSCQaXMBvJsC3XeMAn+cU
+	 uOS4kDin6fW2A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+Cc: Issam Hamdi <ih@simonwunderlich.de>,
+	Kretschmer Mathias <mathias.kretschmer@fit.fraunhofer.de>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	gregory.greenman@intel.com,
-	emmanuel.grumbach@intel.com,
-	ilan.peer@intel.com,
-	shaul.triebitz@intel.com,
-	benjamin.berg@intel.com,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 009/197] wifi: iwlwifi: mvm: drop wrong STA selection in TX
-Date: Wed, 25 Sep 2024 07:50:28 -0400
-Message-ID: <20240925115823.1303019-9-sashal@kernel.org>
+	johannes@sipsolutions.net,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 010/197] wifi: cfg80211: Set correct chandef when starting CAC
+Date: Wed, 25 Sep 2024 07:50:29 -0400
+Message-ID: <20240925115823.1303019-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -71,62 +72,75 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Issam Hamdi <ih@simonwunderlich.de>
 
-[ Upstream commit 1c7e1068a7c9c39ed27636db93e71911e0045419 ]
+[ Upstream commit 20361712880396e44ce80aaeec2d93d182035651 ]
 
-This shouldn't happen at all, since in station mode all MMPDUs
-go through the TXQ for the STA, and not this function. There
-may or may not be a race in mac80211 through which this might
-happen for some frames while a station is being added, but in
-that case we can also just drop the frame and pretend the STA
-didn't exist yet.
+When starting CAC in a mode other than AP mode, it return a
+"WARNING: CPU: 0 PID: 63 at cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]"
+caused by the chandef.chan being null at the end of CAC.
 
-Also, the code is simply wrong since it uses deflink, and it's
-not easy to fix it since the mvmvif->ap_sta pointer cannot be
-used without the mutex, and perhaps the right link might not
-even be known.
+Solution: Ensure the channel definition is set for the different modes
+when starting CAC to avoid getting a NULL 'chan' at the end of CAC.
 
-Just drop the frame at that point instead of trying to fix it
-up.
+ Call Trace:
+  ? show_regs.part.0+0x14/0x16
+  ? __warn+0x67/0xc0
+  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
+  ? report_bug+0xa7/0x130
+  ? exc_overflow+0x30/0x30
+  ? handle_bug+0x27/0x50
+  ? exc_invalid_op+0x18/0x60
+  ? handle_exception+0xf6/0xf6
+  ? exc_overflow+0x30/0x30
+  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
+  ? exc_overflow+0x30/0x30
+  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
+  ? regulatory_propagate_dfs_state.cold+0x1b/0x4c [cfg80211]
+  ? cfg80211_propagate_cac_done_wk+0x1a/0x30 [cfg80211]
+  ? process_one_work+0x165/0x280
+  ? worker_thread+0x120/0x3f0
+  ? kthread+0xc2/0xf0
+  ? process_one_work+0x280/0x280
+  ? kthread_complete_and_exit+0x20/0x20
+  ? ret_from_fork+0x19/0x24
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240808232017.45ad105dc7fe.I6d45c82e5758395d9afb8854057ded03c7dc81d7@changeid
+Reported-by: Kretschmer Mathias <mathias.kretschmer@fit.fraunhofer.de>
+Signed-off-by: Issam Hamdi <ih@simonwunderlich.de>
+Link: https://patch.msgid.link/20240816142418.3381951-1-ih@simonwunderlich.de
+[shorten subject, remove OCB, reorder cases to match previous list]
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c    | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+ net/wireless/nl80211.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 259afecd1a98d..be76234392dd6 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -834,20 +834,10 @@ void iwl_mvm_mac_tx(struct ieee80211_hw *hw,
- 	if (ieee80211_is_mgmt(hdr->frame_control))
- 		sta = NULL;
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 967bc4935b4ed..0c2a7542c3d09 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -10023,7 +10023,20 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
  
--	/* If there is no sta, and it's not offchannel - send through AP */
-+	/* this shouldn't even happen: just drop */
- 	if (!sta && info->control.vif->type == NL80211_IFTYPE_STATION &&
--	    !offchannel) {
--		struct iwl_mvm_vif *mvmvif =
--			iwl_mvm_vif_from_mac80211(info->control.vif);
--		u8 ap_sta_id = READ_ONCE(mvmvif->deflink.ap_sta_id);
--
--		if (ap_sta_id < mvm->fw->ucode_capa.num_stations) {
--			/* mac80211 holds rcu read lock */
--			sta = rcu_dereference(mvm->fw_id_to_mac_id[ap_sta_id]);
--			if (IS_ERR_OR_NULL(sta))
--				goto drop;
--		}
--	}
-+	    !offchannel)
-+		goto drop;
- 
- 	if (tmp_sta && !sta && link_id != IEEE80211_LINK_UNSPECIFIED &&
- 	    !ieee80211_is_probe_resp(hdr->frame_control)) {
+ 	err = rdev_start_radar_detection(rdev, dev, &chandef, cac_time_ms);
+ 	if (!err) {
+-		wdev->links[0].ap.chandef = chandef;
++		switch (wdev->iftype) {
++		case NL80211_IFTYPE_AP:
++		case NL80211_IFTYPE_P2P_GO:
++			wdev->links[0].ap.chandef = chandef;
++			break;
++		case NL80211_IFTYPE_ADHOC:
++			wdev->u.ibss.chandef = chandef;
++			break;
++		case NL80211_IFTYPE_MESH_POINT:
++			wdev->u.mesh.chandef = chandef;
++			break;
++		default:
++			break;
++		}
+ 		wdev->cac_started = true;
+ 		wdev->cac_start_time = jiffies;
+ 		wdev->cac_time_ms = cac_time_ms;
 -- 
 2.43.0
 
