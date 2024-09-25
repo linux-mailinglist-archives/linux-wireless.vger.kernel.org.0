@@ -1,63 +1,68 @@
-Return-Path: <linux-wireless+bounces-13175-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13176-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77347985C95
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 14:50:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4100C985C63
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 14:46:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37402B2A675
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 12:41:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1225B2B0F2
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 12:45:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A68B1AAE15;
-	Wed, 25 Sep 2024 11:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 955171AD40B;
+	Wed, 25 Sep 2024 11:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GQi2R0s6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HDZKpS+w"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E09E1A7ADF;
-	Wed, 25 Sep 2024 11:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A12C1AD404;
+	Wed, 25 Sep 2024 11:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265534; cv=none; b=AU6ijL2KqHLf2qDRQ5k1qHZOJUItTupwcdd8/Cm+JoG/MRR4mu0D0Sr/Va09JgBiouCt6ABE528nH0tS9wzmX4U6i8X/9R5uGNrYz3TRf43GtNhAbN37NyRbr1k3ZJ1panZvc+srwqwkU9Jd2CntRKyhA05ixTZpceWwFy7rh1g=
+	t=1727265559; cv=none; b=IVawEh++/RLx7NQUiHprW7IPbs20jTZl74/sTX9WvNVPmKymJZc9jwhQBwQv1dmk0WbUZTyfAvtEZxJ1TCmWxUurhSMhSSuZamkBnX7BaTuEutjKMP/hHi8h1KauIZMkAC34lMZ/3taog5O7/Jr9UtfFAjKOn6OUdNQZNCTZ77Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265534; c=relaxed/simple;
-	bh=+WpLYJ7yycQNIiw7VTHHHphEGCc9rZ9jaR0okjQ8PX0=;
+	s=arc-20240116; t=1727265559; c=relaxed/simple;
+	bh=UTnyrC6+eQGfN6gBoDqD4hpWuNu1GAI4ICtRKrZvAu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XKOS2qxO8KCrTIt6a2TxiA4FarvMDqnrrJ1jcJGMejLB6qYmDCqHIHPdU7Yuy4OLfZvNkZp9FHNUBXiHFJIdBXGhkDUTVuBKzJCOLR0AiPdPcxxlP7Zl26D/mrP0QsSSAvXDyJEWvNVEzf92Hvz2hzvZH3VjrRjNaQ1JM46Z/WM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GQi2R0s6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37988C4CEC7;
-	Wed, 25 Sep 2024 11:58:52 +0000 (UTC)
+	 MIME-Version; b=ld+Vo+P9pCv0W9EDXq5Su6uY9lfxNv5skU5lvkCSTOFC076wCSzD/Xx5o54RfrP9eZBwj0wO+jvD3erGPGwgH08Ejezz9zKMUQ8f6WdL79oYxY886MW6kPWyuiUdYMjsKsyHUq8hsycWtl4iOH1sHILGOq9SyPCEN2mSS/RY68I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HDZKpS+w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBA4C4CEC3;
+	Wed, 25 Sep 2024 11:59:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265533;
-	bh=+WpLYJ7yycQNIiw7VTHHHphEGCc9rZ9jaR0okjQ8PX0=;
+	s=k20201202; t=1727265558;
+	bh=UTnyrC6+eQGfN6gBoDqD4hpWuNu1GAI4ICtRKrZvAu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GQi2R0s68xaiqLRQZj+Td10r+yuyf4Pw0twYxPeWga5E4uyXVJJEXDtLPRsigsr8b
-	 PZYcK3V5GlDusGZ9QGCaTpfbB19Uu0rQbRIqYy8xzeQVB/nyQGphQR/0MVhiKAW5e3
-	 LzV5dHpAEROfgGO0w7fSp7K0kMFUkqkPVo/qtXYyzksISlGtUOi9+Ds0hcVlVYwKjm
-	 FlnXNtQceY0QUBP6Jj3PZ0Uy82UTCSgxUe8uhXrKzi+XaTh6McSKOm6Q2/TFYOgf7E
-	 hWCjYgFHe4jfx0v0GkjiCUsARL9WNsteowcS09C3AergaSSCQaXMBvJsC3XeMAn+cU
-	 uOS4kDin6fW2A==
+	b=HDZKpS+wby4zn/fV6ztuGh5wuzt95e/OOWuPqRxm2L56nAAp7oEaqGpA7Pd9JI7HQ
+	 71xr8eES2f/MikjMqaM9cJqiO9QYVRIu8dlPi0bKA4z0nAfi3FL2/HWYxRY025LLxt
+	 BXEvTrojmxtrbJhTO7gp2jQviFvTTZXT7fTFcHGl7pnFZmbtr45y86X9W+2jqBG48X
+	 JGPVZ3lyn9cO/AtByHEuyGJcfOdmJa8Fg6F4WE2+GJe6WEORvK75jjdkfFzCRLc4xc
+	 Dbbsuse2uiPY+upmSoW+EaEMABH3tiPsMBfVZnrv6ulD3cGBwSWXDCK+YFqLBKgWIx
+	 lpBKYpnl/mvnQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Issam Hamdi <ih@simonwunderlich.de>,
-	Kretschmer Mathias <mathias.kretschmer@fit.fraunhofer.de>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	kvalo@kernel.org,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	shayne.chen@mediatek.com,
+	chui-hao.chiu@mediatek.com,
+	meichia.chiu@mediatek.com,
+	johannes.berg@intel.com,
+	quic_adisi@quicinc.com,
+	sean.wang@mediatek.com,
 	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 010/197] wifi: cfg80211: Set correct chandef when starting CAC
-Date: Wed, 25 Sep 2024 07:50:29 -0400
-Message-ID: <20240925115823.1303019-10-sashal@kernel.org>
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.10 021/197] wifi: mt76: mt7915: disable tx worker during tx BA session enable/disable
+Date: Wed, 25 Sep 2024 07:50:40 -0400
+Message-ID: <20240925115823.1303019-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -72,75 +77,44 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Issam Hamdi <ih@simonwunderlich.de>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 20361712880396e44ce80aaeec2d93d182035651 ]
+[ Upstream commit 256cbd26fbafb30ba3314339106e5c594e9bd5f9 ]
 
-When starting CAC in a mode other than AP mode, it return a
-"WARNING: CPU: 0 PID: 63 at cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]"
-caused by the chandef.chan being null at the end of CAC.
+Avoids firmware race condition.
 
-Solution: Ensure the channel definition is set for the different modes
-when starting CAC to avoid getting a NULL 'chan' at the end of CAC.
-
- Call Trace:
-  ? show_regs.part.0+0x14/0x16
-  ? __warn+0x67/0xc0
-  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
-  ? report_bug+0xa7/0x130
-  ? exc_overflow+0x30/0x30
-  ? handle_bug+0x27/0x50
-  ? exc_invalid_op+0x18/0x60
-  ? handle_exception+0xf6/0xf6
-  ? exc_overflow+0x30/0x30
-  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
-  ? exc_overflow+0x30/0x30
-  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
-  ? regulatory_propagate_dfs_state.cold+0x1b/0x4c [cfg80211]
-  ? cfg80211_propagate_cac_done_wk+0x1a/0x30 [cfg80211]
-  ? process_one_work+0x165/0x280
-  ? worker_thread+0x120/0x3f0
-  ? kthread+0xc2/0xf0
-  ? process_one_work+0x280/0x280
-  ? kthread_complete_and_exit+0x20/0x20
-  ? ret_from_fork+0x19/0x24
-
-Reported-by: Kretschmer Mathias <mathias.kretschmer@fit.fraunhofer.de>
-Signed-off-by: Issam Hamdi <ih@simonwunderlich.de>
-Link: https://patch.msgid.link/20240816142418.3381951-1-ih@simonwunderlich.de
-[shorten subject, remove OCB, reorder cases to match previous list]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://patch.msgid.link/20240827093011.18621-7-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 967bc4935b4ed..0c2a7542c3d09 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -10023,7 +10023,20 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 9599adf104b16..758249b20c222 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -690,13 +690,17 @@ int mt7915_mcu_add_tx_ba(struct mt7915_dev *dev,
+ {
+ 	struct mt7915_sta *msta = (struct mt7915_sta *)params->sta->drv_priv;
+ 	struct mt7915_vif *mvif = msta->vif;
++	int ret;
  
- 	err = rdev_start_radar_detection(rdev, dev, &chandef, cac_time_ms);
- 	if (!err) {
--		wdev->links[0].ap.chandef = chandef;
-+		switch (wdev->iftype) {
-+		case NL80211_IFTYPE_AP:
-+		case NL80211_IFTYPE_P2P_GO:
-+			wdev->links[0].ap.chandef = chandef;
-+			break;
-+		case NL80211_IFTYPE_ADHOC:
-+			wdev->u.ibss.chandef = chandef;
-+			break;
-+		case NL80211_IFTYPE_MESH_POINT:
-+			wdev->u.mesh.chandef = chandef;
-+			break;
-+		default:
-+			break;
-+		}
- 		wdev->cac_started = true;
- 		wdev->cac_start_time = jiffies;
- 		wdev->cac_time_ms = cac_time_ms;
++	mt76_worker_disable(&dev->mt76.tx_worker);
+ 	if (enable && !params->amsdu)
+ 		msta->wcid.amsdu = false;
++	ret = mt76_connac_mcu_sta_ba(&dev->mt76, &mvif->mt76, params,
++				     MCU_EXT_CMD(STA_REC_UPDATE),
++				     enable, true);
++	mt76_worker_enable(&dev->mt76.tx_worker);
+ 
+-	return mt76_connac_mcu_sta_ba(&dev->mt76, &mvif->mt76, params,
+-				      MCU_EXT_CMD(STA_REC_UPDATE),
+-				      enable, true);
++	return ret;
+ }
+ 
+ int mt7915_mcu_add_rx_ba(struct mt7915_dev *dev,
 -- 
 2.43.0
 
