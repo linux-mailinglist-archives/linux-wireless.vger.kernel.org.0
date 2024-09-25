@@ -1,75 +1,72 @@
-Return-Path: <linux-wireless+bounces-13147-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13169-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF7FB985802
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 13:33:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D892985AEB
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 14:16:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A8881F21720
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 11:33:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AA3428213B
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 12:15:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7217D14600D;
-	Wed, 25 Sep 2024 11:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2729A18FDB9;
+	Wed, 25 Sep 2024 11:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZIAXVSqS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="biwR2LcK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f54.google.com (mail-io1-f54.google.com [209.85.166.54])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D46137775
-	for <linux-wireless@vger.kernel.org>; Wed, 25 Sep 2024 11:33:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8B318FC74
+	for <linux-wireless@vger.kernel.org>; Wed, 25 Sep 2024 11:46:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727263993; cv=none; b=Sp0a9nc3glpHQ101FZRci4CeXdsyxZtKXVZgqsHsK+gtvgZfzbGbaRaeJNRAPj7kMHEO1ZILozX2nywtx2+ZzoKBHyhcfJWnxP/EnP1gYH3LxS06kT0r6wQLT7WYD/VKQlvp9zBm4jmiJh1cfhGDd4YRADUVPrtUS4w14ipEmh0=
+	t=1727264776; cv=none; b=XhE4o1zpOmYglCGXEIXvTEzVv5Oe2i5ZX9E5WdL0s67CQ0yDsztS3UDuuphQTEUAJm00bOLM7lawV205YmDG39XdeeLVXTi/x3ugFtCfCOiLb+Mm3r5/gt5j0arIOyO5jqlSSS7mXn4l4gUlzApKl/tILLnlc6Ub1k8kh+Q7nBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727263993; c=relaxed/simple;
-	bh=tc8uqoCNRNdrD17ZB4QzB7ejHnXWxueD1dikRRayNIA=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=X1yafpD7pkORr55s/9CrnE4/jfWoKJrCvFcq5FtE+Pa7Z0Zqx5WQ8NlVtNd9G2LCeUEQPYgNmpg9NGZPqs8xUfh0qwWlMTx2cv66xd+EiK+jmqHpg2gpQUDu5G9/0D05vkbRddFN8iJnbEkwpoCzQ/6RlGxuvnFAxyZXBSSBZ7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZIAXVSqS; arc=none smtp.client-ip=209.85.166.54
+	s=arc-20240116; t=1727264776; c=relaxed/simple;
+	bh=v9Ae7jmMHQFlMZbF32j43dVF7Z2aG+EUS6iAxFUVHpc=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=hCnEPRwiVooYqzN0CxJzPUM/LVFwaoQo8tKqxxgUguFIpxVJaopacrvUhvPw+DLafamlnVqOflETbO6gtf6W3nAfRq+0bw7UH/g28t/Ozl9ecTNHA8fnvLBoGVXZ/h3tQGgv2uB0onX/nxYtYwAV1sIW1QYs9lqhmAIy3zZVt4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=biwR2LcK; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-io1-f54.google.com with SMTP id ca18e2360f4ac-82aab679b7bso235728939f.0
-        for <linux-wireless@vger.kernel.org>; Wed, 25 Sep 2024 04:33:11 -0700 (PDT)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-42cbc22e1c4so54241825e9.2
+        for <linux-wireless@vger.kernel.org>; Wed, 25 Sep 2024 04:46:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727263991; x=1727868791; darn=vger.kernel.org;
-        h=in-reply-to:from:content-language:references:cc:to:subject
+        d=gmail.com; s=20230601; t=1727264772; x=1727869572; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-language:cc:to:subject:from
          :user-agent:mime-version:date:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tc8uqoCNRNdrD17ZB4QzB7ejHnXWxueD1dikRRayNIA=;
-        b=ZIAXVSqSGn0YV7iJ4pVLZcv32jkvY5UUqPrNpN1Lo40qbS71pvnmn0JQKdL/o+Qxu5
-         r6JEMqHJSP6XTixT4IIN62ya6VfUDtOmWzyvTBSC/4jD1OT3qaX9uZ/7+VHKoYjfeWQt
-         JZZVDTHzv/t8Oe/bNw+I09Zzof6z2VtXj5W78W9h6Su3VrQtuTuaJ+cdYOF6vxnLJuRS
-         9NSNmibQizXOyMTDM/wj0rq5yQZ57r6f7Aku8PwwoA+NY1YqAjhjYk9U50scUyy66CIf
-         dtDOGaJL85MRHTcEbtlOWf74mFXEo2hTXgGP+FFKXVkUF/0Y+5YCb8neYk1JPRMtXSwU
-         wG2A==
+        bh=9kSH3gAmDvaE0TWu0Zw1tqUtUV0KUVsDtyl6cBRmYm4=;
+        b=biwR2LcKsvTJakT56vf3OL+C26ggHnAotYzYzj8PY+ZKJkxVgKnEjFiFtTHobdApr/
+         SRIX5B1BFhr3piMb613B7eWjjQxJ60/RKqgNRNbEiEg2oOhot//bSL75W2psVR9pXdkA
+         nRYjcHTJVDPIZ7wj6czQYYMC8y/XFR5mL2UPanIw61J9pUcKvhFBjK+ShtGtTyYyf7+x
+         6I51FMHNcYjMTfTir2vF+nByVshyhd3opomoOv15xFtzh7Z7bprOFpTgYiK+xqkgw7dd
+         wYAgAj+lCTtOIdIGBA1c8D/AlApHzQ7GcmJXt4f1+shH5m7nDz6+LTkcrS8IYSwrs5tA
+         bywg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727263991; x=1727868791;
-        h=in-reply-to:from:content-language:references:cc:to:subject
+        d=1e100.net; s=20230601; t=1727264772; x=1727869572;
+        h=content-transfer-encoding:content-language:cc:to:subject:from
          :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=tc8uqoCNRNdrD17ZB4QzB7ejHnXWxueD1dikRRayNIA=;
-        b=eHSM6TtofVgNPx4ORQ9BgkBQuRtb4bm/7981cRDZScgPPAMYJ12DOaml0u6MjMuHy3
-         OHY3qWlXBZcUZqqRXikuGRbLdFyWnHAO0m/0ZX+DSc0TZqKbNMMLqgfKmUfdUjZ8YNMQ
-         5cTi0p9A0AuZla6d6FsJC9QUf/q+donaQwwZAqh3xcoBt3FV9U/V7cA+Ob0Trz8yZfrW
-         XdQy/6jg0sF8Q97QhKTk5aX8fvOJwflB40O+fyT2n0eB+OX8XQFskfl8hYIhJKD1jomT
-         UCH9eYR2K07m+0z8N3Q8mh/RB/H43x7UIu0OAgLlByl2F9Ld8Gz1RfVYUeHNgwPNU3cH
-         eMKw==
-X-Forwarded-Encrypted: i=1; AJvYcCUk9u8JLRoO7i/QqYiupE76QT1I5Q+RW1X0cECoHxJjhZluSDsxmpHaW4J9IifqeiQU0kH8lZe3DjGTAs4wUQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9MyBKpplnO/B9X2xL+PLc4OKFp56lomRaqMVKujTCzzyxl6du
-	UvUtZZAdbaQdcqUbp8cQwwUGxfZVlWCNBXZNv0EY3vS2MzwMKRXl
-X-Google-Smtp-Source: AGHT+IHYHRWH8mBWxmgeETnntNhbzxDj98PIYcEbLrgqoXhejrC12/4mSvk/PAlAQKZ3evNhvlxTFA==
-X-Received: by 2002:a05:6602:1694:b0:82d:3c2:9118 with SMTP id ca18e2360f4ac-83247f89baemr302888339f.16.1727263990549;
-        Wed, 25 Sep 2024 04:33:10 -0700 (PDT)
-Received: from [10.163.199.22] ([64.125.133.166])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4d40f0e92ddsm991918173.24.2024.09.25.04.33.08
+        bh=9kSH3gAmDvaE0TWu0Zw1tqUtUV0KUVsDtyl6cBRmYm4=;
+        b=R7BAbjqVfr2mpF8Gd5MarJZpAizLIywEb2hy2JRgRjIylc9XY25wUoWNbPclWMHWI+
+         GHftLaTcS63Sl75QrZ/t+qQfbqLLUPmaQ+C0qlQgpZOgcv3pE2aZ/f3/rShGZbj50LvE
+         xIjiTuNzoe+ow43wzPJXUhc2fXqTC6ep/fQLdfoJoPjOuB0raLN6EJFQlnp745ep3/gW
+         ug+1DpbkPKhHQeeeKrAWOpDr2vm/PN0Ero8KXlUA3jzNaQZVox9IrB/7kjNChjZjU6sW
+         bb6ElJQxxQO1pdiypTeUBWxYdPVgtFX+cTu4U68nTKjHODRjZmHAcwRKvouyjuQw3bIS
+         dk0w==
+X-Gm-Message-State: AOJu0Yz8DnYraYT0IunJF6qA+sa5PYWTHpFYJshCG+tAp0jKx244g8DO
+	IunLS8mk0lz7Zmx6Pc/2Tqpaj1wXubCxW1KdJ5nBoSlMpKeJx2jVLEc6vA==
+X-Google-Smtp-Source: AGHT+IE9bV1ugpIU4zBrLev1tRW11fTNLqfQ5ku0FKbvcZiGSSYCzAcLrVD7uGQmqQc0U8p75iHK5Q==
+X-Received: by 2002:a05:600c:3b87:b0:426:51dc:f6cd with SMTP id 5b1f17b1804b1-42e961173e8mr13054495e9.18.1727264772084;
+        Wed, 25 Sep 2024 04:46:12 -0700 (PDT)
+Received: from [192.168.1.50] ([79.119.240.193])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37cbc31f3ddsm3731628f8f.103.2024.09.25.04.46.11
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Sep 2024 04:33:09 -0700 (PDT)
-Content-Type: multipart/mixed; boundary="------------VLjyUQCgADLx2t4IVYMshR58"
-Message-ID: <0d1dab88-66a0-48c1-bdbe-777d07c3132e@gmail.com>
-Date: Wed, 25 Sep 2024 04:33:05 -0700
+        Wed, 25 Sep 2024 04:46:11 -0700 (PDT)
+Message-ID: <6e7ecb47-7ea0-433a-a19f-05f88a2edf6b@gmail.com>
+Date: Wed, 25 Sep 2024 14:46:10 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -77,88 +74,89 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: ath11k/WCN6855 neighbor report request made immediately after
- connection gets no response (with MFP)
-To: Baochen Qiang <quic_bqiang@quicinc.com>,
- "open list:MEDIATEK MT76 WIRELESS LAN DRIVER"
- <linux-wireless@vger.kernel.org>
-Cc: "ath11k@lists.infradead.org" <ath11k@lists.infradead.org>
-References: <eb41d8ec-c4f1-474e-a938-099f27aa94e3@gmail.com>
- <fd90d471-503b-4f58-ae11-bae2afab08c7@quicinc.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: rtw88: USB devices randomly stop receiving anything
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>
 Content-Language: en-US
-From: James Prestwood <prestwoj@gmail.com>
-In-Reply-To: <fd90d471-503b-4f58-ae11-bae2afab08c7@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-This is a multi-part message in MIME format.
---------------VLjyUQCgADLx2t4IVYMshR58
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+Hi,
 
-SGkgQmFvY2hlbiwNCg0KT24gOS8yNS8yNCAzOjA3IEFNLCBCYW9jaGVuIFFpYW5nIHdyb3Rl
-Og0KPg0KPiBPbiA5LzE5LzIwMjQgODoyMSBQTSwgSmFtZXMgUHJlc3R3b29kIHdyb3RlOg0K
-Pj4gSGksDQo+Pg0KPj4gSSBub3RpY2VkIGFuIGlzc3VlIHdoZW4gd2Ugc3RhcnRlZCBwdXR0
-aW5nIGF0aDExayBjbGllbnRzIG9uIGEgV1BBMyBuZXR3b3JrIHdoaWNoIHNlZW1zIHRvIGJl
-IHJlbGF0ZWQgdG8gdGhlIGZhY3QgdGhhdCBtYW5hZ2VtZW50IGZyYW1lIHByb3RlY3Rpb24g
-aXMgZW5hYmxlZCAod29ya3MgZmluZSBvbiBXUEEyIG5vIE1GUCkuIEltbWVkaWF0ZWx5IGFm
-dGVyIGFuIGluaXRpYWwgYXNzb2NpYXRpb24gYSBuZWlnaGJvciByZXBvcnQgcmVxdWVzdCBn
-b2VzIG91dCBhbmQgd2UgZ2V0IG5vIHJlc3BvbnNlIGZyb20gdGhlIEFQLiBBZnRlciBnZXR0
-aW5nIGEgUENBUCBpbiBvbmUgY2FzZSB3ZSBub3RpY2VkIHRoZSBuZWlnaGJvciByZXBvcnQg
-cmVxdWVzdCB3ZW50IG91dCB1bmVuY3J5cHRlZCwgdGhvdWdoIHN0aWxsIGhhZCB0aGUgQ0NN
-UCBJViBwYXJhbWV0ZXIuIFRoZSBjb250ZW50IG9mIHRoZSByZXF1ZXN0IHdhcyB0aGUgdW5l
-bmNyeXB0ZWQgcmVxdWVzdCwgYW5kIHNvbWV0aGluZyBsaWtlIDE1IGJ5dGVzIG9mIDB4MDAg
-cGFkZGluZy4gSSB3aWxsIHNheSwgdGhpcyBpbml0aWFsIFBDQVAgd2FzIG1hZGUgdGhyb3Vn
-aCB0aGUgQVAgdmVuZG9yIHNvIHBlcmhhcHMgaXQgYXV0b21hdGljYWxseSBhZGRlZCB0aGUg
-cmlnaHQga2V5cyB0byBkZWNyeXB0IHRoZSBmcmFtZSwgdGhpcyBjb3VsZCBiZSBhIHJlZCBo
-ZXJyaW5nLiBJIHRyaWVkIG9uIG15IGhvbWUgbmV0d29yayBhbmQgaXQgd2FzIGhpdCBvciBt
-aXNzLCBzb21ldGltZXMgSSB3b3VsZCBnZXQgYSByZXNwb25zZSBidXQgc29tZXRpbWVzIEkg
-d291bGRuJ3QsIGJ1dCBJIGRpZCBzZWUgdGhlIGZyYW1lIHdhcyBhbHdheXMgZW5jcnlwdGVk
-IGluIG15IGhvbWUgbmV0d29yayBjYXNlIHRob3VnaCB3aGVuIGFkZGluZyB0aGUgUE1LIGRp
-cmVjdGx5IGluIHdpcmVzaGFyayBJIGNvdWxkbid0IGRlY3J5cHQgaXQsIHdoZXJlIG9uIG90
-aGVyIGhhcmR3YXJlIGxpa2UgaXdsd2lmaSBJIGNvdWxkLg0KPiBpcyB5b3VyIGhvbWUgbmV0
-d29yayBhbHNvIFdQQTM/DQo+DQo+IGFuZCBob3cgZGlkIHlvdSBnZXQgdGhlIFBNSz8gaXMg
-aXQgZ2VuZXJhdGVkIGJ5IElXRCBhbmQgcHJpbnRlZCBhcyBkZWJ1ZyBtZXNzYWdlPw0KDQpJ
-IGFjdHVhbGx5IGhhZCB0byBtb2RpZnkgSVdEIHRvIHByaW50IG91dCB0aGUgUE1LIGFmdGVy
-IGl0IGRlcml2ZWQgaXQuIA0KV1BBMyBtYWtlcyB0aGlzIGEgaHVnZSBwYWluIHNpbmNlIHRo
-ZSBQTUsgZGlmZmVycyBiZXR3ZWVuIFNBRSBleGNoYW5nZXMuDQoNCkkndmUgYXR0YWNoZWQg
-YW4gSVdEIGRpZmYgdGhhdCBwcmludHMgb3V0IHRoZSBQTUssIHdoaWNoIGNhbiBiZSBhZGRl
-ZCB0byANCndpcmVzaGFyayBpZiB0aGF0IGhlbHBzLg0KDQo+DQo+PiBTb21lIHRpbWUgYWZ0
-ZXIgdGhlIGNvbm5lY3Rpb24gbmVpZ2hib3IgcmVwb3J0cyB3b3JrIGZpbmUuIEknbSBub3Qg
-c3VyZSBvZiBhIHRpbWUgZnJhbWUgb3IgZGVsYXkgcmVxdWlyZWQgdGhhdCBnZXRzIHRoZW0g
-d29ya2luZywgYnV0IGl0IG1ha2VzIG1lIHN1c3BlY3QgdGhhdCBhdGgxMWsgZG9lc24ndCBo
-YXZlIHRoZSBrZXlzIGZ1bGx5IGFkZGVkIGluIHRoZSBmaXJtd2FyZSBiZWZvcmUgdXNlcnNw
-YWNlIGdldHMgc2lnbmFsZWQgYXMgImNvbm5lY3RlZCIuIFJ1bm5pbmcgdGhlIHNhbWUgc2Nl
-bmFyaW8gb24gYXRoMTBrIG9yIGl3bHdpZmkgaGFzIG5vIGlzc3Vlcy4gVGhpcyBuZWlnaGJv
-ciByZXBvcnQgcmVxdWVzdCBpbW1lZGlhdGVseSBhZnRlciBjb25uZWN0aW5nIGlzIElXRCdz
-IGRlZmF1bHQgYmVoYXZpb3IsIHNvIGl0cyByZWxhdGl2ZWx5IGVhc3kgdG8gdGVzdCBieSBq
-dXN0IHJlc3RhcnRpbmcgSVdELg0KPiBJIGNhcHR1cmVkIGEgV1BBMyBTQUUgUENBUCB0b28s
-IGJ1dCBvbmx5IGNhbiBmaW5kIHNvbWUgdW5lbmNyeXB0ZWQgQUREQkEgcmVxL3Jlc3AgZnJh
-bWVzLiBmb3IgdGhvc2UgZW5jcnlwdGVkIGFjdGlvbiBmcmFtZXMgSSBhbSBzdGlsbCBzdHJ1
-Z2dsaW5nIHRvIGRlY3J5cHQgdGhlbQ0KPg0KPj4gU2luY2UgdGhlIG5laWdoYm9yIHJlcG9y
-dHMgd29yayBmaW5lIGFmdGVyIHNvbWUgdGltZSBpdHMgbm90IHJlYWxseSBhIGNyaXRpY2Fs
-IGlzc3VlIGJ1dCBJIHdhbnRlZCB0byBicmluZyBpdCB1cCBqdXN0IGluIGNhc2UuDQo+Pg0K
-Pj4gVGhhbmtzLA0KPj4NCj4+IEphbWVzDQo+Pg0K
---------------VLjyUQCgADLx2t4IVYMshR58
-Content-Type: text/x-patch; charset=UTF-8; name="print-pmk.patch"
-Content-Disposition: attachment; filename="print-pmk.patch"
-Content-Transfer-Encoding: base64
+I have this problem with RTL8811CU, RTL8723DU, RTL8811AU, RTL8812AU.
+I assume all USB devices are affected. If I have qBittorrent running,
+the wifi stops working after a few hours:
 
-ZGlmZiAtLWdpdCBhL3NyYy9zYWUuYyBiL3NyYy9zYWUuYwppbmRleCA5N2MwYWYwNS4uZjJj
-ZWJlMDkgMTAwNjQ0Ci0tLSBhL3NyYy9zYWUuYworKysgYi9zcmMvc2FlLmMKQEAgLTg1Nyw2
-ICs4NTcsMjAgQEAgc3RhdGljIGJvb2wgc2FlX3ZlcmlmeV9jb25maXJtKHN0cnVjdCBzYWVf
-c20gKnNtLCBjb25zdCB1aW50OF90ICpmcmFtZSkKICAgICAgICByZXR1cm4gdHJ1ZTsKIH0K
-IAorI2luY2x1ZGUgPHN0ZGlvLmg+CisKK3N0YXRpYyB2b2lkIHByaW50X3Btayh1aW50OF90
-ICpwbWspCit7CisgICAgICAgdW5zaWduZWQgaW50IGk7CisKKyAgICAgICBwcmludGYoIlBN
-SzogIik7CisKKyAgICAgICBmb3IgKGkgPSAwOyBpIDwgMzI7IGkrKykKKyAgICAgICAgICAg
-ICAgIHByaW50ZigiJTAyeCIsIHBta1tpXSk7CisKKyAgICAgICBwcmludGYoIlxuIik7Cit9
-CisKIHN0YXRpYyBpbnQgc2FlX3Byb2Nlc3NfY29uZmlybShzdHJ1Y3Qgc2FlX3NtICpzbSwg
-Y29uc3QgdWludDhfdCAqZnJvbSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBj
-b25zdCB1aW50OF90ICpmcmFtZSwgc2l6ZV90IGxlbikKIHsKQEAgLTg4MCw2ICs4OTQsOCBA
-QCBzdGF0aWMgaW50IHNhZV9wcm9jZXNzX2NvbmZpcm0oc3RydWN0IHNhZV9zbSAqc20sIGNv
-bnN0IHVpbnQ4X3QgKmZyb20sCiAgICAgICAgaGFuZHNoYWtlX3N0YXRlX3NldF9wbWtpZChz
-bS0+aGFuZHNoYWtlLCBzbS0+cG1raWQpOwogICAgICAgIGhhbmRzaGFrZV9zdGF0ZV9zZXRf
-cG1rKHNtLT5oYW5kc2hha2UsIHNtLT5wbWssIDMyKTsKIAorICAgICAgIHByaW50X3Btayhz
-bS0+cG1rKTsKKwogICAgICAgIHNtLT5zdGF0ZSA9IFNBRV9TVEFURV9BQ0NFUFRFRDsKIAog
-ICAgICAgIGlmICghc20tPmhhbmRzaGFrZS0+YXV0aGVudGljYXRvcikgewoK
+Sep 24 00:48:21 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
+Sep 24 00:48:21 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
+Sep 24 00:48:23 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
+Sep 24 00:48:23 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
+Sep 24 00:48:25 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
+Sep 24 00:48:25 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
+Sep 24 00:48:27 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
+Sep 24 00:48:27 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
+Sep 24 00:48:29 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
+Sep 24 00:48:29 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
+Sep 24 00:48:31 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
+Sep 24 00:48:31 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
+Sep 24 00:48:33 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
+Sep 24 00:48:33 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
+Sep 24 00:48:35 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
+Sep 24 00:48:35 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
+Sep 24 00:48:37 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
+Sep 24 00:48:37 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
+Sep 24 00:48:39 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
+Sep 24 00:48:39 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
+Sep 24 00:48:41 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
+Sep 24 00:48:41 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
+Sep 24 00:48:42 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-DISCONNECTED bssid=... reason=4 locally_generated=1
+Sep 24 00:48:42 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: Added BSSID ... into ignore list, ignoring for 10 seconds
+Sep 24 00:48:42 ideapad2 NetworkManager[433]: <info>  [1727128122.0377] device (wlp3s0f3u2i2): supplicant interface state: completed -> disconnected
+Sep 24 00:48:45 ideapad2 NetworkManager[433]: <info>  [1727128125.6030] device (wlp3s0f3u2i2): supplicant interface state: disconnected -> scanning
+Sep 24 00:48:47 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: Removed BSSID ... from ignore list (clear)
+Sep 24 00:48:47 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: SME: Trying to authenticate with ... (SSID='...' freq=2472 MHz)
+Sep 24 00:48:50 ideapad2 kernel: wlp3s0f3u2i2: authenticate with ... (local address=,,,)
+Sep 24 00:48:51 ideapad2 NetworkManager[433]: <info>  [1727128131.2488] device (wlp3s0f3u2i2): supplicant interface state: scanning -> authenticating
+Sep 24 00:48:51 ideapad2 kernel: wlp3s0f3u2i2: send auth to ... (try 1/3)
+Sep 24 00:48:51 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
+Sep 24 00:48:52 ideapad2 kernel: wlp3s0f3u2i2: send auth to ... (try 2/3)
+Sep 24 00:48:52 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
+Sep 24 00:48:53 ideapad2 kernel: wlp3s0f3u2i2: send auth to ... (try 3/3)
+Sep 24 00:48:53 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
+Sep 24 00:48:54 ideapad2 kernel: wlp3s0f3u2i2: authentication with ... timed out
 
---------------VLjyUQCgADLx2t4IVYMshR58--
+After this all scans return nothing. The chip is still alive,
+though. The LED blinks during the scans (it's hardware-controlled)
+and another device in monitor mode can see the probe requests.
+
+I confirmed that even C2H stop coming. I used aireplay-ng to send
+some authentication or association frames (can't remember) which
+require TX ACK report. I saw "failed to get tx report from firmware"
+and no C2H.
+
+While qBittorrent is needed to trigger this bug, simply downloading
+a random Linux iso did not do the job. "Other" torrents did. It's
+unclear why. Maybe it's uploading that triggers the bug.
+
+I left iperf3 running all day and nothing happened. Only qBittorrent
+can break it.
+
+RTL8822CE doesn't have this problem. I can use qBittorrent with it
+just fine.
+
+I mounted debugfs and dumped the MAC registers during a scan using
+this command:
+
+for i in {00..20}; do sleep 0.5; cat /sys/kernel/debug/ieee80211/phy2/rtw88/mac_{0..7} > dead-$i.txt; done
+
+I thought maybe some RX URBs failed silently and rtw88 stopped
+sending them to the device (== stopped requesting data from it),
+but that's not the case. [1]
+
+I have the device in this state right now. Is there anything else
+I should look at?
+
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/drivers/net/wireless/realtek/rtw88/usb.c?h=v6.10.11&id=25eaef533bf3ccc6fee5067aac16f41f280e343e#n641
 
