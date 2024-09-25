@@ -1,138 +1,174 @@
-Return-Path: <linux-wireless+bounces-13138-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13139-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE4BC98516E
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 05:31:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D8C79852B5
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 07:58:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8254A284EA7
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 03:31:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3606A284483
+	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 05:58:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC578126F0A;
-	Wed, 25 Sep 2024 03:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B735E155300;
+	Wed, 25 Sep 2024 05:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="vhXwc2W6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A80vH/kQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CEF313D28F
-	for <linux-wireless@vger.kernel.org>; Wed, 25 Sep 2024 03:31:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DFB8647;
+	Wed, 25 Sep 2024 05:58:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727235063; cv=none; b=CjLitO1lRz67dmIt5zo9xii1VelX171BKKfvUKAYNjZkLLBHkZiHAvdEV6m1D71zOdOl+anl7EbqNKC4tCfE8VkAAPdSKLEt0EQH89ulkkoO15Tv7SLz7GOgJKY2phnpOPN1w1ZroANy2zHIKEnjQ/EEX6sbaynJ4uboeXKM9M4=
+	t=1727243927; cv=none; b=SKcHVrO+D3CzygkEXMUWDko3gF8JeR08EW1x3J9QwudRplHwpyDw8n21SwrsElMm8GXYbEjYoQu7tlZV2qHeYcEg5YWocYg/UWiCkou2+RAAQmfeN2EApc7f8+6r5qiS0XdfAfQCnzq8HyaWZqkXnFpEs/XkIsm48Hyv88oWsCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727235063; c=relaxed/simple;
-	bh=lZ41XrreKb2idHJ+XV7apS1aU0INQwOXazUfy77CtzY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=OP/4ahVpl5MZ9Uf9B3iYLAAMs4gsju5+dEFXhx/ymvorONhe3c6mJWC5Z3N2MuAPxKMudgbGTSOCmvstfZRUM7f3BA3iipowzqsx9yCfgKIdScD8k9Jqdc8h0B/pitpl9DhA3tDgzyAeIXmQURNf/YXRFgwnu8mF/0xm4jiVLOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=vhXwc2W6; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 48P3UGE403967754, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1727235016; bh=lZ41XrreKb2idHJ+XV7apS1aU0INQwOXazUfy77CtzY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=vhXwc2W62CH2zX5m+FqTVQ7LJM6PQpYR0JT6fuotO4D5PX0zprR/606T755yoE0aE
-	 V21Lch1AsrMn7TVKO71PaCgcTxtK0x+VCahX7Pu/KPp66fRY8p5aHoPgDEd43KRsDg
-	 Z9c84qugWxqFy4ECXHXOZKKgStYALLkC9s0aDEdNSLBvWukaOXICWBPJMXMG1G1H4l
-	 GcKkey/8LmWZnd830Gnhx8UKKt2AG4qeU2O0DHFk5EUlFsCCo+Tl9ohjtgR5wz5sdo
-	 eHVixwgZzS6ubW1AHrdUKo8TSRxUfCKZgjsMw6PoFpKXwoOUTOuCFf7qJPEm3MG2kf
-	 cp3c4qxrQzXsQ==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.05/5.92) with ESMTPS id 48P3UGE403967754
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 25 Sep 2024 11:30:16 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 25 Sep 2024 11:30:16 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Wed, 25 Sep 2024 11:30:15 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
- RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
- 15.01.2507.035; Wed, 25 Sep 2024 11:30:15 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: "petter@technux.se" <petter@technux.se>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>,
-        "johannes@sipsolutions.net"
-	<johannes@sipsolutions.net>
-CC: "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>,
-        "morrownr@gmail.com"
-	<morrownr@gmail.com>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>
-Subject: RE: rtw88: rtw8822cu: Kernel warning in cfg80211: disconnect_work at net/wireless/core.h:231 on CPU 0
-Thread-Topic: rtw88: rtw8822cu: Kernel warning in cfg80211: disconnect_work at
- net/wireless/core.h:231 on CPU 0
-Thread-Index: AQHbDlBMQrWI+wnn6UWsv+tgTc/yIbJn1a/Q
-Date: Wed, 25 Sep 2024 03:30:15 +0000
-Message-ID: <9d243087654c4f3492d0046b7444c6a6@realtek.com>
-References: <80de30f72595480a2e061dc462191c9f@technux.se>
-In-Reply-To: <80de30f72595480a2e061dc462191c9f@technux.se>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1727243927; c=relaxed/simple;
+	bh=R5iO86c9PhBZIXFBuzoB9GO9RtZOAFqW+RKHK3yqFEo=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=I5aYQQADwfPxkZnEwXW5lrMn7XORmZ2NyBxWpCljlNANSP0zylsLXf6mcOAVgKJvu0HwlDflqaEEZJfeBK443zoGWErlBdv+cX09tVPrzPhF0CdRd77/FWI8FunxX4ugTKnamMjjkOuEjZY4FZLVsgCvatp5EGc9+1yLW58uB4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A80vH/kQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CCE1C4CEC3;
+	Wed, 25 Sep 2024 05:58:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727243927;
+	bh=R5iO86c9PhBZIXFBuzoB9GO9RtZOAFqW+RKHK3yqFEo=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=A80vH/kQJWCU74aJSDRYFOgMTTr0Tb2L6qd6VlJYJBMVXVKTJSX0NPs9v+ea7Co3N
+	 ROIFLvbErHcLPFiZbJWtXsVLAtXddNffbHXIW09pixr/Rz9MBm3YvZlwlIp5meNny4
+	 x8R0OYaCGkfh+X7BeacihYg7vH+0phu+Ee2RKC21brT0AUYc9bHVFcak2KgWs1hcxh
+	 KNKPWgJmT7SUafBDF8Op5n9ysqiWsTK31SfFmSI7e/xmfe/FY9i83/X1LL4j/cKidG
+	 YqxbA98sGTKr1A87g8/gTw+oRP8bLKyT6fHRsAgvZgoiVr/S5GHZ5ACKnueveP6iwL
+	 BuE/THconEoig==
+From: Kalle Valo <kvalo@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Bartosz Golaszewski <brgl@bgdev.pl>,  "David S . Miller"
+ <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
+ Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,  Rob Herring
+ <robh@kernel.org>,  Krzysztof Kozlowski <krzk+dt@kernel.org>,  Conor
+ Dooley <conor+dt@kernel.org>,  Jeff Johnson <jjohnson@kernel.org>,
+  linux-wireless@vger.kernel.org,  netdev@vger.kernel.org,
+  devicetree@vger.kernel.org,  ath11k@lists.infradead.org,
+  linux-kernel@vger.kernel.org,  Bartosz Golaszewski
+ <bartosz.golaszewski@linaro.org>,  Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH net-next v2] dt-bindings: net: ath11k: document the
+ inputs of the ath11k on WCN6855
+References: <20240814082301.8091-1-brgl@bgdev.pl>
+	<83c562e9-2add-4086-86e7-6e956d2ee70f@kernel.org>
+	<87msk49j8m.fsf@kernel.org>
+	<ed6aceb6-4954-43ad-b631-6c6fda209411@kernel.org>
+	<87a5g2bz6j.fsf@kernel.org>
+	<3ba2ce52-4da3-4066-baf0-5bab1a9f872a@kernel.org>
+Date: Wed, 25 Sep 2024 08:58:41 +0300
+In-Reply-To: <3ba2ce52-4da3-4066-baf0-5bab1a9f872a@kernel.org> (Krzysztof
+	Kozlowski's message of "Tue, 24 Sep 2024 10:04:59 +0200")
+Message-ID: <87zfnw8eb2.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Type: text/plain
 
-+ Johannes to comment wiphy_lock stuff=20
+Krzysztof Kozlowski <krzk@kernel.org> writes:
 
-petter@technux.se <petter@technux.se> wrote:
-> Hi,
->=20
-> I have an issue with my 8822cu based usb device on >=3D 6.6 Linux with AP
-> mode. Using latest changes AP-mode seems to work fairly good. But when
-> enabling/disabling it I seems to always get below. It sometimes happens
-> without using AP-mode also, when for example disconnection happens due
-> to bad connection. Any ideas what might be causing this? Please also let
-> me know if you want additional debugging logs etc.
->=20
-> BR Petter
->=20
->=20
-> ```
->=20
-> [ 1429.886683] WARNING: CPU: 0 PID: 9 at net/wireless/core.h:231
-> disconnect_work+0xb8/0x144 [cfg80211]
-> [ 1429.898367] Modules linked in: rtw88_8822cu rtw88_8822c rtw88_usb
-> rtw88_core mac80211 libarc4 cfg80211 btusb btrtl btintel btbcm btmtk
-> imx_sdma ip_tables x_tables
-> [ 1429.913362] CPU: 0 PID: 9 Comm: kworker/0:1 Not tainted
-> 6.6.51-00141-ga1649b6f8ed6 #7
-> [ 1429.921228] Hardware name: Freescale i.MX6 SoloX (Device Tree)
-> [ 1429.927082] Workqueue: events disconnect_work [cfg80211]
-> [ 1429.933556]  unwind_backtrace from show_stack+0x10/0x14
-> [ 1429.938833]  show_stack from dump_stack_lvl+0x58/0x70
-> [ 1429.943922]  dump_stack_lvl from __warn+0x70/0x1c0
-> [ 1429.948759]  __warn from warn_slowpath_fmt+0x16c/0x294
-> [ 1429.953939]  warn_slowpath_fmt from disconnect_work+0xb8/0x144
-> [cfg80211]
-> [ 1429.961935]  disconnect_work [cfg80211] from
+> On 20/09/2024 08:45, Kalle Valo wrote:
+>
+>> Krzysztof Kozlowski <krzk@kernel.org> writes:
+>> 
+>>> On 19/09/2024 09:48, Kalle Valo wrote:
+>>>> Krzysztof Kozlowski <krzk@kernel.org> writes:
+>>>>
+>>>>> On 14/08/2024 10:23, Bartosz Golaszewski wrote:
+>>>>>> From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>>>>>>
+>>>>>> Describe the inputs from the PMU of the ath11k module on WCN6855.
+>>>>>>
+>>>>>> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+>>>>>> ---
+>>>>>> v1 -> v2:
+>>>>>> - update the example
+>>>>>
+>>>>> I don't understand why this patch is no being picked up. The code
+>>>>> correct represents the piece of hardware. The supplies should be
+>>>>> required, because this one particular device - the one described in this
+>>>>> binding - cannot work without them.
+>>>>
+>>>> I have already explained the situation. With supplies changed to
+>>>> optional I'm happy take the patch.
+>>>
+>>> You did not provide any relevant argument to this case. Your concerns
+>>> described quite different case and are no applicable to DT based platforms.
+>> 
+>> Ok, I'll try to explain my concerns one more time. I'll try to be
+>> thorough so will be a longer mail.
+>> 
+>> In ath11k we have board files, it's basically board/product specific
+>> calibration data which is combined with the calibration data from chip's
+>> OTP. Choosing the correct board file is essential as otherwise the
+>> performance can be bad or the device doesn't work at all.
+>> 
+>> The board files are stored in board-2.bin file in /lib/firmware. ath11k
+>> chooses the correct board file based on the information provided by the
+>> ath11k firmware and then transfers the board file to firmware. From
+>> board-2.bin the correct board file is search based on strings like this:
+>> 
+>> bus=pci,vendor=17cb,device=1103,subsystem-vendor=105b,subsystem-device=e0ca,qmi-chip-id=2,qmi-board-id=255
+>> bus=pci,vendor=17cb,device=1103,subsystem-vendor=105b,subsystem-device=e0ca,qmi-chip-id=2,qmi-board-id=255,variant=HO_BNM
+>> 
+>> But the firmware does not always provide unique enough information for
+>> choosing the correct board file and that's why we added the variant
+>> property (the second example above). This variant property gives us the
+>> means to name the board files uniquely and not have any conflicts. In
+>> x86 systems we retrieve it from SMBIOS and in DT systems using
+>> qcom,ath11k-calibration-variant property.
+>> 
+>> If WCN6855 supplies are marked as required, it means that we cannot use
+>> qcom,ath11k-calibration-variant DT property anymore with WCN6855 M.2
+>> boards. So if we have devices which don't provide unique information
+>
+> No, it does not mean that.
+>
+>> then for those devices it's impossible to automatically to choose the
+>> correct board file.
+>
+> Anyway, only this device must be fully described, because you cannot
+> have pci17cb,1103 without these supplies. It's just electrically not
+> possible, according to our investigation.
 
-I think the cause is picking commit 268f84a82753=20
-("wifi: cfg80211: check wiphy mutex is held for wdev mutex"), and
-cfg80211_is_all_idle() called by disconnect_work() uses wdev_lock()
-but not wiphy_lock().=20
+Yeah, you have been telling that all along. But on the contrary I have
+WCN6855 (pci17cb,1103) M.2 board which I installed to my NUC and they
+haven't needed any supplies (unless BIOS does something automatically).
+Also I have QCA6390 and WCN7850 M.2 boards, both which you claim needs
+the supplies, and they just work out-of-box as well. So I have a hard
+time trusting your spec and believing it's the ultimate authority. To me
+if reality and spec doesn't match, reality wins.
 
-I'm not sure if we should simply revert the picked commit 268f84a82753
-or should pick more commits.
+>> So based on this, to me the correct solution here is to make the
+>> supplies optional so that qcom,ath11k-calibration-variant DT property
+>> can continue to be used with WCN6855 M.2 boards.
+>
+> WCN6855 can still do whatever they want. They are not restricted, not
+> limited. pci17cb,1103 must provide suppplies, because pci17cb,1103
+> cannot work without them.
 
-By the way, I think the latest kernel will not throw these messages.
-Could you try it?
+Claiming that WCN6885 can still do whatever they want is confusing to me
+because WCN6855 is pci17cb,1103, there are no other ids. See
+ath11k/pci.c:
 
+#define WCN6855_DEVICE_ID		0x1103
+
+{ PCI_VDEVICE(QCOM, WCN6855_DEVICE_ID) },
+
+But this discussion is going circles and honestly is waste of time. I
+don't think the patch is right but I'll apply it anyway, let's deal with
+the problems if/when they come up.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
