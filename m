@@ -1,145 +1,134 @@
-Return-Path: <linux-wireless+bounces-13206-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13208-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5A05986541
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 19:00:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF9B3986A43
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Sep 2024 02:31:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46CAB1F23EB6
-	for <lists+linux-wireless@lfdr.de>; Wed, 25 Sep 2024 17:00:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 225701C204F8
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Sep 2024 00:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C0491F94C;
-	Wed, 25 Sep 2024 17:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17B8C2B9B3;
+	Thu, 26 Sep 2024 00:31:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=technux.se header.i=@technux.se header.b="VNDvciX6"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="ZhFtglm3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from m101-out-mua-2.websupport.se (m101-out-mua-2.websupport.se [109.235.175.102])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C15FD1D5AC8;
-	Wed, 25 Sep 2024 17:00:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.235.175.102
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D32C22EE8;
+	Thu, 26 Sep 2024 00:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727283626; cv=none; b=akiHT/vwZNihpMrsWJtBMBNOeVuDzNY8a38drrr4TK0hMlWRhoTHX+OHP6WY1/hD+3vHiXbBZfskCbSlnznxY6HY70jSgNGWAZ/aNsv+r1stX6inJADM0lUTbl8U2cszHHac77Aq3Hl3a4+LkjIYfW4RYTxZjNqm7jLI8w5V/s8=
+	t=1727310671; cv=none; b=c7E93Y7e/A6kqQk6qnOajdB6IQG4Jyuydsl9RkTEkvzMo8dpRU5Du0QMt7lNQTY6IxFXtvsJk06HtqGH0h3gO1OPrmESXZjUEP6zYc/JBWXweNa5SqosrZwXDe6JL9PqI3F3TRZShd55MUvvwvMRlmTkYb3zlap6/36wazdph4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727283626; c=relaxed/simple;
-	bh=eAIWmxSIB/wFH+b+hWZW8MT1OROPOx/GVZI1Yx2S4VE=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=LyiaEcswYENSMACke7lxQf4YigjBt0TqhibtxgmcbyABum2FkvBlGayD5/wiespGzKRbq/ltMqw9yBiIWFFrVc+ZuOL/RsEeTiqWhPYHzNRJ6gzsbaApo1JECfWQvVVlCTu97xADYhXz9+qt1dPZOFMyiORNHbk15f/S1MdSQH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=technux.se; spf=pass smtp.mailfrom=technux.se; dkim=pass (2048-bit key) header.d=technux.se header.i=@technux.se header.b=VNDvciX6; arc=none smtp.client-ip=109.235.175.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=technux.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=technux.se
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=technux.se; s=mail;
-	t=1727283613; bh=QbAxxAUT7/ekJWsQXn9co2hKZ92a2vCXMCEDtmEY8F0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=VNDvciX6EkDFlP1Qnn8scL/mda5zRwMXB6db0WnyH91KrzhlBRFvI4xOPlb5o7+oM
-	 k6Xqx2gFHAkGCh3dAmVwvFR/j9ympFOEG14dwtFKMKcm2Boa+TJ8RqaaEys5ppPAz8
-	 Mpw5LjU5ji/CIuKRXYh4MjVEADxPM+I0Yqp1MsSGyW+ABj4+bqVncMOv/PIkhdi5C3
-	 qN3gb7lHoqKI7fs6VdpcqzUqrlc6n5c1y9NUWPcD0gBCWmMxMR0oBevHAyjKAmziU7
-	 fiZDNqAiS7j2WAOeEVPNIKUgCWUW41I4BXzL7f4MngDku7rP2vY4wAq/6jA8+RXj6i
-	 ffKBjnpEhxjEQ==
-Received: from m101-u7-ing.websupport.se (unknown [10.30.7.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	by m101-out-mua-2.websupport.se (Postfix) with ESMTPS id 4XDNJY0f0Gz1ZvN;
-	Wed, 25 Sep 2024 19:00:13 +0200 (CEST)
-X-Authenticated-Sender: petter@technux.se
-Authentication-Results: m101-u7-ing.websupport.se;
-	auth=pass smtp.auth=petter@technux.se smtp.mailfrom=petter@technux.se
-Received: from roundcube.ws.int (unknown [109.235.175.25])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: petter@technux.se)
-	by m101-u7-ing.websupport.se (Postfix) with ESMTPSA id 4XDNJW6j6Yz110k;
-	Wed, 25 Sep 2024 19:00:11 +0200 (CEST)
+	s=arc-20240116; t=1727310671; c=relaxed/simple;
+	bh=Dm7hJ/xRMsVkfJa5R/uvZPyhRcQ74cKBeu84PCeYNIQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YWSLjQAC/qPyzkM/6FWgaJzoyXlfHaCFiV5rIycj+li2uN0N1JoV7+8153qoAHjrN6XirKIJifaAPGbEj1n0zip0J0FfF53Q86uMNVewyEeeflkrpqQNQ+3ls2mGOPbeIRe7ItxbwGMd8c/tInMRMsEvIpIcuNUFFYCL1ALB1gE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=ZhFtglm3; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 48Q0UuyA61152563, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1727310656; bh=Dm7hJ/xRMsVkfJa5R/uvZPyhRcQ74cKBeu84PCeYNIQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=ZhFtglm31Pw1SNibJk4kWjBAdpHh1sZyL6Rjra5sHxNQ5JG+8qhFgRhA/I6WaQCrn
+	 Qwpi7zTSx81NlPLjAZNUBckDus8/DVUGLvddo5CCuRaAL4WW/fwu6YLThGmXdUVa9j
+	 eJ3HE5d9veHoJnM0ZS6O3raNNFFD2MzWWN3E/8yBoiRmfmYejYVusxf1ahgZ9P4Qc0
+	 CiHxJpcprdtr+hN6+YksqX/Hpf2vxZ9vKJ3uSUnWazPnNTyvTO+YesQEdfdYaaI4Wc
+	 5y+TKhlBMuaMtSRpBEwS206JLQmFdCIXtIk8T7GdM0rm/OPEA02wFS7/GPUlTeX4VU
+	 VCrG/PCCvw+AA==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.05/5.92) with ESMTPS id 48Q0UuyA61152563
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 26 Sep 2024 08:30:56 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 26 Sep 2024 08:30:57 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 26 Sep
+ 2024 08:30:56 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <stable@vger.kernel.org>
+CC: <linux-wireless@vger.kernel.org>, <johannes@sipsolutions.net>
+Subject: [PATCH stable 6.6] Revert "wifi: cfg80211: check wiphy mutex is held for wdev mutex"
+Date: Thu, 26 Sep 2024 08:30:17 +0800
+Message-ID: <20240926003017.5427-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 25 Sep 2024 19:00:11 +0200
-From: petter@technux.se
-To: Johannes Berg <johannes@sipsolutions.net>,
- linux-wireless@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>
-Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
- rtl8821cerfe2@gmail.com, morrownr@gmail.com, s.hauer@pengutronix.de
-Subject: Re: rtw88: rtw8822cu: Kernel warning in cfg80211: disconnect_work at
- net/wireless/core.h:231 on CPU 0
-In-Reply-To: <13c3221f0cf2c5586dc34e8dcf6758c9e4e6cd4c.camel@sipsolutions.net>
-References: <80de30f72595480a2e061dc462191c9f@technux.se>
- <9d243087654c4f3492d0046b7444c6a6@realtek.com>
- <13c3221f0cf2c5586dc34e8dcf6758c9e4e6cd4c.camel@sipsolutions.net>
-User-Agent: Roundcube Webmail/1.6.9
-Message-ID: <9e98937d781c990615ef27ee0c858ff9@technux.se>
-X-Sender: petter@technux.se
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Out-Spamd-Result: default: False [-0.10 / 1000.00];
-	MIME_GOOD(-0.10)[text/plain];
-	FROM_EQ_ENVFROM(0.00)[];
-	ASN(0.00)[asn:41528, ipnet:109.235.175.0/24, country:SE];
-	ARC_NA(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	WS_IP_WHITELIST(0.00)[109.235.175.25];
-	FROM_NO_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+]
-X-Out-Rspamd-Server: m101-rspamd-out-4
-X-Rspamd-Pre-Result: action=no action;
-	module=multimap;
-	Matched map: WS_IP_WHITELIST
-X-Out-Rspamd-Queue-Id: 4XDNJW6j6Yz110k
-X-Rspamd-Action: no action
-X-purgate-type: clean
-X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
-X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
-X-purgate: clean
-X-purgate-size: 1598
-X-purgate-ID: 155908::1727283613-C743DF5A-F3B00CA5/0/0
-Feedback-ID: m101:technux.se
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
+This reverts commit 268f84a827534c4e4c2540a4e29daa73359fc0a5.
 
+The reverted commit is based on implementation of wiphy locking that isn't
+planned to redo on a stable kernel, so revert it to avoid warning:
 
-On 2024-09-25 08:19, Johannes Berg wrote:
-> On Wed, 2024-09-25 at 03:30 +0000, Ping-Ke Shih wrote:
-> 
-> 
->> I think the cause is picking commit 268f84a82753
->> ("wifi: cfg80211: check wiphy mutex is held for wdev mutex"), and
->> cfg80211_is_all_idle() called by disconnect_work() uses wdev_lock()
->> but not wiphy_lock().
-> 
-> Yeah seems like a stable only problem (CC them), this is with kernel
-> version 6.6.51-00141-ga1649b6f8ed6 according to the warning.
-> 
->> I'm not sure if we should simply revert the picked commit 268f84a82753
->> or should pick more commits.
-> 
-> I don't see why it was picked up in the first place, so I guess I'd say
-> remove it. We won't want to redo the locking on a stable kernel, I'd
-> think.
-> 
+ WARNING: CPU: 0 PID: 9 at net/wireless/core.h:231 disconnect_work+0xb8/0x144 [cfg80211]
+ CPU: 0 PID: 9 Comm: kworker/0:1 Not tainted 6.6.51-00141-ga1649b6f8ed6 #7
+ Hardware name: Freescale i.MX6 SoloX (Device Tree)
+ Workqueue: events disconnect_work [cfg80211]
+  unwind_backtrace from show_stack+0x10/0x14
+  show_stack from dump_stack_lvl+0x58/0x70
+  dump_stack_lvl from __warn+0x70/0x1c0
+  __warn from warn_slowpath_fmt+0x16c/0x294
+  warn_slowpath_fmt from disconnect_work+0xb8/0x144 [cfg80211]
+  disconnect_work [cfg80211] from process_one_work+0x204/0x620
+  process_one_work from worker_thread+0x1b0/0x474
+  worker_thread from kthread+0x10c/0x12c
+  kthread from ret_from_fork+0x14/0x24
 
-Thanks! I tried reverting 268f84a82753, then as you guys expected the 
-issue is gone. So will continue to run with this commit reverted. But 
-would be good if we can decide
-how to handle this for stable releases (such as 6.6) and see if we can 
-revert it their also in upcoming 6.6.53.
+Reported-by: petter@technux.se
+Closes: https://lore.kernel.org/linux-wireless/9e98937d781c990615ef27ee0c858ff9@technux.se/T/#t
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ net/wireless/core.h | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
->> By the way, I think the latest kernel will not throw these messages.
-> 
-> Agree, that seems unlikely.
-> 
-> johannes
-Sounds good. I will see if I can give it a try on later kernel also, to 
-verify. It will require some work to get my device up and running on a 
-later version so might take some time until I can give feedback. I was a 
-bit fooled that I got the issue when moving from 6.6.30 to 6.6.51 + 
-cherry-picking all latest rtw88 related changes for my LM842 (8822cu) 
-usb dongle, but great that you guys figured it out so quickly.
+diff --git a/net/wireless/core.h b/net/wireless/core.h
+index c955be6c6daa..f0a3a2317638 100644
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -228,7 +228,6 @@ void cfg80211_register_wdev(struct cfg80211_registered_device *rdev,
+ static inline void wdev_lock(struct wireless_dev *wdev)
+ 	__acquires(wdev)
+ {
+-	lockdep_assert_held(&wdev->wiphy->mtx);
+ 	mutex_lock(&wdev->mtx);
+ 	__acquire(wdev->mtx);
+ }
+@@ -236,16 +235,11 @@ static inline void wdev_lock(struct wireless_dev *wdev)
+ static inline void wdev_unlock(struct wireless_dev *wdev)
+ 	__releases(wdev)
+ {
+-	lockdep_assert_held(&wdev->wiphy->mtx);
+ 	__release(wdev->mtx);
+ 	mutex_unlock(&wdev->mtx);
+ }
+ 
+-static inline void ASSERT_WDEV_LOCK(struct wireless_dev *wdev)
+-{
+-	lockdep_assert_held(&wdev->wiphy->mtx);
+-	lockdep_assert_held(&wdev->mtx);
+-}
++#define ASSERT_WDEV_LOCK(wdev) lockdep_assert_held(&(wdev)->mtx)
+ 
+ static inline bool cfg80211_has_monitors_only(struct cfg80211_registered_device *rdev)
+ {
+-- 
+2.25.1
+
 
