@@ -1,123 +1,156 @@
-Return-Path: <linux-wireless+bounces-13227-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13230-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E73A8987486
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Sep 2024 15:38:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2142987597
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Sep 2024 16:27:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB3C62881BC
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Sep 2024 13:38:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 919DC286DED
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Sep 2024 14:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04DE63A8F7;
-	Thu, 26 Sep 2024 13:38:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="UHN9UHy4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEF532AF1C;
+	Thu, 26 Sep 2024 14:27:02 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D749062171;
-	Thu, 26 Sep 2024 13:38:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B1F5136357
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Sep 2024 14:27:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727357909; cv=none; b=LLggsRNKiWP/1crGIBE2H5G4IfXp1K7+Yx+lNjZR8RVxwri5unRHus0+xURg4nYnEnPualohY1tc0zKxrfoG1DqpVkTIxVC//GUXNKFOdtvu6MUtIIehuQIcEj0Tjc8gTGQxkXnsZu2KoOfLfQcQX4XEs18jQKdLCyGIoVvk3ko=
+	t=1727360822; cv=none; b=jkHtDZP6lTIrLMwEE2VYcXlmYlyAr0AinGz6nFxnvYbZ7qBp92u/T9NffOE+MJQskIVqwNerwhN8iVMErTSuKTZZfILoEksnK3IEM+ozK7sZjQUEFbQOD8zoFYeKF8jFIV8BUtpi5iIVobmqsOevPvzxONne3zrm0JzmYyawQlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727357909; c=relaxed/simple;
-	bh=HM8hWjCaGTIhZ+L0lEK+WDF+Dg03Qo7kEWliuN+AiEE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kssgP2hxkGMgSSH364qSJbjKrnQYLBHHfzFuPc/EVd0s+pI623TzzK80CqXFwzSbQjL/0t2CReUFRvqSA+I7rDEsFM1WAjLmMDw42fwPqmZG5Cn7ZTqLOLv9732PPYpkGM4vVVFATmIoTyG+HjCKjrXJpC6O6JnKCj2YjXxNKmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=UHN9UHy4; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from vefanov-Precision-3650-Tower.intra.ispras.ru (unknown [10.10.2.69])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 1A8C840769D4;
-	Thu, 26 Sep 2024 13:38:25 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 1A8C840769D4
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1727357905;
-	bh=U3C6gL58GGhS+NoBws1dkbyUPAYlkDpUF6lUMqgKoC8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=UHN9UHy4+CdcrAOYtcOpWdmVsyzKGVFU+Jnbd0fQK8Hdy1xJ9dlZFWJQxJfe+V46j
-	 Wlu6q/ckIcKHCHwdzaBp8TbK6TrFEkywV8Nv361vXKDkWnw/kCwOTAvSnIgM0b1fIL
-	 QEPyGb/JLXOMb3QG9UviBeZmmvhf+mDVTNZ2WnhM=
-From: Vladislav Efanov <VEfanov@ispras.ru>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Vladislav Efanov <VEfanov@ispras.ru>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"John W. Linville" <linville@tuxdriver.com>,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: [PATCH] cfg80211: Convert WARN_ON() to warning message
-Date: Thu, 26 Sep 2024 16:34:38 +0300
-Message-ID: <20240926133446.25445-1-VEfanov@ispras.ru>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1727360822; c=relaxed/simple;
+	bh=+UG6KlHn70G5XrAq/IXOtWSKOl2G6F3h3ODVWL6Urcw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E4IN7DhKalFWpyKBXAQ3MgbzQc1W7poWWbe1w/iaeXsqkEf+9mTdmY0PG664nVpcWE1HCJ3U6cNr0aHhnplGr0gS6re36M/SS0zb0Yy0DpRFoyqnLWv2aMvaijbrmxM73k7XC9MOogS3kODBIPOnv2jCX1pTAttWpDiVDRdjqNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.98)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1stpFg-000000005jn-1lUu;
+	Thu, 26 Sep 2024 14:13:52 +0000
+Date: Thu, 26 Sep 2024 15:13:44 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: Shayne Chen <shayne.chen@mediatek.com>
+Cc: Felix Fietkau <nbd@nbd.name>,
+	linux-wireless <linux-wireless@vger.kernel.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Ryder Lee <ryder.lee@mediatek.com>,
+	Evelyn Tsai <evelyn.tsai@mediatek.com>,
+	linux-mediatek <linux-mediatek@lists.infradead.org>,
+	StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+Subject: Re: [PATCH 1/3] wifi: mt76: mt7996: extend flexibility of
+ mt7996_mcu_get_eeprom()
+Message-ID: <ZvVsGKmHHX2q_HRx@makrotopia.org>
+References: <20240926032440.15978-1-shayne.chen@mediatek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240926032440.15978-1-shayne.chen@mediatek.com>
 
-syzkaller got the following warning:
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 9992 at net/wireless/ibss.c:36 __cfg80211_ibss
+On Thu, Sep 26, 2024 at 11:24:38AM +0800, Shayne Chen wrote:
+> Support passing customized buffer pointer and length to
+> mt7996_mcu_get_eeprom().
+> 
+> This is the preparation for adding more variants support which needs to
+> prefetch FEM module from efuse, and also fixes potential OOB issue when
+> reading the last efuse block.
+> 
+> Co-developed-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+> Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+> Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
 
-This warning is the result of the race condition between the following
-events:
+Tested-by: Daniel Golle <daniel@makrotopia.org>
 
-event1                          event2                      event3
-__ieee80211_sta_join_ibss()        |                          |
-creates new cgf80211_bss           |                          |
-structure.                         |                          |
-Calls cfg80211_ibss_joined()       |                          |
-which will scheduled               |                          |
-new event_work.                    |                          |
-                         ieee80211_ibss_disconnect()          |
-                         is called due to connection          |
-                         dropped/ibss leaves to               |
-                         remove cfg80211_bss structure.       |
-                                                event_work starts.
-                                          __cfg80211_ibss_joined()
-                                          is called and WARNING is
-                                          detected due to
-                                          cfg80211_bss structure was
-                                          removed by event2.
-
-It is a normal situation when connection is dropped during handshaking.
-So it looks reasonable to replace WARN_ON() with warning message to
-prevent false alarm.
-
-Found by Linux Verification Center (linuxtesting.org) with syzkaller.
-Fixes: 04a773ade068 ("cfg80211/nl80211: add IBSS API")
-Signed-off-by: Vladislav Efanov <VEfanov@ispras.ru>
----
- net/wireless/ibss.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/net/wireless/ibss.c b/net/wireless/ibss.c
-index e6fdb0b8187d..93c8bee12bdf 100644
---- a/net/wireless/ibss.c
-+++ b/net/wireless/ibss.c
-@@ -34,8 +34,10 @@ void __cfg80211_ibss_joined(struct net_device *dev, const u8 *bssid,
- 	bss = cfg80211_get_bss(wdev->wiphy, channel, bssid, NULL, 0,
- 			       IEEE80211_BSS_TYPE_IBSS, IEEE80211_PRIVACY_ANY);
- 
--	if (WARN_ON(!bss))
-+	if (!bss) {
-+		pr_warn("cfg80211: cfg80211_bss with bssid %s not found.\n", bssid);
- 		return;
-+	}
- 
- 	if (wdev->u.ibss.current_bss) {
- 		cfg80211_unhold_bss(wdev->u.ibss.current_bss);
--- 
-2.34.1
-
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c |  9 +++++++--
+>  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c    | 14 ++++++++++----
+>  drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h |  2 +-
+>  3 files changed, 18 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
+> index 4a8237118287..861aba68a725 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7996/eeprom.c
+> @@ -86,8 +86,13 @@ static int mt7996_eeprom_load(struct mt7996_dev *dev)
+>  		/* read eeprom data from efuse */
+>  		block_num = DIV_ROUND_UP(MT7996_EEPROM_SIZE, eeprom_blk_size);
+>  		for (i = 0; i < block_num; i++) {
+> -			ret = mt7996_mcu_get_eeprom(dev, i * eeprom_blk_size);
+> -			if (ret < 0)
+> +			u32 len = eeprom_blk_size;
+> +
+> +			if (i == block_num - 1)
+> +				len = MT7996_EEPROM_SIZE % eeprom_blk_size;
+> +			ret = mt7996_mcu_get_eeprom(dev, i * eeprom_blk_size,
+> +						    NULL, len);
+> +			if (ret && ret != -EINVAL)
+>  				return ret;
+>  		}
+>  	}
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+> index 327337b31279..fa7832f625d7 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+> @@ -3548,7 +3548,7 @@ int mt7996_mcu_set_eeprom(struct mt7996_dev *dev)
+>  				 &req, sizeof(req), true);
+>  }
+>  
+> -int mt7996_mcu_get_eeprom(struct mt7996_dev *dev, u32 offset)
+> +int mt7996_mcu_get_eeprom(struct mt7996_dev *dev, u32 offset, u8 *buf, u32 buf_len)
+>  {
+>  	struct {
+>  		u8 _rsv[4];
+> @@ -3577,15 +3577,21 @@ int mt7996_mcu_get_eeprom(struct mt7996_dev *dev, u32 offset)
+>  	valid = le32_to_cpu(*(__le32 *)(skb->data + 16));
+>  	if (valid) {
+>  		u32 addr = le32_to_cpu(*(__le32 *)(skb->data + 12));
+> -		u8 *buf = (u8 *)dev->mt76.eeprom.data + addr;
+> +
+> +		if (!buf)
+> +			buf = (u8 *)dev->mt76.eeprom.data + addr;
+> +		if (!buf_len || buf_len > MT7996_EEPROM_BLOCK_SIZE)
+> +			buf_len = MT7996_EEPROM_BLOCK_SIZE;
+>  
+>  		skb_pull(skb, 48);
+> -		memcpy(buf, skb->data, MT7996_EEPROM_BLOCK_SIZE);
+> +		memcpy(buf, skb->data, buf_len);
+> +	} else {
+> +		ret = -EINVAL;
+>  	}
+>  
+>  	dev_kfree_skb(skb);
+>  
+> -	return 0;
+> +	return ret;
+>  }
+>  
+>  int mt7996_mcu_get_eeprom_free_block(struct mt7996_dev *dev, u8 *block_num)
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+> index ab8c9070630b..55aa5f6ab77d 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+> @@ -476,7 +476,7 @@ int mt7996_mcu_set_fixed_rate_ctrl(struct mt7996_dev *dev,
+>  int mt7996_mcu_set_fixed_field(struct mt7996_dev *dev, struct ieee80211_vif *vif,
+>  			       struct ieee80211_sta *sta, void *data, u32 field);
+>  int mt7996_mcu_set_eeprom(struct mt7996_dev *dev);
+> -int mt7996_mcu_get_eeprom(struct mt7996_dev *dev, u32 offset);
+> +int mt7996_mcu_get_eeprom(struct mt7996_dev *dev, u32 offset, u8 *buf, u32 buf_len);
+>  int mt7996_mcu_get_eeprom_free_block(struct mt7996_dev *dev, u8 *block_num);
+>  int mt7996_mcu_get_chip_config(struct mt7996_dev *dev, u32 *cap);
+>  int mt7996_mcu_set_ser(struct mt7996_dev *dev, u8 action, u8 set, u8 band);
+> -- 
+> 2.39.2
+> 
 
