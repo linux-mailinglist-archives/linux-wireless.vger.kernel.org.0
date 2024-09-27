@@ -1,224 +1,184 @@
-Return-Path: <linux-wireless+bounces-13249-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13250-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93C46987E04
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2024 07:54:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC85E987E10
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2024 07:59:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B09E1F2264F
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2024 05:54:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D7F11F21EDE
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2024 05:59:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7879176AD3;
-	Fri, 27 Sep 2024 05:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A297641C63;
+	Fri, 27 Sep 2024 05:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Lptup54I"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="CSnKrj0z"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0AE316DEB2
-	for <linux-wireless@vger.kernel.org>; Fri, 27 Sep 2024 05:54:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B332E8475
+	for <linux-wireless@vger.kernel.org>; Fri, 27 Sep 2024 05:59:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727416458; cv=none; b=Y1e3++zTpFZLyY6NAHg2rpeMIpBBCYutOZ+iWx1nOHLISeExL5GX0sz7CkPVcH0ImEasyiEiCAs6lsCxGm0hVaSjYOdwtcsBNApzbFIEFptDSCvWqv+jswHOhm7GcrrYbqP4E+upCexlOwsGTmkUSuqbdQW1KSWZCyc0DPtxZDs=
+	t=1727416772; cv=none; b=EcamyQtSaBGAqyKr7bqad/zUvYKaHhRIKNPfQ42jcHTcJY66EaomCATqyOe8mADkbg4KWoaYEyP+caTuV/SNWxQLrTr1EUK6vCtfLAvPTWDMu/OBfpNxeJbMXmvp01vMkireJ9+b+cxEimTNInin/PB05BzvJnaJgrtfn40sfW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727416458; c=relaxed/simple;
-	bh=G4hpnvLo0m/PQe/eCqe2pef7O4TSc1+b2w1IPvUZUSM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UXFY+RNXJnisTe+hJN2s90aw/MTxl5NFL9w/NWwaskyRMHamLvcemi79NHJzOckplx0x53Hjs/omASW25xaMS44aL+nX85leckg9CBhLf3j1KqrA8NjZiECumw9Z4q7wWR+kWnxOqkQ9c8m96zGtBDMNQllIt1uwHZvygNWmrCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Lptup54I; arc=none smtp.client-ip=209.85.160.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-45b4e638a9aso113201cf.1
-        for <linux-wireless@vger.kernel.org>; Thu, 26 Sep 2024 22:54:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727416455; x=1728021255; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Fbg8QJSSUgH7Q4nHSRemybsPSlB855qz0uznqiadyvc=;
-        b=Lptup54IuW8FcaZfM/tPOF7A8ARekxwdyZJX2+ajQnPBv+RzcTqYiT3Z6aBICNzld7
-         B3Jshr6LVb0Im1ZhLfCuT6aLVrGmAOyGucG529+ZfR9k+mJUowt1IGcuWPXJ1GhGC0fy
-         zG7SipmI90f3ZLqWmjc1ftKXkvAOHdtbm3jOo+zK6M6YCl9Y1P7yf7uPl5KkV37L8mHe
-         2Xp2AbrEgMRgoHRpcSO8iYovN4fkqXlhg0fPiySP/BfdNmtkdlnWR/ZWk7i7h5sE31RX
-         B09848O4DfjmVnRJhF8mL5q/xiTb9kLFvVd6U5a1By8SEUIyiNhDKwD73gsdWNTNN90y
-         rd9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727416455; x=1728021255;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Fbg8QJSSUgH7Q4nHSRemybsPSlB855qz0uznqiadyvc=;
-        b=cotz7LXwaC6xwPfnBFxGZ60yvEr+koWa/WBOHW3xb6yleT0WEUckn4mNuzgcSLpUko
-         IzCrPAdz4mquvmFe14Ponnr5iNPEoEtwqOOfZWO2xP9prc2owJwyYcZt4D41FAu+ZYi8
-         qjt38vX6ZXBopxK/Z8Q3Tn7VrmaEWGK/FZXrkKH9gx0p1+PdLEkFpHVXp/NMXaaD5lDE
-         7LRYP7m1rpWa/+l41fR3HWPCSoTpRtazxBEe07S8xgOht4Y17DwDziVspN1hqw0henpc
-         T4Mcbg+4evzjgJfaqLAVgv/rEFyfLbP4HSgaRX7XVyKM0zeoG96CE5c2zhmH69HGU5oO
-         OvLw==
-X-Forwarded-Encrypted: i=1; AJvYcCWtbbtCpmxYezWQBvE9j1FCXMv1kOu/cGf5Jdcac2uAvInf8x2pVzZs3tusJ1cS2jhkUgEZwvYQAMGYjFegxQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNbml21mVrYxmfPHwDzrqROwAe9+/NfI7BlqqyyPGkEBEaNUa+
-	c1leCZkRUBNccJ5gqVP0G84BoAUswEKkTZlJ90sC4F9b+ONyKit9lEYs1vfw1JUBVAby71vAhao
-	qQFazcb6dL6GgGg+f3V4L/wvQDaNZ18vlSzPo
-X-Google-Smtp-Source: AGHT+IFlWAzqms00GpX5qYW9TQZFSIQORw0rsVCeZaOGfdUcQ3vPP90oLkUJ8sEZ5IgWc6qBEG83z217FGnc5KOy/AE=
-X-Received: by 2002:a05:622a:7d0e:b0:453:58b6:e022 with SMTP id
- d75a77b69052e-45ca02b0365mr2089571cf.28.1727416455179; Thu, 26 Sep 2024
- 22:54:15 -0700 (PDT)
+	s=arc-20240116; t=1727416772; c=relaxed/simple;
+	bh=zsqyD/ntIHWC1fDEiimhwJTCGrX/YHSW2JR6SPXoqQE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=YSfAjfA3H5KikTsijlYT+3CUbOohNacfi54l4Wi4aQb8Q58Cvchp6nnvzjb18dQ4llxTPwZFKutkhPRPMOZxZbt6y5w5EogO8dNNsvTUvjJZRl5iE2v9FPdDGIZsFDzBERdUaxGpcQbCM2MK8/Q1rgQFZscn+yapF0oZn//5c2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=CSnKrj0z; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48QG9aM1027971;
+	Fri, 27 Sep 2024 05:59:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	pDc6NvK0SKIk25ZudmA/LeRyjpVAKL2q52NcBzFfO2Y=; b=CSnKrj0zgQpt95ky
+	bK05Vf03I2vkX7eLo0R9jKsE19DEsbC+qt7vAsQdG2FaPhZSurC268wWmO7g33bj
+	RQk2EV27Rhja7VPLZU3ckYMqiY/PIHE6HQC4CeBYSoBrQHalSNvmk5bWUGdXKznV
+	a0WrZSrtE6UmbDq9LTTEFnQ9VCfY0iRNq+kWzeCJcPkE+MvwQmfUCTjcXsXqzXo8
+	AXcP2IIbm8SrupmsuL8diw5v7LJhzmhDnfuRGCoRJ0b9sPWPUqe43fV7i4D1LlEs
+	KaT5V9t4ZAAw45yRNyKsjsor1B+oJ5iFDSSzYOnsfA0qGlPzrv5SrzwPvWFmy/of
+	bh1TSg==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41skuf1xg4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 27 Sep 2024 05:59:26 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48R5xP3V014205
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 27 Sep 2024 05:59:25 GMT
+Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 26 Sep
+ 2024 22:59:24 -0700
+Message-ID: <26302980-4cd8-466a-8de1-4be10a42536a@quicinc.com>
+Date: Fri, 27 Sep 2024 13:59:22 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240925075707.3970187-1-linyunsheng@huawei.com>
- <20240925075707.3970187-3-linyunsheng@huawei.com> <CAHS8izOxugzWJDTc-4CWqaKABTj=J4OHs=Lcb=SE9r8gX0J+yg@mail.gmail.com>
- <842c8cc6-f716-437a-bc98-70bc26d6fd38@huawei.com>
-In-Reply-To: <842c8cc6-f716-437a-bc98-70bc26d6fd38@huawei.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Thu, 26 Sep 2024 22:54:01 -0700
-Message-ID: <CAHS8izN-3Ooiexsr+Xp2234=GqMUy0sTTMqExKVkXAgmjeWQ6w@mail.gmail.com>
-Subject: Re: [PATCH net v2 2/2] page_pool: fix IOMMU crash when driver has
- already unbound
-To: Yunsheng Lin <linyunsheng@huawei.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
-	liuyonglong@huawei.com, fanghaiqing@huawei.com, zhangkun09@huawei.com, 
-	Robin Murphy <robin.murphy@arm.com>, Alexander Duyck <alexander.duyck@gmail.com>, 
-	IOMMU <iommu@lists.linux.dev>, Wei Fang <wei.fang@nxp.com>, 
-	Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, 
-	Eric Dumazet <edumazet@google.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
-	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
-	Kalle Valo <kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
-	imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	intel-wired-lan@lists.osuosl.org, bpf@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
-	linux-mm@kvack.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: ath11k/WCN6855 neighbor report request made immediately after
+ connection gets no response (with MFP)
+To: James Prestwood <prestwoj@gmail.com>,
+        "open list:MEDIATEK MT76 WIRELESS
+ LAN DRIVER" <linux-wireless@vger.kernel.org>
+CC: "ath11k@lists.infradead.org" <ath11k@lists.infradead.org>
+References: <eb41d8ec-c4f1-474e-a938-099f27aa94e3@gmail.com>
+ <fd90d471-503b-4f58-ae11-bae2afab08c7@quicinc.com>
+ <0d1dab88-66a0-48c1-bdbe-777d07c3132e@gmail.com>
+ <70567137-dfb9-4896-9e6c-6c02a97228cb@quicinc.com>
+ <15c909da-f01e-43ee-b486-f9b6d5bcc29c@gmail.com>
+Content-Language: en-US
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+In-Reply-To: <15c909da-f01e-43ee-b486-f9b6d5bcc29c@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 4HdERewbce4Ki1zP2TBJgDQ79HwP1iAf
+X-Proofpoint-ORIG-GUID: 4HdERewbce4Ki1zP2TBJgDQ79HwP1iAf
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
+ adultscore=0 clxscore=1015 lowpriorityscore=0 suspectscore=0
+ malwarescore=0 impostorscore=0 mlxlogscore=999 bulkscore=0 mlxscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409270039
 
-On Thu, Sep 26, 2024 at 8:58=E2=80=AFPM Yunsheng Lin <linyunsheng@huawei.co=
-m> wrote:
->
-> On 2024/9/27 2:15, Mina Almasry wrote:
-> >
-> >> In order not to do the dma unmmapping after driver has already
-> >> unbound and stall the unloading of the networking driver, add
-> >> the pool->items array to record all the pages including the ones
-> >> which are handed over to network stack, so the page_pool can
-> >> do the dma unmmapping for those pages when page_pool_destroy()
-> >> is called.
-> >
-> > One thing I could not understand from looking at the code: if the
-> > items array is in the struct page_pool, why do you need to modify the
-> > page_pool entry in the struct page and in the struct net_iov? I think
-> > the code could be made much simpler if you can remove these changes,
-> > and you wouldn't need to modify the public api of the page_pool.
->
-> As mentioned in [1]:
-> "There is no space in 'struct page' to track the inflight pages, so
-> 'pp' in 'struct page' is renamed to 'pp_item' to enable the tracking
-> of inflight page"
->
-> As we still need pp for "struct page_pool" for page_pool_put_page()
-> related API, the container_of() trick is used to get the pp from the
-> pp_item.
->
-> As you had changed 'struct net_iov' to be mirroring the 'struct page',
-> so change 'struct net_iov' part accordingly.
->
-> 1. https://lore.kernel.org/all/50a463d5-a5a1-422f-a4f7-d3587b12c265@huawe=
-i.com/
->
 
-I'm not sure we need the pages themselves to have the list of pages
-that need to be dma unmapped on page_pool_destroy. The pool can have
-the list of pages that need to be unmapped on page_pool_destroy, and
-the individual pages need not track them, unless I'm missing
-something.
 
-> >
-> >> As the pool->items need to be large enough to avoid
-> >> performance degradation, add a 'item_full' stat to indicate the
-> >> allocation failure due to unavailability of pool->items.
-> >>
-> >
-> > I'm not sure there is any way to size the pool->items array correctly.
->
-> Currently the size of pool->items is calculated in page_pool_create_percp=
-u()
-> as below, to make sure the size of pool->items is somewhat twice of the
-> size of pool->ring so that the number of page sitting in the driver's rx
-> ring waiting for the new packet is the similar to the number of page that=
- is
-> still being handled in the network stack as most drivers seems to set the
-> pool->pool_size according to their rx ring size:
->
-> +#define PAGE_POOL_MIN_INFLIGHT_ITEMS           512
-> +       unsigned int item_cnt =3D (params->pool_size ? : 1024) +
-> +                               PP_ALLOC_CACHE_SIZE + PAGE_POOL_MIN_INFLI=
-GHT_ITEMS;
-> +       item_cnt =3D roundup_pow_of_two(item_cnt);
->
+On 9/26/2024 8:31 PM, James Prestwood wrote:
+> Hi,
+> 
+> On 9/25/24 8:16 PM, Baochen Qiang wrote:
+>>
+>> On 9/25/2024 7:33 PM, James Prestwood wrote:
+>>> Hi Baochen,
+>>>
+>>> On 9/25/24 3:07 AM, Baochen Qiang wrote:
+>>>> On 9/19/2024 8:21 PM, James Prestwood wrote:
+>>>>> Hi,
+>>>>>
+>>>>> I noticed an issue when we started putting ath11k clients on a WPA3 network which seems to be related to the fact that management frame protection is enabled (works fine on WPA2 no MFP). Immediately after an initial association a neighbor report request goes out and we get no response from the AP. After getting a PCAP in one case we noticed the neighbor report request went out unencrypted, though still had the CCMP IV parameter. The content of the request was the unencrypted request, and something like 15 bytes of 0x00 padding. I will say, this initial PCAP was made through the AP vendor so perhaps it 
+how do you tell if the 'neighbor report request' was unencrypted? did you check the 'protected' flag in sniffer?
 
-I'm not sure it's OK to add a limitation to the page_pool that it can
-only allocate N pages. At the moment, AFAIU, N is unlimited and it may
-become a regression if we add a limitation.
+automatically added the right keys to decrypt the frame, this could be a red herring. I tried on my home network and it was hit or miss, sometimes I would get a response but sometimes I wouldn't, but I did see the frame was always encrypted in my home network case though when adding the PMK directly in wireshark I couldn't decrypt it, where on other hardware like iwlwifi I
+and how do you tell if it is always encrypted?
 
-> > Can you use a data structure here that can grow? Linked list or
-> > xarray?
-> >
-> > AFAIU what we want is when the page pool allocates a netmem it will
-> > add the netmem to the items array, and when the pp releases a netmem
-> > it will remove it from the array. Both of these operations are slow
-> > paths, right? So the performance of a data structure more complicated
-> > than an array may be ok. bench_page_pool_simple will tell for sure.
->
-> The question would be why do we need the pool->items to grow with the
-> additional overhead and complication by dynamic allocation of item, using
-> complicated data structure and concurrent handling?
->
-> As mentioned in [2], it was the existing semantics, but it does not means
-> we need to keep it. The changing of semantics seems like an advantage
-> to me, as we are able to limit how many pages is allowed to be used by
-> a page_pool instance.
->
-> 2. https://lore.kernel.org/all/2fb8d278-62e0-4a81-a537-8f601f61e81d@huawe=
-i.com/
->
-> >
-> >> Note, the devmem patchset seems to make the bug harder to fix,
-> >> and may make backporting harder too. As there is no actual user
-> >> for the devmem and the fixing for devmem is unclear for now,
-> >> this patch does not consider fixing the case for devmem yet.
-> >>
-> >
-> > net_iovs don't hit this bug, dma_unmap_page_attrs() is never called on
-> > them, so no special handling is needed really. However for code
->
-> I am really doubtful about your above claim. As at least the below
-> implementaion of dma_buf_unmap_attachment_unlocked() called in
-> __net_devmem_dmabuf_binding_free() seems be using the DMA API directly:
->
-> https://elixir.bootlin.com/linux/v6.7-rc8/source/drivers/gpu/drm/amd/amdg=
-pu/amdgpu_dma_buf.c#L215
->
-> Or am I missing something obvious here?
->
 
-I mean currently net_iovs don't hit the __page_pool_release_page_dma
-function that causes the crash in the stack trace. The dmabuf layer
-handles the unmapping when the dmabuf dies (I assume correctly).
+>>>>> could.
+>>>> is your home network also WPA3?
+>> any comment on this query?
+> Yes, my home network is WPA3.
+>>
+>>>> and how did you get the PMK? is it generated by IWD and printed as debug message?
+>>> I actually had to modify IWD to print out the PMK after it derived it. WPA3 makes this a huge pain since the PMK differs between SAE exchanges.
+>>>
+>>> I've attached an IWD diff that prints out the PMK, which can be added to wireshark if that helps.
+>> Thanks, I found another way to do the decryption.
+> Out of curiosity how did you do this? I couldn't find any other way to decrypt WPA3 connections in wireshark except adding the PMK directly, even when capturing the 4-way handshake.
+I dumped the TK:
 
---=20
-Thanks,
-Mina
+	@@ -2055,6 +2062,8 @@ static void netdev_set_tk(struct handshake_state *hs, uint8_t key_index,
+	        if (!netdev_copy_tk(tk_buf, tk, cipher, hs->authenticator))
+	                goto invalid_key;
+	
+	+       l_util_hexdump(false, tk_buf, 16, do_debug, "tk: ");
+	+
+	        msg = nl80211_build_new_key_pairwise(netdev->index, cipher, addr,
+	                                        tk_buf, crypto_cipher_key_len(cipher),
+                                        key_index);
+
+>>
+>>>>> Some time after the connection neighbor reports work fine. I'm not sure of a time frame or delay required that gets them working, but it makes me suspect that ath11k doesn't have the keys fully added in the firmware before userspace gets signaled as "connected". Running the same scenario on ath10k or iwlwifi has no issues. This neighbor report request immediately after connecting is IWD's default behavior, so its relatively easy to test by just restarting IWD.
+>>>> I captured a WPA3 SAE PCAP too, but only can find some unencrypted ADDBA req/resp frames. for those encrypted action frames I am still struggling to decrypt them
+>> I checked all the action frames after decrypt the PCAP, but still not able to find a 'neighbor report' frame. next will study IWD code to understand how such a frame is triggered.
+>>
+>> and again, if not possible to share the complete PCAP, can you share the individual 'neighbor report request' frame ? you can simply copy it in wireshark.
+> 
+> Immediately after connecting you should see one of two possibilities.
+> 
+> 1. If IWD did not receive a response you would see:
+> 
+> iwd[694]: src/station.c:station_early_neighbor_report_cb() ifindex: 6, error: -110(Connection timed out)
+> 
+> 2. If a neighbor report was sent back by the AP you would see:
+> 
+> src/station.c:station_early_neighbor_report_cb() ifindex: 13, error: 0()
+> src/station.c:parse_neighbor_report() Neighbor report received for xx:xx:xx:xx:xx:xx ch 44 (oper class 22), MD not set
+> 
+> I just re-ran the test and now, for some reason, I am entirely unable to see the actual request go out. In the case of both ath11k and ath10k I see no request and but I do sometimes see a response. For iwlwifi I was able to capture a request/response but for the most part I don't see any request either, but always a response. Maybe the request is going out at some other data rate that my monitor card is unable to capture reliably? Not sure on that one.
+> 
+> So as far as seeing a request from ath11k, I'm unable to get one at least on my home network. Getting a capture on the corporate network may take me some more time.
+here is the sequence I saw in sniffer:
+#1 AP send M3
+#2 station send 'neighbor report request' without encryption, though 'protected' flag is set
+#3 station send out M4
+
+is this the same with what you saw?
+
+> 
+> Thanks,
+> 
+> James
+> 
+>>
+>>>>> Since the neighbor reports work fine after some time its not really a critical issue but I wanted to bring it up just in case.
+>>>>>
+>>>>> Thanks,
+>>>>>
+>>>>> James
+>>>>>
+
 
