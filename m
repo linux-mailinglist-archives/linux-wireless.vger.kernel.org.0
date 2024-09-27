@@ -1,88 +1,115 @@
-Return-Path: <linux-wireless+bounces-13253-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13255-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB927987FBF
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2024 09:49:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 794CF9880E3
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2024 10:55:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9CAA284B2C
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2024 07:49:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35AF228233D
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2024 08:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07D8178376;
-	Fri, 27 Sep 2024 07:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8A4189F39;
+	Fri, 27 Sep 2024 08:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ba6FvxG4"
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="H01EDKnv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from forward200d.mail.yandex.net (forward200d.mail.yandex.net [178.154.239.221])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825431891A8;
-	Fri, 27 Sep 2024 07:49:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA697189B97
+	for <linux-wireless@vger.kernel.org>; Fri, 27 Sep 2024 08:51:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.221
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727423375; cv=none; b=k4+I1AT6si8u3Dmc7O+I+i3K6t4A5EUagNV5922u6MeG/L60V6E7Td9kJEBhD+l+HZdswYgR6rycT8tZFQU40EQ87SvqCSTgiWeKRAQP90BXIkDWL1lIeH70VLGKNeMC8Kr48niu8WsfPqnJeRidkuKS9/FRVNITM7wTl/DsSss=
+	t=1727427100; cv=none; b=NDs5mH69wqAXNJHhv1OiK5ZBxAkIcDIpvVNmaj8gwgXzysyXf0sG7B2haW+4D2fo9zjYToGolW1+/+MZaKC4/S6k1I2QRq9kAgVURf02dDX9Zt8GwSQHzzoGKJSMl/L4PwrFoxf7QjOj3nceE+xiXl1pJSM6kn2x7wFsXoXLIL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727423375; c=relaxed/simple;
-	bh=PVYfKoUUtEkUNbIQT3g+yTd9FcU2E/Br4LwF1UWSOc0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Hwuhkqv6bmxu0siWtLz5LajkkeNHCWc66uvf6nMR52SqSjKmAqPtpS5pRtGiQvFgQpG3K/7FF/Dw9iQvQKIWxO7Mw5csKgHdLq3GTt+nyPIhA1uvxr5fmgu7ocwbJo6a0qvHOJ4hrU3l9LoZlvAuqWX/g62ZPLfS3GukanECLbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ba6FvxG4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A5AC4CEC4;
-	Fri, 27 Sep 2024 07:49:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727423374;
-	bh=PVYfKoUUtEkUNbIQT3g+yTd9FcU2E/Br4LwF1UWSOc0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ba6FvxG4lkBqH7rR5v0RseuPNGtvnx73lYD7wGCkx7W8Aw9drbdT12mNwVh3DG9KH
-	 eu9IdmwkZ+fz6xD1CkZ3eWQ8sYGCDXjrMz/R+AZ3o9vrVxtiCLjrFVJjFqrTYFbVYb
-	 PU1s/v8ed+6rmKUI2yZ/aJYMEvNm82MCyy9+XNSk=
-Date: Fri, 27 Sep 2024 09:49:23 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: stable@vger.kernel.org, linux-wireless@vger.kernel.org,
-	johannes@sipsolutions.net
-Subject: Re: [PATCH stable 6.6] Revert "wifi: cfg80211: check wiphy mutex is
- held for wdev mutex"
-Message-ID: <2024092714-prepaid-rarity-0a1c@gregkh>
-References: <20240926003017.5427-1-pkshih@realtek.com>
+	s=arc-20240116; t=1727427100; c=relaxed/simple;
+	bh=jsIoMqVZNXghxRYkbEue9X4iBMVyjdL8fuqxnQH4S8Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D8mVNNd9bw2Gq1V5UVxRqtx3wHeCwI+qbfKILqUi+MXZBsLZOJSxf5zGQUrz3tEjV/W1U3IdWMYpSAWxnD74jAdWeO/iR/riwUL35HVWl9WtFeuVmlk9vlsPFMZYpZkTk/hbNm4mSVmUglxNd5lESihUCxc6KpXgeU2c1puSfxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=H01EDKnv; arc=none smtp.client-ip=178.154.239.221
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+Received: from forward200a.mail.yandex.net (forward200a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d200])
+	by forward200d.mail.yandex.net (Yandex) with ESMTPS id D1FD26700D
+	for <linux-wireless@vger.kernel.org>; Fri, 27 Sep 2024 11:45:03 +0300 (MSK)
+Received: from forward100a.mail.yandex.net (forward100a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d100])
+	by forward200a.mail.yandex.net (Yandex) with ESMTP id B0B9A6C546
+	for <linux-wireless@vger.kernel.org>; Fri, 27 Sep 2024 11:44:33 +0300 (MSK)
+Received: from mail-nwsmtp-smtp-production-main-17.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-17.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:6a2:0:640:8042:0])
+	by forward100a.mail.yandex.net (Yandex) with ESMTPS id 392D946D42;
+	Fri, 27 Sep 2024 11:44:26 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-17.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id PiRcldGOpCg0-ENSd26W7;
+	Fri, 27 Sep 2024 11:44:25 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1727426665; bh=dAfmTrmIcRUjXPrdO8VUtes0BhwlZeA5e3w5xX0/uME=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=H01EDKnvvoMt4ikhDew8IIgIHaOQovto80ecTUWuiJrCs8srXqJwj885ygk5k+gFW
+	 7ZSaT7dyOQhJSjdj96ctxD+7WcRqEk3Upn+KglbR9rksCaVWxJIj8DnyXcwxFwqKhq
+	 DqsCTx4p6Pyd47lkKAPDGEe8p9+ciXk29Feg65GI=
+Authentication-Results: mail-nwsmtp-smtp-production-main-17.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: Brian Norris <briannorris@chromium.org>
+Cc: Kalle Valo <kvalo@kernel.org>,
+	linux-wireless@vger.kernel.org,
+	Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH 1/2] wifi: mwifiex: cleanup struct mwifiex_auto_tdls_peer
+Date: Fri, 27 Sep 2024 11:43:16 +0300
+Message-ID: <20240927084317.96687-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.46.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240926003017.5427-1-pkshih@realtek.com>
+Content-Transfer-Encoding: 8bit
+X-Yandex-Filter: 1
 
-On Thu, Sep 26, 2024 at 08:30:17AM +0800, Ping-Ke Shih wrote:
-> This reverts commit 268f84a827534c4e4c2540a4e29daa73359fc0a5.
-> 
-> The reverted commit is based on implementation of wiphy locking that isn't
-> planned to redo on a stable kernel, so revert it to avoid warning:
-> 
->  WARNING: CPU: 0 PID: 9 at net/wireless/core.h:231 disconnect_work+0xb8/0x144 [cfg80211]
->  CPU: 0 PID: 9 Comm: kworker/0:1 Not tainted 6.6.51-00141-ga1649b6f8ed6 #7
->  Hardware name: Freescale i.MX6 SoloX (Device Tree)
->  Workqueue: events disconnect_work [cfg80211]
->   unwind_backtrace from show_stack+0x10/0x14
->   show_stack from dump_stack_lvl+0x58/0x70
->   dump_stack_lvl from __warn+0x70/0x1c0
->   __warn from warn_slowpath_fmt+0x16c/0x294
->   warn_slowpath_fmt from disconnect_work+0xb8/0x144 [cfg80211]
->   disconnect_work [cfg80211] from process_one_work+0x204/0x620
->   process_one_work from worker_thread+0x1b0/0x474
->   worker_thread from kthread+0x10c/0x12c
->   kthread from ret_from_fork+0x14/0x24
-> 
-> Reported-by: petter@technux.se
-> Closes: https://lore.kernel.org/linux-wireless/9e98937d781c990615ef27ee0c858ff9@technux.se/T/#t
-> Cc: Johannes Berg <johannes@sipsolutions.net>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Remove set but otherwise unused 'do_setup' member of
+'struct mwifiex_auto_tdls_peer'. Compile tested only.
 
-Now queued up, thanks.
+Fixes: 9927baa3c724 ("mwifiex: add auto TDLS support")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ drivers/net/wireless/marvell/mwifiex/main.h | 1 -
+ drivers/net/wireless/marvell/mwifiex/tdls.c | 2 --
+ 2 files changed, 3 deletions(-)
 
-greg k-h
+diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
+index 566adce3413c..92a1cab6e750 100644
+--- a/drivers/net/wireless/marvell/mwifiex/main.h
++++ b/drivers/net/wireless/marvell/mwifiex/main.h
+@@ -802,7 +802,6 @@ struct mwifiex_auto_tdls_peer {
+ 	unsigned long rssi_jiffies;
+ 	u8 failure_count;
+ 	u8 do_discover;
+-	u8 do_setup;
+ };
+ 
+ #define MWIFIEX_TYPE_AGGR_DATA_V2 11
+diff --git a/drivers/net/wireless/marvell/mwifiex/tdls.c b/drivers/net/wireless/marvell/mwifiex/tdls.c
+index 7823e67694e8..0a5f340876c3 100644
+--- a/drivers/net/wireless/marvell/mwifiex/tdls.c
++++ b/drivers/net/wireless/marvell/mwifiex/tdls.c
+@@ -1306,7 +1306,6 @@ int mwifiex_tdls_check_tx(struct mwifiex_private *priv, struct sk_buff *skb)
+ 							   peer->mac_addr,
+ 							   NL80211_TDLS_SETUP,
+ 							   0, GFP_ATOMIC);
+-				peer->do_setup = false;
+ 				priv->check_tdls_tx = false;
+ 			} else if (peer->failure_count <
+ 				   MWIFIEX_TDLS_MAX_FAIL_COUNT &&
+@@ -1465,7 +1464,6 @@ void mwifiex_check_auto_tdls(struct timer_list *t)
+ 			   tdls_peer->failure_count <
+ 			   MWIFIEX_TDLS_MAX_FAIL_COUNT) {
+ 				priv->check_tdls_tx = true;
+-				tdls_peer->do_setup = true;
+ 				mwifiex_dbg(priv->adapter, INFO,
+ 					    "check TDLS with peer=%pM\t"
+ 					    "rssi=%d\n", tdls_peer->mac_addr,
+-- 
+2.46.1
+
 
