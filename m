@@ -1,284 +1,230 @@
-Return-Path: <linux-wireless+bounces-13251-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13252-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A50F987E96
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2024 08:44:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA188987F5A
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2024 09:25:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CC8D1C213D6
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2024 06:44:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 273491C22DAC
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2024 07:25:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A9715B572;
-	Fri, 27 Sep 2024 06:44:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=technux.se header.i=@technux.se header.b="sA4l1q8I"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAF05185E7B;
+	Fri, 27 Sep 2024 07:25:20 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from m101-out-mua-2.websupport.se (m101-out-mua-2.websupport.se [109.235.175.102])
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6838815ADAB
-	for <linux-wireless@vger.kernel.org>; Fri, 27 Sep 2024 06:44:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.235.175.102
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0696817E000;
+	Fri, 27 Sep 2024 07:25:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727419469; cv=none; b=gfnYY7MC6dRBP6uMEiXlnYPSY9MPZCin6YBbV1C2orr2t+8ufERbkI4KsGrZ36uh9zy8U+7urYJclZ1mx4kc0ONvwGIHQAKjOYqJ8mfVwW6xlZ1593ViKlpCr1WAD5lf0+8Lc1zUhLuoUYCjmog1q/NXYzmRUdAZAPJT0POxMfw=
+	t=1727421920; cv=none; b=qI5r2a0760hkdBh241KOMtcemb40mD1smGJ7iz28VRFBEoI0KoW6tUPphW72rQxBdv6Ya0khzl/Br3SaOJNnvWa+ky2cmPj05aTXr5SUscOj/XykA/IvpqvOFhPqJOVnFe1o+15NTvliLneugjbsnmtnlr3WleV3LKD0946PLo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727419469; c=relaxed/simple;
-	bh=vJf5m5pUt/Bw0QoFzZgajj+QHx5EyyZqfni8TlKfFi4=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=so2UHjBimfumOjbDZTHJ55K5FoPV/lAFW2hoTLeP7W8XjJUxFozKy1OUgJGRXtoLBmKEY0LQJTNwdZ5aVCWnzqZjlthDlUh4OgqRW8gD4zKfNFqxLLlyG2PS+Lh9vicc1M5ucn+KcLuk5J+k+/O2iZzRiSvELGt14oS7Ya3PXD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=technux.se; spf=pass smtp.mailfrom=technux.se; dkim=pass (2048-bit key) header.d=technux.se header.i=@technux.se header.b=sA4l1q8I; arc=none smtp.client-ip=109.235.175.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=technux.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=technux.se
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=technux.se; s=mail;
-	t=1727419455; bh=3faqF2hvbA1cP26ER+TEAIEkXSs9h5R212FgDKc50kY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=sA4l1q8I9lornHaXjaZcp4GMZ0nAJtl5ZFfmmOOBI62fhj8hVGN07VNDR0XoxHJD8
-	 rZCp5ACVb46QNJlYHyVcDJ2drCP4o3aFk2KGYbvB16ocI7RvHktqvRATHK5B2eyGtv
-	 POGPhoA14t9Ds+Jg4lkYJCVLGlIgpzNTfBxodu9x5YNsdKwbWDj0IqN/B8Hr4miZoS
-	 z8jQhxfvEDAnSQj5fXzrdFQL6K0ApmHpo27N8uizO5Q3fvuHnaRPwi1eHQwlKfTABZ
-	 y1iXohcPrjhjyH7Cep9J6KHY/BED2SMZwiI3koAe6cigmc9JKp4rq5Nq4cWSqTjhe0
-	 0HNbR884JYJTA==
-Received: from m101-u6-ing.websupport.se (unknown [10.30.6.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	by m101-out-mua-2.websupport.se (Postfix) with ESMTPS id 4XFLXv0Wkjz2nPk;
-	Fri, 27 Sep 2024 08:44:15 +0200 (CEST)
-X-Authenticated-Sender: petter@technux.se
-Authentication-Results: m101-u6-ing.websupport.se;
-	auth=pass smtp.auth=petter@technux.se smtp.mailfrom=petter@technux.se
-Received: from roundcube.ws.int (unknown [109.235.175.24])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: petter@technux.se)
-	by m101-u6-ing.websupport.se (Postfix) with ESMTPSA id 4XFLXt0vbMz18TR;
-	Fri, 27 Sep 2024 08:44:14 +0200 (CEST)
+	s=arc-20240116; t=1727421920; c=relaxed/simple;
+	bh=qo3Cd6DVpmzQMbTciJkAYSD2fPKJTcdbunRKS19+MAg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=AjjdXxk+C1hfxz+Kpeg9mOJCBqflzNRZ6voPFoF+xLYpGgQkDyTh0jxBbDgYjE9pYJgjHjBxZOtBF8IPXnhsyBvUppeKPEP4IqDYoloPHl6ViuKLcqksgZWzphHGqYhH/gYyPMaxApww7T3nS91hvwGmj/iDa6i18K/yH3Cjw8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4XFMMk1vKlz1HKGY;
+	Fri, 27 Sep 2024 15:21:22 +0800 (CST)
+Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id C25E81A0188;
+	Fri, 27 Sep 2024 15:25:14 +0800 (CST)
+Received: from [10.67.120.129] (10.67.120.129) by
+ dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 27 Sep 2024 15:25:14 +0800
+Message-ID: <2a495d47-f1ca-42ee-a23d-736d4cd47880@huawei.com>
+Date: Fri, 27 Sep 2024 15:25:14 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 27 Sep 2024 08:44:13 +0200
-From: petter@technux.se
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Cc: linux-wireless@vger.kernel.org, Ping-Ke Shih <pkshih@realtek.com>
-Subject: Re: rtw88: USB devices randomly stop receiving anything
-In-Reply-To: <0ce86878-7baf-45ac-acc4-4fd9e717102d@gmail.com>
-References: <6e7ecb47-7ea0-433a-a19f-05f88a2edf6b@gmail.com>
- <ea1e7d48c1724dfbda8e7d28acb386a9@technux.se>
- <0ce86878-7baf-45ac-acc4-4fd9e717102d@gmail.com>
-User-Agent: Roundcube Webmail/1.6.9
-Message-ID: <9a0877415aab627feda465531ffd4926@technux.se>
-X-Sender: petter@technux.se
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 2/2] page_pool: fix IOMMU crash when driver has
+ already unbound
+To: Mina Almasry <almasrymina@google.com>
+CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<liuyonglong@huawei.com>, <fanghaiqing@huawei.com>, <zhangkun09@huawei.com>,
+	Robin Murphy <robin.murphy@arm.com>, Alexander Duyck
+	<alexander.duyck@gmail.com>, IOMMU <iommu@lists.linux.dev>, Wei Fang
+	<wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang
+	<xiaoning.wang@nxp.com>, Eric Dumazet <edumazet@google.com>, Tony Nguyen
+	<anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>, Alexei Starovoitov
+	<ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard
+ Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Saeed
+ Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq Toukan
+	<tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi
+	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen
+	<shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, Kalle Valo
+	<kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Andrew
+ Morton <akpm@linux-foundation.org>, Ilias Apalodimas
+	<ilias.apalodimas@linaro.org>, <imx@lists.linux.dev>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<intel-wired-lan@lists.osuosl.org>, <bpf@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>,
+	<linux-mm@kvack.org>, Sumit Semwal <sumit.semwal@linaro.org>,
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+	<linux-media@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+	<linaro-mm-sig@lists.linaro.org>
+References: <20240925075707.3970187-1-linyunsheng@huawei.com>
+ <20240925075707.3970187-3-linyunsheng@huawei.com>
+ <CAHS8izOxugzWJDTc-4CWqaKABTj=J4OHs=Lcb=SE9r8gX0J+yg@mail.gmail.com>
+ <842c8cc6-f716-437a-bc98-70bc26d6fd38@huawei.com>
+ <CAHS8izN-3Ooiexsr+Xp2234=GqMUy0sTTMqExKVkXAgmjeWQ6w@mail.gmail.com>
+Content-Language: en-US
+From: Yunsheng Lin <linyunsheng@huawei.com>
+In-Reply-To: <CAHS8izN-3Ooiexsr+Xp2234=GqMUy0sTTMqExKVkXAgmjeWQ6w@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Out-Rspamd-Server: m101-rspamd-out-6
-X-Rspamd-Action: no action
-X-Out-Spamd-Result: default: False [-0.10 / 1000.00];
-	MIME_GOOD(-0.10)[text/plain];
-	FROM_EQ_ENVFROM(0.00)[];
-	ASN(0.00)[asn:41528, ipnet:109.235.175.0/24, country:SE];
-	ARC_NA(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	WS_IP_WHITELIST(0.00)[109.235.175.24];
-	FROM_NO_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+]
-X-Out-Rspamd-Queue-Id: 4XFLXt0vbMz18TR
-X-Rspamd-Pre-Result: action=no action;
-	module=multimap;
-	Matched map: WS_IP_WHITELIST
-X-purgate-type: clean
-X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
-X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
-X-purgate: clean
-X-purgate-size: 8978
-X-purgate-ID: 155908::1727419455-C7C3EF5A-6CBDC735/0/0
-Feedback-ID: m101:technux.se
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpemf200006.china.huawei.com (7.185.36.61)
 
-On 2024-09-26 18:51, Bitterblue Smith wrote:
-> On 26/09/2024 16:04, petter@technux.se wrote:
->> On 2024-09-25 13:46, Bitterblue Smith wrote:
->>> Hi,
->>> 
->>> I have this problem with RTL8811CU, RTL8723DU, RTL8811AU, RTL8812AU.
->>> I assume all USB devices are affected. If I have qBittorrent running,
->>> the wifi stops working after a few hours:
->>> 
->>> Sep 24 00:48:21 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: 
->>> CTRL-EVENT-BEACON-LOSS
->>> Sep 24 00:48:21 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx 
->>> report from firmware
->>> Sep 24 00:48:23 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: 
->>> CTRL-EVENT-BEACON-LOSS
->>> Sep 24 00:48:23 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx 
->>> report from firmware
->>> Sep 24 00:48:25 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: 
->>> CTRL-EVENT-BEACON-LOSS
->>> Sep 24 00:48:25 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx 
->>> report from firmware
->>> Sep 24 00:48:27 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: 
->>> CTRL-EVENT-BEACON-LOSS
->>> Sep 24 00:48:27 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx 
->>> report from firmware
->>> Sep 24 00:48:29 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: 
->>> CTRL-EVENT-BEACON-LOSS
->>> Sep 24 00:48:29 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx 
->>> report from firmware
->>> Sep 24 00:48:31 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: 
->>> CTRL-EVENT-BEACON-LOSS
->>> Sep 24 00:48:31 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx 
->>> report from firmware
->>> Sep 24 00:48:33 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: 
->>> CTRL-EVENT-BEACON-LOSS
->>> Sep 24 00:48:33 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx 
->>> report from firmware
->>> Sep 24 00:48:35 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: 
->>> CTRL-EVENT-BEACON-LOSS
->>> Sep 24 00:48:35 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx 
->>> report from firmware
->>> Sep 24 00:48:37 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: 
->>> CTRL-EVENT-BEACON-LOSS
->>> Sep 24 00:48:37 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx 
->>> report from firmware
->>> Sep 24 00:48:39 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: 
->>> CTRL-EVENT-BEACON-LOSS
->>> Sep 24 00:48:39 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx 
->>> report from firmware
->>> Sep 24 00:48:41 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: 
->>> CTRL-EVENT-BEACON-LOSS
->>> Sep 24 00:48:41 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx 
->>> report from firmware
->>> Sep 24 00:48:42 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: 
->>> CTRL-EVENT-DISCONNECTED bssid=... reason=4 locally_generated=1
->>> Sep 24 00:48:42 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: Added 
->>> BSSID ... into ignore list, ignoring for 10 seconds
->>> Sep 24 00:48:42 ideapad2 NetworkManager[433]: <info>  
->>> [1727128122.0377] device (wlp3s0f3u2i2): supplicant interface state: 
->>> completed -> disconnected
->>> Sep 24 00:48:45 ideapad2 NetworkManager[433]: <info>  
->>> [1727128125.6030] device (wlp3s0f3u2i2): supplicant interface state: 
->>> disconnected -> scanning
->>> Sep 24 00:48:47 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: Removed 
->>> BSSID ... from ignore list (clear)
->>> Sep 24 00:48:47 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: SME: 
->>> Trying to authenticate with ... (SSID='...' freq=2472 MHz)
->>> Sep 24 00:48:50 ideapad2 kernel: wlp3s0f3u2i2: authenticate with ... 
->>> (local address=,,,)
->>> Sep 24 00:48:51 ideapad2 NetworkManager[433]: <info>  
->>> [1727128131.2488] device (wlp3s0f3u2i2): supplicant interface state: 
->>> scanning -> authenticating
->>> Sep 24 00:48:51 ideapad2 kernel: wlp3s0f3u2i2: send auth to ... (try 
->>> 1/3)
->>> Sep 24 00:48:51 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx 
->>> report from firmware
->>> Sep 24 00:48:52 ideapad2 kernel: wlp3s0f3u2i2: send auth to ... (try 
->>> 2/3)
->>> Sep 24 00:48:52 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx 
->>> report from firmware
->>> Sep 24 00:48:53 ideapad2 kernel: wlp3s0f3u2i2: send auth to ... (try 
->>> 3/3)
->>> Sep 24 00:48:53 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx 
->>> report from firmware
->>> Sep 24 00:48:54 ideapad2 kernel: wlp3s0f3u2i2: authentication with 
->>> ... timed out
->>> 
->>> After this all scans return nothing. The chip is still alive,
->>> though. The LED blinks during the scans (it's hardware-controlled)
->>> and another device in monitor mode can see the probe requests.
->>> 
->>> I confirmed that even C2H stop coming. I used aireplay-ng to send
->>> some authentication or association frames (can't remember) which
->>> require TX ACK report. I saw "failed to get tx report from firmware"
->>> and no C2H.
->>> 
->>> While qBittorrent is needed to trigger this bug, simply downloading
->>> a random Linux iso did not do the job. "Other" torrents did. It's
->>> unclear why. Maybe it's uploading that triggers the bug.
->>> 
->>> I left iperf3 running all day and nothing happened. Only qBittorrent
->>> can break it.
->>> 
->>> RTL8822CE doesn't have this problem. I can use qBittorrent with it
->>> just fine.
->>> 
->>> I mounted debugfs and dumped the MAC registers during a scan using
->>> this command:
->>> 
->>> for i in {00..20}; do sleep 0.5; cat 
->>> /sys/kernel/debug/ieee80211/phy2/rtw88/mac_{0..7} > dead-$i.txt; done
->>> 
->>> I thought maybe some RX URBs failed silently and rtw88 stopped
->>> sending them to the device (== stopped requesting data from it),
->>> but that's not the case. [1]
->>> 
->>> I have the device in this state right now. Is there anything else
->>> I should look at?
->> 
->> What hardware are you running on? This looks very similar to some 
->> issue me and some colleagues have seen from time-to-time when using 
->> LM842 (8822cu)[1][2][3], when running it on our i.MX6SX arm board. It 
->> has thou been harder and harder to trigger that issue on our board. 
->> But the outcome when it happens is identical to your. In our case we 
->> get it when running a number of mender streamed installations. We also 
->> can trigger something similar when doing hw-offload scanning, so we 
->> have disabled that in our setup. For us however it seems related to 
->> slower platforms, we haven't seen it on systems with better 
->> performance. Also it become a lot better when the USB RX aggregation 
->> was added to the chip + running with the patch in [3]. We also got it 
->> on LM808 (8812AU) then after suggestion we tried morrownr driver [4] 
->> with USB aggregation enabled and couldn't trigger it anymore. But 
->> feels like all these things are just ways to reduce the risk of 
->> getting into this state. So I think you just
->> found yet another way to reproduce the behavior. So hopefully that is 
->> the first step of finding the root cause of it. I will gladly help to 
->> test things in this area if you guys find something interesting.
->> 
->> [1] 
->> https://lore.kernel.org/all/20230526055551.1823094-1-petter@technux.se/t/
->> [2] 
->> https://lore.kernel.org/linux-wireless/20230616122612.GL18491@pengutronix.de/T/#t
->> [3] 
->> https://lore.kernel.org/linux-wireless/20230612134048.321500-1-petter@technux.se/
->> [4] https://github.com/morrownr/8812au-20210820
->> 
->>> 
->>> 
->>> [1] 
->>> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/drivers/net/wireless/realtek/rtw88/usb.c?h=v6.10.11&id=25eaef533bf3ccc6fee5067aac16f41f280e343e#n641
+adding Sumit & Christian & dma-buf maillist
+
+On 2024/9/27 13:54, Mina Almasry wrote:
+> On Thu, Sep 26, 2024 at 8:58 PM Yunsheng Lin <linyunsheng@huawei.com> wrote:
+>>
+>> On 2024/9/27 2:15, Mina Almasry wrote:
+>>>
+>>>> In order not to do the dma unmmapping after driver has already
+>>>> unbound and stall the unloading of the networking driver, add
+>>>> the pool->items array to record all the pages including the ones
+>>>> which are handed over to network stack, so the page_pool can
+>>>> do the dma unmmapping for those pages when page_pool_destroy()
+>>>> is called.
+>>>
+>>> One thing I could not understand from looking at the code: if the
+>>> items array is in the struct page_pool, why do you need to modify the
+>>> page_pool entry in the struct page and in the struct net_iov? I think
+>>> the code could be made much simpler if you can remove these changes,
+>>> and you wouldn't need to modify the public api of the page_pool.
+>>
+>> As mentioned in [1]:
+>> "There is no space in 'struct page' to track the inflight pages, so
+>> 'pp' in 'struct page' is renamed to 'pp_item' to enable the tracking
+>> of inflight page"
+>>
+>> As we still need pp for "struct page_pool" for page_pool_put_page()
+>> related API, the container_of() trick is used to get the pp from the
+>> pp_item.
+>>
+>> As you had changed 'struct net_iov' to be mirroring the 'struct page',
+>> so change 'struct net_iov' part accordingly.
+>>
+>> 1. https://lore.kernel.org/all/50a463d5-a5a1-422f-a4f7-d3587b12c265@huawei.com/
+>>
 > 
-> The hardware is a Lenovo Ideapad 3 15ADA6 with AMD Athlon Gold 3150U.
+> I'm not sure we need the pages themselves to have the list of pages
+> that need to be dma unmapped on page_pool_destroy. The pool can have
+> the list of pages that need to be unmapped on page_pool_destroy, and
+> the individual pages need not track them, unless I'm missing
+> something.
+
+It is about the pool having the list of pages that need to be unmapped.
+The point is that the list of pages that need to be unmapped is dynamic,
+it is not a static list:
+1. How to find a empty space in the list and add a page to the list?
+2. How to find a page in the list and delete it from the list?
+3. How to do the about two steps concurrently without obvious overhead?
+
+I am not sure how it is possible to do the above without something like
+the 'pp_item' added in this patch? Even the lockless list in the
+include/linux/llist.h need a 'struct llist_node' for that to work.
+But if it is possible, please share the idea in your mind.
+
 > 
-> How does Mender handle the data transfers? Does it have something
-> in common with torrents?
+>>>
+>>>> As the pool->items need to be large enough to avoid
+>>>> performance degradation, add a 'item_full' stat to indicate the
+>>>> allocation failure due to unavailability of pool->items.
+>>>>
+>>>
+>>> I'm not sure there is any way to size the pool->items array correctly.
+>>
+>> Currently the size of pool->items is calculated in page_pool_create_percpu()
+>> as below, to make sure the size of pool->items is somewhat twice of the
+>> size of pool->ring so that the number of page sitting in the driver's rx
+>> ring waiting for the new packet is the similar to the number of page that is
+>> still being handled in the network stack as most drivers seems to set the
+>> pool->pool_size according to their rx ring size:
+>>
+>> +#define PAGE_POOL_MIN_INFLIGHT_ITEMS           512
+>> +       unsigned int item_cnt = (params->pool_size ? : 1024) +
+>> +                               PP_ALLOC_CACHE_SIZE + PAGE_POOL_MIN_INFLIGHT_ITEMS;
+>> +       item_cnt = roundup_pow_of_two(item_cnt);
+>>
+> 
+> I'm not sure it's OK to add a limitation to the page_pool that it can
+> only allocate N pages. At the moment, AFAIU, N is unlimited and it may
+> become a regression if we add a limitation.
 
-In my case I guess they behaves a bit the same, meaning that mender will 
-sort of stream data, by downloading the os image in chunks and wire it 
-to disk. So both the torrent and mender will most likely stress the 
-network and system in a similar way by performing a lot of RX + disk I/O 
-which seems to make the driver behaves bad after some time.
+Maybe, let's see if there is some stronger argument that it is not ok
+to add the limitation or some testing that does show the limitation
+does bring a regression.
 
-For me it feels like it easier to trigger the issue with mender updates 
-when combining it with some tx traffic etc which I guess is happening 
-when you use qbitorrent..
+> 
+>>> Can you use a data structure here that can grow? Linked list or
+>>> xarray?
+>>>
+>>> AFAIU what we want is when the page pool allocates a netmem it will
+>>> add the netmem to the items array, and when the pp releases a netmem
+>>> it will remove it from the array. Both of these operations are slow
+>>> paths, right? So the performance of a data structure more complicated
+>>> than an array may be ok. bench_page_pool_simple will tell for sure.
+>>
+>> The question would be why do we need the pool->items to grow with the
+>> additional overhead and complication by dynamic allocation of item, using
+>> complicated data structure and concurrent handling?
+>>
+>> As mentioned in [2], it was the existing semantics, but it does not means
+>> we need to keep it. The changing of semantics seems like an advantage
+>> to me, as we are able to limit how many pages is allowed to be used by
+>> a page_pool instance.
+>>
+>> 2. https://lore.kernel.org/all/2fb8d278-62e0-4a81-a537-8f601f61e81d@huawei.com/
+>>
+>>>
+>>>> Note, the devmem patchset seems to make the bug harder to fix,
+>>>> and may make backporting harder too. As there is no actual user
+>>>> for the devmem and the fixing for devmem is unclear for now,
+>>>> this patch does not consider fixing the case for devmem yet.
+>>>>
+>>>
+>>> net_iovs don't hit this bug, dma_unmap_page_attrs() is never called on
+>>> them, so no special handling is needed really. However for code
+>>
+>> I am really doubtful about your above claim. As at least the below
+>> implementaion of dma_buf_unmap_attachment_unlocked() called in
+>> __net_devmem_dmabuf_binding_free() seems be using the DMA API directly:
+>>
+>> https://elixir.bootlin.com/linux/v6.7-rc8/source/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c#L215
+>>
+>> Or am I missing something obvious here?
+>>
+> 
+> I mean currently net_iovs don't hit the __page_pool_release_page_dma
+> function that causes the crash in the stack trace. The dmabuf layer
+> handles the unmapping when the dmabuf dies (I assume correctly).
 
+It seems like the similar assumption made about the normal page.
+How is dmabuf layer able to handles the unmapping when the driver
+which creates the page_pool with the devmem pages has unbound and
+the 'struct device' behind the driver has became invalid?
 
-I will see if I can reproduce the issue using bitorrent also in some 
-good way. Also after the usb aggregation changes I do not see issue with 
-"failed to get tx report" that frequent. Instead its more often stuck 
-with "firmware failed to leave lps state" but rest of the side-effects 
-as you describe is the same.
+If dmabuf layer is able to handle that, it seems the page_pool may
+be able to handle that too. Adding the maintainers of Dma-buf to see
+if there is some clarifying from them.
 
-INFO[0000] Native sector size of block device /dev/mmcblkX is 512 bytes. 
-Mender will write in chunks of 1048576 bytes
-.................[54407.626931] rtw_8822cu 1-1:1.2: firmware failed to 
-leave lps state
-[54408.136328] Bluetooth: hci0: urb fb582009 failed to resubmit (2)
-[54408.622588] wlxxxxxxx: deauthenticating from e5:65:d5:35:95:d5 by 
-local choice (Reason: 3=DEAUTH_LEAVING)
-[54408.919367] rtw_8822cu 1-1:1.2: firmware failed to leave lps state
+> 
 
