@@ -1,156 +1,178 @@
-Return-Path: <linux-wireless+bounces-13247-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13248-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91286987C9C
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2024 03:35:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5FBC987D5D
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2024 05:58:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3128C1F23B66
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2024 01:35:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 047F71C224A7
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2024 03:58:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49DE4D53C;
-	Fri, 27 Sep 2024 01:35:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="uNOHzsvS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7086170A00;
+	Fri, 27 Sep 2024 03:58:04 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 500D379C8
-	for <linux-wireless@vger.kernel.org>; Fri, 27 Sep 2024 01:35:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC481B658;
+	Fri, 27 Sep 2024 03:58:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727400955; cv=none; b=LLFjvHh32tKFK3Ohd+W0FRFS+icllwa8F8e5/RhWvWA2z25kkLhK8H6OGRPPqf5ovVYiC3iCI5MmGgmGLrXC5S2Xr4s9OaydYeQOLdDin8BfdWIPjFQ1VVPmFL7bnVq53GdHX3Sf3GMADqUli2zC+Omo6dnDHeohlq5uMlyv6e8=
+	t=1727409484; cv=none; b=OtQq4WRLTksRBn/Ctg63YPHPYMTSFFQEkJntYKrAqM2K+tHxZIm59j0ogiY9r8xhSOgzFpV45sVUAyu/Bh24q4zk6zD20SwouqNdph6s8P6PcLxh+eqD35LOQIVYgGkHdkCSd5NJ7kSaPI/b12GlrEKN4yQ/0/a4zSpZWby6/ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727400955; c=relaxed/simple;
-	bh=+cNeGKXCiogHP3LzLZYhAeUbYrtn3+L1gHJN04IWpXM=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lBRKSqfxNptoskTyUPwXmYrkeDgwIrV3K3LN4MHhHLBp0e2i0TCTcfBGrtSwm2OeiTZjhpaswBVp6af+dHw3tGqIa4d4Rvao3gwsb0Zl+tYw/Pe54h5dTnbBWQY/YD/n8v3Rn5t3kwjJ7fu+aGHE60AAYOb/j+Qe9Bo/CGrUmoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=uNOHzsvS; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 48R1Zp8V22827274, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1727400951; bh=+cNeGKXCiogHP3LzLZYhAeUbYrtn3+L1gHJN04IWpXM=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=uNOHzsvSL3XyhcJOH4h51NHZcBnTSjrIngnM+rRuc9cwMWKpKuh34BmF6NGmWFzTD
-	 liUw+iXtwi+h2c9SSH4dA2iAW81ZrMYOxOlt4Fo+FEhR2M0be0ioMhW4yL2O6KoWf/
-	 gLagigoeDlNezGvUH2d1/PRbx+JI41H9N/HlZ/natef8P521Jw9u+GAlBb35msrfFv
-	 jXfPh+G/NAJ2+a5mM+LEElrCH48ad6tr04B2OV40FHwj7o+GgORa2mEOfFZHwGNOuw
-	 TSL1YV56gYbVS3hdoqp+naKkNKN8Rt6bZV1dbgNtLSKWKuy6iJqDBWs/xSZ+VYqNVM
-	 2y4sKJR9CtXqA==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.05/5.92) with ESMTPS id 48R1Zp8V22827274
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Fri, 27 Sep 2024 09:35:51 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+	s=arc-20240116; t=1727409484; c=relaxed/simple;
+	bh=zwS/DaxFbYR3qTbNEu5uhuYnJAYJWvWGfzselIAAS1E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=j8koX9Ojg5NtR73ohY3uC18Jo8Tz/LJI40KEGuKiHZYJ4aQPRFeBxxPtT3L2CWJUwux291nP8StXTQH5RutUwf4qe2cAAvBkkmDhg1caIR+fDJ6fhMWczdApsKP+OjsD1n0oBIfceYw/uu9/mQI6n/Btd6C10syZ9dqrmpEoV4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4XFGpN5NVMzGq8S;
+	Fri, 27 Sep 2024 11:55:40 +0800 (CST)
+Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id B3F901400CF;
+	Fri, 27 Sep 2024 11:57:58 +0800 (CST)
+Received: from [10.67.120.129] (10.67.120.129) by
+ dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 27 Sep 2024 09:35:51 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 27 Sep
- 2024 09:35:50 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-Subject: [PATCH] wifi: rtw89: debug: add beacon RSSI for debugging
-Date: Fri, 27 Sep 2024 09:35:12 +0800
-Message-ID: <20240927013512.7106-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+ 15.2.1544.11; Fri, 27 Sep 2024 11:57:58 +0800
+Message-ID: <842c8cc6-f716-437a-bc98-70bc26d6fd38@huawei.com>
+Date: Fri, 27 Sep 2024 11:57:58 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 2/2] page_pool: fix IOMMU crash when driver has
+ already unbound
+To: Mina Almasry <almasrymina@google.com>
+CC: <davem@davemloft.net>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<liuyonglong@huawei.com>, <fanghaiqing@huawei.com>, <zhangkun09@huawei.com>,
+	Robin Murphy <robin.murphy@arm.com>, Alexander Duyck
+	<alexander.duyck@gmail.com>, IOMMU <iommu@lists.linux.dev>, Wei Fang
+	<wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang
+	<xiaoning.wang@nxp.com>, Eric Dumazet <edumazet@google.com>, Tony Nguyen
+	<anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>, Alexei Starovoitov
+	<ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard
+ Brouer <hawk@kernel.org>, John Fastabend <john.fastabend@gmail.com>, Saeed
+ Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq Toukan
+	<tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi
+	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen
+	<shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, Kalle Valo
+	<kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Andrew
+ Morton <akpm@linux-foundation.org>, Ilias Apalodimas
+	<ilias.apalodimas@linaro.org>, <imx@lists.linux.dev>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<intel-wired-lan@lists.osuosl.org>, <bpf@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>,
+	<linux-mm@kvack.org>
+References: <20240925075707.3970187-1-linyunsheng@huawei.com>
+ <20240925075707.3970187-3-linyunsheng@huawei.com>
+ <CAHS8izOxugzWJDTc-4CWqaKABTj=J4OHs=Lcb=SE9r8gX0J+yg@mail.gmail.com>
+Content-Language: en-US
+From: Yunsheng Lin <linyunsheng@huawei.com>
+In-Reply-To: <CAHS8izOxugzWJDTc-4CWqaKABTj=J4OHs=Lcb=SE9r8gX0J+yg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpemf200006.china.huawei.com (7.185.36.61)
 
-In range test, the RSSI is helpful to check attenuation of cable and align
-difference between environments. Since data packets can be transmitted with
-different rate and power, the RSSI of all packets can be variant.
-Oppositely beacon is transmitted with the same rate and power, so beacon
-RSSI will be relatively invariant, and more helpful to diagnose problems.
+On 2024/9/27 2:15, Mina Almasry wrote:
+> 
+>> In order not to do the dma unmmapping after driver has already
+>> unbound and stall the unloading of the networking driver, add
+>> the pool->items array to record all the pages including the ones
+>> which are handed over to network stack, so the page_pool can
+>> do the dma unmmapping for those pages when page_pool_destroy()
+>> is called.
+> 
+> One thing I could not understand from looking at the code: if the
+> items array is in the struct page_pool, why do you need to modify the
+> page_pool entry in the struct page and in the struct net_iov? I think
+> the code could be made much simpler if you can remove these changes,
+> and you wouldn't need to modify the public api of the page_pool.
 
-The output of beacon RSSI in unit of dBm looks like:
+As mentioned in [1]:
+"There is no space in 'struct page' to track the inflight pages, so
+'pp' in 'struct page' is renamed to 'pp_item' to enable the tracking
+of inflight page"
 
-  Beacon: 19 (-33 dBm), TF: 0
+As we still need pp for "struct page_pool" for page_pool_put_page()
+related API, the container_of() trick is used to get the pp from the
+pp_item.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/core.c  | 3 +++
- drivers/net/wireless/realtek/rtw89/core.h  | 1 +
- drivers/net/wireless/realtek/rtw89/debug.c | 7 +++++--
- drivers/net/wireless/realtek/rtw89/phy.c   | 2 ++
- 4 files changed, 11 insertions(+), 2 deletions(-)
+As you had changed 'struct net_iov' to be mirroring the 'struct page',
+so change 'struct net_iov' part accordingly.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index 5b8e65f6de6a..5d08c39a5bbb 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -2109,6 +2109,9 @@ static void rtw89_vif_rx_stats_iter(void *data, u8 *mac,
- 			rtw89_fw_h2c_rssi_offload(rtwdev, phy_ppdu);
- 		}
- 		pkt_stat->beacon_nr++;
-+
-+		if (phy_ppdu)
-+			ewma_rssi_add(&rtwdev->phystat.bcn_rssi, phy_ppdu->rssi_avg);
- 	}
- 
- 	if (!ether_addr_equal(bss_conf->addr, hdr->addr1))
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index ac9f9d33436c..8e4b8964e912 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -4747,6 +4747,7 @@ DECLARE_EWMA(thermal, 4, 4);
- 
- struct rtw89_phy_stat {
- 	struct ewma_thermal avg_thermal[RF_PATH_MAX];
-+	struct ewma_rssi bcn_rssi;
- 	struct rtw89_pkt_stat cur_pkt_stat;
- 	struct rtw89_pkt_stat last_pkt_stat;
- };
-diff --git a/drivers/net/wireless/realtek/rtw89/debug.c b/drivers/net/wireless/realtek/rtw89/debug.c
-index 7391f131229a..74b0c722a5b8 100644
---- a/drivers/net/wireless/realtek/rtw89/debug.c
-+++ b/drivers/net/wireless/realtek/rtw89/debug.c
-@@ -3673,13 +3673,16 @@ static int rtw89_debug_priv_phy_info_get(struct seq_file *m, void *v)
- 	const struct rtw89_chip_info *chip = rtwdev->chip;
- 	const struct rtw89_rx_rate_cnt_info *info;
- 	enum rtw89_hw_rate first_rate;
-+	u8 rssi;
- 	int i;
- 
-+	rssi = ewma_rssi_read(&rtwdev->phystat.bcn_rssi);
-+
- 	seq_printf(m, "TP TX: %u [%u] Mbps (lv: %d), RX: %u [%u] Mbps (lv: %d)\n",
- 		   stats->tx_throughput, stats->tx_throughput_raw, stats->tx_tfc_lv,
- 		   stats->rx_throughput, stats->rx_throughput_raw, stats->rx_tfc_lv);
--	seq_printf(m, "Beacon: %u, TF: %u\n", pkt_stat->beacon_nr,
--		   stats->rx_tf_periodic);
-+	seq_printf(m, "Beacon: %u (%d dBm), TF: %u\n", pkt_stat->beacon_nr,
-+		   RTW89_RSSI_RAW_TO_DBM(rssi), stats->rx_tf_periodic);
- 	seq_printf(m, "Avg packet length: TX=%u, RX=%u\n", stats->tx_avg_len,
- 		   stats->rx_avg_len);
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index 1527b08e0c92..1505dce2b313 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -4894,6 +4894,8 @@ static void rtw89_phy_stat_init(struct rtw89_dev *rtwdev)
- 
- 	memset(&phystat->cur_pkt_stat, 0, sizeof(phystat->cur_pkt_stat));
- 	memset(&phystat->last_pkt_stat, 0, sizeof(phystat->last_pkt_stat));
-+
-+	ewma_rssi_init(&phystat->bcn_rssi);
- }
- 
- void rtw89_phy_stat_track(struct rtw89_dev *rtwdev)
--- 
-2.25.1
+1. https://lore.kernel.org/all/50a463d5-a5a1-422f-a4f7-d3587b12c265@huawei.com/
 
+> 
+>> As the pool->items need to be large enough to avoid
+>> performance degradation, add a 'item_full' stat to indicate the
+>> allocation failure due to unavailability of pool->items.
+>>
+> 
+> I'm not sure there is any way to size the pool->items array correctly.
+
+Currently the size of pool->items is calculated in page_pool_create_percpu()
+as below, to make sure the size of pool->items is somewhat twice of the
+size of pool->ring so that the number of page sitting in the driver's rx
+ring waiting for the new packet is the similar to the number of page that is
+still being handled in the network stack as most drivers seems to set the
+pool->pool_size according to their rx ring size:
+
++#define PAGE_POOL_MIN_INFLIGHT_ITEMS		512
++	unsigned int item_cnt = (params->pool_size ? : 1024) +
++				PP_ALLOC_CACHE_SIZE + PAGE_POOL_MIN_INFLIGHT_ITEMS;
++	item_cnt = roundup_pow_of_two(item_cnt);
+
+> Can you use a data structure here that can grow? Linked list or
+> xarray?
+> 
+> AFAIU what we want is when the page pool allocates a netmem it will
+> add the netmem to the items array, and when the pp releases a netmem
+> it will remove it from the array. Both of these operations are slow
+> paths, right? So the performance of a data structure more complicated
+> than an array may be ok. bench_page_pool_simple will tell for sure.
+
+The question would be why do we need the pool->items to grow with the
+additional overhead and complication by dynamic allocation of item, using
+complicated data structure and concurrent handling?
+
+As mentioned in [2], it was the existing semantics, but it does not means
+we need to keep it. The changing of semantics seems like an advantage
+to me, as we are able to limit how many pages is allowed to be used by
+a page_pool instance.
+
+2. https://lore.kernel.org/all/2fb8d278-62e0-4a81-a537-8f601f61e81d@huawei.com/
+
+> 
+>> Note, the devmem patchset seems to make the bug harder to fix,
+>> and may make backporting harder too. As there is no actual user
+>> for the devmem and the fixing for devmem is unclear for now,
+>> this patch does not consider fixing the case for devmem yet.
+>>
+> 
+> net_iovs don't hit this bug, dma_unmap_page_attrs() is never called on
+> them, so no special handling is needed really. However for code
+
+I am really doubtful about your above claim. As at least the below
+implementaion of dma_buf_unmap_attachment_unlocked() called in
+__net_devmem_dmabuf_binding_free() seems be using the DMA API directly:
+
+https://elixir.bootlin.com/linux/v6.7-rc8/source/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c#L215
+
+Or am I missing something obvious here?
+
+> quality reasons lets try to minimize the number of devmem or memory
+> provider checks in the code, if possible.
+> 
 
