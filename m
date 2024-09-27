@@ -1,111 +1,211 @@
-Return-Path: <linux-wireless+bounces-13256-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13257-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 154DA9880E9
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2024 10:56:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 301F6988133
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2024 11:22:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6C632837D1
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2024 08:56:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4783282F5B
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2024 09:22:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8ECE18A6B1;
-	Fri, 27 Sep 2024 08:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3F891BA886;
+	Fri, 27 Sep 2024 09:22:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="a8WplHry"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9EE18A6BC
-	for <linux-wireless@vger.kernel.org>; Fri, 27 Sep 2024 08:55:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D09773501
+	for <linux-wireless@vger.kernel.org>; Fri, 27 Sep 2024 09:22:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727427306; cv=none; b=R5h3tCQ2cz1/WNfBchb1gFA+Jm9Bo/DhcdoH7BmC/kWhwkWodJPgWWeBticTXHcVA5WW3u22IQqJYLmW9S61QVbhgXhr91XWkAvE7D/Geqjiv1hebwe7s92Rfx8sC7MjQ3K9GI5neoZrD0Ta+44HN9FBcwgi5WljnmeneZ39K3M=
+	t=1727428932; cv=none; b=c5Y/SDM13fsCIM6HBiJzS6eVupXXgsA+W4AQ2qKfBrcjeSPOC5CE9CXwxpzh1oMSuG91iukUr11wF6lv/Ulf4K2B4s3KpeyEp5mbrr880BPOOf4yhVgN8vU87WKXsXI9Civ8g+Z3DTezL6wazrnYZXUDQ1Jk9hg+ljBJ5ACNo/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727427306; c=relaxed/simple;
-	bh=gztgcmze25q8vnPHgWieMrU4NG1DAaoB6+zVATQCOqo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Sg8AQxsiB0Xzrx4UTcHxH1jfmZGo6kthVtqN5FmtN42kyIIu1Qul4vtsepLWqN4DPp30TCtnaBwkfjKtDywBTqDiMB2iBqtwf2m9klH2AimhDaM0bNZTrUtyhN5HMB7/sd4/5lzxkTiAk3P9Ry7urLvMgyDhbtsxW7x5UgQKODs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=green-communications.fr; spf=pass smtp.mailfrom=green-communications.fr; arc=none smtp.client-ip=212.227.126.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=green-communications.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=green-communications.fr
-Received: from evilbit.green-communications.fr ([88.171.60.104]) by
- mrelayeu.kundenserver.de (mreue009 [213.165.67.103]) with ESMTPSA (Nemesis)
- id 1Mt6wz-1s5rbf2vSj-011B10; Fri, 27 Sep 2024 10:54:26 +0200
-From: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
-To: Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Ryder Lee <ryder.lee@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Kalle Valo <kvalo@kernel.org>
-Cc: Rany Hany <rany_hany@riseup.net>,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH] wifi: mt76: mt7915: Fix mesh scan on MT7916 DBDC
-Date: Fri, 27 Sep 2024 10:53:17 +0200
-Message-ID: <20240927085350.4594-1-nicolas.cavallari@green-communications.fr>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1727428932; c=relaxed/simple;
+	bh=12b5Ewn3cylugkvg1EbdzJzESK9RcP19B7oJlHII/b8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mQoaxkT9BwuYBWkvWKUgRaarrtuSr7scGYIJ8HRlNZOC780hu2OMu85v06TG8YHhcR/DpTyd0sQUwhp0IS/h7vEGgOpTO1g/Ky9RBMZaeunFji2N5q3EZmtq3NVqpckkVyvuKBuqj0WsXiEfVcT6vBBP7miEyPPK8kgywcBQa0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=a8WplHry; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2e07d91f78aso1565244a91.1
+        for <linux-wireless@vger.kernel.org>; Fri, 27 Sep 2024 02:22:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1727428930; x=1728033730; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=u12Tug5k2bdyzIU9WiqUE2EObFB7IXUcT3bKNNPZCB0=;
+        b=a8WplHry6u3iuaQkoq0+ZuW5zEccqDNVuuHcnAtXMA1SRyBTH7GW2PWKCLY01aJ6lL
+         dD22V5tm/66zyJZ+iCvICdOSB/lK9TZFCPr1tniZWNJ3v8WHRKoGwOgrsmCZjty3S5gt
+         0uSTHMamrhjA1ZZpzQN/Rwvl20Yy6SoXAAYpyx6becyxwT18gcBzmprVsjE076+Zk3Ik
+         +tosuclWvttUNiUGzSPIe6YG0y4c2IQFiRSVRZ1BbxffwUxbmY5aJz3kZgSIWYv9QCRP
+         CGrldaVUavywa5YcmblPv3J1jq8UNYHg7oD6znm6iJhNsOMaSvnST3WO+RLcrv08wJRF
+         BiPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727428930; x=1728033730;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=u12Tug5k2bdyzIU9WiqUE2EObFB7IXUcT3bKNNPZCB0=;
+        b=H4DNH4R8KOlD944KloiDUfnPjnUJ0TQk/xRTO5h4pUMrS7Uia/YLWKPySFwfL48RSP
+         59t+NpM/7Z6cudI+h3SzYfbiIsTSIdAu7wAYuALwO7gRgbjvb6NIkEAXHsrYNx2Fis5m
+         kYfS8N+yBRweNGHDLVxhZn4/g9bRR0xw0M0yRzJo3nKzIACRRIshrIOJAiNfnTSlDXJQ
+         2lDNURamiCHYgMpaDB0s/eerFTVoR2M6HZbTOoREILB56z6Td2MnLty1rerxmlyv1y1j
+         SmvHxv2PQCJfaGQP00FMWuLsRw4ytScBkq9Ae1fQhenY13L+ZWT9rSDWVa+TaHoHEXqn
+         e7cQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVRT1+VZaA0Jf0egP+4mPTsA6mxrPv+BzUny4aMXEhUuE3oHeK9kMoyXsi8Un0jHzYHC6908M84wnbSk7l0AQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQgFo1aqlIywSYC1MbzzPM0GX5+uKu9x2pRCBwlA0+1cbSiFHE
+	tydbIZyMZvK8zSiFFOSkDMape/Pk6/xrFFi3FFCq8ouOAK2Cb0RFe9hf4wb+4hf5K8SB3Umqqev
+	e8wdCsaLzvos1BHfZRHA2juh7PInwZyu490c1Zg==
+X-Google-Smtp-Source: AGHT+IGhQGOutUtxLVOzhj1pZESUxIJEMnWirkI07rvkOdCYDPIQ+9U4QYWB0UPwoiObJJWrhA4Koam3DQfasHbzz4I=
+X-Received: by 2002:a17:90a:4b07:b0:2e0:9147:7db5 with SMTP id
+ 98e67ed59e1d1-2e0b8ed4cebmr2795273a91.38.1727428930437; Fri, 27 Sep 2024
+ 02:22:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:WNTb3PEnhm51fGgebWlKsDbVVi2c3BiT9D7ky7SKmMtN8DRiFMC
- Xp5IhkFUSQagz0klxryY78t80y2j1B1ZJSUtPvLAD7zdwTgzy5kn1AVygmjxQQlLoiCrXIU
- Lzg/V5/W4HdrKblHk6q+8KE12w1MxUc8Hxs8rxBrCut2Td9CuhK1704duH58eICSOepnRXB
- q/7vHM003x6qiCyuAYeXw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:mKI+GyfKpU4=;eKu+g4iLZtLW8YlUycwy84GBnzs
- bPHlrzKf+p+LouuY7r4bsshSI2Yb9nr9/V4dvS054bTby2cgkNyYE3QyLphhQZe74XQbHakQ/
- Ip77y44p8DztrqreD+aitSJP/zlKARZKF1V/CxjQvPKlp/3kV40J514yzIJ/x8iyQwOkugiUc
- v4IEkmqC4S/xwb1EJlYAVaqAsxwwQRuR535/tug6a49iZR6sxRVT5FCOXbNGxuUbSIixrGZum
- 8M0ZbBjexuj2XpM8VkXnpn7bqI1quV/O/J5TNH0/vBQC7zAOsvesjwR3N/5gMg5AhQR8wmnNP
- VwjLXb1lO994IJvY7JSNAzss3onFpHMifp4K0UKdWy05Rjb8LQcV/BFXmINVbOCtA4yJBUgyj
- xRbWZCorAx54Rm1k1zY9CekwtgOgJef/qZUVAf+wqC/GRG/C/agXW3bwVfoEs70Of+0m7kbYo
- n/+B8q3HoM4rfSFTrhfEEdMP/LZSnaGXfD7H9cyxPOMzCNtIWqOaThZRqJHJB4T+7XgQ39C7L
- /bTi1cl9awakdhbobw2JXO77+Dif28T/mzbgiFO6r5aSD1Tdsaqu8h5jGr8o0NHZ80Kv+7v1k
- u76N/oTtbV0XZ56w2nIKhW83oYjti/++75OFKV9FbTzcRo/2i9UyXNEUKHArdvJ0f4Rd5FKbv
- ao+zHlSB8JE9B2bux5SxC/8k7nH+6cCI65XAci0uEhN1SBSF3B4AGdmoytIf0rJwWRqy/1mP5
- qI+VGRATkTtl2KFSpX+uSwyNvMI6C9xyw==
+References: <20240925075707.3970187-1-linyunsheng@huawei.com>
+ <20240925075707.3970187-3-linyunsheng@huawei.com> <CAHS8izOxugzWJDTc-4CWqaKABTj=J4OHs=Lcb=SE9r8gX0J+yg@mail.gmail.com>
+ <842c8cc6-f716-437a-bc98-70bc26d6fd38@huawei.com>
+In-Reply-To: <842c8cc6-f716-437a-bc98-70bc26d6fd38@huawei.com>
+From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Date: Fri, 27 Sep 2024 12:21:33 +0300
+Message-ID: <CAC_iWjLgNOtsbhqrhvvEz2C3S668qB8KatL_W+tPHMSkDrNS=w@mail.gmail.com>
+Subject: Re: [PATCH net v2 2/2] page_pool: fix IOMMU crash when driver has
+ already unbound
+To: Yunsheng Lin <linyunsheng@huawei.com>
+Cc: Mina Almasry <almasrymina@google.com>, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, liuyonglong@huawei.com, fanghaiqing@huawei.com, 
+	zhangkun09@huawei.com, Robin Murphy <robin.murphy@arm.com>, 
+	Alexander Duyck <alexander.duyck@gmail.com>, IOMMU <iommu@lists.linux.dev>, 
+	Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
+	Clark Wang <xiaoning.wang@nxp.com>, Eric Dumazet <edumazet@google.com>, 
+	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+	Alexander Lobakin <aleksander.lobakin@intel.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed <saeedm@nvidia.com>, 
+	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, 
+	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
+	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
+	Kalle Valo <kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, imx@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, intel-wired-lan@lists.osuosl.org, 
+	bpf@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
 
-commit c4f075582304 ("wifi: mt76: mt7915: fix command timeout in AP stop
-period") changes the behavior of mt7915_bss_info_changed() in mesh mode
-when enable_beacon becomes false: it calls mt7915_mcu_add_bss_info(...,
-false) and mt7915_mcu_add_sta(..., false) while the previous code
-didn't.  These sends mcu commands that apparently confuse the firmware.
+Hi Yunsheng
 
-This breaks scanning while in mesh mode on AsiaRF MT7916 DBDC-based cards:
-scanning works but no mesh frames get sent afterwards and the firmware
-seems to be hosed.  It breaks on MT7916 DBDC but not on MT7915 DBDC.
+On Fri, 27 Sept 2024 at 06:58, Yunsheng Lin <linyunsheng@huawei.com> wrote:
+>
+> On 2024/9/27 2:15, Mina Almasry wrote:
+> >
+> >> In order not to do the dma unmmapping after driver has already
+> >> unbound and stall the unloading of the networking driver, add
+> >> the pool->items array to record all the pages including the ones
+> >> which are handed over to network stack, so the page_pool can
+> >> do the dma unmmapping for those pages when page_pool_destroy()
+> >> is called.
+> >
+> > One thing I could not understand from looking at the code: if the
+> > items array is in the struct page_pool, why do you need to modify the
+> > page_pool entry in the struct page and in the struct net_iov? I think
+> > the code could be made much simpler if you can remove these changes,
+> > and you wouldn't need to modify the public api of the page_pool.
+>
+> As mentioned in [1]:
+> "There is no space in 'struct page' to track the inflight pages, so
+> 'pp' in 'struct page' is renamed to 'pp_item' to enable the tracking
+> of inflight page"
 
-Fixes: c4f075582304 ("wifi: mt76: mt7915: fix command timeout in AP stop period")
-Signed-off-by: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+I have the same feeling as Mina here. First of all, we do have an
+unsigned long in struct page we use for padding IIRC. More
+importantly, though, why does struct page need to know about this?
+Can't we have the same information in page pool?
+When the driver allocates pages it does via page_pool_dev_alloc_XXXXX
+or something similar. Cant we do what you suggest here ? IOW when we
+allocate a page we put it in a list, and when that page returns to
+page_pool (and it's mapped) we remove it.
 
----
-PS: I have no idea what's happening here.
----
- drivers/net/wireless/mediatek/mt76/mt7915/main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index d75e8dea1fbd..b7884772e2f4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -619,8 +619,9 @@ static void mt7915_bss_info_changed(struct ieee80211_hw *hw,
- 	if (changed & BSS_CHANGED_ASSOC)
- 		set_bss_info = vif->cfg.assoc;
- 	if (changed & BSS_CHANGED_BEACON_ENABLED &&
-+	    info->enable_beacon &&
- 	    vif->type != NL80211_IFTYPE_AP)
--		set_bss_info = set_sta = info->enable_beacon;
-+		set_bss_info = set_sta = 1;
- 
- 	if (set_bss_info == 1)
- 		mt7915_mcu_add_bss_info(phy, vif, true);
-
-base-commit: 6bba05d651ef77f2c3f3c67b9ace093fee4e01e1
--- 
-2.45.2
-
+Thanks
+/Ilias
+>
+> As we still need pp for "struct page_pool" for page_pool_put_page()
+> related API, the container_of() trick is used to get the pp from the
+> pp_item.
+>
+> As you had changed 'struct net_iov' to be mirroring the 'struct page',
+> so change 'struct net_iov' part accordingly.
+>
+> 1. https://lore.kernel.org/all/50a463d5-a5a1-422f-a4f7-d3587b12c265@huawei.com/
+>
+> >
+> >> As the pool->items need to be large enough to avoid
+> >> performance degradation, add a 'item_full' stat to indicate the
+> >> allocation failure due to unavailability of pool->items.
+> >>
+> >
+> > I'm not sure there is any way to size the pool->items array correctly.
+>
+> Currently the size of pool->items is calculated in page_pool_create_percpu()
+> as below, to make sure the size of pool->items is somewhat twice of the
+> size of pool->ring so that the number of page sitting in the driver's rx
+> ring waiting for the new packet is the similar to the number of page that is
+> still being handled in the network stack as most drivers seems to set the
+> pool->pool_size according to their rx ring size:
+>
+> +#define PAGE_POOL_MIN_INFLIGHT_ITEMS           512
+> +       unsigned int item_cnt = (params->pool_size ? : 1024) +
+> +                               PP_ALLOC_CACHE_SIZE + PAGE_POOL_MIN_INFLIGHT_ITEMS;
+> +       item_cnt = roundup_pow_of_two(item_cnt);
+>
+> > Can you use a data structure here that can grow? Linked list or
+> > xarray?
+> >
+> > AFAIU what we want is when the page pool allocates a netmem it will
+> > add the netmem to the items array, and when the pp releases a netmem
+> > it will remove it from the array. Both of these operations are slow
+> > paths, right? So the performance of a data structure more complicated
+> > than an array may be ok. bench_page_pool_simple will tell for sure.
+>
+> The question would be why do we need the pool->items to grow with the
+> additional overhead and complication by dynamic allocation of item, using
+> complicated data structure and concurrent handling?
+>
+> As mentioned in [2], it was the existing semantics, but it does not means
+> we need to keep it. The changing of semantics seems like an advantage
+> to me, as we are able to limit how many pages is allowed to be used by
+> a page_pool instance.
+>
+> 2. https://lore.kernel.org/all/2fb8d278-62e0-4a81-a537-8f601f61e81d@huawei.com/
+>
+> >
+> >> Note, the devmem patchset seems to make the bug harder to fix,
+> >> and may make backporting harder too. As there is no actual user
+> >> for the devmem and the fixing for devmem is unclear for now,
+> >> this patch does not consider fixing the case for devmem yet.
+> >>
+> >
+> > net_iovs don't hit this bug, dma_unmap_page_attrs() is never called on
+> > them, so no special handling is needed really. However for code
+>
+> I am really doubtful about your above claim. As at least the below
+> implementaion of dma_buf_unmap_attachment_unlocked() called in
+> __net_devmem_dmabuf_binding_free() seems be using the DMA API directly:
+>
+> https://elixir.bootlin.com/linux/v6.7-rc8/source/drivers/gpu/drm/amd/amdgpu/amdgpu_dma_buf.c#L215
+>
+> Or am I missing something obvious here?
+>
+> > quality reasons lets try to minimize the number of devmem or memory
+> > provider checks in the code, if possible.
+> >
 
