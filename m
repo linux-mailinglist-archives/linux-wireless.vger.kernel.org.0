@@ -1,133 +1,138 @@
-Return-Path: <linux-wireless+bounces-13258-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13259-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B25499881CE
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2024 11:50:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01CEF988210
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2024 11:59:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5E5C2858D9
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2024 09:49:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2D52287B60
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Sep 2024 09:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BBC194ACA;
-	Fri, 27 Sep 2024 09:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02D41BB686;
+	Fri, 27 Sep 2024 09:59:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="IJnQTief"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC27186E58;
-	Fri, 27 Sep 2024 09:49:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5963815F3FB
+	for <linux-wireless@vger.kernel.org>; Fri, 27 Sep 2024 09:59:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727430592; cv=none; b=naRQxzwDgm7grhk+rUTCYnnFssQ4nKJU1K+AuWbUuxQm6VVF9hoECEq5a+C9J/GhzksiaWDTa6vON/jfCPuvVdhxm0va5E0WwSEUKXvU1Wd2ZsFwVaoObXCgoedFEu2FjxfgoM31KPlAETiTo7A/P6vcFkYDf7s9UGCa//NkMWM=
+	t=1727431143; cv=none; b=FkQqojTDFvCgAVOTrj9VR+UAS3wva4SAuYNRU1iYynpvDZRFeRCfMRaGocayW3CCLPiydPpUiKclTPKIJ7CxBQwDjB2wZKEJBNSSmt7FnZlTVRUW+G8EGXWTsfUKAcdWWYOGxfb+9/wKW9FpyrlmnDvKLNnjpC4EB1XzMcuDGS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727430592; c=relaxed/simple;
-	bh=NC7KgdCdhPtOVGJUsIpjLuEb6Y2Xbx97UfH4DLBwsg0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Yc9bd2d9+jgx+C4RTyhSfCdMxIdyVPEe+Z/cNK0XAMX+rYrr5sy4MQNCcj3OGddw1PdeXTgGp+65gNg0VlmtMyXFDaWCQaPLhdbwVOM+D3kqMOA/v9Ii9LiCbn7jOc2hXub94jqOzxcgEx7zI17xjeb8ItF38UlMO7QEcwFAesE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.163])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4XFQZN2v7qz1HKJ6;
-	Fri, 27 Sep 2024 17:45:48 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0AC2018002B;
-	Fri, 27 Sep 2024 17:49:41 +0800 (CST)
-Received: from [10.67.120.129] (10.67.120.129) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
+	s=arc-20240116; t=1727431143; c=relaxed/simple;
+	bh=eWuwgO5nfKBnDVGVt2Dlk3LlksIIPdj0I1D96z04ODw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=E29CtB3jSgr8ZXUF7WnwJ6Z8gNOiUzU5d/26Sz5VUf1KZTkXTe7kHDfVaNgcRATfnJ0V6vCWfX2Cv4aJyK+zoS185XnuD3QlOvsayRMRGTjB1NclgFZuFntZVVI3mRglNeNVTsnpGtZv+ykN+cdrwvdgewAb5LqvJKucLG0Kz2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=IJnQTief; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48R6ZkBf000977;
+	Fri, 27 Sep 2024 09:58:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-type:date:from:message-id:mime-version:subject:to; s=
+	qcppdkim1; bh=5d6JzPqE7gzqY+R7mcOMWOu2p5ukRlph0CT314VSWU0=; b=IJ
+	nQTiefOi4jk9lZ1BJ3eQ7DxN1Je6flQNKgFMrqWR5F+iSUoaLDHxdGh1qm3RbRTV
+	sJR2FVSj1y8t1AMItZW8vowxt8ZM1c/HP4v3tTMkgp01Nqoj6wvHJm4QPjfGFZt0
+	GK2NCMkdxS15HiJKUse0LF1JMB4Kvk1MJWR5rQOqPDzyCIBiIeKMtU8OunUYS/t5
+	1VU8+kMnEV9ivY160g2ubs79y+EL9R34v4/HWl8D/AJYuV22yltc2yQsQo+xNtMu
+	GUmuVsXc/IxfBX2KaXN6DSTkEFA4J18BTYafqg0BmN/5vK9mSu0e1rlciK3Q5/rR
+	oWvcH/EaHZh0dQ7V7lpg==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41sn3sjg81-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 27 Sep 2024 09:58:59 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48R9wwo6025947
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 27 Sep 2024 09:58:58 GMT
+Received: from hu-bpothuno-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 27 Sep 2024 17:49:40 +0800
-Message-ID: <0ef315df-e8e9-41e8-9ba8-dcb69492c616@huawei.com>
-Date: Fri, 27 Sep 2024 17:49:40 +0800
+ 15.2.1544.9; Fri, 27 Sep 2024 02:58:56 -0700
+From: Balaji Pothunoori <quic_bpothuno@quicinc.com>
+To: <ath11k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Balaji Pothunoori
+	<quic_bpothuno@quicinc.com>
+Subject: [PATCH] wifi: ath11k: Fix CE offset address calculation for WCN6750 in SSR
+Date: Fri, 27 Sep 2024 15:28:25 +0530
+Message-ID: <20240927095825.22317-1-quic_bpothuno@quicinc.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 2/2] page_pool: fix IOMMU crash when driver has
- already unbound
-To: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-CC: Mina Almasry <almasrymina@google.com>, <davem@davemloft.net>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <liuyonglong@huawei.com>,
-	<fanghaiqing@huawei.com>, <zhangkun09@huawei.com>, Robin Murphy
-	<robin.murphy@arm.com>, Alexander Duyck <alexander.duyck@gmail.com>, IOMMU
-	<iommu@lists.linux.dev>, Wei Fang <wei.fang@nxp.com>, Shenwei Wang
-	<shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Eric Dumazet
-	<edumazet@google.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek
- Kitszel <przemyslaw.kitszel@intel.com>, Alexander Lobakin
-	<aleksander.lobakin@intel.com>, Alexei Starovoitov <ast@kernel.org>, Daniel
- Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed
-	<saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq Toukan
-	<tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi
-	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen
-	<shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, Kalle Valo
-	<kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Andrew
- Morton <akpm@linux-foundation.org>, <imx@lists.linux.dev>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<intel-wired-lan@lists.osuosl.org>, <bpf@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>,
-	<linux-mm@kvack.org>
-References: <20240925075707.3970187-1-linyunsheng@huawei.com>
- <20240925075707.3970187-3-linyunsheng@huawei.com>
- <CAHS8izOxugzWJDTc-4CWqaKABTj=J4OHs=Lcb=SE9r8gX0J+yg@mail.gmail.com>
- <842c8cc6-f716-437a-bc98-70bc26d6fd38@huawei.com>
- <CAC_iWjLgNOtsbhqrhvvEz2C3S668qB8KatL_W+tPHMSkDrNS=w@mail.gmail.com>
-Content-Language: en-US
-From: Yunsheng Lin <linyunsheng@huawei.com>
-In-Reply-To: <CAC_iWjLgNOtsbhqrhvvEz2C3S668qB8KatL_W+tPHMSkDrNS=w@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemf200006.china.huawei.com (7.185.36.61)
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: RMmcXQuV6ig9KZ-eXzZg1rQMVo29R_9B
+X-Proofpoint-ORIG-GUID: RMmcXQuV6ig9KZ-eXzZg1rQMVo29R_9B
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 phishscore=0
+ mlxscore=0 impostorscore=0 spamscore=0 malwarescore=0 suspectscore=0
+ priorityscore=1501 lowpriorityscore=0 mlxlogscore=999 clxscore=1011
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409270070
 
-On 2024/9/27 17:21, Ilias Apalodimas wrote:
-> Hi Yunsheng
-> 
-> On Fri, 27 Sept 2024 at 06:58, Yunsheng Lin <linyunsheng@huawei.com> wrote:
->>
->> On 2024/9/27 2:15, Mina Almasry wrote:
->>>
->>>> In order not to do the dma unmmapping after driver has already
->>>> unbound and stall the unloading of the networking driver, add
->>>> the pool->items array to record all the pages including the ones
->>>> which are handed over to network stack, so the page_pool can
->>>> do the dma unmmapping for those pages when page_pool_destroy()
->>>> is called.
->>>
->>> One thing I could not understand from looking at the code: if the
->>> items array is in the struct page_pool, why do you need to modify the
->>> page_pool entry in the struct page and in the struct net_iov? I think
->>> the code could be made much simpler if you can remove these changes,
->>> and you wouldn't need to modify the public api of the page_pool.
->>
->> As mentioned in [1]:
->> "There is no space in 'struct page' to track the inflight pages, so
->> 'pp' in 'struct page' is renamed to 'pp_item' to enable the tracking
->> of inflight page"
-> 
-> I have the same feeling as Mina here. First of all, we do have an
-> unsigned long in struct page we use for padding IIRC. More
+Currently, mem_ce and mem iomem addresses are used to calculate the
+CE offset address. mem_ce is initialized with mem address, and for
+targets where ce_remap is needed, mem_ce is remapped to a new address
+space during AHB probe.
 
-I am assuming you are referring to '_pp_mapping_pad' in 'struct page',
-unfortunately the field might be used when a page is mmap'ed to user
-space as my understanding.
+For targets such as WCN6750 in which CE address space is same as WCSS
+address space (i.e. "ce_remap" hw_param is set to false), mem_ce and
+mem iomem addresses are same. In the initial SRNG setup for such targets,
+the CE offset address and hence CE register base addresses are
+calculated correctly in ath11k_hal_srng_init() as both mem and mem_ce
+are initialized with same iomem address.
 
-https://elixir.bootlin.com/linux/v6.7-rc8/source/include/linux/mm_types.h#L126
+Later, after the firmware download, mem is initialized with BAR address
+received in qmi_wlanfw_device_info_resp_msg_v01 QMI message, while mem_ce
+is not updated.
 
-> importantly, though, why does struct page need to know about this?
-> Can't we have the same information in page pool?
-> When the driver allocates pages it does via page_pool_dev_alloc_XXXXX
-> or something similar. Cant we do what you suggest here ? IOW when we
-> allocate a page we put it in a list, and when that page returns to
-> page_pool (and it's mapped) we remove it.
+After initial setup success, during Subsystem Restart (SSR), as part
+of reinitialization, ath11k_hal_srng_init() will be called again,
+and CE offset address will be calculated incorrectly this time as mem_ce
+address was not updated. Due to the incorrect CE offset address,
+APPS accesses an invalid CE register address which leads to improper
+behavior in firmware after SSR is triggered.
 
-Yes, that is the basic idea, but the important part is how to do that
-with less performance impact.
+To fix the above issue, update mem_ce to mem iomem address in
+ath11k_qmi_request_device_info() for targets which do not support
+ce_remap feature.
+
+Fixes: b42b3678c91f("wifi: ath11k: remap ce register space for IPQ5018")
+Signed-off-by: Balaji Pothunoori <quic_bpothuno@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/qmi.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
+index f477afd325de..7a22483b35cd 100644
+--- a/drivers/net/wireless/ath/ath11k/qmi.c
++++ b/drivers/net/wireless/ath/ath11k/qmi.c
+@@ -2180,6 +2180,9 @@ static int ath11k_qmi_request_device_info(struct ath11k_base *ab)
+ 	ab->mem = bar_addr_va;
+ 	ab->mem_len = resp.bar_size;
+ 
++	if (!ab->hw_params.ce_remap)
++		ab->mem_ce = ab->mem;
++
+ 	return 0;
+ out:
+ 	return ret;
+-- 
+2.17.1
+
 
