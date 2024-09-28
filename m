@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-13271-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13272-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 647C0988EC1
-	for <lists+linux-wireless@lfdr.de>; Sat, 28 Sep 2024 11:17:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F16FF988EC4
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 Sep 2024 11:19:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14D981F211EC
-	for <lists+linux-wireless@lfdr.de>; Sat, 28 Sep 2024 09:17:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E4571C20BBA
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 Sep 2024 09:19:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B62B15B987;
-	Sat, 28 Sep 2024 09:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98EDC15B987;
+	Sat, 28 Sep 2024 09:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f7PqAes0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jLX0mI7T"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BB82AF15;
-	Sat, 28 Sep 2024 09:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735F72AF15
+	for <linux-wireless@vger.kernel.org>; Sat, 28 Sep 2024 09:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727515035; cv=none; b=q7sHnsIRF0AN45wbU2rMxFo4g86a2COEbWbTsDZwRBIHOFJ/d5sxdoLKdgr+qrQ78SAtkqzUGlb0upJ5BL5i/PTLisp5VLYUKElenZJzV/+NMbZSn9bipI7cku8277XLp9tTjwhIs3V+30NugquGE9dltLSUWu2gFqNJzp6xDOM=
+	t=1727515187; cv=none; b=N1xn9Xncjj3GNNp0DTa3okvG7I96cBQb+j69QV5m5jQP24O3pEB456RvAKgxreDZDvYiWOLt0eTpszgSgagzT5IlouztwbVnEcGPqNpRYZigWGwKhA0owrfxxBPv5SeTORQ8Vi7W9Hb2rReVQH6C0h7IFbRlevwtMVM6YZ4CGeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727515035; c=relaxed/simple;
-	bh=zlFE7sjU8cNkipIRBOILe/Ow1jb6tDtCKLZpkN0gd+k=;
+	s=arc-20240116; t=1727515187; c=relaxed/simple;
+	bh=0HpofGMU4EYTwavpEVFLiZ98wyxVSyXqgct2C7t40e8=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=r37VpNNQC5RKJT7n0c5punBf1hKxV3ea2jCOZsD37/rY6Eoo2WzvyjZ7x7UNhOOYi2w+QZdEg/AQiOo/ZFQZG9nz4QPMR0BNsMtx2pAgWndcWeYNyorM+sNNxmKiM7p6b1hZ9l4Ms9n5v+nYTxptvheZlcgGKQna3WyKHH7NpCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f7PqAes0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD229C4CEC3;
-	Sat, 28 Sep 2024 09:17:13 +0000 (UTC)
+	 Cc:Message-ID:Date; b=WHByTFm1dENWZhyOCsnFbvn/MQXVgKlwdU41P25WuXHwT8c8JuCjA7IbFpWeAFyGhMwvWoKMu9zZ5MDiiIphOCZrjpTvFX1fXb6dWEJ2bXyY0UnxKZGH03oPfztVe5XCTdbnwwCJ79CdhFowaJLuZ8vYxIJzZCN9f7QIEcAhS2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jLX0mI7T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A23DC4CEC3;
+	Sat, 28 Sep 2024 09:19:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727515035;
-	bh=zlFE7sjU8cNkipIRBOILe/Ow1jb6tDtCKLZpkN0gd+k=;
+	s=k20201202; t=1727515187;
+	bh=0HpofGMU4EYTwavpEVFLiZ98wyxVSyXqgct2C7t40e8=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=f7PqAes02e7bGpkU2wkqWqjYg+1Xd2gKrgWRVMMEi75Th5oYb17vRfay9vDx1X08V
-	 54M0K1mJsbbX4dv9ArsoAsxHCYczv+c1O4doeb2UtQ39tw2o/yLGq9tlsh1duabXmH
-	 g4ZavTCCcIPFI5NZjjFk99LTeg2SrwLGoLw9XscnvFn1b67ijcUU+jClFMVDhk2oiy
-	 eurNZ9xg0vWb8Ej0XgPwSa/DTLSUtdpXExx/f9vobzg2U/BUEU3b/my5fMjKc0gjzY
-	 fqTBGdNmeu7KRR/BlttyKtglohpyTaBOfrBjAy0t8moxiq+q7znaHkIMLoXmdr/ZbE
-	 iQrPGDyE4/3dw==
+	b=jLX0mI7TlnZyZXYSud21sSwyNRwWpt5tKrkLInKgaA4Ugdt6DtEd8F8pIRidmFI+u
+	 pzNCL+xL7AepHINke3jKi8+Ww5Epv8bpfXIJ/S08juRiK25y4oFTpIX2/R8wBD3Y00
+	 uJqiCqsXtRYFG3vTVKDDUmqFqup7658NVwGt2v3KNQey0QWXSrDwYHRwUHWFymfhwE
+	 /5cJkVQxykG4gZ4jwcYVtWmYYwA4IOplVY9Z9ofUrLGt5lGRlZ+rlbW/IvwWBU+WO+
+	 e9mTRht+uoTmtg/Y5khCTKYbihgpVlZpva+pBdqYiQU3MClWl9QwUnKlVfnpHSgnZJ
+	 Wx1PBkcvYoHlg==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,43 +49,41 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: allow missing memory-regions
+Subject: Re: [PATCH] wifi: ath12k: move txbaddr/rxbaddr into struct ath12k_dp
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240904095815.1572186-2-caleb.connolly@linaro.org>
-References: <20240904095815.1572186-2-caleb.connolly@linaro.org>
-To: Caleb Connolly <caleb.connolly@linaro.org>
-Cc: Jeff Johnson <jjohnson@kernel.org>,
- Caleb Connolly <caleb.connolly@linaro.org>, linux-arm-msm@vger.kernel.org,
- ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+In-Reply-To: <20240830081942.3623380-1-nico.escande@gmail.com>
+References: <20240830081942.3623380-1-nico.escande@gmail.com>
+To: Nicolas Escande <nico.escande@gmail.com>
+Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <172751503199.2249584.16916308008976490497.kvalo@kernel.org>
-Date: Sat, 28 Sep 2024 09:17:13 +0000 (UTC)
+Message-ID: <172751518486.2249584.15339812073510249276.kvalo@kernel.org>
+Date: Sat, 28 Sep 2024 09:19:46 +0000 (UTC)
 
-Caleb Connolly <caleb.connolly@linaro.org> wrote:
+Nicolas Escande <nico.escande@gmail.com> wrote:
 
-> On SC7280 platforms which are running with TrustZone, it is not
-> necessary to manually map the memory regions used by the wifi hardware.
-> However, ath11k will currently fail to load unless both memory regions
-> are specified.
+> Those two fields are used to store the per SPT page of tx/rx descriptors send to
+> the firmware for cookie conversion. Right now they are in struct ath12k_spt_info
+> which means they are duplicated PPT page times while we only need one instance
+> of them. This works for now as we always use the first spt_info as a global
+> storage for all PPT pages.
 > 
-> This breaks wifi on the rb3gen2 which only specifies the firmware memory
-> region and does not use the CE region.
+> Let's move them into struct ath12k_dp where they belong, alongside of the
+> spt_info array they are tied to, to avoid waisting a good bit of memory.
 > 
-> Adjust the order of operations in ath11k_ahb_fw_resources_init() to
-> check for the wifi-firmware subnode before attempting to parse the
-> memory regions.
+> Tested-on: QCN9274 hw2.0 PCI CI_WLAN.WBE.1.3-03283.1-QCAHKSWPL_SILICONZ-2
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 > 
-> Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+> Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
+> Reviewed-by: Remi Pommarel <repk@triplefau.lt>
 > Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-> Reviewed-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
 > Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-095cb947490c wifi: ath11k: allow missing memory-regions
+3ed5cb8dfbeb wifi: ath12k: move txbaddr/rxbaddr into struct ath12k_dp
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240904095815.1572186-2-caleb.connolly@linaro.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240830081942.3623380-1-nico.escande@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 https://docs.kernel.org/process/submitting-patches.html
