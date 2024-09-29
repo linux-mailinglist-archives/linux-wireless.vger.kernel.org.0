@@ -1,63 +1,46 @@
-Return-Path: <linux-wireless+bounces-13278-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13279-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7191098929E
-	for <lists+linux-wireless@lfdr.de>; Sun, 29 Sep 2024 04:16:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08AE29892C2
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Sep 2024 04:45:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98BD41C2081D
-	for <lists+linux-wireless@lfdr.de>; Sun, 29 Sep 2024 02:16:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3FC6284296
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Sep 2024 02:45:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DE4FB667;
-	Sun, 29 Sep 2024 02:16:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="BjR/JnhK"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268FA1C68C;
+	Sun, 29 Sep 2024 02:45:05 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D7E566A
-	for <linux-wireless@vger.kernel.org>; Sun, 29 Sep 2024 02:16:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16D21CAA4;
+	Sun, 29 Sep 2024 02:45:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727576202; cv=none; b=YLdKpRipqngukLf6D5NJ4ZKWxksDLIafBLNz8Av3BMtBdXUrxMv5ItGOp0zjAsd+gydtuWAwq9Q4Xb3S52DmuGGAAVhJEVvvJi7xxAGosjmssShhn+2Gl2lZPtNImvXEb2miaZDA3H6WCJPCEvOSAOX0hpXiry0c73zxkeTBnRA=
+	t=1727577905; cv=none; b=m9Q1B8smutbJHruLhOY21nIvSV0qTfsGFZhbKvBd65bybPTW0GuSL0FPowuuSts7C0J/LJ/x80lQ7ZJLvW4sJX2ILXrAiofXSyQsUdEPxKWJiu5yLk7n1jv4Olm0beMHa5riHNxBYdj5qKgZKf0yfxWBVr6MdQ4mXqI/FPunhc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727576202; c=relaxed/simple;
-	bh=Ir11AGJoid5+uNs5v5hNSDm/Twok410BnGelvXqLaJg=;
+	s=arc-20240116; t=1727577905; c=relaxed/simple;
+	bh=FiYG/fkLGxsbz6lmYbBjKleWZNMsSfiS+c65d3bFVCU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Axw+PnmFqd3pd9/fjqSvvjqvUKW7upbtoOBV1BQK33QkKcVeP113MYtQZ2Z0XuOhkHdKQyMtCFUOBaA0P5F7IF5rBSEX7s463wM0XeufkeArCr5fLZJxywvQlyrw7ONC9Ji9xLbgIFnfxtGTeMv1SBQy3RunRwwXDbNS6q/bmtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=BjR/JnhK; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48T0PruE023357;
-	Sun, 29 Sep 2024 02:16:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Ir11AGJoid5+uNs5v5hNSDm/Twok410BnGelvXqLaJg=; b=BjR/JnhKDHfq1Dfi
-	ZefheZ7p4TubooEZzCR4sRUk2fsOgyRk2avCqxktG4L4XqgaSKMkCNxF62WcB/yp
-	MyS1dXAr3f/cPSZRNNe54SynAmkp307SOPtGbhLyJuULRh97CJ4CbbisCQXEJb8Z
-	+pmBAKgfn7tCGuT0eWLeSR4d+B//yA2WZrhudrpLVvZiJv1rnvTpm+AHZ5ErzE9a
-	oyuLsCQs6aWGvlGpDdN8ZWWH5hYkKD55ySwUeeCETY4zpTSXtsnkItYwERGY09wB
-	sol6jKKELHw86XlHjKRG9VxHQXwzlS4PyiB0g042w7QN2ESX9TWMy6BtWTkgik1a
-	iddXow==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41xb38sfb4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 29 Sep 2024 02:16:38 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48T2GbT6032389
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 29 Sep 2024 02:16:37 GMT
-Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Sat, 28 Sep
- 2024 19:16:36 -0700
-Message-ID: <564bb38f-aef1-4981-b706-926eef5c6776@quicinc.com>
-Date: Sun, 29 Sep 2024 10:16:34 +0800
+	 In-Reply-To:Content-Type; b=dx1aYe5ieB6KYuk3IQUcNfqZq/tJ6fFH8HiqladNaqSs6A0E2GvZi4AzQTtCx3ARcieDEuxKmncZeCUPUbjPw58wHCVoUKZm4NkWQYoxSge6h9nI1F34+jwQ3unxLazAjsOm2WP1Um2Fbnj83GhMnXCaquQTvge+j1bxdPMTAWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4XGT571jzCzfbjm;
+	Sun, 29 Sep 2024 10:42:35 +0800 (CST)
+Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 219E918007C;
+	Sun, 29 Sep 2024 10:44:54 +0800 (CST)
+Received: from [10.67.120.129] (10.67.120.129) by
+ dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Sun, 29 Sep 2024 10:44:53 +0800
+Message-ID: <ac2eec69-8f44-4adb-8182-02c78625851d@huawei.com>
+Date: Sun, 29 Sep 2024 10:44:53 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,49 +48,111 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: ath11k/WCN6855 neighbor report request made immediately after
- connection gets no response (with MFP)
-To: James Prestwood <prestwoj@gmail.com>,
-        "open list:MEDIATEK MT76 WIRELESS
- LAN DRIVER" <linux-wireless@vger.kernel.org>
-CC: "ath11k@lists.infradead.org" <ath11k@lists.infradead.org>
-References: <eb41d8ec-c4f1-474e-a938-099f27aa94e3@gmail.com>
- <fd90d471-503b-4f58-ae11-bae2afab08c7@quicinc.com>
- <0d1dab88-66a0-48c1-bdbe-777d07c3132e@gmail.com>
- <70567137-dfb9-4896-9e6c-6c02a97228cb@quicinc.com>
- <15c909da-f01e-43ee-b486-f9b6d5bcc29c@gmail.com>
- <26302980-4cd8-466a-8de1-4be10a42536a@quicinc.com>
- <f65b609c-0813-414b-885d-24257e76e6d0@gmail.com>
+Subject: Re: [PATCH net v2 2/2] page_pool: fix IOMMU crash when driver has
+ already unbound
+To: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+CC: Mina Almasry <almasrymina@google.com>, <davem@davemloft.net>,
+	<kuba@kernel.org>, <pabeni@redhat.com>, <liuyonglong@huawei.com>,
+	<fanghaiqing@huawei.com>, <zhangkun09@huawei.com>, Robin Murphy
+	<robin.murphy@arm.com>, Alexander Duyck <alexander.duyck@gmail.com>, IOMMU
+	<iommu@lists.linux.dev>, Wei Fang <wei.fang@nxp.com>, Shenwei Wang
+	<shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Eric Dumazet
+	<edumazet@google.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek
+ Kitszel <przemyslaw.kitszel@intel.com>, Alexander Lobakin
+	<aleksander.lobakin@intel.com>, Alexei Starovoitov <ast@kernel.org>, Daniel
+ Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed
+	<saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq Toukan
+	<tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi
+	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen
+	<shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, Kalle Valo
+	<kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Andrew
+ Morton <akpm@linux-foundation.org>, <imx@lists.linux.dev>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<intel-wired-lan@lists.osuosl.org>, <bpf@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>,
+	<linux-mm@kvack.org>
+References: <20240925075707.3970187-1-linyunsheng@huawei.com>
+ <20240925075707.3970187-3-linyunsheng@huawei.com>
+ <CAHS8izOxugzWJDTc-4CWqaKABTj=J4OHs=Lcb=SE9r8gX0J+yg@mail.gmail.com>
+ <842c8cc6-f716-437a-bc98-70bc26d6fd38@huawei.com>
+ <CAC_iWjLgNOtsbhqrhvvEz2C3S668qB8KatL_W+tPHMSkDrNS=w@mail.gmail.com>
+ <0ef315df-e8e9-41e8-9ba8-dcb69492c616@huawei.com>
+ <CAC_iWjKeajwn3otjdEekE6VDLHGEvqmnQRwpN5R3yHj8UpEiDw@mail.gmail.com>
+ <934d601f-be43-4e04-b126-dc86890a4bfa@huawei.com>
+ <CAC_iWjL7m4ZL2W2OZM5F22dLvZhxU6fyCXV_xjyGf+W7UP43EQ@mail.gmail.com>
 Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <f65b609c-0813-414b-885d-24257e76e6d0@gmail.com>
+From: Yunsheng Lin <linyunsheng@huawei.com>
+In-Reply-To: <CAC_iWjL7m4ZL2W2OZM5F22dLvZhxU6fyCXV_xjyGf+W7UP43EQ@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: Ry-qjHDJ7evn4IHLt4rTu0KxrQvjFwvA
-X-Proofpoint-ORIG-GUID: Ry-qjHDJ7evn4IHLt4rTu0KxrQvjFwvA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- lowpriorityscore=0 spamscore=0 suspectscore=0 mlxscore=0 phishscore=0
- mlxlogscore=778 impostorscore=0 adultscore=0 malwarescore=0
- priorityscore=1501 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2408220000 definitions=main-2409290016
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpemf200006.china.huawei.com (7.185.36.61)
 
+On 2024/9/28 15:34, Ilias Apalodimas wrote:
 
+...
 
-On 9/27/2024 7:53 PM, James Prestwood wrote:
->> here is the sequence I saw in sniffer:
->> #1 AP send M3
->> #2 station send 'neighbor report request' without encryption, though 'protected' flag is set
->> #3 station send out M4
+> 
+> Yes, that wasn't very clear indeed, apologies for any confusion. I was
+> trying to ask on a linked list that only lives in struct page_pool.
+> But I now realize this was a bad idea since the lookup would be way
+> slower.
+> 
+>> If I understand question correctly, the single/doubly linked list
+>> is more costly than array as the page_pool case as my understanding.
 >>
->> is this the same with what you saw?
-> When I was able to capture the neighbor report request (rarely) it was after M4, not before. If you're seeing it prior to M4 that seems strange, unless the kernel/ath11k is doing some odd queuing?
-yeah... firmware has some odd assumption on the sequence of key install, causing such behavior.
+>> For single linked list, it doesn't allow deleting a specific entry but
+>> only support deleting the first entry and all the entries. It does support
+>> lockless operation using llist, but have limitation as below:
+>> https://elixir.bootlin.com/linux/v6.7-rc8/source/include/linux/llist.h#L13
+>>
+>> For doubly linked list, it needs two pointer to support deleting a specific
+>> entry and it does not support lockless operation.
+> 
+> I didn't look at the patch too carefully at first. Looking a bit
+> closer now, the array is indeed better, since the lookup is faster.
+> You just need the stored index in struct page to find the page we need
+> to unmap. Do you remember if we can reduce the atomic pp_ref_count to
+> 32bits? If so we can reuse that space for the index. Looking at it
 
+For 64 bits system, yes, we can reuse that.
+But for 32 bits system, we may have only 16 bits for each of them, and it
+seems that there is no atomic operation for variable that is less than 32
+bits.
+
+> requires a bit more work in netmem, but that's mostly swapping all the
+> atomic64 calls to atomic ones.
+> 
+>>
+>> For pool->items, as the alloc side is protected by NAPI context, and the
+>> free side use item->pp_idx to ensure there is only one producer for each
+>> item, which means for each item in pool->items, there is only one consumer
+>> and one producer, which seems much like the case when the page is not
+>> recyclable in __page_pool_put_page, we don't need a lock protection when
+>> calling page_pool_return_page(), the 'struct page' is also one consumer
+>> and one producer as the pool->items[item->pp_idx] does:
+>> https://elixir.bootlin.com/linux/v6.7-rc8/source/net/core/page_pool.c#L645
+>>
+>> We only need a lock protection when page_pool_destroy() is called to
+>> check if there is inflight page to be unmapped as a consumer, and the
+>> __page_pool_put_page() may also called to unmapped the inflight page as
+>> another consumer,
+> 
+> Thanks for the explanation. On the locking side, page_pool_destroy is
+> called once from the driver and then it's either the workqueue for
+> inflight packets or an SKB that got freed and tried to recycle right?
+> But do we still need to do all the unmapping etc from the delayed
+> work? Since the new function will unmap all packets in
+> page_pool_destroy, we can just skip unmapping when the delayed work
+> runs
+
+Yes, the pool->dma_map is clear in page_pool_item_uninit() after it does
+the unmapping for all inflight pages with the protection of pool->destroy_lock,
+so that the unmapping is skipped in page_pool_return_page() when those inflight
+pages are returned back to page_pool.
+
+> 
 
