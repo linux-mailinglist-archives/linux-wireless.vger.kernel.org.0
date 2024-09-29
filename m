@@ -1,158 +1,126 @@
-Return-Path: <linux-wireless+bounces-13279-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13280-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08AE29892C2
-	for <lists+linux-wireless@lfdr.de>; Sun, 29 Sep 2024 04:45:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E91398934E
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Sep 2024 08:37:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3FC6284296
-	for <lists+linux-wireless@lfdr.de>; Sun, 29 Sep 2024 02:45:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AF2D1C20A01
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Sep 2024 06:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 268FA1C68C;
-	Sun, 29 Sep 2024 02:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AE2329CE6;
+	Sun, 29 Sep 2024 06:37:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="p/+p2Vx4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16D21CAA4;
-	Sun, 29 Sep 2024 02:45:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD84743172;
+	Sun, 29 Sep 2024 06:37:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727577905; cv=none; b=m9Q1B8smutbJHruLhOY21nIvSV0qTfsGFZhbKvBd65bybPTW0GuSL0FPowuuSts7C0J/LJ/x80lQ7ZJLvW4sJX2ILXrAiofXSyQsUdEPxKWJiu5yLk7n1jv4Olm0beMHa5riHNxBYdj5qKgZKf0yfxWBVr6MdQ4mXqI/FPunhc8=
+	t=1727591836; cv=none; b=H+r9HrK13zwXpDh4RUv5/k5BpdfTKCWPVKXYYp+w4b49brAgK8cVcRaDJAM6tHm9DfS+aWnPe4tx5ujVf/44MBSKMK4JFBRvJ/EuLb883H0JQ+1Lpg168ABjjVIvmoQc3MlIcwl7w5K06iag0u0oVP+nWQBVEpLgHLLyM+YE+OA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727577905; c=relaxed/simple;
-	bh=FiYG/fkLGxsbz6lmYbBjKleWZNMsSfiS+c65d3bFVCU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=dx1aYe5ieB6KYuk3IQUcNfqZq/tJ6fFH8HiqladNaqSs6A0E2GvZi4AzQTtCx3ARcieDEuxKmncZeCUPUbjPw58wHCVoUKZm4NkWQYoxSge6h9nI1F34+jwQ3unxLazAjsOm2WP1Um2Fbnj83GhMnXCaquQTvge+j1bxdPMTAWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4XGT571jzCzfbjm;
-	Sun, 29 Sep 2024 10:42:35 +0800 (CST)
-Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 219E918007C;
-	Sun, 29 Sep 2024 10:44:54 +0800 (CST)
-Received: from [10.67.120.129] (10.67.120.129) by
- dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Sun, 29 Sep 2024 10:44:53 +0800
-Message-ID: <ac2eec69-8f44-4adb-8182-02c78625851d@huawei.com>
-Date: Sun, 29 Sep 2024 10:44:53 +0800
+	s=arc-20240116; t=1727591836; c=relaxed/simple;
+	bh=4axLk3F3w0ykKUkmu2YQGXDfaHagaySoaKyMLvysj2Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r/IfaCqa/A3KM1XvQ8hH0od9M1HCxtjCcpf4n24ZOxga43VfjRc9aZYVa21x921ftdTuJdRK4NJgyL0fqkMCwq15zR9pPVum0/KvXQ7yl4g+6Tj6/EjsLzboCPTOgjnrPhdUclOGXCZ/JdHWct05g1B/Y8upBbe1ojTL06jeoq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=p/+p2Vx4; arc=none smtp.client-ip=54.254.200.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1727591822;
+	bh=rGntS9xOFiEeM/CMGDTBCcX5N9b7TzQhEkYEMSmKp44=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=p/+p2Vx404CYWe2z/PdGRr/K1iCHY8km40hECyjVh0i1n0rbZw9RIhXWo1q7BmpYf
+	 90grUOuFbkY7KPHMJGw+KygXO7bB5KGZ3Y8Jd/Z1mvjBgb8U/JJDsnPSBLdXW1LA7U
+	 WQn+ymsh79CPfeeEygfoopykUD3HYn7wQdEuwuhk=
+X-QQ-mid: bizesmtp86t1727591785to4qeecn
+X-QQ-Originating-IP: 4QAUQmEcbPL5ZW/e8HH0uHALE+ArVLh7GTVKQP+BLfI=
+Received: from localhost.localdomain ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Sun, 29 Sep 2024 14:36:23 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 7147250867363797320
+From: WangYuli <wangyuli@uniontech.com>
+To: nbd@nbd.name,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	kvalo@kernel.org,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	raoxu@uniontech.com,
+	guanwentao@uniontech.com,
+	zhanjun@uniontech.com,
+	WangYuli <wangyuli@uniontech.com>
+Subject: [PATCH] mt76: mt76u_vendor_request: Do not print error messages when -EPROTO
+Date: Sun, 29 Sep 2024 14:36:19 +0800
+Message-ID: <B74B0BCDDB8EFA12+20240929063619.925099-1-wangyuli@uniontech.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 2/2] page_pool: fix IOMMU crash when driver has
- already unbound
-To: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-CC: Mina Almasry <almasrymina@google.com>, <davem@davemloft.net>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <liuyonglong@huawei.com>,
-	<fanghaiqing@huawei.com>, <zhangkun09@huawei.com>, Robin Murphy
-	<robin.murphy@arm.com>, Alexander Duyck <alexander.duyck@gmail.com>, IOMMU
-	<iommu@lists.linux.dev>, Wei Fang <wei.fang@nxp.com>, Shenwei Wang
-	<shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Eric Dumazet
-	<edumazet@google.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek
- Kitszel <przemyslaw.kitszel@intel.com>, Alexander Lobakin
-	<aleksander.lobakin@intel.com>, Alexei Starovoitov <ast@kernel.org>, Daniel
- Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed
-	<saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq Toukan
-	<tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi
-	<lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen
-	<shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, Kalle Valo
-	<kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Andrew
- Morton <akpm@linux-foundation.org>, <imx@lists.linux.dev>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<intel-wired-lan@lists.osuosl.org>, <bpf@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>,
-	<linux-mm@kvack.org>
-References: <20240925075707.3970187-1-linyunsheng@huawei.com>
- <20240925075707.3970187-3-linyunsheng@huawei.com>
- <CAHS8izOxugzWJDTc-4CWqaKABTj=J4OHs=Lcb=SE9r8gX0J+yg@mail.gmail.com>
- <842c8cc6-f716-437a-bc98-70bc26d6fd38@huawei.com>
- <CAC_iWjLgNOtsbhqrhvvEz2C3S668qB8KatL_W+tPHMSkDrNS=w@mail.gmail.com>
- <0ef315df-e8e9-41e8-9ba8-dcb69492c616@huawei.com>
- <CAC_iWjKeajwn3otjdEekE6VDLHGEvqmnQRwpN5R3yHj8UpEiDw@mail.gmail.com>
- <934d601f-be43-4e04-b126-dc86890a4bfa@huawei.com>
- <CAC_iWjL7m4ZL2W2OZM5F22dLvZhxU6fyCXV_xjyGf+W7UP43EQ@mail.gmail.com>
-Content-Language: en-US
-From: Yunsheng Lin <linyunsheng@huawei.com>
-In-Reply-To: <CAC_iWjL7m4ZL2W2OZM5F22dLvZhxU6fyCXV_xjyGf+W7UP43EQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- dggpemf200006.china.huawei.com (7.185.36.61)
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: NQ1SesBsQjVtzi1gNi4QUxCQjGq153ESe7+NAopDGzh0e1f/QeZqS/st
+	aA2kdaidwEU/pHiRchlYus4dEcDkKdvAptfMOjsdk9DmVUaiBkc6pxRPWeExnixVgl7KraH
+	qy6RJlmZbvguCL+0cfoHlN8guLRbHfCnJ2Am/8Hhy6S0XMm0htd2Al1gcFcu7wH7bJ6ZJP3
+	EikQ1XK0FPm+bVKJGp/prOOp8Uuqq0LirXIvw/m/01UA1sSfdY9VlXS/RFIJ7YjGtH211pZ
+	AO59jGXsoyeUE6FNFnB8YI0yXZT4mN+WMiLMMaaw1tUk46G5BA7I0n0jIFlOY2Gjn+az5SJ
+	bmOCqneUEaVmKNL4+2qXMencJ5Uz49nkrPWWeES4Wrdj03RFSiYI0Ogi3OfPf0qLal6B3HP
+	9ZV/RKecRq06DcRTVAvhVQVX4lAeoFDsugkReIE0BCDQZxzWbKLRdmffTz3EutyUJa4os4f
+	RUYq0LlchfS979RPQ12qhOF10YhgYyuMEduvYX/SSZtYul4fVWHfKBEiz2aM978Gly5gS9f
+	tn6ceDipbygWsCl3YWPDQPnmjXXoGe0tYzuj19mxo9v3F0OWn5bOzhfI8isPn3G9izNH5B+
+	VojMyRdGgK1f85+imCpWgWYvunRll0hPZxjptP5TkIUiW1/AUORLpxvg5gE8JXoWhu8B1+k
+	T2fGVhAKLnD9S2PCrTwdNvgcViVH6zEDQC75n1rI9ZYPVOLluUizvg3XMIAtFOp2DepCR7E
+	Eq9aKMfrPdjNk5lWqZtdVh/fbeYLxwBRDFpjD2fEMcQbiDjY563LXpLfjy77BjmS8cHQO+H
+	/0smVAEXNSxLzOtdWV9/LCPqLEKVHFjUdzz79FD/JFyWHigrKySf6/Z0E5p/2Eybcbl1w+I
+	Wd31QybG4hK9Q10J8FTPxaiBotX5nbML9ggvl3fz+/duIR/cugy/SlUzngNDvTUVpdUIRM6
+	dFOFJolC6uU27Olm10T9ojqC5NaEYVqJPv/BNf1/FqrEVM6KuK+lAW7UWa/1zCkaAr18ENt
+	HRtndWWBolUT6DTYpA
+X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
+X-QQ-RECHKSPAM: 0
 
-On 2024/9/28 15:34, Ilias Apalodimas wrote:
+When initializing the network card, unplugging the device will
+trigger an -EPROTO error, resulting in a flood of error messages
+being printed frantically.
 
-...
+Signed-off-by: Xu Rao <raoxu@uniontech.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+---
+ drivers/net/wireless/mediatek/mt76/usb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> 
-> Yes, that wasn't very clear indeed, apologies for any confusion. I was
-> trying to ask on a linked list that only lives in struct page_pool.
-> But I now realize this was a bad idea since the lookup would be way
-> slower.
-> 
->> If I understand question correctly, the single/doubly linked list
->> is more costly than array as the page_pool case as my understanding.
->>
->> For single linked list, it doesn't allow deleting a specific entry but
->> only support deleting the first entry and all the entries. It does support
->> lockless operation using llist, but have limitation as below:
->> https://elixir.bootlin.com/linux/v6.7-rc8/source/include/linux/llist.h#L13
->>
->> For doubly linked list, it needs two pointer to support deleting a specific
->> entry and it does not support lockless operation.
-> 
-> I didn't look at the patch too carefully at first. Looking a bit
-> closer now, the array is indeed better, since the lookup is faster.
-> You just need the stored index in struct page to find the page we need
-> to unmap. Do you remember if we can reduce the atomic pp_ref_count to
-> 32bits? If so we can reuse that space for the index. Looking at it
+diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
+index 58ff06823389..f9e67b8c3b3c 100644
+--- a/drivers/net/wireless/mediatek/mt76/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/usb.c
+@@ -33,9 +33,9 @@ int __mt76u_vendor_request(struct mt76_dev *dev, u8 req, u8 req_type,
+ 
+ 		ret = usb_control_msg(udev, pipe, req, req_type, val,
+ 				      offset, buf, len, MT_VEND_REQ_TOUT_MS);
+-		if (ret == -ENODEV)
++		if (ret == -ENODEV || ret == -EPROTO)
+ 			set_bit(MT76_REMOVED, &dev->phy.state);
+-		if (ret >= 0 || ret == -ENODEV)
++		if (ret >= 0 || ret == -ENODEV || ret == -EPROTO)
+ 			return ret;
+ 		usleep_range(5000, 10000);
+ 	}
+-- 
+2.45.2
 
-For 64 bits system, yes, we can reuse that.
-But for 32 bits system, we may have only 16 bits for each of them, and it
-seems that there is no atomic operation for variable that is less than 32
-bits.
-
-> requires a bit more work in netmem, but that's mostly swapping all the
-> atomic64 calls to atomic ones.
-> 
->>
->> For pool->items, as the alloc side is protected by NAPI context, and the
->> free side use item->pp_idx to ensure there is only one producer for each
->> item, which means for each item in pool->items, there is only one consumer
->> and one producer, which seems much like the case when the page is not
->> recyclable in __page_pool_put_page, we don't need a lock protection when
->> calling page_pool_return_page(), the 'struct page' is also one consumer
->> and one producer as the pool->items[item->pp_idx] does:
->> https://elixir.bootlin.com/linux/v6.7-rc8/source/net/core/page_pool.c#L645
->>
->> We only need a lock protection when page_pool_destroy() is called to
->> check if there is inflight page to be unmapped as a consumer, and the
->> __page_pool_put_page() may also called to unmapped the inflight page as
->> another consumer,
-> 
-> Thanks for the explanation. On the locking side, page_pool_destroy is
-> called once from the driver and then it's either the workqueue for
-> inflight packets or an SKB that got freed and tried to recycle right?
-> But do we still need to do all the unmapping etc from the delayed
-> work? Since the new function will unmap all packets in
-> page_pool_destroy, we can just skip unmapping when the delayed work
-> runs
-
-Yes, the pool->dma_map is clear in page_pool_item_uninit() after it does
-the unmapping for all inflight pages with the protection of pool->destroy_lock,
-so that the unmapping is skipped in page_pool_return_page() when those inflight
-pages are returned back to page_pool.
-
-> 
 
