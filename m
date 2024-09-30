@@ -1,177 +1,245 @@
-Return-Path: <linux-wireless+bounces-13321-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13322-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16DCA98A087
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 13:28:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B91298A26D
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 14:29:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BB5A1C24BAE
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 11:27:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 541CD280DAB
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 12:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39E1199E8D;
-	Mon, 30 Sep 2024 11:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40A51E4AF;
+	Mon, 30 Sep 2024 12:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=inria.fr header.i=@inria.fr header.b="hKCq+v+D"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eRPW+ze3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail2-relais-roc.national.inria.fr (mail2-relais-roc.national.inria.fr [192.134.164.83])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A76B198A1B;
-	Mon, 30 Sep 2024 11:21:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.134.164.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7E4364A0;
+	Mon, 30 Sep 2024 12:29:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727695317; cv=none; b=HME3rtDWd45Dva6F2P6YU7tGpHVKhrTJAGhNcWG+MYvAyhCwJUqjUoeD3VHXDzLwGKYUh6LbveHoLPw5e3PtBRhqNRWwslz/H8PxSOLnlYAGj5MWK67L317kSZ83ZDasYNqWf7ajRkWPi73zksCCSSzXlVV7+CapTeAWsklekX4=
+	t=1727699370; cv=none; b=C+4Bg5SlPIO7pnAK5FhQmx4VJv9mXvVxNm26VoM5ujxkFGWMsqF90u3lBhtmo1hTe3QVLmObCre04+pupTtpfi04FIf/rAdhW8so7i/xHpcWllDGLokmBEuO1w7vokF1j0m/NlBtQcUOrZDr4JFiP44E5ey/im2V2khvxEuXHWk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727695317; c=relaxed/simple;
-	bh=wlSJzOFwNkVwK6xhV9kGwcyLBVel4D1ySXl/FG5utrs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=N2qPbZB6jAjifC0FNaGQmxGl1HTiQvLznuXmP9JHkych/AfBghv4QRI6A9hUwa83lWb/pIhaYCEz5bmgbX/0jNJMwERf55llT7t1I3C/CbVd2sq9rcguAn+682netKHebTZoN4mxRAo7uvBpCJHCB3JTkMCahjyrze546RvpqL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inria.fr; spf=pass smtp.mailfrom=inria.fr; dkim=pass (1024-bit key) header.d=inria.fr header.i=@inria.fr header.b=hKCq+v+D; arc=none smtp.client-ip=192.134.164.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=inria.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=inria.fr
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=inria.fr; s=dc;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=TN+wnXyWailQ6qfE02yp7w4g8GHrjDQVwQg6y7qPRjc=;
-  b=hKCq+v+DH0RjVxpepkxEilNpVdaZZAlhESNrzRtL8fd78LMFK/FXsSOk
-   MDBBdu9Ss5UfB8xZSIdqnm2JdLiRAnr9Jb3K6shFP0CAKmikUW4Z8hZeq
-   x54ZKx8iZbAbnOLRSh1NGjbiLfQ1iF1vVvUoFxNJnBRj0nYigBLLWuide
-   Y=;
-Authentication-Results: mail2-relais-roc.national.inria.fr; dkim=none (message not signed) header.i=none; spf=SoftFail smtp.mailfrom=Julia.Lawall@inria.fr; dmarc=fail (p=none dis=none) d=inria.fr
-X-IronPort-AV: E=Sophos;i="6.11,165,1725314400"; 
-   d="scan'208";a="185956906"
-Received: from i80.paris.inria.fr (HELO i80.paris.inria.fr.) ([128.93.90.48])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2024 13:21:28 +0200
-From: Julia Lawall <Julia.Lawall@inria.fr>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: kernel-janitors@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 27/35] mac80211: Reorganize kerneldoc parameter names
-Date: Mon, 30 Sep 2024 13:21:13 +0200
-Message-Id: <20240930112121.95324-28-Julia.Lawall@inria.fr>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20240930112121.95324-1-Julia.Lawall@inria.fr>
-References: <20240930112121.95324-1-Julia.Lawall@inria.fr>
+	s=arc-20240116; t=1727699370; c=relaxed/simple;
+	bh=+XhMECnfZglvhG0I+okp0fRv3vGb2lsaCOD/y+K++Nc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kug2Dis0+JTeh7iYBJpB9dT1k4S4LAe4iyohggnfT2T4sKyjtsQx5LmFWgCBX67k75LK4V63NBvbwrbc6MXLFIA0y1yb+4sHNGt8szGHENx6brqJxK9tTsqB2zcCIfrkOClyf0d1epLjtQt59I4dcrZ+o36VNOJFJ/jX5Ms7ZlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eRPW+ze3; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1727699369; x=1759235369;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=+XhMECnfZglvhG0I+okp0fRv3vGb2lsaCOD/y+K++Nc=;
+  b=eRPW+ze3fWKVhy8yjmHceL3GUlF2/UylzbMSxwEj9HLotYDIv3pPZS57
+   9WwRjzx5vO11LHgdi807mMy+0PN6dZvg/hc+5Xbo86fHjfZ+E7qjRO+7p
+   bNRqhsr5N0EQHSILE9kSPd66Hmlv29QLRBwClGZpcMG9d4WGc17UXad4K
+   a/ZTWU9jRJXzGk8A+brLX44pd6IpdgsMX6j3Z7Iw5Al7iHB794206f45I
+   csaIAZpHvtlhhQzCs5Q2ejwYk+UkncSpjrg/Tetxj3MwGmt691Biq4nIs
+   2APq6QYKlaeexQSFYEfB59E7t8Qy0xdMQi0nxiJHEwd78//JBwtUEW+R4
+   Q==;
+X-CSE-ConnectionGUID: isG3+lVPRtGKsT6Y17n4+w==
+X-CSE-MsgGUID: nuIC27TmTEuYxy+qajddzw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11210"; a="38168571"
+X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; 
+   d="scan'208";a="38168571"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2024 05:29:29 -0700
+X-CSE-ConnectionGUID: jRUbrylWRLabizobaetm0g==
+X-CSE-MsgGUID: vSFJGDWCRZemX02uAoXHJw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; 
+   d="scan'208";a="73412035"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+  by fmviesa008.fm.intel.com with SMTP; 30 Sep 2024 05:29:25 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Mon, 30 Sep 2024 15:29:24 +0300
+From: Ville Syrjala <ville.syrjala@linux.intel.com>
+To: linux-wireless@vger.kernel.org
+Cc: =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	stable@vger.kernel.org,
+	Stanislaw Gruszka <stf_xl@wp.pl>,
+	Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH] iwlegacy: Clear stale interrupts before enabling interrupts
+Date: Mon, 30 Sep 2024 15:29:24 +0300
+Message-ID: <20240930122924.21865-1-ville.syrjala@linux.intel.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Reorganize kerneldoc parameter names to match the parameter
-order in the function header.
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
-Problems identified using Coccinelle.
+iwl4965 fails upon resume from hibernation on my laptop. The reason
+seems to be a stale interrupt which isn't being cleared out before
+interrupts are enabled. We end up with a race beween the resume
+trying to bring things back up, and the restart work (queued form
+the interrupt handler) trying to bring things down. Eventually
+the whole thing blows up.
 
-Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+Fix the problem by clearing out any stale interrupts before
+interrupts get enabled.
 
+Here's a debug log of the indicent:
+[   12.042589] ieee80211 phy0: il_isr ISR inta 0x00000080, enabled 0xaa00008b, fh 0x00000000
+[   12.042625] ieee80211 phy0: il4965_irq_tasklet inta 0x00000080, enabled 0x00000000, fh 0x00000000
+[   12.042651] iwl4965 0000:10:00.0: RF_KILL bit toggled to enable radio.
+[   12.042653] iwl4965 0000:10:00.0: On demand firmware reload
+[   12.042690] ieee80211 phy0: il4965_irq_tasklet End inta 0x00000000, enabled 0xaa00008b, fh 0x00000000, flags 0x00000282
+[   12.052207] ieee80211 phy0: il4965_mac_start enter
+[   12.052212] ieee80211 phy0: il_prep_station Add STA to driver ID 31: ff:ff:ff:ff:ff:ff
+[   12.052244] ieee80211 phy0: il4965_set_hw_ready hardware  ready
+[   12.052324] ieee80211 phy0: il_apm_init Init card's basic functions
+[   12.052348] ieee80211 phy0: il_apm_init L1 Enabled; Disabling L0S
+[   12.055727] ieee80211 phy0: il4965_load_bsm Begin load bsm
+[   12.056140] ieee80211 phy0: il4965_verify_bsm Begin verify bsm
+[   12.058642] ieee80211 phy0: il4965_verify_bsm BSM bootstrap uCode image OK
+[   12.058721] ieee80211 phy0: il4965_load_bsm BSM write complete, poll 1 iterations
+[   12.058734] ieee80211 phy0: __il4965_up iwl4965 is coming up
+[   12.058737] ieee80211 phy0: il4965_mac_start Start UP work done.
+[   12.058757] ieee80211 phy0: __il4965_down iwl4965 is going down
+[   12.058761] ieee80211 phy0: il_scan_cancel_timeout Scan cancel timeout
+[   12.058762] ieee80211 phy0: il_do_scan_abort Not performing scan to abort
+[   12.058765] ieee80211 phy0: il_clear_ucode_stations Clearing ucode stations in driver
+[   12.058767] ieee80211 phy0: il_clear_ucode_stations No active stations found to be cleared
+[   12.058819] ieee80211 phy0: _il_apm_stop Stop card, put in low power state
+[   12.058827] ieee80211 phy0: _il_apm_stop_master stop master
+[   12.058864] ieee80211 phy0: il4965_clear_free_frames 0 frames on pre-allocated heap on clear.
+[   12.058869] ieee80211 phy0: Hardware restart was requested
+[   16.132299] iwl4965 0000:10:00.0: START_ALIVE timeout after 4000ms.
+[   16.132303] ------------[ cut here ]------------
+[   16.132304] Hardware became unavailable upon resume. This could be a software issue prior to suspend or a hardware issue.
+[   16.132338] WARNING: CPU: 0 PID: 181 at net/mac80211/util.c:1826 ieee80211_reconfig+0x8f/0x14b0 [mac80211]
+[   16.132390] Modules linked in: ctr ccm sch_fq_codel xt_tcpudp xt_multiport xt_state iptable_filter iptable_nat nf_nat nf_conntrack nf_defrag_ipv4 ip_tables x_tables binfmt_misc joydev mousedev btusb btrtl btintel btbcm bluetooth ecdh_generic ecc iTCO_wdt i2c_dev iwl4965 iwlegacy coretemp snd_hda_codec_analog pcspkr psmouse mac80211 snd_hda_codec_generic libarc4 sdhci_pci cqhci sha256_generic sdhci libsha256 firewire_ohci snd_hda_intel snd_intel_dspcfg mmc_core snd_hda_codec snd_hwdep firewire_core led_class iosf_mbi snd_hda_core uhci_hcd lpc_ich crc_itu_t cfg80211 ehci_pci ehci_hcd snd_pcm usbcore mfd_core rfkill snd_timer snd usb_common soundcore video parport_pc parport intel_agp wmi intel_gtt backlight e1000e agpgart evdev
+[   16.132456] CPU: 0 UID: 0 PID: 181 Comm: kworker/u8:6 Not tainted 6.11.0-cl+ #143
+[   16.132460] Hardware name: Hewlett-Packard HP Compaq 6910p/30BE, BIOS 68MCU Ver. F.19 07/06/2010
+[   16.132463] Workqueue: async async_run_entry_fn
+[   16.132469] RIP: 0010:ieee80211_reconfig+0x8f/0x14b0 [mac80211]
+[   16.132501] Code: da 02 00 00 c6 83 ad 05 00 00 00 48 89 df e8 98 1b fc ff 85 c0 41 89 c7 0f 84 e9 02 00 00 48 c7 c7 a0 e6 48 a0 e8 d1 77 c4 e0 <0f> 0b eb 2d 84 c0 0f 85 8b 01 00 00 c6 87 ad 05 00 00 00 e8 69 1b
+[   16.132504] RSP: 0018:ffffc9000029fcf0 EFLAGS: 00010282
+[   16.132507] RAX: 0000000000000000 RBX: ffff8880072008e0 RCX: 0000000000000001
+[   16.132509] RDX: ffffffff81f21a18 RSI: 0000000000000086 RDI: 0000000000000001
+[   16.132510] RBP: ffff8880072003c0 R08: 0000000000000000 R09: 0000000000000003
+[   16.132512] R10: 0000000000000000 R11: ffff88807e5b0000 R12: 0000000000000001
+[   16.132514] R13: 0000000000000000 R14: 0000000000000000 R15: 00000000ffffff92
+[   16.132515] FS:  0000000000000000(0000) GS:ffff88807c200000(0000) knlGS:0000000000000000
+[   16.132517] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   16.132519] CR2: 000055dd43786c08 CR3: 000000000978f000 CR4: 00000000000006f0
+[   16.132521] Call Trace:
+[   16.132525]  <TASK>
+[   16.132526]  ? __warn+0x77/0x120
+[   16.132532]  ? ieee80211_reconfig+0x8f/0x14b0 [mac80211]
+[   16.132564]  ? report_bug+0x15c/0x190
+[   16.132568]  ? handle_bug+0x36/0x70
+[   16.132571]  ? exc_invalid_op+0x13/0x60
+[   16.132573]  ? asm_exc_invalid_op+0x16/0x20
+[   16.132579]  ? ieee80211_reconfig+0x8f/0x14b0 [mac80211]
+[   16.132611]  ? snd_hdac_bus_init_cmd_io+0x24/0x200 [snd_hda_core]
+[   16.132617]  ? pick_eevdf+0x133/0x1c0
+[   16.132622]  ? check_preempt_wakeup_fair+0x70/0x90
+[   16.132626]  ? wakeup_preempt+0x4a/0x60
+[   16.132628]  ? ttwu_do_activate.isra.0+0x5a/0x190
+[   16.132632]  wiphy_resume+0x79/0x1a0 [cfg80211]
+[   16.132675]  ? wiphy_suspend+0x2a0/0x2a0 [cfg80211]
+[   16.132697]  dpm_run_callback+0x75/0x1b0
+[   16.132703]  device_resume+0x97/0x200
+[   16.132707]  async_resume+0x14/0x20
+[   16.132711]  async_run_entry_fn+0x1b/0xa0
+[   16.132714]  process_one_work+0x13d/0x350
+[   16.132718]  worker_thread+0x2be/0x3d0
+[   16.132722]  ? cancel_delayed_work_sync+0x70/0x70
+[   16.132725]  kthread+0xc0/0xf0
+[   16.132729]  ? kthread_park+0x80/0x80
+[   16.132732]  ret_from_fork+0x28/0x40
+[   16.132735]  ? kthread_park+0x80/0x80
+[   16.132738]  ret_from_fork_asm+0x11/0x20
+[   16.132741]  </TASK>
+[   16.132742] ---[ end trace 0000000000000000 ]---
+[   16.132930] ------------[ cut here ]------------
+[   16.132932] WARNING: CPU: 0 PID: 181 at net/mac80211/driver-ops.c:41 drv_stop+0xe7/0xf0 [mac80211]
+[   16.132957] Modules linked in: ctr ccm sch_fq_codel xt_tcpudp xt_multiport xt_state iptable_filter iptable_nat nf_nat nf_conntrack nf_defrag_ipv4 ip_tables x_tables binfmt_misc joydev mousedev btusb btrtl btintel btbcm bluetooth ecdh_generic ecc iTCO_wdt i2c_dev iwl4965 iwlegacy coretemp snd_hda_codec_analog pcspkr psmouse mac80211 snd_hda_codec_generic libarc4 sdhci_pci cqhci sha256_generic sdhci libsha256 firewire_ohci snd_hda_intel snd_intel_dspcfg mmc_core snd_hda_codec snd_hwdep firewire_core led_class iosf_mbi snd_hda_core uhci_hcd lpc_ich crc_itu_t cfg80211 ehci_pci ehci_hcd snd_pcm usbcore mfd_core rfkill snd_timer snd usb_common soundcore video parport_pc parport intel_agp wmi intel_gtt backlight e1000e agpgart evdev
+[   16.133014] CPU: 0 UID: 0 PID: 181 Comm: kworker/u8:6 Tainted: G        W          6.11.0-cl+ #143
+[   16.133018] Tainted: [W]=WARN
+[   16.133019] Hardware name: Hewlett-Packard HP Compaq 6910p/30BE, BIOS 68MCU Ver. F.19 07/06/2010
+[   16.133021] Workqueue: async async_run_entry_fn
+[   16.133025] RIP: 0010:drv_stop+0xe7/0xf0 [mac80211]
+[   16.133048] Code: 48 85 c0 74 0e 48 8b 78 08 89 ea 48 89 de e8 e0 87 04 00 65 ff 0d d1 de c4 5f 0f 85 42 ff ff ff e8 be 52 c2 e0 e9 38 ff ff ff <0f> 0b 5b 5d c3 0f 1f 40 00 41 54 49 89 fc 55 53 48 89 f3 2e 2e 2e
+[   16.133050] RSP: 0018:ffffc9000029fc50 EFLAGS: 00010246
+[   16.133053] RAX: 0000000000000000 RBX: ffff8880072008e0 RCX: ffff88800377f6c0
+[   16.133054] RDX: 0000000000000001 RSI: 0000000000000000 RDI: ffff8880072008e0
+[   16.133056] RBP: 0000000000000000 R08: ffffffff81f238d8 R09: 0000000000000000
+[   16.133058] R10: ffff8880080520f0 R11: 0000000000000000 R12: ffff888008051c60
+[   16.133060] R13: ffff8880072008e0 R14: 0000000000000000 R15: ffff8880072011d8
+[   16.133061] FS:  0000000000000000(0000) GS:ffff88807c200000(0000) knlGS:0000000000000000
+[   16.133063] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   16.133065] CR2: 000055dd43786c08 CR3: 000000000978f000 CR4: 00000000000006f0
+[   16.133067] Call Trace:
+[   16.133069]  <TASK>
+[   16.133070]  ? __warn+0x77/0x120
+[   16.133075]  ? drv_stop+0xe7/0xf0 [mac80211]
+[   16.133098]  ? report_bug+0x15c/0x190
+[   16.133100]  ? handle_bug+0x36/0x70
+[   16.133103]  ? exc_invalid_op+0x13/0x60
+[   16.133105]  ? asm_exc_invalid_op+0x16/0x20
+[   16.133109]  ? drv_stop+0xe7/0xf0 [mac80211]
+[   16.133132]  ieee80211_do_stop+0x55a/0x810 [mac80211]
+[   16.133161]  ? fq_codel_reset+0xa5/0xc0 [sch_fq_codel]
+[   16.133164]  ieee80211_stop+0x4f/0x180 [mac80211]
+[   16.133192]  __dev_close_many+0xa2/0x120
+[   16.133195]  dev_close_many+0x90/0x150
+[   16.133198]  dev_close+0x5d/0x80
+[   16.133200]  cfg80211_shutdown_all_interfaces+0x40/0xe0 [cfg80211]
+[   16.133223]  wiphy_resume+0xb2/0x1a0 [cfg80211]
+[   16.133247]  ? wiphy_suspend+0x2a0/0x2a0 [cfg80211]
+[   16.133269]  dpm_run_callback+0x75/0x1b0
+[   16.133273]  device_resume+0x97/0x200
+[   16.133277]  async_resume+0x14/0x20
+[   16.133280]  async_run_entry_fn+0x1b/0xa0
+[   16.133283]  process_one_work+0x13d/0x350
+[   16.133287]  worker_thread+0x2be/0x3d0
+[   16.133290]  ? cancel_delayed_work_sync+0x70/0x70
+[   16.133294]  kthread+0xc0/0xf0
+[   16.133296]  ? kthread_park+0x80/0x80
+[   16.133299]  ret_from_fork+0x28/0x40
+[   16.133302]  ? kthread_park+0x80/0x80
+[   16.133304]  ret_from_fork_asm+0x11/0x20
+[   16.133307]  </TASK>
+[   16.133308] ---[ end trace 0000000000000000 ]---
+[   16.133335] ieee80211 phy0: PM: dpm_run_callback(): wiphy_resume [cfg80211] returns -110
+[   16.133360] ieee80211 phy0: PM: failed to restore async: error -110
+
+Cc: stable@vger.kernel.org
+Cc: Stanislaw Gruszka <stf_xl@wp.pl>
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
 ---
- net/mac80211/mesh_hwmp.c    |    6 +++---
- net/mac80211/mesh_pathtbl.c |   10 +++++-----
- 2 files changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/wireless/intel/iwlegacy/common.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
-index 024f48db6b05..0b13a6648e08 100644
---- a/net/mac80211/mesh_hwmp.c
-+++ b/net/mac80211/mesh_hwmp.c
-@@ -220,12 +220,12 @@ static void prepare_frame_for_deferred_tx(struct ieee80211_sub_if_data *sdata,
- /**
-  * mesh_path_error_tx - Sends a PERR mesh management frame
-  *
-+ * @sdata: local mesh subif
-  * @ttl: allowed remaining hops
-  * @target: broken destination
-  * @target_sn: SN of the broken destination
-  * @target_rcode: reason code for this PERR
-  * @ra: node this frame is addressed to
-- * @sdata: local mesh subif
-  *
-  * Note: This function may be called with driver locks taken that the driver
-  * also acquires in the TX path.  To avoid a deadlock we don't transmit the
-@@ -1137,8 +1137,8 @@ void mesh_path_start_discovery(struct ieee80211_sub_if_data *sdata)
- /**
-  * mesh_nexthop_resolve - lookup next hop; conditionally start path discovery
-  *
-- * @skb: 802.11 frame to be sent
-  * @sdata: network subif the frame will be sent through
-+ * @skb: 802.11 frame to be sent
-  *
-  * Lookup next hop for given skb and start path discovery if no
-  * forwarding information is found.
-@@ -1245,8 +1245,8 @@ void mesh_path_refresh(struct ieee80211_sub_if_data *sdata,
-  * this function is considered "using" the associated mpath, so preempt a path
-  * refresh if this mpath expires soon.
-  *
-- * @skb: 802.11 frame to be sent
-  * @sdata: network subif the frame will be sent through
-+ * @skb: 802.11 frame to be sent
-  *
-  * Returns: 0 if the next hop was found. Nonzero otherwise.
-  */
-diff --git a/net/mac80211/mesh_pathtbl.c b/net/mac80211/mesh_pathtbl.c
-index 30c0d89203af..9f9cb5af0a97 100644
---- a/net/mac80211/mesh_pathtbl.c
-+++ b/net/mac80211/mesh_pathtbl.c
-@@ -300,8 +300,8 @@ __mesh_path_lookup_by_idx(struct mesh_table *tbl, int idx)
+diff --git a/drivers/net/wireless/intel/iwlegacy/common.h b/drivers/net/wireless/intel/iwlegacy/common.h
+index 2147781b5fff..758984d527bf 100644
+--- a/drivers/net/wireless/intel/iwlegacy/common.h
++++ b/drivers/net/wireless/intel/iwlegacy/common.h
+@@ -2342,6 +2342,8 @@ static inline void
+ il_enable_interrupts(struct il_priv *il)
+ {
+ 	set_bit(S_INT_ENABLED, &il->status);
++	_il_wr(il, CSR_INT, 0xffffffff);
++	_il_wr(il, CSR_FH_INT_STATUS, 0xffffffff);
+ 	_il_wr(il, CSR_INT_MASK, il->inta_mask);
+ }
  
- /**
-  * mesh_path_lookup_by_idx - look up a path in the mesh path table by its index
-- * @idx: index
-  * @sdata: local subif, or NULL for all entries
-+ * @idx: index
-  *
-  * Returns: pointer to the mesh path structure, or NULL if not found.
-  *
-@@ -315,8 +315,8 @@ mesh_path_lookup_by_idx(struct ieee80211_sub_if_data *sdata, int idx)
- 
- /**
-  * mpp_path_lookup_by_idx - look up a path in the proxy path table by its index
-- * @idx: index
-  * @sdata: local subif, or NULL for all entries
-+ * @idx: index
-  *
-  * Returns: pointer to the proxy path structure, or NULL if not found.
-  *
-@@ -670,8 +670,8 @@ void mesh_fast_tx_flush_addr(struct ieee80211_sub_if_data *sdata,
- 
- /**
-  * mesh_path_add - allocate and add a new path to the mesh path table
-- * @dst: destination address of the path (ETH_ALEN length)
-  * @sdata: local subif
-+ * @dst: destination address of the path (ETH_ALEN length)
-  *
-  * Returns: 0 on success
-  *
-@@ -916,8 +916,8 @@ static int table_path_del(struct mesh_table *tbl,
- /**
-  * mesh_path_del - delete a mesh path from the table
-  *
-- * @addr: dst address (ETH_ALEN length)
-  * @sdata: local subif
-+ * @addr: dst address (ETH_ALEN length)
-  *
-  * Returns: 0 if successful
-  */
-@@ -996,8 +996,8 @@ int mesh_path_send_to_gates(struct mesh_path *mpath)
- /**
-  * mesh_path_discard_frame - discard a frame whose path could not be resolved
-  *
-- * @skb: frame to discard
-  * @sdata: network subif the frame was to be sent through
-+ * @skb: frame to discard
-  *
-  * Locking: the function must me called within a rcu_read_lock region
-  */
+-- 
+2.45.2
 
 
