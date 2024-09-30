@@ -1,177 +1,158 @@
-Return-Path: <linux-wireless+bounces-13341-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13342-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B09B98AEF1
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 23:20:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95B5A98AEF2
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 23:21:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A590B20DC9
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 21:20:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E7181F225A5
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 21:21:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDA517C7B6;
-	Mon, 30 Sep 2024 21:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B5D18E031;
+	Mon, 30 Sep 2024 21:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D+7BhCpZ"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="OWoXBfP5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qv1-f68.google.com (mail-qv1-f68.google.com [209.85.219.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2B118E031
-	for <linux-wireless@vger.kernel.org>; Mon, 30 Sep 2024 21:20:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCAA17C7B6
+	for <linux-wireless@vger.kernel.org>; Mon, 30 Sep 2024 21:21:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727731237; cv=none; b=tOVbmS4K6fiQTYhB4qPRlTluIt8AoauCbkSJLWZLPzcED1/rvx88uW//hsDc7S6Jlu+49FNI0kbVaI5nXBNfCIYVTy2WXBg0xjnfU8JlXYVx2YKvelFuKjB9r+eqyyzgzF/K9EgNlP35u+ocdb4toC7B5bOQ7iKlhvZPAQai6/k=
+	t=1727731289; cv=none; b=AaKYnJtqzDut/TEgOPOrqzgdV0ycZo5XrsLEVkLJjo2F/+fzxgLl/Z2/3efkEGZAyQ65n+aUWmC3cXgfKgMKd1sY+D5UoIKN3Iq7YVMjncNcnQMz9hfDm6ejom3OWJj8ionPYnMEVQmiYhSN1jymYTb9iq2a1I5HGEpc0NkyYuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727731237; c=relaxed/simple;
-	bh=eUqKwp7DKuZLZCL8HYkcOqfVPNW3kVNWj8Hk+MzINbg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=R7JgyXD/G9lEOqZUUiPlOLjpPwHbBJZEItd5+w4YB668xT6YBt9tHKUgz5A3vWeK3I6eOzvP406PRD8eoTtpylAclqHrWzVCRPcrADrKzFytLZodzpcP6c0RtvjzWftvaGkNy5Yt7TXEEpefZZcsbxxVVbvgl5ZZ0MqMFAFX2Gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D+7BhCpZ; arc=none smtp.client-ip=209.85.219.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f68.google.com with SMTP id 6a1803df08f44-6cb4c013b78so22013336d6.1
-        for <linux-wireless@vger.kernel.org>; Mon, 30 Sep 2024 14:20:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727731235; x=1728336035; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=vsQ/e2xiI+dJT8z4JJ8m8p+LUueRGlcK8RjgeON3V5o=;
-        b=D+7BhCpZhvLU4etZKvxjO8HYXGVgbISKEMWMbzJP2QK5+X8mHP6rpuXC70T9HPzJwM
-         fbBkEU3fovFqDBz98XkEC4mcqCEEzQHJd+gbVWH0kwBAs865gMcrehoGzbeD4SCblcYx
-         XHZjJRliMFGS+AdnRORRcqQ8xiLK0l1PiXREquo1K2LGVLA9xOHeIpWwMKCqmVZbWQ0m
-         0Ta3ouxbX6afi+CeazJthzOKJzGKSemBVTG1L40cNns4bfHowiNcVZIDMgfEn9RNGT9W
-         JQ6Wur5sNklinviJP5ixNaQsP2ccCtINmJL/WpaTs1V5yX7we5EIMLPWXFNp9CFTjdwd
-         tr9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727731235; x=1728336035;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vsQ/e2xiI+dJT8z4JJ8m8p+LUueRGlcK8RjgeON3V5o=;
-        b=bPfrWomCdpJoygzipKL2D+HpFS5k8qPXQepREbngv6XWRGSE9PcNeZThRWrYxiRchP
-         SQxWJUCJ4y5hNkQDQgmeGIJDBztxXB2ylW2VZ4fwrYoK/e5gHUpix7pVcL0BIlz2hX9V
-         SL1r1s5CfPvM/8v0ilBcv5OZwbUJmWSNSLpn2e/Me9ew4TBPVOEICcULC37m9+1SwmL9
-         MDt6qMrhNOUR1RnJYRtB9z8SPcp9YDr316tHjENavIvv1MH321jqY2QNnwKSoYl2iTQ7
-         uVGuOr/pc0jaOUczwhWTzJtgpqaF6e+F+e4dnFdGExCNZ9vozlih6u0cMF1hay2ZTcAM
-         VYew==
-X-Gm-Message-State: AOJu0YzirFNt/chFnUMarEAy/CNyfelc6zmAkK7+YMW2RUUrmAIYUN58
-	sWNyUH0LRAJrI7gAD12fs/QhXhgfVMiwvrkiQXatTJXJl/XWL7gF
-X-Google-Smtp-Source: AGHT+IGd7PGLabE8elrrXK6SjnFi/BH8/IOka198aIEgOeWLSyPWOgxqBQ5q9mzYuHp41bzSL9jlIg==
-X-Received: by 2002:a05:6214:3d8a:b0:6cb:32ef:d55f with SMTP id 6a1803df08f44-6cb3b5b7ef0mr236171746d6.6.1727731234766;
-        Mon, 30 Sep 2024 14:20:34 -0700 (PDT)
-Received: from localhost.localdomain (mobile-130-126-255-54.near.illinois.edu. [130.126.255.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb3b630438sm43196826d6.70.2024.09.30.14.20.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Sep 2024 14:20:33 -0700 (PDT)
-From: Gax-c <zichenxie0106@gmail.com>
-To: nbd@nbd.name,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	kvalo@kernel.org,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	johannes.berg@intel.com,
-	quic_adisi@quicinc.com,
-	deren.wu@mediatek.com,
-	chui-hao.chiu@mediatek.com,
-	meichia.chiu@mediatek.com,
-	mingyen.hsieh@mediatek.com,
-	howard-yh.hsu@mediatek.com,
-	StanleyYP.Wang@mediatek.com,
-	allen.ye@mediatek.com,
-	benjamin-jw.lin@mediatek.com,
-	Bo.Jiao@mediatek.com,
-	Money.Wang@mediatek.com
-Cc: linux-wireless@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Gax-c <zichenxie0106@gmail.com>,
-	Zijie Zhao <zzjas98@gmail.com>,
-	Chenyuan Yang <chenyuan0y@gmail.com>
-Subject: [PATCH] wifi: mt76: Fix NULL Pointer Dereference caused by mt76_connac_get_he_phy_cap()
-Date: Mon, 30 Sep 2024 16:20:14 -0500
-Message-Id: <20240930212014.30607-1-zichenxie0106@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1727731289; c=relaxed/simple;
+	bh=8bixiM5Oj4kMSK82BcEXhk/rH4DWNRr9AVnx/75pDkk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=t6Anub7It59WKU9qfQxyzNaGQYh1ER/V/i6nf7G9Tr1Vn5sBrKGmRvyoUx8QhY4MjhFKx9e0WSS26ocO076mQasoYeRpWBZwjTik2X52AgZv+ns3vhGKH9bhaZ//U2ZW+JmguCyACIiD0o+A3Yn579RH165R18pL+ebJnKucYDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=OWoXBfP5; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48UB5fjG008325;
+	Mon, 30 Sep 2024 21:21:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	NFxlcXRgHKQwl6FNEnXx9vGS3+IHH80cugczq/NoXIA=; b=OWoXBfP5Rqbugdcw
+	yvgVtbnsqlWILSdgz6q6X0QxmqH6uAzUYkTZITNCYVjhb8BkehDRXmEU0FDyHHiq
+	UJDTci+28cGztWHjiSvVfpDBSRBV2afi7AOMaQcbQi4MxsxWRfmgO8CKLylJBJZh
+	Th0lMo3L0397miO15U4I5NvnspTicIrmFm5I/jn7zmoJODkkMBnqS19KSqoKINjp
+	qW4Anbwgj89fiq36wWKCr7b+IAK4kIkTqKOQACm0EGzdAPVOCSIXaD2FDESZw9G1
+	nf/TX+9GT8BQm9wVjEFl6fhsTKSO7Vf+JCKASFDoe9JP8BUphAG9en6DIUuOnUBW
+	J1Zqcw==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41x9vu61p8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Sep 2024 21:21:23 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48ULLMno017683
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Sep 2024 21:21:22 GMT
+Received: from [10.111.183.230] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 30 Sep
+ 2024 14:21:22 -0700
+Message-ID: <91b58719-3e8f-4a80-9be1-b998603244b3@quicinc.com>
+Date: Mon, 30 Sep 2024 14:21:21 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V8 0/9] wifi: ath12k: add MU-MIMO and 160 MHz bandwidth
+ support
+To: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240918212056.4137076-1-quic_pradeepc@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <20240918212056.4137076-1-quic_pradeepc@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: IZILpXcBLoDjKOOvMBkxhNxidkg5gc8m
+X-Proofpoint-ORIG-GUID: IZILpXcBLoDjKOOvMBkxhNxidkg5gc8m
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=999
+ lowpriorityscore=0 clxscore=1015 spamscore=0 suspectscore=0 phishscore=0
+ priorityscore=1501 malwarescore=0 adultscore=0 mlxscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
+ definitions=main-2409300152
 
-like commit f503ae90c735 ("wifi: mt76: mt7996: fix NULL pointer dereference in mt7996_mcu_sta_bfer_he"), mt76_connac_get_he_phy_cap() may return a NULL pointer, leading to NULL Pointer Dereference.
-Add a null check for the returned pointer.
+On 9/18/2024 2:20 PM, Pradeep Kumar Chitrapu wrote:
+> Add support for
+> 1. enabling MU-MIMO in HE and EHT modes from hardware
+> 2. setting fixed HE rate/GI/LTF
+> 3. 160 MHz bandwidth in HE mode
+> 4. extended NSS bandwidth support
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
+> changes in v8:
+>  - rebase and resolve KASAN warnings reported by Jeff in v7, in patch 6/9.
+> 
+> changes in v7:
+>  - rebase and remove patch 01/10 which was merged already.
+> 
+> changes in v6:
+>  - Change comment in patch 01/10 to represent only AP mode
+>    implementation.
+> 
+> changes in v5:
+>  - Fix column length to 80 in patch 01/10
+>  - Fix advertises spelling in patch 09/10
+>  - Fix choosing spelling in patch 10/10
+> 
+> changes in v4:
+>  - Fix ath12k-check warnings in patch 2/10 and 7/10
+>  - remove "hostapd" reference in patches 2/10 and 3/10
+>  - remove redundant prerequisite-patch-id's in cover letter
+> 
+> changes in v3:
+>  - address review comments for fixing ath12k-check issues.
+> 
+> changes in v2:
+>  - Amend mac80211 patch description as the patch is not specific
+>    to AP mode.
+>  - Amend EHT MU-MIMO patch description to specify future support
+>    for STA mode.
+> 
+> Pradeep Kumar Chitrapu (9):
+>   wifi: ath12k: push HE MU-MIMO params to hardware
+>   wifi: ath12k: push EHT MU-MIMO params to hardware
+>   wifi: ath12k: move HE MCS mapper to a separate function
+>   wifi: ath12k: generate rx and tx mcs maps for supported HE mcs
+>   wifi: ath12k: fix TX and RX MCS rate configurations in HE mode
+>   wifi: ath12k: add support for setting fixed HE rate/GI/LTF
+>   wifi: ath12k: clean up 80P80 support
+>   wifi: ath12k: add support for 160 MHz bandwidth
+>   wifi: ath12k: add extended NSS bandwidth support for 160 MHz
+> 
+>  drivers/net/wireless/ath/ath12k/core.h |    2 +
+>  drivers/net/wireless/ath/ath12k/mac.c  | 1052 ++++++++++++++++++++----
+>  drivers/net/wireless/ath/ath12k/mac.h  |   17 +
+>  drivers/net/wireless/ath/ath12k/wmi.c  |   24 +-
+>  drivers/net/wireless/ath/ath12k/wmi.h  |   98 ++-
+>  5 files changed, 985 insertions(+), 208 deletions(-)
+> 
+> 
+> base-commit: 92de67902177c2ea65000a87a6b24fed17d48a18
 
-Fixes: a5c372f77aa7 ("wifi: mt76: mt7925: extend mt7925_mcu_bss_he_tlv for per-link BSS")
-Fixes: e6d557a78b60 ("mt76: mt7915: rely on mt76_connac_get_phy utilities")
-Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
-Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
-Reported-by: Zichen Xie <zichenxie0106@gmail.com>
-Reported-by: Zijie Zhao <zzjas98@gmail.com>
-Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
----
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 6 ++++++
- drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 3 +++
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 3 +++
- 3 files changed, 12 insertions(+)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 87d0dd040001..941a6e40e94c 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -552,6 +552,9 @@ mt7915_mcu_bss_he_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
- 
- 	cap = mt76_connac_get_he_phy_cap(phy->mt76, vif);
- 
-+	if (!cap)
-+		return;
-+
- 	tlv = mt76_connac_mcu_add_tlv(skb, BSS_INFO_HE_BASIC, sizeof(*he));
- 
- 	he = (struct bss_info_he *)tlv;
-@@ -1145,6 +1148,9 @@ mt7915_mcu_sta_bfer_he(struct ieee80211_sta *sta, struct ieee80211_vif *vif,
- 	u8 nss_mcs = mt7915_mcu_get_sta_nss(mcs_map);
- 	u8 snd_dim, sts;
- 
-+	if (!vc)
-+		return;
-+
- 	bf->tx_mode = MT_PHY_TYPE_HE_SU;
- 
- 	mt7915_mcu_sta_sounding_rate(bf);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index 748ea6adbc6b..1caf3e3e0e87 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -2509,6 +2509,9 @@ mt7925_mcu_bss_he_tlv(struct sk_buff *skb, struct ieee80211_bss_conf *link_conf,
- 
- 	cap = mt76_connac_get_he_phy_cap(phy->mt76, link_conf->vif);
- 
-+	if (!cap)
-+		return;
-+
- 	tlv = mt76_connac_mcu_add_tlv(skb, UNI_BSS_INFO_HE_BASIC, sizeof(*he));
- 
- 	he = (struct bss_info_uni_he *)tlv;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 6c445a9dbc03..e547729701b7 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -799,6 +799,9 @@ mt7996_mcu_bss_he_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
- 
- 	cap = mt76_connac_get_he_phy_cap(phy->mt76, vif);
- 
-+	if (!cap)
-+		return;
-+
- 	tlv = mt7996_mcu_add_uni_tlv(skb, UNI_BSS_INFO_HE_BASIC, sizeof(*he));
- 
- 	he = (struct bss_info_uni_he *)tlv;
--- 
-2.25.1
+Although this series applies cleanly to ath/main, it does not apply cleanly to
+ath/ath12k-mlo. So dropping this until ath12k-mlo is mainlined so that your
+series can be rebased on that.
 
 
