@@ -1,159 +1,151 @@
-Return-Path: <linux-wireless+bounces-13308-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13309-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB538989B70
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 09:28:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ABAD989BBE
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 09:41:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC5651C21048
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 07:28:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5D68B21024
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 07:41:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB77115666D;
-	Mon, 30 Sep 2024 07:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47DBF15C13A;
+	Mon, 30 Sep 2024 07:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="poGF7n5Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gF4raLw3"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B6E156653
-	for <linux-wireless@vger.kernel.org>; Mon, 30 Sep 2024 07:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C301547DB
+	for <linux-wireless@vger.kernel.org>; Mon, 30 Sep 2024 07:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727681285; cv=none; b=jYYriPwBktgpdRcXSyvuIedeBH+wYMMKgEwHIUsLMJ8DM4M5qgRButJaZ5uYo1zybZlhBBhO0tP/SDsgSrQ9oa7ZdS6r0wTNSJWMnXEvDSvd7Pk4Vl4eBcM9cvCrIbt+ncHcot0v0Esc/OXQjCvYLTPgRqjP4HgNIK+kY0zHoGE=
+	t=1727682098; cv=none; b=uzpiVUMstnr40vcrjFrov6xg0sE2UCU6XvlNlLXJXRACkvSxIGGVaVIozXiK/tgyxIM7AOf+IhNraUOLz2/4P6chh32G1ZLpm9cIS8U2KMWGo3h57cswEkgxWSPw3KqsSUZfoEsxDDE9FREXOsM6TgajkQtj0FapWGkowydehYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727681285; c=relaxed/simple;
-	bh=bp9KCKXii67v3/vDEihavE3KCdD3KTTpeEisYQUdC4I=;
+	s=arc-20240116; t=1727682098; c=relaxed/simple;
+	bh=/ItUKa7wXs6970KPiCDNNpw0rMdnwOPYYth69xFUMKg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tRhIifsTRmMQdwNCT2F0e6D7tBGk80l4rHxdsPFh02++flk82Csy8PZFODAgQgE/OzGlNgAvGDCAgYtIFhssErH4Js1Y3/wjC03VI2Y8+8jtmJCfYVUZY4GmxPWz1l3+JtAwLS1DRBkpz5PliGm6DOzsHbvlyC6TiIRckFgeA8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=poGF7n5Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CDA1C4CECD
-	for <linux-wireless@vger.kernel.org>; Mon, 30 Sep 2024 07:28:05 +0000 (UTC)
+	 To:Cc:Content-Type; b=XRBtyYxBhdGRjXAbMB3akFnAm9UgW0uEZjil79wSdf/jcEGd8cKAcAmDrOPOBXukQWcC7q/gIdCVMyoZDBVnQSLWjO/ex7Uw1FKsHHihQXuMEcsrslEJtn6yeOhZV1feXcKoDcg6mWYi5I8XzxEnTf2q5RN6CME0pCReVXOFQ54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gF4raLw3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B467AC4CECD
+	for <linux-wireless@vger.kernel.org>; Mon, 30 Sep 2024 07:41:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727681285;
-	bh=bp9KCKXii67v3/vDEihavE3KCdD3KTTpeEisYQUdC4I=;
+	s=k20201202; t=1727682097;
+	bh=/ItUKa7wXs6970KPiCDNNpw0rMdnwOPYYth69xFUMKg=;
 	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
-	b=poGF7n5ZU+bxkk3h8I0CaXL9I8GAH0m+QrE7TVk25D/Am/w/MhoUFDyN7Z7na0Imv
-	 nG0vsvu3gvem2YFMctQ96+g+i/aB6IaXdAZAWMReamrr4ohPIl1ApNCuyaNvHBe2Bj
-	 ihRzFRCkBNg6t4AcrR+Jl8m6qKaYnj/ieGSTu88yPOq3qvqw270pH620s1ECZPHwAE
-	 Uw1aX7WfuNmz7DhAk+qoG5JAt08tg+YLLj2Zxab9K+ASGH34qNBWdVB5Vl5IQvOa+3
-	 tLKVwNdSw2DaxD+Idv7NUgqw/t7AZPFaQwY/1ogfOl62cX9dcv05zhgJmCphDE+Dsk
-	 tqNWJvN9B48OA==
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2facf48166bso5947511fa.0
-        for <linux-wireless@vger.kernel.org>; Mon, 30 Sep 2024 00:28:05 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyZkAR5usjfEbsATsPGkW9GIsWp6i6DDCQc3dK5/ecAbJFS9zpE
-	qmM8eJD2F2uzkuTOimOC0chYWxHXE4j8S2a8HKCrHAIPgMBuhdb5COEYiG6rj23UXwSiLSMx700
-	hMz8PGuECnj+3GLqGscxuG4FI/A8=
-X-Google-Smtp-Source: AGHT+IH//so7C5w0elx54PI9QPgLWCTlklPjTP19OEr8uRzdp3U2Bd/vMYHtvDy4QoLOLSDorTEEHtSPv++OYs4pqDU=
-X-Received: by 2002:a2e:6111:0:b0:2f7:5890:b15a with SMTP id
- 38308e7fff4ca-2f9d41afef6mr41251751fa.38.1727681283517; Mon, 30 Sep 2024
- 00:28:03 -0700 (PDT)
+	b=gF4raLw3DEn4T8dn1IpNLa07JExYZHTrZRLvpewLsnxtbfrv/9cB7bZQ1GLYQHNVP
+	 QfViJTSA10CdmW/LxJX2bSpuWVdB2m50Bvb9MuOgbojBOMUcx4a58v9X2AG+qLtitf
+	 kM90dblHzMUwEbNhCbbL+BbB5mBX6G+4Zi1TWhrJtJhl5SvMtVqwmfKcqIVf+SaF86
+	 yP6E/kLTFu6hRc13nblVbNNgl7YQo+7Mc79ABhBkjyvNemDQZ9M1GWVkRfHYAzdsam
+	 Jj6+4Je0fcYCh4DhkYmfM0Cc1wz4sAuNfOOEe95r/9cBzWljrUT9uWVqWvWwgCzEYh
+	 StdEneuZ5mC/A==
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2fa10e64805so28513711fa.2
+        for <linux-wireless@vger.kernel.org>; Mon, 30 Sep 2024 00:41:37 -0700 (PDT)
+X-Gm-Message-State: AOJu0Ywu7cgQeiYOUXUYfiLGJZWCOAYzNgqrnuV2a9iEehjWkWRmytHR
+	bws9U3g5x1Hffqtw5t1JiGfT9srTKIWM/s43mwwefiP1s8+tOD2PX9Auoykj8GoiuqHydpX7tPd
+	HoemW6DcyinA26ARDFSwDmOQW/60=
+X-Google-Smtp-Source: AGHT+IGvBa2RV59K1aOUc591u0qgleoAZBcTiRo63ipi/AbR9v6SMQLzcJFc0I9+h8PdFNqARUJmhhYPS2XHO2IgcOQ=
+X-Received: by 2002:a05:651c:2222:b0:2fa:c2c4:f9f5 with SMTP id
+ 38308e7fff4ca-2fac2c4fe91mr24297781fa.38.1727682096036; Mon, 30 Sep 2024
+ 00:41:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240902082304.52326-1-pkshih@gmail.com>
-In-Reply-To: <20240902082304.52326-1-pkshih@gmail.com>
+References: <20240920011901.5038-1-pkshih@gmail.com>
+In-Reply-To: <20240920011901.5038-1-pkshih@gmail.com>
 Reply-To: wens@kernel.org
 From: Chen-Yu Tsai <wens@kernel.org>
-Date: Mon, 30 Sep 2024 15:27:50 +0800
-X-Gmail-Original-Message-ID: <CAGb2v64R7FVjEWxXzSercJfnU8bASUAM1chkoMdY8-0WOKvJGg@mail.gmail.com>
-Message-ID: <CAGb2v64R7FVjEWxXzSercJfnU8bASUAM1chkoMdY8-0WOKvJGg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] wireless-regdb: Update regulatory info for Serbia
- (SR) for 2024
+Date: Mon, 30 Sep 2024 15:41:23 +0800
+X-Gmail-Original-Message-ID: <CAGb2v65J1FV-POEh+QciWUxE-OZyRuh+Wfad9TuimJrrDHcjkQ@mail.gmail.com>
+Message-ID: <CAGb2v65J1FV-POEh+QciWUxE-OZyRuh+Wfad9TuimJrrDHcjkQ@mail.gmail.com>
+Subject: Re: [PATCH] wireless-regdb: Update regulatory info for Tanzania (TZ)
+ for 2024
 To: Ping-Ke Shih <pkshih@gmail.com>
 Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 2, 2024 at 4:23=E2=80=AFPM Ping-Ke Shih <pkshih@gmail.com> wrot=
-e:
+On Fri, Sep 20, 2024 at 9:19=E2=80=AFAM Ping-Ke Shih <pkshih@gmail.com> wro=
+te:
 >
 > From: Ping-Ke Shih <pkshih@realtek.com>
 >
-> Serbia government released radio frequency range on February 5, 2024 [1].
-> Based on Article 100, paragraph 5 of the Law on Electronic Communications
-> and Article 17, paragraph 1 and Article 42, paragraph 1 of the Law on
-> Government.
+> United Republic of Tanzania, Tanzania Communications Regulatory Authority
+> released Minimum Technical Specifications for Short Range Devices (SRDs)
+> on 2024 [1].
 >
->  * 2400 - 2483.5 MHz
->    - reference [1] page 114-115, section 2400 MHz - 2450 MHz, 8th row
->      * EN 302 328
+>  * 2400-2483.5 MHz
+>    - 100 mW e.i.r.p.
+>  * 5150-5350 MHz
+>    - 200 mW mean e.i.r.p.
+>      * The maximum mean e.i.r.p. density shall be limited to 10 mW/MHz
+>        in any 1 MHz band.
+>    - EN 301 893
 
-          ^ Should be EN 300 328
+This also restricts 5250-5350 to 100 mW due to lack of TPC.
 
-I can fix this when applying.
+ChenYu
 
-Thanks
-
->        - 20 dBm
->  * 5150 - 5350 MHz
->    - reference [1] page 120-121, section 5150 MHz - 5250 MHz, 8th row
->      reference [1] page 121,     section 5250 MHz - 5255 MHz, 8th row
->      reference [1] page 121,     section 5255 MHz - 5350 MHz, 8th row
->      * EN 301 893
->        - 23 dBM (Without TPC)
->        - 5250 - 5350 MHz, DFS
->  * 5470 - 5725 MHz
->    - reference [1] page 122,     section 5470 MHz - 5570 MHz, 8th row
->      reference [1] page 122,     section 5570 MHz - 5650 MHz, 6th row
->      reference [1] page 123,     section 5650 MHz - 5725 MHz, 8th row
->      * EN 301 893
->        - 27 dBm (Without TPC)
->        - 5470 - 5725 MHz, DFS
->  * 5925 - 6425 MHz
->    - reference [1] page 124,     section 5925 MHz - 6700 MHz, 6th row
->      * EN 303 687
->        - 23 dBm, LPI
+>      * DFS: 5250-5350 MHz
+>    - Restricted to indoor use.
+>  * 5470-5725 MHz
+>    - 250 mW e.i.r.p
+>      * The maximum mean e.i.r.p. density shall be limited to 50 mW/MHz
+>        in any 1 MHz band
+>    - EN 301 893
+>      * DFS: 5470-5725 MHz
+>    - Indoor as well as outdoor use allowed.
+>  * 5725-5850 MHz
+>    - 1W
+>    - EN 302 502
+>      * DFS: 5850 - 5875 MHz
+>      * FWA device shall have the capability to reduce the operating
+>        mean EIRP level to a level not exceeding 24 dBm for ChS =3D 20 MHz
+>        (24 dBm is adopted)
+>  * 5945-6425 MHz
+>    - 23 dBm for LPI usage
+>      (should be indoor naturally)
+>    - 14 dBm for VLP usage
 >
-> [1] https://www.ratel.rs/uploads/documents/empire_plugin/Uredba%20o%20utv=
-rdjivanju%20Plana%20namene%20radiofrekvencijskih%20opsega.pdf
-> [2] EN 302 328 https://www.etsi.org/deliver/etsi_en/300300_300399/300328/=
-02.02.02_60/en_300328v020202p.pdf
-> [3] EN 302 066 https://www.etsi.org/deliver/etsi_en/302000_302099/302066/=
-02.02.00_20/en_302066v020200a.pdf
-> [4] EN 301 893 https://www.etsi.org/deliver/etsi_en/301800_301899/301893/=
-02.01.01_60/en_301893v020101p.pdf
-> [5] EN 303 687 https://www.etsi.org/deliver/etsi_en/303600_303699/303687/=
-01.01.01_60/en_303687v010101p.pdf
+> [1] https://www.tcra.go.tz/download/sw-1719952895-Minimum%20Technical%20S=
+pecifications%20for%20Short%20Range%20Devices%20(SRD),%20June%202024.pdf
 >
 > Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 > ---
-> v2:
->   - update commit message: list page/section/row for reference
-> ---
->  db.txt | 11 +++++++----
->  1 file changed, 7 insertions(+), 4 deletions(-)
+>  db.txt | 12 +++++++++---
+>  1 file changed, 9 insertions(+), 3 deletions(-)
 >
 > diff --git a/db.txt b/db.txt
-> index 9a55f6b8cc98..ad8dddc9c800 100644
+> index 9a55f6b8cc98..5ef3236d26ae 100644
 > --- a/db.txt
 > +++ b/db.txt
-> @@ -1758,11 +1758,14 @@ country SN: DFS-FCC
->         (5490 - 5730 @ 160), (24), DFS
->         (5735 - 5835 @ 80), (30)
+> @@ -1860,9 +1860,15 @@ country TW: DFS-FCC
+>         # 60g band, LP0002 section 4.13.1.1 (1)(A), EIRP=3D40dBm(43dBm pe=
+ak)
+>         (57000 - 66000 @ 2160), (40)
 >
-> +# Source:
-> +# https://www.ratel.rs/uploads/documents/empire_plugin/Uredba%20o%20utvr=
-djivanju%20Plana%20namene%20radiofrekvencijskih%20opsega.pdf
->  country SR: DFS-ETSI
+> -country TZ:
 > -       (2402 - 2482 @ 40), (20)
-> -       (5170 - 5250 @ 80), (20), AUTO-BW
-> -       (5250 - 5330 @ 80), (20), DFS, AUTO-BW
-> -       (5490 - 5710 @ 160), (27), DFS
-> +       (2400 - 2483.5 @ 40), (20)
-> +       (5150 - 5250 @ 80), (23), AUTO-BW
-> +       (5250 - 5350 @ 80), (23), DFS, AUTO-BW
-> +       (5470 - 5725 @ 160), (27), DFS
-> +       (5925 - 6425 @ 320), (23), NO-OUTDOOR
+> -       (5735 - 5835 @ 80), (30)
+> +# Source:
+> +# https://www.tcra.go.tz/download/sw-1719952895-Minimum%20Technical%20Sp=
+ecifications%20for%20Short%20Range%20Devices%20(SRD),%20June%202024.pdf
+> +country TZ: DFS-ETSI
+> +       (2400 - 2483.5 @ 40), (100 mW)
+> +       (5150 - 5250 @ 80), (200 mW), AUTO-BW, NO-OUTDOOR
+> +       (5250 - 5350 @ 80), (200 mW), DFS, AUTO-BW, NO-OUTDOOR
+> +       (5470 - 5725 @ 160), (250 mW), DFS, NO-OUTDOOR
+> +       (5725 - 5850 @ 80), (24), DFS
+> +       (5945 - 6425 @ 320), (23), NO-OUTDOOR
 >
->  # Source:
->  # https://www.siget.gob.sv/actualizacion-de-cuadro-nacional-de-atribucio=
-n-de-frecuencias-t-0408-2023/
+>  # Source: https://zakon.rada.gov.ua/laws/show/z0201-15#n48
+>  # Although it is allowed to use up to 250 mW for some 5 GHz frequency ra=
+nges,
 > --
 > 2.25.1
 >
