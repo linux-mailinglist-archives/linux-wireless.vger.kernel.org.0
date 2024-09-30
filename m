@@ -1,87 +1,60 @@
-Return-Path: <linux-wireless+bounces-13332-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13334-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86DEE98ABA2
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 20:07:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C1B698ABB2
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 20:12:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F881B20FB1
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 18:07:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFC721F220CA
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 18:12:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00EDD192D82;
-	Mon, 30 Sep 2024 18:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E59C1991A5;
+	Mon, 30 Sep 2024 18:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="App6xxHH"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="IZzkuwFu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933221990D1
-	for <linux-wireless@vger.kernel.org>; Mon, 30 Sep 2024 18:07:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933DB1991A1
+	for <linux-wireless@vger.kernel.org>; Mon, 30 Sep 2024 18:11:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727719643; cv=none; b=tgbbnRQ1ku5wZ6ppbBZY/CuEf76aZI/DQEMcCOr+QEgVfkspyRlQA1Y6P1FeBA5UXzH1uJb9HGEfbB6xSz6atXb24nwvB/5ioTbbAjYGk0F7qG9KXhtc+meHKUccorgDrtVCLCyMJBgzaBwVTrJ/83IocaPcaJN/4lozFauyl7w=
+	t=1727719921; cv=none; b=BD/3UvO4PUtJqaZ+c+VD5g8ZwMZGBFHkcGhldnYm9Unme4VQlowXdZ+SMBDFYXfiSoqjEi02c7dJi7fNLsUNb3c4V8wNoyaSpYsgDvAKS4iJJKotLbYYxfTyTfFT1PmD74Ns+QVB3KNJGbGD9VtdOahOUK0jXnqMduSVUAYlJC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727719643; c=relaxed/simple;
-	bh=TmWA5XOLEyN6IMyNFp7UuE+LCAG4dub2rErLLKcgVCQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qCMGUGHxvFOsYIR5v5KiU7vS+JE4eTlgmGOT/9TyvsPblPYIRIFm09IrfQd2ZQukP3bNMGJeFna1EX6m1t6rp/jNMrfAO9Ow3RsksrIMxsJ0qqQmUyCzOYSW6lpbBzR8u7xP7gVhC/dY9ct52pCOyq/jTIzLMrchpC7tS0ooyiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=App6xxHH; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-20b7463dd89so18329225ad.2
-        for <linux-wireless@vger.kernel.org>; Mon, 30 Sep 2024 11:07:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727719642; x=1728324442; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h+Qmv3lRc1xRWRMu/c8FxIebEpdcEiaSGlSOh7PCesQ=;
-        b=App6xxHHcm3q8FpHStMh9pWr4PajEBwurGSZ+1+/37eDbHVB5CFLAqjSQEbKeS6RjM
-         5v47TBbvMb6gF5mnAtvrW2ydIpoqeoDWHI5u5EtPBABU4u70YqJ9LbeVelgEZHAXp8yY
-         8oZuHOiMO6+MUF86mD2oNWbeZObzOk7Kefn0BFVnUoa9U4ghBTG/W8p324LAARFMS7lI
-         o7yEYBdHkudVmOpSQF8wQbMRdMVhMCe3PQEnqRnfH5ivbCmmGPbqPov1xlfmRmyTcIEH
-         jFDc3B6CTUrZJebJ3T5NMcRYRFBnzRsc9nJLSGFQnpUD0oXD/npcTCTTGmhllepqWBIy
-         3ezQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727719642; x=1728324442;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=h+Qmv3lRc1xRWRMu/c8FxIebEpdcEiaSGlSOh7PCesQ=;
-        b=AZRRtmCTkevpMAZVMYXgvo+61UQS0Kt4085AeYSxZakPmYkbvllbDZRyFFmJ2Lmu5Q
-         UkKAnYfzsAy1g4wJUg50OCpUnrYOnrOgV09qLX9kywY08M1z1yT1sf2AO2Aciwws91ZC
-         lQGY1jO6Pn50CDNR8LGSI78Z5azPfGXvWqrW1BKwWFM33eAnkj5thAV4XUO/+nZGvvoJ
-         PfLd0hOjgRvthwZ+7wQVdj7PzATPAlyQWUwDO5+LS95dMXBn/MCwIyZorN87EMV9cHsj
-         TjxjLytaJNFPJ3tdeyJ/Cs4R8rJVy1EsGtzHVIlXgo4T0/zPgu/pYtgvLaZ09/U072xR
-         cIMA==
-X-Gm-Message-State: AOJu0YxAfSIz/1BD/K86Vnn8bZ0dffK1NuErs3wFc7G5R7h9VDk4n25a
-	5C7nVwtFB1Kn1lIA7T8WCUs/sS9/1rbRa/qjVueXSh/oBLJhW/j7bIc425Bx
-X-Google-Smtp-Source: AGHT+IH1x2mqnw5viifSEjQEQMhx633LhogmakDTj7I5f8jqdG9yHSTYIpqle9QUIAMpCob29DDCag==
-X-Received: by 2002:a17:902:c941:b0:20b:5aff:dd50 with SMTP id d9443c01a7336-20b5affde4amr101073045ad.31.1727719641753;
-        Mon, 30 Sep 2024 11:07:21 -0700 (PDT)
-Received: from ryzen.lan ([2601:644:8200:dab8::a86])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20b37d9fe05sm57439295ad.93.2024.09.30.11.07.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Sep 2024 11:07:21 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: kvalo@kernel.org,
-	toke@toke.dk,
-	nbd@nbd.name,
-	yangshiji66@outlook.com,
-	hauke@hauke-m.de,
-	jirislaby@kernel.org,
-	mickflemm@gmail.com,
-	mcgrof@kernel.org
-Subject: [PATCH 2/2] wifi: ath5k: add PCI ID for Arcadyan devices
-Date: Mon, 30 Sep 2024 11:07:16 -0700
-Message-ID: <20240930180716.139894-3-rosenp@gmail.com>
-X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240930180716.139894-1-rosenp@gmail.com>
-References: <20240930180716.139894-1-rosenp@gmail.com>
+	s=arc-20240116; t=1727719921; c=relaxed/simple;
+	bh=tvO3DLpta3xTiSe4n+Hxofk+nQYPxT+qxAX5R+aBqq4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pAh6K/I2QLnBkBbe/jKFcmpmo/x9meynSPPfZAXzLYAEWdeE5cQYuigIK8TSiZ3KuumVUz3eMuDzS8DGvPsMWmT1y3EMcWA/IpANWEFDw0wOBGcinKLt2Gm9BdotarJ4XpubToaE+5mHYONQO2fCGO9AwyZsTDNUOfNvymUsM2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=IZzkuwFu; arc=none smtp.client-ip=148.163.129.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 6F766C40067;
+	Mon, 30 Sep 2024 18:11:51 +0000 (UTC)
+Received: from corvid-conspiracy.candelatech.com (unknown [50.251.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 0367813C2B0;
+	Mon, 30 Sep 2024 11:11:49 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 0367813C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1727719910;
+	bh=tvO3DLpta3xTiSe4n+Hxofk+nQYPxT+qxAX5R+aBqq4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=IZzkuwFuYoWzVMlFlmkktES9AVwZPYVi58+D8Qf8nhxPIG+6CIukE7gWxI5BeKE7V
+	 snPiWMF8GKPCua2pITwEAxmNIMFAwpqb2Cs8B2DzDTaUezOzHr2CqCUNRKS1oS9ywt
+	 QDAhfORHISbpsxzVGDIs42G8c/cBdKNzEFJ+Snsk=
+From: Dylan Eskew <dylan.eskew@candelatech.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
+	Dylan Eskew <dylan.eskew@candelatech.com>
+Subject: [PATCH 0/3] iw: scan: ie parsing restructure
+Date: Mon, 30 Sep 2024 11:11:42 -0700
+Message-ID: <20240930181145.1043048-1-dylan.eskew@candelatech.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -89,27 +62,24 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-MDID: 1727719912-JAqfNkof3UiS
+X-MDID-O:
+ us5;ut7;1727719912;JAqfNkof3UiS;<dylan.eskew@candelatech.com>;b42792dba290a1257c3f0aaf1c60b0ff
 
-Arcadyan made routers with this PCI ID containing an AR2417.
+To prevent double parsing the ie buffer for ies which require
+information from other ies, utilize pointer aliasing to simplify
+the referencing of other ies.
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- drivers/net/wireless/ath/ath5k/pci.c | 1 +
- 1 file changed, 1 insertion(+)
+Dylan Eskew (3):
+  iw: scan: add enum for ie ids
+  iw: scan: change parsing from in-place to cached
+  iw: scan: replace passed ie buffer with alias struct
 
-diff --git a/drivers/net/wireless/ath/ath5k/pci.c b/drivers/net/wireless/ath/ath5k/pci.c
-index b3137f60e879..f5ca2fe0d074 100644
---- a/drivers/net/wireless/ath/ath5k/pci.c
-+++ b/drivers/net/wireless/ath/ath5k/pci.c
-@@ -47,6 +47,7 @@ static const struct pci_device_id ath5k_pci_id_table[] = {
- 	{ PCI_VDEVICE(ATHEROS, 0x001c) }, /* PCI-E cards */
- 	{ PCI_VDEVICE(ATHEROS, 0x001d) }, /* 2417 Nala */
- 	{ PCI_VDEVICE(ATHEROS, 0xff16) }, /* Gigaset SX76[23] AR241[34]A */
-+	{ PCI_VDEVICE(ATHEROS, 0xff1a) }, /* Arcadyan ARV45XX AR2417 */
- 	{ PCI_VDEVICE(ATHEROS, 0xff1b) }, /* AR5BXB63 */
- 	{ 0 }
- };
+ ieee80211.h |  82 +++++++++++++
+ scan.c      | 326 +++++++++++++++++++++++++++++++---------------------
+ 2 files changed, 277 insertions(+), 131 deletions(-)
+
 -- 
-2.46.2
+2.46.0
 
 
