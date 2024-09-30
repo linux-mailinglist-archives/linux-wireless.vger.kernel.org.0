@@ -1,63 +1,77 @@
-Return-Path: <linux-wireless+bounces-13317-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13318-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13F37989D40
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 10:50:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F360F989D48
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 10:52:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9BAE280E2E
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 08:50:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9079280A76
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 08:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5143B17A5A7;
-	Mon, 30 Sep 2024 08:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC8C0126C07;
+	Mon, 30 Sep 2024 08:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="yDQ0qU7D";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="lepPxfJE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UmX5OvWP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23BAD13DB92
-	for <linux-wireless@vger.kernel.org>; Mon, 30 Sep 2024 08:50:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6750213D531
+	for <linux-wireless@vger.kernel.org>; Mon, 30 Sep 2024 08:52:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727686206; cv=none; b=GaEw6XGgqckHBvy6ON+GDZ20qnTZEWDp7LMoKjmaxX/1bHF1kpfM3+Tc7YaRsxDkeXj9H4dZFybdBTKRudARufKzksIHDyuYGzNWUcwh+7rwSIuk9NCremYIbYc0gDBoRp3MjLJ38xttzywI2VFFIlGDL+drb/yEju3pPUgCS34=
+	t=1727686347; cv=none; b=iYUOcQxoMsTOIuzrRjpvjeX2GQXFP1ZB+9kBrS+lUGVYOKudWsIXXvTdTVQV2kgMhoEmjgPsFu7KLqmCFmIw6QGihnTjuXUY16pGH2NicDVdZRSufTWoVJsBWpZWYbRS2O9Hfpl1xw248wyhej7yuCELmjuSpoq31EWmiuRxSIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727686206; c=relaxed/simple;
-	bh=xpuNvtbie8KRHvHviAeyKrcJoFgn2ujGgkdiXYHW55s=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TheWssjB7OD+7Eede2Kf8sH/pEZIEfy9RqMuuPsckzS3UDOfp5QLcqNizJsDz+vbaskQwPkLwbM5n8ZapWKbaAlKScQWv+uafbcBfyPUbjnTUrXHXoGdNuZPKkgcF41XejpndlNAFzkOj6KmHz0yluMQLOZGEBWbcEbr0piY71Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=yDQ0qU7D; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=lepPxfJE; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Martin Kaistra <martin.kaistra@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1727686201;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ckv9nAlTD6BnATcKYD5DwGaJEX2aVRsjR9zKuct5KDg=;
-	b=yDQ0qU7DqmUcX008OwqPzNFJs9Pkr8oV1t1ojO0zawxd8RkbmxRGnFFhV65wd5GsGDuw7X
-	212JBP9a8f8A7DkEyBdAXigdcGTYsPhSzWmR6Ii+//8wx5L+5dPQ/qRPfqyDiOM3L1Hq5i
-	ycfTSgn2vxB+XLzt9rjjAuPyiLLEPsQEeyttu3tp49442joZmzZgxRjJCQ9b9cEmL5cCPh
-	QKKvk8UVVuUAAjEY626kf8n9Mcc4/bBic+xcvWOyIZywLFXB8JNuJSr9nZib6e/6irKY3/
-	XMxEZp3rGyvM/OCPdOZ5n8UBMMIyQwR9YtgKGSY6twYwjjdOavQlp7H2lzPbjw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1727686201;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ckv9nAlTD6BnATcKYD5DwGaJEX2aVRsjR9zKuct5KDg=;
-	b=lepPxfJE0TWt0JuB+VfIGW7IgMhMXMD55z1w/PiFi5pHrJdGck80sRIFkS8tg2whCqzVH1
-	txzHJp71gY7L07CA==
-To: linux-wireless@vger.kernel.org
-Cc: Jes Sorensen <Jes.Sorensen@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: [PATCH] wifi: rtl8xxxu: Perform update_beacon_work when beaconing is enabled
-Date: Mon, 30 Sep 2024 10:49:55 +0200
-Message-Id: <20240930084955.455241-1-martin.kaistra@linutronix.de>
+	s=arc-20240116; t=1727686347; c=relaxed/simple;
+	bh=TQE4segIn7K7TY4aqun96Q+vumK87wqCxd0UAZYpdMY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dJiAA3bKLbW5ISXNoxLRcjXEMcZje7pcRWxPDI93mq0mj0t+aI0mazg9L5kj2vKLJtpNm6voR46Y5Lf/Zqy51kyjU2q4D4wrWzjVloFdrBlHiDdD2VxyUArDjKTA7VnATrdHVRMz0mXmcFDJkAiM5zzCZhw8cSp8mIpAdEfke7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UmX5OvWP; arc=none smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-7163489149eso3429166a12.1
+        for <linux-wireless@vger.kernel.org>; Mon, 30 Sep 2024 01:52:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727686346; x=1728291146; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hT900MQVpXa5tDUbRnu9huAT0/u/D21Vi3hT0pX5t/M=;
+        b=UmX5OvWP9cwrklu4V5R43Fl8cGBYz+WOUI5vzOuE/cta8dW5y7IwvmdGXMax7UPh/x
+         l891S2yAue+/8wP4eeu40cZaMPiicJs10oFPJkO5dxWSTL+9VPHh7uKGo2t/SOrJO/bD
+         lyyXPnOX9UQOgC79K8DMVZt0eHBgbtweuFpztSJtYhJZmeiAtRnX8DlBkQs/9ttwNChY
+         9Xa5xQJISg72gZTMG/GtaVYe6jRKz73hcOSPquhOlEslISAtcg4Rze3cVbGzlY96xjFm
+         qV34Sgif6pxNfZZnj03vx1o1ZlBnLKZBZvSplfMP4wgIpT0ByADCjvdN8Pue+r3Y61Og
+         Vxrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727686346; x=1728291146;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hT900MQVpXa5tDUbRnu9huAT0/u/D21Vi3hT0pX5t/M=;
+        b=FKmwuyOp2NwtfnfgMlzitjt8DHPuYwZfif7vmPQesL4LZdxLBH9SU5+4e4fRoqDYpJ
+         olXtMb87farxPZ8f66V1QA081v/ExqsQ8r7Or5Oj7zr+gygWAxkmwHppyr0junklknn9
+         AiCqw5mGUuOBcrL1JjVR+G7G8eRxeeMOB7CMOQnE5EnB3mjAmXFc6Bh7W2qMyRH4UJjQ
+         nLseco4/HWisKXQztmN/JVZ5TCorWGbko/Bar6R7H+EYH5e6sYWUFfXMU5IeZMF0TqJt
+         dXHwgZsvc/ICVGGgI9YdHuJayiNhgh/wgQAoHID+CjweNGTFNxO6gz2B9jT6+m6I0p6S
+         /NQg==
+X-Gm-Message-State: AOJu0YwAj06D+KUhK3CTxYpZN7k4gWeqL/hJ6AHTUrGd9mZkoqBaue3y
+	9yQk6JEKH9EOcJk5xSAZfU+CGVVPXASFgQa8lUcKrZA4ATt4wW0K
+X-Google-Smtp-Source: AGHT+IEwE+dJYvcb71id0l2YD4NvE1doLPKZAiOo1UvuxHWIQzv/fRz2UK+KxVFfRn/BpobLp/ZqVQ==
+X-Received: by 2002:a05:6a20:2d0a:b0:1d5:1604:65e5 with SMTP id adf61e73a8af0-1d516046696mr7204456637.40.1727686345584;
+        Mon, 30 Sep 2024 01:52:25 -0700 (PDT)
+Received: from localhost.localdomain (59-124-166-19.hinet-ip.hinet.net. [59.124.166.19])
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-71b2652b1c0sm5940149b3a.145.2024.09.30.01.52.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Sep 2024 01:52:25 -0700 (PDT)
+From: Ping-Ke Shih <pkshih@gmail.com>
+To: wens@kernel.org
+Cc: linux-wireless@vger.kernel.org,
+	wireless-regdb@lists.infradead.org
+Subject: [PATCH v2] wireless-regdb: Update regulatory info for Tanzania (TZ) for 2024
+Date: Mon, 30 Sep 2024 16:51:43 +0800
+Message-Id: <20240930085143.10754-1-pkshih@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -66,41 +80,76 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In STA+AP concurrent mode, performing a scan operation on one vif
-temporarily stops beacons on the other. When the scan is completed,
-beacons are enabled again with BSS_CHANGED_BEACON_ENABLED.
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-We can observe that no beacons are being sent when just
-rtl8xxxu_start_tx_beacon() is being called.
+United Republic of Tanzania, Tanzania Communications Regulatory Authority
+released Minimum Technical Specifications for Short Range Devices (SRDs)
+on 2024 [1].
 
-Thus, also perform update_beacon_work in order to restore beaconing.
+ * 2400-2483.5 MHz
+   - 100 mW e.i.r.p.
+ * 5150-5350 MHz
+   - 200 mW mean e.i.r.p.
+     * The maximum mean e.i.r.p. density shall be limited to 10 mW/MHz
+       in any 1 MHz band.
+   - EN 301 893
+     * without TPC: 20 dBm when operating in 5250-5350 MHz
+       (20 dBm is adopted for 5250-5350 MHz)
+     * DFS: 5250-5350 MHz
+   - Restricted to indoor use.
+ * 5470-5725 MHz
+   - 250 mW e.i.r.p
+     * The maximum mean e.i.r.p. density shall be limited to 50 mW/MHz
+       in any 1 MHz band
+   - EN 301 893
+     * DFS: 5470-5725 MHz
+   - Indoor as well as outdoor use allowed.
+ * 5725-5850 MHz
+   - 1W
+   - EN 302 502
+     * DFS: 5850 - 5875 MHz
+     * FWA device shall have the capability to reduce the operating
+       mean EIRP level to a level not exceeding 24 dBm for ChS = 20 MHz
+       (24 dBm is adopted)
+ * 5945-6425 MHz
+   - 23 dBm for LPI usage
+     (should be indoor naturally)
+   - 14 dBm for VLP usage
 
-Fixes: cde8848cad0b ("wifi: rtl8xxxu: Add beacon functions")
-Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+[1] https://www.tcra.go.tz/download/sw-1719952895-Minimum%20Technical%20Specifications%20for%20Short%20Range%20Devices%20(SRD),%20June%202024.pdf
+
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtl8xxxu/core.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+v2:
+  - 20 dBm when operating in 5250-5350 MHz for devices without TPC
+---
+ db.txt | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-index 7891c988dd5f0..f95898f68d68a 100644
---- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-+++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-@@ -5058,10 +5058,12 @@ rtl8xxxu_bss_info_changed(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	}
+diff --git a/db.txt b/db.txt
+index 956cfd044157..932f8464de5a 100644
+--- a/db.txt
++++ b/db.txt
+@@ -1873,9 +1873,15 @@ country TW: DFS-FCC
+ 	# 60g band, LP0002 section 4.13.1.1 (1)(A), EIRP=40dBm(43dBm peak)
+ 	(57000 - 66000 @ 2160), (40)
+  
+-country TZ:
+-	(2402 - 2482 @ 40), (20)
+-	(5735 - 5835 @ 80), (30)
++# Source:
++# https://www.tcra.go.tz/download/sw-1719952895-Minimum%20Technical%20Specifications%20for%20Short%20Range%20Devices%20(SRD),%20June%202024.pdf
++country TZ: DFS-ETSI
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5250 @ 80), (200 mW), AUTO-BW, NO-OUTDOOR
++	(5250 - 5350 @ 80), (20), DFS, AUTO-BW, NO-OUTDOOR
++	(5470 - 5725 @ 160), (250 mW), DFS, NO-OUTDOOR
++	(5725 - 5850 @ 80), (24), DFS
++	(5945 - 6425 @ 320), (23), NO-OUTDOOR
  
- 	if (changed & BSS_CHANGED_BEACON_ENABLED) {
--		if (bss_conf->enable_beacon)
-+		if (bss_conf->enable_beacon) {
- 			rtl8xxxu_start_tx_beacon(priv);
--		else
-+			schedule_delayed_work(&priv->update_beacon_work, 0);
-+		} else {
- 			rtl8xxxu_stop_tx_beacon(priv);
-+		}
- 	}
- 
- 	if (changed & BSS_CHANGED_BEACON)
+ # Source: https://zakon.rada.gov.ua/laws/show/z0201-15#n48
+ # Although it is allowed to use up to 250 mW for some 5 GHz frequency ranges,
 -- 
-2.39.5
+2.25.1
 
 
