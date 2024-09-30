@@ -1,68 +1,73 @@
-Return-Path: <linux-wireless+bounces-13327-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13328-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6204C98AB43
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 19:41:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9E7498AB44
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 19:41:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECAAD1F23505
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 17:41:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31851B2523E
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 17:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E8C1990C2;
-	Mon, 30 Sep 2024 17:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88DD195805;
+	Mon, 30 Sep 2024 17:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="TJy3hHL+"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Sk4fGA2X"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D44198E9E
-	for <linux-wireless@vger.kernel.org>; Mon, 30 Sep 2024 17:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB9B198E89
+	for <linux-wireless@vger.kernel.org>; Mon, 30 Sep 2024 17:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727718039; cv=none; b=NfgG5/ouUQVBwPmzAecapWjARir5u/oI3WePdTiowyOOn1iYn2T9RnRker8fWxEkuOzIkYqqXmfc+af42/Px3r8nbBhiIUMjwq0aI6ilN7ulvQjNA1eYIeDuMgJq0MX4LSzjhlqNIVgwrScbuozpgf924yPYI9f4IqU25X9y4AY=
+	t=1727718042; cv=none; b=VetEC8GRtjVIBMJ/xfRe29eTUN6sBYPozzwf2S2FHrF67eyr4mBz+YOymB4Gq04vGaOLQ1zRyzXuUzbAHVUgDZeWOgvWoJ7hkYaNDalIkc//fsE6jEM84qsbGJuFnxjdxRqeGPB/8q0SO6eVfxeZ8MBX3b4BWhevWYURP2KQ4tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727718039; c=relaxed/simple;
-	bh=HpOO7cwUvfM3msQNR0DKOpDfa4iJGBZR1VX4E7ZyK7k=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qIUl+SkGQjX62c6HTnbWnh8rY0d/rfubct6Y6Mn/W7FJ2NdkJjAV1P7PJgwDd8AFYSqYFbys3XIzJWlER7not/cXmIejKP6/mqxYgDuUh7Tailzxd+0IvuToL50v4u8g9HkYH+QUqnd4zpvgEPohnY/6OJn1ADMPjYoXGQ6DiZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=TJy3hHL+; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1727718042; c=relaxed/simple;
+	bh=Lib154kQZU9JEDJ7lQZaXwr+61XbFcnYCUrFWHJpvx4=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=AKXBy3P383xlOtezW2IiMoJMGjvBsEOYBIeeMPJ7rfwRwqh52qVr03PTd4D8ggEoRpLk+BwAic+oKB+c+aV6VNJgrBEezhgcxuraVrr+/R4SAGWQbclFapjrp9doo4r0kOrTZQt1FwIubUNZW2xq1CZNwy90TzpLPj2FK+acHlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Sk4fGA2X; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48UCDmEA018454;
-	Mon, 30 Sep 2024 17:40:35 GMT
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48UBP4WW028154;
+	Mon, 30 Sep 2024 17:40:38 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=a8lhSik6RlyktlYZWW5NJU
-	0ZqJr01P+wjiX7IUh/yvk=; b=TJy3hHL+MD0QyjFxgacapRXb88PJoS5Qzfwbkb
-	sVLilHc405RIVt/JLvJPtuxa8Br8I14Y3CBIC+K3LU3OTvTIbSmhaiLGPjvAAGu8
-	KJtbZC9NTKkypZu2WGlpu6S8xL0e3c1TLiAC43JkkZRxrEdiW/TVALOVRk8rYCL2
-	SVw3dP5FYjZCS1+YEW5sMu7ZjvkiubS6FGkr7JuMi1d6cGf4+T3m5ojSO+0jgEz0
-	jzfY3F2TLIPa4YNs1DWEvmcJ0ede3/Rgfs6T3KbZAWZPYHh3p/WAlUunUbIp9i9s
-	i2YrybiPoavP8kmLKn3IsbMoQHIauLfn/mQBPmQH7sNIgklw==
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	DyH547WQEvRmqzVRA7WQJ+TQkgoaurnoW0x8ikRbtEY=; b=Sk4fGA2XTyyjtxJc
+	F/mZ76TsxNpHtzPxULEJ2ZnJs1PWbcUAToNRmONOvOUT9Zpj38Ku+r9p770CRmYm
+	8sZXFxXoCoQsg2wMSs1mrmCkgKJvFqy/4zxTTu1TdDKgmza+8RQnHyK3sP/ut4Zi
+	Mdu7mJL6VJTgth/csqpxo3KQnJsvkSttLs85wnkQL5yyzq6vCxHlaMETPSwrMylr
+	6uUbDzDIMYVtMajwLmIRJ7/l1t6JPpnvK038fH7IplLf4zB09xWo7K1961ExVmIY
+	pKUXXDDl+Beq7hOyl93hPuJCnC90f/gFObbZlF+u2AtO3+MUAAkRJKvh6B9xZsF9
+	YQ+BEQ==
 Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41xa12nkrx-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41xb38wjak-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 30 Sep 2024 17:40:35 +0000 (GMT)
+	Mon, 30 Sep 2024 17:40:38 +0000 (GMT)
 Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48UHeXbi026288
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48UHeb0I026315
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 30 Sep 2024 17:40:33 GMT
+	Mon, 30 Sep 2024 17:40:37 GMT
 Received: from hu-rdevanat-blr.qualcomm.com (10.80.80.8) by
  nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Mon, 30 Sep 2024 10:40:31 -0700
+ 15.2.1544.9; Mon, 30 Sep 2024 10:40:35 -0700
 From: Roopni Devanathan <quic_rdevanat@quicinc.com>
 To: <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>,
-        Roopni Devanathan
-	<quic_rdevanat@quicinc.com>
-Subject: [PATCH 0/2] wifi: ath12k: Support AST and Puncture Stats
-Date: Mon, 30 Sep 2024 23:10:08 +0530
-Message-ID: <20240930174010.617123-1-quic_rdevanat@quicinc.com>
+        Dinesh Karthikeyan
+	<quic_dinek@quicinc.com>,
+        Roopni Devanathan <quic_rdevanat@quicinc.com>
+Subject: [PATCH 1/2] wifi: ath12k: Support AST Entry Stats
+Date: Mon, 30 Sep 2024 23:10:09 +0530
+Message-ID: <20240930174010.617123-2-quic_rdevanat@quicinc.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240930174010.617123-1-quic_rdevanat@quicinc.com>
+References: <20240930174010.617123-1-quic_rdevanat@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,59 +80,190 @@ X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01c.na.qualcomm.com (10.47.97.35)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: eUqKVDv0v1eIwzZ0hev91MclX48K2blI
-X-Proofpoint-GUID: eUqKVDv0v1eIwzZ0hev91MclX48K2blI
+X-Proofpoint-GUID: dE9yilvSo3GfAmWyKrepLbV2urHqSwFj
+X-Proofpoint-ORIG-GUID: dE9yilvSo3GfAmWyKrepLbV2urHqSwFj
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=563
- impostorscore=0 priorityscore=1501 lowpriorityscore=0 suspectscore=0
- bulkscore=0 malwarescore=0 spamscore=0 clxscore=1015 mlxscore=0
- adultscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2408220000 definitions=main-2409300127
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ lowpriorityscore=0 spamscore=0 suspectscore=0 mlxscore=0 phishscore=0
+ mlxlogscore=999 impostorscore=0 adultscore=0 malwarescore=0
+ priorityscore=1501 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2408220000 definitions=main-2409300127
 
-Add support to request HTT stats type 41 and 46 from firmware. These
-stats give Address Search Table(AST) entries stats and pdev puncture
-stats, respectively.
+From: Dinesh Karthikeyan <quic_dinek@quicinc.com>
 
-Depends-on:
-[PATCH] wifi: ath12k: Modify print_array_to_buf() to support arrays with 1-based semantics
-Link: https://lore.kernel.org/linux-wireless/20240730035154.3723773-1-quic_rdevanat@quicinc.com/
+Add support to request Address Search Table(AST) entries stats
+from firmware through HTT stats type 41. These stats give AST entries
+related information such as software peer id, MAC address, pdev id,
+vdev, id, next hop, etc.
 
-[PATCH 0/4] wifi: ath12k: Support Ring, SFM, Transmit MU, SelfGen stats, CCA stats
-Link: https://lore.kernel.org/linux-wireless/20240913082949.573482-4-quic_rdevanat@quicinc.com/T/
+Sample output:
+-------------
+echo 41 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
+cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats
+HTT_AST_ENTRY_TLV:
+ast_index = 10
+mac_addr = 00:00:00:01:00:00
+sw_peer_id = 0
+pdev_id = 3
+vdev_id = 255
+next_hop = 0
+mcast = 0
+monitor_direct = 0
+mesh_sta = 0
+mec = 0
+intra_bss = 0
 
-[PATCH] wifi: ath12k: Support Pdev OBSS Stats
-Link: https://lore.kernel.org/linux-wireless/20240919101812.941145-1-quic_rdevanat@quicinc.com/
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
 
-[PATCH] wifi: ath12k: Support DMAC Reset Stats
-Link: https://lore.kernel.org/linux-wireless/20240926051110.2477814-1-quic_rdevanat@quicinc.com/
+Signed-off-by: Dinesh Karthikeyan <quic_dinek@quicinc.com>
+Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
+---
+ .../wireless/ath/ath12k/debugfs_htt_stats.c   | 56 +++++++++++++++++++
+ .../wireless/ath/ath12k/debugfs_htt_stats.h   | 18 ++++++
+ drivers/net/wireless/ath/ath12k/dp.h          | 12 ++++
+ 3 files changed, 86 insertions(+)
 
-[PATCH 0/2] wifi: ath12k: Support pdev Rate, Scheduled Algorithm Stats
-Link: https://lore.kernel.org/linux-wireless/20240930171705.596703-1-quic_rdevanat@quicinc.com/
-
-Dinesh Karthikeyan (1):
-  wifi: ath12k: Support AST Entry Stats
-
-Rajat Soni (1):
-  wifi: ath12k: Support pdev Puncture Stats
-
- .../wireless/ath/ath12k/debugfs_htt_stats.c   | 194 ++++++++++++++++++
- .../wireless/ath/ath12k/debugfs_htt_stats.h   |  56 +++++
- drivers/net/wireless/ath/ath12k/dp.h          |  12 ++
- 3 files changed, 262 insertions(+)
-
-
-base-commit: ced1f8bd64cda4e0c1df0890d1041cc6b18d5c77
-prerequisite-patch-id: 970109034faa25a7630720c0da29c875e821f9ec
-prerequisite-patch-id: 0bda913781a634c055869a033aa9b34d10825a20
-prerequisite-patch-id: 4d37990775694f110ce3e87096231fe8855f09f5
-prerequisite-patch-id: 121409543edef60c5f6144dd7ae3a615a78520f7
-prerequisite-patch-id: ecac67f6fce1dd4d5089dbc3da840e311f6a7218
-prerequisite-patch-id: 0537ae604d2617e42bef13bfb791aad4d11bf6e1
-prerequisite-patch-id: da5a4e5cc3097994bfcba4b37680c90b0675ccf9
-prerequisite-patch-id: fcd0ce1adcc63e80c95e4636bd4614bd5b732ffa
-prerequisite-patch-id: 13cdebd7e2d7d35eb1da839c5b94edb9c83f868f
+diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+index a1170c120825..8016f1b007f2 100644
+--- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
++++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+@@ -2536,6 +2536,59 @@ ath12k_htt_print_pdev_obss_pd_stats_tlv(const void *tag_buf, u16 tag_len,
+ 	stats_req->buf_len = len;
+ }
+ 
++static void
++ath12k_htt_print_ast_entry_tlv(const void *tag_buf, u16 tag_len,
++			       struct debug_htt_stats_req *stats_req)
++{
++	const struct ath12k_htt_ast_entry_tlv *htt_stats_buf = tag_buf;
++	u8 *buf = stats_req->buf;
++	u32 len = stats_req->buf_len;
++	u32 buf_len = ATH12K_HTT_STATS_BUF_SIZE;
++	u32 mac_addr_l32;
++	u32 mac_addr_h16;
++	u32 ast_info;
++
++	if (tag_len < sizeof(*htt_stats_buf))
++		return;
++
++	mac_addr_l32 = le32_to_cpu(htt_stats_buf->mac_addr.mac_addr_l32);
++	mac_addr_h16 = le32_to_cpu(htt_stats_buf->mac_addr.mac_addr_h16);
++	ast_info = le32_to_cpu(htt_stats_buf->info);
++
++	len += scnprintf(buf + len, buf_len - len, "HTT_AST_ENTRY_TLV:\n");
++	len += scnprintf(buf + len, buf_len - len, "ast_index = %u\n",
++			 le32_to_cpu(htt_stats_buf->ast_index));
++	len += scnprintf(buf + len, buf_len - len,
++			 "mac_addr = %02x:%02x:%02x:%02x:%02x:%02x\n",
++			 u32_get_bits(mac_addr_l32, ATH12K_HTT_MAC_ADDR_L32_0),
++			 u32_get_bits(mac_addr_l32, ATH12K_HTT_MAC_ADDR_L32_1),
++			 u32_get_bits(mac_addr_l32, ATH12K_HTT_MAC_ADDR_L32_2),
++			 u32_get_bits(mac_addr_l32, ATH12K_HTT_MAC_ADDR_L32_3),
++			 u32_get_bits(mac_addr_h16, ATH12K_HTT_MAC_ADDR_H16_0),
++			 u32_get_bits(mac_addr_h16, ATH12K_HTT_MAC_ADDR_H16_1));
++
++	len += scnprintf(buf + len, buf_len - len, "sw_peer_id = %u\n",
++			 le32_to_cpu(htt_stats_buf->sw_peer_id));
++	len += scnprintf(buf + len, buf_len - len, "pdev_id = %u\n",
++			 u32_get_bits(ast_info, ATH12K_HTT_AST_PDEV_ID_INFO));
++	len += scnprintf(buf + len, buf_len - len, "vdev_id = %u\n",
++			 u32_get_bits(ast_info, ATH12K_HTT_AST_VDEV_ID_INFO));
++	len += scnprintf(buf + len, buf_len - len, "next_hop = %u\n",
++			 u32_get_bits(ast_info, ATH12K_HTT_AST_NEXT_HOP_INFO));
++	len += scnprintf(buf + len, buf_len - len, "mcast = %u\n",
++			 u32_get_bits(ast_info, ATH12K_HTT_AST_MCAST_INFO));
++	len += scnprintf(buf + len, buf_len - len, "monitor_direct = %u\n",
++			 u32_get_bits(ast_info, ATH12K_HTT_AST_MONITOR_DIRECT_INFO));
++	len += scnprintf(buf + len, buf_len - len, "mesh_sta = %u\n",
++			 u32_get_bits(ast_info, ATH12K_HTT_AST_MESH_STA_INFO));
++	len += scnprintf(buf + len, buf_len - len, "mec = %u\n",
++			 u32_get_bits(ast_info, ATH12K_HTT_AST_MEC_INFO));
++	len += scnprintf(buf + len, buf_len - len, "intra_bss = %u\n\n",
++			 u32_get_bits(ast_info, ATH12K_HTT_AST_INTRA_BSS_INFO));
++
++	stats_req->buf_len = len;
++}
++
+ static void
+ ath12k_htt_print_dmac_reset_stats_tlv(const void *tag_buf, u16 tag_len,
+ 				      struct debug_htt_stats_req *stats_req)
+@@ -2862,6 +2915,9 @@ static int ath12k_dbg_htt_ext_stats_parse(struct ath12k_base *ab,
+ 	case HTT_STATS_PDEV_OBSS_PD_TAG:
+ 		ath12k_htt_print_pdev_obss_pd_stats_tlv(tag_buf, len, stats_req);
+ 		break;
++	case HTT_STATS_AST_ENTRY_TAG:
++		ath12k_htt_print_ast_entry_tlv(tag_buf, len, stats_req);
++		break;
+ 	case HTT_STATS_DMAC_RESET_STATS_TAG:
+ 		ath12k_htt_print_dmac_reset_stats_tlv(tag_buf, len, stats_req);
+ 		break;
+diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
+index ac86cab234ec..6978c3243ee3 100644
+--- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
++++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
+@@ -135,6 +135,7 @@ enum ath12k_dbg_htt_ext_stats_type {
+ 	ATH12K_DBG_HTT_EXT_STATS_PDEV_TX_MU		= 17,
+ 	ATH12K_DBG_HTT_EXT_STATS_PDEV_CCA_STATS		= 19,
+ 	ATH12K_DBG_HTT_EXT_STATS_PDEV_OBSS_PD_STATS	= 23,
++	ATH12K_DBG_HTT_EXT_AST_ENTRIES			= 41,
+ 	ATH12K_DBG_HTT_EXT_STATS_SOC_ERROR		= 45,
+ 	ATH12K_DBG_HTT_EXT_STATS_PDEV_SCHED_ALGO	= 49,
+ 	ATH12K_DBG_HTT_EXT_STATS_MANDATORY_MUOFDMA	= 51,
+@@ -196,6 +197,7 @@ enum ath12k_dbg_htt_tlv_tag {
+ 	HTT_STATS_TX_SELFGEN_AX_SCHED_STATUS_STATS_TAG	= 112,
+ 	HTT_STATS_MU_PPDU_DIST_TAG			= 129,
+ 	HTT_STATS_TX_PDEV_MUMIMO_GRP_STATS_TAG		= 130,
++	HTT_STATS_AST_ENTRY_TAG				= 132,
+ 	HTT_STATS_TX_PDEV_RATE_STATS_BE_OFDMA_TAG	= 135,
+ 	HTT_STATS_TX_SELFGEN_BE_ERR_STATS_TAG		= 137,
+ 	HTT_STATS_TX_SELFGEN_BE_STATS_TAG		= 138,
+@@ -1122,4 +1124,20 @@ struct ath12k_htt_tx_pdev_rate_stats_be_ofdma_tlv {
+ 	__le32 be_ofdma_eht_sig_mcs[ATH12K_HTT_TX_PDEV_NUM_EHT_SIG_MCS_CNTRS];
+ } __packed;
+ 
++#define ATH12K_HTT_AST_PDEV_ID_INFO		GENMASK(1, 0)
++#define ATH12K_HTT_AST_VDEV_ID_INFO		GENMASK(9, 2)
++#define ATH12K_HTT_AST_NEXT_HOP_INFO		BIT(10)
++#define ATH12K_HTT_AST_MCAST_INFO		BIT(11)
++#define ATH12K_HTT_AST_MONITOR_DIRECT_INFO	BIT(12)
++#define ATH12K_HTT_AST_MESH_STA_INFO		BIT(13)
++#define ATH12K_HTT_AST_MEC_INFO			BIT(14)
++#define ATH12K_HTT_AST_INTRA_BSS_INFO		BIT(15)
++
++struct ath12k_htt_ast_entry_tlv {
++	__le32 sw_peer_id;
++	__le32 ast_index;
++	struct htt_mac_addr mac_addr;
++	__le32 info;
++} __packed;
++
+ #endif
+diff --git a/drivers/net/wireless/ath/ath12k/dp.h b/drivers/net/wireless/ath/ath12k/dp.h
+index 2fb18b83b3ee..ec629ff3704b 100644
+--- a/drivers/net/wireless/ath/ath12k/dp.h
++++ b/drivers/net/wireless/ath/ath12k/dp.h
+@@ -1789,6 +1789,18 @@ enum vdev_stats_offload_timer_duration {
+ 	ATH12K_STATS_TIMER_DUR_2SEC = 3,
+ };
+ 
++#define ATH12K_HTT_MAC_ADDR_L32_0	GENMASK(7, 0)
++#define ATH12K_HTT_MAC_ADDR_L32_1	GENMASK(15, 8)
++#define ATH12K_HTT_MAC_ADDR_L32_2	GENMASK(23, 16)
++#define ATH12K_HTT_MAC_ADDR_L32_3	GENMASK(31, 24)
++#define ATH12K_HTT_MAC_ADDR_H16_0	GENMASK(7, 0)
++#define ATH12K_HTT_MAC_ADDR_H16_1	GENMASK(15, 8)
++
++struct htt_mac_addr {
++	__le32 mac_addr_l32;
++	__le32 mac_addr_h16;
++} __packed;
++
+ static inline void ath12k_dp_get_mac_addr(u32 addr_l32, u16 addr_h16, u8 *addr)
+ {
+ 	memcpy(addr, &addr_l32, 4);
 -- 
 2.25.1
 
