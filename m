@@ -1,73 +1,63 @@
-Return-Path: <linux-wireless+bounces-13338-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13339-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46B4B98AEBF
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 22:56:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8330398AED5
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 23:05:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2EE11F23AAA
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 20:56:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 339A528387A
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 21:05:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B937717BB38;
-	Mon, 30 Sep 2024 20:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 972DF199FAF;
+	Mon, 30 Sep 2024 21:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EjnN24l1"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="h+19Aty3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6D31A2547
-	for <linux-wireless@vger.kernel.org>; Mon, 30 Sep 2024 20:56:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C07194082
+	for <linux-wireless@vger.kernel.org>; Mon, 30 Sep 2024 21:05:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727729777; cv=none; b=dccCAKgJPk43LtTiVu1LC7Q/z3kJL0xwWlX6CpQb5WZ67rRTON/uvo89S2Yhz8cWD/Yp8y5m6oQadzUfJ92QnqIYJ/tJoFFAfetOqhelBirAKGvdItBsyZn95Dan/tMZ3GLQxny6f816YlOAnGvXpMM0L1f57TSgUZJBWnjboBY=
+	t=1727730338; cv=none; b=sISYK9ZOi2j+NK/w35+Atw5r3k8f0JApUWjeS2nRiOUXPYcwXSrBG8JNAN4BNaA7BGHBIRhTzkHmji9m8Q7UoW+0++n55XCqTmpoRY01aWWyXwRtyHGhu7UiTAz8N+46bF4UySunmzOx3fe+LW6zRdOlEO/CHEQmL4Gi7SDDh3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727729777; c=relaxed/simple;
-	bh=+ZbOB6PU2gGki+6Nx02UdhkmNQvTyVlBCvONwafgdE0=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=a1/koB+yxaCQMm0Ac0knqAyx6lmbbxEnW1vy1JmOoBzysiyci39EDkVQEuqqp27YQzB63OaZmrt7NUXqHJEWa3QYb/Hu7kfu5+nszkGjgvG2W1PILQOSPAXarbVsOfxaMa7SuTz5Jz03i0Yj8dldHWfVqIF8BfEFjW4aYbSjYKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EjnN24l1; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-37cdbcb139cso2354818f8f.1
-        for <linux-wireless@vger.kernel.org>; Mon, 30 Sep 2024 13:56:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727729774; x=1728334574; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=RLsaO8If/Uzi1PJiBJZweLXUXSjRPUiSecApRUIpTKg=;
-        b=EjnN24l1m15aXrC+CEPAGtbXSnYeLQph0e78qR//NNPux2gLB2emS0unwDOSGtzJko
-         w3CiFkye/dnpUPikdAwTHUf9NIlmhTsyd6yX26VDoXrCVXsAgotBGdmefCBFUVDeBq0h
-         D9VnISXulSPixHkdJMqxtoZ183h+3TQPoTqgG5AB+SlrNqdo/4ZI73jUDcK3jYS87Pr1
-         2rDqWnQLw8NltCUZxHZQhpIrhhbwxrms0kJRRO4zPY45yMGnfE7/YunsdW+f0UaV/TlQ
-         xzSpN1c0f+LS9W/ZSbvHUZef95U3+AaMJgKf10W8ROWsRTbkCgLpsW13cL3PhDltuexk
-         sGEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727729774; x=1728334574;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RLsaO8If/Uzi1PJiBJZweLXUXSjRPUiSecApRUIpTKg=;
-        b=Yyk453JDxmljrXHdbod76CYfFuINOt3dOS54VSegrv6NKTbFSvjvKeLCmEPVlwlmx2
-         SJAGYVKEp4ZU9rs7HmnfKtCYZQCwBV+00sJG5GTYGQmBH6Am2MeRcmCpvmvDs9ecCsIh
-         EdELJca/YIDWfmVFckxh5efsqFdIl8wchi+HBAv2rL7dOBOd+XOW1IH1yNw01WGPhZjL
-         e/jf/X0y9eu+4nKGX3AJYFeieCjMCVyYF5y0rxae6xS83JNdBblk/JVlFjPSaSkEY6RQ
-         27SxOnW4AMQ3o9VauvunzWv5bkE8cDLdJudv15lWUL8HJamw0jSmLZicHk5DiCU4l1J7
-         bUKw==
-X-Gm-Message-State: AOJu0Yy/UG2q1BCm7sUiU6cm6s58jl4BiCRCOlRTyAfBajCt3FhnOOWJ
-	bci6LyYdzxpBMAZVMV2Pvqbh1vdNriznUWBwJykUdHCg2soO5qGj1pADaA==
-X-Google-Smtp-Source: AGHT+IHnvGxpTyLquMc2qENG/CHUtqu6BwgRtYwtFpHJmRloHzkPdI4NBWhc8ugDrF1nCyIPvXGxsQ==
-X-Received: by 2002:adf:efc9:0:b0:37c:d569:467e with SMTP id ffacd0b85a97d-37cd5b10563mr7324867f8f.59.1727729773795;
-        Mon, 30 Sep 2024 13:56:13 -0700 (PDT)
-Received: from [192.168.1.50] ([79.113.150.231])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37cd5730fbbsm10266744f8f.77.2024.09.30.13.56.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Sep 2024 13:56:12 -0700 (PDT)
-Message-ID: <baca0d5d-072e-4003-ab4a-ecc524d6b89b@gmail.com>
-Date: Mon, 30 Sep 2024 23:56:09 +0300
+	s=arc-20240116; t=1727730338; c=relaxed/simple;
+	bh=t5JCqbwxCzYHuN8TsY1TKCCSjdAwBs/DMUcyBZf9gWc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=HYMfFpMQnlKSLDu5CfiVotG5pGIJYuIVqKNprRl9JoXdReFbDZVwQ2BHS+6tKj1xJk9cxypy5/H1f7eKSwyO6vlAf/q300FAwJ9f1sdu3k9CtcRkzEeSp9XcInlJ5zUZMzUvfp89XMoKcI64JhCsVcr17fgjksSFzV+hl2JObOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=h+19Aty3; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48UJrSYG018007;
+	Mon, 30 Sep 2024 21:05:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	pms573lxqBUzUs++iH9ZSuWuzqWOKhKMtahOq9MGFUQ=; b=h+19Aty3eCzEENfF
+	hBVJ46VRCeMcwhkqkIOuT7nIgUFlmp3SkYSCnI9fADhKD1A06b+0s0rAqOJfzaoE
+	TvtteqUuR/NIcjCYiY/b5VhpaS58d9w2KfG54JuKVPjapDOOlSqlflGANM4AGkJi
+	84K3yyeCpWbCXLIfAnNtOhokyqj+lNWEKDabNkMRCsoYD0yLSDv0Fwo67SL4GvFc
+	pWH1jrIp+7VipgkFl7IeoHyoD8iuTT+jDPlzUgahZwCTvmGZFkeu+0ez7qv7vmqf
+	gUi8+Kzlbj9K9hNMlf9dP8TMmBtI30ftGOW4BKINH3wYCqj4f+n91nwI26AQIdTJ
+	vhck4A==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41x7ge688r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Sep 2024 21:05:32 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48UL5W91030108
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Sep 2024 21:05:32 GMT
+Received: from [10.111.183.230] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 30 Sep
+ 2024 14:05:31 -0700
+Message-ID: <5c0a95a4-99e3-4a98-b008-a71a0eaaabef@quicinc.com>
+Date: Mon, 30 Sep 2024 14:05:30 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,135 +65,135 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: rtw88: alloc_skb(32768, GFP_ATOMIC) fails, driver gets stuck
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>, Sascha Hauer <sha@pengutronix.de>
-References: <6e7ecb47-7ea0-433a-a19f-05f88a2edf6b@gmail.com>
+Subject: Re: [PATCH] wifi: ath12k: fix use-after-free in
+ ath12k_dp_cc_cleanup()
+To: Rameshkumar Sundaram <quic_ramess@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20240926020931.3424376-1-quic_ramess@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
 Content-Language: en-US
-In-Reply-To: <6e7ecb47-7ea0-433a-a19f-05f88a2edf6b@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20240926020931.3424376-1-quic_ramess@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: H4JPgAnBHfEwPmgtj4mbmZJ0AazkjyFM
+X-Proofpoint-GUID: H4JPgAnBHfEwPmgtj4mbmZJ0AazkjyFM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 phishscore=0
+ bulkscore=0 mlxlogscore=999 lowpriorityscore=0 spamscore=0
+ priorityscore=1501 suspectscore=0 malwarescore=0 impostorscore=0
+ clxscore=1015 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409300152
 
-On 25/09/2024 14:46, Bitterblue Smith wrote:
-> Hi,
+On 9/25/2024 7:09 PM, Rameshkumar Sundaram wrote:
+> During ath12k module removal, in ath12k_core_deinit(),
+> ath12k_mac_destroy() un-registers ah->hw from mac80211 and frees
+> the ah->hw as well as all the ar's in it. After this
+> ath12k_core_soc_destroy()-> ath12k_dp_free()-> ath12k_dp_cc_cleanup()
+> tries to access one of the freed ar's from pending skb.
 > 
-> I have this problem with RTL8811CU, RTL8723DU, RTL8811AU, RTL8812AU.
-> I assume all USB devices are affected. If I have qBittorrent running,
-> the wifi stops working after a few hours:
+> This is because during mac destroy, driver failed to flush few
+> data packets, which were accessed later in ath12k_dp_cc_cleanup()
+> and freed, but using ar from the packet led to this use-after-free.
 > 
-> Sep 24 00:48:21 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
-> Sep 24 00:48:21 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-> Sep 24 00:48:23 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
-> Sep 24 00:48:23 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-> Sep 24 00:48:25 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
-> Sep 24 00:48:25 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-> Sep 24 00:48:27 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
-> Sep 24 00:48:27 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-> Sep 24 00:48:29 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
-> Sep 24 00:48:29 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-> Sep 24 00:48:31 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
-> Sep 24 00:48:31 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-> Sep 24 00:48:33 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
-> Sep 24 00:48:33 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-> Sep 24 00:48:35 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
-> Sep 24 00:48:35 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-> Sep 24 00:48:37 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
-> Sep 24 00:48:37 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-> Sep 24 00:48:39 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
-> Sep 24 00:48:39 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-> Sep 24 00:48:41 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS
-> Sep 24 00:48:41 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-> Sep 24 00:48:42 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: CTRL-EVENT-DISCONNECTED bssid=... reason=4 locally_generated=1
-> Sep 24 00:48:42 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: Added BSSID ... into ignore list, ignoring for 10 seconds
-> Sep 24 00:48:42 ideapad2 NetworkManager[433]: <info>  [1727128122.0377] device (wlp3s0f3u2i2): supplicant interface state: completed -> disconnected
-> Sep 24 00:48:45 ideapad2 NetworkManager[433]: <info>  [1727128125.6030] device (wlp3s0f3u2i2): supplicant interface state: disconnected -> scanning
-> Sep 24 00:48:47 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: Removed BSSID ... from ignore list (clear)
-> Sep 24 00:48:47 ideapad2 wpa_supplicant[1290]: wlp3s0f3u2i2: SME: Trying to authenticate with ... (SSID='...' freq=2472 MHz)
-> Sep 24 00:48:50 ideapad2 kernel: wlp3s0f3u2i2: authenticate with ... (local address=,,,)
-> Sep 24 00:48:51 ideapad2 NetworkManager[433]: <info>  [1727128131.2488] device (wlp3s0f3u2i2): supplicant interface state: scanning -> authenticating
-> Sep 24 00:48:51 ideapad2 kernel: wlp3s0f3u2i2: send auth to ... (try 1/3)
-> Sep 24 00:48:51 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-> Sep 24 00:48:52 ideapad2 kernel: wlp3s0f3u2i2: send auth to ... (try 2/3)
-> Sep 24 00:48:52 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-> Sep 24 00:48:53 ideapad2 kernel: wlp3s0f3u2i2: send auth to ... (try 3/3)
-> Sep 24 00:48:53 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware
-> Sep 24 00:48:54 ideapad2 kernel: wlp3s0f3u2i2: authentication with ... timed out
+> BUG: KASAN: use-after-free in ath12k_dp_cc_cleanup.part.0+0x5e2/0xd40 [ath12k]
+> Write of size 4 at addr ffff888150bd3514 by task modprobe/8926
+> CPU: 0 UID: 0 PID: 8926 Comm: modprobe Not tainted
+> 6.11.0-rc2-wt-ath+ #1746
+> Hardware name: Intel(R) Client Systems NUC8i7HVK/NUC8i7HVB, BIOS 
+> HNKBLi70.86A.0067.2021.0528.1339 05/28/2021
 > 
-> After this all scans return nothing. The chip is still alive,
-> though. The LED blinks during the scans (it's hardware-controlled)
-> and another device in monitor mode can see the probe requests.
+> Call Trace:
+>   <TASK>
+>   dump_stack_lvl+0x7d/0xe0
+>   print_address_description.constprop.0+0x33/0x3a0
+>   print_report+0xb5/0x260
+>   ? kasan_addr_to_slab+0x24/0x80
+>   kasan_report+0xd8/0x110
+>   ? ath12k_dp_cc_cleanup.part.0+0x5e2/0xd40 [ath12k]
+>   ? ath12k_dp_cc_cleanup.part.0+0x5e2/0xd40 [ath12k]
+>   kasan_check_range+0xf3/0x1a0
+>   __kasan_check_write+0x14/0x20
+>   ath12k_dp_cc_cleanup.part.0+0x5e2/0xd40 [ath12k]
+>   ath12k_dp_free+0x178/0x420 [ath12k]
+>   ath12k_core_stop+0x176/0x200 [ath12k]
+>   ath12k_core_deinit+0x13f/0x210 [ath12k]
+>   ath12k_pci_remove+0xad/0x1c0 [ath12k]
+>   pci_device_remove+0x9b/0x1b0
+>   device_remove+0xbf/0x150
+>   device_release_driver_internal+0x3c3/0x580
+>   ? __kasan_check_read+0x11/0x20
+>   driver_detach+0xc4/0x190
+>   bus_remove_driver+0x130/0x2a0
+>   driver_unregister+0x68/0x90
+>   pci_unregister_driver+0x24/0x240
+>   ? find_module_all+0x13e/0x1e0
+>   ath12k_pci_exit+0x10/0x20 [ath12k]
+>   __do_sys_delete_module+0x32c/0x580
+>   ? module_flags+0x2f0/0x2f0
+>   ? kmem_cache_free+0xf0/0x410
+>   ? __fput+0x56f/0xab0
+>   ? __fput+0x56f/0xab0
+>   ? debug_smp_processor_id+0x17/0x20
+>   __x64_sys_delete_module+0x4f/0x70
+>   x64_sys_call+0x522/0x9f0
+>   do_syscall_64+0x64/0x130
+>   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+> RIP: 0033:0x7f8182c6ac8b
 > 
-> I confirmed that even C2H stop coming. I used aireplay-ng to send
-> some authentication or association frames (can't remember) which
-> require TX ACK report. I saw "failed to get tx report from firmware"
-> and no C2H.
+> Commit 24de1b7b231c ("wifi: ath12k: fix flush failure in recovery
+> scenarios") added the change to decrement the pending packets count
+> in case of recovery which make sense as ah->hw as well all
+> ar's in it are intact during recovery, but during core deinit there
+> is no use in decrementing packets count or waking up the empty waitq
+> as the module is going to be removed also ar from pending skbs
+> can't be used and the packets should just be released back.
 > 
-> While qBittorrent is needed to trigger this bug, simply downloading
-> a random Linux iso did not do the job. "Other" torrents did. It's
-> unclear why. Maybe it's uploading that triggers the bug.
+> To fix this, add additional vif check before trying to use the
+> ar from skb->cb, because during core_deinit mac80211 will delete
+> all the vifs and ath12k will remove these vif's reference
+> (ath12k_mac_vif_unref()) from pending packets.
 > 
-> I left iperf3 running all day and nothing happened. Only qBittorrent
-> can break it.
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00214-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 > 
-> RTL8822CE doesn't have this problem. I can use qBittorrent with it
-> just fine.
+> Fixes: 24de1b7b231c ("wifi: ath12k: fix flush failure in recovery scenarios")
+> Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+> ---
+>  drivers/net/wireless/ath/ath12k/dp.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
 > 
-> I mounted debugfs and dumped the MAC registers during a scan using
-> this command:
+> diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
+> index 61aa78d8bd8c..09363ca15701 100644
+> --- a/drivers/net/wireless/ath/ath12k/dp.c
+> +++ b/drivers/net/wireless/ath/ath12k/dp.c
+> @@ -1203,9 +1203,14 @@ static void ath12k_dp_cc_cleanup(struct ath12k_base *ab)
+>  				continue;
+>  
+>  			skb_cb = ATH12K_SKB_CB(skb);
+> -			ar = skb_cb->ar;
+> -			if (atomic_dec_and_test(&ar->dp.num_tx_pending))
+> -				wake_up(&ar->dp.tx_empty_waitq);
+> +			/* skb_cb's ar is valid only if the skb is associated with
+> +			 * a valid vif.
+> +			 */
+> +			if (skb_cb->vif) {
+> +				ar = skb_cb->ar;
+> +				if (atomic_dec_and_test(&ar->dp.num_tx_pending))
+> +					wake_up(&ar->dp.tx_empty_waitq);
+> +			}
+>  
+>  			dma_unmap_single(ab->dev, ATH12K_SKB_CB(skb)->paddr,
+>  					 skb->len, DMA_TO_DEVICE);
 > 
-> for i in {00..20}; do sleep 0.5; cat /sys/kernel/debug/ieee80211/phy2/rtw88/mac_{0..7} > dead-$i.txt; done
-> 
-> I thought maybe some RX URBs failed silently and rtw88 stopped
-> sending them to the device (== stopped requesting data from it),
-> but that's not the case. [1]
-> 
-> I have the device in this state right now. Is there anything else
-> I should look at?
-> 
-> 
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/drivers/net/wireless/realtek/rtw88/usb.c?h=v6.10.11&id=25eaef533bf3ccc6fee5067aac16f41f280e343e#n641
+> base-commit: d35bb26e150d7fb7434959fad9fcaeaac99906e6
 
-I still don't know why qBittorrent is required to trigger this bug,
-but I found the problem.
+dropping this since there will be a v2
 
-alloc_skb fails (silently) therefore the RX URB is not submitted
-ever again. There are only 4 RX URBs.
-
-static void rtw_usb_rx_resubmit(struct rtw_usb *rtwusb, struct rx_usb_ctrl_block *rxcb)
-{
-	struct rtw_dev *rtwdev = rtwusb->rtwdev;
-	int error;
-
-	rxcb->rx_skb = alloc_skb(RTW_USB_MAX_RECVBUF_SZ, GFP_ATOMIC);
-	if (!rxcb->rx_skb)
-		return;
-
-	usb_fill_bulk_urb(rxcb->rx_urb, rtwusb->udev,
-			  usb_rcvbulkpipe(rtwusb->udev, rtwusb->pipe_in),
-			  rxcb->rx_skb->data, RTW_USB_MAX_RECVBUF_SZ,
-			  rtw_usb_read_port_complete, rxcb);
-
-	error = usb_submit_urb(rxcb->rx_urb, GFP_ATOMIC);
-
-I added an error message there:
-
-	rxcb->rx_skb = alloc_skb(RTW_USB_MAX_RECVBUF_SZ, GFP_ATOMIC);
-	if (!rxcb->rx_skb) {
-		rtw_err(rtwdev, "failed to allocate rx_skb\n");
-		return;
-	}
-
-Now I get these before it stops receiving:
-
-Sep 30 22:34:38 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to allocate rx_skb
-Sep 30 22:35:03 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to allocate rx_skb
-Sep 30 22:35:03 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to allocate rx_skb
-Sep 30 22:35:03 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to allocate rx_skb
-Sep 30 22:35:05 ideapad2 wpa_supplicant[1287]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS                                                                                        Sep 30 22:35:05 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware                                                                              
-Sep 30 22:35:07 ideapad2 wpa_supplicant[1287]: wlp3s0f3u2i2: CTRL-EVENT-BEACON-LOSS                                                                                        
-Sep 30 22:35:07 ideapad2 kernel: rtw_8723du 1-2:1.2: failed to get tx report from firmware                                                                                 
-Sep 30 22:35:08 ideapad2 wpa_supplicant[1287]: wlp3s0f3u2i2: CTRL-EVENT-DISCONNECTED bssid=... reason=4 locally_generated=1                                  
-
-What to do about it?
 
