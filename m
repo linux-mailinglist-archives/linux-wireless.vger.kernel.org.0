@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-13307-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13302-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDC1C989ABD
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 08:42:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AFE3989AB1
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 08:41:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F09181C20902
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 06:42:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D4372833DB
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 06:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C20518801A;
-	Mon, 30 Sep 2024 06:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E20C185E53;
+	Mon, 30 Sep 2024 06:38:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="BNCl9gU9"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Ra0Cg1i1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2074.outbound.protection.outlook.com [40.107.21.74])
+Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2074.outbound.protection.outlook.com [40.107.249.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585E9187339;
-	Mon, 30 Sep 2024 06:38:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC02D183CC7;
+	Mon, 30 Sep 2024 06:38:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.74
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727678334; cv=fail; b=CAG+6u7gnfMClw1L1frL0PP/9Yl3rbcEQowbVPhGcGV64tqwVTT167oDVI887zRapyd6ztFnpFrqVxAyumKRP36ggcYo9lZxnys5g0cPniylWLfroDATUnfGex1a9OpZfQbNN9KVcgfXVOrNvaNcgwXC2849kKwjSAbXor2uUgc=
+	t=1727678323; cv=fail; b=hLiQcplL86ksUTteM+ccLNO0llHrHKwk56+hYFPKfb6pNM+dFPvhFIsKM4827rFT/l8wQamNJfEiO1ynfLOYaZS4fqGinlMPiswGNrdAlf6fmPhyhvcY7ZrD8ukl9lJnKitBLcSQIAHC+pQDOXmAmw0gwgTYfnLYGIftq9xfumY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727678334; c=relaxed/simple;
-	bh=xllh9g36ue1/224g8nKYO6OCUHsEhg9Z5CXDr5IINEo=;
+	s=arc-20240116; t=1727678323; c=relaxed/simple;
+	bh=phzpkL3hvWwhFAZK9c6zhaK0kDiACcLy4HEF+9VaZBs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bRF1CjuPzAkvP0dNCKCvkD24+5Owq+FnW0SZhiI8Kk3eJma4o+3QUo50agDnXZ9kxupGc/woRXuQvD9ZMFoNpJxc2GaWDEMMgAJkKBVFedpT9eozrP/iUvcFFkN9lYucphGdVHLUOOqKoD1Z6Yycuy80rdDmZ9rVF+wYP1WSkEo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=BNCl9gU9; arc=fail smtp.client-ip=40.107.21.74
+	 Content-Type:MIME-Version; b=ceZpJ7YxZ1wmBcR9Z9XkFjWr7KLESkimQsK5tu2RcJzJsIoPYpVYp9mDfW5ycMgQ0+nXrW+lHQek54h/IiC5lYqRD5wqGH5DSvaZj76DDHQRQmENkQ7+Pil+hNBykNkI2YxbNCDpBX9HTz+lgi+4ynudXpsE+I8VJxv02jSSVUA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Ra0Cg1i1; arc=fail smtp.client-ip=40.107.249.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=upCSEo2bXblFwFtKIDSNLRHNerrXWxw2/5Ab8RYuvOqe8xVG2PyJ/NxgxN62a1HwM1mXc/RbyN2HilHzDohxMK1g6JGqnD56twT4fh4oc1g8LntTIakiDuep1IFNlRwuW0DFzI1o3NSGabCn7N7tL4XbFRbBBVpNAsJS62WiqIufeKMTcQh1uwDKTUNrP3gJol0QE9bvoTRgOvy3VNwr9Th/AYIILO4SNFngQuW0oMO87ywccyK1vRPwZQwDGqwDykjBxUjpJyP/N/YTgmFvWLmxyMGDOcgrCuS//rVY5CzHOuOymONqwo7TmB8z/rjqVk7JV2khOnUPN/cDFLuaIg==
+ b=FbKpSCQdkn3Dv8ZIg8ddfL2cet8yjsApLoly6mT/amrEDPZgJHIBXRsqOWAqKTVPVxQny4VxqZyw8io7qZKzbKDud8bpVKmfYO/zbE2vF8Na2y+AEugc5vkTGUH2urYNhFe4gWE8nJCp54VKj8MdNiJ702eWneXONbxJ5NwjLZPQh0ptgACrhvo1eqJZz9vsw5LAD7BAJrZ99L//e1o8KnNyIrzGHqwSo5kBfNNxYICn+NzK5CUvBEzcya5/RiQYKANvE6/BdFuOxnSqtA56c1mza2LeNlKO98Uj8K1sOqcSeeuS5a4moGmXiBklFUJAn0mLHa5kx8VWqvoXGHvWUg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1C+fZ+kLlXQ3hs4tcRj/7DLpQ0te3mfxO8sC9JlFSvg=;
- b=MkK+DHV1SJ7XTZrAKtfzhFml4LcTT29iFmffDwoFsO3SitCT1zkam8NH5VxSphTWJvsjpR8/vGLJBxQykCTJtBUmrNGa2fH2bGF8+c2oQ8NdcWDOb7D9lzq6u9XxXxOwO2vC86QzpO3Pd0FjEvT9l0IJBvbtFwAYLxMhf5uwDGPb5dl+8Tku0wafmRYuZu2/GGZtcQqsmUUVUIlKsSYXQ8dG13OFjU7qlXv+QpfgHBXgtCZr6o71qkQGlqQXNXj/M3iFCO+d9NO4AuiFYFxZ8WIavkVAUrEf09tDUR8OttX4RBAuX0rjEE4V/I+TxVcoaztZ71HajBWXtb4r9e2dIw==
+ bh=97/Xe14j3xdA5vSNX4xd+D6m5GBm6YuqYlLUoXjUL/s=;
+ b=B11IMPtCaz6togZ2aVOolobSfpwX/LEQEy4D8bo+5Mbib9sqXCWGRGOqbiVYikrzD1REITfvX1Z/HnrW+DuyI5umB8IFGe0BzYdg6JoxjqFrHDjhcoPxI5Q9HcFsrbOBLoqOJs7dmR/54gjV7wCF8jOxc4Z9K6WK+FMwdrMr389avD97/kKtTyIOZ8iXQXhVZNE0nO5nxEvWI/WIBfIHJJG5NfAHZaWljzu889ELIqBPxD/NAsSEfFGf80E2NMrKJmMrGGe1KXl+PXTU7Suk0VQ1c/0iBy6SrUHMOEQ31ihqDDy9jzawG2PaejKnQdtKap00EWtnDxkveHTrdAGyzw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1C+fZ+kLlXQ3hs4tcRj/7DLpQ0te3mfxO8sC9JlFSvg=;
- b=BNCl9gU96TiClRHe9ncNxHOFidW6KvrZEoYI3sNutfkx6Rw+Do83MlkfpDpon3I+BwiVFP+5rrrw1XwBheT8VMXV81vrvfnQcOvlGEq4g7/vEBVjtC+xY6qnRLLe4KfnetSqVD5Ez7/PTEM2p2y2zIFkL0kAYc0KBWO1w4Zx3PKkiSHT/fxq/ngBJbD0GH28nZ0fTvfmTwIb9OamfsyM/i+Qrrr2Z7LwoWu0bP3QsyaMThQ/FV9JAFBeDE5PAV9pqm9r8vQf7XexK/Pfg23AzNl5ifUX5A7Pxds5UFcut5A7H/VMSGajwkMWoiyZYlZZa/l4IejXlOWT6N0qJ7ZvKw==
+ bh=97/Xe14j3xdA5vSNX4xd+D6m5GBm6YuqYlLUoXjUL/s=;
+ b=Ra0Cg1i1baQzU8u1wOWs4G+RsPm9+8THCP/f5XjTHAxDNFd2I46sf1ck5odTiikT+pJrAo6FsMr5E/JnDZ20G0M12Pr8m4eK0a5mr15T3nOC00BVC8k2nitXBS5Hj5haYePUFeMRu4pYhwOvp85IGKrt1yeZo2uY8B9p/iqA9vN45XCK/s+dj2LzY4X/bzCouyA2pBonDKq2MdQ0TSf3lhfXBeTKU//xRTMlELgVE5evCT9vW83LZUClNQ/aBECsoQKM5npeQyIMP+Cgwgitu992bwDSNm1bIkiTbY2oV44dP5Xh8XFNE2UJOPOTyhSKAJf68lwsVF36ephtA3Wghw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com (2603:10a6:102:273::20)
- by PAXPR04MB9154.eurprd04.prod.outlook.com (2603:10a6:102:22d::9) with
+ by VI1PR04MB7056.eurprd04.prod.outlook.com (2603:10a6:800:12c::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.23; Mon, 30 Sep
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.26; Mon, 30 Sep
  2024 06:38:37 +0000
 Received: from PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::f950:3bb6:6848:2257]) by PA4PR04MB9638.eurprd04.prod.outlook.com
  ([fe80::f950:3bb6:6848:2257%3]) with mapi id 15.20.8005.024; Mon, 30 Sep 2024
- 06:38:34 +0000
+ 06:38:37 +0000
 From: David Lin <yu-hao.lin@nxp.com>
 To: linux-wireless@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -65,9 +65,9 @@ Cc: linux-kernel@vger.kernel.org,
 	tsung-hsien.hsieh@nxp.com,
 	s.hauer@pengutronix.de,
 	David Lin <yu-hao.lin@nxp.com>
-Subject: [PATCH v3 21/22] wifi: nxpwifi: add makefile and kconfig files
-Date: Mon, 30 Sep 2024 14:37:00 +0800
-Message-Id: <20240930063701.2566520-22-yu-hao.lin@nxp.com>
+Subject: [PATCH v3 22/22] wifi: nxpwifi: modify MAINTAINERS file
+Date: Mon, 30 Sep 2024 14:37:01 +0800
+Message-Id: <20240930063701.2566520-23-yu-hao.lin@nxp.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240930063701.2566520-1-yu-hao.lin@nxp.com>
 References: <20240930063701.2566520-1-yu-hao.lin@nxp.com>
@@ -83,226 +83,104 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PA4PR04MB9638:EE_|PAXPR04MB9154:EE_
-X-MS-Office365-Filtering-Correlation-Id: d8d30ffe-24f6-40a1-452d-08dce11a8180
+X-MS-TrafficTypeDiagnostic: PA4PR04MB9638:EE_|VI1PR04MB7056:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5efd967f-7d11-4781-1e18-08dce11a832f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|52116014|376014|366016|38350700014;
+	BCL:0;ARA:13230040|52116014|366016|1800799024|376014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Ie2K9nOrkkaB3P5hrgsmxeEmO5aW2VsVlrY9wGzq7wrWvn4c7x5kxlo8MFUF?=
- =?us-ascii?Q?50pXJWzDWj96hkFzs0V7CGIK+T/Z/K8K1LDJ67fpj962VjRtd3WXhp3aLc6h?=
- =?us-ascii?Q?y9d6nVpElnBD8a+uCM7BspSdq3OgtJ1JkKlmaQDp+CJMrD+1FcRGjqe8a2MB?=
- =?us-ascii?Q?Cahhp/iHW1EcHW9Fv/pwedbTe+nz+a9km03tcdDNnTomaCPC9SW0b/1/COs6?=
- =?us-ascii?Q?UREFIGVGhC2cJLAS6QUVMboDGVqS77KLC7UQdLYx9RSBj5xHazmUO+ZYpyaZ?=
- =?us-ascii?Q?Br6gV8nEEWnyDCMpCGwby6Mc1I5Pt1ADtKVzAibdZlTNg0RtvNrNSm0+e+ye?=
- =?us-ascii?Q?F/Z9YJ5jI1OeFhMDx2G96osttuKiPXtyIqlqqq5/YLKLboXO5TrkjP+fxV/f?=
- =?us-ascii?Q?2vg5UFHxGZ+xgjmpDVLCJg7oAyXjOsx3WTVA0lT/j5RK/rMLe1P0pcxmk4wn?=
- =?us-ascii?Q?e1rduXhAq1R4yYgxRzjJeqDbr0SrvyJ0p5iOxs4QrX6WzajJicwMEOfVwHpp?=
- =?us-ascii?Q?uwHsbPxpTACY3oC2nWfO9mlVi8sC/Th7kG4caiL+M2Ol29vOrxuNRuoWXCWS?=
- =?us-ascii?Q?y+/Z9N0lD/HZTOOxaAuGSHAzotdfbhf+9M1MdnWfZSR6EQCw7UfoYXXyPIAZ?=
- =?us-ascii?Q?HyHzQ18N31IhszsqLVAlToO7d/UYkKwMxIJMAPhkOHoXLGOxCrXwhNquUORN?=
- =?us-ascii?Q?awq+7JW6VfRIqYubSLRSXwPjZH9YuJPgMTF/2FdQdh5oFzc53K0FaebAfWaw?=
- =?us-ascii?Q?JaYpFDhfN8symKxD3mJC4fhPStA3uVkG5a3SmACw4wOhUXfDthwYaPL0W33V?=
- =?us-ascii?Q?FLrIKlnKO8gNDsG2J+VuvJ+Te7SvhjpXfKaI5fE3PsEfLRCUm9yCU6mqFu65?=
- =?us-ascii?Q?fmplmyNRXFEZ+yjuxcTBbRg97Tb+3VTfLigdUHcMoNnxskmrOn7G/vtpmo6T?=
- =?us-ascii?Q?P0dsJwn8GmcJR7qFlgyKktPGkgAHb3rXYnHVM8DP8iFsrkwam25mu4f1XJe2?=
- =?us-ascii?Q?tbWWgqTpoc5spK7MmpYnw6ydjdyoAixrRbQzvXOo5gFlrNvEXcSIK6BEXBZi?=
- =?us-ascii?Q?vroaw4/+QkIc74mZT1keElQxt1QDDieKswVux9djPQVpYb5KkOyIA2364MOz?=
- =?us-ascii?Q?Oe7oTCYu4QxBQQyLIEDzFi16xdfJjj3fnx+RsMcuUYO+op/QLCRxjtt5ZBs9?=
- =?us-ascii?Q?9oyPJxfBRUs5vBOl8gl/rLaSlOuZK551Cq5lcrl7VlchCQ5A8Q9RKEqCSaXm?=
- =?us-ascii?Q?xG1wn7pPBJPKKO2CmPK/VdGGNDjYnDbHUBvVclA7F4Ubn0Lk4gY57a0nWBfg?=
- =?us-ascii?Q?RbWJqoqog1jo2zFefBZUP3GPjADYyiBNQSMXXJIVSvzEFQSCmd9F9dcgFbOM?=
- =?us-ascii?Q?CbF71RbHjumPgzXyCkcLX4wGSVS9Gmy+eaAoeH7t6AMeVSCruQ=3D=3D?=
+	=?us-ascii?Q?Sr8b8UoKZllS2lnRF+VWoP9jKOKjN+Hg645oT4YdqsFU5KvscpFTwA+Z6E1y?=
+ =?us-ascii?Q?XQ21Hb396T1DGayG0v5UzbJKu7alsDVZZItb2SsiWxw9lOmuOxgyfv2+Or7K?=
+ =?us-ascii?Q?UhG5i1TSVJmfgU4fH57Kvyf3RT27+YMuHca9vJOAuW0oupkK8ZPqvjcM0Y0Z?=
+ =?us-ascii?Q?WtDqyc9g3BFtw+Jqks19x/m89PNPAhHFVD830nLiyIOEEtIYhcAkMWuYi2JL?=
+ =?us-ascii?Q?2XD4Fie8FdpfFPCc8LDPSm0C8l+JRzctRtX+Vv64lVHTuGrQzuLOx7ycYUHN?=
+ =?us-ascii?Q?8gpeqABpdbNI8WkQdarmZhNZlW9Xvyse8iSs8/CecuL4k2yKh0cY0l6fvJv+?=
+ =?us-ascii?Q?F7459E4YapbxoGUIppdCldTRNz3FkRUWvlpaVwklFwOUTkVqF3YF30NEBcdv?=
+ =?us-ascii?Q?5JPbdsRpiOyf25jEdUh/5iFQ5xEU5S1fNtIhLLF905BJhHUBIv455mxwji4u?=
+ =?us-ascii?Q?5eaN4Ywme3zEXZvxP2cBzEUwXBeonVH4etPEf9yplx/bUULYKktPfUJnwWz+?=
+ =?us-ascii?Q?3bcJZqCvcK61bEIgbFj5Xrz39WM7RM5uFanB0KHezJqRMM3Xt57m3qLzZ7SD?=
+ =?us-ascii?Q?8MgIGWus2xFxoglepDSMElHdGEhckzVek7++fyB5KerMTCHZfQCCUaHQOl6w?=
+ =?us-ascii?Q?2OWNZDAEABld2dK0zk7INGVNY29Gkkj8g3vCoZslhOHORjSJVe573tF6xLMW?=
+ =?us-ascii?Q?LkKzJ7ZRTU4a9bzOOR6RqeZLXRSJEYa3A7krZapOosmpQ55BU4JWEsgA6nPy?=
+ =?us-ascii?Q?w8Xmmn48V4p1EFJxLPbQtoJ+yRCMtOmFYfyCwZyAy4lxr88CZPDDCmk/Km8C?=
+ =?us-ascii?Q?ReB3SGSbhnpxX3KVC+6W0K6T1Gwot3i78knBWtanjtb2azLBEO73W+3exNBM?=
+ =?us-ascii?Q?y96I6iGFxbUSH3Dcw4R/ihfrJLdY6tr8WC2eHtSJznCqMLmVPBkJoWj1O4xg?=
+ =?us-ascii?Q?oRz1A85XOza0nt1OWmvKvlJj2uentcA8Fo798VDVZT+vEEezM4bH7+TnBtoq?=
+ =?us-ascii?Q?CzpTC7uRbkzHohzB4VTZt46GCWToediqJQPr7O97hZN1WPwWP1QSF7m/6Ljl?=
+ =?us-ascii?Q?5NBArVhEA16Ew7M2rjYVtjNtkkhHMYUSl4TiLF/p5Lxb+XQfpQlv9X3ncHmq?=
+ =?us-ascii?Q?VD7miWzrSZqvLp3U6GHmZt6vJ2tKVrEu1zgbrtKe7Uo3m6lwnvTy0U5S5Bc7?=
+ =?us-ascii?Q?dDrlzEWpTL4U8kGVfufc6BlpH1VD7/+7lvSX1PAnMyNnKkvlKS3bhZSm4B4k?=
+ =?us-ascii?Q?iEMMKjIs5JacbZETVGtvO7Hp2WMdmrVeqv/Eskae/hImNHTK+CvXvJbKqQQm?=
+ =?us-ascii?Q?FJEGQjudfvbzLpvA7U7uXqLcKnkGlsHkPjClhKMXsdprgA=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(376014)(366016)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9638.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(366016)(1800799024)(376014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?MzAJWKYcT6lacLBR536N+9UI2P0LNUdVRM0pKAVAB6a4B7wb6TmNFUKYOKQG?=
- =?us-ascii?Q?15XDOUwX90LSxBC28Ah0ZHK5fRFrsfXcKKyYHK0Qn8VBVfpdKtEeUZRhndMx?=
- =?us-ascii?Q?2dZ4QAdCfJk/ls3iTDcaeSRE1PvFL1CZaayXxsFUDe9bSiFUaIvDIErzrxuN?=
- =?us-ascii?Q?xNayx7yzVYoRsXlxlN0M5nZgA97pY47999SSK01XTDgecnRZR138OZrsO68h?=
- =?us-ascii?Q?ey65nVq1cCgVtC5dEx0CPRVnnWq5Un6O8kr7teJPuAW72s4tUBU0hLKqW7He?=
- =?us-ascii?Q?1BZnZR/LLvwX314Iv74uqNeFt7I7tHDfSxbWWB45Ej1sXd9uqrf//grmfUMh?=
- =?us-ascii?Q?35ObUzP3ExUWbFIjENox6iZCi/mX+O+g4AsdK8YwQFB8D4BvOhCcmjFRl755?=
- =?us-ascii?Q?+NZy/Hkpgkg+tKxCN8d+ikOPgXHJ0vD2VQzSBA6pLjFJ5/s8fwrFx5E4E6u0?=
- =?us-ascii?Q?WuFBO+UOQWqAcATULqFNCH5YKe+PE5NzXyw88qoknR4RcdZe4toTfaMc+z6r?=
- =?us-ascii?Q?y6BuXkdm7kD/9sWuCPuJ1xsSTR7tbwvZ3eGUyu84QGy5kRhZva9jgKI5pnpy?=
- =?us-ascii?Q?EUcDEhawt//mrXUEYDlUfS822gwyihMAMjTJSXWZFE4xAJZBZZKSR0O1s9Rp?=
- =?us-ascii?Q?Q2vlvbhHe98dL8N+vGc765mjRBuY+qc4FJOPPumFswixhxxsikSRtEeSZUmy?=
- =?us-ascii?Q?BOCeMalve9IYFURHBVvkHfrLdVj8tqMWcJSg1FSzzhzQl5f4dgukz9QS96Kf?=
- =?us-ascii?Q?UYP4HWirUlO7Xl+JBxR9QKgIha++RRJoUGW4LztmcbO/XDUYWwNQNLeP+OUX?=
- =?us-ascii?Q?BPxE0c6JqKv++DkpeBHg4vBT043iyIyWwPA+nim5GLJShjcecQWnXjvfZpiw?=
- =?us-ascii?Q?xIYqM+eqjGO4/VD0DUzWe/LVXruXhxed9HQ/j6MivtCwItDvjsgGvxyukWec?=
- =?us-ascii?Q?ubsHxtcDVIHCYa72ya+rXOKPjy1DG0UDsrivD2funSG2waDkjVw9Cqm4Kzup?=
- =?us-ascii?Q?pnN6zz/IK29xafGkGXx8SVs2u0tLsa9QQ2FdY3YwcwUENMRVcavRFeQCg+KP?=
- =?us-ascii?Q?AqIrdXn7DgwVw5NBBiNpey6gDRlao6KDIIxB4ijXB0fU1lszDtNPJNbNI/1t?=
- =?us-ascii?Q?GG9VfLU9ja4LyRhqyS9X4mdp8wNCqhdFhjK0JrE1878coENYtSkFNObnoH2X?=
- =?us-ascii?Q?McZuEa862+R/fR+DttvOqEAm0lOjTqy2fiVP2NSw23AH1xh+4M0xlUET9/xs?=
- =?us-ascii?Q?Ah6uonAJYrsBBr/wnLW+mbX9EJ+hk6X/nRAiWSJEg64Q0NIqyC8kk4cPZoX0?=
- =?us-ascii?Q?8/PxZfEk5NoZWxx9GJmS+R3wkRcK7Lz5chahXu7ZbXPAkxF4Ny2sERZ4WfFX?=
- =?us-ascii?Q?TQgxpbVjFFoSaiovbPolvriApeOCU/fyhXziz1s9htZtH3AMw6TLtUUueGYp?=
- =?us-ascii?Q?p7HqaA7Fxxl0b3AgvN9w4ZPU3vYjmfMYkTeqNLu4bkroLv23vHlz2F+uOaFK?=
- =?us-ascii?Q?UO6yzZj9ghg0va6n1Hg8Oz2IXANcUtHJ0eZwyHhqCW4gHotwFU63e6axzUga?=
- =?us-ascii?Q?5SCcjOmBprhriDuT+RVBEQyiG9E035VQ8nFNboB8?=
+	=?us-ascii?Q?QfuMISdBeeDP8zEr0pI3S5+ibnk6RkLNIXxSLVyeiXM6DUXW78rn6cKauPge?=
+ =?us-ascii?Q?7VdZsF9NYkrasx7fPKQrrN4m82zVJM7vS2LDXm3i9tm+0O7ywg7M0aVlhXBt?=
+ =?us-ascii?Q?cB9m8VJLDqg+rB9HSipTK2cE78Amd807lNoly1OJmIH0B+RYol0wopzBw0Jf?=
+ =?us-ascii?Q?OBAoOqFBsLqa6yxQwBzmIQWoTAhVv/Qy80SAwZSvGMPw3Xz1sWyN/Y8jKA1V?=
+ =?us-ascii?Q?NwrAuZdjQ5K2U1Hnz+f/poqIVYzWc81olQ7w/EQ3aRPGfGTg3iUi/V57Ioxj?=
+ =?us-ascii?Q?qD85V2m9dUpC5Yl7qJLAH8JWWwtcApnpi5Yn31jVVCok1AroLym/1eWbyOkS?=
+ =?us-ascii?Q?ClxSjQcp+qTWr+8nrCnzm2PC6ewBkfnZ0G0YLIsbymT1KUbjwOFyA2/w50f8?=
+ =?us-ascii?Q?6yao7YiTxzTRhiBrTKFjEQrGhU2BjuHLPQ/vjDjDuasEAl4jxycd5Ly9+nK9?=
+ =?us-ascii?Q?0l8cMtvn7ootMYrW1NC943zS+Xs89Go/jnHza4ehsMZqqNcFRplO3Gp0EInE?=
+ =?us-ascii?Q?ivIoe0NruqxPMoU44gUPPjn6mWxrvxyIP655whBfYZTXJf2O99OxwOXnywSH?=
+ =?us-ascii?Q?gdxl0Ak1GTxMzx7E6RoazwiAsudQlBQ0hAvjMHfzEQrSMP1PEwMOkeI5KEkQ?=
+ =?us-ascii?Q?h30r9L0UgCaVKk8x8cL26jwJnR0mW7LH0S98uS+UM1bbQqRLcm+SkKr33q3w?=
+ =?us-ascii?Q?tRYBo6ulEvPtryyJOGUWXwPeCwlekDznA78yPJ7yuswFhAvRHjR/Zu4GnUPv?=
+ =?us-ascii?Q?zGj9K03DXQnumF2MiAl1RVVi/ni7pbztfIM50ia/zchmhUOc9PYwFuYDBk82?=
+ =?us-ascii?Q?CSqUqhVQFYTP2TcJBUv9LsMfuW5tckmv/4Ljd/ZtU7skhD/CbNzx2G89pL1R?=
+ =?us-ascii?Q?Ger0qKCeeEjYpiwUj2eqcCBzHXmUJWZK7hKPAKXvfzusjUb106dHX2dWWB6S?=
+ =?us-ascii?Q?+iipFfO2iWX1+tBVqWdFyNfNb2Q2+AVUpCdgIuG9DEjq2cHOneNrd6EAAzhy?=
+ =?us-ascii?Q?AVfYDCcD6rCYJwmZr38DsCLEsLMhqm/RjD04jk1POHsV8hg2IOC9wXCp0vWd?=
+ =?us-ascii?Q?OB7W0zzS1ANoCWCdhGIABchm6caaSC+cthyOtwqZv9Ubyd/zVEA+nvRn6p9D?=
+ =?us-ascii?Q?rvxI05hRF31AtUcyaKB8nr6Na2rDi71YA9+R3yjtjb4PVtlD51xoYEydVyWB?=
+ =?us-ascii?Q?okuvmH3y9yqUIZVFUNOJNJM6/Ml7/NzQZn8JeHikTyaP5X9fSZqpagBrGawd?=
+ =?us-ascii?Q?xxRRJg18LBaP1WIgi0a2xawTKGDMaDFZjbQFOpsF+M38NR9P7NPc+OHBOdIL?=
+ =?us-ascii?Q?fefQKQOmJFWI2vWr5MAIeXS6pUnHwf4fXWulezHUUCCQFU504wdhDJmJzVZd?=
+ =?us-ascii?Q?K6sqJiTf5YZ4a5pWC/kOH0JtdM/a94KZar1y2FefIOYrcpaEDAcVeBRkgnc8?=
+ =?us-ascii?Q?I/wo/1UozmYnoGaH804MezC4iX4sNDP7IUuRdF3tTSNZxDFOX5rbV2MlDMsC?=
+ =?us-ascii?Q?Dm+CL+67J9JSl0nCgGmY2c7cQEtRxnV44YEN0iOQ8X4Q+gr3TmBAsIqSuqIe?=
+ =?us-ascii?Q?AnTyBCtgkY33nfDinBn3s2nNrRigibm8U9/oQU9h?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d8d30ffe-24f6-40a1-452d-08dce11a8180
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5efd967f-7d11-4781-1e18-08dce11a832f
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9638.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2024 06:38:34.1051
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2024 06:38:36.9212
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vvO9dvlYKtFZ1JO6Jv0FK3ji3YYTg+4jPmq8mbutyBBzfcj5WrW3y5JE8HMUFXhtNpbzymGRLpLbMmMoSqXuJA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9154
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3pHQBWFmF/32i+caYXvZKRGFaIY9jNc05pLEnZQ8sXubrNm0B1sy6GcFuhVRQGSiwKt+CI6OApVH2x5v7tMADQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7056
 
-Let nxpwifi can be configured and compiled under
-kernel source tree.
+Add nxpwifi related information to MAINTAINERS file.
 
 Signed-off-by: David Lin <yu-hao.lin@nxp.com>
 ---
- drivers/net/wireless/Kconfig              |  1 +
- drivers/net/wireless/Makefile             |  1 +
- drivers/net/wireless/nxp/Kconfig          | 17 ++++++++++
- drivers/net/wireless/nxp/Makefile         |  3 ++
- drivers/net/wireless/nxp/nxpwifi/Kconfig  | 22 +++++++++++++
- drivers/net/wireless/nxp/nxpwifi/Makefile | 39 +++++++++++++++++++++++
- 6 files changed, 83 insertions(+)
- create mode 100644 drivers/net/wireless/nxp/Kconfig
- create mode 100644 drivers/net/wireless/nxp/Makefile
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/Kconfig
- create mode 100644 drivers/net/wireless/nxp/nxpwifi/Makefile
+ MAINTAINERS | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/Kconfig b/drivers/net/wireless/Kconfig
-index c6599594dc99..4d7b81182925 100644
---- a/drivers/net/wireless/Kconfig
-+++ b/drivers/net/wireless/Kconfig
-@@ -27,6 +27,7 @@ source "drivers/net/wireless/intersil/Kconfig"
- source "drivers/net/wireless/marvell/Kconfig"
- source "drivers/net/wireless/mediatek/Kconfig"
- source "drivers/net/wireless/microchip/Kconfig"
-+source "drivers/net/wireless/nxp/Kconfig"
- source "drivers/net/wireless/purelifi/Kconfig"
- source "drivers/net/wireless/ralink/Kconfig"
- source "drivers/net/wireless/realtek/Kconfig"
-diff --git a/drivers/net/wireless/Makefile b/drivers/net/wireless/Makefile
-index e1c4141c6004..0c6b3cc719db 100644
---- a/drivers/net/wireless/Makefile
-+++ b/drivers/net/wireless/Makefile
-@@ -12,6 +12,7 @@ obj-$(CONFIG_WLAN_VENDOR_INTERSIL) += intersil/
- obj-$(CONFIG_WLAN_VENDOR_MARVELL) += marvell/
- obj-$(CONFIG_WLAN_VENDOR_MEDIATEK) += mediatek/
- obj-$(CONFIG_WLAN_VENDOR_MICROCHIP) += microchip/
-+obj-$(CONFIG_WLAN_VENDOR_NXP) += nxp/
- obj-$(CONFIG_WLAN_VENDOR_PURELIFI) += purelifi/
- obj-$(CONFIG_WLAN_VENDOR_QUANTENNA) += quantenna/
- obj-$(CONFIG_WLAN_VENDOR_RALINK) += ralink/
-diff --git a/drivers/net/wireless/nxp/Kconfig b/drivers/net/wireless/nxp/Kconfig
-new file mode 100644
-index 000000000000..68b32d4536e5
---- /dev/null
-+++ b/drivers/net/wireless/nxp/Kconfig
-@@ -0,0 +1,17 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+config WLAN_VENDOR_NXP
-+	bool "NXP devices"
-+	default y
-+	help
-+	  If you have a wireless card belonging to this class, say Y.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 77fcd6f802a5..9846759b0c99 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16526,6 +16526,13 @@ F:	Documentation/devicetree/bindings/clock/imx*
+ F:	drivers/clk/imx/
+ F:	include/dt-bindings/clock/imx*
+ 
++NXP NXPWIFI WIRELESS DRIVER
++M:	David Lin <yu-hao.lin@nxp.com>
++R:	Pete Hsieh <tsung-hsien.hsieh@nxp.com>
++L:	linux-wireless@vger.kernel.org
++S:	Maintained
++F:	drivers/net/wireless/nxp/nxpwifi
 +
-+	  Note that the answer to this question doesn't directly affect the
-+	  kernel: saying N will just cause the configurator to skip all the
-+	  questions about these cards. If you say Y, you will be asked for
-+	  your specific card in the following questions.
-+
-+if WLAN_VENDOR_NXP
-+
-+source "drivers/net/wireless/nxp/nxpwifi/Kconfig"
-+
-+endif # WLAN_VENDOR_NXP
-diff --git a/drivers/net/wireless/nxp/Makefile b/drivers/net/wireless/nxp/Makefile
-new file mode 100644
-index 000000000000..27b41a0afdd2
---- /dev/null
-+++ b/drivers/net/wireless/nxp/Makefile
-@@ -0,0 +1,3 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
-+obj-$(CONFIG_NXPWIFI)	+= nxpwifi/
-diff --git a/drivers/net/wireless/nxp/nxpwifi/Kconfig b/drivers/net/wireless/nxp/nxpwifi/Kconfig
-new file mode 100644
-index 000000000000..3637068574b8
---- /dev/null
-+++ b/drivers/net/wireless/nxp/nxpwifi/Kconfig
-@@ -0,0 +1,22 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+config NXPWIFI
-+	tristate "NXP WiFi Driver"
-+	depends on CFG80211
-+	help
-+	  This adds support for wireless adapters based on NXP
-+	  802.11n/ac chipsets.
-+
-+	  If you choose to build it as a module, it will be called
-+	  nxpwifi.
-+
-+config NXPWIFI_SDIO
-+	tristate "NXP WiFi Driver for IW61x"
-+	depends on NXPWIFI && MMC
-+	select FW_LOADER
-+	select WANT_DEV_COREDUMP
-+	help
-+	  This adds support for wireless adapters based on NXP
-+	  IW61x interface.
-+
-+	  If you choose to build it as a module, it will be called
-+	  nxpwifi_sdio.
-diff --git a/drivers/net/wireless/nxp/nxpwifi/Makefile b/drivers/net/wireless/nxp/nxpwifi/Makefile
-new file mode 100644
-index 000000000000..8f581429f28d
---- /dev/null
-+++ b/drivers/net/wireless/nxp/nxpwifi/Makefile
-@@ -0,0 +1,39 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+# Copyright 2011-2020 NXP
-+#
-+
-+
-+nxpwifi-y += main.o
-+nxpwifi-y += init.o
-+nxpwifi-y += cfp.o
-+nxpwifi-y += cmdevt.o
-+nxpwifi-y += util.o
-+nxpwifi-y += txrx.o
-+nxpwifi-y += wmm.o
-+nxpwifi-y += 11n.o
-+nxpwifi-y += 11ac.o
-+nxpwifi-y += 11ax.o
-+nxpwifi-y += 11n_aggr.o
-+nxpwifi-y += 11n_rxreorder.o
-+nxpwifi-y += scan.o
-+nxpwifi-y += join.o
-+nxpwifi-y += sta_cfg.o
-+nxpwifi-y += sta_cmd.o
-+nxpwifi-y += uap_cmd.o
-+nxpwifi-y += ie.o
-+nxpwifi-y += sta_event.o
-+nxpwifi-y += uap_event.o
-+nxpwifi-y += sta_tx.o
-+nxpwifi-y += sta_rx.o
-+nxpwifi-y += uap_txrx.o
-+nxpwifi-y += cfg80211.o
-+nxpwifi-y += ethtool.o
-+nxpwifi-y += 11h.o
-+nxpwifi-$(CONFIG_DEBUG_FS) += debugfs.o
-+obj-$(CONFIG_NXPWIFI) += nxpwifi.o
-+
-+nxpwifi_sdio-y += sdio.o
-+obj-$(CONFIG_NXPWIFI_SDIO) += nxpwifi_sdio.o
-+
-+ccflags-y += -D__CHECK_ENDIAN
+ NXP PF8100/PF8121A/PF8200 PMIC REGULATOR DEVICE DRIVER
+ M:	Jagan Teki <jagan@amarulasolutions.com>
+ S:	Maintained
 -- 
 2.34.1
 
