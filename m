@@ -1,245 +1,110 @@
-Return-Path: <linux-wireless+bounces-13322-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13323-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B91298A26D
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 14:29:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A14898A708
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 16:30:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 541CD280DAB
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 12:29:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2E6C280405
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Sep 2024 14:30:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D40A51E4AF;
-	Mon, 30 Sep 2024 12:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 600C11917E9;
+	Mon, 30 Sep 2024 14:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eRPW+ze3"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="dqFPEmpX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7E4364A0;
-	Mon, 30 Sep 2024 12:29:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAA31917E3;
+	Mon, 30 Sep 2024 14:30:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727699370; cv=none; b=C+4Bg5SlPIO7pnAK5FhQmx4VJv9mXvVxNm26VoM5ujxkFGWMsqF90u3lBhtmo1hTe3QVLmObCre04+pupTtpfi04FIf/rAdhW8so7i/xHpcWllDGLokmBEuO1w7vokF1j0m/NlBtQcUOrZDr4JFiP44E5ey/im2V2khvxEuXHWk=
+	t=1727706608; cv=none; b=h3ICrds4YTLBgtZcVNTIOaKVVPRrJWRkwyk/pY4C9NOFjDn1hrgVosDryMTW/E5/jHmF+9HgYRnF1xdesaMuPNndG/YZOO7isUuo5J3Zr6HXKqDHudbyxzZamiVswrvo0unWObUxzIgzCsaKViOSIxxhehJFtEmJcaYjXytEIkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727699370; c=relaxed/simple;
-	bh=+XhMECnfZglvhG0I+okp0fRv3vGb2lsaCOD/y+K++Nc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kug2Dis0+JTeh7iYBJpB9dT1k4S4LAe4iyohggnfT2T4sKyjtsQx5LmFWgCBX67k75LK4V63NBvbwrbc6MXLFIA0y1yb+4sHNGt8szGHENx6brqJxK9tTsqB2zcCIfrkOClyf0d1epLjtQt59I4dcrZ+o36VNOJFJ/jX5Ms7ZlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eRPW+ze3; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727699369; x=1759235369;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=+XhMECnfZglvhG0I+okp0fRv3vGb2lsaCOD/y+K++Nc=;
-  b=eRPW+ze3fWKVhy8yjmHceL3GUlF2/UylzbMSxwEj9HLotYDIv3pPZS57
-   9WwRjzx5vO11LHgdi807mMy+0PN6dZvg/hc+5Xbo86fHjfZ+E7qjRO+7p
-   bNRqhsr5N0EQHSILE9kSPd66Hmlv29QLRBwClGZpcMG9d4WGc17UXad4K
-   a/ZTWU9jRJXzGk8A+brLX44pd6IpdgsMX6j3Z7Iw5Al7iHB794206f45I
-   csaIAZpHvtlhhQzCs5Q2ejwYk+UkncSpjrg/Tetxj3MwGmt691Biq4nIs
-   2APq6QYKlaeexQSFYEfB59E7t8Qy0xdMQi0nxiJHEwd78//JBwtUEW+R4
-   Q==;
-X-CSE-ConnectionGUID: isG3+lVPRtGKsT6Y17n4+w==
-X-CSE-MsgGUID: nuIC27TmTEuYxy+qajddzw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11210"; a="38168571"
-X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; 
-   d="scan'208";a="38168571"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2024 05:29:29 -0700
-X-CSE-ConnectionGUID: jRUbrylWRLabizobaetm0g==
-X-CSE-MsgGUID: vSFJGDWCRZemX02uAoXHJw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; 
-   d="scan'208";a="73412035"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
-  by fmviesa008.fm.intel.com with SMTP; 30 Sep 2024 05:29:25 -0700
-Received: by stinkbox (sSMTP sendmail emulation); Mon, 30 Sep 2024 15:29:24 +0300
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-To: linux-wireless@vger.kernel.org
-Cc: =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	stable@vger.kernel.org,
-	Stanislaw Gruszka <stf_xl@wp.pl>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH] iwlegacy: Clear stale interrupts before enabling interrupts
-Date: Mon, 30 Sep 2024 15:29:24 +0300
-Message-ID: <20240930122924.21865-1-ville.syrjala@linux.intel.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1727706608; c=relaxed/simple;
+	bh=b09YgrVJmvgRvMBhcaVCn7o5eWZqdGkkra9l64YUxvg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=LZRiRP3ye8wpZZv1OB0uNN9PuGq/gE1czugHx0DILgnqgDrDES2Oq21qVmZa2prLk2oUY8CfHWHoVmMBf49HF4gT79+jV4FxK2T7exuWCCrA5Naa5FSjvhvEdMBCNU9jV0vBZaiWTB0q9ljYp+Nx3FGZAkd4VbbTrZjJY7fzt7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=dqFPEmpX; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48UCGRJH032600;
+	Mon, 30 Sep 2024 14:29:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	67L6sCzfDHRdsopuyWGssY6DOebG1iMqtYOyqTtRtwA=; b=dqFPEmpXDy5qytvr
+	82tYrmYnshp8ZE2clF0e/7yHufzsq2gFLNY+JMUDJu7aKKQGreJNgbL9femc9XOv
+	ZIFPn2uA95sHOBDST70OXeLW8YmI1BSTt9SvkwXPc2RjN9+tm0k+8VMALy3p7iu5
+	hIbmxDZ0ABdEJwFOtkZ4HsgjNfNzHQ8iQIUO/FsFRxVwTxo0xS6Gv5+khXZ9PTfN
+	wRoxTELxgB6O/WjRmlE755q2uvr43AeaWMv9seRW3LnkfBf0WWhMXEqbO4S+O6cD
+	uXezWMRW4lvQ14xcfw8E71qa+UafOy7UMwZ1Uu1op7XnNJmJ6+Pa7pWqyYqZw4Cz
+	lMFkkA==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41xa12n0k2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Sep 2024 14:29:54 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48UETrCV008012
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Sep 2024 14:29:53 GMT
+Received: from [10.111.183.230] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 30 Sep
+ 2024 07:29:52 -0700
+Message-ID: <6a07392e-b296-4a1b-9444-aa0e2f7eb78c@quicinc.com>
+Date: Mon, 30 Sep 2024 07:29:51 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 27/35] mac80211: Reorganize kerneldoc parameter names
+To: Julia Lawall <Julia.Lawall@inria.fr>,
+        Johannes Berg
+	<johannes@sipsolutions.net>
+CC: <kernel-janitors@vger.kernel.org>,
+        "David S. Miller"
+	<davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20240930112121.95324-1-Julia.Lawall@inria.fr>
+ <20240930112121.95324-28-Julia.Lawall@inria.fr>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <20240930112121.95324-28-Julia.Lawall@inria.fr>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: oam3lfWcCdJQAVnqNPKThWDjszyIyDMS
+X-Proofpoint-GUID: oam3lfWcCdJQAVnqNPKThWDjszyIyDMS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=574
+ impostorscore=0 priorityscore=1501 lowpriorityscore=0 suspectscore=0
+ bulkscore=0 malwarescore=0 spamscore=0 clxscore=1015 mlxscore=0
+ adultscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409300105
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-
-iwl4965 fails upon resume from hibernation on my laptop. The reason
-seems to be a stale interrupt which isn't being cleared out before
-interrupts are enabled. We end up with a race beween the resume
-trying to bring things back up, and the restart work (queued form
-the interrupt handler) trying to bring things down. Eventually
-the whole thing blows up.
-
-Fix the problem by clearing out any stale interrupts before
-interrupts get enabled.
-
-Here's a debug log of the indicent:
-[   12.042589] ieee80211 phy0: il_isr ISR inta 0x00000080, enabled 0xaa00008b, fh 0x00000000
-[   12.042625] ieee80211 phy0: il4965_irq_tasklet inta 0x00000080, enabled 0x00000000, fh 0x00000000
-[   12.042651] iwl4965 0000:10:00.0: RF_KILL bit toggled to enable radio.
-[   12.042653] iwl4965 0000:10:00.0: On demand firmware reload
-[   12.042690] ieee80211 phy0: il4965_irq_tasklet End inta 0x00000000, enabled 0xaa00008b, fh 0x00000000, flags 0x00000282
-[   12.052207] ieee80211 phy0: il4965_mac_start enter
-[   12.052212] ieee80211 phy0: il_prep_station Add STA to driver ID 31: ff:ff:ff:ff:ff:ff
-[   12.052244] ieee80211 phy0: il4965_set_hw_ready hardware  ready
-[   12.052324] ieee80211 phy0: il_apm_init Init card's basic functions
-[   12.052348] ieee80211 phy0: il_apm_init L1 Enabled; Disabling L0S
-[   12.055727] ieee80211 phy0: il4965_load_bsm Begin load bsm
-[   12.056140] ieee80211 phy0: il4965_verify_bsm Begin verify bsm
-[   12.058642] ieee80211 phy0: il4965_verify_bsm BSM bootstrap uCode image OK
-[   12.058721] ieee80211 phy0: il4965_load_bsm BSM write complete, poll 1 iterations
-[   12.058734] ieee80211 phy0: __il4965_up iwl4965 is coming up
-[   12.058737] ieee80211 phy0: il4965_mac_start Start UP work done.
-[   12.058757] ieee80211 phy0: __il4965_down iwl4965 is going down
-[   12.058761] ieee80211 phy0: il_scan_cancel_timeout Scan cancel timeout
-[   12.058762] ieee80211 phy0: il_do_scan_abort Not performing scan to abort
-[   12.058765] ieee80211 phy0: il_clear_ucode_stations Clearing ucode stations in driver
-[   12.058767] ieee80211 phy0: il_clear_ucode_stations No active stations found to be cleared
-[   12.058819] ieee80211 phy0: _il_apm_stop Stop card, put in low power state
-[   12.058827] ieee80211 phy0: _il_apm_stop_master stop master
-[   12.058864] ieee80211 phy0: il4965_clear_free_frames 0 frames on pre-allocated heap on clear.
-[   12.058869] ieee80211 phy0: Hardware restart was requested
-[   16.132299] iwl4965 0000:10:00.0: START_ALIVE timeout after 4000ms.
-[   16.132303] ------------[ cut here ]------------
-[   16.132304] Hardware became unavailable upon resume. This could be a software issue prior to suspend or a hardware issue.
-[   16.132338] WARNING: CPU: 0 PID: 181 at net/mac80211/util.c:1826 ieee80211_reconfig+0x8f/0x14b0 [mac80211]
-[   16.132390] Modules linked in: ctr ccm sch_fq_codel xt_tcpudp xt_multiport xt_state iptable_filter iptable_nat nf_nat nf_conntrack nf_defrag_ipv4 ip_tables x_tables binfmt_misc joydev mousedev btusb btrtl btintel btbcm bluetooth ecdh_generic ecc iTCO_wdt i2c_dev iwl4965 iwlegacy coretemp snd_hda_codec_analog pcspkr psmouse mac80211 snd_hda_codec_generic libarc4 sdhci_pci cqhci sha256_generic sdhci libsha256 firewire_ohci snd_hda_intel snd_intel_dspcfg mmc_core snd_hda_codec snd_hwdep firewire_core led_class iosf_mbi snd_hda_core uhci_hcd lpc_ich crc_itu_t cfg80211 ehci_pci ehci_hcd snd_pcm usbcore mfd_core rfkill snd_timer snd usb_common soundcore video parport_pc parport intel_agp wmi intel_gtt backlight e1000e agpgart evdev
-[   16.132456] CPU: 0 UID: 0 PID: 181 Comm: kworker/u8:6 Not tainted 6.11.0-cl+ #143
-[   16.132460] Hardware name: Hewlett-Packard HP Compaq 6910p/30BE, BIOS 68MCU Ver. F.19 07/06/2010
-[   16.132463] Workqueue: async async_run_entry_fn
-[   16.132469] RIP: 0010:ieee80211_reconfig+0x8f/0x14b0 [mac80211]
-[   16.132501] Code: da 02 00 00 c6 83 ad 05 00 00 00 48 89 df e8 98 1b fc ff 85 c0 41 89 c7 0f 84 e9 02 00 00 48 c7 c7 a0 e6 48 a0 e8 d1 77 c4 e0 <0f> 0b eb 2d 84 c0 0f 85 8b 01 00 00 c6 87 ad 05 00 00 00 e8 69 1b
-[   16.132504] RSP: 0018:ffffc9000029fcf0 EFLAGS: 00010282
-[   16.132507] RAX: 0000000000000000 RBX: ffff8880072008e0 RCX: 0000000000000001
-[   16.132509] RDX: ffffffff81f21a18 RSI: 0000000000000086 RDI: 0000000000000001
-[   16.132510] RBP: ffff8880072003c0 R08: 0000000000000000 R09: 0000000000000003
-[   16.132512] R10: 0000000000000000 R11: ffff88807e5b0000 R12: 0000000000000001
-[   16.132514] R13: 0000000000000000 R14: 0000000000000000 R15: 00000000ffffff92
-[   16.132515] FS:  0000000000000000(0000) GS:ffff88807c200000(0000) knlGS:0000000000000000
-[   16.132517] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   16.132519] CR2: 000055dd43786c08 CR3: 000000000978f000 CR4: 00000000000006f0
-[   16.132521] Call Trace:
-[   16.132525]  <TASK>
-[   16.132526]  ? __warn+0x77/0x120
-[   16.132532]  ? ieee80211_reconfig+0x8f/0x14b0 [mac80211]
-[   16.132564]  ? report_bug+0x15c/0x190
-[   16.132568]  ? handle_bug+0x36/0x70
-[   16.132571]  ? exc_invalid_op+0x13/0x60
-[   16.132573]  ? asm_exc_invalid_op+0x16/0x20
-[   16.132579]  ? ieee80211_reconfig+0x8f/0x14b0 [mac80211]
-[   16.132611]  ? snd_hdac_bus_init_cmd_io+0x24/0x200 [snd_hda_core]
-[   16.132617]  ? pick_eevdf+0x133/0x1c0
-[   16.132622]  ? check_preempt_wakeup_fair+0x70/0x90
-[   16.132626]  ? wakeup_preempt+0x4a/0x60
-[   16.132628]  ? ttwu_do_activate.isra.0+0x5a/0x190
-[   16.132632]  wiphy_resume+0x79/0x1a0 [cfg80211]
-[   16.132675]  ? wiphy_suspend+0x2a0/0x2a0 [cfg80211]
-[   16.132697]  dpm_run_callback+0x75/0x1b0
-[   16.132703]  device_resume+0x97/0x200
-[   16.132707]  async_resume+0x14/0x20
-[   16.132711]  async_run_entry_fn+0x1b/0xa0
-[   16.132714]  process_one_work+0x13d/0x350
-[   16.132718]  worker_thread+0x2be/0x3d0
-[   16.132722]  ? cancel_delayed_work_sync+0x70/0x70
-[   16.132725]  kthread+0xc0/0xf0
-[   16.132729]  ? kthread_park+0x80/0x80
-[   16.132732]  ret_from_fork+0x28/0x40
-[   16.132735]  ? kthread_park+0x80/0x80
-[   16.132738]  ret_from_fork_asm+0x11/0x20
-[   16.132741]  </TASK>
-[   16.132742] ---[ end trace 0000000000000000 ]---
-[   16.132930] ------------[ cut here ]------------
-[   16.132932] WARNING: CPU: 0 PID: 181 at net/mac80211/driver-ops.c:41 drv_stop+0xe7/0xf0 [mac80211]
-[   16.132957] Modules linked in: ctr ccm sch_fq_codel xt_tcpudp xt_multiport xt_state iptable_filter iptable_nat nf_nat nf_conntrack nf_defrag_ipv4 ip_tables x_tables binfmt_misc joydev mousedev btusb btrtl btintel btbcm bluetooth ecdh_generic ecc iTCO_wdt i2c_dev iwl4965 iwlegacy coretemp snd_hda_codec_analog pcspkr psmouse mac80211 snd_hda_codec_generic libarc4 sdhci_pci cqhci sha256_generic sdhci libsha256 firewire_ohci snd_hda_intel snd_intel_dspcfg mmc_core snd_hda_codec snd_hwdep firewire_core led_class iosf_mbi snd_hda_core uhci_hcd lpc_ich crc_itu_t cfg80211 ehci_pci ehci_hcd snd_pcm usbcore mfd_core rfkill snd_timer snd usb_common soundcore video parport_pc parport intel_agp wmi intel_gtt backlight e1000e agpgart evdev
-[   16.133014] CPU: 0 UID: 0 PID: 181 Comm: kworker/u8:6 Tainted: G        W          6.11.0-cl+ #143
-[   16.133018] Tainted: [W]=WARN
-[   16.133019] Hardware name: Hewlett-Packard HP Compaq 6910p/30BE, BIOS 68MCU Ver. F.19 07/06/2010
-[   16.133021] Workqueue: async async_run_entry_fn
-[   16.133025] RIP: 0010:drv_stop+0xe7/0xf0 [mac80211]
-[   16.133048] Code: 48 85 c0 74 0e 48 8b 78 08 89 ea 48 89 de e8 e0 87 04 00 65 ff 0d d1 de c4 5f 0f 85 42 ff ff ff e8 be 52 c2 e0 e9 38 ff ff ff <0f> 0b 5b 5d c3 0f 1f 40 00 41 54 49 89 fc 55 53 48 89 f3 2e 2e 2e
-[   16.133050] RSP: 0018:ffffc9000029fc50 EFLAGS: 00010246
-[   16.133053] RAX: 0000000000000000 RBX: ffff8880072008e0 RCX: ffff88800377f6c0
-[   16.133054] RDX: 0000000000000001 RSI: 0000000000000000 RDI: ffff8880072008e0
-[   16.133056] RBP: 0000000000000000 R08: ffffffff81f238d8 R09: 0000000000000000
-[   16.133058] R10: ffff8880080520f0 R11: 0000000000000000 R12: ffff888008051c60
-[   16.133060] R13: ffff8880072008e0 R14: 0000000000000000 R15: ffff8880072011d8
-[   16.133061] FS:  0000000000000000(0000) GS:ffff88807c200000(0000) knlGS:0000000000000000
-[   16.133063] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   16.133065] CR2: 000055dd43786c08 CR3: 000000000978f000 CR4: 00000000000006f0
-[   16.133067] Call Trace:
-[   16.133069]  <TASK>
-[   16.133070]  ? __warn+0x77/0x120
-[   16.133075]  ? drv_stop+0xe7/0xf0 [mac80211]
-[   16.133098]  ? report_bug+0x15c/0x190
-[   16.133100]  ? handle_bug+0x36/0x70
-[   16.133103]  ? exc_invalid_op+0x13/0x60
-[   16.133105]  ? asm_exc_invalid_op+0x16/0x20
-[   16.133109]  ? drv_stop+0xe7/0xf0 [mac80211]
-[   16.133132]  ieee80211_do_stop+0x55a/0x810 [mac80211]
-[   16.133161]  ? fq_codel_reset+0xa5/0xc0 [sch_fq_codel]
-[   16.133164]  ieee80211_stop+0x4f/0x180 [mac80211]
-[   16.133192]  __dev_close_many+0xa2/0x120
-[   16.133195]  dev_close_many+0x90/0x150
-[   16.133198]  dev_close+0x5d/0x80
-[   16.133200]  cfg80211_shutdown_all_interfaces+0x40/0xe0 [cfg80211]
-[   16.133223]  wiphy_resume+0xb2/0x1a0 [cfg80211]
-[   16.133247]  ? wiphy_suspend+0x2a0/0x2a0 [cfg80211]
-[   16.133269]  dpm_run_callback+0x75/0x1b0
-[   16.133273]  device_resume+0x97/0x200
-[   16.133277]  async_resume+0x14/0x20
-[   16.133280]  async_run_entry_fn+0x1b/0xa0
-[   16.133283]  process_one_work+0x13d/0x350
-[   16.133287]  worker_thread+0x2be/0x3d0
-[   16.133290]  ? cancel_delayed_work_sync+0x70/0x70
-[   16.133294]  kthread+0xc0/0xf0
-[   16.133296]  ? kthread_park+0x80/0x80
-[   16.133299]  ret_from_fork+0x28/0x40
-[   16.133302]  ? kthread_park+0x80/0x80
-[   16.133304]  ret_from_fork_asm+0x11/0x20
-[   16.133307]  </TASK>
-[   16.133308] ---[ end trace 0000000000000000 ]---
-[   16.133335] ieee80211 phy0: PM: dpm_run_callback(): wiphy_resume [cfg80211] returns -110
-[   16.133360] ieee80211 phy0: PM: failed to restore async: error -110
-
-Cc: stable@vger.kernel.org
-Cc: Stanislaw Gruszka <stf_xl@wp.pl>
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
----
- drivers/net/wireless/intel/iwlegacy/common.h | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/wireless/intel/iwlegacy/common.h b/drivers/net/wireless/intel/iwlegacy/common.h
-index 2147781b5fff..758984d527bf 100644
---- a/drivers/net/wireless/intel/iwlegacy/common.h
-+++ b/drivers/net/wireless/intel/iwlegacy/common.h
-@@ -2342,6 +2342,8 @@ static inline void
- il_enable_interrupts(struct il_priv *il)
- {
- 	set_bit(S_INT_ENABLED, &il->status);
-+	_il_wr(il, CSR_INT, 0xffffffff);
-+	_il_wr(il, CSR_FH_INT_STATUS, 0xffffffff);
- 	_il_wr(il, CSR_INT_MASK, il->inta_mask);
- }
- 
--- 
-2.45.2
+On 9/30/2024 4:21 AM, Julia Lawall wrote:
+> Reorganize kerneldoc parameter names to match the parameter
+> order in the function header.
+> 
+> Problems identified using Coccinelle.
+> 
+> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
 
