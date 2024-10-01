@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-13387-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13388-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 943F898C637
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2024 21:46:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8664898C63B
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2024 21:47:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AED301C219BF
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2024 19:46:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D58FA2860A5
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2024 19:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45DD71CDA16;
-	Tue,  1 Oct 2024 19:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DBBF1CDA16;
+	Tue,  1 Oct 2024 19:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KI4YvA7W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a1Q5xL5B"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC2C1CDA11
-	for <linux-wireless@vger.kernel.org>; Tue,  1 Oct 2024 19:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D3D1CCB45
+	for <linux-wireless@vger.kernel.org>; Tue,  1 Oct 2024 19:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727812014; cv=none; b=FhhNLGqdfYApm/pZUoUUxGyD3zkI04Sewut3MfgvHgpZzWIPcpyYkyw0ol6dvqlSbdWYJq3ehzj2FZa7AOtKi7BoUQOqYYM/3/R45IvEHib3X+QjlWnGMdLoioKVsomjigmly+jurk/1FsybsrszuDNtjcnQWVngo5Pwp3NMgtE=
+	t=1727812058; cv=none; b=N8Y6goLWME6VbzENMkwBT4GiYF5JLWImmTay+wRSxEdhf2QU0S5hw5TjCErwZZkSfiMjljQG7FfnGVF944gI2IxTjKtr9SEpMjAz7FUe8+iuCWVceNPyk7IKwPq+HGWx1C0N970UkldSbxMfDAb2YJlZf9qLsFtE+0R9T1BSunM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727812014; c=relaxed/simple;
-	bh=NnBcHNhXe80YzxafWTsh8tN5x2sluT8Gy5kfBJJBbn4=;
+	s=arc-20240116; t=1727812058; c=relaxed/simple;
+	bh=sF1Oqhp1l3qOG6re7Iu8ZxKsKow1kz8lh+ZHIBEMpEs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kLg+Ea0OX7/y/EVxaQvgrL9KbPNGyNsn0Wc2Bo1iWOL31sbW1DW2Xanfel5gbSv1BGb/DHvrrIQtQ/570qPlF31vbVOJEC7BmdB46UAZSRd5+PyagZZ1OJ+j0D5J0W3N3zpeM8SwlcSy/UWl1YZ/wiGDCS9UZ07BnNwH98/tslE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KI4YvA7W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A44C4CEC6;
-	Tue,  1 Oct 2024 19:46:44 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=ExYTIzCtV/Kq5wJBGe0WsjRU2tL2LsXxi7I+Zjksw9xXbZYTrMLc73hBJLAqn1+aXXPaILqJo6Fd88SVNojR4sWziiUEfx013GfoxR6m8YppYAUxjNmMTdmR/Ugod6lsqA0xfRaTYjiWFMNhdNZFgM7RnDSRVSvjkY1zuhT73DI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a1Q5xL5B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E8B0C4CEC6;
+	Tue,  1 Oct 2024 19:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727812013;
-	bh=NnBcHNhXe80YzxafWTsh8tN5x2sluT8Gy5kfBJJBbn4=;
+	s=k20201202; t=1727812057;
+	bh=sF1Oqhp1l3qOG6re7Iu8ZxKsKow1kz8lh+ZHIBEMpEs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KI4YvA7Wzh3uxBFsoQjS6URsjEJ8GNEuiB/S+LT2yGMZ/m67wEYX4DRAryAtSFl9U
-	 iRJXYSGF5UV+NQ4tDPpw5nYLZfftflsdU/YGKmTyLMB/mBAFSX7+1ArWiNqczuhoja
-	 Eh2uMOUV2jmi7g2twpJT5QFnrN4eFQvPjrmqfvyedfK+zVDe2F1xOv7zMH4sqvnPEs
-	 +FhrrJDfjLleWklOEDMdM3tVMq90KD+oaeauvghWmQKAmLxplOBfHoyIvzaMRYN88p
-	 aPQ6z079WKNPzQkTWJsWN2T/TPDCZ89P7vl6WIEJvlbvEuZi1mtl5m+z9tLcXSCZQ/
-	 BxAMVYJx6ZLQQ==
-Message-ID: <3e40513c-3c58-4d25-8dc7-1d9bfc38fcf5@kernel.org>
-Date: Tue, 1 Oct 2024 21:46:42 +0200
+	b=a1Q5xL5BSNCz4CT/VaokEeLtHipxrotQkPFSq17sZfpMCoY5NUANwEm94Jmjh2ZqU
+	 5NfL1J5kxYTmyUF316MKVFtmmD97/n5h2DRE2fumsMRCxVs5o2Y0RK1k2aPOKhi9T5
+	 iMifcauwoJksUQcXnaCfrlac1L4K9aeJxHtIzgKFjyht6sJZF8zXq31Y3VselPEj1R
+	 KM1k+fq0faAiWQCuRmDGU8DTNllqTQ+IsoBQOL1espFFJdR59ElER9O4EUMKHT1+6S
+	 z8bhsQsxs9iHsFZszAPyEyI8A40Wo86JyFCTTilWNMYBXyFIY8SFot1he7gQiI/B8y
+	 Vb2mBBFGfEqpg==
+Message-ID: <a38d5506-4e26-43d3-885e-f4ae22058131@kernel.org>
+Date: Tue, 1 Oct 2024 21:47:31 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,21 +50,17 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: mt76: Fix NULL Pointer Dereference caused by
- mt76_connac_get_he_phy_cap()
+Subject: Re: [PATCH] mt76: mt7925: main.c: Avoid possible NULL Pointer
+ Dereference in mt7925_change_vif_links()
 To: Gax-c <zichenxie0106@gmail.com>, nbd@nbd.name, lorenzo@kernel.org,
  ryder.lee@mediatek.com, shayne.chen@mediatek.com, sean.wang@mediatek.com,
  kvalo@kernel.org, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, johannes.berg@intel.com,
- quic_adisi@quicinc.com, deren.wu@mediatek.com, chui-hao.chiu@mediatek.com,
- meichia.chiu@mediatek.com, mingyen.hsieh@mediatek.com,
- howard-yh.hsu@mediatek.com, StanleyYP.Wang@mediatek.com,
- allen.ye@mediatek.com, benjamin-jw.lin@mediatek.com, Bo.Jiao@mediatek.com,
- Money.Wang@mediatek.com
+ angelogioacchino.delregno@collabora.com, deren.wu@mediatek.com,
+ mingyen.hsieh@mediatek.com
 Cc: linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linux-mediatek@lists.infradead.org, Zijie Zhao <zzjas98@gmail.com>,
  Chenyuan Yang <chenyuan0y@gmail.com>
-References: <20240930212014.30607-1-zichenxie0106@gmail.com>
+References: <20240930185104.19107-1-zichenxie0106@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -110,84 +106,40 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240930212014.30607-1-zichenxie0106@gmail.com>
+In-Reply-To: <20240930185104.19107-1-zichenxie0106@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 30/09/2024 23:20, Gax-c wrote:
-> like commit f503ae90c735 ("wifi: mt76: mt7996: fix NULL pointer dereference in mt7996_mcu_sta_bfer_he"), mt76_connac_get_he_phy_cap() may return a NULL pointer, leading to NULL Pointer Dereference.
+On 30/09/2024 20:51, Gax-c wrote:
+> 'mconf = devm_kzalloc()' and 'mlink = devm_kzalloc()' may return NULL.
+> NULL Pointer Dereference may be triggered in the statement 'mconf->link_id = link_id;' below.
 > Add a null check for the returned pointer.
 > 
-> Fixes: a5c372f77aa7 ("wifi: mt76: mt7925: extend mt7925_mcu_bss_he_tlv for per-link BSS")
-> Fixes: e6d557a78b60 ("mt76: mt7915: rely on mt76_connac_get_phy utilities")
-> Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+> Fixes: 69acd6d910b0 ("wifi: mt76: mt7925: add mt7925_change_vif_links")
 > Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
 > Reported-by: Zichen Xie <zichenxie0106@gmail.com>
 > Reported-by: Zijie Zhao <zzjas98@gmail.com>
 > Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
-
-Same comments as in other patches.
-
 > ---
->  drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 6 ++++++
->  drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 3 +++
->  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 3 +++
->  3 files changed, 12 insertions(+)
+>  drivers/net/wireless/mediatek/mt76/mt7925/main.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-> index 87d0dd040001..941a6e40e94c 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-> @@ -552,6 +552,9 @@ mt7915_mcu_bss_he_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+> index 791c8b00e112..ea635169497f 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+> @@ -1948,6 +1948,12 @@ mt7925_change_vif_links(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+>  					     GFP_KERNEL);
+>  		}
 >  
->  	cap = mt76_connac_get_he_phy_cap(phy->mt76, vif);
->  
-
-Same problem as in other patches - drop unnecessary blank line.
-
-> +	if (!cap)
-> +		return;
+> +		if (!mconf || !mlink) {
+> +			err = -ENOMEM;
+> +			goto free;
+> +		}
 > +
->  	tlv = mt76_connac_mcu_add_tlv(skb, BSS_INFO_HE_BASIC, sizeof(*he));
->  
->  	he = (struct bss_info_he *)tlv;
-> @@ -1145,6 +1148,9 @@ mt7915_mcu_sta_bfer_he(struct ieee80211_sta *sta, struct ieee80211_vif *vif,
->  	u8 nss_mcs = mt7915_mcu_get_sta_nss(mcs_map);
->  	u8 snd_dim, sts;
->  
-> +	if (!vc)
-> +		return;
-> +
->  	bf->tx_mode = MT_PHY_TYPE_HE_SU;
->  
->  	mt7915_mcu_sta_sounding_rate(bf);
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-> index 748ea6adbc6b..1caf3e3e0e87 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-> @@ -2509,6 +2509,9 @@ mt7925_mcu_bss_he_tlv(struct sk_buff *skb, struct ieee80211_bss_conf *link_conf,
->  
->  	cap = mt76_connac_get_he_phy_cap(phy->mt76, link_conf->vif);
->  
-> +	if (!cap)
-> +		return;
-> +
->  	tlv = mt76_connac_mcu_add_tlv(skb, UNI_BSS_INFO_HE_BASIC, sizeof(*he));
->  
->  	he = (struct bss_info_uni_he *)tlv;
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-> index 6c445a9dbc03..e547729701b7 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-> @@ -799,6 +799,9 @@ mt7996_mcu_bss_he_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
->  
->  	cap = mt76_connac_get_he_phy_cap(phy->mt76, vif);
->  
-> +	if (!cap)
-> +		return;
 
-Don't you need to handle the error? Cleanup?
-
+All previous comments apply - wrapping, commit tags, unnecessary blank
+lines, proper cleanup.
 
 Best regards,
 Krzysztof
