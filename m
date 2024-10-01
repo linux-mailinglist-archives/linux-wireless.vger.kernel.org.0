@@ -1,197 +1,168 @@
-Return-Path: <linux-wireless+bounces-13390-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13391-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAFC898C689
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2024 22:12:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C307198C801
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 00:17:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73235283424
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2024 20:12:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EA5F285C3E
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2024 22:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54161CDFD0;
-	Tue,  1 Oct 2024 20:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16F1C199FCF;
+	Tue,  1 Oct 2024 22:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=wp.pl header.i=@wp.pl header.b="NLQjiXpG"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="U/2/B+3l"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx3.wp.pl (mx3.wp.pl [212.77.101.9])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B58E1CBE98
-	for <linux-wireless@vger.kernel.org>; Tue,  1 Oct 2024 20:12:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF471A276
+	for <linux-wireless@vger.kernel.org>; Tue,  1 Oct 2024 22:16:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727813560; cv=none; b=gFngbKp238mJsi9Q5ctuwj9t27przPhMBUOHhJaad1eVNXQjlH0KrYFU9RSXTParaenjADCpsOayQ4V7Ae47yp0t8QUspVmr1PIdQXBX0EBxK3MFUGH6DFy4OS3u4gzPchGMgL/+iWY4n8R27aRyr39fb52ePDaGHkr0mjk+Vko=
+	t=1727821017; cv=none; b=uymOr2NVB/3uAROrhaz/pGaN3xq+GVkbV+lwZjZDss8+mgXIkZWbLQMB+jx44xl5NF4bXmMWZW2nbzRS8mS94JUlX0DjI5GrspYi7M/D9SGyLD2WOcdFArhLPv5qu45u1pWPwLNexdYVH91d/drLg8GsyB2a8kJT1WgzzUn/pgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727813560; c=relaxed/simple;
-	bh=A+Lg3tBqpHm5Yo1eLFAQngKgL+XOfon5rSfz5FwSUtM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gtWEm6Pu5DpMQlQpIt2xrzKkdPfzlKnZCEmZLsx+J01AMh6BkkjRoywx7Zf08WICJs4obzkWwd2gx4Qpm1Z4eNgI0mBaYleUMJLegLeUDUdMomChaOtgHgN77gWlG5sWb+Ir2C6EiGjZPiO3jAxWbOlWpXj4fsbt2Ro8nb9mX3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (1024-bit key) header.d=wp.pl header.i=@wp.pl header.b=NLQjiXpG; arc=none smtp.client-ip=212.77.101.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
-Received: (wp-smtpd smtp.wp.pl 24172 invoked from network); 1 Oct 2024 21:45:56 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
-          t=1727811956; bh=JtGF1bxSjD9IbEkFfx8e8qWZsig0Xb8cTcyoGs6kSa0=;
-          h=From:To:Cc:Subject;
-          b=NLQjiXpGnQSZ9DdCUb6n0UXFILyF5kinncxpugOM73yZEyjcdUN7BDnoisD90yvfc
-           B27CFWL+IJe4aAJDZPv0m7h4wXLxNxWbvSVzR/tfkAwMmJr1DAaZxzuQZm2W83O/Bq
-           P4ktgbY1IBMp/kJ2qzLVdrWBSV2VueoDbaDH9UV8=
-Received: from 89-64-14-248.dynamic.chello.pl (HELO localhost) (stf_xl@wp.pl@[89.64.14.248])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <ville.syrjala@linux.intel.com>; 1 Oct 2024 21:45:56 +0200
-Date: Tue, 1 Oct 2024 21:45:55 +0200
-From: Stanislaw Gruszka <stf_xl@wp.pl>
-To: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-Cc: linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
-Subject: Re: [PATCH] iwlegacy: Clear stale interrupts before enabling
- interrupts
-Message-ID: <20241001194555.GA14595@wp.pl>
-References: <20240930122924.21865-1-ville.syrjala@linux.intel.com>
- <20241001181816.GA12474@wp.pl>
- <ZvxL-NgAilLPHCSa@intel.com>
+	s=arc-20240116; t=1727821017; c=relaxed/simple;
+	bh=Ccai9lwq6zdF/M+odjKzEOIMYBrI+jcpq44Lm7DTVtU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=N8K2HbY/4rtBWNnab8qOh+s0zTNkvPn87dTygXSNg/f7FizkpKXx2hPeGWvY8/6UO0XSUuoigD9hMlxK3lUn5mpYJ0aGNaU2uuZ22z8SjcjSdS4lhysiwW1214C09MsaAAlqufyMbkvotANRTEqg68W3mqTLyVOtmfe9XcVeE5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=U/2/B+3l; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 491BTbjc008088;
+	Tue, 1 Oct 2024 22:16:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	p+R9xUtQWR+Sw1XdO5QF5AXylA7stnEwUMbRSf4or5M=; b=U/2/B+3lqTCU3nc2
+	PRIvUxyo07oztN0ftkdC226BU5kiqgvK4CBsmJB7IvGCUQwjAvW1O0sjKTsbtCo8
+	yEIfV0UZhJZOT6lavV1iav2H0DgI89z3iPME2BkDDpWFS71jh3aj9Y6M8d+W2L9J
+	vwCgMNGfQ1xVXly3PbdARMk3lFbqoyhejx+MdImcUwMb62GdNv8QV217ctH3BxxM
+	VJeZI6sgB6lSHe6TKptt4L8ZacaMSZjc+njCFqAFsKh8Ie+cHXiH/Mjg+4ZORiUP
+	JcO/l5lsXaeZYx0dDZ4fNsLGxmpEIfhBUJT92xF1jAxVpwSWF22J6rkZ1xPTtNgv
+	/khaoQ==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41xa679tqy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 01 Oct 2024 22:16:49 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 491MGliv020504
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 1 Oct 2024 22:16:47 GMT
+Received: from [10.111.183.230] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 1 Oct 2024
+ 15:16:46 -0700
+Message-ID: <14db82b4-dfc0-4f21-a6aa-d6ed80f42638@quicinc.com>
+Date: Tue, 1 Oct 2024 15:16:46 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZvxL-NgAilLPHCSa@intel.com>
-X-WP-MailID: 475dfdb8e2fdb1926b91de44ed2440e0
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000000 [YaOU]                               
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] wifi: ath12k: fix use-after-free in
+ ath12k_dp_cc_cleanup()
+To: Rameshkumar Sundaram <quic_ramess@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20241001092652.3134334-1-quic_ramess@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <20241001092652.3134334-1-quic_ramess@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: bekQMfh69v7Qf9libl6MpJg52gyuMD6P
+X-Proofpoint-ORIG-GUID: bekQMfh69v7Qf9libl6MpJg52gyuMD6P
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
+ lowpriorityscore=0 mlxlogscore=901 malwarescore=0 mlxscore=0
+ priorityscore=1501 bulkscore=0 clxscore=1015 adultscore=0 suspectscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2410010147
 
-On Tue, Oct 01, 2024 at 10:22:32PM +0300, Ville Syrjälä wrote:
-> On Tue, Oct 01, 2024 at 08:18:16PM +0200, Stanislaw Gruszka wrote:
-> > Hi
-> > 
-> > On Mon, Sep 30, 2024 at 03:29:24PM +0300, Ville Syrjala wrote:
-> > > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > > 
-> > > iwl4965 fails upon resume from hibernation on my laptop. The reason
-> > > seems to be a stale interrupt which isn't being cleared out before
-> > > interrupts are enabled. We end up with a race beween the resume
-> > > trying to bring things back up, and the restart work (queued form
-> > > the interrupt handler) trying to bring things down. Eventually
-> > > the whole thing blows up.
-> > > 
-> > > Fix the problem by clearing out any stale interrupts before
-> > > interrupts get enabled.
-> > > 
-> > > Here's a debug log of the indicent:
-> > > [   12.042589] ieee80211 phy0: il_isr ISR inta 0x00000080, enabled 0xaa00008b, fh 0x00000000
-> > > [   12.042625] ieee80211 phy0: il4965_irq_tasklet inta 0x00000080, enabled 0x00000000, fh 0x00000000
-> > > [   12.042651] iwl4965 0000:10:00.0: RF_KILL bit toggled to enable radio.
-> > > [   12.042653] iwl4965 0000:10:00.0: On demand firmware reload
-> > <snip>
-> > > [   12.052207] ieee80211 phy0: il4965_mac_start enter
-> > > [   12.052212] ieee80211 phy0: il_prep_station Add STA to driver ID 31: ff:ff:ff:ff:ff:ff
-> > > [   12.052244] ieee80211 phy0: il4965_set_hw_ready hardware  ready
-> > > [   12.052324] ieee80211 phy0: il_apm_init Init card's basic functions
-> > > [   12.052348] ieee80211 phy0: il_apm_init L1 Enabled; Disabling L0S
-> > > [   12.055727] ieee80211 phy0: il4965_load_bsm Begin load bsm
-> > > [   12.056140] ieee80211 phy0: il4965_verify_bsm Begin verify bsm
-> > > [   12.058642] ieee80211 phy0: il4965_verify_bsm BSM bootstrap uCode image OK
-> > > [   12.058721] ieee80211 phy0: il4965_load_bsm BSM write complete, poll 1 iterations
-> > > [   12.058734] ieee80211 phy0: __il4965_up iwl4965 is coming up
-> > > [   12.058737] ieee80211 phy0: il4965_mac_start Start UP work done.
-> > > [   12.058757] ieee80211 phy0: __il4965_down iwl4965 is going down
-> > > [   12.058761] ieee80211 phy0: il_scan_cancel_timeout Scan cancel timeout
-> > > [   12.058762] ieee80211 phy0: il_do_scan_abort Not performing scan to abort
-> > > [   12.058765] ieee80211 phy0: il_clear_ucode_stations Clearing ucode stations in driver
-> > > [   12.058767] ieee80211 phy0: il_clear_ucode_stations No active stations found to be cleared
-> > > [   12.058819] ieee80211 phy0: _il_apm_stop Stop card, put in low power state
-> > > [   12.058827] ieee80211 phy0: _il_apm_stop_master stop master
-> > > [   12.058864] ieee80211 phy0: il4965_clear_free_frames 0 frames on pre-allocated heap on clear.
-> > > [   12.058869] ieee80211 phy0: Hardware restart was requested
-> > > [   16.132299] iwl4965 0000:10:00.0: START_ALIVE timeout after 4000ms.
-> > > [   16.132303] ------------[ cut here ]------------
-> > > [   16.132304] Hardware became unavailable upon resume. This could be a software issue prior to suspend or a hardware issue.
-> > <snip>
-> > >  drivers/net/wireless/intel/iwlegacy/common.h | 2 ++
-> > >  1 file changed, 2 insertions(+)
-> > > 
-> > > diff --git a/drivers/net/wireless/intel/iwlegacy/common.h b/drivers/net/wireless/intel/iwlegacy/common.h
-> > > index 2147781b5fff..758984d527bf 100644
-> > > --- a/drivers/net/wireless/intel/iwlegacy/common.h
-> > > +++ b/drivers/net/wireless/intel/iwlegacy/common.h
-> > > @@ -2342,6 +2342,8 @@ static inline void
-> > >  il_enable_interrupts(struct il_priv *il)
-> > >  {
-> > >  	set_bit(S_INT_ENABLED, &il->status);
-> > > +	_il_wr(il, CSR_INT, 0xffffffff);
-> > > +	_il_wr(il, CSR_FH_INT_STATUS, 0xffffffff);
-> > >  	_il_wr(il, CSR_INT_MASK, il->inta_mask);
-> > >  }
-> > 
-> > RF_KILL is CSR_INT and we already acknowledged CSR_INT before
-> > il_enable_interrupts() in il4965_mac_start() -> __il4965_up()):
-> > 
-> > 	/* make sure rfkill handshake bits are cleared */
-> > 	_il_wr(il, CSR_UCODE_DRV_GP1_CLR, CSR_UCODE_SW_BIT_RFKILL);
-> > 	_il_wr(il, CSR_UCODE_DRV_GP1_CLR, CSR_UCODE_DRV_GP1_BIT_CMD_BLOCKED);
-> > 
-> > 	/* clear (again), then enable host interrupts */
-> > 	_il_wr(il, CSR_INT, 0xFFFFFFFF);
-> > 	il_enable_interrupts(il);
-> > 
-> > 	/* really make sure rfkill handshake bits are cleared */
-> > 	_il_wr(il, CSR_UCODE_DRV_GP1_CLR, CSR_UCODE_SW_BIT_RFKILL);
-> > 	_il_wr(il, CSR_UCODE_DRV_GP1_CLR, CSR_UCODE_SW_BIT_RFKILL);
-> > 
-> > So the only explanation I can see the patch help with the problem
-> > is additional delay between first and second rfkill handshake bits
-> > clearing (which BTW looks fishy, since is done 2 times, 
-> > and seems in the second line in the second clearing bit 
-> > CSR_UCODE_DRV_GP1_BIT_CMD_BLOCKED should be used).
-> > 
-> > I suspect the real problem is that we do enable rfkill
-> > interrupt by il_enable_rfkill_int() on il4965_mac_stop().
-> > Since we want to know RF KILL state regardless interface
-> > is up or down. But then the interrupt is enabled during
-> > suspend period as well.
-> > 
-> > Probably better fix would be add il_disable_interrupts()
-> > to il_pci_suspend(). Would you like to check that?
+On 10/1/2024 2:26 AM, Rameshkumar Sundaram wrote:
+> During ath12k module removal, in ath12k_core_deinit(),
+> ath12k_mac_destroy() un-registers ah->hw from mac80211 and frees
+> the ah->hw as well as all the ar's in it. After this
+> ath12k_core_soc_destroy()-> ath12k_dp_free()-> ath12k_dp_cc_cleanup()
+> tries to access one of the freed ar's from pending skb.
 > 
-> That doesn't work, which doesn't surprise me since the state
-> of the device in .suspend() has no bearing on the state of the
-> device in .resume() when we're talking about hibernation.
-
-Oh, ok.
-
-> Hmm. I suppose we might want to minimize the potential
-> changes to any runtime behaviour in which case we could
-> do this instead:
+> This is because during mac destroy, driver failed to flush few
+> data packets, which were accessed later in ath12k_dp_cc_cleanup()
+> and freed, but using ar from the packet led to this use-after-free.
 > 
-> diff --git a/drivers/net/wireless/intel/iwlegacy/common.c b/drivers/net/wireless/intel/iwlegacy/common.c
-> index 9d33a66a49b5..7f58e31d23fe 100644
-> --- a/drivers/net/wireless/intel/iwlegacy/common.c
-> +++ b/drivers/net/wireless/intel/iwlegacy/common.c
-> @@ -4962,6 +4962,8 @@ il_pci_resume(struct device *device)
->  	 */
->  	pci_write_config_byte(pdev, PCI_CFG_RETRY_TIMEOUT, 0x00);
->  
-> +	_il_wr(il, CSR_INT, 0xffffffff);
-> +	_il_wr(il, CSR_FH_INT_STATUS, 0xffffffff);
->  	il_enable_interrupts(il);
->  
->  	if (!(_il_rd(il, CSR_GP_CNTRL) & CSR_GP_CNTRL_REG_FLAG_HW_RF_KILL_SW))
+> BUG: KASAN: use-after-free in ath12k_dp_cc_cleanup.part.0+0x5e2/0xd40 [ath12k]
+> Write of size 4 at addr ffff888150bd3514 by task modprobe/8926
+> CPU: 0 UID: 0 PID: 8926 Comm: modprobe Not tainted
+> 6.11.0-rc2-wt-ath+ #1746
+> Hardware name: Intel(R) Client Systems NUC8i7HVK/NUC8i7HVB, BIOS
+> HNKBLi70.86A.0067.2021.0528.1339 05/28/2021
 > 
-> which does work.
-
-I see, we have clear CSR_INT, not in il4965_mac_start() 
-but in il_pci_resume() where we actually enable interrupts
-on resume. Now the solution makes sense to me.
-Feel free to post the second one if you think it's better,
-I'm also fine with the original patch. 
-
-Thanks
-Stanislaw
+> Call Trace:
+>   <TASK>
+>   dump_stack_lvl+0x7d/0xe0
+>   print_address_description.constprop.0+0x33/0x3a0
+>   print_report+0xb5/0x260
+>   ? kasan_addr_to_slab+0x24/0x80
+>   kasan_report+0xd8/0x110
+>   ? ath12k_dp_cc_cleanup.part.0+0x5e2/0xd40 [ath12k]
+>   ? ath12k_dp_cc_cleanup.part.0+0x5e2/0xd40 [ath12k]
+>   kasan_check_range+0xf3/0x1a0
+>   __kasan_check_write+0x14/0x20
+>   ath12k_dp_cc_cleanup.part.0+0x5e2/0xd40 [ath12k]
+>   ath12k_dp_free+0x178/0x420 [ath12k]
+>   ath12k_core_stop+0x176/0x200 [ath12k]
+>   ath12k_core_deinit+0x13f/0x210 [ath12k]
+>   ath12k_pci_remove+0xad/0x1c0 [ath12k]
+>   pci_device_remove+0x9b/0x1b0
+>   device_remove+0xbf/0x150
+>   device_release_driver_internal+0x3c3/0x580
+>   ? __kasan_check_read+0x11/0x20
+>   driver_detach+0xc4/0x190
+>   bus_remove_driver+0x130/0x2a0
+>   driver_unregister+0x68/0x90
+>   pci_unregister_driver+0x24/0x240
+>   ? find_module_all+0x13e/0x1e0
+>   ath12k_pci_exit+0x10/0x20 [ath12k]
+>   __do_sys_delete_module+0x32c/0x580
+>   ? module_flags+0x2f0/0x2f0
+>   ? kmem_cache_free+0xf0/0x410
+>   ? __fput+0x56f/0xab0
+>   ? __fput+0x56f/0xab0
+>   ? debug_smp_processor_id+0x17/0x20
+>   __x64_sys_delete_module+0x4f/0x70
+>   x64_sys_call+0x522/0x9f0
+>   do_syscall_64+0x64/0x130
+>   entry_SYSCALL_64_after_hwframe+0x4b/0x53
+> RIP: 0033:0x7f8182c6ac8b
+> 
+> Commit 24de1b7b231c ("wifi: ath12k: fix flush failure in recovery
+> scenarios") added the change to decrement the pending packets count
+> in case of recovery which make sense as ah->hw as well all
+> ar's in it are intact during recovery, but during core deinit there
+> is no use in decrementing packets count or waking up the empty waitq
+> as the module is going to be removed also ar's from pending skb's
+> can't be used and the packets should just be released back.
+> 
+> To fix this, avoid accessing ar from skb->cb when driver is being
+> unregistered.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00214-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
+> Fixes: 24de1b7b231c ("wifi: ath12k: fix flush failure in recovery scenarios")
+> Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
 
