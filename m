@@ -1,114 +1,124 @@
-Return-Path: <linux-wireless+bounces-13364-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13365-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A491C98B812
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2024 11:13:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E6B898B816
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2024 11:16:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A35D1F2316B
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2024 09:13:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F253282E76
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2024 09:16:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD6C19D090;
-	Tue,  1 Oct 2024 09:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6BF156C4D;
+	Tue,  1 Oct 2024 09:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WqNMcchn"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="YKkNlIwJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678C64594C;
-	Tue,  1 Oct 2024 09:13:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AED51C693
+	for <linux-wireless@vger.kernel.org>; Tue,  1 Oct 2024 09:16:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727774033; cv=none; b=DxMRIguCDvOXCRZGeKiWfunPpmBZm1lINALd13rr5SyMYeMp4mv4ZO6Pqji+iDTgsHGgJUCjWMREuqthGA6c9LumHwCEedtsk7/vazjneVR4pzUqEyDjmMgEeyENN2XP0xOcJoyTMsChGgOQYU4e+y25n0d0StcRODTawIfEsYI=
+	t=1727774190; cv=none; b=gQfQ8AH/N5YLGeYOSOjcI1YOVIhR01r8P2on+cZ/JyZxwmJF13xxA7GE6bm1rayXgAzm7knlq/8B+IOY7d5/RkDhU2hkyRkpOEKWC+TUvT/EI8pbl52IAaiEUW5orWWbXOVy+Wm+ov9lvKCvDqR8cc/1/TIkWMprGsqeu864HBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727774033; c=relaxed/simple;
-	bh=SiC4rx0Uaxb3sCsy8e0UVnitmu9e8ZlW8c9ynEs8+yc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PUe2uv3hDRqNMJuAQvOXDHe7gWukw1HKs3qfcfxflbwVhuzvZMlqvPYoje7MpOlMALXNDMsA8kOomNXA2qhJGbcGG1yauAJ4Baxr947oJdbB+7jvxdglKjsur0Kd2YwbdI5UGBJt9gMsx6WBnJLfJHwe4SWrbSZj++vpXh6M+VU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WqNMcchn; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-42cd74c0d16so48742025e9.1;
-        Tue, 01 Oct 2024 02:13:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727774030; x=1728378830; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nZ8VMiXu6gGmVrp93Vd0jleOW/f3dpveonWUZYL14c0=;
-        b=WqNMcchn6exF8JmTB87Wy6gEHIfueVh1VPRdGy6oK4bAE0yGsH7RA5bVD9Ix5YGZ0I
-         NLg4ESljUPitp8uHwYyxMZzyIvjFhU8c4XwdaQnl10Yels8SyneopV6cW+UdU/optm8z
-         9Nf5MT8ZTudVXC8+Z0aztYxUcyQr1Z71/Elp8b61NhKxbvOEKmoCEvZ7gFH0vWAjICfZ
-         U16RKI1nk9iqjU6cFMX41rlVMwZ094fCd9hpUMUuQRu81t00fgGwBf8AcEodMb04/DSH
-         /PSgr+dX2BQoArYXctSDODYjriT+SVUb+J82xRjKadEo7ZLt5ra0c/qwJW3gxWDmcjlR
-         uNEw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727774030; x=1728378830;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nZ8VMiXu6gGmVrp93Vd0jleOW/f3dpveonWUZYL14c0=;
-        b=sJlr7quBFIcGwIxJFOxjPbgfChFBdAcYc3gyHI2nw9dANirMuDXiIWi7JyK9Z1c1pF
-         O1I1iK775bl548m/O/+c7nm/TBFCgIdGgkm4/QmD7zCuYq8K/BtBdts0gMnDWruyXySw
-         xY6jlPHQSwoH0UyL+ENNGYHWcBMXdfxTGAeKYP86OK7C8HlXH60AwcDOvSiNUaTsKZLQ
-         j5wwk91zv6KvOzJdIUd/FTChd/syoooUsRE37+C3zBVyfC1PZdoqohVMxFDzlQRPxkTh
-         ZwteyQoDarMU6G7mXM6dSt0A2iuNe3W7XZ4Rf0HwHgzNWMLVK/TABuRDXmA1iIAvqrNz
-         zcBw==
-X-Forwarded-Encrypted: i=1; AJvYcCUncSQC3ZEZWIGlcZr230UAf/B4xCsFEfk3XCApdH2fVOVZ+DfKG9LMrs1OOUknQX2gNlmw6sWwsNvR2nk=@vger.kernel.org, AJvYcCX/2Pfj336l4upojDhem3uYXeQbgd+75YW0HKsOtSfy5/7gqyUYEBCccI3QZo8uaUGqHDITuwUezv/nix1P5P8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxb79FQ51k7rKdNPmZlYxmLNktWa4G/V0pJO+5eSgmu0lE5P/R6
-	plSvBY5bJLwZm/IgRZGrY73TQhdsVJla6HabZB8LL4dvC+LKxpai
-X-Google-Smtp-Source: AGHT+IEHo6FjFSSwdArKH11zWRailghYO5HUV6hEY46lvJVjNHGNbQl9JqV/M4Mr5RhWT9PkAJ9XYg==
-X-Received: by 2002:a05:600c:1f91:b0:42c:e0da:f155 with SMTP id 5b1f17b1804b1-42f584349a4mr101548295e9.11.1727774029290;
-        Tue, 01 Oct 2024 02:13:49 -0700 (PDT)
-Received: from alessandro-pc.station (net-2-44-101-4.cust.vodafonedsl.it. [2.44.101.4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e969ffc56sm174792905e9.22.2024.10.01.02.13.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Oct 2024 02:13:48 -0700 (PDT)
-From: Alessandro Zanni <alessandro.zanni87@gmail.com>
-To: pkshih@realtek.com,
-	kvalo@kernel.org
-Cc: Alessandro Zanni <alessandro.zanni87@gmail.com>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	skhan@linuxfoundation.org,
-	anupnewsmail@gmail.com
-Subject: [PATCH] wifi: rtw89: wow: Add unlock mutex before to return
-Date: Tue,  1 Oct 2024 11:13:16 +0200
-Message-ID: <20241001091320.38687-1-alessandro.zanni87@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1727774190; c=relaxed/simple;
+	bh=JJsNupdkuJYAl9OvAqtW3yYJyWfTps9LlGYY7W+wsWQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=A022IAY+mrgQrywcu4ZVVy5xVMRROz0VPoyYusxa1Rn82X1KpmvADgySmGVULhY6Ufv7xDxVgG3PKEZCpLthTqQM86KApeCAJ5xGHzcVLNe79GP7i6pgO/8D5vkaF1GbWbVL2bhKeDfwjJvbHeG3fTmmipMFd7cG+VQP3mwefNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=YKkNlIwJ; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48UNxRUr015533;
+	Tue, 1 Oct 2024 09:16:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	/19Tyxgrt1SEVblNeRF8Z3P7nByNhKfHz19N+7mP6UE=; b=YKkNlIwJTszdi9VM
+	MoxUrODTO+FuV+Tylz4dJjy2OuTKkRmwAyvuMUguyWOkYHT5m4eOn1YCPgKw9Zr1
+	kqn7IwP9uw+HJzFk6+WQKKVeNKsjyDqCknDDeH2bXJQUs+TaYBEweCOQGKuN+zgd
+	ujqDI5A6/0ASXr0tVpLTnbvI2nrFj3SVLwW1HNRviB+kEpElb42EePtDawXE4IbV
+	91t8pxOBfBBbhPWkimeoZb0q7g/qU3T1eLR9dy7yn9lmhpiZbk8O6B8havEAPWs+
+	TIEoS18h92SFuto9OeoucocErPugkaQohc8BSM0KJVOclk/SBqlCQqORYSl0PT4H
+	pm4EEg==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41xaymfp4v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 01 Oct 2024 09:16:23 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4919GKSg013871
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 1 Oct 2024 09:16:20 GMT
+Received: from [10.152.202.18] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 1 Oct 2024
+ 02:16:18 -0700
+Message-ID: <99b6c9aa-ec20-4385-bf6d-49f4c59276ad@quicinc.com>
+Date: Tue, 1 Oct 2024 14:46:15 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: mac80211: fix assigning channel in activate links
+To: Johannes Berg <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>
+References: <20241001041518.2236297-1-quic_adisi@quicinc.com>
+ <0353d31db76afbd5d9bb2e7d42246ae3c8e14044.camel@sipsolutions.net>
+ <fd731cac-7182-4de3-afd4-0fc5892a9440@quicinc.com>
+ <c103db90ed53a75cae10baba0ae52dae85bf1c3f.camel@sipsolutions.net>
+ <5fe9fdf2-ae5c-4d15-a095-0203a814e4ba@quicinc.com>
+ <16ad03533ab6aca65c3fe9db94ae53ad11fdb9d1.camel@sipsolutions.net>
+ <39b73ddd-5478-4599-a92b-00b274d2ce02@quicinc.com>
+ <d66a63e31e55249bc88faa5731abb2859fa2a940.camel@sipsolutions.net>
+Content-Language: en-US
+From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+In-Reply-To: <d66a63e31e55249bc88faa5731abb2859fa2a940.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: rNIGCmJBsCEHjGS0gPVK6BPYBcf7xvOV
+X-Proofpoint-GUID: rNIGCmJBsCEHjGS0gPVK6BPYBcf7xvOV
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 phishscore=0
+ mlxscore=0 adultscore=0 malwarescore=0 priorityscore=1501 impostorscore=0
+ clxscore=1015 bulkscore=0 lowpriorityscore=0 mlxlogscore=848
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2410010060
 
-In error handling code for "ieee80211_gtk_rekey_add failed", release
-the mutex before to return.
+On 10/1/24 13:58, Johannes Berg wrote:
+> On Tue, 2024-10-01 at 13:56 +0530, Aditya Kumar Singh wrote:
+>> Yes please that would be of great help. Let me send a next version
+>> having the changes as discussed above and then you could pick that for
+>> testing and let us know whether it is working as expected by Intel driver?
+> 
+> Sure. I suspect it'll work better if you do the ordering as you had
+> described in the comment.
 
-Found with Coccinelle static analisys tool,
-script: https://coccinelle.gitlabpages.inria.fr/website/rules/mut.cocci
+Sure, done and I have sent the next version. Do let us know if you face 
+any issues.
 
-Signed-off-by: Alessandro Zanni <alessandro.zanni87@gmail.com>
----
- drivers/net/wireless/realtek/rtw89/wow.c | 1 +
- 1 file changed, 1 insertion(+)
+> 
+>> It would be better if other MLO based drivers could also test this? I
+>> mean if possible they could also test and let us know if this breaks any
+>> of their expectations! Or if not test, at least ack this change?
+> 
+> I guess they'll just have to speak up here too :)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/wow.c b/drivers/net/wireless/realtek/rtw89/wow.c
-index 86e24e07780d..8045acb27cf9 100644
---- a/drivers/net/wireless/realtek/rtw89/wow.c
-+++ b/drivers/net/wireless/realtek/rtw89/wow.c
-@@ -624,6 +624,7 @@ static struct ieee80211_key_conf *rtw89_wow_gtk_rekey(struct rtw89_dev *rtwdev,
- 	kfree(rekey_conf);
- 	if (IS_ERR(key)) {
- 		rtw89_err(rtwdev, "ieee80211_gtk_rekey_add failed\n");
-+		mutex_unlock(&rtwdev->mutex);
- 		return NULL;
- 	}
- 
+:)
+
+
 -- 
-2.43.0
+Aditya
 
 
