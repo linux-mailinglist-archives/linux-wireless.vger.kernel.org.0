@@ -1,121 +1,175 @@
-Return-Path: <linux-wireless+bounces-13392-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13393-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B707298C989
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 01:36:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 361AC98C9B7
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 01:59:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C4151F24619
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2024 23:36:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59D121C2265D
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2024 23:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AA8C1D4335;
-	Tue,  1 Oct 2024 23:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2630E1CF5D7;
+	Tue,  1 Oct 2024 23:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Ei2CyyJA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XIfI3nL3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f67.google.com (mail-qv1-f67.google.com [209.85.219.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F98E1D432A
-	for <linux-wireless@vger.kernel.org>; Tue,  1 Oct 2024 23:36:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A27C1BFDFE;
+	Tue,  1 Oct 2024 23:59:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727825802; cv=none; b=B4BvWB83x+yhtoCUz/p9jg2YefwDPAiz81mniwk2sPZb+Ovd1Pe+pGJITHtioMAXDdtfPRiUK1alHH+DKjaTa4hky/ohDnQI+TF2gjSZoB86mEfPoMoI9echK8mTJhckOJbX1jQbSWNlMj4CL8Nb2vO7AIu2NkSHhf70lpC2O+U=
+	t=1727827178; cv=none; b=htXOvv9D33Ka0r3omxLZWlQlB9+o4E/0+iOL48ZyUorApO5ZgQJiNfWnnthgMo83ER/lx2GipO+c3oP0WgXH8YbuCsCYPdlum96pxH06MTUwlcGkQ9jp7sInWvFUyeUQXUDTtF2CUSydzy/FQzrPUUFELVjpzByZp3LDIHqb39w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727825802; c=relaxed/simple;
-	bh=oiIfznLnfn9BRMAKIUK0sS5ChZXwdFmh1w56z2AlV4g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=OOfztK9Z9ENbxewQPEvxIqIZJxCt2VBNs/YOinC1LlfCQG35PS2Jg5DWwEZRJmUfrjx5pqvwLefo1s71EbP9z3VjoajT6Y8t+ixv9XSUXLcV1AXhdJrRwtAfczwrAsEH8NTAPTOtAgk7fyLksjQ5bep2Sf7NA3aKxK1BVilQ1Ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Ei2CyyJA; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 491N7ZBT013853;
-	Tue, 1 Oct 2024 23:36:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	7hBtFRQ/pODJPlMZDaeE7XDB0qJUQKZqYSGjobKZhKU=; b=Ei2CyyJARHDXWJI6
-	CrxSHN1mZNBgz/uAT5rZM8EFWrQ+3IVVaHnGaaugFJHLutG3gq7uz8QvhWZxIxav
-	ZINP5kb/EQWXzVF6NJYKUB4Y8LfXRmnQqxj1m8jSXIzy55NiD8pahMssDjQM95ka
-	t/Hyo6T51kB01+NxfNog5NNkiL4RfnIieHD28J58cAG54qPgNEoorDJQ5aDjfVH8
-	j6BwC/ZtLan4PBtu5RfhWIxS2T4wOi9IeIofHBtu+2S4hY37CRCaWdD6INMBF+0r
-	zt8Vr4q8Czju/z1sye9Lw4tt8aTH4SWN+g8dPSxR/Pwm7u+1zWhJJSZZo7jeaK9e
-	5wJe9g==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41x94hj18t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 01 Oct 2024 23:36:29 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 491NaQBl015538
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 1 Oct 2024 23:36:26 GMT
-Received: from [10.111.183.230] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 1 Oct 2024
- 16:36:25 -0700
-Message-ID: <36130760-b396-4c4e-ad1a-dbe8415fdcb7@quicinc.com>
-Date: Tue, 1 Oct 2024 16:36:25 -0700
+	s=arc-20240116; t=1727827178; c=relaxed/simple;
+	bh=aU/DSpJSbZpqdEffBjFrNS5hGBdv/lZCHpo07LS88Bo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TfdO+ZawjJs0kwjEl+v55sLFO2XYhFABhmsLzqR5w+OwaHITD5RGKO0hCvcuSu2Y+Hyb07DhmHnOrxiTHMl59MvQuaFsDsb7WwzualGUUoAx3N/hKHdvkQoSiaE9qI5vR0bxfg9OJUKrf/Cq0a+9R0REj5HDMj9qQDLynZXjaTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XIfI3nL3; arc=none smtp.client-ip=209.85.219.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f67.google.com with SMTP id 6a1803df08f44-6cb7f5f9fb7so6031666d6.1;
+        Tue, 01 Oct 2024 16:59:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727827175; x=1728431975; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=EIMVYLwIXxHJcv25n73ufbkJ6K09NM55kcrxLf+k2D0=;
+        b=XIfI3nL3/+sW0n2sWHXFNobMpYywlz1KV3Dbwcu69lVnB5WTnkNr3UHk96agUCY+LJ
+         xJgKIR20915smfCaY0LHachfSQWs+4X3gdSmNHFrWycfhcFC38eD3L+cTZzUPdelAtVI
+         ieqSSa/OPYxpOGaE0SkWEq7XDViaVSDl0fio1y2tm5XEwL2ldV8YKru34JIww4sS7pvZ
+         yY43c5AeCsuTUpgfK62dHXuB0FAfRQkzs3UqxpXoW3khW6eLYksmJgcpCnZzVhB2dO3g
+         KVh2ogouleYq0rSWDenxe7enzvdHRodnZUUOUol/j+5UzwmU+MAgUwMfmkYMr6JLKVAy
+         aoFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727827175; x=1728431975;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=EIMVYLwIXxHJcv25n73ufbkJ6K09NM55kcrxLf+k2D0=;
+        b=ZL1j/DQl4CfUw3o0chi2JEYxIEbRYEy7rwyRFVIPTNksV1QS9LBrrsnnqgX6W8TgHA
+         liaDxec6gAvnbrxNTWdTatM0+Hp9arIF9aBQAOGbKt/rHbTKr+0apUXhpDriLZw6CouC
+         oo69uW7GYzkEO6vh44eWVQT9OJYkbTFc3vjaPFPHHCpE9ldSVSzQa7/QeQcxNhfXhjQ3
+         vZq5alNaXVx3+duW+Knk9SdkH+/PIAaQMNYWwt0hBvtmKAJxWLt31MGyc3q4BlfvYtA4
+         gykWIyh9HyDzoMoMHi805rKk910+CfYRAYTpf4TOyAy+gsiNblXgU5qRZg3QxKsGTji1
+         KhxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXtA87wE0wTuMxYLMkRbXphauCTspyZSx0r0fCk7QDEOe2Ell5vB7JMKbOfcVgwvmpWhxn2GZOSgINwRNY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzgfv749yHA7E2myaTGRT8C4r6lIdxWXx3m6iBgxycSUPzd3P5j
+	OnUxmQZnnQobcx0bw2VtjDvfIJUgaEXCm3DUDeOr3Crv+/I7bnL/
+X-Google-Smtp-Source: AGHT+IFRGDetIIOogdXr7hM3QGLlkwxkKdUDQzBEOwXFyl/7/DUQTfRZKup3mPRitlBLh6GpQHzd2Q==
+X-Received: by 2002:a05:6214:3a83:b0:6c7:c668:17fd with SMTP id 6a1803df08f44-6cb819dcd4cmr17609316d6.1.1727827175399;
+        Tue, 01 Oct 2024 16:59:35 -0700 (PDT)
+Received: from localhost.localdomain (mobile-130-126-255-54.near.illinois.edu. [130.126.255.54])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb3b66d0d5sm55104956d6.81.2024.10.01.16.59.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Oct 2024 16:59:34 -0700 (PDT)
+From: Gax-c <zichenxie0106@gmail.com>
+To: nbd@nbd.name,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	kvalo@kernel.org,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	johannes.berg@intel.com,
+	quic_adisi@quicinc.com,
+	deren.wu@mediatek.com,
+	chui-hao.chiu@mediatek.com,
+	mingyen.hsieh@mediatek.com,
+	howard-yh.hsu@mediatek.com,
+	StanleyYP.Wang@mediatek.com,
+	allen.ye@mediatek.com,
+	benjamin-jw.lin@mediatek.com,
+	Bo.Jiao@mediatek.com,
+	evelyn.tsai@mediatek.com,
+	meichia.chiu@mediatek.com
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	zzjas98@gmail.com,
+	chenyuan0y@gmail.com,
+	Gax-c <zichenxie0106@gmail.com>
+Subject: [PATCH] wifi: mt76: Fix NULL Dereference caused by mt76_connac_get_he_phy_cap()
+Date: Tue,  1 Oct 2024 18:59:08 -0500
+Message-Id: <20241001235908.19431-1-zichenxie0106@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath12k: Support DMAC Reset Stats
-To: Roopni Devanathan <quic_rdevanat@quicinc.com>,
-        <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, Rajat Soni <quic_rajson@quicinc.com>
-References: <20240926051110.2477814-1-quic_rdevanat@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Content-Language: en-US
-In-Reply-To: <20240926051110.2477814-1-quic_rdevanat@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: qwoguz48oYRNsv7ypag8f-xh4VipsMeM
-X-Proofpoint-ORIG-GUID: qwoguz48oYRNsv7ypag8f-xh4VipsMeM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 phishscore=0
- mlxscore=0 malwarescore=0 mlxlogscore=999 priorityscore=1501
- impostorscore=0 lowpriorityscore=0 adultscore=0 bulkscore=0 suspectscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2408220000 definitions=main-2410010156
+Content-Transfer-Encoding: 8bit
 
-On 9/25/2024 10:11 PM, Roopni Devanathan wrote:
-> From: Rajat Soni <quic_rajson@quicinc.com>
-> 
-> Add support to request DMAC reset stats from firmware through HTT stats
-> type 45. These stats give debug SoC error stats such as reset count, reset
-> time, engage time and count, disengage time and count and destination
-> ring mask.
-> 
-> Sample output:
-> -------------
-> echo 45 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
-> cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats
-> HTT_DMAC_RESET_STATS_TLV:
-> reset_count = 1
-> reset_time_ms = 8036717648
-> disengage_time_ms = 8036717648
-> engage_time_ms = 8036717649
-> disengage_count = 1
-> engage_count = 1
-> drain_dest_ring_mask = 0x0
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00214-QCAHKSWPL_SILICONZ-1
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
-> 
-> Signed-off-by: Rajat Soni <quic_rajson@quicinc.com>
-> Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+mt76_connac_get_he_phy_cap() may return a NULL pointer,
+leading to NULL Pointer Dereference.
+Add a NULL check for the returned pointer.
+
+Fixes: a5c372f77aa7 ("wifi: mt76: mt7925: extend mt7925_mcu_bss_he_tlv for per-link BSS")
+Fixes: e6d557a78b60 ("mt76: mt7915: rely on mt76_connac_get_phy utilities")
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
+Reported-by: Zichen Xie <zichenxie0106@gmail.com>
+---
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 5 +++++
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 2 ++
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 2 ++
+ 3 files changed, 9 insertions(+)
+
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 87d0dd040001..762be3a37228 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -551,6 +551,8 @@ mt7915_mcu_bss_he_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
+ 	struct tlv *tlv;
+ 
+ 	cap = mt76_connac_get_he_phy_cap(phy->mt76, vif);
++	if (!cap)
++		return;
+ 
+ 	tlv = mt76_connac_mcu_add_tlv(skb, BSS_INFO_HE_BASIC, sizeof(*he));
+ 
+@@ -1145,6 +1147,9 @@ mt7915_mcu_sta_bfer_he(struct ieee80211_sta *sta, struct ieee80211_vif *vif,
+ 	u8 nss_mcs = mt7915_mcu_get_sta_nss(mcs_map);
+ 	u8 snd_dim, sts;
+ 
++	if (!vc)
++		return;
++
+ 	bf->tx_mode = MT_PHY_TYPE_HE_SU;
+ 
+ 	mt7915_mcu_sta_sounding_rate(bf);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 748ea6adbc6b..55e4cda2f20f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -2508,6 +2508,8 @@ mt7925_mcu_bss_he_tlv(struct sk_buff *skb, struct ieee80211_bss_conf *link_conf,
+ 	struct tlv *tlv;
+ 
+ 	cap = mt76_connac_get_he_phy_cap(phy->mt76, link_conf->vif);
++	if (!cap)
++		return;
+ 
+ 	tlv = mt76_connac_mcu_add_tlv(skb, UNI_BSS_INFO_HE_BASIC, sizeof(*he));
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 6c445a9dbc03..55bb2d0e67e5 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -798,6 +798,8 @@ mt7996_mcu_bss_he_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
+ 	struct tlv *tlv;
+ 
+ 	cap = mt76_connac_get_he_phy_cap(phy->mt76, vif);
++	if (!cap)
++		return;
+ 
+ 	tlv = mt7996_mcu_add_uni_tlv(skb, UNI_BSS_INFO_HE_BASIC, sizeof(*he));
+ 
+-- 
+2.25.1
 
 
