@@ -1,207 +1,195 @@
-Return-Path: <linux-wireless+bounces-13386-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13387-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D98698C5FA
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2024 21:22:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 943F898C637
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2024 21:46:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBFCDB20A77
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2024 19:22:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AED301C219BF
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2024 19:46:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 365AF1B5820;
-	Tue,  1 Oct 2024 19:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45DD71CDA16;
+	Tue,  1 Oct 2024 19:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ku4azywu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KI4YvA7W"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389DC1CDA23
-	for <linux-wireless@vger.kernel.org>; Tue,  1 Oct 2024 19:22:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EC2C1CDA11
+	for <linux-wireless@vger.kernel.org>; Tue,  1 Oct 2024 19:46:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727810558; cv=none; b=czQz37FE6Y4S/6hrmwdRsa8SLHajbI1JrsZ+VAPn8uuCLZcTjSRKVeWp6aom42iecpnh32qTnnKLmKqER/YjdH1IG00cLb1UCQvhKy7dq3o9rmyuKcwX7Zo2iWvpK2c6GQl6dBGdrtTJn7g+Ozu5ufjbo5F0bfyC4RW+8jXfzjQ=
+	t=1727812014; cv=none; b=FhhNLGqdfYApm/pZUoUUxGyD3zkI04Sewut3MfgvHgpZzWIPcpyYkyw0ol6dvqlSbdWYJq3ehzj2FZa7AOtKi7BoUQOqYYM/3/R45IvEHib3X+QjlWnGMdLoioKVsomjigmly+jurk/1FsybsrszuDNtjcnQWVngo5Pwp3NMgtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727810558; c=relaxed/simple;
-	bh=BDdOvDNbS1EaSltdBsuiWBcIUhZcUmDIdKMmhDb/tbU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uKpP0NA4SlGft6dhshKuKeq+/LH3DuF5QTLLl7PKk1lRGHbl6xCvPZ5FSdW4HWgjP249YS9gOwl7574WDAHQvO8XAV29waKF4Yfc3xe09QZ7+B1Owx1NT+vvFniYuetmG4WkRBwETL99U7Xsli1lSzzokUfdJg/pEqxfhm5HgC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ku4azywu; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727810556; x=1759346556;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=BDdOvDNbS1EaSltdBsuiWBcIUhZcUmDIdKMmhDb/tbU=;
-  b=Ku4azywudrknKzyShWthmK5a83DsZKgfS6yg7LFSGvuQlvT1W1QPQw6E
-   3Z1POJWOFvSVwJO8BINE72+QZWMOB4S7jPJavpUG9FrkAOHl6lQ02MVFR
-   YVs8Dl8swzYmA896Z54SuATlfpqb5PdP7umXWeQm65s600E2oslV4y9IG
-   plo/4k6jJLSXHReu+u5sevZjYOAc/YYjmEUhYio/hVWSReaYZEp7NMF7P
-   4rzLgKMjvh2ZD3qaSwx6mcAMjCdfri2ceC5Sh6Ghm4UuKfMFBHYVgcNV9
-   CoMDeO0WGz8SDUzOiHrJNcf3TuvPRg9TBrTaJYJ9jsb2zEudSQgLhPhPA
-   w==;
-X-CSE-ConnectionGUID: jRA6OtgtSlue1p+vHSf+oQ==
-X-CSE-MsgGUID: jLFy6SyPSbmlLnegd7hOcw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11212"; a="30850566"
-X-IronPort-AV: E=Sophos;i="6.11,169,1725346800"; 
-   d="scan'208";a="30850566"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2024 12:22:35 -0700
-X-CSE-ConnectionGUID: /ufsFthCRh2YMhuN+MoIzg==
-X-CSE-MsgGUID: c54yxuJvRPiodE5rNaLsOw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,169,1725346800"; 
-   d="scan'208";a="73891731"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
-  by fmviesa008.fm.intel.com with SMTP; 01 Oct 2024 12:22:33 -0700
-Received: by stinkbox (sSMTP sendmail emulation); Tue, 01 Oct 2024 22:22:32 +0300
-Date: Tue, 1 Oct 2024 22:22:32 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Stanislaw Gruszka <stf_xl@wp.pl>
-Cc: linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
-Subject: Re: [PATCH] iwlegacy: Clear stale interrupts before enabling
- interrupts
-Message-ID: <ZvxL-NgAilLPHCSa@intel.com>
-References: <20240930122924.21865-1-ville.syrjala@linux.intel.com>
- <20241001181816.GA12474@wp.pl>
+	s=arc-20240116; t=1727812014; c=relaxed/simple;
+	bh=NnBcHNhXe80YzxafWTsh8tN5x2sluT8Gy5kfBJJBbn4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kLg+Ea0OX7/y/EVxaQvgrL9KbPNGyNsn0Wc2Bo1iWOL31sbW1DW2Xanfel5gbSv1BGb/DHvrrIQtQ/570qPlF31vbVOJEC7BmdB46UAZSRd5+PyagZZ1OJ+j0D5J0W3N3zpeM8SwlcSy/UWl1YZ/wiGDCS9UZ07BnNwH98/tslE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KI4YvA7W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A44C4CEC6;
+	Tue,  1 Oct 2024 19:46:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727812013;
+	bh=NnBcHNhXe80YzxafWTsh8tN5x2sluT8Gy5kfBJJBbn4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KI4YvA7Wzh3uxBFsoQjS6URsjEJ8GNEuiB/S+LT2yGMZ/m67wEYX4DRAryAtSFl9U
+	 iRJXYSGF5UV+NQ4tDPpw5nYLZfftflsdU/YGKmTyLMB/mBAFSX7+1ArWiNqczuhoja
+	 Eh2uMOUV2jmi7g2twpJT5QFnrN4eFQvPjrmqfvyedfK+zVDe2F1xOv7zMH4sqvnPEs
+	 +FhrrJDfjLleWklOEDMdM3tVMq90KD+oaeauvghWmQKAmLxplOBfHoyIvzaMRYN88p
+	 aPQ6z079WKNPzQkTWJsWN2T/TPDCZ89P7vl6WIEJvlbvEuZi1mtl5m+z9tLcXSCZQ/
+	 BxAMVYJx6ZLQQ==
+Message-ID: <3e40513c-3c58-4d25-8dc7-1d9bfc38fcf5@kernel.org>
+Date: Tue, 1 Oct 2024 21:46:42 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241001181816.GA12474@wp.pl>
-X-Patchwork-Hint: comment
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: mt76: Fix NULL Pointer Dereference caused by
+ mt76_connac_get_he_phy_cap()
+To: Gax-c <zichenxie0106@gmail.com>, nbd@nbd.name, lorenzo@kernel.org,
+ ryder.lee@mediatek.com, shayne.chen@mediatek.com, sean.wang@mediatek.com,
+ kvalo@kernel.org, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, johannes.berg@intel.com,
+ quic_adisi@quicinc.com, deren.wu@mediatek.com, chui-hao.chiu@mediatek.com,
+ meichia.chiu@mediatek.com, mingyen.hsieh@mediatek.com,
+ howard-yh.hsu@mediatek.com, StanleyYP.Wang@mediatek.com,
+ allen.ye@mediatek.com, benjamin-jw.lin@mediatek.com, Bo.Jiao@mediatek.com,
+ Money.Wang@mediatek.com
+Cc: linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, Zijie Zhao <zzjas98@gmail.com>,
+ Chenyuan Yang <chenyuan0y@gmail.com>
+References: <20240930212014.30607-1-zichenxie0106@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240930212014.30607-1-zichenxie0106@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 01, 2024 at 08:18:16PM +0200, Stanislaw Gruszka wrote:
-> Hi
+On 30/09/2024 23:20, Gax-c wrote:
+> like commit f503ae90c735 ("wifi: mt76: mt7996: fix NULL pointer dereference in mt7996_mcu_sta_bfer_he"), mt76_connac_get_he_phy_cap() may return a NULL pointer, leading to NULL Pointer Dereference.
+> Add a null check for the returned pointer.
 > 
-> On Mon, Sep 30, 2024 at 03:29:24PM +0300, Ville Syrjala wrote:
-> > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > 
-> > iwl4965 fails upon resume from hibernation on my laptop. The reason
-> > seems to be a stale interrupt which isn't being cleared out before
-> > interrupts are enabled. We end up with a race beween the resume
-> > trying to bring things back up, and the restart work (queued form
-> > the interrupt handler) trying to bring things down. Eventually
-> > the whole thing blows up.
-> > 
-> > Fix the problem by clearing out any stale interrupts before
-> > interrupts get enabled.
-> > 
-> > Here's a debug log of the indicent:
-> > [   12.042589] ieee80211 phy0: il_isr ISR inta 0x00000080, enabled 0xaa00008b, fh 0x00000000
-> > [   12.042625] ieee80211 phy0: il4965_irq_tasklet inta 0x00000080, enabled 0x00000000, fh 0x00000000
-> > [   12.042651] iwl4965 0000:10:00.0: RF_KILL bit toggled to enable radio.
-> > [   12.042653] iwl4965 0000:10:00.0: On demand firmware reload
-> <snip>
-> > [   12.052207] ieee80211 phy0: il4965_mac_start enter
-> > [   12.052212] ieee80211 phy0: il_prep_station Add STA to driver ID 31: ff:ff:ff:ff:ff:ff
-> > [   12.052244] ieee80211 phy0: il4965_set_hw_ready hardware  ready
-> > [   12.052324] ieee80211 phy0: il_apm_init Init card's basic functions
-> > [   12.052348] ieee80211 phy0: il_apm_init L1 Enabled; Disabling L0S
-> > [   12.055727] ieee80211 phy0: il4965_load_bsm Begin load bsm
-> > [   12.056140] ieee80211 phy0: il4965_verify_bsm Begin verify bsm
-> > [   12.058642] ieee80211 phy0: il4965_verify_bsm BSM bootstrap uCode image OK
-> > [   12.058721] ieee80211 phy0: il4965_load_bsm BSM write complete, poll 1 iterations
-> > [   12.058734] ieee80211 phy0: __il4965_up iwl4965 is coming up
-> > [   12.058737] ieee80211 phy0: il4965_mac_start Start UP work done.
-> > [   12.058757] ieee80211 phy0: __il4965_down iwl4965 is going down
-> > [   12.058761] ieee80211 phy0: il_scan_cancel_timeout Scan cancel timeout
-> > [   12.058762] ieee80211 phy0: il_do_scan_abort Not performing scan to abort
-> > [   12.058765] ieee80211 phy0: il_clear_ucode_stations Clearing ucode stations in driver
-> > [   12.058767] ieee80211 phy0: il_clear_ucode_stations No active stations found to be cleared
-> > [   12.058819] ieee80211 phy0: _il_apm_stop Stop card, put in low power state
-> > [   12.058827] ieee80211 phy0: _il_apm_stop_master stop master
-> > [   12.058864] ieee80211 phy0: il4965_clear_free_frames 0 frames on pre-allocated heap on clear.
-> > [   12.058869] ieee80211 phy0: Hardware restart was requested
-> > [   16.132299] iwl4965 0000:10:00.0: START_ALIVE timeout after 4000ms.
-> > [   16.132303] ------------[ cut here ]------------
-> > [   16.132304] Hardware became unavailable upon resume. This could be a software issue prior to suspend or a hardware issue.
-> <snip>
-> >  drivers/net/wireless/intel/iwlegacy/common.h | 2 ++
-> >  1 file changed, 2 insertions(+)
-> > 
-> > diff --git a/drivers/net/wireless/intel/iwlegacy/common.h b/drivers/net/wireless/intel/iwlegacy/common.h
-> > index 2147781b5fff..758984d527bf 100644
-> > --- a/drivers/net/wireless/intel/iwlegacy/common.h
-> > +++ b/drivers/net/wireless/intel/iwlegacy/common.h
-> > @@ -2342,6 +2342,8 @@ static inline void
-> >  il_enable_interrupts(struct il_priv *il)
-> >  {
-> >  	set_bit(S_INT_ENABLED, &il->status);
-> > +	_il_wr(il, CSR_INT, 0xffffffff);
-> > +	_il_wr(il, CSR_FH_INT_STATUS, 0xffffffff);
-> >  	_il_wr(il, CSR_INT_MASK, il->inta_mask);
-> >  }
-> 
-> RF_KILL is CSR_INT and we already acknowledged CSR_INT before
-> il_enable_interrupts() in il4965_mac_start() -> __il4965_up()):
-> 
-> 	/* make sure rfkill handshake bits are cleared */
-> 	_il_wr(il, CSR_UCODE_DRV_GP1_CLR, CSR_UCODE_SW_BIT_RFKILL);
-> 	_il_wr(il, CSR_UCODE_DRV_GP1_CLR, CSR_UCODE_DRV_GP1_BIT_CMD_BLOCKED);
-> 
-> 	/* clear (again), then enable host interrupts */
-> 	_il_wr(il, CSR_INT, 0xFFFFFFFF);
-> 	il_enable_interrupts(il);
-> 
-> 	/* really make sure rfkill handshake bits are cleared */
-> 	_il_wr(il, CSR_UCODE_DRV_GP1_CLR, CSR_UCODE_SW_BIT_RFKILL);
-> 	_il_wr(il, CSR_UCODE_DRV_GP1_CLR, CSR_UCODE_SW_BIT_RFKILL);
-> 
-> So the only explanation I can see the patch help with the problem
-> is additional delay between first and second rfkill handshake bits
-> clearing (which BTW looks fishy, since is done 2 times, 
-> and seems in the second line in the second clearing bit 
-> CSR_UCODE_DRV_GP1_BIT_CMD_BLOCKED should be used).
-> 
-> I suspect the real problem is that we do enable rfkill
-> interrupt by il_enable_rfkill_int() on il4965_mac_stop().
-> Since we want to know RF KILL state regardless interface
-> is up or down. But then the interrupt is enabled during
-> suspend period as well.
-> 
-> Probably better fix would be add il_disable_interrupts()
-> to il_pci_suspend(). Would you like to check that?
+> Fixes: a5c372f77aa7 ("wifi: mt76: mt7925: extend mt7925_mcu_bss_he_tlv for per-link BSS")
+> Fixes: e6d557a78b60 ("mt76: mt7915: rely on mt76_connac_get_phy utilities")
+> Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+> Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
+> Reported-by: Zichen Xie <zichenxie0106@gmail.com>
+> Reported-by: Zijie Zhao <zzjas98@gmail.com>
+> Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
 
-That doesn't work, which doesn't surprise me since the state
-of the device in .suspend() has no bearing on the state of the
-device in .resume() when we're talking about hibernation.
+Same comments as in other patches.
 
-Hmm. I suppose we might want to minimize the potential
-changes to any runtime behaviour in which case we could
-do this instead:
-
-diff --git a/drivers/net/wireless/intel/iwlegacy/common.c b/drivers/net/wireless/intel/iwlegacy/common.c
-index 9d33a66a49b5..7f58e31d23fe 100644
---- a/drivers/net/wireless/intel/iwlegacy/common.c
-+++ b/drivers/net/wireless/intel/iwlegacy/common.c
-@@ -4962,6 +4962,8 @@ il_pci_resume(struct device *device)
- 	 */
- 	pci_write_config_byte(pdev, PCI_CFG_RETRY_TIMEOUT, 0x00);
- 
-+	_il_wr(il, CSR_INT, 0xffffffff);
-+	_il_wr(il, CSR_FH_INT_STATUS, 0xffffffff);
- 	il_enable_interrupts(il);
- 
- 	if (!(_il_rd(il, CSR_GP_CNTRL) & CSR_GP_CNTRL_REG_FLAG_HW_RF_KILL_SW))
-
-which does work.
-
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 6 ++++++
+>  drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 3 +++
+>  drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 3 +++
+>  3 files changed, 12 insertions(+)
 > 
-> If not, patch is ok for me, if it fixes the issue in practice.
-> 
-> Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+> index 87d0dd040001..941a6e40e94c 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+> @@ -552,6 +552,9 @@ mt7915_mcu_bss_he_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
+>  
+>  	cap = mt76_connac_get_he_phy_cap(phy->mt76, vif);
+>  
 
--- 
-Ville Syrjälä
-Intel
+Same problem as in other patches - drop unnecessary blank line.
+
+> +	if (!cap)
+> +		return;
+> +
+>  	tlv = mt76_connac_mcu_add_tlv(skb, BSS_INFO_HE_BASIC, sizeof(*he));
+>  
+>  	he = (struct bss_info_he *)tlv;
+> @@ -1145,6 +1148,9 @@ mt7915_mcu_sta_bfer_he(struct ieee80211_sta *sta, struct ieee80211_vif *vif,
+>  	u8 nss_mcs = mt7915_mcu_get_sta_nss(mcs_map);
+>  	u8 snd_dim, sts;
+>  
+> +	if (!vc)
+> +		return;
+> +
+>  	bf->tx_mode = MT_PHY_TYPE_HE_SU;
+>  
+>  	mt7915_mcu_sta_sounding_rate(bf);
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+> index 748ea6adbc6b..1caf3e3e0e87 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+> @@ -2509,6 +2509,9 @@ mt7925_mcu_bss_he_tlv(struct sk_buff *skb, struct ieee80211_bss_conf *link_conf,
+>  
+>  	cap = mt76_connac_get_he_phy_cap(phy->mt76, link_conf->vif);
+>  
+> +	if (!cap)
+> +		return;
+> +
+>  	tlv = mt76_connac_mcu_add_tlv(skb, UNI_BSS_INFO_HE_BASIC, sizeof(*he));
+>  
+>  	he = (struct bss_info_uni_he *)tlv;
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+> index 6c445a9dbc03..e547729701b7 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+> @@ -799,6 +799,9 @@ mt7996_mcu_bss_he_tlv(struct sk_buff *skb, struct ieee80211_vif *vif,
+>  
+>  	cap = mt76_connac_get_he_phy_cap(phy->mt76, vif);
+>  
+> +	if (!cap)
+> +		return;
+
+Don't you need to handle the error? Cleanup?
+
+
+Best regards,
+Krzysztof
+
 
