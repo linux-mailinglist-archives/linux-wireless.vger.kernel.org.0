@@ -1,124 +1,207 @@
-Return-Path: <linux-wireless+bounces-13385-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13386-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B34DF98C5CE
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2024 21:09:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D98698C5FA
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2024 21:22:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6F4721F22FB0
-	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2024 19:09:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBFCDB20A77
+	for <lists+linux-wireless@lfdr.de>; Tue,  1 Oct 2024 19:22:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F30941CCB5B;
-	Tue,  1 Oct 2024 19:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 365AF1B5820;
+	Tue,  1 Oct 2024 19:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="olDNwP65"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ku4azywu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.3])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453601CC171;
-	Tue,  1 Oct 2024 19:08:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389DC1CDA23
+	for <linux-wireless@vger.kernel.org>; Tue,  1 Oct 2024 19:22:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727809738; cv=none; b=Fwrwn3DeblI67CT5trkmBV0opmD2zX2NRVDnYxg6qyG8DOoji+wzm7Uy4yTR6B86PnbTLIndX19T2SlXAOu0xUisGpk5hfEAYygOHbT6f/dPdRHpWyGex/OMbDvRlalxe0ybiN6n2XTGI+6bblVPRtHSXJrGsdn6AzAL2ZRoyl8=
+	t=1727810558; cv=none; b=czQz37FE6Y4S/6hrmwdRsa8SLHajbI1JrsZ+VAPn8uuCLZcTjSRKVeWp6aom42iecpnh32qTnnKLmKqER/YjdH1IG00cLb1UCQvhKy7dq3o9rmyuKcwX7Zo2iWvpK2c6GQl6dBGdrtTJn7g+Ozu5ufjbo5F0bfyC4RW+8jXfzjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727809738; c=relaxed/simple;
-	bh=dB4On//ws+f9uBfpQgVACgt7KNNwxeozsBW/1z57Nv4=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=mApaIc7UwhDRmMqHhcq/P5JUMwyy2saT6OyUioDuQtehI1P1O3jeBwtBxvWDvLn6VU2tb7jFCPJtYB7GKPEusd7h71XEPgbcK8VVGDeL1/LrG5C1OLJ6HkvD9XTnEnKRQgQX94dyKXMYHFaLUZrsH9Un/BdABhbc45lurBp9vFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=olDNwP65; arc=none smtp.client-ip=212.227.15.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1727809709; x=1728414509; i=markus.elfring@web.de;
-	bh=ZT6HLXkmgq+nzP9SCRx/NsEmzXMd1CrD2QiOlaZlfZ8=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=olDNwP65/FZusddYbtaUBU0+8MUuW6O7d7khSOq2B90rT6LAYS6ZB1BWWXG+UMwa
-	 Q91hZAVBTHUHq9UkVXQ74K4fGeuD5vaZ5/HZeEPJJBhrf+9iNAyb8M2sSdzspwrQL
-	 Pj4sulk/ktfvfQYCzSb8FlgNkJIdxtsf/1EjmqrM+ks9epoyWzw216Ue4GpgB4ThT
-	 UW3NfSqLzvl2jzW0/aKrfnX8vucJGzYRJQtsHrBIHatrYdPO6jnRd2ul5EOJl5nEM
-	 1Bivs9OQnBj/i0z/aW8YUnJJWP6bbnE1mgj0+yAw5inKMm8WPITUkZ11y62FDJPid
-	 NMT4GNYnMk6Ms9LywQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.81.95]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1Mvspv-1s4iVO33Fn-00rHBS; Tue, 01
- Oct 2024 21:08:29 +0200
-Message-ID: <7966ab38-711a-4c46-b3c8-ac8ce34b2949@web.de>
-Date: Tue, 1 Oct 2024 21:08:12 +0200
+	s=arc-20240116; t=1727810558; c=relaxed/simple;
+	bh=BDdOvDNbS1EaSltdBsuiWBcIUhZcUmDIdKMmhDb/tbU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uKpP0NA4SlGft6dhshKuKeq+/LH3DuF5QTLLl7PKk1lRGHbl6xCvPZ5FSdW4HWgjP249YS9gOwl7574WDAHQvO8XAV29waKF4Yfc3xe09QZ7+B1Owx1NT+vvFniYuetmG4WkRBwETL99U7Xsli1lSzzokUfdJg/pEqxfhm5HgC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ku4azywu; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1727810556; x=1759346556;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=BDdOvDNbS1EaSltdBsuiWBcIUhZcUmDIdKMmhDb/tbU=;
+  b=Ku4azywudrknKzyShWthmK5a83DsZKgfS6yg7LFSGvuQlvT1W1QPQw6E
+   3Z1POJWOFvSVwJO8BINE72+QZWMOB4S7jPJavpUG9FrkAOHl6lQ02MVFR
+   YVs8Dl8swzYmA896Z54SuATlfpqb5PdP7umXWeQm65s600E2oslV4y9IG
+   plo/4k6jJLSXHReu+u5sevZjYOAc/YYjmEUhYio/hVWSReaYZEp7NMF7P
+   4rzLgKMjvh2ZD3qaSwx6mcAMjCdfri2ceC5Sh6Ghm4UuKfMFBHYVgcNV9
+   CoMDeO0WGz8SDUzOiHrJNcf3TuvPRg9TBrTaJYJ9jsb2zEudSQgLhPhPA
+   w==;
+X-CSE-ConnectionGUID: jRA6OtgtSlue1p+vHSf+oQ==
+X-CSE-MsgGUID: jLFy6SyPSbmlLnegd7hOcw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11212"; a="30850566"
+X-IronPort-AV: E=Sophos;i="6.11,169,1725346800"; 
+   d="scan'208";a="30850566"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2024 12:22:35 -0700
+X-CSE-ConnectionGUID: /ufsFthCRh2YMhuN+MoIzg==
+X-CSE-MsgGUID: c54yxuJvRPiodE5rNaLsOw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,169,1725346800"; 
+   d="scan'208";a="73891731"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+  by fmviesa008.fm.intel.com with SMTP; 01 Oct 2024 12:22:33 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Tue, 01 Oct 2024 22:22:32 +0300
+Date: Tue, 1 Oct 2024 22:22:32 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Stanislaw Gruszka <stf_xl@wp.pl>
+Cc: linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
+Subject: Re: [PATCH] iwlegacy: Clear stale interrupts before enabling
+ interrupts
+Message-ID: <ZvxL-NgAilLPHCSa@intel.com>
+References: <20240930122924.21865-1-ville.syrjala@linux.intel.com>
+ <20241001181816.GA12474@wp.pl>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Christophe Jaillet <christophe.jaillet@wanadoo.fr>,
- linux-mediatek@lists.infradead.org, linux-wireless@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- Angelo Gioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Felix Fietkau <nbd@nbd.name>, Kalle Valo <kvalo@kernel.org>,
- Lorenzo Bianconi <lorenzo@kernel.org>,
- Matthias Brugger <matthias.bgg@gmail.com>, Ryder Lee
- <ryder.lee@mediatek.com>, Sean Wang <sean.wang@mediatek.com>,
- Shayne Chen <shayne.chen@mediatek.com>
-Cc: kernel-janitors@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-References: <b9d8fbfc19360bfe60b9cea1cb0f735ab3b4bc26.1727639596.git.christophe.jaillet@wanadoo.fr>
-Subject: Re: [PATCH] wifi: mt76: mt7915: Fix an error handling path in
- mt7915_add_interface()
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <b9d8fbfc19360bfe60b9cea1cb0f735ab3b4bc26.1727639596.git.christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:kRjPILfqORU/QkD6eWvK+eGlmHGidSKMW4n6WRbwxP2AD2MR8iO
- qpj2u2/8ejEcSS5yVoMaskLs4AQ8RyMALHmxbAuS27m9AUcp26kjlw1YO3GWF5AlDWAwuzh
- HBP9YkpG85If3uMzljPcFs3QrZ4StYsGwjpPaiOmtIu5qcZFMzaoUfbBX9VfnlPkV0uJl+I
- BssmxKUFm2OwBOaJYDZNA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:e62IPgDwXCE=;Pum2sJBK9wwiOEgW3Kak8Cmjhv8
- vqTcy8otb+EI4UDJDOOY/jefVnoCxRO7izxHBx11aE9UI1iijpfBEOfyYuYWj6h025vsB6NoU
- NRFitCZpUYNNN+Yj8ViTI3NR4+skseZsyTnij7wkwRADOeAvWmfgGscjmWf8IzGljAvBpBqUw
- fOuVxolq1QQmIYusFll/TGSpcpPhKSy/EuWmYwNjfGYnQvQk8Bhf6KJOLjLB6FHzuBCVlnccG
- gtvd3iL9oyu978Kxy+K070YflRuTeMZqMj2TRKwt7JlrSuRgJSlpHVZkbkc67Cw5tzu2IKs0z
- wFAm0gvarTsDNxGAFhk08GeVrKBa4Hr8505iCl+FL7uN8rUuXS/WbmjPd6/DQFzZTDhs2J+Pw
- iC3TNRTDvy675/abOOa/fuaWDcVZtTU6LyDXWuHM58NzTn4kc2Bx7jzh0i2M7Cf2xK+ws0Uem
- doZSyuCntUuodte6uF/mbYdg8NEROANMGJgAp+jk1xrt4KxXAuOv1S7FXEQyet6cm6aIGVsgq
- dzAat2B3QXOM1oLFcrkrUcBfbr3zUmwDUfbiZhPd2KrI0GCDjHZgiLrn59d1FCVbE5A4/PKOM
- ibxoMLks3vMyEvY4NDSEm89PO+W6pVTwsYpN3PdMiZBfGAJ8iRENflyuViZ2/gCwxjbhUoTvU
- 59mouZe62VNf795O6Y8Gs+b6SQDV4Tg3vBetvztXNa9YqAVv8yrM++PUwOJoxEtW6/OihM2jn
- 1fvRQQVQbLwRfOLxm8IJkyArE3xyX6roK9tiEVEXoNh3W0NE57xjJwQ1LoSX8ur5tsjH8pzT5
- /HDbJfbtqz0YZzP7Fj+Udmdg==
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241001181816.GA12474@wp.pl>
+X-Patchwork-Hint: comment
 
-> If mt76_wcid_alloc() fails, the "mt76.mutex" mutex needs to be released =
-as
-> done in the other error handling path of mt7915_add_interface().
+On Tue, Oct 01, 2024 at 08:18:16PM +0200, Stanislaw Gruszka wrote:
+> Hi
+> 
+> On Mon, Sep 30, 2024 at 03:29:24PM +0300, Ville Syrjala wrote:
+> > From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> > 
+> > iwl4965 fails upon resume from hibernation on my laptop. The reason
+> > seems to be a stale interrupt which isn't being cleared out before
+> > interrupts are enabled. We end up with a race beween the resume
+> > trying to bring things back up, and the restart work (queued form
+> > the interrupt handler) trying to bring things down. Eventually
+> > the whole thing blows up.
+> > 
+> > Fix the problem by clearing out any stale interrupts before
+> > interrupts get enabled.
+> > 
+> > Here's a debug log of the indicent:
+> > [   12.042589] ieee80211 phy0: il_isr ISR inta 0x00000080, enabled 0xaa00008b, fh 0x00000000
+> > [   12.042625] ieee80211 phy0: il4965_irq_tasklet inta 0x00000080, enabled 0x00000000, fh 0x00000000
+> > [   12.042651] iwl4965 0000:10:00.0: RF_KILL bit toggled to enable radio.
+> > [   12.042653] iwl4965 0000:10:00.0: On demand firmware reload
+> <snip>
+> > [   12.052207] ieee80211 phy0: il4965_mac_start enter
+> > [   12.052212] ieee80211 phy0: il_prep_station Add STA to driver ID 31: ff:ff:ff:ff:ff:ff
+> > [   12.052244] ieee80211 phy0: il4965_set_hw_ready hardware  ready
+> > [   12.052324] ieee80211 phy0: il_apm_init Init card's basic functions
+> > [   12.052348] ieee80211 phy0: il_apm_init L1 Enabled; Disabling L0S
+> > [   12.055727] ieee80211 phy0: il4965_load_bsm Begin load bsm
+> > [   12.056140] ieee80211 phy0: il4965_verify_bsm Begin verify bsm
+> > [   12.058642] ieee80211 phy0: il4965_verify_bsm BSM bootstrap uCode image OK
+> > [   12.058721] ieee80211 phy0: il4965_load_bsm BSM write complete, poll 1 iterations
+> > [   12.058734] ieee80211 phy0: __il4965_up iwl4965 is coming up
+> > [   12.058737] ieee80211 phy0: il4965_mac_start Start UP work done.
+> > [   12.058757] ieee80211 phy0: __il4965_down iwl4965 is going down
+> > [   12.058761] ieee80211 phy0: il_scan_cancel_timeout Scan cancel timeout
+> > [   12.058762] ieee80211 phy0: il_do_scan_abort Not performing scan to abort
+> > [   12.058765] ieee80211 phy0: il_clear_ucode_stations Clearing ucode stations in driver
+> > [   12.058767] ieee80211 phy0: il_clear_ucode_stations No active stations found to be cleared
+> > [   12.058819] ieee80211 phy0: _il_apm_stop Stop card, put in low power state
+> > [   12.058827] ieee80211 phy0: _il_apm_stop_master stop master
+> > [   12.058864] ieee80211 phy0: il4965_clear_free_frames 0 frames on pre-allocated heap on clear.
+> > [   12.058869] ieee80211 phy0: Hardware restart was requested
+> > [   16.132299] iwl4965 0000:10:00.0: START_ALIVE timeout after 4000ms.
+> > [   16.132303] ------------[ cut here ]------------
+> > [   16.132304] Hardware became unavailable upon resume. This could be a software issue prior to suspend or a hardware issue.
+> <snip>
+> >  drivers/net/wireless/intel/iwlegacy/common.h | 2 ++
+> >  1 file changed, 2 insertions(+)
+> > 
+> > diff --git a/drivers/net/wireless/intel/iwlegacy/common.h b/drivers/net/wireless/intel/iwlegacy/common.h
+> > index 2147781b5fff..758984d527bf 100644
+> > --- a/drivers/net/wireless/intel/iwlegacy/common.h
+> > +++ b/drivers/net/wireless/intel/iwlegacy/common.h
+> > @@ -2342,6 +2342,8 @@ static inline void
+> >  il_enable_interrupts(struct il_priv *il)
+> >  {
+> >  	set_bit(S_INT_ENABLED, &il->status);
+> > +	_il_wr(il, CSR_INT, 0xffffffff);
+> > +	_il_wr(il, CSR_FH_INT_STATUS, 0xffffffff);
+> >  	_il_wr(il, CSR_INT_MASK, il->inta_mask);
+> >  }
+> 
+> RF_KILL is CSR_INT and we already acknowledged CSR_INT before
+> il_enable_interrupts() in il4965_mac_start() -> __il4965_up()):
+> 
+> 	/* make sure rfkill handshake bits are cleared */
+> 	_il_wr(il, CSR_UCODE_DRV_GP1_CLR, CSR_UCODE_SW_BIT_RFKILL);
+> 	_il_wr(il, CSR_UCODE_DRV_GP1_CLR, CSR_UCODE_DRV_GP1_BIT_CMD_BLOCKED);
+> 
+> 	/* clear (again), then enable host interrupts */
+> 	_il_wr(il, CSR_INT, 0xFFFFFFFF);
+> 	il_enable_interrupts(il);
+> 
+> 	/* really make sure rfkill handshake bits are cleared */
+> 	_il_wr(il, CSR_UCODE_DRV_GP1_CLR, CSR_UCODE_SW_BIT_RFKILL);
+> 	_il_wr(il, CSR_UCODE_DRV_GP1_CLR, CSR_UCODE_SW_BIT_RFKILL);
+> 
+> So the only explanation I can see the patch help with the problem
+> is additional delay between first and second rfkill handshake bits
+> clearing (which BTW looks fishy, since is done 2 times, 
+> and seems in the second line in the second clearing bit 
+> CSR_UCODE_DRV_GP1_BIT_CMD_BLOCKED should be used).
+> 
+> I suspect the real problem is that we do enable rfkill
+> interrupt by il_enable_rfkill_int() on il4965_mac_stop().
+> Since we want to know RF KILL state regardless interface
+> is up or down. But then the interrupt is enabled during
+> suspend period as well.
+> 
+> Probably better fix would be add il_disable_interrupts()
+> to il_pci_suspend(). Would you like to check that?
 
-                                   paths?
+That doesn't work, which doesn't surprise me since the state
+of the device in .suspend() has no bearing on the state of the
+device in .resume() when we're talking about hibernation.
 
+Hmm. I suppose we might want to minimize the potential
+changes to any runtime behaviour in which case we could
+do this instead:
 
-=E2=80=A6
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-> @@ -246,8 +246,10 @@ static int mt7915_add_interface(struct ieee80211_hw=
- *hw,
->  	phy->omac_mask |=3D BIT_ULL(mvif->mt76.omac_idx);
->
->  	idx =3D mt76_wcid_alloc(dev->mt76.wcid_mask, mt7915_wtbl_size(dev));
-> -	if (idx < 0)
-> -		return -ENOSPC;
-> +	if (idx < 0) {
-> +		ret =3D -ENOSPC;
-> +		goto out;
-> +	}
-=E2=80=A6
+diff --git a/drivers/net/wireless/intel/iwlegacy/common.c b/drivers/net/wireless/intel/iwlegacy/common.c
+index 9d33a66a49b5..7f58e31d23fe 100644
+--- a/drivers/net/wireless/intel/iwlegacy/common.c
++++ b/drivers/net/wireless/intel/iwlegacy/common.c
+@@ -4962,6 +4962,8 @@ il_pci_resume(struct device *device)
+ 	 */
+ 	pci_write_config_byte(pdev, PCI_CFG_RETRY_TIMEOUT, 0x00);
+ 
++	_il_wr(il, CSR_INT, 0xffffffff);
++	_il_wr(il, CSR_FH_INT_STATUS, 0xffffffff);
+ 	il_enable_interrupts(il);
+ 
+ 	if (!(_il_rd(il, CSR_GP_CNTRL) & CSR_GP_CNTRL_REG_FLAG_HW_RF_KILL_SW))
 
-Would you dare to support another jump target for this assignment statemen=
-t?
+which does work.
 
-Regards,
-Markus
+> 
+> If not, patch is ok for me, if it fixes the issue in practice.
+> 
+> Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+
+-- 
+Ville Syrjälä
+Intel
 
