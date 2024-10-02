@@ -1,182 +1,151 @@
-Return-Path: <linux-wireless+bounces-13399-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13401-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C602398CD64
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 08:52:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C983798CDDA
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 09:38:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80C8B286219
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 06:52:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E0EA284067
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 07:38:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0495D155735;
-	Wed,  2 Oct 2024 06:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB538194A6C;
+	Wed,  2 Oct 2024 07:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SKOPUFsi"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KNVes14/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416C784D2C
-	for <linux-wireless@vger.kernel.org>; Wed,  2 Oct 2024 06:52:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 412F5194A67
+	for <linux-wireless@vger.kernel.org>; Wed,  2 Oct 2024 07:38:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727851947; cv=none; b=UH+7WpHsB1Du355ZPr0oWZCVkDntjMOPkrZ1WQ/PLhroignC0ntB7oBlm3IoO+3s4FbRkRHo6EMclJJBw4ymR0qDvSf82A6eH4c16ZFXJYs7Z1du+STr8guDQPdapyeBRco4bBc7y3gNVEPm0uoFCJGM3Ii8zVE7eyMQh5zouAw=
+	t=1727854683; cv=none; b=jhkRJDXdsM+4jSPn1ORRqzOtdZhfZR5CkBINoA/4dFV9S/pUIAjZvbWyEfpo+dklNGJgz4NcW6SaXZ7ql5rWwbPIPduYCGtHcQsditiI4n6a338f++dv6mymVIZKSlNZJK4vpCDxyLrO/floIRc5OIr1x6tXjsoHGjfSQRJDVlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727851947; c=relaxed/simple;
-	bh=NbxMuNV6T7+k9WLtS52Fq9ckPhCxmFmjklyi5qtHS8g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WXUY7vI6Mi0pvRwBMhFMS9yLOvYo4JZrezVooOVf8mMQcrowHM2KYvpQbRO8wDwC+wWg+HSPvAiwcyM+e/OBRzgkR44thBwq2L1qd2Cvu62DaF3CZvPaLthM+NhFAkRYK46TL943mO1p+IfVvw2ELzTcRJirohSqJh/Il8mhw80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SKOPUFsi; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-7db54269325so4868622a12.2
-        for <linux-wireless@vger.kernel.org>; Tue, 01 Oct 2024 23:52:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1727851945; x=1728456745; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Wi2knaZL4xgHJFaFdtzBXqIWLSuRG81LD3CTPdMJ4G8=;
-        b=SKOPUFsiFBcGR/Z/AOKbsb8AsAhhO0ga0IBXnZetNaEzQfMGEVIUXojR36SE5I7gx3
-         h3dovV/s7YKrYEfR30D7I42wHtihuh0sABujpmskGkLp+xMraVMuy+XSCXFPo3WtwhOF
-         DQ60/4wMoXiTII/x5gmk/1U7iYINkq2Iqi1udOmKbQj8mBLcdpty4Ulq0w0aJRc5yEC7
-         jSXHayg9IIUZRk4ry2SkAYHSBg7t9VeNId5NPk/0iXKHMjQcRaRc1huYOEi2DulPhmrC
-         MCDyCFYx5v0jENfPMZ72j1JuxrR3qjMC3a7w98avqlfbr9fi0hkofmr9FyfQUbc7HJ/c
-         YHoA==
+	s=arc-20240116; t=1727854683; c=relaxed/simple;
+	bh=WE+06bxezNDAqpcu2ZttnmMzwPNs3mFTLb9xN/v5LS8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Lc/WJd6xEL7v/wdx6J2PQ4DzQq9y61wY22gInV1JQluVp1VnnJ2kiF5cdo13fwlNXhrrUUN6Fl5Wf9tKkDy3uMrzO1XS2SYg+SaUnNTtAz71QpnWdj7CR2eNm1uyYfjuZo7otA2PTMqd3B1KoQdUOwI9TfO3uchG1lVdGFL53CM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KNVes14/; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1727854681;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=j08eYaNn2uqZATIiA0jZfTZrfzeBz+jlQCTj6GcTpN8=;
+	b=KNVes14/3JJRBoN+munY7ry+URfle+5VKEkhjArwd9GY5WxZ9uS3phiI5WVOkkasuAM0+N
+	Kz9JS2wbb0y8GSdBTt9NMFJSM6KQVlJ03s94EdOpB2Tzu2FaykBb/tZTMUHoxeeiJaoJl+
+	bzGQS3d0cqbDQh6fOj3OgU7AihfV65A=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-552-T6MLkn0UPKKsuJ4IWxoFqQ-1; Wed, 02 Oct 2024 03:37:59 -0400
+X-MC-Unique: T6MLkn0UPKKsuJ4IWxoFqQ-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-42cb9e14ab6so48855495e9.3
+        for <linux-wireless@vger.kernel.org>; Wed, 02 Oct 2024 00:37:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727851945; x=1728456745;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Wi2knaZL4xgHJFaFdtzBXqIWLSuRG81LD3CTPdMJ4G8=;
-        b=PPhF43Jq21xQfIWwgweN9+2c/rK+0cS+zjfmAsP4GhHzVHdIg3XZRobquCXKxPq/2S
-         e+QOnp3OSD1GilWRlTGb23J/GSoCuoogPWnnzPcbHJQp2ir3nu7xbfR7kGBSKgB3SKP7
-         /TUM3uuIcgU0XohJ0YZ/pWPFKt9gJCFV1fGMfh0u84V4jxTznpRVBdKNFQ0vhg5LPCAs
-         BKTCtNdY0SPAFseN9uDZUnsEnX0tr4gsuPRMxlUWDIkUL41OML0IL4MUlNJTvS5ZZwTx
-         66FJ2s5f7R9LoWk51RrvfOV6y8UaNooYbaabCIph+KC7UkpdbVDj7ut66mzpfOwAEXFe
-         ph7A==
-X-Forwarded-Encrypted: i=1; AJvYcCVj2Or1t/dgj39rSTtEY7iOhmc25vhQizdodi96ZC4A/rn1Z7nXzcvtsuBrlnC6hdnWrAiMYYKCFh4EBEqHdQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxkTFC8okv+oiYZ4tiwK7Ahi54WtFtCcDVoP6f5rxvLcxuFhsco
-	M8c/1dd8fOfTljFh70n9APKSRA2QMPAPTGZgbymcjmjLhDLYPcm5dcvehFjVPrGg6ZNcsFmA9W1
-	W1NpEVDrbjxoHnlh90FbMMPVgMIhJdZfkHjfIoA==
-X-Google-Smtp-Source: AGHT+IHsypqnvHxqefjiDxYFDz2akYzDsFoGU6PLh+7312onUDhEMOGndUNDmbbTnJmbGIeOeR17h1E7o2px85taLvw=
-X-Received: by 2002:a05:6a21:2d8b:b0:1d5:10c3:af5a with SMTP id
- adf61e73a8af0-1d5e2d3df25mr3361839637.47.1727851945585; Tue, 01 Oct 2024
- 23:52:25 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1727854678; x=1728459478;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=j08eYaNn2uqZATIiA0jZfTZrfzeBz+jlQCTj6GcTpN8=;
+        b=NJ3v2NGcBDvBh/1e8NmIUdv/5xaKWz68VCt7uUoHfayW/ZqLDn2oiDHdagqV+/JH5g
+         WPM7m/OQUfxQoYafirYGfFYhvS7EvTH2ZoRqXdLktpkGI8M7nGHPv01m9YcrG+r+NxGE
+         nb1ML6wdpHAUYUKr6EP7BNycnsIv46eoCikYDyjNxgwpi/s8uRB4x9ylHtKM19VhQxgZ
+         LpiaxZ5BQT/wRXozKFj8QSTtlZ06WXP7anLYlOXqWTXIk/Ml0YCWgE+RZpMr/4AQ5d3Y
+         UP7IYH3Omy/KcvQQG8/Cb4r1jeYvPlsUTiMKJsXmgzqvVQOVcSvOY80zfztV3Iop61V8
+         LzJg==
+X-Forwarded-Encrypted: i=1; AJvYcCVP/XRpWkFiSheIzuIwWYFClGhSdEVS5ypcVwfJucSgQN0WmCfIXQ2hX/u6o0lYSe5TGCOSxPj3722Hq2EzhQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYYP6jLOGLu6ymkiKBEARwud1jh7ZdCw9LC0wOSr+LqM3KfZEZ
+	Icl89LoOvY7U3U4gcmnm4dzMrhtjrN42CSLMqzEfVyPLDGXm/lRuzl/jkTyuvFoTGqLS+OpfbWW
+	QqpQBYI6F9rOGN3cgsrx49jW8GvtMJJJ96dhcQc0f9SeAp0I+/8Od4fEpNEWAuuBj
+X-Received: by 2002:a05:600c:1549:b0:42c:b4f1:f281 with SMTP id 5b1f17b1804b1-42f778ffef3mr14810295e9.34.1727854678272;
+        Wed, 02 Oct 2024 00:37:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEexnVZvq0noKxS76pRMj9/ZaTG1nDs7t0bSMBHW4+0LcSgagoa/Bz8vlb6jQ6CnVv6cUGFfw==
+X-Received: by 2002:a05:600c:1549:b0:42c:b4f1:f281 with SMTP id 5b1f17b1804b1-42f778ffef3mr14809895e9.34.1727854677827;
+        Wed, 02 Oct 2024 00:37:57 -0700 (PDT)
+Received: from [192.168.88.248] (146-241-47-72.dyn.eolo.it. [146.241.47.72])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f7a01fc92sm10806665e9.36.2024.10.02.00.37.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Oct 2024 00:37:57 -0700 (PDT)
+Message-ID: <4316fa2d-8dd8-44f2-b211-4b2ef3200d75@redhat.com>
+Date: Wed, 2 Oct 2024 09:37:54 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240925075707.3970187-1-linyunsheng@huawei.com>
- <20240925075707.3970187-3-linyunsheng@huawei.com> <4968c2ec-5584-4a98-9782-143605117315@redhat.com>
- <CAC_iWjKHofqDrp+jOO_QTp_8Op=KeE_jjhjsDUxjRa4vnHYJmQ@mail.gmail.com>
-In-Reply-To: <CAC_iWjKHofqDrp+jOO_QTp_8Op=KeE_jjhjsDUxjRa4vnHYJmQ@mail.gmail.com>
-From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Date: Wed, 2 Oct 2024 09:51:49 +0300
-Message-ID: <CAC_iWjJXWgt9TdBSYGkc=htyeS=VAago5wqXzBgX_Mun76Z42g@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH net v2 2/2] page_pool: fix IOMMU crash when driver has
  already unbound
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net, kuba@kernel.org, 
-	liuyonglong@huawei.com, fanghaiqing@huawei.com, zhangkun09@huawei.com, 
-	Robin Murphy <robin.murphy@arm.com>, Alexander Duyck <alexander.duyck@gmail.com>, 
-	IOMMU <iommu@lists.linux.dev>, Wei Fang <wei.fang@nxp.com>, 
-	Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, 
-	Eric Dumazet <edumazet@google.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
-	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
-	Kalle Valo <kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, imx@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, intel-wired-lan@lists.osuosl.org, 
-	bpf@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
+To: Yunsheng Lin <yunshenglin0825@gmail.com>,
+ Yunsheng Lin <linyunsheng@huawei.com>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Cc: liuyonglong@huawei.com, fanghaiqing@huawei.com, zhangkun09@huawei.com,
+ Robin Murphy <robin.murphy@arm.com>,
+ Alexander Duyck <alexander.duyck@gmail.com>, IOMMU <iommu@lists.linux.dev>,
+ Wei Fang <wei.fang@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>,
+ Clark Wang <xiaoning.wang@nxp.com>, Eric Dumazet <edumazet@google.com>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Alexander Lobakin <aleksander.lobakin@intel.com>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed
+ <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+ Tariq Toukan <tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>,
+ Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>,
+ Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>,
+ Kalle Valo <kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Andrew Morton <akpm@linux-foundation.org>, imx@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ intel-wired-lan@lists.osuosl.org, bpf@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ linux-mm@kvack.org, davem@davemloft.net, kuba@kernel.org
+References: <20240925075707.3970187-1-linyunsheng@huawei.com>
+ <20240925075707.3970187-3-linyunsheng@huawei.com>
+ <4968c2ec-5584-4a98-9782-143605117315@redhat.com>
+ <33f23809-abec-4d39-ab80-839dc525a2e6@gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <33f23809-abec-4d39-ab80-839dc525a2e6@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, 2 Oct 2024 at 09:46, Ilias Apalodimas
-<ilias.apalodimas@linaro.org> wrote:
->
-> Hi Paolo,
->
-> Thanks for taking the time.
->
-> On Tue, 1 Oct 2024 at 16:32, Paolo Abeni <pabeni@redhat.com> wrote:
-> >
-> > On 9/25/24 09:57, Yunsheng Lin wrote:
-> > > Networking driver with page_pool support may hand over page
-> > > still with dma mapping to network stack and try to reuse that
-> > > page after network stack is done with it and passes it back
-> > > to page_pool to avoid the penalty of dma mapping/unmapping.
-> > > With all the caching in the network stack, some pages may be
-> > > held in the network stack without returning to the page_pool
-> > > soon enough, and with VF disable causing the driver unbound,
-> > > the page_pool does not stop the driver from doing it's
-> > > unbounding work, instead page_pool uses workqueue to check
-> > > if there is some pages coming back from the network stack
-> > > periodically, if there is any, it will do the dma unmmapping
-> > > related cleanup work.
-> > >
-> > > As mentioned in [1], attempting DMA unmaps after the driver
-> > > has already unbound may leak resources or at worst corrupt
-> > > memory. Fundamentally, the page pool code cannot allow DMA
-> > > mappings to outlive the driver they belong to.
-> > >
-> > > Currently it seems there are at least two cases that the page
-> > > is not released fast enough causing dma unmmapping done after
-> > > driver has already unbound:
-> > > 1. ipv4 packet defragmentation timeout: this seems to cause
-> > >     delay up to 30 secs.
-> > > 2. skb_defer_free_flush(): this may cause infinite delay if
-> > >     there is no triggering for net_rx_action().
-> > >
-> > > In order not to do the dma unmmapping after driver has already
-> > > unbound and stall the unloading of the networking driver, add
-> > > the pool->items array to record all the pages including the ones
-> > > which are handed over to network stack, so the page_pool can
-> > > do the dma unmmapping for those pages when page_pool_destroy()
-> > > is called. As the pool->items need to be large enough to avoid
-> > > performance degradation, add a 'item_full' stat to indicate the
-> > > allocation failure due to unavailability of pool->items.
-> >
-> > This looks really invasive, with room for potentially large performance
-> > regressions or worse. At very least it does not look suitable for net.
->
-> Perhaps, and you are right we need to measure performance before
-> pulling it but...
->
-> >
-> > Is the problem only tied to VFs drivers? It's a pity all the page_pool
-> > users will have to pay a bill for it...
->
-> It's not. The problem happens when an SKB has been scheduled for
-> recycling and has already been mapped via page_pool. If the driver
-> disappears in the meantime,
+Hi,
 
-Apologies, this wasn't correct. It's the device that has to disappear
-not the driver
+On 10/2/24 04:34, Yunsheng Lin wrote:
+> On 10/1/2024 9:32 PM, Paolo Abeni wrote:
+>> Is the problem only tied to VFs drivers? It's a pity all the page_pool
+>> users will have to pay a bill for it...
+> 
+> I am afraid it is not only tied to VFs drivers, as:
+> attempting DMA unmaps after the driver has already unbound may leak
+> resources or at worst corrupt memory.
+> 
+> Unloading PFs driver might cause the above problems too, I guess the
+> probability of crashing is low for the PF as PF can not be disable
+> unless it can be hot-unplug'ed, but the probability of leaking resources
+> behind the dma mapping might be similar.
 
-> page_pool will free all the packets it
-> holds in its private rings (both slow and fast), but is not in control
-> of the SKB anymore. So any packets coming back for recycling *after*
-> that point cannot unmap memory properly.
->
-> As discussed this can either lead to memory corruption and resource
-> leaking, or worse as seen in the bug report panics. I am fine with
-> this going into -next, but it really is a bugfix, although I am not
-> 100% sure that the Fixes: tag in the current patch is correct.
->
-> Thanks
-> /Ilias
-> >
-> > /P
-> >
+Out of sheer ignorance, why/how the refcount acquired by the page pool 
+on the device does not prevent unloading?
+
+I fear the performance impact could be very high: AFICS, if the item 
+array become fragmented, insertion will take linar time, with the quite 
+large item_count/pool size. If so, it looks like a no-go.
+
+I fear we should consider blocking the device removal until all the 
+pages are returned/unmapped ?!? (I hope that could be easier/faster)
+
+/P
+
 
