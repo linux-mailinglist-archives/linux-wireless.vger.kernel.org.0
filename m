@@ -1,173 +1,242 @@
-Return-Path: <linux-wireless+bounces-13398-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13400-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0328F98CD55
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 08:47:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4400098CD78
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 08:56:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7246B1F2412E
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 06:47:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE648287478
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 06:56:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C74F188CB1;
-	Wed,  2 Oct 2024 06:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB0C85270;
+	Wed,  2 Oct 2024 06:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MRvFZ7se"
+	dkim=pass (1024-bit key) header.d=wp.pl header.i=@wp.pl header.b="I+7aKCvK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4AA18787F
-	for <linux-wireless@vger.kernel.org>; Wed,  2 Oct 2024 06:46:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22CE7E0FF
+	for <linux-wireless@vger.kernel.org>; Wed,  2 Oct 2024 06:56:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727851607; cv=none; b=mMA9Fh1aYYZS8gsjQnayrxJ31g69STuQPGTDVEUdp/P9OMl18FBWW52Na4ExTRZsStSJQbzmKFgkGFFO06vqUZMN5wVPWhj+OGPJ+OaBVA3A/U1hYDnukUK6bkbR7kyTx2YIVsKlGF+Wq7Y++GPyLnODCSqlTuE+DeAca4P9IJU=
+	t=1727852200; cv=none; b=ugt1jpeh0S5beOb+thnnjEBlF10AsUDwBfksrfZQ58h37S0O4j0pvfBIE+BDb+x0HH/QLLGJiJ33jhk+E6eSoxypz+TDtmsEuakP6yopM9howdw00vl6QUHqwchS8fdHPAVBb+wLvZVNleMSofbQhz01+wMCUzAUacOsk9kCuLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727851607; c=relaxed/simple;
-	bh=QohghBaWHgvEKjhP//39OdbypduFrYPoEqH6pqB/N9M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YBWXYYDAjAxa8nqSEoHLkCDiuD7/HDL56G+IFiBMumncYb8zLLqwGoRX+tOV4nHcAWa4k03x0PuPkN6aCFzcSxOLHhq12Ep2GKaPxQuFLeV9EkN6Va14HqY+VKCLNGV7hFJ6D0smJOxqqwDwYlsHtE3idTrwzCLwFvU1c28moJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MRvFZ7se; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-20b90ab6c19so29099295ad.0
-        for <linux-wireless@vger.kernel.org>; Tue, 01 Oct 2024 23:46:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1727851605; x=1728456405; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=julty6rnHcSXHSDPw3px62HgLzdn2IBXQjTC66JT5PQ=;
-        b=MRvFZ7seFETvv/Eo794aVFwt1FH1IU16jyyYegwWDU6at9LtcoB8KsAKc25pJQPyXH
-         UszFoTuQmcBuTXNCsI8pqnnQv4TIRFIp+7zXIOiqYgwF7RZQOA7DAA9yJT5CVrJkQeWl
-         WDrON5WoVxS4D/ljvD6khBajugr/65p5hSGBwt+VahiKApnNpJeswN9kfFr/6SGjjF6W
-         XRjyKjaXHGREeh+PLRE3UtRjmX34fhARrj+MWHhWIyFh4hawTY9T6HkJGEXJuSFLWNJ8
-         Nf7rAMX43XugOauGwTRwg4VtpsCummhrJuanvilyJq9FUzUfBdsa9Pp0YXaW4todQ4Zn
-         0qkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727851605; x=1728456405;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=julty6rnHcSXHSDPw3px62HgLzdn2IBXQjTC66JT5PQ=;
-        b=bE/XMUmvPg6Sny8spyGHwIs58MVIPcmB0uvLTH52SEDD2xzcgNh/2GaI4sxW65mrBu
-         otZtb7W1jP4O/lI6QEtAK7JAgQlSsb+6MXNmoi4pxPvtXXB1ATurk6UNL8SYK73Y1EF2
-         So1X99vgkOGocv3DjoPNCfiMR+xzFvkhE1iF2LBcfVKFc0+roDiORHyta7X4uiVxZXHk
-         OiZH/at0SqqdPRgp+mZDe2TyBDHm4NlVfcDnfq3ctaoRwcPGuwHJ5Og5H5JFXJMX07Oo
-         Ff9d/4dXGyEWgXy8DpoaSeJVSw09tmro1nL3U0RLhb1tSByHUSU9Y8JiQ0mpzNKcIUyl
-         XegA==
-X-Forwarded-Encrypted: i=1; AJvYcCW0dhBFtPAfu2N+UHPweoVmnDikaP9UBMappyF6nO8PSaI0QDYSptd/5CfC64Yy5oaVTHyTUV3bDwGDw5rQUg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwbGq30lQZQ4gYIoL01pdE7eAOaIA2WTNLb0y++s0OJD+55WPaQ
-	wc6vgqywnB9w/T3WGwa4lgJb0r2oDr7ZvDpwKp885VoQgJ1GqubU40OoD7YJ5cdLu8xtmTXeC/+
-	CuPKp/ABWPFtfDLOGTpjZnqyyKXDHnFoDpIbLjw==
-X-Google-Smtp-Source: AGHT+IFQFeN+13hsSVg8HfZx3v0JFKL/2OojczRKBuzwXMASAbyeLF4dgYHBH+F1NmuIXohzp3j20fi5PB1R6+vYJtE=
-X-Received: by 2002:a17:902:d505:b0:205:4e4a:72d9 with SMTP id
- d9443c01a7336-20bc59efb2emr41817915ad.7.1727851604719; Tue, 01 Oct 2024
- 23:46:44 -0700 (PDT)
+	s=arc-20240116; t=1727852200; c=relaxed/simple;
+	bh=L+ZCkUenRaIpgiru/vylDFAs26XklZyCWG0KVLkx4mA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lTsAVkgaTNNdCRhmyIo+6sE9NUmNQ0zW89kWmMY4ycB9BXJHQun04xkq8B6i08TsrNtBiVPPW/AfCa5sLOCHSbbow3OQ9kgoNlxVseCovWa3ZS4S0LniGbsqenI8eVfaUjMs47jJ3M7HYHB2KF7WbL26AZNEFN5cSSO1VeNafE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (1024-bit key) header.d=wp.pl header.i=@wp.pl header.b=I+7aKCvK; arc=none smtp.client-ip=212.77.101.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
+Received: (wp-smtpd smtp.wp.pl 7913 invoked from network); 2 Oct 2024 08:49:52 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=1024a;
+          t=1727851792; bh=BrEFHxjxU45Xsh+4/3GMrgH5T8oCtiQmA7ueBCJh1Gw=;
+          h=From:To:Cc:Subject;
+          b=I+7aKCvKefgT47QoOl4XOVxRfz0c0wmjCZejHxPj7S58Z5pmar+lVWmrWEpDNAlO2
+           Ha67F1FoTxfPSycXNneUFPlKT4GNLAgxKKiHZJqtncWXSTZ0BPIV0AAjWUsdm3uPh5
+           tzEI9jqTkqbnm7mSz5AupPsQ7zENA6BLOPswozWM=
+Received: from 89-64-14-248.dynamic.chello.pl (HELO localhost) (stf_xl@wp.pl@[89.64.14.248])
+          (envelope-sender <stf_xl@wp.pl>)
+          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
+          for <ville.syrjala@linux.intel.com>; 2 Oct 2024 08:49:52 +0200
+Date: Wed, 2 Oct 2024 08:49:52 +0200
+From: Stanislaw Gruszka <stf_xl@wp.pl>
+To: Ville Syrjala <ville.syrjala@linux.intel.com>
+Cc: linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
+Subject: Re: [PATCH v2] iwlegacy: Clear stale interrupts before resuming
+ device
+Message-ID: <20241002064952.GA15679@wp.pl>
+References: <20240930122924.21865-1-ville.syrjala@linux.intel.com>
+ <20241001200745.8276-1-ville.syrjala@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240925075707.3970187-1-linyunsheng@huawei.com>
- <20240925075707.3970187-3-linyunsheng@huawei.com> <4968c2ec-5584-4a98-9782-143605117315@redhat.com>
-In-Reply-To: <4968c2ec-5584-4a98-9782-143605117315@redhat.com>
-From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Date: Wed, 2 Oct 2024 09:46:08 +0300
-Message-ID: <CAC_iWjKHofqDrp+jOO_QTp_8Op=KeE_jjhjsDUxjRa4vnHYJmQ@mail.gmail.com>
-Subject: Re: [PATCH net v2 2/2] page_pool: fix IOMMU crash when driver has
- already unbound
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: Yunsheng Lin <linyunsheng@huawei.com>, davem@davemloft.net, kuba@kernel.org, 
-	liuyonglong@huawei.com, fanghaiqing@huawei.com, zhangkun09@huawei.com, 
-	Robin Murphy <robin.murphy@arm.com>, Alexander Duyck <alexander.duyck@gmail.com>, 
-	IOMMU <iommu@lists.linux.dev>, Wei Fang <wei.fang@nxp.com>, 
-	Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, 
-	Eric Dumazet <edumazet@google.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
-	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
-	Kalle Valo <kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, imx@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, intel-wired-lan@lists.osuosl.org, 
-	bpf@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241001200745.8276-1-ville.syrjala@linux.intel.com>
+X-WP-MailID: a2eaf87ba0a58001950e9a66802a07ec
+X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
+X-WP-SPAM: NO 0000000 [oVNE]                               
 
-Hi Paolo,
-
-Thanks for taking the time.
-
-On Tue, 1 Oct 2024 at 16:32, Paolo Abeni <pabeni@redhat.com> wrote:
->
-> On 9/25/24 09:57, Yunsheng Lin wrote:
-> > Networking driver with page_pool support may hand over page
-> > still with dma mapping to network stack and try to reuse that
-> > page after network stack is done with it and passes it back
-> > to page_pool to avoid the penalty of dma mapping/unmapping.
-> > With all the caching in the network stack, some pages may be
-> > held in the network stack without returning to the page_pool
-> > soon enough, and with VF disable causing the driver unbound,
-> > the page_pool does not stop the driver from doing it's
-> > unbounding work, instead page_pool uses workqueue to check
-> > if there is some pages coming back from the network stack
-> > periodically, if there is any, it will do the dma unmmapping
-> > related cleanup work.
-> >
-> > As mentioned in [1], attempting DMA unmaps after the driver
-> > has already unbound may leak resources or at worst corrupt
-> > memory. Fundamentally, the page pool code cannot allow DMA
-> > mappings to outlive the driver they belong to.
-> >
-> > Currently it seems there are at least two cases that the page
-> > is not released fast enough causing dma unmmapping done after
-> > driver has already unbound:
-> > 1. ipv4 packet defragmentation timeout: this seems to cause
-> >     delay up to 30 secs.
-> > 2. skb_defer_free_flush(): this may cause infinite delay if
-> >     there is no triggering for net_rx_action().
-> >
-> > In order not to do the dma unmmapping after driver has already
-> > unbound and stall the unloading of the networking driver, add
-> > the pool->items array to record all the pages including the ones
-> > which are handed over to network stack, so the page_pool can
-> > do the dma unmmapping for those pages when page_pool_destroy()
-> > is called. As the pool->items need to be large enough to avoid
-> > performance degradation, add a 'item_full' stat to indicate the
-> > allocation failure due to unavailability of pool->items.
->
-> This looks really invasive, with room for potentially large performance
-> regressions or worse. At very least it does not look suitable for net.
-
-Perhaps, and you are right we need to measure performance before
-pulling it but...
-
->
-> Is the problem only tied to VFs drivers? It's a pity all the page_pool
-> users will have to pay a bill for it...
-
-It's not. The problem happens when an SKB has been scheduled for
-recycling and has already been mapped via page_pool. If the driver
-disappears in the meantime, page_pool will free all the packets it
-holds in its private rings (both slow and fast), but is not in control
-of the SKB anymore. So any packets coming back for recycling *after*
-that point cannot unmap memory properly.
-
-As discussed this can either lead to memory corruption and resource
-leaking, or worse as seen in the bug report panics. I am fine with
-this going into -next, but it really is a bugfix, although I am not
-100% sure that the Fixes: tag in the current patch is correct.
+On Tue, Oct 01, 2024 at 11:07:45PM +0300, Ville Syrjala wrote:
+> From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> 
+> iwl4965 fails upon resume from hibernation on my laptop. The reason
+> seems to be a stale interrupt which isn't being cleared out before
+> interrupts are enabled. We end up with a race beween the resume
+> trying to bring things back up, and the restart work (queued form
+> the interrupt handler) trying to bring things down. Eventually
+> the whole thing blows up.
+> 
+> Fix the problem by clearing out any stale interrupts before
+> interrupts get enabled during resume.
+> 
+> Here's a debug log of the indicent:
+> [   12.042589] ieee80211 phy0: il_isr ISR inta 0x00000080, enabled 0xaa00008b, fh 0x00000000
+> [   12.042625] ieee80211 phy0: il4965_irq_tasklet inta 0x00000080, enabled 0x00000000, fh 0x00000000
+> [   12.042651] iwl4965 0000:10:00.0: RF_KILL bit toggled to enable radio.
+> [   12.042653] iwl4965 0000:10:00.0: On demand firmware reload
+> [   12.042690] ieee80211 phy0: il4965_irq_tasklet End inta 0x00000000, enabled 0xaa00008b, fh 0x00000000, flags 0x00000282
+> [   12.052207] ieee80211 phy0: il4965_mac_start enter
+> [   12.052212] ieee80211 phy0: il_prep_station Add STA to driver ID 31: ff:ff:ff:ff:ff:ff
+> [   12.052244] ieee80211 phy0: il4965_set_hw_ready hardware  ready
+> [   12.052324] ieee80211 phy0: il_apm_init Init card's basic functions
+> [   12.052348] ieee80211 phy0: il_apm_init L1 Enabled; Disabling L0S
+> [   12.055727] ieee80211 phy0: il4965_load_bsm Begin load bsm
+> [   12.056140] ieee80211 phy0: il4965_verify_bsm Begin verify bsm
+> [   12.058642] ieee80211 phy0: il4965_verify_bsm BSM bootstrap uCode image OK
+> [   12.058721] ieee80211 phy0: il4965_load_bsm BSM write complete, poll 1 iterations
+> [   12.058734] ieee80211 phy0: __il4965_up iwl4965 is coming up
+> [   12.058737] ieee80211 phy0: il4965_mac_start Start UP work done.
+> [   12.058757] ieee80211 phy0: __il4965_down iwl4965 is going down
+> [   12.058761] ieee80211 phy0: il_scan_cancel_timeout Scan cancel timeout
+> [   12.058762] ieee80211 phy0: il_do_scan_abort Not performing scan to abort
+> [   12.058765] ieee80211 phy0: il_clear_ucode_stations Clearing ucode stations in driver
+> [   12.058767] ieee80211 phy0: il_clear_ucode_stations No active stations found to be cleared
+> [   12.058819] ieee80211 phy0: _il_apm_stop Stop card, put in low power state
+> [   12.058827] ieee80211 phy0: _il_apm_stop_master stop master
+> [   12.058864] ieee80211 phy0: il4965_clear_free_frames 0 frames on pre-allocated heap on clear.
+> [   12.058869] ieee80211 phy0: Hardware restart was requested
+> [   16.132299] iwl4965 0000:10:00.0: START_ALIVE timeout after 4000ms.
+> [   16.132303] ------------[ cut here ]------------
+> [   16.132304] Hardware became unavailable upon resume. This could be a software issue prior to suspend or a hardware issue.
+> [   16.132338] WARNING: CPU: 0 PID: 181 at net/mac80211/util.c:1826 ieee80211_reconfig+0x8f/0x14b0 [mac80211]
+> [   16.132390] Modules linked in: ctr ccm sch_fq_codel xt_tcpudp xt_multiport xt_state iptable_filter iptable_nat nf_nat nf_conntrack nf_defrag_ipv4 ip_tables x_tables binfmt_misc joydev mousedev btusb btrtl btintel btbcm bluetooth ecdh_generic ecc iTCO_wdt i2c_dev iwl4965 iwlegacy coretemp snd_hda_codec_analog pcspkr psmouse mac80211 snd_hda_codec_generic libarc4 sdhci_pci cqhci sha256_generic sdhci libsha256 firewire_ohci snd_hda_intel snd_intel_dspcfg mmc_core snd_hda_codec snd_hwdep firewire_core led_class iosf_mbi snd_hda_core uhci_hcd lpc_ich crc_itu_t cfg80211 ehci_pci ehci_hcd snd_pcm usbcore mfd_core rfkill snd_timer snd usb_common soundcore video parport_pc parport intel_agp wmi intel_gtt backlight e1000e agpgart evdev
+> [   16.132456] CPU: 0 UID: 0 PID: 181 Comm: kworker/u8:6 Not tainted 6.11.0-cl+ #143
+> [   16.132460] Hardware name: Hewlett-Packard HP Compaq 6910p/30BE, BIOS 68MCU Ver. F.19 07/06/2010
+> [   16.132463] Workqueue: async async_run_entry_fn
+> [   16.132469] RIP: 0010:ieee80211_reconfig+0x8f/0x14b0 [mac80211]
+> [   16.132501] Code: da 02 00 00 c6 83 ad 05 00 00 00 48 89 df e8 98 1b fc ff 85 c0 41 89 c7 0f 84 e9 02 00 00 48 c7 c7 a0 e6 48 a0 e8 d1 77 c4 e0 <0f> 0b eb 2d 84 c0 0f 85 8b 01 00 00 c6 87 ad 05 00 00 00 e8 69 1b
+> [   16.132504] RSP: 0018:ffffc9000029fcf0 EFLAGS: 00010282
+> [   16.132507] RAX: 0000000000000000 RBX: ffff8880072008e0 RCX: 0000000000000001
+> [   16.132509] RDX: ffffffff81f21a18 RSI: 0000000000000086 RDI: 0000000000000001
+> [   16.132510] RBP: ffff8880072003c0 R08: 0000000000000000 R09: 0000000000000003
+> [   16.132512] R10: 0000000000000000 R11: ffff88807e5b0000 R12: 0000000000000001
+> [   16.132514] R13: 0000000000000000 R14: 0000000000000000 R15: 00000000ffffff92
+> [   16.132515] FS:  0000000000000000(0000) GS:ffff88807c200000(0000) knlGS:0000000000000000
+> [   16.132517] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   16.132519] CR2: 000055dd43786c08 CR3: 000000000978f000 CR4: 00000000000006f0
+> [   16.132521] Call Trace:
+> [   16.132525]  <TASK>
+> [   16.132526]  ? __warn+0x77/0x120
+> [   16.132532]  ? ieee80211_reconfig+0x8f/0x14b0 [mac80211]
+> [   16.132564]  ? report_bug+0x15c/0x190
+> [   16.132568]  ? handle_bug+0x36/0x70
+> [   16.132571]  ? exc_invalid_op+0x13/0x60
+> [   16.132573]  ? asm_exc_invalid_op+0x16/0x20
+> [   16.132579]  ? ieee80211_reconfig+0x8f/0x14b0 [mac80211]
+> [   16.132611]  ? snd_hdac_bus_init_cmd_io+0x24/0x200 [snd_hda_core]
+> [   16.132617]  ? pick_eevdf+0x133/0x1c0
+> [   16.132622]  ? check_preempt_wakeup_fair+0x70/0x90
+> [   16.132626]  ? wakeup_preempt+0x4a/0x60
+> [   16.132628]  ? ttwu_do_activate.isra.0+0x5a/0x190
+> [   16.132632]  wiphy_resume+0x79/0x1a0 [cfg80211]
+> [   16.132675]  ? wiphy_suspend+0x2a0/0x2a0 [cfg80211]
+> [   16.132697]  dpm_run_callback+0x75/0x1b0
+> [   16.132703]  device_resume+0x97/0x200
+> [   16.132707]  async_resume+0x14/0x20
+> [   16.132711]  async_run_entry_fn+0x1b/0xa0
+> [   16.132714]  process_one_work+0x13d/0x350
+> [   16.132718]  worker_thread+0x2be/0x3d0
+> [   16.132722]  ? cancel_delayed_work_sync+0x70/0x70
+> [   16.132725]  kthread+0xc0/0xf0
+> [   16.132729]  ? kthread_park+0x80/0x80
+> [   16.132732]  ret_from_fork+0x28/0x40
+> [   16.132735]  ? kthread_park+0x80/0x80
+> [   16.132738]  ret_from_fork_asm+0x11/0x20
+> [   16.132741]  </TASK>
+> [   16.132742] ---[ end trace 0000000000000000 ]---
+> [   16.132930] ------------[ cut here ]------------
+> [   16.132932] WARNING: CPU: 0 PID: 181 at net/mac80211/driver-ops.c:41 drv_stop+0xe7/0xf0 [mac80211]
+> [   16.132957] Modules linked in: ctr ccm sch_fq_codel xt_tcpudp xt_multiport xt_state iptable_filter iptable_nat nf_nat nf_conntrack nf_defrag_ipv4 ip_tables x_tables binfmt_misc joydev mousedev btusb btrtl btintel btbcm bluetooth ecdh_generic ecc iTCO_wdt i2c_dev iwl4965 iwlegacy coretemp snd_hda_codec_analog pcspkr psmouse mac80211 snd_hda_codec_generic libarc4 sdhci_pci cqhci sha256_generic sdhci libsha256 firewire_ohci snd_hda_intel snd_intel_dspcfg mmc_core snd_hda_codec snd_hwdep firewire_core led_class iosf_mbi snd_hda_core uhci_hcd lpc_ich crc_itu_t cfg80211 ehci_pci ehci_hcd snd_pcm usbcore mfd_core rfkill snd_timer snd usb_common soundcore video parport_pc parport intel_agp wmi intel_gtt backlight e1000e agpgart evdev
+> [   16.133014] CPU: 0 UID: 0 PID: 181 Comm: kworker/u8:6 Tainted: G        W          6.11.0-cl+ #143
+> [   16.133018] Tainted: [W]=WARN
+> [   16.133019] Hardware name: Hewlett-Packard HP Compaq 6910p/30BE, BIOS 68MCU Ver. F.19 07/06/2010
+> [   16.133021] Workqueue: async async_run_entry_fn
+> [   16.133025] RIP: 0010:drv_stop+0xe7/0xf0 [mac80211]
+> [   16.133048] Code: 48 85 c0 74 0e 48 8b 78 08 89 ea 48 89 de e8 e0 87 04 00 65 ff 0d d1 de c4 5f 0f 85 42 ff ff ff e8 be 52 c2 e0 e9 38 ff ff ff <0f> 0b 5b 5d c3 0f 1f 40 00 41 54 49 89 fc 55 53 48 89 f3 2e 2e 2e
+> [   16.133050] RSP: 0018:ffffc9000029fc50 EFLAGS: 00010246
+> [   16.133053] RAX: 0000000000000000 RBX: ffff8880072008e0 RCX: ffff88800377f6c0
+> [   16.133054] RDX: 0000000000000001 RSI: 0000000000000000 RDI: ffff8880072008e0
+> [   16.133056] RBP: 0000000000000000 R08: ffffffff81f238d8 R09: 0000000000000000
+> [   16.133058] R10: ffff8880080520f0 R11: 0000000000000000 R12: ffff888008051c60
+> [   16.133060] R13: ffff8880072008e0 R14: 0000000000000000 R15: ffff8880072011d8
+> [   16.133061] FS:  0000000000000000(0000) GS:ffff88807c200000(0000) knlGS:0000000000000000
+> [   16.133063] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   16.133065] CR2: 000055dd43786c08 CR3: 000000000978f000 CR4: 00000000000006f0
+> [   16.133067] Call Trace:
+> [   16.133069]  <TASK>
+> [   16.133070]  ? __warn+0x77/0x120
+> [   16.133075]  ? drv_stop+0xe7/0xf0 [mac80211]
+> [   16.133098]  ? report_bug+0x15c/0x190
+> [   16.133100]  ? handle_bug+0x36/0x70
+> [   16.133103]  ? exc_invalid_op+0x13/0x60
+> [   16.133105]  ? asm_exc_invalid_op+0x16/0x20
+> [   16.133109]  ? drv_stop+0xe7/0xf0 [mac80211]
+> [   16.133132]  ieee80211_do_stop+0x55a/0x810 [mac80211]
+> [   16.133161]  ? fq_codel_reset+0xa5/0xc0 [sch_fq_codel]
+> [   16.133164]  ieee80211_stop+0x4f/0x180 [mac80211]
+> [   16.133192]  __dev_close_many+0xa2/0x120
+> [   16.133195]  dev_close_many+0x90/0x150
+> [   16.133198]  dev_close+0x5d/0x80
+> [   16.133200]  cfg80211_shutdown_all_interfaces+0x40/0xe0 [cfg80211]
+> [   16.133223]  wiphy_resume+0xb2/0x1a0 [cfg80211]
+> [   16.133247]  ? wiphy_suspend+0x2a0/0x2a0 [cfg80211]
+> [   16.133269]  dpm_run_callback+0x75/0x1b0
+> [   16.133273]  device_resume+0x97/0x200
+> [   16.133277]  async_resume+0x14/0x20
+> [   16.133280]  async_run_entry_fn+0x1b/0xa0
+> [   16.133283]  process_one_work+0x13d/0x350
+> [   16.133287]  worker_thread+0x2be/0x3d0
+> [   16.133290]  ? cancel_delayed_work_sync+0x70/0x70
+> [   16.133294]  kthread+0xc0/0xf0
+> [   16.133296]  ? kthread_park+0x80/0x80
+> [   16.133299]  ret_from_fork+0x28/0x40
+> [   16.133302]  ? kthread_park+0x80/0x80
+> [   16.133304]  ret_from_fork_asm+0x11/0x20
+> [   16.133307]  </TASK>
+> [   16.133308] ---[ end trace 0000000000000000 ]---
+> [   16.133335] ieee80211 phy0: PM: dpm_run_callback(): wiphy_resume [cfg80211] returns -110
+> [   16.133360] ieee80211 phy0: PM: failed to restore async: error -110
+> 
+> v2: Clear only in il_pci_resume() instead of il_enable_interrupts()
+>     to miminize changes to runtime behaviour
+> 
+> Cc: stable@vger.kernel.org
+> Cc: Stanislaw Gruszka <stf_xl@wp.pl>
+> Cc: Kalle Valo <kvalo@kernel.org>
+> Cc: linux-wireless@vger.kernel.org
+> Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
 
 Thanks
-/Ilias
->
-> /P
->
+Stanislaw
+
+> ---
+>  drivers/net/wireless/intel/iwlegacy/common.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/net/wireless/intel/iwlegacy/common.c b/drivers/net/wireless/intel/iwlegacy/common.c
+> index 9d33a66a49b5..7f58e31d23fe 100644
+> --- a/drivers/net/wireless/intel/iwlegacy/common.c
+> +++ b/drivers/net/wireless/intel/iwlegacy/common.c
+> @@ -4962,6 +4962,8 @@ il_pci_resume(struct device *device)
+>  	 */
+>  	pci_write_config_byte(pdev, PCI_CFG_RETRY_TIMEOUT, 0x00);
+>  
+> +	_il_wr(il, CSR_INT, 0xffffffff);
+> +	_il_wr(il, CSR_FH_INT_STATUS, 0xffffffff);
+>  	il_enable_interrupts(il);
+>  
+>  	if (!(_il_rd(il, CSR_GP_CNTRL) & CSR_GP_CNTRL_REG_FLAG_HW_RF_KILL_SW))
+> -- 
+> 2.45.2
+> 
 
