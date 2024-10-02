@@ -1,34 +1,34 @@
-Return-Path: <linux-wireless+bounces-13411-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13412-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A9498D252
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 13:45:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71B3398D253
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 13:45:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A725BB21954
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 11:45:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2844D1F21804
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 11:45:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CD7F200101;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D522220011A;
 	Wed,  2 Oct 2024 11:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="ch2xEj+g"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="spG+thht"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09CB1E4924
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B640C1E493F
 	for <linux-wireless@vger.kernel.org>; Wed,  2 Oct 2024 11:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727869522; cv=none; b=ctiir7gkuSyb8OWJcuZCcC3SnwZFtdAdRspTZ00gjUz2EUZIohpJhXF8OqMyX25CbAOa3sNYfIVIbzBUpmkDUkrOE0+MSynpQMTW1Q874v8k/7eFFPn1erwsOP4SBu6Ei90ovVmG2ZKwXov24F9Y+5mYOvd2Rxx8zpjQ0ThzTVg=
+	t=1727869522; cv=none; b=dW42WWD65FlF22mqCV9p00lYSY8KfDbtBEeG/tnqs7Y9jRpdlBDpNO12V1LPNbsUVlcrtvq3vWYjsNM1bFIv8SFpg9keIAedX8fVxbJbofG27/HJdR/tt1Z+/Mz5QGw5cv9W5yX7DgVGV1hrx5YCpGoUJ9ikU7YRjark4XS48ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1727869522; c=relaxed/simple;
-	bh=aeUM8FvkcJXeh2rEzqfiDIyJPOV315gxg9y2Ll80+6w=;
+	bh=n/Mzf715m+sCYdkCxwVEMqCB6/rvf/731mnKpTRcVk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dHV84gvFnWIBElglWH+ucPVDfm7/6nBXV8+pfhzFmMiRAq6c84DsKu8zzgOQuZ8Y5BjV1vaZpqn25aMHCdEvdRjIe97Eubx4MgLf7IR1hF/ppZPODnzwqos4NiUgcmsuq4DHT5+X6WH+Xy/dKjNtIfY1ARMUVFAlvgl4EQr1Ttg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=ch2xEj+g; arc=none smtp.client-ip=46.4.11.11
+	 MIME-Version; b=g2QdHhArFGlDHq8n5AOmhXMhbK8kLxdzZhO9cwOx0L/+jE4KtkU4Ab5KGnvJEdFaVZ3QBOyvubStN38wK5QATVn3WKsud2yt7QqdQdm7Y7/IRMvuWnx5OgybNzdqfmTX/5b2NlxVz27XeO0RXxu0y3qVo0B0VopgN/VeKyjpwFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=spG+thht; arc=none smtp.client-ip=46.4.11.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
@@ -37,21 +37,21 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=wdfuZ/s3Yt6/3Pc5yrFI9iwVpSkMn8jgFUdSBK0EWBY=; b=ch2xEj+gGCScwdl2QNaG5/IE/3
-	oSgYB+BYER9Dm5q6lW8KjrAMyc3rvUTrbJNY0ycwrUwo0DM96psOividicyAvIp0SGFRfgCc8t/6o
-	viZD3QWchVHo+ioxTyODIl5SmFhC/0JiTW05lVSrCkRGSb3bJp9xOH2ANzhkSo37X0aM=;
+	bh=lQPPZUOvE5Dareo4vzGXUbjuDhpxEPa/6kxwTlCGcsA=; b=spG+thhtI3lreMmKHpdiQJ8jsy
+	BHay+N+Q/WszKW4ueZPuUwr01U1ADoUbaL4gzM5yr2KsHwT7mRaXuL1hjMWnosQpTDJy+rKpQ7OXj
+	jjdjZ9YZAzMeb0OxAFkkS4GrAOHbxIaT07XB3bZpLzrDykq19lke4wvZUkulLBvWvt3s=;
 Received: from p4ff130c8.dip0.t-ipconnect.de ([79.241.48.200] helo=localhost.localdomain)
 	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
 	(Exim 4.96)
 	(envelope-from <nbd@nbd.name>)
-	id 1svxnC-003vyr-2N;
-	Wed, 02 Oct 2024 13:45:18 +0200
+	id 1svxnC-003vyr-33;
+	Wed, 02 Oct 2024 13:45:19 +0200
 From: Felix Fietkau <nbd@nbd.name>
 To: linux-wireless@vger.kernel.org
 Cc: johannes@sipsolutions.net
-Subject: [PATCH 03/11] wifi: mac80211: use vif radio mask to limit chanctx and remain-on-channel
-Date: Wed,  2 Oct 2024 13:45:09 +0200
-Message-ID: <264dd8d0e80aa8edb3530b6f81b34dd1655a0f12.1727869380.git-series.nbd@nbd.name>
+Subject: [PATCH 04/11] wifi: cfg80211: report per wiphy radio antenna mask
+Date: Wed,  2 Oct 2024 13:45:10 +0200
+Message-ID: <4d15424f7c9f755e542cefa26ed79c958e57e387.1727869380.git-series.nbd@nbd.name>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <cover.cb088351ab8df44310eee259bf2dbec858702463.1727869380.git-series.nbd@nbd.name>
 References: <cover.cb088351ab8df44310eee259bf2dbec858702463.1727869380.git-series.nbd@nbd.name>
@@ -63,58 +63,75 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Reject frequencies not supported by any radio that the vif is allowed to use.
+With multi-radio devices, each radio typically gets a fixed set of antennas.
+In order to be able to disable specific antennas for some radios, user space
+needs to know which antenna mask bits are assigned to which radio.
 
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- net/mac80211/chan.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ include/net/cfg80211.h       | 4 ++++
+ include/uapi/linux/nl80211.h | 3 +++
+ net/wireless/nl80211.c       | 4 +++-
+ 3 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index cca6d14084d2..fbc3b28953a6 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -1169,7 +1169,7 @@ ieee80211_replace_chanctx(struct ieee80211_local *local,
- static bool
- ieee80211_find_available_radio(struct ieee80211_local *local,
- 			       const struct ieee80211_chan_req *chanreq,
--			       int *radio_idx)
-+			       u32 radio_mask, int *radio_idx)
- {
- 	struct wiphy *wiphy = local->hw.wiphy;
- 	const struct wiphy_radio *radio;
-@@ -1180,6 +1180,9 @@ ieee80211_find_available_radio(struct ieee80211_local *local,
- 		return true;
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 73df4a8e8cce..8bb5fb80cd7b 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -5436,6 +5436,8 @@ struct wiphy_radio_freq_range {
+  * @iface_combinations: Valid interface combinations array, should not
+  *	list single interface types.
+  * @n_iface_combinations: number of entries in @iface_combinations array.
++ *
++ * @antenna_mask: bitmask of antennas connected to this radio.
+  */
+ struct wiphy_radio {
+ 	const struct wiphy_radio_freq_range *freq_range;
+@@ -5443,6 +5445,8 @@ struct wiphy_radio {
  
- 	for (i = 0; i < wiphy->n_radio; i++) {
-+		if (!(radio_mask & BIT(i)))
-+			continue;
+ 	const struct ieee80211_iface_combination *iface_combinations;
+ 	int n_iface_combinations;
 +
- 		radio = &wiphy->radio[i];
- 		if (!cfg80211_radio_chandef_valid(radio, &chanreq->oper))
- 			continue;
-@@ -1213,7 +1216,9 @@ int ieee80211_link_reserve_chanctx(struct ieee80211_link_data *link,
- 	new_ctx = ieee80211_find_reservation_chanctx(local, chanreq, mode);
- 	if (!new_ctx) {
- 		if (ieee80211_can_create_new_chanctx(local, -1) &&
--		    ieee80211_find_available_radio(local, chanreq, &radio_idx))
-+		    ieee80211_find_available_radio(local, chanreq,
-+						   sdata->wdev.radio_mask,
-+						   &radio_idx))
- 			new_ctx = ieee80211_new_chanctx(local, chanreq, mode,
- 							false, radio_idx);
- 		else
-@@ -1883,7 +1888,9 @@ int _ieee80211_link_use_channel(struct ieee80211_link_data *link,
- 	/* Note: context is now reserved */
- 	if (ctx)
- 		reserved = true;
--	else if (!ieee80211_find_available_radio(local, chanreq, &radio_idx))
-+	else if (!ieee80211_find_available_radio(local, chanreq,
-+						 sdata->wdev.radio_mask,
-+						 &radio_idx))
- 		ctx = ERR_PTR(-EBUSY);
- 	else
- 		ctx = ieee80211_new_chanctx(local, chanreq, mode,
++	u32 antenna_mask;
+ };
+ 
+ #define CFG80211_HW_TIMESTAMP_ALL_PEERS	0xffff
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index d31ccee99cc7..1b8827f920ff 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -8036,6 +8036,8 @@ enum nl80211_ap_settings_flags {
+  * @NL80211_WIPHY_RADIO_ATTR_INTERFACE_COMBINATION: Supported interface
+  *	combination for this radio. Attribute may be present multiple times
+  *	and contains attributes defined in &enum nl80211_if_combination_attrs.
++ * @NL80211_WIPHY_RADIO_ATTR_ANTENNA_MASK: bitmask (u32) of antennas
++ *	connected to this radio.
+  *
+  * @__NL80211_WIPHY_RADIO_ATTR_LAST: Internal
+  * @NL80211_WIPHY_RADIO_ATTR_MAX: Highest attribute
+@@ -8046,6 +8048,7 @@ enum nl80211_wiphy_radio_attrs {
+ 	NL80211_WIPHY_RADIO_ATTR_INDEX,
+ 	NL80211_WIPHY_RADIO_ATTR_FREQ_RANGE,
+ 	NL80211_WIPHY_RADIO_ATTR_INTERFACE_COMBINATION,
++	NL80211_WIPHY_RADIO_ATTR_ANTENNA_MASK,
+ 
+ 	/* keep last */
+ 	__NL80211_WIPHY_RADIO_ATTR_LAST,
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 8f86b23e106a..5c54e1793539 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -2428,7 +2428,9 @@ static int nl80211_put_radio(struct wiphy *wiphy, struct sk_buff *msg, int idx)
+ 	if (!radio)
+ 		return -ENOBUFS;
+ 
+-	if (nla_put_u32(msg, NL80211_WIPHY_RADIO_ATTR_INDEX, idx))
++	if (nla_put_u32(msg, NL80211_WIPHY_RADIO_ATTR_INDEX, idx) ||
++	    nla_put_u32(msg, NL80211_WIPHY_RADIO_ATTR_ANTENNA_MASK,
++			r->antenna_mask))
+ 		goto nla_put_failure;
+ 
+ 	for (i = 0; i < r->n_freq_range; i++) {
 -- 
 git-series 0.9.1
 
