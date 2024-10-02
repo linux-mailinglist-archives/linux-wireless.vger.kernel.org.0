@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-13426-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13427-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FB4D98DE52
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 17:05:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C770B98DE53
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 17:05:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0BC51C21582
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 15:05:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 721D01F27E1D
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 15:05:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00AF7567D;
-	Wed,  2 Oct 2024 15:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FB33567D;
+	Wed,  2 Oct 2024 15:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="bDjRV9J6"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="IYKM0DA5"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078A310E9
-	for <linux-wireless@vger.kernel.org>; Wed,  2 Oct 2024 15:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C610D10E9
+	for <linux-wireless@vger.kernel.org>; Wed,  2 Oct 2024 15:05:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727881506; cv=none; b=fqBLrbV/JoBTUMPmhK5pbsWmL28nhTdAROPaMoo0qfobQC7yXlMGfU69X1ywPDsZ1j/24pMB4LDMSWKrjYLE56TYoOpswjEpAzaXQJyO4lmS+H5dygBGQWf8KtH+J828JxahtFesVQQRCY3QG9UW2KId10rGVugi3bR+IIzjpA8=
+	t=1727881527; cv=none; b=ijQhksC2sTkFvDAJSaxRXjOVnMRa4E/VpwKQvATFDqd9PadkPdr2g729IYCIzY119/RLNfZoW22rrame3Qv2cjxxi+5HUs8kowvYql9ytJNmpFeOqZqtv2cnsObxmG4pxWBgsECq2RGmu6UbA/qzrRjjHSatUIMzL+OykbnmCuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727881506; c=relaxed/simple;
-	bh=kXVVwM7H4EoaTsxWbZlN4OMuFonm6iOm3TT4RE/4F6E=;
+	s=arc-20240116; t=1727881527; c=relaxed/simple;
+	bh=bjgwHpmEeATSyWavcbaJpsqXpUww08UiJJt7j0NFSzo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=M4mQS7FBq+r9DUYy0l7v2H9E5zuzgCjlMda/mmvyk2U8XNR5J9Kt2pck9yyQrRx3D8GYfz10P4QxDgSRGRuawBAbQYJupbjRYWSO2zJ2NZGoFEuxvbmIpMnvVx0/3+BCUSrOoBfAgrfjVtCGBD7sFTwa743laT3gslYL+6yX7hQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=bDjRV9J6; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:Content-Type; b=OGbIxYV6qJdJUqjLp+TUCUZYE2cEjQDjgGwgZsqwAaXs4dbRWrw68Qh7k/JtEtJnKoM9mVrpZzbh8/C9DBXvrfAFhRdOPBX78VsGKzeKzZ55Q122lL4CRzVlU6skUto+6V03suCXSQyvQT6NB0LkJ4X0oM9QmA0t4T+oIwLm9dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=IYKM0DA5; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 492E4hXX024421;
-	Wed, 2 Oct 2024 15:04:55 GMT
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4921pGBF027724;
+	Wed, 2 Oct 2024 15:05:22 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	b796VRuUd0ikaRYqE2w6NKc6LfGxxVyDJMU8x28zz38=; b=bDjRV9J6PY9YP48+
-	faDSHomLZQzSMVSNyCgSWFL22BQpIaIhN9kJhfjoSlQds+8WGFTkXQ1tIJsmNoc/
-	cZe3ke5e373dECFzxbrLm3iLinP8523fUJ5WuhA0FDtQLMPpW2kYP9uVVJPjObyt
-	8WwnMZPvw1OMAJ3icufu2j+ifXPTJtD0vI/JxsRAuKD66dUC3L988pSdAOOrbkLi
-	/Gwp2szwov8tth8lYN1UZwVV/TNa3aNZYZYU79bGfCTem3Ql+KNaJKZ6dMjDdWC8
-	wfLPxdBwleGMHARExk1hZ1L+CeMkioAoI/arBxS6hZW5N2AkjuUsLnSO+WRnYn7B
-	biBsfw==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41x9cykvhr-1
+	NaBlM4b+XOV1nrl98gaeRfPRdMjGFr536y65kYNcF90=; b=IYKM0DA5/TFbXE3Q
+	dKHBk+p4Z1aHrRRrWpsPkXp7QxjNbjXxTWkQu8LvuN/PcJ/B8hHo639IV4fM+4kP
+	HywsuHiKNdcaK0VN5b779yjcrHp6la4v1og02wVUnDhoj7gLEph8HLmADX+uV0kX
+	v0e8GeprrvOH0bW07zkeVo6ufwo4NyrPXavmY1Qg9cNjl2QWQNKXwzsN0f7rrcXC
+	nWJLNbWO5sJ3zBJGIw31pWc41ji6/TrZTK67R0JTjx0vASmg+QNdK+yDrx9duwgg
+	caf3D7z6lAwrEdqVXaLbf6P4x+rGEIeQhOCEsBbtonSC63wUoHJMl+CnaSTFoOQD
+	asff3w==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41xte12kn1-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 02 Oct 2024 15:04:54 +0000 (GMT)
+	Wed, 02 Oct 2024 15:05:22 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 492F4qcU012597
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 492F5KFR000342
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 2 Oct 2024 15:04:52 GMT
+	Wed, 2 Oct 2024 15:05:20 GMT
 Received: from [10.227.110.203] (10.80.80.8) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 2 Oct 2024
- 08:04:52 -0700
-Message-ID: <57a03cdf-462b-4fc6-ad4b-0863dab9a755@quicinc.com>
-Date: Wed, 2 Oct 2024 08:04:51 -0700
+ 08:05:19 -0700
+Message-ID: <a7fd77c9-2aa9-4d01-8857-3d79eb464ecb@quicinc.com>
+Date: Wed, 2 Oct 2024 08:05:19 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,71 +65,65 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] wifi: ath12k: Support Pdev Scheduled Algorithm Stats
+Subject: Re: [PATCH 2/2] wifi: ath12k: Support BE OFDMA Pdev Rate Stats
 To: Roopni Devanathan <quic_rdevanat@quicinc.com>,
         <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>,
-        Sidhanta Sahu
-	<quic_sidhanta@quicinc.com>
+        Pradeep Kumar Chitrapu
+	<quic_pradeepc@quicinc.com>
 References: <20240930171705.596703-1-quic_rdevanat@quicinc.com>
- <20240930171705.596703-2-quic_rdevanat@quicinc.com>
-Content-Language: en-US
+ <20240930171705.596703-3-quic_rdevanat@quicinc.com>
 From: Jeff Johnson <quic_jjohnson@quicinc.com>
-In-Reply-To: <20240930171705.596703-2-quic_rdevanat@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <20240930171705.596703-3-quic_rdevanat@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 1NQwv6DYXy24TXJzOrOAHnejdapZ2Ocx
-X-Proofpoint-ORIG-GUID: 1NQwv6DYXy24TXJzOrOAHnejdapZ2Ocx
+X-Proofpoint-ORIG-GUID: C-vgEK6CMfcuMdbNQ_JGr6eHWj5CFyxN
+X-Proofpoint-GUID: C-vgEK6CMfcuMdbNQ_JGr6eHWj5CFyxN
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 malwarescore=0
- bulkscore=0 spamscore=0 phishscore=0 suspectscore=0 priorityscore=1501
- mlxlogscore=869 impostorscore=0 mlxscore=0 lowpriorityscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
- definitions=main-2410020110
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=915
+ suspectscore=0 spamscore=0 impostorscore=0 lowpriorityscore=0 adultscore=0
+ priorityscore=1501 bulkscore=0 phishscore=0 mlxscore=0 clxscore=1015
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2410020110
 
 On 9/30/2024 10:17 AM, Roopni Devanathan wrote:
-> From: Sidhanta Sahu <quic_sidhanta@quicinc.com>
+> From: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
 > 
-> Add support to request scheduled algorithm stats from firmware
-> through HTT stats type 49. These stats give information such
-> as count of DLOFDMA enabled, disabled, probed and monitored
-> based on rate and latency, consecutive number of MPDUs tried
-> and succeeded, etc.
+> Add support to request BE OFDMA pdev rate stats from firmware
+> through HTT stats type 51. These stats give information such
+> as number of spatial streams, bandwidth, MCS, etc.
 > 
 > Note: WCN7850 firmware version -
 > WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
-> does not support HTT stats type 49.
+> does not support HTT stats type 51.
 > 
 > Sample output:
 > -------------
-> echo 49 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
+> echo 51 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
 > cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats
-> HTT_PDEV_SCHED_ALGO_TLV:
+> HTT_TX_PDEV_RATE_STATS_BE_OFDMA_TLV:
 > mac_id = 0
-> rate_based_dlofdma_enabled_count =  0:0, 1:0, 2:0, 3:0
-> rate_based_dlofdma_disabled_count =  0:0, 1:0, 2:0, 3:0
-> rate_based_dlofdma_probing_count =  0:0, 1:0, 2:0, 3:0
-> rate_based_dlofdma_monitoring_count =  0:0, 1:0, 2:0, 3:0
-> chan_acc_lat_based_dlofdma_enabled_count =  0:0, 1:0, 2:0, 3:0
-> chan_acc_lat_based_dlofdma_disabled_count =  0:0, 1:0, 2:0, 3:0
-> chan_acc_lat_based_dlofdma_monitoring_count =  0:0, 1:0, 2:0, 3:0
-> downgrade_to_dl_su_ru_alloc_fail =  0:0, 1:0, 2:0, 3:0
-> candidate_list_single_user_disable_ofdma =  0:0, 1:0, 2:0, 3:0
-> dl_cand_list_dropped_high_ul_qos_weight =  0:0, 1:0, 2:0, 3:0
-> ax_dlofdma_disabled_due_to_pipelining =  0:0, 1:0, 2:0, 3:0
-> dlofdma_disabled_su_only_eligible =  0:0, 1:0, 2:0, 3:0
-> dlofdma_disabled_consec_no_mpdus_tried =  0:0, 1:0, 2:0, 3:0
-> dlofdma_disabled_consec_no_mpdus_success =  0:0, 1:0, 2:0, 3:0
+> be_ofdma_tx_ldpc = 0
+> be_ofdma_tx_mcs =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0
+> be_ofdma_eht_sig_mcs =  0:0, 1:0, 2:0, 3:0
+> be_ofdma_tx_ru_size =  26:0  52:0  52+26:0  106:0  106+26:0  242:0  484:0  484+242:0  996:0  996+484:0  996+484+242:0  996x2:0  996x2+484:0  996x3:0  996x3+484:0  996x4:0
+> be_ofdma_tx_nss =  =  1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0
+> be_ofdma_tx_bw =  0:0, 1:0, 2:0, 3:0, 4:0
+> be_ofdma_tx_gi[0] =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0
+> be_ofdma_tx_gi[1] =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0
+> be_ofdma_tx_gi[2] =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0
+> be_ofdma_tx_gi[3] =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0
 > 
 > Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00214-QCAHKSWPL_SILICONZ-1
 > 
-> Signed-off-by: Sidhanta Sahu <quic_sidhanta@quicinc.com>
+> Signed-off-by: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
 > Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
 Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
