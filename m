@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-13423-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13424-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41BF698D3D1
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 14:57:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A082698D3D9
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 14:58:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 748241C20BD5
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 12:57:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2DE41C20D8E
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 12:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C26871CFED1;
-	Wed,  2 Oct 2024 12:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16C771D0156;
+	Wed,  2 Oct 2024 12:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="vb6tDb12"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="d0hqK4RU"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC8C1D0155
-	for <linux-wireless@vger.kernel.org>; Wed,  2 Oct 2024 12:57:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FAF71D017A
+	for <linux-wireless@vger.kernel.org>; Wed,  2 Oct 2024 12:58:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727873855; cv=none; b=nm/fd5wxdvOyCv9Cb678L68Llbep/r35sS4FUiwd65ALtkVaxdUfAk17QtRN39wc+KnJETuafCDy11/rnNQGQltpWV2E1AMI446FAAhiLUSnY4Sy7gdu4ajeeIC8gknZc/ByFIZwrRvQF3d9re+I7Veic/Fa/0/mmm8sP14ukoY=
+	t=1727873905; cv=none; b=U9oJDoQGJChsPmPNvtn3N8b+vhLazKi4/79XKCg4iTEZXd61Szy0sLCQdsp515tjDkvAPeFM/1ZpjJwnwhNJO1pqhmHAL2Fm+fs+HP/9HqHuZbf80g8kmPAl+RFSEDTOYgv/GcrtgUHQibOYx0qANQ/Z7EA5gNOPcq89nlePOE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727873855; c=relaxed/simple;
-	bh=oxFVdBoecQvu0mGTliDAzHXmCc4gIbnE9NqlclG5AJo=;
+	s=arc-20240116; t=1727873905; c=relaxed/simple;
+	bh=5HPAm88LQ1dEGusWY39tu+Gcgz4wn3tKXxI+Yw7MTng=;
 	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=oUtOxMSichNQcorbkkI8S81U7cZwdoYhp1oWgC6lquXH+EG5ZRufkWOhW1rQYYvWZKyPbxT5GoSpg9niAsMkZKxb3rHF/XMeUmx/WEAFv+tUnSyrPvKtH6tCLWYFtjU1X0GnUE4WrYXEL8H+Y9NO0YFbY4aTLC/zahUIAa8eMYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=vb6tDb12; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=XWTZ/papCXoDoUE/yxFJJ+LWe7dAij/r8bxUHKoRtbHaQIi0V9cyuvo1PBQ9t1ttZwssts0zxEJgZMcK7KiTJGsFICELv+/zjD5YbuJRaubZ0c1ww6BkUnNNO7Cu1CjKJYyv/nmOtjl3NtdoPfcCmGa3fXGahMnSeu5FBOYWo6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=d0hqK4RU; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
 	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=6ZPED0F7Vmc3Tx1MkfSwJYntTfgqb/um5sI5q2Dan20=;
-	t=1727873854; x=1729083454; b=vb6tDb12OQHqnBslvzYq5V6IYRt6XwdQ/1ZIZpwxIWRPr7E
-	BiHlhtV+VIdIJIUHpVdvT6ecyeNaeKnGLArbqCHI79lEVUz2yVicO5a5AsUaZTWk0p260RZac//lj
-	1zgl6aX/rEvczqRdWDXdYjxB4zf4i2KG9MAwrVPS6l65GFEUmI58+600NCV5rhNixm/f6ooThsLnq
-	O7uF66AFD3ETDd0Xb9taTWqvYr/7FbarCdt9AQLxjJDnl9/MCclFdbDabbVVy436aUEqJheJAjlRz
-	Sel+bQvd/Gih84N+npwlKtAfiX2QBPhq/3sQYE2fdNIEp3YktqjAKw7cUXNbQejw==;
+	Resent-Cc:Resent-Message-ID; bh=5HPAm88LQ1dEGusWY39tu+Gcgz4wn3tKXxI+Yw7MTng=;
+	t=1727873903; x=1729083503; b=d0hqK4RUeFrmIjTSYJ91Z5PuvAG3BfP5duEFv3jbEHk2D9z
+	Sx+lc/q6F9owJVtvsgkMv1hX9d+vYAhTqBZA8LiT30/cVzExd+vptjIQNRuQQ/VyMSi8jDvuPfFVi
+	hU/JZsh8pKBDEJNgmrSMTabPp4wqd4pyRwmWLCnsXryrKR+G5MD5xpA58gTeZTShAQ02Ryvf6GQdp
+	4d8eQW2kv+HG2oeM52WO2saojhpLKRHtLQaNYmzcABFqeAY4V7URjYpQ4OJSw1+E6zzOqitEbwLmd
+	VrF+YiYCzJkN5FL75ipvnmdyZs+u3g7CL7Z2EHfWp4R/z8J/pTn0pdYYGEVqpo6A==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1svyv5-0000000FdgP-2ooK;
-	Wed, 02 Oct 2024 14:57:31 +0200
-Message-ID: <a9fae8abdc94c094d831f8b39b7f9c6fde61815a.camel@sipsolutions.net>
-Subject: Re: [PATCH 02/11] wifi: mac80211: use vif radio mask to limit ibss
- scan frequencies
+	id 1svyvs-0000000FdiR-435G;
+	Wed, 02 Oct 2024 14:58:21 +0200
+Message-ID: <8e92b7b0252d5e02799d175518a898c015885e15.camel@sipsolutions.net>
+Subject: Re: [PATCH 03/11] wifi: mac80211: use vif radio mask to limit
+ chanctx and remain-on-channel
 From: Johannes Berg <johannes@sipsolutions.net>
 To: Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
-Date: Wed, 02 Oct 2024 14:57:31 +0200
-In-Reply-To: <fa77d4843c4e986db81960c7f859d0750e2b9e8d.1727869380.git-series.nbd@nbd.name>
+Date: Wed, 02 Oct 2024 14:58:20 +0200
+In-Reply-To: <264dd8d0e80aa8edb3530b6f81b34dd1655a0f12.1727869380.git-series.nbd@nbd.name>
 References: 
 	<cover.cb088351ab8df44310eee259bf2dbec858702463.1727869380.git-series.nbd@nbd.name>
-	 <fa77d4843c4e986db81960c7f859d0750e2b9e8d.1727869380.git-series.nbd@nbd.name>
+	 <264dd8d0e80aa8edb3530b6f81b34dd1655a0f12.1727869380.git-series.nbd@nbd.name>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
@@ -68,27 +68,13 @@ MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
 On Wed, 2024-10-02 at 13:45 +0200, Felix Fietkau wrote:
+> Reject frequencies not supported by any radio that the vif is allowed to =
+use.
 >=20
-> @@ -1215,14 +1217,16 @@ int ieee80211_request_ibss_scan(struct ieee80211_=
-sub_if_data *sdata,
->  	} else {
->  		for (i =3D 0; i < n_channels; i++) {
->  			if (channels[i]->flags & (IEEE80211_CHAN_NO_IR |
-> -						  IEEE80211_CHAN_DISABLED))
-> +						  IEEE80211_CHAN_DISABLED) ||
-> +			    !cfg80211_wdev_channel_allowed(&sdata->wdev,
-> +							   channels[i]))
->  				continue;
-> =20
->  			local->int_scan_req->channels[n_ch] =3D channels[i];
->  			n_ch++;
->  		}
-> =20
-> -		if (WARN_ON_ONCE(n_ch =3D=3D 0))
-> +		if (n_ch =3D=3D 0)
->  			goto unlock;
 
--EBUSY seems somewhat confusing in this case?
+Not sure how this does anything for remain-on-channel?
+
+But arguably remain-on-channel also should/can be in cfg80211?
 
 johannes
 
