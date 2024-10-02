@@ -1,34 +1,34 @@
-Return-Path: <linux-wireless+bounces-13410-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13411-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25B9A98D251
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 13:45:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23A9498D252
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 13:45:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F10EC1C21503
-	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 11:45:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A725BB21954
+	for <lists+linux-wireless@lfdr.de>; Wed,  2 Oct 2024 11:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BD6316F84F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CD7F200101;
 	Wed,  2 Oct 2024 11:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="m9usIuWJ"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="ch2xEj+g"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF167DA81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09CB1E4924
 	for <linux-wireless@vger.kernel.org>; Wed,  2 Oct 2024 11:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727869522; cv=none; b=SO9q5nfEgm8eAJNuVfb+FA+D2bcko5kyqLlXSiHafHDzljPW3QwPihs8w8okV/xIfj8q4DZOpseZTWlaH7EmskxFH3d7qWM5XHsxaOjhlkE0XB8KllB1ELFpaMAv1Ymf16y8E+lmzhpCpGzU++8dGOg9Gn8XLJzj2Q9XVKhfEqE=
+	t=1727869522; cv=none; b=ctiir7gkuSyb8OWJcuZCcC3SnwZFtdAdRspTZ00gjUz2EUZIohpJhXF8OqMyX25CbAOa3sNYfIVIbzBUpmkDUkrOE0+MSynpQMTW1Q874v8k/7eFFPn1erwsOP4SBu6Ei90ovVmG2ZKwXov24F9Y+5mYOvd2Rxx8zpjQ0ThzTVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1727869522; c=relaxed/simple;
-	bh=M2wfzZF5AIA32pJsIcHAGu7UkB3eBEE5rGzMrySODos=;
+	bh=aeUM8FvkcJXeh2rEzqfiDIyJPOV315gxg9y2Ll80+6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z+Hp5jmQgh0gTPSaIIczGTYtq+5WgbfyHUW8Cr7bS/ATXK6vixPaB3HUxQxH3joR4qxlCuwewhz2Y5L7cPVI36dV4dQlwQd0TeyFl7AWnDCyB3mHZLpsm0UJ1Oq+EysyemikYsMMT2C7ALfSrgbfB4NaBcfVIWhjqpEs5yIjDIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=m9usIuWJ; arc=none smtp.client-ip=46.4.11.11
+	 MIME-Version; b=dHV84gvFnWIBElglWH+ucPVDfm7/6nBXV8+pfhzFmMiRAq6c84DsKu8zzgOQuZ8Y5BjV1vaZpqn25aMHCdEvdRjIe97Eubx4MgLf7IR1hF/ppZPODnzwqos4NiUgcmsuq4DHT5+X6WH+Xy/dKjNtIfY1ARMUVFAlvgl4EQr1Ttg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=ch2xEj+g; arc=none smtp.client-ip=46.4.11.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
@@ -37,21 +37,21 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=fVk+NGWzlqynA2fGxfPlosGQpmk77cREH3bKeJVExzU=; b=m9usIuWJSW3mzCE5C9/CDmb2ta
-	Hx1q26o3EsT5HMnKgLut10hw7qTxSZm/kA6s2blbyJBOZiA1E1cX8DPzLPUOoIxDQtqzZvTHTzQ8S
-	ZMrpS/aWVXOhKqLHlHy97nQkRfNqPxqfpNwNTUdcta8TlZNwvzii5L8kpMcie1aDANTA=;
+	bh=wdfuZ/s3Yt6/3Pc5yrFI9iwVpSkMn8jgFUdSBK0EWBY=; b=ch2xEj+gGCScwdl2QNaG5/IE/3
+	oSgYB+BYER9Dm5q6lW8KjrAMyc3rvUTrbJNY0ycwrUwo0DM96psOividicyAvIp0SGFRfgCc8t/6o
+	viZD3QWchVHo+ioxTyODIl5SmFhC/0JiTW05lVSrCkRGSb3bJp9xOH2ANzhkSo37X0aM=;
 Received: from p4ff130c8.dip0.t-ipconnect.de ([79.241.48.200] helo=localhost.localdomain)
 	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
 	(Exim 4.96)
 	(envelope-from <nbd@nbd.name>)
-	id 1svxnC-003vyr-1k;
+	id 1svxnC-003vyr-2N;
 	Wed, 02 Oct 2024 13:45:18 +0200
 From: Felix Fietkau <nbd@nbd.name>
 To: linux-wireless@vger.kernel.org
 Cc: johannes@sipsolutions.net
-Subject: [PATCH 02/11] wifi: mac80211: use vif radio mask to limit ibss scan frequencies
-Date: Wed,  2 Oct 2024 13:45:08 +0200
-Message-ID: <fa77d4843c4e986db81960c7f859d0750e2b9e8d.1727869380.git-series.nbd@nbd.name>
+Subject: [PATCH 03/11] wifi: mac80211: use vif radio mask to limit chanctx and remain-on-channel
+Date: Wed,  2 Oct 2024 13:45:09 +0200
+Message-ID: <264dd8d0e80aa8edb3530b6f81b34dd1655a0f12.1727869380.git-series.nbd@nbd.name>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <cover.cb088351ab8df44310eee259bf2dbec858702463.1727869380.git-series.nbd@nbd.name>
 References: <cover.cb088351ab8df44310eee259bf2dbec858702463.1727869380.git-series.nbd@nbd.name>
@@ -67,43 +67,54 @@ Reject frequencies not supported by any radio that the vif is allowed to use.
 
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- net/mac80211/scan.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ net/mac80211/chan.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
-index adb88c06b598..8b77b782696c 100644
---- a/net/mac80211/scan.c
-+++ b/net/mac80211/scan.c
-@@ -1200,7 +1200,9 @@ int ieee80211_request_ibss_scan(struct ieee80211_sub_if_data *sdata,
- 				    &local->hw.wiphy->bands[band]->channels[i];
+diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
+index cca6d14084d2..fbc3b28953a6 100644
+--- a/net/mac80211/chan.c
++++ b/net/mac80211/chan.c
+@@ -1169,7 +1169,7 @@ ieee80211_replace_chanctx(struct ieee80211_local *local,
+ static bool
+ ieee80211_find_available_radio(struct ieee80211_local *local,
+ 			       const struct ieee80211_chan_req *chanreq,
+-			       int *radio_idx)
++			       u32 radio_mask, int *radio_idx)
+ {
+ 	struct wiphy *wiphy = local->hw.wiphy;
+ 	const struct wiphy_radio *radio;
+@@ -1180,6 +1180,9 @@ ieee80211_find_available_radio(struct ieee80211_local *local,
+ 		return true;
  
- 				if (tmp_ch->flags & (IEEE80211_CHAN_NO_IR |
--						     IEEE80211_CHAN_DISABLED))
-+						     IEEE80211_CHAN_DISABLED) ||
-+				    !cfg80211_wdev_channel_allowed(&sdata->wdev,
-+								   tmp_ch))
- 					continue;
- 
- 				local->int_scan_req->channels[n_ch] = tmp_ch;
-@@ -1215,14 +1217,16 @@ int ieee80211_request_ibss_scan(struct ieee80211_sub_if_data *sdata,
- 	} else {
- 		for (i = 0; i < n_channels; i++) {
- 			if (channels[i]->flags & (IEEE80211_CHAN_NO_IR |
--						  IEEE80211_CHAN_DISABLED))
-+						  IEEE80211_CHAN_DISABLED) ||
-+			    !cfg80211_wdev_channel_allowed(&sdata->wdev,
-+							   channels[i]))
- 				continue;
- 
- 			local->int_scan_req->channels[n_ch] = channels[i];
- 			n_ch++;
- 		}
- 
--		if (WARN_ON_ONCE(n_ch == 0))
-+		if (n_ch == 0)
- 			goto unlock;
- 
- 		local->int_scan_req->n_channels = n_ch;
+ 	for (i = 0; i < wiphy->n_radio; i++) {
++		if (!(radio_mask & BIT(i)))
++			continue;
++
+ 		radio = &wiphy->radio[i];
+ 		if (!cfg80211_radio_chandef_valid(radio, &chanreq->oper))
+ 			continue;
+@@ -1213,7 +1216,9 @@ int ieee80211_link_reserve_chanctx(struct ieee80211_link_data *link,
+ 	new_ctx = ieee80211_find_reservation_chanctx(local, chanreq, mode);
+ 	if (!new_ctx) {
+ 		if (ieee80211_can_create_new_chanctx(local, -1) &&
+-		    ieee80211_find_available_radio(local, chanreq, &radio_idx))
++		    ieee80211_find_available_radio(local, chanreq,
++						   sdata->wdev.radio_mask,
++						   &radio_idx))
+ 			new_ctx = ieee80211_new_chanctx(local, chanreq, mode,
+ 							false, radio_idx);
+ 		else
+@@ -1883,7 +1888,9 @@ int _ieee80211_link_use_channel(struct ieee80211_link_data *link,
+ 	/* Note: context is now reserved */
+ 	if (ctx)
+ 		reserved = true;
+-	else if (!ieee80211_find_available_radio(local, chanreq, &radio_idx))
++	else if (!ieee80211_find_available_radio(local, chanreq,
++						 sdata->wdev.radio_mask,
++						 &radio_idx))
+ 		ctx = ERR_PTR(-EBUSY);
+ 	else
+ 		ctx = ieee80211_new_chanctx(local, chanreq, mode,
 -- 
 git-series 0.9.1
 
