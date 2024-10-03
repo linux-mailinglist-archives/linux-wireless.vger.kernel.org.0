@@ -1,52 +1,52 @@
-Return-Path: <linux-wireless+bounces-13450-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13451-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7263998EB04
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Oct 2024 10:04:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A106298EBA4
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Oct 2024 10:31:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC1D1B20E8C
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Oct 2024 08:04:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E34DB20D75
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Oct 2024 08:31:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8D5182D83;
-	Thu,  3 Oct 2024 08:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54C8281742;
+	Thu,  3 Oct 2024 08:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LfocnND2"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="CJ9ogBGy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68C49811E2;
-	Thu,  3 Oct 2024 08:04:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7436F06A
+	for <linux-wireless@vger.kernel.org>; Thu,  3 Oct 2024 08:31:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727942678; cv=none; b=FkeV63zWBrLdbm0DV5CktUdkkm5KSLgdqkkbwUlPtc+hmup5EcuLl04RZFTXNczK8aCzVn8ILOLZ9EZnDdHQtO1pqNq8MwJRPq+KBEQoHRrgNKCw9wd0dt6zls0NGpWY0hd4UrBjB+CCHmlqNF+A9puqENfoHzbr5ELRMOaZ9JA=
+	t=1727944287; cv=none; b=iIVV0u/D38hyZbAbTF67TBg4X/x2vylneSRSNiUs0RQC7zt+Zir7D454QCtU5i4pKjywpJO9XDH6e9VmHL2jJ5Qdx6J8JVCz1dTPj4qTskI80vwbAW2cI9DxThaiNuKM/ciOS3TV/a9qlGyw3HUm1+qAAWtyV3SlTthtsgn263U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727942678; c=relaxed/simple;
-	bh=1tae21s3e6QcaNtDUvIDGJ9EWbkfufNZC2HUUZNH7CE=;
+	s=arc-20240116; t=1727944287; c=relaxed/simple;
+	bh=UmNfXkv9A4aPfCGIHuz1dpD03yyfUYOad9Vjkjkl8hM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qK8UhK9GK5/eJeqw54Ud1r4DNsnxSRmt9OzZdkvVh9bknvOR6/ZKEe6o9BkKdE2wrlzHoeDylZDvHQ6R7PctX8GNhTHIFqR6Kf81uJp8ouOCl3Mgi9Mz2ko9P01mgpqIRo+8pbcE86HcUPdJMtAuSb9HTjTOX/8k/J3VTFv+c90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LfocnND2; arc=none smtp.client-ip=217.70.183.199
+	 In-Reply-To:Content-Type; b=QcMTO+y/iTn/FJvFcejgO0wVX6eg3m1zft3MRqgAPdys0iIC+c3CMP+Rfy9+iqygTL47VS4sxWxsqy3U+aU499gEC8rJ6t9i9oc5+cUXTg4bK7HeUa1J67b+xy87xgqlTltKvtC/xGBaTvOjVXQ76TbIILTKuv0I0Fj1O2UmMd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=CJ9ogBGy; arc=none smtp.client-ip=217.70.183.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id AE9C0FF804;
-	Thu,  3 Oct 2024 08:04:33 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id E750C1BF250;
+	Thu,  3 Oct 2024 08:31:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1727942674;
+	t=1727944284;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qaRvvQziLU6C2Xe7I8nl3yrGndFd7caE/VtEN8AnYx4=;
-	b=LfocnND2/LlhnlobhP3UzyK0PfGnWrlsplWokefGtvgXy06ye7AHzPQdLFf4CU3BOXAKbk
-	exlEz4R3i4CvRocUvhzaisF3HjwQ/ZMQ1LLUg8fH+Wc0QVvP+G6XPnBgwKmwEcCDWPYYNe
-	AZIrCxyoDGsDNCwg6xj+ov88MEXgKG0wo9UG/C2C4syggcjlngPqsIyKT/joekl3q8ZePQ
-	SvOd+oOCY/pTJRzJHixqQ+reF4jGe58Qp9vtmpG3CRsGeuQuUKjU7mnrCOhiurHCJcgB0s
-	ErAyt5eBbNIwbaES94GwUHZI+Te7elwNdj0RIQkXBFmm7i+R0psnkKzW9yICCg==
-Message-ID: <0321fc03-e1ea-4012-82a3-fcdc6f3b18eb@bootlin.com>
-Date: Thu, 3 Oct 2024 10:04:33 +0200
+	bh=ZJAn8v01RuPs1eIcKpM/Xzk14r7FZwvKk5LHczioLu4=;
+	b=CJ9ogBGy9xlxTvhncXyHhxnVbArd15Xg5j+e6l6tEFerpQ3SJQ6r/Y1X9DJkXOOIWyMBi3
+	Aiu788h1nbTABPRjPwNne9F+FubVKPm3kd97bK2yz8QFksskdaCTK/+AH48xT51XNHyTY6
+	Wc/AaT1RCWBenMXNYSLVY03fo9UpkVn54NMQX1lOB6164pc42brbFc47dLRzG+I+6EBcjv
+	5CEbCXWaiE0WcKQ2CHG0BG2BF4YbGkKMThU5WFfDE3Wusx9SYSE4KfLDBknNlpDDIeZd5R
+	uEIM8NlfrNGrmesXyZZIXuSK7UeVs5X6HKpiojmCoWQ2vwW59EQRTlvRFfDxKQ==
+Message-ID: <372e6f65-79f1-4a64-a323-2939269a8a45@bootlin.com>
+Date: Thu, 3 Oct 2024 10:31:23 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -54,44 +54,53 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/7] wifi: wilc1000: Fold wilc_get_chipid() into wlan.c
-To: Marek Vasut <marex@denx.de>, linux-wireless@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
- Adham Abozaeid <adham.abozaeid@microchip.com>,
- Ajay Singh <ajay.kathat@microchip.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Conor Dooley
- <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20240926195700.2823751-1-marex@denx.de>
- <20240926195700.2823751-2-marex@denx.de>
-From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Subject: Re: [PATCH v2] wifi: wilc1000: Keep slot powered on during
+ suspend/resume
+To: Marek Vasut <marex@denx.de>, Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, Ajay Singh <ajay.kathat@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>
+References: <20240926195113.2823392-1-marex@denx.de>
+ <87ed5481ro.fsf@kernel.org> <b3429a32-111b-4bab-9f4f-84c75bb3a049@denx.de>
 Content-Language: en-US
-In-Reply-To: <20240926195700.2823751-2-marex@denx.de>
+From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+In-Reply-To: <b3429a32-111b-4bab-9f4f-84c75bb3a049@denx.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: alexis.lothore@bootlin.com
 
-Hello Marek,
+On 9/29/24 17:23, Marek Vasut wrote:
+> On 9/28/24 1:18 PM, Kalle Valo wrote:
+>> Marek Vasut <marex@denx.de> writes:
+>>
+>>> The WILC3000 can suspend and enter low power state. According to local
+>>> measurements, the WILC3000 consumes the same amount of power if the slot
+>>> is powered up and WILC3000 is suspended, and if the WILC3000 is powered
+>>> off. Use the former option, keep the WILC3000 powered up as that allows
+>>> for things like WoWlan to work.
+>>>
+>>> Note that this is tested on WILC3000 only, not on WILC1000 .
+>>>
+>>> Signed-off-by: Marek Vasut <marex@denx.de>
+>>> ---
+>>> Cc: Ajay Singh <ajay.kathat@microchip.com>
+>>> Cc: Alexis Lothoré <alexis.lothore@bootlin.com>
+>>> Cc: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+>>> Cc: Kalle Valo <kvalo@kernel.org>
+>>> Cc: Marek Vasut <marex@denx.de>
+>>> Cc: linux-wireless@vger.kernel.org
+>>> ---
+>>> V2: Rebase on next-20240926
+>>
+>> BTW I recommend using wireless-next as the baseline for wireless
+>> patches. For example, wireless-next is not pulled to linux-next during
+>> merge windows or other patches in linux-next might create unnecessary
+>> conflicts. Of course most of the cases using linux-next is fine.
+> I didn't know there was one such tree, added to remotes, thanks !
 
-On 9/26/24 21:55, Marek Vasut wrote:
-> Do not use wilc_get_chipid() outside of wlan.c . Instead, call
-> wilc_get_chipid() right after the SDIO/SPI interface has been
-> initialized to cache the device chipid, and then use the cached
-> chipid throughout the driver. Make wilc_get_chipid() return a
-> proper return value instead of a chipid.
-
-This new update now makes the commit message wrong, wilc_get_chipid is used in
-files other than wlan.c (and this change goal is now rather to get the chip id
-early enough to register wiphy with correct info)
-
-> Signed-off-by: Marek Vasut <marex@denx.de>
-
-With the point above fixed:
-
-Reviewed-by: Alexis Lothoré <alexis.lothore@bootlin.com>
++1, as already mentioned in previous revisions, I would gladly test wilc3000
+changes on both wilc3000 and wilc1000 on my platform, and having the series on
+top of wireless-next would allow to do it on top of any change also affecting
+the driver in wireless-next :)
 
 -- 
 Alexis Lothoré, Bootlin
