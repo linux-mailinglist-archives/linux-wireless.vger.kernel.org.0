@@ -1,52 +1,54 @@
-Return-Path: <linux-wireless+bounces-13479-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13481-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1834B98F53C
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Oct 2024 19:34:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2A2F98F606
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Oct 2024 20:28:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C47B7283754
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Oct 2024 17:34:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1FDB5B216CB
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Oct 2024 18:28:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 946FE1A725A;
-	Thu,  3 Oct 2024 17:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6223D78B60;
+	Thu,  3 Oct 2024 18:28:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="fSkJdEwK"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="s6DsH7qf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35D745945;
-	Thu,  3 Oct 2024 17:33:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1CF47F5F
+	for <linux-wireless@vger.kernel.org>; Thu,  3 Oct 2024 18:28:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727976819; cv=none; b=S20WbalGBqaqlIRQRJ5S0vGYgK98FBKlmUpYrK6FrDXLMpD9NaicxXSryi4TUOL4dsNBeZiFbWAMM/J9upDeOnEP7IkuVhq3hUXqXlGl8wUto5y3N5faiLQDLEjmnyX8d1Yx+dwIv/XnZqUCP+Jm3Ldx5Gy0FFVclnZz35OKhkA=
+	t=1727980088; cv=none; b=oQIeHX20o6apYtkv/xWZ8yEh9qjR1045vqRsZDEKtIv3qI5K5bqS5UdCKtDtUNhf0da3soh0OOyy6frWV/JA6dVmEylOZ9EF+XnPOp7QVN/W3SYauBUMoh9Ev9dZJIweVWd58X3sP9UlJvn+HEP4YKVHOqHjz7Gdd9DFG/uKHAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727976819; c=relaxed/simple;
-	bh=0NNvTSrbNAAkdgwmSG2JOqI7Krrq1v9gjZLERXYS2co=;
+	s=arc-20240116; t=1727980088; c=relaxed/simple;
+	bh=b6a4oLwExG7U4H6VsNBFI2Lk4KL0noIJY5TpKEGtPf0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Qcokc6C58ruNZXcu58O31MZREu+2pp+DCMUdxyqwqIMn1o8fh4nPyuiRKA8heQFM49wK+Yuvqb63lrcx95g1ArWjMrkK2+d7zd5iD3IlZtSFlCLr9KOxX4rd4RozMcfOglrrW/+40WkmwkzAOyZAQtF8rEnvIqVFIJMvAXciI2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=fSkJdEwK; arc=none smtp.client-ip=217.70.183.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 5401D60003;
-	Thu,  3 Oct 2024 17:33:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1727976807;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PxPTzSsGuAXr7N6t4guqH3YrYjttQBqVYPPWHqe0kx0=;
-	b=fSkJdEwKCPCMXR0OHyxcogitX1fHGj1ulyy4vTTPh6loBlHElMC8cLY0Ocq0BFhSAvKMRX
-	7pC9CtCMS8W70fNCgkkc9SS3Wt/G5ZosN/WwSYk3qyUiE+y9vl3DFkNoKvkBY/mMYtvv79
-	uoHV0RGl+JwgjyUYEoLHuVlQSmRlpq6UHGhzv0BuxZb2xwx6gq2WOBQ+/cLbQfkk/CIkun
-	BX/NK+1xrA/gddTS6s0twajAeS6QGu3B0t+D97DIdbdXN05uQkjU1EgznPsJR29EM1CuzV
-	V9cUS2A0jsMWACY1jwASYRU/dxOQmxn66SPZqpbNR5ZstD+vzRaU2eHUHE7BgQ==
-Message-ID: <2d9d4896-a81a-4393-8cf3-8e42b36aaae2@bootlin.com>
-Date: Thu, 3 Oct 2024 19:33:26 +0200
+	 In-Reply-To:Content-Type; b=T0MD+psOw0EWGub7bkZWFCVaOGkn7lperOKGqfhdQenM7UPlUQdPonyWUFuCidSz4f39sgBSD7/lAWXp/htpASkPt01yp+GCE9Y0ABZzFZ9lxM3r4CpGefDSKnT1hz+lP7KmiyesfkmoNnwCrTKn60mNp3ecZvUGpuDMdbsjUDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=s6DsH7qf; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id F183988A24;
+	Thu,  3 Oct 2024 20:28:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1727980084;
+	bh=Y9vfHb69KKLNkixYFY+5VgDj+Pd88drRfTtzvjX1YQM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=s6DsH7qfhuwZfkeMJxLBEOYpiAU2k9DvGfuyeIIn3ohJK0OrpOsVBGFYNRG5Bg6H4
+	 mwG4Z5sj5qe9kY4CZXFKojaR0vdlwR8nLWNg9JGPrw20yEHT+FNrDar1UjwAeOEIfH
+	 cVe8Z615xOzlRfjL2l2BO9LSRZTShemtzSKf1Hm0HS0MBGi/zi5j/gf4HXTHxjiaT8
+	 jvurket224pRE4sd97ZpqFZdTJuHQ8N5Pc8fkYxfFb+uy3hE8qjLr4DQveAaNUqgkg
+	 Bj4iOWnC5FTmwYZwCviuuyzDyADqtbzarKjXBGWB6BVZQeqin1nZL3ADNAtoNufHXV
+	 QEkS8hfkn7D9g==
+Message-ID: <f6d0a498-4074-4649-9276-23a2b1608f4e@denx.de>
+Date: Thu, 3 Oct 2024 16:18:44 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -54,85 +56,92 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 2/7] wifi: wilc1000: Clean up usage of
- wilc_get_chipid()
-To: Marek Vasut <marex@denx.de>, linux-wireless@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
- Adham Abozaeid <adham.abozaeid@microchip.com>,
- Ajay Singh <ajay.kathat@microchip.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Conor Dooley
- <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20241003111529.41232-1-marex@denx.de>
- <20241003111529.41232-2-marex@denx.de>
-From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Subject: Re: [PATCH v2] wifi: wilc1000: Keep slot powered on during
+ suspend/resume
+To: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+ Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, Ajay Singh <ajay.kathat@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>
+References: <20240926195113.2823392-1-marex@denx.de>
+ <87ed5481ro.fsf@kernel.org> <b3429a32-111b-4bab-9f4f-84c75bb3a049@denx.de>
+ <372e6f65-79f1-4a64-a323-2939269a8a45@bootlin.com>
+ <1e7351db-366b-4e4a-b423-92867f24cbb5@denx.de>
+ <923ee7fa-d7fe-40b4-802a-b89d9b84c20d@bootlin.com>
+ <42e5e310-dc89-4e6e-bf8d-7d1e83e923d0@denx.de>
+ <f45ee99f-2a5a-4a1d-90c9-99d9354e1d7f@bootlin.com>
 Content-Language: en-US
-In-Reply-To: <20241003111529.41232-2-marex@denx.de>
-Content-Type: text/plain; charset=UTF-8
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <f45ee99f-2a5a-4a1d-90c9-99d9354e1d7f@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: alexis.lothore@bootlin.com
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On 10/3/24 13:14, Marek Vasut wrote:
-> Reduce the use of wilc_get_chipid(), use cached chip ID wherever
-> possible. Remove duplicated partial chip ID read implementations
-> from the driver. Update wilc_get_chipid() to always read the chip
-> ID out of the hardware and update the cached chip ID, and make it
-> return a proper return value instead of a chipid. Call wilc_get_chipid()
-> early to make the cached chip ID available to various sites using
-> is_wilc1000() to access the cached chip ID.
+On 10/3/24 3:59 PM, Alexis Lothoré wrote:
+> On 10/3/24 15:18, Marek Vasut wrote:
+>> On 10/3/24 2:58 PM, Alexis Lothoré wrote:
+>>> On 10/3/24 12:49, Marek Vasut wrote:
+>>>> On 10/3/24 10:31 AM, Alexis Lothoré wrote:
+>>>>> On 9/29/24 17:23, Marek Vasut wrote:
+>>>>>> On 9/28/24 1:18 PM, Kalle Valo wrote:
+>>>>>>> Marek Vasut <marex@denx.de> writes:
+>>>>>>>
+>>>>>>>> The WILC3000 can suspend and enter low power state. According to local
+>>>>>>>> measurements, the WILC3000 consumes the same amount of power if the slot
+>>>>>>>> is powered up and WILC3000 is suspended, and if the WILC3000 is powered
+>>>>>>>> off. Use the former option, keep the WILC3000 powered up as that allows
+>>>>>>>> for things like WoWlan to work.
+>>>>>>>>
+>>>>>>>> Note that this is tested on WILC3000 only, not on WILC1000 .
+>>>>>>>>
+>>>>>>>> Signed-off-by: Marek Vasut <marex@denx.de>
+>>>>>>>> ---
+>>>>>>>> Cc: Ajay Singh <ajay.kathat@microchip.com>
+>>>>>>>> Cc: Alexis Lothoré <alexis.lothore@bootlin.com>
+>>>>>>>> Cc: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+>>>>>>>> Cc: Kalle Valo <kvalo@kernel.org>
+>>>>>>>> Cc: Marek Vasut <marex@denx.de>
+>>>>>>>> Cc: linux-wireless@vger.kernel.org
+>>>>>>>> ---
+>>>>>>>> V2: Rebase on next-20240926
+>>>>>>>
+>>>>>>> BTW I recommend using wireless-next as the baseline for wireless
+>>>>>>> patches. For example, wireless-next is not pulled to linux-next during
+>>>>>>> merge windows or other patches in linux-next might create unnecessary
+>>>>>>> conflicts. Of course most of the cases using linux-next is fine.
+>>>>>> I didn't know there was one such tree, added to remotes, thanks !
+>>>>>
+>>>>> +1, as already mentioned in previous revisions, I would gladly test wilc3000
+>>>>> changes on both wilc3000 and wilc1000 on my platform, and having the series on
+>>>>> top of wireless-next would allow to do it on top of any change also affecting
+>>>>> the driver in wireless-next :)
+>>>>
+>>>> I just had a look at a diff between wireless-next/main and next/master 20241003
+>>>> for drivers/net/wireless/microchip , there are no changes to the driver between
+>>>> the two trees, so it should be possible to test this patch on either tree. Can
+>>>> you give it a try ? Ideally test this patch separately on WILC1000 across
+>>>> suspend/resume and check if it works. You might need the MMC controller fix
+>>>> which sets struct mmc_host .pm_caps |= MMC_PM_KEEP_POWER for your controller ,
+>>>> unless this is already upstream.
+>>>>
+>>>> The WILC3000 series depends on this patch.
+>>>>
+>>> Meh, you are right, I have read too fast your answer to my initial question
+>>> about used base branch, and omitted the suspend/resume patch (I assumed it
+>>> conflicted because of some other patches in wireless-next).
+>> Nope, it conflicted because I (again) didn't include cover letter with the
+>> WILC3000 series, which mentions this information. I really need to find some
+>> suitable tooling to manage the cover letters, branch description does not seem
+>> to cut it quite as I hoped it would.
 > 
-> Reviewed-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-> Signed-off-by: Marek Vasut <marex@denx.de>
-
-[...]
-
-> +int wilc_get_chipid(struct wilc *wilc)
-> +{
-> +	u32 chipid = 0;
-> +	u32 rfrevid = 0;
-> +
-> +	if (wilc->chipid == 0) {
-> +		wilc->hif_func->hif_read_reg(wilc, WILC_CHIPID, &chipid);
-> +		wilc->hif_func->hif_read_reg(wilc, WILC_RF_REVISION_ID,
-> +					     &rfrevid);
-> +		if (!is_wilc1000(chipid)) {
-> +			wilc->chipid = 0;
-> +			return -EINVAL;
-> +		}
-> +		if (chipid == WILC_1000_BASE_ID_2A) { /* 0x1002A0 */
-> +			if (rfrevid != 0x1)
-> +				chipid = WILC_1000_BASE_ID_2A_REV1;
-> +		} else if (chipid == WILC_1000_BASE_ID_2B) { /* 0x1002B0 */
-> +			if (rfrevid == 0x4)
-> +				chipid = WILC_1000_BASE_ID_2B_REV1;
-> +			else if (rfrevid != 0x3)
-> +				chipid = WILC_1000_BASE_ID_2B_REV2;
-> +		}
-> +
-> +		wilc->chipid = chipid;
-> +	}
-> +
-> +	return 0;
-> +}
-
-My bad for not having spotted it in v6, but you are still missing an
-EXPORT_SYMBOL_GPL(wilc_get_chipid) here, making the build fail if wilc support
-is built as module:
-
-ERROR: modpost: "wilc_get_chipid"
-[drivers/net/wireless/microchip/wilc1000/wilc1000-sdio.ko] undefined!
-ERROR: modpost: "wilc_get_chipid"
-[drivers/net/wireless/microchip/wilc1000/wilc1000-spi.ko] undefined!
-make[2]: *** [scripts/Makefile.modpost:145: Module.symvers] Error 1
-make[1]: *** [/home/alexis/src/microchip/linux/Makefile:1878: modpost] Error 2
-make: *** [Makefile:224: __sub-make] Error 2
-
-
--- 
-Alexis Lothoré, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+> May I suggest b4 [0] for such task ? It really eases series submissions, taking
+> care of all the small details that can be easily forgotten :) Latest versions of
+> the tool will warn you during the sending phase if you forgot to create/update
+> your cover letter (which is stored by default as an empty commit, this can be
+> tuned). It is even able now to manage patch sets dependencies (but I still did
+> not have the opportunity to give this feature a try)
+> 
+> [0] https://b4.docs.kernel.org/en/latest/
+I haven't set up b4 yet, but empty commit might actually work in my 
+workflow.
 
