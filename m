@@ -1,118 +1,101 @@
-Return-Path: <linux-wireless+bounces-13432-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13433-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3EBF98E860
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Oct 2024 04:17:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EABBD98E91F
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Oct 2024 06:27:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70DF0281563
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Oct 2024 02:17:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 945EB1F2625A
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Oct 2024 04:27:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F10171AA;
-	Thu,  3 Oct 2024 02:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A8B13FB8B;
+	Thu,  3 Oct 2024 04:27:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kKJE5hAU"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="vcSHzj06"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8882712E7E;
-	Thu,  3 Oct 2024 02:17:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAAD23E499
+	for <linux-wireless@vger.kernel.org>; Thu,  3 Oct 2024 04:27:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727921856; cv=none; b=D/5gUpYsyazBP+do11vqUvzi8cnZvbU/CMy732Xcy7eJ59LadY4vQ42Muvxa9VxK0quqj9nlFEJVGwV5/MMZ7IAHckXif0kqEgCApmLPYo6pJ1b10JJ/B7ttgxXEdFkUj0l8oFJocCWF66SZ5VvqHbO6bWGuN5HEkD81BUajwOg=
+	t=1727929628; cv=none; b=DQANp0rQ2Ul1KB+zHOWOmYgVkd4D3Mh1UqqVc6b2DR0Fd/5+nrSk2FzVsShS4o1htcbaLwbT2QIFQ6KXuNmIiRugVOHuDs5u4eOHaG/aeUI7oUbV1rXj8Lzl4rAUQmOThV9KxCwy3ghZTn3rbnZgTAmc9EijlNCz/4IUHC1c4VY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727921856; c=relaxed/simple;
-	bh=RmRVst64ZEQd/A6urq0Eahz20qftWvwPh7sv4j1v5tc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FppRDu+Jwtlx0Jv5znpRqZ3z2Myf1kG7VWiw9VwNCF36ZhiX7vaUonN/Kx/WP6r0jUJNSNQ3uKKhGlJilIpwE+RWEUeVW1726LH1DBiqCqtUY1MoygQ5ClN11SZ/PWRMbI9veYPz4GaOpp8q44z1smFwm8Is9p4Az3BT9OHmANs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kKJE5hAU; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-20b7259be6fso3783965ad.0;
-        Wed, 02 Oct 2024 19:17:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727921855; x=1728526655; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nHx6vU1ME2OnvOlH7k2mGAPyR4Uu9ah4hPTObNBm8ak=;
-        b=kKJE5hAUivagusB3E2lJZeeltXKmkarKOaLWwKp10z9vmIHsmNI9VfTTxTnA6NmsFX
-         LfAFr0HwbKfsUmIqoQ3J8T/M2RY0oIcOxjtX7x1YNWKlE1C03kStPuI9VDc+3RkZdn69
-         9ELfrXNR+w6+YknLiBnZ4lNdedC8Dk1ZIhIkW1R8Ugf/60UDLcOpx5d/LAhFqALFkI/H
-         ZUCX3IdPdIUrFSeDr3vBE4w35HG3SzCk64u8qRO/w3MBAnB6H72GU1ijNTonsGgImyuK
-         P5pMwdAtcJMwpkQ7EGPLPSYdzUQC7Gp9fOXP+kSsYbt4XgCawn0U2GZ28q2taXYSNv5G
-         hH7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727921855; x=1728526655;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nHx6vU1ME2OnvOlH7k2mGAPyR4Uu9ah4hPTObNBm8ak=;
-        b=FQC2vdo3ya6sd/W6eTSYnXzmYGsRhl/DT43U/LamRS+ooDBx3+Kv3GTGIy5yk02meI
-         QddDQGCDr2mxKw1+tKaa0+pSO6X8vA6iggQqfSMeMYkpw4fXlp0DZwycOsQSIAXksDQT
-         w7jQGIjLRn0QH8RgNL7dRlZM8X6woUDmlFQyf99ViVR8Qk8N3IXvEDh2ooUWx277USvx
-         E9MPRfiVNL4J6ztMPS8II+DV5UZJfbjhIDDAg6D2sg5z5lzTexHu+6BKGiaRSJPu3gtp
-         g8b8r/Ojfl7ESZtLrSk3rh02LJxcoGQz1tbsTJ7nWRMyP8cjkCudTEavdjf4mQnESaww
-         tLLw==
-X-Forwarded-Encrypted: i=1; AJvYcCVC9G5TDxRrKhlTmu9nk0gO9dU3mqbEHTqd9o9muAqH605G/4su0vCDJ9iGplCqjDfNRF5baEGTZMv2Nrw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBKbqB+sJizqhmJj34iLNYyhQDizkCRn745JFRI8FD8xZrxAIH
-	G/kmXqdKUlDyq4GF6AHI3gabMk12I+jwahnojN0QXKE3NeErV4L9VHFfOf8O
-X-Google-Smtp-Source: AGHT+IEmUmCFpE7t5S4ZMOKly/rQ3wxk255nkSI+XkbDoF6hRSrfSyTuNo/pDhDcG9dZMPt1Zh4TxQ==
-X-Received: by 2002:a17:90a:68ca:b0:2e0:855a:ab31 with SMTP id 98e67ed59e1d1-2e18466dbdfmr6224209a91.12.1727921854723;
-        Wed, 02 Oct 2024 19:17:34 -0700 (PDT)
-Received: from ryzen.lan ([2601:644:8200:dab8::a86])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e18f799b60sm2388378a91.29.2024.10.02.19.17.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Oct 2024 19:17:34 -0700 (PDT)
-From: Rosen Penev <rosenp@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: kvalo@kernel.org,
-	toke@toke.dk,
-	nbd@nbd.name,
-	yangshiji66@outlook.com,
-	linux-kernel@vger.kernel.org
-Subject: [PATCHv2] wifi: ath9k: return by of_get_mac_address
-Date: Wed,  2 Oct 2024 19:17:32 -0700
-Message-ID: <20241003021732.1954299-1-rosenp@gmail.com>
-X-Mailer: git-send-email 2.46.2
+	s=arc-20240116; t=1727929628; c=relaxed/simple;
+	bh=V5BCtoBCp4sAuK7Ux3YfUslHV1S3c6yoz4Qo3OB7al8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=LGi9iAUCoc4NjuMFchjCIMF+m+rseUOs2zRijlBRZIoO2465who7BwVOw9ISmue9ta5E+Y/+KJ3mV4xNptUkNkzS5JZd/PE5G8reErRXYU9IqAPRCHYXN4Q0dbaUELAIXSc5jqJE939V4To5nKBKuKpzbIBGtIbF4s7p2bmJFPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=vcSHzj06; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4934QcdpE3499976, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1727929598; bh=V5BCtoBCp4sAuK7Ux3YfUslHV1S3c6yoz4Qo3OB7al8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=vcSHzj06OOS1ZJjGK4onxdjfNFv3vhs9rBItKhEtFhbvf/B+RYHeQlMEi0RUUfant
+	 sNltqzO1gqid9rZxapWDYWTozJEAO0fANN30nZx2kwcdrJ+91un1MNpjoCRiEB+YoZ
+	 XNYpCCsYPq1Ai0gooc9TAyFH7Ve6p++xjJ62Ys7KwGUfgbqDj+pmZWfNAPoRemqhsE
+	 V7TQmnJeYkKVWSfJ+DKST3EDTP3jALAT02Nr47FWrbqkwDHvwKq13VI+X/E27wrVfP
+	 x5d2akNnZrQzPgP0oOgzG3nteCj/uc9aGbiY1mZ8TyPbybo9w0egEH8O+k5RBejes0
+	 PTR5VghMR/xhg==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.05/5.92) with ESMTPS id 4934QcdpE3499976
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 3 Oct 2024 12:26:38 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 3 Oct 2024 12:26:39 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 3 Oct 2024 12:26:38 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
+ 15.01.2507.035; Thu, 3 Oct 2024 12:26:38 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Kalle Valo <kvalo@kernel.org>, Bitterblue Smith <rtl8821cerfe2@gmail.com>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Sascha
+ Hauer" <sha@pengutronix.de>
+Subject: Re: rtw88: alloc_skb(32768, GFP_ATOMIC) fails, driver gets stuck
+Thread-Topic: rtw88: alloc_skb(32768, GFP_ATOMIC) fails, driver gets stuck
+Thread-Index: AQHbE3sze1NKG9K1hEinqRz3ygF0uLJzTWdKgAEc4MQ=
+Date: Thu, 3 Oct 2024 04:26:38 +0000
+Message-ID: <58f2db72612544c9a5f27e524f213243@realtek.com>
+References: <6e7ecb47-7ea0-433a-a19f-05f88a2edf6b@gmail.com>
+	<baca0d5d-072e-4003-ab4a-ecc524d6b89b@gmail.com>,<878qv693g7.fsf@kernel.org>
+In-Reply-To: <878qv693g7.fsf@kernel.org>
+Accept-Language: en-US, zh-TW
+Content-Language: en-US
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-When using nvmem, ath9k could potentially be loaded before nvmem, which
-loads after mtd. This is an issue if DT contains an nvmem mac address.
 
-If nvmem is not ready in time for ath9k, -EPROBE_DEFER is returned. Pass
-it to _probe so that ath9k can properly grab a potentially present MAC
-address.
+> I did a quick look and in wireless drivers some of the alloc_skb()
+> callers print an error and some fail silently. I think we should start
+> printing errors for all alloc_skb() calls. Thoughts?
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
----
- v2: modified commit message
- drivers/net/wireless/ath/ath9k/init.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+I think we don't always print an error because TCP protocol can guarantee
+reliability and packets lost are normal. Also in memory limited platforms
+it might be regular that fails allocating memory causing flooding log if
+we always print an error.
 
-diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wireless/ath/ath9k/init.c
-index f712bb6d1f47..5f4efc760183 100644
---- a/drivers/net/wireless/ath/ath9k/init.c
-+++ b/drivers/net/wireless/ath/ath9k/init.c
-@@ -647,9 +647,7 @@ static int ath9k_of_init(struct ath_softc *sc)
- 		ah->ah_flags |= AH_NO_EEP_SWAP;
- 	}
- 
--	of_get_mac_address(np, common->macaddr);
--
--	return 0;
-+	return of_get_mac_address(np, common->macaddr);
- }
- 
- static int ath9k_init_softc(u16 devid, struct ath_softc *sc,
--- 
-2.46.2
+Maybe print with rate limit is a choice? But this kind of log seems=20
+unnecessary and annoying to users.=20
 
 
