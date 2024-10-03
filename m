@@ -1,52 +1,52 @@
-Return-Path: <linux-wireless+bounces-13478-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13479-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9254198F335
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Oct 2024 17:51:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1834B98F53C
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Oct 2024 19:34:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FDC22824C7
-	for <lists+linux-wireless@lfdr.de>; Thu,  3 Oct 2024 15:51:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C47B7283754
+	for <lists+linux-wireless@lfdr.de>; Thu,  3 Oct 2024 17:34:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82EE017A5BE;
-	Thu,  3 Oct 2024 15:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 946FE1A725A;
+	Thu,  3 Oct 2024 17:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="akr+QVN9"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="fSkJdEwK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B7AE13B280
-	for <linux-wireless@vger.kernel.org>; Thu,  3 Oct 2024 15:51:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35D745945;
+	Thu,  3 Oct 2024 17:33:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727970697; cv=none; b=Mgy80/cI0I58f7DcAho2/RAwvKIjhckndVEWjtKpoGEziQfZUMs40aEvGmLaW9R14y4XaTTZY8rwAFEA5DvABWg7moRgP8tD0UFuONxfVEx6DHroO/5AoMPwpLFhWWoZAiBrpW0TEtKqZd8PdSS9hgANROn9WqEFF8p1ZjFHeEs=
+	t=1727976819; cv=none; b=S20WbalGBqaqlIRQRJ5S0vGYgK98FBKlmUpYrK6FrDXLMpD9NaicxXSryi4TUOL4dsNBeZiFbWAMM/J9upDeOnEP7IkuVhq3hUXqXlGl8wUto5y3N5faiLQDLEjmnyX8d1Yx+dwIv/XnZqUCP+Jm3Ldx5Gy0FFVclnZz35OKhkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727970697; c=relaxed/simple;
-	bh=GOorHwNQd8WAtcpsQwO8eu97whI5W65gVWIJf4O30ng=;
+	s=arc-20240116; t=1727976819; c=relaxed/simple;
+	bh=0NNvTSrbNAAkdgwmSG2JOqI7Krrq1v9gjZLERXYS2co=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DC+7YiolmBKr1C18Jz3rW4lHanc6psyur2F+5mB2dS/R8AEVNag9gKxanhbsjGmBz1Tiwb1KxFAURBg2HsgaDEWIuve7PPr9NEq3lr18U/53r5HIe1DvlwqNjNdJsxNy2F4IQu4b1Ja/DCDggw2vJMliWOuMTwRbGGgAYFT6rkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=akr+QVN9; arc=none smtp.client-ip=217.70.183.194
+	 In-Reply-To:Content-Type; b=Qcokc6C58ruNZXcu58O31MZREu+2pp+DCMUdxyqwqIMn1o8fh4nPyuiRKA8heQFM49wK+Yuvqb63lrcx95g1ArWjMrkK2+d7zd5iD3IlZtSFlCLr9KOxX4rd4RozMcfOglrrW/+40WkmwkzAOyZAQtF8rEnvIqVFIJMvAXciI2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=fSkJdEwK; arc=none smtp.client-ip=217.70.183.195
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 4EF1340004;
-	Thu,  3 Oct 2024 15:51:33 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5401D60003;
+	Thu,  3 Oct 2024 17:33:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1727970693;
+	t=1727976807;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3xzudn7+CACukka0Qq+PGM4biVcK2oJvSAf/elaEcgI=;
-	b=akr+QVN965ktP9KeUCn5PXzu5WV4SILvKvkN4jR/5chubCEewm0SDiUbGFlMJ6gBFxq2TU
-	w2fzjbe/ttaxC2jf70gcD4iQ6eBQ1gNq0H3jbSNaoiQ8kxiIhGeWKGcinlOukV2yUsMkxR
-	KLdALRvSbLpRotITm/ehkIL6OaIApTv40HAEQbLSGpkHBiscpdzzSv7HpCvKiQgvt0ZpYM
-	TvGHspgt82FHOD2+nWYSDPXC0qwDXbEYg85pKh24PN4O7kb0NCXpULN8Ng0A6c992Gvlb6
-	F/oiMKdUpQuMR7EdtotGol8774wI00IZlosUp0DvTkZ7gxmPbhIpbeeiy29uog==
-Message-ID: <6f1d432d-dfe1-441c-a1ac-885ee4363b9c@bootlin.com>
-Date: Thu, 3 Oct 2024 17:51:32 +0200
+	bh=PxPTzSsGuAXr7N6t4guqH3YrYjttQBqVYPPWHqe0kx0=;
+	b=fSkJdEwKCPCMXR0OHyxcogitX1fHGj1ulyy4vTTPh6loBlHElMC8cLY0Ocq0BFhSAvKMRX
+	7pC9CtCMS8W70fNCgkkc9SS3Wt/G5ZosN/WwSYk3qyUiE+y9vl3DFkNoKvkBY/mMYtvv79
+	uoHV0RGl+JwgjyUYEoLHuVlQSmRlpq6UHGhzv0BuxZb2xwx6gq2WOBQ+/cLbQfkk/CIkun
+	BX/NK+1xrA/gddTS6s0twajAeS6QGu3B0t+D97DIdbdXN05uQkjU1EgznPsJR29EM1CuzV
+	V9cUS2A0jsMWACY1jwASYRU/dxOQmxn66SPZqpbNR5ZstD+vzRaU2eHUHE7BgQ==
+Message-ID: <2d9d4896-a81a-4393-8cf3-8e42b36aaae2@bootlin.com>
+Date: Thu, 3 Oct 2024 19:33:26 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -54,47 +54,82 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: wilc1000: Keep slot powered on during
- suspend/resume
+Subject: Re: [PATCH v7 2/7] wifi: wilc1000: Clean up usage of
+ wilc_get_chipid()
 To: Marek Vasut <marex@denx.de>, linux-wireless@vger.kernel.org
-Cc: Ajay Singh <ajay.kathat@microchip.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Kalle Valo <kvalo@kernel.org>
-References: <20240926195113.2823392-1-marex@denx.de>
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Adham Abozaeid <adham.abozaeid@microchip.com>,
+ Ajay Singh <ajay.kathat@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Conor Dooley
+ <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20241003111529.41232-1-marex@denx.de>
+ <20241003111529.41232-2-marex@denx.de>
 From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
 Content-Language: en-US
-In-Reply-To: <20240926195113.2823392-1-marex@denx.de>
+In-Reply-To: <20241003111529.41232-2-marex@denx.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: alexis.lothore@bootlin.com
 
-On 9/26/24 21:50, Marek Vasut wrote:
-> The WILC3000 can suspend and enter low power state. According to local
-> measurements, the WILC3000 consumes the same amount of power if the slot
-> is powered up and WILC3000 is suspended, and if the WILC3000 is powered
-> off. Use the former option, keep the WILC3000 powered up as that allows
-> for things like WoWlan to work.
+On 10/3/24 13:14, Marek Vasut wrote:
+> Reduce the use of wilc_get_chipid(), use cached chip ID wherever
+> possible. Remove duplicated partial chip ID read implementations
+> from the driver. Update wilc_get_chipid() to always read the chip
+> ID out of the hardware and update the cached chip ID, and make it
+> return a proper return value instead of a chipid. Call wilc_get_chipid()
+> early to make the cached chip ID available to various sites using
+> is_wilc1000() to access the cached chip ID.
 > 
-> Note that this is tested on WILC3000 only, not on WILC1000 .
+> Reviewed-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+> Signed-off-by: Marek Vasut <marex@denx.de>
 
-So I have tested this change on wilc1000 over sdio (after enabling
-MMC_PM_KEEP_POWER capability on my sdmmc controller), and LGTM, system properly
-enters and leave suspend, and on resume module is working (ie in sta mode, chip
-properly reconnects to configured AP).
+[...]
 
-The only concern I still have is about existing user who currently do not
-declare MMC_PM_KEEP_POWER cap correctly on their platform (as it was the case
-for me, and as Ajay eventually raised in the first revision):
-- they can currently enter system suspend (and yes, for at least some Atmel
-platforms, wilc chip still works on resume because it is "accidentally" kept
-powered on)
-- after this change, they will fail to do so (because of the failing call to
-sdio_set_host_pm_flags, which makes the whole suspend method fail)
+> +int wilc_get_chipid(struct wilc *wilc)
+> +{
+> +	u32 chipid = 0;
+> +	u32 rfrevid = 0;
+> +
+> +	if (wilc->chipid == 0) {
+> +		wilc->hif_func->hif_read_reg(wilc, WILC_CHIPID, &chipid);
+> +		wilc->hif_func->hif_read_reg(wilc, WILC_RF_REVISION_ID,
+> +					     &rfrevid);
+> +		if (!is_wilc1000(chipid)) {
+> +			wilc->chipid = 0;
+> +			return -EINVAL;
+> +		}
+> +		if (chipid == WILC_1000_BASE_ID_2A) { /* 0x1002A0 */
+> +			if (rfrevid != 0x1)
+> +				chipid = WILC_1000_BASE_ID_2A_REV1;
+> +		} else if (chipid == WILC_1000_BASE_ID_2B) { /* 0x1002B0 */
+> +			if (rfrevid == 0x4)
+> +				chipid = WILC_1000_BASE_ID_2B_REV1;
+> +			else if (rfrevid != 0x3)
+> +				chipid = WILC_1000_BASE_ID_2B_REV2;
+> +		}
+> +
+> +		wilc->chipid = chipid;
+> +	}
+> +
+> +	return 0;
+> +}
 
-But I guess the issue is rather on the sdio host controller description on those
-platforms, which should always have the MMC_PM_KEEP_POWER cap set ? If so:
+My bad for not having spotted it in v6, but you are still missing an
+EXPORT_SYMBOL_GPL(wilc_get_chipid) here, making the build fail if wilc support
+is built as module:
 
-Tested-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-Tested-on: WILC1000SD 07 SDIO WILC_WIFI_FW_REL_16_1_2
+ERROR: modpost: "wilc_get_chipid"
+[drivers/net/wireless/microchip/wilc1000/wilc1000-sdio.ko] undefined!
+ERROR: modpost: "wilc_get_chipid"
+[drivers/net/wireless/microchip/wilc1000/wilc1000-spi.ko] undefined!
+make[2]: *** [scripts/Makefile.modpost:145: Module.symvers] Error 1
+make[1]: *** [/home/alexis/src/microchip/linux/Makefile:1878: modpost] Error 2
+make: *** [Makefile:224: __sub-make] Error 2
+
 
 -- 
 Alexis Lothoré, Bootlin
