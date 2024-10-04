@@ -1,110 +1,92 @@
-Return-Path: <linux-wireless+bounces-13485-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13486-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 655B098FBB3
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Oct 2024 02:43:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F4F098FC87
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Oct 2024 05:24:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E4BB28349C
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Oct 2024 00:43:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1854B21FF9
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Oct 2024 03:24:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 003741876;
-	Fri,  4 Oct 2024 00:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E00E726281;
+	Fri,  4 Oct 2024 03:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="MhGijVbP"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="BuwX2InT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6114C1B7E9;
-	Fri,  4 Oct 2024 00:43:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC4B11C92
+	for <linux-wireless@vger.kernel.org>; Fri,  4 Oct 2024 03:24:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728002583; cv=none; b=NCCvi6StO+cNpn8J1vl3RI3KDQE7PwjnT2g8zpVWP8/hIXAgi+/1RDFBxedReYpA7nobRwbbn838vWv/ZbFQx1AayJurqzdgyJzeZ5DoCV7SO8YFt1uI4chkMBFngBY30Ch2hOIhLCKUAIf+ku2n2LVgGggjUXUGL/o041zLzY8=
+	t=1728012252; cv=none; b=qyE9f0PBBQrOrsaoTsb0B+EwF8U9uAOwd/UTvNyIH+/L/R/++6rNK6li3odhLKtUHTJsNqs3s2eaIrYOIsexXJYUE9aBUoP4IiInMMcyZoO9SCttgwNiepIhSec4+pvUZohEQKj03b49wlbc6Dns4MoxYE4bcUQS5QoVs0THiP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728002583; c=relaxed/simple;
-	bh=Rtz2RkiW/OLsccqc3PDbUBNwvCK21hiRkbRO2wJUD24=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Yp5aqFkxGXODOysM0SvcBDU9EU2X1xRM8LN1g5P6nlOeWVF6y8P1Z1YIPTPv++aSslTeBi2L2w+PH+H3vgWi7CZgQGfiMCOg9o9i1CG71tq4OcRcQtNkAh0JFOWOkJqZFAPgOLTnBmDigU+9sZtjf0asVzWZ+/hSSLceObpY4sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=MhGijVbP; arc=none smtp.client-ip=46.235.229.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
-	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
-	:Subject; bh=lVgwWE6GyZ9ryVazC3efYVBhCMl8DxvEb6ve9xmwhHU=; b=MhGijVbPGuYX5k8u
-	P571sfrn2aAvc7oZEvmMV54DSDvMio2Bk/IFdtUDf5+XG/YxOX88cDfR2EVTIAuEHrMxez7MU0S+6
-	Ed8B1nkdc11NNN0G0aznYHUrrVu2J+mAB2uVeUvIA9Cc6gxpa//jLck9D0N2+sTkQf3tLGTIlRjly
-	1ZNuBrtRQa8SpnosRTjJEX9RMpv4kx7Rdqme9xxh6xaV1TH7l2y5YWOv0uJujPg7WuhgnzHhBJ176
-	hRyf7xCoHMWpiyt7CjBeB4qUDrBIclg/Lmw9ka15cIUMkPyBPfltnnibLselHgDxtZ6JeqOX+h2AS
-	LhKavh6gbJb0C9kAzA==;
-Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
-	by mx.treblig.org with esmtp (Exim 4.96)
-	(envelope-from <linux@treblig.org>)
-	id 1swWPM-008lvh-15;
-	Fri, 04 Oct 2024 00:43:00 +0000
-From: linux@treblig.org
-To: arend.vanspriel@broadcom.com,
-	kvalo@kernel.org,
-	linux-wireless@vger.kernel.org
-Cc: brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com,
-	linux-kernel@vger.kernel.org,
-	"Dr. David Alan Gilbert" <linux@treblig.org>
-Subject: [PATCH] brcmsmac: Remove unused brcms_debugfs_get_devdir
-Date: Fri,  4 Oct 2024 01:42:59 +0100
-Message-ID: <20241004004259.470853-1-linux@treblig.org>
-X-Mailer: git-send-email 2.46.2
+	s=arc-20240116; t=1728012252; c=relaxed/simple;
+	bh=pAh9gSEiYJ8KidX2qXjORqjXrkNpfu472170SlfXz+E=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=RYGblCfl6ThbbydSq0NErZaVuliAN/YDxUPRJysQukOfAs9+/wcg1a1NrYxECswbxUmu0TYDAuLjgl8htFX64XL+bjLMy+Fy1I6n5fo+eiW7qtAVlg0M/6DOcYgJt0FHy/tdWGo+PMKu0BulEYlHvGX80fFn5PNK3wYiavKU+ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=BuwX2InT; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4943NFwU4765975, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1728012195; bh=pAh9gSEiYJ8KidX2qXjORqjXrkNpfu472170SlfXz+E=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=BuwX2InT8Qhj/tpkG64KOvHneqLGtENzwUqpC/wUNc/SJWguhIXp7x16i12/jvn4s
+	 Ltv8w8qBnAv5mzhxUzwisNGrVb2ouRFzGYTw/4Dv5k2iz2Fippin6D3y23rJoQDcMc
+	 HdWZqoPBZbTRSVhfeEdnBABIL6iqS2qJel5WRFePwl7Mvauox26U9xCU5ZL5sivQjS
+	 lJtxCzCA4SBucxXpDm7Hf6vkcbH+kPHM1U/AkeAWtqdUdssvEaGMRFwAMwK3g8m2Kw
+	 RznClkuxz2tS61gdvfoXm8PJh0g8WIndaliGW/WZrgdUadUCfcRkU/78zrXhEoL18I
+	 nD5IjKg3B8LYQ==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.05/5.92) with ESMTPS id 4943NFwU4765975
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 4 Oct 2024 11:23:15 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 4 Oct 2024 08:40:19 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 4 Oct 2024 08:40:19 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
+ 15.01.2507.035; Fri, 4 Oct 2024 08:40:19 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Sanjay Bhattacharya <sanjbh@gmail.com>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>
+Subject: RE: Problems with rtw89_8852be driver in 6.11.1.arch1-1 kernel
+Thread-Topic: Problems with rtw89_8852be driver in 6.11.1.arch1-1 kernel
+Thread-Index: AQHbFZMn1Fy+p/8OAE6jlJF/7eOpc7J1v2Cw
+Date: Fri, 4 Oct 2024 00:40:19 +0000
+Message-ID: <a8170d8367ff4ddeb6cc62113db022e1@realtek.com>
+References: <CAJqS-psO8ykm70VBvi_T05PhOYb4Xvs6MeEUzc2a5uq-EUhM0w@mail.gmail.com>
+In-Reply-To: <CAJqS-psO8ykm70VBvi_T05PhOYb4Xvs6MeEUzc2a5uq-EUhM0w@mail.gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: "Dr. David Alan Gilbert" <linux@treblig.org>
-
-brcms_debugfs_get_devdir() has been unused since it was added by commit
-8e21df23894e ("brcmsmac: hardware info in debugfs")
-
-Remove it.
-
-Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
----
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/debug.c | 5 -----
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/debug.h | 1 -
- 2 files changed, 6 deletions(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/debug.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/debug.c
-index 6d776ef6ff54..81df41c7fbb5 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/debug.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/debug.c
-@@ -56,11 +56,6 @@ void brcms_debugfs_detach(struct brcms_pub *drvr)
- 	debugfs_remove_recursive(drvr->dbgfs_dir);
- }
- 
--struct dentry *brcms_debugfs_get_devdir(struct brcms_pub *drvr)
--{
--	return drvr->dbgfs_dir;
--}
--
- static
- int brcms_debugfs_hardware_read(struct seq_file *s, void *data)
- {
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/debug.h b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/debug.h
-index 56898e6d789d..d30a9fa30f1b 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/debug.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/debug.h
-@@ -70,7 +70,6 @@ void brcms_debugfs_init(void);
- void brcms_debugfs_exit(void);
- void brcms_debugfs_attach(struct brcms_pub *drvr);
- void brcms_debugfs_detach(struct brcms_pub *drvr);
--struct dentry *brcms_debugfs_get_devdir(struct brcms_pub *drvr);
- void brcms_debugfs_create_files(struct brcms_pub *drvr);
- 
- #endif /* _BRCMS_DEBUG_H_ */
--- 
-2.46.2
-
+U2FuamF5IEJoYXR0YWNoYXJ5YSA8c2FuamJoQGdtYWlsLmNvbT4gd3JvdGU6DQo+IA0KPiBIb3dl
+dmVyLCBvbiBkb3duZ3JhZGluZyB0aGUga2VybmVsIGJhY2sgdG8gNi4xMC4xMC5hcmNoMS0xLCBt
+eSB3aWZpDQo+IGludGVyZmFjZSBzZWVtcyB0byBiZSB3b3JraW5nIGZpbmUuIENhbiB5b3UgcGxl
+YXNlIGhlbHA/DQo+IA0KDQpXZSBoYXZlIGZvdW5kIGVhcmx5IGNoaXBzIGhhdmUgMzYtYml0IERN
+QSBpbnRlcm9wZXJhYmlsaXR5IHByb2JsZW1zIHdpdGggDQpjZXJ0YWluIHBsYXRmb3Jtcy4gQ291
+bGQgeW91IHNoYXJlIHlvdXIgUENJIGhvc3QgdmlkL3BpZCBieSBvdXRwdXRzIG9mDQonbHNwY2kg
+LXZ0JyBhbmQgJ2xzcGNpIC14JyA/IA0KDQpBbmQsIHBsZWFzZSB0cnkgcGF0Y2ggWzFdIHRvIHNl
+ZSBpZiBpdCBjYW4gd29yayB0byB5b3UuIA0KDQoNClsxXSBodHRwczovL2xvcmUua2VybmVsLm9y
+Zy9saW51eC13aXJlbGVzcy8yMDI0MDkyNDAyMTYzMy4xOTg2MS0xLXBrc2hpaEByZWFsdGVrLmNv
+bS8NCg0K
 
