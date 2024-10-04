@@ -1,122 +1,331 @@
-Return-Path: <linux-wireless+bounces-13521-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13522-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6AE1990FAB
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Oct 2024 22:05:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E59DF990FDA
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Oct 2024 22:10:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04C6B1C2303A
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Oct 2024 20:05:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A5111F23028
+	for <lists+linux-wireless@lfdr.de>; Fri,  4 Oct 2024 20:10:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB46D1D90AC;
-	Fri,  4 Oct 2024 19:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE7E51DF254;
+	Fri,  4 Oct 2024 19:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="VI3TTj1u"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="Q2+Rym6f"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941A91D8DFD
-	for <linux-wireless@vger.kernel.org>; Fri,  4 Oct 2024 19:19:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D231CACFB
+	for <linux-wireless@vger.kernel.org>; Fri,  4 Oct 2024 19:38:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728069544; cv=none; b=Rc1xZdkoeZqBuMSrzu3mctCph4i0f7iTYqQjNzUCIrl67bguJ1gyb0Z/6VjCIzGdEwErdip8RuS6O3+LOw1gSbZDpyfO1TSH7PNZ0S5KsiPfzRf2xCakpEeMuIy8nJk4NfwkAgt9qOrJEkOydJBuxH38zmMA7Jz5QvzQgQhGh5E=
+	t=1728070700; cv=none; b=T2KzDpGX/AtAHTP3lYVP59LfDdg4eqcMAcRwCvifBqrh5DljLH0oG5OqTpb1MDo9wRSCymGaqcwMU98pzbvurtn2hql449yzYPeUtNKenEMD6uMtYKp2XJF+CyIdoe+jnzojx8ZF+qPLxKTPkmg0vwfMs6Gp8L40XoK7pvk2f3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728069544; c=relaxed/simple;
-	bh=I6dS25FZ6+z7FaVOKobmQQ+yIGb8HYVDKgWBNaLgutk=;
+	s=arc-20240116; t=1728070700; c=relaxed/simple;
+	bh=apHsA4bzCve12RjcTay766eWUI2pITrQykDMg/OOeA8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=meIEbwGFP7aaIwQJ6YuVnIAXD2iUUAlxbdAU/xZ2mj1Ttm8bosUHr41RyNZxHBHWeXGvXgnhLBvS6KXnetaw0seBS04iwKaTqDWCmsz7n2tteFUCO3XjkxG7sSKv+5cX5Y2n/c0I/wRBkGRYedtjHbBARsXKvFtrFwxEVx0nBDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=VI3TTj1u; arc=none smtp.client-ip=148.163.129.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 46AA034006F;
-	Fri,  4 Oct 2024 19:18:55 +0000 (UTC)
-Received: from [192.168.100.159] (unknown [50.251.239.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id AB32913C2B0;
-	Fri,  4 Oct 2024 12:18:54 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com AB32913C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1728069534;
-	bh=I6dS25FZ6+z7FaVOKobmQQ+yIGb8HYVDKgWBNaLgutk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=VI3TTj1uWI/r3iz0u/wzVd3uLGxDghzj5V3Jeq8FbC37fKXL5Sa3U8qikFx/UshbV
-	 PhQyGTvcDrd1dXj9J4ycW0RRdd3iergp5YeE+iP7o8sE76/V4IqnJeeec4PI6/oYLZ
-	 24p0K90Dy6Mhlvnzx9nlSE3OhhnrCQoyimeiJEs4=
-Message-ID: <d1e75a08-047d-7947-d51a-2e486efead77@candelatech.com>
-Date: Fri, 4 Oct 2024 12:18:54 -0700
+	 In-Reply-To:Content-Type; b=rn294HiwaQVAJVmAmrBAw413SHWfrdMTxwaReo2cpCxlb5HkWg+LbebBmSUV9Ab8x9Meta8WsF+nH2p8TdJY/TBdLJAcbUVZ7GNe2xh/DuuQmMkJHT8XyJlczoq417erp0c3MxcqMXR5eampEQlHFJKgQ7+a1oXEYPUqO1Wplg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=Q2+Rym6f; arc=none smtp.client-ip=44.202.169.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
+Received: from eig-obgw-6008a.ext.cloudfilter.net ([10.0.30.227])
+	by cmsmtp with ESMTPS
+	id wONGsSC7ViA19wo7wsDNai; Fri, 04 Oct 2024 19:38:12 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id wo7vssJhrFyvuwo7vsNLMY; Fri, 04 Oct 2024 19:38:11 +0000
+X-Authority-Analysis: v=2.4 cv=TZeQtwQh c=1 sm=1 tr=0 ts=67004423
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=B3fuDwYyW55wTQKIj88FGw==:17
+ a=IkcTkHD0fZMA:10 a=DAUX931o1VcA:10 a=7T7KSl7uo7wA:10 a=VwQbUJbxAAAA:8
+ a=VRFK7ttmmsBj0-VOgosA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=Xt_RvD8W3m28Mn_h3AK8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=+ZvhtcYmcu5ebP9Dze5zd947DL/rSnJCmx8x4yc9BL8=; b=Q2+Rym6f/xRJjp3vNOprb3D6Xq
+	j1X2c+6xggXJpHpR27cktWdZLN7A7IObnW+eC4X8Kb2trVpq1U8bB39K0lsx1x4zNePnOlNuqz3j4
+	/p7XZh0kRMCzKEJ1xtF8qMh8rTHDcyhAb4J0g/fI2ZMEP11zlDy5Nc89qG6r925WAyJ1T5T07Kyek
+	COqbsJ6qun4DfrNy4zVY3Ac6BIvqyBDY4zA/kIQv3n1UJjFzai8VQAwT4Nvc24OZfI34d9MLdhyTb
+	XUTatJgt8rG7BWvKowGoEL5fOnSXe9l+xx2941KTvpUwQ4XXwMt8CTr05w8GiO2wVTbc8VgSUdwMr
+	2QM2KfCQ==;
+Received: from [201.172.174.147] (port=50772 helo=[192.168.15.5])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1swo7u-002jdA-2a;
+	Fri, 04 Oct 2024 14:38:10 -0500
+Message-ID: <e54fb6fb-dd99-407e-84e5-1866d3d9248e@embeddedor.com>
+Date: Fri, 4 Oct 2024 13:38:09 -0600
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: Missing scan results with SCAN_FLAG_COLOCATED_6GHZ set
- (Ath11k/WCN6855)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH][next] wifi: iwlwifi: fw/mvm: Avoid multiple
+ -Wflex-array-member-not-at-end warnings
+To: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+ Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-hardening@vger.kernel.org
+References: <Zr5c2DVAp3mWVO6h@elsanto>
 Content-Language: en-US
-To: James Prestwood <prestwoj@gmail.com>,
- "open list:MEDIATEK MT76 WIRELESS LAN DRIVER"
- <linux-wireless@vger.kernel.org>
-Cc: "ath11k@lists.infradead.org" <ath11k@lists.infradead.org>
-References: <cfb00919-678f-408d-9fb9-83fc24fee197@gmail.com>
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <cfb00919-678f-408d-9fb9-83fc24fee197@gmail.com>
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <Zr5c2DVAp3mWVO6h@elsanto>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1728069536-ex0oB6e5GI3J
-X-MDID-O:
- us5;ut7;1728069536;ex0oB6e5GI3J;<greearb@candelatech.com>;aae89045ff394e1bf2215a139f564027
-X-PPE-TRUSTED: V=1;DIR=OUT;
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 201.172.174.147
+X-Source-L: No
+X-Exim-ID: 1swo7u-002jdA-2a
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.15.5]) [201.172.174.147]:50772
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 3
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfKgs9uBE+9SiV/ajiMcW9XcPD1gi+E74T71IzzJPenBOfQh5I13sZKKGoqfy6KABDwdYN3W7uIsk8NY50VkiAp85/ifu+JV36yS3gaPSu3zmiXGdZis0
+ zytDfJV2CVKosNr60HHwGm/uF3pCj315oi6cH3Y7yvw3dRIglxn+694MKh4jI2OkqtetZF4v9MLAGaTzH0j0QytoWrLhu6sgKHk8IJ3YAf+bGrZ8acWYm449
 
-On 10/4/24 11:46, James Prestwood wrote:
-> Hi,
-> 
-> I've noticed that when setting the colocated flag much of the scan results are not appearing when they should be. This was seen in a large warehouse where our 
-> network/SSID was using only the 6ghz band. There were other networks on 2.4/5ghz though, which maybe is having some effect, but those networks are not 
-> broadcasting on 6ghz.
-> 
-> This first came to my attention when the majority of our clients were experiencing horrible signal quality. Upon looking at the logs and nl80211 messages to the 
-> kernel IWD was issuing both limited 6ghz scans as well as full spectrum scans and only showing a few 6ghz results, like 1-2 BSS's which should not have been the 
-> case. I was able to scan manually using "iw scan" and I saw all the expected BSS's. I isolated it to the fact that IWD was setting the SCAN_FLAG_COLOCATED_6GHZ 
-> and removing that flag resulted in all the BSS's showing up in scan results. Note, that with or without the flag all the 2.4/5ghz BSS's were showing up without 
-> a problem, it seems completely isolated to the 6ghz band.
-> 
-> The NEW_SCAN_RESULTS event was indicating the kernel had scanned all the expected frequencies we were asking to scan, but the results were mostly empty for 
-> 6ghz. Only ever the connected BSS would show up and _sometimes_ another BSS, but generally not.
-> 
-> I'm trying to read through the code associated with the COLOCATED flag, but its not exactly intuitive (to me at least). I'm not sure if this is something with 
-> mac80211 or at the driver level. I really don't have anything to compare it to as ath11k is the only hardware available at this warehouse with many APs around.
-> 
-> I'm looking for some guidance on if this is expected behavior with the colocated flag, and if there is any concern with including it unconditionally on every 
-> scan. If it has unintended consequences like this, generally, across multiple drivers I'd like to re-think its use in IWD.
+Hi all,
 
-I had some similar issues using hostap, and hacked it to do every 4th or so scan with that
-flag set differently.  Hopefully that lets the 'fast' scan work when it can, but still lets one
-scan the hard way...
+Friendly ping: who can take this, please? 🙂
 
-Possibly there are driver concerns too, I was using Intel be200 when debugging this.
+Thanks
+-Gustavo
 
-Thanks,
-Ben
-
+On 15/08/24 13:54, Gustavo A. R. Silva wrote:
+> -Wflex-array-member-not-at-end was introduced in GCC-14, and we are
+> getting ready to enable it, globally.
 > 
-> Thanks,
+> So, in order to avoid ending up with a flexible-array member in the
+> middle of multiple other structs, we use the `__struct_group()`
+> helper to create a new tagged `struct iwl_tx_cmd_hdr`. This structure
+> groups together all the members of the flexible `struct iwl_tx_cmd`
+> except the flexible array.
 > 
-> James
+> As a result, the array is effectively separated from the rest of the
+> members without modifying the memory layout of the flexible structure.
+> We then change the type of the middle struct members currently causing
+> trouble from `struct iwl_tx_cmd` to `struct iwl_tx_cmd_hdr`.
 > 
+> We also want to ensure that when new members need to be added to the
+> flexible structure, they are always included within the newly created
+> tagged struct. For this, we use `static_assert()`. This ensures that the
+> memory layout for both the flexible structure and the new tagged struct
+> is the same after any changes.
 > 
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
-
-
+> This approach avoids having to implement `struct iwl_tx_cmd_hdr`
+> as a completely separate structure, thus preventing having to maintain
+> two independent but basically identical structures, closing the door
+> to potential bugs in the future.
+> 
+> We also use `container_of()` whenever we need to retrieve a pointer to
+> the flexible structure, through which we can access the flexible-array
+> member, if necessary.
+> 
+> Worth mentioning is that the union at the end of the flexible structure
+> was replaced by a direct declaration of flexible-array member `hdr[]`
+> as `payload` is unnecessary.
+> 
+> So, with these changes, fix the following warnings:
+> 
+> drivers/net/wireless/intel/iwlwifi/fw/api/tx.h:745:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> drivers/net/wireless/intel/iwlwifi/fw/api/tx.h:764:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> drivers/net/wireless/intel/iwlwifi/mvm/../fw/api/tdls.h:134:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> drivers/net/wireless/intel/iwlwifi/mvm/../fw/api/tdls.h:53:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> drivers/net/wireless/intel/iwlwifi/mvm/../fw/api/tx.h:745:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> drivers/net/wireless/intel/iwlwifi/mvm/../fw/api/tx.h:764:27: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> 
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> ---
+>   .../net/wireless/intel/iwlwifi/fw/api/tdls.h  |  4 +-
+>   .../net/wireless/intel/iwlwifi/fw/api/tx.h    | 61 ++++++++++---------
+>   .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |  8 ++-
+>   drivers/net/wireless/intel/iwlwifi/mvm/tdls.c |  8 ++-
+>   4 files changed, 45 insertions(+), 36 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/tdls.h b/drivers/net/wireless/intel/iwlwifi/fw/api/tdls.h
+> index 893438aadab0..0ea6c0e37750 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/fw/api/tdls.h
+> +++ b/drivers/net/wireless/intel/iwlwifi/fw/api/tdls.h
+> @@ -50,7 +50,7 @@ struct iwl_tdls_channel_switch_timing {
+>    */
+>   struct iwl_tdls_channel_switch_frame {
+>   	__le32 switch_time_offset;
+> -	struct iwl_tx_cmd tx_cmd;
+> +	struct iwl_tx_cmd_hdr tx_cmd;
+>   	u8 data[IWL_TDLS_CH_SW_FRAME_MAX_SIZE];
+>   } __packed; /* TDLS_STA_CHANNEL_SWITCH_FRAME_API_S_VER_1 */
+>   
+> @@ -131,7 +131,7 @@ struct iwl_tdls_config_cmd {
+>   	struct iwl_tdls_sta_info sta_info[IWL_MVM_TDLS_STA_COUNT];
+>   
+>   	__le32 pti_req_data_offset;
+> -	struct iwl_tx_cmd pti_req_tx_cmd;
+> +	struct iwl_tx_cmd_hdr pti_req_tx_cmd;
+>   	u8 pti_req_template[];
+>   } __packed; /* TDLS_CONFIG_CMD_API_S_VER_1 */
+>   
+> diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h b/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
+> index c5277e2f8cd4..903f0f7517e0 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
+> +++ b/drivers/net/wireless/intel/iwlwifi/fw/api/tx.h
+> @@ -222,34 +222,37 @@ enum iwl_tx_offload_assist_flags_pos {
+>    * and then the actial payload.
+>    */
+>   struct iwl_tx_cmd {
+> -	__le16 len;
+> -	__le16 offload_assist;
+> -	__le32 tx_flags;
+> -	struct {
+> -		u8 try_cnt;
+> -		u8 btkill_cnt;
+> -		__le16 reserved;
+> -	} scratch; /* DRAM_SCRATCH_API_U_VER_1 */
+> -	__le32 rate_n_flags;
+> -	u8 sta_id;
+> -	u8 sec_ctl;
+> -	u8 initial_rate_index;
+> -	u8 reserved2;
+> -	u8 key[16];
+> -	__le32 reserved3;
+> -	__le32 life_time;
+> -	__le32 dram_lsb_ptr;
+> -	u8 dram_msb_ptr;
+> -	u8 rts_retry_limit;
+> -	u8 data_retry_limit;
+> -	u8 tid_tspec;
+> -	__le16 pm_frame_timeout;
+> -	__le16 reserved4;
+> -	union {
+> -		DECLARE_FLEX_ARRAY(u8, payload);
+> -		DECLARE_FLEX_ARRAY(struct ieee80211_hdr, hdr);
+> -	};
+> +	/* New members MUST be added within the __struct_group() macro below. */
+> +	__struct_group(iwl_tx_cmd_hdr, __hdr, __packed,
+> +		__le16 len;
+> +		__le16 offload_assist;
+> +		__le32 tx_flags;
+> +		struct {
+> +			u8 try_cnt;
+> +			u8 btkill_cnt;
+> +			__le16 reserved;
+> +		} scratch; /* DRAM_SCRATCH_API_U_VER_1 */
+> +		__le32 rate_n_flags;
+> +		u8 sta_id;
+> +		u8 sec_ctl;
+> +		u8 initial_rate_index;
+> +		u8 reserved2;
+> +		u8 key[16];
+> +		__le32 reserved3;
+> +		__le32 life_time;
+> +		__le32 dram_lsb_ptr;
+> +		u8 dram_msb_ptr;
+> +		u8 rts_retry_limit;
+> +		u8 data_retry_limit;
+> +		u8 tid_tspec;
+> +		__le16 pm_frame_timeout;
+> +		__le16 reserved4;
+> +	);
+> +
+> +	struct ieee80211_hdr hdr[];
+>   } __packed; /* TX_CMD_API_S_VER_6 */
+> +static_assert(offsetof(struct iwl_tx_cmd, hdr) == sizeof(struct iwl_tx_cmd_hdr),
+> +	      "struct member likely outside of __struct_group()");
+>   
+>   struct iwl_dram_sec_info {
+>   	__le32 pn_low;
+> @@ -742,7 +745,7 @@ struct iwl_mvm_compressed_ba_notif {
+>    * @frame: the template of the beacon frame
+>    */
+>   struct iwl_mac_beacon_cmd_v6 {
+> -	struct iwl_tx_cmd tx;
+> +	struct iwl_tx_cmd_hdr tx;
+>   	__le32 template_id;
+>   	__le32 tim_idx;
+>   	__le32 tim_size;
+> @@ -761,7 +764,7 @@ struct iwl_mac_beacon_cmd_v6 {
+>    * @frame: the template of the beacon frame
+>    */
+>   struct iwl_mac_beacon_cmd_v7 {
+> -	struct iwl_tx_cmd tx;
+> +	struct iwl_tx_cmd_hdr tx;
+>   	__le32 template_id;
+>   	__le32 tim_idx;
+>   	__le32 tim_size;
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+> index dfcc96f18b4f..41e276f2fcf8 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+> @@ -1053,8 +1053,10 @@ static int iwl_mvm_mac_ctxt_send_beacon_v6(struct iwl_mvm *mvm,
+>   {
+>   	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+>   	struct iwl_mac_beacon_cmd_v6 beacon_cmd = {};
+> +	struct iwl_tx_cmd *beacon_cmd_tx =
+> +		container_of(&beacon_cmd.tx, struct iwl_tx_cmd, __hdr);
+>   
+> -	iwl_mvm_mac_ctxt_set_tx(mvm, vif, beacon, &beacon_cmd.tx);
+> +	iwl_mvm_mac_ctxt_set_tx(mvm, vif, beacon, beacon_cmd_tx);
+>   
+>   	beacon_cmd.template_id = cpu_to_le32((u32)mvmvif->id);
+>   
+> @@ -1073,8 +1075,10 @@ static int iwl_mvm_mac_ctxt_send_beacon_v7(struct iwl_mvm *mvm,
+>   {
+>   	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+>   	struct iwl_mac_beacon_cmd_v7 beacon_cmd = {};
+> +	struct iwl_tx_cmd *beacon_cmd_tx =
+> +			container_of(&beacon_cmd.tx, struct iwl_tx_cmd, __hdr);
+>   
+> -	iwl_mvm_mac_ctxt_set_tx(mvm, vif, beacon, &beacon_cmd.tx);
+> +	iwl_mvm_mac_ctxt_set_tx(mvm, vif, beacon, beacon_cmd_tx);
+>   
+>   	beacon_cmd.template_id = cpu_to_le32((u32)mvmvif->id);
+>   
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c b/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c
+> index 3d25ff5cd7e8..7e45445c3ce6 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c
+> @@ -341,6 +341,8 @@ iwl_mvm_tdls_config_channel_switch(struct iwl_mvm *mvm,
+>   	struct iwl_tdls_channel_switch_cmd cmd = {0};
+>   	struct iwl_tdls_channel_switch_cmd_tail *tail =
+>   		iwl_mvm_chan_info_cmd_tail(mvm, &cmd.ci);
+> +	struct iwl_tx_cmd *tail_frame_tx_cmd =
+> +		container_of(&tail->frame.tx_cmd, struct iwl_tx_cmd, __hdr);
+>   	u16 len = sizeof(cmd) - iwl_mvm_chan_info_padding(mvm);
+>   	int ret;
+>   
+> @@ -410,13 +412,13 @@ iwl_mvm_tdls_config_channel_switch(struct iwl_mvm *mvm,
+>   			ret = -EINVAL;
+>   			goto out;
+>   		}
+> -		iwl_mvm_set_tx_cmd_ccmp(info, &tail->frame.tx_cmd);
+> +		iwl_mvm_set_tx_cmd_ccmp(info, tail_frame_tx_cmd);
+>   	}
+>   
+> -	iwl_mvm_set_tx_cmd(mvm, skb, &tail->frame.tx_cmd, info,
+> +	iwl_mvm_set_tx_cmd(mvm, skb, tail_frame_tx_cmd, info,
+>   			   mvmsta->deflink.sta_id);
+>   
+> -	iwl_mvm_set_tx_cmd_rate(mvm, &tail->frame.tx_cmd, info, sta,
+> +	iwl_mvm_set_tx_cmd_rate(mvm, tail_frame_tx_cmd, info, sta,
+>   				hdr->frame_control);
+>   	rcu_read_unlock();
+>   
 
