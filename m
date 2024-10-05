@@ -1,372 +1,319 @@
-Return-Path: <linux-wireless+bounces-13560-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13561-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22FB099165E
-	for <lists+linux-wireless@lfdr.de>; Sat,  5 Oct 2024 13:23:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24A3499166F
+	for <lists+linux-wireless@lfdr.de>; Sat,  5 Oct 2024 13:25:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2C8528447C
-	for <lists+linux-wireless@lfdr.de>; Sat,  5 Oct 2024 11:23:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFECA2815CA
+	for <lists+linux-wireless@lfdr.de>; Sat,  5 Oct 2024 11:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93561142E6F;
-	Sat,  5 Oct 2024 11:23:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="KuMBLRM3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B68D1494AC;
+	Sat,  5 Oct 2024 11:25:26 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1781149DF4
-	for <linux-wireless@vger.kernel.org>; Sat,  5 Oct 2024 11:22:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5139314A0BC
+	for <linux-wireless@vger.kernel.org>; Sat,  5 Oct 2024 11:25:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728127380; cv=none; b=FnfRbJlFEBMAEDE5UlBNysolh9ceNTIt/XCKx2+00nVv7fuajWRBU3mQhjefxtHIaEDIn+b7YPqTNzQ6grnchcYZTs+2TE8BAUepz1OM4fZegMmzzX2LuVQW+y1uVlUKdxWZjDLKLfcAGnJGCZMwWTFsqtbqQWdzzfQR7E29DKI=
+	t=1728127526; cv=none; b=tVQnDYreiPlERV3srTcZ6eeQmFfs+WhwhiX5ITfKK+U/WFgsaFE0giebGlVZDQR/Waqibl+A2yNISZ8HpOtRMdutWgrmV4tCU+zFXOJQ9vggpV2Lf1HE6AbQUvHl1D493z3Y37AwIjP/3mkoxUoOGxYVR5TD+kv2vWtCyj4GL1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728127380; c=relaxed/simple;
-	bh=F/kAScdg9qolKCEdTqGfbi4m6nB70rgWTD73qMen354=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tuqg8RcDkJ1Mxrf1rOSbY0buL1zjKPvZXVVKa2pv5UCyaESDMD3M0Z0FeYsZ3ywgCrqoNY1kuI2fKhto2Bl+vvVOmriKnbm+6bcYOO1/V0PmePdF+F/CIEu3J9938B4HcLUqpkdASdvPPe+KF2O/0gy8o8bhDSQP5P2bRSDl3s0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=KuMBLRM3; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 495AiWxC014212;
-	Sat, 5 Oct 2024 11:22:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ldZ4dnswxeMiPCWXuV6BCLuSMyPHNW3xQ1je7Gdu3+k=; b=KuMBLRM3OI9YEotu
-	Tx98s6jiXxe+st/HgaPfvOEnLr163MtYNc7tu6OqgQ3yZPYjrPTqBI2aLUeUXYMc
-	SY7uqv8IcyA0Djl6thNh8Ghoml4xDOuKtarb/zsxrm5FQ7pWUZ8mci7F7/BsmLEW
-	6X9zVah+Y8P5sjCX2YK8/2eWKb2IK1h/mXZehuGfRyMjrU7E+1/389LZqlvA5Ct5
-	YLEN8R4WTurD54Gzc3cxO1DqmrAW8CZPoX9yoRZVUaljU1kVC4pAAbFOOrPz6qEJ
-	QVPcXnQC+OyE6hqwl3ihqAivh/w30G+Ep+Jw0Okol3ds+ZdDiCRCsmnaazH1Qc0g
-	SfbEww==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 422xv6revr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 05 Oct 2024 11:22:56 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 495BMto1025193
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 5 Oct 2024 11:22:56 GMT
-Received: from hu-rdevanat-blr.qualcomm.com (10.80.80.8) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Sat, 5 Oct 2024 04:22:53 -0700
-From: Roopni Devanathan <quic_rdevanat@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, Rajat Soni <quic_rajson@quicinc.com>,
-        Roopni Devanathan <quic_rdevanat@quicinc.com>
-Subject: [PATCH v2 2/2] wifi: ath12k: Support pdev Puncture Stats
-Date: Sat, 5 Oct 2024 16:52:34 +0530
-Message-ID: <20241005112234.3379043-3-quic_rdevanat@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241005112234.3379043-1-quic_rdevanat@quicinc.com>
-References: <20241005112234.3379043-1-quic_rdevanat@quicinc.com>
+	s=arc-20240116; t=1728127526; c=relaxed/simple;
+	bh=qKU++iZyvLgGYMb15MhpKrMvNQPqZ4TxgLoGhxMrkHw=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=JGgzC8jSHXo1JLi8ngRHwOfaO8hOctxTW7baTjzbANUmC9jmV/Ea7qLXZrSnxIWwZsvy7I/KNbMvzaQDcAAo+ML3e73lWexmWP8jGP0fLXQwz95mHjfSSAd5QySaU1KWxguMUeZAUdQzow3xDI5i77ir1TGeUPJoD8OrWkaBnuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3a34988d6b4so49906575ab.2
+        for <linux-wireless@vger.kernel.org>; Sat, 05 Oct 2024 04:25:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728127523; x=1728732323;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=A6dzhWKVs5AfYreUvYmTsCMUmIRINLLJ4AYBSn+UIzE=;
+        b=CpFj/lAQhH0cLeU/NMuYQNZHI5VCixRJHibZ5TCYDwXOjJ6UYUwPLA+ogM+Df5IBqP
+         yHxFALNO8a8k9A3OtixobT0VYs7fnskSMptK6DnnMe2hw1UDZCOSMdAl4GQmSEEUn5/w
+         q4g9PDKfb2PaSiV8A+Kri+I8WJMQHKA89DOqh4pdXf9f4Ygj6qxYUh8jxucnN6rs5Q4V
+         kjMbZlucF7egZnh1KJk94pr8AxotKYj4q/r+XzOC42MbqebB/yDZ8s7Wf9cxNBxaAKYd
+         82/YxMbjjmTJwzlqD+MrwwAQM57eC1/y4E0pTCUhOHGuAmcxAt2Nz54Eaoqv/OMw+W8U
+         BFKA==
+X-Forwarded-Encrypted: i=1; AJvYcCW1/jKm/xlLbi1DzF4ko+zmuraLflXZyt/f6V9NMEYG2sBErqEFxsp47b6wNJi3KMPRNG9AYgoZh18xauWEcA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZmEU1869+kJ8OeOjbe92nXSNx82UL3sft0PpgHKz39FDmY4bW
+	HSyx+LSz2l8XxSNIsAeKTccKh2AuE4b5o260Y/RrKwZl9a2I/YeFf7nKmQqITT2HwVk7uMZ999j
+	Oul0LYhmS6UqfIoleNDCm6BGOMnvz5U7/Jx6wzKJw0bLSKd6Vunays4g=
+X-Google-Smtp-Source: AGHT+IGLICQvgRZ0hvXYBcDGR/lV7RFh6CGa1PGLTrtC17RIEy+HmSld6vlXJsDuuAQkfHkYzqTaec7lOxc1mlGb0U80qOtLMr6Q
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 1nHYiflGGMA9phYUdowO6tzMVlMK3hwR
-X-Proofpoint-GUID: 1nHYiflGGMA9phYUdowO6tzMVlMK3hwR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- priorityscore=1501 impostorscore=0 adultscore=0 lowpriorityscore=0
- mlxlogscore=999 mlxscore=0 bulkscore=0 phishscore=0 malwarescore=0
- spamscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410050084
+X-Received: by 2002:a05:6e02:1846:b0:39d:2939:3076 with SMTP id
+ e9e14a558f8ab-3a375bd2038mr54970835ab.25.1728127523544; Sat, 05 Oct 2024
+ 04:25:23 -0700 (PDT)
+Date: Sat, 05 Oct 2024 04:25:23 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <67012223.050a0220.49194.04be.GAE@google.com>
+Subject: [syzbot] [wireless?] INFO: task hung in regdb_fw_cb (2)
+From: syzbot <syzbot+aff8125319e0457b4a25@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, johannes@sipsolutions.net, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: Rajat Soni <quic_rajson@quicinc.com>
+Hello,
 
-Add support to request pdev puncture stats from firmware through
-HTT stats type 46. These stats give the count of number of
-subbands used in different wifi standards.
+syzbot found the following issue on:
 
-Sample output:
--------------
-echo 46 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
-cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats
-HTT_PDEV_PUNCTURE_STATS_TLV:
-mac_id = 0
-tx_ofdm_su_last_used_pattern_mask = 0x00000001
-tx_ofdm_su_num_subbands_used_cnt_01 = 217
-tx_ofdm_su_num_subbands_used_cnt_02 = 0
-tx_ofdm_su_num_subbands_used_cnt_03 = 0
-.....
+HEAD commit:    e32cde8d2bd7 Merge tag 'sched_ext-for-6.12-rc1-fixes-1' of..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=15510927980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=286b31f2cf1c36b5
+dashboard link: https://syzkaller.appspot.com/bug?extid=aff8125319e0457b4a25
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=173c3dd0580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15902777980000
 
-HTT_PDEV_PUNCTURE_STATS_TLV:
-mac_id = 0
-tx_ax_dl_mu_ofdma_last_used_pattern_mask = 0x00000000
-tx_ax_dl_mu_ofdma_num_subbands_used_cnt_01 = 0
-tx_ax_dl_mu_ofdma_num_subbands_used_cnt_02 = 0
-tx_ax_dl_mu_ofdma_num_subbands_used_cnt_03 = 0
-.....
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/f7f2dc1bf47b/disk-e32cde8d.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/063e4eafb554/vmlinux-e32cde8d.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/7ce38bae7b74/bzImage-e32cde8d.xz
 
-HTT_PDEV_PUNCTURE_STATS_TLV:
-mac_id = 0
-tx_be_dl_mu_ofdma_last_used_pattern_mask = 0x00000000
-tx_be_dl_mu_ofdma_num_subbands_used_cnt_01 = 0
-tx_be_dl_mu_ofdma_num_subbands_used_cnt_02 = 0
-tx_be_dl_mu_ofdma_num_subbands_used_cnt_03 = 0
-.....
+Bisection is inconclusive: the first bad commit could be any of:
 
-HTT_PDEV_PUNCTURE_STATS_TLV:
-mac_id = 0
-rx_ax_ul_mu_ofdma_last_used_pattern_mask = 0x00000000
-rx_ax_ul_mu_ofdma_num_subbands_used_cnt_01 = 0
-rx_ax_ul_mu_ofdma_num_subbands_used_cnt_02 = 0
-rx_ax_ul_mu_ofdma_num_subbands_used_cnt_03 = 0
-.....
+abc158c82ae5 sched: Prepare generic code for delayed dequeue
+dfa0a574cbc4 sched/uclamg: Handle delayed dequeue
 
-HTT_PDEV_PUNCTURE_STATS_TLV:
-mac_id = 0
-rx_be_ul_mu_ofdma_last_used_pattern_mask = 0x00000000
-rx_be_ul_mu_ofdma_num_subbands_used_cnt_01 = 0
-rx_be_ul_mu_ofdma_num_subbands_used_cnt_02 = 0
-rx_be_ul_mu_ofdma_num_subbands_used_cnt_03 = 0
-.....
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=10096580580000
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+aff8125319e0457b4a25@syzkaller.appspotmail.com
 
-Signed-off-by: Rajat Soni <quic_rajson@quicinc.com>
-Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
+INFO: task kworker/1:2:1166 blocked for more than 146 seconds.
+      Not tainted 6.12.0-rc1-syzkaller-00031-ge32cde8d2bd7 #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:kworker/1:2     state:D stack:25400 pid:1166  tgid:1166  ppid:2      flags:0x00004000
+Workqueue: events request_firmware_work_func
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5315 [inline]
+ __schedule+0x1895/0x4b30 kernel/sched/core.c:6675
+ __schedule_loop kernel/sched/core.c:6752 [inline]
+ schedule+0x14b/0x320 kernel/sched/core.c:6767
+ schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:6824
+ __mutex_lock_common kernel/locking/mutex.c:684 [inline]
+ __mutex_lock+0x6a7/0xd70 kernel/locking/mutex.c:752
+ regdb_fw_cb+0x82/0x1c0 net/wireless/reg.c:1017
+ request_firmware_work_func+0x1a4/0x280 drivers/base/firmware_loader/main.c:1197
+ process_one_work kernel/workqueue.c:3229 [inline]
+ process_scheduled_works+0xa63/0x1850 kernel/workqueue.c:3310
+ worker_thread+0x870/0xd30 kernel/workqueue.c:3391
+ kthread+0x2f0/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+INFO: task syz-executor127:5227 blocked for more than 148 seconds.
+      Not tainted 6.12.0-rc1-syzkaller-00031-ge32cde8d2bd7 #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:syz-executor127 state:D stack:19376 pid:5227  tgid:5227  ppid:5225   flags:0x00000002
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5315 [inline]
+ __schedule+0x1895/0x4b30 kernel/sched/core.c:6675
+ __schedule_loop kernel/sched/core.c:6752 [inline]
+ schedule+0x14b/0x320 kernel/sched/core.c:6767
+ schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:6824
+ __mutex_lock_common kernel/locking/mutex.c:684 [inline]
+ __mutex_lock+0x6a7/0xd70 kernel/locking/mutex.c:752
+ rtnl_lock net/core/rtnetlink.c:79 [inline]
+ rtnetlink_rcv_msg+0x6e6/0xcf0 net/core/rtnetlink.c:6643
+ netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2550
+ netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
+ netlink_unicast+0x7f6/0x990 net/netlink/af_netlink.c:1357
+ netlink_sendmsg+0x8e4/0xcb0 net/netlink/af_netlink.c:1901
+ sock_sendmsg_nosec net/socket.c:729 [inline]
+ __sock_sendmsg+0x221/0x270 net/socket.c:744
+ __sys_sendto+0x39b/0x4f0 net/socket.c:2209
+ __do_sys_sendto net/socket.c:2221 [inline]
+ __se_sys_sendto net/socket.c:2217 [inline]
+ __x64_sys_sendto+0xde/0x100 net/socket.c:2217
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f79ea26dd93
+RSP: 002b:00007ffe87ec0fc8 EFLAGS: 00000202 ORIG_RAX: 000000000000002c
+RAX: ffffffffffffffda RBX: 00007f79ea2eb1c0 RCX: 00007f79ea26dd93
+RDX: 0000000000000028 RSI: 00007f79ea2eb210 RDI: 0000000000000003
+RBP: 0000000000000003 R08: 00007ffe87ec0fe4 R09: 000000000000000c
+R10: 0000000000000000 R11: 0000000000000202 R12: 0000000000000001
+R13: 0000000000000000 R14: 00007f79ea2eb210 R15: 0000000000000000
+ </TASK>
+
+Showing all locks held in the system:
+3 locks held by kworker/0:0/8:
+2 locks held by kworker/u8:0/11:
+1 lock held by khungtaskd/30:
+ #0: ffffffff8e937de0 (rcu_read_lock){....}-{1:2}, at: rcu_lock_acquire include/linux/rcupdate.h:337 [inline]
+ #0: ffffffff8e937de0 (rcu_read_lock){....}-{1:2}, at: rcu_read_lock include/linux/rcupdate.h:849 [inline]
+ #0: ffffffff8e937de0 (rcu_read_lock){....}-{1:2}, at: debug_show_all_locks+0x55/0x2a0 kernel/locking/lockdep.c:6720
+3 locks held by kworker/u8:2/35:
+ #0: ffff88814bb46948 ((wq_completion)ipv6_addrconf){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3204 [inline]
+ #0: ffff88814bb46948 ((wq_completion)ipv6_addrconf){+.+.}-{0:0}, at: process_scheduled_works+0x93b/0x1850 kernel/workqueue.c:3310
+ #1: ffffc90000ab7d00 ((work_completion)(&(&ifa->dad_work)->work)){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3205 [inline]
+ #1: ffffc90000ab7d00 ((work_completion)(&(&ifa->dad_work)->work)){+.+.}-{0:0}, at: process_scheduled_works+0x976/0x1850 kernel/workqueue.c:3310
+ #2: ffffffff8fcd1748 (rtnl_mutex){+.+.}-{3:3}, at: addrconf_dad_work+0xd0/0x16f0 net/ipv6/addrconf.c:4196
+3 locks held by kworker/u8:4/61:
+ #0: ffff88801ac89148 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3204 [inline]
+ #0: ffff88801ac89148 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_scheduled_works+0x93b/0x1850 kernel/workqueue.c:3310
+ #1: ffffc900015d7d00 ((linkwatch_work).work){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3205 [inline]
+ #1: ffffc900015d7d00 ((linkwatch_work).work){+.+.}-{0:0}, at: process_scheduled_works+0x976/0x1850 kernel/workqueue.c:3310
+ #2: ffffffff8fcd1748 (rtnl_mutex){+.+.}-{3:3}, at: linkwatch_event+0xe/0x60 net/core/link_watch.c:276
+3 locks held by kworker/1:2/1166:
+ #0: ffff88801ac80948 ((wq_completion)events){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3204 [inline]
+ #0: ffff88801ac80948 ((wq_completion)events){+.+.}-{0:0}, at: process_scheduled_works+0x93b/0x1850 kernel/workqueue.c:3310
+ #1: ffffc900042e7d00 ((work_completion)(&fw_work->work)){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3205 [inline]
+ #1: ffffc900042e7d00 ((work_completion)(&fw_work->work)){+.+.}-{0:0}, at: process_scheduled_works+0x976/0x1850 kernel/workqueue.c:3310
+ #2: ffffffff8fcd1748 (rtnl_mutex){+.+.}-{3:3}, at: regdb_fw_cb+0x82/0x1c0 net/wireless/reg.c:1017
+2 locks held by udevd/4686:
+2 locks held by getty/4995:
+ #0: ffff88814bdc20a0 (&tty->ldisc_sem){++++}-{0:0}, at: tty_ldisc_ref_wait+0x25/0x70 drivers/tty/tty_ldisc.c:243
+ #1: ffffc90002f062f0 (&ldata->atomic_read_lock){+.+.}-{3:3}, at: n_tty_read+0x6a6/0x1e00 drivers/tty/n_tty.c:2211
+1 lock held by syz-executor127/5227:
+ #0: ffffffff8fcd1748 (rtnl_mutex){+.+.}-{3:3}, at: rtnl_lock net/core/rtnetlink.c:79 [inline]
+ #0: ffffffff8fcd1748 (rtnl_mutex){+.+.}-{3:3}, at: rtnetlink_rcv_msg+0x6e6/0xcf0 net/core/rtnetlink.c:6643
+2 locks held by syz-executor127/5228:
+1 lock held by syz-executor127/5232:
+ #0: ffffffff8fcd1748 (rtnl_mutex){+.+.}-{3:3}, at: rtnl_lock net/core/rtnetlink.c:79 [inline]
+ #0: ffffffff8fcd1748 (rtnl_mutex){+.+.}-{3:3}, at: rtnetlink_rcv_msg+0x6e6/0xcf0 net/core/rtnetlink.c:6643
+1 lock held by syz-executor127/5233:
+1 lock held by syz-executor127/5234:
+ #0: ffffffff8fcd1748 (rtnl_mutex){+.+.}-{3:3}, at: rtnl_lock net/core/rtnetlink.c:79 [inline]
+ #0: ffffffff8fcd1748 (rtnl_mutex){+.+.}-{3:3}, at: rtnetlink_rcv_msg+0x6e6/0xcf0 net/core/rtnetlink.c:6643
+2 locks held by kworker/1:4/5262:
+3 locks held by kworker/1:6/5264:
+3 locks held by kworker/1:7/5267:
+1 lock held by dhcpcd/5279:
+1 lock held by dhcpcd/5281:
+
+=============================================
+
+NMI backtrace for cpu 0
+CPU: 0 UID: 0 PID: 30 Comm: khungtaskd Not tainted 6.12.0-rc1-syzkaller-00031-ge32cde8d2bd7 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ nmi_cpu_backtrace+0x49c/0x4d0 lib/nmi_backtrace.c:113
+ nmi_trigger_cpumask_backtrace+0x198/0x320 lib/nmi_backtrace.c:62
+ trigger_all_cpu_backtrace include/linux/nmi.h:162 [inline]
+ check_hung_uninterruptible_tasks kernel/hung_task.c:223 [inline]
+ watchdog+0xff4/0x1040 kernel/hung_task.c:379
+ kthread+0x2f0/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+Sending NMI from CPU 0 to CPUs 1:
+NMI backtrace for cpu 1
+CPU: 1 UID: 0 PID: 24 Comm: ksoftirqd/1 Not tainted 6.12.0-rc1-syzkaller-00031-ge32cde8d2bd7 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+RIP: 0010:on_stack arch/x86/include/asm/stacktrace.h:58 [inline]
+RIP: 0010:stack_access_ok arch/x86/kernel/unwind_orc.c:393 [inline]
+RIP: 0010:deref_stack_reg arch/x86/kernel/unwind_orc.c:403 [inline]
+RIP: 0010:unwind_next_frame+0xb9c/0x22d0 arch/x86/kernel/unwind_orc.c:585
+Code: 80 3c 27 00 74 08 48 89 df e8 40 2b bd 00 4c 8b 74 24 08 4d 8b 66 10 48 b8 00 00 00 00 00 fc ff df 48 8b 4c 24 20 0f b6 04 01 <84> c0 0f 85 67 12 00 00 48 8b 04 24 4c 8d 68 f8 41 83 3e 00 74 1c
+RSP: 0018:ffffc900001e6270 EFLAGS: 00000246
+RAX: 0000000000000000 RBX: ffffc900001e6350 RCX: 1ffff9200003cc68
+RDX: ffffffff90ae974c RSI: 0000000000000002 RDI: 0000000000000001
+RBP: ffffc900001e0000 R08: 0000000000000001 R09: ffffc900001e6430
+R10: ffffc900001e6390 R11: ffffffff81808f50 R12: ffffc900001e8000
+R13: ffffc900001e6340 R14: ffffc900001e6340 R15: 1ffff9200003cc6a
+FS:  0000000000000000(0000) GS:ffff8880b8700000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffe87ec043c CR3: 000000000e734000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <NMI>
+ </NMI>
+ <TASK>
+ arch_stack_walk+0x11c/0x150 arch/x86/kernel/stacktrace.c:25
+ stack_trace_save+0x118/0x1d0 kernel/stacktrace.c:122
+ save_stack+0xfb/0x1f0 mm/page_owner.c:156
+ __set_page_owner+0x92/0x800 mm/page_owner.c:320
+ set_page_owner include/linux/page_owner.h:32 [inline]
+ post_alloc_hook+0x1f3/0x230 mm/page_alloc.c:1537
+ prep_new_page mm/page_alloc.c:1545 [inline]
+ get_page_from_freelist+0x3045/0x3190 mm/page_alloc.c:3457
+ __alloc_pages_noprof+0x256/0x6c0 mm/page_alloc.c:4733
+ alloc_pages_mpol_noprof+0x3e8/0x680 mm/mempolicy.c:2265
+ alloc_slab_page+0x6a/0x120 mm/slub.c:2413
+ allocate_slab+0x5a/0x2f0 mm/slub.c:2579
+ new_slab mm/slub.c:2632 [inline]
+ ___slab_alloc+0xcd1/0x14b0 mm/slub.c:3819
+ __slab_alloc+0x58/0xa0 mm/slub.c:3909
+ __slab_alloc_node mm/slub.c:3962 [inline]
+ slab_alloc_node mm/slub.c:4123 [inline]
+ __do_kmalloc_node mm/slub.c:4264 [inline]
+ __kmalloc_node_track_caller_noprof+0x281/0x440 mm/slub.c:4284
+ kmalloc_reserve+0x111/0x2a0 net/core/skbuff.c:609
+ __alloc_skb+0x1f3/0x440 net/core/skbuff.c:678
+ alloc_skb include/linux/skbuff.h:1322 [inline]
+ synproxy_send_client_synack+0x1ba/0xf30 net/netfilter/nf_synproxy_core.c:460
+ nft_synproxy_eval_v4+0x3ca/0x610 net/netfilter/nft_synproxy.c:59
+ nft_synproxy_do_eval+0x362/0xa60 net/netfilter/nft_synproxy.c:141
+ expr_call_ops_eval net/netfilter/nf_tables_core.c:240 [inline]
+ nft_do_chain+0x4ad/0x1da0 net/netfilter/nf_tables_core.c:288
+ nft_do_chain_inet+0x418/0x6b0 net/netfilter/nft_chain_filter.c:161
+ nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
+ nf_hook_slow+0xc3/0x220 net/netfilter/core.c:626
+ nf_hook include/linux/netfilter.h:269 [inline]
+ NF_HOOK+0x29e/0x450 include/linux/netfilter.h:312
+ NF_HOOK+0x3a4/0x450 include/linux/netfilter.h:314
+ __netif_receive_skb_one_core net/core/dev.c:5662 [inline]
+ __netif_receive_skb+0x2bf/0x650 net/core/dev.c:5775
+ process_backlog+0x662/0x15b0 net/core/dev.c:6107
+ __napi_poll+0xcb/0x490 net/core/dev.c:6771
+ napi_poll net/core/dev.c:6840 [inline]
+ net_rx_action+0x89b/0x1240 net/core/dev.c:6962
+ handle_softirqs+0x2c5/0x980 kernel/softirq.c:554
+ run_ksoftirqd+0xca/0x130 kernel/softirq.c:927
+ smpboot_thread_fn+0x544/0xa30 kernel/smpboot.c:164
+ kthread+0x2f0/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+INFO: NMI handler (nmi_cpu_backtrace_handler) took too long to run: 2.875 msecs
+
+
 ---
- .../wireless/ath/ath12k/debugfs_htt_stats.c   | 138 ++++++++++++++++++
- .../wireless/ath/ath12k/debugfs_htt_stats.h   |  38 +++++
- 2 files changed, 176 insertions(+)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-index 63f3e8e78efd..42d504d93c52 100644
---- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-+++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-@@ -2633,6 +2633,141 @@ ath12k_htt_print_dmac_reset_stats_tlv(const void *tag_buf, u16 tag_len,
- 	stats_req->buf_len = len;
- }
- 
-+static const char*
-+ath12k_htt_get_punct_dir_type_str(enum ath12k_htt_stats_direction direction,
-+				  struct debug_htt_stats_req *stats_req)
-+{
-+	const char *direction_str = "unknown";
-+	u32 len = stats_req->buf_len;
-+
-+	switch (direction) {
-+	case ATH12K_HTT_STATS_DIRECTION_TX:
-+		direction_str = "tx";
-+		break;
-+	case ATH12K_HTT_STATS_DIRECTION_RX:
-+		direction_str = "rx";
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	stats_req->buf_len = len;
-+	return direction_str;
-+}
-+
-+static const char*
-+ath12k_htt_get_punct_ppdu_type_str(enum ath12k_htt_stats_ppdu_type ppdu_type,
-+				   struct debug_htt_stats_req *stats_req)
-+{
-+	const char *ppdu_type_str = "unknown";
-+	u32 len = stats_req->buf_len;
-+
-+	switch (ppdu_type) {
-+	case ATH12K_HTT_STATS_PPDU_TYPE_MODE_SU:
-+		ppdu_type_str = "su";
-+		break;
-+	case ATH12K_HTT_STATS_PPDU_TYPE_DL_MU_MIMO:
-+		ppdu_type_str = "dl_mu_mimo";
-+		break;
-+	case ATH12K_HTT_STATS_PPDU_TYPE_UL_MU_MIMO:
-+		ppdu_type_str = "ul_mu_mimo";
-+		break;
-+	case ATH12K_HTT_STATS_PPDU_TYPE_DL_MU_OFDMA:
-+		ppdu_type_str = "dl_mu_ofdma";
-+		break;
-+	case ATH12K_HTT_STATS_PPDU_TYPE_UL_MU_OFDMA:
-+		ppdu_type_str = "ul_mu_ofdma";
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	stats_req->buf_len = len;
-+	return ppdu_type_str;
-+}
-+
-+static const char*
-+ath12k_htt_get_punct_pream_type_str(enum ath12k_htt_stats_param_type pream_type,
-+				    struct debug_htt_stats_req *stats_req)
-+{
-+	const char *pream_type_str = "unknown";
-+	u32 len = stats_req->buf_len;
-+
-+	switch (pream_type) {
-+	case ATH12K_HTT_STATS_PREAM_OFDM:
-+		pream_type_str = "ofdm";
-+		break;
-+	case ATH12K_HTT_STATS_PREAM_CCK:
-+		pream_type_str = "cck";
-+		break;
-+	case ATH12K_HTT_STATS_PREAM_HT:
-+		pream_type_str = "ht";
-+		break;
-+	case ATH12K_HTT_STATS_PREAM_VHT:
-+		pream_type_str = "ac";
-+		break;
-+	case ATH12K_HTT_STATS_PREAM_HE:
-+		pream_type_str = "ax";
-+		break;
-+	case ATH12K_HTT_STATS_PREAM_EHT:
-+		pream_type_str = "be";
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	stats_req->buf_len = len;
-+	return pream_type_str;
-+}
-+
-+static void
-+ath12k_htt_print_puncture_stats_tlv(const void *tag_buf, u16 tag_len,
-+				    struct debug_htt_stats_req *stats_req)
-+{
-+	const struct ath12k_htt_pdev_puncture_stats_tlv *stats_buf = tag_buf;
-+	u8 *buf = stats_req->buf;
-+	u32 len = stats_req->buf_len;
-+	u32 buf_len = ATH12K_HTT_STATS_BUF_SIZE;
-+	int i;
-+	const char *direction;
-+	const char *preamble;
-+	const char *ppdu_type;
-+	u32 mac_id__word;
-+	u32 subband_limit;
-+
-+	if (tag_len < sizeof(*stats_buf))
-+		return;
-+
-+	mac_id__word = le32_to_cpu(stats_buf->mac_id__word);
-+	subband_limit = min(le32_to_cpu(stats_buf->subband_cnt),
-+			    ATH12K_HTT_PUNCT_STATS_MAX_SUBBAND_CNT);
-+
-+	direction = ath12k_htt_get_punct_dir_type_str(le32_to_cpu(stats_buf->direction),
-+						      stats_req);
-+	ppdu_type = ath12k_htt_get_punct_ppdu_type_str(le32_to_cpu(stats_buf->ppdu_type),
-+						       stats_req);
-+	preamble = ath12k_htt_get_punct_pream_type_str(le32_to_cpu(stats_buf->preamble),
-+						       stats_req);
-+
-+	len += scnprintf(buf + len, buf_len - len, "HTT_PDEV_PUNCTURE_STATS_TLV:\n");
-+	len += scnprintf(buf + len, buf_len - len, "mac_id = %u\n",
-+			 u32_get_bits(mac_id__word, ATH12K_HTT_STATS_MAC_ID));
-+	len += scnprintf(buf + len, buf_len - len,
-+			 "%s_%s_%s_last_used_pattern_mask = 0x%08x\n",
-+			 direction, preamble, ppdu_type,
-+			 le32_to_cpu(stats_buf->last_used_pattern_mask));
-+
-+	for (i = 0; i < subband_limit; i++) {
-+		len += scnprintf(buf + len, buf_len - len,
-+				 "%s_%s_%s_num_subbands_used_cnt_%02d = %u\n",
-+				 direction, preamble, ppdu_type, i + 1,
-+				 le32_to_cpu(stats_buf->num_subbands_used_cnt[i]));
-+	}
-+	len += scnprintf(buf + len, buf_len - len, "\n");
-+
-+	stats_req->buf_len = len;
-+}
-+
- static void
- ath12k_htt_print_pdev_sched_algo_ofdma_stats_tlv(const void *tag_buf, u16 tag_len,
- 						 struct debug_htt_stats_req *stats_req)
-@@ -2928,6 +3063,9 @@ static int ath12k_dbg_htt_ext_stats_parse(struct ath12k_base *ab,
- 	case HTT_STATS_DMAC_RESET_STATS_TAG:
- 		ath12k_htt_print_dmac_reset_stats_tlv(tag_buf, len, stats_req);
- 		break;
-+	case HTT_STATS_PDEV_PUNCTURE_STATS_TAG:
-+		ath12k_htt_print_puncture_stats_tlv(tag_buf, len, stats_req);
-+		break;
- 	case HTT_STATS_PDEV_SCHED_ALGO_OFDMA_STATS_TAG:
- 		ath12k_htt_print_pdev_sched_algo_ofdma_stats_tlv(tag_buf, len, stats_req);
- 		break;
-diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
-index 6978c3243ee3..e6e2bcbe95a7 100644
---- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
-+++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
-@@ -137,6 +137,7 @@ enum ath12k_dbg_htt_ext_stats_type {
- 	ATH12K_DBG_HTT_EXT_STATS_PDEV_OBSS_PD_STATS	= 23,
- 	ATH12K_DBG_HTT_EXT_AST_ENTRIES			= 41,
- 	ATH12K_DBG_HTT_EXT_STATS_SOC_ERROR		= 45,
-+	ATH12K_DBG_HTT_DBG_PDEV_PUNCTURE_STATS		= 46,
- 	ATH12K_DBG_HTT_EXT_STATS_PDEV_SCHED_ALGO	= 49,
- 	ATH12K_DBG_HTT_EXT_STATS_MANDATORY_MUOFDMA	= 51,
- 
-@@ -203,6 +204,7 @@ enum ath12k_dbg_htt_tlv_tag {
- 	HTT_STATS_TX_SELFGEN_BE_STATS_TAG		= 138,
- 	HTT_STATS_TX_SELFGEN_BE_SCHED_STATUS_STATS_TAG	= 139,
- 	HTT_STATS_DMAC_RESET_STATS_TAG			= 155,
-+	HTT_STATS_PDEV_PUNCTURE_STATS_TAG		= 158,
- 	HTT_STATS_PDEV_SCHED_ALGO_OFDMA_STATS_TAG	= 165,
- 
- 	HTT_STATS_MAX_TAG,
-@@ -1140,4 +1142,40 @@ struct ath12k_htt_ast_entry_tlv {
- 	__le32 info;
- } __packed;
- 
-+enum ath12k_htt_stats_direction {
-+	ATH12K_HTT_STATS_DIRECTION_TX,
-+	ATH12K_HTT_STATS_DIRECTION_RX
-+};
-+
-+enum ath12k_htt_stats_ppdu_type {
-+	ATH12K_HTT_STATS_PPDU_TYPE_MODE_SU,
-+	ATH12K_HTT_STATS_PPDU_TYPE_DL_MU_MIMO,
-+	ATH12K_HTT_STATS_PPDU_TYPE_UL_MU_MIMO,
-+	ATH12K_HTT_STATS_PPDU_TYPE_DL_MU_OFDMA,
-+	ATH12K_HTT_STATS_PPDU_TYPE_UL_MU_OFDMA
-+};
-+
-+enum ath12k_htt_stats_param_type {
-+	ATH12K_HTT_STATS_PREAM_OFDM,
-+	ATH12K_HTT_STATS_PREAM_CCK,
-+	ATH12K_HTT_STATS_PREAM_HT,
-+	ATH12K_HTT_STATS_PREAM_VHT,
-+	ATH12K_HTT_STATS_PREAM_HE,
-+	ATH12K_HTT_STATS_PREAM_EHT,
-+	ATH12K_HTT_STATS_PREAM_RSVD1,
-+	ATH12K_HTT_STATS_PREAM_COUNT,
-+};
-+
-+#define ATH12K_HTT_PUNCT_STATS_MAX_SUBBAND_CNT	32
-+
-+struct ath12k_htt_pdev_puncture_stats_tlv {
-+	__le32 mac_id__word;
-+	__le32 direction;
-+	__le32 preamble;
-+	__le32 ppdu_type;
-+	__le32 subband_cnt;
-+	__le32 last_used_pattern_mask;
-+	__le32 num_subbands_used_cnt[ATH12K_HTT_PUNCT_STATS_MAX_SUBBAND_CNT];
-+} __packed;
-+
- #endif
--- 
-2.25.1
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
 
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
