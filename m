@@ -1,98 +1,106 @@
-Return-Path: <linux-wireless+bounces-13544-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13545-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA60A991408
-	for <lists+linux-wireless@lfdr.de>; Sat,  5 Oct 2024 05:00:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA8B699156B
+	for <lists+linux-wireless@lfdr.de>; Sat,  5 Oct 2024 10:55:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74FE21F23B35
-	for <lists+linux-wireless@lfdr.de>; Sat,  5 Oct 2024 03:00:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D983B21B15
+	for <lists+linux-wireless@lfdr.de>; Sat,  5 Oct 2024 08:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B9021BC2A;
-	Sat,  5 Oct 2024 03:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5634584D3E;
+	Sat,  5 Oct 2024 08:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="wwE3TcAk"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="keeIyN6L"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789AD231CA7
-	for <linux-wireless@vger.kernel.org>; Sat,  5 Oct 2024 03:00:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD16813DBBC;
+	Sat,  5 Oct 2024 08:55:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728097212; cv=none; b=phelhvr4qvHcvhalR4OiR2CS4lE7jC7Tx+8MaQj8YqzYLGX/D/BGeR6p2m285hMS8UTUs6K7oV2I+gB5IC1mopOptOSoYdV10y9zGqHUjaSFiVCoKvjkM0hJFGUsf+p41H1Wxieen40cEY2cgX8t/c7g2SFVZuSqY9WJUH4CyCw=
+	t=1728118527; cv=none; b=Ek2Q7ACjXDMiATRI/IDd4Wo6UGfupGqiWmywwOLtGP3B3AN3zvcqvjXr3cFYz8BNCUEeoOE+zeKUXl2w2M+AuTBkcgYxL5rTK0+XybNQ1iCnSGMNTQsGr55/0BZegWmQ8YowOVeZmcMSL9QriLXrKiBejKtKO8mMBXfjb3Lnkjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728097212; c=relaxed/simple;
-	bh=kvuqYRmmdLUwWD1gz6bgfo48GQJtpNBjvOgwVrzkBWk=;
-	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date; b=WGaLgSH8v9Q3rclIFwfIn+ULJa4HpHLTkee+rgGnbwM9Oytv3rOlfhWZz16HAUrRvZfmODpVKBnVvASH04oQzLWfdscNvb5YaSyc8Kb411PkvVOpk9CqWdtCAnUg+0D7MF+n/4O8h0B6jpu9La2KySiuXDRdpraT7lriVTsfgU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=wwE3TcAk; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4952xoOJ32458028, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1728097190; bh=kvuqYRmmdLUwWD1gz6bgfo48GQJtpNBjvOgwVrzkBWk=;
-	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date;
-	b=wwE3TcAkYn34Fuc40gJNS1RTK69gcPiDHnXlby5+RC9OYD9MTIJzsdwzKpCeqL/q8
-	 ZkO1vN33+eOxgDCz9MrhmBSWr/EjRAjmnbBOT9knMhiUtn6vyrKueC0AhBYCFfsXJN
-	 QZaXUjAtBXXwlbULpk0QjiNrZ1X4wZX9Z5Tb/ZAtVsYpQMs6JLTm3XtSgIH6CKppK4
-	 zLpMdtfWDMt9TpkAvkFJqLHjdA5oCG/C2jJsrR51hw9K6MTXBOIUQ3iHgq1UtpnBY+
-	 AsFiuNON4pWnHeIQpiwZbAR7OIfzoFEOlLWz+EUgeIJ7FESRXulgrU7gZhpAQZyvgM
-	 nv49QBd3iUNqg==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4952xoOJ32458028
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 5 Oct 2024 10:59:50 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Sat, 5 Oct 2024 10:59:50 +0800
-Received: from [127.0.1.1] (172.16.20.49) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Sat, 5 Oct
- 2024 10:59:50 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Martin Kaistra <martin.kaistra@linutronix.de>,
-        <linux-wireless@vger.kernel.org>
-CC: Jes Sorensen <Jes.Sorensen@gmail.com>, Ping-Ke Shih <pkshih@realtek.com>,
-        Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: Re: [PATCH] wifi: rtl8xxxu: Perform update_beacon_work when beaconing is enabled
-In-Reply-To: <20240930084955.455241-1-martin.kaistra@linutronix.de>
-References: <20240930084955.455241-1-martin.kaistra@linutronix.de>
+	s=arc-20240116; t=1728118527; c=relaxed/simple;
+	bh=Q9fN4mIljgWDFimuOMbRoPT+LKzZXB/LgeqSeq5NyoU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mZVeDmf4Buusm3cDnnVLlZSMRjYvpwLOm++OVgddznFNJppTD9Ba2cBtea5Y6h1w4TpUsACHR6FguMYex+6iXaM8mGyfHZ/EQZ/+kBQaUdu4vsI2ofwluZi3zfFnr9GbCAMzU6gIxSVYVKykF83VfXlmSSpcnlYnV/37fvvJyrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=keeIyN6L; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from gaggiata.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 004411F921;
+	Sat,  5 Oct 2024 10:55:19 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1728118519;
+	bh=CDFLEKcKHVxpFqH0nXKpZpV/aXgTu4xt6u1XvUqG51s=;
+	h=Received:From:To:Subject;
+	b=keeIyN6LSR25JuIY2SIcSA+mnr/DCGLQzTsrn/acIHK2dkEUN3tAxBFH6t27LHW3K
+	 wDGljIO2kHOF3ued7Lf0GJvPCF9Ex0Y/KZwaccJ/f60eacB9EauMTDDWmG5V7Jr7q9
+	 NZNi5M3wqnKOeSK++fiD+ojYcamoqXKYUKun6+URKuDjJDsIuZBmEgi7N+ln879T5s
+	 swISV2oNbpfsrgxlwzvRfHx+LxwDtLNIZ2dR++sQtMppy3OD4eiaFrLcGbtk3NFXwn
+	 l7ssm7ZJTBpgP00w7pS09JvetBeKisWeMXCesB3eWYG4E84+2FiOTTb72NKH97IsQf
+	 yFVdJDkCO2d0w==
+Received: by gaggiata.pivistrello.it (Postfix, from userid 1000)
+	id A99417F96B; Sat,  5 Oct 2024 10:55:18 +0200 (CEST)
+Date: Sat, 5 Oct 2024 10:55:18 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Brian Norris <briannorris@chromium.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Francesco Dolcini <francesco@dolcini.it>, Kalle Valo <kvalo@kernel.org>,
+	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	David Lin <yu-hao.lin@nxp.com>, kernel@pengutronix.de,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 02/12] wifi: mwifiex: fix MAC address handling
+Message-ID: <ZwD-9nV3o2fOpEYb@gaggiata.pivistrello.it>
+References: <20240918-mwifiex-cleanup-1-v2-0-2d0597187d3c@pengutronix.de>
+ <20240918-mwifiex-cleanup-1-v2-2-2d0597187d3c@pengutronix.de>
+ <ZwB3FCdpL85yA2Si@google.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Message-ID: <12a59502-9f3e-49e4-b567-b05666baf380@RTEXMBS04.realtek.com.tw>
-Date: Sat, 5 Oct 2024 10:59:50 +0800
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZwB3FCdpL85yA2Si@google.com>
 
-Martin Kaistra <martin.kaistra@linutronix.de> wrote:
-
-> In STA+AP concurrent mode, performing a scan operation on one vif
-> temporarily stops beacons on the other. When the scan is completed,
-> beacons are enabled again with BSS_CHANGED_BEACON_ENABLED.
+On Fri, Oct 04, 2024 at 04:15:32PM -0700, Brian Norris wrote:
+> On Wed, Sep 18, 2024 at 01:10:27PM +0200, Sascha Hauer wrote:
+> > Furthermore the driver doesn't use the permanent address to add the
+> > bss_num to, but instead the current MAC address increases each time
+> > we do a change_virtual_intf.
+> > 
+> > Fix this by initializing the MAC address once from the permanent MAC
+> > address during creation of the virtual interface and never touch it
+> > again. This also means that userspace can set a different MAC address
+> > which then stays like this forever and is not unexpectedly changed
+> > by the driver.
+> > 
+> > It is not clear how many (if any) MAC addresses after the permanent MAC
+> > address are reserved for a device, so set the locally admistered
+> > bit for all MAC addresses derived from the permanent address.
 > 
-> We can observe that no beacons are being sent when just
-> rtl8xxxu_start_tx_beacon() is being called.
-> 
-> Thus, also perform update_beacon_work in order to restore beaconing.
-> 
-> Fixes: cde8848cad0b ("wifi: rtl8xxxu: Add beacon functions")
-> Signed-off-by: Martin Kaistra <martin.kaistra@linutronix.de>
+> I think I'm generally supportive of the direction this changes things,
+> but I'm a bit hesitant about two things:
 
-1 patch(es) applied to rtw-next branch of rtw.git, thanks.
+FTR, I am hesitant for similar reasons. In addition there is my comment
+from the previous version on a specific use case potentially broken.
 
-d7063ed6758c wifi: rtl8xxxu: Perform update_beacon_work when beaconing is enabled
+> And I see that you rightly don't know how many addresses are actually
+> reserved, but I have an educated guess that it's not just 1. For one,
+> this driver used to default-create 3 interfaces:
 
----
-https://github.com/pkshih/rtw.git
+The MAC addresses on the module are not allocated by the Wi-Fi chip vendor (NXP,
+and before Marvell), but by whom is integrating the chip. I can try to ask
+a couple of vendors what they are doing on this regard, and if this is somehow
+suggested by NXP or they are just doing whatever they believe is right. Just to
+add a couple of more data points to this discussion.
+
+Francesco
 
 
