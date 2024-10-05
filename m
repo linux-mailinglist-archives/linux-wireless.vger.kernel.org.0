@@ -1,130 +1,95 @@
-Return-Path: <linux-wireless+bounces-13542-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13543-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 230709912F5
-	for <lists+linux-wireless@lfdr.de>; Sat,  5 Oct 2024 01:25:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 996F2991406
+	for <lists+linux-wireless@lfdr.de>; Sat,  5 Oct 2024 04:57:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEF29281AAF
-	for <lists+linux-wireless@lfdr.de>; Fri,  4 Oct 2024 23:24:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C9C7284067
+	for <lists+linux-wireless@lfdr.de>; Sat,  5 Oct 2024 02:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2796C14F118;
-	Fri,  4 Oct 2024 23:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C19C17C8D;
+	Sat,  5 Oct 2024 02:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="aTGvnViL"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="B3KV3paF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A309D14E2E6
-	for <linux-wireless@vger.kernel.org>; Fri,  4 Oct 2024 23:24:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C483810A18
+	for <linux-wireless@vger.kernel.org>; Sat,  5 Oct 2024 02:57:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728084296; cv=none; b=nQjgSDV0KZ3H7DJjH6btMrjXbdAxdl2eSFeZVTdwBLpGz7b7O7t2jfpo+2s6DW7EgIMxmh3T6UR7QxQtqRcoZZ4H4C5KHqW+qedQ3wPzGCxpd3TZ92WNNs0V/xck8wfCxt1LkwUxUld1yrXIXXos09rdvC82k3ysBPr7P0sk9yg=
+	t=1728097052; cv=none; b=PPolIp4q4x6DB/IAX8eCqrm4dVsdmehIWgNorT7wF3fe0IeC3OKkGbl8noIbM8CZ4vzZLUjVzPNfPppnDIfIFcRS8F8J+2aDg68RX/oCq2EV7Hln+fON9wFpDpkrzWNcSUBoOPwWXzG/H9Wf69GEjdRaYIv6/CvLl1F8Ez7l0iA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728084296; c=relaxed/simple;
-	bh=TJOu96rYMl60HiNFYN8472od4zNgX/vpXVk4giBXSLQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D3920QNt2SLIZa2IF8Et48WY/6V1QwbjSfmCq45yEpZIPXAaw4+j4Xr4psDy0HnKCrxzwxP7sbitepoC5QUawawAuy/XPD/Pts6iAyqXjg9YxRmzL1abswdG/+U65LXu1Le0uK9+AkDj5aKfi1Bxpe2tCdQZworOV6ujNZrupSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=aTGvnViL; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-7db1f13b14aso2134588a12.1
-        for <linux-wireless@vger.kernel.org>; Fri, 04 Oct 2024 16:24:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1728084294; x=1728689094; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=jTPa7+E4o1wGyCtejrtt8lh7LwXJ+ELK3Vr+c6O7bFA=;
-        b=aTGvnViLJKeosYjccBQXHGHaUEXsPC8wm0n+af22e8qRmd4wS7qywqNRHXVu3ARLyV
-         SC5lGUsOT5xPN5I9xPDmzVqK+2/zQ8Rgy+O/5pf/yrg8TF8J34NlGXw+9Bk8jgFyuj7G
-         Ox53BvJIlIPbC3gWPMLkBAgxIUu1Io9zwK6NU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728084294; x=1728689094;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jTPa7+E4o1wGyCtejrtt8lh7LwXJ+ELK3Vr+c6O7bFA=;
-        b=EEz90C1JO+NAkjsyL8d3Mpt9Kjoe1kVhXm6P7RpdUsBAvCpSjsubxgcVe6pSTwOl/b
-         IFy6nj9VgK9sJD7FEnX8UyXx7e5Vpdm/4XIOfuFLyRxfDq4gtYBJD/cnig2FexbkyLf2
-         rkQ/F9dvGEvslhn+LuIbgqfVf3e9MXIrweTSslS4c3ki1qeTZs7ze/2bEPvB3a64SOKh
-         ft/wcBLOv6yoPgeNMhjXcP0JlwIt+L9XKkfAIGj1wfECXgbw10kWHCMkdRK21y5R48cY
-         7fN89adVU6tSHvANlZbVspc98MkFblhoVf9lAo5JRDYy2n/QqVa/k9rGq8WQdC7CRbDj
-         pgbQ==
-X-Gm-Message-State: AOJu0YyyXln2fncj1P8CGKw3knGMnVp0UYnmhGAcJEwv55YDNFoL6hmb
-	vlQYOMlPtSr7wg65hsw+uaRsXFSVFC7h/7NnDmwrulSnAtJlrNseox84Fxpd5g==
-X-Google-Smtp-Source: AGHT+IF2R3tEmtJDKg1teHd/pUpxmNXBwOp9mFLYPfS4Sx/KLmiJLMGsstUxZheibiWLBKWpsCB5BA==
-X-Received: by 2002:a05:6a21:3947:b0:1d4:fd63:95bc with SMTP id adf61e73a8af0-1d6dfa25a7dmr6061489637.9.1728084294010;
-        Fri, 04 Oct 2024 16:24:54 -0700 (PDT)
-Received: from localhost ([2a00:79e0:2e14:7:431c:f73a:93be:1ac2])
-        by smtp.gmail.com with UTF8SMTPSA id 41be03b00d2f7-7e9f6c35e9esm535321a12.66.2024.10.04.16.24.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Oct 2024 16:24:53 -0700 (PDT)
-Date: Fri, 4 Oct 2024 16:24:51 -0700
-From: Brian Norris <briannorris@chromium.org>
-To: Alper Nebi Yasak <alpernebiyasak@gmail.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	David Lin <yu-hao.lin@nxp.com>,
-	Dmitry Antipov <dmantipov@yandex.ru>, Kalle Valo <kvalo@kernel.org>,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Sascha Hauer <s.hauer@pengutronix.de>, Kees Cook <kees@kernel.org>,
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: Re: [PATCH] wifi: mwifiex: Fix memcpy() field-spanning write warning
- in mwifiex_config_scan()
-Message-ID: <ZwB5Q4_P42DVMr04@google.com>
-References: <20240917150938.843879-1-alpernebiyasak@gmail.com>
+	s=arc-20240116; t=1728097052; c=relaxed/simple;
+	bh=OFEv54KQaMkTqw8aUooCp4EwuoQXhrFD3h9Dt4ekVbU=;
+	h=From:To:Subject:In-Reply-To:References:MIME-Version:Content-Type:
+	 Message-ID:Date; b=lMH/ja3MApRlz6/gm4i1FpjGD3Mo9geethi2UgpUvv1Kd2CzHv3wEFVoAytKLmzVBD8ElFQSZDaP9OEREDqmNNVYl5fgSGl6HeExmypfHXRREfodtR1euDF43bWg8Js0ikN+calwtFssLxrtGtVFB4jbFyxU8OB5/8vY4lsU2GA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=B3KV3paF; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4952vPbiD2457294, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1728097045; bh=OFEv54KQaMkTqw8aUooCp4EwuoQXhrFD3h9Dt4ekVbU=;
+	h=From:To:Subject:In-Reply-To:References:MIME-Version:Content-Type:
+	 Message-ID:Date;
+	b=B3KV3paFxe52taHoV8mm96H1hYXXC7n4ym9O7hJ048Tod1SODRWe+ZmXv2EJI/rTf
+	 8F99Qwd0snd0cq0xlMjHuhEjCJP5bWBpvM3Hy3nz6wz8x3VSCOiO1BLffu/2/dXOY6
+	 HyvEGx8rLH+1Z5XWOhdz7d0iro36Q7CwlsSCOOqcPM9iB0YCZWe/q5hBft4zkIWuhu
+	 Ler6kooa8NqLu3mOmCkoNMEvBGWPMvtCoGJI3+E5Zlm5kz4aIX1xA8rsosCPYcEFTr
+	 dOa3JUZiv9J43pkpQF4UInf+9H28vRjZgfkORUIcBZOcnuhHyWILbV13QWLLSrBCqG
+	 ajJyApl7Z7cbw==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4952vPbiD2457294
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Sat, 5 Oct 2024 10:57:25 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Sat, 5 Oct 2024 10:57:26 +0800
+Received: from [127.0.1.1] (172.16.20.49) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Sat, 5 Oct
+ 2024 10:57:25 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] wifi: rtw89: debug: add beacon RSSI for debugging
+In-Reply-To: <20240927013512.7106-1-pkshih@realtek.com>
+References: <20240927013512.7106-1-pkshih@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240917150938.843879-1-alpernebiyasak@gmail.com>
+Content-Type: text/plain
+Message-ID: <c97d22d6-7d04-45d5-9d99-8aa783148799@RTEXMBS04.realtek.com.tw>
+Date: Sat, 5 Oct 2024 10:57:25 +0800
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-On Tue, Sep 17, 2024 at 06:08:41PM +0300, Alper Nebi Yasak wrote:
-> Replace one-element array with a flexible-array member in `struct
-> mwifiex_ie_types_wildcard_ssid_params` to fix the following warning
-> on a MT8173 Chromebook (mt8173-elm-hana):
-> 
-> [  356.775250] ------------[ cut here ]------------
-> [  356.784543] memcpy: detected field-spanning write (size 6) of single field "wildcard_ssid_tlv->ssid" at drivers/net/wireless/marvell/mwifiex/scan.c:904 (size 1)
-> [  356.813403] WARNING: CPU: 3 PID: 742 at drivers/net/wireless/marvell/mwifiex/scan.c:904 mwifiex_scan_networks+0x4fc/0xf28 [mwifiex]
-> 
-> The "(size 6)" above is exactly the length of the SSID of the network
-> this device was connected to. The source of the warning looks like:
-> 
->     ssid_len = user_scan_in->ssid_list[i].ssid_len;
->     [...]
->     memcpy(wildcard_ssid_tlv->ssid,
->            user_scan_in->ssid_list[i].ssid, ssid_len);
-> 
-> Also adjust a #define that uses sizeof() on this struct to keep the
-> value same as before.
-> 
-> Signed-off-by: Alper Nebi Yasak <alpernebiyasak@gmail.com>
-> ---
-> I found these relevant patches that modify other such arrays, where the
-> second one removes a -1 from some sizeof() calculation:
-> 
-> https://lore.kernel.org/lkml/Y9xkECG3uTZ6T1dN@work/T/#u
-> https://lore.kernel.org/lkml/ZsZa5xRcsLq9D+RX@elsanto/T/#u
-> 
-> So I think we need the +1 to keep things same. But it appears to work
-> fine without it, so I'm not sure. Maybe it should've had a -1 before
-> that I would remove with this?
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
-Thanks for the investigation and patch! I believe I agree with the other
-comments, that then "+ 1" isn't necessary. It's just a wasteful extra
-byte of allocation. Can you send a v2? (Bonus: with the suggested Fixes
-tag. Double bonus if you test KASAN with __counted_by, for a second
-patch.)
+> In range test, the RSSI is helpful to check attenuation of cable and align
+> difference between environments. Since data packets can be transmitted with
+> different rate and power, the RSSI of all packets can be variant.
+> Oppositely beacon is transmitted with the same rate and power, so beacon
+> RSSI will be relatively invariant, and more helpful to diagnose problems.
+> 
+> The output of beacon RSSI in unit of dBm looks like:
+> 
+>   Beacon: 19 (-33 dBm), TF: 0
+> 
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Thanks,
-Brian
+1 patch(es) applied to rtw-next branch of rtw.git, thanks.
+
+284939d7e87f wifi: rtw89: debug: add beacon RSSI for debugging
+
+---
+https://github.com/pkshih/rtw.git
+
 
