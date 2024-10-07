@@ -1,181 +1,92 @@
-Return-Path: <linux-wireless+bounces-13599-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13600-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6F46992AFA
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 14:02:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E135992BDA
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 14:33:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1691A1C22254
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 12:02:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F32E1C20311
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 12:33:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463861D2F48;
-	Mon,  7 Oct 2024 12:01:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gq7Y96J/"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1891C3F36;
+	Mon,  7 Oct 2024 12:33:25 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from IgnazServer.ignaz.org (IgnazServer.ignaz.org [37.252.120.146])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1EF31D2F6F
-	for <linux-wireless@vger.kernel.org>; Mon,  7 Oct 2024 12:01:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3BAA1E519
+	for <linux-wireless@vger.kernel.org>; Mon,  7 Oct 2024 12:33:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.252.120.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728302495; cv=none; b=HtLB4cWHo+O5auiQTuGo94+vf1/128jyG/33IeO08U9N1exrE0F9Oibso0OE7abe/kgO3Oib5I5S6pnrBgvyY4bOyl28Tz5X1ji8BUQMRmWQI+cBVNPDnmXi4RzA4uV3QNt4QksjqBRiFvrorZRqxrXn0DhhL0XHJbh1duu45u0=
+	t=1728304405; cv=none; b=dGfzwKN1lGC2u42IWuSywgS2gYC1VF1HRGlvn1xsfa5a3U+mm3ws7OFIt8488yDJCgFfjBMKYO3GdJRP0hIAaGjOREnV7I+9E+D3iqVRb6EAf4j2rwOQI2xJRYEIOH0BTDUFLnawA3AagcsOpnYbhaIwnvsJOAkWH/zI+VroAMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728302495; c=relaxed/simple;
-	bh=jJDNL2benmMytKWXJ3lvW8RJWBf/uml2YXNi6MCdBfI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nZYV1B/XfffhkbquGaO8DlZYbu98K2axt+bF0VragUPUGvLOqwyV0n3Ez/gRouCFFdpkirwhCVE1T6y5aC21U4FErrOdCss1Qncu3mT3jZUUkJVqLE4028b1oLr7OsahdAVArSvGWxjQC7zwCJR4xMIu1vPU1f+WpVSjuXOgC2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gq7Y96J/; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728302493; x=1759838493;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=jJDNL2benmMytKWXJ3lvW8RJWBf/uml2YXNi6MCdBfI=;
-  b=Gq7Y96J/URIAeKiFXVTYfeuZWKagcXr4CaXAa3ErFt5XlDYWk8Ko4SdA
-   27sCsvBv2u/WifjdCYkvWTz9mppNHXBxQqMI18vaK7dlyKelyvlwlXEt2
-   /P7OQFFWNfvxe8kkMCzFozeP1zJ6SY7QKpMzklX7xiY5YEkfzv7rbwVjf
-   lPyI8MmXTFoqm68ZodHHFhIRpyIy3hoMKG7m2IzwtVj3vKW+Z/1cWAFma
-   /vcPQwtLnSZFVRdSdIKkxlbyMERkeKOWE6Spp6rmdV4MUigeY6jC359+w
-   UetmLYnF2/L+Tofb4bap2xXkeWS7TTGZpc8Pym/7vGtUkbZWhpkA2DC6D
-   A==;
-X-CSE-ConnectionGUID: VT+a21r/Ta+q9KN7Am8OFQ==
-X-CSE-MsgGUID: tD9wytiITBecgCm8oGHsXA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11217"; a="38099449"
-X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; 
-   d="scan'208";a="38099449"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2024 05:01:33 -0700
-X-CSE-ConnectionGUID: zdTWibY9S96LpiwncKRmWg==
-X-CSE-MsgGUID: 8v+D7JmoQp+SJtTFxtaZdw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; 
-   d="scan'208";a="75019288"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2024 05:01:32 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 14/14] wifi: mac80211: expose ieee80211_chan_width_to_rx_bw() to drivers
-Date: Mon,  7 Oct 2024 15:00:58 +0300
-Message-Id: <20241007144851.af003cb4a088.I8b5d29504b726caae24af6013c65b3daebe842a2@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241007120058.1822752-1-miriam.rachel.korenblit@intel.com>
-References: <20241007120058.1822752-1-miriam.rachel.korenblit@intel.com>
+	s=arc-20240116; t=1728304405; c=relaxed/simple;
+	bh=Y4JoxDTrrN788jGFl0A7n810QkY4yiyHIyTqYGlwCqo=;
+	h=From:To:Cc:Subject:References:In-Reply-To:Message-ID:Date:
+	 Content-Type:MIME-Version; b=DrelHKV/lZjx6jKG9v8bCsNF2nq69z1h0sl1L5d2JbGyLouSL1hKhsLAAJUlSAPHdfb0GQ29G7JwhKNPc3KmGRTGIfl/mLWWrxcNUgpGIh4cLYTQ/EDflkmZ/prTs2FBa47HE3m1VvGbC+wYmynrP+21iKIbxPeqH9kNGHpTp1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ignaz.org; spf=pass smtp.mailfrom=ignaz.org; arc=none smtp.client-ip=37.252.120.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ignaz.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ignaz.org
+Received: from ignaz.org (ignaz.org [37.252.120.146])
+	by IgnazServer.ignaz.org (IgnazServer) with ESMTPSA id 3F02A4421F;
+	Mon, 07 Oct 2024 14:25:25 +0200 (CEST)
+From: Marcel =?utf-8?b?V2Vpw59lbmJhY2g=?= <mweissenbach@ignaz.org>
+To: Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] wifi: rtw89: pci: early chips only enable 36-bit DMA on
+ specific PCI hosts
+References: <87a5fs81pq.fsf@kernel.org>
+In-Reply-To: <87a5fs81pq.fsf@kernel.org>
+Message-ID: <20241007122524.Horde.2JAdlkKXx-zqmJFI4TBIqZH@ignaz.org>
+User-Agent: Horde Application Framework 5
+Date: Mon, 07 Oct 2024 12:25:24 +0000
+Content-Type: text/plain; charset=utf-8
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
-
-Drivers might need to also do this calculation, no point in
-them duplicating the code. Since it's so simple, just make
-it an inline.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- include/net/mac80211.h     | 27 +++++++++++++++++++++++++++
- net/mac80211/ieee80211_i.h |  2 --
- net/mac80211/vht.c         | 22 ----------------------
- 3 files changed, 27 insertions(+), 24 deletions(-)
-
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index af70ad504cf2..7062638cec2f 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -7704,6 +7704,33 @@ void ieee80211_set_active_links_async(struct ieee80211_vif *vif,
-  */
- void ieee80211_send_teardown_neg_ttlm(struct ieee80211_vif *vif);
- 
-+/**
-+ * ieee80211_chan_width_to_rx_bw - convert channel width to STA RX bandwidth
-+ * @width: the channel width value to convert
-+ * Return: the STA RX bandwidth value for the channel width
-+ */
-+static inline enum ieee80211_sta_rx_bandwidth
-+ieee80211_chan_width_to_rx_bw(enum nl80211_chan_width width)
-+{
-+	switch (width) {
-+	default:
-+		WARN_ON_ONCE(1);
-+		fallthrough;
-+	case NL80211_CHAN_WIDTH_20_NOHT:
-+	case NL80211_CHAN_WIDTH_20:
-+		return IEEE80211_STA_RX_BW_20;
-+	case NL80211_CHAN_WIDTH_40:
-+		return IEEE80211_STA_RX_BW_40;
-+	case NL80211_CHAN_WIDTH_80:
-+		return IEEE80211_STA_RX_BW_80;
-+	case NL80211_CHAN_WIDTH_160:
-+	case NL80211_CHAN_WIDTH_80P80:
-+		return IEEE80211_STA_RX_BW_160;
-+	case NL80211_CHAN_WIDTH_320:
-+		return IEEE80211_STA_RX_BW_320;
-+	}
-+}
-+
- /* for older drivers - let's not document these ... */
- int ieee80211_emulate_add_chanctx(struct ieee80211_hw *hw,
- 				  struct ieee80211_chanctx_conf *ctx);
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index edb2d55a5126..4248e299a331 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -2194,8 +2194,6 @@ ieee80211_sta_cur_vht_bw(struct link_sta_info *link_sta)
- 	return _ieee80211_sta_cur_vht_bw(link_sta, NULL);
- }
- void ieee80211_sta_init_nss(struct link_sta_info *link_sta);
--enum ieee80211_sta_rx_bandwidth
--ieee80211_chan_width_to_rx_bw(enum nl80211_chan_width width);
- enum nl80211_chan_width
- ieee80211_sta_cap_chan_bw(struct link_sta_info *link_sta);
- void ieee80211_process_mu_groups(struct ieee80211_sub_if_data *sdata,
-diff --git a/net/mac80211/vht.c b/net/mac80211/vht.c
-index 7c878fb69f9a..2432d3bee7ce 100644
---- a/net/mac80211/vht.c
-+++ b/net/mac80211/vht.c
-@@ -479,28 +479,6 @@ ieee80211_sta_rx_bw_to_chan_width(struct link_sta_info *link_sta)
- 	}
- }
- 
--enum ieee80211_sta_rx_bandwidth
--ieee80211_chan_width_to_rx_bw(enum nl80211_chan_width width)
--{
--	switch (width) {
--	case NL80211_CHAN_WIDTH_20_NOHT:
--	case NL80211_CHAN_WIDTH_20:
--		return IEEE80211_STA_RX_BW_20;
--	case NL80211_CHAN_WIDTH_40:
--		return IEEE80211_STA_RX_BW_40;
--	case NL80211_CHAN_WIDTH_80:
--		return IEEE80211_STA_RX_BW_80;
--	case NL80211_CHAN_WIDTH_160:
--	case NL80211_CHAN_WIDTH_80P80:
--		return IEEE80211_STA_RX_BW_160;
--	case NL80211_CHAN_WIDTH_320:
--		return IEEE80211_STA_RX_BW_320;
--	default:
--		WARN_ON_ONCE(1);
--		return IEEE80211_STA_RX_BW_20;
--	}
--}
--
- /* FIXME: rename/move - this deals with everything not just VHT */
- enum ieee80211_sta_rx_bandwidth
- _ieee80211_sta_cur_vht_bw(struct link_sta_info *link_sta,
--- 
-2.34.1
-
+Hi there,
+ 
+just wanted to kindly ask in which Kernel Version this patch will be implemented (given it is not yet).
+ 
+I assume it did not make it into 6.11.2, or?
+ 
+"Kalle Valo" kvalo@kernel.org – 2024年9月28日 20:19
+> Ping-Ke Shih <pkshih@realtek.com> writes:
+> 
+> > Ping-Ke Shih <pkshih@realtek.com> wrote:
+> >> 
+> >> The early chips including RTL8852A, RTL8851B, RTL8852B and RTL8852BT have
+> >> interoperability problems of 36-bit DMA with some PCI hosts. Rollback
+> >> to 32-bit DMA by default, and only enable 36-bit DMA for tested platforms.
+> >> 
+> >> Since all Intel platforms we have can work correctly, add the vendor ID to
+> >> white list. Otherwise, list vendor/device ID of bridge we have tested.
+> >> 
+> >> Fixes: 1fd4b3fe52ef ("wifi: rtw89: pci: support 36-bit PCI DMA address")
+> >> Reported-by: Marcel Weißenbach <mweissenbach@ignaz.org>
+> >> Closes:
+> >> https://lore.kernel.org/linux-wireless/20240918073237.Horde.VLueh0_KaiDw-9asEEcdM84@ignaz.org/T/#m07c5
+> >> 694df1acb173a42e1a0bab7ac22bd231a2b8
+> >> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> >
+> > Could you please queue this patch to wireless tree? Because RTL8852BE becomes
+> > unusable for some users. I assigned this patch to you in patchwork, if you
+> > don't think so and have other suggestions, please let me know. Thanks. 
+> >
+> > The user has reported this patch works as expected [1], so add his tested-by:
+> > Tested-by: Marcel Weißenbach <mweissenbach@ignaz.org>
+> >
+> > Also, I think this should Cc stable, so
+> > Cc: stable@vger.kernel.org
+> 
+> Ok, I'll add all that.
+> 
+>
 
