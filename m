@@ -1,71 +1,70 @@
-Return-Path: <linux-wireless+bounces-13586-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13587-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDE2B992AEB
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 14:01:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E81B992AEC
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 14:01:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D5731F2343A
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 12:01:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4FDAB23CAB
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 12:01:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B8C81D1F7B;
-	Mon,  7 Oct 2024 12:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB901D26E0;
+	Mon,  7 Oct 2024 12:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mAabVkKq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FcrirI3D"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5391AA7B4
-	for <linux-wireless@vger.kernel.org>; Mon,  7 Oct 2024 12:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B448D18B483
+	for <linux-wireless@vger.kernel.org>; Mon,  7 Oct 2024 12:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728302476; cv=none; b=oLE3M8kPQVeZPxpZun3YC5BfC0og1j6q0j1rq61vBFBpJb2IRBqxIoUsXKVBklKk9KAcl/POXYxlehoMrrS7EiefWmwLrgH3bQ+iES+16JeRbubc9srQfF4obJr2crR533Co4SC5PyRJu8BtHD36D9I1eX2gsAD8/Cbtcpq7UMA=
+	t=1728302477; cv=none; b=jxpY4wGZFrth8hdPoDHAVLw44en1ajWnLa87NlfmO89byAqzi3YHvCg+mu6dkSa51pr8hxRiB31gpXaNKBwFmbzBgvhAZ85OlYGINpZfimfJADiCxNVWaE60twOKsN8XotvLDvSyQKHAE7Mk91EEJqZ90YX3djx42KFgwItzxrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728302476; c=relaxed/simple;
-	bh=8KceWwUds778BALn+IZ1Eo2KWDvU/ZYUX2F1Luvelq8=;
+	s=arc-20240116; t=1728302477; c=relaxed/simple;
+	bh=z8fhY9s4+wMsKs8l7kO4ngasxocXRbHgKO+pZTcIz48=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UkO5itWD2Ceco6WPiXtvQy/w0OVuqOitJrjXhamz/+42EX8TOsL1xR5Qd03/3C6+SCehIeUaR9fcq9IP+x9YPGoJrQj94QihH6WKFqpSZsrmUdFdeSuO98quhiYJXl39ti4gK6qtEYDO0Oc9zwEspk50wOw+k4n6nM7jvc7ziJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mAabVkKq; arc=none smtp.client-ip=192.198.163.9
+	 MIME-Version; b=K7RJpa1ZOy3v+FyTqX2UF8w/LHndxXAnHyB0qEHPiy7BBADNttotnLXc49w51YRAx/8qCFX7Slyt2HL8KZPg2lDDhy9a639pMoV+cZP/Nf5e1Ga/5rhzvRH9t57FI2xicLGOO7yf4etH6GMGrkhIo7qTnuzUh6GJBgSWYy2HycI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FcrirI3D; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728302474; x=1759838474;
+  t=1728302475; x=1759838475;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=8KceWwUds778BALn+IZ1Eo2KWDvU/ZYUX2F1Luvelq8=;
-  b=mAabVkKqd3RxyFy2SaqyQYM7lU7FaJBduuwoW0WlYQfwpCz1ZPOs7cso
-   3A4zExzSCdYAvZtOr30WWBOAr5vQaSCJHt79AVj6wwgl2/+kGZnRR/Ol7
-   XlDTRBo/Y5pwZkgVwhhtNWPQXhhOJ5wPEXvxSOhs169PFnUKt+9JouYmZ
-   hsyy1FJwL4Osq4R/4s2et1hYKCEGsTn3bJHC7pvxCDEU4WHcWCWL5tmWE
-   RMD+Nu9zP3PjHoFRREirzJKm3XHQ5Px6U7oLOcpwl5nQBEwQ+mx5PP7uk
-   +uqzOHv3SWJKEJN63TJkTj/Z73PnxvYEPkwK8M5tRnD2CN9nHJm/G8FKL
-   w==;
-X-CSE-ConnectionGUID: MCKQoU3AT16nS2DNth/hUw==
-X-CSE-MsgGUID: lKma1yHSR+6HaUBagnfMxw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11217"; a="38099366"
+  bh=z8fhY9s4+wMsKs8l7kO4ngasxocXRbHgKO+pZTcIz48=;
+  b=FcrirI3Dh4CtSahx5SG6p2MeyPGouuIg9oNxjy8nqqw6TAob8wqD+Eu+
+   z1M6p1QWu1hQis8C+4GHjxwPRWZNVWPHFAyDfRmxCi5Kxb5/rvi76LSjr
+   +5UcfIuCAmtmKix8W3c2tHLnOCM8KR0nnPhDm2Ht3tGSQa8q5mVjwlqTR
+   QpJXeHzgbgVdjYyN8PY2KAfXb9K72NtoDeMOH9r/0fRVhkUZ1YLmnbrjs
+   j/ITGLsjbVy5NTirrJajjeDp8pQ8YWkp32eVS7jcXWATpE92hYkPiO7AU
+   ZhtIOYdV1aD/Sskk8PTQKo+l5I5uwhw4q98cJunqJTUG41jIg3AhtJu+I
+   g==;
+X-CSE-ConnectionGUID: MiXXJLFcQCePa3xX77+MRw==
+X-CSE-MsgGUID: K+i+cM4OR120ZS+O0pTP+g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11217"; a="38099373"
 X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; 
-   d="scan'208";a="38099366"
+   d="scan'208";a="38099373"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2024 05:01:14 -0700
-X-CSE-ConnectionGUID: IgdMnebLT8u9vcLSXTPmhA==
-X-CSE-MsgGUID: BeXcJkPoQleda4piVtr7tw==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2024 05:01:15 -0700
+X-CSE-ConnectionGUID: 6VRhbvJ2TASDxG1jGQmw8Q==
+X-CSE-MsgGUID: 7102S+S6QZel9zRfQw/LQw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; 
-   d="scan'208";a="75019229"
+   d="scan'208";a="75019236"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2024 05:01:12 -0700
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2024 05:01:14 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Ilan Peer <ilan.peer@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 01/14] wifi: mac80211: Add support to indicate that a new interface is to be added
-Date: Mon,  7 Oct 2024 15:00:45 +0300
-Message-Id: <20241007144851.e0e8563e1c30.Ifccc96a46a347eb15752caefc9f4eff31f75ed47@changeid>
+Subject: [PATCH 02/14] wifi: cfg80211: disallow SMPS in AP mode
+Date: Mon,  7 Oct 2024 15:00:46 +0300
+Message-Id: <20241007144851.fe1fc46484cf.I8676fb52b818a4bedeb9c25b901e1396277ffc0b@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241007120058.1822752-1-miriam.rachel.korenblit@intel.com>
 References: <20241007120058.1822752-1-miriam.rachel.korenblit@intel.com>
@@ -78,128 +77,111 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-Add support to indicate to the driver that an interface is about to be
-added so that the driver could prepare its resources early if it needs
-so.
+In practice, userspace hasn't been able to set this for many
+years, and mac80211 has already rejected it (which is now no
+longer needed), so reject SMPS mode (other than "OFF" to be
+a bit more compatible) in AP mode. Also remove the parameter
+from the AP settings struct.
 
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- include/net/mac80211.h    |  8 ++++++++
- net/mac80211/cfg.c        | 18 ++++++++++++++++++
- net/mac80211/driver-ops.h | 12 ++++++++++++
- net/mac80211/trace.h      | 19 +++++++++++++++++++
- 4 files changed, 57 insertions(+)
+ .../net/wireless/quantenna/qtnfmac/commands.c |  2 +-
+ include/net/cfg80211.h                        |  2 --
+ net/mac80211/cfg.c                            |  3 --
+ net/wireless/nl80211.c                        | 30 ++-----------------
+ 4 files changed, 4 insertions(+), 33 deletions(-)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 954dff901b69..479b61fdfb96 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -4444,6 +4444,12 @@ struct ieee80211_prep_tx_info {
-  *	if the requested TID-To-Link mapping can be accepted or not.
-  *	If it's not accepted the driver may suggest a preferred mapping and
-  *	modify @ttlm parameter with the suggested TID-to-Link mapping.
-+ * @prep_add_interface: prepare for interface addition. This can be used by
-+ *      drivers to prepare for the addition of a new interface, e.g., allocate
-+ *      the needed resources etc. This callback doesn't guarantee that an
-+ *      interface with the specified type would be added, and thus drivers that
-+ *      implement this callback need to handle such cases. The type is the full
-+ *      &enum nl80211_iftype.
-  */
- struct ieee80211_ops {
- 	void (*tx)(struct ieee80211_hw *hw,
-@@ -4828,6 +4834,8 @@ struct ieee80211_ops {
- 	enum ieee80211_neg_ttlm_res
- 	(*can_neg_ttlm)(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			struct ieee80211_neg_ttlm *ttlm);
-+	void (*prep_add_interface)(struct ieee80211_hw *hw,
-+				   enum nl80211_iftype type);
- };
- 
- /**
+diff --git a/drivers/net/wireless/quantenna/qtnfmac/commands.c b/drivers/net/wireless/quantenna/qtnfmac/commands.c
+index 9540ad6196d7..956c5763662f 100644
+--- a/drivers/net/wireless/quantenna/qtnfmac/commands.c
++++ b/drivers/net/wireless/quantenna/qtnfmac/commands.c
+@@ -257,7 +257,7 @@ int qtnf_cmd_send_start_ap(struct qtnf_vif *vif,
+ 	cmd->beacon_interval = cpu_to_le16(s->beacon_interval);
+ 	cmd->hidden_ssid = qlink_hidden_ssid_nl2q(s->hidden_ssid);
+ 	cmd->inactivity_timeout = cpu_to_le16(s->inactivity_timeout);
+-	cmd->smps_mode = s->smps_mode;
++	cmd->smps_mode = NL80211_SMPS_OFF;
+ 	cmd->p2p_ctwindow = s->p2p_ctwindow;
+ 	cmd->p2p_opp_ps = s->p2p_opp_ps;
+ 	cmd->pbss = s->pbss;
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 69ec1eb41a09..c8ce5c2e14f4 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -1460,7 +1460,6 @@ struct cfg80211_unsol_bcast_probe_resp {
+  * @crypto: crypto settings
+  * @privacy: the BSS uses privacy
+  * @auth_type: Authentication type (algorithm)
+- * @smps_mode: SMPS mode
+  * @inactivity_timeout: time in seconds to determine station's inactivity.
+  * @p2p_ctwindow: P2P CT Window
+  * @p2p_opp_ps: P2P opportunistic PS
+@@ -1498,7 +1497,6 @@ struct cfg80211_ap_settings {
+ 	struct cfg80211_crypto_settings crypto;
+ 	bool privacy;
+ 	enum nl80211_auth_type auth_type;
+-	enum nl80211_smps_mode smps_mode;
+ 	int inactivity_timeout;
+ 	u8 p2p_ctwindow;
+ 	bool p2p_opp_ps;
 diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 847304a3a29a..ce9558cd1576 100644
+index ce9558cd1576..548b9bbdac04 100644
 --- a/net/mac80211/cfg.c
 +++ b/net/mac80211/cfg.c
-@@ -194,6 +194,24 @@ static struct wireless_dev *ieee80211_add_iface(struct wiphy *wiphy,
- 		}
+@@ -1312,9 +1312,6 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
+ 	if (old)
+ 		return -EALREADY;
+ 
+-	if (params->smps_mode != NL80211_SMPS_OFF)
+-		return -EOPNOTSUPP;
+-
+ 	link->smps_mode = IEEE80211_SMPS_OFF;
+ 
+ 	link->needed_rx_chains = sdata->local->rx_chains;
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 9ab777e0bd4d..3a434f4654ab 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -6227,33 +6227,9 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ 			goto out;
  	}
  
-+	/* Let the driver know that an interface is going to be added.
-+	 * Indicate so only for interface types that will be added to the
-+	 * driver.
-+	 */
-+	switch (type) {
-+	case NL80211_IFTYPE_AP_VLAN:
-+		break;
-+	case NL80211_IFTYPE_MONITOR:
-+		if (!ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF) ||
-+		    !(params->flags & MONITOR_FLAG_ACTIVE))
-+			break;
-+		fallthrough;
-+	default:
-+		drv_prep_add_interface(local,
-+				       ieee80211_vif_type_p2p(&sdata->vif));
-+		break;
-+	}
-+
- 	return wdev;
- }
+-	if (info->attrs[NL80211_ATTR_SMPS_MODE]) {
+-		params->smps_mode =
+-			nla_get_u8(info->attrs[NL80211_ATTR_SMPS_MODE]);
+-		switch (params->smps_mode) {
+-		case NL80211_SMPS_OFF:
+-			break;
+-		case NL80211_SMPS_STATIC:
+-			if (!(rdev->wiphy.features &
+-			      NL80211_FEATURE_STATIC_SMPS)) {
+-				err = -EINVAL;
+-				goto out;
+-			}
+-			break;
+-		case NL80211_SMPS_DYNAMIC:
+-			if (!(rdev->wiphy.features &
+-			      NL80211_FEATURE_DYNAMIC_SMPS)) {
+-				err = -EINVAL;
+-				goto out;
+-			}
+-			break;
+-		default:
+-			err = -EINVAL;
+-			goto out;
+-		}
+-	} else {
+-		params->smps_mode = NL80211_SMPS_OFF;
+-	}
++	if (info->attrs[NL80211_ATTR_SMPS_MODE] &&
++	    nla_get_u8(info->attrs[NL80211_ATTR_SMPS_MODE]) != NL80211_SMPS_OFF)
++		return -EOPNOTSUPP;
  
-diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
-index d382d9729e85..48bc2da728c0 100644
---- a/net/mac80211/driver-ops.h
-+++ b/net/mac80211/driver-ops.h
-@@ -1728,4 +1728,16 @@ drv_can_neg_ttlm(struct ieee80211_local *local,
- 
- 	return res;
- }
-+
-+static inline void
-+drv_prep_add_interface(struct ieee80211_local *local,
-+		       enum nl80211_iftype type)
-+{
-+	trace_drv_prep_add_interface(local, type);
-+	if (local->ops->prep_add_interface)
-+		local->ops->prep_add_interface(&local->hw, type);
-+
-+	trace_drv_return_void(local);
-+}
-+
- #endif /* __MAC80211_DRIVER_OPS */
-diff --git a/net/mac80211/trace.h b/net/mac80211/trace.h
-index dc498cd8cd91..e6f0ce8e5d43 100644
---- a/net/mac80211/trace.h
-+++ b/net/mac80211/trace.h
-@@ -3154,6 +3154,25 @@ TRACE_EVENT(drv_neg_ttlm_res,
- 		  LOCAL_PR_ARG, VIF_PR_ARG, __entry->res
- 	)
- );
-+
-+TRACE_EVENT(drv_prep_add_interface,
-+	    TP_PROTO(struct ieee80211_local *local,
-+		     enum nl80211_iftype type),
-+
-+	TP_ARGS(local, type),
-+	TP_STRUCT__entry(LOCAL_ENTRY
-+			 __field(u32, type)
-+	),
-+
-+	TP_fast_assign(LOCAL_ASSIGN;
-+		       __entry->type = type;
-+	),
-+
-+	TP_printk(LOCAL_PR_FMT  " type: %u\n ",
-+		  LOCAL_PR_ARG, __entry->type
-+	)
-+);
-+
- #endif /* !__MAC80211_DRIVER_TRACE || TRACE_HEADER_MULTI_READ */
- 
- #undef TRACE_INCLUDE_PATH
+ 	params->pbss = nla_get_flag(info->attrs[NL80211_ATTR_PBSS]);
+ 	if (params->pbss && !rdev->wiphy.bands[NL80211_BAND_60GHZ]) {
 -- 
 2.34.1
 
