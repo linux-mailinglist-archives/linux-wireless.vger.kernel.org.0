@@ -1,194 +1,242 @@
-Return-Path: <linux-wireless+bounces-13658-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13659-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 634EC993A42
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2024 00:35:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DBF6993AA7
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2024 01:07:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E1D01C23216
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 22:35:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C2AAB22B16
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 23:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF57218DF96;
-	Mon,  7 Oct 2024 22:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0711516D4E6;
+	Mon,  7 Oct 2024 23:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="e3VL5Ud8"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="EBm71lZN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568B518BBBD
-	for <linux-wireless@vger.kernel.org>; Mon,  7 Oct 2024 22:35:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D6913D8B1
+	for <linux-wireless@vger.kernel.org>; Mon,  7 Oct 2024 23:06:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728340529; cv=none; b=XM97ud9js2acMlxz9Lz1MK4tkynCVNVxX6iPu887QJcq8NgksGwr54CAlMKtzVmyNA4qysEYWi2dzGcUl5PHIUGyXPiXCn5fnpQDaAVXtgrIk52ULEaECTI3drsYbN8wJRws5j5C2NmJooPnZYDvA7dABZ4Om27woVywVa5jgmc=
+	t=1728342411; cv=none; b=HnLyXHiVx6A5Sa2qMrOucyDel/t/KVLOxY6oCeA/mtZORBUS50xs9l1a/uL1V5vwCrnTs4D14IuwBiioHoXv8KNsG2x6z6YB3H2QDzA3CQAYptD8iWqidCu2TKfG2ymw8JrLwQzZGjBqZgGw40qHY1MSobLkH/cfQ9jbGuB99h8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728340529; c=relaxed/simple;
-	bh=gesjil9Y0RZgbcjmX5qHd/S97rHztDCcedkOm+1cl0k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=J5jJ1GE1mcF8Pn3apuZcNbHtQ9J30CE+QfArQn9I6FclTXXYajo+yQEMfhVjp+RH6Wc4QCnwVFcaBgM2+9pRoMYuca8nqbSzBrnvvZgMKLtsKBYSFbT8H9D/YFonclOG2wbHB2CIv92JMUx32dr0c2eeddHLbd5ImcGT6gO4t8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=e3VL5Ud8; arc=none smtp.client-ip=209.85.219.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e25d164854dso4139029276.2
-        for <linux-wireless@vger.kernel.org>; Mon, 07 Oct 2024 15:35:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1728340526; x=1728945326; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=gesjil9Y0RZgbcjmX5qHd/S97rHztDCcedkOm+1cl0k=;
-        b=e3VL5Ud84GLI+E2x3bA8ztpqvuFMv57yd9aYEVQJXCzdGLPTTmXpQqv3Opq72bJmux
-         KBHMo3MVO1HOzdmTO8H+pcTCfVPqaiTDnPTpbQzl0qQR7IL44jHkwS4bzBufrjeR8qhe
-         DDLiaWivcex7UxcVlthWRdgNLBWzi+M8qTeDx57baSkDWFH1agIYPgvRPadbYLCLtjZu
-         06qTHbdte5aRDCOnGRwQe0feCJbqguEWevqetTaa5WoZI91EWlvvh0bLcBUS4nMqHsf9
-         D1KWrNcsh7YIcTiYbXUJhkPijHa5aKTMIfa20aY8luGYazLflzR5ecy/UydbOSAfiQM/
-         3TDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728340526; x=1728945326;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gesjil9Y0RZgbcjmX5qHd/S97rHztDCcedkOm+1cl0k=;
-        b=hnCuJSM+OA2YI47m0HTg/59Y3Hame4DTMpzaB7SfRxD+5niv7DMAOVWVfd/XYtqpLT
-         JC9nT+nQ1/3aY5JbjAOspkfQzmAncbAtpc1wq/fFrOZ17FFgAGH1KBaEdCaCRPgRPQyV
-         JJSXWJbhzn0nYd6u9RmpXi/8KJ9LIegIjsqhknNir6cwim8fkO9g+Guy7ys5d5QdhI/X
-         mjY2y3QLp8WH4qlm05YpOmmZVFCXQzQswaCIcGHNaUi2mwk+d0D9p+D6wDR9Q1Z7CVio
-         chufNxu6EpurQ8PJRCSYRTB+XHKm+PXUPqQQe/S9dWIHP4DwJGAvMEObAcx9zzkEAb0P
-         XwuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUHRypwwvCla51D+w32DT4Q69005vGsg4Rg+42hOOYLfmmaCNOmgLOeOLeW79FYMNsvOfcW0ZP3Y+BmT4cQkg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyOoYSewVmfehH4/vLyv8llyV61iKiOQCT5ePd5mRkyh4u/VzII
-	RESXtsPN9kw7hBfhm1dRY8RCzaK/Q9CFRbH/k6eBKaq+kLAYRtf3pR3JgaKpB3wFX7yYFE1HnK5
-	Hp/Sryic+EBFcl6ALxf+kVnQXylV50tnG9hoX7A==
-X-Google-Smtp-Source: AGHT+IGYLLRVc3CeXKReIUVnntYlZ+ULRb29gPUl3UTx4hoqAUGdx6q2aFDzdnacRWqcM/cOYseo4GoEdp7e3a8qLZE=
-X-Received: by 2002:a05:6902:2305:b0:e28:6ec7:4353 with SMTP id
- 3f1490d57ef6-e2893964043mr10612649276.54.1728340526338; Mon, 07 Oct 2024
- 15:35:26 -0700 (PDT)
+	s=arc-20240116; t=1728342411; c=relaxed/simple;
+	bh=/jQnWGDyEgOttC6257evqm/jWBsBaJ1Znf+b3bbKv4M=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=QK9c5Dwz9gw0CZ01bSWxEiLJr+uuM28Zw+w7kyAQpA/bzeirh0KX9gdFL+rtvyoBwHl6qNJudU6rgpYHRqZ61PNHGeV2UQybp3DyhJO4q4T1tIssHRVZTTyWLBAgmz1FLfqJffUPBMNeimGqbREH3nQFznMNySEDPLFSw3CSriA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=EBm71lZN; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 497F42R0025511;
+	Mon, 7 Oct 2024 23:06:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	f2ts6yjT2lwkrcAK7dwQ6qLUhy9HnAHO7NfATKePO/Y=; b=EBm71lZN6JQnGoiP
+	xPYQYgZUn3xWqp9fIhHtYFyi3wAGuBnOUTDCrkFUPf0ys7R48EUsN7ay3HSuD3dv
+	QcmlXuxLn1O8UX+vMmUsvTA6koQwhCNtPF5JTH60Z8Yq9vSi3R3KwjdVeFOc6hST
+	T2p13sw1pGkOdd/LtZtkdp8SzaI/diCsxUQk8aNXwEnHD8vu9PUK3hSLJ6FctmRi
+	P1f1Xz9Hyve8XuiXdEvwWpwtSIhIEo57w5H3qd1GbzqRUulKDh7hI8JnGDpRmD5Z
+	aIe5fPa0Q+a79F/qoXlJ5W9PVyC1z2JjOJnooARegzX3gJDIGSjTfSD66u38twiw
+	SmzaRQ==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 422xs85gd7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 07 Oct 2024 23:06:41 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 497N6eaH026908
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 7 Oct 2024 23:06:40 GMT
+Received: from [10.48.240.101] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 7 Oct 2024
+ 16:06:39 -0700
+Message-ID: <e350c2c5-47e8-4fd2-aa8c-b63ab228d718@quicinc.com>
+Date: Mon, 7 Oct 2024 16:06:39 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241004094101.113349-1-sakari.ailus@linux.intel.com>
- <CAPDyKFp0N6UJhnHS164Tdf=xkWB0jzq65L9TdvYazeBQ-6WjeQ@mail.gmail.com>
- <20241007184924.GH14766@pendragon.ideasonboard.com> <CAPDyKFpQVnF7eQv3dup8k-3EijnMjuveCG9sZ=Rpey1Y6MBJEg@mail.gmail.com>
- <20241007222502.GG30699@pendragon.ideasonboard.com>
-In-Reply-To: <20241007222502.GG30699@pendragon.ideasonboard.com>
-From: Ulf Hansson <ulf.hansson@linaro.org>
-Date: Tue, 8 Oct 2024 00:34:49 +0200
-Message-ID: <CAPDyKFrGNwna6Y2pqSRaBbRYHKRaD2ayqQHLtoqLPOu9Et7qTg@mail.gmail.com>
-Subject: Re: [PATCH 00/51] treewide: Switch to __pm_runtime_put_autosuspend()
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
-	linux-clk@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	dmaengine@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	amd-gfx@lists.freedesktop.org, nouveau@lists.freedesktop.org, 
-	linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org, 
-	linux-i3c@lists.infradead.org, linux-iio@vger.kernel.org, 
-	linux-input@vger.kernel.org, patches@opensource.cirrus.com, 
-	iommu@lists.linux.dev, imx@lists.linux.dev, 
-	linux-mediatek@lists.infradead.org, linux-media@vger.kernel.org, 
-	linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org, 
-	netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-phy@lists.infradead.org, 
-	linux-pwm@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
-	linux-sound@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-staging@lists.linux.dev, linux-usb@vger.kernel.org, 
-	linux-serial@vger.kernel.org, greybus-dev@lists.linaro.org, 
-	asahi@lists.linux.dev, rafael@kernel.org, 
-	Andy Shevchenko <andy.shevchenko@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] wifi: ath12k: Support DMAC Reset Stats
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+To: Roopni Devanathan <quic_rdevanat@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, Rajat Soni <quic_rajson@quicinc.com>
+References: <20241005105207.3350790-1-quic_rdevanat@quicinc.com>
+ <a6190d4e-aff9-48bc-b674-071656090c74@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <a6190d4e-aff9-48bc-b674-071656090c74@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: qlpu_mTKdV-TDz65cbf5k2CJaaR1J86G
+X-Proofpoint-ORIG-GUID: qlpu_mTKdV-TDz65cbf5k2CJaaR1J86G
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 spamscore=0
+ priorityscore=1501 phishscore=0 mlxlogscore=999 clxscore=1015
+ impostorscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0
+ suspectscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410070159
 
-On Tue, 8 Oct 2024 at 00:25, Laurent Pinchart
-<laurent.pinchart@ideasonboard.com> wrote:
->
-> Hi Ulf,
->
-> On Tue, Oct 08, 2024 at 12:08:24AM +0200, Ulf Hansson wrote:
-> > On Mon, 7 Oct 2024 at 20:49, Laurent Pinchart wrote:
-> > > On Fri, Oct 04, 2024 at 04:38:36PM +0200, Ulf Hansson wrote:
-> > > > On Fri, 4 Oct 2024 at 11:41, Sakari Ailus wrote:
-> > > > >
-> > > > > Hello everyone,
-> > > > >
-> > > > > This set will switch the users of pm_runtime_put_autosuspend() to
-> > > > > __pm_runtime_put_autosuspend() while the former will soon be re-purposed
-> > > > > to include a call to pm_runtime_mark_last_busy(). The two are almost
-> > > > > always used together, apart from bugs which are likely common. Going
-> > > > > forward, most new users should be using pm_runtime_put_autosuspend().
-> > > > >
-> > > > > Once this conversion is done and pm_runtime_put_autosuspend() re-purposed,
-> > > > > I'll post another set to merge the calls to __pm_runtime_put_autosuspend()
-> > > > > and pm_runtime_mark_last_busy().
-> > > >
-> > > > That sounds like it could cause a lot of churns.
-> > > >
-> > > > Why not add a new helper function that does the
-> > > > pm_runtime_put_autosuspend() and the pm_runtime_mark_last_busy()
-> > > > things? Then we can start moving users over to this new interface,
-> > > > rather than having this intermediate step?
-> > >
-> > > I think the API would be nicer if we used the shortest and simplest
-> > > function names for the most common use cases. Following
-> > > pm_runtime_put_autosuspend() with pm_runtime_mark_last_busy() is that
-> > > most common use case. That's why I like Sakari's approach of repurposing
-> > > pm_runtime_put_autosuspend(), and introducing
-> > > __pm_runtime_put_autosuspend() for the odd cases where
-> > > pm_runtime_mark_last_busy() shouldn't be called.
-> >
-> > Okay, so the reason for this approach is because we couldn't find a
-> > short and descriptive name that could be used in favor of
-> > pm_runtime_put_autosuspend(). Let me throw some ideas at it and maybe
-> > you like it - or not. :-)
->
-> I like the idea at least :-)
->
-> > I don't know what options you guys discussed, but to me the entire
-> > "autosuspend"-suffix isn't really that necessary in my opinion. There
-> > are more ways than calling pm_runtime_put_autosuspend() that triggers
-> > us to use the RPM_AUTO flag for rpm_suspend(). For example, just
-> > calling pm_runtime_put() has the similar effect.
->
-> To be honest, I'm lost there. pm_runtime_put() calls
-> __pm_runtime_idle(RPM_GET_PUT | RPM_ASYNC), while
-> pm_runtime_put_autosuspend() calls __pm_runtime_suspend(RPM_GET_PUT |
-> RPM_ASYNC | RPM_AUTO).
+On 10/7/2024 8:37 AM, Jeff Johnson wrote:
+> On 10/5/2024 3:52 AM, Roopni Devanathan wrote:
+>> From: Rajat Soni <quic_rajson@quicinc.com>
+>>
+>> Add support to request DMAC reset stats from firmware through HTT stats
+>> type 45. These stats give debug SoC error stats such as reset count, reset
+>> time, engage time and count, disengage time and count and destination
+>> ring mask.
+>>
+>> Sample output:
+>> -------------
+>> echo 45 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
+>> cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats
+>> HTT_DMAC_RESET_STATS_TLV:
+>> reset_count = 1
+>> reset_time_ms = 8036717648
+>> disengage_time_ms = 8036717648
+>> engage_time_ms = 8036717649
+>> disengage_count = 1
+>> engage_count = 1
+>> drain_dest_ring_mask = 0x0
+>>
+>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00214-QCAHKSWPL_SILICONZ-1
+>> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+>>
+>> Signed-off-by: Rajat Soni <quic_rajson@quicinc.com>
+>> Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
+>> ---
+>> v2:
+>>  - Updated dependencies. No change in code.
+>> ---
+>> Depends-on:
+>> [PATCH v2] wifi: ath12k: Modify print_array_to_buf() to support arrays with 1-based semantics
+>> Link: https://lore.kernel.org/all/20241004085915.1788951-1-quic_rdevanat@quicinc.com/
+>>
+>> [PATCH v2 0/4] wifi: ath12k: Support Ring, SFM, Transmit MU, SelfGen stats, CCA stats
+>> Link: https://lore.kernel.org/ath12k/20241005101816.3314728-1-quic_rdevanat@quicinc.com/
+>>
+>> [PATCH v2] wifi: ath12k: Support Pdev OBSS Stats
+>> Link: https://lore.kernel.org/ath12k/20241005104206.3327143-1-quic_rdevanat@quicinc.com/
+>> ---
+>> ---
+>>  .../wireless/ath/ath12k/debugfs_htt_stats.c   | 41 +++++++++++++++++++
+>>  .../wireless/ath/ath12k/debugfs_htt_stats.h   | 15 +++++++
+>>  2 files changed, 56 insertions(+)
+>>
+>> diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+>> index d890679a3f16..2debb253185c 100644
+>> --- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+>> +++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+>> @@ -2502,6 +2502,44 @@ ath12k_htt_print_pdev_obss_pd_stats_tlv(const void *tag_buf, u16 tag_len,
+>>  	stats_req->buf_len = len;
+>>  }
+>>  
+>> +static void
+>> +ath12k_htt_print_dmac_reset_stats_tlv(const void *tag_buf, u16 tag_len,
+>> +				      struct debug_htt_stats_req *stats_req)
+>> +{
+>> +	const struct ath12k_htt_dmac_reset_stats_tlv *htt_stats_buf = tag_buf;
+>> +	u8 *buf = stats_req->buf;
+>> +	u32 len = stats_req->buf_len;
+>> +	u32 buf_len = ATH12K_HTT_STATS_BUF_SIZE;
+>> +	unsigned long time;
+>> +
+>> +	if (tag_len < sizeof(*htt_stats_buf))
+>> +		return;
+>> +
+>> +	len += scnprintf(buf + len, buf_len - len, "HTT_DMAC_RESET_STATS_TLV:\n");
+>> +	len += scnprintf(buf + len, buf_len - len, "reset_count = %u\n",
+>> +			 le32_to_cpu(htt_stats_buf->reset_count));
+>> +	time = ((unsigned long)le32_to_cpu(htt_stats_buf->reset_time_hi_ms) << 32) |
+>> +		le32_to_cpu(htt_stats_buf->reset_time_lo_ms);
+> 
+> The v1 version was flagged by the Intel 0-DAY CI Kernel Test Service:
+> https://lore.kernel.org/all/202410040200.Mwb85JzQ-lkp@intel.com/
+> 
+> I believe you need to use u64 instead of unsigned long since unsigned long
+> will only be 32 bits on a 32-bit system. Also suggest you refactor into a
+> helper function to remove any ambiguity about the order of operations between
+> (typecast) and <<, i.e.:
+> 
+> /* untested */
+> static u64 ath12k_le32hilo_to_u64(__le32 hi, __le32 lo)
+> {
+> 	u64 hi64 = le32_to_cpu(hi);
+> 	u64 lo64 = le32_to_cpu(lo);
+> 
+> 	return (hi64 << 32) | lo64;
+> }
 
-__pm_runtime_idle() ends up calling rpm_idle(), which may call
-rpm_suspend() - if it succeeds to idle the device. In that case, it
-tags on the RPM_AUTO flag in the call to rpm_suspend(). Quite similar
-to what is happening when calling pm_runtime_put_autosuspend().
+compile tested the following diff against your patch:
 
->
-> >
-> > Moreover, it's similar for pm_runtime_mark_last_busy(), it's called
-> > during rpm_resume() too, for example. So why bother about having
-> > "mark_last_busy" in the new name too.
-> >
-> > That said, my suggestion is simply "pm_runtime_put_suspend".
->
-> Can we do even better, and make pm_runtime_put() to handle autosuspend
-> automatically when autosuspend is enabled ?
+diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+index 8dc158675e12..9c54c457af30 100644
+--- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
++++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+@@ -2542,6 +2542,13 @@ ath12k_htt_print_pdev_obss_pd_stats_tlv(const void *tag_buf, u16 tag_len,
+ 	stats_req->buf_len = len;
+ }
+ 
++static u64 ath12k_le32hilo_to_u64(__le32 hi, __le32 lo)
++{
++	u64 hi64 = le32_to_cpu(hi);
++	u64 lo64 = le32_to_cpu(lo);
++
++	return (hi64 << 32) | lo64;
++}
+ static void
+ ath12k_htt_print_dmac_reset_stats_tlv(const void *tag_buf, u16 tag_len,
+ 				      struct debug_htt_stats_req *stats_req)
+@@ -2550,7 +2557,7 @@ ath12k_htt_print_dmac_reset_stats_tlv(const void *tag_buf, u16 tag_len,
+ 	u8 *buf = stats_req->buf;
+ 	u32 len = stats_req->buf_len;
+ 	u32 buf_len = ATH12K_HTT_STATS_BUF_SIZE;
+-	unsigned long time;
++	u64 time;
+ 
+ 	if (tag_len < sizeof(*htt_stats_buf))
+ 		return;
+@@ -2558,17 +2565,17 @@ ath12k_htt_print_dmac_reset_stats_tlv(const void *tag_buf, u16 tag_len,
+ 	len += scnprintf(buf + len, buf_len - len, "HTT_DMAC_RESET_STATS_TLV:\n");
+ 	len += scnprintf(buf + len, buf_len - len, "reset_count = %u\n",
+ 			 le32_to_cpu(htt_stats_buf->reset_count));
+-	time = ((unsigned long)le32_to_cpu(htt_stats_buf->reset_time_hi_ms) << 32) |
+-		le32_to_cpu(htt_stats_buf->reset_time_lo_ms);
+-	len += scnprintf(buf + len, buf_len - len, "reset_time_ms = %ld\n", time);
++	time = ath12k_le32hilo_to_u64(htt_stats_buf->reset_time_hi_ms,
++				      htt_stats_buf->reset_time_lo_ms);
++	len += scnprintf(buf + len, buf_len - len, "reset_time_ms = %llu\n", time);
+ 
+-	time = ((unsigned long)le32_to_cpu(htt_stats_buf->disengage_time_hi_ms) << 32) |
+-		le32_to_cpu(htt_stats_buf->disengage_time_lo_ms);
+-	len += scnprintf(buf + len, buf_len - len, "disengage_time_ms = %ld\n", time);
++	time = ath12k_le32hilo_to_u64(htt_stats_buf->disengage_time_hi_ms,
++				      htt_stats_buf->disengage_time_lo_ms);
++	len += scnprintf(buf + len, buf_len - len, "disengage_time_ms = %llu\n", time);
+ 
+-	time = ((unsigned long)le32_to_cpu(htt_stats_buf->engage_time_hi_ms) << 32) |
+-		le32_to_cpu(htt_stats_buf->engage_time_lo_ms);
+-	len += scnprintf(buf + len, buf_len - len, "engage_time_ms = %ld\n", time);
++	time = ath12k_le32hilo_to_u64(htt_stats_buf->engage_time_hi_ms,
++				      htt_stats_buf->engage_time_lo_ms);
++	len += scnprintf(buf + len, buf_len - len, "engage_time_ms = %llu\n", time);
+ 
+ 	len += scnprintf(buf + len, buf_len - len, "disengage_count = %u\n",
+ 			 le32_to_cpu(htt_stats_buf->disengage_count));
 
-As stated above, this is already the case.
 
->
-> > If you don't like it, I will certainly not object to your current
-> > approach, even if I think it leads to unnecessary churns.
-> >
-> > [...]
-> >
-> > Kind regards
-> > Uffe
->
-> --
-> Regards,
->
-> Laurent Pinchart
-
-Kind regards
-Uffe
 
