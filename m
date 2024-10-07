@@ -1,33 +1,33 @@
-Return-Path: <linux-wireless+bounces-13641-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13642-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15F65993707
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 21:14:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0086993773
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 21:35:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A61A1C20FDC
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 19:14:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69694284CF6
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 19:35:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F267D1D9A43;
-	Mon,  7 Oct 2024 19:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FAA71DDA3C;
+	Mon,  7 Oct 2024 19:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Fr/YhSnd"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="YyfCT6lK"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45CB71DE2C6
-	for <linux-wireless@vger.kernel.org>; Mon,  7 Oct 2024 19:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2C91DE2A6
+	for <linux-wireless@vger.kernel.org>; Mon,  7 Oct 2024 19:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728328477; cv=none; b=nbcxUZYi7CKBjhtnaMDLBgjum7/qGzEhUg1vMnDo5YUHJWGzSyZu9pILqSvt38NQ5+gFigs7UMrqFEeM+JKLjS5H+FFI5G2vft7IVYHMMIJleqnUpbbWv6hs7ofuASafHWYdVMvEhscIZQq5DadB6ANwQA8cu0D2U63TtgNrcRA=
+	t=1728329732; cv=none; b=Ua1yq4auK6wFUv97wWDpu+bup8N52iENBrIouST/NOjv7sEI5m16V6SHP41524ncudDHCzoviXUdL+wPQ0H3zLdgXj2tEUN42pitSfFi1xw1iCUfotZk5aKSmJIrQ1fvHL1IvaSGSNyLSilB2njwpgIJ0Wx8+/1nWYMwyCJPPLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728328477; c=relaxed/simple;
-	bh=blrkVRzZFBeIC/bw+QiDu+l00Dw/II3vbodZ9d3/t1w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Iq61nBF5yE1O7NZdZfYSPpzXmQDzFkqdExx4Q64MtbT1csKyrsd6+onDFXnYGAVlySy36Br+ULKLF5zjhoqUAi1/DUuLSQMs1SZl3igBb2ww8bAJtLY6DN444SGeFvdRO36Yrt37S1nyjEfx7XXcz2yJWysiHqw03CxYNWlTvVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Fr/YhSnd; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1728329732; c=relaxed/simple;
+	bh=etgsORkkKQbefDggb5bu0oyWYsdQsAj9Cb9qrYZXpcY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EZuLcCj4d9+QYUI2yGJDDqpAJWeIIT8FU0lkNcqjWiPMcDENsKLdH8Qg0Wv/vi3ayZC9NNcnlS4tq6WXwjQ0iM0WbegJ21qThPTyn3gS21x+UgxUHWc5jRPkCUCQf/LEJ6ayZmTmkJMKTpoPRhEWUTCzEp7/WpZILAY6Q2QpkME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=YyfCT6lK; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -35,23 +35,23 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
 	Resent-Message-ID:In-Reply-To:References;
-	bh=+J2+DCeR3UMVRjy1NM5MlXBgt39zCp64Wa9AanJOGVo=; t=1728328476; x=1729538076; 
-	b=Fr/YhSndPKGANpyXGGIvl6Nh7nNySUjcxuU5VpW1TWPsu/L0ahytgNfMLcXA14ZZGDmwIZWl4fE
-	rsEvX+inga9zQVwSZkzzIxVeiY9xLTy0RJpK2+jwSBiSicsl37P/T6iEPDr+Sv77xJr2NcEtF65nT
-	UNH9shoF6zpuCESjnX23MOhF4mk61kLn7KJoiiGiQk44u4+8eo15xjrCyqIoBvea+puppkZ8gUzei
-	EYwqdSlL0p4OBsqmD4DbCh0AAxOV+zmWiQlpbrY2eYFe7l0HTHR+z9mzv887B5b5D/fm3JzmOxOPC
-	6gfOKipfntBjLe7bA92eMF7GlgseNMPiIq+g==;
+	bh=hs1vGEsu5yi9gm8qjGbEp0yxKJGt+WBhtNxc6Lu3rxw=; t=1728329729; x=1729539329; 
+	b=YyfCT6lKbDBmW5iApnKT4yaK9aQ3WznaWf5XVIDDn3Ri4EO6sJEaamK3iCw4NtLHnqxXHnvWzI6
+	i1uYeqxRKDXsN9mPxKcJ50RjxAJ1HIG8hzoLKoP5SfjxpyhFV2/p4LD7NtO4vC0fdGkqy2CgV+irY
+	dVzKCbtz5BEMlQK4/dHLocUujMcg/HIFu1UuSvnI+aSSGfvwS+Axv20/8YPyfxdLoPXspdOsJdQd7
+	99lYDfHQVSMg6WJK+8ACZCuDFfUPFcyAE1GsG+75Kvzc4RX6Gn3Y5cgFgJjmZFQStQ7ZDpshOeepQ
+	QogRc1lNbuiUPnuFfYFFF/B1ngG4jR+l0lMQ==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1sxtBh-00000003VJ0-1Yul;
-	Mon, 07 Oct 2024 21:14:33 +0200
+	id 1sxtVu-00000003Vid-23yQ;
+	Mon, 07 Oct 2024 21:35:26 +0200
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] wifi: cfg80211: stop exporting wext symbols
-Date: Mon,  7 Oct 2024 21:14:30 +0200
-Message-ID: <20241007211431.8d4a7242ce92.I66ceb885ddfa52c368feeea1ea884bf988c525f2@changeid>
+Subject: [PATCH] wifi: remove iw_public_data from struct net_device
+Date: Mon,  7 Oct 2024 21:35:25 +0200
+Message-ID: <20241007213525.8b2d52b60531.I6a27aaf30bded9a0977f07f47fba2bd31a3b3330@changeid>
 X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -63,195 +63,180 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-CFG80211_WEXT_EXPORT is no longer needed, if we only make
-ipw2200 return the static name for SIOCGIWNAME itself.
+Given the previous patches, we no longer need the
+struct iw_public_data etc., it's only used by the
+old Intel drivers (and ps3_gelic creates it but
+then doesn't use it). Remove all of that, including
+the pointer in struct net_device.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- drivers/net/wireless/intel/ipw2x00/Kconfig   |  1 -
- drivers/net/wireless/intel/ipw2x00/ipw2200.c | 10 +++++++++-
- net/wireless/Kconfig                         |  9 +--------
- net/wireless/scan.c                          |  2 --
- net/wireless/wext-compat.c                   |  9 ---------
- net/wireless/wext-compat.h                   |  6 ------
- 6 files changed, 10 insertions(+), 27 deletions(-)
+ .../networking/net_cachelines/net_device.rst   |  1 -
+ .../net/ethernet/toshiba/ps3_gelic_wireless.c  |  1 -
+ .../net/ethernet/toshiba/ps3_gelic_wireless.h  |  1 -
+ drivers/net/wireless/intel/ipw2x00/ipw2100.c   |  2 --
+ drivers/net/wireless/intel/ipw2x00/ipw2100.h   |  2 --
+ drivers/net/wireless/intel/ipw2x00/ipw2200.c   |  1 -
+ drivers/net/wireless/intel/ipw2x00/ipw2200.h   |  2 --
+ .../net/wireless/intel/ipw2x00/libipw_spy.c    |  7 ++++---
+ include/linux/netdevice.h                      |  2 --
+ include/net/iw_handler.h                       | 18 ------------------
+ 10 files changed, 4 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/ipw2x00/Kconfig b/drivers/net/wireless/intel/ipw2x00/Kconfig
-index ce34118f1e90..5e98be664d38 100644
---- a/drivers/net/wireless/intel/ipw2x00/Kconfig
-+++ b/drivers/net/wireless/intel/ipw2x00/Kconfig
-@@ -65,7 +65,6 @@ config IPW2100_DEBUG
- config IPW2200
- 	tristate "Intel PRO/Wireless 2200BG and 2915ABG Network Connection"
- 	depends on PCI && CFG80211
--	select CFG80211_WEXT_EXPORT
- 	select WIRELESS_EXT
- 	select WEXT_PRIV
- 	select FW_LOADER
+diff --git a/Documentation/networking/net_cachelines/net_device.rst b/Documentation/networking/net_cachelines/net_device.rst
+index 22b07c814f4a..b7d1d4c7a1ab 100644
+--- a/Documentation/networking/net_cachelines/net_device.rst
++++ b/Documentation/networking/net_cachelines/net_device.rst
+@@ -51,7 +51,6 @@ struct_net_device_core_stats*       core_stats
+ atomic_t                            carrier_up_count                                                
+ atomic_t                            carrier_down_count                                              
+ struct_iw_handler_def*              wireless_handlers                                               
+-struct_iw_public_data*              wireless_data                                                   
+ struct_ethtool_ops*                 ethtool_ops                                                     
+ struct_l3mdev_ops*                  l3mdev_ops                                                      
+ struct_ndisc_ops*                   ndisc_ops                                                       
+diff --git a/drivers/net/ethernet/toshiba/ps3_gelic_wireless.c b/drivers/net/ethernet/toshiba/ps3_gelic_wireless.c
+index 44488c153ea2..4fbe4b7cd12a 100644
+--- a/drivers/net/ethernet/toshiba/ps3_gelic_wireless.c
++++ b/drivers/net/ethernet/toshiba/ps3_gelic_wireless.c
+@@ -2566,7 +2566,6 @@ static void gelic_wl_setup_netdev_ops(struct net_device *netdev)
+ 
+ 	netdev->ethtool_ops = &gelic_wl_ethtool_ops;
+ 	netdev->netdev_ops = &gelic_wl_netdevice_ops;
+-	netdev->wireless_data = &wl->wireless_data;
+ 	netdev->wireless_handlers = &gelic_wl_wext_handler_def;
+ }
+ 
+diff --git a/drivers/net/ethernet/toshiba/ps3_gelic_wireless.h b/drivers/net/ethernet/toshiba/ps3_gelic_wireless.h
+index 1f203d1ae8db..dbabf538e10a 100644
+--- a/drivers/net/ethernet/toshiba/ps3_gelic_wireless.h
++++ b/drivers/net/ethernet/toshiba/ps3_gelic_wireless.h
+@@ -276,7 +276,6 @@ struct gelic_wl_info {
+ 	u8 active_bssid[ETH_ALEN]; /* associated bssid */
+ 	unsigned int essid_len;
+ 
+-	struct iw_public_data wireless_data;
+ 	struct iw_statistics iwstat;
+ };
+ 
+diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2100.c b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
+index a89e06c1b8ee..15bf35f2de2a 100644
+--- a/drivers/net/wireless/intel/ipw2x00/ipw2100.c
++++ b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
+@@ -6022,8 +6022,6 @@ static struct net_device *ipw2100_alloc_device(struct pci_dev *pci_dev,
+ 	dev->netdev_ops = &ipw2100_netdev_ops;
+ 	dev->ethtool_ops = &ipw2100_ethtool_ops;
+ 	dev->wireless_handlers = &ipw2100_wx_handler_def;
+-	priv->wireless_data.libipw = priv->ieee;
+-	dev->wireless_data = &priv->wireless_data;
+ 	dev->watchdog_timeo = 3 * HZ;
+ 	dev->irq = 0;
+ 	dev->min_mtu = 68;
+diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2100.h b/drivers/net/wireless/intel/ipw2x00/ipw2100.h
+index b34085ade3aa..6f81f509b9cb 100644
+--- a/drivers/net/wireless/intel/ipw2x00/ipw2100.h
++++ b/drivers/net/wireless/intel/ipw2x00/ipw2100.h
+@@ -554,8 +554,6 @@ struct ipw2100_priv {
+ 	struct net_device *net_dev;
+ 	struct iw_statistics wstats;
+ 
+-	struct iw_public_data wireless_data;
+-
+ 	struct tasklet_struct irq_tasklet;
+ 
+ 	struct delayed_work reset_work;
 diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.c b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-index 0008b4615731..c0e9d2109e34 100644
+index c0e9d2109e34..be1d971b3d32 100644
 --- a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
 +++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-@@ -6463,6 +6463,14 @@ static int ipw_set_rsn_capa(struct ipw_priv *priv,
-  * WE-18 support
-  */
+@@ -11645,7 +11645,6 @@ static int ipw_pci_probe(struct pci_dev *pdev,
  
-+static int ipw_wx_get_name(struct net_device *dev,
-+			   struct iw_request_info *info,
-+			   union iwreq_data *wrqu, char *extra)
-+{
-+	strcpy(wrqu->name, "IEEE 802.11");
-+	return 0;
-+}
+ 	net_dev->netdev_ops = &ipw_netdev_ops;
+ 	priv->ieee->spy_enabled = true;
+-	net_dev->wireless_data = &priv->wireless_data;
+ 	net_dev->wireless_handlers = &ipw_wx_handler_def;
+ 	net_dev->ethtool_ops = &ipw_ethtool_ops;
+ 
+diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.h b/drivers/net/wireless/intel/ipw2x00/ipw2200.h
+index 46f119123b49..d3db54e6d37c 100644
+--- a/drivers/net/wireless/intel/ipw2x00/ipw2200.h
++++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.h
+@@ -1274,8 +1274,6 @@ struct ipw_priv {
+ 
+ 	struct iw_statistics wstats;
+ 
+-	struct iw_public_data wireless_data;
+-
+ 	int user_requested_scan;
+ 	u8 direct_scan_ssid[IW_ESSID_MAX_SIZE];
+ 	u8 direct_scan_ssid_len;
+diff --git a/drivers/net/wireless/intel/ipw2x00/libipw_spy.c b/drivers/net/wireless/intel/ipw2x00/libipw_spy.c
+index 979aeb10aeeb..ba876e92f7f6 100644
+--- a/drivers/net/wireless/intel/ipw2x00/libipw_spy.c
++++ b/drivers/net/wireless/intel/ipw2x00/libipw_spy.c
+@@ -18,9 +18,10 @@
+ 
+ static struct iw_spy_data *get_spydata(struct net_device *dev)
+ {
+-	if (dev->wireless_data && dev->wireless_data->libipw &&
+-	    dev->wireless_data->libipw->spy_enabled)
+-		return &dev->wireless_data->libipw->spy_data;
++	struct libipw_device *ieee = netdev_priv(dev);
 +
- /* SIOCSIWGENIE */
- static int ipw_wx_set_genie(struct net_device *dev,
- 			    struct iw_request_info *info,
-@@ -9826,7 +9834,7 @@ static int ipw_wx_sw_reset(struct net_device *dev,
- 
- /* Rebase the WE IOCTLs to zero for the handler array */
- static iw_handler ipw_wx_handlers[] = {
--	IW_HANDLER(SIOCGIWNAME, cfg80211_wext_giwname),
-+	IW_HANDLER(SIOCGIWNAME, ipw_wx_get_name),
- 	IW_HANDLER(SIOCSIWFREQ, ipw_wx_set_freq),
- 	IW_HANDLER(SIOCGIWFREQ, ipw_wx_get_freq),
- 	IW_HANDLER(SIOCSIWMODE, ipw_wx_set_mode),
-diff --git a/net/wireless/Kconfig b/net/wireless/Kconfig
-index 8c8bd8b75708..2d67b5f2010e 100644
---- a/net/wireless/Kconfig
-+++ b/net/wireless/Kconfig
-@@ -185,19 +185,12 @@ config CFG80211_CRDA_SUPPORT
- 	  If unsure, say Y.
- 
- config CFG80211_WEXT
--	bool "cfg80211 wireless extensions compatibility" if !CFG80211_WEXT_EXPORT
-+	bool "cfg80211 wireless extensions compatibility"
- 	select WEXT_CORE
--	default y if CFG80211_WEXT_EXPORT
- 	help
- 	  Enable this option if you need old userspace for wireless
- 	  extensions with cfg80211-based drivers.
- 
--config CFG80211_WEXT_EXPORT
--	bool
--	help
--	  Drivers should select this option if they require cfg80211's
--	  wext compatibility symbols to be exported.
--
- config CFG80211_KUNIT_TEST
- 	tristate "KUnit tests for cfg80211" if !KUNIT_ALL_TESTS
- 	depends on KUNIT
-diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-index 59a90bf3c0d6..8ba618f4734f 100644
---- a/net/wireless/scan.c
-+++ b/net/wireless/scan.c
-@@ -3594,7 +3594,6 @@ int cfg80211_wext_siwscan(struct net_device *dev,
- 	kfree(creq);
- 	return err;
++	if (ieee->spy_enabled)
++		return &ieee->spy_data;
+ 	return NULL;
  }
--EXPORT_WEXT_HANDLER(cfg80211_wext_siwscan);
  
- static char *ieee80211_scan_add_ies(struct iw_request_info *info,
- 				    const struct cfg80211_bss_ies *ies,
-@@ -3966,5 +3965,4 @@ int cfg80211_wext_giwscan(struct net_device *dev,
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index e87b5e488325..f0abed1e6e45 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -1773,7 +1773,6 @@ enum netdev_reg_state {
+  *	@wireless_handlers:	List of functions to handle Wireless Extensions,
+  *				instead of ioctl,
+  *				see <net/iw_handler.h> for details.
+- *	@wireless_data:	Instance data managed by the core of wireless extensions
+  *
+  *	@netdev_ops:	Includes several pointers to callbacks,
+  *			if one wants to override the ndo_*() functions
+@@ -2150,7 +2149,6 @@ struct net_device {
  
- 	return res;
- }
--EXPORT_WEXT_HANDLER(cfg80211_wext_giwscan);
+ #ifdef CONFIG_WIRELESS_EXT
+ 	const struct iw_handler_def *wireless_handlers;
+-	struct iw_public_data	*wireless_data;
  #endif
-diff --git a/net/wireless/wext-compat.c b/net/wireless/wext-compat.c
-index 2371069f3c43..def4ce063d68 100644
---- a/net/wireless/wext-compat.c
-+++ b/net/wireless/wext-compat.c
-@@ -30,7 +30,6 @@ int cfg80211_wext_giwname(struct net_device *dev,
- 	strcpy(wrqu->name, "IEEE 802.11");
- 	return 0;
- }
--EXPORT_WEXT_HANDLER(cfg80211_wext_giwname);
+ 	const struct ethtool_ops *ethtool_ops;
+ #ifdef CONFIG_NET_L3_MASTER_DEV
+diff --git a/include/net/iw_handler.h b/include/net/iw_handler.h
+index a7b502958d27..fc44fcca1d5c 100644
+--- a/include/net/iw_handler.h
++++ b/include/net/iw_handler.h
+@@ -404,24 +404,6 @@ struct iw_spy_data {
+ 	u_char			spy_thr_under[IW_MAX_SPY];
+ };
  
- int cfg80211_wext_siwmode(struct net_device *dev, struct iw_request_info *info,
- 			  union iwreq_data *wrqu, char *extra)
-@@ -69,7 +68,6 @@ int cfg80211_wext_siwmode(struct net_device *dev, struct iw_request_info *info,
- 
- 	return ret;
- }
--EXPORT_WEXT_HANDLER(cfg80211_wext_siwmode);
- 
- int cfg80211_wext_giwmode(struct net_device *dev, struct iw_request_info *info,
- 			  union iwreq_data *wrqu, char *extra)
-@@ -105,7 +103,6 @@ int cfg80211_wext_giwmode(struct net_device *dev, struct iw_request_info *info,
- 	}
- 	return 0;
- }
--EXPORT_WEXT_HANDLER(cfg80211_wext_giwmode);
- 
- 
- int cfg80211_wext_giwrange(struct net_device *dev,
-@@ -220,7 +217,6 @@ int cfg80211_wext_giwrange(struct net_device *dev,
- 
- 	return 0;
- }
--EXPORT_WEXT_HANDLER(cfg80211_wext_giwrange);
- 
- 
- /**
-@@ -281,7 +277,6 @@ int cfg80211_wext_siwrts(struct net_device *dev,
- 	wiphy_unlock(&rdev->wiphy);
- 	return err;
- }
--EXPORT_WEXT_HANDLER(cfg80211_wext_siwrts);
- 
- int cfg80211_wext_giwrts(struct net_device *dev,
- 			 struct iw_request_info *info,
-@@ -296,7 +291,6 @@ int cfg80211_wext_giwrts(struct net_device *dev,
- 
- 	return 0;
- }
--EXPORT_WEXT_HANDLER(cfg80211_wext_giwrts);
- 
- int cfg80211_wext_siwfrag(struct net_device *dev,
- 			  struct iw_request_info *info,
-@@ -327,7 +321,6 @@ int cfg80211_wext_siwfrag(struct net_device *dev,
- 
- 	return err;
- }
--EXPORT_WEXT_HANDLER(cfg80211_wext_siwfrag);
- 
- int cfg80211_wext_giwfrag(struct net_device *dev,
- 			  struct iw_request_info *info,
-@@ -342,7 +335,6 @@ int cfg80211_wext_giwfrag(struct net_device *dev,
- 
- 	return 0;
- }
--EXPORT_WEXT_HANDLER(cfg80211_wext_giwfrag);
- 
- static int cfg80211_wext_siwretry(struct net_device *dev,
- 				  struct iw_request_info *info,
-@@ -413,7 +405,6 @@ int cfg80211_wext_giwretry(struct net_device *dev,
- 
- 	return 0;
- }
--EXPORT_WEXT_HANDLER(cfg80211_wext_giwretry);
- 
- static int cfg80211_set_encryption(struct cfg80211_registered_device *rdev,
- 				   struct net_device *dev, bool pairwise,
-diff --git a/net/wireless/wext-compat.h b/net/wireless/wext-compat.h
-index c02eb789e676..8251ca5df8ae 100644
---- a/net/wireless/wext-compat.h
-+++ b/net/wireless/wext-compat.h
-@@ -5,12 +5,6 @@
- #include <net/iw_handler.h>
- #include <linux/wireless.h>
- 
--#ifdef CONFIG_CFG80211_WEXT_EXPORT
--#define EXPORT_WEXT_HANDLER(h) EXPORT_SYMBOL_GPL(h)
--#else
--#define EXPORT_WEXT_HANDLER(h)
--#endif /* CONFIG_CFG80211_WEXT_EXPORT */
+-/* --------------------- DEVICE WIRELESS DATA --------------------- */
+-/*
+- * This is all the wireless data specific to a device instance that
+- * is managed by the core of Wireless Extensions or the 802.11 layer.
+- * We only keep pointer to those structures, so that a driver is free
+- * to share them between instances.
+- * This structure should be initialised before registering the device.
+- * Access to this data follow the same rules as any other struct net_device
+- * data (i.e. valid as long as struct net_device exist, same locking rules).
+- */
+-/* Forward declaration */
+-struct libipw_device;
+-/* The struct */
+-struct iw_public_data {
+-	/* Legacy structure managed by the ipw2x00-specific IEEE 802.11 layer */
+-	struct libipw_device *		libipw;
+-};
 -
- int cfg80211_ibss_wext_siwfreq(struct net_device *dev,
- 			       struct iw_request_info *info,
- 			       struct iw_freq *wextfreq, char *extra);
+ /**************************** PROTOTYPES ****************************/
+ /*
+  * Functions part of the Wireless Extensions (defined in net/wireless/wext-core.c).
 -- 
 2.46.2
 
