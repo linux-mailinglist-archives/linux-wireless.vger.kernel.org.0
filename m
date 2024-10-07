@@ -1,164 +1,158 @@
-Return-Path: <linux-wireless+bounces-13655-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13656-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD7EB993A1A
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2024 00:23:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6755993A2C
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2024 00:25:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 047F71C23F10
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 22:23:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBE3EB228D7
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 22:25:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5F3F191F91;
-	Mon,  7 Oct 2024 22:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4B2018DF8E;
+	Mon,  7 Oct 2024 22:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ayunz/gp"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="Vt/jQpsJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24CC18FDC9;
-	Mon,  7 Oct 2024 22:23:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D888D3FB9F;
+	Mon,  7 Oct 2024 22:25:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728339801; cv=none; b=j7kGBo9EPnmzFMappOPHX/eoKoFecVF1O+fuQtHBm863f2/8L1Jp0h+BqeDR6UBB6kSR4ZH/Xz+0+uMFXhcO7ae5MWPLJBvXGuvFHBz1dvJNoeZtqa1wjR91wgx5POo1Yi+KJjH2EvCv/xx1K06DYX8AfzZYRsT9NuC+IcKpcVg=
+	t=1728339912; cv=none; b=axG+L3OO+DBVyR87CBXsj3A92NhlVABgHOwelzzYUporYk9NwCwb99xsikY9Jka9FvFtO9av4O6/a7sz9hzQl1rkz4LQ/poSeMUHT2CIf4g9kWwADF7U6CzqCG72cI6e5CzoPpbUuKojT6OWRfQ+VPpaUfQXXbNuB1kL/KDLfXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728339801; c=relaxed/simple;
-	bh=1xwCQjw7OIJYwBx+Ll76469/2xlTnNv83u+vEUHeLE0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tT9ZDSi1yQUpOfz0EVcac2xMJCEIIyi6Ujbr31SEriZ0LtQs4IXnANwjoP2rRnfsvCw3yxjL55tFOgE5vwsvSleiC9cCaXfWi2+90odJyQmVman6wfkFHpwTqe9CtG/+2rT5/rVcc46rQviCse6AbzrA11AkKx7yzpB7hKyL1rU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ayunz/gp; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-37ccd81de57so3306280f8f.0;
-        Mon, 07 Oct 2024 15:23:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728339798; x=1728944598; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UNPNpp0MeAYNrngJnQDd8W/cQ07lWgfLVB+09bhq70A=;
-        b=ayunz/gp25apHU/r9GIxv8ewBmSpd6/ydDVKPZJWs2zV3ITvh8563ybdkK5YPvRKE8
-         yKwWhAF9g72RuqlOgxUQTJJmOCGpIVQ6JNeGZLy3VjJsUoayY9SLDG0rwSBKyG87NQmL
-         2sP8lWM1v1bxfzABl+1KLN0XZIbhlJkFZt5dFGC+e1/QS0pMPA/OHpp8E43glekePcCB
-         AkHHB6aS/pCFxgvRAHX+cVL3tTrhc3UJfwKTX3jolwfsM+RW5q2wDX/0IEV1+wBmJFXp
-         PML2+MtTZg/b8AQxEQzUCOaTPdbGG4YkbbJ43uS1ZplGGhTzEv8AqZs5dZ/xmTTpIgj4
-         5rWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728339798; x=1728944598;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UNPNpp0MeAYNrngJnQDd8W/cQ07lWgfLVB+09bhq70A=;
-        b=IsXt10J52xtUqem0027KgKc9/gbNyLK7o/XLvrJn48ti8FkUJi8M7PZ68Eldti1hi/
-         xQCYphHqVA89SW7bstaQv3eoiUOAIOYwb4ZDD2pe5GNV22av0UONmZt5NxYhIw3qdcRO
-         NCLTlv6+LCMVEFNwLkjmx/BzHZA72YgbwXsrmXpXjFlljw6U9HfDYipy7Clweiri4/gd
-         pW2eDPmkDhprC6SBw1BhdYllhqzip5Fvo1bePrlS13z2ePGXyyJBz0MRJJCYzoiXmBVQ
-         o3ZsouKeLef7rpko+8hzg0DIr4/EYWwzfPqcAtjC0Ar3nYApGUgf/fHeDsp1Svy1m9x8
-         QGtA==
-X-Forwarded-Encrypted: i=1; AJvYcCWEI0ODwEWvJ9vzYprVD5LgyQ88ywGX9CQWCslfqXGbYyEK7TIN17Pzc6I3I0HpqopUoARFf1pu97Hnsyfv@vger.kernel.org, AJvYcCXaznV+9lbrPNKMGxy/upKV6G8FcDsMacBeXI/akzbm3XO7nD4jLhXpWUhxVANK7kuZCSdrso2OnrRb//RAZLs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YytpiuC1CRY4Agd/dhJovTfLuyFhIBX3Yh2+7RAB/lIdNkBhfuV
-	FahuYcL7vRw4nSjhGT1ojSLyaGqU6AICmniMMQ3KC8S2BCFryErTz0K+bA==
-X-Google-Smtp-Source: AGHT+IHIj9TkpZy8HCYg3j0VAxoa8KY9XxdoduFtTNQxvWoBWr6/f4R1GJ94Lah6EOpK/nHxcrQaYA==
-X-Received: by 2002:a5d:4567:0:b0:37c:fbb7:5082 with SMTP id ffacd0b85a97d-37d29315e90mr544928f8f.25.1728339798139;
-        Mon, 07 Oct 2024 15:23:18 -0700 (PDT)
-Received: from ALPER-PC.koi-vector.ts.net ([178.233.24.52])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d1690f3b1sm6545857f8f.14.2024.10.07.15.23.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Oct 2024 15:23:17 -0700 (PDT)
-From: Alper Nebi Yasak <alpernebiyasak@gmail.com>
-To: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Francesco Dolcini <francesco@dolcini.it>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Kees Cook <kees@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Brian Norris <briannorris@chromium.org>,
-	David Lin <yu-hao.lin@nxp.com>,
-	linux-hardening@vger.kernel.org,
-	Kalle Valo <kvalo@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Alper Nebi Yasak <alpernebiyasak@gmail.com>
-Subject: [PATCH v2 2/2] wifi: mwifiex: Annotate mwifiex_ie_types_wildcard_ssid_params with __counted_by()
-Date: Tue,  8 Oct 2024 01:20:55 +0300
-Message-ID: <20241007222301.24154-2-alpernebiyasak@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20241007222301.24154-1-alpernebiyasak@gmail.com>
-References: <20241007222301.24154-1-alpernebiyasak@gmail.com>
+	s=arc-20240116; t=1728339912; c=relaxed/simple;
+	bh=dP+7pB+yKyOf0NQhF4Ey5QlbknqrHAfw9DP+SkAi1ag=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AlrpIROybiHt4wDp3Kfxbs1b65qf2s5nlwQoWP6D+JhseLEPMfuJ7j+oIsf5TXB4upLO0EUCAbhZbpiD3Jip5eQPCrojzmdbhmzInElVd5I7cMZmmnoqdyLp91AbKpkchYLHd0pV3bGcmQUv2SG6fNmP6d4VSrxRpmXR68ZVij8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=Vt/jQpsJ; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (unknown [132.205.230.14])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 3BF2C2E0;
+	Tue,  8 Oct 2024 00:23:32 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1728339812;
+	bh=dP+7pB+yKyOf0NQhF4Ey5QlbknqrHAfw9DP+SkAi1ag=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Vt/jQpsJvHUxjmrGDOx6XdDb5/eYcmNOZ+fqGvfgmsCX/Gb8xh5L8MF7/XiaHHs5d
+	 yKwoK1M07KNVU8k6VzBH5mlVNl0fsdfcm8rX4+3gQCvlKP9vNnMhm8hVpFB58jMlbq
+	 3JlQ6yo4ObX+z3BTaIVDayxCEaIiiFVwmh4Cxqis=
+Date: Tue, 8 Oct 2024 01:25:02 +0300
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+	linux-bluetooth@vger.kernel.org, linux-clk@vger.kernel.org,
+	linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
+	linux-gpio@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+	nouveau@lists.freedesktop.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org,
+	linux-i3c@lists.infradead.org, linux-iio@vger.kernel.org,
+	linux-input@vger.kernel.org, patches@opensource.cirrus.com,
+	iommu@lists.linux.dev, imx@lists.linux.dev,
+	linux-mediatek@lists.infradead.org, linux-media@vger.kernel.org,
+	linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org,
+	netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+	linux-pci@vger.kernel.org, linux-phy@lists.infradead.org,
+	linux-pwm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
+	linux-sound@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-staging@lists.linux.dev, linux-usb@vger.kernel.org,
+	linux-serial@vger.kernel.org, greybus-dev@lists.linaro.org,
+	asahi@lists.linux.dev, rafael@kernel.org,
+	Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: Re: [PATCH 00/51] treewide: Switch to __pm_runtime_put_autosuspend()
+Message-ID: <20241007222502.GG30699@pendragon.ideasonboard.com>
+References: <20241004094101.113349-1-sakari.ailus@linux.intel.com>
+ <CAPDyKFp0N6UJhnHS164Tdf=xkWB0jzq65L9TdvYazeBQ-6WjeQ@mail.gmail.com>
+ <20241007184924.GH14766@pendragon.ideasonboard.com>
+ <CAPDyKFpQVnF7eQv3dup8k-3EijnMjuveCG9sZ=Rpey1Y6MBJEg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAPDyKFpQVnF7eQv3dup8k-3EijnMjuveCG9sZ=Rpey1Y6MBJEg@mail.gmail.com>
 
-Add the __counted_by compiler attribute to the flexible array member
-`ssid` to improve access bounds-checking via CONFIG_UBSAN_BOUNDS and
-CONFIG_FORTIFY_SOURCE.
+Hi Ulf,
 
-Signed-off-by: Alper Nebi Yasak <alpernebiyasak@gmail.com>
----
-I've mimicked the commit messages from `git log -S"__counted_by("`.
-Since they refer to UBSAN I tried testing with CONFIG_KASAN (w/
-kasan_multi_shot), CONFIG_UBSAN and CONFIG_FORTIFY_SOURCE. I do not
-get any errors relating to this module with those options, but have
-others -- I even had to test on another board altogether.
+On Tue, Oct 08, 2024 at 12:08:24AM +0200, Ulf Hansson wrote:
+> On Mon, 7 Oct 2024 at 20:49, Laurent Pinchart wrote:
+> > On Fri, Oct 04, 2024 at 04:38:36PM +0200, Ulf Hansson wrote:
+> > > On Fri, 4 Oct 2024 at 11:41, Sakari Ailus wrote:
+> > > >
+> > > > Hello everyone,
+> > > >
+> > > > This set will switch the users of pm_runtime_put_autosuspend() to
+> > > > __pm_runtime_put_autosuspend() while the former will soon be re-purposed
+> > > > to include a call to pm_runtime_mark_last_busy(). The two are almost
+> > > > always used together, apart from bugs which are likely common. Going
+> > > > forward, most new users should be using pm_runtime_put_autosuspend().
+> > > >
+> > > > Once this conversion is done and pm_runtime_put_autosuspend() re-purposed,
+> > > > I'll post another set to merge the calls to __pm_runtime_put_autosuspend()
+> > > > and pm_runtime_mark_last_busy().
+> > >
+> > > That sounds like it could cause a lot of churns.
+> > >
+> > > Why not add a new helper function that does the
+> > > pm_runtime_put_autosuspend() and the pm_runtime_mark_last_busy()
+> > > things? Then we can start moving users over to this new interface,
+> > > rather than having this intermediate step?
+> >
+> > I think the API would be nicer if we used the shortest and simplest
+> > function names for the most common use cases. Following
+> > pm_runtime_put_autosuspend() with pm_runtime_mark_last_busy() is that
+> > most common use case. That's why I like Sakari's approach of repurposing
+> > pm_runtime_put_autosuspend(), and introducing
+> > __pm_runtime_put_autosuspend() for the odd cases where
+> > pm_runtime_mark_last_busy() shouldn't be called.
+> 
+> Okay, so the reason for this approach is because we couldn't find a
+> short and descriptive name that could be used in favor of
+> pm_runtime_put_autosuspend(). Let me throw some ideas at it and maybe
+> you like it - or not. :-)
 
-This attribute was suggested in reviews, I don't fully understand it,
-but I am not sure it is correct in the context of this comment from
-scan.c (with irrelelvant parts omitted):
+I like the idea at least :-)
 
-    ssid_len = user_scan_in->ssid_list[i].ssid_len;
+> I don't know what options you guys discussed, but to me the entire
+> "autosuspend"-suffix isn't really that necessary in my opinion. There
+> are more ways than calling pm_runtime_put_autosuspend() that triggers
+> us to use the RPM_AUTO flag for rpm_suspend(). For example, just
+> calling pm_runtime_put() has the similar effect.
 
-    wildcard_ssid_tlv =
-            (struct mwifiex_ie_types_wildcard_ssid_params *)
-            tlv_pos;
+To be honest, I'm lost there. pm_runtime_put() calls
+__pm_runtime_idle(RPM_GET_PUT | RPM_ASYNC), while
+pm_runtime_put_autosuspend() calls __pm_runtime_suspend(RPM_GET_PUT |
+RPM_ASYNC | RPM_AUTO).
 
-    /*
-     * max_ssid_length = 0 tells firmware to perform
-     * specific scan for the SSID filled, whereas
-     * max_ssid_length = IEEE80211_MAX_SSID_LEN is for
-     * wildcard scan.
-     */
-    if (ssid_len)
-            wildcard_ssid_tlv->max_ssid_length = 0;
-    else
-            wildcard_ssid_tlv->max_ssid_length =
-                                    IEEE80211_MAX_SSID_LEN;
+> 
+> Moreover, it's similar for pm_runtime_mark_last_busy(), it's called
+> during rpm_resume() too, for example. So why bother about having
+> "mark_last_busy" in the new name too.
+> 
+> That said, my suggestion is simply "pm_runtime_put_suspend".
 
-    memcpy(wildcard_ssid_tlv->ssid,
-           user_scan_in->ssid_list[i].ssid, ssid_len);
+Can we do even better, and make pm_runtime_put() to handle autosuspend
+automatically when autosuspend is enabled ?
 
-I expect we want to use __counted_by(ssid_len) instead, but do not have
-it in the struct. And max_ssid_length = 0 when ssid[] is non-empty, so
-is it really appropriate as the __counted_by()? But then again, I
-couldn't get this to produce a warning.
+> If you don't like it, I will certainly not object to your current
+> approach, even if I think it leads to unnecessary churns.
+> 
+> [...]
+> 
+> Kind regards
+> Uffe
 
-Changes in v2:
-- Add patch to annotate ssid field with __counted_by(max_ssid_length)
-
- drivers/net/wireless/marvell/mwifiex/fw.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
-index 4a96281792cc..e4e35ba35454 100644
---- a/drivers/net/wireless/marvell/mwifiex/fw.h
-+++ b/drivers/net/wireless/marvell/mwifiex/fw.h
-@@ -875,7 +875,7 @@ struct mwifiex_ietypes_chanstats {
- struct mwifiex_ie_types_wildcard_ssid_params {
- 	struct mwifiex_ie_types_header header;
- 	u8 max_ssid_length;
--	u8 ssid[];
-+	u8 ssid[] __counted_by(max_ssid_length);
- } __packed;
- 
- #define TSF_DATA_SIZE            8
 -- 
-2.45.2
+Regards,
 
+Laurent Pinchart
 
