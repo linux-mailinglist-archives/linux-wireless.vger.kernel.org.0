@@ -1,151 +1,118 @@
-Return-Path: <linux-wireless+bounces-13601-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13602-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E396992C8A
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 15:06:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42E80992CEE
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 15:17:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B57661F23919
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 13:06:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 655DB1C231C9
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 13:17:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FC3E1D271F;
-	Mon,  7 Oct 2024 13:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 887421D434E;
+	Mon,  7 Oct 2024 13:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B2cRpbQ4"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="y660Vn8T"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FEE1E519
-	for <linux-wireless@vger.kernel.org>; Mon,  7 Oct 2024 13:06:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879E31D1757
+	for <linux-wireless@vger.kernel.org>; Mon,  7 Oct 2024 13:16:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728306371; cv=none; b=GeYSc4z+GdpH8rn5mgWsIg7NYptL5AisCd33szoRiyUpA7b5896WSOr5rUU+U4MNjdsXKIdcN53GtA3pZsjWLT82bSyvsUMb9Kq4nnFNEXnaqWtoMl0ekx/edjrrmg8PWytFtJfyqbWTiQu8HTtyuuNCrGWyFngc07317sSigO4=
+	t=1728307013; cv=none; b=PbaLoUXoSGDEWlYuAHFexIbYzloLpmJwHpO0+e7EKrdjpBdV/d7IjyqDBaUaIvmY8Lfr/0AzY2LDPf/zXQAvmEyZbyJtzqtYYHEb/mY7I8FJt7ye1WZrs1ge6Kl69qajIF/QUU21hPe4GDsYPU1sfssruyg9J/AOZv6qRPYlmi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728306371; c=relaxed/simple;
-	bh=Yun7qgQTsJz2BzI3VjEUKoPV09aMuVzK6eBZFCNekvw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lD6r8JMUdsLoXppjpkAkUhoH3Pmm6vW0w0INXrnuVWoL0ViyE4tHyvTzCO9dXl4bH4QfvsyIgNnKElCQMPRVCBhhx3Mmu+T67OOJkjAswHFL2xXJceB0gPA1Pz44aPRrMy8CuSNjmstuQc0A1Hkox2X9NxJ3x1NhqIXcNQtn96o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B2cRpbQ4; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-71dfc250001so1048076b3a.2
-        for <linux-wireless@vger.kernel.org>; Mon, 07 Oct 2024 06:06:09 -0700 (PDT)
+	s=arc-20240116; t=1728307013; c=relaxed/simple;
+	bh=OcYuo83U2iRwCpYhaFW8wDpfY57aiwrGoCMgI1DeJwc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gfgx9i9ev0RcQ5zAe/jAeQuIsssey2Qv5i86NIwrGAlIGqxejaQLVwd1AXrDptkZsDXvZFcxjVDNdfKVSyFW5xgo6G9hVEYlT3qBXG679iPBworMvHUbb7px0zFD2v4tNyWnTLPyDwkEONHSWff4raoSSbti83Q+JGMyYf+Mv9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=y660Vn8T; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-42cbc38a997so27438565e9.1
+        for <linux-wireless@vger.kernel.org>; Mon, 07 Oct 2024 06:16:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728306369; x=1728911169; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PVbc7x7qGxvPs4q2XtOSLgTK7eiawW+8HJ7G1mC5t0I=;
-        b=B2cRpbQ4FpgZ35n8lmeh2jyI6VsTFML+x+dCe6ixgQMuLsfjvHuMSFCfRhxGYTO68p
-         3iqb7fmqY8V+8z+BDg4SIkG13+NGv3Mnlwe/Ha8amHAE9eE1BN/WDIQ3cNP0eZ0n61TI
-         BVBzaY4miNULO5f7UaY8noHJGUde6EuHa4UoTWW6y66nNmRW8DE5V0GmPKykzeNLrNTb
-         nvmB4llymtiBi7/cSpsRcjvDqcZXwptxdRfoI7DmdkZXlq1ztzURbH6KSwhSI9l11i6p
-         6+XYrAeizOVLKTJMa8XI/VBSMpZuthAoCakC6QCJ0k17AKNGscWiVIxcxviaGCy4TP9G
-         fAiA==
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1728307010; x=1728911810; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2xJ2YFkWfoe18Mjx4VFZ0GmwDt9WkCYa7a9JNvVutAI=;
+        b=y660Vn8TF1N8RN7VNvfYjsefWwuMFay3yXawBOTqUWFEx0Id6hTU12M2AJIOqzx/TO
+         +4pzycIJTYb5ETYUhp+kRQGokwjcNO9f6XuN0J4NZPnuSTwLFAq1GTbUJ0dniyG/jENF
+         w+LRvARU6OF+GgtxI1XGAglQK+Q57pbpmsM0UKD1rElspWWr/zk960ENodyUwcYkeoC3
+         WW+qNuzn4WQ8JA/HpCmDBZekH/cxZCVVBI5f4optbo7zF21UBznwZa5aOJNnftCUKZvt
+         w1giQ/9HzwdZIYRnULgxZDd1NV6shyTGZYH7EanvWg2JkkF9U3qLewhiwtOXwO7BxLTV
+         wPTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728306369; x=1728911169;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PVbc7x7qGxvPs4q2XtOSLgTK7eiawW+8HJ7G1mC5t0I=;
-        b=Zl9f/rNk4q7pXB7ac66TIC6wXkJU3EYBJ4Fq3r+EwMzC2igeoTHpuT4exxrw5TJDl0
-         +kNpX7QomWM6OKpi/TmJSRiuSHUFRW6IK4grqs4A+9pfzD7edArQElnJo8AFs8499+cr
-         qZsDN7mQ0Ld8ELpYsNdgMbFDVQhUfGCxy47FkM0h/PecsokXwsG/VhDldWl5AKYupNSl
-         3e0iKii9mKgIY5RKwMCKyR++dRSCJUsAOhBiWuppGORD/xIKaVwuwfElohPco54mMtsA
-         KwxqTDvtkCigJTcm6V/nFfla/dN4CrYmwWIQq1B0erAEBHrGXzeUIWENaqfRnmvIDACB
-         zH5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV+BoCEZUCgSNDt2WQ/94R9mVGsPiwvbG1jpr0MA2JWTEDtSdaSCnN4KTXDDTV83h7yZ9FGht0hrOfVw20JcA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzyeyiat0z8AKO3fHewt93t8jXaf9tNCdLGvS7QwsX3nQprNv8h
-	1J2gDkP24aQSYvFw9FVeD4Lk4qxZGQb9z/zeYQzP0kJC7qOwbCEHnx0wWg==
-X-Google-Smtp-Source: AGHT+IEBokp742xlJXBM+MooOnnuVX8tXk84A4LTmcw9Fd7Zmd5xB+kiCRAuVzfGh9bR6h1QzdaIRQ==
-X-Received: by 2002:a05:6a00:1893:b0:71d:f510:b791 with SMTP id d2e1a72fcca58-71df510bbdfmr1864578b3a.12.1728306369364;
-        Mon, 07 Oct 2024 06:06:09 -0700 (PDT)
-Received: from [192.168.1.164] (h69-130-12-20.bendor.broadband.dynamic.tds.net. [69.130.12.20])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7e9f681f1e8sm4197232a12.28.2024.10.07.06.06.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Oct 2024 06:06:08 -0700 (PDT)
-Message-ID: <4ce007ef-5a5e-4403-b53e-fe13513f21b5@gmail.com>
-Date: Mon, 7 Oct 2024 06:06:08 -0700
+        d=1e100.net; s=20230601; t=1728307010; x=1728911810;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2xJ2YFkWfoe18Mjx4VFZ0GmwDt9WkCYa7a9JNvVutAI=;
+        b=V/CNlL/2mp2KbLxlw+AFdmuz8BSJhnVtmJKOKv1nwbFp4ogrBbR+L17wVGevE6oWFc
+         DqpOzz06ro2vUg1u0w5ZcDrxklPqZXdDqPG6VxhX1MEYxrK6em8liIs+FAUl6XH+Y51h
+         SR1guB7rpeWtAiecdGa5B599REY7wIt0wbIDnQO93Tddv+kpC/aCa4XB9OGdy/Ybs3Ft
+         n1YTGux7ZTFK+H/GxXqfTpp6mI0lCd8fTs7XegqEvjA1KG+3JM38EE/0rmu9Wd78rNxv
+         DLX9dFWDkHc0dqyDYhaibo6k2N8b8hpZ5h9N91cjFvwcmbmcXO0ZiMxUEwj7mrDWKexV
+         ymiw==
+X-Gm-Message-State: AOJu0Yzx3ugwxyAL71EES1JZw/kIwAnxwvoLQkR+OLF9J5aWzRCsouzq
+	p2zOjT8K828XWA3y9NsdiVWQ225sdGtASiQJWOPz5b8ko0EJ6/gZ3Sfb8hylwNM6rHav+pITSAK
+	D
+X-Google-Smtp-Source: AGHT+IFCxIu22KVn102zI/v0p4tBA3WyzTx0G+ILqzEftEQiZFlR0gzu/jBnsdN6zjbqWia8kun3jQ==
+X-Received: by 2002:a7b:c5c3:0:b0:426:64c1:8388 with SMTP id 5b1f17b1804b1-42f892fd471mr57225385e9.17.1728307009843;
+        Mon, 07 Oct 2024 06:16:49 -0700 (PDT)
+Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:6100:637:cbe9:f3bc])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f86b1d672sm92484155e9.28.2024.10.07.06.16.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Oct 2024 06:16:47 -0700 (PDT)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+To: Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com,
+	linux-kernel@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH] wifi: brcmfmac: of: use devm_clk_get_optional_enabled_with_rate()
+Date: Mon,  7 Oct 2024 15:16:39 +0200
+Message-ID: <20241007131639.98358-1-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Missing scan results with SCAN_FLAG_COLOCATED_6GHZ set
- (Ath11k/WCN6855)
-To: Ben Greear <greearb@candelatech.com>,
- "open list:MEDIATEK MT76 WIRELESS LAN DRIVER"
- <linux-wireless@vger.kernel.org>
-Cc: "ath11k@lists.infradead.org" <ath11k@lists.infradead.org>
-References: <cfb00919-678f-408d-9fb9-83fc24fee197@gmail.com>
- <d1e75a08-047d-7947-d51a-2e486efead77@candelatech.com>
-Content-Language: en-US
-From: James Prestwood <prestwoj@gmail.com>
-In-Reply-To: <d1e75a08-047d-7947-d51a-2e486efead77@candelatech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-Hi Ben,
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-On 10/4/24 12:18 PM, Ben Greear wrote:
-> On 10/4/24 11:46, James Prestwood wrote:
->> Hi,
->>
->> I've noticed that when setting the colocated flag much of the scan 
->> results are not appearing when they should be. This was seen in a 
->> large warehouse where our network/SSID was using only the 6ghz band. 
->> There were other networks on 2.4/5ghz though, which maybe is having 
->> some effect, but those networks are not broadcasting on 6ghz.
->>
->> This first came to my attention when the majority of our clients were 
->> experiencing horrible signal quality. Upon looking at the logs and 
->> nl80211 messages to the kernel IWD was issuing both limited 6ghz 
->> scans as well as full spectrum scans and only showing a few 6ghz 
->> results, like 1-2 BSS's which should not have been the case. I was 
->> able to scan manually using "iw scan" and I saw all the expected 
->> BSS's. I isolated it to the fact that IWD was setting the 
->> SCAN_FLAG_COLOCATED_6GHZ and removing that flag resulted in all the 
->> BSS's showing up in scan results. Note, that with or without the flag 
->> all the 2.4/5ghz BSS's were showing up without a problem, it seems 
->> completely isolated to the 6ghz band.
->>
->> The NEW_SCAN_RESULTS event was indicating the kernel had scanned all 
->> the expected frequencies we were asking to scan, but the results were 
->> mostly empty for 6ghz. Only ever the connected BSS would show up and 
->> _sometimes_ another BSS, but generally not.
->>
->> I'm trying to read through the code associated with the COLOCATED 
->> flag, but its not exactly intuitive (to me at least). I'm not sure if 
->> this is something with mac80211 or at the driver level. I really 
->> don't have anything to compare it to as ath11k is the only hardware 
->> available at this warehouse with many APs around.
->>
->> I'm looking for some guidance on if this is expected behavior with 
->> the colocated flag, and if there is any concern with including it 
->> unconditionally on every scan. If it has unintended consequences like 
->> this, generally, across multiple drivers I'd like to re-think its use 
->> in IWD.
->
-> I had some similar issues using hostap, and hacked it to do every 4th 
-> or so scan with that
-> flag set differently.  Hopefully that lets the 'fast' scan work when 
-> it can, but still lets one
-> scan the hard way...
->
-> Possibly there are driver concerns too, I was using Intel be200 when 
-> debugging this.
+Fold the separate clk_set_rate() call into the clock getter.
 
-Thanks for the extra info. Seems like a mac80211 quirk if its also on an 
-Intel card. Long term I may just parse RNR elements in userspace and 
-issue extra scans if needed.
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Thanks,
-
-James
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+index b90e23bb9366..ae98e371dbfd 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+@@ -116,12 +116,11 @@ int brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
+ 		of_node_put(root);
+ 	}
+ 
+-	clk = devm_clk_get_optional_enabled(dev, "lpo");
++	clk = devm_clk_get_optional_enabled_with_rate(dev, "lpo", 32768);
+ 	if (IS_ERR(clk))
+ 		return PTR_ERR(clk);
+ 
+ 	brcmf_dbg(INFO, "%s LPO clock\n", clk ? "enable" : "no");
+-	clk_set_rate(clk, 32768);
+ 
+ 	if (!np || !of_device_is_compatible(np, "brcm,bcm4329-fmac"))
+ 		return 0;
+-- 
+2.43.0
 
 
