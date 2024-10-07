@@ -1,104 +1,115 @@
-Return-Path: <linux-wireless+bounces-13645-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13646-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE269937D2
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 22:00:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4ABA993937
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 23:32:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8798FB2359E
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 20:00:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A687A282F4A
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 21:32:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053AA1DE3DD;
-	Mon,  7 Oct 2024 20:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A60518BC16;
+	Mon,  7 Oct 2024 21:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="wyIsKlOM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gt9m/nbM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5DED1DE3DE
-	for <linux-wireless@vger.kernel.org>; Mon,  7 Oct 2024 20:00:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6432318BBB7
+	for <linux-wireless@vger.kernel.org>; Mon,  7 Oct 2024 21:32:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728331210; cv=none; b=EzLrDDBoWYO8SiHoI6bkMalFU9GfV9Xe7xnhnqVJacft1JW5fPdb/5OEjZc2BWXIUwvjVziao+R5TzkQodDQtxz0JJbH84DP7+nP4wEzEeQKRA6GqIjyUnGere725PEN1xsw7QtxennJrbKC9Q1MgGMwaoWfnXoKPri8CPgFSCg=
+	t=1728336749; cv=none; b=i/rcuLUnmTeBJURsSeqVr/FLSLHD8kIu9lRsPGnFxhNvCLCUDXSvtGAV8u6tCI+MVybaZeBdlXVK1M8iuwnnPvwvB0EiyYWIIo+1yZZyAABqDpIQRCxEVj/YGub9GkU/hqEXp/bJL+7m2iIDbGZNTglNaeeLFDwicK4A9j1XQxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728331210; c=relaxed/simple;
-	bh=8t8wy9Mr2uMVO82QWv6BFsgu1Hq0m2O+Rs9chdwborI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EQRA6FvjIzGWcbnypJ/dBqFbu3yEgm2DzEjxWFdzn7RE7HF5G+5SP60lidHjn1XmkbBr3gu7MfNjciFlEJ4U0bzFDs9DzM7+Vtfk5CBCoyerLnOoUTPTEKA1PJy6OGcQFYY+eaHGo7yFN+c203GQpld47mIhXhsrDGGM7o0BzTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=wyIsKlOM; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=G7TLga9TAkQVflgjPREs1kTKkN4aYcfNzMzdLRTVXJk=; t=1728331208; x=1729540808; 
-	b=wyIsKlOMAa72fBcp5eNg0g7VtW//tmHTp4B6bydocsUAwYPU+MaTqW88R+rKxQYHhif71WYHqtP
-	l7mU7PwmpSPtLZ8grEu8He+ZEX0RfJyLlf0I/KkYK6LBpyMGNyBLYC8qJDxb2Pa2+/i3ZxkpiZSpy
-	PHmTMFLD6MmQUeec9LwLitTVnqt2uf7Y0XpsNupRmkCsB8FFdWXA7iyrRdhUicbYUxcrcuH29VOc8
-	erxXMPvvL91Rag3zpeo40QY/KeCx4yKwAgYtVUSbx1IHnPMltxG+0QKkoxN6CCPAvM0mM6qOZfJ6N
-	bDU4RYwZQGHSoVmAJMRNBkXN5ObzUJ4D7Ifg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1sxttk-00000003WFA-3rNx;
-	Mon, 07 Oct 2024 22:00:05 +0200
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] wireless: wext: shorten struct iw_ioctl_description
-Date: Mon,  7 Oct 2024 22:00:03 +0200
-Message-ID: <20241007220003.309bd52fa763.I9a1229fa7f2be53d4f50e63671ed441d0968bb41@changeid>
-X-Mailer: git-send-email 2.46.2
+	s=arc-20240116; t=1728336749; c=relaxed/simple;
+	bh=gL5/7aoZZbjUZOM1kABtEgwg/a+SkrQ2Kv6ccoibTis=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BIjiM3iHgNvDnFOVxyOrNhR+pvHWytfGOCbqMKAirWkJfVa0PcAp+5V7G6orb2kcKvgSPlsLRHahs+IbsVS0qc/Vci1i1IRCT2O0AUAShGv4U6+IMKWpB+AyVq0lc5XpGoSsjM8jyrSsKB8NgysBELkAnIi5OxG+mKMA+dMslSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gt9m/nbM; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a995627a0daso181584666b.3
+        for <linux-wireless@vger.kernel.org>; Mon, 07 Oct 2024 14:32:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728336747; x=1728941547; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ekm5gKz417Yao8spvCZDf7dM5FZumrXk9Uz0nUEH35E=;
+        b=Gt9m/nbMDmjt2yK0HSjWP2u1CKzAFd5oqD1Pgu0B1o3mOGgIJrSK5iqF52/UCVJK7c
+         Ndljtbp57hpn7cZOrv3mSJPAfxUIMd1JOb0QQ+VDBXOK1pxVvtcy0SlSuJXK7gRiUyIL
+         4Zzsxg4QxVySW84GcKmBkoQnefTPegDbnq6l/5E7LlqgZyEfL/j/SBpttjGdJaFuRdRn
+         aKaR61kdxV07Drm5VaPBWe0qsKlGZI7R5p1Kd7NQvq7kDfwbQTxwBJbStFry9oRy+EVr
+         pAuJUgbxDfzVUjJlKxJpn/LyY1IheQPrrG81h0vRdm7WCp2jIgaadGytD/13pbLuNHkx
+         jyQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728336747; x=1728941547;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ekm5gKz417Yao8spvCZDf7dM5FZumrXk9Uz0nUEH35E=;
+        b=TvfS4J6KZbgbf/QQINL3ztS0CQfiJbBfXwjQo/DDBxwcXU82ZThEJxuG4A9ijh/WPw
+         lVsoQeQgfC0ohz4faCEkcJP+qM2/iB3n6b9YWWTIIN6tb6/HdC4r4RCIs90uDJFgQC8v
+         8EtEg+MldEUawCoYyg16ZgPx0DShdKVavoNHmGRcdkmUhUaLeHaxrYnrnk8VRGELckxU
+         ekKYJx5pwne9H8hc8uPNHEfoFIdmBhiiwUdX/a2ja2JyvoOCLfeWX4OrnJ34R4TJYX3Y
+         3K2ArwcPcjZcF7exLZnwBHKfDcNTU6OGPqhJdhMp7ZQj3Y0n6DKZBGcOz9Ebz5wpUGKR
+         D5ag==
+X-Forwarded-Encrypted: i=1; AJvYcCWpx6WGPi2XPZOk//+snpxudZfCMUpLkMBPOunZtEdsWMH5KSFpgAMc+zLMt1P9hid2kXzOuDVcSKGJv9SGxQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxiskydsngWNR/Rek5ddnMzVYnjWaDqoTbY6+yqbCwEzc/BYRb
+	jhgw50TohlQNrxD4fYX8kJGAbE0wrwsgAlBkcwB7x3xs+/Whlw3M6/3jIPS2
+X-Google-Smtp-Source: AGHT+IGgR2EkpaGxTSdHmhGbKh+kRFvmuzoBYzdgJGsL0ZyNNvwMDINlinsWWqTJqdZxhuJ58Vq+Iw==
+X-Received: by 2002:a17:907:318d:b0:a90:41a9:7c3e with SMTP id a640c23a62f3a-a991c0af160mr1376735766b.65.1728336746406;
+        Mon, 07 Oct 2024 14:32:26 -0700 (PDT)
+Received: from [192.168.2.105] (p54a0712c.dip0.t-ipconnect.de. [84.160.113.44])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a994ada19fcsm270665266b.183.2024.10.07.14.32.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Oct 2024 14:32:26 -0700 (PDT)
+Message-ID: <b6ff86e3-56a1-43d3-83b2-01818684f076@gmail.com>
+Date: Mon, 7 Oct 2024 23:32:25 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/6] staging: rtl8192e: delete the driver
+To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-staging@lists.linux.dev, Johannes Berg <johannes.berg@intel.com>
+References: <20241007182706.66888-8-johannes@sipsolutions.net>
+ <20241007202707.d0e59cdd2cdc.I8e4d74a6e1d09eefe1f5e2e208735ba2ccef1d4f@changeid>
+Content-Language: en-US
+From: Philipp Hortmann <philipp.g.hortmann@gmail.com>
+In-Reply-To: <20241007202707.d0e59cdd2cdc.I8e4d74a6e1d09eefe1f5e2e208735ba2ccef1d4f@changeid>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+On 10/7/24 20:26, Johannes Berg wrote:
+> From: Johannes Berg<johannes.berg@intel.com>
+> 
+> This driver is using lib80211 and any driver that plans to ever
+> leave staging should never have done that, so remove the driver
+> to enable cleaning up lib80211 into libipw inside the old Intel
+> drivers.
+> 
+> Signed-off-by: Johannes Berg<johannes.berg@intel.com>
+> ---
 
-There's no need for "future" extensions in an internal
-struct, and we don't need a u32 for flags, use just a
-u8. Also remove the unused IW_DESCR_FLAG_WAIT flag.
+Hi Johannes,
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- include/net/iw_handler.h | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+this driver is not only working, it is also supporting a form factor 
+that is usable and is available on the used hardware market.
 
-diff --git a/include/net/iw_handler.h b/include/net/iw_handler.h
-index 804587b7592b..c9b46b996197 100644
---- a/include/net/iw_handler.h
-+++ b/include/net/iw_handler.h
-@@ -279,8 +279,6 @@
- #define IW_DESCR_FLAG_RESTRICT	0x0004	/* GET : request is ROOT only */
- 				/* SET : Omit payload from generated iwevent */
- #define IW_DESCR_FLAG_NOMAX	0x0008	/* GET : no limit on request size */
--/* Driver level flags */
--#define IW_DESCR_FLAG_WAIT	0x0100	/* Wait for driver event */
- 
- /****************************** TYPES ******************************/
- 
-@@ -373,11 +371,10 @@ struct iw_handler_def {
-  */
- struct iw_ioctl_description {
- 	__u8	header_type;		/* NULL, iw_point or other */
--	__u8	token_type;		/* Future */
-+	__u8	flags;			/* Special handling of the request */
- 	__u16	token_size;		/* Granularity of payload */
- 	__u16	min_tokens;		/* Min acceptable token number */
- 	__u16	max_tokens;		/* Max acceptable token number */
--	__u32	flags;			/* Special handling of the request */
- };
- 
- /* Need to think of short header translation table. Later. */
--- 
-2.46.2
+Is it possible to migrate the driver from lib80211 to libipw?
 
+It does not have to be you who is doing this. How urgent is it to remove 
+this driver?
+
+Thanks for your support.
+
+Bye Philipp
 
