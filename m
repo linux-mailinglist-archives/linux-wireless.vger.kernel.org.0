@@ -1,118 +1,126 @@
-Return-Path: <linux-wireless+bounces-13602-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13603-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42E80992CEE
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 15:17:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 085CF992DD4
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 15:52:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 655DB1C231C9
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 13:17:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C57A4280E68
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 13:52:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 887421D434E;
-	Mon,  7 Oct 2024 13:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8FEF1D4354;
+	Mon,  7 Oct 2024 13:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="y660Vn8T"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="PTx7hlff"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879E31D1757
-	for <linux-wireless@vger.kernel.org>; Mon,  7 Oct 2024 13:16:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84DF91D45E2
+	for <linux-wireless@vger.kernel.org>; Mon,  7 Oct 2024 13:52:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728307013; cv=none; b=PbaLoUXoSGDEWlYuAHFexIbYzloLpmJwHpO0+e7EKrdjpBdV/d7IjyqDBaUaIvmY8Lfr/0AzY2LDPf/zXQAvmEyZbyJtzqtYYHEb/mY7I8FJt7ye1WZrs1ge6Kl69qajIF/QUU21hPe4GDsYPU1sfssruyg9J/AOZv6qRPYlmi8=
+	t=1728309123; cv=none; b=jhtWlHIExuoyDRvrNVJxNVWO1pRoUmGtZyRVQa5HzWquGRCgkApZl1ahM+qN/Z2+6OLuIBNosZlZK+4wH88hHUpmq4Yv67WwN+rSrFvqj5DD3z8Gpm8gBcptkgPEZBDejVsylukLVqKBzXxFhJfiz8aER63eYRJuzCwVVdGPB4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728307013; c=relaxed/simple;
-	bh=OcYuo83U2iRwCpYhaFW8wDpfY57aiwrGoCMgI1DeJwc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gfgx9i9ev0RcQ5zAe/jAeQuIsssey2Qv5i86NIwrGAlIGqxejaQLVwd1AXrDptkZsDXvZFcxjVDNdfKVSyFW5xgo6G9hVEYlT3qBXG679iPBworMvHUbb7px0zFD2v4tNyWnTLPyDwkEONHSWff4raoSSbti83Q+JGMyYf+Mv9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=y660Vn8T; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-42cbc38a997so27438565e9.1
-        for <linux-wireless@vger.kernel.org>; Mon, 07 Oct 2024 06:16:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1728307010; x=1728911810; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2xJ2YFkWfoe18Mjx4VFZ0GmwDt9WkCYa7a9JNvVutAI=;
-        b=y660Vn8TF1N8RN7VNvfYjsefWwuMFay3yXawBOTqUWFEx0Id6hTU12M2AJIOqzx/TO
-         +4pzycIJTYb5ETYUhp+kRQGokwjcNO9f6XuN0J4NZPnuSTwLFAq1GTbUJ0dniyG/jENF
-         w+LRvARU6OF+GgtxI1XGAglQK+Q57pbpmsM0UKD1rElspWWr/zk960ENodyUwcYkeoC3
-         WW+qNuzn4WQ8JA/HpCmDBZekH/cxZCVVBI5f4optbo7zF21UBznwZa5aOJNnftCUKZvt
-         w1giQ/9HzwdZIYRnULgxZDd1NV6shyTGZYH7EanvWg2JkkF9U3qLewhiwtOXwO7BxLTV
-         wPTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728307010; x=1728911810;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2xJ2YFkWfoe18Mjx4VFZ0GmwDt9WkCYa7a9JNvVutAI=;
-        b=V/CNlL/2mp2KbLxlw+AFdmuz8BSJhnVtmJKOKv1nwbFp4ogrBbR+L17wVGevE6oWFc
-         DqpOzz06ro2vUg1u0w5ZcDrxklPqZXdDqPG6VxhX1MEYxrK6em8liIs+FAUl6XH+Y51h
-         SR1guB7rpeWtAiecdGa5B599REY7wIt0wbIDnQO93Tddv+kpC/aCa4XB9OGdy/Ybs3Ft
-         n1YTGux7ZTFK+H/GxXqfTpp6mI0lCd8fTs7XegqEvjA1KG+3JM38EE/0rmu9Wd78rNxv
-         DLX9dFWDkHc0dqyDYhaibo6k2N8b8hpZ5h9N91cjFvwcmbmcXO0ZiMxUEwj7mrDWKexV
-         ymiw==
-X-Gm-Message-State: AOJu0Yzx3ugwxyAL71EES1JZw/kIwAnxwvoLQkR+OLF9J5aWzRCsouzq
-	p2zOjT8K828XWA3y9NsdiVWQ225sdGtASiQJWOPz5b8ko0EJ6/gZ3Sfb8hylwNM6rHav+pITSAK
-	D
-X-Google-Smtp-Source: AGHT+IFCxIu22KVn102zI/v0p4tBA3WyzTx0G+ILqzEftEQiZFlR0gzu/jBnsdN6zjbqWia8kun3jQ==
-X-Received: by 2002:a7b:c5c3:0:b0:426:64c1:8388 with SMTP id 5b1f17b1804b1-42f892fd471mr57225385e9.17.1728307009843;
-        Mon, 07 Oct 2024 06:16:49 -0700 (PDT)
-Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:6100:637:cbe9:f3bc])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f86b1d672sm92484155e9.28.2024.10.07.06.16.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Oct 2024 06:16:47 -0700 (PDT)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-To: Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org,
-	brcm80211@lists.linux.dev,
-	brcm80211-dev-list.pdl@broadcom.com,
-	linux-kernel@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH] wifi: brcmfmac: of: use devm_clk_get_optional_enabled_with_rate()
-Date: Mon,  7 Oct 2024 15:16:39 +0200
-Message-ID: <20241007131639.98358-1-brgl@bgdev.pl>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1728309123; c=relaxed/simple;
+	bh=+NR/gzftuGKXn/urGk2NvII2unSGUCda0d/FerRGJdA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=W5VOQuXQhKef7V+4lJ3dYhuaFEIyvazlG+SXjv6/V1Q4y96qhPxQzlfnNl9zBrbbaI8/5SJ15BH1DAag7OpHTN4ILQEViaWQW2/m6LW5ELuDOQ5Xp6MsVy6DRO94ADw3JxNke9MhT/ynnmnS0BwrarBQSuzhezOYlju+y4pG3Wg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=PTx7hlff; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 504a4d0884b311ef8b96093e013ec31c-20241007
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=ATimxhLnDANYMNPMxpqt7QVT0xGNiTFBMcTp6ckVdHA=;
+	b=PTx7hlffCNtt4AYJpa6fv4WAw2QEm7XvOrj9vltfuD3sY6HpYRZ/Sb4Fe3g0Fxeay8JRU+00DtKwlzvo1esr3i0dR+3ArdYv3GuAwC6/2dew4RVnF/EFXzhqdRfLb6+JXE+WstPCg7SU2+vH07rao+EUQl+gxgyoQPfVNh3jr3I=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.41,REQID:e6dcc5c5-5965-4932-81cd-499aeb4089d6,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:6dc6a47,CLOUDID:346ee140-8751-41b2-98dd-475503d45150,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
+	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 504a4d0884b311ef8b96093e013ec31c-20241007
+Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw02.mediatek.com
+	(envelope-from <shayne.chen@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1470070736; Mon, 07 Oct 2024 21:51:55 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Mon, 7 Oct 2024 21:51:53 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Mon, 7 Oct 2024 21:51:53 +0800
+From: Shayne Chen <shayne.chen@mediatek.com>
+To: linux-wireless <linux-wireless@vger.kernel.org>
+CC: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
+	"Ryder Lee" <ryder.lee@mediatek.com>, Evelyn Tsai <evelyn.tsai@mediatek.com>,
+	linux-mediatek <linux-mediatek@lists.infradead.org>, Frank Wunderlich
+	<frank-w@public-files.de>, Shayne Chen <shayne.chen@mediatek.com>
+Subject: [PATCH wireless] wifi: mt76: mt7996: fix invalid interface combinations
+Date: Mon, 7 Oct 2024 21:51:33 +0800
+Message-ID: <20241007135133.5336-1-shayne.chen@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-AS-Result: No-10--5.690600-8.000000
+X-TMASE-MatchedRID: Tck8wxuMuYzAHHHFQcj2dge06kQGFaIW75oFMklhrngG2HMvWEJenuml
+	/E2CK49bwhRO9036tr8uug82vqq5s8ot60/Xh7AB+YXwgWdSaC8raL2mh8ZVK/+am84b5ALE+Vi
+	hXqn9xLHLlfTm7xmbgoAy6p60ZV62fJ5/bZ6npdjKayT/BQTiGgmYwOHxlFtLpTNQm6sBpj6T2G
+	yja3Qu86U3gJLi1iNP2cVbp8HJAFvAvpLE+mvX8g==
+X-TM-AS-User-Approved-Sender: No
+X-TM-AS-User-Blocked-Sender: No
+X-TMASE-Result: 10--5.690600-8.000000
+X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
+X-TM-SNTS-SMTP: 42C26800CFBBCB87A1219E76D155024E8DA548A6DE27E62152D2AAC8652A88ED2000:8
+X-MTK: N
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Setting beacon_int_min_gcd and NL80211_IFTYPE_ADHOC in the same interface
+combination is invalid, which will trigger the following warning trace
+and get error returned from wiphy_register().
 
-Fold the separate clk_set_rate() call into the clock getter.
+[   10.080325] Call trace:
+[   10.082761]  wiphy_register+0xc4/0x76c [cfg80211]
+[   10.087465]  ieee80211_register_hw+0x800/0xac4 [mac80211]
+[   10.092868]  mt76_register_device+0x16c/0x2c0 [mt76]
+[   10.097829]  mt7996_register_device+0x740/0x844 [mt7996e]
 
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Fix this by removing unused adhoc iftype.
+
+Fixes: 948f65249868 ("wifi: mt76: mt7996: advertize beacon_int_min_gcd")
+Reported-by: Frank Wunderlich <frank-w@public-files.de>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/init.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-index b90e23bb9366..ae98e371dbfd 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-@@ -116,12 +116,11 @@ int brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
- 		of_node_put(root);
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index f6a010b61a8a..2d36c7325137 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -16,9 +16,6 @@
  
--	clk = devm_clk_get_optional_enabled(dev, "lpo");
-+	clk = devm_clk_get_optional_enabled_with_rate(dev, "lpo", 32768);
- 	if (IS_ERR(clk))
- 		return PTR_ERR(clk);
- 
- 	brcmf_dbg(INFO, "%s LPO clock\n", clk ? "enable" : "no");
--	clk_set_rate(clk, 32768);
- 
- 	if (!np || !of_device_is_compatible(np, "brcm,bcm4329-fmac"))
- 		return 0;
+ static const struct ieee80211_iface_limit if_limits[] = {
+ 	{
+-		.max = 1,
+-		.types = BIT(NL80211_IFTYPE_ADHOC)
+-	}, {
+ 		.max = 16,
+ 		.types = BIT(NL80211_IFTYPE_AP)
+ #ifdef CONFIG_MAC80211_MESH
 -- 
-2.43.0
+2.39.2
 
 
