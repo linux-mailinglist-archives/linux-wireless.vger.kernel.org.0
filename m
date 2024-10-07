@@ -1,182 +1,149 @@
-Return-Path: <linux-wireless+bounces-13580-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13581-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 633D6992628
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 09:39:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 085259929D9
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 13:02:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7A3B1F228C4
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 07:39:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 822B31F22BC8
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 11:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F2716FF44;
-	Mon,  7 Oct 2024 07:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F4971BB69E;
+	Mon,  7 Oct 2024 11:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="hEpaNMyj"
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="jmMUycRd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5CC11711
-	for <linux-wireless@vger.kernel.org>; Mon,  7 Oct 2024 07:39:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800013FBA5;
+	Mon,  7 Oct 2024 11:02:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728286767; cv=none; b=V8RNCXHCABfSAUOA97KhVRI6cNFDAfzGXuFW/93sqnvymKRTcgVWJWKuYDs5DgtwGV87MZm5K/pRaMUWl9XK8ba4H6bfMEY789acbWOlq0ftCp4j/FoeCOH+5JHKRvKYW98XzyQaUdod+VXPLcUK/j1lMCIcIzug4E3+CSPHPVA=
+	t=1728298966; cv=none; b=OJYDtsHHmqKfisTcsg3xHS7aloIsETDVhUmPDGrOGl+5ZnA2TErEQ8n9JRjS6hRzt13ptjGfTyHFaBh+WZCd2M6LXeg1OY6qysUtstXZlVBHUKiHYY0qF5xVkzGtM80nwOa78BIiSY9fmYvJYNT8g8JB2QlbpHu/si0Ey0N48+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728286767; c=relaxed/simple;
-	bh=ZeuFztKcWbqA6Gga6wtNBEOv+ukb99RGLI/gpmUaXzs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZdxYL070CtsaZdXXaeZRHaP5+m6GTPrxtnyRai+/QYsvfutTvi8dNT4Z9UFIYqxFMPe8zvVpVZnqRQ9QEMTuZ52704KPBqahF0wPUMirKDQ6UsqQlC2qGiXIbBkJu3UZ53u4T7tQPVW4COtWsOS+PaO/yogQ6ask6cg2Am/yrDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=hEpaNMyj; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 41c76312847f11efb66947d174671e26-20241007
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=d999Apm6wgh7Wgg5ODcPtKfGfy7xE+a7t0wVdhVowAM=;
-	b=hEpaNMyj3jXvRIum0J8kWQ4mx6RzaLC/yFAfub/IAXE9Y1E2w3A8TIkqjiPndtMubDmlliTMc0KkJMIuTvebAYU/Cg769ywi1CTwW/sZnHfWtXle2XFb+yjmTbMCRhnqlRZJszqbG7rjFAJM3/fSUAUQZ7EK57q09d3c/baH6fs=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.41,REQID:03e19f67-a8c7-4d4f-b1ea-406340a4a9ca,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-25
-X-CID-META: VersionHash:6dc6a47,CLOUDID:c408dd40-8751-41b2-98dd-475503d45150,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: 41c76312847f11efb66947d174671e26-20241007
-Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw01.mediatek.com
-	(envelope-from <allan.wang@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 2075223373; Mon, 07 Oct 2024 15:39:17 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Mon, 7 Oct 2024 00:39:15 -0700
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Mon, 7 Oct 2024 15:39:15 +0800
-From: Allan Wang <allan.wang@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <deren.wu@mediatek.com>, <mingyen.hsieh@mediatek.com>,
-	<Sean.Wang@mediatek.com>, <Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
-	<Michael.Lo@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-	<km.lin@mediatek.com>, <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
-	<posh.sun@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, allan.wang <allan.wang@mediatek.com>,
-	Hao Zhang <hao.zhang@mediatek.com>
-Subject: [PATCH v2] wifi: mt76: introduce mt792x_config_mac_addr_list routine
-Date: Mon, 7 Oct 2024 15:37:54 +0800
-Message-ID: <20241007073752.18514-1-allan.wang@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+	s=arc-20240116; t=1728298966; c=relaxed/simple;
+	bh=FRySkjQzO6lfk1QnDsoJoJYyGOnf6qBzb2WynHvIQlg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I9EkTu5yw9Ne8uKSkgc84wL+UjlAZ5ONLh7sN0JYr1lQG7fPZurxOB/4Zk5rPqM7iFK+0QoAVM7A7Xf/L4ihYIGcFk7eXjQqILKOgDqEWL4S86Reg8r43qSH4Epjt8KKwQC/GpVHJB1IEbKaugGK/1JXVdKd7D83Fy+WNR9UKuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=jmMUycRd; arc=none smtp.client-ip=46.235.229.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+	; s=bytemarkmx; h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
+	:Subject; bh=4UdrlcSM0R9sIwpXI9mXRLqDoDJqEckyOHQSRBFfszo=; b=jmMUycRdrju7lfyC
+	6cziNsZ8IoScMbK/7hxxP/20Fzbwuo/vZ7CYIkwcDsDfI17PRbue7THHymb20Mc0sGGaQHwVjKiNQ
+	ZdXabwZ9CDftFO2V3jXzj6XhVq5p73BSqlRZEYSni7c9Hpz+Mc6KtO0qVWHO4oS3T5IMMHLL2Evtz
+	i7+6P/nBNCrBNIaTmU7PWfoHH48/lEjZ+iHA/3nmQVdvu0Sdz87+UGvE2Tth0OIShgUpJaByoLKIJ
+	YCMltCKMtZ7jlGUrG9kso09d1kAvkyVNJQmfTtZ66QJ0xlaw2Q7TYqC0cqiAEiJXPx1j4A/QsMT8l
+	iJtzmcdkNHfEx610aA==;
+Received: from dg by mx.treblig.org with local (Exim 4.96)
+	(envelope-from <dg@treblig.org>)
+	id 1sxlVY-009QFo-0K;
+	Mon, 07 Oct 2024 11:02:32 +0000
+Date: Mon, 7 Oct 2024 11:02:32 +0000
+From: "Dr. David Alan Gilbert" <linux@treblig.org>
+To: Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>
+Cc: johannes@sipsolutions.net, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] cfg80211: Remove unused cfg80211_background_cac_abort
+Message-ID: <ZwO_yAmGLB5aqgXR@gallifrey>
+References: <20241006225303.121445-1-linux@treblig.org>
+ <20241006225303.121445-2-linux@treblig.org>
+ <831a7a48-2fed-c84c-dee5-8e74735309fb@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <831a7a48-2fed-c84c-dee5-8e74735309fb@quicinc.com>
+X-Chocolate: 70 percent or better cocoa solids preferably
+X-Operating-System: Linux/6.1.0-21-amd64 (x86_64)
+X-Uptime: 11:02:02 up 151 days, 22:16,  1 user,  load average: 0.17, 0.08,
+ 0.02
+User-Agent: Mutt/2.2.12 (2023-09-09)
 
-From: "allan.wang" <allan.wang@mediatek.com>
+* Vasanthakumar Thiagarajan (quic_vthiagar@quicinc.com) wrote:
+> 
+> 
+> On 10/7/2024 4:23 AM, linux@treblig.org wrote:
+> > From: "Dr. David Alan Gilbert" <linux@treblig.org>
+> > 
+> > cfg80211_background_cac_abort() is unused.
+> > It got renamed from cfg80211_offchan_cac_abort by commit
+> > a95bfb876fa8 ("cfg80211: rename offchannel_chain structs to background_chain to avoid confusion with ETSI standard")
+> > 
+> > and that was originally added in commit
+> > 1507b1531981 ("cfg80211: move offchan_cac_event to a dedicated work")
+> > but never used.
+> > 
+> > To me it looks like the queue is still used (I see a queue_work
+> > in __cfg80211_radar_event), so I think it's just the wrapper that's
+> > unused.
+> > 
+> > Remove cfg80211_background_cac_abort.
+> > 
+> > Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+> > ---
+> >   include/net/cfg80211.h | 9 ---------
+> >   net/wireless/mlme.c    | 8 --------
+> >   2 files changed, 17 deletions(-)
+> > 
+> > diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+> > index 69ec1eb41a09..fd843a519329 100644
+> > --- a/include/net/cfg80211.h
+> > +++ b/include/net/cfg80211.h
+> > @@ -8752,15 +8752,6 @@ void cfg80211_cac_event(struct net_device *netdev,
+> >   			enum nl80211_radar_event event, gfp_t gfp,
+> >   			unsigned int link_id);
+> > -/**
+> > - * cfg80211_background_cac_abort - Channel Availability Check offchan abort event
+> > - * @wiphy: the wiphy
+> > - *
+> > - * This function is called by the driver when a Channel Availability Check
+> > - * (CAC) is aborted by a offchannel dedicated chain.
+> > - */
+> > -void cfg80211_background_cac_abort(struct wiphy *wiphy);
+> > -
+> >   /**
+> >    * cfg80211_gtk_rekey_notify - notify userspace about driver rekeying
+> >    * @dev: network device
+> > diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
+> > index 4dac81854721..8ec236bbbc7c 100644
+> > --- a/net/wireless/mlme.c
+> > +++ b/net/wireless/mlme.c
+> > @@ -1226,14 +1226,6 @@ void cfg80211_background_cac_abort_wk(struct work_struct *work)
+> >   				      NL80211_RADAR_CAC_ABORTED);
+> >   }
+> > -void cfg80211_background_cac_abort(struct wiphy *wiphy)
+> > -{
+> > -	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wiphy);
+> > -
+> > -	queue_work(cfg80211_wq, &rdev->background_cac_abort_wk);
+> > -}
+> > -EXPORT_SYMBOL(cfg80211_background_cac_abort);
+> > -
+> 
+> We have an internal WIP ath driver implementation for background radar feature
+> calling this function to notify the background CAC abort state. There is definitely
+> real use case for this function.
 
-Add mt792x_config_mac_addr_list routine in order to set
-the mac address list supported by the driver. Initialize
-wiphy->addresses/n_addresses for mt792x driver
+OK, fair enough.
 
-Signed-off-by: Hao Zhang <hao.zhang@mediatek.com>
-Signed-off-by: Leon Yen <Leon.Yen@mediatek.com>
-Signed-off-by: allan.wang <allan.wang@mediatek.com>
----
-v2:
- - remove Change-Id tag
----
- .../net/wireless/mediatek/mt76/mt7921/init.c  |  1 +
- .../net/wireless/mediatek/mt76/mt7925/init.c  |  1 +
- drivers/net/wireless/mediatek/mt76/mt792x.h   |  3 +++
- .../net/wireless/mediatek/mt76/mt792x_core.c  | 22 +++++++++++++++++++
- 4 files changed, 27 insertions(+)
+What about the other patch?
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index d1d64fa7d35d..cdcb002b3094 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -227,6 +227,7 @@ static void mt7921_init_work(struct work_struct *work)
- 
- 	mt76_set_stream_caps(&dev->mphy, true);
- 	mt7921_set_stream_he_caps(&dev->phy);
-+	mt792x_config_mac_addr_list(dev);
- 
- 	ret = mt76_register_device(&dev->mt76, true, mt76_rates,
- 				   ARRAY_SIZE(mt76_rates));
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/init.c b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-index 039949b344b9..ddc654b9ea5e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-@@ -178,6 +178,7 @@ static void mt7925_init_work(struct work_struct *work)
- 
- 	mt76_set_stream_caps(&dev->mphy, true);
- 	mt7925_set_stream_he_eht_caps(&dev->phy);
-+	mt792x_config_mac_addr_list(dev);
- 
- 	ret = mt7925_init_mlo_caps(&dev->phy);
- 	if (ret) {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wireless/mediatek/mt76/mt792x.h
-index ab12616ec2b8..10e1eaa52706 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
-@@ -206,6 +206,8 @@ struct mt792x_dev {
- 		struct mt76_phy mphy;
- 	};
- 
-+	struct mac_address macaddr_list[8];
-+
- 	const struct mt76_bus_ops *bus_ops;
- 	struct mt792x_phy phy;
- 
-@@ -414,6 +416,7 @@ int mt792x_mcu_fw_pmctrl(struct mt792x_dev *dev);
- void mt792x_mac_link_bss_remove(struct mt792x_dev *dev,
- 				struct mt792x_bss_conf *mconf,
- 				struct mt792x_link_sta *mlink);
-+void mt792x_config_mac_addr_list(struct mt792x_dev *dev);
- 
- static inline char *mt792x_ram_name(struct mt792x_dev *dev)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-index 042aa8d1b6e7..868cb97fa2ff 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-@@ -916,6 +916,28 @@ int mt792x_load_firmware(struct mt792x_dev *dev)
- }
- EXPORT_SYMBOL_GPL(mt792x_load_firmware);
- 
-+void mt792x_config_mac_addr_list(struct mt792x_dev *dev)
-+{
-+	struct ieee80211_hw *hw = mt76_hw(dev);
-+	struct wiphy *wiphy = hw->wiphy;
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(dev->macaddr_list); i++) {
-+		u8 *addr = dev->macaddr_list[i].addr;
-+
-+		memcpy(addr, dev->mphy.macaddr, ETH_ALEN);
-+
-+		if (!i)
-+			continue;
-+
-+		addr[0] |= BIT(1);
-+		addr[0] ^= ((i - 1) << 2);
-+	}
-+	wiphy->addresses = dev->macaddr_list;
-+	wiphy->n_addresses = ARRAY_SIZE(dev->macaddr_list);
-+}
-+EXPORT_SYMBOL_GPL(mt792x_config_mac_addr_list);
-+
- MODULE_DESCRIPTION("MediaTek MT792x core driver");
- MODULE_LICENSE("Dual BSD/GPL");
- MODULE_AUTHOR("Lorenzo Bianconi <lorenzo@kernel.org>");
+Dave
+
+> Vasanth
 -- 
-2.45.2
-
+ -----Open up your eyes, open up your mind, open up your code -------   
+/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
+\        dave @ treblig.org |                               | In Hex /
+ \ _________________________|_____ http://www.treblig.org   |_______/
 
