@@ -1,33 +1,33 @@
-Return-Path: <linux-wireless+bounces-13638-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13639-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 724249936E8
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 20:55:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F0B49936F2
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 21:03:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C5F71C20F49
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 18:55:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAEEEB209B0
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 19:03:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D0B61DCB2B;
-	Mon,  7 Oct 2024 18:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A8C11D90CB;
+	Mon,  7 Oct 2024 19:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="d7uU8jyj"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="J42herDm"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D935139587
-	for <linux-wireless@vger.kernel.org>; Mon,  7 Oct 2024 18:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C5A320F
+	for <linux-wireless@vger.kernel.org>; Mon,  7 Oct 2024 19:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728327337; cv=none; b=qzwexs8/jJ/QgUtfbY4C5yU0M8aZzm/Mx/ErkYlZDtsEJ7ylhBwyf3TkfqURy6xtk5EtN3HKteEgQlL+0iAmNahIyMv6/BCc1JJo3ZzZx32djUmTbp3KY6pIi+L7Wqx1tgqvxh3pyP0KgFqr8t9yIb1HiLtgRu40zC7/R5SW7gQ=
+	t=1728327781; cv=none; b=q1ClvTpTXwLnJ6AzDEDtljQ+w1uDWkJ711+mioufBn3wkEiwd/sjAJOXQHfdMnuc4xqFmhlSi/vOiwLHhw7rY7ITBJpTEMMF9DTbLFRyfHy2fVoZN1N+8FsEcS7vuibHjNxs8Z4xVuogjfSRp2wGimVIhw0SgirWqa6rCUDKClE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728327337; c=relaxed/simple;
-	bh=VnzXwNlITAk2r/l75nmqmKmF+no7rjIQ/quH8CHLovw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QBHZbJLpqa4nPQg661dwEMNXBkcOSA4MKSzpzeqhroytL649tOo4h4BmXQIVAX8O6StqD/yfB0VPfJ1clahwTBzTzLUYYMe0r6gAQucDajtGKPwJYDUtMAQNMA3fmoZYBTJtGcdZbs4lxEuASPuT8xB8mf/8xgVELW7pKQqhhFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=d7uU8jyj; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1728327781; c=relaxed/simple;
+	bh=HkznQ4FVPA6lKAn1tur5vpWE+bkkDSC4CTcrFyErFds=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ivl0GQw45FEhX6vAFAmCgnwXeshMyfr7SisSvXRDaktuOKxQAfuGVlLUTvTjaAjOcrVqTRiEBF1W5SyHpPOCTsthRmDammtLSZcIigNwpCQMDaU2raAjb44tTS6AgHsVLpafzZfp8of2duhhdEOTjkiDb8wpM+OSnYhRvjIcarE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=J42herDm; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -35,23 +35,23 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
 	Resent-Message-ID:In-Reply-To:References;
-	bh=suDhCS3V4oEPLjo+nIRTLL1+3fzmATAoj+gou88TTUE=; t=1728327335; x=1729536935; 
-	b=d7uU8jyjZxm+y2F/082M5p81LVMrq2pvy1QTMOgU/wOS7ta37pnc9IM/DiDheJueBoBMR8Vcmcj
-	4E0qHTx/i0792jHR/1e+084v75mVZjyvI5JaKk7L5jOH2a1VuPFjLDMg12Dw6Xs8O5XlrtI6cNjh9
-	EpMW6xLvH9ml4akErO8heakTbetMMC2z9YSiprPg0AFmVYjb0dgrWUJhmcfbElSBYJpFFS9TLgJld
-	JQqf0vxVzJE1ljOpz+p61x7KUkDQQzxM31k+/SPRQFwfWFqkl+Q9wxb8U9M51NpQbiLilJFULLRG9
-	xrlV07LdqcZewkp4phudzO3AVLybg8m/ikRA==;
+	bh=eUZbf72+zXB8hhnpYth2+ftLhnwTBWpD7PaGree3tAQ=; t=1728327779; x=1729537379; 
+	b=J42herDmnlwSxlWR4LNuFr8WiWJ8Xaws8PBWXUDW5CGbenNY6JI905cPVEFX/iMyut6Utwze8i5
+	7iIzb5DHAcEKhUzbvmhDI4JtRgDPjXgUs5RwtBdBNEbRSa8nQK+pu5IVK+cfyA2PYOaRwTHtetlzg
+	YfjF8p/PmtM3n7aad6yj/cV2kW9So/pDz8uRU/5wj4sweeu7IyrpnErnhrzuiab8GUZ8OPAGgjfLY
+	4HQuo751l/g/lPHrR7kO6FZUkjuHLsZo1lvPuFM2V1FMGXZKJ1vN3D7y1oB7CuhKEt5KrfOXU35or
+	MC8Vk7e0K40J61JaxB9ovslPZwVfaiaVhKYA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1sxstI-00000003Uop-2lEG;
-	Mon, 07 Oct 2024 20:55:32 +0200
+	id 1sxt0S-00000003Uxg-2egU;
+	Mon, 07 Oct 2024 21:02:56 +0200
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] wifi: wext/libipw: move spy implementation to libipw
-Date: Mon,  7 Oct 2024 20:55:30 +0200
-Message-ID: <20241007205530.995eeb87604e.Ib2197cb056ff05746d3521a5fba637062acb7314@changeid>
+Subject: [PATCH v2] wifi: wext/libipw: move spy implementation to libipw
+Date: Mon,  7 Oct 2024 21:02:53 +0200
+Message-ID: <20241007210254.037d864cda7d.Ib2197cb056ff05746d3521a5fba637062acb7314@changeid>
 X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -68,15 +68,48 @@ so move the data bookkeeping and code into libipw.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
+v2: fix Kconfig/Makefile
+---
+ drivers/net/wireless/intel/ipw2x00/Kconfig    |  3 -
  drivers/net/wireless/intel/ipw2x00/Makefile   |  1 +
  drivers/net/wireless/intel/ipw2x00/ipw2200.c  | 10 +--
  drivers/net/wireless/intel/ipw2x00/libipw.h   | 13 ++++
  .../net/wireless/intel/ipw2x00/libipw_rx.c    |  2 +-
  .../net/wireless/intel/ipw2x00/libipw_spy.c   | 62 +++++++++----------
  include/net/iw_handler.h                      | 18 ------
- 6 files changed, 51 insertions(+), 55 deletions(-)
+ net/wireless/Kconfig                          |  3 -
+ net/wireless/Makefile                         |  1 -
+ 9 files changed, 51 insertions(+), 62 deletions(-)
  rename net/wireless/wext-spy.c => drivers/net/wireless/intel/ipw2x00/libipw_spy.c (81%)
 
+diff --git a/drivers/net/wireless/intel/ipw2x00/Kconfig b/drivers/net/wireless/intel/ipw2x00/Kconfig
+index d9c042772399..ce34118f1e90 100644
+--- a/drivers/net/wireless/intel/ipw2x00/Kconfig
++++ b/drivers/net/wireless/intel/ipw2x00/Kconfig
+@@ -7,7 +7,6 @@ config IPW2100
+ 	tristate "Intel PRO/Wireless 2100 Network Connection"
+ 	depends on PCI && CFG80211
+ 	select WIRELESS_EXT
+-	select WEXT_SPY
+ 	select WEXT_PRIV
+ 	select FW_LOADER
+ 	select LIBIPW
+@@ -68,7 +67,6 @@ config IPW2200
+ 	depends on PCI && CFG80211
+ 	select CFG80211_WEXT_EXPORT
+ 	select WIRELESS_EXT
+-	select WEXT_SPY
+ 	select WEXT_PRIV
+ 	select FW_LOADER
+ 	select LIBIPW
+@@ -156,7 +154,6 @@ config LIBIPW
+ 	tristate
+ 	depends on PCI && CFG80211
+ 	select WIRELESS_EXT
+-	select WEXT_SPY
+ 	select CRYPTO
+ 	select CRYPTO_MICHAEL_MIC
+ 	select CRC32
 diff --git a/drivers/net/wireless/intel/ipw2x00/Makefile b/drivers/net/wireless/intel/ipw2x00/Makefile
 index 60c5faccbe15..91e6091c4ebf 100644
 --- a/drivers/net/wireless/intel/ipw2x00/Makefile
@@ -339,6 +372,32 @@ index 7af1082ea9a0..a7b502958d27 100644
  /************************* INLINE FUNCTIONS *************************/
  /*
   * Function that are so simple that it's more efficient inlining them
+diff --git a/net/wireless/Kconfig b/net/wireless/Kconfig
+index 733c53ad4de5..8c8bd8b75708 100644
+--- a/net/wireless/Kconfig
++++ b/net/wireless/Kconfig
+@@ -11,9 +11,6 @@ config WEXT_PROC
+ 	depends on PROC_FS
+ 	depends on WEXT_CORE
+ 
+-config WEXT_SPY
+-	bool
+-
+ config WEXT_PRIV
+ 	bool
+ 
+diff --git a/net/wireless/Makefile b/net/wireless/Makefile
+index 27f211bd9954..62a83faf0e07 100644
+--- a/net/wireless/Makefile
++++ b/net/wireless/Makefile
+@@ -4,7 +4,6 @@ obj-y += tests/
+ 
+ obj-$(CONFIG_WEXT_CORE) += wext-core.o
+ obj-$(CONFIG_WEXT_PROC) += wext-proc.o
+-obj-$(CONFIG_WEXT_SPY) += wext-spy.o
+ obj-$(CONFIG_WEXT_PRIV) += wext-priv.o
+ 
+ cfg80211-y += core.o sysfs.o radiotap.o util.o reg.o scan.o nl80211.o
 -- 
 2.46.2
 
