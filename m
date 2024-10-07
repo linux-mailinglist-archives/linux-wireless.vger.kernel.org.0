@@ -1,71 +1,70 @@
-Return-Path: <linux-wireless+bounces-13593-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13594-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4B41992AF2
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 14:01:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83DC9992AF3
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 14:02:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33AB7B242A5
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 12:01:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3056B24484
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 12:01:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 923D41D223B;
-	Mon,  7 Oct 2024 12:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B6501AA7B4;
+	Mon,  7 Oct 2024 12:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YBYmxAvv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lr7K/7qa"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB26E1D1E87
-	for <linux-wireless@vger.kernel.org>; Mon,  7 Oct 2024 12:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C93F1BA285
+	for <linux-wireless@vger.kernel.org>; Mon,  7 Oct 2024 12:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728302486; cv=none; b=Fr16+GvECaBbErH7iWe+CMkDbgVzfOAzB+9XAyWTDNpE/nAJc4P2/80zY7is2v8Xwpg9iPq3xxPGRWX4EQjMs31e53OKkXrT7y6RPqbcXYvERVBYuX7Ptgo80ODxTwvy+8t1JJqYUlbnIYLCI2f+6ECx+qNOq8U6uyO+c5qaNFw=
+	t=1728302488; cv=none; b=TSk9waht8IhZb1tIVqW3dI4VmxDknxD/JZKJWIB0xjzRH+vIcpw72EGo7GhY+X9CkdJji97vbBkL2zoz1bEoikgcrUto2crwnJdiui6im3Lsu+8NwqS56sJqyouLfgYtTVDFzCyfmGmzuruUe1FnmiJRVpE8wH7RufcYh7LHB2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728302486; c=relaxed/simple;
-	bh=AxVnDPQhpjKnA7jmvOpWVrlwfUTc+/iVpo9StglF4w4=;
+	s=arc-20240116; t=1728302488; c=relaxed/simple;
+	bh=bWgic3soOfo8Y7couk/yl3Af+FgqlA/NDb8doaS4HI4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Z58PAbs1cKBmDknb2yBKy9JqzC5TsW2LwJpeegQm8/M4IB4fsfEA6BjHOptZrZTisUydia6CdDwLlqAqNBLyAxMjz881l/ZH8Riyspwhr8s+drwMuTXR+VlPLs+6SM3SRUg8aKAFBkn7wx5ZeaJexlm870N/WMDSlyXjagIe6jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YBYmxAvv; arc=none smtp.client-ip=192.198.163.9
+	 MIME-Version; b=ECh12nzkg0apzt2r74TqYkKipRUB7lh5UrQMRAI8McO+9Vg7FE7td/zP/sJfGEWO5RUJjI5aZJjBWySlteowkCZYtORRdwAvjlrG2VtwMCdSFst3XSxZh/CBIGdizAZSzD13TfnP9+lJkSkB7MgUS8xnoIYpIT1/9Ig5EhF3njs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lr7K/7qa; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728302485; x=1759838485;
+  t=1728302486; x=1759838486;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=AxVnDPQhpjKnA7jmvOpWVrlwfUTc+/iVpo9StglF4w4=;
-  b=YBYmxAvvE8o95CEA4E/5o+BzG6emjACZW+kJ6aabeFRj0UVQh4ErBVOL
-   CH35t+bRaZQqpJvG6T1H8sYpQtGl48W08ECwjvTQci/xM949+gDVIEn4r
-   uD8hXU/A4NPxUEBKdwYRHX0rYmYrix4RuvRYx4vg9EUcn+q7vV8Jcix4S
-   qmG30BICJoJTGmEQAKfGuibMKNcksu9gu/p4rb7fvVHjQ7+F8qLk8+IxB
-   JeqqwQrWZtOBOlX76w/6bteBLAyMbqTuNQw55d7RWV5P0pLuSX8vKwOav
-   +7cGB7y0g5bp/fBKtGZwmDtWZBACu97LPfLnLwhoaJv4gNfhPtCNt6xzo
-   g==;
-X-CSE-ConnectionGUID: RwIgjCgjREOoDwWWppl+tA==
-X-CSE-MsgGUID: F+Y+u95kREmKphSORFZvig==
-X-IronPort-AV: E=McAfee;i="6700,10204,11217"; a="38099408"
+  bh=bWgic3soOfo8Y7couk/yl3Af+FgqlA/NDb8doaS4HI4=;
+  b=lr7K/7qaEeGHBW63xv40sQOl9YlLt/catskaZdb68u3g1Wu1SvM5scKm
+   alvdXAn6G43Y05TRs3AK6Lize0qj+P9opqsex1UgZJGkK93n2kzInHR6j
+   NmvPKG1CFfvHPK7lJX2L43tjF+wfeN5A61MujMHjs6lQIij8X/gsC0D3m
+   z6MA3dFWxZXnc8JC/ilFQ+b5ecsDQc9/0pOEk6+FLlJpyKlMXcdedAr22
+   jxHvSDDLwG5ZEwTlmQqlVt4skUFIzsAweG+8T+g70ARKycRWeqg9acPvl
+   C0yJzKpBKCkHgNQ/uJEL4Gbtcw/QF52ENpJ5PRQFRBnEBPLlxjqciLcBb
+   Q==;
+X-CSE-ConnectionGUID: WF5Gq7KjShuUClapupaDzg==
+X-CSE-MsgGUID: M90hV57mSYKgJ5gUAZjAKg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11217"; a="38099413"
 X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; 
-   d="scan'208";a="38099408"
+   d="scan'208";a="38099413"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2024 05:01:24 -0700
-X-CSE-ConnectionGUID: gZQPHjKwQjK48U8F5nxGUA==
-X-CSE-MsgGUID: x5tFpZ//SG+B3GW+PCSH5w==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2024 05:01:26 -0700
+X-CSE-ConnectionGUID: Y6oFsFbOSmiFB2yhtQ8+jA==
+X-CSE-MsgGUID: bxJ8Tc29Ryu8SSEo9ez2bw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; 
-   d="scan'208";a="75019266"
+   d="scan'208";a="75019270"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2024 05:01:23 -0700
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2024 05:01:25 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 08/14] wifi: mac80211: update the right link for tx power
-Date: Mon,  7 Oct 2024 15:00:52 +0300
-Message-Id: <20241007144851.2685dab8e1ab.I1d82cbdb2dda020aee4a225bd9a134f7d82dd810@changeid>
+Subject: [PATCH 09/14] wifi: mac80211: allow rate_control_rate_init() for links
+Date: Mon,  7 Oct 2024 15:00:53 +0300
+Message-Id: <20241007144851.c693274a908f.I0376da02e9f5a30eaa1b5d0d01371ff09506d453@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241007120058.1822752-1-miriam.rachel.korenblit@intel.com>
 References: <20241007120058.1822752-1-miriam.rachel.korenblit@intel.com>
@@ -78,239 +77,230 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-Stop looking at deflink and start using the actual link.
-Initialize the power settings upon link init.
+Andrei previously fixed an issue in the client where the NSS
+for links other than the primary/assoc/deflink isn't set. The
+same issue appears to exist on the AP side, because there's
+only a call to rate_control_rate_init() for the deflink, and
+not any other links.
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Rework the code a bit to do rate_control_rate_init() for links,
+even if it really doesn't work with software rate control yet,
+it does other things as well.
+
+Also add rate_control_rate_init_all_links() to actually do it
+properly when moving to ASSOC state in cfg80211.
+
+Change the explicit call to ieee80211_sta_init_nss() to instead
+be rate_control_rate_init() now in the client code, but also
+add a call to rate_control_rate_init() when a link is added in
+AP mode and the STA is already associated.
+
+This should fix the NSS initialization issue, and perhaps pave
+the way for actual software rate scaling a bit, in case anyone
+cares in the future, but that of course needs a lot more than
+just the init call.
+
+We still need to fix the rate control _update_ as well, and the
+sta_rc_update() driver method especially, but that will be in a
+different patch.
+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- net/mac80211/cfg.c   | 94 +++++++++++++++++++++++++++-----------------
- net/mac80211/chan.c  |  4 +-
- net/mac80211/iface.c | 20 ++++------
- net/mac80211/link.c  |  3 ++
- 4 files changed, 72 insertions(+), 49 deletions(-)
+ net/mac80211/cfg.c        | 11 +++++++++--
+ net/mac80211/ibss.c       |  4 ++--
+ net/mac80211/mesh_plink.c |  2 +-
+ net/mac80211/mlme.c       |  2 +-
+ net/mac80211/ocb.c        |  4 ++--
+ net/mac80211/rate.c       | 24 ++++++++++++++++++++++--
+ net/mac80211/rate.h       |  5 +++--
+ 7 files changed, 40 insertions(+), 12 deletions(-)
 
 diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 27468a463d8b..ca4fd217be3e 100644
+index ca4fd217be3e..ecc138869b4b 100644
 --- a/net/mac80211/cfg.c
 +++ b/net/mac80211/cfg.c
-@@ -3061,9 +3061,25 @@ static int ieee80211_set_tx_power(struct wiphy *wiphy,
- 	enum nl80211_tx_power_setting txp_type = type;
- 	bool update_txp_type = false;
- 	bool has_monitor = false;
-+	int user_power_level;
+@@ -1720,7 +1720,7 @@ static int sta_apply_auth_flags(struct ieee80211_local *local,
+ 		 * before drv_sta_state() is called.
+ 		 */
+ 		if (!test_sta_flag(sta, WLAN_STA_RATE_CONTROL))
+-			rate_control_rate_init(sta);
++			rate_control_rate_init_all_links(sta);
  
- 	lockdep_assert_wiphy(local->hw.wiphy);
+ 		ret = sta_info_move_state(sta, IEEE80211_STA_ASSOC);
+ 		if (ret)
+@@ -2149,7 +2149,7 @@ static int ieee80211_add_station(struct wiphy *wiphy, struct net_device *dev,
+ 	 */
+ 	if (!test_sta_flag(sta, WLAN_STA_TDLS_PEER) &&
+ 	    test_sta_flag(sta, WLAN_STA_ASSOC))
+-		rate_control_rate_init(sta);
++		rate_control_rate_init_all_links(sta);
  
-+	switch (type) {
-+	case NL80211_TX_POWER_AUTOMATIC:
-+		user_power_level = IEEE80211_UNSET_POWER_LEVEL;
-+		txp_type = NL80211_TX_POWER_LIMITED;
-+		break;
-+	case NL80211_TX_POWER_LIMITED:
-+	case NL80211_TX_POWER_FIXED:
-+		if (mbm < 0 || (mbm % 100))
-+			return -EOPNOTSUPP;
-+		user_power_level = MBM_TO_DBM(mbm);
-+		break;
-+	default:
-+		return -EINVAL;
+ 	return sta_info_insert(sta);
+ }
+@@ -5063,6 +5063,13 @@ ieee80211_add_link_station(struct wiphy *wiphy, struct net_device *dev,
+ 		return ret;
+ 	}
+ 
++	if (test_sta_flag(sta, WLAN_STA_ASSOC)) {
++		struct link_sta_info *link_sta;
++
++		link_sta = sdata_dereference(sta->link[params->link_id], sdata);
++		rate_control_rate_init(link_sta);
 +	}
 +
- 	if (wdev) {
- 		sdata = IEEE80211_WDEV_TO_SUB_IF(wdev);
+ 	/* ieee80211_sta_activate_link frees the link upon failure */
+ 	return ieee80211_sta_activate_link(sta, params->link_id);
+ }
+diff --git a/net/mac80211/ibss.c b/net/mac80211/ibss.c
+index 3f74bbceeca5..08fac295ad5b 100644
+--- a/net/mac80211/ibss.c
++++ b/net/mac80211/ibss.c
+@@ -569,7 +569,7 @@ static struct sta_info *ieee80211_ibss_finish_sta(struct sta_info *sta)
+ 	if (!sta->sdata->u.ibss.control_port)
+ 		sta_info_pre_move_state(sta, IEEE80211_STA_AUTHORIZED);
  
-@@ -3077,57 +3093,65 @@ static int ieee80211_set_tx_power(struct wiphy *wiphy,
- 				return -EOPNOTSUPP;
- 		}
+-	rate_control_rate_init(sta);
++	rate_control_rate_init(&sta->deflink);
  
--		switch (type) {
--		case NL80211_TX_POWER_AUTOMATIC:
--			sdata->deflink.user_power_level =
--				IEEE80211_UNSET_POWER_LEVEL;
--			txp_type = NL80211_TX_POWER_LIMITED;
--			break;
--		case NL80211_TX_POWER_LIMITED:
--		case NL80211_TX_POWER_FIXED:
--			if (mbm < 0 || (mbm % 100))
--				return -EOPNOTSUPP;
--			sdata->deflink.user_power_level = MBM_TO_DBM(mbm);
--			break;
--		}
-+		for (int link_id = 0;
-+		     link_id < ARRAY_SIZE(sdata->link);
-+		     link_id++) {
-+			struct ieee80211_link_data *link =
-+				wiphy_dereference(wiphy, sdata->link[link_id]);
+ 	/* If it fails, maybe we raced another insertion? */
+ 	if (sta_info_insert_rcu(sta))
+@@ -1068,7 +1068,7 @@ static void ieee80211_update_sta_info(struct ieee80211_sub_if_data *sdata,
  
--		if (txp_type != sdata->vif.bss_conf.txpower_type) {
--			update_txp_type = true;
--			sdata->vif.bss_conf.txpower_type = txp_type;
--		}
-+			if (!link)
-+				continue;
-+
-+			link->user_power_level = user_power_level;
+ 		/* Force rx_nss recalculation */
+ 		sta->sta.deflink.rx_nss = 0;
+-		rate_control_rate_init(sta);
++		rate_control_rate_init(&sta->deflink);
+ 		if (sta->sta.deflink.rx_nss != rx_nss)
+ 			changed |= IEEE80211_RC_NSS_CHANGED;
  
--		ieee80211_recalc_txpower(&sdata->deflink, update_txp_type);
-+			if (txp_type != link->conf->txpower_type) {
-+				update_txp_type = true;
-+				link->conf->txpower_type = txp_type;
-+			}
- 
-+			ieee80211_recalc_txpower(link, update_txp_type);
-+		}
- 		return 0;
+diff --git a/net/mac80211/mesh_plink.c b/net/mac80211/mesh_plink.c
+index 8f2b492a9fe9..5c32b92aa63f 100644
+--- a/net/mac80211/mesh_plink.c
++++ b/net/mac80211/mesh_plink.c
+@@ -487,7 +487,7 @@ static void mesh_sta_info_init(struct ieee80211_sub_if_data *sdata,
  	}
  
--	switch (type) {
--	case NL80211_TX_POWER_AUTOMATIC:
--		local->user_power_level = IEEE80211_UNSET_POWER_LEVEL;
--		txp_type = NL80211_TX_POWER_LIMITED;
--		break;
--	case NL80211_TX_POWER_LIMITED:
--	case NL80211_TX_POWER_FIXED:
--		if (mbm < 0 || (mbm % 100))
--			return -EOPNOTSUPP;
--		local->user_power_level = MBM_TO_DBM(mbm);
--		break;
--	}
-+	local->user_power_level = user_power_level;
+ 	if (!test_sta_flag(sta, WLAN_STA_RATE_CONTROL))
+-		rate_control_rate_init(sta);
++		rate_control_rate_init(&sta->deflink);
+ 	else
+ 		rate_control_rate_update(local, sband, sta, 0, changed);
+ out:
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 2cb3691971e0..91ae0ff49bba 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -5750,7 +5750,7 @@ static bool ieee80211_assoc_success(struct ieee80211_sub_if_data *sdata,
+ 	/* links might have changed due to rejected ones, set them again */
+ 	ieee80211_vif_set_links(sdata, valid_links, dormant_links);
  
- 	list_for_each_entry(sdata, &local->interfaces, list) {
- 		if (sdata->vif.type == NL80211_IFTYPE_MONITOR) {
- 			has_monitor = true;
- 			continue;
- 		}
--		sdata->deflink.user_power_level = local->user_power_level;
--		if (txp_type != sdata->vif.bss_conf.txpower_type)
--			update_txp_type = true;
--		sdata->vif.bss_conf.txpower_type = txp_type;
-+
-+		for (int link_id = 0;
-+		     link_id < ARRAY_SIZE(sdata->link);
-+		     link_id++) {
-+			struct ieee80211_link_data *link =
-+				wiphy_dereference(wiphy, sdata->link[link_id]);
-+
-+			if (!link)
-+				continue;
-+
-+			link->user_power_level = local->user_power_level;
-+			if (txp_type != link->conf->txpower_type)
-+				update_txp_type = true;
-+			link->conf->txpower_type = txp_type;
-+		}
- 	}
- 	list_for_each_entry(sdata, &local->interfaces, list) {
- 		if (sdata->vif.type == NL80211_IFTYPE_MONITOR)
- 			continue;
--		ieee80211_recalc_txpower(&sdata->deflink, update_txp_type);
-+
-+		for (int link_id = 0;
-+		     link_id < ARRAY_SIZE(sdata->link);
-+		     link_id++) {
-+			struct ieee80211_link_data *link =
-+				wiphy_dereference(wiphy, sdata->link[link_id]);
-+
-+			if (!link)
-+				continue;
-+
-+			ieee80211_recalc_txpower(link, update_txp_type);
-+		}
- 	}
+-	rate_control_rate_init(sta);
++	rate_control_rate_init_all_links(sta);
  
- 	if (has_monitor) {
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index a4cc91beee74..97c8480f0f2c 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -905,7 +905,7 @@ static int ieee80211_assign_link_chanctx(struct ieee80211_link_data *link,
- 	}
+ 	if (ifmgd->flags & IEEE80211_STA_MFP_ENABLED) {
+ 		set_sta_flag(sta, WLAN_STA_MFP);
+diff --git a/net/mac80211/ocb.c b/net/mac80211/ocb.c
+index 9ef14e475c90..54ba51309919 100644
+--- a/net/mac80211/ocb.c
++++ b/net/mac80211/ocb.c
+@@ -4,7 +4,7 @@
+  *
+  * Copyright: (c) 2014 Czech Technical University in Prague
+  *            (c) 2014 Volkswagen Group Research
+- * Copyright (C) 2022 - 2023 Intel Corporation
++ * Copyright (C) 2022 - 2024 Intel Corporation
+  * Author:    Rostislav Lisovy <rostislav.lisovy@fel.cvut.cz>
+  * Funded by: Volkswagen Group Research
+  */
+@@ -96,7 +96,7 @@ static struct sta_info *ieee80211_ocb_finish_sta(struct sta_info *sta)
+ 	sta_info_move_state(sta, IEEE80211_STA_ASSOC);
+ 	sta_info_move_state(sta, IEEE80211_STA_AUTHORIZED);
  
- 	if (new_ctx && ieee80211_chanctx_num_assigned(local, new_ctx) > 0) {
--		ieee80211_recalc_txpower(&sdata->deflink, false);
-+		ieee80211_recalc_txpower(link, false);
- 		ieee80211_recalc_chanctx_min_def(local, new_ctx, NULL, false);
- 	}
+-	rate_control_rate_init(sta);
++	rate_control_rate_init(&sta->deflink);
  
-@@ -1712,7 +1712,7 @@ static int ieee80211_vif_use_reserved_switch(struct ieee80211_local *local)
- 								  link,
- 								  changed);
+ 	/* If it fails, maybe we raced another insertion? */
+ 	if (sta_info_insert_rcu(sta))
+diff --git a/net/mac80211/rate.c b/net/mac80211/rate.c
+index 3dc9752188d5..23b4f1af37e0 100644
+--- a/net/mac80211/rate.c
++++ b/net/mac80211/rate.c
+@@ -28,8 +28,9 @@ module_param(ieee80211_default_rc_algo, charp, 0644);
+ MODULE_PARM_DESC(ieee80211_default_rc_algo,
+ 		 "Default rate control algorithm for mac80211 to use");
  
--			ieee80211_recalc_txpower(&sdata->deflink, false);
-+			ieee80211_recalc_txpower(link, false);
- 		}
- 
- 		ieee80211_recalc_chanctx_chantype(local, ctx);
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 138ba30e23ba..7a99fa057cd9 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -46,12 +46,11 @@ static void ieee80211_iface_work(struct wiphy *wiphy, struct wiphy_work *work);
- 
- bool __ieee80211_recalc_txpower(struct ieee80211_link_data *link)
+-void rate_control_rate_init(struct sta_info *sta)
++void rate_control_rate_init(struct link_sta_info *link_sta)
  {
--	struct ieee80211_sub_if_data *sdata = link->sdata;
++	struct sta_info *sta = link_sta->sta;
+ 	struct ieee80211_local *local = sta->sdata->local;
+ 	struct rate_control_ref *ref = sta->rate_ctrl;
+ 	struct ieee80211_sta *ista = &sta->sta;
+@@ -37,11 +38,15 @@ void rate_control_rate_init(struct sta_info *sta)
+ 	struct ieee80211_supported_band *sband;
  	struct ieee80211_chanctx_conf *chanctx_conf;
- 	int power;
  
+-	ieee80211_sta_init_nss(&sta->deflink);
++	ieee80211_sta_init_nss(link_sta);
+ 
+ 	if (!ref)
+ 		return;
+ 
++	/* SW rate control isn't supported with MLO right now */
++	if (WARN_ON(ieee80211_vif_is_mld(&sta->sdata->vif)))
++		return;
++
  	rcu_read_lock();
--	chanctx_conf = rcu_dereference(sdata->vif.bss_conf.chanctx_conf);
-+	chanctx_conf = rcu_dereference(link->conf->chanctx_conf);
- 	if (!chanctx_conf) {
- 		rcu_read_unlock();
- 		return false;
-@@ -60,15 +59,15 @@ bool __ieee80211_recalc_txpower(struct ieee80211_link_data *link)
- 	power = ieee80211_chandef_max_power(&chanctx_conf->def);
- 	rcu_read_unlock();
  
--	if (sdata->deflink.user_power_level != IEEE80211_UNSET_POWER_LEVEL)
--		power = min(power, sdata->deflink.user_power_level);
-+	if (link->user_power_level != IEEE80211_UNSET_POWER_LEVEL)
-+		power = min(power, link->user_power_level);
+ 	chanctx_conf = rcu_dereference(sta->sdata->vif.bss_conf.chanctx_conf);
+@@ -67,6 +72,21 @@ void rate_control_rate_init(struct sta_info *sta)
+ 	set_sta_flag(sta, WLAN_STA_RATE_CONTROL);
+ }
  
--	if (sdata->deflink.ap_power_level != IEEE80211_UNSET_POWER_LEVEL)
--		power = min(power, sdata->deflink.ap_power_level);
-+	if (link->ap_power_level != IEEE80211_UNSET_POWER_LEVEL)
-+		power = min(power, link->ap_power_level);
++void rate_control_rate_init_all_links(struct sta_info *sta)
++{
++	int link_id;
++
++	for (link_id = 0; link_id < ARRAY_SIZE(sta->link); link_id++) {
++		struct link_sta_info *link_sta;
++
++		link_sta = sdata_dereference(sta->link[link_id], sta->sdata);
++		if (!link_sta)
++			continue;
++
++		rate_control_rate_init(link_sta);
++	}
++}
++
+ void rate_control_tx_status(struct ieee80211_local *local,
+ 			    struct ieee80211_tx_status *st)
+ {
+diff --git a/net/mac80211/rate.h b/net/mac80211/rate.h
+index d6190f10fe7c..8d3c8903b4ae 100644
+--- a/net/mac80211/rate.h
++++ b/net/mac80211/rate.h
+@@ -3,7 +3,7 @@
+  * Copyright 2002-2005, Instant802 Networks, Inc.
+  * Copyright 2005, Devicescape Software, Inc.
+  * Copyright (c) 2006 Jiri Benc <jbenc@suse.cz>
+- * Copyright (C) 2022 Intel Corporation
++ * Copyright (C) 2022, 2024 Intel Corporation
+  */
  
--	if (power != sdata->vif.bss_conf.txpower) {
--		sdata->vif.bss_conf.txpower = power;
--		ieee80211_hw_config(sdata->local, 0);
-+	if (power != link->conf->txpower) {
-+		link->conf->txpower = power;
-+		ieee80211_hw_config(link->sdata->local, 0);
- 		return true;
- 	}
+ #ifndef IEEE80211_RATE_H
+@@ -29,7 +29,8 @@ void rate_control_get_rate(struct ieee80211_sub_if_data *sdata,
+ void rate_control_tx_status(struct ieee80211_local *local,
+ 			    struct ieee80211_tx_status *st);
  
-@@ -2177,9 +2176,6 @@ int ieee80211_if_add(struct ieee80211_local *local, const char *name,
- 
- 	ieee80211_set_default_queues(sdata);
- 
--	sdata->deflink.ap_power_level = IEEE80211_UNSET_POWER_LEVEL;
--	sdata->deflink.user_power_level = local->user_power_level;
--
- 	/* setup type-dependent data */
- 	ieee80211_setup_sdata(sdata, type);
- 
-diff --git a/net/mac80211/link.c b/net/mac80211/link.c
-index 0bbac64d5fa0..503bdea904bc 100644
---- a/net/mac80211/link.c
-+++ b/net/mac80211/link.c
-@@ -36,6 +36,9 @@ void ieee80211_link_init(struct ieee80211_sub_if_data *sdata,
- 	link->conf = link_conf;
- 	link_conf->link_id = link_id;
- 	link_conf->vif = &sdata->vif;
-+	link->ap_power_level = IEEE80211_UNSET_POWER_LEVEL;
-+	link->user_power_level = sdata->local->user_power_level;
-+	link_conf->txpower = INT_MIN;
- 
- 	wiphy_work_init(&link->csa.finalize_work,
- 			ieee80211_csa_finalize_work);
+-void rate_control_rate_init(struct sta_info *sta);
++void rate_control_rate_init(struct link_sta_info *link_sta);
++void rate_control_rate_init_all_links(struct sta_info *sta);
+ void rate_control_rate_update(struct ieee80211_local *local,
+ 			      struct ieee80211_supported_band *sband,
+ 			      struct sta_info *sta,
 -- 
 2.34.1
 
