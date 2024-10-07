@@ -1,33 +1,33 @@
-Return-Path: <linux-wireless+bounces-13643-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13644-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F25A0993795
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 21:47:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9DCC9937B1
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 21:51:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E57BB2193C
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 19:47:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94B091F23A08
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 19:51:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 847211DA0FC;
-	Mon,  7 Oct 2024 19:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 211271DE3D3;
+	Mon,  7 Oct 2024 19:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="d0Hm6miL"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Afjxo+7C"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C5713698F
-	for <linux-wireless@vger.kernel.org>; Mon,  7 Oct 2024 19:47:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6FC213698F
+	for <linux-wireless@vger.kernel.org>; Mon,  7 Oct 2024 19:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728330443; cv=none; b=DeNLgioJNNz6K1iN9E8+WKRxB2y36Otj64R20OzWPJM96qyUf5aG7VhiVwslo96d9GNYIY5BUyzQjo+kuC4CNfIezqvLZ3sIAhudhQIIkjBJH9PijsXmx3TTlrLLHpB01ziQ/MW3b16aOMBZuqSxXtCZX86X76jrYH2k/CuNfs8=
+	t=1728330631; cv=none; b=oE+5iNiBhpHLyIKVxd79T58XpYQ4KYHDncfseHK+wgHVIAA6t70WPzBJ28TOok5QfYgtSqND2k3nKPd6vRBLwCh2eOVgwmaNFr3A/NRbeIH6b4iG/pWrHTejey3YSH/U+XCTBJtRVXN2rwfTnCju3i40Qk8NCnGNrM0pEYJPD9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728330443; c=relaxed/simple;
-	bh=b2VQOi3H/kz3Ridj+EEeLof1sqWridwQNuvRroN6lOM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tJY6w04mUd+CuRyci/GLpiJioabV/FYTlMV3aO+DdVDINKmff8iS/b4ef78eFhfphIYEdsvyg9JUClOPE0OPTZGrXeEb7OpMP/6HOp9e5X4HdzT9at51Jiitcofdvi6BuIFzcJ37SGsBydbPkFnKBim2ktsKRVGlQvyREq2EaTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=d0Hm6miL; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1728330631; c=relaxed/simple;
+	bh=0KlEbAhm+5GjjzJ1TY4tXIsvZZe74tFodw+oXTe2p/E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WPwacFMykerK4xBCyyWkjr1KKai5rN4tyygtUM0fPsxAxx6De/4gIl156TN/QdJ56e9mMhKiqyEB13/zIuDR6zbYsd47bdFRGpvc7atPLpjqBbdPdG+9Geu54NBKhWg+cQFGA4edV0m9JioJ65Ysw9kfIHvli6meZGWWno7imfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Afjxo+7C; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -35,23 +35,23 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
 	Resent-Message-ID:In-Reply-To:References;
-	bh=Snz8romZscymZOBAa6mqWVPm+OWXGtOCWtjoHDFIcuk=; t=1728330440; x=1729540040; 
-	b=d0Hm6miLJu9+cmj1bU8uisi0qnz99Qz7r5xLJCaI7RX73+74xX1bdKNTNCiqUFRaO4BGr+pJ0VJ
-	cFjTTf2pmBfRD4NreDfCrS3/aG07rfJjCykNmYK7iIF09ILm46CjrrG1RhntaKZie/e3bL8ZHh+BM
-	DcwHZLNxvxAhMSKbgnNjySQMx3U3wjT15E8wjQFGsVO3e07tAAhZHkMoqTjxMheaifMazQXHAlg+M
-	CZuzQFpkps9kwhM5eICss3QFDNmkwHBhZdUb2Kj+OZaQ5QCbWzKDoNaodr6vix+q65RuKIlbcf8BO
-	43qz3MCcVNMYGkv2RzgDra61OF2nvPz/JOuA==;
+	bh=yp0rQH5P4+m4nE3WEo7FLDrCQTjFxQzs8OPVznIE2Tk=; t=1728330629; x=1729540229; 
+	b=Afjxo+7CuIBbhWwPWvbMMGwZeBk3NhwYt0G5I6HYEr9pPmeUu96uUjCRzw4aVgO/PlUoYaZzNk2
+	lpOKJE1ROE9CSiJe4Kb9j4bMmW2WJyQzS+ezraD7znh8PklEd6cYaBN/ZM0kpxjh6LkAyLgLV/81z
+	3KgqqH71CVQWqsqCxMDO7rNi4oTbLaj4Exl2tZjvagBUWLfjuI5Lb/j1xee7jgYWcxJFXMqEbHfEC
+	gNB9jlFKx4PbSjbwCAuP3J+xpOJdpUXcS6Ohd7jWTnNBuweSFNifOuJQEWZNcY2lk2y9PpXqzGMfx
+	zttcNiijT8tHXuXVUuTrLHWRZ/fBrFRrb50A==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1sxthN-00000003VzY-35LC;
-	Mon, 07 Oct 2024 21:47:17 +0200
+	id 1sxtkR-00000003W4n-0248;
+	Mon, 07 Oct 2024 21:50:27 +0200
 From: Johannes Berg <johannes@sipsolutions.net>
 To: linux-wireless@vger.kernel.org
 Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] wifi: cfg80211: unexport wireless_nlevent_flush()
-Date: Mon,  7 Oct 2024 21:47:16 +0200
-Message-ID: <20241007214715.3dd736dc3ac0.I1388536e99c37f28a007dd753c473ad21513d9a9@changeid>
+Subject: [PATCH] wifi: wext: merge adjacent CONFIG_COMPAT ifdef blocks
+Date: Mon,  7 Oct 2024 21:50:25 +0200
+Message-ID: <20241007215025.5ecdad1e02ed.I54efa895efc496e06ba41e1c39c9df9e23b0171f@changeid>
 X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -63,69 +63,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-This no longer needs to be exported, so don't export it.
+Simplify this, and also add a comment at the #endif.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 ---
- include/net/iw_handler.h   | 6 ------
- net/wireless/wext-compat.h | 6 ++++++
- net/wireless/wext-core.c   | 2 +-
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ include/linux/wireless.h | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/iw_handler.h b/include/net/iw_handler.h
-index fc44fcca1d5c..804587b7592b 100644
---- a/include/net/iw_handler.h
-+++ b/include/net/iw_handler.h
-@@ -413,12 +413,6 @@ struct iw_spy_data {
- /* Send a single event to user space */
- void wireless_send_event(struct net_device *dev, unsigned int cmd,
- 			 union iwreq_data *wrqu, const char *extra);
--#ifdef CONFIG_WEXT_CORE
--/* flush all previous wext events - if work is done from netdev notifiers */
--void wireless_nlevent_flush(void);
--#else
--static inline void wireless_nlevent_flush(void) {}
+diff --git a/include/linux/wireless.h b/include/linux/wireless.h
+index e6e34d74dda0..03e5d3fe226d 100644
+--- a/include/linux/wireless.h
++++ b/include/linux/wireless.h
+@@ -21,8 +21,7 @@ struct compat_iw_point {
+ 	__u16 length;
+ 	__u16 flags;
+ };
 -#endif
- 
- /* We may need a function to send a stream of events to user space.
-  * More on that later... */
-diff --git a/net/wireless/wext-compat.h b/net/wireless/wext-compat.h
-index 8251ca5df8ae..f680dd134582 100644
---- a/net/wireless/wext-compat.h
-+++ b/net/wireless/wext-compat.h
-@@ -5,6 +5,12 @@
- #include <net/iw_handler.h>
- #include <linux/wireless.h>
- 
-+#ifdef CONFIG_WEXT_CORE
-+void wireless_nlevent_flush(void);
-+#else
-+static inline void wireless_nlevent_flush(void) {}
-+#endif
+-#ifdef CONFIG_COMPAT
 +
- int cfg80211_ibss_wext_siwfreq(struct net_device *dev,
- 			       struct iw_request_info *info,
- 			       struct iw_freq *wextfreq, char *extra);
-diff --git a/net/wireless/wext-core.c b/net/wireless/wext-core.c
-index 838ad6541a17..f023f9bddf45 100644
---- a/net/wireless/wext-core.c
-+++ b/net/wireless/wext-core.c
-@@ -20,6 +20,7 @@
- #include <net/netlink.h>
- #include <net/wext.h>
- #include <net/net_namespace.h>
-+#include "wext-compat.h"
- 
- typedef int (*wext_ioctl_func)(struct net_device *, struct iwreq *,
- 			       unsigned int, struct iw_request_info *,
-@@ -356,7 +357,6 @@ void wireless_nlevent_flush(void)
- 	}
- 	up_read(&net_rwsem);
- }
--EXPORT_SYMBOL_GPL(wireless_nlevent_flush);
- 
- static int wext_netdev_notifier_call(struct notifier_block *nb,
- 				     unsigned long state, void *ptr)
+ struct __compat_iw_event {
+ 	__u16		len;			/* Real length of this stuff */
+ 	__u16		cmd;			/* Wireless IOCTL */
+@@ -49,5 +48,5 @@ struct __compat_iw_event {
+ #define IW_EV_COMPAT_POINT_LEN	\
+ 	(IW_EV_COMPAT_LCP_LEN + sizeof(struct compat_iw_point) - \
+ 	 IW_EV_COMPAT_POINT_OFF)
+-#endif
++#endif /* CONFIG_COMPAT */
+ #endif	/* _LINUX_WIRELESS_H */
 -- 
 2.46.2
 
