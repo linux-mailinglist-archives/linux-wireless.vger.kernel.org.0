@@ -1,69 +1,74 @@
-Return-Path: <linux-wireless+bounces-13585-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13586-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D79DB992AEA
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 14:01:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE2B992AEB
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 14:01:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0AC7283F67
-	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 12:01:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D5731F2343A
+	for <lists+linux-wireless@lfdr.de>; Mon,  7 Oct 2024 12:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B31418BB90;
-	Mon,  7 Oct 2024 12:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B8C81D1F7B;
+	Mon,  7 Oct 2024 12:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LKjQffKC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mAabVkKq"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9893D18B483
-	for <linux-wireless@vger.kernel.org>; Mon,  7 Oct 2024 12:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB5391AA7B4
+	for <linux-wireless@vger.kernel.org>; Mon,  7 Oct 2024 12:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728302474; cv=none; b=tWL1ISCpbgpO1PAII9CkBlRRjyCVD9n79Y9yAXDeP16gc5ybxn+6gKItRc07yJ2dhLzUUJu39epO90pu44JFyuLucIoBdMl9n2d+qmBiAAqarHOjBTBUdK7S6a+71mxQ/xKTxnYzb7XKXlnHoNVNtm8b260JmQJaDzHz6awOj0Y=
+	t=1728302476; cv=none; b=oLE3M8kPQVeZPxpZun3YC5BfC0og1j6q0j1rq61vBFBpJb2IRBqxIoUsXKVBklKk9KAcl/POXYxlehoMrrS7EiefWmwLrgH3bQ+iES+16JeRbubc9srQfF4obJr2crR533Co4SC5PyRJu8BtHD36D9I1eX2gsAD8/Cbtcpq7UMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728302474; c=relaxed/simple;
-	bh=viUnxLyl0O2MJt/FEclUo93I6+pFiBiFu0N3NlOF0NE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EF52r2GTO4Jt6CDZ1cq/qDpn96/rvHMQE3Gy4Dy+gKBFw7zN7ZTONnro/Pr/uE/J56ND2SfF3kgi1rnm2lCajGI57lOHjGkyVZCT4WnppCfh4X3CfoYqe1L9UONULI7EYicMSsc5gG3OLcjKeKlIS3QYbRhl+TeoyE1Kx5paDR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LKjQffKC; arc=none smtp.client-ip=192.198.163.9
+	s=arc-20240116; t=1728302476; c=relaxed/simple;
+	bh=8KceWwUds778BALn+IZ1Eo2KWDvU/ZYUX2F1Luvelq8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=UkO5itWD2Ceco6WPiXtvQy/w0OVuqOitJrjXhamz/+42EX8TOsL1xR5Qd03/3C6+SCehIeUaR9fcq9IP+x9YPGoJrQj94QihH6WKFqpSZsrmUdFdeSuO98quhiYJXl39ti4gK6qtEYDO0Oc9zwEspk50wOw+k4n6nM7jvc7ziJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mAabVkKq; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728302472; x=1759838472;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=viUnxLyl0O2MJt/FEclUo93I6+pFiBiFu0N3NlOF0NE=;
-  b=LKjQffKCwsVVEPp96qPyjvy9K9Oy9vjcADSzq+vru1ZZ+Vc1nrtg6JQL
-   JghC3H6nWwdUEmJBvoD7QJLlCl9WnjrJUAQ6XGyXTAt2zNI38PsvwMaMw
-   yjHOEBsTqy/LEaHD93+NQtjjcgh66DJjmtJ5zUemirWbh565rP7jbzNXA
-   65YaCWBiEc23pw38v4poIHpYYYLmNbUo2Yoh4aPS8o+ctm2sNJcnXlA8P
-   gw5NpzcX24UJG3PdVwHtuvVBlx8i4OfdNPO7p7K4vrFyDp1HYVpXuSSdC
-   +6MxwKCxhjOBNuLZk6n/phe+fXgouxElYHTa7gk0L42Fn8mZY3/B0uy86
+  t=1728302474; x=1759838474;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=8KceWwUds778BALn+IZ1Eo2KWDvU/ZYUX2F1Luvelq8=;
+  b=mAabVkKqd3RxyFy2SaqyQYM7lU7FaJBduuwoW0WlYQfwpCz1ZPOs7cso
+   3A4zExzSCdYAvZtOr30WWBOAr5vQaSCJHt79AVj6wwgl2/+kGZnRR/Ol7
+   XlDTRBo/Y5pwZkgVwhhtNWPQXhhOJ5wPEXvxSOhs169PFnUKt+9JouYmZ
+   hsyy1FJwL4Osq4R/4s2et1hYKCEGsTn3bJHC7pvxCDEU4WHcWCWL5tmWE
+   RMD+Nu9zP3PjHoFRREirzJKm3XHQ5Px6U7oLOcpwl5nQBEwQ+mx5PP7uk
+   +uqzOHv3SWJKEJN63TJkTj/Z73PnxvYEPkwK8M5tRnD2CN9nHJm/G8FKL
    w==;
-X-CSE-ConnectionGUID: PFRC8q5oTKC4wkR4qhfPRA==
-X-CSE-MsgGUID: 3Y6v9glkTKm2rK6jqOKIzg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11217"; a="38099362"
+X-CSE-ConnectionGUID: MCKQoU3AT16nS2DNth/hUw==
+X-CSE-MsgGUID: lKma1yHSR+6HaUBagnfMxw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11217"; a="38099366"
 X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; 
-   d="scan'208";a="38099362"
+   d="scan'208";a="38099366"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2024 05:01:12 -0700
-X-CSE-ConnectionGUID: 7uPEokn4QZ21i8d0RftMcw==
-X-CSE-MsgGUID: 7sEMtx8YRm+QdHeastHsBg==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2024 05:01:14 -0700
+X-CSE-ConnectionGUID: IgdMnebLT8u9vcLSXTPmhA==
+X-CSE-MsgGUID: BeXcJkPoQleda4piVtr7tw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,184,1725346800"; 
-   d="scan'208";a="75019216"
+   d="scan'208";a="75019229"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2024 05:01:11 -0700
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Oct 2024 05:01:12 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 00/14] mac80211/cfg80211 updates 07-10-2024
-Date: Mon,  7 Oct 2024 15:00:44 +0300
-Message-Id: <20241007120058.1822752-1-miriam.rachel.korenblit@intel.com>
+Cc: linux-wireless@vger.kernel.org,
+	Ilan Peer <ilan.peer@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 01/14] wifi: mac80211: Add support to indicate that a new interface is to be added
+Date: Mon,  7 Oct 2024 15:00:45 +0300
+Message-Id: <20241007144851.e0e8563e1c30.Ifccc96a46a347eb15752caefc9f4eff31f75ed47@changeid>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241007120058.1822752-1-miriam.rachel.korenblit@intel.com>
+References: <20241007120058.1822752-1-miriam.rachel.korenblit@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -73,71 +78,128 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-Hi,
-some features and cleanups from our internal tree.
+From: Ilan Peer <ilan.peer@intel.com>
 
-Thanks,
-Miri
+Add support to indicate to the driver that an interface is about to be
+added so that the driver could prepare its resources early if it needs
+so.
 
-Emmanuel Grumbach (5):
-  wifi: mac80211: make bss_param_ch_cnt available for the low level driver
-  wifi: mac80211: remove unneeded parameters
-  wifi: mac80211: ieee80211_recalc_txpower receives a link
-  wifi: mac80211: __ieee80211_recalc_txpower receives a link
-  wifi: mac80211: update the right link for tx power
+Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+---
+ include/net/mac80211.h    |  8 ++++++++
+ net/mac80211/cfg.c        | 18 ++++++++++++++++++
+ net/mac80211/driver-ops.h | 12 ++++++++++++
+ net/mac80211/trace.h      | 19 +++++++++++++++++++
+ 4 files changed, 57 insertions(+)
 
-Ilan Peer (1):
-  wifi: mac80211: Add support to indicate that a new interface is to be added
-
-Johannes Berg (5):
-  wifi: cfg80211: disallow SMPS in AP mode
-  wifi: mac80211: allow rate_control_rate_init() for links
-  wifi: mac80211: call rate_control_rate_update() for link STA
-  wifi: mac80211: chan: calculate min_def also for client mode
-  wifi: mac80211: expose ieee80211_chan_width_to_rx_bw() to drivers
-
-Miri Korenblit (3):
-  wifi: mac80211: rename IEEE80211_CHANCTX_CHANGE_MIN_WIDTH
-  wifi: mac80211: parse A-MSDU len from EHT capabilities
-  wifi: mac80211: add an option to fake ieee80211_connection_loss
-
- drivers/net/wireless/ath/ath10k/mac.c         |   5 +-
- drivers/net/wireless/ath/ath11k/mac.c         |   5 +-
- drivers/net/wireless/ath/ath12k/mac.c         |   5 +-
- drivers/net/wireless/ath/ath9k/htc_drv_main.c |   6 +-
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c |   9 +-
- .../wireless/intel/iwlwifi/mvm/mld-mac80211.c |   2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |   2 +-
- .../net/wireless/mediatek/mt76/mt7915/main.c  |   5 +-
- .../net/wireless/mediatek/mt76/mt7996/main.c  |   5 +-
- .../net/wireless/quantenna/qtnfmac/commands.c |   2 +-
- drivers/net/wireless/realtek/rtw88/mac80211.c |   6 +-
- drivers/net/wireless/realtek/rtw89/mac80211.c |   6 +-
- drivers/net/wireless/ti/wlcore/main.c         |   5 +-
- drivers/net/wireless/virtual/mac80211_hwsim.c |   8 +-
- include/net/cfg80211.h                        |   2 -
- include/net/mac80211.h                        |  66 +++++++--
- net/mac80211/cfg.c                            | 129 ++++++++++++------
- net/mac80211/chan.c                           |  34 +++--
- net/mac80211/driver-ops.c                     |  15 +-
- net/mac80211/driver-ops.h                     |  18 ++-
- net/mac80211/eht.c                            |  21 ++-
- net/mac80211/ibss.c                           |   7 +-
- net/mac80211/ieee80211_i.h                    |   8 +-
- net/mac80211/iface.c                          |  29 ++--
- net/mac80211/link.c                           |   3 +
- net/mac80211/mesh_plink.c                     |   5 +-
- net/mac80211/mlme.c                           | 118 ++++++++++++++--
- net/mac80211/ocb.c                            |   4 +-
- net/mac80211/rate.c                           |  32 ++++-
- net/mac80211/rate.h                           |   8 +-
- net/mac80211/rx.c                             |   4 +-
- net/mac80211/tdls.c                           |   3 +-
- net/mac80211/trace.h                          |  34 ++++-
- net/mac80211/vht.c                            |  25 +---
- net/wireless/nl80211.c                        |  30 +---
- 35 files changed, 451 insertions(+), 215 deletions(-)
-
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 954dff901b69..479b61fdfb96 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -4444,6 +4444,12 @@ struct ieee80211_prep_tx_info {
+  *	if the requested TID-To-Link mapping can be accepted or not.
+  *	If it's not accepted the driver may suggest a preferred mapping and
+  *	modify @ttlm parameter with the suggested TID-to-Link mapping.
++ * @prep_add_interface: prepare for interface addition. This can be used by
++ *      drivers to prepare for the addition of a new interface, e.g., allocate
++ *      the needed resources etc. This callback doesn't guarantee that an
++ *      interface with the specified type would be added, and thus drivers that
++ *      implement this callback need to handle such cases. The type is the full
++ *      &enum nl80211_iftype.
+  */
+ struct ieee80211_ops {
+ 	void (*tx)(struct ieee80211_hw *hw,
+@@ -4828,6 +4834,8 @@ struct ieee80211_ops {
+ 	enum ieee80211_neg_ttlm_res
+ 	(*can_neg_ttlm)(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 			struct ieee80211_neg_ttlm *ttlm);
++	void (*prep_add_interface)(struct ieee80211_hw *hw,
++				   enum nl80211_iftype type);
+ };
+ 
+ /**
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 847304a3a29a..ce9558cd1576 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -194,6 +194,24 @@ static struct wireless_dev *ieee80211_add_iface(struct wiphy *wiphy,
+ 		}
+ 	}
+ 
++	/* Let the driver know that an interface is going to be added.
++	 * Indicate so only for interface types that will be added to the
++	 * driver.
++	 */
++	switch (type) {
++	case NL80211_IFTYPE_AP_VLAN:
++		break;
++	case NL80211_IFTYPE_MONITOR:
++		if (!ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF) ||
++		    !(params->flags & MONITOR_FLAG_ACTIVE))
++			break;
++		fallthrough;
++	default:
++		drv_prep_add_interface(local,
++				       ieee80211_vif_type_p2p(&sdata->vif));
++		break;
++	}
++
+ 	return wdev;
+ }
+ 
+diff --git a/net/mac80211/driver-ops.h b/net/mac80211/driver-ops.h
+index d382d9729e85..48bc2da728c0 100644
+--- a/net/mac80211/driver-ops.h
++++ b/net/mac80211/driver-ops.h
+@@ -1728,4 +1728,16 @@ drv_can_neg_ttlm(struct ieee80211_local *local,
+ 
+ 	return res;
+ }
++
++static inline void
++drv_prep_add_interface(struct ieee80211_local *local,
++		       enum nl80211_iftype type)
++{
++	trace_drv_prep_add_interface(local, type);
++	if (local->ops->prep_add_interface)
++		local->ops->prep_add_interface(&local->hw, type);
++
++	trace_drv_return_void(local);
++}
++
+ #endif /* __MAC80211_DRIVER_OPS */
+diff --git a/net/mac80211/trace.h b/net/mac80211/trace.h
+index dc498cd8cd91..e6f0ce8e5d43 100644
+--- a/net/mac80211/trace.h
++++ b/net/mac80211/trace.h
+@@ -3154,6 +3154,25 @@ TRACE_EVENT(drv_neg_ttlm_res,
+ 		  LOCAL_PR_ARG, VIF_PR_ARG, __entry->res
+ 	)
+ );
++
++TRACE_EVENT(drv_prep_add_interface,
++	    TP_PROTO(struct ieee80211_local *local,
++		     enum nl80211_iftype type),
++
++	TP_ARGS(local, type),
++	TP_STRUCT__entry(LOCAL_ENTRY
++			 __field(u32, type)
++	),
++
++	TP_fast_assign(LOCAL_ASSIGN;
++		       __entry->type = type;
++	),
++
++	TP_printk(LOCAL_PR_FMT  " type: %u\n ",
++		  LOCAL_PR_ARG, __entry->type
++	)
++);
++
+ #endif /* !__MAC80211_DRIVER_TRACE || TRACE_HEADER_MULTI_READ */
+ 
+ #undef TRACE_INCLUDE_PATH
 -- 
 2.34.1
 
