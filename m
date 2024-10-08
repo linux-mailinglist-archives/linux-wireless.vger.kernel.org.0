@@ -1,201 +1,159 @@
-Return-Path: <linux-wireless+bounces-13728-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13729-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0438C995670
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2024 20:25:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D29A995709
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2024 20:45:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DAA71F24E7E
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2024 18:25:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC83028B273
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2024 18:45:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C520212D23;
-	Tue,  8 Oct 2024 18:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90155213EC0;
+	Tue,  8 Oct 2024 18:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QWv3+c7h"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ArCuS6i2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67A220B1E5;
-	Tue,  8 Oct 2024 18:25:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C59212D17
+	for <linux-wireless@vger.kernel.org>; Tue,  8 Oct 2024 18:44:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728411908; cv=none; b=iY4WxDlRVJ4m4OGBPQ1ELg85C6r0yZ+QDYeTfC1N+NEWbdte9IXY2ireisz0C8oJQSkjTtmfLl2Fawg/WyizRNiveUVThcMuOPPd37ItABn/GUNRI29vPt51qdQprLEIZJBhrKNxN2e0Eh524SuD1DrWZlkspZUJ0ccktCXb7Mk=
+	t=1728413047; cv=none; b=OCdgwaAHhJvMkkR3+hubpcwhjaXfDZXEq6nDZW2KBkA+gTS1vn7Uir9G0PGjjUNd5SR4tmlrAVDV365W1uTPfyZlqvwn/41IhhQU+fySgFVkpI6/3Q7Cu0byiwGCeBAs7hhbYy6KUWM8ZL3haRGMy+7QU33CR9s4SkbuBgji9Ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728411908; c=relaxed/simple;
-	bh=gbTLwyB5anW/NVNa27O4GYEgcT7Zt8zwGlDOBl4w9X4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DSjJ3y7jGCHPN0opTgBqBhLeVfPa0Y6k3x4lo2gFVhGf+YIXbRfaJHdkCYrJtWpj41BhLpVVGwnlq+UUDc0oVHa4+ULwK2vSOh9Iihv9qEZD8L1PG01Wuw4lQNgus1HhQsHBqwrmhWFcAPQIDmycPDt0RIAoPq6xgw5TFhRiC+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QWv3+c7h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 579F8C4CED3;
-	Tue,  8 Oct 2024 18:25:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728411907;
-	bh=gbTLwyB5anW/NVNa27O4GYEgcT7Zt8zwGlDOBl4w9X4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=QWv3+c7hgheNar52dT93kuaRJqQGwrTlm+2qt+dJoGyQzAHIgU0jubrC8ThWhyZIZ
-	 RS8ECJijkXPnKWXZt/DHYo4oNlel2cdA7QmeMfgDuBLkCfLLpl6vQcl4DNTcV5EyFH
-	 5h8XYKukhwE21LUBMtMTij4WxRmO6XhWfjQaEwayPWgg9ncS5s6vbgtpgFKR2d4Ze1
-	 U8RaeSIFzvB8vNoypQgBEdP43kZiPZVbc5vt/+kjhif0hCbio5j23Z7Fbcd2MdU+Eu
-	 u4mqS8NwdiP912BRPYfCL4ckK1zD9U7UpC3cflIOLH9kTp0r9qM6ScGNZWHbmYuBvP
-	 5BPH6goJRp7XQ==
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5e5d0a80db4so3217626eaf.3;
-        Tue, 08 Oct 2024 11:25:07 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU3C3tK00jRXhoDZ96Dzj87jGGWiyg2EPXq2wo8twXZRCit9AeTBQH0qi7g71NeR3ndkIDf6zbCO2tCxOF3Go0=@vger.kernel.org, AJvYcCUD9UjTrJPYFCwGiVUYkyUEeZBiugwoiKWgkR6f1ZvJQUXSh7pQwb/ehWVwZSj34Obki6ROqP4T+Nwp@vger.kernel.org, AJvYcCUPVbBzCw6zvLiCONNyI1ddGYtUzA+MHpEDBCAsW6t6M65XCOKNj56eshvi2CmN/CpJORuxiTRooGbqUVBR1clH@vger.kernel.org, AJvYcCUafMoirgA3e5dJkDINiZqnh5qLjlbeI47XxJzi6PBgWdYgzJC00+bADWoklUhSt3fTGKXgi/2b7Cs=@vger.kernel.org, AJvYcCUdD/AhSYyBNDirh3PISBiwwXRNURiDVDcxQf77QQEDXCi3oTIY1JW+fz4/Zi5cCG7IsIVcnpYom8xN0XA=@vger.kernel.org, AJvYcCVKjPj8S9Cx++kzEGvwFgrQJ5Ii5xMsQlR05NMOg45G5iaauB8vEZpCTeJI6P5uFkoXKuBGJDKCo+nem6s=@vger.kernel.org, AJvYcCVL45VzJJc9nt6spfbiiO6L9DTnzo7i3yke7UoO/oTfZAtHo/vlmCCdXaBDUIv/E6ydRcx/oQplLjjzoA7H@vger.kernel.org, AJvYcCVMz5l8ZPHKtmjYCxJBkY4DRurKhkDBubjnyu3jKklDdLaVd6ej5iYbecElBzbNN/lfRjj4gAvLQyjH@vger.kernel.org, AJvYcCVTcIwXSAUbucn8TVDe1qx0PSHPmATijxKPLeBF/liopYXcLQ8ScAgnF3Yqj0X5rhu4cG5E48jqB8mc@vger.kernel.org, AJvYcCWClUGOO7yG560xUvaF
- YQCo7slmKdQbsRUjiXB1uhxLvpc+HouPwj4fFoi+FEBisNLRNDd1VQVWiaYj@vger.kernel.org, AJvYcCWOEzBzz0LjlFp6HFvZ11F5QnLq5gjO/21J41JjqVltZc+rpksNlzjeDYalgS79mIC58zE0xBoS@vger.kernel.org, AJvYcCWULSQYYztWyt0PcUroL3N0kIvSh9DCjJZM98nMzpRDokvJjojrZrBiVQDakYuM4uzVnRAV/gE1Sxxi@vger.kernel.org, AJvYcCWgM7Gzxm3gksn1fv9oUHSIJdAhDMK/c6wMzi8J+4YrDwp7epUQPKTEk0BxwOgVby4JbrU4dCZLlTRV@vger.kernel.org, AJvYcCWgXdWexWcVGuVAFwrVWY48r1t9Edbc4p9omIYy5/zgYxMqkiS5sbXJiYfIIlbuXNrhESuKJGWJvHyDiA==@vger.kernel.org, AJvYcCWxiJ/5XtFlUli+/zTZtnfq87fGeioVam9UlDjBmhZoMk8Gu976EkD63HnmmqLXDlr7LvNr4HVIJH9Ql2A7Ryfy/w==@vger.kernel.org, AJvYcCX3ch1TTIOzPm7XF+W4zOr7q8QsmZwzR1oJ6GKkz9XQ7vvlp/fHRjHux9+g6nUd4Z7CK8d5lW0ih6JDg28p@vger.kernel.org, AJvYcCX53X85N4Ri3qdiFm276KT5SNw18oK2Tre6x/w5VUfxRK+Pdh/J9GkRjmO26bM+wd3NMHx4AZ25PlEO@vger.kernel.org, AJvYcCX6L4fi/TdH5zDCtPYXvMzGM/qWvxLz34wO/6FzIoBhCYOEckc7qxU6Wy8CYN8mt+zVyjyO7nLMlK+3@vger.kernel.org, AJvYcCXCupac8c380ExASXZG1cOW3GSRrTD4pOsNa//Ehzy7Mc9+nhrMK91rRqiQYYUUNzHoUj4qEvu62hzFjFM
- =@vger.kernel.org, AJvYcCXN28OzyeGZgOPyw9ddKIIB6Tx6vMl50ZBIBrdKVVHELeHm6OnE7vFC/CpfnJolMr7yZJBzEiCuiH6TWjk1@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDtei8K4c+yglZWIg+wthGPZHkZ7UnsIQmNflJFGICsDhc9KZf
-	6UGNS75k6Og3dhkPiDn96OjfZNpuVrvIjIr8L8jxLZ+rzJat6qBtCvWOpeT+mLhY8C7hDo0/oWm
-	HENFfnjpCC32JdxMZanz8yplv9AQ=
-X-Google-Smtp-Source: AGHT+IE8/UzrmOfg0dgL+a7sFpnmZmTmVZlVfZVXeH9h9sR6Zbx0f+k3/XHDUWx/NQFfJo1odWsZ7gtN5j50xL2u+GA=
-X-Received: by 2002:a05:6820:228e:b0:5e1:d741:6f04 with SMTP id
- 006d021491bc7-5e7cc079979mr12626737eaf.3.1728411906564; Tue, 08 Oct 2024
- 11:25:06 -0700 (PDT)
+	s=arc-20240116; t=1728413047; c=relaxed/simple;
+	bh=Bq5zgCFmXLsJ3LuovW+5SV+B/UZh2uEIGdjhroPlaU4=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=m9tW06Vr2TuwNtS37Zp04mmATFbIJ3Bo8Vrm92LRePSvPq69hIHiIAVL9eOUkazk0VQLKPkRSD5U7BOVs9X4NCH+C4n3V3gMGXEiCUELkIHanFVpG9UX30pZQ0TtsSKNMInRqANiOSc1CMd20yxsBGWlhyct3NwVHIHJuPtPY9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ArCuS6i2; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-37d39d9f782so59376f8f.1
+        for <linux-wireless@vger.kernel.org>; Tue, 08 Oct 2024 11:44:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728413044; x=1729017844; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oY8qdbIaD4fQpJpbCqFCi211KMLt3iwhBJ5vOh1d3g4=;
+        b=ArCuS6i2htiQTIHDoXKflneghi9GZeexKzVuXOnAytr0hE70rWc89zrreUQd8FCiaZ
+         Bh546kaIhimU9718yG5iobAYMogW0N9iSW/iAENFuoQMxuWjHyXLcBxBDuM2wTOI9+Wl
+         NfvKbvyRQX7lJ7z/gdllZ0+B//CnKfd0NIOqqdqqt1kmDBfZAQW81cIvOlVcv0lhlTRM
+         SCi1agscTaVImDy79CQCUrXs80Pb1/mwDFnRAhl0EvHr9YWp6RPedALGL+wIYOm9HXB/
+         x5fGJJz9tRRrB6vj+zhuscP+bLLAKCXj+RtiFBGwpnC8w0zYaceNiyYXAQ2ChLN6avTy
+         DOPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728413044; x=1729017844;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=oY8qdbIaD4fQpJpbCqFCi211KMLt3iwhBJ5vOh1d3g4=;
+        b=qrgxxzkWeFjTxWS+P28XC9wIBzlRriD2LbG4sgTw7o4dld4Ffg9PPRFWlahnHDLLVW
+         YW1j+mm2tfDmJUnMK9Mo5K+8zxIeHrHFjK+lYw86ZKRyJUUzHwXtgXp5imHTQIgMzz4a
+         8IWSypR3gFN90WkxF2HHAbINRkEzZAJ/4pboRWs00O/+eo/zYhJbCkKt0enKMqXHLyu4
+         L5QYkK43rvJdsf7hdywIikzr7RfPJbPP9qGC6OMvRkxmqZW83DNbplSAUqflm3Niv7YT
+         D0qjucWLksj8ztNU2pcc91WIB2ZeyrjaMBkDTR4oCQDyfyNcvAMBep3ZXyMAWdveCC62
+         N1mw==
+X-Gm-Message-State: AOJu0Yw4m75jYnUq+GkrR6pe+JXtg51IAcGrzfqkqkn+Osz64SFUJik+
+	LC+IpmzGnNF+BvJNWbZ6ozuTB4dd+B76gcnsm2lA+fXZZgLjaYQRHBzp+A==
+X-Google-Smtp-Source: AGHT+IFUeLvaiLNpwsJlilxrYkY5ll0P7tI03s3Kjno95xAMwdNmRLFuM4uGOfGcBdp2ZyquG8iOMg==
+X-Received: by 2002:a5d:5108:0:b0:37c:d522:af6d with SMTP id ffacd0b85a97d-37d0eb1ae9fmr8430975f8f.58.1728413043672;
+        Tue, 08 Oct 2024 11:44:03 -0700 (PDT)
+Received: from [192.168.0.50] ([79.113.150.231])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d1690f1dasm8761444f8f.6.2024.10.08.11.44.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Oct 2024 11:44:03 -0700 (PDT)
+Message-ID: <afb94a82-3d18-459e-97fc-1a217608cdf0@gmail.com>
+Date: Tue, 8 Oct 2024 21:44:02 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241004094101.113349-1-sakari.ailus@linux.intel.com>
- <CAPDyKFp0N6UJhnHS164Tdf=xkWB0jzq65L9TdvYazeBQ-6WjeQ@mail.gmail.com>
- <20241007184924.GH14766@pendragon.ideasonboard.com> <CAPDyKFpQVnF7eQv3dup8k-3EijnMjuveCG9sZ=Rpey1Y6MBJEg@mail.gmail.com>
- <20241007222502.GG30699@pendragon.ideasonboard.com> <CAPDyKFrGNwna6Y2pqSRaBbRYHKRaD2ayqQHLtoqLPOu9Et7qTg@mail.gmail.com>
-In-Reply-To: <CAPDyKFrGNwna6Y2pqSRaBbRYHKRaD2ayqQHLtoqLPOu9Et7qTg@mail.gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 8 Oct 2024 20:24:55 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0jvJyS7D5-wURi2kyWN-rmNa+YqupeQJ000pQRVd9VBcQ@mail.gmail.com>
-Message-ID: <CAJZ5v0jvJyS7D5-wURi2kyWN-rmNa+YqupeQJ000pQRVd9VBcQ@mail.gmail.com>
-Subject: Re: [PATCH 00/51] treewide: Switch to __pm_runtime_put_autosuspend()
-To: Ulf Hansson <ulf.hansson@linaro.org>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	linux-bluetooth@vger.kernel.org, linux-clk@vger.kernel.org, 
-	linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
-	nouveau@lists.freedesktop.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org, 
-	linux-i3c@lists.infradead.org, linux-iio@vger.kernel.org, 
-	linux-input@vger.kernel.org, patches@opensource.cirrus.com, 
-	iommu@lists.linux.dev, imx@lists.linux.dev, 
-	linux-mediatek@lists.infradead.org, linux-media@vger.kernel.org, 
-	linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org, 
-	netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-phy@lists.infradead.org, 
-	linux-pwm@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
-	linux-sound@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-staging@lists.linux.dev, linux-usb@vger.kernel.org, 
-	linux-serial@vger.kernel.org, greybus-dev@lists.linaro.org, 
-	asahi@lists.linux.dev, Andy Shevchenko <andy.shevchenko@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH] wifi: rtw88: Fix the RX aggregation in USB 3 mode
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 8, 2024 at 12:35=E2=80=AFAM Ulf Hansson <ulf.hansson@linaro.org=
-> wrote:
->
-> On Tue, 8 Oct 2024 at 00:25, Laurent Pinchart
-> <laurent.pinchart@ideasonboard.com> wrote:
-> >
-> > Hi Ulf,
-> >
-> > On Tue, Oct 08, 2024 at 12:08:24AM +0200, Ulf Hansson wrote:
-> > > On Mon, 7 Oct 2024 at 20:49, Laurent Pinchart wrote:
-> > > > On Fri, Oct 04, 2024 at 04:38:36PM +0200, Ulf Hansson wrote:
-> > > > > On Fri, 4 Oct 2024 at 11:41, Sakari Ailus wrote:
-> > > > > >
-> > > > > > Hello everyone,
-> > > > > >
-> > > > > > This set will switch the users of pm_runtime_put_autosuspend() =
-to
-> > > > > > __pm_runtime_put_autosuspend() while the former will soon be re=
--purposed
-> > > > > > to include a call to pm_runtime_mark_last_busy(). The two are a=
-lmost
-> > > > > > always used together, apart from bugs which are likely common. =
-Going
-> > > > > > forward, most new users should be using pm_runtime_put_autosusp=
-end().
-> > > > > >
-> > > > > > Once this conversion is done and pm_runtime_put_autosuspend() r=
-e-purposed,
-> > > > > > I'll post another set to merge the calls to __pm_runtime_put_au=
-tosuspend()
-> > > > > > and pm_runtime_mark_last_busy().
-> > > > >
-> > > > > That sounds like it could cause a lot of churns.
-> > > > >
-> > > > > Why not add a new helper function that does the
-> > > > > pm_runtime_put_autosuspend() and the pm_runtime_mark_last_busy()
-> > > > > things? Then we can start moving users over to this new interface=
-,
-> > > > > rather than having this intermediate step?
-> > > >
-> > > > I think the API would be nicer if we used the shortest and simplest
-> > > > function names for the most common use cases. Following
-> > > > pm_runtime_put_autosuspend() with pm_runtime_mark_last_busy() is th=
-at
-> > > > most common use case. That's why I like Sakari's approach of repurp=
-osing
-> > > > pm_runtime_put_autosuspend(), and introducing
-> > > > __pm_runtime_put_autosuspend() for the odd cases where
-> > > > pm_runtime_mark_last_busy() shouldn't be called.
-> > >
-> > > Okay, so the reason for this approach is because we couldn't find a
-> > > short and descriptive name that could be used in favor of
-> > > pm_runtime_put_autosuspend(). Let me throw some ideas at it and maybe
-> > > you like it - or not. :-)
-> >
-> > I like the idea at least :-)
-> >
-> > > I don't know what options you guys discussed, but to me the entire
-> > > "autosuspend"-suffix isn't really that necessary in my opinion. There
-> > > are more ways than calling pm_runtime_put_autosuspend() that triggers
-> > > us to use the RPM_AUTO flag for rpm_suspend(). For example, just
-> > > calling pm_runtime_put() has the similar effect.
-> >
-> > To be honest, I'm lost there. pm_runtime_put() calls
-> > __pm_runtime_idle(RPM_GET_PUT | RPM_ASYNC), while
-> > pm_runtime_put_autosuspend() calls __pm_runtime_suspend(RPM_GET_PUT |
-> > RPM_ASYNC | RPM_AUTO).
->
-> __pm_runtime_idle() ends up calling rpm_idle(), which may call
-> rpm_suspend() - if it succeeds to idle the device. In that case, it
-> tags on the RPM_AUTO flag in the call to rpm_suspend(). Quite similar
-> to what is happening when calling pm_runtime_put_autosuspend().
+RTL8822CU, RTL8822BU, and RTL8821CU don't need BIT_EN_PRE_CALC.
+In fact, RTL8822BU in USB 3 mode doesn't pass all the frames to the
+driver, resulting in much lower download speed than normal:
 
-Right.
+$ iperf3 -c 192.168.0.1 -R
+Connecting to host 192.168.0.1, port 5201
+Reverse mode, remote host 192.168.0.1 is sending
+[  5] local 192.168.0.50 port 43062 connected to 192.168.0.1 port 5201
+[ ID] Interval           Transfer     Bitrate
+[  5]   0.00-1.00   sec  26.9 MBytes   225 Mbits/sec                  
+[  5]   1.00-2.00   sec  7.50 MBytes  62.9 Mbits/sec                  
+[  5]   2.00-3.00   sec  8.50 MBytes  71.3 Mbits/sec                  
+[  5]   3.00-4.00   sec  8.38 MBytes  70.3 Mbits/sec                  
+[  5]   4.00-5.00   sec  7.75 MBytes  65.0 Mbits/sec                  
+[  5]   5.00-6.00   sec  8.00 MBytes  67.1 Mbits/sec                  
+[  5]   6.00-7.00   sec  8.00 MBytes  67.1 Mbits/sec                  
+[  5]   7.00-8.00   sec  7.75 MBytes  65.0 Mbits/sec                  
+[  5]   8.00-9.00   sec  7.88 MBytes  66.1 Mbits/sec                  
+[  5]   9.00-10.00  sec  7.88 MBytes  66.1 Mbits/sec                  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-10.02  sec   102 MBytes  85.1 Mbits/sec  224             sender
+[  5]   0.00-10.00  sec  98.6 MBytes  82.7 Mbits/sec                  receiver
 
-For almost everybody, except for a small bunch of drivers that
-actually have a .runtime_idle() callback, pm_runtime_put() is
-literally equivalent to pm_runtime_put_autosuspend().
+Don't set BIT_EN_PRE_CALC. Then the speed is much better:
 
-So really the question is why anyone who doesn't provide a
-.runtime_idle() callback bothers with using this special
-pm_runtime_put_autosuspend() thing, which really means "do a
-runtime_put(), but skip my .runtime_idle() callback".
+% iperf3 -c 192.168.0.1 -R    
+Connecting to host 192.168.0.1, port 5201
+Reverse mode, remote host 192.168.0.1 is sending
+[  5] local 192.168.0.50 port 39000 connected to 192.168.0.1 port 5201
+[ ID] Interval           Transfer     Bitrate
+[  5]   0.00-1.00   sec  52.8 MBytes   442 Mbits/sec                  
+[  5]   1.00-2.00   sec  71.9 MBytes   603 Mbits/sec                  
+[  5]   2.00-3.00   sec  74.8 MBytes   627 Mbits/sec                  
+[  5]   3.00-4.00   sec  75.9 MBytes   636 Mbits/sec                  
+[  5]   4.00-5.00   sec  76.0 MBytes   638 Mbits/sec                  
+[  5]   5.00-6.00   sec  74.1 MBytes   622 Mbits/sec                  
+[  5]   6.00-7.00   sec  74.0 MBytes   621 Mbits/sec                  
+[  5]   7.00-8.00   sec  76.0 MBytes   638 Mbits/sec                  
+[  5]   8.00-9.00   sec  74.4 MBytes   624 Mbits/sec                  
+[  5]   9.00-10.00  sec  63.9 MBytes   536 Mbits/sec                  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate         Retr
+[  5]   0.00-10.00  sec   717 MBytes   601 Mbits/sec   24             sender
+[  5]   0.00-10.00  sec   714 MBytes   599 Mbits/sec                  receiver
 
-> >
-> > >
-> > > Moreover, it's similar for pm_runtime_mark_last_busy(), it's called
-> > > during rpm_resume() too, for example. So why bother about having
-> > > "mark_last_busy" in the new name too.
-> > >
-> > > That said, my suggestion is simply "pm_runtime_put_suspend".
-> >
-> > Can we do even better, and make pm_runtime_put() to handle autosuspend
-> > automatically when autosuspend is enabled ?
->
-> As stated above, this is already the case.
+Fixes: 002a5db9a52a ("wifi: rtw88: Enable USB RX aggregation for 8822c/8822b/8821c")
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+---
+The code in the official drivers is a little broken. It sets
+BIT_EN_PRE_CALC and then immediately unsets it. I didn't notice that
+before.
 
-What really is needed appears to be a combination of
-pm_runtime_mark_last_busy() with pm_runtime_put().
+Maybe this should go to kernel 6.12, if it's not too late. Commit 002a5db9a52a
+("wifi: rtw88: Enable USB RX aggregation for 8822c/8822b/8821c") first appears
+in 6.12.
+---
+ drivers/net/wireless/realtek/rtw88/usb.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Granted, pm_runtime_put() could do the pm_runtime_mark_last_busy()
-thing automatically if autosuspend is enabled and the only consequence
-of it might be delaying a suspend of the device until its autosuspend
-timer expires, which should not be a problem in the vast majority of
-cases.
+diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
+index 10b840d59ebd..74ee5bdbb036 100644
+--- a/drivers/net/wireless/realtek/rtw88/usb.c
++++ b/drivers/net/wireless/realtek/rtw88/usb.c
+@@ -772,7 +772,6 @@ static void rtw_usb_dynamic_rx_agg_v1(struct rtw_dev *rtwdev, bool enable)
+ 	u8 size, timeout;
+ 	u16 val16;
+ 
+-	rtw_write32_set(rtwdev, REG_RXDMA_AGG_PG_TH, BIT_EN_PRE_CALC);
+ 	rtw_write8_set(rtwdev, REG_TXDMA_PQ_MAP, BIT_RXDMA_AGG_EN);
+ 	rtw_write8_clr(rtwdev, REG_RXDMA_AGG_PG_TH + 3, BIT(7));
+ 
+-- 
+2.46.0
 
