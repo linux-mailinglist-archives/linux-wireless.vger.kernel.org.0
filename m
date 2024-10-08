@@ -1,67 +1,67 @@
-Return-Path: <linux-wireless+bounces-13704-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13705-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EE029940FC
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2024 10:18:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E1399940FD
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2024 10:18:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9FCA1F28BB2
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2024 08:18:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CBA2DB221DE
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2024 08:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B9F81D278C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58B8F1D27A5;
 	Tue,  8 Oct 2024 07:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="UKiuJtoS"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="DAnzgR8i"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A7E16BE0D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FFC1C9B99
 	for <linux-wireless@vger.kernel.org>; Tue,  8 Oct 2024 07:36:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728372970; cv=none; b=qG0bXNmJhvBgs989kf66Ea8+KrbQQgMen081dbEE870EKiSbYnF4b2sHYLgs+cr8Gwp3kMJfIsbMflvLF3/O6HaW783mw0RTzdqF+ffodoIlscZ9xh4fJhfXrD9igHFkB9EGdiiJEx/EaA5dia6pxZQ1l0L6RY2dZt2F3AuV1Pg=
+	t=1728372970; cv=none; b=HkIWMqt/UIQonK7IgdYLLmbmOaKHE80jlQ586yZEWj/RzrfwE6hauO0btaMJP1sqBiLlKKrDLuS7f5v4koQ0RKSqqY9swWiTZ5yKFkUlI5d4a971pSFFd7ppOSTsrBJB7UthUW9WfDi8QLTNmCQeRZiSn/FoMBQqLQH0Assxhn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1728372970; c=relaxed/simple;
-	bh=/zmaJuDt02/CgkCLeMPZyGo95wG7KRlhublFvOBGzEs=;
+	bh=aFUIlvo95q7U2aS7Vf2ApVseGwrX6n3asSMcZiQmvIM=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SDfL6pYiPKTRWINzTW4dNRwUHdg5c1n59+BIUDACnEFVN4ftVMvHXe0YqoFUBJpYGiwn9oEOdxF5rs7l4gGLPrvyuDVJSexc+DUEQpWpfo3AT12vmofpxcUvQdmFBO9NooUUU+mWfZW9rLZ7SxqpO/5DltBTDd9RtdkMXLIFaKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=UKiuJtoS; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version:Content-Type; b=TCawqRJKqMMrFpbkAXiwgTUrHdalVhQ9XoLrcajlHcm/lon+ItFXuxQGI16uxh2E4i8pFZwDFFoxNgj+ysfc5Yt/zA9XzY0XQbma/7bCpZ+T0NOxAoDLMNm7d+txGQWR4Hm9o13yCdfILgWbAmvIiMPMAFSZqtNlTRi8btd1okw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=DAnzgR8i; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4986E1a3017611;
-	Tue, 8 Oct 2024 07:36:05 GMT
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4984Sd6O008709;
+	Tue, 8 Oct 2024 07:36:06 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	kAaGrGxFh5qUX9LSPD41/FkOAs1qBaBHtHde1Te8Qg4=; b=UKiuJtoSOsNgG+zV
-	ahUMbCsibdyqcGL0FYeTZLD3fK6r6CVAmVWUb9VXago/313mm7z1I6RSu+44RFHI
-	WQ/w4b8CuIGkM9jFuA2EGunc7rVQGAXDMbGkyULVuGoz88EmYo79YRkslBOK9zSL
-	cTHx5fAmsQzs/+FDNN7g4RianWbp3CXM1mXa+TNbyIvPbCG3xZR2IiO10Qkvc/ee
-	7YvWefivMxN+CfGiSmnRHnGLWSmlxgv4slCo0DJnHUfsg9/BbV+daNxwSkd0i+Dk
-	UsSp+YYFK8bqnP4d6kw4uVtZMW3BpGDR0zcGDxskWU1jmzUHCWUhbJbm9vRMbCfV
-	YH2Opg==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 422xs4ehyh-1
+	1Ckqb/NAI8TIZI38O82g/lLOXipO79LZ85NWqQ+Cclw=; b=DAnzgR8iJECvo5tP
+	rc/0r1PYCO5eAeqAiFdMQw1z80Va5skbnZ/4tP1/VkEQZIB7ycZqSEH9qwVylR/X
+	bz92diWZxmNPgqpyqFiuCCk7Nt3eo7SugQ9EE7DmKAS33gSDD1ufymFafRRPTel4
+	ekr7ZtXWvSj1GsnWfvVcbIQxqVl1lwRv4iZjN+/+Gq9J6mNE5VOaYG+EFpXrGsk7
+	HIykPVA9DZDoXHr8WOO8UkzniuQfhlndCNSVVvG88zJjOfYhxN+2Ao9WhQOWHfhW
+	M9ETiD3b3TkjSTS3s6no1QI319Dw7s1PR2I0BtEYkWJvrNdli3yhv7bq6IZwSiwC
+	/qLZLw==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 424wrc0cg9-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 08 Oct 2024 07:36:05 +0000 (GMT)
+	Tue, 08 Oct 2024 07:36:06 +0000 (GMT)
 Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4987a4RG010608
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4987a5Dl028027
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 8 Oct 2024 07:36:04 GMT
+	Tue, 8 Oct 2024 07:36:06 GMT
 Received: from kangyang.ap.qualcomm.com (10.80.80.8) by
  nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Tue, 8 Oct 2024 00:36:02 -0700
+ 15.2.1544.9; Tue, 8 Oct 2024 00:36:04 -0700
 From: Kang Yang <quic_kangyang@quicinc.com>
 To: <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>, <quic_kangyang@quicinc.com>
-Subject: [PATCH v2 03/11] wifi: ath12k: fix struct hal_rx_ppdu_end_user_stats
-Date: Tue, 8 Oct 2024 15:35:26 +0800
-Message-ID: <20241008073534.1195-4-quic_kangyang@quicinc.com>
+Subject: [PATCH v2 04/11] wifi: ath12k: fix struct hal_rx_ppdu_start
+Date: Tue, 8 Oct 2024 15:35:27 +0800
+Message-ID: <20241008073534.1195-5-quic_kangyang@quicinc.com>
 X-Mailer: git-send-email 2.34.1.windows.1
 In-Reply-To: <20241008073534.1195-1-quic_kangyang@quicinc.com>
 References: <20241008073534.1195-1-quic_kangyang@quicinc.com>
@@ -77,19 +77,19 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01b.na.qualcomm.com (10.47.209.197)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: stXezkNcInBzUcGenuGPPlEJtM9lSoBs
-X-Proofpoint-GUID: stXezkNcInBzUcGenuGPPlEJtM9lSoBs
+X-Proofpoint-GUID: rY6YIx7k5hO7BDCs3Lx03a8NIx4RLsPz
+X-Proofpoint-ORIG-GUID: rY6YIx7k5hO7BDCs3Lx03a8NIx4RLsPz
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 mlxscore=0 bulkscore=0 spamscore=0 suspectscore=0
- adultscore=0 impostorscore=0 phishscore=0 mlxlogscore=928
- lowpriorityscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2409260000 definitions=main-2410080048
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ impostorscore=0 suspectscore=0 mlxscore=0 clxscore=1015 spamscore=0
+ adultscore=0 priorityscore=1501 phishscore=0 lowpriorityscore=0
+ mlxlogscore=557 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410080048
 
-Current struct hal_rx_ppdu_end_user_stats in hal_rx.h is not matched
-with hardware descriptor definition.
+Current struct hal_rx_ppdu_start in hal_rx.h is not matched with
+hardware descriptor definition.
 
 So update this structure and related code.
 
@@ -98,90 +98,71 @@ Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ
 Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
 Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/dp_mon.c | 11 ++++-------
- drivers/net/wireless/ath/ath12k/hal_rx.h | 22 +++++++++++-----------
- 2 files changed, 15 insertions(+), 18 deletions(-)
+ drivers/net/wireless/ath/ath12k/dp_mon.c | 16 ++++++++++++----
+ drivers/net/wireless/ath/ath12k/hal_rx.h | 11 ++++++++---
+ 2 files changed, 20 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
-index 5c6749bc4039..516089bd3562 100644
+index 516089bd3562..95f4507179c4 100644
 --- a/drivers/net/wireless/ath/ath12k/dp_mon.c
 +++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
-@@ -26,15 +26,12 @@ ath12k_dp_mon_rx_populate_byte_count(const struct hal_rx_ppdu_end_user_stats *st
- 				     void *ppduinfo,
- 				     struct hal_rx_user_status *rx_user_status)
- {
--	u32 mpdu_ok_byte_count = __le32_to_cpu(stats->mpdu_ok_cnt);
--	u32 mpdu_err_byte_count = __le32_to_cpu(stats->mpdu_err_cnt);
--
- 	rx_user_status->mpdu_ok_byte_count =
--		u32_get_bits(mpdu_ok_byte_count,
--			     HAL_RX_PPDU_END_USER_STATS_MPDU_DELIM_OK_BYTE_COUNT);
-+		le32_get_bits(stats->info7,
-+			      HAL_RX_PPDU_END_USER_STATS_INFO7_MPDU_OK_BYTE_COUNT);
- 	rx_user_status->mpdu_err_byte_count =
--		u32_get_bits(mpdu_err_byte_count,
--			     HAL_RX_PPDU_END_USER_STATS_MPDU_DELIM_ERR_BYTE_COUNT);
-+		le32_get_bits(stats->info8,
-+			      HAL_RX_PPDU_END_USER_STATS_INFO8_MPDU_ERR_BYTE_COUNT);
- }
+@@ -590,12 +590,20 @@ ath12k_dp_mon_rx_parse_status_tlv(struct ath12k_base *ab,
+ 		struct hal_rx_ppdu_start *ppdu_start =
+ 			(struct hal_rx_ppdu_start *)tlv_data;
  
- static void
++		u64 ppdu_ts = __le32_to_cpu(ppdu_start->ppdu_start_ts_31_0) |
++			(u64)(__le32_to_cpu(ppdu_start->ppdu_start_ts_63_32)) << 32;
++
+ 		info[0] = __le32_to_cpu(ppdu_start->info0);
+ 
+-		ppdu_info->ppdu_id =
+-			u32_get_bits(info[0], HAL_RX_PPDU_START_INFO0_PPDU_ID);
+-		ppdu_info->chan_num = __le32_to_cpu(ppdu_start->chan_num);
+-		ppdu_info->ppdu_ts = __le32_to_cpu(ppdu_start->ppdu_start_ts);
++		ppdu_info->ppdu_id = u32_get_bits(info[0],
++						  HAL_RX_PPDU_START_INFO0_PPDU_ID);
++
++		info[1] = __le32_to_cpu(ppdu_start->info1);
++		ppdu_info->chan_num = u32_get_bits(info[1],
++						   HAL_RX_PPDU_START_INFO1_CHAN_NUM);
++		ppdu_info->freq = u32_get_bits(info[1],
++					       HAL_RX_PPDU_START_INFO1_CHAN_FREQ);
++		ppdu_info->ppdu_ts = ppdu_ts;
+ 
+ 		if (ppdu_info->ppdu_id != ppdu_info->last_ppdu_id) {
+ 			ppdu_info->last_ppdu_id = ppdu_info->ppdu_id;
 diff --git a/drivers/net/wireless/ath/ath12k/hal_rx.h b/drivers/net/wireless/ath/ath12k/hal_rx.h
-index 095216eabc01..837ba4adba88 100644
+index 837ba4adba88..6ab33d5f1b2a 100644
 --- a/drivers/net/wireless/ath/ath12k/hal_rx.h
 +++ b/drivers/net/wireless/ath/ath12k/hal_rx.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2023 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
+@@ -156,6 +156,7 @@ struct hal_rx_mon_ppdu_info {
+ 	u32 preamble_type;
+ 	u32 mpdu_len;
+ 	u16 chan_num;
++	u16 freq;
+ 	u16 tcp_msdu_count;
+ 	u16 tcp_ack_msdu_count;
+ 	u16 udp_msdu_count;
+@@ -232,12 +233,16 @@ struct hal_rx_mon_ppdu_info {
+ 	u8 medium_prot_type;
+ };
  
- #ifndef ATH12K_HAL_RX_H
-@@ -240,13 +240,13 @@ struct hal_rx_ppdu_start {
- 	__le32 ppdu_start_ts;
+-#define HAL_RX_PPDU_START_INFO0_PPDU_ID		GENMASK(15, 0)
++#define HAL_RX_PPDU_START_INFO0_PPDU_ID			GENMASK(15, 0)
++#define HAL_RX_PPDU_START_INFO1_CHAN_NUM		GENMASK(15, 0)
++#define HAL_RX_PPDU_START_INFO1_CHAN_FREQ		GENMASK(31, 16)
+ 
+ struct hal_rx_ppdu_start {
+ 	__le32 info0;
+-	__le32 chan_num;
+-	__le32 ppdu_start_ts;
++	__le32 info1;
++	__le32 ppdu_start_ts_31_0;
++	__le32 ppdu_start_ts_63_32;
++	__le32 rsvd[2];
  } __packed;
  
--#define HAL_RX_PPDU_END_USER_STATS_INFO0_MPDU_CNT_FCS_ERR	GENMASK(25, 16)
-+#define HAL_RX_PPDU_END_USER_STATS_INFO0_MPDU_CNT_FCS_ERR	GENMASK(26, 16)
- 
--#define HAL_RX_PPDU_END_USER_STATS_INFO1_MPDU_CNT_FCS_OK	GENMASK(8, 0)
--#define HAL_RX_PPDU_END_USER_STATS_INFO1_FC_VALID		BIT(9)
--#define HAL_RX_PPDU_END_USER_STATS_INFO1_QOS_CTRL_VALID		BIT(10)
--#define HAL_RX_PPDU_END_USER_STATS_INFO1_HT_CTRL_VALID		BIT(11)
--#define HAL_RX_PPDU_END_USER_STATS_INFO1_PKT_TYPE		GENMASK(23, 20)
-+#define HAL_RX_PPDU_END_USER_STATS_INFO1_MPDU_CNT_FCS_OK	GENMASK(10, 0)
-+#define HAL_RX_PPDU_END_USER_STATS_INFO1_FC_VALID		BIT(11)
-+#define HAL_RX_PPDU_END_USER_STATS_INFO1_QOS_CTRL_VALID		BIT(12)
-+#define HAL_RX_PPDU_END_USER_STATS_INFO1_HT_CTRL_VALID		BIT(13)
-+#define HAL_RX_PPDU_END_USER_STATS_INFO1_PKT_TYPE              GENMASK(24, 21)
- 
- #define HAL_RX_PPDU_END_USER_STATS_INFO2_AST_INDEX		GENMASK(15, 0)
- #define HAL_RX_PPDU_END_USER_STATS_INFO2_FRAME_CTRL		GENMASK(31, 16)
-@@ -262,8 +262,8 @@ struct hal_rx_ppdu_start {
- #define HAL_RX_PPDU_END_USER_STATS_INFO6_TID_BITMAP		GENMASK(15, 0)
- #define HAL_RX_PPDU_END_USER_STATS_INFO6_TID_EOSP_BITMAP	GENMASK(31, 16)
- 
--#define HAL_RX_PPDU_END_USER_STATS_MPDU_DELIM_OK_BYTE_COUNT	GENMASK(24, 0)
--#define HAL_RX_PPDU_END_USER_STATS_MPDU_DELIM_ERR_BYTE_COUNT	GENMASK(24, 0)
-+#define HAL_RX_PPDU_END_USER_STATS_INFO7_MPDU_OK_BYTE_COUNT    GENMASK(24, 0)
-+#define HAL_RX_PPDU_END_USER_STATS_INFO8_MPDU_ERR_BYTE_COUNT   GENMASK(24, 0)
- 
- struct hal_rx_ppdu_end_user_stats {
- 	__le32 rsvd0[2];
-@@ -278,9 +278,9 @@ struct hal_rx_ppdu_end_user_stats {
- 	__le32 usr_resp_ref;
- 	__le32 info6;
- 	__le32 rsvd3[4];
--	__le32 mpdu_ok_cnt;
-+	__le32 info7;
- 	__le32 rsvd4;
--	__le32 mpdu_err_cnt;
-+	__le32 info8;
- 	__le32 rsvd5[2];
- 	__le32 usr_resp_ref_ext;
- 	__le32 rsvd6;
+ #define HAL_RX_PPDU_END_USER_STATS_INFO0_MPDU_CNT_FCS_ERR	GENMASK(26, 16)
 -- 
 2.34.1
 
