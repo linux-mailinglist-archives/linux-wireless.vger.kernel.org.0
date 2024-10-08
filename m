@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-13732-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13733-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CEFC995855
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2024 22:24:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E817199585A
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2024 22:26:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2434D289F5F
-	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2024 20:24:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E46F1F22792
+	for <lists+linux-wireless@lfdr.de>; Tue,  8 Oct 2024 20:26:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12E3921501D;
-	Tue,  8 Oct 2024 20:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C14215006;
+	Tue,  8 Oct 2024 20:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="SjVOX5jc"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Aqay5GK0"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7CF5213ED6
-	for <linux-wireless@vger.kernel.org>; Tue,  8 Oct 2024 20:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E18D1E104B
+	for <linux-wireless@vger.kernel.org>; Tue,  8 Oct 2024 20:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728419043; cv=none; b=FAjkAq5Xfd4rEvvrioRxaZd4cPExyEn67Ymcb6fbKQ5NWKay1fnQ17pHxb97rwgaM6/OI0eoLjxVBfWWCkePJAhO65qFO22f+7QJde7UBFnIB3LCmx6qyPSQkWqBnJVDVUaDZpqQ1+NGz4eXO0/VWlc0CSGtIhUlJJj9oqjbKYg=
+	t=1728419184; cv=none; b=OQbfeZqUNnkeZFbFFPd4RxHmnr82+0stpBnNMhQSQ5EjU+L+GK4TR/v92/NxlURKjf4VunxnX0UmRj08T9Gagdm7sIYib3/0iog8c/zPIHyV8e+Li+J63SGTYdGlQiOWHBQwHxGymbMqlGGt4kT9vYQhVd8X8+wBaQgwZU9Wh50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728419043; c=relaxed/simple;
-	bh=eyF1S1iLnEAY6Xj8XmjX2I3zJ/C+wjVsREhresDR3l8=;
+	s=arc-20240116; t=1728419184; c=relaxed/simple;
+	bh=sCo12iY1AfRT+sjp1kgRKvXKOzFE1M/VF6MJNYghPxE=;
 	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Mf6IhvmDfn1Eh+OQXTQWtpZgiUwtNDSrDK/x6wG6leBPt1o2KwDVgvBGDein0mqXNi7njx3BtlCfeYghm0mjHZRa48fEU6NEN5YyLH+8RMVBdiyNJC+/xA7vTnQL2g4T0Ij75Q5iH9ikgkgskq6Ige8jfSLth1e9e0CIcFsqvKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=SjVOX5jc; arc=none smtp.client-ip=168.119.38.16
+	 Content-Type:MIME-Version; b=Ytl2HepFCBTYF4fm9T0k0c9dMQOilHtKAUjR3N9mo6oLy6f+99e0pWjwjrqbDeRjKj74M8hLzvFgAJRzhirJkln3fbril5eM22fNoXVahqr0l2mPOOM8z1++foOhSCvXGGedpjBK0feTYlGtUWBmzJOHiOyv3xyi2KLxrGTjLDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Aqay5GK0; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
 	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
 	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=D0lsbmdh0d3Y/fnKaiLCG0fEwW3lRhPI6mhwkHn/hP8=;
-	t=1728419040; x=1729628640; b=SjVOX5jchR4H8uVEBKRBNKj+BuzOGfxBdBTrCY1rXyIbQol
-	Dt8TYSrAYtyyvEs82v6v+NSmD9dN6o8+y8RwI3K/OQ4cC7UhBaGrw9Ed3qP776y2NB/cBwWTlcyP5
-	QHhyClljuZu0H5/rejFvt4th60eRiPh3VvOnOYmFa+ZqSusiJXP4W+nfo0YrWTqf3IwqTu/IrfXRB
-	agfLMW55SIFWX0Dohl4QDVZ4dBpsUEvag32C9wa8Hh5N2FyZvQG56YicRKNRXM9KBXzM6jUuX1NdN
-	FYrbmLYFiD6CkPKurS/6znJc8KvQ2dGo2pIVcn0+wIvYfk02f5TdEhTnmkzcsYnw==;
+	Resent-Cc:Resent-Message-ID; bh=pguwOqbT95af/Lf619A3V1B+12Fg/QJXBqgHuxJLPAM=;
+	t=1728419183; x=1729628783; b=Aqay5GK0Hi+dIQPi+VEIZSsgsd+QW1Nb9i7kK1GNME95ID4
+	ACLRtS34rKAusfOjPxxV03SPJXqTyKugpUbsNCYlOZio/eYsH+V+P8pqwBzKNStzQJVxwGgNIetMn
+	xntG9GhwZWNr1v3yPy91z8LheDvolyXLXhPfZy8lCJAl6C2PR29SxCndjR2/wluLHREkc6bytVbhG
+	QR0wsmVIvg815mOKU2pgLUiFtHp4UB6C7SAoC3LoxeYdjEFh9AQowYHcZuZ3R/g0kVW4gWoZJ9Lh+
+	NseAXlQgQU3TeW2SKf0rtgAuCGtldqLZ1Gx+v1MspqDE6oHS6/fmCj+IUeTp3JSg==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1syGkP-00000004Nf1-2jQT;
-	Tue, 08 Oct 2024 22:23:57 +0200
-Message-ID: <7167e2cde9e9573944cb1a8c38ee7cf30930a8df.camel@sipsolutions.net>
-Subject: Re: [PATCH v4 01/11] wifi: cfg80211: add option for vif allowed
- radios
+	id 1syGmi-00000004Nif-2ccE;
+	Tue, 08 Oct 2024 22:26:20 +0200
+Message-ID: <a6f71a159f8e2770dba6279dc7e685c22b309937.camel@sipsolutions.net>
+Subject: Re: [PATCH v4 02/11] wifi: mac80211: use vif radio mask to limit
+ ibss scan frequencies
 From: Johannes Berg <johannes@sipsolutions.net>
 To: Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
-Date: Tue, 08 Oct 2024 22:23:56 +0200
-In-Reply-To: <5b1da33c10f63ee696fbd53a1552a65faac039bf.1728372192.git-series.nbd@nbd.name>
+Date: Tue, 08 Oct 2024 22:26:19 +0200
+In-Reply-To: <f41b5a66279c2a106f69042d64aa2bf0f9ce81c6.1728372192.git-series.nbd@nbd.name>
 References: 
 	<cover.bd168805c299851d01269473eb64e7b05edc41d6.1728372192.git-series.nbd@nbd.name>
-	 <5b1da33c10f63ee696fbd53a1552a65faac039bf.1728372192.git-series.nbd@nbd.name>
+	 <f41b5a66279c2a106f69042d64aa2bf0f9ce81c6.1728372192.git-series.nbd@nbd.name>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
@@ -67,71 +67,70 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-malware-bazaar: not-scanned
 
-On Tue, 2024-10-08 at 09:23 +0200, Felix Fietkau wrote:
-> This allows users to prevent a vif from affecting radios other than the
-> configured ones. This can be useful in cases where e.g. an AP is running
-> on one radio, and triggering a scan on another radio should not disturb i=
-t.
->=20
-> Changing the allowed radios list for a vif is supported, but only while
-> it is down.
->=20
-> While it is possible to achieve the same by always explicitly specifying
-> a frequency list for scan requests and ensuring that the wrong channel/ba=
-nd
-> is never accidentally set on an unrelated interface, this change makes
-> multi-radio wiphy setups a lot easier to deal with for CLI users.
->=20
-> By itself, this patch only enforces the radio mask for scanning requests
-> and remain-on-channel. Follow-up changes build on this to limit configure=
-d
-> frequencies.
->=20
-> Signed-off-by: Felix Fietkau <nbd@nbd.name>
-> ---
->  include/net/cfg80211.h       | 12 +++++++-
->  include/uapi/linux/nl80211.h |  5 +++-
->  net/wireless/core.c          |  2 +-
->  net/wireless/nl80211.c       | 60 ++++++++++++++++++++++++++++++++-----
->  net/wireless/scan.c          | 10 ++++--
->  net/wireless/util.c          | 29 ++++++++++++++++++-
->  6 files changed, 107 insertions(+), 11 deletions(-)
->=20
-> diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-> index 69ec1eb41a09..73df4a8e8cce 100644
-> --- a/include/net/cfg80211.h
-> +++ b/include/net/cfg80211.h
-> @@ -6223,6 +6223,7 @@ enum ieee80211_ap_reg_power {
->   *	entered.
->   * @links.cac_time_ms: CAC time in ms
->   * @valid_links: bitmap describing what elements of @links are valid
-> + * @radio_mask: Bitmask of radios that this interface is allowed to oper=
-ate on.
->   */
->  struct wireless_dev {
->  	struct wiphy *wiphy;
-> @@ -6335,6 +6336,8 @@ struct wireless_dev {
->  		unsigned int cac_time_ms;
->  	} links[IEEE80211_MLD_MAX_NUM_LINKS];
->  	u16 valid_links;
-> +
-> +	u32 radio_mask;
->  };
+> Reject frequencies not supported by any radio that the vif is allowed to =
+use.
+
+Should line-break to fewer chars per line, though I guess you're not
+over by much (78 vs. 75) :)
+
+> +++ b/net/mac80211/scan.c
+> @@ -1176,14 +1176,16 @@ int ieee80211_request_ibss_scan(struct ieee80211_=
+sub_if_data *sdata,
+>  				unsigned int n_channels)
+>  {
+>  	struct ieee80211_local *local =3D sdata->local;
+> -	int ret =3D -EBUSY, i, n_ch =3D 0;
+> +	int ret =3D -EINVAL, i, n_ch =3D 0;
+>  	enum nl80211_band band;
 > =20
->  static inline const u8 *wdev_address(struct wireless_dev *wdev)
-> @@ -6521,6 +6524,15 @@ bool cfg80211_radio_chandef_valid(const struct wip=
-hy_radio *radio,
->  				  const struct cfg80211_chan_def *chandef);
+>  	lockdep_assert_wiphy(local->hw.wiphy);
 > =20
->  /**
-> + * cfg80211_wdev_channel_allowed - Check if the wdev may use the channel
-> + *
-> + * @wdev: the wireless device
-> + * @chan: channel to check
-> + */
+>  	/* busy scanning */
+> -	if (local->scan_req)
+> +	if (local->scan_req) {
+> +		ret =3D -EBUSY;
+>  		goto unlock;
+> +	}
+> =20
+>  	/* fill internal scan request */
+>  	if (!channels) {
+> @@ -1200,7 +1202,9 @@ int ieee80211_request_ibss_scan(struct ieee80211_su=
+b_if_data *sdata,
+>  				    &local->hw.wiphy->bands[band]->channels[i];
+> =20
+>  				if (tmp_ch->flags & (IEEE80211_CHAN_NO_IR |
+> -						     IEEE80211_CHAN_DISABLED))
+> +						     IEEE80211_CHAN_DISABLED) ||
+> +				    !cfg80211_wdev_channel_allowed(&sdata->wdev,
+> +								   tmp_ch))
+>  					continue;
+> =20
+>  				local->int_scan_req->channels[n_ch] =3D tmp_ch;
+> @@ -1215,14 +1219,16 @@ int ieee80211_request_ibss_scan(struct ieee80211_=
+sub_if_data *sdata,
+>  	} else {
+>  		for (i =3D 0; i < n_channels; i++) {
+>  			if (channels[i]->flags & (IEEE80211_CHAN_NO_IR |
+> -						  IEEE80211_CHAN_DISABLED))
+> +						  IEEE80211_CHAN_DISABLED) ||
+> +			    !cfg80211_wdev_channel_allowed(&sdata->wdev,
+> +							   channels[i]))
+>  				continue;
+> =20
+>  			local->int_scan_req->channels[n_ch] =3D channels[i];
+>  			n_ch++;
+>  		}
+> =20
+> -		if (WARN_ON_ONCE(n_ch =3D=3D 0))
+> +		if (n_ch =3D=3D 0)
+>  			goto unlock;
 >=20
 
-need Return: documentation
+You're changing the return value here and in another case hidden in the
+context, is that intentional?
+
+And either way it's better to just remove the unlock label and 'ret'
+variable while at it now, it's pretty much unused already.
 
 johannes
 
