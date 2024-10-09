@@ -1,34 +1,34 @@
-Return-Path: <linux-wireless+bounces-13770-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13776-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29762996266
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 10:26:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E73199626D
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 10:26:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B0D71C216CA
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 08:26:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A182B251B2
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 08:26:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A77C188A0E;
-	Wed,  9 Oct 2024 08:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27C7A189F41;
+	Wed,  9 Oct 2024 08:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="q5gfLgRY"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="biors1W+"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A10818870E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD2B1885BF
 	for <linux-wireless@vger.kernel.org>; Wed,  9 Oct 2024 08:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728462364; cv=none; b=FSqbP6tkZLZxGO90jlKd7TL8sZSogPyCCvXby+PsJUm88n3wK4Q6kk69zpTjWXQfqd39yqgRpEVXyJ93d1SVZy0RNBg+oousJ29AblGWk8RvwF6XgYBBdi1yBOKPE7HhAg2IKxA+CC1ZraHBlOAhVDMk4JxH7uVj8AKtF35Cjo4=
+	t=1728462365; cv=none; b=N7vb3avNVmecMTngjMVArwMDT3EZmqkkfV89U7aqH0Gm/59FnSE9Rjzsfipwqps3M9azboQvgYHq/gJBwoJ/yOjsQuAekMGS22tv2DYzrjJoXAYN2aFy0niffB/Bd4IMtWPA+coHa/vp5JVSsHnMSI+X6DSz24ZOow0rKpSOZbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728462364; c=relaxed/simple;
-	bh=T8aWZ6ky5aMDHgPLNEcVU9kDrGQy7UHqv2FTHwcaPcM=;
+	s=arc-20240116; t=1728462365; c=relaxed/simple;
+	bh=UkjF4HOro5aN8DiZTQ3QsDvednMYB+Spm+V0JtIFPlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=muhSyc60DuY4SmuCjC4clqU94J/TNP/EagrlOPNKsjYthOnOtB1yZMrIYcFBWkitJnm423xr9laFC292Pa2e4poyTKN4sJZDcGzO3L/aD32ZA9QJkZWYemB3uGtHMS/Oq9UOy+ajwTyzPt51Hti5ysI4OIDxl7QwOuoh3ZJWC44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=q5gfLgRY; arc=none smtp.client-ip=46.4.11.11
+	 MIME-Version; b=UEEuJ9QAPQi+ChCnJftkQdF2Gz4vN/0EpaQpFv18MF9DLC/Rk5alFjKApK5j5FRQPF7YD5+qZYSmdylXgD5V9Bq/UG5MGHkFDI+hYRrkYLTFmUjOHVV0ZxV7Ue2nWFQQCJ9NaxI+cN80lBf21XjKymQNbOctJJ+c7x+GNkjFvTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=biors1W+; arc=none smtp.client-ip=46.4.11.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
@@ -37,21 +37,21 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=7uDNsfTjVvQpbFVeu1LtI5HvkmVHibvN2xo4MmfehWQ=; b=q5gfLgRYVVj+kr3ZvxgTwqQCpM
-	zUCOTC0Rha8hZaFCYAHu2Tpr2h6tIPKn8/TD8EEhkCRVjKB7StCNBWZsaEPmjZKdfD0EHwmspqex5
-	VvrsZ/c8DSli9UcuZpQsg8blJKKm0wCoWZKygn1meqB1qEjKkMdeVP+7RhzRw346gNm8=;
+	bh=+W2n1arQ3UlR5HI1TCcncXTPZc4iGYQAVL4hD78CJNg=; b=biors1W+vJgfzQN2TqW3IORce7
+	bv46BOfMPjGaE7Nw11IAbjGQw787iKrt2nS8IjnW7hUsAIUpjWiKxJlT1W100gSqDD2FBb0liQAVc
+	HsEtzpL96J5lAELkzsgmnVfE5dnFp07D3GkkL1l9EuTGJRBLVG1G9KsDQbUoDsj0M6Wg=;
 Received: from p54ae98e8.dip0.t-ipconnect.de ([84.174.152.232] helo=Maecks.lan)
 	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
 	(Exim 4.96)
 	(envelope-from <nbd@nbd.name>)
-	id 1syS14-006e0I-2r;
+	id 1syS15-006e0I-0d;
 	Wed, 09 Oct 2024 10:25:55 +0200
 From: Felix Fietkau <nbd@nbd.name>
 To: linux-wireless@vger.kernel.org
 Cc: johannes@sipsolutions.net
-Subject: [PATCH v5 08/11] wifi: cfg80211: add monitor SKIP_TX flag
-Date: Wed,  9 Oct 2024 10:25:49 +0200
-Message-ID: <f0c20f832eadd36c71fba9a2a16ba57d78389b6c.1728462320.git-series.nbd@nbd.name>
+Subject: [PATCH v5 09/11] wifi: mac80211: add support for the monitor SKIP_TX flag
+Date: Wed,  9 Oct 2024 10:25:50 +0200
+Message-ID: <c327bb57ef8dadaa6a0e8e4dc2f5f99ae8123e6c.1728462320.git-series.nbd@nbd.name>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <cover.7a6c6087b8cacec78525ec7f4f4d38c649d4a647.1728462320.git-series.nbd@nbd.name>
 References: <cover.7a6c6087b8cacec78525ec7f4f4d38c649d4a647.1728462320.git-series.nbd@nbd.name>
@@ -63,68 +63,66 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This can be used to indicate that the user is not interested in receiving
-locally sent packets on the monitor interface.
+Do not pass locally sent packets to monitor interfaces with this flag set.
+Skip processing tx packets on the status call entirely if no monitor
+interfaces without this flag are present.
 
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- include/net/cfg80211.h       | 2 ++
- include/uapi/linux/nl80211.h | 2 ++
- net/wireless/nl80211.c       | 1 +
- 3 files changed, 5 insertions(+)
+ net/mac80211/ieee80211_i.h | 2 +-
+ net/mac80211/iface.c       | 2 ++
+ net/mac80211/status.c      | 5 ++++-
+ 3 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 045866b9ffb9..c5c7ccad439e 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -2269,6 +2269,7 @@ static inline int cfg80211_get_station(struct net_device *dev,
-  * @MONITOR_FLAG_OTHER_BSS: disable BSSID filtering
-  * @MONITOR_FLAG_COOK_FRAMES: report frames after processing
-  * @MONITOR_FLAG_ACTIVE: active monitor, ACKs frames on its MAC address
-+ * @MONITOR_FLAG_SKIP_TX: do not pass locally transmitted frames
-  */
- enum monitor_flags {
- 	MONITOR_FLAG_CHANGED		= BIT(__NL80211_MNTR_FLAG_INVALID),
-@@ -2278,6 +2279,7 @@ enum monitor_flags {
- 	MONITOR_FLAG_OTHER_BSS		= BIT(NL80211_MNTR_FLAG_OTHER_BSS),
- 	MONITOR_FLAG_COOK_FRAMES	= BIT(NL80211_MNTR_FLAG_COOK_FRAMES),
- 	MONITOR_FLAG_ACTIVE		= BIT(NL80211_MNTR_FLAG_ACTIVE),
-+	MONITOR_FLAG_SKIP_TX		= BIT(NL80211_MNTR_FLAG_SKIP_TX),
- };
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 4f0390918b60..d697e9dab70d 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -1370,7 +1370,7 @@ struct ieee80211_local {
+ 	spinlock_t queue_stop_reason_lock;
  
- /**
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index 1b8827f920ff..6d11437596b9 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -4703,6 +4703,7 @@ enum nl80211_survey_info {
-  *	overrides all other flags.
-  * @NL80211_MNTR_FLAG_ACTIVE: use the configured MAC address
-  *	and ACK incoming unicast packets.
-+ * @NL80211_MNTR_FLAG_SKIP_TX: do not pass local tx packets
-  *
-  * @__NL80211_MNTR_FLAG_AFTER_LAST: internal use
-  * @NL80211_MNTR_FLAG_MAX: highest possible monitor flag
-@@ -4715,6 +4716,7 @@ enum nl80211_mntr_flags {
- 	NL80211_MNTR_FLAG_OTHER_BSS,
- 	NL80211_MNTR_FLAG_COOK_FRAMES,
- 	NL80211_MNTR_FLAG_ACTIVE,
-+	NL80211_MNTR_FLAG_SKIP_TX,
+ 	int open_count;
+-	int monitors, cooked_mntrs;
++	int monitors, cooked_mntrs, tx_mntrs;
+ 	/* number of interfaces with corresponding FIF_ flags */
+ 	int fif_fcsfail, fif_plcpfail, fif_control, fif_other_bss, fif_pspoll,
+ 	    fif_probe_req;
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index 3aefc62034ba..54060ba97b98 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -1094,6 +1094,8 @@ void ieee80211_adjust_monitor_flags(struct ieee80211_sub_if_data *sdata,
+ 	ADJUST(CONTROL, control);
+ 	ADJUST(CONTROL, pspoll);
+ 	ADJUST(OTHER_BSS, other_bss);
++	if (!(flags & MONITOR_FLAG_SKIP_TX))
++		local->tx_mntrs += offset;
  
- 	/* keep last */
- 	__NL80211_MNTR_FLAG_AFTER_LAST,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 72749cdda091..8d997fafd5f6 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -4206,6 +4206,7 @@ static const struct nla_policy mntr_flags_policy[NL80211_MNTR_FLAG_MAX + 1] = {
- 	[NL80211_MNTR_FLAG_OTHER_BSS] = { .type = NLA_FLAG },
- 	[NL80211_MNTR_FLAG_COOK_FRAMES] = { .type = NLA_FLAG },
- 	[NL80211_MNTR_FLAG_ACTIVE] = { .type = NLA_FLAG },
-+	[NL80211_MNTR_FLAG_SKIP_TX] = { .type = NLA_FLAG },
- };
+ #undef ADJUST
+ }
+diff --git a/net/mac80211/status.c b/net/mac80211/status.c
+index d1cf987de13b..eb889cda8bf9 100644
+--- a/net/mac80211/status.c
++++ b/net/mac80211/status.c
+@@ -927,6 +927,9 @@ void ieee80211_tx_monitor(struct ieee80211_local *local, struct sk_buff *skb,
+ 			if (!ieee80211_sdata_running(sdata))
+ 				continue;
  
- static int parse_monitor_flags(struct nlattr *nla, u32 *mntrflags)
++			if (sdata->u.mntr.flags & MONITOR_FLAG_SKIP_TX)
++				continue;
++
+ 			if ((sdata->u.mntr.flags & MONITOR_FLAG_COOK_FRAMES) &&
+ 			    !send_to_cooked)
+ 				continue;
+@@ -1099,7 +1102,7 @@ static void __ieee80211_tx_status(struct ieee80211_hw *hw,
+ 	 * This is a bit racy but we can avoid a lot of work
+ 	 * with this test...
+ 	 */
+-	if (!local->monitors && (!send_to_cooked || !local->cooked_mntrs)) {
++	if (!local->tx_mntrs && (!send_to_cooked || !local->cooked_mntrs)) {
+ 		if (status->free_list)
+ 			list_add_tail(&skb->list, status->free_list);
+ 		else
 -- 
 git-series 0.9.1
 
