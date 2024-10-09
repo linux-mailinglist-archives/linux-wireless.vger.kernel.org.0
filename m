@@ -1,231 +1,101 @@
-Return-Path: <linux-wireless+bounces-13801-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13804-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C922996432
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 10:56:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FE4899658E
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 11:37:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40E4D1C23DF8
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 08:56:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F27F1C22305
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 09:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65C00198A32;
-	Wed,  9 Oct 2024 08:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053433BB48;
+	Wed,  9 Oct 2024 09:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o9G7ZWkU"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="t3Y4Hl/V"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5B1198A01;
-	Wed,  9 Oct 2024 08:51:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672E018A6DD
+	for <linux-wireless@vger.kernel.org>; Wed,  9 Oct 2024 09:33:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728463905; cv=none; b=ctsvPECxbQn8BXw4wVgy34rGKJ8FRFI94AdqK/tBep06JiOrqSLdNXj9avifBLuTtnvGv7xgSQNFHp0DmhObh325FRkuY14hTkaViLO+NdLT81N43lHVJAgnxn2V4nVPfhDFYQ8U8EvygCbG5aWKTYyLcVf+cdgZ4dV62Mz7Ibw=
+	t=1728466433; cv=none; b=aO6JVS/oNXz7JKwe/9ZqdUz12W+givbKhQeXISHqDemG+ioy5/xAhba9raFIOB5bnUxYRX4487m2PfiRtzXmROtPQAzsEiL0tJighJ5iZp2csHWNZT12FOqg3psFne3udX5o1xDMIfwsqM6W1/jE49pKbEmaFeNfacTDDwUuV40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728463905; c=relaxed/simple;
-	bh=b+116RTJglq8hKTMJPN3ihohHycl1ODOr7MG5VEIobs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GI7cZfTQA+tOxQ2HWseZr286hAcSUFhgPORiAvhl8LIN0ASvUBWHSw9ZT1P+J5jUFpZAZ30imHKq3Q+nJykUnP8e4WFM1oXgrLlgB9TWfER0C7mPUsBYa55Dn65n96V9pRFbO5nfh6SDad2XgBjcsBhGnZvUIOXKXF4l5A5Ox4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o9G7ZWkU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7B7C4CEC5;
-	Wed,  9 Oct 2024 08:51:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728463904;
-	bh=b+116RTJglq8hKTMJPN3ihohHycl1ODOr7MG5VEIobs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=o9G7ZWkUiZ2jhvq5Xffn69FYVlVdQLJ2vD2vq0OH8pOa8Pn2o184IsyAtOJxwSAhG
-	 we51csfH2s/J3u4NwHuVw/Dua+LFoCmX2iprgUu13LHO8hXrFUkOJWqn6Yoe8JUNM5
-	 UQzL1jZsg1xzOyZDIDpbPns/vU1fLfp7uT/2QwJ1ankVmgSZ7JxhyzIhIqq/GTlzo1
-	 shGeQGD5ddN997v99g192UiOAWF2uno4uyLJUyM7z+ace2KK0y8tWbgtVRtOWwWwbH
-	 wlL09TdEbFYJlE2bUuqk+VPUMQG/2vEwvQc44WN1H1e5n4GlbrhWh0e/Uq480U1VKK
-	 RWMwG6nRnJW/g==
-Message-ID: <95b23ff9-eb17-4e1c-b7a3-2d3691ffc48f@kernel.org>
-Date: Wed, 9 Oct 2024 17:51:34 +0900
+	s=arc-20240116; t=1728466433; c=relaxed/simple;
+	bh=2vzkDDouvWOCpgJdPcTrsyYeS0crOoJ/ZMxGW26nt1k=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=tXnPj4ruJYScT+MEsAT39YhjHkCmKEBD1InKGhQxSIBp3QakKW6rIGPVMJrnfHZL16xg0Ugu0Nuy00bShC4bIVrSt5h+zSwO2fZG92h5qQtd6IDVNQXnqrVo6AMnd9ppwpsGssvB1hSiAVyL1cGGwAxaWwGcRRvqPFGnJ1lVSEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=t3Y4Hl/V; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=oRsGgSNV4RqhW+Q3MvpQBOQn2z+Uv3OrZlNf2AAYSDQ=;
+	t=1728466432; x=1729676032; b=t3Y4Hl/VWNgULNBkRxuzWjnn0WwLpHBiXDj02cqGDwpiuS6
+	KhioUy/ntc5fEW/MsZda0y6ObBqslG0uVOuQcaXZ38z9QFijPwJshE5BjO339k6MJkE3uMgU2ZZe4
+	MEgoj4q9Ij5yJugmINWf5MyivbuRJpgwO3Hu6D8JzqDB9ZyiJ9G86BEpQxjAp8h8z+uJ3LNNeMS9P
+	xfgBuuSUToIH2bj4ozDg2LKd9psRLSEqh8UMsifZlUV+mRzX8uvQTXLXhD/oVNWTwlnBM611xvFTP
+	afR3cD/EugnB49YoYlfZvaB354zbsiateGwAgpXFPsyV05c52HhlESMXrSpTwrWg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1sySc6-000000054DR-2qay;
+	Wed, 09 Oct 2024 11:04:10 +0200
+Message-ID: <6a2029dcaf7724b8d4516807097541f09268f828.camel@sipsolutions.net>
+Subject: Re: [PATCH 1/2] wifi: iwlwifi: Report link-id for transmitted
+ frames.
+From: Johannes Berg <johannes@sipsolutions.net>
+To: greearb@candelatech.com, linux-wireless@vger.kernel.org
+Date: Wed, 09 Oct 2024 11:04:10 +0200
+In-Reply-To: <20241007173851.2207849-1-greearb@candelatech.com>
+References: <20241007173851.2207849-1-greearb@candelatech.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 09/13] ata: Use always-managed version of pci_intx()
-To: Philipp Stanner <pstanner@redhat.com>, Niklas Cassel <cassel@kernel.org>,
- Sergey Shtylyov <s.shtylyov@omp.ru>,
- Basavaraj Natikar <basavaraj.natikar@amd.com>, Jiri Kosina
- <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alex Dubov
- <oakad@yahoo.com>, Sudarsana Kalluru <skalluru@marvell.com>,
- Manish Chopra <manishc@marvell.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rasesh Mody <rmody@marvell.com>, GR-Linux-NIC-Dev@marvell.com,
- Igor Mitsyanko <imitsyanko@quantenna.com>,
- Sergey Matyukevich <geomatsi@gmail.com>, Kalle Valo <kvalo@kernel.org>,
- Sanjay R Mehta <sanju.mehta@amd.com>,
- Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, Jon Mason <jdmason@kudzu.us>,
- Dave Jiang <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Alex Williamson <alex.williamson@redhat.com>, Juergen Gross
- <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- Mario Limonciello <mario.limonciello@amd.com>, Chen Ni <nichen@iscas.ac.cn>,
- Ricky Wu <ricky_wu@realtek.com>, Al Viro <viro@zeniv.linux.org.uk>,
- Breno Leitao <leitao@debian.org>, Kevin Tian <kevin.tian@intel.com>,
- Thomas Gleixner <tglx@linutronix.de>,
- =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
- Mostafa Saleh <smostafa@google.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Hannes Reinecke <hare@suse.de>, John Garry <john.g.garry@oracle.com>,
- Soumya Negi <soumya.negi97@gmail.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- Yi Liu <yi.l.liu@intel.com>, "Dr. David Alan Gilbert" <linux@treblig.org>,
- Christian Brauner <brauner@kernel.org>, Ankit Agrawal <ankita@nvidia.com>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Eric Auger <eric.auger@redhat.com>, Ye Bin <yebin10@huawei.com>,
- =?UTF-8?Q?Marek_Marczykowski-G=C3=B3recki?=
- <marmarek@invisiblethingslab.com>,
- Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Kai Vehmanen <kai.vehmanen@linux.intel.com>,
- Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
- Rui Salvaterra <rsalvaterra@gmail.com>, Marc Zyngier <maz@kernel.org>
-Cc: linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-input@vger.kernel.org, netdev@vger.kernel.org,
- linux-wireless@vger.kernel.org, ntb@lists.linux.dev,
- linux-pci@vger.kernel.org, linux-staging@lists.linux.dev,
- kvm@vger.kernel.org, xen-devel@lists.xenproject.org,
- linux-sound@vger.kernel.org
-References: <20241009083519.10088-1-pstanner@redhat.com>
- <20241009083519.10088-10-pstanner@redhat.com>
-From: Damien Le Moal <dlemoal@kernel.org>
-Content-Language: en-US
-Organization: Western Digital Research
-In-Reply-To: <20241009083519.10088-10-pstanner@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 
-On 10/9/24 17:35, Philipp Stanner wrote:
-> pci_intx() is a hybrid function which can sometimes be managed through
-> devres. To remove this hybrid nature from pci_intx(), it is necessary to
-> port users to either an always-managed or a never-managed version.
-> 
-> All users in ata enable their PCI-Device with pcim_enable_device(). Thus,
-> they need the always-managed version.
-> 
-> Replace pci_intx() with pci_intx_unmanaged().
+Hi,
 
-This contradicts the sentence above and the patche replaces pci_intx() with
-pcim_intx()... So s/pci_intx_unmanaged/pcim_intx in the above sentence ?
+So ... I suppose I kind of get it, your product doesn't really need
+things upstream and so you don't care all _that_ much, but I'd still
+appreciate if you could take a bit more care.
 
-> 
-> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-> ---
->  drivers/ata/ahci.c       | 2 +-
->  drivers/ata/ata_piix.c   | 2 +-
->  drivers/ata/pata_rdc.c   | 2 +-
->  drivers/ata/sata_sil24.c | 2 +-
->  drivers/ata/sata_sis.c   | 2 +-
->  drivers/ata/sata_uli.c   | 2 +-
->  drivers/ata/sata_vsc.c   | 2 +-
->  7 files changed, 7 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-> index 45f63b09828a..9273ff3d4732 100644
-> --- a/drivers/ata/ahci.c
-> +++ b/drivers/ata/ahci.c
-> @@ -1985,7 +1985,7 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
->  
->  	if (ahci_init_msi(pdev, n_ports, hpriv) < 0) {
->  		/* legacy intx interrupts */
-> -		pci_intx(pdev, 1);
-> +		pcim_intx(pdev, 1);
->  	}
->  	hpriv->irq = pci_irq_vector(pdev, 0);
->  
-> diff --git a/drivers/ata/ata_piix.c b/drivers/ata/ata_piix.c
-> index 093b940bc953..d441246fa357 100644
-> --- a/drivers/ata/ata_piix.c
-> +++ b/drivers/ata/ata_piix.c
-> @@ -1725,7 +1725,7 @@ static int piix_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
->  	 * message-signalled interrupts currently).
->  	 */
->  	if (port_flags & PIIX_FLAG_CHECKINTR)
-> -		pci_intx(pdev, 1);
-> +		pcim_intx(pdev, 1);
->  
->  	if (piix_check_450nx_errata(pdev)) {
->  		/* This writes into the master table but it does not
-> diff --git a/drivers/ata/pata_rdc.c b/drivers/ata/pata_rdc.c
-> index 0a9689862f71..09792aac7f9d 100644
-> --- a/drivers/ata/pata_rdc.c
-> +++ b/drivers/ata/pata_rdc.c
-> @@ -340,7 +340,7 @@ static int rdc_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
->  		return rc;
->  	host->private_data = hpriv;
->  
-> -	pci_intx(pdev, 1);
-> +	pcim_intx(pdev, 1);
->  
->  	host->flags |= ATA_HOST_PARALLEL_SCAN;
->  
-> diff --git a/drivers/ata/sata_sil24.c b/drivers/ata/sata_sil24.c
-> index 72c03cbdaff4..b771ebd41252 100644
-> --- a/drivers/ata/sata_sil24.c
-> +++ b/drivers/ata/sata_sil24.c
-> @@ -1317,7 +1317,7 @@ static int sil24_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
->  
->  	if (sata_sil24_msi && !pci_enable_msi(pdev)) {
->  		dev_info(&pdev->dev, "Using MSI\n");
-> -		pci_intx(pdev, 0);
-> +		pcim_intx(pdev, 0);
->  	}
->  
->  	pci_set_master(pdev);
-> diff --git a/drivers/ata/sata_sis.c b/drivers/ata/sata_sis.c
-> index ef8724986de3..b8b6d9eff3b8 100644
-> --- a/drivers/ata/sata_sis.c
-> +++ b/drivers/ata/sata_sis.c
-> @@ -290,7 +290,7 @@ static int sis_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
->  	}
->  
->  	pci_set_master(pdev);
-> -	pci_intx(pdev, 1);
-> +	pcim_intx(pdev, 1);
->  	return ata_host_activate(host, pdev->irq, ata_bmdma_interrupt,
->  				 IRQF_SHARED, &sis_sht);
->  }
-> diff --git a/drivers/ata/sata_uli.c b/drivers/ata/sata_uli.c
-> index 60ea45926cd1..52894ff49dcb 100644
-> --- a/drivers/ata/sata_uli.c
-> +++ b/drivers/ata/sata_uli.c
-> @@ -221,7 +221,7 @@ static int uli_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
->  	}
->  
->  	pci_set_master(pdev);
-> -	pci_intx(pdev, 1);
-> +	pcim_intx(pdev, 1);
->  	return ata_host_activate(host, pdev->irq, ata_bmdma_interrupt,
->  				 IRQF_SHARED, &uli_sht);
->  }
-> diff --git a/drivers/ata/sata_vsc.c b/drivers/ata/sata_vsc.c
-> index d39b87537168..a53a2dfc1e17 100644
-> --- a/drivers/ata/sata_vsc.c
-> +++ b/drivers/ata/sata_vsc.c
-> @@ -384,7 +384,7 @@ static int vsc_sata_init_one(struct pci_dev *pdev,
->  		pci_write_config_byte(pdev, PCI_CACHE_LINE_SIZE, 0x80);
->  
->  	if (pci_enable_msi(pdev) == 0)
-> -		pci_intx(pdev, 0);
-> +		pcim_intx(pdev, 0);
->  
->  	/*
->  	 * Config offset 0x98 is "Extended Control and Status Register 0"
+There's always a large amount of friction with patches you send, which
+at this point makes me not even want to really look at them, and then I
+wonder if I should just fix it up or send it back ... Yes I can and do
+fix trivial things, but it really isn't something I feel I should need
+to be doing all the time.
 
+And yes, I also understand you want to just throw ideas over the wall,
+but really in a v2 patchset I think we're beyond that. I'd also
+appreciate not seeing obviously wrong patches (e.g. with a ton of marker
+comments or prints left in them) since that just detracts from the
+purpose, but that's not relevant to this patchset here.
 
--- 
-Damien Le Moal
-Western Digital Research
+Anyway ...
+
+Here, the subject should've had "v2", and in the commit message, below a
+--- marker, a description of what you changed.
+
+>  		memset(&info->status, 0, sizeof(info->status));
+>  		info->flags &=3D ~(IEEE80211_TX_STAT_ACK | IEEE80211_TX_STAT_TX_FILTER=
+ED);
+> +		if (link_sta_id !=3D -1)
+> +			info->control.flags =3D u32_replace_bits(info->control.flags, link_st=
+a_id, IEEE80211_TX_CTRL_MLO_LINK);
+
+That line is clearly too long for no reason at all, and same below.
+
+johannes
 
