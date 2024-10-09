@@ -1,107 +1,128 @@
-Return-Path: <linux-wireless+bounces-13765-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13766-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A47E99960CD
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 09:27:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C28996261
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 10:25:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E93CB21A30
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 07:27:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 738352841BE
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 08:25:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA6617C7CA;
-	Wed,  9 Oct 2024 07:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4ECD187FF2;
+	Wed,  9 Oct 2024 08:25:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qq4cMrRA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Woekskbq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C08142070;
-	Wed,  9 Oct 2024 07:27:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2221178CC5
+	for <linux-wireless@vger.kernel.org>; Wed,  9 Oct 2024 08:25:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728458827; cv=none; b=QDuyKg5yLffE1MKW3vDA/Hb6iCY4GdBMpO/HsVLW+adD17bd15sY9z7yFJeUZo9OzEna8RQ4arZWCQ7jqH6WeYI6w6Sk9kZErPGoI8Qzu7jwE9bS/hJX2lgzqOEKPWFYjEJItAgfvD/dEdCVY1MIYAlM1BMxopkWa4BiBSFut7U=
+	t=1728462346; cv=none; b=iyc/1C8LRz3qg2XFqJ747n7TMV0L7lY64IMH8Cc9OtHa+kpnv+k9XMRVg58UcEes10O+MzkS+PXTkil2F/vtCE4ezGVuighza86hgUfgjPtKWIC3Es4JdxZaZbnTEuApg4Chs4gZosHuVTKCsuPaD5hlETjpLLUyYRgAmLUmOAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728458827; c=relaxed/simple;
-	bh=GBFBg0sEKBmtN4hXfjdfnCUTzVJ67hl4jwYYPj+Qp0g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RsNQfqyBR6UvGPFhNhzqcE5XxGbr/6cr31c3Xzom8Xg/rO0BXNJk8Pf9esQ8vdspSFIjMrM/uoPzBNkFirwDEnmBkmbSnHA05Qj7sUSOWoBAtbgsv0U3cXd/xODg1g65iYAYki8rMwAr6xwQhi5bVKHnhD3aJ3wq9q0rplVK2Ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qq4cMrRA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E2DC4CEC5;
-	Wed,  9 Oct 2024 07:27:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1728458826;
-	bh=GBFBg0sEKBmtN4hXfjdfnCUTzVJ67hl4jwYYPj+Qp0g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qq4cMrRAGTdRgs57WxeBmft29M4EL2YMExW3S5DG0GJUiAIvYSOgSrufz64z93NI3
-	 C8ItshSY4ql3gfl29enhHT2JpEL7yc0doud3K5nccK5jP4ZYLbi7z8pPATHbWnxj3U
-	 TUljyw2TbhI4LZIqyI8X3X54jbZz6s/Nk98zQ860=
-Date: Wed, 9 Oct 2024 09:27:03 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>, Kalle Valo <kvalo@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Wireless <linux-wireless@vger.kernel.org>,
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Next Mailing List <linux-next@vger.kernel.org>,
-	Tree Davies <tdavies@darkphysics.net>
-Subject: Re: linux-next: manual merge of the wireless-next tree with Linus'
- tree
-Message-ID: <2024100941-gaining-sprang-826b@gregkh>
-References: <20241009114455.52db31ad@canb.auug.org.au>
- <2024100945-engross-appraisal-d1f0@gregkh>
- <317aeb02110105be1483d13c204bfb48d4d19c61.camel@sipsolutions.net>
- <2024100917-footsie-anatomist-fd06@gregkh>
- <e572bee3a1c2600b09cb2fd5d09a2e95b4e0faa0.camel@sipsolutions.net>
+	s=arc-20240116; t=1728462346; c=relaxed/simple;
+	bh=NGMRGCmKorB9h3VMalUupB456+qTD0rV5nQOgIVkf4A=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=fRBA8iP23OysVBqAdt3EYg9pWQZN8nrvv8PPjRrdSZiewzmHXevhV42nLs7vViqicUqemNg0ngFp392gTZnH2AExmJ2m4mBZC8ioZSlVRMlZ6Ti79SXLB4BMbZ4CWLJQSLRaMAmebTbci5OXsgQnFB0jBJA6VQjvNVgYLIL8A6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Woekskbq; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-43058268d91so7973425e9.0
+        for <linux-wireless@vger.kernel.org>; Wed, 09 Oct 2024 01:25:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728462343; x=1729067143; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aLJVWehmFbOOxGZYpNzLo94Hs3PFFYW5teQQXPK7uLQ=;
+        b=WoekskbqsMfYinhS1i6r0dI05mepbo0VCYHYCCRgwzLxdy46LMhAR3xSFiBCSonfjv
+         pPSmw34H1PJVYghDWJqo/lGspz4JcYnNM9eWvDZX7YsSlbWGWcuFfHvCA6abQIHh4QRV
+         Gjsv2e60xymFkg62eOQ3jDRP9ISkXmmrWrfsbWfam6q/JnrIH3xptqAgnlEeUI1BluEu
+         0TUq0o+Gx3k3ZraVZ7l0ckzRX+vgcCXbP9I4QRh69nJnpyglL6l2GZijZQr7xmKDopbh
+         yVpKipKCie4eFYsUhJgpQuC5xCTSU7f7oZbosSq4Yh4Dc11sV6EELdY6KoHS5snZnV1e
+         cM3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728462343; x=1729067143;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=aLJVWehmFbOOxGZYpNzLo94Hs3PFFYW5teQQXPK7uLQ=;
+        b=FN6PZRXnaa8stTF9pIqBmfvCMCbhIyg470QR4xbpKo0MDMC6qkhnvIIT10t+S/WQeM
+         YPS6Jgbov8qG+vXmTVvaHqxQvvuO9Hi+c8Hqr+MPHZxM1j3S0QwrQDoYaMc4WuarWeeE
+         N4FlGFMroV7sIq40o+oBcRAY9XH9v4oO1ilyueqNdUahFDrVbvbUmNzdTCOSgmirBgiz
+         mxkSwd3SiS3HetvR0oNsAK/xKC7F0MvZHJjFuewhkIsvV2Q6LyLdvfF3owknIckhTseB
+         nEcafQnaA7jutcTHBcYp1BiK3+ddZVAorfT/tIwPEWJ2pTMVgRu3+lKBEGfMYtIErI/j
+         NEbg==
+X-Gm-Message-State: AOJu0YxOwsuKcW6pHaK+U4K/2pBiPYSjoWsPxAqGfOW9Br+4BcYTa6gF
+	KcDsweEWd2nk0vJJ3cQE6ZfYEfR4Mm7tAq46JNZrDxQBS7JUWdCn
+X-Google-Smtp-Source: AGHT+IGaeKaBN/+yVM5/82DOl5S9YcoWJ5/O5SoqGkr+H4MgcLO9os/k5x/8836Up417G2gPyPEoWg==
+X-Received: by 2002:a05:600c:4f52:b0:42c:b9c7:f54b with SMTP id 5b1f17b1804b1-430ccf4c22dmr13919255e9.16.1728462342941;
+        Wed, 09 Oct 2024 01:25:42 -0700 (PDT)
+Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-430d748d445sm12590565e9.44.2024.10.09.01.25.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Oct 2024 01:25:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e572bee3a1c2600b09cb2fd5d09a2e95b4e0faa0.camel@sipsolutions.net>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 09 Oct 2024 10:25:41 +0200
+Message-Id: <D4R4RHZM9GWX.2V6MHL6HW9YG3@gmail.com>
+Cc: <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v2 00/11] wifi: ath12k: some fixes and clean up for
+ monitor mode
+From: "Nicolas Escande" <nico.escande@gmail.com>
+To: "Kang Yang" <quic_kangyang@quicinc.com>, <ath12k@lists.infradead.org>
+X-Mailer: aerc 0.18.2-0-ge037c095a049
+References: <20241008073534.1195-1-quic_kangyang@quicinc.com>
+In-Reply-To: <20241008073534.1195-1-quic_kangyang@quicinc.com>
 
-On Wed, Oct 09, 2024 at 09:19:40AM +0200, Johannes Berg wrote:
-> On Wed, 2024-10-09 at 09:13 +0200, Greg Kroah-Hartman wrote:
-> 
-> > > But if the conflict is to Linus's tree, is that even going to help?
-> > > Seems like I should pull in -rc2 and solve this one and the ks7010 one
-> > > that way? Just need to check with net-next?
-> > 
-> > I'm not worried about the conflict with Linus's tree, sorry, I now see
-> > that that's what was being reported here also.
-> 
-> Ah OK. But I checked, and I can just pull in net-next to resolve this
-> and two other conflicts (where one appears to be due to git getting
-> confused between moving a file and deleting another copy of it in
-> staging), so I'll probably just do that, just need to sync with Kalle.
-> 
-> > I just want to get your
-> > staging driver changes, so I'll pull in up to commit 4991d2e7ad38, which
-> > is all I really care about :)
-> 
-> Oh OK, so that's mostly unrelated then. Sure, you can pull that in so
-> you have the staging changes I've made in case other staging patches
-> want to touch the files.
-> 
-> 
-> Although ... maybe wait with that too. If you merge that now you'll have
-> to resolve (some of) the conflicts, and if I'm merging net-next now as
-> well we'll have two conflict resolutions for the same thing? That seems
-> a bit strange, even if the resolutions are almost certainly going to be
-> identical.
-> 
-> I can push out the net-next merge (& revert) soon, and then it'll all be
-> cleaner?
+On Tue Oct 8, 2024 at 9:35 AM CEST, Kang Yang wrote:
+> This patch set does some fixes and clean up for monitor mode.
+>
+> v2: rebase on tag: ath-202410072115.
+>
+> Kang Yang (11):
+>   wifi: ath12k: remove unused variable monitor_present
+>   wifi: ath12k: optimize storage size for struct ath12k
+>   wifi: ath12k: fix struct hal_rx_ppdu_end_user_stats
+>   wifi: ath12k: fix struct hal_rx_ppdu_start
+>   wifi: ath12k: fix struct hal_rx_phyrx_rssi_legacy_info
+>   wifi: ath12k: fix struct hal_rx_mpdu_start
+>   wifi: ath12k: properly handling the state variables of monitor mode
+>   wifi: ath12k: delete NSS and TX power setting for monitor vdev
+>   wifi: ath12k: use tail MSDU to get MSDU information
+>   wifi: ath12k: fix A-MSDU indication in monitor mode
+>   wifi: ath12k: delete mon reap timer
+>
+>  drivers/net/wireless/ath/ath12k/core.c   |   5 ++
+>  drivers/net/wireless/ath/ath12k/core.h   |  23 +++--
+>  drivers/net/wireless/ath/ath12k/dp.c     |  25 ------
+>  drivers/net/wireless/ath/ath12k/dp_mon.c | 108 ++++++++++++-----------
+>  drivers/net/wireless/ath/ath12k/hal_rx.h |  53 ++++++-----
+>  drivers/net/wireless/ath/ath12k/mac.c    |  24 +++--
+>  6 files changed, 114 insertions(+), 124 deletions(-)
+>
+>
+> base-commit: b9545f4570fcfebe982439de7c9106e55b4bf756
 
-Sure, I'll wait, just let me know what commit to merge at, from what
-tree, whenever you have it ready.
+Hello,
 
-thanks!
+Two quick questions there:
+ - If monitor works for wcn7850 shouldn't you set supports_monitor=3Dtrue i=
+n hw.c
+   Or does it still require more work for it work ?
+ - This whole series seems to have been tested only with wcn7850 and not qc=
+n9274
+   Is it still not supported on qcn9274 ?
 
-greg k-h
+Thanks
 
