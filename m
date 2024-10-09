@@ -1,106 +1,228 @@
-Return-Path: <linux-wireless+bounces-13749-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13750-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13DE9995C9F
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 03:05:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1AC7995DB1
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 04:23:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 723B21F24F36
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 01:05:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 678B71F25C02
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 02:23:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC081A288;
-	Wed,  9 Oct 2024 01:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3703617C61;
+	Wed,  9 Oct 2024 02:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="HENBb+Tv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f4bWWsp0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f194.google.com (mail-qk1-f194.google.com [209.85.222.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7D5218EA2;
-	Wed,  9 Oct 2024 01:04:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E211136341
+	for <linux-wireless@vger.kernel.org>; Wed,  9 Oct 2024 02:22:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728435902; cv=none; b=U/TR2X9OMbmPJ/uenDOwf4i5JUgedELCwte6P/NazvqDAQy3mQs6R6l8HX/qR3IigT+2jLlJAx4TLdWOIjIf5d2iUwUC6E+nZxk+VaFsmi68hFYRMjvn8O3rVluB1PtexlWGt99yxzHkOpyWT4SEnwKQLvbf3hemxXYNGAdhzpA=
+	t=1728440579; cv=none; b=qDTLDV1Izem0Sk4h+nbrj+byKMD6PCKsbQJavP281DB35TW/Bc0ikEgqALs0nAHTYKeoudBXLAEWa7G15nW1UrfSIQd6yp48OYNGezgCXlQLcovspXQmtFZyrwgXkZgacaq1JPrKxC/aBuN3dgZAps3ThE3ZkpsdOslxkJ3HP8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728435902; c=relaxed/simple;
-	bh=81lkfRSXN90AHUj37kdA3eB/32XiUOUh/H1F66bbIaA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=H30tNm4CFMu19ctdB7RBgdNeC7yTHmUHsCey6yW+4rB8DIn94nExr+Ny/2QeY5/d5dJVB1Kr3VAMFwb5MaXbFzobQ3QxSdRoWfsIv065jJ/bkPPnaLjwfO/+DoZJPLCPo/oX2o4N7EcEGk9wRF5fwuaFasaNDBnvxoNPc442JzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=HENBb+Tv; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=201702; t=1728435897;
-	bh=tmJ2vN1V5w2qXUTPFlUceiygPAXDPWg0BrGys1co0LI=;
-	h=Date:From:To:Cc:Subject:From;
-	b=HENBb+TvyLM5kmBYblhg8eOou8/mTOqnfOgqDzsp8iEpN62uVvPaWrV44qdbMx/VJ
-	 1nt1uaEcfBj0QswwpA6NDYPL62kedDfmb+2Vn3QqSV6sDUvo8dhLWe+26zJCfZ5kSE
-	 Tnr7GWomK9bthe+sG/apP98hiG4rabc8OoTKla0lukAV7vLi5OEz0U5XuUxiQGDZV7
-	 gyt/B+XC7S/o5Y7BPkmLaRRQ3/hDljt2So+nPnsEVwjFFHTnlG+Z8ESXOuT2QXmZB5
-	 zLA0Z0cxkmvbflKz3IpXCM/gz1EIZ5+/ULfJSpcojxPlStMBCuLcWhudy649sBBiPb
-	 ZBY2HUj2cg/3w==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4XNZRr6Y5wz4wxm;
-	Wed,  9 Oct 2024 12:04:56 +1100 (AEDT)
-Date: Wed, 9 Oct 2024 12:04:57 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Kalle Valo <kvalo@kernel.org>, Johannes Berg <johannes@sipsolutions.net>
-Cc: Johannes Berg <johannes.berg@intel.com>, Wireless
- <linux-wireless@vger.kernel.org>, Linux Kernel Mailing List
- <linux-kernel@vger.kernel.org>, Linux Next Mailing List
- <linux-next@vger.kernel.org>
-Subject: linux-next: build failure after merge of the wireless-next tree
-Message-ID: <20241009120457.4bcebe8e@canb.auug.org.au>
+	s=arc-20240116; t=1728440579; c=relaxed/simple;
+	bh=kpiHyh3ocQeggESZJOLyRPcid9hTPvwHybR3g+joj8A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pMzvgYCCzfYrP5oVF0748klQhPQCLA3i9I1ssWM+rf2lRlpX5Kg1sRWJljqJvwKuU3a5W45v1y7mkQCf8MPXqHz4prJgqxN89tL9WYWs4x0REpi1Sa1DXGn6/IGlzjUhjL334Gh/+gXlwfBGnY1P7eo2dBEPG8ptN+PuVc2l5og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f4bWWsp0; arc=none smtp.client-ip=209.85.222.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f194.google.com with SMTP id af79cd13be357-7a9a7bea3cfso367712185a.1
+        for <linux-wireless@vger.kernel.org>; Tue, 08 Oct 2024 19:22:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728440576; x=1729045376; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=weUUuRAoghyBz6FgerXA1YixGamIMNDhvhsUYrGfjKg=;
+        b=f4bWWsp08QokGD6yniNmbJZqGow1HkilW9tE4on5NCODBQYZPGAvf4cICaBUyLo+kw
+         8JTUQhbfRzXqwT3+I8yOvBE/gxbfsdMfkPJwDbkjkfBciNTPKEWdSFT+p3SgDsnRdvfA
+         7f697+sTU+OeO+/1nsRmeYX/JTVZnJCPam04PdZq/1YqyIfDq1M7iVGPbGRAZBmehUGs
+         TsgONbIFL1jMLQxnVCSDbqQrFRNq+pdmTwTIy1xcFp/dCUc0pIuY5XRASCh1uxssyuS+
+         QQHJsnK/paAFsQTEBa7mojONdiXrHllBAHjTfbO1dTsUlEqyAxOYgAoVYSx2AUZaObS7
+         2dHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728440576; x=1729045376;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=weUUuRAoghyBz6FgerXA1YixGamIMNDhvhsUYrGfjKg=;
+        b=o+GyYWF0nwJkyRMNDsFDOwBzH2jamvtHU9xdvObN182elL5tcVQ9FQlTorVPI7uxCV
+         YwwsaOMPTiCOltEKGB6n3Pq8CqgLlkBq0tUEwfTTqY4tgIojHaZE1q0/nuKUBn8Eg6PZ
+         buZ7upBfswY5IHuHlbl7dV97oWfsjQej7hKIDHNP9XPxLItLvb0MCKTHGs7BRDz3cqSu
+         3C0lncLH8i39Ign6uCBrsHhW9X4G3SC4HupkUY3rIdgOPe9ZGwnB2Ow5ld9KrxHCBvnW
+         ww0T5KevJKjO1unRR3IuVYRkreFnApRsJmEUpjmeD4qgqLnJIQGZFtuSIyNg2go04+nC
+         jnIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUODK5pninbS5dycZdeFviB4AeOWcC0GiyIr2WDlIxUA/WQl+HjfrI+g8nWZ0mxvVo49eGVHZPoxjWuMizd7A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuMutm3/kvZ3cAJLyFlxuHQEBTib+WUj60VTkxFGJMSWW+NoXL
+	rkEPAm3xlQ4SPHtZpXHqI1cPJldhO8U6+nHrBI7EcvV/f58ub0BE
+X-Google-Smtp-Source: AGHT+IEwxJNvuKRSiqyXP2M2lr4oU40745qAIbLo93EQkHwaH7MNfxd5KNVlwE3LpA96Ps5I4tmMlg==
+X-Received: by 2002:a05:620a:410f:b0:7af:ccb5:c8e6 with SMTP id af79cd13be357-7b07953a4bfmr150264285a.18.1728440576377;
+        Tue, 08 Oct 2024 19:22:56 -0700 (PDT)
+Received: from [10.194.139.248] (mobile-130-126-255-54.near.illinois.edu. [130.126.255.54])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7ae756611b5sm414861485a.77.2024.10.08.19.22.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Oct 2024 19:22:55 -0700 (PDT)
+Message-ID: <3262c5dc-42e1-4e02-b77f-d11e9cd3d08b@gmail.com>
+Date: Tue, 8 Oct 2024 21:22:54 -0500
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/8QMFo0XJLd0E+cBFd3awETn";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5] wifi: mt76: Fix NULL Dereference caused by
+ mt76_connac_get_he_phy_cap()
+To: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
+ shayne.chen@mediatek.com, sean.wang@mediatek.com, kvalo@kernel.org,
+ angelogioacchino.delregno@collabora.com, johannes.berg@intel.com,
+ quic_adisi@quicinc.com, deren.wu@mediatek.com, chui-hao.chiu@mediatek.com,
+ mingyen.hsieh@mediatek.com, howard-yh.hsu@mediatek.com,
+ StanleyYP.Wang@mediatek.com, allen.ye@mediatek.com,
+ benjamin-jw.lin@mediatek.com, Bo.Jiao@mediatek.com,
+ evelyn.tsai@mediatek.com, meichia.chiu@mediatek.com,
+ linux-wireless@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, chenyuan0y@gmail.com, zzjas98@gmail.com
+References: <20241003180959.12158-1-zichenxie0106@gmail.com>
+ <e116a42e-877e-439e-a83d-1afbaf35748b@gmail.com>
+ <CANdh5G4mnj-N1gV=O=OiFFrZYFP+nzjte2dZTCAobzBHxSdhpA@mail.gmail.com>
+ <7daf8976-91ee-4045-a9a7-d9d14d53c6dd@gmail.com>
+Content-Language: en-US
+From: Zichen Xie <zichenxie0106@gmail.com>
+In-Reply-To: <7daf8976-91ee-4045-a9a7-d9d14d53c6dd@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
---Sig_/8QMFo0XJLd0E+cBFd3awETn
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
 
-Hi all,
+On 2024/10/7 14:13, Matthias Brugger wrote:
+>
+>
+> On 07/10/2024 17:36, Zichen Xie wrote:
+>> IMHO, using operator "&" for a NULL dereferenced pointer won't cause a
+>> crash. 've' will only be assigned to a invalid address.
+>>
+>
+> Please don't top post.
+>
+>> So we can put off the NULL check after
+>> 'const struct ieee80211_he_cap_elem *ve = &vc->he_cap_elem;'
+>>
+>
+> You are right, nevertheless for better code readability I'd still 
+> advise to change the code so that vc is checked for NULL before any 
+> use of struct vc.
 
-After merging the wireless-next tree, today's linux-next build (x86_64
-allmodconfig) failed like this:
+The code snippets here does the same thing like me.
 
-ERROR: modpost: "wireless_nlevent_flush" [net/wireless/cfg80211.ko] undefin=
-ed!
+https://elixir.bootlin.com/linux/v6.12-rc2/source/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c#L1547
 
-Caused by commit
+Should I also repair it for readability?
 
-  aee809aaa2d1 ("wifi: cfg80211: unexport wireless_nlevent_flush()")
 
-I have reverted that commit for today.
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/8QMFo0XJLd0E+cBFd3awETn
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmcF1rkACgkQAVBC80lX
-0GxdiQf7BmLXGNVrsjjCj9MbsIR+OIbkqD9M0DeJZ8lrobYGhsflDt3cR8tsObT4
-CQWnZPmu/lNpbAfW7vx/uJwIDxjI5f5t1GTCXK/j5wK/ipVwZBRmBN1k8PnCO3y6
-gAbSEKe/D/H3IdqMw7slCjxQW00/bX9klidyyJUomE0pZ/maIz4sytnn7iIvAfUf
-wBeO6PgL0sQyrK4FPsGmgxm6iSuBMdR0CjeNjE0MmpBjhZxopH4/1aHtBJQUhZYI
-+uo8Lic3nw4TnXAKyfAGiKImERDknVAtmBnYtE07ZPShVDEpKJu1bng3GPUI7s0H
-B8gC9gjn4839gNQzfelXWLx+/7DP3Q==
-=MNv/
------END PGP SIGNATURE-----
-
---Sig_/8QMFo0XJLd0E+cBFd3awETn--
+>
+> Regards,
+> Matthias
+>
+>> Best Regards,
+>> Zichen
+>>
+>> On Mon, Oct 7, 2024 at 9:23 AM Matthias Brugger 
+>> <matthias.bgg@gmail.com> wrote:
+>>>
+>>>
+>>>
+>>> On 03/10/2024 20:09, Gax-c wrote:
+>>>> From: Zichen Xie <zichenxie0106@gmail.com>
+>>>>
+>>>> mt76_connac_get_he_phy_cap() may return a NULL pointer,
+>>>> leading to NULL Pointer Dereference.
+>>>> Add a NULL check for the returned pointer.
+>>>>
+>>>> Fixes: a5c372f77aa7 ("wifi: mt76: mt7925: extend 
+>>>> mt7925_mcu_bss_he_tlv for per-link BSS")
+>>>> Fixes: e6d557a78b60 ("mt76: mt7915: rely on mt76_connac_get_phy 
+>>>> utilities")
+>>>> Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek 
+>>>> Wi-Fi 7 (802.11be) devices")
+>>>> Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
+>>>> ---
+>>>>    drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 5 +++++
+>>>>    drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 2 ++
+>>>>    drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 2 ++
+>>>>    3 files changed, 9 insertions(+)
+>>>>
+>>>> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c 
+>>>> b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+>>>> index 87d0dd040001..762be3a37228 100644
+>>>> --- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+>>>> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+>>>> @@ -551,6 +551,8 @@ mt7915_mcu_bss_he_tlv(struct sk_buff *skb, 
+>>>> struct ieee80211_vif *vif,
+>>>>        struct tlv *tlv;
+>>>>
+>>>>        cap = mt76_connac_get_he_phy_cap(phy->mt76, vif);
+>>>> +     if (!cap)
+>>>> +             return;
+>>>>
+>>>>        tlv = mt76_connac_mcu_add_tlv(skb, BSS_INFO_HE_BASIC, 
+>>>> sizeof(*he));
+>>>>
+>>>> @@ -1145,6 +1147,9 @@ mt7915_mcu_sta_bfer_he(struct ieee80211_sta 
+>>>> *sta, struct ieee80211_vif *vif,
+>>>>        u8 nss_mcs = mt7915_mcu_get_sta_nss(mcs_map);
+>>>>        u8 snd_dim, sts;
+>>>>
+>>>> +     if (!vc)
+>>>> +             return;
+>>>> +
+>>>
+>>> That will already blow up at line:
+>>>           const struct ieee80211_he_cap_elem *ve = &vc->he_cap_elem;
+>>>
+>>> This needs some more code changes.
+>>>
+>>> Regards,
+>>> Matthias
+>>>
+>>>>        bf->tx_mode = MT_PHY_TYPE_HE_SU;
+>>>>
+>>>>        mt7915_mcu_sta_sounding_rate(bf);
+>>>> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c 
+>>>> b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+>>>> index 748ea6adbc6b..55e4cda2f20f 100644
+>>>> --- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+>>>> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+>>>> @@ -2508,6 +2508,8 @@ mt7925_mcu_bss_he_tlv(struct sk_buff *skb, 
+>>>> struct ieee80211_bss_conf *link_conf,
+>>>>        struct tlv *tlv;
+>>>>
+>>>>        cap = mt76_connac_get_he_phy_cap(phy->mt76, link_conf->vif);
+>>>> +     if (!cap)
+>>>> +             return;
+>>>>
+>>>>        tlv = mt76_connac_mcu_add_tlv(skb, UNI_BSS_INFO_HE_BASIC, 
+>>>> sizeof(*he));
+>>>>
+>>>> diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c 
+>>>> b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+>>>> index 6c445a9dbc03..55bb2d0e67e5 100644
+>>>> --- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+>>>> +++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+>>>> @@ -798,6 +798,8 @@ mt7996_mcu_bss_he_tlv(struct sk_buff *skb, 
+>>>> struct ieee80211_vif *vif,
+>>>>        struct tlv *tlv;
+>>>>
+>>>>        cap = mt76_connac_get_he_phy_cap(phy->mt76, vif);
+>>>> +     if (!cap)
+>>>> +             return;
+>>>>
+>>>>        tlv = mt7996_mcu_add_uni_tlv(skb, UNI_BSS_INFO_HE_BASIC, 
+>>>> sizeof(*he));
+>>>>
 
