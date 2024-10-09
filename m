@@ -1,34 +1,34 @@
-Return-Path: <linux-wireless+bounces-13771-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13775-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 219FA996267
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 10:26:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71CA399626C
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 10:26:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD65A1F23378
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 08:26:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC095B24FB3
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 08:26:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82A81188CC4;
-	Wed,  9 Oct 2024 08:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16B29188591;
+	Wed,  9 Oct 2024 08:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="IfABApi6"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="mUTqF1lA"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619FB1885A6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61A491885B2
 	for <linux-wireless@vger.kernel.org>; Wed,  9 Oct 2024 08:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728462364; cv=none; b=QOvqo/eWSYLGe9uiF8cQygZd7EejgbbTIsfTe1WmIUqlFa1PcDrwij0DgMT1xh2x4irW9Q5JPvC/+aeh2c5RGziTV+vHSuwOras8MCiZQEAswwcy38I9b1zKapfE3a+jo3r+OqqRytMi232a54ZeK8JUqsboXAOLyZdFcZ73zoA=
+	t=1728462365; cv=none; b=PxqIt8AEQXqysXOwSCfLuOJuAfOTGVbvPQ5vG+GsDGGrimM2fvwl3kbHZi4mP3CwkEzig5inPy9emey3/G4t0n8nxZqBcMELbK4LrjAMlj0WQRSzS8ybv303R0NIcZZ+Nts0CGsBomIIR1BYCpQOMlAoytMvkR1FWNl5qs6YVDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728462364; c=relaxed/simple;
-	bh=dFhbS7xLehSrIrwcUsWLVUkW18BRdBqb/hce7X3b5xs=;
+	s=arc-20240116; t=1728462365; c=relaxed/simple;
+	bh=f5R/zk2Ad4Z9vn5oqS4B93z+tE/meUVUTTgWK0X70d4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tFdtO9bMTquliDa22Zpdxl8cjOAsC4px4SwvBgNKn/8t9yYYgSDBP/Omyl1/uvm2c/hJkbeCRV8+a9P6+R0O3COABp5NhOpDKPVxL7LHrHTcKBoDDu7U819LTL5nVqj4C9SubSG8BI9JTXz8aXMHJglk8iAQU7SiyA2PGr/W/mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=IfABApi6; arc=none smtp.client-ip=46.4.11.11
+	 MIME-Version; b=B1ycqRTVShs35kYCn6VhSgC6ipvHQwVPnwH2QaAbCxqdJj0avhNXLkUF7Npi7+dk9BydsTbIURt73j56UqU0nkjFkiMUzjO5WzKlaXxySQBH8Ayji/uYSFs0CaYM2JA2tkBgcdKC5rXK01951NLihOL/gpD4n3YKWks556fCoQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=mUTqF1lA; arc=none smtp.client-ip=46.4.11.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
@@ -37,21 +37,21 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=p/xRrdutwkUzpmwjSM2Y8O9DsLB8sCu8/v60pB+dPXg=; b=IfABApi6tHUxLEijp8Apr6p3XD
-	kYCUPQXZ61gA0MarBq9XOMiPGt7wS2zt8w8WpKk6DosOy5m8BQGOvzgoVEVYjGwDjtY17v39QLxly
-	G3lJd8MipP5JvDu4TijTrVfPAKHJTuWuqxFSL5VR2PYIPqHfzq8Mf1u684Su51bpr33Y=;
+	bh=HMREsktTjCWYGxrmPAaUNBwes3G+pzjn93Qy+wWj2fw=; b=mUTqF1lAhyWx8LKIm1Ftqlk4sc
+	jISAFm/vF34OjJJAeqMi7E6VPd3NpMiH9mYjHATE7gADqhvxWeXq/7hMTbpqhk7rvhS4HMMU5banE
+	IO2sVeZvBOdBaUnrMoASP26XQUWSvpO9zxyS+G3NnMESR0Nd+wIkYoyfFJZ0/c/Aa5so=;
 Received: from p54ae98e8.dip0.t-ipconnect.de ([84.174.152.232] helo=Maecks.lan)
 	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
 	(Exim 4.96)
 	(envelope-from <nbd@nbd.name>)
-	id 1syS13-006e0I-2i;
-	Wed, 09 Oct 2024 10:25:53 +0200
+	id 1syS14-006e0I-0P;
+	Wed, 09 Oct 2024 10:25:54 +0200
 From: Felix Fietkau <nbd@nbd.name>
 To: linux-wireless@vger.kernel.org
 Cc: johannes@sipsolutions.net
-Subject: [PATCH v5 04/11] wifi: cfg80211: report per wiphy radio antenna mask
-Date: Wed,  9 Oct 2024 10:25:45 +0200
-Message-ID: <e0a26afa2c88eaa188ec96ec6d17ecac4e827641.1728462320.git-series.nbd@nbd.name>
+Subject: [PATCH v5 05/11] wifi: mac80211: remove status->ampdu_delimiter_crc
+Date: Wed,  9 Oct 2024 10:25:46 +0200
+Message-ID: <e6fee6eed49b105261830db1c74f13841fb9616c.1728462320.git-series.nbd@nbd.name>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <cover.7a6c6087b8cacec78525ec7f4f4d38c649d4a647.1728462320.git-series.nbd@nbd.name>
 References: <cover.7a6c6087b8cacec78525ec7f4f4d38c649d4a647.1728462320.git-series.nbd@nbd.name>
@@ -63,75 +63,75 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-With multi-radio devices, each radio typically gets a fixed set of antennas.
-In order to be able to disable specific antennas for some radios, user space
-needs to know which antenna mask bits are assigned to which radio.
+This was never used by any driver, so remove it to free up some space.
 
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- include/net/cfg80211.h       | 4 ++++
- include/uapi/linux/nl80211.h | 3 +++
- net/wireless/nl80211.c       | 5 +++++
- 3 files changed, 12 insertions(+)
+ include/net/mac80211.h | 6 +-----
+ net/mac80211/rx.c      | 7 +------
+ 2 files changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index e4441e4536ae..636b9b32aa31 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -5436,6 +5436,8 @@ struct wiphy_radio_freq_range {
-  * @iface_combinations: Valid interface combinations array, should not
-  *	list single interface types.
-  * @n_iface_combinations: number of entries in @iface_combinations array.
-+ *
-+ * @antenna_mask: bitmask of antennas connected to this radio.
-  */
- struct wiphy_radio {
- 	const struct wiphy_radio_freq_range *freq_range;
-@@ -5443,6 +5445,8 @@ struct wiphy_radio {
- 
- 	const struct ieee80211_iface_combination *iface_combinations;
- 	int n_iface_combinations;
-+
-+	u32 antenna_mask;
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 954dff901b69..be916e1e5e1d 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -1448,8 +1448,6 @@ ieee80211_tx_info_clear_status(struct ieee80211_tx_info *info)
+  * @RX_FLAG_AMPDU_IS_LAST: this subframe is the last subframe of the A-MPDU
+  * @RX_FLAG_AMPDU_DELIM_CRC_ERROR: A delimiter CRC error has been detected
+  *	on this subframe
+- * @RX_FLAG_AMPDU_DELIM_CRC_KNOWN: The delimiter CRC field is known (the CRC
+- *	is stored in the @ampdu_delimiter_crc field)
+  * @RX_FLAG_MIC_STRIPPED: The mic was stripped of this packet. Decryption was
+  *	done by the hardware
+  * @RX_FLAG_ONLY_MONITOR: Report frame only to monitor interfaces without
+@@ -1521,7 +1519,7 @@ enum mac80211_rx_flags {
+ 	RX_FLAG_AMPDU_LAST_KNOWN	= BIT(12),
+ 	RX_FLAG_AMPDU_IS_LAST		= BIT(13),
+ 	RX_FLAG_AMPDU_DELIM_CRC_ERROR	= BIT(14),
+-	RX_FLAG_AMPDU_DELIM_CRC_KNOWN	= BIT(15),
++	/* one free bit at 15 */
+ 	RX_FLAG_MACTIME			= BIT(16) | BIT(17),
+ 	RX_FLAG_MACTIME_PLCP_START	= 1 << 16,
+ 	RX_FLAG_MACTIME_START		= 2 << 16,
+@@ -1618,7 +1616,6 @@ enum mac80211_rx_encoding {
+  * @rx_flags: internal RX flags for mac80211
+  * @ampdu_reference: A-MPDU reference number, must be a different value for
+  *	each A-MPDU but the same for each subframe within one A-MPDU
+- * @ampdu_delimiter_crc: A-MPDU delimiter CRC
+  * @zero_length_psdu_type: radiotap type of the 0-length PSDU
+  * @link_valid: if the link which is identified by @link_id is valid. This flag
+  *	is set only when connection is MLO.
+@@ -1656,7 +1653,6 @@ struct ieee80211_rx_status {
+ 	s8 signal;
+ 	u8 chains;
+ 	s8 chain_signal[IEEE80211_MAX_CHAINS];
+-	u8 ampdu_delimiter_crc;
+ 	u8 zero_length_psdu_type;
+ 	u8 link_valid:1, link_id:4;
  };
- 
- #define CFG80211_HW_TIMESTAMP_ALL_PEERS	0xffff
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index d31ccee99cc7..1b8827f920ff 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -8036,6 +8036,8 @@ enum nl80211_ap_settings_flags {
-  * @NL80211_WIPHY_RADIO_ATTR_INTERFACE_COMBINATION: Supported interface
-  *	combination for this radio. Attribute may be present multiple times
-  *	and contains attributes defined in &enum nl80211_if_combination_attrs.
-+ * @NL80211_WIPHY_RADIO_ATTR_ANTENNA_MASK: bitmask (u32) of antennas
-+ *	connected to this radio.
-  *
-  * @__NL80211_WIPHY_RADIO_ATTR_LAST: Internal
-  * @NL80211_WIPHY_RADIO_ATTR_MAX: Highest attribute
-@@ -8046,6 +8048,7 @@ enum nl80211_wiphy_radio_attrs {
- 	NL80211_WIPHY_RADIO_ATTR_INDEX,
- 	NL80211_WIPHY_RADIO_ATTR_FREQ_RANGE,
- 	NL80211_WIPHY_RADIO_ATTR_INTERFACE_COMBINATION,
-+	NL80211_WIPHY_RADIO_ATTR_ANTENNA_MASK,
- 
- 	/* keep last */
- 	__NL80211_WIPHY_RADIO_ATTR_LAST,
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 7f3bd35c8a3b..ab87587df408 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -2431,6 +2431,11 @@ static int nl80211_put_radio(struct wiphy *wiphy, struct sk_buff *msg, int idx)
- 	if (nla_put_u32(msg, NL80211_WIPHY_RADIO_ATTR_INDEX, idx))
- 		goto nla_put_failure;
- 
-+	if (r->antenna_mask &&
-+	    nla_put_u32(msg, NL80211_WIPHY_RADIO_ATTR_ANTENNA_MASK,
-+			r->antenna_mask))
-+		goto nla_put_failure;
-+
- 	for (i = 0; i < r->n_freq_range; i++) {
- 		const struct wiphy_radio_freq_range *range = &r->freq_range[i];
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index 59ad24a71141..718f02f0a181 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -508,18 +508,13 @@ ieee80211_add_rx_radiotap_header(struct ieee80211_local *local,
+ 			flags |= IEEE80211_RADIOTAP_AMPDU_IS_LAST;
+ 		if (status->flag & RX_FLAG_AMPDU_DELIM_CRC_ERROR)
+ 			flags |= IEEE80211_RADIOTAP_AMPDU_DELIM_CRC_ERR;
+-		if (status->flag & RX_FLAG_AMPDU_DELIM_CRC_KNOWN)
+-			flags |= IEEE80211_RADIOTAP_AMPDU_DELIM_CRC_KNOWN;
+ 		if (status->flag & RX_FLAG_AMPDU_EOF_BIT_KNOWN)
+ 			flags |= IEEE80211_RADIOTAP_AMPDU_EOF_KNOWN;
+ 		if (status->flag & RX_FLAG_AMPDU_EOF_BIT)
+ 			flags |= IEEE80211_RADIOTAP_AMPDU_EOF;
+ 		put_unaligned_le16(flags, pos);
+ 		pos += 2;
+-		if (status->flag & RX_FLAG_AMPDU_DELIM_CRC_KNOWN)
+-			*pos++ = status->ampdu_delimiter_crc;
+-		else
+-			*pos++ = 0;
++		*pos++ = 0;
+ 		*pos++ = 0;
+ 	}
  
 -- 
 git-series 0.9.1
