@@ -1,146 +1,134 @@
-Return-Path: <linux-wireless+bounces-13780-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13795-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07B2B996309
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 10:38:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 153BE9963A0
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 10:48:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E9E71C23425
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 08:38:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDE8428275C
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 08:48:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A0118950A;
-	Wed,  9 Oct 2024 08:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4447D18E045;
+	Wed,  9 Oct 2024 08:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="OF81mdv2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sZgE1VxV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26F6188CD8
-	for <linux-wireless@vger.kernel.org>; Wed,  9 Oct 2024 08:36:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17AD918E032;
+	Wed,  9 Oct 2024 08:44:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728462968; cv=none; b=cK2h1cCc5MSO5J9CqRP60xF3eNDEPGq6QEuRH9IN5bMsoaT2ATIp+gtt6Fh5bAd8nmj1APq2Ks0WwBfdLlznJAJ65DzbgrNQRyIKv1abRTlxMd0X+B4HydBy7RSZLaEJnx6p+S4ECTirvlXOgspUrmvdK75QyR//qCjX/pslbCk=
+	t=1728463446; cv=none; b=X8HHJTNhejQ7F8v3k6bN6bREUTV6BRbsFRaaMSII8QQndA8cOr9ajBffxEvuQiCifnDUlTSHOZjwGcF9lOVwC6yM7/SVrri3Ody4Piw/SAEiYp8+Bk1xqVi55VtFaSLachZzVhOeaqGbAXSJg8xGSrEDugI0nU6HZDsdkyO8Rl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728462968; c=relaxed/simple;
-	bh=WUhKtY+Pha2Bi1kOHcd9KnsPgaXA9rHMLMwo5HBuwP0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=PhS9vZ2XnCxxyHSUfOfo/8eOFsV/MjGrEBljT8xIZDv+NLictRp5xFl7GO+Vzt8GL5F3/DV8o/ZR/rpVpHU7i3M/VdzatVCEkSp6EHiQp51GyN9sToqqA2793fgTA2WYRBuf5Ns4KQa4WRMPwqw/aaUWjWJBpqngwxJLs8W9X/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=OF81mdv2; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 498KxEon017879;
-	Wed, 9 Oct 2024 08:36:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ahCNDTY0nVOifi3pmg+ZttAOzsh0sxA+SIzoiLNG0+o=; b=OF81mdv2xWKyLDbr
-	k08kF9JiDMJ/tG0BVN7Q0sDZNGbZVh1xD2Mr5etMlyLd8zTg4qU0HxziNQpQJAeR
-	t7UbRUa37gzdQyJPDQzSOztGkZMI5QSGkaJ1unkFyIJ/LY95iyk52BGrR4d5p1e/
-	UOPXcRgU6s6BJfVwKjoxtyJe1wkhUjs0/T/bWXJ2F5aYAU47zo3tatI/Ixi8GUc4
-	oX4X9Dqb/G5C1Bwr/iW58+jSRFBljAMtAtD5bW/Q9z5qAi750iVuAQ6l1lWGoQw9
-	OJv9z11e6ZjZw4buGdWerXwpVnmLKGNKFf0vbw7pHOPQ1HTgbXvgVED0uBMGuV5I
-	o6IGZA==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 425c8qsdvv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 09 Oct 2024 08:36:01 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4998Zx3g030162
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 9 Oct 2024 08:35:59 GMT
-Received: from [10.253.72.222] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 9 Oct 2024
- 01:35:58 -0700
-Message-ID: <fc004753-2e5d-4694-9c35-8a4c4ccab7ed@quicinc.com>
-Date: Wed, 9 Oct 2024 16:35:55 +0800
+	s=arc-20240116; t=1728463446; c=relaxed/simple;
+	bh=ceMij/yfbKLvJo6J2VHlzeDQMeXfsggIscfz1kWVik4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lPJoPcf5IPTthcylSN+zxhuHqL/cAQkT3ENkt2Py9O77o6GZ4pQpHQR6Dk9Ij0Rz6ZbsYgUUZefNBn18eD6+bM7qvxq8rTTFlo9zxL6E51O3wq25kFSVP02HUT+A5Yfs8sxItZuEWnwsU5KnrTmUbzBpH8kUPorN9fUJy1JUCkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sZgE1VxV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EF4FC4CECF;
+	Wed,  9 Oct 2024 08:44:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728463445;
+	bh=ceMij/yfbKLvJo6J2VHlzeDQMeXfsggIscfz1kWVik4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sZgE1VxVx2v/62JJUVZHh+KqF+47rw+KtEoQHosRPAEMQCrgihLVD4FLPln22/PlO
+	 Qw5UOCA9BGcPzWm60t8LKGAlwIx5x53bZfNkEQFG6Z/nfwtSDXKy9/wqR2Hax5bkol
+	 HC5xNucZL1KdzEYPCFk+xqNit6YLzELIffu6Lh4sCSesoTxJR4Aj3iU1YzAR4bjxh+
+	 fveoxVGtGM825lS5LJn7PVrKJ4xOJeZKtrGhhE+vkyEh2uVY9IpG9v6hKTBWXsNurh
+	 FVHjaAAgqa6XZ0TfH74v2IrV20Dd8TC8F9aoIMxIqlyvsmgOwd/e8zV5aUfIVm0a5c
+	 TGZ8zzAQBNiyw==
+Date: Wed, 9 Oct 2024 09:43:56 +0100
+From: Simon Horman <horms@kernel.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Kalle Valo <kvalo@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH RFC net 1/2] MAINTAINERS: consistently exclude wireless
+ files from NETWORKING [GENERAL]
+Message-ID: <20241009084356.GH99782@kernel.org>
+References: <20241004-maint-net-hdrs-v1-0-41fd555aacc5@kernel.org>
+ <20241004-maint-net-hdrs-v1-1-41fd555aacc5@kernel.org>
+ <87setb7us5.fsf@kernel.org>
+ <20241007141305.GD32733@kernel.org>
+ <87ed4r4xqn.fsf@kernel.org>
+ <a36f0fec7c007031f55e220a0ca585b48630f205.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/11] wifi: ath12k: some fixes and clean up for
- monitor mode
-To: Nicolas Escande <nico.escande@gmail.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20241008073534.1195-1-quic_kangyang@quicinc.com>
- <D4R4RHZM9GWX.2V6MHL6HW9YG3@gmail.com>
-Content-Language: en-US
-From: Kang Yang <quic_kangyang@quicinc.com>
-In-Reply-To: <D4R4RHZM9GWX.2V6MHL6HW9YG3@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: PxBfLCA3YSSheeR7-ZLgWBkXz2o4qQrp
-X-Proofpoint-ORIG-GUID: PxBfLCA3YSSheeR7-ZLgWBkXz2o4qQrp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- lowpriorityscore=0 mlxlogscore=999 malwarescore=0 suspectscore=0
- priorityscore=1501 mlxscore=0 spamscore=0 phishscore=0 clxscore=1011
- bulkscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2409260000 definitions=main-2410090056
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a36f0fec7c007031f55e220a0ca585b48630f205.camel@sipsolutions.net>
 
-
-
-On 10/9/2024 4:25 PM, Nicolas Escande wrote:
-> On Tue Oct 8, 2024 at 9:35 AM CEST, Kang Yang wrote:
->> This patch set does some fixes and clean up for monitor mode.
->>
->> v2: rebase on tag: ath-202410072115.
->>
->> Kang Yang (11):
->>    wifi: ath12k: remove unused variable monitor_present
->>    wifi: ath12k: optimize storage size for struct ath12k
->>    wifi: ath12k: fix struct hal_rx_ppdu_end_user_stats
->>    wifi: ath12k: fix struct hal_rx_ppdu_start
->>    wifi: ath12k: fix struct hal_rx_phyrx_rssi_legacy_info
->>    wifi: ath12k: fix struct hal_rx_mpdu_start
->>    wifi: ath12k: properly handling the state variables of monitor mode
->>    wifi: ath12k: delete NSS and TX power setting for monitor vdev
->>    wifi: ath12k: use tail MSDU to get MSDU information
->>    wifi: ath12k: fix A-MSDU indication in monitor mode
->>    wifi: ath12k: delete mon reap timer
->>
->>   drivers/net/wireless/ath/ath12k/core.c   |   5 ++
->>   drivers/net/wireless/ath/ath12k/core.h   |  23 +++--
->>   drivers/net/wireless/ath/ath12k/dp.c     |  25 ------
->>   drivers/net/wireless/ath/ath12k/dp_mon.c | 108 ++++++++++++-----------
->>   drivers/net/wireless/ath/ath12k/hal_rx.h |  53 ++++++-----
->>   drivers/net/wireless/ath/ath12k/mac.c    |  24 +++--
->>   6 files changed, 114 insertions(+), 124 deletions(-)
->>
->>
->> base-commit: b9545f4570fcfebe982439de7c9106e55b4bf756
+On Mon, Oct 07, 2024 at 08:03:22PM +0200, Johannes Berg wrote:
+> On Mon, 2024-10-07 at 20:41 +0300, Kalle Valo wrote:
+> > Simon Horman <horms@kernel.org> writes:
+> > 
+> > > On Fri, Oct 04, 2024 at 06:27:38PM +0300, Kalle Valo wrote:
+> > > 
+> > > > Simon Horman <horms@kernel.org> writes:
+> > > > 
+> > > > > We already exclude wireless drivers from the netdev@ traffic, to
+> > > > > delegate it to linux-wireless@, and avoid overwhelming netdev@.
+> > > > > 
+> > > > > Many of the following wireless-related sections MAINTAINERS
+> > > > > are already not included in the NETWORKING [GENERAL] section.
+> > > > > For consistency, exclude those that are.
+> > > > > 
+> > > > > * 802.11 (including CFG80211/NL80211)
+> > > > > * MAC80211
+> > > > > * RFKILL
+> > > > > 
+> > > > > Signed-off-by: Simon Horman <horms@kernel.org>
+> > > > > ---
+> > > > >  MAINTAINERS | 11 +++++++++++
+> > > > >  1 file changed, 11 insertions(+)
+> > > > > 
+> > > > > diff --git a/MAINTAINERS b/MAINTAINERS
+> > > > > index c27f3190737f..ea3ea2c0d3fa 100644
+> > > > > --- a/MAINTAINERS
+> > > > > +++ b/MAINTAINERS
+> > > > > @@ -16197,8 +16197,19 @@ F:	lib/random32.c
+> > > > >  F:	net/
+> > > > >  F:	tools/net/
+> > > > >  F:	tools/testing/selftests/net/
+> > > > > +X:	Documentation/networking/mac80211-injection.rst
+> > > > > +X:	Documentation/networking/mac80211_hwsim/
+> > > > > +X:	Documentation/networking/regulatory.rst
+> > > > > +X:	include/net/cfg80211.h
+> > > > > +X:	include/net/ieee80211_radiotap.h
+> > > > > +X:	include/net/iw_handler.h
+> > > > > +X:	include/net/mac80211.h
+> > > > > +X:	include/net/wext.h
+> > > > 
+> > > > Should we add also lib80211.h?
+> > > 
+> > > Thanks, I missed that one. Perhaps it should have:
+> > > 
+> > > * An F: entry in the MAC80211
+> > > * An X: entry in the NETWORKING [GENERAL]
+> > > 
+> > > If so, perhaps I can just add that to a v2 of this patch.
+> > > Let me know what you think.
+> > 
+> > Like Johannes said, the cfg80211 entry is more approriate but otherwise
+> > sounds like a good plan, thanks!
 > 
-> Hello,
-> 
-> Two quick questions there:
->   - If monitor works for wcn7850 shouldn't you set supports_monitor=true in hw.c
->     Or does it still require more work for it work ?
+> Actually scratch that, please just ignore it. I'm going to remove that
+> header file entirely and move the functionality into libipw in the
+> ipw2x00 drivers.
 
-Yes, still have many monitor mode patches. Will set this hw parameter in 
-those patches.
+Thanks,
 
-
->   - This whole series seems to have been tested only with wcn7850 and not qcn9274
->     Is it still not supported on qcn9274 ?
-
-Actually, this is classic monitor mode for wcn7850, not sure whether 
-qcn9274 supports it(I think theoretically it is supported).
-As far as I know, they are using full monitor mode.
-
-> 
-> Thanks
-
+In that case I'll post a v2 without any code changes.
+Rather, bumping it to non-RFC and accumulating tags.
 
