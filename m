@@ -1,233 +1,158 @@
-Return-Path: <linux-wireless+bounces-13812-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13813-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FE35996C31
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 15:35:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01AED996CA2
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 15:49:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 145651F22F10
-	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 13:35:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33875B21A7D
+	for <lists+linux-wireless@lfdr.de>; Wed,  9 Oct 2024 13:49:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ECC21991A4;
-	Wed,  9 Oct 2024 13:34:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U3neOl0y"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0293C199396;
+	Wed,  9 Oct 2024 13:48:30 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD05190462;
-	Wed,  9 Oct 2024 13:34:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE72199E9F
+	for <linux-wireless@vger.kernel.org>; Wed,  9 Oct 2024 13:48:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.69
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728480888; cv=none; b=Z2eINOjI2aU0YxCsNUnHslmhYJbTngidl5avMIkzs7Y4ZR2kvfrbfg3SosxuqFTy+hrw5t5evGGiy7YHEF4LcOQABqP/4igYSp/nSktmr737eDlcAiiTKidlUtZj7S6qrjt0uguK0XdAy3PbKLWtaaBDeRCc7hrcwAu84OaOaJg=
+	t=1728481709; cv=none; b=VUeYP8/OA/2PROZOp9HesbP4IB/KNOMxwFMJHdOIeSQmkJfoC3cYVuP/jsU9DeUmBKhZzQi0WadlHOXBw4SLwDjBznGJZYHLRo6ffHIrjsL5uRZCjkRWUqNWG5bM6g/A/cWMMbJBOFgajGBXCLCbw/mrPnDW2GGQp/bGw/S/xtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728480888; c=relaxed/simple;
-	bh=e0gqHlZkDT5WvXlJLxiiH51AUvpJH6OopoCW36UMFTI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hRFVrw3eJcJ+dnhgjvlteKcJ+U4Z1OnxblcpdTkdy4P/MU8bphu3ut4yYISToG0gUycyRkYpms1KC8BtRN8fWn1rELh0RxCCLxV0rNqaSnNgMqafDolaNrdIlBU+mUTVEkFRsYIC24MJeSxGuMO3tnJ0thcnkvKLH+D6wfJZbNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U3neOl0y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45939C4CEC5;
-	Wed,  9 Oct 2024 13:34:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728480886;
-	bh=e0gqHlZkDT5WvXlJLxiiH51AUvpJH6OopoCW36UMFTI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=U3neOl0ybb4Ab65jgWhp3xT7HcEy4YMuUgGV+fe0qorbYgOtJiVf4vdBC8aSbF+zk
-	 VaSzmlKJr1Td+ZlEfUnqPwPvP3ItSIxZE3mhiSqTU0Y+ILn1z2LAcj5l0mNd964u9E
-	 IJiiL6vn/nZ84NJqFn6bT+eDEGpN/zUWDJjiTS1Nw44OfqVQU1G+/BklpTTM5qjnQt
-	 qFWcWXBTn592t1uwoUFl7fAOhoRDLvjep0N3/TGk+zJy9Qodx9ZM9pOn4mlQ+m1tjB
-	 +zz3ljVHlk8StJ6aovxl3cW8GcQDcp3o2MYDG6IpoR0lwS4CMa0F2Pi7cYkeI0mOAq
-	 BM9t8zEhFY8Sg==
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5e7ae4c504fso3516272eaf.1;
-        Wed, 09 Oct 2024 06:34:46 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUCYBHtap9eFCW3ArtkPXaJnLn5ePbzRMLF94mTPKDCWvHZaXlO+efrZQ9WoBsAW0rGiCPuWUm/2hvW@vger.kernel.org, AJvYcCUJRLIt8++Asms4Z6YFGduZz8EUvaosy8ELAKdBk+YukWLoGYsCrAtZdLTQc+ePCbKPuLAKP+Q6Zddn@vger.kernel.org, AJvYcCUkPQvB1cQEd6oDHYzl+hw0cOlWz0zA32hTDm3HcGJ0BcYfiF6olPe/8ROtsL9QjfHFIUclxOMX4k1jzLI=@vger.kernel.org, AJvYcCV+aUdQXyBHAQNGH+brWQcmtteeQij7cC3p3WZpGRHm3y8ytXsWqv2rTFgdcJi1SvgsXPm7fj8AfpEI@vger.kernel.org, AJvYcCV/SF2Y8hgvSLREEQc3GPe+mhTti6rVXDdkPnBHdVtfBymF2iS04KGUf2U50I8yY3ugTXfAhBjz8ZxFAfPC@vger.kernel.org, AJvYcCVAYbdllUvcFJHe9+OctVfnyiD1tBGVy8aMJw1USr80rTMmRyHUt2uwlClssBFzEacOJTeSmY3ufPkZ@vger.kernel.org, AJvYcCVx0ILIb2bqJQwGWfceTiTswMWA7qkQBF3IDNK3Y++9GLJQKODRq+kbM8nNuT3GzDjMDDmj/exrfiLmHWxbyWvT@vger.kernel.org, AJvYcCW1arAhCLgfrrrpmNH8RanrE0gw8qbtN97USny55mxxStVROHs0OMiv6MGpBFbXIhOH4kvdsi6qRNOpsrI=@vger.kernel.org, AJvYcCW4uK4pp/SfwHOf8uV1KoMQH4aO0RVtfqyJg//wiE9xXy+VP3lt2iakoAfe5+Nj0B50bs1nkwoVfdhVIPr1ZtZ2kA==@vger.kernel.org, AJvYcCWMWHrYPU+Wj7NG
- TB2viIz++k/HlsVtqdh7QGTchZSaPcS9eruc6QMo5nmbhl/3j4x7rYQhz199pS5H@vger.kernel.org, AJvYcCWY1lWuqm50sh0wqMQMb+jDeJM+5Al6i42vWPqEiagWwABWr8vmt3d3vq9HKLiTtUNmtX7dEwefsI4=@vger.kernel.org, AJvYcCX3/WApf0RVgTI4rS7fgqUNzwuIRFSnJi0/x3ucVs2nDFYdO2MIrbZYThNNCwEGBOpzAwTK0EbU87Eo@vger.kernel.org, AJvYcCX9EDj4AyeWl5BKC2QlKRGaDYJzv0/hphzvGEfgGlK8Dpcf+46uKBu63g5b0eYIqHhJd6cXfC33@vger.kernel.org, AJvYcCXIB0DquxdKTLyab8yODrwn6Tlh9jjDfSHjxtm9fuMqtD1tpa4wuK65HOYAzXtvvY6TZZau8tiIIz0r/nqHVhc=@vger.kernel.org, AJvYcCXKRq6frWMsrT1XWrvf13RSumJym9g1pd6E8CgisgVautUqJ+mNDLK6my7dU/DRGFhJWvGkjqjJqiDZGFyN@vger.kernel.org, AJvYcCXPLfXcgojrQWn5dzzgPtuZpIGeyk1TBqBpQmBuBV0mwNY8kpNEJ2UCQpLUiUGQ4SwS5+Lz9dHRkffSsg==@vger.kernel.org, AJvYcCXTR+XrB33gvXCC3gkxiLVco9iP2hjj9cKBXmn5FUgvCC43QOGCsSe5OwDUYDubrm3Bj/Wf4fb5KGRj@vger.kernel.org, AJvYcCXchzfBXIXTdWLD8grIaI7Y7jNnWL6rqNLCCErTzbGLYjzIfQamfIqB4MzX1OhILl0fcvzQfiKQwZCq@vger.kernel.org, AJvYcCXsg22ML+HaZwTtG/y6l6UZNcCgdKEpRV1K6j8zuoK+E0qBh2l9gn6y5ubGXUrnxRpAzQaatusnfW3eUYm
- W@vger.kernel.org, AJvYcCXtXbSqnrF9IfHakH1CLfhw7uDd/khZ9tDC/RwUkUFRD6vTCBh1T2V5L56FXtzBEt3F9UABgnX7rnsRaLY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyi/Hxvnc7e8NrjIW5/GnwKMx7fVvoVB1d02sUfbqGECs4pEIz/
-	0eY293poLJic+qEAqL8Bod+C1gJLSEuI/VrqBUE4KJxWyf9eWEIbXEm0Zrtg6kTZcTN0xPq9OGG
-	2f1HTVEYCyeoz/zOiJzRTuo8BNxI=
-X-Google-Smtp-Source: AGHT+IGPvjQmX3zbZk+/LQ5kxG4XslEJ8m7y5iETpKVOpmsBmOdZ4tET2kRXnqT/piSrFy5yYrBa2CfwSNatwWXgz3s=
-X-Received: by 2002:a05:6820:270f:b0:5e5:c489:6f3c with SMTP id
- 006d021491bc7-5e987bc9df9mr1249377eaf.5.1728480885551; Wed, 09 Oct 2024
- 06:34:45 -0700 (PDT)
+	s=arc-20240116; t=1728481709; c=relaxed/simple;
+	bh=sqyEKgaEIHBixzMZSz6UpRg/Re7a8fMiFsRaftKTxRc=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=HJIuZ3RFDNT7ICNPTzU5qpinfCmu/8+Da48itrC2Po5K+TyzgLqDI+QMdjHc4N2q7hLagEByw2C2dnBLPWb6TEPtj1lNLBk9T1hUevXqWMhPB5MlC58gL1LTpbQJzxpKjs7APAOfWP8I/pYoju9MWleX5hz9syiTOXTQWwWLbkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-83542775244so37008139f.0
+        for <linux-wireless@vger.kernel.org>; Wed, 09 Oct 2024 06:48:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728481705; x=1729086505;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UBH+agA01deK2EnfnEgoMg09FaDLd24PoeelaCAABlk=;
+        b=WBUHPlbkx2X0mqUz53lHlFP28xyPFJCgtL6yi1MZcQDkS1hD5GLf9w1gV6+5BlWJBk
+         oZdwHPqZHny9kV9a4h5TusZ6xsUG+SDPeSYuM9RGtKTlDW+4SFsLiNrDpKVTSW2tRjGL
+         Qtbvxjywp/B6d1AN6eglhzTZ3aE2gW4sgEJcO6iYN3MliyeFbp4cPW0qT+YE6pQBH554
+         O3AjUPovJn78JXZ0ijAt/7SjTrE0WxklsYg9cIJ2VX/Yza2o/4taXIP0KQExaG/zkOCP
+         RvkN2Pq62FqO1K7VnTMe5byecrbx2IQyB+qZNSESIofYLmFzl5XnZg8yy8JNhzC4NM3O
+         c2nQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWrTpkJoGpdNvv96t6vuZ8Eje6kQDVXv08ffyeg0BfO9DVVCYyFiMqFSKTy1UuX44jd2IrzBNF7AgnnQYzCqQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6aznCiQkQrwStZ53cLl8yTY/bLjiPt31ruGmkmWlHKzOH44dm
+	m3T7VxSorSdSQjtz8wO+GFra46tPho9CFlT7dC0XRkXiPYp5w38axRvr3M7cGIPR3toPUYshPIj
+	rDcsBoQQwVGB35Zfom1IVBkSDWR6SA97y6qFkMOo/1WojCt2U1ajxMv8=
+X-Google-Smtp-Source: AGHT+IHnMe5lc2Q03NLolZQmZ+SxAAXJagk4vihG3rU3/wbu5RXvNTAzmQuKlUs/gwZxmfyCClVkU8aNs0eqlhPt59da4so5AqSR
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241004094101.113349-1-sakari.ailus@linux.intel.com>
- <CAPDyKFp0N6UJhnHS164Tdf=xkWB0jzq65L9TdvYazeBQ-6WjeQ@mail.gmail.com>
- <20241007184924.GH14766@pendragon.ideasonboard.com> <CAPDyKFpQVnF7eQv3dup8k-3EijnMjuveCG9sZ=Rpey1Y6MBJEg@mail.gmail.com>
- <20241007222502.GG30699@pendragon.ideasonboard.com> <CAPDyKFrGNwna6Y2pqSRaBbRYHKRaD2ayqQHLtoqLPOu9Et7qTg@mail.gmail.com>
- <CAJZ5v0jvJyS7D5-wURi2kyWN-rmNa+YqupeQJ000pQRVd9VBcQ@mail.gmail.com> <41a0ad69-912b-4eb3-84f7-fb385433c056@opensource.cirrus.com>
-In-Reply-To: <41a0ad69-912b-4eb3-84f7-fb385433c056@opensource.cirrus.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 9 Oct 2024 15:34:33 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0gbrhMpPT0fHYSC+ES5WS5kv7XkM2hj9M4vpNwFFs6xsQ@mail.gmail.com>
-Message-ID: <CAJZ5v0gbrhMpPT0fHYSC+ES5WS5kv7XkM2hj9M4vpNwFFs6xsQ@mail.gmail.com>
-Subject: Re: [PATCH 00/51] treewide: Switch to __pm_runtime_put_autosuspend()
-To: Richard Fitzgerald <rf@opensource.cirrus.com>, Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc: Ulf Hansson <ulf.hansson@linaro.org>, 
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, dri-devel@lists.freedesktop.org, 
-	linux-kernel@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
-	linux-clk@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	dmaengine@vger.kernel.org, linux-gpio@vger.kernel.org, 
-	amd-gfx@lists.freedesktop.org, nouveau@lists.freedesktop.org, 
-	linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org, 
-	linux-i3c@lists.infradead.org, linux-iio@vger.kernel.org, 
-	linux-input@vger.kernel.org, patches@opensource.cirrus.com, 
-	iommu@lists.linux.dev, imx@lists.linux.dev, 
-	linux-mediatek@lists.infradead.org, linux-media@vger.kernel.org, 
-	linux-mmc@vger.kernel.org, linux-mtd@lists.infradead.org, 
-	netdev@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	linux-pci@vger.kernel.org, linux-phy@lists.infradead.org, 
-	linux-pwm@vger.kernel.org, linux-remoteproc@vger.kernel.org, 
-	linux-sound@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-staging@lists.linux.dev, linux-usb@vger.kernel.org, 
-	linux-serial@vger.kernel.org, greybus-dev@lists.linaro.org, 
-	asahi@lists.linux.dev, Andy Shevchenko <andy.shevchenko@gmail.com>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+X-Received: by 2002:a05:6e02:1548:b0:3a1:a2b4:6665 with SMTP id
+ e9e14a558f8ab-3a397546271mr23260295ab.12.1728481705316; Wed, 09 Oct 2024
+ 06:48:25 -0700 (PDT)
+Date: Wed, 09 Oct 2024 06:48:25 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <670689a9.050a0220.67064.0047.GAE@google.com>
+Subject: [syzbot] [wireless?] WARNING in ieee80211_tx_monitor
+From: syzbot <syzbot+26bc0430f38b1093a293@syzkaller.appspotmail.com>
+To: davem@davemloft.net, edumazet@google.com, johannes@sipsolutions.net, 
+	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 9, 2024 at 2:48=E2=80=AFPM Richard Fitzgerald
-<rf@opensource.cirrus.com> wrote:
->
-> On 08/10/2024 7:24 pm, Rafael J. Wysocki wrote:
-> > On Tue, Oct 8, 2024 at 12:35=E2=80=AFAM Ulf Hansson <ulf.hansson@linaro=
-.org> wrote:
-> >>
-> >> On Tue, 8 Oct 2024 at 00:25, Laurent Pinchart
-> >> <laurent.pinchart@ideasonboard.com> wrote:
-> >>>
-> >>> Hi Ulf,
-> >>>
-> >>> On Tue, Oct 08, 2024 at 12:08:24AM +0200, Ulf Hansson wrote:
-> >>>> On Mon, 7 Oct 2024 at 20:49, Laurent Pinchart wrote:
-> >>>>> On Fri, Oct 04, 2024 at 04:38:36PM +0200, Ulf Hansson wrote:
-> >>>>>> On Fri, 4 Oct 2024 at 11:41, Sakari Ailus wrote:
-> >>>>>>>
-> >>>>>>> Hello everyone,
-> >>>>>>>
-> >>>>>>> This set will switch the users of pm_runtime_put_autosuspend() to
-> >>>>>>> __pm_runtime_put_autosuspend() while the former will soon be re-p=
-urposed
-> >>>>>>> to include a call to pm_runtime_mark_last_busy(). The two are alm=
-ost
-> >>>>>>> always used together, apart from bugs which are likely common. Go=
-ing
-> >>>>>>> forward, most new users should be using pm_runtime_put_autosuspen=
-d().
-> >>>>>>>
-> >>>>>>> Once this conversion is done and pm_runtime_put_autosuspend() re-=
-purposed,
-> >>>>>>> I'll post another set to merge the calls to __pm_runtime_put_auto=
-suspend()
-> >>>>>>> and pm_runtime_mark_last_busy().
-> >>>>>>
-> >>>>>> That sounds like it could cause a lot of churns.
-> >>>>>>
-> >>>>>> Why not add a new helper function that does the
-> >>>>>> pm_runtime_put_autosuspend() and the pm_runtime_mark_last_busy()
-> >>>>>> things? Then we can start moving users over to this new interface,
-> >>>>>> rather than having this intermediate step?
-> >>>>>
-> >>>>> I think the API would be nicer if we used the shortest and simplest
-> >>>>> function names for the most common use cases. Following
-> >>>>> pm_runtime_put_autosuspend() with pm_runtime_mark_last_busy() is th=
-at
-> >>>>> most common use case. That's why I like Sakari's approach of repurp=
-osing
-> >>>>> pm_runtime_put_autosuspend(), and introducing
-> >>>>> __pm_runtime_put_autosuspend() for the odd cases where
-> >>>>> pm_runtime_mark_last_busy() shouldn't be called.
-> >>>>
-> >>>> Okay, so the reason for this approach is because we couldn't find a
-> >>>> short and descriptive name that could be used in favor of
-> >>>> pm_runtime_put_autosuspend(). Let me throw some ideas at it and mayb=
-e
-> >>>> you like it - or not. :-)
-> >>>
-> >>> I like the idea at least :-)
-> >>>
-> >>>> I don't know what options you guys discussed, but to me the entire
-> >>>> "autosuspend"-suffix isn't really that necessary in my opinion. Ther=
-e
-> >>>> are more ways than calling pm_runtime_put_autosuspend() that trigger=
-s
-> >>>> us to use the RPM_AUTO flag for rpm_suspend(). For example, just
-> >>>> calling pm_runtime_put() has the similar effect.
-> >>>
-> >>> To be honest, I'm lost there. pm_runtime_put() calls
-> >>> __pm_runtime_idle(RPM_GET_PUT | RPM_ASYNC), while
-> >>> pm_runtime_put_autosuspend() calls __pm_runtime_suspend(RPM_GET_PUT |
-> >>> RPM_ASYNC | RPM_AUTO).
-> >>
-> >> __pm_runtime_idle() ends up calling rpm_idle(), which may call
-> >> rpm_suspend() - if it succeeds to idle the device. In that case, it
-> >> tags on the RPM_AUTO flag in the call to rpm_suspend(). Quite similar
-> >> to what is happening when calling pm_runtime_put_autosuspend().
-> >
-> > Right.
-> >
-> > For almost everybody, except for a small bunch of drivers that
-> > actually have a .runtime_idle() callback, pm_runtime_put() is
-> > literally equivalent to pm_runtime_put_autosuspend().
-> >
-> > So really the question is why anyone who doesn't provide a
-> > .runtime_idle() callback bothers with using this special
-> > pm_runtime_put_autosuspend() thing,
->
-> Because they are following the documentation? It says:
->
-> "Drivers should call pm_runtime_mark_last_busy() to update this field
-> after carrying out I/O, typically just before calling
-> pm_runtime_put_autosuspend()."
->
-> and
->
-> "In order to use autosuspend, subsystems or drivers must call
-> pm_runtime_use_autosuspend() (...), and thereafter they should use the
-> various `*_autosuspend()` helper functions instead of the non#
-> autosuspend counterparts"
->
-> So the documentation says I should be using pm_runtime_put_autosuspend()
-> instead of pm_runtime_put().
->
-> Seems unfair to criticise people for following the documentation.
+Hello,
 
-I'm not criticising anyone, just wondering why they do what they do.
+syzbot found the following issue on:
 
-"Because it is documented this way" is a fair answer, but it doesn't
-invalidate the observation that the difference between
-pm_runtime_put_autosuspend() and pm_runtime_put() boils down to the
-cases when the .runtime_idle() callback is present (which are few and
-far between so to speak).  Moreover, there are call sites using
-pm_runtime_*() functions even though they may not know whether or not
-autosuspend is enabled for the target devices, so the advice given in
-the documentation cannot be universally followed regardless.
+HEAD commit:    87d6aab2389e Merge tag 'for_linus' of git://git.kernel.org..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=17dd3b80580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=fb6ea01107fa96bd
+dashboard link: https://syzkaller.appspot.com/bug?extid=26bc0430f38b1093a293
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
 
-This thread is about the way to go, generally speaking, and what I'm
-saying is effectively that replacing pm_runtime_put_autosuspend() with
-pm_runtime_put() almost everywhere (if not just everywhere) would be
-fine with me.
+Unfortunately, I don't have any reproducer for this issue yet.
 
-I also think that the current users of pm_runtime_put_autosuspend()
-that is not immediately preceded by pm_runtime_mark_last_busy() can be
-readily switched over to using pm_runtime_put() instead of it and then
-pm_runtime_put_autosuspend() can be made call
-pm_runtime_mark_last_busy(), so the latter can be removed from the
-code using the former.  Note that this last step does not require
-tree-wide changes, because calling pm_runtime_mark_last_busy() twice
-in a row for the same device is not a problem.
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7feb34a89c2a/non_bootable_disk-87d6aab2.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/7a670c730bf1/vmlinux-87d6aab2.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/069744babdba/bzImage-87d6aab2.xz
 
-Of course, the documentation needs to be updated in accordance with
-the code changes, which didn't happen when previous changes were made
-to pm_runtime_put() and that likely is why it does not reflect the
-current code.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+26bc0430f38b1093a293@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 1113 at net/mac80211/status.c:909 ieee80211_tx_monitor+0x202a/0x2520 net/mac80211/status.c:909
+Modules linked in:
+CPU: 0 UID: 0 PID: 1113 Comm: kworker/u32:9 Not tainted 6.12.0-rc2-syzkaller-00006-g87d6aab2389e #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Workqueue: events_unbound macvlan_process_broadcast
+RIP: 0010:ieee80211_tx_monitor+0x202a/0x2520 net/mac80211/status.c:909
+Code: 0f 9e c2 84 c0 0f 95 c0 84 c2 0f 84 a0 eb ff ff 48 8b 7c 24 18 be 02 00 00 00 e8 51 50 66 f7 e9 8c eb ff ff e8 d7 d9 04 f7 90 <0f> 0b 90 48 c7 c7 00 cf be 8c e8 97 8c e4 f6 4c 89 ff e8 1f 8c 6b
+RSP: 0018:ffffc90000007c70 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 000000000000000d RCX: ffffffff8a8893e0
+RDX: ffff888026828000 RSI: ffffffff8a88a779 RDI: 0000000000000004
+RBP: ffffc90000007e00 R08: 0000000000000004 R09: 0000000000000000
+R10: 000000000000000d R11: 0000000000000000 R12: 000000000000000d
+R13: 0000000000000000 R14: 0000000000000000 R15: ffff88804f976140
+FS:  0000000000000000(0000) GS:ffff88806a600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000001b2e219ff8 CR3: 000000004f2e2000 CR4: 0000000000352ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <IRQ>
+ __ieee80211_tx_status net/mac80211/status.c:1111 [inline]
+ ieee80211_tx_status_ext+0x1b13/0x2ca0 net/mac80211/status.c:1233
+ ieee80211_tx_status_skb+0x133/0x2d0 net/mac80211/status.c:1131
+ ieee80211_handle_queued_frames+0xf1/0x130 net/mac80211/main.c:443
+ tasklet_action_common+0x24c/0x3e0 kernel/softirq.c:784
+ handle_softirqs+0x213/0x8f0 kernel/softirq.c:554
+ do_softirq kernel/softirq.c:455 [inline]
+ do_softirq+0xb2/0xf0 kernel/softirq.c:442
+ </IRQ>
+ <TASK>
+ __local_bh_enable_ip+0x100/0x120 kernel/softirq.c:382
+ local_bh_enable include/linux/bottom_half.h:33 [inline]
+ netif_rx net/core/dev.c:5251 [inline]
+ netif_rx+0x93/0xb0 net/core/dev.c:5240
+ macvlan_broadcast+0x37d/0x680 drivers/net/macvlan.c:290
+ macvlan_multicast_rx drivers/net/macvlan.c:302 [inline]
+ macvlan_multicast_rx+0xd6/0x100 drivers/net/macvlan.c:296
+ macvlan_process_broadcast+0x225/0x690 drivers/net/macvlan.c:338
+ process_one_work+0x9c5/0x1ba0 kernel/workqueue.c:3229
+ process_scheduled_works kernel/workqueue.c:3310 [inline]
+ worker_thread+0x6c8/0xf00 kernel/workqueue.c:3391
+ kthread+0x2c1/0x3a0 kernel/kthread.c:389
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
