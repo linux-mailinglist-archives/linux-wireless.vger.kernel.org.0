@@ -1,69 +1,73 @@
-Return-Path: <linux-wireless+bounces-13842-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13843-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38173998465
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2024 13:05:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3C0A998466
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2024 13:05:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DDFBD1F212A8
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2024 11:05:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F774B2405E
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2024 11:05:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A9861C2327;
-	Thu, 10 Oct 2024 11:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B9FD1BFE12;
+	Thu, 10 Oct 2024 11:05:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JnJfK529"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VexkbusC"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468841BFE12
-	for <linux-wireless@vger.kernel.org>; Thu, 10 Oct 2024 11:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EBB1C231C
+	for <linux-wireless@vger.kernel.org>; Thu, 10 Oct 2024 11:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728558324; cv=none; b=afkSloNUuw4n/Ya8noAZL0PF833NDvb1fmoFnCVq5Hp4sLybbT/UOXPUKVT9bhzE9wqQ6oKh6CChK6uqwmTVYKKlijkurAeiDk0CWTCva1/xnZ8rlR0iOK3p1qyxVCMXGmh0EDWbb3A64/VJCx3uSgEjP0grsS7qzDJ6U73VhZ8=
+	t=1728558325; cv=none; b=Mh0yCsMHOwXhETQVjAD5ElKibCNMEx+XGBClDR/SD1cL3UHyPQTJm9gqF4vYC2lNQPh3OyL5yFMbPGlY2ch7JOvzo0B4vzfR9wB8XM68HDFZ0+6HUpBCQrJmpRGOr6lVwrVoIn0MNEz/FDRfCn7mlBOBwC06q9arlbJTMg8sL74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728558324; c=relaxed/simple;
-	bh=5thz95aXwLQjhkuul7TBnGA1Nce+q+xED8Aq4bUeLcA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=f0aFHmxsG1XOhictEt9UuZ6u8aLIiWG/kLRgDMACQjrHb8LQ+7Tv3YPHmFMiJZzfvEMuZVPiGru26erC8GCKQyvlVBZQWey53+hDsOk7Ng10GjLXsqbzH33FsFZ96fL77Dffmoy6R95lqco6yGtodPknz+B0Y8a7zNegLAmYWMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JnJfK529; arc=none smtp.client-ip=198.175.65.14
+	s=arc-20240116; t=1728558325; c=relaxed/simple;
+	bh=QddeRWLzD8HQ5IBiB2I/uU8aSMk3RfqHBRfozV/feb8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=PcS6nYFpmhHnD0zeGdzomZauncCm88p7vXCQndhAkDkq0a2FEyKsBPN4EIlyQEOApNWpqPWeYHQZ2K2R+kqanT3PJzLHgx0G+OfqQEUfCeGPZMSuFyEmed3J1wDExVFuUpCmtJUDSfYco19/FR5WZByxog44Qe4cHtX2ny/MAV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VexkbusC; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728558322; x=1760094322;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=5thz95aXwLQjhkuul7TBnGA1Nce+q+xED8Aq4bUeLcA=;
-  b=JnJfK529cWcZkcsRIfp7PWvRDTjtlWVNCjeZxpJ9azeoGF3mU9sfkG3p
-   loCiMpTqR48tRhNslwkfalVChdz+Og+ywZd64hJK10vV7MZ4NqpawGAVd
-   0p7/fSsPBAFE04F45kiJrl12JTNHqPN1cP8d0v+3OpPhb+eUOMURz1D+2
-   iWt77KCIg1LBuZKXNXOJLFhMtv+jCvx3RERejRhYHEjngk7nmnNmVVURl
-   rpMwAJMs2Bh4TT0P1B5Ph9w42WrNCk8r8XKWzJyPIIf6FyS/WJgZVffge
-   KFVSrGhXbQMfnh18FpL+LXQJFJLX1AIDqd6z/AqKLPR+7aFPrPsHv0DGL
-   w==;
-X-CSE-ConnectionGUID: zGrO5JnTSKGpCiKwrcewFw==
-X-CSE-MsgGUID: +dMKl4HaTZ6RNDl+SNYKyw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="31697725"
+  t=1728558323; x=1760094323;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=QddeRWLzD8HQ5IBiB2I/uU8aSMk3RfqHBRfozV/feb8=;
+  b=VexkbusCFVxa8FG49xUgwdi7o3zRAgsQ6ErMz0shkxaz3VHI9P5++UIb
+   Y6+9/xJPuzuHdf6AFJZAqzshUoehAJg1pjWEIqGnfBGLx6U4R0PWcYalx
+   rxGGCCeBlAFaep29rXVSJAVNuutQx+ukUTHfnd79QKZBo4gYGb5nP41gY
+   kiK+NmnpF4E0axX0JA4mo1H+CK3zGObdf+eFVdQzGeorAow7PvXtIJQ5z
+   q7OKSevYKvk4NFBO0lx/Ozrc86v3DH2A+kZ7Qslm+FQEXgctruVU3b5Pn
+   xe4NdJgcWV9RwWzVIOMUiHQgGOarRrtoArr/3uvHC1vv3hReTCNjLUktO
+   A==;
+X-CSE-ConnectionGUID: Iur+lw+9SVuY33Th7u+qww==
+X-CSE-MsgGUID: 17CNewB1TXKXFoadFe7okQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="31697728"
 X-IronPort-AV: E=Sophos;i="6.11,192,1725346800"; 
-   d="scan'208";a="31697725"
+   d="scan'208";a="31697728"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 04:05:21 -0700
-X-CSE-ConnectionGUID: V2uTGbfVQYuFVVXaNQWf/w==
-X-CSE-MsgGUID: 95q/PpLERfu7dllOcJ3xZw==
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 04:05:23 -0700
+X-CSE-ConnectionGUID: WT9hinVMSq+4CLJ4YkJByA==
+X-CSE-MsgGUID: xoDeVWLDSXmgop6opirWBw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,192,1725346800"; 
-   d="scan'208";a="81362296"
+   d="scan'208";a="81362307"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 04:05:21 -0700
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 04:05:22 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 0/9] [wireless] iwlwifi bugfixes - 10-10-2024
-Date: Thu, 10 Oct 2024 14:04:58 +0300
-Message-Id: <20241010110507.1006209-1-miriam.rachel.korenblit@intel.com>
+Cc: linux-wireless@vger.kernel.org,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Subject: [PATCH 1/9] wifi: iwlwifi: mvm: don't leak a link on AP removal
+Date: Thu, 10 Oct 2024 14:04:59 +0300
+Message-Id: <20241010140328.c54c42779882.Ied79e0d6244dc5a372e8b6ffa8ee9c6e1379ec1d@changeid>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241010110507.1006209-1-miriam.rachel.korenblit@intel.com>
+References: <20241010110507.1006209-1-miriam.rachel.korenblit@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -73,42 +77,40 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-A few bugfixes from our internal tree.
+Release the link mapping resource in AP removal. This impacted devices
+that do not support the MLD API (9260 and down).
+On those devices, we couldn't start the AP again after the AP has been
+already started and stopped.
 
-Thanks,
-Miri
+Fixes: a8b5d4809b50 ("wifi: iwlwifi: mvm: Configure the link mapping for non-MLD FW")
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Anjaneyulu (1):
-  wifi: iwlwifi: mvm: SAR table alignment
-
-Daniel Gabay (2):
-  wifi: iwlwifi: mvm: Use the sync timepoint API in suspend
-  wifi: iwlwifi: mvm: Fix response handling in iwl_mvm_send_recovery_cmd()
-
-Emmanuel Grumbach (4):
-  wifi: iwlwifi: mvm: don't leak a link on AP removal
-  wifi: iwlwifi: allow fast resume on ax200
-  wifi: iwlwifi: mvm: don't add default link in fw restart flow
-  wifi: iwlwifi: mvm: tell iwlmei when we finished suspending
-
-Johannes Berg (1):
-  wifi: iwlwifi: mvm: remove STARTING state
-
-Miri Korenblit (1):
-  wifi: iwlwifi: mvm: really send iwl_txpower_constraints_cmd
-
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c  | 96 +++++++++++--------
- drivers/net/wireless/intel/iwlwifi/fw/init.c  |  4 +-
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c   |  2 +
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c   | 10 +-
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 23 ++---
- .../wireless/intel/iwlwifi/mvm/mld-mac80211.c | 34 ++++---
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  3 -
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |  3 -
- 8 files changed, 97 insertions(+), 78 deletions(-)
-
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index a327893c6dce..39b815904501 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -1970,7 +1970,6 @@ static void iwl_mvm_mac_remove_interface(struct ieee80211_hw *hw,
+ 		mvm->p2p_device_vif = NULL;
+ 	}
+ 
+-	iwl_mvm_unset_link_mapping(mvm, vif, &vif->bss_conf);
+ 	iwl_mvm_mac_ctxt_remove(mvm, vif);
+ 
+ 	RCU_INIT_POINTER(mvm->vif_id_to_mac[mvmvif->id], NULL);
+@@ -1979,6 +1978,7 @@ static void iwl_mvm_mac_remove_interface(struct ieee80211_hw *hw,
+ 		mvm->monitor_on = false;
+ 
+ out:
++	iwl_mvm_unset_link_mapping(mvm, vif, &vif->bss_conf);
+ 	if (vif->type == NL80211_IFTYPE_AP ||
+ 	    vif->type == NL80211_IFTYPE_ADHOC) {
+ 		iwl_mvm_dealloc_int_sta(mvm, &mvmvif->deflink.mcast_sta);
 -- 
 2.34.1
 
