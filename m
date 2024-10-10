@@ -1,210 +1,273 @@
-Return-Path: <linux-wireless+bounces-13829-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13830-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 424C99979F7
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2024 03:06:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E08C5997BDE
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2024 06:37:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3027284896
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2024 01:06:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CBF71C2252A
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2024 04:37:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8C4921105;
-	Thu, 10 Oct 2024 01:06:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2690619D89B;
+	Thu, 10 Oct 2024 04:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="T9K67kiU"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="therNLnn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2056.outbound.protection.outlook.com [40.107.220.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49621C2E9
-	for <linux-wireless@vger.kernel.org>; Thu, 10 Oct 2024 01:06:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728522393; cv=none; b=e+cqAC942VqNJRi3eSCr9xzRgrGfgRGycVTbcJHTVtEkltaOhZZnWpbl4mRHFswo8M99NXUeke35Xzl2MauuBj/2jJ+Uuh7WhMW7IDbqzH3Wrj8xKw72sef8PzJa3CDdbPaYJgvsjaPJgLYpc7m0ZsETIjoOnKmgWXHkhEcbFN8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728522393; c=relaxed/simple;
-	bh=seF9MRFwj/lp33VXjon+HZto+aeAaArbaD5jDbXLBPo=;
-	h=From:To:Subject:MIME-Version:Content-Type:Message-ID:Date; b=jUZcqzx+3Qb1lbB4RMNwcDJsBOAeXqpaysojzLbWGxlkHnjj95acAY5k3ohuongR1r/a+zDwmZeZAc11geET7CnibJbzGB2dlrpUzkaRUISk0AJsROXVWFCy9NJBgsqYHydYYRR126dpThWN+x5WBzJ6rBt6rJKbWzXB4r5dRBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=T9K67kiU; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 49A16S5e81586044, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1728522388; bh=seF9MRFwj/lp33VXjon+HZto+aeAaArbaD5jDbXLBPo=;
-	h=From:To:Subject:MIME-Version:Content-Type:Message-ID:Date;
-	b=T9K67kiU9D4SCKyPvM+W03UaGIYNMUxSjWnmXijmVYL6a9jIcw4LzAz0UzEbd5+pp
-	 jSnLkoasgxKg0qMMSXal1GHDzMO2kusFt7iF5vxjWDDJldeFIVbNlQ5QnYRJfhuZpz
-	 k3NvKMZZpoNvcDCuV5oxCzLGxbgLoz1sA6xu8fUvcMjxbn6L/QYJ3HZjCacXLyIvXF
-	 IrPd/sRKTB4hhTHxg5S8rdiveZmM2fkVlSvjp6Op+wD/YhCJLQ+VmK86mNZTLf8KL9
-	 X7Qmvcm8kcyfnR/NQRJjOwewNKqjyDiU3JmD465Yd4uErEd02IIycLvXIacTEprNvG
-	 5J4LYjqvPWqmQ==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 49A16S5e81586044
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Thu, 10 Oct 2024 09:06:28 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 10 Oct 2024 09:06:29 +0800
-Received: from [127.0.1.1] (172.16.17.99) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 10 Oct
- 2024 09:06:28 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-Subject: pull-request: rtw-next-2024-10-10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37FE3321D;
+	Thu, 10 Oct 2024 04:37:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.56
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1728535068; cv=fail; b=NhYyc6gWPCUbkiDUQHmTcEfOC3DiyS8N0wzUk3O6jJLRYi53kAdhr6fJZSiKLCKAzE6LwYTJ2qBZaq2EfixlvXoa9Q7xl/EimXZqkDVuFXNAVMalUGeJcJccG/mR2GcBj5/57C0qDKxHZH9iRFuwEEIbk5L0HnZHZdKe6LH3qTs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1728535068; c=relaxed/simple;
+	bh=2Ju2iA5LDB653EdfcM2z2mxcxXhlnlHdL5LDEHRar1w=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=MXZbR48BFpQFhd7NdldDK1GxOAO4VpGBs34A9NcF9SR9xE5cVsDZDAqfVZcF7V133IEX7J4nc4ObfFXrDoToQJ2Jg5hHA1Ax946ISVGoU+CnqFlhvA2O2CylbYiivhGzYu5lFBXRl5EES4whTD7whjyo2lTgQ1AEtUvdAFuIDZg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=therNLnn; arc=fail smtp.client-ip=40.107.220.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wt+sTFgdvI5tvSL6o83xiWXZhdM/CyiYwDHlczpxwJJUsSM9FISfc2vQQBdDrc1NTv+aS5mYmwiFmaw+d6KqUmMGWdsd1TRHtJ2hne+czfIulzKUHN7c1LydjT0jvx9dpYymNpvS2Zl3/nXDNquQZ4R3m4so8qSgPjLAoJrEVEZ0M2NK/NzSKR1JEkWWhHurHnRIfo9NTxuTDxu5e5R+Mk4xwaFypSaECXLiLvwRVVUJia0AbZziTtj4LKh14U9iL9BndDewpkHeKOLaeGb3SeIAGnNrmyB2ZLKi75qW8n/lbS0TPdWurdD0MXqkR8x2FptN5NEfsL57SlLU7sJZUw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Klvl+0k+IcZY28S/d1xTQ0dsUop0L+0uOzjkH7sZpdg=;
+ b=JPGiWNAIVU52g+9AVEZKlSxjHV5OA0eMgJrvTM2s3WlhGeKt6TMyAMz/p4lEAhs+YO4J8bG6dbEwF9DnwnhxwuHUtcuEKZHzv3yW+NuDO8Vuz9TOnR8ko54RwiM3HmORjbfxbL6j05magh/TC5P4KoYyYsMLyuPxlhQk3JzIBEX5grE9Fm+VtgQzopQJ8E2MokWUliRiH77u3s4lkI6Jh0qGyoOWgrrYmObKwDAijhQK3K/Hu+Q95Qm/8aWrgdxMwIiNaBc+0MbF4WDarFzce6JGMSJTulvnhZH4Mq3ismnwd33/9cd+tvC+RrNiMG2mzGiWSDty/Tc6hSSfsTG3zg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Klvl+0k+IcZY28S/d1xTQ0dsUop0L+0uOzjkH7sZpdg=;
+ b=therNLnnQJoWAWU3GwEq8PHji3denVcw3rzffbsga/UXhBfUvNFvZ1Oa0mHWPjBZ560aecw057udqs6U8SezIGobiu+4l8SU4USBoN/J5Veg8gBVzgrJtaCdmXcp43is72mymh0oUgBlfdvh+rx0dUoqBEMKeGhH1t8eNZ3ASt4=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL1PR12MB5176.namprd12.prod.outlook.com (2603:10b6:208:311::19)
+ by CY8PR12MB8300.namprd12.prod.outlook.com (2603:10b6:930:7d::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.16; Thu, 10 Oct
+ 2024 04:37:43 +0000
+Received: from BL1PR12MB5176.namprd12.prod.outlook.com
+ ([fe80::ed5b:dd2f:995a:bcf4]) by BL1PR12MB5176.namprd12.prod.outlook.com
+ ([fe80::ed5b:dd2f:995a:bcf4%4]) with mapi id 15.20.8048.017; Thu, 10 Oct 2024
+ 04:37:42 +0000
+Message-ID: <79ba9c9b-984d-41c7-be01-c6a8e7f7ebd2@amd.com>
+Date: Thu, 10 Oct 2024 10:07:18 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 05/13] net/ntb: Use never-managed version of
+ pci_intx()
+To: Philipp Stanner <pstanner@redhat.com>, Damien Le Moal
+ <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>,
+ Sergey Shtylyov <s.shtylyov@omp.ru>,
+ Basavaraj Natikar <basavaraj.natikar@amd.com>, Jiri Kosina
+ <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alex Dubov
+ <oakad@yahoo.com>, Sudarsana Kalluru <skalluru@marvell.com>,
+ Manish Chopra <manishc@marvell.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rasesh Mody <rmody@marvell.com>, GR-Linux-NIC-Dev@marvell.com,
+ Igor Mitsyanko <imitsyanko@quantenna.com>,
+ Sergey Matyukevich <geomatsi@gmail.com>, Kalle Valo <kvalo@kernel.org>,
+ Sanjay R Mehta <sanju.mehta@amd.com>, Jon Mason <jdmason@kudzu.us>,
+ Dave Jiang <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Alex Williamson <alex.williamson@redhat.com>, Juergen Gross
+ <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ Mario Limonciello <mario.limonciello@amd.com>, Chen Ni <nichen@iscas.ac.cn>,
+ Ricky Wu <ricky_wu@realtek.com>, Al Viro <viro@zeniv.linux.org.uk>,
+ Breno Leitao <leitao@debian.org>, Kevin Tian <kevin.tian@intel.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Mostafa Saleh <smostafa@google.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Hannes Reinecke <hare@suse.de>, John Garry <john.g.garry@oracle.com>,
+ Soumya Negi <soumya.negi97@gmail.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Yi Liu <yi.l.liu@intel.com>, "Dr. David Alan Gilbert" <linux@treblig.org>,
+ Christian Brauner <brauner@kernel.org>, Ankit Agrawal <ankita@nvidia.com>,
+ Reinette Chatre <reinette.chatre@intel.com>,
+ Eric Auger <eric.auger@redhat.com>, Ye Bin <yebin10@huawei.com>,
+ =?UTF-8?Q?Marek_Marczykowski-G=C3=B3recki?=
+ <marmarek@invisiblethingslab.com>,
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+ Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+ Rui Salvaterra <rsalvaterra@gmail.com>, Marc Zyngier <maz@kernel.org>
+Cc: linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-input@vger.kernel.org, netdev@vger.kernel.org,
+ linux-wireless@vger.kernel.org, ntb@lists.linux.dev,
+ linux-pci@vger.kernel.org, linux-staging@lists.linux.dev,
+ kvm@vger.kernel.org, xen-devel@lists.xenproject.org,
+ linux-sound@vger.kernel.org
+References: <20241009083519.10088-1-pstanner@redhat.com>
+ <20241009083519.10088-6-pstanner@redhat.com>
+Content-Language: en-US
+From: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+In-Reply-To: <20241009083519.10088-6-pstanner@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN3PR01CA0006.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:95::10) To BL1PR12MB5176.namprd12.prod.outlook.com
+ (2603:10b6:208:311::19)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Message-ID: <4a90097d-a2ce-4a30-953e-fb0ddae8d012@RTEXMBS04.realtek.com.tw>
-Date: Thu, 10 Oct 2024 09:06:28 +0800
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL1PR12MB5176:EE_|CY8PR12MB8300:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0c1b8c51-260f-4a03-6870-08dce8e54718
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?S2xHMWc1WlVvbTVwWGt0QzVLY056QjVBSUpVZWV4WERRRHBoTlJLN3BIQ2xI?=
+ =?utf-8?B?bXFlbnJsd2F5ekxBVnk4bUg5cWZ4T25KY1owQzgwcEZRN1J4dit1bDIwRnN1?=
+ =?utf-8?B?SWtRL2VCTCtoRGw1RUwzbEpKRW93SDlzdnhsMktoMkZQQ2xIUjE1UGpuNjkw?=
+ =?utf-8?B?cXlmeVJUNVpyai9UaHRpOU1IOWc4b0tNeXc5NVJRRWxxRjlXNlpjOEw3RjBP?=
+ =?utf-8?B?azNZMi9xREs1UmFLc3NRRERFbVVGMWFEckNyd1JxampSLzNoM1hTem8wWTlW?=
+ =?utf-8?B?UTJvMmdTTWI2eGVlOFhWRm5qSHd3dWdhN0MreXRrQnlLTHpwaDVKYWRMSlJk?=
+ =?utf-8?B?L3NNQmQzUkovVDk0RURsYWNaNGpiaUZvV0JuWTdhTTFmMWRRZWxma0JRbzVX?=
+ =?utf-8?B?amlVSi9malo2SVI0UlBDOXIrNnA4RE1Ta3lrbUhoLzVVK3VzNXVWM05sdGhp?=
+ =?utf-8?B?Z0F5eG5uZ0xtcWNQZDI3eGUxUjlTQmZMT0dYaDRObERSWHpNajU1SWVRTHp2?=
+ =?utf-8?B?MWU0OVFiaGsyRFowUGNzcWdHZS9ia09NSUhPcnhLeHV0ZlhFeWNyd3VkZ295?=
+ =?utf-8?B?Wm50RGt6aVhtcGxTa1RVbEJmWUZlVXdvU0p5d3pMYnhvL0dSZER5U1gvWGpa?=
+ =?utf-8?B?eEE5MTBQVHV6MTZzZGJlOXllQVg0QlBITlBLcG9IRXNZMXVxZlZkR1BkSkc2?=
+ =?utf-8?B?UzBIclA1d0dNVklZaXg5WmxMVWYvaGMwMGlUOTJTZXBGZnRRbFNoaTdJeG9n?=
+ =?utf-8?B?WVg4RFp2RW1WeWtTdVh5ekJNVGJ2MmlOVXM4UEl6R1hEc2ttS1M3dUliNUFR?=
+ =?utf-8?B?TyttNDJSemFxL3dOMlp2Q3Q1ZXUwRUdXWHdnak8yQ1dKaVlURzBGNW5iR1FG?=
+ =?utf-8?B?MGlTaEtSdFl0VTROUFhuNmxOS1dHcGFpVWFtNkRHQUZBZU0vUUxEc3g3eVFU?=
+ =?utf-8?B?YTUvZkFGSTBPc0JkaHlFUmpCVjlIRGs1Nk1TbTVITzRwTjlRd3lvdlBLRDR3?=
+ =?utf-8?B?bEFqOXFaMDg2enIxUGlwVTF3bVBkOW1lN0pQWElBSDBaZjZpdTlKYjc2OEVp?=
+ =?utf-8?B?RkQra3hzZy9ucmh5WFZMRkRtY21mYzRra0RYaThHT2dsUkc0aEhJbmJkc1hB?=
+ =?utf-8?B?Z0hMQ3lFZnF1WUpVaG00WjZWUk9vNC9iQ1FldlZKWDluK0xuZ0hYY3psRVZK?=
+ =?utf-8?B?TkJOeFBhdmg0cllMWDBGUVpaKzF4bXpUVWVseU1BeFVlWWtQaDRzUlFtZU04?=
+ =?utf-8?B?RVdXUVEzUGpRWGR6WlpSQmUxWVRlRm1HQU1FQTEySUFJa21FQm9aWTJXN1Bz?=
+ =?utf-8?B?WGg2cmd2UmFYTzdlbG5oekhibkttR1NEbStnT2pEMDhWSlEyMkVjY3hXUUdN?=
+ =?utf-8?B?ZUVRaXdtYjhsL1lGRi9xdDZXaVBMRy91b1lBVkRIWHBGSzNnN1J6WHRUYjY4?=
+ =?utf-8?B?WXpVSXBGT0g4R1lVMFkvdS93K0NoQzJOVGp5Y1Vxdkx5SndscEwzM0hNY2FF?=
+ =?utf-8?B?VWtrR2JKcHlXWHpXSS8rd1IvK1IzVEtCM1dHcHBPVGpjWUI5ZGtOTStBTGhv?=
+ =?utf-8?B?Q2lJS2hTblFnNWwyUHZ2aGNTTU9Ram5wTHhDazhZeFovaFJQNzY1WDFWNllj?=
+ =?utf-8?B?VklpaERqa1B4VTR0QkM3N3lPUUlkWEozUVVHRkxPUk5vd1BnMGpEVWUxNEdq?=
+ =?utf-8?B?WWRZYnJmSjBaY2x4THNDcDFDNkY1VE5rTTBZSmNVU1lJVFBVbTkxc1FMbmIy?=
+ =?utf-8?Q?fQxbUSn8voWg9m72DR7CD+eGOfL+bKZKv4gl32N?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5176.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dG9hUkhsZHBuK2JnNEFHa3V2VFdaVWw1Unh1cXVwWExaRkEvVWhUL01Wbk5y?=
+ =?utf-8?B?UjJ3bDliaXpuckw2aTNla2ZuV0U2eFNyM2h5Wk1Pa0E4eEFpVnhwekpaaU5K?=
+ =?utf-8?B?MCtZWEMxaFdKSXdWbEEwWWZyUzJrTVRiUFRTUVNZL095TWZDRTVHVzhCNG1J?=
+ =?utf-8?B?YkpNc2xMTUYwcTJnRENZaVJvMHdoTGVSbDNUek1YeGJKaHdtNWpqL0tFb0hz?=
+ =?utf-8?B?ZG9hdW5KRUxZek11UkxxMWV5MXpnZXY2UGQyVkdRU1l1WG9mNDlHVmlmL2c3?=
+ =?utf-8?B?dTErS05kckpkQkxBM2oyakJtQmpaemFlaGxtM3BZMExraGFVcW4xdVBoNE9I?=
+ =?utf-8?B?NFZRcjh2NllaUHZTS2J2NWpEUDd5aE9Xb0hwbnpsUGR2N3haOGRKc2t6allK?=
+ =?utf-8?B?NDcxN2R2TWt5RUcwWng4SVF6U1JHZ01MVHhTQjVIZ0F6YVNhQzNTSHJEN3U1?=
+ =?utf-8?B?Zm05ZTI3ZHVUYnRDNmxteVN3S1ZhTk9JZE5PZXJZblBVMXhhUGNSWm1SUkxW?=
+ =?utf-8?B?dnhZdkZEQ3BGTE5tdnZkck9pdTgwcmdYQ0FaWHVGVTN0YVYyamEwd0JiUzhZ?=
+ =?utf-8?B?V0xqVXNublJ0QmVHZ0FSM3JNbTlpYjJnTVc5QTFrY3BvWjE5dXZveWlzaUZv?=
+ =?utf-8?B?SU5uY0JVd0JjQzdCeU9IdUIwRFNtV0pUaGxreEVEQVZrVnBiczIyV3ExQ0tE?=
+ =?utf-8?B?OUhwaXpNOERSenBTTEEvK0FJVnQ2bWsyTmJtKzFOeWp6a3pBenMvTmVJdXpm?=
+ =?utf-8?B?MWZseTY5YUhkMmdaTGNKQU1CbGdLejRVYjhQWm45Sm1IbGpVaGtGUXVvTXZD?=
+ =?utf-8?B?eDF4TjBPQzFMRXo4U2dpcjQrTnlYc1h2RTA4VHFPc1pLSExoTExTczg0RTM5?=
+ =?utf-8?B?a2pBSG45V3VmS0hIWGM4TEpHSjdyemVFcnVPUjVqcm5TSGRQSDdXNzFZZ09w?=
+ =?utf-8?B?Q0xZemtUaTRwSzZheUY0N0tQZ2I0R1NWWEl6TUQ4bXhNVWdtbGUwck84czdB?=
+ =?utf-8?B?QU1zcm5QZVcycDh2azJBdU1BK3RoVFF2Z1RIUnRaY1VKT08ram9SWEY2TitN?=
+ =?utf-8?B?MDJaKy90YURzd1RHd1Q5ZkQzaTBKVTVnZ2JLYXpKOXBXeDRqV1pqNG1LN09p?=
+ =?utf-8?B?OVllMnpBYzJTU01qZU0zd28yY21sckJXWXJPdVBwRDdCclV1dkhwQkpMWmtj?=
+ =?utf-8?B?aFdrNWlkS1FDL1RyTVMzdnFpc0hoaTJTbWNmdllXaGJxVU4xYXVCTXFWYWZC?=
+ =?utf-8?B?Und0R1g3MFpDb01OMEhTNVpsRldlQk9CS2Y0aW1BT3lzeG85c2ZyamcwVTQy?=
+ =?utf-8?B?SWtPdTExSlBLVGdueitCYWVSZzlxWWlSdXFONDNZRm8rNTVmYS9EUDFXaXpX?=
+ =?utf-8?B?bFU4NHRRNFpnZWc5R1o5ZkE3T28zR3ZOVFI5ZWZXREdpUkZCbW4yblNKWmEr?=
+ =?utf-8?B?Z29zUWZJYTZmYytHbmF2U2dpV3ltNkYramlKeGNWbGtsNEVzUlJ4R3p6cDQ3?=
+ =?utf-8?B?UG9PNWpqeFhTTk1KNVQ3NHg1MS9KYzFQTVNJem5qbWhCMlk2QXNtb3RFUkJH?=
+ =?utf-8?B?TzRoUnhiVVloRElVTENEK3RYVjRXYVRDYnZBaG04SGlmWDZuMXlmTmU0S2pP?=
+ =?utf-8?B?d2NnUDVuY2QxS2VqMUg3WWVSb292UVFueVlwTGMrVlAvdEdUZlJ1YmI2aTZE?=
+ =?utf-8?B?Y05nZVhzaDZmZWRFMmdtc0FKVHFIS3dUSTB5eTRtdTBTdkFlenIvT0lGN3Qw?=
+ =?utf-8?B?OTQvVHhlTjlXMnRnamFzZmdvV0hDbFNsQkJFTFZlRmpwMmdRVUxPQy9ESVZm?=
+ =?utf-8?B?czF6ZXFDN3JmY0lIemlmY3A3NXRrZHpIUW9qNnB3QnFramNhM3JpLy9SVy9G?=
+ =?utf-8?B?QmUrVXFtUzR2MDNTOVVFTDFYNitqcjRkcnZ5bUlDT3FZei9xdjBvRHVCSENT?=
+ =?utf-8?B?OGMxaDFWRm9xY3NBYkk5aGFLNGpJbS9mSWtpbTF6RlFOci84ajV1cEJ5ZmpD?=
+ =?utf-8?B?NWVyZ3JtcUlwQytvYjcrTnlJYmJJWElGS0JacTI0RVl2dGcwVDZkOFA4VnQy?=
+ =?utf-8?B?NVlDY3dpOE9zc1Bmdkxnd3pMZ1VLWkhxRFRwdDlwOUh2by9NamVERWswbWxn?=
+ =?utf-8?Q?aNz1Ck4pRRLj+rsSsnFZlgFFQ?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0c1b8c51-260f-4a03-6870-08dce8e54718
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5176.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Oct 2024 04:37:42.2623
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: m0qLPNHieptuXDE6QrWF4k80opazgWD0GToi3pf7VL4bTVZyBi0AGjqiZRu4iTS4nLBvzm+aG7oGgdARyHAgXA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8300
 
-Hi,
 
-A pull-request of rtw-next to wireless-next tree, more info below. Please
-let me know if any problems.
 
-Thanks
-Ping-Ke
+On 10/9/2024 14:05, Philipp Stanner wrote:
+> pci_intx() is a hybrid function which can sometimes be managed through
+> devres. To remove this hybrid nature from pci_intx(), it is necessary to
+> port users to either an always-managed or a never-managed version.
+> 
+> hw/amd and how/intel enable their PCI-Device with pci_enable_device().
+> Thus, they need the never-managed version.
+> 
+> Replace pci_intx() with pci_intx_unmanaged().
+> 
+> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
 
----
+Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com> #for ntb_hw_amd.c
 
-The following changes since commit 5a4d42c1688c88f3be6aef46b0ea6c32694cd2b8:
-
-  wifi: wl1251: Use IRQF_NO_AUTOEN flag in request_irq() (2024-09-18 16:54:30 +0300)
-
-are available in the Git repository at:
-
-  https://github.com/pkshih/rtw.git tags/rtw-next-2024-10-10
-
-for you to fetch changes up to fc442560016d9246460b317771bebbcbaf910aa2:
-
-  wifi: rtw89: wow: do not configure CPU IO to receive packets for old firmware (2024-10-10 08:45:37 +0800)
-
-----------------------------------------------------------------
-rtw-next patches for v6.13
-
-No big change at this point. Regular development and fixes are listed:
-
-rtl8xxxu:
- - correct beaconing for the case of STA + AP
-
-rtw88:
- - consolidate parser of RX descriptor as preparation to support coming
-   chips
-
-rtw89:
- - update BT-coexistence to improve user experience for RTL8852BE and
-   RTL8852BE-VT
- - correct RTL8922AE RF calibration timeout time and print out firmware
-   log
- - set proper PCI EQ value for RTL8852CE and RTL8922AE
- - adjust to support MLO continuously
-
-----------------------------------------------------------------
-Bitterblue Smith (2):
-      wifi: rtw88: Constify some arrays and structs
-      wifi: rtw88: Parse the RX descriptor with a single function
-
-Chin-Yen Lee (1):
-      wifi: rtw89: wow: do not configure CPU IO to receive packets for old firmware
-
-Ching-Te Ku (4):
-      wifi: rtw89: coex: Update priority setting for Wi-Fi is scanning
-      wifi: rtw89: coex: Reorder Bluetooth info related logic
-      wifi: rtw89: coex: Solved BT PAN profile idle decrease Wi-Fi throughput
-      wifi: rtw89: coex: Add function to reorder Wi-Fi firmware report index
-
-Colin Ian King (1):
-      wifi: rtlwifi: make read-only arrays static const
-
-Martin Kaistra (1):
-      wifi: rtl8xxxu: Perform update_beacon_work when beaconing is enabled
-
-Ping-Ke Shih (14):
-      wifi: rtw89: 8922a: rfk: enlarge TSSI timeout time to 20ms
-      wifi: rtw89: 8922a: rfk: support firmware command RX DCK v1 format
-      wifi: rtw89: rfk: add firmware debug log of TSSI
-      wifi: rtw89: rfk: add firmware debug log of IQK
-      wifi: rtw89: rfk: update firmware debug log of DACK to v2
-      wifi: rtw88: use ieee80211_purge_tx_queue() to purge TX skb
-      wifi: rtw89: check return value of ieee80211_probereq_get() for RNR
-      wifi: rtw89: coex: initialize local .dbcc_2g_phy in _set_btg_ctrl()
-      wifi: rtw89: 8852c: rfk: remove unnecessary assignment of return value of _dpk_dgain_read()
-      wifi: rtw89: pci: consolidate PCI basic configurations for probe and resume
-      wifi: rtw89: 8922ae: disable PCI PHY EQ to improve compatibility
-      wifi: rtw89: 8852ce: fix gray code conversion for filter out EQ
-      wifi: rtw89: 8852ce: set offset K of PCI PHY EQ to manual mode to improve compatibility
-      wifi: rtw89: debug: add beacon RSSI for debugging
-
-Zong-Zhe Yang (9):
-      wifi: rtw89: rename rtw89_vif to rtw89_vif_link ahead for MLO
-      wifi: rtw89: rename rtw89_sta to rtw89_sta_link ahead for MLO
-      wifi: rtw89: read bss_conf corresponding to the link
-      wifi: rtw89: read link_sta corresponding to the link
-      wifi: rtw89: refactor VIF related func ahead for MLO
-      wifi: rtw89: refactor STA related func ahead for MLO
-      wifi: rtw89: tweak driver architecture for impending MLO support
-      wifi: rtw89: initialize dual HW bands for MLO and control them by link
-      wifi: rtw89: handle entity active flag per PHY
-
- drivers/net/wireless/realtek/rtl8xxxu/core.c       |   6 +-
- .../net/wireless/realtek/rtlwifi/rtl8723be/hw.c    |  18 +-
- drivers/net/wireless/realtek/rtw88/fw.c            |   2 +-
- drivers/net/wireless/realtek/rtw88/mac.c           |   4 +-
- drivers/net/wireless/realtek/rtw88/main.h          |  13 +-
- drivers/net/wireless/realtek/rtw88/pci.c           |   2 +-
- drivers/net/wireless/realtek/rtw88/phy.c           |   2 +-
- drivers/net/wireless/realtek/rtw88/rtw8703b.c      |  62 +-
- drivers/net/wireless/realtek/rtw88/rtw8723d.c      |  49 +-
- drivers/net/wireless/realtek/rtw88/rtw8821c.c      |  65 +-
- drivers/net/wireless/realtek/rtw88/rtw8822b.c      |  53 +-
- drivers/net/wireless/realtek/rtw88/rtw8822c.c      |  54 +-
- drivers/net/wireless/realtek/rtw88/rx.c            |  70 +-
- drivers/net/wireless/realtek/rtw88/rx.h            |  64 +-
- drivers/net/wireless/realtek/rtw88/sdio.c          |   9 +-
- drivers/net/wireless/realtek/rtw88/usb.c           |   9 +-
- drivers/net/wireless/realtek/rtw89/cam.c           | 259 ++++--
- drivers/net/wireless/realtek/rtw89/cam.h           |  24 +-
- drivers/net/wireless/realtek/rtw89/chan.c          | 215 +++--
- drivers/net/wireless/realtek/rtw89/chan.h          |  15 +-
- drivers/net/wireless/realtek/rtw89/coex.c          | 383 ++++++---
- drivers/net/wireless/realtek/rtw89/coex.h          |   6 +-
- drivers/net/wireless/realtek/rtw89/core.c          | 927 ++++++++++++++-------
- drivers/net/wireless/realtek/rtw89/core.h          | 450 +++++++---
- drivers/net/wireless/realtek/rtw89/debug.c         | 134 ++-
- drivers/net/wireless/realtek/rtw89/fw.c            | 706 +++++++++-------
- drivers/net/wireless/realtek/rtw89/fw.h            | 261 ++++--
- drivers/net/wireless/realtek/rtw89/mac.c           | 721 +++++++++-------
- drivers/net/wireless/realtek/rtw89/mac.h           | 115 ++-
- drivers/net/wireless/realtek/rtw89/mac80211.c      | 654 ++++++++++++---
- drivers/net/wireless/realtek/rtw89/mac_be.c        |  71 +-
- drivers/net/wireless/realtek/rtw89/pci.c           |  68 +-
- drivers/net/wireless/realtek/rtw89/pci.h           |  24 +
- drivers/net/wireless/realtek/rtw89/pci_be.c        |  77 ++
- drivers/net/wireless/realtek/rtw89/phy.c           | 668 ++++++++++-----
- drivers/net/wireless/realtek/rtw89/phy.h           |  13 +-
- drivers/net/wireless/realtek/rtw89/phy_be.c        |  12 +-
- drivers/net/wireless/realtek/rtw89/ps.c            | 109 ++-
- drivers/net/wireless/realtek/rtw89/ps.h            |  14 +-
- drivers/net/wireless/realtek/rtw89/regd.c          |  79 +-
- drivers/net/wireless/realtek/rtw89/rtw8851b.c      |  13 +-
- drivers/net/wireless/realtek/rtw89/rtw8852a.c      |  12 +-
- drivers/net/wireless/realtek/rtw89/rtw8852b.c      |  13 +-
- drivers/net/wireless/realtek/rtw89/rtw8852bt.c     |  13 +-
- drivers/net/wireless/realtek/rtw89/rtw8852c.c      |  12 +-
- drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c  |   2 +-
- drivers/net/wireless/realtek/rtw89/rtw8922a.c      |  33 +-
- drivers/net/wireless/realtek/rtw89/ser.c           |  37 +-
- drivers/net/wireless/realtek/rtw89/wow.c           | 217 ++---
- drivers/net/wireless/realtek/rtw89/wow.h           |  10 +-
- 50 files changed, 4443 insertions(+), 2406 deletions(-)
+> ---
+>  drivers/ntb/hw/amd/ntb_hw_amd.c    | 4 ++--
+>  drivers/ntb/hw/intel/ntb_hw_gen1.c | 2 +-
+>  2 files changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/ntb/hw/amd/ntb_hw_amd.c b/drivers/ntb/hw/amd/ntb_hw_amd.c
+> index d687e8c2cc78..b146f170e839 100644
+> --- a/drivers/ntb/hw/amd/ntb_hw_amd.c
+> +++ b/drivers/ntb/hw/amd/ntb_hw_amd.c
+> @@ -791,7 +791,7 @@ static int ndev_init_isr(struct amd_ntb_dev *ndev,
+>  err_msi_enable:
+>  
+>  	/* Try to set up intx irq */
+> -	pci_intx(pdev, 1);
+> +	pci_intx_unmanaged(pdev, 1);
+>  
+>  	rc = request_irq(pdev->irq, ndev_irq_isr, IRQF_SHARED,
+>  			 "ndev_irq_isr", ndev);
+> @@ -831,7 +831,7 @@ static void ndev_deinit_isr(struct amd_ntb_dev *ndev)
+>  		if (pci_dev_msi_enabled(pdev))
+>  			pci_disable_msi(pdev);
+>  		else
+> -			pci_intx(pdev, 0);
+> +			pci_intx_unmanaged(pdev, 0);
+>  	}
+>  }
+>  
+> diff --git a/drivers/ntb/hw/intel/ntb_hw_gen1.c b/drivers/ntb/hw/intel/ntb_hw_gen1.c
+> index 079b8cd79785..9ad9d7fe227e 100644
+> --- a/drivers/ntb/hw/intel/ntb_hw_gen1.c
+> +++ b/drivers/ntb/hw/intel/ntb_hw_gen1.c
+> @@ -445,7 +445,7 @@ int ndev_init_isr(struct intel_ntb_dev *ndev,
+>  
+>  	/* Try to set up intx irq */
+>  
+> -	pci_intx(pdev, 1);
+> +	pci_intx_unmanaged(pdev, 1);
+>  
+>  	rc = request_irq(pdev->irq, ndev_irq_isr, IRQF_SHARED,
+>  			 "ndev_irq_isr", ndev);
 
