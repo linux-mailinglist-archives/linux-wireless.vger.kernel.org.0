@@ -1,131 +1,179 @@
-Return-Path: <linux-wireless+bounces-13851-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13852-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 985C0998473
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2024 13:06:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7CBA998A54
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2024 16:52:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5741A285389
-	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2024 11:06:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C51D41C23EC5
+	for <lists+linux-wireless@lfdr.de>; Thu, 10 Oct 2024 14:52:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A49931C3F1A;
-	Thu, 10 Oct 2024 11:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 421D41E1321;
+	Thu, 10 Oct 2024 14:34:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Hc8DfKnL"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="QUBgXRv6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04E011C2439
-	for <linux-wireless@vger.kernel.org>; Thu, 10 Oct 2024 11:05:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBFC21E04BC
+	for <linux-wireless@vger.kernel.org>; Thu, 10 Oct 2024 14:34:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728558336; cv=none; b=bqcz0BXA5g6neWU4X63KF0IK6TjO0F+j77X1jvRLK1BBfqVJsgssiwe0RFyailks/HRbiJ/c0Uy6qRzcaS4ZZnsT54yxXENjC3CyrfPU4rTtrm+RPAyRF8utLoYwZTYy344vCEzVmPuVrAZ45DqmUeYO7c3czbbXZn9u3Vs5MiI=
+	t=1728570895; cv=none; b=q5gguWNKEQCIKD6TtVKKrxz9Xj93aL3WFYklmbdYlhSSZgtgCGfp2EQfVlDaO/W5lkLVC16Zfv4Ca+vCAst23E2RAe93DFBQ1NFJ+XneZB+cCmOHDc05cEZkI5DyKEoXLvgkkTPD8WhYOjLTxRr1TBrJtxU842mDQqjezZPsSP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728558336; c=relaxed/simple;
-	bh=3ECqspv3YmPba6PIxQUUN4ClaJatIPZn/x4TEOVwLNM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kVpiHyNtaBq2TUSBoetM1IeEeHKe2e8wbyIunaxv3FnQzV8sOGAhxUGjwiVKfqXHJSnKXVqQvi8s1T1gSHWNscoCvZk8F1gsMZSWohxyigzdChH5/xlKh3xxs7A3IojmFs8T4A5sZUEgQdSYRvC1q32tvMplpnnTM0WVOtj2J5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Hc8DfKnL; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728558335; x=1760094335;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=3ECqspv3YmPba6PIxQUUN4ClaJatIPZn/x4TEOVwLNM=;
-  b=Hc8DfKnLTMdmGg+x/D6F6SP+nEdIRceS7xSTcdm/HGPV42gm/1X0madW
-   3ZwX1ezBqglNmvvC472bfBPkifF59t+ofQ9HG/iEcaDZgS20PQWj1iHOs
-   Xqy2DiyKmkEAQPMZH/3fmCvUUDUVH7k6C7WWbMUUg5tWOUJ936AgEhECZ
-   Hq6rElfzXQ+aw/aGRFyF3lXYvEPrwLeNQrzXkffyT4EtarCNmooK72TZz
-   bIBhrKVJNvcv9woWc4nGlVDlPdkR3I7lA0Jb64L86gyiIT+EU+0T+qxmr
-   kHaQ+iz0IyCiEIGfnYESSs+EEujQR3XXR9e1DSy+OLvzM278wzeU6YGzA
-   w==;
-X-CSE-ConnectionGUID: +YIPY6OQRaKLi/EZXVRQtw==
-X-CSE-MsgGUID: Cf5Ao8WLSr+DdRYIIhe4nA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11220"; a="31697751"
-X-IronPort-AV: E=Sophos;i="6.11,192,1725346800"; 
-   d="scan'208";a="31697751"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 04:05:34 -0700
-X-CSE-ConnectionGUID: t/iDAKXnSKqqVwsk1CWUKw==
-X-CSE-MsgGUID: kaujwZ4BQLmJfztswdFHlQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,192,1725346800"; 
-   d="scan'208";a="81362348"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Oct 2024 04:05:34 -0700
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH 9/9] wifi: iwlwifi: mvm: tell iwlmei when we finished suspending
-Date: Thu, 10 Oct 2024 14:05:07 +0300
-Message-Id: <20241010140328.1dc3a7fea9d1.Ibf183824471ea5580d9276d104444e53191e6900@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241010110507.1006209-1-miriam.rachel.korenblit@intel.com>
-References: <20241010110507.1006209-1-miriam.rachel.korenblit@intel.com>
+	s=arc-20240116; t=1728570895; c=relaxed/simple;
+	bh=yHH3piVh+56+GsIRxj9SGhbjggLabs4JJ/qW5PUj/MQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=J2j68IdTC8OAsyIqyeDvgVc8ZFtgI58PFrtWfh3II/XzzBW31ME+7vSu0uoSlYAGqwLysSLerSH5O0/YPfRplFC4s6Q6KNaIUVKbTLrmJp1imq9MO6x/qHmBdwDSM0TEEJI0DsXEc7IiXg4oP3/XthSolzX9wqU5JOQ4xtH7/0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=QUBgXRv6; arc=none smtp.client-ip=148.163.129.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id D243B280069;
+	Thu, 10 Oct 2024 14:34:43 +0000 (UTC)
+Received: from [192.168.1.23] (unknown [98.97.32.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id ECEB913C2B0;
+	Thu, 10 Oct 2024 07:34:42 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com ECEB913C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1728570883;
+	bh=yHH3piVh+56+GsIRxj9SGhbjggLabs4JJ/qW5PUj/MQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=QUBgXRv6o6zxg5Iy7mUgnVlL4jMWIqAmzt+qfpP15Hkl1qizIp0RVT8pCWsfMYvN/
+	 jYiOiRlMqwKV1DaNUE6lpt/EEH3/1w5ouxFXeTk4q9d5++6EoqAzb5wphfFHlrEiD3
+	 ia1RzQh0TLwLWn4v5cVXauq+tM9MT0YIh41iwLdM=
+Message-ID: <b8c12251-7099-4aa1-9b8e-e709cc6eafac@candelatech.com>
+Date: Thu, 10 Oct 2024 07:34:42 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless] wifi: mt76: mt7915: add module param to select 5
+ GHz or 6 GHz on MT7916
+To: Felix Fietkau <nbd@nbd.name>, linux-wireless@vger.kernel.org
+Cc: kvalo@kernel.org, Steven Liu <steven.liu@mediatek.com>,
+ Evelyn Tsai <Evelyn.Tsai@mediatek.com>, Paul <paul@asiarf.com>,
+ Shayne Chen <Shayne.Chen@mediatek.com>
+References: <20241010083816.51880-1-nbd@nbd.name>
+Content-Language: en-MW
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <20241010083816.51880-1-nbd@nbd.name>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MDID: 1728570885-WGPlRuWPISu5
+X-MDID-O:
+ us5;ut7;1728570885;WGPlRuWPISu5;<greearb@candelatech.com>;5cd11ceaa947e1566cadf6dee08d9f7e
+X-PPE-TRUSTED: V=1;DIR=OUT;
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+On 10/10/24 01:38, Felix Fietkau wrote:
+> From: Shayne Chen <shayne.chen@mediatek.com>
+> 
+> Due to a limitation in available memory, the MT7916 firmware can only
+> handle either 5 GHz or 6 GHz at a time. It does not support runtime
+> switching without a full restart.
 
-Since we no longer shut down the device in suspend, we also no longer
-call iwl_mvm_mei_device_state() and this is a problem because iwlmei
-expects this to be called when it runs its own suspend sequence. It
-checks mei->device_down in iwl_mei_remove() which is called upon
-suspend.
+Can this also be implemented so that we can change the module parameter,
+force the radio to do a hard reset, and change bands that way, without
+having to do a reboot?
 
-Fix this by telling iwlmei when we're done accessing the device.
-When we'll wake up, the device should be untouched if CSME didn't use it
-during the suspend time. If CSME used it, we'll notice it through the
-CSR_FUNC_SCRATCH register.
+Thanks,
+Ben
 
-Fixes: e8bb19c1d590 ("wifi: iwlwifi: support fast resume")
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> On older firmware, this accidentally worked to some degree due to missing
+> checks, but couldn't be supported properly, because it left the 6 GHz
+> channels uncalibrated.
+> Newer firmware refuses to start on either band if the passed EEPROM
+> data indicates support for both.
+> 
+> Deal with this limitation by using a module parameter to specify the
+> preferred band in case both are supported.
+> 
+> Fixes: b4d093e321bd ("mt76: mt7915: add 6 GHz support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> ---
+>   .../wireless/mediatek/mt76/mt7915/eeprom.c    | 21 +++++++++++++++++--
+>   .../net/wireless/mediatek/mt76/mt7915/init.c  |  4 ++--
+>   2 files changed, 21 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+> index bfdbc15abaa9..928e0b07a9bf 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.c
+> @@ -2,9 +2,14 @@
+>   /* Copyright (C) 2020 MediaTek Inc. */
+>   
+>   #include <linux/firmware.h>
+> +#include <linux/moduleparam.h>
+>   #include "mt7915.h"
+>   #include "eeprom.h"
+>   
+> +static bool enable_6ghz;
+> +module_param(enable_6ghz, bool, 0644);
+> +MODULE_PARM_DESC(enable_6ghz, "Enable 6 GHz instead of 5 GHz on hardware that supports both");
+> +
+>   static int mt7915_eeprom_load_precal(struct mt7915_dev *dev)
+>   {
+>   	struct mt76_dev *mdev = &dev->mt76;
+> @@ -170,8 +175,20 @@ static void mt7915_eeprom_parse_band_config(struct mt7915_phy *phy)
+>   			phy->mt76->cap.has_6ghz = true;
+>   			return;
+>   		case MT_EE_V2_BAND_SEL_5GHZ_6GHZ:
+> -			phy->mt76->cap.has_5ghz = true;
+> -			phy->mt76->cap.has_6ghz = true;
+> +			if (enable_6ghz) {
+> +				phy->mt76->cap.has_6ghz = true;
+> +				u8p_replace_bits(&eeprom[MT_EE_WIFI_CONF + band],
+> +						 MT_EE_V2_BAND_SEL_6GHZ,
+> +						 MT_EE_WIFI_CONF0_BAND_SEL);
+> +			} else {
+> +				phy->mt76->cap.has_5ghz = true;
+> +				u8p_replace_bits(&eeprom[MT_EE_WIFI_CONF + band],
+> +						 MT_EE_V2_BAND_SEL_5GHZ,
+> +						 MT_EE_WIFI_CONF0_BAND_SEL);
+> +			}
+> +			/* force to buffer mode */
+> +			dev->flash_mode = true;
+> +
+>   			return;
+>   		default:
+>   			phy->mt76->cap.has_2ghz = true;
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+> index 6bef96e3d2a3..f82216d1bda0 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+> @@ -1239,14 +1239,14 @@ int mt7915_register_device(struct mt7915_dev *dev)
+>   	if (ret)
+>   		goto unreg_dev;
+>   
+> -	ieee80211_queue_work(mt76_hw(dev), &dev->init_work);
+> -
+>   	if (phy2) {
+>   		ret = mt7915_register_ext_phy(dev, phy2);
+>   		if (ret)
+>   			goto unreg_thermal;
+>   	}
+>   
+> +	ieee80211_queue_work(mt76_hw(dev), &dev->init_work);
+> +
+>   	dev->recovery.hw_init_done = true;
+>   
+>   	ret = mt7915_init_debugfs(&dev->phy);
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 819e1c0c46ca..db0c6e7a186b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -1237,6 +1237,7 @@ int __iwl_mvm_mac_start(struct iwl_mvm *mvm)
- 	fast_resume = mvm->fast_resume;
- 
- 	if (fast_resume) {
-+		iwl_mvm_mei_device_state(mvm, true);
- 		ret = iwl_mvm_fast_resume(mvm);
- 		if (ret) {
- 			iwl_mvm_stop_device(mvm);
-@@ -1356,10 +1357,13 @@ void __iwl_mvm_mac_stop(struct iwl_mvm *mvm, bool suspend)
- 		iwl_mvm_rm_aux_sta(mvm);
- 
- 	if (suspend &&
--	    mvm->trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_22000)
-+	    mvm->trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_22000) {
- 		iwl_mvm_fast_suspend(mvm);
--	else
-+		/* From this point on, we won't touch the device */
-+		iwl_mvm_mei_device_state(mvm, false);
-+	} else {
- 		iwl_mvm_stop_device(mvm);
-+	}
- 
- 	iwl_mvm_async_handlers_purge(mvm);
- 	/* async_handlers_list is empty and will stay empty: HW is stopped */
 -- 
-2.34.1
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
 
 
