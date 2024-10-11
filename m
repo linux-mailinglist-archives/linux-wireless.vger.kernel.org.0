@@ -1,253 +1,122 @@
-Return-Path: <linux-wireless+bounces-13890-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13893-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03BA399A56A
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Oct 2024 15:51:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C485799A68F
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Oct 2024 16:41:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 265B31C21E48
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Oct 2024 13:51:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62309B252C5
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Oct 2024 14:40:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 350B0219495;
-	Fri, 11 Oct 2024 13:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C430319755A;
+	Fri, 11 Oct 2024 14:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fZlzaVOr"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="IvqfDn7F"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FAA218D85;
-	Fri, 11 Oct 2024 13:51:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DBE194094
+	for <linux-wireless@vger.kernel.org>; Fri, 11 Oct 2024 14:39:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728654675; cv=none; b=MYvpQhTQCOtsc2CLa6BAT8usVBNX2QSvkaWo8UYl8+uD49nxjrSiRXRIr6pP5C6QWlfwqX+EXbnNIaXg+hwF1NrfiKvSRukAOpDS+sqxbQkwt1QCBcixTu6ecjlgHrZymzlCTdXVQclwxQa+XEf7GrrriA1dzfvJraA27gak/MM=
+	t=1728657580; cv=none; b=KWZtNdkHvqKsy9B8SMCzT+Wkv9xeI4+iKXKvYPLmSykeJ6QmthCkXXa/5bcyKmBaokgb8WqJcGaVEbjy5Dvq3lQ0ln4MOWhcKNiCJ2GYxuYyoYM3v7u3dkhK0hFo/RXTkILG0ujRnR8X5OwN+ej3SaXmAcCs/umWZLkdWzghYeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728654675; c=relaxed/simple;
-	bh=JZpTFHIOKgsBhrK+TAyqIMe3uV9e4+zAkXpEvbByrtE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RZHAoAkl8Jo2pK9NFbUv85zGACcbvCqnTzwL9fUtN6OnGlyAo5jHBEiyj7KiZK37Pzc2b/3aN0dLWFE696u7ZBOR84BEXkhtZU8FUrEP7i2qArKCqDn9MdzZmAkZXo/F0loXqz21AUTn7LIc3EFp2lo+nQfmhPncarczAbqj+10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fZlzaVOr; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1728654674; x=1760190674;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=JZpTFHIOKgsBhrK+TAyqIMe3uV9e4+zAkXpEvbByrtE=;
-  b=fZlzaVOrCRHUNF3RJPkievhkT1A1xiCeBwdl4Ync+1CmOfkfRU9QrLub
-   fzitE0w3l1VsfdStgHZEb5jG3cmynWmY8UMkM9UYYOFUCLYZgtX+F/d3M
-   pL6l+0iz1kYBk9hn+ToOVsa6HzVDlV5BlrUoaNs1/ZmVNq2JhXXbbY4Jl
-   Iri2MJJ4Ec9gumdRmoBjUTYcAnQpGdtrKRjl9B2yWuHBo5MYEPTFqc16Z
-   G58cko1qMqSloqg1yITxdVLeV0sZ4XWOzlR0BodalU6x/1nwX+Wg5V3mQ
-   8Rgqt/ewimAaA5qBm/yJsGZTn4OvBYvH0Q5f2RlLr7E2YdmlGgceP0xIB
-   A==;
-X-CSE-ConnectionGUID: gnJlkRW4TP2awSLw3E/2rw==
-X-CSE-MsgGUID: jZ6Z4kA0QU2BnSslE7bPNg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="27862192"
-X-IronPort-AV: E=Sophos;i="6.11,196,1725346800"; 
-   d="scan'208";a="27862192"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 06:51:12 -0700
-X-CSE-ConnectionGUID: +v41otkISg+36h8OYkcGUw==
-X-CSE-MsgGUID: Wq59MZX2TDuGSzOxtLCdcA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,196,1725346800"; 
-   d="scan'208";a="76834109"
-Received: from smile.fi.intel.com ([10.237.72.154])
-  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Oct 2024 06:50:58 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1szG2d-00000001uKQ-3BlX;
-	Fri, 11 Oct 2024 16:50:51 +0300
-Date: Fri, 11 Oct 2024 16:50:51 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Philipp Stanner <pstanner@redhat.com>
-Cc: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Basavaraj Natikar <basavaraj.natikar@amd.com>,
-	Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Alex Dubov <oakad@yahoo.com>,
-	Sudarsana Kalluru <skalluru@marvell.com>,
-	Manish Chopra <manishc@marvell.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rasesh Mody <rmody@marvell.com>, GR-Linux-NIC-Dev@marvell.com,
-	Igor Mitsyanko <imitsyanko@quantenna.com>,
-	Sergey Matyukevich <geomatsi@gmail.com>,
-	Kalle Valo <kvalo@kernel.org>, Sanjay R Mehta <sanju.mehta@amd.com>,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Jon Mason <jdmason@kudzu.us>, Dave Jiang <dave.jiang@intel.com>,
-	Allen Hubbe <allenbh@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Chen Ni <nichen@iscas.ac.cn>, Ricky Wu <ricky_wu@realtek.com>,
-	Al Viro <viro@zeniv.linux.org.uk>, Breno Leitao <leitao@debian.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Mostafa Saleh <smostafa@google.com>, Hannes Reinecke <hare@suse.de>,
-	John Garry <john.g.garry@oracle.com>,
-	Soumya Negi <soumya.negi97@gmail.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Yi Liu <yi.l.liu@intel.com>,
-	"Dr. David Alan Gilbert" <linux@treblig.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Eric Auger <eric.auger@redhat.com>, Ye Bin <yebin10@huawei.com>,
-	Marek =?iso-8859-1?Q?Marczykowski-G=F3recki?= <marmarek@invisiblethingslab.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Rui Salvaterra <rsalvaterra@gmail.com>,
-	Marc Zyngier <maz@kernel.org>, linux-ide@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-	netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-	ntb@lists.linux.dev, linux-pci@vger.kernel.org,
-	linux-staging@lists.linux.dev, kvm@vger.kernel.org,
-	xen-devel@lists.xenproject.org, linux-sound@vger.kernel.org
-Subject: Re: [RFC PATCH 01/13] PCI: Prepare removing devres from pci_intx()
-Message-ID: <ZwktO8AUmFEakhVP@smile.fi.intel.com>
-References: <20241009083519.10088-1-pstanner@redhat.com>
- <20241009083519.10088-2-pstanner@redhat.com>
- <ZwfnULv2myACxnVb@smile.fi.intel.com>
- <f65e9fa01a1947782fc930876e5f84174408db67.camel@redhat.com>
+	s=arc-20240116; t=1728657580; c=relaxed/simple;
+	bh=ObFMZtBAAacC/P83aZm9WRPrbE0ZqpADQws0/SSHTm4=;
+	h=From:To:CC:In-Reply-To:References:Subject:Message-ID:Date:
+	 MIME-Version:Content-Type; b=hCeMfRh9tR58FOMURUFyi966bqbl4+DzWpK+JFVpeXFVhAVAFyIovFOPG9Va/DUHlKKPZh58FEO+j/xSzVEBgMXhXV6Afa5oNBxTLjjrfPQWiDSY3JZn9lIUmDuM6gS4L4j8isoJkpBUNZ6jLgPM9kmWBcED29Z27kyM7a9NFLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=IvqfDn7F; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49BAjWOs005432;
+	Fri, 11 Oct 2024 14:39:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	L2C9ZVjGeGuo1wcMeYk37kBBOFT3TAusl1UrGYBdQz0=; b=IvqfDn7F1TvDjqac
+	UMU9Zfu813+safIgFm7JWDRZTZZ2ScXJ0SxUnjZzHHR/3MuqG/+Ze2nxaNPM5sp5
+	2caYAR+P1i0tATItCmIeJZ55cf8SHNop89KuEkpmUD9GtTmqh2/EE8+hz3Yk+49e
+	B42inOHc1mN6X1lgkJ9AEC3YYejwER40wECObv2E54b66vqySUj3PiBKp8O2t+UU
+	ps54acpTuJbdNJD23py416Kbaw86JHPizb+AOWoNoV5PN1HAmvQ0Bw6APymeT5jU
+	uDWzpOy+AVNaRNBHRh5n9crfSFQGT+r2DMdkqgpORJv+buRZ9GanfsrEA4/1tX+j
+	B6HKIA==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 426t7st244-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 11 Oct 2024 14:39:34 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49BEdY82016049
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 11 Oct 2024 14:39:34 GMT
+Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 11 Oct
+ 2024 07:39:34 -0700
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+To: <ath12k@lists.infradead.org>, Kalle Valo <kvalo@kernel.org>
+CC: <linux-wireless@vger.kernel.org>
+In-Reply-To: <20241007165932.78081-1-kvalo@kernel.org>
+References: <20241007165932.78081-1-kvalo@kernel.org>
+Subject: Re: [PATCH v4 0/6] wifi: ath12k: switch to using wiphy_lock()
+Message-ID: <172865757395.243911.9922704649615659085.b4-ty@quicinc.com>
+Date: Fri, 11 Oct 2024 07:39:33 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f65e9fa01a1947782fc930876e5f84174408db67.camel@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.0
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 2ENUQEBAIK0YNnf2L3THv0Jb-KR4iswN
+X-Proofpoint-ORIG-GUID: 2ENUQEBAIK0YNnf2L3THv0Jb-KR4iswN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ mlxlogscore=643 malwarescore=0 phishscore=0 mlxscore=0 priorityscore=1501
+ suspectscore=0 impostorscore=0 clxscore=1015 adultscore=0 bulkscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410110101
 
-On Fri, Oct 11, 2024 at 02:16:06PM +0200, Philipp Stanner wrote:
-> On Thu, 2024-10-10 at 17:40 +0300, Andy Shevchenko wrote:
-> > On Wed, Oct 09, 2024 at 10:35:07AM +0200, Philipp Stanner wrote:
-> > > pci_intx() is a hybrid function which sometimes performs devres
-> > > operations, depending on whether pcim_enable_device() has been used
-> > > to
-> > > enable the pci_dev. This sometimes-managed nature of the function
-> > > is
-> > > problematic. Notably, it causes the function to allocate under some
-> > > circumstances which makes it unusable from interrupt context.
-> > > 
-> > > To, ultimately, remove the hybrid nature from pci_intx(), it is
-> > > first
-> > > necessary to provide an always-managed and a never-managed version
-> > > of that function. Then, all callers of pci_intx() can be ported to
-> > > the
-> > > version they need, depending whether they use pci_enable_device()
-> > > or
-> > > pcim_enable_device().
 
-> > > An always-managed function exists, namely pcim_intx(), for which
-> > > __pcim_intx(), a never-managed version of pci_intx() had been
-> > > implemented.
-> > 
-> > > Make __pcim_intx() a public function under the name
-> > > pci_intx_unmanaged(). Make pcim_intx() a public function.
-
-It seems I got confused by these two paragraphs. Why the double underscored
-function is even mentioned here?
-
-> > To avoid an additional churn we can make just completely new APIs,
-> > namely:
-> > pcim_int_x()
-> > pci_int_x()
-> > 
-> > You won't need all dirty dances with double underscored function
-> > naming and
-> > renaming.
+On Mon, 07 Oct 2024 19:59:26 +0300, Kalle Valo wrote:
+> From: Kalle Valo <quic_kvalo@quicinc.com>
 > 
-> Ähm.. I can't follow. The new version doesn't use double underscores
-> anymore. __pcim_intx() is being removed, effectively.
-> After this series, we'd end up with a clean:
+> Convert all uses of struct ath12k::conf_mutex to use struct wiphy::mtx, which
+> is already used by mac80211, and remove conf_mutex from ath12k. This way we
+> have one mutex less in ath12k and simpler locking design.
 > 
-> 	pci_intx() <-> pcim_intx()
+> v4:
 > 
-> just as in the other PCI APIs.
+> [...]
 
-...
+Applied, thanks!
 
-> > > +	pci_read_config_word(pdev, PCI_COMMAND, &pci_command);
-> > > +
-> > > +	if (enable)
-> > > +		new = pci_command & ~PCI_COMMAND_INTX_DISABLE;
-> > > +	else
-> > > +		new = pci_command | PCI_COMMAND_INTX_DISABLE;
-> > > +
-> > > +	if (new != pci_command)
-> > 
-> > I would use positive conditionals as easy to read (yes, a couple of
-> > lines
-> > longer, but also a win is the indentation and avoiding an additional
-> > churn in
-> > the future in case we need to add something in this branch.
-> 
-> I can't follow. You mean:
-> 
-> if (new == pci_command)
->     return;
-> 
-> ?
-> 
-> That's exactly the same level of indentation.
+[1/6] wifi: ath12k: fix atomic calls in ath12k_mac_op_set_bitrate_mask()
+      commit: 8fac3266c68a8e647240b8ac8d0b82f1821edf85
+[2/6] wifi: ath12k: convert struct ath12k_sta::update_wk to use struct wiphy_work
+      commit: 58550cdda961dedad8ed08c5abf8367d5c020fb6
+[3/6] wifi: ath12k: switch to using wiphy_lock() and remove ar->conf_mutex
+      commit: b8c67509b91ec23fcacbb99d40c960ab479e1299
+[4/6] wifi: ath12k: cleanup unneeded labels
+      commit: 31489439e6481cd0c21c8c7096d2ec44dc56b6a6
+[5/6] wifi: ath12k: ath12k_mac_set_key(): remove exit label
+      commit: 37d06d71e69c16d24ccc276cb86489fd2fcd00c4
+[6/6] wifi: ath12k: ath12k_mac_op_sta_state(): clean up update_wk cancellation
+      commit: e805272f8c2dee280e2fa1c1a454517df17f1261
 
-No, the body gets one level off.
-
-> Plus, I just copied the code.
-> 
-> > > +		pci_write_config_word(pdev, PCI_COMMAND, new);
-
-	if (new == pci_command)
-		return;
-
-	pci_write_config_word(pdev, PCI_COMMAND, new);
-
-See the difference?
-Also, imaging adding a new code in your case:
-
-	if (new != pci_command)
-		pci_write_config_word(pdev, PCI_COMMAND, new);
-
-==>
-
-	if (new != pci_command) {
-		...foo...
-		pci_write_config_word(pdev, PCI_COMMAND, new);
-		...bar...
-	}
-
-And in mine:
-
-	if (new == pci_command)
-		return;
-
-	...foo...
-	pci_write_config_word(pdev, PCI_COMMAND, new);
-	...bar...
-
-I hope it's clear now what I meant.
-
+Best regards,
 -- 
-With Best Regards,
-Andy Shevchenko
-
+Jeff Johnson <quic_jjohnson@quicinc.com>
 
 
