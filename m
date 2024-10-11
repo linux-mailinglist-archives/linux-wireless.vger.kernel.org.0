@@ -1,73 +1,73 @@
-Return-Path: <linux-wireless+bounces-13901-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13902-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8272199ADA9
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Oct 2024 22:44:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4789499ADAA
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Oct 2024 22:45:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFC56282362
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Oct 2024 20:44:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDF2C1F227E8
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Oct 2024 20:45:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEAB019B3CB;
-	Fri, 11 Oct 2024 20:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E8F1BE251;
+	Fri, 11 Oct 2024 20:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UGvsuUa9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l0QEIi88"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6CE41991DB
-	for <linux-wireless@vger.kernel.org>; Fri, 11 Oct 2024 20:44:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C61198850
+	for <linux-wireless@vger.kernel.org>; Fri, 11 Oct 2024 20:45:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728679473; cv=none; b=TfstTo02wcv0BBcivfIUkiLygzRd0TPp7MZOvU9qA4PmYj1uVqtk8GXio8eNqrZdkijRnczZy/Kplusk79UE0hvD12TI6FrXvFSWLNQfDM2D8Q6yqF8bUv3BpXjSCh4f7Up90+bVr+cHGGvqcUg8NaWFlVj5FgkSdgnkKIjW/is=
+	t=1728679539; cv=none; b=jLOM+E+qf8hEiBjQ/iWuS4GuA4cLIY1wW481k9osw8jdCSwstcF5LkEtKX5oA9K1kJBPbHFZcCRGXR5hg30BQ1MTHQiDVvfudYEQrr68Kr80wWf71tdUX5TFXZkd+GFnLh0K/IBlMbLwSN471kVBSZTDMWQLCk+J6VrU7CZxs9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728679473; c=relaxed/simple;
-	bh=zMkqOzFN0AzlMf6q+PM9fWJRZqkdQxeI9yezKr0N72U=;
+	s=arc-20240116; t=1728679539; c=relaxed/simple;
+	bh=hydkE4cokygQbWTW3MfiVswcoo7uY41ll4Lkq1t1ItY=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=UGXWdgGh5Eq2rG2n/XzFLaSXopcV5cqL1NeCUF51/vIjhopgMy/a8NF0uRPmJwvPOmc0BcgVwDchr2zOg5jDPmxngrsYPBVXAc2h1F36S1QAD+Jxpxcqh5KQ+Y3nZR9M9vPOeTdX3LImw/s0fGhlpgQKZPQu3GKULZkz7PZ2dDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UGvsuUa9; arc=none smtp.client-ip=209.85.128.50
+	 In-Reply-To:Content-Type; b=LlPxSVOwBTGCTwGa3xIpZxuZsWUfyqsQlCkkt2hQXdPzsS4nAMeldHAAgk8CDfIrcmx4fc0Ana4cX/8lpTo1akv5x3Y2XlF/ZZFN7JffRSD/sI9j/8CiW8LMxPq+uJ7XQWFP5J9mHTgx1YIVnsyHLV9q3wRaVgWDwRzVqRmbcy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l0QEIi88; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4311ac1994dso14943615e9.1
-        for <linux-wireless@vger.kernel.org>; Fri, 11 Oct 2024 13:44:31 -0700 (PDT)
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-43055b43604so22107225e9.3
+        for <linux-wireless@vger.kernel.org>; Fri, 11 Oct 2024 13:45:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728679470; x=1729284270; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1728679536; x=1729284336; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=6fiRozuzIXBG82ud0imjiJaxs/QORhmb+QGmMgySLHQ=;
-        b=UGvsuUa99kR1AAi90NrvlYLpstHKfQhjDeM+BRQ5yuG3wk55GHAbO19KzwiFI0gUDG
-         bKdpK0R6XyiIkbpcZPakTatZf6dnyZsufj39PH61hqNpbINFIKeXgaPHW/REwNNdH+HO
-         uxRD5xsGJvBDSosQuvxlpvYs/iGFi6uw6lOa8DEVXTnVZwnGtBHHHOut8bXm7Y9yNbs2
-         DBLjwJ8zqrBdTBmWXsMc8DXYSxLpA8Hua8GBtS7e08QQZrm84t+KMT71vcfThERGR3VV
-         4uhcHx3Kiixycp8vn/LmDRiL0ok7iJcejhQa7ZmFBWZuSHd3wwPfu/1CQJjAFU5zLUYr
-         lB/A==
+        bh=JTLdt4BxksjHi8NKFiwPHAaByB092+AM07DTNccjOQU=;
+        b=l0QEIi88SK2EQI6Kv6m0i3wr/XVs6ayZeSk32oukD1keQRvbDj+58x11TVkztozzSl
+         r+fWCNbzfOqk4Z+9ZrPcfaAaYLch4JobOvQXwld/Fwp4iomQ+lQqY1hpEAeV3ESasiH0
+         sZ7co2vuZvP8lkBPYpn1x7L5A+QN7mZh6BhfVLvOozHFT8renFuawaCh+G/LYqhX3Rau
+         +LA+EObi3v6V3dQGYusfRh77yHzk+Jc60OJYFOVUa8HGBwtvy9LMaArjRFvctuykQMqC
+         4pLOFzFLyy8AyjlZXicScBWqPO2tslSX4zXsHKy+7YOEsJG/3pvQ9vfRYf0+HVcTekDt
+         kxRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728679470; x=1729284270;
+        d=1e100.net; s=20230601; t=1728679536; x=1729284336;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6fiRozuzIXBG82ud0imjiJaxs/QORhmb+QGmMgySLHQ=;
-        b=bVEYdEYdYprPRhwoY/vCo576NsaYygX26zpd5DoAkd5HvzRL3UhKjoXkwgsU6GlqTg
-         LR1Jm96BaShsSYNve1uk27AagtgZ759PvsN2E5LVPHtQoKAnRTgNE525Id3yWuH/C7S3
-         jwtjqMJEICRNDNW6TQe5luYaqaO7OUUkR/3b6RlczdaRgCOpeWFwKnS5WcngN4DeG3hi
-         qd/eAW9oR8vtBczszclbLQN1RlqBzHVdoApAI1aERIYi0XJ76kZSKdTIBVPEJqHobj5X
-         zB87ew4ud3BCXlq9RjRuZn6WaT+T5jLwr8WQ+y49YXWlgYYTa9CKDjU9WFHr6LkWWaTJ
-         sh5A==
-X-Gm-Message-State: AOJu0YwDlOI9U4ireDTRHwENEATVeO5IVj/9e5bGnueDcEp7PxumkPxc
-	WY0mNnqcrumD3pjtDMoAObyizZ2Zc+LtZQspbI7RVcLdHwjuDlqRWda+kQ==
-X-Google-Smtp-Source: AGHT+IG1LkpfSa59fyq07xPcKLVR59sCHy0y89XJH3UVT8srvDvOHSrC5ak5/g8AtaqXD9RWUMgaeg==
-X-Received: by 2002:a05:600c:5248:b0:42c:bae0:f05b with SMTP id 5b1f17b1804b1-4311deae1a9mr33383695e9.1.1728679469679;
-        Fri, 11 Oct 2024 13:44:29 -0700 (PDT)
+        bh=JTLdt4BxksjHi8NKFiwPHAaByB092+AM07DTNccjOQU=;
+        b=l2b19vXmh9dTCBABpidUee3ap9iNIhecvEuo9NqP7u8ETGCm4L+DmD0KqnjMkHugGx
+         bSRzrnGn9P+GhwzVBHy23WKNqnko0H2Jrge9act0+FwlgYgwwPksVNVUW/hEQmsNcW3p
+         b/2vy+FnwhXe4q5eLuuwP4jx5x157xNAROhFidOCajExwXpRNEwE8OiGwAcqRFCYpHuH
+         qWXqwAPEglMwhEq9ra0XcYDIQie8XZbXj90b0ZYY4JpE87UgiT22tu5+Jnoz8ztYgTHf
+         pxx2AZ6tuOmuCTX2W35dQfThgmoh4FZt8vNV190jVB02x+IXA6aN8CwcBYeWhIIVckth
+         GjzQ==
+X-Gm-Message-State: AOJu0YzTu4Fwj/LeukOQD9rOrqZh5dVEOT8e573QCt5tBbv5p9ilcZta
+	3cRpFhXbsxdR5p0LSmqzCnS+Szcmgo67IaNBjDuHeCotfvNZNmQLM1tkeA==
+X-Google-Smtp-Source: AGHT+IGjgVGDwb7YREdQLWJrGU4N683mJD0kZbO+LFjgQIHZmkQ8ThYSvmmt2WSw7NtPkyjekLS+Bw==
+X-Received: by 2002:a05:600c:3ba9:b0:42c:b6e4:e3aa with SMTP id 5b1f17b1804b1-4311deae9ccmr36410375e9.5.1728679536211;
+        Fri, 11 Oct 2024 13:45:36 -0700 (PDT)
 Received: from [192.168.0.50] ([79.113.150.231])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b6a8911sm4689469f8f.14.2024.10.11.13.44.28
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b6a881bsm4723272f8f.16.2024.10.11.13.45.35
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Oct 2024 13:44:29 -0700 (PDT)
-Message-ID: <f778497d-41ea-4bb5-b155-22518c87f33d@gmail.com>
-Date: Fri, 11 Oct 2024 23:44:26 +0300
+        Fri, 11 Oct 2024 13:45:35 -0700 (PDT)
+Message-ID: <709c69ad-d272-4738-a443-cf57e54841ee@gmail.com>
+Date: Fri, 11 Oct 2024 23:45:34 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,8 +75,8 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH v2 01/22] wifi: rtw88: Add some definitions for
- RTL8821AU/RTL8812AU
+Subject: [PATCH v2 02/22] wifi: rtw88: Dump the HW features only for some
+ chips
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 Cc: Ping-Ke Shih <pkshih@realtek.com>
@@ -86,501 +86,109 @@ In-Reply-To: <d2870a44-9b91-4090-9a25-873eb62997f5@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Add 8821A and 8812A chip type enums.
-
-Add cck_high_power member to struct rtw_hal. This will be used to
-calculate the RX signal strength of RTL8812AU.
-
-Add various register definitions which will be used by the new drivers.
-
-Move some existing register definitions from rtw8821c.h and rtw8822b.h.
-They were duplicated in those headers and will also be used by the new
-drivers.
+RTL8821AU and RTL8812AU don't support this. They hit the "failed to read
+hw feature report" error.
 
 Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 ---
-v2:
- - Add register definitions.
- - Move some common definitions from rtw8821c.h and rtw8822b.h.
+ v2:
+ - Return instead of printing hw_cap.
 ---
- drivers/net/wireless/realtek/rtw88/main.h     |   3 +
- drivers/net/wireless/realtek/rtw88/reg.h      | 174 ++++++++++++++++++
- drivers/net/wireless/realtek/rtw88/rtw8821c.h |  24 ---
- drivers/net/wireless/realtek/rtw88/rtw8822b.h |  12 --
- 4 files changed, 177 insertions(+), 36 deletions(-)
+ drivers/net/wireless/realtek/rtw88/main.c     | 3 +++
+ drivers/net/wireless/realtek/rtw88/main.h     | 1 +
+ drivers/net/wireless/realtek/rtw88/rtw8703b.c | 1 +
+ drivers/net/wireless/realtek/rtw88/rtw8723d.c | 1 +
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c | 1 +
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c | 1 +
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c | 1 +
+ 7 files changed, 9 insertions(+)
 
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index bbdef38c7e34..942266324ca4 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -1917,6 +1917,9 @@ static int rtw_dump_hw_feature(struct rtw_dev *rtwdev)
+ 	u8 bw;
+ 	int i;
+ 
++	if (!rtwdev->chip->hw_feature_report)
++		return 0;
++
+ 	id = rtw_read8(rtwdev, REG_C2HEVT);
+ 	if (id != C2H_HW_FEATURE_REPORT) {
+ 		rtw_err(rtwdev, "failed to read hw feature report\n");
 diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index 05cfb235f272..a2bef559cfb8 100644
+index a2bef559cfb8..58c7c6a178a8 100644
 --- a/drivers/net/wireless/realtek/rtw88/main.h
 +++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -189,6 +189,8 @@ enum rtw_chip_type {
- 	RTW_CHIP_TYPE_8723D,
- 	RTW_CHIP_TYPE_8821C,
- 	RTW_CHIP_TYPE_8703B,
-+	RTW_CHIP_TYPE_8821A,
-+	RTW_CHIP_TYPE_8812A,
- };
+@@ -1200,6 +1200,7 @@ struct rtw_chip_info {
+ 	const struct rtw_fwcd_segs *fwcd_segs;
  
- enum rtw_tx_queue_type {
-@@ -1934,6 +1936,7 @@ struct rtw_hal {
- 	u32 antenna_rx;
- 	u8 bfee_sts_cap;
- 	bool txrx_1ss;
-+	bool cck_high_power;
+ 	u8 usb_tx_agg_desc_num;
++	bool hw_feature_report;
  
- 	/* protect tx power section */
- 	struct mutex tx_power_mutex;
-diff --git a/drivers/net/wireless/realtek/rtw88/reg.h b/drivers/net/wireless/realtek/rtw88/reg.h
-index 4d9b8668e8b0..e4d506cf9c33 100644
---- a/drivers/net/wireless/realtek/rtw88/reg.h
-+++ b/drivers/net/wireless/realtek/rtw88/reg.h
-@@ -9,6 +9,7 @@
- #define BIT_FEN_EN_25_1		BIT(13)
- #define BIT_FEN_ELDR		BIT(12)
- #define BIT_FEN_CPUEN		BIT(2)
-+#define BIT_FEN_USBA		BIT(2)
- #define BIT_FEN_BB_GLB_RST	BIT(1)
- #define BIT_FEN_BB_RSTB		BIT(0)
- #define BIT_R_DIS_PRST		BIT(6)
-@@ -16,6 +17,10 @@
- #define REG_SYS_PW_CTRL		0x0004
- #define BIT_PFM_WOWL		BIT(3)
- #define BIT_APFM_OFFMAC		BIT(9)
-+#define REG_APS_FSMCO		0x0004
-+#define APS_FSMCO_MAC_ENABLE	BIT(8)
-+#define APS_FSMCO_MAC_OFF	BIT(9)
-+#define APS_FSMCO_HW_POWERDOWN	BIT(15)
- #define REG_SYS_CLK_CTRL	0x0008
- #define BIT_CPU_CLK_EN		BIT(14)
+ 	u8 default_1ss_tx_path;
  
-@@ -58,6 +63,8 @@
- #define BIT_SHIFT_LDO25_VOLTAGE	4
- #define BIT_LDO25_EN		BIT(7)
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8703b.c b/drivers/net/wireless/realtek/rtw88/rtw8703b.c
+index 77399b8dd8cd..01ac07ac68c8 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8703b.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8703b.c
+@@ -1960,6 +1960,7 @@ const struct rtw_chip_info rtw8703b_hw_spec = {
+ 	.max_power_index = 0x3f,
+ 	.ampdu_density = IEEE80211_HT_MPDU_DENSITY_16,
+ 	.usb_tx_agg_desc_num = 1, /* Not sure if this chip has USB interface */
++	.hw_feature_report = true,
  
-+#define REG_ACLK_MON		0x3e
-+
- #define REG_GPIO_MUXCFG		0x0040
- #define BIT_FSPI_EN		BIT(19)
- #define BIT_EN_SIC		BIT(12)
-@@ -90,6 +97,8 @@
- #define BIT_USB_SUS_DIS		BIT(8)
- #define BIT_SDIO_PAD_E5		BIT(18)
- 
-+#define REG_RF_B_CTRL		0x76
-+
- #define REG_AFE_CTRL_4		0x0078
- #define BIT_CK320M_AFE_EN	BIT(4)
- #define BIT_EN_SYN		BIT(15)
-@@ -134,6 +143,11 @@
- #define REG_PMC_DBG_CTRL1	0xa8
- #define BITS_PMC_BT_IQK_STS	GENMASK(22, 21)
- 
-+#define REG_HIMR0		0xb0
-+#define REG_HISR0		0xb4
-+#define REG_HIMR1		0xb8
-+#define REG_HISR1		0xbc
-+
- #define REG_PAD_CTRL2		0x00C4
- #define BIT_RSM_EN_V1		BIT(16)
- #define BIT_NO_PDN_CHIPOFF_V1	BIT(17)
-@@ -185,6 +199,15 @@
- #define MAC_TRX_ENABLE	(BIT_HCI_TXDMA_EN | BIT_HCI_RXDMA_EN | BIT_TXDMA_EN | \
- 			BIT_RXDMA_EN | BIT_PROTOCOL_EN | BIT_SCHEDULE_EN | \
- 			BIT_MACTXEN | BIT_MACRXEN)
-+#define REG_PBP			0x104
-+#define PBP_RX_MASK		0x0f
-+#define PBP_TX_MASK		0xf0
-+#define PBP_64			0x0
-+#define PBP_128			0x1
-+#define PBP_256			0x2
-+#define PBP_512			0x3
-+#define PBP_1024		0x4
-+
- #define BIT_SHIFT_TXDMA_VOQ_MAP	4
- #define BIT_MASK_TXDMA_VOQ_MAP	0x3
- #define BIT_TXDMA_VOQ_MAP(x)                                                   \
-@@ -256,6 +279,8 @@
- #define REG_HMEBOX1		0x01D4
- #define REG_HMEBOX2		0x01D8
- #define REG_HMEBOX3		0x01DC
-+#define REG_LLT_INIT		0x01E0
-+#define BIT_LLT_WRITE_ACCESS	BIT(30)
- #define REG_HMEBOX0_EX		0x01F0
- #define REG_HMEBOX1_EX		0x01F4
- #define REG_HMEBOX2_EX		0x01F8
-@@ -298,6 +323,7 @@
- 
- #define REG_AUTO_LLT		0x0224
- #define BIT_AUTO_INIT_LLT	BIT(16)
-+#define REG_DWBCN1_CTRL		0x0228
- #define REG_RQPN_CTRL_1		0x0228
- #define REG_RQPN_CTRL_2		0x022C
- #define BIT_LD_RQPN		BIT(31)
-@@ -329,6 +355,7 @@
- #define BIT_DMA_BURST_SIZE_1024	0
- 
- #define REG_RXPKTNUM		0x02B0
-+#define REG_EARLY_MODE_CONTROL	0x02BC
- 
- #define REG_INT_MIG		0x0304
- #define REG_HCI_MIX_CFG		0x03FC
-@@ -336,6 +363,7 @@
- 
- #define REG_BCNQ_INFO		0x0418
- #define BIT_MGQ_CPU_EMPTY	BIT(24)
-+#define REG_TXPKT_EMPTY		0x041A
- #define REG_FWHW_TXQ_CTRL	0x0420
- #define BIT_EN_BCNQ_DL		BIT(22)
- #define BIT_EN_WR_FREE_TAIL	BIT(20)
-@@ -362,10 +390,12 @@
- #define REG_AMPDU_MAX_TIME_V1	0x0455
- #define REG_BCNQ1_BDNY_V1	0x0456
- #define REG_AMPDU_MAX_TIME	0x0456
-+#define REG_AMPDU_MAX_LENGTH	0x0458
- #define REG_WMAC_LBK_BF_HD	0x045D
- #define REG_TX_HANG_CTRL	0x045E
- #define BIT_EN_GNT_BT_AWAKE	BIT(3)
- #define BIT_EN_EOF_V1		BIT(2)
-+#define REG_FAST_EDCA_CTRL	0x0460
- #define REG_DATA_SC		0x0483
- #define REG_ARFR2_V1		0x048C
- #define REG_ARFRH2_V1		0x0490
-@@ -390,6 +420,8 @@
- #define REG_PRECNT_CTRL		0x04E5
- #define BIT_BTCCA_CTRL		(BIT(0) | BIT(1))
- #define BIT_EN_PRECNT		BIT(11)
-+#define REG_TX_RPT_CTRL		0x04EC
-+#define REG_TX_RPT_TIME		0x04F0
- #define REG_DUMMY_PAGE4_V1	0x04FC
- 
- #define REG_EDCA_VO_PARAM	0x0500
-@@ -400,6 +432,7 @@
- #define BIT_MASK_CWMAX		GENMASK(15, 12)
- #define BIT_MASK_CWMIN		GENMASK(11, 8)
- #define BIT_MASK_AIFS		GENMASK(7, 0)
-+#define REG_BCNTCFG		0x0510
- #define REG_PIFS		0x0512
- #define REG_SIFS		0x0514
- #define BIT_SHIFT_SIFS_OFDM_CTX	8
-@@ -526,6 +559,8 @@
- #define REG_BT_COEX_V2		0x0762
- #define BIT_GNT_BT_POLARITY	BIT(12)
- #define BIT_LTE_COEX_EN		BIT(7)
-+#define REG_GNT_BT		0x0765
-+#define BIT_PTA_SW_CTL		GENMASK(4, 3)
- #define REG_BT_COEX_ENH_INTR_CTRL	0x76E
- #define BIT_R_GRANTALL_WLMASK	BIT(3)
- #define BIT_STATIS_BT_EN	BIT(2)
-@@ -543,14 +578,43 @@
- #define REG_FPGA0_RFMOD		0x0800
- #define BIT_CCKEN		BIT(24)
- #define BIT_OFDMEN		BIT(25)
-+#define REG_CCK_RPT_FORMAT	0x0804
-+#define BIT_CCK_RPT_FORMAT	BIT(16)
-+#define REG_RXPSEL		0x0808
-+#define BIT_RX_PSEL_RST		(BIT(28) | BIT(29))
-+#define REG_TXPSEL		0x080C
- #define REG_RX_GAIN_EN		0x081c
-+#define REG_CCASEL		0x082C
-+#define REG_PDMFTH		0x0830
-+#define REG_BWINDICATION	0x0834
-+#define REG_CCA2ND		0x0838
-+#define REG_L1PKTH		0x0848
-+#define REG_CLKTRK		0x0860
-+#define REG_ADCCLK		0x08AC
-+#define REG_HSSI_READ		0x08B0
-+#define REG_FPGA0_XCD_RF_PARA	0x08B4
-+#define REG_RX_MCS_LIMIT	0x08BC
-+#define REG_ADC160		0x08C4
-+#define REG_ANTSEL_SW		0x0900
-+#define REG_DAC_RSTB		0x090c
-+#define REG_SINGLE_TONE_CONT_TX	0x0914
- 
- #define REG_RFE_CTRL_E		0x0974
- #define REG_2ND_CCA_CTRL	0x0976
-+#define REG_IQK_COM00		0x0978
-+#define REG_IQK_COM32		0x097c
-+#define REG_IQK_COM64		0x0980
-+#define REG_IQK_COM96		0x0984
-+
-+#define REG_FAS			0x09a4
-+#define REG_RXSB		0x0a00
-+#define REG_CCK_RX		0x0a04
-+#define REG_CCK_PD_TH		0x0a0a
- 
- #define REG_CCK0_FAREPORT	0xa2c
- #define BIT_CCK0_2RX		BIT(18)
- #define BIT_CCK0_MRC		BIT(22)
-+#define REG_FA_CCK		0x0a5c
- 
- #define REG_DIS_DPD		0x0a70
- #define DIS_DPD_MASK		GENMASK(9, 0)
-@@ -566,13 +630,109 @@
- #define DIS_DPD_RATEVHT2SS_MCS1	BIT(9)
- #define DIS_DPD_RATEALL		GENMASK(9, 0)
- 
-+#define REG_CNTRST		0x0b58
-+
-+#define REG_3WIRE_SWA		0x0c00
-+#define REG_RX_IQC_AB_A		0x0c10
-+#define REG_TXSCALE_A		0x0c1c
-+#define BB_SWING_MASK		GENMASK(31, 21)
-+#define REG_TX_AGC_A_CCK_11_CCK_1		0xc20
-+#define REG_TX_AGC_A_OFDM18_OFDM6		0xc24
-+#define REG_TX_AGC_A_OFDM54_OFDM24		0xc28
-+#define REG_TX_AGC_A_MCS3_MCS0			0xc2c
-+#define REG_TX_AGC_A_MCS7_MCS4			0xc30
-+#define REG_TX_AGC_A_MCS11_MCS8			0xc34
-+#define REG_TX_AGC_A_MCS15_MCS12		0xc38
-+#define REG_TX_AGC_A_NSS1_INDEX3_NSS1_INDEX0	0xc3c
-+#define REG_TX_AGC_A_NSS1_INDEX7_NSS1_INDEX4	0xc40
-+#define REG_TX_AGC_A_NSS2_INDEX1_NSS1_INDEX8	0xc44
-+#define REG_TX_AGC_A_NSS2_INDEX5_NSS2_INDEX2	0xc48
-+#define REG_TX_AGC_A_NSS2_INDEX9_NSS2_INDEX6	0xc4c
-+#define REG_RXIGI_A		0x0c50
-+#define REG_TX_PWR_TRAINING_A	0x0c54
-+#define REG_CK_MONHA		0x0c5c
-+#define REG_AFE_PWR1_A		0x0c60
-+#define REG_AFE_PWR2_A		0x0c64
-+#define REG_RX_WAIT_CCA_TX_CCK_RFON_A	0x0c68
-+#define REG_OFDM0_XA_TX_IQ_IMBALANCE	0x0c80
-+#define REG_OFDM0_A_TX_AFE	0x0c84
-+#define REG_OFDM0_XB_TX_IQ_IMBALANCE	0x0c88
-+#define REG_TSSI_TRK_SW		0x0c8c
-+#define REG_LSSI_WRITE_A	0x0c90
-+#define REG_PREDISTA		0x0c90
-+#define REG_TXAGCIDX		0x0c94
-+
-+#define REG_RFE_PINMUX_A	0x0cb0
-+#define REG_RFE_INV_A		0x0cb4
- #define REG_RFE_CTRL8		0x0cb4
- #define BIT_MASK_RFE_SEL89	GENMASK(7, 0)
-+#define PTA_CTRL_PIN		0x66
-+#define DPDT_CTRL_PIN		0x77
-+#define RFE_INV_MASK		0x3ff00000
-+#define REG_RFECTL_A		0x0cb8
- #define REG_RFE_INV8		0x0cbd
- #define BIT_MASK_RFE_INV89	GENMASK(1, 0)
- #define REG_RFE_INV16		0x0cbe
- #define BIT_RFE_BUF_EN		BIT(3)
- 
-+#define REG_IQK_DPD_CFG		0x0cc4
-+#define REG_CFG_PMPD		0x0cc8
-+#define REG_IQC_Y		0x0ccc
-+#define REG_IQC_X		0x0cd4
-+#define REG_INTPO_SETA		0x0ce8
-+
-+#define REG_IQKA_END		0x0d00
-+#define REG_PI_READ_A		0x0d04
-+#define REG_SI_READ_A		0x0d08
-+#define REG_IQKB_END		0x0d40
-+#define REG_PI_READ_B		0x0d44
-+#define REG_SI_READ_B		0x0d48
-+
-+#define REG_3WIRE_SWB		0x0e00
-+#define REG_RX_IQC_AB_B		0x0e10
-+#define REG_TXSCALE_B		0x0e1c
-+#define REG_TX_AGC_B_CCK_11_CCK_1		0xe20
-+#define REG_TX_AGC_B_OFDM18_OFDM6		0xe24
-+#define REG_TX_AGC_B_OFDM54_OFDM24		0xe28
-+#define REG_TX_AGC_B_MCS3_MCS0			0xe2c
-+#define REG_TX_AGC_B_MCS7_MCS4			0xe30
-+#define REG_TX_AGC_B_MCS11_MCS8			0xe34
-+#define REG_TX_AGC_B_MCS15_MCS12		0xe38
-+#define REG_TX_AGC_B_NSS1_INDEX3_NSS1_INDEX0	0xe3c
-+#define REG_TX_AGC_B_NSS1_INDEX7_NSS1_INDEX4	0xe40
-+#define REG_TX_AGC_B_NSS2_INDEX1_NSS1_INDEX8	0xe44
-+#define REG_TX_AGC_B_NSS2_INDEX5_NSS2_INDEX2	0xe48
-+#define REG_TX_AGC_B_NSS2_INDEX9_NSS2_INDEX6	0xe4c
-+#define REG_RXIGI_B		0x0e50
-+#define REG_TX_PWR_TRAINING_B	0x0e54
-+#define REG_CK_MONHB		0x0e5c
-+#define REG_AFE_PWR1_B		0x0e60
-+#define REG_AFE_PWR2_B		0x0e64
-+#define REG_RX_WAIT_CCA_TX_CCK_RFON_B	0x0e68
-+#define REG_TXTONEB		0x0e80
-+#define REG_RXTONEB		0x0e84
-+#define REG_TXPITMB		0x0e88
-+#define REG_RXPITMB		0x0e8c
-+#define REG_LSSI_WRITE_B	0x0e90
-+#define REG_PREDISTB		0x0e90
-+#define REG_INIDLYB		0x0e94
-+#define REG_RFE_PINMUX_B	0x0eb0
-+#define REG_RFE_INV_B		0x0eb4
-+#define REG_RFECTL_B		0x0eb8
-+#define REG_BPBDB		0x0ec4
-+#define REG_PHYTXONB		0x0ec8
-+#define REG_IQKYB		0x0ecc
-+#define REG_IQKXB		0x0ed4
-+#define REG_INTPO_SETB		0x0ee8
-+
-+#define REG_CRC_CCK		0x0f04
-+#define REG_CCA_OFDM		0x0f08
-+#define REG_CRC_VHT		0x0f0c
-+#define REG_CRC_HT		0x0f10
-+#define REG_CRC_OFDM		0x0f14
-+#define REG_FA_OFDM		0x0f48
-+#define REG_CCA_CCK		0x0fcc
-+
- #define REG_ANAPARSW_MAC_0	0x1010
- #define BIT_CF_L_V2		GENMASK(29, 28)
- 
-@@ -709,6 +869,10 @@
- 
- #define REG_IGN_GNTBT4	0x4160
- 
-+#define REG_USB_MOD	0xf008
-+#define REG_USB3_RXITV	0xf050
-+#define REG_USB_HRPWM	0xfe58
-+
- #define RF_MODE		0x00
- #define RF_MODOPT	0x01
- #define RF_WLINT	0x01
-@@ -716,7 +880,13 @@
- #define RF_DTXLOK	0x08
- #define RF_CFGCH	0x18
- #define BIT_BAND	GENMASK(18, 16)
-+#define RF18_BAND_MASK	(BIT(16) | BIT(9) | BIT(8))
-+#define RF18_CHANNEL_MASK	(MASKBYTE0)
-+#define RF18_RFSI_MASK	(BIT(18) | BIT(17))
- #define RF_RCK		0x1d
-+#define RF_MODE_TABLE_ADDR	0x30
-+#define RF_MODE_TABLE_DATA0	0x31
-+#define RF_MODE_TABLE_DATA1	0x32
- #define RF_LUTWA	0x33
- #define RF_LUTWD1	0x3e
- #define RF_LUTWD0	0x3f
-@@ -725,10 +895,14 @@
- #define RF_T_METER	0x42
- #define RF_BSPAD	0x54
- #define RF_GAINTX	0x56
-+#define RF_TXMOD	0x58
- #define RF_TXATANK	0x64
-+#define RF_TXA_PREPAD	0x65
- #define RF_TRXIQ	0x66
- #define RF_RXIQGEN	0x8d
-+#define RF_RXBB2	0x8f
- #define RF_SYN_PFD	0xb0
-+#define RF_LCK		0xb4
- #define RF_XTALX2	0xb8
- #define RF_SYN_CTRL	0xbb
- #define RF_MALSEL	0xbe
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.h b/drivers/net/wireless/realtek/rtw88/rtw8821c.h
-index 91ed921407bb..7a33ebd612ed 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8821c.h
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.h
-@@ -214,19 +214,10 @@ extern const struct rtw_chip_info rtw8821c_hw_spec;
- #define BIT_FEN_EN	BIT(26)
- #define REG_INIRTS_RATE_SEL 0x0480
- #define REG_HTSTFWT	0x800
--#define REG_RXPSEL	0x808
--#define BIT_RX_PSEL_RST		(BIT(28) | BIT(29))
--#define REG_TXPSEL	0x80c
- #define REG_RXCCAMSK	0x814
--#define REG_CCASEL	0x82c
--#define REG_PDMFTH	0x830
--#define REG_CCA2ND	0x838
- #define REG_L1WT	0x83c
- #define REG_L1PKWT	0x840
- #define REG_MRC		0x850
--#define REG_CLKTRK	0x860
--#define REG_ADCCLK	0x8ac
--#define REG_ADC160	0x8c4
- #define REG_ADC40	0x8c8
- #define REG_CHFIR	0x8f0
- #define REG_CDDTXP	0x93c
-@@ -234,14 +225,11 @@ extern const struct rtw_chip_info rtw8821c_hw_spec;
- #define REG_ACBB0	0x948
- #define REG_ACBBRXFIR	0x94c
- #define REG_ACGG2TBL	0x958
--#define REG_FAS		0x9a4
--#define REG_RXSB	0xa00
- #define REG_ADCINI	0xa04
- #define REG_PWRTH	0xa08
- #define REG_CCA_FLTR	0xa20
- #define REG_TXSF2	0xa24
- #define REG_TXSF6	0xa28
--#define REG_FA_CCK	0xa5c
- #define REG_RXDESC	0xa2c
- #define REG_ENTXCCK	0xa80
- #define BTG_LNA		0xfc84
-@@ -252,12 +240,8 @@ extern const struct rtw_chip_info rtw8821c_hw_spec;
- #define REG_PWRTH2	0xaa8
- #define REG_CSRATIO	0xaaa
- #define REG_TXFILTER	0xaac
--#define REG_CNTRST	0xb58
- #define REG_AGCTR_A	0xc08
--#define REG_TXSCALE_A	0xc1c
- #define REG_TXDFIR	0xc20
--#define REG_RXIGI_A	0xc50
--#define REG_TXAGCIDX	0xc94
- #define REG_TRSW	0xca0
- #define REG_RFESEL0	0xcb0
- #define REG_RFESEL8	0xcb4
-@@ -269,14 +253,6 @@ extern const struct rtw_chip_info rtw8821c_hw_spec;
- #define B_WLA_SWITCH	BIT(23)
- #define REG_RFEINV	0xcbc
- #define REG_AGCTR_B	0xe08
--#define REG_RXIGI_B	0xe50
--#define REG_CRC_CCK	0xf04
--#define REG_CRC_OFDM	0xf14
--#define REG_CRC_HT	0xf10
--#define REG_CRC_VHT	0xf0c
--#define REG_CCA_OFDM	0xf08
--#define REG_FA_OFDM	0xf48
--#define REG_CCA_CCK	0xfcc
- #define REG_DMEM_CTRL	0x1080
- #define BIT_WL_RST	BIT(16)
- #define REG_ANTWT	0x1904
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.h b/drivers/net/wireless/realtek/rtw88/rtw8822b.h
-index cf85e63966a1..0514958fb57c 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822b.h
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.h
-@@ -151,21 +151,12 @@ _rtw_write32s_mask(struct rtw_dev *rtwdev, u32 addr, u32 mask, u32 data)
- #define RTW8822B_EDCCA_MAX	0x7f
- #define RTW8822B_EDCCA_SRC_DEF	1
- #define REG_HTSTFWT	0x800
--#define REG_RXPSEL	0x808
--#define BIT_RX_PSEL_RST		(BIT(28) | BIT(29))
--#define REG_TXPSEL	0x80c
- #define REG_RXCCAMSK	0x814
--#define REG_CCASEL	0x82c
--#define REG_PDMFTH	0x830
--#define REG_CCA2ND	0x838
- #define REG_L1WT	0x83c
- #define REG_L1PKWT	0x840
- #define REG_MRC		0x850
--#define REG_CLKTRK	0x860
- #define REG_EDCCA_POW_MA	0x8a0
- #define BIT_MA_LEVEL	GENMASK(1, 0)
--#define REG_ADCCLK	0x8ac
--#define REG_ADC160	0x8c4
- #define REG_ADC40	0x8c8
- #define REG_EDCCA_DECISION	0x8dc
- #define BIT_EDCCA_OPTION	BIT(5)
-@@ -176,7 +167,6 @@ _rtw_write32s_mask(struct rtw_dev *rtwdev, u32 addr, u32 mask, u32 data)
- #define REG_ACBB0	0x948
- #define REG_ACBBRXFIR	0x94c
- #define REG_ACGG2TBL	0x958
--#define REG_RXSB	0xa00
- #define REG_ADCINI	0xa04
- #define REG_TXSF2	0xa24
- #define REG_TXSF6	0xa28
-@@ -184,14 +174,12 @@ _rtw_write32s_mask(struct rtw_dev *rtwdev, u32 addr, u32 mask, u32 data)
- #define REG_ENTXCCK	0xa80
- #define REG_AGCTR_A	0xc08
- #define REG_TXDFIR	0xc20
--#define REG_RXIGI_A	0xc50
- #define REG_TRSW	0xca0
- #define REG_RFESEL0	0xcb0
- #define REG_RFESEL8	0xcb4
- #define REG_RFECTL	0xcb8
- #define REG_RFEINV	0xcbc
- #define REG_AGCTR_B	0xe08
--#define REG_RXIGI_B	0xe50
- #define REG_ANTWT	0x1904
- #define REG_IQKFAILMSK	0x1bf0
- 
+ 	.path_div_supported = false,
+ 	.ht_supported = true,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.c b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+index 86a5e2497641..bf87c92087da 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723d.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+@@ -2131,6 +2131,7 @@ const struct rtw_chip_info rtw8723d_hw_spec = {
+ 	.page_size = TX_PAGE_SIZE,
+ 	.dig_min = 0x20,
+ 	.usb_tx_agg_desc_num = 1,
++	.hw_feature_report = true,
+ 	.ht_supported = true,
+ 	.vht_supported = false,
+ 	.lps_deep_mode_supported = 0,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+index 66c79956e8e5..44ef2e246724 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+@@ -1968,6 +1968,7 @@ const struct rtw_chip_info rtw8821c_hw_spec = {
+ 	.page_size = TX_PAGE_SIZE,
+ 	.dig_min = 0x1c,
+ 	.usb_tx_agg_desc_num = 3,
++	.hw_feature_report = true,
+ 	.ht_supported = true,
+ 	.vht_supported = true,
+ 	.lps_deep_mode_supported = BIT(LPS_DEEP_MODE_LCLK),
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+index 24f76a36f23e..9b7c383f37fe 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+@@ -2509,6 +2509,7 @@ const struct rtw_chip_info rtw8822b_hw_spec = {
+ 	.page_size = TX_PAGE_SIZE,
+ 	.dig_min = 0x1c,
+ 	.usb_tx_agg_desc_num = 3,
++	.hw_feature_report = true,
+ 	.ht_supported = true,
+ 	.vht_supported = true,
+ 	.lps_deep_mode_supported = BIT(LPS_DEEP_MODE_LCLK),
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+index da74e66bda84..063c65c269fe 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+@@ -5329,6 +5329,7 @@ const struct rtw_chip_info rtw8822c_hw_spec = {
+ 	.page_size = TX_PAGE_SIZE,
+ 	.dig_min = 0x20,
+ 	.usb_tx_agg_desc_num = 3,
++	.hw_feature_report = true,
+ 	.default_1ss_tx_path = BB_PATH_A,
+ 	.path_div_supported = true,
+ 	.ht_supported = true,
 -- 
 2.46.0
 
