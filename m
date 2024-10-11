@@ -1,73 +1,73 @@
-Return-Path: <linux-wireless+bounces-13907-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13908-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4351F99ADB3
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Oct 2024 22:49:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B85399ADB7
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Oct 2024 22:50:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F231828241F
-	for <lists+linux-wireless@lfdr.de>; Fri, 11 Oct 2024 20:49:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F8D61C22627
+	for <lists+linux-wireless@lfdr.de>; Fri, 11 Oct 2024 20:50:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB2231CFECE;
-	Fri, 11 Oct 2024 20:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C07E2199231;
+	Fri, 11 Oct 2024 20:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h5Zqy/5n"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lIGjJEZw"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86E5199231
-	for <linux-wireless@vger.kernel.org>; Fri, 11 Oct 2024 20:49:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F4E1CFECE
+	for <linux-wireless@vger.kernel.org>; Fri, 11 Oct 2024 20:50:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728679779; cv=none; b=sXImku6KZ1frAAB4WSzcuaqQOJcqI+E1wle6ashJbl/YnNsSY9C3eC6ljDZGD4by8rtEk/IB2jqKIUePD6gVCT5S+UPQmLboBhAmIdyT3Zj746+GqEPHS9fC6bI+xwR1udf2wykWom1tvluMV1K0PFpS1TAJh5pfyeftRvUVpCE=
+	t=1728679809; cv=none; b=u8HU0Hy99Z0Yk0u2h4Ph7vMcdOrfUZFjy7hFtOVjvAW1r4Bq71Zul7kFSDLTo8+yCeAXbIE01nLhUYgAaaDAj0irvTdvWRc43rHCFPS4F5qsRUBVPy2QwgBDJxbyn0dxdAupwgLGe6Mm2UEnpqUVUwUEnbxMKRluQm5EvtIzZs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728679779; c=relaxed/simple;
-	bh=ZR1otjwyQcsAiVDZby/9yS02124ZFbvIW8lo6jkmLv0=;
+	s=arc-20240116; t=1728679809; c=relaxed/simple;
+	bh=zAhYgTa37cJvLLXlV12fDr0sO+eXXdiIVez7Neb0Hu8=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=W4HJNu5YNRsHE5XhDg640Tbnh2eoPrroO3t/GrkFEljdXjkxf415bDY5CHOFgzsNJsdspc1D01Fs+jgXMKhkSRGKiDmpD5eaPCYxvWjjRGiq0WPriiTfNABGaAkS9c1h+gEyZkU0ttR2Xe+3ij08KtR7QUoyFHVgS1DRNd7ol4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h5Zqy/5n; arc=none smtp.client-ip=209.85.167.49
+	 In-Reply-To:Content-Type; b=eP97K4nRT4zknF6YrfTVgzLVwiIfm1jHNQx+5h15U7vaPnj9QlG/SJSPUEeqT6fmtkcEGMir2eaFcTdj57rGbouUJmhom/SUAvJoM5aVrdlGSS4MpdqspU42xKYzx5XKV4gEcCkgpnD4Wul9phfXooMRj49i8IPuOUP3YsdvILQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lIGjJEZw; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-539e5c15fd3so195919e87.3
-        for <linux-wireless@vger.kernel.org>; Fri, 11 Oct 2024 13:49:37 -0700 (PDT)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-43058268d91so21402495e9.0
+        for <linux-wireless@vger.kernel.org>; Fri, 11 Oct 2024 13:50:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728679776; x=1729284576; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1728679806; x=1729284606; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=NN7Ak9ORNH/OGUqM97NWUI9Uzxb48T4Fo89ac4YOvfk=;
-        b=h5Zqy/5noZ7wLvKkU8ltZCJARoMGzRgYIz+6lVm6d7dOo7Uxu9mcjsoYgnWvy6XdcG
-         aR0/3PHwBgU2YPKwuQxzoNzKag42o+8C95h0GKdSvZjKFycWmb9qr6sgfaoH75xLxGck
-         EqZKIjAGzYeqfOjCU/ph8C98BTqM8ELdGB81pJvruJXrWcJWeYuvdNeMpXjam1KuN3yw
-         pIGE1hbbTOf+AmfjqPTmDLhxe3LBxtFjYkpnH8QsXtKb5XeDw2kDZ7C9ZppnKf5hiJTb
-         9sRbiWITpK36P4W64+xD8g+UUIsTZsiiAoj2PbqzfIXb+FhLIWzLZi5jpEJFBNxQDhXk
-         wjiw==
+        bh=HRjyqKwSN/TcZYSbXj0ckwT6zaigwXZxioktj5K45Ws=;
+        b=lIGjJEZwtAwz2xHTGAirNDLIYv/zw1fcXmBhmXMv5k1azIMxonjYhX6yhJMOh0nC4a
+         SV/e+xABc5QyyOqqzsnu9qHfwB0juInpzg1SIcTziweo/lmYjhsCuyIctDPztMUnBz4t
+         SJ3K208zRN+5do2DdKGNNPlicTez84H+gu3JqX5pY+dHEaYT8Xa8v/0hUPmesROMMPYx
+         eyHsKxWzQ/S6G7eai8PEQ9gwusLWt7ja8oLAQ6JotipUGGpM9DbeBVJKCdGkVE0Ud6UF
+         61UtcwLL4AK0/sMhskJeXbFszD+vaA+Jc2eBAosZ2VhPZwS36hEE04NQVEhhyC7lAUGx
+         iWyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728679776; x=1729284576;
+        d=1e100.net; s=20230601; t=1728679806; x=1729284606;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NN7Ak9ORNH/OGUqM97NWUI9Uzxb48T4Fo89ac4YOvfk=;
-        b=HSXPcj2v9xU6WMelVxGECY1dfHvRTsZKcViNQcM+hB+TK0BXzxlnWBcF5DzKj6NwUT
-         1mlvAopdwyxYuZlEPbdPhroXiZ1IrrhHuVg3sQkZAKcwQUrUTe3rMws7lHa6pzUpwN8v
-         65tOQS5N5mTLOIXW3BOcyG3GyJnJ5gE5K5G8VsKS3V9aR7jRx2T+HHgmgkxBqWYx6PsF
-         XSyHFOd0ezzYj4PdnbmRbeOYeRRVsoN9G7JI5RYkgbp3hnfphc+jdVJmzbosDAQOB8NO
-         owa4EUVL1/P/E6LJDKIuIVeOr7+L+OoBdG85kUDA+18MQLyqmVgaCQay2Qs/xuhQ2oBz
-         cSrQ==
-X-Gm-Message-State: AOJu0YzgoMFD3JB/KTeHSOoUpYTvRd81Fq9hq84BKiCEHsKX9AxjXU4a
-	FrH48o1DAzEfRtEOwRKOtc+jUmpIBeuDrQtNjU9Bh5RBXgTc1aZBsjGC3w==
-X-Google-Smtp-Source: AGHT+IHR0FaJDxaVPLvW6/wAtk3kGQbE3pFNsFBvi/3qYR3/5TT96LLQoDuiLxQUh1tNK/hXVnFcQQ==
-X-Received: by 2002:ac2:51c7:0:b0:539:e454:942e with SMTP id 2adb3069b0e04-539e45495c3mr941990e87.16.1728679775504;
-        Fri, 11 Oct 2024 13:49:35 -0700 (PDT)
+        bh=HRjyqKwSN/TcZYSbXj0ckwT6zaigwXZxioktj5K45Ws=;
+        b=jYBGaxRo5x2U/KWHYV108nKNr2z6UQUTiJ56rj86IeJDF2ECjbyAcdBs4WBkpNnubw
+         +6y76spGE/+y4Lw0HHghj76UkLzw9kSQVoR/Niua/ctI6SbTZvGEadfQ628GMVoCw1jk
+         GBfCjt2puTgiayW12TYDurfStzkoX/QneEc/Y9/hdw5tejpT/5ibuNbMYGUq08a//KYc
+         xiSTn5RuBrfEWp683a2rdeO2FWcnxLXeWuEuyPVYoyogm9Ssxw0V9MUE4HSSnjjjek79
+         x9msH3ZO0LbYhly7fY+ghXXRZfVyThc4ZqgOQl9YdTMaRYQ5KRrtN4Pk+r0HrLYHCfPz
+         mUqw==
+X-Gm-Message-State: AOJu0YzjTmJ8oeDVmnymeUZgqvHQ0GrvTV3FpbzH6QtUZtreG0YL6Gte
+	t3Mxr6YaWsDC5qRpNVcBQsabJuVjl4jkn6KJ9Bsl98sA9TSM5jaAgN9S7A==
+X-Google-Smtp-Source: AGHT+IFUwz19wTYZPP0tAGGpIOgva5CS5V7MzZCvSomR+xk5n16Gs4ma1XJzSxz5JNswB0p3Lhqf/g==
+X-Received: by 2002:a05:600c:470e:b0:42c:acb0:dda5 with SMTP id 5b1f17b1804b1-4311dea3c39mr34916965e9.1.1728679806205;
+        Fri, 11 Oct 2024 13:50:06 -0700 (PDT)
 Received: from [192.168.0.50] ([79.113.150.231])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-430ccf51c69sm82740665e9.28.2024.10.11.13.49.34
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4311835d78fsm50237785e9.43.2024.10.11.13.50.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Oct 2024 13:49:35 -0700 (PDT)
-Message-ID: <21dbccaf-82e2-48aa-9b11-dc217ca76309@gmail.com>
-Date: Fri, 11 Oct 2024 23:49:34 +0300
+        Fri, 11 Oct 2024 13:50:05 -0700 (PDT)
+Message-ID: <371b587a-b7ee-4a1d-9a45-4a3f583b3bde@gmail.com>
+Date: Fri, 11 Oct 2024 23:50:05 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,8 +75,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH v2 07/22] wifi: rtw88: Enable data rate fallback for older
- chips
+Subject: [PATCH v2 08/22] wifi: rtw88: Make txagc_remnant_ofdm an array
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 Cc: Ping-Ke Shih <pkshih@realtek.com>
@@ -86,220 +85,95 @@ In-Reply-To: <d2870a44-9b91-4090-9a25-873eb62997f5@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-RTL8811AU fails to perform the 4-way handshake when the AP is too far
-because it transmits the EAPOL frames at MCS9 and when that doesn't
-work it retries 48 times with the same rate, to no avail.
+txagc_remnant_ofdm member of struct rtw_dm_info should be different for
+each RF path, so make it an array of size RTW_RF_PATH_MAX (4).
 
-Retrying 48 times with the same rate seems pointless. Set the
-appropriate field in the TX descriptor to allow it to use lower rates
-when retrying.
-
-Set it for RTL8723D and RTL8703B because they interpret this field the
-same way as RTL8811A.
-
-The newer RTL8822C, RTL8822B, RTL8821C seem to interpret this field in
-the TX descriptor differently, so leave it alone for those chips.
-
-Tested with RTL8811AU and RTL8723DU.
+Until now all the chips using this had only one RF path, but RTL8812AU
+has two, and RTL8814AU has four.
 
 Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 ---
 v2:
- - Initialise old_datarate_fb_limit for every chip.
+ - No change.
 ---
- drivers/net/wireless/realtek/rtw88/fw.c       | 2 +-
- drivers/net/wireless/realtek/rtw88/main.h     | 1 +
- drivers/net/wireless/realtek/rtw88/pci.c      | 2 +-
- drivers/net/wireless/realtek/rtw88/rtw8703b.c | 1 +
- drivers/net/wireless/realtek/rtw88/rtw8723d.c | 1 +
- drivers/net/wireless/realtek/rtw88/rtw8821c.c | 1 +
- drivers/net/wireless/realtek/rtw88/rtw8822b.c | 1 +
- drivers/net/wireless/realtek/rtw88/rtw8822c.c | 1 +
- drivers/net/wireless/realtek/rtw88/sdio.c     | 2 +-
- drivers/net/wireless/realtek/rtw88/tx.c       | 6 +++++-
- drivers/net/wireless/realtek/rtw88/tx.h       | 4 +++-
- drivers/net/wireless/realtek/rtw88/usb.c      | 4 ++--
- 12 files changed, 19 insertions(+), 7 deletions(-)
+ drivers/net/wireless/realtek/rtw88/main.h     | 2 +-
+ drivers/net/wireless/realtek/rtw88/phy.c      | 4 ++--
+ drivers/net/wireless/realtek/rtw88/rtw8703b.c | 4 ++--
+ drivers/net/wireless/realtek/rtw88/rtw8723d.c | 4 ++--
+ 4 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-index 168e19187ba7..19de5ba555a9 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.c
-+++ b/drivers/net/wireless/realtek/rtw88/fw.c
-@@ -1290,7 +1290,7 @@ static void rtw_fill_rsvd_page_desc(struct rtw_dev *rtwdev, struct sk_buff *skb,
- 	rtw_tx_rsvd_page_pkt_info_update(rtwdev, &pkt_info, skb, type);
- 	pkt_desc = skb_push(skb, chip->tx_pkt_desc_sz);
- 	memset(pkt_desc, 0, chip->tx_pkt_desc_sz);
--	rtw_tx_fill_tx_desc(&pkt_info, skb);
-+	rtw_tx_fill_tx_desc(rtwdev, &pkt_info, skb);
- }
- 
- static inline u8 rtw_len_to_page(unsigned int len, u8 page_size)
 diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
-index af4876327837..64bc43cdd209 100644
+index 64bc43cdd209..45f0e8fff453 100644
 --- a/drivers/net/wireless/realtek/rtw88/main.h
 +++ b/drivers/net/wireless/realtek/rtw88/main.h
-@@ -1204,6 +1204,7 @@ struct rtw_chip_info {
- 	u8 usb_tx_agg_desc_num;
- 	bool hw_feature_report;
- 	u8 c2h_ra_report_size;
-+	bool old_datarate_fb_limit;
+@@ -1715,7 +1715,7 @@ struct rtw_dm_info {
+ 	bool pwr_trk_init_trigger;
+ 	struct ewma_thermal avg_thermal[RTW_RF_PATH_MAX];
+ 	s8 txagc_remnant_cck;
+-	s8 txagc_remnant_ofdm;
++	s8 txagc_remnant_ofdm[RTW_RF_PATH_MAX];
+ 	u8 rx_cck_agc_report_type;
  
- 	u8 default_1ss_tx_path;
+ 	/* backup dack results for each path and I/Q */
+diff --git a/drivers/net/wireless/realtek/rtw88/phy.c b/drivers/net/wireless/realtek/rtw88/phy.c
+index dda212a721ca..5fbacb7ce499 100644
+--- a/drivers/net/wireless/realtek/rtw88/phy.c
++++ b/drivers/net/wireless/realtek/rtw88/phy.c
+@@ -2170,8 +2170,8 @@ void rtw_get_tx_power_params(struct rtw_dev *rtwdev, u8 path, u8 rate, u8 bw,
  
-diff --git a/drivers/net/wireless/realtek/rtw88/pci.c b/drivers/net/wireless/realtek/rtw88/pci.c
-index f71e41d6f97c..0ecaefc4c83d 100644
---- a/drivers/net/wireless/realtek/rtw88/pci.c
-+++ b/drivers/net/wireless/realtek/rtw88/pci.c
-@@ -824,7 +824,7 @@ static int rtw_pci_tx_write_data(struct rtw_dev *rtwdev,
- 	pkt_desc = skb_push(skb, chip->tx_pkt_desc_sz);
- 	memset(pkt_desc, 0, tx_pkt_desc_sz);
- 	pkt_info->qsel = rtw_pci_get_tx_qsel(skb, queue);
--	rtw_tx_fill_tx_desc(pkt_info, skb);
-+	rtw_tx_fill_tx_desc(rtwdev, pkt_info, skb);
- 	dma = dma_map_single(&rtwpci->pdev->dev, skb->data, skb->len,
- 			     DMA_TO_DEVICE);
- 	if (dma_mapping_error(&rtwpci->pdev->dev, dma))
+ 	*limit = rtw_phy_get_tx_power_limit(rtwdev, band, bw, path,
+ 					    rate, ch, regd);
+-	*remnant = (rate <= DESC_RATE11M ? dm_info->txagc_remnant_cck :
+-		    dm_info->txagc_remnant_ofdm);
++	*remnant = rate <= DESC_RATE11M ? dm_info->txagc_remnant_cck :
++					  dm_info->txagc_remnant_ofdm[path];
+ 	*sar = rtw_phy_get_tx_power_sar(rtwdev, hal->sar_band, path, rate);
+ }
+ 
 diff --git a/drivers/net/wireless/realtek/rtw88/rtw8703b.c b/drivers/net/wireless/realtek/rtw88/rtw8703b.c
-index 97dbc77f037a..f6f6635b46e1 100644
+index f6f6635b46e1..dec0cec4ca22 100644
 --- a/drivers/net/wireless/realtek/rtw88/rtw8703b.c
 +++ b/drivers/net/wireless/realtek/rtw88/rtw8703b.c
-@@ -1964,6 +1964,7 @@ const struct rtw_chip_info rtw8703b_hw_spec = {
- 	.usb_tx_agg_desc_num = 1, /* Not sure if this chip has USB interface */
- 	.hw_feature_report = true,
- 	.c2h_ra_report_size = 7,
-+	.old_datarate_fb_limit = true,
+@@ -637,7 +637,7 @@ static void rtw8703b_pwrtrack_init(struct rtw_dev *rtwdev)
+ 	dm_info->pwr_trk_init_trigger = true;
+ 	dm_info->thermal_meter_k = rtwdev->efuse.thermal_meter_k;
+ 	dm_info->txagc_remnant_cck = 0;
+-	dm_info->txagc_remnant_ofdm = 0;
++	dm_info->txagc_remnant_ofdm[RF_PATH_A] = 0;
+ }
  
- 	.path_div_supported = false,
- 	.ht_supported = true,
+ static void rtw8703b_phy_set_param(struct rtw_dev *rtwdev)
+@@ -1589,7 +1589,7 @@ static void rtw8703b_pwrtrack_set_ofdm_pwr(struct rtw_dev *rtwdev, s8 swing_idx,
+ {
+ 	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
+ 
+-	dm_info->txagc_remnant_ofdm = txagc_idx;
++	dm_info->txagc_remnant_ofdm[RF_PATH_A] = txagc_idx;
+ 
+ 	/* Only path A is calibrated for rtl8703b */
+ 	rtw8703b_set_iqk_matrix(rtwdev, swing_idx, RF_PATH_A);
 diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.c b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
-index f6a08b06f853..a0bf37a58632 100644
+index a0bf37a58632..1d99bb89ef1d 100644
 --- a/drivers/net/wireless/realtek/rtw88/rtw8723d.c
 +++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
-@@ -2135,6 +2135,7 @@ const struct rtw_chip_info rtw8723d_hw_spec = {
- 	.usb_tx_agg_desc_num = 1,
- 	.hw_feature_report = true,
- 	.c2h_ra_report_size = 7,
-+	.old_datarate_fb_limit = true,
- 	.ht_supported = true,
- 	.vht_supported = false,
- 	.lps_deep_mode_supported = 0,
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-index e17d0193ca6f..39dc8244f744 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
-@@ -1972,6 +1972,7 @@ const struct rtw_chip_info rtw8821c_hw_spec = {
- 	.usb_tx_agg_desc_num = 3,
- 	.hw_feature_report = true,
- 	.c2h_ra_report_size = 7,
-+	.old_datarate_fb_limit = false,
- 	.ht_supported = true,
- 	.vht_supported = true,
- 	.lps_deep_mode_supported = BIT(LPS_DEEP_MODE_LCLK),
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-index 7360ce0a193e..419eb14c5467 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
-@@ -2513,6 +2513,7 @@ const struct rtw_chip_info rtw8822b_hw_spec = {
- 	.usb_tx_agg_desc_num = 3,
- 	.hw_feature_report = true,
- 	.c2h_ra_report_size = 7,
-+	.old_datarate_fb_limit = false,
- 	.ht_supported = true,
- 	.vht_supported = true,
- 	.lps_deep_mode_supported = BIT(LPS_DEEP_MODE_LCLK),
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index 17d4d9bddd83..56085f220fcd 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -5333,6 +5333,7 @@ const struct rtw_chip_info rtw8822c_hw_spec = {
- 	.usb_tx_agg_desc_num = 3,
- 	.hw_feature_report = true,
- 	.c2h_ra_report_size = 7,
-+	.old_datarate_fb_limit = false,
- 	.default_1ss_tx_path = BB_PATH_A,
- 	.path_div_supported = true,
- 	.ht_supported = true,
-diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
-index f0b06ed8f76d..799230eb5f16 100644
---- a/drivers/net/wireless/realtek/rtw88/sdio.c
-+++ b/drivers/net/wireless/realtek/rtw88/sdio.c
-@@ -864,7 +864,7 @@ static void rtw_sdio_tx_skb_prepare(struct rtw_dev *rtwdev,
- 
- 	pkt_info->qsel = rtw_sdio_get_tx_qsel(rtwdev, skb, queue);
- 
--	rtw_tx_fill_tx_desc(pkt_info, skb);
-+	rtw_tx_fill_tx_desc(rtwdev, pkt_info, skb);
- 	rtw_tx_fill_txdesc_checksum(rtwdev, pkt_info, pkt_desc);
+@@ -79,7 +79,7 @@ static void rtw8723d_pwrtrack_init(struct rtw_dev *rtwdev)
+ 	dm_info->pwr_trk_init_trigger = true;
+ 	dm_info->thermal_meter_k = rtwdev->efuse.thermal_meter_k;
+ 	dm_info->txagc_remnant_cck = 0;
+-	dm_info->txagc_remnant_ofdm = 0;
++	dm_info->txagc_remnant_ofdm[RF_PATH_A] = 0;
  }
  
-diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wireless/realtek/rtw88/tx.c
-index dae7ca148865..6ed470dd6f22 100644
---- a/drivers/net/wireless/realtek/rtw88/tx.c
-+++ b/drivers/net/wireless/realtek/rtw88/tx.c
-@@ -32,7 +32,8 @@ void rtw_tx_stats(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
- 	}
- }
- 
--void rtw_tx_fill_tx_desc(struct rtw_tx_pkt_info *pkt_info, struct sk_buff *skb)
-+void rtw_tx_fill_tx_desc(struct rtw_dev *rtwdev,
-+			 struct rtw_tx_pkt_info *pkt_info, struct sk_buff *skb)
+ static void rtw8723d_phy_set_param(struct rtw_dev *rtwdev)
+@@ -1265,7 +1265,7 @@ static void rtw8723d_pwrtrack_set_ofdm_pwr(struct rtw_dev *rtwdev, s8 swing_idx,
  {
- 	struct rtw_tx_desc *tx_desc = (struct rtw_tx_desc *)skb->data;
- 	bool more_data = false;
-@@ -67,6 +68,9 @@ void rtw_tx_fill_tx_desc(struct rtw_tx_pkt_info *pkt_info, struct sk_buff *skb)
+ 	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
  
- 	tx_desc->w4 = le32_encode_bits(pkt_info->rate, RTW_TX_DESC_W4_DATARATE);
+-	dm_info->txagc_remnant_ofdm = txagc_idx;
++	dm_info->txagc_remnant_ofdm[RF_PATH_A] = txagc_idx;
  
-+	if (rtwdev->chip->old_datarate_fb_limit)
-+		tx_desc->w4 |= le32_encode_bits(0x1f, RTW_TX_DESC_W4_DATARATE_FB_LIMIT);
-+
- 	tx_desc->w5 = le32_encode_bits(pkt_info->short_gi, RTW_TX_DESC_W5_DATA_SHORT) |
- 		      le32_encode_bits(pkt_info->bw, RTW_TX_DESC_W5_DATA_BW) |
- 		      le32_encode_bits(pkt_info->ldpc, RTW_TX_DESC_W5_DATA_LDPC) |
-diff --git a/drivers/net/wireless/realtek/rtw88/tx.h b/drivers/net/wireless/realtek/rtw88/tx.h
-index 3d544fd7f60f..d34cdeca16f1 100644
---- a/drivers/net/wireless/realtek/rtw88/tx.h
-+++ b/drivers/net/wireless/realtek/rtw88/tx.h
-@@ -44,6 +44,7 @@ struct rtw_tx_desc {
- #define RTW_TX_DESC_W3_NAVUSEHDR BIT(15)
- #define RTW_TX_DESC_W3_MAX_AGG_NUM GENMASK(21, 17)
- #define RTW_TX_DESC_W4_DATARATE GENMASK(6, 0)
-+#define RTW_TX_DESC_W4_DATARATE_FB_LIMIT GENMASK(12, 8)
- #define RTW_TX_DESC_W4_RTSRATE GENMASK(28, 24)
- #define RTW_TX_DESC_W5_DATA_SHORT BIT(4)
- #define RTW_TX_DESC_W5_DATA_BW GENMASK(6, 5)
-@@ -94,7 +95,8 @@ void rtw_tx_pkt_info_update(struct rtw_dev *rtwdev,
- 			    struct rtw_tx_pkt_info *pkt_info,
- 			    struct ieee80211_sta *sta,
- 			    struct sk_buff *skb);
--void rtw_tx_fill_tx_desc(struct rtw_tx_pkt_info *pkt_info, struct sk_buff *skb);
-+void rtw_tx_fill_tx_desc(struct rtw_dev *rtwdev,
-+			 struct rtw_tx_pkt_info *pkt_info, struct sk_buff *skb);
- void rtw_tx_report_enqueue(struct rtw_dev *rtwdev, struct sk_buff *skb, u8 sn);
- void rtw_tx_report_handle(struct rtw_dev *rtwdev, struct sk_buff *skb, int src);
- void rtw_tx_rsvd_page_pkt_info_update(struct rtw_dev *rtwdev,
-diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
-index ba314d90ab3f..a3d2b40ec67b 100644
---- a/drivers/net/wireless/realtek/rtw88/usb.c
-+++ b/drivers/net/wireless/realtek/rtw88/usb.c
-@@ -458,7 +458,7 @@ static int rtw_usb_write_data(struct rtw_dev *rtwdev,
- 	skb_put_data(skb, buf, size);
- 	skb_push(skb, chip->tx_pkt_desc_sz);
- 	memset(skb->data, 0, chip->tx_pkt_desc_sz);
--	rtw_tx_fill_tx_desc(pkt_info, skb);
-+	rtw_tx_fill_tx_desc(rtwdev, pkt_info, skb);
- 	rtw_tx_fill_txdesc_checksum(rtwdev, pkt_info, skb->data);
- 
- 	ret = rtw_usb_write_port(rtwdev, qsel, skb,
-@@ -525,7 +525,7 @@ static int rtw_usb_tx_write(struct rtw_dev *rtwdev,
- 	pkt_desc = skb_push(skb, chip->tx_pkt_desc_sz);
- 	memset(pkt_desc, 0, chip->tx_pkt_desc_sz);
- 	ep = qsel_to_ep(rtwusb, pkt_info->qsel);
--	rtw_tx_fill_tx_desc(pkt_info, skb);
-+	rtw_tx_fill_tx_desc(rtwdev, pkt_info, skb);
- 	rtw_tx_fill_txdesc_checksum(rtwdev, pkt_info, skb->data);
- 	tx_data = rtw_usb_get_tx_data(skb);
- 	tx_data->sn = pkt_info->sn;
+ 	rtw8723d_set_iqk_matrix(rtwdev, swing_idx, RF_PATH_A);
+ 	rtw8723d_set_iqk_matrix(rtwdev, swing_idx, RF_PATH_B);
 -- 
 2.46.0
 
