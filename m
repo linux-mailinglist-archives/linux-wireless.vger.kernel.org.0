@@ -1,112 +1,130 @@
-Return-Path: <linux-wireless+bounces-13927-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13928-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2005F99B57F
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Oct 2024 16:27:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F29D399B71A
+	for <lists+linux-wireless@lfdr.de>; Sat, 12 Oct 2024 22:55:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1E75B225AE
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Oct 2024 14:27:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 305901C20FB0
+	for <lists+linux-wireless@lfdr.de>; Sat, 12 Oct 2024 20:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01302189905;
-	Sat, 12 Oct 2024 14:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4CC146599;
+	Sat, 12 Oct 2024 20:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="lhiS0+ic"
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="rxKluLvb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from nbd.name (nbd.name [46.4.11.11])
+Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2F51E892
-	for <linux-wireless@vger.kernel.org>; Sat, 12 Oct 2024 14:27:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2014C12CDA5;
+	Sat, 12 Oct 2024 20:55:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728743250; cv=none; b=N4l512x303HjAiHLQkH/plFLOisCZZzuOFL/LzR2DPCyER0jpy/pJ53JLb5BI/hgQES31fa4W8dsRRkNHqMjZ2ykQpqOssnoAVjN4rkO8KG70M9L6aID34k27AJnCbe1wDANiUnfkPyxJCgTjpgbK30O/LHwb7DVAo+6rESikq0=
+	t=1728766523; cv=none; b=UIbC8GMdf0/jRkgWs7M2uN+M/gSmcdWnriQ2ejpX0+ohbfbfMFZnWG97MMc8TBJzwXJ6fYROxnt8Jr/BhXA1bEegd51HfyM5LQTCd4/e9MZbl1iOGdUJJGNOWLLfYhcZqif7vk2L4fpQ/oDqnLDxUaoOXANKVebT5085A47wNt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728743250; c=relaxed/simple;
-	bh=I16L4XbJe3g3fUx8aW5+IazWchbdydz3HBCknQ/Ozjk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JXYkL0cy8bFy/l9LsO9zO8GegIo0qBpIEYqfv7rfulmvpxubodH1ScWmENCIp6iCURvlpY5fO2am7+Qz23TayNn4rDLTDNYjC++EujteZ4BlpMKjO0g1/mw1tzoIBZdPk8d0na2MdDQ7FbmMD6YJPftWjiWK2y/FjqW8cUIuEwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=lhiS0+ic; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=70lw4zCxUoObVf+Tk492v3g4csCqQzYlgmQ/kWdfhkY=; b=lhiS0+iccznDwNKHRMUulSB6pb
-	9W5FimSWVUdo97QXXYo7rAz61hDgBiKDixO4ndBVIx9+61JmgSg7h7gURtbgVoMiun0h1P1RL7mCF
-	QWYE+SEBScja/ycB1G0GWknwj7Zc/bSoFMGtFuoXCcofTWgwebNi3PE08h9nu7JFuPr4=;
-Received: from [2a01:599:10d:b131:5deb:efe3:952a:fc7e] (helo=nf.local)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1szd5S-007l2X-21;
-	Sat, 12 Oct 2024 16:27:18 +0200
-Message-ID: <d7088c46-e956-4f09-9595-7bb99321d7f1@nbd.name>
-Date: Sat, 12 Oct 2024 16:27:15 +0200
+	s=arc-20240116; t=1728766523; c=relaxed/simple;
+	bh=/9vvY2eKL7girIMximjebAKd53ExFcJZ+ZsIsMghqU0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u4e9O6ijB0KJTAPvCkdyP6GHeRizQyl7srdKFJ5SQUVOtOAlhwiesHSC9GCpjFHWFB/kOq+1CksJQ+ndoQt1MJ8fAfRS4SQRlH/PKR14MEKmF5Y6Jl0iT8rK4wplle8HAGYSVM+OwP/eI1ZGw8vKl6qyYm5WTw0MK2HNacV5Kh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=rxKluLvb; arc=none smtp.client-ip=46.235.229.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
+	:Subject; bh=wvYKHcFqppquqswVxJCB39KuSTx+SdhHabWlL/bm2+I=; b=rxKluLvbBH4sa5sW
+	elOpo+yQ5TAmHidGZTGFs3AQdGNz+TmHOQJcUZJ051DDSS2fa1O3ZkMsyiRoyuEU5oGaoOXnnOdbC
+	fOhNC7GHLI3QvuOxYWtCHwF1NKq5bwTWe4grAmfNIS2LoNCr6SmCmFqF+7yrvQPk+YIZopzCoSh9j
+	Mt+YDtJADLFmDYpo7YiiYJtkWYHPUQhJcsmZjowRI8zvdRlBMA2sdU8vMKEzVTW2Xjs3S+H4i9ExA
+	KhsKDGYDBtCafDXF/1upq3TqfeswNjRLSHnJOuPTAxwTEk+U3G8J+8206fUHj5bFVDu+jvXea5mNg
+	D4ikGP3Ak1R05I87Ew==;
+Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
+	by mx.treblig.org with esmtp (Exim 4.96)
+	(envelope-from <linux@treblig.org>)
+	id 1szit3-00Aiud-0x;
+	Sat, 12 Oct 2024 20:38:53 +0000
+From: linux@treblig.org
+To: kvalo@kernel.org,
+	linux-wireless@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	"Dr. David Alan Gilbert" <linux@treblig.org>
+Subject: [PATCH] cw1200: Remove unused cw1200_queue_requeue_all
+Date: Sat, 12 Oct 2024 21:38:52 +0100
+Message-ID: <20241012203852.229151-1-linux@treblig.org>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless] wifi: mt76: mt7915: add module param to select 5
- GHz or 6 GHz on MT7916
-To: Ben Greear <greearb@candelatech.com>, linux-wireless@vger.kernel.org
-Cc: kvalo@kernel.org, Steven Liu <steven.liu@mediatek.com>,
- Evelyn Tsai <Evelyn.Tsai@mediatek.com>, Paul <paul@asiarf.com>,
- Shayne Chen <Shayne.Chen@mediatek.com>
-References: <20241010083816.51880-1-nbd@nbd.name>
- <b8c12251-7099-4aa1-9b8e-e709cc6eafac@candelatech.com>
-From: Felix Fietkau <nbd@nbd.name>
-Content-Language: en-US
-Autocrypt: addr=nbd@nbd.name; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
- cL98efvrjdstUfTCP2pfetyN
-In-Reply-To: <b8c12251-7099-4aa1-9b8e-e709cc6eafac@candelatech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 10.10.24 16:34, Ben Greear wrote:
-> On 10/10/24 01:38, Felix Fietkau wrote:
->> From: Shayne Chen <shayne.chen@mediatek.com>
->> 
->> Due to a limitation in available memory, the MT7916 firmware can only
->> handle either 5 GHz or 6 GHz at a time. It does not support runtime
->> switching without a full restart.
-> 
-> Can this also be implemented so that we can change the module parameter,
-> force the radio to do a hard reset, and change bands that way, without
-> having to do a reboot?
+From: "Dr. David Alan Gilbert" <linux@treblig.org>
 
-It probably can be, but that requires more work and testing. I'd prefer 
-to do that separately at some point in a follow-up patch.
+cw1200_queue_requeue_all() has been unused since it was added in 2013
+by commit
+a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
 
-- Felix
+Remove it.
+
+Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+---
+ drivers/net/wireless/st/cw1200/queue.c | 27 --------------------------
+ drivers/net/wireless/st/cw1200/queue.h |  1 -
+ 2 files changed, 28 deletions(-)
+
+diff --git a/drivers/net/wireless/st/cw1200/queue.c b/drivers/net/wireless/st/cw1200/queue.c
+index 805a3c1bf8fe..259739e53fc1 100644
+--- a/drivers/net/wireless/st/cw1200/queue.c
++++ b/drivers/net/wireless/st/cw1200/queue.c
+@@ -411,33 +411,6 @@ int cw1200_queue_requeue(struct cw1200_queue *queue, u32 packet_id)
+ 	return ret;
+ }
+ 
+-int cw1200_queue_requeue_all(struct cw1200_queue *queue)
+-{
+-	struct cw1200_queue_item *item, *tmp;
+-	struct cw1200_queue_stats *stats = queue->stats;
+-	spin_lock_bh(&queue->lock);
+-
+-	list_for_each_entry_safe_reverse(item, tmp, &queue->pending, head) {
+-		--queue->num_pending;
+-		++queue->link_map_cache[item->txpriv.link_id];
+-
+-		spin_lock_bh(&stats->lock);
+-		++stats->num_queued;
+-		++stats->link_map_cache[item->txpriv.link_id];
+-		spin_unlock_bh(&stats->lock);
+-
+-		++item->generation;
+-		item->packet_id = cw1200_queue_mk_packet_id(queue->generation,
+-							    queue->queue_id,
+-							    item->generation,
+-							    item - queue->pool);
+-		list_move(&item->head, &queue->queue);
+-	}
+-	spin_unlock_bh(&queue->lock);
+-
+-	return 0;
+-}
+-
+ int cw1200_queue_remove(struct cw1200_queue *queue, u32 packet_id)
+ {
+ 	int ret = 0;
+diff --git a/drivers/net/wireless/st/cw1200/queue.h b/drivers/net/wireless/st/cw1200/queue.h
+index 96ac69ae97de..d46304b58747 100644
+--- a/drivers/net/wireless/st/cw1200/queue.h
++++ b/drivers/net/wireless/st/cw1200/queue.h
+@@ -85,7 +85,6 @@ int cw1200_queue_get(struct cw1200_queue *queue,
+ 		     struct ieee80211_tx_info **tx_info,
+ 		     const struct cw1200_txpriv **txpriv);
+ int cw1200_queue_requeue(struct cw1200_queue *queue, u32 packet_id);
+-int cw1200_queue_requeue_all(struct cw1200_queue *queue);
+ int cw1200_queue_remove(struct cw1200_queue *queue,
+ 			u32 packet_id);
+ int cw1200_queue_get_skb(struct cw1200_queue *queue, u32 packet_id,
+-- 
+2.47.0
 
 
