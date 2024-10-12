@@ -1,114 +1,125 @@
-Return-Path: <linux-wireless+bounces-13923-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13924-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 648B199B3C8
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Oct 2024 13:34:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8784D99B55B
+	for <lists+linux-wireless@lfdr.de>; Sat, 12 Oct 2024 16:14:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 950491C2136A
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Oct 2024 11:34:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30CCD1F22881
+	for <lists+linux-wireless@lfdr.de>; Sat, 12 Oct 2024 14:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0432E1BB6BB;
-	Sat, 12 Oct 2024 11:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA49189B8F;
+	Sat, 12 Oct 2024 14:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lljsPDCX"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="a4JB3X1l";
+	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="JKaHmknR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from e2i340.smtp2go.com (e2i340.smtp2go.com [103.2.141.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDECD1B85D0;
-	Sat, 12 Oct 2024 11:27:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA571E481
+	for <linux-wireless@vger.kernel.org>; Sat, 12 Oct 2024 14:14:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.2.141.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728732473; cv=none; b=h9iabWikd+9iFCm/tJ8FI68k2ZxAvMCJyJzHJ7z7v2MsPGGwATNl/q5vkIgeQwrOdGUD3/FrLKAJQ1igaXARSYRMEAlliU9unRSpDQsLt/K/dUhJMuIeVucvVET63BDSafKGUg42FlmYiQpNU7BX1WeyrV6TFJAXlE6WQ8ZQjNA=
+	t=1728742446; cv=none; b=Zqj44cJkjIY5eZuQ7Ft22vyRLpOBiUO0ydi4acxgBaMcn6+3jhGqdVOMauoC62WtHyLkACZ+lilLkQPloNfhSF73/Pc4c3cPriSBJedrK8+hfchtJegBTw0X0LUOdYUnUa/USzh39s/u3u0Vsj3sKoqhMeLCiMD66UPRaH6RL/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728732473; c=relaxed/simple;
-	bh=Lw3xV5CQbRpHj7Suwhvn/ROZHULgNHJAEmyajtD6PGE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HIpKmQzBDgf0CnJUBg1eOmQUTwb/wfMSuBJ9yOL6WqrrT13XcFv0jspGXXYwu+hY9ENl5YZz3jQ2Ly7DU2px7LxjmnU1VG/CpX5zkZvBRXzGwhqv/N844ycEglrEgWnT+hn4cUFUDMMph87PqO86P1gb/sQKak4mY9IY+F6pweI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lljsPDCX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90137C4CEC6;
-	Sat, 12 Oct 2024 11:27:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728732473;
-	bh=Lw3xV5CQbRpHj7Suwhvn/ROZHULgNHJAEmyajtD6PGE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lljsPDCXyj8TBE846ZEmWDWDi1iRtyL8hgSgKh+ueveO44nWZfs0SuukTaLnJpI3a
-	 gd3AEALGGRc8bBE2K/HIo4urXpCfXF4Iuyloygw70rJquvQFYh78Fu4f79u23gj+JD
-	 vz8ds4hSfzseNp/phZHb9LD8Ay+7qO1VNhcD71P4lCDaASFLAaUKeihFvxUVBnq3TS
-	 kPOdPB9ibMxosl1Uv+duYyT5dwCb7vW4iiyVZsNSl7J+3bQox2M36rI5yFykFGgSob
-	 pc7xIXGlUSNcYOeqg6RpnAmgeX+TGucjluWOtQCLJ7cWmMkqc8itQTVEGEOx1LuFl+
-	 U6+BjNwpjZb8w==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Bert Karwatzki <spasswolf@web.de>,
-	Felix Fietkau <nbd@nbd.name>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	sean.wang@mediatek.com,
-	deren.wu@mediatek.com,
-	mingyen.hsieh@mediatek.com,
-	johannes.berg@intel.com,
-	hao.zhang@mediatek.com,
-	emmanuel.grumbach@intel.com,
-	leon.yen@mediatek.com,
-	linux-wireless@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 15/20] wifi: mt76: mt7921: fix NULL pointer access in mt7921_ipv6_addr_change
-Date: Sat, 12 Oct 2024 07:26:47 -0400
-Message-ID: <20241012112715.1763241-15-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241012112715.1763241-1-sashal@kernel.org>
-References: <20241012112715.1763241-1-sashal@kernel.org>
+	s=arc-20240116; t=1728742446; c=relaxed/simple;
+	bh=Cy+R4FPDFUOG+iV2pPma0CEtX9bmeveSMtqN46TLDlw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SH9un09D1H58AfO9al8FCAqnT9wKdVmadJMEyWhNdvlWO3WBb9sKHRkR9vQZmzIZfDnCwapEaB6omhIyjw/2GVRvHIOfzH/MgXFItH7HRoPmthNCemPqfTV3nX3fsGjdmNgOP/pOWPRDfBs3bc2407lkHvmgyfjBLcDMnBstmtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=pass (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=a4JB3X1l; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=JKaHmknR; arc=none smtp.client-ip=103.2.141.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=smtpservice.net; s=maxzs0.a1-4.dyn; x=1728743342; h=Feedback-ID:
+	X-Smtpcorp-Track:Message-Id:Date:Subject:To:From:Reply-To:Sender:
+	List-Unsubscribe:List-Unsubscribe-Post;
+	bh=nZwbub+Y+2CpDF1gb5jtpGb5EXEnMSxGMYCK7/dCUDI=; b=a4JB3X1leQyvTwTzvjaq06x6hL
+	Sp3rcHoIrK1iG3wBaTOKjm//WxpV721QcEgrafpC8TZzIL52i5KGGqiiuO24aD8B3SUwjWs6Wy/pn
+	L0dgi+9IxxXQ3i0H4fc4wHLnbiRFDsKThntE/kghIz5sNk+lSGzIS8PrUGMPYmaf6kllmQXliUMPL
+	2Rn9MnaRJBvftvSV2s6udoaUjxOf77kgDDS2AlqhLw3hCRfMHhlRubo5iIYF878QJf78Y1uuJgApf
+	m60CphxCmjlkOFDP0hWLkV8GVCtTw4DlA8Ujj/8LCaNMdz3OckTR5TpxggB90Lkg7H8sHBcDdbZ91
+	i0T4uxcQ==;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
+ i=@triplefau.lt; q=dns/txt; s=s510616; t=1728742442; h=from : subject
+ : to : message-id : date;
+ bh=nZwbub+Y+2CpDF1gb5jtpGb5EXEnMSxGMYCK7/dCUDI=;
+ b=JKaHmknRVtLVowY0/dvg813kqvkAyT1YTWUxsUDahqYjFCnoUbShgmezaT72sZ9HbIo+P
+ 18F4TswfKG0m9AsgdDxfyCwLnYK+JdF2YOSEDNztsZ4EEajLm8Lg2H8bAef/GH4o2QBJkNS
+ Adbs4vyuHamimKVmK2AY7Ep87Z1q7ef1l/IdXkjydp99EQkaPVUt3RAsogUT8wsisMGdhHC
+ YQ6fuXsENoKpF53wEimFxfqBiEr/Z2v1lYJbxF3qggV0KF5peDoQeOAw19qjG9TlRYF36Dx
+ NE5UzTmX6pz5o81cd8E7hyLSvT2TULJYqdwaRjYv1h9h+JAftIX8sQ1uiTSw==
+Received: from [10.172.233.58] (helo=SmtpCorp) by smtpcorp.com with esmtpsa
+ (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+ (Exim 4.94.2-S2G) (envelope-from <repk@triplefau.lt>)
+ id 1szcsI-TRjz50-AJ; Sat, 12 Oct 2024 14:13:42 +0000
+Received: from [10.12.239.196] (helo=localhost) by smtpcorp.com with esmtpsa
+ (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+ (Exim 4.97.1-S2G) (envelope-from <repk@triplefau.lt>)
+ id 1szcsH-FnQW0hPuzUP-oFaB; Sat, 12 Oct 2024 14:13:42 +0000
+From: Remi Pommarel <repk@triplefau.lt>
+To: ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+ Cedric Veilleux <veilleux.cedric@gmail.com>,
+ Remi Pommarel <repk@triplefau.lt>
+Subject: [PATCH 0/2] Improve ath10k flush queue mechanism
+Date: Sat, 12 Oct 2024 16:13:53 +0200
+Message-Id: <cover.1728741827.git.repk@triplefau.lt>
+X-Mailer: git-send-email 2.40.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.56
 Content-Transfer-Encoding: 8bit
+X-Smtpcorp-Track: zUAeVd_EnM7q.fys3mRp1UF2T.zf5K7w-TJA5
+Feedback-ID: 510616m:510616apGKSTK:510616sE1o2YokP8
+X-Report-Abuse: Please forward a copy of this message, including all headers,
+ to <abuse-report@smtp2go.com>
 
-From: Bert Karwatzki <spasswolf@web.de>
+It has been reported [0] that a 3-4 seconds (actually up to 5 sec) of
+radio silence could be observed followed by the error below on ath10k
+devices:
 
-[ Upstream commit 479ffee68d59c599f8aed8fa2dcc8e13e7bd13c3 ]
+ ath10k_pci 0000:04:00.0: failed to flush transmit queue (skip 0 ar-state 1): 0
 
-When disabling wifi mt7921_ipv6_addr_change() is called as a notifier.
-At this point mvif->phy is already NULL so we cannot use it here.
+This is due to how the TX queues are flushed in ath10k. When a STA is
+removed, mac80211 need to flush queues [1], but because ath10k does not
+have a lightweight .flush_sta operation, ieee80211_flush_queues() is
+called instead effectively blocking the whole queue during the drain
+causing this radio silence. Also because ath10k_flush() waits for all
+queued to be emptied, not only the flushed ones it could more easily
+take up to 5 seconds to finish making the whole situation worst.
 
-Signed-off-by: Bert Karwatzki <spasswolf@web.de>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240812104542.80760-1-spasswolf@web.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/net/wireless/mediatek/mt76/mt7921/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The first patch of this series adds a .flush_sta operation to flush only
+specific STA traffic avoiding the need to stop whole queues and should
+be enough in itself to fix the reported issue.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index d8851cb5f400b..da17a29a4ce57 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -1095,7 +1095,7 @@ static void mt7921_ipv6_addr_change(struct ieee80211_hw *hw,
- 				    struct inet6_dev *idev)
- {
- 	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
--	struct mt792x_dev *dev = mvif->phy->dev;
-+	struct mt792x_dev *dev = mt792x_hw_dev(hw);
- 	struct inet6_ifaddr *ifa;
- 	struct in6_addr ns_addrs[IEEE80211_BSS_ARP_ADDR_LIST_LEN];
- 	struct sk_buff *skb;
+The second patch of this series is a proposal to improve ath10k_flush so
+that it will be less likely to timeout waiting for non related queues to
+drain.
+
+The abose kernel warning could still be observed (e.g. flushing a dead
+STA) but should be now harmless.
+
+[0]: https://lore.kernel.org/all/CA+Xfe4FjUmzM5mvPxGbpJsF3SvSdE5_wgxvgFJ0bsdrKODVXCQ@mail.gmail.com/
+[1]: commit 0b75a1b1e42e ("wifi: mac80211: flush queues on STA removal")
+
+Remi Pommarel (2):
+  wifi: ath10k: Implement ieee80211 flush_sta callback
+  wifi: ath10k: Flush only requested txq in ath10k_flush()
+
+ drivers/net/wireless/ath/ath10k/core.h   |  4 ++
+ drivers/net/wireless/ath/ath10k/htt.h    | 11 +++-
+ drivers/net/wireless/ath/ath10k/htt_tx.c | 50 +++++++++++++++-
+ drivers/net/wireless/ath/ath10k/mac.c    | 76 ++++++++++++++++++++----
+ drivers/net/wireless/ath/ath10k/txrx.c   |  5 +-
+ 5 files changed, 129 insertions(+), 17 deletions(-)
+
 -- 
-2.43.0
+2.40.0
 
 
