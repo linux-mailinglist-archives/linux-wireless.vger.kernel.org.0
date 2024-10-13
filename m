@@ -1,56 +1,83 @@
-Return-Path: <linux-wireless+bounces-13928-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13929-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F29D399B71A
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Oct 2024 22:55:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EBE099B92C
+	for <lists+linux-wireless@lfdr.de>; Sun, 13 Oct 2024 13:19:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 305901C20FB0
-	for <lists+linux-wireless@lfdr.de>; Sat, 12 Oct 2024 20:55:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D339E1F217AF
+	for <lists+linux-wireless@lfdr.de>; Sun, 13 Oct 2024 11:19:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4CC146599;
-	Sat, 12 Oct 2024 20:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CAD313D245;
+	Sun, 13 Oct 2024 11:19:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="rxKluLvb"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="Mp00CnmF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2014C12CDA5;
-	Sat, 12 Oct 2024 20:55:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7E61E495;
+	Sun, 13 Oct 2024 11:19:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728766523; cv=none; b=UIbC8GMdf0/jRkgWs7M2uN+M/gSmcdWnriQ2ejpX0+ohbfbfMFZnWG97MMc8TBJzwXJ6fYROxnt8Jr/BhXA1bEegd51HfyM5LQTCd4/e9MZbl1iOGdUJJGNOWLLfYhcZqif7vk2L4fpQ/oDqnLDxUaoOXANKVebT5085A47wNt8=
+	t=1728818381; cv=none; b=TWOinhZ4QQlgSmNtv8oDlkBWQeZ0f1GDEcxAl2m5V7Us6q60n3S9oQavLC3iRj1XRAYhoxG0RBt7w/iMurjyZn9bnhxunCIBu/xlYyrc61RmZXl8Dj9kyrSyofUiMRYHTBkr7VwgSIPf5laqqYA3n6n3uoJ72UgbKzaAoSKisIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728766523; c=relaxed/simple;
-	bh=/9vvY2eKL7girIMximjebAKd53ExFcJZ+ZsIsMghqU0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u4e9O6ijB0KJTAPvCkdyP6GHeRizQyl7srdKFJ5SQUVOtOAlhwiesHSC9GCpjFHWFB/kOq+1CksJQ+ndoQt1MJ8fAfRS4SQRlH/PKR14MEKmF5Y6Jl0iT8rK4wplle8HAGYSVM+OwP/eI1ZGw8vKl6qyYm5WTw0MK2HNacV5Kh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=rxKluLvb; arc=none smtp.client-ip=46.235.229.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
-	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
-	:Subject; bh=wvYKHcFqppquqswVxJCB39KuSTx+SdhHabWlL/bm2+I=; b=rxKluLvbBH4sa5sW
-	elOpo+yQ5TAmHidGZTGFs3AQdGNz+TmHOQJcUZJ051DDSS2fa1O3ZkMsyiRoyuEU5oGaoOXnnOdbC
-	fOhNC7GHLI3QvuOxYWtCHwF1NKq5bwTWe4grAmfNIS2LoNCr6SmCmFqF+7yrvQPk+YIZopzCoSh9j
-	Mt+YDtJADLFmDYpo7YiiYJtkWYHPUQhJcsmZjowRI8zvdRlBMA2sdU8vMKEzVTW2Xjs3S+H4i9ExA
-	KhsKDGYDBtCafDXF/1upq3TqfeswNjRLSHnJOuPTAxwTEk+U3G8J+8206fUHj5bFVDu+jvXea5mNg
-	D4ikGP3Ak1R05I87Ew==;
-Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
-	by mx.treblig.org with esmtp (Exim 4.96)
-	(envelope-from <linux@treblig.org>)
-	id 1szit3-00Aiud-0x;
-	Sat, 12 Oct 2024 20:38:53 +0000
-From: linux@treblig.org
-To: kvalo@kernel.org,
-	linux-wireless@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	"Dr. David Alan Gilbert" <linux@treblig.org>
-Subject: [PATCH] cw1200: Remove unused cw1200_queue_requeue_all
-Date: Sat, 12 Oct 2024 21:38:52 +0100
-Message-ID: <20241012203852.229151-1-linux@treblig.org>
+	s=arc-20240116; t=1728818381; c=relaxed/simple;
+	bh=dQIhx85P5+avHvO6BNKpI2DsjSrClwyn3dzCv19zTLc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZOkn9oupuGZTVa7BQkdk8NYQWhfGFhff1hzG9Zy/UkSqudBFD8djgDaDPPHe47yE+aQAcfKzp2KJW78oCC8cV+15ytKMLUZpcQgudgDMtfwGGII8hlLLniOn4eadc3hISHJR/y1U+ts7WMweHg5EyfeQEZcE0OndOLG2phgLyZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=Mp00CnmF; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5c94c4ad9d8so2622256a12.2;
+        Sun, 13 Oct 2024 04:19:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1728818377; x=1729423177; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=a78jCwD07IIr0zzbJdTp9e6+G/hl6TYZEf6UvVEfM8c=;
+        b=Mp00CnmF3D89I7WflRb33xeyv6KNOQt5RrVT7cCcJx9m11AurHinuhd/LBQ6IHliH2
+         YcL64O5rxn0DH03abVF3n9Q6pstC8+l+No4fIXnjws+NTRzyiClgaPrx54NrVg8D8596
+         nDXOz7CaXbDsfIepSBSPG0xh409DsARbjPLWOyDEI24mIPhpN6TSkC1NzTVqgTYwrdNa
+         pqLwWtBIsI6CGYXSQNPpN8SDuC6wrGkDVYmdIj4CYfKeI16sTJkEdZK7oy5F6Z+tjJrL
+         xsz75KdcLum34A2CAnaub2NMgmRvAGfc3aemo4t1BY3mugDp6SLb8zee/4fRtK6crccs
+         BuBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728818377; x=1729423177;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=a78jCwD07IIr0zzbJdTp9e6+G/hl6TYZEf6UvVEfM8c=;
+        b=FzArJWDHCko5KVOoZQbfU6AWYughpsnCVyHvnZQDuMeGxU12PXSuJo1FJsPPnaH8vw
+         4JQD9s5FsYhDeY+M0D/HZcHt/z+KFhvYR4QqaKm37ORegl179/Dcjb0MrYOgOnVvOfFe
+         oGjRh/QUncO3RS5LErHJfYWr47QiFZN18msX8fRlWo0bFQZsB7cdtXAKutzCvyrbvtzP
+         Cd/Pg3TYF5UvUBTFeSe1ViHk87SaRT+kngnLz1YM/nuZRLLo3a9PcmwySbQu3Gwep192
+         CbTuD9G446NX5SkrYcGVlkgmKs9zQTKC9MmRpdBUV85lsAcHCy8GlZeETipMUhGaj4HI
+         deSA==
+X-Forwarded-Encrypted: i=1; AJvYcCXUBMOiwBX93dnWyf6R6oK5WBCya77pQdwje8EFIoMyLxfHXot+MXxPbCNf4yWpwOjpZDNeXr/1pAz5o3g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy01I4JVXMoPaFvnboiLRpkCe6ypKp+ZDwDgQGVn9vP/pMqtAhh
+	GPyK5tjXV81hxWiTEp0J3lDcuqQcaLmcR3TYHgDLh5MuEVkh4zjEZ4+Jbw==
+X-Google-Smtp-Source: AGHT+IHJ6a9mQsJnncdL0rnghqhEUMCPwK/kDBKoEWEsI2SsB6487fRFXbL4XVwWNHCkWXHsgVrblA==
+X-Received: by 2002:a17:907:961e:b0:a9a:835:b4eb with SMTP id a640c23a62f3a-a9a0835b5c3mr117395766b.38.1728818376857;
+        Sun, 13 Oct 2024 04:19:36 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-2a02-3100-ad8f-1500-0000-0000-0000-0e63.310.pool.telefonica.de. [2a02:3100:ad8f:1500::e63])
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-a99ea321959sm189788666b.194.2024.10.13.04.19.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 13 Oct 2024 04:19:36 -0700 (PDT)
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+To: linux-wireless@vger.kernel.org
+Cc: Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Ryder Lee <ryder.lee@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mediatek@lists.infradead.org,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Subject: wifi: mt76: mt7921 Survey is missing noise floor
+Date: Sun, 13 Oct 2024 13:19:20 +0200
+Message-ID: <20241013111920.679188-1-martin.blumenstingl@googlemail.com>
 X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -60,71 +87,34 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: "Dr. David Alan Gilbert" <linux@treblig.org>
+Hello,
 
-cw1200_queue_requeue_all() has been unused since it was added in 2013
-by commit
-a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
+I'm using an MT7921 PCIe card in AP mode on the 5GHz band.
+It works well when I manually set a channel in hostapd.conf.
 
-Remove it.
+Setting channel=0 or channel=acs_survey (both have the same meaning)
+should make hostapd check for a suitable channel and pick that
+automatically.
+Unfortunately this does not work as hostapd reports the following (for
+all frequencies/channels):
+    ACS: Survey for freq 5180 is missing noise floor
+    ACS: Survey for freq 5180 is missing noise floor
+    ACS: Survey for freq 5180 is missing noise floor
+    ACS: Survey for freq 5180 is missing noise floor
+    ACS: Survey for freq 5180 is missing noise floor
+    ACS: Channel 36 has insufficient survey data
 
-Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
----
- drivers/net/wireless/st/cw1200/queue.c | 27 --------------------------
- drivers/net/wireless/st/cw1200/queue.h |  1 -
- 2 files changed, 28 deletions(-)
+I suspect that this is due to mt792x_phy_update_channel() (from
+drivers/net/wireless/mediatek/mt76/mt792x_mac.c) which calls
+mt792x_phy_get_nf(). The latter just returns zero - so it seems
+reading the noise floor from the hardware/firmware is not
+supported yet.
 
-diff --git a/drivers/net/wireless/st/cw1200/queue.c b/drivers/net/wireless/st/cw1200/queue.c
-index 805a3c1bf8fe..259739e53fc1 100644
---- a/drivers/net/wireless/st/cw1200/queue.c
-+++ b/drivers/net/wireless/st/cw1200/queue.c
-@@ -411,33 +411,6 @@ int cw1200_queue_requeue(struct cw1200_queue *queue, u32 packet_id)
- 	return ret;
- }
- 
--int cw1200_queue_requeue_all(struct cw1200_queue *queue)
--{
--	struct cw1200_queue_item *item, *tmp;
--	struct cw1200_queue_stats *stats = queue->stats;
--	spin_lock_bh(&queue->lock);
--
--	list_for_each_entry_safe_reverse(item, tmp, &queue->pending, head) {
--		--queue->num_pending;
--		++queue->link_map_cache[item->txpriv.link_id];
--
--		spin_lock_bh(&stats->lock);
--		++stats->num_queued;
--		++stats->link_map_cache[item->txpriv.link_id];
--		spin_unlock_bh(&stats->lock);
--
--		++item->generation;
--		item->packet_id = cw1200_queue_mk_packet_id(queue->generation,
--							    queue->queue_id,
--							    item->generation,
--							    item - queue->pool);
--		list_move(&item->head, &queue->queue);
--	}
--	spin_unlock_bh(&queue->lock);
--
--	return 0;
--}
--
- int cw1200_queue_remove(struct cw1200_queue *queue, u32 packet_id)
- {
- 	int ret = 0;
-diff --git a/drivers/net/wireless/st/cw1200/queue.h b/drivers/net/wireless/st/cw1200/queue.h
-index 96ac69ae97de..d46304b58747 100644
---- a/drivers/net/wireless/st/cw1200/queue.h
-+++ b/drivers/net/wireless/st/cw1200/queue.h
-@@ -85,7 +85,6 @@ int cw1200_queue_get(struct cw1200_queue *queue,
- 		     struct ieee80211_tx_info **tx_info,
- 		     const struct cw1200_txpriv **txpriv);
- int cw1200_queue_requeue(struct cw1200_queue *queue, u32 packet_id);
--int cw1200_queue_requeue_all(struct cw1200_queue *queue);
- int cw1200_queue_remove(struct cw1200_queue *queue,
- 			u32 packet_id);
- int cw1200_queue_get_skb(struct cw1200_queue *queue, u32 packet_id,
--- 
-2.47.0
+What is needed to implement this? I can test patches or - if
+someone describes which registers to program - I can also write
+a patch and submit it upstream.
 
+
+Thank you and best regards,
+Martin
 
