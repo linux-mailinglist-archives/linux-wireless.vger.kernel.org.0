@@ -1,212 +1,124 @@
-Return-Path: <linux-wireless+bounces-13948-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13949-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F105999D8AB
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Oct 2024 22:57:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 288D499D9F4
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 01:02:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5ACE5282774
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Oct 2024 20:57:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86A8BB21B3E
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Oct 2024 23:02:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA4F81D1728;
-	Mon, 14 Oct 2024 20:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1F3F158D79;
+	Mon, 14 Oct 2024 23:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="t8V+pgkW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b4N/dLyk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp-fw-80009.amazon.com (smtp-fw-80009.amazon.com [99.78.197.220])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C6961D1518
-	for <linux-wireless@vger.kernel.org>; Mon, 14 Oct 2024 20:56:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.220
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135901448DF;
+	Mon, 14 Oct 2024 23:02:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728939410; cv=none; b=jqzPvnSUk8QE8y8UrBKkQBk9WBl0jM9z0GXEi82ZYYXzPX+Powr6HAGX4A1XGilFKtgHoR30ytvbQxBI1/O8LwNMDO3LgL1ddnCh1MQE0s10rATYs6dhuA4mi5tt9ZJwaq06u3ovQvIOL7zH4oOrta3nzTzskE/uNlqqRsEgZ/o=
+	t=1728946925; cv=none; b=tcctjGw/Ze9Va8n6yzNt0/tngxC6yhUIkgEwtSsldcU0SNpKCqZOZt7msCPsh03x1w00Z/vGxBMo9yGiY6oGpwS1/40McIRj0k0v+UeElX9CPr7CNVcGVAFpcpZ84TizhH9v8EyJ7evFBQU5FrWlM7Nrjm8T3/TaQ9Yw/W9PPyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728939410; c=relaxed/simple;
-	bh=zoVxVHxBOoITHvYx/wds+4nlVcC3Cw40aNA88OH+CAs=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gwy9zJT0KwraEqFVYEW1qtETonL4N4Qd49rLm2R/GZoLtLb3wZa0EFxp8z4cVvfcAZjz9d9jtCeJrYASi3ueDhYuW1cds7XH+nEic7gkKMLHBE9kj9YWL2kPF2aHflOxIn8K6mHLq3zDaahqIj+ZOugXsXmB2sOUtgIDWrWMNVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=t8V+pgkW; arc=none smtp.client-ip=99.78.197.220
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1728946925; c=relaxed/simple;
+	bh=isxeY2F05qQsZ2WKXbGh/MaxpRRZpflVYsLI4JN7mzA=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=s9m9ve3iDSlVs2t/uRHC1cut5yvXMZO9qq4u7Rw8Kgrp7tA2tw9d5mkrcA6JpzUnnN+Kkn7df2uhIYPDpaXxKSIZqMaVNa08mx6cVCvxUg2KWbnzfjma9rafgiZaCsQ+NOkFXZlywAd/SV0c3daguWMaJqhjwYPM9CFBbFpxt5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b4N/dLyk; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-37d49a7207cso3042232f8f.0;
+        Mon, 14 Oct 2024 16:02:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1728939409; x=1760475409;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=cIC71K1ngjjnOWz/tQ2pY1RF/NWPWwSpvGOAjVKxY74=;
-  b=t8V+pgkWsSXYvn36WzvBwNaqxX9D/4iG+f2+xmb8+SKdAMYcLsY1285N
-   gyKNECj5PhB/NxSXKYir3tz7I0X562sOPH9Z/7RgbPPsqPwynBXfvxF+E
-   wmIakueGeN/ykVtxKs3ij1rrZHlhKK1c//jnZYJokZa7sfPTsWX9sdF3f
-   s=;
-X-IronPort-AV: E=Sophos;i="6.11,203,1725321600"; 
-   d="scan'208";a="138018246"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-80009.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Oct 2024 20:56:47 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [10.0.21.151:43461]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.59.23:2525] with esmtp (Farcaster)
- id a1983923-8adc-4ffd-b998-fc6d6b098004; Mon, 14 Oct 2024 20:56:47 +0000 (UTC)
-X-Farcaster-Flow-ID: a1983923-8adc-4ffd-b998-fc6d6b098004
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Mon, 14 Oct 2024 20:56:47 +0000
-Received: from 6c7e67c6786f.amazon.com (10.106.101.44) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
- Mon, 14 Oct 2024 20:56:44 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: Johannes Berg <johannes.berg@intel.com>
-CC: Alexandre Ferrieux <alexandre.ferrieux@gmail.com>, Kuniyuki Iwashima
-	<kuniyu@amazon.com>, Kuniyuki Iwashima <kuni1840@gmail.com>,
-	<linux-wireless@vger.kernel.org>
-Subject: [PATCH v1 wl-next 3/3] wifi: wext: Don't iterate all netns in wireless_nlevent_flush().
-Date: Mon, 14 Oct 2024 13:55:43 -0700
-Message-ID: <20241014205543.94787-4-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <20241014205543.94787-1-kuniyu@amazon.com>
-References: <20241014205543.94787-1-kuniyu@amazon.com>
+        d=gmail.com; s=20230601; t=1728946922; x=1729551722; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fIkS7pzP1CV8VNgOcTKZ+pJdHHTX/0kd0qi96EfGmwA=;
+        b=b4N/dLyk4Pu54nZpS8+5FCEeXtWYA5XmucQvLXafmYnihamCgzXOI1FWfLMyq9K6au
+         VgIwAXNw3NCXJVwi3GlJ4izxGLYqX10Dj9WJxk7heZspNpGJgT8+oEf2/KAYPdXpqueg
+         AUvVZa5Hn0IKKwILsGPikB6vO4EtdlMHaLQ12PuOG9junGLE8oG/OZv0wCL7aGjRQHQs
+         MKUUI4vs2MlvrSAHqvxIVsot7UL6wsor9O1vjCxhQ4LmxV3izUxVAu0bQG+Cytp1A8kB
+         DqjSRXfBMX1hli3bJnHNxIqEL1PWfcYTQuU/F+CQUjEGgxFEpVbJ9ICxHvr2WXnlZ6xZ
+         wmyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728946922; x=1729551722;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=fIkS7pzP1CV8VNgOcTKZ+pJdHHTX/0kd0qi96EfGmwA=;
+        b=LuvAYlX1LHGWwWkKdP+DBsBSA7kDu+f3wCdmxTMwrYNS+lVY9MPDXdKWTYa4uOb/Rg
+         CaDSbFjgErCKlko803T2FdLJViL2o01HlojPLBDZHQ3qy/fBuUXo+WommaNJ+lQcq6AD
+         4j2DZ+HoJVfI1pSXDhNAXOpleqCfAhQjdxs/aoOohKXjd1YBugu1DEYZ24GNBmwkqose
+         fJtrq1wDhIywmODwCfLejuzjgOOZz28WqKXXMVUxs3m5I379J9VHNUelsyiFJlJ7nKWP
+         G6I7pIqqn9SNCY35ZsQeFCQ0y5Ej7iKMiT+JdWo4N1EI89br1vp06/Ae4nl2UcLzDZ/1
+         CChw==
+X-Forwarded-Encrypted: i=1; AJvYcCXDLsv99vFSquiM400rRIRXRlZ7CXgXMQOZ7p8KJBTCCGKFIFtnSrdLC80ztqZdBwWivkNKeN359305ZOPazA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxd3ZcqDMwwWPWS7yloVtlhiP1MWsQ7OyWIdSaPVrPfpb1lHhnn
+	/yAS64VkaO1y4gtYE7LtBdHFjkiFjoxpoisxFLOyYMSFV4Y3WevCEh5qTg==
+X-Google-Smtp-Source: AGHT+IGtA4bl0vTDiM0+34/hmRCDBCj/NNYNNYyHfcFZcCHzGIIQMEEMETQwN5PfPgRBOylVg4J0pA==
+X-Received: by 2002:a5d:4d8c:0:b0:374:bd48:fae9 with SMTP id ffacd0b85a97d-37d5ff2a6fbmr7178985f8f.20.1728946922222;
+        Mon, 14 Oct 2024 16:02:02 -0700 (PDT)
+Received: from [192.168.1.240] ([194.120.133.80])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-37d7fa87c7dsm105712f8f.42.2024.10.14.16.02.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Oct 2024 16:02:00 -0700 (PDT)
+Message-ID: <9c02683d-c688-4e39-913e-6b20b3bd76a0@gmail.com>
+Date: Tue, 15 Oct 2024 00:02:00 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D045UWC001.ant.amazon.com (10.13.139.223) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Arend van Spriel <arend.vanspriel@broadcom.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+From: "Colin King (gmail)" <colin.i.king@gmail.com>
+Subject: incorrect shift and mask operation in
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Commit 8bf862739a77 ("wext: fix message delay/ordering") introduced
-wext_netdev_notifier_call() to avoid message delay and out-of-order.
+Hi,
 
-The notifier calls wireless_nlevent_flush(), which iterates all netns.
+Static analysis on 
+drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c has found 
+an issue with a mask and shift operation in function 
+wlc_phy_rxcal_radio_setup_nphy() as follows:
 
-The problem is that this happens for any event and netdev, even if
-the host does not have a wext device.
+lines 26326-26330:
 
-This is too noisy, especially on a host with thousands of netns as
-reported by Alexandre Ferrieux.
+         offtune_val =
+                 (pi->tx_rx_cal_radio_saveregs
+                  [2] & 0xF0) >> 8;
+         offtune_val =
+                 (offtune_val <= 0x7) ? 0xF : 0;
 
-Given that the wext event queue was implemented in struct net,
-wireless_nlevent_flush() does not need to iterate all netns.
+and similar in lines 26376-26381 too.
 
-Let's avoid unnecessary netns iteration in wireless_nlevent_flush().
+The issue is that the expression pi->tx_rx_cal_radio_saveregs[2] & 0xF0
+when shifted 8 places right is always zero, so this looks like a mistake 
+since some value value between 0..0xf is expected in the second statement.
 
-Reported-by: Alexandre Ferrieux <alexandre.ferrieux@gmail.com>
-Closes: https://lore.kernel.org/netdev/CAKYWH0Ti3=4GeeuVyWKJ9LyTuRnf3Wy9GKg4Jb7tdeaT39qADA@mail.gmail.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
----
- include/net/iw_handler.h |  4 ++--
- net/wireless/core.c      |  2 +-
- net/wireless/wext-core.c | 25 +++++++++++++------------
- 3 files changed, 16 insertions(+), 15 deletions(-)
+Since pi->tx_rx_cal_radio_saveregs[2] is a u16 value the expression 
+could plausible be:
 
-diff --git a/include/net/iw_handler.h b/include/net/iw_handler.h
-index b80e474cb0aa..e6acff086d39 100644
---- a/include/net/iw_handler.h
-+++ b/include/net/iw_handler.h
-@@ -412,9 +412,9 @@ void wireless_send_event(struct net_device *dev, unsigned int cmd,
- 			 union iwreq_data *wrqu, const char *extra);
- #ifdef CONFIG_WEXT_CORE
- /* flush all previous wext events - if work is done from netdev notifiers */
--void wireless_nlevent_flush(void);
-+void wireless_nlevent_flush(struct net *net);
- #else
--static inline void wireless_nlevent_flush(void) {}
-+static inline void wireless_nlevent_flush(struct net *net) {}
- #endif
- 
- /* We may need a function to send a stream of events to user space.
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 4c8d8f167409..a864ec889de3 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -1629,7 +1629,7 @@ static int cfg80211_netdev_notifier_call(struct notifier_block *nb,
- 		return NOTIFY_DONE;
- 	}
- 
--	wireless_nlevent_flush();
-+	wireless_nlevent_flush(dev_net(dev));
- 
- 	return NOTIFY_OK;
- }
-diff --git a/net/wireless/wext-core.c b/net/wireless/wext-core.c
-index 4d7699135f46..28033211c9e3 100644
---- a/net/wireless/wext-core.c
-+++ b/net/wireless/wext-core.c
-@@ -345,6 +345,7 @@ static const int compat_event_type_size[] = {
- /* IW event code */
- 
- struct wext_net {
-+	struct net *net;
- 	struct sk_buff_head nlevents;
- 	struct work_struct nlevent_work;
- };
-@@ -356,26 +357,22 @@ static struct wext_net *wext_net(struct net *net)
- 	return net_generic(net, wext_net_id);
- }
- 
--void wireless_nlevent_flush(void)
-+void wireless_nlevent_flush(struct net *net)
- {
-+	struct wext_net *wnet = wext_net(net);
- 	struct sk_buff *skb;
--	struct net *net;
- 
--	down_read(&net_rwsem);
--	for_each_net(net) {
--		struct wext_net *wnet = wext_net(net);
- 
--		while ((skb = skb_dequeue(&wnet->nlevents)))
--			rtnl_notify(skb, net, 0, RTNLGRP_LINK, NULL,
--				    GFP_KERNEL);
--	}
--	up_read(&net_rwsem);
-+	while ((skb = skb_dequeue(&wnet->nlevents)))
-+		rtnl_notify(skb, net, 0, RTNLGRP_LINK, NULL, GFP_KERNEL);
- }
- EXPORT_SYMBOL_GPL(wireless_nlevent_flush);
- 
- static int wext_netdev_notifier_call(struct notifier_block *nb,
- 				     unsigned long state, void *ptr)
- {
-+	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
-+
- 	/*
- 	 * When a netdev changes state in any way, flush all pending messages
- 	 * to avoid them going out in a strange order, e.g. RTM_NEWLINK after
-@@ -383,7 +380,7 @@ static int wext_netdev_notifier_call(struct notifier_block *nb,
- 	 * or similar - all of which could otherwise happen due to delays from
- 	 * schedule_work().
- 	 */
--	wireless_nlevent_flush();
-+	wireless_nlevent_flush(dev_net(dev));
- 
- 	return NOTIFY_OK;
- }
-@@ -395,13 +392,17 @@ static struct notifier_block wext_netdev_notifier = {
- /* Process events generated by the wireless layer or the driver. */
- static void wireless_nlevent_process(struct work_struct *work)
- {
--	wireless_nlevent_flush();
-+	struct wext_net *wnet;
-+
-+	wnet = container_of(work, struct wext_net, nlevent_work);
-+	wireless_nlevent_flush(wnet->net);
- }
- 
- static int __net_init wext_pernet_init(struct net *net)
- {
- 	struct wext_net *wnet = wext_net(net);
- 
-+	wnet->net = net;
- 	skb_queue_head_init(&wnet->nlevents);
- 	INIT_WORK(&wnet->nlevent_work, wireless_nlevent_process);
- 
--- 
-2.39.5 (Apple Git-154)
+	(pi->tx_rx_cal_radio_saveregs[2] & 0xf0) >> 4
+or
+	(pi->tx_rx_cal_radio_saveregs[2] & 0xf00) >> 8
+
+I don't have knowledge of the hardware so I'm not sure what a suitable 
+fix is.
+
+Regards,
+
+Colin
 
 
