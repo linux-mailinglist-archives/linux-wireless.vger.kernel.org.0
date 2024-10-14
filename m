@@ -1,372 +1,268 @@
-Return-Path: <linux-wireless+bounces-13938-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13939-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C883799C115
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Oct 2024 09:18:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CB3999C558
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Oct 2024 11:20:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4861B1F237BA
-	for <lists+linux-wireless@lfdr.de>; Mon, 14 Oct 2024 07:18:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4B2E1F23D89
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Oct 2024 09:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20CE014831C;
-	Mon, 14 Oct 2024 07:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE7F91991A9;
+	Mon, 14 Oct 2024 09:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ay2NyVwv"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HUTyjlge"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4CF145323
-	for <linux-wireless@vger.kernel.org>; Mon, 14 Oct 2024 07:17:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDB315666B
+	for <linux-wireless@vger.kernel.org>; Mon, 14 Oct 2024 09:12:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728890269; cv=none; b=k3mAUzOgeX/3WE77mz5Scjfva+BG7/5h7Gbr3ZrX0RW14cNRUaY7dmH4+zhybQpj6r9ggf9kiyxMQ1jfApj2kWu97CDTHvDHen3W3z6rbsscyOW5Y5HlOE3wX1DKvEiegw+SHQzHr5dXbHdKi8/Bo5NI4/mPV/+p9Rq/Yd1nBqU=
+	t=1728897133; cv=none; b=fCm8cb2NBzQy9MMalclCmbxR+QlRzb8h5VIDxmt00LtKyOilgxgbYsbsW89amOBJVBVF4tlMJ0fH0j4O4yPVAyKDbtvCBuoecgonH8yavQ0/F/pGiepMC97FSPNCTWsS6z9hrTXAW854kCZ7PFaQJret3EUeb0ZtGen2lcpwlyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728890269; c=relaxed/simple;
-	bh=tuH1UCTaD6bujCPTywwdrcQ4Ruyu0AwN/zvi0iBkmpA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rb4uwYvvbMBOJjykegGo9mA8XTiRCqZydZ7jUA/yNzE0vFah2YccImp+Gc9/NU2MZxdS7ZgXYji9aZDHxub2g8gMuSR6rwIOwc8Ca6PkDFKw2ju9ODwHK3qsZ8SA+F/EgYFFSUIPsWChmZLeTnwYAtYGfq/S1RWjqpBKxS0iAw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ay2NyVwv; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49DNo2Zl023892;
-	Mon, 14 Oct 2024 07:17:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	caa6yMf65OcFiIwziS5rDTIxTb3ZxY5gFIiSVOcNJU8=; b=ay2NyVwvRsjDh7r2
-	UjAOK4ReIEz8+z0Ix80GOy7kvAjE5VTF/sJp2SpBS8ONwp/Wol1t9bXMmhc2GhS6
-	/Ummt7+nW26mDWZQ2yDzqdeJYFxmeq3le3PloZjkxzOP6gg6TZzmMT+c82oZ4jFP
-	GIA0DneFUKIYLnYrDtYrDKHdaI4gwHCTzS9FQWzh3Uj5ba8lke+n+qbApZiCux3C
-	iNv9UTDbCBw3Krgo0nVe6YUc9kgI/UpQpVg94uh4MikLIhVablk9fCrfXZnj/KYs
-	fPHgyIhUk7U4aXwY9jY8KbqLs5XWL3om31INgYzxLCfuI5x6Ldpr38UJGWTdgXKj
-	N7brMA==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 427g45bn5v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 14 Oct 2024 07:17:43 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49E7Hgtc030387
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 14 Oct 2024 07:17:42 GMT
-Received: from hu-rdevanat-blr.qualcomm.com (10.80.80.8) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Mon, 14 Oct 2024 00:17:40 -0700
-From: Roopni Devanathan <quic_rdevanat@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, Rajat Soni <quic_rajson@quicinc.com>,
-        Roopni Devanathan <quic_rdevanat@quicinc.com>
-Subject: [PATCH v3 2/2] wifi: ath12k: Support pdev Puncture Stats
-Date: Mon, 14 Oct 2024 12:47:20 +0530
-Message-ID: <20241014071720.3991199-3-quic_rdevanat@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241014071720.3991199-1-quic_rdevanat@quicinc.com>
-References: <20241014071720.3991199-1-quic_rdevanat@quicinc.com>
+	s=arc-20240116; t=1728897133; c=relaxed/simple;
+	bh=X6kY1iJ7DeXV7dzOM/Quy8TkeUIc2RgmP57BuSAG348=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=LHUhNRHC3mXr3aSED0u2ep5KU9lerpaNdT8E9GVXcJ0UbKpMkxrhnOh7r4ZkGwqqkEVZi4POwZ7ggui35Ht7bv4Iw+MLhNM6+0KSV5e4yShADuvQqDxblUwPUC5vrDFRizLrgjpQbiu7UqwYX7dTREA5e2mQeVCI2ofo7GlBogE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HUTyjlge; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1728897130;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=efYEDzJoXvnSDmPZhcwgS+G1MqF2s5kTREhSaGYut/4=;
+	b=HUTyjlgeFceJqihqg6Rgr5eSgMTf4AyWsRiI+28eO8PlwmGPZze0TaiUxI/okLbYFID8nE
+	XRTLYtedaGGVce8vfS5sVC5Wb6ExB4hblwv51M+wg9+DOsaYc9EpCrrO2QWmgP5IWWEMWD
+	RmJzg9WhgGt6THrNZFH4N6W/DIbSMdA=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-319-A2CA7JVAN9mJxZS6OVR5RA-1; Mon, 14 Oct 2024 05:12:09 -0400
+X-MC-Unique: A2CA7JVAN9mJxZS6OVR5RA-1
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-a9a0710ca24so73231466b.3
+        for <linux-wireless@vger.kernel.org>; Mon, 14 Oct 2024 02:12:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728897128; x=1729501928;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=efYEDzJoXvnSDmPZhcwgS+G1MqF2s5kTREhSaGYut/4=;
+        b=p10nnrh3FnkS/7QTdlpkNCh1oW7K7UScuKuj2d+rl8FpFDf2dtzjcdvV3+JhE3LFOo
+         HLs0bLdVshbuSCv+drh7kSSMhMEk3T3zxdy5hIHDZK5+wIJkhKsnhDduUg0RivR+kQax
+         5v0gzWCpZQTpBnjRgCXElo/N0v/kkmqXyS23YRqPWSyKz72ek4DCvmUTEfsVj3EaTcFI
+         svnPQ6r01lGexirchIXGra3c0JD2X/7n6nsQuUbSHzKmJjf+PrUk+4hcVehh9dXInWox
+         pqFNYMQB/zpyjInPy3q4JMvIYXJ0qo2uRwoZhrp6Nqgab2OVGlV05JDu5g29uYsMkwYH
+         jU1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXjNAw57R8pGwN+h398j9D0JONBmrptwtNnfgvh/63ko6zz7gahikiJPAzcoDI68femo4Sxp7ulxBFb+xFPnQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxtERWeBqvLKwT237kV7v+1sqxZ/rQSujG/BTjjx+oxNkbjK/fh
+	n3P5H1qqpnxgKpIIL16JpFLJeufLnPwjJ6XRvH29FGt/mbZZ+xHSTNqnrPwnv7+0HH9ZIpcWbNz
+	+rovfEC5TfVg8ug7/CGs3BwITsy4hy2zxLBvtxHN1ygVW/U1IgNybxLKZrKTp3B4c
+X-Received: by 2002:a17:907:9611:b0:a99:36ab:d843 with SMTP id a640c23a62f3a-a99b940ff26mr1050661066b.38.1728897127775;
+        Mon, 14 Oct 2024 02:12:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFnnCmW/otcj2gQQZVhAW9woFCE4udOO76Y7RHXvuu8hpYM4Kp8213Cwui9o9/A0ZQF2FNuJw==
+X-Received: by 2002:a17:907:9611:b0:a99:36ab:d843 with SMTP id a640c23a62f3a-a99b940ff26mr1050652366b.38.1728897127228;
+        Mon, 14 Oct 2024 02:12:07 -0700 (PDT)
+Received: from ?IPv6:2001:16b8:2d37:9800:1d57:78cf:c1ae:b0b3? (200116b82d3798001d5778cfc1aeb0b3.dip.versatel-1u1.de. [2001:16b8:2d37:9800:1d57:78cf:c1ae:b0b3])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a99f07c842csm290736366b.54.2024.10.14.02.12.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Oct 2024 02:12:06 -0700 (PDT)
+Message-ID: <3515493a0d0dd8f1b7df5a5677042946325ea6a8.camel@redhat.com>
+Subject: Re: [RFC PATCH 01/13] PCI: Prepare removing devres from pci_intx()
+From: Philipp Stanner <pstanner@redhat.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, 
+ Sergey Shtylyov <s.shtylyov@omp.ru>, Basavaraj Natikar
+ <basavaraj.natikar@amd.com>, Jiri Kosina <jikos@kernel.org>,  Benjamin
+ Tissoires <bentiss@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Alex Dubov <oakad@yahoo.com>,
+ Sudarsana Kalluru <skalluru@marvell.com>, Manish Chopra
+ <manishc@marvell.com>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Rasesh Mody <rmody@marvell.com>,
+ GR-Linux-NIC-Dev@marvell.com, Igor Mitsyanko <imitsyanko@quantenna.com>,
+ Sergey Matyukevich <geomatsi@gmail.com>, Kalle Valo <kvalo@kernel.org>,
+ Sanjay R Mehta <sanju.mehta@amd.com>, Shyam Sundar S K
+ <Shyam-sundar.S-k@amd.com>, Jon Mason <jdmason@kudzu.us>, Dave Jiang
+ <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>, Bjorn Helgaas
+ <bhelgaas@google.com>, Alex Williamson <alex.williamson@redhat.com>,
+ Juergen Gross <jgross@suse.com>, Stefano Stabellini
+ <sstabellini@kernel.org>, Oleksandr Tyshchenko
+ <oleksandr_tyshchenko@epam.com>, Jaroslav Kysela <perex@perex.cz>, Takashi
+ Iwai <tiwai@suse.com>, Mario Limonciello <mario.limonciello@amd.com>, Chen
+ Ni <nichen@iscas.ac.cn>, Ricky Wu <ricky_wu@realtek.com>, Al Viro
+ <viro@zeniv.linux.org.uk>, Breno Leitao <leitao@debian.org>, Kevin Tian
+ <kevin.tian@intel.com>, Thomas Gleixner <tglx@linutronix.de>, Ilpo
+ =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>, Mostafa Saleh
+ <smostafa@google.com>, Hannes Reinecke <hare@suse.de>, John Garry
+ <john.g.garry@oracle.com>, Soumya Negi <soumya.negi97@gmail.com>, Jason
+ Gunthorpe <jgg@ziepe.ca>, Yi Liu <yi.l.liu@intel.com>, "Dr. David Alan
+ Gilbert" <linux@treblig.org>, Christian Brauner <brauner@kernel.org>, Ankit
+ Agrawal <ankita@nvidia.com>, Reinette Chatre <reinette.chatre@intel.com>,
+ Eric Auger <eric.auger@redhat.com>, Ye Bin <yebin10@huawei.com>, Marek
+ =?ISO-8859-1?Q?Marczykowski-G=F3recki?= <marmarek@invisiblethingslab.com>,
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Kai Vehmanen
+ <kai.vehmanen@linux.intel.com>,  Peter Ujfalusi
+ <peter.ujfalusi@linux.intel.com>, Rui Salvaterra <rsalvaterra@gmail.com>,
+ Marc Zyngier <maz@kernel.org>, linux-ide@vger.kernel.org,
+ linux-kernel@vger.kernel.org,  linux-input@vger.kernel.org,
+ netdev@vger.kernel.org,  linux-wireless@vger.kernel.org,
+ ntb@lists.linux.dev, linux-pci@vger.kernel.org, 
+ linux-staging@lists.linux.dev, kvm@vger.kernel.org, 
+ xen-devel@lists.xenproject.org, linux-sound@vger.kernel.org
+Date: Mon, 14 Oct 2024 11:12:03 +0200
+In-Reply-To: <ZwktO8AUmFEakhVP@smile.fi.intel.com>
+References: <20241009083519.10088-1-pstanner@redhat.com>
+	 <20241009083519.10088-2-pstanner@redhat.com>
+	 <ZwfnULv2myACxnVb@smile.fi.intel.com>
+	 <f65e9fa01a1947782fc930876e5f84174408db67.camel@redhat.com>
+	 <ZwktO8AUmFEakhVP@smile.fi.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: W9Pr1GRe_JBzhxqepHLrxAuATXa67_t7
-X-Proofpoint-ORIG-GUID: W9Pr1GRe_JBzhxqepHLrxAuATXa67_t7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
- lowpriorityscore=0 malwarescore=0 spamscore=0 impostorscore=0 bulkscore=0
- mlxscore=0 priorityscore=1501 adultscore=0 clxscore=1015 suspectscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410140052
 
-From: Rajat Soni <quic_rajson@quicinc.com>
+On Fri, 2024-10-11 at 16:50 +0300, Andy Shevchenko wrote:
+> On Fri, Oct 11, 2024 at 02:16:06PM +0200, Philipp Stanner wrote:
+> > On Thu, 2024-10-10 at 17:40 +0300, Andy Shevchenko wrote:
+> > > On Wed, Oct 09, 2024 at 10:35:07AM +0200, Philipp Stanner wrote:
+> > > > pci_intx() is a hybrid function which sometimes performs devres
+> > > > operations, depending on whether pcim_enable_device() has been
+> > > > used
+> > > > to
+> > > > enable the pci_dev. This sometimes-managed nature of the
+> > > > function
+> > > > is
+> > > > problematic. Notably, it causes the function to allocate under
+> > > > some
+> > > > circumstances which makes it unusable from interrupt context.
+> > > >=20
+> > > > To, ultimately, remove the hybrid nature from pci_intx(), it is
+> > > > first
+> > > > necessary to provide an always-managed and a never-managed
+> > > > version
+> > > > of that function. Then, all callers of pci_intx() can be ported
+> > > > to
+> > > > the
+> > > > version they need, depending whether they use
+> > > > pci_enable_device()
+> > > > or
+> > > > pcim_enable_device().
+>=20
+> > > > An always-managed function exists, namely pcim_intx(), for
+> > > > which
+> > > > __pcim_intx(), a never-managed version of pci_intx() had been
+> > > > implemented.
+> > >=20
+> > > > Make __pcim_intx() a public function under the name
+> > > > pci_intx_unmanaged(). Make pcim_intx() a public function.
+>=20
+> It seems I got confused by these two paragraphs. Why the double
+> underscored
+> function is even mentioned here?
 
-Add support to request pdev puncture stats from firmware through
-HTT stats type 46. These stats give the count of number of
-subbands used in different wifi standards.
+It's mentioned because it's being moved.
 
-Sample output:
--------------
-echo 46 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
-cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats
-HTT_PDEV_PUNCTURE_STATS_TLV:
-mac_id = 0
-tx_ofdm_su_last_used_pattern_mask = 0x00000001
-tx_ofdm_su_num_subbands_used_cnt_01 = 217
-tx_ofdm_su_num_subbands_used_cnt_02 = 0
-tx_ofdm_su_num_subbands_used_cnt_03 = 0
-.....
+>=20
+> > > To avoid an additional churn we can make just completely new
+> > > APIs,
+> > > namely:
+> > > pcim_int_x()
+> > > pci_int_x()
+> > >=20
+> > > You won't need all dirty dances with double underscored function
+> > > naming and
+> > > renaming.
+> >=20
+> > =C3=84hm.. I can't follow. The new version doesn't use double
+> > underscores
+> > anymore. __pcim_intx() is being removed, effectively.
+> > After this series, we'd end up with a clean:
+> >=20
+> > 	pci_intx() <-> pcim_intx()
+> >=20
+> > just as in the other PCI APIs.
+>=20
+> ...
+>=20
+> > > > +	pci_read_config_word(pdev, PCI_COMMAND, &pci_command);
+> > > > +
+> > > > +	if (enable)
+> > > > +		new =3D pci_command & ~PCI_COMMAND_INTX_DISABLE;
+> > > > +	else
+> > > > +		new =3D pci_command | PCI_COMMAND_INTX_DISABLE;
+> > > > +
+> > > > +	if (new !=3D pci_command)
+> > >=20
+> > > I would use positive conditionals as easy to read (yes, a couple
+> > > of
+> > > lines
+> > > longer, but also a win is the indentation and avoiding an
+> > > additional
+> > > churn in
+> > > the future in case we need to add something in this branch.
+> >=20
+> > I can't follow. You mean:
+> >=20
+> > if (new =3D=3D pci_command)
+> > =C2=A0=C2=A0=C2=A0 return;
+> >=20
+> > ?
+> >=20
+> > That's exactly the same level of indentation.
+>=20
+> No, the body gets one level off.
+>=20
+> > Plus, I just copied the code.
+> >=20
+> > > > +		pci_write_config_word(pdev, PCI_COMMAND, new);
+>=20
+> 	if (new =3D=3D pci_command)
+> 		return;
+>=20
+> 	pci_write_config_word(pdev, PCI_COMMAND, new);
+>=20
+> See the difference?
+> Also, imaging adding a new code in your case:
+>=20
+> 	if (new !=3D pci_command)
+> 		pci_write_config_word(pdev, PCI_COMMAND, new);
+>=20
+> =3D=3D>
+>=20
+> 	if (new !=3D pci_command) {
+> 		...foo...
+> 		pci_write_config_word(pdev, PCI_COMMAND, new);
+> 		...bar...
+> 	}
+>=20
+> And in mine:
+>=20
+> 	if (new =3D=3D pci_command)
+> 		return;
+>=20
+> 	...foo...
+> 	pci_write_config_word(pdev, PCI_COMMAND, new);
+> 	...bar...
+>=20
+> I hope it's clear now what I meant.
 
-HTT_PDEV_PUNCTURE_STATS_TLV:
-mac_id = 0
-tx_ax_dl_mu_ofdma_last_used_pattern_mask = 0x00000000
-tx_ax_dl_mu_ofdma_num_subbands_used_cnt_01 = 0
-tx_ax_dl_mu_ofdma_num_subbands_used_cnt_02 = 0
-tx_ax_dl_mu_ofdma_num_subbands_used_cnt_03 = 0
-.....
+It is clear.. I'm not necessarily convinced that it's better to review
+than just copying the pre-existing code, but if you really want it we
+can do it I guess.
 
-HTT_PDEV_PUNCTURE_STATS_TLV:
-mac_id = 0
-tx_be_dl_mu_ofdma_last_used_pattern_mask = 0x00000000
-tx_be_dl_mu_ofdma_num_subbands_used_cnt_01 = 0
-tx_be_dl_mu_ofdma_num_subbands_used_cnt_02 = 0
-tx_be_dl_mu_ofdma_num_subbands_used_cnt_03 = 0
-.....
-
-HTT_PDEV_PUNCTURE_STATS_TLV:
-mac_id = 0
-rx_ax_ul_mu_ofdma_last_used_pattern_mask = 0x00000000
-rx_ax_ul_mu_ofdma_num_subbands_used_cnt_01 = 0
-rx_ax_ul_mu_ofdma_num_subbands_used_cnt_02 = 0
-rx_ax_ul_mu_ofdma_num_subbands_used_cnt_03 = 0
-.....
-
-HTT_PDEV_PUNCTURE_STATS_TLV:
-mac_id = 0
-rx_be_ul_mu_ofdma_last_used_pattern_mask = 0x00000000
-rx_be_ul_mu_ofdma_num_subbands_used_cnt_01 = 0
-rx_be_ul_mu_ofdma_num_subbands_used_cnt_02 = 0
-rx_be_ul_mu_ofdma_num_subbands_used_cnt_03 = 0
-.....
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
-
-Signed-off-by: Rajat Soni <quic_rajson@quicinc.com>
-Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
----
- .../wireless/ath/ath12k/debugfs_htt_stats.c   | 138 ++++++++++++++++++
- .../wireless/ath/ath12k/debugfs_htt_stats.h   |  38 +++++
- 2 files changed, 176 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-index 60f0260550bb..b85b55ea7bf5 100644
---- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-+++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-@@ -2641,6 +2641,141 @@ ath12k_htt_print_dmac_reset_stats_tlv(const void *tag_buf, u16 tag_len,
- 	stats_req->buf_len = len;
- }
- 
-+static const char*
-+ath12k_htt_get_punct_dir_type_str(enum ath12k_htt_stats_direction direction,
-+				  struct debug_htt_stats_req *stats_req)
-+{
-+	const char *direction_str = "unknown";
-+	u32 len = stats_req->buf_len;
-+
-+	switch (direction) {
-+	case ATH12K_HTT_STATS_DIRECTION_TX:
-+		direction_str = "tx";
-+		break;
-+	case ATH12K_HTT_STATS_DIRECTION_RX:
-+		direction_str = "rx";
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	stats_req->buf_len = len;
-+	return direction_str;
-+}
-+
-+static const char*
-+ath12k_htt_get_punct_ppdu_type_str(enum ath12k_htt_stats_ppdu_type ppdu_type,
-+				   struct debug_htt_stats_req *stats_req)
-+{
-+	const char *ppdu_type_str = "unknown";
-+	u32 len = stats_req->buf_len;
-+
-+	switch (ppdu_type) {
-+	case ATH12K_HTT_STATS_PPDU_TYPE_MODE_SU:
-+		ppdu_type_str = "su";
-+		break;
-+	case ATH12K_HTT_STATS_PPDU_TYPE_DL_MU_MIMO:
-+		ppdu_type_str = "dl_mu_mimo";
-+		break;
-+	case ATH12K_HTT_STATS_PPDU_TYPE_UL_MU_MIMO:
-+		ppdu_type_str = "ul_mu_mimo";
-+		break;
-+	case ATH12K_HTT_STATS_PPDU_TYPE_DL_MU_OFDMA:
-+		ppdu_type_str = "dl_mu_ofdma";
-+		break;
-+	case ATH12K_HTT_STATS_PPDU_TYPE_UL_MU_OFDMA:
-+		ppdu_type_str = "ul_mu_ofdma";
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	stats_req->buf_len = len;
-+	return ppdu_type_str;
-+}
-+
-+static const char*
-+ath12k_htt_get_punct_pream_type_str(enum ath12k_htt_stats_param_type pream_type,
-+				    struct debug_htt_stats_req *stats_req)
-+{
-+	const char *pream_type_str = "unknown";
-+	u32 len = stats_req->buf_len;
-+
-+	switch (pream_type) {
-+	case ATH12K_HTT_STATS_PREAM_OFDM:
-+		pream_type_str = "ofdm";
-+		break;
-+	case ATH12K_HTT_STATS_PREAM_CCK:
-+		pream_type_str = "cck";
-+		break;
-+	case ATH12K_HTT_STATS_PREAM_HT:
-+		pream_type_str = "ht";
-+		break;
-+	case ATH12K_HTT_STATS_PREAM_VHT:
-+		pream_type_str = "ac";
-+		break;
-+	case ATH12K_HTT_STATS_PREAM_HE:
-+		pream_type_str = "ax";
-+		break;
-+	case ATH12K_HTT_STATS_PREAM_EHT:
-+		pream_type_str = "be";
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	stats_req->buf_len = len;
-+	return pream_type_str;
-+}
-+
-+static void
-+ath12k_htt_print_puncture_stats_tlv(const void *tag_buf, u16 tag_len,
-+				    struct debug_htt_stats_req *stats_req)
-+{
-+	const struct ath12k_htt_pdev_puncture_stats_tlv *stats_buf = tag_buf;
-+	u8 *buf = stats_req->buf;
-+	u32 len = stats_req->buf_len;
-+	u32 buf_len = ATH12K_HTT_STATS_BUF_SIZE;
-+	int i;
-+	const char *direction;
-+	const char *preamble;
-+	const char *ppdu_type;
-+	u32 mac_id__word;
-+	u32 subband_limit;
-+
-+	if (tag_len < sizeof(*stats_buf))
-+		return;
-+
-+	mac_id__word = le32_to_cpu(stats_buf->mac_id__word);
-+	subband_limit = min(le32_to_cpu(stats_buf->subband_cnt),
-+			    ATH12K_HTT_PUNCT_STATS_MAX_SUBBAND_CNT);
-+
-+	direction = ath12k_htt_get_punct_dir_type_str(le32_to_cpu(stats_buf->direction),
-+						      stats_req);
-+	ppdu_type = ath12k_htt_get_punct_ppdu_type_str(le32_to_cpu(stats_buf->ppdu_type),
-+						       stats_req);
-+	preamble = ath12k_htt_get_punct_pream_type_str(le32_to_cpu(stats_buf->preamble),
-+						       stats_req);
-+
-+	len += scnprintf(buf + len, buf_len - len, "HTT_PDEV_PUNCTURE_STATS_TLV:\n");
-+	len += scnprintf(buf + len, buf_len - len, "mac_id = %u\n",
-+			 u32_get_bits(mac_id__word, ATH12K_HTT_STATS_MAC_ID));
-+	len += scnprintf(buf + len, buf_len - len,
-+			 "%s_%s_%s_last_used_pattern_mask = 0x%08x\n",
-+			 direction, preamble, ppdu_type,
-+			 le32_to_cpu(stats_buf->last_used_pattern_mask));
-+
-+	for (i = 0; i < subband_limit; i++) {
-+		len += scnprintf(buf + len, buf_len - len,
-+				 "%s_%s_%s_num_subbands_used_cnt_%02d = %u\n",
-+				 direction, preamble, ppdu_type, i + 1,
-+				 le32_to_cpu(stats_buf->num_subbands_used_cnt[i]));
-+	}
-+	len += scnprintf(buf + len, buf_len - len, "\n");
-+
-+	stats_req->buf_len = len;
-+}
-+
- static void
- ath12k_htt_print_pdev_sched_algo_ofdma_stats_tlv(const void *tag_buf, u16 tag_len,
- 						 struct debug_htt_stats_req *stats_req)
-@@ -2936,6 +3071,9 @@ static int ath12k_dbg_htt_ext_stats_parse(struct ath12k_base *ab,
- 	case HTT_STATS_DMAC_RESET_STATS_TAG:
- 		ath12k_htt_print_dmac_reset_stats_tlv(tag_buf, len, stats_req);
- 		break;
-+	case HTT_STATS_PDEV_PUNCTURE_STATS_TAG:
-+		ath12k_htt_print_puncture_stats_tlv(tag_buf, len, stats_req);
-+		break;
- 	case HTT_STATS_PDEV_SCHED_ALGO_OFDMA_STATS_TAG:
- 		ath12k_htt_print_pdev_sched_algo_ofdma_stats_tlv(tag_buf, len, stats_req);
- 		break;
-diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
-index 6978c3243ee3..e6e2bcbe95a7 100644
---- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
-+++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
-@@ -137,6 +137,7 @@ enum ath12k_dbg_htt_ext_stats_type {
- 	ATH12K_DBG_HTT_EXT_STATS_PDEV_OBSS_PD_STATS	= 23,
- 	ATH12K_DBG_HTT_EXT_AST_ENTRIES			= 41,
- 	ATH12K_DBG_HTT_EXT_STATS_SOC_ERROR		= 45,
-+	ATH12K_DBG_HTT_DBG_PDEV_PUNCTURE_STATS		= 46,
- 	ATH12K_DBG_HTT_EXT_STATS_PDEV_SCHED_ALGO	= 49,
- 	ATH12K_DBG_HTT_EXT_STATS_MANDATORY_MUOFDMA	= 51,
- 
-@@ -203,6 +204,7 @@ enum ath12k_dbg_htt_tlv_tag {
- 	HTT_STATS_TX_SELFGEN_BE_STATS_TAG		= 138,
- 	HTT_STATS_TX_SELFGEN_BE_SCHED_STATUS_STATS_TAG	= 139,
- 	HTT_STATS_DMAC_RESET_STATS_TAG			= 155,
-+	HTT_STATS_PDEV_PUNCTURE_STATS_TAG		= 158,
- 	HTT_STATS_PDEV_SCHED_ALGO_OFDMA_STATS_TAG	= 165,
- 
- 	HTT_STATS_MAX_TAG,
-@@ -1140,4 +1142,40 @@ struct ath12k_htt_ast_entry_tlv {
- 	__le32 info;
- } __packed;
- 
-+enum ath12k_htt_stats_direction {
-+	ATH12K_HTT_STATS_DIRECTION_TX,
-+	ATH12K_HTT_STATS_DIRECTION_RX
-+};
-+
-+enum ath12k_htt_stats_ppdu_type {
-+	ATH12K_HTT_STATS_PPDU_TYPE_MODE_SU,
-+	ATH12K_HTT_STATS_PPDU_TYPE_DL_MU_MIMO,
-+	ATH12K_HTT_STATS_PPDU_TYPE_UL_MU_MIMO,
-+	ATH12K_HTT_STATS_PPDU_TYPE_DL_MU_OFDMA,
-+	ATH12K_HTT_STATS_PPDU_TYPE_UL_MU_OFDMA
-+};
-+
-+enum ath12k_htt_stats_param_type {
-+	ATH12K_HTT_STATS_PREAM_OFDM,
-+	ATH12K_HTT_STATS_PREAM_CCK,
-+	ATH12K_HTT_STATS_PREAM_HT,
-+	ATH12K_HTT_STATS_PREAM_VHT,
-+	ATH12K_HTT_STATS_PREAM_HE,
-+	ATH12K_HTT_STATS_PREAM_EHT,
-+	ATH12K_HTT_STATS_PREAM_RSVD1,
-+	ATH12K_HTT_STATS_PREAM_COUNT,
-+};
-+
-+#define ATH12K_HTT_PUNCT_STATS_MAX_SUBBAND_CNT	32
-+
-+struct ath12k_htt_pdev_puncture_stats_tlv {
-+	__le32 mac_id__word;
-+	__le32 direction;
-+	__le32 preamble;
-+	__le32 ppdu_type;
-+	__le32 subband_cnt;
-+	__le32 last_used_pattern_mask;
-+	__le32 num_subbands_used_cnt[ATH12K_HTT_PUNCT_STATS_MAX_SUBBAND_CNT];
-+} __packed;
-+
- #endif
--- 
-2.25.1
+P.
 
 
