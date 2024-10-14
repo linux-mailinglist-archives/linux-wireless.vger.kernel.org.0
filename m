@@ -1,178 +1,228 @@
-Return-Path: <linux-wireless+bounces-13930-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13931-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC52899BBAC
-	for <lists+linux-wireless@lfdr.de>; Sun, 13 Oct 2024 22:28:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C861699C06D
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Oct 2024 08:53:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 348F01F21650
-	for <lists+linux-wireless@lfdr.de>; Sun, 13 Oct 2024 20:28:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EF54280F47
+	for <lists+linux-wireless@lfdr.de>; Mon, 14 Oct 2024 06:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B2614B972;
-	Sun, 13 Oct 2024 20:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B5513A24D;
+	Mon, 14 Oct 2024 06:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cShxu2Fb"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="VIAuH4sv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F79214A619;
-	Sun, 13 Oct 2024 20:28:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427BE17C91
+	for <linux-wireless@vger.kernel.org>; Mon, 14 Oct 2024 06:53:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728851333; cv=none; b=sXgSAHIGRNp8xQWifD/50fyIpvmuGQ2Q///3wGBSt61fYK0P8Dvuwrzsy5tX1ZG0kG2VJVgEnW+npDnzchGGjy3UgYaSkNWTEzckujq99BI7hAKRJzxDO/RedrUJTL640AA4780ou8GR0Jujx/co39OCoBQJ6HqVY5OdEl+y7zc=
+	t=1728888803; cv=none; b=lsjcGULJFJFjhFAE3YVVH4hjKULMMrGjyJz877YOy2vb+lwSF6dk7coBslXH3VAVcIJ+APd+lmmUboMKBQHGDtv10KR1irba1oIeieBxMGQX3DXvXv/lkl1RHBK13JN3wOMh3MgkYvZ2uIKAXAxnr072TiOs7RxguNXk0G9OxYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728851333; c=relaxed/simple;
-	bh=B14erMBGVuq9kG+SORUOBD0xFZqGRijfqMUyrsc3wOA=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=fLVqcYobBnEQnhkNSZNxSDSNcdAyHr8DiJd5BLWQC4eb7v8y4fcra1ABB/eGReo0YDGKhCHwBSDxCOfFSG29WnMfam2pS+F0XSIPL2gWttpemgFn04l8oINBxwDCwLKmDpkg6sqZSeiTpSzXxsUcoURhdvgEfyurk6jNg7iRrjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cShxu2Fb; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a999521d0c3so604820166b.1;
-        Sun, 13 Oct 2024 13:28:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1728851330; x=1729456130; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:from:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3wRWCdVZVlOXVVV3K+TnOo4abj1WCau4sw4RIKpf2YQ=;
-        b=cShxu2FbXj2xhKH5gCqtitsy8u5PdnnZrMIv5EWuVU61A9/qsT3JgxCJNWgxEfkuTl
-         0I+irojyVzwfUZFtY1gzSDHp8nSpBKKdcp0eS0MQum+GgCQ+uNtzb0InKoWtiefziidb
-         hqux6Lj8fNmq9QMh0Ov7WZWr7NN8PUCusQfWfGnNwtI7W7Gmql1D7dAG38GdaWdg8WPH
-         KTuehP10V5VFUzy7bKrrfuA+UUtoO035YeUXAXo3PHpF2Nuvym0X529Cn5s/jcRZIqGt
-         jTs5EgjhxcDvuGHM1w7aAUvSGLzt2akYkA3Jys7apjxYhSP+ab1qOb9mPzwNNNgSLVcg
-         wybw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1728851330; x=1729456130;
-        h=content-transfer-encoding:cc:to:subject:from:content-language
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=3wRWCdVZVlOXVVV3K+TnOo4abj1WCau4sw4RIKpf2YQ=;
-        b=r5M7Z8pv0DELi05QoNDVZ1cEP1iY3DjtVrkr7VFcgd15TZ1Uzaaqfu7vfnMfTDgZGN
-         mhd6vMsBbu9L74NSbLGF/zAZsDMD2MyqycQB5XS4ou8N3YWNESvgoznAfynl9rDHsKaW
-         S8QkVdyLkEOvk8LYpjHLUdp3/emUnt6JUwITMfBUfyYszTM5ektHtTxDJxyZJjZrvsgK
-         /vCFwv12z4kSCCWF6SfWrHK6Ar5JvenDLxGejQRKqkglszrqrttqsjHzvl244aMiNd8A
-         1nQkp7jZafwfQio0LU8D8xke6W1KDxofxEBm3P56F2J7mTpkjX9vV/MPD739cNHVXPhK
-         uMgA==
-X-Forwarded-Encrypted: i=1; AJvYcCXKrOXwF36I1mg2PNZ5fyjnHnHdWhg0qwsSEK91LMSVLXqAVhDVmHmmQGVvFnZ1qcmDENED5l+AnDhRgEQR2w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YytuDaRg5VGq5PENKlXn784h9HGJz+Qry8xScyy6sVorwKyBpdP
-	fb93M0/R1hAqVWEMcs35rghEi/KRQBohEChzrJ/Jk4sOCRMydxNW6fxprP5+
-X-Google-Smtp-Source: AGHT+IFs8k6ARM1XBsiAlApkPDu0TO2sAvbk/FEu1+/7bODbqmT00VImgLMaitpFuy+TrqJfC18XtQ==
-X-Received: by 2002:a17:907:86ab:b0:a99:f887:ec09 with SMTP id a640c23a62f3a-a99f887ee29mr376832566b.35.1728851330052;
-        Sun, 13 Oct 2024 13:28:50 -0700 (PDT)
-Received: from [192.168.2.105] (p54a0712c.dip0.t-ipconnect.de. [84.160.113.44])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a06169967sm114645266b.97.2024.10.13.13.28.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 13 Oct 2024 13:28:49 -0700 (PDT)
-Message-ID: <a7eb3db4-ad0d-451a-9106-90d481bd3231@gmail.com>
-Date: Sun, 13 Oct 2024 22:28:48 +0200
+	s=arc-20240116; t=1728888803; c=relaxed/simple;
+	bh=f7664dU/a6gFK69Y6v2ALVWujjTPELePfFeSIwKcbEM=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=A692jEvgp5L07R+IpJygVEEDiV5MnUZSIxU3O5FPHAJHwwf2zPdVzaYLXhOB/NZ4GSRLX+Ibcxb5L40Unx587uSrz6odjMW+KyWgQwIjApq/B3p2VBfayoF+t4GZoHncSx7Z7d5/vengmXbeK9ugKtRcNrC17WygltzpAeVF1pU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=VIAuH4sv; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49DLJvkK028069;
+	Mon, 14 Oct 2024 06:53:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=QBgFKLvzV+6/3uKVD5x2uy
+	6/BElFgus6gprawF2aJmQ=; b=VIAuH4sv/MlYWeIxLY6Sw3NEBRyrqEK16Vv18r
+	egYjen9msKdM0daNuqirknIUcJ65yPJY0A2D4gE1yn1JZ28Gq0ENt9st4IPix/lM
+	ndmXqv/TFLgWCpvLT1zamELs0ZgKSU9ebMXjoR/l3SH19ZROZ362VQruiWEXfgLL
+	ZdvnUb+j/uvrUhPxLS+F4ZGAOwaf0AX2bsZ8RNl6//KKMCmoHlfBiB3KwV4ZNL3M
+	GcPNxCxwmYRZlpOr0g7NyCiPw/iyvEMf0VPVlP9TW4KzLgkcbHjQY/v4rKvLh79O
+	TP5krztbe7LWokxBjUAeJD2WB0o2MAR/C77/MmZFyWo0/LSA==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 427hb33gtn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 14 Oct 2024 06:53:17 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49E6rGMr020078
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 14 Oct 2024 06:53:16 GMT
+Received: from hu-rdevanat-blr.qualcomm.com (10.80.80.8) by
+ nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Sun, 13 Oct 2024 23:53:14 -0700
+From: Roopni Devanathan <quic_rdevanat@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, Rajat Soni <quic_rajson@quicinc.com>,
+        Roopni Devanathan <quic_rdevanat@quicinc.com>
+Subject: [PATCH v3] wifi: ath12k: Support DMAC Reset Stats
+Date: Mon, 14 Oct 2024 12:22:59 +0530
+Message-ID: <20241014065259.3968727-1-quic_rdevanat@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-From: Philipp Hortmann <philipp.g.hortmann@gmail.com>
-Subject: [RFC] ipw2100 ipw2200 ps3_gelic rtl8712 --- Are we ready for wext
- cleanup?
-To: linux-kernel@vger.kernel.org
-Cc: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Geert Uytterhoeven <geert@linux-m68k.org>, Geoff Levand
- <geoff@infradead.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jakub Kicinski <kuba@kernel.org>, Jeff Johnson <quic_jjohnson@quicinc.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- Larry Finger <Larry.Finger@lwfinger.net>,
- Nicolas Ferre <nicolas.ferre@microchip.com>, Pavel Machek <pavel@ucw.cz>,
- Stanislaw Gruszka <stf_xl@wp.pl>,
- Gregory Greenman <gregory.greenman@intel.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- linux-arm-kernel@lists.infradead.org, linux-staging@lists.linux.dev,
- linux-wireless@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
- Stefan Lippers-Hollmann <s.l-h@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: EJnx0ZdhzJbwlMOR41PPkplXS-pwmS3H
+X-Proofpoint-GUID: EJnx0ZdhzJbwlMOR41PPkplXS-pwmS3H
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
+ malwarescore=0 lowpriorityscore=0 priorityscore=1501 suspectscore=0
+ bulkscore=0 clxscore=1015 adultscore=0 phishscore=0 mlxscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410140049
 
-Hi,
+From: Rajat Soni <quic_rajson@quicinc.com>
 
-origin of this question was the following patch series from Arnd Bergmann
-[PATCH 00/10] Remove obsolete and orphaned wifi drivers
-https://lore.kernel.org/linux-staging/20231023131953.2876682-1-arnd@kernel.org/
+Add support to request DMAC reset stats from firmware through HTT stats
+type 45. These stats give debug SoC error stats such as reset count, reset
+time, engage time and count, disengage time and count and destination
+ring mask.
 
-Here the remaining files that use iw_handler_def:
-drivers/net/ethernet/toshiba/ps3_gelic_wireless.c:static const struct 
-iw_handler_def gelic_wl_wext_handler_def = {
-drivers/net/wireless/intel/ipw2x00/ipw2100.c:static const struct 
-iw_handler_def ipw2100_wx_handler_def;
-drivers/net/wireless/intel/ipw2x00/ipw2100.c:static const struct 
-iw_handler_def ipw2100_wx_handler_def = {
-drivers/net/wireless/intel/ipw2x00/ipw2200.c:static const struct 
-iw_handler_def ipw_wx_handler_def = {
-drivers/staging/rtl8712/os_intfs.c:     pnetdev->wireless_handlers = 
-(struct iw_handler_def *)
-drivers/staging/rtl8712/rtl871x_ioctl.h:extern struct iw_handler_def 
-r871x_handlers_def;
-drivers/staging/rtl8712/rtl871x_ioctl_linux.c:struct iw_handler_def 
-r871x_handlers_def = {
+Sample output:
+-------------
+echo 45 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
+cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats
+HTT_DMAC_RESET_STATS_TLV:
+reset_count = 1
+reset_time_ms = 3013430342
+disengage_time_ms = 3013430342
+engage_time_ms = 3013430342
+disengage_count = 1
+engage_count = 1
+drain_dest_ring_mask = 0x0
 
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00214-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
 
-In this Email Greg writes over rtl8192e:
-https://lore.kernel.org/linux-staging/2024100810-payback-suds-8c15@gregkh/
-"...
-No staging driver should ever get in the way of api changes elsewhere in
-the kernel, that's one of the rules of this part of the tree.  So from
-my opinion, it's fine to delete it now.  It can always come back in a
-new way later on.
-..."
+Signed-off-by: Rajat Soni <quic_rajson@quicinc.com>
+Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
+---
+ .../wireless/ath/ath12k/debugfs_htt_stats.c   | 49 +++++++++++++++++++
+ .../wireless/ath/ath12k/debugfs_htt_stats.h   | 15 ++++++
+ 2 files changed, 64 insertions(+)
 
-So it should not be an issue to remove rtl8712.
+diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+index b2be7dade79f..8e43e05422c2 100644
+--- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
++++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+@@ -2502,6 +2502,52 @@ ath12k_htt_print_pdev_obss_pd_stats_tlv(const void *tag_buf, u16 tag_len,
+ 	stats_req->buf_len = len;
+ }
+ 
++static u64 ath12k_le32hilo_to_u64(__le32 hi, __le32 lo)
++{
++	u64 hi64 = le32_to_cpu(hi);
++	u64 lo64 = le32_to_cpu(lo);
++
++	return (hi64 << 32) | lo64;
++}
++
++static void
++ath12k_htt_print_dmac_reset_stats_tlv(const void *tag_buf, u16 tag_len,
++				      struct debug_htt_stats_req *stats_req)
++{
++	const struct ath12k_htt_dmac_reset_stats_tlv *htt_stats_buf = tag_buf;
++	u8 *buf = stats_req->buf;
++	u32 len = stats_req->buf_len;
++	u32 buf_len = ATH12K_HTT_STATS_BUF_SIZE;
++	u64 time;
++
++	if (tag_len < sizeof(*htt_stats_buf))
++		return;
++
++	len += scnprintf(buf + len, buf_len - len, "HTT_DMAC_RESET_STATS_TLV:\n");
++	len += scnprintf(buf + len, buf_len - len, "reset_count = %u\n",
++			 le32_to_cpu(htt_stats_buf->reset_count));
++	time = ath12k_le32hilo_to_u64(htt_stats_buf->reset_time_hi_ms,
++				      htt_stats_buf->reset_time_lo_ms);
++	len += scnprintf(buf + len, buf_len - len, "reset_time_ms = %llu\n", time);
++
++	time = ath12k_le32hilo_to_u64(htt_stats_buf->disengage_time_hi_ms,
++				      htt_stats_buf->disengage_time_lo_ms);
++	len += scnprintf(buf + len, buf_len - len, "disengage_time_ms = %llu\n", time);
++
++	time = ath12k_le32hilo_to_u64(htt_stats_buf->engage_time_hi_ms,
++				      htt_stats_buf->engage_time_lo_ms);
++	len += scnprintf(buf + len, buf_len - len, "engage_time_ms = %llu\n", time);
++
++	len += scnprintf(buf + len, buf_len - len, "disengage_count = %u\n",
++			 le32_to_cpu(htt_stats_buf->disengage_count));
++	len += scnprintf(buf + len, buf_len - len, "engage_count = %u\n",
++			 le32_to_cpu(htt_stats_buf->engage_count));
++	len += scnprintf(buf + len, buf_len - len, "drain_dest_ring_mask = 0x%x\n\n",
++			 le32_to_cpu(htt_stats_buf->drain_dest_ring_mask));
++
++	stats_req->buf_len = len;
++}
++
+ static int ath12k_dbg_htt_ext_stats_parse(struct ath12k_base *ab,
+ 					  u16 tag, u16 len, const void *tag_buf,
+ 					  void *user_data)
+@@ -2675,6 +2721,9 @@ static int ath12k_dbg_htt_ext_stats_parse(struct ath12k_base *ab,
+ 	case HTT_STATS_PDEV_OBSS_PD_TAG:
+ 		ath12k_htt_print_pdev_obss_pd_stats_tlv(tag_buf, len, stats_req);
+ 		break;
++	case HTT_STATS_DMAC_RESET_STATS_TAG:
++		ath12k_htt_print_dmac_reset_stats_tlv(tag_buf, len, stats_req);
++		break;
+ 	default:
+ 		break;
+ 	}
+diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
+index 597334830d02..120615fbe853 100644
+--- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
++++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
+@@ -135,6 +135,7 @@ enum ath12k_dbg_htt_ext_stats_type {
+ 	ATH12K_DBG_HTT_EXT_STATS_PDEV_TX_MU		= 17,
+ 	ATH12K_DBG_HTT_EXT_STATS_PDEV_CCA_STATS		= 19,
+ 	ATH12K_DBG_HTT_EXT_STATS_PDEV_OBSS_PD_STATS	= 23,
++	ATH12K_DBG_HTT_EXT_STATS_SOC_ERROR		= 45,
+ 
+ 	/* keep this last */
+ 	ATH12K_DBG_HTT_NUM_EXT_STATS,
+@@ -196,6 +197,7 @@ enum ath12k_dbg_htt_tlv_tag {
+ 	HTT_STATS_TX_SELFGEN_BE_ERR_STATS_TAG		= 137,
+ 	HTT_STATS_TX_SELFGEN_BE_STATS_TAG		= 138,
+ 	HTT_STATS_TX_SELFGEN_BE_SCHED_STATUS_STATS_TAG	= 139,
++	HTT_STATS_DMAC_RESET_STATS_TAG			= 155,
+ 
+ 	HTT_STATS_MAX_TAG,
+ };
+@@ -1048,4 +1050,17 @@ struct ath12k_htt_pdev_obss_pd_stats_tlv {
+ 	__le32 num_sr_ppdu_abort_flush_cnt;
+ } __packed;
+ 
++struct ath12k_htt_dmac_reset_stats_tlv {
++	__le32 reset_count;
++	__le32 reset_time_lo_ms;
++	__le32 reset_time_hi_ms;
++	__le32 disengage_time_lo_ms;
++	__le32 disengage_time_hi_ms;
++	__le32 engage_time_lo_ms;
++	__le32 engage_time_hi_ms;
++	__le32 disengage_count;
++	__le32 engage_count;
++	__le32 drain_dest_ring_mask;
++} __packed;
++
+ #endif
 
-Stefan Lippers-Hollmann was one year ago still using the ipw2200.
-https://lore.kernel.org/linux-staging/20231024014302.0a0b79b0@mir/
-
-Here my opinion why I think we should reconsider this:
-
-I really like to use old hardware. One of my computers is from trash and 
-the other one is bought for 50€ three years ago. But non of my hardware 
-is from before 2012. Do we as a community really need to support 
-hardware from 2003 in kernel 6.13 for WLAN that evolved so rapidly? I do 
-not think so.
-
-People around me are complaining that the 2,4GHz WLAN is difficult to 
-use because so many devices are using it. Such slow devices consume a 
-lot of time to send and receive the data and block therefore other devices.
-
-The longterm kernels will still support this hardware for years.
-
-Please explain to our very high value resources (Maintainers, Developers 
-with wext and mac80211 expierience) that you cannot find any other 
-solution that is within technical possibility and budget (USB WLAN Stick 
-or exchange of WLAN module) and that they need to invest their time for 
-maintenance.
-Here the example of invested time from Johannes Berg:
-https://lore.kernel.org/all/20241007213525.8b2d52b60531.I6a27aaf30bded9a0977f07f47fba2bd31a3b3330@changeid/
-
-I cannot ask the Linux kernel community to support my test hardware just 
-because I bought it some time ago. Rather, I have to show that I use it 
-for private or business purposes on a regular basis and that I cannot 
-easily change.
-
-Using this hardware is security wise not state of the art as WPA3 is not 
-supported. We put so much effort into security. Why not here?
-
-Thanks for your response.
-
-Bye Philipp
-
-
-
-
-
-
+base-commit: 69eabe24843f238e79a6dbbd2b3fcc8eef39d6b8
+-- 
+2.25.1
 
 
