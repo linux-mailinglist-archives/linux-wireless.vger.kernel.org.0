@@ -1,176 +1,138 @@
-Return-Path: <linux-wireless+bounces-14021-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14022-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 943C799FAE6
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 00:07:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83A8999FB41
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 00:20:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 148751F22941
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 22:07:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B47E11C23518
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 22:20:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 959F11B0F36;
-	Tue, 15 Oct 2024 22:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468FD1B0F21;
+	Tue, 15 Oct 2024 22:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="YpWxMC5j"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="gS4t2AGk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1869F1B0F25
-	for <linux-wireless@vger.kernel.org>; Tue, 15 Oct 2024 22:06:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D42B185B47;
+	Tue, 15 Oct 2024 22:20:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729030017; cv=none; b=PHFTYUDZ+ovfkmaiOvVRAtrqQCVy/0DAEZ03rMs2BJGyMI1dlRxdtnztX872IO5a64GA0rn8I54lT+Q8D81lpTYGceOAvbd0owhboxkyA/5jSfG7HeksbfyTT0OgdHy1aVHp+ieX+rT5ziRTPhqddStwRJZzPjxpKrXmvUA5OBA=
+	t=1729030845; cv=none; b=epxscwD8E8odYge2afriZ8H/Vcdm/gjnptg8mDx3jKZuNajz5HFnZgPp8xc3Ju78+n1qU8ijFbLONuo/pk8oz/o9QVOHwq1KXGCve4ahsThg/cTQFJOJ9G4uHnDEwzJk2+wqXyPzmk61RiEqFsesCLChNVJCJYaHu4UbA0hEEZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729030017; c=relaxed/simple;
-	bh=4vRt+hJq2BeLpXAtOJSNUjTXAzJvtSSt2c04j5cz7M0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Sb+HmE6W4HeNGvdK7BuUwnwlGlMplDPAMjenOWUHrMo7GEXiECcLFUDGJLHDWXKTzHcG6Q52T5CMJ0XWUSqB6+uiZ1OQValiRbamJfQuew90FWWfzF6BKyjHiMCK9o21FoIdl3P//gjYyopmss9SpSU18krNY11tqx8QYqkYKBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=YpWxMC5j; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-7ea784aea63so1404066a12.3
-        for <linux-wireless@vger.kernel.org>; Tue, 15 Oct 2024 15:06:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1729030015; x=1729634815; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hT0R9bqoxmercTe8FcIYej1AYkgMYBqJ5UzV5PqtWaI=;
-        b=YpWxMC5jG9VSSz6q7gKC8/h24hnHK9W3Mm5+t0Rp28PTjI9UAkUX/PNTMpCGDNBdmR
-         EU8c5vd9Ic1g7jYT4ySXqt/k1UrHnmpXYGMazhLJyQrV7d1qXkBmrlMexoXH/dngKq4N
-         ccd/JRgIRCn5fEJs1yXUUgNVKCsWXI8aj9hP0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729030015; x=1729634815;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hT0R9bqoxmercTe8FcIYej1AYkgMYBqJ5UzV5PqtWaI=;
-        b=rxHLZJ1GXFrWJDnBTo+gg0fsFeF177Z7q/j4gdm4db+LKT7uaMKnHxrhh+BdyISo/S
-         Pvk2UaQCMQblLMiuhuwDl5vZYxlnhLIP/bmIwIz/QtAUiqUdB26KhVtGAN1Z/iFMwcYp
-         wQaTfeXrZAz7w4V5N/5dB9JFxLe/NGnfG0sc6BM570b0hVyQxXlIVag+sBBr6skysJrf
-         VQiWh/f9g+6rL7tkPnKsh3eMdr0roeWrsMhBobqUZHalKL5lod/rjo90q6NDPbpe6lY+
-         kNPmkycEIfwFssAbgFLWqOP9sy7TkMnW47LZb2IXMUBsUCow5oowQ2v+H+u1k1Xsh2pb
-         TqpQ==
-X-Gm-Message-State: AOJu0Yw6bLtBfNUzbDu0Sw80phlyAOd2Pb5jxvjNISSkFFWIjwC7/g8Y
-	0FrGmOc+29u6yi+aQRL8qcmm2wnlDTQqG+e4dMXy6qKxH4izR7NF7wvT0ENrxQ==
-X-Google-Smtp-Source: AGHT+IEpVH6CVZlPWktmJt6DhI48M5bSXpnUMj7IEXnfgo2g4woJPHJ3BpNKBkT2LODRTvv8UgeTew==
-X-Received: by 2002:a05:6a21:4d8c:b0:1d2:eaca:4fa8 with SMTP id adf61e73a8af0-1d905f58e25mr2593674637.35.1729030015272;
-        Tue, 15 Oct 2024 15:06:55 -0700 (PDT)
-Received: from localhost ([2a00:79e0:2e14:7:eef3:dbf8:fbe3:ab12])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-71e773716bbsm1882961b3a.13.2024.10.15.15.06.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Oct 2024 15:06:55 -0700 (PDT)
-Date: Tue, 15 Oct 2024 15:06:53 -0700
-From: Brian Norris <briannorris@chromium.org>
-To: Alper Nebi Yasak <alpernebiyasak@gmail.com>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Kees Cook <kees@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	David Lin <yu-hao.lin@nxp.com>, linux-hardening@vger.kernel.org,
-	Kalle Valo <kvalo@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH v2 2/2] wifi: mwifiex: Annotate
- mwifiex_ie_types_wildcard_ssid_params with __counted_by()
-Message-ID: <Zw7nfaYZHP-HIqWQ@google.com>
-References: <20241007222301.24154-1-alpernebiyasak@gmail.com>
- <20241007222301.24154-2-alpernebiyasak@gmail.com>
+	s=arc-20240116; t=1729030845; c=relaxed/simple;
+	bh=XYyFKaNRA4wWaSAfK8rsk2azG+eY0S/cwk//6ZrNo8w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PFtrRqE11P24rBhZP0QXSvC+g3ASyD+HRXuWd0Mw+yRwEE6xHkvVs/VoXJI+durjP7mfKnINlLccpShqhKNzMRt/gGhjYV7CFhRK7WTzjqpTF/WKECxvbGb34rnIMZvkIbqNiKTwHy1UhomK8gATakylok8JsiUr9xEZGAYDfho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=gS4t2AGk; arc=none smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49FHth3T019373;
+	Tue, 15 Oct 2024 22:20:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2023-11-20; bh=9amxsHQkQT/G9w3PaJaVF40PUix0E
+	rL5Pm84yf3YqPc=; b=gS4t2AGkl98LYAhuJ6m2b5XYCRScFGfkcqxQgwCmW+zCC
+	DpGzwRw+NlK1LmC3GukPrGh5k5CdJAVQ/jWWM6CJWTvkVwJHRUL0s1uVuuKj20C8
+	IF320xSQ9c1k4SiskUtXhh2AbUT0eHd8x3mFGPy6azPyyNMwIull+3xsE41+5bnc
+	rPpzg7NHvmvRjNLosx+L0HigMo7iLdiuYQgwbAx7f/4ubOiq34QBHUu4OA8/0NGa
+	1dq6FoSgczwa1WWe9jtYBXGOuQ1Tto3kcAZBMU0mXcCLpDK8F8TE/KsnyrWbviMK
+	ToFUzzZrH5MPVfGCErZFCsISKzpP3Tk89paAaa/XQ==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 427gq7jdab-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 15 Oct 2024 22:20:34 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 49FLWmX5026429;
+	Tue, 15 Oct 2024 22:20:33 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 427fj82ve0-1;
+	Tue, 15 Oct 2024 22:20:33 +0000
+From: Sherry Yang <sherry.yang@oracle.com>
+To: stable@vger.kernel.org, sashal@kernel.org, gregkh@linuxfoundation.org
+Cc: johannes@sipsolutions.net, davem@davemloft.net, kuba@kernel.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: [PATCH 5.15.y 5.10.y 5.4.y] wifi: mac80211: fix potential key use-after-free
+Date: Tue, 15 Oct 2024 15:20:30 -0700
+Message-ID: <20241015222030.1105765-1-sherry.yang@oracle.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241007222301.24154-2-alpernebiyasak@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_17,2024-10-15_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 adultscore=0
+ bulkscore=0 spamscore=0 mlxlogscore=999 phishscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2409260000
+ definitions=main-2410150147
+X-Proofpoint-ORIG-GUID: MlRzkmW65rnXGfo3puKQ1oyeU0YjGui1
+X-Proofpoint-GUID: MlRzkmW65rnXGfo3puKQ1oyeU0YjGui1
 
-Hi Alper,
+From: Johannes Berg <johannes.berg@intel.com>
 
-On Tue, Oct 08, 2024 at 01:20:55AM +0300, Alper Nebi Yasak wrote:
-> Add the __counted_by compiler attribute to the flexible array member
-> `ssid` to improve access bounds-checking via CONFIG_UBSAN_BOUNDS and
-> CONFIG_FORTIFY_SOURCE.
-> 
-> Signed-off-by: Alper Nebi Yasak <alpernebiyasak@gmail.com>
-> ---
-> I've mimicked the commit messages from `git log -S"__counted_by("`.
-> Since they refer to UBSAN I tried testing with CONFIG_KASAN (w/
-> kasan_multi_shot), CONFIG_UBSAN and CONFIG_FORTIFY_SOURCE. I do not
-> get any errors relating to this module with those options, but have
-> others -- I even had to test on another board altogether.
+[ Upstream commit 31db78a4923ef5e2008f2eed321811ca79e7f71b ]
 
-It's possible you don't have a new enough compiler to enable the
-improved array bounds checks? Supposedly, that's new in GCC 15 and Clang
-18. But I'm not too familiar.
+When ieee80211_key_link() is called by ieee80211_gtk_rekey_add()
+but returns 0 due to KRACK protection (identical key reinstall),
+ieee80211_gtk_rekey_add() will still return a pointer into the
+key, in a potential use-after-free. This normally doesn't happen
+since it's only called by iwlwifi in case of WoWLAN rekey offload
+which has its own KRACK protection, but still better to fix, do
+that by returning an error code and converting that to success on
+the cfg80211 boundary only, leaving the error for bad callers of
+ieee80211_gtk_rekey_add().
 
-> This attribute was suggested in reviews, I don't fully understand it,
-> but I am not sure it is correct in the context of this comment from
-> scan.c (with irrelelvant parts omitted):
-> 
->     ssid_len = user_scan_in->ssid_list[i].ssid_len;
-> 
->     wildcard_ssid_tlv =
->             (struct mwifiex_ie_types_wildcard_ssid_params *)
->             tlv_pos;
-> 
->     /*
->      * max_ssid_length = 0 tells firmware to perform
->      * specific scan for the SSID filled, whereas
->      * max_ssid_length = IEEE80211_MAX_SSID_LEN is for
->      * wildcard scan.
->      */
->     if (ssid_len)
->             wildcard_ssid_tlv->max_ssid_length = 0;
->     else
->             wildcard_ssid_tlv->max_ssid_length =
->                                     IEEE80211_MAX_SSID_LEN;
-> 
->     memcpy(wildcard_ssid_tlv->ssid,
->            user_scan_in->ssid_list[i].ssid, ssid_len);
-> 
-> I expect we want to use __counted_by(ssid_len) instead, but do not have
-> it in the struct. And max_ssid_length = 0 when ssid[] is non-empty, so
-> is it really appropriate as the __counted_by()? But then again, I
-> couldn't get this to produce a warning.
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fixes: fdf7cb4185b6 ("mac80211: accept key reinstall without changing anything")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[Sherry: bp to fix CVE-2023-52530, resolved minor conflicts in 
+net/mac80211/cfg.c because of context change due to missing commit
+23a5f0af6ff4 ("wifi: mac80211: remove cipher scheme support")
+ccdde7c74ffd ("wifi: mac80211: properly implement MLO key handling")]
+Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
+---
+ net/mac80211/cfg.c | 3 +++
+ net/mac80211/key.c | 2 +-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-The correct length would be derived from header.len. But IIUC,
-__counted_by neither supports nested structs, nor derived values.
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index f652982a106b..c54b3be62c0a 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -511,6 +511,9 @@ static int ieee80211_add_key(struct wiphy *wiphy, struct net_device *dev,
+ 		sta->cipher_scheme = cs;
+ 
+ 	err = ieee80211_key_link(key, sdata, sta);
++	/* KRACK protection, shouldn't happen but just silently accept key */
++	if (err == -EALREADY)
++		err = 0;
+ 
+  out_unlock:
+ 	mutex_unlock(&local->sta_mtx);
+diff --git a/net/mac80211/key.c b/net/mac80211/key.c
+index f695fc80088b..7b427e39831b 100644
+--- a/net/mac80211/key.c
++++ b/net/mac80211/key.c
+@@ -843,7 +843,7 @@ int ieee80211_key_link(struct ieee80211_key *key,
+ 	 */
+ 	if (ieee80211_key_identical(sdata, old_key, key)) {
+ 		ieee80211_key_free_unused(key);
+-		ret = 0;
++		ret = -EALREADY;
+ 		goto out;
+ 	}
+ 
+-- 
+2.46.0
 
-But anyway, like you suspect, __counted_by(max_ssid_length) is actually
-wrong.
-
-I'd be happy to be enlighted by other experts on CC, but otherwise,
-that's a "NACK" for patch 2. Thanks for looking into this though!
-
-Regards,
-Brian
-
-> Changes in v2:
-> - Add patch to annotate ssid field with __counted_by(max_ssid_length)
-> 
->  drivers/net/wireless/marvell/mwifiex/fw.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
-> index 4a96281792cc..e4e35ba35454 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/fw.h
-> +++ b/drivers/net/wireless/marvell/mwifiex/fw.h
-> @@ -875,7 +875,7 @@ struct mwifiex_ietypes_chanstats {
->  struct mwifiex_ie_types_wildcard_ssid_params {
->  	struct mwifiex_ie_types_header header;
->  	u8 max_ssid_length;
-> -	u8 ssid[];
-> +	u8 ssid[] __counted_by(max_ssid_length);
->  } __packed;
->  
->  #define TSF_DATA_SIZE            8
-> -- 
-> 2.45.2
-> 
 
