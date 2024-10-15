@@ -1,111 +1,86 @@
-Return-Path: <linux-wireless+bounces-13958-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13959-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F189499E2F7
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 11:42:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 672FA99E33F
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 11:59:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A7C01F22EC7
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 09:42:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BEC328416D
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 09:59:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2737A1DF261;
-	Tue, 15 Oct 2024 09:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24061AB534;
+	Tue, 15 Oct 2024 09:59:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="bFtqEMyu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nJFrDM43"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from nbd.name (nbd.name [46.4.11.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C16C1CACF9
-	for <linux-wireless@vger.kernel.org>; Tue, 15 Oct 2024 09:42:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBB217DFEC
+	for <linux-wireless@vger.kernel.org>; Tue, 15 Oct 2024 09:59:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728985350; cv=none; b=BXjbeyA3BXc+Y3YaRBf/ZsmUiznnSMQ4Oi1wBhvLg0V8ISysCfOZCUJHMNl2/RK1SPfybtC6vCQW5kpYHk2/90Y/6p1E1LzXByh+uGQ/VWKBnCm/5LcPYzuI3HdOHaKTRvbOCcpRESHdDIqRL9NZg9Ejs351lnbZSILNJi46GRY=
+	t=1728986369; cv=none; b=VWMnIdyNyM5SfC5l97cOadvrIG2mjFoC7SU5bxEkYT7IlOpTD9Xdqbsm6e9vmwnN96mpVBUQaUJzpquiOKzTZF15qMbp2TiNhXt7UxvVDdPdPHu4JUZXIDg2ifG5KopsAFxSMke7+JmJNspu9AyioCAfzEEBl30v1TAF8/ub10Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728985350; c=relaxed/simple;
-	bh=7kVZoMG8NT7ClPFvWSeRe5pQzw7PASU87h5+uPyjoHQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=K+dE/KIs1Q5lYbsOKtmRqdMEas8Qd7wC38/Nc9crPW39ahGp6KFgu/mCFdLPEvu2UaeZB5ivt9IukdIngkGA/6FUiygC43aBKtLuFjz2S0GqZzUrNxIcVYRP3jXVFtgVn0MRMwpNFAdAiu0Rozw56gKCOAFax07w2TEhbSJIt8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=bFtqEMyu; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=79hFrZzKtZVoI91nkSHSW3HtpM/A0i9prWuUplOayuE=; b=bFtqEMyufbr5ER5KB8FQURyfP7
-	xbjHWN8at08nb/uMeSmvSVkDBzJgOSYQaPRQg2K/YGIdl4jOw0ASJ0wbh2W/7t2rvhEUpbMfcqR8Q
-	5k4yea7tnK1RGJXM2tb7S/PfxnmHbxOXKUCrEgbqWajDls78jdwvJJS4LLlhNoGGZiGA=;
-Received: from p54ae9bfc.dip0.t-ipconnect.de ([84.174.155.252] helo=nf.local)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1t0e4Q-00943a-1h;
-	Tue, 15 Oct 2024 11:42:26 +0200
-Message-ID: <cd453040-aac3-4b0d-bdba-89881be5982c@nbd.name>
-Date: Tue, 15 Oct 2024 11:42:26 +0200
+	s=arc-20240116; t=1728986369; c=relaxed/simple;
+	bh=RNlRMD3eaFAhEC52+XuWUcDS+FqDL91nWc7Jm19SleY=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=RN6pbrHEn1z5LcTDRB+ecwn0gW7VYqNPv34JtfsjmOhum8PW9IxDp7E8U6j3RS3CadVSOwUR0fv+DN7v0VTkNjC03+luzfHj5qWVbzNtkAniE+ht7ZcBmJ65NHGKBnF+BGj9jBU+PNrQntlAYQ02rhWhjBQDJUNRSAFPOwlEYXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nJFrDM43; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26BBCC4CEC6;
+	Tue, 15 Oct 2024 09:59:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1728986369;
+	bh=RNlRMD3eaFAhEC52+XuWUcDS+FqDL91nWc7Jm19SleY=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=nJFrDM43figFmyPY1kP70mD4eKpMjOg70m551kXServ0jPdxyO3dimytjeINvptR9
+	 Wo4Nz9hvRcptxYN5F9B7wJuOi3GYbKv1Ifgfaz5w9aa7LeBuZ6GOKVayxDgDcmch8x
+	 6rru31h+7DRhZq/E8rCBctQIgnGddiTmXS7g01tAdgOR7h/feUhmuEDyPdDsteBFw2
+	 8xqU5lZeMMT7vI6Li2+T0UztovLDeRFuEUhckszjZR08w8A71+LcIToWep6G8qz4Mk
+	 1o/ZFM1/evtN4lpP74qPiVz8KNYNtdnCb7lVf0yHb4HKL3x5p9tGS7QefS81lon09E
+	 lkSRB1LQ2hNaQ==
+From: Kalle Valo <kvalo@kernel.org>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: Dmitry Kandybka <d.kandybka@gmail.com>,
+  "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+  "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,  Dmitry
+ Antipov <dmantipov@yandex.ru>
+Subject: Re: [PATCH] wifi: rtw88: coex: remove rf4ce unused code
+References: <20240820055244.128644-1-d.kandybka@gmail.com>
+	<2c5c0d485df7b334ea0bfbb87325a5fbc7b52663.camel@gmail.com>
+	<9c83fca1a28c4b3f8fb2ca65752ad655@realtek.com>
+Date: Tue, 15 Oct 2024 12:59:26 +0300
+In-Reply-To: <9c83fca1a28c4b3f8fb2ca65752ad655@realtek.com> (Ping-Ke Shih's
+	message of "Fri, 11 Oct 2024 00:26:32 +0000")
+Message-ID: <87a5f5660x.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless] wifi: mac80211: skip non-uploaded keys in
- ieee80211_iter_keys
-To: Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, johannes@sipsolutions.net
-References: <20241006153630.87885-1-nbd@nbd.name> <87ed4h6861.fsf@kernel.org>
-From: Felix Fietkau <nbd@nbd.name>
-Content-Language: en-US
-Autocrypt: addr=nbd@nbd.name; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
- cL98efvrjdstUfTCP2pfetyN
-In-Reply-To: <87ed4h6861.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 15.10.24 11:13, Kalle Valo wrote:
-> Felix Fietkau <nbd@nbd.name> writes:
-> 
->> Sync iterator conditions with ieee80211_iter_keys_rcu.
->>
->> Fixes: 830af02f24fb ("mac80211: allow driver to iterate keys")
->> Signed-off-by: Felix Fietkau <nbd@nbd.name>
-> 
-> I see this is already applied but why we need this? Please include a
-> description of the bug in the commit message. That's too late now but if
-> you provide one via email I can include it in the pull request.
+Ping-Ke Shih <pkshih@realtek.com> writes:
 
-I needed the key iterator for not yet published mt7996 work, and while 
-reading the code found the inconsistency, that (unlike the RCU version) 
-it could pass keys that weren't added to the driver yet.
-I didn't see any specific driver bugs, but the mac80211 code didn't make 
-sense to me during review, so I fixed it.
+>> This is kindly reminder. Could you pay some attention to this patch and
+>> clarify if the rf4ce is actual for this moment and future?
+>
+> Yes. Our coex developers want to keep this chunk. For me, this kind of cleanup
+> patch is not very help to driver, but I and developers need much time to
+> confirm and judge if we keep or remove them, so I would want to ignore this
+> kind of patches... 
 
-- Felix
+Yeah, I share your pain. Cleanup patches are most of the time
+unnecessary extra work for us maintainers. We should try to write that
+"cleanup policy for wireless subsystem" doc at some point, then we could
+just point that to everyone submitting cleanup patches.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
