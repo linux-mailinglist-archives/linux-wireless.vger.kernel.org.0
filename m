@@ -1,103 +1,111 @@
-Return-Path: <linux-wireless+bounces-13957-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13958-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0262B99E2E9
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 11:36:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F189499E2F7
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 11:42:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 65014B22675
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 09:36:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A7C01F22EC7
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 09:42:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0F01B0137;
-	Tue, 15 Oct 2024 09:35:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2737A1DF261;
+	Tue, 15 Oct 2024 09:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="UCi50yug"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="bFtqEMyu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from nbd.name (nbd.name [46.4.11.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C4C01DDC08
-	for <linux-wireless@vger.kernel.org>; Tue, 15 Oct 2024 09:35:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C16C1CACF9
+	for <linux-wireless@vger.kernel.org>; Tue, 15 Oct 2024 09:42:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728984959; cv=none; b=JeCtumtYqyFUCyR6Yt8iBt5N+6WDzjEbwNYEo1I0G6C32o4IQdG5whxP8bgap7SQe1LUt9EomZ4cHmriIo98A7D1NQwGYN1mQSSnFBQs1jmDkkJRSGbhZKzXi2D+1IrjkQQuTRgAzN+1Hk3k7I2D0wKS16EFgNHN8nUWEqp9Isk=
+	t=1728985350; cv=none; b=BXjbeyA3BXc+Y3YaRBf/ZsmUiznnSMQ4Oi1wBhvLg0V8ISysCfOZCUJHMNl2/RK1SPfybtC6vCQW5kpYHk2/90Y/6p1E1LzXByh+uGQ/VWKBnCm/5LcPYzuI3HdOHaKTRvbOCcpRESHdDIqRL9NZg9Ejs351lnbZSILNJi46GRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728984959; c=relaxed/simple;
-	bh=VVyIcN4bjq5EiwWfyS9Vg1G8jVYSsIcS4f7bDsRAKSY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=pVySKu4u0jh+9l4ZoMeb+qxZK8OHgVV753kQoe2g3yVyTAFY5t1mHq6Z20B6dbkq/yrYT4nJjnfDC8gXvPlR5KERszwq+xn3hFBhGhJ0gdfgicAmK7CuCaFmOkTdb0WyP3y0FhhUiMRijAgGxKe13+Ucod2UZ93W0Uggd0FSNTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=UCi50yug; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 49F9ZdFxA1241444, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1728984939; bh=VVyIcN4bjq5EiwWfyS9Vg1G8jVYSsIcS4f7bDsRAKSY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=UCi50yug2g10mBxx/4Zg27AKk+azqarKC3qDAQZeosiHbcO99ccuQksiG4bJQ4h5x
-	 yQnljeNOLDCnlLS6mVdnXG9oJvDokd/ywvyCxvDlHSqTI7NLiBfH31cut5qgvEhFU2
-	 hrjFfXHuAYqjt0B2HIHDpIRmCfV0kbaTwPjsiL9woFJ9kL9DmPj5xruKDCcGkPIoAB
-	 eT5a1NlUKwyLdqF9cCyz4riwomNvfRJSmBVU+3faeM7PsKIAfhByT1UOz6KUgU2oRU
-	 TBTSWXyL0o/LGu9iOyqIIYDN5ODdEkPTpjF5t4/5tfORPTTAgTbAQQNGvVZTXChjNw
-	 SUkcBvMS98IZQ==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 49F9ZdFxA1241444
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 15 Oct 2024 17:35:39 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 15 Oct 2024 17:35:40 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 15 Oct 2024 17:35:39 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
- RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
- 15.01.2507.035; Tue, 15 Oct 2024 17:35:39 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Kalle Valo <kvalo@kernel.org>, Bitterblue Smith <rtl8821cerfe2@gmail.com>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: [PATCH] wifi: rtlwifi: rtl8192du: Don't claim USB ID 0bda:8171
-Thread-Topic: [PATCH] wifi: rtlwifi: rtl8192du: Don't claim USB ID 0bda:8171
-Thread-Index: AQHbGynxRkG6/djiCEqH16RdBt6+gbKHC1CAgACJOcA=
-Date: Tue, 15 Oct 2024 09:35:39 +0000
-Message-ID: <35868a383b4c488aa263aee9d32d3224@realtek.com>
-References: <40245564-41fe-4a5e-881f-cd517255b20a@gmail.com>
- <172898420024.235905.11004494352014224008.kvalo@kernel.org>
-In-Reply-To: <172898420024.235905.11004494352014224008.kvalo@kernel.org>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1728985350; c=relaxed/simple;
+	bh=7kVZoMG8NT7ClPFvWSeRe5pQzw7PASU87h5+uPyjoHQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=K+dE/KIs1Q5lYbsOKtmRqdMEas8Qd7wC38/Nc9crPW39ahGp6KFgu/mCFdLPEvu2UaeZB5ivt9IukdIngkGA/6FUiygC43aBKtLuFjz2S0GqZzUrNxIcVYRP3jXVFtgVn0MRMwpNFAdAiu0Rozw56gKCOAFax07w2TEhbSJIt8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=bFtqEMyu; arc=none smtp.client-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=79hFrZzKtZVoI91nkSHSW3HtpM/A0i9prWuUplOayuE=; b=bFtqEMyufbr5ER5KB8FQURyfP7
+	xbjHWN8at08nb/uMeSmvSVkDBzJgOSYQaPRQg2K/YGIdl4jOw0ASJ0wbh2W/7t2rvhEUpbMfcqR8Q
+	5k4yea7tnK1RGJXM2tb7S/PfxnmHbxOXKUCrEgbqWajDls78jdwvJJS4LLlhNoGGZiGA=;
+Received: from p54ae9bfc.dip0.t-ipconnect.de ([84.174.155.252] helo=nf.local)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96)
+	(envelope-from <nbd@nbd.name>)
+	id 1t0e4Q-00943a-1h;
+	Tue, 15 Oct 2024 11:42:26 +0200
+Message-ID: <cd453040-aac3-4b0d-bdba-89881be5982c@nbd.name>
+Date: Tue, 15 Oct 2024 11:42:26 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless] wifi: mac80211: skip non-uploaded keys in
+ ieee80211_iter_keys
+To: Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, johannes@sipsolutions.net
+References: <20241006153630.87885-1-nbd@nbd.name> <87ed4h6861.fsf@kernel.org>
+From: Felix Fietkau <nbd@nbd.name>
+Content-Language: en-US
+Autocrypt: addr=nbd@nbd.name; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
+ cL98efvrjdstUfTCP2pfetyN
+In-Reply-To: <87ed4h6861.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-S2FsbGUgVmFsbyA8a3ZhbG9Aa2VybmVsLm9yZz4gd3JvdGU6DQo+IEJpdHRlcmJsdWUgU21pdGgg
-PHJ0bDg4MjFjZXJmZTJAZ21haWwuY29tPiB3cm90ZToNCj4gDQo+ID4gVGhpcyBJRCBhcHBlYXJz
-IHRvIGJlIFJUTDgxODhTVSwgbm90IFJUTDgxOTJEVS4gVGhpcyBpcyB0aGUgd3JvbmcgZHJpdmVy
-DQo+ID4gZm9yIFJUTDgxODhTVS4gVGhlIHI4NzEydSBkcml2ZXIgZnJvbSBzdGFnaW5nIGhhbmRs
-ZXMgdGhpcyBJRC4NCj4gPg0KPiA+IEkgdGhpbmsgdGhpcyBJRCBjb21lcyBmcm9tIHRoZSBvcmln
-aW5hbCBydGw4MTkyZHUgZHJpdmVyIGZyb20gUmVhbHRlay4NCj4gPiBJIGRvbid0IGtub3cgaWYg
-dGhleSBhZGRlZCBpdCBieSBtaXN0YWtlLCBvciBpdCB3YXMgYWN0dWFsbHkgdXNlZCBmb3INCj4g
-PiB0d28gZGlmZmVyZW50IGNoaXBzLg0KPiA+DQo+ID4gUlRMODE4OFNVIHdpdGggdGhpcyBJRCBl
-eGlzdHMgaW4gdGhlIHdpbGQuIFJUTDgxOTJEVSB3aXRoIHRoaXMgSUQNCj4gPiBwcm9iYWJseSBk
-b2Vzbid0Lg0KPiA+DQo+ID4gQ2M6IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcgIyB2Ni4xMQ0KPiA+
-IExpbms6IGh0dHBzOi8vZ2l0aHViLmNvbS9sd2Zpbmdlci9ydGw4MTkyZHUvaXNzdWVzLzEwNQ0K
-PiA+IFNpZ25lZC1vZmYtYnk6IEJpdHRlcmJsdWUgU21pdGggPHJ0bDg4MjFjZXJmZTJAZ21haWwu
-Y29tPg0KPiA+IEFja2VkLWJ5OiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4NCj4g
-DQo+IEkgYXNzaWduZWQgdGhpcyB0byBtZSBvbiBwYXRjaHdvcmssIEknbGwgdGFrZSB0aGlzIHRv
-IHdpcmVsZXNzIHRyZWUgYW5kIGFkZDoNCj4gDQo+IEZpeGVzOiBiNWRjODg3M2I2ZmYgKCJ3aWZp
-OiBydGx3aWZpOiBBZGQgcnRsODE5MmR1L3N3LmMiKQ0KPiANCj4gT2s/DQoNCk9rLiBUaGFua3Mh
-DQoNCg==
+On 15.10.24 11:13, Kalle Valo wrote:
+> Felix Fietkau <nbd@nbd.name> writes:
+> 
+>> Sync iterator conditions with ieee80211_iter_keys_rcu.
+>>
+>> Fixes: 830af02f24fb ("mac80211: allow driver to iterate keys")
+>> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> 
+> I see this is already applied but why we need this? Please include a
+> description of the bug in the commit message. That's too late now but if
+> you provide one via email I can include it in the pull request.
+
+I needed the key iterator for not yet published mt7996 work, and while 
+reading the code found the inconsistency, that (unlike the RCU version) 
+it could pass keys that weren't added to the driver yet.
+I didn't see any specific driver bugs, but the mac80211 code didn't make 
+sense to me during review, so I fixed it.
+
+- Felix
 
