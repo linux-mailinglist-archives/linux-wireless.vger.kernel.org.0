@@ -1,59 +1,61 @@
-Return-Path: <linux-wireless+bounces-13981-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13982-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34FD299F535
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 20:27:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B0BD99F538
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 20:27:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58F331C22E33
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 18:27:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E0251C233DC
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 18:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB54C1FC7EC;
-	Tue, 15 Oct 2024 18:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4C09227B8A;
+	Tue, 15 Oct 2024 18:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="U1eyWnlh"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="oYP0CTRP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026B61F9ED1;
-	Tue, 15 Oct 2024 18:27:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89265227B82;
+	Tue, 15 Oct 2024 18:27:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729016846; cv=none; b=rrzfJ6LAqRTjXUJLWO82elCaEFr10c/XtVKWZQ/9F3ltEKovfOiJGoIdz4TOIUBI+u599oLX9p4TP/o0wSYouuOIHsosvtAvaTcgaH6MKCM78PZKfcCjjfJnQ5X5jdhq62F2atGuJ9xVNgp0YSPn4SzNTAbkpthjxq+fo2kNq/M=
+	t=1729016851; cv=none; b=DSXc0RUAOqkIV2KfqE+qzGaolHiZ4tzZvI0Q2mnY4QFYPQjRolXP7rHUxESTwPPFLLjpCfAUptP7GbnrnaMlamfHoIJb2PJmRhjk6aS3ve4+50OAGJ0BjiNIykhZ4tixWdVWcSyWJSpcbaCNmGDcZOqzrZYIV0AQfOC/vKlj3Ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729016846; c=relaxed/simple;
-	bh=gJQ+QtaJu95zsVAAg22z4qlMvHm4Bi0RoYZIPGW4U+0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KKbrKJvpicyYD2akBqWgiobASxPxrno1qYN09riPmQlt7NT0hzL7N2eYR5V8EG3Y58wqnKBf5zD4FezxS9AbMg/e7DLKUJhhE/gAf7iLnNXRIGlGP26SvKkteWFiK1ykckRGxd8GTHpXycsOUwoLEagfTyEFgRU6wTur0uARBC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=U1eyWnlh; arc=none smtp.client-ip=205.220.168.131
+	s=arc-20240116; t=1729016851; c=relaxed/simple;
+	bh=r580848Pa6EhAf/LJl45U/mpDssBmvc1HGvm+xzeulQ=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=opZA95zEYLpaumMcHySDso9RGkdpjwryahlsDx9MJQ6kcwpnuU7khhHoFsE6FoyVSVc7y69D4o8JPnYevjcrT9T3yA2tMUXZNpYam+/6VLzDrwSDMvTK7lJbvmEhD0jau+JuwLQrEIruskFo3TNPyjezWtPnAgYUshAgqe4rKuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=oYP0CTRP; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49FBejj3019629;
-	Tue, 15 Oct 2024 18:27:16 GMT
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49FI7LTP007481;
+	Tue, 15 Oct 2024 18:27:21 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=ZZiwqF20rDtQLdlXXlqvzw
-	lZsLog4CB3TcNilWiCjSI=; b=U1eyWnlhg0VdjLhG3CVeVDC1XGDZMciZ3Q9xH/
-	DCml/fOB0I4c53jvzjsWXWOx9LenuVY8BXEknscATh0HHQ3A/MzjLWqc9r9j9dG1
-	QpCYA1+OMvaEVQiPr5f0l6ySbTscMhmlnec1uvZd5nyQm5aFlmMuac44csNRknFs
-	VFGSSJkRYwnT1tj3UgVeWCsEdL+jaHk8lKocCWpamQ4iEedfnmhEhnYdg4I3OQhA
-	1cbfrUlaSQSCt/jpEBNvKiZEwRU8zDJ22q4KVq08kvoM76lDnb3lIO/z7AXrfzOo
-	gQuFEySi/+88Qerqsv0XmmZPMaS+ELFNObr6xO/Z7VPXZSnA==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 427jd90jpv-1
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	q4FOqLgTs0Nykh5g2LE+zi6yqi/x/gc2MPl8ReqSQyg=; b=oYP0CTRPC0Ze9HjJ
+	sPATXuGGF5ejZyh8MQ0bHkRNCFn/3BqZGvL0q8cy9bfxz686jmtagibChdu9GkC1
+	hH9dd8xM3TwRHFNuS4G0wwoZl6ifeBxhnVIaqltO1BcIYlsCbjPvcAl8qF1G52bF
+	ViAnevmMocBCQ9LGxT6HwM2mJ4aSig2mmIaxa6CULdb2oyX0xew9t+yVaGmNIogw
+	LdjyEJSouPoCah1keW13BMsj3nHckaQ8er08wcSs7GCTX++mlH4JQYrEyLP4LHLy
+	e/cLkjbIqXYlLaS4tM/YppFD7C5j+kCterd2xhSdcbPcoxRVMFKLHY0w2QagngPB
+	aefqrQ==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 429mh51st6-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 15 Oct 2024 18:27:16 +0000 (GMT)
+	Tue, 15 Oct 2024 18:27:20 +0000 (GMT)
 Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49FIRF0Z003860
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49FIRJXa016580
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 15 Oct 2024 18:27:15 GMT
+	Tue, 15 Oct 2024 18:27:19 GMT
 Received: from hu-rajkbhag-blr.qualcomm.com (10.80.80.8) by
  nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Tue, 15 Oct 2024 11:27:11 -0700
+ 15.2.1544.9; Tue, 15 Oct 2024 11:27:15 -0700
 From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
 To: <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>,
@@ -68,129 +70,343 @@ CC: <linux-wireless@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>,
         Konrad Dybcio <konradybcio@kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
         Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-Subject: [PATCH v2 00/22] wifi: ath12k: add Ath12k AHB driver support for IPQ5332
-Date: Tue, 15 Oct 2024 23:56:15 +0530
-Message-ID: <20241015182637.955753-1-quic_rajkbhag@quicinc.com>
+Subject: [PATCH v2 01/22] dt-bindings: net: wireless: describe the ath12k AHB module
+Date: Tue, 15 Oct 2024 23:56:16 +0530
+Message-ID: <20241015182637.955753-2-quic_rajkbhag@quicinc.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241015182637.955753-1-quic_rajkbhag@quicinc.com>
+References: <20241015182637.955753-1-quic_rajkbhag@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="y"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01b.na.qualcomm.com (10.47.209.197)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 4GOuJXn4R8GBzzws6oxtlsJKbqR3CP6Z
-X-Proofpoint-ORIG-GUID: 4GOuJXn4R8GBzzws6oxtlsJKbqR3CP6Z
+X-Proofpoint-GUID: 4ajAP5prVFxuwg5omOlJV587_T0tY2DM
+X-Proofpoint-ORIG-GUID: 4ajAP5prVFxuwg5omOlJV587_T0tY2DM
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- lowpriorityscore=0 phishscore=0 suspectscore=0 impostorscore=0 bulkscore=0
- mlxscore=0 mlxlogscore=850 malwarescore=0 priorityscore=1501 adultscore=0
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
+ spamscore=0 priorityscore=1501 adultscore=0 mlxlogscore=999
+ lowpriorityscore=0 mlxscore=0 phishscore=0 malwarescore=0 suspectscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2409260000 definitions=main-2410150125
 
-Currently, Ath12k driver only supports WiFi devices that are based on
-PCI bus. New Ath12k device IPQ5332 is based on AHB bus. Hence, add
-Ath12k AHB support for IPQ5332.
+Add device-tree bindings for the ATH12K module found in the IPQ5332
+device.
 
-IPQ5332 is IEEE802.11be 2 GHz 2x2 Wifi device. To bring-up IPQ5332
-device:
-- Add hardware parameters for IPQ5332.
-- CE and CMEM register address space in IPQ5332 is separate from WCSS
-  register space. Hence, add logic to remap CE and CMEM register
-  address.
-- Add support for fixed QMI firmware memory for IPQ5332.
-- Support userPD handling for WCSS secure PIL driver to enable ath12k
-  AHB support.
-
-Depends-On: [PATCH V7 0/5] remove unnecessary q6 clocks
-Depends-On: [PATCH V2 0/4] Add new driver for WCSS secure PIL loading
-Link: https://lore.kernel.org/all/20240820055618.267554-1-quic_gokulsri@quicinc.com/
-Link: https://lore.kernel.org/all/20240829134021.1452711-1-quic_gokulsri@quicinc.com/
-
-Balamurugan S (9):
-  wifi: ath12k: add ath12k_hw_params for IPQ5332
-  wifi: ath12k: add ath12k_hw_hal_params for IPQ5332
-  wifi: ath12k: avoid m3 firmware download in AHB device IPQ5332
-  wifi: ath12k: add new CMEM read-write ath12k_hif_ops
-  wifi: ath12k: remap CMEM register space for IPQ5332
-  wifi: ath12k: fix incorrect CE addresses
-  wifi: ath12k: remap CE register space for IPQ5332
-  wifi: ath12k: add AHB driver support for IPQ5332
-  wifi: ath12k: enable ath12k AHB support
-
-P Praneesh (4):
-  wifi: ath12k: refactor ath12k_hw_regs structure
-  wifi: ath12k: add ath12k_hw_regs for IPQ5332
-  wifi: ath12k: add ath12k_hw_ring_mask for IPQ5332
-  wifi: ath12k: add CE configurations for IPQ5332
-
-Raj Kumar Bhagat (5):
-  dt-bindings: net: wireless: describe the ath12k AHB module
-  arm64: dts: qcom: add wifi node for IPQ5332 based RDP441
-  wifi: ath12k: add support for fixed QMI firmware memory
-  wifi: ath12k: add BDF address in hardware parameter
-  wifi: ath12k: convert tasklet to BH workqueue for CE interrupts
-
-Sowmiya Sree Elavalagan (4):
-  wifi: ath12k: Power up root PD
-  wifi: ath12k: Register various userPD interrupts and save SMEM entries
-  wifi: ath12k: Power up userPD
-  wifi: ath12k: Power down userPD
+Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
 ---
-v2:
-- Integrated the “Support userPD handling for WCSS secure PIL driver”
-  patch series with the Ath12k AHB bring-up patch.
-- Updated DT binding and DTS files to align with the new Rproc design.
-- Addressed review comments on RFC patch series v1 of
-  “wifi: ath12k: add Ath12k AHB driver support for IPQ5332”.
-- Removed the RFC tag as all dependency patch series are now compilable.
-
-v1: https://patchwork.kernel.org/project/linux-wireless/cover/20240814094323.3927603-1-quic_rajkbhag@quicinc.com/
----
- .../net/wireless/qcom,ath12k-ahb.yaml         |  293 ++++
- arch/arm64/boot/dts/qcom/ipq5332-rdp441.dts   |   59 +-
- arch/arm64/boot/dts/qcom/ipq5332.dtsi         |  108 +-
- drivers/net/wireless/ath/ath12k/Kconfig       |    6 +
- drivers/net/wireless/ath/ath12k/Makefile      |    1 +
- drivers/net/wireless/ath/ath12k/ahb.c         | 1326 +++++++++++++++++
- drivers/net/wireless/ath/ath12k/ahb.h         |   80 +
- drivers/net/wireless/ath/ath12k/ce.c          |   90 ++
- drivers/net/wireless/ath/ath12k/ce.h          |   18 +-
- drivers/net/wireless/ath/ath12k/core.c        |   35 +-
- drivers/net/wireless/ath/ath12k/core.h        |   19 +-
- drivers/net/wireless/ath/ath12k/dp.c          |   10 +-
- drivers/net/wireless/ath/ath12k/hal.c         |   82 +-
- drivers/net/wireless/ath/ath12k/hal.h         |   69 +-
- drivers/net/wireless/ath/ath12k/hif.h         |   13 +
- drivers/net/wireless/ath/ath12k/hw.c          |  482 ++++++
- drivers/net/wireless/ath/ath12k/hw.h          |   16 +
- drivers/net/wireless/ath/ath12k/pci.c         |   28 +-
- drivers/net/wireless/ath/ath12k/pci.h         |    2 +
- drivers/net/wireless/ath/ath12k/qmi.c         |  169 ++-
- drivers/net/wireless/ath/ath12k/qmi.h         |    1 +
- 21 files changed, 2793 insertions(+), 114 deletions(-)
+ .../net/wireless/qcom,ath12k-ahb.yaml         | 293 ++++++++++++++++++
+ 1 file changed, 293 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/net/wireless/qcom,ath12k-ahb.yaml
- create mode 100644 drivers/net/wireless/ath/ath12k/ahb.c
- create mode 100644 drivers/net/wireless/ath/ath12k/ahb.h
 
-
-base-commit: 69eabe24843f238e79a6dbbd2b3fcc8eef39d6b8
-prerequisite-patch-id: bfefff55ba6a3fdf8930b3b4d48746bc9cd5a0a0
-prerequisite-patch-id: 9e143f9cd10add55d2fd52bac0e538b904d6dee5
-prerequisite-patch-id: cb987ee3dbc145fee1135307badb61c0e21f0ccd
-prerequisite-patch-id: 14b990ceacec658b924c78d91ce33b45f70ca112
-prerequisite-patch-id: b1f6cc6ae066f3e10b5626ff0af3267449d613d3
-prerequisite-patch-id: be810c2435b44ea08527d739510d18770e732dfa
-prerequisite-patch-id: 1a946f3d5f563f0de825606b276dbaee695aa5b8
-prerequisite-patch-id: 97f4a586c7040822e0e7977bd1599333ad02237b
-prerequisite-patch-id: bc306b2998d1afe66757052e33dc685ae4e7a627
+diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-ahb.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-ahb.yaml
+new file mode 100644
+index 000000000000..54784e396d7e
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-ahb.yaml
+@@ -0,0 +1,293 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++# Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/wireless/qcom,ath12k-ahb.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Qualcomm Technologies ath12k wireless devices (AHB)
++
++maintainers:
++  - Kalle Valo <kvalo@kernel.org>
++  - Jeff Johnson <jjohnson@kernel.org>
++
++description:
++  Qualcomm Technologies IEEE 802.11be AHB devices.
++
++properties:
++  compatible:
++    enum:
++      - qcom,ipq5332-wifi
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    items:
++      - description: XO clock used for copy engine
++
++  clock-names:
++    items:
++      - const: gcc_xo_clk
++
++  interrupts:
++    items:
++      - description: Ready interrupt
++      - description: Spawn acknowledge interrupt
++      - description: Stop acknowledge interrupt
++      - description: misc-pulse1 interrupt events
++      - description: misc-latch interrupt events
++      - description: sw exception interrupt events
++      - description: interrupt event for ring CE0
++      - description: interrupt event for ring CE1
++      - description: interrupt event for ring CE2
++      - description: interrupt event for ring CE3
++      - description: interrupt event for ring CE4
++      - description: interrupt event for ring CE5
++      - description: interrupt event for ring CE6
++      - description: interrupt event for ring CE7
++      - description: interrupt event for ring CE8
++      - description: interrupt event for ring CE9
++      - description: interrupt event for ring CE10
++      - description: interrupt event for ring CE11
++      - description: interrupt event for ring host2wbm-desc-feed
++      - description: interrupt event for ring host2reo-re-injection
++      - description: interrupt event for ring host2reo-command
++      - description: interrupt event for ring host2rxdma-monitor-ring1
++      - description: interrupt event for ring reo2ost-exception
++      - description: interrupt event for ring wbm2host-rx-release
++      - description: interrupt event for ring reo2host-status
++      - description: interrupt event for ring reo2host-destination-ring4
++      - description: interrupt event for ring reo2host-destination-ring3
++      - description: interrupt event for ring reo2host-destination-ring2
++      - description: interrupt event for ring reo2host-destination-ring1
++      - description: interrupt event for ring rxdma2host-monitor-destination-mac3
++      - description: interrupt event for ring rxdma2host-monitor-destination-mac2
++      - description: interrupt event for ring rxdma2host-monitor-destination-mac1
++      - description: interrupt event for ring host2rxdma-host-buf-ring-mac3
++      - description: interrupt event for ring host2rxdma-host-buf-ring-mac2
++      - description: interrupt event for ring host2rxdma-host-buf-ring-mac1
++      - description: interrupt event for ring host2tcl-input-ring4
++      - description: interrupt event for ring host2tcl-input-ring3
++      - description: interrupt event for ring host2tcl-input-ring2
++      - description: interrupt event for ring host2tcl-input-ring1
++      - description: interrupt event for ring wbm2host-tx-completions-ring4
++      - description: interrupt event for ring wbm2host-tx-completions-ring3
++      - description: interrupt event for ring wbm2host-tx-completions-ring2
++      - description: interrupt event for ring wbm2host-tx-completions-ring1
++      - description: interrupt event for ring host2tx-monitor-ring1
++      - description: interrupt event for ring txmon2host-monitor-destination-mac3
++      - description: interrupt event for ring txmon2host-monitor-destination-mac2
++      - description: interrupt event for ring txmon2host-monitor-destination-mac1
++      - description: interrupt event for umac_reset
++
++  interrupt-names:
++    items:
++      - const: ready
++      - const: spawn
++      - const: stop-ack
++      - const: misc-pulse1
++      - const: misc-latch
++      - const: sw-exception
++      - const: ce0
++      - const: ce1
++      - const: ce2
++      - const: ce3
++      - const: ce4
++      - const: ce5
++      - const: ce6
++      - const: ce7
++      - const: ce8
++      - const: ce9
++      - const: ce10
++      - const: ce11
++      - const: host2wbm-desc-feed
++      - const: host2reo-re-injection
++      - const: host2reo-command
++      - const: host2rxdma-monitor-ring1
++      - const: reo2ost-exception
++      - const: wbm2host-rx-release
++      - const: reo2host-status
++      - const: reo2host-destination-ring4
++      - const: reo2host-destination-ring3
++      - const: reo2host-destination-ring2
++      - const: reo2host-destination-ring1
++      - const: rxdma2host-monitor-destination-mac3
++      - const: rxdma2host-monitor-destination-mac2
++      - const: rxdma2host-monitor-destination-mac1
++      - const: host2rxdma-host-buf-ring-mac3
++      - const: host2rxdma-host-buf-ring-mac2
++      - const: host2rxdma-host-buf-ring-mac1
++      - const: host2tcl-input-ring4
++      - const: host2tcl-input-ring3
++      - const: host2tcl-input-ring2
++      - const: host2tcl-input-ring1
++      - const: wbm2host-tx-completions-ring4
++      - const: wbm2host-tx-completions-ring3
++      - const: wbm2host-tx-completions-ring2
++      - const: wbm2host-tx-completions-ring1
++      - const: host2tx-monitor-ring1
++      - const: txmon2host-monitor-destination-mac3
++      - const: txmon2host-monitor-destination-mac2
++      - const: txmon2host-monitor-destination-mac1
++      - const: umac_reset
++
++  memory-region:
++    minItems: 1
++    description:
++      phandle to a node describing reserved memory (System RAM memory)
++      used by ath12k firmware (see bindings/reserved-memory/reserved-memory.txt)
++
++  qcom,rproc:
++    $ref: /schemas/types.yaml#/definitions/phandle
++    description:
++      DT entry of a WCSS node. WCSS node is the child node of q6 remoteproc driver.
++      (see bindings/remoteproc/qcom,multipd-pil.yaml)
++
++  qcom,smem-states:
++    $ref: /schemas/types.yaml#/definitions/phandle-array
++    description: States used by the AP to signal the remote processor
++    items:
++      - description: Shutdown WCSS pd
++      - description: Stop WCSS pd
++      - description: Spawn WCSS pd
++
++  qcom,smem-state-names:
++    description:
++      Names of the states used by the AP to signal the remote processor
++    items:
++      - const: shutdown
++      - const: stop
++      - const: spawn
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - clock-names
++  - interrupts
++  - interrupt-names
++  - memory-region
++  - qcom,rproc
++  - qcom,smem-states
++  - qcom,smem-state-names
++
++additionalProperties: false
++
++examples:
++  - |
++
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++    #include <dt-bindings/clock/qcom,ipq5332-gcc.h>
++
++    wifi0: wifi@c0000000 {
++        compatible = "qcom,ipq5332-wifi";
++        reg = <0xc000000 0x1000000>;
++        clocks = <&gcc GCC_XO_CLK>;
++        clock-names = "gcc_xo_clk";
++        interrupts-extended = <&wcss_smp2p_in 9 IRQ_TYPE_NONE>,
++                              <&wcss_smp2p_in 12 IRQ_TYPE_NONE>,
++                              <&wcss_smp2p_in 11 IRQ_TYPE_NONE>,
++                              <&intc GIC_SPI 559 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 560 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 561 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 422 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 423 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 424 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 425 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 426 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 427 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 428 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 429 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 430 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 431 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 432 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 433 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 491 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 495 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 493 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 544 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 457 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 466 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 497 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 454 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 453 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 452 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 451 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 488 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 488 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 484 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 554 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 554 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 549 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 507 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 500 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 499 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 498 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 450 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 449 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 448 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 447 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 543 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 486 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 486 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 482 IRQ_TYPE_EDGE_RISING>,
++                              <&intc GIC_SPI 419 IRQ_TYPE_EDGE_RISING>;
++        interrupt-names = "ready",
++                          "spawn",
++                          "stop-ack",
++                          "misc-pulse1",
++                          "misc-latch",
++                          "sw-exception",
++                          "ce0",
++                          "ce1",
++                          "ce2",
++                          "ce3",
++                          "ce4",
++                          "ce5",
++                          "ce6",
++                          "ce7",
++                          "ce8",
++                          "ce9",
++                          "ce10",
++                          "ce11",
++                          "host2wbm-desc-feed",
++                          "host2reo-re-injection",
++                          "host2reo-command",
++                          "host2rxdma-monitor-ring1",
++                          "reo2ost-exception",
++                          "wbm2host-rx-release",
++                          "reo2host-status",
++                          "reo2host-destination-ring4",
++                          "reo2host-destination-ring3",
++                          "reo2host-destination-ring2",
++                          "reo2host-destination-ring1",
++                          "rxdma2host-monitor-destination-mac3",
++                          "rxdma2host-monitor-destination-mac2",
++                          "rxdma2host-monitor-destination-mac1",
++                          "host2rxdma-host-buf-ring-mac3",
++                          "host2rxdma-host-buf-ring-mac2",
++                          "host2rxdma-host-buf-ring-mac1",
++                          "host2tcl-input-ring4",
++                          "host2tcl-input-ring3",
++                          "host2tcl-input-ring2",
++                          "host2tcl-input-ring1",
++                          "wbm2host-tx-completions-ring4",
++                          "wbm2host-tx-completions-ring3",
++                          "wbm2host-tx-completions-ring2",
++                          "wbm2host-tx-completions-ring1",
++                          "host2tx-monitor-ring1",
++                          "txmon2host-monitor-destination-mac3",
++                          "txmon2host-monitor-destination-mac2",
++                          "txmon2host-monitor-destination-mac1",
++                          "umac_reset";
++
++        memory-region = <&q6_region>;
++        qcom,rproc = <&q6v5_wcss>;
++        qcom,smem-states = <&wcss_smp2p_out 8>,
++                           <&wcss_smp2p_out 9>,
++                           <&wcss_smp2p_out 10>;
++        qcom,smem-state-names = "shutdown",
++                                "stop",
++                                "spawn";
++    };
 -- 
 2.34.1
 
