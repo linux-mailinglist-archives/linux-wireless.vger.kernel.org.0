@@ -1,61 +1,61 @@
-Return-Path: <linux-wireless+bounces-13996-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13997-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98B0399F576
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 20:32:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCAF999F57D
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 20:32:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 150771F254CF
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 18:32:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AF872848FF
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 18:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6851F1FE0FA;
-	Tue, 15 Oct 2024 18:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36D031FF03F;
+	Tue, 15 Oct 2024 18:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="eousoP5t"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mf09iTQO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8CF1FE0EC;
-	Tue, 15 Oct 2024 18:28:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9195B1FF029;
+	Tue, 15 Oct 2024 18:28:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729016911; cv=none; b=GfN1VVo5JRiszdbmrUH4y/SOKcbDLL1t4nLYvihAnv0jpDKaH7f8r6x7VfWy3v6Q+C5U6GZ2BSQuR81Oqu2sjp5E6z2tusI635tx8JhG+4OyH6BhuHLNan21pwb0Grc1lzDJyVr51CBm39DEBrPidenjhttpEkDPCuvMCoFA624=
+	t=1729016918; cv=none; b=nJAAY4dnW0D7b0GNoTGo/liE/3PbZU/M1F+bNFpB4q2gGJTHTHE53/ZSrVNfqhfgz0Wg+XOTJGGZ3mISMzjW9Gzts7GcL3IbKzY6Qr4nP0OXY28IaE3sqxe934zyb6dUbA+t4vC3DMRPYEK0VrnCeHXPAOt4f11u2JIYdidiaLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729016911; c=relaxed/simple;
-	bh=6lHkQxtaTIIqWG+SCYbSyO9ZJI19A1Aus4WHjY0UCLk=;
+	s=arc-20240116; t=1729016918; c=relaxed/simple;
+	bh=EmyHcYr2R3cztoflD7rbb7zbpa+A3C8cUr8FJATVtho=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BoP/xhIr/acEUE4eTf1vsVlAoy969kv3Cx64HZEKVLVabovZW4Vy/lw8THv71unFVLV8BZONiUnBIJ1iznLCZ3Dl43QyYA26PANBFw52m4MielhkYd5wfIcIq69bOfHJxyTy613aL6fOHn8M3OQE2HuoLDE1Mp1ibsl0laceY+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=eousoP5t; arc=none smtp.client-ip=205.220.168.131
+	 MIME-Version:Content-Type; b=vB/6mnLKb1yt/mNrSfJ9XqYvW4N10D9zA3Ey6L9z8lpFPY9dx5K87AO7fzmPffUx0ta5lw3xGW+sJOiTjvYB2ipg+en7nD8wvAevyALgawKJ9MKICwxy2zSyDhtGnEyF04iRqy5QX+rqbxsie/tRLV0qihpJQqhOrXXIqIw/EIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mf09iTQO; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49FEQkwq025512;
-	Tue, 15 Oct 2024 18:28:26 GMT
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49FH4bKf027069;
+	Tue, 15 Oct 2024 18:28:31 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	nEZqn7it0PL6ftdvoyHGFbWI7+LjfBRa+WzBcBcTrnU=; b=eousoP5tHn1iXIxP
-	htdGyEA2n1tG54XP5L/Vao/RVR9drAZJ6rLtStAA4bdE61Twis7guV/PrbYHLWMv
-	8ahOa0FMi6pPC5op4B72afeK24PzwFVN5P5p0LTVXkks6NLRCSLKN1NdeZd2hha6
-	rmp41Gw7+cX+UQlQMxSVagJDBtvo1ZEAzH5zaM1ONTczkFX85nB+FM6RrLLUEgBL
-	JvG/70QlnrNU+9vtElOuoB9LF682IZkUXpw+zF5br0RHYJR3HeQOWC4pu8EBd5iU
-	jzL3xiKrIOuJ6wOh094b+/enclGeaN7FEyR8am/1AqOk3Fhx7w93P+3HxgIMs8P1
-	83F2DQ==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 429t5kgstk-1
+	6CZ3wsDki4Yjq6d7XGf9ovEe9RqWs2nfDi6Xyl1OkuE=; b=mf09iTQOq2ILOGAY
+	Tor0gE4VAFd1Zj8xUi1d6Ya8qwddT092TdHPs+B9K0F0s6hIN+G8ELWfk37EZfb/
+	uS+1Z3awCxBGoWWzGXcNnWYMa+U7It3+zRgN5RvZECa1zl6h9ftDU3TYWG6UTTyh
+	fRTGarXavaePZKyaCcFkCFL4yU6fo+sEGj0Y2XzVq4aWd589gCTIRovtcdGHWO2w
+	x7MMkRb1qnX/xYz+DBa4IaFRhSgKqnCdf3ZPEBSYBn5j6J9SWl7GIpkpEshw1R6B
+	PlCAGK/XRp+PswNlp+MIR02YG7OIp6LgE30bgCgM7lJxn4HFaJkeDWy8GE01tGL8
+	+7cGTw==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 429m0f9vwy-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 15 Oct 2024 18:28:26 +0000 (GMT)
+	Tue, 15 Oct 2024 18:28:31 +0000 (GMT)
 Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49FISP7t005196
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49FISUnD017907
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 15 Oct 2024 18:28:25 GMT
+	Tue, 15 Oct 2024 18:28:30 GMT
 Received: from hu-rajkbhag-blr.qualcomm.com (10.80.80.8) by
  nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Tue, 15 Oct 2024 11:28:21 -0700
+ 15.2.1544.9; Tue, 15 Oct 2024 11:28:25 -0700
 From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
 To: <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>,
@@ -70,9 +70,9 @@ CC: <linux-wireless@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>,
         Konrad Dybcio <konradybcio@kernel.org>, <devicetree@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
         Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-Subject: [PATCH v2 15/22] wifi: ath12k: add BDF address in hardware parameter
-Date: Tue, 15 Oct 2024 23:56:30 +0530
-Message-ID: <20241015182637.955753-16-quic_rajkbhag@quicinc.com>
+Subject: [PATCH v2 16/22] wifi: ath12k: convert tasklet to BH workqueue for CE interrupts
+Date: Tue, 15 Oct 2024 23:56:31 +0530
+Message-ID: <20241015182637.955753-17-quic_rajkbhag@quicinc.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241015182637.955753-1-quic_rajkbhag@quicinc.com>
 References: <20241015182637.955753-1-quic_rajkbhag@quicinc.com>
@@ -88,99 +88,109 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01b.na.qualcomm.com (10.47.209.197)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 09zG3Kabjjx7tvdD_j7SAYIVs-s-wLts
-X-Proofpoint-GUID: 09zG3Kabjjx7tvdD_j7SAYIVs-s-wLts
+X-Proofpoint-GUID: nrFfWYu1nrH5LHLzQ0PDaDnUEeiyo-53
+X-Proofpoint-ORIG-GUID: nrFfWYu1nrH5LHLzQ0PDaDnUEeiyo-53
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 impostorscore=0
- bulkscore=0 mlxscore=0 spamscore=0 lowpriorityscore=0 priorityscore=1501
- malwarescore=0 phishscore=0 clxscore=1015 suspectscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
- definitions=main-2410150125
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ lowpriorityscore=0 bulkscore=0 adultscore=0 clxscore=1015 phishscore=0
+ spamscore=0 impostorscore=0 suspectscore=0 mlxlogscore=999 malwarescore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410150125
 
-The Ath2k AHB device (IPQ5332) firmware requests BDF_MEM_REGION_TYPE
-memory during QMI memory requests. This memory is part of the
-HOST_DDR_REGION_TYPE. Therefore, add the BDF memory address to the
-hardware parameter and provide this memory address to the firmware
-during QMI memory requests.
+Currently in Ath12k, tasklet is used to handle the BH context of CE
+interrupts. However the tasklet is marked deprecated and has some
+design flaws. To replace tasklets, BH workqueue support has been
+added. BH workqueue behaves similarly to regular workqueues except
+that the queued work items are executed in the BH context.
+
+Hence, convert the tasklet to BH workqueue for handling CE interrupts
+in the BH context.
 
 Tested-on: IPQ5332 hw1.0 AHB WLAN.WBE.1.3.1-00130-QCAHKSWPL_SILICONZ-1
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00210-QCAHKSWPL_SILICONZ-1
 
 Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/hw.c  | 4 ++++
- drivers/net/wireless/ath/ath12k/hw.h  | 1 +
- drivers/net/wireless/ath/ath12k/qmi.c | 8 ++++++++
- 3 files changed, 13 insertions(+)
+ drivers/net/wireless/ath/ath12k/ce.h  |  2 +-
+ drivers/net/wireless/ath/ath12k/pci.c | 14 +++++++-------
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
-index 4117a4b718e3..8fc191b0b467 100644
---- a/drivers/net/wireless/ath/ath12k/hw.c
-+++ b/drivers/net/wireless/ath/ath12k/hw.c
-@@ -1320,6 +1320,7 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
- 		.cmem_remap = NULL,
- 		.ce_ie_addr = NULL,
- 		.ce_remap = NULL,
-+		.bdf_addr = 0,
- 	},
- 	{
- 		.name = "wcn7850 hw2.0",
-@@ -1405,6 +1406,7 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
- 		.cmem_remap = NULL,
- 		.ce_ie_addr = NULL,
- 		.ce_remap = NULL,
-+		.bdf_addr = 0,
- 	},
- 	{
- 		.name = "qcn9274 hw2.0",
-@@ -1486,6 +1488,7 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
- 		.cmem_remap = NULL,
- 		.ce_ie_addr = NULL,
- 		.ce_remap = NULL,
-+		.bdf_addr = 0,
- 	},
- 	{
- 		.name = "ipq5332 hw1.0",
-@@ -1562,6 +1565,7 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
- 		.cmem_remap = &ath12k_cmem_remap_ipq5332,
- 		.ce_ie_addr = &ath12k_ce_ie_addr_ipq5332,
- 		.ce_remap = &ath12k_ce_remap_ipq5332,
-+		.bdf_addr = 0x4B500000,
- 	},
- };
+diff --git a/drivers/net/wireless/ath/ath12k/ce.h b/drivers/net/wireless/ath/ath12k/ce.h
+index 9dd71056e1c5..75c9f8f1f7c6 100644
+--- a/drivers/net/wireless/ath/ath12k/ce.h
++++ b/drivers/net/wireless/ath/ath12k/ce.h
+@@ -159,7 +159,7 @@ struct ath12k_ce_pipe {
+ 	void (*send_cb)(struct ath12k_ce_pipe *pipe);
+ 	void (*recv_cb)(struct ath12k_base *ab, struct sk_buff *skb);
  
-diff --git a/drivers/net/wireless/ath/ath12k/hw.h b/drivers/net/wireless/ath/ath12k/hw.h
-index 580c7be109e0..038fe1b30d11 100644
---- a/drivers/net/wireless/ath/ath12k/hw.h
-+++ b/drivers/net/wireless/ath/ath12k/hw.h
-@@ -225,6 +225,7 @@ struct ath12k_hw_params {
- 	const struct cmem_remap *cmem_remap;
- 	const struct ce_ie_addr *ce_ie_addr;
- 	const struct ce_remap *ce_remap;
-+	u32 bdf_addr;
- };
+-	struct tasklet_struct intr_tq;
++	struct work_struct intr_wq;
+ 	struct ath12k_ce_ring *src_ring;
+ 	struct ath12k_ce_ring *dest_ring;
+ 	struct ath12k_ce_ring *status_ring;
+diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
+index 0c393bc30f92..9a50d813e9b4 100644
+--- a/drivers/net/wireless/ath/ath12k/pci.c
++++ b/drivers/net/wireless/ath/ath12k/pci.c
+@@ -425,9 +425,9 @@ static void ath12k_pci_sync_ce_irqs(struct ath12k_base *ab)
+ 	}
+ }
  
- struct ath12k_hw_ops {
-diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
-index ec8859031824..b5cad6656722 100644
---- a/drivers/net/wireless/ath/ath12k/qmi.c
-+++ b/drivers/net/wireless/ath/ath12k/qmi.c
-@@ -2491,6 +2491,14 @@ static int ath12k_qmi_assign_target_mem_chunk(struct ath12k_base *ab)
- 			ab->qmi.target_mem[idx].type = ab->qmi.target_mem[i].type;
- 			idx++;
- 			break;
-+		case BDF_MEM_REGION_TYPE:
-+			ab->qmi.target_mem[idx].paddr = ab->hw_params->bdf_addr;
-+			ab->qmi.target_mem[idx].v.ioaddr = NULL;
-+			ab->qmi.target_mem[idx].size = ab->qmi.target_mem[i].size;
-+			ab->qmi.target_mem[idx].type = ab->qmi.target_mem[i].type;
-+			idx++;
-+			break;
-+
- 		case CALDB_MEM_REGION_TYPE:
- 			/* Cold boot calibration is not enabled in Ath12k. Hence,
- 			 * assign paddr = 0.
+-static void ath12k_pci_ce_tasklet(struct tasklet_struct *t)
++static void ath12k_pci_ce_workqueue(struct work_struct *work)
+ {
+-	struct ath12k_ce_pipe *ce_pipe = from_tasklet(ce_pipe, t, intr_tq);
++	struct ath12k_ce_pipe *ce_pipe = from_work(ce_pipe, work, intr_wq);
+ 	int irq_idx = ATH12K_PCI_IRQ_CE0_OFFSET + ce_pipe->pipe_num;
+ 
+ 	ath12k_ce_per_engine_service(ce_pipe->ab, ce_pipe->pipe_num);
+@@ -449,7 +449,7 @@ static irqreturn_t ath12k_pci_ce_interrupt_handler(int irq, void *arg)
+ 
+ 	disable_irq_nosync(ab->irq_num[irq_idx]);
+ 
+-	tasklet_schedule(&ce_pipe->intr_tq);
++	queue_work(system_bh_wq, &ce_pipe->intr_wq);
+ 
+ 	return IRQ_HANDLED;
+ }
+@@ -675,7 +675,7 @@ static int ath12k_pci_config_irq(struct ath12k_base *ab)
+ 
+ 		irq_idx = ATH12K_PCI_IRQ_CE0_OFFSET + i;
+ 
+-		tasklet_setup(&ce_pipe->intr_tq, ath12k_pci_ce_tasklet);
++		INIT_WORK(&ce_pipe->intr_wq, ath12k_pci_ce_workqueue);
+ 
+ 		ret = request_irq(irq, ath12k_pci_ce_interrupt_handler,
+ 				  ab_pci->irq_flags, irq_name[irq_idx],
+@@ -962,7 +962,7 @@ static void ath12k_pci_aspm_restore(struct ath12k_pci *ab_pci)
+ 						   PCI_EXP_LNKCTL_ASPMC);
+ }
+ 
+-static void ath12k_pci_kill_tasklets(struct ath12k_base *ab)
++static void ath12k_pci_cancel_workqueue(struct ath12k_base *ab)
+ {
+ 	int i;
+ 
+@@ -972,7 +972,7 @@ static void ath12k_pci_kill_tasklets(struct ath12k_base *ab)
+ 		if (ath12k_ce_get_attr_flags(ab, i) & CE_ATTR_DIS_INTR)
+ 			continue;
+ 
+-		tasklet_kill(&ce_pipe->intr_tq);
++		cancel_work_sync(&ce_pipe->intr_wq);
+ 	}
+ }
+ 
+@@ -980,7 +980,7 @@ static void ath12k_pci_ce_irq_disable_sync(struct ath12k_base *ab)
+ {
+ 	ath12k_pci_ce_irqs_disable(ab);
+ 	ath12k_pci_sync_ce_irqs(ab);
+-	ath12k_pci_kill_tasklets(ab);
++	ath12k_pci_cancel_workqueue(ab);
+ }
+ 
+ int ath12k_pci_map_service_to_pipe(struct ath12k_base *ab, u16 service_id,
 -- 
 2.34.1
 
