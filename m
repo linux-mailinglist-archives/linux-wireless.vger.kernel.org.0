@@ -1,102 +1,108 @@
-Return-Path: <linux-wireless+bounces-13967-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13968-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FBAF99F3BD
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 19:14:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3BF699F3C0
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 19:14:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2DA11F2355D
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 17:14:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88E4B2834DF
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 17:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F4481F76C6;
-	Tue, 15 Oct 2024 17:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CE2F1F76B4;
+	Tue, 15 Oct 2024 17:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="LtE5tCH1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hzUQNOEI"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42AA117335C;
-	Tue, 15 Oct 2024 17:14:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED03917335C
+	for <linux-wireless@vger.kernel.org>; Tue, 15 Oct 2024 17:14:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729012448; cv=none; b=qs0MLI4Kz5L0Z/GNPBha40fCZ2gnnK0DCcItuCKXLDBmLXSLmYaigLCf8kcjNCXR5lNihXcw6HTUpMGHhnimvMg7plU+0rtzJQEIVQBAZ/YC0eZpXQNIDSdGYqI8cbh7wZ7YdlJGZ62EwjBfOhVWk/FtKZkKwkzg609csPM+vLo=
+	t=1729012460; cv=none; b=jllc7/v8xq6AmU4+lFT6NDWwU9rEvr9CHNNu5JlGVbnrn74kW7nEM9mImsJWByA0Li7tzVfI0okm0H9pd5lwI8hgoE5e232QL8byovGNbTyDwrK5P/ktHqOy9ktqepcBBcB+oZFzm93W7p9rQNexDGqc4s9S/1lnS0Qu7TfsLD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729012448; c=relaxed/simple;
-	bh=6hhjjX296MgLHzT7WDibRPRupKhNhJn+ECmZjq6lcxI=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
-	 In-Reply-To:Content-Type; b=VnRrd/bqlMlo3ZH6ugSb/ySZO/tAWHJTJTzVX1Ch0mLnsHv/BiAom9gp/iA9gE3IwfK6sY7wfGv/NbWlnIVbAFB7FgdrSy9No9ItX1hlfLJIwZrP0edGO9HHRy2o379kSxgzgrK4F4HyBclElwot6w9+O3vlPiZHTWU1FLubSqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=LtE5tCH1; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49FBZ6en005958;
-	Tue, 15 Oct 2024 17:13:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	6hhjjX296MgLHzT7WDibRPRupKhNhJn+ECmZjq6lcxI=; b=LtE5tCH1P7Hskj3N
-	Oow7Vw1oIFSoRD56HvCGnNQ4N66kk34irvHjfI/9KkT8PnWOHQ3iFHpapaTX4Is9
-	2b23h7/XEemeZGCeOLzGp31lAY9TCdAm5Gft+/et4MN5MssuCRItUJYScHsaZwNe
-	yiYBd3dzHHr8E+lA7Vemb+OMeJSSh+ZvUVDhBb25j7qXb4oM4A5tV9luFjWKghGh
-	ef2ut9MTXrvzR7QrDMdc9naE4wyNREgJxki5dPHHoJGWTqFyrtqD47ne8JjoXWAE
-	QSnH39jNI86FQfm+0ayTUP8KAGytRt5AE9YHoTag5Z/MGIAbvHQ8INRXJu7NrL2l
-	zVwyDg==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 427g2rrdyh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 15 Oct 2024 17:13:57 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49FHDvCl031597
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 15 Oct 2024 17:13:57 GMT
-Received: from [10.48.240.238] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 15 Oct
- 2024 10:13:55 -0700
-Message-ID: <fd99a66e-edd7-4c01-bc10-3596fb24f637@quicinc.com>
-Date: Tue, 15 Oct 2024 10:13:55 -0700
+	s=arc-20240116; t=1729012460; c=relaxed/simple;
+	bh=DCBlPadHCzsQZj65kPYdgD6poH9aNHZndZDV2jYWdMY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=m2SkG4k/hdO3yZldHRp5hTL+F50ZH+b4DYi5S0F9qrqZpo9iBuI1YFi4nPcny7h7+zYz0suhb6hamFNgmwuUEeKOIW+aDmjt5EGXHcdN/ejrjlNDWRmqJnDiBmk11RJOgCUR9aJbI2v+7c0Zrc8ny2Ds2nW56AbHjvc+JN2Qioc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hzUQNOEI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFF03C4CEC6;
+	Tue, 15 Oct 2024 17:14:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729012459;
+	bh=DCBlPadHCzsQZj65kPYdgD6poH9aNHZndZDV2jYWdMY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=hzUQNOEI7REmVwE5/qbInfTNjcc2P9kOUqdSyOEytpaQK7poDRwmlmBAQhXOPw6YZ
+	 7DcRyUCQhVOlMqNkOkdGuYAqgRLwTJhi/HVQNdUopuvuNi6rSGu5gzaF5pipBWySwN
+	 5MFNeZjMcNDr9Gv6EuLK6oKdbyN3NTQdMCDg6znMu7fc2Co5awhEKSfG3t13s+KKZF
+	 tYB4OVOUY8I4eXQvOJ8zkLVbg3outmAK8WrVzmKPpFeVeD98sjit0nuRnOmHxT2oBA
+	 0p+5IblPJecsorMkAH/5Wh1BINz9BVwCp1f2ZgYkrHGiFLSOAkm4RHxrOiyBma/FTZ
+	 MsV4ywnSBbvPg==
+From: Kalle Valo <kvalo@kernel.org>
+To: ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH 00/11] wifi: ath12k: MLO support part 1
+Date: Tue, 15 Oct 2024 20:14:05 +0300
+Message-Id: <20241015171416.518022-1-kvalo@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] wifi: ath12k: fix warning when unbinding
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>, <kvalo@kernel.org>,
-        <jjohnson@kernel.org>, <linux-wireless@vger.kernel.org>,
-        <ath12k@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-CC: <stable@vger.kernel.org>
-References: <20241010175102.207324-1-jtornosm@redhat.com>
- <20241010175102.207324-3-jtornosm@redhat.com>
- <2f6f7649-772e-42e6-a762-f2d66b7e3b22@quicinc.com>
-Content-Language: en-US
-In-Reply-To: <2f6f7649-772e-42e6-a762-f2d66b7e3b22@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: rwkCopgQ4arcmTJS5_JcF7MkiKjuCRS3
-X-Proofpoint-GUID: rwkCopgQ4arcmTJS5_JcF7MkiKjuCRS3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- lowpriorityscore=0 suspectscore=0 phishscore=0 malwarescore=0
- clxscore=1015 spamscore=0 adultscore=0 mlxlogscore=624 impostorscore=0
- mlxscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410150118
+Content-Transfer-Encoding: 8bit
 
-On 10/15/2024 9:48 AM, Jeff Johnson wrote:
-> On 10/10/2024 10:48 AM, Jose Ignacio Tornos Martinez wrote:
->> If there is an error during some initialization realated to firmware,
+From: Kalle Valo <quic_kvalo@quicinc.com>
 
-s/realated/related/ (also in 1/2)
+I'll start submitting patches for adding MLO support to ath12k. There will be
+several patchsets and this is the first one (of many).
+
+In this patchset we start refactoring code in mac.c to support multiple links.
+
+Depends-on: wifi: ath12k: add missing lockdep_assert_wiphy() for ath12k_mac_op_ functions
+https://patchwork.kernel.org/project/linux-wireless/patch/20241011173323.924473-1-kvalo@kernel.org/
+
+Rameshkumar Sundaram (4):
+  wifi: ath12k: prepare vif config caching for MLO
+  wifi: ath12k: modify ath12k_mac_vif_chan() for MLO
+  wifi: ath12k: modify ath12k_get_arvif_iter() for MLO
+  wifi: ath12k: modify ath12k_mac_op_set_key() for MLO
+
+Sriram R (7):
+  wifi: ath12k: prepare vif data structure for MLO handling
+  wifi: ath12k: pass ath12k_link_vif instead of vif/ahvif
+  wifi: ath12k: prepare sta data structure for MLO handling
+  wifi: ath12k: modify ath12k_mac_op_bss_info_changed() for MLO
+  wifi: ath12k: update ath12k_mac_op_conf_tx() for MLO
+  wifi: ath12k: update ath12k_mac_op_update_vif_offload() for MLO
+  wifi: ath12k: modify link arvif creation and removal for MLO
+
+ drivers/net/wireless/ath/ath12k/core.h   |   89 +-
+ drivers/net/wireless/ath/ath12k/dp.c     |   21 +-
+ drivers/net/wireless/ath/ath12k/dp.h     |    3 +-
+ drivers/net/wireless/ath/ath12k/dp_mon.c |   14 +-
+ drivers/net/wireless/ath/ath12k/dp_rx.c  |   16 +-
+ drivers/net/wireless/ath/ath12k/dp_rx.h  |    2 +-
+ drivers/net/wireless/ath/ath12k/dp_tx.c  |    9 +-
+ drivers/net/wireless/ath/ath12k/dp_tx.h  |    2 +-
+ drivers/net/wireless/ath/ath12k/mac.c    | 1492 +++++++++++++++-------
+ drivers/net/wireless/ath/ath12k/mac.h    |   11 +-
+ drivers/net/wireless/ath/ath12k/p2p.c    |   17 +-
+ drivers/net/wireless/ath/ath12k/p2p.h    |    2 +-
+ drivers/net/wireless/ath/ath12k/peer.c   |    5 +-
+ drivers/net/wireless/ath/ath12k/peer.h   |    4 +-
+ drivers/net/wireless/ath/ath12k/wmi.c    |   22 +-
+ drivers/net/wireless/ath/ath12k/wmi.h    |    8 +-
+ drivers/net/wireless/ath/ath12k/wow.c    |   59 +-
+ 17 files changed, 1192 insertions(+), 584 deletions(-)
+
+
+base-commit: 69eabe24843f238e79a6dbbd2b3fcc8eef39d6b8
+prerequisite-patch-id: 3f91f437016fbeec6019c1444cee521756971ba1
+-- 
+2.39.5
 
 
