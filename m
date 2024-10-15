@@ -1,86 +1,267 @@
-Return-Path: <linux-wireless+bounces-13959-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13960-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 672FA99E33F
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 11:59:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD59C99E3AD
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 12:21:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BEC328416D
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 09:59:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CB2A2846DB
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 10:21:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24061AB534;
-	Tue, 15 Oct 2024 09:59:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nJFrDM43"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E5E1E3790;
+	Tue, 15 Oct 2024 10:21:02 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBB217DFEC
-	for <linux-wireless@vger.kernel.org>; Tue, 15 Oct 2024 09:59:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA35F1D14FF
+	for <linux-wireless@vger.kernel.org>; Tue, 15 Oct 2024 10:20:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728986369; cv=none; b=VWMnIdyNyM5SfC5l97cOadvrIG2mjFoC7SU5bxEkYT7IlOpTD9Xdqbsm6e9vmwnN96mpVBUQaUJzpquiOKzTZF15qMbp2TiNhXt7UxvVDdPdPHu4JUZXIDg2ifG5KopsAFxSMke7+JmJNspu9AyioCAfzEEBl30v1TAF8/ub10Y=
+	t=1728987662; cv=none; b=K4kiYEDBrWgAXTuC7hI/SACN9zweikgMbiOG2qXgmwDhVdzey2syjbL8Nv2qQ98VFcviQ5meb+4SBdpDCAxw6fEF7yOjQ/tQPXQrUASmZoQZoLU0l2dWUIDZSFx1N6fkTIfPi/umpbIfGu/eO6npT6jucTW8OKdkKgxiipbH9nY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728986369; c=relaxed/simple;
-	bh=RNlRMD3eaFAhEC52+XuWUcDS+FqDL91nWc7Jm19SleY=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=RN6pbrHEn1z5LcTDRB+ecwn0gW7VYqNPv34JtfsjmOhum8PW9IxDp7E8U6j3RS3CadVSOwUR0fv+DN7v0VTkNjC03+luzfHj5qWVbzNtkAniE+ht7ZcBmJ65NHGKBnF+BGj9jBU+PNrQntlAYQ02rhWhjBQDJUNRSAFPOwlEYXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nJFrDM43; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26BBCC4CEC6;
-	Tue, 15 Oct 2024 09:59:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1728986369;
-	bh=RNlRMD3eaFAhEC52+XuWUcDS+FqDL91nWc7Jm19SleY=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=nJFrDM43figFmyPY1kP70mD4eKpMjOg70m551kXServ0jPdxyO3dimytjeINvptR9
-	 Wo4Nz9hvRcptxYN5F9B7wJuOi3GYbKv1Ifgfaz5w9aa7LeBuZ6GOKVayxDgDcmch8x
-	 6rru31h+7DRhZq/E8rCBctQIgnGddiTmXS7g01tAdgOR7h/feUhmuEDyPdDsteBFw2
-	 8xqU5lZeMMT7vI6Li2+T0UztovLDeRFuEUhckszjZR08w8A71+LcIToWep6G8qz4Mk
-	 1o/ZFM1/evtN4lpP74qPiVz8KNYNtdnCb7lVf0yHb4HKL3x5p9tGS7QefS81lon09E
-	 lkSRB1LQ2hNaQ==
-From: Kalle Valo <kvalo@kernel.org>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: Dmitry Kandybka <d.kandybka@gmail.com>,
-  "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-  "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,  Dmitry
- Antipov <dmantipov@yandex.ru>
-Subject: Re: [PATCH] wifi: rtw88: coex: remove rf4ce unused code
-References: <20240820055244.128644-1-d.kandybka@gmail.com>
-	<2c5c0d485df7b334ea0bfbb87325a5fbc7b52663.camel@gmail.com>
-	<9c83fca1a28c4b3f8fb2ca65752ad655@realtek.com>
-Date: Tue, 15 Oct 2024 12:59:26 +0300
-In-Reply-To: <9c83fca1a28c4b3f8fb2ca65752ad655@realtek.com> (Ping-Ke Shih's
-	message of "Fri, 11 Oct 2024 00:26:32 +0000")
-Message-ID: <87a5f5660x.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1728987662; c=relaxed/simple;
+	bh=qFw4pwxpBpttm95Yafbw1L21sbIFCKSXOR9wwNVM6uk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UpI96DE/+o/TdABGo/TzEFnE+nnPml2sPDZeHue/a5ty1mFBGfQhazJY5/zTpniU40Hgc5GVzE7iw+xj4rHQ6i/wAVnAvVN1ptsJ8XQZRT0juAjem0L/oYbXn3pObqiFBmf/die96YCB4UkoPdqX2N3EiOBRI6GDzy80wjgmpxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1t0efi-0003Hh-A6; Tue, 15 Oct 2024 12:20:58 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1t0efh-0020WR-Je; Tue, 15 Oct 2024 12:20:57 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1t0efh-00CdtB-1f;
+	Tue, 15 Oct 2024 12:20:57 +0200
+Date: Tue, 15 Oct 2024 12:20:57 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: David Lin <yu-hao.lin@nxp.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	briannorris@chromium.org, kvalo@kernel.org, francesco@dolcini.it,
+	tsung-hsien.hsieh@nxp.com
+Subject: Re: [PATCH v3] wifi: mwifiex: avoid AP and STA running on different
+ channel
+Message-ID: <Zw5CCWsvyoIR_0Bl@pengutronix.de>
+References: <20241008050405.6948-1-yu-hao.lin@nxp.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241008050405.6948-1-yu-hao.lin@nxp.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
 
-Ping-Ke Shih <pkshih@realtek.com> writes:
+On Tue, Oct 08, 2024 at 01:04:05PM +0800, David Lin wrote:
+> Current firmware doesn't support AP and STA running on different
+> channels simultaneously if DRCS is not enabled.
+> FW crash would occur in such case.
+> This patch avoids the issue by disabling AP and STA to run on
+> different channels if DRCS is not running.
+> 
+> Signed-off-by: David Lin <yu-hao.lin@nxp.com>
 
->> This is kindly reminder. Could you pay some attention to this patch and
->> clarify if the rf4ce is actual for this moment and future?
->
-> Yes. Our coex developers want to keep this chunk. For me, this kind of cleanup
-> patch is not very help to driver, but I and developers need much time to
-> confirm and judge if we keep or remove them, so I would want to ignore this
-> kind of patches... 
+Acked-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-Yeah, I share your pain. Cleanup patches are most of the time
-unnecessary extra work for us maintainers. We should try to write that
-"cleanup policy for wireless subsystem" doc at some point, then we could
-just point that to everyone submitting cleanup patches.
+Sascha
+
+> ---
+> 
+> v3:
+>    - add the check for DRCS mode.
+>    - add clean comment for wiphy parameters setting.
+> 
+> v2:
+>    - clean up code.
+> 
+> ---
+>  .../net/wireless/marvell/mwifiex/cfg80211.c   | 32 +++++++++----
+>  drivers/net/wireless/marvell/mwifiex/util.c   | 47 +++++++++++++++++++
+>  drivers/net/wireless/marvell/mwifiex/util.h   | 13 +++++
+>  3 files changed, 82 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> index fca3eea7ee84..ebc891d5d6c6 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+> @@ -746,13 +746,18 @@ mwifiex_cfg80211_set_wiphy_params(struct wiphy *wiphy, u32 changed)
+>  
+>  	priv = mwifiex_get_priv(adapter, MWIFIEX_BSS_ROLE_ANY);
+>  
+> +	/* Because wiphy parameters are global setting, the setting for
+> +	 * the first interface will apply for other interfaces too.
+> +	 * If AP and STA are running at same time, these parameters must
+> +	 * be the same. If the first interface is running, it means wiphy
+> +	 * parameters are already set. The second setting should be dropped
+> +	 * without error return, otherwise AP and STA can't run at the same
+> +	 * time if wiphy parameters are setting.
+> +	 */
+>  	switch (priv->bss_role) {
+>  	case MWIFIEX_BSS_ROLE_UAP:
+> -		if (priv->bss_started) {
+> -			mwifiex_dbg(adapter, ERROR,
+> -				    "cannot change wiphy params when bss started");
+> -			return -EINVAL;
+> -		}
+> +		if (priv->bss_started)
+> +			break;
+>  
+>  		bss_cfg = kzalloc(sizeof(*bss_cfg), GFP_KERNEL);
+>  		if (!bss_cfg)
+> @@ -781,11 +786,9 @@ mwifiex_cfg80211_set_wiphy_params(struct wiphy *wiphy, u32 changed)
+>  		break;
+>  
+>  	case MWIFIEX_BSS_ROLE_STA:
+> -		if (priv->media_connected) {
+> -			mwifiex_dbg(adapter, ERROR,
+> -				    "cannot change wiphy params when connected");
+> -			return -EINVAL;
+> -		}
+> +		if (priv->media_connected)
+> +			break;
+> +
+>  		if (changed & WIPHY_PARAM_RTS_THRESHOLD) {
+>  			ret = mwifiex_set_rts(priv,
+>  					      wiphy->rts_threshold);
+> @@ -2069,6 +2072,9 @@ static int mwifiex_cfg80211_start_ap(struct wiphy *wiphy,
+>  	if (GET_BSS_ROLE(priv) != MWIFIEX_BSS_ROLE_UAP)
+>  		return -1;
+>  
+> +	if (!mwifiex_is_channel_setting_allowable(priv, params->chandef.chan))
+> +		return -EOPNOTSUPP;
+> +
+>  	bss_cfg = kzalloc(sizeof(struct mwifiex_uap_bss_param), GFP_KERNEL);
+>  	if (!bss_cfg)
+>  		return -ENOMEM;
+> @@ -2463,6 +2469,9 @@ mwifiex_cfg80211_connect(struct wiphy *wiphy, struct net_device *dev,
+>  		return -EFAULT;
+>  	}
+>  
+> +	if (!mwifiex_is_channel_setting_allowable(priv, sme->channel))
+> +		return -EOPNOTSUPP;
+> +
+>  	mwifiex_dbg(adapter, INFO,
+>  		    "info: Trying to associate to bssid %pM\n", sme->bssid);
+>  
+> @@ -4298,6 +4307,9 @@ mwifiex_cfg80211_authenticate(struct wiphy *wiphy,
+>  		return -EINVAL;
+>  	}
+>  
+> +	if (!mwifiex_is_channel_setting_allowable(priv, req->bss->channel))
+> +		return -EOPNOTSUPP;
+> +
+>  	if (priv->auth_alg != WLAN_AUTH_SAE &&
+>  	    (priv->auth_flag & HOST_MLME_AUTH_PENDING)) {
+>  		mwifiex_dbg(priv->adapter, ERROR, "Pending auth on going\n");
+> diff --git a/drivers/net/wireless/marvell/mwifiex/util.c b/drivers/net/wireless/marvell/mwifiex/util.c
+> index 42c04bf858da..da5eef7b1dec 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/util.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/util.c
+> @@ -323,6 +323,53 @@ int mwifiex_debug_info_to_buffer(struct mwifiex_private *priv, char *buf,
+>  	return p - buf;
+>  }
+>  
+> +bool mwifiex_is_channel_setting_allowable(struct mwifiex_private *priv,
+> +					  struct ieee80211_channel *check_chan)
+> +{
+> +	struct mwifiex_adapter *adapter = priv->adapter;
+> +	int i;
+> +	struct mwifiex_private *tmp_priv;
+> +	u8 bss_role = GET_BSS_ROLE(priv);
+> +	struct ieee80211_channel *set_chan;
+> +
+> +	if (adapter->drcs_enabled)
+> +		return true;
+> +
+> +	for (i = 0; i < MWIFIEX_MAX_BSS_NUM; i++) {
+> +		tmp_priv = adapter->priv[i];
+> +		if (tmp_priv == priv)
+> +			continue;
+> +
+> +		set_chan = NULL;
+> +		if (bss_role == MWIFIEX_BSS_ROLE_STA) {
+> +			if (GET_BSS_ROLE(tmp_priv) == MWIFIEX_BSS_ROLE_UAP &&
+> +			    netif_carrier_ok(tmp_priv->netdev) &&
+> +			    cfg80211_chandef_valid(&tmp_priv->bss_chandef))
+> +				set_chan = tmp_priv->bss_chandef.chan;
+> +		} else if (bss_role == MWIFIEX_BSS_ROLE_UAP) {
+> +			struct mwifiex_current_bss_params *bss_params =
+> +				&tmp_priv->curr_bss_params;
+> +			int channel = bss_params->bss_descriptor.channel;
+> +			enum nl80211_band band =
+> +				mwifiex_band_to_radio_type(bss_params->band);
+> +			int freq =
+> +				ieee80211_channel_to_frequency(channel, band);
+> +
+> +			if (GET_BSS_ROLE(tmp_priv) == MWIFIEX_BSS_ROLE_STA &&
+> +			    tmp_priv->media_connected)
+> +				set_chan = ieee80211_get_channel(adapter->wiphy, freq);
+> +		}
+> +
+> +		if (set_chan && !ieee80211_channel_equal(check_chan, set_chan)) {
+> +			mwifiex_dbg(adapter, ERROR,
+> +				    "AP/STA must run on the same channel\n");
+> +			return false;
+> +		}
+> +	}
+> +
+> +	return true;
+> +}
+> +
+>  static int
+>  mwifiex_parse_mgmt_packet(struct mwifiex_private *priv, u8 *payload, u16 len,
+>  			  struct rxpd *rx_pd)
+> diff --git a/drivers/net/wireless/marvell/mwifiex/util.h b/drivers/net/wireless/marvell/mwifiex/util.h
+> index 4699c505c0a0..16f092bb0823 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/util.h
+> +++ b/drivers/net/wireless/marvell/mwifiex/util.h
+> @@ -86,4 +86,17 @@ static inline void le16_unaligned_add_cpu(__le16 *var, u16 val)
+>  	put_unaligned_le16(get_unaligned_le16(var) + val, var);
+>  }
+>  
+> +/* Current firmware doesn't support AP and STA running on different
+> + * channels simultaneously in normal mode.
+> + * FW crash would occur in such case.
+> + * This function is used to check if check_chan can be set to FW or not.
+> + *
+> + * Return:
+> + * %true if check_chan can be set to FW without issues.
+> + * %false there is already other channel is set to FW, setting of
+> + * check_chan is not allowable.
+> + */
+> +bool mwifiex_is_channel_setting_allowable(struct mwifiex_private *priv,
+> +					  struct ieee80211_channel *check_chan);
+> +
+>  #endif /* !_MWIFIEX_UTIL_H_ */
+> 
+> base-commit: 5a4d42c1688c88f3be6aef46b0ea6c32694cd2b8
+> -- 
+> 2.34.1
+> 
+> 
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
