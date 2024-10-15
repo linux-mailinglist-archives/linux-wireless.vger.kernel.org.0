@@ -1,52 +1,52 @@
-Return-Path: <linux-wireless+bounces-13972-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-13973-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAB0B99F3C4
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 19:14:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F05BC99F3C5
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 19:14:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70DAA283392
-	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 17:14:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6D64283264
+	for <lists+linux-wireless@lfdr.de>; Tue, 15 Oct 2024 17:14:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B46CC1FAEF6;
-	Tue, 15 Oct 2024 17:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDEB81F9EDF;
+	Tue, 15 Oct 2024 17:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tK2am1xp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tQaE0W3k"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE991FAEF4
-	for <linux-wireless@vger.kernel.org>; Tue, 15 Oct 2024 17:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92AC1F9EDE
+	for <linux-wireless@vger.kernel.org>; Tue, 15 Oct 2024 17:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729012464; cv=none; b=gFxPSfRJpp4skB8GjC61nY5hKaKbX9qwdJuHbJyhyjpqN+o+TSMi8JjQvyJSJxCpIMzj5T2vk383JArxBPQqWQwQq2doaXkkFlQ5iZfWQdYyLIaR5rJZh93ChQqoNY4VbNhPHJVm9tk3GhGKp53RqeA398wUM+2Xppz9YESio9A=
+	t=1729012466; cv=none; b=Ej2ciWzvYZebq4LSFxqMNOvG0IzuP1Z/Zw2tOKx+Sr9BBDlvvpkUZG9HfYJ/uINZplYCVdtR3pIdFhD23B/H3HMJQw+P1A2+c7C/UGhZdFM3qv39+j7WEyfEeJGzOgrbu9KpiUxWphUFs/xM1Fq5LicGs60q1sQf7ZIR5L29FVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729012464; c=relaxed/simple;
-	bh=oYdIozVcWnqTHGSGUu7NoEC6/sPKe7T+fQiidBr+j+4=;
+	s=arc-20240116; t=1729012466; c=relaxed/simple;
+	bh=uqUqwPy7xxBGqKDeN9sHyDh1l78ZazaJwZza2SPLuEI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LYDwZzGM8bxq0Z7vYebQU4KBl2isXfy6El23uDjdKXAVuzpbMCipX6mRKItWnzZ6i8QGT32uafsl8cvJaQx30G6wnWStpONEwh6uprj9lFbP0KW+DcPTSRFmkeb5DOvnktXgQ3I1pEX+isxuTBJtm0y1vTWmyGL0vCrOXV7ZIn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tK2am1xp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97CE6C4CED3;
-	Tue, 15 Oct 2024 17:14:23 +0000 (UTC)
+	 MIME-Version; b=Ihp/C/jDQX87TKId2x3O5OEh43YzRTHAN/4wKc4jkAw1KdQtxv7pxJUVL9zutLIu8zwTa/9IEMMc1MkHvP5neJuyRNI1XUEgGKl8v2aqDaTzh0OZ/by/uBl+AeIM048WxVM9fE2iFQpmnOs0iHKFXm5DOaJ1c3QEBsDFvzYPFZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tQaE0W3k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A56ABC4CECF;
+	Tue, 15 Oct 2024 17:14:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729012464;
-	bh=oYdIozVcWnqTHGSGUu7NoEC6/sPKe7T+fQiidBr+j+4=;
+	s=k20201202; t=1729012465;
+	bh=uqUqwPy7xxBGqKDeN9sHyDh1l78ZazaJwZza2SPLuEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tK2am1xpiAxEHIrHeCBpvXyn8vaUdWz/209xgIzsDvKoer1FNc0DPBom3WL7A1Ima
-	 RzXt0kvRZAVqKCLl8jQyHoyJmYSoznR29LHSUFBTPpfFolYMVmV5O3Z7MMQJ7Nj9fR
-	 r99ZnmtrpsdCqvQ1+0YkIvYBLTzBWwHRE+3P19uANSTj/wvkaBQjWnlFXnvPGWFY5W
-	 4L65YCfECyRLqyRUVvFKe2APLz8UiMuusnXc9w92+YAZO4tHBTv2HSQsZRbmHGqsX+
-	 B7hj9MYPiVNyON0WWBJaimfr3qIEWmceKtkGfDnF+FG8GOgwlmcKtZr8BCh5//00/w
-	 xOWiPHVt9p1EA==
+	b=tQaE0W3kRTEVyIpx7BeFlomBxl6T5vjyLzVJkZ7nc/AGbpdr1CKDjx1tdjXt7Cgxr
+	 P1KQeqsf40lM6lSjbzcI19FGUKTr9sDgU3Q4ZnC6njR2jQSAoMicFa5zsia973iYuj
+	 Nea7nBerqPechfaaYj1Zu20qgVhEN9+FOpRFH06DrcFnQhT8qJWTM6KFDhDh93Ex5O
+	 R+ocv9VflW0iBIswEIDfY6D72TYFrihpiLkUf8p+AIYxbNLLcIC2/bYZ1AyY4uI0wb
+	 UTWZYQK1dDVLG9MH+/jUBM5wZUueU7oRDnDT/o3pMoYePGY/pg7M2EDxfXSfBPeE1y
+	 7UqxOy7MUKDyQ==
 From: Kalle Valo <kvalo@kernel.org>
 To: ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 04/11] wifi: ath12k: prepare vif config caching for MLO
-Date: Tue, 15 Oct 2024 20:14:09 +0300
-Message-Id: <20241015171416.518022-5-kvalo@kernel.org>
+Subject: [PATCH 05/11] wifi: ath12k: modify ath12k_mac_vif_chan() for MLO
+Date: Tue, 15 Oct 2024 20:14:10 +0300
+Message-Id: <20241015171416.518022-6-kvalo@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241015171416.518022-1-kvalo@kernel.org>
 References: <20241015171416.518022-1-kvalo@kernel.org>
@@ -60,159 +60,165 @@ Content-Transfer-Encoding: 8bit
 
 From: Rameshkumar Sundaram <quic_ramess@quicinc.com>
 
-Currently vif configuration cache pointers are placed in arvif and caching is
-done whenever a link vif configuration is received before driver created vdev
-for it (i.e. before channel is assigned), this is possible because current code
-only uses default link (ahvif->deflink) which is preallocated.
+With MLO, multiple links can be affiliated to a vif (struct ieee80211_vif) and
+hence ath12k_mac_vif_chan() needs to know the link id to fetch the channel
+context among the links. Rename ath12k_mac_vif_chan() to
+ath12k_mac_vif_link_chan() and introduce link id argument to fetch the channel
+context from the link bss corresponding to the link id.
 
-With MLO changes the ieee80211_vif drv priv is now ahvif and its arvifs (struct
-ath12k_link_vif) other than deflink can be allocated dynamically during channel
-assignment.  Hence maintain link level cache in ahvif and whenever channel is
-assigned for link vif and vdev is created, flush the corresponding link vif
-cache from ahvif.
+For non-MLO vif, link 0's (i.e. deflink) channel context will be returned.
 
-Current code uses cache of ATH12K_DEFAULT_LINK_ID (0) which is the cache of
-ahvif->deflink.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-Co-developed-by: Sriram R <quic_srirrama@quicinc.com>
-Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
 Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/core.h |  2 +-
- drivers/net/wireless/ath/ath12k/mac.c  | 40 ++++++++++++++------------
- 2 files changed, 22 insertions(+), 20 deletions(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 39 ++++++++++++++++-----------
+ 1 file changed, 23 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 8f956327f07f..96d12ef94e9c 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -272,7 +272,6 @@ struct ath12k_link_vif {
- 	u32 punct_bitmap;
- 	u8 link_id;
- 	struct ath12k_vif *ahvif;
--	struct ath12k_vif_cache *cache;
- 	struct ath12k_rekey_data rekey_data;
- };
- 
-@@ -306,6 +305,7 @@ struct ath12k_vif {
- 
- 	struct ath12k_link_vif deflink;
- 	struct ath12k_link_vif __rcu *link[IEEE80211_MLD_MAX_NUM_LINKS];
-+	struct ath12k_vif_cache *cache[IEEE80211_MLD_MAX_NUM_LINKS];
- 	/* indicates bitmap of link vif created in FW */
- 	u16 links_map;
- 
 diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index d888169d57dc..85d084d6fb34 100644
+index 85d084d6fb34..a0869ed1cb57 100644
 --- a/drivers/net/wireless/ath/ath12k/mac.c
 +++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -3464,18 +3464,19 @@ static void ath12k_mac_bss_info_changed(struct ath12k *ar,
+@@ -476,18 +476,25 @@ static u8 ath12k_parse_mpdudensity(u8 mpdudensity)
  	}
  }
  
--static struct ath12k_vif_cache *ath12k_arvif_get_cache(struct ath12k_link_vif *arvif)
-+static struct ath12k_vif_cache *ath12k_ahvif_get_link_cache(struct ath12k_vif *ahvif,
-+							    u8 link_id)
+-static int ath12k_mac_vif_chan(struct ieee80211_vif *vif,
+-			       struct cfg80211_chan_def *def)
++static int ath12k_mac_vif_link_chan(struct ieee80211_vif *vif, u8 link_id,
++				    struct cfg80211_chan_def *def)
  {
--	if (!arvif->cache)
--		arvif->cache = kzalloc(sizeof(*arvif->cache), GFP_KERNEL);
-+	if (!ahvif->cache[link_id])
-+		ahvif->cache[link_id] = kzalloc(sizeof(*ahvif->cache[0]), GFP_KERNEL);
++	struct ieee80211_bss_conf *link_conf;
+ 	struct ieee80211_chanctx_conf *conf;
  
--	return arvif->cache;
-+	return ahvif->cache[link_id];
- }
- 
--static void ath12k_arvif_put_cache(struct ath12k_link_vif *arvif)
-+static void ath12k_ahvif_put_link_cache(struct ath12k_vif *ahvif, u8 link_id)
- {
--	kfree(arvif->cache);
--	arvif->cache = NULL;
-+	kfree(ahvif->cache[link_id]);
-+	ahvif->cache[link_id] = NULL;
- }
- 
- static void ath12k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
-@@ -3502,14 +3503,13 @@ static void ath12k_mac_op_bss_info_changed(struct ieee80211_hw *hw,
- 
- 	if (!ar) {
- 		/* TODO Once link vif is fetched based on link id from
--		 * info, avoid using the deflink above and cache the link
--		 * configs in ahvif per link.
-+		 * info, avoid using ATH12K_DEFAULT_LINK_ID.
- 		 */
--		cache = ath12k_arvif_get_cache(arvif);
-+		cache = ath12k_ahvif_get_link_cache(ahvif, ATH12K_DEFAULT_LINK_ID);
- 		if (!cache)
- 			return;
- 
--		arvif->cache->bss_conf_changed |= changed;
-+		cache->bss_conf_changed |= changed;
- 
- 		return;
- 	}
-@@ -4157,7 +4157,7 @@ static int ath12k_mac_op_set_key(struct ieee80211_hw *hw, enum set_key_cmd cmd,
- 			return -EINVAL;
- 		}
- 
--		cache = ath12k_arvif_get_cache(arvif);
-+		cache = ath12k_ahvif_get_link_cache(ahvif, ATH12K_DEFAULT_LINK_ID);
- 		if (!cache)
- 			return -ENOSPC;
- 
-@@ -5074,7 +5074,7 @@ static int ath12k_mac_op_conf_tx(struct ieee80211_hw *hw,
- 	ar = ath12k_get_ar_by_vif(hw, vif);
- 	if (!ar) {
- 		/* cache the info and apply after vdev is created */
--		cache = ath12k_arvif_get_cache(arvif);
-+		cache = ath12k_ahvif_get_link_cache(ahvif, ATH12K_DEFAULT_LINK_ID);
- 		if (!cache)
- 			return -ENOSPC;
- 
-@@ -6790,10 +6790,11 @@ int ath12k_mac_vdev_create(struct ath12k *ar, struct ath12k_link_vif *arvif)
- 	return ret;
- }
- 
--static void ath12k_mac_vif_cache_flush(struct ath12k *ar,  struct ath12k_link_vif *arvif)
-+static void ath12k_mac_vif_cache_flush(struct ath12k *ar, struct ath12k_link_vif *arvif)
- {
--	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(arvif->ahvif);
--	struct ath12k_vif_cache *cache = arvif->cache;
-+	struct ath12k_vif *ahvif = arvif->ahvif;
-+	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(ahvif);
-+	struct ath12k_vif_cache *cache = ahvif->cache[arvif->link_id];
- 	struct ath12k_base *ab = ar->ab;
- 
- 	int ret;
-@@ -6824,7 +6825,7 @@ static void ath12k_mac_vif_cache_flush(struct ath12k *ar,  struct ath12k_link_vi
- 			ath12k_warn(ab, "unable to apply set key param to vdev %d ret %d\n",
- 				    arvif->vdev_id, ret);
- 	}
--	ath12k_arvif_put_cache(arvif);
-+	ath12k_ahvif_put_link_cache(ahvif, arvif->link_id);
- }
- 
- static struct ath12k *ath12k_mac_assign_vif_to_vdev(struct ieee80211_hw *hw,
-@@ -7028,7 +7029,7 @@ static int ath12k_mac_vdev_delete(struct ath12k *ar, struct ath12k_link_vif *arv
- 	spin_unlock_bh(&ar->data_lock);
- 
- 	ath12k_peer_cleanup(ar, arvif->vdev_id);
--	ath12k_arvif_put_cache(arvif);
-+	ath12k_ahvif_put_link_cache(ahvif, arvif->link_id);
- 
- 	idr_for_each(&ar->txmgmt_idr,
- 		     ath12k_mac_vif_txmgmt_idr_remove, vif);
-@@ -7069,7 +7070,8 @@ static void ath12k_mac_op_remove_interface(struct ieee80211_hw *hw,
- 		/* if we cached some config but never received assign chanctx,
- 		 * free the allocated cache.
- 		 */
--		ath12k_arvif_put_cache(arvif);
-+		ath12k_ahvif_put_link_cache(ahvif, ATH12K_DEFAULT_LINK_ID);
+ 	rcu_read_lock();
+-	conf = rcu_dereference(vif->bss_conf.chanctx_conf);
++	link_conf = rcu_dereference(vif->link_conf[link_id]);
 +
++	if (!link_conf) {
++		rcu_read_unlock();
++		return -ENOLINK;
++	}
++
++	conf = rcu_dereference(link_conf->chanctx_conf);
+ 	if (!conf) {
+ 		rcu_read_unlock();
+ 		return -ENOENT;
+ 	}
+-
+ 	*def = conf->def;
+ 	rcu_read_unlock();
+ 
+@@ -721,7 +728,7 @@ static u8 ath12k_mac_get_target_pdev_id_from_vif(struct ath12k_link_vif *arvif)
+ 	u8 pdev_id = ab->fw_pdev[0].pdev_id;
+ 	int i;
+ 
+-	if (WARN_ON(ath12k_mac_vif_chan(vif, &def)))
++	if (WARN_ON(ath12k_mac_vif_link_chan(vif, arvif->link_id, &def)))
+ 		return pdev_id;
+ 
+ 	band = def.chan->band;
+@@ -1780,7 +1787,7 @@ static void ath12k_peer_assoc_h_crypto(struct ath12k *ar,
+ 
+ 	lockdep_assert_wiphy(hw->wiphy);
+ 
+-	if (WARN_ON(ath12k_mac_vif_chan(vif, &def)))
++	if (WARN_ON(ath12k_mac_vif_link_chan(vif, arvif->link_id, &def)))
  		return;
+ 
+ 	bss = cfg80211_get_bss(hw->wiphy, def.chan, info->bssid, NULL, 0,
+@@ -1846,7 +1853,7 @@ static void ath12k_peer_assoc_h_rates(struct ath12k *ar,
+ 
+ 	lockdep_assert_wiphy(hw->wiphy);
+ 
+-	if (WARN_ON(ath12k_mac_vif_chan(vif, &def)))
++	if (WARN_ON(ath12k_mac_vif_link_chan(vif, arvif->link_id, &def)))
+ 		return;
+ 
+ 	band = def.chan->band;
+@@ -1908,7 +1915,7 @@ static void ath12k_peer_assoc_h_ht(struct ath12k *ar,
+ 
+ 	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
+ 
+-	if (WARN_ON(ath12k_mac_vif_chan(vif, &def)))
++	if (WARN_ON(ath12k_mac_vif_link_chan(vif, arvif->link_id, &def)))
+ 		return;
+ 
+ 	if (!ht_cap->ht_supported)
+@@ -2071,7 +2078,7 @@ static void ath12k_peer_assoc_h_vht(struct ath12k *ar,
+ 
+ 	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
+ 
+-	if (WARN_ON(ath12k_mac_vif_chan(vif, &def)))
++	if (WARN_ON(ath12k_mac_vif_link_chan(vif, arvif->link_id, &def)))
+ 		return;
+ 
+ 	if (!vht_cap->vht_supported)
+@@ -2320,7 +2327,7 @@ static void ath12k_peer_assoc_h_he_6ghz(struct ath12k *ar,
+ 	enum nl80211_band band;
+ 	u8 ampdu_factor, mpdu_density;
+ 
+-	if (WARN_ON(ath12k_mac_vif_chan(vif, &def)))
++	if (WARN_ON(ath12k_mac_vif_link_chan(vif, arvif->link_id, &def)))
+ 		return;
+ 
+ 	band = def.chan->band;
+@@ -2624,7 +2631,7 @@ static void ath12k_peer_assoc_h_phymode(struct ath12k *ar,
+ 	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(arvif->ahvif);
+ 	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
+ 
+-	if (WARN_ON(ath12k_mac_vif_chan(vif, &def)))
++	if (WARN_ON(ath12k_mac_vif_link_chan(vif, arvif->link_id, &def)))
+ 		return;
+ 
+ 	band = def.chan->band;
+@@ -3369,7 +3376,7 @@ static void ath12k_mac_bss_info_changed(struct ath12k *ar,
  	}
  
+ 	if (changed & BSS_CHANGED_MCAST_RATE &&
+-	    !ath12k_mac_vif_chan(vif, &def)) {
++	    !ath12k_mac_vif_link_chan(vif, arvif->link_id, &def)) {
+ 		band = def.chan->band;
+ 		mcast_rate = vif->bss_conf.mcast_rate[band];
+ 
+@@ -3413,7 +3420,7 @@ static void ath12k_mac_bss_info_changed(struct ath12k *ar,
+ 	}
+ 
+ 	if (changed & BSS_CHANGED_BASIC_RATES &&
+-	    !ath12k_mac_vif_chan(vif, &def))
++	    !ath12k_mac_vif_link_chan(vif, arvif->link_id, &def))
+ 		ath12k_recalculate_mgmt_rate(ar, arvif, &def);
+ 
+ 	if (changed & BSS_CHANGED_TWT) {
+@@ -4260,7 +4267,7 @@ static int ath12k_station_assoc(struct ath12k *ar,
+ 
+ 	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
+ 
+-	if (WARN_ON(ath12k_mac_vif_chan(vif, &def)))
++	if (WARN_ON(ath12k_mac_vif_link_chan(vif, arvif->link_id, &def)))
+ 		return -EPERM;
+ 
+ 	band = def.chan->band;
+@@ -4384,7 +4391,7 @@ static void ath12k_sta_rc_update_wk(struct wiphy *wiphy, struct wiphy_work *wk)
+ 	vif = ath12k_ahvif_to_vif(arvif->ahvif);
+ 	ar = arvif->ar;
+ 
+-	if (WARN_ON(ath12k_mac_vif_chan(vif, &def)))
++	if (WARN_ON(ath12k_mac_vif_link_chan(vif, arvif->link_id, &def)))
+ 		return;
+ 
+ 	band = def.chan->band;
+@@ -8348,7 +8355,7 @@ ath12k_mac_op_set_bitrate_mask(struct ieee80211_hw *hw,
+ 	arvif = &ahvif->deflink;
+ 
+ 	ar = arvif->ar;
+-	if (ath12k_mac_vif_chan(vif, &def)) {
++	if (ath12k_mac_vif_link_chan(vif, arvif->link_id, &def)) {
+ 		ret = -EPERM;
+ 		goto out;
+ 	}
 -- 
 2.39.5
 
