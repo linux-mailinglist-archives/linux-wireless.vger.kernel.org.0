@@ -1,73 +1,66 @@
-Return-Path: <linux-wireless+bounces-14036-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14037-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93C789A0169
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 08:27:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E40D39A017E
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 08:36:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0892A1F26C64
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 06:27:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BFB11C22AC6
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 06:36:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC3FD18C021;
-	Wed, 16 Oct 2024 06:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B1FE18CC01;
+	Wed, 16 Oct 2024 06:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="WhSi3PkO"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mune/E6B"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FEFF18E364
-	for <linux-wireless@vger.kernel.org>; Wed, 16 Oct 2024 06:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A4C18C32E
+	for <linux-wireless@vger.kernel.org>; Wed, 16 Oct 2024 06:36:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729060018; cv=none; b=auFOolD7LMklDdcckj9kU8tRrrTouC6wYP1ad/IvtcdRyXPGLTBfpEq+D0WTJGozoWQYR1X+SSrwjzwro7lDaJY0s1c72wYJ/ZiuKdXJFJhmEx+gRXnUznRTB+XfzFGzyWMVmoVVyYYO52cel9tanGewq8XhZQ1YV50OJU3Myeo=
+	t=1729060611; cv=none; b=Q55W7Tx23RvWzLn7EwfgP4i9YlEgkcNZp8c3dLK73tAjDuY11C9+RGec4QLz/MMg85FYdMK9UoVcWH8LImRHIyXd+plfo4kDdpuQN+OJU/tLnELm63H0x6GtTVGJHrdrSm3YduS3T3M1iSrIy/9Az30iDs/UCXDOLnO4BhRoNfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729060018; c=relaxed/simple;
-	bh=mLXBHhLDKjOK++wrI3Tx1yzLku8XN3i9S/axEiY2JsA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Qtqh/amUg63gDPb/5pw4UjcwdiG0JLvuTE5YxxQU4raF9KudarfJpiGoLYz6Ip7LmN+3nD9vXyDXMOA0foF55NiiBOktkPXHbU/EDxDCf/yLcSgbfZZ0tjxAm+3hZKUcdy4JJS+wmjb2aMk1vcYcGz8M99qBVw8BEz84AOYC6PU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=WhSi3PkO; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1729060611; c=relaxed/simple;
+	bh=+N4uOqsyyzECEqS3Wwlnf4yFqBi7RhPcZHmEkAqVr3w=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qcwgYgffkepr+SKhfPmVb9yiexy8MOGvoMyKA9uN56kPnYhVTQuoBsTnkXI0PEnXT/scVSVxYq+08IT6wAUsf3Rsp9ijFbiozv36eX6kFH28ICz3SdgGxitV6T533Zq7URJSdcVGzymhvu33m1QzofS5f7DXXnKvHe7P24vh5MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mune/E6B; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49G6B4Bp018012;
-	Wed, 16 Oct 2024 06:26:53 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49FJEipb020093;
+	Wed, 16 Oct 2024 06:36:41 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	wX5+1yq46ARfFea7R2yLyCLvYYTD7zqZfqpb9tv2Ryk=; b=WhSi3PkOxivbVQY0
-	sxOHjboz0DTLLU8kyDL5+mBoeIklKdtBPN93cbusyZWFZ2aitqXT+SH4m/GMZkXM
-	u2CTBqGyP3DjazRTQz3RW+n+cCmvS927h2PrWeAthENcUwIcfIp2gt5en2qSIMw2
-	KDxQgUSKZHKIk9gnWSt1jYBVX/7fTSs3KFoe5MuR35F/n8rsgkeRi814nnm+C07x
-	tLINQCtNNsN8sY83VmAWFzPCtqFkGpcssBQquOnZ283zeOJwJeBmldxSJBdY2el0
-	cniHyKYYytnEQRXNM2Edgy9l0uLcBW9Glrj91r2JjvK4uSye+ACU6WqYCT7SwPWO
-	gdd+rA==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 429nm3ka69-1
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=TAnV2ukSO4vvGKlgvm3p1Y
+	BMFelYJ6Dod5kwnBuPw7A=; b=mune/E6BEtAe9skpiewMhGYoqS+ee/BOEep95E
+	htBeIrTvJ75I4FD5blt5y5JpmlPPkHoUYhfk4GFjswiCPt3HUMCI1lPLQQzuaKtZ
+	0Fl39mATJi9XyVOpJR37BQio1p9OGdRsNHf5aMRFUOi29T3yRVcuCfcy8tYaxlj9
+	gIliXd4TuKbxsTaFgR1AHJo6iy0P2RDzrThMASeis5THNOTaYbzHWVTKjlLZO8XX
+	k2kYJvSS1Iqc+UTzTam2j/ApnyiP42b+bQfR26gXeCImu5d+RGdmd74mtE1NF3kV
+	We3iqxQ5BrHAv3P7ymMIEnQ32/tD1UIUd5st05dMz+WA3miA==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 429nm3kb0n-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Oct 2024 06:26:52 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49G6QpZV005031
+	Wed, 16 Oct 2024 06:36:40 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49G6ad0Z026513
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Oct 2024 06:26:51 GMT
-Received: from hu-rdevanat-blr.qualcomm.com (10.80.80.8) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
+	Wed, 16 Oct 2024 06:36:39 GMT
+Received: from kangyang.ap.qualcomm.com (10.80.80.8) by
+ nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Tue, 15 Oct 2024 23:26:49 -0700
-From: Roopni Devanathan <quic_rdevanat@quicinc.com>
+ 15.2.1544.9; Tue, 15 Oct 2024 23:36:38 -0700
+From: Kang Yang <quic_kangyang@quicinc.com>
 To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Dinesh Karthikeyan
-	<quic_dinek@quicinc.com>,
-        Roopni Devanathan <quic_rdevanat@quicinc.com>
-Subject: [PATCH 4/4] wifi: ath12k: Support Transmit PER Rate Stats
-Date: Wed, 16 Oct 2024 11:56:17 +0530
-Message-ID: <20241016062617.2726252-5-quic_rdevanat@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241016062617.2726252-1-quic_rdevanat@quicinc.com>
-References: <20241016062617.2726252-1-quic_rdevanat@quicinc.com>
+CC: <linux-wireless@vger.kernel.org>, <quic_kangyang@quicinc.com>
+Subject: [PATCH v5 0/4] wifi: ath12k: add 11d scan offload support and handle country code for WCN7850
+Date: Wed, 16 Oct 2024 14:35:02 +0800
+Message-ID: <20241016063506.1037-1-quic_kangyang@quicinc.com>
+X-Mailer: git-send-email 2.34.1.windows.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -76,455 +69,67 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: tUqyRLyDrMmHmpFwcZVY3jKhEsLTtNRu
-X-Proofpoint-ORIG-GUID: tUqyRLyDrMmHmpFwcZVY3jKhEsLTtNRu
+X-Proofpoint-GUID: fErcd6FIgW8jZbXAXGdNr3Rvq5zaPdyz
+X-Proofpoint-ORIG-GUID: fErcd6FIgW8jZbXAXGdNr3Rvq5zaPdyz
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
  lowpriorityscore=0 malwarescore=0 adultscore=0 phishscore=0
  priorityscore=1501 mlxscore=0 spamscore=0 suspectscore=0 bulkscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ mlxlogscore=889 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2409260000 definitions=main-2410160041
 
-From: Dinesh Karthikeyan <quic_dinek@quicinc.com>
+This patch-set mainly does four things:
+1. Add handler to send WMI_SET_CURRENT_COUNTRY_CMDID to firmware.
+2. Implement 11d scan offload, and report country code to firmware by
+WMI command WMI_SET_CURRENT_COUNTRY_CMDID.
+3. Use WMI_SET_CURRENT_COUNTRY_CMDID to set country code for WCN7850.
+4. Store country code, and update it to firmware after device recovery.
 
-Add support to request per rate stats through HTT stats type
-40. These stats give information about rates of PPDUs and
-MPDUs for single user and for OFDMA and MUMIMO technologies
-corresponding to multiple users.
+With this patch-set, WCN7850 can do 11d offload scan and update country
+code to firmware successfully.
 
-Sample output:
--------------
-echo 40 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
-cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats
-HTT_TX_PER_STATS:
+Note: This patch-set is an old patch-set in public review written by
+Wen Gong. Just resend it for him.
+Link: https://patchwork.kernel.org/project/linux-wireless/cover/20230914090746.23560-1-quic_wgong@quicinc.com/
 
-PER_STATS_SU:
+v5: rebase on tag: ath/main(ath-202410111606).
+v4: rebase on tag: ath-202410072115.
+v3:
+    1. use wiphy::mtx lock instead of adding a new lock(patch#2).
+    2. rename struct according to wmi naming convention(patch#1, #2).
+    3. update copyright in reg.h
+    4. modifiy patch#3, #4 due to struct name change.
+v2: change per Jeff.
+    1. change alpha2 length from 3 to 2.
+    2. change wmi_11d_new_cc_ev to wmi_11d_new_cc_event.
 
-PER per BW:
-ppdus_tried_su =  0:0  1:0  2:0  3:0  4:0
-ppdus_ack_failed_su =  0:0  1:0  2:0  3:0  4:0
-mpdus_tried_su =  0:0  1:0  2:0  3:0  4:0
-mpdus_failed_su =  0:0 1:0 2:0 3:0 4:0
+Wen Gong (4):
+  wifi: ath12k: add configure country code for WCN7850
+  wifi: ath12k: add 11d scan offload support
+  wifi: ath12k: use correct WMI command to set country code for WCN7850
+  wifi: ath12k: store and send country code to firmware after recovery
 
-PER per NSS:
-ppdus_tried_su =  0:0  1:0  2:0  3:0  4:0  5:0  6:0  7:0
-ppdus_ack_failed_su =  0:0  1:0  2:0  3:0  4:0  5:0  6:0  7:0
-mpdus_tried_su =  0:0  1:0  2:0  3:0  4:0  5:0  6:0  7:0
-mpdus_failed_su =  0:0  1:0  2:0  3:0  4:0  5:0  6:0  7:0
+ drivers/net/wireless/ath/ath12k/core.c |  34 ++++-
+ drivers/net/wireless/ath/ath12k/core.h |  17 +++
+ drivers/net/wireless/ath/ath12k/hw.c   |   6 +
+ drivers/net/wireless/ath/ath12k/hw.h   |   1 +
+ drivers/net/wireless/ath/ath12k/mac.c  | 167 ++++++++++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/mac.h  |   7 ++
+ drivers/net/wireless/ath/ath12k/reg.c  |  70 ++++++++---
+ drivers/net/wireless/ath/ath12k/reg.h  |   4 +-
+ drivers/net/wireless/ath/ath12k/wmi.c  | 158 ++++++++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/wmi.h  |  38 ++++++
+ 10 files changed, 480 insertions(+), 22 deletions(-)
 
-PER per MCS:
-ppdus_tried_su =  0:0  1:0  2:0  3:0  4:0  5:0  6:0  7:0  8:0  9:0  10:0  11:0  12:0  13:0
-ppdus_ack_failed_su =  0:0  1:0  2:0  3:0  4:0  5:0  6:0  7:0  8:0  9:0  10:0  11:0  12:0  13:0
-mpdus_tried_su =  0:0  1:0  2:0  3:0  4:0  5:0  6:0  7:0  8:0  9:0  10:0  11:0  12:0  13:0
-mpdus_failed_su =  0:0  1:0  2:0  3:0  4:0  5:0  6:0  7:0  8:0  9:0  10:0  11:0  12:0  13:0
-.....
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
-
-Signed-off-by: Dinesh Karthikeyan <quic_dinek@quicinc.com>
-Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
----
- .../wireless/ath/ath12k/debugfs_htt_stats.c   | 267 ++++++++++++++++++
- .../wireless/ath/ath12k/debugfs_htt_stats.h   |  65 +++++
- 2 files changed, 332 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-index ba728918a60b..8c08656aa16f 100644
---- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-+++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-@@ -48,6 +48,28 @@ print_array_to_buf(u8 *buf, u32 offset, const char *header,
- 					footer);
- }
- 
-+static const char *ath12k_htt_ax_tx_rx_ru_size_to_str(u8 ru_size)
-+{
-+	switch (ru_size) {
-+	case ATH12K_HTT_TX_RX_PDEV_STATS_AX_RU_SIZE_26:
-+		return "26";
-+	case ATH12K_HTT_TX_RX_PDEV_STATS_AX_RU_SIZE_52:
-+		return "52";
-+	case ATH12K_HTT_TX_RX_PDEV_STATS_AX_RU_SIZE_106:
-+		return "106";
-+	case ATH12K_HTT_TX_RX_PDEV_STATS_AX_RU_SIZE_242:
-+		return "242";
-+	case ATH12K_HTT_TX_RX_PDEV_STATS_AX_RU_SIZE_484:
-+		return "484";
-+	case ATH12K_HTT_TX_RX_PDEV_STATS_AX_RU_SIZE_996:
-+		return "996";
-+	case ATH12K_HTT_TX_RX_PDEV_STATS_AX_RU_SIZE_996x2:
-+		return "996x2";
-+	default:
-+		return "unknown";
-+	}
-+}
-+
- static const char *ath12k_htt_be_tx_rx_ru_size_to_str(u8 ru_size)
- {
- 	switch (ru_size) {
-@@ -88,6 +110,17 @@ static const char *ath12k_htt_be_tx_rx_ru_size_to_str(u8 ru_size)
- 	}
- }
- 
-+static const char*
-+ath12k_tx_ru_size_to_str(enum ath12k_htt_stats_ru_type ru_type, u8 ru_size)
-+{
-+	if (ru_type == ATH12K_HTT_STATS_RU_TYPE_SINGLE_RU_ONLY)
-+		return ath12k_htt_ax_tx_rx_ru_size_to_str(ru_size);
-+	else if (ru_type == ATH12K_HTT_STATS_RU_TYPE_SINGLE_AND_MULTI_RU)
-+		return ath12k_htt_be_tx_rx_ru_size_to_str(ru_size);
-+	else
-+		return "unknown";
-+}
-+
- static void
- htt_print_tx_pdev_stats_cmn_tlv(const void *tag_buf, u16 tag_len,
- 				struct debug_htt_stats_req *stats_req)
-@@ -2879,6 +2912,237 @@ ath12k_htt_print_soc_txrx_stats_common_tlv(const void *tag_buf, u16 tag_len,
- 	stats_req->buf_len = len;
- }
- 
-+static void
-+ath12k_htt_print_tx_per_rate_stats_tlv(const void *tag_buf, u16 tag_len,
-+				       struct debug_htt_stats_req *stats_req)
-+{
-+	const struct ath12k_htt_tx_per_rate_stats_tlv *stats_buf = tag_buf;
-+	u8 *buf = stats_req->buf;
-+	u32 len = stats_req->buf_len;
-+	u32 buf_len = ATH12K_HTT_STATS_BUF_SIZE;
-+	const char *mode_prefix;
-+	int i;
-+	u32 ru_size_cnt = 0;
-+	u32 rc_mode;
-+	u32 ru_type;
-+
-+	if (tag_len < sizeof(*stats_buf))
-+		return;
-+
-+	rc_mode = le32_to_cpu(stats_buf->rc_mode);
-+	ru_type = le32_to_cpu(stats_buf->ru_type);
-+
-+	switch (rc_mode) {
-+	case ATH12K_HTT_STATS_RC_MODE_DLSU:
-+		len += scnprintf(buf + len, buf_len - len, "HTT_TX_PER_STATS:\n");
-+		len += scnprintf(buf + len, buf_len - len, "\nPER_STATS_SU:\n");
-+		mode_prefix = "su";
-+		break;
-+	case ATH12K_HTT_STATS_RC_MODE_DLMUMIMO:
-+		len += scnprintf(buf + len, buf_len - len, "\nPER_STATS_DL_MUMIMO:\n");
-+		mode_prefix = "mu";
-+		break;
-+	case ATH12K_HTT_STATS_RC_MODE_DLOFDMA:
-+		len += scnprintf(buf + len, buf_len - len, "\nPER_STATS_DL_OFDMA:\n");
-+		mode_prefix = "ofdma";
-+		if (ru_type == ATH12K_HTT_STATS_RU_TYPE_SINGLE_RU_ONLY)
-+			ru_size_cnt = ATH12K_HTT_TX_RX_PDEV_STATS_NUM_AX_RU_SIZE_CNTRS;
-+		else if (ru_type == ATH12K_HTT_STATS_RU_TYPE_SINGLE_AND_MULTI_RU)
-+			ru_size_cnt = ATH12K_HTT_TX_RX_PDEV_NUM_BE_RU_SIZE_CNTRS;
-+		break;
-+	case ATH12K_HTT_STATS_RC_MODE_ULMUMIMO:
-+		len += scnprintf(buf + len, buf_len - len, "HTT_RX_PER_STATS:\n");
-+		len += scnprintf(buf + len, buf_len - len, "\nPER_STATS_UL_MUMIMO:\n");
-+		mode_prefix = "ulmu";
-+		break;
-+	case ATH12K_HTT_STATS_RC_MODE_ULOFDMA:
-+		len += scnprintf(buf + len, buf_len - len, "\nPER_STATS_UL_OFDMA:\n");
-+		mode_prefix = "ulofdma";
-+		if (ru_type == ATH12K_HTT_STATS_RU_TYPE_SINGLE_RU_ONLY)
-+			ru_size_cnt = ATH12K_HTT_TX_RX_PDEV_STATS_NUM_AX_RU_SIZE_CNTRS;
-+		else if (ru_type == ATH12K_HTT_STATS_RU_TYPE_SINGLE_AND_MULTI_RU)
-+			ru_size_cnt = ATH12K_HTT_TX_RX_PDEV_NUM_BE_RU_SIZE_CNTRS;
-+		break;
-+	default:
-+		return;
-+	}
-+
-+	len += scnprintf(buf + len, buf_len - len, "\nPER per BW:\n");
-+	if (rc_mode == ATH12K_HTT_STATS_RC_MODE_ULOFDMA ||
-+	    rc_mode == ATH12K_HTT_STATS_RC_MODE_ULMUMIMO)
-+		len += scnprintf(buf + len, buf_len - len, "data_ppdus_%s = ",
-+				 mode_prefix);
-+	else
-+		len += scnprintf(buf + len, buf_len - len, "ppdus_tried_%s = ",
-+				 mode_prefix);
-+	for (i = 0; i < ATH12K_HTT_TX_PDEV_STATS_NUM_BW_CNTRS; i++)
-+		len += scnprintf(buf + len, buf_len - len, " %u:%u ", i,
-+				 le32_to_cpu(stats_buf->per_bw[i].ppdus_tried));
-+	len += scnprintf(buf + len, buf_len - len, " %u:%u\n", i,
-+			 le32_to_cpu(stats_buf->per_bw320.ppdus_tried));
-+
-+	if (rc_mode == ATH12K_HTT_STATS_RC_MODE_ULOFDMA ||
-+	    rc_mode == ATH12K_HTT_STATS_RC_MODE_ULMUMIMO)
-+		len += scnprintf(buf + len, buf_len - len, "non_data_ppdus_%s = ",
-+				 mode_prefix);
-+	else
-+		len += scnprintf(buf + len, buf_len - len, "ppdus_ack_failed_%s = ",
-+				 mode_prefix);
-+	for (i = 0; i < ATH12K_HTT_TX_PDEV_STATS_NUM_BW_CNTRS; i++)
-+		len += scnprintf(buf + len, buf_len - len, " %u:%u ", i,
-+				 le32_to_cpu(stats_buf->per_bw[i].ppdus_ack_failed));
-+	len += scnprintf(buf + len, buf_len - len, " %u:%u\n", i,
-+			 le32_to_cpu(stats_buf->per_bw320.ppdus_ack_failed));
-+
-+	len += scnprintf(buf + len, buf_len - len, "mpdus_tried_%s = ", mode_prefix);
-+	for (i = 0; i < ATH12K_HTT_TX_PDEV_STATS_NUM_BW_CNTRS; i++)
-+		len += scnprintf(buf + len, buf_len - len, " %u:%u ", i,
-+				 le32_to_cpu(stats_buf->per_bw[i].mpdus_tried));
-+	len += scnprintf(buf + len, buf_len - len, " %u:%u\n", i,
-+			 le32_to_cpu(stats_buf->per_bw320.mpdus_tried));
-+
-+	len += scnprintf(buf + len, buf_len - len, "mpdus_failed_%s = ", mode_prefix);
-+	for (i = 0; i < ATH12K_HTT_TX_PDEV_STATS_NUM_BW_CNTRS; i++)
-+		len += scnprintf(buf + len, buf_len - len, " %u:%u", i,
-+				 le32_to_cpu(stats_buf->per_bw[i].mpdus_failed));
-+	len += scnprintf(buf + len, buf_len - len, " %u:%u\n", i,
-+			 le32_to_cpu(stats_buf->per_bw320.mpdus_failed));
-+
-+	len += scnprintf(buf + len, buf_len - len, "\nPER per NSS:\n");
-+	if (rc_mode == ATH12K_HTT_STATS_RC_MODE_ULOFDMA ||
-+	    rc_mode == ATH12K_HTT_STATS_RC_MODE_ULMUMIMO)
-+		len += scnprintf(buf + len, buf_len - len, "data_ppdus_%s = ",
-+				 mode_prefix);
-+	else
-+		len += scnprintf(buf + len, buf_len - len, "ppdus_tried_%s = ",
-+				 mode_prefix);
-+	for (i = 0; i < ATH12K_HTT_PDEV_STAT_NUM_SPATIAL_STREAMS; i++)
-+		len += scnprintf(buf + len, buf_len - len, " %u:%u ", i,
-+				 le32_to_cpu(stats_buf->per_nss[i].ppdus_tried));
-+	len += scnprintf(buf + len, buf_len - len, "\n");
-+
-+	if (rc_mode == ATH12K_HTT_STATS_RC_MODE_ULOFDMA ||
-+	    rc_mode == ATH12K_HTT_STATS_RC_MODE_ULMUMIMO)
-+		len += scnprintf(buf + len, buf_len - len, "non_data_ppdus_%s = ",
-+				 mode_prefix);
-+	else
-+		len += scnprintf(buf + len, buf_len - len, "ppdus_ack_failed_%s = ",
-+				 mode_prefix);
-+	for (i = 0; i < ATH12K_HTT_PDEV_STAT_NUM_SPATIAL_STREAMS; i++)
-+		len += scnprintf(buf + len, buf_len - len, " %u:%u ", i,
-+				 le32_to_cpu(stats_buf->per_nss[i].ppdus_ack_failed));
-+	len += scnprintf(buf + len, buf_len - len, "\n");
-+
-+	len += scnprintf(buf + len, buf_len - len, "mpdus_tried_%s = ", mode_prefix);
-+	for (i = 0; i < ATH12K_HTT_PDEV_STAT_NUM_SPATIAL_STREAMS; i++)
-+		len += scnprintf(buf + len, buf_len - len, " %u:%u ", i,
-+				 le32_to_cpu(stats_buf->per_nss[i].mpdus_tried));
-+	len += scnprintf(buf + len, buf_len - len, "\n");
-+
-+	len += scnprintf(buf + len, buf_len - len, "mpdus_failed_%s = ", mode_prefix);
-+	for (i = 0; i < ATH12K_HTT_PDEV_STAT_NUM_SPATIAL_STREAMS; i++)
-+		len += scnprintf(buf + len, buf_len - len, " %u:%u ", i,
-+				 le32_to_cpu(stats_buf->per_nss[i].mpdus_failed));
-+	len += scnprintf(buf + len, buf_len - len, "\n");
-+
-+	len += scnprintf(buf + len, buf_len - len, "\nPER per MCS:\n");
-+	if (rc_mode == ATH12K_HTT_STATS_RC_MODE_ULOFDMA ||
-+	    rc_mode == ATH12K_HTT_STATS_RC_MODE_ULMUMIMO)
-+		len += scnprintf(buf + len, buf_len - len, "data_ppdus_%s = ",
-+				 mode_prefix);
-+	else
-+		len += scnprintf(buf + len, buf_len - len, "ppdus_tried_%s = ",
-+				 mode_prefix);
-+	for (i = 0; i < ATH12K_HTT_TXBF_RATE_STAT_NUM_MCS_CNTRS; i++)
-+		len += scnprintf(buf + len, buf_len - len, " %u:%u ", i,
-+				 le32_to_cpu(stats_buf->per_mcs[i].ppdus_tried));
-+	len += scnprintf(buf + len, buf_len - len, "\n");
-+
-+	if (rc_mode == ATH12K_HTT_STATS_RC_MODE_ULOFDMA ||
-+	    rc_mode == ATH12K_HTT_STATS_RC_MODE_ULMUMIMO)
-+		len += scnprintf(buf + len, buf_len - len, "non_data_ppdus_%s = ",
-+				 mode_prefix);
-+	else
-+		len += scnprintf(buf + len, buf_len - len, "ppdus_ack_failed_%s = ",
-+				 mode_prefix);
-+	for (i = 0; i < ATH12K_HTT_TXBF_RATE_STAT_NUM_MCS_CNTRS; i++)
-+		len += scnprintf(buf + len, buf_len - len, " %u:%u ", i,
-+				 le32_to_cpu(stats_buf->per_mcs[i].ppdus_ack_failed));
-+	len += scnprintf(buf + len, buf_len - len, "\n");
-+
-+	len += scnprintf(buf + len, buf_len - len, "mpdus_tried_%s = ", mode_prefix);
-+	for (i = 0; i < ATH12K_HTT_TXBF_RATE_STAT_NUM_MCS_CNTRS; i++)
-+		len += scnprintf(buf + len, buf_len - len, " %u:%u ", i,
-+				 le32_to_cpu(stats_buf->per_mcs[i].mpdus_tried));
-+	len += scnprintf(buf + len, buf_len - len, "\n");
-+
-+	len += scnprintf(buf + len, buf_len - len, "mpdus_failed_%s = ", mode_prefix);
-+	for (i = 0; i < ATH12K_HTT_TXBF_RATE_STAT_NUM_MCS_CNTRS; i++)
-+		len += scnprintf(buf + len, buf_len - len, " %u:%u ", i,
-+				 le32_to_cpu(stats_buf->per_mcs[i].mpdus_failed));
-+	len += scnprintf(buf + len, buf_len - len, "\n");
-+
-+	if ((rc_mode == ATH12K_HTT_STATS_RC_MODE_DLOFDMA ||
-+	     rc_mode == ATH12K_HTT_STATS_RC_MODE_ULOFDMA) &&
-+	     ru_type != ATH12K_HTT_STATS_RU_TYPE_INVALID) {
-+		len += scnprintf(buf + len, buf_len - len, "\nPER per RU:\n");
-+
-+		if (rc_mode == ATH12K_HTT_STATS_RC_MODE_ULOFDMA)
-+			len += scnprintf(buf + len, buf_len - len, "data_ppdus_%s = ",
-+					 mode_prefix);
-+		else
-+			len += scnprintf(buf + len, buf_len - len, "ppdus_tried_%s = ",
-+					 mode_prefix);
-+		for (i = 0; i < ru_size_cnt; i++)
-+			len += scnprintf(buf + len, buf_len - len, " %s:%u ",
-+					 ath12k_tx_ru_size_to_str(ru_type, i),
-+					 le32_to_cpu(stats_buf->ru[i].ppdus_tried));
-+		len += scnprintf(buf + len, buf_len - len, "\n");
-+
-+		if (rc_mode == ATH12K_HTT_STATS_RC_MODE_ULOFDMA)
-+			len += scnprintf(buf + len, buf_len - len,
-+					 "non_data_ppdus_%s = ", mode_prefix);
-+		else
-+			len += scnprintf(buf + len, buf_len - len,
-+					 "ppdus_ack_failed_%s = ", mode_prefix);
-+		for (i = 0; i < ru_size_cnt; i++)
-+			len += scnprintf(buf + len, buf_len - len, " %s:%u ",
-+					 ath12k_tx_ru_size_to_str(ru_type, i),
-+					 le32_to_cpu(stats_buf->ru[i].ppdus_ack_failed));
-+		len += scnprintf(buf + len, buf_len - len, "\n");
-+
-+		len += scnprintf(buf + len, buf_len - len, "mpdus_tried_%s = ",
-+				 mode_prefix);
-+		for (i = 0; i < ru_size_cnt; i++)
-+			len += scnprintf(buf + len, buf_len - len, " %s:%u ",
-+					 ath12k_tx_ru_size_to_str(ru_type, i),
-+					 le32_to_cpu(stats_buf->ru[i].mpdus_tried));
-+		len += scnprintf(buf + len, buf_len - len, "\n");
-+
-+		len += scnprintf(buf + len, buf_len - len, "mpdus_failed_%s = ",
-+				 mode_prefix);
-+		for (i = 0; i < ru_size_cnt; i++)
-+			len += scnprintf(buf + len, buf_len - len, " %s:%u ",
-+					 ath12k_tx_ru_size_to_str(ru_type, i),
-+					 le32_to_cpu(stats_buf->ru[i].mpdus_failed));
-+		len += scnprintf(buf + len, buf_len - len, "\n\n");
-+	}
-+
-+	if (rc_mode == ATH12K_HTT_STATS_RC_MODE_DLMUMIMO) {
-+		len += scnprintf(buf + len, buf_len - len, "\nlast_probed_bw  = %u\n",
-+				 le32_to_cpu(stats_buf->last_probed_bw));
-+		len += scnprintf(buf + len, buf_len - len, "last_probed_nss = %u\n",
-+				 le32_to_cpu(stats_buf->last_probed_nss));
-+		len += scnprintf(buf + len, buf_len - len, "last_probed_mcs = %u\n",
-+				 le32_to_cpu(stats_buf->last_probed_mcs));
-+		len += print_array_to_buf(buf, len, "MU Probe count per RC MODE",
-+					  stats_buf->probe_cnt,
-+					  ATH12K_HTT_RC_MODE_2D_COUNT, "\n\n");
-+	}
-+
-+	stats_req->buf_len = len;
-+}
-+
- static void
- ath12k_htt_print_ast_entry_tlv(const void *tag_buf, u16 tag_len,
- 			       struct debug_htt_stats_req *stats_req)
-@@ -3462,6 +3726,9 @@ static int ath12k_dbg_htt_ext_stats_parse(struct ath12k_base *ab,
- 	case HTT_STATS_SOC_TXRX_STATS_COMMON_TAG:
- 		ath12k_htt_print_soc_txrx_stats_common_tlv(tag_buf, len, stats_req);
- 		break;
-+	case HTT_STATS_PER_RATE_STATS_TAG:
-+		ath12k_htt_print_tx_per_rate_stats_tlv(tag_buf, len, stats_req);
-+		break;
- 	case HTT_STATS_AST_ENTRY_TAG:
- 		ath12k_htt_print_ast_entry_tlv(tag_buf, len, stats_req);
- 		break;
-diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
-index 9f36d1d4508e..2a7dda6c3653 100644
---- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
-+++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
-@@ -138,6 +138,7 @@ enum ath12k_dbg_htt_ext_stats_type {
- 	ATH12K_DBG_HTT_EXT_STATS_DLPAGER_STATS		= 36,
- 	ATH12K_DBG_HTT_EXT_PHY_COUNTERS_AND_PHY_STATS	= 37,
- 	ATH12K_DBG_HTT_EXT_VDEVS_TXRX_STATS		= 38,
-+	ATH12K_DBG_HTT_EXT_PDEV_PER_STATS		= 40,
- 	ATH12K_DBG_HTT_EXT_AST_ENTRIES			= 41,
- 	ATH12K_DBG_HTT_EXT_STATS_SOC_ERROR		= 45,
- 	ATH12K_DBG_HTT_DBG_PDEV_PUNCTURE_STATS		= 46,
-@@ -206,6 +207,7 @@ enum ath12k_dbg_htt_tlv_tag {
- 	HTT_STATS_PHY_RESET_COUNTERS_TAG		= 123,
- 	HTT_STATS_PHY_RESET_STATS_TAG			= 124,
- 	HTT_STATS_SOC_TXRX_STATS_COMMON_TAG		= 125,
-+	HTT_STATS_PER_RATE_STATS_TAG			= 128,
- 	HTT_STATS_MU_PPDU_DIST_TAG			= 129,
- 	HTT_STATS_TX_PDEV_MUMIMO_GRP_STATS_TAG		= 130,
- 	HTT_STATS_AST_ENTRY_TAG				= 132,
-@@ -1264,6 +1266,69 @@ struct ath12k_htt_tx_pdev_rate_stats_be_ofdma_tlv {
- 	__le32 be_ofdma_eht_sig_mcs[ATH12K_HTT_TX_PDEV_NUM_EHT_SIG_MCS_CNTRS];
- } __packed;
- 
-+#define ATH12K_HTT_TX_PDEV_STATS_NUM_BW_CNTRS		4
-+#define ATH12K_HTT_PDEV_STAT_NUM_SPATIAL_STREAMS	8
-+#define ATH12K_HTT_TXBF_RATE_STAT_NUM_MCS_CNTRS		14
-+
-+enum ATH12K_HTT_RC_MODE {
-+	ATH12K_HTT_RC_MODE_SU_OL,
-+	ATH12K_HTT_RC_MODE_SU_BF,
-+	ATH12K_HTT_RC_MODE_MU1_INTF,
-+	ATH12K_HTT_RC_MODE_MU2_INTF,
-+	ATH12K_HTT_RC_MODE_MU3_INTF,
-+	ATH12K_HTT_RC_MODE_MU4_INTF,
-+	ATH12K_HTT_RC_MODE_MU5_INTF,
-+	ATH12K_HTT_RC_MODE_MU6_INTF,
-+	ATH12K_HTT_RC_MODE_MU7_INTF,
-+	ATH12K_HTT_RC_MODE_2D_COUNT
-+};
-+
-+enum ATH12K_HTT_TX_RX_PDEV_STATS_AX_RU_SIZE {
-+	ATH12K_HTT_TX_RX_PDEV_STATS_AX_RU_SIZE_26,
-+	ATH12K_HTT_TX_RX_PDEV_STATS_AX_RU_SIZE_52,
-+	ATH12K_HTT_TX_RX_PDEV_STATS_AX_RU_SIZE_106,
-+	ATH12K_HTT_TX_RX_PDEV_STATS_AX_RU_SIZE_242,
-+	ATH12K_HTT_TX_RX_PDEV_STATS_AX_RU_SIZE_484,
-+	ATH12K_HTT_TX_RX_PDEV_STATS_AX_RU_SIZE_996,
-+	ATH12K_HTT_TX_RX_PDEV_STATS_AX_RU_SIZE_996x2,
-+	ATH12K_HTT_TX_RX_PDEV_STATS_NUM_AX_RU_SIZE_CNTRS
-+};
-+
-+enum ath12k_htt_stats_rc_mode {
-+	ATH12K_HTT_STATS_RC_MODE_DLSU     = 0,
-+	ATH12K_HTT_STATS_RC_MODE_DLMUMIMO = 1,
-+	ATH12K_HTT_STATS_RC_MODE_DLOFDMA  = 2,
-+	ATH12K_HTT_STATS_RC_MODE_ULMUMIMO = 3,
-+	ATH12K_HTT_STATS_RC_MODE_ULOFDMA  = 4,
-+};
-+
-+enum ath12k_htt_stats_ru_type {
-+	ATH12K_HTT_STATS_RU_TYPE_INVALID,
-+	ATH12K_HTT_STATS_RU_TYPE_SINGLE_RU_ONLY,
-+	ATH12K_HTT_STATS_RU_TYPE_SINGLE_AND_MULTI_RU,
-+};
-+
-+struct ath12k_htt_tx_rate_stats {
-+	__le32 ppdus_tried;
-+	__le32 ppdus_ack_failed;
-+	__le32 mpdus_tried;
-+	__le32 mpdus_failed;
-+} __packed;
-+
-+struct ath12k_htt_tx_per_rate_stats_tlv {
-+	__le32 rc_mode;
-+	__le32 last_probed_mcs;
-+	__le32 last_probed_nss;
-+	__le32 last_probed_bw;
-+	struct ath12k_htt_tx_rate_stats per_bw[ATH12K_HTT_TX_PDEV_STATS_NUM_BW_CNTRS];
-+	struct ath12k_htt_tx_rate_stats per_nss[ATH12K_HTT_PDEV_STAT_NUM_SPATIAL_STREAMS];
-+	struct ath12k_htt_tx_rate_stats per_mcs[ATH12K_HTT_TXBF_RATE_STAT_NUM_MCS_CNTRS];
-+	struct ath12k_htt_tx_rate_stats per_bw320;
-+	__le32 probe_cnt[ATH12K_HTT_RC_MODE_2D_COUNT];
-+	__le32 ru_type;
-+	struct ath12k_htt_tx_rate_stats ru[ATH12K_HTT_TX_RX_PDEV_NUM_BE_RU_SIZE_CNTRS];
-+} __packed;
-+
- #define ATH12K_HTT_AST_PDEV_ID_INFO		GENMASK(1, 0)
- #define ATH12K_HTT_AST_VDEV_ID_INFO		GENMASK(9, 2)
- #define ATH12K_HTT_AST_NEXT_HOP_INFO		BIT(10)
+base-commit: 69eabe24843f238e79a6dbbd2b3fcc8eef39d6b8
 -- 
-2.25.1
+2.34.1
 
 
