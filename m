@@ -1,174 +1,126 @@
-Return-Path: <linux-wireless+bounces-14025-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14026-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F44C99FD28
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 02:31:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55A0E99FD60
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 02:50:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42E3C285C57
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 00:31:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB287B22406
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 00:50:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED5CA1078B;
-	Wed, 16 Oct 2024 00:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC93C156;
+	Wed, 16 Oct 2024 00:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P5yhXm81"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="OtCIbM7i"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-fw-9106.amazon.com (smtp-fw-9106.amazon.com [207.171.188.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD3CBBA42;
-	Wed, 16 Oct 2024 00:31:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C874C98
+	for <linux-wireless@vger.kernel.org>; Wed, 16 Oct 2024 00:50:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729038710; cv=none; b=k1ZiDWLfIF0tXB5zu2JI8NaJVcEkTlo9QVGZCv29KIa/oK8uBqYDhzp97qiej48WVDzQ81GM8lJmgUWgT8jzZpl+hoRJlownOYRiowVuDr5ekwlY7qYyODc7kNjl5CKdsCEdCpnQkQaxEpzwyuZBTPcg+ChlobAZPMhNH8LpuY4=
+	t=1729039811; cv=none; b=KwjiR3Oj8TIIMC5Kg9eX+4idHGprL1omvnBUc6GKP1JeLVXZnZ76DCWhpifbYhSqX4s6nxaxmytNPlux5DmNfhfmrWv6oO44zZi0fUQvCon/qfzUbm22804x7AoCjPkVpDt2KOgrHmPEDWqZ02BwnaMSroOEd3U+aDFItJ5Fp+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729038710; c=relaxed/simple;
-	bh=h/0LiuTcJJi5xVByk4esB4Kk1MBKkOZ8H5VO5I5yi9Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BnHR4iKLl2BgzosGGmkl1YTHuaRVcWFFHM9Vimlw74vMLab1yCRrJiHKAIKpH8rQhFVoksocQRN+Hg3Hy1DCquU4jI63CPrm8PWcvXWFnMNRsstJDI3ewh4bImGaIAeJeUGcgvyIHHZPmPY43a3y2De95EgMqUOJmT0BWXoRXY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P5yhXm81; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9391AC4CEC6;
-	Wed, 16 Oct 2024 00:31:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729038710;
-	bh=h/0LiuTcJJi5xVByk4esB4Kk1MBKkOZ8H5VO5I5yi9Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=P5yhXm81qTTez88jN3ABjVLKMZuhPgYT1WznUQP9fytzhr1WpV2EacUy2W/ntDLvF
-	 XSOE023SBjSuax5wOd+cLy31PTXWaSkDqE9ueABCxOyTUe2uoySVkpbAqyOTwLuSKw
-	 Ljj6tXz6Ut0+R/sTJhBtdN3GSe5f1poSnJhXTm1kAEay2jPRX0PSpPBEEuhet4mZXo
-	 d3ZppAXEUVAF6DEVZvSuW81Ube0ERuxUbtFfLJPwfhMn9Jqi3QVpogi/RRvNcnegxZ
-	 woQCnwII3KT91mcB+PNBOFE/M1TvstkiqEnPEhBwjPlQfn4pmhHcvzEm/XlSjQ9Yr/
-	 4UaGppmzvGUdw==
-Date: Tue, 15 Oct 2024 18:31:47 -0600
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	linux-hardening@vger.kernel.org, Kees Cook <kees@kernel.org>
-Subject: [PATCH 3/5][next] uapi: wireless: Avoid
- -Wflex-array-member-not-at-end warnings
-Message-ID: <d9e9d9c1ade33701172b069e7dea728b063b00ee.1729037131.git.gustavoars@kernel.org>
-References: <cover.1729037131.git.gustavoars@kernel.org>
+	s=arc-20240116; t=1729039811; c=relaxed/simple;
+	bh=cHL8WzzDKNEPEYnuq4BafCchccjxxp6NtEVi9Kwj05w=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MncOxZYsYSp0uC7BrP4rom2zznWspu5m1rKb0YQHGfBBfXhUDIvGdLw87xbANtt5DFJ15F8uR6wwIr2XVY5IFD9dDE0Ms7sFdsVEcKa+WrM8Xnh+qiMM2kQAbzBAvWAFGRDU2hAXE3PqSlHAGt2LwsXb/eXOyAe1ImaHofhP8Ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=OtCIbM7i; arc=none smtp.client-ip=207.171.188.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1729039810; x=1760575810;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ir6jjsOg5lrec8/lftmnTe9kqY1Fyi30/eseCpzwCQU=;
+  b=OtCIbM7iPRN1VCRAsvALUIOkQHAvmNN2DLT46xqpWq8UPCvaoQN5luyM
+   NZ9ThEZ85BiLTbBwNRpbC+kiCydRg0x94d+bFJDrOp6haWtr5vImXk5fC
+   xi0GvM5rZqwfbFK7F1WDILHnE9iiYG89ajggUcWEOUaKdF3TYHmCqzEJz
+   8=;
+X-IronPort-AV: E=Sophos;i="6.11,206,1725321600"; 
+   d="scan'208";a="766907367"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-9106.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2024 00:50:04 +0000
+Received: from EX19MTAUWB002.ant.amazon.com [10.0.7.35:28126]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.59.23:2525] with esmtp (Farcaster)
+ id 7ed5a2d0-9c4c-407a-a458-7547516dde20; Wed, 16 Oct 2024 00:50:02 +0000 (UTC)
+X-Farcaster-Flow-ID: 7ed5a2d0-9c4c-407a-a458-7547516dde20
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Wed, 16 Oct 2024 00:50:01 +0000
+Received: from 6c7e67c6786f.amazon.com (10.106.100.36) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
+ Wed, 16 Oct 2024 00:49:59 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: <johannes@sipsolutions.net>
+CC: <alexandre.ferrieux@gmail.com>, <kuni1840@gmail.com>, <kuniyu@amazon.com>,
+	<linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v1 wl-next 1/3] wifi: wext: Move wext_nlevents to net->gen[].
+Date: Tue, 15 Oct 2024 17:49:56 -0700
+Message-ID: <20241016004956.74702-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <2d4bc83dffef3b773312aa08d55bb310f2dcead9.camel@sipsolutions.net>
+References: <2d4bc83dffef3b773312aa08d55bb310f2dcead9.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1729037131.git.gustavoars@kernel.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D041UWA003.ant.amazon.com (10.13.139.105) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
--Wflex-array-member-not-at-end was introduced in GCC-14, and we are
-getting ready to enable it, globally.
+From: Johannes Berg <johannes@sipsolutions.net>
+Date: Tue, 15 Oct 2024 08:36:24 +0200
+> On Mon, 2024-10-14 at 13:55 -0700, Kuniyuki Iwashima wrote:
+> > CONFIG_WEXT_CORE cannot be built as a module
+> 
+> Isn't that precisely an argument for _not_ using net->gen[] with all the
+> additional dynamic allocations that implies?
 
-Address the following warnings by changing the type of the middle struct
-members in various composite structs, which are currently causing trouble,
-from `struct sockaddr` to `struct sockaddr_legacy`. Note that the latter
-struct doesn't contain a flexible-array member.
+Exactly...
 
-include/uapi/linux/wireless.h:751:33: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-include/uapi/linux/wireless.h:776:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-include/uapi/linux/wireless.h:833:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-include/uapi/linux/wireless.h:857:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-include/uapi/linux/wireless.h:864:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+Recently I was thinking most of the structs in struct net (except for
+first-class citizens like ipv4/ipv6) should use net->gen[] given the
+distro kernel enables most configs.
 
-No binary differences are present after these changes.
+But yes, WEXT is always built-in.
 
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
----
- include/uapi/linux/wireless.h | 50 +++++++++++++++++------------------
- 1 file changed, 25 insertions(+), 25 deletions(-)
 
-diff --git a/include/uapi/linux/wireless.h b/include/uapi/linux/wireless.h
-index 3c2ad5fae17f..b29ab42fa2e2 100644
---- a/include/uapi/linux/wireless.h
-+++ b/include/uapi/linux/wireless.h
-@@ -748,7 +748,7 @@ struct iw_missed {
-  *	Quality range (for spy threshold)
-  */
- struct iw_thrspy {
--	struct sockaddr		addr;		/* Source address (hw/mac) */
-+	struct sockaddr_legacy	addr;		/* Source address (hw/mac) */
- 	struct iw_quality	qual;		/* Quality of the link */
- 	struct iw_quality	low;		/* Low threshold */
- 	struct iw_quality	high;		/* High threshold */
-@@ -766,15 +766,15 @@ struct iw_thrspy {
-  *	current BSS if the driver is in Managed mode and associated with an AP.
-  */
- struct iw_scan_req {
--	__u8		scan_type; /* IW_SCAN_TYPE_{ACTIVE,PASSIVE} */
--	__u8		essid_len;
--	__u8		num_channels; /* num entries in channel_list;
--				       * 0 = scan all allowed channels */
--	__u8		flags; /* reserved as padding; use zero, this may
--				* be used in the future for adding flags
--				* to request different scan behavior */
--	struct sockaddr	bssid; /* ff:ff:ff:ff:ff:ff for broadcast BSSID or
--				* individual address of a specific BSS */
-+	__u8			scan_type; /* IW_SCAN_TYPE_{ACTIVE,PASSIVE} */
-+	__u8			essid_len;
-+	__u8			num_channels; /* num entries in channel_list;
-+					       * 0 = scan all allowed channels */
-+	__u8			flags; /* reserved as padding; use zero, this may
-+					* be used in the future for adding flags
-+					* to request different scan behavior */
-+	struct sockaddr_legacy	bssid; /* ff:ff:ff:ff:ff:ff for broadcast BSSID or
-+					* individual address of a specific BSS */
- 
- 	/*
- 	 * Use this ESSID if IW_SCAN_THIS_ESSID flag is used instead of using
-@@ -827,15 +827,15 @@ struct iw_scan_req {
-  *	debugging/testing.
-  */
- struct iw_encode_ext {
--	__u32		ext_flags; /* IW_ENCODE_EXT_* */
--	__u8		tx_seq[IW_ENCODE_SEQ_MAX_SIZE]; /* LSB first */
--	__u8		rx_seq[IW_ENCODE_SEQ_MAX_SIZE]; /* LSB first */
--	struct sockaddr	addr; /* ff:ff:ff:ff:ff:ff for broadcast/multicast
--			       * (group) keys or unicast address for
--			       * individual keys */
--	__u16		alg; /* IW_ENCODE_ALG_* */
--	__u16		key_len;
--	__u8		key[];
-+	__u32			ext_flags; /* IW_ENCODE_EXT_* */
-+	__u8			tx_seq[IW_ENCODE_SEQ_MAX_SIZE]; /* LSB first */
-+	__u8			rx_seq[IW_ENCODE_SEQ_MAX_SIZE]; /* LSB first */
-+	struct sockaddr_legacy	addr; /* ff:ff:ff:ff:ff:ff for broadcast/multicast
-+				       * (group) keys or unicast address for
-+				       * individual keys */
-+	__u16			alg; /* IW_ENCODE_ALG_* */
-+	__u16			key_len;
-+	__u8			key[];
- };
- 
- /* SIOCSIWMLME data */
-@@ -853,16 +853,16 @@ struct iw_mlme {
- #define IW_PMKID_LEN	16
- 
- struct iw_pmksa {
--	__u32		cmd; /* IW_PMKSA_* */
--	struct sockaddr	bssid;
--	__u8		pmkid[IW_PMKID_LEN];
-+	__u32			cmd; /* IW_PMKSA_* */
-+	struct sockaddr_legacy	bssid;
-+	__u8			pmkid[IW_PMKID_LEN];
- };
- 
- /* IWEVMICHAELMICFAILURE data */
- struct iw_michaelmicfailure {
--	__u32		flags;
--	struct sockaddr	src_addr;
--	__u8		tsc[IW_ENCODE_SEQ_MAX_SIZE]; /* LSB first */
-+	__u32			flags;
-+	struct sockaddr_legacy	src_addr;
-+	__u8			tsc[IW_ENCODE_SEQ_MAX_SIZE]; /* LSB first */
- };
- 
- /* IWEVPMKIDCAND data */
--- 
-2.34.1
+> I'm not really against
+> doing this, but it does make the third patch more complex, requiring the
+> new wext_net->net pointer,
 
+Right, FWIW, before posting this patch, I checked 5 structs have
+a similar pointer.
+
+rdma_dev_net : possible_net_t net
+pktgen_net : struct net
+netns_ipvs : struct net
+bond_net : struct net
+afs_net : struct net
+
+
+> and given allocations (rounded up) will take
+> more space - for something always present - than just going with the
+> existing scheme?
+> 
+> What's the reason to use net->gen[]?
+
+Probably because wext_nlevents was just before a cacheline
+on my setup ?
+
+$ pahole -EC net vmlinux | grep net_generic -C 30
+...
+	} wext_nlevents; /*  2536    24 */
+	/* --- cacheline 40 boundary (2560 bytes) --- */
+	struct net_generic *       gen;                                                  /*  2560     8 */
 
