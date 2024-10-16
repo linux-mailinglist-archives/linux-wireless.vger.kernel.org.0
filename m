@@ -1,91 +1,140 @@
-Return-Path: <linux-wireless+bounces-14109-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14110-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A96A49A15AF
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 00:11:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D692E9A165F
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 01:59:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32EAAB24943
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 22:11:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13B6A1C20D63
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 23:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8110C1D3573;
-	Wed, 16 Oct 2024 22:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB091D54CD;
+	Wed, 16 Oct 2024 23:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="FHaAHRL3"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="mIu6f019"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-6001.amazon.com (smtp-fw-6001.amazon.com [52.95.48.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5471D356E
-	for <linux-wireless@vger.kernel.org>; Wed, 16 Oct 2024 22:11:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E371D5168;
+	Wed, 16 Oct 2024 23:58:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.48.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729116662; cv=none; b=hkInBZaznOKCPVcwfHFk1yNTrnFGOemxRWdL1XqI/k/SbeuD0ANgypvgVvObg2iq2VKt7oNKZSjLfrOnLi14S/4b3L8GpSvwM5ARjlIa+UVkRkgfldE6QfhB9OaOXHqHoou/AqYaSboiPbqwN8EK4Rvpq9qjg544rXUbk14qe90=
+	t=1729123141; cv=none; b=WFIHznSWawx05PmQNuVBLr83jIcteTEkNOy+O0G41MSOjb9GmC5zj8JKjln90+g21FCZZ2lPqQE6VzB4M6fowlsGONTFfHVqGfTOIMAosIQlxxHtkvCBxE+3xBRX/pcEK42ZvBu2lJJ+Gcs+9wdXl2B6ZeJz5Yd9a1HExJMkKlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729116662; c=relaxed/simple;
-	bh=LOLVIRp1+lxhHJfPTspYiH0WrKuj143j3MUfYY6Ji1M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Erw0VZEfuEoF6PvqcWPSrR6eezaN2lWlUcg1Ut5ywc1oMXpLH5FvlQn93itnkZqfKwuayjCHi+kbvxID+N5GWz38daC0hHnr3Ras8G9AV2yY7Fqh5B8dgY4gDu7EXKRyPEHnAO7Ow9h0uqaIh0ZRnnjZMFLo+1TeaC3PHttbH/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=FHaAHRL3; arc=none smtp.client-ip=148.163.129.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id AA526340011;
-	Wed, 16 Oct 2024 22:10:52 +0000 (UTC)
-Received: from [192.168.101.245] (unknown [50.251.239.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id D9E4B13C2B0;
-	Wed, 16 Oct 2024 15:10:50 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com D9E4B13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1729116651;
-	bh=LOLVIRp1+lxhHJfPTspYiH0WrKuj143j3MUfYY6Ji1M=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FHaAHRL3Hmi1ZGqi4X0GEXGAYINjxDz1q97Mccubl39/w5dPdCQWnnzgyGA3mdenH
-	 sgEGbbUV0O9iwHc+CXbud8yJvFo8i7wYkJMqZqBxFf4SLK5Nj0EfMtMeWWKYOT7DG/
-	 MtdpFzgYNx88td6iePNoDWIFgyMsTx7F+sEDAnIQ=
-Message-ID: <f2f00f4e-0a57-4a2a-933e-4497353f857c@candelatech.com>
-Date: Wed, 16 Oct 2024 15:10:50 -0700
+	s=arc-20240116; t=1729123141; c=relaxed/simple;
+	bh=iZqdpAIYCAdpsvh2o5vIMQL91GsNm3g5JEE8xPnTxbM=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hM/ZPdn2m0QWKFIeieBFvEvKTkzSbWkanoOZslBaPqOsU+TsAqKrICWKkka5reJuA5tEza7o7g/UISvPuvGIjVDGmjaXWFDeVqTqkZho8n9XDi+Vc3nhOXS2EuxDS13YmEXyX/Ua7MOE1QWMtMLkuC2CKLBLs+jLgJdI5BeopuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=mIu6f019; arc=none smtp.client-ip=52.95.48.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1729123140; x=1760659140;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=0Id/l01nSeayy7Ttal/hLOGBbUMzpZ1OImbzEKyUIL0=;
+  b=mIu6f019q+E140tQ1hWBwNhigOC4qAmK1SH4XDpJNhLMGh/6frrOGCC0
+   3bOWcz7kCxoihdVZJ4W0mF2cUEXTnESpl4Z5DItB36/t8yQdKrDfk95sT
+   8IULdCNl2ttwUvS8RjCoDqmHT95ZzRE7wxtgMA1aixRSbg6ZPHh8+dizA
+   0=;
+X-IronPort-AV: E=Sophos;i="6.11,209,1725321600"; 
+   d="scan'208";a="432097324"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.2])
+  by smtp-border-fw-6001.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2024 23:58:56 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [10.0.7.35:15229]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.5.202:2525] with esmtp (Farcaster)
+ id f4176c88-2464-4500-b1cd-73ce946b38b0; Wed, 16 Oct 2024 23:58:56 +0000 (UTC)
+X-Farcaster-Flow-ID: f4176c88-2464-4500-b1cd-73ce946b38b0
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Wed, 16 Oct 2024 23:58:55 +0000
+Received: from 6c7e67c6786f.amazon.com (10.106.100.12) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
+ Wed, 16 Oct 2024 23:58:53 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: <johannes@sipsolutions.net>
+CC: <alexandre.ferrieux@gmail.com>, <kuni1840@gmail.com>, <kuniyu@amazon.com>,
+	<linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>
+Subject: Re: [PATCH v1 wl-next 1/3] wifi: wext: Move wext_nlevents to net->gen[].
+Date: Wed, 16 Oct 2024 16:58:50 -0700
+Message-ID: <20241016235850.29495-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <f677361da9e1e4bb032e62301255ab705252e016.camel@sipsolutions.net>
+References: <f677361da9e1e4bb032e62301255ab705252e016.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/20] wifi: iwlwifi: mvm: handle TPE advertised by AP
-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: linux-wireless@vger.kernel.org, Johannes Berg <johannes.berg@intel.com>,
- Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
- Miri Korenblit <miriam.rachel.korenblit@intel.com>, johannes@sipsolutions.net
-References: <20240527160615.1549563-1-miriam.rachel.korenblit@intel.com>
- <20240527190228.32f1e2e1447c.I58ac91c38585362aa42bb4a8a59c7d88e67bc40b@changeid>
- <ea1eeb13-c568-4381-812a-dec4246a440e@candelatech.com>
- <57d28bcf-8f2b-4755-bf2a-7c9d316e6823@leemhuis.info>
-Content-Language: en-US
-From: Rory Little <rory@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <57d28bcf-8f2b-4755-bf2a-7c9d316e6823@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1729116653-C2LRLwij_tBL
-X-MDID-O:
- us5;ut7;1729116653;C2LRLwij_tBL;<rory@candelatech.com>;9afb24c90898fa38a1d775b75cf58c9a
-X-PPE-TRUSTED: V=1;DIR=OUT;
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D031UWC004.ant.amazon.com (10.13.139.246) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-On 9/2/24 05:59, Linux regression tracking (Thorsten Leemhuis) wrote:
-> Rory Little: was this ever resolved? I noticed the patch you send to
-> which Johannes replied to stating a similar fix is already in -rc1. But
-> you reported this a few days after -rc1 was out, which makes me wonder
-> if this really is resolved.
+From: Johannes Berg <johannes@sipsolutions.net>
+Date: Wed, 16 Oct 2024 10:56:44 +0200
+> +netdev, I think we're starting to discuss more general things :)
+> 
+> On Tue, 2024-10-15 at 17:49 -0700, Kuniyuki Iwashima wrote:
+> > From: Johannes Berg <johannes@sipsolutions.net>
+> > Date: Tue, 15 Oct 2024 08:36:24 +0200
+> > > On Mon, 2024-10-14 at 13:55 -0700, Kuniyuki Iwashima wrote:
+> > > > CONFIG_WEXT_CORE cannot be built as a module
+> > > 
+> > > Isn't that precisely an argument for _not_ using net->gen[] with all the
+> > > additional dynamic allocations that implies?
+> > 
+> > Exactly...
+> > 
+> > Recently I was thinking most of the structs in struct net (except for
+> > first-class citizens like ipv4/ipv6) should use net->gen[] given the
+> > distro kernel enables most configs.
+> 
+> Wait I'm confused, to me it seems you're contradicting yourself? :)
 
-It was resolved. We independently pulled in this patch series without 
-the earlier fix, which caused an issue only in our forked kernel, and 
-the confusion on our end. My mistake for reporting the issue here.
+Sorry, I meant the above is for module :)
 
-- Rory
+> 
+> If we agree that making it use net->gen[] is more overhead since it
+> requires additional allocations (which necessarily require more memory
+> due to alignment etc., but even without that because now you needed
+> wext_net->net too) ...
+> 
+> Then why do you think more should use net->gen[] if it's built-in?
+> 
+> > But yes, WEXT is always built-in.
+> 
+> I can see an argument for things that aren't always present, obviously,
+> like bonding and pktgen, but I don't see much of an argument for things
+> like wext that are either present or not?
+> 
+> > Probably because wext_nlevents was just before a cacheline
+> > on my setup ?
+> > 
+> > $ pahole -EC net vmlinux | grep net_generic -C 30
+> > ...
+> > 	} wext_nlevents; /*  2536    24 */
+> > 	/* --- cacheline 40 boundary (2560 bytes) --- */
+> > 	struct net_generic *       gen;                                                  /*  2560     8 */
+> 
+> I'd argue that doesn't really mean it makes sense to pull it into
+> net->gen (where it gets accessed via two indirect pointers)?
+> 
+> That's an argument for reordering things there perhaps, but in struct
+> net that's probably not too much of an issue unless it shares a
+> cacheline with something that's used all the time?
+
+Yes, avoiding false shareing would be the only reason to use ->gen[]
+for builtin.
+
+I'll drop the patch 1 in v2.
+
+Btw, why WEXT cannot be module ?
 
