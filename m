@@ -1,95 +1,57 @@
-Return-Path: <linux-wireless+bounces-14065-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14066-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85A299A05AA
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 11:37:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C87609A05CB
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 11:41:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AECF51C260DD
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 09:37:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C08DF1C208B7
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 09:41:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A47F205E34;
-	Wed, 16 Oct 2024 09:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14BBC2038A4;
+	Wed, 16 Oct 2024 09:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TKOX9/0G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qy7jxljE"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F6F205E05;
-	Wed, 16 Oct 2024 09:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4DD61F8199
+	for <linux-wireless@vger.kernel.org>; Wed, 16 Oct 2024 09:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729071432; cv=none; b=tMUv6aUC8PIdhk+1ZEkqzFNMbxjkAYK92e8rEkrxRAsAh8pqGy3tiPGc92oHPhDrmtZGo/urrewcAA5wSvD5wVFvFV8LVSwilyITZ2WJkYSLp7GwkgNDexnDllcOOOqGqQK9dQ3AR0NqQ35lnnb/P7O78WHtgmtmI0Z+fMN6Y1w=
+	t=1729071672; cv=none; b=mqQsYMIX9VpZJPLgYgvHM+j04ZBwrkazb1SsOtHAT+Um1RQ1s09qH5/REET5C3rE49oEjSc3ZjyuwlwAbSfZEwCzWYmKJkUUGuUPF1RfYOmzSfXPgIuD11Lmlyaxu80KYaASGhhyLIvz4cE/b7CkyEjMkA6Iiyhaj69dO4m8cI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729071432; c=relaxed/simple;
-	bh=3qs9RCIcBMaiRaaQowBtUAYRplzqstMrihAHPPNLmDY=;
+	s=arc-20240116; t=1729071672; c=relaxed/simple;
+	bh=TLsTaqD/pm+PCLhsg3ChSBa9IAbdPESXVq9kKw9fz+g=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=Cnc8wtkcZW4olhmy2rYsWJnD/QgVO9gh2vUVBSkOn67kPDmY099bhEA8vV66VwO97rNkYvxIM3kXWhNUrdu/pbB7gXJTcsJqQdGPIPjm4g3/vevlGgQ40ytb1ARV34FsVdK9InA5uAqNp79NI27YxaJ6uee+i65AQPJYPQSmYKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TKOX9/0G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A83DEC4CECF;
-	Wed, 16 Oct 2024 09:37:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=usiAa/kjM+Bd/AfM7Y4sbOII9CuF7pbGuu+vlph88Unmd0fEfV2AJHGYycaZSnjkBAxr4mvyORpqKBoLopW3l8Em1KzaLulnwwwIj5jgk+a5wVP5vq0E2SnQmTy9ZH8iqiaidia0bRKWOZR+nLmnzAocWLzviF6bF/bLveK8rU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qy7jxljE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1A71C4CEC5;
+	Wed, 16 Oct 2024 09:41:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729071431;
-	bh=3qs9RCIcBMaiRaaQowBtUAYRplzqstMrihAHPPNLmDY=;
+	s=k20201202; t=1729071671;
+	bh=TLsTaqD/pm+PCLhsg3ChSBa9IAbdPESXVq9kKw9fz+g=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=TKOX9/0GP1+lza5sQLTeaGorlh3MWnyZcXGq05D/f/GBd2opmS8ChUbAgJdPb/CZ1
-	 yn5rFWuoHPLLh+d3Tn7faqhBzYHFIRUNCjskSa+aHE7Hk+eHTbbOc5TCSh9q9iJ3uy
-	 ecD+a1d8UI2TkI22bqwo5dXLynEXWBDFQZqY5PiV0eO3UFpqqqMhVJV65YiRQTDMNj
-	 WP2usCFu0zlWexw7EVaqgNj9e/FFPneDaR8h9YjjAPmN4hPc1uAoQejPiORMJPvOU5
-	 CWaLZFgGsjhgxS13aQ+7ta5bJuOGaob/3dXOYCK3/wDOU6szpcWpgz4jJlrkWESsRr
-	 s45FfeYSH4aKw==
+	b=Qy7jxljEvacZvZIZ4yqS3R6e+JOFGMQJwwgmMVgdwdkjcEbtqkywZO/gP3V8m87hl
+	 p+RIfYJRNczBTsFCYgHsdzabChSdz/6MbYqHuHVxHR6uhIhru6jv0B5E+uvV09i7Ns
+	 x291y9JfPX9FP//Wu8MICYooqv9d+XBRPk4VjgR/WExp8d2BNGULvMVEJlKz8FMBV0
+	 tNVphvh4H2DkSFWferIH4PRy7jiMi0y5PQk9Xyw0fTkzRxxpA+V+tEz/f389g/iTKu
+	 crLt1aP9g6vCmsgFBy3VZWqeD+R865snIMF09FYg7sWDp/p2t36bGHo3egGyeeI+Fu
+	 uofcBaoakaWYw==
 From: Kalle Valo <kvalo@kernel.org>
-To: Philipp Stanner <pstanner@redhat.com>
-Cc: Damien Le Moal <dlemoal@kernel.org>,  Niklas Cassel <cassel@kernel.org>,
-  Sergey Shtylyov <s.shtylyov@omp.ru>,  Basavaraj Natikar
- <basavaraj.natikar@amd.com>,  Jiri Kosina <jikos@kernel.org>,  Benjamin
- Tissoires <bentiss@kernel.org>,  Arnd Bergmann <arnd@arndb.de>,  Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>,  Alex Dubov <oakad@yahoo.com>,
-  Sudarsana Kalluru <skalluru@marvell.com>,  Manish Chopra
- <manishc@marvell.com>,  "David S. Miller" <davem@davemloft.net>,  Eric
- Dumazet <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo
- Abeni <pabeni@redhat.com>,  Rasesh Mody <rmody@marvell.com>,
-  GR-Linux-NIC-Dev@marvell.com,  Igor Mitsyanko <imitsyanko@quantenna.com>,
-  Sergey Matyukevich <geomatsi@gmail.com>,  Sanjay R Mehta
- <sanju.mehta@amd.com>,  Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,  Jon
- Mason <jdmason@kudzu.us>,  Dave Jiang <dave.jiang@intel.com>,  Allen Hubbe
- <allenbh@gmail.com>,  Bjorn Helgaas <bhelgaas@google.com>,  Alex
- Williamson <alex.williamson@redhat.com>,  Juergen Gross <jgross@suse.com>,
-  Stefano Stabellini <sstabellini@kernel.org>,  Oleksandr Tyshchenko
- <oleksandr_tyshchenko@epam.com>,  Jaroslav Kysela <perex@perex.cz>,
-  Takashi Iwai <tiwai@suse.com>,  Chen Ni <nichen@iscas.ac.cn>,  Mario
- Limonciello <mario.limonciello@amd.com>,  Ricky Wu <ricky_wu@realtek.com>,
-  Al Viro <viro@zeniv.linux.org.uk>,  Breno Leitao <leitao@debian.org>,
-  Kevin Tian <kevin.tian@intel.com>,  Thomas Gleixner <tglx@linutronix.de>,
-  Ilpo =?utf-8?Q?J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,  Andy
- Shevchenko
- <andriy.shevchenko@linux.intel.com>,  Mostafa Saleh <smostafa@google.com>,
-  Jason Gunthorpe <jgg@ziepe.ca>,  Yi Liu <yi.l.liu@intel.com>,  Christian
- Brauner <brauner@kernel.org>,  Ankit Agrawal <ankita@nvidia.com>,  Eric
- Auger <eric.auger@redhat.com>,  Reinette Chatre
- <reinette.chatre@intel.com>,  Ye Bin <yebin10@huawei.com>,  Marek
- =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
-  Pierre-Louis
- Bossart <pierre-louis.bossart@linux.dev>,  Peter Ujfalusi
- <peter.ujfalusi@linux.intel.com>,  Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>,  Kai Vehmanen
- <kai.vehmanen@linux.intel.com>,  Rui Salvaterra <rsalvaterra@gmail.com>,
-  linux-ide@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  linux-input@vger.kernel.org,  netdev@vger.kernel.org,
-  linux-wireless@vger.kernel.org,  ntb@lists.linux.dev,
-  linux-pci@vger.kernel.org,  kvm@vger.kernel.org,
-  xen-devel@lists.xenproject.org,  linux-sound@vger.kernel.org
-Subject: Re: [PATCH 10/13] wifi: qtnfmac: use always-managed version of
- pcim_intx()
-References: <20241015185124.64726-1-pstanner@redhat.com>
-	<20241015185124.64726-11-pstanner@redhat.com>
-Date: Wed, 16 Oct 2024 12:36:58 +0300
-In-Reply-To: <20241015185124.64726-11-pstanner@redhat.com> (Philipp Stanner's
-	message of "Tue, 15 Oct 2024 20:51:20 +0200")
-Message-ID: <87y12o4ced.fsf@kernel.org>
+To: Felix Fietkau <nbd@nbd.name>
+Cc: linux-wireless@vger.kernel.org,  johannes@sipsolutions.net
+Subject: Re: [PATCH wireless] wifi: mac80211: skip non-uploaded keys in
+ ieee80211_iter_keys
+References: <20241006153630.87885-1-nbd@nbd.name> <87ed4h6861.fsf@kernel.org>
+	<cd453040-aac3-4b0d-bdba-89881be5982c@nbd.name>
+Date: Wed, 16 Oct 2024 12:41:08 +0300
+In-Reply-To: <cd453040-aac3-4b0d-bdba-89881be5982c@nbd.name> (Felix Fietkau's
+	message of "Tue, 15 Oct 2024 11:42:26 +0200")
+Message-ID: <87ttdc4c7f.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -99,22 +61,27 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Philipp Stanner <pstanner@redhat.com> writes:
+Felix Fietkau <nbd@nbd.name> writes:
 
-> pci_intx() is a hybrid function which can sometimes be managed through
-> devres. To remove this hybrid nature from pci_intx(), it is necessary to
-> port users to either an always-managed or a never-managed version.
+> On 15.10.24 11:13, Kalle Valo wrote:
+>> Felix Fietkau <nbd@nbd.name> writes:
+>> 
+>>> Sync iterator conditions with ieee80211_iter_keys_rcu.
+>>>
+>>> Fixes: 830af02f24fb ("mac80211: allow driver to iterate keys")
+>>> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+>> I see this is already applied but why we need this? Please include a
+>> description of the bug in the commit message. That's too late now but if
+>> you provide one via email I can include it in the pull request.
 >
-> qtnfmac enables its PCI-Device with pcim_enable_device(). Thus, it needs
-> the always-managed version.
->
-> Replace pci_intx() with pcim_intx().
->
-> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+> I needed the key iterator for not yet published mt7996 work, and while
+> reading the code found the inconsistency, that (unlike the RCU
+> version) it could pass keys that weren't added to the driver yet.
+> I didn't see any specific driver bugs, but the mac80211 code didn't
+> make sense to me during review, so I fixed it.
 
-Feel free to take this via the PCI tree:
-
-Acked-by: Kalle Valo <kvalo@kernel.org>
+Ah, if this is just a theoretical fix I don't mention anything about
+this in the pull request. Thanks.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
