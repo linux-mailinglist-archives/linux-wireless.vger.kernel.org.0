@@ -1,126 +1,171 @@
-Return-Path: <linux-wireless+bounces-14028-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14029-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE40999FE67
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 03:45:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D34299FF89
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 05:31:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82A431F24F87
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 01:45:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFFFA28687D
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 03:31:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6911DDC9;
-	Wed, 16 Oct 2024 01:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A34816D9C2;
+	Wed, 16 Oct 2024 03:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="gLmHhN2Z"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="BQDhvSIt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp-fw-9106.amazon.com (smtp-fw-9106.amazon.com [207.171.188.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A74171A7
-	for <linux-wireless@vger.kernel.org>; Wed, 16 Oct 2024 01:45:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169E3157A41;
+	Wed, 16 Oct 2024 03:31:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729043145; cv=none; b=hkD7aEbfCZm4MXIWEuXW+b8GnM96mYJtONP8a5mEZEQ0USQFKODsk3IFjqxmZEtcOAGtSsa0vYxGO0tAXk0TddC943Vl4CMg4Mn/J7lO5wHLrtBD4WLs0GvP23sCbKl/0vosB+RuWtpzOlLfiQNeLXktgvFs86+LSj/XmTEP0us=
+	t=1729049466; cv=none; b=Z6AbgZJ/PhORZG6ng8n6svJW1eUoxh1rgV4UfQKrHUmr7cRMI1wGKIv5vU1jSQoznbx/3SpfjO8soKya1nQqh2DqILIjJwkUnozG0+q618OUc2f74HQAn8o4p6oBDhGG4Ev7vEywpc5vWaT7EknB28LTghEKy5s6prh61uJsPvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729043145; c=relaxed/simple;
-	bh=qzOdsnMD/pLbwqQXYSplYLgkDIH401A/ZYUMSa0Zk2k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=FNVLAPCMkmxvVWzDZ0uDdeG3g07Y1Ab2vM988uD2SBkPoMFApwS+rA1PEQ+e0M0owb+13fkeN1LNhKRS//nNSAs+F6LkcE3ez+aDk2CVqGk9CaxTZGMa6G51GULOV2EdPbC0ONCM0Wda2rCkIdC7Qbyq9DYro/zxrqLSl9e6hp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=gLmHhN2Z; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49FHc2tJ007494;
-	Wed, 16 Oct 2024 01:45:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	6eB3P0RUzugGcgI9oeHPWddAzZ0JTq97gXXPmH3Mkdk=; b=gLmHhN2ZB5YbNC2P
-	wObpGGpS1H/RnHEkF8fwEy+NmfLrm5KvKnknemKH0frKevcb/Bz70ohLjkKqvk4t
-	1C7UCdtOn9bW2ahjwOXHiwpFtMrNYELwjVXjgFJ3kwgpVpdTDxoumJG/C9FkW9cl
-	K23tj1gMErArxv6tFqBtV2p+2g61art5gJYhRo4+K9Wn58XbOROb0CeoWPTav/mU
-	Knr8HoTEpvuJer34Vy8MQuVIDO8UC8tcMEE6Vl/tXj2I3PN5xHwVNa7yipvSFBo8
-	kkaJ7+xsUl+tQ/oYlGmL1LGBb63yXeog2heWqcO6a7J7ehuB7mLG10wqPWzzQDeL
-	EXxmMA==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 429mh52w9a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Oct 2024 01:45:39 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49G1jcYg004993
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Oct 2024 01:45:38 GMT
-Received: from [10.48.241.64] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 15 Oct
- 2024 18:45:38 -0700
-Message-ID: <7ca286cc-5ee5-4fa3-af86-05b381dacd58@quicinc.com>
-Date: Tue, 15 Oct 2024 18:45:37 -0700
+	s=arc-20240116; t=1729049466; c=relaxed/simple;
+	bh=1RDWVfjt8CeM/x84cXRzvf+PJhV9JF8TakbxdEtOjaE=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CypFqG11Lyitr81pcvdq448H2VvJhgMUskyOTcLiinlGKtbd58tb6U83vuqFSyjUttWKKO1h2gefbmySyAbgcEulrQGcdOhBKQPA4IZ25ptWX26/QYdYqKFwpnObqL8mYcP1EHjesKUnyMjQgYiUX+4r1WgJ4Qw28ShFyQF4jpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=BQDhvSIt; arc=none smtp.client-ip=207.171.188.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1729049465; x=1760585465;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=R0CkBNDYdSm6bkTWLi6IG3qXSuk5UAVOE/HPqWHE6og=;
+  b=BQDhvSIt0P9SlewVzuRBf/3bNc7V6Uull7wSxcCse6kL8nruH/eXCgvh
+   FzUst9V8xTcMgKLF+3QSFPywAR3j4nFKv7S64yjl3TwkakbyckUUz2GOS
+   wST7iZ8fsZFW7tBQocYfaBpfjOH9qAp20Zy14c4qndVDQBlapZA1Q5Amk
+   Y=;
+X-IronPort-AV: E=Sophos;i="6.11,206,1725321600"; 
+   d="scan'208";a="766935707"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-9106.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2024 03:30:59 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [10.0.7.35:34151]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.59.23:2525] with esmtp (Farcaster)
+ id 7a6e1911-5029-441d-8ce8-1b14b5d8e96d; Wed, 16 Oct 2024 03:30:57 +0000 (UTC)
+X-Farcaster-Flow-ID: 7a6e1911-5029-441d-8ce8-1b14b5d8e96d
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
+ Wed, 16 Oct 2024 03:30:57 +0000
+Received: from 6c7e67c6786f.amazon.com (10.106.100.36) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
+ Wed, 16 Oct 2024 03:30:53 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: <gustavoars@kernel.org>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <dsahern@kernel.org>,
+	<edumazet@google.com>, <johannes@sipsolutions.net>, <kees@kernel.org>,
+	<kuba@kernel.org>, <linux-hardening@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <pabeni@redhat.com>, <kuniyu@amazon.com>
+Subject: Re: [PATCH 1/5][next] net: dev: Introduce struct sockaddr_legacy
+Date: Tue, 15 Oct 2024 20:30:42 -0700
+Message-ID: <20241016033042.89280-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <1c12601bea3e9c18da6adc106bfcf5b7569e5dfb.1729037131.git.gustavoars@kernel.org>
+References: <1c12601bea3e9c18da6adc106bfcf5b7569e5dfb.1729037131.git.gustavoars@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] wifi: ath11k: add srng->lock for ath11k_hal_srng_*
- in monitor mode
-To: Kang Yang <quic_kangyang@quicinc.com>, <ath11k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20241008053744.1070-1-quic_kangyang@quicinc.com>
- <20241008053744.1070-3-quic_kangyang@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Content-Language: en-US
-In-Reply-To: <20241008053744.1070-3-quic_kangyang@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: AObHifDSZCx91g1iyQed4S_bCw_MV9kh
-X-Proofpoint-ORIG-GUID: AObHifDSZCx91g1iyQed4S_bCw_MV9kh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
- spamscore=0 priorityscore=1501 adultscore=0 mlxlogscore=589
- lowpriorityscore=0 mlxscore=0 phishscore=0 malwarescore=0 suspectscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410160010
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D032UWB003.ant.amazon.com (10.13.139.165) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-On 10/7/2024 10:37 PM, Kang Yang wrote:
-> ath11k_hal_srng_* should be used with srng->lock to protect srng data.
+From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Date: Tue, 15 Oct 2024 18:27:16 -0600
+> We are currently working on enabling the -Wflex-array-member-not-at-end
+> compiler option. This option has helped us detect several objects of
+> the type `struct sockaddr` that appear in the middle of composite
+> structures like `struct rtentry`, `struct compat_rtentry`, and others:
 > 
-> For ath11k_dp_rx_mon_dest_process() and ath11k_dp_full_mon_process_rx(),
-> they use ath11k_hal_srng_* for many times but never call srng->lock.
+> include/uapi/linux/wireless.h:751:33: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> include/uapi/linux/wireless.h:776:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> include/uapi/linux/wireless.h:833:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> include/uapi/linux/wireless.h:857:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> include/uapi/linux/wireless.h:864:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> include/uapi/linux/route.h:33:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> include/uapi/linux/route.h:34:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> include/uapi/linux/route.h:35:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> include/uapi/linux/if_arp.h:118:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> include/uapi/linux/if_arp.h:119:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> include/uapi/linux/if_arp.h:121:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> include/uapi/linux/if_arp.h:126:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> include/uapi/linux/if_arp.h:127:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> include/net/compat.h:34:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> include/net/compat.h:35:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> fs/nfsd/nfsd.h:74:33: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
+> fs/nfsd/nfsd.h:75:33: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
 > 
-> So when running (full) monitor mode, warning will occur:
-> RIP: 0010:ath11k_hal_srng_dst_peek+0x18/0x30 [ath11k]
-> Call Trace:
->  ? ath11k_hal_srng_dst_peek+0x18/0x30 [ath11k]
->  ath11k_dp_rx_process_mon_status+0xc45/0x1190 [ath11k]
->  ? idr_alloc_u32+0x97/0xd0
->  ath11k_dp_rx_process_mon_rings+0x32a/0x550 [ath11k]
->  ath11k_dp_service_srng+0x289/0x5a0 [ath11k]
->  ath11k_pcic_ext_grp_napi_poll+0x30/0xd0 [ath11k]
->  __napi_poll+0x30/0x1f0
->  net_rx_action+0x198/0x320
->  __do_softirq+0xdd/0x319
+> In order to fix the warnings above, we introduce `struct sockaddr_legacy`.
+> The intention is to use it to replace the type of several struct members
+> in the middle of composite structures, currently of type `struct sockaddr`.
 > 
-> So add srng->lock for them to avoid such warnings.
+> These middle struct members are currently causing thousands of warnings
+> because `struct sockaddr` contains a flexible-array member, introduced
+> by commit b5f0de6df6dce ("net: dev: Convert sa_data to flexible array in
+> struct sockaddr").
 > 
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
-> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+> The new `struct sockaddr_legacy` doesn't include a flexible-array
+> member, making it suitable for use as the type of middle members
+> in composite structs that don't really require the flexible-array
+> member in `struct sockaddr`, thus avoiding -Wflex-array-member-not-at-end
+> warnings.
 > 
-> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-> Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
+> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+> ---
+>  include/linux/socket.h | 19 +++++++++++++++++++
+>  1 file changed, 19 insertions(+)
+> 
+> diff --git a/include/linux/socket.h b/include/linux/socket.h
+> index d18cc47e89bd..f370ae0e6c82 100644
+> --- a/include/linux/socket.h
+> +++ b/include/linux/socket.h
+> @@ -40,6 +40,25 @@ struct sockaddr {
+>  	};
+>  };
+>  
+> +/*
+> + * This is the legacy form of `struct sockaddr`. The original `struct sockaddr`
+> + * was modified in commit b5f0de6df6dce ("net: dev: Convert sa_data to flexible
+> + * array in struct sockaddR") due to the fact that "One of the worst offenders
 
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+s/sockaddR/sockaddr/
 
-(note that since this has a locking change Kalle wants to review/approve so
-I've assigned this series back to him in patchwork)
+The same typo? exists in the cover letter.
 
+With it fixed,
+
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+
+
+> + * of "fake flexible arrays" is struct sockaddr". This means that the original
+> + * `char sa_data[14]` behaved as a flexible array at runtime, so a proper
+> + * flexible-array member was introduced.
+> + *
+> + * This caused several flexible-array-in-the-middle issues:
+> + * https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wflex-array-member-not-at-end
+> + *
+> + * `struct sockaddr_legacy` replaces `struct sockaddr` in all instances where
+> + * objects of this type do not appear at the end of composite structures.
+> + */
+> +struct sockaddr_legacy {
+> +	sa_family_t	sa_family;	/* address family, AF_xxx	*/
+> +	char 		sa_data[14];	/* 14 bytes of protocol address	*/
+> +};
+> +
+>  struct linger {
+>  	int		l_onoff;	/* Linger active		*/
+>  	int		l_linger;	/* How long to linger for	*/
+> -- 
+> 2.34.1
 
