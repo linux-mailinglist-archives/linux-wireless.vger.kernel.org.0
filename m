@@ -1,171 +1,120 @@
-Return-Path: <linux-wireless+bounces-14029-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14030-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D34299FF89
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 05:31:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BDE29A00DB
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 07:39:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFFFA28687D
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 03:31:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7E031F244FC
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 05:39:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A34816D9C2;
-	Wed, 16 Oct 2024 03:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F29718BC35;
+	Wed, 16 Oct 2024 05:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="BQDhvSIt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTPd17kq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp-fw-9106.amazon.com (smtp-fw-9106.amazon.com [207.171.188.206])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169E3157A41;
-	Wed, 16 Oct 2024 03:31:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263B718BC0B;
+	Wed, 16 Oct 2024 05:39:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729049466; cv=none; b=Z6AbgZJ/PhORZG6ng8n6svJW1eUoxh1rgV4UfQKrHUmr7cRMI1wGKIv5vU1jSQoznbx/3SpfjO8soKya1nQqh2DqILIjJwkUnozG0+q618OUc2f74HQAn8o4p6oBDhGG4Ev7vEywpc5vWaT7EknB28LTghEKy5s6prh61uJsPvk=
+	t=1729057189; cv=none; b=On8qLn5+FETXyfi/dJjiU5YUmQEJuHmsmF6amDUJCtgrFnqI7yyqSLk5z7n25o6/jsIU+f8gdTShlhy2kQUOK2TWFsKDh/xIsYIDPVWPY3n50xFPIinw7hqHOngWoAvNJ33iqNfD77OL89Qml0HhQu6r/U8zez9vJ/4FGz2xlv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729049466; c=relaxed/simple;
-	bh=1RDWVfjt8CeM/x84cXRzvf+PJhV9JF8TakbxdEtOjaE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CypFqG11Lyitr81pcvdq448H2VvJhgMUskyOTcLiinlGKtbd58tb6U83vuqFSyjUttWKKO1h2gefbmySyAbgcEulrQGcdOhBKQPA4IZ25ptWX26/QYdYqKFwpnObqL8mYcP1EHjesKUnyMjQgYiUX+4r1WgJ4Qw28ShFyQF4jpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=BQDhvSIt; arc=none smtp.client-ip=207.171.188.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1729049465; x=1760585465;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=R0CkBNDYdSm6bkTWLi6IG3qXSuk5UAVOE/HPqWHE6og=;
-  b=BQDhvSIt0P9SlewVzuRBf/3bNc7V6Uull7wSxcCse6kL8nruH/eXCgvh
-   FzUst9V8xTcMgKLF+3QSFPywAR3j4nFKv7S64yjl3TwkakbyckUUz2GOS
-   wST7iZ8fsZFW7tBQocYfaBpfjOH9qAp20Zy14c4qndVDQBlapZA1Q5Amk
-   Y=;
-X-IronPort-AV: E=Sophos;i="6.11,206,1725321600"; 
-   d="scan'208";a="766935707"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-9106.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2024 03:30:59 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [10.0.7.35:34151]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.59.23:2525] with esmtp (Farcaster)
- id 7a6e1911-5029-441d-8ce8-1b14b5d8e96d; Wed, 16 Oct 2024 03:30:57 +0000 (UTC)
-X-Farcaster-Flow-ID: 7a6e1911-5029-441d-8ce8-1b14b5d8e96d
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.218) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.34;
- Wed, 16 Oct 2024 03:30:57 +0000
-Received: from 6c7e67c6786f.amazon.com (10.106.100.36) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.35;
- Wed, 16 Oct 2024 03:30:53 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: <gustavoars@kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <dsahern@kernel.org>,
-	<edumazet@google.com>, <johannes@sipsolutions.net>, <kees@kernel.org>,
-	<kuba@kernel.org>, <linux-hardening@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <pabeni@redhat.com>, <kuniyu@amazon.com>
-Subject: Re: [PATCH 1/5][next] net: dev: Introduce struct sockaddr_legacy
-Date: Tue, 15 Oct 2024 20:30:42 -0700
-Message-ID: <20241016033042.89280-1-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <1c12601bea3e9c18da6adc106bfcf5b7569e5dfb.1729037131.git.gustavoars@kernel.org>
-References: <1c12601bea3e9c18da6adc106bfcf5b7569e5dfb.1729037131.git.gustavoars@kernel.org>
+	s=arc-20240116; t=1729057189; c=relaxed/simple;
+	bh=Bd5M4DzFMNGGadIfi1fklC0+ZqtBunY0WkA0awItZsk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u9Oj/71ClAwjO5Y/W7bDuTvsHpGMP3oNta9KpmX7UrUKxQidQlVQVlw8jikgS9HWtRjsLvxQrzm6K9oLn5rfzxtjFBMdncOsQR8uv0pi5IVP+0Grb/zm6oJTs4GNaBonzfOk/X+DyY5nbxmmqQr4HKCxQYI3vFDrkTWlQ2Jm7KA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UTPd17kq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E85C4CEC5;
+	Wed, 16 Oct 2024 05:39:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1729057188;
+	bh=Bd5M4DzFMNGGadIfi1fklC0+ZqtBunY0WkA0awItZsk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UTPd17kqa+JStBo//drZQEXyhoDU5Ick9FOrbiK2kK6EtrjHt2psudKPkH6oC/JjU
+	 UK7DuqgB1JR/yTVSIQJrmb20KHuDiQAI5hwh8cFhK/eWYqq9mtCIzMO4GOty2SoRF6
+	 h+kDt3eL0NVejAHRkxFksFewisHYtyjgnG5HKBLU=
+Date: Wed, 16 Oct 2024 07:39:41 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Philipp Stanner <pstanner@redhat.com>
+Cc: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Basavaraj Natikar <basavaraj.natikar@amd.com>,
+	Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, Alex Dubov <oakad@yahoo.com>,
+	Sudarsana Kalluru <skalluru@marvell.com>,
+	Manish Chopra <manishc@marvell.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rasesh Mody <rmody@marvell.com>, GR-Linux-NIC-Dev@marvell.com,
+	Igor Mitsyanko <imitsyanko@quantenna.com>,
+	Sergey Matyukevich <geomatsi@gmail.com>,
+	Kalle Valo <kvalo@kernel.org>, Sanjay R Mehta <sanju.mehta@amd.com>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Jon Mason <jdmason@kudzu.us>, Dave Jiang <dave.jiang@intel.com>,
+	Allen Hubbe <allenbh@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Ricky Wu <ricky_wu@realtek.com>, Al Viro <viro@zeniv.linux.org.uk>,
+	Breno Leitao <leitao@debian.org>, Kevin Tian <kevin.tian@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mostafa Saleh <smostafa@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Yi Liu <yi.l.liu@intel.com>, Christian Brauner <brauner@kernel.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Ye Bin <yebin10@huawei.com>,
+	Marek =?iso-8859-1?Q?Marczykowski-G=F3recki?= <marmarek@invisiblethingslab.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Rui Salvaterra <rsalvaterra@gmail.com>, linux-ide@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
+	netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+	ntb@lists.linux.dev, linux-pci@vger.kernel.org, kvm@vger.kernel.org,
+	xen-devel@lists.xenproject.org, linux-sound@vger.kernel.org
+Subject: Re: [PATCH 13/13] PCI: Deprecate pci_intx(), pcim_intx()
+Message-ID: <2024101652-valium-gizzard-cf14@gregkh>
+References: <20241015185124.64726-1-pstanner@redhat.com>
+ <20241015185124.64726-14-pstanner@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D032UWB003.ant.amazon.com (10.13.139.165) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241015185124.64726-14-pstanner@redhat.com>
 
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Date: Tue, 15 Oct 2024 18:27:16 -0600
-> We are currently working on enabling the -Wflex-array-member-not-at-end
-> compiler option. This option has helped us detect several objects of
-> the type `struct sockaddr` that appear in the middle of composite
-> structures like `struct rtentry`, `struct compat_rtentry`, and others:
+On Tue, Oct 15, 2024 at 08:51:23PM +0200, Philipp Stanner wrote:
+> pci_intx() and its managed counterpart pcim_intx() only exist for older
+> drivers which have not been ported yet for various reasons. Future
+> drivers should preferably use pci_alloc_irq_vectors().
 > 
-> include/uapi/linux/wireless.h:751:33: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> include/uapi/linux/wireless.h:776:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> include/uapi/linux/wireless.h:833:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> include/uapi/linux/wireless.h:857:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> include/uapi/linux/wireless.h:864:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> include/uapi/linux/route.h:33:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> include/uapi/linux/route.h:34:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> include/uapi/linux/route.h:35:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> include/uapi/linux/if_arp.h:118:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> include/uapi/linux/if_arp.h:119:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> include/uapi/linux/if_arp.h:121:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> include/uapi/linux/if_arp.h:126:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> include/uapi/linux/if_arp.h:127:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> include/net/compat.h:34:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> include/net/compat.h:35:25: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> fs/nfsd/nfsd.h:74:33: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> fs/nfsd/nfsd.h:75:33: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-> 
-> In order to fix the warnings above, we introduce `struct sockaddr_legacy`.
-> The intention is to use it to replace the type of several struct members
-> in the middle of composite structures, currently of type `struct sockaddr`.
-> 
-> These middle struct members are currently causing thousands of warnings
-> because `struct sockaddr` contains a flexible-array member, introduced
-> by commit b5f0de6df6dce ("net: dev: Convert sa_data to flexible array in
-> struct sockaddr").
-> 
-> The new `struct sockaddr_legacy` doesn't include a flexible-array
-> member, making it suitable for use as the type of middle members
-> in composite structs that don't really require the flexible-array
-> member in `struct sockaddr`, thus avoiding -Wflex-array-member-not-at-end
-> warnings.
-> 
-> Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-> ---
->  include/linux/socket.h | 19 +++++++++++++++++++
->  1 file changed, 19 insertions(+)
-> 
-> diff --git a/include/linux/socket.h b/include/linux/socket.h
-> index d18cc47e89bd..f370ae0e6c82 100644
-> --- a/include/linux/socket.h
-> +++ b/include/linux/socket.h
-> @@ -40,6 +40,25 @@ struct sockaddr {
->  	};
->  };
->  
-> +/*
-> + * This is the legacy form of `struct sockaddr`. The original `struct sockaddr`
-> + * was modified in commit b5f0de6df6dce ("net: dev: Convert sa_data to flexible
-> + * array in struct sockaddR") due to the fact that "One of the worst offenders
+> Mark pci_intx() and pcim_intx() as deprecated and encourage usage of
+> pci_alloc_irq_vectors() in its place.
 
-s/sockaddR/sockaddr/
+No one is going to notice these comments, so please, if this really does
+need to be removed, just remove it from all callers and delete the
+function from the tree.
 
-The same typo? exists in the cover letter.
+thanks,
 
-With it fixed,
-
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-
-
-> + * of "fake flexible arrays" is struct sockaddr". This means that the original
-> + * `char sa_data[14]` behaved as a flexible array at runtime, so a proper
-> + * flexible-array member was introduced.
-> + *
-> + * This caused several flexible-array-in-the-middle issues:
-> + * https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wflex-array-member-not-at-end
-> + *
-> + * `struct sockaddr_legacy` replaces `struct sockaddr` in all instances where
-> + * objects of this type do not appear at the end of composite structures.
-> + */
-> +struct sockaddr_legacy {
-> +	sa_family_t	sa_family;	/* address family, AF_xxx	*/
-> +	char 		sa_data[14];	/* 14 bytes of protocol address	*/
-> +};
-> +
->  struct linger {
->  	int		l_onoff;	/* Linger active		*/
->  	int		l_linger;	/* How long to linger for	*/
-> -- 
-> 2.34.1
+greg k-h
 
