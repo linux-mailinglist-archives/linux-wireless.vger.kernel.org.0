@@ -1,107 +1,123 @@
-Return-Path: <linux-wireless+bounces-14064-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14065-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB5CB9A0501
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 11:06:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85A299A05AA
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 11:37:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 935D01F25112
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 09:06:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AECF51C260DD
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 09:37:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFE63205149;
-	Wed, 16 Oct 2024 09:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A47F205E34;
+	Wed, 16 Oct 2024 09:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Nj3mVFA3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TKOX9/0G"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F09134A8;
-	Wed, 16 Oct 2024 09:06:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F6F205E05;
+	Wed, 16 Oct 2024 09:37:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729069596; cv=none; b=igmpgqGfeTvo9IcwQojCzRlJGaZR/8+91qcxBgk3cYHTeK6463DUGX+0LF/URIeiZbsQX1AcY/dCddbtT65K/nZAkHyLQAjVRuYCbFj6J3dhWc7J7d6mkrrNZwn+c2nuEK/JEsF+dEZAvl6xRFHRtNgVEfQI2ySJdSxvDwHx2L0=
+	t=1729071432; cv=none; b=tMUv6aUC8PIdhk+1ZEkqzFNMbxjkAYK92e8rEkrxRAsAh8pqGy3tiPGc92oHPhDrmtZGo/urrewcAA5wSvD5wVFvFV8LVSwilyITZ2WJkYSLp7GwkgNDexnDllcOOOqGqQK9dQ3AR0NqQ35lnnb/P7O78WHtgmtmI0Z+fMN6Y1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729069596; c=relaxed/simple;
-	bh=EP34Go3o3E+bVfi/rpZAtI5M56XbwKeVq+nRPe/KikU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ok2zWZYO0rIVtt4FC/hGEiXONrFopGxbujLsHxIS3RLsbp57ZYpZ+pKVEvnhw//S4Hf8A9ey3CDXsf1lsw0nEv+Golm+l4ezcEoebWKnZpZg02RUU7J0iViRhFKigj2gKNMriEYWqiiKTybHQI09Nvhi1Ub6fa7apwCa5kBb6nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Nj3mVFA3; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=EP34Go3o3E+bVfi/rpZAtI5M56XbwKeVq+nRPe/KikU=;
-	t=1729069595; x=1730279195; b=Nj3mVFA38TCc5AKuxZhT7CVaP54+1xb/i8XlBtKDRV8kqoQ
-	Z14S8c1s9pPYqL9T666QH8IMWbpLt4xeqiGLPd7gCusig+qLGh3E9HdSuisk5qvUt/0pwh8NlfDq5
-	IpSp/zoQsOd6UyhzeQHepQ5CdQevfImUEr7gtVFGAC5IZDf60gZ+OwXAXlVlCq2nxXTiH2uErE4Jf
-	cXDLJW+1RTUNbWUG7q4JZaJSHyLz9RYcK7X3C59/dexSmycyR4rNfN+ESrutjEv4xC6tzx1SW9qWL
-	V63bPFAd6zqiBi2YBu9Bjj2jujHn6Q2wkV7hDJiYVzjhGWfN7pJxaLOuGP2Qt0eg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1t0zzE-0000000Cihs-3Vhq;
-	Wed, 16 Oct 2024 11:06:33 +0200
-Message-ID: <e4debfb8fff961e889cf333a95132f5ed6687928.camel@sipsolutions.net>
-Subject: Re: [PATCH 3/5][next] uapi: wireless: Avoid
- -Wflex-array-member-not-at-end warnings
-From: Johannes Berg <johannes@sipsolutions.net>
-To: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, Kees Cook <kees@kernel.org>
-Date: Wed, 16 Oct 2024 11:06:31 +0200
-In-Reply-To: <d9e9d9c1ade33701172b069e7dea728b063b00ee.1729037131.git.gustavoars@kernel.org>
-References: <cover.1729037131.git.gustavoars@kernel.org>
-	 <d9e9d9c1ade33701172b069e7dea728b063b00ee.1729037131.git.gustavoars@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+	s=arc-20240116; t=1729071432; c=relaxed/simple;
+	bh=3qs9RCIcBMaiRaaQowBtUAYRplzqstMrihAHPPNLmDY=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=Cnc8wtkcZW4olhmy2rYsWJnD/QgVO9gh2vUVBSkOn67kPDmY099bhEA8vV66VwO97rNkYvxIM3kXWhNUrdu/pbB7gXJTcsJqQdGPIPjm4g3/vevlGgQ40ytb1ARV34FsVdK9InA5uAqNp79NI27YxaJ6uee+i65AQPJYPQSmYKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TKOX9/0G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A83DEC4CECF;
+	Wed, 16 Oct 2024 09:37:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729071431;
+	bh=3qs9RCIcBMaiRaaQowBtUAYRplzqstMrihAHPPNLmDY=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=TKOX9/0GP1+lza5sQLTeaGorlh3MWnyZcXGq05D/f/GBd2opmS8ChUbAgJdPb/CZ1
+	 yn5rFWuoHPLLh+d3Tn7faqhBzYHFIRUNCjskSa+aHE7Hk+eHTbbOc5TCSh9q9iJ3uy
+	 ecD+a1d8UI2TkI22bqwo5dXLynEXWBDFQZqY5PiV0eO3UFpqqqMhVJV65YiRQTDMNj
+	 WP2usCFu0zlWexw7EVaqgNj9e/FFPneDaR8h9YjjAPmN4hPc1uAoQejPiORMJPvOU5
+	 CWaLZFgGsjhgxS13aQ+7ta5bJuOGaob/3dXOYCK3/wDOU6szpcWpgz4jJlrkWESsRr
+	 s45FfeYSH4aKw==
+From: Kalle Valo <kvalo@kernel.org>
+To: Philipp Stanner <pstanner@redhat.com>
+Cc: Damien Le Moal <dlemoal@kernel.org>,  Niklas Cassel <cassel@kernel.org>,
+  Sergey Shtylyov <s.shtylyov@omp.ru>,  Basavaraj Natikar
+ <basavaraj.natikar@amd.com>,  Jiri Kosina <jikos@kernel.org>,  Benjamin
+ Tissoires <bentiss@kernel.org>,  Arnd Bergmann <arnd@arndb.de>,  Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>,  Alex Dubov <oakad@yahoo.com>,
+  Sudarsana Kalluru <skalluru@marvell.com>,  Manish Chopra
+ <manishc@marvell.com>,  "David S. Miller" <davem@davemloft.net>,  Eric
+ Dumazet <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo
+ Abeni <pabeni@redhat.com>,  Rasesh Mody <rmody@marvell.com>,
+  GR-Linux-NIC-Dev@marvell.com,  Igor Mitsyanko <imitsyanko@quantenna.com>,
+  Sergey Matyukevich <geomatsi@gmail.com>,  Sanjay R Mehta
+ <sanju.mehta@amd.com>,  Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,  Jon
+ Mason <jdmason@kudzu.us>,  Dave Jiang <dave.jiang@intel.com>,  Allen Hubbe
+ <allenbh@gmail.com>,  Bjorn Helgaas <bhelgaas@google.com>,  Alex
+ Williamson <alex.williamson@redhat.com>,  Juergen Gross <jgross@suse.com>,
+  Stefano Stabellini <sstabellini@kernel.org>,  Oleksandr Tyshchenko
+ <oleksandr_tyshchenko@epam.com>,  Jaroslav Kysela <perex@perex.cz>,
+  Takashi Iwai <tiwai@suse.com>,  Chen Ni <nichen@iscas.ac.cn>,  Mario
+ Limonciello <mario.limonciello@amd.com>,  Ricky Wu <ricky_wu@realtek.com>,
+  Al Viro <viro@zeniv.linux.org.uk>,  Breno Leitao <leitao@debian.org>,
+  Kevin Tian <kevin.tian@intel.com>,  Thomas Gleixner <tglx@linutronix.de>,
+  Ilpo =?utf-8?Q?J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,  Andy
+ Shevchenko
+ <andriy.shevchenko@linux.intel.com>,  Mostafa Saleh <smostafa@google.com>,
+  Jason Gunthorpe <jgg@ziepe.ca>,  Yi Liu <yi.l.liu@intel.com>,  Christian
+ Brauner <brauner@kernel.org>,  Ankit Agrawal <ankita@nvidia.com>,  Eric
+ Auger <eric.auger@redhat.com>,  Reinette Chatre
+ <reinette.chatre@intel.com>,  Ye Bin <yebin10@huawei.com>,  Marek
+ =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
+  Pierre-Louis
+ Bossart <pierre-louis.bossart@linux.dev>,  Peter Ujfalusi
+ <peter.ujfalusi@linux.intel.com>,  Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>,  Kai Vehmanen
+ <kai.vehmanen@linux.intel.com>,  Rui Salvaterra <rsalvaterra@gmail.com>,
+  linux-ide@vger.kernel.org,  linux-kernel@vger.kernel.org,
+  linux-input@vger.kernel.org,  netdev@vger.kernel.org,
+  linux-wireless@vger.kernel.org,  ntb@lists.linux.dev,
+  linux-pci@vger.kernel.org,  kvm@vger.kernel.org,
+  xen-devel@lists.xenproject.org,  linux-sound@vger.kernel.org
+Subject: Re: [PATCH 10/13] wifi: qtnfmac: use always-managed version of
+ pcim_intx()
+References: <20241015185124.64726-1-pstanner@redhat.com>
+	<20241015185124.64726-11-pstanner@redhat.com>
+Date: Wed, 16 Oct 2024 12:36:58 +0300
+In-Reply-To: <20241015185124.64726-11-pstanner@redhat.com> (Philipp Stanner's
+	message of "Tue, 15 Oct 2024 20:51:20 +0200")
+Message-ID: <87y12o4ced.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain
 
-On Tue, 2024-10-15 at 18:31 -0600, Gustavo A. R. Silva wrote:
-> -Wflex-array-member-not-at-end was introduced in GCC-14, and we are
-> getting ready to enable it, globally.
->=20
-> Address the following warnings by changing the type of the middle struct
-> members in various composite structs, which are currently causing trouble=
-,
-> from `struct sockaddr` to `struct sockaddr_legacy`. Note that the latter
-> struct doesn't contain a flexible-array member.
->=20
-> include/uapi/linux/wireless.h:751:33: warning: structure containing a fle=
-xible array member is not at the end of another structure [-Wflex-array-mem=
-ber-not-at-end]
-> include/uapi/linux/wireless.h:776:25: warning: structure containing a fle=
-xible array member is not at the end of another structure [-Wflex-array-mem=
-ber-not-at-end]
-> include/uapi/linux/wireless.h:833:25: warning: structure containing a fle=
-xible array member is not at the end of another structure [-Wflex-array-mem=
-ber-not-at-end]
-> include/uapi/linux/wireless.h:857:25: warning: structure containing a fle=
-xible array member is not at the end of another structure [-Wflex-array-mem=
-ber-not-at-end]
-> include/uapi/linux/wireless.h:864:25: warning: structure containing a fle=
-xible array member is not at the end of another structure [-Wflex-array-mem=
-ber-not-at-end]
->=20
-> No binary differences are present after these changes.
+Philipp Stanner <pstanner@redhat.com> writes:
 
-I don't see how this works if you introduce "struct sockaddr_legacy" in
-a non-UAPI header, but then use it in UAPI?!
+> pci_intx() is a hybrid function which can sometimes be managed through
+> devres. To remove this hybrid nature from pci_intx(), it is necessary to
+> port users to either an always-managed or a never-managed version.
+>
+> qtnfmac enables its PCI-Device with pcim_enable_device(). Thus, it needs
+> the always-managed version.
+>
+> Replace pci_intx() with pcim_intx().
+>
+> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
 
-Also, userspace might have pointers to it or whatnot, and warn/break if
-you change the type?
+Feel free to take this via the PCI tree:
 
-johannes
+Acked-by: Kalle Valo <kvalo@kernel.org>
 
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
