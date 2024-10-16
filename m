@@ -1,63 +1,55 @@
-Return-Path: <linux-wireless+bounces-14108-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14109-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 974609A1461
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 22:49:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A96A49A15AF
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 00:11:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B2ED283072
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 20:49:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32EAAB24943
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 22:11:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AFCE18D634;
-	Wed, 16 Oct 2024 20:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8110C1D3573;
+	Wed, 16 Oct 2024 22:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="M2GiCDYU"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="FHaAHRL3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9271D4409
-	for <linux-wireless@vger.kernel.org>; Wed, 16 Oct 2024 20:49:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5471D356E
+	for <linux-wireless@vger.kernel.org>; Wed, 16 Oct 2024 22:11:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729111768; cv=none; b=bKe1Zq04sP230xDi0cmagIl/89qbtSuuF33AWSYoKLGEu+8FNxrpYT+npCqbkvbjF9jEX6C4ipY9wIUnlPvhyEBEgdVa2JLSHVY58agZvsRff8S14X+dAFNkNtoZ4RdsZgxll16Uj3S/B84Dgs4YRKTP5Ra0EK9R60knJ4v0o+s=
+	t=1729116662; cv=none; b=hkInBZaznOKCPVcwfHFk1yNTrnFGOemxRWdL1XqI/k/SbeuD0ANgypvgVvObg2iq2VKt7oNKZSjLfrOnLi14S/4b3L8GpSvwM5ARjlIa+UVkRkgfldE6QfhB9OaOXHqHoou/AqYaSboiPbqwN8EK4Rvpq9qjg544rXUbk14qe90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729111768; c=relaxed/simple;
-	bh=KDVfT4Kzb96DZMWVjkZrIZwvmiR9un0ehaXVN+7/Kv8=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
-	 In-Reply-To:Content-Type; b=DCcSbotcbk1XFb1nVIwFaiQQJPUNpj2h7xfysh/uJTCytXuN5D7DkT+CP6B9USpEKlNycgR3GmV47zXdn77Ep2tJdhlGGTBdngYLXhQ+xoaZMqVFpN++CLsJtMJ1j9z3ah/hJN6+iSko2IEjHa2DisJyE2a6uXJlQg3UaXK4vS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=M2GiCDYU; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49GGXNd0020138;
-	Wed, 16 Oct 2024 20:49:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	W+cfm+hlliUw3u6gPupcm1xWbhXrIRY5DEBBKhMbhTs=; b=M2GiCDYU0KFRiE6n
-	p8UKZz6MA2NS/i3mR6zRK7j6e+rcmSESXYmov5pobUbQpjuwkWrgklcmRkhULq7x
-	fRvc0XR6UDkVQ6vhYAO5nPXWUXAOluh7BmPd4OZmOYd2ghV43d7zKLCSqPxTb2v9
-	7DzMFi+3O26wYP1yv8RjmYGPsYWcvOOSTrkxKs5d4QRICCHBxpDhfjo53oS3NB58
-	Ya5ohUVEAIOClDNRTuYFA/g3T++p/u+WnIgohPeuTbyfIV5gafO3jQ1fzZPrhHIT
-	ndneyubKwrJZGSNjPh7zaNgmzTtYu3yxQVfnHGR94RBjPpQKzaOzH/40QVaCnCw+
-	iLVgSQ==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 429m0fe1g4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Oct 2024 20:49:21 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49GKnKZR010896
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Oct 2024 20:49:20 GMT
-Received: from [10.110.80.27] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 16 Oct
- 2024 13:49:20 -0700
-Message-ID: <6e16ac26-8414-4ec4-a061-8d27237d63cd@quicinc.com>
-Date: Wed, 16 Oct 2024 13:49:19 -0700
+	s=arc-20240116; t=1729116662; c=relaxed/simple;
+	bh=LOLVIRp1+lxhHJfPTspYiH0WrKuj143j3MUfYY6Ji1M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Erw0VZEfuEoF6PvqcWPSrR6eezaN2lWlUcg1Ut5ywc1oMXpLH5FvlQn93itnkZqfKwuayjCHi+kbvxID+N5GWz38daC0hHnr3Ras8G9AV2yY7Fqh5B8dgY4gDu7EXKRyPEHnAO7Ow9h0uqaIh0ZRnnjZMFLo+1TeaC3PHttbH/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=FHaAHRL3; arc=none smtp.client-ip=148.163.129.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id AA526340011;
+	Wed, 16 Oct 2024 22:10:52 +0000 (UTC)
+Received: from [192.168.101.245] (unknown [50.251.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id D9E4B13C2B0;
+	Wed, 16 Oct 2024 15:10:50 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com D9E4B13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1729116651;
+	bh=LOLVIRp1+lxhHJfPTspYiH0WrKuj143j3MUfYY6Ji1M=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=FHaAHRL3Hmi1ZGqi4X0GEXGAYINjxDz1q97Mccubl39/w5dPdCQWnnzgyGA3mdenH
+	 sgEGbbUV0O9iwHc+CXbud8yJvFo8i7wYkJMqZqBxFf4SLK5Nj0EfMtMeWWKYOT7DG/
+	 MtdpFzgYNx88td6iePNoDWIFgyMsTx7F+sEDAnIQ=
+Message-ID: <f2f00f4e-0a57-4a2a-933e-4497353f857c@candelatech.com>
+Date: Wed, 16 Oct 2024 15:10:50 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,97 +57,35 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] wifi: nl80211: add link id of transmitted profile for
- MLO MBSSID
-Content-Language: en-GB
-From: Muna Sinada <quic_msinada@quicinc.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>,
-        Rameshkumar Sundaram
-	<quic_ramess@quicinc.com>,
-        Aloka Dixit <quic_alokad@quicinc.com>
-References: <20240910204538.4077640-1-quic_msinada@quicinc.com>
- <20240910204538.4077640-2-quic_msinada@quicinc.com>
- <5673aab17fa4e6bbba5b286f29b0558726305155.camel@sipsolutions.net>
- <559c2b6e-23d8-41d5-ba4d-262ab996dad6@quicinc.com>
-In-Reply-To: <559c2b6e-23d8-41d5-ba4d-262ab996dad6@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH 06/20] wifi: iwlwifi: mvm: handle TPE advertised by AP
+To: Linux regressions mailing list <regressions@lists.linux.dev>
+Cc: linux-wireless@vger.kernel.org, Johannes Berg <johannes.berg@intel.com>,
+ Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
+ Miri Korenblit <miriam.rachel.korenblit@intel.com>, johannes@sipsolutions.net
+References: <20240527160615.1549563-1-miriam.rachel.korenblit@intel.com>
+ <20240527190228.32f1e2e1447c.I58ac91c38585362aa42bb4a8a59c7d88e67bc40b@changeid>
+ <ea1eeb13-c568-4381-812a-dec4246a440e@candelatech.com>
+ <57d28bcf-8f2b-4755-bf2a-7c9d316e6823@leemhuis.info>
+Content-Language: en-US
+From: Rory Little <rory@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <57d28bcf-8f2b-4755-bf2a-7c9d316e6823@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: k_NEggE8qObeSlqVE5VIh7LYOHkOVVoS
-X-Proofpoint-ORIG-GUID: k_NEggE8qObeSlqVE5VIh7LYOHkOVVoS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- lowpriorityscore=0 bulkscore=0 adultscore=0 clxscore=1015 phishscore=0
- spamscore=0 impostorscore=0 suspectscore=0 mlxlogscore=966 malwarescore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410160132
+X-MDID: 1729116653-C2LRLwij_tBL
+X-MDID-O:
+ us5;ut7;1729116653;C2LRLwij_tBL;<rory@candelatech.com>;9afb24c90898fa38a1d775b75cf58c9a
+X-PPE-TRUSTED: V=1;DIR=OUT;
 
+On 9/2/24 05:59, Linux regression tracking (Thorsten Leemhuis) wrote:
+> Rory Little: was this ever resolved? I noticed the patch you send to
+> which Johannes replied to stating a similar fix is already in -rc1. But
+> you reported this a few days after -rc1 was out, which makes me wonder
+> if this really is resolved.
 
+It was resolved. We independently pulled in this patch series without 
+the earlier fix, which caused an issue only in our forked kernel, and 
+the confusion on our end. My mistake for reporting the issue here.
 
-On 10/16/2024 12:50 PM, Muna Sinada wrote:
-> On 9/11/2024 2:36 AM, Johannes Berg wrote:
->> On Tue, 2024-09-10 at 13:45 -0700, Muna Sinada wrote:
->>>  	if (!wiphy->mbssid_max_interfaces)
->>>  		return -EOPNOTSUPP;
->>> @@ -5509,9 +5513,7 @@ static int nl80211_parse_mbssid_config(struct wiphy *wiphy,
->>>  			return -EINVAL;
->>>  
->>>  		if (tx_ifindex != dev->ifindex) {
->>> -			struct net_device *tx_netdev =
->>> -				dev_get_by_index(wiphy_net(wiphy), tx_ifindex);
->>> -
->>> +			tx_netdev = dev_get_by_index(wiphy_net(wiphy), tx_ifindex);
->>>  			if (!tx_netdev || !tx_netdev->ieee80211_ptr ||
->>>  			    tx_netdev->ieee80211_ptr->wiphy != wiphy ||
->>>  			    tx_netdev->ieee80211_ptr->iftype !=
->>> @@ -5530,7 +5532,28 @@ static int nl80211_parse_mbssid_config(struct wiphy *wiphy,
->>>  		return -EINVAL;
->>>  	}
->>>  
->>> +	config->tx_link_id = 0;
->>> +	if (config->tx_wdev->valid_links) {
->>> +		if (!tb[NL80211_MBSSID_CONFIG_ATTR_TX_LINK_ID])
->>> +			goto err;
->>> +
->>> +		config->tx_link_id = nla_get_u8(tb[NL80211_MBSSID_CONFIG_ATTR_TX_LINK_ID]);
->>> +		if (!(config->tx_wdev->valid_links & BIT(config->tx_link_id))) {
->>> +			err = -ENOLINK;
->>> +			goto err;
->>> +		}
->>> +	} else if (tb[NL80211_MBSSID_CONFIG_ATTR_TX_LINK_ID]) {
->>> +		goto err;
->>> +	}
->>> +
->>>  	return 0;
->>> +
->>> +err:
->>> +	if (tx_netdev) {
->>> +		config->tx_wdev = NULL;
->>> +		dev_put(tx_netdev);
->>> +	}
->>
->> Why not use config->tx_wdev and avoid changes around tx_netdev?
-> 
-> tx_netdev instance is being utilized on exisiting code to perform checks and grab its 
->ieee80211_ptr. W are not making changes to tx_netdev itself. In this specific patch we 
-> are making changes to config->tx_wdev. I was wondering if I could get clarification on 
->this. 
-> 
->>
->> There's also an existing error path that does dev_put(), so you should
->> unify that.
->>
->> johannes
-> 
-> Thank you,
-> Muna
-
-I apologize for the lack of link breaks in my response. Will make sure to include them
-in the future.
+- Rory
 
