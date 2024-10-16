@@ -1,196 +1,108 @@
-Return-Path: <linux-wireless+bounces-14067-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14068-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D638D9A06B6
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 12:10:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD6BC9A0763
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 12:30:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F33C28823D
-	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 10:10:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DA59288C15
+	for <lists+linux-wireless@lfdr.de>; Wed, 16 Oct 2024 10:30:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D4F4206054;
-	Wed, 16 Oct 2024 10:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D257206E96;
+	Wed, 16 Oct 2024 10:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="saoruRIz"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GAoTA0G9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C8C29A0
-	for <linux-wireless@vger.kernel.org>; Wed, 16 Oct 2024 10:10:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658EF2071E0
+	for <linux-wireless@vger.kernel.org>; Wed, 16 Oct 2024 10:28:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729073430; cv=none; b=QDdrsOOnN52YcIvCn+S1ldSo5KZEbuEHHiIYeKXk+8VcnCJvzqtyod+RS1EDxKxLUn3dYX/8b3XOp5gsKqva1SrqgpWbeulT0bdpDdOrecHNcG58B/2HA87QZ/pZ9FpD76ZLNatiV1rTtTW3nJqtnf0x2hdg4WcHoCWZ9aLojJ8=
+	t=1729074514; cv=none; b=u0HWqtVFpsdU4/aIl8JEnLUWc0/zZpVm0bFUoKSscC293RMuigenpX+50p/1nV4VjmjOaG90dWDMlgb/h58GIQF9hJRfSqvzH+79X0QNMMOpXCn7DYYyPmLr0tVWa2lA9VpCaCE5iUqLhNlcQUE+bMURIaId3rBw1mQJxVLQlZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729073430; c=relaxed/simple;
-	bh=EpddFLSun7fDw+egZk707OQtlEoscZa7kiFPCa/aEZI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Y2Ahj+0WYD4aoKa3y/2V5HQZ5vHedCSztnlZqnw/rYwRCKaq/ISoDS9aqGRjIxTm2LCnf5k3yI60Doccxbh/3e/d8HvXYrD9YM+4m0Rr7sUr4YMOYnUKq6JQmRWwu1ZxLnN22zNMY5mc6gU86n5VWytJRIeBMUXTh7Feb8WdQxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=saoruRIz; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: db6e1d488ba611ef8b96093e013ec31c-20241016
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=dw7E25Ax5aPaEi8VvFtVDhiaph6LmLWdS1o3OukH4H8=;
-	b=saoruRIzVdNVWNKqmGKzeF08LKmCthKm1cfEldBaDfBnQ3gCgd/5M6B/l1e5ixWTbCA9LAapBUOex0A09y5sx0Rp+wpGkIiDhkotyID+gNIEZq2x7utReqlB2JQLbkqPGOYKstjRAJGChc5RyBx2+kk01CJF+dklic0lLK9v47Q=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.41,REQID:efffa6cc-40b6-4e06-8b34-72f266614a81,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:25,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTI
-	ON:release,TS:0
-X-CID-META: VersionHash:6dc6a47,CLOUDID:8add5665-444a-4b47-a99a-591ade3b04b2,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:5,IP:nil,UR
-	L:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:
-	1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_ULN,TF_CID_SPAM_SNR
-X-UUID: db6e1d488ba611ef8b96093e013ec31c-20241016
-Received: from mtkmbs09n1.mediatek.inc [(172.21.101.35)] by mailgw02.mediatek.com
-	(envelope-from <allan.wang@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1464840681; Wed, 16 Oct 2024 18:10:23 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Wed, 16 Oct 2024 18:10:20 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Wed, 16 Oct 2024 18:10:20 +0800
-From: Allan Wang <allan.wang@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <deren.wu@mediatek.com>, <mingyen.hsieh@mediatek.com>,
-	<Sean.Wang@mediatek.com>, <Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
-	<Michael.Lo@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
-	<km.lin@mediatek.com>, <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
-	<posh.sun@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Allan Wang <allan.wang@mediatek.com>,
-	Hao Zhang <hao.zhang@mediatek.com>
-Subject: [PATCH v3] wifi: mt76: introduce mt792x_config_mac_addr_list routine
-Date: Wed, 16 Oct 2024 18:10:17 +0800
-Message-ID: <20241016101017.19598-1-allan.wang@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+	s=arc-20240116; t=1729074514; c=relaxed/simple;
+	bh=cPLPMI+yIzV0Ysp2WcB/FUdAA4R7BLdsnV3NMnx7rBg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P4sPd6ZD48JW4XFAn9GNDU8sWoekLwEKZ0HV4+5RFmfsxWhtNrK6o3HenKcn5QFI1GceY6/r0+p+6BQhNBM8TEBYogadQ79jdG6Nr0p8Grhwj0AJb0HcY7vmoysSYn130eqPOQyUmDJg4w9t0uixZUr/whowWFgbAdwTXQAPCL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GAoTA0G9; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-539f72c913aso3654287e87.1
+        for <linux-wireless@vger.kernel.org>; Wed, 16 Oct 2024 03:28:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1729074510; x=1729679310; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=MAXpBaMtfWO8UJVVjb65PyHD/dGQ0kmBoOJFKkFJy0M=;
+        b=GAoTA0G9+N+nJiN1IEcM93LkU/f1vLY3uQlt04OF6pmhzIUseLmg8xCQeMvweBcl5S
+         9VozJBRHF2UGPzbRlGzP6kP1pdX8RhfTDX3xDWma3lWqs8qPJLsZXThx7oD6way2+VYe
+         CUbLMnj8oc0kqhc8l9+A1fLI4Urrx5GgtcSPxoNezqF79kUi2ezZstpQN7sJQtoB9sMn
+         c5neCtFHl/mu2RyfEqCFVxiVQ9gAiGpjy6gjVsWdfGqMB8+emeb+loNR4M1KIbAgVY8U
+         iyea+YZallaOu9SgRvSQf7XYml1LubKe/14VDteIFnvWIhcubZiDm3VZsNV9DmK2KFux
+         BMWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729074510; x=1729679310;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MAXpBaMtfWO8UJVVjb65PyHD/dGQ0kmBoOJFKkFJy0M=;
+        b=fveKOvb49z/2Ku8CDm7Sy0GjLWF4WzHaO2IpGkqzg/WKN1MsipRm/ZEGD45Xjju6BX
+         nQGfRcq6A3TKCx6pLDyXL/zpssPGMg36cB7Lvl+1RGwKPalE+qWC7VOCYUqvIroUgCTj
+         E7F9wd0vcZP7BxhS68SBALYdoaYIeJa3agZF9fw5vEiKZ54mMq7CozCVctDm+5peLeCz
+         JwudKRK+K2ewJy7ICvmbbjHkJzaHusXdeahIevMacVicN9M3mWqDG8EUbKjGafPgOnyY
+         39QeFVvc2SuXW+BndsJXKMiOQaQimh/ei6mxC98Vd0TFENpik77c6tPh13rn7ugA3oP4
+         Q/1A==
+X-Forwarded-Encrypted: i=1; AJvYcCVcG0gEKlhNCyND2yEgtHv7ZrwNseag/Y9VF4bIynICrbVtjmZMYx0zdTeJdy2/CLLGfkIHKSNC8rKmeLupbw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzat013FtY7B1/CgWSpgFk0MKmaWJ28RaDSwciEF6XBNhPxA040
+	mH2eoqJBmVsT4ZUKTmE54/6rDMsciJ8xFsYHoYDRneB+8hHy4j3+bkk0+5cKsVs=
+X-Google-Smtp-Source: AGHT+IGtiqjFOVGlArjjfVOfTBmXeHODhday3PR0qenIrPwNidjJwD23eHbV+vCHzblqwLmnxlmcVQ==
+X-Received: by 2002:a05:6512:3c91:b0:539:f807:ada1 with SMTP id 2adb3069b0e04-53a03f97686mr2367940e87.58.1729074510575;
+        Wed, 16 Oct 2024 03:28:30 -0700 (PDT)
+Received: from eriador.lumag.spb.ru (2001-14ba-a0c3-3a00--b8c.rev.dnainternet.fi. [2001:14ba:a0c3:3a00::b8c])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53a0000677fsm402183e87.194.2024.10.16.03.28.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Oct 2024 03:28:30 -0700 (PDT)
+Date: Wed, 16 Oct 2024 13:28:27 +0300
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org, 
+	Kalle Valo <kvalo@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Jeff Johnson <jjohnson@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
+	Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH v2 01/22] dt-bindings: net: wireless: describe the ath12k
+ AHB module
+Message-ID: <qzjgpwemwaknwbs3dwils6kaa5c3inabfvkaryvc32kblzfhy3@6yduooj4dk63>
+References: <20241015182637.955753-1-quic_rajkbhag@quicinc.com>
+ <20241015182637.955753-2-quic_rajkbhag@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-AS-Result: No-10--8.161600-8.000000
-X-TMASE-MatchedRID: mSPDr4jZDFE9S3IiQd+eNULhYg/sa1gs+Vb3woyMZbtUjspoiX02F8+c
-	wCLpvDnE01CjbbHk5lBso/8Nu7eWqFIMRaTXK1BMA9lly13c/gFflOpBqBHTtzUsHjosUACSWfD
-	0boMRR4Mdp4Txl116a82cSlJJpVq0mHQ8ODC8xrYMH4SsGvRsA+rRJDUyDHkIwsR7A2gTdJmv1j
-	/2L7xP1lD3U31Zcw/LTBBYZttKmvw6khM4kbcJpRlckvO1m+JcfS0Ip2eEHnz3IzXlXlpamPoLR
-	4+zsDTtgUicvJ4MChnqDCGTL5wntxilhxfL6BTVKN0vs4WWTMmmiOBdzYSoWmY7eqLvyw0k
-X-TM-AS-User-Approved-Sender: No
-X-TM-AS-User-Blocked-Sender: No
-X-TMASE-Result: 10--8.161600-8.000000
-X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-SNTS-SMTP:
-	A35463E1A97DF16B4076621888CB5B8AA9E0F58099AC491B4A80AEEA2B8E074F2000:8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241015182637.955753-2-quic_rajkbhag@quicinc.com>
 
-Add mt792x_config_mac_addr_list routine in order to set
-the mac address list supported by the driver. Initialize
-wiphy->addresses/n_addresses for mt792x driver
+On Tue, Oct 15, 2024 at 11:56:16PM +0530, Raj Kumar Bhagat wrote:
+> Add device-tree bindings for the ATH12K module found in the IPQ5332
+> device.
+> 
+> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+> ---
+>  .../net/wireless/qcom,ath12k-ahb.yaml         | 293 ++++++++++++++++++
+>  1 file changed, 293 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/wireless/qcom,ath12k-ahb.yaml
 
-Signed-off-by: Hao Zhang <hao.zhang@mediatek.com>
-Signed-off-by: Leon Yen <Leon.Yen@mediatek.com>
-Signed-off-by: Allan Wang <allan.wang@mediatek.com>
----
-v2:
- - Remove Change-Id tag
+Generic comment, please add qcom,ath12k-calibration-variant
 
-v3:
- - Update commit message after fixing gitconfig username format
----
- .../net/wireless/mediatek/mt76/mt7921/init.c  |  1 +
- .../net/wireless/mediatek/mt76/mt7925/init.c  |  1 +
- drivers/net/wireless/mediatek/mt76/mt792x.h   |  3 +++
- .../net/wireless/mediatek/mt76/mt792x_core.c  | 22 +++++++++++++++++++
- 4 files changed, 27 insertions(+)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index d1d64fa7d35d..cdcb002b3094 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -227,6 +227,7 @@ static void mt7921_init_work(struct work_struct *work)
- 
- 	mt76_set_stream_caps(&dev->mphy, true);
- 	mt7921_set_stream_he_caps(&dev->phy);
-+	mt792x_config_mac_addr_list(dev);
- 
- 	ret = mt76_register_device(&dev->mt76, true, mt76_rates,
- 				   ARRAY_SIZE(mt76_rates));
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/init.c b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-index 039949b344b9..ddc654b9ea5e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-@@ -178,6 +178,7 @@ static void mt7925_init_work(struct work_struct *work)
- 
- 	mt76_set_stream_caps(&dev->mphy, true);
- 	mt7925_set_stream_he_eht_caps(&dev->phy);
-+	mt792x_config_mac_addr_list(dev);
- 
- 	ret = mt7925_init_mlo_caps(&dev->phy);
- 	if (ret) {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x.h b/drivers/net/wireless/mediatek/mt76/mt792x.h
-index ab12616ec2b8..10e1eaa52706 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x.h
-@@ -206,6 +206,8 @@ struct mt792x_dev {
- 		struct mt76_phy mphy;
- 	};
- 
-+	struct mac_address macaddr_list[8];
-+
- 	const struct mt76_bus_ops *bus_ops;
- 	struct mt792x_phy phy;
- 
-@@ -414,6 +416,7 @@ int mt792x_mcu_fw_pmctrl(struct mt792x_dev *dev);
- void mt792x_mac_link_bss_remove(struct mt792x_dev *dev,
- 				struct mt792x_bss_conf *mconf,
- 				struct mt792x_link_sta *mlink);
-+void mt792x_config_mac_addr_list(struct mt792x_dev *dev);
- 
- static inline char *mt792x_ram_name(struct mt792x_dev *dev)
- {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt792x_core.c b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-index 042aa8d1b6e7..868cb97fa2ff 100644
---- a/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt792x_core.c
-@@ -916,6 +916,28 @@ int mt792x_load_firmware(struct mt792x_dev *dev)
- }
- EXPORT_SYMBOL_GPL(mt792x_load_firmware);
- 
-+void mt792x_config_mac_addr_list(struct mt792x_dev *dev)
-+{
-+	struct ieee80211_hw *hw = mt76_hw(dev);
-+	struct wiphy *wiphy = hw->wiphy;
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(dev->macaddr_list); i++) {
-+		u8 *addr = dev->macaddr_list[i].addr;
-+
-+		memcpy(addr, dev->mphy.macaddr, ETH_ALEN);
-+
-+		if (!i)
-+			continue;
-+
-+		addr[0] |= BIT(1);
-+		addr[0] ^= ((i - 1) << 2);
-+	}
-+	wiphy->addresses = dev->macaddr_list;
-+	wiphy->n_addresses = ARRAY_SIZE(dev->macaddr_list);
-+}
-+EXPORT_SYMBOL_GPL(mt792x_config_mac_addr_list);
-+
- MODULE_DESCRIPTION("MediaTek MT792x core driver");
- MODULE_LICENSE("Dual BSD/GPL");
- MODULE_AUTHOR("Lorenzo Bianconi <lorenzo@kernel.org>");
 -- 
-2.45.2
-
+With best wishes
+Dmitry
 
