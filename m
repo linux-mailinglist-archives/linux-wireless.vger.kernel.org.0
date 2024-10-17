@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-14160-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14161-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE04C9A297C
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 18:48:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F27BA9A2982
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 18:49:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B23D1C27CE7
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 16:48:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30AAC1C27CAC
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 16:49:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 747EA1DF243;
-	Thu, 17 Oct 2024 16:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02481DF969;
+	Thu, 17 Oct 2024 16:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SmrPRy/B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H8ykIPTN"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489F61DED5B;
-	Thu, 17 Oct 2024 16:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C45F1DF963
+	for <linux-wireless@vger.kernel.org>; Thu, 17 Oct 2024 16:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729183685; cv=none; b=VulxWPzMPDSOiKtqMMR9/z33Ka4ZC5jmTLo+f1yf4Al+WpkoZVxR2KhwRWpNaLLrji6Rvb2S0QzTcfXahQevCCayomh8NoSYW9UZkcuHgsJ7RF93Qsd2ht9F4F8Rqtezf/F1ojhN90tFA2pD0Ds21aeNUf8CXJ7TZ2+0yPtFC9s=
+	t=1729183719; cv=none; b=D2TWqyFyyRiTs8LjBlvrCD5aH//JHYjzl7E/7r66NtDsaW+mT90YznYxiC+WQ47jf1K7cIzcI2/jhqXA7+FJNpT1Xbe9jVscmjeNYfLNI7OoJg28UjEKS2KATeSyrSBipqpTAxOaewgvPbd4UEmiPvRKAmnt2n5mvaQErCevx64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729183685; c=relaxed/simple;
-	bh=1lxOlYEcYOR8eSfFluOEN1NiPrjmOzuMGs0H0pgeIuI=;
+	s=arc-20240116; t=1729183719; c=relaxed/simple;
+	bh=hcYT01pKLpBZQ5GmZQFQAkEg785xPs5WuCIRK6z4FLk=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=tsSIFCh+0zkUDC7FFjpOWk6fmpN5Xy8rhATA70ZhcqhrI/M2FxTm9tVntETvao3MMNHEQv4cI8R6nkTzKOB2FPLPVch/5Vjo/s4E1KrLKZoWYkCp/6Hu7DFQTNlzZv94r3LMKzCNKc3QZ+01s54pBjhpPtVBQT+Y9p/0Rom+Vwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SmrPRy/B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB28C4CEC3;
-	Thu, 17 Oct 2024 16:48:01 +0000 (UTC)
+	 Cc:Message-ID:Date; b=fWZEMQVhp+9JQJdyeN9QX4jQ+46mi9cCZ3KHDPSMkThK1uwF+9B72QLgM4XeblcvzouAR/AywTmL10ZlJxbqdMC6lcdXqdjHWt/ftrUsh/mkNDT302+Yo3WwLN8tWkd4JhPr23lN8JZrzeV/ikfAoxCZHQusFpMqSH2lM+r3kFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H8ykIPTN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 475C6C4CECD;
+	Thu, 17 Oct 2024 16:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729183684;
-	bh=1lxOlYEcYOR8eSfFluOEN1NiPrjmOzuMGs0H0pgeIuI=;
+	s=k20201202; t=1729183719;
+	bh=hcYT01pKLpBZQ5GmZQFQAkEg785xPs5WuCIRK6z4FLk=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=SmrPRy/B7ogdyZ6IDnLACoZecv9uC4jXbGQuxsDdhe9mG+sGQptUjaxEs9MSKkvn7
-	 zLUPyzThXEyMNbwpUJr89T4LEd5JbWD/jQeWkQF+OqJRaiwt+ICUWsbDeAP/ptzFso
-	 IjyE+Wbu0EvHEhR8LwXXc8Od7HLbPhj2A8ObNrp8j6ZnrSRp6HeKVEdlBqMnQ67wjw
-	 5C+ndzVSfUDzegddcBcFL5HZE3i80nmsmdr3zXyofwWnUsPp1cBJ/KUi+6peHzYuIA
-	 h939D1L35OmMxasGtkLYwRnldFkU3AmtjDhsBiGNLmCVs6+IerXQ3OsKFvNQbl5Swl
-	 GSwAiBrvsFkiQ==
+	b=H8ykIPTNPogagKrwXtdbVhGLpvv3oOS5PgYzXA90EBQQIqbL6R+oSHftbqJEMHNPU
+	 2cnNePME4dfnMnLfR79qz910X08U4xMMIy1qLsdng6kfsEXHi3tVgxxMyduBdqYO9N
+	 lDJvYx/mBcO9PvtppPwOpiJeEV5eiuBJMWPzkrQsnCwHkoByLZefgFtgPFwQKR0z8I
+	 09OUkm+Juko1T8f9P/Hi9rCze3DoI0/+xpjSc4oH1c+ozbRsLwWiPMvNOjiOBInzUh
+	 UN3Qykj3uW555CMSrEAI35zQ+RCyPX972Mtuc/GZusuoAZ+hrZ30SSf07jmrU0ez7y
+	 jrhhcz9wlHA7g==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,48 +49,31 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v8 1/7] dt-bindings: wireless: wilc1000: Document WILC3000
- compatible string
+Subject: Re: [1/2] wifi: mwifiex: cleanup struct mwifiex_auto_tdls_peer
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20241004114551.40236-1-marex@denx.de>
-References: <20241004114551.40236-1-marex@denx.de>
-To: Marek Vasut <marex@denx.de>
-Cc: linux-wireless@vger.kernel.org, Marek Vasut <marex@denx.de>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- "David S. Miller" <davem@davemloft.net>,
- Adham Abozaeid <adham.abozaeid@microchip.com>,
- Ajay Singh <ajay.kathat@microchip.com>,
- =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>,
- Conor Dooley <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
- devicetree@vger.kernel.org, netdev@vger.kernel.org
+In-Reply-To: <20240927084317.96687-1-dmantipov@yandex.ru>
+References: <20240927084317.96687-1-dmantipov@yandex.ru>
+To: Dmitry Antipov <dmantipov@yandex.ru>
+Cc: Brian Norris <briannorris@chromium.org>, linux-wireless@vger.kernel.org,
+ Dmitry Antipov <dmantipov@yandex.ru>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <172918367985.970100.15233672330515513203.kvalo@kernel.org>
-Date: Thu, 17 Oct 2024 16:48:01 +0000 (UTC)
+Message-ID: <172918371669.970100.4257266161703633530.kvalo@kernel.org>
+Date: Thu, 17 Oct 2024 16:48:38 +0000 (UTC)
 
-Marek Vasut <marex@denx.de> wrote:
+Dmitry Antipov <dmantipov@yandex.ru> wrote:
 
-> Document compatible string for the WILC3000 chip. The chip is similar
-> to WILC1000, except that the register layout is slightly different and
-> it does not support WPA3/SAE.
+> Remove set but otherwise unused 'do_setup' member of
+> 'struct mwifiex_auto_tdls_peer'. Compile tested only.
 > 
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> Signed-off-by: Marek Vasut <marex@denx.de>
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 
-7 patches applied to wireless-next.git, thanks.
+2 patches applied to wireless-next.git, thanks.
 
-1b292a161cfb dt-bindings: wireless: wilc1000: Document WILC3000 compatible string
-719e469eb9a2 wifi: wilc1000: Clean up usage of wilc_get_chipid()
-0a6ea2e235ef wifi: wilc1000: Fold chip_allow_sleep()/chip_wakeup() into wlan.c
-1241c5650ff7 wifi: wilc1000: Fill in missing error handling
-577c04fc3b8e wifi: wilc1000: Fold wilc_create_wiphy() into cfg80211.c
-fbdf0c5248dc wifi: wilc1000: Register wiphy after reading out chipid
-e1408c115ef9 wifi: wilc1000: Add WILC3000 support
+d0847e16ca2a wifi: mwifiex: cleanup struct mwifiex_auto_tdls_peer
+6dc944577254 wifi: mwifiex: cleanup struct mwifiex_private
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20241004114551.40236-1-marex@denx.de/
+https://patchwork.kernel.org/project/linux-wireless/patch/20240927084317.96687-1-dmantipov@yandex.ru/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
