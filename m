@@ -1,124 +1,100 @@
-Return-Path: <linux-wireless+bounces-14142-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14143-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89D4F9A1BFF
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 09:51:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 315299A1C9B
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 10:10:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4020C1F23807
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 07:51:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95BE61F27213
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 08:10:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 671691D0149;
-	Thu, 17 Oct 2024 07:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3295F1D79B4;
+	Thu, 17 Oct 2024 08:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nnuHR7jw"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="c1Vu56Og"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F4671B81CC;
-	Thu, 17 Oct 2024 07:51:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D5F71D7E47;
+	Thu, 17 Oct 2024 08:06:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729151477; cv=none; b=rINgb2ge31/2/kagIYNBLaP1TzrUm5MtV3Blq/TBMor0gns2MZyQkHl3rGBi/O8HEmrtbugIBKfuvmQ8+G+Miy17063D6nCz3hAxMNGHCwofJUZ9zgANle+jWCKCatv1rrIKGo0jF7p55LMeQYOc+GgXvYfm8ivO60uqddpXYu8=
+	t=1729152372; cv=none; b=ZaDhi+hs9T/FgS3qv26jZ7iEh/EJEBp81j0fWhbbHQl7NCl+3WemT9d1cormpXpfldh9f9rjWaTb5Dp44qLZS3RVQfV3ErYiH1jZvWraek4A8772PMU4mCwOykVrp63ZTqsBknGwT1Sg2hWWqhMH0Xf4oo9ggLhDyJnNBdlnWI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729151477; c=relaxed/simple;
-	bh=S7jKXDCTV0a7mjHjenpVgcs/7uJFTwTY0Mo7sljId2E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QxtspXTxzLbQXZ2mnOYWzLKQX7p3BEDU1tdGN6esBT1HtxghZ9N1e8bMkJm9Of2c0WlhBiWa6M4+lwr6D922xnIFgPiBemwjHWgJE8DKjAVAN+j12uQ6SaUd5l4k2keHbB0Naffttrtfod6Rp9xL4xoNbLJomx1TGUDWnEsvnDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nnuHR7jw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65243C4CEC3;
-	Thu, 17 Oct 2024 07:51:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729151476;
-	bh=S7jKXDCTV0a7mjHjenpVgcs/7uJFTwTY0Mo7sljId2E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nnuHR7jwc5IT9MUnpqTkftP717SgFq2tdbzrAXLJr0NNXMPwkfDRz0DOmpmLKdpfB
-	 vI3dj/r0aj6unSib+Ajn75Z/dVWMfwwAZLpYTqgTPN94WoXpHKZzvx4BCkQqYmF+E5
-	 sR1NtbnU+Y91mNgozQBJkBSYpH9pnxU2CjcuXGV01SwAIff4HHp3dH6d6CsWINCYJa
-	 EKqLVtbTJ61f/74WcKhy8To0jm0Hrduf43nC2norZ95y8fry4OQV6dQexDDbgqGFHD
-	 h/Ylk92vVrLZrg8kZjQAjS9wRS6OBoMYHYqrTeVcuOx4jHmwdkCBhDaUoptKso9F4D
-	 3rAyz4IDimhmg==
-Date: Thu, 17 Oct 2024 09:51:01 +0200
-From: Niklas Cassel <cassel@kernel.org>
-To: Philipp Stanner <pstanner@redhat.com>
-Cc: Damien Le Moal <dlemoal@kernel.org>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Basavaraj Natikar <basavaraj.natikar@amd.com>,
-	Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Alex Dubov <oakad@yahoo.com>,
-	Sudarsana Kalluru <skalluru@marvell.com>,
-	Manish Chopra <manishc@marvell.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rasesh Mody <rmody@marvell.com>, GR-Linux-NIC-Dev@marvell.com,
-	Igor Mitsyanko <imitsyanko@quantenna.com>,
-	Sergey Matyukevich <geomatsi@gmail.com>,
-	Kalle Valo <kvalo@kernel.org>, Sanjay R Mehta <sanju.mehta@amd.com>,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Jon Mason <jdmason@kudzu.us>, Dave Jiang <dave.jiang@intel.com>,
-	Allen Hubbe <allenbh@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Ricky Wu <ricky_wu@realtek.com>, Al Viro <viro@zeniv.linux.org.uk>,
-	Breno Leitao <leitao@debian.org>, Kevin Tian <kevin.tian@intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mostafa Saleh <smostafa@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Yi Liu <yi.l.liu@intel.com>, Christian Brauner <brauner@kernel.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Ye Bin <yebin10@huawei.com>,
-	Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Rui Salvaterra <rsalvaterra@gmail.com>, linux-ide@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
-	netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
-	ntb@lists.linux.dev, linux-pci@vger.kernel.org, kvm@vger.kernel.org,
-	xen-devel@lists.xenproject.org, linux-sound@vger.kernel.org
-Subject: Re: [PATCH 09/13] ata: Use always-managed version of pci_intx()
-Message-ID: <ZxDB5TOb-sgiZfXg@ryzen.lan>
-References: <20241015185124.64726-1-pstanner@redhat.com>
- <20241015185124.64726-10-pstanner@redhat.com>
+	s=arc-20240116; t=1729152372; c=relaxed/simple;
+	bh=6pcCCpe8Vn1r9JfblpBBw9bgqc9ZlKKQPhCtJn1Um0Y=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QQlVUY7JHMPc6hJ+IqurV2/y6xSYlPiqBJizwTbwiBLr7X7OFSPrXspxOcfUVoo2fSGBcRxHDt94EWYVSMV4UwIfwLEUFs/XQQ2EV6KFZYqOw5NedZ+nhTqOQhAAvuSvB2ZoymuhxXw092VM8zRHtwDnvVdlW/IVBsDm8Eko47U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=c1Vu56Og; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=6pcCCpe8Vn1r9JfblpBBw9bgqc9ZlKKQPhCtJn1Um0Y=;
+	t=1729152370; x=1730361970; b=c1Vu56OgEaxDf7Qfh4ZopfRvWW8sges9Cb+nrrmdpZBlmaY
+	WcbZ81ZKdpp84huy4g77r5oc1EOfP7PVPyjRME2FmuDa/lWSjuvUNxXTrOS99iS2YPlbYmzyj7rns
+	q20/ytY+DYHhA81x5ssOY5QrwJIv7MW1t+G2Dj9NEH74FWl2YEerI0RveRzT4X+VrBhJi+PDH+1Qx
+	1yE30Q1vkPOfLjPCUk2zrBJ5vjzKN54GCkJdGWC4jZ1MeKRygKYtZK8ykiimPlaRHfLW4PjGFnz+4
+	4a4xIBW9vWcOMXwzFk87RXSFG5jv3pCHzLbqq9j5c+A+8d/mHJ/3rm5Iecf5CliQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1t1LWI-0000000Dnhb-3AtF;
+	Thu, 17 Oct 2024 10:06:06 +0200
+Message-ID: <a4e27207087bc94ce120a1e1c54742f97c9ad046.camel@sipsolutions.net>
+Subject: Re: [PATCH v1 wl-next 1/3] wifi: wext: Move wext_nlevents to
+ net->gen[].
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Kuniyuki Iwashima <kuniyu@amazon.com>
+Cc: alexandre.ferrieux@gmail.com, kuni1840@gmail.com, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Date: Thu, 17 Oct 2024 10:06:06 +0200
+In-Reply-To: <20241016235850.29495-1-kuniyu@amazon.com>
+References: 
+	<f677361da9e1e4bb032e62301255ab705252e016.camel@sipsolutions.net>
+	 <20241016235850.29495-1-kuniyu@amazon.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241015185124.64726-10-pstanner@redhat.com>
+X-malware-bazaar: not-scanned
 
-On Tue, Oct 15, 2024 at 08:51:19PM +0200, Philipp Stanner wrote:
-> pci_intx() is a hybrid function which can sometimes be managed through
-> devres. To remove this hybrid nature from pci_intx(), it is necessary to
-> port users to either an always-managed or a never-managed version.
-> 
-> All users in ata enable their PCI-Device with pcim_enable_device(). Thus,
-> they need the always-managed version.
-> 
-> Replace pci_intx() with pcim_intx().
-> 
-> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-> ---
+On Wed, 2024-10-16 at 16:58 -0700, Kuniyuki Iwashima wrote:
+>=20
+> Btw, why WEXT cannot be module ?
 
-Acked-by: Niklas Cassel <cassel@kernel.org>
+TBH, I don't remember well. I feel like I may have tried ~20 years ago,
+but hit issues, and just made the built-in parts minimal. Might've been
+we didn't have net->gen yet (did we? I don't recall), but I wouldn't be
+surprised if there are other issues with it as well with ioctl linkage
+and /proc and whatever else it does.
+
+Not sure it's worth trying, WEXT really ought to be on the way out now,
+and with WiFi7 (and higher) devices it's completely disabled.
+
+
+
+Btw, if you really wanted to, I suspect you _could_ use net->gen[], make
+the .size only a pointer size and then allocate the real data only if a
+wireless capable device shows up in the namespace? Then that'd actually
+be a win (vs. the other discussion we just had above) since wireless
+devices are probably almost never in a netns. Not sure you'd be able to
+easily free it when the last wifi capable devices leaves a netns, but
+that probably also doesn't matter.
+
+I don't know though how much the size of the netns matters for the
+scalability issue you have in mind, seems the O(N) time behaviour here
+is more problematic than a handful of bytes.
+
+johannes
 
