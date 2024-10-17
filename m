@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-14159-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14160-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49E8C9A298E
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 18:50:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE04C9A297C
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 18:48:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E14E0B2CB0C
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 16:47:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B23D1C27CE7
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 16:48:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84DF61DF74E;
-	Thu, 17 Oct 2024 16:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 747EA1DF243;
+	Thu, 17 Oct 2024 16:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QWKAXmnq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SmrPRy/B"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6176E1DF742
-	for <linux-wireless@vger.kernel.org>; Thu, 17 Oct 2024 16:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489F61DED5B;
+	Thu, 17 Oct 2024 16:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729183643; cv=none; b=M7Bh/VebspS1Af5dajLF2k8bITRwxdcwUOjNvcbeyISYXc30/hXHBQi+wCIvLPvwWhHY32quHdLv70xjKGXpevri38d6XRuyv5pg5L69bAnX8fhhPmpaCobjObXXvkJ2GLEE19ZEF6Z9XAnNJIWW37dzwPgONviqOsmrSgmKJck=
+	t=1729183685; cv=none; b=VulxWPzMPDSOiKtqMMR9/z33Ka4ZC5jmTLo+f1yf4Al+WpkoZVxR2KhwRWpNaLLrji6Rvb2S0QzTcfXahQevCCayomh8NoSYW9UZkcuHgsJ7RF93Qsd2ht9F4F8Rqtezf/F1ojhN90tFA2pD0Ds21aeNUf8CXJ7TZ2+0yPtFC9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729183643; c=relaxed/simple;
-	bh=eBS/nkpl5OjhXd5/RKCyJym9ZjZ6BmsHfrVAXeTZ7Ac=;
+	s=arc-20240116; t=1729183685; c=relaxed/simple;
+	bh=1lxOlYEcYOR8eSfFluOEN1NiPrjmOzuMGs0H0pgeIuI=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=ffBozud2MOblckpQZDAwWaZ+8G4D/85pe5yi/0GJgoAqpbVxEGaYVdlifd+ILfzl9NbyU5VmMh8f5+BvWgnq0vKbmjbwT2H7oLuqNfQBd/ROurcmkoDa1FgBKswXh+Lfb7wB+5hGr6kGYXFtwCQusHTJksj78EDVwyS6Qi0p6lA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QWKAXmnq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0262C4CEC3;
-	Thu, 17 Oct 2024 16:47:21 +0000 (UTC)
+	 Cc:Message-ID:Date; b=tsSIFCh+0zkUDC7FFjpOWk6fmpN5Xy8rhATA70ZhcqhrI/M2FxTm9tVntETvao3MMNHEQv4cI8R6nkTzKOB2FPLPVch/5Vjo/s4E1KrLKZoWYkCp/6Hu7DFQTNlzZv94r3LMKzCNKc3QZ+01s54pBjhpPtVBQT+Y9p/0Rom+Vwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SmrPRy/B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB28C4CEC3;
+	Thu, 17 Oct 2024 16:48:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729183643;
-	bh=eBS/nkpl5OjhXd5/RKCyJym9ZjZ6BmsHfrVAXeTZ7Ac=;
+	s=k20201202; t=1729183684;
+	bh=1lxOlYEcYOR8eSfFluOEN1NiPrjmOzuMGs0H0pgeIuI=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=QWKAXmnqHJ6/iUEDc7huTEThYUhaPsMS/9uq+01K7McstCCZVsE4ELqvRUK5+eD4n
-	 GcsSvo05wwR8mU8Gt6Y5AdgDC8qpMqYaOzEv2eFxwaBiVN3vOLH+l5f8S7vHLM4S/a
-	 uZCwt4C3nihnu16KXdUM8jGMru1oh08VzB/HD32mIF1Bz+NaL1aPPgMR0JRHt8gjP+
-	 0sZZu9lZFcojyWv5Pb1VPY56hXCJ9tHOErEuxl8UiMkosjdGXInbMvGLVGpb1wS7+a
-	 i3W0iRQnttjWbIvH3L6E4bfgdhJMhhOPjfb0CFW28HFvJnkZZOg5jk4/FAwB8wdEmj
-	 N7uH7X1dsDA4g==
+	b=SmrPRy/B7ogdyZ6IDnLACoZecv9uC4jXbGQuxsDdhe9mG+sGQptUjaxEs9MSKkvn7
+	 zLUPyzThXEyMNbwpUJr89T4LEd5JbWD/jQeWkQF+OqJRaiwt+ICUWsbDeAP/ptzFso
+	 IjyE+Wbu0EvHEhR8LwXXc8Od7HLbPhj2A8ObNrp8j6ZnrSRp6HeKVEdlBqMnQ67wjw
+	 5C+ndzVSfUDzegddcBcFL5HZE3i80nmsmdr3zXyofwWnUsPp1cBJ/KUi+6peHzYuIA
+	 h939D1L35OmMxasGtkLYwRnldFkU3AmtjDhsBiGNLmCVs6+IerXQ3OsKFvNQbl5Swl
+	 GSwAiBrvsFkiQ==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -48,40 +48,49 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] wifi: wilc1000: Keep slot powered on during
- suspend/resume
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v8 1/7] dt-bindings: wireless: wilc1000: Document WILC3000
+ compatible string
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240926195113.2823392-1-marex@denx.de>
-References: <20240926195113.2823392-1-marex@denx.de>
+In-Reply-To: <20241004114551.40236-1-marex@denx.de>
+References: <20241004114551.40236-1-marex@denx.de>
 To: Marek Vasut <marex@denx.de>
 Cc: linux-wireless@vger.kernel.org, Marek Vasut <marex@denx.de>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Adham Abozaeid <adham.abozaeid@microchip.com>,
  Ajay Singh <ajay.kathat@microchip.com>,
  =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Conor Dooley <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+ devicetree@vger.kernel.org, netdev@vger.kernel.org
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <172918363989.970100.14147823876508252072.kvalo@kernel.org>
-Date: Thu, 17 Oct 2024 16:47:21 +0000 (UTC)
+Message-ID: <172918367985.970100.15233672330515513203.kvalo@kernel.org>
+Date: Thu, 17 Oct 2024 16:48:01 +0000 (UTC)
 
 Marek Vasut <marex@denx.de> wrote:
 
-> The WILC3000 can suspend and enter low power state. According to local
-> measurements, the WILC3000 consumes the same amount of power if the slot
-> is powered up and WILC3000 is suspended, and if the WILC3000 is powered
-> off. Use the former option, keep the WILC3000 powered up as that allows
-> for things like WoWlan to work.
+> Document compatible string for the WILC3000 chip. The chip is similar
+> to WILC1000, except that the register layout is slightly different and
+> it does not support WPA3/SAE.
 > 
-> Note that this is tested on WILC3000 only, not on WILC1000 .
-> 
+> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 > Signed-off-by: Marek Vasut <marex@denx.de>
-> Tested-by: Alexis Lothoré <alexis.lothore@bootlin.com>
 
-Patch applied to wireless-next.git, thanks.
+7 patches applied to wireless-next.git, thanks.
 
-98ca3178ad79 wifi: wilc1000: Keep slot powered on during suspend/resume
+1b292a161cfb dt-bindings: wireless: wilc1000: Document WILC3000 compatible string
+719e469eb9a2 wifi: wilc1000: Clean up usage of wilc_get_chipid()
+0a6ea2e235ef wifi: wilc1000: Fold chip_allow_sleep()/chip_wakeup() into wlan.c
+1241c5650ff7 wifi: wilc1000: Fill in missing error handling
+577c04fc3b8e wifi: wilc1000: Fold wilc_create_wiphy() into cfg80211.c
+fbdf0c5248dc wifi: wilc1000: Register wiphy after reading out chipid
+e1408c115ef9 wifi: wilc1000: Add WILC3000 support
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240926195113.2823392-1-marex@denx.de/
+https://patchwork.kernel.org/project/linux-wireless/patch/20241004114551.40236-1-marex@denx.de/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
