@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-14181-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14182-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5381A9A2FC4
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 23:24:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9315D9A2FD0
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 23:25:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 182F32867C3
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 21:24:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DB871F25D0A
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 21:25:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B691D271D;
-	Thu, 17 Oct 2024 21:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E7701D3185;
+	Thu, 17 Oct 2024 21:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="gEUCZayO"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="KyMccSja"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418751D0496;
-	Thu, 17 Oct 2024 21:24:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB8B1D3182;
+	Thu, 17 Oct 2024 21:25:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729200291; cv=none; b=INxWL5/xXP4XxXesWUYnu7w6IC8SM9/HT1lUnvGrZA9Xishu5DKLfWxBUn9nOb71LgBsl9bsDKS84GgWCltcZ5khrJqvykDbYkP/GQgf+rLtyj3OLFLrOwZhyKS+8t0U6y90bE29894ztGwV2qXBjgJxCQafQpPqUMynncwcLqU=
+	t=1729200342; cv=none; b=YTL18F6zev7Or4tfmNlULQb6fjNwEBxqOdEQARIjFeCqctZkw+F2tSrd9zHLHCF8ijRqg0MN/Lpf6GoLBwC0rmwbU07ezVwrhd+RF/qPbIhuBRFB1Cy48VSB4DXr1FO1g/zRkBXiJRxt8lDCgyBujkGlnf8D3FvYNRjXxdwX4mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729200291; c=relaxed/simple;
-	bh=4WLylA54PqHzVxIYBP42QkGZxrXkEsWJPLBqN24fwJk=;
+	s=arc-20240116; t=1729200342; c=relaxed/simple;
+	bh=suDF/ADSxNICs9pQ/ec+TobPhgWJtyvEXu2OKVYrk+8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=icTR3i5PzpAaHkXPMCaiCT3rqnmC8HHBd0fpDUH+NfOn9dzHji0GkvcRm6wEfveWFYnKKp6ANXr4IxEcjRIPx6IXgBFHiV0x2ROSIw9GIFKNFJ3dkaF6vc9E6S1lppHosNIxuOiDOHdPiEy41sLjYkcadUFyUe912hZfdLDw/M0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=gEUCZayO; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:Content-Type; b=mWGuvcMXWQE65Yg75yvnHH2hSr/7W2ZuIxGz9NTPxcOwTEej/djtOVu0LgkjW8Xwnyj2Zh4/1/0rbrPYklMc/7ne9R+CdvmZgCHBSjCo1BQEJ/ciHW8XXXp3E5oL6fQMKnwjeFHWrlUJ8WZ9Yq9lcQuAR9yZpU4J1kk3meqg7NM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=KyMccSja; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49HKJBAT027126;
-	Thu, 17 Oct 2024 21:24:32 GMT
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49HHEWT0000489;
+	Thu, 17 Oct 2024 21:25:30 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	EcSHCx2JQq3nN+Y3bskrGaIP8pxhfHO/tg8J4qfzDYw=; b=gEUCZayO0u3f8+aJ
-	Z0GHNNfEq8TG9jZ2RXoDrpgx76HWegY8SBLeQP1WV7TlVl8ubaShSESiFnr5VOhO
-	24CnHbHB/yAs3QJEShtlY43qiYdWXB+gyE4hOZA7UJRcMW4Pz3aThRMFUjma1meq
-	DBpw/rgMVF9yI8Ht8gXqUoiMjGg4/n8Z5/70ZbEwMuQRI38xAPDQlBNJmCB0QywF
-	OfDpAZw8xn2t4PRx3yT4onOykE4z6zqivRxtsCntfEbvvC5dQNg0sUIeQ/8ZUYdY
-	brOmKZDhan877gMXF68S5kloxFY85ZyrhgVSAygPxnwxkteYJmyXn1PwpvH34Vez
-	hQjzoQ==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42ay8ja2kc-1
+	nXiMqZVzQS5lxXD/YXvDV9jZB0iT+aslMiGaiQVmRdw=; b=KyMccSja+Jzpqf0M
+	ShCjjsIrzEDTD+ouG+/2pJX+Cf4ZwcCBdWyFMhkcjcDvfp/LxqxsMB5gOMtgbOiU
+	bJ92cxSmUKFUngondzCXl+XC2OWYkKRl++IBKLJbvJ7kgE+U3DP/iVEXQSjWVk/S
+	SdsstywsV6LFLqyrJguSl0ymEGIhYihlOOy9NYqo0vLyRevqgbxfCBDYfLowCRUC
+	SVgRjOFbMCXlG24b6p1zK9dpZeIZkyN153I4YvvaZ30V1xTHsqnGg4EE1w+k3eZp
+	f5k8sYPvATTmpLAaWi/aeQ2FGQRnA3ChBHLfV61F0bRTPGCbzZOdmYlfWUQ25qUd
+	tFCoWQ==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42a8nq6435-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 17 Oct 2024 21:24:32 +0000 (GMT)
+	Thu, 17 Oct 2024 21:25:29 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49HLOUBM015333
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49HLPSVm007469
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 17 Oct 2024 21:24:30 GMT
+	Thu, 17 Oct 2024 21:25:28 GMT
 Received: from [10.48.241.64] (10.49.16.6) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 17 Oct
- 2024 14:24:30 -0700
-Message-ID: <3ea462fe-3028-44c1-9be4-3d973d202bee@quicinc.com>
-Date: Thu, 17 Oct 2024 14:24:29 -0700
+ 2024 14:25:28 -0700
+Message-ID: <9e314a29-69a3-45b3-9d70-b86075582b23@quicinc.com>
+Date: Thu, 17 Oct 2024 14:25:27 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,67 +65,75 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] wifi: ath10k: Flush only requested txq in
- ath10k_flush()
+Subject: Re: [PATCH 0/2] Improve ath10k flush queue mechanism
 To: Remi Pommarel <repk@triplefau.lt>, <ath10k@lists.infradead.org>,
         <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
         Cedric
  Veilleux <veilleux.cedric@gmail.com>
 References: <cover.1728741827.git.repk@triplefau.lt>
- <3baf9565d72291a0b730d9a53fc1ee9610dcc91f.1728741827.git.repk@triplefau.lt>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
 Content-Language: en-US
-In-Reply-To: <3baf9565d72291a0b730d9a53fc1ee9610dcc91f.1728741827.git.repk@triplefau.lt>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <cover.1728741827.git.repk@triplefau.lt>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: vyzmtg9wNEvgzaCCeMrotrhKGEchehq4
-X-Proofpoint-ORIG-GUID: vyzmtg9wNEvgzaCCeMrotrhKGEchehq4
+X-Proofpoint-ORIG-GUID: TJtxeNbv4Rpw6SF0azI50sDIvDG48nnn
+X-Proofpoint-GUID: TJtxeNbv4Rpw6SF0azI50sDIvDG48nnn
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 impostorscore=0
- priorityscore=1501 lowpriorityscore=0 suspectscore=0 adultscore=0
- mlxscore=0 malwarescore=0 bulkscore=0 spamscore=0 clxscore=1015
- mlxlogscore=929 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ malwarescore=0 impostorscore=0 mlxlogscore=278 priorityscore=1501
+ suspectscore=0 adultscore=0 spamscore=0 bulkscore=0 clxscore=1015
+ mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2409260000 definitions=main-2410170144
 
 On 10/12/2024 7:13 AM, Remi Pommarel wrote:
-> The ieee80211 flush callback can be called to flush only part of all hw
-> queues. The ath10k's flush callback implementation (i.e. ath10k_flush())
-> was waiting for all pending frames of all queues to be flushed ignoring
-> the queue parameter. Because only the queues to be flushed are stopped
-> by mac80211, skb can still be queued to other queues meanwhile. Thus
-> ath10k_flush() could fail (and wait 5sec holding ar->conf lock) even if
-> the requested queues are flushed correctly.
+> It has been reported [0] that a 3-4 seconds (actually up to 5 sec) of
+> radio silence could be observed followed by the error below on ath10k
+> devices:
 > 
-> A way to reproduce the issue is to use two different APs because
-> each vdev has its own hw queue in ath10k. Connect STA0 to AP0 and STA1
-> to AP1. Then generate traffic from AP0 to STA0 and kill STA0 without
-> clean disassociation frame (e.g. unplug power cable, reboot -f, ...).
-> Now if we were to flush AP1's queue, ath10k_flush() would fail (and
-> effectively block 5 seconds with ar->conf or even wiphy's lock held)
-> with the following warning:
+>  ath10k_pci 0000:04:00.0: failed to flush transmit queue (skip 0 ar-state 1): 0
 > 
->  ath10k_pci 0000:01:00.0: failed to flush transmit queue (skip 0 ar-state 2): 0
+> This is due to how the TX queues are flushed in ath10k. When a STA is
+> removed, mac80211 need to flush queues [1], but because ath10k does not
+> have a lightweight .flush_sta operation, ieee80211_flush_queues() is
+> called instead effectively blocking the whole queue during the drain
+> causing this radio silence. Also because ath10k_flush() waits for all
+> queued to be emptied, not only the flushed ones it could more easily
+> take up to 5 seconds to finish making the whole situation worst.
 > 
-> Wait only for pending frames of the requested queues to be flushed in
-> ath10k_flush() to avoid that long blocking.
+> The first patch of this series adds a .flush_sta operation to flush only
+> specific STA traffic avoiding the need to stop whole queues and should
+> be enough in itself to fix the reported issue.
 > 
-> Reported-by: Cedric Veilleux <veilleux.cedric@gmail.com>
+> The second patch of this series is a proposal to improve ath10k_flush so
+> that it will be less likely to timeout waiting for non related queues to
+> drain.
+> 
+> The abose kernel warning could still be observed (e.g. flushing a dead
+> STA) but should be now harmless.
+> 
+> [0]: https://lore.kernel.org/all/CA+Xfe4FjUmzM5mvPxGbpJsF3SvSdE5_wgxvgFJ0bsdrKODVXCQ@mail.gmail.com/
+> [1]: commit 0b75a1b1e42e ("wifi: mac80211: flush queues on STA removal")
+> 
+> Remi Pommarel (2):
+>   wifi: ath10k: Implement ieee80211 flush_sta callback
+>   wifi: ath10k: Flush only requested txq in ath10k_flush()
+> 
+>  drivers/net/wireless/ath/ath10k/core.h   |  4 ++
+>  drivers/net/wireless/ath/ath10k/htt.h    | 11 +++-
+>  drivers/net/wireless/ath/ath10k/htt_tx.c | 50 +++++++++++++++-
+>  drivers/net/wireless/ath/ath10k/mac.c    | 76 ++++++++++++++++++++----
+>  drivers/net/wireless/ath/ath10k/txrx.c   |  5 +-
+>  5 files changed, 129 insertions(+), 17 deletions(-)
+> 
+LGTM wit a few nits.
+Hope the Qualcomm ath10k folks review this.
 
-WARNING:BAD_REPORTED_BY_LINK: Reported-by: should be immediately followed by Closes: with a URL to the report
-
-> Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-> ---
->  drivers/net/wireless/ath/ath10k/htt.h    |  7 +++--
->  drivers/net/wireless/ath/ath10k/htt_tx.c | 18 ++++++++++---
->  drivers/net/wireless/ath/ath10k/mac.c    | 33 +++++++++++++++++-------
->  drivers/net/wireless/ath/ath10k/txrx.c   |  2 +-
->  4 files changed, 44 insertions(+), 16 deletions(-)
-
+/jeff
 
