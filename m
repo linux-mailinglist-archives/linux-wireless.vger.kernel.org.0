@@ -1,163 +1,109 @@
-Return-Path: <linux-wireless+bounces-14133-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14134-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30BC59A1943
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 05:20:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 401B49A1B22
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 08:57:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD682B25690
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 03:20:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0432528984F
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 06:57:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70EBF13A3E4;
-	Thu, 17 Oct 2024 03:20:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404B61991C3;
+	Thu, 17 Oct 2024 06:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k28sRFDO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S4WYBpTA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11399137C35;
-	Thu, 17 Oct 2024 03:19:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8389199955;
+	Thu, 17 Oct 2024 06:57:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729135201; cv=none; b=oRB+P86b/v0TwOLh3TZNioJyB+TLbIG+IBhwgf5VhXpuHfPxNnlhYfxg1OIqX4lzloQtFQuSr1ft4LjFoMjDSPgON4S6YV9EAwYlsH7hfS6NQvhnYkBNsIbdEGEqeuZ/cgzvJ8kjFnu5aZ97otCGd1AKdPPy/RZieozA2OTJIjo=
+	t=1729148233; cv=none; b=HN2bJzumIHHn7sBhYS86Cf6+7mUHkwfSGPkyH8xGlIWd8tMDY4/FUSoywY5f+iKNxRLlzM7Vl5qICsI7SQlp8vahLBGhv3PEhkNMk75q00d7o3La5YPo/9z6MBuBUF3b29iLfajSdIKy02j0PWkYpC/mBC0iAfLgmPDSeCCGqNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729135201; c=relaxed/simple;
-	bh=QpR4Zii1U6m84VnWdsjB3ejPAaWaCvzFThm/qYtJfJA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=scZrIORFu/haEnRy5pf9Ui1vxSBgx4wOF/J/2WlUkipe1sdzHgekKj6ySS60Wxvq9w9CPDLeKytXW7P9fasPn/xL0qyBX6eeLS+DmDeeuEvW1wSdKuMjUrOEPnn8+rs00rbcea2eIVnaGl4V44R5lTpoNFhvidE3xN4R+T9YpBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k28sRFDO; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729135197; x=1760671197;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=QpR4Zii1U6m84VnWdsjB3ejPAaWaCvzFThm/qYtJfJA=;
-  b=k28sRFDOR7YipLcSmUFD6kAgW6YpSd6JTvvARRVbL13pGpsUlwFYwBwd
-   9NdGw/W8nfj1Y9LDwRAblx2H3ehIFg0nu4A4okjFhWwpKn060zca/jyVR
-   ygJs53LVxTzCedHNkFe4aSGgNkt7SNkh3VdewTGiFhECB3xQlz+STNjEH
-   DLVPhyb72hzVE1eaVfcWp8MpFpIYkHrWwT4+fnClB92+T+SGNo+RkYEOZ
-   5xvbsIpoWwd3TXiOvp8fquDzlgj5T/w2c1pzt/e3FiG7S89Jw8jDlr7wt
-   T+9el/3qoavY3lm9i2S3Xmol1natxAeQi2CpHe4FzVBGKKMxQbKwjdh8p
-   Q==;
-X-CSE-ConnectionGUID: IS9y5SNjTK2LjJ0EVs/RqA==
-X-CSE-MsgGUID: i/nJF/UqTG6lQw3yVwNhzg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11226"; a="28812369"
-X-IronPort-AV: E=Sophos;i="6.11,210,1725346800"; 
-   d="scan'208";a="28812369"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Oct 2024 20:19:56 -0700
-X-CSE-ConnectionGUID: YY2xbBM1S3K678gWyrx5OA==
-X-CSE-MsgGUID: C3+yYf8ORZ27m3kiyqkrrA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,210,1725346800"; 
-   d="scan'208";a="79230898"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by orviesa008.jf.intel.com with ESMTP; 16 Oct 2024 20:19:55 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t1H3I-000LgR-0g;
-	Thu, 17 Oct 2024 03:19:52 +0000
-Date: Thu, 17 Oct 2024 11:19:30 +0800
-From: kernel test robot <lkp@intel.com>
-To: Mohammed Anees <pvmohammedanees2003@gmail.com>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Ping-Ke Shih <pkshih@realtek.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Mohammed Anees <pvmohammedanees2003@gmail.com>
-Subject: Re: [PATCH] wifi: rtw88: Refactor looping in
- rtw_phy_store_tx_power_by_rate
-Message-ID: <202410171143.OnFlgIwK-lkp@intel.com>
-References: <20241016060605.11359-1-pvmohammedanees2003@gmail.com>
+	s=arc-20240116; t=1729148233; c=relaxed/simple;
+	bh=shtix6Vyx5HBndb6WI7X44kldclZ5gMnq8azhK9OOKE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZkozH6Jq/kWGpAYPL9hsjzv2kSj2XYwzsqWR0f4XmPOvjdnhMjW39hgZtNlzQIInrw5VgVPqXX/3p8kXZV3Ji84tj862R1AohHP2idYboOfzVJZLhAyqq3kJg5OmXK6NWvz44Qzyz4pT5RjfkFAGJItf8uue4aNltFdNCAy8Ml4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S4WYBpTA; arc=none smtp.client-ip=209.85.167.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3e5f835c024so326931b6e.2;
+        Wed, 16 Oct 2024 23:57:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729148230; x=1729753030; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hvRvosvvlInmc5nTg/6cdvc7/Szsbe6+XJ5j1b95qIg=;
+        b=S4WYBpTA9V7KBO3IKU7QHn7hZRf9l+NzTN9OMVkg6hqxMCxo1IgILr+GZSf/13TqBq
+         OSEc2dHoMx91znC6UNntfO6sk6D/SKUcYgDppXcd/oIzKUkAUAhbmvjmgb/G+nOJ0RNk
+         nYwpYlhULo4WMGmAlDZZ82w+MqlZjc97+OtorDddgSEnWbAB6b98vJuLL3F2Y+el920o
+         gKswrHthTo3Gu0TRLZsd6IXH2e5e0zYlbcbyzURilU5Z9tOUIvyBxibjG8ratB6wsLZV
+         FZQ8QwzEruSUcR6bLPMHv87N9Lio6fyk5FATVw1c3pNsvhxfoEiko2mLJ3qKmu8hGZb9
+         ChqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729148230; x=1729753030;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hvRvosvvlInmc5nTg/6cdvc7/Szsbe6+XJ5j1b95qIg=;
+        b=J2iB1/WULjLZiESaM4AeTFtG877xiirR7DMIzKwLHkwSlLVLPV1DtmKaNuyuxfIo6W
+         YVDrq5aBm1GcJgeXVd6l2KmVAy1wvmLRKJNYnEv8/SjmUSGynIHpTYaPz8ag2cbLn0SW
+         HeocU+xSx8W/5hp6WTehfvGEvVy/lD6U2h9ua6bYcJyt/nyZyETaa4IAYhVC+rjZM487
+         kw+eOEr09tB99SZ7RjGUfS++r3AsEXJBEr4Wd1QR8Ud1zibR+Tkgarr8Sm7kc+meJp6x
+         Sg89w35yOz8WoG+lSjz2iDKcH+R0vFwNPq/4izMPXk0yqxWg09DdMM2BUqsVUdnprxzb
+         +6XA==
+X-Forwarded-Encrypted: i=1; AJvYcCUDtAqGSRWqKi2NJEAgJeaLwKgLu48TKukvbn1atUSlnpP244o4fusXj8GXMQoPEgvqlEXKPI8D2Mc9fm1jnJw=@vger.kernel.org, AJvYcCUI4sk4GZySGt7amgJXHQ7hncxMwlcjwN5PhWUV7hSo9uvRBHMwTl36ek8GfF2PI5nUpXmKb+uOkziifk8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxhg5bKcNrJbNP7nZodWsUYMuSYbZnrzoQQcIHOIz9tEZFgSUEo
+	//1cqJ9onN/Ngkqmi6LO+IDlnWo0eUVFTBdfmn70d+Emac2UWN4c
+X-Google-Smtp-Source: AGHT+IFS/PFID+fQBk/3FX/YxH/oX621qepd442RlZ2cJYJ06pljfbm4uZRR6iorUD1sNZlBK8dWAA==
+X-Received: by 2002:a05:6808:2021:b0:3e0:36a7:710f with SMTP id 5614622812f47-3e5f024a7fbmr5664005b6e.20.1729148230603;
+        Wed, 16 Oct 2024 23:57:10 -0700 (PDT)
+Received: from archlinux.. ([2405:201:e00c:517f:5e87:9cff:fe63:6000])
+        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-7ea9c6ba33csm4292808a12.17.2024.10.16.23.57.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Oct 2024 23:57:10 -0700 (PDT)
+From: Mohammed Anees <pvmohammedanees2003@gmail.com>
+To: pkshih@realtek.com
+Cc: kvalo@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	pvmohammedanees2003@gmail.com
+Subject: Re: [PATCH] wifi: rtw88: Refactor looping in rtw_phy_store_tx_power_by_rate
+Date: Thu, 17 Oct 2024 12:26:45 +0530
+Message-ID: <20241017065645.5409-1-pvmohammedanees2003@gmail.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <c0f6c6c3b87c4d048ad9f42dc1dfaed9@realtek.com>
+References: <c0f6c6c3b87c4d048ad9f42dc1dfaed9@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241016060605.11359-1-pvmohammedanees2003@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Mohammed,
+Oops, I sent over the wrong patch with typo,
+I'll make sure to fix that in the next version.
 
-kernel test robot noticed the following build errors:
+> I feel compilers can optimize the check for the band, and we can just remove
+> the else condition. Or
+>   if (2ghz)
+>      foo_2g();
+>   else
+>      foo_5g();
 
-[auto build test ERROR on wireless-next/main]
-[also build test ERROR on wireless/main linus/master v6.12-rc3 next-20241016]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+I do agree with that but I feel, it would be
+better to make it independent of compiler
+optimization, thoughts?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Mohammed-Anees/wifi-rtw88-Refactor-looping-in-rtw_phy_store_tx_power_by_rate/20241016-140811
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-patch link:    https://lore.kernel.org/r/20241016060605.11359-1-pvmohammedanees2003%40gmail.com
-patch subject: [PATCH] wifi: rtw88: Refactor looping in rtw_phy_store_tx_power_by_rate
-config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20241017/202410171143.OnFlgIwK-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 14.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241017/202410171143.OnFlgIwK-lkp@intel.com/reproduce)
+Let me know what you think is better, that is 
+whether letting it be if - else, or using a
+pointer.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410171143.OnFlgIwK-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/net/wireless/realtek/rtw88/phy.c: In function 'rtw_phy_store_tx_power_by_rate':
->> drivers/net/wireless/realtek/rtw88/phy.c:1468:48: error: 'PHY_BANK_2G' undeclared (first use in this function); did you mean 'PHY_BAND_2G'?
-    1468 |         s8 (*tx_pwr_by_rate_offset) = (band == PHY_BANK_2G)
-         |                                                ^~~~~~~~~~~
-         |                                                PHY_BAND_2G
-   drivers/net/wireless/realtek/rtw88/phy.c:1468:48: note: each undeclared identifier is reported only once for each function it appears in
-
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for GET_FREE_REGION
-   Depends on [n]: SPARSEMEM [=n]
-   Selected by [m]:
-   - RESOURCE_KUNIT_TEST [=m] && RUNTIME_TESTING_MENU [=y] && KUNIT [=m]
-
-
-vim +1468 drivers/net/wireless/realtek/rtw88/phy.c
-
-  1447	
-  1448	static void rtw_phy_store_tx_power_by_rate(struct rtw_dev *rtwdev,
-  1449						   u32 band, u32 rfpath, u32 txnum,
-  1450						   u32 regaddr, u32 bitmask, u32 data)
-  1451	{
-  1452		struct rtw_hal *hal = &rtwdev->hal;
-  1453		u8 rate_num = 0;
-  1454		u8 rate;
-  1455		u8 rates[RTW_RF_PATH_MAX] = {0};
-  1456		s8 offset;
-  1457		s8 pwr_by_rate[RTW_RF_PATH_MAX] = {0};
-  1458		int i;
-  1459	
-  1460		rtw_phy_get_rate_values_of_txpwr_by_rate(rtwdev, regaddr, bitmask, data,
-  1461							 rates, pwr_by_rate, &rate_num);
-  1462	
-  1463		if (WARN_ON(rfpath >= RTW_RF_PATH_MAX ||
-  1464			    (band != PHY_BAND_2G && band != PHY_BAND_5G) ||
-  1465			    rate_num > RTW_RF_PATH_MAX))
-  1466			return;
-  1467	
-> 1468		s8 (*tx_pwr_by_rate_offset) = (band == PHY_BANK_2G)
-  1469							? hal->tx_pwr_by_rate_offset_2g[rfpath]
-  1470							: hal->tx_pwr_by_rate_offset_5g[rfpath];
-  1471	
-  1472		for (i = 0; i < rate_num; i++) {
-  1473			offset = pwr_by_rate[i];
-  1474			rate = rates[i];
-  1475			tx_pwr_by_rate_offset[rate] = offset;
-  1476		}
-  1477	}
-  1478	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+thanks
 
