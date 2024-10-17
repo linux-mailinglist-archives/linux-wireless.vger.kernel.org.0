@@ -1,128 +1,136 @@
-Return-Path: <linux-wireless+bounces-14141-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14140-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7FE99A1BF7
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 09:49:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B96F89A1BF3
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 09:49:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25A2B1C22499
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 07:49:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE63CB20FF3
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 07:48:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FBF01D0BBB;
-	Thu, 17 Oct 2024 07:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08FCD1D0DE7;
+	Thu, 17 Oct 2024 07:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eHPdm5Y5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EZqco2w9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196AC1D0149
-	for <linux-wireless@vger.kernel.org>; Thu, 17 Oct 2024 07:49:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D252C1D0DC4;
+	Thu, 17 Oct 2024 07:48:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729151348; cv=none; b=idiB7EpfqNFTJaqaajl9e+PCawCkhDh/dIic14OJ3YpOWhPwW9VMIQpuVvri5iluGBPATn4xNJ2BtONtPQ1icJ7PcKGLYVbsadUYNULmXGIGRI5yxtkYjNwgtJVfT2iILswgfw2iF0RHJneRICYbwTaWZKAXq5FqTE7qypnvHJA=
+	t=1729151324; cv=none; b=Kc4S5w8Tz5PdD2G42LoTdGojT4yiOxcL4Q/26ai0fsfI/xI7Xzy7zosQegLDXg7tiQmqE3RdwKAp0OZOTzNbhwbGG89Edh5lfyVuv4Hc5bKSGLlBsEqCvs3dcR3GivdMn1GpGEBhQ8/BSLV5+GYOfg5wUUiKmwT0rOu1+E+LAUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729151348; c=relaxed/simple;
-	bh=fRCJhGtgZMDr7r4S2J0gZoJavK2qD80Zh8Z67SYLGHQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tDM/Pt3XuKFvtVoTwkp540NnZQZQDWG6oR8BO0IQBMJ1zu4MtJw3S79q1yDGCaWMpf4A53yb3TWjOz/uK7EIzC+4jDcKz1YPoEvgOEOhK8T0dKQ1b72/ieLJFY2awjUH66nIfn9MUgFl+Tjx5nqDi2oQnWhtNa4BF8ezDLuGNaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eHPdm5Y5; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729151346;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=4va4c2L7EgdgRCb+CXhLRRmcsU+QQfGi6+Ot1ojIP3o=;
-	b=eHPdm5Y5wt6DnrYdOI4dONfEEhMldHuDilDMVO+JlSA51n8zvdrEorUZlNCoPlCaKVy+G0
-	qBSR2cVJDqrmQc0skaLQnLGifptT8ad/cPBlNW7sQxGiHETmw/cmmUCZNK7U3krMARBV3V
-	z68+4xKn80bhEkUULCnqyBXalNbjnt8=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-376-jZBC4SsGOW-NIaEQXlR-9w-1; Thu,
- 17 Oct 2024 03:49:02 -0400
-X-MC-Unique: jZBC4SsGOW-NIaEQXlR-9w-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 62A3019560A6;
-	Thu, 17 Oct 2024 07:49:01 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.60.16.52])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 45B1519560AD;
-	Thu, 17 Oct 2024 07:48:57 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: kvalo@kernel.org,
-	jjohnson@kernel.org,
-	linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: jtornosm@redhat.com,
-	stable@vger.kernel.org
-Subject: [PATCH v3 2/2] wifi: ath12k: fix warning when unbinding
-Date: Thu, 17 Oct 2024 09:48:15 +0200
-Message-ID: <20241017074854.176765-1-jtornosm@redhat.com>
+	s=arc-20240116; t=1729151324; c=relaxed/simple;
+	bh=AbxgFND14fAabCol8XiCmaikesH5sGAZCim6GukqBPA=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=eQOpjztSuknblkxq6hi/JD2uzd5AD7TKPn12Pg0ssHUNrgGlypYgMbKW4YrFkvaZ7iyuEKU/Qi7jyKP+jT1G9auWPyt6Vw3ZxznoS7TozgC3onodi9PXVE6No36tCiR011NvcXMYCVfT+P5xMmiz9uTOu0yhSzIJbJhalYflRiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EZqco2w9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2178C4CECD;
+	Thu, 17 Oct 2024 07:48:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729151324;
+	bh=AbxgFND14fAabCol8XiCmaikesH5sGAZCim6GukqBPA=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=EZqco2w905uQTSAODuE00UWJtI0d16Nh8Tply6BmUT2CqLgMsRGZYOgNxvs039gNH
+	 Djr6j+ATPqSkVYCkZjwVP31J7odXj2Unplzj9lNjOLhcJ85/u45eX7GIALjwPtwL6Q
+	 o8vo7oNVKYXIFUAlfmjDomWR3K/DJ+mbzx1i+x5+doAg8IUkNG3DHPwRICyOFSkn6N
+	 eniY0OQTEYRtq+VT8gtaGJTe4i+gKaOGh9x2PRoyWK8kjE110NQ4dopfIgqvkbMhzX
+	 Qx8osaPw7OdB5nC5boB9Hd6drg4AQDar5Au7pKCvihgPodUsCwFU58VnBtSov14kLi
+	 bKtpnHK5AWqDA==
+From: Kalle Valo <kvalo@kernel.org>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: David Lin <yu-hao.lin@nxp.com>,  linux-wireless@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  johannes@sipsolutions.net,
+  briannorris@chromium.org,  francesco@dolcini.it,
+  tsung-hsien.hsieh@nxp.com,  kernel@pengutronix.de
+Subject: Re: [PATCH v2 00/43] wifi: nxpwifi: create nxpwifi to support iw61x
+References: <20240809094533.1660-1-yu-hao.lin@nxp.com>
+	<Zsc1efkBHDXdZtfJ@pengutronix.de>
+Date: Thu, 17 Oct 2024 10:48:40 +0300
+In-Reply-To: <Zsc1efkBHDXdZtfJ@pengutronix.de> (Sascha Hauer's message of
+	"Thu, 22 Aug 2024 14:56:25 +0200")
+Message-ID: <87a5f341bb.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+Content-Type: text/plain
 
-If there is an error during some initialization related to firmware,
-the buffers dp->tx_ring[i].tx_status are released.
-However this is released again when the device is unbinded (ath12k_pci),
-and we get:
-WARNING: CPU: 0 PID: 2098 at mm/slub.c:4689 free_large_kmalloc+0x4d/0x80
-Call Trace:
-free_large_kmalloc
-ath12k_dp_free
-ath12k_core_deinit
-ath12k_pci_remove
-...
+Sascha Hauer <s.hauer@pengutronix.de> writes:
 
-The issue is always reproducible from a VM because the MSI addressing
-initialization is failing.
+> On Fri, Aug 09, 2024 at 05:44:50PM +0800, David Lin wrote:
+>
+>> This series adds support for IW61x which is a new family of 2.4/5 GHz
+>> dual-band 1x1 Wi-Fi 6, Bluetooth/Bluetooth Low Energy 5.2 and 15.4
+>> tri-radio single chip by NXP. These devices support 20/40/80MHz
+>> single spatial stream in both STA and AP mode. Communication to the
+>> IW61x is done via SDIO interface
+>> 
+>> This driver is a derivative of existing Mwifiex [1] and based on similar
+>> full-MAC architecture [2]. It has been tested with i.MX8M Mini evaluation
+>> kits in both AP and STA mode.
+>> 
+>> All code passes sparse and checkpatch
+>> 
+>> Data sheet (require registration):
+>> https://www.nxp.com/products/wireless-connectivity/wi-fi-plus-bluetooth-
+>> plus-802-15-4/2-4-5-ghz-dual-band-1x1-wi-fi-6-802-11ax-plus-bluetooth-5-
+>> 4-plus-802-15-4-tri-radio-solution:IW612
+>> 
+>> Known gaps to be addressed in the following patches,
+>>   - Enable 11ax capabilities. This initial patch support up to 11ac.
+>>   - Support DFS channel. This initial patch doesn't support DFS channel in
+>>     both AP/STA mode.
+>> 
+>> This patch is presented as a request for comment with the intention of being
+>> made into a patch after initial feedbacks are addressed
+>> 
+>> [1] We had considered adding IW61x to mwifiex driver, however due to
+>>     FW architecture, host command interface and supported features are
+>>     significantly different, we have to create the new nxpwifi driver.
+>>     Subsequent NXP chipsets will be added and sustained in this new driver.
+>
+> I added IW61x support to the mwifiex driver and besides the VDLL
+> handling which must be added I didn't notice any differences. There
+> might be other differences, but I doubt that these can't be integrated
+> into the mwifiex driver.
+>
+> Honestly I don't think adding a new driver is a good ideai, given how big
+> wifi drivers are and how limited the review bandwidth is.
+>
+> What we'll end up with is that we'll receive the same patches for both
+> drivers, or worse, only for one driver while the other stays unpatched.
+>
+> I even found some of the bugs and deficiencies I am just fixing for the
+> mwifiex driver in the nxpwifi driver as well. So please direct your
+> effort to improving the existing driver rather than putting more burden
+> to the maintainers by adding a new driver. I am sure this is the faster
+> path to get the necessary changes upstream, plus users of the mwifiex
+> driver will profit from these changes as well.
+>
+> Of course I don't have to decide this. The wifi maintainer(s) will have
+> the final word, but these are my 2 cents on this topic.
 
-In order to fix the issue, just set the buffers to NULL after releasing in
-order to avoid the double free.
+Replying to an old mail but I'm with Sascha here and I'm also skeptic
+about adding a new driver. Especially my worry is that after the driver
+is accepted we will not hear from NXP anymore and the community has two
+almost identical drivers to maintain. There have been cases that after
+taking the driver the company disappears and we (the community) are left
+maintaining the abandoned driver.
 
-cc: stable@vger.kernel.org
-Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
----
-v3:
-  - Remove unnecessary check to not free if buffer is NULL.
-  - Trim backtrace.
-  - Fix typos.
-v2: https://lore.kernel.org/linux-wireless/20241016123722.206899-1-jtornosm@redhat.com/
-v1: https://lore.kernel.org/linux-wireless/20241010175102.207324-3-jtornosm@redhat.com/
+Also I have not seen any convincing reasons why a new driver is needed.
+For me much better approach would be to extend mwifiex like Sascha
+recommends.
 
- drivers/net/wireless/ath/ath12k/dp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
-index 789d430e4455..15061782a2df 100644
---- a/drivers/net/wireless/ath/ath12k/dp.c
-+++ b/drivers/net/wireless/ath/ath12k/dp.c
-@@ -1277,8 +1277,10 @@ void ath12k_dp_free(struct ath12k_base *ab)
- 
- 	ath12k_dp_rx_reo_cmd_list_cleanup(ab);
- 
--	for (i = 0; i < ab->hw_params->max_tx_ring; i++)
-+	for (i = 0; i < ab->hw_params->max_tx_ring; i++) {
- 		kfree(dp->tx_ring[i].tx_status);
-+		dp->tx_ring[i].tx_status = NULL;
-+	}
- 
- 	ath12k_dp_rx_free(ab);
- 	/* Deinit any SOC level resource */
 -- 
-2.47.0
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
