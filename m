@@ -1,95 +1,96 @@
-Return-Path: <linux-wireless+bounces-14136-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14137-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC109A1B73
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 09:13:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 743789A1BBE
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 09:35:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B0111C21DF9
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 07:13:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FE77289D5D
+	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 07:35:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83DE01779AE;
-	Thu, 17 Oct 2024 07:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ACA117BB03;
+	Thu, 17 Oct 2024 07:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DfwsbvS1"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IRraA3w5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39536146A69;
-	Thu, 17 Oct 2024 07:13:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30B539FE5
+	for <linux-wireless@vger.kernel.org>; Thu, 17 Oct 2024 07:35:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729149198; cv=none; b=LC5L9+4MbA6QF8Wv1dY+1qHufek/YGC4rbeWhAHkVRaleBNlqruuZG/8lPWqjT9rXvu7+ad1L9GwH4kW4VS5Uju2jW1m5u3QxDas4bzLfyj8vhevCmGZqMN55bZBbJXOQg6lA05Ozn7nNVfHjKsUERNggyXY1tvfkkSbzXy1PXY=
+	t=1729150551; cv=none; b=MENTL852sFQo42pOur6gBYq5FvFgy9t7kdNcB45N3TOq71loSUm3C3GLElRfB2yggzlrzqg1zKGm5mZS8Uz/1ClWYZTu+GjyTy1QXnSderdpK5mZ7/yq6Mk7sYl3ySHHMQNQm97Zm9EoUlJLzUJ6A71ubiWw/w1QZJFP+o+nwZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729149198; c=relaxed/simple;
-	bh=ipyZo6UKYHezokUH7iiV3RNsr2G7jtQ77Dt9+CzFxyM=;
+	s=arc-20240116; t=1729150551; c=relaxed/simple;
+	bh=ekjP/+RTxRRpF924txgjW8HefsPRSKOo9PCJDVuif4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KytxyiK0ypgnE69jmuQJxZmK8X1xCAr0SWmqXwoo1Y+TQfE+nGSM/IuBqEWmFfVXxOlzJeLGiRHxLhSjqIdf4Wmfxiz4f6+Vjpg2T8pVoSLNhie6nBdbmCrmLWa51N2aH06ZW48IKPq6HfVf8I2MHUZGNAnSuDoKeGxDt5+5tmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DfwsbvS1; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-71e49ef3bb9so441327b3a.1;
-        Thu, 17 Oct 2024 00:13:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729149195; x=1729753995; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+5yobkPUNCA4J8cZaWaHfv1b6AD/BVcjG9MZFqh6cjo=;
-        b=DfwsbvS1V1dTVPPR3bXayJQf1pmZKUNMMcqcFN7EogiMHxJ0a2MUyE8OdFDReDm3P8
-         HCNrixht1yPHt4IAeEk16SkHFoyvsGhLh9t9m5TScuBPQnwENALhwBX+dVCGSoQo0SR9
-         wAr7BV90/wOPlLNuFbdOxqTbyTPW79aHL5BfgeGn0acdzxXNeUTm79w/euS+OvUv2dDb
-         Dypob1VarRIn3eOswYOvWIdlLBBOFMjV4KZJvBeGggvp45zNvngno38fzzfK3auhrO3Z
-         YIUkXWANi/bJVziz3klJWwdotlzeygpla6jo2GQr40c/sVFFNHv9nulM0jfHi5yGP2ey
-         m6eA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729149195; x=1729753995;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+5yobkPUNCA4J8cZaWaHfv1b6AD/BVcjG9MZFqh6cjo=;
-        b=Ti+gR+dsJXda+VDKtEKZncaFk1jj0lyBNe7Vzb+4XxXUdN5EypFC2jlIJ9Web2g2kn
-         5c3ITURBNgJO3677G+cPXUpxJCFUtltQ4Bg8xG6Vzn3RLEd+zVTypzvtDRxxn9Lfz1Zb
-         wlF/NndM4eF0gSBAxFNyQ7AE3Hrxpi0qjYQj1eHGUA6QIIGsTQxTOY+3ldj6Rwuo3XU9
-         qrt/gFM7Eb7W+U9dchG/r3c3qz7JMfjEUgvue1oZYb0surc7iPie4yLVB1ScvCW8Juf0
-         2WGJNIzFjnmxXyz2wRcwHB6HggtLGEv36JGuno6voJG41RP2zwIZwKdqQWZ9xCegMk1p
-         /9FA==
-X-Forwarded-Encrypted: i=1; AJvYcCU+6eXzbUZRZl9ggNDDobYtvC03WOqokUbAN9GcSzy95eKq9Brxa01hGrFMFLhGEM5PFAjOQB1bZgyz1d3w7rE=@vger.kernel.org, AJvYcCVhtG02WMxMvgx9FdR3Oqpr/UpslPcqXIDnrfJskrnU/BYuLL10PBnn/Le45zAgo+TD7T4xfnwWUSc3uzY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMgTehzuaiwAB0aBIRsReZXwKnEkYcS1u9213v8EhlesnoqeMb
-	CvVj+NLIltBNnTcUy/JwpONtYLFgT8flnEPQ6hgkWFcoOtmyPK7E
-X-Google-Smtp-Source: AGHT+IEjtNVFwC77YhTW11wejj6XGR9tsFBNBb6fy3IhT6+jEHfJ57O07dw78MKh+9xpOqXAAb2uCw==
-X-Received: by 2002:a05:6a00:188f:b0:71e:667c:8384 with SMTP id d2e1a72fcca58-71e8fd8c630mr3607247b3a.9.1729149195342;
-        Thu, 17 Oct 2024 00:13:15 -0700 (PDT)
-Received: from archlinux.. ([2405:201:e00c:517f:5e87:9cff:fe63:6000])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-71e774a2b42sm4132370b3a.110.2024.10.17.00.13.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 17 Oct 2024 00:13:14 -0700 (PDT)
-From: Mohammed Anees <pvmohammedanees2003@gmail.com>
-To: pkshih@realtek.com
-Cc: kvalo@kernel.org,
+	 MIME-Version:Content-Type; b=e29EVhuGLzmqxdC9V+qpqzCi6UMLVeGHKQU3KMuaoqub+P9rctQwhYeYgOSCBtQN2Ujk/sXTB4FGGPdm2BnwrpwjjZ+8eWSiCEikJ+HpktTn330l0dSq1j149EJWMgNCqWD6RCucbKbrgQYouPUlqmQCWL/jZ1VqgJeVhgVLM0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IRraA3w5; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729150548;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ekjP/+RTxRRpF924txgjW8HefsPRSKOo9PCJDVuif4w=;
+	b=IRraA3w5KJTtrOVjPWmzJ2YqZvJkgUQ0H8ttys5ahpLH33bQXMnj4aVheLHvL4AmND5MS9
+	8fZza7VT4VmfZ0Y6jWYuRrcxS2i7EIcs+HEVsN6z+aZJjnYK/tYFBsYHHrddVGvrdVwrYj
+	6FEM2J98Tx64a5KZGzpVEFfWITH+nhw=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-677--NNdpK-0Plq6hfaZ_JTfCw-1; Thu,
+ 17 Oct 2024 03:35:45 -0400
+X-MC-Unique: -NNdpK-0Plq6hfaZ_JTfCw-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 58B241955D91;
+	Thu, 17 Oct 2024 07:35:43 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.60.16.52])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1B46D19560A3;
+	Thu, 17 Oct 2024 07:35:39 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: quic_jjohnson@quicinc.com
+Cc: ath12k@lists.infradead.org,
+	jjohnson@kernel.org,
+	jtornosm@redhat.com,
+	kvalo@kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-wireless@vger.kernel.org,
-	pvmohammedanees2003@gmail.com
-Subject: Re: [PATCH] wifi: rtw88: Refactor looping in rtw_phy_store_tx_power_by_rate
-Date: Thu, 17 Oct 2024 12:42:39 +0530
-Message-ID: <20241017071239.6505-1-pvmohammedanees2003@gmail.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <e25e1e06fbe549dc9e9b48719f66653b@realtek.com>
-References: <e25e1e06fbe549dc9e9b48719f66653b@realtek.com>
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] wifi: ath12k: fix crash when unbinding
+Date: Thu, 17 Oct 2024 09:35:37 +0200
+Message-ID: <20241017073538.176198-1-jtornosm@redhat.com>
+In-Reply-To: <452ec614-7883-4e0f-ae0a-25d22d0be41c@quicinc.com>
+References: <452ec614-7883-4e0f-ae0a-25d22d0be41c@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Thank you for your feedback! I appreciate your perspective on this,
-I'll stick to if-else then and remove the unnecessary else and 
-send over the patch.
+Hello Jeff,
 
-Thanks!
+> FYI I didn't comment on this previously but
+> <https://www.kernel.org/doc/html/latest/process/submitting-patches.html#backtraces-in-commit-messages>
+> has some guidance on trimming backtraces in commit messages.
+Ok, I will trim the backtrace in a next version of the patch.
+And I will fix the typos too.
+
+Thanks
+
+Best regards
+José Ignacio
+
 
