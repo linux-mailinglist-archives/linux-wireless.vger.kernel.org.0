@@ -1,74 +1,74 @@
-Return-Path: <linux-wireless+bounces-14219-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14220-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 264869A43FE
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2024 18:41:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 756309A4400
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2024 18:42:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D08FD1F24385
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2024 16:41:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20B301F23602
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2024 16:42:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF1A220371E;
-	Fri, 18 Oct 2024 16:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 520F056B81;
+	Fri, 18 Oct 2024 16:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DIqInSiF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NN07WTjX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0BE72036F2
-	for <linux-wireless@vger.kernel.org>; Fri, 18 Oct 2024 16:41:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F649202F9A
+	for <linux-wireless@vger.kernel.org>; Fri, 18 Oct 2024 16:41:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729269707; cv=none; b=eDdCMh/tgEF31ONoC8v3uoHpkuIqz3vRj00fDT5UhpnIweJR2Qv3dDY/QZ1y2JBNLC5oB3vb7yu2eRpwKPP5Qvanr+vfc3pBGLLS6IS2nucUQlx24MjHFrP4uHCXGReExwg+Chl9kj4/V4EZalQUfNifthi72gGlP/09vYeB20c=
+	t=1729269721; cv=none; b=nAxjH3bPxEWnfqlaS9LrL2lDiY9ZEZNqOq7fLmNhDrMJooBvDKXpnjkvSrZ1cz0XcKwsVL+xstIO9ZpoRVed/B4rGsM4lReNa1XBi3ya8mSGLydN44nM/rGC1X+ziZPfQedHgjtbYt/yp1LevquiT6eggw5QtUAdHCeqSl3bBes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729269707; c=relaxed/simple;
-	bh=mv5fw+IHDMU8J7iF4mVDmDLwGRJQomRgrbBa8Jywkwo=;
+	s=arc-20240116; t=1729269721; c=relaxed/simple;
+	bh=Z0PSUxMs5C8rL8r1FMjVfS1mhHkld6BaVmO+JiwO8uU=;
 	h=Message-ID:Date:MIME-Version:From:Subject:To:References:
-	 In-Reply-To:Content-Type; b=i5cxu4zu1RSCx0riqmbVWDvjpD3Y4Ctwji12baX8tJ4NdJZxJpfZbn5fTk0dJIAg289DNbYu2ch4pBEQObXvdqJWkNljfczwsz4leCZ89VNTGTnTzQeyWgwzhC7pb9G6eOxXb+4IOTka5fAC27WuFchmRt2HkW/KwVQIJUOA8vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DIqInSiF; arc=none smtp.client-ip=209.85.128.42
+	 In-Reply-To:Content-Type; b=RxkCnfBrplgqTKHot7sK52aYI1hio2HXL+WDb7tp0+C1jL0KWysxoA0uluVXpMiizoIJr5xopya5Im2m240yYLyeymjP1gVE7qIJS/tL3vSc9DbK7c7/h1EbJr7O6s89RMc5h22d8TjrpsMUhx+YfTyjTUZXfju0ChWMCra4zEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NN07WTjX; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43163667f0eso6684545e9.0
-        for <linux-wireless@vger.kernel.org>; Fri, 18 Oct 2024 09:41:45 -0700 (PDT)
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-37d808ae924so1581946f8f.0
+        for <linux-wireless@vger.kernel.org>; Fri, 18 Oct 2024 09:41:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729269704; x=1729874504; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1729269717; x=1729874517; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :to:subject:from:user-agent:mime-version:date:message-id:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1iNwDavuzP+OmqTbsj+fCB7PZTubF53PxHS2FeiEwLw=;
-        b=DIqInSiF3CTTFTy4UdFJkd+rMmfxbuQxB/Is4YlKzpmi7fmihCOcQXKmJorybYfn2P
-         DTqYVUb5FJ0iLsWe2I7EunTMeMHL5R/ZazX7wgT6GurBgBGe+0z24Htj7Dyp9xMrLShu
-         2mIWusEJAx1H0mbZzA3um42Kz6m2GOW0dNl1QkTJa+TtuLAfDFJ09fyHmm0OD3X0aNWZ
-         DTXhXZ/8fWvGPbv29lY7Wru/QCrWF2ci/nNHxOiKMHHoUJsOCP3XLlvsVJwYbezYYb+0
-         UxdTAGg+ciMURJb/QUHnmvAhvYtC6+OMb53TvGNdsZLHkc2Ug271jiNXlKPvCKeEEkt6
-         15OA==
+        bh=I3pMffVc5TJktf3tfTSI/BahiZHf9zbHayzCeZ+ShD4=;
+        b=NN07WTjXDgDOkMrmb2OEq0Uz6y8olYaJ1lVuRgdI6Wq23ytiBAJRbMJUbd5XB9GGPF
+         qXARIuH99KP5hefBgBdTEYjt1Ui3mtmkdKR2JHBeL3YFtG6rWoAjxV3qqE861o00P65N
+         mZHw6tr1s/7eBQ0xsEIW0eql3LWELfvlN6p5GG6p8ylk2OvKhCT25OGo9syMO0C0p5KO
+         OnW85G+IcK6J4Ca0N16slOid37MVWqOfx/aK40gVRC/mWd5pQCWYpnjgb0L0gszW/M+D
+         ZjNvSeB/AuiJJTzWTXisoypow8lbgaMcVQCAEDawosuk9D+2Zcvjzps88I0F9eajIWJh
+         ZMaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729269704; x=1729874504;
+        d=1e100.net; s=20230601; t=1729269717; x=1729874517;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :to:subject:from:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1iNwDavuzP+OmqTbsj+fCB7PZTubF53PxHS2FeiEwLw=;
-        b=n5C4H7Kz3vyClNhE0uGzxeleF+PWzDOVlVu3hN/VMkp/OY7UvTML+b2OmMBRvcXkBz
-         leY8NUW0edE4pvrW7MRrv5NpbqPduNE+tEXru1x7AF4wKeoLyqFiWGNJyVftZu8auQ9L
-         asWvExB8mRqj6SErD85JR3LL+PtCWqFJPlTgbIQKayb706D/o6/JYwo7/VRk1fQWQksZ
-         4vJY9A0500i/g/6th/6prfYzcZXBXWDEDf4+iqdNofY8H9I9Ve4q1Ojpa/vqaVcs9e/9
-         Buz8k0OWaxFeJLPnSdUdbf9e4P5C/I+f8r78H5rqsS7YwgRR0Zve5OYQBINF92958sKQ
-         gDmA==
-X-Forwarded-Encrypted: i=1; AJvYcCXbE0S0O2F5m8ZbASYB8meQr5n1ba6AwPrWfFq9vaKKsOjsyWNnRsRmhLtir3raFt+c19zLAIW3+MwIT8ob6A==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8OQ6yTMVyXMm6a9HW+s3HauxoLjBjFrI3WWfkTwb548GsTjTy
-	11jQrIF2SOZxtoqYD1Deoq0ywul815p9+abSO66vqKAqR7ty3SYHY6fJZg==
-X-Google-Smtp-Source: AGHT+IG7c3e8XeICBT8i8EpUZ4C0KMY1FaI9bhpWjKOA13xwb+eCnZT3k+fJvRO6dAvjYMHlXCbrpQ==
-X-Received: by 2002:a05:600c:4e12:b0:431:4f29:9542 with SMTP id 5b1f17b1804b1-431616332a7mr24997875e9.6.1729269703845;
-        Fri, 18 Oct 2024 09:41:43 -0700 (PDT)
+        bh=I3pMffVc5TJktf3tfTSI/BahiZHf9zbHayzCeZ+ShD4=;
+        b=wQ9OJVZJ/6xs2/Ncgdt0EKJgSrBA8RLPvMekBskxjXEAtXzO+Rsd2prlypcHVMAbVX
+         i7zqiW6jrT19vrnIntZDGZ1o1aO3L1DsiaLJTlmYN7aO8GKkLBEQGhjTRhkhlcxwLfUq
+         H+KITmeESX45urLcBNYwPJz2trJGu1+qjdE9BikyC3K4GHKmeQ8KW1fMZuJCe58wlo/v
+         pKavGELUkp3c8tKOAeHqJ52UrX/OeNjITfCkE/ofqlcmBE+nBPWcMAaczrhB4IIrFFyp
+         hGlEJKxPad7POCHufvbnC1aFm7SJvh94b/iMzBkOlIK2ASMSTjRP9r5Ebb7ESvz6+csE
+         oSjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXRPp0Fsd5D3150ZkQuo9x20GIR27huRiETMEjr0H16I1phobxa9tFZugjom1EpyW3CBSG8CS+BC3GYoOqzDA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyU4Nq/m8h4raMJN0jCnc9qAGt4m6NeiowJ7FWOofiaOeIS/4KS
+	re5qFQjuENv6PGgPYx8iKJVhWVqwk8qc8rjDzy1oxTUNc4ufQrWId+UwKQ==
+X-Google-Smtp-Source: AGHT+IEfXtHZB5P1N1Vs0sYEQZLNr0xksGCm+HF8z44HQmf8n2NLJ3Qp3kawSz74ToHRMqEuV7IgTA==
+X-Received: by 2002:a5d:6d03:0:b0:37d:47b0:6adc with SMTP id ffacd0b85a97d-37eab4d1248mr2946900f8f.4.1729269717274;
+        Fri, 18 Oct 2024 09:41:57 -0700 (PDT)
 Received: from [192.168.1.50] ([79.113.150.231])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43160696dacsm31359435e9.26.2024.10.18.09.41.43
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37ecf0ed7bfsm2317544f8f.84.2024.10.18.09.41.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 18 Oct 2024 09:41:43 -0700 (PDT)
-Message-ID: <b4225966-435e-4a0a-9d7e-607f666b48e0@gmail.com>
-Date: Fri, 18 Oct 2024 19:41:42 +0300
+        Fri, 18 Oct 2024 09:41:56 -0700 (PDT)
+Message-ID: <fbbc4a6c-dd51-4c7e-bc25-d0a53691d807@gmail.com>
+Date: Fri, 18 Oct 2024 19:41:56 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -77,36 +77,60 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: Re: [PATCH v2 07/22] wifi: rtw88: Enable data rate fallback for older
- chips
+Subject: Re: [PATCH v2 10/22] wifi: rtw88: Move pwr_track_tbl to struct
+ rtw_rfe_def
 To: Ping-Ke Shih <pkshih@realtek.com>,
  "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 References: <d2870a44-9b91-4090-9a25-873eb62997f5@gmail.com>
- <21dbccaf-82e2-48aa-9b11-dc217ca76309@gmail.com>
- <db016f99a85241798d28bf60edb0e61b@realtek.com>
+ <46e4f978-7dc3-447b-a744-a4ea7654ab5b@gmail.com>
+ <2429b39cb60941bca351455e1eed7a24@realtek.com>
 Content-Language: en-US
-In-Reply-To: <db016f99a85241798d28bf60edb0e61b@realtek.com>
+In-Reply-To: <2429b39cb60941bca351455e1eed7a24@realtek.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 18/10/2024 09:26, Ping-Ke Shih wrote:
+On 18/10/2024 09:41, Ping-Ke Shih wrote:
 > Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>> diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+>> index ef82e60d5c19..072d09a7d313 100644
+>> --- a/drivers/net/wireless/realtek/rtw88/main.h
+>> +++ b/drivers/net/wireless/realtek/rtw88/main.h
+>> @@ -1100,16 +1100,19 @@ struct rtw_rfe_def {
+>>         const struct rtw_table *phy_pg_tbl;
+>>         const struct rtw_table *txpwr_lmt_tbl;
+>>         const struct rtw_table *agc_btg_tbl;
+>> +       const struct rtw_pwr_track_tbl *pwr_track_tbl;
+>>  };
 >>
->> RTL8811AU fails to perform the 4-way handshake when the AP is too far
->> because it transmits the EAPOL frames at MCS9 and when that doesn't
->> work it retries 48 times with the same rate, to no avail.
-> 
-> It looks weird that it doesn't try lower rate.
-> 
+>> -#define RTW_DEF_RFE(chip, bb_pg, pwrlmt) {                               \
+>> +#define RTW_DEF_RFE(chip, bb_pg, pwrlmt, track) {                                \
+>>         .phy_pg_tbl = &rtw ## chip ## _bb_pg_type ## bb_pg ## _tbl,       \
+>>         .txpwr_lmt_tbl = &rtw ## chip ## _txpwr_lmt_type ## pwrlmt ## _tbl, \
+>> +       .pwr_track_tbl = &rtw ## chip ## _pwr_track_type ## track ## _tbl, \
+>>         }
 >>
->> Retrying 48 times with the same rate seems pointless. Set the
->> appropriate field in the TX descriptor to allow it to use lower rates
->> when retrying.
+>> -#define RTW_DEF_RFE_EXT(chip, bb_pg, pwrlmt, btg) {                      \
+>> +#define RTW_DEF_RFE_EXT(chip, bb_pg, pwrlmt, track, btg) {                       \
 > 
-> This means setting 0x1f as limit in TX descriptor, and then it will
-> try lower rates?
+> Why not keep the same order of struct declaration? 
 > 
+> I guess you want first three arguments of RTW_DEF_RFE() and RTW_DEF_RFE_EXT()
+> are the same, right?
+
+Yes.
+
+> Move ' pwr_track_tbl' entry in struct upward one line as
+> below order?
 > 
 
-That's right.
+Right, I didn't consider that.
+
+>>         .phy_pg_tbl = &rtw ## chip ## _bb_pg_type ## bb_pg ## _tbl,       \
+>>         .txpwr_lmt_tbl = &rtw ## chip ## _txpwr_lmt_type ## pwrlmt ## _tbl, \
+>> +       .pwr_track_tbl = &rtw ## chip ## _pwr_track_type ## track ## _tbl, \
+>>         .agc_btg_tbl = &rtw ## chip ## _agc_btg_type ## btg ## _tbl, \
+>>         }
+>>
+> 
+
 
