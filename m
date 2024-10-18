@@ -1,189 +1,192 @@
-Return-Path: <linux-wireless+bounces-14230-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14231-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2D9D9A49B8
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Oct 2024 00:41:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 621399A4A14
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Oct 2024 01:30:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36CD11F246A6
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2024 22:41:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABA40B216AF
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2024 23:30:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35FF11898FB;
-	Fri, 18 Oct 2024 22:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F5D5189F58;
+	Fri, 18 Oct 2024 23:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FEfuZZiY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BlsVKAZW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D3A188A18;
-	Fri, 18 Oct 2024 22:41:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D509F18E758
+	for <linux-wireless@vger.kernel.org>; Fri, 18 Oct 2024 23:30:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729291261; cv=none; b=a9Z1+oaAczWOj3p3P6nVoWRgKeo5GOBwL0sfsIehCirvKTf8BQVG7+1O7Go9cmw4w9V8u9+L9w2clZUfhAkFi2KG4PuotiUsoh+LInj8XZYeGk8uR7x5szgp0ZdE5YZMYXoHUXhGUWIaDYga/ntF9esSHvfARsU0BRNAOCur7X8=
+	t=1729294212; cv=none; b=tzBZE9LyeB+kYKgPaUoDtTSM+ytwgM/H5IlxCLHmHDWR6zYndacCGi8+T/oJACpKOzY7B6G9ba2RusNO8lgrnZcuGSr/W50227MY/wSFp2E28fl5ko5z/wc0OjBB84wNTkXJ8fyRIbi/BTMXjJqqZtEoZCFWB676ID5dsjUIqpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729291261; c=relaxed/simple;
-	bh=AkeNo/tk92UbTjmdHz4UbsBIgtAYxTSYnCUb4J5AiLE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aibnaq+lxQmAfPMzHABl42O8KU9C6AVmh45mgq5cuxRkeA108cA5jzv5wydakP6egINFP0S1ztATx8NrabVv7wjdbG1dK8I5BUAi/eQHcOFxZM9gjDcoYtCokFb/98g9xiiEccyymvYlKbsHgwVDxSiT9KsrkYDHuUgLwDnRW2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FEfuZZiY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1664C4CEC3;
-	Fri, 18 Oct 2024 22:40:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729291260;
-	bh=AkeNo/tk92UbTjmdHz4UbsBIgtAYxTSYnCUb4J5AiLE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FEfuZZiY9ByqoBy8I9AFOCFq56jmWhFmK3zzcnvop+h9aWq7A+ljGSoa9190KOHR/
-	 0fEUhaMJN/fJ5fOnfuVkRFYyupkZJiQXG5SL3Ey+TFv5t9IKI3o3Nvh3KW/0oASXo+
-	 s+Im/aKJLt99jnQ47Bv8Ir0EHb4AFlT9S19UcRSVMZhTqV0HMIhqRh/jwNof13Kud0
-	 kTTuFHD4AsPqXtGSrJoQlbh222xkJaBv9sEdIquJrAH4wTsrsb8GHvOvUvcJfwJLbg
-	 8k7HV+wnkclc+mvhu96OHF6/qkIy5hxjpj0jaAnYWztQ/ssbeiDEi/f6TjL/uPRy05
-	 DMbLkZgVUnYlA==
-Date: Fri, 18 Oct 2024 15:40:58 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Zong-Zhe Yang <kevin_yang@realtek.com>,
-	Kuan-Chung Chen <damon.chen@realtek.com>,
-	Chih-Kang Chang <gary.chang@realtek.com>,
-	linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: Re: [PATCH] rtw89: -Wenum-compare-conditional warnings
-Message-ID: <20241018224058.GA2635543@thelio-3990X>
-References: <20241018152311.4023979-1-arnd@kernel.org>
+	s=arc-20240116; t=1729294212; c=relaxed/simple;
+	bh=69cn4VL0TwIWIUYxxqh5SEuOA5IFjv84GYnyFOB4mIk=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=dBB72x4AK1yM/tYXTKgZ93UbvnxcGzXm0R1QHAC5QvOuZGsayZiydMwn40OXpO5N1yDB/xohxJKbl5JoBkuQS37KjbAFLjdwCBMjDYdqsIMwTcUi1Fpoe6n7MDGO7bDCJ6vFTIs1sW8t/urRpHy/fca0AXTm6ClahOCBfWBSnJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BlsVKAZW; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729294209; x=1760830209;
+  h=date:from:to:cc:subject:message-id;
+  bh=69cn4VL0TwIWIUYxxqh5SEuOA5IFjv84GYnyFOB4mIk=;
+  b=BlsVKAZWL8VwDQDXZxYwHFwSVOMQf51nZ7NcM0TqF0CZ1T8A6xyYNdId
+   wit76v/wogToEtjOHoZKNh93g1Oa+9IqecQNnlNcwyaKCQF7ZfpPrzrZE
+   LS2LoP+pDIVAbNfJS+ZrUEkJzO0GLxeAUwcj+sS9y/CLgjGR9vOZk+XsN
+   G0Oe6r6gDm+EsAxnWm+99D2CmRgTolxue6PvcPpGMK8HJyMY6Cjvl1ahQ
+   jiBujany8aODv1TBprw1fnYDYYURmmPZXflVu8UF9mKi7dYAqWE8/8PxM
+   ZhmsS01lgU1z6Jy4/3cMEFYCzGw9H6dj/aBt9JpqnXxQmvztReqT9VO8n
+   Q==;
+X-CSE-ConnectionGUID: I9brdqM0RWq0DG75nPw9uA==
+X-CSE-MsgGUID: SZ39HcWhTFCPYw/GskC1Fw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11229"; a="54251922"
+X-IronPort-AV: E=Sophos;i="6.11,214,1725346800"; 
+   d="scan'208";a="54251922"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2024 16:30:09 -0700
+X-CSE-ConnectionGUID: F8px++sJS5GhLKMWMpmJ6Q==
+X-CSE-MsgGUID: PMfjDj5xSn2Rd4aJ40hvpw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,214,1725346800"; 
+   d="scan'208";a="79342966"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 18 Oct 2024 16:30:08 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t1wQ1-000OPZ-2r;
+	Fri, 18 Oct 2024 23:30:05 +0000
+Date: Sat, 19 Oct 2024 07:29:13 +0800
+From: kernel test robot <lkp@intel.com>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+ linux-wireless@vger.kernel.org
+Subject: [wireless-next:main] BUILD SUCCESS
+ 1f3de77752a7bf0d1beb44603f048eb46948b9fe
+Message-ID: <202410190706.kACDo4iy-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241018152311.4023979-1-arnd@kernel.org>
 
-On Fri, Oct 18, 2024 at 03:23:07PM +0000, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> This is one of three drivers that trigger -Wenum-compare-conditional warnings
-> with clang:
-> 
-> drivers/net/wireless/realtek/rtw89/core.c:1806:14: error: conditional expression between different enumeration types ('enum nl80211_eht_gi' and 'enum nl80211_he_gi') [-Werror,-Wenum-compare-conditional]
->  1806 |                 return eht ? NL80211_RATE_INFO_EHT_GI_0_8 :
->       |                            ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->  1807 |                              NL80211_RATE_INFO_HE_GI_0_8;
->       |                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> drivers/net/wireless/realtek/rtw89/core.c:1810:14: error: conditional expression between different enumeration types ('enum nl80211_eht_gi' and 'enum nl80211_he_gi') [-Werror,-Wenum-compare-conditional]
->  1810 |                 return eht ? NL80211_RATE_INFO_EHT_GI_1_6 :
->       |                            ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->  1811 |                              NL80211_RATE_INFO_HE_GI_1_6;
->       |                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> drivers/net/wireless/realtek/rtw89/core.c:1813:14: error: conditional expression between different enumeration types ('enum nl80211_eht_gi' and 'enum nl80211_he_gi') [-Werror,-Wenum-compare-conditional]
->  1813 |                 return eht ? NL80211_RATE_INFO_EHT_GI_3_2 :
->       |                            ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->  1814 |                              NL80211_RATE_INFO_HE_GI_3_2;
->       |                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> drivers/net/wireless/realtek/rtw89/core.c:1818:15: error: conditional expression between different enumeration types ('enum nl80211_eht_gi' and 'enum nl80211_he_gi') [-Werror,-Wenum-compare-conditional]
->  1818 |                         return eht ? NL80211_RATE_INFO_EHT_GI_3_2 :
->       |                                    ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->  1819 |                                      NL80211_RATE_INFO_HE_GI_3_2;
->       |                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> 
-> In this case, all four warnings can be easily avoided by splitting the
-> function into two separate ones, in a way that helps readability as well,
-> at the expense of a few extra source lines.
-> 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+branch HEAD: 1f3de77752a7bf0d1beb44603f048eb46948b9fe  Merge tag 'rtw-next-2024-10-10' of https://github.com/pkshih/rtw
 
-I agree this is slightly less compact but I think it is more obvious,
-especially in the face of the warning.
+elapsed time: 1802m
 
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+configs tested: 98
+configs skipped: 3
 
-> ---
->  drivers/net/wireless/realtek/rtw89/core.c | 48 +++++++++++++++++------
->  1 file changed, 37 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-> index bba5bde95bb4..62e873fa1659 100644
-> --- a/drivers/net/wireless/realtek/rtw89/core.c
-> +++ b/drivers/net/wireless/realtek/rtw89/core.c
-> @@ -1858,32 +1858,58 @@ static void rtw89_core_rx_process_phy_sts(struct rtw89_dev *rtwdev,
->  					  phy_ppdu);
->  }
->  
-> -static u8 rtw89_rxdesc_to_nl_he_eht_gi(struct rtw89_dev *rtwdev,
-> -				       u8 desc_info_gi,
-> -				       bool rx_status, bool eht)
-> +static u8 rtw89_rxdesc_to_nl_he_gi(struct rtw89_dev *rtwdev,
-> +				   u8 desc_info_gi,
-> +				   bool rx_status)
-> +{
-> +	switch (desc_info_gi) {
-> +	case RTW89_GILTF_SGI_4XHE08:
-> +	case RTW89_GILTF_2XHE08:
-> +	case RTW89_GILTF_1XHE08:
-> +		return NL80211_RATE_INFO_HE_GI_0_8;
-> +	case RTW89_GILTF_2XHE16:
-> +	case RTW89_GILTF_1XHE16:
-> +		return NL80211_RATE_INFO_HE_GI_1_6;
-> +	case RTW89_GILTF_LGI_4XHE32:
-> +		return NL80211_RATE_INFO_HE_GI_3_2;
-> +	default:
-> +		rtw89_warn(rtwdev, "invalid gi_ltf=%d", desc_info_gi);
-> +		if (rx_status)
-> +			return NL80211_RATE_INFO_HE_GI_3_2;
-> +		return U8_MAX;
-> +	}
-> +}
-> +
-> +static u8 rtw89_rxdesc_to_nl_eht_gi(struct rtw89_dev *rtwdev,
-> +				    u8 desc_info_gi,
-> +				    bool rx_status)
->  {
->  	switch (desc_info_gi) {
->  	case RTW89_GILTF_SGI_4XHE08:
->  	case RTW89_GILTF_2XHE08:
->  	case RTW89_GILTF_1XHE08:
-> -		return eht ? NL80211_RATE_INFO_EHT_GI_0_8 :
-> -			     NL80211_RATE_INFO_HE_GI_0_8;
-> +		return NL80211_RATE_INFO_EHT_GI_0_8;
->  	case RTW89_GILTF_2XHE16:
->  	case RTW89_GILTF_1XHE16:
-> -		return eht ? NL80211_RATE_INFO_EHT_GI_1_6 :
-> -			     NL80211_RATE_INFO_HE_GI_1_6;
-> +		return NL80211_RATE_INFO_EHT_GI_1_6;
->  	case RTW89_GILTF_LGI_4XHE32:
-> -		return eht ? NL80211_RATE_INFO_EHT_GI_3_2 :
-> -			     NL80211_RATE_INFO_HE_GI_3_2;
-> +		return NL80211_RATE_INFO_EHT_GI_3_2;
->  	default:
->  		rtw89_warn(rtwdev, "invalid gi_ltf=%d", desc_info_gi);
->  		if (rx_status)
-> -			return eht ? NL80211_RATE_INFO_EHT_GI_3_2 :
-> -				     NL80211_RATE_INFO_HE_GI_3_2;
-> +			return NL80211_RATE_INFO_EHT_GI_3_2;
->  		return U8_MAX;
->  	}
->  }
->  
-> +static u8 rtw89_rxdesc_to_nl_he_eht_gi(struct rtw89_dev *rtwdev,
-> +				       u8 desc_info_gi,
-> +				       bool rx_status, bool eht)
-> +{
-> +	return eht ? rtw89_rxdesc_to_nl_eht_gi(rtwdev, desc_info_gi, rx_status) :
-> +		     rtw89_rxdesc_to_nl_he_gi(rtwdev, desc_info_gi, rx_status);
-> +}
-> +
->  static
->  bool rtw89_check_rx_statu_gi_match(struct ieee80211_rx_status *status, u8 gi_ltf,
->  				   bool eht)
-> -- 
-> 2.39.5
-> 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                             allnoconfig    gcc-14.1.0
+alpha                            allyesconfig    clang-20
+alpha                               defconfig    gcc-14.1.0
+arc                              allmodconfig    clang-20
+arc                               allnoconfig    gcc-14.1.0
+arc                              allyesconfig    clang-20
+arc                                 defconfig    gcc-14.1.0
+arm                              allmodconfig    clang-20
+arm                               allnoconfig    gcc-14.1.0
+arm                              allyesconfig    clang-20
+arm                                 defconfig    gcc-14.1.0
+arm64                            allmodconfig    clang-20
+arm64                             allnoconfig    gcc-14.1.0
+arm64                               defconfig    gcc-14.1.0
+csky                              allnoconfig    gcc-14.1.0
+csky                                defconfig    gcc-14.1.0
+hexagon                          allmodconfig    clang-20
+hexagon                           allnoconfig    gcc-14.1.0
+hexagon                          allyesconfig    clang-20
+hexagon                             defconfig    gcc-14.1.0
+i386                             allmodconfig    clang-18
+i386                              allnoconfig    clang-18
+i386                             allyesconfig    clang-18
+i386        buildonly-randconfig-001-20241018    gcc-11
+i386        buildonly-randconfig-002-20241018    gcc-11
+i386        buildonly-randconfig-003-20241018    gcc-11
+i386        buildonly-randconfig-004-20241018    gcc-11
+i386        buildonly-randconfig-005-20241018    gcc-11
+i386        buildonly-randconfig-006-20241018    gcc-11
+i386                                defconfig    clang-18
+i386                  randconfig-001-20241018    gcc-11
+i386                  randconfig-002-20241018    gcc-11
+i386                  randconfig-003-20241018    gcc-11
+i386                  randconfig-004-20241018    gcc-11
+i386                  randconfig-005-20241018    gcc-11
+i386                  randconfig-006-20241018    gcc-11
+i386                  randconfig-011-20241018    gcc-11
+i386                  randconfig-012-20241018    gcc-11
+i386                  randconfig-013-20241018    gcc-11
+i386                  randconfig-014-20241018    gcc-11
+i386                  randconfig-015-20241018    gcc-11
+i386                  randconfig-016-20241018    gcc-11
+loongarch                        allmodconfig    gcc-14.1.0
+loongarch                         allnoconfig    gcc-14.1.0
+loongarch                           defconfig    gcc-14.1.0
+m68k                             allmodconfig    gcc-14.1.0
+m68k                              allnoconfig    gcc-14.1.0
+m68k                             allyesconfig    gcc-14.1.0
+m68k                                defconfig    gcc-14.1.0
+microblaze                       allmodconfig    gcc-14.1.0
+microblaze                        allnoconfig    gcc-14.1.0
+microblaze                       allyesconfig    gcc-14.1.0
+microblaze                          defconfig    gcc-14.1.0
+mips                              allnoconfig    gcc-14.1.0
+nios2                             allnoconfig    gcc-14.1.0
+nios2                               defconfig    gcc-14.1.0
+openrisc                          allnoconfig    clang-20
+openrisc                         allyesconfig    gcc-14.1.0
+openrisc                            defconfig    gcc-12
+parisc                           allmodconfig    gcc-14.1.0
+parisc                            allnoconfig    clang-20
+parisc                           allyesconfig    gcc-14.1.0
+parisc                              defconfig    gcc-12
+parisc64                            defconfig    gcc-14.1.0
+powerpc                          allmodconfig    gcc-14.1.0
+powerpc                           allnoconfig    clang-20
+powerpc                          allyesconfig    gcc-14.1.0
+riscv                            allmodconfig    gcc-14.1.0
+riscv                             allnoconfig    clang-20
+riscv                            allyesconfig    gcc-14.1.0
+riscv                               defconfig    gcc-12
+s390                             allmodconfig    gcc-14.1.0
+s390                              allnoconfig    clang-20
+s390                             allyesconfig    gcc-14.1.0
+s390                                defconfig    gcc-12
+sh                               allmodconfig    gcc-14.1.0
+sh                                allnoconfig    gcc-14.1.0
+sh                               allyesconfig    gcc-14.1.0
+sh                                  defconfig    gcc-12
+sparc                            allmodconfig    gcc-14.1.0
+sparc64                             defconfig    gcc-12
+um                               allmodconfig    clang-20
+um                                allnoconfig    clang-20
+um                               allyesconfig    clang-20
+um                                  defconfig    gcc-12
+um                             i386_defconfig    gcc-12
+um                           x86_64_defconfig    gcc-12
+x86_64                            allnoconfig    clang-18
+x86_64                           allyesconfig    clang-18
+x86_64                              defconfig    clang-18
+x86_64                                  kexec    clang-18
+x86_64                                  kexec    gcc-12
+x86_64                               rhel-8.3    gcc-12
+x86_64                           rhel-8.3-bpf    clang-18
+x86_64                         rhel-8.3-kunit    clang-18
+x86_64                           rhel-8.3-ltp    clang-18
+x86_64                          rhel-8.3-rust    clang-18
+xtensa                            allnoconfig    gcc-14.1.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
