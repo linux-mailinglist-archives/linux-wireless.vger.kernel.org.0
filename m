@@ -1,192 +1,240 @@
-Return-Path: <linux-wireless+bounces-14231-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14232-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 621399A4A14
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Oct 2024 01:30:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB7689A4A38
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Oct 2024 01:45:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABA40B216AF
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2024 23:30:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 952EC282A06
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2024 23:45:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F5D5189F58;
-	Fri, 18 Oct 2024 23:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCCB919149E;
+	Fri, 18 Oct 2024 23:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BlsVKAZW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="evtxctpR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D509F18E758
-	for <linux-wireless@vger.kernel.org>; Fri, 18 Oct 2024 23:30:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75011817;
+	Fri, 18 Oct 2024 23:45:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729294212; cv=none; b=tzBZE9LyeB+kYKgPaUoDtTSM+ytwgM/H5IlxCLHmHDWR6zYndacCGi8+T/oJACpKOzY7B6G9ba2RusNO8lgrnZcuGSr/W50227MY/wSFp2E28fl5ko5z/wc0OjBB84wNTkXJ8fyRIbi/BTMXjJqqZtEoZCFWB676ID5dsjUIqpY=
+	t=1729295139; cv=none; b=OmiOMG8Lys/smUXmH59CeiZe0fgD2Tu+J9+rCerZ5N3b5erD1Op3kUalu3z0Iaj+gyPrvqpNYBZYSXiLCT0BAvCoiZqVrZEZIid2W3b0oSzrOXEbfcRZW/7+jCk2j16fEts/ibTfYGKnJ8stHR6bpx+RszoKeFHZPY74/5IB9hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729294212; c=relaxed/simple;
-	bh=69cn4VL0TwIWIUYxxqh5SEuOA5IFjv84GYnyFOB4mIk=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=dBB72x4AK1yM/tYXTKgZ93UbvnxcGzXm0R1QHAC5QvOuZGsayZiydMwn40OXpO5N1yDB/xohxJKbl5JoBkuQS37KjbAFLjdwCBMjDYdqsIMwTcUi1Fpoe6n7MDGO7bDCJ6vFTIs1sW8t/urRpHy/fca0AXTm6ClahOCBfWBSnJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BlsVKAZW; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1729294209; x=1760830209;
-  h=date:from:to:cc:subject:message-id;
-  bh=69cn4VL0TwIWIUYxxqh5SEuOA5IFjv84GYnyFOB4mIk=;
-  b=BlsVKAZWL8VwDQDXZxYwHFwSVOMQf51nZ7NcM0TqF0CZ1T8A6xyYNdId
-   wit76v/wogToEtjOHoZKNh93g1Oa+9IqecQNnlNcwyaKCQF7ZfpPrzrZE
-   LS2LoP+pDIVAbNfJS+ZrUEkJzO0GLxeAUwcj+sS9y/CLgjGR9vOZk+XsN
-   G0Oe6r6gDm+EsAxnWm+99D2CmRgTolxue6PvcPpGMK8HJyMY6Cjvl1ahQ
-   jiBujany8aODv1TBprw1fnYDYYURmmPZXflVu8UF9mKi7dYAqWE8/8PxM
-   ZhmsS01lgU1z6Jy4/3cMEFYCzGw9H6dj/aBt9JpqnXxQmvztReqT9VO8n
-   Q==;
-X-CSE-ConnectionGUID: I9brdqM0RWq0DG75nPw9uA==
-X-CSE-MsgGUID: SZ39HcWhTFCPYw/GskC1Fw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11229"; a="54251922"
-X-IronPort-AV: E=Sophos;i="6.11,214,1725346800"; 
-   d="scan'208";a="54251922"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Oct 2024 16:30:09 -0700
-X-CSE-ConnectionGUID: F8px++sJS5GhLKMWMpmJ6Q==
-X-CSE-MsgGUID: PMfjDj5xSn2Rd4aJ40hvpw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,214,1725346800"; 
-   d="scan'208";a="79342966"
-Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 18 Oct 2024 16:30:08 -0700
-Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1t1wQ1-000OPZ-2r;
-	Fri, 18 Oct 2024 23:30:05 +0000
-Date: Sat, 19 Oct 2024 07:29:13 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- linux-wireless@vger.kernel.org
-Subject: [wireless-next:main] BUILD SUCCESS
- 1f3de77752a7bf0d1beb44603f048eb46948b9fe
-Message-ID: <202410190706.kACDo4iy-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1729295139; c=relaxed/simple;
+	bh=lFZnjV8RlVPG6PrVOgGg9hgB2Ob3uus6nsFdYXxg0xQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=TcCmc9xGp5zi+KyatlAp1nCUjrl7OhoX5KPxHwT9SPd8wUmeRdsJZPurUONEIEzZVv+xr1UyvGmyQwPFvFT0EvQU8PUS0O/FqQ1v46ZBKds9MxQuwhAx6v8esadfO+poUJaiyGyCccxH4pzs9jmkIdmJwzVeUdMTjrOARFzipLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=evtxctpR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6996C4CEC3;
+	Fri, 18 Oct 2024 23:45:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729295139;
+	bh=lFZnjV8RlVPG6PrVOgGg9hgB2Ob3uus6nsFdYXxg0xQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=evtxctpRyaoTSOigJT5cFz8FlzinZ4CiqIbWurTmKrRfQkXyPwANmEAW+wstE4BGx
+	 TIN4rKkxFq5bRqf1RYbu8X5+GaKP8PCUkJCSI7XdnVuPyggqqCKegX2g9xYIK1RWWo
+	 +b0kx6X/7xFOXGXdvbNco/L2DpCtD2beey4jXYhDZqcjQ6tHOX7X1U5wq38aQ9bZXw
+	 j4FYzQwUpZeifU9a96tVVuahIFbm86NthAcccPlNw2GRZ0nybq3IyuM42izSzAVkj8
+	 T19Q5jWyld7A4Ht/0K1UYHtBeST5LII4RfUrhhhbZUkSRif8tr3x1ApUVAUGVSTvJT
+	 Ma/8xyjaHk33A==
+Date: Fri, 18 Oct 2024 18:45:37 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Philipp Stanner <pstanner@redhat.com>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Basavaraj Natikar <basavaraj.natikar@amd.com>,
+	Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Alex Dubov <oakad@yahoo.com>,
+	Sudarsana Kalluru <skalluru@marvell.com>,
+	Manish Chopra <manishc@marvell.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rasesh Mody <rmody@marvell.com>, GR-Linux-NIC-Dev@marvell.com,
+	Igor Mitsyanko <imitsyanko@quantenna.com>,
+	Sergey Matyukevich <geomatsi@gmail.com>,
+	Kalle Valo <kvalo@kernel.org>, Sanjay R Mehta <sanju.mehta@amd.com>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Jon Mason <jdmason@kudzu.us>, Dave Jiang <dave.jiang@intel.com>,
+	Allen Hubbe <allenbh@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Juergen Gross <jgross@suse.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Ricky Wu <ricky_wu@realtek.com>, Al Viro <viro@zeniv.linux.org.uk>,
+	Breno Leitao <leitao@debian.org>, Kevin Tian <kevin.tian@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mostafa Saleh <smostafa@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Yi Liu <yi.l.liu@intel.com>, Christian Brauner <brauner@kernel.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Eric Auger <eric.auger@redhat.com>,
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Ye Bin <yebin10@huawei.com>,
+	Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Rui Salvaterra <rsalvaterra@gmail.com>, linux-ide@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-input@vger.kernel.org,
+	netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+	ntb@lists.linux.dev, linux-pci@vger.kernel.org, kvm@vger.kernel.org,
+	xen-devel@lists.xenproject.org, linux-sound@vger.kernel.org
+Subject: Re: [PATCH 13/13] PCI: Deprecate pci_intx(), pcim_intx()
+Message-ID: <20241018234537.GA770692@bhelgaas>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f871a77fb51e54332886882e8ecb1a4a5f5d296b.camel@redhat.com>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-branch HEAD: 1f3de77752a7bf0d1beb44603f048eb46948b9fe  Merge tag 'rtw-next-2024-10-10' of https://github.com/pkshih/rtw
+On Wed, Oct 16, 2024 at 10:53:16AM +0200, Philipp Stanner wrote:
+> On Wed, 2024-10-16 at 10:43 +0200, Heiner Kallweit wrote:
+> > On 16.10.2024 08:57, Philipp Stanner wrote:
+> > > On Tue, 2024-10-15 at 13:53 -0600, Alex Williamson wrote:
+> > > > On Tue, 15 Oct 2024 20:51:23 +0200
+> > > > Philipp Stanner <pstanner@redhat.com> wrote:
+> > > > 
+> > > > > pci_intx() and its managed counterpart pcim_intx() only exist
+> > > > > for
+> > > > > older
+> > > > > drivers which have not been ported yet for various reasons.
+> > > > > Future
+> > > > > drivers should preferably use pci_alloc_irq_vectors().
+> > > > > 
+> > > > > Mark pci_intx() and pcim_intx() as deprecated and encourage
+> > > > > usage
+> > > > > of
+> > > > > pci_alloc_irq_vectors() in its place.
+> > > > 
+> > > > I don't really understand this.  As we've discussed previously
+> > > > pci_alloc_irq_vectors() is, unsurprisingly, for allocating PCI
+> > > > IRQ
+> > > > vectors while pci_intx() is for manipulating the INTx disable bit
+> > > > on
+> > > > PCI devices.  The latter is a generic mechanism for preventing
+> > > > PCI
+> > > > devices from generating INTx, regardless of whether there's a
+> > > > vector
+> > > > allocated for it.  How does the former replace the latter and why
+> > > > do
+> > > > we
+> > > > feel the need to deprecate the latter?
+> > > > 
+> > > > It feels like this fits some narrow narrative and makes all users
+> > > > of
+> > > > these now deprecated functions second class citizens.  Why?  At
+> > > > it's
+> > > > root these are simply providing mask and set or mask and clear
+> > > > register
+> > > > bit operations.  Thanks,
+> > > 
+> > > I got the feeling from the RFC discussion that that was basically
+> > > the
+> > > consensus: people should use pci_alloc_irq_vectors(). Or did I
+> > > misunderstand Andy and Heiner?
+> > > 
+> > I think there are two different use cases for pci_intx().
+> > At first there are several drivers where the direct usage of
+> > pci_intx()
+> > can be eliminated by switching to the pci_alloc_irq_vectors() API.
+> > 
+> > And then there's usage of pci_intx() in
+> > drivers/vfio/pci/vfio_pci_intrs.c
+> > drivers/xen/xen-pciback/conf_space_header.c
+> > There we have to keep the (AFAICS unmanaged) pci_intx() calls.
+> 
+> There is also the usage within PCI itself, in MSI. Patch №8 touches
+> that.
+> 
+> It's why I think this series should land before anyone should port
+> direct pci_intx() users to the irq vectors function, because the latter
+> also uses pci_intx() and its own devres, which sounds explosive to me.
+>
+> > > I'm perfectly happy with dropping this patch and continue offering
+> > > pci{m}_intx() to users, since after removing that hybrid hazzard I
+> > > don't see any harm in them anymore.
 
-elapsed time: 1802m
+So is the bottom line that we should drop *this* patch and apply the
+rest of the series?
 
-configs tested: 98
-configs skipped: 3
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig    gcc-14.1.0
-alpha                            allyesconfig    clang-20
-alpha                               defconfig    gcc-14.1.0
-arc                              allmodconfig    clang-20
-arc                               allnoconfig    gcc-14.1.0
-arc                              allyesconfig    clang-20
-arc                                 defconfig    gcc-14.1.0
-arm                              allmodconfig    clang-20
-arm                               allnoconfig    gcc-14.1.0
-arm                              allyesconfig    clang-20
-arm                                 defconfig    gcc-14.1.0
-arm64                            allmodconfig    clang-20
-arm64                             allnoconfig    gcc-14.1.0
-arm64                               defconfig    gcc-14.1.0
-csky                              allnoconfig    gcc-14.1.0
-csky                                defconfig    gcc-14.1.0
-hexagon                          allmodconfig    clang-20
-hexagon                           allnoconfig    gcc-14.1.0
-hexagon                          allyesconfig    clang-20
-hexagon                             defconfig    gcc-14.1.0
-i386                             allmodconfig    clang-18
-i386                              allnoconfig    clang-18
-i386                             allyesconfig    clang-18
-i386        buildonly-randconfig-001-20241018    gcc-11
-i386        buildonly-randconfig-002-20241018    gcc-11
-i386        buildonly-randconfig-003-20241018    gcc-11
-i386        buildonly-randconfig-004-20241018    gcc-11
-i386        buildonly-randconfig-005-20241018    gcc-11
-i386        buildonly-randconfig-006-20241018    gcc-11
-i386                                defconfig    clang-18
-i386                  randconfig-001-20241018    gcc-11
-i386                  randconfig-002-20241018    gcc-11
-i386                  randconfig-003-20241018    gcc-11
-i386                  randconfig-004-20241018    gcc-11
-i386                  randconfig-005-20241018    gcc-11
-i386                  randconfig-006-20241018    gcc-11
-i386                  randconfig-011-20241018    gcc-11
-i386                  randconfig-012-20241018    gcc-11
-i386                  randconfig-013-20241018    gcc-11
-i386                  randconfig-014-20241018    gcc-11
-i386                  randconfig-015-20241018    gcc-11
-i386                  randconfig-016-20241018    gcc-11
-loongarch                        allmodconfig    gcc-14.1.0
-loongarch                         allnoconfig    gcc-14.1.0
-loongarch                           defconfig    gcc-14.1.0
-m68k                             allmodconfig    gcc-14.1.0
-m68k                              allnoconfig    gcc-14.1.0
-m68k                             allyesconfig    gcc-14.1.0
-m68k                                defconfig    gcc-14.1.0
-microblaze                       allmodconfig    gcc-14.1.0
-microblaze                        allnoconfig    gcc-14.1.0
-microblaze                       allyesconfig    gcc-14.1.0
-microblaze                          defconfig    gcc-14.1.0
-mips                              allnoconfig    gcc-14.1.0
-nios2                             allnoconfig    gcc-14.1.0
-nios2                               defconfig    gcc-14.1.0
-openrisc                          allnoconfig    clang-20
-openrisc                         allyesconfig    gcc-14.1.0
-openrisc                            defconfig    gcc-12
-parisc                           allmodconfig    gcc-14.1.0
-parisc                            allnoconfig    clang-20
-parisc                           allyesconfig    gcc-14.1.0
-parisc                              defconfig    gcc-12
-parisc64                            defconfig    gcc-14.1.0
-powerpc                          allmodconfig    gcc-14.1.0
-powerpc                           allnoconfig    clang-20
-powerpc                          allyesconfig    gcc-14.1.0
-riscv                            allmodconfig    gcc-14.1.0
-riscv                             allnoconfig    clang-20
-riscv                            allyesconfig    gcc-14.1.0
-riscv                               defconfig    gcc-12
-s390                             allmodconfig    gcc-14.1.0
-s390                              allnoconfig    clang-20
-s390                             allyesconfig    gcc-14.1.0
-s390                                defconfig    gcc-12
-sh                               allmodconfig    gcc-14.1.0
-sh                                allnoconfig    gcc-14.1.0
-sh                               allyesconfig    gcc-14.1.0
-sh                                  defconfig    gcc-12
-sparc                            allmodconfig    gcc-14.1.0
-sparc64                             defconfig    gcc-12
-um                               allmodconfig    clang-20
-um                                allnoconfig    clang-20
-um                               allyesconfig    clang-20
-um                                  defconfig    gcc-12
-um                             i386_defconfig    gcc-12
-um                           x86_64_defconfig    gcc-12
-x86_64                            allnoconfig    clang-18
-x86_64                           allyesconfig    clang-18
-x86_64                              defconfig    clang-18
-x86_64                                  kexec    clang-18
-x86_64                                  kexec    gcc-12
-x86_64                               rhel-8.3    gcc-12
-x86_64                           rhel-8.3-bpf    clang-18
-x86_64                         rhel-8.3-kunit    clang-18
-x86_64                           rhel-8.3-ltp    clang-18
-x86_64                          rhel-8.3-rust    clang-18
-xtensa                            allnoconfig    gcc-14.1.0
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+> > > > > Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+> > > > > ---
+> > > > >  drivers/pci/devres.c | 5 ++++-
+> > > > >  drivers/pci/pci.c    | 5 ++++-
+> > > > >  2 files changed, 8 insertions(+), 2 deletions(-)
+> > > > > 
+> > > > > diff --git a/drivers/pci/devres.c b/drivers/pci/devres.c
+> > > > > index 6f8f712fe34e..4c76fc063104 100644
+> > > > > --- a/drivers/pci/devres.c
+> > > > > +++ b/drivers/pci/devres.c
+> > > > > @@ -435,7 +435,7 @@ static struct pcim_intx_devres
+> > > > > *get_or_create_intx_devres(struct device *dev)
+> > > > >  }
+> > > > >  
+> > > > >  /**
+> > > > > - * pcim_intx - managed pci_intx()
+> > > > > + * pcim_intx - managed pci_intx() (DEPRECATED)
+> > > > >   * @pdev: the PCI device to operate on
+> > > > >   * @enable: boolean: whether to enable or disable PCI INTx
+> > > > >   *
+> > > > > @@ -443,6 +443,9 @@ static struct pcim_intx_devres
+> > > > > *get_or_create_intx_devres(struct device *dev)
+> > > > >   *
+> > > > >   * Enable/disable PCI INTx for device @pdev.
+> > > > >   * Restore the original state on driver detach.
+> > > > > + *
+> > > > > + * This function is DEPRECATED. Do not use it in new code.
+> > > > > + * Use pci_alloc_irq_vectors() instead (there is no managed
+> > > > > version, currently).
+> > > > >   */
+> > > > >  int pcim_intx(struct pci_dev *pdev, int enable)
+> > > > >  {
+> > > > > diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> > > > > index 7ce1d0e3a1d5..dc69e23b8982 100644
+> > > > > --- a/drivers/pci/pci.c
+> > > > > +++ b/drivers/pci/pci.c
+> > > > > @@ -4477,11 +4477,14 @@ void pci_disable_parity(struct pci_dev
+> > > > > *dev)
+> > > > >  }
+> > > > >  
+> > > > >  /**
+> > > > > - * pci_intx - enables/disables PCI INTx for device dev
+> > > > > + * pci_intx - enables/disables PCI INTx for device dev
+> > > > > (DEPRECATED)
+> > > > >   * @pdev: the PCI device to operate on
+> > > > >   * @enable: boolean: whether to enable or disable PCI INTx
+> > > > >   *
+> > > > >   * Enables/disables PCI INTx for device @pdev
+> > > > > + *
+> > > > > + * This function is DEPRECATED. Do not use it in new code.
+> > > > > + * Use pci_alloc_irq_vectors() instead.
+> > > > >   */
+> > > > >  void pci_intx(struct pci_dev *pdev, int enable)
+> > > > >  {
+> > > > 
+> > > 
+> > > 
+> > 
+> 
 
