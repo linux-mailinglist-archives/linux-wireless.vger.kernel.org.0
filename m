@@ -1,173 +1,113 @@
-Return-Path: <linux-wireless+bounces-14183-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14184-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16B8E9A310B
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2024 00:52:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 130769A323F
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2024 03:48:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7E812B21803
-	for <lists+linux-wireless@lfdr.de>; Thu, 17 Oct 2024 22:52:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CBE6828430C
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2024 01:48:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6A8E1D798B;
-	Thu, 17 Oct 2024 22:52:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B243639FD9;
+	Fri, 18 Oct 2024 01:48:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YYaz4nW9"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="uJYxvIwh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBD41D5142;
-	Thu, 17 Oct 2024 22:52:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51D920E327
+	for <linux-wireless@vger.kernel.org>; Fri, 18 Oct 2024 01:48:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729205535; cv=none; b=GMXkTdOFLnPZYYcO1Dg6MjqCfM/Me1ItO9/dfHzLV0TVc/3zgVHRp0q4ShTDvKssfQCt3TSP4uzEjvZ61uCqIKtk574H3YQxxtxLCTy8HYVCWW8Ywv6fgpM7pwo/A2pZwLbknXxzrV2bt91ienHJw48n1ag5AhQCPJvHSyjcCWc=
+	t=1729216106; cv=none; b=XbzSCWDQEPmTzo9nQYnSoBuEMQw/NuWJVOgnz2O7TjTAm5KNftAwjLzDpu80vuWY2njaxaHYseWPl0JoA1v76+PmX7BkdoVoIANljh27o9677NO8Pg77YhKj5I33S9HMTL92XIQ1KtesRCmxweOvEDXHnao64r01/14WXGD6uN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729205535; c=relaxed/simple;
-	bh=frnSwULrYETQkvbVwZEgEPiE36HANfCtPd3CbO9qsZg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ob5abbcMEg9naBUnOljJG+2/Loq/SyYz3KDyCVojaNI3dAuErZIEspC0tcjumD4fR7TVlJHlFG/YAno1p57zciZ0nHgIx26HEYZbC2JTEYwhYMAU7b56u3iPn9pJnvX6WoqAVHKDqmJH58wiJ6I1erVucc50gleghl8hlnClVYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YYaz4nW9; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-7ea9739647bso1016410a12.0;
-        Thu, 17 Oct 2024 15:52:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729205530; x=1729810330; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ak09hnm3ZyKvAlgCv6Rshtaw1ScSFFpp67M4d2jxtOE=;
-        b=YYaz4nW9BEKv3zZKajTdQLIX64gRyr3ffCepOocKuw5YGXHDXJ0sw/uu3lk+bDVX4g
-         kPEoPqGt5660/uFr0EpUqc5ZlPM81SQwuPAFoKXfn/+d96SlHMthZsd2dJdNc+rc+kE4
-         /KWKha30cJvpd3ShNDki8fGHcRfgtn882aw5Z3EJ3F9wwA1SCujgYrj6Jrq7UW2vp8iN
-         7KBtiShx2N04zRxw+ynmKXZVTFxiTh1STAM6wZc+gVBZUTDZfm8d64YGfGgA+RiWdIhM
-         aZCpek2EzohkrJO5KuSp1fjkOADGAzdTq9PJalTM+Nmv4ut40v1QOtnpYf/Xgi3A6p0G
-         cyXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729205530; x=1729810330;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ak09hnm3ZyKvAlgCv6Rshtaw1ScSFFpp67M4d2jxtOE=;
-        b=B6dj+o5FPeDP7L3Ri56sflQODO30jsF/VJTEeHPlWrHw1wYGrQSMEDF/MbMASaY9XL
-         gIIDp6l+J7e8GM6Jiqy7n416gm35lzSkdSqhpGFutfB0hMPkDVBwLXqLSzi7rUA9Dn2j
-         lw/jXro9BA2YfOxpZKia3Tl3Frijx0pTWW7tXjnyDG4TBzbDkhxXTrskiMi6ulMvRMeb
-         84XiSWhHPKPuTg5Pv6DwkLzKK66Z5kTWnqmqErc/YZNTA+FRlWauxcWC5ldReleR7dyw
-         wfTec3WV7Hv5GU9rG2tQAMfRJm3T/aNSGvvGgX7KvszRGnbj8C00EEXB+YMsq+dEVAZG
-         InDA==
-X-Forwarded-Encrypted: i=1; AJvYcCVncGm/i1AzUmy9GV8QE7rE4PuIrXE/uyuqIzK8xlUlUWDevXUmuxY5rZYRv6fh8GWb5LzMRL86nFxmQyhLMq0=@vger.kernel.org, AJvYcCWNfJpimwVzHJuvTmaxyYjtimGT0K9Exc28qvqjifVpLGlBhC+nvj/kUWk970BEc3IaeRuMUrqLgNY8cyM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxm8rgPy6wil/EqiVMJDZ4Ay1RB7W2ougb852Kky5C69YKXHDca
-	Vpfwz6IludxvZVprz2DgJ1AXgCtxBIj1kkArteK+gLsD6ax6dAXP4VjrS7z/lBlo4ICGGxCAy1b
-	+Fb5+UfML7Bz615DQJ/49K6NTqw==
-X-Google-Smtp-Source: AGHT+IGgAVW5XSoMHG4e+KpIXFuLcDgPF2s1F+2Cv3K68fhHnOOm7OviGrLHhAGMq+8oKZAf3PPVXx/5ByQdbk46G4E=
-X-Received: by 2002:a05:6a21:710a:b0:1d8:d880:2069 with SMTP id
- adf61e73a8af0-1d92c4ad296mr654536637.3.1729205530193; Thu, 17 Oct 2024
- 15:52:10 -0700 (PDT)
+	s=arc-20240116; t=1729216106; c=relaxed/simple;
+	bh=fYmZlbDI8LwU2ZR9owMoRZlB79TnjT6ZB2KE6ilr3yk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Luvq2h2o3fBPi25rzEnl/8G8BQJSZ51XNshZc18VQRDOaxESQJ2AFwig2f3j/du23PZ2ckPufIS8FsXfEnWtLfNt2Z5Zu+YIAXP+HfR4lVMQSLcNkCDGyvZHhT3TKyAbyRZONrL8kx1k7bZp1YgL4wCIZTqx+EFRIaxmqSn7GmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=uJYxvIwh; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 49I1m8umD1287289, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1729216088; bh=fYmZlbDI8LwU2ZR9owMoRZlB79TnjT6ZB2KE6ilr3yk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=uJYxvIwhufmMIq1VUUqtQanTnxNZ2DMjBP0k3QSn4qw+zMe5RamoOt3jHodpLKNOE
+	 0w+1rFuXQMdCOrr8n98MOKQeAj24EJ5teOPM0ZbMNfF1Ck/CZ/1N22sKlo/AU2TYaH
+	 cEqAIEpyKHA8dC0MZw5elbOiS/Q6tsGA+jhB2W5ifwp8KHEsEsQBMMOVbnRcfApsiz
+	 1C1RgWi1yQnpigDC2LdCyqMEHn+MgeEH42wWKOQF078zZx6iAUEGZIuMcWHJXW3FNV
+	 CQvJdx6CjopSYSUCzEeXZkvTa0m+hoGBxojamsOgb2pKV3NFIty3rHEEnUQQB1HKGb
+	 cUWHeBWXPtG6A==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 49I1m8umD1287289
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 18 Oct 2024 09:48:08 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 18 Oct 2024 09:48:08 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 18 Oct 2024 09:48:08 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
+ 15.01.2507.035; Fri, 18 Oct 2024 09:48:07 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Zenm Chen <zenmchen@gmail.com>,
+        "linux-firmware@kernel.org"
+	<linux-firmware@kernel.org>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>
+Subject: RE: [PATCH 2/2] rtlwifi: Remove unused firmware images
+Thread-Topic: [PATCH 2/2] rtlwifi: Remove unused firmware images
+Thread-Index: AQHbIKgrKBNsTJOjZEOj1hqWHuhyqLKLp86Q
+Date: Fri, 18 Oct 2024 01:48:07 +0000
+Message-ID: <7b298bde63ef426bb01ea463c783d9e3@realtek.com>
+References: <20241017152043.10205-1-zenmchen@gmail.com>
+ <20241017152043.10205-3-zenmchen@gmail.com>
+In-Reply-To: <20241017152043.10205-3-zenmchen@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240801202359.794035-1-frut3k7@gmail.com> <20241009065051.51143-1-frut3k7@gmail.com>
- <b58b5b2e-bf9f-480c-810b-2cef29aab82c@quicinc.com>
-In-Reply-To: <b58b5b2e-bf9f-480c-810b-2cef29aab82c@quicinc.com>
-From: =?UTF-8?Q?Pawe=C5=82_Owoc?= <frut3k7@gmail.com>
-Date: Fri, 18 Oct 2024 00:51:59 +0200
-Message-ID: <CAKEyCaDUfn4jtCdTt9JJ-Qe+CCudORPwcjj5i5=G28ANc+eCRg@mail.gmail.com>
-Subject: Re: [PATCH v2] wifi: ath10k: add channel 177 for 5 GHz band
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, 
-	linux-wireless@vger.kernel.org, ath10k@lists.infradead.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Oct 11, 2024 at 6:51=E2=80=AFPM Jeff Johnson <quic_jjohnson@quicinc=
-.com> wrote:
->
-> On 10/8/2024 11:49 PM, Pawe=C5=82 Owoc wrote:> Add support for channel 17=
-7 (5885
-> MHz ) for the 5 GHz band.
-> >
-> > Tested-on: qca988x hw2.0 firmware ver 10.2.4-1.0-00047
->
-> Can you elaborate on what was tested in your commit text? And more
-> importantly, what is the impact on existing devices, especially given tha=
-t
-> existing devices would not have calibration data for this channel in the =
-board
-> files? Does the QCA988x board file even have calibration data for this ch=
-annel?
->
-In the case of ath10k we use an external regulatory database.
-For the country "US" channels 169, 173 and 177 are marked as NO-IR and
-we cannot run AP on them.
-Even if channels are not disabled in the board files:
-            * 5845.0 MHz [169] (27.0 dBm) (no IR)
-            * 5865.0 MHz [173] (27.0 dBm) (no IR)
-            * 5885.0 MHz [177] (27.0 dBm) (no IR)
+Zenm Chen <zenmchen@gmail.com> wrote:
+> The firmware images below are no longer used by any in-kernel driver,
+> so remove them.
+>=20
+> rtlwifi/rtl8192eu_ap_wowlan.bin
+> rtlwifi/rtl8192eu_wowlan.bin
+> rtlwifi/rtl8723bs_bt.bin
+> rtlwifi/rtl8723bu_ap_wowlan.bin
+> rtlwifi/rtl8723bu_wowlan.bin
+> rtlwifi/rtl8723defw.bin
+> rtlwifi/rtl8822befw.bin
+>=20
 
-I only tested the use as a client on channel 177:
-root@OpenWrt:~# iwinfo phy1 scan
-Cell 01 - Address: XX:XX:XX:XX:XX:XX
-          ESSID: "ch177"
-          Mode: Master  Frequency: 5.885 GHz  Band: 5 GHz  Channel: 177
-          Signal: -43 dBm  Quality: 67/70
-          Encryption: mixed WPA2/WPA3 PSK/SAE (CCMP)
-          HT Operation:
-                    Primary Channel: 177
-                    Secondary Channel Offset: no secondary
-                    Channel Width: 20 MHz
-> >
-> > Signed-off-by: Pawe=C5=82 Owoc <frut3k7@gmail.com>
-> > ---
->
-> what is the diff from v1?
-> for future reference when you submit a new version of a patch you should
-> include a patch changelog after the ---, see:
-> https://www.kernel.org/doc/html/latest/process/submitting-patches.html#th=
-e-canonical-patch-format
->
-There are no differences. My previous patch was deferred. I don't know
-exactly how to proceed in such a case.
+I have confirmed these files are not used, but distro can select and pick
+firmware by module info. Not sure if cleanup is necessary.
 
-> >  drivers/net/wireless/ath/ath10k/core.h | 4 ++--
-> >  drivers/net/wireless/ath/ath10k/mac.c  | 1 +
-> >  2 files changed, 3 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/net/wireless/ath/ath10k/core.h b/drivers/net/wirel=
-ess/ath/ath10k/core.h
-> > index 446dca74f06a..3dff8c028526 100644
-> > --- a/drivers/net/wireless/ath/ath10k/core.h
-> > +++ b/drivers/net/wireless/ath/ath10k/core.h
-> > @@ -39,8 +39,8 @@
-> >  #define WMI_READY_TIMEOUT (5 * HZ)
-> >  #define ATH10K_FLUSH_TIMEOUT_HZ (5 * HZ)
-> >  #define ATH10K_CONNECTION_LOSS_HZ (3 * HZ)
-> > -#define ATH10K_NUM_CHANS 41
-> > -#define ATH10K_MAX_5G_CHAN 173
-> > +#define ATH10K_NUM_CHANS 42
-> > +#define ATH10K_MAX_5G_CHAN 177
-> >
-> >  /* Antenna noise floor */
-> >  #define ATH10K_DEFAULT_NOISE_FLOOR -95
-> > diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wirele=
-ss/ath/ath10k/mac.c
-> > index 646e1737d4c4..cee6a4d287b5 100644
-> > --- a/drivers/net/wireless/ath/ath10k/mac.c
-> > +++ b/drivers/net/wireless/ath/ath10k/mac.c
-> > @@ -9543,6 +9543,7 @@ static const struct ieee80211_channel ath10k_5ghz=
-_channels[] =3D {
-> >       CHAN5G(165, 5825, 0),
-> >       CHAN5G(169, 5845, 0),
-> >       CHAN5G(173, 5865, 0),
-> > +     CHAN5G(177, 5885, 0),
-> >       /* If you add more, you may need to change ATH10K_MAX_5G_CHAN */
-> >       /* And you will definitely need to change ATH10K_NUM_CHANS in cor=
-e.h */
-> >  };
->
+By the way, I found some firmware aren't added to MODULE_FIRMWARE():
+
+rtlwifi/rtl8723ae/sw.c:         fw_name =3D "rtlwifi/rtl8723fw_B.bin";
+rtlwifi/rtl8821ae/sw.c:         wowlan_fw_name =3D "rtlwifi/rtl8812aefw_wow=
+lan.bin";
+rtlwifi/rtl8821ae/sw.c:         wowlan_fw_name =3D "rtlwifi/rtl8821aefw_wow=
+lan.bin";
+...
+
+I will prepare a patch for them.=20
+
+
 
