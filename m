@@ -1,177 +1,154 @@
-Return-Path: <linux-wireless+bounces-14223-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14224-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83E3A9A4740
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2024 21:43:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AECC09A4779
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2024 21:58:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B36291C20DBD
-	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2024 19:43:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E912284348
+	for <lists+linux-wireless@lfdr.de>; Fri, 18 Oct 2024 19:58:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98B90205ACC;
-	Fri, 18 Oct 2024 19:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 961991885AA;
+	Fri, 18 Oct 2024 19:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="FLB3+9vS"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="enAOv2qV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6677318786A;
-	Fri, 18 Oct 2024 19:42:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA1820408D
+	for <linux-wireless@vger.kernel.org>; Fri, 18 Oct 2024 19:58:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729280579; cv=none; b=eXQZqYSifih7H/BNfVtWpqVqDHPCc358skeVCgKwPlImXJUB9cDolaco6M3WLs59Hvbwrfz2xhMXy1XliwyFt/Alc/ED25lIWOrgyfYcPf2xvQGZhNcvxaKwCEEGTy4rLKYtXGIXNc6vO7GW4bH9HisDIYY43AUQex8gRcTdfkQ=
+	t=1729281500; cv=none; b=eNs5vRolA/TPx5LYeXKd9Vi9AYtv+ao4KoQKlotN1J5iX3iurJcoS8uwDxuplX1ZMdSOawZtDbZ4DpXJjUWzRoMNmFO3NZulXSgRjOg5OP/h/3KcatP2Ro7GLbB84qLEyhqPUd1vF7lFv9AmjPe54kAzR6egqpn04ExGXLzdVrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729280579; c=relaxed/simple;
-	bh=Gpuxf7aeuuzqmzhp63zYCRRpmPtiuiFGFtvbgMIYt9Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Jlp2WGlySjRmJnZ5SxVwOEC71beOo7lBdwuy4SbBKowTcOht2MRWSxcBXta3wWp3SqDPV48zTRKcOLBMS5NEfI604b/9Cswa2l+O3iXV2VJV6FhqvOdivt5BpFfmBiP2utWReb2soeIZQq6oVa9QwSIEf/Er3H16ZxS6GWM12MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=FLB3+9vS; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 5DBA188A0E;
-	Fri, 18 Oct 2024 21:42:54 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1729280575;
-	bh=5zSJJrhTq//NrW8OCQxS0nkzbZo5tl0gZe9uSnXIa48=;
-	h=From:To:Cc:Subject:Date:From;
-	b=FLB3+9vSianCeYmV9Od/b2APXn596aSKEbVfzgyT9Z885pV91FVJfpTeOcJ5m/2+e
-	 P7pEuM9ni/5fEGnYBSVIURb5MOWbuQdkiKu6Mcizz//MNYg6jxZXed/spUgjmyBnPj
-	 FDbZgP9ak7D60KfMhLjFVKINF5FCq5O0KPLuGIoPsPsZKwQ/l/kpJhanXD4gkSipOd
-	 fP5o1r0YoIL5kQaeXiYoM3q+87xWmNGqd1ith68a7NqWimSHX06j5q2NTykFfMI8EL
-	 KlCXiRqGNyPYaZVeOmd0UVh/AZ+7rKfzTIG5DgaAOu8TgYgQHfejTV8c2lXZmI32M7
-	 RklBwEVAKkvzA==
-From: Marek Vasut <marex@denx.de>
-To: linux-wireless@vger.kernel.org
-Cc: Marek Vasut <marex@denx.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Adham Abozaeid <adham.abozaeid@microchip.com>,
-	Ajay Singh <ajay.kathat@microchip.com>,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kalle Valo <kvalo@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	devicetree@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH] wifi: wilc1000: Add proper error handling for remaining CMD52
-Date: Fri, 18 Oct 2024 21:41:57 +0200
-Message-ID: <20241018194244.280322-1-marex@denx.de>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1729281500; c=relaxed/simple;
+	bh=82sYqD5s+7hIOtXqNsdn8pKxRLGsL54DcQPgvuBtjes=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gPNjRGWvKzzvXcnaT6W3237L959LL02EnQ8byuql7AWjDU8g2OVvm0d/7dPgdGRAvvLr1LV9uXosGbu4reFMOhcEXQEL8viO0XmG/Aj72xk1njxt4I3/7J3llGs1aBOoOqAm78FMKNvpcAs8ZsxYMqQ4HWNVK8b5y2lWJ/9jFxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com; spf=fail smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=enAOv2qV; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49IFEZle010153
+	for <linux-wireless@vger.kernel.org>; Fri, 18 Oct 2024 19:58:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	17H7VN6qnXXJuVQsrDHyc4u5oFUS85hKz7JjpkIBFxQ=; b=enAOv2qVfFOqAZs3
+	Hj+1SryuUMNEsrrYPma/Spi/PsFdLg8uYOHRd6yChn54ILaDQqs+HFjI6EhTbsz7
+	7+r0PltmJrDPcGOyFJBcgGskMgL+6+CTVaqXL/oBpef2q2j9wYu97kfT73e1ZxDH
+	SJk5XgYniFg2etwoCgSzXCgSp8pBKTnbx5jUn2XIIg2Lmq8Bg/mn+0OMS+PZ0YlK
+	/bBUhtmRqoUaE1rf5Ya0K+zX4PQwvTleklv15D1w9L/h7Gbask/yZaFEkyiOwpAL
+	GxbRjkecEZgX25ErYPk0uy8KlYj3b0e6LCqevfs5wCQhwb/RkUl+0wJRkDxKUHz/
+	olydew==
+Received: from mail-io1-f70.google.com (mail-io1-f70.google.com [209.85.166.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42bt540pna-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Fri, 18 Oct 2024 19:58:17 +0000 (GMT)
+Received: by mail-io1-f70.google.com with SMTP id ca18e2360f4ac-83aaad1b050so40101939f.1
+        for <linux-wireless@vger.kernel.org>; Fri, 18 Oct 2024 12:58:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729281496; x=1729886296;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=17H7VN6qnXXJuVQsrDHyc4u5oFUS85hKz7JjpkIBFxQ=;
+        b=pkxVzGgznRYQjJFy2l90RUEPDKWEhedZ/74nd2h9b86ts/moRsDfoUSZSSSuvhEUvO
+         0iBepmP+4zNWGJEvHVgpTBFHo8r8Xm01ZLGZIF8nYaf9PHaioK7PCsjOHZDjpCwSGevx
+         rprdJkBT230QD+rmFvWCwqWy4lYeDd8Nesn72hTDFclP24sZ1GabufQgn8PIDbgaJVNk
+         /RS3Xgkd3QBUhZWhzhqcK8/sExOOdNyKPYiyeKAn4bthAUhKv5c9QKkElKMucbToQdid
+         XNTSRQvFw4fWL9XKXaU6CAeYvYd5KcT1YyZNiVm3gl4lufnO3IUliZdJTtqC5ZNbcMBS
+         +9+g==
+X-Gm-Message-State: AOJu0YwUiL6I7HoJyFH9pyxpIcYV+YC4C8XFr0nkNHbNTU2vGnaFyDKh
+	MCpwOwrE/Cxn+iPgNtiy7n1wHwvcE5X8D+QEKB9TzCGsl1jdAQHiyI6BVJbu5xv2PwqNfPAaMBb
+	NOxsQwQUwfqGiDCdJXtQmAA8WLJzF1Jp+7LAkV0rw5hSaoBWD4Q+lnGO8UdLO0j1avvOMPcDJgw
+	==
+X-Received: by 2002:a05:6e02:1705:b0:39a:f126:9d86 with SMTP id e9e14a558f8ab-3a3f3fc94b4mr7183805ab.0.1729281496152;
+        Fri, 18 Oct 2024 12:58:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGqsPyEr/Lwj74Qskarn7NoA+u+1X8YWX9tKtJRLbScUlYeXVIFDyeC9CKm8mQ47T95ZjMwYg==
+X-Received: by 2002:a05:6e02:1705:b0:39a:f126:9d86 with SMTP id e9e14a558f8ab-3a3f3fc94b4mr7183625ab.0.1729281495736;
+        Fri, 18 Oct 2024 12:58:15 -0700 (PDT)
+Received: from [192.168.212.120] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a68ad506asm131676266b.57.2024.10.18.12.58.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 18 Oct 2024 12:58:14 -0700 (PDT)
+Message-ID: <940da07b-1286-4b88-8384-16ca2f996d90@oss.qualcomm.com>
+Date: Fri, 18 Oct 2024 21:58:11 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 05/22] wifi: ath12k: add ath12k_hw_regs for IPQ5332
+To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>, ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        P Praneesh <quic_ppranees@quicinc.com>,
+        Balamurugan S <quic_bselvara@quicinc.com>
+References: <20241015182637.955753-1-quic_rajkbhag@quicinc.com>
+ <20241015182637.955753-6-quic_rajkbhag@quicinc.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20241015182637.955753-6-quic_rajkbhag@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: -YLG_YXCyhCG5UqOHbVKLx5-zeWIczI6
+X-Proofpoint-GUID: -YLG_YXCyhCG5UqOHbVKLx5-zeWIczI6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 bulkscore=0
+ lowpriorityscore=0 malwarescore=0 clxscore=1011 priorityscore=1501
+ impostorscore=0 phishscore=0 spamscore=0 mlxscore=0 suspectscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410180127
 
-A few of the CMD52 calls did not have any error handling, add it.
-This prevents odd errors like "Unexpected interrupt (1) int=nnn"
-when the CMD52 fails just above in the IRQ handler and the CMD52
-error code is ignored by the driver. Fill the error handling in.
-Sort the variables in those affected functions while at it. Note
-that the error code itself is already printed in wilc_sdio_cmd52().
+On 15.10.2024 8:26 PM, Raj Kumar Bhagat wrote:
+> From: P Praneesh <quic_ppranees@quicinc.com>
+> 
+> Add register addresses (ath12k_hw_regs) for new ath12k AHB based
+> WiFi device IPQ5332.
+> 
+> Tested-on: IPQ5332 hw1.0 AHB WLAN.WBE.1.3.1-00130-QCAHKSWPL_SILICONZ-1
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00210-QCAHKSWPL_SILICONZ-1
+> 
+> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+> Co-developed-by: Balamurugan S <quic_bselvara@quicinc.com>
+> Signed-off-by: Balamurugan S <quic_bselvara@quicinc.com>
+> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+> ---
 
-Signed-off-by: Marek Vasut <marex@denx.de>
----
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Adham Abozaeid <adham.abozaeid@microchip.com>
-Cc: Ajay Singh <ajay.kathat@microchip.com>
-Cc: Alexis Lothoré <alexis.lothore@bootlin.com>
-Cc: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Cc: Conor Dooley <conor+dt@kernel.org>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Rob Herring <robh@kernel.org>
-Cc: devicetree@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Cc: netdev@vger.kernel.org
----
- .../net/wireless/microchip/wilc1000/sdio.c    | 27 ++++++++++++++-----
- 1 file changed, 21 insertions(+), 6 deletions(-)
+[...]
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/sdio.c b/drivers/net/wireless/microchip/wilc1000/sdio.c
-index 5262c8846c13d..170470d1c2092 100644
---- a/drivers/net/wireless/microchip/wilc1000/sdio.c
-+++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
-@@ -769,8 +769,10 @@ static int wilc_sdio_init(struct wilc *wilc, bool resume)
- 
- static int wilc_sdio_read_size(struct wilc *wilc, u32 *size)
- {
--	u32 tmp;
-+	struct sdio_func *func = dev_to_sdio_func(wilc->dev);
- 	struct sdio_cmd52 cmd;
-+	u32 tmp;
-+	int ret;
- 
- 	/**
- 	 *      Read DMA count in words
-@@ -780,12 +782,20 @@ static int wilc_sdio_read_size(struct wilc *wilc, u32 *size)
- 	cmd.raw = 0;
- 	cmd.address = WILC_SDIO_INTERRUPT_DATA_SZ_REG;
- 	cmd.data = 0;
--	wilc_sdio_cmd52(wilc, &cmd);
-+	ret = wilc_sdio_cmd52(wilc, &cmd);
-+	if (ret) {
-+		dev_err(&func->dev, "Fail cmd 52, set DATA_SZ[0] register...\n");
-+		return ret;
-+	}
- 	tmp = cmd.data;
- 
- 	cmd.address = WILC_SDIO_INTERRUPT_DATA_SZ_REG + 1;
- 	cmd.data = 0;
--	wilc_sdio_cmd52(wilc, &cmd);
-+	ret = wilc_sdio_cmd52(wilc, &cmd);
-+	if (ret) {
-+		dev_err(&func->dev, "Fail cmd 52, set DATA_SZ[1] register...\n");
-+		return ret;
-+	}
- 	tmp |= (cmd.data << 8);
- 
- 	*size = tmp;
-@@ -796,9 +806,10 @@ static int wilc_sdio_read_int(struct wilc *wilc, u32 *int_status)
- {
- 	struct sdio_func *func = dev_to_sdio_func(wilc->dev);
- 	struct wilc_sdio *sdio_priv = wilc->bus_data;
--	u32 tmp;
--	u8 irq_flags;
- 	struct sdio_cmd52 cmd;
-+	u8 irq_flags;
-+	u32 tmp;
-+	int ret;
- 
- 	wilc_sdio_read_size(wilc, &tmp);
- 
-@@ -817,7 +828,11 @@ static int wilc_sdio_read_int(struct wilc *wilc, u32 *int_status)
- 	cmd.raw = 0;
- 	cmd.read_write = 0;
- 	cmd.data = 0;
--	wilc_sdio_cmd52(wilc, &cmd);
-+	ret = wilc_sdio_cmd52(wilc, &cmd);
-+	if (ret) {
-+		dev_err(&func->dev, "Fail cmd 52, set IRQ_FLAG register...\n");
-+		return ret;
-+	}
- 	irq_flags = cmd.data;
- 
- 	if (sdio_priv->irq_gpio)
--- 
-2.45.2
+> +	/* CE base address */
+> +	.hal_umac_ce0_src_reg_base = 0x00740000,
+> +	.hal_umac_ce0_dest_reg_base = 0x00741000,
+> +	.hal_umac_ce1_src_reg_base = 0x00742000,
+> +	.hal_umac_ce1_dest_reg_base = 0x00743000,
+> +};
+> +
+>  static const struct ath12k_hw_regs wcn7850_regs = {
+>  	/* SW2TCL(x) R0 ring configuration address */
+>  	.hal_tcl1_ring_id = 0x00000908,
+> @@ -1126,7 +1210,7 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
+>  		.internal_sleep_clock = false,
+>  
+>  		.hw_ops = &qcn9274_ops,
+> -		.regs = NULL,
+> +		.regs = &ipq5332_regs,
 
+This makes me believe the patches should be reordered (or perhaps
+this should be squashed with "add ath12k_hw_params for IPQ5332"?)
+
+Konrad
 
