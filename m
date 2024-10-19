@@ -1,102 +1,148 @@
-Return-Path: <linux-wireless+bounces-14233-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14235-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E5899A4B8A
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Oct 2024 08:31:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 944109A4F8F
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Oct 2024 18:05:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F155B1F2352A
-	for <lists+linux-wireless@lfdr.de>; Sat, 19 Oct 2024 06:31:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1F661C23C71
+	for <lists+linux-wireless@lfdr.de>; Sat, 19 Oct 2024 16:05:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4681CCB34;
-	Sat, 19 Oct 2024 06:31:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="QoDXVIq1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F6B155747;
+	Sat, 19 Oct 2024 16:05:34 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps-ovh.mhejs.net (vps-ovh.mhejs.net [145.239.82.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E10D18C910
-	for <linux-wireless@vger.kernel.org>; Sat, 19 Oct 2024 06:31:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776982F3E;
+	Sat, 19 Oct 2024 16:05:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.82.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729319511; cv=none; b=DEl1iJvQoGQPgPbRG4wbSIGtumfU0kNGPznBM+6aihkwOnvPr+dg+PyoaDXlKvwv5pdxSFDmqVUEEjjYjMSvDueLDX+w2wK4Ml3tZk/xZ+ybyFY3alwST2UcgCQYwHwomfnCn52T/knT6Omvz8+ue/XPe8BnXNr7y+ylpKkQA7s=
+	t=1729353934; cv=none; b=G0YlJ0TK9XSocRCiP4pbzAFQ9VFYXtZNeyP1xReOUkyMY4Jr7hcFUiYYlwSxZZmQxw5Bu2TelsMOuGJnH/14yFKHFh+xOBmCxfW8t/KnIHWYhXzNQ/NHA5JiKwlT/tkqo8BnBt+5WLkhIwd/OTDj7OX5NHqnjx826rkYKRNB9Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729319511; c=relaxed/simple;
-	bh=dSrj7xZYdBtRyrbg1RhHPpzbtGug5wYupjOHGJz2S2Y=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rX3HX4cvz0etkqz1khkx7Ii2iGhl1x2jOugBnEjSMhC0gbh6ZkOo1iQT+/Rv7CCPVXdPswP7F95aCTzVWHC7KRkvBvjkSaVz0g/Qz9MxznY1O2acY9g8EVUqKEuhElnKeknyUGxUzpK4gHYUwSysgSoysQOY5O7wRZmP8fmoaf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=QoDXVIq1; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 49J6VjchE3226386, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1729319505; bh=dSrj7xZYdBtRyrbg1RhHPpzbtGug5wYupjOHGJz2S2Y=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=QoDXVIq1f1pE+ernA89uRNcTy5LUCuHYnPatru1Fx/wcdMdVTsZTWtMnyIJJfUKLK
-	 0lVbkJIkCqSN0lFaaOH6jqlpAN3U4W5qJ8fgWv3+xaGBOwEO2Q5Tk37PqU8ER/XpPo
-	 MPFQcjPc6zajK5tdohRatfAzXmER62DZA6Gi4EZeqFkAA4nhNqzfi0tRMod4vOuiR4
-	 Yg1XMZbVDbHTIXS10BkRbtV6faHzESU/Bocvm4VXVoZMBHyTColvIMSsKJsQEA0eeW
-	 X/xiiouR632yTfeX5gQRZWbHMrCKk0vXVu3TJhOYWplb37GCp8/orBD99dhhmw5W8N
-	 lh9iDdcvXqQPg==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 49J6VjchE3226386
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Sat, 19 Oct 2024 14:31:45 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Sat, 19 Oct 2024 14:31:45 +0800
-Received: from [127.0.1.1] (172.16.22.200) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Sat, 19 Oct
- 2024 14:31:45 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <ku920601@realtek.com>
-Subject: [PATCH] wifi: rtw89: coex: Set Wi-Fi/Bluetooth priority for Wi-Fi scan case
-Date: Sat, 19 Oct 2024 14:31:31 +0800
-Message-ID: <20241019063131.9462-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1729353934; c=relaxed/simple;
+	bh=D6GF2QLuPg+veL1kNJams82Ezzj9cCPIbLHUxuwnxJI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Td8UFi0GnBNfNTQHtrC1G0LZWYzhbVgXYxmQiNruPFrD5WbjS5CmsdnLPu+ma6nKM5smzxxCh2Rj4Q2aucaUogfFR0OrxJ+E+7p20BT0z9TNdYGCJz3a16lkqYr8Kfcgu+aXVY5KwJTw6NM98Ua33l/V786n7Po6oN5/9wjNGmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name; spf=none smtp.mailfrom=vps-ovh.mhejs.net; arc=none smtp.client-ip=145.239.82.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maciej.szmigiero.name
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=vps-ovh.mhejs.net
+Received: from MUA
+	by vps-ovh.mhejs.net with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98)
+	(envelope-from <mhej@vps-ovh.mhejs.net>)
+	id 1t2B45-00000000lhD-1AsZ;
+	Sat, 19 Oct 2024 17:08:25 +0200
+Message-ID: <1ededf38-8f2a-49ef-8453-85399bf4fe12@maciej.szmigiero.name>
+Date: Sat, 19 Oct 2024 17:08:19 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+User-Agent: Mozilla Thunderbird
+Subject: Re: Root filesystem read access for firmware load during hibernation
+ image writing
+To: Luis Chamberlain <mcgrof@kernel.org>
+Cc: "Darrick J. Wong" <djwong@kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <len.brown@intel.com>,
+ Pavel Machek <pavel@ucw.cz>, linux-pm <linux-pm@vger.kernel.org>,
+ linux-kernel@vger.kernel.org, Russ Weight <russ.weight@linux.dev>,
+ Danilo Krummrich <dakr@redhat.com>, Ping-Ke Shih <pkshih@realtek.com>,
+ linux-wireless <linux-wireless@vger.kernel.org>,
+ Marcel Holtmann <marcel@holtmann.org>,
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ "linux-bluetooth@vger.kernel.org" <linux-bluetooth@vger.kernel.org>
+References: <3c95fb54-9cac-4b4f-8e1b-84ca041b57cb@maciej.szmigiero.name>
+ <413b1e99-8cfe-4018-9ef3-2f3e21806bad@maciej.szmigiero.name>
+ <ZwmwtZivKP8UDx1V@bombadil.infradead.org>
+Content-Language: en-US, pl-PL
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
+Autocrypt: addr=mail@maciej.szmigiero.name; keydata=
+ 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
+Disposition-Notification-To: "Maciej S. Szmigiero"
+ <mail@maciej.szmigiero.name>
+In-Reply-To: <ZwmwtZivKP8UDx1V@bombadil.infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Sender: mhej@vps-ovh.mhejs.net
 
-From: Ching-Te Ku <ku920601@realtek.com>
+On 12.10.2024 01:11, Luis Chamberlain wrote:
+> On Sat, Oct 05, 2024 at 03:16:27PM +0200, Maciej S. Szmigiero wrote:
+>> The issue below still happens on kernel version 6.11.1.
+>>
+>> Created a kernel bugzilla entry for it:
+>> https://bugzilla.kernel.org/show_bug.cgi?id=219353
+>>
+>> It would be nice to at least know whether the filesystem read access supposed is
+>> to be working normally at PMSG_THAW hibernation stage to assign the issue accordingly.
+> 
+> No, there are races possible if you trigger IO to a fs before a suspend
+> is going on. If you have *more* IO ongoing, then you are likely to stall
+> suspend and not be able to recover.
 
-The priority table should be changed according to what the in using
-Bluetooth application is. To avoid Bluetooth audio + HID (mouse) will
-trigger the lag experience, update the priority table.
+That's more or less the same answer as Pavel wrote 2 weeks ago,
+but thanks for confirming it and providing more details on the subject.
 
-Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/coex.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Since it essentially makes this an rtw88/btrtl specific issue (and not
+a generic PM/hibernation one) I have updated and reassigned the
+aforementioned kernel bug accordingly.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
-index 989e6e882c6e..8a65722dd1fd 100644
---- a/drivers/net/wireless/realtek/rtw89/coex.c
-+++ b/drivers/net/wireless/realtek/rtw89/coex.c
-@@ -3853,7 +3853,7 @@ void rtw89_btc_set_policy_v1(struct rtw89_dev *rtwdev, u16 policy_type)
- 				     s_def[CXST_ENULL].cxtbl, s_def[CXST_ENULL].cxtype);
- 			break;
- 		case BTC_CXP_OFFE_2GBWMIXB:
--			_slot_set(btc, CXST_E2G, 0, 0xea5a5555, SLOT_MIX);
-+			_slot_set(btc, CXST_E2G, 0, tbl_w1, SLOT_MIX);
- 			_slot_set_le(btc, CXST_EBT, s_def[CXST_EBT].dur,
- 				     s_def[CXST_EBT].cxtbl, s_def[CXST_EBT].cxtype);
- 			break;
--- 
-2.25.1
+As it is just my personal system that is affected by this hibernation
+issue I'm content with just patching its kernel with a simple
+workaround [1].
+WiFi/BT NIC is hardly useful for hibernation snapshot writing anyway.
+
+But of course if someone has the bandwidth to get a clean fix merged
+then it would be great to have this fixed upstream for everyone.
+
+>    Luis
+
+Thanks,
+Maciej
+
+[1]: https://github.com/maciejsszmigiero/linux/commit/f6188a940324b4bc8f51dcb1a9ae1a489e57bd1d
 
 
