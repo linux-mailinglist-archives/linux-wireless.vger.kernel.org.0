@@ -1,129 +1,157 @@
-Return-Path: <linux-wireless+bounces-14276-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14277-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B3669A6F78
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2024 18:30:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B4A09A71F2
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2024 20:09:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C01A0283E60
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2024 16:30:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B09E1C21B7A
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2024 18:09:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 392001CBEB6;
-	Mon, 21 Oct 2024 16:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2ADB1FB3F7;
+	Mon, 21 Oct 2024 18:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="orfvX9tR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="babJoFUk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EAA02F4A;
-	Mon, 21 Oct 2024 16:30:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7392D1FB3D1;
+	Mon, 21 Oct 2024 18:06:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729528241; cv=none; b=pZwDEjlSuXF6j5ICf8MnEUcEOE4m4U4VeuI52D+fwKk6NB3oPr1Ba8qGyZC3Y7hniotmFVb092vu7Qq5siyqZFyARA7VsvrZ1cF8bT4sywclBaztEznCHQW32dlH7/OeMstiKV5MOrKTfOwMZY3c1faSAZVEMP7lyVYFMyQhWxM=
+	t=1729533978; cv=none; b=JwJd8F2mH05gkKI0X8tI59yZIYjulCYW+3CznBOXJpqem7B7EJ7ZrmC42i1TcgIivFbDql4psZcrvDGx8nITj5tmO7erJu3rdJSkkwc+pthk6DuOOCTQhJccIVw4z55qqh5+Wp/yipl2b61jREQ6KfYw2FMSlgTjKHCGwUglJX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729528241; c=relaxed/simple;
-	bh=wVHygHLX0rRBWh+MRDKlvnD+h8J3+q7ltadnmhMxdMA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=VgX2ib16HGIbjxWqSe0tVPaLevOeZeqXhmx1HjMunf/osq/kOS0zvUM1c+BOhHaLRjRmJ0nrM3Lp2CPCqKcWnIe2Lz081KNNDpgaEGtRYXpHC0oRgyyeH9RuYSxJieLI3FPgmjPELN5GYFwa6xdoyWohCSpiVimKiI4105IllaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=orfvX9tR; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49LGLcu4014411;
-	Mon, 21 Oct 2024 16:30:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	B7SbI7GfHWJG7zU0LfJLxgCILdUeybLhY9e6jy8p+wA=; b=orfvX9tReUZru0J/
-	X1GUjG45arnJtIoT/my1XoX/QkKRHR+DBibJCDwXeXPy/e0J/L9153JDdxBPLoVZ
-	nvCGUgopV2pklzo/ZGXZ2O9o2iWjyeRUC6oJim3NnYnvWcrkQrfPJMpS6QGWUNQI
-	p6WnptJjVdV+ay5XzLRevYZPw9iqm19h74Hwuzv0euBBaAPguYy4Hvsxs0Bwvuga
-	xNnMjttX7ft76paqz4ihYCyHKeWugZjXt0OYk4TCTUFeSONn2P/W1HGXSBT+IQ5O
-	G0W6TpgXDmYW5tHavBiqItM48HyKL6r1I7hHojDqjv/oahsnhd3It92JmdYHrDnj
-	o9nvww==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42dkhd1jru-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 21 Oct 2024 16:30:32 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49LGUVMQ011808
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 21 Oct 2024 16:30:31 GMT
-Received: from [10.48.241.209] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 21 Oct
- 2024 09:30:30 -0700
-Message-ID: <be969496-0c74-400c-b856-9524746a5ee2@quicinc.com>
-Date: Mon, 21 Oct 2024 09:30:30 -0700
+	s=arc-20240116; t=1729533978; c=relaxed/simple;
+	bh=kbQ79oVLqA9EiTmrGftQUF5wI52tyKmDV3jSRmXz67o=;
+	h=Content-Type:MIME-Version:From:Subject:To:Cc:Message-Id:Date; b=OZie+mLBt83KTwaTGwZUiJJnnc13BcMp34lhwqLxDNzZtk8Y3ZIdAZXZKBi5e7N9Cm311f9e+VlipkWg/tWvgO8VZQb0y8aC5h9k4KjbJaCPTzbcgFXM2PDrGMMgoPbhXb2E+b79aleQ0Pqud332FyDvjmztfyFfKdxj6fM+KpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=babJoFUk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B49DAC4CEC7;
+	Mon, 21 Oct 2024 18:06:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729533978;
+	bh=kbQ79oVLqA9EiTmrGftQUF5wI52tyKmDV3jSRmXz67o=;
+	h=From:Subject:To:Cc:Date:From;
+	b=babJoFUktscJToaZS1DkFPx+Pn0T6MrU1lDisBNyX4hplxwML1GpQvtxCrk2O7oLh
+	 9DkfHwf+/+uHAoCWEpMpLEGUvqnpH1IoMXklyD0vjOkL20dGE2dzRiRi312JRKzgbP
+	 cI1CwK2ymZMM/m7yqZRTnEej8F3y3FGIJtO1JAUIbK4KcEKLVofibhRNZTceYYO6z5
+	 g1H9mNl3YWoWj9emZMnj+FJJFZ3M6VQV3yRAU1CbtGx27okm7qeHijG1LLCBPmKRh/
+	 N50yDXONyO6ToUP96/CcSZgF8kPxZCDi4a+c0bhTBD058K0mHnScilfsQ05utoGk1T
+	 ZzJQDNBVz8deA==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] wifi: ath11k: annotate skb of struct ath11k_ce_ring
- with __counted_by
-To: Dmitry Antipov <dmantipov@yandex.ru>, Jeff Johnson <jjohnson@kernel.org>
-CC: Kalle Valo <kvalo@kernel.org>, Kees Cook <kees@kernel.org>,
-        <linux-hardening@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-        <lvc-project@linuxtesting.org>
-References: <20241021142745.585308-1-dmantipov@yandex.ru>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Content-Language: en-US
-In-Reply-To: <20241021142745.585308-1-dmantipov@yandex.ru>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: IRUHp4G_0wrYzE8DG4NQKUMqn40kwm2_
-X-Proofpoint-GUID: IRUHp4G_0wrYzE8DG4NQKUMqn40kwm2_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 adultscore=0
- phishscore=0 spamscore=0 clxscore=1011 priorityscore=1501 impostorscore=0
- mlxscore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
- definitions=main-2410210118
+Content-Transfer-Encoding: 8bit
+From: Kalle Valo <kvalo@kernel.org>
+Subject: pull-request: wireless-2024-10-21
+To: netdev@vger.kernel.org
+Cc: linux-wireless@vger.kernel.org
+Message-Id: <20241021180617.B49DAC4CEC7@smtp.kernel.org>
+Date: Mon, 21 Oct 2024 18:06:17 +0000 (UTC)
 
-On 10/21/2024 7:27 AM, Dmitry Antipov wrote:
-> According to 'ath11k_ce_alloc_ring()', annotate flexible array
-> member 'skb' of 'struct ath11k_ce_ring' with '__counted_by()'
-> to improve runtime bounds checking when CONFIG_UBSAN_BOUNDS is
-> enabled. Compile tested only.
-> 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-> ---
->  drivers/net/wireless/ath/ath11k/ce.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath11k/ce.h b/drivers/net/wireless/ath/ath11k/ce.h
-> index bcde2fcf02cf..9c54244970ce 100644
-> --- a/drivers/net/wireless/ath/ath11k/ce.h
-> +++ b/drivers/net/wireless/ath/ath11k/ce.h
-> @@ -162,7 +162,7 @@ struct ath11k_ce_ring {
->  	u32 hal_ring_id;
->  
->  	/* keep last */
-> -	struct sk_buff *skb[];
-> +	struct sk_buff *skb[] __counted_by(nentries);
->  };
->  
->  struct ath11k_ce_pipe {
+Hi,
 
-I won't be taking any of these without testing. I don't want to introduce
-warnings due to the array being populated before setting the counter.
+here's a pull request to net tree, more info below. Please let me know if there
+are any problems.
 
-At a minimum you need to document where the counter is being set and verify
-that is always done before accessing the flexible array.
+Kalle
 
-(If it isn't broken, don't fix it)
+The following changes since commit 9410645520e9b820069761f3450ef6661418e279:
 
-/jeff
+  Merge tag 'net-next-6.12' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net-next (2024-09-16 06:02:27 +0200)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2024-10-21
+
+for you to fetch changes up to a940b3a1ad0f5bab139fd710dd433aec4eeaea85:
+
+  Merge tag 'ath-current-20241016' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath (2024-10-17 17:25:37 +0300)
+
+----------------------------------------------------------------
+wireless fixes for v6.12-rc5
+
+The first set of wireless fixes for v6.12. We have been busy and have
+not been able to send this earlier, so there are more fixes than
+usual. The fixes are all over, both in stack and in drivers, but
+nothing special really standing out.
+
+----------------------------------------------------------------
+Ben Greear (1):
+      wifi: mac80211: Fix setting txpower with emulate_chanctx
+
+Ben Hutchings (1):
+      wifi: iwlegacy: Fix "field-spanning write" warning in il_enqueue_hcmd()
+
+Bitterblue Smith (2):
+      wifi: rtw88: Fix the RX aggregation in USB 3 mode
+      wifi: rtlwifi: rtl8192du: Don't claim USB ID 0bda:8171
+
+Chenming Huang (1):
+      wifi: cfg80211: Do not create BSS entries for unsupported channels
+
+Felix Fietkau (3):
+      wifi: mt76: do not increase mcu skb refcount if retry is not supported
+      wifi: mac80211: do not pass a stopped vif to the driver in .get_txpower
+      wifi: mac80211: skip non-uploaded keys in ieee80211_iter_keys
+
+Geert Uytterhoeven (2):
+      mac80211: MAC80211_MESSAGE_TRACING should depend on TRACING
+      wifi: brcm80211: BRCM_TRACING should depend on TRACING
+
+Gustavo A. R. Silva (1):
+      wifi: radiotap: Avoid -Wflex-array-member-not-at-end warnings
+
+Kalle Valo (1):
+      Merge tag 'ath-current-20241016' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath
+
+Manikanta Pubbisetty (1):
+      wifi: ath10k: Fix memory leak in management tx
+
+Ping-Ke Shih (2):
+      wifi: rtw89: coex: add debug message of link counts on 2/5GHz bands for wl_info v7
+      wifi: rtw89: pci: early chips only enable 36-bit DMA on specific PCI hosts
+
+Remi Pommarel (3):
+      wifi: cfg80211: Add wiphy_delayed_work_pending()
+      wifi: mac80211: Convert color collision detection to wiphy work
+      wifi: ath11k: Fix invalid ring usage in full monitor mode
+
+Ville Syrjälä (1):
+      wifi: iwlegacy: Clear stale interrupts before resuming device
+
+ drivers/net/wireless/ath/ath10k/wmi-tlv.c          |  7 +++-
+ drivers/net/wireless/ath/ath10k/wmi.c              |  2 +
+ drivers/net/wireless/ath/ath11k/dp_rx.c            |  7 +++-
+ drivers/net/wireless/ath/wil6210/txrx.c            |  2 +-
+ drivers/net/wireless/broadcom/brcm80211/Kconfig    |  1 +
+ drivers/net/wireless/intel/ipw2x00/ipw2100.c       |  2 +-
+ drivers/net/wireless/intel/ipw2x00/ipw2200.h       |  2 +-
+ drivers/net/wireless/intel/iwlegacy/common.c       | 15 ++++++-
+ drivers/net/wireless/intel/iwlegacy/common.h       | 12 ++++++
+ drivers/net/wireless/marvell/libertas/radiotap.h   |  4 +-
+ drivers/net/wireless/mediatek/mt76/mcu.c           |  7 +++-
+ drivers/net/wireless/microchip/wilc1000/mon.c      |  4 +-
+ .../net/wireless/realtek/rtlwifi/rtl8192du/sw.c    |  1 -
+ drivers/net/wireless/realtek/rtw88/usb.c           |  1 -
+ drivers/net/wireless/realtek/rtw89/coex.c          |  2 +
+ drivers/net/wireless/realtek/rtw89/pci.c           | 48 ++++++++++++++++++----
+ drivers/net/wireless/virtual/mac80211_hwsim.c      |  4 +-
+ include/net/cfg80211.h                             | 44 ++++++++++++++++++++
+ include/net/ieee80211_radiotap.h                   | 37 +++++++++--------
+ net/mac80211/Kconfig                               |  2 +-
+ net/mac80211/cfg.c                                 | 25 +++++++----
+ net/mac80211/ieee80211_i.h                         |  5 ++-
+ net/mac80211/key.c                                 | 42 +++++++++++--------
+ net/mac80211/link.c                                |  7 ++--
+ net/wireless/core.c                                |  7 ++++
+ net/wireless/scan.c                                |  4 ++
+ 26 files changed, 222 insertions(+), 72 deletions(-)
+
 
