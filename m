@@ -1,118 +1,115 @@
-Return-Path: <linux-wireless+bounces-14238-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14239-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 042909A594A
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2024 05:42:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBAF69A5A64
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2024 08:32:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32A991C212C4
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2024 03:42:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56728B20F66
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2024 06:32:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59BB8208A9;
-	Mon, 21 Oct 2024 03:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C07433A0;
+	Mon, 21 Oct 2024 06:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="MG+49zU/"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="uzrrO3Cu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494582C95
-	for <linux-wireless@vger.kernel.org>; Mon, 21 Oct 2024 03:42:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B26EDDA8
+	for <linux-wireless@vger.kernel.org>; Mon, 21 Oct 2024 06:32:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729482155; cv=none; b=u/AaeSh/Ay/gHFclJ+5CqM1pTe6fqGnqfcbqaF6oOoapbXLEuAryl6m+Csem57b6u4HEGU782Wem5hY8R206ybiF1xpcohYpJPzzliFKOyPwQBFWCs0sd1mnzIVk4jalnAgFPPvneVYzAUvnhiHzuZxaNCVLnEZRpRuxz0yLTAk=
+	t=1729492361; cv=none; b=MgZK2RlBT7V+pB4YkAADD7rknSP8Bfq9toqSMkm3BxPc8oqT6tjII0vKpF+zE4G5y1Y/BUo5jVHsqOMOx0VDLdkLvMzP/ZWm0leSGciiw7ql6cP3DF2Dh61UoCAk2ai2wQpHWfjSUPTGFKU1Gl6111PNwHVyCmaCqHtfgP4muzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729482155; c=relaxed/simple;
-	bh=q9Y3agGMae5heb7QtJYd7L57USxzttEJvGVZw3BAyDw=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:CC:Content-Type; b=Dcuta1YG3BBn3H1DdUbtf+PlJu63y8J1hVMyS9CUYseB0j6ZnGOWFJkvOCPtFGCGZqI8GjQddTHT6NR1N7jRbCEPw11r4OVxe+nkfclt8UP8nt/0mEKLf7TGJhA/gFBCZSzYMD638otAStIMr6Z/73Es1LsN1hfMoZs+d4F0B6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=MG+49zU/; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49L0U8rr032495;
-	Mon, 21 Oct 2024 03:42:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=ksLhW/V+p5aq+UYSCvfz+V
-	/T+gkWpgjhCe1uOLs/VQc=; b=MG+49zU/35zOKGBwMs5+mdSSraOINX7ROiUyHf
-	VJW8oEBbonEg57nvMslFL5vUkfBv+dI4+6uygzXZJR49msJ1T0yIQLguM0IG5sgy
-	ERhChIzzjb1ref4gLBGFaqFvWxRTX1HhSA1ZElobTmB44z50qxBbQE1AfDv5nKqE
-	2me+dGoGRZBrmZcgENcxhC71kAKfcrpKRoN8XRNBy8SamyW3NZ3vP1Kpor4sh1ib
-	oi3jwc4H2LgL16HnLwKcrNHfHml+HH8HruGt0Okl+S8qHUdEaUytIdg+EKlaBL3Y
-	BX+GeO1X8oDYp4a8DgvnFbTtR+fwcc2nWAdFvW79P1IYyWjg==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42c6vuu3ba-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 21 Oct 2024 03:42:28 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49L3gRr7032680
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 21 Oct 2024 03:42:27 GMT
-Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Sun, 20 Oct
- 2024 20:42:26 -0700
-Message-ID: <9840f652-7d4a-4693-90da-844174dc30f5@quicinc.com>
-Date: Mon, 21 Oct 2024 11:42:25 +0800
+	s=arc-20240116; t=1729492361; c=relaxed/simple;
+	bh=yANGpz0328jo7W+Eye6jw/bjB9w05fdezicgR3FZw9Y=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=M8W6jnE+8QbCTLDPze30ZGuI9MdTa/uZDyU75OBWgyrR3njUhgFQpcA9dFvh+415lEbWRVpWnEbh2KupOi1HmVPxDeoy2CLmfE+OIgmaCacX6hYqHsbrZ0+dDOQWMaabVWyv/Vb6L/zSdl4CCSEGn+5fHfvZNgC/gSxRQWQvPJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=uzrrO3Cu; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 49L6WZuF42015984, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1729492355; bh=yANGpz0328jo7W+Eye6jw/bjB9w05fdezicgR3FZw9Y=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=uzrrO3Cu+ftGQTM3yQhr2kgxXoWMLKwQirAkfu73WWd+Au1UIXKRcr9tFcSWbW9qL
+	 taTvb0NHJW+rrtaeiCvbwD0q+H7n2XRj+D4ySdRPp5SysQrtzs7PU/t0FRgEo+xRX9
+	 MYXFUy3dXtTGILqd/b1TvPnyO3L+lBbBuFBkQP3cG9yjpdfpaOP9NNnFYZQ1mhXyeO
+	 e8ll6apqJQKgrKRVGkcODvpODkuf4sxT71LTVbeCPaDiCwQUI0qUpry+op7Tk3VOje
+	 2CWVydDeTQZqHfGxwIfYQROBWSxV3VlVqOHHBqPjAIfbxVNdlEh2LitazRjM9PZaKj
+	 eDHIRtbIzGRAw==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 49L6WZuF42015984
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Mon, 21 Oct 2024 14:32:35 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 21 Oct 2024 14:32:35 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 21 Oct
+ 2024 14:32:35 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+CC: <phhuang@realtek.com>
+Subject: [PATCH] wifi: rtw89: Fix TX fail with A2DP after scanning
+Date: Mon, 21 Oct 2024 14:32:19 +0800
+Message-ID: <20241021063219.22613-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-Subject: iwlwifi GTK rekey is not working with WPA3 SAE encryption
-To: <johannes.berg@intel.com>
-CC: linux-wireless <linux-wireless@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: ydHyaYliteC9snlSUpUlKxkaDsErnOGg
-X-Proofpoint-GUID: ydHyaYliteC9snlSUpUlKxkaDsErnOGg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
- mlxlogscore=373 bulkscore=0 spamscore=0 mlxscore=0 clxscore=1011
- suspectscore=0 priorityscore=1501 adultscore=0 lowpriorityscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410210023
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-Hi Johannes,
+From: Po-Hao Huang <phhuang@realtek.com>
 
-My AP is configured as WPA3 SAE encrytption, and GTK rekey interval 30s. After enable WoWLan:
+There might be some racing between BT and WiFi after scan. Since
+one of the TX related register will be modified by both FW and
+rtw89_set_channel() in driver, which could cause Tx fail. Reorder
+the calling sequence to only notify coexistence mechanism after
+rtw89_set_channel() is called, so that there are no concurrent
+operations.
 
-	iw phy0 wowlan enable disconnect
+Fixes: 5f499ce69b8d ("wifi: rtw89: pause/proceed MCC for ROC and HW scan")
+Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/fw.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-and put system to s2idle state:
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 744a8d277cfc..b1123a4ee999 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -6675,6 +6675,8 @@ void rtw89_hw_scan_complete(struct rtw89_dev *rtwdev,
+ 	if (!rtwvif_link)
+ 		return;
+ 
++	rtw89_chanctx_proceed(rtwdev);
++
+ 	rtwvif = rtwvif_link->rtwvif;
+ 
+ 	reg = rtw89_mac_reg_by_idx(rtwdev, mac->rx_fltr, rtwvif_link->mac_idx);
+@@ -6692,8 +6694,6 @@ void rtw89_hw_scan_complete(struct rtw89_dev *rtwdev,
+ 	scan_info->last_chan_idx = 0;
+ 	scan_info->scanning_vif = NULL;
+ 	scan_info->abort = false;
+-
+-	rtw89_chanctx_proceed(rtwdev);
+ }
+ 
+ void rtw89_hw_scan_abort(struct rtw89_dev *rtwdev,
+-- 
+2.25.1
 
-	echo mem > /sys/power/state
-
-I see in sniffer there is M1 frame from AP to station but didn;t see M2 response. AP retries for some times but finally kicked out station.
-
-such issue is not seen after changing AP encryption to WPA2.
-
-HW in use:
-
-00:14.3 Network controller: Intel Corporation Ice Lake-LP PCH CNVi WiFi (rev 30)
-        Subsystem: Rivet Networks Ice Lake-LP PCH CNVi WiFi
-        Flags: bus master, fast devsel, latency 0, IRQ 16
-        Memory at 603ebb4000 (64-bit, non-prefetchable) [size=16K]
-        Capabilities: <access denied>
-        Kernel driver in use: iwlwifi
-        Kernel modules: iwlwifi
-
-kernel is from https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git/ and with version:
-
-Linux xps13 5.19.0-rc8-wt-ath+ #4 SMP PREEMPT_DYNAMIC Tue Dec 26 17:02:03 CST 2023 x86_64 x86_64 x86_64 GNU/Linux
-
-
-is this an known issue? or am I missing something?
 
