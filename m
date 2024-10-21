@@ -1,95 +1,129 @@
-Return-Path: <linux-wireless+bounces-14275-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14276-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87EF79A6C30
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2024 16:34:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B3669A6F78
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2024 18:30:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B51F11C21B02
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2024 14:34:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C01A0283E60
+	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2024 16:30:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659331F9A8C;
-	Mon, 21 Oct 2024 14:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 392001CBEB6;
+	Mon, 21 Oct 2024 16:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="Sw9RwZ+p"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="orfvX9tR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward102b.mail.yandex.net (forward102b.mail.yandex.net [178.154.239.149])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6141EABA5;
-	Mon, 21 Oct 2024 14:34:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EAA02F4A;
+	Mon, 21 Oct 2024 16:30:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729521277; cv=none; b=X/zIY2QPCP+otGrhtW551kFElI4nc6d1vp+PyBjWgrE9jWOtTsy99FSYUuAIOaHTkjHC5kiva5sQXJskI43l/BiX8ikMkoarm774MKZWvpXpWGQIre3l9ZDVOt91U265LdQypAaT0xzfah41y0ZN6InKXvXXaUADVtAfJY8JIME=
+	t=1729528241; cv=none; b=pZwDEjlSuXF6j5ICf8MnEUcEOE4m4U4VeuI52D+fwKk6NB3oPr1Ba8qGyZC3Y7hniotmFVb092vu7Qq5siyqZFyARA7VsvrZ1cF8bT4sywclBaztEznCHQW32dlH7/OeMstiKV5MOrKTfOwMZY3c1faSAZVEMP7lyVYFMyQhWxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729521277; c=relaxed/simple;
-	bh=H/1mC4SCc2iTgxP83Bnsjr0fXY2lPhM7iOe+UoT+TGc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GaINcIywC55ZgjNECmQ2T5OwO93buQELtYiXUh7844EV9eKSa0YRSECSWsbD3qsh+HZv/UculQ2OFRvsnc9LFps9Gts0NhnHN74ZT0735DE4kF+ds8xs3CbUvhdkc6Fk2qXoaSAb3HM6xbvjTIXeFoZznWbeB+oxS4l1s0t/cKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=Sw9RwZ+p; arc=none smtp.client-ip=178.154.239.149
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from mail-nwsmtp-smtp-production-main-25.sas.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-25.sas.yp-c.yandex.net [IPv6:2a02:6b8:c1c:2911:0:640:4396:0])
-	by forward102b.mail.yandex.net (Yandex) with ESMTPS id EC18460D4B;
-	Mon, 21 Oct 2024 17:34:26 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-25.sas.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id KYSvOR0ZrOs0-SSODkf8B;
-	Mon, 21 Oct 2024 17:34:26 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1729521266; bh=MJ2cFZkn5LXzl2WTFVkvoYqur6ajXiI++VBDmLPedrQ=;
-	h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-	b=Sw9RwZ+pcrfAc6wDZ0DNnP74UUFReZQDHiFQlCiwCJlhzut4ubqG2ywD9e6mJdfl+
-	 EKNsRz3f1YCwIl2APzl6j0Gb+evBAsKOuDUvEmUAve8Z8HbCu1ElnOfmWdJy9BrewN
-	 Q577mZBqgvcqcYu9gOKActPu4Cbq1lN0BOjZRdoU=
-Authentication-Results: mail-nwsmtp-smtp-production-main-25.sas.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-From: Dmitry Antipov <dmantipov@yandex.ru>
-To: Jeff Johnson <jjohnson@kernel.org>
-Cc: Kalle Valo <kvalo@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	linux-hardening@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH 2/2] wifi: ath12k: annotate channel of struct ath12k_wmi_scan_chan_list_arg with __counted_by
-Date: Mon, 21 Oct 2024 17:34:19 +0300
-Message-ID: <20241021143419.587716-2-dmantipov@yandex.ru>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241021143419.587716-1-dmantipov@yandex.ru>
-References: <20241021143419.587716-1-dmantipov@yandex.ru>
+	s=arc-20240116; t=1729528241; c=relaxed/simple;
+	bh=wVHygHLX0rRBWh+MRDKlvnD+h8J3+q7ltadnmhMxdMA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=VgX2ib16HGIbjxWqSe0tVPaLevOeZeqXhmx1HjMunf/osq/kOS0zvUM1c+BOhHaLRjRmJ0nrM3Lp2CPCqKcWnIe2Lz081KNNDpgaEGtRYXpHC0oRgyyeH9RuYSxJieLI3FPgmjPELN5GYFwa6xdoyWohCSpiVimKiI4105IllaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=orfvX9tR; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49LGLcu4014411;
+	Mon, 21 Oct 2024 16:30:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	B7SbI7GfHWJG7zU0LfJLxgCILdUeybLhY9e6jy8p+wA=; b=orfvX9tReUZru0J/
+	X1GUjG45arnJtIoT/my1XoX/QkKRHR+DBibJCDwXeXPy/e0J/L9153JDdxBPLoVZ
+	nvCGUgopV2pklzo/ZGXZ2O9o2iWjyeRUC6oJim3NnYnvWcrkQrfPJMpS6QGWUNQI
+	p6WnptJjVdV+ay5XzLRevYZPw9iqm19h74Hwuzv0euBBaAPguYy4Hvsxs0Bwvuga
+	xNnMjttX7ft76paqz4ihYCyHKeWugZjXt0OYk4TCTUFeSONn2P/W1HGXSBT+IQ5O
+	G0W6TpgXDmYW5tHavBiqItM48HyKL6r1I7hHojDqjv/oahsnhd3It92JmdYHrDnj
+	o9nvww==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42dkhd1jru-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 21 Oct 2024 16:30:32 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49LGUVMQ011808
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 21 Oct 2024 16:30:31 GMT
+Received: from [10.48.241.209] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 21 Oct
+ 2024 09:30:30 -0700
+Message-ID: <be969496-0c74-400c-b856-9524746a5ee2@quicinc.com>
+Date: Mon, 21 Oct 2024 09:30:30 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] wifi: ath11k: annotate skb of struct ath11k_ce_ring
+ with __counted_by
+To: Dmitry Antipov <dmantipov@yandex.ru>, Jeff Johnson <jjohnson@kernel.org>
+CC: Kalle Valo <kvalo@kernel.org>, Kees Cook <kees@kernel.org>,
+        <linux-hardening@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+        <lvc-project@linuxtesting.org>
+References: <20241021142745.585308-1-dmantipov@yandex.ru>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <20241021142745.585308-1-dmantipov@yandex.ru>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: IRUHp4G_0wrYzE8DG4NQKUMqn40kwm2_
+X-Proofpoint-GUID: IRUHp4G_0wrYzE8DG4NQKUMqn40kwm2_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 adultscore=0
+ phishscore=0 spamscore=0 clxscore=1011 priorityscore=1501 impostorscore=0
+ mlxscore=0 suspectscore=0 lowpriorityscore=0 bulkscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
+ definitions=main-2410210118
 
-According to 'ath12k_reg_update_chan_list()', annotate flexible
-array member 'channel' of 'struct ath12k_wmi_scan_chan_list_arg'
-with '__counted_by()' attribute to improve runtime bounds checking
-when CONFIG_UBSAN_BOUNDS is enabled. Compile tested only.
+On 10/21/2024 7:27 AM, Dmitry Antipov wrote:
+> According to 'ath11k_ce_alloc_ring()', annotate flexible array
+> member 'skb' of 'struct ath11k_ce_ring' with '__counted_by()'
+> to improve runtime bounds checking when CONFIG_UBSAN_BOUNDS is
+> enabled. Compile tested only.
+> 
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> ---
+>  drivers/net/wireless/ath/ath11k/ce.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath11k/ce.h b/drivers/net/wireless/ath/ath11k/ce.h
+> index bcde2fcf02cf..9c54244970ce 100644
+> --- a/drivers/net/wireless/ath/ath11k/ce.h
+> +++ b/drivers/net/wireless/ath/ath11k/ce.h
+> @@ -162,7 +162,7 @@ struct ath11k_ce_ring {
+>  	u32 hal_ring_id;
+>  
+>  	/* keep last */
+> -	struct sk_buff *skb[];
+> +	struct sk_buff *skb[] __counted_by(nentries);
+>  };
+>  
+>  struct ath11k_ce_pipe {
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
----
- drivers/net/wireless/ath/ath12k/wmi.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I won't be taking any of these without testing. I don't want to introduce
+warnings due to the array being populated before setting the counter.
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
-index 6a913f9b8315..9a6e28142754 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.h
-+++ b/drivers/net/wireless/ath/ath12k/wmi.h
-@@ -3746,7 +3746,7 @@ struct wmi_stop_scan_cmd {
- struct ath12k_wmi_scan_chan_list_arg {
- 	u32 pdev_id;
- 	u16 nallchans;
--	struct ath12k_wmi_channel_arg channel[];
-+	struct ath12k_wmi_channel_arg channel[] __counted_by(nallchains);
- };
- 
- struct wmi_scan_chan_list_cmd {
--- 
-2.47.0
+At a minimum you need to document where the counter is being set and verify
+that is always done before accessing the flexible array.
 
+(If it isn't broken, don't fix it)
+
+/jeff
 
