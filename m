@@ -1,63 +1,52 @@
-Return-Path: <linux-wireless+bounces-14308-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14309-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 923DD9A9FCE
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 12:21:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37FCD9AA03B
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 12:44:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 241D5283DE3
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 10:21:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF63F282DF3
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 10:44:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F39F19994B;
-	Tue, 22 Oct 2024 10:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B0319AA53;
+	Tue, 22 Oct 2024 10:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="nXcnw76O"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="SZ3ybE8w"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A071F18E02D;
-	Tue, 22 Oct 2024 10:21:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 765DE16DECB;
+	Tue, 22 Oct 2024 10:43:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729592478; cv=none; b=fKtJiP/wdtUBYfR+rX6alcFxskPuCSF9fY6hoP21/4AVggVMn5f2L8YqF3LP+QNYho3nPQMwpL/7tLVleQz+vSV1yY9pLxFMQDCWsqA8voRebUwUPZHox7MrkNBVSlcrQFpSYsrUaj6XSf/OPVKEMCjBKpPDb/OrKDkcKuqStHY=
+	t=1729593836; cv=none; b=QzrvBavePwxYQN3Mrrsof5NwNSnxARDZGhTsKYk7xEo+cYG4tQPxEfUZB9AG4DXIIppAx6mU03wypxplYNqKEWYd5RfQC03TWemHRG9HheaUcQHqUJcDv9uN3Y09ZsuRBDEe+Cx5hH42bHi1MeY/0+IaHp8Up86SNQtZKtJ62/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729592478; c=relaxed/simple;
-	bh=H/OQLMP1D3Pzj6veo2hkf4Mks7xnJVi14u2jVIBrjuU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=qVMZ/4Xz/ifPkxV0bKxTWMpDUdSzVNE5G/zepuCAGJEYabCu17nhpT87TvwmCGoYbV4bwvEeTGhMR8Hx/9ULtdGDui0zyi0FftEtvtpVJDvGsjoZ/XREP47K72TpEAuCPi5fJy8NaNuA6KsK6+fpI69mL7J8LpZhrXbrMM/6WAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=nXcnw76O; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49M8rwPu029542;
-	Tue, 22 Oct 2024 10:20:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	N+s6AQopGnxwcBNHC7PWJg7SZl5oszgpZ1Oj13OA6Es=; b=nXcnw76OAD9D9zCC
-	lZmabVRP2PFvS4nXp3K+TRdePhwI1PZbfGbsqU0nLMIKMo4MLfaO/4RaTcHY7lhY
-	XYuVOocnS1c9oWMz0BH75+HNr8AYyp6XMvVpD6NawuR3uuqtcC6JtbLFciquw0Uh
-	u5Gnnju8ApTKBevv4CWChXTmUsPHvK89VuqluG/xALP1456VYxZSaPYaCWYHugpC
-	DK6qcQNrHOoPdTXwQMv6EcpLGxMH+2vKmAPuNMa98maUEif2xDE18+ioAJx9VBF+
-	DdzkPH/olh7IHPcgJexjNuoIn/GQs5cM6ZLWh3b3iCp23RFzE/G+ClFITPdHmyo/
-	U6KFJA==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42c6vc7y3t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Oct 2024 10:20:56 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49MAKtVM014405
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Oct 2024 10:20:55 GMT
-Received: from [10.253.13.77] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 22 Oct
- 2024 03:20:53 -0700
-Message-ID: <1c5f5c93-db06-4490-af2e-bbce2d184c94@quicinc.com>
-Date: Tue, 22 Oct 2024 18:20:50 +0800
+	s=arc-20240116; t=1729593836; c=relaxed/simple;
+	bh=3L/mfArSh02i4CZyNQjoKh10X4Lo25gJRXejPnC009o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YqvV6cRHax8USWv/7Z/ESqeN8KFaRh4JxUsrNeo4aAh9u78I3QSpetUf+p+XJ4Ji7tN8uwY/4Z4iu3hRYcplLM1ygZhVv9tWqum4gLb9IWhbLOYsmZTDy1NbkvTHMjYuCV1M5T2O5D2xgVJRINJ0rSHP+BSEgQEEXX1Z2KrfaHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=SZ3ybE8w; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D096B40002;
+	Tue, 22 Oct 2024 10:43:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1729593825;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=p4qsrG6uruQTTTq/+4Xc9VuG+K4ys0k5jHgZ1t4x9E0=;
+	b=SZ3ybE8wllmqN+BvxV9heeYAnisb5Zp9aRtSqWEpYyBD+7i/vk+39TSmXk0gvfEEE8eaQn
+	3kdpvnsC8+o0sEVquJ5nuQUY18YYGVGM1d2vplYckrd1sRWsN9J6TNgWxjsufyIikKo0bw
+	V8gcdM0G3Lmpx3GvFWf0Ysv+b0qAJa3ph33r/hQ4NvJlqJlx9Wh56mXJm82WBrPzrc6Vof
+	cRhevYdxHFnBCvCYUS3hdqkuDu/6kQ8UVFVAKQb460nY2L2HZB1cK0BauIS7w2xjzC8k4V
+	/73GdVHpiKKWdKTS9jx27hJRl0vIGzLKoYXGgaBw678kvkeHXnPNXEMI1ffarA==
+Message-ID: <c9e98811-15f5-427a-82f7-2e7fff4a9873@bootlin.com>
+Date: Tue, 22 Oct 2024 12:43:44 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,90 +54,139 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] wifi: ath11k: add firmware-name device tree property
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-CC: <kvalo@kernel.org>, <quic_jjohnson@quicinc.com>,
-        <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20241001033053.2084360-1-quic_miaoqing@quicinc.com>
- <20241001033053.2084360-3-quic_miaoqing@quicinc.com>
- <smgbishqbin4kcpshqvue3ivvfko2l6rj2w4ikwydosbkq6kde@pdbzhklj7znm>
+Subject: Re: [PATCH] wifi: wilc1000: Rework bus locking
+To: Marek Vasut <marex@denx.de>, linux-wireless@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Adham Abozaeid <adham.abozaeid@microchip.com>,
+ Ajay Singh <ajay.kathat@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Conor Dooley
+ <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20241022013855.284783-1-marex@denx.de>
+From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
 Content-Language: en-US
-From: Miaoqing Pan <quic_miaoqing@quicinc.com>
-In-Reply-To: <smgbishqbin4kcpshqvue3ivvfko2l6rj2w4ikwydosbkq6kde@pdbzhklj7znm>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: ookBtTEFOklfLVemqbibubzxo3qtZxKi
-X-Proofpoint-ORIG-GUID: ookBtTEFOklfLVemqbibubzxo3qtZxKi
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1011
- priorityscore=1501 impostorscore=0 lowpriorityscore=0 suspectscore=0
- spamscore=0 phishscore=0 bulkscore=0 mlxscore=0 adultscore=0
- mlxlogscore=860 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410220066
+In-Reply-To: <20241022013855.284783-1-marex@denx.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: alexis.lothore@bootlin.com
 
+Hi Marek,
 
-
-On 10/22/2024 5:57 PM, Dmitry Baryshkov wrote:
-> On Tue, Oct 01, 2024 at 11:30:52AM +0800, Miaoqing Pan wrote:
->> QCA6698AQ uses different firmware/bdf/regdb with existing WCN6855
->> firmware, which is customized for IoE platforms. And the 'pci-device-id +
->> soc-hw-version + soc-hw-sub-version' may not be enough to identify the
->> correct firmware directory path.
+On 10/22/24 03:38, Marek Vasut wrote:
+> The bus locking in this driver is broken and produces subtle race
+> condition with ksdioirqd and its mmc_claim_host()/mmc_release_host()
+> usage in case of SDIO bus. Rework the locking to avoid this race
+> condition.
 > 
-> Why is it so? What makes it so different from the existing platforms
-> that you can not use WCN6855 firmware?
-
-Just as I said, a new customized firmware for IoE devices.
-
+> The problem is the hif_cs mutex used in acquire_bus()/release_bus(),
+> which makes it look like calling acquire_bus() results in exclusive
+> access to the bus, but that is not true for SDIO bus. For SDIO bus,
+> to obtain exclusive access (any access, really), it is necessary to
+> call sdio_claim_host(), which is a wrapper around mmc_claim_host(),
+> which does its own locking. The acquire_bus() does not do that, but
+> the SDIO interface implementation does call sdio_claim_host() and
+> sdio_release_host() every single command, which is problematic. To
+> make things worse, wilc_sdio_interrupt() implementation called from
+> ksdioirqd first calls sdio_release_host(), then interrupt handling
+> and finally sdio_claim_host().
 > 
->>
->> The device tree allows "firmware-name" to define the firmware path,
->>      wifi@c000000 {
-> 
-> You are describing platform node, while the commit message talks about
-> the PCIe devices. Could you please clarify, whether it is a PCIe device
-> or an AHB device?
+> The core problem is that sdio_claim_host() cannot be done per command,
+> but has to be done per register/data IO which consists of multiple
+> commands.
 
-PCIe device. The change is for sa8775p/qcs8300 those non-AHB boards.
+Is it really true ? What makes you say that we can not perform multiple
+operations under the same exclusive sdio section ?
 
+Usually the WILC register read/write consists of 3x CMD52
+> to push in CSA pointer address and 1x CMD53 to read/write data to that
+> address. Most other accesses are also composed of multiple commands.
 > 
->>          firmware-name = "QCA6698AQ";
-> 
-> Could we please follow the approach that has been defined in the commit
-> 5abf259772df ("wifi: ath10k: support board-specific firmware
-> overrides")? In other words, instead of creating another directory under
-> ath11k, create a subdir under the WCN6855/hwN.M/ which contains your
-> device-specific data.
+> Currently, if ksdioirqd wakes up and attempts to read SDIO_CCCR_INTx
+> to get pending SDIO IRQs in sdio_get_pending_irqs(), it can easily
+> perform that transfer between two consecutive CMD52 which are pushing
+> in the CSA pointer address and possibly disrupt the WILC operation.
+> This is undesired behavior.
 
-Sure, thanks, will update.
+I agree about the observation, and then I disagree about the statement above on
+sdio_claim_host/sdio_release_host not meant to be used for multiple commands.
+I see plenty of sdio wireless drivers performing multiple sdio operations under
+the same sdio exclusive bus access section, either explicitely in their code, or
+through a sdio dedicated helper (eg: sdio_enable_func, sdio_disable_func).
 
+But more concerns below
 > 
->>          status = "okay";
->>      };
->>
->> Tested-on: QCA6698AQ hw2.1 PCI WLAN.HSP.1.1-04402-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1
->>
->> Signed-off-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
+> Rework the locking.
 > 
-> P.S. please CC linux-arm-msm for future respins of this series or for
-> all other submissions that concern board-specific DT data on MSM
-> platforms.
+> Introduce new .hif_claim/.hif_release callbacks which implement bus
+> specific locking. Lock/unlock SDIO bus access using sdio_claim_host()
+> and sdio_release_host(), lock/unlock SPI bus access using the current
+> hif_cs mutex moved purely into the spi.c interface. Make acquire_bus()
+> and release_bus() call the .hif_claim/.hif_release() callbacks and do
+> not access the hif_cs mutex from there at all.
+> 
+> Remove any SDIO bus locking used directly in commands and the broken
+> SDIO bus unlocking in wilc_sdio_interrupt(), this is no longer needed.
+> Fix up SDIO initialization code which newly needs sdio_claim_host()
+> and sdio_release_host(), since it cannot depend on the locking being
+> done per-command anymore.
+> 
+> Signed-off-by: Marek Vasut <marex@denx.de>
 
-ok.
+[...]
 
-> 
->> ---
->>   drivers/net/wireless/ath/ath11k/core.c | 12 ++++++++++++
->>   drivers/net/wireless/ath/ath11k/core.h | 11 +++--------
->>   2 files changed, 15 insertions(+), 8 deletions(-)
->>
-> 
+>  
+> -static void wilc_sdio_interrupt(struct sdio_func *func)
+> +static void wilc_sdio_claim(struct wilc *wilc)
+> +{
+> +	struct sdio_func *func = container_of(wilc->dev, struct sdio_func, dev);
+> +
+> +	sdio_claim_host(func);
+> +}
+> +
+> +static void wilc_sdio_release(struct wilc *wilc)
+>  {
+> +	struct sdio_func *func = container_of(wilc->dev, struct sdio_func, dev);
+> +
+>  	sdio_release_host(func);
+> +}
 
+So with this series, we end up with some bus-specific operations needing some
+locking, but is now up to the upper layer to control this locking. This feels
+wrong. The driver has a dedicated sdio layer, so if we need some locking for
+sdio-specific operations, it should be handled autonomously by the sdio layer,
+right ?
+
+[...]
+
+>  static int wilc_wlan_cfg_commit(struct wilc_vif *vif, int type,
+> diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.h b/drivers/net/wireless/microchip/wilc1000/wlan.h
+> index b9e7f9222eadd..ade2db95e8a0f 100644
+> --- a/drivers/net/wireless/microchip/wilc1000/wlan.h
+> +++ b/drivers/net/wireless/microchip/wilc1000/wlan.h
+> @@ -403,6 +403,8 @@ struct wilc_hif_func {
+>  	void (*disable_interrupt)(struct wilc *nic);
+>  	int (*hif_reset)(struct wilc *wilc);
+>  	bool (*hif_is_init)(struct wilc *wilc);
+> +	void (*hif_claim)(struct wilc *wilc);
+> +	void (*hif_release)(struct wilc *wilc);
+
+So IIUC, your series push the hif_cs lock into each bus layer of the driver,
+remove any explicit call to bus-specific locking mechanism from those layers,
+and makes the upper layer control the locking. As mentioned above, I don't
+understand why those layers can not manage the bus-specific locking by
+themselves (which would be a big win for the upper layer).
+For SDIO specifically, I feel like letting the layer handle those claim/release
+would even allow to remove this hif_cs mutex (but we may still need a lock for
+SPI side)
+
+But I may be missing something, so feel free to prove me wrong.
+
+
+-- 
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
