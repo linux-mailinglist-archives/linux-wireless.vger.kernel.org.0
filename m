@@ -1,114 +1,97 @@
-Return-Path: <linux-wireless+bounces-14331-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14328-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1D9C9AB121
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 16:44:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F8DB9AB0A6
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 16:18:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60074B2327F
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 14:44:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF3B91F2404B
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 14:18:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFDC11A2550;
-	Tue, 22 Oct 2024 14:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7301A08B8;
+	Tue, 22 Oct 2024 14:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="M0q1PpH0"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="LKiToaJm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F84E1A0737;
-	Tue, 22 Oct 2024 14:44:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0051A00F2;
+	Tue, 22 Oct 2024 14:17:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729608268; cv=none; b=Wq2IZmnCG+mjRfa3RhrUSUV24nNYZjHg1tB2hKeWDqeONl7NVZLNZIkLx+rt/1UQvpWYaKyJIp3+Z4SIUfwe3ZklqG//yYfgChY7xMaEJ2wf8w8J3fKmb/XT2A1AnXc1mtq5o+zNp2aPnHK/WA6zAXDbbkEdNuEkONtinnu9q0M=
+	t=1729606668; cv=none; b=PyX9X+2cHlzejzTuwxXM0KgHadu7fVdfm+Ll1R5PcSseYlreo+JlbPogESvEBZFQX4Ow/5rYP0/TbGEapRCCRqxpK3cIkgItFWQPzVjIsU8JgTpKxay9tsw56giywbLHADxWqrf9efW2Z/h0sS2vkMCjqhOuf5NzgmmdG74d1Wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729608268; c=relaxed/simple;
-	bh=2QKP5bShhJgstrGjEpmyAJHBDPoJQrvbizAvM/kvMQc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mbmnD0RfkqOpZying71SJR1+/PudL5ZD2hPyGSx3sv1guJ7yYN8jALFPrOf6N366yfIf/Q4xIvZXZpLUxviGT9JP754xDyGNqZElM3cpqsgpifTWk5sRXs77SSvFtq5NqaTJ9L4UgIpyauuwNViF1xRA7uafX/YG9G4DtXJnGt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=M0q1PpH0; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id B5B81883D4;
-	Tue, 22 Oct 2024 16:44:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1729608264;
-	bh=XpHkPMU9+jmzDRCDk3QaPWlsUvggEKn5/K45SclQhvo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=M0q1PpH0oUl6Cus5XKlSbppFeAItUcnij+MxEsLIZpOzIcOPT1+4vTlqsQKxUfqKt
-	 QcCkF10ZOKiqwDGrVuImGWf++kKhnMSqUJQ5oKDghKfInq9VJgcyIIIdDYB7SHO0s+
-	 bfjfOqcPIpC6bahy0RYfclJza+zaegY0liKiR2zEKdO0vhhUWNDg4SxytsRPidgkxH
-	 8yli49eSfSydAdu/vSwr0sBP0U2GaqwZNnrP42vbVjC3G7GTE7GnSxjCB/WBF8egqJ
-	 2LrcmILnCd7DYVIiccdUK9iVoqevfLEfZiC9LLrrLHw7L32GNm2iyKwLClAtbO7rY+
-	 T1VVFPALtV/3Q==
-Message-ID: <f95fc508-fe6f-4501-9233-07bda0d28d98@denx.de>
-Date: Tue, 22 Oct 2024 15:23:33 +0200
+	s=arc-20240116; t=1729606668; c=relaxed/simple;
+	bh=68WdYzIarQVjRHSchfunh+oOLTQrpXXpJWnb1pF3ttE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SQ5Ws/k8MllkQQ75KCUPSzaaSt1jQhM1doejutafN3JpGYmrR8jTKt55p/jjc9EAOOv9R2fm54hvV+ex9yHFoum6+eVlkhNNymjAB2OmHIcnwzQqGBKrE72EIxe2Kpj3rozsLUTxixNCylq+sB2bmtpb1nb42y77lS7vdIPEp1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=LKiToaJm; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=wAWaw7uJMG1uA564YAQqUUha8AMLR3EufJ78OEJdlh4=; t=1729606666; x=1730816266; 
+	b=LKiToaJmdtr8gAVEHp4k94botLNG5RHMKnnxFL2S0A1ETQwbtYDfLLnGYpp0RxLFDYBuFPkVARN
+	cSkAz0BJ2kZp9f6wc0pzrv+ZgTDKV3ExN4Lea3Q4JwPaIiDvSIHOV0mqc/56RX6oe160s88WIqiAA
+	dX60ztnYiq52EEgydOy8qDcz8iaNbxWggP4zOxTCxmJnDZKwh2NlmZyoBjo2NmtkFsDti04w4XCuE
+	x0dvVsv1zmNmDA3mJqJRaYcEsAhpOeq0lJ32nm7klXuQrOmrcgedL2kixEXf45wlTBiu3UMCG/x1p
+	VFz5jLA8/8FLXA7UOrE6JxUiExpZRVlhmbIg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1t3Fhg-00000001lpE-0fRR;
+	Tue, 22 Oct 2024 16:17:44 +0200
+From: Johannes Berg <johannes@sipsolutions.net>
+To: linux-wireless@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	syzbot+36218cddfd84b5cc263e@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH] wifi: cfg80211: clear wdev->cqm_config pointer on free
+Date: Tue, 22 Oct 2024 16:17:42 +0200
+Message-ID: <20241022161742.7c34b2037726.I121b9cdb7eb180802eafc90b493522950d57ee18@changeid>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: wilc1000: Add proper error handling for remaining
- CMD52
-To: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
- linux-wireless@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
- Adham Abozaeid <adham.abozaeid@microchip.com>,
- Ajay Singh <ajay.kathat@microchip.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Conor Dooley
- <conor+dt@kernel.org>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20241018194244.280322-1-marex@denx.de>
- <a6529da9-6333-4516-923d-01f12c439b33@bootlin.com>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <a6529da9-6333-4516-923d-01f12c439b33@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
 
-On 10/22/24 11:11 AM, Alexis Lothoré wrote:
+From: Johannes Berg <johannes.berg@intel.com>
 
-Hi,
+When we free wdev->cqm_config when unregistering, we also
+need to clear out the pointer since the same wdev/netdev
+may get re-registered in another network namespace, then
+destroyed later, running this code again, which results in
+a double-free.
 
->> diff --git a/drivers/net/wireless/microchip/wilc1000/sdio.c b/drivers/net/wireless/microchip/wilc1000/sdio.c
->> index 5262c8846c13d..170470d1c2092 100644
->> --- a/drivers/net/wireless/microchip/wilc1000/sdio.c
->> +++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
->> @@ -769,8 +769,10 @@ static int wilc_sdio_init(struct wilc *wilc, bool resume)
->>   
->>   static int wilc_sdio_read_size(struct wilc *wilc, u32 *size)
->>   {
->> -	u32 tmp;
->> +	struct sdio_func *func = dev_to_sdio_func(wilc->dev);
->>   	struct sdio_cmd52 cmd;
->> +	u32 tmp;
->> +	int ret;
->>   
->>   	/**
->>   	 *      Read DMA count in words
->> @@ -780,12 +782,20 @@ static int wilc_sdio_read_size(struct wilc *wilc, u32 *size)
->>   	cmd.raw = 0;
->>   	cmd.address = WILC_SDIO_INTERRUPT_DATA_SZ_REG;
->>   	cmd.data = 0;
->> -	wilc_sdio_cmd52(wilc, &cmd);
->> +	ret = wilc_sdio_cmd52(wilc, &cmd);
->> +	if (ret) {
->> +		dev_err(&func->dev, "Fail cmd 52, set DATA_SZ[0] register...\n");
-> 
-> I don't get the log message, why "set" DATA_SZ[0] ? This helper is rather trying
-> to read it. Same for the other logs added below
-Fixed in V2 , s@set@get@ , thanks !
+Reported-by: syzbot+36218cddfd84b5cc263e@syzkaller.appspotmail.com
+Fixes: 37c20b2effe9 ("wifi: cfg80211: fix cqm_config access race")
+Cc: stable@vger.kernel.org # 6.6+
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ net/wireless/core.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 4c8d8f167409..d3c7b7978f00 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1280,6 +1280,7 @@ static void _cfg80211_unregister_wdev(struct wireless_dev *wdev,
+ 	/* deleted from the list, so can't be found from nl80211 any more */
+ 	cqm_config = rcu_access_pointer(wdev->cqm_config);
+ 	kfree_rcu(cqm_config, rcu_head);
++	RCU_INIT_POINTER(wdev->cqm_config, NULL);
+ 
+ 	/*
+ 	 * Ensure that all events have been processed and
+-- 
+2.47.0
+
 
