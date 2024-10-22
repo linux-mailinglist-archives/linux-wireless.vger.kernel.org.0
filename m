@@ -1,116 +1,90 @@
-Return-Path: <linux-wireless+bounces-14333-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14334-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69C689AB191
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 17:02:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B8939AB2F4
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 17:59:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21B151F235E8
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 15:02:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C68D11F25076
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 15:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D1A19DF99;
-	Tue, 22 Oct 2024 15:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D831A0B06;
+	Tue, 22 Oct 2024 15:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="XveL2wVQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AspX8KV3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBF5199939;
-	Tue, 22 Oct 2024 15:02:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDD213957E;
+	Tue, 22 Oct 2024 15:58:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729609335; cv=none; b=rhqP5KEdfZqKMJyVYtj0fmsyRniR/NS8lklgv3YlTqf1XWyH8CQM6HPfO5HGppKEE7EC9sgowxMDQCFAVdbFNW661WI6oTih1O8y5xVMHfyuVmvUnl9GngSI2iXqcJqe5AUldDmw2PrPZu1esFLoX1DAK+OpDp7193jOuMr+16A=
+	t=1729612738; cv=none; b=MuFJG1oF4dcLgWFc8FeBWUN9OSupnq1giMnijkahc7g+KMm89J6S6tSUpLlPFhQvJxql+BWo0+u/x1AwDsO2DOxAWZ2/elnVqibva+vZMPRKroAG9rMgNoHp3wzMGXgvXm37lbcJlkOisPweHu3a5OAthnhP5PsH5RwHoBPDejM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729609335; c=relaxed/simple;
-	bh=dk9GVXBzMcljhw5qoxyb0/4o0TGxVOKtLeB4U0yWriM=;
-	h=From:To:In-Reply-To:References:Subject:Message-ID:Date:
-	 MIME-Version:Content-Type; b=Er7Q6V8GfNqv9PGzlyA3TV1nnZ06eKLud3DUQaMaZNkxSCPjsyFl6LGMTCxt9JDPjAnJd+EUGe8wRabth6PF2rqWtKJPNei1+VKl/KXD3QpuPToFeGTbfgT2QgfZXhnjEHOYEHliFDjpbGa4eagHiI9UuhrA0KQTec3d1jdOgU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=XveL2wVQ; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49MBpanH023780;
-	Tue, 22 Oct 2024 15:01:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	4j0TSrcG4+GrKDdFhSudIfWhVj2QOoPGryroBU7BN2c=; b=XveL2wVQGWVvDPvc
-	byij4+QOMdto+5SsR2HsbnHIxPUFV6JZKintrjw6Z9AHPV5mofyGRQZCaYl1J6cO
-	j5JGKuPLIPhGw9XctqyhwFRUgPudXX8tJXzvuHIaaYsUIi3SkaPe9KBO/mPsW3K0
-	OItknDCyfFUmgZq16txtpdMZld42tu3/zy6pcCEWDiULZGxYMkbAzdE1ZKmcNqbv
-	zEFuWakkBVExT+MtLNeRtWkPEMqvkg73WrCDFZ6/l1WqWontnkBeF894dH23U8G0
-	gYaH2RBKaM686aHvfM5G7jVZAY4wEQ4olh+vCqW+U4BaDp4cxgamN6Pj+fUw6kTx
-	BZAyqA==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42e3cgj24t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Oct 2024 15:01:57 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49MF1t3R019415
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Oct 2024 15:01:55 GMT
-Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 22 Oct
- 2024 08:01:55 -0700
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-To: <kvalo@kernel.org>, <jjohnson@kernel.org>,
-        <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Jose Ignacio Tornos Martinez
-	<jtornosm@redhat.com>
-In-Reply-To: <20241017181004.199589-1-jtornosm@redhat.com>
-References: <20241017181004.199589-1-jtornosm@redhat.com>
-Subject: Re: [PATCH v4 0/2] wifi: ath12k: fix issues when unbinding
-Message-ID: <172960931548.3037585.16411259457657952070.b4-ty@quicinc.com>
-Date: Tue, 22 Oct 2024 08:01:55 -0700
+	s=arc-20240116; t=1729612738; c=relaxed/simple;
+	bh=u7X7plqkp/9v6wNfXVOJrFtOm4tT8rm/aCvTWXXbSto=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=iBJ36ur4TxnIz6F/H1m7IJ5kbFCQjNctrTo0ukewWQuwFj3i0R0mKsvtd3nr92nUyaYkXeuwhKpT4bbuvTYxwRsH8E8imMBAzw+UCpkvPdwQI6a7TvvBDH7bd57RTryC9vAIk2QR2W8HYMGnSnTZF7UsY9vLro2a7OeYwyq4Bts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AspX8KV3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 554D6C4CEC3;
+	Tue, 22 Oct 2024 15:58:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729612737;
+	bh=u7X7plqkp/9v6wNfXVOJrFtOm4tT8rm/aCvTWXXbSto=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=AspX8KV3W7y+CPHHYvlAnMWXh8T/2zUCEqAZRcHn5f4474HiLQKiz22JIry6GiOOm
+	 zsQfWc7hhNh7Ot4a0BSr8xglApKye7szdZmjpf7azWfXuXrh9P3+WQT/RayTL/J2gL
+	 pnkoLzdonbb4r3KnrzhmCRPJoZKZOmQ4D1YHZgLvVsZq9fd9v4C9GCyKjOSdY0IXnK
+	 gsSiT4I7cK+rFF50p7GdijoXLLrxP2GDuBcDZT/7A5GLpPnUMN0LrnZeccwcGT/TER
+	 0+SpKJUCx8gWr56ELXTO8ilXenaWWZ/G40ELUuW3Z352zsd5fxY1c3rA/43lxCnJzh
+	 5UvbFgJ5JlExw==
+From: Kalle Valo <kvalo@kernel.org>
+To: Miaoqing Pan <quic_miaoqing@quicinc.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+  <quic_jjohnson@quicinc.com>,  <ath11k@lists.infradead.org>,
+  <linux-wireless@vger.kernel.org>,  <devicetree@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/2] wifi: ath11k: add firmware-name device tree property
+References: <20241001033053.2084360-1-quic_miaoqing@quicinc.com>
+	<20241001033053.2084360-3-quic_miaoqing@quicinc.com>
+	<smgbishqbin4kcpshqvue3ivvfko2l6rj2w4ikwydosbkq6kde@pdbzhklj7znm>
+	<1c5f5c93-db06-4490-af2e-bbce2d184c94@quicinc.com>
+Date: Tue, 22 Oct 2024 18:58:54 +0300
+In-Reply-To: <1c5f5c93-db06-4490-af2e-bbce2d184c94@quicinc.com> (Miaoqing
+	Pan's message of "Tue, 22 Oct 2024 18:20:50 +0800")
+Message-ID: <87cyjsnn7l.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.0
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: ukR6yyaYn5pRdcw48nrbrIDbsGSgoGCJ
-X-Proofpoint-ORIG-GUID: ukR6yyaYn5pRdcw48nrbrIDbsGSgoGCJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=479
- spamscore=0 malwarescore=0 priorityscore=1501 lowpriorityscore=0
- phishscore=0 clxscore=1015 impostorscore=0 suspectscore=0 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410220096
+Content-Type: text/plain
 
+Miaoqing Pan <quic_miaoqing@quicinc.com> writes:
 
-On Thu, 17 Oct 2024 20:07:30 +0200, Jose Ignacio Tornos Martinez wrote:
-> wifi: ath12k: fix issues when unbinding
-> 
-> Currently, ath12k driver is not working from VMs but it cannot be unbinded
-> either from there. I would like to send these patches to fix the issues that
-> I have found in order to get the unbind operation working there, at least to
-> fix the errors found during the process when the initial error is detected.
-> 
-> [...]
+> On 10/22/2024 5:57 PM, Dmitry Baryshkov wrote:
+>> On Tue, Oct 01, 2024 at 11:30:52AM +0800, Miaoqing Pan wrote:
+>>> QCA6698AQ uses different firmware/bdf/regdb with existing WCN6855
+>>> firmware, which is customized for IoE platforms. And the 'pci-device-id +
+>>> soc-hw-version + soc-hw-sub-version' may not be enough to identify the
+>>> correct firmware directory path.
+>> Why is it so? What makes it so different from the existing platforms
+>> that you can not use WCN6855 firmware?
+>
+> Just as I said, a new customized firmware for IoE devices.
 
-Applied, thanks!
+I know in Qualcomm it's common practise to fork the firmware multiple
+times per project and what not, but in the community the preference is
+to have one mainline branch. Having different firmware forks/branches is
+a lot more difficult to maintain.
 
-[1/2] wifi: ath12k: fix crash when unbinding
-      commit: 1304446f67863385dc4c914b6e0194f6664ee764
-[2/2] wifi: ath12k: fix warning when unbinding
-      commit: ca68ce0d9f4bcd032fd1334441175ae399642a06
-
-Best regards,
 -- 
-Jeff Johnson <quic_jjohnson@quicinc.com>
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
