@@ -1,118 +1,141 @@
-Return-Path: <linux-wireless+bounces-14281-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14282-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAE079A918A
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2024 22:48:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0CB29A9474
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 02:03:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61C5C282B14
-	for <lists+linux-wireless@lfdr.de>; Mon, 21 Oct 2024 20:48:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEA421C2146F
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 00:03:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BE1D1C9EDD;
-	Mon, 21 Oct 2024 20:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE827647;
+	Tue, 22 Oct 2024 00:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sk5twam3"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="M2jKoMSk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1FE11A256B;
-	Mon, 21 Oct 2024 20:48:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14393360;
+	Tue, 22 Oct 2024 00:03:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729543717; cv=none; b=FN8Iv/y/bMjVrTMm3FI+iVCv7Ij+FpeS/k9BFn3k6UFfT5wftJisDYg05KzpUi1EZOwOps5Bb3wS4vGheoiVPndlj1vPddzRWajQiS7enS4wvmw+/bv4BIptQ4ABrttwzpvfYAPKAvFjjLNnrO2CYNYI9onSO7h+4Hzw6wDapXU=
+	t=1729555433; cv=none; b=n0krr0AwB3ZB65QNf5OhlGqu2NyzXW+FNWfqvdzYpMH/z8gFdZ3B7G4/niYo0v1vQ0GQhnj96aMRETwoa7cm1m9NWWk9mRhwxHI6O4rJ5etzo0ADm/vug1zplDuBF5NwMPpBQZIVDgmjc62SrGksMqps63kBIaGF7WSo3t/vHvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729543717; c=relaxed/simple;
-	bh=jeejQkWoFif0OIlF8LQNrN6BapSosBnxpXfYt2G+tGE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kf1nP8+x2E2GyTRQkl1mpiQ4yc62Ol1pmEMt6ZWhtTZ1NE0MblooH5qixqkZLruvbwa+JDNZYFlv7vARZ8/SdhbudCcV1jkko47tb1lQ+DJ727tqbOrmrlBxHFYE4HTHdsibV+tK8VCseJloWvMFkD78hy+7E82zIhL5d2Po7Sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sk5twam3; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a93c1cc74fdso729867366b.3;
-        Mon, 21 Oct 2024 13:48:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729543714; x=1730148514; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6F708dL/ffeOZXEz1qq/ZOCQiXeq5R//1slMVkIXf6w=;
-        b=Sk5twam3w/aeyKSePbtXQLYEfSJERW2nLlVMV7RG/KTlRrQ2V9Sr+sLvk9AOEckh0q
-         WbcmWYVZ0hUYqxnW1LEttOANRk+QJ774CUWE+SdW4J6hnM83ARy213A+aqkDgXsMjoml
-         vvj4Y/l2gGHtLu6MtcJrFlkNiwoW+BmWzARQdKn6PlZdCsg+1lIBkLcf8fZ0DMogTTE0
-         IWxctGUQZ93i5tHYUX7VZ14HNob4OwGXbHiSqE4t8t2bgaeM4AvC6rPGlcnh3eztFMaC
-         eOJHqdFQMejb3ApMTam2sgINsUoFgAlh20HXB8NwkJ+jQn7Abaj5Wy9AM9Xbr5sDxPvE
-         JWiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729543714; x=1730148514;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6F708dL/ffeOZXEz1qq/ZOCQiXeq5R//1slMVkIXf6w=;
-        b=cGI0nnV96oSzCJ4LzxaRkehIroIGek8IaiwJL8ACyv4BPuwYgoK5vBaC+IIA2gQKaC
-         uGSdlface+tcnUn4pdCeaGdDRi1hsoIZTiBgUY08e6YuOTjixdq9gTePbuYxwSCavfFQ
-         ZXRTlyarRHqyAgO0A5sxHeZsBVeiHbrJAg61iLU19BwiOCoJsk7ayRYJRX4gvvqaqNQ0
-         GSkxTolbdLKXAdyrxkGUd2FVzNQgh2hu8TTibGXbLfXRcZQrCKeukAayJj/5ezgxu4Pp
-         fHzZ8tF3UD+sjH2taG8vpFrtYiL2hhuRVLRJ6RsRgXCFGbhpATsRiqlBYtlPUOJBmy/p
-         7rYg==
-X-Forwarded-Encrypted: i=1; AJvYcCVcQynXjNKmZnQe/9Ssd7UZ69ieKk33n0y93lan4D3gG5nm9ASLcrvO3CNWHW51NctHNUywXO2mQ9ZpIOkp/us=@vger.kernel.org, AJvYcCWoaNJc9ZvssD4bmpoHho64k+RXXvv1FYPoQANrhTZLA7kShdMy1WKSRljv3s+Z+L5Jve9/f08EviRc9Ak=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyybUdJ9UM/bjbqDi/GAk21oGgiawkFxLXiHawkiYms/4waTJj
-	b5okU0a0+Z3XIshETXaagCboL4oWIcU/0CHfrpr8qccun93Bh15n7jEQaMcu
-X-Google-Smtp-Source: AGHT+IGJMghbxAACpszuNPwOqK9gcryXeriFm6MLHgFVXQZJsBlGcOh5PjeUpuPY+oJxLdB6UkGpUQ==
-X-Received: by 2002:a17:906:c10e:b0:a99:7bc0:bca9 with SMTP id a640c23a62f3a-a9a69a65949mr1153925266b.3.1729543713844;
-        Mon, 21 Oct 2024 13:48:33 -0700 (PDT)
-Received: from C-KP-LP15v.consult.red ([83.168.79.145])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a912ee59dsm252369466b.71.2024.10.21.13.48.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Oct 2024 13:48:33 -0700 (PDT)
-From: Karol Przybylski <karprzy7@gmail.com>
-To: kvalo@kernel.org,
-	jjohnson@kernel.org
-Cc: Karol Przybylski <karprzy7@gmail.com>,
-	linux-wireless@vger.kernel.org,
-	ath12k@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	skhan@linuxfoundation.org
-Subject: [PATCH v2] wifi: ath12k: Fix for out-of bound access error
-Date: Mon, 21 Oct 2024 22:48:14 +0200
-Message-Id: <20241021204814.728090-1-karprzy7@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1729555433; c=relaxed/simple;
+	bh=la6+mSD3E4cWykUp+bMo0m61VOjKIcAEjePnOyL/d7c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=BJZmWZvXwpk9h+hcmm/Tzo2IX/o1FiJE201AYMn+tzce6U2Q58Fqiw3vx0KdNBWJsreypzgq/sC9C73pNkVJPIue8Uoe98U4ZnP8AfMozx6JM7oPxBVWb3nzc5tZmaKgwGeLeOp30CiYdpDTW0UT1bNNBhNsIWv8JdV6iMCexI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=M2jKoMSk; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49LNGOBC019303;
+	Tue, 22 Oct 2024 00:03:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	6WM7Ott1G6v7WRCxJzN5NLSNfN64lKptPUJSvoYiAnY=; b=M2jKoMSkxeNVv/Tx
+	cTLDFq9+lIsQjTGy3+3mO6ajMQmNHRaRroS6nG+O3iTe6uh/BWyk2qO2FT9G1+gm
+	oAlFHMj5j3frWYjbX1Vierj7dyTLK4cwWoSizJmnBFxWWkga0zU3j8lOdLOzHD2W
+	jq2qmxhXKhOUlW9aReqRiQtB/mNGqNujdAaPiRrX1Jvg71y7R3WaRg/zFWteq8L2
+	TXcLHaYhPfvC7DVESaXZf3FBVf3NQm+TBFq4LZe0l7ihOBGFNIRKIQkZLkLuM1k7
+	QRqQLK+cl3v+dFB6r+2b7YS8KpOQHIDrxm0ceJvVI4r18W/hGrGWeHZU6OGT7+hn
+	9SHMzA==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42c6tsp987-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 22 Oct 2024 00:03:42 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49M03fm1018799
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 22 Oct 2024 00:03:41 GMT
+Received: from [10.48.242.6] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 21 Oct
+ 2024 17:03:40 -0700
+Message-ID: <08767ff7-f764-473d-a44b-c3c3b1695008@quicinc.com>
+Date: Mon, 21 Oct 2024 17:03:40 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] wifi: ath12k: Fix for out-of bound access error
+To: Karol Przybylski <karprzy7@gmail.com>, <kvalo@kernel.org>,
+        <jjohnson@kernel.org>
+CC: <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <skhan@linuxfoundation.org>
+References: <20241021204814.728090-1-karprzy7@gmail.com>
+Content-Language: en-US
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20241021204814.728090-1-karprzy7@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: t92Cu2D_BIIKJ-HhCGNFxRK1kDKhwOGQ
+X-Proofpoint-ORIG-GUID: t92Cu2D_BIIKJ-HhCGNFxRK1kDKhwOGQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ suspectscore=0 spamscore=0 mlxlogscore=719 phishscore=0 adultscore=0
+ mlxscore=0 clxscore=1011 bulkscore=0 malwarescore=0 impostorscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410210168
 
-Size of array passed to print_array_to_buf_index is decremented by 1
+On 10/21/2024 1:48 PM, Karol Przybylski wrote:
+> Size of array passed to print_array_to_buf_index is decremented by 1
 
-Discovered in coverity scan, CID 1600742
----
-Changes in v2:
-- Code style: added spaces before and after '-'
-- Link to v1: https://lore.kernel.org/all/8734kpq0wo.fsf@kernel.org/
----
+This is not a clear commit message.
+Please follow the order normally used in the kernel:
+1) describe the current code
+2) describe the problem with the current code
+3) describe how to fix the code (in imperative voice)
 
-Signed-off-by: Karol Przybylski <karprzy7@gmail.com>
----
- drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> Discovered in coverity scan, CID 1600742
+> ---
+> Changes in v2:
+> - Code style: added spaces before and after '-'
+> - Link to v1: https://lore.kernel.org/all/8734kpq0wo.fsf@kernel.org/
+> ---
+> 
+> Signed-off-by: Karol Przybylski <karprzy7@gmail.com>
 
-diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-index 799b865b89e5..8371df570c42 100644
---- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-+++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
-@@ -1590,7 +1590,7 @@ ath12k_htt_print_tx_selfgen_ax_stats_tlv(const void *tag_buf, u16 tag_len,
- 			 le32_to_cpu(htt_stats_buf->ax_mu_mimo_ndp));
- 	len += print_array_to_buf_index(buf, len, "ax_mu_mimo_brpollX_tried = ", 1,
- 					htt_stats_buf->ax_mu_mimo_brpoll,
--					ATH12K_HTT_TX_NUM_AX_MUMIMO_USER_STATS, "\n");
-+					ATH12K_HTT_TX_NUM_AX_MUMIMO_USER_STATS - 1, "\n");
- 	len += scnprintf(buf + len, buf_len - len, "ax_basic_trigger = %u\n",
- 			 le32_to_cpu(htt_stats_buf->ax_basic_trigger));
- 	len += scnprintf(buf + len, buf_len - len, "ax_ulmumimo_total_trigger = %u\n",
--- 
-2.34.1
+SOB needs to be before the first "---"
+
+> ---
+>  drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+> index 799b865b89e5..8371df570c42 100644
+> --- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+> +++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+> @@ -1590,7 +1590,7 @@ ath12k_htt_print_tx_selfgen_ax_stats_tlv(const void *tag_buf, u16 tag_len,
+>  			 le32_to_cpu(htt_stats_buf->ax_mu_mimo_ndp));
+>  	len += print_array_to_buf_index(buf, len, "ax_mu_mimo_brpollX_tried = ", 1,
+>  					htt_stats_buf->ax_mu_mimo_brpoll,
+> -					ATH12K_HTT_TX_NUM_AX_MUMIMO_USER_STATS, "\n");
+> +					ATH12K_HTT_TX_NUM_AX_MUMIMO_USER_STATS - 1, "\n");
+>  	len += scnprintf(buf + len, buf_len - len, "ax_basic_trigger = %u\n",
+>  			 le32_to_cpu(htt_stats_buf->ax_basic_trigger));
+>  	len += scnprintf(buf + len, buf_len - len, "ax_ulmumimo_total_trigger = %u\n",
+
+Aren't there more than this one? This also looks suspect:
+
+	len += print_array_to_buf_index(buf, len, "ac_mu_mimo_brpollX_tried = ", 1,
+					htt_stats_buf->ac_mu_mimo_brpoll,
+					ATH12K_HTT_TX_NUM_AC_MUMIMO_USER_STATS, "\n\n");
+
+
 
 
