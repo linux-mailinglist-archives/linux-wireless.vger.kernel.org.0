@@ -1,87 +1,107 @@
-Return-Path: <linux-wireless+bounces-14323-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14324-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE6FB9AA31E
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 15:29:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E14419AB028
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 15:55:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 604B61F24669
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 13:29:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BD86B213F5
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 13:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F36E1537D9;
-	Tue, 22 Oct 2024 13:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2CF19F121;
+	Tue, 22 Oct 2024 13:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Hq20jLTD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yaxHMYBP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D94C8199FC1
-	for <linux-wireless@vger.kernel.org>; Tue, 22 Oct 2024 13:29:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F9019F110;
+	Tue, 22 Oct 2024 13:55:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729603754; cv=none; b=PKCELFxxl17U/y4+kso59k8ZT/0e7yEV67nLG4vl8Ybx5AzWXHv5UqKyhgbaH9+qnKiR0kMBKc65/j1Pjv9YHOLFlo+r1xdN5VfXsj7fx5Svh3zChdqw1g3882VoIVrECjWLvfLiaBp5qtRLHUZ/XOe9unA8hnipuKvXwH9EgfI=
+	t=1729605332; cv=none; b=MIGTQiEQ8xP2G8A7zK1WQ/LxEcQKAl/ldTZjeF8M4Q2EImBy8s0zEzPIKWnz1C7Of3tZ5YRFJ07DuxcR7MfyNvvjTxkMGA2pdiJax74tHS5rksJtyWDv6VMysWX2Y05H4wdCEdiR4/nqR4GEtMFVKOzITxwht3bgYQUHpNwmHzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729603754; c=relaxed/simple;
-	bh=zWtObovD9c1HYqiE/NV+2jVm6gv2qyvrQVQGFDV2DfQ=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RCt7LnQ++FXsZdmKzxiu3pFTBr1S13WZ+6lDHTvsU6iZyeDmRcMDG/Cy/n0Vd04IvBwNib5L2Sgn7f6Uhau6/MmrUh+v3TgeGW4U7DoGhNMpKrDkXBc6ABsHs016unQ27zohN6N3LTTXEGlQtfRTEz+dOVC08ZTmBmF4xQfCY7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Hq20jLTD; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=0piA9ZJgNvD+34z6X7Id8wtJdye2wLVnTedIySbTwkM=;
-	t=1729603752; x=1730813352; b=Hq20jLTDeCS6xP0YUw6DDUU+IwGa5t7IFHxsd5o5NPPsxYV
-	jZlKycUo+JlcBVY9qGDoYuimnxTo45VAjetJXZp40knh2mkRvdT1TpqnDgwhP81iq803FvY84Q5m3
-	l7XNif+gn3eBgKwWFCuvw/umXTyfpNgXpTJxvt6FkP5/h4q1Zc7ZQwUq9lZzVNXAv4siEAVT/D9g0
-	N8c/vSwF3kmEMisUEwxq250Dug7oxx2ziyawtYBVL23a/Zms0mKtDjOAHiEBABVeUhrS3jACnfLvB
-	T1irHRZ4d0K9fec6L8MbDHK3UXLaSVqO+PUqaMGovkYR1QkkEi7EO36Zwpmuj7zA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1t3Ewg-00000001kdD-1ffS;
-	Tue, 22 Oct 2024 15:29:10 +0200
-Message-ID: <404d0ef8b9a5e70dcab331a5ee73155313464d06.camel@sipsolutions.net>
-Subject: Re: [PATCH] mac80211:  Remove NOP call to ieee80211_hw_config
-From: Johannes Berg <johannes@sipsolutions.net>
-To: greearb@candelatech.com, linux-wireless@vger.kernel.org
-Date: Tue, 22 Oct 2024 15:29:09 +0200
-In-Reply-To: <20241010204036.1219896-1-greearb@candelatech.com>
-References: <20241010204036.1219896-1-greearb@candelatech.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+	s=arc-20240116; t=1729605332; c=relaxed/simple;
+	bh=XhHyHOtSwHDDIM0tckjx0so2HvBXf6EjJ+FnZqUiM7o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gQNBn9KxiGhgdVkJANUZaDNbIPn/ltPRgxlHud8rYAHrb+ZGyauwVtpTNFnIthEKzjzrFoRbWUmz0+tk1hganCkF6CIVTB0IedUS2Am0GjzYBapGVHQ0ZjIv5ndVCh4p4UtakIsybeIXROOS/SsG8rEBboPbSy0m49zHMj9doXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yaxHMYBP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C21EC4CEC3;
+	Tue, 22 Oct 2024 13:55:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1729605331;
+	bh=XhHyHOtSwHDDIM0tckjx0so2HvBXf6EjJ+FnZqUiM7o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=yaxHMYBP51cKSnmD7V658l3LTcc7dlfrBkmV4n/LE8RRlVeeXxE90fz2MbCPUAEKu
+	 LtJKrCS1ucZqTGnvhUM0VCK1KtwyP32AIqmhmKTrkXev3fZPiCFtFIWuGut+0laVlf
+	 GObFqiDCTVFlZoq7MBD6yB8vsV03/5kepQ8B44nA=
+Date: Tue, 22 Oct 2024 15:55:29 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: Re: [PATCH 1/2] debugfs: add small file operations for most files
+Message-ID: <2024102201-pummel-mournful-d349@gregkh>
+References: <20241022151838.26f9925fb959.Ia80b55e934bbfc45ce0df42a3233d34b35508046@changeid>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241022151838.26f9925fb959.Ia80b55e934bbfc45ce0df42a3233d34b35508046@changeid>
 
-On Thu, 2024-10-10 at 13:40 -0700, greearb@candelatech.com wrote:
-> From: Ben Greear <greearb@candelatech.com>
->=20
-> If changed is '0', then the ieee80211_hw_config takes no
-> action, so just remove the call in
-> __ieee809211_recalc_txpower()
+On Tue, Oct 22, 2024 at 03:18:34PM +0200, Johannes Berg wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
+> 
+> As struct file_operations is really big, but (most) debugfs
+> files only use simple_open, read, write and perhaps seek, and
+> don't need anything else, this wastes a lot of space for NULL
+> pointers.
+> 
+> Add a struct debugfs_short_fops and some bookkeeping code in
+> debugfs so that users can use that with debugfs_create_file()
+> using _Generic to figure out which function to use.
+> 
+> Converting mac80211 to use it where possible saves quite a
+> bit of space:
+> 
+> 1010127  205064    1220 1216411  128f9b net/mac80211/mac80211.ko (before)
+>  981199  205064    1220 1187483  121e9b net/mac80211/mac80211.ko (after)
+> -------
+>  -28928 = ~28KiB
+> 
+> With a marginal space cost in debugfs:
+> 
+>    8701	    550	     16	   9267	   2433	fs/debugfs/inode.o (before)
+>   25233	    325	     32	  25590	   63f6	fs/debugfs/file.o  (before)
+>    8914	    558	     16	   9488	   2510	fs/debugfs/inode.o (after)
+>   25380	    325	     32	  25737	   6489	fs/debugfs/file.o  (after)
+> ---------------
+>    +360      +8
+> 
+> (All on x86-64)
+> 
+> A simple spatch suggests there are more than 300 instances,
+> not even counting the ones hidden in macros like in mac80211,
+> that could be trivially converted, for additional savings of
+> about 240 bytes for each.
+> 
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 
-Hmm. I think it may have done something in the past, so perhaps this is
-a bug that needs to be fixed instead?
+I imagine you want to take this through the wireless tree for the second
+patch, so feel free to do that and add:
 
--       if (!local->use_chanctx)
--               changed |=3D ieee80211_hw_conf_chan(local);
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-in "wifi: mac80211: simplify non-chanctx drivers".
+thanks!
 
-But maybe that's exactly the previous patch? Would be nice though to
-have that in the commit message, or if it's related maybe even squash
-them?
-
-johannes
+greg k-h
 
