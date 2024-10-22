@@ -1,65 +1,65 @@
-Return-Path: <linux-wireless+bounces-14297-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14298-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB8B89A9CA9
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 10:31:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDA099A9CAA
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 10:32:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB1521C22548
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 08:31:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4DB21C22D76
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 08:32:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7589527735;
-	Tue, 22 Oct 2024 08:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA2014EC4E;
+	Tue, 22 Oct 2024 08:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="c2p4Ra+1"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="YTFcMkfm"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BB8157487
-	for <linux-wireless@vger.kernel.org>; Tue, 22 Oct 2024 08:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDCB0157487
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Oct 2024 08:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729585903; cv=none; b=TqPZTh8cPbywD9zVmd4qw8jGKMwOU1aMrzJ9PtAMhgQm96AT6budAnevZz0uJrr+PoS5l1HGmfoCFxSyl6fn7rjZwvRrSylMd0Lsogjh4Kj9Kgskt0AS0SZ77BQ6HAmosAPjxaEU+mrcq2CBoCde12bmTUS+juTf5H4PoirZrlU=
+	t=1729585907; cv=none; b=czWzA/CCzvQsaOMWIbgJLveLm+bU3H5Vbn2ZpthgDjGtYF02cyyralb9JtUi0a++bN38LSH5ljG/7UpFiG0UJsSyeIttgq/WvarBGsLB7xkQMFBL2lYsyirEm+MZ+jQnNIx2wotF2NezOdebCPoNefKPFAhdyZt62Kb5oKaakrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729585903; c=relaxed/simple;
-	bh=EapJNtVjpDlNNRnPSV+Lnw3BsZNPf4t/8AmsKfyhXLc=;
+	s=arc-20240116; t=1729585907; c=relaxed/simple;
+	bh=lhG8wlzbthmwXY9bcgULveYWiaXOEDRJ8+PFVpwW7Ec=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PRB13eSIkeyjqEswsEIYdpD7EJFP9RH7fQFjy6u7UOBAu7CXXMzOpRPCq4Rt9oZB2uMMbaW8KnXRaE4CdlL4bOBsf2v6tAgfsC1NjByuv9OY9Anvn9Z0dgrWY+iV5GBrwZhjvozXdlqnz6ela7W8Uh3kx5+4AX9K1+Pl1sFhYC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=c2p4Ra+1; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=GhW+Dt59Y3yewghyENHU/OALM5k7xpw9x+TSbj95nN0UzhLCm5ZlGWkRFq7eQjUea598tIFnCM73X15WwFiRi6RZL0abMfllsd3V6l+5goeV2X3ZBFE9PT0RzqUvEB+aPodGj5/A9MnVceVX4VuZfWjb+1BGfKZnbjKwa/QZcu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=YTFcMkfm; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 49M8VcCxA3771851, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 49M8VglpE3771857, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1729585898; bh=EapJNtVjpDlNNRnPSV+Lnw3BsZNPf4t/8AmsKfyhXLc=;
+	t=1729585902; bh=lhG8wlzbthmwXY9bcgULveYWiaXOEDRJ8+PFVpwW7Ec=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=c2p4Ra+1h47oCWCmJ4jMQRqHb6ShYzIg8mL/ydh9pWYUT/OOqj5z35Uk5Dx2PtC+A
-	 QAwMOEgRjSrwNDcd6DAD3JwvVhFAZ8C+0mCUswEaSrWKg3dZFJ3VNxMUKBmX8raJ0V
-	 OSg61CNipbt6UTPi+UM1YEUWWG5R0i8xnXgE8GoMfIizsOKX70NtNGhjOvC23zZaFD
-	 3Dds9nP6nKW1rpLy34/wl7KQ+a8OoPy9GdTnTwMiS4RWvrqnDN5q6w6Hsoeu9rZ+lM
-	 zVqe5835wYAOuH6VAFF5stUwKgGqgCcr5LVJZIDuq+LMbD5iqVc0zbGsVckU/Ju6O3
-	 iecut4DeERxWA==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 49M8VcCxA3771851
+	b=YTFcMkfm+MS2wR34tzh/zXfmbHUdm3/lo81/iH7VSjwL2Ap5SjrPBLgvtSLBargHn
+	 b4aIhCavxxa3iyTmS+ApgIR70bcnkthGxdgCCYfP3IhoZcrIdTtDpETdpDd33REd3N
+	 hRrb4EMapxNVR+VAKo33GTdPqxxY9a1Jm/m4KJ9gJ1+utTh+IAtW+84NdXvBsKrGfU
+	 hxhLMBKPlhITIirFjtaarNasO8/GZl01gdsv3HVCirsInGPVqjoJZnPBhkCGJ23hkO
+	 B8mG8P+BIRK4zXOvI2bVm7xqvJTPmSPzdZdN1tijHbk016opRslSy/fYPjPML1eSmV
+	 nGuoM0Ozd9z/g==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 49M8VglpE3771857
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Tue, 22 Oct 2024 16:31:38 +0800
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Oct 2024 16:31:42 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 22 Oct 2024 16:31:39 +0800
+ 15.1.2507.39; Tue, 22 Oct 2024 16:31:42 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 22 Oct
- 2024 16:31:38 +0800
+ 2024 16:31:42 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
 CC: <phhuang@realtek.com>, <kevin_yang@realtek.com>
-Subject: [PATCH 2/5] wifi: rtw89: Add encryption support for MLO connections
-Date: Tue, 22 Oct 2024 16:31:03 +0800
-Message-ID: <20241022083106.149252-3-pkshih@realtek.com>
+Subject: [PATCH 3/5] wifi: rtw89: chan: manage active interfaces
+Date: Tue, 22 Oct 2024 16:31:04 +0800
+Message-ID: <20241022083106.149252-4-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20241022083106.149252-1-pkshih@realtek.com>
 References: <20241022083106.149252-1-pkshih@realtek.com>
@@ -74,135 +74,291 @@ Content-Type: text/plain
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-From: Po-Hao Huang <phhuang@realtek.com>
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
 
-In order to make encryption/decryption work properly with MLO
-connections, MLD address needs to be filled in so circuits can
-operate with the correct information.
+To set channel well for combination of MCC (multi-channel concurrency) and
+impending MLO support, we need a method to manage relation between active
+interfaces and channel contexts. If an interface owns at least one active
+link, we call it an active interface. We add a list to manage active ones.
 
-Signed-off-by: Po-Hao Huang <phhuang@realtek.com>
+Basically, the list follows the active order except for the below case. To
+be compatible with legacy behavior, the first interface that owns the first
+channel context will put at the first entry in the list when recalculating.
+
+Besides, MCC can also select and fill roles based on the above active list.
+
+Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/cam.c | 51 ++++++++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/cam.h | 24 ++++++++---
- 2 files changed, 69 insertions(+), 6 deletions(-)
+ drivers/net/wireless/realtek/rtw89/chan.c     | 105 ++++++++++++++++--
+ drivers/net/wireless/realtek/rtw89/core.c     |   4 +-
+ drivers/net/wireless/realtek/rtw89/core.h     |  10 ++
+ drivers/net/wireless/realtek/rtw89/mac80211.c |   2 +
+ 4 files changed, 108 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/cam.c b/drivers/net/wireless/realtek/rtw89/cam.c
-index 8d140b94cb44..8ef59994c0db 100644
---- a/drivers/net/wireless/realtek/rtw89/cam.c
-+++ b/drivers/net/wireless/realtek/rtw89/cam.c
-@@ -961,16 +961,24 @@ void rtw89_cam_fill_dctl_sec_cam_info_v2(struct rtw89_dev *rtwdev,
- 					 struct rtw89_sta_link *rtwsta_link,
- 					 struct rtw89_h2c_dctlinfo_ud_v2 *h2c)
+diff --git a/drivers/net/wireless/realtek/rtw89/chan.c b/drivers/net/wireless/realtek/rtw89/chan.c
+index ba6332da8019..2b7e6921ff9c 100644
+--- a/drivers/net/wireless/realtek/rtw89/chan.c
++++ b/drivers/net/wireless/realtek/rtw89/chan.c
+@@ -10,6 +10,10 @@
+ #include "ps.h"
+ #include "util.h"
+ 
++static void rtw89_swap_chanctx(struct rtw89_dev *rtwdev,
++			       enum rtw89_chanctx_idx idx1,
++			       enum rtw89_chanctx_idx idx2);
++
+ static enum rtw89_subband rtw89_get_subband_type(enum rtw89_band band,
+ 						 u8 center_chan)
  {
-+	struct ieee80211_sta *sta = rtwsta_link_to_sta_safe(rtwsta_link);
-+	struct ieee80211_vif *vif = rtwvif_to_vif(rtwvif_link->rtwvif);
-+	struct rtw89_vif *rtwvif = rtwvif_link->rtwvif;
- 	struct rtw89_addr_cam_entry *addr_cam =
- 		rtw89_get_addr_cam_of(rtwvif_link, rtwsta_link);
-+	bool is_mld = sta ? sta->mlo : ieee80211_vif_is_mld(vif);
- 	struct rtw89_wow_param *rtw_wow = &rtwdev->wow;
- 	u8 *ptk_tx_iv = rtw_wow->key_info.ptk_tx_iv;
-+	u8 *mld_sma, *mld_tma, *mld_bssid;
+@@ -226,11 +230,15 @@ static void rtw89_config_default_chandef(struct rtw89_dev *rtwdev)
+ void rtw89_entity_init(struct rtw89_dev *rtwdev)
+ {
+ 	struct rtw89_hal *hal = &rtwdev->hal;
++	struct rtw89_entity_mgnt *mgnt = &hal->entity_mgnt;
  
- 	h2c->c0 = le32_encode_bits(rtwsta_link ? rtwsta_link->mac_id :
- 						 rtwvif_link->mac_id,
- 				   DCTLINFO_V2_C0_MACID) |
- 		  le32_encode_bits(1, DCTLINFO_V2_C0_OP);
- 
-+	h2c->w2 = le32_encode_bits(is_mld, DCTLINFO_V2_W2_IS_MLD);
-+	h2c->m2 = cpu_to_le32(DCTLINFO_V2_W2_IS_MLD);
+ 	hal->entity_pause = false;
+ 	bitmap_zero(hal->entity_map, NUM_OF_RTW89_CHANCTX);
+ 	bitmap_zero(hal->changes, NUM_OF_RTW89_CHANCTX_CHANGES);
+ 	atomic_set(&hal->roc_chanctx_idx, RTW89_CHANCTX_IDLE);
 +
- 	h2c->w4 = le32_encode_bits(addr_cam->sec_ent_keyid[0],
- 				   DCTLINFO_V2_W4_SEC_ENT0_KEYID) |
- 		  le32_encode_bits(addr_cam->sec_ent_keyid[1],
-@@ -1036,4 +1044,47 @@ void rtw89_cam_fill_dctl_sec_cam_info_v2(struct rtw89_dev *rtwdev,
- 					    DCTLINFO_V2_W4_SEC_KEY_ID);
- 		h2c->m4 |= cpu_to_le32(DCTLINFO_V2_W4_SEC_KEY_ID);
++	INIT_LIST_HEAD(&mgnt->active_list);
++
+ 	rtw89_config_default_chandef(rtwdev);
+ }
+ 
+@@ -272,6 +280,71 @@ static void rtw89_entity_calculate_weight(struct rtw89_dev *rtwdev,
  	}
+ }
+ 
++static void rtw89_normalize_link_chanctx(struct rtw89_dev *rtwdev,
++					 struct rtw89_vif_link *rtwvif_link)
++{
++	struct rtw89_vif *rtwvif = rtwvif_link->rtwvif;
++	struct rtw89_vif_link *cur;
 +
-+	if (!is_mld)
++	if (unlikely(!rtwvif_link->chanctx_assigned))
 +		return;
 +
-+	if (rtwvif_link->net_type == RTW89_NET_TYPE_INFRA) {
-+		mld_sma = rtwvif->mac_addr;
-+		mld_tma = vif->cfg.ap_addr;
-+		mld_bssid = vif->cfg.ap_addr;
-+	} else if (rtwvif_link->net_type == RTW89_NET_TYPE_AP_MODE && sta) {
-+		mld_sma = rtwvif->mac_addr;
-+		mld_tma = sta->addr;
-+		mld_bssid = rtwvif->mac_addr;
-+	} else {
++	cur = rtw89_vif_get_link_inst(rtwvif, 0);
++	if (!cur || !cur->chanctx_assigned)
 +		return;
++
++	if (cur == rtwvif_link)
++		return;
++
++	rtw89_swap_chanctx(rtwdev, rtwvif_link->chanctx_idx, cur->chanctx_idx);
++}
++
++static void rtw89_entity_recalc_mgnt_roles(struct rtw89_dev *rtwdev)
++{
++	struct rtw89_hal *hal = &rtwdev->hal;
++	struct rtw89_entity_mgnt *mgnt = &hal->entity_mgnt;
++	struct rtw89_vif_link *link;
++	struct rtw89_vif *role;
++	u8 pos = 0;
++	int i;
++
++	lockdep_assert_held(&rtwdev->mutex);
++
++	for (i = 0; i < RTW89_MAX_INTERFACE_NUM; i++)
++		mgnt->active_roles[i] = NULL;
++
++	/* To be consistent with legacy behavior, expect the first active role
++	 * which uses RTW89_CHANCTX_0 to put at position 0, and make its first
++	 * link instance take RTW89_CHANCTX_0. (normalizing)
++	 */
++	list_for_each_entry(role, &mgnt->active_list, mgnt_entry) {
++		for (i = 0; i < role->links_inst_valid_num; i++) {
++			link = rtw89_vif_get_link_inst(role, i);
++			if (!link || !link->chanctx_assigned)
++				continue;
++
++			if (link->chanctx_idx == RTW89_CHANCTX_0) {
++				rtw89_normalize_link_chanctx(rtwdev, link);
++
++				list_del(&role->mgnt_entry);
++				list_add(&role->mgnt_entry, &mgnt->active_list);
++				break;
++			}
++		}
 +	}
 +
-+	h2c->w8 = le32_encode_bits(mld_sma[0], DCTLINFO_V2_W8_MLD_SMA_0) |
-+		  le32_encode_bits(mld_sma[1], DCTLINFO_V2_W8_MLD_SMA_1) |
-+		  le32_encode_bits(mld_sma[2], DCTLINFO_V2_W8_MLD_SMA_2) |
-+		  le32_encode_bits(mld_sma[3], DCTLINFO_V2_W8_MLD_SMA_3);
-+	h2c->m8 = cpu_to_le32(DCTLINFO_V2_W8_ALL);
++	list_for_each_entry(role, &mgnt->active_list, mgnt_entry) {
++		if (unlikely(pos >= RTW89_MAX_INTERFACE_NUM)) {
++			rtw89_warn(rtwdev,
++				   "%s: active roles are over max iface num\n",
++				   __func__);
++			break;
++		}
 +
-+	h2c->w9 = le32_encode_bits(mld_sma[4], DCTLINFO_V2_W9_MLD_SMA_4) |
-+		  le32_encode_bits(mld_sma[5], DCTLINFO_V2_W9_MLD_SMA_5) |
-+		  le32_encode_bits(mld_tma[0], DCTLINFO_V2_W9_MLD_TMA_0) |
-+		  le32_encode_bits(mld_tma[1], DCTLINFO_V2_W9_MLD_TMA_1);
-+	h2c->m9 = cpu_to_le32(DCTLINFO_V2_W9_ALL);
++		mgnt->active_roles[pos++] = role;
++	}
++}
 +
-+	h2c->w10 = le32_encode_bits(mld_tma[2], DCTLINFO_V2_W10_MLD_TMA_2) |
-+		   le32_encode_bits(mld_tma[3], DCTLINFO_V2_W10_MLD_TMA_3) |
-+		   le32_encode_bits(mld_tma[4], DCTLINFO_V2_W10_MLD_TMA_4) |
-+		   le32_encode_bits(mld_tma[5], DCTLINFO_V2_W10_MLD_TMA_5);
-+	h2c->m10 = cpu_to_le32(DCTLINFO_V2_W10_ALL);
-+
-+	h2c->w11 = le32_encode_bits(mld_bssid[0], DCTLINFO_V2_W11_MLD_BSSID_0) |
-+		   le32_encode_bits(mld_bssid[1], DCTLINFO_V2_W11_MLD_BSSID_1) |
-+		   le32_encode_bits(mld_bssid[2], DCTLINFO_V2_W11_MLD_BSSID_2) |
-+		   le32_encode_bits(mld_bssid[3], DCTLINFO_V2_W11_MLD_BSSID_3);
-+	h2c->m11 = cpu_to_le32(DCTLINFO_V2_W11_ALL);
-+
-+	h2c->w12 = le32_encode_bits(mld_bssid[4], DCTLINFO_V2_W12_MLD_BSSID_4) |
-+		   le32_encode_bits(mld_bssid[5], DCTLINFO_V2_W12_MLD_BSSID_5);
-+	h2c->m12 = cpu_to_le32(DCTLINFO_V2_W12_ALL);
- }
-diff --git a/drivers/net/wireless/realtek/rtw89/cam.h b/drivers/net/wireless/realtek/rtw89/cam.h
-index a6f72edd30fe..3134ebf08825 100644
---- a/drivers/net/wireless/realtek/rtw89/cam.h
-+++ b/drivers/net/wireless/realtek/rtw89/cam.h
-@@ -514,16 +514,28 @@ struct rtw89_h2c_dctlinfo_ud_v2 {
- #define DCTLINFO_V2_W7_SEC_ENT7 GENMASK(23, 16)
- #define DCTLINFO_V2_W7_SEC_ENT8 GENMASK(31, 24)
- #define DCTLINFO_V2_W7_ALL GENMASK(31, 0)
--#define DCTLINFO_V2_W8_MLD_SMA_L_V1 GENMASK(31, 0)
-+#define DCTLINFO_V2_W8_MLD_SMA_0 GENMASK(7, 0)
-+#define DCTLINFO_V2_W8_MLD_SMA_1 GENMASK(15, 8)
-+#define DCTLINFO_V2_W8_MLD_SMA_2 GENMASK(23, 16)
-+#define DCTLINFO_V2_W8_MLD_SMA_3 GENMASK(31, 24)
- #define DCTLINFO_V2_W8_ALL GENMASK(31, 0)
--#define DCTLINFO_V2_W9_MLD_SMA_H_V1 GENMASK(15, 0)
--#define DCTLINFO_V2_W9_MLD_TMA_L_V1 GENMASK(31, 16)
-+#define DCTLINFO_V2_W9_MLD_SMA_4 GENMASK(7, 0)
-+#define DCTLINFO_V2_W9_MLD_SMA_5 GENMASK(15, 8)
-+#define DCTLINFO_V2_W9_MLD_TMA_0 GENMASK(23, 16)
-+#define DCTLINFO_V2_W9_MLD_TMA_1 GENMASK(31, 24)
- #define DCTLINFO_V2_W9_ALL GENMASK(31, 0)
--#define DCTLINFO_V2_W10_MLD_TMA_H_V1 GENMASK(31, 0)
-+#define DCTLINFO_V2_W10_MLD_TMA_2 GENMASK(7, 0)
-+#define DCTLINFO_V2_W10_MLD_TMA_3 GENMASK(15, 8)
-+#define DCTLINFO_V2_W10_MLD_TMA_4 GENMASK(23, 16)
-+#define DCTLINFO_V2_W10_MLD_TMA_5 GENMASK(31, 24)
- #define DCTLINFO_V2_W10_ALL GENMASK(31, 0)
--#define DCTLINFO_V2_W11_MLD_TA_BSSID_L_V1 GENMASK(31, 0)
-+#define DCTLINFO_V2_W11_MLD_BSSID_0 GENMASK(7, 0)
-+#define DCTLINFO_V2_W11_MLD_BSSID_1 GENMASK(15, 8)
-+#define DCTLINFO_V2_W11_MLD_BSSID_2 GENMASK(23, 16)
-+#define DCTLINFO_V2_W11_MLD_BSSID_3 GENMASK(31, 24)
- #define DCTLINFO_V2_W11_ALL GENMASK(31, 0)
--#define DCTLINFO_V2_W12_MLD_TA_BSSID_H_V1 GENMASK(15, 0)
-+#define DCTLINFO_V2_W12_MLD_BSSID_4 GENMASK(7, 0)
-+#define DCTLINFO_V2_W12_MLD_BSSID_5 GENMASK(15, 8)
- #define DCTLINFO_V2_W12_ALL GENMASK(15, 0)
+ enum rtw89_entity_mode rtw89_entity_recalc(struct rtw89_dev *rtwdev)
+ {
+ 	DECLARE_BITMAP(recalc_map, NUM_OF_RTW89_CHANCTX) = {};
+@@ -327,6 +400,8 @@ enum rtw89_entity_mode rtw89_entity_recalc(struct rtw89_dev *rtwdev)
+ 		rtw89_assign_entity_chan(rtwdev, idx, &chan);
+ 	}
  
- int rtw89_cam_init(struct rtw89_dev *rtwdev, struct rtw89_vif_link *vif);
++	rtw89_entity_recalc_mgnt_roles(rtwdev);
++
+ 	if (hal->entity_pause)
+ 		return rtw89_get_entity_mode(rtwdev);
+ 
+@@ -716,6 +791,7 @@ struct rtw89_mcc_fill_role_selector {
+ };
+ 
+ static_assert((u8)NUM_OF_RTW89_CHANCTX >= NUM_OF_RTW89_MCC_ROLES);
++static_assert(RTW89_MAX_INTERFACE_NUM >= NUM_OF_RTW89_MCC_ROLES);
+ 
+ static int rtw89_mcc_fill_role_iterator(struct rtw89_dev *rtwdev,
+ 					struct rtw89_mcc_role *mcc_role,
+@@ -745,14 +821,18 @@ static int rtw89_mcc_fill_role_iterator(struct rtw89_dev *rtwdev,
+ 
+ static int rtw89_mcc_fill_all_roles(struct rtw89_dev *rtwdev)
+ {
++	struct rtw89_hal *hal = &rtwdev->hal;
++	struct rtw89_entity_mgnt *mgnt = &hal->entity_mgnt;
+ 	struct rtw89_mcc_fill_role_selector sel = {};
+ 	struct rtw89_vif_link *rtwvif_link;
+ 	struct rtw89_vif *rtwvif;
+ 	int ret;
++	int i;
+ 
+-	rtw89_for_each_rtwvif(rtwdev, rtwvif) {
+-		if (!rtw89_vif_is_active_role(rtwvif))
+-			continue;
++	for (i = 0; i < NUM_OF_RTW89_MCC_ROLES; i++) {
++		rtwvif = mgnt->active_roles[i];
++		if (!rtwvif)
++			break;
+ 
+ 		rtwvif_link = rtw89_vif_get_link_inst(rtwvif, 0);
+ 		if (unlikely(!rtwvif_link)) {
+@@ -760,14 +840,7 @@ static int rtw89_mcc_fill_all_roles(struct rtw89_dev *rtwdev)
+ 			continue;
+ 		}
+ 
+-		if (sel.bind_vif[rtwvif_link->chanctx_idx]) {
+-			rtw89_warn(rtwdev,
+-				   "MCC skip extra vif <macid %d> on chanctx[%d]\n",
+-				   rtwvif_link->mac_id, rtwvif_link->chanctx_idx);
+-			continue;
+-		}
+-
+-		sel.bind_vif[rtwvif_link->chanctx_idx] = rtwvif_link;
++		sel.bind_vif[i] = rtwvif_link;
+ 	}
+ 
+ 	ret = rtw89_iterate_mcc_roles(rtwdev, rtw89_mcc_fill_role_iterator, &sel);
+@@ -2501,12 +2574,18 @@ int rtw89_chanctx_ops_assign_vif(struct rtw89_dev *rtwdev,
+ 				 struct ieee80211_chanctx_conf *ctx)
+ {
+ 	struct rtw89_chanctx_cfg *cfg = (struct rtw89_chanctx_cfg *)ctx->drv_priv;
++	struct rtw89_vif *rtwvif = rtwvif_link->rtwvif;
++	struct rtw89_hal *hal = &rtwdev->hal;
++	struct rtw89_entity_mgnt *mgnt = &hal->entity_mgnt;
+ 	struct rtw89_entity_weight w = {};
+ 
+ 	rtwvif_link->chanctx_idx = cfg->idx;
+ 	rtwvif_link->chanctx_assigned = true;
+ 	cfg->ref_count++;
+ 
++	if (list_empty(&rtwvif->mgnt_entry))
++		list_add_tail(&rtwvif->mgnt_entry, &mgnt->active_list);
++
+ 	if (cfg->idx == RTW89_CHANCTX_0)
+ 		goto out;
+ 
+@@ -2526,6 +2605,7 @@ void rtw89_chanctx_ops_unassign_vif(struct rtw89_dev *rtwdev,
+ 				    struct ieee80211_chanctx_conf *ctx)
+ {
+ 	struct rtw89_chanctx_cfg *cfg = (struct rtw89_chanctx_cfg *)ctx->drv_priv;
++	struct rtw89_vif *rtwvif = rtwvif_link->rtwvif;
+ 	struct rtw89_hal *hal = &rtwdev->hal;
+ 	enum rtw89_chanctx_idx roll;
+ 	enum rtw89_entity_mode cur;
+@@ -2536,6 +2616,9 @@ void rtw89_chanctx_ops_unassign_vif(struct rtw89_dev *rtwdev,
+ 	rtwvif_link->chanctx_assigned = false;
+ 	cfg->ref_count--;
+ 
++	if (!rtw89_vif_is_active_role(rtwvif))
++		list_del_init(&rtwvif->mgnt_entry);
++
+ 	if (cfg->ref_count != 0)
+ 		goto out;
+ 
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 3317f9b8a705..53aaf500bca5 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -192,13 +192,13 @@ static const struct ieee80211_iface_combination rtw89_iface_combs[] = {
+ 	{
+ 		.limits = rtw89_iface_limits,
+ 		.n_limits = ARRAY_SIZE(rtw89_iface_limits),
+-		.max_interfaces = 2,
++		.max_interfaces = RTW89_MAX_INTERFACE_NUM,
+ 		.num_different_channels = 1,
+ 	},
+ 	{
+ 		.limits = rtw89_iface_limits_mcc,
+ 		.n_limits = ARRAY_SIZE(rtw89_iface_limits_mcc),
+-		.max_interfaces = 2,
++		.max_interfaces = RTW89_MAX_INTERFACE_NUM,
+ 		.num_different_channels = 2,
+ 	},
+ };
+diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
+index 4366b581c56b..5306ee97444c 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.h
++++ b/drivers/net/wireless/realtek/rtw89/core.h
+@@ -4634,6 +4634,14 @@ enum rtw89_entity_mode {
+ 	RTW89_ENTITY_MODE_UNHANDLED = -ESRCH,
+ };
+ 
++#define RTW89_MAX_INTERFACE_NUM 2
++
++/* only valid when running with chanctx_ops */
++struct rtw89_entity_mgnt {
++	struct list_head active_list;
++	struct rtw89_vif *active_roles[RTW89_MAX_INTERFACE_NUM];
++};
++
+ struct rtw89_chanctx {
+ 	struct cfg80211_chan_def chandef;
+ 	struct rtw89_chan chan;
+@@ -4677,6 +4685,7 @@ struct rtw89_hal {
+ 	bool entity_active[RTW89_PHY_MAX];
+ 	bool entity_pause;
+ 	enum rtw89_entity_mode entity_mode;
++	struct rtw89_entity_mgnt entity_mgnt;
+ 
+ 	struct rtw89_edcca_bak edcca_bak;
+ 	u32 disabled_dm_bitmap; /* bitmap of enum rtw89_dm_type */
+@@ -5614,6 +5623,7 @@ struct rtw89_dev {
+ struct rtw89_vif {
+ 	struct rtw89_dev *rtwdev;
+ 	struct list_head list;
++	struct list_head mgnt_entry;
+ 
+ 	u8 mac_addr[ETH_ALEN];
+ 	__be32 ip_addr;
+diff --git a/drivers/net/wireless/realtek/rtw89/mac80211.c b/drivers/net/wireless/realtek/rtw89/mac80211.c
+index 1ee63a85308f..672da8def90f 100644
+--- a/drivers/net/wireless/realtek/rtw89/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw89/mac80211.c
+@@ -192,6 +192,8 @@ static int rtw89_ops_add_interface(struct ieee80211_hw *hw,
+ 	if (!rtw89_rtwvif_in_list(rtwdev, rtwvif))
+ 		list_add_tail(&rtwvif->list, &rtwdev->rtwvifs_list);
+ 
++	INIT_LIST_HEAD(&rtwvif->mgnt_entry);
++
+ 	ether_addr_copy(rtwvif->mac_addr, vif->addr);
+ 
+ 	rtwvif->offchan = false;
 -- 
 2.25.1
 
