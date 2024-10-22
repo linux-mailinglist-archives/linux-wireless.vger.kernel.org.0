@@ -1,133 +1,189 @@
-Return-Path: <linux-wireless+bounces-14291-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14292-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69C959A9AA9
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 09:14:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A1F9A9ADA
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 09:22:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 925921C221F0
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 07:14:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 196B61F218AA
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 07:22:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D57ED14A604;
-	Tue, 22 Oct 2024 07:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3AE514901B;
+	Tue, 22 Oct 2024 07:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="CnZLv6wR"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Uj+O/JwT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EEE1148FEB;
-	Tue, 22 Oct 2024 07:14:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C41684A22
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Oct 2024 07:22:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729581262; cv=none; b=FHQSoBDAhCVzZeqg4bUi5mknByuuRPT0np2mlchIqBiNyVJLmbKmUzAcxdBkejUPmjh0DGRZwF4c+LOgWSP0xe5ErmziRxR/wsW2koK4FPiQPMQCLqSvD6KTyaKFsikrZhrnkquLC84insSeXpBSbebOPThKLvtihkhnICDVxGQ=
+	t=1729581744; cv=none; b=bxJg7EW5+DVDAhQ36nnNatQ2VmAbWvUMk34GdjoNcAPYCfE6FCRGOoxhUvi3Ryoa1mm0dkOEEC6wCNRJdZas8gWypPuqcrFla8n7C1+Lw9hFaXUh/udI3EXBLlRkz3I2XS6FkUK5TLhWKtM7fdHLNXlr/osMr4qc/3kelcBtScQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729581262; c=relaxed/simple;
-	bh=/Rgpo9I553gF5Dq4wZ7FZfxuASIDdLW/V8cSYDAMXD0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=lzwBuB/2c3IyjxIRkkzGLWydK+A4QPU67XrRoYXnORLbIL+3P0zXFUZWbaP6SIPZZr2clDyHhgH9BOelIqZ4002Tb8jGD9Eb+RnlUK8OK8Y/LW8p4BH4zOIDjwQd1cHwnKtVkwAkTUYp1b2iulE6qwMq27vdDjdvqkWlatGvFpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=CnZLv6wR; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49M6uVqZ019049;
-	Tue, 22 Oct 2024 07:14:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	2OQf0si/CIXxYVkyVvj9sbbdpTRNuvie33M0zB2wTuk=; b=CnZLv6wRZlLSPWbP
-	azI4Ryr3rzSb5MJECbNKX3AtFZErqfropwue0i0kbznUMcqc4RT4FFg04Sw9v6v3
-	LOMMtWAvioq48XZDgw2MzpztdpZ5uNUCEAOSzUjsd9HFUkE8jGzdBzENwnGvV7R9
-	48RvAqBCEQBbWmH+kwR2BWe9IO9nftszC1DbWWowSI10MTAZwM7yQGt57kLIqGtJ
-	RjLNOhJqcK3u41ezFei+w0zFCV8Gje/5Hxj3YDgU2rn3voqMtd40r8+xHaTmZqO7
-	ktiYhyw7371VoV0WvlMz2rss/bqyvSNRaKXvHMpcev/VQ3u8CjswqbaTwPgaOlt1
-	8AfGIw==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42e77pg2ge-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Oct 2024 07:14:16 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49M7EFWn024228
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 22 Oct 2024 07:14:15 GMT
-Received: from [10.151.40.160] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 22 Oct
- 2024 00:14:12 -0700
-Message-ID: <09be6843-52c0-4d84-bcba-e6cbd0cb51a9@quicinc.com>
-Date: Tue, 22 Oct 2024 12:43:36 +0530
+	s=arc-20240116; t=1729581744; c=relaxed/simple;
+	bh=VLE/UZSqxnBEMMJv1C0CrNd4y+h/544R3S2DgWANX1Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YKp+o3GvjMK6UMsthmtnSxle8LZWlP+jtg3EIJREkrxx+q4Ot9Ojhj95LVfaCZhYLPQ/j2wyS5jawkXlRCVZQE2TTtsxem2YDWpCRC4ikT+90oOrHPHUQQdBJwHAJAtzoidglZ/EQUeLrLkUCxoC0BLn0ExXrAGBwaBLq4pdxgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Uj+O/JwT; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=qDQVgQ+dou8Qa1R8LFDv2lddmXu01YhnjL75jECS5KU=; t=1729581743; x=1730791343; 
+	b=Uj+O/JwTzsy1100ezte91s6c4a+8lMQS4QWf5YCpW2O+Lia8ZKdvAFWTIdyegdz1LQTyL2lSh4a
+	OvQW8BA7k7M6uHDVRJZ0fiTLBFtufapiyruC9gBzkIURJrRD3rg1/KV8p02GoCeeVt068tU7HhDYL
+	TtT1ZREa+Vk6wS86jysj8sGL92kmPTF14SRyi1jm6LzV84BWRYybSg5sDu83uz9CBsF5xdEoAaRSM
+	lGxBPRodWL5IBp+OA3RsFOFqKLvxx1l8Mynf4ZiIOW38kmSLhYoJblOqqZdrMbrUogD84N8oWjdGp
+	xYZjgFN0yX0vM6g/UvGpHiqE44e7yIFPgLOg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1t39Da-00000001c1h-1RBc;
+	Tue, 22 Oct 2024 09:22:14 +0200
+From: Johannes Berg <johannes@sipsolutions.net>
+To: linux-wireless@vger.kernel.org
+Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Subject: [PATCH wireless] Revert "wifi: iwlwifi: remove retry loops in start"
+Date: Tue, 22 Oct 2024 09:22:11 +0200
+Message-ID: <20241022092212.4aa82a558a00.Ibdeff9c8f0d608bc97fc42024392ae763b6937b7@changeid>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 16/22] wifi: ath12k: convert tasklet to BH workqueue
- for CE interrupts
-To: Kalle Valo <kvalo@kernel.org>
-CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        Rob
- Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor
- Dooley <conor+dt@kernel.org>,
-        Jeff Johnson <jjohnson@kernel.org>,
-        Bjorn
- Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>
-References: <20241015182637.955753-1-quic_rajkbhag@quicinc.com>
- <20241015182637.955753-17-quic_rajkbhag@quicinc.com>
- <877ca1q0yq.fsf@kernel.org>
-Content-Language: en-US
-From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-In-Reply-To: <877ca1q0yq.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: ds6dUeqqETgxjzzffRHEvUQO7UndozCn
-X-Proofpoint-ORIG-GUID: ds6dUeqqETgxjzzffRHEvUQO7UndozCn
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- suspectscore=0 impostorscore=0 adultscore=0 bulkscore=0 phishscore=0
- mlxlogscore=967 spamscore=0 malwarescore=0 priorityscore=1501
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410220045
+Content-Transfer-Encoding: 8bit
 
-On 10/21/2024 2:36 PM, Kalle Valo wrote:
-> Raj Kumar Bhagat <quic_rajkbhag@quicinc.com> writes:
-> 
->> Currently in Ath12k, tasklet is used to handle the BH context of CE
->> interrupts. However the tasklet is marked deprecated and has some
->> design flaws. To replace tasklets, BH workqueue support has been
->> added. BH workqueue behaves similarly to regular workqueues except
->> that the queued work items are executed in the BH context.
->>
->> Hence, convert the tasklet to BH workqueue for handling CE interrupts
->> in the BH context.
->>
->> Tested-on: IPQ5332 hw1.0 AHB WLAN.WBE.1.3.1-00130-QCAHKSWPL_SILICONZ-1
->> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00210-QCAHKSWPL_SILICONZ-1
->>
->> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-> 
-> 22 patches is a lot and I'm not going to look at this in detail, please
-> reduce your patchset size. 10-12 patches is recommended. For example,
-> this could be easily submitted separately.
-> 
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-Sure Kalle,
+Revert commit dfdfe4be183b ("wifi: iwlwifi: remove retry loops in
+start"), it turns out that there's an issue with the PNVM load
+notification from firmware not getting processed, that this patch
+has been somewhat successfully papering over. Since this is being
+reported, revert the loop removal for now.
 
-We are working on other review comments in this series, in the next version
-we will reduce the number of patches.
+We will later at least clean this up to only attempt to retry if
+there was a timeout, but currently we don't even bubble up the
+failure reason to the correct layer, only returning NULL.
 
-This patch we will be sending separately as v3.
+Fixes: dfdfe4be183b ("wifi: iwlwifi: remove retry loops in start")
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c  | 34 ++++++++++++-------
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.h  |  3 ++
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 10 +++++-
+ 3 files changed, 34 insertions(+), 13 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+index 2abfc986701f..c620911a1193 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+@@ -1413,26 +1413,36 @@ _iwl_op_mode_start(struct iwl_drv *drv, struct iwlwifi_opmode_table *op)
+ 	const struct iwl_op_mode_ops *ops = op->ops;
+ 	struct dentry *dbgfs_dir = NULL;
+ 	struct iwl_op_mode *op_mode = NULL;
++	int retry, max_retry = !!iwlwifi_mod_params.fw_restart * IWL_MAX_INIT_RETRY;
+ 
+ 	/* also protects start/stop from racing against each other */
+ 	lockdep_assert_held(&iwlwifi_opmode_table_mtx);
+ 
+-#ifdef CONFIG_IWLWIFI_DEBUGFS
+-	drv->dbgfs_op_mode = debugfs_create_dir(op->name,
+-						drv->dbgfs_drv);
+-	dbgfs_dir = drv->dbgfs_op_mode;
+-#endif
+-
+-	op_mode = ops->start(drv->trans, drv->trans->cfg,
+-			     &drv->fw, dbgfs_dir);
+-	if (op_mode)
+-		return op_mode;
++	for (retry = 0; retry <= max_retry; retry++) {
+ 
+ #ifdef CONFIG_IWLWIFI_DEBUGFS
+-	debugfs_remove_recursive(drv->dbgfs_op_mode);
+-	drv->dbgfs_op_mode = NULL;
++		drv->dbgfs_op_mode = debugfs_create_dir(op->name,
++							drv->dbgfs_drv);
++		dbgfs_dir = drv->dbgfs_op_mode;
+ #endif
+ 
++		op_mode = ops->start(drv->trans, drv->trans->cfg,
++				     &drv->fw, dbgfs_dir);
++
++		if (op_mode)
++			return op_mode;
++
++		if (test_bit(STATUS_TRANS_DEAD, &drv->trans->status))
++			break;
++
++		IWL_ERR(drv, "retry init count %d\n", retry);
++
++#ifdef CONFIG_IWLWIFI_DEBUGFS
++		debugfs_remove_recursive(drv->dbgfs_op_mode);
++		drv->dbgfs_op_mode = NULL;
++#endif
++	}
++
+ 	return NULL;
+ }
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.h b/drivers/net/wireless/intel/iwlwifi/iwl-drv.h
+index 1549ff429549..6a1d31892417 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.h
+@@ -98,6 +98,9 @@ void iwl_drv_stop(struct iwl_drv *drv);
+ #define VISIBLE_IF_IWLWIFI_KUNIT static
+ #endif
+ 
++/* max retry for init flow */
++#define IWL_MAX_INIT_RETRY 2
++
+ #define FW_NAME_PRE_BUFSIZE	64
+ struct iwl_trans;
+ const char *iwl_drv_get_fwname_pre(struct iwl_trans *trans, char *buf);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index a327893c6dce..812ef47a396f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -1293,12 +1293,14 @@ int iwl_mvm_mac_start(struct ieee80211_hw *hw)
+ {
+ 	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
+ 	int ret;
++	int retry, max_retry = 0;
+ 
+ 	mutex_lock(&mvm->mutex);
+ 
+ 	/* we are starting the mac not in error flow, and restart is enabled */
+ 	if (!test_bit(IWL_MVM_STATUS_HW_RESTART_REQUESTED, &mvm->status) &&
+ 	    iwlwifi_mod_params.fw_restart) {
++		max_retry = IWL_MAX_INIT_RETRY;
+ 		/*
+ 		 * This will prevent mac80211 recovery flows to trigger during
+ 		 * init failures
+@@ -1306,7 +1308,13 @@ int iwl_mvm_mac_start(struct ieee80211_hw *hw)
+ 		set_bit(IWL_MVM_STATUS_STARTING, &mvm->status);
+ 	}
+ 
+-	ret = __iwl_mvm_mac_start(mvm);
++	for (retry = 0; retry <= max_retry; retry++) {
++		ret = __iwl_mvm_mac_start(mvm);
++		if (!ret)
++			break;
++
++		IWL_ERR(mvm, "mac start retry %d\n", retry);
++	}
+ 	clear_bit(IWL_MVM_STATUS_STARTING, &mvm->status);
+ 
+ 	mutex_unlock(&mvm->mutex);
+-- 
+2.47.0
+
 
