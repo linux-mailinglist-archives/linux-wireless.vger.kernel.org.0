@@ -1,118 +1,133 @@
-Return-Path: <linux-wireless+bounces-14290-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14291-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 858229A9A64
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 09:02:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69C959A9AA9
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 09:14:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28EA2B21654
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 07:02:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 925921C221F0
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 07:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9197450EE;
-	Tue, 22 Oct 2024 07:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D57ED14A604;
+	Tue, 22 Oct 2024 07:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UujTTw5L"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="CnZLv6wR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4007ECF;
-	Tue, 22 Oct 2024 07:02:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EEE1148FEB;
+	Tue, 22 Oct 2024 07:14:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729580533; cv=none; b=pD7fRMk5iA27hTmnCLk9m9/fMzAnmp0y043NDkHTp1+jpHipZXn7X/qsZjtSWmhgC5/7lQqalgIwnNrxjRr5oq9LXzx+cWjzf9fwH/cnSpguCt8pXiwfaHwF5UiAQBJ4sHnW8lnPu50uv6V2Z5I49QEVjoheIG0DxmtvFWzzSp0=
+	t=1729581262; cv=none; b=FHQSoBDAhCVzZeqg4bUi5mknByuuRPT0np2mlchIqBiNyVJLmbKmUzAcxdBkejUPmjh0DGRZwF4c+LOgWSP0xe5ErmziRxR/wsW2koK4FPiQPMQCLqSvD6KTyaKFsikrZhrnkquLC84insSeXpBSbebOPThKLvtihkhnICDVxGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729580533; c=relaxed/simple;
-	bh=dyrGwMan4H/kztgk0P8s+ilEAdT66GF/kqBU40DpcJI=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=mz3wn8vwCa9qlPZCxYHO7BI0MvHWkzsfsKg/bILIKHGZeHs8IeKqsXsqU0BvC3ESb/jH1JR4JgnYVk6jTRZveoGllwVpnKskl7jGUC8zAkc18d7B6nSDFe5fFVZiTQUdWwG+QlryIZNExeqaNAbU3GhTOuCRe5fSjRsdV7BekfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UujTTw5L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 482B6C4CEC3;
-	Tue, 22 Oct 2024 07:02:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729580533;
-	bh=dyrGwMan4H/kztgk0P8s+ilEAdT66GF/kqBU40DpcJI=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=UujTTw5LSiPlS/rShRmXW+Culj8ON2Qp6aYd9EYFg6BnWBcoIkIWCUmiXCc9DKKCL
-	 UQjLbl1IiYxdUp3737WKxiaTngxtKH1jpWPDf4zgF7ab/6WVzCKNsvOMuxc3nKJdgZ
-	 RKnOTasj6YaL28VteJguD5BrrpVtQ1AntHCcKplJ6XsB8J+3nPEQKTnC+B1u2bxwaG
-	 xtdYdJAXg2bkR1XbhjvOfyQtHugr6uQD2uvpcGWb11Y1mme9bZsKV5gbyxDxZdqapC
-	 thdDo9hmF2Ody5nMJ2oFsa3NtCIjVfr/QkLASaSE95ux8SyMfpBd/ePapAsoyNi9w/
-	 7lybAlwK2F9jA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Jeongjun Park <aha310510@gmail.com>
-Cc: toke@toke.dk,  linux-wireless@vger.kernel.org,
-  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] wifi: ath9k: add range check for conn_rsp_epid in
- htc_connect_service()
-References: <172631439319.3042536.1475962432679276880.kvalo@kernel.org>
-	<1D787F7E-08E2-4F21-B7D3-68A9F345E79E@gmail.com>
-Date: Tue, 22 Oct 2024 10:02:10 +0300
-In-Reply-To: <1D787F7E-08E2-4F21-B7D3-68A9F345E79E@gmail.com> (Jeongjun Park's
-	message of "Tue, 22 Oct 2024 09:36:37 +0900")
-Message-ID: <87ldygoc25.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1729581262; c=relaxed/simple;
+	bh=/Rgpo9I553gF5Dq4wZ7FZfxuASIDdLW/V8cSYDAMXD0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=lzwBuB/2c3IyjxIRkkzGLWydK+A4QPU67XrRoYXnORLbIL+3P0zXFUZWbaP6SIPZZr2clDyHhgH9BOelIqZ4002Tb8jGD9Eb+RnlUK8OK8Y/LW8p4BH4zOIDjwQd1cHwnKtVkwAkTUYp1b2iulE6qwMq27vdDjdvqkWlatGvFpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=CnZLv6wR; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49M6uVqZ019049;
+	Tue, 22 Oct 2024 07:14:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	2OQf0si/CIXxYVkyVvj9sbbdpTRNuvie33M0zB2wTuk=; b=CnZLv6wRZlLSPWbP
+	azI4Ryr3rzSb5MJECbNKX3AtFZErqfropwue0i0kbznUMcqc4RT4FFg04Sw9v6v3
+	LOMMtWAvioq48XZDgw2MzpztdpZ5uNUCEAOSzUjsd9HFUkE8jGzdBzENwnGvV7R9
+	48RvAqBCEQBbWmH+kwR2BWe9IO9nftszC1DbWWowSI10MTAZwM7yQGt57kLIqGtJ
+	RjLNOhJqcK3u41ezFei+w0zFCV8Gje/5Hxj3YDgU2rn3voqMtd40r8+xHaTmZqO7
+	ktiYhyw7371VoV0WvlMz2rss/bqyvSNRaKXvHMpcev/VQ3u8CjswqbaTwPgaOlt1
+	8AfGIw==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42e77pg2ge-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 22 Oct 2024 07:14:16 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49M7EFWn024228
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 22 Oct 2024 07:14:15 GMT
+Received: from [10.151.40.160] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 22 Oct
+ 2024 00:14:12 -0700
+Message-ID: <09be6843-52c0-4d84-bcba-e6cbd0cb51a9@quicinc.com>
+Date: Tue, 22 Oct 2024 12:43:36 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 16/22] wifi: ath12k: convert tasklet to BH workqueue
+ for CE interrupts
+To: Kalle Valo <kvalo@kernel.org>
+CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        Rob
+ Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor
+ Dooley <conor+dt@kernel.org>,
+        Jeff Johnson <jjohnson@kernel.org>,
+        Bjorn
+ Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>
+References: <20241015182637.955753-1-quic_rajkbhag@quicinc.com>
+ <20241015182637.955753-17-quic_rajkbhag@quicinc.com>
+ <877ca1q0yq.fsf@kernel.org>
+Content-Language: en-US
+From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+In-Reply-To: <877ca1q0yq.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: ds6dUeqqETgxjzzffRHEvUQO7UndozCn
+X-Proofpoint-ORIG-GUID: ds6dUeqqETgxjzzffRHEvUQO7UndozCn
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
+ suspectscore=0 impostorscore=0 adultscore=0 bulkscore=0 phishscore=0
+ mlxlogscore=967 spamscore=0 malwarescore=0 priorityscore=1501
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410220045
 
-Jeongjun Park <aha310510@gmail.com> writes:
+On 10/21/2024 2:36 PM, Kalle Valo wrote:
+> Raj Kumar Bhagat <quic_rajkbhag@quicinc.com> writes:
+> 
+>> Currently in Ath12k, tasklet is used to handle the BH context of CE
+>> interrupts. However the tasklet is marked deprecated and has some
+>> design flaws. To replace tasklets, BH workqueue support has been
+>> added. BH workqueue behaves similarly to regular workqueues except
+>> that the queued work items are executed in the BH context.
+>>
+>> Hence, convert the tasklet to BH workqueue for handling CE interrupts
+>> in the BH context.
+>>
+>> Tested-on: IPQ5332 hw1.0 AHB WLAN.WBE.1.3.1-00130-QCAHKSWPL_SILICONZ-1
+>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00210-QCAHKSWPL_SILICONZ-1
+>>
+>> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+> 
+> 22 patches is a lot and I'm not going to look at this in detail, please
+> reduce your patchset size. 10-12 patches is recommended. For example,
+> this could be easily submitted separately.
+> 
 
->> Kalle Valo <kvalo@kernel.org> wrote:
->>=20
->> =EF=BB=BFJeongjun Park <aha310510@gmail.com> wrote:
->>=20
->>> I found the following bug in my fuzzer:
->>>=20
->>>  UBSAN: array-index-out-of-bounds in drivers/net/wireless/ath/ath9k/htc=
-_hst.c:26:51
->>>  index 255 is out of range for type 'htc_endpoint [22]'
->>>  CPU: 0 UID: 0 PID: 8 Comm: kworker/0:0 Not tainted 6.11.0-rc6-dirty #14
->>>  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 0=
-4/01/2014
->>>  Workqueue: events request_firmware_work_func
->>>  Call Trace:
->>>   <TASK>
->>>   dump_stack_lvl+0x180/0x1b0
->>>   __ubsan_handle_out_of_bounds+0xd4/0x130
->>>   htc_issue_send.constprop.0+0x20c/0x230
->>>   ? _raw_spin_unlock_irqrestore+0x3c/0x70
->>>   ath9k_wmi_cmd+0x41d/0x610
->>>   ? mark_held_locks+0x9f/0xe0
->>>   ...
->>>=20
->>> Since this bug has been confirmed to be caused by insufficient verifica=
-tion
->>> of conn_rsp_epid, I think it would be appropriate to add a range check =
-for
->>> conn_rsp_epid to htc_connect_service() to prevent the bug from occurrin=
-g.
->>>=20
->>> Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
->>> Signed-off-by: Jeongjun Park <aha310510@gmail.com>
->>> Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
->>> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
->>=20
->> Patch applied to ath-next branch of ath.git, thanks.
->>=20
->
-> I think this patch should be applied to the next rc version immediately
-> to fix the oob vulnerability as soon as possible, and also to the=20
-> stable version.
+Sure Kalle,
 
-ath-next is fine, the issue has been in ath9k forever so waiting four
-weeks or so to get to Linus' tree is not making any difference.
+We are working on other review comments in this series, in the next version
+we will reduce the number of patches.
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+This patch we will be sending separately as v3.
 
