@@ -1,123 +1,134 @@
-Return-Path: <linux-wireless+bounces-14288-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14289-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64C419A9720
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 05:32:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A2639A9A3F
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 08:49:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 080B7287286
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 03:32:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51B4B2837E3
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 06:49:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63DBB12E1CA;
-	Tue, 22 Oct 2024 03:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F3D146A71;
+	Tue, 22 Oct 2024 06:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="bYGM08HN"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b="ODl32DNE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EAFF256D;
-	Tue, 22 Oct 2024 03:32:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729567955; cv=none; b=HcvJVM3D6HoPZMFdH78Jk+Xvb3HgI9kXQL3ZWGOrJAeiOX81opcfFfWBUszalTxIg+aEINx65dlKCWCH55tBoMmaTCCfekrZVaqfpP8VQ55MVOJSRciqOfJCPPR9HtnKCc5qZzhDHfpckMSh8+9XCISd5nGKZQqj5FlNynzY/uE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729567955; c=relaxed/simple;
-	bh=G3bmWtoDYvpAbFjD4WI6gHq/z+KB1wTq7TQqp1VTSpw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=OGrzMONBjtpdBp2uoNTxJDrWSvEH+ikxTST58CUh8zUWcuLFHU3songXn3dn39h1xrFUXDlSBaup9HSQtQ61VlaRouhNyuoGzHhGJMORFWKs3P+wFnujCcYLI2UF0p/wmEZ+0NPD44z7/mrUijKIPsy9FbCe+kAWUJ2+PcTXtwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=bYGM08HN; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 49M3WOYe83445860, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1729567944; bh=G3bmWtoDYvpAbFjD4WI6gHq/z+KB1wTq7TQqp1VTSpw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=bYGM08HNBX/TpMDVu9aBJ3gCpbT1slBbBCB1hgzen2OZMvoGUJJ085s0XkFXsEzaI
-	 1I5TkplrgG/KebctwTlPETdsawftmVDS5YCcKhWNRQUgq7KMt8uRdZDylXRs+EFcnr
-	 ZbpOBg2+IYNzGcozksOC0bs1QQbOwDnle91YxfI9XZcHZZN3KF4N1eWVLPp09N1chL
-	 gv75x6K524T8748KilA52aZ2vK9/Ah/UsbU2VyW1XEfLD7CY8HPD03SA2oInKe8rxl
-	 P0BhyzpoqG8eHGzvbi1EOHZXY4S7bZk73Om3B3mHqUZanMl4pwqxtV6SrMmImczqjV
-	 DqeU3sJaRSo2Q==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 49M3WOYe83445860
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 22 Oct 2024 11:32:24 +0800
-Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 22 Oct 2024 11:32:24 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 22 Oct 2024 11:32:24 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
- RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
- 15.01.2507.035; Tue, 22 Oct 2024 11:32:24 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Zong-Zhe Yang <kevin_yang@realtek.com>,
-        Dan Carpenter
-	<dan.carpenter@linaro.org>
-CC: Kalle Valo <kvalo@kernel.org>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org"
-	<kernel-janitors@vger.kernel.org>
-Subject: RE: [PATCH next] wifi: rtw89: unlock on error path in rtw89_ops_unassign_vif_chanctx()
-Thread-Topic: [PATCH next] wifi: rtw89: unlock on error path in
- rtw89_ops_unassign_vif_chanctx()
-Thread-Index: AQHbI5mvMqMtxuCXfUeWI6pQPfmKb7KRlzaAgACHFlA=
-Date: Tue, 22 Oct 2024 03:32:23 +0000
-Message-ID: <931c79c15bc04be99bb87a9826cf2b04@realtek.com>
-References: <8683a712-ffc2-466b-8382-0b264719f8ef@stanley.mountain>
- <6a80d4adc51f4ea884b5e02f16d8aaed@realtek.com>
-In-Reply-To: <6a80d4adc51f4ea884b5e02f16d8aaed@realtek.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B661474B2
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Oct 2024 06:48:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729579740; cv=pass; b=cA6aHPb/2+MemndMnUh7OvRwdU8kXMF+CvsaqDZaDXzNhj85xDyPYjs8k0dHWuH79QtbOiV5hvCvv1zr/2qYmWvOHRF7Y9ljJ04ZAqRHVlTX65l1TZrvVw1iVvWlr+A3b1rJhBUyIbGs9p+KRWRzOCGhI7wTyQxjCRggps14JvU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729579740; c=relaxed/simple;
+	bh=PjCwF1x/n5pLs/kjoZ78JaDeN+SCeTOznEQZz8GDoo8=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=PYxBGWZ7jdH1ignjeh3dK8ajQNlZWNiiSEx9yDZ2yrjIBn12VqfGkvtBIdZyXz1lJHkhwYZAKuoYNz4mtav2j0w8AbOeSObc+tg/SoH1da01yywSVd9FtYnCgzLjN1+LKH2M9DOL+PROyyg7MtpjeJkHbk17QhPUo7GJVEGuJj0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b=ODl32DNE; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1729579731; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=EC4jh4XA+DKtrV4ZIBVyWHhqDAqvwu7i+bYL4xBoFwsQ6E8gWN5r8Rvg593mqAnScXcZHldS65mDBuvU/YOHPZ7fzd4spduGYJqYbgNl1zhkCRrfeNJA6XOD5vTycY2S4DTGu7t/lPWdAyopFvJtGtkF3tiKIK2ZdwUog/ljJjc=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1729579731; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=39UhXVSNom/D968QZX3NP2279tlO3PvdWexNNLUG2b0=; 
+	b=nlQLf/oW4nCj7TH8iEAftIWo3LMqElof7GkptuPF23Qpl365qfdc+TWwfl4b0G+hV5bzH3Nae+WkozTkbYieuq8zmZ4Pa7b48tP6t9fRlMu/cYd7ADzAgueigC888BHPzukZ+vjA4xh8oibhzzPHCFDrYTF5tswH1ITrVGAbOsI=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=Usama.Anjum@collabora.com;
+	dmarc=pass header.from=<Usama.Anjum@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1729579731;
+	s=zohomail; d=collabora.com; i=Usama.Anjum@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Cc:Cc:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=39UhXVSNom/D968QZX3NP2279tlO3PvdWexNNLUG2b0=;
+	b=ODl32DNEmfzmS9XFDPA6AduEFVFDfdJVxSufBS4OSL3ZbgCen3MaHDC3V9moArgm
+	TFPUh8aiTBP2GqFqreJtlXVhcuRL0P1QkYxV2hpF97IEaZB8KAvhEnG5PVH0YRRHkxp
+	09PkyOkERogOA3qhqIuzTg5I5F6rilRVUtbbzWRQ=
+Received: by mx.zohomail.com with SMTPS id 1729579729629892.7028481450611;
+	Mon, 21 Oct 2024 23:48:49 -0700 (PDT)
+Message-ID: <1d673f56-0bd8-4a55-8805-4e30c38cc36f@collabora.com>
+Date: Tue, 22 Oct 2024 11:48:43 +0500
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+User-Agent: Mozilla Thunderbird
+Cc: Usama.Anjum@collabora.com,
+ =?UTF-8?B?TsOtY29sYXMgRi4gUi4gQS4gUHJhZG8=?= <nfraprado@collabora.com>,
+ Alper Nebi Yasak <alpernebiyasak@gmail.com>, Felix Fietkau <nbd@nbd.name>,
+ linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] wifi: mt76: do not increase mcu skb refcount if retry is
+ not supported
+To: Kalle Valo <kvalo@kernel.org>
+References: <20240917110942.22077-1-nbd@nbd.name>
+Content-Language: en-US
+From: Muhammad Usama Anjum <Usama.Anjum@collabora.com>
+In-Reply-To: <20240917110942.22077-1-nbd@nbd.name>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-Zong-Zhe Yang <kevin_yang@realtek.com> wrote:
-> Dan Carpenter <dan.carpenter@linaro.org> wrote:
-> >
-> > [...]
-> >
-> > @@ -1373,6 +1373,7 @@ static void rtw89_ops_unassign_vif_chanctx(struct=
- ieee80211_hw
-> > *hw,
-> >
-> >         rtwvif_link =3D rtwvif->links[link_conf->link_id];
-> >         if (unlikely(!rtwvif_link)) {
-> > +               mutex_unlock(&rtwdev->mutex);
-> >                 rtw89_err(rtwdev,
-> >                           "%s: rtwvif link (link_id %u) is not active\n=
-",
-> >                           __func__, link_conf->link_id);
-> >
->=20
-> Acked-by: Zong-Zhe Yang <kevin_yang@realtek.com>
->=20
+On 9/17/24 4:09 PM, Felix Fietkau wrote:
+> If mcu_skb_prepare_msg is not implemented, incrementing skb refcount does not
+> work for mcu message retry. In some cases (e.g. on SDIO), shared skbs can trigger
+> a BUG_ON, crashing the system.
+> Fix this by only incrementing refcount if retry is actually supported.
+> 
+> Fixes: 3688c18b65ae ("wifi: mt76: mt7915: retry mcu messages")
+> Reported-by: Nícolas F. R. A. Prado <nfraprado@collabora.com> #KernelCI
+> Tested-by: Alper Nebi Yasak <alpernebiyasak@gmail.com>
+> Signed-off-by: Felix Fietkau <nbd@nbd.name>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mcu.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/mediatek/mt76/mcu.c b/drivers/net/wireless/mediatek/mt76/mcu.c
+> index 98da82b74094..3353012e8542 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mcu.c
+> @@ -84,13 +84,16 @@ int mt76_mcu_skb_send_and_get_msg(struct mt76_dev *dev, struct sk_buff *skb,
+>  	mutex_lock(&dev->mcu.mutex);
+>  
+>  	if (dev->mcu_ops->mcu_skb_prepare_msg) {
+> +		orig_skb = skb;
+>  		ret = dev->mcu_ops->mcu_skb_prepare_msg(dev, skb, cmd, &seq);
+>  		if (ret < 0)
+>  			goto out;
+>  	}
+>  
+>  retry:
+> -	orig_skb = skb_get(skb);
+> +	/* orig skb might be needed for retry, mcu_skb_send_msg consumes it */
+> +	if (orig_skb)
+> +		skb_get(orig_skb);
+>  	ret = dev->mcu_ops->mcu_skb_send_msg(dev, skb, cmd, &seq);
+>  	if (ret < 0)
+>  		goto out;
+> @@ -105,7 +108,7 @@ int mt76_mcu_skb_send_and_get_msg(struct mt76_dev *dev, struct sk_buff *skb,
+>  	do {
+>  		skb = mt76_mcu_get_response(dev, expires);
+>  		if (!skb && !test_bit(MT76_MCU_RESET, &dev->phy.state) &&
+> -		    retry++ < dev->mcu_ops->max_retry) {
+> +		    orig_skb && retry++ < dev->mcu_ops->max_retry) {
+>  			dev_err(dev->dev, "Retry message %08x (seq %d)\n",
+>  				cmd, seq);
+>  			skb = orig_skb;
+This patch is in next from 5 weeks. As 3688c18b65ae ("wifi: mt76: mt7915: retry mcu messages") is
+already in the mainline, why this fix hasn't been included in mainline? I thought fixes are included
+as soon as possible in mainline RCs. Am I missing something? 
 
-Thanks for the ack.=20
+Are we planning to include this fix in next release instead of current one?
 
-Acked-by is often used by the maintainer, so I will change it to Reviewed-b=
-y
-during committing.=20
 
+-- 
+BR,
+Muhammad Usama Anjum
 
 
