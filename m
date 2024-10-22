@@ -1,97 +1,87 @@
-Return-Path: <linux-wireless+bounces-14328-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14329-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F8DB9AB0A6
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 16:18:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 461E59AB0B8
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 16:23:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF3B91F2404B
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 14:18:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0519428385F
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 14:22:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7301A08B8;
-	Tue, 22 Oct 2024 14:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DBFF19F424;
+	Tue, 22 Oct 2024 14:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="LKiToaJm"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="oBfNXSsW"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0051A00F2;
-	Tue, 22 Oct 2024 14:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE3A19DFB5
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Oct 2024 14:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729606668; cv=none; b=PyX9X+2cHlzejzTuwxXM0KgHadu7fVdfm+Ll1R5PcSseYlreo+JlbPogESvEBZFQX4Ow/5rYP0/TbGEapRCCRqxpK3cIkgItFWQPzVjIsU8JgTpKxay9tsw56giywbLHADxWqrf9efW2Z/h0sS2vkMCjqhOuf5NzgmmdG74d1Wg=
+	t=1729606978; cv=none; b=qKavApV52R63EFCZePbnC67knog6BB/20+H7l5e/Pe0msRohVgOubdWzt1hCbULqjikCjtIltJ/rQ0KTQgTH1isG9rbFpVI14/iNvAmaIZW/qp/6UJ/NDCFNdIsSV+bpDDrdRWruStmPaVuCi/RJkaFGHRFQxnrIXjC+96wscPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729606668; c=relaxed/simple;
-	bh=68WdYzIarQVjRHSchfunh+oOLTQrpXXpJWnb1pF3ttE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SQ5Ws/k8MllkQQ75KCUPSzaaSt1jQhM1doejutafN3JpGYmrR8jTKt55p/jjc9EAOOv9R2fm54hvV+ex9yHFoum6+eVlkhNNymjAB2OmHIcnwzQqGBKrE72EIxe2Kpj3rozsLUTxixNCylq+sB2bmtpb1nb42y77lS7vdIPEp1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=LKiToaJm; arc=none smtp.client-ip=168.119.38.16
+	s=arc-20240116; t=1729606978; c=relaxed/simple;
+	bh=C7dB+44glUjthplD54g454wMmfyotwR9WqglEpzszAk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=u9VdS/FD1y912ehPKKnc6hZEqPynNbCqQpxJ9IDi8806xuj+MF8/KDFeSnfRgK3vPJMS7TI64auMYoeq4t+ImpUTrxOG0gwsn2eYHtz516qyqW1TBIwjGe6fp1VUf2MGTQvBXzMjjXTmxHuxz8sLY3jc8P13NTSHHrLy1tFJ7vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=oBfNXSsW; arc=none smtp.client-ip=168.119.38.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=wAWaw7uJMG1uA564YAQqUUha8AMLR3EufJ78OEJdlh4=; t=1729606666; x=1730816266; 
-	b=LKiToaJmdtr8gAVEHp4k94botLNG5RHMKnnxFL2S0A1ETQwbtYDfLLnGYpp0RxLFDYBuFPkVARN
-	cSkAz0BJ2kZp9f6wc0pzrv+ZgTDKV3ExN4Lea3Q4JwPaIiDvSIHOV0mqc/56RX6oe160s88WIqiAA
-	dX60ztnYiq52EEgydOy8qDcz8iaNbxWggP4zOxTCxmJnDZKwh2NlmZyoBjo2NmtkFsDti04w4XCuE
-	x0dvVsv1zmNmDA3mJqJRaYcEsAhpOeq0lJ32nm7klXuQrOmrcgedL2kixEXf45wlTBiu3UMCG/x1p
-	VFz5jLA8/8FLXA7UOrE6JxUiExpZRVlhmbIg==;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=C7dB+44glUjthplD54g454wMmfyotwR9WqglEpzszAk=;
+	t=1729606976; x=1730816576; b=oBfNXSsWLoZ0yh2osQqZ7jzZONmf86+kI34BDzcPYjX8aFj
+	sNHWayzenXutgKQdepbk8EQfcU63UuaClPBIHi+cmL+o0RQAlCQY3MUioM27d+pdBe5Z1m+IixpqD
+	KK5SlwVs4Ry/DSw5SEFTWJSO/SVAL4GFKZD+aBtQJXhG6U9jL7FOwmYvYwETRlHQ7u1vLTsLm+2xh
+	6k6OB31TkIQ3J0oTB1LXswddHXddLj9X0Inf1hmeZbVV0WgSrg/nWCeE0TybMAjOw6O7/y+jU/8J1
+	uLA2E8BN0MaYPVnTuFE3l6ZtyMaKu5VIjCZcb3K+kD1Rkv73yxVW+r0aRZEhJ1zA==;
 Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.98)
 	(envelope-from <johannes@sipsolutions.net>)
-	id 1t3Fhg-00000001lpE-0fRR;
-	Tue, 22 Oct 2024 16:17:44 +0200
+	id 1t3Fmf-00000001lyY-1c6C;
+	Tue, 22 Oct 2024 16:22:53 +0200
+Message-ID: <9d70965797bb3309dd7405f1ab1f789db135ddb7.camel@sipsolutions.net>
+Subject: Re: [PATCH 1/2] wifi: nl80211: add link id of transmitted profile
+ for MLO MBSSID
 From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	syzbot+36218cddfd84b5cc263e@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH] wifi: cfg80211: clear wdev->cqm_config pointer on free
-Date: Tue, 22 Oct 2024 16:17:42 +0200
-Message-ID: <20241022161742.7c34b2037726.I121b9cdb7eb180802eafc90b493522950d57ee18@changeid>
-X-Mailer: git-send-email 2.47.0
+To: Muna Sinada <quic_msinada@quicinc.com>
+Cc: linux-wireless@vger.kernel.org, Rameshkumar Sundaram
+	 <quic_ramess@quicinc.com>, Aloka Dixit <quic_alokad@quicinc.com>
+Date: Tue, 22 Oct 2024 16:22:52 +0200
+In-Reply-To: <559c2b6e-23d8-41d5-ba4d-262ab996dad6@quicinc.com>
+References: <20240910204538.4077640-1-quic_msinada@quicinc.com>
+	 <20240910204538.4077640-2-quic_msinada@quicinc.com>
+	 <5673aab17fa4e6bbba5b286f29b0558726305155.camel@sipsolutions.net>
+	 <559c2b6e-23d8-41d5-ba4d-262ab996dad6@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-From: Johannes Berg <johannes.berg@intel.com>
+On Wed, 2024-10-16 at 12:50 -0700, Muna Sinada wrote:
+> >=20
+> > Why not use config->tx_wdev and avoid changes around tx_netdev?
+>=20
+> tx_netdev instance is being utilized on exisiting code to perform checks =
+and grab its ieee80211_ptr. W are not making changes to tx_netdev itself. I=
+n this specific patch we are making changes to config->tx_wdev. I was wonde=
+ring if I could get clarification on this.=20
 
-When we free wdev->cqm_config when unregistering, we also
-need to clear out the pointer since the same wdev/netdev
-may get re-registered in another network namespace, then
-destroyed later, running this code again, which results in
-a double-free.
+I might've misinterpreted the code, but also you're pulling out the
+tx_netdev variable and really don't need to, just like the end of
+nl80211_start_ap() you can release it via the config->tx_wdev pointer?
 
-Reported-by: syzbot+36218cddfd84b5cc263e@syzkaller.appspotmail.com
-Fixes: 37c20b2effe9 ("wifi: cfg80211: fix cqm_config access race")
-Cc: stable@vger.kernel.org # 6.6+
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
----
- net/wireless/core.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 4c8d8f167409..d3c7b7978f00 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -1280,6 +1280,7 @@ static void _cfg80211_unregister_wdev(struct wireless_dev *wdev,
- 	/* deleted from the list, so can't be found from nl80211 any more */
- 	cqm_config = rcu_access_pointer(wdev->cqm_config);
- 	kfree_rcu(cqm_config, rcu_head);
-+	RCU_INIT_POINTER(wdev->cqm_config, NULL);
- 
- 	/*
- 	 * Ensure that all events have been processed and
--- 
-2.47.0
-
+johannes
 
