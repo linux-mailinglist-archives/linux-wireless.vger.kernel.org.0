@@ -1,143 +1,104 @@
-Return-Path: <linux-wireless+bounces-14294-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14296-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 340C79A9B70
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 09:47:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D305E9A9CA8
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 10:31:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E04F91F230E5
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 07:47:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 810DE1F2322A
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 08:31:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C76132120;
-	Tue, 22 Oct 2024 07:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596E315B102;
+	Tue, 22 Oct 2024 08:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HRqN0HUQ"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="NUNpMygn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 204A636124
-	for <linux-wireless@vger.kernel.org>; Tue, 22 Oct 2024 07:47:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43BB780BF8
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Oct 2024 08:31:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729583270; cv=none; b=IwHoaDJQNw/CtjB/ZO/h3t2t0VmvfyDOcMQXKna89uSa04jw0EWeC+ER2OXs9TPGrQrsNu87GZzYictfzasEs+mZSh2F/ji+XsAtq2B9n44qhTPBqUmwokvOFBLWgB/ibWN6LlGiOVsw1dkUOLMixGa/FV32hR7Dg90Z6RdaP1A=
+	t=1729585901; cv=none; b=uM2HP+0x9e3SCPjzbT1mbMv+68td5Q9kKBQi+v5joBMdytuw6EYWvRpIAvYazv2tEUo7TtH7DWr4Fx9enpOkxeX2oUBmMyS30sI3k5wOl/Pyh4o7vlxTbbvd7tBvyUAFi3ERdqH+tbcV+9CVym33J4G1E817A6jrnBgqrLu8kP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729583270; c=relaxed/simple;
-	bh=vwZg68piq+RdXI+ln/yjAtHFs9GxcvyPWjuI7Z35WMg=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=blLIvsL5Dl3mCvbyC9mB/pg6fBL1O40TAef048+kauWLTKK+OUwFAaaotH+E5FvfkxCLGjiAxq5Uyjbc4iD4DDRvK0D9OR+hSD5WXTTrjwT5Xjwg03UHErvklbUSgXbOsTDwARCbt84rfwVVHH0nOv/nzBfuNsoOHPRpdfobFyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HRqN0HUQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89618C4CEC3;
-	Tue, 22 Oct 2024 07:47:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729583269;
-	bh=vwZg68piq+RdXI+ln/yjAtHFs9GxcvyPWjuI7Z35WMg=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=HRqN0HUQ1y3vLl+a029aCvPbsTEHrsWAai8jOhMqObEDJTfw/WjEwmvo7gejz7mb8
-	 P9z7ZXyQzUkRTtLLLrSyD0Dpjef0nt1qiAdWSA0IODw60+dbOEx9l+bCWHYgMOawAu
-	 w7FAMA/x0+IkaJGnEM/blkkaAxLSxUplzrw2RuJEwkNI+agqTU3qHFHMIcZZsfx51P
-	 A5Z2xefr1fSC3ObS3Wr43NI7hMee07MP68YG4xjD8SmnHMHHjgK5XdSxPGRgf3yGq3
-	 fJC1F7jzmBJRKCSURWHZXXQSRmHRO/FBduUqwqYi3VNddo5FdPEaZm4adOHtVuByOC
-	 Gj+IyBeAeX56A==
-From: Kalle Valo <kvalo@kernel.org>
-To: Muhammad Usama Anjum <Usama.Anjum@collabora.com>
-Cc: =?utf-8?Q?N=C3=ADcolas?= F. R. A. Prado <nfraprado@collabora.com>,
-  Alper Nebi Yasak
- <alpernebiyasak@gmail.com>,  Felix Fietkau <nbd@nbd.name>,
-  linux-wireless@vger.kernel.org
-Subject: Re: [PATCH] wifi: mt76: do not increase mcu skb refcount if retry
- is not supported
-References: <20240917110942.22077-1-nbd@nbd.name>
-	<1d673f56-0bd8-4a55-8805-4e30c38cc36f@collabora.com>
-Date: Tue, 22 Oct 2024 10:47:46 +0300
-In-Reply-To: <1d673f56-0bd8-4a55-8805-4e30c38cc36f@collabora.com> (Muhammad
-	Usama Anjum's message of "Tue, 22 Oct 2024 11:48:43 +0500")
-Message-ID: <87h694o9y5.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1729585901; c=relaxed/simple;
+	bh=V5nEOUoXMfC5w7AuS4q8zm2TswCGzvZ9p6wk54vzDho=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qkcOiR6/+5mRUG6v6XK0+ERMxUBWoKow6FFye90XQFqNa7l8dgWGmhmyiE2QykwYp78Suew5KPw7QRcbTC6Zibwqb4Zk8MgNvpq1DaJT7F0vrwSEuyRhbphAEWsUcpjH48CF5qnbSe7iuR5Wfa2RuYInxt/eq4rm1zjVkEWvszY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=NUNpMygn; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 49M8VVOJ03771795, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1729585891; bh=V5nEOUoXMfC5w7AuS4q8zm2TswCGzvZ9p6wk54vzDho=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=NUNpMygnMtPLerJjMt+yMFg1uBzv/3wqdahRT3a4z+JV9W+px5WprAPv/tJ/mH6JR
+	 oxlloLwJoWxbLk52DvYfkAy4OjTRSRkTHmJtD2zcf/Pe1AlWEit+ykp9I7DZOkZl9D
+	 o1DoOOjvLGimm6mlNvfsyGPOH1isLi9oMLaJiDqJRkZjXWRoqqcF9ysYyziIrDl2DU
+	 24s7q9hQRzyC52OgYieW7tCypmWKRskgRXRFUOOBzqJTQI47cxup7/1+DBX3Lpdwxq
+	 E4GQKIEEVMTLvayp43wrQcV5pZs/ycPIrxe2RSkEK2v2YRPozgd+/MQZH4WD3E49BH
+	 Rk/3hVf3oh0PA==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 49M8VVOJ03771795
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Oct 2024 16:31:31 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 22 Oct 2024 16:31:30 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 22 Oct
+ 2024 16:31:30 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+CC: <phhuang@realtek.com>, <kevin_yang@realtek.com>
+Subject: [PATCH 0/5] wifi: rtw89: configure encryption/decryption and channels for MLO
+Date: Tue, 22 Oct 2024 16:31:01 +0800
+Message-ID: <20241022083106.149252-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-Muhammad Usama Anjum <Usama.Anjum@collabora.com> writes:
+A patchset to prepare more materials related to MLO. First two patches are
+to configure encryption/decryption to support MLD address, and latter
+three patches are to adjust chanctx to fit MLO and MCC cases, and to
+notify channel settings to firmware to have correct RF calibration.
 
-> On 9/17/24 4:09 PM, Felix Fietkau wrote:
->
->> If mcu_skb_prepare_msg is not implemented, incrementing skb refcount doe=
-s not
->> work for mcu message retry. In some cases (e.g. on SDIO), shared skbs ca=
-n trigger
->> a BUG_ON, crashing the system.
->> Fix this by only incrementing refcount if retry is actually supported.
->>=20
->> Fixes: 3688c18b65ae ("wifi: mt76: mt7915: retry mcu messages")
->> Reported-by: N=C3=ADcolas F. R. A. Prado <nfraprado@collabora.com> #Kern=
-elCI
->> Tested-by: Alper Nebi Yasak <alpernebiyasak@gmail.com>
->> Signed-off-by: Felix Fietkau <nbd@nbd.name>
->> ---
->>  drivers/net/wireless/mediatek/mt76/mcu.c | 7 +++++--
->>  1 file changed, 5 insertions(+), 2 deletions(-)
->>=20
->> diff --git a/drivers/net/wireless/mediatek/mt76/mcu.c b/drivers/net/wire=
-less/mediatek/mt76/mcu.c
->> index 98da82b74094..3353012e8542 100644
->> --- a/drivers/net/wireless/mediatek/mt76/mcu.c
->> +++ b/drivers/net/wireless/mediatek/mt76/mcu.c
->> @@ -84,13 +84,16 @@ int mt76_mcu_skb_send_and_get_msg(struct mt76_dev *d=
-ev, struct sk_buff *skb,
->>  	mutex_lock(&dev->mcu.mutex);
->>=20=20
->>  	if (dev->mcu_ops->mcu_skb_prepare_msg) {
->> +		orig_skb =3D skb;
->>  		ret =3D dev->mcu_ops->mcu_skb_prepare_msg(dev, skb, cmd, &seq);
->>  		if (ret < 0)
->>  			goto out;
->>  	}
->>=20=20
->>  retry:
->> -	orig_skb =3D skb_get(skb);
->> +	/* orig skb might be needed for retry, mcu_skb_send_msg consumes it */
->> +	if (orig_skb)
->> +		skb_get(orig_skb);
->>  	ret =3D dev->mcu_ops->mcu_skb_send_msg(dev, skb, cmd, &seq);
->>  	if (ret < 0)
->>  		goto out;
->> @@ -105,7 +108,7 @@ int mt76_mcu_skb_send_and_get_msg(struct mt76_dev *d=
-ev, struct sk_buff *skb,
->>  	do {
->>  		skb =3D mt76_mcu_get_response(dev, expires);
->>  		if (!skb && !test_bit(MT76_MCU_RESET, &dev->phy.state) &&
->> -		    retry++ < dev->mcu_ops->max_retry) {
->> +		    orig_skb && retry++ < dev->mcu_ops->max_retry) {
->>  			dev_err(dev->dev, "Retry message %08x (seq %d)\n",
->>  				cmd, seq);
->>  			skb =3D orig_skb;
-> This patch is in next from 5 weeks. As 3688c18b65ae ("wifi: mt76: mt7915:=
- retry mcu messages") is
-> already in the mainline, why this fix hasn't been included in mainline? I=
- thought fixes are included
-> as soon as possible in mainline RCs. Am I missing something?=20
->
-> Are we planning to include this fix in next release instead of current on=
-e?
+Po-Hao Huang (2):
+  wifi: rtw89: Add header conversion for MLO connections
+  wifi: rtw89: Add encryption support for MLO connections
 
-The commit is now in wireless tree:
+Zong-Zhe Yang (3):
+  wifi: rtw89: chan: manage active interfaces
+  wifi: rtw89: tweak setting of channel and TX power for MLO
+  wifi: rtw89: 8922a: extend RFK handling and consider MLO
 
-34b695481084 wifi: mt76: do not increase mcu skb refcount if retry is not s=
-upported
+ drivers/net/wireless/realtek/rtw89/cam.c      |  51 +++++
+ drivers/net/wireless/realtek/rtw89/cam.h      |  24 ++-
+ drivers/net/wireless/realtek/rtw89/chan.c     | 183 ++++++++++++++++--
+ drivers/net/wireless/realtek/rtw89/chan.h     |   8 +
+ drivers/net/wireless/realtek/rtw89/core.c     | 131 +++++++------
+ drivers/net/wireless/realtek/rtw89/core.h     |  32 ++-
+ drivers/net/wireless/realtek/rtw89/fw.c       |  23 ++-
+ drivers/net/wireless/realtek/rtw89/mac80211.c |   2 +
+ .../net/wireless/realtek/rtw89/rtw8852c_rfk.c |   6 +-
+ drivers/net/wireless/realtek/rtw89/rtw8922a.c |  18 +-
+ .../net/wireless/realtek/rtw89/rtw8922a_rfk.c |  61 +++---
+ 11 files changed, 412 insertions(+), 127 deletions(-)
 
-With good luck it will be in v6.12-rc5 but no guarantees.
+-- 
+2.25.1
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
 
