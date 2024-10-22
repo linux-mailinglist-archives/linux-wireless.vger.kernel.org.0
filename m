@@ -1,67 +1,72 @@
-Return-Path: <linux-wireless+bounces-14336-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14337-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4E1D9AB4B9
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 19:07:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54C0D9AB4DC
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 19:20:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56429284F61
-	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 17:07:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D2BA285590
+	for <lists+linux-wireless@lfdr.de>; Tue, 22 Oct 2024 17:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18681BD01A;
-	Tue, 22 Oct 2024 17:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2B0B1A726D;
+	Tue, 22 Oct 2024 17:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="FCqZFx06"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ux5a7iru"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5851BC9E5
-	for <linux-wireless@vger.kernel.org>; Tue, 22 Oct 2024 17:07:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6F8199937
+	for <linux-wireless@vger.kernel.org>; Tue, 22 Oct 2024 17:20:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729616846; cv=none; b=FfqmoxnqgTXU49KoLwCi+CnXvMtvQCSp9tpCAs6riB3UlYDQsBHqWXSd2FhPF/afJUtlOtxBvVum2jWJS7dxERltN2le75NQwjMN5whyWO9+99OCqavngU+QSrVO2A66qg8G+7sAqXUqnxGKauRrTgIayca2CsNs7ZD10cCBXzs=
+	t=1729617631; cv=none; b=GDrWYnBPKONRPPdLy5kOpQap52ZKIa+aH3Wihpil+Adg3ymhpTQ/4NiZgjAecTrvfQz4y9zEVJLrPJqto61RrQmDJU1KeTjOVX7CJ/NyL7w/E6GF/adOinLWYvpVYDEOz5aifcrQN3Uufqze+dQQtNBDzHgypMmrzo11egDvRNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729616846; c=relaxed/simple;
-	bh=mp0Jcn5EtOnjMbflgg0F1NYpB+AlS4nk0vTcWOB4BZo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KpbYcntTOs53wOTUTPwSxvISf4RXhbEhhq24fW7jWEYP4GK3EGFDx2xw/fNmqtvhMkeIcaaDqt8h8MkZtY5fa5XFjfL0l53itiX4GN2RVzdwX1Fj8x2NBWyqUHkjnFlsXo5K9Qc/G4UKkc433UNhjIj5us2ET8UfYbZ9T5kNOsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=FCqZFx06; arc=none smtp.client-ip=44.202.169.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
-Received: from eig-obgw-5003a.ext.cloudfilter.net ([10.0.29.159])
-	by cmsmtp with ESMTPS
-	id 2vZdtfgVXiA193ILltNCAF; Tue, 22 Oct 2024 17:07:17 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id 3ILht2m0L827n3ILht7I5F; Tue, 22 Oct 2024 17:07:13 +0000
-X-Authority-Analysis: v=2.4 cv=GeTcnhXL c=1 sm=1 tr=0 ts=6717dbc1
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=OKg9RQrQ6+Y1xAlsUndU0w==:17
- a=IkcTkHD0fZMA:10 a=DAUX931o1VcA:10 a=7T7KSl7uo7wA:10 a=vggBfdFIAAAA:8
- a=mDV3o1hIAAAA:8 a=Ptn-oV1zd_OeuEQti5AA:9 a=QEXdDO2ut3YA:10 a=SS-iHM-wgvsA:10
- a=Xt_RvD8W3m28Mn_h3AK8:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=nk5LLuWorWhD+hjQc4rS4N1v3XwIncbBTQM7XbjQieM=; b=FCqZFx06ykmZSPSUVaN05zCfak
-	yrwfC8pZ50z/TTclPSddJSj3t9Xu+efAFQkz3jNgGnAE5RMuslhh8lBioWzjvocie1ibn75+ot3nt
-	4pqXWJy25T6oKIDVOn3NoBEJpghC2yIe10Hwd867a7jQddyavpsHftYo18EmkSqtM9iN+KuTdqO5h
-	C3hDAc2ntsUcc9YdnaB04YBQjiiQvMcK2L1wdBj4M71zkB6LIbqahYtvSSPUHwbOEK4DoZbtC4GW4
-	grCmxQtu4cPqK+1dMBPvlmFTOdGDncccypqOOHhs9+3WAkZmLDkL1C8ecnAg54HkfrR0VYwW7/i34
-	0SelyCYQ==;
-Received: from [201.172.173.7] (port=50728 helo=[192.168.15.5])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1t3ILb-000j3U-2e;
-	Tue, 22 Oct 2024 12:07:07 -0500
-Message-ID: <60395da0-5969-4d72-9b90-c60e5473b7a5@embeddedor.com>
-Date: Tue, 22 Oct 2024 11:07:02 -0600
+	s=arc-20240116; t=1729617631; c=relaxed/simple;
+	bh=vh+R1Zd4MTAaZaAju8U8hIov+Y1RPNtcyZfp/WzqES0=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=JI4g+V8uIPDtPmYKIkjhEZnxdH/RE6hakeQXG1W1W8NB8nf1QnPfwWhigkcKgoF/C5RP4/GLV+PFlRaCNgah4r+BX6PDm+2TRPcC/IetMX8rO1SzbM5gA4TtE2JD+fKEGBfLynHUHaK2QmzAFGnS0C1vExebNDSrTz8YgDmc29E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ux5a7iru; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a99ebb390a5so6247266b.1
+        for <linux-wireless@vger.kernel.org>; Tue, 22 Oct 2024 10:20:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729617628; x=1730222428; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vzoS4n/QIruBE5n7YwqmKIU7X7obCPkyIMQstWa5DMQ=;
+        b=Ux5a7irulCs5RB3ECkg5ZHZkqYHSI6kW9C4wtVgqku9UOH2dF5eCMDcY+aBH/v2aSW
+         DFbEh7aC9qQbAjrOR97wLu8U+xE+Me2oFRDrtIsD669m8s+RhpP5QHfP4b7xuAhFv7Jl
+         DWYppKELFSF82iu9GUK7QWh0jIVwjH7El8wMTVGAIO3dFjruOSBcNa9er1TdRJnDuulj
+         UgRXhESB1zGKFNLw8WgJlAhhR/3HvxMh2Fa2GOjv/ObxLeccJl2kLk/zrXx+qrGiBd18
+         IAf0sSZ1IfvI1WLiXxfBhKj24t8cMRlnUex4bvGagvsvs+AsSTrrptG6IzD2Hv/c0zMB
+         ggbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729617628; x=1730222428;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=vzoS4n/QIruBE5n7YwqmKIU7X7obCPkyIMQstWa5DMQ=;
+        b=DbmTaHeaEJiXaCl6lQyBz6yR+89y18/VGvw0W8RJBRNR9DlE9OrqzdQze3inTzEaJJ
+         A5h+5kdCe5Y5UiK389PlDYipGzO1dAR458/7yZe6pfPrcxQOBACkPMNNoJsOQMk4HN4G
+         e/O2bBztYOuLHpQokG2rNhawno61L87YcZTuv5t20eivv9oPp/5D5cYgwm0hAcXeE9DR
+         GDa6SO+/PxYvt/WmC+a/Fn2J4YwuksjvRjWs5krBOKRfTnyHHFVyCM2W6cJxkzvLo5uh
+         XnMdyfxREivs5f0CL8aW+UKUILq7jaBlWubSh8kC+f1F8MnIrDD5aJ7JPQugeBv69kgy
+         Q4oQ==
+X-Gm-Message-State: AOJu0YwzTTVOzonsKfWtRvEcEZnZjpkIsCjtlWJFTV+Tk7sfnqf1Ql9b
+	3P7SkvK3E7eRR55Gd4x8VREyJN8Fa2uRXxWNSWK22FQbNMZL98WaHciX2w==
+X-Google-Smtp-Source: AGHT+IH+fV2P0Y+5LSZIjeAJde2PrRGFLFDOlzUWwYBkCHJXvd3ba0nTBpowDIHLlM4ecfJz0rCBYA==
+X-Received: by 2002:a17:906:c116:b0:a9a:1575:23e3 with SMTP id a640c23a62f3a-a9aaa5428e4mr364704566b.19.1729617628069;
+        Tue, 22 Oct 2024 10:20:28 -0700 (PDT)
+Received: from [192.168.1.50] ([79.113.150.231])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a91370e54sm363413966b.102.2024.10.22.10.20.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Oct 2024 10:20:27 -0700 (PDT)
+Message-ID: <f7e1e448-2c9b-498f-b8b1-a14dd967d7d3@gmail.com>
+Date: Tue, 22 Oct 2024 20:20:26 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -69,82 +74,48 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/5][next] net: dev: Introduce struct sockaddr_legacy
-To: Kuniyuki Iwashima <kuniyu@amazon.com>, gustavoars@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, dsahern@kernel.org,
- edumazet@google.com, johannes@sipsolutions.net, kees@kernel.org,
- kuba@kernel.org, linux-hardening@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
- netdev@vger.kernel.org, pabeni@redhat.com
-References: <1c12601bea3e9c18da6adc106bfcf5b7569e5dfb.1729037131.git.gustavoars@kernel.org>
- <20241016033042.89280-1-kuniyu@amazon.com>
 Content-Language: en-US
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <20241016033042.89280-1-kuniyu@amazon.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH] wifi: rtw88: Report the signal strength only if it's known
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 201.172.173.7
-X-Source-L: No
-X-Exim-ID: 1t3ILb-000j3U-2e
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: ([192.168.15.5]) [201.172.173.7]:50728
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 3
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfJqZvgJQD6600tXAl43dfG14mK7O2tWPrE7ww0coi+2qqmftvjA/u9uhF6lRRDi+6m5TfZ/9PKPTxkO97VlDwY7JIP6TQGKo7ywg9FysJ0vZrCmS1Rgd
- 3aBafOqS/XBz94SjDBceByELQORJC0izcQn8wom/GJp07QIYJNtkV91tBlfj94NCq1xc/JlhBV2nAXHiyfvH6IMltHeOFdmfB9/n20BioxuVsoitWFTWTyQg
 
+RTL8811CU doesn't report the signal strength for many (any?) data
+frames. When the signal strength is not known, set
+RX_FLAG_NO_SIGNAL_VAL in order to avoid reporting a signal
+strength of 0.
 
->>   
->> +/*
->> + * This is the legacy form of `struct sockaddr`. The original `struct sockaddr`
->> + * was modified in commit b5f0de6df6dce ("net: dev: Convert sa_data to flexible
->> + * array in struct sockaddR") due to the fact that "One of the worst offenders
-> 
-> s/sockaddR/sockaddr/
-> 
-> The same typo? exists in the cover letter.
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+---
+ drivers/net/wireless/realtek/rtw88/rx.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-Thanks for catching this! :)
+diff --git a/drivers/net/wireless/realtek/rtw88/rx.c b/drivers/net/wireless/realtek/rtw88/rx.c
+index 1de93fc9efe9..90fc8a5fa89e 100644
+--- a/drivers/net/wireless/realtek/rtw88/rx.c
++++ b/drivers/net/wireless/realtek/rtw88/rx.c
+@@ -234,10 +234,14 @@ static void rtw_rx_fill_rx_status(struct rtw_dev *rtwdev,
+ 	else
+ 		rx_status->bw = RATE_INFO_BW_20;
+ 
+-	rx_status->signal = pkt_stat->signal_power;
+-	for (path = 0; path < rtwdev->hal.rf_path_num; path++) {
+-		rx_status->chains |= BIT(path);
+-		rx_status->chain_signal[path] = pkt_stat->rx_power[path];
++	if (pkt_stat->phy_status) {
++		rx_status->signal = pkt_stat->signal_power;
++		for (path = 0; path < rtwdev->hal.rf_path_num; path++) {
++			rx_status->chains |= BIT(path);
++			rx_status->chain_signal[path] = pkt_stat->rx_power[path];
++		}
++	} else {
++		rx_status->flag |= RX_FLAG_NO_SIGNAL_VAL;
+ 	}
+ 
+ 	rtw_rx_addr_match(rtwdev, pkt_stat, hdr);
+-- 
+2.46.0
 
---
-Gustavo
-
-> 
-> With it fixed,
-> 
-> Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-> 
-> 
->> + * of "fake flexible arrays" is struct sockaddr". This means that the original
->> + * `char sa_data[14]` behaved as a flexible array at runtime, so a proper
->> + * flexible-array member was introduced.
->> + *
->> + * This caused several flexible-array-in-the-middle issues:
->> + * https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wflex-array-member-not-at-end
->> + *
->> + * `struct sockaddr_legacy` replaces `struct sockaddr` in all instances where
->> + * objects of this type do not appear at the end of composite structures.
->> + */
->> +struct sockaddr_legacy {
->> +	sa_family_t	sa_family;	/* address family, AF_xxx	*/
->> +	char 		sa_data[14];	/* 14 bytes of protocol address	*/
->> +};
->> +
->>   struct linger {
->>   	int		l_onoff;	/* Linger active		*/
->>   	int		l_linger;	/* How long to linger for	*/
->> -- 
->> 2.34.1
-> 
 
