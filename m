@@ -1,168 +1,161 @@
-Return-Path: <linux-wireless+bounces-14374-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14375-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD6549AC758
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2024 12:06:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E8C69AC7F8
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2024 12:28:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D7631F2172E
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2024 10:06:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4028D28A09F
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2024 10:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F07A19E97E;
-	Wed, 23 Oct 2024 10:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E1681A0BE5;
+	Wed, 23 Oct 2024 10:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BOkPtVOt"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="HrfzTN9S"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96EA119E7ED
-	for <linux-wireless@vger.kernel.org>; Wed, 23 Oct 2024 10:06:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF39714F108;
+	Wed, 23 Oct 2024 10:28:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729677986; cv=none; b=lXWwrKV4phk4HDXGTxx3PNz0tkb4LxShvLQFbRt9mLprj204rt9y/zC5VKcEF/7CBM6ip9AiIj/plT8Cu39Ch52kokQ0hDmmkZHHaDbQVoicM5Igyt9wVl/ODrlhOdBscDQYJ/JN42ER/SKU5cZ8on1BVZ+WGNPkam87+0uT52k=
+	t=1729679297; cv=none; b=IHaGXEbERVgdQbMpYWhbyDMt5L4EcFDTQBUWyg2CikD2Kb8viVJOqFenuvrGVbMFWq5Qr86SgFkGfQJLXoH+6CficlSjVKL81nKLGv5T8QKUtwE27cFe+6ttSvqLP5OSCZjEiySzwk9RsUnWfrYlx3Os77E0QSEuusjCQzIVfHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729677986; c=relaxed/simple;
-	bh=yU5dZthC4JR7clFEU+VaiuHzsRK9INyahbMu5Agd3mY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gr74jpUGacReqIIFKhTQcfj+Gge6MldtNpoG49+CibA2AyC/as7BpfFLnU5I5Z/6QhfBSkFJcDDfunB/K6NZRx4CAYCpFGhk4FN+kcFlIjT8IIbywhy494QQFrWtQpI3yqEVvX2bIHAld9uHrHIbBKxxuhPT+1H4iP/uN8volDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BOkPtVOt; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-539f8490856so7047072e87.2
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Oct 2024 03:06:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1729677983; x=1730282783; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=QmFWwJacJAgS5CGhagQj/y+QCn9s9Xrg8IyhVVZtACM=;
-        b=BOkPtVOt1LxHQ5opf1ucDJvtIJWKr2JsQ8jYpF9UO4nLWGupGgAA+fhuK1023+NX7R
-         1ssrUxsyYoxLR9jie7SzjuGKGZ/2h0CS+ktA9JDD46CGz1XbpytaCPTgyt/ikoI6ckij
-         9GH61VtPQNglgDMWWSClD/cnATNCRPvZ2YW41y1cyZEvT/8EYAlSCON4MTCgJxuLn1E8
-         WZWWyr1c621UzdzQaHtv50ZmujvDRw3THTCH4yD9iJMKfnCjVWeqjQ5zTlWXq9bF/jEu
-         VN7KCZJreCh2h82rqn3kfA2SEtG1hEANT1/1Ivm2wsJYwj0CWiRaHVlBZQY1WZOv3GYQ
-         4dVw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729677983; x=1730282783;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QmFWwJacJAgS5CGhagQj/y+QCn9s9Xrg8IyhVVZtACM=;
-        b=KVz499cEWv11BweTFJ5fVjdHZW+vzeV+Ac85mxwBhFUdrebQ2xBzEUz7WZomd72aDO
-         sb1B6g/S1LOSAjbqVrMvF1gQV1G0CISQvJNDZ47Am5tGGeetrkkmU5C8ChuWvGHNEjX4
-         bDaRcQWV7a2pq/1fqh8/5KGREQIJbtL8q0ku+Y23dQ3cHXkiyCO+hhbCUsSVyEpsMH35
-         pJEPgozVCOC3zGJTgPd+45doASnH01cnjbB2U8m5oq3HyBHw0ihL6asXlTkX887FIZCw
-         ZnxxnaLxIdhCSBArpGPj6Ann2XciombhGSqDGzyDcSmc6DCobyNaPrRFNbxUEJ8UCpEI
-         dQcw==
-X-Forwarded-Encrypted: i=1; AJvYcCVNhpJtRDzvYeDnm3U8hOdsTnlfDWbXRTFQoYZH0dn+hk1RAlSzg5PY/xgzabUw4RQj31L4qhws41Gd6fjgbA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7a9s43jVfUWXBq431ek48AaLcQkVtGIjtTAMLakGldKgbBXGq
-	OpXLYnaBoph9I51NteXMv+tX1zI9ilv4O9t8QLYYjoJmW40CgBqxmMAoJogWS1g=
-X-Google-Smtp-Source: AGHT+IENoLqmzudlZrppge6f/QJA6ViYHAbyrrfgtDyUbQMErRS34yaCQr0YHoWGW0qrUIe/m7/udQ==
-X-Received: by 2002:a05:6512:1293:b0:536:55a9:4b6c with SMTP id 2adb3069b0e04-53b1a307d85mr1130622e87.13.1729677982662;
-        Wed, 23 Oct 2024 03:06:22 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43186bd69ebsm11979625e9.1.2024.10.23.03.06.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Oct 2024 03:06:22 -0700 (PDT)
-Date: Wed, 23 Oct 2024 13:06:18 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>,
-	Zong-Zhe Yang <kevin_yang@realtek.com>,
-	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH next] wifi: rtw89: unlock on error path in
- rtw89_ops_unassign_vif_chanctx()
-Message-ID: <9729c2f5-2df5-4468-a4da-cd31f4332b4c@stanley.mountain>
-References: <8683a712-ffc2-466b-8382-0b264719f8ef@stanley.mountain>
- <6a80d4adc51f4ea884b5e02f16d8aaed@realtek.com>
- <931c79c15bc04be99bb87a9826cf2b04@realtek.com>
- <2e85c84b-31bf-484b-b3e2-9285999bb2e4@stanley.mountain>
- <87v7xjma5d.fsf@kernel.org>
+	s=arc-20240116; t=1729679297; c=relaxed/simple;
+	bh=iHOp32SFkBd7m82e8yskiq+ewhqH5uFRQqMZdB2NOvo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ibcC1y8Fn6sVHP5yPjM8K4aWRU2Gw65X7I3eOuSIuIwxiuJzCgZVFIleQ0RfBbD+zpvUjDaLNfKJxD9KlNgCYWHNRfzO8oDk4dnRVIsXPveVOid5MiTHrF4VOZKajhF8NEjLH8t5XT4Ar9FCExbGrFt4UTE28EuzFuLBorvrFUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=HrfzTN9S; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49N9v1hK025427;
+	Wed, 23 Oct 2024 10:28:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	/1RhKFk91LwuJ9KLrEjUapOT6KTyBjv1q2UPl2OI9ss=; b=HrfzTN9SIVYgQddQ
+	0/QZ6JuHxOPEaVDaikTe7Z7MQXhpuTRaWdKFYnKB0fPbmrhVYc/yocx2gHmTNsrR
+	Qnzuoliysc8w+/D2CvTb3uhThBDm0qmpgcDGh5xNnHbbET5kUwsURoYFIPVFzfBe
+	1u+Qv2RNFCtnaDW13iNlntO2e36kjg4/C+RWBJlTs2MXS7agetDwRlVKqkio1Xly
+	zVdLXkFdWicXprdDIgbBrJHxXmC87TejTm2sN6Yp2NS65cWZ6rHwb+aePq5ezkK1
+	g1YIVTQg843QAcJUveCC4vVLdZZONZzEwDivW/iLg54oHn/qOfPvq7lAkhksjPQg
+	kC24gA==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42em409uq4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 23 Oct 2024 10:28:10 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49NAS9aK007187
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 23 Oct 2024 10:28:09 GMT
+Received: from [10.151.40.160] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 23 Oct
+ 2024 03:28:05 -0700
+Message-ID: <94defe49-c87a-44f6-8768-03f3d6687ac3@quicinc.com>
+Date: Wed, 23 Oct 2024 15:58:02 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/6] dt-bindings: net: wireless: update required
+ properties for ath12k PCI module
+To: Krzysztof Kozlowski <krzk@kernel.org>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>,
+        Rob
+ Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor
+ Dooley <conor+dt@kernel.org>,
+        Jeff Johnson <jjohnson@kernel.org>,
+        Bjorn
+ Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>
+References: <20241023060352.605019-1-quic_rajkbhag@quicinc.com>
+ <20241023060352.605019-2-quic_rajkbhag@quicinc.com>
+ <87db3d68-ab1a-4cc4-9857-416de39cea0f@kernel.org>
+ <e2c1ce1a-89af-4feb-a21a-9ca2578430e7@quicinc.com>
+ <b97b8350-3925-40b0-8f87-f89df429a52a@kernel.org>
+ <e7b27f57-efb2-45ea-bbe0-e5aeb90cbff9@quicinc.com>
+ <606083d8-4332-45e4-be41-08ca5425cc03@kernel.org>
+Content-Language: en-US
+From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+In-Reply-To: <606083d8-4332-45e4-be41-08ca5425cc03@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87v7xjma5d.fsf@kernel.org>
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 7nlqLKTs3YYANTZf9zjWISYTedC-DO5Y
+X-Proofpoint-GUID: 7nlqLKTs3YYANTZf9zjWISYTedC-DO5Y
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
+ impostorscore=0 spamscore=0 phishscore=0 mlxlogscore=598
+ lowpriorityscore=0 clxscore=1015 malwarescore=0 bulkscore=0 suspectscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410230064
 
-On Wed, Oct 23, 2024 at 12:38:38PM +0300, Kalle Valo wrote:
-> Dan Carpenter <dan.carpenter@linaro.org> writes:
+On 10/23/2024 12:29 PM, Krzysztof Kozlowski wrote:
+> On 23/10/2024 08:53, Raj Kumar Bhagat wrote:
+>> On 10/23/2024 12:17 PM, Krzysztof Kozlowski wrote:
+>>> On 23/10/2024 08:45, Raj Kumar Bhagat wrote:
+>>>> On 10/23/2024 12:05 PM, Krzysztof Kozlowski wrote:
+>>>>> On 23/10/2024 08:03, Raj Kumar Bhagat wrote:
+>>>>>> The current device-tree bindings for the Ath12K module list many
+>>>>>> WCN7850-specific properties as required. However, these properties are
+>>>>>> not applicable to other Ath12K devices.
+>>>>>>
+>>>>>> Hence, remove WCN7850-specific properties from the required section,
+>>>>>> retaining only generic properties valid across all Ath12K devices.
+>>>>>> WCN7850-specific properties will remain required based on the device's
+>>>>>> compatible enum.
+>>>>> Just not true. These apply to all devices described in this binding.
+>>>>>
+>>>>> NAK.
+>>>>>
+>>>>> Don't send patches for your downstream stuff.
+>>>> This is not for downstream. This series is the per-requisite for ath12k
+>>>> MLO support in upstream.
+>>>>
+>>>> In the subsequent patch [2/6] we are adding new device (QCN9274) in this
+>>>> binding that do not require the WCN7850 specific properties.
+>>>>
+>>>> This is a refactoring patch for the next patch [2/6].
+>>> It's just wrong. Not true. At this point of patch there are no other
+>>> devices. Don't refactor uselessly introducing incorrect hardware
+>> Ok then, If we squash this patch with the next patch [2/6], that actually adding
+>> the new device, then this patch changes are valid right?
+> Yes, except I asked to have separate binding for devices with different
+> interface (WSI). You add unrelated devices to same binding, growing it
+> into something tricky to manage. Your second patch misses if:then
+> disallwing all this WSI stuff for existing device... and then you should
+> notice there is absolutely *nothing* in common.
 > 
-> > On Tue, Oct 22, 2024 at 03:32:23AM +0000, Ping-Ke Shih wrote:
-> >
-> >> Zong-Zhe Yang <kevin_yang@realtek.com> wrote:
-> >> > Dan Carpenter <dan.carpenter@linaro.org> wrote:
-> >> > >
-> >> > > [...]
-> >> > >
-> >> > > @@ -1373,6 +1373,7 @@ static void rtw89_ops_unassign_vif_chanctx(struct ieee80211_hw
-> >> > > *hw,
-> >> > >
-> >> > >         rtwvif_link = rtwvif->links[link_conf->link_id];
-> >> > >         if (unlikely(!rtwvif_link)) {
-> >> > > +               mutex_unlock(&rtwdev->mutex);
-> >> > >                 rtw89_err(rtwdev,
-> >> > >                           "%s: rtwvif link (link_id %u) is not active\n",
-> >> > >                           __func__, link_conf->link_id);
-> >> > >
-> >> > 
-> >> > Acked-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-> >> > 
-> >> 
-> >> Thanks for the ack. 
-> >> 
-> >> Acked-by is often used by the maintainer, so I will change it to Reviewed-by
-> >> during committing. 
-> >
-> > To me Acked by just means you're okay with the patch.  When I use it, it means I
-> > don't feel qualified or interested enough to do a full review.  For example, if
-> > I complain about a v1 patch and they fix my issue in v2 then I like to say that
-> > I'm okay with it.  In that case I'll use Reviewed-by for a full review or Acked
-> > by if the bits that I care about are okay.  I don't like to complain and then
-> > just go silent.
-> >
-> > In the end, it doesn't make any difference.  You'll get CC'd on bug reports to
-> > do with the patch and you'll potentially feel bad for not spotting the bug, I
-> > guess.
-> 
-> I have understood that Acked-by should be only used by the corresponding
-> maintainers and the documentation seems to say the same:
-> 
-> https://docs.kernel.org/process/submitting-patches.html#when-to-use-acked-by-cc-and-co-developed-by
 
-"If a person was not directly involved in the preparation or handling of a patch
-but wishes to signify and record their approval of it then they can ask to have
-an Acked-by: line added to the patch’s changelog."
+I understand your point about having separate bindings if there are no common
+properties. However, the title and description of this binding indicate that it
+is intended for Qualcomm ath12k wireless devices with a PCI bus. Given this, the
+QCN9274 seems to fit within the same binding.
 
-The documentation does say that it's also often used by maintainers for
-approving part of a patchset.  But to me, it's the "partial" which is the more
-important word in that sentence.  I haven't reviewed the whole patch.
+Additionally, there will likely be more properties added in the future that could
+be common. For example, the “qcom,ath12k-calibration-variant” property (which the
+ath12k host currently doesn’t support reading and using, hence we are not adding it
+now) could be a common property.
 
-> 
-> The reason I ask non-maintainers avoid using Acked-by is that it messes
-> our patchwork listings (it counts both Acked-by and Reviewed-by tags).
-> 
-> -- 
-> https://patchwork.kernel.org/project/linux-wireless/list/
+If you still recommend creating a separate binding for the QCN9274, we are open to
+working on that.
 
-Huh.  I wasn't aware that anything really differentiated between Acks and
-Reviews.  That does make things more complicated.
-
-I rarely do Acks, but when I do it's because I'm outside of a subsystem I'm
-familiar with.  I would say LGTM and leave it at that, except other people want
-proper tags.  Probably they won't insist on proper tags from me though so it's
-fine.
-
-regards,
-dan carpenter
+Thank you for your guidance.
 
 
