@@ -1,205 +1,178 @@
-Return-Path: <linux-wireless+bounces-14389-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14390-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 013D89ACBA6
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2024 15:52:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 493579ACBC7
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2024 15:59:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21E2B1C223F1
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2024 13:51:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A60BEB223FD
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2024 13:59:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 212751C3021;
-	Wed, 23 Oct 2024 13:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 367771AC885;
+	Wed, 23 Oct 2024 13:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MV4LdYs8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XmlvsYvt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6981BE223
-	for <linux-wireless@vger.kernel.org>; Wed, 23 Oct 2024 13:50:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645A4154439
+	for <linux-wireless@vger.kernel.org>; Wed, 23 Oct 2024 13:59:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729691420; cv=none; b=B7CrXmajfliyery4NMtOr3pg7qAQEPy+wZSD7fzQRKaCrhSfUGGC+sp1X2LoV22FspYFYFA3a/tsnRHWchWfIiJALcGguDIAnIkp5ZRqKzYceHgH72J1fmILhDiqhhumMg6cyom9biiz7pBUGbEOTRzOSP2lTlnproZdWl1ij8k=
+	t=1729691962; cv=none; b=mxfGNRNPGVBRyORO3ntde1MprhdR/xGExfxDfZ3bZ/7z4PGDQUkwND5VYrjF2zDXZd8Q996CYTkORBTpI3MWPKzmsQSvAFVBq2mYvKE8VBoGGMoXnM08qcuLwdlX1JTU2hCBZN3KS/4YJiGdrXzTpyTCc5whyz4n+QEzDai7l6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729691420; c=relaxed/simple;
-	bh=1CTS0Ugnf9jJBC1ruM/WIiADBY5GmrMIo6GSJ3E70PI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=EsNBtqTUcXKgmnhveOp47xRL0F4v30VsQGfcfj8DVGYduzmVFZIMmhqtuUoHmAqDdiRSOJh24MXVinFuyB1Tutewgmtf62IcYWRTVQsWz/iW2aHDqxqVtKsv1lZyX4jVrzTqyuhejODTq3l+S1FFG1LtvLKnfcskS6HzD4yAJP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MV4LdYs8; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729691415;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oO7/c3KxFQ4pCLrpHRIQyFFVX9SeNU/L27HBNV7OVps=;
-	b=MV4LdYs89IhkXEdpv48Wa/IRPAgOsxnBIdhdluTma/rKfhu6MZwNZ0DBm+54r9KDPEe2/x
-	XK8Xp9+usPt9nWroXU7YtvsXX1QwrpjHKzYtNjLbygm2GmR9wsO49ElgCnRQb12DODV9aO
-	1JYtXZTu2jsOUe/IZzCTtzQGod6SGXY=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-362-JXfOVV01PYqhcNZqd6iEfw-1; Wed, 23 Oct 2024 09:50:14 -0400
-X-MC-Unique: JXfOVV01PYqhcNZqd6iEfw-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4315e8e9b1cso5513145e9.1
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Oct 2024 06:50:14 -0700 (PDT)
+	s=arc-20240116; t=1729691962; c=relaxed/simple;
+	bh=wyz8z+fQG0nQqsYS8loNgn+Fd20tbUJw+LRqV8WmgmM=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=NX/Dv+64d7d6hmNDg7olz7So01wZO+OoAYo+bVBjmWyMm/3vftKHRqkOKaPv1Cehit+al00xdhH4JAAzDRIruHkkZaIR16Mwk1tP2mVMpN8bEpECbZMigQ7G8uRET0Vw1Oy9jFCbpvekUXPWzvBtEOEZkohcYQD54zOBvUXveWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XmlvsYvt; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5c97c7852e8so8008515a12.1
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Oct 2024 06:59:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1729691959; x=1730296759; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=E+5kDRWBF9TvX1igWMuh7G2PHBH1Oa3fpxMjemnvDBs=;
+        b=XmlvsYvtc7qNg6oH5lDx1EUc0FKMKAQihVPSIZ3OWNrkEl8l1+x3z5TFLcnikAEqUc
+         VTPqiRdi2MUz8fxOjY8DzYHqoWIgoafRb7VTrg76s6nFEP448fr/ff//6kcA0Fhod11B
+         ym/U71TVQ65ONMiFyr8MMu7QjLxdkGjVFnP7LgE9xvoSR5c/SuAIJOkNtJjj4lD3/PQb
+         ApsxLKFRnmnWdgmeph1q7s2Tg9fKyTLWnxdUvgk2XS7VzQLfUKWNEsJDX5mYlLxisGWt
+         LmJ3Ojq7BIpga8YTqb1mLD9rggA7lRVYhY3o/YZc7/0UzGuDzCSEMrzVALdZpSwglrbY
+         CCZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729691412; x=1730296212;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=oO7/c3KxFQ4pCLrpHRIQyFFVX9SeNU/L27HBNV7OVps=;
-        b=s4dvxAsRXBZudZ3Rolmlh+qzGtWnKtqHDL9fZtqaqDTYQvzgtBEd7yfnHCbY8PzlL1
-         j09ahEyO3Z2C8JOfHoUeOe97Sz/o/m+8BMt2MhazRxRYnsTAZrk6KeeRfDr9ijBmWK+D
-         pJC28VuNJ2U2iW3SHd0T+JP+b81q4ZzVeks8wddtXt0xMuLPjPvv9iCzXYIhXrTf+1dw
-         ywwUxvZYAjhhXj25dhcRUFQkWvFm5w4/Q8RxOYiw7EcImP+U8RljvI1BFuDl7/0jyhnU
-         0EGhIyBBPmEpRbIh6WYEww47pMlWI/QI1ill/Y3nFB/RspFSJgbDRpwrjXr5J5gmL6Yv
-         c8qA==
-X-Forwarded-Encrypted: i=1; AJvYcCWawCTGzs4cf0nwTNUF6LYPfz0WaC/sKZBEhVci8lmn1fu+mG3HXoHF4A2R+GLy96uueZdxAdCV26MxBH1CgQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCeyP7hjIKca0z529H385QNfqr8R5p8MYjkJZ48CQqKWipoJ2Y
-	qOUSTW7vLOZ8UP35FslMti2aGU+8K3XNsmgtD3hD6RXIQnz1Bwk3PeIe7DOotbwU1Iy4od2+iop
-	7AnZCp7CsQTX6IupKWmuMOuFSk18AeMieREtai0WSx36uKfSs5xcFadGqpYj/HVH2
-X-Received: by 2002:a05:600c:4f43:b0:42f:84ec:3e0 with SMTP id 5b1f17b1804b1-4317bd88469mr48316585e9.9.1729691412218;
-        Wed, 23 Oct 2024 06:50:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHVbS2v+nb51IE57ofZXQEpzrUukFuey0NWkF8DOXs6/K2mGsAvF2UpvyCTTgP3Onw94z3R5g==
-X-Received: by 2002:a05:600c:4f43:b0:42f:84ec:3e0 with SMTP id 5b1f17b1804b1-4317bd88469mr48316115e9.9.1729691411741;
-        Wed, 23 Oct 2024 06:50:11 -0700 (PDT)
-Received: from eisenberg.fritz.box ([2001:16b8:3dac:2f00:8834:dd3a:39b8:e43b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43186be7605sm16955265e9.19.2024.10.23.06.50.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Oct 2024 06:50:11 -0700 (PDT)
-Message-ID: <6f3db65fe9a5dcd1a7a8d9bd5352ecb248ef57b1.camel@redhat.com>
-Subject: Re: [PATCH 02/13] ALSA: hda_intel: Use always-managed version of
- pcim_intx()
-From: Philipp Stanner <pstanner@redhat.com>
-To: Takashi Iwai <tiwai@suse.de>
-Cc: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, 
- Sergey Shtylyov <s.shtylyov@omp.ru>, Basavaraj Natikar
- <basavaraj.natikar@amd.com>, Jiri Kosina <jikos@kernel.org>,  Benjamin
- Tissoires <bentiss@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Alex Dubov <oakad@yahoo.com>,
- Sudarsana Kalluru <skalluru@marvell.com>, Manish Chopra
- <manishc@marvell.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Rasesh Mody <rmody@marvell.com>,
- GR-Linux-NIC-Dev@marvell.com, Igor Mitsyanko <imitsyanko@quantenna.com>,
- Sergey Matyukevich <geomatsi@gmail.com>, Kalle Valo <kvalo@kernel.org>,
- Sanjay R Mehta <sanju.mehta@amd.com>, Shyam Sundar S K
- <Shyam-sundar.S-k@amd.com>, Jon Mason <jdmason@kudzu.us>, Dave Jiang
- <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>, Bjorn Helgaas
- <bhelgaas@google.com>, Alex Williamson <alex.williamson@redhat.com>,
- Juergen Gross <jgross@suse.com>, Stefano Stabellini
- <sstabellini@kernel.org>, Oleksandr Tyshchenko
- <oleksandr_tyshchenko@epam.com>, Jaroslav Kysela <perex@perex.cz>, Takashi
- Iwai <tiwai@suse.com>, Chen Ni <nichen@iscas.ac.cn>, Mario Limonciello
- <mario.limonciello@amd.com>, Ricky Wu <ricky_wu@realtek.com>, Al Viro
- <viro@zeniv.linux.org.uk>, Breno Leitao <leitao@debian.org>, Kevin Tian
- <kevin.tian@intel.com>, Thomas Gleixner <tglx@linutronix.de>, Ilpo
- =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>, Andy
- Shevchenko <andriy.shevchenko@linux.intel.com>, Mostafa Saleh
- <smostafa@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Yi Liu
- <yi.l.liu@intel.com>,  Christian Brauner <brauner@kernel.org>, Ankit
- Agrawal <ankita@nvidia.com>, Eric Auger <eric.auger@redhat.com>, Reinette
- Chatre <reinette.chatre@intel.com>, Ye Bin <yebin10@huawei.com>, Marek
- =?ISO-8859-1?Q?Marczykowski-G=F3recki?= <marmarek@invisiblethingslab.com>,
- Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, Peter Ujfalusi
- <peter.ujfalusi@linux.intel.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Kai Vehmanen
- <kai.vehmanen@linux.intel.com>,  Rui Salvaterra <rsalvaterra@gmail.com>,
- linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-input@vger.kernel.org, netdev@vger.kernel.org, 
- linux-wireless@vger.kernel.org, ntb@lists.linux.dev,
- linux-pci@vger.kernel.org,  kvm@vger.kernel.org,
- xen-devel@lists.xenproject.org, linux-sound@vger.kernel.org
-Date: Wed, 23 Oct 2024 15:50:09 +0200
-In-Reply-To: <87v7xk2ps5.wl-tiwai@suse.de>
-References: <20241015185124.64726-1-pstanner@redhat.com>
-	 <20241015185124.64726-3-pstanner@redhat.com> <87v7xk2ps5.wl-tiwai@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+        d=1e100.net; s=20230601; t=1729691959; x=1730296759;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=E+5kDRWBF9TvX1igWMuh7G2PHBH1Oa3fpxMjemnvDBs=;
+        b=WIUpgatAKciCWnHOunlsuyB/6AVkKg9UQS2XJDXTbzsNDdAQkqGI+9RbKRt4RrGL/7
+         jcI2Th1tEQWC7kJ1ddxVIRArL29ezYNKpH3c63FwhRgkCTAvd2rMXoNl1meOgZZ2+G3N
+         C4wqL4+qldzER+h0kPGQszJBEBk9Zo3gwTS/LaZXLgvk/zOkRholieKdl1LJ3+kRC28C
+         Ash3+5sJJpmjW31ygmdE4OEinXGaivpV3umxcS6LrQvBCiiOewuy6PP6pLc4RwNt3Wdy
+         TBbwStR8DkTr3C6o/waOyoL9qH4QeUqjZFygXcxhJpE1g3cEjGwahPYrfxY+lqUILARV
+         xRdw==
+X-Gm-Message-State: AOJu0Yye+V9C0Fdu9xqGKNPdJLRC2nDltRagL5Rdi7qIKxHd9OfNSrY5
+	JoLLHbHAW9hbRwHnW9zhGOMtveqrKEQj9I4pd+hkV8ZZDe5QgszycvA0kg==
+X-Google-Smtp-Source: AGHT+IGTZS+ZL2Lukzkedm+2DahdQCix050/d7WjG7sB7BXXJf4ltelq6YgA/7Igqnw5N/MuLAbogw==
+X-Received: by 2002:a05:6402:2792:b0:5c9:39d8:58b3 with SMTP id 4fb4d7f45d1cf-5cb8b26317dmr2183928a12.23.1729691958308;
+        Wed, 23 Oct 2024 06:59:18 -0700 (PDT)
+Received: from [192.168.1.50] ([79.113.150.231])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cb6696b51asm4530959a12.6.2024.10.23.06.59.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Oct 2024 06:59:17 -0700 (PDT)
+Message-ID: <ee6d97b3-0c82-4225-a07f-b0d4043a901a@gmail.com>
+Date: Wed, 23 Oct 2024 16:59:16 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: [PATCH v3 00/22] wifi: rtw88: Add support for RTL8821AU and RTL8812AU
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, 2024-10-22 at 16:08 +0200, Takashi Iwai wrote:
-> On Tue, 15 Oct 2024 20:51:12 +0200,
-> Philipp Stanner wrote:
-> >=20
-> > pci_intx() is a hybrid function which can sometimes be managed
-> > through
-> > devres. To remove this hybrid nature from pci_intx(), it is
-> > necessary to
-> > port users to either an always-managed or a never-managed version.
-> >=20
-> > hda_intel enables its PCI-Device with pcim_enable_device(). Thus,
-> > it needs
-> > the always-managed version.
-> >=20
-> > Replace pci_intx() with pcim_intx().
-> >=20
-> > Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-> > ---
-> > =C2=A0sound/pci/hda/hda_intel.c | 2 +-
-> > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
-> >=20
-> > diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
-> > index b4540c5cd2a6..b44ca7b6e54f 100644
-> > --- a/sound/pci/hda/hda_intel.c
-> > +++ b/sound/pci/hda/hda_intel.c
-> > @@ -786,7 +786,7 @@ static int azx_acquire_irq(struct azx *chip,
-> > int do_disconnect)
-> > =C2=A0	}
-> > =C2=A0	bus->irq =3D chip->pci->irq;
-> > =C2=A0	chip->card->sync_irq =3D bus->irq;
-> > -	pci_intx(chip->pci, !chip->msi);
-> > +	pcim_intx(chip->pci, !chip->msi);
-> > =C2=A0	return 0;
-> > =C2=A0}
-> > =C2=A0
->=20
-> Hm, it's OK-ish to do this as it's practically same as what
-> pci_intx()
-> currently does.=C2=A0 But, the current code can be a bit inconsistent
-> about
-> the original intx value.=C2=A0 pcim_intx() always stores !enable to
-> res->orig_intx unconditionally, and it means that the orig_intx value
-> gets overridden at each time pcim_intx() gets called.
+Patches 1..15 prepare things, patches 16..21 add the new files,
+and patch 22 enables their compilation.
 
-Yes.
+There are five new modules: rtw88_88xxa, which contains shared code,
+rtw88_8821a and rtw88_8812a, which contain code specific to each chip,
+rtw88_8821au, and rtw88_8812au.
 
->=20
-> Meanwhile, HD-audio driver does release and re-acquire the interrupt
-> after disabling MSI when something goes wrong, and pci_intx() call
-> above is a part of that procedure.=C2=A0 So, it can rewrite the
-> res->orig_intx to another value by retry without MSI.=C2=A0 And after the
-> driver removal, it'll lead to another state.
+More device IDs will be added later because they are not my patches
+and I assume they won't need (as m)any revisions. 22 patches is already
+a lot.
 
-I'm not sure that I understand this paragraph completely. Still, could
-a solution for the driver on the long-term just be to use pci_intx()?
+Also to be added later: USB 3 support for RTL8812AU and RX aggregation
+for both chips.
 
->=20
-> In anyway, as it doesn't change the current behavior, feel free to
-> take my ack for now:
->=20
-> Acked-by: Takashi Iwai <tiwai@suse.de>
+Bitterblue Smith (22):
+  wifi: rtw88: Add some definitions for RTL8821AU/RTL8812AU
+  wifi: rtw88: Dump the HW features only for some chips
+  wifi: rtw88: Allow different C2H RA report sizes
+  wifi: rtw88: Extend the init table parsing for RTL8812AU
+  wifi: rtw88: Allow rtw_chip_info.ltecoex_addr to be NULL
+  wifi: rtw88: Let each driver control the power on/off process
+  wifi: rtw88: Enable data rate fallback for older chips
+  wifi: rtw88: Make txagc_remnant_ofdm an array
+  wifi: rtw88: Support TX page sizes bigger than 128
+  wifi: rtw88: Move pwr_track_tbl to struct rtw_rfe_def
+  wifi: rtw88: usb: Set pkt_info.ls for the reserved page
+  wifi: rtw88: Detect beacon loss with chips other than 8822c
+  wifi: rtw88: coex: Support chips without a scoreboard
+  wifi: rtw88: 8821a: Regularly ask for BT info updates
+  wifi: rtw88: 8812a: Mitigate beacon loss
+  wifi: rtw88: Add rtw8812a_table.{c,h}
+  wifi: rtw88: Add rtw8821a_table.{c,h}
+  wifi: rtw88: Add rtw88xxa.{c,h}
+  wifi: rtw88: Add rtw8821a.{c,h}
+  wifi: rtw88: Add rtw8812a.{c,h}
+  wifi: rtw88: Add rtw8821au.c and rtw8812au.c
+  wifi: rtw88: Enable the new RTL8821AU/RTL8812AU drivers
 
-Thank you,
-P.
+ drivers/net/wireless/realtek/rtw88/Kconfig    |   33 +
+ drivers/net/wireless/realtek/rtw88/Makefile   |   15 +
+ drivers/net/wireless/realtek/rtw88/coex.c     |   37 +-
+ drivers/net/wireless/realtek/rtw88/coex.h     |   11 +
+ drivers/net/wireless/realtek/rtw88/debug.c    |    2 +-
+ drivers/net/wireless/realtek/rtw88/fw.c       |   44 +-
+ drivers/net/wireless/realtek/rtw88/fw.h       |   17 +-
+ drivers/net/wireless/realtek/rtw88/mac.c      |   13 +-
+ drivers/net/wireless/realtek/rtw88/mac.h      |    3 +
+ drivers/net/wireless/realtek/rtw88/main.c     |   35 +-
+ drivers/net/wireless/realtek/rtw88/main.h     |   39 +-
+ drivers/net/wireless/realtek/rtw88/pci.c      |    2 +-
+ drivers/net/wireless/realtek/rtw88/phy.c      |   76 +-
+ drivers/net/wireless/realtek/rtw88/reg.h      |  174 +
+ drivers/net/wireless/realtek/rtw88/rtw8703b.c |   21 +-
+ drivers/net/wireless/realtek/rtw88/rtw8723d.c |   21 +-
+ drivers/net/wireless/realtek/rtw88/rtw8723x.c |    3 +-
+ drivers/net/wireless/realtek/rtw88/rtw8812a.c | 1102 +++++++
+ drivers/net/wireless/realtek/rtw88/rtw8812a.h |   10 +
+ .../wireless/realtek/rtw88/rtw8812a_table.c   | 2812 +++++++++++++++++
+ .../wireless/realtek/rtw88/rtw8812a_table.h   |   26 +
+ .../net/wireless/realtek/rtw88/rtw8812au.c    |   28 +
+ drivers/net/wireless/realtek/rtw88/rtw8821a.c | 1197 +++++++
+ drivers/net/wireless/realtek/rtw88/rtw8821a.h |   10 +
+ .../wireless/realtek/rtw88/rtw8821a_table.c   | 2350 ++++++++++++++
+ .../wireless/realtek/rtw88/rtw8821a_table.h   |   21 +
+ .../net/wireless/realtek/rtw88/rtw8821au.c    |   28 +
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c |   22 +-
+ drivers/net/wireless/realtek/rtw88/rtw8821c.h |   24 -
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c |   20 +-
+ drivers/net/wireless/realtek/rtw88/rtw8822b.h |   12 -
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c |   28 +-
+ drivers/net/wireless/realtek/rtw88/rtw88xxa.c | 1989 ++++++++++++
+ drivers/net/wireless/realtek/rtw88/rtw88xxa.h |  175 +
+ drivers/net/wireless/realtek/rtw88/sdio.c     |    2 +-
+ drivers/net/wireless/realtek/rtw88/tx.c       |    6 +-
+ drivers/net/wireless/realtek/rtw88/tx.h       |    4 +-
+ drivers/net/wireless/realtek/rtw88/usb.c      |    5 +-
+ 38 files changed, 10277 insertions(+), 140 deletions(-)
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8812a.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8812a.h
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8812a_table.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8812a_table.h
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8812au.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821a.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821a.h
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821a_table.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821a_table.h
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821au.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw88xxa.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw88xxa.h
 
->=20
->=20
-> thanks,
->=20
-> Takashi
->=20
+-- 
+2.46.0
 
 
