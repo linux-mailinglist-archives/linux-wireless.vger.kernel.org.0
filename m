@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-14364-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14365-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5866D9ABF99
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2024 09:02:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E1BC9ABFA1
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2024 09:02:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7948B1C23888
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2024 07:02:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EE3D1C20D34
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2024 07:02:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E440156861;
-	Wed, 23 Oct 2024 06:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B03E6149C7A;
+	Wed, 23 Oct 2024 07:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zf+sq6Bq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nxou0tKm"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E9D155CBD;
-	Wed, 23 Oct 2024 06:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F9CE13D896;
+	Wed, 23 Oct 2024 07:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729666759; cv=none; b=NLAP+6gE++3khtzzAbQ/LXttY5vbxGEkNbdTXEB4ddQPHcfbIvgo/LkAxFU0k5PMMiUWeB5iNvzNFjShkZP956tpIgNA7Tlt8BtFSLbup1YWd0wIMN67so41bkTdma/0jyIIVhe5mNDyhuNm+QR/67C1vHFeVBopeyuHRzbZu+M=
+	t=1729666824; cv=none; b=k4HQDDYeF5xzLxtHDn5FTceiwaYepJ7DaYCOKZmxHUpoQIAWj0/y2xM/j7ESUy2UKrDc2hWdiiHE6yWtAtuuLpnmSz4j2XXMW6FVYNifW/7EMAZkMDqTxdOOJpDUuE4EtYHGxkQhqX86je1UAlhprhWMnV6Ie6PML70dW+9aUMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729666759; c=relaxed/simple;
-	bh=dWYJ5hZw4CRKNMwTRgvaoC3DrogIMgmnJ7kv8WblhHc=;
+	s=arc-20240116; t=1729666824; c=relaxed/simple;
+	bh=MGwG3YdItCc878aLJDylUKdLwrKGxl01AckUB4YzOpc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NNNm39dt4quh1iGXGg7ozuxsSMLSQMuRlJ+8AX1yal0ckXFzKYqdP4vzcE4J6/mzl7hVh4/rkxvSOlRhrwMLYT12ts65WDlga4vEW5gvQUYxkQqeA7qCa084Vd9WkSy1Ci61L2PVlgF8S5woT/U5YEIXKQO+Zr9ukHVLy+CiL6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zf+sq6Bq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1BB8C4CEC6;
-	Wed, 23 Oct 2024 06:59:11 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=b9F7FXcYaa1OLvLM2o8e+8ZSsDKP/OlaZ48btPAZK2kWSDs5FPQxbuRngWjYyhqrmVWgeiMV1u6JWi6m4EDOu4KQ+0b4x9akFLjrQN2bLT1t/gcVQKc+9XVLz7NRlatsSkF6/jqHgwK5ekoFg8+or/W0fhFLTQ13k0co59FN2BU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nxou0tKm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41676C4CEE5;
+	Wed, 23 Oct 2024 07:00:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729666756;
-	bh=dWYJ5hZw4CRKNMwTRgvaoC3DrogIMgmnJ7kv8WblhHc=;
+	s=k20201202; t=1729666824;
+	bh=MGwG3YdItCc878aLJDylUKdLwrKGxl01AckUB4YzOpc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Zf+sq6BqJ2ZOiwRV6/mGAhj4NsURVkdphEf0bNxR9ZLrs8x/0IdvH2FWRP7Mr1RCN
-	 9oA0PxVKhA0N+xLlC8OfgZynUUIFSE7vzqq+O3v3lsUVav44+Y62ls3lCpK3NNLWfk
-	 a9wLWy23z/lQYn9CgtjDTBMgjK2q1r6t3w2U9QAFyNugf5yXuCTtvPBGFxzc8NZOy5
-	 OHfh0Cwq4PiDnGSAvMoV4EBDD8/HeGmfw3hzR4g4cEoq64yjpG0hM+wpVwDr+cBIEY
-	 XbyrpZZIYFdCREnf9oBgdJEWGEq1feKzk+KprS4TVMrr7HqiVbQx6Vbf82VzGPumFB
-	 JmG3oneCVWukA==
-Message-ID: <606083d8-4332-45e4-be41-08ca5425cc03@kernel.org>
-Date: Wed, 23 Oct 2024 08:59:09 +0200
+	b=Nxou0tKmDqlb0ntqVzpzEixkRGjP4ty96WOtbCBjvXWmf8LXhvF6dwaRjlP22Popu
+	 zYMem7JbmKbvSBs+/d7Y6SHtEg43SGtRhdHAkD+x6QmYw/RL/VvCa6biIk4f5y2DK7
+	 vuk+1qynNg76QLk1dmY2u8x2HpI/IkEmZ87FT17iXp5E0jBiS2YMKLyphsP2/iVRYZ
+	 rRZI/tQh/q3mD7wEiHvNzq/kwGn4KckuLlAiQ+Ik2CgKh0QIHo1az+zd1D9UoqWfTK
+	 +8RxdFnIAAMmvt+Kdh8yagse+z+PYOQWkFUp3FjdykOEOBc/n3rkS7fKfpACLmR/hk
+	 3L91IqfDz6tbg==
+Message-ID: <c7c6bf7e-0f79-44b1-aed4-db1fdbedc9a8@kernel.org>
+Date: Wed, 23 Oct 2024 09:00:16 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,8 +50,8 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 1/6] dt-bindings: net: wireless: update required
- properties for ath12k PCI module
+Subject: Re: [RFC PATCH 2/6] dt-bindings: net: wireless: ath12k: describe WSI
+ property for QCN9274
 To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>, ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -60,11 +60,7 @@ Cc: linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
  Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
 References: <20241023060352.605019-1-quic_rajkbhag@quicinc.com>
- <20241023060352.605019-2-quic_rajkbhag@quicinc.com>
- <87db3d68-ab1a-4cc4-9857-416de39cea0f@kernel.org>
- <e2c1ce1a-89af-4feb-a21a-9ca2578430e7@quicinc.com>
- <b97b8350-3925-40b0-8f87-f89df429a52a@kernel.org>
- <e7b27f57-efb2-45ea-bbe0-e5aeb90cbff9@quicinc.com>
+ <20241023060352.605019-3-quic_rajkbhag@quicinc.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -110,46 +106,47 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <e7b27f57-efb2-45ea-bbe0-e5aeb90cbff9@quicinc.com>
+In-Reply-To: <20241023060352.605019-3-quic_rajkbhag@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 23/10/2024 08:53, Raj Kumar Bhagat wrote:
-> On 10/23/2024 12:17 PM, Krzysztof Kozlowski wrote:
->> On 23/10/2024 08:45, Raj Kumar Bhagat wrote:
->>> On 10/23/2024 12:05 PM, Krzysztof Kozlowski wrote:
->>>> On 23/10/2024 08:03, Raj Kumar Bhagat wrote:
->>>>> The current device-tree bindings for the Ath12K module list many
->>>>> WCN7850-specific properties as required. However, these properties are
->>>>> not applicable to other Ath12K devices.
->>>>>
->>>>> Hence, remove WCN7850-specific properties from the required section,
->>>>> retaining only generic properties valid across all Ath12K devices.
->>>>> WCN7850-specific properties will remain required based on the device's
->>>>> compatible enum.
->>>> Just not true. These apply to all devices described in this binding.
->>>>
->>>> NAK.
->>>>
->>>> Don't send patches for your downstream stuff.
->>> This is not for downstream. This series is the per-requisite for ath12k
->>> MLO support in upstream.
->>>
->>> In the subsequent patch [2/6] we are adding new device (QCN9274) in this
->>> binding that do not require the WCN7850 specific properties.
->>>
->>> This is a refactoring patch for the next patch [2/6].
->> It's just wrong. Not true. At this point of patch there are no other
->> devices. Don't refactor uselessly introducing incorrect hardware
+On 23/10/2024 08:03, Raj Kumar Bhagat wrote:
+> QCN9274 device has WSI support. WSI stands for WLAN Serial Interface.
+> It is used for the exchange of specific control information across
+> radios based on the doorbell mechanism. This WSI connection is
+> essential to exchange control information among these devices
 > 
-> Ok then, If we squash this patch with the next patch [2/6], that actually adding
-> the new device, then this patch changes are valid right?
+> Hence, describe WSI interface supported in QCN9274 with the following
+> properties:
+> 
+>  - qcom,wsi-group-id: It represents the identifier assigned to the WSI
+>    connection. All the ath12k devices connected to same WSI connection
+>    have the same wsi-group-id.
+> 
+>  - qcom,wsi-index: It represents the identifier assigned to ath12k
+>    device in the order of the WSI connection.
+> 
+>  - qcom,wsi-num-devices: Number of devices connected through WSI in
+>    the same group ID.
+> 
+> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+> ---
+>  .../bindings/net/wireless/qcom,ath12k.yaml    | 61 +++++++++++++++++++
+>  1 file changed, 61 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
+> index ecf38af747f7..6c8f97865075 100644
+> --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
+> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
+> @@ -19,6 +19,7 @@ properties:
+>    compatible:
+>      enum:
+>        - pci17cb,1107  # WCN7850
+> +      - pci17cb,1109  # QCN9274
 
-Yes, except I asked to have separate binding for devices with different
-interface (WSI). You add unrelated devices to same binding, growing it
-into something tricky to manage. Your second patch misses if:then
-disallwing all this WSI stuff for existing device... and then you should
-notice there is absolutely *nothing* in common.
+Missing supplies. How does the device take power? Everything through
+standard PCI pins? Are you sure? Please submit complete binding, so with
+all required properties.
 
 Best regards,
 Krzysztof
