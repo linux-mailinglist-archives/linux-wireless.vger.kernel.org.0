@@ -1,374 +1,205 @@
-Return-Path: <linux-wireless+bounces-14388-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14389-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2292F9ACB46
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2024 15:31:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 013D89ACBA6
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2024 15:52:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D343A2841C8
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2024 13:31:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21E2B1C223F1
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2024 13:51:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C451BE236;
-	Wed, 23 Oct 2024 13:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 212751C3021;
+	Wed, 23 Oct 2024 13:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZOiyncwY"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MV4LdYs8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADDE81C7B6F
-	for <linux-wireless@vger.kernel.org>; Wed, 23 Oct 2024 13:30:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F6981BE223
+	for <linux-wireless@vger.kernel.org>; Wed, 23 Oct 2024 13:50:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729690215; cv=none; b=GFzeLvqSY9yCtBnlCeT7QtX54YyJp0rQUIoUbNgrcya7HF0Jq0Qi4L7XS2WfgmJeKYTUQVeNnuYND4CGGMxQlXoX1aBmGWvdDgb8T6tdi7EdKwX9YQo/LVHDxR7rIMO1HoB4yY8MK+yWZdSWtMFOsV8ANn5XFwqoqw2ZBPaQ0Ok=
+	t=1729691420; cv=none; b=B7CrXmajfliyery4NMtOr3pg7qAQEPy+wZSD7fzQRKaCrhSfUGGC+sp1X2LoV22FspYFYFA3a/tsnRHWchWfIiJALcGguDIAnIkp5ZRqKzYceHgH72J1fmILhDiqhhumMg6cyom9biiz7pBUGbEOTRzOSP2lTlnproZdWl1ij8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729690215; c=relaxed/simple;
-	bh=Ag9DclzY7/2/pGnRv0ABMCHxmHrgQzR27GgVipjegnE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=B/RfxcEcR2Z/o23Npj6rGOPqFR2lX4dI/QZjiDf5V2ZilayxcrYlB8e/h/YS7DM0++gvpa05iUK68KdNKecr+vJWX4pVr2FFfGBlLSZ3mL4PczH2EIyMgkRZxcWqX40GX57qH7zGLadre3Vpm9NQSpHAfRC9k4keAowAlYtajBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZOiyncwY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1834C4CECD;
-	Wed, 23 Oct 2024 13:30:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729690215;
-	bh=Ag9DclzY7/2/pGnRv0ABMCHxmHrgQzR27GgVipjegnE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZOiyncwYccSkw/QrFSEPY8wrcl+/g+OHpXnfuw6Fsje4Ed+8Oy4iuvzedzLOBPqvW
-	 2IA7Na/gL/JhFKE9Tf+Lv6H8FRSPVofCgQokEj9XsgpmgGZEsv0ni/WT5TTgWCmoSR
-	 mrJvytL4KOcDN+ca+HAgoZ2q+vmknZjkiMgFMGFBpPOl/m+KTY47Hl+3TaxlccsHwK
-	 jRFe14/VHrpwA4RcIgoKoNUZybItK+efvt2CrxrHwfz3e+cLnh9o5/L6rxQZxtx84F
-	 0wSHDGyq829ySOgUDtw/KP61dHbFhiXsKOrJ8WQPXWo/sI0W+QiNGQVnOUjAjWqlnB
-	 7qf0drolDdZeg==
-From: Kalle Valo <kvalo@kernel.org>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 8/8] wifi: ath12k: Add MLO peer assoc command support
-Date: Wed, 23 Oct 2024 16:30:04 +0300
-Message-Id: <20241023133004.2253830-9-kvalo@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241023133004.2253830-1-kvalo@kernel.org>
-References: <20241023133004.2253830-1-kvalo@kernel.org>
+	s=arc-20240116; t=1729691420; c=relaxed/simple;
+	bh=1CTS0Ugnf9jJBC1ruM/WIiADBY5GmrMIo6GSJ3E70PI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=EsNBtqTUcXKgmnhveOp47xRL0F4v30VsQGfcfj8DVGYduzmVFZIMmhqtuUoHmAqDdiRSOJh24MXVinFuyB1Tutewgmtf62IcYWRTVQsWz/iW2aHDqxqVtKsv1lZyX4jVrzTqyuhejODTq3l+S1FFG1LtvLKnfcskS6HzD4yAJP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MV4LdYs8; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729691415;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oO7/c3KxFQ4pCLrpHRIQyFFVX9SeNU/L27HBNV7OVps=;
+	b=MV4LdYs89IhkXEdpv48Wa/IRPAgOsxnBIdhdluTma/rKfhu6MZwNZ0DBm+54r9KDPEe2/x
+	XK8Xp9+usPt9nWroXU7YtvsXX1QwrpjHKzYtNjLbygm2GmR9wsO49ElgCnRQb12DODV9aO
+	1JYtXZTu2jsOUe/IZzCTtzQGod6SGXY=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-362-JXfOVV01PYqhcNZqd6iEfw-1; Wed, 23 Oct 2024 09:50:14 -0400
+X-MC-Unique: JXfOVV01PYqhcNZqd6iEfw-1
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4315e8e9b1cso5513145e9.1
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Oct 2024 06:50:14 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729691412; x=1730296212;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oO7/c3KxFQ4pCLrpHRIQyFFVX9SeNU/L27HBNV7OVps=;
+        b=s4dvxAsRXBZudZ3Rolmlh+qzGtWnKtqHDL9fZtqaqDTYQvzgtBEd7yfnHCbY8PzlL1
+         j09ahEyO3Z2C8JOfHoUeOe97Sz/o/m+8BMt2MhazRxRYnsTAZrk6KeeRfDr9ijBmWK+D
+         pJC28VuNJ2U2iW3SHd0T+JP+b81q4ZzVeks8wddtXt0xMuLPjPvv9iCzXYIhXrTf+1dw
+         ywwUxvZYAjhhXj25dhcRUFQkWvFm5w4/Q8RxOYiw7EcImP+U8RljvI1BFuDl7/0jyhnU
+         0EGhIyBBPmEpRbIh6WYEww47pMlWI/QI1ill/Y3nFB/RspFSJgbDRpwrjXr5J5gmL6Yv
+         c8qA==
+X-Forwarded-Encrypted: i=1; AJvYcCWawCTGzs4cf0nwTNUF6LYPfz0WaC/sKZBEhVci8lmn1fu+mG3HXoHF4A2R+GLy96uueZdxAdCV26MxBH1CgQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCeyP7hjIKca0z529H385QNfqr8R5p8MYjkJZ48CQqKWipoJ2Y
+	qOUSTW7vLOZ8UP35FslMti2aGU+8K3XNsmgtD3hD6RXIQnz1Bwk3PeIe7DOotbwU1Iy4od2+iop
+	7AnZCp7CsQTX6IupKWmuMOuFSk18AeMieREtai0WSx36uKfSs5xcFadGqpYj/HVH2
+X-Received: by 2002:a05:600c:4f43:b0:42f:84ec:3e0 with SMTP id 5b1f17b1804b1-4317bd88469mr48316585e9.9.1729691412218;
+        Wed, 23 Oct 2024 06:50:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHVbS2v+nb51IE57ofZXQEpzrUukFuey0NWkF8DOXs6/K2mGsAvF2UpvyCTTgP3Onw94z3R5g==
+X-Received: by 2002:a05:600c:4f43:b0:42f:84ec:3e0 with SMTP id 5b1f17b1804b1-4317bd88469mr48316115e9.9.1729691411741;
+        Wed, 23 Oct 2024 06:50:11 -0700 (PDT)
+Received: from eisenberg.fritz.box ([2001:16b8:3dac:2f00:8834:dd3a:39b8:e43b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43186be7605sm16955265e9.19.2024.10.23.06.50.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Oct 2024 06:50:11 -0700 (PDT)
+Message-ID: <6f3db65fe9a5dcd1a7a8d9bd5352ecb248ef57b1.camel@redhat.com>
+Subject: Re: [PATCH 02/13] ALSA: hda_intel: Use always-managed version of
+ pcim_intx()
+From: Philipp Stanner <pstanner@redhat.com>
+To: Takashi Iwai <tiwai@suse.de>
+Cc: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, 
+ Sergey Shtylyov <s.shtylyov@omp.ru>, Basavaraj Natikar
+ <basavaraj.natikar@amd.com>, Jiri Kosina <jikos@kernel.org>,  Benjamin
+ Tissoires <bentiss@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Alex Dubov <oakad@yahoo.com>,
+ Sudarsana Kalluru <skalluru@marvell.com>, Manish Chopra
+ <manishc@marvell.com>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Rasesh Mody <rmody@marvell.com>,
+ GR-Linux-NIC-Dev@marvell.com, Igor Mitsyanko <imitsyanko@quantenna.com>,
+ Sergey Matyukevich <geomatsi@gmail.com>, Kalle Valo <kvalo@kernel.org>,
+ Sanjay R Mehta <sanju.mehta@amd.com>, Shyam Sundar S K
+ <Shyam-sundar.S-k@amd.com>, Jon Mason <jdmason@kudzu.us>, Dave Jiang
+ <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>, Bjorn Helgaas
+ <bhelgaas@google.com>, Alex Williamson <alex.williamson@redhat.com>,
+ Juergen Gross <jgross@suse.com>, Stefano Stabellini
+ <sstabellini@kernel.org>, Oleksandr Tyshchenko
+ <oleksandr_tyshchenko@epam.com>, Jaroslav Kysela <perex@perex.cz>, Takashi
+ Iwai <tiwai@suse.com>, Chen Ni <nichen@iscas.ac.cn>, Mario Limonciello
+ <mario.limonciello@amd.com>, Ricky Wu <ricky_wu@realtek.com>, Al Viro
+ <viro@zeniv.linux.org.uk>, Breno Leitao <leitao@debian.org>, Kevin Tian
+ <kevin.tian@intel.com>, Thomas Gleixner <tglx@linutronix.de>, Ilpo
+ =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>, Andy
+ Shevchenko <andriy.shevchenko@linux.intel.com>, Mostafa Saleh
+ <smostafa@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Yi Liu
+ <yi.l.liu@intel.com>,  Christian Brauner <brauner@kernel.org>, Ankit
+ Agrawal <ankita@nvidia.com>, Eric Auger <eric.auger@redhat.com>, Reinette
+ Chatre <reinette.chatre@intel.com>, Ye Bin <yebin10@huawei.com>, Marek
+ =?ISO-8859-1?Q?Marczykowski-G=F3recki?= <marmarek@invisiblethingslab.com>,
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, Peter Ujfalusi
+ <peter.ujfalusi@linux.intel.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Kai Vehmanen
+ <kai.vehmanen@linux.intel.com>,  Rui Salvaterra <rsalvaterra@gmail.com>,
+ linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-input@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-wireless@vger.kernel.org, ntb@lists.linux.dev,
+ linux-pci@vger.kernel.org,  kvm@vger.kernel.org,
+ xen-devel@lists.xenproject.org, linux-sound@vger.kernel.org
+Date: Wed, 23 Oct 2024 15:50:09 +0200
+In-Reply-To: <87v7xk2ps5.wl-tiwai@suse.de>
+References: <20241015185124.64726-1-pstanner@redhat.com>
+	 <20241015185124.64726-3-pstanner@redhat.com> <87v7xk2ps5.wl-tiwai@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Sriram R <quic_srirrama@quicinc.com>
+On Tue, 2024-10-22 at 16:08 +0200, Takashi Iwai wrote:
+> On Tue, 15 Oct 2024 20:51:12 +0200,
+> Philipp Stanner wrote:
+> >=20
+> > pci_intx() is a hybrid function which can sometimes be managed
+> > through
+> > devres. To remove this hybrid nature from pci_intx(), it is
+> > necessary to
+> > port users to either an always-managed or a never-managed version.
+> >=20
+> > hda_intel enables its PCI-Device with pcim_enable_device(). Thus,
+> > it needs
+> > the always-managed version.
+> >=20
+> > Replace pci_intx() with pcim_intx().
+> >=20
+> > Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+> > ---
+> > =C2=A0sound/pci/hda/hda_intel.c | 2 +-
+> > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+> >=20
+> > diff --git a/sound/pci/hda/hda_intel.c b/sound/pci/hda/hda_intel.c
+> > index b4540c5cd2a6..b44ca7b6e54f 100644
+> > --- a/sound/pci/hda/hda_intel.c
+> > +++ b/sound/pci/hda/hda_intel.c
+> > @@ -786,7 +786,7 @@ static int azx_acquire_irq(struct azx *chip,
+> > int do_disconnect)
+> > =C2=A0	}
+> > =C2=A0	bus->irq =3D chip->pci->irq;
+> > =C2=A0	chip->card->sync_irq =3D bus->irq;
+> > -	pci_intx(chip->pci, !chip->msi);
+> > +	pcim_intx(chip->pci, !chip->msi);
+> > =C2=A0	return 0;
+> > =C2=A0}
+> > =C2=A0
+>=20
+> Hm, it's OK-ish to do this as it's practically same as what
+> pci_intx()
+> currently does.=C2=A0 But, the current code can be a bit inconsistent
+> about
+> the original intx value.=C2=A0 pcim_intx() always stores !enable to
+> res->orig_intx unconditionally, and it means that the orig_intx value
+> gets overridden at each time pcim_intx() gets called.
 
-Add changes to send MLO peer assoc command with partner link details and
-primary umac details
+Yes.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+>=20
+> Meanwhile, HD-audio driver does release and re-acquire the interrupt
+> after disabling MSI when something goes wrong, and pci_intx() call
+> above is a part of that procedure.=C2=A0 So, it can rewrite the
+> res->orig_intx to another value by retry without MSI.=C2=A0 And after the
+> driver removal, it'll lead to another state.
 
-Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
-Signed-off-by: Harshitha Prem <quic_hprem@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/core.h |  7 +++
- drivers/net/wireless/ath/ath12k/mac.c  | 62 ++++++++++++++++++++
- drivers/net/wireless/ath/ath12k/wmi.c  | 79 ++++++++++++++++++++++++--
- drivers/net/wireless/ath/ath12k/wmi.h  | 46 +++++++++++++++
- 4 files changed, 188 insertions(+), 6 deletions(-)
+I'm not sure that I understand this paragraph completely. Still, could
+a solution for the driver on the long-term just be to use pci_intx()?
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 0a0c1a1594f2..e7a2d43e7b8a 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -487,9 +487,16 @@ struct ath12k_link_sta {
- 	struct ath12k_rx_peer_stats *rx_stats;
- 	struct ath12k_wbm_tx_stats *wbm_tx_stats;
- 	u32 bw_prev;
-+
-+	/* For now the assoc link will be considered primary */
-+	bool is_assoc_link;
-+
-+	 /* for firmware use only */
-+	u8 link_idx;
- };
- 
- struct ath12k_sta {
-+	struct ath12k_vif *ahvif;
- 	enum hal_pn_type pn_type;
- 	struct ath12k_link_sta deflink;
- 	struct ath12k_link_sta __rcu *link[IEEE80211_MLD_MAX_NUM_LINKS];
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index b628bc2fd0f5..2e79849974f0 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -2873,6 +2873,67 @@ static void ath12k_peer_assoc_h_eht(struct ath12k *ar,
- 	arg->punct_bitmap = ~arvif->punct_bitmap;
- }
- 
-+static void ath12k_peer_assoc_h_mlo(struct ath12k_link_sta *arsta,
-+				    struct ath12k_wmi_peer_assoc_arg *arg)
-+{
-+	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
-+	struct peer_assoc_mlo_params *ml = &arg->ml;
-+	struct ath12k_sta *ahsta = arsta->ahsta;
-+	struct ath12k_link_sta *arsta_p;
-+	struct ath12k_link_vif *arvif;
-+	unsigned long links;
-+	u8 link_id;
-+	int i;
-+
-+	if (!sta->mlo || ahsta->ml_peer_id == ATH12K_MLO_PEER_ID_INVALID)
-+		return;
-+
-+	ml->enabled = true;
-+	ml->assoc_link = arsta->is_assoc_link;
-+
-+	/* For now considering the primary umac based on assoc link */
-+	ml->primary_umac = arsta->is_assoc_link;
-+	ml->peer_id_valid = true;
-+	ml->logical_link_idx_valid = true;
-+
-+	ether_addr_copy(ml->mld_addr, sta->addr);
-+	ml->logical_link_idx = arsta->link_idx;
-+	ml->ml_peer_id = ahsta->ml_peer_id;
-+	ml->ieee_link_id = arsta->link_id;
-+	ml->num_partner_links = 0;
-+	links = ahsta->links_map;
-+
-+	rcu_read_lock();
-+
-+	i = 0;
-+
-+	for_each_set_bit(link_id, &links, IEEE80211_MLD_MAX_NUM_LINKS) {
-+		if (i >= ATH12K_WMI_MLO_MAX_LINKS)
-+			break;
-+
-+		arsta_p = rcu_dereference(ahsta->link[link_id]);
-+		arvif = rcu_dereference(ahsta->ahvif->link[link_id]);
-+
-+		if (arsta_p == arsta)
-+			continue;
-+
-+		if (!arvif->is_started)
-+			continue;
-+
-+		ml->partner_info[i].vdev_id = arvif->vdev_id;
-+		ml->partner_info[i].hw_link_id = arvif->ar->pdev->hw_link_id;
-+		ml->partner_info[i].assoc_link = arsta_p->is_assoc_link;
-+		ml->partner_info[i].primary_umac = arsta_p->is_assoc_link;
-+		ml->partner_info[i].logical_link_idx_valid = true;
-+		ml->partner_info[i].logical_link_idx = arsta_p->link_idx;
-+		ml->num_partner_links++;
-+
-+		i++;
-+	}
-+
-+	rcu_read_unlock();
-+}
-+
- static void ath12k_peer_assoc_prepare(struct ath12k *ar,
- 				      struct ath12k_link_vif *arvif,
- 				      struct ath12k_link_sta *arsta,
-@@ -2897,6 +2958,7 @@ static void ath12k_peer_assoc_prepare(struct ath12k *ar,
- 	ath12k_peer_assoc_h_qos(ar, arvif, arsta, arg);
- 	ath12k_peer_assoc_h_phymode(ar, arvif, arsta, arg);
- 	ath12k_peer_assoc_h_smps(arsta, arg);
-+	ath12k_peer_assoc_h_mlo(arsta, arg);
- 
- 	/* TODO: amsdu_disable req? */
- }
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index 0583d832fac7..73c1c6bcf48b 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -2101,12 +2101,15 @@ int ath12k_wmi_send_peer_assoc_cmd(struct ath12k *ar,
- 	struct ath12k_wmi_vht_rate_set_params *mcs;
- 	struct ath12k_wmi_he_rate_set_params *he_mcs;
- 	struct ath12k_wmi_eht_rate_set_params *eht_mcs;
-+	struct wmi_peer_assoc_mlo_params *ml_params;
-+	struct wmi_peer_assoc_mlo_partner_info *partner_info;
- 	struct sk_buff *skb;
- 	struct wmi_tlv *tlv;
- 	void *ptr;
- 	u32 peer_legacy_rates_align;
- 	u32 peer_ht_rates_align;
- 	int i, ret, len;
-+	__le32 v;
- 
- 	peer_legacy_rates_align = roundup(arg->peer_legacy_rates.num_rates,
- 					  sizeof(u32));
-@@ -2118,8 +2121,13 @@ int ath12k_wmi_send_peer_assoc_cmd(struct ath12k *ar,
- 	      TLV_HDR_SIZE + (peer_ht_rates_align * sizeof(u8)) +
- 	      sizeof(*mcs) + TLV_HDR_SIZE +
- 	      (sizeof(*he_mcs) * arg->peer_he_mcs_count) +
--	      TLV_HDR_SIZE + (sizeof(*eht_mcs) * arg->peer_eht_mcs_count) +
--	      TLV_HDR_SIZE + TLV_HDR_SIZE;
-+	      TLV_HDR_SIZE + (sizeof(*eht_mcs) * arg->peer_eht_mcs_count);
-+
-+	if (arg->ml.enabled)
-+		len += TLV_HDR_SIZE + sizeof(*ml_params) +
-+		       TLV_HDR_SIZE + (arg->ml.num_partner_links * sizeof(*partner_info));
-+	else
-+		len += (2 * TLV_HDR_SIZE);
- 
- 	skb = ath12k_wmi_alloc_skb(wmi->wmi_ab, len);
- 	if (!skb)
-@@ -2243,12 +2251,38 @@ int ath12k_wmi_send_peer_assoc_cmd(struct ath12k *ar,
- 		ptr += sizeof(*he_mcs);
- 	}
- 
--	/* MLO header tag with 0 length */
--	len = 0;
- 	tlv = ptr;
-+	len = arg->ml.enabled ? sizeof(*ml_params) : 0;
- 	tlv->header = ath12k_wmi_tlv_hdr(WMI_TAG_ARRAY_STRUCT, len);
- 	ptr += TLV_HDR_SIZE;
-+	if (!len)
-+		goto skip_ml_params;
- 
-+	ml_params = ptr;
-+	ml_params->tlv_header = ath12k_wmi_tlv_cmd_hdr(WMI_TAG_MLO_PEER_ASSOC_PARAMS,
-+						       len);
-+	ml_params->flags = cpu_to_le32(ATH12K_WMI_FLAG_MLO_ENABLED);
-+
-+	if (arg->ml.assoc_link)
-+		ml_params->flags |= cpu_to_le32(ATH12K_WMI_FLAG_MLO_ASSOC_LINK);
-+
-+	if (arg->ml.primary_umac)
-+		ml_params->flags |= cpu_to_le32(ATH12K_WMI_FLAG_MLO_PRIMARY_UMAC);
-+
-+	if (arg->ml.logical_link_idx_valid)
-+		ml_params->flags |=
-+			cpu_to_le32(ATH12K_WMI_FLAG_MLO_LOGICAL_LINK_IDX_VALID);
-+
-+	if (arg->ml.peer_id_valid)
-+		ml_params->flags |= cpu_to_le32(ATH12K_WMI_FLAG_MLO_PEER_ID_VALID);
-+
-+	ether_addr_copy(ml_params->mld_addr.addr, arg->ml.mld_addr);
-+	ml_params->logical_link_idx = cpu_to_le32(arg->ml.logical_link_idx);
-+	ml_params->ml_peer_id = cpu_to_le32(arg->ml.ml_peer_id);
-+	ml_params->ieee_link_id = cpu_to_le32(arg->ml.ieee_link_id);
-+	ptr += sizeof(*ml_params);
-+
-+skip_ml_params:
- 	/* Loop through the EHT rate set */
- 	len = arg->peer_eht_mcs_count * sizeof(*eht_mcs);
- 	tlv = ptr;
-@@ -2265,12 +2299,45 @@ int ath12k_wmi_send_peer_assoc_cmd(struct ath12k *ar,
- 		ptr += sizeof(*eht_mcs);
- 	}
- 
--	/* ML partner links tag with 0 length */
--	len = 0;
- 	tlv = ptr;
-+	len = arg->ml.enabled ? arg->ml.num_partner_links * sizeof(*partner_info) : 0;
-+	/* fill ML Partner links */
- 	tlv->header = ath12k_wmi_tlv_hdr(WMI_TAG_ARRAY_STRUCT, len);
- 	ptr += TLV_HDR_SIZE;
- 
-+	if (len == 0)
-+		goto send;
-+
-+	for (i = 0; i < arg->ml.num_partner_links; i++) {
-+		u32 cmd = WMI_TAG_MLO_PARTNER_LINK_PARAMS_PEER_ASSOC;
-+
-+		partner_info = ptr;
-+		partner_info->tlv_header = ath12k_wmi_tlv_cmd_hdr(cmd,
-+								  sizeof(*partner_info));
-+		partner_info->vdev_id = cpu_to_le32(arg->ml.partner_info[i].vdev_id);
-+		partner_info->hw_link_id =
-+			cpu_to_le32(arg->ml.partner_info[i].hw_link_id);
-+		partner_info->flags = cpu_to_le32(ATH12K_WMI_FLAG_MLO_ENABLED);
-+
-+		if (arg->ml.partner_info[i].assoc_link)
-+			partner_info->flags |=
-+				cpu_to_le32(ATH12K_WMI_FLAG_MLO_ASSOC_LINK);
-+
-+		if (arg->ml.partner_info[i].primary_umac)
-+			partner_info->flags |=
-+				cpu_to_le32(ATH12K_WMI_FLAG_MLO_PRIMARY_UMAC);
-+
-+		if (arg->ml.partner_info[i].logical_link_idx_valid) {
-+			v = cpu_to_le32(ATH12K_WMI_FLAG_MLO_LINK_ID_VALID);
-+			partner_info->flags |= v;
-+		}
-+
-+		partner_info->logical_link_idx =
-+			cpu_to_le32(arg->ml.partner_info[i].logical_link_idx);
-+		ptr += sizeof(*partner_info);
-+	}
-+
-+send:
- 	ath12k_dbg(ar->ab, ATH12K_DBG_WMI,
- 		   "wmi peer assoc vdev id %d assoc id %d peer mac %pM peer_flags %x rate_caps %x peer_caps %x listen_intval %d ht_caps %x max_mpdu %d nss %d phymode %d peer_mpdu_density %d vht_caps %x he cap_info %x he ops %x he cap_info_ext %x he phy %x %x %x peer_bw_rxnss_override %x peer_flags_ext %x eht mac_cap %x %x eht phy_cap %x %x %x\n",
- 		   cmd->vdev_id, cmd->peer_associd, arg->peer_mac,
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
-index 07bd275608bf..e93f74e97771 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.h
-+++ b/drivers/net/wireless/ath/ath12k/wmi.h
-@@ -3698,6 +3698,24 @@ struct wmi_vdev_install_key_arg {
- #define WMI_HECAP_TXRX_MCS_NSS_IDX_160		1
- #define WMI_HECAP_TXRX_MCS_NSS_IDX_80_80	2
- 
-+#define ATH12K_WMI_MLO_MAX_PARTNER_LINKS \
-+	(ATH12K_WMI_MLO_MAX_LINKS + ATH12K_MAX_NUM_BRIDGE_LINKS - 1)
-+
-+struct peer_assoc_mlo_params {
-+	bool enabled;
-+	bool assoc_link;
-+	bool primary_umac;
-+	bool peer_id_valid;
-+	bool logical_link_idx_valid;
-+	bool bridge_peer;
-+	u8 mld_addr[ETH_ALEN];
-+	u32 logical_link_idx;
-+	u32 ml_peer_id;
-+	u32 ieee_link_id;
-+	u8 num_partner_links;
-+	struct wmi_ml_partner_info partner_info[ATH12K_WMI_MLO_MAX_LINKS];
-+};
-+
- struct wmi_rate_set_arg {
- 	u32 num_rates;
- 	u8 rates[WMI_MAX_SUPPORTED_RATES];
-@@ -3772,8 +3790,36 @@ struct ath12k_wmi_peer_assoc_arg {
- 	u32 peer_eht_tx_mcs_set[WMI_MAX_EHTCAP_RATE_SET];
- 	struct ath12k_wmi_ppe_threshold_arg peer_eht_ppet;
- 	u32 punct_bitmap;
-+	bool is_assoc;
-+	struct peer_assoc_mlo_params ml;
- };
- 
-+#define ATH12K_WMI_FLAG_MLO_ENABLED			BIT(0)
-+#define ATH12K_WMI_FLAG_MLO_ASSOC_LINK			BIT(1)
-+#define ATH12K_WMI_FLAG_MLO_PRIMARY_UMAC		BIT(2)
-+#define ATH12K_WMI_FLAG_MLO_LINK_ID_VALID		BIT(3)
-+#define ATH12K_WMI_FLAG_MLO_PEER_ID_VALID		BIT(4)
-+
-+struct wmi_peer_assoc_mlo_partner_info {
-+	__le32 tlv_header;
-+	__le32 vdev_id;
-+	__le32 hw_link_id;
-+	__le32 flags;
-+	__le32 logical_link_idx;
-+} __packed;
-+
-+struct wmi_peer_assoc_mlo_params {
-+	__le32 tlv_header;
-+	__le32 flags;
-+	struct wmi_mac_addr mld_addr;
-+	__le32 logical_link_idx;
-+	__le32 ml_peer_id;
-+	__le32 ieee_link_id;
-+	__le32 emlsr_trans_timeout_us;
-+	__le32 emlsr_trans_delay_us;
-+	__le32 emlsr_padding_delay_us;
-+} __packed;
-+
- struct wmi_peer_assoc_complete_cmd {
- 	__le32 tlv_header;
- 	struct ath12k_wmi_mac_addr_params peer_macaddr;
--- 
-2.39.5
+>=20
+> In anyway, as it doesn't change the current behavior, feel free to
+> take my ack for now:
+>=20
+> Acked-by: Takashi Iwai <tiwai@suse.de>
+
+Thank you,
+P.
+
+>=20
+>=20
+> thanks,
+>=20
+> Takashi
+>=20
 
 
