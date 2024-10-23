@@ -1,73 +1,73 @@
-Return-Path: <linux-wireless+bounces-14408-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14409-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 752C19ACC19
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2024 16:17:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D85039ACC1A
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2024 16:18:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B845286BAC
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2024 14:17:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 210851F2147F
+	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2024 14:18:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 573E61B85C5;
-	Wed, 23 Oct 2024 14:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ADE919DF53;
+	Wed, 23 Oct 2024 14:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kFWjSrsr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZgOha6gR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033CD1A76AC
-	for <linux-wireless@vger.kernel.org>; Wed, 23 Oct 2024 14:17:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72279DDAB
+	for <linux-wireless@vger.kernel.org>; Wed, 23 Oct 2024 14:17:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729693042; cv=none; b=OfAG2zDX2ZKgmyPKFmeZuskEngSNxcO27sFImcgGV9iFv1yluoDtULqrDvERuB2bOyX6YSvPUFugZ9Cio1R5KgL7HDYP+OhOQYOeetFcqjBNY0ZFl5XE509y23WonwbT0pum3JEYvQ9FEgEgeqdeABqIrJzOvNriN7Wq7/3etoM=
+	t=1729693078; cv=none; b=uoXzjcbuhG2qOxvvcCnGUKi7NmrmmKOXAIxMmHH8hyuR6ujp3DH7/AWm8EED8iOTtTTXTieqbS6Fos2CtHDu3UXLLnlJrHiBFKeVSf5wmF0XdSxTYw+/80tXx+eR4+siuc1DpZZ/R0ITOfL0sx4E5HRKG0XI27VF88PBoCRt9zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729693042; c=relaxed/simple;
-	bh=FM0GnBqyVvPL6hIhxfrfcqPrGiD0DYy+C1FmPcBtkDg=;
+	s=arc-20240116; t=1729693078; c=relaxed/simple;
+	bh=r7auNeDnpguX5JZlLwXpCQrw/Bcao1gxFc47suaumso=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=FPXET/XGm9e8py0V9DuV0eIesRs3f+78zNJUhPlojRXA0HRHlL9Ere362jLvTpd0Ibw4tNYFJTarGfPDbHlWjnJ0Vl/ReRcrSaaum//r9YWrNzyorn9Pr5Y9engcH1v+aIjxNGc7EkpAQa4jlWKIWQ+EfunPEFj0McNgVePpdtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kFWjSrsr; arc=none smtp.client-ip=209.85.167.43
+	 In-Reply-To:Content-Type; b=N9aq2O4k7i126B5wDWil4SgoyJrHAUx+aE3ikhyE5OUxuwEJ/1H7y/sYp8VVC4eqiCqL9R5T/rJjmAUZWN7gsH7MX3eDCxqIqDhtL+h2d/FLlsocqKi+/10Gf/Dx+itLJZe7xao/zs+c2yfEZ6OenkQlhoM7ie25IJkiwvDCmNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZgOha6gR; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-539d9fffea1so6502712e87.2
-        for <linux-wireless@vger.kernel.org>; Wed, 23 Oct 2024 07:17:17 -0700 (PDT)
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-37d473c4bb6so6187610f8f.3
+        for <linux-wireless@vger.kernel.org>; Wed, 23 Oct 2024 07:17:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729693036; x=1730297836; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1729693073; x=1730297873; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=GgIZQF1p7zsIy3E9iYpmsmFPEU6Yhp4uwzbvwAOGYdM=;
-        b=kFWjSrsrc+pL16tZtfh3aBy+dRxWxgVzOte+eFfb+uWLyaBZOt8XEItPRENgQaUyRv
-         Zj3PUgtjJrxU7b3dIfvu4ujqGbnnNLv9rMoLbMN16/zvjTYMri7BFBgrSUlYo3QTLY7J
-         59xZ8E97YPFfG/qnIyA4IReW86UTF2f/1seE5qNP8k9zeMRi9xP0PJiQX8TJWueHtrhc
-         3GboBeFcO2UQ/re9gLEiBWFRwZMBOjSWwN3cRSycQbsFuKfkmp27rnLhHAj+KPaO2WGB
-         9c7CzJ+bD2bXVZ879CX6BxyGNVBb5VY5a+p3ntSKbZlKvgN52NP+BErAlIzG/lMR6NgP
-         Cf5A==
+        bh=lrvhveHFLfTHTUNaVXK3Q2NKIsZfhxZtn05/7NfUM7E=;
+        b=ZgOha6gRoMKMLPGd8N38v2/X81H34829IqEgVCo1lTGPTu62t/DnMDXOnrntUs4kdZ
+         y27afEhoxCxKRfy6plGwdprNuKffflzhu3c/e5o4h6dhq4hUgdx/79mo1W+mn+Hos371
+         gAgr3r+YPEkrV/dElU0cmzWcKZUXj1hF3GgvvdNT1bPPruwNOi6lTSdoCkpD0PPPyieu
+         cw8mfj8mHd6xdydS5rWDf5Uzx+cB5SU5fOwkpfmfCtuBxFme/eAWpf8ThhpCUthnDnp5
+         O1ZnJi2uqvNR9KtsVzPN2H4io1rOhTMsqIELjAhqyQU0JlyIlmKYpytNBTKuPE2sYSO6
+         dllA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729693036; x=1730297836;
+        d=1e100.net; s=20230601; t=1729693073; x=1730297873;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GgIZQF1p7zsIy3E9iYpmsmFPEU6Yhp4uwzbvwAOGYdM=;
-        b=ZuxhOx+zuV/rebTkWzMLqAUiIDi/yzVz+ywCbomfkOVqOpdKK4nwY3YeV1FcoY2ZP1
-         AgawKY1Lo2bJSEOjhYYNljt31uPk1OqSwAf6459W37BnJObXk5zbSzLQfG3eQmmMNlYz
-         LFt+z/LQi42bDAjlrvyaAzxwH6pJ4o/C3URRUYxsCCFyPWQRP9ub6YajD0LMcChPhs29
-         yMjoPSuzVuZl4pXj4mERurb5Gvd+54euVsR1dh8RtHXyq7vbxqyR5Hd/gGswajwKlAXc
-         I0Qj0vJ8n36SDSnXWj3RI/7mKA3z4bt1QTDpqkAEjcOhfFlKM5CffCLv0HwmVpmrkpDI
-         utsA==
-X-Gm-Message-State: AOJu0Yzd46buzLLwh79cWTQVyO3RR7lTUjio4FKY4XEIMGCQjKhNFqXm
-	lTBH+uZm9LLhlOBDNrszCzHx5OCiPzueIbdHXI/KHGcCMkCRUF5TjhsFgw==
-X-Google-Smtp-Source: AGHT+IGCr1fhNFbSXNxReOlJ8rPtQL/qVdBACZNBsgMGltgGbh6MPW3tqO2bKnmScpkxn9ri91inLA==
-X-Received: by 2002:a05:6512:3b27:b0:52e:76d5:9504 with SMTP id 2adb3069b0e04-53b1a31d782mr1821518e87.3.1729693035302;
-        Wed, 23 Oct 2024 07:17:15 -0700 (PDT)
+        bh=lrvhveHFLfTHTUNaVXK3Q2NKIsZfhxZtn05/7NfUM7E=;
+        b=e3NwkIeFEdiuHxO8L1R+XZ0pkmFX/9rcSGSeHKPpQTWZ3Yi6Dm1cFtkiE2pO7r+1Ho
+         IIrWFXKah/w/9q7C8NpOFgc2Zn0QmsneQbnr1au5AhkEWc0VATqU1ydHFex7LrpeJREw
+         Kxo0Y7lzyn76r+rbKNTkuEyETK7Mc8qxmk4PbiDqhJetX43RrdZAkPsX6jgx1jYntsFS
+         G5zuhoe881jY5+SmbZq9uTsYr8zfmckLLPwVPleTfyAakbQZwbtYVo1TgfWTrdzCzjyo
+         gdOC82ATd6R0YwdJvPYWUfCXxVGQs0i2JcgXEN/P8+0sRMDQCqc81nz6+UMyASWXmmgV
+         H/2A==
+X-Gm-Message-State: AOJu0YyqgFQB3wn8lcHgk6kfVXLVUUdr2XecmlAJKn+gmQGAvKxJRR2D
+	wy5RNtgWy81s4PLqFRSqaSyO0o9SKXoQ/b32YhLhtsfdfdvbWBVriS2dCA==
+X-Google-Smtp-Source: AGHT+IHxSOzcFR4tuNNKPiG5HOvUJgTuWQhJ00k4y+MgPspHiLpjuLzMzERuxB2MRrlBW8Au5ZpinQ==
+X-Received: by 2002:a5d:4bc6:0:b0:37d:52fc:edf9 with SMTP id ffacd0b85a97d-37efcf061c5mr2134609f8f.20.1729693071983;
+        Wed, 23 Oct 2024 07:17:51 -0700 (PDT)
 Received: from [192.168.1.50] ([79.113.150.231])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a915720f2sm480219666b.169.2024.10.23.07.17.14
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9a912edb6asm481874066b.49.2024.10.23.07.17.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Oct 2024 07:17:14 -0700 (PDT)
-Message-ID: <5d3a12af-53c7-417a-a75e-8af273d4a87d@gmail.com>
-Date: Wed, 23 Oct 2024 17:17:13 +0300
+        Wed, 23 Oct 2024 07:17:51 -0700 (PDT)
+Message-ID: <1a7657af-042d-44d3-829d-c1053bc77c47@gmail.com>
+Date: Wed, 23 Oct 2024 17:17:50 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,7 +75,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH v3 17/22] wifi: rtw88: Add rtw8821a_table.{c,h}
+Subject: [PATCH v3 18/22] wifi: rtw88: Add rtw88xxa.{c,h}
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 Cc: Ping-Ke Shih <pkshih@realtek.com>
@@ -85,2406 +85,2229 @@ In-Reply-To: <ee6d97b3-0c82-4225-a07f-b0d4043a901a@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-These contain various arrays for initialising RTL8821AU. Also TX power
-limits.
+These contain code shared by both RTL8821AU and RTL8812AU chips.
 
 Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 ---
 v2:
- - Constify card_enable_flow_8821a, enter_lps_flow_8821a,
-   card_disable_flow_8821a.
+ - Rename rtw8821a.{c,h} to rtw88xxa.{c,h}.
+ - Rename functions to use the "rtw88xxa" prefix.
+ - Rename struct rtw8821a_efuse to rtw88xxa_efuse.
+ - Keep only the common code in this patch. The rest is in the next
+   two patches now.
  - Fix copyright year.
+ - Print hw_cap in rtw88xxa_read_usb_type.
+ - Use pointer to rtwdev->efuse in rtw88xxa_get_bb_swing instead of
+   making a copy of the struct.
+ - Make rtw88xxa_get_swing_index return 24 instead of 0 by default.
+ - Use new register definitions.
+ - Delete rtw8821a_query_rx_desc. Use the new rtw_rx_query_rx_desc
+   function instead.
+ - Use u32_get_bits instead of FIELD_GET in
+   rtw88xxa_false_alarm_statistics.
+ - Use existing bit definitions for REG_CR bits instead of creating new
+   ones.
+ - Use existing name of REG_CCK0_FAREPORT instead of adding a new name.
+ - Delete unnecessary braces and semicolons in switch statements.
+ - Initialise arrays with {} instead of {0}.
+ - Empty functions should have the braces on separate lines.
+ - Include reg.h in rtw88xxa.h.
+ - Make struct rtw8821au_efuse and rtw8812au_efuse __packed.
+ - Delete most macros from rtw88xxa.h. Some were moved to reg.h, some
+   were unused (inherited from rtw8821c.h).
+ - Fix some indentation.
+ - Use the correct IQK function for 8812au in the tx power tracking.
+   v1 was accidentally using the IQK function meant for 8821au.
+ - Rename struct rtw8821a_phy_status_rpt to rtw_jaguar_phy_status_rpt.
+   It's shared by RTL8821AU and RTL8812AU, and maybe RTL8814AU in the
+   future. These are all "Jaguar" chips.
+ - Make struct rtw_jaguar_phy_status_rpt __packed.
+ - Access struct rtw_jaguar_phy_status_rpt with le32_get_bits instead
+   of bit fields.
 
 v3:
  - No change.
 ---
- .../wireless/realtek/rtw88/rtw8821a_table.c   | 2350 +++++++++++++++++
- .../wireless/realtek/rtw88/rtw8821a_table.h   |   21 +
- 2 files changed, 2371 insertions(+)
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821a_table.c
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821a_table.h
+ drivers/net/wireless/realtek/rtw88/rtw88xxa.c | 1989 +++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/rtw88xxa.h |  175 ++
+ 2 files changed, 2164 insertions(+)
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw88xxa.c
+ create mode 100644 drivers/net/wireless/realtek/rtw88/rtw88xxa.h
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821a_table.c b/drivers/net/wireless/realtek/rtw88/rtw8821a_table.c
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw88xxa.c b/drivers/net/wireless/realtek/rtw88/rtw88xxa.c
 new file mode 100644
-index 000000000000..c8fd8e331f69
+index 000000000000..71e61b9c0bec
 --- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821a_table.c
-@@ -0,0 +1,2350 @@
++++ b/drivers/net/wireless/realtek/rtw88/rtw88xxa.c
+@@ -0,0 +1,1989 @@
 +// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
 +/* Copyright(c) 2024  Realtek Corporation
 + */
 +
++#include <linux/usb.h>
 +#include "main.h"
++#include "coex.h"
 +#include "phy.h"
-+#include "rtw8821a_table.h"
++#include "rtw88xxa.h"
++#include "mac.h"
++#include "reg.h"
++#include "sec.h"
++#include "debug.h"
++#include "bf.h"
++#include "efuse.h"
++#include "usb.h"
 +
-+static const u32 rtw8821a_mac[] = {
-+	0x421, 0x0000000F,
-+	0x428, 0x0000000A,
-+	0x429, 0x00000010,
-+	0x430, 0x00000000,
-+	0x431, 0x00000000,
-+	0x432, 0x00000000,
-+	0x433, 0x00000001,
-+	0x434, 0x00000004,
-+	0x435, 0x00000005,
-+	0x436, 0x00000007,
-+	0x437, 0x00000008,
-+	0x43C, 0x00000004,
-+	0x43D, 0x00000005,
-+	0x43E, 0x00000007,
-+	0x43F, 0x00000008,
-+	0x440, 0x0000005D,
-+	0x441, 0x00000001,
-+	0x442, 0x00000000,
-+	0x444, 0x00000010,
-+	0x445, 0x00000000,
-+	0x446, 0x00000000,
-+	0x447, 0x00000000,
-+	0x448, 0x00000000,
-+	0x449, 0x000000F0,
-+	0x44A, 0x0000000F,
-+	0x44B, 0x0000003E,
-+	0x44C, 0x00000010,
-+	0x44D, 0x00000000,
-+	0x44E, 0x00000000,
-+	0x44F, 0x00000000,
-+	0x450, 0x00000000,
-+	0x451, 0x000000F0,
-+	0x452, 0x0000000F,
-+	0x453, 0x00000000,
-+	0x456, 0x0000005E,
-+	0x460, 0x00000066,
-+	0x461, 0x00000066,
-+	0x4C8, 0x0000003F,
-+	0x4C9, 0x000000FF,
-+	0x4CC, 0x000000FF,
-+	0x4CD, 0x000000FF,
-+	0x4CE, 0x00000001,
-+	0x500, 0x00000026,
-+	0x501, 0x000000A2,
-+	0x502, 0x0000002F,
-+	0x503, 0x00000000,
-+	0x504, 0x00000028,
-+	0x505, 0x000000A3,
-+	0x506, 0x0000005E,
-+	0x507, 0x00000000,
-+	0x508, 0x0000002B,
-+	0x509, 0x000000A4,
-+	0x50A, 0x0000005E,
-+	0x50B, 0x00000000,
-+	0x50C, 0x0000004F,
-+	0x50D, 0x000000A4,
-+	0x50E, 0x00000000,
-+	0x50F, 0x00000000,
-+	0x512, 0x0000001C,
-+	0x514, 0x0000000A,
-+	0x516, 0x0000000A,
-+	0x525, 0x0000004F,
-+	0x550, 0x00000010,
-+	0x551, 0x00000010,
-+	0x559, 0x00000002,
-+	0x55C, 0x00000050,
-+	0x55D, 0x000000FF,
-+	0x605, 0x00000030,
-+	0x607, 0x00000007,
-+	0x608, 0x0000000E,
-+	0x609, 0x0000002A,
-+	0x620, 0x000000FF,
-+	0x621, 0x000000FF,
-+	0x622, 0x000000FF,
-+	0x623, 0x000000FF,
-+	0x624, 0x000000FF,
-+	0x625, 0x000000FF,
-+	0x626, 0x000000FF,
-+	0x627, 0x000000FF,
-+	0x638, 0x00000050,
-+	0x63C, 0x0000000A,
-+	0x63D, 0x0000000A,
-+	0x63E, 0x0000000E,
-+	0x63F, 0x0000000E,
-+	0x640, 0x00000040,
-+	0x642, 0x00000040,
-+	0x643, 0x00000000,
-+	0x652, 0x000000C8,
-+	0x66E, 0x00000005,
-+	0x700, 0x00000021,
-+	0x701, 0x00000043,
-+	0x702, 0x00000065,
-+	0x703, 0x00000087,
-+	0x708, 0x00000021,
-+	0x709, 0x00000043,
-+	0x70A, 0x00000065,
-+	0x70B, 0x00000087,
-+	0x718, 0x00000040,
++void rtw88xxa_efuse_grant(struct rtw_dev *rtwdev, bool on)
++{
++	if (on) {
++		rtw_write8(rtwdev, REG_EFUSE_ACCESS, EFUSE_ACCESS_ON);
++
++		rtw_write16_set(rtwdev, REG_SYS_FUNC_EN, BIT_FEN_ELDR);
++		rtw_write16_set(rtwdev, REG_SYS_CLKR,
++				BIT_LOADER_CLK_EN | BIT_ANA8M);
++	} else {
++		rtw_write8(rtwdev, REG_EFUSE_ACCESS, EFUSE_ACCESS_OFF);
++	}
++}
++EXPORT_SYMBOL(rtw88xxa_efuse_grant);
++
++static void rtw8812a_read_amplifier_type(struct rtw_dev *rtwdev)
++{
++	struct rtw_efuse *efuse = &rtwdev->efuse;
++
++	efuse->ext_pa_2g = (efuse->pa_type_2g & BIT(5)) &&
++			   (efuse->pa_type_2g & BIT(4));
++	efuse->ext_lna_2g = (efuse->lna_type_2g & BIT(7)) &&
++			    (efuse->lna_type_2g & BIT(3));
++
++	efuse->ext_pa_5g = (efuse->pa_type_5g & BIT(1)) &&
++			   (efuse->pa_type_5g & BIT(0));
++	efuse->ext_lna_5g = (efuse->lna_type_5g & BIT(7)) &&
++			    (efuse->lna_type_5g & BIT(3));
++
++	/* For rtw_phy_cond2: */
++	if (efuse->ext_pa_2g) {
++		u8 ext_type_pa_2g_a = u8_get_bits(efuse->lna_type_2g, BIT(2));
++		u8 ext_type_pa_2g_b = u8_get_bits(efuse->lna_type_2g, BIT(6));
++
++		efuse->gpa_type = (ext_type_pa_2g_b << 2) | ext_type_pa_2g_a;
++	}
++
++	if (efuse->ext_pa_5g) {
++		u8 ext_type_pa_5g_a = u8_get_bits(efuse->lna_type_5g, BIT(2));
++		u8 ext_type_pa_5g_b = u8_get_bits(efuse->lna_type_5g, BIT(6));
++
++		efuse->apa_type = (ext_type_pa_5g_b << 2) | ext_type_pa_5g_a;
++	}
++
++	if (efuse->ext_lna_2g) {
++		u8 ext_type_lna_2g_a = u8_get_bits(efuse->lna_type_2g,
++						   BIT(1) | BIT(0));
++		u8 ext_type_lna_2g_b = u8_get_bits(efuse->lna_type_2g,
++						   BIT(5) | BIT(4));
++
++		efuse->glna_type = (ext_type_lna_2g_b << 2) | ext_type_lna_2g_a;
++	}
++
++	if (efuse->ext_lna_5g) {
++		u8 ext_type_lna_5g_a = u8_get_bits(efuse->lna_type_5g,
++						   BIT(1) | BIT(0));
++		u8 ext_type_lna_5g_b = u8_get_bits(efuse->lna_type_5g,
++						   BIT(5) | BIT(4));
++
++		efuse->alna_type = (ext_type_lna_5g_b << 2) | ext_type_lna_5g_a;
++	}
++}
++
++static void rtw8812a_read_rfe_type(struct rtw_dev *rtwdev,
++				   struct rtw88xxa_efuse *map)
++{
++	struct rtw_efuse *efuse = &rtwdev->efuse;
++
++	if (map->rfe_option == 0xff) {
++		if (rtwdev->hci.type == RTW_HCI_TYPE_USB)
++			efuse->rfe_option = 0;
++		else if (rtwdev->hci.type == RTW_HCI_TYPE_PCIE)
++			efuse->rfe_option = 2;
++		else
++			efuse->rfe_option = 4;
++	} else if (map->rfe_option & BIT(7)) {
++		if (efuse->ext_lna_5g) {
++			if (efuse->ext_pa_5g) {
++				if (efuse->ext_lna_2g && efuse->ext_pa_2g)
++					efuse->rfe_option = 3;
++				else
++					efuse->rfe_option = 0;
++			} else {
++				efuse->rfe_option = 2;
++			}
++		} else {
++			efuse->rfe_option = 4;
++		}
++	} else {
++		efuse->rfe_option = map->rfe_option & 0x3f;
++
++		/* Due to other customer already use incorrect EFUSE map for
++		 * their product. We need to add workaround to prevent to
++		 * modify spec and notify all customer to revise the IC 0xca
++		 * content.
++		 */
++		if (efuse->rfe_option == 4 &&
++		    (efuse->ext_pa_5g || efuse->ext_pa_2g ||
++		     efuse->ext_lna_5g || efuse->ext_lna_2g)) {
++			if (rtwdev->hci.type == RTW_HCI_TYPE_USB)
++				efuse->rfe_option = 0;
++			else if (rtwdev->hci.type == RTW_HCI_TYPE_PCIE)
++				efuse->rfe_option = 2;
++		}
++	}
++}
++
++static void rtw88xxa_read_usb_type(struct rtw_dev *rtwdev)
++{
++	struct rtw_efuse *efuse = &rtwdev->efuse;
++	struct rtw_hal *hal = &rtwdev->hal;
++	u8 antenna = 0;
++	u8 wmode = 0;
++	u8 val8, i;
++
++	efuse->hw_cap.bw = BIT(RTW_CHANNEL_WIDTH_20) |
++			   BIT(RTW_CHANNEL_WIDTH_40) |
++			   BIT(RTW_CHANNEL_WIDTH_80);
++	efuse->hw_cap.ptcl = EFUSE_HW_CAP_PTCL_VHT;
++
++	if (rtwdev->chip->id == RTW_CHIP_TYPE_8821A)
++		efuse->hw_cap.nss = 1;
++	else
++		efuse->hw_cap.nss = 2;
++
++	if (rtwdev->chip->id == RTW_CHIP_TYPE_8821A)
++		goto print_hw_cap;
++
++	for (i = 0; i < 2; i++) {
++		rtw_read8_physical_efuse(rtwdev, 1019 - i, &val8);
++
++		antenna = u8_get_bits(val8, GENMASK(7, 5));
++		if (antenna)
++			break;
++		antenna = u8_get_bits(val8, GENMASK(3, 1));
++		if (antenna)
++			break;
++	}
++
++	for (i = 0; i < 2; i++) {
++		rtw_read8_physical_efuse(rtwdev, 1021 - i, &val8);
++
++		wmode = u8_get_bits(val8, GENMASK(3, 2));
++		if (wmode)
++			break;
++	}
++
++	if (antenna == 1) {
++		rtw_info(rtwdev, "This RTL8812AU says it is 1T1R.\n");
++
++		efuse->hw_cap.nss = 1;
++		hal->rf_type = RF_1T1R;
++		hal->rf_path_num = 1;
++		hal->rf_phy_num = 1;
++		hal->antenna_tx = BB_PATH_A;
++		hal->antenna_rx = BB_PATH_A;
++	} else {
++		/* Override rtw_chip_parameter_setup(). It detects 8812au as 1T1R. */
++		efuse->hw_cap.nss = 2;
++		hal->rf_type = RF_2T2R;
++		hal->rf_path_num = 2;
++		hal->rf_phy_num = 2;
++		hal->antenna_tx = BB_PATH_AB;
++		hal->antenna_rx = BB_PATH_AB;
++
++		if (antenna == 2 && wmode == 2) {
++			rtw_info(rtwdev, "This RTL8812AU says it can't do VHT.\n");
++
++			/* Can't be EFUSE_HW_CAP_IGNORE and can't be
++			 * EFUSE_HW_CAP_PTCL_VHT, so make it 1.
++			 */
++			efuse->hw_cap.ptcl = 1;
++			efuse->hw_cap.bw &= ~BIT(RTW_CHANNEL_WIDTH_80);
++		}
++	}
++
++print_hw_cap:
++	rtw_dbg(rtwdev, RTW_DBG_EFUSE,
++		"hw cap: hci=0x%02x, bw=0x%02x, ptcl=0x%02x, ant_num=%d, nss=%d\n",
++		efuse->hw_cap.hci, efuse->hw_cap.bw, efuse->hw_cap.ptcl,
++		efuse->hw_cap.ant_num, efuse->hw_cap.nss);
++}
++
++int rtw88xxa_read_efuse(struct rtw_dev *rtwdev, u8 *log_map)
++{
++	const struct rtw_chip_info *chip = rtwdev->chip;
++	struct rtw_efuse *efuse = &rtwdev->efuse;
++	struct rtw88xxa_efuse *map;
++	int i;
++
++	if (chip->id == RTW_CHIP_TYPE_8812A)
++		rtwdev->hal.cut_version += 1;
++
++	if (rtw_dbg_is_enabled(rtwdev, RTW_DBG_EFUSE))
++		print_hex_dump(KERN_INFO, "", DUMP_PREFIX_OFFSET, 16, 1,
++			       log_map, chip->log_efuse_size, true);
++
++	map = (struct rtw88xxa_efuse *)log_map;
++
++	efuse->rf_board_option = map->rf_board_option;
++	efuse->crystal_cap = map->xtal_k;
++	if (efuse->crystal_cap == 0xff)
++		efuse->crystal_cap = 0x20;
++	efuse->pa_type_2g = map->pa_type;
++	efuse->pa_type_5g = map->pa_type;
++	efuse->lna_type_2g = map->lna_type_2g;
++	efuse->lna_type_5g = map->lna_type_5g;
++	if (chip->id == RTW_CHIP_TYPE_8812A) {
++		rtw8812a_read_amplifier_type(rtwdev);
++		rtw8812a_read_rfe_type(rtwdev, map);
++
++		efuse->usb_mode_switch = u8_get_bits(map->usb_mode, BIT(1));
++	}
++	efuse->channel_plan = map->channel_plan;
++	efuse->country_code[0] = map->country_code[0];
++	efuse->country_code[1] = map->country_code[1];
++	efuse->bt_setting = map->rf_bt_setting;
++	efuse->regd = map->rf_board_option & 0x7;
++	efuse->thermal_meter[0] = map->thermal_meter;
++	efuse->thermal_meter[1] = map->thermal_meter;
++	efuse->thermal_meter_k = map->thermal_meter;
++	efuse->tx_bb_swing_setting_2g = map->tx_bb_swing_setting_2g;
++	efuse->tx_bb_swing_setting_5g = map->tx_bb_swing_setting_5g;
++
++	rtw88xxa_read_usb_type(rtwdev);
++
++	if (chip->id == RTW_CHIP_TYPE_8821A)
++		efuse->btcoex = rtw_read32_mask(rtwdev, REG_WL_BT_PWR_CTRL,
++						BIT_BT_FUNC_EN);
++	else
++		efuse->btcoex = (map->rf_board_option & 0xe0) == 0x20;
++	efuse->share_ant = !!(efuse->bt_setting & BIT(0));
++
++	/* No antenna diversity because it's disabled in the vendor driver */
++	efuse->ant_div_cfg = 0;
++
++	efuse->ant_div_type = map->rf_antenna_option;
++	if (efuse->ant_div_type == 0xff)
++		efuse->ant_div_type = 0x3;
++
++	for (i = 0; i < 4; i++)
++		efuse->txpwr_idx_table[i] = map->txpwr_idx_table[i];
++
++	switch (rtw_hci_type(rtwdev)) {
++	case RTW_HCI_TYPE_USB:
++		if (chip->id == RTW_CHIP_TYPE_8821A)
++			ether_addr_copy(efuse->addr, map->rtw8821au.mac_addr);
++		else
++			ether_addr_copy(efuse->addr, map->rtw8812au.mac_addr);
++		break;
++	case RTW_HCI_TYPE_PCIE:
++	case RTW_HCI_TYPE_SDIO:
++	default:
++		/* unsupported now */
++		return -EOPNOTSUPP;
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL(rtw88xxa_read_efuse);
++
++static void rtw88xxa_reset_8051(struct rtw_dev *rtwdev)
++{
++	const struct rtw_chip_info *chip = rtwdev->chip;
++	u8 val8;
++
++	/* Reset MCU IO Wrapper */
++	rtw_write8_clr(rtwdev, REG_RSV_CTRL, BIT(1));
++	if (chip->id == RTW_CHIP_TYPE_8812A)
++		rtw_write8_clr(rtwdev, REG_RSV_CTRL + 1, BIT(3));
++	else
++		rtw_write8_clr(rtwdev, REG_RSV_CTRL + 1, BIT(0));
++
++	val8 = rtw_read8(rtwdev, REG_SYS_FUNC_EN + 1);
++	rtw_write8(rtwdev, REG_SYS_FUNC_EN + 1, val8 & ~BIT(2));
++
++	/* Enable MCU IO Wrapper */
++	rtw_write8_clr(rtwdev, REG_RSV_CTRL, BIT(1));
++	if (chip->id == RTW_CHIP_TYPE_8812A)
++		rtw_write8_set(rtwdev, REG_RSV_CTRL + 1, BIT(3));
++	else
++		rtw_write8_set(rtwdev, REG_RSV_CTRL + 1, BIT(0));
++
++	rtw_write8(rtwdev, REG_SYS_FUNC_EN + 1, val8 | BIT(2));
++}
++
++/* A lightweight deinit function */
++static void rtw88xxau_hw_reset(struct rtw_dev *rtwdev)
++{
++	u8 val8;
++
++	if (!(rtw_read8(rtwdev, REG_MCUFW_CTRL) & BIT_RAM_DL_SEL))
++		return;
++
++	rtw88xxa_reset_8051(rtwdev);
++	rtw_write8(rtwdev, REG_MCUFW_CTRL, 0x00);
++
++	/* before BB reset should do clock gated */
++	rtw_write32_set(rtwdev, REG_FPGA0_XCD_RF_PARA, BIT(6));
++
++	/* reset BB */
++	rtw_write8_clr(rtwdev, REG_SYS_FUNC_EN, BIT(0) | BIT(1));
++
++	/* reset RF */
++	rtw_write8(rtwdev, REG_RF_CTRL, 0);
++
++	/* reset TRX path */
++	rtw_write16(rtwdev, REG_CR, 0);
++
++	/* reset MAC, reg0x5[1], auto FSM off */
++	rtw_write8_set(rtwdev, REG_APS_FSMCO + 1, APS_FSMCO_MAC_OFF >> 8);
++
++	/* check if reg0x5[1] auto cleared */
++	if (read_poll_timeout_atomic(rtw_read8, val8,
++				     !(val8 & (APS_FSMCO_MAC_OFF >> 8)),
++				     1, 5000, false,
++				     rtwdev, REG_APS_FSMCO + 1))
++		rtw_err(rtwdev, "%s: timed out waiting for 0x5[1]\n", __func__);
++
++	/* reg0x5[0], auto FSM on */
++	val8 |= APS_FSMCO_MAC_ENABLE >> 8;
++	rtw_write8(rtwdev, REG_APS_FSMCO + 1, val8);
++
++	rtw_write8_clr(rtwdev, REG_SYS_FUNC_EN + 1, BIT(4) | BIT(7));
++	rtw_write8_set(rtwdev, REG_SYS_FUNC_EN + 1, BIT(4) | BIT(7));
++}
++
++static int rtw88xxau_init_power_on(struct rtw_dev *rtwdev)
++{
++	const struct rtw_chip_info *chip = rtwdev->chip;
++	u16 val16;
++	int ret;
++
++	ret = rtw_pwr_seq_parser(rtwdev, chip->pwr_on_seq);
++	if (ret) {
++		rtw_err(rtwdev, "power on flow failed\n");
++		return ret;
++	}
++
++	rtw_write16(rtwdev, REG_CR, 0);
++	val16 = BIT_HCI_TXDMA_EN | BIT_HCI_RXDMA_EN | BIT_TXDMA_EN |
++		BIT_RXDMA_EN | BIT_PROTOCOL_EN | BIT_SCHEDULE_EN |
++		BIT_MAC_SEC_EN | BIT_32K_CAL_TMR_EN;
++	rtw_write16_set(rtwdev, REG_CR, val16);
++
++	if (chip->id == RTW_CHIP_TYPE_8821A) {
++		if (rtw_read8(rtwdev, REG_SYS_CFG1 + 3) & BIT(0))
++			rtw_write8_set(rtwdev, REG_LDO_SWR_CTRL, BIT(6));
++	}
++
++	return ret;
++}
++
++static int rtw88xxa_llt_write(struct rtw_dev *rtwdev, u32 address, u32 data)
++{
++	u32 value = BIT_LLT_WRITE_ACCESS | (address << 8) | data;
++	int count = 0;
++
++	rtw_write32(rtwdev, REG_LLT_INIT, value);
++
++	do {
++		if (!rtw_read32_mask(rtwdev, REG_LLT_INIT, BIT(31) | BIT(30)))
++			break;
++
++		if (count > 20) {
++			rtw_err(rtwdev, "Failed to poll write LLT done at %d!\n",
++				address);
++			return -EBUSY;
++		}
++	} while (++count);
++
++	return 0;
++}
++
++static int rtw88xxa_llt_init(struct rtw_dev *rtwdev, u32 boundary)
++{
++	u32 last_entry = 255;
++	int status = 0;
++	u32 i;
++
++	for (i = 0; i < boundary - 1; i++) {
++		status = rtw88xxa_llt_write(rtwdev, i, i + 1);
++		if (status)
++			return status;
++	}
++
++	status = rtw88xxa_llt_write(rtwdev, boundary - 1, 0xFF);
++	if (status)
++		return status;
++
++	for (i = boundary; i < last_entry; i++) {
++		status = rtw88xxa_llt_write(rtwdev, i, i + 1);
++		if (status)
++			return status;
++	}
++
++	status = rtw88xxa_llt_write(rtwdev, last_entry, boundary);
++
++	return status;
++}
++
++static void rtw88xxau_init_queue_reserved_page(struct rtw_dev *rtwdev)
++{
++	const struct rtw_chip_info *chip = rtwdev->chip;
++	struct rtw_fifo_conf *fifo = &rtwdev->fifo;
++	const struct rtw_page_table *pg_tbl = NULL;
++	u16 pubq_num;
++	u32 val32;
++
++	switch (rtw_hci_type(rtwdev)) {
++	case RTW_HCI_TYPE_PCIE:
++		pg_tbl = &chip->page_table[1];
++		break;
++	case RTW_HCI_TYPE_USB:
++		if (rtwdev->hci.bulkout_num == 2)
++			pg_tbl = &chip->page_table[2];
++		else if (rtwdev->hci.bulkout_num == 3)
++			pg_tbl = &chip->page_table[3];
++		else if (rtwdev->hci.bulkout_num == 4)
++			pg_tbl = &chip->page_table[4];
++		break;
++	case RTW_HCI_TYPE_SDIO:
++		pg_tbl = &chip->page_table[0];
++		break;
++	default:
++		break;
++	}
++
++	pubq_num = fifo->acq_pg_num - pg_tbl->hq_num - pg_tbl->lq_num -
++		   pg_tbl->nq_num - pg_tbl->exq_num - pg_tbl->gapq_num;
++
++	val32 = BIT_RQPN_NE(pg_tbl->nq_num, pg_tbl->exq_num);
++	rtw_write32(rtwdev, REG_RQPN_NPQ, val32);
++
++	val32 = BIT_RQPN_HLP(pg_tbl->hq_num, pg_tbl->lq_num, pubq_num);
++	rtw_write32(rtwdev, REG_RQPN, val32);
++}
++
++static void rtw88xxau_init_tx_buffer_boundary(struct rtw_dev *rtwdev)
++{
++	struct rtw_fifo_conf *fifo = &rtwdev->fifo;
++
++	rtw_write8(rtwdev, REG_BCNQ_BDNY, fifo->rsvd_boundary);
++	rtw_write8(rtwdev, REG_MGQ_BDNY, fifo->rsvd_boundary);
++	rtw_write8(rtwdev, REG_WMAC_LBK_BF_HD, fifo->rsvd_boundary);
++	rtw_write8(rtwdev, REG_TRXFF_BNDY, fifo->rsvd_boundary);
++	rtw_write8(rtwdev, REG_DWBCN0_CTRL + 1, fifo->rsvd_boundary);
++}
++
++static int rtw88xxau_init_queue_priority(struct rtw_dev *rtwdev)
++{
++	const struct rtw_chip_info *chip = rtwdev->chip;
++	u8 bulkout_num = rtwdev->hci.bulkout_num;
++	const struct rtw_rqpn *rqpn = NULL;
++	u16 txdma_pq_map;
++
++	switch (rtw_hci_type(rtwdev)) {
++	case RTW_HCI_TYPE_PCIE:
++		rqpn = &chip->rqpn_table[1];
++		break;
++	case RTW_HCI_TYPE_USB:
++		if (bulkout_num == 2)
++			rqpn = &chip->rqpn_table[2];
++		else if (bulkout_num == 3)
++			rqpn = &chip->rqpn_table[3];
++		else if (bulkout_num == 4)
++			rqpn = &chip->rqpn_table[4];
++		else
++			return -EINVAL;
++		break;
++	case RTW_HCI_TYPE_SDIO:
++		rqpn = &chip->rqpn_table[0];
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	rtwdev->fifo.rqpn = rqpn;
++
++	txdma_pq_map = rtw_read16(rtwdev, REG_TXDMA_PQ_MAP) & 0x7;
++	txdma_pq_map |= BIT_TXDMA_HIQ_MAP(rqpn->dma_map_hi);
++	txdma_pq_map |= BIT_TXDMA_MGQ_MAP(rqpn->dma_map_mg);
++	txdma_pq_map |= BIT_TXDMA_BKQ_MAP(rqpn->dma_map_bk);
++	txdma_pq_map |= BIT_TXDMA_BEQ_MAP(rqpn->dma_map_be);
++	txdma_pq_map |= BIT_TXDMA_VIQ_MAP(rqpn->dma_map_vi);
++	txdma_pq_map |= BIT_TXDMA_VOQ_MAP(rqpn->dma_map_vo);
++	rtw_write16(rtwdev, REG_TXDMA_PQ_MAP, txdma_pq_map);
++
++	/* Packet in Hi Queue Tx immediately (No constraint for ATIM Period). */
++	if (rtw_hci_type(rtwdev) == RTW_HCI_TYPE_USB && bulkout_num == 4)
++		rtw_write8(rtwdev, REG_HIQ_NO_LMT_EN, 0xff);
++
++	return 0;
++}
++
++static void rtw88xxa_init_wmac_setting(struct rtw_dev *rtwdev)
++{
++	rtw_write16(rtwdev, REG_RXFLTMAP0, 0xffff);
++	rtw_write16(rtwdev, REG_RXFLTMAP1, 0x0400);
++	rtw_write16(rtwdev, REG_RXFLTMAP2, 0xffff);
++
++	rtw_write32(rtwdev, REG_MAR, 0xffffffff);
++	rtw_write32(rtwdev, REG_MAR + 4, 0xffffffff);
++}
++
++static void rtw88xxa_init_adaptive_ctrl(struct rtw_dev *rtwdev)
++{
++	rtw_write32_mask(rtwdev, REG_RRSR, 0xfffff, 0xffff1);
++	rtw_write16(rtwdev, REG_RETRY_LIMIT, 0x3030);
++}
++
++static void rtw88xxa_init_edca(struct rtw_dev *rtwdev)
++{
++	rtw_write16(rtwdev, REG_SPEC_SIFS, 0x100a);
++	rtw_write16(rtwdev, REG_MAC_SPEC_SIFS, 0x100a);
++
++	rtw_write16(rtwdev, REG_SIFS, 0x100a);
++	rtw_write16(rtwdev, REG_SIFS + 2, 0x100a);
++
++	rtw_write32(rtwdev, REG_EDCA_BE_PARAM, 0x005EA42B);
++	rtw_write32(rtwdev, REG_EDCA_BK_PARAM, 0x0000A44F);
++	rtw_write32(rtwdev, REG_EDCA_VI_PARAM, 0x005EA324);
++	rtw_write32(rtwdev, REG_EDCA_VO_PARAM, 0x002FA226);
++
++	rtw_write8(rtwdev, REG_USTIME_TSF, 0x50);
++	rtw_write8(rtwdev, REG_USTIME_EDCA, 0x50);
++}
++
++static void rtw88xxau_tx_aggregation(struct rtw_dev *rtwdev)
++{
++	const struct rtw_chip_info *chip = rtwdev->chip;
++
++	rtw_write32_mask(rtwdev, REG_DWBCN0_CTRL, 0xf0,
++			 chip->usb_tx_agg_desc_num);
++
++	if (chip->id == RTW_CHIP_TYPE_8821A)
++		rtw_write8(rtwdev, REG_DWBCN1_CTRL,
++			   chip->usb_tx_agg_desc_num << 1);
++}
++
++static void rtw88xxa_init_beacon_parameters(struct rtw_dev *rtwdev)
++{
++	u16 val16;
++
++	val16 = (BIT_DIS_TSF_UDT << 8) | BIT_DIS_TSF_UDT;
++	if (rtwdev->efuse.btcoex)
++		val16 |= BIT_EN_BCN_FUNCTION;
++	rtw_write16(rtwdev, REG_BCN_CTRL, val16);
++
++	rtw_write32_mask(rtwdev, REG_TBTT_PROHIBIT, 0xfffff, WLAN_TBTT_TIME);
++	rtw_write8(rtwdev, REG_DRVERLYINT, 0x05);
++	rtw_write8(rtwdev, REG_BCNDMATIM, WLAN_BCN_DMA_TIME);
++	rtw_write16(rtwdev, REG_BCNTCFG, 0x4413);
++}
++
++static void rtw88xxa_phy_bb_config(struct rtw_dev *rtwdev)
++{
++	u8 val8, crystal_cap;
++
++	/* power on BB/RF domain */
++	val8 = rtw_read8(rtwdev, REG_SYS_FUNC_EN);
++	val8 |= BIT_FEN_USBA;
++	rtw_write8(rtwdev, REG_SYS_FUNC_EN, val8);
++
++	/* toggle BB reset */
++	val8 |= BIT_FEN_BB_RSTB | BIT_FEN_BB_GLB_RST;
++	rtw_write8(rtwdev, REG_SYS_FUNC_EN, val8);
++
++	rtw_write8(rtwdev, REG_RF_CTRL,
++		   BIT_RF_EN | BIT_RF_RSTB | BIT_RF_SDM_RSTB);
++	rtw_write8(rtwdev, REG_RF_B_CTRL,
++		   BIT_RF_EN | BIT_RF_RSTB | BIT_RF_SDM_RSTB);
++
++	rtw_load_table(rtwdev, rtwdev->chip->bb_tbl);
++	rtw_load_table(rtwdev, rtwdev->chip->agc_tbl);
++
++	crystal_cap = rtwdev->efuse.crystal_cap & 0x3F;
++	if (rtwdev->chip->id == RTW_CHIP_TYPE_8812A)
++		rtw_write32_mask(rtwdev, REG_AFE_CTRL3, 0x7FF80000,
++				 crystal_cap | (crystal_cap << 6));
++	else
++		rtw_write32_mask(rtwdev, REG_AFE_CTRL3, 0x00FFF000,
++				 crystal_cap | (crystal_cap << 6));
++}
++
++static void rtw88xxa_phy_rf_config(struct rtw_dev *rtwdev)
++{
++	u8 rf_path;
++
++	for (rf_path = 0; rf_path < rtwdev->hal.rf_path_num; rf_path++)
++		rtw_load_table(rtwdev, rtwdev->chip->rf_tbl[rf_path]);
++}
++
++static void rtw8812a_config_1t(struct rtw_dev *rtwdev)
++{
++	/* BB OFDM RX Path_A */
++	rtw_write32_mask(rtwdev, REG_RXPSEL, 0xff, 0x11);
++
++	/* BB OFDM TX Path_A */
++	rtw_write32_mask(rtwdev, REG_TXPSEL, MASKLWORD, 0x1111);
++
++	/* BB CCK R/Rx Path_A */
++	rtw_write32_mask(rtwdev, REG_CCK_RX, 0x0c000000, 0x0);
++
++	/* MCS support */
++	rtw_write32_mask(rtwdev, REG_RX_MCS_LIMIT, 0xc0000060, 0x4);
++
++	/* RF Path_B HSSI OFF */
++	rtw_write32_mask(rtwdev, REG_3WIRE_SWB, 0xf, 0x4);
++
++	/* RF Path_B Power Down */
++	rtw_write32_mask(rtwdev, REG_LSSI_WRITE_B, MASKDWORD, 0);
++
++	/* ADDA Path_B OFF */
++	rtw_write32_mask(rtwdev, REG_AFE_PWR1_B, MASKDWORD, 0);
++	rtw_write32_mask(rtwdev, REG_AFE_PWR2_B, MASKDWORD, 0);
++}
++
++static const u32 rtw88xxa_txscale_tbl[] = {
++	0x081, 0x088, 0x090, 0x099, 0x0a2, 0x0ac, 0x0b6, 0x0c0, 0x0cc, 0x0d8,
++	0x0e5, 0x0f2, 0x101, 0x110, 0x120, 0x131, 0x143, 0x156, 0x16a, 0x180,
++	0x197, 0x1af, 0x1c8, 0x1e3, 0x200, 0x21e, 0x23e, 0x261, 0x285, 0x2ab,
++	0x2d3, 0x2fe, 0x32b, 0x35c, 0x38e, 0x3c4, 0x3fe
 +};
 +
-+RTW_DECL_TABLE_PHY_COND(rtw8821a_mac, rtw_phy_cfg_mac);
++static u32 rtw88xxa_get_bb_swing(struct rtw_dev *rtwdev, u8 band, u8 path)
++{
++	static const u32 swing2setting[4] = {0x200, 0x16a, 0x101, 0x0b6};
++	struct rtw_efuse *efuse = &rtwdev->efuse;
++	u8 tx_bb_swing;
 +
-+static const u32 rtw8821a_agc[] = {
-+	0x81C, 0xBF000001,
-+	0x81C, 0xBF020001,
-+	0x81C, 0xBF040001,
-+	0x81C, 0xBF060001,
-+	0x81C, 0xBE080001,
-+	0x81C, 0xBD0A0001,
-+	0x81C, 0xBC0C0001,
-+	0x81C, 0xBA0E0001,
-+	0x81C, 0xB9100001,
-+	0x81C, 0xB8120001,
-+	0x81C, 0xB7140001,
-+	0x81C, 0xB6160001,
-+	0x81C, 0xB5180001,
-+	0x81C, 0xB41A0001,
-+	0x81C, 0xB31C0001,
-+	0x81C, 0xB21E0001,
-+	0x81C, 0xB1200001,
-+	0x81C, 0xB0220001,
-+	0x81C, 0xAF240001,
-+	0x81C, 0xAE260001,
-+	0x81C, 0xAD280001,
-+	0x81C, 0xAC2A0001,
-+	0x81C, 0xAB2C0001,
-+	0x81C, 0xAA2E0001,
-+	0x81C, 0xA9300001,
-+	0x81C, 0xA8320001,
-+	0x81C, 0xA7340001,
-+	0x81C, 0xA6360001,
-+	0x81C, 0xA5380001,
-+	0x81C, 0xA43A0001,
-+	0x81C, 0x683C0001,
-+	0x81C, 0x673E0001,
-+	0x81C, 0x66400001,
-+	0x81C, 0x65420001,
-+	0x81C, 0x64440001,
-+	0x81C, 0x63460001,
-+	0x81C, 0x62480001,
-+	0x81C, 0x614A0001,
-+	0x81C, 0x474C0001,
-+	0x81C, 0x464E0001,
-+	0x81C, 0x45500001,
-+	0x81C, 0x44520001,
-+	0x81C, 0x43540001,
-+	0x81C, 0x42560001,
-+	0x81C, 0x41580001,
-+	0x81C, 0x285A0001,
-+	0x81C, 0x275C0001,
-+	0x81C, 0x265E0001,
-+	0x81C, 0x25600001,
-+	0x81C, 0x24620001,
-+	0x81C, 0x0A640001,
-+	0x81C, 0x09660001,
-+	0x81C, 0x08680001,
-+	0x81C, 0x076A0001,
-+	0x81C, 0x066C0001,
-+	0x81C, 0x056E0001,
-+	0x81C, 0x04700001,
-+	0x81C, 0x03720001,
-+	0x81C, 0x02740001,
-+	0x81C, 0x01760001,
-+	0x81C, 0x01780001,
-+	0x81C, 0x017A0001,
-+	0x81C, 0x017C0001,
-+	0x81C, 0x017E0001,
-+	0x8000020c,	0x00000000,	0x40000000,	0x00000000,
-+	0x81C, 0xFB000101,
-+	0x81C, 0xFA020101,
-+	0x81C, 0xF9040101,
-+	0x81C, 0xF8060101,
-+	0x81C, 0xF7080101,
-+	0x81C, 0xF60A0101,
-+	0x81C, 0xF50C0101,
-+	0x81C, 0xF40E0101,
-+	0x81C, 0xF3100101,
-+	0x81C, 0xF2120101,
-+	0x81C, 0xF1140101,
-+	0x81C, 0xF0160101,
-+	0x81C, 0xEF180101,
-+	0x81C, 0xEE1A0101,
-+	0x81C, 0xED1C0101,
-+	0x81C, 0xEC1E0101,
-+	0x81C, 0xEB200101,
-+	0x81C, 0xEA220101,
-+	0x81C, 0xE9240101,
-+	0x81C, 0xE8260101,
-+	0x81C, 0xE7280101,
-+	0x81C, 0xE62A0101,
-+	0x81C, 0xE52C0101,
-+	0x81C, 0xE42E0101,
-+	0x81C, 0xE3300101,
-+	0x81C, 0xA5320101,
-+	0x81C, 0xA4340101,
-+	0x81C, 0xA3360101,
-+	0x81C, 0x87380101,
-+	0x81C, 0x863A0101,
-+	0x81C, 0x853C0101,
-+	0x81C, 0x843E0101,
-+	0x81C, 0x69400101,
-+	0x81C, 0x68420101,
-+	0x81C, 0x67440101,
-+	0x81C, 0x66460101,
-+	0x81C, 0x49480101,
-+	0x81C, 0x484A0101,
-+	0x81C, 0x474C0101,
-+	0x81C, 0x2A4E0101,
-+	0x81C, 0x29500101,
-+	0x81C, 0x28520101,
-+	0x81C, 0x27540101,
-+	0x81C, 0x26560101,
-+	0x81C, 0x25580101,
-+	0x81C, 0x245A0101,
-+	0x81C, 0x235C0101,
-+	0x81C, 0x055E0101,
-+	0x81C, 0x04600101,
-+	0x81C, 0x03620101,
-+	0x81C, 0x02640101,
-+	0x81C, 0x01660101,
-+	0x81C, 0x01680101,
-+	0x81C, 0x016A0101,
-+	0x81C, 0x016C0101,
-+	0x81C, 0x016E0101,
-+	0x81C, 0x01700101,
-+	0x81C, 0x01720101,
-+	0x9000040c,	0x00000000,	0x40000000,	0x00000000,
-+	0x81C, 0xFB000101,
-+	0x81C, 0xFA020101,
-+	0x81C, 0xF9040101,
-+	0x81C, 0xF8060101,
-+	0x81C, 0xF7080101,
-+	0x81C, 0xF60A0101,
-+	0x81C, 0xF50C0101,
-+	0x81C, 0xF40E0101,
-+	0x81C, 0xF3100101,
-+	0x81C, 0xF2120101,
-+	0x81C, 0xF1140101,
-+	0x81C, 0xF0160101,
-+	0x81C, 0xEF180101,
-+	0x81C, 0xEE1A0101,
-+	0x81C, 0xED1C0101,
-+	0x81C, 0xEC1E0101,
-+	0x81C, 0xEB200101,
-+	0x81C, 0xEA220101,
-+	0x81C, 0xE9240101,
-+	0x81C, 0xE8260101,
-+	0x81C, 0xE7280101,
-+	0x81C, 0xE62A0101,
-+	0x81C, 0xE52C0101,
-+	0x81C, 0xE42E0101,
-+	0x81C, 0xE3300101,
-+	0x81C, 0xA5320101,
-+	0x81C, 0xA4340101,
-+	0x81C, 0xA3360101,
-+	0x81C, 0x87380101,
-+	0x81C, 0x863A0101,
-+	0x81C, 0x853C0101,
-+	0x81C, 0x843E0101,
-+	0x81C, 0x69400101,
-+	0x81C, 0x68420101,
-+	0x81C, 0x67440101,
-+	0x81C, 0x66460101,
-+	0x81C, 0x49480101,
-+	0x81C, 0x484A0101,
-+	0x81C, 0x474C0101,
-+	0x81C, 0x2A4E0101,
-+	0x81C, 0x29500101,
-+	0x81C, 0x28520101,
-+	0x81C, 0x27540101,
-+	0x81C, 0x26560101,
-+	0x81C, 0x25580101,
-+	0x81C, 0x245A0101,
-+	0x81C, 0x235C0101,
-+	0x81C, 0x055E0101,
-+	0x81C, 0x04600101,
-+	0x81C, 0x03620101,
-+	0x81C, 0x02640101,
-+	0x81C, 0x01660101,
-+	0x81C, 0x01680101,
-+	0x81C, 0x016A0101,
-+	0x81C, 0x016C0101,
-+	0x81C, 0x016E0101,
-+	0x81C, 0x01700101,
-+	0x81C, 0x01720101,
-+	0xA0000000,	0x00000000,
-+	0x81C, 0xFF000101,
-+	0x81C, 0xFF020101,
-+	0x81C, 0xFE040101,
-+	0x81C, 0xFD060101,
-+	0x81C, 0xFC080101,
-+	0x81C, 0xFD0A0101,
-+	0x81C, 0xFC0C0101,
-+	0x81C, 0xFB0E0101,
-+	0x81C, 0xFA100101,
-+	0x81C, 0xF9120101,
-+	0x81C, 0xF8140101,
-+	0x81C, 0xF7160101,
-+	0x81C, 0xF6180101,
-+	0x81C, 0xF51A0101,
-+	0x81C, 0xF41C0101,
-+	0x81C, 0xF31E0101,
-+	0x81C, 0xF2200101,
-+	0x81C, 0xF1220101,
-+	0x81C, 0xF0240101,
-+	0x81C, 0xEF260101,
-+	0x81C, 0xEE280101,
-+	0x81C, 0xED2A0101,
-+	0x81C, 0xEC2C0101,
-+	0x81C, 0xEB2E0101,
-+	0x81C, 0xEA300101,
-+	0x81C, 0xE9320101,
-+	0x81C, 0xE8340101,
-+	0x81C, 0xE7360101,
-+	0x81C, 0xE6380101,
-+	0x81C, 0xE53A0101,
-+	0x81C, 0xE43C0101,
-+	0x81C, 0xE33E0101,
-+	0x81C, 0xA5400101,
-+	0x81C, 0xA4420101,
-+	0x81C, 0xA3440101,
-+	0x81C, 0x87460101,
-+	0x81C, 0x86480101,
-+	0x81C, 0x854A0101,
-+	0x81C, 0x844C0101,
-+	0x81C, 0x694E0101,
-+	0x81C, 0x68500101,
-+	0x81C, 0x67520101,
-+	0x81C, 0x66540101,
-+	0x81C, 0x49560101,
-+	0x81C, 0x48580101,
-+	0x81C, 0x475A0101,
-+	0x81C, 0x2A5C0101,
-+	0x81C, 0x295E0101,
-+	0x81C, 0x28600101,
-+	0x81C, 0x27620101,
-+	0x81C, 0x26640101,
-+	0x81C, 0x25660101,
-+	0x81C, 0x24680101,
-+	0x81C, 0x236A0101,
-+	0x81C, 0x056C0101,
-+	0x81C, 0x046E0101,
-+	0x81C, 0x03700101,
-+	0x81C, 0x02720101,
-+	0xB0000000,	0x00000000,
-+	0x81C, 0x01740101,
-+	0x81C, 0x01760101,
-+	0x81C, 0x01780101,
-+	0x81C, 0x017A0101,
-+	0x81C, 0x017C0101,
-+	0x81C, 0x017E0101,
-+	0xC50, 0x00000022,
-+	0xC50, 0x00000020,
-+};
++	if (band == RTW_BAND_2G)
++		tx_bb_swing = efuse->tx_bb_swing_setting_2g;
++	else
++		tx_bb_swing = efuse->tx_bb_swing_setting_5g;
 +
-+RTW_DECL_TABLE_PHY_COND(rtw8821a_agc, rtw_phy_cfg_agc);
++	if (path == RF_PATH_B)
++		tx_bb_swing >>= 2;
++	tx_bb_swing &= 0x3;
 +
-+static const u32 rtw8821a_bb[] = {
-+	0x800, 0x0020D090,
-+	0x804, 0x080112E0,
-+	0x808, 0x0E028211,
-+	0x80C, 0x92131111,
-+	0x810, 0x20101261,
-+	0x814, 0x020C3D10,
-+	0x818, 0x03A00385,
-+	0x820, 0x00000000,
-+	0x824, 0x00030FE0,
-+	0x828, 0x00000000,
-+	0x82C, 0x002081DD,
-+	0x830, 0x2AAAEEC8,
-+	0x834, 0x0037A706,
-+	0x838, 0x06489B44,
-+	0x83C, 0x0000095B,
-+	0x840, 0xC0000001,
-+	0x844, 0x40003CDE,
-+	0x848, 0x62103F8B,
-+	0x84C, 0x6CFDFFB8,
-+	0x850, 0x28874706,
-+	0x854, 0x0001520C,
-+	0x858, 0x8060E000,
-+	0x85C, 0x74210168,
-+	0x860, 0x6929C321,
-+	0x864, 0x79727432,
-+	0x868, 0x8CA7A314,
-+	0x86C, 0x888C2878,
-+	0x870, 0x08888888,
-+	0x874, 0x31612C2E,
-+	0x878, 0x00000152,
-+	0x87C, 0x000FD000,
-+	0x8A0, 0x00000013,
-+	0x8A4, 0x7F7F7F7F,
-+	0x8A8, 0xA2000338,
-+	0x8AC, 0x0FF0FA0A,
-+	0x8B4, 0x000FC080,
-+	0x8B8, 0x6C10D7FF,
-+	0x8BC, 0x0CA52090,
-+	0x8C0, 0x1BF00020,
-+	0x8C4, 0x00000000,
-+	0x8C8, 0x00013169,
-+	0x8CC, 0x08248492,
-+	0x8D4, 0x940008A0,
-+	0x8D8, 0x290B5612,
-+	0x8F8, 0x400002C0,
-+	0x8FC, 0x00000000,
-+	0x900, 0x00000700,
-+	0x90C, 0x00000000,
-+	0x910, 0x0000FC00,
-+	0x914, 0x00000404,
-+	0x918, 0x1C1028C0,
-+	0x91C, 0x64B11A1C,
-+	0x920, 0xE0767233,
-+	0x924, 0x055AA500,
-+	0x928, 0x00000004,
-+	0x92C, 0xFFFE0000,
-+	0x930, 0xFFFFFFFE,
-+	0x934, 0x001FFFFF,
-+	0x960, 0x00000000,
-+	0x964, 0x00000000,
-+	0x968, 0x00000000,
-+	0x96C, 0x00000000,
-+	0x970, 0x801FFFFF,
-+	0x974, 0x000003FF,
-+	0x978, 0x00000000,
-+	0x97C, 0x00000000,
-+	0x980, 0x00000000,
-+	0x984, 0x00000000,
-+	0x988, 0x00000000,
-+	0x990, 0x27100000,
-+	0x994, 0xFFFF0100,
-+	0x998, 0xFFFFFF5C,
-+	0x99C, 0xFFFFFFFF,
-+	0x9A0, 0x000000FF,
-+	0x9A4, 0x00480080,
-+	0x9A8, 0x00000000,
-+	0x9AC, 0x00000000,
-+	0x9B0, 0x81081008,
-+	0x9B4, 0x01081008,
-+	0x9B8, 0x01081008,
-+	0x9BC, 0x01081008,
-+	0x9D0, 0x00000000,
-+	0x9D4, 0x00000000,
-+	0x9D8, 0x00000000,
-+	0x9DC, 0x00000000,
-+	0x9E0, 0x00005D00,
-+	0x9E4, 0x00000003,
-+	0x9E8, 0x00000001,
-+	0xA00, 0x00D047C8,
-+	0xA04, 0x01FF800C,
-+	0xA08, 0x8C8A8300,
-+	0xA0C, 0x2E68000F,
-+	0xA10, 0x9500BB78,
-+	0xA14, 0x11144028,
-+	0xA18, 0x00881117,
-+	0xA1C, 0x89140F00,
-+	0xA20, 0x1A1B0000,
-+	0xA24, 0x090E1317,
-+	0xA28, 0x00000204,
-+	0xA2C, 0x00900000,
-+	0xA70, 0x101FFF00,
-+	0xA74, 0x00000008,
-+	0xA78, 0x00000900,
-+	0xA7C, 0x225B0606,
-+	0xA80, 0x21805490,
-+	0xA84, 0x001F0000,
-+	0XB00, 0x03100040,
-+	0XB04, 0x0000B000,
-+	0XB08, 0xAE0201EB,
-+	0XB0C, 0x01003207,
-+	0XB10, 0x00009807,
-+	0XB14, 0x01000000,
-+	0XB18, 0x00000002,
-+	0XB1C, 0x00000002,
-+	0XB20, 0x0000001F,
-+	0XB24, 0x03020100,
-+	0XB28, 0x07060504,
-+	0XB2C, 0x0B0A0908,
-+	0XB30, 0x0F0E0D0C,
-+	0XB34, 0x13121110,
-+	0XB38, 0x17161514,
-+	0XB3C, 0x0000003A,
-+	0XB40, 0x00000000,
-+	0XB44, 0x00000000,
-+	0XB48, 0x13000032,
-+	0XB4C, 0x48080000,
-+	0XB50, 0x00000000,
-+	0XB54, 0x00000000,
-+	0XB58, 0x00000000,
-+	0XB5C, 0x00000000,
-+	0xC00, 0x00000007,
-+	0xC04, 0x00042020,
-+	0xC08, 0x80410231,
-+	0xC0C, 0x00000000,
-+	0xC10, 0x00000100,
-+	0xC14, 0x01000000,
-+	0xC1C, 0x40000003,
-+	0xC20, 0x2C2C2C2C,
-+	0xC24, 0x30303030,
-+	0xC28, 0x30303030,
-+	0xC2C, 0x2C2C2C2C,
-+	0xC30, 0x2C2C2C2C,
-+	0xC34, 0x2C2C2C2C,
-+	0xC38, 0x2C2C2C2C,
-+	0xC3C, 0x2A2A2A2A,
-+	0xC40, 0x2A2A2A2A,
-+	0xC44, 0x2A2A2A2A,
-+	0xC48, 0x2A2A2A2A,
-+	0xC4C, 0x2A2A2A2A,
-+	0xC50, 0x00000020,
-+	0xC54, 0x001C1208,
-+	0xC58, 0x30000C1C,
-+	0xC5C, 0x00000058,
-+	0xC60, 0x34344443,
-+	0xC64, 0x07003333,
-+	0xC68, 0x19791979,
-+	0xC6C, 0x19791979,
-+	0xC70, 0x19791979,
-+	0xC74, 0x19791979,
-+	0xC78, 0x19791979,
-+	0xC7C, 0x19791979,
-+	0xC80, 0x19791979,
-+	0xC84, 0x19791979,
-+	0xC94, 0x0100005C,
-+	0xC98, 0x00000000,
-+	0xC9C, 0x00000000,
-+	0xCA0, 0x00000029,
-+	0xCA4, 0x08040201,
-+	0xCA8, 0x80402010,
-+	0xCB0, 0x77775747,
-+	0xCB4, 0x10000077,
-+	0xCB8, 0x00508240,
-+};
++	return swing2setting[tx_bb_swing];
++}
 +
-+RTW_DECL_TABLE_PHY_COND(rtw8821a_bb, rtw_phy_cfg_bb);
++static u8 rtw88xxa_get_swing_index(struct rtw_dev *rtwdev)
++{
++	u32 swing, table_value;
++	u8 i;
 +
-+static const struct rtw_phy_pg_cfg_pair rtw8821a_bb_pg[] = {
-+	{ 0, 0, 0, 0x00000c20, 0xffffffff, 0x32343638, },
-+	{ 0, 0, 0, 0x00000c24, 0xffffffff, 0x36363838, },
-+	{ 0, 0, 0, 0x00000c28, 0xffffffff, 0x28303234, },
-+	{ 0, 0, 0, 0x00000c2c, 0xffffffff, 0x34363838, },
-+	{ 0, 0, 0, 0x00000c30, 0xffffffff, 0x26283032, },
-+	{ 0, 0, 0, 0x00000c3c, 0xffffffff, 0x32343636, },
-+	{ 0, 0, 0, 0x00000c40, 0xffffffff, 0x24262830, },
-+	{ 0, 0, 0, 0x00000c44, 0x0000ffff, 0x00002022, },
-+	{ 1, 0, 0, 0x00000c24, 0xffffffff, 0x34343636, },
-+	{ 1, 0, 0, 0x00000c28, 0xffffffff, 0x26283032, },
-+	{ 1, 0, 0, 0x00000c2c, 0xffffffff, 0x32343636, },
-+	{ 1, 0, 0, 0x00000c30, 0xffffffff, 0x24262830, },
-+	{ 1, 0, 0, 0x00000c3c, 0xffffffff, 0x32343636, },
-+	{ 1, 0, 0, 0x00000c40, 0xffffffff, 0x24262830, },
-+	{ 1, 0, 0, 0x00000c44, 0x0000ffff, 0x00002022, },
-+};
++	swing = rtw88xxa_get_bb_swing(rtwdev, rtwdev->hal.current_band_type,
++				      RF_PATH_A);
 +
-+RTW_DECL_TABLE_BB_PG(rtw8821a_bb_pg);
++	for (i = 0; i < ARRAY_SIZE(rtw88xxa_txscale_tbl); i++) {
++		table_value = rtw88xxa_txscale_tbl[i];
++		if (swing == table_value)
++			return i;
++	}
 +
-+static const u32 rtw8821a_rf_a[] = {
-+	0x018, 0x0001712A,
-+	0x056, 0x00051CF2,
-+	0x066, 0x00040000,
-+	0x000, 0x00010000,
-+	0x01E, 0x00080000,
-+	0x082, 0x00000830,
-+	0x083, 0x00021800,
-+	0x084, 0x00028000,
-+	0x085, 0x00048000,
-+	0x80000111,	0x00000000,	0x40000000,	0x00000000,
-+	0x086, 0x0009483A,
-+	0xA0000000,	0x00000000,
-+	0x086, 0x00094838,
-+	0xB0000000,	0x00000000,
-+	0x087, 0x00044980,
-+	0x088, 0x00048000,
-+	0x089, 0x0000D480,
-+	0x08A, 0x00042240,
-+	0x08B, 0x000F0380,
-+	0x08C, 0x00090000,
-+	0x08D, 0x00022852,
-+	0x08E, 0x00065540,
-+	0x08F, 0x00088001,
-+	0x0EF, 0x00020000,
-+	0x03E, 0x00000380,
-+	0x03F, 0x00090018,
-+	0x03E, 0x00020380,
-+	0x03F, 0x000A0018,
-+	0x03E, 0x00040308,
-+	0x03F, 0x000A0018,
-+	0x03E, 0x00060018,
-+	0x03F, 0x000A0018,
-+	0x0EF, 0x00000000,
-+	0x018, 0x0001712A,
-+	0x089, 0x00000080,
-+	0x08B, 0x00080180,
-+	0x0EF, 0x00001000,
-+	0x03A, 0x00000244,
-+	0x03B, 0x00038027,
-+	0x03C, 0x00082000,
-+	0x03A, 0x00000244,
-+	0x03B, 0x00030113,
-+	0x03C, 0x00082000,
-+	0x03A, 0x0000014C,
-+	0x03B, 0x00028027,
-+	0x03C, 0x00082000,
-+	0x03A, 0x000000CC,
-+	0x03B, 0x00027027,
-+	0x03C, 0x00042000,
-+	0x03A, 0x0000014C,
-+	0x03B, 0x0001F913,
-+	0x03C, 0x00042000,
-+	0x03A, 0x0000010C,
-+	0x03B, 0x00017F10,
-+	0x03C, 0x00012000,
-+	0x03A, 0x000000D0,
-+	0x03B, 0x00008027,
-+	0x03C, 0x000CA000,
-+	0x03A, 0x00000244,
-+	0x03B, 0x00078027,
-+	0x03C, 0x00082000,
-+	0x03A, 0x00000244,
-+	0x03B, 0x00070113,
-+	0x03C, 0x00082000,
-+	0x03A, 0x0000014C,
-+	0x03B, 0x00068027,
-+	0x03C, 0x00082000,
-+	0x03A, 0x000000CC,
-+	0x03B, 0x00067027,
-+	0x03C, 0x00042000,
-+	0x03A, 0x0000014C,
-+	0x03B, 0x0005F913,
-+	0x03C, 0x00042000,
-+	0x03A, 0x0000010C,
-+	0x03B, 0x00057F10,
-+	0x03C, 0x00012000,
-+	0x03A, 0x000000D0,
-+	0x03B, 0x00048027,
-+	0x03C, 0x000CA000,
-+	0x03A, 0x00000244,
-+	0x03B, 0x000B8027,
-+	0x03C, 0x00082000,
-+	0x03A, 0x00000244,
-+	0x03B, 0x000B0113,
-+	0x03C, 0x00082000,
-+	0x03A, 0x0000014C,
-+	0x03B, 0x000A8027,
-+	0x03C, 0x00082000,
-+	0x03A, 0x000000CC,
-+	0x03B, 0x000A7027,
-+	0x03C, 0x00042000,
-+	0x03A, 0x0000014C,
-+	0x03B, 0x0009F913,
-+	0x03C, 0x00042000,
-+	0x03A, 0x0000010C,
-+	0x03B, 0x00097F10,
-+	0x03C, 0x00012000,
-+	0x03A, 0x000000D0,
-+	0x03B, 0x00088027,
-+	0x03C, 0x000CA000,
-+	0x0EF, 0x00000000,
-+	0x0EF, 0x00001100,
-+	0x80000111,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x0004ADF3,
-+	0x034, 0x00049DF0,
-+	0x90000110,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x0004ADF3,
-+	0x034, 0x00049DF0,
-+	0x90000210,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x0004ADF5,
-+	0x034, 0x00049DF2,
-+	0x9000020c,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x0004A0F3,
-+	0x034, 0x000490B1,
-+	0x9000040c,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x0004A0F3,
-+	0x034, 0x000490B1,
-+	0x90000200,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x0004ADF5,
-+	0x034, 0x00049DF2,
-+	0x90000410,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x0004ADF3,
-+	0x034, 0x00049DF0,
-+	0xA0000000,	0x00000000,
-+	0x034, 0x0004ADF7,
-+	0x034, 0x00049DF3,
-+	0xB0000000,	0x00000000,
-+	0x80000111,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x00048DED,
-+	0x034, 0x00047DEA,
-+	0x034, 0x00046DE7,
-+	0x034, 0x00045CE9,
-+	0x034, 0x00044CE6,
-+	0x034, 0x000438C6,
-+	0x034, 0x00042886,
-+	0x034, 0x00041486,
-+	0x034, 0x00040447,
-+	0x90000110,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x00048DED,
-+	0x034, 0x00047DEA,
-+	0x034, 0x00046DE7,
-+	0x034, 0x00045CE9,
-+	0x034, 0x00044CE6,
-+	0x034, 0x000438C6,
-+	0x034, 0x00042886,
-+	0x034, 0x00041486,
-+	0x034, 0x00040447,
-+	0x9000020c,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x000480AE,
-+	0x034, 0x000470AB,
-+	0x034, 0x0004608B,
-+	0x034, 0x00045069,
-+	0x034, 0x00044048,
-+	0x034, 0x00043045,
-+	0x034, 0x00042026,
-+	0x034, 0x00041023,
-+	0x034, 0x00040002,
-+	0x9000040c,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x000480AE,
-+	0x034, 0x000470AB,
-+	0x034, 0x0004608B,
-+	0x034, 0x00045069,
-+	0x034, 0x00044048,
-+	0x034, 0x00043045,
-+	0x034, 0x00042026,
-+	0x034, 0x00041023,
-+	0x034, 0x00040002,
-+	0x90000410,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x00048DED,
-+	0x034, 0x00047DEA,
-+	0x034, 0x00046DE7,
-+	0x034, 0x00045CE9,
-+	0x034, 0x00044CE6,
-+	0x034, 0x000438C6,
-+	0x034, 0x00042886,
-+	0x034, 0x00041486,
-+	0x034, 0x00040447,
-+	0xA0000000,	0x00000000,
-+	0x034, 0x00048DEF,
-+	0x034, 0x00047DEC,
-+	0x034, 0x00046DE9,
-+	0x034, 0x00045CCB,
-+	0x034, 0x0004488D,
-+	0x034, 0x0004348D,
-+	0x034, 0x0004248A,
-+	0x034, 0x0004108D,
-+	0x034, 0x0004008A,
-+	0xB0000000,	0x00000000,
-+	0x80000210,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x0002ADF4,
-+	0x9000020c,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x0002A0F3,
-+	0x9000040c,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x0002A0F3,
-+	0x90000200,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x0002ADF4,
-+	0xA0000000,	0x00000000,
-+	0x034, 0x0002ADF7,
-+	0xB0000000,	0x00000000,
-+	0x80000111,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x00029DF4,
-+	0x90000110,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x00029DF4,
-+	0x90000210,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x00029DF1,
-+	0x9000020c,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x000290F0,
-+	0x9000040c,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x000290F0,
-+	0x90000200,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x00029DF1,
-+	0x90000410,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x00029DF4,
-+	0xA0000000,	0x00000000,
-+	0x034, 0x00029DF2,
-+	0xB0000000,	0x00000000,
-+	0x80000111,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x00028DF1,
-+	0x034, 0x00027DEE,
-+	0x034, 0x00026DEB,
-+	0x034, 0x00025CEC,
-+	0x034, 0x00024CE9,
-+	0x034, 0x000238CA,
-+	0x034, 0x00022889,
-+	0x034, 0x00021489,
-+	0x034, 0x0002044A,
-+	0x90000110,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x00028DF1,
-+	0x034, 0x00027DEE,
-+	0x034, 0x00026DEB,
-+	0x034, 0x00025CEC,
-+	0x034, 0x00024CE9,
-+	0x034, 0x000238CA,
-+	0x034, 0x00022889,
-+	0x034, 0x00021489,
-+	0x034, 0x0002044A,
-+	0x9000020c,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x000280AF,
-+	0x034, 0x000270AC,
-+	0x034, 0x0002608B,
-+	0x034, 0x00025069,
-+	0x034, 0x00024048,
-+	0x034, 0x00023045,
-+	0x034, 0x00022026,
-+	0x034, 0x00021023,
-+	0x034, 0x00020002,
-+	0x9000040c,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x000280AF,
-+	0x034, 0x000270AC,
-+	0x034, 0x0002608B,
-+	0x034, 0x00025069,
-+	0x034, 0x00024048,
-+	0x034, 0x00023045,
-+	0x034, 0x00022026,
-+	0x034, 0x00021023,
-+	0x034, 0x00020002,
-+	0x90000410,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x00028DF1,
-+	0x034, 0x00027DEE,
-+	0x034, 0x00026DEB,
-+	0x034, 0x00025CEC,
-+	0x034, 0x00024CE9,
-+	0x034, 0x000238CA,
-+	0x034, 0x00022889,
-+	0x034, 0x00021489,
-+	0x034, 0x0002044A,
-+	0xA0000000,	0x00000000,
-+	0x034, 0x00028DEE,
-+	0x034, 0x00027DEB,
-+	0x034, 0x00026CCD,
-+	0x034, 0x00025CCA,
-+	0x034, 0x0002488C,
-+	0x034, 0x0002384C,
-+	0x034, 0x00022849,
-+	0x034, 0x00021449,
-+	0x034, 0x0002004D,
-+	0xB0000000,	0x00000000,
-+	0x8000020c,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x0000A0D7,
-+	0x034, 0x000090D3,
-+	0x034, 0x000080B1,
-+	0x034, 0x000070AE,
-+	0x9000040c,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x0000A0D7,
-+	0x034, 0x000090D3,
-+	0x034, 0x000080B1,
-+	0x034, 0x000070AE,
-+	0xA0000000,	0x00000000,
-+	0x034, 0x0000ADF7,
-+	0x034, 0x00009DF4,
-+	0x034, 0x00008DF1,
-+	0x034, 0x00007DEE,
-+	0xB0000000,	0x00000000,
-+	0x80000111,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x00006DEB,
-+	0x034, 0x00005CEC,
-+	0x034, 0x00004CE9,
-+	0x034, 0x000038CA,
-+	0x034, 0x00002889,
-+	0x034, 0x00001489,
-+	0x034, 0x0000044A,
-+	0x90000110,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x00006DEB,
-+	0x034, 0x00005CEC,
-+	0x034, 0x00004CE9,
-+	0x034, 0x000038CA,
-+	0x034, 0x00002889,
-+	0x034, 0x00001489,
-+	0x034, 0x0000044A,
-+	0x9000020c,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x0000608D,
-+	0x034, 0x0000506B,
-+	0x034, 0x0000404A,
-+	0x034, 0x00003047,
-+	0x034, 0x00002044,
-+	0x034, 0x00001025,
-+	0x034, 0x00000004,
-+	0x9000040c,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x0000608D,
-+	0x034, 0x0000506B,
-+	0x034, 0x0000404A,
-+	0x034, 0x00003047,
-+	0x034, 0x00002044,
-+	0x034, 0x00001025,
-+	0x034, 0x00000004,
-+	0x90000410,	0x00000000,	0x40000000,	0x00000000,
-+	0x034, 0x00006DEB,
-+	0x034, 0x00005CEC,
-+	0x034, 0x00004CE9,
-+	0x034, 0x000038CA,
-+	0x034, 0x00002889,
-+	0x034, 0x00001489,
-+	0x034, 0x0000044A,
-+	0xA0000000,	0x00000000,
-+	0x034, 0x00006DCD,
-+	0x034, 0x00005CCD,
-+	0x034, 0x00004CCA,
-+	0x034, 0x0000388C,
-+	0x034, 0x00002888,
-+	0x034, 0x00001488,
-+	0x034, 0x00000486,
-+	0xB0000000,	0x00000000,
-+	0x0EF, 0x00000000,
-+	0x018, 0x0001712A,
-+	0x0EF, 0x00000040,
-+	0x80000111,	0x00000000,	0x40000000,	0x00000000,
-+	0x035, 0x00000187,
-+	0x035, 0x00008187,
-+	0x035, 0x00010187,
-+	0x035, 0x00020188,
-+	0x035, 0x00028188,
-+	0x035, 0x00030188,
-+	0x035, 0x00040188,
-+	0x035, 0x00048188,
-+	0x035, 0x00050188,
-+	0x90000110,	0x00000000,	0x40000000,	0x00000000,
-+	0x035, 0x00000187,
-+	0x035, 0x00008187,
-+	0x035, 0x00010187,
-+	0x035, 0x00020188,
-+	0x035, 0x00028188,
-+	0x035, 0x00030188,
-+	0x035, 0x00040188,
-+	0x035, 0x00048188,
-+	0x035, 0x00050188,
-+	0x90000210,	0x00000000,	0x40000000,	0x00000000,
-+	0x035, 0x00000128,
-+	0x035, 0x00008128,
-+	0x035, 0x00010128,
-+	0x035, 0x000201C8,
-+	0x035, 0x000281C8,
-+	0x035, 0x000301C8,
-+	0x035, 0x000401C8,
-+	0x035, 0x000481C8,
-+	0x035, 0x000501C8,
-+	0x9000040c,	0x00000000,	0x40000000,	0x00000000,
-+	0x035, 0x00000145,
-+	0x035, 0x00008145,
-+	0x035, 0x00010145,
-+	0x035, 0x00020196,
-+	0x035, 0x00028196,
-+	0x035, 0x00030196,
-+	0x035, 0x000401C7,
-+	0x035, 0x000481C7,
-+	0x035, 0x000501C7,
-+	0x90000200,	0x00000000,	0x40000000,	0x00000000,
-+	0x035, 0x00000128,
-+	0x035, 0x00008128,
-+	0x035, 0x00010128,
-+	0x035, 0x000201C8,
-+	0x035, 0x000281C8,
-+	0x035, 0x000301C8,
-+	0x035, 0x000401C8,
-+	0x035, 0x000481C8,
-+	0x035, 0x000501C8,
-+	0x90000410,	0x00000000,	0x40000000,	0x00000000,
-+	0x035, 0x00000187,
-+	0x035, 0x00008187,
-+	0x035, 0x00010187,
-+	0x035, 0x00020188,
-+	0x035, 0x00028188,
-+	0x035, 0x00030188,
-+	0x035, 0x00040188,
-+	0x035, 0x00048188,
-+	0x035, 0x00050188,
-+	0xA0000000,	0x00000000,
-+	0x035, 0x00000145,
-+	0x035, 0x00008145,
-+	0x035, 0x00010145,
-+	0x035, 0x00020196,
-+	0x035, 0x00028196,
-+	0x035, 0x00030196,
-+	0x035, 0x000401C7,
-+	0x035, 0x000481C7,
-+	0x035, 0x000501C7,
-+	0xB0000000,	0x00000000,
-+	0x0EF, 0x00000000,
-+	0x018, 0x0001712A,
-+	0x0EF, 0x00000010,
-+	0x80000111,	0x00000000,	0x40000000,	0x00000000,
-+	0x036, 0x00085733,
-+	0x036, 0x0008D733,
-+	0x036, 0x00095733,
-+	0x036, 0x0009D733,
-+	0x036, 0x000A64B4,
-+	0x036, 0x000AE4B4,
-+	0x036, 0x000B64B4,
-+	0x036, 0x000BE4B4,
-+	0x036, 0x000C64B4,
-+	0x036, 0x000CE4B4,
-+	0x036, 0x000D64B4,
-+	0x036, 0x000DE4B4,
-+	0x90000110,	0x00000000,	0x40000000,	0x00000000,
-+	0x036, 0x00085733,
-+	0x036, 0x0008D733,
-+	0x036, 0x00095733,
-+	0x036, 0x0009D733,
-+	0x036, 0x000A64B4,
-+	0x036, 0x000AE4B4,
-+	0x036, 0x000B64B4,
-+	0x036, 0x000BE4B4,
-+	0x036, 0x000C64B4,
-+	0x036, 0x000CE4B4,
-+	0x036, 0x000D64B4,
-+	0x036, 0x000DE4B4,
-+	0x90000210,	0x00000000,	0x40000000,	0x00000000,
-+	0x036, 0x000063B5,
-+	0x036, 0x0000E3B5,
-+	0x036, 0x000163B5,
-+	0x036, 0x0001E3B5,
-+	0x036, 0x000263B5,
-+	0x036, 0x0002E3B5,
-+	0x036, 0x000363B5,
-+	0x036, 0x0003E3B5,
-+	0x036, 0x000463B5,
-+	0x036, 0x0004E3B5,
-+	0x036, 0x000563B5,
-+	0x036, 0x0005E3B5,
-+	0x9000040c,	0x00000000,	0x40000000,	0x00000000,
-+	0x036, 0x000056B3,
-+	0x036, 0x0000D6B3,
-+	0x036, 0x000156B3,
-+	0x036, 0x0001D6B3,
-+	0x036, 0x00026634,
-+	0x036, 0x0002E634,
-+	0x036, 0x00036634,
-+	0x036, 0x0003E634,
-+	0x036, 0x000467B4,
-+	0x036, 0x0004E7B4,
-+	0x036, 0x000567B4,
-+	0x036, 0x0005E7B4,
-+	0x90000200,	0x00000000,	0x40000000,	0x00000000,
-+	0x036, 0x000063B5,
-+	0x036, 0x0000E3B5,
-+	0x036, 0x000163B5,
-+	0x036, 0x0001E3B5,
-+	0x036, 0x000263B5,
-+	0x036, 0x0002E3B5,
-+	0x036, 0x000363B5,
-+	0x036, 0x0003E3B5,
-+	0x036, 0x000463B5,
-+	0x036, 0x0004E3B5,
-+	0x036, 0x000563B5,
-+	0x036, 0x0005E3B5,
-+	0x90000410,	0x00000000,	0x40000000,	0x00000000,
-+	0x036, 0x00085733,
-+	0x036, 0x0008D733,
-+	0x036, 0x00095733,
-+	0x036, 0x0009D733,
-+	0x036, 0x000A64B4,
-+	0x036, 0x000AE4B4,
-+	0x036, 0x000B64B4,
-+	0x036, 0x000BE4B4,
-+	0x036, 0x000C64B4,
-+	0x036, 0x000CE4B4,
-+	0x036, 0x000D64B4,
-+	0x036, 0x000DE4B4,
-+	0xA0000000,	0x00000000,
-+	0x036, 0x000056B3,
-+	0x036, 0x0000D6B3,
-+	0x036, 0x000156B3,
-+	0x036, 0x0001D6B3,
-+	0x036, 0x00026634,
-+	0x036, 0x0002E634,
-+	0x036, 0x00036634,
-+	0x036, 0x0003E634,
-+	0x036, 0x000467B4,
-+	0x036, 0x0004E7B4,
-+	0x036, 0x000567B4,
-+	0x036, 0x0005E7B4,
-+	0xB0000000,	0x00000000,
-+	0x0EF, 0x00000000,
-+	0x0EF, 0x00000008,
-+	0x80000111,	0x00000000,	0x40000000,	0x00000000,
-+	0x03C, 0x000001C8,
-+	0x03C, 0x00000492,
-+	0x90000110,	0x00000000,	0x40000000,	0x00000000,
-+	0x03C, 0x000001C8,
-+	0x03C, 0x00000492,
-+	0x90000210,	0x00000000,	0x40000000,	0x00000000,
-+	0x03C, 0x000001B6,
-+	0x03C, 0x00000492,
-+	0x9000040c,	0x00000000,	0x40000000,	0x00000000,
-+	0x03C, 0x0000022A,
-+	0x03C, 0x00000594,
-+	0x90000200,	0x00000000,	0x40000000,	0x00000000,
-+	0x03C, 0x000001B6,
-+	0x03C, 0x00000492,
-+	0x90000410,	0x00000000,	0x40000000,	0x00000000,
-+	0x03C, 0x000001C8,
-+	0x03C, 0x00000492,
-+	0xA0000000,	0x00000000,
-+	0x03C, 0x0000022A,
-+	0x03C, 0x00000594,
-+	0xB0000000,	0x00000000,
-+	0x80000111,	0x00000000,	0x40000000,	0x00000000,
-+	0x03C, 0x00000800,
-+	0x90000110,	0x00000000,	0x40000000,	0x00000000,
-+	0x03C, 0x00000800,
-+	0x90000210,	0x00000000,	0x40000000,	0x00000000,
-+	0x03C, 0x00000800,
-+	0x9000020c,	0x00000000,	0x40000000,	0x00000000,
-+	0x03C, 0x00000820,
-+	0x9000040c,	0x00000000,	0x40000000,	0x00000000,
-+	0x03C, 0x00000820,
-+	0x90000200,	0x00000000,	0x40000000,	0x00000000,
-+	0x03C, 0x00000800,
-+	0x90000410,	0x00000000,	0x40000000,	0x00000000,
-+	0x03C, 0x00000800,
-+	0xA0000000,	0x00000000,
-+	0x03C, 0x00000900,
-+	0xB0000000,	0x00000000,
-+	0x0EF, 0x00000000,
-+	0x018, 0x0001712A,
-+	0x0EF, 0x00000002,
-+	0x80000111,	0x00000000,	0x40000000,	0x00000000,
-+	0x008, 0x0004E400,
-+	0x90000110,	0x00000000,	0x40000000,	0x00000000,
-+	0x008, 0x0004E400,
-+	0x90000210,	0x00000000,	0x40000000,	0x00000000,
-+	0x008, 0x00002000,
-+	0x9000020c,	0x00000000,	0x40000000,	0x00000000,
-+	0x008, 0x00002000,
-+	0x9000040c,	0x00000000,	0x40000000,	0x00000000,
-+	0x008, 0x00002000,
-+	0x90000200,	0x00000000,	0x40000000,	0x00000000,
-+	0x008, 0x00002000,
-+	0x90000410,	0x00000000,	0x40000000,	0x00000000,
-+	0x008, 0x0004E400,
-+	0xA0000000,	0x00000000,
-+	0x008, 0x00002000,
-+	0xB0000000,	0x00000000,
-+	0x0EF, 0x00000000,
-+	0x0DF, 0x000000C0,
-+	0x01F, 0x00000064,
-+	0x80000111,	0x00000000,	0x40000000,	0x00000000,
-+	0x058, 0x000A7284,
-+	0x059, 0x000600EC,
-+	0x90000110,	0x00000000,	0x40000000,	0x00000000,
-+	0x058, 0x000A7284,
-+	0x059, 0x000600EC,
-+	0x9000020c,	0x00000000,	0x40000000,	0x00000000,
-+	0x058, 0x00081184,
-+	0x059, 0x0006016C,
-+	0x9000040c,	0x00000000,	0x40000000,	0x00000000,
-+	0x058, 0x00081184,
-+	0x059, 0x0006016C,
-+	0x90000200,	0x00000000,	0x40000000,	0x00000000,
-+	0x058, 0x00081184,
-+	0x059, 0x0006016C,
-+	0x90000410,	0x00000000,	0x40000000,	0x00000000,
-+	0x058, 0x000A7284,
-+	0x059, 0x000600EC,
-+	0xA0000000,	0x00000000,
-+	0x058, 0x00081184,
-+	0x059, 0x0006016C,
-+	0xB0000000,	0x00000000,
-+	0x80000111,	0x00000000,	0x40000000,	0x00000000,
-+	0x061, 0x000E8D73,
-+	0x062, 0x00093FC5,
-+	0x90000110,	0x00000000,	0x40000000,	0x00000000,
-+	0x061, 0x000E8D73,
-+	0x062, 0x00093FC5,
-+	0x90000210,	0x00000000,	0x40000000,	0x00000000,
-+	0x061, 0x000EFD83,
-+	0x062, 0x00093FCC,
-+	0x9000040c,	0x00000000,	0x40000000,	0x00000000,
-+	0x061, 0x000EAD53,
-+	0x062, 0x00093BC4,
-+	0x90000200,	0x00000000,	0x40000000,	0x00000000,
-+	0x061, 0x000EFD83,
-+	0x062, 0x00093FCC,
-+	0x90000410,	0x00000000,	0x40000000,	0x00000000,
-+	0x061, 0x000E8D73,
-+	0x062, 0x00093FC5,
-+	0xA0000000,	0x00000000,
-+	0x061, 0x000EAD53,
-+	0x062, 0x00093BC4,
-+	0xB0000000,	0x00000000,
-+	0x80000111,	0x00000000,	0x40000000,	0x00000000,
-+	0x063, 0x000110E9,
-+	0x90000110,	0x00000000,	0x40000000,	0x00000000,
-+	0x063, 0x000110E9,
-+	0x90000210,	0x00000000,	0x40000000,	0x00000000,
-+	0x063, 0x000110EB,
-+	0x9000020c,	0x00000000,	0x40000000,	0x00000000,
-+	0x063, 0x000110E9,
-+	0x9000040c,	0x00000000,	0x40000000,	0x00000000,
-+	0x063, 0x000110E9,
-+	0x90000200,	0x00000000,	0x40000000,	0x00000000,
-+	0x063, 0x000110EB,
-+	0x90000410,	0x00000000,	0x40000000,	0x00000000,
-+	0x063, 0x000110E9,
-+	0xA0000000,	0x00000000,
-+	0x063, 0x000714E9,
-+	0xB0000000,	0x00000000,
-+	0x80000111,	0x00000000,	0x40000000,	0x00000000,
-+	0x064, 0x0001C27C,
-+	0x90000110,	0x00000000,	0x40000000,	0x00000000,
-+	0x064, 0x0001C27C,
-+	0x90000210,	0x00000000,	0x40000000,	0x00000000,
-+	0x064, 0x0001C27C,
-+	0x9000040c,	0x00000000,	0x40000000,	0x00000000,
-+	0x064, 0x0001C67C,
-+	0x90000200,	0x00000000,	0x40000000,	0x00000000,
-+	0x064, 0x0001C27C,
-+	0x90000410,	0x00000000,	0x40000000,	0x00000000,
-+	0x064, 0x0001C27C,
-+	0xA0000000,	0x00000000,
-+	0x064, 0x0001C67C,
-+	0xB0000000,	0x00000000,
-+	0x80000111,	0x00000000,	0x40000000,	0x00000000,
-+	0x065, 0x00091016,
-+	0x90000110,	0x00000000,	0x40000000,	0x00000000,
-+	0x065, 0x00091016,
-+	0x90000210,	0x00000000,	0x40000000,	0x00000000,
-+	0x065, 0x00093016,
-+	0x9000020c,	0x00000000,	0x40000000,	0x00000000,
-+	0x065, 0x00093015,
-+	0x9000040c,	0x00000000,	0x40000000,	0x00000000,
-+	0x065, 0x00093015,
-+	0x90000200,	0x00000000,	0x40000000,	0x00000000,
-+	0x065, 0x00093016,
-+	0xA0000000,	0x00000000,
-+	0x065, 0x00091016,
-+	0xB0000000,	0x00000000,
-+	0x018, 0x00000006,
-+	0x0EF, 0x00002000,
-+	0x03B, 0x0003824B,
-+	0x03B, 0x0003024B,
-+	0x03B, 0x0002844B,
-+	0x03B, 0x00020F4B,
-+	0x03B, 0x00018F4B,
-+	0x03B, 0x000104B2,
-+	0x03B, 0x00008049,
-+	0x03B, 0x00000148,
-+	0x03B, 0x0007824B,
-+	0x03B, 0x0007024B,
-+	0x03B, 0x0006824B,
-+	0x03B, 0x00060F4B,
-+	0x03B, 0x00058F4B,
-+	0x03B, 0x000504B2,
-+	0x03B, 0x00048049,
-+	0x03B, 0x00040148,
-+	0x0EF, 0x00000000,
-+	0x0EF, 0x00000100,
-+	0x034, 0x0000ADF3,
-+	0x034, 0x00009DF0,
-+	0x034, 0x00008D70,
-+	0x034, 0x00007D6D,
-+	0x034, 0x00006CEE,
-+	0x034, 0x00005CCC,
-+	0x034, 0x000044EC,
-+	0x034, 0x000034AC,
-+	0x034, 0x0000246D,
-+	0x034, 0x0000106F,
-+	0x034, 0x0000006C,
-+	0x0EF, 0x00000000,
-+	0x0ED, 0x00000010,
-+	0x044, 0x0000ADF2,
-+	0x044, 0x00009DEF,
-+	0x044, 0x00008DEC,
-+	0x044, 0x00007DE9,
-+	0x044, 0x00006CEC,
-+	0x044, 0x00005CE9,
-+	0x044, 0x000044EC,
-+	0x044, 0x000034E9,
-+	0x044, 0x0000246C,
-+	0x044, 0x00001469,
-+	0x044, 0x0000006C,
-+	0x0ED, 0x00000000,
-+	0x0ED, 0x00000001,
-+	0x040, 0x00038DA7,
-+	0x040, 0x000300C2,
-+	0x040, 0x000288E2,
-+	0x040, 0x000200B8,
-+	0x040, 0x000188A5,
-+	0x040, 0x00010FBC,
-+	0x040, 0x00008F71,
-+	0x040, 0x00000240,
-+	0x0ED, 0x00000000,
-+	0x0EF, 0x000020A2,
-+	0x0DF, 0x00000080,
-+	0x035, 0x00000120,
-+	0x035, 0x00008120,
-+	0x035, 0x00010120,
-+	0x036, 0x00000085,
-+	0x036, 0x00008085,
-+	0x036, 0x00010085,
-+	0x036, 0x00018085,
-+	0x0EF, 0x00000000,
-+	0x051, 0x00000C31,
-+	0x052, 0x00000622,
-+	0x053, 0x000FC70B,
-+	0x054, 0x0000017E,
-+	0x056, 0x00051DF3,
-+	0x051, 0x00000C01,
-+	0x052, 0x000006D6,
-+	0x053, 0x000FC649,
-+	0x070, 0x00049661,
-+	0x071, 0x0007843E,
-+	0x072, 0x00000382,
-+	0x074, 0x00051400,
-+	0x035, 0x00000160,
-+	0x035, 0x00008160,
-+	0x035, 0x00010160,
-+	0x036, 0x00000124,
-+	0x036, 0x00008124,
-+	0x036, 0x00010124,
-+	0x036, 0x00018124,
-+	0x0ED, 0x0000000C,
-+	0x045, 0x00000140,
-+	0x045, 0x00008140,
-+	0x045, 0x00010140,
-+	0x046, 0x00000124,
-+	0x046, 0x00008124,
-+	0x046, 0x00010124,
-+	0x046, 0x00018124,
-+	0x0DF, 0x00000088,
-+	0x0B3, 0x000F0E18,
-+	0x0B4, 0x0001214C,
-+	0x0B7, 0x0003000C,
-+	0x01C, 0x000539D2,
-+	0x0C4, 0x000AFE00,
-+	0x018, 0x0001F12A,
-+	0xFFE, 0x00000000,
-+	0xFFE, 0x00000000,
-+	0x018, 0x0001712A,
-+};
++	return 24;
++}
 +
-+RTW_DECL_TABLE_RF_RADIO(rtw8821a_rf_a, A);
++static void rtw88xxa_pwrtrack_init(struct rtw_dev *rtwdev)
++{
++	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
++	u8 path;
 +
-+static const struct rtw_txpwr_lmt_cfg_pair rtw8821a_txpwr_lmt[] = {
-+	{ 0, 0, 0, 0, 1, 32, },
-+	{ 2, 0, 0, 0, 1, 28, },
-+	{ 1, 0, 0, 0, 1, 32, },
-+	{ 0, 0, 0, 0, 2, 32, },
-+	{ 2, 0, 0, 0, 2, 28, },
-+	{ 1, 0, 0, 0, 2, 32, },
-+	{ 0, 0, 0, 0, 3, 36, },
-+	{ 2, 0, 0, 0, 3, 28, },
-+	{ 1, 0, 0, 0, 3, 32, },
-+	{ 0, 0, 0, 0, 4, 36, },
-+	{ 2, 0, 0, 0, 4, 28, },
-+	{ 1, 0, 0, 0, 4, 32, },
-+	{ 0, 0, 0, 0, 5, 36, },
-+	{ 2, 0, 0, 0, 5, 28, },
-+	{ 1, 0, 0, 0, 5, 32, },
-+	{ 0, 0, 0, 0, 6, 36, },
-+	{ 2, 0, 0, 0, 6, 28, },
-+	{ 1, 0, 0, 0, 6, 32, },
-+	{ 0, 0, 0, 0, 7, 36, },
-+	{ 2, 0, 0, 0, 7, 28, },
-+	{ 1, 0, 0, 0, 7, 32, },
-+	{ 0, 0, 0, 0, 8, 36, },
-+	{ 2, 0, 0, 0, 8, 28, },
-+	{ 1, 0, 0, 0, 8, 32, },
-+	{ 0, 0, 0, 0, 9, 32, },
-+	{ 2, 0, 0, 0, 9, 28, },
-+	{ 1, 0, 0, 0, 9, 32, },
-+	{ 0, 0, 0, 0, 10, 32, },
-+	{ 2, 0, 0, 0, 10, 28, },
-+	{ 1, 0, 0, 0, 10, 32, },
-+	{ 0, 0, 0, 0, 11, 32, },
-+	{ 2, 0, 0, 0, 11, 28, },
-+	{ 1, 0, 0, 0, 11, 32, },
-+	{ 0, 0, 0, 0, 12, 28, },
-+	{ 2, 0, 0, 0, 12, 28, },
-+	{ 1, 0, 0, 0, 12, 32, },
-+	{ 0, 0, 0, 0, 13, 26, },
-+	{ 2, 0, 0, 0, 13, 28, },
-+	{ 1, 0, 0, 0, 13, 32, },
-+	{ 0, 0, 0, 0, 14, 63, },
-+	{ 2, 0, 0, 0, 14, 63, },
-+	{ 1, 0, 0, 0, 14, 32, },
-+	{ 0, 0, 0, 1, 1, 30, },
-+	{ 2, 0, 0, 1, 1, 30, },
-+	{ 1, 0, 0, 1, 1, 32, },
-+	{ 0, 0, 0, 1, 2, 30, },
-+	{ 2, 0, 0, 1, 2, 32, },
-+	{ 1, 0, 0, 1, 2, 32, },
-+	{ 0, 0, 0, 1, 3, 32, },
-+	{ 2, 0, 0, 1, 3, 32, },
-+	{ 1, 0, 0, 1, 3, 32, },
-+	{ 0, 0, 0, 1, 4, 32, },
-+	{ 2, 0, 0, 1, 4, 32, },
-+	{ 1, 0, 0, 1, 4, 32, },
-+	{ 0, 0, 0, 1, 5, 32, },
-+	{ 2, 0, 0, 1, 5, 32, },
-+	{ 1, 0, 0, 1, 5, 32, },
-+	{ 0, 0, 0, 1, 6, 32, },
-+	{ 2, 0, 0, 1, 6, 32, },
-+	{ 1, 0, 0, 1, 6, 32, },
-+	{ 0, 0, 0, 1, 7, 32, },
-+	{ 2, 0, 0, 1, 7, 32, },
-+	{ 1, 0, 0, 1, 7, 32, },
-+	{ 0, 0, 0, 1, 8, 32, },
-+	{ 2, 0, 0, 1, 8, 32, },
-+	{ 1, 0, 0, 1, 8, 32, },
-+	{ 0, 0, 0, 1, 9, 30, },
-+	{ 2, 0, 0, 1, 9, 32, },
-+	{ 1, 0, 0, 1, 9, 32, },
-+	{ 0, 0, 0, 1, 10, 30, },
-+	{ 2, 0, 0, 1, 10, 32, },
-+	{ 1, 0, 0, 1, 10, 32, },
-+	{ 0, 0, 0, 1, 11, 30, },
-+	{ 2, 0, 0, 1, 11, 32, },
-+	{ 1, 0, 0, 1, 11, 32, },
-+	{ 0, 0, 0, 1, 12, 26, },
-+	{ 2, 0, 0, 1, 12, 32, },
-+	{ 1, 0, 0, 1, 12, 32, },
-+	{ 0, 0, 0, 1, 13, 24, },
-+	{ 2, 0, 0, 1, 13, 30, },
-+	{ 1, 0, 0, 1, 13, 32, },
-+	{ 0, 0, 0, 1, 14, 63, },
-+	{ 2, 0, 0, 1, 14, 63, },
-+	{ 1, 0, 0, 1, 14, 63, },
-+	{ 0, 0, 0, 2, 1, 26, },
-+	{ 2, 0, 0, 2, 1, 26, },
-+	{ 1, 0, 0, 2, 1, 32, },
-+	{ 0, 0, 0, 2, 2, 26, },
-+	{ 2, 0, 0, 2, 2, 32, },
-+	{ 1, 0, 0, 2, 2, 32, },
-+	{ 0, 0, 0, 2, 3, 32, },
-+	{ 2, 0, 0, 2, 3, 32, },
-+	{ 1, 0, 0, 2, 3, 32, },
-+	{ 0, 0, 0, 2, 4, 32, },
-+	{ 2, 0, 0, 2, 4, 32, },
-+	{ 1, 0, 0, 2, 4, 32, },
-+	{ 0, 0, 0, 2, 5, 32, },
-+	{ 2, 0, 0, 2, 5, 32, },
-+	{ 1, 0, 0, 2, 5, 32, },
-+	{ 0, 0, 0, 2, 6, 32, },
-+	{ 2, 0, 0, 2, 6, 32, },
-+	{ 1, 0, 0, 2, 6, 32, },
-+	{ 0, 0, 0, 2, 7, 32, },
-+	{ 2, 0, 0, 2, 7, 32, },
-+	{ 1, 0, 0, 2, 7, 32, },
-+	{ 0, 0, 0, 2, 8, 32, },
-+	{ 2, 0, 0, 2, 8, 32, },
-+	{ 1, 0, 0, 2, 8, 32, },
-+	{ 0, 0, 0, 2, 9, 26, },
-+	{ 2, 0, 0, 2, 9, 32, },
-+	{ 1, 0, 0, 2, 9, 32, },
-+	{ 0, 0, 0, 2, 10, 26, },
-+	{ 2, 0, 0, 2, 10, 32, },
-+	{ 1, 0, 0, 2, 10, 32, },
-+	{ 0, 0, 0, 2, 11, 26, },
-+	{ 2, 0, 0, 2, 11, 32, },
-+	{ 1, 0, 0, 2, 11, 32, },
-+	{ 0, 0, 0, 2, 12, 26, },
-+	{ 2, 0, 0, 2, 12, 32, },
-+	{ 1, 0, 0, 2, 12, 32, },
-+	{ 0, 0, 0, 2, 13, 24, },
-+	{ 2, 0, 0, 2, 13, 26, },
-+	{ 1, 0, 0, 2, 13, 32, },
-+	{ 0, 0, 0, 2, 14, 63, },
-+	{ 2, 0, 0, 2, 14, 63, },
-+	{ 1, 0, 0, 2, 14, 63, },
-+	{ 0, 0, 0, 3, 1, 30, },
-+	{ 2, 0, 0, 3, 1, 32, },
-+	{ 1, 0, 0, 3, 1, 32, },
-+	{ 0, 0, 0, 3, 2, 32, },
-+	{ 2, 0, 0, 3, 2, 32, },
-+	{ 1, 0, 0, 3, 2, 32, },
-+	{ 0, 0, 0, 3, 3, 32, },
-+	{ 2, 0, 0, 3, 3, 32, },
-+	{ 1, 0, 0, 3, 3, 32, },
-+	{ 0, 0, 0, 3, 4, 32, },
-+	{ 2, 0, 0, 3, 4, 32, },
-+	{ 1, 0, 0, 3, 4, 32, },
-+	{ 0, 0, 0, 3, 5, 32, },
-+	{ 2, 0, 0, 3, 5, 32, },
-+	{ 1, 0, 0, 3, 5, 32, },
-+	{ 0, 0, 0, 3, 6, 32, },
-+	{ 2, 0, 0, 3, 6, 32, },
-+	{ 1, 0, 0, 3, 6, 32, },
-+	{ 0, 0, 0, 3, 7, 32, },
-+	{ 2, 0, 0, 3, 7, 32, },
-+	{ 1, 0, 0, 3, 7, 32, },
-+	{ 0, 0, 0, 3, 8, 32, },
-+	{ 2, 0, 0, 3, 8, 32, },
-+	{ 1, 0, 0, 3, 8, 32, },
-+	{ 0, 0, 0, 3, 9, 32, },
-+	{ 2, 0, 0, 3, 9, 32, },
-+	{ 1, 0, 0, 3, 9, 32, },
-+	{ 0, 0, 0, 3, 10, 32, },
-+	{ 2, 0, 0, 3, 10, 32, },
-+	{ 1, 0, 0, 3, 10, 32, },
-+	{ 0, 0, 0, 3, 11, 30, },
-+	{ 2, 0, 0, 3, 11, 32, },
-+	{ 1, 0, 0, 3, 11, 32, },
-+	{ 0, 0, 0, 3, 12, 63, },
-+	{ 2, 0, 0, 3, 12, 32, },
-+	{ 1, 0, 0, 3, 12, 32, },
-+	{ 0, 0, 0, 3, 13, 63, },
-+	{ 2, 0, 0, 3, 13, 32, },
-+	{ 1, 0, 0, 3, 13, 32, },
-+	{ 0, 0, 0, 3, 14, 63, },
-+	{ 2, 0, 0, 3, 14, 63, },
-+	{ 1, 0, 0, 3, 14, 63, },
-+	{ 0, 0, 1, 2, 1, 63, },
-+	{ 2, 0, 1, 2, 1, 63, },
-+	{ 1, 0, 1, 2, 1, 63, },
-+	{ 0, 0, 1, 2, 2, 63, },
-+	{ 2, 0, 1, 2, 2, 63, },
-+	{ 1, 0, 1, 2, 2, 63, },
-+	{ 0, 0, 1, 2, 3, 26, },
-+	{ 2, 0, 1, 2, 3, 26, },
-+	{ 1, 0, 1, 2, 3, 32, },
-+	{ 0, 0, 1, 2, 4, 26, },
-+	{ 2, 0, 1, 2, 4, 32, },
-+	{ 1, 0, 1, 2, 4, 32, },
-+	{ 0, 0, 1, 2, 5, 26, },
-+	{ 2, 0, 1, 2, 5, 32, },
-+	{ 1, 0, 1, 2, 5, 32, },
-+	{ 0, 0, 1, 2, 6, 32, },
-+	{ 2, 0, 1, 2, 6, 32, },
-+	{ 1, 0, 1, 2, 6, 32, },
-+	{ 0, 0, 1, 2, 7, 32, },
-+	{ 2, 0, 1, 2, 7, 32, },
-+	{ 1, 0, 1, 2, 7, 32, },
-+	{ 0, 0, 1, 2, 8, 32, },
-+	{ 2, 0, 1, 2, 8, 32, },
-+	{ 1, 0, 1, 2, 8, 32, },
-+	{ 0, 0, 1, 2, 9, 26, },
-+	{ 2, 0, 1, 2, 9, 32, },
-+	{ 1, 0, 1, 2, 9, 32, },
-+	{ 0, 0, 1, 2, 10, 24, },
-+	{ 2, 0, 1, 2, 10, 32, },
-+	{ 1, 0, 1, 2, 10, 32, },
-+	{ 0, 0, 1, 2, 11, 22, },
-+	{ 2, 0, 1, 2, 11, 26, },
-+	{ 1, 0, 1, 2, 11, 32, },
-+	{ 0, 0, 1, 2, 12, 63, },
-+	{ 2, 0, 1, 2, 12, 63, },
-+	{ 1, 0, 1, 2, 12, 63, },
-+	{ 0, 0, 1, 2, 13, 63, },
-+	{ 2, 0, 1, 2, 13, 63, },
-+	{ 1, 0, 1, 2, 13, 63, },
-+	{ 0, 0, 1, 2, 14, 63, },
-+	{ 2, 0, 1, 2, 14, 63, },
-+	{ 1, 0, 1, 2, 14, 63, },
-+	{ 0, 0, 1, 3, 1, 63, },
-+	{ 2, 0, 1, 3, 1, 63, },
-+	{ 1, 0, 1, 3, 1, 63, },
-+	{ 0, 0, 1, 3, 2, 63, },
-+	{ 2, 0, 1, 3, 2, 63, },
-+	{ 1, 0, 1, 3, 2, 63, },
-+	{ 0, 0, 1, 3, 3, 30, },
-+	{ 2, 0, 1, 3, 3, 30, },
-+	{ 1, 0, 1, 3, 3, 30, },
-+	{ 0, 0, 1, 3, 4, 32, },
-+	{ 2, 0, 1, 3, 4, 30, },
-+	{ 1, 0, 1, 3, 4, 30, },
-+	{ 0, 0, 1, 3, 5, 32, },
-+	{ 2, 0, 1, 3, 5, 30, },
-+	{ 1, 0, 1, 3, 5, 30, },
-+	{ 0, 0, 1, 3, 6, 32, },
-+	{ 2, 0, 1, 3, 6, 30, },
-+	{ 1, 0, 1, 3, 6, 30, },
-+	{ 0, 0, 1, 3, 7, 32, },
-+	{ 2, 0, 1, 3, 7, 30, },
-+	{ 1, 0, 1, 3, 7, 30, },
-+	{ 0, 0, 1, 3, 8, 32, },
-+	{ 2, 0, 1, 3, 8, 30, },
-+	{ 1, 0, 1, 3, 8, 30, },
-+	{ 0, 0, 1, 3, 9, 32, },
-+	{ 2, 0, 1, 3, 9, 30, },
-+	{ 1, 0, 1, 3, 9, 30, },
-+	{ 0, 0, 1, 3, 10, 32, },
-+	{ 2, 0, 1, 3, 10, 30, },
-+	{ 1, 0, 1, 3, 10, 30, },
-+	{ 0, 0, 1, 3, 11, 30, },
-+	{ 2, 0, 1, 3, 11, 30, },
-+	{ 1, 0, 1, 3, 11, 30, },
-+	{ 0, 0, 1, 3, 12, 63, },
-+	{ 2, 0, 1, 3, 12, 32, },
-+	{ 1, 0, 1, 3, 12, 32, },
-+	{ 0, 0, 1, 3, 13, 63, },
-+	{ 2, 0, 1, 3, 13, 32, },
-+	{ 1, 0, 1, 3, 13, 32, },
-+	{ 0, 0, 1, 3, 14, 63, },
-+	{ 2, 0, 1, 3, 14, 63, },
-+	{ 1, 0, 1, 3, 14, 63, },
-+	{ 0, 1, 0, 1, 36, 32, },
-+	{ 2, 1, 0, 1, 36, 30, },
-+	{ 1, 1, 0, 1, 36, 30, },
-+	{ 0, 1, 0, 1, 40, 32, },
-+	{ 2, 1, 0, 1, 40, 30, },
-+	{ 1, 1, 0, 1, 40, 30, },
-+	{ 0, 1, 0, 1, 44, 32, },
-+	{ 2, 1, 0, 1, 44, 30, },
-+	{ 1, 1, 0, 1, 44, 30, },
-+	{ 0, 1, 0, 1, 48, 32, },
-+	{ 2, 1, 0, 1, 48, 30, },
-+	{ 1, 1, 0, 1, 48, 30, },
-+	{ 0, 1, 0, 1, 52, 32, },
-+	{ 2, 1, 0, 1, 52, 30, },
-+	{ 1, 1, 0, 1, 52, 30, },
-+	{ 0, 1, 0, 1, 56, 32, },
-+	{ 2, 1, 0, 1, 56, 30, },
-+	{ 1, 1, 0, 1, 56, 30, },
-+	{ 0, 1, 0, 1, 60, 32, },
-+	{ 2, 1, 0, 1, 60, 30, },
-+	{ 1, 1, 0, 1, 60, 30, },
-+	{ 0, 1, 0, 1, 64, 32, },
-+	{ 2, 1, 0, 1, 64, 30, },
-+	{ 1, 1, 0, 1, 64, 30, },
-+	{ 0, 1, 0, 1, 100, 32, },
-+	{ 2, 1, 0, 1, 100, 30, },
-+	{ 1, 1, 0, 1, 100, 30, },
-+	{ 0, 1, 0, 1, 104, 32, },
-+	{ 2, 1, 0, 1, 104, 30, },
-+	{ 1, 1, 0, 1, 104, 30, },
-+	{ 0, 1, 0, 1, 108, 32, },
-+	{ 2, 1, 0, 1, 108, 30, },
-+	{ 1, 1, 0, 1, 108, 30, },
-+	{ 0, 1, 0, 1, 112, 32, },
-+	{ 2, 1, 0, 1, 112, 30, },
-+	{ 1, 1, 0, 1, 112, 30, },
-+	{ 0, 1, 0, 1, 116, 32, },
-+	{ 2, 1, 0, 1, 116, 30, },
-+	{ 1, 1, 0, 1, 116, 30, },
-+	{ 0, 1, 0, 1, 120, 32, },
-+	{ 2, 1, 0, 1, 120, 30, },
-+	{ 1, 1, 0, 1, 120, 30, },
-+	{ 0, 1, 0, 1, 124, 32, },
-+	{ 2, 1, 0, 1, 124, 30, },
-+	{ 1, 1, 0, 1, 124, 30, },
-+	{ 0, 1, 0, 1, 128, 32, },
-+	{ 2, 1, 0, 1, 128, 30, },
-+	{ 1, 1, 0, 1, 128, 30, },
-+	{ 0, 1, 0, 1, 132, 32, },
-+	{ 2, 1, 0, 1, 132, 30, },
-+	{ 1, 1, 0, 1, 132, 30, },
-+	{ 0, 1, 0, 1, 136, 32, },
-+	{ 2, 1, 0, 1, 136, 30, },
-+	{ 1, 1, 0, 1, 136, 30, },
-+	{ 0, 1, 0, 1, 140, 32, },
-+	{ 2, 1, 0, 1, 140, 30, },
-+	{ 1, 1, 0, 1, 140, 30, },
-+	{ 0, 1, 0, 1, 149, 32, },
-+	{ 2, 1, 0, 1, 149, 30, },
-+	{ 1, 1, 0, 1, 149, 63, },
-+	{ 0, 1, 0, 1, 153, 32, },
-+	{ 2, 1, 0, 1, 153, 30, },
-+	{ 1, 1, 0, 1, 153, 63, },
-+	{ 0, 1, 0, 1, 157, 32, },
-+	{ 2, 1, 0, 1, 157, 30, },
-+	{ 1, 1, 0, 1, 157, 63, },
-+	{ 0, 1, 0, 1, 161, 32, },
-+	{ 2, 1, 0, 1, 161, 30, },
-+	{ 1, 1, 0, 1, 161, 63, },
-+	{ 0, 1, 0, 1, 165, 32, },
-+	{ 2, 1, 0, 1, 165, 30, },
-+	{ 1, 1, 0, 1, 165, 63, },
-+	{ 0, 1, 0, 2, 36, 32, },
-+	{ 2, 1, 0, 2, 36, 30, },
-+	{ 1, 1, 0, 2, 36, 30, },
-+	{ 0, 1, 0, 2, 40, 32, },
-+	{ 2, 1, 0, 2, 40, 30, },
-+	{ 1, 1, 0, 2, 40, 30, },
-+	{ 0, 1, 0, 2, 44, 32, },
-+	{ 2, 1, 0, 2, 44, 30, },
-+	{ 1, 1, 0, 2, 44, 30, },
-+	{ 0, 1, 0, 2, 48, 32, },
-+	{ 2, 1, 0, 2, 48, 30, },
-+	{ 1, 1, 0, 2, 48, 30, },
-+	{ 0, 1, 0, 2, 52, 32, },
-+	{ 2, 1, 0, 2, 52, 30, },
-+	{ 1, 1, 0, 2, 52, 30, },
-+	{ 0, 1, 0, 2, 56, 32, },
-+	{ 2, 1, 0, 2, 56, 30, },
-+	{ 1, 1, 0, 2, 56, 30, },
-+	{ 0, 1, 0, 2, 60, 32, },
-+	{ 2, 1, 0, 2, 60, 30, },
-+	{ 1, 1, 0, 2, 60, 30, },
-+	{ 0, 1, 0, 2, 64, 32, },
-+	{ 2, 1, 0, 2, 64, 30, },
-+	{ 1, 1, 0, 2, 64, 30, },
-+	{ 0, 1, 0, 2, 100, 32, },
-+	{ 2, 1, 0, 2, 100, 30, },
-+	{ 1, 1, 0, 2, 100, 30, },
-+	{ 0, 1, 0, 2, 104, 32, },
-+	{ 2, 1, 0, 2, 104, 30, },
-+	{ 1, 1, 0, 2, 104, 30, },
-+	{ 0, 1, 0, 2, 108, 32, },
-+	{ 2, 1, 0, 2, 108, 30, },
-+	{ 1, 1, 0, 2, 108, 30, },
-+	{ 0, 1, 0, 2, 112, 32, },
-+	{ 2, 1, 0, 2, 112, 30, },
-+	{ 1, 1, 0, 2, 112, 30, },
-+	{ 0, 1, 0, 2, 116, 32, },
-+	{ 2, 1, 0, 2, 116, 30, },
-+	{ 1, 1, 0, 2, 116, 30, },
-+	{ 0, 1, 0, 2, 120, 32, },
-+	{ 2, 1, 0, 2, 120, 30, },
-+	{ 1, 1, 0, 2, 120, 30, },
-+	{ 0, 1, 0, 2, 124, 32, },
-+	{ 2, 1, 0, 2, 124, 30, },
-+	{ 1, 1, 0, 2, 124, 30, },
-+	{ 0, 1, 0, 2, 128, 32, },
-+	{ 2, 1, 0, 2, 128, 30, },
-+	{ 1, 1, 0, 2, 128, 30, },
-+	{ 0, 1, 0, 2, 132, 32, },
-+	{ 2, 1, 0, 2, 132, 30, },
-+	{ 1, 1, 0, 2, 132, 30, },
-+	{ 0, 1, 0, 2, 136, 32, },
-+	{ 2, 1, 0, 2, 136, 30, },
-+	{ 1, 1, 0, 2, 136, 30, },
-+	{ 0, 1, 0, 2, 140, 32, },
-+	{ 2, 1, 0, 2, 140, 30, },
-+	{ 1, 1, 0, 2, 140, 30, },
-+	{ 0, 1, 0, 2, 149, 32, },
-+	{ 2, 1, 0, 2, 149, 30, },
-+	{ 1, 1, 0, 2, 149, 63, },
-+	{ 0, 1, 0, 2, 153, 32, },
-+	{ 2, 1, 0, 2, 153, 30, },
-+	{ 1, 1, 0, 2, 153, 63, },
-+	{ 0, 1, 0, 2, 157, 32, },
-+	{ 2, 1, 0, 2, 157, 30, },
-+	{ 1, 1, 0, 2, 157, 63, },
-+	{ 0, 1, 0, 2, 161, 32, },
-+	{ 2, 1, 0, 2, 161, 30, },
-+	{ 1, 1, 0, 2, 161, 63, },
-+	{ 0, 1, 0, 2, 165, 32, },
-+	{ 2, 1, 0, 2, 165, 30, },
-+	{ 1, 1, 0, 2, 165, 63, },
-+	{ 0, 1, 0, 3, 36, 28, },
-+	{ 2, 1, 0, 3, 36, 30, },
-+	{ 1, 1, 0, 3, 36, 30, },
-+	{ 0, 1, 0, 3, 40, 28, },
-+	{ 2, 1, 0, 3, 40, 30, },
-+	{ 1, 1, 0, 3, 40, 30, },
-+	{ 0, 1, 0, 3, 44, 28, },
-+	{ 2, 1, 0, 3, 44, 30, },
-+	{ 1, 1, 0, 3, 44, 30, },
-+	{ 0, 1, 0, 3, 48, 28, },
-+	{ 2, 1, 0, 3, 48, 30, },
-+	{ 1, 1, 0, 3, 48, 30, },
-+	{ 0, 1, 0, 3, 52, 34, },
-+	{ 2, 1, 0, 3, 52, 30, },
-+	{ 1, 1, 0, 3, 52, 30, },
-+	{ 0, 1, 0, 3, 56, 32, },
-+	{ 2, 1, 0, 3, 56, 30, },
-+	{ 1, 1, 0, 3, 56, 30, },
-+	{ 0, 1, 0, 3, 60, 30, },
-+	{ 2, 1, 0, 3, 60, 30, },
-+	{ 1, 1, 0, 3, 60, 30, },
-+	{ 0, 1, 0, 3, 64, 26, },
-+	{ 2, 1, 0, 3, 64, 30, },
-+	{ 1, 1, 0, 3, 64, 30, },
-+	{ 0, 1, 0, 3, 100, 28, },
-+	{ 2, 1, 0, 3, 100, 30, },
-+	{ 1, 1, 0, 3, 100, 30, },
-+	{ 0, 1, 0, 3, 104, 28, },
-+	{ 2, 1, 0, 3, 104, 30, },
-+	{ 1, 1, 0, 3, 104, 30, },
-+	{ 0, 1, 0, 3, 108, 30, },
-+	{ 2, 1, 0, 3, 108, 30, },
-+	{ 1, 1, 0, 3, 108, 30, },
-+	{ 0, 1, 0, 3, 112, 32, },
-+	{ 2, 1, 0, 3, 112, 30, },
-+	{ 1, 1, 0, 3, 112, 30, },
-+	{ 0, 1, 0, 3, 116, 32, },
-+	{ 2, 1, 0, 3, 116, 30, },
-+	{ 1, 1, 0, 3, 116, 30, },
-+	{ 0, 1, 0, 3, 120, 34, },
-+	{ 2, 1, 0, 3, 120, 30, },
-+	{ 1, 1, 0, 3, 120, 30, },
-+	{ 0, 1, 0, 3, 124, 32, },
-+	{ 2, 1, 0, 3, 124, 30, },
-+	{ 1, 1, 0, 3, 124, 30, },
-+	{ 0, 1, 0, 3, 128, 30, },
-+	{ 2, 1, 0, 3, 128, 30, },
-+	{ 1, 1, 0, 3, 128, 30, },
-+	{ 0, 1, 0, 3, 132, 28, },
-+	{ 2, 1, 0, 3, 132, 30, },
-+	{ 1, 1, 0, 3, 132, 30, },
-+	{ 0, 1, 0, 3, 136, 28, },
-+	{ 2, 1, 0, 3, 136, 30, },
-+	{ 1, 1, 0, 3, 136, 30, },
-+	{ 0, 1, 0, 3, 140, 26, },
-+	{ 2, 1, 0, 3, 140, 30, },
-+	{ 1, 1, 0, 3, 140, 30, },
-+	{ 0, 1, 0, 3, 149, 34, },
-+	{ 2, 1, 0, 3, 149, 30, },
-+	{ 1, 1, 0, 3, 149, 63, },
-+	{ 0, 1, 0, 3, 153, 34, },
-+	{ 2, 1, 0, 3, 153, 30, },
-+	{ 1, 1, 0, 3, 153, 63, },
-+	{ 0, 1, 0, 3, 157, 34, },
-+	{ 2, 1, 0, 3, 157, 30, },
-+	{ 1, 1, 0, 3, 157, 63, },
-+	{ 0, 1, 0, 3, 161, 34, },
-+	{ 2, 1, 0, 3, 161, 30, },
-+	{ 1, 1, 0, 3, 161, 63, },
-+	{ 0, 1, 0, 3, 165, 34, },
-+	{ 2, 1, 0, 3, 165, 30, },
-+	{ 1, 1, 0, 3, 165, 63, },
-+	{ 0, 1, 1, 2, 38, 26, },
-+	{ 2, 1, 1, 2, 38, 30, },
-+	{ 1, 1, 1, 2, 38, 30, },
-+	{ 0, 1, 1, 2, 46, 32, },
-+	{ 2, 1, 1, 2, 46, 30, },
-+	{ 1, 1, 1, 2, 46, 30, },
-+	{ 0, 1, 1, 2, 54, 32, },
-+	{ 2, 1, 1, 2, 54, 30, },
-+	{ 1, 1, 1, 2, 54, 30, },
-+	{ 0, 1, 1, 2, 62, 24, },
-+	{ 2, 1, 1, 2, 62, 30, },
-+	{ 1, 1, 1, 2, 62, 30, },
-+	{ 0, 1, 1, 2, 102, 24, },
-+	{ 2, 1, 1, 2, 102, 30, },
-+	{ 1, 1, 1, 2, 102, 30, },
-+	{ 0, 1, 1, 2, 110, 32, },
-+	{ 2, 1, 1, 2, 110, 30, },
-+	{ 1, 1, 1, 2, 110, 30, },
-+	{ 0, 1, 1, 2, 118, 32, },
-+	{ 2, 1, 1, 2, 118, 30, },
-+	{ 1, 1, 1, 2, 118, 30, },
-+	{ 0, 1, 1, 2, 126, 32, },
-+	{ 2, 1, 1, 2, 126, 30, },
-+	{ 1, 1, 1, 2, 126, 30, },
-+	{ 0, 1, 1, 2, 134, 32, },
-+	{ 2, 1, 1, 2, 134, 30, },
-+	{ 1, 1, 1, 2, 134, 30, },
-+	{ 0, 1, 1, 2, 151, 30, },
-+	{ 2, 1, 1, 2, 151, 30, },
-+	{ 1, 1, 1, 2, 151, 63, },
-+	{ 0, 1, 1, 2, 159, 32, },
-+	{ 2, 1, 1, 2, 159, 30, },
-+	{ 1, 1, 1, 2, 159, 63, },
-+	{ 0, 1, 1, 3, 38, 28, },
-+	{ 2, 1, 1, 3, 38, 30, },
-+	{ 1, 1, 1, 3, 38, 30, },
-+	{ 0, 1, 1, 3, 46, 28, },
-+	{ 2, 1, 1, 3, 46, 30, },
-+	{ 1, 1, 1, 3, 46, 30, },
-+	{ 0, 1, 1, 3, 54, 30, },
-+	{ 2, 1, 1, 3, 54, 30, },
-+	{ 1, 1, 1, 3, 54, 30, },
-+	{ 0, 1, 1, 3, 62, 30, },
-+	{ 2, 1, 1, 3, 62, 30, },
-+	{ 1, 1, 1, 3, 62, 30, },
-+	{ 0, 1, 1, 3, 102, 26, },
-+	{ 2, 1, 1, 3, 102, 30, },
-+	{ 1, 1, 1, 3, 102, 30, },
-+	{ 0, 1, 1, 3, 110, 30, },
-+	{ 2, 1, 1, 3, 110, 30, },
-+	{ 1, 1, 1, 3, 110, 30, },
-+	{ 0, 1, 1, 3, 118, 34, },
-+	{ 2, 1, 1, 3, 118, 30, },
-+	{ 1, 1, 1, 3, 118, 30, },
-+	{ 0, 1, 1, 3, 126, 32, },
-+	{ 2, 1, 1, 3, 126, 30, },
-+	{ 1, 1, 1, 3, 126, 30, },
-+	{ 0, 1, 1, 3, 134, 30, },
-+	{ 2, 1, 1, 3, 134, 30, },
-+	{ 1, 1, 1, 3, 134, 30, },
-+	{ 0, 1, 1, 3, 151, 34, },
-+	{ 2, 1, 1, 3, 151, 30, },
-+	{ 1, 1, 1, 3, 151, 63, },
-+	{ 0, 1, 1, 3, 159, 34, },
-+	{ 2, 1, 1, 3, 159, 30, },
-+	{ 1, 1, 1, 3, 159, 63, },
-+	{ 0, 1, 2, 4, 42, 22, },
-+	{ 2, 1, 2, 4, 42, 30, },
-+	{ 1, 1, 2, 4, 42, 30, },
-+	{ 0, 1, 2, 4, 58, 20, },
-+	{ 2, 1, 2, 4, 58, 30, },
-+	{ 1, 1, 2, 4, 58, 30, },
-+	{ 0, 1, 2, 4, 106, 20, },
-+	{ 2, 1, 2, 4, 106, 30, },
-+	{ 1, 1, 2, 4, 106, 30, },
-+	{ 0, 1, 2, 4, 122, 20, },
-+	{ 2, 1, 2, 4, 122, 30, },
-+	{ 1, 1, 2, 4, 122, 30, },
-+	{ 0, 1, 2, 4, 155, 28, },
-+	{ 2, 1, 2, 4, 155, 30, },
-+	{ 1, 1, 2, 4, 155, 63, },
-+	{ 0, 1, 2, 5, 42, 28, },
-+	{ 2, 1, 2, 5, 42, 30, },
-+	{ 1, 1, 2, 5, 42, 30, },
-+	{ 0, 1, 2, 5, 58, 26, },
-+	{ 2, 1, 2, 5, 58, 30, },
-+	{ 1, 1, 2, 5, 58, 30, },
-+	{ 0, 1, 2, 5, 106, 28, },
-+	{ 2, 1, 2, 5, 106, 30, },
-+	{ 1, 1, 2, 5, 106, 30, },
-+	{ 0, 1, 2, 5, 122, 32, },
-+	{ 2, 1, 2, 5, 122, 30, },
-+	{ 1, 1, 2, 5, 122, 30, },
-+	{ 0, 1, 2, 5, 155, 34, },
-+	{ 2, 1, 2, 5, 155, 30, },
-+	{ 1, 1, 2, 5, 155, 63, },
-+};
++	dm_info->default_ofdm_index = rtw88xxa_get_swing_index(rtwdev);
 +
-+RTW_DECL_TABLE_TXPWR_LMT(rtw8821a_txpwr_lmt);
++	if (rtwdev->chip->id == RTW_CHIP_TYPE_8821A)
++		dm_info->default_cck_index = 0;
++	else
++		dm_info->default_cck_index = 24;
 +
-+static const struct rtw_pwr_seq_cmd trans_carddis_to_cardemu_8821a[] = {
-+	{0x0005,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(3) | BIT(7), 0},
-+	{0x0086,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_SDIO,
-+	 RTW_PWR_CMD_WRITE, BIT(0), 0},
-+	{0x0086,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_SDIO,
-+	 RTW_PWR_CMD_POLLING, BIT(1), BIT(1)},
-+	{0x004A,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_USB_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(0), 0},
-+	{0x0005,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(3) | BIT(4), 0},
-+	{0x0023,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(4), 0},
-+	{0x0301,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_PCI_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, 0xFF, 0},
-+	{0xFFFF,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 0,
-+	 RTW_PWR_CMD_END, 0, 0},
-+};
++	for (path = RF_PATH_A; path < rtwdev->hal.rf_path_num; path++) {
++		ewma_thermal_init(&dm_info->avg_thermal[path]);
++		dm_info->delta_power_index[path] = 0;
++		dm_info->delta_power_index_last[path] = 0;
++	}
 +
-+static const struct rtw_pwr_seq_cmd trans_cardemu_to_act_8821a[] = {
-+	{0x0020,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_USB_MSK | RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(0), BIT(0)},
-+	{0x0067,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_USB_MSK | RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(4), 0},
-+	{0x0001,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_USB_MSK | RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_DELAY, 1, RTW_PWR_DELAY_MS},
-+	{0x0000,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_USB_MSK | RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(5), 0},
-+	{0x0005,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(4) | BIT(3) | BIT(2), 0},
-+	{0x0075,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_PCI_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(0), BIT(0)},
-+	{0x0006,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_POLLING, BIT(1), BIT(1)},
-+	{0x0075,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_PCI_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(0), 0},
-+	{0x0006,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(0), BIT(0)},
-+	{0x0005,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(7), 0},
-+	{0x0005,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(4) | BIT(3), 0},
-+	{0x0005,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(0), BIT(0)},
-+	{0x0005,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_POLLING, BIT(0), 0},
-+	{0x004F,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(0), BIT(0)},
-+	{0x0067,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(5) | BIT(4), BIT(5) | BIT(4)},
-+	{0x0025,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(6), 0},
-+	{0x0049,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(1), BIT(1)},
-+	{0x0063,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(1), BIT(1)},
-+	{0x0062,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(1), 0},
-+	{0x0058,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(0), BIT(0)},
-+	{0x005A,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(1), BIT(1)},
-+	{0x002E,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, 0xFF, 0x82},
-+	{0x0010,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(6), BIT(6)},
-+	{0xFFFF,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 0,
-+	 RTW_PWR_CMD_END, 0, 0},
-+};
++	dm_info->pwr_trk_triggered = false;
++	dm_info->pwr_trk_init_trigger = true;
++	dm_info->thermal_meter_k = rtwdev->efuse.thermal_meter_k;
++}
 +
-+static const struct rtw_pwr_seq_cmd trans_act_to_lps_8821a[] = {
-+	{0x0301,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_PCI_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, 0xFF, 0xFF},
-+	{0x0522,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, 0xFF, 0xFF},
-+	{0x05F8,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_POLLING, 0xFF, 0},
-+	{0x05F9,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_POLLING, 0xFF, 0},
-+	{0x05FA,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_POLLING, 0xFF, 0},
-+	{0x05FB,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_POLLING, 0xFF, 0},
-+	{0x0002,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(0), 0},
-+	{0x0002,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_DELAY, 0, RTW_PWR_DELAY_US},
-+	{0x0002,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(1), 0},
-+	{0x0100,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, 0xFF, 0x03},
-+	{0x0101,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(1), 0},
-+	{0x0093,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, 0xFF, 0x00},
-+	{0x0553,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(5), BIT(5)},
-+	{0xFFFF,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 0,
-+	 RTW_PWR_CMD_END, 0, 0},
-+};
++void rtw88xxa_power_off(struct rtw_dev *rtwdev,
++			const struct rtw_pwr_seq_cmd *const *enter_lps_flow)
++{
++	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
++	enum usb_device_speed speed = rtwusb->udev->speed;
++	u16 ori_fsmc0;
++	u8 reg_cr;
 +
-+static const struct rtw_pwr_seq_cmd trans_act_to_cardemu_8821a[] = {
-+	{0x001F,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, 0xFF, 0},
-+	{0x004F,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(0), 0},
-+	{0x0049,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(1), 0},
-+	{0x0006,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_USB_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(0), BIT(0)},
-+	{0x0005,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(1), BIT(1)},
-+	{0x0005,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_POLLING, BIT(1), 0},
-+	{0x0000,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_USB_MSK | RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(5), BIT(5)},
-+	{0x0020,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_USB_MSK | RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(0), 0},
-+	{0xFFFF,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 0,
-+	 RTW_PWR_CMD_END, 0, 0},
-+};
++	reg_cr = rtw_read8(rtwdev, REG_CR);
 +
-+static const struct rtw_pwr_seq_cmd trans_cardemu_to_carddis_8821a[] = {
-+	{0x0007,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, 0xFF, 0x20},
-+	{0x0005,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_USB_MSK | RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(3) | BIT(4), BIT(3)},
-+	{0x0005,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_PCI_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(2), BIT(2)},
-+	{0x004A,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_USB_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(0), 1},
-+	{0x0023,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_MAC,
-+	 RTW_PWR_CMD_WRITE, BIT(4), BIT(4)},
-+	{0x0086,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_SDIO,
-+	 RTW_PWR_CMD_WRITE, BIT(0), BIT(0)},
-+	{0x0086,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_SDIO_MSK,
-+	 RTW_PWR_ADDR_SDIO,
-+	 RTW_PWR_CMD_POLLING, BIT(1), 0},
-+	{0xFFFF,
-+	 RTW_PWR_CUT_ALL_MSK,
-+	 RTW_PWR_INTF_ALL_MSK,
-+	 0,
-+	 RTW_PWR_CMD_END, 0, 0},
-+};
++	/* Already powered off */
++	if (reg_cr == 0 || reg_cr == 0xEA)
++		return;
 +
-+const struct rtw_pwr_seq_cmd * const card_enable_flow_8821a[] = {
-+	trans_carddis_to_cardemu_8821a,
-+	trans_cardemu_to_act_8821a,
-+	NULL
-+};
++	rtw_hci_stop(rtwdev);
 +
-+const struct rtw_pwr_seq_cmd * const enter_lps_flow_8821a[] = {
-+	trans_act_to_lps_8821a,
-+	NULL
-+};
++	if (!rtwdev->efuse.btcoex)
++		rtw_write16_clr(rtwdev, REG_GPIO_MUXCFG, BIT_EN_SIC);
 +
-+const struct rtw_pwr_seq_cmd * const card_disable_flow_8821a[] = {
-+	trans_act_to_cardemu_8821a,
-+	trans_cardemu_to_carddis_8821a,
-+	NULL
-+};
++	/* set Reg 0xf008[3:4] to 2'11 to enable U1/U2 Mode in USB3.0. */
++	if (speed == USB_SPEED_SUPER)
++		rtw_write8_set(rtwdev, REG_USB_MOD, 0x18);
 +
-+static const u8 rtw8821a_pwrtrk_5gb_n[][RTW_PWR_TRK_TBL_SZ] = {
-+	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11, 12, 12, 13, 14, 15,
-+	 15, 16, 16, 16, 16, 16, 16, 16, 16},
-+	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11, 12, 12, 13, 14, 15,
-+	 15, 16, 16, 16, 16, 16, 16, 16, 16},
-+	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11, 12, 12, 13, 14, 15,
-+	 15, 16, 16, 16, 16, 16, 16, 16, 16},
-+};
++	rtw_write32(rtwdev, REG_HISR0, 0xffffffff);
++	rtw_write32(rtwdev, REG_HISR1, 0xffffffff);
++	rtw_write32(rtwdev, REG_HIMR0, 0);
++	rtw_write32(rtwdev, REG_HIMR1, 0);
 +
-+static const u8 rtw8821a_pwrtrk_5gb_p[][RTW_PWR_TRK_TBL_SZ] = {
-+	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11, 12, 12, 13, 14, 15,
-+	 15, 16, 16, 16, 16, 16, 16, 16, 16},
-+	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11, 12, 12, 13, 14, 15,
-+	 15, 16, 16, 16, 16, 16, 16, 16, 16},
-+	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11, 12, 12, 13, 14, 15,
-+	 15, 16, 16, 16, 16, 16, 16, 16, 16},
-+};
++	if (rtwdev->efuse.btcoex)
++		rtw_coex_power_off_setting(rtwdev);
 +
-+static const u8 rtw8821a_pwrtrk_5ga_n[][RTW_PWR_TRK_TBL_SZ] = {
-+	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11, 12, 12, 13, 14, 15,
-+	 15, 16, 16, 16, 16, 16, 16, 16, 16},
-+	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11, 12, 12, 13, 14, 15,
-+	 15, 16, 16, 16, 16, 16, 16, 16, 16},
-+	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11, 12, 12, 13, 14, 15,
-+	 15, 16, 16, 16, 16, 16, 16, 16, 16},
-+};
++	ori_fsmc0 = rtw_read16(rtwdev, REG_APS_FSMCO);
++	rtw_write16(rtwdev, REG_APS_FSMCO, ori_fsmc0 & ~APS_FSMCO_HW_POWERDOWN);
 +
-+static const u8 rtw8821a_pwrtrk_5ga_p[][RTW_PWR_TRK_TBL_SZ] = {
-+	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11, 12, 12, 13, 14, 15,
-+	 15, 16, 16, 16, 16, 16, 16, 16, 16},
-+	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11, 12, 12, 13, 14, 15,
-+	 15, 16, 16, 16, 16, 16, 16, 16, 16},
-+	{0, 0, 1, 2, 3, 3, 4, 5, 6, 6, 7, 8, 9, 9, 10, 11, 12, 12, 13, 14, 15,
-+	 15, 16, 16, 16, 16, 16, 16, 16, 16},
-+};
++	/* Stop Tx Report Timer. */
++	rtw_write8_clr(rtwdev, REG_TX_RPT_CTRL, BIT(1));
 +
-+static const u8 rtw8821a_pwrtrk_2gb_n[] = {
-+	0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6,
-+	6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10
-+};
++	/* Stop Rx */
++	rtw_write8(rtwdev, REG_CR, 0);
 +
-+static const u8 rtw8821a_pwrtrk_2gb_p[] = {
-+	0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7,
-+	8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 12, 12, 12, 12
-+};
++	rtw_pwr_seq_parser(rtwdev, enter_lps_flow);
 +
-+static const u8 rtw8821a_pwrtrk_2ga_n[] = {
-+	0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6,
-+	6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10
-+};
++	if (rtw_read8(rtwdev, REG_MCUFW_CTRL) & BIT_RAM_DL_SEL)
++		rtw88xxa_reset_8051(rtwdev);
 +
-+static const u8 rtw8821a_pwrtrk_2ga_p[] = {
-+	0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7,
-+	8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 12, 12, 12, 12
-+};
++	rtw_write8_clr(rtwdev, REG_SYS_FUNC_EN + 1, BIT(2));
++	rtw_write8(rtwdev, REG_MCUFW_CTRL, 0);
 +
-+static const u8 rtw8821a_pwrtrk_2g_cck_b_n[] = {
-+	0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6,
-+	6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10
-+};
++	rtw_pwr_seq_parser(rtwdev, rtwdev->chip->pwr_off_seq);
 +
-+static const u8 rtw8821a_pwrtrk_2g_cck_b_p[] = {
-+	0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7,
-+	8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 12, 12, 12, 12
-+};
++	if (ori_fsmc0 & APS_FSMCO_HW_POWERDOWN)
++		rtw_write16_set(rtwdev, REG_APS_FSMCO, APS_FSMCO_HW_POWERDOWN);
 +
-+static const u8 rtw8821a_pwrtrk_2g_cck_a_n[] = {
-+	0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6,
-+	6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10
-+};
++	clear_bit(RTW_FLAG_POWERON, rtwdev->flags);
++}
++EXPORT_SYMBOL(rtw88xxa_power_off);
 +
-+static const u8 rtw8821a_pwrtrk_2g_cck_a_p[] = {
-+	0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7,
-+	8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 12, 12, 12, 12
-+};
++static void rtw88xxa_set_channel_bb_swing(struct rtw_dev *rtwdev, u8 band)
++{
++	rtw_write32_mask(rtwdev, REG_TXSCALE_A, BB_SWING_MASK,
++			 rtw88xxa_get_bb_swing(rtwdev, band, RF_PATH_A));
++	rtw_write32_mask(rtwdev, REG_TXSCALE_B, BB_SWING_MASK,
++			 rtw88xxa_get_bb_swing(rtwdev, band, RF_PATH_B));
++	rtw88xxa_pwrtrack_init(rtwdev);
++}
 +
-+const struct rtw_pwr_track_tbl rtw8821a_rtw_pwr_track_tbl = {
-+	.pwrtrk_5gb_n[0] = rtw8821a_pwrtrk_5gb_n[0],
-+	.pwrtrk_5gb_n[1] = rtw8821a_pwrtrk_5gb_n[1],
-+	.pwrtrk_5gb_n[2] = rtw8821a_pwrtrk_5gb_n[2],
-+	.pwrtrk_5gb_p[0] = rtw8821a_pwrtrk_5gb_p[0],
-+	.pwrtrk_5gb_p[1] = rtw8821a_pwrtrk_5gb_p[1],
-+	.pwrtrk_5gb_p[2] = rtw8821a_pwrtrk_5gb_p[2],
-+	.pwrtrk_5ga_n[0] = rtw8821a_pwrtrk_5ga_n[0],
-+	.pwrtrk_5ga_n[1] = rtw8821a_pwrtrk_5ga_n[1],
-+	.pwrtrk_5ga_n[2] = rtw8821a_pwrtrk_5ga_n[2],
-+	.pwrtrk_5ga_p[0] = rtw8821a_pwrtrk_5ga_p[0],
-+	.pwrtrk_5ga_p[1] = rtw8821a_pwrtrk_5ga_p[1],
-+	.pwrtrk_5ga_p[2] = rtw8821a_pwrtrk_5ga_p[2],
-+	.pwrtrk_2gb_n = rtw8821a_pwrtrk_2gb_n,
-+	.pwrtrk_2gb_p = rtw8821a_pwrtrk_2gb_p,
-+	.pwrtrk_2ga_n = rtw8821a_pwrtrk_2ga_n,
-+	.pwrtrk_2ga_p = rtw8821a_pwrtrk_2ga_p,
-+	.pwrtrk_2g_cckb_n = rtw8821a_pwrtrk_2g_cck_b_n,
-+	.pwrtrk_2g_cckb_p = rtw8821a_pwrtrk_2g_cck_b_p,
-+	.pwrtrk_2g_ccka_n = rtw8821a_pwrtrk_2g_cck_a_n,
-+	.pwrtrk_2g_ccka_p = rtw8821a_pwrtrk_2g_cck_a_p,
-+};
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821a_table.h b/drivers/net/wireless/realtek/rtw88/rtw8821a_table.h
++static void rtw8821a_set_ext_band_switch(struct rtw_dev *rtwdev, u8 band)
++{
++	rtw_write32_mask(rtwdev, REG_LED_CFG, BIT_DPDT_SEL_EN, 0);
++	rtw_write32_mask(rtwdev, REG_LED_CFG, BIT_DPDT_WL_SEL, 1);
++	rtw_write32_mask(rtwdev, REG_RFE_INV_A, 0xf, 7);
++	rtw_write32_mask(rtwdev, REG_RFE_INV_A, 0xf0, 7);
++
++	if (band == RTW_BAND_2G)
++		rtw_write32_mask(rtwdev, REG_RFE_INV_A, BIT(29) | BIT(28), 1);
++	else
++		rtw_write32_mask(rtwdev, REG_RFE_INV_A, BIT(29) | BIT(28), 2);
++}
++
++static void rtw8821a_phy_set_rfe_reg_24g(struct rtw_dev *rtwdev)
++{
++	struct rtw_efuse *efuse = &rtwdev->efuse;
++
++	/* Turn off RF PA and LNA */
++
++	/* 0xCB0[15:12] = 0x7 (LNA_On)*/
++	rtw_write32_mask(rtwdev, REG_RFE_PINMUX_A, 0xF000, 0x7);
++	/* 0xCB0[7:4] = 0x7 (PAPE_A)*/
++	rtw_write32_mask(rtwdev, REG_RFE_PINMUX_A, 0xF0, 0x7);
++
++	if (efuse->ext_lna_2g) {
++		/* Turn on 2.4G External LNA */
++		rtw_write32_mask(rtwdev, REG_RFE_INV_A, BIT(20), 1);
++		rtw_write32_mask(rtwdev, REG_RFE_INV_A, BIT(22), 0);
++		rtw_write32_mask(rtwdev, REG_RFE_PINMUX_A, GENMASK(2, 0), 0x2);
++		rtw_write32_mask(rtwdev, REG_RFE_PINMUX_A, GENMASK(10, 8), 0x2);
++	} else {
++		/* Bypass 2.4G External LNA */
++		rtw_write32_mask(rtwdev, REG_RFE_INV_A, BIT(20), 0);
++		rtw_write32_mask(rtwdev, REG_RFE_INV_A, BIT(22), 0);
++		rtw_write32_mask(rtwdev, REG_RFE_PINMUX_A, GENMASK(2, 0), 0x7);
++		rtw_write32_mask(rtwdev, REG_RFE_PINMUX_A, GENMASK(10, 8), 0x7);
++	}
++}
++
++static void rtw8821a_phy_set_rfe_reg_5g(struct rtw_dev *rtwdev)
++{
++	/* Turn ON RF PA and LNA */
++
++	/* 0xCB0[15:12] = 0x7 (LNA_On)*/
++	rtw_write32_mask(rtwdev, REG_RFE_PINMUX_A, 0xF000, 0x5);
++	/* 0xCB0[7:4] = 0x7 (PAPE_A)*/
++	rtw_write32_mask(rtwdev, REG_RFE_PINMUX_A, 0xF0, 0x4);
++
++	/* Bypass 2.4G External LNA */
++	rtw_write32_mask(rtwdev, REG_RFE_INV_A, BIT(20), 0);
++	rtw_write32_mask(rtwdev, REG_RFE_INV_A, BIT(22), 0);
++	rtw_write32_mask(rtwdev, REG_RFE_PINMUX_A, GENMASK(2, 0), 0x7);
++	rtw_write32_mask(rtwdev, REG_RFE_PINMUX_A, GENMASK(10, 8), 0x7);
++}
++
++static void rtw8812a_phy_set_rfe_reg_24g(struct rtw_dev *rtwdev)
++{
++	switch (rtwdev->efuse.rfe_option) {
++	case 0:
++	case 2:
++		rtw_write32(rtwdev, REG_RFE_PINMUX_A, 0x77777777);
++		rtw_write32(rtwdev, REG_RFE_PINMUX_B, 0x77777777);
++		rtw_write32_mask(rtwdev, REG_RFE_INV_A, RFE_INV_MASK, 0x000);
++		rtw_write32_mask(rtwdev, REG_RFE_INV_B, RFE_INV_MASK, 0x000);
++		break;
++	case 1:
++		if (rtwdev->efuse.btcoex) {
++			rtw_write32_mask(rtwdev, REG_RFE_PINMUX_A, 0xffffff, 0x777777);
++			rtw_write32(rtwdev, REG_RFE_PINMUX_B, 0x77777777);
++			rtw_write32_mask(rtwdev, REG_RFE_INV_A, 0x33f00000, 0x000);
++			rtw_write32_mask(rtwdev, REG_RFE_INV_B, RFE_INV_MASK, 0x000);
++		} else {
++			rtw_write32(rtwdev, REG_RFE_PINMUX_A, 0x77777777);
++			rtw_write32(rtwdev, REG_RFE_PINMUX_B, 0x77777777);
++			rtw_write32_mask(rtwdev, REG_RFE_INV_A, RFE_INV_MASK, 0x000);
++			rtw_write32_mask(rtwdev, REG_RFE_INV_B, RFE_INV_MASK, 0x000);
++		}
++		break;
++	case 3:
++		rtw_write32(rtwdev, REG_RFE_PINMUX_A, 0x54337770);
++		rtw_write32(rtwdev, REG_RFE_PINMUX_B, 0x54337770);
++		rtw_write32_mask(rtwdev, REG_RFE_INV_A, RFE_INV_MASK, 0x010);
++		rtw_write32_mask(rtwdev, REG_RFE_INV_B, RFE_INV_MASK, 0x010);
++		rtw_write32_mask(rtwdev, REG_ANTSEL_SW, 0x00000303, 0x1);
++		break;
++	case 4:
++		rtw_write32(rtwdev, REG_RFE_PINMUX_A, 0x77777777);
++		rtw_write32(rtwdev, REG_RFE_PINMUX_B, 0x77777777);
++		rtw_write32_mask(rtwdev, REG_RFE_INV_A, RFE_INV_MASK, 0x001);
++		rtw_write32_mask(rtwdev, REG_RFE_INV_B, RFE_INV_MASK, 0x001);
++		break;
++	case 5:
++		rtw_write8(rtwdev, REG_RFE_PINMUX_A + 2, 0x77);
++		rtw_write32(rtwdev, REG_RFE_PINMUX_B, 0x77777777);
++		rtw_write8_clr(rtwdev, REG_RFE_INV_A + 3, BIT(0));
++		rtw_write32_mask(rtwdev, REG_RFE_INV_B, RFE_INV_MASK, 0x000);
++		break;
++	case 6:
++		rtw_write32(rtwdev, REG_RFE_PINMUX_A, 0x07772770);
++		rtw_write32(rtwdev, REG_RFE_PINMUX_B, 0x07772770);
++		rtw_write32(rtwdev, REG_RFE_INV_A, 0x00000077);
++		rtw_write32(rtwdev, REG_RFE_INV_B, 0x00000077);
++		break;
++	default:
++		break;
++	}
++}
++
++static void rtw8812a_phy_set_rfe_reg_5g(struct rtw_dev *rtwdev)
++{
++	switch (rtwdev->efuse.rfe_option) {
++	case 0:
++		rtw_write32(rtwdev, REG_RFE_PINMUX_A, 0x77337717);
++		rtw_write32(rtwdev, REG_RFE_PINMUX_B, 0x77337717);
++		rtw_write32_mask(rtwdev, REG_RFE_INV_A, RFE_INV_MASK, 0x010);
++		rtw_write32_mask(rtwdev, REG_RFE_INV_B, RFE_INV_MASK, 0x010);
++		break;
++	case 1:
++		if (rtwdev->efuse.btcoex) {
++			rtw_write32_mask(rtwdev, REG_RFE_PINMUX_A, 0xffffff, 0x337717);
++			rtw_write32(rtwdev, REG_RFE_PINMUX_B, 0x77337717);
++			rtw_write32_mask(rtwdev, REG_RFE_INV_A, 0x33f00000, 0x000);
++			rtw_write32_mask(rtwdev, REG_RFE_INV_B, RFE_INV_MASK, 0x000);
++		} else {
++			rtw_write32(rtwdev, REG_RFE_PINMUX_A, 0x77337717);
++			rtw_write32(rtwdev, REG_RFE_PINMUX_B, 0x77337717);
++			rtw_write32_mask(rtwdev, REG_RFE_INV_A, RFE_INV_MASK, 0x000);
++			rtw_write32_mask(rtwdev, REG_RFE_INV_B, RFE_INV_MASK, 0x000);
++		}
++		break;
++	case 2:
++	case 4:
++		rtw_write32(rtwdev, REG_RFE_PINMUX_A, 0x77337777);
++		rtw_write32(rtwdev, REG_RFE_PINMUX_B, 0x77337777);
++		rtw_write32_mask(rtwdev, REG_RFE_INV_A, RFE_INV_MASK, 0x010);
++		rtw_write32_mask(rtwdev, REG_RFE_INV_B, RFE_INV_MASK, 0x010);
++		break;
++	case 3:
++		rtw_write32(rtwdev, REG_RFE_PINMUX_A, 0x54337717);
++		rtw_write32(rtwdev, REG_RFE_PINMUX_B, 0x54337717);
++		rtw_write32_mask(rtwdev, REG_RFE_INV_A, RFE_INV_MASK, 0x010);
++		rtw_write32_mask(rtwdev, REG_RFE_INV_B, RFE_INV_MASK, 0x010);
++		rtw_write32_mask(rtwdev, REG_ANTSEL_SW, 0x00000303, 0x1);
++		break;
++	case 5:
++		rtw_write8(rtwdev, REG_RFE_PINMUX_A + 2, 0x33);
++		rtw_write32(rtwdev, REG_RFE_PINMUX_B, 0x77337777);
++		rtw_write8_set(rtwdev, REG_RFE_INV_A + 3, BIT(0));
++		rtw_write32_mask(rtwdev, REG_RFE_INV_B, RFE_INV_MASK, 0x010);
++		break;
++	case 6:
++		rtw_write32(rtwdev, REG_RFE_PINMUX_A, 0x07737717);
++		rtw_write32(rtwdev, REG_RFE_PINMUX_B, 0x07737717);
++		rtw_write32(rtwdev, REG_RFE_INV_A, 0x00000077);
++		rtw_write32(rtwdev, REG_RFE_INV_B, 0x00000077);
++		break;
++	default:
++		break;
++	}
++}
++
++static void rtw88xxa_switch_band(struct rtw_dev *rtwdev, u8 new_band, u8 bw)
++{
++	const struct rtw_chip_info *chip = rtwdev->chip;
++	u16 basic_rates, reg_41a;
++
++	/* 8811au one antenna module doesn't support antenna div, so driver must
++	 * control antenna band, otherwise one of the band will have issue
++	 */
++	if (chip->id == RTW_CHIP_TYPE_8821A && !rtwdev->efuse.btcoex &&
++	    rtwdev->efuse.ant_div_cfg == 0)
++		rtw8821a_set_ext_band_switch(rtwdev, new_band);
++
++	if (new_band == RTW_BAND_2G) {
++		rtw_write32_set(rtwdev, REG_RXPSEL, BIT_RX_PSEL_RST);
++
++		if (chip->id == RTW_CHIP_TYPE_8821A) {
++			rtw8821a_phy_set_rfe_reg_24g(rtwdev);
++
++			rtw_write32_mask(rtwdev, REG_TXSCALE_A, 0xf00, 0);
++		} else {
++			rtw_write32_mask(rtwdev, REG_BWINDICATION, 0x3, 0x1);
++			rtw_write32_mask(rtwdev, REG_PDMFTH, GENMASK(17, 13), 0x17);
++
++			if (bw == RTW_CHANNEL_WIDTH_20 &&
++			    rtwdev->hal.rf_type == RF_1T1R &&
++			    !rtwdev->efuse.ext_lna_2g)
++				rtw_write32_mask(rtwdev, REG_PDMFTH, GENMASK(3, 1), 0x02);
++			else
++				rtw_write32_mask(rtwdev, REG_PDMFTH, GENMASK(3, 1), 0x04);
++
++			rtw_write32_mask(rtwdev, REG_CCASEL, 0x3, 0);
++
++			rtw8812a_phy_set_rfe_reg_24g(rtwdev);
++		}
++
++		rtw_write32_mask(rtwdev, REG_TXPSEL, 0xf0, 0x1);
++		rtw_write32_mask(rtwdev, REG_CCK_RX, 0x0f000000, 0x1);
++
++		basic_rates = BIT(DESC_RATE1M) | BIT(DESC_RATE2M) |
++			      BIT(DESC_RATE5_5M) | BIT(DESC_RATE11M) |
++			      BIT(DESC_RATE6M) | BIT(DESC_RATE12M) |
++			      BIT(DESC_RATE24M);
++		rtw_write32_mask(rtwdev, REG_RRSR, 0xfffff, basic_rates);
++
++		rtw_write8_clr(rtwdev, REG_CCK_CHECK, BIT_CHECK_CCK_EN);
++	} else { /* RTW_BAND_5G */
++		if (chip->id == RTW_CHIP_TYPE_8821A)
++			rtw8821a_phy_set_rfe_reg_5g(rtwdev);
++
++		rtw_write8_set(rtwdev, REG_CCK_CHECK, BIT_CHECK_CCK_EN);
++
++		read_poll_timeout_atomic(rtw_read16, reg_41a, (reg_41a & 0x30) == 0x30,
++					 50, 2500, false, rtwdev, REG_TXPKT_EMPTY);
++
++		rtw_write32_set(rtwdev, REG_RXPSEL, BIT_RX_PSEL_RST);
++
++		if (chip->id == RTW_CHIP_TYPE_8821A) {
++			rtw_write32_mask(rtwdev, REG_TXSCALE_A, 0xf00, 1);
++		} else {
++			rtw_write32_mask(rtwdev, REG_BWINDICATION, 0x3, 0x2);
++			rtw_write32_mask(rtwdev, REG_PDMFTH, GENMASK(17, 13), 0x15);
++			rtw_write32_mask(rtwdev, REG_PDMFTH, GENMASK(3, 1), 0x04);
++
++			rtw_write32_mask(rtwdev, REG_CCASEL, 0x3, 1);
++
++			rtw8812a_phy_set_rfe_reg_5g(rtwdev);
++		}
++
++		rtw_write32_mask(rtwdev, REG_TXPSEL, 0xf0, 0);
++		rtw_write32_mask(rtwdev, REG_CCK_RX, 0x0f000000, 0xf);
++
++		basic_rates = BIT(DESC_RATE6M) | BIT(DESC_RATE12M) |
++			      BIT(DESC_RATE24M);
++		rtw_write32_mask(rtwdev, REG_RRSR, 0xfffff, basic_rates);
++	}
++
++	rtw88xxa_set_channel_bb_swing(rtwdev, new_band);
++}
++
++int rtw88xxa_power_on(struct rtw_dev *rtwdev)
++{
++	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
++	const struct rtw_chip_info *chip = rtwdev->chip;
++	struct rtw_efuse *efuse = &rtwdev->efuse;
++	struct rtw_hal *hal = &rtwdev->hal;
++	int ret;
++
++	if (test_bit(RTW_FLAG_POWERON, rtwdev->flags))
++		return 0;
++
++	/* Override rtw_chip_efuse_info_setup() */
++	if (chip->id == RTW_CHIP_TYPE_8821A)
++		efuse->btcoex = rtw_read32_mask(rtwdev, REG_WL_BT_PWR_CTRL,
++						BIT_BT_FUNC_EN);
++
++	/* Override rtw_chip_efuse_info_setup() */
++	if (chip->id == RTW_CHIP_TYPE_8812A)
++		rtw8812a_read_amplifier_type(rtwdev);
++
++	ret = rtw_hci_setup(rtwdev);
++	if (ret) {
++		rtw_err(rtwdev, "failed to setup hci\n");
++		goto err;
++	}
++
++	/* Revise for U2/U3 switch we can not update RF-A/B reset.
++	 * Reset after MAC power on to prevent RF R/W error.
++	 * Is it a right method?
++	 */
++	if (chip->id == RTW_CHIP_TYPE_8812A) {
++		rtw_write8(rtwdev, REG_RF_CTRL, 5);
++		rtw_write8(rtwdev, REG_RF_CTRL, 7);
++		rtw_write8(rtwdev, REG_RF_B_CTRL, 5);
++		rtw_write8(rtwdev, REG_RF_B_CTRL, 7);
++	}
++
++	/* If HW didn't go through a complete de-initial procedure,
++	 * it probably occurs some problem for double initial
++	 * procedure.
++	 */
++	rtw88xxau_hw_reset(rtwdev);
++
++	ret = rtw88xxau_init_power_on(rtwdev);
++	if (ret) {
++		rtw_err(rtwdev, "failed to power on\n");
++		goto err;
++	}
++
++	ret = rtw_set_trx_fifo_info(rtwdev);
++	if (ret) {
++		rtw_err(rtwdev, "failed to set trx fifo info\n");
++		goto err;
++	}
++
++	ret = rtw88xxa_llt_init(rtwdev, rtwdev->fifo.rsvd_boundary);
++	if (ret) {
++		rtw_err(rtwdev, "failed to init llt\n");
++		goto err;
++	}
++
++	rtw_write32_set(rtwdev, REG_TXDMA_OFFSET_CHK, BIT_DROP_DATA_EN);
++
++	ret = rtw_wait_firmware_completion(rtwdev);
++	if (ret) {
++		rtw_err(rtwdev, "failed to wait firmware completion\n");
++		goto err_off;
++	}
++
++	ret = rtw_download_firmware(rtwdev, &rtwdev->fw);
++	if (ret) {
++		rtw_err(rtwdev, "failed to download firmware\n");
++		goto err_off;
++	}
++
++	rtw_write8(rtwdev, REG_HMETFR, 0xf);
++
++	rtw_load_table(rtwdev, chip->mac_tbl);
++
++	rtw88xxau_init_queue_reserved_page(rtwdev);
++	rtw88xxau_init_tx_buffer_boundary(rtwdev);
++	rtw88xxau_init_queue_priority(rtwdev);
++
++	rtw_write16(rtwdev, REG_TRXFF_BNDY + 2,
++		    chip->rxff_size - REPORT_BUF - 1);
++
++	if (chip->id == RTW_CHIP_TYPE_8812A)
++		rtw_write8(rtwdev, REG_PBP,
++			   u8_encode_bits(PBP_512, PBP_TX_MASK) |
++			   u8_encode_bits(PBP_64, PBP_RX_MASK));
++
++	rtw_write8(rtwdev, REG_RX_DRVINFO_SZ, PHY_STATUS_SIZE);
++
++	rtw_write32(rtwdev, REG_HIMR0, 0);
++	rtw_write32(rtwdev, REG_HIMR1, 0);
++
++	rtw_write32_mask(rtwdev, REG_CR, 0x30000, 0x2);
++
++	rtw88xxa_init_wmac_setting(rtwdev);
++	rtw88xxa_init_adaptive_ctrl(rtwdev);
++	rtw88xxa_init_edca(rtwdev);
++
++	rtw_write8_set(rtwdev, REG_FWHW_TXQ_CTRL, BIT(7));
++	rtw_write8(rtwdev, REG_ACKTO, 0x80);
++
++	rtw88xxau_tx_aggregation(rtwdev);
++
++	rtw88xxa_init_beacon_parameters(rtwdev);
++	rtw_write8(rtwdev, REG_BCN_MAX_ERR, 0xff);
++
++	rtw_hci_interface_cfg(rtwdev);
++
++	/* usb3 rx interval */
++	rtw_write8(rtwdev, REG_USB3_RXITV, 0x01);
++
++	/* burst length=4, set 0x3400 for burst length=2 */
++	rtw_write16(rtwdev, REG_RXDMA_STATUS, 0x7400);
++	rtw_write8(rtwdev, REG_RXDMA_STATUS + 1, 0xf5);
++
++	/* 0x456 = 0x70, sugguested by Zhilin */
++	if (chip->id == RTW_CHIP_TYPE_8821A)
++		rtw_write8(rtwdev, REG_AMPDU_MAX_TIME, 0x5e);
++	else
++		rtw_write8(rtwdev, REG_AMPDU_MAX_TIME, 0x70);
++
++	rtw_write32(rtwdev, REG_AMPDU_MAX_LENGTH, 0xffffffff);
++	rtw_write8(rtwdev, REG_USTIME_TSF, 0x50);
++	rtw_write8(rtwdev, REG_USTIME_EDCA, 0x50);
++
++	if (rtwusb->udev->speed == USB_SPEED_SUPER)
++		/* Disable U1/U2 Mode to avoid 2.5G spur in USB3.0. */
++		rtw_write8_clr(rtwdev, REG_USB_MOD, BIT(4) | BIT(3));
++
++	rtw_write8_set(rtwdev, REG_SINGLE_AMPDU_CTRL, BIT_EN_SINGLE_APMDU);
++
++	/* for VHT packet length 11K */
++	rtw_write8(rtwdev, REG_RX_PKT_LIMIT, 0x18);
++
++	rtw_write8(rtwdev, REG_PIFS, 0x00);
++
++	if (chip->id == RTW_CHIP_TYPE_8821A) {
++		/* 0x0a0a too small, it can't pass AC logo. change to 0x1f1f */
++		rtw_write16(rtwdev, REG_MAX_AGGR_NUM, 0x1f1f);
++		rtw_write8(rtwdev, REG_FWHW_TXQ_CTRL, 0x80);
++		rtw_write32(rtwdev, REG_FAST_EDCA_CTRL, 0x03087777);
++	} else {
++		rtw_write16(rtwdev, REG_MAX_AGGR_NUM, 0x1f1f);
++		rtw_write8_clr(rtwdev, REG_FWHW_TXQ_CTRL, BIT(7));
++	}
++
++	 /* to prevent mac is reseted by bus. */
++	rtw_write8_set(rtwdev, REG_RSV_CTRL, BIT(5) | BIT(6));
++
++	/* ARFB table 9 for 11ac 5G 2SS */
++	rtw_write32(rtwdev, REG_ARFR0, 0x00000010);
++	rtw_write32(rtwdev, REG_ARFRH0, 0xfffff000);
++
++	/* ARFB table 10 for 11ac 5G 1SS */
++	rtw_write32(rtwdev, REG_ARFR1_V1, 0x00000010);
++	rtw_write32(rtwdev, REG_ARFRH1_V1, 0x003ff000);
++
++	/* ARFB table 11 for 11ac 24G 1SS */
++	rtw_write32(rtwdev, REG_ARFR2_V1, 0x00000015);
++	rtw_write32(rtwdev, REG_ARFRH2_V1, 0x003ff000);
++
++	/* ARFB table 12 for 11ac 24G 2SS */
++	rtw_write32(rtwdev, REG_ARFR3_V1, 0x00000015);
++	rtw_write32(rtwdev, REG_ARFRH3_V1, 0xffcff000);
++
++	rtw_write8_set(rtwdev, REG_CR, BIT_MACTXEN | BIT_MACRXEN);
++
++	rtw88xxa_phy_bb_config(rtwdev);
++	rtw88xxa_phy_rf_config(rtwdev);
++
++	if (chip->id == RTW_CHIP_TYPE_8812A && hal->rf_path_num == 1)
++		rtw8812a_config_1t(rtwdev);
++
++	rtw88xxa_switch_band(rtwdev, RTW_BAND_2G, RTW_CHANNEL_WIDTH_20);
++
++	rtw_write32(rtwdev, RTW_SEC_CMD_REG, BIT(31) | BIT(30));
++
++	rtw_write8(rtwdev, REG_HWSEQ_CTRL, 0xff);
++	rtw_write32(rtwdev, REG_BAR_MODE_CTRL, 0x0201ffff);
++	rtw_write8(rtwdev, REG_NAV_CTRL + 2, 0);
++
++	rtw_write8_clr(rtwdev, REG_GPIO_MUXCFG, BIT(5));
++
++	rtw_phy_init(rtwdev);
++
++	rtw88xxa_pwrtrack_init(rtwdev);
++
++	/* 0x4c6[3] 1: RTS BW = Data BW
++	 * 0: RTS BW depends on CCA / secondary CCA result.
++	 */
++	rtw_write8_clr(rtwdev, REG_QUEUE_CTRL, BIT(3));
++
++	/* enable Tx report. */
++	rtw_write8(rtwdev, REG_FWHW_TXQ_CTRL + 1, 0x0f);
++
++	/* Pretx_en, for WEP/TKIP SEC */
++	rtw_write8(rtwdev, REG_EARLY_MODE_CONTROL + 3, 0x01);
++
++	rtw_write16(rtwdev, REG_TX_RPT_TIME, 0x3df0);
++
++	/* Reset USB mode switch setting */
++	rtw_write8(rtwdev, REG_SYS_SDIO_CTRL, 0x0);
++	rtw_write8(rtwdev, REG_ACLK_MON, 0x0);
++
++	rtw_write8(rtwdev, REG_USB_HRPWM, 0);
++
++	/* ack for xmit mgmt frames. */
++	rtw_write32_set(rtwdev, REG_FWHW_TXQ_CTRL, BIT(12));
++
++	hal->cck_high_power = rtw_read32_mask(rtwdev, REG_CCK_RPT_FORMAT,
++					      BIT_CCK_RPT_FORMAT);
++
++	ret = rtw_hci_start(rtwdev);
++	if (ret) {
++		rtw_err(rtwdev, "failed to start hci\n");
++		goto err_off;
++	}
++
++	if (efuse->btcoex) {
++		rtw_coex_power_on_setting(rtwdev);
++		rtw_coex_init_hw_config(rtwdev, false);
++	}
++
++	set_bit(RTW_FLAG_POWERON, rtwdev->flags);
++
++	return 0;
++
++err_off:
++	chip->ops->power_off(rtwdev);
++
++err:
++	return ret;
++}
++EXPORT_SYMBOL(rtw88xxa_power_on);
++
++u32 rtw88xxa_phy_read_rf(struct rtw_dev *rtwdev,
++			 enum rtw_rf_path rf_path, u32 addr, u32 mask)
++{
++	static const u32 pi_addr[2] = { REG_3WIRE_SWA, REG_3WIRE_SWB };
++	static const u32 read_addr[2][2] = {
++		{ REG_SI_READ_A, REG_SI_READ_B },
++		{ REG_PI_READ_A, REG_PI_READ_B }
++	};
++	const struct rtw_chip_info *chip = rtwdev->chip;
++	const struct rtw_hal *hal = &rtwdev->hal;
++	bool set_cca, pi_mode;
++	u32 val;
++
++	if (rf_path >= hal->rf_phy_num) {
++		rtw_err(rtwdev, "unsupported rf path (%d)\n", rf_path);
++		return INV_RF_DATA;
++	}
++
++	/* CCA off to avoid reading the wrong value.
++	 * Toggling CCA would affect RF 0x0, skip it.
++	 */
++	set_cca = addr != 0x0 && chip->id == RTW_CHIP_TYPE_8812A &&
++		  hal->cut_version != RTW_CHIP_VER_CUT_C;
++
++	if (set_cca)
++		rtw_write32_set(rtwdev, REG_CCA2ND, BIT(3));
++
++	addr &= 0xff;
++
++	pi_mode = rtw_read32_mask(rtwdev, pi_addr[rf_path], 0x4);
++
++	rtw_write32_mask(rtwdev, REG_HSSI_READ, MASKBYTE0, addr);
++
++	if (chip->id == RTW_CHIP_TYPE_8821A ||
++	    hal->cut_version == RTW_CHIP_VER_CUT_C)
++		udelay(20);
++
++	val = rtw_read32_mask(rtwdev, read_addr[pi_mode][rf_path], mask);
++
++	/* CCA on */
++	if (set_cca)
++		rtw_write32_clr(rtwdev, REG_CCA2ND, BIT(3));
++
++	return val;
++}
++EXPORT_SYMBOL(rtw88xxa_phy_read_rf);
++
++static void rtw8812a_phy_fix_spur(struct rtw_dev *rtwdev, u8 channel, u8 bw)
++{
++	/* C cut Item12 ADC FIFO CLOCK */
++	if (rtwdev->hal.cut_version == RTW_CHIP_VER_CUT_C) {
++		if (bw == RTW_CHANNEL_WIDTH_40 && channel == 11)
++			rtw_write32_mask(rtwdev, REG_ADCCLK, 0xC00, 0x3);
++		else
++			rtw_write32_mask(rtwdev, REG_ADCCLK, 0xC00, 0x2);
++
++		/* A workaround to resolve 2480Mhz spur by setting ADC clock
++		 * as 160M.
++		 */
++		if (bw == RTW_CHANNEL_WIDTH_20 && (channel == 13 || channel == 14)) {
++			rtw_write32_mask(rtwdev, REG_ADCCLK, 0x300, 0x3);
++			rtw_write32_mask(rtwdev, REG_ADC160, BIT(30), 1);
++		} else if (bw == RTW_CHANNEL_WIDTH_40 && channel == 11) {
++			rtw_write32_mask(rtwdev, REG_ADC160, BIT(30), 1);
++		} else if (bw != RTW_CHANNEL_WIDTH_80) {
++			rtw_write32_mask(rtwdev, REG_ADCCLK, 0x300, 0x2);
++			rtw_write32_mask(rtwdev, REG_ADC160, BIT(30), 0);
++		}
++	} else {
++		/* A workaround to resolve 2480Mhz spur by setting ADC clock
++		 * as 160M.
++		 */
++		if (bw == RTW_CHANNEL_WIDTH_20 && (channel == 13 || channel == 14))
++			rtw_write32_mask(rtwdev, REG_ADCCLK, 0x300, 0x3);
++		else if (channel <= 14) /* 2.4G only */
++			rtw_write32_mask(rtwdev, REG_ADCCLK, 0x300, 0x2);
++	}
++}
++
++static void rtw88xxa_switch_channel(struct rtw_dev *rtwdev, u8 channel, u8 bw)
++{
++	struct rtw_hal *hal = &rtwdev->hal;
++	u32 fc_area, rf_mod_ag;
++	u8 path;
++
++	switch (channel) {
++	case 36 ... 48:
++		fc_area = 0x494;
++		break;
++	case 50 ... 64:
++		fc_area = 0x453;
++		break;
++	case 100 ... 116:
++		fc_area = 0x452;
++		break;
++	default:
++		if (channel >= 118)
++			fc_area = 0x412;
++		else
++			fc_area = 0x96a;
++		break;
++	}
++
++	rtw_write32_mask(rtwdev, REG_CLKTRK, 0x1ffe0000, fc_area);
++
++	for (path = 0; path < hal->rf_path_num; path++) {
++		switch (channel) {
++		case 36 ... 64:
++			rf_mod_ag = 0x101;
++			break;
++		case 100 ... 140:
++			rf_mod_ag = 0x301;
++			break;
++		default:
++			if (channel > 140)
++				rf_mod_ag = 0x501;
++			else
++				rf_mod_ag = 0x000;
++			break;
++		}
++
++		rtw_write_rf(rtwdev, path, RF_CFGCH,
++			     RF18_RFSI_MASK | RF18_BAND_MASK, rf_mod_ag);
++
++		if (rtwdev->chip->id == RTW_CHIP_TYPE_8812A)
++			rtw8812a_phy_fix_spur(rtwdev, channel, bw);
++
++		rtw_write_rf(rtwdev, path, RF_CFGCH, RF18_CHANNEL_MASK, channel);
++	}
++}
++
++static void rtw88xxa_set_reg_bw(struct rtw_dev *rtwdev, u8 bw)
++{
++	u16 val16 = rtw_read16(rtwdev, REG_WMAC_TRXPTCL_CTL);
++
++	val16 &= ~BIT_RFMOD;
++	if (bw == RTW_CHANNEL_WIDTH_80)
++		val16 |= BIT_RFMOD_80M;
++	else if (bw == RTW_CHANNEL_WIDTH_40)
++		val16 |= BIT_RFMOD_40M;
++
++	rtw_write16(rtwdev, REG_WMAC_TRXPTCL_CTL, val16);
++}
++
++static void rtw88xxa_post_set_bw_mode(struct rtw_dev *rtwdev, u8 channel,
++				      u8 bw, u8 primary_chan_idx)
++{
++	struct rtw_hal *hal = &rtwdev->hal;
++	u8 txsc40 = 0, txsc20, txsc;
++	u8 reg_837, l1pkval;
++
++	rtw88xxa_set_reg_bw(rtwdev, bw);
++
++	txsc20 = primary_chan_idx;
++	if (bw == RTW_CHANNEL_WIDTH_80) {
++		if (txsc20 == RTW_SC_20_UPPER || txsc20 == RTW_SC_20_UPMOST)
++			txsc40 = RTW_SC_40_UPPER;
++		else
++			txsc40 = RTW_SC_40_LOWER;
++	}
++
++	txsc = BIT_TXSC_20M(txsc20) | BIT_TXSC_40M(txsc40);
++	rtw_write8(rtwdev, REG_DATA_SC, txsc);
++
++	reg_837 = rtw_read8(rtwdev, REG_BWINDICATION + 3);
++
++	switch (bw) {
++	default:
++	case RTW_CHANNEL_WIDTH_20:
++		rtw_write32_mask(rtwdev, REG_ADCCLK, 0x003003C3, 0x00300200);
++		rtw_write32_mask(rtwdev, REG_ADC160, BIT(30), 0);
++
++		if (hal->rf_type == RF_2T2R)
++			rtw_write32_mask(rtwdev, REG_L1PKTH, 0x03C00000, 7);
++		else
++			rtw_write32_mask(rtwdev, REG_L1PKTH, 0x03C00000, 8);
++
++		break;
++	case RTW_CHANNEL_WIDTH_40:
++		rtw_write32_mask(rtwdev, REG_ADCCLK, 0x003003C3, 0x00300201);
++		rtw_write32_mask(rtwdev, REG_ADC160, BIT(30), 0);
++		rtw_write32_mask(rtwdev, REG_ADCCLK, 0x3C, txsc);
++		rtw_write32_mask(rtwdev, REG_CCA2ND, 0xf0000000, txsc);
++
++		if (reg_837 & BIT(2)) {
++			l1pkval = 6;
++		} else {
++			if (hal->rf_type == RF_2T2R)
++				l1pkval = 7;
++			else
++				l1pkval = 8;
++		}
++
++		rtw_write32_mask(rtwdev, REG_L1PKTH, 0x03C00000, l1pkval);
++
++		if (txsc == RTW_SC_20_UPPER)
++			rtw_write32_set(rtwdev, REG_RXSB, BIT(4));
++		else
++			rtw_write32_clr(rtwdev, REG_RXSB, BIT(4));
++
++		break;
++	case RTW_CHANNEL_WIDTH_80:
++		rtw_write32_mask(rtwdev, REG_ADCCLK, 0x003003C3, 0x00300202);
++		rtw_write32_mask(rtwdev, REG_ADC160, BIT(30), 1);
++		rtw_write32_mask(rtwdev, REG_ADCCLK, 0x3C, txsc);
++		rtw_write32_mask(rtwdev, REG_CCA2ND, 0xf0000000, txsc);
++
++		if (reg_837 & BIT(2)) {
++			l1pkval = 5;
++		} else {
++			if (hal->rf_type == RF_2T2R)
++				l1pkval = 6;
++			else
++				l1pkval = 7;
++		}
++
++		rtw_write32_mask(rtwdev, REG_L1PKTH, 0x03C00000, l1pkval);
++
++		break;
++	}
++}
++
++static void rtw88xxa_set_channel_rf(struct rtw_dev *rtwdev, u8 channel, u8 bw)
++{
++	u8 path;
++
++	for (path = RF_PATH_A; path < rtwdev->hal.rf_path_num; path++) {
++		switch (bw) {
++		case RTW_CHANNEL_WIDTH_5:
++		case RTW_CHANNEL_WIDTH_10:
++		case RTW_CHANNEL_WIDTH_20:
++		default:
++			rtw_write_rf(rtwdev, path, RF_CFGCH, RF18_BW_MASK, 3);
++			break;
++		case RTW_CHANNEL_WIDTH_40:
++			rtw_write_rf(rtwdev, path, RF_CFGCH, RF18_BW_MASK, 1);
++			break;
++		case RTW_CHANNEL_WIDTH_80:
++			rtw_write_rf(rtwdev, path, RF_CFGCH, RF18_BW_MASK, 0);
++			break;
++		}
++	}
++}
++
++void rtw88xxa_set_channel(struct rtw_dev *rtwdev, u8 channel, u8 bw,
++			  u8 primary_chan_idx)
++{
++	u8 old_band, new_band;
++
++	if (rtw_read8(rtwdev, REG_CCK_CHECK) & BIT_CHECK_CCK_EN)
++		old_band = RTW_BAND_5G;
++	else
++		old_band = RTW_BAND_2G;
++
++	if (channel > 14)
++		new_band = RTW_BAND_5G;
++	else
++		new_band = RTW_BAND_2G;
++
++	if (new_band != old_band)
++		rtw88xxa_switch_band(rtwdev, new_band, bw);
++
++	rtw88xxa_switch_channel(rtwdev, channel, bw);
++
++	rtw88xxa_post_set_bw_mode(rtwdev, channel, bw, primary_chan_idx);
++
++	if (rtwdev->chip->id == RTW_CHIP_TYPE_8812A)
++		rtw8812a_phy_fix_spur(rtwdev, channel, bw);
++
++	rtw88xxa_set_channel_rf(rtwdev, channel, bw);
++}
++EXPORT_SYMBOL(rtw88xxa_set_channel);
++
++void rtw88xxa_query_phy_status(struct rtw_dev *rtwdev, u8 *phy_status,
++			       struct rtw_rx_pkt_stat *pkt_stat,
++			       s8 (*cck_rx_pwr)(u8 lna_idx, u8 vga_idx))
++{
++	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
++	struct rtw_jaguar_phy_status_rpt *rpt;
++	u8 gain[RTW_RF_PATH_MAX], rssi, i;
++	s8 rx_pwr_db, power_a, power_b;
++	const s8 min_rx_power = -120;
++	u8 lna_idx, vga_idx;
++
++	rpt = (struct rtw_jaguar_phy_status_rpt *)phy_status;
++
++	if (pkt_stat->rate <= DESC_RATE11M) {
++		lna_idx = le32_get_bits(rpt->w1, RTW_JGRPHY_W1_AGC_RPT_LNA_IDX);
++		vga_idx = le32_get_bits(rpt->w1, RTW_JGRPHY_W1_AGC_RPT_VGA_IDX);
++
++		rx_pwr_db = cck_rx_pwr(lna_idx, vga_idx);
++
++		pkt_stat->rx_power[RF_PATH_A] = rx_pwr_db;
++		pkt_stat->rssi = rtw_phy_rf_power_2_rssi(pkt_stat->rx_power, 1);
++		dm_info->rssi[RF_PATH_A] = pkt_stat->rssi;
++		pkt_stat->bw = RTW_CHANNEL_WIDTH_20;
++		pkt_stat->signal_power = rx_pwr_db;
++	} else { /* OFDM rate */
++		gain[RF_PATH_A] = le32_get_bits(rpt->w0, RTW_JGRPHY_W0_GAIN_A);
++		gain[RF_PATH_B] = le32_get_bits(rpt->w0, RTW_JGRPHY_W0_GAIN_B);
++
++		for (i = RF_PATH_A; i < rtwdev->hal.rf_path_num; i++) {
++			pkt_stat->rx_power[i] = gain[i] - 110;
++			rssi = rtw_phy_rf_power_2_rssi(&pkt_stat->rx_power[i], 1);
++			dm_info->rssi[i] = rssi;
++		}
++
++		pkt_stat->rssi = rtw_phy_rf_power_2_rssi(pkt_stat->rx_power,
++							 rtwdev->hal.rf_path_num);
++
++		power_a = pkt_stat->rx_power[RF_PATH_A];
++		power_b = pkt_stat->rx_power[RF_PATH_B];
++		if (rtwdev->hal.rf_path_num == 1)
++			power_b = power_a;
++
++		pkt_stat->signal_power = max3(power_a, power_b, min_rx_power);
++	}
++}
++EXPORT_SYMBOL(rtw88xxa_query_phy_status);
++
++static void
++rtw88xxa_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path,
++				    u8 rs, u32 *phy_pwr_idx)
++{
++	static const u32 offset_txagc[2] = {
++		REG_TX_AGC_A_CCK_11_CCK_1, REG_TX_AGC_B_CCK_11_CCK_1
++	};
++	u8 rate, rate_idx, pwr_index, shift;
++	struct rtw_hal *hal = &rtwdev->hal;
++	bool write_1ss_mcs9;
++	u32 mask;
++	int j;
++
++	for (j = 0; j < rtw_rate_size[rs]; j++) {
++		rate = rtw_rate_section[rs][j];
++
++		pwr_index = hal->tx_pwr_tbl[path][rate];
++
++		shift = rate & 0x3;
++		*phy_pwr_idx |= ((u32)pwr_index << (shift * 8));
++
++		write_1ss_mcs9 = rate == DESC_RATEVHT1SS_MCS9 &&
++				 hal->rf_path_num == 1;
++
++		if (write_1ss_mcs9)
++			mask = MASKLWORD;
++		else
++			mask = MASKDWORD;
++
++		if (shift == 0x3 || write_1ss_mcs9) {
++			rate_idx = rate & 0xfc;
++			if (rate >= DESC_RATEVHT1SS_MCS0)
++				rate_idx -= 0x10;
++
++			rtw_write32_mask(rtwdev, offset_txagc[path] + rate_idx,
++					 mask, *phy_pwr_idx);
++
++			*phy_pwr_idx = 0;
++		}
++	}
++}
++
++static void rtw88xxa_tx_power_training(struct rtw_dev *rtwdev, u8 bw,
++				       u8 channel, u8 path)
++{
++	static const u32 write_offset[] = {
++		REG_TX_PWR_TRAINING_A, REG_TX_PWR_TRAINING_B,
++	};
++	u32 power_level, write_data;
++	u8 i;
++
++	power_level = rtwdev->hal.tx_pwr_tbl[path][DESC_RATEMCS7];
++	write_data = 0;
++
++	for (i = 0; i < 3; i++) {
++		if (i == 0)
++			power_level -= 10;
++		else if (i == 1)
++			power_level -= 8;
++		else
++			power_level -= 6;
++
++		write_data |= max_t(u32, power_level, 2) << (i * 8);
++	}
++
++	rtw_write32_mask(rtwdev, write_offset[path], 0xffffff, write_data);
++}
++
++void rtw88xxa_set_tx_power_index(struct rtw_dev *rtwdev)
++{
++	struct rtw_hal *hal = &rtwdev->hal;
++	u32 phy_pwr_idx = 0;
++	int rs, path;
++
++	for (path = 0; path < hal->rf_path_num; path++) {
++		for (rs = 0; rs < RTW_RATE_SECTION_MAX; rs++) {
++			if (hal->rf_path_num == 1 &&
++			    (rs == RTW_RATE_SECTION_HT_2S ||
++			     rs == RTW_RATE_SECTION_VHT_2S))
++				continue;
++
++			if (test_bit(RTW_FLAG_SCANNING, rtwdev->flags) &&
++			    rs > RTW_RATE_SECTION_OFDM)
++				continue;
++
++			if (hal->current_band_type == RTW_BAND_5G &&
++			    rs == RTW_RATE_SECTION_CCK)
++				continue;
++
++			rtw88xxa_set_tx_power_index_by_rate(rtwdev, path, rs,
++							    &phy_pwr_idx);
++		}
++
++		rtw88xxa_tx_power_training(rtwdev, hal->current_band_width,
++					   hal->current_channel, path);
++	}
++}
++EXPORT_SYMBOL(rtw88xxa_set_tx_power_index);
++
++void rtw88xxa_false_alarm_statistics(struct rtw_dev *rtwdev)
++{
++	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
++	u32 cck_fa_cnt, ofdm_fa_cnt;
++	u32 crc32_cnt, cca32_cnt;
++	u32 cck_enable;
++
++	cck_enable = rtw_read32(rtwdev, REG_RXPSEL) & BIT(28);
++	cck_fa_cnt = rtw_read16(rtwdev, REG_FA_CCK);
++	ofdm_fa_cnt = rtw_read16(rtwdev, REG_FA_OFDM);
++
++	dm_info->cck_fa_cnt = cck_fa_cnt;
++	dm_info->ofdm_fa_cnt = ofdm_fa_cnt;
++	dm_info->total_fa_cnt = ofdm_fa_cnt;
++	if (cck_enable)
++		dm_info->total_fa_cnt += cck_fa_cnt;
++
++	crc32_cnt = rtw_read32(rtwdev, REG_CRC_CCK);
++	dm_info->cck_ok_cnt = u32_get_bits(crc32_cnt, MASKLWORD);
++	dm_info->cck_err_cnt = u32_get_bits(crc32_cnt, MASKHWORD);
++
++	crc32_cnt = rtw_read32(rtwdev, REG_CRC_OFDM);
++	dm_info->ofdm_ok_cnt = u32_get_bits(crc32_cnt, MASKLWORD);
++	dm_info->ofdm_err_cnt = u32_get_bits(crc32_cnt, MASKHWORD);
++
++	crc32_cnt = rtw_read32(rtwdev, REG_CRC_HT);
++	dm_info->ht_ok_cnt = u32_get_bits(crc32_cnt, MASKLWORD);
++	dm_info->ht_err_cnt = u32_get_bits(crc32_cnt, MASKHWORD);
++
++	crc32_cnt = rtw_read32(rtwdev, REG_CRC_VHT);
++	dm_info->vht_ok_cnt = u32_get_bits(crc32_cnt, MASKLWORD);
++	dm_info->vht_err_cnt = u32_get_bits(crc32_cnt, MASKHWORD);
++
++	cca32_cnt = rtw_read32(rtwdev, REG_CCA_OFDM);
++	dm_info->ofdm_cca_cnt = u32_get_bits(cca32_cnt, MASKHWORD);
++	dm_info->total_cca_cnt = dm_info->ofdm_cca_cnt;
++	if (cck_enable) {
++		cca32_cnt = rtw_read32(rtwdev, REG_CCA_CCK);
++		dm_info->cck_cca_cnt = u32_get_bits(cca32_cnt, MASKLWORD);
++		dm_info->total_cca_cnt += dm_info->cck_cca_cnt;
++	}
++
++	rtw_write32_set(rtwdev, REG_FAS, BIT(17));
++	rtw_write32_clr(rtwdev, REG_FAS, BIT(17));
++	rtw_write32_clr(rtwdev, REG_CCK0_FAREPORT, BIT(15));
++	rtw_write32_set(rtwdev, REG_CCK0_FAREPORT, BIT(15));
++	rtw_write32_set(rtwdev, REG_CNTRST, BIT(0));
++	rtw_write32_clr(rtwdev, REG_CNTRST, BIT(0));
++}
++EXPORT_SYMBOL(rtw88xxa_false_alarm_statistics);
++
++void rtw88xxa_iqk_backup_mac_bb(struct rtw_dev *rtwdev,
++				u32 *macbb_backup,
++				const u32 *backup_macbb_reg,
++				u32 macbb_num)
++{
++	u32 i;
++
++	/* [31] = 0 --> Page C */
++	rtw_write32_mask(rtwdev, REG_CCASEL, BIT(31), 0x0);
++
++	/* save MACBB default value */
++	for (i = 0; i < macbb_num; i++)
++		macbb_backup[i] = rtw_read32(rtwdev, backup_macbb_reg[i]);
++}
++EXPORT_SYMBOL(rtw88xxa_iqk_backup_mac_bb);
++
++void rtw88xxa_iqk_backup_afe(struct rtw_dev *rtwdev, u32 *afe_backup,
++			     const u32 *backup_afe_reg, u32 afe_num)
++{
++	u32 i;
++
++	/* [31] = 0 --> Page C */
++	rtw_write32_mask(rtwdev, REG_CCASEL, BIT(31), 0x0);
++
++	/* Save AFE Parameters */
++	for (i = 0; i < afe_num; i++)
++		afe_backup[i] = rtw_read32(rtwdev, backup_afe_reg[i]);
++}
++EXPORT_SYMBOL(rtw88xxa_iqk_backup_afe);
++
++void rtw88xxa_iqk_restore_mac_bb(struct rtw_dev *rtwdev,
++				 u32 *macbb_backup,
++				 const u32 *backup_macbb_reg,
++				 u32 macbb_num)
++{
++	u32 i;
++
++	/* [31] = 0 --> Page C */
++	rtw_write32_mask(rtwdev, REG_CCASEL, BIT(31), 0x0);
++
++	/* Reload MacBB Parameters */
++	for (i = 0; i < macbb_num; i++)
++		rtw_write32(rtwdev, backup_macbb_reg[i], macbb_backup[i]);
++}
++EXPORT_SYMBOL(rtw88xxa_iqk_restore_mac_bb);
++
++void rtw88xxa_iqk_configure_mac(struct rtw_dev *rtwdev)
++{
++	/* [31] = 0 --> Page C */
++	rtw_write32_mask(rtwdev, REG_CCASEL, BIT(31), 0x0);
++
++	rtw_write8(rtwdev, REG_TXPAUSE, 0x3f);
++	rtw_write32_mask(rtwdev, REG_BCN_CTRL,
++			 (BIT_EN_BCN_FUNCTION << 8) | BIT_EN_BCN_FUNCTION, 0x0);
++
++	/* RX ante off */
++	rtw_write8(rtwdev, REG_RXPSEL, 0x00);
++
++	/* CCA off */
++	rtw_write32_mask(rtwdev, REG_CCA2ND, 0xf, 0xc);
++
++	/* CCK RX path off */
++	rtw_write8(rtwdev, REG_CCK_RX + 3, 0xf);
++}
++EXPORT_SYMBOL(rtw88xxa_iqk_configure_mac);
++
++bool rtw88xxa_iqk_finish(int average, int threshold,
++			 int *x_temp, int *y_temp, int *x, int *y,
++			 bool break_inner, bool break_outer)
++{
++	bool finish = false;
++	int i, ii, dx, dy;
++
++	for (i = 0; i < average; i++) {
++		for (ii = i + 1; ii < average; ii++) {
++			dx = abs_diff(x_temp[i] >> 21, x_temp[ii] >> 21);
++			dy = abs_diff(y_temp[i] >> 21, y_temp[ii] >> 21);
++
++			if (dx < threshold && dy < threshold) {
++				*x = ((x_temp[i] >> 21) + (x_temp[ii] >> 21));
++				*y = ((y_temp[i] >> 21) + (y_temp[ii] >> 21));
++
++				*x /= 2;
++				*y /= 2;
++
++				finish = true;
++
++				if (break_inner)
++					break;
++			}
++		}
++
++		if (finish && break_outer)
++			break;
++	}
++
++	return finish;
++}
++EXPORT_SYMBOL(rtw88xxa_iqk_finish);
++
++static void rtw88xxa_pwrtrack_set(struct rtw_dev *rtwdev, u8 tx_rate, u8 path)
++{
++	static const u32 reg_txscale[2] = { REG_TXSCALE_A, REG_TXSCALE_B };
++	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
++	u8 cck_swing_idx, ofdm_swing_idx;
++	u8 pwr_tracking_limit;
++
++	switch (tx_rate) {
++	case DESC_RATE1M ... DESC_RATE11M:
++		pwr_tracking_limit = 32;
++		break;
++	case DESC_RATE6M ... DESC_RATE48M:
++	case DESC_RATEMCS3 ... DESC_RATEMCS4:
++	case DESC_RATEMCS11 ... DESC_RATEMCS12:
++	case DESC_RATEVHT1SS_MCS3 ... DESC_RATEVHT1SS_MCS4:
++	case DESC_RATEVHT2SS_MCS3 ... DESC_RATEVHT2SS_MCS4:
++		pwr_tracking_limit = 30;
++		break;
++	case DESC_RATE54M:
++	case DESC_RATEMCS5 ... DESC_RATEMCS7:
++	case DESC_RATEMCS13 ... DESC_RATEMCS15:
++	case DESC_RATEVHT1SS_MCS5 ... DESC_RATEVHT1SS_MCS6:
++	case DESC_RATEVHT2SS_MCS5 ... DESC_RATEVHT2SS_MCS6:
++		pwr_tracking_limit = 28;
++		break;
++	case DESC_RATEMCS0 ... DESC_RATEMCS2:
++	case DESC_RATEMCS8 ... DESC_RATEMCS10:
++	case DESC_RATEVHT1SS_MCS0 ... DESC_RATEVHT1SS_MCS2:
++	case DESC_RATEVHT2SS_MCS0 ... DESC_RATEVHT2SS_MCS2:
++		pwr_tracking_limit = 34;
++		break;
++	case DESC_RATEVHT1SS_MCS7:
++	case DESC_RATEVHT2SS_MCS7:
++		pwr_tracking_limit = 26;
++		break;
++	default:
++	case DESC_RATEVHT1SS_MCS8:
++	case DESC_RATEVHT2SS_MCS8:
++		pwr_tracking_limit = 24;
++		break;
++	case DESC_RATEVHT1SS_MCS9:
++	case DESC_RATEVHT2SS_MCS9:
++		pwr_tracking_limit = 22;
++		break;
++	}
++
++	cck_swing_idx = dm_info->delta_power_index[path] + dm_info->default_cck_index;
++	ofdm_swing_idx = dm_info->delta_power_index[path] + dm_info->default_ofdm_index;
++
++	if (ofdm_swing_idx > pwr_tracking_limit) {
++		if (path == RF_PATH_A)
++			dm_info->txagc_remnant_cck = cck_swing_idx - pwr_tracking_limit;
++		dm_info->txagc_remnant_ofdm[path] = ofdm_swing_idx - pwr_tracking_limit;
++
++		ofdm_swing_idx = pwr_tracking_limit;
++	} else if (ofdm_swing_idx == 0) {
++		if (path == RF_PATH_A)
++			dm_info->txagc_remnant_cck = cck_swing_idx;
++		dm_info->txagc_remnant_ofdm[path] = ofdm_swing_idx;
++	} else {
++		if (path == RF_PATH_A)
++			dm_info->txagc_remnant_cck = 0;
++		dm_info->txagc_remnant_ofdm[path] = 0;
++	}
++
++	rtw_write32_mask(rtwdev, reg_txscale[path], GENMASK(31, 21),
++			 rtw88xxa_txscale_tbl[ofdm_swing_idx]);
++}
++
++void rtw88xxa_phy_pwrtrack(struct rtw_dev *rtwdev,
++			   void (*do_lck)(struct rtw_dev *rtwdev),
++			   void (*do_iqk)(struct rtw_dev *rtwdev))
++{
++	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
++	struct rtw_hal *hal = &rtwdev->hal;
++	struct rtw_swing_table swing_table;
++	s8 remnant_pre[RTW_RF_PATH_MAX];
++	u8 thermal_value, delta, path;
++	bool need_iqk;
++
++	rtw_phy_config_swing_table(rtwdev, &swing_table);
++
++	if (rtwdev->efuse.thermal_meter[0] == 0xff) {
++		pr_err_once("efuse thermal meter is 0xff\n");
++		return;
++	}
++
++	thermal_value = rtw_read_rf(rtwdev, RF_PATH_A, RF_T_METER, 0xfc00);
++
++	rtw_phy_pwrtrack_avg(rtwdev, thermal_value, RF_PATH_A);
++
++	need_iqk = rtw_phy_pwrtrack_need_iqk(rtwdev);
++
++	if (need_iqk && do_lck)
++		do_lck(rtwdev);
++
++	if (dm_info->pwr_trk_init_trigger)
++		dm_info->pwr_trk_init_trigger = false;
++	else if (!rtw_phy_pwrtrack_thermal_changed(rtwdev, thermal_value,
++						   RF_PATH_A))
++		goto iqk;
++
++	delta = rtw_phy_pwrtrack_get_delta(rtwdev, RF_PATH_A);
++
++	for (path = RF_PATH_A; path < hal->rf_path_num; path++) {
++		remnant_pre[path] = dm_info->txagc_remnant_ofdm[path];
++
++		dm_info->delta_power_index[path] =
++			rtw_phy_pwrtrack_get_pwridx(rtwdev, &swing_table, path,
++						    RF_PATH_A, delta);
++
++		if (dm_info->delta_power_index[path] !=
++		    dm_info->delta_power_index_last[path]) {
++			dm_info->delta_power_index_last[path] =
++				dm_info->delta_power_index[path];
++
++			rtw88xxa_pwrtrack_set(rtwdev, dm_info->tx_rate, path);
++		}
++	}
++
++	for (path = RF_PATH_A; path < hal->rf_path_num; path++) {
++		if (remnant_pre[path] != dm_info->txagc_remnant_ofdm[path]) {
++			rtw_phy_set_tx_power_level(rtwdev,
++						   hal->current_channel);
++			break;
++		}
++	}
++
++iqk:
++	if (need_iqk)
++		do_iqk(rtwdev);
++}
++EXPORT_SYMBOL(rtw88xxa_phy_pwrtrack);
++
++void rtw88xxa_phy_cck_pd_set(struct rtw_dev *rtwdev, u8 new_lvl)
++{
++	static const u8 pd[CCK_PD_LV_MAX] = {0x40, 0x83, 0xcd, 0xdd, 0xed};
++	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
++
++	/* Override rtw_phy_cck_pd_lv_link(). It implements something
++	 * like type 2/3/4. We need type 1 here.
++	 */
++	if (rtw_is_assoc(rtwdev)) {
++		if (dm_info->min_rssi > 60) {
++			new_lvl = CCK_PD_LV3;
++		} else if (dm_info->min_rssi > 35) {
++			new_lvl = CCK_PD_LV2;
++		} else if (dm_info->min_rssi > 20) {
++			if (dm_info->cck_fa_avg > 500)
++				new_lvl = CCK_PD_LV2;
++			else if (dm_info->cck_fa_avg < 250)
++				new_lvl = CCK_PD_LV1;
++			else
++				return;
++		} else {
++			new_lvl = CCK_PD_LV1;
++		}
++	}
++
++	rtw_dbg(rtwdev, RTW_DBG_PHY, "lv: (%d) -> (%d)\n",
++		dm_info->cck_pd_lv[RTW_CHANNEL_WIDTH_20][RF_PATH_A], new_lvl);
++
++	if (dm_info->cck_pd_lv[RTW_CHANNEL_WIDTH_20][RF_PATH_A] == new_lvl)
++		return;
++
++	dm_info->cck_fa_avg = CCK_FA_AVG_RESET;
++	dm_info->cck_pd_lv[RTW_CHANNEL_WIDTH_20][RF_PATH_A] = new_lvl;
++
++	rtw_write8(rtwdev, REG_CCK_PD_TH, pd[new_lvl]);
++}
++EXPORT_SYMBOL(rtw88xxa_phy_cck_pd_set);
++
++MODULE_AUTHOR("Realtek Corporation");
++MODULE_DESCRIPTION("Realtek 802.11ac wireless 8821a/8811a/8812a common code");
++MODULE_LICENSE("Dual BSD/GPL");
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw88xxa.h b/drivers/net/wireless/realtek/rtw88/rtw88xxa.h
 new file mode 100644
-index 000000000000..90379ac7a817
+index 000000000000..09a45c1a4129
 --- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821a_table.h
-@@ -0,0 +1,21 @@
++++ b/drivers/net/wireless/realtek/rtw88/rtw88xxa.h
+@@ -0,0 +1,175 @@
 +/* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
 +/* Copyright(c) 2024  Realtek Corporation
 + */
 +
-+#ifndef __RTW8821A_TABLE_H__
-+#define __RTW8821A_TABLE_H__
++#ifndef __RTW88XXA_H__
++#define __RTW88XXA_H__
 +
-+extern const struct rtw_table rtw8821a_mac_tbl;
-+extern const struct rtw_table rtw8821a_agc_tbl;
-+extern const struct rtw_table rtw8821a_bb_tbl;
-+extern const struct rtw_table rtw8821a_bb_pg_tbl;
-+extern const struct rtw_table rtw8821a_rf_a_tbl;
-+extern const struct rtw_table rtw8821a_txpwr_lmt_tbl;
++#include <asm/byteorder.h>
++#include "reg.h"
 +
-+extern const struct rtw_pwr_seq_cmd * const card_enable_flow_8821a[];
-+extern const struct rtw_pwr_seq_cmd * const enter_lps_flow_8821a[];
-+extern const struct rtw_pwr_seq_cmd * const card_disable_flow_8821a[];
++struct rtw8821au_efuse {
++	u8 res4[48];			/* 0xd0 */
++	u8 vid[2];			/* 0x100 */
++	u8 pid[2];
++	u8 res8[3];
++	u8 mac_addr[ETH_ALEN];		/* 0x107 */
++	u8 res9[243];
++} __packed;
 +
-+extern const struct rtw_pwr_track_tbl rtw8821a_rtw_pwr_track_tbl;
++struct rtw8812au_efuse {
++	u8 vid[2];			/* 0xd0 */
++	u8 pid[2];			/* 0xd2 */
++	u8 res0[3];
++	u8 mac_addr[ETH_ALEN];		/* 0xd7 */
++	u8 res1[291];
++} __packed;
++
++struct rtw88xxa_efuse {
++	__le16 rtl_id;
++	u8 res0[6];			/* 0x02 */
++	u8 usb_mode;			/* 0x08 */
++	u8 res1[7];			/* 0x09 */
++
++	/* power index for four RF paths */
++	struct rtw_txpwr_idx txpwr_idx_table[4];
++
++	u8 channel_plan;		/* 0xb8 */
++	u8 xtal_k;
++	u8 thermal_meter;
++	u8 iqk_lck;
++	u8 pa_type;			/* 0xbc */
++	u8 lna_type_2g;			/* 0xbd */
++	u8 res2;
++	u8 lna_type_5g;			/* 0xbf */
++	u8 res3;
++	u8 rf_board_option;		/* 0xc1 */
++	u8 rf_feature_option;
++	u8 rf_bt_setting;
++	u8 eeprom_version;
++	u8 eeprom_customer_id;		/* 0xc5 */
++	u8 tx_bb_swing_setting_2g;
++	u8 tx_bb_swing_setting_5g;
++	u8 tx_pwr_calibrate_rate;
++	u8 rf_antenna_option;		/* 0xc9 */
++	u8 rfe_option;
++	u8 country_code[2];
++	u8 res4[3];
++	union {
++		struct rtw8821au_efuse rtw8821au;
++		struct rtw8812au_efuse rtw8812au;
++	};
++} __packed;
++
++static_assert(sizeof(struct rtw88xxa_efuse) == 512);
++
++#define WLAN_BCN_DMA_TIME			0x02
++#define WLAN_TBTT_PROHIBIT			0x04
++#define WLAN_TBTT_HOLD_TIME			0x064
++#define WLAN_TBTT_TIME	(WLAN_TBTT_PROHIBIT |\
++			(WLAN_TBTT_HOLD_TIME << BIT_SHIFT_TBTT_HOLD_TIME_AP))
++
++struct rtw_jaguar_phy_status_rpt {
++	__le32 w0;
++	__le32 w1;
++	__le32 w2;
++	__le32 w3;
++	__le32 w4;
++	__le32 w5;
++	__le32 w6;
++} __packed;
++
++#define RTW_JGRPHY_W0_GAIN_A		GENMASK(6, 0)
++#define RTW_JGRPHY_W0_TRSW_A		BIT(7)
++#define RTW_JGRPHY_W0_GAIN_B		GENMASK(14, 8)
++#define RTW_JGRPHY_W0_TRSW_B		BIT(15)
++#define RTW_JGRPHY_W0_CHL_NUM		GENMASK(25, 16)
++#define RTW_JGRPHY_W0_SUB_CHNL		GENMASK(29, 26)
++#define RTW_JGRPHY_W0_R_RFMOD		GENMASK(31, 30)
++
++/* CCK: */
++#define RTW_JGRPHY_W1_SIG_QUAL		GENMASK(7, 0)
++#define RTW_JGRPHY_W1_AGC_RPT_VGA_IDX	GENMASK(12, 8)
++#define RTW_JGRPHY_W1_AGC_RPT_LNA_IDX	GENMASK(15, 13)
++#define RTW_JGRPHY_W1_BB_POWER		GENMASK(23, 16)
++/* OFDM: */
++#define RTW_JGRPHY_W1_PWDB_ALL		GENMASK(7, 0)
++#define RTW_JGRPHY_W1_CFO_SHORT_A	GENMASK(15, 8)	/* s8 */
++#define RTW_JGRPHY_W1_CFO_SHORT_B	GENMASK(23, 16)	/* s8 */
++#define RTW_JGRPHY_W1_BT_RF_CH_MSB	GENMASK(31, 30)
++
++#define RTW_JGRPHY_W2_ANT_DIV_SW_A	BIT(0)
++#define RTW_JGRPHY_W2_ANT_DIV_SW_B	BIT(1)
++#define RTW_JGRPHY_W2_BT_RF_CH_LSB	GENMASK(7, 2)
++#define RTW_JGRPHY_W2_CFO_TAIL_A	GENMASK(15, 8)	/* s8 */
++#define RTW_JGRPHY_W2_CFO_TAIL_B	GENMASK(23, 16)	/* s8 */
++#define RTW_JGRPHY_W2_PCTS_MSK_RPT_0	GENMASK(31, 24)
++
++#define RTW_JGRPHY_W3_PCTS_MSK_RPT_1	GENMASK(7, 0)
++/* Stream 1 and 2 RX EVM: */
++#define RTW_JGRPHY_W3_RXEVM_1		GENMASK(15, 8)	/* s8 */
++#define RTW_JGRPHY_W3_RXEVM_2		GENMASK(23, 16)	/* s8 */
++#define RTW_JGRPHY_W3_RXSNR_A		GENMASK(31, 24)	/* s8 */
++
++#define RTW_JGRPHY_W4_RXSNR_B		GENMASK(7, 0)	/* s8 */
++#define RTW_JGRPHY_W4_PCTS_MSK_RPT_2	GENMASK(21, 8)
++#define RTW_JGRPHY_W4_PCTS_RPT_VALID	BIT(22)
++#define RTW_JGRPHY_W4_RXEVM_3		GENMASK(31, 24)	/* s8 */
++
++#define RTW_JGRPHY_W5_RXEVM_4		GENMASK(7, 0)	/* s8 */
++/* 8812a, stream 1 and 2 CSI: */
++#define RTW_JGRPHY_W5_CSI_CURRENT_1	GENMASK(15, 8)
++#define RTW_JGRPHY_W5_CSI_CURRENT_2	GENMASK(23, 16)
++/* 8814a: */
++#define RTW_JGRPHY_W5_RXSNR_C		GENMASK(15, 8)	/* s8 */
++#define RTW_JGRPHY_W5_RXSNR_D		GENMASK(23, 16)	/* s8 */
++#define RTW_JGRPHY_W5_GAIN_C		GENMASK(30, 24)
++#define RTW_JGRPHY_W5_TRSW_C		BIT(31)
++
++#define RTW_JGRPHY_W6_GAIN_D		GENMASK(6, 0)
++#define RTW_JGRPHY_W6_TRSW_D		BIT(7)
++#define RTW_JGRPHY_W6_SIGEVM		GENMASK(15, 8)	/* s8 */
++#define RTW_JGRPHY_W6_ANTIDX_ANTC	GENMASK(18, 16)
++#define RTW_JGRPHY_W6_ANTIDX_ANTD	GENMASK(21, 19)
++#define RTW_JGRPHY_W6_DPDT_CTRL_KEEP	BIT(22)
++#define RTW_JGRPHY_W6_GNT_BT_KEEP	BIT(23)
++#define RTW_JGRPHY_W6_ANTIDX_ANTA	GENMASK(26, 24)
++#define RTW_JGRPHY_W6_ANTIDX_ANTB	GENMASK(29, 27)
++#define RTW_JGRPHY_W6_HW_ANTSW_OCCUR	GENMASK(31, 30)
++
++#define RF18_BW_MASK		(BIT(11) | BIT(10))
++
++void rtw88xxa_efuse_grant(struct rtw_dev *rtwdev, bool on);
++int rtw88xxa_read_efuse(struct rtw_dev *rtwdev, u8 *log_map);
++void rtw88xxa_power_off(struct rtw_dev *rtwdev,
++			const struct rtw_pwr_seq_cmd *const *enter_lps_flow);
++int rtw88xxa_power_on(struct rtw_dev *rtwdev);
++u32 rtw88xxa_phy_read_rf(struct rtw_dev *rtwdev,
++			 enum rtw_rf_path rf_path, u32 addr, u32 mask);
++void rtw88xxa_set_channel(struct rtw_dev *rtwdev, u8 channel, u8 bw,
++			  u8 primary_chan_idx);
++void rtw88xxa_query_phy_status(struct rtw_dev *rtwdev, u8 *phy_status,
++			       struct rtw_rx_pkt_stat *pkt_stat,
++			       s8 (*cck_rx_pwr)(u8 lna_idx, u8 vga_idx));
++void rtw88xxa_set_tx_power_index(struct rtw_dev *rtwdev);
++void rtw88xxa_false_alarm_statistics(struct rtw_dev *rtwdev);
++void rtw88xxa_iqk_backup_mac_bb(struct rtw_dev *rtwdev,
++				u32 *macbb_backup,
++				const u32 *backup_macbb_reg,
++				u32 macbb_num);
++void rtw88xxa_iqk_backup_afe(struct rtw_dev *rtwdev, u32 *afe_backup,
++			     const u32 *backup_afe_reg, u32 afe_num);
++void rtw88xxa_iqk_restore_mac_bb(struct rtw_dev *rtwdev,
++				 u32 *macbb_backup,
++				 const u32 *backup_macbb_reg,
++				 u32 macbb_num);
++void rtw88xxa_iqk_configure_mac(struct rtw_dev *rtwdev);
++bool rtw88xxa_iqk_finish(int average, int threshold,
++			 int *x_temp, int *y_temp, int *x, int *y,
++			 bool break_inner, bool break_outer);
++void rtw88xxa_phy_pwrtrack(struct rtw_dev *rtwdev,
++			   void (*do_lck)(struct rtw_dev *rtwdev),
++			   void (*do_iqk)(struct rtw_dev *rtwdev));
++void rtw88xxa_phy_cck_pd_set(struct rtw_dev *rtwdev, u8 new_lvl);
 +
 +#endif
 -- 
