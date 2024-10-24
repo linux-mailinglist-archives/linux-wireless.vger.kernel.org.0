@@ -1,139 +1,124 @@
-Return-Path: <linux-wireless+bounces-14436-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14437-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E688B9AD6D8
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2024 23:43:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 700069AD8ED
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 02:26:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82BE2B226D2
-	for <lists+linux-wireless@lfdr.de>; Wed, 23 Oct 2024 21:43:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2615C1F22692
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 00:26:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB2881F5848;
-	Wed, 23 Oct 2024 21:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC649848C;
+	Thu, 24 Oct 2024 00:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="DdC9hlmC"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="aJCxys0g"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C36E56A
-	for <linux-wireless@vger.kernel.org>; Wed, 23 Oct 2024 21:43:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8BA079CD;
+	Thu, 24 Oct 2024 00:26:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729719806; cv=none; b=AncZPdX4oHtoyS9lFRMC1ov7Tz91ilThzBGot8+/pmMd5XHOTYETycEzb92g+BbeSrXDPNj6xMFYPkas3L8QCU/RLCMwHK3InKRh0rHqmJuZxmWT0M+OyUHgSG1/NsMANcVR0YhcyRq+2lsOTLgXceyz5awCp1vRW0EiWCIjsYc=
+	t=1729729591; cv=none; b=ilY3dtenK7Y2z8Rq6gIhkYl5PrJr58I7kzzNm+q0vkMmuwTfngQceqXsNnIq6jYeO6jkX8hwe32GsOengMw2CB6OwxnB5r1I7jzFPmfCvFM0swuw2Zjm4drNezYYBYF3E1egyCEqI14jiDrNST4Ly7+K6wGeUHbz3gpzdqGEwbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729719806; c=relaxed/simple;
-	bh=D0Tfqt5jcLVUkD6Q67v0hwF1VSxCNxhs/HDdCEwABZM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=au0GWOWBs1FX21Gffu+0LOaY7D3WDZPJaplQMBhBEbSSgQIRr3PYOmwEcD7smfqwdGFnzB1SsEbaKRvf6Y3O3mq3g4sFYdmlNR7K/cxT/oK0u7O+d1mjai/cRDLZzm2e/CnP9alHrPP/Oz9A+JW8LnRy70dNmWdLL/ReqXUJy2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=DdC9hlmC; arc=none smtp.client-ip=44.202.169.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
-Received: from eig-obgw-6009a.ext.cloudfilter.net ([10.0.30.184])
-	by cmsmtp with ESMTPS
-	id 3exdtq2HjiA193j8QtYfFU; Wed, 23 Oct 2024 21:43:18 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id 3j8PttDAxCB7M3j8Ptjft3; Wed, 23 Oct 2024 21:43:18 +0000
-X-Authority-Analysis: v=2.4 cv=Y97+sAeN c=1 sm=1 tr=0 ts=67196df6
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=OKg9RQrQ6+Y1xAlsUndU0w==:17
- a=IkcTkHD0fZMA:10 a=DAUX931o1VcA:10 a=7T7KSl7uo7wA:10 a=VwQbUJbxAAAA:8
- a=QyXUC8HyAAAA:8 a=vaJtXVxTAAAA:8 a=iwwoO_9B2agcGiYlQ7MA:9 a=QEXdDO2ut3YA:10
- a=Xt_RvD8W3m28Mn_h3AK8:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=16Q14PDMblkrTX6HXayHmrPosS3yrk6wYHUNr9G8tFQ=; b=DdC9hlmCbxOMYomLHYhhthbaGx
-	T/pCCUXSbFOZ+S9cD7IpJAaaZVuA5uuG8yVA6RZgKxw6F9bfXV39r2ppXBex5nBYqisTZrirkxEzH
-	30y3DCx902J0B+ymLZHjJZU83Dx9M/ngd3OUXasP3t3NdWOvqTIDWZ2tC+pw53v8FISB57lisr8mM
-	GnVsdbAs+g06Ef3NS4SbBOO2o9SA97NUXKo4oJZTi965iZZqH9nLER/aLBfhpdvx7AJb1xRfkTsb+
-	4NYL2lvjX+hErHbrAY8ZzB0ruJJgd5g7Y9WazxlNYYbYtr/VagU4MUG86dCJO1ojRCJrvc1TqoDvW
-	qID9nuJQ==;
-Received: from [201.172.173.7] (port=55182 helo=[192.168.15.6])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1t3j8P-000jzM-0A;
-	Wed, 23 Oct 2024 16:43:17 -0500
-Message-ID: <a51a9a11-02b4-4da5-a9cc-1317b6bc7526@embeddedor.com>
-Date: Wed, 23 Oct 2024 15:43:15 -0600
+	s=arc-20240116; t=1729729591; c=relaxed/simple;
+	bh=N50ZQr4UI2FkUci7BJLOsdnNoEBca6hfIAg+HgBIZMA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=aVpVT6mWyYnBGLn3HmX9y9LLOM8bjEVbcbnydZ+36gVjzSZuLjqs0T/VDufikv1+R4NPR4HdjAWoAHBwrOp+Jw94PwQSiLcFevUtco4MUZBnAdGfaw+gyJNDEFFSd48eDOOWfYCvRakl3USupegs7Mz9YiVXfyXiI9y1rHOBjwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=aJCxys0g; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49NKGKPJ016165;
+	Thu, 24 Oct 2024 00:26:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=Psowjo8/4dp9MRXeqNJ9ul
+	yPSJmjyL5Q08XlY52RyAc=; b=aJCxys0g8mF/5N1//6KmHz9BOdXV/Ho+zLdGzb
+	wCz0/io1IePpJMpOLmJ3zCj0Oram77D1YNTOzwC45QNgiFlVk5XRFKhcGn89aHqa
+	X59LCBvwipXY9dmBFkQHs6OmDwzG2xpmqqmY3mS2fO8kj0lF6pC9f00LaDaz2NS5
+	vbF/uGqG1xrl9XnkEGDFyDV0Fjr4kMqdQ5tWMs4RFHLS9FthFPQdMhmxvXah+8jA
+	iWWldcpdKDZxTUk78pjz2n1MId+r1sNzIjpGGXrnOTS0wLnXNR75KPdIOxXKf24z
+	MIM2n8eYFcIsRdpQ1UY9Sq3/A2MiZ+fg2HZ86Kwe8nYiE0iA==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42em3xkuhp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 24 Oct 2024 00:26:23 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49O0QMpp007695
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 24 Oct 2024 00:26:22 GMT
+Received: from Z2-SFF-G9-MQ.ap.qualcomm.com (10.80.80.8) by
+ nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Wed, 23 Oct 2024 17:26:20 -0700
+From: Miaoqing Pan <quic_miaoqing@quicinc.com>
+To: <kvalo@kernel.org>
+CC: <quic_jjohnson@quicinc.com>, <ath11k@lists.infradead.org>,
+        <linux-wireless@vger.kernel.org>, <dmitry.baryshkov@linaro.org>,
+        <linux-arm-msm@vger.kernel.org>,
+        Miaoqing Pan <quic_miaoqing@quicinc.com>
+Subject: [PATCH v2 0/2] wifi: ath11k: support board-specific firmware overrides
+Date: Thu, 24 Oct 2024 08:25:12 +0800
+Message-ID: <20241024002514.92290-1-quic_miaoqing@quicinc.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] wifi: ath12k: annotate channel of struct
- ath12k_wmi_scan_chan_list_arg with __counted_by
-To: Dmitry Antipov <dmantipov@yandex.ru>, Jeff Johnson <jjohnson@kernel.org>
-Cc: Kalle Valo <kvalo@kernel.org>, Kees Cook <kees@kernel.org>,
- linux-hardening@vger.kernel.org, linux-wireless@vger.kernel.org,
- lvc-project@linuxtesting.org
-References: <20241021143419.587716-1-dmantipov@yandex.ru>
- <20241021143419.587716-2-dmantipov@yandex.ru>
-Content-Language: en-US
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <20241021143419.587716-2-dmantipov@yandex.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 201.172.173.7
-X-Source-L: No
-X-Exim-ID: 1t3j8P-000jzM-0A
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: ([192.168.15.6]) [201.172.173.7]:55182
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 17
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfKiJTb4Vb0KON/Bn363BXm73VnK1vqGDXx6NcRexZkyJnaA1vD3yh1s9c6Xql6qCHbjUhtyghZk20LZvOhteTF+AQw/mndBRWcyZf8DzgO52NRoks8f5
- 6v6s+rCCZQ10sUWXZa4BpfyZRtKmFNtjnkcb08IqSeHPQU8guOE2sxyoJ4KWrCmRATj4wgVfNkhidPrWbc7cTxiu/H1+7F9RY5f8Sb6/1E8bOZNhraQ6iseH
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: jr6hqZDUCg8WCYMd0s60UBj7R6yoImY0
+X-Proofpoint-ORIG-GUID: jr6hqZDUCg8WCYMd0s60UBj7R6yoImY0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
+ impostorscore=0 mlxscore=0 bulkscore=0 spamscore=0 lowpriorityscore=0
+ mlxlogscore=809 malwarescore=0 priorityscore=1501 adultscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410240000
+
+QCA6698AQ IP core is the same as WCN6855 hw2.1, but it has different RF,
+IPA, thermal, RAM size and etc, so new firmware files used. This change
+allows board DT files to override the subdir of the firmware directory
+used to lookup the amss.bin and m3.bin.
+
+For example:
+
+- ath11k/WCN6855/hw2.1/amss.bin,
+  ath11k/WCN6855/hw2.1/m3.bin: main firmware files, used by default
+
+- ath11k/WCN6855/hw2.1/qca6698aq/amss.bin,
+  ath11k/WCN6855/hw2.1/qca6698aq/m3.bin
+
+Signed-off-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
+---
+v2: follow the approach that has been defined in the commit
+5abf259772df ("wifi: ath10k: support board-specific firmware
+overrides").
+---
+
+Miaoqing Pan (2):
+  dt-bindings: net: wireless: ath11k-pci: add firmware-name property
+  wifi: ath11k: support board-specific firmware overrides
+
+ .../bindings/net/wireless/qcom,ath11k-pci.yaml   |  7 +++++++
+ drivers/net/wireless/ath/ath11k/core.c           | 16 ++++++++++++++++
+ drivers/net/wireless/ath/ath11k/core.h           | 11 +++--------
+ 3 files changed, 26 insertions(+), 8 deletions(-)
 
 
+base-commit: cd8aa3af7491a1f7a5b81e53dbe62a38433c2d4b
+-- 
+2.25.1
 
-On 21/10/24 08:34, Dmitry Antipov wrote:
-> According to 'ath12k_reg_update_chan_list()', annotate flexible
-> array member 'channel' of 'struct ath12k_wmi_scan_chan_list_arg'
-> with '__counted_by()' attribute to improve runtime bounds checking
-> when CONFIG_UBSAN_BOUNDS is enabled. Compile tested only.
-
-It seems you didn't[1] actually build-test this changes. :/
-
--Gustavo
-
-[1] https://lore.kernel.org/linux-hardening/202410231916.Wjn5HeB6-lkp@intel.com/
-
-> 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-> ---
->   drivers/net/wireless/ath/ath12k/wmi.h | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
-> index 6a913f9b8315..9a6e28142754 100644
-> --- a/drivers/net/wireless/ath/ath12k/wmi.h
-> +++ b/drivers/net/wireless/ath/ath12k/wmi.h
-> @@ -3746,7 +3746,7 @@ struct wmi_stop_scan_cmd {
->   struct ath12k_wmi_scan_chan_list_arg {
->   	u32 pdev_id;
->   	u16 nallchans;
-> -	struct ath12k_wmi_channel_arg channel[];
-> +	struct ath12k_wmi_channel_arg channel[] __counted_by(nallchains);
->   };
->   
->   struct wmi_scan_chan_list_cmd {
 
