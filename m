@@ -1,113 +1,85 @@
-Return-Path: <linux-wireless+bounces-14466-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14467-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50B169AE46E
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 14:11:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76CC19AE560
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 14:51:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1874C1F23621
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 12:11:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 221261F22F64
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 12:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19A0A1D5144;
-	Thu, 24 Oct 2024 12:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF3FA1D517E;
+	Thu, 24 Oct 2024 12:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="HQjTmV+z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="egUOX+eW"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E5151D174F;
-	Thu, 24 Oct 2024 12:11:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852021B6CEE;
+	Thu, 24 Oct 2024 12:51:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729771871; cv=none; b=O9uSm2bXS6WkCsJLDU/VIfoAMtdu+ARB/GxbxzkIwJnIzIO1qsGTfYfGXPlJ7skIjQpHnZsmr2irbz0EMD+PIzFOSFoCnJSPybz1Pg6bq9xUacd4NZ3S46QTZE1hF8EM4r4Bezl6SCpfDar6PRB2rpXx6pZ7JndeG0psBYkzygI=
+	t=1729774270; cv=none; b=L+j3inKvVAUDCkcFvhX6mNmY5z3WWyiTl7umOBc6TVwY6FzwLYwwpAugl7YgLNF37NQUCZtbMyav1oRGt5strfl2lie51RmeHjlCcxTFKxe//chFyinvvWWsoitnZxXJHT5zc4MVzuwbZQPNuVffx3eno6YvkiiVRGEFK+szNMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729771871; c=relaxed/simple;
-	bh=wMU6dY7TVg6TAJC+av7cXdBdpRzCOepMRELr/Bpf0v4=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GI5eU4vSsNpkoyGs7JTVbhXdMYs8bBnKaLIfecrZD5XstGeLft8QBCzVNU3bblnJfx++vEI1QesHkOU7OLqMsH60kdFFnk3sX18l2MsUWeBH5NC3VSsvHPPMBBJF35L5SZp7rXr+SlIC6nvqe+8+EYg7N7XL9UTT2NjqR938e4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=HQjTmV+z; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=Yv5vMmnHB72ppkztkQfrFSxWLbID9R/jEsBocXpljV0=;
-	t=1729771869; x=1730981469; b=HQjTmV+zVvx6SEyDYOzw6OtzwKCEurZyVUYtzt7KST1IIft
-	DjeQryY8ny0DZtjwiV+yw5dEfho6n52x6dxki+ZSTNMykTrmd7wpK9DEk16yB/2pj06/l9ytjkwZ8
-	l/QUEASPsyKV/k7xsSTA293XQg4C2g5IRIzfrt8uZMmb44u7VKp9RhI75Sjz2eyphoXgiBbiQj1um
-	b4wNmAzGk/rgbNeXWWqOYH4trtAnoGT8lviDSMOIGyVeQpZWYIgmG3jrEPbzIF/KKPvoEh5hlRaKy
-	akYyrHk/NZY1zEop/yAeMJiEgvszhlOLr/MJD3z1UDXMfqZJs9zdU/fRHyzrzARQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1t3wgE-00000003d7E-2l86;
-	Thu, 24 Oct 2024 14:11:06 +0200
-Message-ID: <6461c18e0be520b4f7ecefc910af5d8dd205bce9.camel@sipsolutions.net>
-Subject: Re: [RFC PATCH 2/2] net: convert to nla_get_*_default()
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Date: Thu, 24 Oct 2024 14:11:05 +0200
-In-Reply-To: <20241024131807.d5b9f6e57ede.I740beeaa2f70ebfc19bfca1045a24d6151992790@changeid>
-References: 
-	<20241024131807.0a6c07355832.I3df6aac71d38a5baa1c0a03d0c7e82d4395c030e@changeid>
-	 <20241024131807.d5b9f6e57ede.I740beeaa2f70ebfc19bfca1045a24d6151992790@changeid>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+	s=arc-20240116; t=1729774270; c=relaxed/simple;
+	bh=11eghT2XM6A9UCg3foQEvZgI8vR3UuWQXU3FknKnd4g=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ObcNm28P9oU6R0hUinlC/f5smEsvLh3crjJdFRheiJzVu5itDl2FrUA4Zmri4DxVz8HELxhSSrrzdIO3Ro6RJvpaa1HUEP81U3KJg02+kEa8qMdTO/x0z61xHf4NUpL0QHtZIhwqt01gbRd2osuqKtb9uesr1TG/W4ednMZuMLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=egUOX+eW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A2FC4CEC7;
+	Thu, 24 Oct 2024 12:51:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729774270;
+	bh=11eghT2XM6A9UCg3foQEvZgI8vR3UuWQXU3FknKnd4g=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=egUOX+eWNry87Cog/fnjPuIxY+Xiy86qVsZuB0CQc3lAF4mqda+/dfqwIBZntDp+o
+	 6+0Q75WpUKccH8UKJUEX4MsKz4p96cXT2A/Zn2Mf9znvxeQ2o+s9JfCPIgxQGnU6r2
+	 TrRwC88+7843QQd5hh26pBO5yB0OP/XtHm+QCVaC3qT9wBYGrF4VVLC56NxPlfF5DE
+	 UjEjsMkxKVwF58NFB4C/LtOeugkX4RXpjaISV9IahlyLSKyCioE2kJjfRqTP4BMqXa
+	 dSEk05G+rqNin8ncIJTXa0IpTy1FNkCIpZp7fY59ZHVD+c43GkKKCnYlIPXWd9Gy5e
+	 g83q2ZL368Sag==
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id 48EAF160B498; Thu, 24 Oct 2024 14:51:07 +0200 (CEST)
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>
+To: Johannes Berg <johannes@sipsolutions.net>,
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>
+Subject: Re: [RFC PATCH 1/2] net: netlink: add nla_get_*_default() accessors
+In-Reply-To: <20241024131807.0a6c07355832.I3df6aac71d38a5baa1c0a03d0c7e82d4395c030e@changeid>
+References: <20241024131807.0a6c07355832.I3df6aac71d38a5baa1c0a03d0c7e82d4395c030e@changeid>
+X-Clacks-Overhead: GNU Terry Pratchett
+Date: Thu, 24 Oct 2024 14:51:07 +0200
+Message-ID: <87seslfyv8.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 2024-10-24 at 13:18 +0200, Johannes Berg wrote:
+Johannes Berg <johannes@sipsolutions.net> writes:
+
 > From: Johannes Berg <johannes.berg@intel.com>
->=20
-> This is mostly to illustrate, done with the following spatch:
->=20
+>
+> There are quite a number of places that use patterns
+> such as
+>
+>   if (attr)
+>      val =3D nla_get_u16(attr);
+>   else
+>      val =3D DEFAULT;
+>
+> Add nla_get_u16_default() and friends like that to
+> not have to type this out all the time.
+>
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 
-And we can extend that and get bunch more:
+I think this is an excellent idea! So typos/copy-paste errors aside:
 
-@@
-expression attr, def;
-expression val;
-identifier fn =3D~ "^nla_get_.*";
-fresh identifier dfn =3D fn ## "_default";
-@@
-(
--if (attr)
--  val =3D fn(attr);
--else
--  val =3D def;
-+val =3D dfn(attr, def);
-|
--if (!attr)
--  val =3D def;
--else
--  val =3D fn(attr);
-+val =3D dfn(attr, def);
-|
--val =3D def;
-... where !=3D val;
--if (attr)
--  val =3D fn(attr);
-+val =3D dfn(attr, def);
-|
--if (!attr)
--  return def;
--return fn(attr);
-+return dfn(attr, def);
-)
-
-
-(also just running it multiple times finds more instances?!)
-
-
-johannes
+Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@kernel.org>
 
