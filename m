@@ -1,58 +1,57 @@
-Return-Path: <linux-wireless+bounces-14478-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14479-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77B1A9AEDC1
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 19:21:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF5799AEF38
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 20:10:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B8A11C23B90
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 17:21:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A6C01F20F03
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 18:10:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BAB81F76B4;
-	Thu, 24 Oct 2024 17:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F0F21FF02F;
+	Thu, 24 Oct 2024 18:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nrnLInid"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qy6bYx7r"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E97701F5844
-	for <linux-wireless@vger.kernel.org>; Thu, 24 Oct 2024 17:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B451FBF50
+	for <linux-wireless@vger.kernel.org>; Thu, 24 Oct 2024 18:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729790486; cv=none; b=Q1K+CLVMDRKcJ6IjK1gkeX5f2KBfWDzeecenu12hqRNeFqNaBFA1ePFfZGCaEKpwACHk2jrX8IyMXR//ummPd5LDwLbKs/PF9r9srCAPKIWY2daWZ6EbAZ8hXiqLd+wLcfC+TaKd09xEvi2XCLCZbXFv9E+KgHOozKZsgq+qeto=
+	t=1729793419; cv=none; b=BKN784nWFlr7GK95P6JV9ESyAkWyS74b9/Ai6YfQVKSkPDSH2mhr0Uy/aiTnENwaRsl9pJRo7+EJKHqcZ78HGR0rbYT4ZCYiyLhJNZULBFpdxtfkad/sTIdMMQqjKlNZGOFPGyx6ovdrYQM2yWuAY5MOrfmpKaYbv4usZT8R8bY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729790486; c=relaxed/simple;
-	bh=IxpR5XjcaYcZ65huyZuO1PDv2ovoaXh745f+hkM7SPM=;
+	s=arc-20240116; t=1729793419; c=relaxed/simple;
+	bh=D1oGPE8iY8SLhbcXjgJNlgsYs6nH9gYfciNl9/OSycQ=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=aaIWnOYtmPSSzq3wWdhS6l0snCXouNMeMNBAoSmDc1hYAb2RhApr9SQU82tw6heNMzJIIDLZT8iOSdwMbBhQ23bYFLhCdRrdl+98eaHGqdrbv9SH2d+32dnANqxo3duSFiW3qjpWM0dje8CRkhbxJyTDr1zkVn36K3DPC1pZZX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nrnLInid; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EBEFC4CEC7;
-	Thu, 24 Oct 2024 17:21:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hMI6703RkoWMP0SpsZcLRLe1xf+3mxk5fgQomRDssXeLmk+1yZmbU/H973C+WdG1F6QHLt/rIe1WcEb3wm1lussr4PGabVgmWVlvo25Imdds0SJtldlbcTQKahIgrHrYJYxzxh7F2/CaEVkw8JbXbhnAp1qMmAP9AQx/CaV+YiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qy6bYx7r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 343B9C4CEC7;
+	Thu, 24 Oct 2024 18:10:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729790485;
-	bh=IxpR5XjcaYcZ65huyZuO1PDv2ovoaXh745f+hkM7SPM=;
+	s=k20201202; t=1729793419;
+	bh=D1oGPE8iY8SLhbcXjgJNlgsYs6nH9gYfciNl9/OSycQ=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=nrnLInid2ueSNqYCcvwTcLcbpU3aplkalnukL3AoJr6WcKV0tGi31ygFjsbhQt7jI
-	 m1RnCVltUs1BXgJV8JejxfFqMEceW5zy+7JT6jsmykxBf19JWgeiydkd+BOukdodaY
-	 0zXLhG2zyVYPbACr+pyY3pcUCT1vDsZEOXKY2VmRvEYaFtMWWks4JBCshYsw7regsr
-	 95K0hhqX43OxAQQZvhUuntyI/e8LSzrDIxXyQf8WmeLh/plMvnTGADoIVmfsyjae+W
-	 ONMdMITnGBnXDJHsFeRtc2Nq64qpZkcrWBl0A5XKP9gT/2HC7XUZmGoJLbtmU/e44M
-	 lCn5uzV/SpA0w==
+	b=qy6bYx7rToXkBdQ/acrG1YZmsbnel3MZcTAqXMHBroyZxZsPEi/RSUILGUbu37HoL
+	 azTQNG3GKkt8Y+RfQMjr/XbXjZz7u0WVLvcMUTAuc63ERCD/zVsbmdvUI8kQYpY1Lh
+	 gdziTx7xcx4tJPLe20wGwZzNE/GD+XCUJA7rsBbonzkLoPMCJHIJ6rJCrqlZPQVw3J
+	 zr7pI8/n5MUzZwzJqYn5dIKW479kRyFlP8AoBXEGB8m3A3T6VwdlKJctsNbzNywB/2
+	 CeqBY/vUluDJ3nffCzHw/gm2cd/nx3SupIFxhpCiNiBUNOMUCewCnwhhzYeEr0/nX4
+	 YPqzq3mgAKDeQ==
 From: Kalle Valo <kvalo@kernel.org>
 To: Jeff Johnson <quic_jjohnson@quicinc.com>
 Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 1/8] wifi: ath12k: ath12k_mac_vdev_create(): use goto
- for error handling
+Subject: Re: [PATCH 2/8] wifi: ath12k: MLO vdev bringup changes
 References: <20241023133004.2253830-1-kvalo@kernel.org>
-	<20241023133004.2253830-2-kvalo@kernel.org>
-	<ab8f3e88-f55b-4945-b4bb-a784d1466a27@quicinc.com>
-Date: Thu, 24 Oct 2024 20:21:22 +0300
-In-Reply-To: <ab8f3e88-f55b-4945-b4bb-a784d1466a27@quicinc.com> (Jeff
-	Johnson's message of "Wed, 23 Oct 2024 08:01:05 -0700")
-Message-ID: <877c9xmn71.fsf@kernel.org>
+	<20241023133004.2253830-3-kvalo@kernel.org>
+	<b79d33c6-a7cc-4a23-9b85-b2481c508d07@quicinc.com>
+Date: Thu, 24 Oct 2024 21:10:16 +0300
+In-Reply-To: <b79d33c6-a7cc-4a23-9b85-b2481c508d07@quicinc.com> (Jeff
+	Johnson's message of "Wed, 23 Oct 2024 08:19:02 -0700")
+Message-ID: <871q05mkxj.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -65,85 +64,105 @@ Content-Type: text/plain
 Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
 > On 10/23/2024 6:29 AM, Kalle Valo wrote:
->> From: Kalle Valo <quic_kvalo@quicinc.com>
+>
+>> From: Sriram R <quic_srirrama@quicinc.com>
 >> 
->> In commit 477cabfdb776 ("wifi: ath12k: modify link arvif creation and removal
->> for MLO") I had accidentally left one personal TODO comment about using goto
->> instead of ret. Switch to use goto to be consistent with the error handling in
->> the function.
+>> Add changes to add the link vdevs dynamically whenever a channel is assigned
+>> from mac80211 for a link vdev. During vdev create, update ML address of the
+>> vdev to firmware using the new WMI parameter (WMI_TAG_MLO_VDEV_CREATE_PARAMS).
 >> 
+>> During vdev start, notify the firmware that this link vdev is newly added and
+>> also indicate all its known partners so that the firmware can take necessary
+>> actions to internally update the partners on the new link being added.
+>> 
+>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 >> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 >> 
+>> Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
+>> Co-developed-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+>> Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
 >> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 >> ---
->>  drivers/net/wireless/ath/ath12k/mac.c | 3 +--
->>  1 file changed, 1 insertion(+), 2 deletions(-)
+>>  drivers/net/wireless/ath/ath12k/mac.c | 90 ++++++++++++++++++++++++++-
+>>  drivers/net/wireless/ath/ath12k/wmi.c | 85 ++++++++++++++++++++++++-
+>>  drivers/net/wireless/ath/ath12k/wmi.h | 74 ++++++++++++++++++++++
+>>  3 files changed, 244 insertions(+), 5 deletions(-)
 >> 
 >> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
->> index f5f96a8b1d61..f45f32f3b5f6 100644
+>> index f45f32f3b5f6..d4aa4540c8e6 100644
 >> --- a/drivers/net/wireless/ath/ath12k/mac.c
 >> +++ b/drivers/net/wireless/ath/ath12k/mac.c
->> @@ -7047,8 +7047,7 @@ int ath12k_mac_vdev_create(struct ath12k *ar, struct ath12k_link_vif *arvif)
->>  		ret = ath12k_wait_for_peer_delete_done(ar, arvif->vdev_id,
->>  						       arvif->bssid);
->>  		if (ret)
->> -			/* KVALO: why not goto err? */
->> -			return ret;
->> +			goto err;
->
-> why does this goto err instead of err_vdev_del?
-
-Good point. I did this to follow the same as the next command does:
-
-		ret = ath12k_wait_for_peer_delete_done(ar, arvif->vdev_id,
-						       arvif->bssid);
-		if (ret)
-			goto err;
-
-But yeah, err_vdev_del looks like more approriate.
-
->
+>> @@ -648,6 +648,18 @@ struct ath12k *ath12k_mac_get_ar_by_pdev_id(struct ath12k_base *ab, u32 pdev_id)
+>>  	return NULL;
+>>  }
 >>  
->>  		ar->num_peers--;
->>  	}
+>> +static bool ath12k_mac_is_ml_arvif(struct ath12k_link_vif *arvif)
+>> +{
+>> +	struct ath12k_vif *ahvif = arvif->ahvif;
+>> +
+>> +	lockdep_assert_wiphy(ahvif->ah->hw->wiphy);
 >
-> looking at the context for this patch I have a question about a different part
-> of this function:
->
-> 	param_id = WMI_VDEV_PARAM_RTS_THRESHOLD;
-> 	param_value = hw->wiphy->rts_threshold;
-> 	ret = ath12k_wmi_vdev_set_param_cmd(ar, arvif->vdev_id,
-> 					    param_id, param_value);
-> 	if (ret) {
-> 		ath12k_warn(ar->ab, "failed to set rts threshold for vdev %d: %d\n",
-> 			    arvif->vdev_id, ret);
->
-> NOTE: no return or goto
->
-> 	}
->
-> 	ath12k_dp_vdev_tx_attach(ar, arvif);
-> 	if (vif->type != NL80211_IFTYPE_MONITOR && ar->monitor_conf_enabled)
-> 		ath12k_mac_monitor_vdev_create(ar);
->
-> 	return ret;
->
-> NOTE: this can return an error if the RTS threshold set fails, but fails
-> without cleaning up (dp vdev still attached and monitor vdev created)
->
-> Seems either we need error handling if the set param fails, or we should ret 0
-> at this point
+> should we have helper functions ath12k_<foo>_to_wiphy() to abstract out the
+> underlying linkages?
 
-Yeah, I do not like this kind of vague error handling at all. I think we
-should have either a proper error handling or a comment explaining why
-we continue to the execution. An example about the comment:
+While working on these patches I started to like the current form, extra
+abstractions are always an extra layer to check when working on the
+code. Maybe we should revisit this after MLO works? It's easy to add the
+new helper in a separate patch.
 
-ret = foo();
-if (ret)
-        ath12k_warn("foo failed: %d", ret);
-        /* continue function because foo is optional */
+>> +static void
+>> +ath12k_mac_mlo_get_vdev_args(struct ath12k_link_vif *arvif,
+>> +			     struct wmi_ml_arg *ml_arg)
+>> +{
+>> +	struct ath12k_vif *ahvif = arvif->ahvif;
+>> +	struct wmi_ml_partner_info *partner_info;
+>> +	struct ieee80211_bss_conf *link_conf;
+>> +	struct ath12k_link_vif *arvif_p;
+>> +	unsigned long links;
+>> +	u8 link_id;
+>> +
+>> +	lockdep_assert_wiphy(ahvif->ah->hw->wiphy);
+>> +
+>> +	if (!ath12k_mac_is_ml_arvif(arvif))
+>> +		return;
+>> +
+>> +	if (hweight16(ahvif->vif->valid_links) > ATH12K_WMI_MLO_MAX_LINKS)
+>> +		return;
+>> +
+>> +	rcu_read_lock();
+>
+> what is this protecting?
 
-I think this should all this should be cleaned up in a separate patch.
+Access to ahvif->link[] and vif->link_conf[]. Protection for
+ahvif->links_map is still not clear for me, I need to analyse that more.
+
+> do all of the statements between here and the for loop really need RCU protection?
+
+No, they do not need it. And actually we can could change it to
+wiphy_dereference() so we don't need to take rcu_read_lock() at all.
+I'll do that in v2.
+
+>> +/* 2 word representation of MAC addr */
+>> +struct wmi_mac_addr {
+>> +	union {
+>> +		u8 addr[6];
+>> +		struct {
+>> +			u32 word0;
+>> +			u32 word1;
+>> +		} __packed;
+>> +	} __packed;
+>> +} __packed;
+>
+> we already have:
+> /* 2 word representation of MAC addr */
+> struct ath12k_wmi_mac_addr_params {
+> 	u8 addr[ETH_ALEN];
+> 	u8 padding[2];
+> } __packed;
+>
+> why aren't we consistently using that?
+
+Ouch, I'll switch to using that. Thanks for the review!
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
