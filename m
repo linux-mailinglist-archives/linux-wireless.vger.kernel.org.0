@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-14459-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14460-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 928B19AE3A9
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 13:20:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 512AE9AE3AA
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 13:20:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36E19B234B1
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 11:19:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FF301C2295F
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 11:20:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF96D1CDA1C;
-	Thu, 24 Oct 2024 11:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7411A1CDA3A;
+	Thu, 24 Oct 2024 11:19:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="SYR/8giV"
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="boWAUI2Z"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward101a.mail.yandex.net (forward101a.mail.yandex.net [178.154.239.84])
+Received: from forward102a.mail.yandex.net (forward102a.mail.yandex.net [178.154.239.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F9E1CCEE0;
-	Thu, 24 Oct 2024 11:19:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854CD1CEE8D;
+	Thu, 24 Oct 2024 11:19:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729768787; cv=none; b=kisNimwUIzTbRdaqMtcXYMc3hiOz/CQ2JrfKs5jQ+5tZ/oUvF6hfQ2rdVptaaj7JrqU63zCsLRxNcFXzHUzFTCw9Vco7yGWvc3p2q4PfjsGfZ8ZGaxf3o0hNUrM99NtDLpTR4uuFtQY8QUjKhWypELMRuGX5h2EpyPHSk3SpluQ=
+	t=1729768789; cv=none; b=ZZY8ThFeQ2H90y8ezCUdwfk5jfho6Ocq5Zs1qREb+NIESvVywBLZyD6T5hNZBZ9WmlcrpCERRmgTiAoWOzpBCUlkce22MnP261ciUCVJfS0FYiLZNyy9I+NWpSDju8PbGrlL05P70E+Tp707eJb/Yse/twmfgbK+uFXzwgS7uRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729768787; c=relaxed/simple;
-	bh=utpNps1/ZY6oW+MzyY2tkq5Q/ZXySUJ0sIocbr8mDgs=;
+	s=arc-20240116; t=1729768789; c=relaxed/simple;
+	bh=5tTrRmjoVHELp3KDuPicsvggP5XzB9cTyoDk2y8EL/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bBkRgHje/v48h3pYh3oohAqBuz+wF0gsD3OdIPnLaY8un29KaMAdSbd0kMw9Kd0Sjx04KtRxcewOT24DMo0EzHR5qMPBVezhnnoCV8Jrv1ElAYZOZuQnTSF6BLtocQjQID3rcEnRGX+lDWFHXNJ+ALlEbJasSJNN5VhcyG2vITQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=SYR/8giV; arc=none smtp.client-ip=178.154.239.84
+	 MIME-Version; b=eXbVeMiMRFGLfRVoKyYZrMFW7P3nGJWLAfwVhY9gAcQxdzATQ1zFAhyStgbrAFH4RQZdvoyxuxmo6haE5fmJHIhUueBSipfb9BIztkGVcWVYEaAlFqNk8yD7La11u3qkH/NRuC69PeV65bLfPfwLQGk3kZiqNny9AvxMqNeOApc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=boWAUI2Z; arc=none smtp.client-ip=178.154.239.85
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
 Received: from mail-nwsmtp-smtp-production-main-51.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-51.vla.yp-c.yandex.net [IPv6:2a02:6b8:c0f:4c80:0:640:a0f:0])
-	by forward101a.mail.yandex.net (Yandex) with ESMTPS id 8D9EF60B5D;
-	Thu, 24 Oct 2024 14:19:35 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-51.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id SJSJZc7btmI0-YBgQ4H2V;
-	Thu, 24 Oct 2024 14:19:34 +0300
+	by forward102a.mail.yandex.net (Yandex) with ESMTPS id AE48560B17;
+	Thu, 24 Oct 2024 14:19:37 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-51.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id SJSJZc7btmI0-rxIvdZYl;
+	Thu, 24 Oct 2024 14:19:37 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1729768774; bh=Ujogf2n6d3xM51NjQgS1UgXmJyF3SKIBj1zGKPXG+uE=;
+	t=1729768777; bh=SLwG2Ba8NCmx37QYsKgUA9oUytCJNj/QnHeAbCi4bbQ=;
 	h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
-	b=SYR/8giVvrCbXYTHDwxv0XDwR5fe7SCh/3YPvhI3YDKr0Gc10UMD3w6V1sUOyeAlv
-	 i5mru+Hsf1S+OPAGs8O3MAsK4gqxpVI8tXGHIGq8LgZ7n5Zfj7bqmM1gCX+Eq+PNGP
-	 38ryKNlAB0L3RFd7Ylhyf65NeYB2srH2NdXGB22w=
+	b=boWAUI2ZfV8B4ZNsnH53GhFnWDvi3xwvwsLr1YZX+1hSxdJB7JSy3arxfo/GFPJAK
+	 lCc4STJHQ0Gdmv1q5tZz4lirkAHkcYpQt6Ji4tqpGwJM2W8R4c4PbY8aqbu5YjK8Fy
+	 OcY3cRIopcbNbyblRbH8mee2a/silTIeJcWR3+UI=
 Authentication-Results: mail-nwsmtp-smtp-production-main-51.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
 From: Dmitry Antipov <dmantipov@yandex.ru>
 To: Jeff Johnson <jjohnson@kernel.org>
@@ -53,9 +53,9 @@ Cc: Kalle Valo <kvalo@kernel.org>,
 	linux-hardening@vger.kernel.org,
 	lvc-project@linuxtesting.org,
 	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH v2 2/3] wifi: ath11k: annotate ch_param of struct scan_chan_list_params with __counted_by
-Date: Thu, 24 Oct 2024 14:19:20 +0300
-Message-ID: <20241024111921.93105-2-dmantipov@yandex.ru>
+Subject: [PATCH v2 3/3] wifi: ath11k: miscellaneous spelling fixes
+Date: Thu, 24 Oct 2024 14:19:21 +0300
+Message-ID: <20241024111921.93105-3-dmantipov@yandex.ru>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241024111921.93105-1-dmantipov@yandex.ru>
 References: <20241024111921.93105-1-dmantipov@yandex.ru>
@@ -67,46 +67,69 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-According to 'ath11k_reg_update_chan_list()', annotate flexible
-array member 'ch_param' of 'struct scan_chan_list_params' with
-'__counted_by()' attribute to improve runtime bounds checking
-when CONFIG_UBSAN_BOUNDS is enabled. Compile tested only.
+Correct spelling here and there as suggested by codespell.
 
 Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 ---
-v2: add related comment in ath11k_reg_update_chan_list()
+v2: join the series
 ---
- drivers/net/wireless/ath/ath11k/reg.c | 3 +++
- drivers/net/wireless/ath/ath11k/wmi.h | 2 +-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath11k/hal.h | 6 +++---
+ drivers/net/wireless/ath/ath11k/mac.c | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/reg.c b/drivers/net/wireless/ath/ath11k/reg.c
-index b0f289784dd3..0a8a0ea2bdc7 100644
---- a/drivers/net/wireless/ath/ath11k/reg.c
-+++ b/drivers/net/wireless/ath/ath11k/reg.c
-@@ -164,6 +164,9 @@ int ath11k_reg_update_chan_list(struct ath11k *ar, bool wait)
- 		return -ENOMEM;
+diff --git a/drivers/net/wireless/ath/ath11k/hal.h b/drivers/net/wireless/ath/ath11k/hal.h
+index dc8bbe073017..601542410c75 100644
+--- a/drivers/net/wireless/ath/ath11k/hal.h
++++ b/drivers/net/wireless/ath/ath11k/hal.h
+@@ -700,7 +700,7 @@ enum hal_rx_buf_return_buf_manager {
+ #define HAL_REO_CMD_FLG_UNBLK_RESOURCE		BIT(7)
+ #define HAL_REO_CMD_FLG_UNBLK_CACHE		BIT(8)
  
- 	params->pdev_id = ar->pdev->pdev_id;
-+	/* Note nallchans should be set before populating ch_param[],
-+	 * otherwise __counted_by() might raise false positives.
-+	 */
- 	params->nallchans = num_channels;
+-/* Should be matching with HAL_REO_UPD_RX_QUEUE_INFO0_UPD_* feilds */
++/* Should be matching with HAL_REO_UPD_RX_QUEUE_INFO0_UPD_* fields */
+ #define HAL_REO_CMD_UPD0_RX_QUEUE_NUM		BIT(8)
+ #define HAL_REO_CMD_UPD0_VLD			BIT(9)
+ #define HAL_REO_CMD_UPD0_ALDC			BIT(10)
+@@ -725,7 +725,7 @@ enum hal_rx_buf_return_buf_manager {
+ #define HAL_REO_CMD_UPD0_PN_VALID		BIT(29)
+ #define HAL_REO_CMD_UPD0_PN			BIT(30)
  
- 	ch = params->ch_param;
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index 8982b909c821..58471da42087 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -3819,7 +3819,7 @@ struct wmi_stop_scan_cmd {
- struct scan_chan_list_params {
- 	u32 pdev_id;
- 	u16 nallchans;
--	struct channel_param ch_param[];
-+	struct channel_param ch_param[] __counted_by(nallchans);
- };
+-/* Should be matching with HAL_REO_UPD_RX_QUEUE_INFO1_* feilds */
++/* Should be matching with HAL_REO_UPD_RX_QUEUE_INFO1_* fields */
+ #define HAL_REO_CMD_UPD1_VLD			BIT(16)
+ #define HAL_REO_CMD_UPD1_ALDC			GENMASK(18, 17)
+ #define HAL_REO_CMD_UPD1_DIS_DUP_DETECTION	BIT(19)
+@@ -741,7 +741,7 @@ enum hal_rx_buf_return_buf_manager {
+ #define HAL_REO_CMD_UPD1_PN_HANDLE_ENABLE	BIT(30)
+ #define HAL_REO_CMD_UPD1_IGNORE_AMPDU_FLG	BIT(31)
  
- struct wmi_scan_chan_list_cmd {
+-/* Should be matching with HAL_REO_UPD_RX_QUEUE_INFO2_* feilds */
++/* Should be matching with HAL_REO_UPD_RX_QUEUE_INFO2_* fields */
+ #define HAL_REO_CMD_UPD2_SVLD			BIT(10)
+ #define HAL_REO_CMD_UPD2_SSN			GENMASK(22, 11)
+ #define HAL_REO_CMD_UPD2_SEQ_2K_ERR		BIT(23)
+diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
+index e6acbff06749..7a75de8aec2b 100644
+--- a/drivers/net/wireless/ath/ath11k/mac.c
++++ b/drivers/net/wireless/ath/ath11k/mac.c
+@@ -2230,7 +2230,7 @@ static void ath11k_peer_assoc_h_vht(struct ath11k *ar,
+ 		__le16_to_cpu(vht_cap->vht_mcs.tx_mcs_map), vht_mcs_mask);
+ 
+ 	/* In IPQ8074 platform, VHT mcs rate 10 and 11 is enabled by default.
+-	 * VHT mcs rate 10 and 11 is not suppoerted in 11ac standard.
++	 * VHT mcs rate 10 and 11 is not supported in 11ac standard.
+ 	 * so explicitly disable the VHT MCS rate 10 and 11 in 11ac mode.
+ 	 */
+ 	arg->tx_mcs_set &= ~IEEE80211_VHT_MCS_SUPPORT_0_11_MASK;
+@@ -6952,7 +6952,7 @@ static void ath11k_mac_op_remove_interface(struct ieee80211_hw *hw,
+ 	/* Recalc txpower for remaining vdev */
+ 	ath11k_mac_txpower_recalc(ar);
+ 
+-	/* TODO: recal traffic pause state based on the available vdevs */
++	/* TODO: recalc traffic pause state based on the available vdevs */
+ 
+ 	mutex_unlock(&ar->conf_mutex);
+ }
 -- 
 2.47.0
 
