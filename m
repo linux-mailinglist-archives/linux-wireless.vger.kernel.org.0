@@ -1,147 +1,302 @@
-Return-Path: <linux-wireless+bounces-14476-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14477-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B2BF9AEA7B
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 17:29:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E6389AEADE
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 17:42:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A101284BE0
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 15:29:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D42411F21ACB
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 15:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A0421EC011;
-	Thu, 24 Oct 2024 15:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 030671F5839;
+	Thu, 24 Oct 2024 15:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="JkmA6aU+"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="nf7+XH/L";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="bUCNy+kH";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="nf7+XH/L";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="bUCNy+kH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A4C1D8A1E;
-	Thu, 24 Oct 2024 15:29:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159671B3937;
+	Thu, 24 Oct 2024 15:42:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729783795; cv=none; b=HN0SmW8ySDqZ/1Okepi/piO7i5MtES5AJr+/OceF+BWVlvtu9dQyqzrNXfwZcmZqBkPbz/adSvECad8FfryCjA/TR+9HsEM7yP+7+EZoUv/Xb+Cz+W+l4+LzL/UPkfw67uowzwwpOoyCfKW3+Nk0K6+j/pfiHMi2KSFPj6q0tXo=
+	t=1729784538; cv=none; b=u2x6hY5iFPEpzmOBL3Rd1kirNw4hDk3EhHFT0N5Gw6tCUyc0MbvclggUbmt2wk243pnfsmWtpYGvhdYec6gYjfbZZzWouoE/qWMr4/EINFeroqMz4VjbITo2fOx+oDPyFFmJi5XhWTK7E+1t3MeePu4fcnGoO+6SXAqnITr+1yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729783795; c=relaxed/simple;
-	bh=/c3nPV0FlFBZC3KSq4T9BU0smS+lIYhUyC2Quk6Z91M=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=c2MkxT0WY4LQYSmlsbrF50tuxeFEp+Pj4Zqb5skk3WpBZ654ZLzIzy9U5snNEfswYXdW6knrrJiBo2PMjusZLURLcFVh1vKUdWUjH91gSf6sdazqk8GlRYfa9lHotZbQmKn4mWnnD9cQpXC7msacel5cH7icwVm8qx2nKniQ2OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=JkmA6aU+; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=1xiupaF61lfS6z4Pq8dSc4R0ENSuX2KdNUITbPAYRRM=;
-	t=1729783793; x=1730993393; b=JkmA6aU+xDkflpCKFxNi+2p7k5hXG8/0udrO6D/wvzk0bAk
-	okL6v/nw4fUrixwEDCvsL1Olt1a9e5kwVa+tZp/Oj7HiSJosZvG6S9ZWXYyI8xrrFjWKTBaynmqsx
-	y2sQCmLqTWOzWtpDZkoTSIO1uh2K1QlVqaKG6i5ozJKHUorIALc7m/kzpwFMOSQ73YHJdbljLNZGu
-	01DOOyA5y/QN3ikSFOY4kYWOCVC/DzDJvdm3fJdNiJsiybpzYssrgC0mbp66tQnNJLWysD1Hruag8
-	GZjD4sWjnl/AF5mPSBKvIT5KlWXi5Onacih5DkV7EMA923M1bOWmRzJrSAcQovxQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1t3zmT-00000003hnS-2GLn;
-	Thu, 24 Oct 2024 17:29:45 +0200
-Message-ID: <4c9b5027a70f7d9039ffb5579a1e7a08c7fa5ddb.camel@sipsolutions.net>
-Subject: Re: [RFC PATCH 2/2] net: convert to nla_get_*_default()
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Sabrina Dubroca <sd@queasysnail.net>
-Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Date: Thu, 24 Oct 2024 17:29:44 +0200
-In-Reply-To: <ZxplEne_oHXQycnc@hog>
-References: 
-	<20241024131807.0a6c07355832.I3df6aac71d38a5baa1c0a03d0c7e82d4395c030e@changeid>
-	 <20241024131807.d5b9f6e57ede.I740beeaa2f70ebfc19bfca1045a24d6151992790@changeid>
-	 <8fabb6e5a2eda8c3bd7ca0bccc3e7804ad27bbad.camel@sipsolutions.net>
-	 <ZxpeL7S2GZeJOiQw@hog>
-	 <2e3b106585cebbb579c0d5cca33737623765ded7.camel@sipsolutions.net>
-	 <ZxplEne_oHXQycnc@hog>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+	s=arc-20240116; t=1729784538; c=relaxed/simple;
+	bh=fyCVM0H3wBChDlsqqMqAVhOen98CNN27wwnpuqoJWHs=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=umg6neifYt6aw9zUMsT6DbmqnlPTW9gQhf7D68Qxb+bAAQ0UNXz4H8GxsqcDtqGbOd3GldsagF+/Lnq1sVISDumaaKiJBfxlsz6vbyMByMZWqREv+nksFhTbF5qvLF6MNM3sPCy4lCf4OjiCwa5TRwo1OCclZ05wEBQkukWeXWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=nf7+XH/L; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=bUCNy+kH; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=nf7+XH/L; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=bUCNy+kH; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 2A8A422129;
+	Thu, 24 Oct 2024 15:42:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1729784533; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=e/3cTOJeo8U10J73FzqEOoczI8O2ncrtc0XB23zkv5s=;
+	b=nf7+XH/LuqrxkP91/yVelJSCFw67hxyf6AXFWk3zyABwq4t50EjV4OpunUzQwKh4O0X2HJ
+	4nMIH+IkWiV+OyB9+2lpXXEkxEb6F9xe7EmRT51s93pHP7VGseNAqLpWkAnTMF4e/9a33H
+	jIwPZWttZWt/MbrLD+5eKYCd75VNgto=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1729784533;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=e/3cTOJeo8U10J73FzqEOoczI8O2ncrtc0XB23zkv5s=;
+	b=bUCNy+kHeragGzzLpfz4PtWaPc3dFKTrYqlZNmv+RbyR7CQspcjxEUACIPOU4RaAWi7ash
+	i5YJ2tGAyzT1zcBg==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="nf7+XH/L";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=bUCNy+kH
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1729784533; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=e/3cTOJeo8U10J73FzqEOoczI8O2ncrtc0XB23zkv5s=;
+	b=nf7+XH/LuqrxkP91/yVelJSCFw67hxyf6AXFWk3zyABwq4t50EjV4OpunUzQwKh4O0X2HJ
+	4nMIH+IkWiV+OyB9+2lpXXEkxEb6F9xe7EmRT51s93pHP7VGseNAqLpWkAnTMF4e/9a33H
+	jIwPZWttZWt/MbrLD+5eKYCd75VNgto=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1729784533;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=e/3cTOJeo8U10J73FzqEOoczI8O2ncrtc0XB23zkv5s=;
+	b=bUCNy+kHeragGzzLpfz4PtWaPc3dFKTrYqlZNmv+RbyR7CQspcjxEUACIPOU4RaAWi7ash
+	i5YJ2tGAyzT1zcBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A023D1368E;
+	Thu, 24 Oct 2024 15:42:11 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id g9J2JdNqGmebSAAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Thu, 24 Oct 2024 15:42:11 +0000
+Date: Thu, 24 Oct 2024 17:43:12 +0200
+Message-ID: <875xphzeun.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Philipp Stanner <pstanner@redhat.com>
+Cc: Takashi Iwai <tiwai@suse.de>,	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Basavaraj Natikar <basavaraj.natikar@amd.com>,	Jiri Kosina
+ <jikos@kernel.org>,	Benjamin Tissoires <bentiss@kernel.org>,	Arnd Bergmann
+ <arnd@arndb.de>,	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,	Alex
+ Dubov <oakad@yahoo.com>,	Sudarsana Kalluru <skalluru@marvell.com>,	Manish
+ Chopra <manishc@marvell.com>,	"David S. Miller" <davem@davemloft.net>,	Eric
+ Dumazet <edumazet@google.com>,	Jakub Kicinski <kuba@kernel.org>,	Paolo
+ Abeni <pabeni@redhat.com>,	Rasesh Mody <rmody@marvell.com>,
+	GR-Linux-NIC-Dev@marvell.com,	Igor Mitsyanko <imitsyanko@quantenna.com>,
+	Sergey Matyukevich <geomatsi@gmail.com>,	Kalle Valo <kvalo@kernel.org>,
+	Sanjay R Mehta <sanju.mehta@amd.com>,	Shyam Sundar S K
+ <Shyam-sundar.S-k@amd.com>,	Jon Mason <jdmason@kudzu.us>,	Dave Jiang
+ <dave.jiang@intel.com>,	Allen Hubbe <allenbh@gmail.com>,	Bjorn Helgaas
+ <bhelgaas@google.com>,	Alex Williamson <alex.williamson@redhat.com>,
+	Juergen Gross <jgross@suse.com>,	Stefano Stabellini
+ <sstabellini@kernel.org>,	Oleksandr Tyshchenko
+ <oleksandr_tyshchenko@epam.com>,	Jaroslav Kysela <perex@perex.cz>,	Takashi
+ Iwai <tiwai@suse.com>,	Chen Ni <nichen@iscas.ac.cn>,	Mario Limonciello
+ <mario.limonciello@amd.com>,	Ricky Wu <ricky_wu@realtek.com>,	Al Viro
+ <viro@zeniv.linux.org.uk>,	Breno Leitao <leitao@debian.org>,	Kevin Tian
+ <kevin.tian@intel.com>,	Thomas Gleixner <tglx@linutronix.de>,	Ilpo
+ =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,	Andy
+ Shevchenko <andriy.shevchenko@linux.intel.com>,	Mostafa Saleh
+ <smostafa@google.com>,	Jason Gunthorpe <jgg@ziepe.ca>,	Yi Liu
+ <yi.l.liu@intel.com>,	Christian Brauner <brauner@kernel.org>,	Ankit Agrawal
+ <ankita@nvidia.com>,	Eric Auger <eric.auger@redhat.com>,	Reinette Chatre
+ <reinette.chatre@intel.com>,	Ye Bin <yebin10@huawei.com>,	Marek
+ =?ISO-8859-1?Q?Marczykowski-G=F3recki?= <marmarek@invisiblethingslab.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,	Peter Ujfalusi
+ <peter.ujfalusi@linux.intel.com>,	Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>,	Kai Vehmanen
+ <kai.vehmanen@linux.intel.com>,	Rui Salvaterra <rsalvaterra@gmail.com>,
+	linux-ide@vger.kernel.org,	linux-kernel@vger.kernel.org,
+	linux-input@vger.kernel.org,	netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org,	ntb@lists.linux.dev,
+	linux-pci@vger.kernel.org,	kvm@vger.kernel.org,
+	xen-devel@lists.xenproject.org,	linux-sound@vger.kernel.org
+Subject: Re: [PATCH 02/13] ALSA: hda_intel: Use always-managed version of pcim_intx()
+In-Reply-To: <aec23bb79b9ff7dd7f13eb67460e0605eac22912.camel@redhat.com>
+References: <20241015185124.64726-1-pstanner@redhat.com>
+	<20241015185124.64726-3-pstanner@redhat.com>
+	<87v7xk2ps5.wl-tiwai@suse.de>
+	<6f3db65fe9a5dcd1a7a8d9bd5352ecb248ef57b1.camel@redhat.com>
+	<87ttd2276j.wl-tiwai@suse.de>
+	<aec23bb79b9ff7dd7f13eb67460e0605eac22912.camel@redhat.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 2A8A422129
+X-Spam-Score: -3.51
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-3.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
+	ARC_NA(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FREEMAIL_ENVRCPT(0.00)[yahoo.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[suse.de,kernel.org,omp.ru,amd.com,arndb.de,linuxfoundation.org,yahoo.com,marvell.com,davemloft.net,google.com,redhat.com,quantenna.com,gmail.com,kudzu.us,intel.com,suse.com,epam.com,perex.cz,iscas.ac.cn,realtek.com,zeniv.linux.org.uk,debian.org,linutronix.de,linux.intel.com,ziepe.ca,nvidia.com,huawei.com,invisiblethingslab.com,linux.dev,vger.kernel.org,lists.linux.dev,lists.xenproject.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCVD_TLS_ALL(0.00)[];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[67];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-On Thu, 2024-10-24 at 17:17 +0200, Sabrina Dubroca wrote:
-> 2024-10-24, 16:52:00 +0200, Johannes Berg wrote:
-> > On Thu, 2024-10-24 at 16:48 +0200, Sabrina Dubroca wrote:
-> > >=20
-> > > If nla_get_*_default was a macro (generating an "attr ? getter :
-> > > default" expression) you wouldn't have that problem I think,=C2=A0
-> >=20
-> > Hmm. Perhaps. In the conditional operator (?:) they're subject to
-> > integer promotion though
->=20
-> Is it?
->=20
->     #define nla_get_u16_default(attr, d) (attr ? nla_get_u16(attr) : d)
->     int v =3D nla_get_u16_default(NULL, -1);
->=20
-> seems to put the correct value into v.
-> (but -ENOFOOD and -ELOWCOFFEE here, so I don't trust this quick test
-> much :))
+On Thu, 24 Oct 2024 10:02:59 +0200,
+Philipp Stanner wrote:
+> 
+> On Wed, 2024-10-23 at 17:03 +0200, Takashi Iwai wrote:
+> > On Wed, 23 Oct 2024 15:50:09 +0200,
+> > Philipp Stanner wrote:
+> > > 
+> > > On Tue, 2024-10-22 at 16:08 +0200, Takashi Iwai wrote:
+> > > > On Tue, 15 Oct 2024 20:51:12 +0200,
+> > > > Philipp Stanner wrote:
+> > > > > 
+> > > > > pci_intx() is a hybrid function which can sometimes be managed
+> > > > > through
+> > > > > devres. To remove this hybrid nature from pci_intx(), it is
+> > > > > necessary to
+> > > > > port users to either an always-managed or a never-managed
+> > > > > version.
+> > > > > 
+> > > > > hda_intel enables its PCI-Device with pcim_enable_device().
+> > > > > Thus,
+> > > > > it needs
+> > > > > the always-managed version.
+> > > > > 
+> > > > > Replace pci_intx() with pcim_intx().
+> > > > > 
+> > > > > Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+> > > > > ---
+> > > > >  sound/pci/hda/hda_intel.c | 2 +-
+> > > > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > > 
+> > > > > diff --git a/sound/pci/hda/hda_intel.c
+> > > > > b/sound/pci/hda/hda_intel.c
+> > > > > index b4540c5cd2a6..b44ca7b6e54f 100644
+> > > > > --- a/sound/pci/hda/hda_intel.c
+> > > > > +++ b/sound/pci/hda/hda_intel.c
+> > > > > @@ -786,7 +786,7 @@ static int azx_acquire_irq(struct azx
+> > > > > *chip,
+> > > > > int do_disconnect)
+> > > > >  	}
+> > > > >  	bus->irq = chip->pci->irq;
+> > > > >  	chip->card->sync_irq = bus->irq;
+> > > > > -	pci_intx(chip->pci, !chip->msi);
+> > > > > +	pcim_intx(chip->pci, !chip->msi);
+> > > > >  	return 0;
+> > > > >  }
+> > > > >  
+> > > > 
+> > > > Hm, it's OK-ish to do this as it's practically same as what
+> > > > pci_intx()
+> > > > currently does.  But, the current code can be a bit inconsistent
+> > > > about
+> > > > the original intx value.  pcim_intx() always stores !enable to
+> > > > res->orig_intx unconditionally, and it means that the orig_intx
+> > > > value
+> > > > gets overridden at each time pcim_intx() gets called.
+> > > 
+> > > Yes.
+> > > 
+> > > > 
+> > > > Meanwhile, HD-audio driver does release and re-acquire the
+> > > > interrupt
+> > > > after disabling MSI when something goes wrong, and pci_intx()
+> > > > call
+> > > > above is a part of that procedure.  So, it can rewrite the
+> > > > res->orig_intx to another value by retry without MSI.  And after
+> > > > the
+> > > > driver removal, it'll lead to another state.
+> > > 
+> > > I'm not sure that I understand this paragraph completely. Still,
+> > > could
+> > > a solution for the driver on the long-term just be to use
+> > > pci_intx()?
+> > 
+> > pci_intx() misses the restore of the original value, so it's no
+> > long-term solution, either.
+> 
+> Sure that is missing – I was basically asking whether the driver could
+> live without that feature.
+> 
+> Consider that point obsolete, see below
+> 
+> > 
+> > What I meant is that pcim_intx() blindly assumes the negative of the
+> > passed argument as the original state, which isn't always true.  e.g.
+> > when the driver calls it twice with different values, a wrong value
+> > may be remembered.
+> 
+> Ah, I see – thoguh the issue is when it's called several times with the
+> *same* value, isn't it?
+> 
+> E.g.
+> 
+> pcim_intx(pdev, 1); // 0 is remembered as the old value
+> pcim_intx(pdev, 1); // 0 is falsely remembered as the old value
+> 
+> Also, it would seem that calling the function for the first time like
+> that:
+> 
+> pcim_intx(pdev, 0); // old value: 1
+> 
+> is at least incorrect, because INTx should be 0 per default, shouldn't
+> it? Could then even be a 1st class bug, because INTx would end up being
+> enabled despite having been disabled all the time.
 
-I'm probably -ELOWBLOODSUGAR right now ;-)
+Yeah, and the unexpected restore can happen even with a single call of
+pcim_intx(), if the driver calls it unnecessarily.
 
-But yeah, I couldn't yet construct a scenario where it mattered, but I'
-also couldn't convince myself that there isn't one. Maybe too much
-inspired by the enum compare warnings:
+> > That said, I thought of something like below.
+> 
+> At first glance that looks like a good idea to me, thanks for working
+> this out!
+> 
+> IMO you can submit that as a patch so we can discuss it separately.
 
-https://lore.kernel.org/linux-wireless/20241018151841.3821671-1-arnd@kernel=
-.org/
-
-
-> > , I wonder if that could cause some subtle issue
-> > too especially if nla_get_u*() is used with signed variables?
->=20
-> The issue in that example is pretty subtle and I'm fairly sure people
-> are going to mess up :/
-
-I didn't think it was that bad, but it's well possible that my
-calibration for "subtle" is way off ;-)
-
-> But I'm not attached to that macro I just suggested, it's just a
-> thought.
-
-Sure.
-
-> > > but you
-> > > couldn't nicely generate all the helpers with MAKE_NLA_GET_DEFAULT
-> > > anymore.
-> >=20
-> > Right, that too.
-> >=20
-> > I think it's probably better to just review them, and only commit the
-> > obvious ones originally?
->=20
-> Well, this one looked reasonable too. I'm not convinced reviewers are
-> going to catch those problems. Or authors of new code using those
-> _default helpers from the start.
-
-Fair point. I didn't think it was that bad, in fact there were some I
-was far less sure about, say
-
-> +	request->page =3D nla_get_u8_default(info->attrs[NL802154_ATTR_PAGE],
-> +					   wpan_phy->current_page);
-
-which really depends on the types of 'page' and 'current_page'...
+Sure, I'm going to submit later.
 
 
-I think for most cases it's probably still worth doing, and I wouldn't
-be _too_ concerned about the type issues here, most places are just
-using zero or a small constant as the default anyway.
+thanks,
 
-Even nla_get_XX_or_zero() would be a win, but that seemed too special
-...
-
-johannes
+Takashi
 
