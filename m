@@ -1,104 +1,147 @@
-Return-Path: <linux-wireless+bounces-14446-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14447-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8F4C9ADBB3
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 07:55:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B916B9ADC6E
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 08:43:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9B031C20DCC
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 05:55:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EB3E1F22C0F
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 06:43:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BAA3172BCC;
-	Thu, 24 Oct 2024 05:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABE4918870F;
+	Thu, 24 Oct 2024 06:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="b2pR0Rcu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n5Iyibci"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E07A16E863
-	for <linux-wireless@vger.kernel.org>; Thu, 24 Oct 2024 05:55:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C706CDBA;
+	Thu, 24 Oct 2024 06:43:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729749334; cv=none; b=Cnnu8f9v/EJjDpDvMfWaHPD41K6lBrjjlDAmC5wO/xjlCnDkHfmGEEIGZ/3AaCwN4mZSjvNzUqz5skVW9bLi+/d20Qp67NqeyOBTNO3hpYM4esgV95A08ORvxzd4CU/IssG3yCCj4FDVGZr0/m2hSYeTSq4bpgQ6XZ8OeaEQicw=
+	t=1729752215; cv=none; b=eQR/QUTE1YGV+FIB7faiW7FZ4gHDnGE5+BSWJxQKkuIdYbIJc6bbjfSVSJnqctOMBkNzHtQTLHyl3DFdQBMPcmTXM0zgX5v/0v5T2jVEm6Xi/DzgxD7wixDoOCvdwqQkA8BfpJ87rAqNhhPl2EKibENwzCF1Zer5tC9Rxrn7oy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729749334; c=relaxed/simple;
-	bh=CCBRDFXutuev2qInNUYfI/JeR+PjGsz8CmqCAoEjrsg=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bc/fviH1CehwRC2oguuibYwOzXqymsBXM/kEvXN+YOjAXV0jRxqYfdkBf7/PyqGiJbxfERCaVyE8CUQx+zY3gy0gKm/dC9JZoPmWL2SYDk0JcQmvkryrIVk9F8e5zmrLzRzFi/7SjWygDknuQJ5LhWvhs+unBvO8TWh0bpZQSxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=b2pR0Rcu; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 49O5tRlaD2704397, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1729749327; bh=CCBRDFXutuev2qInNUYfI/JeR+PjGsz8CmqCAoEjrsg=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=b2pR0RcuKlzeiYtfUHmfaL5OLMNQzl9voD+kFUgk/9n/toeDMIFsDEFlnKcyXSoyc
-	 OfMotDvKWfhk112REwwgMrpyHLRr/oFR2eSYpP+3hNcAbuhPpdkqYz90tdZbEqW8R/
-	 kTI1a0hufvkSv6VS4dCr/LcgN6WGsX9Hng3KOGIKJuMi8GkVAtVJ/HX0c62eEgXbk4
-	 HHdiGiwHGJG5NKAykrXo1AtqcjuS9h8aZ9cNvowVylrkjI11qqh1svdoosUYfYEge5
-	 kBFlhtARIPJY1kj++dmaCeG2BsOM/ox43qXQ9ZA6sS1xvLK/gizHtg3nTpnlBOFYhy
-	 2fcM5n2+J2/LQ==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 49O5tRlaD2704397
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Thu, 24 Oct 2024 13:55:27 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 24 Oct 2024 13:55:27 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 24 Oct
- 2024 13:55:27 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <timlee@realtek.com>
-Subject: [PATCH] wifi: rtw89: don't check done-ack for entering PS
-Date: Thu, 24 Oct 2024 13:55:09 +0800
-Message-ID: <20241024055509.8000-1-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1729752215; c=relaxed/simple;
+	bh=+q8InVq2dJazQdq21aaONgOiPhX3HW8Nj+5dzHDxHsg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lNkhlOUpj5O+3j6X3JF9frx+GaHhhxD8P6wnAH3fBl+bcEUHCDcfwIRhoq2xhFBVDjuMk+1Pg9jpIPECJ0r+UoTKSQ6dQOisb2HGjyMlMwX2a8xgbzVw+ZvPjPvAKxCuVonzM68Evmg1j2exzbUqKPNKy1DXMT7ggKJhBhyjWFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n5Iyibci; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F16C4CEC7;
+	Thu, 24 Oct 2024 06:43:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1729752215;
+	bh=+q8InVq2dJazQdq21aaONgOiPhX3HW8Nj+5dzHDxHsg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=n5IyibcincV5kXos4gLNr6NtM/AhnA/loXieVzKXOkg/R6QLCxixvk4ApkflrxNBq
+	 Ja6iCe2sEyyOKxVRPxrFpEXvAwpaze8RjWYT7vkLLi2kw2Wjmzx3QpujMmq/T8+IKj
+	 DOBVmAim8lvF4mSyHm/Y/PqNnjLY8TPcyGXlKH6+cfjjPEAE1vtQwEvmh82BEMNxIN
+	 LZXf7WfpFk1FszhwLOejnwjy3DfrHTECd8HGKZXz7cOXP9bOPXxkldWGKTzv5WO22H
+	 GZm+2MTUkdDi6I+CNnt/jNsdW/exWmwZ/qMNnUtCl7izK2vM2VJQB3o0Rg7hcgB9sH
+	 HGkzUFbK047WA==
+Message-ID: <fd98c29c-d7f0-4ddf-b7d9-e4904b43e1bd@kernel.org>
+Date: Thu, 24 Oct 2024 08:43:29 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] dt-bindings: net: wireless: ath11k-pci: add
+ firmware-name property
+To: Miaoqing Pan <quic_miaoqing@quicinc.com>, kvalo@kernel.org
+Cc: quic_jjohnson@quicinc.com, ath11k@lists.infradead.org,
+ linux-wireless@vger.kernel.org, dmitry.baryshkov@linaro.org,
+ linux-arm-msm@vger.kernel.org
+References: <20241024002514.92290-1-quic_miaoqing@quicinc.com>
+ <20241024002514.92290-2-quic_miaoqing@quicinc.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
+ FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
+ QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
+ gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
+ /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
+ iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
+ VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
+ 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
+ xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
+ eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
+ AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
+ MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
+ Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
+ MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
+ OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
+ GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
+ 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
+ YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
+ 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
+ BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
+ JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
+ 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
+ YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
+ Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
+ ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
+ vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
+ oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
+ lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
+ t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
+ uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
+ 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
+ 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
+In-Reply-To: <20241024002514.92290-2-quic_miaoqing@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Chin-Yen Lee <timlee@realtek.com>
+On 24/10/2024 02:25, Miaoqing Pan wrote:
+> This is the same optional property that defined in qcom,ath10k.yaml. It's
+> useful for the platform / board to specify firmware through device-tree.
 
-In WoWLAN mode, driver will disable interrupt after calling H2C command
-for entering PS mode, but it may lead to failing to enter deep PS mode by
-firmware because the done-ack of the H2C from firmware is not handled by
-driver. In fact, the done-ack for entering PS is not necessary for driver
-to check, so remove it.
+Wasn't this rejected already?
 
-Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/fw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Anyway NAK for the reasons below.
+> 
+> Signed-off-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
+> ---
+>  .../devicetree/bindings/net/wireless/qcom,ath11k-pci.yaml  | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 744a8d277cfc..96ec2672f765 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -2508,7 +2508,7 @@ int rtw89_fw_h2c_lps_parm(struct rtw89_dev *rtwdev,
- 	rtw89_h2c_pkt_set_hdr(rtwdev, skb, FWCMD_TYPE_H2C,
- 			      H2C_CAT_MAC,
- 			      H2C_CL_MAC_PS,
--			      H2C_FUNC_MAC_LPS_PARM, 0, 1,
-+			      H2C_FUNC_MAC_LPS_PARM, 0, !lps_param->psmode,
- 			      H2C_LPS_PARM_LEN);
- 
- 	ret = rtw89_h2c_tx(rtwdev, skb, false);
--- 
-2.25.1
+<form letter>
+Please use scripts/get_maintainers.pl to get a list of necessary people
+and lists to CC. It might happen, that command when run on an older
+kernel, gives you outdated entries. Therefore please be sure you base
+your patches on recent Linux kernel.
+
+Tools like b4 or scripts/get_maintainer.pl provide you proper list of
+people, so fix your workflow. Tools might also fail if you work on some
+ancient tree (don't, instead use mainline) or work on fork of kernel
+(don't, instead use mainline). Just use b4 and everything should be
+fine, although remember about `b4 prep --auto-to-cc` if you added new
+patches to the patchset.
+
+You missed at least devicetree list (maybe more), so this won't be
+tested by automated tooling. Performing review on untested code might be
+a waste of time.
+
+Please kindly resend and include all necessary To/Cc entries.
+</form letter>
+
+Best regards,
+Krzysztof
 
 
