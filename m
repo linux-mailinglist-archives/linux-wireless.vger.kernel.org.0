@@ -1,310 +1,166 @@
-Return-Path: <linux-wireless+bounces-14453-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14454-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BE229ADE61
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 10:03:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3013E9ADF59
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 10:41:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F88F1C20C8C
-	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 08:03:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 512A01C2082F
+	for <lists+linux-wireless@lfdr.de>; Thu, 24 Oct 2024 08:41:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1387B1AF0BB;
-	Thu, 24 Oct 2024 08:03:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DAWh/hQk"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59668145B18;
+	Thu, 24 Oct 2024 08:41:41 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 849B91AF0A3
-	for <linux-wireless@vger.kernel.org>; Thu, 24 Oct 2024 08:03:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ECB06F305
+	for <linux-wireless@vger.kernel.org>; Thu, 24 Oct 2024 08:41:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729756996; cv=none; b=ZlWi+Z7a5L1hjMEHNUL+M1bV9bmb1DTnquA22ehSA+BPv43l/yWxg3+QFH5ZVn2A+5DPS6eska7SkPOsunOHfUrec5ix+KhgsKrZnV4TGOiEPxUDbP5Xq4agGewD5vUtneKja6L23N+SkRokV1wbNeU2CoWGtPwHp5UfgU70y5o=
+	t=1729759301; cv=none; b=n+rdVrGrHh6AeUH+ELFQ4WRUoZk044rhfdXl60AKJRTOzcKiyX/X36IdbMDFpiKcznbMvnCIvOtbOtA/NB5jvdjZ8gfGeAPVIpl9Rt/Wv0V/CaI345P75a01X3AntoBEDMZjPmAK1klBaJ/pgI6hAlDLC1vuBO3KISUTrcfAIbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729756996; c=relaxed/simple;
-	bh=Q1kfe1t0sp4jY5sNXXPh9kCYnsSIp6kXPNBXZwj0GiI=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LxVubfYG4tVqUcDZrs0hfTZ9DQf3637KgoW9gpUATuoru2K/iqAY32tp39dMlSV/utmPL2Ty9XvhZT5/WUTEELZKpSkiKWEAUGHf7y1KqTA/vnCvEfqJNN3xHPQQeQYskApsDAqO4VO2NVdb4ujHXmAoWr7RcS9J6YQJXTmHJ8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DAWh/hQk; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729756992;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eCHAxEtiIjB9/eMXdwm4L84xFlQFaCf3ZNV6cwdqU9g=;
-	b=DAWh/hQkLYixjlBwgOo+dDn6feqML1opewPtY1waQA8RUq83yylOsXcVRdFamezniO0URN
-	buGBpXnRRE+YFr7ykvuorxO8v3Y94XJNfTNeKDeu+63pUW3yuAI50vszQg4rpYtoRN+Egk
-	pxLJQPGIBGkv9vYd1HzjKJRKd7gIvgM=
-Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com
- [209.85.210.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-634-JCkX_fs8Ox6guvGiiHhFDQ-1; Thu, 24 Oct 2024 04:03:10 -0400
-X-MC-Unique: JCkX_fs8Ox6guvGiiHhFDQ-1
-Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-71817451e83so682944a34.0
-        for <linux-wireless@vger.kernel.org>; Thu, 24 Oct 2024 01:03:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729756989; x=1730361789;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eCHAxEtiIjB9/eMXdwm4L84xFlQFaCf3ZNV6cwdqU9g=;
-        b=wQRCZkPKdG33V3V5v/15cZqbqDsNatAbzBntmO3xUMFAdU1BthqwY417fnAMUvJn+7
-         7shZUyFW/BSUNIA9aY3whW1ENc0UPJIKFIiZTB7R6Da96lfMGHKYUoQ0KWvvFcTMkl87
-         RDgXW1F1VOT5lKYQQUCgwea103InoVJLPokKwyZtqt3fmthwrpBSD/kOCP6yEGJLhzF2
-         fbdCNY9WiJvfrCVFoQXk2sj4tOyqpbFWpC1lCTWkud4WDZ8TNo6tyGSROXfHxAJzkMT8
-         yPBNqgj7YJaYx2RGX0ssTeZOcVQwzVmBIKkgjJpYDT+/iH76wHHimzOI4rdnyc8v0HlN
-         uuTg==
-X-Forwarded-Encrypted: i=1; AJvYcCVews142Qfz4963m/uFp9nX7TTMpfWptaoW/gT7o/B46p7zphPnyCXzU3TlBtLwviJTsrgAchPyqxm6Yp9DFA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzaxYuCi2KzrOPeIZQPrW6sngCN+JGuhBxuvGCCasJhnpf/h1Rc
-	bOuzAzrrthUaYp0h34w9AfPluO50WpeSBA8Dt1E2aw0eBnjmGyP/7U4A3ZKi2wQU3XilHeBBRK7
-	V1k9OzRzBMwJOIgsuPa6nsAUERtbggkKUg85vrnhwklDN6sVLrf3v95lNP6kO98c0
-X-Received: by 2002:a05:6830:6dc7:b0:718:c0d:6bdb with SMTP id 46e09a7af769-718598599b9mr736338a34.20.1729756989531;
-        Thu, 24 Oct 2024 01:03:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHVwKg5C+Tp+G04yjB73N1UyaDqsdgqmmyDICp7Nqm80mYC6tnNIzWvedx2PALg7dJ9abA7Jw==
-X-Received: by 2002:a05:6830:6dc7:b0:718:c0d:6bdb with SMTP id 46e09a7af769-718598599b9mr736305a34.20.1729756989132;
-        Thu, 24 Oct 2024 01:03:09 -0700 (PDT)
-Received: from dhcp-64-16.muc.redhat.com (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6ce0099a79fsm47100376d6.90.2024.10.24.01.03.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Oct 2024 01:03:08 -0700 (PDT)
-Message-ID: <aec23bb79b9ff7dd7f13eb67460e0605eac22912.camel@redhat.com>
-Subject: Re: [PATCH 02/13] ALSA: hda_intel: Use always-managed version of
- pcim_intx()
-From: Philipp Stanner <pstanner@redhat.com>
-To: Takashi Iwai <tiwai@suse.de>
-Cc: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, 
- Sergey Shtylyov <s.shtylyov@omp.ru>, Basavaraj Natikar
- <basavaraj.natikar@amd.com>, Jiri Kosina <jikos@kernel.org>,  Benjamin
- Tissoires <bentiss@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Alex Dubov <oakad@yahoo.com>,
- Sudarsana Kalluru <skalluru@marvell.com>, Manish Chopra
- <manishc@marvell.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Rasesh Mody <rmody@marvell.com>,
- GR-Linux-NIC-Dev@marvell.com, Igor Mitsyanko <imitsyanko@quantenna.com>,
- Sergey Matyukevich <geomatsi@gmail.com>, Kalle Valo <kvalo@kernel.org>,
- Sanjay R Mehta <sanju.mehta@amd.com>, Shyam Sundar S K
- <Shyam-sundar.S-k@amd.com>, Jon Mason <jdmason@kudzu.us>, Dave Jiang
- <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>, Bjorn Helgaas
- <bhelgaas@google.com>, Alex Williamson <alex.williamson@redhat.com>,
- Juergen Gross <jgross@suse.com>, Stefano Stabellini
- <sstabellini@kernel.org>, Oleksandr Tyshchenko
- <oleksandr_tyshchenko@epam.com>, Jaroslav Kysela <perex@perex.cz>, Takashi
- Iwai <tiwai@suse.com>, Chen Ni <nichen@iscas.ac.cn>, Mario Limonciello
- <mario.limonciello@amd.com>, Ricky Wu <ricky_wu@realtek.com>, Al Viro
- <viro@zeniv.linux.org.uk>, Breno Leitao <leitao@debian.org>, Kevin Tian
- <kevin.tian@intel.com>, Thomas Gleixner <tglx@linutronix.de>, Ilpo
- =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>, Andy
- Shevchenko <andriy.shevchenko@linux.intel.com>, Mostafa Saleh
- <smostafa@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Yi Liu
- <yi.l.liu@intel.com>,  Christian Brauner <brauner@kernel.org>, Ankit
- Agrawal <ankita@nvidia.com>, Eric Auger <eric.auger@redhat.com>, Reinette
- Chatre <reinette.chatre@intel.com>, Ye Bin <yebin10@huawei.com>, Marek
- =?ISO-8859-1?Q?Marczykowski-G=F3recki?= <marmarek@invisiblethingslab.com>,
- Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, Peter Ujfalusi
- <peter.ujfalusi@linux.intel.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Kai Vehmanen
- <kai.vehmanen@linux.intel.com>,  Rui Salvaterra <rsalvaterra@gmail.com>,
- linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-input@vger.kernel.org, netdev@vger.kernel.org, 
- linux-wireless@vger.kernel.org, ntb@lists.linux.dev,
- linux-pci@vger.kernel.org,  kvm@vger.kernel.org,
- xen-devel@lists.xenproject.org, linux-sound@vger.kernel.org
-Date: Thu, 24 Oct 2024 10:02:59 +0200
-In-Reply-To: <87ttd2276j.wl-tiwai@suse.de>
-References: <20241015185124.64726-1-pstanner@redhat.com>
-	 <20241015185124.64726-3-pstanner@redhat.com> <87v7xk2ps5.wl-tiwai@suse.de>
-	 <6f3db65fe9a5dcd1a7a8d9bd5352ecb248ef57b1.camel@redhat.com>
-	 <87ttd2276j.wl-tiwai@suse.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+	s=arc-20240116; t=1729759301; c=relaxed/simple;
+	bh=u2PjvEHkmZDnIud7iu/UCQ9Uem62TkUIeaDbY6frbP8=;
+	h=Message-ID:Date:MIME-Version:To:References:From:Subject:
+	 In-Reply-To:Content-Type; b=aP3fk9+ppKSD1Zjp6WucH3TV5fBPIS01WITwLFOd/RJFNfUmsCM+2HH6rVB/FwX4+kX7IMZ9darocuLpXIfeHlu/p4TKnewnTvn6ZoujvG00WfuGNADPr/hYLWVHi5pNBNALPIIoF/hTtmr3J/NhctAdXQFrnV3MrlKsW2zzNMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=green-communications.fr; spf=pass smtp.mailfrom=green-communications.fr; arc=none smtp.client-ip=212.227.126.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=green-communications.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=green-communications.fr
+Received: from [192.168.0.66] ([88.171.60.104]) by mrelayeu.kundenserver.de
+ (mreue010 [213.165.67.103]) with ESMTPSA (Nemesis) id
+ 1MvKL3-1tvAkh3H2P-012qEZ; Thu, 24 Oct 2024 10:41:34 +0200
+Message-ID: <69782bb8-7840-4870-b171-094adc5ca089@green-communications.fr>
+Date: Thu, 24 Oct 2024 10:41:34 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: John Kyle Cronan <john@pbx.org>, linux-wireless@vger.kernel.org
+References: <CAFqYJVEUjXPVARSj-dMS0=vhocu4=HSke_p4=PfGMBob6bGJHA@mail.gmail.com>
+Content-Language: en-US
+From: Nicolas Cavallari <Nicolas.Cavallari@green-communications.fr>
+Autocrypt: addr=Nicolas.Cavallari@green-communications.fr; keydata=
+ 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
+Subject: Re: How to distinguish multi PHY devices for interface naming?
+In-Reply-To: <CAFqYJVEUjXPVARSj-dMS0=vhocu4=HSke_p4=PfGMBob6bGJHA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:cGf3gosXpEtXyo6fRrc2AemBWA59yR48cR6im47lJDUfPqDhbBt
+ 0ikhPghbrUivtC64k9gx3ODAdj3/UTctO/cr6zaHJoJQ3RS1WUKoILekdX/ijPkZa1DqqEV
+ 9BIQQCuOgN7BptVsriHRp2dd0d3yKfOHZdVEzbgVOWUdTqVLfKKxeWjWMAhsPSSP1qsAT7Z
+ c5YWebDvX1dOArpp9tCOg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:jBMmKrxnhqY=;RsE3GAkev6qWZJ+FLm2VbK+KYNK
+ QkJ/9CXR3afQCagIxHJdMUiTwVCGgOpNI5a01C4zGsmcxUE0GKDwhKnvbwDHky+MEyZVlCcMD
+ HfLfY7HVtiTdD/NI21ecChN8T+IwlwyfOs52CJfQke/26JIcnWo3hNfMlg/YJJbSF779HMAoF
+ 6Gqd8ThYrP3ic4yh05QpTJpGjPbYdBZwodzNBpApxrPI0CgT4aZET0PdLXG51W4oibgZ9sVta
+ 8HWWPE4dAxaRUQbo5ZjiYIq4bB6rsQvgF3eMH8iN+/RNqeVgRLzAN/9aP1BI/xi6NeDcjswB5
+ 6NuKuL1e/nYoewojne+aUhGd0QpByxA2AU1R/mqHaqRaAYhIifcEDXpxFOdFKmhLYr2hSR3NY
+ S5iQkcmimUcXoL4K1NLAJYVQ7BMaKdp94eBpDUY19652em6hoZ/kXkrCg9WhWynSULd/iQQUT
+ P3LKWQ5+lWBQfBmogdOE+rcp456FCMewtfG7vq43WDizQiyrg9HM8szlV/HRuUKt+HNYDxDn9
+ ncok15NKMHmQtna/P/1yHBjcLmGjbE60BEfxvcbQCRXoChmtKJFGffFUXSUXYP3qAnAvmYYOD
+ E7FUzydM82TDppCY4kmpoGRAidboJ3eohpolafCho8i69Hb7wksmTlrUr5yTj4r2NLroLdHr3
+ yWJuE4x0dvbpQeVPqndKkAij5syYgz+Dakeufo2yupV8p7iRtJTvUrNysQPWOu3a0cKr9VpVW
+ 1NIj/SNc+O2UXgF7tmFec1HO85tTddDPw==
 
-On Wed, 2024-10-23 at 17:03 +0200, Takashi Iwai wrote:
-> On Wed, 23 Oct 2024 15:50:09 +0200,
-> Philipp Stanner wrote:
-> >=20
-> > On Tue, 2024-10-22 at 16:08 +0200, Takashi Iwai wrote:
-> > > On Tue, 15 Oct 2024 20:51:12 +0200,
-> > > Philipp Stanner wrote:
-> > > >=20
-> > > > pci_intx() is a hybrid function which can sometimes be managed
-> > > > through
-> > > > devres. To remove this hybrid nature from pci_intx(), it is
-> > > > necessary to
-> > > > port users to either an always-managed or a never-managed
-> > > > version.
-> > > >=20
-> > > > hda_intel enables its PCI-Device with pcim_enable_device().
-> > > > Thus,
-> > > > it needs
-> > > > the always-managed version.
-> > > >=20
-> > > > Replace pci_intx() with pcim_intx().
-> > > >=20
-> > > > Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-> > > > ---
-> > > > =C2=A0sound/pci/hda/hda_intel.c | 2 +-
-> > > > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
-> > > >=20
-> > > > diff --git a/sound/pci/hda/hda_intel.c
-> > > > b/sound/pci/hda/hda_intel.c
-> > > > index b4540c5cd2a6..b44ca7b6e54f 100644
-> > > > --- a/sound/pci/hda/hda_intel.c
-> > > > +++ b/sound/pci/hda/hda_intel.c
-> > > > @@ -786,7 +786,7 @@ static int azx_acquire_irq(struct azx
-> > > > *chip,
-> > > > int do_disconnect)
-> > > > =C2=A0	}
-> > > > =C2=A0	bus->irq =3D chip->pci->irq;
-> > > > =C2=A0	chip->card->sync_irq =3D bus->irq;
-> > > > -	pci_intx(chip->pci, !chip->msi);
-> > > > +	pcim_intx(chip->pci, !chip->msi);
-> > > > =C2=A0	return 0;
-> > > > =C2=A0}
-> > > > =C2=A0
-> > >=20
-> > > Hm, it's OK-ish to do this as it's practically same as what
-> > > pci_intx()
-> > > currently does.=C2=A0 But, the current code can be a bit inconsistent
-> > > about
-> > > the original intx value.=C2=A0 pcim_intx() always stores !enable to
-> > > res->orig_intx unconditionally, and it means that the orig_intx
-> > > value
-> > > gets overridden at each time pcim_intx() gets called.
-> >=20
-> > Yes.
-> >=20
-> > >=20
-> > > Meanwhile, HD-audio driver does release and re-acquire the
-> > > interrupt
-> > > after disabling MSI when something goes wrong, and pci_intx()
-> > > call
-> > > above is a part of that procedure.=C2=A0 So, it can rewrite the
-> > > res->orig_intx to another value by retry without MSI.=C2=A0 And after
-> > > the
-> > > driver removal, it'll lead to another state.
-> >=20
-> > I'm not sure that I understand this paragraph completely. Still,
-> > could
-> > a solution for the driver on the long-term just be to use
-> > pci_intx()?
->=20
-> pci_intx() misses the restore of the original value, so it's no
-> long-term solution, either.
+On 23/10/2024 22:58, John Kyle Cronan wrote:
+> Hi all,
+> 
+> This is not an especially serious issue, but maybe I can get to the
+> bottom of it. I was using the Mediatek mt76 wireless driver with one
+> of the newer cards that presents multiple interfaces, one for 2.4g and
+> one for 5g. I noticed that the usual udev setup with systemd was not
+> naming them in a way that makes sense: one is wlp59s0 and the other is
+> wlan0. So I investigated, and found that udev doesn't have access to
+> any information that could distinguish the two interfaces that share
+> the same PCI port path.
+> 
+> Here's the issue I opened with the Mediatek maintainer:
+> https://github.com/nbd168/wireless/issues/12
+> "Systemd assigns the first, wlp59s0, using the path-based name, but
+> then the second one tries to assign its name in the same manner and it
+> conflicts, so it has to fall back to wlan0." I took a look at the
+> kernel sources for this area, as best I can understand them, and made
+> the suggestion to set a netdev phys_port_id attribute uniquely for
+> each interface. That would result in wlp59s0n0 and wlp59s0n1. (There
+> appear to be two other possible methods, though, corresponding to 'f'
+> function and 'd' device port. Unfortunately I never made it that far,
+> trying to learn the implementation details.)
+> 
+> I got the response, "the driver is not responsible for managing
+> netdevs and their attributes - that's all handled by the mac80211
+> stack. What the driver does is register two ieee80211 wiphys on the
+> same PCIe device. There are no separate devices here, because on a PCI
+> level, there is no isolation at all. It really is a single device. The
+> wiphys operate independently from each other, so naturally the
+> auto-created netdevs do so as well. ... Not sure what the solution is
+> here."
+> 
+> Is this the 802.11 stack's concern, or the device drivers'? How could
+> udev get the info to distinguish these network interfaces, and which
+> approach is the right one for wireless devices?
 
-Sure that is missing =E2=80=93 I was basically asking whether the driver co=
-uld
-live without that feature.
+Udev is already confused with multiple vifs on a single phy on a single device. 
+It is somewhat mitigated by name_assign_type and manually specifying vif names, 
+but this is really a udev problem, it need to be smarter.
 
-Consider that point obsolete, see below
+Now there are multiple phy on a single device, and those are the kind of devices 
+that people will want to use with multiple vifs per phy: people mostly use them 
+in access point mode, with maybe multiple SSIDs per band.
 
->=20
-> What I meant is that pcim_intx() blindly assumes the negative of the
-> passed argument as the original state, which isn't always true.=C2=A0 e.g=
-.
-> when the driver calls it twice with different values, a wrong value
-> may be remembered.
+For mt76, currently the only reliable way to distinguish the 2.4 GHz phy from 
+the 5/6 GHz phy is that the 2.4 GHz phy is always created first (there are no 
+possible races), so incrementally numbering the default vifs will create a 
+stable output.
 
-Ah, I see =E2=80=93 thoguh the issue is when it's called several times with=
- the
-*same* value, isn't it?
-
-E.g.
-
-pcim_intx(pdev, 1); // 0 is remembered as the old value
-pcim_intx(pdev, 1); // 0 is falsely remembered as the old value
-
-Also, it would seem that calling the function for the first time like
-that:
-
-pcim_intx(pdev, 0); // old value: 1
-
-is at least incorrect, because INTx should be 0 per default, shouldn't
-it? Could then even be a 1st class bug, because INTx would end up being
-enabled despite having been disabled all the time.
-
->=20
-> That said, I thought of something like below.
-
-At first glance that looks like a good idea to me, thanks for working
-this out!
-
-IMO you can submit that as a patch so we can discuss it separately.
-
-Greetings,
-Philipp
-
->=20
->=20
-> thanks,
->=20
-> Takashi
->=20
-> -- 8< --
-> --- a/drivers/pci/devres.c
-> +++ b/drivers/pci/devres.c
-> @@ -438,8 +438,17 @@ static void pcim_intx_restore(struct device
-> *dev, void *data)
-> =C2=A0	__pcim_intx(pdev, res->orig_intx);
-> =C2=A0}
-> =C2=A0
-> -static struct pcim_intx_devres *get_or_create_intx_devres(struct
-> device *dev)
-> +static void save_orig_intx(struct pci_dev *pdev)
-> =C2=A0{
-> +	u16 pci_command;
-> +
-> +	pci_read_config_word(pdev, PCI_COMMAND, &pci_command);
-> +	res->orig_intx =3D !(pci_command & PCI_COMMAND_INTX_DISABLE);
-> +}
-> +
-> +static struct pcim_intx_devres *get_or_create_intx_devres(struct
-> pci_dev *pdev)
-> +{
-> +	struct device *dev =3D &pdev->dev;
-> =C2=A0	struct pcim_intx_devres *res;
-> =C2=A0
-> =C2=A0	res =3D devres_find(dev, pcim_intx_restore, NULL, NULL);
-> @@ -447,8 +456,10 @@ static struct pcim_intx_devres
-> *get_or_create_intx_devres(struct device *dev)
-> =C2=A0		return res;
-> =C2=A0
-> =C2=A0	res =3D devres_alloc(pcim_intx_restore, sizeof(*res),
-> GFP_KERNEL);
-> -	if (res)
-> +	if (res) {
-> +		save_orig_intx(pdev);
-> =C2=A0		devres_add(dev, res);
-> +	}
-> =C2=A0
-> =C2=A0	return res;
-> =C2=A0}
-> @@ -467,11 +478,10 @@ int pcim_intx(struct pci_dev *pdev, int enable)
-> =C2=A0{
-> =C2=A0	struct pcim_intx_devres *res;
-> =C2=A0
-> -	res =3D get_or_create_intx_devres(&pdev->dev);
-> +	res =3D get_or_create_intx_devres(pdev);
-> =C2=A0	if (!res)
-> =C2=A0		return -ENOMEM;
-> =C2=A0
-> -	res->orig_intx =3D !enable;
-> =C2=A0	__pcim_intx(pdev, enable);
-> =C2=A0
-> =C2=A0	return 0;
->=20
-
+Maybe there should be a phy field to locally number the phys of a single device. 
+A bit like phys_port_id for netdevs.
 
