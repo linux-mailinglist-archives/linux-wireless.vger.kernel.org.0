@@ -1,321 +1,129 @@
-Return-Path: <linux-wireless+bounces-14508-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14509-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 145D79AFCC7
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 10:38:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F2C9AFCCB
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 10:40:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8060281F77
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 08:38:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C4F91F21C4C
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 08:40:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D77721D3654;
-	Fri, 25 Oct 2024 08:38:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 695971B394D;
+	Fri, 25 Oct 2024 08:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QtMvOpeM"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="iKzW5SW+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DEE1D31A2
-	for <linux-wireless@vger.kernel.org>; Fri, 25 Oct 2024 08:38:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42042192592
+	for <linux-wireless@vger.kernel.org>; Fri, 25 Oct 2024 08:40:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729845490; cv=none; b=Gr1sczXysNBMqm4n52l6HCUnAhWObhsd80HaFnMt2xq7jtIvvMBuN8Sk9x5rgY2Na77F9XbK+ijdPZ5dvDlJ0aNCULRxIHIVYBfz68jur94hHGiS8e17dbf5WUmNDlhXUFJLKS4MF+XKh0tOgcD40dsON8eTzCCC7DgAhibn47A=
+	t=1729845639; cv=none; b=JlyeKf6JRxa8yq3I1/hKQnxTHAiizKS6IriCz5ZTXZQjvb7BKY4KBA1RAZ4wmgjNWb2zbQnCtMpDgiDB31qwjMglQElsYnjdHGJdZVe6hygHDhd3x0G+NKClWbia7YvcwI3doettUuIOtz7hR4DWnu/jDb3weZ9PZkVr6DQbe24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729845490; c=relaxed/simple;
-	bh=Kj+t7bUL5B0QKM5IwQHw3NNDOxblEb5Nefz9XwGv6eA=;
+	s=arc-20240116; t=1729845639; c=relaxed/simple;
+	bh=ahEu//eBdMoY4aZf4bHJASQdKkkhTRq6DaQ/Nyitzts=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=IL1WRmWE2/YutkXVdJ8kJ6xPCLhhM6gdULTGvy14fmedz8GATdKt1/HKlynanquaBumxJ93dxmDtfyQ2D6K+q4fxzBQmL9pO0E30/Cv2u/lAToMGUW7eqjPJ5F+rzyuitxPoRZpBaGtjmHhnq9b84OfQSL+SAaF9NBtjtlbYTRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QtMvOpeM; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729845487;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=t5SfsCaa6OQtbrocW2yvj8So2+UMhrgJURtFbTDl4+U=;
-	b=QtMvOpeMYzxjfm6r7lfMyfiqhfubQ1pUrrbtwP6o94lJiUArH1RAN6yLPPlb+avmJsaQBB
-	o9y5cuF3glvRAH5eUpPnOZT/VUz3Ti2CT3vWVZtu5tQCR3CJ+BTpP3owci6VIb7Ev+32H0
-	AhddDlLnLqs5OPKr77HCZyAqPboUkII=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-583-C7HqokCiP_mCYMr8cT9ksg-1; Fri, 25 Oct 2024 04:38:02 -0400
-X-MC-Unique: C7HqokCiP_mCYMr8cT9ksg-1
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-37d4922d8c7so1041387f8f.1
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Oct 2024 01:38:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729845481; x=1730450281;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=t5SfsCaa6OQtbrocW2yvj8So2+UMhrgJURtFbTDl4+U=;
-        b=WV4zyyzSaPEEAxJcpM0b26/R6Kkjg/q9iA/5ZrmllGwdO5G9vFxKTuPO2CUSxI9Z3B
-         tLKHubICly6FhdTtXMSrtgOMQVNIGfa1GwoU69MVibK1fjS1hse0kNCRc/sMT4/LrUyF
-         H0Ma2kOagWsrHISvbYPsQdFJOQ4bcIiI38ZE5i+FvX6qUVTvC3l2/dETu3Hbe6km1rtG
-         HYEgnuzI7tXnIAwXAsQN09HHzyDNAHvuaBcUUTtwZzTFdTZYHyO2OfGxYxY9uv7BqKDL
-         4uPHS6oqUTqdSLewtbkjCW6jdfOJlQUjbhVEHaR+1suxy1NK5FJNj7W4a7dZS+G01MxQ
-         0MLw==
-X-Forwarded-Encrypted: i=1; AJvYcCW2D0jOa/TQw2+qjidMQeo+ZaRcfP8JlLc2AeG0fZnVDrWpyAv9lAYpBTyNTy1o0RBYpYc7yQlQeBSiiWBibQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxiQLHq98d7Q2ZFaJ3CUQED8DRsJAQfsRLxd4JLHZgRVCitl2Y5
-	Fo7SUCWxNZqJTMkfeNdgUrQFKJ5SqUXhIBZmGiN+cRgc4LkgbC+GBH6nqVeV7Uo3os4/Dl+Hsay
-	/Mp16Oh9mLYdV6J4urWav+mAGzmm3sDOwYRZWdT8xmLBIsYyq+3EfWeAF8GJbauXJ
-X-Received: by 2002:a5d:45d2:0:b0:37d:5103:8894 with SMTP id ffacd0b85a97d-37efcf78dadmr5976808f8f.42.1729845481095;
-        Fri, 25 Oct 2024 01:38:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGcYWpz+kQZdr3vU0ccyDv2e4lUiNEwepdTyBtEeS9wkTJkf/x/0hfBIa/kJv59+/PzqJJV1A==
-X-Received: by 2002:a5d:45d2:0:b0:37d:5103:8894 with SMTP id ffacd0b85a97d-37efcf78dadmr5976745f8f.42.1729845480512;
-        Fri, 25 Oct 2024 01:38:00 -0700 (PDT)
-Received: from ?IPv6:2001:16b8:2de5:ba00:738a:c8da:daac:7543? (200116b82de5ba00738ac8dadaac7543.dip.versatel-1u1.de. [2001:16b8:2de5:ba00:738a:c8da:daac:7543])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b70c44sm932452f8f.80.2024.10.25.01.37.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Oct 2024 01:38:00 -0700 (PDT)
-Message-ID: <ae081c36c49733b007a8946dceeec0af94fc449a.camel@redhat.com>
-Subject: Re: [PATCH 02/13] ALSA: hda_intel: Use always-managed version of
- pcim_intx()
-From: Philipp Stanner <pstanner@redhat.com>
-To: Takashi Iwai <tiwai@suse.de>
-Cc: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, 
- Sergey Shtylyov <s.shtylyov@omp.ru>, Basavaraj Natikar
- <basavaraj.natikar@amd.com>, Jiri Kosina <jikos@kernel.org>,  Benjamin
- Tissoires <bentiss@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Alex Dubov <oakad@yahoo.com>,
- Sudarsana Kalluru <skalluru@marvell.com>, Manish Chopra
- <manishc@marvell.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Rasesh Mody <rmody@marvell.com>,
- GR-Linux-NIC-Dev@marvell.com, Igor Mitsyanko <imitsyanko@quantenna.com>,
- Sergey Matyukevich <geomatsi@gmail.com>, Kalle Valo <kvalo@kernel.org>,
- Sanjay R Mehta <sanju.mehta@amd.com>, Shyam Sundar S K
- <Shyam-sundar.S-k@amd.com>, Jon Mason <jdmason@kudzu.us>, Dave Jiang
- <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>, Bjorn Helgaas
- <bhelgaas@google.com>, Alex Williamson <alex.williamson@redhat.com>,
- Juergen Gross <jgross@suse.com>, Stefano Stabellini
- <sstabellini@kernel.org>, Oleksandr Tyshchenko
- <oleksandr_tyshchenko@epam.com>, Jaroslav Kysela <perex@perex.cz>, Takashi
- Iwai <tiwai@suse.com>, Chen Ni <nichen@iscas.ac.cn>, Mario Limonciello
- <mario.limonciello@amd.com>, Ricky Wu <ricky_wu@realtek.com>, Al Viro
- <viro@zeniv.linux.org.uk>, Breno Leitao <leitao@debian.org>, Kevin Tian
- <kevin.tian@intel.com>, Thomas Gleixner <tglx@linutronix.de>, Ilpo
- =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>, Andy
- Shevchenko <andriy.shevchenko@linux.intel.com>, Mostafa Saleh
- <smostafa@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Yi Liu
- <yi.l.liu@intel.com>,  Christian Brauner <brauner@kernel.org>, Ankit
- Agrawal <ankita@nvidia.com>, Eric Auger <eric.auger@redhat.com>, Reinette
- Chatre <reinette.chatre@intel.com>, Ye Bin <yebin10@huawei.com>, Marek
- =?ISO-8859-1?Q?Marczykowski-G=F3recki?= <marmarek@invisiblethingslab.com>,
- Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, Peter Ujfalusi
- <peter.ujfalusi@linux.intel.com>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>, Kai Vehmanen
- <kai.vehmanen@linux.intel.com>,  Rui Salvaterra <rsalvaterra@gmail.com>,
- linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-input@vger.kernel.org, netdev@vger.kernel.org, 
- linux-wireless@vger.kernel.org, ntb@lists.linux.dev,
- linux-pci@vger.kernel.org,  kvm@vger.kernel.org,
- xen-devel@lists.xenproject.org, linux-sound@vger.kernel.org
-Date: Fri, 25 Oct 2024 10:37:57 +0200
-In-Reply-To: <875xphzeun.wl-tiwai@suse.de>
-References: <20241015185124.64726-1-pstanner@redhat.com>
-	 <20241015185124.64726-3-pstanner@redhat.com> <87v7xk2ps5.wl-tiwai@suse.de>
-	 <6f3db65fe9a5dcd1a7a8d9bd5352ecb248ef57b1.camel@redhat.com>
-	 <87ttd2276j.wl-tiwai@suse.de>
-	 <aec23bb79b9ff7dd7f13eb67460e0605eac22912.camel@redhat.com>
-	 <875xphzeun.wl-tiwai@suse.de>
+	 Content-Type:MIME-Version; b=hTzW8urQLGCpLrcuGtNBqOPOHx8dCw0Bi8wguWBDy7gZGhOuRikqW+AJ7y6jwjGYRiiHcsoTiLcZL9gTyiod1oCmeREAfW4eLmqKlWdnVxkfvU/y5VEF05p57/+qFL5kaxKuB6w5PrmlirwSHOODb9pOs5dEzTYqfRaWLRf8yd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=iKzW5SW+; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=nYEuqCRkm9bFWiJqVp5zM2T65JDdtPX5F8GTbMQio50=;
+	t=1729845637; x=1731055237; b=iKzW5SW+BfmZ4qP9W7QnqRx+BsxY20s9ucnzR50RY/udULi
+	sptIdbgefNk2z3JxWj3jiCZ5yY63W6SlP7A+pGdYNV+XuyZpBZKu0ScD7fcYcASFLGGahjHiaiDh5
+	PkNPYiuqxhWCH9CJAXxgsaGmWL2FDRVnVj9nFBCzYrSeCrjlcGNSif9eYa9OXbXpDCB5fOV1MgJP4
+	wxty+xD5csQ6io6AkDYLMeJpYnOk2jIH4EeJsYbommYSwZNRVVW3s+7l5MFXqQS1vYi1y1dckxejb
+	o8+LbzfmvLp8WGLO9oZu8IEWZgpec/9IW1B52PZg5L443gw1tbkXffk5CcvmCPWA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1t4Fs1-00000004RPv-3P3V;
+	Fri, 25 Oct 2024 10:40:33 +0200
+Message-ID: <6d6c30a2c033d94f8691e1ac099d7205b897d30b.camel@sipsolutions.net>
+Subject: Re: [PATCH v2 1/2] wifi: nl80211: add link id of transmitted
+ profile for MLO MBSSID
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Muna Sinada <quic_msinada@quicinc.com>
+Cc: linux-wireless@vger.kernel.org, Rameshkumar Sundaram
+	 <quic_ramess@quicinc.com>, Aloka Dixit <quic_alokad@quicinc.com>
+Date: Fri, 25 Oct 2024 10:40:32 +0200
+In-Reply-To: <20241025013857.2793346-2-quic_msinada@quicinc.com>
+References: <20241025013857.2793346-1-quic_msinada@quicinc.com>
+	 <20241025013857.2793346-2-quic_msinada@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-malware-bazaar: not-scanned
 
-On Thu, 2024-10-24 at 17:43 +0200, Takashi Iwai wrote:
-> On Thu, 24 Oct 2024 10:02:59 +0200,
-> Philipp Stanner wrote:
-> >=20
-> > On Wed, 2024-10-23 at 17:03 +0200, Takashi Iwai wrote:
-> > > On Wed, 23 Oct 2024 15:50:09 +0200,
-> > > Philipp Stanner wrote:
-> > > >=20
-> > > > On Tue, 2024-10-22 at 16:08 +0200, Takashi Iwai wrote:
-> > > > > On Tue, 15 Oct 2024 20:51:12 +0200,
-> > > > > Philipp Stanner wrote:
-> > > > > >=20
-> > > > > > pci_intx() is a hybrid function which can sometimes be
-> > > > > > managed
-> > > > > > through
-> > > > > > devres. To remove this hybrid nature from pci_intx(), it is
-> > > > > > necessary to
-> > > > > > port users to either an always-managed or a never-managed
-> > > > > > version.
-> > > > > >=20
-> > > > > > hda_intel enables its PCI-Device with pcim_enable_device().
-> > > > > > Thus,
-> > > > > > it needs
-> > > > > > the always-managed version.
-> > > > > >=20
-> > > > > > Replace pci_intx() with pcim_intx().
-> > > > > >=20
-> > > > > > Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-> > > > > > ---
-> > > > > > =C2=A0sound/pci/hda/hda_intel.c | 2 +-
-> > > > > > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
-> > > > > >=20
-> > > > > > diff --git a/sound/pci/hda/hda_intel.c
-> > > > > > b/sound/pci/hda/hda_intel.c
-> > > > > > index b4540c5cd2a6..b44ca7b6e54f 100644
-> > > > > > --- a/sound/pci/hda/hda_intel.c
-> > > > > > +++ b/sound/pci/hda/hda_intel.c
-> > > > > > @@ -786,7 +786,7 @@ static int azx_acquire_irq(struct azx
-> > > > > > *chip,
-> > > > > > int do_disconnect)
-> > > > > > =C2=A0	}
-> > > > > > =C2=A0	bus->irq =3D chip->pci->irq;
-> > > > > > =C2=A0	chip->card->sync_irq =3D bus->irq;
-> > > > > > -	pci_intx(chip->pci, !chip->msi);
-> > > > > > +	pcim_intx(chip->pci, !chip->msi);
-> > > > > > =C2=A0	return 0;
-> > > > > > =C2=A0}
-> > > > > > =C2=A0
-> > > > >=20
-> > > > > Hm, it's OK-ish to do this as it's practically same as what
-> > > > > pci_intx()
-> > > > > currently does.=C2=A0 But, the current code can be a bit
-> > > > > inconsistent
-> > > > > about
-> > > > > the original intx value.=C2=A0 pcim_intx() always stores !enable
-> > > > > to
-> > > > > res->orig_intx unconditionally, and it means that the
-> > > > > orig_intx
-> > > > > value
-> > > > > gets overridden at each time pcim_intx() gets called.
-> > > >=20
-> > > > Yes.
-> > > >=20
-> > > > >=20
-> > > > > Meanwhile, HD-audio driver does release and re-acquire the
-> > > > > interrupt
-> > > > > after disabling MSI when something goes wrong, and pci_intx()
-> > > > > call
-> > > > > above is a part of that procedure.=C2=A0 So, it can rewrite the
-> > > > > res->orig_intx to another value by retry without MSI.=C2=A0 And
-> > > > > after
-> > > > > the
-> > > > > driver removal, it'll lead to another state.
-> > > >=20
-> > > > I'm not sure that I understand this paragraph completely.
-> > > > Still,
-> > > > could
-> > > > a solution for the driver on the long-term just be to use
-> > > > pci_intx()?
-> > >=20
-> > > pci_intx() misses the restore of the original value, so it's no
-> > > long-term solution, either.
-> >=20
-> > Sure that is missing =E2=80=93 I was basically asking whether the drive=
-r
-> > could
-> > live without that feature.
-> >=20
-> > Consider that point obsolete, see below
-> >=20
-> > >=20
-> > > What I meant is that pcim_intx() blindly assumes the negative of
-> > > the
-> > > passed argument as the original state, which isn't always true.=C2=A0
-> > > e.g.
-> > > when the driver calls it twice with different values, a wrong
-> > > value
-> > > may be remembered.
-> >=20
-> > Ah, I see =E2=80=93 thoguh the issue is when it's called several times =
-with
-> > the
-> > *same* value, isn't it?
-> >=20
-> > E.g.
-> >=20
-> > pcim_intx(pdev, 1); // 0 is remembered as the old value
-> > pcim_intx(pdev, 1); // 0 is falsely remembered as the old value
-> >=20
-> > Also, it would seem that calling the function for the first time
-> > like
-> > that:
-> >=20
-> > pcim_intx(pdev, 0); // old value: 1
-> >=20
-> > is at least incorrect, because INTx should be 0 per default,
-> > shouldn't
-> > it? Could then even be a 1st class bug, because INTx would end up
-> > being
-> > enabled despite having been disabled all the time.
+On Thu, 2024-10-24 at 18:38 -0700, Muna Sinada wrote:
 >=20
-> Yeah, and the unexpected restore can happen even with a single call
-> of
-> pcim_intx(), if the driver calls it unnecessarily.
->=20
-> > > That said, I thought of something like below.
-> >=20
-> > At first glance that looks like a good idea to me, thanks for
-> > working
-> > this out!
-> >=20
-> > IMO you can submit that as a patch so we can discuss it separately.
->=20
-> Sure, I'm going to submit later.
+> + * @NL80211_MBSSID_CONFIG_ATTR_TX_LINK_ID: Parameter for a non-transmitt=
+ed
+> + *	profile which provides the link ID (u8) of the transmitted profile wh=
+en
+> + *	the latter is part of an MLD. This is a mandatory parameter for a
+> + *	non-transmitted profile. If transmitted profile is not part of an MLD=
+,
+> + *	link_id will be set to -1.
 
-I just took a look into the old implementation of pci_intx() (there was
-no pcim_intx() back then), before I started cleaning up PCI's devres.
-This what it looked like before
-25216afc9db53d85dc648aba8fb7f6d31f2c8731:
+The part about it being mandatory/-1 doesn't seem true, according to the
+code it needs to be not present? Which sounds like something I'd ask
+for, but now I don't really remember :) Please adjust the description.
 
-void pci_intx(struct pci_dev *pdev, int enable)
-{
-	u16 pci_command, new;
+>  		if (tx_ifindex !=3D dev->ifindex) {
+> -			struct net_device *tx_netdev =3D
+> -				dev_get_by_index(wiphy_net(wiphy), tx_ifindex);
+> -
+> -			if (!tx_netdev || !tx_netdev->ieee80211_ptr ||
+> -			    tx_netdev->ieee80211_ptr->wiphy !=3D wiphy ||
+> -			    tx_netdev->ieee80211_ptr->iftype !=3D
+> -							NL80211_IFTYPE_AP) {
+> -				dev_put(tx_netdev);
+> -				return -EINVAL;
+> +			config->tx_wdev =3D
+> +			 dev_get_by_index(wiphy_net(wiphy), tx_ifindex)->ieee80211_ptr;
+> +			if (!config->tx_wdev ||
+> +			    config->tx_wdev->wiphy !=3D wiphy ||
+> +			    config->tx_wdev->iftype !=3D NL80211_IFTYPE_AP) {
+> +				err =3D -EINVAL;
+> +				goto out;
+>  			}
+> -
+> -			config->tx_wdev =3D tx_netdev->ieee80211_ptr;
 
-	pci_read_config_word(pdev, PCI_COMMAND, &pci_command);
+Not sure why you change this so much? I'd argue the local variable was
+used to make the code not indent so badly, it never would've been needed
+for the dev_put() here either.
 
-	if (enable)
-		new =3D pci_command & ~PCI_COMMAND_INTX_DISABLE;
-	else
-		new =3D pci_command | PCI_COMMAND_INTX_DISABLE;
+> +	config->tx_link_id =3D 0;
+> +	if (config->tx_wdev->valid_links) {
+> +		if (!tb[NL80211_MBSSID_CONFIG_ATTR_TX_LINK_ID])
+> +			goto out;
+> +
+> +		config->tx_link_id =3D
+> +			  nla_get_u8(tb[NL80211_MBSSID_CONFIG_ATTR_TX_LINK_ID]);
+> +		if (!(config->tx_wdev->valid_links & BIT(config->tx_link_id))) {
+> +			err =3D -ENOLINK;
+> +			goto out;
+> +		}
 
-	if (new !=3D pci_command) {
-		struct pci_devres *dr;
+Is it valid if the dev=3D=3Dtx_wdev->netdev, but tx_link_id different? I'd
+think not? Otherwise need to catch that? Or actually, move this into the
+"tx_ifindex !=3D dev->ifindex" part, no?
 
-		pci_write_config_word(pdev, PCI_COMMAND, new);
-
-		dr =3D find_pci_dr(pdev);
-		if (dr && !dr->restore_intx) {
-			dr->restore_intx =3D 1;
-			dr->orig_intx =3D !enable;
-		}
-	}
-}
-EXPORT_SYMBOL_GPL(pci_intx);
-
-If I'm not mistaken the old version did not have the problem because
-the value to be restored only changed if new !=3D pci_command.
-
-That should always be correct, what do you think?
-
-If so, only my commit 25216afc9db53d85dc648aba8fb7f6d31f2c8731 needs to
-be fixed.
-
-Thanks,
-P.
-
-
->=20
->=20
-> thanks,
->=20
-> Takashi
->=20
+johannes
 
 
