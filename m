@@ -1,136 +1,65 @@
-Return-Path: <linux-wireless+bounces-14540-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14541-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71BF79B06F2
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 17:04:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D819B070B
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 17:06:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 953501C2033D
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 15:04:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 509691F23468
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 15:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E86217453;
-	Fri, 25 Oct 2024 15:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B909166F33;
+	Fri, 25 Oct 2024 15:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WAsVYMT4"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="QlARgUcp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FD120F3E9
-	for <linux-wireless@vger.kernel.org>; Fri, 25 Oct 2024 15:00:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1CB1547D4;
+	Fri, 25 Oct 2024 15:02:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729868463; cv=none; b=YC6cWSbTlE4LJ5V9KyNKZNGTicR4Zn8+HN/hOwF2MiPoJAyFl2262YOnyG/QiF/JW3BQBi5UYYRRt1ruCVz7xEMlXB7PLP+7oWaDY0fJFT/X5m2oUa/TPuEEbCEDFckR/eLgXSCbklbp372ZEjuf65hb682ewrqk3qL6hmIFaR8=
+	t=1729868570; cv=none; b=fyfaWff41ruzLVfukOtpenOu0NJ+6sRhTM+/9O+NdkefZ/jE7f9coE5lu0yg3Jg4ENWSeFTf1CJvpgggDVDHiFp7mvr7ILVmvz9zIRyLPMmydQzGpMYpuCcfCYYwRurmBzPGQLJsTNcsX/0Zcp2qaEocMSsl7WbKqrlYxWvQKcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729868463; c=relaxed/simple;
-	bh=RcTa7mPaWn9S/3FL+we6iyllf4n7RFykRGESqGJxd90=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kc6gXEOrWEuNeuyNxjytdwrEA5Wkk57A7VXASLwEXHTSr1pwSF1lJEJFWADGeakAkpt9rl0iL6aRQJbudAGZFsByfCyEGdknHKn9XLzLvkeEKi2hhBseYqtaNH4NF2Y2Pr9ICQfpzCLdWu4yNMEicMDWFmsnQ5VxbbaTofaOM10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WAsVYMT4; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729868456;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AonUKd9JFeAmu2FkelnO1Z47g8svJdBoVMsQtMVmtG0=;
-	b=WAsVYMT4vDgE+tBIGJRU3RXgIqedUTfzOkMNwWDz0V89SIQGqpK3/1Muq35LxIAz5h5VX8
-	2z5l6IiL4zkyvdFQ9O0VPgs7D/dQhPy6FV8jWvYRm3SMBpdu6ZFcu1pj/+9th2ixHs8tMD
-	pvjFlWQWBzmbEWW80tLhPeHRD0S6Gss=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-683-iYqHJ4BUPx-5ZQutvaD6tg-1; Fri, 25 Oct 2024 11:00:55 -0400
-X-MC-Unique: iYqHJ4BUPx-5ZQutvaD6tg-1
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-37d45f1e935so1129170f8f.0
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Oct 2024 08:00:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729868454; x=1730473254;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AonUKd9JFeAmu2FkelnO1Z47g8svJdBoVMsQtMVmtG0=;
-        b=UpvNQM2a13CNgpmRmq9yuxv2qlipLkmzYeF9/RUG51ruYkOTZ7oRUIqYQev9NJeEWR
-         vQDVB+Q7ZfaVeMdFBMD5Mg0ApYKVJgF8wr2eOW+76TP8f2M64va5lx2b2G8HLVhdet7m
-         uiE5ltkPWMxenqeQujnauP9iDp5eVMmHsCZuC7IfmLc2sLD8I0X1SknpzP2f772/f5v5
-         JXCeMgUIOkUqSgKdVcb7UOt6ZS3KbgAZ6P8DQLGnV2GVHwT3ZHZ+hb36+tnnaMpfB/uH
-         NsnbfGrelBvMj786TVKS4xFBg32CQWvHnGDbFtVDDjgr7RRlSzhVm5u3hN0Bvcoi0abG
-         Y6lg==
-X-Forwarded-Encrypted: i=1; AJvYcCUNks/GJxR0brvILADs7iwJ9flNsbZyeeQFqMcBLf8PsrpUXBsXncAwAsVq6IL/nB8QHHGZbvyCqXffXQMxkA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQzJ+WWZDBs314cCUza3uf5qV05fMjMLdobKQjtJlEL8f5B/I/
-	tfPxw4Y944RqMzaW3nMbIcWZtIPqkTZwPsm1tU1wJ8tCVIWcnOIhv41dKFsrOpFXmaOfqg/NHYv
-	yKsqGsCw2RxxxeMd7OhNPCRdC/rBNEeOzD2zx3RCbxXPVTdr9ExSJR0uXxRD7xCPw
-X-Received: by 2002:a5d:434e:0:b0:37d:4d3f:51e9 with SMTP id ffacd0b85a97d-37efcf7665amr6749329f8f.40.1729868454480;
-        Fri, 25 Oct 2024 08:00:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFYS4KQfglA92Gzw16122qjYNkYIWyEgmDdpCu016/6uuxTInLXjVC7AfMuCfkKwlTQ2XYDlQ==
-X-Received: by 2002:a5d:434e:0:b0:37d:4d3f:51e9 with SMTP id ffacd0b85a97d-37efcf7665amr6749277f8f.40.1729868453962;
-        Fri, 25 Oct 2024 08:00:53 -0700 (PDT)
-Received: from eisenberg.fritz.box (200116b82de5ba00738ac8dadaac7543.dip.versatel-1u1.de. [2001:16b8:2de5:ba00:738a:c8da:daac:7543])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b9216fsm1727189f8f.100.2024.10.25.08.00.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Oct 2024 08:00:53 -0700 (PDT)
-From: Philipp Stanner <pstanner@redhat.com>
-To: Jonathan Corbet <corbet@lwn.net>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Boris Brezillon <bbrezillon@kernel.org>,
-	Arnaud Ebalard <arno@natisbad.org>,
-	Srujana Challa <schalla@marvell.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Jon Mason <jdmason@kudzu.us>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Allen Hubbe <allenbh@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Kevin Cernekee <cernekee@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Mark Brown <broonie@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Philipp Stanner <pstanner@redhat.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Jie Wang <jie.wang@intel.com>,
-	Tero Kristo <tero.kristo@linux.intel.com>,
-	Adam Guerin <adam.guerin@intel.com>,
-	Shashank Gupta <shashank.gupta@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Nithin Dabilpuram <ndabilpuram@marvell.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
-	Breno Leitao <leitao@debian.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: linux-doc@vger.kernel.org,
+	s=arc-20240116; t=1729868570; c=relaxed/simple;
+	bh=dsgsar/lq9h68px2z+YopEnzb0lo//koWLJldh9k9Ck=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HRzuIInv+64MfEpc6WL3KWOnro1wA3zdPA2v7ZHExi3lfHwa8I9LhN6TKs63JOZWgZVDQQY6oQ8yTe+5DuUeWt55aBY2oJ/qWgR/ySwUAWUp+PDjSMdQ5kaVWmz5uVutBJTE8IYVhKlORtqLpzqcd1p00RQHdwZJId4DcVO4JqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=QlARgUcp; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=heAl94HWGe1G6ctlNlL5CBOHnMpx7UyxiFprcL0faS8=; b=QlARgUcp0ANqFUiEPH5e4JbwbA
+	CKcecSxYu6l4YTpsNrZgC+ho/gR++Wo44671B9aeCvZKEBDZ4kGqGSoqaxgLBfk9MKAi1Kkk24HrN
+	1Jlcsd2+G8aJwWmEYRcISLWv21emo8ZiVy3MhHizg+fcL7ydx1GHnoF9EY3IllqcjvoWwsEAszztN
+	UNtbLE7ICCPeiZfxcdPOjgvW/TMKa/wgvXt1oAovX56RBZtaWRRJU7abWj0Y0AqkUfnO7KL9D/umi
+	M6gDMfHETjTACos/Sce2Ox2J5tY5zSSsTVruBGmzKKrCNTEDJni+rzLukkZXIlNw0YzBsH4H5Sdz/
+	InQVMl8Q==;
+Received: from [189.79.117.125] (helo=localhost)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1t4Lpk-00F4Ps-VV; Fri, 25 Oct 2024 17:02:37 +0200
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+To: pkshih@realtek.com,
+	linux-wireless@vger.kernel.org
+Cc: kvalo@kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-ide@vger.kernel.org,
-	qat-linux@intel.com,
-	linux-crypto@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	ntb@lists.linux.dev,
-	linux-pci@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	linux-sound@vger.kernel.org
-Subject: [PATCH 10/10] PCI: Remove pcim_iomap_regions_request_all()
-Date: Fri, 25 Oct 2024 16:59:53 +0200
-Message-ID: <20241025145959.185373-11-pstanner@redhat.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241025145959.185373-1-pstanner@redhat.com>
-References: <20241025145959.185373-1-pstanner@redhat.com>
+	kernel@gpiccoli.net,
+	kernel-dev@igalia.com,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	stable@vger.kernel.org,
+	syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com
+Subject: [PATCH] wifi: rtlwifi: Drastically reduce the attempts to read efuse bytes in case of failures
+Date: Fri, 25 Oct 2024 12:02:16 -0300
+Message-ID: <20241025150226.896613-1-gpiccoli@igalia.com>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -139,115 +68,89 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-pcim_iomap_regions_request_all() have been deprecated in
-commit e354bb84a4c1 ("PCI: Deprecate pcim_iomap_table(),
-pcim_iomap_regions_request_all()").
+Syzkaller reported a hung task with uevent_show() on stack trace. That
+specific issue was addressed by another commit [0], but even with that
+fix applied (for example, running v6.12-rc4) we face another type of hung
+task that comes from the same reproducer [1]. By investigating that, we
+could narrow it to the following path:
 
-All users of this function have been ported to other interfaces by now.
+(a) Syzkaller emulates a Realtek USB WiFi adapter using raw-gadget and
+dummy_hcd infrastructure.
 
-Remove pcim_iomap_regions_request_all().
+(b) During the probe of rtl8192cu, the driver ends-up performing an efuse
+read procedure (which is related to EEPROM load IIUC), and here lies the
+issue: the function read_efuse() calls read_efuse_byte() many times, as
+loop iterations depending on the efuse size (in our example, 512 in total).
 
-Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+This procedure for reading efuse bytes relies in a loop that performs an
+I/O read up to *10k* times in case of failures. We measured the time of
+the loop inside read_efuse_byte() alone, and in this reproducer (which
+involves the dummy_hcd emulation layer), it takes 15 seconds each. As a
+consequence, we have the driver stuck in its probe routine for big time,
+exposing a stack trace like below if we attempt to reboot the system, for
+example:
+
+task:kworker/0:3 state:D stack:0 pid:662 tgid:662 ppid:2 flags:0x00004000
+Workqueue: usb_hub_wq hub_event
+Call Trace:
+ __schedule+0xe22/0xeb6
+ schedule_timeout+0xe7/0x132
+ __wait_for_common+0xb5/0x12e
+ usb_start_wait_urb+0xc5/0x1ef
+ ? usb_alloc_urb+0x95/0xa4
+ usb_control_msg+0xff/0x184
+ _usbctrl_vendorreq_sync+0xa0/0x161
+ _usb_read_sync+0xb3/0xc5
+ read_efuse_byte+0x13c/0x146
+ read_efuse+0x351/0x5f0
+ efuse_read_all_map+0x42/0x52
+ rtl_efuse_shadow_map_update+0x60/0xef
+ rtl_get_hwinfo+0x5d/0x1c2
+ rtl92cu_read_eeprom_info+0x10a/0x8d5
+ ? rtl92c_read_chip_version+0x14f/0x17e
+ rtl_usb_probe+0x323/0x851
+ usb_probe_interface+0x278/0x34b
+ really_probe+0x202/0x4a4
+ __driver_probe_device+0x166/0x1b2
+ driver_probe_device+0x2f/0xd8
+ [...]
+
+We propose hereby to drastically reduce the attempts of doing the I/O read
+in case of failures, from 10000 to 10. With that, we got reponsiveness in the
+reproducer, while seems reasonable to believe that there's no sane device
+implementation in the field requiring this amount of retries at every I/O
+read in order to properly work. Based on that assumption it'd be good to
+have it backported to stable but maybe not since driver implementation
+(the 10k number comes from day 0), perhaps up to 6.x series makes sense.
+
+[0] Commit 15fffc6a5624 ("driver core: Fix uevent_show() vs driver detach race").
+
+[1] A note about that: this syzkaller report presents multiple reproducers
+that differs by the type of emulated USB device. For this specific case,
+check the entry from 2024/08/08 06:23 in the list of crashes; the C repro
+is available at https://syzkaller.appspot.com/text?tag=ReproC&x=1521fc83980000.
+
+Cc: stable@vger.kernel.org # v6.1+
+Reported-by: syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
 ---
- .../driver-api/driver-model/devres.rst        |  1 -
- drivers/pci/devres.c                          | 56 -------------------
- include/linux/pci.h                           |  2 -
- 3 files changed, 59 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/efuse.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/driver-api/driver-model/devres.rst b/Documentation/driver-api/driver-model/devres.rst
-index 5f2ee8d717b1..3a30cf4f6c0d 100644
---- a/Documentation/driver-api/driver-model/devres.rst
-+++ b/Documentation/driver-api/driver-model/devres.rst
-@@ -394,7 +394,6 @@ PCI
-   pcim_enable_device()		: after success, some PCI ops become managed
-   pcim_iomap()			: do iomap() on a single BAR
-   pcim_iomap_regions()		: do request_region() and iomap() on multiple BARs
--  pcim_iomap_regions_request_all() : do request_region() on all and iomap() on multiple BARs
-   pcim_iomap_table()		: array of mapped addresses indexed by BAR
-   pcim_iounmap()		: do iounmap() on a single BAR
-   pcim_iounmap_regions()	: do iounmap() and release_region() on multiple BARs
-diff --git a/drivers/pci/devres.c b/drivers/pci/devres.c
-index 2a64da5c91fb..319a477a2135 100644
---- a/drivers/pci/devres.c
-+++ b/drivers/pci/devres.c
-@@ -959,62 +959,6 @@ int pcim_request_all_regions(struct pci_dev *pdev, const char *name)
- }
- EXPORT_SYMBOL(pcim_request_all_regions);
+diff --git a/drivers/net/wireless/realtek/rtlwifi/efuse.c b/drivers/net/wireless/realtek/rtlwifi/efuse.c
+index 82cf5fb5175f..2f75e376c0f6 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/efuse.c
++++ b/drivers/net/wireless/realtek/rtlwifi/efuse.c
+@@ -178,7 +178,7 @@ void read_efuse_byte(struct ieee80211_hw *hw, u16 _offset, u8 *pbuf)
  
--/**
-- * pcim_iomap_regions_request_all - Request all BARs and iomap specified ones
-- *			(DEPRECATED)
-- * @pdev: PCI device to map IO resources for
-- * @mask: Mask of BARs to iomap
-- * @name: Name associated with the requests
-- *
-- * Returns: 0 on success, negative error code on failure.
-- *
-- * Request all PCI BARs and iomap regions specified by @mask.
-- *
-- * To release these resources manually, call pcim_release_region() for the
-- * regions and pcim_iounmap() for the mappings.
-- *
-- * This function is DEPRECATED. Don't use it in new code. Instead, use one
-- * of the pcim_* region request functions in combination with a pcim_*
-- * mapping function.
-- */
--int pcim_iomap_regions_request_all(struct pci_dev *pdev, int mask,
--				   const char *name)
--{
--	int bar;
--	int ret;
--	void __iomem **legacy_iomap_table;
--
--	ret = pcim_request_all_regions(pdev, name);
--	if (ret != 0)
--		return ret;
--
--	for (bar = 0; bar < PCI_STD_NUM_BARS; bar++) {
--		if (!mask_contains_bar(mask, bar))
--			continue;
--		if (!pcim_iomap(pdev, bar, 0))
--			goto err;
--	}
--
--	return 0;
--
--err:
--	/*
--	 * If bar is larger than 0, then pcim_iomap() above has most likely
--	 * failed because of -EINVAL. If it is equal 0, most likely the table
--	 * couldn't be created, indicating -ENOMEM.
--	 */
--	ret = bar > 0 ? -EINVAL : -ENOMEM;
--	legacy_iomap_table = (void __iomem **)pcim_iomap_table(pdev);
--
--	while (--bar >= 0)
--		pcim_iounmap(pdev, legacy_iomap_table[bar]);
--
--	pcim_release_all_regions(pdev);
--
--	return ret;
--}
--EXPORT_SYMBOL(pcim_iomap_regions_request_all);
--
- /**
-  * pcim_iounmap_regions - Unmap and release PCI BARs
-  * @pdev: PCI device to map IO resources for
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 3b151c8331e5..b59197635c5c 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -2301,8 +2301,6 @@ void pcim_iounmap(struct pci_dev *pdev, void __iomem *addr);
- void __iomem * const *pcim_iomap_table(struct pci_dev *pdev);
- int pcim_request_region(struct pci_dev *pdev, int bar, const char *name);
- int pcim_iomap_regions(struct pci_dev *pdev, int mask, const char *name);
--int pcim_iomap_regions_request_all(struct pci_dev *pdev, int mask,
--				   const char *name);
- void pcim_iounmap_regions(struct pci_dev *pdev, int mask);
- void __iomem *pcim_iomap_range(struct pci_dev *pdev, int bar,
- 				unsigned long offset, unsigned long len);
+ 	retry = 0;
+ 	value32 = rtl_read_dword(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]);
+-	while (!(((value32 >> 24) & 0xff) & 0x80) && (retry < 10000)) {
++	while (!(((value32 >> 24) & 0xff) & 0x80) && (retry < 10)) {
+ 		value32 = rtl_read_dword(rtlpriv,
+ 					 rtlpriv->cfg->maps[EFUSE_CTRL]);
+ 		retry++;
 -- 
-2.47.0
+2.46.2
 
 
