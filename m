@@ -1,239 +1,208 @@
-Return-Path: <linux-wireless+bounces-14529-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14530-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A94089B05B0
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 16:24:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C45B19B06A2
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 17:01:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F6D51F24CD7
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 14:24:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43FC01F220A6
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 15:01:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430B71D2F6D;
-	Fri, 25 Oct 2024 14:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7317A16FF4E;
+	Fri, 25 Oct 2024 15:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Tkv9IZar"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XMFXXuqC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F371B7083A;
-	Fri, 25 Oct 2024 14:23:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46FE1290F
+	for <linux-wireless@vger.kernel.org>; Fri, 25 Oct 2024 15:00:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729866240; cv=none; b=Fq1xdQWAFRl6X3YRVnAdrnUMN3AeWymIT4/irGi98+HKAfhmyTHmRl921wEIAiefJk34y4Z0F8WxBusi4XG1ItCrXhYlUNnmpbVkCxrR/TCq32jCczC0RLlPO2t8BUSyIK9VNcYP30gJyXtpr35DsNptH1l48mJsfQOmBj0+U+M=
+	t=1729868442; cv=none; b=ITNLo0qj2DeaUJStBkDjrScMrfJGdEhwPlunpePDwO6zzWlGsUVPmbzRooORo1q/xTdjOt3tkPWzAY9vb67LjUGtofBhwSoyeLLXsNMVUG9H0uy4QNolrGGwnFAraagvjV+QIDeh5YkFlwQqoZMQV1dkV6tfo8G6QN4YckELVPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729866240; c=relaxed/simple;
-	bh=Eagn6KR7Vu5qf4a0WFptrizR1Q3pPwQYGYlaKFrvzC4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=seSxgU93O8luMllMkDOmLGr/VYhM3dieDjVcqIp0Ifhp3Df8gQA5M2bjyMRvjOlth0IEbhVuohScjfBQb9WHte1nr4oEpb53vKD5bzOo7aF4l2ekwU+82WcUDJMSJaELkDu4Y1tUvnMFGMvKwbnLAeNx453Ys/GF76uuMaWpgQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Tkv9IZar; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49PBAla8003727;
-	Fri, 25 Oct 2024 14:23:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	5XVUU3LW0UdnWfaq9PHUYoJe/VTZeYml3GXCx25NU4Q=; b=Tkv9IZarkuL0krp9
-	Yv2It454poX1+1VmvVU2JaqnAKyD+bRyiydtBpq64zMyHKMRF+TDnC5rY3aarpoY
-	O4K4F6a8WinyV8SYdmRVFynwubKtFeuxYFBhsw1217c1dqeVEcluaWGFYaugYOrC
-	9iIIPpcbBgIuz9N334S+nzofUx3mlq3LlE10CjTI1sAx4u9V6Qrcrt854/CpEEHV
-	6+42PbVfJxC2xAZBUGwx/WiU2XErza6cNVAp53lOGZiluwvOiFLmvAuEGEb0u2mc
-	br6BahQbOLTBCESjm8le9SCt2fgNY+nHSXKHkpdUZQy9uB3ojR2RjxvTAJxdHvt2
-	zeXXdg==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42em689cfx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Oct 2024 14:23:51 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49PENoQ9013672
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Oct 2024 14:23:50 GMT
-Received: from [10.253.77.237] (10.80.80.8) by nalasex01c.na.qualcomm.com
- (10.47.97.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 25 Oct
- 2024 07:23:48 -0700
-Message-ID: <49313be4-b0e2-4ec4-8663-bd4daf20f78a@quicinc.com>
-Date: Fri, 25 Oct 2024 22:23:45 +0800
+	s=arc-20240116; t=1729868442; c=relaxed/simple;
+	bh=qn2zisIVAp1A3sOByjD0CKUjzgN/331GtrAdNv9H2Gs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=aw1U366HIJnumf4azO3sjLr8BO51Y46FEA5nwlttGwFGLW44aN4AaUUdOt/1s6H2AHdogcYHPRUwr/uHdRVDtc6ata5ZqtoQdlNb/LxxF0jNgxW9xfcUnCtkXKwOffjQrpYNCGhGUhceEj2/BrtYUmM6nLMqFF5oXXZxo2R2NO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XMFXXuqC; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729868438;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=6mk7pVJi4FxC5YCmtGMcoceHkePQhE8sXwo0Yl4cl4Y=;
+	b=XMFXXuqCWVUAVm2tG0dM6PHfyyu2sAT5PygTKygfI0PlWJGAFHZ3iM/d2ihMi/CP50iLyq
+	cZZbMf6XKhTF+mAjaPJoOiRsVUXeCPIGNVTjqyGiCMTSG7nZaKRqfg+nt77nzC63/p0nNY
+	hYKf70wC3UUel+04RKeBK0NIJHhSEI8=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-605-Dx4EBFrEMwuqwBVYabyshA-1; Fri, 25 Oct 2024 11:00:37 -0400
+X-MC-Unique: Dx4EBFrEMwuqwBVYabyshA-1
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-37d589138a9so1022067f8f.1
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Oct 2024 08:00:36 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729868436; x=1730473236;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6mk7pVJi4FxC5YCmtGMcoceHkePQhE8sXwo0Yl4cl4Y=;
+        b=dtx8SDZeGgAZAulzX6xns+1inzm8EolsI+LrtkJzUDNXrfziQQBH4Zf/0yX/spEQxF
+         wbYQkdhgBJb7HhBQ/lgcTaiilA38uwH+B8ZDzKP+q2pFg2YM0GevIu/6zN+0fdvv+sfe
+         GG8Dv8EyHrG9lIeesYDSoKmMiM4stGcz43dvicgWVlarbv4hkFQSarJ4k8GfaK6JqQSB
+         jh439XHSaNZyoTXKcVFA3BXnshlVOCFPHDPXjr8sw9tSo438n1VVX1luC0VIgSkXQQ4e
+         y05iuniDH/OxDT4wmQLn47k4SEGKgGiKfUYbzWHIfGJH40PV1Sirb8t3zWJZi4ZAAwQq
+         L9EA==
+X-Forwarded-Encrypted: i=1; AJvYcCV+ktXheX957PQ+eTKGECzju2u4ze06yXR6YG3VYarrXzvYXx5z6h0erfIjfrdFhR4z+v5cwbLmLsPPP6eyzg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxb3QYpnzgvN9DLSTLx0vl9NQuZnDhyhbny+oCjgFFNA53coIVC
+	wgbyOY6khLUAd44XAk6Pca+sg8I/EDkcFkWpvidRNSw9v+V49fgaozqY3TwjbP3JZ3bYhrJQRjJ
+	AtGDrbIgsZVoGDw2dLfxTcpG5dx9S+kh4RjdtnbsiOVJYcgRIxGeNZVhR/mApGrmx
+X-Received: by 2002:adf:eac4:0:b0:37c:d2f0:7331 with SMTP id ffacd0b85a97d-3803ab1a8bbmr4410339f8f.0.1729868435659;
+        Fri, 25 Oct 2024 08:00:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHDs+qGkPhYGAaZ+QRORXNw+V6iATQJifr1mVHJ8hw/ogKGV0BNUWn6+ubNlvP8p8bNny4MNA==
+X-Received: by 2002:adf:eac4:0:b0:37c:d2f0:7331 with SMTP id ffacd0b85a97d-3803ab1a8bbmr4410253f8f.0.1729868435070;
+        Fri, 25 Oct 2024 08:00:35 -0700 (PDT)
+Received: from eisenberg.fritz.box (200116b82de5ba00738ac8dadaac7543.dip.versatel-1u1.de. [2001:16b8:2de5:ba00:738a:c8da:daac:7543])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b9216fsm1727189f8f.100.2024.10.25.08.00.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Oct 2024 08:00:34 -0700 (PDT)
+From: Philipp Stanner <pstanner@redhat.com>
+To: Jonathan Corbet <corbet@lwn.net>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Boris Brezillon <bbrezillon@kernel.org>,
+	Arnaud Ebalard <arno@natisbad.org>,
+	Srujana Challa <schalla@marvell.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Jon Mason <jdmason@kudzu.us>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Allen Hubbe <allenbh@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Kevin Cernekee <cernekee@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Mark Brown <broonie@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Philipp Stanner <pstanner@redhat.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Jie Wang <jie.wang@intel.com>,
+	Tero Kristo <tero.kristo@linux.intel.com>,
+	Adam Guerin <adam.guerin@intel.com>,
+	Shashank Gupta <shashank.gupta@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Bharat Bhushan <bbhushan2@marvell.com>,
+	Nithin Dabilpuram <ndabilpuram@marvell.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
+	Breno Leitao <leitao@debian.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Cc: linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-ide@vger.kernel.org,
+	qat-linux@intel.com,
+	linux-crypto@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	ntb@lists.linux.dev,
+	linux-pci@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	linux-sound@vger.kernel.org
+Subject: [PATCH 00/10] Remove pcim_iomap_regions_request_all()
+Date: Fri, 25 Oct 2024 16:59:43 +0200
+Message-ID: <20241025145959.185373-1-pstanner@redhat.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] wifi: ath11k: support board-specific firmware
- overrides
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-CC: <kvalo@kernel.org>, <quic_jjohnson@quicinc.com>,
-        <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <linux-arm-msm@vger.kernel.org>
-References: <20241024002514.92290-1-quic_miaoqing@quicinc.com>
- <20241024002514.92290-3-quic_miaoqing@quicinc.com>
- <pdjhyrjoreiykv2tquvufjw3rkti5sxrjvpmkjhvkfasq7zbo4@xxntxdmhhyg5>
- <bc3c06eb-1cb2-4cbb-aaad-95c09223f0cc@quicinc.com>
- <ig3m3sgmnkgfmwrlglundhqif6rygzl7uh7rzoemrz3yxgvfpc@35a323mw2wbt>
- <46de0bfe-ebdd-4b37-a957-3c64e30a1376@quicinc.com>
- <CAA8EJpr4zgV4Sa4sPdCToQWs+CFJu6Xz6CPcPyHDhDczmuzj=g@mail.gmail.com>
- <06ff37ef-dfda-470f-80f7-0f54bae25686@quicinc.com>
- <CAA8EJppFCXeUAZax+jv42JrKYgLmaPQNpXhn-06q_K_uB9JZLQ@mail.gmail.com>
- <46b18b39-9e88-42f8-aa88-5b527fc92a9f@quicinc.com>
- <xp5j6kkpggfhxvzuozqcvs2ugon5xexjgzl24zjlen7kggdaju@vd3okew4vcsy>
-Content-Language: en-US
-From: Miaoqing Pan <quic_miaoqing@quicinc.com>
-In-Reply-To: <xp5j6kkpggfhxvzuozqcvs2ugon5xexjgzl24zjlen7kggdaju@vd3okew4vcsy>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: h9Cc_friCQJt2G3sPk3zR8I5gKmypg5E
-X-Proofpoint-GUID: h9Cc_friCQJt2G3sPk3zR8I5gKmypg5E
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 malwarescore=0
- priorityscore=1501 adultscore=0 bulkscore=0 phishscore=0 mlxscore=0
- lowpriorityscore=0 mlxlogscore=999 impostorscore=0 suspectscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410250111
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+All Acked-by's are in place now.
+
+Changes in v5:
+  - Add Acked-by's from Alexander and Bharat (the latter sent off-list,
+    because of some issue with receiving the previous patch sets).
+
+Changes in v4:
+  - Add Acked-by's from Giovanni and Kalle.
+
+Changes in v3:
+  - Add missing full stops to commit messages (Andy).
+
+Changes in v2:
+  - Fix a bug in patch №4 ("crypto: marvell ...") where an error code
+    was not set before printing it. (Me)
+  - Apply Damien's Reviewed- / Acked-by to patches 1, 2 and 10. (Damien)
+  - Apply Serge's Acked-by to patch №7. (Serge)
+  - Apply Jiri's Reviewed-by to patch №8. (Jiri)
+  - Apply Takashi Iwai's Reviewed-by to patch №9. (Takashi)
 
 
+Hi all,
 
-On 10/25/2024 10:01 PM, Dmitry Baryshkov wrote:
-> On Fri, Oct 25, 2024 at 09:43:04PM +0800, Miaoqing Pan wrote:
->>
->>
->> On 10/25/2024 8:21 PM, Dmitry Baryshkov wrote:
->>> On Fri, 25 Oct 2024 at 15:03, Miaoqing Pan <quic_miaoqing@quicinc.com> wrote:
->>>>
->>>>
->>>>
->>>> On 10/25/2024 6:20 PM, Dmitry Baryshkov wrote:
->>>>> On Fri, 25 Oct 2024 at 10:23, Miaoqing Pan <quic_miaoqing@quicinc.com> wrote:
->>>>>>
->>>>>>
->>>>>>
->>>>>> On 10/25/2024 2:01 PM, Dmitry Baryshkov wrote:
->>>>>>> On Fri, Oct 25, 2024 at 10:56:02AM +0800, Miaoqing Pan wrote:
->>>>>>>>
->>>>>>>>
->>>>>>>> On 10/25/2024 3:39 AM, Dmitry Baryshkov wrote:
->>>>>>>>> On Thu, Oct 24, 2024 at 08:25:14AM +0800, Miaoqing Pan wrote:
->>>>>>>>>> QCA6698AQ IP core is the same as WCN6855 hw2.1, but it has different RF,
->>>>>>>>>> IPA, thermal, RAM size and etc, so new firmware files used. This change
->>>>>>>>>> allows board DT files to override the subdir of the firmware directory
->>>>>>>>>> used to lookup the amss.bin and m3.bin.
->>>>>>>>>
->>>>>>>>> I have slight concerns regarding the _board_ DT files overriding the
->>>>>>>>> subdir. This opens a can of worms, allowing per-board firmware sets,
->>>>>>>>> which (as far as I understand) is far from being what driver maintainers
->>>>>>>>> would like to see. This was required for ath10k-snoc devices, since
->>>>>>>>> firmware for those platforms is signed by the vendor keys and it is
->>>>>>>>> limited to a particular SoC or SoC family. For ath11k-pci there is no
->>>>>>>>> such limitation.
->>>>>>>>>
->>>>>>>>> Would it be possible to use PCI subvendor / subdev to identify affected
->>>>>>>>> cards? PCI Revision? Any other way to identify the device?  Please
->>>>>>>>> provide lspci -nnvv for the affected device kind. Is there a way to
->>>>>>>>> identify the RF part somehow?
->>>>>>>>
->>>>>>>> It's rather difficult, for WCN685x, there are multiple evolved subseries for
->>>>>>>> customized products. e.g.
->>>>>>>>
->>>>>>>> QCA6698AQ/hw2.1
->>>>>>>> QCA2066/hw2.1
->>>>>>>> WCN6855/hw2.0/hw2.1
->>>>>>>> WCN6856/hw2.1
->>>>>>>>
->>>>>>>> They have the same PCIe ID (17cb:1103), the commit 5dc9d1a55e95 ("wifi:
->>>>>>>> ath11k: add support for QCA2066") reads TCSR_SOC_HW_SUB_VER to enumerate all
->>>>>>>> QCA2066 cards, it lacks of flexibility, as the list will become longer and
->>>>>>>> longer. But it's the only choice for QCA2066, as it's customized for X86
->>>>>>>> platform which without DT files.
->>>>>>>
->>>>>>> I guess, this is closer to Kalle's expectations: being able to detect
->>>>>>> the hardware instead of adding DT properties.
->>>>>>>
->>>>>>>> So for MSM those have DT file platforms, like SA8775P-RIDE/QCS8300-RIDE both
->>>>>>>> attached to QCA6698AQ, we can specify the correct firmware to
->>>>>>>> 'ath11k/WCN6855/hw2.1/qca6698aq', so it's not per-board firmware, it depends
->>>>>>>> on the type of the products(x86 windows, IoT products or AUTO).
->>>>>>>
->>>>>>> No-no-no and no. The firmware used must not be specific to the product
->>>>>>> type.  This is what everybody here is trying to avoid. Please try
->>>>>>> following the QCA2066 approach instead. And note that it could use new
->>>>>>> TLD as it perfectly shows itself as a different hardware kind.
->>>>>>
->>>>>> Actually, TCSR_SOC_HW_SUB_VER is not SOC register, it's a TLMM hw
->>>>>> revision register in BAR0 space, it's hard to maintain the list.
->>>>>
->>>>> How is it so?
->>>>
->>>> I think QCA2066 approach is just a workaround. Different batches of chip
->>>> manufacture has different value in TCSR_SOC_HW_SUB_VER.
->>>
->>> Ok. So, subvendor / subdevice?
->>
->> The 'subvendor' is fixed to 0x17cb, so it's useless. And I don't have enough
->> samples to decide to use 'subdevice', it's a risk for existing devices.
-> 
-> What kind of risk? If subvendor is fixed, then it's Qualcomm who
-> enumerates subdevices.
+the PCI subsystem is currently working on cleaning up its devres API. To
+do so, a few functions will be replaced with better alternatives.
 
-It's risk for there is not enough sample card to verify. Subdevice is 
-never used by ath1xk drivers.
+This series removes pcim_iomap_regions_request_all(), which has been
+deprecated already, and accordingly replaces the calls to
+pcim_iomap_table() (which were only necessary because of
+pcim_iomap_regions_request_all() in the first place) with calls to
+pcim_iomap().
 
-> 
-> I'm really reluctant to bringing more DT usage into the PCIe space.
-> Especially if the user is able to swap cards.
+Would be great if you can take a look whether this behaves as you
+intended for your respective component.
 
-Understand your concern, automatic adaptation is always the best choice. 
-But it may not work for MSM boards, the PCIe card (non m.2) is 
-customized, which has special PMU control. User can't swap cards. And 
-that's why power sequencing module was introduced.
+Cheers,
+Philipp
 
-> 
->>>>> And if it is hard, can we please get to the _normal_ way how vendors
->>>>> handle PCI hardware differences: the subvendor and subdevice? This is
->>>>> a usual way to describe that the PCIe device is the same, but the
->>>>> analog / tuner / RF / etc parts are different.
->>>>
->>>>
->>>>>
->>>>>> We're going to have another problem to enable NFA765 m.2 card for IoT
->>>>>> platforms, which has different feature sets with X86 platform, so also
->>>>>> new firmware should be used. In this case, QCA2066 approach not works.
->>>>>> Seems DT approach is only choice.
->>>>>>
->>>>>> Could you advice ?
->>>>>
->>>>> Hmm, The first question is _why_ does it have different feature sets?
->>>>> What exactly is different?
->>>>
->>>> Yeah, for IoT device will support SAP/TWT/UL-OFDMA/BSS color and etc new
->>>> features, and the existing x86 firmware mainly for STA mode.
->>>>
->>>> What if the user plugs a normal (laptop)
->>>>> M.2 card into their IoT device?
->>>>
->>>> If there is no DT file to specify the firmware, IoT device will load the
->>>> default firmware, it will affect SAP and WiFi-6 advanced features.
->>>
->>> Can we get all those nice features into x86 world instead?
->>
->> It's out of our scope, we will not touch the existing stable firmware
->> version, also it's not allowed.
-> 
-> If it's not allowed for laptop cards, why is it allowed for IoT M.2
-> cards (which then can be perfectly installed into the laptop)?
-> 
+Philipp Stanner (10):
+  PCI: Make pcim_request_all_regions() a public function
+  ata: ahci: Replace deprecated PCI functions
+  crypto: qat - replace deprecated PCI functions
+  crypto: marvell - replace deprecated PCI functions
+  intel_th: pci: Replace deprecated PCI functions
+  wifi: iwlwifi: replace deprecated PCI functions
+  ntb: idt: Replace deprecated PCI functions
+  serial: rp2: Replace deprecated PCI functions
+  ALSA: korg1212: Replace deprecated PCI functions
+  PCI: Remove pcim_iomap_regions_request_all()
 
-Only specific IoT M.2 cards.
+ .../driver-api/driver-model/devres.rst        |  1 -
+ drivers/ata/acard-ahci.c                      |  6 +-
+ drivers/ata/ahci.c                            |  6 +-
+ drivers/crypto/intel/qat/qat_420xx/adf_drv.c  | 11 +++-
+ drivers/crypto/intel/qat/qat_4xxx/adf_drv.c   | 11 +++-
+ .../marvell/octeontx2/otx2_cptpf_main.c       | 14 +++--
+ .../marvell/octeontx2/otx2_cptvf_main.c       | 13 ++--
+ drivers/hwtracing/intel_th/pci.c              |  9 ++-
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   | 16 ++---
+ drivers/ntb/hw/idt/ntb_hw_idt.c               | 13 ++--
+ drivers/pci/devres.c                          | 59 +------------------
+ drivers/tty/serial/rp2.c                      | 12 ++--
+ include/linux/pci.h                           |  3 +-
+ sound/pci/korg1212/korg1212.c                 |  6 +-
+ 14 files changed, 76 insertions(+), 104 deletions(-)
 
+-- 
+2.47.0
 
 
