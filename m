@@ -1,206 +1,196 @@
-Return-Path: <linux-wireless+bounces-14546-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14547-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB7BE9B089A
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 17:41:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 015309B08F7
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 17:56:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 518931F25D44
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 15:41:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A198E1F21E5B
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 15:56:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E4781531C8;
-	Fri, 25 Oct 2024 15:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E42175D38;
+	Fri, 25 Oct 2024 15:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FjDTNA5K"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jSvkOaGf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313201865E7
-	for <linux-wireless@vger.kernel.org>; Fri, 25 Oct 2024 15:40:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFAAB21A4D1;
+	Fri, 25 Oct 2024 15:55:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729870851; cv=none; b=V/F2gEUXh+thIp/qy4aqd9esqB6tCE+QPVolucb2mHNVqMsZZmKWYvMsPQXqonvhhKWKocje2CYyKKKE0E2pZkh2bUdkNQ47vz9dfOqcNCSUknBHqkNuwZkbtNRMczgIm4to3RTJaFUYBAtNbt48mwUT8S0/VCSfns4V47mxgyw=
+	t=1729871759; cv=none; b=TcXRea3k0DBg+Se4qXnyCcF490q8L815dI5cMfY8LsCLUcmEt+UqgnTTeZViJ+/2sHPLgxjelfsRimBpulYkbYB5eQGSOf6pv3z3Pxrc4ggJg8oJ6LJJCwfoyZqC1pvNdQ/RJKJMLJzlu7mgtbwOw359FQVCj5x34haOSlC5Dug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729870851; c=relaxed/simple;
-	bh=bucM69zhnxn5/hKlJK4fqgGKg509HVAnLVGWxMBxtFs=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Lf9lMtiUQidjnmofMN3HO/klizF8XnYZmJKC4D8j9RRVctc01osQFnTwDqW1d9i/h8XpABNgd3aeEwEaa3k1uoMffY8x6tHsbPSTOOnoCYaIjBvZbJXU4yYelJlY+/+bm7iQ6xH1iKKq30LGLWE2pIh+R766K9sR8i2zXydCQVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FjDTNA5K; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729870848;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XzoMdLAmboBYe/1IRrBdZaOPlgpz2yyMsskVNx8zBnM=;
-	b=FjDTNA5KeN/BqZ5XgpdYii/DwlF/2jpOd2Di4+pOqewT/B8ByOZg0TV6C02oZ1ef7wNVUe
-	j3GDe2fLaN+vTm32UbAYqChtI7JBr9+Na4rWODM36RlF7Itf/D5j4Vc+/ECn0kNifC8l/Z
-	RN9hTL779l4tz6xTX4B0DxGPr9viGK4=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-56-TtcvmsNWNDqUOKWixzKdUQ-1; Fri, 25 Oct 2024 11:40:45 -0400
-X-MC-Unique: TtcvmsNWNDqUOKWixzKdUQ-1
-Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-5c9465e3547so1613011a12.3
-        for <linux-wireless@vger.kernel.org>; Fri, 25 Oct 2024 08:40:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729870844; x=1730475644;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XzoMdLAmboBYe/1IRrBdZaOPlgpz2yyMsskVNx8zBnM=;
-        b=b1n6v+HwGCgwZZRMLSOLCdWSiYTZrBcxcdMR0b6/JAiUlP9/WG3sXWetpCnwjOZ76y
-         M9T9XsQ1Uf/Js7EHJCVqiyjDVvwbLWRTg4HLdEHmm9dgMVnhjezOBuCys9gsKbKVQAhZ
-         1QmT/4TVQWQyq/kFsxZyVviAw2244pyj6ZkeBqiw6qmJOzwf2vzABNhZZ5GhZllXftCX
-         FxjJCUkJMX/U0uOG3PDzgdcgOBEBLrHuuIPq8kTe1psAeWayuDO7FZ5EKFdsrRGumwKU
-         4Virz3GnbAHclEcjDITBxcbHYlAVFQbbRN2gG0wXEfxbAtGRhdAzPqsbEL7gIj2W5z4G
-         lpSg==
-X-Forwarded-Encrypted: i=1; AJvYcCUd293jgEjqSDFRVc5QpejIIhzseAdu0+sb7N8nxQt4fj6aULQef/IDxWF7hF/zX6VU5w4jxTRweuRP5KP+OA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAJhAxp6Fjx5+HYNOnYiZE2US9F6M0EJ2BQ7AvmINy4Vruld7v
-	iDCJl8qZ/97HVmgHTECXiF8PhJl8SmrGbLmY11coPX0UQTKMamsRJAgwEPAkG582SLhu73jeyqV
-	pyJXqWGue9EW916b1VRfUN5ZI+sQl3Rj45W+8G01lZTUeXY/XwinfNcFczBriqIgW
-X-Received: by 2002:a05:6402:2708:b0:5cb:6718:660a with SMTP id 4fb4d7f45d1cf-5cba242fd48mr4898158a12.9.1729870843878;
-        Fri, 25 Oct 2024 08:40:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG/Zcv+ZRlluNXU1aQ1MGYzlRmBIYaLWcpFVZkMbyXea+x6Kqw2wJYkAxS4CN0OGWslX2I1RQ==
-X-Received: by 2002:a05:6402:2708:b0:5cb:6718:660a with SMTP id 4fb4d7f45d1cf-5cba242fd48mr4898108a12.9.1729870843339;
-        Fri, 25 Oct 2024 08:40:43 -0700 (PDT)
-Received: from eisenberg.fritz.box (200116b82de5ba00738ac8dadaac7543.dip.versatel-1u1.de. [2001:16b8:2de5:ba00:738a:c8da:daac:7543])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cbb613c3e9sm747217a12.0.2024.10.25.08.40.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Oct 2024 08:40:42 -0700 (PDT)
-Message-ID: <415402ba495b402b67ae9ece0ca96ab3ea5ee823.camel@redhat.com>
-Subject: Re: [PATCH 06/10] wifi: iwlwifi: replace deprecated PCI functions
-From: Philipp Stanner <pstanner@redhat.com>
-To: Ilpo =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Damien Le Moal <dlemoal@kernel.org>, 
- Niklas Cassel <cassel@kernel.org>, Giovanni Cabiddu
- <giovanni.cabiddu@intel.com>, Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>,  Boris Brezillon
- <bbrezillon@kernel.org>, Arnaud Ebalard <arno@natisbad.org>, Srujana Challa
- <schalla@marvell.com>,  Alexander Shishkin
- <alexander.shishkin@linux.intel.com>, Miri Korenblit
- <miriam.rachel.korenblit@intel.com>, Kalle Valo <kvalo@kernel.org>, Serge
- Semin <fancer.lancer@gmail.com>, Jon Mason <jdmason@kudzu.us>, Dave Jiang
- <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>, Bjorn Helgaas
- <bhelgaas@google.com>, Kevin Cernekee <cernekee@gmail.com>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby
- <jirislaby@kernel.org>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai
- <tiwai@suse.com>,  Mark Brown <broonie@kernel.org>, David Lechner
- <dlechner@baylibre.com>, Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?=
- <u.kleine-koenig@pengutronix.de>, Jie Wang <jie.wang@intel.com>, Tero
- Kristo <tero.kristo@linux.intel.com>, Adam Guerin <adam.guerin@intel.com>,
- Shashank Gupta <shashank.gupta@intel.com>, Przemek Kitszel
- <przemyslaw.kitszel@intel.com>, Bharat Bhushan <bbhushan2@marvell.com>,
- Nithin Dabilpuram <ndabilpuram@marvell.com>, Johannes Berg
- <johannes.berg@intel.com>, Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-  Gregory Greenman <gregory.greenman@intel.com>, Benjamin Berg
- <benjamin.berg@intel.com>, Yedidya Benshimol
- <yedidya.ben.shimol@intel.com>, Breno Leitao <leitao@debian.org>, Florian
- Fainelli <florian.fainelli@broadcom.com>, linux-doc@vger.kernel.org, LKML
- <linux-kernel@vger.kernel.org>, linux-ide@vger.kernel.org,
- qat-linux@intel.com,  linux-crypto@vger.kernel.org,
- linux-wireless@vger.kernel.org,  ntb@lists.linux.dev,
- linux-pci@vger.kernel.org, linux-serial <linux-serial@vger.kernel.org>,
- linux-sound@vger.kernel.org
-Date: Fri, 25 Oct 2024 17:40:39 +0200
-In-Reply-To: <ea7b805a-6c8e-8060-1c6b-4d62c69f78ae@linux.intel.com>
-References: <20241025145959.185373-1-pstanner@redhat.com>
-	 <20241025145959.185373-7-pstanner@redhat.com>
-	 <ea7b805a-6c8e-8060-1c6b-4d62c69f78ae@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+	s=arc-20240116; t=1729871759; c=relaxed/simple;
+	bh=DaMt0huU4SsMQ4gyRkKRhmgOiXOiXExV8wbhN/2DR6o=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=XUYFmkq5bqcfFDTAwqbfmFkGJUksuRvhPKQZhUN0yRLXLc8Z1xTRkD+ibZXPacpzUgkhR1bZsDvUBnHIPbOcQorg8dzJKJ6DpBeXU6A7c8PVP3GRSFidREWzmNjbKBdkPJh9yL1wC9x4e21meCl1LOxFr6mMPPM5iwLF+k/he2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jSvkOaGf; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1729871757; x=1761407757;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=DaMt0huU4SsMQ4gyRkKRhmgOiXOiXExV8wbhN/2DR6o=;
+  b=jSvkOaGfWHtRIKPLy5Bg3zybzszpVco2ZOgvEaN3jsws3+GXTqhEnHoq
+   151nfUbgbnX5FzQoce7LNrAnR1isRj30JBFkoCieoe6du16wqWVeeAzec
+   dLCPIe6bea9qNybIgtsdTdaAAljdo6XT/c3Y13RhfGYnMspU4E3WQXBFg
+   /j5rx+WNXRrX0L/LfW5DyllqT2LadREeEnKtyM8+7/6ebwhSyBgx4R2dn
+   sC8smA8aD05anXAtVCuxnM9yeyjTwmRJEznNCYF49Yx5m/mVzbuy13KCW
+   Vq+7t83dJ7iJphhdCQth/f1WuLvRkYwwytBmVtiDf6i+KSND4Ysypx1lK
+   A==;
+X-CSE-ConnectionGUID: io4rN/cmQWOo22ah0IgAnw==
+X-CSE-MsgGUID: RcEDt4TxQbWfrV7pj29gKg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11222"; a="40097883"
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="40097883"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2024 08:55:56 -0700
+X-CSE-ConnectionGUID: Q/1oAimYRtS5BH6V/FKA8g==
+X-CSE-MsgGUID: 1+Ve4Ha3Qu6UfDGm2Qn9IQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,232,1725346800"; 
+   d="scan'208";a="81250468"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.225])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2024 08:55:42 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Fri, 25 Oct 2024 18:55:38 +0300 (EEST)
+To: Philipp Stanner <pstanner@redhat.com>
+cc: Jonathan Corbet <corbet@lwn.net>, Damien Le Moal <dlemoal@kernel.org>, 
+    Niklas Cassel <cassel@kernel.org>, 
+    Giovanni Cabiddu <giovanni.cabiddu@intel.com>, 
+    Herbert Xu <herbert@gondor.apana.org.au>, 
+    "David S. Miller" <davem@davemloft.net>, 
+    Boris Brezillon <bbrezillon@kernel.org>, 
+    Arnaud Ebalard <arno@natisbad.org>, Srujana Challa <schalla@marvell.com>, 
+    Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+    Miri Korenblit <miriam.rachel.korenblit@intel.com>, 
+    Kalle Valo <kvalo@kernel.org>, Serge Semin <fancer.lancer@gmail.com>, 
+    Jon Mason <jdmason@kudzu.us>, Dave Jiang <dave.jiang@intel.com>, 
+    Allen Hubbe <allenbh@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>, 
+    Kevin Cernekee <cernekee@gmail.com>, 
+    Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+    Jiri Slaby <jirislaby@kernel.org>, Jaroslav Kysela <perex@perex.cz>, 
+    Takashi Iwai <tiwai@suse.com>, Mark Brown <broonie@kernel.org>, 
+    David Lechner <dlechner@baylibre.com>, 
+    =?ISO-8859-15?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>, 
+    Jie Wang <jie.wang@intel.com>, Tero Kristo <tero.kristo@linux.intel.com>, 
+    Adam Guerin <adam.guerin@intel.com>, 
+    Shashank Gupta <shashank.gupta@intel.com>, 
+    Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+    Bharat Bhushan <bbhushan2@marvell.com>, 
+    Nithin Dabilpuram <ndabilpuram@marvell.com>, 
+    Johannes Berg <johannes.berg@intel.com>, 
+    Emmanuel Grumbach <emmanuel.grumbach@intel.com>, 
+    Gregory Greenman <gregory.greenman@intel.com>, 
+    Benjamin Berg <benjamin.berg@intel.com>, 
+    Yedidya Benshimol <yedidya.ben.shimol@intel.com>, 
+    Breno Leitao <leitao@debian.org>, 
+    Florian Fainelli <florian.fainelli@broadcom.com>, 
+    linux-doc@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
+    linux-ide@vger.kernel.org, qat-linux@intel.com, 
+    linux-crypto@vger.kernel.org, linux-wireless@vger.kernel.org, 
+    ntb@lists.linux.dev, linux-pci@vger.kernel.org, 
+    linux-serial <linux-serial@vger.kernel.org>, linux-sound@vger.kernel.org
+Subject: Re: [PATCH 02/10] ata: ahci: Replace deprecated PCI functions
+In-Reply-To: <20241025145959.185373-3-pstanner@redhat.com>
+Message-ID: <282ba5d4-cdad-a6f4-8ee0-1936c532dbc5@linux.intel.com>
+References: <20241025145959.185373-1-pstanner@redhat.com> <20241025145959.185373-3-pstanner@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 
-On Fri, 2024-10-25 at 18:31 +0300, Ilpo J=C3=A4rvinen wrote:
-> On Fri, 25 Oct 2024, Philipp Stanner wrote:
->=20
-> > pcim_iomap_table() and pcim_iomap_regions_request_all() have been
-> > deprecated by the PCI subsystem in commit e354bb84a4c1 ("PCI:
-> > Deprecate
-> > pcim_iomap_table(), pcim_iomap_regions_request_all()").
-> >=20
-> > Replace these functions with their successors, pcim_iomap() and
-> > pcim_request_all_regions().
-> >=20
-> > Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-> > Acked-by: Kalle Valo <kvalo@kernel.org>
-> > ---
-> > =C2=A0drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 16 ++++--------=
--
-> > ---
-> > =C2=A01 file changed, 4 insertions(+), 12 deletions(-)
-> >=20
-> > diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-> > b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-> > index 3b9943eb6934..4b41613ad89d 100644
-> > --- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-> > +++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-> > @@ -3533,7 +3533,6 @@ struct iwl_trans *iwl_trans_pcie_alloc(struct
-> > pci_dev *pdev,
-> > =C2=A0	struct iwl_trans_pcie *trans_pcie, **priv;
-> > =C2=A0	struct iwl_trans *trans;
-> > =C2=A0	int ret, addr_size;
-> > -	void __iomem * const *table;
-> > =C2=A0	u32 bar0;
-> > =C2=A0
-> > =C2=A0	/* reassign our BAR 0 if invalid due to possible runtime
-> > PM races */
-> > @@ -3659,22 +3658,15 @@ struct iwl_trans
-> > *iwl_trans_pcie_alloc(struct pci_dev *pdev,
-> > =C2=A0		}
-> > =C2=A0	}
-> > =C2=A0
-> > -	ret =3D pcim_iomap_regions_request_all(pdev, BIT(0),
-> > DRV_NAME);
-> > +	ret =3D pcim_request_all_regions(pdev, DRV_NAME);
-> > =C2=A0	if (ret) {
-> > -		dev_err(&pdev->dev,
-> > "pcim_iomap_regions_request_all failed\n");
-> > +		dev_err(&pdev->dev, "pcim_request_all_regions
-> > failed\n");
-> > =C2=A0		goto out_no_pci;
-> > =C2=A0	}
-> > =C2=A0
-> > -	table =3D pcim_iomap_table(pdev);
-> > -	if (!table) {
-> > -		dev_err(&pdev->dev, "pcim_iomap_table failed\n");
-> > -		ret =3D -ENOMEM;
-> > -		goto out_no_pci;
-> > -	}
-> > -
-> > -	trans_pcie->hw_base =3D table[0];
-> > +	trans_pcie->hw_base =3D pcim_iomap(pdev, 0, 0);
-> > =C2=A0	if (!trans_pcie->hw_base) {
-> > -		dev_err(&pdev->dev, "couldn't find IO mem in first
-> > BAR\n");
-> > +		dev_err(&pdev->dev, "pcim_iomap failed\n");
->=20
-> This seems a step backwards as a human readable English error message
-> was=20
-> replaced with a reference to a function name.
+On Fri, 25 Oct 2024, Philipp Stanner wrote:
 
-I think it's still an improvement because "couldn't find IO mem in
-first BAR" is a nonsensical statement. What the author probably meant
-was: "Couldn't find first BAR's IO mem in magic pci_iomap_table" ;)
+> pcim_iomap_regions_request_all() and pcim_iomap_table() have been
+> deprecated by the PCI subsystem in commit e354bb84a4c1 ("PCI: Deprecate
+> pcim_iomap_table(), pcim_iomap_regions_request_all()").
+> 
+> Replace these functions with their successors, pcim_iomap() and
+> pcim_request_all_regions().
+> 
+> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+> Acked-by: Damien Le Moal <dlemoal@kernel.org>
+> ---
+>  drivers/ata/acard-ahci.c | 6 ++++--
+>  drivers/ata/ahci.c       | 6 ++++--
+>  2 files changed, 8 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/ata/acard-ahci.c b/drivers/ata/acard-ahci.c
+> index 547f56341705..3999305b5356 100644
+> --- a/drivers/ata/acard-ahci.c
+> +++ b/drivers/ata/acard-ahci.c
+> @@ -370,7 +370,7 @@ static int acard_ahci_init_one(struct pci_dev *pdev, const struct pci_device_id
+>  	/* AHCI controllers often implement SFF compatible interface.
+>  	 * Grab all PCI BARs just in case.
+>  	 */
+> -	rc = pcim_iomap_regions_request_all(pdev, 1 << AHCI_PCI_BAR, DRV_NAME);
+> +	rc = pcim_request_all_regions(pdev, DRV_NAME);
+>  	if (rc == -EBUSY)
+>  		pcim_pin_device(pdev);
+>  	if (rc)
+> @@ -386,7 +386,9 @@ static int acard_ahci_init_one(struct pci_dev *pdev, const struct pci_device_id
+>  	if (!(hpriv->flags & AHCI_HFLAG_NO_MSI))
+>  		pci_enable_msi(pdev);
+>  
+> -	hpriv->mmio = pcim_iomap_table(pdev)[AHCI_PCI_BAR];
+> +	hpriv->mmio = pcim_iomap(pdev, AHCI_PCI_BAR, 0);
+> +	if (!hpriv->mmio)
+> +		return -ENOMEM;
+>  
+>  	/* save initial config */
+>  	ahci_save_initial_config(&pdev->dev, hpriv);
+> diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+> index 45f63b09828a..2043dfb52ae8 100644
+> --- a/drivers/ata/ahci.c
+> +++ b/drivers/ata/ahci.c
+> @@ -1869,7 +1869,7 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+>  	/* AHCI controllers often implement SFF compatible interface.
+>  	 * Grab all PCI BARs just in case.
+>  	 */
+> -	rc = pcim_iomap_regions_request_all(pdev, 1 << ahci_pci_bar, DRV_NAME);
+> +	rc = pcim_request_all_regions(pdev, DRV_NAME);
+>  	if (rc == -EBUSY)
+>  		pcim_pin_device(pdev);
+>  	if (rc)
+> @@ -1893,7 +1893,9 @@ static int ahci_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
+>  	if (ahci_sb600_enable_64bit(pdev))
+>  		hpriv->flags &= ~AHCI_HFLAG_32BIT_ONLY;
+>  
+> -	hpriv->mmio = pcim_iomap_table(pdev)[ahci_pci_bar];
+> +	hpriv->mmio = pcim_iomap(pdev, ahci_pci_bar, 0);
+> +	if (!hpriv->mmio)
+> +		return -ENOMEM;
 
-The reason I just wrote "pcim_iomap failed\n" is that this seems to be
-this driver's style for those messages. See the dev_err() above, there
-they also just state that this or that function failed.
+Hi,
 
-I am indifferent about the message, though. Whatever the maintainer
-prefers is fine.
+I've probably lost the big picture somewhere and the coverletter wasn't 
+helpful focusing only the most immediate goal of getting rid of the 
+deprecated function.
 
-P.
+These seem to only pcim_iomap() a single BAR. So my question is, what is 
+the reason for using pcim_request_all_regions() and not 
+pcim_request_region() as mentioned in the commit message of the commit 
+e354bb84a4c1 ("PCI: Deprecate pcim_iomap_table(), 
+pcim_iomap_regions_request_all()")?
+
+I understand it's strictly not wrong to use pcim_request_all_regions()
+but I'm just trying to understand the logic behind the selection.
+I'm sorry if this is a stupid question, it's just what I couldn't figure 
+out on my own while trying to review these patches.
+
+(I admit not reading all the related discussions in the earlier versions.)
+
+-- 
+ i.
 
 
