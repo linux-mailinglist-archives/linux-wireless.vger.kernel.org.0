@@ -1,147 +1,189 @@
-Return-Path: <linux-wireless+bounces-14521-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14522-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0559A9AFFAD
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 12:10:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC2DB9AFFEC
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 12:20:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3768F1C22D57
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 10:10:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21FDCB21A92
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 10:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98456202F6A;
-	Fri, 25 Oct 2024 10:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 298CE18D655;
+	Fri, 25 Oct 2024 10:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="hAmoK8Np"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jaV8aXqg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F2D200CB0;
-	Fri, 25 Oct 2024 10:08:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51671D5ABF
+	for <linux-wireless@vger.kernel.org>; Fri, 25 Oct 2024 10:20:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729850932; cv=none; b=ojir+4ssJCoshol8reN6/BA4++8dpTP6e7OAdHptVW1Fcxlwrq66G58C832bE1Rygj9uz/dhe6t7bVfesOX+gssZGRVzbRflE21EwKHIS8QV+Bbg3d3xrQEPjzCF4hiQVIRZ4p54ja/gRX2w6Ly3Rp71QdInAoFX+Z1SQ3U1IMg=
+	t=1729851649; cv=none; b=Eb4g/QdYgZALTYd7TyzDX5Tpc2SWTFKy0CVZy920VxA1IuE4M/Meo90MzuHczQFULsnGMKkfd+EAxyJCUns4SFI1znEXCn8EEAO/XGXmaLZr85yDVLB/og4ZM+HuuWkTPrqaJuYpqXgOwjQpwX/AHb88C9c39yJbKdVzSmuli8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729850932; c=relaxed/simple;
-	bh=uMsrbKEFzUIIDa3jlcbEjO0ezM4GnYr63OfFQI2mv0Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=eti54e1a0XW7RsiW+BqGMHmvGByW6EZyM1zl2qaMnXzRuXOQG2xFXYodTW0lCUpsKPNGwaQGOTfEFx5M738TG6ViRqI38G84yaecWqdH6oMgjhXSppGaA+Uf+P2fwsozQX14XFX6HgwzE3j3n0PXccwkpuujck98i6dtoQGJeiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=hAmoK8Np; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49P0mmpb004988;
-	Fri, 25 Oct 2024 10:08:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	6IgLGyzdm/Oz8+57j6vgG+Bixk6o1KsOnA+JBxBzS9Y=; b=hAmoK8NpDQkVoM+C
-	Gp+hHQSnPI2SOW/HB95nsNQSpeApGf1zR8iS+ZgzCyImmVCQsnqj7QpvmcoF7dl5
-	5XOvf2fzxd0SXntL6RfhcauMFytd9mzQs01NvdjywUzIjtyOKtpFxR2X8JuK+T4V
-	AQxI7yYM6AJz6KJ3gQDhVIKmjFo754A54/9GFeJYvKnj3lDhvHM9kOR+R2t4KTQk
-	H2agamty4Uiv+KvWuW/03W2+59kI8hxCqfK2WmOIDxK+eyc3ZaASCWg3IAazZG2Q
-	Qt243QgSRDRvPeIc6gAtlWVnvLCkl9Rh7n+h6Dk1MhgvZzOwDmF3hTOnm1KEEDjJ
-	pk5SjA==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42em688gvd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Oct 2024 10:08:42 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49PA8fKp025900
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 25 Oct 2024 10:08:41 GMT
-Received: from [10.151.41.25] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 25 Oct
- 2024 03:08:37 -0700
-Message-ID: <db0a6797-0e51-45b2-bf8a-58d53d8cf959@quicinc.com>
-Date: Fri, 25 Oct 2024 15:38:33 +0530
+	s=arc-20240116; t=1729851649; c=relaxed/simple;
+	bh=1iLlAKGudjFkUN/QcEd0Uk7MU9ti5Wpd4+h+AMVeics=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jcBVtHIIRov72d4RuPWXd1AjuXCa6I/sTiiaLOL4it8lKQN/YQ47bdkIy5ANkhT2fasoL7iiDa0LeVzbxBcFR1RNCw/G3HBC9UOsyUnjPyWHQlwALYolIcBLoaHI0L+tKWXORz2csJcQJHHqKQzYey/umTbi5JGUpYzySCva10s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jaV8aXqg; arc=none smtp.client-ip=209.85.128.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-6e35bf59cf6so29673887b3.0
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Oct 2024 03:20:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1729851646; x=1730456446; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=UZGOCvYm3rNUGn+PGYfltlg4oLnrSe3DwF5M9CLcXjE=;
+        b=jaV8aXqg/VWJYTPqUgRDCTd7bO9OC8eyHa8PUrgpnAzEE5BPYJmLNqJ+rwc1+60w7D
+         gYzfywaksyJlc1EU/hlESVXdAXkBpQ6rSeAq/CVJhrwPzhk8DUWVlKg1pOJVPvyBl9zr
+         RmtCYKrWn2QwdO9t/htwShurBYUeK8islTUDuIW7BXLWpS/tLeeVxjZPBLjsU8oRQJD6
+         aWSgCkpnXI2mX3ckiqqF2xxg7mp/fa45M7WAZYygwabd0Wl3A1kWQOIBWB4ynqHth9js
+         7Orwk4+ZdY+XJWcHRXYYravLoVNKHebe7R9mK/4/Pc7vDd2S6Esy9pMszKx+5K3osCBD
+         39rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729851646; x=1730456446;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UZGOCvYm3rNUGn+PGYfltlg4oLnrSe3DwF5M9CLcXjE=;
+        b=pN/6c3NsG6GjUisX69GvD0gOGjALj5f/YhNc97ckGsuEByFsI9FG8/0+GXp9h86PCX
+         vTZpG/AEnnorWq+V32FgXFKRqmFG7VGWWZ+0fh5zohk29OSZpQMgGJ1mr1W8sB5AXntM
+         3MZulXSt3EKcW3DB5QkwP4W5DPHlLdgsr9dugtaIoZ0aoH97yahwEvAHSF520UnLYQ6l
+         rwiBmUCv5fkCXycbI7sTSvOLTifCoUhhTA+BOa+7UdNUuL8cLK1qX9I0SkMtx9PHlntf
+         cuebk9jJfNPoPxSoGZX+ehOAsHaSHaI64VYR6/gW+7XhSsWy3gY3kzpx4Dzp67EQpou6
+         aVuA==
+X-Forwarded-Encrypted: i=1; AJvYcCXGE/L7VnJIhBkC61UySOktRa/l5gKRLbB3TpQ2/K51OSSOnbGB27QWXNDr1/v/uOdAkyvBzolRYc0PXwXkqA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzu6c4wCh4bFxn9Nso/J1rtdf+1ssu/qjZOFYo7yGkeBg5FiA4M
+	+tcWtmuo/g4gNB5qZQVLqkDOuMSNf0arWH0P3tqAcVCD/CFQOtgrxJPXYgnlzc066XsZwfo8427
+	mBMCm7c7jANmf2YmpKE6e8uHgKSLfi0rxJetuQQ==
+X-Google-Smtp-Source: AGHT+IEK+IFBHUuYbFtTsmlZx0OQVp0kbPTqAa5jGXbCwa8RgIenukeKGRyvXq5xKgheZN8Zq0OHePmdyhBBXaHPjpY=
+X-Received: by 2002:a05:690c:3584:b0:6e3:7625:15f7 with SMTP id
+ 00721157ae682-6e84de8edfamr42407037b3.10.1729851645875; Fri, 25 Oct 2024
+ 03:20:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/6] dt-bindings: net: wireless: ath12k: describe WSI
- property for QCN9274
-To: Krzysztof Kozlowski <krzk@kernel.org>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>,
-        Rob
- Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor
- Dooley <conor+dt@kernel.org>,
-        Jeff Johnson <jjohnson@kernel.org>,
-        Bjorn
- Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>
-References: <20241023060352.605019-1-quic_rajkbhag@quicinc.com>
- <20241023060352.605019-3-quic_rajkbhag@quicinc.com>
- <c7c6bf7e-0f79-44b1-aed4-db1fdbedc9a8@kernel.org>
-Content-Language: en-US
-From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-In-Reply-To: <c7c6bf7e-0f79-44b1-aed4-db1fdbedc9a8@kernel.org>
+References: <20241024002514.92290-1-quic_miaoqing@quicinc.com>
+ <20241024002514.92290-3-quic_miaoqing@quicinc.com> <pdjhyrjoreiykv2tquvufjw3rkti5sxrjvpmkjhvkfasq7zbo4@xxntxdmhhyg5>
+ <bc3c06eb-1cb2-4cbb-aaad-95c09223f0cc@quicinc.com> <ig3m3sgmnkgfmwrlglundhqif6rygzl7uh7rzoemrz3yxgvfpc@35a323mw2wbt>
+ <46de0bfe-ebdd-4b37-a957-3c64e30a1376@quicinc.com>
+In-Reply-To: <46de0bfe-ebdd-4b37-a957-3c64e30a1376@quicinc.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date: Fri, 25 Oct 2024 13:20:35 +0300
+Message-ID: <CAA8EJpr4zgV4Sa4sPdCToQWs+CFJu6Xz6CPcPyHDhDczmuzj=g@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] wifi: ath11k: support board-specific firmware overrides
+To: Miaoqing Pan <quic_miaoqing@quicinc.com>
+Cc: kvalo@kernel.org, quic_jjohnson@quicinc.com, ath11k@lists.infradead.org, 
+	linux-wireless@vger.kernel.org, linux-arm-msm@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: cTudtVr9yD2hfIhIKlDkE9f4wgUtdiAW
-X-Proofpoint-GUID: cTudtVr9yD2hfIhIKlDkE9f4wgUtdiAW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 malwarescore=0
- priorityscore=1501 adultscore=0 bulkscore=0 phishscore=0 mlxscore=0
- lowpriorityscore=0 mlxlogscore=999 impostorscore=0 suspectscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410250078
 
-On 10/23/2024 12:30 PM, Krzysztof Kozlowski wrote:
-> On 23/10/2024 08:03, Raj Kumar Bhagat wrote:
->> QCN9274 device has WSI support. WSI stands for WLAN Serial Interface.
->> It is used for the exchange of specific control information across
->> radios based on the doorbell mechanism. This WSI connection is
->> essential to exchange control information among these devices
->>
->> Hence, describe WSI interface supported in QCN9274 with the following
->> properties:
->>
->>  - qcom,wsi-group-id: It represents the identifier assigned to the WSI
->>    connection. All the ath12k devices connected to same WSI connection
->>    have the same wsi-group-id.
->>
->>  - qcom,wsi-index: It represents the identifier assigned to ath12k
->>    device in the order of the WSI connection.
->>
->>  - qcom,wsi-num-devices: Number of devices connected through WSI in
->>    the same group ID.
->>
->> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
->> ---
->>  .../bindings/net/wireless/qcom,ath12k.yaml    | 61 +++++++++++++++++++
->>  1 file changed, 61 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
->> index ecf38af747f7..6c8f97865075 100644
->> --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
->> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
->> @@ -19,6 +19,7 @@ properties:
->>    compatible:
->>      enum:
->>        - pci17cb,1107  # WCN7850
->> +      - pci17cb,1109  # QCN9274
-> 
-> Missing supplies. How does the device take power? Everything through
-> standard PCI pins? Are you sure? Please submit complete binding, so with
-> all required properties.
-> 
+On Fri, 25 Oct 2024 at 10:23, Miaoqing Pan <quic_miaoqing@quicinc.com> wrote:
+>
+>
+>
+> On 10/25/2024 2:01 PM, Dmitry Baryshkov wrote:
+> > On Fri, Oct 25, 2024 at 10:56:02AM +0800, Miaoqing Pan wrote:
+> >>
+> >>
+> >> On 10/25/2024 3:39 AM, Dmitry Baryshkov wrote:
+> >>> On Thu, Oct 24, 2024 at 08:25:14AM +0800, Miaoqing Pan wrote:
+> >>>> QCA6698AQ IP core is the same as WCN6855 hw2.1, but it has different RF,
+> >>>> IPA, thermal, RAM size and etc, so new firmware files used. This change
+> >>>> allows board DT files to override the subdir of the firmware directory
+> >>>> used to lookup the amss.bin and m3.bin.
+> >>>
+> >>> I have slight concerns regarding the _board_ DT files overriding the
+> >>> subdir. This opens a can of worms, allowing per-board firmware sets,
+> >>> which (as far as I understand) is far from being what driver maintainers
+> >>> would like to see. This was required for ath10k-snoc devices, since
+> >>> firmware for those platforms is signed by the vendor keys and it is
+> >>> limited to a particular SoC or SoC family. For ath11k-pci there is no
+> >>> such limitation.
+> >>>
+> >>> Would it be possible to use PCI subvendor / subdev to identify affected
+> >>> cards? PCI Revision? Any other way to identify the device?  Please
+> >>> provide lspci -nnvv for the affected device kind. Is there a way to
+> >>> identify the RF part somehow?
+> >>
+> >> It's rather difficult, for WCN685x, there are multiple evolved subseries for
+> >> customized products. e.g.
+> >>
+> >> QCA6698AQ/hw2.1
+> >> QCA2066/hw2.1
+> >> WCN6855/hw2.0/hw2.1
+> >> WCN6856/hw2.1
+> >>
+> >> They have the same PCIe ID (17cb:1103), the commit 5dc9d1a55e95 ("wifi:
+> >> ath11k: add support for QCA2066") reads TCSR_SOC_HW_SUB_VER to enumerate all
+> >> QCA2066 cards, it lacks of flexibility, as the list will become longer and
+> >> longer. But it's the only choice for QCA2066, as it's customized for X86
+> >> platform which without DT files.
+> >
+> > I guess, this is closer to Kalle's expectations: being able to detect
+> > the hardware instead of adding DT properties.
+> >
+> >> So for MSM those have DT file platforms, like SA8775P-RIDE/QCS8300-RIDE both
+> >> attached to QCA6698AQ, we can specify the correct firmware to
+> >> 'ath11k/WCN6855/hw2.1/qca6698aq', so it's not per-board firmware, it depends
+> >> on the type of the products(x86 windows, IoT products or AUTO).
+> >
+> > No-no-no and no. The firmware used must not be specific to the product
+> > type.  This is what everybody here is trying to avoid. Please try
+> > following the QCA2066 approach instead. And note that it could use new
+> > TLD as it perfectly shows itself as a different hardware kind.
+>
+> Actually, TCSR_SOC_HW_SUB_VER is not SOC register, it's a TLMM hw
+> revision register in BAR0 space, it's hard to maintain the list.
 
-QCN9274 gets powered from the standard Pcie (3.3 V) supply. No additional
-regulators are required.
+How is it so?
+
+And if it is hard, can we please get to the _normal_ way how vendors
+handle PCI hardware differences: the subvendor and subdevice? This is
+a usual way to describe that the PCIe device is the same, but the
+analog / tuner / RF / etc parts are different.
+
+> We're going to have another problem to enable NFA765 m.2 card for IoT
+> platforms, which has different feature sets with X86 platform, so also
+> new firmware should be used. In this case, QCA2066 approach not works.
+> Seems DT approach is only choice.
+>
+> Could you advice ?
+
+Hmm, The first question is _why_ does it have different feature sets?
+What exactly is different? What if the user plugs a normal (laptop)
+M.2 card into their IoT device?
+
+> >
+> >> 0000:01:00.0 Network controller [0280]: Qualcomm QCNFA765 Wireless Network
+> >> Adapter [17cb:1103] (rev 01)
+> >>      Subsystem: Qualcomm QCNFA765 Wireless Network Adapter [17cb:0108]
+> >>      Device tree node: /sys/firmware/devicetree/base/pci@1c00000/pcie@0/wifi@0
+> >>
+> >>
+> >>>
+> >>> Could you possibly clarify, how this situation is handled in Windows
+> >>> world?
+> >>
+> >> X86 platforms use standard m.2 PCIe card, and it will only use the default
+> >> main firmware files, as they without DT files.
+> >
+> > So QCA6698AQ cannot appear on an M.2 PCIe card?
+>
+> No, but no m.2 PCIe card so far. It depends on power sequencing module
+> to do power up.
+
+You are describing software (power sequencing module), while I was
+talking about the hardware. Nothing prevents OEM from adding fixed
+regulators to drive necessary voltages from the PCIe slot.
+
+-- 
+With best wishes
+Dmitry
 
