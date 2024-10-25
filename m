@@ -1,156 +1,179 @@
-Return-Path: <linux-wireless+bounces-14564-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14565-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FA129B1180
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 23:12:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95A619B118C
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 23:16:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59EB2286064
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 21:11:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EF99281D15
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 21:16:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14511D14FA;
-	Fri, 25 Oct 2024 21:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A857E792;
+	Fri, 25 Oct 2024 21:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="q2tRjDhc"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Rzg0iyvz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3B918BB90
-	for <linux-wireless@vger.kernel.org>; Fri, 25 Oct 2024 21:10:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF65F217F30;
+	Fri, 25 Oct 2024 21:16:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729890617; cv=none; b=J/gPaW1zFZiSBjldhO7z40+c2wftTrAa9/u7bU9GmCOAIUGSgJsDTG8Nord+2s8jW5OmOmbeYHgMSOzdIIjC0MJFn9AQOx9AX0FAj4PbADlnrUTPVAkubBqfk4c/gUbdKZoaPXOatUVxd9sY5p5DIjRgvtgoQquEXYxHkPw5crc=
+	t=1729890985; cv=none; b=JKvuMP8jRBTOAWWfJfTjCBu+MISoUapOHtDR9LomuGVJh3HE8AzqM1vx7j4o27R4vYLh08WondOVc9JFpj/Ogr5yHVQWzIvhVwlQ9viPSgribPL2CzCqAzSfZBJLc+fkHFdBqSYBivizJHKeJwmFFqbTTXOGNnbC5jbyUxHCOAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729890617; c=relaxed/simple;
-	bh=TPho4dkS6mrn6hTejdUWmg7ebeatab0pOXP++hksgOA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KzvZl9f6gYPwvPpxRGpEtacXYtOF0GX1kBUGA42Cvp1dOmn4gFIfZBPONnbwfCIWxIz5+nhHrRm6SdwIGj3T6lH5b8uwYKyD5C6Dn/1nHmkMliPHN3HNmvH1qtdlhmM5aleKhrkpO00V7Ln9qMnmtb4jRFa5aTiVkjugvMA7M5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=q2tRjDhc; arc=none smtp.client-ip=44.202.169.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
-Received: from eig-obgw-5004a.ext.cloudfilter.net ([10.0.29.221])
-	by cmsmtp with ESMTPS
-	id 4ObStlEolnNFG4RZWt2KLI; Fri, 25 Oct 2024 21:10:14 +0000
-Received: from gator4166.hostgator.com ([108.167.133.22])
-	by cmsmtp with ESMTPS
-	id 4RZVt14EPWvXp4RZWtknSa; Fri, 25 Oct 2024 21:10:14 +0000
-X-Authority-Analysis: v=2.4 cv=LtdZyWdc c=1 sm=1 tr=0 ts=671c0936
- a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=OKg9RQrQ6+Y1xAlsUndU0w==:17
- a=IkcTkHD0fZMA:10 a=DAUX931o1VcA:10 a=7T7KSl7uo7wA:10
- a=XVG_Zt8v1qosKg6nO_oA:9 a=QEXdDO2ut3YA:10 a=Xt_RvD8W3m28Mn_h3AK8:22
+	s=arc-20240116; t=1729890985; c=relaxed/simple;
+	bh=8Nn3A+UdrXv0Swkr7BZ4okxDkyB1splEY8faoNaG2sE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=HeD+jfs486iWDGEk+X+tQqAMUn/jOUxtX5LmjC6CIcvE2nIp8EcBXqVsA+9pC5ARE/NC2vNRJI2VeL0AN7kG9cpszmfWjwqJQxfcbN07nRxIidkGsSTu34wXMyeR9S8hfMXD9X06e1Ulgh+rafHbf3P9B9x1SaOwhMYwRXidI3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Rzg0iyvz; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=0isTUBLuyFlo6RiNDsF6WYPY4prLAUENxvha5GaK7rk=; b=q2tRjDhc517w0ph9oN1uUlCjaH
-	TeOsyJryyQAhkFGSo9+/WWq2mSMgP8bQAH+Ed7zRcnGHbrJMlLZslK0ylIJDiSgIWAwWZoKkhuCSB
-	gbXX5zIi1LvSzjPy2MwPaq7hSMAhO5DkR5n1M2FZOSXrlESrxyJ8CQk7KZtVBnB4hO/0D+V47FD1v
-	UG6fd/j/Y4MV2YANPn71ZMdHX4FoJVX4m8V5GapAMEX7AlZLBeX1YYDaCY1Egj1MCfMB2s2kku86a
-	6xawpK6Bi4m4birdVJY9oCGvL+RY/+L9Ryf2nev7z/3QBiAeO/Fxchm+wqhcvuG2y9wZw6WLkhg32
-	XuKh20Kg==;
-Received: from [201.172.173.7] (port=37432 helo=[192.168.15.6])
-	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <gustavo@embeddedor.com>)
-	id 1t4RZV-003ykj-07;
-	Fri, 25 Oct 2024 16:10:13 -0500
-Message-ID: <7e2745d9-f607-4b9b-87c6-0623708747ef@embeddedor.com>
-Date: Fri, 25 Oct 2024 15:10:11 -0600
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=jgMnw5M7Z+ZY5Nf4QUgXosxnvQKmVFPBeE4lXBGNjVE=;
+	t=1729890983; x=1731100583; b=Rzg0iyvzIUN2wZe12yw4kZglZSSdOU4oNk6qFmnqcpOvz0K
+	jZ69mpcnAypen+R+f9BxAaBR3vZrMroC3Quwowj396hvfpMdw59BKmUv5yIUeygDiVlBYivMbB7Mr
+	X9TAeuHOxA6dp6cZ28s2APcGCW4sc2fyyBRcaFH5jIcuuhJvSQdtH+biXH6nLpGSp9k0kd/6ScCPX
+	HH/MYoq432sONiyUvUad6/zshMknPaBx8sejF5d4+H4vNHlF4NiqBZC7+uxIgWAMWJ7mBsv4G5OYh
+	BAIiipOqzzXb6zjW4N4g4xjEcrGbNAdSIT/B21N4MDRBQDkT2PmIj2zEt3BqWVQQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1t4RfP-00000004i3l-48CV;
+	Fri, 25 Oct 2024 23:16:20 +0200
+Message-ID: <49a18a9a482263e9063a0afc8b93de451dbe4d84.camel@sipsolutions.net>
+Subject: Re: [PATCH][next] wifi: mac80211: ieee80211_i: Avoid dozens of
+ -Wflex-array-member-not-at-end warnings
+From: Johannes Berg <johannes@sipsolutions.net>
+To: "Gustavo A. R. Silva" <gustavo@embeddedor.com>, "Gustavo A. R. Silva"
+	 <gustavoars@kernel.org>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-hardening@vger.kernel.org, Aditya Kumar Singh <quic_adisi@quicinc.com>
+Date: Fri, 25 Oct 2024 23:16:19 +0200
+In-Reply-To: <7e2745d9-f607-4b9b-87c6-0623708747ef@embeddedor.com>
+References: <Zxv7KtPEy1kvnTPM@kspp>
+	 <c90c3c9825e3837bf7c47979acd0075b102576ce.camel@sipsolutions.net>
+	 <3471e59f-a414-479f-8fb0-aa1a26aecf16@embeddedor.com>
+	 <5c48b4529bf552d5c16b4dcc951c653f37b6a68e.camel@sipsolutions.net>
+	 <8152a551-1813-4d44-a203-45d30f2ac671@embeddedor.com>
+	 <192eb05afffd37bd13ff9bc1fc9b044b347b5dc4.camel@sipsolutions.net>
+	 <7e2745d9-f607-4b9b-87c6-0623708747ef@embeddedor.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH][next] wifi: mac80211: ieee80211_i: Avoid dozens of
- -Wflex-array-member-not-at-end warnings
-To: Johannes Berg <johannes@sipsolutions.net>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-hardening@vger.kernel.org, Aditya Kumar Singh <quic_adisi@quicinc.com>
-References: <Zxv7KtPEy1kvnTPM@kspp>
- <c90c3c9825e3837bf7c47979acd0075b102576ce.camel@sipsolutions.net>
- <3471e59f-a414-479f-8fb0-aa1a26aecf16@embeddedor.com>
- <5c48b4529bf552d5c16b4dcc951c653f37b6a68e.camel@sipsolutions.net>
- <8152a551-1813-4d44-a203-45d30f2ac671@embeddedor.com>
- <192eb05afffd37bd13ff9bc1fc9b044b347b5dc4.camel@sipsolutions.net>
-Content-Language: en-US
-From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
-In-Reply-To: <192eb05afffd37bd13ff9bc1fc9b044b347b5dc4.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - embeddedor.com
-X-BWhitelist: no
-X-Source-IP: 201.172.173.7
-X-Source-L: No
-X-Exim-ID: 1t4RZV-003ykj-07
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: ([192.168.15.6]) [201.172.173.7]:37432
-X-Source-Auth: gustavo@embeddedor.com
-X-Email-Count: 4
-X-Org: HG=hgshared;ORG=hostgator;
-X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfGWlXNYY7IFqUnSgPpLvnDR/hlsPFxkx1T78QWL0VjUz3IRl92mJqnaxNpA7gvw3CMZP/C6smQdgPhuEFvijVzRkPuWGZpePZ95qkCtDExOSNVZKqt69
- T2Cvtwl1dcMvngNy1p3WxTlJeUMA9Zxl4VtR2kQFtFdtCwiQtVs3ejWNHBIn9Tgcw9PJXon4Oyr8E0nYdZfe+MKGtdPuNuHLW7jAybLUXDmGtnjyBc8mgAZ6
+X-malware-bazaar: not-scanned
+
+On Fri, 2024-10-25 at 15:10 -0600, Gustavo A. R. Silva wrote:
+>=20
+> On 25/10/24 14:48, Johannes Berg wrote:
+> > On Fri, 2024-10-25 at 14:36 -0600, Gustavo A. R. Silva wrote:
+> > > > >=20
+> > > > > Yeah, I was actually going to mention this commit, as it's the on=
+e that introduced
+> > > > > that `bool radar_detected` to the flex struct. However, it wasn't=
+ obvious to me
+> > > > > how `struct ieee80211_chanctx_conf conf` could overwrite `radar_d=
+etected` as I didn't
+> > > > > see `conf->drv_priv` being accessed through `struct struct ieee80=
+211_chanctx_conf`.
+> > > >=20
+> > > > You have to look at the drivers, see hwsim_clear_chanctx_magic() fo=
+r
+> > > > example; I wonder why hwsim_check_chanctx_magic() never caught this=
+.
+> > >=20
+> > > Sorry, I actually meant through `struct ieee80211_chanctx`. Something=
+ like:
+> > >=20
+> > > struct ieee80211_chanctx *foo;
+> > > ...
+> > >=20
+> > > foo->conf.drv_priv[i] =3D something;
+> > >=20
+> > > or
+> > >=20
+> > > struct bar *ptr =3D (void *)foo->conf->drv_priv;
+> > > then write something into *ptr...
+> > >=20
+> > > In the above cases the code will indeed overwrite `radar_detected`.
+> >=20
+> > Right, that's what it does though, no? Except it doesn't have, in the
+> > driver, "foo->conf." because mac80211 only gives it a pointer to conf,
+> > so it's only "conf->drv_priv" (and it's the "struct bar" example.)
+>=20
+> OK, so do you mean that pointer to `conf` is actually coming from
+> `foo->conf`?
+
+Well depends what code you're looking at? I guess we should get more
+concrete now. Let's say hwsim:
+
+struct hwsim_chanctx_priv {
+        u32 magic;
+};
+
+...
+
+static inline void hwsim_set_chanctx_magic(struct ieee80211_chanctx_conf *c=
+)
+{
+        struct hwsim_chanctx_priv *cp =3D (void *)c->drv_priv;
+        cp->magic =3D HWSIM_CHANCTX_MAGIC;
+}
+
+probably shouldn't be marked 'inline' now that I look at it :-)
+
+This is being called in hwsim itself, of course:
+
+static int mac80211_hwsim_add_chanctx(struct ieee80211_hw *hw,
+                                      struct ieee80211_chanctx_conf *ctx)
+{
+        hwsim_set_chanctx_magic(ctx);
+...
+
+which is only referenced as a function pointer in the ops:
+
+static const struct ieee80211_ops mac80211_hwsim_mchan_ops =3D {
+...
+	.add_chanctx =3D mac80211_hwsim_add_chanctx,
+
+(via some macros)
 
 
+And that's called by mac80211:
 
-On 25/10/24 14:48, Johannes Berg wrote:
-> On Fri, 2024-10-25 at 14:36 -0600, Gustavo A. R. Silva wrote:
->>>>
->>>> Yeah, I was actually going to mention this commit, as it's the one that introduced
->>>> that `bool radar_detected` to the flex struct. However, it wasn't obvious to me
->>>> how `struct ieee80211_chanctx_conf conf` could overwrite `radar_detected` as I didn't
->>>> see `conf->drv_priv` being accessed through `struct struct ieee80211_chanctx_conf`.
->>>
->>> You have to look at the drivers, see hwsim_clear_chanctx_magic() for
->>> example; I wonder why hwsim_check_chanctx_magic() never caught this.
->>
->> Sorry, I actually meant through `struct ieee80211_chanctx`. Something like:
->>
->> struct ieee80211_chanctx *foo;
->> ...
->>
->> foo->conf.drv_priv[i] = something;
->>
->> or
->>
->> struct bar *ptr = (void *)foo->conf->drv_priv;
->> then write something into *ptr...
->>
->> In the above cases the code will indeed overwrite `radar_detected`.
-> 
-> Right, that's what it does though, no? Except it doesn't have, in the
-> driver, "foo->conf." because mac80211 only gives it a pointer to conf,
-> so it's only "conf->drv_priv" (and it's the "struct bar" example.)
+static inline int drv_add_chanctx(struct ieee80211_local *local,
+                                  struct ieee80211_chanctx *ctx)
+{
+        int ret =3D -EOPNOTSUPP;
 
-OK, so do you mean that pointer to `conf` is actually coming from
-`foo->conf`?
+        might_sleep();
+        lockdep_assert_wiphy(local->hw.wiphy);
 
-This is probably a dumb question but, where is that pointer to `conf`
-coming from exactly?
+        trace_drv_add_chanctx(local, ctx);
+        if (local->ops->add_chanctx)
+                ret =3D local->ops->add_chanctx(&local->hw, &ctx->conf);
 
-I'd really like to understand this better so I can determine whether
-I'm dealing with a bug when analyzing similar instances in the future. :)
 
-> 
-> So yeah, pretty sure it will overwrite that, and I do wonder why it
-> wasn't caught. I guess no radar detection tests with MLO yet.
-> 
+so you see that the struct ieee80211_chanctx is never passed to the
+driver, but instead &ctx->conf, which is the struct with the flex array
+for driver priv.
 
---
-Gustavo
+So in this example, struct hwsim_chanctx_priv::magic overlaps the
+radar_detected value.
+
+
+(The allocation happens via chanctx_data_size.)
+
+johannes
 
