@@ -1,327 +1,321 @@
-Return-Path: <linux-wireless+bounces-14507-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14508-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68F1E9AFC7C
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 10:26:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 145D79AFCC7
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 10:38:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C45B1C21CD2
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 08:26:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8060281F77
+	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 08:38:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62BB31D1E8E;
-	Fri, 25 Oct 2024 08:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D77721D3654;
+	Fri, 25 Oct 2024 08:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="unknown key version" (0-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="b8X7RUAn";
-	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="bUe+dVkQ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QtMvOpeM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from e2i340.smtp2go.com (e2i340.smtp2go.com [103.2.141.84])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 042AA1D131D
-	for <linux-wireless@vger.kernel.org>; Fri, 25 Oct 2024 08:26:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.2.141.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DEE1D31A2
+	for <linux-wireless@vger.kernel.org>; Fri, 25 Oct 2024 08:38:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729844799; cv=none; b=HON4a7/d3XsZ/QXlxQxagNuHDIVjjniQsk7KFpE8v6k922LWzZsgUukmKZxxYN29/4mLDtv77bJxirbwM+TR4rbtwNnEvfOpTFyJICByV18ZY+0wCDPPGcoDNNTaqwnHf7m8GWRmGhmzP5Mj+57zyJkHpRLWp2f5a9qH8Pq2ubU=
+	t=1729845490; cv=none; b=Gr1sczXysNBMqm4n52l6HCUnAhWObhsd80HaFnMt2xq7jtIvvMBuN8Sk9x5rgY2Na77F9XbK+ijdPZ5dvDlJ0aNCULRxIHIVYBfz68jur94hHGiS8e17dbf5WUmNDlhXUFJLKS4MF+XKh0tOgcD40dsON8eTzCCC7DgAhibn47A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729844799; c=relaxed/simple;
-	bh=66BJsGKSO0zFJ5xRn6kHzXxXZ0lN+l9CnEWscQpaTEY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oXPsxqRbleah+CeWQQuBJKbqIgmHlA2zCmBVFdeXOjqZPHnyzibkLGcNzzyFTFxJLH6Cik8ygJy7fkyyLuxwyJOxgu+IKvhGSW2Q1+fn7tAEYZjN4IxR/hvs2vZcNBto9Ipn5vTl9Q8CC7D7v1fekatrOWougnzMYff2Kh8Qd5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=fail (0-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=b8X7RUAn reason="unknown key version"; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=bUe+dVkQ; arc=none smtp.client-ip=103.2.141.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=smtpservice.net; s=maxzs0.a1-4.dyn; x=1729845696; h=Feedback-ID:
-	X-Smtpcorp-Track:Message-Id:Date:Subject:To:From:Reply-To:Sender:
-	List-Unsubscribe:List-Unsubscribe-Post;
-	bh=GxT94cQL1fAndlDPcyAmj+ZFucIh1j+4l3cVtvOBc3c=; b=b8X7RUAnndUVdde5qSwlXmjFTK
-	7RGtoJVJpesZMZMFWpdXWNe04qFiMacUCpE/jE+Mhk57jKc98ekP4R4UeFqJc9GEj5uY65tqXd8Sc
-	VMh3IY+fmJt4t4tDZlZ6YryRamnv2781vZW48flTX3uiGU4MgFE1n8fAbcIPTpyuQtNrqdsNV/Wn7
-	q4H7Jz0049aNt64eq6qu2iy4j7/yoa5InAogcCaBm4ueVXYqpPYRh0JlOUy/4Fp/ML6AYByq1ao86
-	WoohGLPv4iCftv5Fe+w5KgINr86QmeppHe96LUn6QL71sgD7HttTW8pyTtWUPUMYZkI51RYeLNt+E
-	zITdLQxg==;
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
- i=@triplefau.lt; q=dns/txt; s=s510616; t=1729844796; h=from : subject
- : to : message-id : date;
- bh=GxT94cQL1fAndlDPcyAmj+ZFucIh1j+4l3cVtvOBc3c=;
- b=bUe+dVkQuXWF6se3OwWkjD1LiZL8jzYaIOwvNKuQBv/85pYXi3BfWDMBHsWPrm121JChy
- jKrQB+pokrd2IDy+B4CHUpgbpHdeL8vpmCsNtrtWqcyQr6Yf0TnFEq8QPEeF3DaU8V0RYCb
- HIh5BqQZyGqMLLuiPD/mKbNhoiU80F481gwCi12gZGf+d9cgSWSR+p7bWwr8wJ2h6nmMMX9
- x5LvUTaL2GKXoe8j5rhKfO2vSRMACfkxhcVwMaFy+wSF0ZB/mWaVwy2UsyQzpY5Wjbt6Vcx
- FweLuNkKoK/g+/FdF246HxEB7d0i9hPoeIXTf8rceY5SGb/vM9+K5CzmPBDA==
-Received: from [10.172.233.45] (helo=SmtpCorp) by smtpcorp.com with esmtpsa
- (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
- (Exim 4.94.2-S2G) (envelope-from <repk@triplefau.lt>)
- id 1t4FeB-TRjx9W-Q5; Fri, 25 Oct 2024 08:26:15 +0000
-Received: from [10.12.239.196] (helo=localhost) by smtpcorp.com with esmtpsa
- (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
- (Exim 4.97.1-S2G) (envelope-from <repk@triplefau.lt>)
- id 1t4FeB-AIkwcC8o9Lr-IbvN; Fri, 25 Oct 2024 08:26:15 +0000
-From: Remi Pommarel <repk@triplefau.lt>
-To: ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
- Cedric Veilleux <veilleux.cedric@gmail.com>,
- Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>,
- Remi Pommarel <repk@triplefau.lt>
-Subject: [PATCH v3 2/2] wifi: ath10k: Flush only requested txq in
- ath10k_flush()
-Date: Fri, 25 Oct 2024 10:23:48 +0200
-Message-Id: <d0a3e1b61ae7ff8cc1a474b37d1064eeea11cbff.1729844329.git.repk@triplefau.lt>
-X-Mailer: git-send-email 2.40.0
-In-Reply-To: <cover.1729844329.git.repk@triplefau.lt>
-References: <cover.1729844329.git.repk@triplefau.lt>
+	s=arc-20240116; t=1729845490; c=relaxed/simple;
+	bh=Kj+t7bUL5B0QKM5IwQHw3NNDOxblEb5Nefz9XwGv6eA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=IL1WRmWE2/YutkXVdJ8kJ6xPCLhhM6gdULTGvy14fmedz8GATdKt1/HKlynanquaBumxJ93dxmDtfyQ2D6K+q4fxzBQmL9pO0E30/Cv2u/lAToMGUW7eqjPJ5F+rzyuitxPoRZpBaGtjmHhnq9b84OfQSL+SAaF9NBtjtlbYTRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QtMvOpeM; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729845487;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t5SfsCaa6OQtbrocW2yvj8So2+UMhrgJURtFbTDl4+U=;
+	b=QtMvOpeMYzxjfm6r7lfMyfiqhfubQ1pUrrbtwP6o94lJiUArH1RAN6yLPPlb+avmJsaQBB
+	o9y5cuF3glvRAH5eUpPnOZT/VUz3Ti2CT3vWVZtu5tQCR3CJ+BTpP3owci6VIb7Ev+32H0
+	AhddDlLnLqs5OPKr77HCZyAqPboUkII=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-583-C7HqokCiP_mCYMr8cT9ksg-1; Fri, 25 Oct 2024 04:38:02 -0400
+X-MC-Unique: C7HqokCiP_mCYMr8cT9ksg-1
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-37d4922d8c7so1041387f8f.1
+        for <linux-wireless@vger.kernel.org>; Fri, 25 Oct 2024 01:38:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729845481; x=1730450281;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=t5SfsCaa6OQtbrocW2yvj8So2+UMhrgJURtFbTDl4+U=;
+        b=WV4zyyzSaPEEAxJcpM0b26/R6Kkjg/q9iA/5ZrmllGwdO5G9vFxKTuPO2CUSxI9Z3B
+         tLKHubICly6FhdTtXMSrtgOMQVNIGfa1GwoU69MVibK1fjS1hse0kNCRc/sMT4/LrUyF
+         H0Ma2kOagWsrHISvbYPsQdFJOQ4bcIiI38ZE5i+FvX6qUVTvC3l2/dETu3Hbe6km1rtG
+         HYEgnuzI7tXnIAwXAsQN09HHzyDNAHvuaBcUUTtwZzTFdTZYHyO2OfGxYxY9uv7BqKDL
+         4uPHS6oqUTqdSLewtbkjCW6jdfOJlQUjbhVEHaR+1suxy1NK5FJNj7W4a7dZS+G01MxQ
+         0MLw==
+X-Forwarded-Encrypted: i=1; AJvYcCW2D0jOa/TQw2+qjidMQeo+ZaRcfP8JlLc2AeG0fZnVDrWpyAv9lAYpBTyNTy1o0RBYpYc7yQlQeBSiiWBibQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxiQLHq98d7Q2ZFaJ3CUQED8DRsJAQfsRLxd4JLHZgRVCitl2Y5
+	Fo7SUCWxNZqJTMkfeNdgUrQFKJ5SqUXhIBZmGiN+cRgc4LkgbC+GBH6nqVeV7Uo3os4/Dl+Hsay
+	/Mp16Oh9mLYdV6J4urWav+mAGzmm3sDOwYRZWdT8xmLBIsYyq+3EfWeAF8GJbauXJ
+X-Received: by 2002:a5d:45d2:0:b0:37d:5103:8894 with SMTP id ffacd0b85a97d-37efcf78dadmr5976808f8f.42.1729845481095;
+        Fri, 25 Oct 2024 01:38:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGcYWpz+kQZdr3vU0ccyDv2e4lUiNEwepdTyBtEeS9wkTJkf/x/0hfBIa/kJv59+/PzqJJV1A==
+X-Received: by 2002:a5d:45d2:0:b0:37d:5103:8894 with SMTP id ffacd0b85a97d-37efcf78dadmr5976745f8f.42.1729845480512;
+        Fri, 25 Oct 2024 01:38:00 -0700 (PDT)
+Received: from ?IPv6:2001:16b8:2de5:ba00:738a:c8da:daac:7543? (200116b82de5ba00738ac8dadaac7543.dip.versatel-1u1.de. [2001:16b8:2de5:ba00:738a:c8da:daac:7543])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b70c44sm932452f8f.80.2024.10.25.01.37.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Oct 2024 01:38:00 -0700 (PDT)
+Message-ID: <ae081c36c49733b007a8946dceeec0af94fc449a.camel@redhat.com>
+Subject: Re: [PATCH 02/13] ALSA: hda_intel: Use always-managed version of
+ pcim_intx()
+From: Philipp Stanner <pstanner@redhat.com>
+To: Takashi Iwai <tiwai@suse.de>
+Cc: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, 
+ Sergey Shtylyov <s.shtylyov@omp.ru>, Basavaraj Natikar
+ <basavaraj.natikar@amd.com>, Jiri Kosina <jikos@kernel.org>,  Benjamin
+ Tissoires <bentiss@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Alex Dubov <oakad@yahoo.com>,
+ Sudarsana Kalluru <skalluru@marvell.com>, Manish Chopra
+ <manishc@marvell.com>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Rasesh Mody <rmody@marvell.com>,
+ GR-Linux-NIC-Dev@marvell.com, Igor Mitsyanko <imitsyanko@quantenna.com>,
+ Sergey Matyukevich <geomatsi@gmail.com>, Kalle Valo <kvalo@kernel.org>,
+ Sanjay R Mehta <sanju.mehta@amd.com>, Shyam Sundar S K
+ <Shyam-sundar.S-k@amd.com>, Jon Mason <jdmason@kudzu.us>, Dave Jiang
+ <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>, Bjorn Helgaas
+ <bhelgaas@google.com>, Alex Williamson <alex.williamson@redhat.com>,
+ Juergen Gross <jgross@suse.com>, Stefano Stabellini
+ <sstabellini@kernel.org>, Oleksandr Tyshchenko
+ <oleksandr_tyshchenko@epam.com>, Jaroslav Kysela <perex@perex.cz>, Takashi
+ Iwai <tiwai@suse.com>, Chen Ni <nichen@iscas.ac.cn>, Mario Limonciello
+ <mario.limonciello@amd.com>, Ricky Wu <ricky_wu@realtek.com>, Al Viro
+ <viro@zeniv.linux.org.uk>, Breno Leitao <leitao@debian.org>, Kevin Tian
+ <kevin.tian@intel.com>, Thomas Gleixner <tglx@linutronix.de>, Ilpo
+ =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>, Andy
+ Shevchenko <andriy.shevchenko@linux.intel.com>, Mostafa Saleh
+ <smostafa@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Yi Liu
+ <yi.l.liu@intel.com>,  Christian Brauner <brauner@kernel.org>, Ankit
+ Agrawal <ankita@nvidia.com>, Eric Auger <eric.auger@redhat.com>, Reinette
+ Chatre <reinette.chatre@intel.com>, Ye Bin <yebin10@huawei.com>, Marek
+ =?ISO-8859-1?Q?Marczykowski-G=F3recki?= <marmarek@invisiblethingslab.com>,
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, Peter Ujfalusi
+ <peter.ujfalusi@linux.intel.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Kai Vehmanen
+ <kai.vehmanen@linux.intel.com>,  Rui Salvaterra <rsalvaterra@gmail.com>,
+ linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-input@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-wireless@vger.kernel.org, ntb@lists.linux.dev,
+ linux-pci@vger.kernel.org,  kvm@vger.kernel.org,
+ xen-devel@lists.xenproject.org, linux-sound@vger.kernel.org
+Date: Fri, 25 Oct 2024 10:37:57 +0200
+In-Reply-To: <875xphzeun.wl-tiwai@suse.de>
+References: <20241015185124.64726-1-pstanner@redhat.com>
+	 <20241015185124.64726-3-pstanner@redhat.com> <87v7xk2ps5.wl-tiwai@suse.de>
+	 <6f3db65fe9a5dcd1a7a8d9bd5352ecb248ef57b1.camel@redhat.com>
+	 <87ttd2276j.wl-tiwai@suse.de>
+	 <aec23bb79b9ff7dd7f13eb67460e0605eac22912.camel@redhat.com>
+	 <875xphzeun.wl-tiwai@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Smtpcorp-Track: rQKgsTbO0UQK.Y1umMMnxKE84.-2wyOQs1pFw
-Feedback-ID: 510616m:510616apGKSTK:510616sRI4AHN5Hf
-X-Report-Abuse: Please forward a copy of this message, including all headers,
- to <abuse-report@smtp2go.com>
 
-The ieee80211 flush callback can be called to flush only part of all hw
-queues. The ath10k's flush callback implementation (i.e. ath10k_flush())
-was waiting for all pending frames of all queues to be flushed ignoring
-the queue parameter. Because only the queues to be flushed are stopped
-by mac80211, skb can still be queued to other queues meanwhile. Thus
-ath10k_flush() could fail (and wait 5sec holding ar->conf lock) even if
-the requested queues are flushed correctly.
+On Thu, 2024-10-24 at 17:43 +0200, Takashi Iwai wrote:
+> On Thu, 24 Oct 2024 10:02:59 +0200,
+> Philipp Stanner wrote:
+> >=20
+> > On Wed, 2024-10-23 at 17:03 +0200, Takashi Iwai wrote:
+> > > On Wed, 23 Oct 2024 15:50:09 +0200,
+> > > Philipp Stanner wrote:
+> > > >=20
+> > > > On Tue, 2024-10-22 at 16:08 +0200, Takashi Iwai wrote:
+> > > > > On Tue, 15 Oct 2024 20:51:12 +0200,
+> > > > > Philipp Stanner wrote:
+> > > > > >=20
+> > > > > > pci_intx() is a hybrid function which can sometimes be
+> > > > > > managed
+> > > > > > through
+> > > > > > devres. To remove this hybrid nature from pci_intx(), it is
+> > > > > > necessary to
+> > > > > > port users to either an always-managed or a never-managed
+> > > > > > version.
+> > > > > >=20
+> > > > > > hda_intel enables its PCI-Device with pcim_enable_device().
+> > > > > > Thus,
+> > > > > > it needs
+> > > > > > the always-managed version.
+> > > > > >=20
+> > > > > > Replace pci_intx() with pcim_intx().
+> > > > > >=20
+> > > > > > Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+> > > > > > ---
+> > > > > > =C2=A0sound/pci/hda/hda_intel.c | 2 +-
+> > > > > > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+> > > > > >=20
+> > > > > > diff --git a/sound/pci/hda/hda_intel.c
+> > > > > > b/sound/pci/hda/hda_intel.c
+> > > > > > index b4540c5cd2a6..b44ca7b6e54f 100644
+> > > > > > --- a/sound/pci/hda/hda_intel.c
+> > > > > > +++ b/sound/pci/hda/hda_intel.c
+> > > > > > @@ -786,7 +786,7 @@ static int azx_acquire_irq(struct azx
+> > > > > > *chip,
+> > > > > > int do_disconnect)
+> > > > > > =C2=A0	}
+> > > > > > =C2=A0	bus->irq =3D chip->pci->irq;
+> > > > > > =C2=A0	chip->card->sync_irq =3D bus->irq;
+> > > > > > -	pci_intx(chip->pci, !chip->msi);
+> > > > > > +	pcim_intx(chip->pci, !chip->msi);
+> > > > > > =C2=A0	return 0;
+> > > > > > =C2=A0}
+> > > > > > =C2=A0
+> > > > >=20
+> > > > > Hm, it's OK-ish to do this as it's practically same as what
+> > > > > pci_intx()
+> > > > > currently does.=C2=A0 But, the current code can be a bit
+> > > > > inconsistent
+> > > > > about
+> > > > > the original intx value.=C2=A0 pcim_intx() always stores !enable
+> > > > > to
+> > > > > res->orig_intx unconditionally, and it means that the
+> > > > > orig_intx
+> > > > > value
+> > > > > gets overridden at each time pcim_intx() gets called.
+> > > >=20
+> > > > Yes.
+> > > >=20
+> > > > >=20
+> > > > > Meanwhile, HD-audio driver does release and re-acquire the
+> > > > > interrupt
+> > > > > after disabling MSI when something goes wrong, and pci_intx()
+> > > > > call
+> > > > > above is a part of that procedure.=C2=A0 So, it can rewrite the
+> > > > > res->orig_intx to another value by retry without MSI.=C2=A0 And
+> > > > > after
+> > > > > the
+> > > > > driver removal, it'll lead to another state.
+> > > >=20
+> > > > I'm not sure that I understand this paragraph completely.
+> > > > Still,
+> > > > could
+> > > > a solution for the driver on the long-term just be to use
+> > > > pci_intx()?
+> > >=20
+> > > pci_intx() misses the restore of the original value, so it's no
+> > > long-term solution, either.
+> >=20
+> > Sure that is missing =E2=80=93 I was basically asking whether the drive=
+r
+> > could
+> > live without that feature.
+> >=20
+> > Consider that point obsolete, see below
+> >=20
+> > >=20
+> > > What I meant is that pcim_intx() blindly assumes the negative of
+> > > the
+> > > passed argument as the original state, which isn't always true.=C2=A0
+> > > e.g.
+> > > when the driver calls it twice with different values, a wrong
+> > > value
+> > > may be remembered.
+> >=20
+> > Ah, I see =E2=80=93 thoguh the issue is when it's called several times =
+with
+> > the
+> > *same* value, isn't it?
+> >=20
+> > E.g.
+> >=20
+> > pcim_intx(pdev, 1); // 0 is remembered as the old value
+> > pcim_intx(pdev, 1); // 0 is falsely remembered as the old value
+> >=20
+> > Also, it would seem that calling the function for the first time
+> > like
+> > that:
+> >=20
+> > pcim_intx(pdev, 0); // old value: 1
+> >=20
+> > is at least incorrect, because INTx should be 0 per default,
+> > shouldn't
+> > it? Could then even be a 1st class bug, because INTx would end up
+> > being
+> > enabled despite having been disabled all the time.
+>=20
+> Yeah, and the unexpected restore can happen even with a single call
+> of
+> pcim_intx(), if the driver calls it unnecessarily.
+>=20
+> > > That said, I thought of something like below.
+> >=20
+> > At first glance that looks like a good idea to me, thanks for
+> > working
+> > this out!
+> >=20
+> > IMO you can submit that as a patch so we can discuss it separately.
+>=20
+> Sure, I'm going to submit later.
 
-A way to reproduce the issue is to use two different APs because
-each vdev has its own hw queue in ath10k. Connect STA0 to AP0 and STA1
-to AP1. Then generate traffic from AP0 to STA0 and kill STA0 without
-clean disassociation frame (e.g. unplug power cable, reboot -f, ...).
-Now if we were to flush AP1's queue, ath10k_flush() would fail (and
-effectively block 5 seconds with ar->conf or even wiphy's lock held)
-with the following warning:
+I just took a look into the old implementation of pci_intx() (there was
+no pcim_intx() back then), before I started cleaning up PCI's devres.
+This what it looked like before
+25216afc9db53d85dc648aba8fb7f6d31f2c8731:
 
- ath10k_pci 0000:01:00.0: failed to flush transmit queue (skip 0 ar-state 2): 0
+void pci_intx(struct pci_dev *pdev, int enable)
+{
+	u16 pci_command, new;
 
-Wait only for pending frames of the requested queues to be flushed in
-ath10k_flush() to avoid that long blocking.
+	pci_read_config_word(pdev, PCI_COMMAND, &pci_command);
 
-Reported-by: Cedric Veilleux <veilleux.cedric@gmail.com>
-Closes: https://lore.kernel.org/all/CA+Xfe4FjUmzM5mvPxGbpJsF3SvSdE5_wgxvgFJ0bsdrKODVXCQ@mail.gmail.com/
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
----
- drivers/net/wireless/ath/ath10k/htt.h    |  7 +++--
- drivers/net/wireless/ath/ath10k/htt_tx.c | 18 ++++++++++--
- drivers/net/wireless/ath/ath10k/mac.c    | 35 ++++++++++++++++--------
- drivers/net/wireless/ath/ath10k/txrx.c   |  2 +-
- 4 files changed, 45 insertions(+), 17 deletions(-)
+	if (enable)
+		new =3D pci_command & ~PCI_COMMAND_INTX_DISABLE;
+	else
+		new =3D pci_command | PCI_COMMAND_INTX_DISABLE;
 
-diff --git a/drivers/net/wireless/ath/ath10k/htt.h b/drivers/net/wireless/ath/ath10k/htt.h
-index d150f9330941..ca8bf3b6766d 100644
---- a/drivers/net/wireless/ath/ath10k/htt.h
-+++ b/drivers/net/wireless/ath/ath10k/htt.h
-@@ -1870,6 +1870,7 @@ struct ath10k_htt {
- 	spinlock_t tx_lock;
- 	int max_num_pending_tx;
- 	int num_pending_tx;
-+	int num_pending_per_queue[IEEE80211_MAX_QUEUES];
- 	int num_pending_mgmt_tx;
- 	struct idr pending_tx;
- 	wait_queue_head_t empty_tx_wq;
-@@ -2447,8 +2448,10 @@ void ath10k_htt_tx_txq_update(struct ieee80211_hw *hw,
- void ath10k_htt_tx_txq_recalc(struct ieee80211_hw *hw,
- 			      struct ieee80211_txq *txq);
- void ath10k_htt_tx_txq_sync(struct ath10k *ar);
--void ath10k_htt_tx_dec_pending(struct ath10k_htt *htt);
--int ath10k_htt_tx_inc_pending(struct ath10k_htt *htt);
-+void ath10k_htt_tx_dec_pending(struct ath10k_htt *htt,
-+			       struct ieee80211_txq *txq);
-+int ath10k_htt_tx_inc_pending(struct ath10k_htt *htt,
-+			      struct ieee80211_txq *txq);
- void ath10k_htt_tx_mgmt_dec_pending(struct ath10k_htt *htt);
- int ath10k_htt_tx_mgmt_inc_pending(struct ath10k_htt *htt, bool is_mgmt,
- 				   bool is_presp);
-diff --git a/drivers/net/wireless/ath/ath10k/htt_tx.c b/drivers/net/wireless/ath/ath10k/htt_tx.c
-index 211752bd0f65..ef5a992e8cce 100644
---- a/drivers/net/wireless/ath/ath10k/htt_tx.c
-+++ b/drivers/net/wireless/ath/ath10k/htt_tx.c
-@@ -140,19 +140,26 @@ void ath10k_htt_tx_txq_update(struct ieee80211_hw *hw,
- 	spin_unlock_bh(&ar->htt.tx_lock);
- }
- 
--void ath10k_htt_tx_dec_pending(struct ath10k_htt *htt)
-+void ath10k_htt_tx_dec_pending(struct ath10k_htt *htt,
-+			       struct ieee80211_txq *txq)
- {
-+	int qnr = -1;
-+
- 	lockdep_assert_held(&htt->tx_lock);
- 
- 	htt->num_pending_tx--;
- 	if (htt->num_pending_tx == htt->max_num_pending_tx - 1)
- 		ath10k_mac_tx_unlock(htt->ar, ATH10K_TX_PAUSE_Q_FULL);
- 
--	if (htt->num_pending_tx == 0)
-+	if (txq)
-+		qnr = --htt->num_pending_per_queue[txq->vif->hw_queue[txq->ac]];
-+
-+	if (htt->num_pending_tx == 0 || qnr == 0)
- 		wake_up(&htt->empty_tx_wq);
- }
- 
--int ath10k_htt_tx_inc_pending(struct ath10k_htt *htt)
-+int ath10k_htt_tx_inc_pending(struct ath10k_htt *htt,
-+			      struct ieee80211_txq *txq)
- {
- 	lockdep_assert_held(&htt->tx_lock);
- 
-@@ -163,6 +170,11 @@ int ath10k_htt_tx_inc_pending(struct ath10k_htt *htt)
- 	if (htt->num_pending_tx == htt->max_num_pending_tx)
- 		ath10k_mac_tx_lock(htt->ar, ATH10K_TX_PAUSE_Q_FULL);
- 
-+	if (!txq)
-+		return 0;
-+
-+	htt->num_pending_per_queue[txq->vif->hw_queue[txq->ac]]++;
-+
- 	return 0;
- }
- 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 86386a0af14d..74c28a68a7f0 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -4385,7 +4385,7 @@ int ath10k_mac_tx_push_txq(struct ieee80211_hw *hw,
- 	u16 airtime;
- 
- 	spin_lock_bh(&ar->htt.tx_lock);
--	ret = ath10k_htt_tx_inc_pending(htt);
-+	ret = ath10k_htt_tx_inc_pending(htt, txq);
- 	spin_unlock_bh(&ar->htt.tx_lock);
- 
- 	if (ret)
-@@ -4394,7 +4394,7 @@ int ath10k_mac_tx_push_txq(struct ieee80211_hw *hw,
- 	skb = ieee80211_tx_dequeue_ni(hw, txq);
- 	if (!skb) {
- 		spin_lock_bh(&ar->htt.tx_lock);
--		ath10k_htt_tx_dec_pending(htt);
-+		ath10k_htt_tx_dec_pending(htt, txq);
- 		spin_unlock_bh(&ar->htt.tx_lock);
- 
- 		return -ENOENT;
-@@ -4416,7 +4416,7 @@ int ath10k_mac_tx_push_txq(struct ieee80211_hw *hw,
- 		ret = ath10k_htt_tx_mgmt_inc_pending(htt, is_mgmt, is_presp);
- 
- 		if (ret) {
--			ath10k_htt_tx_dec_pending(htt);
-+			ath10k_htt_tx_dec_pending(htt, txq);
- 			spin_unlock_bh(&ar->htt.tx_lock);
- 			return ret;
- 		}
-@@ -4430,7 +4430,7 @@ int ath10k_mac_tx_push_txq(struct ieee80211_hw *hw,
- 		ath10k_warn(ar, "failed to push frame: %d\n", ret);
- 
- 		spin_lock_bh(&ar->htt.tx_lock);
--		ath10k_htt_tx_dec_pending(htt);
-+		ath10k_htt_tx_dec_pending(htt, txq);
- 		if (is_mgmt)
- 			ath10k_htt_tx_mgmt_dec_pending(htt);
- 		spin_unlock_bh(&ar->htt.tx_lock);
-@@ -4693,7 +4693,7 @@ static void ath10k_mac_op_tx(struct ieee80211_hw *hw,
- 			is_presp = ieee80211_is_probe_resp(hdr->frame_control);
- 		}
- 
--		ret = ath10k_htt_tx_inc_pending(htt);
-+		ret = ath10k_htt_tx_inc_pending(htt, txq);
- 		if (ret) {
- 			ath10k_warn(ar, "failed to increase tx pending count: %d, dropping\n",
- 				    ret);
-@@ -4706,7 +4706,7 @@ static void ath10k_mac_op_tx(struct ieee80211_hw *hw,
- 		if (ret) {
- 			ath10k_dbg(ar, ATH10K_DBG_MAC, "failed to increase tx mgmt pending count: %d, dropping\n",
- 				   ret);
--			ath10k_htt_tx_dec_pending(htt);
-+			ath10k_htt_tx_dec_pending(htt, txq);
- 			spin_unlock_bh(&ar->htt.tx_lock);
- 			ieee80211_free_txskb(ar->hw, skb);
- 			return;
-@@ -4719,7 +4719,7 @@ static void ath10k_mac_op_tx(struct ieee80211_hw *hw,
- 		ath10k_warn(ar, "failed to transmit frame: %d\n", ret);
- 		if (is_htt) {
- 			spin_lock_bh(&ar->htt.tx_lock);
--			ath10k_htt_tx_dec_pending(htt);
-+			ath10k_htt_tx_dec_pending(htt, txq);
- 			if (is_mgmt)
- 				ath10k_htt_tx_mgmt_dec_pending(htt);
- 			spin_unlock_bh(&ar->htt.tx_lock);
-@@ -8045,10 +8045,12 @@ static int ath10k_mac_op_set_frag_threshold(struct ieee80211_hw *hw, u32 value)
- 	return -EOPNOTSUPP;
- }
- 
--void ath10k_mac_wait_tx_complete(struct ath10k *ar)
-+static void _ath10k_mac_wait_tx_complete(struct ath10k *ar,
-+					 unsigned long queues)
- {
- 	bool skip;
- 	long time_left;
-+	unsigned int q;
- 
- 	/* mac80211 doesn't care if we really xmit queued frames or not
- 	 * we'll collect those frames either way if we stop/delete vdevs
-@@ -8058,10 +8060,14 @@ void ath10k_mac_wait_tx_complete(struct ath10k *ar)
- 		return;
- 
- 	time_left = wait_event_timeout(ar->htt.empty_tx_wq, ({
--			bool empty;
-+			bool empty = true;
- 
- 			spin_lock_bh(&ar->htt.tx_lock);
--			empty = (ar->htt.num_pending_tx == 0);
-+			for_each_set_bit(q, &queues, ar->hw->queues) {
-+				empty = (ar->htt.num_pending_per_queue[q] == 0);
-+				if (!empty)
-+					break;
-+			}
- 			spin_unlock_bh(&ar->htt.tx_lock);
- 
- 			skip = (ar->state == ATH10K_STATE_WEDGED) ||
-@@ -8076,6 +8082,13 @@ void ath10k_mac_wait_tx_complete(struct ath10k *ar)
- 			    skip, ar->state, time_left);
- }
- 
-+void ath10k_mac_wait_tx_complete(struct ath10k *ar)
-+{
-+	unsigned int queues = GENMASK(ar->hw->queues - 1, 0);
-+
-+	_ath10k_mac_wait_tx_complete(ar, queues);
-+}
-+
- static void ath10k_flush(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 			 u32 queues, bool drop)
- {
-@@ -8097,7 +8110,7 @@ static void ath10k_flush(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	}
- 
- 	mutex_lock(&ar->conf_mutex);
--	ath10k_mac_wait_tx_complete(ar);
-+	_ath10k_mac_wait_tx_complete(ar, queues);
- 	mutex_unlock(&ar->conf_mutex);
- }
- 
-diff --git a/drivers/net/wireless/ath/ath10k/txrx.c b/drivers/net/wireless/ath/ath10k/txrx.c
-index 5b6750ef7d19..b848962fc8fb 100644
---- a/drivers/net/wireless/ath/ath10k/txrx.c
-+++ b/drivers/net/wireless/ath/ath10k/txrx.c
-@@ -82,7 +82,7 @@ int ath10k_txrx_tx_unref(struct ath10k_htt *htt,
- 
- 	flags = skb_cb->flags;
- 	ath10k_htt_tx_free_msdu_id(htt, tx_done->msdu_id);
--	ath10k_htt_tx_dec_pending(htt);
-+	ath10k_htt_tx_dec_pending(htt, txq);
- 	spin_unlock_bh(&htt->tx_lock);
- 
- 	rcu_read_lock();
--- 
-2.40.0
+	if (new !=3D pci_command) {
+		struct pci_devres *dr;
+
+		pci_write_config_word(pdev, PCI_COMMAND, new);
+
+		dr =3D find_pci_dr(pdev);
+		if (dr && !dr->restore_intx) {
+			dr->restore_intx =3D 1;
+			dr->orig_intx =3D !enable;
+		}
+	}
+}
+EXPORT_SYMBOL_GPL(pci_intx);
+
+If I'm not mistaken the old version did not have the problem because
+the value to be restored only changed if new !=3D pci_command.
+
+That should always be correct, what do you think?
+
+If so, only my commit 25216afc9db53d85dc648aba8fb7f6d31f2c8731 needs to
+be fixed.
+
+Thanks,
+P.
+
+
+>=20
+>=20
+> thanks,
+>=20
+> Takashi
+>=20
 
 
