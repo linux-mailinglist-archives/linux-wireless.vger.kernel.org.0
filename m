@@ -1,120 +1,98 @@
-Return-Path: <linux-wireless+bounces-14567-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14568-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DD859B124C
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Oct 2024 00:05:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C97079B13CE
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Oct 2024 02:17:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BD131C21238
-	for <lists+linux-wireless@lfdr.de>; Fri, 25 Oct 2024 22:05:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9124D281331
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Oct 2024 00:17:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E4F21C174E;
-	Fri, 25 Oct 2024 22:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C240EC4;
+	Sat, 26 Oct 2024 00:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SLWUMbE9"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="BIWdoKCa"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF00020E3
+	for <linux-wireless@vger.kernel.org>; Sat, 26 Oct 2024 00:17:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1729901872; cv=none; b=FRikKIs6vvwJMhDpwEUeNQOGvpjX/XLtszzGnF4BLurv82dF4Kq2nX/ZdjWyFrW9wguvOBeZhTRKWVDBRZ0Vq4bkfVeFI8hRTOf3bEyKKRR5VSwyEJy+KvTZsVbBKWyUNvfgvjWrGzqTw2fZh/GOsPq34TzgUx9yNFhD7hHYk4Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1729901872; c=relaxed/simple;
+	bh=GpoFvR/ixgUTW4yOL/YhbRYkHU8AZGcwHA6Fq5KOixk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jViYD5Kee5jhs4ZWxvid2nfkKpDr0T8EU/1wyjw5zp8fbCtwBH8aldPh7KlI58iDFF+ggdUyILWi1MNbTQ9jftnafBy4/3AYwyaT1P3p6xkeEiUyPs2YMb491ztqrbCuvjWvQ0O7vLVYdWU9ZypMvdebMkTTQOG3kbvA/YCWQTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=BIWdoKCa; arc=none smtp.client-ip=148.163.129.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id ED760340011;
+	Sat, 26 Oct 2024 00:17:41 +0000 (UTC)
+Received: from carkeek.candelatech.com (unknown [50.251.239.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7661217F53;
-	Fri, 25 Oct 2024 22:05:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729893954; cv=none; b=At1bHCcHCOJ5Nw0GIzN6zR/12B0YN5Bh4wXtsyWbI2ybhfNeiU8OsYp2Mv+GtA9TmO3lmxylEiU2stj95SQhjg7sSlxIu4nCGRfEEelMeUEI+ugz3iLR2WrQqpXlmO9c1S9h1Yu9W85PgeVz8pfe9oAKqZmI++mHGjIEPD/kh1U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729893954; c=relaxed/simple;
-	bh=FC/t5CIaNNudWpigYqqneQEUamxykiRhAYd41d/2WrM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=ZWqkYOtePdadAj097c/GBJdIpYy9dt3EvcSzdbOesRqKJrFShq5hzC2NvVLAp+8c95oqRvuu0BwPIp3wg2/LwED8LXdlrhZ6OwULj5lLqYeTnXTf2oefZB5Pbm1uHoPA4Xu+aBOqREHD/6OXp39uAKKqa6tNzlO3Wq8849tDZZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SLWUMbE9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E83B8C4CEC3;
-	Fri, 25 Oct 2024 22:05:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729893953;
-	bh=FC/t5CIaNNudWpigYqqneQEUamxykiRhAYd41d/2WrM=;
-	h=Date:From:To:Cc:Subject:From;
-	b=SLWUMbE9lrThVgyiRhzZA/O21a3GoxeJ1NYB5+De1PjiiAE+TLQBnjvyeHro9mRXi
-	 ROenmcDxUuPRGGpBq+7Lsa9WgRalgwpB7huiFNyxETiiQzUj1VBjuopd/9dw9koRjp
-	 ITxX48QD/+JcdBPdJQhQCbBDMB92M0R9IcVnx2QtWe0hjQ6GSsRoW2mzrx3WnudhXI
-	 Tiz/yn2QsCKxpkUXx4SAjDV1DcdqKryn1MBgmsugIuKpRM/QQphyW7HP9+39h5xezw
-	 lo/SOLWmjJI8OUNPfGAu0kpPYMvdWvwAR0a8z42SanywiEPJFXbOqP1zsHWYLNoaya
-	 9mtgZLWnsK6sw==
-Date: Fri, 25 Oct 2024 16:05:50 -0600
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH v2] wifi: mac80211: ieee80211_i: Fix memory corruption bug in
- struct ieee80211_chanctx
-Message-ID: <ZxwWPrncTeSi1UTq@kspp>
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 979C413C2B0;
+	Fri, 25 Oct 2024 17:17:39 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 979C413C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1729901859;
+	bh=GpoFvR/ixgUTW4yOL/YhbRYkHU8AZGcwHA6Fq5KOixk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=BIWdoKCah9t/W4bsfRDofl6jUoUOAv5YSkgsjXqPvQFoVu+yWPzapIrbWo/KMtSgj
+	 MlziudwhSx9gURXu/fPBuau6iZpguVa8BVDW1TBCbizAFvvWGp7/R7zWdSlihYgQnv
+	 Xd7ABtJxmBDLtBn09VeQ2j73RgMettxIungowLyk=
+From: Rory Little <rory@candelatech.com>
+To: linux-wireless@vger.kernel.org
+Cc: nbd@nbd.name,
+	Rory Little <rory@candelatech.com>
+Subject: [PATCH] wifi: mt76: mt7915: Release wiphy mutex if WCID allocation fails.
+Date: Fri, 25 Oct 2024 17:15:49 -0700
+Message-Id: <20241026001549.163966-1-rory@candelatech.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-MDID: 1729901862-ZP09BXzsi5VA
+X-MDID-O:
+ us5;ut7;1729901862;ZP09BXzsi5VA;<rory@candelatech.com>;340f598122f25443170ac9d27e6a82df
+X-PPE-TRUSTED: V=1;DIR=OUT;
 
-Move the `struct ieee80211_chanctx_conf conf` to the end of
-`struct ieee80211_chanctx` and fix a memory corruption bug
-triggered in `hwsim_set_chanctx_magic()`: `radar_detected`
-is being overwritten when `cp->magic = HWSIM_CHANCTX_MAGIC;`
-See the function call sequence below:
+This fixes a lockup observed when the alloc failed. The mutex is
+released in the normal exit path - we miss it if we early return here.
 
-drv_add_chanctx(... struct ieee80211_chanctx *ctx) ->
-    local->ops->add_chanctx(&local->hw, &ctx->conf) ->
-	mac80211_hwsim_add_chanctx(... struct ieee80211_chanctx_conf *ctx) ->
-	    hwsim_set_chanctx_magic(ctx)
-
-Also, add a code comment to try to prevent people from introducing
-new members after `struct ieee80211_chanctx_conf conf`. Notice that
-`struct ieee80211_chanctx_conf` is a flexible structure --a structure
-that contains a flexible-array member, so it should always be at
-the end of any other containing structures.
-
-This change also fixes 50 of the following warnings:
-
-net/mac80211/ieee80211_i.h:895:39: warning: structure containing a flexible array member is not at the end of another structure [-Wflex-array-member-not-at-end]
-
--Wflex-array-member-not-at-end was introduced in GCC-14, and we are
-getting ready to enable it, globally.
-
-Fixes: bca8bc0399ac ("wifi: mac80211: handle ieee80211_radar_detected() for MLO")
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Signed-off-by: Rory Little <rory@candelatech.com>
 ---
-Changes in v2:
- - Add `Fixes:` tag. (Johannes)
- - Update Subject line and changelog text to better reflect
-   the severity of this change.
+ drivers/net/wireless/mediatek/mt76/mt7915/main.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-v1:
- - Link: https://lore.kernel.org/linux-hardening/Zxv7KtPEy1kvnTPM@kspp/
-
- net/mac80211/ieee80211_i.h | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index e7815ffeaf30..c65adbdf2166 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -892,9 +892,10 @@ struct ieee80211_chanctx {
- 	/* temporary data for search algorithm etc. */
- 	struct ieee80211_chan_req req;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index b79ef44732d8..a2c199219224 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -265,8 +265,10 @@ static int mt7915_add_interface(struct ieee80211_hw *hw,
+ 	phy->omac_mask |= BIT_ULL(mvif->mt76.omac_idx);
  
--	struct ieee80211_chanctx_conf conf;
--
- 	bool radar_detected;
-+
-+	/* MUST be last - ends in a flexible-array member. */
-+	struct ieee80211_chanctx_conf conf;
- };
+ 	idx = mt76_wcid_alloc(dev->mt76.wcid_mask, mt7915_wtbl_size(dev));
+-	if (idx < 0)
+-		return -ENOSPC;
++	if (idx < 0) {
++		ret = -ENOSPC;
++		goto out;
++	}
  
- struct mac80211_qos_map {
+ 	INIT_LIST_HEAD(&mvif->sta.rc_list);
+ 	INIT_LIST_HEAD(&mvif->sta.wcid.poll_list);
 -- 
-2.34.1
+2.46.0
 
 
