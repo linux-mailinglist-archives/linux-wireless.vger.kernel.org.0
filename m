@@ -1,57 +1,58 @@
-Return-Path: <linux-wireless+bounces-14572-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14573-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BF089B1662
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Oct 2024 11:08:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FCEE9B166C
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Oct 2024 11:09:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CA941C20DB9
-	for <lists+linux-wireless@lfdr.de>; Sat, 26 Oct 2024 09:08:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5215281190
+	for <lists+linux-wireless@lfdr.de>; Sat, 26 Oct 2024 09:09:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 772A3178CEC;
-	Sat, 26 Oct 2024 09:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6901C3301;
+	Sat, 26 Oct 2024 09:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ij1JNBhb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tjjKXTx0"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F3D217F5E
-	for <linux-wireless@vger.kernel.org>; Sat, 26 Oct 2024 09:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2DB61C3038
+	for <linux-wireless@vger.kernel.org>; Sat, 26 Oct 2024 09:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729933722; cv=none; b=ubjki/2U0lmzr0QeKcbqoCvTaliL6broZfXfGcF3r1iKVI6OsZegH1z5/fP0E6m3H/CVe84fnRWwspMSfO5GW/8YaImSlEyw0Wzznc8+CKjrGQMnxa0Sj4v2vBM2fEXTj9nZ1l7Cfqkm/BhFntwaShJHhmM0SE34fRyP3+QUWVo=
+	t=1729933789; cv=none; b=cMGNkAkJSL3aZGqonJsT8zXM1haZMrbxJNm0QdoXI3sYy5wvYhprBteHI2yz5w/t72jeJ3jx5ZtqU5gZV44+obb9na3zij0WEEskWFIbJy5JG/QsvUg1afg4JbwuM34UNu/32Oc8NZfEWFb6EYOq+qIns49M25JIXjlIgV8cx1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729933722; c=relaxed/simple;
-	bh=MbVYq5hP582/qyZUS1tqQD3SG2ii9UrEUkQvpbS/jLE=;
+	s=arc-20240116; t=1729933789; c=relaxed/simple;
+	bh=GdSlBnU5mW6xXp7829fFirSG7AH/4sa35q2q65bh1/s=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=mPkqOYnsGS3ZprJ7vBc9br206O+ptQJ/39iVzWiZfolRy0Wz3JhapA3FDzNSQsvzkaD5er8RNnw/USr3FuCR5w8FFF9Nbc8+0ghmI9h59tAgU12OjWAaPTer2S07378fFZydqaW1wMV4+kTEbXeB4+lswFGleaMnQcSa6GNvFrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ij1JNBhb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B517C4CEC6;
-	Sat, 26 Oct 2024 09:08:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=poU5mOsXh5/vEw7Eh1eOSACLBQQTuNgkOcQq51otKLTGRrdBZ21OQQCh2gRFeX0Cxeux1jlb1rfhm9mywAs6wKGhGAmOlANWFy6tR76GYUd1+qCpSA6zagQ63n9ZoT0H8xMF6RG6XAVfZ3KL2pRgUxfSrwQDWoWMxDspIHP8rF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tjjKXTx0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83AD1C4CEC6;
+	Sat, 26 Oct 2024 09:09:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1729933721;
-	bh=MbVYq5hP582/qyZUS1tqQD3SG2ii9UrEUkQvpbS/jLE=;
+	s=k20201202; t=1729933789;
+	bh=GdSlBnU5mW6xXp7829fFirSG7AH/4sa35q2q65bh1/s=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=ij1JNBhb2toHdck78qZ13KU3D4f0OmZljPlCtnHY4Rm0piNHUzBQLKSvWMMkYQfxz
-	 DNq2wg+6RZvO64GD63O+gQjoT0DEaFwfXed1L7UeANUeIJVCE4LdyMDCV9zKKC4sJb
-	 B7kKkVxum1wgwJONabJWoigxFNd/MaejU2eZZmx4hRxM3MtKtBmnSL9IxE/fYfifxc
-	 y31C/z1Gi7XHFrvJf11J1U3iU2nnksPbVOal8qQoMBXe8NPBTYMKzppuItFbjRK+a1
-	 78dEAkBanNccZUpOeDVR5LY9k/A/klay3Sv3tqdnNvgNRPnc2UMPaBqJMyutC4Llnm
-	 5ps7oIBRdeltg==
+	b=tjjKXTx0EDLJyDpYwqmlLteJi+DSeja8xk4hYcKLiiSMmkaVGEbnCraatkjjL1zuu
+	 imPrDTldw0ciFXEVWEcS70Ub3pSpLp6MSmyIXAEwSzfwICG5gfGypna8FwCntoVYy5
+	 dwODwT4cykaZ2sYAwthcqnujcfF+xmEiJzol1KXbMCjx0OQqqCBbjfiU+NksISL6Xc
+	 T/huWa0jpcrC56wnd4KpfzNhg0anw2rCWgl0SU7UEJTfrMPO9s9828CAH26eR26P1+
+	 Fi3muMxnTIX+iqHE16DZRSodRNPNR9bwoZJU6kQQbZQhdgBOps5Wk7i1S/IpmJslpw
+	 DRUqmGJngQujQ==
 From: Kalle Valo <kvalo@kernel.org>
-To: Baochen Qiang <quic_bqiang@quicinc.com>
-Cc: <ath12k@lists.infradead.org>, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH 3/8] wifi: ath12k: Refactor sta state machine
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 5/8] wifi: ath12k: Add helpers for multi link peer
+ creation and deletion
 References: <20241023133004.2253830-1-kvalo@kernel.org>
-	<20241023133004.2253830-4-kvalo@kernel.org>
-	<e886a4c0-14f9-4299-97ef-f8cd811c94e6@quicinc.com>
-Date: Sat, 26 Oct 2024 12:08:39 +0300
-In-Reply-To: <e886a4c0-14f9-4299-97ef-f8cd811c94e6@quicinc.com> (Baochen
-	Qiang's message of "Thu, 24 Oct 2024 10:58:56 +0800")
-Message-ID: <87o737kz8o.fsf@kernel.org>
+	<20241023133004.2253830-6-kvalo@kernel.org>
+	<fdcc379d-b5ac-4554-8963-55653337db61@quicinc.com>
+Date: Sat, 26 Oct 2024 12:09:46 +0300
+In-Reply-To: <fdcc379d-b5ac-4554-8963-55653337db61@quicinc.com> (Jeff
+	Johnson's message of "Wed, 23 Oct 2024 08:43:44 -0700")
+Message-ID: <87jzdvkz6t.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -61,47 +62,43 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Baochen Qiang <quic_bqiang@quicinc.com> writes:
+Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
-> On 10/23/2024 9:29 PM, Kalle Valo wrote:
->> +static void ath12k_mac_station_post_remove(struct ath12k *ar,
->> +					   struct ath12k_link_vif *arvif,
->> +					   struct ath12k_link_sta *arsta)
+> On 10/23/2024 6:30 AM, Kalle Valo wrote:
+>> From: Sriram R <quic_srirrama@quicinc.com>
+>> 
+>> Add helper functions for multi link peer addition and deletion. And add address
+>> validation to ensure we are not creating link peers (belonging to different
+>> clients) with same MLD address. To aid in this validation for faster lookup,
+>> add a new list of ML peers to struct ath12k_hw::ml_peers and use the same for
+>> parsing for the above address validation use cases.
+>> 
+>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+>> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+>> 
+>> Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
+>> Signed-off-by: Harshitha Prem <quic_hprem@quicinc.com>
+>> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+>> ---
+> ...
+>> +int ath12k_peer_mlo_create(struct ath12k_hw *ah, struct ieee80211_sta *sta)
 >> +{
->> +	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(arvif->ahvif);
->> +	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
->> +	struct ath12k_sta *ahsta = arsta->ahsta;
->> +	struct ath12k_peer *peer;
+>> +	struct ath12k_sta *ahsta = ath12k_sta_to_ahsta(sta);
+>> +	struct ath12k_ml_peer *ml_peer;
 >> +
->> +	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
+>> +	lockdep_assert_wiphy(ah->hw->wiphy);
 >> +
->> +	ath12k_mac_dec_num_stations(arvif, arsta);
+>> +	if (!sta->mlo)
+>> +		return -EINVAL;
 >> +
->> +	spin_lock_bh(&ar->ab->base_lock);
->> +
->> +	peer = ath12k_peer_find(ar->ab, arvif->vdev_id, sta->addr);
->> +	if (peer && peer->sta == sta) {
->> +		ath12k_warn(ar->ab, "Found peer entry %pM n vdev %i after it was supposedly removed\n",
->> +			    vif->addr, arvif->vdev_id);
->> +		peer->sta = NULL;
->> +		list_del(&peer->list);
->> +		kfree(peer);
->> +		ar->num_peers--;
->> +	}
->> +
->> +	spin_unlock_bh(&ar->ab->base_lock);
->> +
->> +	kfree(arsta->rx_stats);
->> +	arsta->rx_stats = NULL;
->> +
->> +	if (arsta->link_id < IEEE80211_MLD_MAX_NUM_LINKS) {
->> +		rcu_assign_pointer(ahsta->link[arsta->link_id], NULL);
->> +		synchronize_rcu();
->> +		ahsta->links_map &= ~(BIT(arsta->link_id));
+>> +	ml_peer = ath12k_ml_peer_find(ah, sta->addr);
+>> +	if (ml_peer) {
+>> +		ath12k_hw_warn(ah, "ML peer (%d) exists already, unable to add new entry for %pM",
 >
-> should we put this ahead of rcu_assign_pointer()?
+> The Linux coding style says:
+> Printing numbers in parentheses (%d) adds no value and should be avoided.
 
-I agree, I'll do that in v2.
+Good point, I'll remove them.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
