@@ -1,165 +1,122 @@
-Return-Path: <linux-wireless+bounces-14616-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14617-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BC509B382C
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Oct 2024 18:49:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3A239B3D80
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Oct 2024 23:07:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F09C1C222BA
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Oct 2024 17:49:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41A79B225E7
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Oct 2024 22:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8550A1552FC;
-	Mon, 28 Oct 2024 17:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827531CF5CA;
+	Mon, 28 Oct 2024 22:06:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="i+9uqQqD"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="r/C7Q5pn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.48])
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E47E1DF99E
-	for <linux-wireless@vger.kernel.org>; Mon, 28 Oct 2024 17:48:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7E319005F
+	for <linux-wireless@vger.kernel.org>; Mon, 28 Oct 2024 22:06:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730137700; cv=none; b=TE3DsK/mDa9v7qLyD+SMwMH3bdkg/ZTbjQQMMU/8CD1O65baCRRmkXhYXMii2mdWNjk+CHUbpeS70RTor5sFBKLY5dFI4zDzO2OMQlBqXzNbV7SQPqAEUbM2MDIQbu/5Jl625wGIIuRq61GM4l0vvtNlmTTvdbhI4mcD4R03HUE=
+	t=1730153218; cv=none; b=QQKWiGrVidEH6qVgn61zNhsuUl9M4HRyeegYTgUPtNgOf2X1jyhwWzOZqCPPakjtuGkxAEegERFD+D/mGV76jhDANmDTJpXhXCASgUMAnbosgA2lYItZyPAkr29v72TyuMkEMqHwbDmX7gEtKhYMN3sUEw9maGFMG6VmtwxO66c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730137700; c=relaxed/simple;
-	bh=MKjze7Q16+9SgGwdVELAGxzvv+7lcDuq2TEmJTW//2E=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=GxRrU5bSk4yywnuWkMDlrnAKgUvhvKBnktyUjVsxKbXRC4Bw325yq/ag+n0jP2X+rPFUSwnXBLLvTeHJLk/NKGeMiiSUmI/i/2rmREkn9EJks2S09vmvYxVj3R+TirBYhnWKvUJDswnoUct9j4zk+5TFMMFCFyx5C2s3U/mFcbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=i+9uqQqD; arc=none smtp.client-ip=148.163.129.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 96E1578006D
-	for <linux-wireless@vger.kernel.org>; Mon, 28 Oct 2024 17:48:09 +0000 (UTC)
-Received: from [192.168.100.159] (unknown [50.251.239.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 0ED2A13C2B0
-	for <linux-wireless@vger.kernel.org>; Mon, 28 Oct 2024 10:48:09 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 0ED2A13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1730137689;
-	bh=MKjze7Q16+9SgGwdVELAGxzvv+7lcDuq2TEmJTW//2E=;
-	h=Date:To:From:Subject:From;
-	b=i+9uqQqDMQlpeLMsf0FMTv4oflECy4hMDa5L1enkT5sdo0VJ7CInYmgmeexQ90Mks
-	 z6fo31CTy5ZoyzXej1JcA3iaq1/AdN+YAJMe3e1LJBO+b21c/5B2lNn+SCGCW29ZWL
-	 VAC3qHFUVESN3MXKHv19cO/i118rST6Vf3hBQmao=
-Message-ID: <8dce89a1-350c-4885-afcc-0eda162fd76c@candelatech.com>
-Date: Mon, 28 Oct 2024 10:48:08 -0700
+	s=arc-20240116; t=1730153218; c=relaxed/simple;
+	bh=T3zY1iojt5aZtxt1W1qBRwJM2MDbsqj2FO2IHTgW4+E=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=JIPeag6hDqsWE2EkItil0DkqK9a/rbRBNaJolWGuA9PkH3VDHldt8PQVKYedzTFiMoVpA941aimYIxPrdWOKjNtlEmyjhTe0dKjH6C/kWSVDWUbc/ikV1g1y772E1c+/WQ4ahg8jqshyP5rYL2gm0tJ01Oh9oASXT0Eed12XOSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=r/C7Q5pn; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2fb3110b964so38081131fa.1
+        for <linux-wireless@vger.kernel.org>; Mon, 28 Oct 2024 15:06:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1730153214; x=1730758014; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ijx3SbyGLD9fttKeJt8UbTRLoaINrfzyu2OaDvA9VEM=;
+        b=r/C7Q5pnR7iQKgtqf47BtBL7ICxnpmPfpFjf9QLkxRuNJydZMxhO7CVpZOpxFNbsGb
+         TQIdZcAlwoZOSpLzM5N/VqdnoYw98oexlLYab8zTR0DtoWVE4IQdEfy4+IVe4goDzjV3
+         MWwT9l7CJ/6mOxrQeN2wQt8kTyD5nQleX7zlNIXTbq/u125vAeh6R7HqRpWrtjofExpN
+         GJzq/ywQl1t6OANWKEJqxN7blmVG025KuRWup1CAOQ84Qo/trno++sFSNdZ2EH6JInNH
+         FC1cXVWei3IawxCVgF18NHgKqGJxiP1XZGdNJRbFEa2w3D6GPl6ouFZeA8FRmbtkDc9F
+         jeag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730153214; x=1730758014;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ijx3SbyGLD9fttKeJt8UbTRLoaINrfzyu2OaDvA9VEM=;
+        b=uinJBboRZNhXWKkhAy8Cw7h40DEt/uXXyF3D51JtCYiEzJVpxFW11wAj6WKbflvhwe
+         XO2em3qa9klA0esYahtgWDTbbMi0keWa6px0n4MqgQnb9fjqHSbJRdXOTRgnCkZak4+8
+         bQFw7F4yN3Er7JswFregQ5NTc1cisfyUNFlQ+lVyPc1w1WQFCpefWiGAB33EBNBh/18v
+         XCuIDSDIGrhIdw2gpcRmi69sjNbi4/9fz+Huw/3l6wRabl96XG1jD27H1SpR8+EMAZ+d
+         t2jjWKs37SOxWYAiS9RCxz27y8VawQoUFo9h+zwUxyaIEvNyZe28ZKh9kLcocOfu/5rD
+         nIbg==
+X-Gm-Message-State: AOJu0Yz1GPrRJeIiGPlKSeNDjaYOGuvPOmsHDt1tYSQ0HChwX5vldWWu
+	rccySc/8hYugX4S4lePQb9Cq8iFDlJdicDfehWjbwaaGoLcBXZlS1OCX+9swgW0=
+X-Google-Smtp-Source: AGHT+IGs4WDExaogrlXHdgw3R1jPqGJGm5zywy9oYHpMOGUnmhxnRsAfl7DWnsytavmejXSbFwUyeQ==
+X-Received: by 2002:a05:6512:3b2b:b0:535:6aa9:9855 with SMTP id 2adb3069b0e04-53b3472951amr4543722e87.0.1730153214432;
+        Mon, 28 Oct 2024 15:06:54 -0700 (PDT)
+Received: from lino.lan ([85.235.12.238])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53b2e12495fsm1189576e87.93.2024.10.28.15.06.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Oct 2024 15:06:54 -0700 (PDT)
+From: Linus Walleij <linus.walleij@linaro.org>
+Date: Mon, 28 Oct 2024 23:06:53 +0100
+Subject: [PATCH] wifi: cw1200: Fix potential NULL dereference
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Content-Language: en-US
-To: linux-wireless <linux-wireless@vger.kernel.org>
-From: Ben Greear <greearb@candelatech.com>
-Subject: Question on iwlwifi iwl_mvm_mac_itxq_xmit, possible busy-spin.
-Organization: Candela Technologies
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-MDID: 1730137690-I5PPaM9KkapL
-X-MDID-O:
- us5;ut7;1730137690;I5PPaM9KkapL;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
-X-PPE-TRUSTED: V=1;DIR=OUT;
+Message-Id: <20241028-cw1200-fix-v1-1-e092b6558d1e@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAPwKIGcC/x2MQQqAIBAAvyJ7TtAlRPpKdEjdai8WChWIf2/pO
+ AMzDSoVpgqTalDo5spnFrCDgniseSfNSRjQ4GgNeh0fi8bojV+N5GyI5F0MCSS4Con+Z/PS+wc
+ VRZrBXAAAAA==
+To: Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, kernel test robot <lkp@intel.com>, 
+ Dan Carpenter <dan.carpenter@linaro.org>, 
+ Linus Walleij <linus.walleij@linaro.org>
+X-Mailer: b4 0.14.0
 
-Hello,
+A recent refactoring was identified by static analysis to
+cause a potential NULL dereference, fix this!
 
-We see indication that the iwlwifi txpath can busy-spin,
-causing soft-lockup (and, only indication at this point, possibly
-issue is elsewhere somehow).
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202410121505.nyghqEkK-lkp@intel.com/
+Fixes: 2719a9e7156c ("wifi: cw1200: Convert to GPIO descriptors")
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+---
+ drivers/net/wireless/st/cw1200/cw1200_spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-While looking through the xmit path for potential busy-spin bugs, I found
-this method below.  I'm planning to add this 'sofar' logic to bail out after
-1000 loops:  It is not in upstream code.
+diff --git a/drivers/net/wireless/st/cw1200/cw1200_spi.c b/drivers/net/wireless/st/cw1200/cw1200_spi.c
+index 4f346fb977a9..862964a8cc87 100644
+--- a/drivers/net/wireless/st/cw1200/cw1200_spi.c
++++ b/drivers/net/wireless/st/cw1200/cw1200_spi.c
+@@ -450,7 +450,7 @@ static int __maybe_unused cw1200_spi_suspend(struct device *dev)
+ {
+ 	struct hwbus_priv *self = spi_get_drvdata(to_spi_device(dev));
+ 
+-	if (!cw1200_can_suspend(self->core))
++	if (self && !cw1200_can_suspend(self->core))
+ 		return -EAGAIN;
+ 
+ 	/* XXX notify host that we have to keep CW1200 powered on? */
 
-But, I also wanted to check on expected behaviour.  At the bottom is a double
-loop.  The inner will break out if the queues are full and for some other reasons,
-but the outside loop is spinning on a different atomic counter.  The question is:
-If the inner loop breaks out, at least for queue full reasons, should it then
-immediately break out of the outer while loop as well?
+---
+base-commit: 9852d85ec9d492ebef56dc5f229416c925758edc
+change-id: 20241028-cw1200-fix-2e61bce86cbd
 
-And, from what I can tell, it would be possible for other transmitters to hit this
-path, repeatedly increasing the tx_request to 2, causing the original transmitter
-to run for a very long time.  Especially under high load with a slow kernel
-larded up with debugging...  Maybe something like the 'sofar' logic would even
-be wanted upstream?
-
-Based on the description of the 3 tx_request states, I am also not sure that
-this would not hang the tx path in case where inner loop bails out due to
-tx queue full, leaving packets queued.  If no other packets are ever transmitted,
-is there anything that would re-kick the xmit path?
-
-void iwl_mvm_mac_itxq_xmit(struct ieee80211_hw *hw, struct ieee80211_txq *txq)
-{
-	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
-	struct iwl_mvm_txq *mvmtxq = iwl_mvm_txq_from_mac80211(txq);
-	struct sk_buff *skb = NULL;
-	u32 sofar = 0;
-
-	/*
-	 * No need for threads to be pending here, they can leave the first
-	 * taker all the work.
-	 *
-	 * mvmtxq->tx_request logic:
-	 *
-	 * If 0, no one is currently TXing, set to 1 to indicate current thread
-	 * will now start TX and other threads should quit.
-	 *
-	 * If 1, another thread is currently TXing, set to 2 to indicate to
-	 * that thread that there was another request. Since that request may
-	 * have raced with the check whether the queue is empty, the TXing
-	 * thread should check the queue's status one more time before leaving.
-	 * This check is done in order to not leave any TX hanging in the queue
-	 * until the next TX invocation (which may not even happen).
-	 *
-	 * If 2, another thread is currently TXing, and it will already double
-	 * check the queue, so do nothing.
-	 */
-	if (atomic_fetch_add_unless(&mvmtxq->tx_request, 1, 2))
-		return;
-
-	rcu_read_lock();
-	do {
-		while (likely(!test_bit(IWL_MVM_TXQ_STATE_STOP_FULL,
-					&mvmtxq->state) &&
-			      !test_bit(IWL_MVM_TXQ_STATE_STOP_REDIRECT,
-					&mvmtxq->state) &&
-			      !test_bit(IWL_MVM_TXQ_STATE_STOP_AP_CSA,
-					&mvmtxq->state) &&
-			      (sofar <= 1000) &&
-			      !test_bit(IWL_MVM_STATUS_IN_D3, &mvm->status))) {
-			skb = ieee80211_tx_dequeue(hw, txq);
-
-			if (!skb) {
-				if (txq->sta)
-					IWL_DEBUG_TX(mvm,
-						     "TXQ of sta %pM tid %d is now empty\n",
-						     txq->sta->addr,
-						     txq->tid);
-				break;
-			}
-
-			iwl_mvm_tx_skb(mvm, skb, txq->sta);
-			if (++sofar > 1000)
-				pr_info("WARNING: Wrote %d packets in iwl_mvm_mac_itxq_xmit, tx_request: %d returning.\n",
-					sofar, atomic_read(&mvmtxq->tx_request));
-		}
-	} while (atomic_dec_return(&mvmtxq->tx_request));
-	rcu_read_unlock();
-}
-
-Thanks,
-Ben
-
+Best regards,
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+Linus Walleij <linus.walleij@linaro.org>
 
 
