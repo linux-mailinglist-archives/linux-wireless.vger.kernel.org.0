@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-14593-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14594-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DD139B2F60
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Oct 2024 12:55:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC2C99B2F62
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Oct 2024 12:56:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EDBECB21C78
-	for <lists+linux-wireless@lfdr.de>; Mon, 28 Oct 2024 11:55:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 196BCB21EAE
+	for <lists+linux-wireless@lfdr.de>; Mon, 28 Oct 2024 11:56:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FE3A1D8E10;
-	Mon, 28 Oct 2024 11:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01D01D932F;
+	Mon, 28 Oct 2024 11:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hENwQebe"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QcZhAfjZ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E98B1D6DC5
-	for <linux-wireless@vger.kernel.org>; Mon, 28 Oct 2024 11:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611EB1D8E0F
+	for <linux-wireless@vger.kernel.org>; Mon, 28 Oct 2024 11:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730116526; cv=none; b=sCnzC5JTjIz4ggsYc0XIntjl47qgqsn3ZEh2jQTpRwIdZkAZttS3/c5JU2Gc+pI0Ta/j0FDmNV8f4Y5RaDH/7yOP/lNpDUuEAHH7JgGk3qt6J6Yo+QOYgbc3ZPyoP1pkbft4BINv2Fx7Ba7g6YF/4gIpgN/GrvYabf82mPQ0S7k=
+	t=1730116528; cv=none; b=u2/ia6VkVyBtRxOYCF7I440pGSIMN1bLthV9JdwO9inm9HNkG7suZJmsPlk458DLE4HBwdGKyvxLYv+OgcKr19Agedde/v2fLmgnP31jD0VzDsMidMZN1EG9ZViL6PCwcWt193PPf0NuMgiVPnTWd1CU7+UARq/0mWw/yzb8KbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730116526; c=relaxed/simple;
-	bh=pFx8m+Fpo7ze7VpJazsJ52EHFo0smeAg9h6H6h1R3gw=;
+	s=arc-20240116; t=1730116528; c=relaxed/simple;
+	bh=NWL/UsHCibM7WvSuOoWT4K0wx/5qCZ4aDYw4QuItpQ0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lCyK//mBEt0HNFpUqAYEBvPnPe1bXVaE4PH5qmuAhvyBvVjs7PDcWHa67FkidL6bVlQmoneNPBf1BZX8UzAVFPIlgM5eouAv1I87inC03Ep2YUPy2PIS3dMnk0g3NCSXyhhWRrLMG++xB8d+tzGmCCmF/DTHPa48FlCrYhA5sLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hENwQebe; arc=none smtp.client-ip=198.175.65.17
+	 MIME-Version; b=fANsTmSW8EsOeeFCuiObDl/r14cR5thPSPosG/IqW4I5tgNcZkZACPrcyUM6iSxqvoqa8z7iyS5/Jn1cF0rDu5atVV5hxF/oWlFbp+iPQ2UYBav4BZRF2dXNGZn9XitxyGGohRTULil4zlvTChJ8wfje3rKrfS26Q8zpScMDJOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QcZhAfjZ; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1730116525; x=1761652525;
+  t=1730116527; x=1761652527;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=pFx8m+Fpo7ze7VpJazsJ52EHFo0smeAg9h6H6h1R3gw=;
-  b=hENwQebeHjEZ2wLtdHNgqZlNNdZbdZGkVQE73DCISXWZhatxDV//+Jae
-   g+UJKqlyWlVUlwcSqDH3y0uau1X06Tp4wdDi1ByQFRhCVx4CjgCrhJdjV
-   9yQ6cdAKDEfnGEEmBwixauSEyBl+ApIVbquDvrX1ym7AePeOCgXEAJUyE
-   crFCfJKMhZdsZBwzCPti4fTWEJygxBb0LMuimHoMT4Vd2rD6xa5xW7CdU
-   yJhVDbt52ZGSyU++xgPiojq/Xbj4/2gaW744OHZxVUbcGxqBBW3AogaxB
-   dnUcfOAPbDQwveTIKufqyy7urP6inPfZA9B6mYGfCKmC3V4Wizlh9b4PF
-   Q==;
-X-CSE-ConnectionGUID: TMnjMKRST4qXy7vUhz2b4g==
-X-CSE-MsgGUID: SVt1fFKhQXGKEo9lwwafsw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11238"; a="29813890"
+  bh=NWL/UsHCibM7WvSuOoWT4K0wx/5qCZ4aDYw4QuItpQ0=;
+  b=QcZhAfjZkO3CosZufVAjzL0flkteS15Hn0KGEZtRfVkSSCpbC5MGpisR
+   YtJT3ZRCWNe1wHNCp9Gtm1R30ksacgONgUbJNq3trAn/icaEht06CX9fi
+   UoZ9/cbEOFpweMMblFDOXtJy6B4yvHF2b4lQI/orBBZCN34MXAfP6N/uI
+   2NIpycQNbjBE3cN5myhjTsdQv+dsXokwMhCXaLFp0H/hKPTihqq7jY9Ic
+   OZgEI0ukSFeDb1Tnj21ojmGPJJ7wfdjgMq97eTSBd4PE0JzjVMIWEUwWc
+   qutVYCvodolhS05aJ+AMSJSU+CMGs7l9ilqLYIP3phYyiSE6Ic4dowqEk
+   A==;
+X-CSE-ConnectionGUID: dqoVpLAPSb6V8MOUq65qfg==
+X-CSE-MsgGUID: 2xzMQ1GUTn+Mr9Phce5OMQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11238"; a="29813898"
 X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; 
-   d="scan'208";a="29813890"
+   d="scan'208";a="29813898"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 04:55:24 -0700
-X-CSE-ConnectionGUID: dkaWzZ4rQEqdOWv2yqWHJQ==
-X-CSE-MsgGUID: V2RQ3ZBvTgmFw5J3yAvuww==
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 04:55:26 -0700
+X-CSE-ConnectionGUID: L7ecwLlNR2a7O1skyfG/2Q==
+X-CSE-MsgGUID: LDRXoIQIQhS8z+KoPMunDw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; 
-   d="scan'208";a="112432584"
+   d="scan'208";a="112432588"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 04:55:22 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 04:55:23 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH 05/15] wifi: iwlwifi: mvm: MLO scan upon channel condition degradation
-Date: Mon, 28 Oct 2024 13:54:50 +0200
-Message-Id: <20241028135215.6402718fbc94.Ia6ce651cc7c96f7aaeee449737dd28ed291788a6@changeid>
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 06/15] wifi: iwlwifi: mvm: use wiphy locked debugfs for low-latency
+Date: Mon, 28 Oct 2024 13:54:51 +0200
+Message-Id: <20241028135215.c62e23392400.Ifcb652d324bc60b7144fdf277d7989bede9e54d5@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241028115500.351123-1-miriam.rachel.korenblit@intel.com>
 References: <20241028115500.351123-1-miriam.rachel.korenblit@intel.com>
@@ -77,87 +77,119 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-This will allow to prevent disconnections.
+This will call into the OMI control path soon, and that will
+require the wiphy mutex to be held. The files are removed by
+mac80211 under wiphy mutex, so we must use the wiphy-locked
+debugfs for them.
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/constants.h |  1 +
- drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c  |  3 +++
- drivers/net/wireless/intel/iwlwifi/mvm/rx.c        | 10 +++++++++-
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c      |  3 ++-
- 4 files changed, 15 insertions(+), 2 deletions(-)
+ .../wireless/intel/iwlwifi/mvm/debugfs-vif.c  | 64 ++++++++++++++++---
+ 1 file changed, 55 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/constants.h b/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
-index 795a166ed63a..776600ddaea6 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/constants.h
-@@ -19,6 +19,7 @@
- #define IWL_MVM_BCN_LOSS_EXIT_ESR_THRESH_2_LINKS	5
- #define IWL_MVM_BCN_LOSS_EXIT_ESR_THRESH	15
- #define IWL_MVM_BCN_LOSS_EXIT_ESR_THRESH_BSS_PARAM_CHANGED	11
-+#define IWL_MVM_LOW_RSSI_MLO_SCAN_THRESH	-72
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
+index 25f07e00db42..261aca03682c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs-vif.c
+@@ -463,11 +463,13 @@ static ssize_t iwl_dbgfs_os_device_timediff_read(struct file *file,
+ 	return simple_read_from_buffer(user_buf, count, ppos, buf, pos);
+ }
  
- #define IWL_MVM_DEFAULT_PS_TX_DATA_TIMEOUT	(100 * USEC_PER_MSEC)
- #define IWL_MVM_DEFAULT_PS_RX_DATA_TIMEOUT	(100 * USEC_PER_MSEC)
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-index c8bc26380b4a..2a13d70da46c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-@@ -1691,6 +1691,9 @@ iwl_mvm_handle_missed_beacons_notif(struct iwl_mvm *mvm,
- 			ieee80211_beacon_loss(vif);
- 		else
- 			ieee80211_cqm_beacon_loss_notify(vif, GFP_ATOMIC);
-+
-+		/* try to switch links, no-op if we don't have MLO */
-+		iwl_mvm_int_mlo_scan(mvm, vif);
- 	}
- 
- 	iwl_dbg_tlv_time_point(&mvm->fwrt,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
-index 1a0b5f8d4339..9e72db9bab40 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/rx.c
-@@ -560,7 +560,8 @@ static void iwl_mvm_update_link_sig(struct ieee80211_vif *vif, int sig,
- 				    struct iwl_mvm_vif_link_info *link_info,
- 				    struct ieee80211_bss_conf *bss_conf)
+-static ssize_t iwl_dbgfs_low_latency_write(struct ieee80211_vif *vif, char *buf,
+-					   size_t count, loff_t *ppos)
++static ssize_t
++iwl_dbgfs_low_latency_write_handle(struct wiphy *wiphy, struct file *file,
++				   char *buf, size_t count, void *data)
  {
--	struct iwl_mvm *mvm = iwl_mvm_vif_from_mac80211(vif)->mvm;
+-	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+-	struct iwl_mvm *mvm = mvmvif->mvm;
++	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
++	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
++	struct ieee80211_vif *vif = data;
+ 	u8 value;
+ 	int ret;
+ 
+@@ -484,12 +486,28 @@ static ssize_t iwl_dbgfs_low_latency_write(struct ieee80211_vif *vif, char *buf,
+ 	return count;
+ }
+ 
+-static ssize_t
+-iwl_dbgfs_low_latency_force_write(struct ieee80211_vif *vif, char *buf,
+-				  size_t count, loff_t *ppos)
++static ssize_t iwl_dbgfs_low_latency_write(struct file *file,
++					   const char __user *user_buf,
++					   size_t count, loff_t *ppos)
+ {
++	struct ieee80211_vif *vif = file->private_data;
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+ 	struct iwl_mvm *mvm = mvmvif->mvm;
++	char buf[10] = {};
++
++	return wiphy_locked_debugfs_write(mvm->hw->wiphy, file,
++					  buf, sizeof(buf), user_buf, count,
++					  iwl_dbgfs_low_latency_write_handle,
++					  vif);
++}
++
++static ssize_t
++iwl_dbgfs_low_latency_force_write_handle(struct wiphy *wiphy, struct file *file,
++					 char *buf, size_t count, void *data)
++{
++	struct ieee80211_hw *hw = wiphy_to_ieee80211_hw(wiphy);
++	struct iwl_mvm *mvm = IWL_MAC80211_GET_MVM(hw);
++	struct ieee80211_vif *vif = data;
+ 	u8 value;
+ 	int ret;
+ 
+@@ -517,6 +535,22 @@ iwl_dbgfs_low_latency_force_write(struct ieee80211_vif *vif, char *buf,
+ 	return count;
+ }
+ 
++static ssize_t
++iwl_dbgfs_low_latency_force_write(struct file *file,
++				  const char __user *user_buf,
++				  size_t count, loff_t *ppos)
++{
++	struct ieee80211_vif *vif = file->private_data;
 +	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
 +	struct iwl_mvm *mvm = mvmvif->mvm;
- 	int thold = bss_conf->cqm_rssi_thold;
- 	int hyst = bss_conf->cqm_rssi_hyst;
- 	int last_event;
-@@ -625,6 +626,13 @@ static void iwl_mvm_update_link_sig(struct ieee80211_vif *vif, int sig,
- 	if (!vif->cfg.assoc || !ieee80211_vif_is_mld(vif))
- 		return;
- 
-+	/* We're not in EMLSR and our signal is bad, try to switch link maybe */
-+	if (sig < IWL_MVM_LOW_RSSI_MLO_SCAN_THRESH && !mvmvif->esr_active) {
-+		iwl_mvm_int_mlo_scan(mvm, vif);
-+		return;
-+	}
++	char buf[10] = {};
 +
-+	/* We are in EMLSR, check if we need to exit */
- 	exit_esr_thresh =
- 		iwl_mvm_get_esr_rssi_thresh(mvm,
- 					    &bss_conf->chanreq.oper,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index 3ce9150213a7..6fb241d0c5f5 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -3597,7 +3597,8 @@ static int iwl_mvm_int_mlo_scan_start(struct iwl_mvm *mvm,
- 	IWL_DEBUG_SCAN(mvm, "Starting Internal MLO scan: n_channels=%zu\n",
- 		       n_channels);
- 
--	if (!vif->cfg.assoc || !ieee80211_vif_is_mld(vif))
-+	if (!vif->cfg.assoc || !ieee80211_vif_is_mld(vif) ||
-+	    hweight16(vif->valid_links) == 1)
- 		return -EINVAL;
- 
- 	size = struct_size(req, channels, n_channels);
++	return wiphy_locked_debugfs_write(mvm->hw->wiphy, file,
++					  buf, sizeof(buf), user_buf, count,
++					  iwl_dbgfs_low_latency_force_write_handle,
++					  vif);
++}
++
+ static ssize_t iwl_dbgfs_low_latency_read(struct file *file,
+ 					  char __user *user_buf,
+ 					  size_t count, loff_t *ppos)
+@@ -831,8 +865,20 @@ MVM_DEBUGFS_READ_FILE_OPS(mac_params);
+ MVM_DEBUGFS_READ_FILE_OPS(tx_pwr_lmt);
+ MVM_DEBUGFS_READ_WRITE_FILE_OPS(pm_params, 32);
+ MVM_DEBUGFS_READ_WRITE_FILE_OPS(bf_params, 256);
+-MVM_DEBUGFS_READ_WRITE_FILE_OPS(low_latency, 10);
+-MVM_DEBUGFS_WRITE_FILE_OPS(low_latency_force, 10);
++
++static const struct file_operations iwl_dbgfs_low_latency_ops = {
++	.write = iwl_dbgfs_low_latency_write,
++	.read = iwl_dbgfs_low_latency_read,
++	.open = simple_open,
++	.llseek = generic_file_llseek,
++};
++
++static const struct file_operations iwl_dbgfs_low_latency_force_ops = {
++	.write = iwl_dbgfs_low_latency_force_write,
++	.open = simple_open,
++	.llseek = generic_file_llseek,
++};
++
+ MVM_DEBUGFS_READ_WRITE_FILE_OPS(uapsd_misbehaving, 20);
+ MVM_DEBUGFS_READ_WRITE_FILE_OPS(rx_phyinfo, 10);
+ MVM_DEBUGFS_READ_WRITE_FILE_OPS(quota_min, 32);
 -- 
 2.34.1
 
