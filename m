@@ -1,34 +1,34 @@
-Return-Path: <linux-wireless+bounces-14590-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14589-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E61089B2F5D
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C1E39B2F5C
 	for <lists+linux-wireless@lfdr.de>; Mon, 28 Oct 2024 12:55:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4AC0282279
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 603DF1C20BAA
 	for <lists+linux-wireless@lfdr.de>; Mon, 28 Oct 2024 11:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 285571D61A4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22BB71D5CE0;
 	Mon, 28 Oct 2024 11:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V3EG1R8B"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l0xkJJPK"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F9C1D86DC
-	for <linux-wireless@vger.kernel.org>; Mon, 28 Oct 2024 11:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD801D5CC5
+	for <linux-wireless@vger.kernel.org>; Mon, 28 Oct 2024 11:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730116522; cv=none; b=usGIGHBfWv6BK21vRiDeT9WFazUDFx6y1YG4PeDkQh8repXNqsKugClwhicLWGl9q1K8cLOm2b5hUJ+2iTNy09I7NLhl7+/Tv7JTIMH3usg80RHndFKid7Fa8/tBzfd43qECf8ScKwpqzJU6Wv5o6Np+3KLRoUIdrUYeFRRsaEs=
+	t=1730116522; cv=none; b=slAlZ24cvd7JmZL6lyUR7S2YoGVrjVt9ejy6V4pwi+jxNF6ODukGv9sQcbJKhd2DAgp13HznmGGJDhngJQ2rs+RszFirtZnwcBnFXb3EZf/DSWFfVm2mE7B6WOWZrS+hDQutzeklf/oIF3KWjtJdRUo7HXMQHbhpy6VAnvrK+oM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1730116522; c=relaxed/simple;
-	bh=0Boe/NZNdkuGDl/ROM4CzySbDcET+BNsrim4wTaIOiw=;
+	bh=nuA2GhGMhX8enCfOse7WkrGSD2WpoiXSjQ5Jkwz46LY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=J/y9cF0PeJMkREb/tOm9WCk5gs/r6e7s5n4GCo2neR2OJtYNW0jKheCLTJCbVvqP6VEQCUUtqqhbWf/8MuGnXo+HdO3EJ/19h1x1m3YsLkCAI2oNy8E54oJQxal9Bb1CBFaq4TmcV8nOulQB3FwMvRQUsCsZP6b8TcyyWkw3RrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V3EG1R8B; arc=none smtp.client-ip=198.175.65.17
+	 MIME-Version; b=OBSQLlW8oMKheebTwDYKaAr4FQ16/yjk//FuBNEN/EQUpa3mn7KItFrVimAMiJY0rLOeQLdhMNWSYnoHW7hXKqb70iXsbKW7kVDZzFkbkQSILNRH3enZf8YcMWIE8QhopTMR0t2RvfLm76awKfHXyJ1NJ33iHCuvBmpuwIQpo58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l0xkJJPK; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
@@ -36,35 +36,35 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   t=1730116520; x=1761652520;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=0Boe/NZNdkuGDl/ROM4CzySbDcET+BNsrim4wTaIOiw=;
-  b=V3EG1R8B7TFqRYUWcqf+bQd99gpWYWWl6iWrHjhdvM7NBVWhNObeYkEf
-   WX/9HBypp4x8pKekBIkgZuNZVJkaSwk9obQgch89+uk8894nbX8rOazIz
-   9REVUubZsT94cW297/Ut2zfj9pshj+hXY6wB2c6yosDky6ScJ4FuEe0/O
-   hBFFjhsf6HF4LsYsLibiYVr4CfrdGmlHGbTg8iBOwbdnAlYcJKXDOf9Tx
-   IwXwGSmVYa+m0UHt6naWvwqw2pvu8CQeOIwlln2bW6kRp7toUZk+CllFc
-   G4YgcJm/Mci6PLCVTDE+o5AZjFW3GaMifUPZp2Vo8/59ACfJMmE+PH0dl
+  bh=nuA2GhGMhX8enCfOse7WkrGSD2WpoiXSjQ5Jkwz46LY=;
+  b=l0xkJJPKXl/R3SvT6MCnBXmq5lhoP0D+nCmAHisGtjoJFd9BC3ZS3ReL
+   FL6PvdqHcn93BBXHqmkBr6/wruyuAqCw/W893HhiP4CDk3sA2aEqNicbY
+   sYJmnCjlCwUD3u3Fr9D6bpWtwEivqS1C8T51phgLmlK2Xah0h24w0tmFD
+   II0rcXclJRiu2K1eti5OlmGI35et/L0ZWRwh04C1zl5CkSP+uJcsq8UqZ
+   fSX1I5pUUPc8hlJ9ux5gyuO9bDzhDO1r3OXUFNYhPUVQBwMy5wRxLIQN7
+   ca14ebRahwLIzoWAvAFLMb3oN7uk9f5a05GmV6MPlZvvvdhWtpx2Bjp4T
    A==;
-X-CSE-ConnectionGUID: vt9OfUl8TUmfRWslZBZbfA==
-X-CSE-MsgGUID: DRv1cDtbRFOeceN7wyQZQQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11238"; a="29813869"
+X-CSE-ConnectionGUID: 81+Xv4ZqSWmXxIWURvNQ4g==
+X-CSE-MsgGUID: Grx2WJTNQfaMJS4mXsmKZw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11238"; a="29813873"
 X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; 
-   d="scan'208";a="29813869"
+   d="scan'208";a="29813873"
 Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 04:55:18 -0700
-X-CSE-ConnectionGUID: 6XhuOPg6Rt2LePfNrPIXxQ==
-X-CSE-MsgGUID: BdGWiOS7SkGQc++rWqQ7kA==
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 04:55:20 -0700
+X-CSE-ConnectionGUID: +hEoB9kET/us+whAzWsUwg==
+X-CSE-MsgGUID: f6ZoxahwSkKrq6iDp4XfwQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,239,1725346800"; 
-   d="scan'208";a="112432561"
+   d="scan'208";a="112432568"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 04:55:16 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2024 04:55:18 -0700
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 01/15] wifi: iwlwifi: mvm: clarify fw_id_to_link_sta protection
-Date: Mon, 28 Oct 2024 13:54:46 +0200
-Message-Id: <20241028135215.a6c6aa4147cf.If7f1b30a7b92ce5e9226e8972201a20aa9905108@changeid>
+Subject: [PATCH 02/15] wifi: iwlwifi: mvm: unify link info initialization
+Date: Mon, 28 Oct 2024 13:54:47 +0200
+Message-Id: <20241028135215.ab963cc90e56.Ice5cf66dec8351f8e94ca4c5b3a27e9311d0c20a@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241028115500.351123-1-miriam.rachel.korenblit@intel.com>
 References: <20241028115500.351123-1-miriam.rachel.korenblit@intel.com>
@@ -79,114 +79,112 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-This is written only with wiphy and mvm mutexes held, but in
-order to actually rely on that document it and add lockdep
-assertions to ensure it.
+Move the link info initialization to a common function so
+that it can be modified more easily later.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c       |  2 ++
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c |  2 ++
- drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c  | 11 +++++++++++
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h      |  1 +
- 4 files changed, 16 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/link.c         | 11 +++++++++++
+ drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c     |  9 ++-------
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c | 10 +---------
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h          |  1 +
+ 4 files changed, 15 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-index 08546e673cf5..1b62bb92ee93 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/fw.c
-@@ -1403,6 +1403,7 @@ int iwl_mvm_up(struct iwl_mvm *mvm)
- 	int ret, i;
- 	struct ieee80211_supported_band *sband = NULL;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/link.c b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
+index 628baf67b208..492e0da553ab 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/link.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
+@@ -1167,3 +1167,14 @@ void iwl_mvm_unblock_esr(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 	if (!mvmvif->esr_disable_reason)
+ 		iwl_mvm_esr_unblocked(mvm, vif);
+ }
++
++void iwl_mvm_init_link(struct iwl_mvm_vif_link_info *link)
++{
++	link->bcast_sta.sta_id = IWL_MVM_INVALID_STA;
++	link->mcast_sta.sta_id = IWL_MVM_INVALID_STA;
++	link->ap_sta_id = IWL_MVM_INVALID_STA;
++
++	for (int r = 0; r < NUM_IWL_MVM_SMPS_REQ; r++)
++		link->smps_requests[r] =
++			IEEE80211_SMPS_AUTOMATIC;
++}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+index 9a43df49493f..c8bc26380b4a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+@@ -216,7 +216,7 @@ int iwl_mvm_mac_ctxt_init(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
+ 		.preferred_tsf = NUM_TSF_IDS,
+ 		.found_vif = false,
+ 	};
+-	int ret, i;
++	int ret;
  
-+	lockdep_assert_wiphy(mvm->hw->wiphy);
  	lockdep_assert_held(&mvm->mutex);
  
- 	ret = iwl_trans_start_hw(mvm->trans);
-@@ -1622,6 +1623,7 @@ int iwl_mvm_load_d3_fw(struct iwl_mvm *mvm)
- {
- 	int ret, i;
+@@ -298,9 +298,7 @@ int iwl_mvm_mac_ctxt_init(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
+ 	mvmvif->time_event_data.id = TE_MAX;
+ 	mvmvif->roc_activity = ROC_NUM_ACTIVITIES;
  
-+	lockdep_assert_wiphy(mvm->hw->wiphy);
- 	lockdep_assert_held(&mvm->mutex);
+-	mvmvif->deflink.bcast_sta.sta_id = IWL_MVM_INVALID_STA;
+-	mvmvif->deflink.mcast_sta.sta_id = IWL_MVM_INVALID_STA;
+-	mvmvif->deflink.ap_sta_id = IWL_MVM_INVALID_STA;
++	iwl_mvm_init_link(&mvmvif->deflink);
  
- 	ret = iwl_trans_start_hw(mvm->trans);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 4db7c3ee6bf5..7c6051990569 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -3516,6 +3516,8 @@ void iwl_mvm_sta_pre_rcu_remove(struct ieee80211_hw *hw,
- 	struct iwl_mvm_sta *mvm_sta = iwl_mvm_sta_from_mac80211(sta);
- 	unsigned int link_id;
+ 	/* No need to allocate data queues to P2P Device MAC and NAN.*/
+ 	if (vif->type == NL80211_IFTYPE_P2P_DEVICE)
+@@ -316,9 +314,6 @@ int iwl_mvm_mac_ctxt_init(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
+ 		mvmvif->deflink.cab_queue = IWL_MVM_DQA_GCAST_QUEUE;
+ 	}
  
-+	lockdep_assert_wiphy(mvm->hw->wiphy);
-+
- 	/*
- 	 * This is called before mac80211 does RCU synchronisation,
- 	 * so here we already invalidate our internal RCU-protected
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-index 99eb1e1db1bb..1a096f1b1870 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
-@@ -521,6 +521,9 @@ void iwl_mvm_mld_free_sta_link(struct iwl_mvm *mvm,
- 			       unsigned int link_id,
- 			       bool is_in_fw)
- {
-+	lockdep_assert_wiphy(mvm->hw->wiphy);
-+	lockdep_assert_held(&mvm->mutex);
-+
- 	RCU_INIT_POINTER(mvm->fw_id_to_mac_id[mvm_sta_link->sta_id],
- 			 is_in_fw ? ERR_PTR(-EINVAL) : NULL);
- 	RCU_INIT_POINTER(mvm->fw_id_to_link_sta[mvm_sta_link->sta_id], NULL);
-@@ -559,6 +562,9 @@ static int iwl_mvm_mld_alloc_sta_link(struct iwl_mvm *mvm,
- 	u32 sta_id = iwl_mvm_find_free_sta_id(mvm,
- 					  ieee80211_vif_type_p2p(vif));
+-	for (i = 0; i < NUM_IWL_MVM_SMPS_REQ; i++)
+-		mvmvif->deflink.smps_requests[i] = IEEE80211_SMPS_AUTOMATIC;
+-
+ 	return 0;
  
-+	lockdep_assert_wiphy(mvm->hw->wiphy);
-+	lockdep_assert_held(&mvm->mutex);
-+
- 	if (sta_id == IWL_MVM_INVALID_STA)
- 		return -ENOSPC;
+ exit_fail:
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+index a5c38f389c69..4acfa6c3844f 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+@@ -1161,8 +1161,6 @@ iwl_mvm_mld_change_vif_links(struct ieee80211_hw *hw,
+ 	int err, i;
  
-@@ -631,6 +637,9 @@ static int iwl_mvm_alloc_sta_after_restart(struct iwl_mvm *mvm,
- 	int ret = -EINVAL;
- 	int sta_id;
+ 	for (i = 0; i < IEEE80211_MLD_MAX_NUM_LINKS; i++) {
+-		int r;
+-
+ 		if (test_bit(IWL_MVM_STATUS_IN_HW_RESTART, &mvm->status))
+ 			break;
  
-+	lockdep_assert_wiphy(mvm->hw->wiphy);
-+	lockdep_assert_held(&mvm->mutex);
-+
- 	/* First add an empty station since allocating a queue requires
- 	 * a valid station. Since we need a link_id to allocate a station,
- 	 * pick up the first valid one.
-@@ -858,6 +867,7 @@ int iwl_mvm_mld_rm_sta_id(struct iwl_mvm *mvm, u8 sta_id)
- {
- 	int ret;
+@@ -1174,14 +1172,8 @@ iwl_mvm_mld_change_vif_links(struct ieee80211_hw *hw,
+ 			goto free;
+ 		}
  
-+	lockdep_assert_wiphy(mvm->hw->wiphy);
- 	lockdep_assert_held(&mvm->mutex);
+-		new_link[i]->bcast_sta.sta_id = IWL_MVM_INVALID_STA;
+-		new_link[i]->mcast_sta.sta_id = IWL_MVM_INVALID_STA;
+-		new_link[i]->ap_sta_id = IWL_MVM_INVALID_STA;
+ 		new_link[i]->fw_link_id = IWL_MVM_FW_LINK_ID_INVALID;
+-
+-		for (r = 0; r < NUM_IWL_MVM_SMPS_REQ; r++)
+-			new_link[i]->smps_requests[r] =
+-				IEEE80211_SMPS_AUTOMATIC;
++		iwl_mvm_init_link(new_link[i]);
+ 	}
  
- 	if (WARN_ON(sta_id == IWL_MVM_INVALID_STA))
-@@ -1064,6 +1074,7 @@ int iwl_mvm_mld_update_sta_links(struct iwl_mvm *mvm,
- 	unsigned int link_id;
- 	int ret;
- 
-+	lockdep_assert_wiphy(mvm->hw->wiphy);
- 	lockdep_assert_held(&mvm->mutex);
- 
- 	for_each_set_bit(link_id, &old_links_long,
+ 	mutex_lock(&mvm->mutex);
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index 5aa48c77b054..5d85661e01f5 100644
+index 5d85661e01f5..9d3072ac8c58 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -1082,6 +1082,7 @@ struct iwl_mvm {
- 	/* data related to data path */
- 	struct iwl_rx_phy_info last_phy_info;
- 	struct ieee80211_sta __rcu *fw_id_to_mac_id[IWL_STATION_COUNT_MAX];
-+	/* note: fw_id_to_link_sta must be protected by wiphy and mvm mutexes */
- 	struct ieee80211_link_sta __rcu *fw_id_to_link_sta[IWL_STATION_COUNT_MAX];
- 	u8 rx_ba_sessions;
+@@ -2105,6 +2105,7 @@ int iwl_mvm_binding_remove_vif(struct iwl_mvm *mvm, struct ieee80211_vif *vif);
+ u32 iwl_mvm_get_lmac_id(struct iwl_mvm *mvm, enum nl80211_band band);
  
+ /* Links */
++void iwl_mvm_init_link(struct iwl_mvm_vif_link_info *link);
+ int iwl_mvm_set_link_mapping(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 			     struct ieee80211_bss_conf *link_conf);
+ int iwl_mvm_add_link(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
 -- 
 2.34.1
 
