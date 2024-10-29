@@ -1,74 +1,63 @@
-Return-Path: <linux-wireless+bounces-14639-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14640-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 635709B4AFB
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 14:32:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 452309B4C12
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 15:29:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E76DB1F233A4
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 13:32:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6B43B21978
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 14:29:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2F07205AD2;
-	Tue, 29 Oct 2024 13:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14367206E8D;
+	Tue, 29 Oct 2024 14:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d6mJEqD4"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="VKjAXvBM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6409D205E17
-	for <linux-wireless@vger.kernel.org>; Tue, 29 Oct 2024 13:32:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3786120696B
+	for <linux-wireless@vger.kernel.org>; Tue, 29 Oct 2024 14:29:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730208743; cv=none; b=Y6myKKqKq7Jyao4ajqJtjT9/j2Bh2k/HnU+5Sf6vXPHe5MF5ELArMHAEDn2h6wHdX3xj/ODO4W2MXiWIfkQFN0/A3gJ9r5iFD4AMLVon141nMerza8T8mvsfmxMup0RyMQ87bpziV25Z/VjqgcqxHG+BLDn285pdYmd/ffIvWKo=
+	t=1730212159; cv=none; b=kICcWnciDpV6x5UmBthWRnq2vZbGJft+i+R4dFUy++LjCfzyPi3+n2aGUnkAkDwL/qA+kmX9/dCrhzsf27jPDZelXHdVIGI3JTjv1C6VqP8rYzuNfwJIIENmT6sOsm23w98D9hR/lb7dcwDub04qp6YY7wtwth1kT1wr0qpSSFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730208743; c=relaxed/simple;
-	bh=xRYPrbqnH8FvUk6RiwLLUP7NtRt7OM+3sqHd6nyUiYQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=bFix1OOb01ZKzIYcfLM5nn3eRzVY4L/uZ1UbCfy89+K9oo1IqIaLimOiHCq+Mtpk6g07+wfpc5r+FJJO9i35gzVM2Ez6zXzYbB0fjXQbOIzPOBL1cJ8tQWohpUAOdaBGuvbd8qkJJsqKcpTr+doeLfDsEEDUuAmyiwQ1mjRjz9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d6mJEqD4; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4316a44d1bbso50093365e9.3
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Oct 2024 06:32:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730208739; x=1730813539; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Ef2TorUb7iOPDztwWwRI/7rNTUIMCTIe6IoJdvE6OXM=;
-        b=d6mJEqD45XDrM2ZRalaG0ULpJBkcw/jnTW657y9cr9vxAlmSZlGDjMpAodgimDVQ2C
-         evCxyY7mJlDSj/f5x++zGKF0ayfC20g2PXpZjmwapFQEIt77rIWK+O03TEcC9xXnUNf1
-         5wFC6v56s2l1boYrmgxLAkPp8r9wVKl2nz7mGbiFYFANSKLl5aAMtZVRUyN8u/749l5D
-         73713wT7tIqrVhirUrDw+3a2s7C3GpxHOB1oopmWsgvnidPEdWTlmlANLBRIt3CPDsU6
-         Wt3EyBX7n+IlhOXn6dLAFJPIJPsd3s//iNJrHKar5uPgM+72iU5h5T0RCKCSPhohoP9w
-         qs5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730208739; x=1730813539;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ef2TorUb7iOPDztwWwRI/7rNTUIMCTIe6IoJdvE6OXM=;
-        b=rSxqD6rqYEe7vqzdhPuf6Q4IKevx7TN+fqsGq5d+CqzkeOYpuuekYg8K522heCa2Lp
-         hlWZ9NlbQvyMSmEekqwo27/NpocGUCCn/M4pCDtP7KRLtO1jnRdxfbPUyy8TM/3MSg8v
-         qWn3tB1eb91gE92EMAZrSXaKLnVsIjIsOzZo6mW7BQDeEMsDqRkedPO51jpJQ/2q8RQ+
-         D1tosM0nArTyUH7ZIM9GUVKxquIK/Ut9c3t+RRmyL6nfMp+3ZtO1/UJCRXqnV3u6Y2sw
-         x++7/ReU7a3QAHE4nqdjdao0SYsTd07S6Lotb1euQbSaV2sVpicD5XIvNVYia4gkTHnf
-         LsZw==
-X-Forwarded-Encrypted: i=1; AJvYcCVRupFq+ZBJxdXPfFJFuRM1mu9iQsgGl4SNnBcByRD4fx0iyzp0K6B923BHyuNmJSbuyw5D4YZlRZAn2fQ+2w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxK1GHK4fZCV+x5Q8ruH/lzxkAB6YzSOriLy6YHoQb6Bpmupq6i
-	g6bDAq/r2tBwrs6XnZReKmaGNHVSZ1ugwEJ/AXeF0KwfzJkWBMqNW+Igxg==
-X-Google-Smtp-Source: AGHT+IFsQquDeB6VW27u+UbmsnETye7P/JxGnCiD40SLGk6y0xCIHCaPgdn3LRPC6ZpcmNwwPKxmVg==
-X-Received: by 2002:a05:600c:3b94:b0:431:4e3f:9dee with SMTP id 5b1f17b1804b1-4319ac7409amr89477765e9.4.1730208738642;
-        Tue, 29 Oct 2024 06:32:18 -0700 (PDT)
-Received: from [192.168.1.50] ([79.113.150.231])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4318b5707e8sm174712265e9.36.2024.10.29.06.32.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Oct 2024 06:32:18 -0700 (PDT)
-Message-ID: <207adc8d-06db-46cf-a87b-6dc2a1efd6d0@gmail.com>
-Date: Tue, 29 Oct 2024 15:32:16 +0200
+	s=arc-20240116; t=1730212159; c=relaxed/simple;
+	bh=r5X5dxDkcLTVK99lKBzwCP4nJad61hFiqlBoAwTndk4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=l1mhWVRUSaAvjQrBUanbWWVVMlbnZ7AI4Bl+ZlopRTv/QkW+nVsxJVBrtHVs2xP7GkinzWw3EKLmm21SW/PSF/tuxfn2i5+fCiZpd72zorK7jnbRwoRmuOKILPVdFKrTVNFu/NzK3C7wK8Unym4KdIuz+1zDM6+SxmDu0Q1RAEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=VKjAXvBM; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49T9jjD7014001;
+	Tue, 29 Oct 2024 14:27:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	pZmo/McqSpLcIptNy9yv9fDZlhygSzER86/5Nb6iaLY=; b=VKjAXvBM5cW0RWIy
+	iFPTvVg5J6cO0+RgSovgLnYgDxqP8R4bXUUcl0AHF5EFXkYKb4eW1wXFKo2Ly6a0
+	61HrnG9n1wzm4kvTKhuS6JS/ZvWKPAW+7BKQj9Ho50YqX4EbYPW61LbgsXKte3Ir
+	HGMNmc1dTBoDfQ9ILOscleRejGznLxIE5c90VUd/QVSmP76eEm/ms5cxhGxSQN0z
+	TK4XimSgGuOgPDvS1NK+JNiFUeIidulo7gCGewLVIFLcqvIjArGKKq9aRwp+IPWi
+	1FSvOQtbFDnnTxrDr6bpUpsrcdh1l3bt+ngKALDiGWDo1KYhAD2944/azQ2j6HMl
+	928s0Q==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42gqe60kv6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 29 Oct 2024 14:27:02 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49TER1TI012647
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 29 Oct 2024 14:27:01 GMT
+Received: from [10.48.242.156] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 29 Oct
+ 2024 07:27:00 -0700
+Message-ID: <24ca263a-e367-457a-94c4-f1204993cdfe@quicinc.com>
+Date: Tue, 29 Oct 2024 07:27:00 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -76,67 +65,67 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 01/22] wifi: rtw88: Add some definitions for
- RTL8821AU/RTL8812AU
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <ee6d97b3-0c82-4225-a07f-b0d4043a901a@gmail.com>
- <9279a9cd-6f86-4dc3-a095-7c36cb9b9d06@gmail.com>
- <808c66fa-60a2-4878-b1f8-65d064735692@RTEXMBS04.realtek.com.tw>
+Subject: Re: [PATCH v2] ath11k: remove error checking for
+ debugfs_create_file()
+To: Julian Calaby <julian.calaby@gmail.com>
+CC: Kalle Valo <kvalo@kernel.org>, Zhen Lei <thunder.leizhen@huawei.com>,
+        Jeff
+ Johnson <jjohnson@kernel.org>, <linux-wireless@vger.kernel.org>,
+        <ath11k@lists.infradead.org>
+References: <20241025064235.382-1-thunder.leizhen@huawei.com>
+ <87v7xcgwb0.fsf@kernel.org>
+ <ff8c3443-3651-480e-956e-81c7d592099d@quicinc.com>
+ <CAGRGNgUmdKfWxOSPyj9Ofk8ULyPX0j61Qnrd_ckLAy-a0RhdKg@mail.gmail.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
 Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <808c66fa-60a2-4878-b1f8-65d064735692@RTEXMBS04.realtek.com.tw>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <CAGRGNgUmdKfWxOSPyj9Ofk8ULyPX0j61Qnrd_ckLAy-a0RhdKg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: cPDzIlsYjN9XVCJaB3iIIPrzYTgp274X
+X-Proofpoint-ORIG-GUID: cPDzIlsYjN9XVCJaB3iIIPrzYTgp274X
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 spamscore=0
+ phishscore=0 bulkscore=0 mlxlogscore=778 malwarescore=0 adultscore=0
+ priorityscore=1501 impostorscore=0 mlxscore=0 clxscore=1011
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410290110
 
-On 29/10/2024 06:22, Ping-Ke Shih wrote:
-> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+On 10/28/2024 8:41 PM, Julian Calaby wrote:
+> The big question for me is this:
 > 
->> Add 8821A and 8812A chip type enums.
->>
->> Add cck_high_power member to struct rtw_hal. This will be used to
->> calculate the RX signal strength of RTL8812AU.
->>
->> Add various register definitions which will be used by the new drivers.
->>
->> Move some existing register definitions from rtw8821c.h and rtw8822b.h.
->> They were duplicated in those headers and will also be used by the new
->> drivers.
->>
->> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>> Since the relayfs functionality that spectral scan uses is dependent upon
+>> debugfs
 > 
-> Smatch warns
+> Why?
 > 
->   drivers/net/wireless/realtek/rtw88/rtw8812a.c:619 rtw8812a_iqk() error: uninitialized symbol 'tx_x1'.
->   drivers/net/wireless/realtek/rtw88/rtw8812a.c:621 rtw8812a_iqk() error: uninitialized symbol 'tx_y1'.
+> This seems to go against the general guidance that debugfs should
+> essentially be "fire and forget" and return values shouldn't be
+> checked.
 > 
+> IMHO it comes down to one of two outcomes here:
+> 
+> 1. Spectral scan isn't necessary for normal operation so we shouldn't
+> initialise that functionality if we can't use debugfs, which violates
+> the "don't check return values" guidance
+> 2. We should break that dependency
+> 
+> I can envisage a lot of people making the sensible assumption that a
+> non-debug kernel doesn't need debugfs and therefore disabling it on
+> their thing, but also it seems to be enabled everywhere I have access
+> to: Debian Stable, WSL and Bazzite. So I could be completely missing
+> the point here.
 
-These are false positives. The variables are initialised inside
-rtw88xxa_iqk_finish(). But I'll initialise them when they are
-declared.
+https://docs.kernel.org/filesystems/relay.html
 
-> Please respin patches 16-22.
-> 
-> 15 patch(es) applied to rtw-next branch of rtw.git, thanks.
-> 
-> d12722830ea4 wifi: rtw88: Add some definitions for RTL8821AU/RTL8812AU
-> 87341ca1eac9 wifi: rtw88: Dump the HW features only for some chips
-> d9018f437351 wifi: rtw88: Allow different C2H RA report sizes
-> 95a772e30b60 wifi: rtw88: Extend the init table parsing for RTL8812AU
-> 7c5bbeba7c36 wifi: rtw88: Allow rtw_chip_info.ltecoex_addr to be NULL
-> fbb5e1b3637a wifi: rtw88: Let each driver control the power on/off process
-> c7706b1173c7 wifi: rtw88: Enable data rate fallback for older chips
-> abb0f19492ba wifi: rtw88: Make txagc_remnant_ofdm an array
-> 82a617413e85 wifi: rtw88: Support TX page sizes bigger than 128
-> 67d915604e69 wifi: rtw88: Move pwr_track_tbl to struct rtw_rfe_def
-> 85bf3041a0ea wifi: rtw88: usb: Set pkt_info.ls for the reserved page
-> 57289d30cd2a wifi: rtw88: Detect beacon loss with chips other than 8822c
-> b19840afc051 wifi: rtw88: coex: Support chips without a scoreboard
-> bfcee5ee924f wifi: rtw88: 8821a: Regularly ask for BT info updates
-> f9e0189cbc2d wifi: rtw88: 8812a: Mitigate beacon loss
-> 
-> ---
-> https://github.com/pkshih/rtw.git
-> 
+The relay interface needs a struct dentry * and debugfs provides that.
+And as a result userspace expects the relay file to be there as well.
+
+/jeff
 
 
