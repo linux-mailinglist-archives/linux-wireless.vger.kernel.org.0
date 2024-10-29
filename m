@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-14683-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14684-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 834519B5106
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 18:38:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C287F9B5155
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 18:52:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 083B81F2252E
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 17:38:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4892D1F25173
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 17:52:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E97200C85;
-	Tue, 29 Oct 2024 17:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B984E1DB350;
+	Tue, 29 Oct 2024 17:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fskBfInQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iS6g92jR"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68F71D5CD6;
-	Tue, 29 Oct 2024 17:34:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870E219A298;
+	Tue, 29 Oct 2024 17:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730223265; cv=none; b=bHA31+W1Xfjr5HmgVqr9IHx4Xn3IEGf2yxP5887zS/Xd8H0LBa1TI/9LQRQjSaORozc/0KUulsbURpzhoUqZ45A6QvKdv5pZUO+jEbiQDKV0doV9dQdYF+YzHa80rzvNud9MIElOFmuKuJ+Q4bUJWaBAbnOfRjZ4vBGv27g4rY8=
+	t=1730224362; cv=none; b=nHqxYnyXJM/qL47ojKmTjntPix9HqvQIhDx48bNOZpGEoNI1q8CPZTTVvcZZz2zmLwY7Hdu15wydy4peeYt3rfdEiSmdjBy8YBIxLdxX/naJdU/4aGyCvQCBCHqBJ1kQiUHT4nCsaxuY1ijRR1S4i1BxkKaD7RGFO0iEpQxax2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730223265; c=relaxed/simple;
-	bh=3g0p2tDhh+R0D+c6XvvKGkeoeP0gW3rm59HIK5YxF5I=;
+	s=arc-20240116; t=1730224362; c=relaxed/simple;
+	bh=JFFzzl4Y52ZVnegDHi82oJJUqr3xGdEYAQL4WOBiKC8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h8SWCoC98D1XsQlWglVLfFRpigK16PZWOnYLQJPLnbqyy+PcsY8OWGnLSb/OWs6R+jjHTiKIRe/UDPJP5M27XwfmhgM8hZZHAV3u3oiYkeobQu/CABoPzdb2+jMcqoKaxFolRlyuFGcNM5KRzOtaBgrmVZrLaANcuy1OxV2C7ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fskBfInQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BFCDC4CEE4;
-	Tue, 29 Oct 2024 17:34:20 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=kKLT9a5+VJWBBMBtZ40I/jDqOUCJZxmxh4W+5k7M/vcCwsfXSjFDouwlELG5dNldNN7NVVySAXwij+B8p2UZFiiJGe4Ix368lmK7A2DFbN1pr0otVBzpzLL+Jbbh9jfPn++Rkgr0+0XXFdQUumjxjwYgkvH6RxncCS6rFcZdZYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iS6g92jR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F540C4CECD;
+	Tue, 29 Oct 2024 17:52:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730223264;
-	bh=3g0p2tDhh+R0D+c6XvvKGkeoeP0gW3rm59HIK5YxF5I=;
+	s=k20201202; t=1730224362;
+	bh=JFFzzl4Y52ZVnegDHi82oJJUqr3xGdEYAQL4WOBiKC8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=fskBfInQPb9slhqLvkZEC0UaitcPPXnryTO0C5+mk7a6L0yUbkzhi2qUHoY31L9xl
-	 DONXv/2KnJAxTYYW8r597tybHkC93ESd8EXZeOUTSUDKtBWVwApKkLFqhRAJ3Ogrfz
-	 /1LRFz36cfv7w3Ya8y5rvWcKhH5HH0lZ0Hzk2dZOCvWkGXhfrH7ujvnwmnmzrH4/Hf
-	 C69smfNkXJAa6FNUEiWtezB2hmKI2rK2BO803+pVToMLNOvEsaMo8QeI9nSHbDT8cp
-	 5IChbCb3vbOhgkEwo4EgxfUupkWIAlmpZOv8BG/V4Q16vwNa0wLMLXl/VvCoWIH3gR
-	 w0V/m90No7aKA==
-Message-ID: <9aff2bed-bca4-482b-83ea-4cd945812817@kernel.org>
-Date: Tue, 29 Oct 2024 18:34:18 +0100
+	b=iS6g92jRiZ2sdckjC6a0TGhUadZSgLSncPGUraVTUoGyigoxlqcwGRdosGj0Pk66d
+	 Z7JEpb514VEus4LQOtsuuqD1OH9DKdq81bzkpOCjErHNNp1pVlXHubbqeYjTb1UDo/
+	 N0NQtxRc3ws1lZSNyiQsgJBBKMi8fPINo2IxaLqLcT4LurWt9v2rwhJvKQz6mWRI5c
+	 +0NGDG8D87qjZ+D8VpMWGVOYsTv1RnZFMUWIh+wN76FMFs6MwUSlzsCY+qiLmjf7zt
+	 YKDto92Uykys+cOmW2cd10ld4c5CZIVuxWJ8aYeWyOV4+ycRxA8Q4o/O+AZoZdy5Yj
+	 +243lUKrmyNjw==
+Message-ID: <764f8f22-146d-4edc-9d46-7fe3c7d9a2f2@kernel.org>
+Date: Tue, 29 Oct 2024 18:52:34 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,18 +50,17 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 04/17] wifi: cc33xx: Add sdio.c, io.c, io.h
-To: Michael Nemanov <michael.nemanov@ti.com>, Kalle Valo <kvalo@kernel.org>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-wireless@vger.kernel.org,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: Sabeeh Khan <sabeeh-khan@ti.com>
-References: <20241029172354.4027886-1-michael.nemanov@ti.com>
- <20241029172354.4027886-5-michael.nemanov@ti.com>
+Subject: Re: [RFC PATCH v2 1/5] dt-bindings: net: wireless: ath12k: describe
+ WSI properties for QCN9274
+To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>, ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+References: <20241029173050.2188150-1-quic_rajkbhag@quicinc.com>
+ <20241029173050.2188150-2-quic_rajkbhag@quicinc.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -107,142 +106,243 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20241029172354.4027886-5-michael.nemanov@ti.com>
+In-Reply-To: <20241029173050.2188150-2-quic_rajkbhag@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 29/10/2024 18:23, Michael Nemanov wrote:
-> sdio.c implements SDIO transport functions. These are bound into
-> struct cc33xx_if_operations and accessed via io.h in order to abstract
-> multiple transport interfaces such as SPI in the future.
-> The CC33xx driver supports the SDIO in-band IRQ option so the IRQ from
-> the device received here as well.
-> Unlike wl1xxx products, there is no longer mapping between
-> HW and SDIO / SPI address space of any kind.
-> There are only 3 valid addresses for control, data and status
-> transactions each with a predefined structure.
+On 29/10/2024 18:30, Raj Kumar Bhagat wrote:
+> QCN9274 device has WSI support. WSI stands for WLAN Serial Interface.
+> It is used for the exchange of specific control information across
+> radios based on the doorbell mechanism. This WSI connection is
+> essential to exchange control information among these devices
 > 
-> Signed-off-by: Michael Nemanov <michael.nemanov@ti.com>
+> Hence, describe WSI interface supported in QCN9274 with the following
+> properties:
+> 
+>  - qcom,wsi-group-id: It represents the identifier assigned to the WSI
+>    connection. All the ath12k devices connected to same WSI connection
+>    have the same wsi-group-id.
+> 
+>  - qcom,wsi-master: Indicates if this device is the WSI master.
+> 
+>  - ports: This is a graph ports schema that has two ports: TX (port@0)
+>    and RX (port@1). This represents the actual WSI connection among
+>    multiple devices.
+
+Describe the hardware, not the contents of the patch/binding. We see it
+easily, but what we do not see is the hardware.
+
+> 
+> Also, describe the ath12k device property
+> "qcom,ath12k-calibration-variant". This is a common property among
+> ath12k devices.
+
+Why do you describe it? What you do is easily visible. We do not see why.
+
+> 
+> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
 > ---
->  drivers/net/wireless/ti/cc33xx/io.c   | 129 +++++++
->  drivers/net/wireless/ti/cc33xx/io.h   |  26 ++
->  drivers/net/wireless/ti/cc33xx/sdio.c | 530 ++++++++++++++++++++++++++
->  3 files changed, 685 insertions(+)
->  create mode 100644 drivers/net/wireless/ti/cc33xx/io.c
->  create mode 100644 drivers/net/wireless/ti/cc33xx/io.h
->  create mode 100644 drivers/net/wireless/ti/cc33xx/sdio.c
+>  .../bindings/net/wireless/qcom,ath12k.yaml    | 241 +++++++++++++++++-
+>  1 file changed, 232 insertions(+), 9 deletions(-)
 > 
-> diff --git a/drivers/net/wireless/ti/cc33xx/io.c b/drivers/net/wireless/ti/cc33xx/io.c
-> new file mode 100644
-> index 000000000000..59696004efe9
-> --- /dev/null
-> +++ b/drivers/net/wireless/ti/cc33xx/io.c
-> @@ -0,0 +1,129 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Copyright (C) 2022-2024 Texas Instruments Incorporated - https://www.ti.com/
-> + */
+> diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
+> index 1b5884015b15..42bcd73dd159 100644
+> --- a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
+> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k.yaml
+> @@ -1,5 +1,6 @@
+>  # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>  # Copyright (c) 2024 Linaro Limited
+> +# Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
+>  %YAML 1.2
+>  ---
+>  $id: http://devicetree.org/schemas/net/wireless/qcom,ath12k.yaml#
+> @@ -18,10 +19,17 @@ properties:
+>    compatible:
+>      enum:
+>        - pci17cb,1107  # WCN7850
+> +      - pci17cb,1109  # QCN9274
+
+I asked for separate binding because it is quite a different device.
+Unless it is not... but then commit msg is quite not precise here.
+
+>  
+>    reg:
+>      maxItems: 1
+>  
+> +  qcom,ath12k-calibration-variant:
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +    description: |
+
+Do not need '|' unless you need to preserve formatting.
+
+> +      string to uniquely identify variant of the calibration data for designs
+> +      with colliding bus and device ids
 > +
-> +#include "cc33xx.h"
-> +#include "debug.h"
-> +#include "io.h"
-> +#include "tx.h"
+>    vddaon-supply:
+>      description: VDD_AON supply regulator handle
+>  
+> @@ -49,21 +57,100 @@ properties:
+>    vddpcie1p8-supply:
+>      description: VDD_PCIE_1P8 supply regulator handle
+>  
+> +  wsi:
+
+Not much improved here. I asked to drop the node.
+
+> +    type: object
+> +    description: |
+> +      The ath12k devices (QCN9274) feature WSI support. WSI stands for
+> +      WLAN Serial Interface. It is used for the exchange of specific
+> +      control information across radios based on the doorbell mechanism.
+> +      This WSI connection is essential to exchange control information
+> +      among these devices.
 > +
-> +bool cc33xx_set_block_size(struct cc33xx *cc)
-> +{
-> +	if (cc->if_ops->set_block_size) {
-> +		cc->if_ops->set_block_size(cc->dev, CC33XX_BUS_BLOCK_SIZE);
-> +		cc33xx_debug(DEBUG_CC33xx,
-> +			     "Set BLKsize to %d", CC33XX_BUS_BLOCK_SIZE);
-> +		return true;
-> +	}
+> +      Diagram to represent one WSI connection (one WSI group) among
+> +      three devices.
 > +
-> +	cc33xx_debug(DEBUG_CC33xx, "Could not set BLKsize");
-> +	return false;
-> +}
+> +               +-------+        +-------+        +-------+
+> +               | pcie2 |        | pcie3 |        | pcie1 |
+> +               |       |        |       |        |       |
+> +        +----->|  wsi  |------->|  wsi  |------->|  wsi  |-----+
+> +        |      | grp 0 |        | grp 0 |        | grp 2 |     |
+> +        |      +-------+        +-------+        +-------+     |
+> +        +------------------------------------------------------+
 > +
-> +void cc33xx_disable_interrupts_nosync(struct cc33xx *cc)
-> +{
-> +	cc->if_ops->disable_irq(cc->dev);
-> +}
+> +      Diagram to represent two WSI connections (two separate WSI groups)
+> +      among four devices.
 > +
-> +void cc33xx_irq(void *cookie);
-
-Why do you need forward declaration of non-static function? If you need
-it, it means you had W=1 warning which you fixed incorrect way.
-
-Regardless, be sure this code has 0 warnings on clang with W=1.
-
-
-> +void cc33xx_enable_interrupts(struct cc33xx *cc)
-> +{
-> +	cc->if_ops->enable_irq(cc->dev);
+> +           +-------+    +-------+          +-------+    +-------+
+> +           | pcie2 |    | pcie3 |          | pcie1 |    | pcie0 |
+> +           |       |    |       |          |       |    |       |
+> +       +-->|  wsi  |--->|  wsi  |--+   +-->|  wsi  |--->|  wsi  |--+
+> +       |   | grp 0 |    | grp 0 |  |   |   | grp 1 |    | grp 1 |  |
+> +       |   +-------+    +-------+  |   |   +-------+    +-------+  |
+> +       +---------------------------+   +---------------------------+
 > +
-> +	cc33xx_irq(cc);
-> +}
+> +    properties:
+> +      qcom,wsi-group-id:
+> +        $ref: /schemas/types.yaml#/definitions/uint32
+> +        description:
+> +          It represents the identifier assigned to the WSI connection. All
+> +          the ath12k devices connected to same WSI connection have the
+> +          same wsi-group-id.
 
-...
-
-
-> +static const struct cc33xx_if_operations sdio_ops_inband_irq = {
-> +	.interface_claim	= cc33xx_sdio_claim,
-> +	.interface_release	= cc33xx_sdio_release,
-> +	.read			= cc33xx_sdio_raw_read,
-> +	.write			= cc33xx_sdio_raw_write,
-> +	.power			= cc33xx_sdio_set_power,
-> +	.set_block_size	= cc33xx_sdio_set_block_size,
-> +	.set_irq_handler	= cc33xx_set_irq_handler,
-> +	.disable_irq		= cc33xx_sdio_disable_irq,
-> +	.enable_irq		= cc33xx_sdio_enable_irq,
-> +};
-> +
-> +#ifdef CONFIG_OF
-> +static const struct cc33xx_family_data cc33xx_data = {
-> +	.name = "cc33xx",
-> +	.cfg_name = "ti-connectivity/cc33xx-conf.bin",
-> +	.nvs_name = "ti-connectivity/cc33xx-nvs.bin",
-> +};
-> +
-> +static const struct of_device_id cc33xx_sdio_of_match_table[] = {
-> +	{ .compatible = "ti,cc33xx", .data = &cc33xx_data },
-
-This is supposed to be your base variant.
-
-> +	{ }
-> +};
-
-Missing MODULE_DEVICE_TABLE... or you do not autoload this based on OF
-matching? That's a bit surprising, I don't remember how SDIO bus handles
-it. But for other buses this is unexpected and usually not correct.
-
-> +
-
-...
+That's not needed according to description. Entire group is defined by
+graph.
 
 > +
-> +static struct sdio_driver cc33xx_sdio_driver = {
-> +	.name		= "cc33xx_sdio",
-> +	.id_table	= cc33xx_devices,
-> +	.probe		= sdio_cc33xx_probe,
-> +	.remove		= sdio_cc33xx_remove,
-> +#ifdef CONFIG_PM
-> +	.drv = {
-> +		.pm = &cc33xx_sdio_pm_ops,
-> +	},
-> +#endif /* CONFIG_PM */
-> +};
+> +      qcom,wsi-master:
+> +        type: boolean
+> +        description:
+> +          Indicates if this device is the WSI master.
 > +
-> +MODULE_DEVICE_TABLE(sdio, cc33xx_devices);
 
-This is always next to the table.
+This copies property name. Why being master is important?
+
+Also, use some different name: see preferred names in kernel coding style.
+
+> +      ports:
+> +        $ref: /schemas/graph.yaml#/properties/ports
+> +        description:
+> +          These ports are used to connect multiple WSI supported devices to
+> +          form the WSI group.
+> +
+> +        properties:
+> +          port@0:
+> +            $ref: /schemas/graph.yaml#/properties/port
+> +            description:
+> +              This is the TX port of WSI interface. It is attached to the RX
+> +              port of the next device in the WSI connection.
+> +
+> +          port@1:
+> +            $ref: /schemas/graph.yaml#/properties/port
+> +            description:
+> +              This is the RX port of WSI interface. It is attached to the TX
+> +              port of the previous device in the WSI connection.
+> +
+> +    required:
+> +      - qcom,wsi-group-id
+> +      - ports
+> +
+> +    additionalProperties: false
+> +
+>  required:
+>    - compatible
+>    - reg
+> -  - vddaon-supply
+> -  - vddwlcx-supply
+> -  - vddwlmx-supply
+> -  - vddrfacmn-supply
+> -  - vddrfa0p8-supply
+> -  - vddrfa1p2-supply
+> -  - vddrfa1p8-supply
+> -  - vddpcie0p9-supply
+> -  - vddpcie1p8-supply
+>  
+>  additionalProperties: false
+>  
+> +allOf:
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            enum:
+> +              - pci17cb,1107
+> +    then:
+> +      required:
+> +        - vddaon-supply
+> +        - vddwlcx-supply
+> +        - vddwlmx-supply
+> +        - vddrfacmn-supply
+> +        - vddrfa0p8-supply
+> +        - vddrfa1p2-supply
+> +        - vddrfa1p8-supply
+> +        - vddpcie0p9-supply
+> +        - vddpcie1p8-supply
+
+Commit says WSI applies only to new variant, so properties should be
+disallowed... or just follow my feedback last time: separate binding.
 
 > +
-> +module_sdio_driver(cc33xx_sdio_driver);
+>  examples:
+>    - |
+>      #include <dt-bindings/clock/qcom,rpmh.h>
+> @@ -97,3 +184,139 @@ examples:
+>              };
+>          };
+>      };
 > +
-> +MODULE_LICENSE("GPL v2");
-> +MODULE_DESCRIPTION("SDIO transport for Texas Instruments CC33xx WLAN driver");
-> +MODULE_AUTHOR("Michael Nemanov <michael.nemanov@ti.com>");
-> +MODULE_AUTHOR("Sabeeh Khan <sabeeh-khan@ti.com>");
+> +  - |
+> +    pcie1 {
+
+pcie {
+and keep all nodes here
+
+> +        #address-cells = <3>;
+> +        #size-cells = <2>;
+> +
+> +        pcie@0 {
+> +            device_type = "pci";
+> +            reg = <0x0 0x0 0x0 0x0 0x0>;
+> +            #address-cells = <3>;
+> +            #size-cells = <2>;
+> +            ranges;
+> +
+> +            wifi1@0 {
+
+wifi@
+
+Same in other places.
+
+> +                compatible = "pci17cb,1109";
+> +                reg = <0x0 0x0 0x0 0x0 0x0>;
+> +
+> +                qcom,ath12k-calibration-variant = "RDP433_1";
+> +
+> +                wsi {
+
+No resources here? Not a bus? You already got comment about it.
+
 
 Best regards,
 Krzysztof
