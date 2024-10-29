@@ -1,95 +1,111 @@
-Return-Path: <linux-wireless+bounces-14689-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14690-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 594939B53BD
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 21:33:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5DDB9B5430
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 21:43:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5703287521
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 20:33:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56D771F2459C
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 20:43:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBDAF1DF967;
-	Tue, 29 Oct 2024 20:32:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20B6C207A14;
+	Tue, 29 Oct 2024 20:37:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="WnyR2iTP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.15.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF2120721D
-	for <linux-wireless@vger.kernel.org>; Tue, 29 Oct 2024 20:32:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339021DAC8E;
+	Tue, 29 Oct 2024 20:37:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730233925; cv=none; b=po9M62+rjNcrAte9uZ18Z7uBwTWPt2G3KbEvZFONgjEVDHLdXpHL4fiwIGKrsCzUXbf4ayuCshSMLds/Ut89asw7rFCvX3Vm3wprtCjUKQKbBnr945olv8n0Tfv1OAe0ZVMVuW8+FpCJ/AGDeCWFH2iokaa3rygwwug99d+ip4Q=
+	t=1730234269; cv=none; b=n1YBxg9E/rv6BjWCgrhpysOKcmq/UKjpvD9o6Z8FRnp5rgz9Un3Oc/Mnpci6ypRwGV8EuVSSR3c4HJN/U6bfkVqC+YhqONnsDeqdGo7f2TDNinKYeSqbz6qgJvs7OBi5c2JaidSvHnzOcay5m4EIPtKI+svnWTBsz17rnxZ3LXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730233925; c=relaxed/simple;
-	bh=+ucZND5jXPG6IF+RsGlmnHfSNTQet+yftUa81HCkFzo=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=PtMiO1fxOuy6XrZ5hQEZiw0rVH2hPK7DgolpTKh05pt9LaNQcmJv+vrA8TnRnBkkFC3dq8RGauhbXTYkR/EJG7slly/SsNz+lxHrC6HDBjBInoTSsgL64G0QadDWwvuD5sDLuDaASFaPJj0DuW7hHyoPBYwRy4uc/OpJkziaEbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-3a3b506c87cso55710295ab.1
-        for <linux-wireless@vger.kernel.org>; Tue, 29 Oct 2024 13:32:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730233922; x=1730838722;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cXeyHPxAZWU63IOD8dE86wBYbVBW54NU6tNTx9BtVeU=;
-        b=ppdoqUYadQ36aqe+eolqu6TIGQdNylzdavjR3V8hTwaWb2BXCQf8kjKhOqOrym6Uku
-         EcxkX8ewprcgG11sWBwIZpT0YEimXXpvlmjk9AdcaJybdkmMwQPw+OoAvCqzpNAdqVnZ
-         w++5zy6Wfqqjn22YzbJYvht0Tf8oYwger5NTjaWjzmpIQcx6XrPS586+/jwgEnPb0/qT
-         BnqR0QZlP/PsjMWYHOU4EVslDr7xVW4ezOf7lGjwXROSpRa92Mvg2mw3F3+f05Z2b+Qo
-         5XBRDBiFZHt15BsoluIpG8X1scAp0RxJCddqX2YVSxVZ8tQzHbnEXglKa1vJiMJVnfSe
-         Vzzg==
-X-Forwarded-Encrypted: i=1; AJvYcCWBKz8+h7L1UKVf6xUXpyjXLRw/hD9hiYJukgw+lPlK5Cc7Nii4g4QdRiz5UlF1g4nLyg+EkloSLKX5GcD+wQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxfyY5fUWqq3kGGVIj8WODwgPu6Qn1ej9wt4WqmH7QdQq7V9jBo
-	9cLxuE8/eNkMmKBXBQyO5DPyN5lXuqAcWjo67a3ld5NEQbn0kk7fbZkxVYgsA5BRwQkgb/LdaYO
-	PDa5iHfWyOpsjr1unXgK/2XERCgvqVccuOO4IMaUi8SeztkbdjXOcsT8=
-X-Google-Smtp-Source: AGHT+IFPIChgNx3Wlye5TqtptBZLvqb3bek41OZ1ZZ4YWYBXoDgcq+Btr2G9uFmJzd4mWD9bZMgo2Jg8ozZZKJznffWBB4zGj0WL
+	s=arc-20240116; t=1730234269; c=relaxed/simple;
+	bh=Pn8IbOM6PQjhBS/svTx7c3FqVGthgO85lsYlDjWydoo=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=rjzSWGHPfT4UkE8N1SFjn+tDNLvF24Rc+ci6cQpqBwzbhRtTgKU7mVWqGxHGUT5P8uoW4E9XOo3O47v3sDY4X5FiH/Khu0JaWLjCFbhlptERHce2syUtNv/W+JBZ7q/mBCfpohAvWx5SzibDZa+RGQ0fuwkqEiUOixgTzRIA2Jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=WnyR2iTP; arc=none smtp.client-ip=212.227.15.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1730234240; x=1730839040; i=markus.elfring@web.de;
+	bh=2F5NLKTLbfCBtP5K8Zr8KlJO4E66JAmj/qGsj6/+jJU=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=WnyR2iTPdbo2iQ7TWsj2m6ytwCR2cAvdEp8AH6iiBdvfYh0vwUre1YEQsB4U/29N
+	 SZLR2+zEB1V+UMdhcy6n4lYEqfa0qqc6PFpLoyKlQsgHRm9sHalj2fVGA1FQtMAJx
+	 F/+bKy823YuQK7LQWwLKpBn1CaG3mrxGxvORd0d7THQRh1CKwazlXH/e5tml5HDTg
+	 QuMVHWb7QzXxVv5h6wyfkcXIgTlymS3cG6CC2Ne9xsFmVcE2cXRJ9/ncjxpsGgChB
+	 48IoJuyEbh0s4w576lyQ+hkCvzA4YjZ2rjtLfgypGdBasPx5Jejm7hHthJ3uPQT+G
+	 rdcRpY82o30zJnP2nQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.89.95]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MfKxj-1tm7LP2RcB-00iCKo; Tue, 29
+ Oct 2024 21:37:20 +0100
+Message-ID: <7d8df935-d1b2-4416-88e1-052113038f54@web.de>
+Date: Tue, 29 Oct 2024 21:37:13 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:1fcc:b0:3a0:49da:8f6d with SMTP id
- e9e14a558f8ab-3a4ed3057c0mr107085245ab.22.1730233922598; Tue, 29 Oct 2024
- 13:32:02 -0700 (PDT)
-Date: Tue, 29 Oct 2024 13:32:02 -0700
-In-Reply-To: <671cedcb.050a0220.2b8c0f.01b1.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <67214642.050a0220.4735a.0262.GAE@google.com>
-Subject: Re: [syzbot] [wireless?] WARNING in __rate_control_send_low (3)
-From: syzbot <syzbot+34463a129786910405dd@syzkaller.appspotmail.com>
-To: clang-built-linux@googlegroups.com, davem@davemloft.net, 
-	johannes.berg@intel.com, johannes@sipsolutions.net, kuba@kernel.org, 
-	kvalo@codeaurora.org, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	ramonreisfontes@gmail.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+To: Pei Xiao <xiaopei01@kylinos.cn>, linux-wireless@vger.kernel.org,
+ Kalle Valo <kvalo@kernel.org>, Ping-Ke Shih <pkshih@realtek.com>
+Cc: LKML <linux-kernel@vger.kernel.org>, xiaopeitux@foxmail.com,
+ xiongxin@kylinos.cn
+References: <82dd45fe7faed8f558841643a0593202b2da90c5.1730192926.git.xiaopei01@kylinos.cn>
+Subject: Re: [PATCH] net: wireless: realtek/rtw89: Add check null return of
+ kmalloc
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <82dd45fe7faed8f558841643a0593202b2da90c5.1730192926.git.xiaopei01@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:geAUZc1ce26bBTfHNfhlEr9aHDHHrYeL3lHIVOiDQSXYrlSNMbm
+ jYs60swgvMcxaNwe0UKyJzFGxad+r2ymapVZONMdUJtpbUJsNn4nd/sWaA99J7/yiAuKuHr
+ qVeOJwIzdPvC6srNQYcjqzmRZ3VCQN2twOxCXmsZDlUETimsgPNG3Pd50qIQLUeGZt/aJuM
+ YVS5BcRIRdEvMTMsrhhNA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:DgCvXnav4KI=;V2ACIpGjoGj1ItCbRzGCEUz6jIe
+ ZIvJtSTtRmNXyQ1XLrfe44kkvceIQgUzKw5B+PIGYmn9q8tese6SWMzHvRZkiCWdtM9D4Mlqe
+ vcZ/VvWZiwszGELQywIxNAEzHLpJJ9KamuHvpKfPZY7m4HHZvsmpGVhc+7Ry39FierQ7QkvqX
+ yRsCLCeDXlhJocVneLE71y9sbxVhLHQG4dc3J3Uxh0wJLhhALMzjTNHQdn9ZzGTFIc5EhwqEV
+ bVubpjMQNUtN8ufXEPRY4SCfF7ZCdDPnck9IBCTdG1Yq/hqIvv72PAEdTERunlTAvw9ryIhdK
+ c7ubmgPyn0ODHbtMcaeK2qyU5bxKXw522A1ZXNLZY4oLX0J1tO5wTVpi49gG7VcXh2XdgZZky
+ PP5imhw3+7DWfHTzzNByhP0Rf2e0R9iui69Y1V3GKONkkYUenR7zQmhtodfimtgAZif0dx2GY
+ hBCDv+KlKq/QT8xjOMEijOYt8lY7pdWz5UXsMiFIYzhXoOKyVk+GRzxr10imvheTAQ6Ze1tGd
+ WwCm/iuDeEjYHIZR2Eyf1UHbbUjCvhaLgk26GdCTEhZd91UEQJlouPgRoQPX21m/p9ih9ATHw
+ Y2zEfk2NO6JIC1jocryQIcY7LyvH7yTBXp/+/mw6w2YIdp24Xf47iq2PmLNOU/e4NzsEDtHA8
+ CYI5U8OOtSk1NJu03T5TiCnZHShpJAfxTXiTBNMX7Qn7tHNXUKHNk59MLB0g/w3IERzC3Jfu2
+ 7cTJSVtD99Q3VIvCr13HYdnrb46ZjZ5GSArlfJJMfYq7s/E7Tn4B/IHGrxIaxXR9NIZpA2esG
+ FA6CTAJ0feAEgsqOXTmDrvhA==
 
-syzbot has bisected this issue to:
+> kmalloc may fail, return might be NULL and will cause
 
-commit 119aadf816f5373dc82ca4109d6d5b777e00475b
-Author: Ramon Fontes <ramonreisfontes@gmail.com>
-Date:   Fri May 15 16:46:40 2020 +0000
+                           value?
 
-    mac80211_hwsim: report the WIPHY_FLAG_SUPPORTS_5_10_MHZ capability
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=170e3687980000
-start commit:   b5abbf612092 Merge branch 'mptcp-sched-fix-some-lock-issues'
-git tree:       net
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=148e3687980000
-console output: https://syzkaller.appspot.com/x/log.txt?x=108e3687980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=309bb816d40abc28
-dashboard link: https://syzkaller.appspot.com/bug?extid=34463a129786910405dd
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17a76ebb980000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=17f0ee40580000
+> NULL pointer dereference later.
 
-Reported-by: syzbot+34463a129786910405dd@syzkaller.appspotmail.com
-Fixes: 119aadf816f5 ("mac80211_hwsim: report the WIPHY_FLAG_SUPPORTS_5_10_MHZ capability")
+* An imperative wording is more desirable for such a change description,
+  isn't it?
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
+Documentation/process/submitting-patches.rst?h=3Dv6.12-rc5#n94
 
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+* Would you like to add any tags (like =E2=80=9CFixes=E2=80=9D and =E2=80=
+=9CCc=E2=80=9D) accordingly?
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
+Documentation/process/submitting-patches.rst?h=3Dv6.12-rc5#n145
+
+
+Regards,
+Markus
 
