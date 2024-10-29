@@ -1,103 +1,126 @@
-Return-Path: <linux-wireless+bounces-14651-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14652-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29BC09B4EC8
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 17:02:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5852D9B4EC9
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 17:02:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AF0F1C225E9
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 16:02:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C44C1C21FEB
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 16:02:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FC78192B69;
-	Tue, 29 Oct 2024 16:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A49F33234;
+	Tue, 29 Oct 2024 16:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D6PR3Lft"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="KDQ4SJNo"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0FE802
-	for <linux-wireless@vger.kernel.org>; Tue, 29 Oct 2024 16:02:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D0C802
+	for <linux-wireless@vger.kernel.org>; Tue, 29 Oct 2024 16:02:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730217736; cv=none; b=jzRkjtNJAtiT0/ORDXofSWd2i0NJIfcyWCfT6SG6slmTRbjAIXvR7r2WD72tTl/RRSKqdlVCsS4kw4f8EH3EDqHxpWu7qOTvNsntBCZ1s2QhSFmRCs1/g3R14K8AmqtqobKfE768soo8XCuB1y2w+7CVJL5015pyXYeZ1bT7efw=
+	t=1730217772; cv=none; b=Y/EugMp7dK2pDgKoM31z5F+shx2QtwMW95uhwTtwZ0gT8nM2qw+neWU6oX+naos2stX0Ll2dMy+SDTFfX5+cjJOYYLu+9v6PRSGFJC/DnKj/K73NBDsSCq5QrrmyGzdY2VbdXT7YcP3YY86CnadV1w+n1jAPc6LRbnvnxk1EQn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730217736; c=relaxed/simple;
-	bh=5RnZNa0gGv94StUKJ60e3iVKJyhd1vTLQVj1lPWxRdU=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=KgITVj0O6LYoOFt4yg6N8xgxVHzPpbLghPgubfj45MT4U85Wo9g0IIu/ykZsUdSbQhG7FdUlJbhZp4kPgHW50xQ14gjN6vL+2EjF5DLse3pq095tzLay0Co/rSu9x0TuS/4MxVn7Uugtj0BvIDRRL0+WAveZ1kYOcBw/9yHIRko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D6PR3Lft; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E944CC4CECD;
-	Tue, 29 Oct 2024 16:02:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730217735;
-	bh=5RnZNa0gGv94StUKJ60e3iVKJyhd1vTLQVj1lPWxRdU=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=D6PR3LftX6EZiwwOnRQVfHO0REuSUf8N0SxpFl0XevwoBiUhPXIrn/RHiB4LpWH2G
-	 fUWbhsSXvCqSbUUYxnuIcS2mN9865NFIr+cjr0QfWGIZBiU1VE9+eK5wGbzgZYmvvI
-	 +2hDXm6sVy4gT1se4iHN/cDvuiRTAfI8y88qfbtwdfA6Kljx3DvQfifiq6LdamQ9E5
-	 gwEpbJCztXYN98rQgZjqSw4Q4pgjXnSyhGKxlymZmgUhdL+ovq5xWmCyVo6PbJK4Ju
-	 EoifKsAPhJcYvZSKqpPPX5+b6jpb3nbDbjZCCUyQU1etgz9BmoTYybSHhltGOhsoXN
-	 InkeqQClLhumA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 7/8] wifi: ath12k: add helper to find multi-link station
-References: <20241023133004.2253830-1-kvalo@kernel.org>
-	<20241023133004.2253830-8-kvalo@kernel.org>
-	<05f2ef12-5176-4742-adb7-04da614995fc@quicinc.com>
-Date: Tue, 29 Oct 2024 18:02:13 +0200
-In-Reply-To: <05f2ef12-5176-4742-adb7-04da614995fc@quicinc.com> (Jeff
-	Johnson's message of "Wed, 23 Oct 2024 09:01:01 -0700")
-Message-ID: <87seseganu.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1730217772; c=relaxed/simple;
+	bh=9tpX7XqLAKZkoIs5DMdXAW2cl1bd1XcvVV3LwEEFaNM=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=VLvdQFTIN+qBewaDP4TSQT4kRGESc0az5VKIAjsMLYVeN0/uCnPS2il0qaUgfy4PHoUf7X9+5GkrW37j6sRtcdqAlMY+KhpD5Z0V0B41mQdG/o90jjpyDa23ujwmYtoxPeDGy4FDnC5c0XcDyyCQJ2Ck2C/qJ+pt8M+gOLl8PH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=KDQ4SJNo; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=dtUtIMGX7HLnZUV77fr33a6T2hxFbj1NQw5gxFIf5rU=;
+	t=1730217770; x=1731427370; b=KDQ4SJNotZipjqFDiInCDVkzO0xXCRomY+VOyYxN6ko7bnh
+	M0fsJ7RhflYPNOxvaICGcyuim5ofAtpg+jBQ29JCfOCPWZKbrqspJJ3rSUXHWF9Kfr7nJpuHS2/F+
+	vmWRpxVPnohEtVVl7p+vL+9Wznv3RgITU7Q58K9/8DJof9DOxi63UMHZeCyBqFhy1T8NPvy/fj5QJ
+	gst1p3rqLFtRjhaWCADcSpsqjCbX8PZqU10DerDroRX6T26KgwJ9gwrP6s+IU4l0a5nYTGPhe3IFL
+	2xKSJaThspvc2wpDim1RXg/NNmBehTx8B88kgTLwACSQ/DwaIOrbz0fmsUH4eHPQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1t5ogB-00000008Mu2-2x5Q;
+	Tue, 29 Oct 2024 17:02:47 +0100
+Message-ID: <10ef9bc82600e0ee0ccf763b842f056bcb1e2fdb.camel@sipsolutions.net>
+Subject: Re: Question on iwlwifi iwl_mvm_mac_itxq_xmit, possible busy-spin.
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Ben Greear <greearb@candelatech.com>, linux-wireless
+	 <linux-wireless@vger.kernel.org>
+Date: Tue, 29 Oct 2024 17:02:46 +0100
+In-Reply-To: <9cfa23e6-3c4e-4c45-b6db-2148c9bdd2b0@candelatech.com>
+References: <8dce89a1-350c-4885-afcc-0eda162fd76c@candelatech.com>
+	 <1f6d998c16510426e57b774c42358dcef7a5cd31.camel@sipsolutions.net>
+	 <9cfa23e6-3c4e-4c45-b6db-2148c9bdd2b0@candelatech.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-malware-bazaar: not-scanned
 
-Jeff Johnson <quic_jjohnson@quicinc.com> writes:
+On Tue, 2024-10-29 at 08:55 -0700, Ben Greear wrote:
+> >=20
+> > Not really? It should only get here from two places: userspace
+> > (serialized, so you're not going to get to this point with two threads
+> > from there), and the "queue no longer full" logic I mentioned above. Oh=
+,
+> > maybe technically a third at the beginning after allocating a new queue=
+.
+>=20
+> How is user-space serialized here?  The comments in the code seem to assu=
+me
+> that multiple threads/whatever calling into this is expected (ie, the who=
+le
+> 3-state atomic counter).
 
-> On 10/23/2024 6:30 AM, Kalle Valo wrote:
->
->> --- a/drivers/net/wireless/ath/ath12k/dp.h
->> +++ b/drivers/net/wireless/ath/ath12k/dp.h
->> @@ -1796,6 +1796,8 @@ static inline void ath12k_dp_get_mac_addr(u32 addr_l32, u16 addr_h16, u8 *addr)
->>  	memcpy(addr + 4, &addr_h16, ETH_ALEN - 4);
->>  }
->>  
->> +#define ATH12K_ML_PEER_ID_VALID         BIT(13)
->> +
->
-> this seems to be randomly placed without any context
+Well mac80211, certainly serialized per iTXQ, but since we don't have
+LLTX (yet) also through a single netdev queue.
 
-Yeah, it is. I'll try to find a better place for it.
+> > I guess I could sort of see a scenario where
+> >=20
+> >   - queues got full
+> >   - queues got not full
+> >   - we kick this logic via "queue not full"
+> >   - while this is running, userspace TX permanently bumps
+> >     tx_request from 1 to 2, this decrements it again, etc.
+>=20
+> Considering GSO and KASAN slowness and highly loaded system, perhaps unde=
+r memory pressure too,
+> maybe upper stack could feed the txq fast enough that something is always=
+ bumping
+> tx_requests to 2 before inner loop can finish?
 
->> @@ -87,6 +101,9 @@ struct ath12k_peer *ath12k_peer_find_by_id(struct ath12k_base *ab,
->>  
->>  	lockdep_assert_held(&ab->base_lock);
->>  
->> +	if (peer_id & ATH12K_ML_PEER_ID_VALID)
->
-> where is code that sets the bit?
+Maybe? But at some point the socket buffers are full too. You can't
+indefinitely queue packets.
 
-That will come later in patch 'wifi: ath12k: Add support for HTT MLO peer map and unmap event'.
+> > What thread is the soft lockup in that you see?
+>=20
+> I believe this below is the culprit.  Other threads are blocked on trying=
+ to grab xmit lock on
+> netdev and sock locks on tcp socket(s).
 
-> does other code elsewhere need to mask this bit off to have the "true" peer_id?
+That seems odd though - it's locked up at a different place, and also
+coming in from userspace - but that's serialized against other
+userspace, and the "queue not full" thread can only run once really?
 
-I'll investigate this.
+OTOH if it's deadlocked at that level you could get interrupted at any
+level below...
 
-> the commit text for this patch seems to need a lot more description
+I guess it's still possible that you end up pushing a packet down, it
+gets transmitted, space becomes available, and then we run this again to
+push more packets all while the original loop didn't finish? But that
+seem pretty unlikely?
 
-Will fix.
+Hard to tell what's going on.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+johannes
 
