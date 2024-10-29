@@ -1,58 +1,75 @@
-Return-Path: <linux-wireless+bounces-14631-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14630-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 697769B45D7
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 10:39:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DFCA9B4559
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 10:12:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96E011C21E45
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 09:39:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25D8C1F2333F
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 09:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971FF2036F4;
-	Tue, 29 Oct 2024 09:39:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="sQ66qEAQ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9918020403A;
+	Tue, 29 Oct 2024 09:12:20 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A9E7DA82;
-	Tue, 29 Oct 2024 09:39:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1F8204037;
+	Tue, 29 Oct 2024 09:12:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730194779; cv=none; b=BnC07yLpl5yFK9Fufu9IXZ2w/pQiqouwhw92qbl8KbfUL3r7bzqKMpCzjo38uJevES3qqfony6mSbnHuup9KQPRHkogFhB1Mf5fQAP2wJt0ibA9hEdA6XZeYvK4RhSlOzGWkrBFGYPlHrSa63KH4GIjI9bT/4DfyO8IUcjx1nHk=
+	t=1730193140; cv=none; b=BkwLsjkYxNoffyf2O0iCdwlpMotGekuBq1VNDwkq8tcIn2iyL0GrtXuwVJ0ILSiymb0TZFPkCzD1zNQaKPBFWNycBkTV/z8diu+d6K08CwblZzVU8WYVtxuga5dghnp3hn7JShrEIjqfZowkNff3QbBgGF3uFU7w0Ohjgl5Vd9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730194779; c=relaxed/simple;
-	bh=wjKh3Y/EW6aDWLY9xkwOOGoTgEC5VDgRV9BYS6shpbs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YPn8X4S/hZIR15MaHjRpz3v4a10n+5bDSIJAv6MHZ6I0MuDWQ/BO52zW2Nr+cY3gSblMtno8n+Zfq8cX1Rp4hzclFKshz0AHxSV8bo31lUqXWW+I6367Kyhzqg4C6JQE0hQhcyCzXUJY0tHA3oCD1tdaDcdiqDiAvMA0fUqSC94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=sQ66qEAQ; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=lJgy+uS5MvZRnt5KBckuuVPIjDa4nis657tfLdv9kJQ=; t=1730194777; x=1731404377; 
-	b=sQ66qEAQOQu1UdHpacEYtT5ujVU1CFjnabbRq000BJO+SsbHb0ebz36AoNxOv2BYo9RQIJutDaq
-	x/6LQMZr+47e2h6bTIRRKbWwd+168y6JVUDGZDfo2Xc+5kjqubcNxbIRz2WZ2D04P6cnpqABBr9BL
-	EVDlMiU/BKJUn0bbhW9osY0lJ7779qZQURfg9Xa9NWGaiGAw5FuIINlNAKTChekXhoWQ3WGRd14j7
-	q1QeR1la9ke/oo7S0miZwbYbK8WUja+7B8sxFBTu17i8KIlvrk0a2epbZiEy22DmcZrPohmjyRkeb
-	vNlqeNqh1BrBNFqs0MyePjR2QAieeyi0tWgA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1t5ihK-00000008AqU-2N9t;
-	Tue, 29 Oct 2024 10:39:34 +0100
-From: Johannes Berg <johannes@sipsolutions.net>
-To: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Subject: pull-request: wireless-2024-10-29
-Date: Tue, 29 Oct 2024 10:06:23 +0100
-Message-ID: <20241029093926.13750-3-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.47.0
+	s=arc-20240116; t=1730193140; c=relaxed/simple;
+	bh=F/rVR4l5Scy7U0//a0Uhui1AH5VjS0Dg/jmTcL8ws14=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=b+NSfhGKSyhLc5HvoQ9FKbO60q+RWqjDpMFHw5sd/Q/stnJDiYRwTSN3sTSlolYqpp1elKcKccVZ1YCjRGSmtU6EJk4+C7dKihlxMSwkLgWYTHzCjA1YkM4ZsRwPzlbFG4FuRGPwJ6vVLeojiBGqvJep62HUXaHuqYfLLXJMakw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: deb7e8c495d511efa216b1d71e6e1362-20241029
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_DIGIT_LEN
+	HR_FROM_NAME, HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER
+	HR_SJ_NOR_SYM, HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT
+	HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED
+	SA_EXISTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS
+	CIE_BAD, CIE_GOOD_SPF, GTI_FG_BS, GTI_RG_INFO, GTI_C_BU
+	AMN_T1, AMN_GOOD, AMN_C_TI, AMN_C_BU
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.38,REQID:fea1eefe-9061-43ed-9117-463ccb5cf6bd,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-10
+X-CID-INFO: VERSION:1.1.38,REQID:fea1eefe-9061-43ed-9117-463ccb5cf6bd,IP:0,URL
+	:0,TC:0,Content:-5,EDM:0,RT:0,SF:-5,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:-10
+X-CID-META: VersionHash:82c5f88,CLOUDID:9defbc8387e5e00f07b5071d8410f52e,BulkI
+	D:241029171208PR0B2CCJ,BulkQuantity:0,Recheck:0,SF:66|841|38|17|19|102,TC:
+	nil,Content:0,EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,
+	COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-UUID: deb7e8c495d511efa216b1d71e6e1362-20241029
+X-User: xiaopei01@kylinos.cn
+Received: from xiaopei-pc.. [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <xiaopei01@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1551847879; Tue, 29 Oct 2024 17:12:06 +0800
+From: Pei Xiao <xiaopei01@kylinos.cn>
+To: pkshih@realtek.com,
+	linux-wireless@vger.kernel.org,
+	kvalo@kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: xiaopeitux@foxmail.com,
+	xiongxin@kylinos.cn,
+	Pei Xiao <xiaopei01@kylinos.cn>
+Subject: [PATCH] net: wireless: realtek/rtw89: Add check null return of kmalloc
+Date: Tue, 29 Oct 2024 17:12:01 +0800
+Message-Id: <82dd45fe7faed8f558841643a0593202b2da90c5.1730192926.git.xiaopei01@kylinos.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -61,118 +78,37 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Hi,
+kmalloc may fail, return might be NULL and will cause
+NULL pointer dereference later.
 
-A couple of important bugs were found, notably an infinite
-loop in iwlwifi but also other bugs, which is why we have
-a new pull request so soon.
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+---
+ drivers/net/wireless/realtek/rtw89/coex.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
+diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
+index b60c8bd4537b..092f882147cd 100644
+--- a/drivers/net/wireless/realtek/rtw89/coex.c
++++ b/drivers/net/wireless/realtek/rtw89/coex.c
+@@ -2507,6 +2507,8 @@ static void btc_fw_set_monreg(struct rtw89_dev *rtwdev)
+ 	if (ver->fcxmreg == 7) {
+ 		sz = struct_size(v7, regs, n);
+ 		v7 = kmalloc(sz, GFP_KERNEL);
++		if (!v7)
++			return;
+ 		v7->type = RPT_EN_MREG;
+ 		v7->fver = ver->fcxmreg;
+ 		v7->len = n;
+@@ -2521,6 +2523,8 @@ static void btc_fw_set_monreg(struct rtw89_dev *rtwdev)
+ 	} else {
+ 		sz = struct_size(v1, regs, n);
+ 		v1 = kmalloc(sz, GFP_KERNEL);
++		if (!v1)
++			return;
+ 		v1->fver = ver->fcxmreg;
+ 		v1->reg_num = n;
+ 		memcpy(v1->regs, chip->mon_reg, flex_array_size(v1, regs, n));
+-- 
+2.34.1
 
-Note that this unfortunately introduces two merge conflicts
-with the previous wireless-next pull request. I'm guessing
-they will land together in net-next after wireless-next is
-pulled, and then net goes into net-next.
-
-The first conflict is in net/mac80211/cfg.c, and is just
-two new lines in the same place:
-
-@@@ -3070,7 -3046,7 +3070,8 @@@ static int ieee80211_set_tx_power(struc
-        enum nl80211_tx_power_setting txp_type = type;
-        bool update_txp_type = false;
-        bool has_monitor = false;
- +      int user_power_level;
-+       int old_power = local->user_power_level;
-
-
-The other conflict in drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-looks more complicated, but really isn't all that much,
-just take the -next version. Which I think really means
-I incorrectly did the iwlwifi changes in 188a1bf894323b
-("wifi: mac80211: re-order assigning channel in activate links")
-because that never claimed to move the iwl_mvm_link_changed()
-vs. iwl_mvm_send_ap_tx_power_constraint_cmd() calls ...
-
-
-Please pull and let us know if there's any (other) problem.
-
-Thanks,
-johannes
-
-
-
-The following changes since commit e31a8219fbfcf9dc65ba1e1c10cade12b6754e00:
-
-  Merge tag 'wireless-2024-10-21' of git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless (2024-10-25 10:44:41 +0100)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git tags/wireless-2024-10-29
-
-for you to fetch changes up to cf44e745048df2c935cb37de16e0ca476003a3b1:
-
-  wifi: mac80211: ieee80211_i: Fix memory corruption bug in struct ieee80211_chanctx (2024-10-26 00:42:49 +0200)
-
-----------------------------------------------------------------
-wireless fixes for v6.12-rc6
-
-Another set of fixes, mostly iwlwifi:
- * fix infinite loop in 6 GHz scan if more than
-   255 colocated APs were reported
- * revert removal of retry loops for now to work
-   around issues with firmware initialization on
-   some devices/platforms
- * fix SAR table issues with some BIOSes
- * fix race in suspend/debug collection
- * fix memory leak in fw recovery
- * fix link ID leak in AP mode for older devices
- * fix sending TX power constraints
- * fix link handling in FW restart
-
-And also the stack:
- * fix setting TX power from userspace with the new
-   chanctx emulation code for old-style drivers
- * fix a memory corruption bug due to structure
-   embedding
- * fix CQM configuration double-free when moving
-   between net namespaces
-
-----------------------------------------------------------------
-Anjaneyulu (1):
-      wifi: iwlwifi: mvm: SAR table alignment
-
-Ben Greear (1):
-      mac80211: fix user-power when emulating chanctx
-
-Daniel Gabay (2):
-      wifi: iwlwifi: mvm: Use the sync timepoint API in suspend
-      wifi: iwlwifi: mvm: Fix response handling in iwl_mvm_send_recovery_cmd()
-
-Emmanuel Grumbach (3):
-      wifi: iwlwifi: mvm: don't leak a link on AP removal
-      wifi: iwlwifi: mvm: don't add default link in fw restart flow
-      Revert "wifi: iwlwifi: remove retry loops in start"
-
-Gustavo A. R. Silva (1):
-      wifi: mac80211: ieee80211_i: Fix memory corruption bug in struct ieee80211_chanctx
-
-Johannes Berg (2):
-      wifi: cfg80211: clear wdev->cqm_config pointer on free
-      wifi: iwlwifi: mvm: fix 6 GHz scan construction
-
-Miri Korenblit (1):
-      wifi: iwlwifi: mvm: really send iwl_txpower_constraints_cmd
-
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c       | 96 +++++++++++++---------
- drivers/net/wireless/intel/iwlwifi/fw/init.c       |  4 +-
- drivers/net/wireless/intel/iwlwifi/iwl-drv.c       | 34 +++++---
- drivers/net/wireless/intel/iwlwifi/iwl-drv.h       |  3 +
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c        |  2 +
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c        | 10 +--
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c  | 12 ++-
- .../net/wireless/intel/iwlwifi/mvm/mld-mac80211.c  | 34 +++++---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c      |  6 +-
- net/mac80211/ieee80211_i.h                         |  5 +-
- net/mac80211/main.c                                |  2 +
- net/wireless/core.c                                |  1 +
- 12 files changed, 134 insertions(+), 75 deletions(-)
 
