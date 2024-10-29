@@ -1,124 +1,256 @@
-Return-Path: <linux-wireless+bounces-14628-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14629-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C69D9B43A6
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 09:02:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8198F9B444B
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 09:34:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4FAC28366F
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 08:02:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 413AF283584
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 08:34:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA6E5200BA5;
-	Tue, 29 Oct 2024 08:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2611F7565;
+	Tue, 29 Oct 2024 08:33:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="KmVTk8oB"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="BvKhgSSq"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE37202F9C
-	for <linux-wireless@vger.kernel.org>; Tue, 29 Oct 2024 08:01:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988011E048B
+	for <linux-wireless@vger.kernel.org>; Tue, 29 Oct 2024 08:33:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730188912; cv=none; b=TbpdkpqKKloszcdPAROiR6/PPmP2l2aAVJRUkHJ9RBqmwMyKjvnRjr0yIbWhdnUd4fyQeU1mZ69cX3ftMV/XM3At2H/lZbtxYb49pOhWDRMyYQYxBV7+9wTLk65njDANV4mnGSjBjGzSV+3Mpryelx7TUM4nwmqWcC9cNYCNyHI=
+	t=1730190838; cv=none; b=sHEm4qrtYyZ8BRk4h9FRD5u0nNObjRJlO85qvgiItdHS+FK52vmsDIlgKJ0aIoVfxXY9fYiQSJI4sLDJSWscRyF2HJo7+sCSGLdO2BWHqi5iJuC4HbbcExIoFt/s3sza2rdux/eJcq4YMB11tFDN+CZ7C1dRPBc6Pc/t+c1KUkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730188912; c=relaxed/simple;
-	bh=Lb7+JRot0Ow/hXFvvjjqUJ2t6DwR3AB4KdHFXq1esh0=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=NC+j9sAy6G9IQqntG02rCBwK0jLPwZRHh4AYwYNMjtYVxHJe+2Wl+mRN+ShkpZDhiNJp+n6MnVHi2CCnFWEJrYalUsZjUNUMKLTf+7em3TCs7zbOMa6TNWL/pa5pQUwYXd+CrFpTBnlcdUABsfsnocH0+zHWNpDGwkiaubTHY7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=KmVTk8oB; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=JTtqIS6uZm1lVd1JigYggHFNA/02TY3W2/sJni/wQjg=;
-	t=1730188910; x=1731398510; b=KmVTk8oBF2LNHJ6tpNMnqPvZzl7W23u6u5ITQINZtRHqXae
-	y8psbjqWkIh0neWQWx/hEzL2Apa2JF2lELKShGrN6K9cUh3Y4f4j7oTBoNgwCdx1UgjqgxA8l834B
-	EenthmRB4b9X67lKQVaPDgW9dshyd/uh+Zwte/4FpUGix331xrv5u1ft3OymrhQRW96L2m24fR7Nr
-	dVM/B3S3npuMHRyiuwDIlsHZvG0GmiVxQrX5gTWoOg1clbVTZ/O7UNxm97orGq/c5ZgH5t4CvlPIZ
-	xznij9qNNEVI4UMWhRGehIdwyKMOHxnv/376KpKVUctK1e1fD6ubi9dNiYYdq+WQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1t5hAc-000000087a4-2f2V;
-	Tue, 29 Oct 2024 09:01:42 +0100
-Message-ID: <1f6d998c16510426e57b774c42358dcef7a5cd31.camel@sipsolutions.net>
-Subject: Re: Question on iwlwifi iwl_mvm_mac_itxq_xmit, possible busy-spin.
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Ben Greear <greearb@candelatech.com>, linux-wireless
-	 <linux-wireless@vger.kernel.org>
-Date: Tue, 29 Oct 2024 09:01:41 +0100
-In-Reply-To: <8dce89a1-350c-4885-afcc-0eda162fd76c@candelatech.com>
-References: <8dce89a1-350c-4885-afcc-0eda162fd76c@candelatech.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1730190838; c=relaxed/simple;
+	bh=ysRCRit5VIxbHWG3YUhU/VJelVejFaOAiPNch6P/sgk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KQ2hVfebyFuWGx1j0qhdsM6GE5C99qZfReMCTnufWrMDgvEN6Ahw8R8Kv5Ps7eWbLLKmwlGzYKYRq7E1P6iEQiKVREUtdMCUMvPZFdl8506w4lc8gFf46gbDt1lMfbgR3bjN70YQMuB54osdU/K4bhJTOpjIjY2MBPNksd0kNlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=BvKhgSSq; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49SKYPkG012047;
+	Tue, 29 Oct 2024 08:33:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=ND7P14RGUCa/3njBpgO0LodGoDDkZ/lSdMM
+	fyom5wfM=; b=BvKhgSSqCsAl0YzUAj0gW9Xw3KcLV07EgCLb/XoW7OGXS1XDM47
+	4JMcZowBdQY8WgmV3vbjsojEnd16OzXxIhv+BpsqXz4m2LFyHyTMKmvfNTD1t5NE
+	6kUB/tebAQZVULoynoOjIxFEZaGxOIjDikOvANrv5p/LqTuEJUjOovwV9CMQjTHN
+	4cJdVAhKHngr4UjOktqaaV5uwlDVsUCKm1wjN0pP2sHK7YDpmCXZ1DoWHgM7Qt9M
+	jhbf6wBHKY0oVEUFAxP0l33zUhXwIq861urO0mv3FVdf+BwY3RNVBOfO14a3aR1C
+	NF4c5+4UcixYHBw6fcpmYeFIJgALiSbI6KA==
+Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42gp4dyxy5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 29 Oct 2024 08:33:51 +0000 (GMT)
+Received: from pps.filterd (APBLRPPMTA01.qualcomm.com [127.0.0.1])
+	by APBLRPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 49T8Xmd9008331;
+	Tue, 29 Oct 2024 08:33:48 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 42gsgkvtk3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 29 Oct 2024 08:33:48 +0000
+Received: from APBLRPPMTA01.qualcomm.com (APBLRPPMTA01.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 49T8Xmel008325;
+	Tue, 29 Oct 2024 08:33:48 GMT
+Received: from hu-devc-hyd-u22-c.qualcomm.com ([10.213.97.93])
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 49T8Xlne008323
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 29 Oct 2024 08:33:47 +0000
+Received: by hu-devc-hyd-u22-c.qualcomm.com (Postfix, from userid 460767)
+	id 055964A8; Tue, 29 Oct 2024 14:03:47 +0530 (+0530)
+From: Balaji Pothunoori <quic_bpothuno@quicinc.com>
+To: ath11k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org,
+        Balaji Pothunoori <quic_bpothuno@quicinc.com>
+Subject: [PATCH] wifi: ath11k: Suspend hardware before firmware mode off for WCN6750
+Date: Tue, 29 Oct 2024 14:03:40 +0530
+Message-Id: <20241029083340.3010798-1-quic_bpothuno@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: _onm_X5DIw0JJ4VfGMo2aKwI7XeYTKBK
+X-Proofpoint-GUID: _onm_X5DIw0JJ4VfGMo2aKwI7XeYTKBK
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ priorityscore=1501 mlxlogscore=999 clxscore=1011 spamscore=0
+ lowpriorityscore=0 malwarescore=0 bulkscore=0 adultscore=0 phishscore=0
+ mlxscore=0 suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410290067
 
-On Mon, 2024-10-28 at 10:48 -0700, Ben Greear wrote:
->=20
-> We see indication that the iwlwifi txpath can busy-spin,
-> causing soft-lockup (and, only indication at this point, possibly
-> issue is elsewhere somehow).
+During rmmod, the ath11k host driver sends a QMI MODE OFF command
+to firmware.
+As part of this command, firmware initiates WLAN de-initialization
+and accesses certain UMAC registers during this process.
+Currently, on WCN6750 WLAN hardware, the system is in a sleep state when
+firmware receives the QMI MODE OFF command.
+This results in a firmware/hardware reset while accessing the UMAC hardware
+registers during sleep state.
 
-TX path I'm not aware of any issues, but we did have this recently:
+To avoid this, add logic to send WCN6750 hardware specific
+WMI_PDEV_SUSPEND_AND_DISABLE_INTR command to firmware prior to sending
+the QMI MODE OFF command.
+This will cause firmware to cease all activities and put the device in
+a powered-on state that prevents access to registers which have been
+powered off.
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D219375
+Signed-off-by: Balaji Pothunoori <quic_bpothuno@quicinc.com>
+---
+ drivers/net/wireless/ath/ath11k/core.c | 45 ++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/hw.h   |  1 +
+ 2 files changed, 46 insertions(+)
 
-> But, I also wanted to check on expected behaviour.  At the bottom is a do=
-uble
-> loop.  The inner will break out if the queues are full and for some other=
- reasons,
-> but the outside loop is spinning on a different atomic counter. The quest=
-ion is:
-> If the inner loop breaks out, at least for queue full reasons, should it =
-then
-> immediately break out of the outer while loop as well?
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index be67382c00f6..a9aefb1a705d 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -123,6 +123,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.tx_ring_size = DP_TCL_DATA_RING_SIZE,
+ 		.smp2p_wow_exit = false,
+ 		.support_dual_stations = false,
++		.pdev_suspend = false,
+ 	},
+ 	{
+ 		.hw_rev = ATH11K_HW_IPQ6018_HW10,
+@@ -207,6 +208,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.smp2p_wow_exit = false,
+ 		.support_fw_mac_sequence = false,
+ 		.support_dual_stations = false,
++		.pdev_suspend = false,
+ 	},
+ 	{
+ 		.name = "qca6390 hw2.0",
+@@ -296,6 +298,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.smp2p_wow_exit = false,
+ 		.support_fw_mac_sequence = true,
+ 		.support_dual_stations = true,
++		.pdev_suspend = false,
+ 	},
+ 	{
+ 		.name = "qcn9074 hw1.0",
+@@ -379,6 +382,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.smp2p_wow_exit = false,
+ 		.support_fw_mac_sequence = false,
+ 		.support_dual_stations = false,
++		.pdev_suspend = false,
+ 	},
+ 	{
+ 		.name = "wcn6855 hw2.0",
+@@ -468,6 +472,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.smp2p_wow_exit = false,
+ 		.support_fw_mac_sequence = true,
+ 		.support_dual_stations = true,
++		.pdev_suspend = false,
+ 	},
+ 	{
+ 		.name = "wcn6855 hw2.1",
+@@ -555,6 +560,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.smp2p_wow_exit = false,
+ 		.support_fw_mac_sequence = true,
+ 		.support_dual_stations = true,
++		.pdev_suspend = false,
+ 	},
+ 	{
+ 		.name = "wcn6750 hw1.0",
+@@ -637,6 +643,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.smp2p_wow_exit = true,
+ 		.support_fw_mac_sequence = true,
+ 		.support_dual_stations = false,
++		.pdev_suspend = true,
+ 	},
+ 	{
+ 		.hw_rev = ATH11K_HW_IPQ5018_HW10,
+@@ -719,6 +726,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.smp2p_wow_exit = false,
+ 		.support_fw_mac_sequence = false,
+ 		.support_dual_stations = false,
++		.pdev_suspend = false,
+ 	},
+ 	{
+ 		.name = "qca2066 hw2.1",
+@@ -808,6 +816,7 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 		.smp2p_wow_exit = false,
+ 		.support_fw_mac_sequence = true,
+ 		.support_dual_stations = true,
++		.pdev_suspend = false,
+ 	},
+ };
+ 
+@@ -1669,11 +1678,47 @@ static int ath11k_core_pdev_create(struct ath11k_base *ab)
+ 	return ret;
+ }
+ 
++static void ath11k_core_pdev_suspend_target(struct ath11k_base *ab)
++{
++	struct ath11k *ar;
++	struct ath11k_pdev *pdev;
++	unsigned long time_left;
++	int ret;
++	int i;
++
++	if (!ab->hw_params.pdev_suspend)
++		return;
++
++	for (i = 0; i < ab->num_radios; i++) {
++		pdev = &ab->pdevs[i];
++		ar = pdev->ar;
++
++		reinit_completion(&ab->htc_suspend);
++
++		ret = ath11k_wmi_pdev_suspend(ar, WMI_PDEV_SUSPEND_AND_DISABLE_INTR,
++					      pdev->pdev_id);
++		if (ret) {
++			ath11k_warn(ab, "could not suspend target :%d\n", ret);
++			/* pointless to try other pdevs */
++			return;
++		}
++
++		time_left = wait_for_completion_timeout(&ab->htc_suspend, 3 * HZ);
++
++		if (!time_left) {
++			ath11k_warn(ab, "suspend timed out - target pause event never came\n");
++			/* pointless to try other pdevs */
++			return;
++		}
++	}
++}
++
+ static void ath11k_core_pdev_destroy(struct ath11k_base *ab)
+ {
+ 	ath11k_spectral_deinit(ab);
+ 	ath11k_thermal_unregister(ab);
+ 	ath11k_mac_unregister(ab);
++	ath11k_core_pdev_suspend_target(ab);
+ 	ath11k_hif_irq_disable(ab);
+ 	ath11k_dp_pdev_free(ab);
+ 	ath11k_debugfs_pdev_destroy(ab);
+diff --git a/drivers/net/wireless/ath/ath11k/hw.h b/drivers/net/wireless/ath/ath11k/hw.h
+index 300322535766..52d9f4c13b13 100644
+--- a/drivers/net/wireless/ath/ath11k/hw.h
++++ b/drivers/net/wireless/ath/ath11k/hw.h
+@@ -227,6 +227,7 @@ struct ath11k_hw_params {
+ 	bool smp2p_wow_exit;
+ 	bool support_fw_mac_sequence;
+ 	bool support_dual_stations;
++	bool pdev_suspend;
+ };
+ 
+ struct ath11k_hw_ops {
+-- 
+2.34.1
 
-It shouldn't matter, but off the top of my head I'd say it's valid to
-break out entirely since the "queue no longer full" indication will
-restart it. In fact, it seems that'd really make more sense than the
-"sofar" thing you added. Not much value in retrying if the queue is full
-anyway?
-
-> And, from what I can tell, it would be possible for other transmitters to=
- hit this
-> path,
-
-Not really? It should only get here from two places: userspace
-(serialized, so you're not going to get to this point with two threads
-from there), and the "queue no longer full" logic I mentioned above. Oh,
-maybe technically a third at the beginning after allocating a new queue.
-
-> Based on the description of the 3 tx_request states, I am also not sure t=
-hat
-> this would not hang the tx path in case where inner loop bails out due to
-> tx queue full, leaving packets queued.  If no other packets are ever tran=
-smitted,
-> is there anything that would re-kick the xmit path?
-
-If the queue becomes "not full", then yes, that kicks it again.
-
-
-I guess I could sort of see a scenario where
-
- - queues got full
- - queues got not full
- - we kick this logic via "queue not full"
- - while this is running, userspace TX permanently bumps
-   tx_request from 1 to 2, this decrements it again, etc.
-
-What thread is the soft lockup in that you see?
-
-johannes
 
