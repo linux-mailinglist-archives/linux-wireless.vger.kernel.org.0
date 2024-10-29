@@ -1,119 +1,124 @@
-Return-Path: <linux-wireless+bounces-14627-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14628-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59F259B4190
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 05:22:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C69D9B43A6
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 09:02:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A64E1F23035
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 04:22:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4FAC28366F
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 08:02:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9678D1E0DA7;
-	Tue, 29 Oct 2024 04:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA6E5200BA5;
+	Tue, 29 Oct 2024 08:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="YdvVJ0dm"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="KmVTk8oB"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08A6714900E
-	for <linux-wireless@vger.kernel.org>; Tue, 29 Oct 2024 04:22:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE37202F9C
+	for <linux-wireless@vger.kernel.org>; Tue, 29 Oct 2024 08:01:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730175752; cv=none; b=npPjef5gQHu+od/p9NcIqBr1ALgKAzgWVETr5ITlNfh1MiVvpwtiV7cWASL5CdqWDFP0Buo0RGL1GGkIYC6haSLcVqcRfegbQcMzMCtrXpM4AdGMn8VuAAe/K+UxR9JVmJAcQZc/s/hNT2iKYgIru3HfmZBJCO++eDMwYc7e2iY=
+	t=1730188912; cv=none; b=TbpdkpqKKloszcdPAROiR6/PPmP2l2aAVJRUkHJ9RBqmwMyKjvnRjr0yIbWhdnUd4fyQeU1mZ69cX3ftMV/XM3At2H/lZbtxYb49pOhWDRMyYQYxBV7+9wTLk65njDANV4mnGSjBjGzSV+3Mpryelx7TUM4nwmqWcC9cNYCNyHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730175752; c=relaxed/simple;
-	bh=UoXbLEEORhkbqS+cB3wZC64pm/6434iVgD+RVdZ3ESk=;
-	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date; b=RsDBUZYyHqhSxKyameB251+fT+Azku1E7m4/qXSUOhAgCVkpvYZSnFzFh2tvlfmDWhwuw8NKTotblVXWvPGnh/rNQOmXvX3AKWbrtDnJcVIWrXbuZnUGSlG2mWhu6kNFqgBg3kF9Bq8b0T4M3h6aJ9SMWye9ICErZsNFyln6CcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=YdvVJ0dm; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 49T4MLb741845039, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1730175741; bh=UoXbLEEORhkbqS+cB3wZC64pm/6434iVgD+RVdZ3ESk=;
-	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date;
-	b=YdvVJ0dmUzWTetXtulVy4FIDF2C6qcYAZsWJ29ZuQHLbSYR8pXeJOhq43Kcp1GyVP
-	 d9FsLqaY7fIINWJaVSQnF+qRkeCg08UumU6b2Iik9iwYgXvLkX2GuJxQ/w8mzgTkaO
-	 M2tLf/wf71WlUWkBqCvcGJGbt+wY3qbvmVO07X6+pQ3N5UgBeoE54nm4j8ex2kR8xM
-	 vCh3GIG7PtqBq1lSYhTa95VkAM28j4sdkJybS75DGh5qyiWjAMBqE43ZEwVON249op
-	 mcl3/9wwOjM4JQMPDZC6ObWSIGfca6D8ntPneLwkd9SqUS9cwTFrlXh6mchSIr2Lbi
-	 Uy8sFLoIZMjHQ==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 49T4MLb741845039
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 29 Oct 2024 12:22:21 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 29 Oct 2024 12:22:22 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 29 Oct
- 2024 12:22:22 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: Ping-Ke Shih <pkshih@realtek.com>
-Subject: Re: [PATCH v3 01/22] wifi: rtw88: Add some definitions for RTL8821AU/RTL8812AU
-In-Reply-To: <9279a9cd-6f86-4dc3-a095-7c36cb9b9d06@gmail.com>
-References: <ee6d97b3-0c82-4225-a07f-b0d4043a901a@gmail.com> <9279a9cd-6f86-4dc3-a095-7c36cb9b9d06@gmail.com>
+	s=arc-20240116; t=1730188912; c=relaxed/simple;
+	bh=Lb7+JRot0Ow/hXFvvjjqUJ2t6DwR3AB4KdHFXq1esh0=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=NC+j9sAy6G9IQqntG02rCBwK0jLPwZRHh4AYwYNMjtYVxHJe+2Wl+mRN+ShkpZDhiNJp+n6MnVHi2CCnFWEJrYalUsZjUNUMKLTf+7em3TCs7zbOMa6TNWL/pa5pQUwYXd+CrFpTBnlcdUABsfsnocH0+zHWNpDGwkiaubTHY7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=KmVTk8oB; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=JTtqIS6uZm1lVd1JigYggHFNA/02TY3W2/sJni/wQjg=;
+	t=1730188910; x=1731398510; b=KmVTk8oBF2LNHJ6tpNMnqPvZzl7W23u6u5ITQINZtRHqXae
+	y8psbjqWkIh0neWQWx/hEzL2Apa2JF2lELKShGrN6K9cUh3Y4f4j7oTBoNgwCdx1UgjqgxA8l834B
+	EenthmRB4b9X67lKQVaPDgW9dshyd/uh+Zwte/4FpUGix331xrv5u1ft3OymrhQRW96L2m24fR7Nr
+	dVM/B3S3npuMHRyiuwDIlsHZvG0GmiVxQrX5gTWoOg1clbVTZ/O7UNxm97orGq/c5ZgH5t4CvlPIZ
+	xznij9qNNEVI4UMWhRGehIdwyKMOHxnv/376KpKVUctK1e1fD6ubi9dNiYYdq+WQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1t5hAc-000000087a4-2f2V;
+	Tue, 29 Oct 2024 09:01:42 +0100
+Message-ID: <1f6d998c16510426e57b774c42358dcef7a5cd31.camel@sipsolutions.net>
+Subject: Re: Question on iwlwifi iwl_mvm_mac_itxq_xmit, possible busy-spin.
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Ben Greear <greearb@candelatech.com>, linux-wireless
+	 <linux-wireless@vger.kernel.org>
+Date: Tue, 29 Oct 2024 09:01:41 +0100
+In-Reply-To: <8dce89a1-350c-4885-afcc-0eda162fd76c@candelatech.com>
+References: <8dce89a1-350c-4885-afcc-0eda162fd76c@candelatech.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Message-ID: <808c66fa-60a2-4878-b1f8-65d064735692@RTEXMBS04.realtek.com.tw>
-Date: Tue, 29 Oct 2024 12:22:22 +0800
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-malware-bazaar: not-scanned
 
-Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+On Mon, 2024-10-28 at 10:48 -0700, Ben Greear wrote:
+>=20
+> We see indication that the iwlwifi txpath can busy-spin,
+> causing soft-lockup (and, only indication at this point, possibly
+> issue is elsewhere somehow).
 
-> Add 8821A and 8812A chip type enums.
-> 
-> Add cck_high_power member to struct rtw_hal. This will be used to
-> calculate the RX signal strength of RTL8812AU.
-> 
-> Add various register definitions which will be used by the new drivers.
-> 
-> Move some existing register definitions from rtw8821c.h and rtw8822b.h.
-> They were duplicated in those headers and will also be used by the new
-> drivers.
-> 
-> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+TX path I'm not aware of any issues, but we did have this recently:
 
-Smatch warns
+https://bugzilla.kernel.org/show_bug.cgi?id=3D219375
 
-  drivers/net/wireless/realtek/rtw88/rtw8812a.c:619 rtw8812a_iqk() error: uninitialized symbol 'tx_x1'.
-  drivers/net/wireless/realtek/rtw88/rtw8812a.c:621 rtw8812a_iqk() error: uninitialized symbol 'tx_y1'.
+> But, I also wanted to check on expected behaviour.  At the bottom is a do=
+uble
+> loop.  The inner will break out if the queues are full and for some other=
+ reasons,
+> but the outside loop is spinning on a different atomic counter. The quest=
+ion is:
+> If the inner loop breaks out, at least for queue full reasons, should it =
+then
+> immediately break out of the outer while loop as well?
 
-Please respin patches 16-22.
+It shouldn't matter, but off the top of my head I'd say it's valid to
+break out entirely since the "queue no longer full" indication will
+restart it. In fact, it seems that'd really make more sense than the
+"sofar" thing you added. Not much value in retrying if the queue is full
+anyway?
 
-15 patch(es) applied to rtw-next branch of rtw.git, thanks.
+> And, from what I can tell, it would be possible for other transmitters to=
+ hit this
+> path,
 
-d12722830ea4 wifi: rtw88: Add some definitions for RTL8821AU/RTL8812AU
-87341ca1eac9 wifi: rtw88: Dump the HW features only for some chips
-d9018f437351 wifi: rtw88: Allow different C2H RA report sizes
-95a772e30b60 wifi: rtw88: Extend the init table parsing for RTL8812AU
-7c5bbeba7c36 wifi: rtw88: Allow rtw_chip_info.ltecoex_addr to be NULL
-fbb5e1b3637a wifi: rtw88: Let each driver control the power on/off process
-c7706b1173c7 wifi: rtw88: Enable data rate fallback for older chips
-abb0f19492ba wifi: rtw88: Make txagc_remnant_ofdm an array
-82a617413e85 wifi: rtw88: Support TX page sizes bigger than 128
-67d915604e69 wifi: rtw88: Move pwr_track_tbl to struct rtw_rfe_def
-85bf3041a0ea wifi: rtw88: usb: Set pkt_info.ls for the reserved page
-57289d30cd2a wifi: rtw88: Detect beacon loss with chips other than 8822c
-b19840afc051 wifi: rtw88: coex: Support chips without a scoreboard
-bfcee5ee924f wifi: rtw88: 8821a: Regularly ask for BT info updates
-f9e0189cbc2d wifi: rtw88: 8812a: Mitigate beacon loss
+Not really? It should only get here from two places: userspace
+(serialized, so you're not going to get to this point with two threads
+from there), and the "queue no longer full" logic I mentioned above. Oh,
+maybe technically a third at the beginning after allocating a new queue.
 
----
-https://github.com/pkshih/rtw.git
+> Based on the description of the 3 tx_request states, I am also not sure t=
+hat
+> this would not hang the tx path in case where inner loop bails out due to
+> tx queue full, leaving packets queued.  If no other packets are ever tran=
+smitted,
+> is there anything that would re-kick the xmit path?
 
+If the queue becomes "not full", then yes, that kicks it again.
+
+
+I guess I could sort of see a scenario where
+
+ - queues got full
+ - queues got not full
+ - we kick this logic via "queue not full"
+ - while this is running, userspace TX permanently bumps
+   tx_request from 1 to 2, this decrements it again, etc.
+
+What thread is the soft lockup in that you see?
+
+johannes
 
