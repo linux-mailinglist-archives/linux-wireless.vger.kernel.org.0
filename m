@@ -1,169 +1,180 @@
-Return-Path: <linux-wireless+bounces-14671-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14676-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ED8E9B50A8
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 18:29:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E2659B50E4
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 18:34:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCB551C22BFA
-	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 17:29:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A9B57B2156C
+	for <lists+linux-wireless@lfdr.de>; Tue, 29 Oct 2024 17:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE7E420ADFB;
-	Tue, 29 Oct 2024 17:24:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1327D209663;
+	Tue, 29 Oct 2024 17:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="SLou/OZD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tgKSPGZN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2305020A5EC;
-	Tue, 29 Oct 2024 17:24:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.248
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12B2205151;
+	Tue, 29 Oct 2024 17:28:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730222695; cv=none; b=FnMIaBpzNCtEIMVVGeYKFQHqGQyuZOC52/Ak5noXrlafvgfCUPfhmgmISKnIdUPrBiL5Kl2hrzBoQ//dU6h6Z+uMxdRlAzeEpcUvlmceTJNXR6ZThjKPC9PXV1zRLwArR4WnDw+Wo2vazXqmO0zFBAacg2KeZywhugIFKrFF7pg=
+	t=1730222940; cv=none; b=nsD+hApBj4mAOBMEqry0/2vG1V1edn2gdpJVzdxrwEawZ5j7YSTvgaH9y+iUlebh+n2b5CpztnulM+2YEL/VhGZjC9WqOZAoI9QeqjX9HlUnPY6Pf6z5ZL+/cldTF18jvVEgzGFEnHwqLDesRADEDMtGsttSrNq8+y9X7Vv01+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730222695; c=relaxed/simple;
-	bh=ms8A76nkeaNRHdXkIVVVrgITpbhw592CLIfijFs1/HQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QD1YwgTWQFmSfkmoxmvK0BzknXERzMQ128IhF5ErH80/Z3mERhoi51cWUzBDNM7xqa00Jp9dQl3ihCvLR3E7VUM8sP+haXb2Araoh+PnoxlIBsW5bx61vIoJbct4si0E5Hb9jcdjjyTokmAYH18ME353mUIoB09gE8xFCsrwjYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=SLou/OZD; arc=none smtp.client-ip=198.47.23.248
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 49THOkE7051096;
-	Tue, 29 Oct 2024 12:24:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1730222686;
-	bh=q15TcAJYFaPQe8njBAMAvJ8ClRw15csz0DfHF3xGVLE=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=SLou/OZDWrBSo0WHUrstUq3tjHzzVUmVDOfTuIWLXEoUPAbKK+cy0Wunu0q1Y3Xpq
-	 I/Tj5URm2wzW+92fwHnLeKy9yFRpim8u+WhFVo4FBZ+MkqknEWtE0gbW4qw6qE3SpZ
-	 +HJr2CZ1HTHObxRbYrL+S7wZIIuxPYvfEf0+aUYU=
-Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 49THOkhw092366
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 29 Oct 2024 12:24:46 -0500
-Received: from DFLE110.ent.ti.com (10.64.6.31) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 29
- Oct 2024 12:24:46 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE110.ent.ti.com
- (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Tue, 29 Oct 2024 12:24:46 -0500
-Received: from localhost (udb0389739.dhcp.ti.com [137.167.1.149])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 49THOj6K065912;
-	Tue, 29 Oct 2024 12:24:45 -0500
-From: Michael Nemanov <michael.nemanov@ti.com>
-To: Kalle Valo <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo
- Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski
-	<krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC: Sabeeh Khan <sabeeh-khan@ti.com>, Michael Nemanov <michael.nemanov@ti.com>
-Subject: [PATCH v4 17/17] wifi: cc33xx: Add Kconfig, Makefile
-Date: Tue, 29 Oct 2024 19:23:54 +0200
-Message-ID: <20241029172354.4027886-18-michael.nemanov@ti.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241029172354.4027886-1-michael.nemanov@ti.com>
-References: <20241029172354.4027886-1-michael.nemanov@ti.com>
+	s=arc-20240116; t=1730222940; c=relaxed/simple;
+	bh=MldSz6jSOpOM5SSLe31IAiFl/WG1XrtsHpWKkH+MwY8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OH7+RtkuiYHMM5HNnBQFxEMK9My5nTn5UctGlDWV7OPepcdwxPI8RgDH5/49ihGAW1y95yfrPSLKBygV5YGBjC5xQ3pvralNjMtErpHpdqjD/GJFv4Lhy1lv6wjiAR5x4v50Xqlf7icz9CHC6UH306g5MjCCgs2q+TtNhfK/yEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tgKSPGZN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B38EDC4CECD;
+	Tue, 29 Oct 2024 17:28:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730222939;
+	bh=MldSz6jSOpOM5SSLe31IAiFl/WG1XrtsHpWKkH+MwY8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=tgKSPGZNIgjnXJPCOcR+x2pVq6GSJpA0isa/ZEBEjsWypzQhJJZGQ7wefdPooq2vy
+	 ykk8oXGr9halwGFM/b4U5tU2LEclDEX3i+Jf5FUAORXN6qZtdzQIHepje61VhzlVTl
+	 8jI1SQZTVnuaV2wnhzJNDsXuQJkQUcZfcOHXj9RDnPDonKZITb2WBK34CFgYk7UssN
+	 ZhlgunzxsF5lpRQRLJL+hoHKTmDWVes9Vr0DEOp3vvSFJOFtHJiYjTlOmDclA2ubPh
+	 n6sE95i4FuWxeoagV78mc4VPrEyJEHzf3RcAvOsavW07gZvP0TX5QiGnftsx99nlCP
+	 e3M+ohkmieg9A==
+Message-ID: <936b19eb-cde7-4be8-98cf-e60e32b335cd@kernel.org>
+Date: Tue, 29 Oct 2024 18:28:52 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 01/17] dt-bindings: net: wireless: cc33xx: Add
+ ti,cc33xx.yaml
+To: Michael Nemanov <michael.nemanov@ti.com>, Kalle Valo <kvalo@kernel.org>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-wireless@vger.kernel.org,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: Sabeeh Khan <sabeeh-khan@ti.com>
+References: <20241029172354.4027886-1-michael.nemanov@ti.com>
+ <20241029172354.4027886-2-michael.nemanov@ti.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20241029172354.4027886-2-michael.nemanov@ti.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Integrate cc33xx into wireless/ti folder
+On 29/10/2024 18:23, Michael Nemanov wrote:
+> Add device-tree bindings for the CC33xx family.
+> 
+> Signed-off-by: Michael Nemanov <michael.nemanov@ti.com>
+> ---
+>  .../bindings/net/wireless/ti,cc33xx.yaml      | 59 +++++++++++++++++++
+>  1 file changed, 59 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/wireless/ti,cc33xx.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/net/wireless/ti,cc33xx.yaml b/Documentation/devicetree/bindings/net/wireless/ti,cc33xx.yaml
+> new file mode 100644
+> index 000000000000..12a0a2f52f44
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/wireless/ti,cc33xx.yaml
+> @@ -0,0 +1,59 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/net/wireless/ti,cc33xx.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Texas Instruments CC33xx Wireless LAN Controller
+> +
+> +maintainers:
+> +  - Michael Nemanov <michael.nemanov@ti.com>
+> +
+> +description:
+> +  The CC33xx is a family of IEEE 802.11ax chips from Texas Instruments.
+> +  These chips must be connected via SDIO and support in-band / out-of-band IRQ.
+> +
+> +properties:
+> +  $nodename:
+> +    pattern: "^wifi@2"
 
-Signed-off-by: Michael Nemanov <michael.nemanov@ti.com>
----
- drivers/net/wireless/ti/Kconfig         |  1 +
- drivers/net/wireless/ti/Makefile        |  1 +
- drivers/net/wireless/ti/cc33xx/Kconfig  | 24 ++++++++++++++++++++++++
- drivers/net/wireless/ti/cc33xx/Makefile | 10 ++++++++++
- 4 files changed, 36 insertions(+)
- create mode 100644 drivers/net/wireless/ti/cc33xx/Kconfig
- create mode 100644 drivers/net/wireless/ti/cc33xx/Makefile
+This wasn't here, please drop.
 
-diff --git a/drivers/net/wireless/ti/Kconfig b/drivers/net/wireless/ti/Kconfig
-index 3fcd9e395f72..fa7214d6018c 100644
---- a/drivers/net/wireless/ti/Kconfig
-+++ b/drivers/net/wireless/ti/Kconfig
-@@ -14,6 +14,7 @@ if WLAN_VENDOR_TI
- source "drivers/net/wireless/ti/wl1251/Kconfig"
- source "drivers/net/wireless/ti/wl12xx/Kconfig"
- source "drivers/net/wireless/ti/wl18xx/Kconfig"
-+source "drivers/net/wireless/ti/cc33xx/Kconfig"
- 
- # keep last for automatic dependencies
- source "drivers/net/wireless/ti/wlcore/Kconfig"
-diff --git a/drivers/net/wireless/ti/Makefile b/drivers/net/wireless/ti/Makefile
-index 05ee016594f8..9e028a91ec30 100644
---- a/drivers/net/wireless/ti/Makefile
-+++ b/drivers/net/wireless/ti/Makefile
-@@ -3,3 +3,4 @@ obj-$(CONFIG_WLCORE)			+= wlcore/
- obj-$(CONFIG_WL12XX)			+= wl12xx/
- obj-$(CONFIG_WL1251)			+= wl1251/
- obj-$(CONFIG_WL18XX)			+= wl18xx/
-+obj-$(CONFIG_CC33XX)			+= cc33xx/
-\ No newline at end of file
-diff --git a/drivers/net/wireless/ti/cc33xx/Kconfig b/drivers/net/wireless/ti/cc33xx/Kconfig
-new file mode 100644
-index 000000000000..0c3ff97dacc7
---- /dev/null
-+++ b/drivers/net/wireless/ti/cc33xx/Kconfig
-@@ -0,0 +1,24 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+config CC33XX
-+	tristate "TI CC33XX support"
-+	depends on MAC80211
-+	select FW_LOADER
-+	help
-+	  This module contains the main code for TI CC33XX WLAN chips. It abstracts
-+	  hardware-specific differences among different chipset families.
-+	  Each chipset family needs to implement its own lower-level module
-+	  that will depend on this module for the common code.
-+
-+	  If you choose to build a module, it will be called cc33xx. Say N if
-+	  unsure.
-+
-+config CC33XX_SDIO
-+	tristate "TI CC33XX SDIO support"
-+	depends on CC33XX && MMC
-+	help
-+	  This module adds support for the SDIO interface of adapters using
-+	  TI CC33XX WLAN chipsets.  Select this if your platform is using
-+	  the SDIO bus.
-+
-+	  If you choose to build a module, it'll be called cc33xx_sdio.
-+	  Say N if unsure.
-diff --git a/drivers/net/wireless/ti/cc33xx/Makefile b/drivers/net/wireless/ti/cc33xx/Makefile
-new file mode 100644
-index 000000000000..6156f778edee
---- /dev/null
-+++ b/drivers/net/wireless/ti/cc33xx/Makefile
-@@ -0,0 +1,10 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+cc33xx-objs		= main.o cmd.o io.o event.o tx.o rx.o ps.o acx.o \
-+					boot.o init.o scan.o
-+
-+cc33xx_sdio-objs	= sdio.o
-+
-+cc33xx-$(CONFIG_NL80211_TESTMODE)	+= testmode.o
-+obj-$(CONFIG_CC33XX)				+= cc33xx.o
-+obj-$(CONFIG_CC33XX_SDIO)			+= cc33xx_sdio.o
--- 
-2.34.1
+> +
+> +  compatible:
+> +    oneOf:
+
+Why oneOf appeared? Do you plan to grow it?
+
+> +      - items:
+> +          - enum:
+> +              - ti,cc3300
+> +              - ti,cc3301
+> +              - ti,cc3350
+> +              - ti,cc3351
+> +          - const: ti,cc33xx
+
+And how cc33xx could appear? That's a no. Generic compatibles are not
+allowed. Please do not introduce some completely different changes than
+asked for.
+
+Your changelog does not explain these three. "Fixed compatibility" is
+way too vague, especially that you do not fix anything here.
+
+> +
+> +  reg:
+> +    const: 2
+> +
+
+Best regards,
+Krzysztof
 
 
