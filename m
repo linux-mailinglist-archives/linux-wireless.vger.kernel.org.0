@@ -1,165 +1,118 @@
-Return-Path: <linux-wireless+bounces-14710-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14711-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1112C9B5A8B
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 05:05:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD9619B5E85
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 10:16:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4CD02837C8
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 04:05:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31BD31F2159E
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 09:16:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 672A87E9;
-	Wed, 30 Oct 2024 04:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FEF5194A73;
+	Wed, 30 Oct 2024 09:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Pg7M2n1t"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="a/G7diST"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DBC6193081
-	for <linux-wireless@vger.kernel.org>; Wed, 30 Oct 2024 04:05:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F7754BD4
+	for <linux-wireless@vger.kernel.org>; Wed, 30 Oct 2024 09:16:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730261154; cv=none; b=pWucU9Oa6LpsWy897SmysLJpTuybAMngXEerHsYEQeFk71oEHPA4NzfDjQhObSRmZMPvHQWtPHzq5dYCNSjeTf8M0HEtBVU3Q6rJz0QbTPcJYV4QDFZquZvhqOCUiC7t6AnPGrrswki8G+rxXcqJ7sdQ/M6zuoHFVx0czFJQTA0=
+	t=1730279793; cv=none; b=GThfgzl9uQachYgYl9xGzQbTEIXgA8x56sO8rvDyuNugR0FBFICzGwCNlEEERyajqXu15uyXlpJ2FxDQTD5E3m4YB32C2DEkzKwcbRO7bBQgjyE2z4hy6xKCgL8KiMC0lkfqpVlO9qRZevHBlgFPDU/STdNevU1HQYxH4w/JJjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730261154; c=relaxed/simple;
-	bh=TUTZrX6NAnuqJ5cDI5RUtjePgqFt6yXmXWtQgcd8Dsc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=DH/i9JT7pcpfJhWKTdgmqI25Lfr6dyalV7INYPIdHcN630yQiywLjrW/mTkAgAQVyp6SBad0wj1xJUb2gjii+r/fwa/JiawF6UOWhZBrBXi9EvnZBzaKpLn/PK+g9n77CM2SqiLkCLvq/LpKoD0EmKEwQEMmuSG7SBxOJsQV70E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Pg7M2n1t; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49TEebdZ027398;
-	Wed, 30 Oct 2024 04:05:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	5Rdo6ulYw0tRvnn2Gcx4YZ8PYC9DH6YfHABu8VFgs04=; b=Pg7M2n1tyW31/7Do
-	5Kqjgkr1RJj4WUGMqQIkIRF46/PTxPrO3XH2Dj6b6d32lDtXfWRSOJffuL3iL9M4
-	a8CxVQQmpW4rsENusO1/oz0QxXAAggLZzUZh7dGSG5ih/PSiavdxxoPaRbcSBihz
-	qt0Qtny3GhwhxVjWMqWaOa6097OnYacJQcTLAZ7DUYeLOyiZwjZfbhP7s3bFpTIj
-	3zNfXrVOG6Zw1V7GTMduHFlO6jYUDQLKAA0IXFV30jS49V9enoP+TbhFBR/Bc+Iu
-	1b+G84I/uN7CfRLcUtq8HjFInmGcREdK7GcsCDkOSiB19rszfWEswNfx0x8MFr59
-	udeNZw==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42k1p31vwf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 30 Oct 2024 04:05:43 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49U45gbE026513
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 30 Oct 2024 04:05:42 GMT
-Received: from [10.152.202.18] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 29 Oct
- 2024 21:05:40 -0700
-Message-ID: <cd19db4a-953d-4230-85b1-695140bb185c@quicinc.com>
-Date: Wed, 30 Oct 2024 09:35:37 +0530
+	s=arc-20240116; t=1730279793; c=relaxed/simple;
+	bh=XHTCaP/GC3/STWhYxt2xN33fYQmC36v3lrOTZli5hkQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LeTlKrYBcnSPreKWR9GgEk6rPbJE9VqjvMT6ezt41IOc2Zc3OTehHm8iPeSl4T2BXayIWR7hS7XBZbcrbOjdJFh4/+F4x32y+lZI0h8bYQrWQq1GtXAcDDhp2Xqv8o6qNRgw+pqiI8G6UEsPbzEbXDXcbDXwff3XbQI5vrANPd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=a/G7diST; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 49U9GQZG03795429, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1730279786; bh=XHTCaP/GC3/STWhYxt2xN33fYQmC36v3lrOTZli5hkQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=a/G7diST5P/CKKRDNPmDkrrbcq1599ZMiueCOCOo0sUuXf20/LhWR/wHHbvIZSlyX
+	 DRMO9ZcuAk5nVaJvyBz6RmJraYF0Urx5dCW/i1avoQg1JUuFQXNt1VVKo/K/z9azb0
+	 GlOTP7glp3b/P9XcS3M6ferwkLIxnPFwfDay9oPBOk4bJ17wQx1CTpBh1l+SJUESsx
+	 EGF9k8W7/XEUEHeGMhPSqO0ZIfEgsItggEuGmhEOxmnmIkdYvGC3Rx7wCx+kfHt71m
+	 J3jXWpl/pSPetOyxyQlW6DNhAfeMF5l4pIpdAEG3N9z2bE7c66PL+vK10xR1fcE03b
+	 V4Zeu8ih074Hg==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 49U9GQZG03795429
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Wed, 30 Oct 2024 17:16:26 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 30 Oct 2024 17:16:26 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 30 Oct
+ 2024 17:16:25 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+CC: <gary.chang@realtek.com>
+Subject: [PATCH] wifi: rtw89: 8852b: change RF mode to normal mode when set channel
+Date: Wed, 30 Oct 2024 17:16:03 +0800
+Message-ID: <20241030091603.6073-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/8] wifi: ath12k: Refactor sta state machine
-To: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <quic_jjohnson@quicinc.com>
-CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20241023133004.2253830-1-kvalo@kernel.org>
- <20241023133004.2253830-4-kvalo@kernel.org>
- <a4b92b80-ec57-4db3-acd7-9c6c7644d7c9@quicinc.com>
- <875xpahqc5.fsf@kernel.org>
-Content-Language: en-US
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
-In-Reply-To: <875xpahqc5.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 3BeXbF90L541wORic7JaI7Qa7sRYVaBd
-X-Proofpoint-ORIG-GUID: 3BeXbF90L541wORic7JaI7Qa7sRYVaBd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- adultscore=0 spamscore=0 lowpriorityscore=0 mlxscore=0 malwarescore=0
- phishscore=0 clxscore=1011 impostorscore=0 mlxlogscore=999 suspectscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410300029
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-On 10/29/24 21:08, Kalle Valo wrote:
-> + aditya
-> 
-> Jeff Johnson <quic_jjohnson@quicinc.com> writes:
-> 
->>> +static int ath12k_mac_station_unauthorize(struct ath12k *ar,
->>> +					  struct ath12k_link_vif *arvif,
->>> +					  struct ath12k_link_sta *arsta)
->>> +{
->>> +	struct ath12k_peer *peer;
->>> +	int ret;
->>> +
->>> +	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
->>> +
->>> +	spin_lock_bh(&ar->ab->base_lock);
->>> +
->>> +	peer = ath12k_peer_find(ar->ab, arvif->vdev_id, arsta->addr);
->>> +	if (peer)
->>> +		peer->is_authorized = false;
->>> +
->>> +	spin_unlock_bh(&ar->ab->base_lock);
->>> +
->>> +	/* Driver should clear the peer keys during mac80211's ref ptr
->>> +	 * gets cleared in __sta_info_destroy_part2 (trans from
->>> +	 * IEEE80211_STA_AUTHORIZED to IEEE80211_STA_ASSOC)
->>
->> I'm unable to understand this comment
-> 
-> Indeed, that's weird. Aditya, do you have any idea what the comment is
-> trying to say?
-> 
+From: Chih-Kang Chang <gary.chang@realtek.com>
 
-At present, ath12k clear the keys in ath12k_station_disassoc() which 
-gets executed in state change from IEEE80211_STA_ASSOC to 
-IEEE80211_STA_AUTH.
+Set the RF mode from 0xA(low power mode) to 0x3(Normal mode) to avoid
+abnormal TX waveform in OFDM rate. Originally the RF mode will be changed
+to normal mode by the firmware after entering LPS once. Therefore, this
+change does not affect power saving.
 
-However, in mac80211, once the station moves from 
-IEEE80211_STA_AUTHORIZED to IEEE80211_STA_ASSOC itself, the keys are 
-deleted. Please see - __sta_info_destroy_part2() -> 
-ieee80211_free_sta_keys().
+Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw89/rtw8852b_common.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-Now, ath12k peer object (struct ath12k_peer) holds the key reference 
-from mac80211 (see ath12k_peer::keys[]). Hence, once mac80211 deletes 
-the key, driver should not keep a reference to it or else it could lead 
-to issues.
-
-Therefore, it is important that the driver should clear the peer keys 
-during transition from IEEE80211_STA_AUTHORIZED to IEEE80211_STA_ASSOC 
-it self since we know that once we return from here, mac80211 is going 
-to remove the keys.
-
-ath12k_mac_station_unauthorize() gets called when station moves from 
-state IEEE80211_STA_AUTHORIZED to IEEE80211_STA_ASSOC hence call to 
-ath12k_clear_peer_keys() is moved from ath12k_station_disassoc() to 
-ath12k_mac_station_unauthorize().
-
-Is this clear now?
-
-May be the comment in the code could be re-written as below?
-
-/* Driver must clear the keys during the state change from
-  * IEEE80211_STA_AUTHORIZED to IEEE80211_STA_ASSOC, since after
-  * returning from here, mac80211 is going to delete the keys
-  * in __sta_info_destroy_part2(). This will ensure that the driver does
-  * not retain stale key references after mac80211 deletes the keys.
-  */
-
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b_common.c b/drivers/net/wireless/realtek/rtw89/rtw8852b_common.c
+index ede0ca5426ae..f4aa4437fb75 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852b_common.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852b_common.c
+@@ -905,7 +905,6 @@ static void rtw8852bx_ctrl_bw(struct rtw89_dev *rtwdev, u8 pri_ch, u8 bw,
+ {
+ 	enum rtw89_core_chip_id chip_id = rtwdev->chip->chip_id;
+ 	u32 rx_path_0;
+-	u32 val;
+ 
+ 	rx_path_0 = rtw89_phy_read32_idx(rtwdev, R_CHBW_MOD_V1, B_ANT_RX_SEG0, phy_idx);
+ 
+@@ -985,12 +984,11 @@ static void rtw8852bx_ctrl_bw(struct rtw89_dev *rtwdev, u8 pri_ch, u8 bw,
+ 		rtw89_phy_write32_idx(rtwdev, R_CHBW_MOD_V1, B_CHBW_MOD_PRICH,
+ 				      pri_ch, phy_idx);
+ 
+-		/*Set RF mode at A */
+-		val = chip_id == RTL8852BT ? 0x333 : 0xaaa;
++		/*Set RF mode at 3 */
+ 		rtw89_phy_write32_idx(rtwdev, R_P0_RFMODE_ORI_RX,
+-				      B_P0_RFMODE_ORI_RX_ALL, val, phy_idx);
++				      B_P0_RFMODE_ORI_RX_ALL, 0x333, phy_idx);
+ 		rtw89_phy_write32_idx(rtwdev, R_P1_RFMODE_ORI_RX,
+-				      B_P1_RFMODE_ORI_RX_ALL, val, phy_idx);
++				      B_P1_RFMODE_ORI_RX_ALL, 0x333, phy_idx);
+ 		break;
+ 	default:
+ 		rtw89_warn(rtwdev, "Fail to switch bw (bw:%d, pri ch:%d)\n", bw,
 -- 
-Aditya
+2.25.1
 
 
