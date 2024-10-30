@@ -1,74 +1,48 @@
-Return-Path: <linux-wireless+bounces-14735-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14736-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 200C09B63E3
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 14:17:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA3099B650F
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 15:01:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2AB728295B
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 13:17:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE0071C21DFD
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 14:01:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BAA445023;
-	Wed, 30 Oct 2024 13:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF0C61EE021;
+	Wed, 30 Oct 2024 14:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UM8IIhHW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LkOfSo/y"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1415A3D551;
-	Wed, 30 Oct 2024 13:17:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC301EBFF2;
+	Wed, 30 Oct 2024 14:01:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730294262; cv=none; b=hq3/bXVhB/5wj+Uj1cLgxp5xTkNiIRk/SNoEDz0K/yDdCAlvytwlBYUJbv46KXR90ZdXGqhG/PGXxmuXgK44XFZ9G+OfX5zQUJ8BwGyLJ3mtJIdIDK1zDvDA0R36J7IjACF0Ux21VpOFeVFkSrCN8SolWkfKetR5KYL9zbRvZjY=
+	t=1730296874; cv=none; b=POZIUZ4/TgVEAT3BorshzxRqekn9cx6aUMxwN55j1duPNJOUk38wEZwOOu/k9kegm6fovonoC5JOrdLTMRuxNg9ixRC0DWlcyn/CXcEfWLs39OuV371jnCIFU8SsndNbFSXk/71S9bfvrjee0IEtwNZw7KYS6ml5lZUjc2ssCdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730294262; c=relaxed/simple;
-	bh=7LSgZxYpBGd1npYy4xgr5/IFiST5qDnV77eehbUTEDc=;
+	s=arc-20240116; t=1730296874; c=relaxed/simple;
+	bh=cZyl/pNcW3otfN/m79DGyMQG/9YXXsayTz/r9b6yIhA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=px3KVHNwU6I/0/rOw0VsLPp8m6idJnOcagpRUqC/Qf/Ys8+dQwS543rrNpBHnpRH4+om54HeKk6ib4taXk6EjFNK2cIbPVrFftJzo6Ua9b2G//jS2a702UUeExRW0A5DCT256sw9zKk2CsNFWWWVL1zRlS6sFK7uPy/SWJ7KjDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UM8IIhHW; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a9a3dc089d8so990821766b.3;
-        Wed, 30 Oct 2024 06:17:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730294257; x=1730899057; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0gyxyoUviu6uqUWH/cy1i8mHHBIJcAPqfiqibX0KqM8=;
-        b=UM8IIhHWXPrgXvB6DFxfbO+hlcSp4QqmVJYWoxLw4RXa+/PLH3BsA1CZ+KHDzd1Iqy
-         p8XRmUBe+k0cVhHrlhUWAxaKE3thcoOgaoyq3KCKMG3vb3fESB//Su96NMeEIQdcXqqA
-         T0Wy9aPgxPi0DxUBb+OJSBI+GKAu073R9rw72+uRjlyfPeosUnF9DoFC3uYF1ZXCUl26
-         xd6I9jwwQC+Bs7b2gXYUulc2F2wKafUrDFtg0a1uVe/wKwH7iWoNSuZNiyNse9fu7t2t
-         5CrbbfXOVXeX189j3CCY88vinu6gP8b6YfGOgerdKOW94lgt0Y+Cd8MVpvizFDmqNmpf
-         migg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730294257; x=1730899057;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0gyxyoUviu6uqUWH/cy1i8mHHBIJcAPqfiqibX0KqM8=;
-        b=OP42+RMvt0MNQp9cD5Yq3T134Q4gv9fgEIQ1h5mFe5cMVKbCdI0vZuMOYaKoTIQ4rg
-         R9YT4eiJbF6CwwQSyhSec/R52YXtpLHCNzJs+w4Sxa/k9/NNGIJGIduMWzUowxYM+VDw
-         DOh+niSrdFq13LhsPznmVNuFBIP53jX0kZgj4TrqPhhHU/AZK7/T6C1519GDNqIGxr8M
-         wwhBTGl74MJMyPUW5ikiCNJA2UhP/ZKiLn9fqYzxFe+KELZ/uwjjLoZluINaOe1mQxjq
-         si6c3Y5CgGL+m2pFtm2igYiagE6xzjgU+3R2adWWXuxoDFLRCTJPXDjjUpeBGL0PZZhp
-         HIWA==
-X-Forwarded-Encrypted: i=1; AJvYcCUdJt/yY2QB9YjWv/b3+IGH4qJVB8bQsgSE/rJE3uHkeA4yYz9bK1+ZflgnkKF4tERTEZ2ow50sBh/hjY0=@vger.kernel.org, AJvYcCVnvpk4rIX+rLX99YL0k03Ahr6FvKF+Q349KTwfDKQfb6gbsE6Dbjq+aW9r5cFzUeQIyAlkRkHp@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/VpPLwskW/3j4uEugkGE+uX7aB2keWJVsn9RD5mSPRFmhbZGb
-	PqyfNskH6OWbDgz51+XwZUy/jR6ENXbRJ+xQSxFfpa2856SRkVmjTzaDBQ==
-X-Google-Smtp-Source: AGHT+IER/5f2G4la7GINKS4UizPtPjbUp+XOatRjnXnsYQvTjY1fbBAFhhk4Vr2lAow13dab+g1eBA==
-X-Received: by 2002:a17:907:3e20:b0:a99:d587:6045 with SMTP id a640c23a62f3a-a9de5d977b4mr1381667166b.19.1730294257251;
-        Wed, 30 Oct 2024 06:17:37 -0700 (PDT)
-Received: from [192.168.0.50] ([79.113.150.231])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9b1dec7b59sm570613766b.44.2024.10.30.06.17.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Oct 2024 06:17:36 -0700 (PDT)
-Message-ID: <c47081db-4a7a-46df-bb4b-82f8dda94460@gmail.com>
-Date: Wed, 30 Oct 2024 15:17:34 +0200
+	 In-Reply-To:Content-Type; b=EkEFHpSOmwYnjjI3G3sagJngDTVdHKItvNpS6F/PNk5TnFzT2tVGFzuZqhINLbJNHojxBJifFiS6POHq4e586RnraNdHl4LL33sFh8+AoWaGhYO8z/DPNbfnym6tmSaBboMzSZAzo7olprU0oiYMMfQTH03JnPzx4U3jfurZAxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LkOfSo/y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A31C0C4CECE;
+	Wed, 30 Oct 2024 14:01:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730296874;
+	bh=cZyl/pNcW3otfN/m79DGyMQG/9YXXsayTz/r9b6yIhA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LkOfSo/yWKilkg1Ba1/mfdCdNpDj5hmbfa2HUyCQMWR5oHPsxysWFNMSinsKPGwkm
+	 b959PYpfFQkCzX+y5ocQQS9/I/6fAPJW5Wgko9ltT79MGM+LfJ/RCigiJfjEY1mQQE
+	 NHvFU8DuaW0/JbIodVcvk92BhyWZ8Lr7Gd6HSSnQwZYGL79jMJPnfohMfNXm3EiTEY
+	 6W6LWd/xmw6Xy0+/68K4suxUxj6nIkiwvzLYEbSmO/y6RLeKiHmi0N7fisC7jE2N71
+	 z6Tb8SAJm02w3c3wTNhKC9ZgTh6lz7YsOEYNX91E3xarEdE6aHZCxBVCYQlyXEKutR
+	 bEqXNo+r8dqnw==
+Message-ID: <ae0faee0-d695-4b48-8be8-dfd2e7e08f54@kernel.org>
+Date: Wed, 30 Oct 2024 15:01:08 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -76,49 +50,125 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: rtlwifi: Drastically reduce the attempts to read
- efuse bytes in case of failures
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
- Ping-Ke Shih <pkshih@realtek.com>
-Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
- "kvalo@kernel.org" <kvalo@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "kernel@gpiccoli.net" <kernel@gpiccoli.net>,
- "kernel-dev@igalia.com" <kernel-dev@igalia.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com"
- <syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com>
-References: <20241025150226.896613-1-gpiccoli@igalia.com>
- <ed8114c231d1423893d3c90c458f35f3@realtek.com>
- <61aae4ff-8f80-252e-447a-cd8a51a325a1@igalia.com>
- <c93c8e9c109b444b91489ac0e88b987c@realtek.com>
- <14c3164c-0e1e-4d9d-89d9-28d3240861c6@gmail.com>
- <d6e01e56-51e7-cbb2-024a-c7db86dc70fb@igalia.com>
- <baf6d88e-e753-4aaf-a340-991373d77fa8@gmail.com>
- <984038be-6cc2-3acc-8ab0-5720a79dbf07@igalia.com>
+Subject: Re: [PATCH v4 01/17] dt-bindings: net: wireless: cc33xx: Add
+ ti,cc33xx.yaml
+To: "Nemanov, Michael" <michael.nemanov@ti.com>, Kalle Valo
+ <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-wireless@vger.kernel.org,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: Sabeeh Khan <sabeeh-khan@ti.com>
+References: <20241029172354.4027886-1-michael.nemanov@ti.com>
+ <20241029172354.4027886-2-michael.nemanov@ti.com>
+ <936b19eb-cde7-4be8-98cf-e60e32b335cd@kernel.org>
+ <8024aa1c-5bd1-40d8-b0c3-14b5fcd992e2@ti.com>
+ <bda36285-dc70-4dff-85ed-9c04c0f7ba44@kernel.org>
+ <3fc3c670-ce63-4a27-9d12-1c6c996cf914@ti.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <984038be-6cc2-3acc-8ab0-5720a79dbf07@igalia.com>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <3fc3c670-ce63-4a27-9d12-1c6c996cf914@ti.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 29/10/2024 19:58, Guilherme G. Piccoli wrote:
-> On 29/10/2024 13:55, Bitterblue Smith wrote:
->> [...]
+On 30/10/2024 13:14, Nemanov, Michael wrote:
+> On 10/30/2024 1:09 PM, Krzysztof Kozlowski wrote:
+>> On 30/10/2024 11:59, Nemanov, Michael wrote:
+>>>>
+>>>> Your changelog does not explain these three. "Fixed compatibility" is
+>>>> way too vague, especially that you do not fix anything here.
+>>>>
+>>>
+>>> I was trying to address the feedback from previous patch. You said:
+>>>
+>>>>>>> +static const struct of_device_id cc33xx_sdio_of_match_table[] = {
+>>>>>>> +	{ .compatible = "ti,cc3300", .data = &cc33xx_data },
+>>>>>>> +	{ .compatible = "ti,cc3301", .data = &cc33xx_data },
+>>>>>>> +	{ .compatible = "ti,cc3350", .data = &cc33xx_data },
+>>>>>>> +	{ .compatible = "ti,cc3351", .data = &cc33xx_data },
+>>>>>>> +	{ }
+>>>>>>> +};
+>>>>>>
+>>>>>>
+>>>>>> Eh? What happened here? So devices are compatibles thus make them
+>>>>>> compatible in the bindings.
+>>>>>>
+>>>>>
+>>>>> I thought this is the right way to do it (originally taken from [1]).
+>>>>> How can I solve it via DT bindings?
+>>>>
+>>>> It's all over the bindings (also example-schema). Use fallback and oneOf.
+>>>>
+>>>
+>>> Looking at [2] and [3] as an example I tried to do the same (make cc33xx
+>>> driver compatible with all chip variants).
+>>> How should have I done it?
 >>
->> I tested your patch. Both my devices can still read the efuse.
+>> qcom-wdt is quite a different device. It's true you should have here
+>> oneOf, but for a purpose. oneOf without purpose does not make sense, right?
+>>
+>> I think other TI bindings would serve you as an example. Or this one:
+>>
+>> https://elixir.bootlin.com/linux/v6.3-rc6/source/Documentation/devicetree/bindings/sound/nvidia,tegra210-ope.yaml#L31
+>>
+>>
+>> Best regards,
+>> Krzysztof
 >>
 > 
-> This is super great, thank you! Would you like to have a Tested-by on
-> that? If so, just send the name / email of your preference and I can add
-> it to the V2. I'll implement the PCI guard and re-submit, thanks again!
+> OK.
+> So I should make one of the variants the base and declare others as 
+> compatible? i.e:
 > 
-> Cheers,
-> 
-> 
-> Guilherme
 
-Sure,
+Yes
 
-Tested-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Best regards,
+Krzysztof
+
 
