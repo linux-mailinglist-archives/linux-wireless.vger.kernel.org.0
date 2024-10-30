@@ -1,174 +1,188 @@
-Return-Path: <linux-wireless+bounces-14736-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14737-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA3099B650F
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 15:01:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1825A9B656B
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 15:15:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE0071C21DFD
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 14:01:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAF88281C71
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 14:14:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF0C61EE021;
-	Wed, 30 Oct 2024 14:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F13CD1EABA4;
+	Wed, 30 Oct 2024 14:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LkOfSo/y"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="Q8bGm43a"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFC301EBFF2;
-	Wed, 30 Oct 2024 14:01:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2402C1EF095;
+	Wed, 30 Oct 2024 14:14:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730296874; cv=none; b=POZIUZ4/TgVEAT3BorshzxRqekn9cx6aUMxwN55j1duPNJOUk38wEZwOOu/k9kegm6fovonoC5JOrdLTMRuxNg9ixRC0DWlcyn/CXcEfWLs39OuV371jnCIFU8SsndNbFSXk/71S9bfvrjee0IEtwNZw7KYS6ml5lZUjc2ssCdQ=
+	t=1730297696; cv=none; b=oK+bbTlbw2Md7QEAXCqq9YMqYktLMnR9jMP6VRwR0yuvjPmMxJOypF/E7ACr/AAm1H/nYa8+1y3FuLe5XO91sLnUpKT316dxZlHW1L3GinBmi7hcPJReQO7RDSIVLcUnGWYTOduGHN7pN71a7LLDtAakwkHhIyeiTVdPPPYQEf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730296874; c=relaxed/simple;
-	bh=cZyl/pNcW3otfN/m79DGyMQG/9YXXsayTz/r9b6yIhA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EkEFHpSOmwYnjjI3G3sagJngDTVdHKItvNpS6F/PNk5TnFzT2tVGFzuZqhINLbJNHojxBJifFiS6POHq4e586RnraNdHl4LL33sFh8+AoWaGhYO8z/DPNbfnym6tmSaBboMzSZAzo7olprU0oiYMMfQTH03JnPzx4U3jfurZAxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LkOfSo/y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A31C0C4CECE;
-	Wed, 30 Oct 2024 14:01:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730296874;
-	bh=cZyl/pNcW3otfN/m79DGyMQG/9YXXsayTz/r9b6yIhA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LkOfSo/yWKilkg1Ba1/mfdCdNpDj5hmbfa2HUyCQMWR5oHPsxysWFNMSinsKPGwkm
-	 b959PYpfFQkCzX+y5ocQQS9/I/6fAPJW5Wgko9ltT79MGM+LfJ/RCigiJfjEY1mQQE
-	 NHvFU8DuaW0/JbIodVcvk92BhyWZ8Lr7Gd6HSSnQwZYGL79jMJPnfohMfNXm3EiTEY
-	 6W6LWd/xmw6Xy0+/68K4suxUxj6nIkiwvzLYEbSmO/y6RLeKiHmi0N7fisC7jE2N71
-	 z6Tb8SAJm02w3c3wTNhKC9ZgTh6lz7YsOEYNX91E3xarEdE6aHZCxBVCYQlyXEKutR
-	 bEqXNo+r8dqnw==
-Message-ID: <ae0faee0-d695-4b48-8be8-dfd2e7e08f54@kernel.org>
-Date: Wed, 30 Oct 2024 15:01:08 +0100
+	s=arc-20240116; t=1730297696; c=relaxed/simple;
+	bh=V7XbNCI+y0Vja1Ya3QUPKHzcNmuePulkbMMVMW94cyU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fC50j5Wf28oD4fTDYuSoiv/JObRuE0U3oxXGayujC+xwRnzRjNEwpaRX3yQR8w5VdwfGx9Gq0dUiwTgrXeMcoCBAabWidQwz4nWN/cLXiHyV7Ki2c1aO0+0wQWGMn+NiB/4d1agenz01PtDd2NjtrNDn3g/nvNFOVy352idV99o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=Q8bGm43a; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=B4k0iWwm0nLFX+L3oF505AnrUFVobXPrf0f5J1041gc=; b=Q8bGm43a9qpRmka9D8b77c13bD
+	QRuvU5Fo8fa8aa2DVTOqX+bodsN9ZOraMdNdPTF2+IVi7799Pb1k+PbjgD+9yFCx+xmS9+9LWZ8sD
+	LfZg3JlWnUZU/6TM1cezO1HTVbIF/+gH2FL6LtDkS9PbVw3V0UqQ7Z91AL3uF6lAVUFC/9aUifLhu
+	Molspq09PMRqgQWYsowG4recw9+rPikrdeqrvsqG2k/hwb0Bebr8j+GUQ3TFK0cFTw2CpzHSXPcbj
+	GJBPHwwF8RbrqXY7uIInMI+2VxtSLaujTt2+FAjWmXyG8qC+hyhYDxbMXUsaUS3z0wNortI4pbPf/
+	+PnDCEeA==;
+Received: from [189.79.117.125] (helo=localhost)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1t69TC-00H78u-5x; Wed, 30 Oct 2024 15:14:47 +0100
+From: "Guilherme G. Piccoli" <gpiccoli@igalia.com>
+To: pkshih@realtek.com,
+	linux-wireless@vger.kernel.org
+Cc: kvalo@kernel.org,
+	linux-kernel@vger.kernel.org,
+	kernel@gpiccoli.net,
+	kernel-dev@igalia.com,
+	rtl8821cerfe2@gmail.com,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	stable@vger.kernel.org,
+	syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com
+Subject: [PATCH V2] wifi: rtlwifi: Drastically reduce the attempts to read efuse in case of failures
+Date: Wed, 30 Oct 2024 11:09:52 -0300
+Message-ID: <20241030141440.1153887-1-gpiccoli@igalia.com>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 01/17] dt-bindings: net: wireless: cc33xx: Add
- ti,cc33xx.yaml
-To: "Nemanov, Michael" <michael.nemanov@ti.com>, Kalle Valo
- <kvalo@kernel.org>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-wireless@vger.kernel.org,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Cc: Sabeeh Khan <sabeeh-khan@ti.com>
-References: <20241029172354.4027886-1-michael.nemanov@ti.com>
- <20241029172354.4027886-2-michael.nemanov@ti.com>
- <936b19eb-cde7-4be8-98cf-e60e32b335cd@kernel.org>
- <8024aa1c-5bd1-40d8-b0c3-14b5fcd992e2@ti.com>
- <bda36285-dc70-4dff-85ed-9c04c0f7ba44@kernel.org>
- <3fc3c670-ce63-4a27-9d12-1c6c996cf914@ti.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <3fc3c670-ce63-4a27-9d12-1c6c996cf914@ti.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 30/10/2024 13:14, Nemanov, Michael wrote:
-> On 10/30/2024 1:09 PM, Krzysztof Kozlowski wrote:
->> On 30/10/2024 11:59, Nemanov, Michael wrote:
->>>>
->>>> Your changelog does not explain these three. "Fixed compatibility" is
->>>> way too vague, especially that you do not fix anything here.
->>>>
->>>
->>> I was trying to address the feedback from previous patch. You said:
->>>
->>>>>>> +static const struct of_device_id cc33xx_sdio_of_match_table[] = {
->>>>>>> +	{ .compatible = "ti,cc3300", .data = &cc33xx_data },
->>>>>>> +	{ .compatible = "ti,cc3301", .data = &cc33xx_data },
->>>>>>> +	{ .compatible = "ti,cc3350", .data = &cc33xx_data },
->>>>>>> +	{ .compatible = "ti,cc3351", .data = &cc33xx_data },
->>>>>>> +	{ }
->>>>>>> +};
->>>>>>
->>>>>>
->>>>>> Eh? What happened here? So devices are compatibles thus make them
->>>>>> compatible in the bindings.
->>>>>>
->>>>>
->>>>> I thought this is the right way to do it (originally taken from [1]).
->>>>> How can I solve it via DT bindings?
->>>>
->>>> It's all over the bindings (also example-schema). Use fallback and oneOf.
->>>>
->>>
->>> Looking at [2] and [3] as an example I tried to do the same (make cc33xx
->>> driver compatible with all chip variants).
->>> How should have I done it?
->>
->> qcom-wdt is quite a different device. It's true you should have here
->> oneOf, but for a purpose. oneOf without purpose does not make sense, right?
->>
->> I think other TI bindings would serve you as an example. Or this one:
->>
->> https://elixir.bootlin.com/linux/v6.3-rc6/source/Documentation/devicetree/bindings/sound/nvidia,tegra210-ope.yaml#L31
->>
->>
->> Best regards,
->> Krzysztof
->>
-> 
-> OK.
-> So I should make one of the variants the base and declare others as 
-> compatible? i.e:
-> 
+Syzkaller reported a hung task with uevent_show() on stack trace. That
+specific issue was addressed by another commit [0], but even with that
+fix applied (for example, running v6.12-rc5) we face another type of hung
+task that comes from the same reproducer [1]. By investigating that, we
+could narrow it to the following path:
 
-Yes
+(a) Syzkaller emulates a Realtek USB WiFi adapter using raw-gadget and
+dummy_hcd infrastructure.
 
-Best regards,
-Krzysztof
+(b) During the probe of rtl8192cu, the driver ends-up performing an efuse
+read procedure (which is related to EEPROM load IIUC), and here lies the
+issue: the function read_efuse() calls read_efuse_byte() many times, as
+loop iterations depending on the efuse size (in our example, 512 in total).
+
+This procedure for reading efuse bytes relies in a loop that performs an
+I/O read up to *10k* times in case of failures. We measured the time of
+the loop inside read_efuse_byte() alone, and in this reproducer (which
+involves the dummy_hcd emulation layer), it takes 15 seconds each. As a
+consequence, we have the driver stuck in its probe routine for big time,
+exposing a stack trace like below if we attempt to reboot the system, for
+example:
+
+task:kworker/0:3 state:D stack:0 pid:662 tgid:662 ppid:2 flags:0x00004000
+Workqueue: usb_hub_wq hub_event
+Call Trace:
+ __schedule+0xe22/0xeb6
+ schedule_timeout+0xe7/0x132
+ __wait_for_common+0xb5/0x12e
+ usb_start_wait_urb+0xc5/0x1ef
+ ? usb_alloc_urb+0x95/0xa4
+ usb_control_msg+0xff/0x184
+ _usbctrl_vendorreq_sync+0xa0/0x161
+ _usb_read_sync+0xb3/0xc5
+ read_efuse_byte+0x13c/0x146
+ read_efuse+0x351/0x5f0
+ efuse_read_all_map+0x42/0x52
+ rtl_efuse_shadow_map_update+0x60/0xef
+ rtl_get_hwinfo+0x5d/0x1c2
+ rtl92cu_read_eeprom_info+0x10a/0x8d5
+ ? rtl92c_read_chip_version+0x14f/0x17e
+ rtl_usb_probe+0x323/0x851
+ usb_probe_interface+0x278/0x34b
+ really_probe+0x202/0x4a4
+ __driver_probe_device+0x166/0x1b2
+ driver_probe_device+0x2f/0xd8
+ [...]
+
+We propose hereby to drastically reduce the attempts of doing the I/O reads
+in case of failures, restricted to USB devices (given that they're inherently
+slower than PCIe ones). By retrying up to 10 times (instead of 10000), we
+got responsiveness in the reproducer, while seems reasonable to believe
+that there's no sane USB device implementation in the field requiring this
+amount of retries (at every I/O read) in order to properly work. Based on
+that assumption, it'd be good to have it backported to stable but maybe not
+since driver implementation (the 10k number comes from day 0), perhaps up
+to 6.x series makes sense.
+
+[0] Commit 15fffc6a5624 ("driver core: Fix uevent_show() vs driver detach race").
+
+[1] A note about that: this syzkaller report presents multiple reproducers
+that differs by the type of emulated USB device. For this specific case,
+check the entry from 2024/08/08 06:23 in the list of crashes; the C repro
+is available at https://syzkaller.appspot.com/text?tag=ReproC&x=1521fc83980000.
+
+Cc: stable@vger.kernel.org # v6.1+
+Reported-by: syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com
+Tested-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+---
+
+
+V2:
+- Restrict the change to USB device only (thanks Ping-Ke Shih).
+- Tested in 2 USB devices by Bitterblue Smith - thanks a lot!
+
+V1: https://lore.kernel.org/lkml/20241025150226.896613-1-gpiccoli@igalia.com/
+
+
+ drivers/net/wireless/realtek/rtlwifi/efuse.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtlwifi/efuse.c b/drivers/net/wireless/realtek/rtlwifi/efuse.c
+index 82cf5fb5175f..f741066c06de 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/efuse.c
++++ b/drivers/net/wireless/realtek/rtlwifi/efuse.c
+@@ -164,7 +164,17 @@ void read_efuse_byte(struct ieee80211_hw *hw, u16 _offset, u8 *pbuf)
+ 	struct rtl_priv *rtlpriv = rtl_priv(hw);
+ 	u32 value32;
+ 	u8 readbyte;
+-	u16 retry;
++	u16 retry, max_attempts;
++
++	/*
++	 * In case of USB devices, transfer speeds are limited, hence
++	 * efuse I/O reads could be (way) slower. So, decrease (a lot)
++	 * the read attempts in case of failures.
++	 */
++	if (rtlpriv->rtlhal.interface == INTF_PCI)
++		max_attempts = 10000;
++	else
++		max_attempts = 10;
+ 
+ 	rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL] + 1,
+ 		       (_offset & 0xff));
+@@ -178,7 +188,7 @@ void read_efuse_byte(struct ieee80211_hw *hw, u16 _offset, u8 *pbuf)
+ 
+ 	retry = 0;
+ 	value32 = rtl_read_dword(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]);
+-	while (!(((value32 >> 24) & 0xff) & 0x80) && (retry < 10000)) {
++	while (!(((value32 >> 24) & 0xff) & 0x80) && (retry < max_attempts)) {
+ 		value32 = rtl_read_dword(rtlpriv,
+ 					 rtlpriv->cfg->maps[EFUSE_CTRL]);
+ 		retry++;
+-- 
+2.46.2
 
 
