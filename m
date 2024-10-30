@@ -1,162 +1,112 @@
-Return-Path: <linux-wireless+bounces-14732-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14733-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EB869B62C2
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 13:15:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 635039B63CC
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 14:14:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D12EB21406
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 12:15:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 941801C20E00
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 13:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885261E882B;
-	Wed, 30 Oct 2024 12:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82E5D1EABA5;
+	Wed, 30 Oct 2024 13:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="lNjIEzTI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JZQAIhVr"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6DBA1E7C1D;
-	Wed, 30 Oct 2024 12:15:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A1CD1D1E7A;
+	Wed, 30 Oct 2024 13:14:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730290505; cv=none; b=a9d0Aib7oh84mA9YP9HBLjxDIAq+l6cjQ6RCoGF2k+bnFqJWUOuv/tEHa/z2eiWPge1USpgdcqpxT/NXUueQlGazGvTyoQ8G+T0P7IdkDPgENjSN6IE4XeKVzX07D/CKFY8H42iN8mmK40R4XKmWjQziJSgxV9cBxfOXB02UFD4=
+	t=1730294061; cv=none; b=hY9OTiyVwJNMFQUkaIWvoYliih6nqgfw2d8nMiLCG1Doc6tzaTsSDdMmvF90thGb2ObV0ioV6c8uLRAO5DQz11egO6Mgbw2UcrQ5pm+TXp0TR0xbGSl9kN/ZzyYVhf84OUTzFpLxxwEnd8ujFXUO4pURzVjNiF3x7HUniS4Ryz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730290505; c=relaxed/simple;
-	bh=U7yrooYPgfoJ8DXXEy3+qGTnaeyv5NSw22xvBQrzcEU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=f9Gfcp5hYspxk+SDwCYlVEAmHMoiVtHn1Fm0Mbo3ifUOeOc5tFOrKljuM+b93PqfzmmU3iar2iVqtRRstSvYXVuY5xfT1SGebtP0UNJGj24qLlP285EjMAg4WbT10yoSnN+Ng8hQ0hVVAfNZvyWHMmkrEqwGv/+s9pEUmIbtTVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=lNjIEzTI; arc=none smtp.client-ip=198.47.19.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 49UCEs3Q046386;
-	Wed, 30 Oct 2024 07:14:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1730290494;
-	bh=hEqQ1qpqZb8TB5oDmGeSGKH2Lagktizrv4yzLYIgTBU=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=lNjIEzTIbDhnyrTf1dUnb4rJACF9W4x7JZjhaqz5ZsWwabRkE3joy0qPjZ/OzxL5e
-	 kQW20q2kUtZokTigcBbPiWmxDWWu7l4iBUYKAE6QeG5KMVOSWCc1DS2XHurL6HfthY
-	 GAQAMXOA8kS+LQr4Ea4P+grv0CgMxqWGbTfNu57U=
-Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 49UCEsEM105209
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 30 Oct 2024 07:14:54 -0500
-Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 30
- Oct 2024 07:14:54 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Wed, 30 Oct 2024 07:14:54 -0500
-Received: from [10.250.202.81] ([10.250.202.81])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 49UCEo2g024212;
-	Wed, 30 Oct 2024 07:14:51 -0500
-Message-ID: <3fc3c670-ce63-4a27-9d12-1c6c996cf914@ti.com>
-Date: Wed, 30 Oct 2024 14:14:50 +0200
+	s=arc-20240116; t=1730294061; c=relaxed/simple;
+	bh=BdmExtkMA0VZuzrJ5PrYQTQ5P7R2up+kNAlU+s9OMZ0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=qqdqgBgEZ0DbEH4zjrz9tWPRY3Ttgw0HiIv39Dxt2kUfTsDc2NN0f1KS06gpt+1bqbMyc8aivImiabHxqknmn9Zl9iK+pzf/xqwaHmWEdfGY3n3Ddca59l2FDS6unmC+bOt/B6tsHxhKRTcfjzhgtVqfgg6WY4G3rERUzD8Bm38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JZQAIhVr; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-431548bd1b4so61052145e9.3;
+        Wed, 30 Oct 2024 06:14:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730294058; x=1730898858; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nFu9X9ZfhRR/+8JSdiYichwPIWFG9gfOkKOe7mEGzqE=;
+        b=JZQAIhVrRIpN9M5mPF5J8hf13bCts6aHYo6SOr7lMxjWV0bWyh70ogMIVW0QUZFi3l
+         sGqfcVdkLT9IptNA3CouuTRkKPpFB7jHaIV3qWSt8jxn5gOUDL0c5YTDsMaSUemZn5Bk
+         34CEVc8jIoWLYu+uHwV9iZiRRkIgnA5YhUW97cm6/EftdWKFIbrLAxBVrSoW5JlyBmga
+         ePZsdbvhXBCpC8Q1vpd10BjvDTTtscuQ3B4DFpIlPOACF6DlTVzo9uZikAKLhv63tAqh
+         HvhKa3XzDtrTMwH6rBQIis83hyqomZtSUDVePEm1jF+nFLNCUgY0PP8f+2OQ4/qgH/F4
+         jW9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730294058; x=1730898858;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nFu9X9ZfhRR/+8JSdiYichwPIWFG9gfOkKOe7mEGzqE=;
+        b=WLWp40yRbF8l7jsGI3hUqQG1FkvNDSrzHfSIcmvLIqVeNVk7jPp03NfpMuww0/z2xF
+         VzjNjtnyLZWutbCrRZygCVAil5Z/HAkrhH9/dlws08g/jViHlpciXGbVxsSFcTHofI3E
+         jj3llDdcHG9cj6yCsL8LACLLs9v3NwENA2ncrDNAKSMxQ9c6YA0hNHOOcWgB5timWtIZ
+         jPfduWNrxQANKlXz3u0B2A106HO7YGG/cULOuScp/D7aEDyGwkrOjxEwtwga8/63ZDcK
+         FisANrVJ98998cdUOC9cRU31LYMJdG4pJjDQjp45NRUnmitSagaCF0uuI95H+PO9TOLX
+         pnLA==
+X-Forwarded-Encrypted: i=1; AJvYcCUMb919B4C+G0rEFzkQdaJg1QHzbOCMUIxgHphtso3uQq6gW3uzlhwkhwqTG5hiemJM3FXAtVsFCGG3ugXR/qs=@vger.kernel.org, AJvYcCWKxHjFj0XrMtUIfxmNTfqUJ2a5ehE6du2kCCtJDGuK28AmiEF27vYxBZpXkqqKVVKcb3TV6Kx4cFUDv7Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFdcDYOkWqz8upMRucryW7jNoLDiLFissQp2Q4au5T5KpCx7kn
+	UkN4ShpWcKC7euyRT2ukeN5ncXAOZEjdNLHdXAGnFaTxiYNcIXp1
+X-Google-Smtp-Source: AGHT+IF8uQpUwo28perjaG2xI3g/LHuSBns2dWrPqR/sBur/Bi+UnRnwW1Ksp3eUVXqn7ebfyU3rkA==
+X-Received: by 2002:a05:600c:4e04:b0:431:5c7b:e937 with SMTP id 5b1f17b1804b1-4319acb42cemr157648745e9.17.1730294057359;
+        Wed, 30 Oct 2024 06:14:17 -0700 (PDT)
+Received: from localhost ([194.120.133.34])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431bd8e848csm21382295e9.3.2024.10.30.06.14.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Oct 2024 06:14:16 -0700 (PDT)
+From: Colin Ian King <colin.i.king@gmail.com>
+To: Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	linux-wireless@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH][next] wifi: rtw89: 8852a: remove redundant else statement
+Date: Wed, 30 Oct 2024 13:14:16 +0000
+Message-Id: <20241030131416.3091954-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 01/17] dt-bindings: net: wireless: cc33xx: Add
- ti,cc33xx.yaml
-To: Krzysztof Kozlowski <krzk@kernel.org>, Kalle Valo <kvalo@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Rob
- Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor
- Dooley <conor+dt@kernel.org>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC: Sabeeh Khan <sabeeh-khan@ti.com>
-References: <20241029172354.4027886-1-michael.nemanov@ti.com>
- <20241029172354.4027886-2-michael.nemanov@ti.com>
- <936b19eb-cde7-4be8-98cf-e60e32b335cd@kernel.org>
- <8024aa1c-5bd1-40d8-b0c3-14b5fcd992e2@ti.com>
- <bda36285-dc70-4dff-85ed-9c04c0f7ba44@kernel.org>
-Content-Language: en-US
-From: "Nemanov, Michael" <michael.nemanov@ti.com>
-In-Reply-To: <bda36285-dc70-4dff-85ed-9c04c0f7ba44@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On 10/30/2024 1:09 PM, Krzysztof Kozlowski wrote:
-> On 30/10/2024 11:59, Nemanov, Michael wrote:
->>>
->>> Your changelog does not explain these three. "Fixed compatibility" is
->>> way too vague, especially that you do not fix anything here.
->>>
->>
->> I was trying to address the feedback from previous patch. You said:
->>
->>>>>> +static const struct of_device_id cc33xx_sdio_of_match_table[] = {
->>>>>> +	{ .compatible = "ti,cc3300", .data = &cc33xx_data },
->>>>>> +	{ .compatible = "ti,cc3301", .data = &cc33xx_data },
->>>>>> +	{ .compatible = "ti,cc3350", .data = &cc33xx_data },
->>>>>> +	{ .compatible = "ti,cc3351", .data = &cc33xx_data },
->>>>>> +	{ }
->>>>>> +};
->>>>>
->>>>>
->>>>> Eh? What happened here? So devices are compatibles thus make them
->>>>> compatible in the bindings.
->>>>>
->>>>
->>>> I thought this is the right way to do it (originally taken from [1]).
->>>> How can I solve it via DT bindings?
->>>
->>> It's all over the bindings (also example-schema). Use fallback and oneOf.
->>>
->>
->> Looking at [2] and [3] as an example I tried to do the same (make cc33xx
->> driver compatible with all chip variants).
->> How should have I done it?
-> 
-> qcom-wdt is quite a different device. It's true you should have here
-> oneOf, but for a purpose. oneOf without purpose does not make sense, right?
-> 
-> I think other TI bindings would serve you as an example. Or this one:
-> 
-> https://elixir.bootlin.com/linux/v6.3-rc6/source/Documentation/devicetree/bindings/sound/nvidia,tegra210-ope.yaml#L31
-> 
-> 
-> Best regards,
-> Krzysztof
-> 
+The cascaded if statements covers all 16 bit values in the comparisons
+of dgain and the last else statement is not reachable and hence
+dead code. Remove it.
 
-OK.
-So I should make one of the variants the base and declare others as 
-compatible? i.e:
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---Bindings--
-
-   compatible:
-     oneOf:
-       - const: ti,cc3300
-       - items:
-           - enum:
-               - ti,cc3301
-               - ti,cc3350
-               - ti,cc3351
-           - const: ti,cc3300
-
-
---Driver--
-
-static const struct of_device_id cc33xx_sdio_of_match_table[] = {
-	{ .compatible = "ti,cc3300", .data = &cc33xx_data },
-	{ }
-};
-
+diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
+index 9db8713ac99b..f3568c4d0af6 100644
+--- a/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
++++ b/drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
+@@ -2248,8 +2248,6 @@ static s8 _dpk_dgain_mapping(struct rtw89_dev *rtwdev, u16 dgain)
+ 		offset = -9;
+ 	else if (dgain <= 0x155)
+ 		offset = -12;
+-	else
+-		offset = 0x0;
+ 
+ 	return offset;
+ }
+-- 
+2.39.5
 
 
