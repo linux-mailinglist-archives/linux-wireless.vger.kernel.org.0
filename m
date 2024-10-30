@@ -1,64 +1,64 @@
-Return-Path: <linux-wireless+bounces-14698-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14699-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E59BB9B59DE
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 03:22:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF3089B59DF
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 03:23:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37E07B22859
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 02:22:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52E271F24164
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 02:23:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DC71990BA;
-	Wed, 30 Oct 2024 02:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98894199222;
+	Wed, 30 Oct 2024 02:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="HjccAN+Q"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="aaYAGFzR"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4C5194C9D
-	for <linux-wireless@vger.kernel.org>; Wed, 30 Oct 2024 02:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6CF198E71
+	for <linux-wireless@vger.kernel.org>; Wed, 30 Oct 2024 02:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730254939; cv=none; b=h27Po0PrJbUEtPlUlbgrD9bRZjOf5rXvfL6lba16ZRv5MMz40WqnaF0gAryKX7sNlNky5HnOC+yAg+t6CsxIDWU+nCZdC4axfJWUfdfp1aGrwyxq8v9/6DQWAYZzSIyEEmhPqgE05kPCc2OQWQ8IJVQ+QvtkUT744fYRrrKU+nA=
+	t=1730254941; cv=none; b=ZkLNj5rNKmFEY26X1JA1D2nlfCujkP7hxjUDXCWFXpZXaU4eXt8Aeibdbdft3+oxyqy0CW3jf4Ky/I7cBup9+vpwLkIRoLEMd/Bzs5CTciada6lY89paA4kRNve5EAlamRmGwIv1Ch6d0rWZP6p0VIYdLJZSC8C6emg5lMt3EHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730254939; c=relaxed/simple;
-	bh=DNKY0IYgldnjYjNegYbj4hXZR1xxt7HysA5Msp3yxkc=;
+	s=arc-20240116; t=1730254941; c=relaxed/simple;
+	bh=E0uxXp6vgW3SYQK+w8UrYYFuaAKn6ryxDlOCkNM0IVo=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HsEj7bFThvpRzsl32MsE9udrRUnzCpLMYIH58PtaTOvp22Nxry0APtVCHDKf8BJgmC1LSQbX0ZbVMjGS9Hr+3TudipLHxAJqOm3Tzmi4662CyM/flhkthYTvU5pcA9OUvpnfQqc8UaejoyRgtrQV86P3oQwOp4Op3YtXd4p/Ij8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=HjccAN+Q; arc=none smtp.client-ip=211.75.126.72
+	 MIME-Version:Content-Type; b=sa3xLrpCegfTBNTmVnSh+WAb6Zy22DjgykrHV7sLhV8L+23S73z5XwnUHCLrzOWjcpR9ifxu98Pd9EPe4uI31HE56/5I4gMK+qQQ6nhg4NQKREKvF6W2OA+mSi8WEoodQnhsNsjjmJ6A41CcJ2GlVsB1uTU2xqR8MQ0zXsfOvJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=aaYAGFzR; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 49U2MEMB03310598, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 49U2MHRd83310608, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1730254934; bh=DNKY0IYgldnjYjNegYbj4hXZR1xxt7HysA5Msp3yxkc=;
+	t=1730254937; bh=E0uxXp6vgW3SYQK+w8UrYYFuaAKn6ryxDlOCkNM0IVo=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
 	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=HjccAN+Qa1a/p5JwuNc2mnqrWBdExdjRZsbosoRKXAamDbm/u7vJOsT64EZrghBSR
-	 zTMqPOn2frXYvVAjpizg/FrLn5dhSpsQ/9BTvoF4R5Hxddg5aYV8TyZr5B6L2hQe2r
-	 9TWrKOj5F9NhgSjp8Rn5u8J30EA24XVuN4+EAO3WAYl6+X1RK9QaLK+VJN3bEU3IQa
-	 xcHoeWCDa4mjrsALppbFp6f5vHIBId7wZtlD+IG0bU5gJNjWGFRDBJY3XgseC9sKJc
-	 27wvuVND+MWdA8fZKnOgr9LiI05bzgZ8GF6fZyWnbW8hwvVplDqFnxPWxHwrAUCO7R
-	 WGBwcL9p5ryYw==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 49U2MEMB03310598
+	b=aaYAGFzRdkNtw65z0O+5eKruelR2NNxwt2AJ12lEhGw69B1tS9aMSjzOJA0E7Ds7T
+	 dcFJ8f5zUukysBhxltBCgZaJ65ro/k153FGfvRLkUQocsODu8tHWSl1Z4e/obGUe/D
+	 haF6mr1k4xHEnacmiVSl+RvOY1/GvFwjKdrqYWJEhs6Cr2LsaC5Fad/abxDXcL3vf6
+	 jZv++Ab/4Vam4dPrT0WKOq0434uysAXtFnhWKkpfNhk5hNAP3mTjeEWuuOkDSc88NA
+	 Ialsz6pMrCdKtoK8JWdK9xNj8M+2GuEd+XUV5ikF46DcU6c4p+h8XOyR09u4cypNa1
+	 VIdk0sUp/yDKQ==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 49U2MHRd83310608
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Wed, 30 Oct 2024 10:22:14 +0800
+	for <linux-wireless@vger.kernel.org>; Wed, 30 Oct 2024 10:22:17 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 30 Oct 2024 10:22:14 +0800
+ 15.1.2507.39; Wed, 30 Oct 2024 10:22:17 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 30 Oct
- 2024 10:22:13 +0800
+ 2024 10:22:17 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
-Subject: [PATCH 3/8] wifi: rtw89: efuse: read firmware secure info v0 from efuse for WiFi 6 chips
-Date: Wed, 30 Oct 2024 10:21:30 +0800
-Message-ID: <20241030022135.11688-4-pkshih@realtek.com>
+Subject: [PATCH 4/8] wifi: rtw89: fw: shrink download size of security section for RTL8852B
+Date: Wed, 30 Oct 2024 10:21:31 +0800
+Message-ID: <20241030022135.11688-5-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20241030022135.11688-1-pkshih@realtek.com>
 References: <20241030022135.11688-1-pkshih@realtek.com>
@@ -73,158 +73,119 @@ Content-Type: text/plain
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-WiFi 6 chips could program secure information in v0 or v1 format. Use
-existing v1 parser or newly added v0 parser to recognize firmware key
-that is going to be used.
+For RTL8852B, when current firmware is secure boot, the security section
+needs a special treatment that shrink its size to 960.
+
+As figure below, not only shrink the amount of download size of security
+section (2), but also need to modify the section size in firmware header
+(1) that is also downloaded to chip.
+
+   +---------------------------+
+   |      firmware header      |
+   |                           |
+   | +-----------------------+ |
+   | | section type, size N -|-|-------+
+   | | ...               (1) | |       |
+   | +-----------------------+ |       |
+   +---------------------------+       | 2048 shrink to 960
+   :                           :       |
+   +---------------------------+ -\    |
+   |  security section type 9  |  |    |
+   |           (2)             |  | <--+
+   |                           |  |
+   +---------------------------+ -/
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 ---
- drivers/net/wireless/realtek/rtw89/core.h  |  5 +-
- drivers/net/wireless/realtek/rtw89/efuse.c | 86 ++++++++++++++++++++++
- 2 files changed, 90 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/fw.c | 36 ++++++++++++++++++++++---
+ drivers/net/wireless/realtek/rtw89/fw.h |  1 +
+ 2 files changed, 34 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 5fa59cd138c1..ccee011c9975 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -4516,11 +4516,14 @@ enum rtw89_fw_mss_dev_type {
- };
- 
- struct rtw89_fw_secure {
--	bool secure_boot;
-+	bool secure_boot: 1;
-+	bool can_mss_v1: 1;
-+	bool can_mss_v0: 1;
- 	u32 sb_sel_mgn;
- 	u8 mss_dev_type;
- 	u8 mss_cust_idx;
- 	u8 mss_key_num;
-+	u8 mss_idx; /* v0 */
- };
- 
- struct rtw89_fw_info {
-diff --git a/drivers/net/wireless/realtek/rtw89/efuse.c b/drivers/net/wireless/realtek/rtw89/efuse.c
-index a02b04eecd05..6c6c763510af 100644
---- a/drivers/net/wireless/realtek/rtw89/efuse.c
-+++ b/drivers/net/wireless/realtek/rtw89/efuse.c
-@@ -16,6 +16,20 @@
- #define EFUSE_B2_MSSKEYNUM_MASK GENMASK(3, 0)
- #define EFUSE_B2_MSSCUSTIDX1_MASK BIT(6)
- 
-+#define EFUSE_EXTERNALPN_ADDR_AX 0x5EC
-+#define EFUSE_CUSTOMER_ADDR_AX 0x5ED
-+#define EFUSE_SERIALNUM_ADDR_AX 0x5ED
-+
-+#define EFUSE_B1_EXTERNALPN_MASK GENMASK(7, 0)
-+#define EFUSE_B2_CUSTOMER_MASK GENMASK(3, 0)
-+#define EFUSE_B2_SERIALNUM_MASK GENMASK(6, 4)
-+
-+#define OTP_KEY_INFO_NUM 2
-+
-+static const u8 otp_key_info_externalPN[OTP_KEY_INFO_NUM] = {0x0, 0x0};
-+static const u8 otp_key_info_customer[OTP_KEY_INFO_NUM]   = {0x0, 0x1};
-+static const u8 otp_key_info_serialNum[OTP_KEY_INFO_NUM]  = {0x0, 0x1};
-+
- enum rtw89_efuse_bank {
- 	RTW89_EFUSE_BANK_WIFI,
- 	RTW89_EFUSE_BANK_BT,
-@@ -397,24 +411,96 @@ static u8 get_mss_dev_type_idx(struct rtw89_dev *rtwdev, u8 mss_dev_type)
- 
- int rtw89_efuse_recognize_mss_info_v1(struct rtw89_dev *rtwdev, u8 b1, u8 b2)
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 1fc1ee46b3a3..0af0e539e976 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -124,7 +124,9 @@ static int rtw89_fw_hdr_parser_v0(struct rtw89_dev *rtwdev, const u8 *fw, u32 le
+ 				  struct rtw89_fw_bin_info *info)
  {
+ 	const struct rtw89_fw_hdr *fw_hdr = (const struct rtw89_fw_hdr *)fw;
 +	const struct rtw89_chip_info *chip = rtwdev->chip;
- 	struct rtw89_fw_secure *sec = &rtwdev->fw.sec;
- 	u8 mss_dev_type;
- 
-+	if (chip->chip_id == RTL8852B && b1 == 0xFF && b2 == 0x6E) {
-+		mss_dev_type = MSS_DEV_TYPE_FWSEC_NONLIN_INBOX_NON_COB;
-+		sec->mss_cust_idx = 0;
-+		sec->mss_key_num = 0;
-+
-+		goto mss_dev_type;
-+	}
-+
- 	mss_dev_type = u8_get_bits(b1, EFUSE_B1_MSSDEVTYPE_MASK);
- 	sec->mss_cust_idx = 0x1F - (u8_get_bits(b1, EFUSE_B1_MSSCUSTIDX0_MASK) |
- 				    u8_get_bits(b2, EFUSE_B2_MSSCUSTIDX1_MASK) << 4);
- 	sec->mss_key_num = 0xF - u8_get_bits(b2, EFUSE_B2_MSSKEYNUM_MASK);
- 
-+mss_dev_type:
- 	sec->mss_dev_type = get_mss_dev_type_idx(rtwdev, mss_dev_type);
- 	if (sec->mss_dev_type == RTW89_FW_MSS_DEV_TYPE_FWSEC_INV) {
- 		rtw89_warn(rtwdev, "invalid mss_dev_type %d\n", mss_dev_type);
- 		return -ENOENT;
- 	}
- 
-+	sec->can_mss_v1 = true;
-+
- 	return 0;
- }
- 
-+static
-+int rtw89_efuse_recognize_mss_index_v0(struct rtw89_dev *rtwdev, u8 b1, u8 b2)
-+{
+ 	struct rtw89_fw_hdr_section_info *section_info;
 +	struct rtw89_fw_secure *sec = &rtwdev->fw.sec;
-+	u8 externalPN;
-+	u8 serialNum;
-+	u8 customer;
-+	u8 i;
+ 	const struct rtw89_fw_dynhdr_hdr *fwdynhdr;
+ 	const struct rtw89_fw_hdr_section *section;
+ 	const u8 *fw_end = fw + len;
+@@ -165,6 +167,9 @@ static int rtw89_fw_hdr_parser_v0(struct rtw89_dev *rtwdev, const u8 *fw, u32 le
+ 			section_info->mssc =
+ 				le32_get_bits(section->w2, FWSECTION_HDR_W2_MSSC);
+ 			mssc_len += section_info->mssc * FWDL_SECURITY_SIGLEN;
 +
-+	externalPN = 0xFF - u8_get_bits(b1, EFUSE_B1_EXTERNALPN_MASK);
-+	customer = 0xF - u8_get_bits(b2, EFUSE_B2_CUSTOMER_MASK);
-+	serialNum = 0x7 - u8_get_bits(b2, EFUSE_B2_SERIALNUM_MASK);
-+
-+	for (i = 0; i < OTP_KEY_INFO_NUM; i++) {
-+		if (externalPN == otp_key_info_externalPN[i] &&
-+		    customer == otp_key_info_customer[i] &&
-+		    serialNum == otp_key_info_serialNum[i]) {
-+			sec->mss_idx = i;
-+			sec->can_mss_v0 = true;
-+			return 0;
-+		}
-+	}
-+
-+	return -ENOENT;
-+}
-+
- int rtw89_efuse_read_fw_secure_ax(struct rtw89_dev *rtwdev)
++			if (sec->secure_boot && chip->chip_id == RTL8852B)
++				section_info->len_override = 960;
+ 		} else {
+ 			section_info->mssc = 0;
+ 		}
+@@ -1155,9 +1160,24 @@ static u32 __rtw89_fw_download_tweak_hdr_v0(struct rtw89_dev *rtwdev,
+ 					    struct rtw89_fw_bin_info *info,
+ 					    struct rtw89_fw_hdr *fw_hdr)
  {
-+	struct rtw89_fw_secure *sec = &rtwdev->fw.sec;
-+	u32 sec_addr = EFUSE_EXTERNALPN_ADDR_AX;
-+	u32 sec_size = 2;
-+	u8 sec_map[2];
-+	u8 b1, b2;
-+	int ret;
++	struct rtw89_fw_hdr_section_info *section_info;
++	struct rtw89_fw_hdr_section *section;
++	int i;
 +
-+	ret = rtw89_dump_physical_efuse_map(rtwdev, sec_map,
-+					    sec_addr, sec_size, false);
-+	if (ret) {
-+		rtw89_warn(rtwdev, "failed to dump secsel map\n");
-+		return ret;
+ 	le32p_replace_bits(&fw_hdr->w7, FWDL_SECTION_PER_PKT_LEN,
+ 			   FW_HDR_W7_PART_SIZE);
+ 
++	for (i = 0; i < info->section_num; i++) {
++		section_info = &info->section_info[i];
++
++		if (!section_info->len_override)
++			continue;
++
++		section = &fw_hdr->sections[i];
++		le32p_replace_bits(&section->w1, section_info->len_override,
++				   FWSECTION_HDR_W1_SEC_SIZE);
 +	}
-+
-+	b1 = sec_map[0];
-+	b2 = sec_map[1];
-+
-+	if (b1 == 0xFF && b2 == 0xFF)
-+		return 0;
-+
-+	rtw89_efuse_recognize_mss_index_v0(rtwdev, b1, b2);
-+	rtw89_efuse_recognize_mss_info_v1(rtwdev, b1, b2);
-+	if (!sec->can_mss_v1 && !sec->can_mss_v0)
-+		goto out;
-+
-+	sec->secure_boot = true;
-+
-+out:
-+	rtw89_debug(rtwdev, RTW89_DBG_FW,
-+		    "MSS secure_boot=%d(%d/%d) dev_type=%d cust_idx=%d key_num=%d mss_index=%d\n",
-+		    sec->secure_boot, sec->can_mss_v0, sec->can_mss_v1,
-+		    sec->mss_dev_type, sec->mss_cust_idx,
-+		    sec->mss_key_num, sec->mss_idx);
 +
  	return 0;
  }
+ 
+@@ -1286,10 +1306,20 @@ static int __rtw89_fw_download_main(struct rtw89_dev *rtwdev,
+ 	if (info->ignore)
+ 		return 0;
+ 
++	if (info->len_override) {
++		if (info->len_override > info->len)
++			rtw89_warn(rtwdev, "override length %u larger than original %u\n",
++				   info->len_override, info->len);
++		else
++			residue_len = info->len_override;
++	}
++
+ 	if (info->key_addr && info->key_len) {
+-		if (info->len > FWDL_SECTION_PER_PKT_LEN || info->len < info->key_len)
+-			rtw89_warn(rtwdev, "ignore to copy key data because of len %d, %d, %d\n",
+-				   info->len, FWDL_SECTION_PER_PKT_LEN, info->key_len);
++		if (residue_len > FWDL_SECTION_PER_PKT_LEN || info->len < info->key_len)
++			rtw89_warn(rtwdev,
++				   "ignore to copy key data because of len %d, %d, %d, %d\n",
++				   info->len, FWDL_SECTION_PER_PKT_LEN,
++				   info->key_len, residue_len);
+ 		else
+ 			copy_key = true;
+ 	}
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.h b/drivers/net/wireless/realtek/rtw89/fw.h
+index 2e2035705881..83fcd5edc057 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.h
++++ b/drivers/net/wireless/realtek/rtw89/fw.h
+@@ -261,6 +261,7 @@ struct rtw89_fw_hdr_section_info {
+ 	u8 redl;
+ 	const u8 *addr;
+ 	u32 len;
++	u32 len_override;
+ 	u32 dladdr;
+ 	u32 mssc;
+ 	u8 type;
 -- 
 2.25.1
 
