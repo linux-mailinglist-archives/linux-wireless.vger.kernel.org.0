@@ -1,63 +1,72 @@
-Return-Path: <linux-wireless+bounces-14715-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14716-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB6A09B60B8
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 12:00:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA31B9B6116
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 12:08:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39200B22BDE
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 11:00:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A0D1281870
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 11:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61BB11E47B0;
-	Wed, 30 Oct 2024 11:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49FF81E572C;
+	Wed, 30 Oct 2024 11:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="ym7TTSkM"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="JwX+yrx2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA26E1E3DFD;
-	Wed, 30 Oct 2024 11:00:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529951E5000
+	for <linux-wireless@vger.kernel.org>; Wed, 30 Oct 2024 11:08:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730286007; cv=none; b=Amf+tgOG3NNhiDVY4OOrpZUxWfIE1tg/elZbNqHRZrEs00F5AZx/+mdnzNHDK1AC8053mHLDYsMVIAZ5iR4QPcZr1uGQyqzInn5HZfur1Rgmc+6oYpXUcIAXkrlnpi3sVaz9cjf4p1B+Ho5YSbYJLeIOO9gnqiRzV5JHQofkVMQ=
+	t=1730286495; cv=none; b=KtchZWyrVjewZLW8RkhcWflRssDtgHYP4ioLb4CxGzcSH878fKqddD1qzS4+mdhoS3c15A1jpJY9WZe1aTWlsgVdb33s+5Sf8e2JtF1zUlv3cXAibHzgbKxFkVkc9nzx0WHRGX9Lvs6NgCYHpn0vyRjKWfRgLr8bpQeiDMa01Vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730286007; c=relaxed/simple;
-	bh=OakBX+RLezysbRjHVFoqGAN0kilo4WleR6cnN3iJ4ds=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=OzE87LgGkWFDiK6uIx/IX74HINAps8uvXmvCQlfdqyyYKkS24GKeRHQyN3O26PzOukRMN+8PoyDmJg7L48piGFwrv7SvpmRw/mDyr7n2YcG/W651VdgCWiDFmB70SMog1F6ggXR6GkLXUErcrOlsDNyiDtByrjnq6Ip4JnTGJ48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=ym7TTSkM; arc=none smtp.client-ip=198.47.23.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 49UAxsum113792;
-	Wed, 30 Oct 2024 05:59:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1730285995;
-	bh=l63k3Jhw1oNpvbtOumlKeE3VOY2fol/XMJbv2YlVDLs=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=ym7TTSkMK7JCdrWlrrpPLD0WKp0NFl57xFlQXOUtAkwRcDdZvRr9lN7eW74MMzpQK
-	 p04sGadWJe5qkJs62O7JE3NB7koWoUPWapfP32SYMUVIzjvU6LPf1y8vj13+0xRt1F
-	 8bv9VPBPBvqOi+GD21SC5v0zMQWyFmJMmjUDlBbk=
-Received: from DFLE104.ent.ti.com (dfle104.ent.ti.com [10.64.6.25])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 49UAxs5R012788
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 30 Oct 2024 05:59:54 -0500
-Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE104.ent.ti.com
- (10.64.6.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 30
- Oct 2024 05:59:54 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE106.ent.ti.com
- (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Wed, 30 Oct 2024 05:59:54 -0500
-Received: from [10.250.202.81] ([10.250.202.81])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 49UAxp7h068380;
-	Wed, 30 Oct 2024 05:59:51 -0500
-Message-ID: <8024aa1c-5bd1-40d8-b0c3-14b5fcd992e2@ti.com>
-Date: Wed, 30 Oct 2024 12:59:50 +0200
+	s=arc-20240116; t=1730286495; c=relaxed/simple;
+	bh=mQhweHZtfQd/nfsfIKR/19URa4f+qVo3ER/TW2Dj1Y0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UWx8Etz+MTQtwO/fcvNwcWq3cohuqkRdWfajkR6z9dEnv6OzCtlNV6UT6OlbyWcSv5+m410sBrYZmDKsQspNvj11KM3GbyeCyU+Fn5QwnBmZIJp2lZgV/A3cbMxbM60lZ8klzgvG7h3aAxQoR9G+t2acPp0RiiLoi53Gia7OKo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=JwX+yrx2; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-71ec997ad06so4665928b3a.3
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Oct 2024 04:08:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1730286492; x=1730891292; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=SDC5+p/fN+8HeECl2TRb5z1+IbrstnK0lNDWpJYgTbY=;
+        b=JwX+yrx2D94Gjd4RigybSbwxVY/A0OgPLd6ouhUrDD40of8iU2nrSkNonIeEhMTTqc
+         ZYr2istoJr9pPvfKGB5bf1NJ24PXj+Dx+516n4yYiBT+6weuP9mQVgW55tupOpCi+jEd
+         tVakPsaHYhSeCXYEjR4bszH/IOB+q1j0ijbFg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730286492; x=1730891292;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SDC5+p/fN+8HeECl2TRb5z1+IbrstnK0lNDWpJYgTbY=;
+        b=t9hGWSiEP8o+FdfTtISBBNUNIEtSYquAVMHfsWVcvYEkvll3V1uAlmBwWDt17FpSKC
+         iSsEv2+eYw9PDPQ7MaKzy6sU/APl4Jbq3iYhw+9xFYWph3lB4NCkbzVha6wWqQyQrko4
+         Cw8Am0Mg7+SM5h596zoPM/8AYOLbzPEI7ULmpjHvNOhRMyeDU9cc8tneI+B650f0vyQe
+         6dJ90t8/Wrnr6ruEgy0Fuuy3N9DW9LDv0U88YXcE9jiosHi5QeRQBaBvE+J75X74dsQ1
+         4KlU1+XhcZYtD8j5ScAw2FfzGLScuQIEGu0jf9v+EGRz8zctUrKNh5no+YDxxE4pmq0/
+         HD4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWMCnFIOv11+wfSgHt+Do14fdNjTNAwuecyo5MZ/r/QTAsqQFAObckdaj5YrFBpXZ9e81mfrCterWhTK/GOmA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIG+Oay4B//8YWnNNwgkzBjJViVZpakOaCupdhj68WEWpzIBUF
+	7oiGWtNRKZc9/iiT6jtdutr4AnUgxSK+zQG/3iiOblEZpzCCJsq6wuc6v5WMDg==
+X-Google-Smtp-Source: AGHT+IGaKpkSr3ONj/8tkf0uNIDs04G8IQUfN4JFdlW6rWyabr4OE6nAnW+LkU/GJjSgkungmU1zJg==
+X-Received: by 2002:a05:6a00:811:b0:71e:50ef:20f3 with SMTP id d2e1a72fcca58-720ab4c705fmr3538687b3a.28.1730286492478;
+        Wed, 30 Oct 2024 04:08:12 -0700 (PDT)
+Received: from [10.176.68.61] ([192.19.176.250])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7205793189esm8950018b3a.58.2024.10.30.04.08.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 30 Oct 2024 04:08:11 -0700 (PDT)
+Message-ID: <467fd994-01f0-4057-964c-4184a23e59c4@broadcom.com>
+Date: Wed, 30 Oct 2024 12:08:07 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,129 +74,104 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 01/17] dt-bindings: net: wireless: cc33xx: Add
- ti,cc33xx.yaml
-To: Krzysztof Kozlowski <krzk@kernel.org>, Kalle Valo <kvalo@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Rob
- Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor
- Dooley <conor+dt@kernel.org>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC: Sabeeh Khan <sabeeh-khan@ti.com>
-References: <20241029172354.4027886-1-michael.nemanov@ti.com>
- <20241029172354.4027886-2-michael.nemanov@ti.com>
- <936b19eb-cde7-4be8-98cf-e60e32b335cd@kernel.org>
+Subject: Re: incorrect shift and mask operation in
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/phy_n.c
+To: "Colin King (gmail)" <colin.i.king@gmail.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Dmitry Antipov <dmantipov@yandex.ru>
+References: <9c02683d-c688-4e39-913e-6b20b3bd76a0@gmail.com>
 Content-Language: en-US
-From: "Nemanov, Michael" <michael.nemanov@ti.com>
-In-Reply-To: <936b19eb-cde7-4be8-98cf-e60e32b335cd@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
+Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
+ 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
+In-Reply-To: <9c02683d-c688-4e39-913e-6b20b3bd76a0@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 10/29/2024 7:28 PM, Krzysztof Kozlowski wrote:
-> On 29/10/2024 18:23, Michael Nemanov wrote:
->> Add device-tree bindings for the CC33xx family.
->>
->> Signed-off-by: Michael Nemanov <michael.nemanov@ti.com>
->> ---
->>   .../bindings/net/wireless/ti,cc33xx.yaml      | 59 +++++++++++++++++++
->>   1 file changed, 59 insertions(+)
->>   create mode 100644 Documentation/devicetree/bindings/net/wireless/ti,cc33xx.yaml
->>
->> diff --git a/Documentation/devicetree/bindings/net/wireless/ti,cc33xx.yaml b/Documentation/devicetree/bindings/net/wireless/ti,cc33xx.yaml
->> new file mode 100644
->> index 000000000000..12a0a2f52f44
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/net/wireless/ti,cc33xx.yaml
->> @@ -0,0 +1,59 @@
->> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/net/wireless/ti,cc33xx.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title: Texas Instruments CC33xx Wireless LAN Controller
->> +
->> +maintainers:
->> +  - Michael Nemanov <michael.nemanov@ti.com>
->> +
->> +description:
->> +  The CC33xx is a family of IEEE 802.11ax chips from Texas Instruments.
->> +  These chips must be connected via SDIO and support in-band / out-of-band IRQ.
->> +
->> +properties:
->> +  $nodename:
->> +    pattern: "^wifi@2"
+On 10/15/2024 1:02 AM, Colin King (gmail) wrote:
+> Hi,
 > 
-> This wasn't here, please drop.
- >
+> Static analysis on drivers/net/wireless/broadcom/brcm80211/brcmsmac/phy/ 
+> phy_n.c has found an issue with a mask and shift operation in function 
+> wlc_phy_rxcal_radio_setup_nphy() as follows:
+> 
+> lines 26326-26330:
+> 
+>          offtune_val =
+>                  (pi->tx_rx_cal_radio_saveregs
+>                   [2] & 0xF0) >> 8;
+>          offtune_val =
+>                  (offtune_val <= 0x7) ? 0xF : 0;
+> 
+> and similar in lines 26376-26381 too.
+> 
+> The issue is that the expression pi->tx_rx_cal_radio_saveregs[2] & 0xF0
+> when shifted 8 places right is always zero, so this looks like a mistake 
+> since some value value between 0..0xf is expected in the second statement.
+> 
+> Since pi->tx_rx_cal_radio_saveregs[2] is a u16 value the expression 
+> could plausible be:
+> 
+>      (pi->tx_rx_cal_radio_saveregs[2] & 0xf0) >> 4
+> or
+>      (pi->tx_rx_cal_radio_saveregs[2] & 0xf00) >> 8
+> 
+> I don't have knowledge of the hardware so I'm not sure what a suitable 
+> fix is.
 
-In the previous patch you noted there was a mismatch between the reg 
-address in the schema (const: 2) and the used in the example (wifi@1). 
-The dt_binding_check did not flag this because SDIO is not a simple bus. 
-Using this regex seemed like a good alternative. Still drop it?
+Thanks, Colin
 
-> 
->> +
->> +  compatible:
->> +    oneOf:
-> 
-> Why oneOf appeared? Do you plan to grow it? >
->> +      - items:
->> +          - enum:
->> +              - ti,cc3300
->> +              - ti,cc3301
->> +              - ti,cc3350
->> +              - ti,cc3351
->> +          - const: ti,cc33xx
-> 
-> And how cc33xx could appear? That's a no. Generic compatibles are not
-> allowed. Please do not introduce some completely different changes than
-> asked for.
-> 
-> Your changelog does not explain these three. "Fixed compatibility" is
-> way too vague, especially that you do not fix anything here.
-> 
+That looks pretty redundant indeed. I look into the history of it, but 
+ended up in an old end-of-life development tree and the code was pretty 
+much the same. It is one of the finer dark arts of our phy/radio 
+development team I guess ;-)
 
-I was trying to address the feedback from previous patch. You said:
-
->>>> +static const struct of_device_id cc33xx_sdio_of_match_table[] = {
->>>> +	{ .compatible = "ti,cc3300", .data = &cc33xx_data },
->>>> +	{ .compatible = "ti,cc3301", .data = &cc33xx_data },
->>>> +	{ .compatible = "ti,cc3350", .data = &cc33xx_data },
->>>> +	{ .compatible = "ti,cc3351", .data = &cc33xx_data },
->>>> +	{ }
->>>> +};
->>>
->>>
->>> Eh? What happened here? So devices are compatibles thus make them
->>> compatible in the bindings.
->>>
->>
->> I thought this is the right way to do it (originally taken from [1]).
->> How can I solve it via DT bindings?
-> 
-> It's all over the bindings (also example-schema). Use fallback and oneOf.
-> 
-
-Looking at [2] and [3] as an example I tried to do the same (make cc33xx 
-driver compatible with all chip variants).
-How should have I done it?
+I see that Dmitry Antipov submitted a patch to address this. Again 
+thanks for reporting.
 
 Regards,
-Michael.
-
-
-[1] 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/wireless/ti/wlcore/sdio.c#n204
-
-[2] 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/devicetree/bindings/watchdog/qcom-wdt.yaml
-
-[3] 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/watchdog/qcom-wdt.c
+Arend
 
