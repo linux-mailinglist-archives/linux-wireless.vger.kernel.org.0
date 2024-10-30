@@ -1,73 +1,73 @@
-Return-Path: <linux-wireless+bounces-14748-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14749-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DB0D9B6C19
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 19:29:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39B559B6C23
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 19:31:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ECD63B21010
-	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 18:29:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E031B22E41
+	for <lists+linux-wireless@lfdr.de>; Wed, 30 Oct 2024 18:31:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D8E1C9EBB;
-	Wed, 30 Oct 2024 18:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB1271B95B;
+	Wed, 30 Oct 2024 18:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A3h42dBj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C5cZKrWb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2E51BD9DA
-	for <linux-wireless@vger.kernel.org>; Wed, 30 Oct 2024 18:29:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649C21BD9F4
+	for <linux-wireless@vger.kernel.org>; Wed, 30 Oct 2024 18:31:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730312975; cv=none; b=LoP4A8IfN/QwUUJ9oLSixwWjafYDOjh0tTIBMc6DCBSt8Vjxov6bIANJDeJg1CfN1ch/W06ZjmuGgXnYPzRBP8LvpqC8LyrVHsZxwtul1zMj+CWFatpRgwl1n86pkrJ7sGonQRSldj1SVyJH0Up9kFgW48yWmIroS6bmp2r5px0=
+	t=1730313095; cv=none; b=pNNp3fXncS6VSodu/8D7uuATete1SXZypIIAkgqTwvCe9mBXO/WdG9pTYjk15Qv4g0mlmR55/pZpRgNvRSEI4C9g/pzswXXfpvwEzvJAkCT1RN2Uws/OVNRLmchRm8wlF9C43irT2u4G/J7PFG5adSMOoIkEwQHiRRtpNBB4HxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730312975; c=relaxed/simple;
-	bh=OsGcTja0wrrtqyjvDkRyztQ9779ISddz+34sASFVh7Y=;
+	s=arc-20240116; t=1730313095; c=relaxed/simple;
+	bh=dSxNfduacesZlnOS1LFItNcxRGae+zN/yHoCktJFcdo=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Pnn0Lp43WlERL+9MG7uTzuC73vrMQqQVN933IRoyAYE2Dpx3glQw+elN5fBcgCepliz63lQAJVDSmGMirfnvUmiGIgbr5gLBEBhNXIlYtI5sVNEWkKK5cs3yuwFMXT3cyFsAqPpWNT6A9o0uzUVBwG8HLW751+lr0znNcDlhkYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A3h42dBj; arc=none smtp.client-ip=209.85.208.174
+	 In-Reply-To:Content-Type; b=fM5IljyanboS4x1R6hFO2pGFg3jaLKqNxjJ7QqL20cwugWmkGUjt4uVbSE7RhdMS8pN+6zrzISVF0WbqPRZC40ioWYgYRPQIKnBZvqOhT/QvcyWFKjx/3+AHDNRfGK/KB2fKBXCrf36YmMFjaxf16ytNMAUtqAA0jOMYnVIJfWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C5cZKrWb; arc=none smtp.client-ip=209.85.208.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2fb587d0436so722841fa.2
-        for <linux-wireless@vger.kernel.org>; Wed, 30 Oct 2024 11:29:32 -0700 (PDT)
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5c97c7852e8so317445a12.1
+        for <linux-wireless@vger.kernel.org>; Wed, 30 Oct 2024 11:31:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730312971; x=1730917771; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1730313092; x=1730917892; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=F+1lZ4giOmpe95+Gq/i2PbzQXe88NZzeDPUC5J9YVC4=;
-        b=A3h42dBjcRmyLPiZs/Vy+GlqEy0IPqRKxPlaA+SInBhVZfDyLSyl3tiPZf0bqqsRrt
-         Dk5UZaS7M6D0n+DIsOzfvrESXM034jGEpN6EHcMc0qzefvmBdJ+zytq+Bi1PBtgAgNDY
-         O6BJr+r3O56t+AlF4BDM9ZCY4fjsVdsxhyBASHIAkDt8n0qlwFwr1YNu5gPFV58ThFQQ
-         uGUDsUtJYid7Zq4ck1EPyAR2uHJClsWq60uZ5KUWWD4rWN4yEwF0xw5FZMGTvf9YAuPu
-         wDfaaJM2khxxcdzdZIOI4eDepXs0wp8w1Z3XG+2pukuI8/aEwuWSQMpmaVjBvf2+8ZC9
-         /dJQ==
+        bh=JS4o5FPNWyTuJZZZaU6KJv3THsEE4D+3vVjV2bNWLO4=;
+        b=C5cZKrWbF9XvmP9NsohBPFY6HPEqSvZWmsZVWS0Lb8Jj5/HeKLX3a8TrloHXbfbqpj
+         4IswTxw9c9/87XOGAgrZr+ErupuKRZOHSQN3Xtk/jOlzqnW+J09c+XYmch//bfG3Lh0q
+         ga6pEziBS4Tm+gz78RPfHVJeJ7s4vX+hBl1udlTNtX1IeyOAdIWmyBr9EogSPk6ci6lZ
+         jUiBxl6aBHSf/2f+y8E7pswTnb1XKdtxslvagl7pq4QCBAJhzPmXx1ghPhV9EjKNBVkG
+         0iWnkCAZWK4jC/7Dc/g88UedeLk4nHV1/G6FbVGlsykmDZzDCXIecNxZyB00pBhfVa72
+         I5KQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730312971; x=1730917771;
+        d=1e100.net; s=20230601; t=1730313092; x=1730917892;
         h=content-transfer-encoding:in-reply-to:content-language:references
          :cc:to:from:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=F+1lZ4giOmpe95+Gq/i2PbzQXe88NZzeDPUC5J9YVC4=;
-        b=HSRAI11W3r5tBQyx8wHdkdZ+YboOKtRLc9X0iyOd5leZxLJwgJHyvqjuHB6BhCTLmy
-         LxWQMuUY68l0x9sUP7twaqDbt+zoL3DaD++kPR8eNsOrt6NYJhKk2zopYin+saF3cr1I
-         jXH/iVKGrT71eeBWqCvghCACxGVeQ4lVN/iR6JFRJpWAU+IFrg/rPpkz15SiPmPj/Cjb
-         KniAkww9Mc1lckeO4/OgExl9/KdedG3LR5xaZhe6uRZjFIRNSwyLpt9gQ8BB6kc6iJX8
-         zr0Jb2EV/MKW1665jDtcVzWht6MzFPzBXR9/6ehM4yKBVO2QjQuwbkE8LTi8Taba4UCP
-         2YGw==
-X-Gm-Message-State: AOJu0YzZo6Ej83b0Su8bla0/hGvwMD89qOgUNy8XwRdj6p5idiko7kuC
-	ah9xa4DRKy1f+6X53cHnD+ZW+NgdkSVMIQiDGhHLJ4PlqkCz4PZHiTXW+Q==
-X-Google-Smtp-Source: AGHT+IEI1HJ/4nV8wi2ipi4l6ct3k+N+5+Yd4e4HauIqJfdutLuESJRycAp7cRZ1bR1EHw0Z0FCQtg==
-X-Received: by 2002:a05:651c:550:b0:2f7:64b9:ff90 with SMTP id 38308e7fff4ca-2fcbdf61ed6mr75102111fa.9.1730312970889;
-        Wed, 30 Oct 2024 11:29:30 -0700 (PDT)
+        bh=JS4o5FPNWyTuJZZZaU6KJv3THsEE4D+3vVjV2bNWLO4=;
+        b=u/QAQg1u/F1OPTuTlUddqxAvBIyunTZketpnziTyok4oFA8r3l+idyfeJuw8mznzCf
+         b52FRcGn4dpkX3Z0mh5x+/0HWf+dWElxKUAvZyHsqDSRretKllvxyhvUq0Vi5WzwQ91X
+         L31vOo2raNZFGwvPrrF4jWigkM+7wjfM3VDGuZgTa/LBoJaAA22tW8VPfyTa1VVkTJRZ
+         U0lped+qHZHh0Oq1SqQ51WxDK1M9rFmLrhVM0pHo/lovjYxQHjNcP+bybiMJ0D9yl6fc
+         tbxYON8dQ9ZiUykQKuBM+2T1mWEWaOq+KegTXeAlw/w9gtPgAGF4YpDqyY0LnCdhrESO
+         I4vw==
+X-Gm-Message-State: AOJu0Ywy7D5/r/UwBMRTbjbJY2zrLKjmx+vJzZtCKnmAzz0oLp2VNzuE
+	izJUocCiq+3mjuzyyepuGkDrWMGWjPq4FAHEaVrwXf7rHjhrn+XyvfE4hA==
+X-Google-Smtp-Source: AGHT+IHYO2/766YCUXikoC7mdR5jCott0OTg62y3laBsKXMlHl7mcPlwHbbNZB0yScK/Ex5anxHNLw==
+X-Received: by 2002:a17:907:1a4e:b0:a9e:1fa0:d2f0 with SMTP id a640c23a62f3a-a9e1fa0d784mr529912066b.19.1730313091441;
+        Wed, 30 Oct 2024 11:31:31 -0700 (PDT)
 Received: from [192.168.0.50] ([79.113.150.231])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cbb6257b19sm4904093a12.16.2024.10.30.11.29.28
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9b1f297317sm593194066b.103.2024.10.30.11.31.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Oct 2024 11:29:29 -0700 (PDT)
-Message-ID: <91c495f8-a607-429b-8bc0-5a45d3c1393e@gmail.com>
-Date: Wed, 30 Oct 2024 20:29:28 +0200
+        Wed, 30 Oct 2024 11:31:31 -0700 (PDT)
+Message-ID: <0b8e8093-8103-4999-86bf-0055ec52ea64@gmail.com>
+Date: Wed, 30 Oct 2024 20:31:28 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,7 +75,8 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: [PATCH v4 6/7] wifi: rtw88: Add rtw8821au.c and rtw8812au.c
+Subject: [PATCH v4 7/7] wifi: rtw88: Enable the new RTL8821AU/RTL8812AU
+ drivers
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
 Cc: Ping-Ke Shih <pkshih@realtek.com>
@@ -85,95 +86,129 @@ In-Reply-To: <435af284-0794-48e0-81a5-5a88b3c454bf@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-These are the entry points for the new modules rtw88_8821au
-(RTL8821AU/RTL8811AU) and rtw88_8812au (RTL8812AU).
+These are older Wifi 5 chips. RTL8821AU is 1x1, with or without
+Bluetooth. RTL8812AU is 2x2, without Bluetooth.
+
+Beamforming is not implemented. It looks like these chips need a
+different implementation than what is in bf.c.
+
+Speed tests with RTL8821AU: 137 Mbps download, 144 Mbps upload.
+Speed tests with RTL8812AU: 344 Mbps download, 387 Mbps upload.
+
+Station mode and AP mode were tested.
+
+Bluetooth coexistence works. I used my Bluetooth headphones for
+several days, listening to music and watching videos. There is only
+a problem with the wifi speeds with one router:
+
+With ISP's HG6544C router:
+Official driver: 3/5 Mbps.
+rtw88: a bit more, but not steady at all. Not enough to watch a 1080p
+Youtube video.
+
+With my D-Link Eagle R32 router running Openwrt, on the same channel:
+Official driver: 6/10 Mbps.
+rtw88: download starts around 30, climbs to 50 / upload is 10 Mbps.
+I can watch a 1080p Youtube video.
+
+The music doesn't cut out during any speed tests.
+
+I also tested transferring files to and from my phone. I don't have
+other types of Bluetooth devices to test.
 
 Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 ---
 v2:
- - Fix copyright year.
- - Include the correct header rtw8812a.h in rtw8812au.c.
+ - Add more information to the commit message.
+ - Add the new rtw88_88xxa and rtw88_8812a modules.
 
 v3:
- - No change.
+ - Mention 8811AU in Kconfig.
 
 v4:
  - No change.
 ---
- .../net/wireless/realtek/rtw88/rtw8812au.c    | 28 +++++++++++++++++++
- .../net/wireless/realtek/rtw88/rtw8821au.c    | 28 +++++++++++++++++++
- 2 files changed, 56 insertions(+)
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8812au.c
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821au.c
+ drivers/net/wireless/realtek/rtw88/Kconfig  | 33 +++++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/Makefile | 15 ++++++++++
+ 2 files changed, 48 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8812au.c b/drivers/net/wireless/realtek/rtw88/rtw8812au.c
-new file mode 100644
-index 000000000000..4da69590a423
---- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8812au.c
-@@ -0,0 +1,28 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+/* Copyright(c) 2024  Realtek Corporation
-+ */
+diff --git a/drivers/net/wireless/realtek/rtw88/Kconfig b/drivers/net/wireless/realtek/rtw88/Kconfig
+index 02b0d698413b..733b3e58da51 100644
+--- a/drivers/net/wireless/realtek/rtw88/Kconfig
++++ b/drivers/net/wireless/realtek/rtw88/Kconfig
+@@ -43,6 +43,17 @@ config RTW88_8723D
+ config RTW88_8821C
+ 	tristate
+ 
++config RTW88_88XXA
++	tristate
 +
-+#include <linux/module.h>
-+#include <linux/usb.h>
-+#include "main.h"
-+#include "rtw8812a.h"
-+#include "usb.h"
++config RTW88_8821A
++	tristate
++	select RTW88_88XXA
 +
-+static const struct usb_device_id rtw_8812au_id_table[] = {
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2604, 0x0012, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(usb, rtw_8812au_id_table);
++config RTW88_8812A
++	tristate
++	select RTW88_88XXA
 +
-+static struct usb_driver rtw_8812au_driver = {
-+	.name = "rtw_8812au",
-+	.id_table = rtw_8812au_id_table,
-+	.probe = rtw_usb_probe,
-+	.disconnect = rtw_usb_disconnect,
-+};
-+module_usb_driver(rtw_8812au_driver);
+ config RTW88_8822BE
+ 	tristate "Realtek 8822BE PCI wireless network adapter"
+ 	depends on PCI
+@@ -189,6 +200,28 @@ config RTW88_8821CU
+ 
+ 	  802.11ac USB wireless network adapter
+ 
++config RTW88_8821AU
++	tristate "Realtek 8821AU/8811AU USB wireless network adapter"
++	depends on USB
++	select RTW88_CORE
++	select RTW88_USB
++	select RTW88_8821A
++	help
++	  Select this option will enable support for 8821AU and 8811AU chipset
 +
-+MODULE_AUTHOR("Bitterblue Smith <rtl8821cerfe2@gmail.com>");
-+MODULE_DESCRIPTION("Realtek 802.11ac wireless 8812au driver");
-+MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821au.c b/drivers/net/wireless/realtek/rtw88/rtw8821au.c
-new file mode 100644
-index 000000000000..730018773e1c
---- /dev/null
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8821au.c
-@@ -0,0 +1,28 @@
-+// SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
-+/* Copyright(c) 2024  Realtek Corporation
-+ */
++	  802.11ac USB wireless network adapter
 +
-+#include <linux/module.h>
-+#include <linux/usb.h>
-+#include "main.h"
-+#include "rtw8821a.h"
-+#include "usb.h"
++config RTW88_8812AU
++	tristate "Realtek 8812AU USB wireless network adapter"
++	depends on USB
++	select RTW88_CORE
++	select RTW88_USB
++	select RTW88_8812A
++	help
++	  Select this option will enable support for 8812AU chipset
 +
-+static const struct usb_device_id rtw_8821au_id_table[] = {
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2357, 0x011e, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8821a_hw_spec) },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(usb, rtw_8821au_id_table);
++	  802.11ac USB wireless network adapter
 +
-+static struct usb_driver rtw_8821au_driver = {
-+	.name = "rtw_8821au",
-+	.id_table = rtw_8821au_id_table,
-+	.probe = rtw_usb_probe,
-+	.disconnect = rtw_usb_disconnect,
-+};
-+module_usb_driver(rtw_8821au_driver);
+ config RTW88_DEBUG
+ 	bool "Realtek rtw88 debug support"
+ 	depends on RTW88_CORE
+diff --git a/drivers/net/wireless/realtek/rtw88/Makefile b/drivers/net/wireless/realtek/rtw88/Makefile
+index 8f47359b4380..f0b49f5a8a5a 100644
+--- a/drivers/net/wireless/realtek/rtw88/Makefile
++++ b/drivers/net/wireless/realtek/rtw88/Makefile
+@@ -77,6 +77,21 @@ rtw88_8821cs-objs		:= rtw8821cs.o
+ obj-$(CONFIG_RTW88_8821CU)	+= rtw88_8821cu.o
+ rtw88_8821cu-objs		:= rtw8821cu.o
+ 
++obj-$(CONFIG_RTW88_88XXA)	+= rtw88_88xxa.o
++rtw88_88xxa-objs		:= rtw88xxa.o
 +
-+MODULE_AUTHOR("Bitterblue Smith <rtl8821cerfe2@gmail.com>");
-+MODULE_DESCRIPTION("Realtek 802.11ac wireless 8821au/8811au driver");
-+MODULE_LICENSE("Dual BSD/GPL");
++obj-$(CONFIG_RTW88_8821A)	+= rtw88_8821a.o
++rtw88_8821a-objs		:= rtw8821a.o rtw8821a_table.o
++
++obj-$(CONFIG_RTW88_8812A)	+= rtw88_8812a.o
++rtw88_8812a-objs		:= rtw8812a.o rtw8812a_table.o
++
++obj-$(CONFIG_RTW88_8821AU)	+= rtw88_8821au.o
++rtw88_8821au-objs		:= rtw8821au.o
++
++obj-$(CONFIG_RTW88_8812AU)	+= rtw88_8812au.o
++rtw88_8812au-objs		:= rtw8812au.o
++
+ obj-$(CONFIG_RTW88_PCI)		+= rtw88_pci.o
+ rtw88_pci-objs			:= pci.o
+ 
 -- 
 2.46.0
 
