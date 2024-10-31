@@ -1,84 +1,138 @@
-Return-Path: <linux-wireless+bounces-14784-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14786-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 044F59B7CB1
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 15:21:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 390889B7D03
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 15:36:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD3F4282AE4
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 14:21:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69C941C21723
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 14:36:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0681A286D;
-	Thu, 31 Oct 2024 14:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DBDA181B8D;
+	Thu, 31 Oct 2024 14:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KU7yXS9E"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QkxjHHWw";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="P2Pk2/hy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558011A265E
-	for <linux-wireless@vger.kernel.org>; Thu, 31 Oct 2024 14:20:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2BD1A0BFA;
+	Thu, 31 Oct 2024 14:36:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730384438; cv=none; b=jT9+XMEhMgfn//jucmpJWC48rhnV54NCqSEExWuybKY+4aOpto7+hnVS/D06exjZHufGXhcM74BjO0Ec9b+I3AVvCnpMVAdvqeK4VqgY3g+8BbsqFfxk5ZBa3Pu4QRLD3ntYrgB8uNMrawz24hu44izqEVZaPbt4TdBOkrY+4rA=
+	t=1730385383; cv=none; b=R8wj6y/ZXul6TFDYhY5Sj7dKQeUI0EFAs1YT+xpVnm82EFavedMma5oO5jnNwq5meNPodfxmhyS3Wkrq+7171WpeWrN/KwRLmRu81IVJ+OH1eTpZoLU3dRh+Tg/81AFJWzSYa3H423cPYLkG55jvy72feL3gBwHcqHa11JesSAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730384438; c=relaxed/simple;
-	bh=Vb9V4OKwM8pfdri9jhkPlPDeip2AFeT+GpgSLBpXj18=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=IC3OYB+APLhKS2tdWbocYj65t5zUeOLazQakX83K+LiJg8bHjJATVhKR3kf6lrfJ2EmQDWjNGnzx7jmmC3+2TrSvRy5Wd3bQgytxLuZk1C0oPuK0FJI5S4njQWwUvuZZOf5laB/FgOXVMc0fsLKjxzEFZPKkEkh7G8H3uMuPyEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KU7yXS9E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BCC2C4FF48;
-	Thu, 31 Oct 2024 14:20:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730384438;
-	bh=Vb9V4OKwM8pfdri9jhkPlPDeip2AFeT+GpgSLBpXj18=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=KU7yXS9E0aiwmSSu2uaEEHWiS0Az/H1rnny5NWLCbG6srMOOgw6kXr9qiU09fDz7X
-	 eY/1DWR+mr+amkIEjI0+rj5XRUBzEh0yHLD/Ltf2jR6jma+egcuv8nDv0vOEfP4ck5
-	 LXo5WPGe96FGWpdUAkg5qtHenvRpqeMOOTgBoUXmSnuXN6SeyTGGNWV47tup8tIzAD
-	 6YdYU5Unah5EHI7uONC1L93buo9+PP6+/HOLaFjhLcMONNzcA7Cu/oFBYA3rQ74zBN
-	 KKt6NGGgF/be0lBEBoo4jsjMGyqOba7vgvg7DSyOZcSsskqhWqqv3JkxIUB29+whPd
-	 plXdcLSIeHRYw==
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1730385383; c=relaxed/simple;
+	bh=MlUBwT++RbBkyEa3T3TimRZQSnvqIO7eCYZnB8HFFJI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FhzUjhRJzY9GmK63tHon7+Mq7KB5j+zqh6a8b9QkI99Ajsl+dn/bGB6pF1RtsyNwJW1EVqRNq/4yUCEKv0bJn1AGa1un3nXcDg0iFVZ7o1O+14oN6UGJe7iNww+Z3buIBRwf31Uob3ZmKY4sN+Fmb3NzU0dTg4cdkuo4T1fDOLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QkxjHHWw; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=P2Pk2/hy; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Thu, 31 Oct 2024 15:36:09 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1730385377;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zFWtjZRQTdWduLAor0O9LykkVJ5XjmX1JLbKlMKlkpk=;
+	b=QkxjHHWwmKJ1qdobe4I2Y+atw8qx+ISgFF1tjNZwtDSp0ORfysW1Jcz5dp7zR6Js79bRy0
+	i226xrqs413mzDeBgw1jRomNbeGJzDtZ7nBO8IhD3ecS8/pVOatosqp4tnkxCAtEL79Rzw
+	AOwBVAxC7aT6UbutjROR9VsFXnKPNja80g5Bbudr1qkS/7EXziQvg4/kUep7ghULm/MhJq
+	CPy4J2UlWVH4QqRN7yanD/6ZWYAmHUF0rieqmdbhcgHGxoEUG6WmEKhoEtF+ZlJZVuiams
+	KVYeGXjlzGMc6rW3IS9kkkUjYwTDunfgJIxnWdO+pv5552kLTu4iVR2YXuJ/EQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1730385377;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zFWtjZRQTdWduLAor0O9LykkVJ5XjmX1JLbKlMKlkpk=;
+	b=P2Pk2/hy3uejlXJUrAHf0UJ4GdC6Jir4eJmEy04sEuesJqD6RKJD3sEgNSp8aqGq+J/BLQ
+	+Y3OU1IHoExp3wDQ==
+From: Nam Cao <namcao@linutronix.de>
+To: Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org
+Cc: Jani Nikula <jani.nikula@linux.intel.com>,
+	intel-gfx@lists.freedesktop.org,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>, x86@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Christian Brauner <brauner@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	John Stultz <jstultz@google.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>, kvm@vger.kernel.org,
+	linux-wireless@vger.kernel.org
+Subject: Re: [PATCH v2 00/19] hrtimers: Consolidate hrtimer initialization -
+ Part 1
+Message-ID: <20241031143609.bX-WHDeK@linutronix.de>
+References: <20241031-hrtimer_setup_p1_v2-v2-0-23400656575a@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: cw1200: Fix potential NULL dereference
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20241028-cw1200-fix-v1-1-e092b6558d1e@linaro.org>
-References: <20241028-cw1200-fix-v1-1-e092b6558d1e@linaro.org>
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: linux-wireless@vger.kernel.org, kernel test robot <lkp@intel.com>,
- Dan Carpenter <dan.carpenter@linaro.org>,
- Linus Walleij <linus.walleij@linaro.org>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <173038443545.539202.17263172917828394635.kvalo@kernel.org>
-Date: Thu, 31 Oct 2024 14:20:36 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241031-hrtimer_setup_p1_v2-v2-0-23400656575a@linutronix.de>
 
-Linus Walleij <linus.walleij@linaro.org> wrote:
+I just learned the hard way that git-send-email doesn't work for a .mbox
+file including multiple emails. Sorry for the noises, please ignore this
+one. I will resend it shortly.
 
-> A recent refactoring was identified by static analysis to
-> cause a potential NULL dereference, fix this!
+On Thu, Oct 31, 2024 at 03:19:21PM +0100, Nam Cao wrote:
+> This is a follow up to version 1, which can be found here:
 > 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> Closes: https://lore.kernel.org/r/202410121505.nyghqEkK-lkp@intel.com/
-> Fixes: 2719a9e7156c ("wifi: cw1200: Convert to GPIO descriptors")
-> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-
-Patch applied to wireless-next.git, thanks.
-
-2b94751626a6 wifi: cw1200: Fix potential NULL dereference
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20241028-cw1200-fix-v1-1-e092b6558d1e@linaro.org/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+>     https://lore.kernel.org/lkml/cover.1729864615.git.namcao@linutronix.de/
+> 
+> hrtimers must be initialized with a hrtimer_init() variant, and after that
+> the timer's callback function must be setup separately.
+> 
+> This seperate initialization is error prone and awkward to use. The
+> seperate initialization is also problematic for a clean Rust abstraction.
+> 
+> A combined setup function like timer_setup() is less error prone and
+> simpler to use.
+> 
+> This first part of the conversion provides:
+> 
+>   - a set of hrtimer_setup*() variants, which take the function pointer as
+>     argument.
+> 
+>   - hrtimer_update_function() which allows to change the callback function
+>     after initialization with the proper safety checks in place.
+> 
+>   - conversion of the hrtimer_init*_on_stack() variants
+> 
+>   - some minor cleanups
+> 
+> The remaining users will be converted in follow up series.
+> 
+> Most conversions were done with Coccinelle. See sematic patch below.
+> 
+> Changes versus v1:
+>   - Open code kvm_xen_init_vcpu() (Sean)
+>   - Drop the can/bcm patch (Oliver)
+>   - Folded the removal of hrtimer_init_sleeper() (tglx)
+>   - Update change logs and cover letter
+> 
+> The series applies on top of:
+> 
+>     git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git timers/core
+> 
+> and is also available from git:
+> 
+>     git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel.git hrtimer-setup-part1-v2
+> 
+> Best regards,
+> 
+> Nam
 
