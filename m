@@ -1,122 +1,108 @@
-Return-Path: <linux-wireless+bounces-14789-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14790-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E8D99B7E0F
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 16:15:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 879C69B7E8B
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 16:32:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFF4E1C219C7
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 15:15:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13729B2149E
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 15:32:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1578619D08A;
-	Thu, 31 Oct 2024 15:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6141B1A2554;
+	Thu, 31 Oct 2024 15:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tJ6zgXnl";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NKtYgqgN"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="B9pNY0VG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00101A3BDE;
-	Thu, 31 Oct 2024 15:15:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602C21A3BC8;
+	Thu, 31 Oct 2024 15:31:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730387707; cv=none; b=I+HkFFoWJHYP6gkpnXLJoq34SMevOCY7vQu8YKUsAVECbYBEfGwbIFDl0EsT/TLAcJaFGKkDVZpuMQlGkT/Nxi+o7FIkaD7h03impskU59UX7pD8z+3d+tXrZf8U0nmRBemKYdudv+PVXTldUAZxzQsJj5s68hpgNuZ8DTgBkdI=
+	t=1730388691; cv=none; b=mjS2t4DFe+hEJSoNJgFKacnxlGP8l+erctqBVLF1VAwXNAnpnjxZBUuHyVwa0coXNLOLSIIhhFg4429An7DOms0E6ZjvUoG2/+0Xlf7DYfNgYUrvFEkpJC0824JyMiaTzfym7yjJJ6XYqfkRFF+GuoF6uHl1HQEQGzzs3p09Jf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730387707; c=relaxed/simple;
-	bh=v22nMp0NCgMKpKQ34cvZP1/P6cf3rMn2mJFAvL3jUoE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=m7AuLZYDxz/MVBkL65D9YHPhwriE4fRllfjSmHB00pjbZtvnsNH7XccNE8K+49Rj+K4Hc5qo83M7qKbzyhPjKdKCGdzByNUrWRKvdIv8MbCTLcc7X9N11gGaphNKgtsVcMj4rx1ktGisgW69IdXTjvyIc4JeKWU23mZUCu+OpPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tJ6zgXnl; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NKtYgqgN; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1730387703;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FyuxFuHZyEAgLrnvafIRcWRKTeRTsVTMh2Dczz2F9rU=;
-	b=tJ6zgXnltAPSCcx7THHEtdYpBg/DS8NrFZ02jd33CGDpy49sS9dp6ids4gtlsFpOONmg4I
-	zn7HjwH+7fNNKyZ9cagv6Kt1OFfBeDlDOrmth8blvN+yVy+xht6MIY+Q/B1/+zT2jzy/a9
-	YiMkkc2DZDsPJeuzo11TgZnctzGNyzlWwW58J/Lv6kGpv+PnU60BxSfsmV20IplsyYIg5b
-	U6K/kLmz85Fp0mG2HKnsxIY7EwC0Qbhlo+TLxalXoz7+bRdS6BZvRqIknOLX3T5V8rYstH
-	Nmf4KZmFGIZ3PRMD5OfEO6YII8zq0XXbIsT3x8DeaCR6Sbgaf86NjNOSd0y+lA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1730387703;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FyuxFuHZyEAgLrnvafIRcWRKTeRTsVTMh2Dczz2F9rU=;
-	b=NKtYgqgNGk4bIoUpaptCn6O7NlJj+lp7jKGQCDEoVRKabClUHDqq3vxb7ws7xpabxmSEfj
-	Vs0PJ7aVdW/esRDA==
-To: Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	linux-kernel@vger.kernel.org
-Cc: Jani Nikula <jani.nikula@linux.intel.com>,
-	intel-gfx@lists.freedesktop.org,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	x86@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kalle Valo <kvalo@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Christian Brauner <brauner@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	John Stultz <jstultz@google.com>,
-	Nam Cao <namcao@linutronix.de>,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	linux-wireless@vger.kernel.org
-Subject: [RESEND PATCH v2 04/19] wifi: rt2x00: Remove redundant hrtimer_init()
-Date: Thu, 31 Oct 2024 16:14:18 +0100
-Message-Id: <66116057f788e18a6603d50a554417eee459e02c.1730386209.git.namcao@linutronix.de>
-In-Reply-To: <cover.1730386209.git.namcao@linutronix.de>
-References: <cover.1730386209.git.namcao@linutronix.de>
+	s=arc-20240116; t=1730388691; c=relaxed/simple;
+	bh=T2Fa3SUut4Ty9yjJO6CPTHbG3BQNqqTTUOqXsqZxfJw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=SlYLsf9w7PxQ8rbYGRv0gVC9o4hzp+R84ijCnXr4CFUSUPfCI14S4aV0phnGZqrPqUHEtghaXRjM3w1HyLbjuyBokPutNyquP14Ydvdh56vpapbjvolVBm5TWx1UaHTapMmRMCf+kV0sTtnDzwGy7wthn1L4I7M9x98Szkymx14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=B9pNY0VG; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49VBwSE6002694;
+	Thu, 31 Oct 2024 15:31:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	Ub/JWH13NrOvk/2P9lnbjjU3DTjmfkl31DbRGAiNyYM=; b=B9pNY0VGzcgMhXhb
+	30FWzsIaVtgvDgXPmQGd1vaWZctqSPdmzr8jCwiQIPEkAdhQkAeOF+0aYoZgoeQg
+	0jVz3ptX+LSgitmNtPkod2JJw+pTmTjQKJaBqobpFdgD2wb5qZ68GQTI6Mnt1e1U
+	2c1AJ5VdZovAfxDRCr5oH3thT7LxSFEh3ewi0wdv1QAV2ngXG/xrFpVtNh2fKwZg
+	tkVWOUjKCcBBxx/zp4FCDtWDWkaEiFoPK2ow9oJpIlEyfm9NRwTzFtu2cphyDM7t
+	9laW1D+jjV0qirN2G7U4eq6drBAgIt5qsirykS97CzF+NfsPoeJCceqn+bo+7Fql
+	TJhPyA==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42kmn5c3wg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 31 Oct 2024 15:31:23 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49VFVMRb003181
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 31 Oct 2024 15:31:22 GMT
+Received: from [10.48.242.225] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 31 Oct
+ 2024 08:31:21 -0700
+Message-ID: <73ccf2a5-f08f-49ce-b810-6282f9a35f6e@quicinc.com>
+Date: Thu, 31 Oct 2024 08:31:21 -0700
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath11k: add support for QCA6698AQ
+To: Miaoqing Pan <quic_miaoqing@quicinc.com>, <kvalo@kernel.org>
+CC: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20241031000541.3331606-1-quic_miaoqing@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <20241031000541.3331606-1-quic_miaoqing@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: M8v_aAnhj6vHUCcXg8Wtyv10U1yYtUGa
+X-Proofpoint-GUID: M8v_aAnhj6vHUCcXg8Wtyv10U1yYtUGa
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
+ lowpriorityscore=0 impostorscore=0 phishscore=0 mlxlogscore=759
+ priorityscore=1501 mlxscore=0 malwarescore=0 bulkscore=0 suspectscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2410310117
 
-rt2x00usb_probe() executes a hrtimer_init() for txstatus_timer. Afterwards,
-rt2x00lib_probe_dev() is called which also initializes this txstatus_timer
-with the same settings.
-
-Remove the redundant hrtimer_init() call in rt2x00usb_probe().
-
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Acked-by: Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org
----
- drivers/net/wireless/ralink/rt2x00/rt2x00usb.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c b/drivers/net/w=
-ireless/ralink/rt2x00/rt2x00usb.c
-index 8fd22c69855f..a6d50149e0c3 100644
---- a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
-+++ b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
-@@ -823,8 +823,6 @@ int rt2x00usb_probe(struct usb_interface *usb_intf,
-=20
- 	INIT_WORK(&rt2x00dev->rxdone_work, rt2x00usb_work_rxdone);
- 	INIT_WORK(&rt2x00dev->txdone_work, rt2x00usb_work_txdone);
--	hrtimer_init(&rt2x00dev->txstatus_timer, CLOCK_MONOTONIC,
--		     HRTIMER_MODE_REL);
-=20
- 	retval =3D rt2x00usb_alloc_reg(rt2x00dev);
- 	if (retval)
---=20
-2.39.5
+On 10/30/2024 5:05 PM, Miaoqing Pan wrote:
+> QCA6698AQ IP core is the same as WCN6855 hw2.1, they share the same
+> PCI device ID, the same major and minor version numbers, the same
+> register address, and same HAL descriptors, etc. The most significant
+> difference is that QCA6698AQ has different RF, IPA, thermal, etc.
+> 
+> Follow the approach done in commit 5dc9d1a55e95 ("wifi: ath11k: add
+> support for QCA2066"), enumerate the subversion number to identify the
+> specific card.
+> 
+> Tested-on: QCA6698AQ hw2.1 PCI WLAN.HSP.1.1-04479-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1
+> 
+> Signed-off-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
 
