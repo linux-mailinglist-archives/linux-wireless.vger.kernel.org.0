@@ -1,115 +1,258 @@
-Return-Path: <linux-wireless+bounces-14768-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14769-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89EF59B7725
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 10:14:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D09B79B774A
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 10:20:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15D78B230D9
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 09:14:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CC372864B9
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 09:20:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3028419343F;
-	Thu, 31 Oct 2024 09:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2C4B197A6C;
+	Thu, 31 Oct 2024 09:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="cTxG0950"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Ea95kNvi";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+lYYZtpA";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Ea95kNvi";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="+lYYZtpA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from out162-62-57-49.mail.qq.com (out162-62-57-49.mail.qq.com [162.62.57.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D99193427;
-	Thu, 31 Oct 2024 09:14:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846C01953B9;
+	Thu, 31 Oct 2024 09:18:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730366063; cv=none; b=HKuJPylaaUfLQyJrutCXfK9e98/edCDWmyY/VP9sJ0VIwmw9KGu7BBAfoO4Fmar/ZCqW8J2IMIjY/abJE+Rw9SMm+6tYxWHfXU9L1XZiOqdtgWT5sIvcB2bZbf6Sbd8mJewjvpF56ly81sgxWI3dwmRDrI+Aeq454utWrmFrw+I=
+	t=1730366335; cv=none; b=iOtcZp5SQWsjIW2+1QshajCTPWi+GGdEV1tzSJvO0vvKTNVxEYTOKJEE65ToKfrj/1T4FPlOEK4966Kiqu+6y+PXDYg1jEnGG9FWPKClaqtQZYETgwGnVPytHwIGXsIwzMComDsP83G0RwkVJqb0ByHe/7YmHJ3PbD4OyU8Rvck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730366063; c=relaxed/simple;
-	bh=5Q45RTbSjOjBlp3SygGSMuq7WMqUe32chDxswiHpUtI=;
-	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YnELxlU95Xp5q4imsMWedvNqvrt4Pwq00HE04RSJ4X9nkis2vzrBlNtx95kW02PLfJmAsqNKzeKxadVQl15GbY75/EO7NBG6E46NuPO1Ce9T8N3/Ck/yU8FW1TKq8wGQy++EzjxxS8Cke0K6NyhQQ50VCtDrAnBJEaZdAQPqFtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=cTxG0950; arc=none smtp.client-ip=162.62.57.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1730366054;
-	bh=jZ7hCTaVut3mZbCJbGFLXFGxd6/H6md/TZ1pj2DkSxw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=cTxG09503B4E3EcCq4Tlr4SOP5tpNriTxkwdgA9WRfof/7mfXUXVCXoPSxZAD016s
-	 pWjLrKck+Fp4TzbNIL8LqUXvy40pyL8aFRU5akeUvgGPLgXbMYo0dGRMEYsP4cM7fX
-	 VoWm48I03YvIOT2ZIL3KwES78aJGg64q+qbyXjOs=
-Received: from localhost ([223.70.160.239])
-	by newxmesmtplogicsvrsza29-0.qq.com (NewEsmtp) with SMTP
-	id 2071D25C; Thu, 31 Oct 2024 17:08:07 +0800
-X-QQ-mid: xmsmtpt1730365687ths52uw97
-Message-ID: <tencent_9E86EA49928C177B25C1691D4454AAB21106@qq.com>
-X-QQ-XMAILINFO: Mv2ulet+XN3NjEpaj3v5W09FCOccoH6qPYx7PV2Ta6BCPoCNWGDsgtWOJkWFfO
-	 +d8s0sCqZai/8akJBW/WHSe8TuL+MPd9MtmADoh8r2aO5zjfy8Sw+6rWui8kYRPaYoHG7nJn7A/m
-	 WXYxSmIIK6teADp8GBz3H8kpLxl1h6P4Sqm3/8lbrf0fML6ig5nEdkaKin5fRCzVFtSBcHrJTctC
-	 Oj+i1zcOIcPxX+sv+C9Ke2ASZZbu6KplOeeXT/1QwUNBOmfNkPhayDZhPkvNm8LNCRff5bF9oXi1
-	 JMkKVJeGlLfYbzxGWJnSnNA67UyfXFxqgoFYfr5DzEIa9pmf+CaLB6t5skY094XvJL3J7Z+3+4jY
-	 7jL2OokJgGhk915PLRTilKBChtsixZLJS1qi0YoMgzKW2sNEiz5zSrdgLimbqL3gUbJBTUzCFQ9e
-	 t6x2WKy458q7RG+K1RRP6/kvXSjjeIfg/Qj3SIirZTCfsqtLRqTIxApGvKQlo43+e8elqyyBMM98
-	 yCFPV67gvxNgQMasq7bEfwfAhPolnjfhWYsafeoYUPU8gaFUWek7iJR9/6EgYqzH4CCLyiphTzOB
-	 dxJv65VdE4monD2F3BftXEWw/PmfOGtw/KVmV4bxSQcNU7jJeVrGDrd3QHF8QcY9ZCKARMtLU9JB
-	 bJxbtORXJMS9PUFpB+upja/MKGSK2bUrIOSGpwzN8tB9OQtPsI9BWzKeEbi8QUI17anhC4AnjzD2
-	 qEAc+L++kho0nbq0cvzZUoH/rW9IyNrh4yI0LH8MZeOPz2hLSDCOmLWjSB0L8d9fWbIu4SrFFBN3
-	 uYpYYOwF9tWfojTnZ9p7cDxWyQxtW2TtV9phE+1gm1NIYHZjWomZAxGY5GBeNoPrngF6pMAL037k
-	 SZGpLxYpMKAVwieQDvnaLJPu9wlToXJy4V+E1IZW5cUc1NQu/LEAyt3vlErw9g51wdAvCvxsBUla
-	 E21nUnl+h2V15IrZmV2agFJY6IOsHHhWMn3OCHyXLg4DQiFnEPORQPqtsksk+5DOiZ3G4tcQHtIt
-	 xgurRt82qQB1vdiCBUn1mqu1+hskY=
-X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
-Date: Thu, 31 Oct 2024 17:08:07 +0800
-From: Gang Yan <gang_yan@foxmail.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: "miriam.rachel.korenblit" <miriam.rachel.korenblit@intel.com>,
-	kvalo <kvalo@kernel.org>,
-	linux-wireless <linux-wireless@vger.kernel.org>,
-	linux-kernel <linux-kernel@vger.kernel.org>
-Subject: Re: Issue with iwlwifi Firmware Loading When Compiled into the Kernel
-X-OQ-MSGID: <ZyNI95gdvc-FKXe9@yangang-TM1701>
-References: <tencent_2C31282B61589DFCC908B3831384D569440A@qq.com>
- <7100cb98b8e46793cfb1197c3af0f151a9628c9d.camel@sipsolutions.net>
- <tencent_7DC9187727BD32FEEC99045E754751A0CA08@qq.com>
- <5fc092da11b3d81c99fc4bc4b78e87783280414f.camel@sipsolutions.net>
+	s=arc-20240116; t=1730366335; c=relaxed/simple;
+	bh=j9pEYC1oMnqKj6SaaODCHemQCh8YG4xtOCYKWT6m5Go=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ulbVgJcIXLmztBjqHHZ7sxg5fMRoAIC4sDHcCTQSBg5VK3bZcwTS62lTzHhYtWnr7e3kXMdbPe9fy3LxsUx4PWkaQNaLT//1dz5lfOmI0XCRE0p8079r+D6hLtmGs+rSxAhKcspCO+ZvMzZKV6DGMyqS9U21QRpJkpfTpFab0p4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Ea95kNvi; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+lYYZtpA; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Ea95kNvi; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=+lYYZtpA; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 354531FE18;
+	Thu, 31 Oct 2024 09:18:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1730366325; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8flyOdsN1Wv/gVQcgw6n18uLkNhAqVdP/ybYJ4cMEt4=;
+	b=Ea95kNviZxvF/MWH1YNektTuRzffklUHTKPVt+MLD8KNcUuk+RAFwME8rOfLDmUgeoNZCY
+	uHKrZVrKtjwKmHCfcdY6P5Xf2yD0jxjFQO3JjxZEAJHe6L/4OpVl2MN++X5CKYP5BBRjwP
+	GYrY0rVxH2Fcy1Msv0+vT1N9t5TR4LA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1730366325;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8flyOdsN1Wv/gVQcgw6n18uLkNhAqVdP/ybYJ4cMEt4=;
+	b=+lYYZtpATJvtnnHjt9JH6YqR8hovRj92QK7IQ/MlTx3aBUOCUlkgzMYDVjUJg00CqGIqAq
+	nLXkrGkIXGcGRXDg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1730366325; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8flyOdsN1Wv/gVQcgw6n18uLkNhAqVdP/ybYJ4cMEt4=;
+	b=Ea95kNviZxvF/MWH1YNektTuRzffklUHTKPVt+MLD8KNcUuk+RAFwME8rOfLDmUgeoNZCY
+	uHKrZVrKtjwKmHCfcdY6P5Xf2yD0jxjFQO3JjxZEAJHe6L/4OpVl2MN++X5CKYP5BBRjwP
+	GYrY0rVxH2Fcy1Msv0+vT1N9t5TR4LA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1730366325;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8flyOdsN1Wv/gVQcgw6n18uLkNhAqVdP/ybYJ4cMEt4=;
+	b=+lYYZtpATJvtnnHjt9JH6YqR8hovRj92QK7IQ/MlTx3aBUOCUlkgzMYDVjUJg00CqGIqAq
+	nLXkrGkIXGcGRXDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AB49F136A5;
+	Thu, 31 Oct 2024 09:18:43 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id uBqmKHNLI2f+JgAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Thu, 31 Oct 2024 09:18:43 +0000
+Date: Thu, 31 Oct 2024 10:19:47 +0100
+Message-ID: <87plngwrws.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Philipp Stanner <pstanner@redhat.com>,	Damien Le Moal
+ <dlemoal@kernel.org>,	Niklas Cassel <cassel@kernel.org>,	Sergey Shtylyov
+ <s.shtylyov@omp.ru>,	Basavaraj Natikar <basavaraj.natikar@amd.com>,	Jiri
+ Kosina <jikos@kernel.org>,	Benjamin Tissoires <bentiss@kernel.org>,	Arnd
+ Bergmann <arnd@arndb.de>,	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Alex Dubov <oakad@yahoo.com>,	Sudarsana Kalluru <skalluru@marvell.com>,
+	Manish Chopra <manishc@marvell.com>,	"David S. Miller"
+ <davem@davemloft.net>,	Eric Dumazet <edumazet@google.com>,	Jakub Kicinski
+ <kuba@kernel.org>,	Paolo Abeni <pabeni@redhat.com>,	Rasesh Mody
+ <rmody@marvell.com>,	GR-Linux-NIC-Dev@marvell.com,	Igor Mitsyanko
+ <imitsyanko@quantenna.com>,	Sergey Matyukevich <geomatsi@gmail.com>,	Kalle
+ Valo <kvalo@kernel.org>,	Sanjay R Mehta <sanju.mehta@amd.com>,	Shyam Sundar
+ S K <Shyam-sundar.S-k@amd.com>,	Jon Mason <jdmason@kudzu.us>,	Dave Jiang
+ <dave.jiang@intel.com>,	Allen Hubbe <allenbh@gmail.com>,	Bjorn Helgaas
+ <bhelgaas@google.com>,	Alex Williamson <alex.williamson@redhat.com>,
+	Juergen Gross <jgross@suse.com>,	Stefano Stabellini
+ <sstabellini@kernel.org>,	Oleksandr Tyshchenko
+ <oleksandr_tyshchenko@epam.com>,	Jaroslav Kysela <perex@perex.cz>,	Takashi
+ Iwai <tiwai@suse.com>,	Chen Ni <nichen@iscas.ac.cn>,	Mario Limonciello
+ <mario.limonciello@amd.com>,	Ricky Wu <ricky_wu@realtek.com>,	Al Viro
+ <viro@zeniv.linux.org.uk>,	Breno Leitao <leitao@debian.org>,	Kevin Tian
+ <kevin.tian@intel.com>,	Thomas Gleixner <tglx@linutronix.de>,	Ilpo
+ =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,	Andy
+ Shevchenko <andriy.shevchenko@linux.intel.com>,	Mostafa Saleh
+ <smostafa@google.com>,	Jason Gunthorpe <jgg@ziepe.ca>,	Yi Liu
+ <yi.l.liu@intel.com>,	Christian Brauner <brauner@kernel.org>,	Ankit Agrawal
+ <ankita@nvidia.com>,	Eric Auger <eric.auger@redhat.com>,	Reinette Chatre
+ <reinette.chatre@intel.com>,	Ye Bin <yebin10@huawei.com>,	Marek
+ =?ISO-8859-1?Q?Marczykowski-G=F3recki?= <marmarek@invisiblethingslab.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,	Peter Ujfalusi
+ <peter.ujfalusi@linux.intel.com>,	Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>,	Kai Vehmanen
+ <kai.vehmanen@linux.intel.com>,	Rui Salvaterra <rsalvaterra@gmail.com>,
+	linux-ide@vger.kernel.org,	linux-kernel@vger.kernel.org,
+	linux-input@vger.kernel.org,	netdev@vger.kernel.org,
+	linux-wireless@vger.kernel.org,	ntb@lists.linux.dev,
+	linux-pci@vger.kernel.org,	kvm@vger.kernel.org,
+	xen-devel@lists.xenproject.org,	linux-sound@vger.kernel.org
+Subject: Re: [PATCH 00/13] Remove implicit devres from pci_intx()
+In-Reply-To: <20241030221737.GA1223682@bhelgaas>
+References: <20241015185124.64726-1-pstanner@redhat.com>
+	<20241030221737.GA1223682@bhelgaas>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <5fc092da11b3d81c99fc4bc4b78e87783280414f.camel@sipsolutions.net>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	FREEMAIL_ENVRCPT(0.00)[yahoo.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCPT_COUNT_GT_50(0.00)[67];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[redhat.com,kernel.org,omp.ru,amd.com,arndb.de,linuxfoundation.org,yahoo.com,marvell.com,davemloft.net,google.com,quantenna.com,gmail.com,kudzu.us,intel.com,suse.com,epam.com,perex.cz,iscas.ac.cn,realtek.com,zeniv.linux.org.uk,debian.org,linutronix.de,linux.intel.com,ziepe.ca,nvidia.com,huawei.com,invisiblethingslab.com,linux.dev,vger.kernel.org,lists.linux.dev,lists.xenproject.org];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCVD_TLS_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid]
+X-Spam-Score: -3.30
+X-Spam-Flag: NO
 
-> On Thu, Oct 31, 2024 at 09:57:33AM +0100, Johannes Berg wrote:
-> On Thu, 2024-10-31 at 16:52 +0800, Gang Yan wrote:
+On Wed, 30 Oct 2024 23:17:37 +0100,
+Bjorn Helgaas wrote:
+> 
+> On Tue, Oct 15, 2024 at 08:51:10PM +0200, Philipp Stanner wrote:
+> > @Driver-Maintainers: Your driver might be touched by patch "Remove
+> > devres from pci_intx()". You might want to take a look.
 > > 
-> > In fact, I'm using Ubuntu's userspace, but I've simply replaced Ubuntu's 
-> > kernel with the mainline 6.12.rc2 version (x86_64_defconfig). By merely 
-> > changing CONFIG_IWLWIFI from 'm' to 'y', the network functionality normalized, 
-> > which is inevitably confusing. By the way, both of my computers encountered 
-> > this issue, with network devices being Intel Wireless 8265 and Intel AX210, respectively. 
+> > Changes since the RFC [1]:
+> >   - Add a patch deprecating pci{m}_intx(). (Heiner, Andy, Me)
+> >   - Add Acked-by's already given.
+> >   - Export pcim_intx() as a GPL function. (Alex)
+> >   - Drop patch for rts5280, since this driver will be removed quite
+> >     soon. (Philipp Hortmann, Greg)
+> >   - Use early-return in pci_intx_unmanaged() and pci_intx(). (Andy)
+> > 
+> > Hi all,
+> > 
+> > this series removes a problematic feature from pci_intx(). That function
+> > sometimes implicitly uses devres for automatic cleanup. We should get
+> > rid of this implicit behavior.
+> > 
+> > To do so, a pci_intx() version that is always-managed, and one that is
+> > never-managed are provided. Then, all pci_intx() users are ported to the
+> > version they need. Afterwards, pci_intx() can be cleaned up and the
+> > users of the never-managed version be ported back to pci_intx().
+> > 
+> > This way we'd get this PCI API consistent again.
+> > 
+> > Patch "Remove devres from pci_intx()" obviously reverts the previous
+> > patches that made drivers use pci_intx_unmanaged(). But this way it's
+> > easier to review and approve. It also makes sure that each checked out
+> > commit should provide correct behavior, not just the entire series as a
+> > whole.
+> > 
+> > Merge plan for this is to enter through the PCI tree.
+> > 
+> > [1] https://lore.kernel.org/all/20241009083519.10088-1-pstanner@redhat.com/
 > 
-> Yeah well, so Ubuntu integrated everything in a certain way, and because
-> they build everything as modules they didn't integrated anything to make
-> it possible to build modules in the kernel.
-> 
-> When you change it, you own the integration. I gave you a few ways to
-> solve this, simplest is just specifying the firmware to build into the
-> kernel in the .config file.
-> 
-> > I still think some clarification will be helpful to make the configuration process
-> > here clearer.
-> 
-> I don't think we need to change anything. Whoever makes some changes to
-> a distro needs to actually do the integration too. This is in no way
-> specific to iwlwifi, every other devices with firmware has the problem,
-> and generic ways of fixing it already exist.
-> 
-> Johannes
-Thanks a lot, I understand what you mean now.
+> I *think* this series depends on resolution of Takashi's "Restore the
+> original INTX_DISABLE bit by pcim_intx()" patch [2], right?
 
-Gang Yan
+IIUC, it's not really dependent, as pcim_intx() has been used in
+pci_intx() internally when the PCI device is already managed.
+My patch is to correct the already existing behavior.  So I guess you
+can take this series, and I'll post the revised patch later (sorry, I
+was too busy for other tasks).
 
+
+thanks,
+
+Takashi
+
+> 
+> For now I'm postponing this series, but let me know if that's not the
+> right thing.
+> 
+> [2] https://lore.kernel.org/r/20241024155539.19416-1-tiwai@suse.de
+> 
+> > Philipp Stanner (13):
+> >   PCI: Prepare removing devres from pci_intx()
+> >   ALSA: hda_intel: Use always-managed version of pcim_intx()
+> >   drivers/xen: Use never-managed version of pci_intx()
+> >   net/ethernet: Use never-managed version of pci_intx()
+> >   net/ntb: Use never-managed version of pci_intx()
+> >   misc: Use never-managed version of pci_intx()
+> >   vfio/pci: Use never-managed version of pci_intx()
+> >   PCI: MSI: Use never-managed version of pci_intx()
+> >   ata: Use always-managed version of pci_intx()
+> >   wifi: qtnfmac: use always-managed version of pcim_intx()
+> >   HID: amd_sfh: Use always-managed version of pcim_intx()
+> >   Remove devres from pci_intx()
+> >   PCI: Deprecate pci_intx(), pcim_intx()
+> > 
+> >  drivers/ata/ahci.c                            |  2 +-
+> >  drivers/ata/ata_piix.c                        |  2 +-
+> >  drivers/ata/pata_rdc.c                        |  2 +-
+> >  drivers/ata/sata_sil24.c                      |  2 +-
+> >  drivers/ata/sata_sis.c                        |  2 +-
+> >  drivers/ata/sata_uli.c                        |  2 +-
+> >  drivers/ata/sata_vsc.c                        |  2 +-
+> >  drivers/hid/amd-sfh-hid/amd_sfh_pcie.c        |  4 +--
+> >  drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c |  2 +-
+> >  .../wireless/quantenna/qtnfmac/pcie/pcie.c    |  2 +-
+> >  drivers/pci/devres.c                          | 29 +++++--------------
+> >  drivers/pci/pci.c                             | 19 ++++--------
+> >  include/linux/pci.h                           |  1 +
+> >  sound/pci/hda/hda_intel.c                     |  2 +-
+> >  14 files changed, 26 insertions(+), 47 deletions(-)
+> > 
+> > -- 
+> > 2.47.0
+> > 
 
