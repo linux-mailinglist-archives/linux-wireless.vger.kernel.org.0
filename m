@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-14783-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14784-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A24C89B7C9B
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 15:19:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 044F59B7CB1
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 15:21:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5997A1F22455
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 14:19:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD3F4282AE4
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 14:21:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F201784A52;
-	Thu, 31 Oct 2024 14:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0681A286D;
+	Thu, 31 Oct 2024 14:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kh2Io39h"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KU7yXS9E"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C535E156CF;
-	Thu, 31 Oct 2024 14:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558011A265E
+	for <linux-wireless@vger.kernel.org>; Thu, 31 Oct 2024 14:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730384370; cv=none; b=JVJXDVbF/j16BE++eWFvh2sxGKia2kmqBOVXX+0HGREDHf/Fg1eDGfQ7wctcbjPt5z+4Kr4qaqiJFweP2xDsgbI7PEVN7qRYD0/RCUxsdepnCN1tFxjK4UM7YRG1sogDUV1OHEgT/N9bzYVqZeZMkfOD9sJHAkNW/DNQP4kV0QE=
+	t=1730384438; cv=none; b=jT9+XMEhMgfn//jucmpJWC48rhnV54NCqSEExWuybKY+4aOpto7+hnVS/D06exjZHufGXhcM74BjO0Ec9b+I3AVvCnpMVAdvqeK4VqgY3g+8BbsqFfxk5ZBa3Pu4QRLD3ntYrgB8uNMrawz24hu44izqEVZaPbt4TdBOkrY+4rA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730384370; c=relaxed/simple;
-	bh=QJxJNeaj3gC0NUWb5CZdw1212FbzauRiC0Vy6rHljeA=;
+	s=arc-20240116; t=1730384438; c=relaxed/simple;
+	bh=Vb9V4OKwM8pfdri9jhkPlPDeip2AFeT+GpgSLBpXj18=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=rlG930XlDFo3Vtu/kfr5BzBoHP6g5qMBFwVdN60sV/h7WI1ztbXVu/TBtU+B4PxaqTg/EtfG4XL01hdKkFQwAS2/MW/f0R5wmXEcLoOzp8Mxdv01IyhzAkvILnUCvw3xQwRnuTrnhpIDTPnUBBAuDKs7H8S0QKcAS/Dbu6KE3aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kh2Io39h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 598ACC4DDED;
-	Thu, 31 Oct 2024 14:19:28 +0000 (UTC)
+	 Cc:Message-ID:Date; b=IC3OYB+APLhKS2tdWbocYj65t5zUeOLazQakX83K+LiJg8bHjJATVhKR3kf6lrfJ2EmQDWjNGnzx7jmmC3+2TrSvRy5Wd3bQgytxLuZk1C0oPuK0FJI5S4njQWwUvuZZOf5laB/FgOXVMc0fsLKjxzEFZPKkEkh7G8H3uMuPyEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KU7yXS9E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BCC2C4FF48;
+	Thu, 31 Oct 2024 14:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730384370;
-	bh=QJxJNeaj3gC0NUWb5CZdw1212FbzauRiC0Vy6rHljeA=;
+	s=k20201202; t=1730384438;
+	bh=Vb9V4OKwM8pfdri9jhkPlPDeip2AFeT+GpgSLBpXj18=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=kh2Io39hLbpuvosOg5J3WXfTKR9/K1A1ix/WnkWrIN+lp+0OtxXR7MGxCYdQxX7y4
-	 ugKYAwZGMcg1j1Ws0wDzr/vtgpFzMdloxNyRJ/zxGo29x8HslTGxjZU7MqWHJDX6BL
-	 XYwsG35daO/ZmVKe2hTWE+VtGubQ50qEq3M2eUXEA2tnsl4tTfumK4UsMx+9bI8Khm
-	 9nmacdkhLIkjro5fSrQ19rTCq+39YbzktZBwn57T9tVJ0DuWoeLPAFFgLf4befL4KB
-	 I3ire0G0CviGopLWv9LcHEBje7mf1ZXo3hH6+LOwlfDwhLVcV2YxH9zPyCabz9jWii
-	 Pk9tGhbHcj6eQ==
+	b=KU7yXS9E0aiwmSSu2uaEEHWiS0Az/H1rnny5NWLCbG6srMOOgw6kXr9qiU09fDz7X
+	 eY/1DWR+mr+amkIEjI0+rj5XRUBzEh0yHLD/Ltf2jR6jma+egcuv8nDv0vOEfP4ck5
+	 LXo5WPGe96FGWpdUAkg5qtHenvRpqeMOOTgBoUXmSnuXN6SeyTGGNWV47tup8tIzAD
+	 6YdYU5Unah5EHI7uONC1L93buo9+PP6+/HOLaFjhLcMONNzcA7Cu/oFBYA3rQ74zBN
+	 KKt6NGGgF/be0lBEBoo4jsjMGyqOba7vgvg7DSyOZcSsskqhWqqv3JkxIUB29+whPd
+	 plXdcLSIeHRYw==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,38 +49,35 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: wifi: brcm80211: Remove unused dma_txflush()
+Subject: Re: [PATCH] wifi: cw1200: Fix potential NULL dereference
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20241025204651.244627-1-linux@treblig.org>
-References: <20241025204651.244627-1-linux@treblig.org>
-To: linux@treblig.org
-Cc: arend.vanspriel@broadcom.com, kees@kernel.org, erick.archer@outlook.com,
- linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
- brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org,
- "Dr. David Alan Gilbert" <linux@treblig.org>
+In-Reply-To: <20241028-cw1200-fix-v1-1-e092b6558d1e@linaro.org>
+References: <20241028-cw1200-fix-v1-1-e092b6558d1e@linaro.org>
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: linux-wireless@vger.kernel.org, kernel test robot <lkp@intel.com>,
+ Dan Carpenter <dan.carpenter@linaro.org>,
+ Linus Walleij <linus.walleij@linaro.org>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <173038436681.539202.501004601707648947.kvalo@kernel.org>
-Date: Thu, 31 Oct 2024 14:19:28 +0000 (UTC)
+Message-ID: <173038443545.539202.17263172917828394635.kvalo@kernel.org>
+Date: Thu, 31 Oct 2024 14:20:36 +0000 (UTC)
 
-linux@treblig.org wrote:
+Linus Walleij <linus.walleij@linaro.org> wrote:
 
-> From: "Dr. David Alan Gilbert" <linux@treblig.org>
+> A recent refactoring was identified by static analysis to
+> cause a potential NULL dereference, fix this!
 > 
-> dma_fxflush() has been unused since 2013's
-> commit 7b2385b95363 ("brcmsmac: rework of mac80211 .flush() callback
-> operation")
-> 
-> Remove it.
-> 
-> Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
-> Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Closes: https://lore.kernel.org/r/202410121505.nyghqEkK-lkp@intel.com/
+> Fixes: 2719a9e7156c ("wifi: cw1200: Convert to GPIO descriptors")
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 
 Patch applied to wireless-next.git, thanks.
 
-1e52d0061a83 wifi: brcm80211: Remove unused dma_txflush()
+2b94751626a6 wifi: cw1200: Fix potential NULL dereference
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20241025204651.244627-1-linux@treblig.org/
+https://patchwork.kernel.org/project/linux-wireless/patch/20241028-cw1200-fix-v1-1-e092b6558d1e@linaro.org/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
