@@ -1,109 +1,130 @@
-Return-Path: <linux-wireless+bounces-14758-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14759-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDADC9B7269
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 03:16:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4ECB9B7272
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 03:20:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18727286537
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 02:16:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA93E286650
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 02:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A81245026;
-	Thu, 31 Oct 2024 02:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF305A79B;
+	Thu, 31 Oct 2024 02:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="ZQRg8/AO"
+	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="nfc2Q/E0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801082E401;
-	Thu, 31 Oct 2024 02:16:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCF445026;
+	Thu, 31 Oct 2024 02:20:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730340985; cv=none; b=GfCZB3+OWQEGGfjq5WMgLJxhhkyrPAImjIEN5pFMlsvh+2Djnl7jpFpwVWthiMtA/EuQn3A55C+Ro0bqBW8TFwuxnEISoL0uJxgetRUQGQ+9CD3Wjo5D7IPPRFFRsnXSkDy3olki6UwdRKF+HInm5zru7TSXLehtm+NaDgaFqkk=
+	t=1730341230; cv=none; b=f9yTm6n+U003NOJkMFlYpFITvGwkclODKQuyU//yodKmoIlR9P3v3wB38ULvfPX8eMaTwgfUhVPhU+yNvGS1Hb2bHMeggnOpQaYGu76Ap4bmw060TIc4AHZK7b1fR/OLkQ74/IqVargl6bRvwsapiYt+/fsJhgvOvVdtxkfwBu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730340985; c=relaxed/simple;
-	bh=vhdnE9JA5pT9fw4J2PrJS8MGAPAdj0Foe/ClAeCnIHw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=XyOmrOp+/oc/SB3tJLQpzl7waaZ3wYhTTnD5jVc9NL5Xx2NFufeUtr8E7PCGO5CgPR+SXlMB9jvMBF6xmdfjzsvG1McOsa6OCJs+4Tqc3LFNaM8Ocnb+HnL5BdojwsnmATO4HthRzUp2k7ZbGivNbCopzuDkYRz9FnQcOxrQb/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=ZQRg8/AO; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 49V2Fd382697773, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1730340939; bh=vhdnE9JA5pT9fw4J2PrJS8MGAPAdj0Foe/ClAeCnIHw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=ZQRg8/AO85UwWA3ecJ8u+bRapJZYuNJLVenU4VHcEL94itQGC8ceAqG/zQRQAoLSP
-	 StVYQ/GNYRF4nOeDbTbu5g9Q++a8GG9XzDx+qziz4WdUJXVknjHcq9n2TNIQk0FrBp
-	 t8mkfuBKktHaUSKJq8X3STyawXK4gmEv/hYAMBhQwAANnc2cPOsQbhfaCyG5P3TBgM
-	 c63zA0DOTLv4OH0Df24tbQlrgdvQKpl/+pZQgA7/6Nrgeda4Sjp5RPQXOht8q83rG7
-	 LxSzF4guIDltztjNfLIoVikuTU7DIBuVPwB4mliYWUrLNrUUsCe3/hDtwwi+iKmVRH
-	 3k1843z4AFf/w==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 49V2Fd382697773
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 31 Oct 2024 10:15:39 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 31 Oct 2024 10:15:39 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 31 Oct 2024 10:15:38 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
- RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
- 15.01.2507.035; Thu, 31 Oct 2024 10:15:38 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: "kvalo@kernel.org" <kvalo@kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "kernel@gpiccoli.net" <kernel@gpiccoli.net>,
-        "kernel-dev@igalia.com" <kernel-dev@igalia.com>,
-        "rtl8821cerfe2@gmail.com"
-	<rtl8821cerfe2@gmail.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com"
-	<syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com>
-Subject: Re: [PATCH V2] wifi: rtlwifi: Drastically reduce the attempts to read efuse in case of failures
-Thread-Topic: [PATCH V2] wifi: rtlwifi: Drastically reduce the attempts to
- read efuse in case of failures
-Thread-Index: AQHbKtYZmZEqsJWd+ECeMgNDFqDflLKgHpmT
-Date: Thu, 31 Oct 2024 02:15:38 +0000
-Message-ID: <4d9471f600224d23bb1f49a8ed4943c2@realtek.com>
-References: <20241030141440.1153887-1-gpiccoli@igalia.com>
-In-Reply-To: <20241030141440.1153887-1-gpiccoli@igalia.com>
-Accept-Language: en-US, zh-TW
-Content-Language: en-US
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1730341230; c=relaxed/simple;
+	bh=drU3KW7IEWpok2cJ6SbKWoKUJDEAts5QmVDexHgPN7k=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZkP5WxYzszpwoO8TOcP4k8BdynRG31BJSMCtn0CtgIUQ4MxiesuygrLoRkmSPNLtIbPoqjxEhnzUoF9D0fstKBvIDZLA7oSMBKE/OeZ5ZkW21kqgqIfl6q7upHF2xh5sIdSyu5d+51ijfP5EaYbFN3FVTsl0nm1uzoomCclIKgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=nfc2Q/E0; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1730341222;
+	bh=xqQt8+HgzhSe91OSWjrnVK5r+keJ18ApvAwnw2ZwvF4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=nfc2Q/E0GC5j/opUbRiHRLrThE3HEGjNimf56MjinQUgzobOwED6Q9HwHx86pNH/w
+	 zK2+3eo5l0NY1/ve0/ZBL20JD0ggi2Bd5UFN474+iXTbIl24ysml7Q+6hCYNXqRpCb
+	 DI5q4fuNkSi0nMfxYm+4iqmLO6O7sZjyFYT9Dshec1K14E7Mv3NxyKX8c89MVp9vsX
+	 gKktFje9JchEFCGtv1hruSUeTNY7XRRyz+WzN9PQITxGJwtIfSbgbGDPwOvML2HYYW
+	 G5mKT4BtlDAQw/pjbSgEKTpRStsMY9W8I7oGHwQtSnZUG8pfjO5TEYBSvr4wCbDmEY
+	 h6DO7zyL6Dqmw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Xf74j2jjmz4xPF;
+	Thu, 31 Oct 2024 13:20:21 +1100 (AEDT)
+Date: Thu, 31 Oct 2024 13:20:21 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Kalle Valo <kvalo@kernel.org>, Johannes Berg
+ <johannes@sipsolutions.net>, Wireless <linux-wireless@vger.kernel.org>,
+ Aditya Kumar Singh <quic_adisi@quicinc.com>, Johannes Berg
+ <johannes.berg@intel.com>, Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>, Linux Next Mailing List
+ <linux-next@vger.kernel.org>, Miri Korenblit
+ <miriam.rachel.korenblit@intel.com>, Networking <netdev@vger.kernel.org>
+Subject: Re: linux-next: manual merge of the wireless-next tree with the
+ wireless tree
+Message-ID: <20241031132021.6c7eedb2@canb.auug.org.au>
+In-Reply-To: <20241028123621.7bbb131b@canb.auug.org.au>
+References: <20241028123621.7bbb131b@canb.auug.org.au>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; boundary="Sig_/tnRE6..8MI65nh6OXU0jFZM";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 
+--Sig_/tnRE6..8MI65nh6OXU0jFZM
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/efuse.c b/drivers/net/w=
-ireless/realtek/rtlwifi/efuse.c
-> index 82cf5fb5175f..f741066c06de 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/efuse.c
-> +++ b/drivers/net/wireless/realtek/rtlwifi/efuse.c
-> @@ -164,7 +164,17 @@ void read_efuse_byte(struct ieee80211_hw *hw, u16 _o=
-ffset, u8 *pbuf)
->         struct rtl_priv *rtlpriv =3D rtl_priv(hw);
->         u32 value32;
->         u8 readbyte;
-> -       u16 retry;
-> +       u16 retry, max_attempts;
-> +
+Hi all,
 
-Declarations should be in reverse X'mas tree order.
-Just add max_attempts to a new line at proper position.=20
+On Mon, 28 Oct 2024 12:36:21 +1100 Stephen Rothwell <sfr@canb.auug.org.au> =
+wrote:
+>
+> Today's linux-next merge of the wireless-next tree got a conflict in:
+>=20
+>   drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+>=20
+> between commit:
+>=20
+>   cbe84e9ad5e2 ("wifi: iwlwifi: mvm: really send iwl_txpower_constraints_=
+cmd")
+>=20
+> from the wireless tree and commit:
+>=20
+>   188a1bf89432 ("wifi: mac80211: re-order assigning channel in activate l=
+inks")
+>=20
+> from the wireless-next tree.
+>=20
+> I fixed it up (the latter removed some code that the former moved some
+> other cde around - so I effectively just used the latter) and can carry
+> the fix as necessary. This is now fixed as far as linux-next is
+> concerned, but any non trivial conflicts should be mentioned to your
+> upstream maintainer when your tree is submitted for merging.  You may
+> also want to consider cooperating with the maintainer of the
+> conflicting tree to minimise any particularly complex conflicts.
+
+This is now a conflict between the net tree and the net-next tree.
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/tnRE6..8MI65nh6OXU0jFZM
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmci6WUACgkQAVBC80lX
+0GxPxQf9FqLkRiEWj82juUiZPr9wMOiyF4uQDIPt0jxdY0Ipv33sN98/byCOjcLs
+U4tUVDB8ok7Wd6WAsoS9okoLovZCv8xYvMFk6ngV3iWmrR4y5clA1B2Stp7DKCtH
+1wOJPy+IGleTTdc8+BMDAZ/T9iXjEhkDdKkQH0qSKAc7vsYJB/WgplzC/T4kyMK5
+/44spSzjoDZG0t7Myvg1EU4S/KFPeo+CmkbzB8c7EK/YwMzXlTBUNLqb0wvN4HJg
+GJdtQxWy/dvjxXzzygeTPBaLjjmplLXQFHHFeOqdI7wz68CJ50mOtVfxi+aJ815H
+EmaBK70IitkmNeO4SSNPQHL3TNSauA==
+=trsc
+-----END PGP SIGNATURE-----
+
+--Sig_/tnRE6..8MI65nh6OXU0jFZM--
 
