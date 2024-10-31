@@ -1,116 +1,122 @@
-Return-Path: <linux-wireless+bounces-14788-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14789-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E01BC9B7D6E
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 15:59:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E8D99B7E0F
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 16:15:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D5F01C20F2D
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 14:59:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFF4E1C219C7
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 15:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF111A256B;
-	Thu, 31 Oct 2024 14:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1578619D08A;
+	Thu, 31 Oct 2024 15:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="lyORiaDp"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tJ6zgXnl";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NKtYgqgN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B523719D899;
-	Thu, 31 Oct 2024 14:59:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00101A3BDE;
+	Thu, 31 Oct 2024 15:15:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730386748; cv=none; b=i84oAtsuP94Q6bS4Zsd6yRdfdEzyMdi2mkceyJJlasgS9eoYIDJKr+eIDLweUfh+bQlTol2+S8AAtT7agDmJOtZGEagUAFmYbPdpAEZyGZchRDC2I+nWUKFeT76etXjgU4QM/RcibEYcr7dCzOJttlWKXXX5jh/l/0mRO6EhFwI=
+	t=1730387707; cv=none; b=I+HkFFoWJHYP6gkpnXLJoq34SMevOCY7vQu8YKUsAVECbYBEfGwbIFDl0EsT/TLAcJaFGKkDVZpuMQlGkT/Nxi+o7FIkaD7h03impskU59UX7pD8z+3d+tXrZf8U0nmRBemKYdudv+PVXTldUAZxzQsJj5s68hpgNuZ8DTgBkdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730386748; c=relaxed/simple;
-	bh=aXQzHB0l2eJKfWz2KXkH3lMLBqVUQna2/zvn8aisx14=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=bnrd27U6mOWI7Ntdw3kTnXviEOj5pdEi9ToWELN4Nxa71bP3N8fjsrOTCmyiuKaUeIpMXt8CoOKZAz0PBxsAbjFNdCMD2FOucA/vS9b//hYlKC5aKY+g43MM70rqpukGB//rnruzVCJJtOGOZISl4gvWONRK/Jcg+EkVN1jrwec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=lyORiaDp; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49VAVYLs012647;
-	Thu, 31 Oct 2024 14:58:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	8t0//s2p6v4uv3QH6EBO5L5mclmjif12h2X4xx7nKWc=; b=lyORiaDpi4Agu78x
-	zVjoJg0uSp7KjU+OT2Jb88N2LiaXHg5VjPxEgPsZBVSe/zY8RvIz3ENpY44vviTa
-	7vTkT9VQ0kUU7KE9inDQJzjetC2UkCbT7Tkg1Nb4RirVTKCKcqot8UGvyLDTbQBn
-	ymTN2jDPkdJM1yhOkdhx5/2g7tdxfYjOD5Tmt6H9cX6soRb758ND3sYjKHdu1Y9G
-	eKmfgr8i2L8jyi/FAiCDZxbsO9KXipbFSp/grkptRARuYNI8xj45gHYqOzhIJA7m
-	W9sUwEKa3Q3MbwFpL6DM/mZv0iBqg09ZLvM8pKZXp5sIO0uO5ss4jozxO8vVCbnV
-	kiO7Mg==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42ky6ra8se-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 31 Oct 2024 14:58:58 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 49VEwvRU017613
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 31 Oct 2024 14:58:57 GMT
-Received: from [10.48.242.225] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 31 Oct
- 2024 07:58:57 -0700
-Message-ID: <bb1c77cb-7efc-4c85-a946-5394b9105416@quicinc.com>
-Date: Thu, 31 Oct 2024 07:58:56 -0700
+	s=arc-20240116; t=1730387707; c=relaxed/simple;
+	bh=v22nMp0NCgMKpKQ34cvZP1/P6cf3rMn2mJFAvL3jUoE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=m7AuLZYDxz/MVBkL65D9YHPhwriE4fRllfjSmHB00pjbZtvnsNH7XccNE8K+49Rj+K4Hc5qo83M7qKbzyhPjKdKCGdzByNUrWRKvdIv8MbCTLcc7X9N11gGaphNKgtsVcMj4rx1ktGisgW69IdXTjvyIc4JeKWU23mZUCu+OpPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tJ6zgXnl; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NKtYgqgN; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Nam Cao <namcao@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1730387703;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FyuxFuHZyEAgLrnvafIRcWRKTeRTsVTMh2Dczz2F9rU=;
+	b=tJ6zgXnltAPSCcx7THHEtdYpBg/DS8NrFZ02jd33CGDpy49sS9dp6ids4gtlsFpOONmg4I
+	zn7HjwH+7fNNKyZ9cagv6Kt1OFfBeDlDOrmth8blvN+yVy+xht6MIY+Q/B1/+zT2jzy/a9
+	YiMkkc2DZDsPJeuzo11TgZnctzGNyzlWwW58J/Lv6kGpv+PnU60BxSfsmV20IplsyYIg5b
+	U6K/kLmz85Fp0mG2HKnsxIY7EwC0Qbhlo+TLxalXoz7+bRdS6BZvRqIknOLX3T5V8rYstH
+	Nmf4KZmFGIZ3PRMD5OfEO6YII8zq0XXbIsT3x8DeaCR6Sbgaf86NjNOSd0y+lA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1730387703;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FyuxFuHZyEAgLrnvafIRcWRKTeRTsVTMh2Dczz2F9rU=;
+	b=NKtYgqgNGk4bIoUpaptCn6O7NlJj+lp7jKGQCDEoVRKabClUHDqq3vxb7ws7xpabxmSEfj
+	Vs0PJ7aVdW/esRDA==
+To: Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	linux-kernel@vger.kernel.org
+Cc: Jani Nikula <jani.nikula@linux.intel.com>,
+	intel-gfx@lists.freedesktop.org,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	x86@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Kalle Valo <kvalo@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Christian Brauner <brauner@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	John Stultz <jstultz@google.com>,
+	Nam Cao <namcao@linutronix.de>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	linux-wireless@vger.kernel.org
+Subject: [RESEND PATCH v2 04/19] wifi: rt2x00: Remove redundant hrtimer_init()
+Date: Thu, 31 Oct 2024 16:14:18 +0100
+Message-Id: <66116057f788e18a6603d50a554417eee459e02c.1730386209.git.namcao@linutronix.de>
+In-Reply-To: <cover.1730386209.git.namcao@linutronix.de>
+References: <cover.1730386209.git.namcao@linutronix.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath11k: add support for QCA6698AQ
-To: Miaoqing Pan <quic_miaoqing@quicinc.com>, <kvalo@kernel.org>
-CC: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20241031000541.3331606-1-quic_miaoqing@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Content-Language: en-US
-In-Reply-To: <20241031000541.3331606-1-quic_miaoqing@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: xvUkR7xcZWE866uKdW0vEvZpQ3NEQ1Zn
-X-Proofpoint-ORIG-GUID: xvUkR7xcZWE866uKdW0vEvZpQ3NEQ1Zn
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 spamscore=0
- clxscore=1015 phishscore=0 mlxscore=0 impostorscore=0 bulkscore=0
- priorityscore=1501 mlxlogscore=755 lowpriorityscore=0 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2410310113
+Content-Transfer-Encoding: quoted-printable
 
-On 10/30/2024 5:05 PM, Miaoqing Pan wrote:
-> QCA6698AQ IP core is the same as WCN6855 hw2.1, they share the same
-> PCI device ID, the same major and minor version numbers, the same
-> register address, and same HAL descriptors, etc. The most significant
-> difference is that QCA6698AQ has different RF, IPA, thermal, etc.
-> 
-> Follow the approach done in commit 5dc9d1a55e95 ("wifi: ath11k: add
-> support for QCA2066"), enumerate the subversion number to identify the
-> specific card.
-> 
-> Tested-on: QCA6698AQ hw2.1 PCI WLAN.HSP.1.1-04479-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1
-> 
-> Signed-off-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
+rt2x00usb_probe() executes a hrtimer_init() for txstatus_timer. Afterwards,
+rt2x00lib_probe_dev() is called which also initializes this txstatus_timer
+with the same settings.
 
-Am I correct that this satisfies at least a subset of the devices you were
-trying to support with the following?
-https://lore.kernel.org/all/20241024002514.92290-1-quic_miaoqing@quicinc.com/
+Remove the redundant hrtimer_init() call in rt2x00usb_probe().
 
-If so, can you reply to that thread, pointing to this new patch, and elaborate
-on what is now supported and what still requires ath11k to support
-board-specific firmware overrides?
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Acked-by: Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org
+---
+ drivers/net/wireless/ralink/rt2x00/rt2x00usb.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-/jeff
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c b/drivers/net/w=
+ireless/ralink/rt2x00/rt2x00usb.c
+index 8fd22c69855f..a6d50149e0c3 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
+@@ -823,8 +823,6 @@ int rt2x00usb_probe(struct usb_interface *usb_intf,
+=20
+ 	INIT_WORK(&rt2x00dev->rxdone_work, rt2x00usb_work_rxdone);
+ 	INIT_WORK(&rt2x00dev->txdone_work, rt2x00usb_work_txdone);
+-	hrtimer_init(&rt2x00dev->txstatus_timer, CLOCK_MONOTONIC,
+-		     HRTIMER_MODE_REL);
+=20
+ 	retval =3D rt2x00usb_alloc_reg(rt2x00dev);
+ 	if (retval)
+--=20
+2.39.5
+
 
