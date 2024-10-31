@@ -1,138 +1,123 @@
-Return-Path: <linux-wireless+bounces-14786-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14787-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 390889B7D03
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 15:36:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D31849B7D3D
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 15:46:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69C941C21723
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 14:36:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FED31F241C9
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 14:46:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DBDA181B8D;
-	Thu, 31 Oct 2024 14:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 795741A08B5;
+	Thu, 31 Oct 2024 14:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QkxjHHWw";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="P2Pk2/hy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EsUPYw+m"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2BD1A0BFA;
-	Thu, 31 Oct 2024 14:36:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631295A79B;
+	Thu, 31 Oct 2024 14:46:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730385383; cv=none; b=R8wj6y/ZXul6TFDYhY5Sj7dKQeUI0EFAs1YT+xpVnm82EFavedMma5oO5jnNwq5meNPodfxmhyS3Wkrq+7171WpeWrN/KwRLmRu81IVJ+OH1eTpZoLU3dRh+Tg/81AFJWzSYa3H423cPYLkG55jvy72feL3gBwHcqHa11JesSAE=
+	t=1730385987; cv=none; b=UM44zPmc5vU+T4KFIw9I9a7mS415d4PGVWboDZzAOVCWAyEKAuPQqb5HuGHGcStZ1wudkiQFikLhqk+j5hR7UnyeEb29XKL8ePajsP/+c5XfHDwjGpalCavL5HoPr9sMTJoI/v+DZIYiYiLY0FyturJ1uLkq0xuXcAwWCZQ+VkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730385383; c=relaxed/simple;
-	bh=MlUBwT++RbBkyEa3T3TimRZQSnvqIO7eCYZnB8HFFJI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FhzUjhRJzY9GmK63tHon7+Mq7KB5j+zqh6a8b9QkI99Ajsl+dn/bGB6pF1RtsyNwJW1EVqRNq/4yUCEKv0bJn1AGa1un3nXcDg0iFVZ7o1O+14oN6UGJe7iNww+Z3buIBRwf31Uob3ZmKY4sN+Fmb3NzU0dTg4cdkuo4T1fDOLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QkxjHHWw; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=P2Pk2/hy; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Thu, 31 Oct 2024 15:36:09 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1730385377;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zFWtjZRQTdWduLAor0O9LykkVJ5XjmX1JLbKlMKlkpk=;
-	b=QkxjHHWwmKJ1qdobe4I2Y+atw8qx+ISgFF1tjNZwtDSp0ORfysW1Jcz5dp7zR6Js79bRy0
-	i226xrqs413mzDeBgw1jRomNbeGJzDtZ7nBO8IhD3ecS8/pVOatosqp4tnkxCAtEL79Rzw
-	AOwBVAxC7aT6UbutjROR9VsFXnKPNja80g5Bbudr1qkS/7EXziQvg4/kUep7ghULm/MhJq
-	CPy4J2UlWVH4QqRN7yanD/6ZWYAmHUF0rieqmdbhcgHGxoEUG6WmEKhoEtF+ZlJZVuiams
-	KVYeGXjlzGMc6rW3IS9kkkUjYwTDunfgJIxnWdO+pv5552kLTu4iVR2YXuJ/EQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1730385377;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zFWtjZRQTdWduLAor0O9LykkVJ5XjmX1JLbKlMKlkpk=;
-	b=P2Pk2/hy3uejlXJUrAHf0UJ4GdC6Jir4eJmEy04sEuesJqD6RKJD3sEgNSp8aqGq+J/BLQ
-	+Y3OU1IHoExp3wDQ==
-From: Nam Cao <namcao@linutronix.de>
-To: Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org
-Cc: Jani Nikula <jani.nikula@linux.intel.com>,
-	intel-gfx@lists.freedesktop.org,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, x86@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>, Kalle Valo <kvalo@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Christian Brauner <brauner@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	John Stultz <jstultz@google.com>,
-	Oliver Hartkopp <socketcan@hartkopp.net>, kvm@vger.kernel.org,
-	linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2 00/19] hrtimers: Consolidate hrtimer initialization -
- Part 1
-Message-ID: <20241031143609.bX-WHDeK@linutronix.de>
-References: <20241031-hrtimer_setup_p1_v2-v2-0-23400656575a@linutronix.de>
+	s=arc-20240116; t=1730385987; c=relaxed/simple;
+	bh=G3k8YCPLvT/vD+woarb58oSt9eiPRkiyHHDZR/GB9XA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=e0wMu5AOEy8Ov2FZa+GSSVBF411B2OPfiFSSsQy+p9JxCvfltLtgPZrMX5M+hGTBxDVHEyznUI6FyeWWNncS7YWOI9SfflXld30mfnZQTD+4rCanFjFqHZMQedRHXDQJmwqcBIZ9recu0rmThaQ1h0ihXRUAYOxGjHz5EKfez9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EsUPYw+m; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-37d47eff9acso673304f8f.3;
+        Thu, 31 Oct 2024 07:46:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730385984; x=1730990784; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=w+R2z2Hq8YdiXOzRMQtJlJNAR8ul2IAPxkBdT8ZGZaI=;
+        b=EsUPYw+mN7HRSE8C7FFLIkXqmtMGt7p7x8ZcG7V6w4vnAYG42sgL1VpABunm/yEjyG
+         qtfIeqp/Z5LCbpc0Tw5gfyO37Z/FgyOmba5BSlSBr3Pg793Pl85YM1HKEJjFnqEMX6Wy
+         9bHG7cieYCkcXi4o9RzY4nnTMZ97qTrIPQqmMvMKcqIj+ijmqyhNQ1Y7YBv01J+y4IUo
+         riTSWVQoZYcQZWLmONWhQvgI6rKQIAqgCrLaAAtQFs6mISHy5T9W9B2g86MoWhd/4fIE
+         fKOTkWB3nOo47JllPywCQzpzaHBk2xuZ6kPdo5CFVB+ebvTPu58ilGRYNy+ZI8ZLc5Os
+         233g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730385984; x=1730990784;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=w+R2z2Hq8YdiXOzRMQtJlJNAR8ul2IAPxkBdT8ZGZaI=;
+        b=XGYYmy+AHN8v4FROaXMMKxrl+9GuTcFczyWRG6byLqnHrHBx93tWLDnNrLf8LNHhCV
+         APJiDbcdH7kmdO/YNJ+LfZNDAd18V8dDU5tvMJaxlP8CEUl1uzQozy+bBZTFOWlr8zmt
+         CfYt7ieRAAczl/hE+swHgVnKrtbM1MpTW2OK4w5RiZS0wT4pfWiMzr1mMU0dlD8l3PUv
+         lWMRojbKLf2/U4z0KCfBfVn109Rygo4Vyq7IyVdc1gZ+0IMgV/b0ntW9KMAi8d8H5ZLk
+         ixGTno7mV0m46eGeINTEm7KN90gNUncxdXNn4Fo42H4Qwfu5i0Hox1UnFQRK8ocoZZlE
+         N5/A==
+X-Forwarded-Encrypted: i=1; AJvYcCU6dVq0RmseTX2lFrm+jYmC/LJ8h/c6Ha+39XQJ44Pyan70g9e8BNXzFPEbwmFbZ5K1ItXSI0y1@vger.kernel.org, AJvYcCUMGPqMwFD3ux3D3u0gs1uey8yXxYtW1Qs+rWd17aGurcqZjOspELsSgKcLUXxsTf/ObYSqRD0X2cXSpoU=@vger.kernel.org, AJvYcCWIvQYLuzTrPQmlO+qLfkRJRDtOBrE5j+Pw7pFvfq+VnU/GvNwofHwarNNcX/Bo1gecLTNvvzHGiRHr30URyUg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzprEfrr9s8yakoeUj7YioPQrJ8JCNwsu3qZxPoohtsc2dZlWAT
+	f9Vb90cXajELKaAAoTAS5N7G27JW3gAYOn2b4duuZe+f+nXH542O
+X-Google-Smtp-Source: AGHT+IH9Re7qI11bFWjzdKhmKNOoTKp5aILEFXvdHmzSO7KktOHqim6bI57kv3Ke9l9/aFvrvDBnCQ==
+X-Received: by 2002:a5d:6da6:0:b0:37d:501f:483f with SMTP id ffacd0b85a97d-381c7ab2fb6mr155006f8f.44.1730385983595;
+        Thu, 31 Oct 2024 07:46:23 -0700 (PDT)
+Received: from ?IPV6:2a02:8389:41cf:e200:d7b9:afdb:c541:d023? (2a02-8389-41cf-e200-d7b9-afdb-c541-d023.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:d7b9:afdb:c541:d023])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c10d439esm2316878f8f.44.2024.10.31.07.46.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 31 Oct 2024 07:46:23 -0700 (PDT)
+Message-ID: <fc0657cd-083c-4abe-8f27-0b5a49cdd35a@gmail.com>
+Date: Thu, 31 Oct 2024 15:46:21 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241031-hrtimer_setup_p1_v2-v2-0-23400656575a@linutronix.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] wifi: brcmfmac: release 'root' node in all execution
+ paths
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Arend van Spriel <arend.vanspriel@broadcom.com>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+ Hector Martin <marcan@marcan.st>, =?UTF-8?Q?Alvin_=C5=A0ipraga?=
+ <alsi@bang-olufsen.dk>, linux-wireless@vger.kernel.org,
+ brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20241030-brcmfmac-of-cleanup-v1-1-0b90eefb4279@gmail.com>
+ <173038429759.539202.17634636965892286169.kvalo@kernel.org>
+Content-Language: en-US, de-AT
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+In-Reply-To: <173038429759.539202.17634636965892286169.kvalo@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-I just learned the hard way that git-send-email doesn't work for a .mbox
-file including multiple emails. Sorry for the noises, please ignore this
-one. I will resend it shortly.
+On 31/10/2024 15:18, Kalle Valo wrote:
+> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+> 
+>> The fixed patch introduced an additional condition to enter the scope
+>> where the 'root' device_node is released (!settings->board_type,
+>> currently 'err'), which avoid decrementing the refcount with a call to
+>> of_node_put() if that second condition is not satisfied.
+>>
+>> Move the call to of_node_put() to the point where 'root' is no longer
+>> required to avoid leaking the resource if err is not zero.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 7682de8b3351 ("wifi: brcmfmac: of: Fetch Apple properties")
+>> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> 
+> Wireless patches go to wireless trees, not net. But no need to resend because
+> of this. And I think wireless-next is approriate for this fix.
+> 
 
-On Thu, Oct 31, 2024 at 03:19:21PM +0100, Nam Cao wrote:
-> This is a follow up to version 1, which can be found here:
-> 
->     https://lore.kernel.org/lkml/cover.1729864615.git.namcao@linutronix.de/
-> 
-> hrtimers must be initialized with a hrtimer_init() variant, and after that
-> the timer's callback function must be setup separately.
-> 
-> This seperate initialization is error prone and awkward to use. The
-> seperate initialization is also problematic for a clean Rust abstraction.
-> 
-> A combined setup function like timer_setup() is less error prone and
-> simpler to use.
-> 
-> This first part of the conversion provides:
-> 
->   - a set of hrtimer_setup*() variants, which take the function pointer as
->     argument.
-> 
->   - hrtimer_update_function() which allows to change the callback function
->     after initialization with the proper safety checks in place.
-> 
->   - conversion of the hrtimer_init*_on_stack() variants
-> 
->   - some minor cleanups
-> 
-> The remaining users will be converted in follow up series.
-> 
-> Most conversions were done with Coccinelle. See sematic patch below.
-> 
-> Changes versus v1:
->   - Open code kvm_xen_init_vcpu() (Sean)
->   - Drop the can/bcm patch (Oliver)
->   - Folded the removal of hrtimer_init_sleeper() (tglx)
->   - Update change logs and cover letter
-> 
-> The series applies on top of:
-> 
->     git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git timers/core
-> 
-> and is also available from git:
-> 
->     git://git.kernel.org/pub/scm/linux/kernel/git/tglx/devel.git hrtimer-setup-part1-v2
-> 
-> Best regards,
-> 
-> Nam
+
+Sorry, the second link from your signature explains very well what I
+should have done. I will keep that in mind for the next patch(es) to
+wireless.
+
+Thank you and best regards,
+Javier Carrasco
 
