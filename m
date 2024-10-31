@@ -1,62 +1,124 @@
-Return-Path: <linux-wireless+bounces-14770-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14771-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 710A59B7766
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 10:26:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F091F9B777A
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 10:29:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FC6028729B
-	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 09:26:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03A9B1C217F7
+	for <lists+linux-wireless@lfdr.de>; Thu, 31 Oct 2024 09:29:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F16402AE9A;
-	Thu, 31 Oct 2024 09:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF2B9197A6A;
+	Thu, 31 Oct 2024 09:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="RhZhe9QY"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DCABTsmQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2DE1953BB
-	for <linux-wireless@vger.kernel.org>; Thu, 31 Oct 2024 09:25:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C74719408B
+	for <linux-wireless@vger.kernel.org>; Thu, 31 Oct 2024 09:28:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730366733; cv=none; b=j3DZpVUalYCabSjcYWwzCMlSKdUZp4RO7UFr5Fp9D27uccLWVYkMf2gGqoOOqHU3SCnvjlfmTpbHJFGduWRJnqaxuddMRFxiwStDA9i0Dn4+ULdtDt0nhXYWkuemvGK1Ze3DsPFVzRMdztT7fflWOFnUEzRF1A3BSNTz2cnkCPw=
+	t=1730366921; cv=none; b=ndZOzIUUrJBo6VW036q9kA9VoZt/FhcVqLX0smCK5i7gRssbm5eoIiHtddX4KEjvd0i2Yues5X2saXcDLGOsM/CnTUvrzGz9fnCmqBIevVpiyRdA/+cfJtHdUClYURsbacbmW/HVSEfP3NreASrC1Ediww3ukIakBkZV0NzuhlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730366733; c=relaxed/simple;
-	bh=igU3YD2gTFvL6SRw+zvMfGhyI7kshb+qH0gLKFBFPik=;
+	s=arc-20240116; t=1730366921; c=relaxed/simple;
+	bh=d6wn1lKONgblnZ++1qSDC4UeXUH/h7Owd02AbOfZVIQ=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=oTRD6vH+zOSKu35RkCT6EVcjk7Ub/ht13cmGjjwRDaHhZbE2aJ4C2WFsakanoHqXbvCHim+8+H038uXzu42hFIoH2f3YnFdQdv5f8JCc6JenlR3ooZpcs/FYE7csWnda4MIOG0PvOl+11tuUDGhIgcQ7rCGhp2UA48RCkjQvTYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=RhZhe9QY; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=v4XL6NR0MlbeM5C9eez14VUJKm+e/odrQvpRS4cSaz4=;
-	t=1730366731; x=1731576331; b=RhZhe9QY93kUvtLIeFFBzX895OtWvtDLFbS8FhwHbtZCNVo
-	ZrXZ43qat+W4xEXMpumwD5j9JIa/zTwBJrzHH2JLVrcef9aGQSrPgKLRucaP7GLWEy6y/vGa3ABxD
-	PlZxz9Seu1QO5vPon6u+CZevRr46N1TmS50edpAYQ/DB6pysB5DohqZgsuLWN6y3vmmYu0SKrlCiP
-	SBZBEzCqTtTOL0/VVvZNjqh+6fqbvv5k/ToIkPY+exGEKVUK/9PBB1OcErXwog0n0EMMXROfwe87g
-	FzJh7iAMICMNvYuf7rxZtCmIeDUXZ3SgxsBjJxAL4zVWkCtQmpISk0W08onHNxvg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <benjamin@sipsolutions.net>)
-	id 1t6RQl-0000000ANPk-1eLJ;
-	Thu, 31 Oct 2024 10:25:27 +0100
-Message-ID: <b07102047bf2f076c090948b1a06ae4f22a881ff.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: cfg80211: Correctly handle Medium Synchronization
- Delay
-From: Benjamin Berg <benjamin@sipsolutions.net>
-To: Lingbo Kong <quic_lingbok@quicinc.com>, ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-Date: Thu, 31 Oct 2024 10:25:23 +0100
-In-Reply-To: <3a74f2f1-fd9f-46a5-87c1-fdc0235a50e5@quicinc.com>
-References: <20241030025515.16004-1-quic_lingbok@quicinc.com>
-	 <e56621b7a8b229f726d644ffde7b98ba0c11b06b.camel@sipsolutions.net>
-	 <3a74f2f1-fd9f-46a5-87c1-fdc0235a50e5@quicinc.com>
+	 Content-Type:MIME-Version; b=o12qd2E3vO1k3wwxHIlTASTB/4h32VVFfVvCYZthc/i2vmdpT9h7fs7BXpBRJ4l7nLC26msEIfvegFvQrOEmvLFgNxGO3fxZkurEpfemK0cSeIprY0hCodPc+s1LFOkaSLIFQNa6iY69kSL1tB3+gdgAB1paSeogZHKfklM5Zhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DCABTsmQ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1730366918;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d6wn1lKONgblnZ++1qSDC4UeXUH/h7Owd02AbOfZVIQ=;
+	b=DCABTsmQrlrqZPPC8obhqarMKF6G/CAJS7qc5NNpwMiMvoKhAJrqkJ2rRJVOdK086ArbgF
+	GtGT0Df/MSUFQmBhPQIAaj/eNGr2TT12SWRcpooAXH7XLDutptpnRQnTrg7Y5Vp43pxVP0
+	tmJW2c2lsjnCPirM6rya5ZzdoqhOkgU=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-487-Wne8Kqa4ODynRB2UwF7frg-1; Thu, 31 Oct 2024 05:28:35 -0400
+X-MC-Unique: Wne8Kqa4ODynRB2UwF7frg-1
+Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-2fcd9765852so3882731fa.3
+        for <linux-wireless@vger.kernel.org>; Thu, 31 Oct 2024 02:28:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730366914; x=1730971714;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=d6wn1lKONgblnZ++1qSDC4UeXUH/h7Owd02AbOfZVIQ=;
+        b=g4QfTChcvTv5Obhw9rgqRfGHdbL7ZwbjeKotMrK+RNUaJNTiRoBovjmv9g6ewk97mi
+         2tjISk+Zzy/BN8g2AjAw7obYAZntMTumSOk+GxpjiBUx//9X3HtEmq+tFgK4BBbpSmNu
+         jmBZEt0nQVJxgw42IsyxxQ2wp57aigM8Cvx7HZt3o6P0WtXh3dY8jp/0bAX8CWkZCnuz
+         2teXmI0989ibcMqZRr3W7qpsud+cB9uI2FAQmq47p2dwd4PU56IdKvvleCn95OIB9Fwl
+         kgjUa7vJvE2/FeWOuIjThUW3B2GVwQ0x4IZJBnZvLLUyIcDH7jwAaoXmRb+lw4W3fo1K
+         c2sA==
+X-Forwarded-Encrypted: i=1; AJvYcCWE8OqJzS5rKADzTOl3NT78DQ8cc39CmmJr8A88eutwIHTppDfTPWD7gDeWiWvJfZ8rs/sh3jDKY+lMsTFv4w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+LCMJ9YH8gS5FXKqxXzFxMXhl7UaEED01t+3Ch1nExeneGY7+
+	JlN9JHboPaKt0j9PDNHa7X/higIc8pVJLDZiktNbApGmPXyEHEZgomOexl4uo7i9tiS5oHUfB1A
+	t9u5jmYFB+9UyT0up15tIxuk1rdYggAJB/LeB3xRRGXsx8jxdqBBR6Bxb05/L2ofO
+X-Received: by 2002:a2e:b8cf:0:b0:2fb:58b1:3731 with SMTP id 38308e7fff4ca-2fd058fbda2mr43395221fa.6.1730366913711;
+        Thu, 31 Oct 2024 02:28:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEinR4wm9boDAsEkZ9V3ivoUKK9VQmKYoIEQNVXO7Y2sjsmX4v4AmQcNIDCbC3ckt5R0LeFLA==
+X-Received: by 2002:a2e:b8cf:0:b0:2fb:58b1:3731 with SMTP id 38308e7fff4ca-2fd058fbda2mr43394381fa.6.1730366913125;
+        Thu, 31 Oct 2024 02:28:33 -0700 (PDT)
+Received: from dhcp-64-16.muc.redhat.com (nat-pool-muc-t.redhat.com. [149.14.88.26])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4327d5e94cdsm18626575e9.28.2024.10.31.02.28.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 31 Oct 2024 02:28:32 -0700 (PDT)
+Message-ID: <f13c91f2d1e7672e1d9983425117eeb6347c0ea1.camel@redhat.com>
+Subject: Re: [PATCH 00/13] Remove implicit devres from pci_intx()
+From: Philipp Stanner <pstanner@redhat.com>
+To: Takashi Iwai <tiwai@suse.de>, Bjorn Helgaas <helgaas@kernel.org>
+Cc: Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, 
+ Sergey Shtylyov <s.shtylyov@omp.ru>, Basavaraj Natikar
+ <basavaraj.natikar@amd.com>, Jiri Kosina <jikos@kernel.org>,  Benjamin
+ Tissoires <bentiss@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Alex Dubov <oakad@yahoo.com>,
+ Sudarsana Kalluru <skalluru@marvell.com>, Manish Chopra
+ <manishc@marvell.com>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Rasesh Mody <rmody@marvell.com>,
+ GR-Linux-NIC-Dev@marvell.com, Igor Mitsyanko <imitsyanko@quantenna.com>,
+ Sergey Matyukevich <geomatsi@gmail.com>, Kalle Valo <kvalo@kernel.org>,
+ Sanjay R Mehta <sanju.mehta@amd.com>, Shyam Sundar S K
+ <Shyam-sundar.S-k@amd.com>, Jon Mason <jdmason@kudzu.us>, Dave Jiang
+ <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>, Bjorn Helgaas
+ <bhelgaas@google.com>, Alex Williamson <alex.williamson@redhat.com>,
+ Juergen Gross <jgross@suse.com>, Stefano Stabellini
+ <sstabellini@kernel.org>, Oleksandr Tyshchenko
+ <oleksandr_tyshchenko@epam.com>, Jaroslav Kysela <perex@perex.cz>, Takashi
+ Iwai <tiwai@suse.com>, Chen Ni <nichen@iscas.ac.cn>, Mario Limonciello
+ <mario.limonciello@amd.com>, Ricky Wu <ricky_wu@realtek.com>, Al Viro
+ <viro@zeniv.linux.org.uk>, Breno Leitao <leitao@debian.org>, Kevin Tian
+ <kevin.tian@intel.com>, Thomas Gleixner <tglx@linutronix.de>, Ilpo
+ =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>, Andy
+ Shevchenko <andriy.shevchenko@linux.intel.com>, Mostafa Saleh
+ <smostafa@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Yi Liu
+ <yi.l.liu@intel.com>,  Christian Brauner <brauner@kernel.org>, Ankit
+ Agrawal <ankita@nvidia.com>, Eric Auger <eric.auger@redhat.com>, Reinette
+ Chatre <reinette.chatre@intel.com>, Ye Bin <yebin10@huawei.com>, Marek
+ =?ISO-8859-1?Q?Marczykowski-G=F3recki?= <marmarek@invisiblethingslab.com>,
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, Peter Ujfalusi
+ <peter.ujfalusi@linux.intel.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Kai Vehmanen
+ <kai.vehmanen@linux.intel.com>,  Rui Salvaterra <rsalvaterra@gmail.com>,
+ linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-input@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-wireless@vger.kernel.org, ntb@lists.linux.dev,
+ linux-pci@vger.kernel.org,  kvm@vger.kernel.org,
+ xen-devel@lists.xenproject.org, linux-sound@vger.kernel.org
+Date: Thu, 31 Oct 2024 10:28:29 +0100
+In-Reply-To: <87plngwrws.wl-tiwai@suse.de>
+References: <20241015185124.64726-1-pstanner@redhat.com>
+	 <20241030221737.GA1223682@bhelgaas> <87plngwrws.wl-tiwai@suse.de>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
@@ -66,277 +128,155 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
 
-Hi,
-
-On Thu, 2024-10-31 at 13:23 +0800, Lingbo Kong wrote:
-> On 2024/10/30 18:23, Benjamin Berg wrote:
-> > Hi,
+On Thu, 2024-10-31 at 10:19 +0100, Takashi Iwai wrote:
+> On Wed, 30 Oct 2024 23:17:37 +0100,
+> Bjorn Helgaas wrote:
 > >=20
-> > On Wed, 2024-10-30 at 10:55 +0800, Lingbo Kong wrote:
-> > > Currently, when the driver attempts to connect to an AP MLD with mult=
-iple
-> > > APs, the cfg80211_mlme_check_mlo_compat() function requires the Mediu=
-m
-> > > Synchronization Delay values from different APs of the same AP MLD to=
- be
-> > > equal, which may result in connection failures.
+> > On Tue, Oct 15, 2024 at 08:51:10PM +0200, Philipp Stanner wrote:
+> > > @Driver-Maintainers: Your driver might be touched by patch
+> > > "Remove
+> > > devres from pci_intx()". You might want to take a look.
 > > >=20
-> > > This is because when the driver receives a multi-link probe response =
-from
-> > > an AP MLD with multiple APs, cfg80211 updates the Elements for each A=
-P
-> > > based on the multi-link probe response. If the Medium Synchronization=
- Delay
-> > > is set in the multi-link probe response, the Elements for each AP bel=
-onging
-> > > to the same AP MLD will have the Medium Synchronization Delay set
-> > > simultaneously. If non-multi-link probe responses are received from
-> > > different APs of the same MLD AP, cfg80211 will still update the Elem=
-ents
-> > > based on the non-multi-link probe response. Since the non-multi-link =
-probe
-> > > response does not set the Medium Synchronization Delay
-> > > (IEEE 802.11be-2024-35.3.4.4), if the Elements from a non-multi-link =
-probe
-> > > response overwrite those from a multi-link probe response that has se=
-t the
-> > > Medium Synchronization Delay, the Medium Synchronization Delay values=
- for
-> > > APs belonging to the same AP MLD will not be equal. This discrepancy =
-causes
-> > > the cfg80211_mlme_check_mlo_compat() function to fail, leading to
-> > > connection failures. Commit ccb964b4ab16
-> > > ("wifi: cfg80211: validate MLO connections better") did not take this=
- into
-> > > account.
-> >=20
-> > The specification confuses me a bit and I am probably missing
-> > something.
-> >=20
-> > > To address this issue, add a u16 type member to the struct cfg80211_b=
-ss to
-> > > store the Medium Synchronization Delay. When the driver receives a pr=
-obe
-> > > response with the Medium Synchronization Delay set, update this membe=
-r=E2=80=99s
-> > > value; otherwise, do not update it. Additionally, modify the paramete=
-r list
-> > > of cfg80211_mlme_check_mlo_compat() so that this member variable can =
-be
-> > > directly accessed within the cfg80211_mlme_check_mlo_compat() functio=
-n viaq
-> > > a pointer to the struct cfg80211_bss. This will allow checking whethe=
-r the
-> > > Medium Synchronization Delay values from different APs of the same AP=
- MLD
-> > > are equal.
-> >=20
-> > This feels like a recipe for failures. Whether or not an ML-Probe
-> > Response is seen should not generally affect the validity of a BSS.
-> > Which means that the validity check itself may be incorrect.
-> >=20
-> > Maybe we should only compare the values if the subfield has been
-> > included?
-> >=20
-> >=20
-> > That said, do you understand when exactly the subfield should be
-> > included? It seems that it may be carried in the "(Re)Association
-> > Response", in which case it would be consistent anyway.
-> >=20
-> > The ML probe response part seems a bit specific. Could it be that this
-> > is intended to be used by NSTR APs only, in which case there would not
-> > be a beacon on the secondary AP. If that is the case, then there
-> > wouldn't be much of an inconsistency (though we would still need to be
-> > a bit careful).
-> >=20
-> > Benjamin
-> >=20
->=20
-> hi=EF=BC=8Cbenjamin,
->=20
-> regarding your comment, I believe removing this validity check might be=
-=20
-> the easiest solution. As for the scenarios where this subfield would be=
-=20
-> included, I referred to the IEEE 802.11be specification. According to
-> section 35.3.16.8, it states:
->=20
-> A STA shall not start a MediumSyncDelay timer unless the STA is one of=
-=20
-> the following:
-> =E2=80=94 a non-AP STA affiliated with a non-AP MLD operating on an NSTR =
-link
-> pair or
-> =E2=80=94 a non-AP STA affiliated with a non-AP MLD operating on an EMLSR=
- link or
-> =E2=80=94 a non-AP STA affiliated with a non-AP MLD operating on an EMLMR=
- link or
-> =E2=80=94 an AP affiliated with an NSTR mobile AP MLD operating on the=
-=20
-> nonprimary link of an NSTR link pair.
-
-Right, which does seem to imply that a non-NSTR AP can very well set a
-Medium Delay Synchronization.
-
-> Regarding the statement =E2=80=9CCould it be that this is intended to be =
-used by=20
-> NSTR APs only,=E2=80=9D I did not find any explicit indication in the spe=
-c that=20
-> the multi-link probe response carrying the medium sync delay subfield is=
-=20
-> solely applicable to NSTR APs.
->=20
-> Additionally, do you have any suggestions on how to address this issue?=
-=F0=9F=99=82
-
-Not really. I don't grasp the intention of the specification here. But
-if an AP may include the field in an ML Probe Response, then we
-obviously cannot rely on the value to be consistent.
-
-Seems to me that the option to remove the check is still the best way
-forward right now.
-
-Benjamin
-
+> > > Changes since the RFC [1]:
+> > > =C2=A0 - Add a patch deprecating pci{m}_intx(). (Heiner, Andy, Me)
+> > > =C2=A0 - Add Acked-by's already given.
+> > > =C2=A0 - Export pcim_intx() as a GPL function. (Alex)
+> > > =C2=A0 - Drop patch for rts5280, since this driver will be removed
+> > > quite
+> > > =C2=A0=C2=A0=C2=A0 soon. (Philipp Hortmann, Greg)
+> > > =C2=A0 - Use early-return in pci_intx_unmanaged() and pci_intx().
+> > > (Andy)
 > > >=20
-> > > Fixes: ccb964b4ab16 ("wifi: cfg80211: validate MLO connections better=
-")
-> > > Signed-off-by: Lingbo Kong <quic_lingbok@quicinc.com>
-> > > ---
-> > > =C2=A0=C2=A0include/net/cfg80211.h |=C2=A0 4 ++++
-> > > =C2=A0=C2=A0net/wireless/mlme.c=C2=A0=C2=A0=C2=A0 | 11 +++++++----
-> > > =C2=A0=C2=A0net/wireless/scan.c=C2=A0=C2=A0=C2=A0 | 15 ++++++++++++++=
-+
-> > > =C2=A0=C2=A03 files changed, 26 insertions(+), 4 deletions(-)
+> > > Hi all,
 > > >=20
-> > > diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-> > > index 27acf1292a5c..ebeb305c1d0c 100644
-> > > --- a/include/net/cfg80211.h
-> > > +++ b/include/net/cfg80211.h
-> > > @@ -2956,6 +2956,8 @@ struct cfg80211_bss_ies {
-> > > =C2=A0=C2=A0 * @cannot_use_reasons: the reasons (bitmap) for not bein=
-g able to connect,
-> > > =C2=A0=C2=A0 *	if @restrict_use is set and @use_for is zero (empty); =
-may be 0 for
-> > > =C2=A0=C2=A0 *	unspecified reasons; see &enum nl80211_bss_cannot_use_=
-reasons
-> > > + * @med_sync_delay: Medium Synchronization delay as described in
-> > > + *	IEEE 802.11be-2024 Figure 9-1074q.
-> > > =C2=A0=C2=A0 * @priv: private area for driver use, has at least wiphy=
-->bss_priv_size bytes
-> > > =C2=A0=C2=A0 */
-> > > =C2=A0=C2=A0struct cfg80211_bss {
-> > > @@ -2986,6 +2988,8 @@ struct cfg80211_bss {
-> > > =C2=A0=C2=A0	u8 use_for;
-> > > =C2=A0=C2=A0	u8 cannot_use_reasons;
-> > > =C2=A0=20
-> > > +	u16 med_sync_delay;
-> > > +
-> > > =C2=A0=C2=A0	u8 priv[] __aligned(sizeof(void *));
-> > > =C2=A0=C2=A0};
-> > > =C2=A0=20
-> > > diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
-> > > index 4dac81854721..ae00c36779d2 100644
-> > > --- a/net/wireless/mlme.c
-> > > +++ b/net/wireless/mlme.c
-> > > @@ -326,7 +326,9 @@ void cfg80211_oper_and_vht_capa(struct ieee80211_=
-vht_cap *vht_capa,
-> > > =C2=A0=C2=A0}
-> > > =C2=A0=20
-> > > =C2=A0=C2=A0static int
-> > > -cfg80211_mlme_check_mlo_compat(const struct ieee80211_multi_link_ele=
-m *mle_a,
-> > > +cfg80211_mlme_check_mlo_compat(const struct cfg80211_bss *bss_a,
-> > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const struct cfg80211_bss *b=
-ss_b,
-> > > +			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const struct ieee80211_multi=
-_link_elem *mle_a,
-> > > =C2=A0=C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const struct ieee=
-80211_multi_link_elem *mle_b,
-> > > =C2=A0=C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct netlink_ex=
-t_ack *extack)
-> > > =C2=A0=C2=A0{
-> > > @@ -340,8 +342,7 @@ cfg80211_mlme_check_mlo_compat(const struct ieee8=
-0211_multi_link_elem *mle_a,
-> > > =C2=A0=C2=A0		return -EINVAL;
-> > > =C2=A0=C2=A0	}
-> > > =C2=A0=20
-> > > -	if (ieee80211_mle_get_eml_med_sync_delay((const u8 *)mle_a) !=3D
-> > > -	=C2=A0=C2=A0=C2=A0 ieee80211_mle_get_eml_med_sync_delay((const u8 *=
-)mle_b)) {
-> > > +	if (bss_a->med_sync_delay !=3D bss_b->med_sync_delay) {
-> > > =C2=A0=C2=A0		NL_SET_ERR_MSG(extack, "link EML medium sync delay mism=
-atch");
-> > > =C2=A0=C2=A0		return -EINVAL;
-> > > =C2=A0=C2=A0	}
-> > > @@ -426,7 +427,9 @@ static int cfg80211_mlme_check_mlo(struct net_dev=
-ice *dev,
-> > > =C2=A0=C2=A0		if (WARN_ON(!mles[i]))
-> > > =C2=A0=C2=A0			goto error;
-> > > =C2=A0=20
-> > > -		if (cfg80211_mlme_check_mlo_compat(mles[req->link_id], mles[i],
-> > > +		if (cfg80211_mlme_check_mlo_compat(req->links[req->link_id].bss,
-> > > +						=C2=A0=C2=A0 req->links[i].bss,
-> > > +						=C2=A0=C2=A0 mles[req->link_id], mles[i],
-> > > =C2=A0=C2=A0						=C2=A0=C2=A0 extack)) {
-> > > =C2=A0=C2=A0			req->links[i].error =3D -EINVAL;
-> > > =C2=A0=C2=A0			goto error;
-> > > diff --git a/net/wireless/scan.c b/net/wireless/scan.c
-> > > index 1c6fd45aa809..6ad935475484 100644
-> > > --- a/net/wireless/scan.c
-> > > +++ b/net/wireless/scan.c
-> > > @@ -1899,6 +1899,13 @@ cfg80211_update_known_bss(struct cfg80211_regi=
-stered_device *rdev,
-> > > =C2=A0=C2=A0	 */
-> > > =C2=A0=C2=A0	if (signal_valid)
-> > > =C2=A0=C2=A0		known->pub.signal =3D new->pub.signal;
-> > > +
-> > > +	/* update medium synchronization delay when its value is not
-> > > +	 * the default.
-> > > +	 */
-> > > +	if (new->pub.med_sync_delay !=3D IEEE80211_MED_SYNC_DELAY_DEFAULT)
-> > > +		known->pub.med_sync_delay =3D new->pub.med_sync_delay;
-> > > +
-> > > =C2=A0=C2=A0	known->pub.capability =3D new->pub.capability;
-> > > =C2=A0=C2=A0	known->ts =3D new->ts;
-> > > =C2=A0=C2=A0	known->ts_boottime =3D new->ts_boottime;
-> > > @@ -2224,6 +2231,7 @@ cfg80211_inform_single_bss_data(struct wiphy *w=
-iphy,
-> > > =C2=A0=C2=A0	int bss_type;
-> > > =C2=A0=C2=A0	bool signal_valid;
-> > > =C2=A0=C2=A0	unsigned long ts;
-> > > +	const struct element *ml;
-> > > =C2=A0=20
-> > > =C2=A0=C2=A0	if (WARN_ON(!wiphy))
-> > > =C2=A0=C2=A0		return NULL;
-> > > @@ -2267,6 +2275,7 @@ cfg80211_inform_single_bss_data(struct wiphy *w=
-iphy,
-> > > =C2=A0=C2=A0	tmp.pub.use_for =3D data->use_for;
-> > > =C2=A0=C2=A0	tmp.pub.cannot_use_reasons =3D data->cannot_use_reasons;
-> > > =C2=A0=C2=A0	tmp.bss_source =3D data->bss_source;
-> > > +	tmp.pub.med_sync_delay =3D IEEE80211_MED_SYNC_DELAY_DEFAULT;
-> > > =C2=A0=20
-> > > =C2=A0=C2=A0	switch (data->bss_source) {
-> > > =C2=A0=C2=A0	case BSS_SOURCE_MBSSID:
-> > > @@ -2321,6 +2330,12 @@ cfg80211_inform_single_bss_data(struct wiphy *=
-wiphy,
-> > > =C2=A0=C2=A0		break;
-> > > =C2=A0=C2=A0	case CFG80211_BSS_FTYPE_PRESP:
-> > > =C2=A0=C2=A0		rcu_assign_pointer(tmp.pub.proberesp_ies, ies);
-> > > +		ml =3D cfg80211_find_ext_elem(WLAN_EID_EXT_EHT_MULTI_LINK,
-> > > +					=C2=A0=C2=A0=C2=A0 ies->data, ies->len);
-> > > +		if (ml)
-> > > +			tmp.pub.med_sync_delay =3D
-> > > +				ieee80211_mle_get_eml_med_sync_delay(ml->data + 1);
-> > > +
-> > > =C2=A0=C2=A0		break;
-> > > =C2=A0=C2=A0	}
-> > > =C2=A0=C2=A0	rcu_assign_pointer(tmp.pub.ies, ies);
+> > > this series removes a problematic feature from pci_intx(). That
+> > > function
+> > > sometimes implicitly uses devres for automatic cleanup. We should
+> > > get
+> > > rid of this implicit behavior.
 > > >=20
-> > > base-commit: e7e2957f403ba4655199f2ba9920c1a015a7be44
+> > > To do so, a pci_intx() version that is always-managed, and one
+> > > that is
+> > > never-managed are provided. Then, all pci_intx() users are ported
+> > > to the
+> > > version they need. Afterwards, pci_intx() can be cleaned up and
+> > > the
+> > > users of the never-managed version be ported back to pci_intx().
+> > >=20
+> > > This way we'd get this PCI API consistent again.
+> > >=20
+> > > Patch "Remove devres from pci_intx()" obviously reverts the
+> > > previous
+> > > patches that made drivers use pci_intx_unmanaged(). But this way
+> > > it's
+> > > easier to review and approve. It also makes sure that each
+> > > checked out
+> > > commit should provide correct behavior, not just the entire
+> > > series as a
+> > > whole.
+> > >=20
+> > > Merge plan for this is to enter through the PCI tree.
+> > >=20
+> > > [1]
+> > > https://lore.kernel.org/all/20241009083519.10088-1-pstanner@redhat.co=
+m/
 > >=20
+> > I *think* this series depends on resolution of Takashi's "Restore
+> > the
+> > original INTX_DISABLE bit by pcim_intx()" patch [2], right?
+>=20
+> IIUC, it's not really dependent, as pcim_intx() has been used in
+> pci_intx() internally when the PCI device is already managed.
+> My patch is to correct the already existing behavior.
+
+IOW, pcim_intx() does not behave correctly, independently from removing
+the call to it in pci_intx().
+
+> =C2=A0 So I guess you
+> can take this series, and I'll post the revised patch later (sorry, I
+> was too busy for other tasks).
+>=20
+>=20
+> thanks,
+>=20
+> Takashi
+>=20
+> >=20
+> > For now I'm postponing this series, but let me know if that's not
+> > the
+> > right thing.
+
+There are still several reviews / acks missing from the respective
+driver maintainers, so there's no hurry with this series regarding your
+side ;)
+
+Regards
+P.
+
+
+> >=20
+> > [2] https://lore.kernel.org/r/20241024155539.19416-1-tiwai@suse.de
+> >=20
+> > > Philipp Stanner (13):
+> > > =C2=A0 PCI: Prepare removing devres from pci_intx()
+> > > =C2=A0 ALSA: hda_intel: Use always-managed version of pcim_intx()
+> > > =C2=A0 drivers/xen: Use never-managed version of pci_intx()
+> > > =C2=A0 net/ethernet: Use never-managed version of pci_intx()
+> > > =C2=A0 net/ntb: Use never-managed version of pci_intx()
+> > > =C2=A0 misc: Use never-managed version of pci_intx()
+> > > =C2=A0 vfio/pci: Use never-managed version of pci_intx()
+> > > =C2=A0 PCI: MSI: Use never-managed version of pci_intx()
+> > > =C2=A0 ata: Use always-managed version of pci_intx()
+> > > =C2=A0 wifi: qtnfmac: use always-managed version of pcim_intx()
+> > > =C2=A0 HID: amd_sfh: Use always-managed version of pcim_intx()
+> > > =C2=A0 Remove devres from pci_intx()
+> > > =C2=A0 PCI: Deprecate pci_intx(), pcim_intx()
+> > >=20
+> > > =C2=A0drivers/ata/ahci.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +-
+> > > =C2=A0drivers/ata/ata_piix.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +-
+> > > =C2=A0drivers/ata/pata_rdc.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +-
+> > > =C2=A0drivers/ata/sata_sil24.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 |=C2=A0 2 +-
+> > > =C2=A0drivers/ata/sata_sis.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +-
+> > > =C2=A0drivers/ata/sata_uli.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +-
+> > > =C2=A0drivers/ata/sata_vsc.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +-
+> > > =C2=A0drivers/hid/amd-sfh-hid/amd_sfh_pcie.c=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 |=C2=A0 4 +--
+> > > =C2=A0drivers/hid/amd-sfh-hid/sfh1_1/amd_sfh_init.c |=C2=A0 2 +-
+> > > =C2=A0.../wireless/quantenna/qtnfmac/pcie/pcie.c=C2=A0=C2=A0=C2=A0 |=
+=C2=A0 2 +-
+> > > =C2=A0drivers/pci/devres.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 29 +++++--------
+> > > ------
+> > > =C2=A0drivers/pci/pci.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 19 ++++--------
+> > > =C2=A0include/linux/pci.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 1 +
+> > > =C2=A0sound/pci/hda/hda_intel.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 |=C2=A0 2 +-
+> > > =C2=A014 files changed, 26 insertions(+), 47 deletions(-)
+> > >=20
+> > > --=20
+> > > 2.47.0
+> > >=20
 >=20
 
 
