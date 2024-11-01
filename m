@@ -1,52 +1,55 @@
-Return-Path: <linux-wireless+bounces-14817-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14818-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 413409B9426
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2024 16:17:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7DCC9B9427
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2024 16:17:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05F3A2827E9
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2024 15:17:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 320C5B21886
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2024 15:17:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C02B1C0DD6;
-	Fri,  1 Nov 2024 15:17:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222801C3F26;
+	Fri,  1 Nov 2024 15:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tPpjGeG5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KzFD0tti"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1624778E
-	for <linux-wireless@vger.kernel.org>; Fri,  1 Nov 2024 15:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BEE1C32FF
+	for <linux-wireless@vger.kernel.org>; Fri,  1 Nov 2024 15:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730474228; cv=none; b=SLlMkuzQtJEWNrxx6oaBgnXwJzHGkAs32mSR69qWTH+sFi1mZ2VwpfKW+DTkZ1KcnLqT/6BJAUZ0rMLrgzZpKX1nNm70Ij0I1Xesd65nFE+kE9tz9gn4a97EgfvDo08C1TpMukJZzDXgeh4rHrH1qTvxoUDqPgLxfPLHv7G/+1U=
+	t=1730474229; cv=none; b=WBWlhnpRf7FzAis6zz0fKjwQcjn1/DtaNbUZzodb8SPw8Rka09YdswWML34ouT3wUxSjHDce7vXT/Kce4L8+PPf7qDpercFoOIlDqC8bsp5CMQ4bQDBdaxtHdKetPDkqwyKaM8OUqJTNQrT+WMPL8M/NTcxupLUSecyh+XiyH9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730474228; c=relaxed/simple;
-	bh=rqKZRh1kZWq0dO6E77nwpLrqssHmvDvFFYlqyHS8MoA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Soz3R20v12aYHRJg9bG/uSmPhlCl/FGbGf/r7m2U9tGwZm+OP/oyb7LLQcSYPYHgOWCfPuNeGP4IG3G9/B+q+9CosRwKrwEsxqJbNkdEGIbLmEvDLOhXH7oGLAfKTRzaB7BDq66fKYWHKPw4Zwd3zxG8yihCXuTo+Z4Jk8thqVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tPpjGeG5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0487C4CECD;
-	Fri,  1 Nov 2024 15:17:06 +0000 (UTC)
+	s=arc-20240116; t=1730474229; c=relaxed/simple;
+	bh=cI45HBk6KyHpqGnCdeXtWbhky1ba9wmHtnNGv1+4u5Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=M77z1PvxXP5e4tHTRxDid/VCNukC9NpNL7ULYCJKYuQdSp8a7DJJiKhSlYr+GIb8iKfhoqvChymrBavGfTQM9oID6fyidWDtxTHjYsLgYhifwkQUPs5W47jlTEflWa5b8uO0PthZE4eC/yKjMLuPxQRdvrLDoe/DPQ8UCbB8dwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KzFD0tti; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 082CFC4CED1;
+	Fri,  1 Nov 2024 15:17:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730474227;
-	bh=rqKZRh1kZWq0dO6E77nwpLrqssHmvDvFFYlqyHS8MoA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=tPpjGeG5lqGIuXysu2lSZISFOBxuEiX7mn5u7WM7i9R/w+pKsSGgVFO0dItd1wkMV
-	 Is90czFTBUVq0SZ3ZNXU+CHF4nmvVnoBjUmAPJTJFpNoYrkc9HL3kLY/7/DzHX4CiR
-	 VHVF+913zLngMlpd6VDLrmyeJOsKqh1FwO4WCHmV3i0c/XzCoA6aawRvsZSJ0mA3p6
-	 ryClx+6rWbTdyLpcQ1SotRya5rf3raHeJTOyh9GhpfYjtcDBFeuiyGRBL+lSr692AK
-	 //NUHGfKKrbV6Lmm0rko2+z71N+PJTQMJfLgHuyMDdnEOmeLvRWsqDQlW3uY7FDsIa
-	 xhFJfeIF0i7Hw==
+	s=k20201202; t=1730474228;
+	bh=cI45HBk6KyHpqGnCdeXtWbhky1ba9wmHtnNGv1+4u5Q=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=KzFD0tti8Oeu0TxjMgYZ1acIzfeffD8LYsgULjbxs+Z9YEfhP1ml3riObSv4ja+X5
+	 6rHSdSuNt0EFxZK+QnWbRaWU1xFQL8Dyr7cT5jLsBBr/a8YE3DhQ+vSgR5hW+bVt0x
+	 7P9MUOsm17wMsfOq4zEH5JmtKBt+jUoQozhoAdoVkObYf+EImpVw+v4k89Pj1W3ddj
+	 Wdb3f175DCdaO2Ubg5PJ6Z0V2e9kTNY8t+Fxip5z1WP3cKZfKduAOEmz1aR34MDcb/
+	 7lSy6GVzNszyzKHzT2/KwhPOBm3fxH81o/bORIxUFQ+J/Ijg4SHiSFgdUM01c2jlmh
+	 1NUlRprb1x+NA==
 From: Kalle Valo <kvalo@kernel.org>
 To: ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH v2 0/8] wifi: ath12k: MLO support part 2
-Date: Fri,  1 Nov 2024 17:16:57 +0200
-Message-Id: <20241101151705.165987-1-kvalo@kernel.org>
+Subject: [PATCH v2 1/8] wifi: ath12k: ath12k_mac_vdev_create(): use goto for error handling
+Date: Fri,  1 Nov 2024 17:16:58 +0200
+Message-Id: <20241101151705.165987-2-kvalo@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241101151705.165987-1-kvalo@kernel.org>
+References: <20241101151705.165987-1-kvalo@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -57,66 +60,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Kalle Valo <quic_kvalo@quicinc.com>
 
-Here we continue to refactor mac.c to support multiple links and extend peer
-assoc WMI command to support MLO.
+In commit 477cabfdb776 ("wifi: ath12k: modify link arvif creation and removal
+for MLO") I had accidentally left one personal TODO comment about using goto
+instead of ret. Switch to use goto to be consistent with the error handling in
+the function.
 
-Please review.
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-v2:
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+---
+ drivers/net/wireless/ath/ath12k/mac.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-* patch 1: use err_vdev_del
-
-* patch 2: ath12k_mac_mlo_get_vdev_args(): switch
-wiphy_dereference()
-
-* patch 2: use struct ath12k_wmi_mac_addr_params instead adding struct wmi_mac_addr
-
-* patch 3: ath12k_mac_station_post_remove(): assign
-ahsta->links_map before rcu_assign_pointer()
-
-* patch 3: ath12k_mac_station_unauthorize(): fi* confusing comment about __sta_info_destroy_part2()
-
-* patch 4: debugfs.c: copyright year
-
-* patch 5: ath12k_peer_mlo_create(): remove parenthesis from the
-  warning message
-
-* patch 5: ATH12K_ML_PEER_ID_VALID: move to peer.h and rename to ATH12K_PEER_ML_ID_VALID
-
-* patch 5: rename struct ath12k_peer::ml_peer_id to peer_id
-
-* patch 5: use ath12k_peer_ml_*() naming style in peer.c
-
-* patch 7: improve commit message a bit
-
-* patch 7: struct wmi_peer_assoc_mlo_partner_info: add _params to name
-
-v1: https://patchwork.kernel.org/project/linux-wireless/cover/20241023133004.2253830-1-kvalo@kernel.org/
-
-Kalle Valo (2):
-  wifi: ath12k: ath12k_mac_vdev_create(): use goto for error handling
-  wifi: ath12k: introduce ath12k_hw_warn()
-
-Sriram R (6):
-  wifi: ath12k: MLO vdev bringup changes
-  wifi: ath12k: Refactor sta state machine
-  wifi: ath12k: Add helpers for multi link peer creation and deletion
-  wifi: ath12k: add multi-link flag in peer create command
-  wifi: ath12k: add helper to find multi-link station
-  wifi: ath12k: Add MLO peer assoc command support
-
- drivers/net/wireless/ath/ath12k/core.h  |  25 ++
- drivers/net/wireless/ath/ath12k/debug.c |   6 +-
- drivers/net/wireless/ath/ath12k/debug.h |   5 +-
- drivers/net/wireless/ath/ath12k/mac.c   | 504 +++++++++++++++++++-----
- drivers/net/wireless/ath/ath12k/peer.c  | 115 ++++++
- drivers/net/wireless/ath/ath12k/peer.h  |  12 +
- drivers/net/wireless/ath/ath12k/wmi.c   | 191 ++++++++-
- drivers/net/wireless/ath/ath12k/wmi.h   | 115 ++++++
- 8 files changed, 848 insertions(+), 125 deletions(-)
-
-
-base-commit: fa934bf3e0a825ee09f035c6580af513187d59a2
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index f5f96a8b1d61..7dd2b66d3386 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -7047,8 +7047,7 @@ int ath12k_mac_vdev_create(struct ath12k *ar, struct ath12k_link_vif *arvif)
+ 		ret = ath12k_wait_for_peer_delete_done(ar, arvif->vdev_id,
+ 						       arvif->bssid);
+ 		if (ret)
+-			/* KVALO: why not goto err? */
+-			return ret;
++			goto err_vdev_del;
+ 
+ 		ar->num_peers--;
+ 	}
 -- 
 2.39.5
 
