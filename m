@@ -1,125 +1,132 @@
-Return-Path: <linux-wireless+bounces-14810-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14811-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 014799B9109
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2024 13:14:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42FA99B92CB
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2024 15:06:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA8B628163A
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2024 12:14:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF7F6B21D47
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2024 14:06:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9642119CC27;
-	Fri,  1 Nov 2024 12:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4EB42D600;
+	Fri,  1 Nov 2024 14:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QUZ1dJ7r"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nhZy/pzM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E0F175D2D
-	for <linux-wireless@vger.kernel.org>; Fri,  1 Nov 2024 12:14:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B06168DA
+	for <linux-wireless@vger.kernel.org>; Fri,  1 Nov 2024 14:06:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730463262; cv=none; b=CGrUQDHjMJcc5rJaJLPlIShkno7tyyy59HlpPVeSSJyp7O/sNmvO2CJCo33yUQ4mRPKA4Yqa/2MnF1Oe+ku11T7rBI2LbCOiwCY7JRHEis34ZnYO1zCaVFX+Y3UlGE45wdslfoM7afHfDG6uoWPaWhB7ExO6i7E51vLThi3EJRE=
+	t=1730469972; cv=none; b=cOt19qGUvXlEu+Ho0cngPOl1IFNETGqW4+OuIQbmTl2Set0bVi/5Bcc51rHlAg4M/w4rm+Fzx+P+L9DZq0NTydbWl7agIIZC8ooN/L/aec6p+WdkKrw/sSztG1FZBsZF73bEOllvlv7ztpqcJpubOtmiLlx4rCQjpcqseirB/z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730463262; c=relaxed/simple;
-	bh=p9DKxdVSBtQD6DXS5i3JPCzqn4/KGAK9P6m7WbcJMw4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fyjAyrZAflkqbUs3UtwFx1OXvwZkh49ZSypr8GoyiH4BJuQq6ElWHjBoURz3XZR6h/Odsn8dSQhO7QkONA5DXjqJhgwqjYirPzVd4eN0T3LjTVVcIhL8GjVmFBUWl2oLFpQ7G6En26hDa6EYd7ffwscXKlHAnhAsUyMsfFnt5pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QUZ1dJ7r; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a93c1cc74fdso259075166b.3
-        for <linux-wireless@vger.kernel.org>; Fri, 01 Nov 2024 05:14:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730463259; x=1731068059; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=afXS28WNzPIn8ZiAoXeQQ+AWZulWG4v7TMM2B1Nbx3U=;
-        b=QUZ1dJ7rkaon9IdRblSPKi+PUdbjaLpDy5AwncBPMqc56LGhZgHnoZFLI6cGrTwFYU
-         pvGxqIH7jecdaZjAZ0Absw93WRxUmrEffiSqlEpV8XS0hYXT3RdjBfkQ5ZhklqInQad0
-         WSYeS13phWkY6E4IdE2WewZgG/onG2hbIbOIjz2u3IDEKYGLvVj/Pmu6cOTqYy+yAgdn
-         nCkv8qU7T4YNzN+SAONb4rk0Xw2S+Y3JGl8Brbc5xfEpolYC8YT+6oiPCUC19zrsqSre
-         3ZZSIt1eltZ8VQ8s2Mna3nBNDwXpWe3NJatHWtoLdtS34C1Bq9TDM2Si15oNQabxDg9F
-         tOow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730463259; x=1731068059;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=afXS28WNzPIn8ZiAoXeQQ+AWZulWG4v7TMM2B1Nbx3U=;
-        b=v5v+TqK54WwlgEHPhWwVbRoYj8sZxts8jmeZt5VBptL4mspvYkPBQWJIqQx/Q3/FJe
-         lKS3/qdXvNjTS3sd2GZ+i71ZEUf5MRgUy/2gwz04k2EwUZSgwwRkq4WwFMm7ops4jOxU
-         /kCr3VP58B28KRW2qfkn1xXoteWMwuG78aFz0QNquvsJuq85+7CSwKOXyrqubVaHBeG9
-         P2skbsi3XBm8zh6iLFF1ndgmTha9NnWlOSkqPQJUfwiLvhVkxO6cgeAMnoeiwkUX8bpS
-         Gj4wxRLbwFbXY3LLbZInxVyKsx7+4IjxfwsneX2O+ioC1hfLe5lEFaL56XQRPaaIo/1Y
-         W+Dg==
-X-Forwarded-Encrypted: i=1; AJvYcCUSvjODc+uBE1LcGjqGGOnPr0xqJbn53zZ7zBFRk/QR5QTl9F/r31Eq5ANh0gHOt9YHWciVCbW3VCvjtDhZmg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YztfdEDV7pfOmywHzrCwZ/DqarEQr1MwgzysqRBn5Uq9Sih6fCr
-	oz3AoxhnpkD0mlsaEjU9KKpV1dhzmKF6OV79V8cpfA2gvtPoQET4g/6uow==
-X-Google-Smtp-Source: AGHT+IGswJw9DBDaL1k60WKA1olp/Z5xH9EPY//gHoHbDiGQFhhiaordtKUxXzGZhvoPWau6GTIcoQ==
-X-Received: by 2002:a17:907:1c02:b0:a99:a9b6:2eb6 with SMTP id a640c23a62f3a-a9e652c179emr345249966b.0.1730463258564;
-        Fri, 01 Nov 2024 05:14:18 -0700 (PDT)
-Received: from [192.168.0.50] ([79.113.150.231])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9e565dfa80sm173888566b.130.2024.11.01.05.14.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 Nov 2024 05:14:18 -0700 (PDT)
-Message-ID: <fdec3e56-ee9f-4b44-bd61-cb8cfec5f2f8@gmail.com>
-Date: Fri, 1 Nov 2024 14:14:14 +0200
+	s=arc-20240116; t=1730469972; c=relaxed/simple;
+	bh=hw08P6c0qMmSDif5XWYSxDZ+sFwdJtpv8E3VGa2FsFw=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=bx4IbMqHMa7PbFFLLFi75c+JAnIdRKVsBIpoiTVl/Hsg8xEIRqe5v+yo9B0k/xnUTTk4XKj3sIncmpjCqHWgmJ71CNa958DhHh59nupNb9MsAR3oFym5XMSnFkcLB/U7A07rGrLcEZO44xVoHQzaaIwY+VgiDhSA5lmUu0XLwL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nhZy/pzM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 756B5C4CECD;
+	Fri,  1 Nov 2024 14:06:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730469972;
+	bh=hw08P6c0qMmSDif5XWYSxDZ+sFwdJtpv8E3VGa2FsFw=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=nhZy/pzMEIYHMDYS6TZg9AEupTSrkrWgLoOdT8/SDEN3sz9s2+yYVY35zqjidsW2Q
+	 jSZTEgEUkiFAcl8Wa5EtHkehM6v4EfA6Ydfx23aE2QXHEcfYuwbfD0kKB2pS6prWQT
+	 oHi3FucEyG5aTQ4+R1gDwnHAzZyMfBiYOVEBsQhlPmP8NQgSkPxC3k3dRfB33fad3+
+	 A65165KIxbQyPXIW0BVwA101HLktzFf+X1zGm5Ow9an+oHRcXA62HqZeEYEaLQv/VS
+	 2ul8TCw0TLwH8gfmN0Zemvu3J+lt2PVFcXFShtlCTQsgX/oaM8OtpF3Gi9HwtmpSE1
+	 j12dqja2q4a2Q==
+From: Kalle Valo <kvalo@kernel.org>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 6/8] wifi: ath12k: add multi-link flag in peer create
+ command
+References: <20241023133004.2253830-1-kvalo@kernel.org>
+	<20241023133004.2253830-7-kvalo@kernel.org>
+	<f8049c99-c7ac-410c-84fd-ac844041f34c@quicinc.com>
+	<87wmhqgb0r.fsf@kernel.org>
+	<8d4aca1d-e48d-48e2-bacf-fdfe49c8e212@quicinc.com>
+Date: Fri, 01 Nov 2024 16:06:09 +0200
+In-Reply-To: <8d4aca1d-e48d-48e2-bacf-fdfe49c8e212@quicinc.com> (Jeff
+	Johnson's message of "Tue, 29 Oct 2024 09:01:17 -0700")
+Message-ID: <87h68r6oby.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 7/7] wifi: rtw88: Enable the new RTL8821AU/RTL8812AU
- drivers
-To: kernel test robot <lkp@intel.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, Ping-Ke Shih <pkshih@realtek.com>
-References: <0b8e8093-8103-4999-86bf-0055ec52ea64@gmail.com>
- <202411010825.Kzdw5VeV-lkp@intel.com>
-Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <202411010825.Kzdw5VeV-lkp@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 01/11/2024 02:35, kernel test robot wrote:
-> Hi Bitterblue,
-> 
-> kernel test robot noticed the following build errors:
-> 
-> [auto build test ERROR on wireless-next/main]
-> [also build test ERROR on wireless/main linus/master v6.12-rc5 next-20241031]
-> [If your patch is applied to the wrong git tree, kindly drop us a note.
-> And when submitting patch, we suggest to use '--base' as documented in
-> https://git-scm.com/docs/git-format-patch#_base_tree_information]
-> 
-> url:    https://github.com/intel-lab-lkp/linux/commits/Bitterblue-Smith/wifi-rtw88-Add-rtw8812a_table-c-h/20241031-023323
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-> patch link:    https://lore.kernel.org/r/0b8e8093-8103-4999-86bf-0055ec52ea64%40gmail.com
-> patch subject: [PATCH v4 7/7] wifi: rtw88: Enable the new RTL8821AU/RTL8812AU drivers
-> config: um-allyesconfig (https://download.01.org/0day-ci/archive/20241101/202411010825.Kzdw5VeV-lkp@intel.com/config)
-> compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241101/202411010825.Kzdw5VeV-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202411010825.Kzdw5VeV-lkp@intel.com/
-> 
-> All errors (new ones prefixed by >>):
-> 
->          |                             REG_RFE_CTRL_E
->    drivers/net/wireless/realtek/rtw88/rtw8821a.c:338:37: error: 'REG_IQK_COM64' undeclared (first use in this function)
->      338 |                 rtw_write32(rtwdev, REG_IQK_COM64, 0xfa000000);
->          |                                     ^~~~~~~~~~~~~
+Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 
-Ah, sorry, I didn't use --base. This series is supposed to be
-applied on top of rtw-next, not wireless-next.
+> On 10/29/2024 8:54 AM, Kalle Valo wrote:
+>> Jeff Johnson <quic_jjohnson@quicinc.com> writes:
+>> 
+>>>> @@ -1244,9 +1249,23 @@ int ath12k_wmi_send_peer_create_cmd(struct ath12k *ar,
+>>>>  	cmd->peer_type = cpu_to_le32(arg->peer_type);
+>>>>  	cmd->vdev_id = cpu_to_le32(arg->vdev_id);
+>>>>  
+>>>> +	ptr = skb->data + sizeof(*cmd);
+>>>> +	tlv = ptr;
+>>>> +	tlv->header = ath12k_wmi_tlv_hdr(WMI_TAG_ARRAY_STRUCT,
+>>>> +					 sizeof(*ml_param));
+>>>
+>>> using the same TLV size both here and for the TLV that follows doesn't seem
+>>> logical. is this missing + TLV_HDR_SIZE to account for its own TLV header?
+
+So I assume you are referring to this:
+
+	tlv->header = ath12k_wmi_tlv_hdr(WMI_TAG_ARRAY_STRUCT,
+					 sizeof(*ml_param));
+	ptr += TLV_HDR_SIZE;
+	ml_param = ptr;
+	ml_param->tlv_header =
+			ath12k_wmi_tlv_cmd_hdr(WMI_TAG_MLO_PEER_CREATE_PARAMS,
+					       sizeof(*ml_param));
+
+I have never figured out how WMI_TAG_ARRAY_STRUCT is supposed to work
+but I see a similar pattern also in ath12k_wmi_wow_add_pattern(). Any
+ideas?
+
+>>>> +	ptr += TLV_HDR_SIZE;
+>>>> +	ml_param = ptr;
+>>>> +	ml_param->tlv_header =
+>>>> +			ath12k_wmi_tlv_cmd_hdr(WMI_TAG_MLO_PEER_CREATE_PARAMS,
+>>>> +					       sizeof(*ml_param));
+>> 
+>> But did you notice that here is used ath12k_wmi_tlv_cmd_hdr() and it
+>> reduces the header size:
+>> 
+>> static __le32 ath12k_wmi_tlv_cmd_hdr(u32 cmd, u32 len)
+>> {
+>> 	return ath12k_wmi_tlv_hdr(cmd, len - TLV_HDR_SIZE);
+>> }
+>> 
+>
+> Yes, I missed that since that is evil to use the _cmd_ TLV function on
+> something that isn't the command TLV.
+
+Ok, so you are saying that we should have a identical function but with
+name ath12k_wmi_tlv_param_hdr() or similar? That makes sense but I think
+that's separate cleanup as ath12k_wmi_tlv_cmd_hdr() is already used with
+several WMI params, like in ath12k_wmi_wow_add_pattern().
+
+> Please fix to use the standard function and subtract the thv header size from
+> the length param
+
+I'm not a fan of manually subtracting lengths, as then it's easy to miss
+something. I would prefer to have functions for handling the length
+calculation, like ath12k_wmi_tlv_cmd_hdr() ath12k_wmi_tlv_param_hdr().
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
