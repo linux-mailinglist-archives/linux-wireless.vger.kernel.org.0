@@ -1,129 +1,107 @@
-Return-Path: <linux-wireless+bounces-14802-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14803-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 045239B8A38
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2024 05:23:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EE999B8AC9
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2024 06:59:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9565BB21C04
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2024 04:23:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BC141C2195E
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2024 05:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254B9146A72;
-	Fri,  1 Nov 2024 04:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F7BF1494BB;
+	Fri,  1 Nov 2024 05:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="b06df2ql"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O+yPTUCT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C727211C;
-	Fri,  1 Nov 2024 04:22:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF8136B;
+	Fri,  1 Nov 2024 05:59:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730434978; cv=none; b=F1yibXX0Kq8qoAsDIc0t788Aaiszag3dimCtLc34k0jvQLVrjYSPuGbfxLpzPwfmT2ZFpG2XNFJXmcfnLUTFjSptGSbg1eZM4vmZAqOIHn5JspdGxRB+GduxEMhpxgEwoI5zkcYQfGBg3CG7Amy9Bay7BrEBLMzqOQKns2Z8NFM=
+	t=1730440771; cv=none; b=EpKy5ktVTXfD6JJ9g6X4dRL6EPMTRVLBKwPxQzvPRHc6q4cCIrnFkqSmYCJaAGwK1R5q2z5X/kMzLX0NHwfQHWccve6UApJSJGd86zBIDPVr925JPHo/LOKpQztO8l+LzJE+0j26xSxXpTpaoIX8QE9H8kp0iRO1xzHy3rl9LDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730434978; c=relaxed/simple;
-	bh=+R9vhprP6Pe387Q5ueLIl38bbj6vgw38MdtuxGVbax4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=L7+/qgp1c2WvUxJKFabj8Y4cK2vfoK/CVaG/BMY5I1wEPtqIvpcbkomJG2pYokfaWIvTmuTwoNjAYwx4nzgElvs0t4YPQVDiTis9tfjicFP2hsqjEahiDyvPHnY3AqaySKr1LxA5OtLvWCNf0dV+fG9GhnZy6LluLyO1i+B2SMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=b06df2ql; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4A14MJOf82509540, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1730434939; bh=+R9vhprP6Pe387Q5ueLIl38bbj6vgw38MdtuxGVbax4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=b06df2ql6dP0by1U8c3jHx/U9S6Qp0Ryu8CAR0u9OJBw8ulYZYN2Dze7myCFEzbFE
-	 IgnlmpGIKXj5rySbkgqYPKHE07agwDwb4EicBkYLcrjlmC7OVC18qHhpryfUQImsi2
-	 n4QLwS7ErFzwovEexr8JQr0/pZDfP74J1pHqXciEeiict0xX20J12IjyDaiyL4WY55
-	 BW2YUnyqu+JUGsma9xMQYyPt1wCPJ1azEbvOX90WH9MKw9fNqqI5gx7+MGo41FR3tq
-	 u48Gh+x2dN/hc7PCMNuQfF0GtZzSyRFdrl3jypqIdZQsH4wMdvoRmvPAmg/DQ4nd85
-	 512wP5cnF4uOg==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4A14MJOf82509540
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 1 Nov 2024 12:22:19 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 1 Nov 2024 12:22:20 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 1 Nov 2024 12:22:19 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
- RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
- 15.01.2507.035; Fri, 1 Nov 2024 12:22:19 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: "kvalo@kernel.org" <kvalo@kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "kernel@gpiccoli.net" <kernel@gpiccoli.net>,
-        "kernel-dev@igalia.com" <kernel-dev@igalia.com>,
-        "rtl8821cerfe2@gmail.com"
-	<rtl8821cerfe2@gmail.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com"
-	<syzbot+edd9fe0d3a65b14588d5@syzkaller.appspotmail.com>
-Subject: RE: [PATCH V3] wifi: rtlwifi: Drastically reduce the attempts to read efuse in case of failures
-Thread-Topic: [PATCH V3] wifi: rtlwifi: Drastically reduce the attempts to
- read efuse in case of failures
-Thread-Index: AQHbK62jzL4hMAZxOk2XHUy0QNETw7Kh0tAg
-Date: Fri, 1 Nov 2024 04:22:19 +0000
-Message-ID: <8363b94ee45c49c0996b12010c18b9f0@realtek.com>
-References: <20241031155731.1253259-1-gpiccoli@igalia.com>
-In-Reply-To: <20241031155731.1253259-1-gpiccoli@igalia.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1730440771; c=relaxed/simple;
+	bh=w8CJk0Lj+OggVkEl3e7Y2Zhv00G5Vs+rcrgZnjXssew=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=VtMxc0pq5AR9ge3O284Q5EvFMsXyRWyFK+QEY1sZNhrh27OoREN2E1m+w/W39B7FTnN4u/XOpnLqa6pM1+DBh/ogQX3PF5vfaTX+vS+7wJIBEHWdxXT2OONulXtUZTASFJDU2q4nQhCyDwTVuFfojQQFn9DlGYruxhS2OWTjXSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O+yPTUCT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C1BFC4CECD;
+	Fri,  1 Nov 2024 05:59:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730440771;
+	bh=w8CJk0Lj+OggVkEl3e7Y2Zhv00G5Vs+rcrgZnjXssew=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=O+yPTUCTFB2BIFXBIu9ehOvcCY8X/sdl2BrhReB8zNlZBpPI1UUeQ5y8/bQNMmF/a
+	 McwwnUwK4XkM6DJpsJvGnJfveubU3CjU0IOIxMjyf7rE2MY30quHqwK3V2g9iZENIl
+	 mKVybqkBmNw+aaaxDmTfctspvSw7jKyWLlOvyTBSMu5mLcLqmnSmhKNc+qaQaG2N8y
+	 B623zJxANjqLwo2v3Uuu5wzmuGQrYCqmGzn8mXPFSVk9fye2htMzXpA7C73V10jAgX
+	 4en1jBzCi7wTLgZzJ2L3yDM26oNpPNqI25N2qZpuJLjNHFkyg4I5Dw3BOtAmZfh2+i
+	 Nv2ptH0IotK5g==
+From: Kalle Valo <kvalo@kernel.org>
+To: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Cc: stas.yakovlev@gmail.com,  linux-wireless@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  Abaci Robot <abaci@linux.alibaba.com>
+Subject: Re: [PATCH v2 -next] wifi: ipw2x00: fix bad alignments
+References: <20241101022215.6667-1-jiapeng.chong@linux.alibaba.com>
+Date: Fri, 01 Nov 2024 07:59:28 +0200
+In-Reply-To: <20241101022215.6667-1-jiapeng.chong@linux.alibaba.com> (Jiapeng
+	Chong's message of "Fri, 1 Nov 2024 10:22:15 +0800")
+Message-ID: <87cyjfze7z.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain
 
-Guilherme G. Piccoli <gpiccoli@igalia.com> wrote:
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/efuse.c
-> b/drivers/net/wireless/realtek/rtlwifi/efuse.c
-> index 82cf5fb5175f..0ff553f650f9 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/efuse.c
-> +++ b/drivers/net/wireless/realtek/rtlwifi/efuse.c
-> @@ -162,9 +162,19 @@ void efuse_write_1byte(struct ieee80211_hw *hw, u16 =
-address, u8 value)
->  void read_efuse_byte(struct ieee80211_hw *hw, u16 _offset, u8 *pbuf)
->  {
->         struct rtl_priv *rtlpriv =3D rtl_priv(hw);
-> +       u16 retry, max_attempts;
->         u32 value32;
->         u8 readbyte;
-> -       u16 retry;
-> +
-> +       /*
-> +        * In case of USB devices, transfer speeds are limited, hence
-> +        * efuse I/O reads could be (way) slower. So, decrease (a lot)
-> +        * the read attempts in case of failures.
-> +        */
-> +       if (rtlpriv->rtlhal.interface =3D=3D INTF_PCI)
-> +               max_attempts =3D 10000;
-> +       else
-> +               max_attempts =3D 10;
+Jiapeng Chong <jiapeng.chong@linux.alibaba.com> writes:
 
-As your comment, setting max_atttempts to 10 under condition of INTF_USB wo=
-uld
-be more reasonable, like
+> This patch fixes incorrect code alignment.
+>
+> ./drivers/net/wireless/intel/ipw2x00/libipw_rx.c:871:2-3: code aligned with following code on line 882.
+> ./drivers/net/wireless/intel/ipw2x00/libipw_rx.c:886:2-3: code aligned with following code on line 900.
+>
+> Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+> Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=11381
+> Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+> ---
+> Changes in v2:
+>   -Replace the & in the if statement with &&. Add 'wifi: ' to subject.
+>
+>  .../net/wireless/intel/ipw2x00/libipw_rx.c    | 44 +++++++++----------
+>  1 file changed, 22 insertions(+), 22 deletions(-)
+>
+> diff --git a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
+> index 7e41cb7bbfe0..38731f67cb54 100644
+> --- a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
+> +++ b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
+> @@ -868,34 +868,34 @@ void libipw_rx_any(struct libipw_device *ieee,
+>  	case IW_MODE_ADHOC:
+>  		/* our BSS and not from/to DS */
+>  		if (ether_addr_equal(hdr->addr3, ieee->bssid))
+> -		if ((fc & (IEEE80211_FCTL_TODS+IEEE80211_FCTL_FROMDS)) == 0) {
+> -			/* promisc: get all */
+> -			if (ieee->dev->flags & IFF_PROMISC)
+> -				is_packet_for_us = 1;
+> -			/* to us */
+> -			else if (ether_addr_equal(hdr->addr1, ieee->dev->dev_addr))
+> -				is_packet_for_us = 1;
+> -			/* mcast */
+> -			else if (is_multicast_ether_addr(hdr->addr1))
+> -				is_packet_for_us = 1;
+> +			if ((fc && (IEEE80211_FCTL_TODS + IEEE80211_FCTL_FROMDS)) == 0) {
 
-    u16 max_attempts =3D 10000;
+I meant instead of using two nested if statements you can use only one
+if statement with '&&' operator.
 
-    if (rtlpriv->rtlhal.interface =3D=3D INTF_USB)
-        max_attempts =3D 10;
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
