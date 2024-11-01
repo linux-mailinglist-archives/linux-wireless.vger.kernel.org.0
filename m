@@ -1,165 +1,237 @@
-Return-Path: <linux-wireless+bounces-14835-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14836-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A097E9B95E6
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2024 17:52:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3DD39B9754
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2024 19:23:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 570B71F21FD3
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2024 16:52:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38D171F21219
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2024 18:23:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A0A1CB51D;
-	Fri,  1 Nov 2024 16:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15E571CEAA0;
+	Fri,  1 Nov 2024 18:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="F6FYalw1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LI8bqEmL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 069DD1C7610
-	for <linux-wireless@vger.kernel.org>; Fri,  1 Nov 2024 16:52:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C57771AB523;
+	Fri,  1 Nov 2024 18:22:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730479929; cv=none; b=DFHHtXTfvl2Up1bSPECQ2VE910FwJASAmYksDLuvzBdmI9+NUstrMJKVVzd3C1zdrklg0YxREkB8IZXprr8lz4GYwbalB5vL6Qf1WNTrCEnHLX9mjtluOMN34fs7/9spGP2x1UwYvIdA/wF64/E9jGeckv61zy4kdSr4uR66A4M=
+	t=1730485378; cv=none; b=Uj9QuQ23RwOIkqbSfIAmw57PHx8HlP4dmQne3UOOdcJESGdb1L22L56Sh0pH0PicRHd7IcE2BAd/SGezd8FlD+hveWQsVEUVw9p41a0ODw7q64E4QjFaMHQjGNy1lc4gBhfyrOwoKH6mwGrWGuCFmEaHlTJmQGhOm+O9YEKHNHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730479929; c=relaxed/simple;
-	bh=4XyyCMr7WNIN+9FSKNROCVwF9PXPQ51cF/rMoA+9avg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=UDgARLnyJoGijSYOO7vVnrAlKXrd/5h0LO45h4hSVbO2hOBhaL3nq2faqPLYmrPIth8o6HD4okboadDUmlvPGHC2VZI0mLe/kLU+56FPL5fPXdtZiiZCj28gsdklBP6++PmkU9HjzKz+hppz5eeCuio8Bpzwdw9WRcNsgBlP5hQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=F6FYalw1; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A1FQle1005298;
-	Fri, 1 Nov 2024 16:52:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	uWKdgpCrSL/dGAtjc3VP5zlmydUehCWzC80P4R0szrU=; b=F6FYalw1ijA31tWM
-	oUSNEGU0ei46phethydIDvilPGOd3TfFJ354Z23u79B4cli3TUrW5F+5ociMsNTi
-	QZE3rNDcglwfTjh25vcWpclfRVL1VsrBHdb9jvJmLozOvWiLaddivMbnx8R0CNDy
-	pPENWceGeryt1UdAxWobqvpUVI02607f/F24+vG1icHTe6fVlWJPYm5zDu/4pGUU
-	8Piez1YwSPkwUwc3D25w2z2MdW/OhmfAF+vGcrACOfyxN0YcbMJGAOkIqQVEqgN+
-	QNuVPcOEXVKOhWdkuDx5aiFKn2U0PRCM+8MbjDES38jFAj+KcEtk387JlmkQEjk/
-	E00Y9g==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42n1mpg756-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 01 Nov 2024 16:52:00 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4A1Gq0iH004913
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 1 Nov 2024 16:52:00 GMT
-Received: from [10.48.242.225] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 1 Nov 2024
- 09:51:59 -0700
-Message-ID: <935b7f88-a48f-48b5-9e5b-b333cafec25f@quicinc.com>
-Date: Fri, 1 Nov 2024 09:51:59 -0700
+	s=arc-20240116; t=1730485378; c=relaxed/simple;
+	bh=2u420hLBt+iAZWsevacsMaooa6yJ5dkWq6pbYF7QYJI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H49vBSGw3Wlepq5KQfWVvXYTF8QvDBHAw4KngwgwLTv857six88zoabNIEnLNuvFUkDIbBavBES0xEKIsypX07TQN+wBq97Db7aeu9g9q/DoCeFlcFKag0IsBUu2I9CXiWw1XNquBmYKYQTuJeb8Oj1dVnqUMLckzXVq0g5SJL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LI8bqEmL; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730485376; x=1762021376;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=2u420hLBt+iAZWsevacsMaooa6yJ5dkWq6pbYF7QYJI=;
+  b=LI8bqEmLwFr0lSOxiD9CVsiT+wFWsqEb4ZmY4JKx1RabgSsBVQyFsiVZ
+   gzej6cfy9ateey50ToNINHl6HfrE9G5q3fehBuYmFnBQbvrMksz0PW5yC
+   IAyaDdahoaukDrvRNslpy1r9mdJpjFRSD1bfT302xyFdpjK8MQPYWPAkS
+   tnJbMNMZmMmZE1fNTrWTiaSQxaqIbpVcEEIWEPYvjs3i3c1BIgMMMwvpa
+   RPdhRqOpX5ACxjlII5rBZTSrj0EXUoqzpAqchFjTLTFng7uYfjfLM0I7n
+   650rZH0tBLm4NXa7Uc0iabRcOHL6fQpVTSdaWB+w7SYDX25DRKP8g2sLV
+   A==;
+X-CSE-ConnectionGUID: t1e6XNHGRuO6LdmnfKuAyQ==
+X-CSE-MsgGUID: gDR0GSjKTLeV4EdXjMmZww==
+X-IronPort-AV: E=McAfee;i="6700,10204,11243"; a="41621051"
+X-IronPort-AV: E=Sophos;i="6.11,250,1725346800"; 
+   d="scan'208";a="41621051"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2024 11:22:55 -0700
+X-CSE-ConnectionGUID: MgzT1atKTHuzxXyZpL2S5g==
+X-CSE-MsgGUID: NnO6t/eaTL+P0ldpDzL7Gg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,250,1725346800"; 
+   d="scan'208";a="83141278"
+Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
+  by fmviesa009.fm.intel.com with ESMTP; 01 Nov 2024 11:22:53 -0700
+Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1t6wIN-000hsP-0D;
+	Fri, 01 Nov 2024 18:22:51 +0000
+Date: Sat, 2 Nov 2024 02:22:06 +0800
+From: kernel test robot <lkp@intel.com>
+To: Colin Ian King <colin.i.king@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>,
+	linux-wireless@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] wifi: rtw89: 8852a: remove redundant else statement
+Message-ID: <202411020209.qamp5h6r-lkp@intel.com>
+References: <20241030131416.3091954-1-colin.i.king@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/8] wifi: ath12k: MLO support part 2
-To: Kalle Valo <kvalo@kernel.org>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20241101151705.165987-1-kvalo@kernel.org>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Content-Language: en-US
-In-Reply-To: <20241101151705.165987-1-kvalo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: pqF9QvpopR5d7x-kfnzducKLepPczBYU
-X-Proofpoint-GUID: pqF9QvpopR5d7x-kfnzducKLepPczBYU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 spamscore=0
- priorityscore=1501 phishscore=0 suspectscore=0 mlxscore=0 adultscore=0
- malwarescore=0 lowpriorityscore=0 impostorscore=0 mlxlogscore=861
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411010121
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241030131416.3091954-1-colin.i.king@gmail.com>
 
-On 11/1/2024 8:16 AM, Kalle Valo wrote:
-> From: Kalle Valo <quic_kvalo@quicinc.com>
-> 
-> Here we continue to refactor mac.c to support multiple links and extend peer
-> assoc WMI command to support MLO.
-> 
-> Please review.
-> 
-> v2:
-> 
-> * patch 1: use err_vdev_del
-> 
-> * patch 2: ath12k_mac_mlo_get_vdev_args(): switch
-> wiphy_dereference()
-> 
-> * patch 2: use struct ath12k_wmi_mac_addr_params instead adding struct wmi_mac_addr
-> 
-> * patch 3: ath12k_mac_station_post_remove(): assign
-> ahsta->links_map before rcu_assign_pointer()
-> 
-> * patch 3: ath12k_mac_station_unauthorize(): fi* confusing comment about __sta_info_destroy_part2()
-> 
-> * patch 4: debugfs.c: copyright year
-> 
-> * patch 5: ath12k_peer_mlo_create(): remove parenthesis from the
->   warning message
-> 
-> * patch 5: ATH12K_ML_PEER_ID_VALID: move to peer.h and rename to ATH12K_PEER_ML_ID_VALID
-> 
-> * patch 5: rename struct ath12k_peer::ml_peer_id to peer_id
-> 
-> * patch 5: use ath12k_peer_ml_*() naming style in peer.c
-> 
-> * patch 7: improve commit message a bit
-> 
-> * patch 7: struct wmi_peer_assoc_mlo_partner_info: add _params to name
-> 
-> v1: https://patchwork.kernel.org/project/linux-wireless/cover/20241023133004.2253830-1-kvalo@kernel.org/
-> 
-> Kalle Valo (2):
->   wifi: ath12k: ath12k_mac_vdev_create(): use goto for error handling
->   wifi: ath12k: introduce ath12k_hw_warn()
-> 
-> Sriram R (6):
->   wifi: ath12k: MLO vdev bringup changes
->   wifi: ath12k: Refactor sta state machine
->   wifi: ath12k: Add helpers for multi link peer creation and deletion
->   wifi: ath12k: add multi-link flag in peer create command
->   wifi: ath12k: add helper to find multi-link station
->   wifi: ath12k: Add MLO peer assoc command support
-> 
->  drivers/net/wireless/ath/ath12k/core.h  |  25 ++
->  drivers/net/wireless/ath/ath12k/debug.c |   6 +-
->  drivers/net/wireless/ath/ath12k/debug.h |   5 +-
->  drivers/net/wireless/ath/ath12k/mac.c   | 504 +++++++++++++++++++-----
->  drivers/net/wireless/ath/ath12k/peer.c  | 115 ++++++
->  drivers/net/wireless/ath/ath12k/peer.h  |  12 +
->  drivers/net/wireless/ath/ath12k/wmi.c   | 191 ++++++++-
->  drivers/net/wireless/ath/ath12k/wmi.h   | 115 ++++++
->  8 files changed, 848 insertions(+), 125 deletions(-)
-> 
-> 
-> base-commit: fa934bf3e0a825ee09f035c6580af513187d59a2
+Hi Colin,
 
-with this series I see a new warning with gcc:
-drivers/net/wireless/ath/ath12k/mac.c: In function 'ath12k_bss_assoc':
-drivers/net/wireless/ath/ath12k/mac.c:3080:1: warning: the frame size of 1040 bytes is larger than 1024 bytes [-Wframe-larger-than=]
+kernel test robot noticed the following build warnings:
 
-we should clean this up with a subsequent patch
+[auto build test WARNING on wireless-next/main]
+[also build test WARNING on wireless/main linus/master v6.12-rc5 next-20241101]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-I'm taking the current series into 'pending'
+url:    https://github.com/intel-lab-lkp/linux/commits/Colin-Ian-King/wifi-rtw89-8852a-remove-redundant-else-statement/20241030-211507
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
+patch link:    https://lore.kernel.org/r/20241030131416.3091954-1-colin.i.king%40gmail.com
+patch subject: [PATCH][next] wifi: rtw89: 8852a: remove redundant else statement
+config: um-allmodconfig (https://download.01.org/0day-ci/archive/20241102/202411020209.qamp5h6r-lkp@intel.com/config)
+compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project 639a7ac648f1e50ccd2556e17d401c04f9cce625)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241102/202411020209.qamp5h6r-lkp@intel.com/reproduce)
 
-/jeff
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202411020209.qamp5h6r-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   In file included from drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c:5:
+   In file included from drivers/net/wireless/realtek/rtw89/coex.h:8:
+   In file included from drivers/net/wireless/realtek/rtw89/core.h:12:
+   In file included from include/linux/iopoll.h:14:
+   In file included from include/linux/io.h:14:
+   In file included from arch/um/include/asm/io.h:24:
+   include/asm-generic/io.h:548:31: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     548 |         val = __raw_readb(PCI_IOBASE + addr);
+         |                           ~~~~~~~~~~ ^
+   include/asm-generic/io.h:561:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     561 |         val = __le16_to_cpu((__le16 __force)__raw_readw(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/little_endian.h:37:51: note: expanded from macro '__le16_to_cpu'
+      37 | #define __le16_to_cpu(x) ((__force __u16)(__le16)(x))
+         |                                                   ^
+   In file included from drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c:5:
+   In file included from drivers/net/wireless/realtek/rtw89/coex.h:8:
+   In file included from drivers/net/wireless/realtek/rtw89/core.h:12:
+   In file included from include/linux/iopoll.h:14:
+   In file included from include/linux/io.h:14:
+   In file included from arch/um/include/asm/io.h:24:
+   include/asm-generic/io.h:574:61: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     574 |         val = __le32_to_cpu((__le32 __force)__raw_readl(PCI_IOBASE + addr));
+         |                                                         ~~~~~~~~~~ ^
+   include/uapi/linux/byteorder/little_endian.h:35:51: note: expanded from macro '__le32_to_cpu'
+      35 | #define __le32_to_cpu(x) ((__force __u32)(__le32)(x))
+         |                                                   ^
+   In file included from drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c:5:
+   In file included from drivers/net/wireless/realtek/rtw89/coex.h:8:
+   In file included from drivers/net/wireless/realtek/rtw89/core.h:12:
+   In file included from include/linux/iopoll.h:14:
+   In file included from include/linux/io.h:14:
+   In file included from arch/um/include/asm/io.h:24:
+   include/asm-generic/io.h:585:33: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     585 |         __raw_writeb(value, PCI_IOBASE + addr);
+         |                             ~~~~~~~~~~ ^
+   include/asm-generic/io.h:595:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     595 |         __raw_writew((u16 __force)cpu_to_le16(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+   include/asm-generic/io.h:605:59: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     605 |         __raw_writel((u32 __force)cpu_to_le32(value), PCI_IOBASE + addr);
+         |                                                       ~~~~~~~~~~ ^
+   include/asm-generic/io.h:693:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     693 |         readsb(PCI_IOBASE + addr, buffer, count);
+         |                ~~~~~~~~~~ ^
+   include/asm-generic/io.h:701:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     701 |         readsw(PCI_IOBASE + addr, buffer, count);
+         |                ~~~~~~~~~~ ^
+   include/asm-generic/io.h:709:20: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     709 |         readsl(PCI_IOBASE + addr, buffer, count);
+         |                ~~~~~~~~~~ ^
+   include/asm-generic/io.h:718:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     718 |         writesb(PCI_IOBASE + addr, buffer, count);
+         |                 ~~~~~~~~~~ ^
+   include/asm-generic/io.h:727:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     727 |         writesw(PCI_IOBASE + addr, buffer, count);
+         |                 ~~~~~~~~~~ ^
+   include/asm-generic/io.h:736:21: warning: performing pointer arithmetic on a null pointer has undefined behavior [-Wnull-pointer-arithmetic]
+     736 |         writesl(PCI_IOBASE + addr, buffer, count);
+         |                 ~~~~~~~~~~ ^
+   In file included from drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c:5:
+   In file included from drivers/net/wireless/realtek/rtw89/coex.h:8:
+   In file included from drivers/net/wireless/realtek/rtw89/core.h:14:
+   In file included from include/net/mac80211.h:18:
+   In file included from include/linux/if_ether.h:19:
+   In file included from include/linux/skbuff.h:17:
+   In file included from include/linux/bvec.h:10:
+   In file included from include/linux/highmem.h:8:
+   In file included from include/linux/cacheflush.h:5:
+   In file included from arch/um/include/asm/cacheflush.h:4:
+   In file included from arch/um/include/asm/tlbflush.h:9:
+   In file included from include/linux/mm.h:2213:
+   include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
+     518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
+         |                               ~~~~~~~~~~~ ^ ~~~
+>> drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c:2249:11: warning: variable 'offset' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
+    2249 |         else if (dgain <= 0x155)
+         |                  ^~~~~~~~~~~~~~
+   drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c:2252:9: note: uninitialized use occurs here
+    2252 |         return offset;
+         |                ^~~~~~
+   drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c:2249:7: note: remove the 'if' if its condition is always true
+    2249 |         else if (dgain <= 0x155)
+         |              ^~~~~~~~~~~~~~~~~~~
+    2250 |                 offset = -12;
+   drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c:2235:11: note: initialize the variable 'offset' to silence this warning
+    2235 |         s8 offset;
+         |                  ^
+         |                   = '\0'
+   14 warnings generated.
+
+Kconfig warnings: (for reference only)
+   WARNING: unmet direct dependencies detected for GET_FREE_REGION
+   Depends on [n]: SPARSEMEM [=n]
+   Selected by [m]:
+   - RESOURCE_KUNIT_TEST [=m] && RUNTIME_TESTING_MENU [=y] && KUNIT [=m]
+
+
+vim +2249 drivers/net/wireless/realtek/rtw89/rtw8852a_rfk.c
+
+e3ec7017f6a20d Ping-Ke Shih 2021-10-11  2232  
+e3ec7017f6a20d Ping-Ke Shih 2021-10-11  2233  static s8 _dpk_dgain_mapping(struct rtw89_dev *rtwdev, u16 dgain)
+e3ec7017f6a20d Ping-Ke Shih 2021-10-11  2234  {
+e3ec7017f6a20d Ping-Ke Shih 2021-10-11  2235  	s8 offset;
+e3ec7017f6a20d Ping-Ke Shih 2021-10-11  2236  
+e3ec7017f6a20d Ping-Ke Shih 2021-10-11  2237  	if (dgain >= 0x783)
+e3ec7017f6a20d Ping-Ke Shih 2021-10-11  2238  		offset = 0x6;
+e3ec7017f6a20d Ping-Ke Shih 2021-10-11  2239  	else if (dgain <= 0x782 && dgain >= 0x551)
+e3ec7017f6a20d Ping-Ke Shih 2021-10-11  2240  		offset = 0x3;
+e3ec7017f6a20d Ping-Ke Shih 2021-10-11  2241  	else if (dgain <= 0x550 && dgain >= 0x3c4)
+e3ec7017f6a20d Ping-Ke Shih 2021-10-11  2242  		offset = 0x0;
+e3ec7017f6a20d Ping-Ke Shih 2021-10-11  2243  	else if (dgain <= 0x3c3 && dgain >= 0x2aa)
+e3ec7017f6a20d Ping-Ke Shih 2021-10-11  2244  		offset = -3;
+e3ec7017f6a20d Ping-Ke Shih 2021-10-11  2245  	else if (dgain <= 0x2a9 && dgain >= 0x1e3)
+e3ec7017f6a20d Ping-Ke Shih 2021-10-11  2246  		offset = -6;
+e3ec7017f6a20d Ping-Ke Shih 2021-10-11  2247  	else if (dgain <= 0x1e2 && dgain >= 0x156)
+e3ec7017f6a20d Ping-Ke Shih 2021-10-11  2248  		offset = -9;
+e3ec7017f6a20d Ping-Ke Shih 2021-10-11 @2249  	else if (dgain <= 0x155)
+e3ec7017f6a20d Ping-Ke Shih 2021-10-11  2250  		offset = -12;
+e3ec7017f6a20d Ping-Ke Shih 2021-10-11  2251  
+e3ec7017f6a20d Ping-Ke Shih 2021-10-11  2252  	return offset;
+e3ec7017f6a20d Ping-Ke Shih 2021-10-11  2253  }
+e3ec7017f6a20d Ping-Ke Shih 2021-10-11  2254  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
