@@ -1,52 +1,52 @@
-Return-Path: <linux-wireless+bounces-14823-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14824-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CD239B942C
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2024 16:17:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6712D9B942D
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2024 16:17:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 481041F21DBB
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2024 15:17:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B334282F1B
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2024 15:17:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 891181C7610;
-	Fri,  1 Nov 2024 15:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD04C1C82F0;
+	Fri,  1 Nov 2024 15:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KkMveaeJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fqbQVclJ"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656281C82F0
-	for <linux-wireless@vger.kernel.org>; Fri,  1 Nov 2024 15:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CCA1C876B
+	for <linux-wireless@vger.kernel.org>; Fri,  1 Nov 2024 15:17:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730474234; cv=none; b=k4RSqBIxr4+61sDalavzxAx72e+LEQpGUtFGMuCdGOWX1tka7Easg0sLBSLGHX/SBnC4uXGm69KNhEiulP+HmqRfDN+U2LHmYDGDdNZ7G07JeAVQCTSz4RdKqEnYmZEOs3rDZfoPUDgWNQG3yo9YovI/3pkL0H+51njw3jas1hU=
+	t=1730474235; cv=none; b=nfDO31RIuIflqx50AyNTjU7868ja0cRMSCU1ViO1zBz0fS0NmlgV3P4zzqnZ6lkW/RNzkrXHeBIsjANZou1ZKl0s5VAYdyVjyyX26vumdprOSR/vjfyoZhD09BblDxpUAtUY3jMNxjIxwYIlSIRuExp38ZeynnBANmciLjsyMc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730474234; c=relaxed/simple;
-	bh=h/Xj/nI0xoarcqXFFlfgJg5CxwBK7LrhIy0nFNgw9Ao=;
+	s=arc-20240116; t=1730474235; c=relaxed/simple;
+	bh=GcHF9smJ63ZYYJcEtK76RykifUHXRqnHH0oKt4J7VQA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CX/0JUndlQylkO+spwc4adLGlhgOi7CXIeFhoffwDeOfTc/cYJH81rvaKO0OrS5yulvim79rP0OMrlzM23q0jC0dbi6t+/NW4wYRS5k0rCUspNGq2mjxnAswi1WgP419Px1KYpS1YDA3RJ5pSPB8j//aqDX1aWYDBk5P3WetIr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KkMveaeJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 653EFC4CED3;
-	Fri,  1 Nov 2024 15:17:13 +0000 (UTC)
+	 MIME-Version; b=nZOmrjcBXlWPw7bC1hDPGdwHc1EaC8qe+3ksnMDG5svO8/iDBdz69WO0PLo5tdcZR19H9pZnSFsU+BCesovpOOnQ1zRtVOii4FrMPX1QgDkXNnhd9ellnq9DATMHXvzxDeT3G6huaQmgo1JauehDwHsIdQOfoidBSMKA82cCRqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fqbQVclJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7136EC4CED1;
+	Fri,  1 Nov 2024 15:17:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730474234;
-	bh=h/Xj/nI0xoarcqXFFlfgJg5CxwBK7LrhIy0nFNgw9Ao=;
+	s=k20201202; t=1730474235;
+	bh=GcHF9smJ63ZYYJcEtK76RykifUHXRqnHH0oKt4J7VQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KkMveaeJ0o0GehfRMJE1Box2aBGx9ES5LHa4xSmudLraktL1l2OcMNfRwknRZQiIc
-	 VlIa7HOebTxqEmwde4hxl2lfuZ+MXS+UzMX5wc/MGYt3DX8jSITdD5ghw6ggq51amo
-	 T02OP69dVp0Z31h2m+SHuIxQ3pIc7zPaQORdqNfn0T5ffkJ69kGXJFIiY1oEB2loxa
-	 laLHtzfIwVr6UxgjfDtcd63gwEg+dyBkZ+H9p77S/ZJaxA/uIjAGHgJ0HnxGjmWXIs
-	 lRADTnG7oyy2GTV2ld+yGCDXgtgO3M7sCIpgTR6QzJ2Y295Sd6Nhh3nVd3V7M4Uul3
-	 mjXZPjV9rYdHQ==
+	b=fqbQVclJiqokSduUgTA0ZkRr6S7E0OP/Pu5GjFWXYkt9vlfgnMdG6aI89BWgWSCzP
+	 btHyL9xik2yMl3fABwljiRPsGk72aUbl6xr8+LFAuYwedfha/FgqBvwfMLMgU+VoVZ
+	 usd4iCmXlOdc91f4P+gzfHN7UXzYby5c/kbjZP3uKaFQTlOcOs9PbesR0xJGHpoCZt
+	 rqRqtZEfpWmxt9H0aiwbWGRrqRmRmtnGd5WbNQkichMB00Yz9bHPg6x9RmyE8qaCZC
+	 vlm+go/+J57NlS+6NhnKpdj7pXYPdIRALjca9wYHTqBBVa+8IAULdKXEq8qb2d59YN
+	 EF05xgloLW+Kg==
 From: Kalle Valo <kvalo@kernel.org>
 To: ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH v2 6/8] wifi: ath12k: add multi-link flag in peer create command
-Date: Fri,  1 Nov 2024 17:17:03 +0200
-Message-Id: <20241101151705.165987-7-kvalo@kernel.org>
+Subject: [PATCH v2 7/8] wifi: ath12k: add helper to find multi-link station
+Date: Fri,  1 Nov 2024 17:17:04 +0200
+Message-Id: <20241101151705.165987-8-kvalo@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241101151705.165987-1-kvalo@kernel.org>
 References: <20241101151705.165987-1-kvalo@kernel.org>
@@ -60,9 +60,9 @@ Content-Transfer-Encoding: 8bit
 
 From: Sriram R <quic_srirrama@quicinc.com>
 
-Driver should indicate to firmware whether a peer is multi-link or not in peer
-create command using multi-link flag. Add changes to support
-WMI_TAG_MLO_PEER_CREATE_PARAMS in WMI_PEER_CREATE_CMDID.
+Multi-link stations are identified in driver using the multi-link
+peer id and they have ATH12K_PEER_ML_ID_VALID bit set in the id. Add a helper
+to find multi-link station using the multi-link peer id.
 
 Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
@@ -71,99 +71,67 @@ Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
 Signed-off-by: Harshitha Prem <quic_hprem@quicinc.com>
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/mac.c |  5 +++--
- drivers/net/wireless/ath/ath12k/wmi.c | 27 +++++++++++++++++++++++----
- drivers/net/wireless/ath/ath12k/wmi.h |  6 ++++++
- 3 files changed, 32 insertions(+), 6 deletions(-)
+ drivers/net/wireless/ath/ath12k/peer.c | 17 +++++++++++++++++
+ drivers/net/wireless/ath/ath12k/peer.h |  4 ++++
+ 2 files changed, 21 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 2f1edce0287a..b12682547410 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -4983,8 +4983,9 @@ static int ath12k_mac_station_add(struct ath12k *ar,
- 	}
+diff --git a/drivers/net/wireless/ath/ath12k/peer.c b/drivers/net/wireless/ath/ath12k/peer.c
+index 2ad19baf0664..0e86847edd6e 100644
+--- a/drivers/net/wireless/ath/ath12k/peer.c
++++ b/drivers/net/wireless/ath/ath12k/peer.c
+@@ -79,6 +79,20 @@ struct ath12k_peer *ath12k_peer_find_by_addr(struct ath12k_base *ab,
+ 	return NULL;
+ }
  
- 	peer_param.vdev_id = arvif->vdev_id;
--	peer_param.peer_addr = sta->addr;
-+	peer_param.peer_addr = arsta->addr;
- 	peer_param.peer_type = WMI_PEER_TYPE_DEFAULT;
-+	peer_param.ml_enabled = sta->mlo;
- 
- 	ret = ath12k_peer_create(ar, arvif, sta, &peer_param);
- 	if (ret) {
-@@ -7018,7 +7019,7 @@ int ath12k_mac_vdev_create(struct ath12k *ar, struct ath12k_link_vif *arvif)
- 	struct ath12k_vif *ahvif = arvif->ahvif;
- 	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(ahvif);
- 	struct ath12k_wmi_vdev_create_arg vdev_arg = {0};
--	struct ath12k_wmi_peer_create_arg peer_param;
-+	struct ath12k_wmi_peer_create_arg peer_param = {0};
- 	struct ieee80211_bss_conf *link_conf;
- 	u32 param_id, param_value;
- 	u16 nss;
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index e089b58bbea1..0583d832fac7 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -1230,9 +1230,14 @@ int ath12k_wmi_send_peer_create_cmd(struct ath12k *ar,
- 	struct ath12k_wmi_pdev *wmi = ar->wmi;
- 	struct wmi_peer_create_cmd *cmd;
- 	struct sk_buff *skb;
--	int ret;
-+	int ret, len;
-+	struct wmi_peer_create_mlo_params *ml_param;
-+	void *ptr;
-+	struct wmi_tlv *tlv;
- 
--	skb = ath12k_wmi_alloc_skb(wmi->wmi_ab, sizeof(*cmd));
-+	len = sizeof(*cmd) + TLV_HDR_SIZE + sizeof(*ml_param);
++static struct ath12k_peer *ath12k_peer_find_by_ml_id(struct ath12k_base *ab,
++						     int ml_peer_id)
++{
++	struct ath12k_peer *peer;
 +
-+	skb = ath12k_wmi_alloc_skb(wmi->wmi_ab, len);
- 	if (!skb)
- 		return -ENOMEM;
- 
-@@ -1244,9 +1249,23 @@ int ath12k_wmi_send_peer_create_cmd(struct ath12k *ar,
- 	cmd->peer_type = cpu_to_le32(arg->peer_type);
- 	cmd->vdev_id = cpu_to_le32(arg->vdev_id);
- 
-+	ptr = skb->data + sizeof(*cmd);
-+	tlv = ptr;
-+	tlv->header = ath12k_wmi_tlv_hdr(WMI_TAG_ARRAY_STRUCT,
-+					 sizeof(*ml_param));
-+	ptr += TLV_HDR_SIZE;
-+	ml_param = ptr;
-+	ml_param->tlv_header =
-+			ath12k_wmi_tlv_cmd_hdr(WMI_TAG_MLO_PEER_CREATE_PARAMS,
-+					       sizeof(*ml_param));
-+	if (arg->ml_enabled)
-+		ml_param->flags = cpu_to_le32(ATH12K_WMI_FLAG_MLO_ENABLED);
++	lockdep_assert_held(&ab->base_lock);
 +
-+	ptr += sizeof(*ml_param);
++	list_for_each_entry(peer, &ab->peers, list)
++		if (ml_peer_id == peer->ml_id)
++			return peer;
 +
- 	ath12k_dbg(ar->ab, ATH12K_DBG_WMI,
--		   "WMI peer create vdev_id %d peer_addr %pM\n",
--		   arg->vdev_id, arg->peer_addr);
-+		   "WMI peer create vdev_id %d peer_addr %pM ml_flags 0x%x\n",
-+		   arg->vdev_id, arg->peer_addr, ml_param->flags);
++	return NULL;
++}
++
+ struct ath12k_peer *ath12k_peer_find_by_id(struct ath12k_base *ab,
+ 					   int peer_id)
+ {
+@@ -86,6 +100,9 @@ struct ath12k_peer *ath12k_peer_find_by_id(struct ath12k_base *ab,
  
- 	ret = ath12k_wmi_cmd_send(wmi, skb, WMI_PEER_CREATE_CMDID);
- 	if (ret) {
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
-index 0ddd7ce97385..2378d94b2409 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.h
-+++ b/drivers/net/wireless/ath/ath12k/wmi.h
-@@ -3015,6 +3015,12 @@ struct ath12k_wmi_peer_create_arg {
- 	const u8 *peer_addr;
- 	u32 peer_type;
- 	u32 vdev_id;
-+	bool ml_enabled;
-+};
+ 	lockdep_assert_held(&ab->base_lock);
+ 
++	if (peer_id & ATH12K_PEER_ML_ID_VALID)
++		return ath12k_peer_find_by_ml_id(ab, peer_id);
 +
-+struct wmi_peer_create_mlo_params {
-+	__le32 tlv_header;
-+	__le32 flags;
+ 	list_for_each_entry(peer, &ab->peers, list)
+ 		if (peer_id == peer->peer_id)
+ 			return peer;
+diff --git a/drivers/net/wireless/ath/ath12k/peer.h b/drivers/net/wireless/ath/ath12k/peer.h
+index 085246ca938d..c28aca5d88a0 100644
+--- a/drivers/net/wireless/ath/ath12k/peer.h
++++ b/drivers/net/wireless/ath/ath12k/peer.h
+@@ -19,6 +19,8 @@ struct ppdu_user_delayba {
+ 	u32 resp_rate_flags;
  };
  
- struct ath12k_wmi_pdev_set_regdomain_arg {
++#define ATH12K_PEER_ML_ID_VALID         BIT(13)
++
+ struct ath12k_peer {
+ 	struct list_head list;
+ 	struct ieee80211_sta *sta;
+@@ -47,6 +49,8 @@ struct ath12k_peer {
+ 
+ 	/* protected by ab->data_lock */
+ 	bool dp_setup_done;
++
++	u16 ml_id;
+ };
+ 
+ struct ath12k_ml_peer {
 -- 
 2.39.5
 
