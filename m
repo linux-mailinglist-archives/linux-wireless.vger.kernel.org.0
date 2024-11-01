@@ -1,110 +1,109 @@
-Return-Path: <linux-wireless+bounces-14807-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14808-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F2839B8C49
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2024 08:48:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B21909B8CB7
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2024 09:13:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 908321C208EE
-	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2024 07:48:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BDC7B23069
+	for <lists+linux-wireless@lfdr.de>; Fri,  1 Nov 2024 08:13:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E330915A84E;
-	Fri,  1 Nov 2024 07:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF8515687C;
+	Fri,  1 Nov 2024 08:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QLiiX4kM"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="h0GFmca9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com [209.85.214.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE5D155C82;
-	Fri,  1 Nov 2024 07:46:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5CF5156879
+	for <linux-wireless@vger.kernel.org>; Fri,  1 Nov 2024 08:12:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730447207; cv=none; b=Vtj16VJw0OW9Fw4cU0I2WHYAesFwFFny65yg1iPo2tzJYXXREFs7SrJlMHGD2Hh3xOSVqpRuIIOFmhifvOcHCX4qYLhv6XgSu+zm8UuCPlK7zUB1U2/cqTwIFzPaZe71b/HyYbeG+NzA9aHt0akisMv/0vQy6Tr0aRL65/mYZrY=
+	t=1730448779; cv=none; b=oNFJk9nIEqWpavgjv2E7xSqn5Z4ypQH/I8xVqN3ANsVUfk1ftOBdv7XMBeEEkBcQTUFTNcKJA6HoM46Zf3EvTRNaKTWr1Q6aGu47dvDDtLbjO1waY/LmdqOySbHOjCL3o3jfBPxhmpfZXbIxkJrCAo31HTga0VR1oIG8asntId0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730447207; c=relaxed/simple;
-	bh=TF6bZIvSMDp9mqHIuwU8sLZ1ByDGmrUCLsCTB5m3/fY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Po0u0cXyJexhjK0wNi0fjHiEGXHTrcF4tnoQrIF5wzg1WheqOc18eBX0aTpy7gtc+2g09PgVnZC93WHnFAgXGV48D3wXBr2c1GrRTnzQ9utbeiYfB1xIN7PDqR+nABCPJEO+CySGQaR4QVVI2zWvYh9fYnxagKKD4o8FsuBPY7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QLiiX4kM; arc=none smtp.client-ip=209.85.214.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f195.google.com with SMTP id d9443c01a7336-20b5affde14so13810665ad.3;
-        Fri, 01 Nov 2024 00:46:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730447205; x=1731052005; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Nz4PoH12jyh9oC2ESydlrxm91wEB4TKbC9HA6hPB9Zo=;
-        b=QLiiX4kMjlcn27EPrN3eOxLtA0V5X55JKKsznrkKdcWwABlXbjkRrBgvKzUTf5bfA3
-         xxvWZzIvvtKhyrzLvaREQ+PCPwsFiNKQxLneaUM5k+L5BDBigsKekklc+ZFEH53I5bLr
-         yx9eFXhExJFrbW/mV12b0VhwG2N+nlMuQr5yBLS/REYgI9FGJbwXEAL7v9I7dvw7j0zo
-         9C50G0CLi3IWfigPzPA/vDWUBHIvOkRgUf+qx1bZs7744WApFv0WbxfCQMp0IdLEGswc
-         xD60wO559XHxnALD5LL5I1PVUFYmV75bXtj5qfrZ9mOBwaTJjhgSDSlRcKEMKEliwoZf
-         1qbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730447205; x=1731052005;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Nz4PoH12jyh9oC2ESydlrxm91wEB4TKbC9HA6hPB9Zo=;
-        b=hiyM9aiScJPRBD8bZxJ4xxHPF68GIthuPD3hH1e6dJbvlF+7VRRSfsYEIcptzcvAN7
-         v2cuexdLHY4V/HF7YDaMlY3uk9ibfCziwwCFNKoxQ2o9Tv4wsVsNKEHa5AC1nxNgIapX
-         atNAhSsw0Bf41MNcaBD/BO5CLVUD55ZUNxuq5Hw9c7kUxvXNecJb9+V8Z2xuAziomDZw
-         teAeVx4njue38zsU7DxngaNwd6DzkE/tUw+1cCHISxZ5HbrlyqcD8r6xsq46EE9tGAfQ
-         Fkgp/1sMBibNR9/qOCYnDnaFl0jEQzzILW4D6hqp88s8y1Yd5qrUQmQBuMTFEK78cJcB
-         N9RA==
-X-Forwarded-Encrypted: i=1; AJvYcCXcXwp7R+tbMocE1JzF7sbzoYr5jCAHtL4EGQw1tZl2Wf+g0tOlw4ripvRxYzujDUC2ipD8Uc45cfldTO4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPmvUeO/mZ0VroH1uzahhoM5vfKQ8jeRu4vjuERttbLqIj711k
-	5Omm9PjcsZg1HCRsN3EIyBEfaza2kWH9O14kYB/lkQk5E7Qjg8oF
-X-Google-Smtp-Source: AGHT+IEnjqZXRFFl/HYyvTdaUyHu1abBvCfO6O45RDVhOBDwH+2H38UMiLNuyL6cnsCehls03BQRjw==
-X-Received: by 2002:a17:90a:508:b0:2c9:6a38:54e4 with SMTP id 98e67ed59e1d1-2e8f12f55aemr21061780a91.41.1730447205193;
-        Fri, 01 Nov 2024 00:46:45 -0700 (PDT)
-Received: from localhost.localdomain ([2001:250:4000:8246:8007:bb90:49ad:3903])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-211056edb4csm17640335ad.58.2024.11.01.00.46.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Nov 2024 00:46:44 -0700 (PDT)
-From: Gan Jie <ganjie182@gmail.com>
-To: kvalo@kernel.org
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	trivial@kernel.org,
-	ganjie163@hust.edu.cn,
-	ganjie182@gmail.com
-Subject: [PATCH] Driver:net:wireless: Fix typo 'adderss'
-Date: Fri,  1 Nov 2024 15:46:25 +0800
-Message-ID: <20241101074626.961-1-ganjie182@gmail.com>
-X-Mailer: git-send-email 2.42.0.windows.2
+	s=arc-20240116; t=1730448779; c=relaxed/simple;
+	bh=ePelJAOYuxY8JxhO38HS8bn9JMMzPs/JJvxVs5Ijusw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oiDWjtvupKOdunIBk2WmcxxdMvwFpiJqHkP64k5mbr1z0vqiqOyqGw9zjftETp7nhO5bsiJ0Yc7t6ICzKNQ3T/jzpcctKgX50tVEiL0aqiX5946lGtSS09m25c5SYQMReoe2O0JppwRdCKy45VaHNzweBTVk7l914pZ4KbQBjBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=h0GFmca9; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 173da904982911efb88477ffae1fc7a5-20241101
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=p21M7mko/v90TFPnykxFUlxJZuzWC05tCWN+cJswq1Q=;
+	b=h0GFmca9jhqQRvV7KAlK7oHjAxkdGwJ4lku7xJ1eA/tr/e4V6r8HQk8Z/wiutdoqEGg0fgXxWb4th+eEipcrpCIYXlQDpLJ8JBNGirItDTFxyoyCDBgDd20Mj+Y0N5Y9/lRv/P6IMKVVFqWYF/ZnBzp12p8WN5JvMRNpJLL/wr0=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.42,REQID:369971ff-5a16-4a0b-b0a2-8ea2f6b76754,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:b0fcdc3,CLOUDID:1fe18648-ca13-40ea-8070-fa012edab362,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
+	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 173da904982911efb88477ffae1fc7a5-20241101
+Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
+	(envelope-from <mingyen.hsieh@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 148020157; Fri, 01 Nov 2024 16:12:52 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Fri, 1 Nov 2024 16:12:50 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Fri, 1 Nov 2024 16:12:50 +0800
+From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
+	<Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
+	<Michael.Lo@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+	<km.lin@mediatek.com>, <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
+	<posh.sun@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
+	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
+	<mingyen.hsieh@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt7925: fix get wrong chip cap from incorrect pointer
+Date: Fri, 1 Nov 2024 16:12:49 +0800
+Message-ID: <20241101081249.27834-1-mingyen.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Fix typo 'adderss' to 'address'.
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-Signed-off-by: Gan Jie <ganjie182@gmail.com>
+Use tlv instead of skb, because using skb will get invalid data
+with wrong offset.
+
+Fixes: 86c051f2c418 ("wifi: mt76: mt7925: enabling MLO when the firmware supports it")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/error-dump.h | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/error-dump.h b/drivers/net/wireless/intel/iwlwifi/fw/error-dump.h
-index e63b08b7d336..3af275133da0 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/error-dump.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/error-dump.h
-@@ -169,7 +169,7 @@ struct iwl_fw_error_dump_info {
-  * @fw_mon_wr_ptr: the position of the write pointer in the cyclic buffer
-  * @fw_mon_base_ptr: base pointer of the data
-  * @fw_mon_cycle_cnt: number of wraparounds
-- * @fw_mon_base_high_ptr: used in AX210 devices, the base adderss is 64 bit
-+ * @fw_mon_base_high_ptr: used in AX210 devices, the base address is 64 bit
-  *	so fw_mon_base_ptr holds LSB 32 bits and fw_mon_base_high_ptr hold
-  *	MSB 32 bits
-  * @reserved: for future use
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 0c2a2337c313..9b6aff463063 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -823,7 +823,7 @@ mt7925_mcu_get_nic_capability(struct mt792x_dev *dev)
+ 			mt7925_mcu_parse_phy_cap(dev, tlv->data);
+ 			break;
+ 		case MT_NIC_CAP_CHIP_CAP:
+-			memcpy(&dev->phy.chip_cap, (void *)skb->data, sizeof(u64));
++			memcpy(&dev->phy.chip_cap, (void *)tlv->data, sizeof(u64));
+ 			break;
+ 		case MT_NIC_CAP_EML_CAP:
+ 			mt7925_mcu_parse_eml_cap(dev, tlv->data);
 -- 
-2.34.1
+2.45.2
 
 
