@@ -1,141 +1,144 @@
-Return-Path: <linux-wireless+bounces-14840-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14841-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 017609B9E6F
-	for <lists+linux-wireless@lfdr.de>; Sat,  2 Nov 2024 10:52:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88F5B9B9FDB
+	for <lists+linux-wireless@lfdr.de>; Sat,  2 Nov 2024 13:00:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36F0A1C20DA2
-	for <lists+linux-wireless@lfdr.de>; Sat,  2 Nov 2024 09:52:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35B331F232DD
+	for <lists+linux-wireless@lfdr.de>; Sat,  2 Nov 2024 12:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0B6C16A92C;
-	Sat,  2 Nov 2024 09:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 093E816DEBB;
+	Sat,  2 Nov 2024 12:00:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hOy5EUSy"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-il1-f197.google.com (mail-il1-f197.google.com [209.85.166.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FB2154BFF
-	for <linux-wireless@vger.kernel.org>; Sat,  2 Nov 2024 09:52:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF686AB8;
+	Sat,  2 Nov 2024 12:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730541142; cv=none; b=JLwuka2PTSx4ixQfUHQ67G9//SQ/O4aYwfy4hQxPPxv0F+anXSg9h8n3yP2DowQJNIWqoHBKdhZ4veT0GRM6Tg0VWocTRgX7qab4FlnJt0C9C8kVI31d+wbmQmlFIvC6TK3+3QCIYef4Sg9JdrkVIZe6N9ByGjps32Grs5+qwog=
+	t=1730548842; cv=none; b=kt8Qkwe0se83xx2bl9jWPRJv7VKbW+St7QALPev8wLnZBP4j9cdsNSTU7HzInbjWhG47CpPUejTEZT0VU3HWBlhg6ikhw8sFqazU7TapmanhdQ+DJfyBOdUpRDvVIBNc1XAUGe5QJIZy+MceRLhFpNGr3xWvjgIIPv9DypAI/c0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730541142; c=relaxed/simple;
-	bh=GxrjJnXGW6sCjILVBpRuGw7tXtuPIvPHnn0g5HYWMi4=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=GXtcP8p+eqq9f6IMKrv5+Pth4r6RUDOzFeIP68MYzPHV7DpSsAKLb9j65W3UziPLrcmr1lDXufIqY5IfowezdJfhFkjhmA5HLsFgO4vuXqkyUCCVkpYTg2I0IhQbF6Bt5F9EQ6XeLRz4dJmB08PaKHpV+GSkZ7wdgG6TVexd1KA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f197.google.com with SMTP id e9e14a558f8ab-3a3ba4fcf24so29397075ab.0
-        for <linux-wireless@vger.kernel.org>; Sat, 02 Nov 2024 02:52:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730541140; x=1731145940;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3nf4dj4k5c/58PSLQgpPF9A/XJV10m35XQHJdZxnCHw=;
-        b=VvjGawZ9a80zVX7OOl3xp5DtevHMyLxS6P/myKBdiHalbBU/yiO9Noid72Mj5BZYFZ
-         wJZwzVDZwBTlpSysUXiCA4BYuD4CNXUV0ILH1KGHk8csotc6zD0bf67blRiApxWgHI9+
-         /8+aeuSAc68Fz+Ow3ayGq4trzlPTrhfDgyCPzx7VButOslwI53jL5fga2Y3kDfb1fQ1K
-         Ygx1UNuYhX7P8jkvf/bj9c5HYNPTv1bzOJssZllasWWqqR1uckWAcTjjLaKqfjoiP6Y9
-         52XD/E49eKtV9VqMEPtoOVpTJQVTnIsPpN52d3IXVPZlYGkzImEmSWupVoFREP8gfFI1
-         rVtw==
-X-Forwarded-Encrypted: i=1; AJvYcCXUI4F8/sJvXxY5HfoStOnAQrVuQJGTdmkzn5aX8Y1EAAbTjUM5swRXFuJ8RbpTxnqQM6XnLIhxJ4E/a7bL4w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyg39C28SPyerk2H0WjbGdmFiLTsVUm7XbMB34qcVOTfogUVc/9
-	BuNa60VYUm4BTfLYD57Kysu1vxRc+7ZsE+85kQciBxDTWKff4/PvOdmmtNB1D750uDl2xjQsvt/
-	PJbHp6cJxsInB6N/iTvcEfq6YwxQc2ykH6NQNX9U+aqAZZg+mc8XWqk4=
-X-Google-Smtp-Source: AGHT+IHb0ZMHQqWAdWsXgk64U3xn3mks4qVwYd1/yAxUKlN/pmKz/xZviD0D6HvX92YpJ1nyhV/+NCPl6bWb/3uGVmKx9mVyYW0J
+	s=arc-20240116; t=1730548842; c=relaxed/simple;
+	bh=Gax01FuZKLQfe+8CO7ewzivLwUdPlXNuJeuqRVWx8Qc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jPhD6D+fBF6gzxknshcbpHophNoM6/04j4NwCEHkBrMCrE7APoX8V4bVH5bK57PbnOk86WxJX0WKDc4UVyBgbFp/OL6jOjF9lVgyjNl93XklaKnLUyKarsZr2Vnaxt//HrELRJ4MFzCAKDCEzIgMk61AvdoN3tFlVoWbMyRh6wM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hOy5EUSy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D16A1C4CED2;
+	Sat,  2 Nov 2024 12:00:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730548842;
+	bh=Gax01FuZKLQfe+8CO7ewzivLwUdPlXNuJeuqRVWx8Qc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hOy5EUSypJsqP3WaNWj8wo13ZKzdP7ItQe6wpSkp5E/shKd/Jg8XJds3y8apv97bG
+	 dLxo0ECMkWdfaeaioW8poZ6Pfv+e5mFt00Pb13PJPM9O/JfvJfyPQBn5f3+fLyLg/t
+	 tkpZgWTzCSxO7OAnfFRhi6M1aOZOZciftNFY+THjG81eeXl9ray4CYrQIDgPkmfE4r
+	 jYqNlVCykpkR+5VhWbXt+xakVAIvvmJ4JObdP8Nv41Jc+I8n+i6ERrqmSdntKFV4F3
+	 0Swj+Ss+SUPNn+onGxe1xtWPgISqAlW2xdxmIbsftlDJoItvn5q1SAhwPbZXsQ1SuY
+	 6AoJjjmrG8dQw==
+Date: Sat, 2 Nov 2024 12:00:30 +0000
+From: Simon Horman <horms@kernel.org>
+To: "Nemanov, Michael" <michael.nemanov@ti.com>
+Cc: Kalle Valo <kvalo@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Sabeeh Khan <sabeeh-khan@ti.com>
+Subject: Re: [PATCH v3 12/17] wifi: cc33xx: Add scan.c, scan.h
+Message-ID: <20241102120030.GG1838431@kernel.org>
+References: <20240806170018.638585-1-michael.nemanov@ti.com>
+ <20240806170018.638585-13-michael.nemanov@ti.com>
+ <20240809160355.GD1951@kernel.org>
+ <33f3b6a4-f907-4374-90ac-d81a81700936@ti.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:2186:b0:3a6:b1b0:6799 with SMTP id
- e9e14a558f8ab-3a6b1b067ecmr58208075ab.10.1730541140267; Sat, 02 Nov 2024
- 02:52:20 -0700 (PDT)
-Date: Sat, 02 Nov 2024 02:52:20 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6725f654.050a0220.529b6.0297.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING in ieee80211_mgd_probe_ap_send (2)
-From: syzbot <syzbot+ab9bce876a60d87abeb0@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <33f3b6a4-f907-4374-90ac-d81a81700936@ti.com>
 
-Hello,
+On Mon, Oct 28, 2024 at 06:26:50PM +0200, Nemanov, Michael wrote:
+> On 8/9/2024 7:03 PM, Simon Horman wrote:
+> > On Tue, Aug 06, 2024 at 08:00:13PM +0300, Michael Nemanov wrote:
+> > 
+> > ...
+> > 
+> > > diff --git a/drivers/net/wireless/ti/cc33xx/scan.h b/drivers/net/wireless/ti/cc33xx/scan.h
+> > 
+> > ...
+> > 
+> > > +/**
+> > > + * struct cc33xx_cmd_ssid_list - scan SSID list description
+> > > + *
+> > > + * @role_id:            roleID
+> > > + *
+> > > + * @num_of_ssids:       Number of SSID in the list. MAX 16 entries
+> > 
+> > @num_of_ssids -> @n_ssids
+> > 
+> > > + *
+> > > + * @ssid_list:          SSIDs to scan for (active scan only)
+> > 
+> > @ssid_list -> @ssids
+> >
+> 
+> Thanks for the feedback, will fix.
+> 
+> > Please document all non-private fields,
+> > and annotate those that are private.
+> > 
+> 
+> Not sure I follow. You mean mark private vs. non private members in the
+> documentation? If so, private to what (the CC33xx driver or the underlying
+> HW)?
 
-syzbot found the following issue on:
+Hi Michael,
 
-HEAD commit:    94c11e852955 usb: add support for new USB device ID 0x17EF..
-git tree:       net
-console output: https://syzkaller.appspot.com/x/log.txt?x=11f6eca7980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=309bb816d40abc28
-dashboard link: https://syzkaller.appspot.com/bug?extid=ab9bce876a60d87abeb0
-compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+I'm not sure why I mentioned private, perhaps it was a general statement
+that all fields should either be documented or marked as private. If
+you don't think anything is private - whatever that might mean - then you
+can ignore that part of my comment. But suffice to say, there is syntax to
+mark fields as private[1].
 
-Unfortunately, I don't have any reproducer for this issue yet.
+[1] https://www.kernel.org/doc/html/latest/doc-guide/kernel-doc.html#members
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/86f5604d3b74/disk-94c11e85.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/8be1f807098d/vmlinux-94c11e85.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/c343d3004f40/bzImage-94c11e85.xz
+> > There are a number of similar minor Kernel doc problems with this patch.
+> > Please consider using W=1 builds or ./scripts/kernel-doc -none
+> > (bonus points for -Wall)
+> > 
+> 
+> Ran both, got warning for "no structured comments found" on multiple files.
+> Is that it?
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+ab9bce876a60d87abeb0@syzkaller.appspotmail.com
+I'm a but unsure why you see that, but what I was referring to is this:
 
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 11 at net/mac80211/mlme.c:3843 ieee80211_mgd_probe_ap_send+0x4e3/0x5c0 net/mac80211/mlme.c:3843
-Modules linked in:
-CPU: 1 UID: 0 PID: 11 Comm: kworker/u8:0 Not tainted 6.12.0-rc4-syzkaller-00174-g94c11e852955 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Workqueue: events_unbound cfg80211_wiphy_work
-RIP: 0010:ieee80211_mgd_probe_ap_send+0x4e3/0x5c0 net/mac80211/mlme.c:3843
-Code: 5d 41 5e 41 5f 5d e9 bc 79 33 f6 e8 37 d3 46 f6 90 0f 0b 90 eb b6 e8 2c d3 46 f6 90 0f 0b 90 e9 fc fb ff ff e8 1e d3 46 f6 90 <0f> 0b 90 e9 bf fc ff ff e8 10 d3 46 f6 90 0f 0b 90 e9 30 ff ff ff
-RSP: 0018:ffffc90000107b20 EFLAGS: 00010293
-RAX: ffffffff8b4e04a2 RBX: 0000000000000001 RCX: ffff88801ce83c00
-RDX: 0000000000000000 RSI: ffffffff8c0adcc0 RDI: ffffffff8c6102e0
-RBP: 1ffff11005239377 R08: ffffffff901d002f R09: 1ffffffff203a005
-R10: dffffc0000000000 R11: fffffbfff203a006 R12: ffff8880291ca972
-R13: dffffc0000000000 R14: dffffc0000000000 R15: ffff8880291c8cc0
-FS:  0000000000000000(0000) GS:ffff8880b8700000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000555565f7b5c8 CR3: 0000000033890000 CR4: 00000000003526f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- cfg80211_wiphy_work+0x2db/0x490 net/wireless/core.c:440
- process_one_work kernel/workqueue.c:3229 [inline]
- process_scheduled_works+0xa63/0x1850 kernel/workqueue.c:3310
- worker_thread+0x870/0xd30 kernel/workqueue.c:3391
- kthread+0x2f0/0x390 kernel/kthread.c:389
- ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+$ ./scripts/kernel-doc -none drivers/net/wireless/ti/cc33xx/scan.h
+drivers/net/wireless/ti/cc33xx/scan.h:104: warning: Function parameter or struct member 'header' not described in 'cc33xx_cmd_ssid_list'
+drivers/net/wireless/ti/cc33xx/scan.h:104: warning: Function parameter or struct member 'scan_type' not described in 'cc33xx_cmd_ssid_list'
+drivers/net/wireless/ti/cc33xx/scan.h:104: warning: Function parameter or struct member 'n_ssids' not described in 'cc33xx_cmd_ssid_list'
+drivers/net/wireless/ti/cc33xx/scan.h:104: warning: Function parameter or struct member 'ssids' not described in 'cc33xx_cmd_ssid_list'
+drivers/net/wireless/ti/cc33xx/scan.h:104: warning: Function parameter or struct member 'padding' not described in 'cc33xx_cmd_ssid_list'
+drivers/net/wireless/ti/cc33xx/scan.h:104: warning: Excess struct member 'num_of_ssids' description in 'cc33xx_cmd_ssid_list'
+drivers/net/wireless/ti/cc33xx/scan.h:104: warning: Excess struct member 'ssid_list' description in 'cc33xx_cmd_ssid_list'
+drivers/net/wireless/ti/cc33xx/scan.h:149: warning: bad line:
+drivers/net/wireless/ti/cc33xx/scan.h:177: warning: cannot understand function prototype: 'struct sched_scan_plan_cmd '
+drivers/net/wireless/ti/cc33xx/scan.h:227: warning: Function parameter or struct member 'u' not described in 'scan_param'
+drivers/net/wireless/ti/cc33xx/scan.h:227: warning: Excess struct member 'one_shot' description in 'scan_param'
+drivers/net/wireless/ti/cc33xx/scan.h:227: warning: Excess struct member 'periodic' description in 'scan_param'
+drivers/net/wireless/ti/cc33xx/scan.h:269: warning: Function parameter or struct member 'header' not described in 'cc33xx_cmd_scan_params'
+drivers/net/wireless/ti/cc33xx/scan.h:269: warning: Function parameter or struct member 'padding' not described in 'cc33xx_cmd_scan_params'
+drivers/net/wireless/ti/cc33xx/scan.h:295: warning: Function parameter or struct member 'header' not described in 'cc33xx_cmd_set_ies'
+drivers/net/wireless/ti/cc33xx/scan.h:319: warning: Function parameter or struct member 'header' not described in 'cc33xx_cmd_scan_stop'
+drivers/net/wireless/ti/cc33xx/scan.h:319: warning: Function parameter or struct member 'padding' not described in 'cc33xx_cmd_scan_stop'
 
