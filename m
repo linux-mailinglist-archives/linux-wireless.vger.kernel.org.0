@@ -1,135 +1,92 @@
-Return-Path: <linux-wireless+bounces-14847-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14848-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB21A9BA59E
-	for <lists+linux-wireless@lfdr.de>; Sun,  3 Nov 2024 14:34:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E4EF9BA66A
+	for <lists+linux-wireless@lfdr.de>; Sun,  3 Nov 2024 16:39:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 121CFB20AB6
-	for <lists+linux-wireless@lfdr.de>; Sun,  3 Nov 2024 13:34:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE2B81C20D3D
+	for <lists+linux-wireless@lfdr.de>; Sun,  3 Nov 2024 15:39:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33EB01EB5B;
-	Sun,  3 Nov 2024 13:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10B5175D39;
+	Sun,  3 Nov 2024 15:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="XvTavTnB"
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="HZeia+Oz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24745BA42;
-	Sun,  3 Nov 2024 13:34:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8E7B15D5C1;
+	Sun,  3 Nov 2024 15:39:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730640846; cv=none; b=HS9q5UJM4U1Z3ZwrAEGh0nv1jO6DshNsWxp4dgmbaXZyDSJbGOMoYS3bwoabZU/CTlamPshGNsVZG03Yoywt/793ceJCynhdukJFFxObje6yFrTe/rIf/UlWGQ6esEIy0y9LD1RKb03z8gj2SCshEIP2ckivpM5DcMbHDrXpGI0=
+	t=1730648347; cv=none; b=RzE76IluEgza+PRsefUM0PuZlmma61MReaDksGrwntgWLmoszq2e/sUEqmR9oYQmn+gtWQalUsSrgaNSIwGGUoFuVq3qlZLaUBLNVy1lIkBBbd66jFl8Xl6iwFd6rGldpU9VBlxaG4eT2yRNSfdQx4v1IF5UT2obr9nY65ITylU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730640846; c=relaxed/simple;
-	bh=I54X4peSj3IPI/qOlSKztxqhq18cLbGg5nqbNKX7vzo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=jCe1YBjvqpuvypCtMnGoF3ETs7eWvds7o+PZg9sV9x/O9BfCKsHOPKRFm2jRJXnMyMdJtiDpSJuhXkGpXxB8sj9tsutFNYeSV5SWbAQhMC28iFQ0rtO/l+d9PFETlIpNXs1DRKgP1+8wQ59iKFZI4bDsBjc4hbv41AYja/Y2WFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=XvTavTnB; arc=none smtp.client-ip=198.47.19.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4A3DXuYP086682;
-	Sun, 3 Nov 2024 07:33:56 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1730640836;
-	bh=gmVA7vfrv9fk4q4SW8yK7cB8cAzdiQdnrMLsiuJ7YAg=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=XvTavTnB/edNGzlRMsUNVETDEG9heYT8AVt2uGxN/waty3GlDk6Q6U+sVWghm8NVm
-	 0zVtYroyGrayIwUgJJWXPOMmHY39nPqbCDd7v0z5cCA6xsBVJNJ7Gia57M1iBcAwPr
-	 W+zZh5TftXd1gdJHmaI8Di1LFokoQvi/za16rUq0=
-Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4A3DXuKx103426
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Sun, 3 Nov 2024 07:33:56 -0600
-Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Sun, 3
- Nov 2024 07:33:56 -0600
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Sun, 3 Nov 2024 07:33:55 -0600
-Received: from [10.250.202.81] ([10.250.202.81])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4A3DXqIa032298;
-	Sun, 3 Nov 2024 07:33:53 -0600
-Message-ID: <e2c01b4b-769e-4409-a8e7-90792b2ce2a1@ti.com>
-Date: Sun, 3 Nov 2024 15:33:52 +0200
+	s=arc-20240116; t=1730648347; c=relaxed/simple;
+	bh=/JhnV5TnR5mf9r4USEDaINFGa88PDHOV7R/4923mRt4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=utrkEIG9pqJz/XAiOEyPNH9ERu2nMjJuN4s1DTLyLsQYn3rvaz2EW1RaVaYAO6NP3MgDDYZWW3yl+Jli18lqm+uIGuIuPmbQmuNblNlTnNtF12CjSIitEkeUNI2b2JQOis5CKuQPgi8OHEMeLnjFzat4Vop/kF2r2raSAE6G9F4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=HZeia+Oz; arc=none smtp.client-ip=46.235.229.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
+	:Subject; bh=OOZ5eVSjFlNUjtO2O93/lBUiBivCtll0TCegO2d8i8M=; b=HZeia+OzF1aCuiVH
+	WV7JhLlfIWxWaJ5vG6Xdt1nhSe4LaqPTPDGfHC6MSm9Z09tMPWSXbLH8hTmPJErck35c6J84cwZqj
+	YdXbNuNM0+QvL8MflEWzFTInjzNSOjcAv4vAf3t8DgWKIChEddVSeSrUiZUPkXvz/lTHtb61sVrgG
+	crlJSq/ZOGYLVt+06QfsLLfnqIW00mydFIOiB8+gbFEUgPyvbglrFAuOlh2nN0lj+/P/mT1KG2AOd
+	PSkWv/Zgl2Egh5AZIxGrPDFQEptqt7XaVQXVFNm3znJm116oSTc57dj7/8NV8vO0LMECFMJz4E0xa
+	rGLlGFLjIT72uUf3Ng==;
+Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
+	by mx.treblig.org with esmtp (Exim 4.96)
+	(envelope-from <linux@treblig.org>)
+	id 1t7cgs-00FBKZ-1p;
+	Sun, 03 Nov 2024 15:38:58 +0000
+From: linux@treblig.org
+To: pkshih@realtek.com,
+	kvalo@kernel.org,
+	linux-wireless@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	"Dr. David Alan Gilbert" <linux@treblig.org>
+Subject: [PATCH 0/2] Realtek wifi deadcoding
+Date: Sun,  3 Nov 2024 15:38:55 +0000
+Message-ID: <20241103153857.255450-1-linux@treblig.org>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 04/17] wifi: cc33xx: Add sdio.c, io.c, io.h
-To: Krzysztof Kozlowski <krzk@kernel.org>, Kalle Valo <kvalo@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Rob
- Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor
- Dooley <conor+dt@kernel.org>, <linux-wireless@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC: Sabeeh Khan <sabeeh-khan@ti.com>
-References: <20241029172354.4027886-1-michael.nemanov@ti.com>
- <20241029172354.4027886-5-michael.nemanov@ti.com>
- <9aff2bed-bca4-482b-83ea-4cd945812817@kernel.org>
-Content-Language: en-US
-From: "Nemanov, Michael" <michael.nemanov@ti.com>
-In-Reply-To: <9aff2bed-bca4-482b-83ea-4cd945812817@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Transfer-Encoding: 8bit
 
-On 10/29/2024 7:34 PM, Krzysztof Kozlowski wrote:
+From: "Dr. David Alan Gilbert" <linux@treblig.org>
 
-...
+Hi,
+  This cleans up a bunch of unused functions.
+I've split it, I think based on where they were added.
 
->> +
->> +void cc33xx_disable_interrupts_nosync(struct cc33xx *cc)
->> +{
->> +	cc->if_ops->disable_irq(cc->dev);
->> +}
->> +
->> +void cc33xx_irq(void *cookie);
-> 
-> Why do you need forward declaration of non-static function? If you need
-> it, it means you had W=1 warning which you fixed incorrect way.
-> 
-> Regardless, be sure this code has 0 warnings on clang with W=1.
-> 
+I'm also suspicious that exhalbtc_pre_load_firmware and
+ex_btc8821a2ant_pre_load_firmware are unused, but commit 6fbbc82adfb2
+makes a promising sounding reason why it's there - but I can't see
+a use.  Anyone know why?  Anyway, I've left that for now.
 
-Indeed a refactoring leftover (already moved to a header file) will fix.
+Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
 
-...
+Dave
 
->> +
->> +static struct sdio_driver cc33xx_sdio_driver = {
->> +	.name		= "cc33xx_sdio",
->> +	.id_table	= cc33xx_devices,
->> +	.probe		= sdio_cc33xx_probe,
->> +	.remove		= sdio_cc33xx_remove,
->> +#ifdef CONFIG_PM
->> +	.drv = {
->> +		.pm = &cc33xx_sdio_pm_ops,
->> +	},
->> +#endif /* CONFIG_PM */
->> +};
->> +
->> +MODULE_DEVICE_TABLE(sdio, cc33xx_devices);
-> 
-> This is always next to the table.
-> 
+Dr. David Alan Gilbert (2):
+  rtlwifi: Remove unused functions
+  rtlwifi: Remove more unused functions
 
-Will fix.
+ .../rtlwifi/btcoexist/halbtc8723b1ant.c       | 11 ---
+ .../rtlwifi/btcoexist/halbtc8723b1ant.h       |  1 -
+ .../realtek/rtlwifi/btcoexist/halbtcoutsrc.c  | 79 -------------------
+ .../realtek/rtlwifi/btcoexist/halbtcoutsrc.h  | 10 ---
+ 4 files changed, 101 deletions(-)
 
-Regards,
-Michael.
+-- 
+2.47.0
 
 
