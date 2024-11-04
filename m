@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-14873-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14874-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB2359BB280
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Nov 2024 12:10:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F9089BB291
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Nov 2024 12:12:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FCA8284BE7
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Nov 2024 11:10:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB5031F218B3
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Nov 2024 11:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0323C1F5829;
-	Mon,  4 Nov 2024 10:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E6C1F7561;
+	Mon,  4 Nov 2024 10:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V99X0UE+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H8xHn0Rt"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6B51F5824;
-	Mon,  4 Nov 2024 10:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6DD1F755B;
+	Mon,  4 Nov 2024 10:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730717722; cv=none; b=B3k6CWkLYveXln2mtytWcGVlLkGhvESX+zzDG4BsOPCotd2c2soggr+0gf1jGeEQkYrIr2uZKz4/yQ73hCXnx4yufBoVZZTIhejVP765ejBxgi7tIGh4+HVlP6EXeKxJ/YP3+9sZAmQXLUe+9iiA59UoUHYpFbiyeCjAKchqUBs=
+	t=1730717744; cv=none; b=TKTqijK4D3WZY4ajedbmPjkbkgO20XQRtlymMcmkONtbDjvfeovQrfOoMRsVDlqoHXT4e/TYPY+towYZPDZS++oKxkwioyFYHz7YraPiXB5MuKnVp18Kj0eMnoGUcEvrbPfttN6JDA669AvjG9c8ATBHCpD+2j4ZW4fcvNLIH0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730717722; c=relaxed/simple;
-	bh=A2JvirvhQNBFQ5hH1ZIZA0LOkFVHzfzG4cUsmVyHxG4=;
+	s=arc-20240116; t=1730717744; c=relaxed/simple;
+	bh=+OLKUtZuVadq41JrBY27nCN6auZO8OYRPVSmExa2HmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T48tbv+z1TQ3u9n0GeyQn+WiypxhLt7aeHRTy6zIodHkVjRvcurbWXP2XfACBddd5NPpjm5+/uI7Z1rYR9pXWloeAxxnrVtcVh5bqDwkme2TIJu26LH4MeDNePYsDBfPCgrtuEPOK1ItExoJWgqkQ+MCEMMF+SKs+O6he7sspZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V99X0UE+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91535C4CED7;
-	Mon,  4 Nov 2024 10:55:21 +0000 (UTC)
+	 MIME-Version; b=V+6G4qRjel1M6zPFjLku6lKvrBgGZ1xaTar94ll4DxTgAolGFyfaCnlFjLiQsBOrdnkpCSis8Z6JvpmCdVXEXYemeYc8NgoPHOsmtzbUiEXA9f2rQcwklolZGJGARqClJL5a2mY29Ijv2JXQUUsSpkn4uX6oucwskMpb6b0zzjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H8xHn0Rt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7921C4CECE;
+	Mon,  4 Nov 2024 10:55:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730717722;
-	bh=A2JvirvhQNBFQ5hH1ZIZA0LOkFVHzfzG4cUsmVyHxG4=;
+	s=k20201202; t=1730717743;
+	bh=+OLKUtZuVadq41JrBY27nCN6auZO8OYRPVSmExa2HmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V99X0UE+wuPhPoNFQo7dV9p///QuVH9lYSusz/+F3cWJcl9QGH+QknCMCxczrmX4R
-	 jExs7frs8ublTiIo0lYK+WhA/Ep+FusrDN3NTj+bntEnxYKv2JsN16wUbEs3CyohF1
-	 bgM+zi8hxD19cG/lhqZCv29krUhQJmBUV7fn+Rrsf4mS+22XuiJxbeLzkeuDgt/y/X
-	 TWsP16bTkz32mmPr+tkp3JVZxcCBVZFh7VTOX5fz/4mKzOuSp3ksISJgF8+uj6BU1B
-	 o0EHNxZVpmBV92KX84qn4G6RyvtQTIa9+cnC0bku8McKU0PnGLWIKV91w1vxvOOLc4
-	 RsBfE7Hx297Cw==
+	b=H8xHn0RtCcssJw0lYJlIv2xDTJJvDw1NYE0Sq6/KhofiKc4FURav4Bs9TqDcc6My4
+	 blEa+qjuLVD/pKkDhlgnf22xANzw83vJequr1CgQ0R5+16G4BA8tO8NQoTwBcH0pAI
+	 VhqaS0ODsrCN5lCAp/URqL1A+DvZI+BNb7cCt4VnIrJ5h+w4OJ3APqldZdBrHugFgI
+	 +nETqJiGW07gm3AptBr7q+Mj2Fu9VeZKn2KCbJU7pr1JBX0CZlJhwAQaik2RYL5A6R
+	 O8KvqlkruNT4YxmViK8V+WA5SUMIU5jXO1MwpX77FQ4FzDIuseOvQLCDZ9ilEAHagZ
+	 8bVdx3NUwFdPg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -49,12 +49,12 @@ Cc: Ben Greear <greearb@candelatech.com>,
 	Sasha Levin <sashal@kernel.org>,
 	johannes@sipsolutions.net,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 2/6] mac80211: fix user-power when emulating chanctx
-Date: Mon,  4 Nov 2024 05:55:06 -0500
-Message-ID: <20241104105517.98071-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 2/5] mac80211: fix user-power when emulating chanctx
+Date: Mon,  4 Nov 2024 05:55:31 -0500
+Message-ID: <20241104105539.98219-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241104105517.98071-1-sashal@kernel.org>
-References: <20241104105517.98071-1-sashal@kernel.org>
+In-Reply-To: <20241104105539.98219-1-sashal@kernel.org>
+References: <20241104105539.98219-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.284
+X-stable-base: Linux 4.19.322
 Content-Transfer-Encoding: 8bit
 
 From: Ben Greear <greearb@candelatech.com>
@@ -83,10 +83,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index fa2ac02063cf4..266250e9f0330 100644
+index e8c4e9c0c5a09..71d10bdee4309 100644
 --- a/net/mac80211/main.c
 +++ b/net/mac80211/main.c
-@@ -139,6 +139,8 @@ static u32 ieee80211_hw_conf_chan(struct ieee80211_local *local)
+@@ -140,6 +140,8 @@ static u32 ieee80211_hw_conf_chan(struct ieee80211_local *local)
  	}
  
  	power = ieee80211_chandef_max_power(&chandef);
