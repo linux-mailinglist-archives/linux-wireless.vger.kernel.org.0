@@ -1,193 +1,173 @@
-Return-Path: <linux-wireless+bounces-14899-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14900-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D34789BBE8D
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Nov 2024 21:06:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF1AF9BC000
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Nov 2024 22:25:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93731282779
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Nov 2024 20:06:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D4331C20E9F
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Nov 2024 21:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2FA31D356E;
-	Mon,  4 Nov 2024 20:06:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="T0TuLFSv"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B1D81FCC69;
+	Mon,  4 Nov 2024 21:25:29 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f199.google.com (mail-il1-f199.google.com [209.85.166.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69151CBA1E;
-	Mon,  4 Nov 2024 20:06:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A0D1AC43E
+	for <linux-wireless@vger.kernel.org>; Mon,  4 Nov 2024 21:25:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730750774; cv=none; b=dRSjmfabXkBQWpRP4v6EdcPUYUZyWa0l/kB0eeFo/Zt7AuS1whKLcl/dFwahF6PxQVYQIcq15VUN3RffY6z1oZHQKU6FVTHxX1hluW9CeWAKkJG1WZdINctdNEdgyR+UKkiE/LYwHkCbHvOGy/xMcctNoascNucV+kKGRKQoXZU=
+	t=1730755528; cv=none; b=Wj2k5lWVxUPMUkZpYBRdVqfabpcL00ycnLmdL5YW1hNSmWYgn9naofI+2FA8NHTeKScfyOs5w4ZX+TYyC0IehMABUmqYZbQcMr4LrR7YhC/1tMhzf91GaOajSLSrT67NIRGfTDJKCXw3qcV/LHOvOo0KdHcgo8Tcg/3JCsQZ13s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730750774; c=relaxed/simple;
-	bh=FKFWGi5po/mx3uK8oCShRp6WwiaDqV99UF5bP5pHJNc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PQmRUB1zI0rNjBDVyRoBwbkCBBawl6rjDPzahurKzW3gxE7zbh/RrCobpBTA+Uhz4Oq7Urnp1CuQp0LdYw7FpqenbyFqFrtxGekBXi2zHgpH64K5CtpeDrcSiHbo08XRlTss0GjJSnA7Hd9xvB/+00LRvPPCX7/3GZ5KKOgN7Ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=T0TuLFSv; arc=none smtp.client-ip=212.227.15.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1730750762; x=1731355562; i=wahrenst@gmx.net;
-	bh=FKFWGi5po/mx3uK8oCShRp6WwiaDqV99UF5bP5pHJNc=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=T0TuLFSv+FKPahPisFOQSNfppvWHno9zpAXTeltY6/DiSESG2XY92oDYfJ2jIEG2
-	 8N4+bL8tVBBDC2fUf3HzKyg7ECHj8666duELDKNpibZ/n6Ygem9OnAVCQ8B0fkTLl
-	 OdAZiOIFwHzVnYmqXIROKupx8Dqw/uhI//KSKjycWQkA3q/nVzf1kJc42BV8Rwrcv
-	 XMBl0TeVNvzmh5jNcuPUUbWWEge3722ihBQ8yOou87Ebul+MT0vB4tqcn1BSLe+zK
-	 OTE9PuVgCc8vdN3SiXFN8ak1FlEcY9xJ8gOKzfmig6ozxZE5W7172Hsn4kIGaC4nY
-	 8M662DnYvOAd3QSvPQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.1.105] ([37.4.248.43]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MvbFs-1u0iFw2Kla-00xzfv; Mon, 04
- Nov 2024 21:06:02 +0100
-Message-ID: <a122ad79-086b-42a9-894e-d589092bac80@gmx.net>
-Date: Mon, 4 Nov 2024 21:06:01 +0100
+	s=arc-20240116; t=1730755528; c=relaxed/simple;
+	bh=Rre4DbdsOxeLgoI5LSbnhb9diCbHE4TntsWN6o3Ahq4=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=BkQH/MCZE+J1G+R4fFXlZSVxyw2vcLsJgMs/UrC5XRqC0x+x2UIuKpYFvNb7P8jk0b5+BDAyCHkhpbyIagUqCpyt6aIht8w/NCcAB9A1kiALcNDWlfR57UqezSq0+dicALclLQ3KvESIhMY3/jRU7QkCY7uW4jpS2iU3YWkuLJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f199.google.com with SMTP id e9e14a558f8ab-3a6c48f1312so25283645ab.3
+        for <linux-wireless@vger.kernel.org>; Mon, 04 Nov 2024 13:25:27 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730755526; x=1731360326;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SAsKvAp8Sst3NYJtT1LShmmNbzN8YlFhKi+LB2P10Gs=;
+        b=d85TfEB4b4PAqFxcUZzLFNCDhy0Ny/VRGpxrgzQGm7UAxP7JmaiRzc8w+FdedG3M1V
+         RsyA9G/gXOvZsCdd8NTTOOd3b6CYwzHaVvPi2OE/XYUo7dZqeZWnSoTma85xm+xcB1KC
+         ZqtDKiW+juMTdSwpF7Qe9Rd+5tzAjm+53KyMK1wZ5JJgagEWXZgz/6YXwedHDDdKwvMg
+         zUrEGgt8zi4zsHD/agI5mO3ro9dp3Z+B6H0Q1+bARNbcUww41AYreJx64aStkJiwOqko
+         TFzRA8zPkT/nWGCYP7eCJ3snXEXbERVTuI/+kW/Sl5KYifQidIby8udA6rX+J09V09ZT
+         SIkA==
+X-Forwarded-Encrypted: i=1; AJvYcCXrx+xBVldHhO1RVQqEmk/zps2G1SY46GXZUGRTtIOY1MGVPA0rGg9SDoQwNQfgLzpTLkaaN6bRddBExsPGZQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHi9R+4Bd96U23IddkUpEi8wu00qFtDYYumFQTUw3nj+H1AcHP
+	iC6ZZJ3ekPiLd3OQgk1MxeaT+q1bt8HFBiHSzsXJrTIdW+WXGMNg6/d16DvVullMhTXKH8dju3E
+	fDTSJmr44rdjVaHqhM5zQ8pRaMEFkj6HqnLTEh+Z0urhv42UBwUVYi30=
+X-Google-Smtp-Source: AGHT+IHthQkVIqK9FjtxcEWleyaboaWzlDMUbs0UcaxRBaxZT6t2Tla3mP4Y2/hhLaOfFQ8UdxWHvCZczEKkhNOrCtEZlNAraFYZ
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: brcmfmac: error messages while entering suspend
-To: Johannes Berg <johannes@sipsolutions.net>,
- Arend van Spriel <arend.vanspriel@broadcom.com>,
- Arend van Spriel <aspriel@gmail.com>, Ulf Hansson <ulf.hansson@linaro.org>
-Cc: linux-wireless@vger.kernel.org, brcm80211-dev-list.pdl@broadcom.com,
- SHA-cyfmac-dev-list@infineon.com, Kalle Valo <kvalo@kernel.org>,
- linux-mmc <linux-mmc@vger.kernel.org>
-References: <a825587c-e6f6-45f8-8ac0-a1a5642a5333@gmx.net>
- <16169285-d838-46f3-8be1-3639f573062e@broadcom.com>
- <86ef2465-3b5c-47c8-9e81-ad5b545bcfe4@gmx.net>
- <89888eab44b7b431ac7fedcd573db325e07b935d.camel@sipsolutions.net>
-Content-Language: en-US
-From: Stefan Wahren <wahrenst@gmx.net>
-In-Reply-To: <89888eab44b7b431ac7fedcd573db325e07b935d.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:VRc1NSBpucuM0Cx95dMoCWJfKwSLvhQQpbor7Bo1SQv2WCBHBKv
- LdEhTjaUfKVbvh+Lftxe77Rg0DMnHXUFn6/pcg3FDiakXcUblKti04fRc2/Fr0quJeudWJL
- zx/fg4wi2peI0ZR0LKzo16NA4nkLaglA5WblBuLInLlSbzC1Z7HUzVHJyYH1MRPdKhMWKsQ
- fp3Xve/CYm1ZRt8mqIGvg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:iqKjcf2qvjM=;V991R9Fa8EWLuo37ZVmw0KJ9HVO
- 1k8cfmVGnOCpDk6rTQNBx4kf0wC/taGGHOmBaz0oH07NEDYKuOtYhPIQj2viajT+N0Fn084Pl
- /LKDz9wG+TNGPmCa/Z3RbLLEYHHASVHWNAYL2P6OF9vqVWCCZiuiL81lhw4gcIEp50jztRXeq
- c7vTfeQj/nq9Ydgt1W5WhDXiS4Kpvt1TNAbLHia7jJUOeGbR6eGlM4exawABvxTZMrD9Gf1CE
- ng9UgyMGH4gb3f06sLe5PvaoYP3RQ4He4yF3ckPUHv6xHv3EBoqtpN/5qvXqciecZ2dl43MAc
- Cp0Pvtb9972SdF9Nig7f1R0KGJWd4nLzRxh9Ew4gxiuIv2naw4tobKC+ImqD+NaCzCTBny6fK
- 1RRi7bEbASmU9hQGrJO2rFUgYWFdAF9IZUjEk9zZBv8FJpCQVPcz9hQkP2Y7p4z59+XFNjjq8
- wb4xl9vlfFXzr4krk42KFDt/YryVUZ1MhJPuRpkfHglr7cfM8FWE2ntYtrsdu81UeBT07whi0
- nfK8E6qCsumsdtz3dQlEElWPXkaSSKs+UKWCJTMtIKRIzDBZRmLTBJFlw6Zkso3lfdPXtLuXs
- v1Z5gBejJNamwDFoJqVwrIPoMiZzRWSS5oU/5XCG7mtXJt/LHEgTYih1nIhB8OBjAZVYh6t8D
- 7Fruz5idq8K10M8tJPgGKxLaegnO9GH3Fibsh3WjgHVd44y4euPs0ItSUIGeoq2ZTCueVtzSL
- eIQoP350I/vvIp2EmKB4nNCs9zQ34ESVEoLlb8bvmxJBrKZaYs0HQg3keZ//q/93g0K7QL7HF
- Pju+4Lg04NgXBZP2ysWwYh0w==
+X-Received: by 2002:a05:6e02:3d06:b0:3a6:c122:508c with SMTP id
+ e9e14a558f8ab-3a6c1225323mr89295815ab.19.1730755526457; Mon, 04 Nov 2024
+ 13:25:26 -0800 (PST)
+Date: Mon, 04 Nov 2024 13:25:26 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <67293bc6.050a0220.2edce.14fb.GAE@google.com>
+Subject: [syzbot] [wireless?] WARNING in kcov_remote_start (6)
+From: syzbot <syzbot+3f51ad7ac3ae57a6fdcc@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+Hello,
 
-Am 04.11.24 um 13:18 schrieb Johannes Berg:
-> On Mon, 2024-11-04 at 12:59 +0100, Stefan Wahren wrote:
->>>> [=C2=A0 384.292071] ieee80211 phy0: brcmf_fil_cmd_data: bus is down. =
-we have
->>>> nothing to do.
->>>> [=C2=A0 384.292079] ieee80211 phy0: brcmf_cfg80211_get_tx_power: erro=
-r (-5)
->>>>
->>>> These errors are not new and I assume they have always been there. I'=
-m
->>>> not an expert here, so I want to know is the problem here that the SD=
-IO
->>>> interface is shutdown before brcmfmac is suspended or lies the issue
->>>> within brcmfmac suspend itself?
->>> Upon suspend we execute the remove path and cleaning the interfaces.
->>> We notify cfg80211 about the removal, which in turn will notify
->>> userspace, but is tries to obtain the tx power from brcmfmac.
-> I guess "it tries to obtain" is some sort of event path that wants to
-> include the TX power in an event. That doesn't seem to make all that
-> much sense on removal events though, so perhaps we could remove the
-> get_channel and get_tx_power calls for NL80211_CMD_DEL_INTERFACE.
->
-Not sure if I get it right, but the follow patch make the errors go away:
+syzbot found the following issue on:
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 1ac8a196f376..52120cce2f7e 100644
-=2D-- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -4006,23 +4006,25 @@ static int nl80211_send_iface(struct sk_buff
-*msg, u32 portid, u32 seq, int flag
- =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 nla_put_u32(msg, NL80211_ATTR=
-_VIF_RADIO_MASK, wdev->radio_mask))
- =C2=A0=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 goto nla_put_failure;
+HEAD commit:    3e5e6c9900c3 Merge tag 'nfsd-6.12-3' of git://git.kernel.o..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=11406b40580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=f527353e21e067e8
+dashboard link: https://syzkaller.appspot.com/bug?extid=3f51ad7ac3ae57a6fdcc
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
 
--=C2=A0=C2=A0=C2=A0 if (rdev->ops->get_channel && !wdev->valid_links) {
--=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 struct cfg80211_chan_def chandef =
-=3D {};
--=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 int ret;
-+=C2=A0=C2=A0=C2=A0 if (cmd !=3D NL80211_CMD_DEL_INTERFACE) {
-+=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 if (rdev->ops->get_channel && !wdev=
-->valid_links) {
-+=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 struct cfg80211_=
-chan_def chandef =3D {};
-+=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 int ret;
+Unfortunately, I don't have any reproducer for this issue yet.
 
--=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 ret =3D rdev_get_channel(rdev, wdev=
-, 0, &chandef);
--=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 if (ret =3D=3D 0 && nl80211_send_ch=
-andef(msg, &chandef))
--=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 goto nla_put_fai=
-lure;
--=C2=A0=C2=A0=C2=A0 }
-+=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 ret =3D rdev_get=
-_channel(rdev, wdev, 0, &chandef);
-+=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 if (ret =3D=3D 0=
- && nl80211_send_chandef(msg, &chandef))
-+=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=
-=A0 goto nla_put_failure;
-+=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 }
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/3c9dd6858e45/disk-3e5e6c99.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/4d49c920af4f/vmlinux-3e5e6c99.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/9905ad94dc22/bzImage-3e5e6c99.xz
 
--=C2=A0=C2=A0=C2=A0 if (rdev->ops->get_tx_power) {
--=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 int dbm, ret;
-+=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 if (rdev->ops->get_tx_power) {
-+=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 int dbm, ret;
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+3f51ad7ac3ae57a6fdcc@syzkaller.appspotmail.com
 
--=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 ret =3D rdev_get_tx_power(rdev, wde=
-v, &dbm);
--=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 if (ret =3D=3D 0 &&
--=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 nla_put_u32(msg,=
- NL80211_ATTR_WIPHY_TX_POWER_LEVEL,
--=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=
-=A0 DBM_TO_MBM(dbm)))
--=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 goto nla_put_fai=
-lure;
-+=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 ret =3D rdev_get=
-_tx_power(rdev, wdev, &dbm);
-+=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 if (ret =3D=3D 0=
- &&
-+=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=
-=A0 nla_put_u32(msg, NL80211_ATTR_WIPHY_TX_POWER_LEVEL,
-+=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=
-=A0 =C2=A0=C2=A0=C2=A0 DBM_TO_MBM(dbm)))
-+=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=
-=A0 goto nla_put_failure;
-+=C2=A0=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0 }
- =C2=A0=C2=A0=C2=A0=C2=A0 }
+netdevsim netdevsim4 netdevsim1: unset [1, 0] type 2 family 0 port 6081 - 0
+netdevsim netdevsim4 netdevsim2: unset [1, 0] type 2 family 0 port 6081 - 0
+netdevsim netdevsim4 netdevsim3: unset [1, 0] type 2 family 0 port 6081 - 0
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 16141 at kernel/kcov.c:872 kcov_remote_start+0x542/0x7d0 kernel/kcov.c:872
+Modules linked in:
+CPU: 0 UID: 0 PID: 16141 Comm: syz.4.2741 Not tainted 6.12.0-rc5-syzkaller-00308-g3e5e6c9900c3 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+RIP: 0010:kcov_remote_start+0x542/0x7d0 kernel/kcov.c:872
+Code: 4c 89 ff be 03 00 00 00 e8 9b df 1f 03 e9 04 fb ff ff e8 d1 af 29 0a 41 f7 c6 00 02 00 00 0f 84 f2 fa ff ff e9 7f fc ff ff 90 <0f> 0b 90 e8 06 cd 29 0a 89 c0 48 c7 c7 c0 d4 02 00 48 03 3c c5 50
+RSP: 0018:ffffc9000d826610 EFLAGS: 00010002
+RAX: 0000000080000200 RBX: ffff888033771e00 RCX: 0000000000000002
+RDX: dffffc0000000000 RSI: ffffffff8c0adc40 RDI: ffffffff8c603460
+RBP: 0000000000000000 R08: ffffffff9429786f R09: 1ffffffff2852f0d
+R10: dffffc0000000000 R11: fffffbfff2852f0e R12: ffffffff8194e367
+R13: ffff888025389780 R14: 0000000000000246 R15: ffff8880b862d4c0
+FS:  00007ff44c8056c0(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fdf652656c0 CR3: 000000001fed8000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ kcov_remote_start_common include/linux/kcov.h:50 [inline]
+ ieee80211_rx_list+0x799/0x3780 net/mac80211/rx.c:5444
+ ieee80211_rx_napi+0x18a/0x3c0 net/mac80211/rx.c:5485
+ ieee80211_rx include/net/mac80211.h:5138 [inline]
+ ieee80211_handle_queued_frames+0xe7/0x1e0 net/mac80211/main.c:441
+ ieee80211_stop_device+0x3f/0xf0 net/mac80211/util.c:1587
+ ieee80211_do_stop+0x1cb5/0x2300 net/mac80211/iface.c:721
+ ieee80211_stop+0x436/0x4a0 net/mac80211/iface.c:780
+ __dev_close_many+0x219/0x300 net/core/dev.c:1560
+ __dev_close net/core/dev.c:1572 [inline]
+ __dev_change_flags+0x30e/0x6f0 net/core/dev.c:8843
+ dev_change_flags+0x8b/0x1a0 net/core/dev.c:8917
+ do_setlink+0xcd0/0x41f0 net/core/rtnetlink.c:2929
+ rtnl_group_changelink net/core/rtnetlink.c:3476 [inline]
+ __rtnl_newlink net/core/rtnetlink.c:3735 [inline]
+ rtnl_newlink+0x1119/0x20a0 net/core/rtnetlink.c:3772
+ rtnetlink_rcv_msg+0x73f/0xcf0 net/core/rtnetlink.c:6675
+ netlink_rcv_skb+0x1e3/0x430 net/netlink/af_netlink.c:2551
+ netlink_unicast_kernel net/netlink/af_netlink.c:1331 [inline]
+ netlink_unicast+0x7f6/0x990 net/netlink/af_netlink.c:1357
+ netlink_sendmsg+0x8e4/0xcb0 net/netlink/af_netlink.c:1901
+ sock_sendmsg_nosec net/socket.c:729 [inline]
+ __sock_sendmsg+0x221/0x270 net/socket.c:744
+ ____sys_sendmsg+0x52a/0x7e0 net/socket.c:2607
+ ___sys_sendmsg net/socket.c:2661 [inline]
+ __sys_sendmsg+0x292/0x380 net/socket.c:2690
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7ff44b97e719
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ff44c805038 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007ff44bb35f80 RCX: 00007ff44b97e719
+RDX: 0000000000000000 RSI: 0000000020000040 RDI: 0000000000000003
+RBP: 00007ff44b9f132e R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 00007ff44bb35f80 R15: 00007fffdca94ea8
+ </TASK>
 
- =C2=A0=C2=A0=C2=A0=C2=A0 switch (wdev->iftype) {
 
-But this change doesn't consider get_txq_stats and the further calls
-rdev_get_channel for the valid_links.
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-Do we actually need nl80211_send_iface() for NL80211_CMD_DEL_INTERFACE?
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-Regards
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
