@@ -1,121 +1,212 @@
-Return-Path: <linux-wireless+bounces-14890-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14893-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A52B9BBB32
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Nov 2024 18:12:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 433299BBBD4
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Nov 2024 18:25:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB54128131A
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Nov 2024 17:12:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01A8628281F
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Nov 2024 17:25:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 727F71C07DA;
-	Mon,  4 Nov 2024 17:12:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="iX2q3kly"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 964211C4A2F;
+	Mon,  4 Nov 2024 17:25:21 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2D81BC063;
-	Mon,  4 Nov 2024 17:12:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06A417583
+	for <linux-wireless@vger.kernel.org>; Mon,  4 Nov 2024 17:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730740343; cv=none; b=N9gIxrcL1Gpk8rjkC+SJnmnQN3rDxUwZVxYwytbzIBii0ri6GEz+y5TOQ3bBzwzeP4hGcrsFjxUcnFTXBgAXp3jFmRTcHZunbKugzW3Yp8xc4FL8Q/6wg9v12Uhqhy5Iu/7CwgNaxTHGk2ZgVmST315Mkur7vBSXwDOKo7tRiXM=
+	t=1730741121; cv=none; b=nV74sKbAijGLGJxFiqjwSt1QI19lyQIqcMwgjhu3m/gjGdzc8P6BXzlyPS3AKNFNZ99xqXaRbnUXiRVrz03UkOB4YFwBVxwnfXYWnwfiIIkETP4hhgzqGcKjQNEIuS1378p5cR0zZQhKJSadl/lRUnwXwOxcb2MG9DOgXMqCaEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730740343; c=relaxed/simple;
-	bh=hlW3nIWVL5Db3nxpqovS/7E3UEXnG0/pFjbnueckOcY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=MXQ9OforHKDeVArRxSvll9epuEiwAGBE1Zi+SCwY7RswG12sFxuAHej13DP4HugBSBrSYRHZLct4SCedfuNY27dTyUdOCx/kitDGoAayUftADEIMV71aiP5qAOmAqXlgPZypZJekCRIFRzlMGfu0sURN68JmdKw03D5NMQXbFL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=iX2q3kly; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A4BjYx4026443;
-	Mon, 4 Nov 2024 17:12:12 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	BeCnEGykaYEk4EgJ7ihgNRfZLqbRJA/d8HCeWrka304=; b=iX2q3kly++kBOFC7
-	Rwdlsb5OD/MZVjWQtKmUncEAamlRvKnAMLtcgP2xrLRpRCLxTkIo2WwSGapb+aON
-	t27rL2J2f4VTQmQ0EL60dN2GShRGYUpuenAnhtaLvtX7ItmP6giNNNdzZVOksHUn
-	MZshh057akq54CeXWDjKOMbdKae9RQMuLyrdFK+J7Y5doG/F9XDMBFGKCUAhYrZl
-	gZSneNADOLIRH6MVKD0ozc7B3jGJ/1mvhMPV/oUaLYSpy9oGbwdaLf64A4vR6ARE
-	NlvreKcHCv0bnUhW3x5spO6UBwYEa3plO0kerWfeju7j/myVh1M3xFhmPXXt1Gtf
-	N+Brxg==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42nd1fmyra-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 04 Nov 2024 17:12:12 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4A4HCBSY009671
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 4 Nov 2024 17:12:11 GMT
-Received: from [10.48.242.250] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 4 Nov 2024
- 09:12:10 -0800
-Message-ID: <0bc2e4b0-4dad-4341-a41e-a98fbc4b1658@quicinc.com>
-Date: Mon, 4 Nov 2024 09:12:09 -0800
+	s=arc-20240116; t=1730741121; c=relaxed/simple;
+	bh=frT+i/m43tebJ7LPnRV9z6cD+yVa4szXmoyDX/DM734=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EBI7NAbJcaNLI5qEGKUu6oHe/+d92g8F1kXbN0kF056YcWjdhwzCqgppA+xituFkNT6L6Tr/SsUwRnqegg0+f+d+8cuTAxrZgGrc8PXyoWF3jj3PhnZ/50wXY5B9NCOkAzeC8kET+B4WcGs1DZwQeCYEwGD6hgrBmUQfSGhwHEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
+Received: from localhost (p200300c59740c190000000000000032b.dip0.t-ipconnect.de [IPv6:2003:c5:9740:c190::32b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.simonwunderlich.de (Postfix) with ESMTPSA id BE8D8FA132;
+	Mon,  4 Nov 2024 18:16:44 +0100 (CET)
+From: Issam Hamdi <ih@simonwunderlich.de>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
+	mathias.kretschmer@fit.fraunhofer.de,
+	Simon Wunderlich <simon.wunderlich@open-mesh.com>,
+	Simon Wunderlich <sw@simonwunderlich.de>,
+	Sven Eckelmann <se@simonwunderlich.de>,
+	Issam Hamdi <ih@simonwunderlich.de>
+Subject: [PATCH 1/2] wifi: ath9k: work around AR_CFG 0xdeadbeef chip hang
+Date: Mon,  4 Nov 2024 18:16:26 +0100
+Message-Id: <20241104171627.3789199-1-ih@simonwunderlich.de>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: nl80211: fix bounds checker error in
- nl80211_parse_sched_scan
-To: Aleksei Vetrov <vvvvvv@google.com>,
-        Johannes Berg
-	<johannes@sipsolutions.net>,
-        Kees Cook <kees@kernel.org>,
-        "Gustavo A. R.
- Silva" <gustavoars@kernel.org>,
-        Dmitry Antipov <dmantipov@yandex.ru>
-CC: <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-hardening@vger.kernel.org>, <stable@vger.kernel.org>
-References: <20241029-nl80211_parse_sched_scan-bounds-checker-fix-v2-1-c804b787341f@google.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Content-Language: en-US
-In-Reply-To: <20241029-nl80211_parse_sched_scan-bounds-checker-fix-v2-1-c804b787341f@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: rDFkmgpesmK2zhLKJ52g5uHr2cbaeixx
-X-Proofpoint-ORIG-GUID: rDFkmgpesmK2zhLKJ52g5uHr2cbaeixx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
- impostorscore=0 bulkscore=0 mlxlogscore=565 spamscore=0 phishscore=0
- malwarescore=0 mlxscore=0 clxscore=1015 lowpriorityscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411040143
+Content-Transfer-Encoding: 8bit
 
-On 10/29/2024 6:22 AM, Aleksei Vetrov wrote:
-> The channels array in the cfg80211_scan_request has a __counted_by
-> attribute attached to it, which points to the n_channels variable. This
-> attribute is used in bounds checking, and if it is not set before the
-> array is filled, then the bounds sanitizer will issue a warning or a
-> kernel panic if CONFIG_UBSAN_TRAP is set.
-> 
-> This patch sets the size of allocated memory as the initial value for
-> n_channels. It is updated with the actual number of added elements after
-> the array is filled.
-> 
-> Fixes: aa4ec06c455d ("wifi: cfg80211: use __counted_by where appropriate")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Aleksei Vetrov <vvvvvv@google.com>
-Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+From: Simon Wunderlich <simon.wunderlich@open-mesh.com>
 
-And it is exactly this kind of issue why I'm not accepting any __counted_by()
-changes in ath.git without actually testing the code that is modified.
+QCA 802.11n chips (especially AR9330/AR9340) sometimes end up in a state in
+which a read of AR_CFG always returns 0xdeadbeef. This should not happen
+when when the power_mode of the device is ATH9K_PM_AWAKE.
 
-/jeff
+This problem is not yet detected by any other workaround in ath9k. No way
+is known to reproduce the problem easily.
+
+This patch originally developed by "Simon Wunderlich <simon.wunderlich@open-mesh.com>"
+and "Sven Eckelmann <sven.eckelmann@open-mesh.com>"
+
+Co-developed-by: Simon Wunderlich <sw@simonwunderlich.de>
+Co-developed-by: Sven Eckelmann <se@simonwunderlich.de>
+Signed-off-by: Issam Hamdi <ih@simonwunderlich.de>
+---
+ drivers/net/wireless/ath/ath9k/ath9k.h |  3 +++
+ drivers/net/wireless/ath/ath9k/debug.c |  1 +
+ drivers/net/wireless/ath/ath9k/debug.h |  1 +
+ drivers/net/wireless/ath/ath9k/init.c  |  1 +
+ drivers/net/wireless/ath/ath9k/link.c  | 31 ++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath9k/main.c  |  4 ++++
+ 6 files changed, 41 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath9k/ath9k.h b/drivers/net/wireless/ath/ath9k/ath9k.h
+index 29ca65a732a6..c1ce081445a9 100644
+--- a/drivers/net/wireless/ath/ath9k/ath9k.h
++++ b/drivers/net/wireless/ath/ath9k/ath9k.h
+@@ -739,11 +739,13 @@ void ath9k_csa_update(struct ath_softc *sc);
+ #define ATH_ANI_MAX_SKIP_COUNT    10
+ #define ATH_PAPRD_TIMEOUT         100 /* msecs */
+ #define ATH_PLL_WORK_INTERVAL     100
++#define ATH_HANG_WORK_INTERVAL    4000
+ 
+ void ath_hw_check_work(struct work_struct *work);
+ void ath_reset_work(struct work_struct *work);
+ bool ath_hw_check(struct ath_softc *sc);
+ void ath_hw_pll_work(struct work_struct *work);
++void ath_hw_hang_work(struct work_struct *work);
+ void ath_paprd_calibrate(struct work_struct *work);
+ void ath_ani_calibrate(struct timer_list *t);
+ void ath_start_ani(struct ath_softc *sc);
+@@ -1044,6 +1046,7 @@ struct ath_softc {
+ #endif
+ 	struct delayed_work hw_check_work;
+ 	struct delayed_work hw_pll_work;
++	struct delayed_work hw_hang_work;
+ 	struct timer_list sleep_timer;
+ 
+ #ifdef CONFIG_ATH9K_BTCOEX_SUPPORT
+diff --git a/drivers/net/wireless/ath/ath9k/debug.c b/drivers/net/wireless/ath/ath9k/debug.c
+index eff894958a73..6b2469a01f17 100644
+--- a/drivers/net/wireless/ath/ath9k/debug.c
++++ b/drivers/net/wireless/ath/ath9k/debug.c
+@@ -750,6 +750,7 @@ static int read_file_reset(struct seq_file *file, void *data)
+ 		[RESET_TYPE_CALIBRATION] = "Calibration error",
+ 		[RESET_TX_DMA_ERROR] = "Tx DMA stop error",
+ 		[RESET_RX_DMA_ERROR] = "Rx DMA stop error",
++		[RESET_TYPE_DEADBEEF] = "deadbeef hang",
+ 	};
+ 	int i;
+ 
+diff --git a/drivers/net/wireless/ath/ath9k/debug.h b/drivers/net/wireless/ath/ath9k/debug.h
+index 389459c04d14..6ebb6053a8c1 100644
+--- a/drivers/net/wireless/ath/ath9k/debug.h
++++ b/drivers/net/wireless/ath/ath9k/debug.h
+@@ -53,6 +53,7 @@ enum ath_reset_type {
+ 	RESET_TYPE_CALIBRATION,
+ 	RESET_TX_DMA_ERROR,
+ 	RESET_RX_DMA_ERROR,
++	RESET_TYPE_DEADBEEF,
+ 	__RESET_TYPE_MAX
+ };
+ 
+diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wireless/ath/ath9k/init.c
+index f9e77c4624d9..833474d7281f 100644
+--- a/drivers/net/wireless/ath/ath9k/init.c
++++ b/drivers/net/wireless/ath/ath9k/init.c
+@@ -740,6 +740,7 @@ static int ath9k_init_softc(u16 devid, struct ath_softc *sc,
+ 	INIT_WORK(&sc->paprd_work, ath_paprd_calibrate);
+ 	INIT_DELAYED_WORK(&sc->hw_pll_work, ath_hw_pll_work);
+ 	INIT_DELAYED_WORK(&sc->hw_check_work, ath_hw_check_work);
++	INIT_DELAYED_WORK(&sc->hw_hang_work, ath_hw_hang_work);
+ 
+ 	ath9k_init_channel_context(sc);
+ 
+diff --git a/drivers/net/wireless/ath/ath9k/link.c b/drivers/net/wireless/ath/ath9k/link.c
+index d1e5767aab3c..37438960c278 100644
+--- a/drivers/net/wireless/ath/ath9k/link.c
++++ b/drivers/net/wireless/ath/ath9k/link.c
+@@ -142,6 +142,37 @@ void ath_hw_pll_work(struct work_struct *work)
+ 				     msecs_to_jiffies(ATH_PLL_WORK_INTERVAL));
+ }
+ 
++static bool ath_hw_hang_deadbeef(struct ath_softc *sc)
++{
++	struct ath_common *common = ath9k_hw_common(sc->sc_ah);
++	u32 reg;
++
++	/* check for stucked MAC */
++	ath9k_ps_wakeup(sc);
++	reg = REG_READ(sc->sc_ah, AR_CFG);
++	ath9k_ps_restore(sc);
++
++	if (reg != 0xdeadbeef)
++		return false;
++
++	ath_dbg(common, RESET,
++		"0xdeadbeef hang is detected. Schedule chip reset\n");
++	ath9k_queue_reset(sc, RESET_TYPE_DEADBEEF);
++
++	return true;
++}
++
++void ath_hw_hang_work(struct work_struct *work)
++{
++	struct ath_softc *sc = container_of(work, struct ath_softc,
++					    hw_hang_work.work);
++
++	ath_hw_hang_deadbeef(sc);
++
++	ieee80211_queue_delayed_work(sc->hw, &sc->hw_hang_work,
++				     msecs_to_jiffies(ATH_HANG_WORK_INTERVAL));
++}
++
+ /*
+  * PA Pre-distortion.
+  */
+diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
+index b92c89dad8de..024028ce8417 100644
+--- a/drivers/net/wireless/ath/ath9k/main.c
++++ b/drivers/net/wireless/ath/ath9k/main.c
+@@ -186,6 +186,7 @@ static void __ath_cancel_work(struct ath_softc *sc)
+ 	cancel_work_sync(&sc->paprd_work);
+ 	cancel_delayed_work_sync(&sc->hw_check_work);
+ 	cancel_delayed_work_sync(&sc->hw_pll_work);
++	cancel_delayed_work_sync(&sc->hw_hang_work);
+ 
+ #ifdef CONFIG_ATH9K_BTCOEX_SUPPORT
+ 	if (ath9k_hw_mci_is_enabled(sc->sc_ah))
+@@ -208,6 +209,9 @@ void ath_restart_work(struct ath_softc *sc)
+ 		ieee80211_queue_delayed_work(sc->hw, &sc->hw_pll_work,
+ 				     msecs_to_jiffies(ATH_PLL_WORK_INTERVAL));
+ 
++	ieee80211_queue_delayed_work(sc->hw, &sc->hw_hang_work,
++				     msecs_to_jiffies(ATH_HANG_WORK_INTERVAL));
++
+ 	ath_start_ani(sc);
+ }
+ 
+
+base-commit: 2b94751626a6d49bbe42a19cc1503bd391016bd5
+-- 
+2.39.2
 
 
