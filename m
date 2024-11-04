@@ -1,125 +1,138 @@
-Return-Path: <linux-wireless+bounces-14883-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14884-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D19779BB82F
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Nov 2024 15:44:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D30F9BB92C
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Nov 2024 16:41:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F3051C2175D
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Nov 2024 14:44:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35D9F1F22695
+	for <lists+linux-wireless@lfdr.de>; Mon,  4 Nov 2024 15:41:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE801B218E;
-	Mon,  4 Nov 2024 14:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16A8D1C07D7;
+	Mon,  4 Nov 2024 15:41:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="lfPu/w+8"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Sss+PP61"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B92A70839;
-	Mon,  4 Nov 2024 14:44:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330AD1C2443
+	for <linux-wireless@vger.kernel.org>; Mon,  4 Nov 2024 15:41:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730731476; cv=none; b=VBKacGox5sQscS+RqwxTiU2FfGpioDtZMZk42aKL5WB/9MqE4xbckSfIWhNh2cbDE/S0rYodDBch3P4dS5aKa1w8MAnduonZSDaSEM7wKkMi5WH77qP/GXPJPQTOlBDk5FenE5c9Co8chKVxO12/MumuLw4u38ja7PX16sEPplE=
+	t=1730734875; cv=none; b=WLqV3zYnfKDdNUy3MlPrLDdNTud751+KtdHM/V6o46R5KtsqpK6HplNjUhBUefAdYZdw2K0nou9BBjLUsjaB8TnZbmtV9JZ5WvlbfPvrmD5lTMRi4sfmf0zRr6KnCx4HEZ9K1G5WKKJUPBak+sOpSVzgpi7iGmwP3njTwZfHzX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730731476; c=relaxed/simple;
-	bh=O0q310ZXS/8hd5zK7hGv/wooSKysaSdt6OHMte7aao0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qcotsFACGgTrRw7m2INp5B/RpLWB+7vyD7iL5LpaLR1PEQsyb7Bq6lsBgDLiP+6bksGfvUfyXxNE5RV4V+fH77+wdcGYnLxYF1uZgEh3s0ecwLD9j6y8d4x23UXfdfi2ZYlFEAjsI4wfJyIbHwGfUarOxgrQ9RQfRO0trHwfeuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=lfPu/w+8; arc=none smtp.client-ip=46.235.229.95
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
-	; s=bytemarkmx; h=Content-Type:MIME-Version:Message-ID:Subject:From:Date:From
-	:Subject; bh=tHknOMDBUHnACywOrqNmGl+/VByrwWQHN9oBTWQhGhA=; b=lfPu/w+8QvvNKN8m
-	3lpiDU38rsV0O3DSdh6xEdFQ3ASuMJTQad9ZwLQYgRGnOR0j1QRKUGAaJ9laBM5pF4fnIXoGBHR8l
-	2yynSjwYnCLIs3JxppmZYRvdTufpFO6+bMeVwxyQ/cm8w10YjMIBsv/iuk9TNO6ArptYIs5wkQeO2
-	u7GqTHVB7X46MwcMozt9W99UxPFDH04TkD6Ht7nATtg76YyiKydosuxS0ux/5PILYUJoTFu1gfbLZ
-	j6vb5xK4HJPRK+U79G1wOKLrtzVJMkWFM9VmQPCiB7CNMDt+IUFRzyUgKh72N73Eo0M2nt5ILOyvh
-	a+75EMooi030A78LrQ==;
-Received: from dg by mx.treblig.org with local (Exim 4.96)
-	(envelope-from <dg@treblig.org>)
-	id 1t7yJg-00FLns-3C;
-	Mon, 04 Nov 2024 14:44:28 +0000
-Date: Mon, 4 Nov 2024 14:44:28 +0000
-From: "Dr. David Alan Gilbert" <linux@treblig.org>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: pkshih@realtek.com, linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] rtlwifi: Remove more unused functions
-Message-ID: <ZyjdzJujaHJekv8Q@gallifrey>
-References: <20241103153857.255450-1-linux@treblig.org>
- <20241103153857.255450-3-linux@treblig.org>
- <87y11zxwlr.fsf@kernel.org>
- <ZyjDn0R7gzDQ4jnT@gallifrey>
- <87msif6q4q.fsf@kernel.org>
+	s=arc-20240116; t=1730734875; c=relaxed/simple;
+	bh=2/TVkVyGg9SMBHGoekqwjWlFbZIZyCUeB3LECQtAzm4=;
+	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=MZOsfsImk+1w73LcB/Qe6Jfrq0IqksIECaeKJLViIK/zOus06mY1pLOFbQ4+jSu51F+rHMeLJV3oLQlzHADnqzMext/meMtEzKcd4lhKlyXfM8oUp08dKaa4nob80lpRZeH9lPcCMavZsLBulLhY+4V21y45OYFCna3rXr9zkp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Sss+PP61; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a99e3b3a411so831876266b.0
+        for <linux-wireless@vger.kernel.org>; Mon, 04 Nov 2024 07:41:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1730734871; x=1731339671; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EOXglObfnAnhBL3frBdzCWvPAMNA4tpUfFPAYRRKgbo=;
+        b=Sss+PP61+i2ScV4QVHYo2VGmsNpK8tGnCEIaiNvRnOqjdTaVi0F2UVu+knkbJtqb20
+         8mHXi5dV9w3eT0gU9RMLQIBzdQMn+wST34Uga5RBaJiGKKYlu4iQyFjXIcbJ/HtoQiff
+         4GZQLTyhK2eAImpYAmG/MRfvgNmKhhexQeDD0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730734871; x=1731339671;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EOXglObfnAnhBL3frBdzCWvPAMNA4tpUfFPAYRRKgbo=;
+        b=nuxZfE+l7XjLh/2/vmba7xjiJWoMQLjllYZEyDm/TNPM1cnFP0g3LDh9kMOGKpp2xj
+         s+0eme0EpFI/3m3YB7rkafOEwvVLVA4Ou/9lpOKWb7KZGG2gYu9XvVnI0VUMlZSLUwze
+         aPdQU6dXNz3/CAo7FLouIyQCp9PW60n85KtOwyvXtLe8MwZ4GUGjBAogIzzur+THTcib
+         MrLMKDsqrlHMxab/c7PM/rJWvU9jKNNQmm6p0ZZAgd34zJsCX1CJgj2igOqkM9lUvTJe
+         eFbO1pLen7eWRGfi32xmrHt4ngQi7nXDehfzKM4tnfvQm+V2+/GnzF6+zbLoJHpIhGV/
+         o4XA==
+X-Gm-Message-State: AOJu0Yw6f9i6M/Jqk3FQPftcKSWdXiljtw7DC2GOZvtwiwMdub8lp/1I
+	kGcdvtZ/GSK+yVfAB9Z7i+eMSLgh3++CsFrr1Bv4F+sYFon5yobtjiur/v5I2g==
+X-Google-Smtp-Source: AGHT+IE36xk8PmLNdKkgHOVWci4w9T24kW7T9I6LD7JitrCFEgmN98YmaezOS6Dw4H/xrClhKfClmw==
+X-Received: by 2002:a17:907:7e8b:b0:a9a:6c41:50a8 with SMTP id a640c23a62f3a-a9e653828camr1266220766b.17.1730734871504;
+        Mon, 04 Nov 2024 07:41:11 -0800 (PST)
+Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9e56493e40sm564177866b.40.2024.11.04.07.41.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 04 Nov 2024 07:41:11 -0800 (PST)
+From: Arend Van Spriel <arend.vanspriel@broadcom.com>
+To: Johannes Berg <johannes@sipsolutions.net>, Stefan Wahren <wahrenst@gmx.net>, Arend van Spriel <aspriel@gmail.com>, Ulf Hansson <ulf.hansson@linaro.org>
+CC: <linux-wireless@vger.kernel.org>, <brcm80211-dev-list.pdl@broadcom.com>, <SHA-cyfmac-dev-list@infineon.com>, Kalle Valo <kvalo@kernel.org>, "linux-mmc" <linux-mmc@vger.kernel.org>
+Date: Mon, 04 Nov 2024 16:41:10 +0100
+Message-ID: <192f7d64df0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <89888eab44b7b431ac7fedcd573db325e07b935d.camel@sipsolutions.net>
+References: <a825587c-e6f6-45f8-8ac0-a1a5642a5333@gmx.net>
+ <16169285-d838-46f3-8be1-3639f573062e@broadcom.com>
+ <86ef2465-3b5c-47c8-9e81-ad5b545bcfe4@gmx.net>
+ <89888eab44b7b431ac7fedcd573db325e07b935d.camel@sipsolutions.net>
+User-Agent: AquaMail/1.53.0 (build: 105300523)
+Subject: Re: brcmfmac: error messages while entering suspend
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-In-Reply-To: <87msif6q4q.fsf@kernel.org>
-X-Chocolate: 70 percent or better cocoa solids preferably
-X-Operating-System: Linux/6.1.0-21-amd64 (x86_64)
-X-Uptime: 14:43:51 up 180 days,  1:57,  1 user,  load average: 0.10, 0.05,
- 0.01
-User-Agent: Mutt/2.2.12 (2023-09-09)
+Content-Type: text/plain; format=flowed; charset="us-ascii"
+Content-Transfer-Encoding: 8bit
 
-* Kalle Valo (kvalo@kernel.org) wrote:
-> "Dr. David Alan Gilbert" <linux@treblig.org> writes:
-> 
-> > * Kalle Valo (kvalo@kernel.org) wrote:
-> >> linux@treblig.org writes:
-> >> 
-> >> > From: "Dr. David Alan Gilbert" <linux@treblig.org>
-> >> >
-> >> > exhalbtc_dbg_control(), exhalbtc_stack_update_profile_info(),
-> >> > exhalbtc_set_hci_version(), and exhalbtc_set_bt_patch_version() are
-> >> > unused since their addition in 2014 by
-> >> > commit aa45a673b291 ("rtlwifi: btcoexist: Add new mini driver")
-> >> >
-> >> > Remove them.
-> >> >
-> >> > Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
-> >> 
-> >> 'wifi:' missing.
-> >
-> > Oops, can add that.
-> >
-> >> Also in both patches the subject could be more unique.
-> >
-> > Do you have suggestions? I don't know the code to give good titles.
-> > They're both 'btcoexist'; I could merge them into one
-> >
-> > wifi: wtlwifi: Remove btcoexist deadcode
-> 
-> No good suggestions really. Usually I add what I'm removing to the
-> subject but as this patch is removing several functions the subject
-> would be too long. Maybe something like 'wifi: rtlwifi: remove several
-> unused exhalbtc_*() functions?' just to throw out some ideas, I'm sure
-> you can come with better ones.
+On November 4, 2024 1:18:44 PM Johannes Berg <johannes@sipsolutions.net> wrote:
 
-OK, I've just merged the two together, and sent it out as a single patch
+> On Mon, 2024-11-04 at 12:59 +0100, Stefan Wahren wrote:
+>>
+>>>> [  384.292071] ieee80211 phy0: brcmf_fil_cmd_data: bus is down. we have
+>>>> nothing to do.
+>>>> [  384.292079] ieee80211 phy0: brcmf_cfg80211_get_tx_power: error (-5)
+>>>>
+>>>> These errors are not new and I assume they have always been there. I'm
+>>>> not an expert here, so I want to know is the problem here that the SDIO
+>>>> interface is shutdown before brcmfmac is suspended or lies the issue
+>>>> within brcmfmac suspend itself?
+>
+>>> Upon suspend we execute the remove path and cleaning the interfaces.
+>>> We notify cfg80211 about the removal, which in turn will notify
+>>> userspace, but is tries to obtain the tx power from brcmfmac.
+>
+> I guess "it tries to obtain" is some sort of event path that wants to
+> include the TX power in an event. That doesn't seem to make all that
+> much sense on removal events though, so perhaps we could remove the
+> get_channel and get_tx_power calls for NL80211_CMD_DEL_INTERFACE.
 
-[PATCH v2] wifi: rtlwifi: Remove some exhalbtc deadcod
-message-id: 20241104144331.29262-1-linux@treblig.org
+That's what I was considering.
 
-Dave
+>
+>
+>>> However,
+>>> at this stage the communication with the dongle is already gone. These
+>>> messages are also seen in the module unload scenario. It seems a bit
+>>> redundant to query a device that is going to be removed. So it could
+>>> be fixed by chiming down those message or avoid it completely by
+>>> changing the behavior in cfg80211.
+>
+>> chiming down all the affected messages (i reported only one example
+>> here) sounds strange to me. Maybe Johannes has also a opinion about this.
+>
+> Dunno about the messages, I mean it's still possible to get those
+> messages when e.g. userspace manages to query just while it died, so
+> perhaps you wouldn't want to print it for all cases, but OTOH that's not
+> going to happen all the time.
+>
+> But I don't have much opinion on driver messages :)
 
-> 
-> -- 
-> https://patchwork.kernel.org/project/linux-wireless/list/
-> 
-> https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-> 
--- 
- -----Open up your eyes, open up your mind, open up your code -------   
-/ Dr. David Alan Gilbert    |       Running GNU/Linux       | Happy  \ 
-\        dave @ treblig.org |                               | In Hex /
- \ _________________________|_____ http://www.treblig.org   |_______/
+Sure. The two messages mentioned above are the ones I meant with coming 
+down. Not all driver messages. At least the message in brcmf_fil_cmd_data() 
+is not very useful. Could just be a debug print iso error print.
+
+Regards,
+Arend
+
+
 
