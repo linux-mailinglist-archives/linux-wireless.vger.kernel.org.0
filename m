@@ -1,81 +1,77 @@
-Return-Path: <linux-wireless+bounces-14937-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14938-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06DA49BD423
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2024 19:07:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A166A9BD724
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2024 21:40:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B964D2825B6
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2024 18:07:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D40EB1C20F28
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2024 20:40:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A781EF08D;
-	Tue,  5 Nov 2024 18:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C31E41F8183;
+	Tue,  5 Nov 2024 20:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mr5gwgJ4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dkkhp4wA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161721E7661;
-	Tue,  5 Nov 2024 18:05:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B661CB9E6
+	for <linux-wireless@vger.kernel.org>; Tue,  5 Nov 2024 20:40:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730829952; cv=none; b=gpJrGKmOxz8SNrA6VQg0trtY18LzuCOKQlCwvjyo5colGPYvnnoA2/XXdz8rWtGKdW7BPBePRmXEgJJWCWihfCKzCmNkUf+TKj6e6krD8AvC0ygraruLzk/sbY1qBItlo9Ehr4cprR9Z0MD2lH6Y89XfYlUKnOl82omfRUSBqi4=
+	t=1730839219; cv=none; b=UZsj08K8PxVvayVyAJAaWYubkiKQbfviPMDK0MR/7jRi2RBkD7LDunuS7YTnbldgEd7l5DWDhhOvAfYZ9qzbdNb0q4xhxrgb7kfEWx89o2ucxfUWnq/JLDHhN4xp2TnDFd2z0es7mOiJGnGlErwfBxdvlJUMRIUicUwTMK1K4ZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730829952; c=relaxed/simple;
-	bh=N9nOmAp428to/VheCGeL53sIG5iceZdmdcdD887Koms=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gkt7YxsChD6QnqqQVI28dJ9ARTS93tjD1vWFW2npIYVvnxu3GrgvKvyETkUjhi7keI5JSWghjFqen+KeXTot/CjGv1X6bURR3aj9FmD+sL2VdMrVeGOrjtLYI3VKfB+PZgXTYn0faga5Sy9Iq8WxC+LTFpna00FDDHbSmvXDbXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mr5gwgJ4; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A59YWRh028840;
-	Tue, 5 Nov 2024 18:05:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	kd2JiE9B9EjKM0emvf0bQJLJXrq0QujoPl0mNkoNW3A=; b=mr5gwgJ4ciToyIal
-	+S98m9hlzJksbmue7SZ9sZa2tp6ri5sVXWpnwvTnGgHUsZwFLvFaPdLyj4h7wyOa
-	uii/gvCwUSdeplExZ4TWHSFp+2Qka7tOu7VUkKqBErtJvxg+38WE+KO+8gvDIlyq
-	5CrX3avffipyledrzrRayGFPAYuLUeC43nMqy6qdBW5lBAchgppxHfdIj5FQz+VM
-	pW2UZ3Juzpe7JNQQ4vdwTAKugZWQx7eTXItH7WOGb7RLT+72SJgjgeLaXOWI7LZ3
-	fDT1Hj5tQuJJai91CEJWKK7lU7ZHx5GuBPrbj9G2QsWxRllY/kNTJ/bJBmNcsPmU
-	V8W2nQ==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42nd288p2p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 Nov 2024 18:05:44 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4A5I5h2T016738
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 5 Nov 2024 18:05:43 GMT
-Received: from hu-rajkbhag-blr.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Tue, 5 Nov 2024 10:05:39 -0800
-From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, Kalle Valo <kvalo@kernel.org>,
-        "Rob
- Herring" <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        "Conor
- Dooley" <conor+dt@kernel.org>,
-        Jeff Johnson <jjohnson@kernel.org>,
-        "Bjorn
- Andersson" <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-Subject: [RFC PATCH v3 5/5] arm64: dts: qcom: ipq9574: Add WiFi nodes for RDP433
-Date: Tue, 5 Nov 2024 23:34:44 +0530
-Message-ID: <20241105180444.770951-6-quic_rajkbhag@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241105180444.770951-1-quic_rajkbhag@quicinc.com>
-References: <20241105180444.770951-1-quic_rajkbhag@quicinc.com>
+	s=arc-20240116; t=1730839219; c=relaxed/simple;
+	bh=gRX+9AKtNIGSCrLqOM8SDaBgepi/RtXUPk6cjRt0E6A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sNM6UbdkTqtMKP0fAn90Vr8/B6TjMuFImbOtPmk3szN1bdhB4IHAU2HEccknDH2FPWTQ7JtlTXsWxA3tRbriGTCHvjeFHehRz8VtLd2Ip4VDaMsRnEit3P66FCtSBRHkZU3OLGTtHj4suj3jBRWJ+8AK+sOvme6CkJkjm9CPtLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dkkhp4wA; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5cedea84d77so2765642a12.1
+        for <linux-wireless@vger.kernel.org>; Tue, 05 Nov 2024 12:40:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730839216; x=1731444016; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jn35xIkqQYJnCioVH+H86gECBogCSl/ywNlSAFiU+/s=;
+        b=dkkhp4wAOtpQAUyGc+KYm0jRUjDH9Ws5j/sWcs1ktfu9ILQ15jpfhYIH1dfQ3AiieF
+         rUYyvlUN3AG+23SKZiQ6PWQ009tWsueNe42m2L03PV0oN2Fbd3yikODgA9xUM+9OVvb9
+         3nizL0VThKWH8OZRehhj7wp4qn2FMAzVEh/z/3fcrqfRqdoL6CDbiktpup2hMDEhg3TA
+         KNpUGBHQcLt3m3Nk8df354zE93QAwjOZtKCriihgwDhj80eljLPptsw1yPcckhUfSmim
+         tmxdYi32DIVf953PZJjYizDnSiPkPERIFu/oUB3tu6Xzh0cBLeNqJdYP+NQ5cuVrU4XF
+         kOew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730839216; x=1731444016;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jn35xIkqQYJnCioVH+H86gECBogCSl/ywNlSAFiU+/s=;
+        b=nK0VVub6pR/4iAVEuvNdbu1gAb7upzTRNSgHUMdhG/c1xyyVlWAtPNOz4xLqXQ+kP2
+         GLnhzLJe3UFa2mC/riiO4pvDRga8Xtm6EgdqXDuXtenRjSckyYcp9tQnjnjGdzjT5Kyp
+         eKkGlo7zojjgHEw07ZAS3CnSGwXWxaWG3E9xuh5tc+EifJhwyXF9s8SLijBEHnR8KVaK
+         JiqVnH8mKXAG7nAsymL5CjwkM/54eLW0ZP3MTd8XfBKYHeHpqwpKv/0IhHm0Eje9+lE0
+         brBMDRu6G+sEuUR+aP3o696bXcF/Sh7MV1BautLJ07bKKJE7iidsSxvoXeshMVyB7Si2
+         dVWA==
+X-Gm-Message-State: AOJu0YwjIMNwnI45gGXSILployz+KKjq3Yo+p3i92UL5ldroZdBnAMWm
+	0kuX83K50LKG0k6OHvH0djhz5qVN19tw9ee0k3W3x8mz2dQUKWxmf3JTGCrh
+X-Google-Smtp-Source: AGHT+IF5K4cum6IB4B+oiHS9McJE3l2Wqd95W1j28OQBb1NlWMFpDWk6EyKdv4n3e/TSnbEQbAnCBg==
+X-Received: by 2002:a05:6402:248b:b0:5cb:6841:ec8a with SMTP id 4fb4d7f45d1cf-5cea968a150mr17682393a12.19.1730839215656;
+        Tue, 05 Nov 2024 12:40:15 -0800 (PST)
+Received: from wlt.home (77-165-185-46.fixed.kpn.net. [77.165.185.46])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5cee6ab1a67sm1749237a12.35.2024.11.05.12.40.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Nov 2024 12:40:15 -0800 (PST)
+From: Norbert van Bolhuis <nvbolhuis@gmail.com>
+X-Google-Original-From: Norbert van Bolhuis <norbert.vanbolhuis@ev-box.com>
+To: linux-wireless@vger.kernel.org
+Cc: Norbert van Bolhuis <norbert.vanbolhuis@ev-box.com>
+Subject: [PATCH] wifi: brcmfmac: Fix oops due to NULL pointer dereference in 'brcmf_sdiod_sglist_rw'
+Date: Tue,  5 Nov 2024 21:40:11 +0100
+Message-ID: <20241105204011.1603148-1-norbert.vanbolhuis@ev-box.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -83,192 +79,42 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: XLpjE65kjhiAo07QS_xZBZRRNoqQCuED
-X-Proofpoint-GUID: XLpjE65kjhiAo07QS_xZBZRRNoqQCuED
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=696
- clxscore=1015 lowpriorityscore=0 impostorscore=0 priorityscore=1501
- spamscore=0 phishscore=0 bulkscore=0 malwarescore=0 suspectscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411050139
 
-The RDP433 is a Qualcomm Reference Design Platform based on the
-IPQ9574. It has three QCN9274 WiFi devices connected to PCIe1, PCIe2,
-and PCIe3. These devices are also connected among themselves via
-WSI connection. This WSI connection is essential to exchange control
-information among these devices
+This patch fixes a NULL pointer dereference bug in brcmfmac that occurs
+when a high 'sd_sgentry_align' value applies (e.g. 512) and a lot of queued SKBs
+are sent from the pkt queue.
 
-The WSI connection in RDP433 is represented below:
+The problem is the number of entries in the pre-allocated sgtable, it is
+nents = max(rxglom_size, txglom_size) + max(rxglom_size, txglom_size) >> 4 + 1.
+Given the default [rt]xglom_size=32 it's actually 35 which is too small.
+Worst case, the pkt queue can end up with 64 SKBs. This occurs when a new SKB
+is added for each original SKB if tailroom isn't enough to hold tail_pad.
+At least one sg entry is needed for each SKB. So, eventually the "skb_queue_walk loop"
+in brcmf_sdiod_sglist_rw may run out of sg entries. This makes sg_next return
+NULL and this causes the oops.
 
-          +-------+        +-------+        +-------+
-          | pcie1 |        | pcie2 |        | pcie3 |
-          |       |        |       |        |       |
-   +----->|  wsi  |------->|  wsi  |------->|  wsi  |-----+
-   |      | grp 0 |        | grp 0 |        | grp 0 |     |
-   |      +-------+        +-------+        +-------+     |
-   +------------------------------------------------------+
-
-Based on the above, the wifi node properties for QCN9274 at pcie2 are
-(considering QCN9274 at pcie2 is WSI controller):
-
- - qcom,wsi-controller
- - ports:
-    tx-port (port@0): endpoint at pcie3 RX port.
-    rx-port (port@1): endpoint at pcie1 TX port.
-
-Hence, add WiFi nodes with WSI properties for all three QCN9274
-devices connected to RDP433.
-
-Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+The patch sets nents to max(rxglom_size, txglom_size) * 2 to be able handle
+the worst-case.
+Btw. this requires only 64-35=29 * 16 (or 20 if CONFIG_NEED_SG_DMA_LENGTH) = 464
+additional bytes of memory.
 ---
- arch/arm64/boot/dts/qcom/ipq9574-rdp433.dts | 105 +++++++++++++++++++-
- 1 file changed, 104 insertions(+), 1 deletion(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/ipq9574-rdp433.dts b/arch/arm64/boot/dts/qcom/ipq9574-rdp433.dts
-index 165ebbb59511..a490a0d51fbb 100644
---- a/arch/arm64/boot/dts/qcom/ipq9574-rdp433.dts
-+++ b/arch/arm64/boot/dts/qcom/ipq9574-rdp433.dts
-@@ -3,7 +3,7 @@
-  * IPQ9574 RDP433 board device tree source
-  *
-  * Copyright (c) 2020-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2023 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2023-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+index 17f6b33beabd..42d991d9f8cb 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+@@ -770,7 +770,7 @@ void brcmf_sdiod_sgtable_alloc(struct brcmf_sdio_dev *sdiodev)
  
- /dts-v1/;
-@@ -27,6 +27,40 @@ &pcie1 {
- 	perst-gpios = <&tlmm 26 GPIO_ACTIVE_LOW>;
- 	wake-gpios = <&tlmm 27 GPIO_ACTIVE_LOW>;
- 	status = "okay";
-+
-+	pcie@0 {
-+		device_type = "pci";
-+		reg = <0x0 0x0 0x0 0x0 0x0>;
-+		#address-cells = <3>;
-+		#size-cells = <2>;
-+		ranges;
-+
-+		wifi@0 {
-+			compatible = "pci17cb,1109";
-+			reg = <0x0 0x0 0x0 0x0 0x0>;
-+
-+			ports {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				port@0 {
-+					reg = <0>;
-+
-+					wifi1_wsi_tx: endpoint {
-+						remote-endpoint = <&wifi2_wsi_rx>;
-+					};
-+				};
-+
-+				port@1 {
-+					reg = <1>;
-+
-+					wifi1_wsi_rx: endpoint {
-+						remote-endpoint = <&wifi3_wsi_tx>;
-+					};
-+				};
-+			};
-+		};
-+	};
- };
+ 	nents = max_t(uint, BRCMF_DEFAULT_RXGLOM_SIZE,
+ 		      sdiodev->settings->bus.sdio.txglomsz);
+-	nents += (nents >> 4) + 1;
++	nents *= 2;
  
- &pcie2_phy {
-@@ -40,6 +74,42 @@ &pcie2 {
- 	perst-gpios = <&tlmm 29 GPIO_ACTIVE_LOW>;
- 	wake-gpios = <&tlmm 30 GPIO_ACTIVE_LOW>;
- 	status = "okay";
-+
-+	pcie@0 {
-+		device_type = "pci";
-+		reg = <0x0 0x0 0x0 0x0 0x0>;
-+		#address-cells = <3>;
-+		#size-cells = <2>;
-+		ranges;
-+
-+		wifi@0 {
-+			compatible = "pci17cb,1109";
-+			reg = <0x0 0x0 0x0 0x0 0x0>;
-+
-+			qcom,wsi-controller;
-+
-+			ports {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				port@0 {
-+					reg = <0>;
-+
-+					wifi2_wsi_tx: endpoint {
-+						remote-endpoint = <&wifi3_wsi_rx>;
-+					};
-+				};
-+
-+				port@1 {
-+					reg = <1>;
-+
-+					wifi2_wsi_rx: endpoint {
-+						remote-endpoint = <&wifi1_wsi_tx>;
-+					};
-+				};
-+			};
-+		};
-+	};
- };
+ 	WARN_ON(nents > sdiodev->max_segment_count);
  
- &pcie3_phy {
-@@ -53,6 +123,39 @@ &pcie3 {
- 	perst-gpios = <&tlmm 32 GPIO_ACTIVE_LOW>;
- 	wake-gpios = <&tlmm 33 GPIO_ACTIVE_LOW>;
- 	status = "okay";
-+
-+	pcie@0 {
-+		device_type = "pci";
-+		reg = <0x0 0x0 0x0 0x0 0x0>;
-+		#address-cells = <3>;
-+		#size-cells = <2>;
-+		ranges;
-+
-+		wifi@0 {
-+			compatible = "pci17cb,1109";
-+			reg = <0x0 0x0 0x0 0x0 0x0>;
-+
-+			ports {
-+				#address-cells = <1>;
-+				#size-cells = <0>;
-+
-+				port@0 {
-+					reg = <0>;
-+
-+					wifi3_wsi_tx: endpoint {
-+						remote-endpoint = <&wifi1_wsi_rx>;
-+					};
-+				};
-+
-+				port@1 {
-+					reg = <1>;
-+					wifi3_wsi_rx: endpoint {
-+						remote-endpoint = <&wifi2_wsi_tx>;
-+					};
-+				};
-+			};
-+		};
-+	};
- };
- 
- &sdhc_1 {
 -- 
-2.34.1
+2.42.0
 
 
