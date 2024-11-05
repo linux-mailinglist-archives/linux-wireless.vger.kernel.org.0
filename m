@@ -1,68 +1,73 @@
-Return-Path: <linux-wireless+bounces-14902-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14903-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 623B49BC447
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2024 05:18:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A35A9BC448
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2024 05:18:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1492F1F21F7C
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2024 04:18:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79A0B28217F
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2024 04:18:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F24716BE2A;
-	Tue,  5 Nov 2024 04:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6034919047D;
+	Tue,  5 Nov 2024 04:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Cnoj65eV"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="nZyvcxuN"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79646376E0
-	for <linux-wireless@vger.kernel.org>; Tue,  5 Nov 2024 04:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90344376E0
+	for <linux-wireless@vger.kernel.org>; Tue,  5 Nov 2024 04:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730780325; cv=none; b=clNANCDhnxH0XvV1pzsSSQghnyVwiDtgK4VbcdFY8V48jkKsA7qAUKAVZxCU4kxlvEwgnB1ugSZZooPIMsMNWXQhH9wTfyCIoVDrmBo/nNoxORJxXvsvxMBLFoB04LMsai3T8ajxFjYzp3jr55ve+57tl0FeS8493+s1ZKHc10c=
+	t=1730780328; cv=none; b=U2hRBSKhjIN+rFkLz80HvW6FLc9p8rG9o8Ltq/l9jmDK0IuNZga9shU6OuFryKSeWMS9SJkLO1FtRZyGd8XCyvm5KVzCsF+y228Qzr4GLKU1HdjsVife5Yf97MwpT9NKxIkWvjy4onoi7p1w54EQjOEqqK5Woqr3vxqbLMijJjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730780325; c=relaxed/simple;
-	bh=HemS6j1CcDIjI52HDF8mptggeEnrOP1UI5f//aY0Sh0=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qaXyAAmi0YqJLM4Vxu+xa7mVe8Bn+LT4Fk1a+CrUXBf+ho25ed7sfNCzWLb4lMh6LuY1i7VzHnG0IO/n3mnaJIMQvJoqHvX9i8Tmzt8b8O7SNq1RaJYJ0N8lLCLXjYP6UABY7IWKaYCxQNVFb7cdM6+0tYEEQHQNsBU++mRXgNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Cnoj65eV; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1730780328; c=relaxed/simple;
+	bh=sxzWNGRNflXyY3Dj3STU2zeYG9FIJFblDCyP+P0K8fg=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=K0+iruWrchpYal0q2R3AvL8UHYhOzLjT58CiWPBe2ET2b4+chxrrV+4DU1CkOg0/yTSfePDPMfUFq/6TDXeCyVCHDdObE6BH1K1pI8TiTfPHrdtuBpX4HRDhTj26rAP6Nhqn8m/F/SDdZRcOO976d4nbDexIUtH4m5ccmUpo4fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=nZyvcxuN; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A4LIjTo012122;
-	Tue, 5 Nov 2024 04:18:39 GMT
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A4LIhFM023076;
+	Tue, 5 Nov 2024 04:18:43 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=ycUlWrOY/pHCrQ2QjBmK29
-	HvigH7sdArj1aB3IQ58eI=; b=Cnoj65eV9d+V715Y4OtuBngvXOjyihTXOdIVp+
-	yeK3GIjkebiiP7q1mUG7tLCt6oDP6aZ8kjteJdcgl8KBts5IvyFsxScjsBWM7Tcl
-	xLKCmpZfx9/TtftmruQPZ7/Lo9wVJpwCyPT520HuYsDf+uY8+OW5O3dpy+dgtsR8
-	Bdey5idc0l8hoa+czUdeU1CtAAToMwgkxxJiTTmBWJaLdjaElve4tETdrQ22nSlb
-	oEbXjgnNkGEdEJ050WojzZWgv7wSedOrPAtqcW4Y2BokkJU9i1Ny2c5F3ucBLeEV
-	vO2OXPQTRanBOf7asIhqG1xE3YpyDjw7w5PKfCN2mMFQGTpw==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42nd11xa80-1
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	wRjcgtFuVslGzrIG6xm/45r09Ns90G4hJkkbl/KiXtA=; b=nZyvcxuN+stxNC/b
+	DnA5HI/ocBZNPFblQ2Q5tpi/27LKBoufuhKNUOAdWkv6xhjBaOYpq40NK15SkcbA
+	d9wDEyXAMtdj3oP/x+iPQkDj5fbQLQGQZEz6niV3NO792WpRo16Ghhk+MU2kglnp
+	MhDVCXgSty/xWjg0lOqxusJknwA+BTkBMjjXPH68ji3yek1mBq4ZA8N5DUWchyvy
+	T1Evzzd0QWT6+8jOsVRgytdv+d0htT6Ghu7D+8P42WEp+81jP9cB5l4ceQQSmCeM
+	STWt3XvlJbJtvVgKJRtw5cgLeD9/5ev9wpVPT/gWZtYU/OaMTOmupoX4RBALYii4
+	xJBcpA==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42nd1fpatd-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 Nov 2024 04:18:38 +0000 (GMT)
+	Tue, 05 Nov 2024 04:18:42 +0000 (GMT)
 Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4A54IbbB014446
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4A54IfrD031916
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 5 Nov 2024 04:18:37 GMT
+	Tue, 5 Nov 2024 04:18:41 GMT
 Received: from hu-rdevanat-blr.qualcomm.com (10.80.80.8) by
  nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Mon, 4 Nov 2024 20:18:36 -0800
+ 15.2.1544.9; Mon, 4 Nov 2024 20:18:39 -0800
 From: Roopni Devanathan <quic_rdevanat@quicinc.com>
 To: <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>,
-        Roopni Devanathan
-	<quic_rdevanat@quicinc.com>
-Subject: [PATCH v2 0/4] wifi: ath12k: Support Pager, Counter, SoC, Transmit Rate Stats
-Date: Tue, 5 Nov 2024 09:48:18 +0530
-Message-ID: <20241105041822.2039214-1-quic_rdevanat@quicinc.com>
+        Dinesh Karthikeyan
+	<quic_dinek@quicinc.com>,
+        Roopni Devanathan <quic_rdevanat@quicinc.com>
+Subject: [PATCH v2 1/4] wifi: ath12k: Support Downlink Pager Stats
+Date: Tue, 5 Nov 2024 09:48:19 +0530
+Message-ID: <20241105041822.2039214-2-quic_rdevanat@quicinc.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241105041822.2039214-1-quic_rdevanat@quicinc.com>
+References: <20241105041822.2039214-1-quic_rdevanat@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -75,36 +80,222 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01c.na.qualcomm.com (10.47.97.35)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: e9JDxh3Xby1uYNQvC-QXm57wKkXKSNsE
-X-Proofpoint-ORIG-GUID: e9JDxh3Xby1uYNQvC-QXm57wKkXKSNsE
+X-Proofpoint-GUID: 7okBond8toGeW1BgO0ZHSUjCzgh3gVde
+X-Proofpoint-ORIG-GUID: 7okBond8toGeW1BgO0ZHSUjCzgh3gVde
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=883
- mlxscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0
- priorityscore=1501 impostorscore=0 spamscore=0 bulkscore=0 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
+ impostorscore=0 bulkscore=0 mlxlogscore=999 spamscore=0 phishscore=0
+ malwarescore=0 mlxscore=0 clxscore=1015 lowpriorityscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2409260000 definitions=main-2411050029
 
-Add support to request HTT stats type 36, 37, 38 and 40 from firmware.
-These stat types give downlink pager stats, counter and TPC stats, SoC
-common stats and Transmit PER rate stats, respectively.
+From: Dinesh Karthikeyan <quic_dinek@quicinc.com>
 
--v2:
- - Removed dependencies. No change in code.
+Add support to request downlink pager stats from firmware through HTT
+stats type 36. These stats give paging information like number of pages,
+their timestamp, number of locked and free pages, synchronous and
+asynchronous locked pages.
 
-Dinesh Karthikeyan (4):
-  wifi: ath12k: Support Downlink Pager Stats
-  wifi: ath12k: Support phy counter and TPC stats
-  wifi: ath12k: Support SoC Common Stats
-  wifi: ath12k: Support Transmit PER Rate Stats
+Note: MCC firmware version -
+WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4 responds to
+the event requesting stats, but it does not give any data.
 
- .../wireless/ath/ath12k/debugfs_htt_stats.c   | 627 +++++++++++++++++-
- .../wireless/ath/ath12k/debugfs_htt_stats.h   | 200 +++++-
- 2 files changed, 824 insertions(+), 3 deletions(-)
+Sample output:
+-------------
+echo 36 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
+cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats
+HTT_DLPAGER_STATS_TLV:
+ASYNC locked pages = 2
+SYNC locked pages = 0
+Total locked pages = 2
+Total free pages = 127
 
+LOCKED PAGES HISTORY
+last_locked_page_idx = 0
+Index - 0 ; Page Number - 8495 ; Num of pages - 1 ; Timestamp - 4031009360us
+Index - 1 ; Page Number - 7219 ; Num of pages - 2 ; Timestamp - 885379515us
+Index - 2 ; Page Number - 0 ; Num of pages - 0 ; Timestamp - 0us
+Index - 3 ; Page Number - 0 ; Num of pages - 0 ; Timestamp - 0us
+.....
+UNLOCKED PAGES HISTORY
+last_unlocked_page_idx = 0
+Index - 0 ; Page Number - 7144 ; Num of pages - 2 ; Timestamp - 4032070008us
+Index - 1 ; Page Number - 7214 ; Num of pages - 2 ; Timestamp - 885379512us
+Index - 2 ; Page Number - 0 ; Num of pages - 0 ; Timestamp - 0us
+Index - 3 ; Page Number - 0 ; Num of pages - 0 ; Timestamp - 0us
+.....
 
-base-commit: e7e2957f403ba4655199f2ba9920c1a015a7be44
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Dinesh Karthikeyan <quic_dinek@quicinc.com>
+Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
+---
+ .../wireless/ath/ath12k/debugfs_htt_stats.c   | 86 +++++++++++++++++++
+ .../wireless/ath/ath12k/debugfs_htt_stats.h   | 31 +++++++
+ 2 files changed, 117 insertions(+)
+
+diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+index c9980c0193d1..22edc320a0b1 100644
+--- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
++++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.c
+@@ -2542,6 +2542,89 @@ ath12k_htt_print_pdev_obss_pd_stats_tlv(const void *tag_buf, u16 tag_len,
+ 	stats_req->buf_len = len;
+ }
+ 
++static void ath12k_htt_print_dlpager_entry(const struct ath12k_htt_pgs_info *pg_info,
++					   int idx, char *str_buf)
++{
++	u32 ts_lo;
++	u32 ts_hi;
++	unsigned long long page_timestamp;
++	u16 index = 0;
++
++	ts_lo = le32_to_cpu(pg_info->ts_lsb);
++	ts_hi = le32_to_cpu(pg_info->ts_msb);
++	page_timestamp = ((unsigned long long)ts_hi) << 32 | ts_lo;
++
++	index += snprintf(&str_buf[index], ATH12K_HTT_MAX_STRING_LEN - index,
++			  "Index - %u ; Page Number - %u ; ",
++			  idx, le32_to_cpu(pg_info->page_num));
++	index += snprintf(&str_buf[index], ATH12K_HTT_MAX_STRING_LEN - index,
++			  "Num of pages - %u ; Timestamp - %lluus\n",
++			  le32_to_cpu(pg_info->num_pgs), page_timestamp);
++}
++
++static void
++ath12k_htt_print_dlpager_stats_tlv(const void *tag_buf, u16 tag_len,
++				   struct debug_htt_stats_req *stats_req)
++{
++	const struct ath12k_htt_dl_pager_stats_tlv *stat_buf = tag_buf;
++	u8 *buf = stats_req->buf;
++	u32 len = stats_req->buf_len;
++	u32 buf_len = ATH12K_HTT_STATS_BUF_SIZE;
++	u32 info0;
++	u32 info1;
++	u32 info2;
++	u32 dword_lock;
++	u32 dword_unlock;
++	u8 pg_locked;
++	u8 pg_unlock;
++	int i;
++	char str_buf[ATH12K_HTT_MAX_STRING_LEN] = {0};
++
++	if (tag_len < sizeof(*stat_buf))
++		return;
++
++	info0 = le32_to_cpu(stat_buf->info0);
++	info1 = le32_to_cpu(stat_buf->info1);
++	info2 = le32_to_cpu(stat_buf->info2);
++	dword_lock = u32_get_bits(info2, ATH12K_HTT_DLPAGER_TOTAL_LOCK_PAGES_INFO2);
++	dword_unlock = u32_get_bits(info2, ATH12K_HTT_DLPAGER_TOTAL_FREE_PAGES_INFO2);
++	pg_locked = ATH12K_HTT_STATS_PAGE_LOCKED;
++	pg_unlock = ATH12K_HTT_STATS_PAGE_UNLOCKED;
++
++	len += scnprintf(buf + len, buf_len - len, "HTT_DLPAGER_STATS_TLV:\n");
++	len += scnprintf(buf + len, buf_len - len, "ASYNC locked pages = %u\n",
++			 u32_get_bits(info0, ATH12K_HTT_DLPAGER_ASYNC_LOCK_PG_CNT_INFO0));
++	len += scnprintf(buf + len, buf_len - len, "SYNC locked pages = %u\n",
++			 u32_get_bits(info0, ATH12K_HTT_DLPAGER_SYNC_LOCK_PG_CNT_INFO0));
++	len += scnprintf(buf + len, buf_len - len, "Total locked pages = %u\n",
++			 u32_get_bits(info1, ATH12K_HTT_DLPAGER_TOTAL_LOCK_PAGES_INFO1));
++	len += scnprintf(buf + len, buf_len - len, "Total free pages = %u\n",
++			 u32_get_bits(info1, ATH12K_HTT_DLPAGER_TOTAL_FREE_PAGES_INFO1));
++
++	len += scnprintf(buf + len, buf_len - len, "\nLOCKED PAGES HISTORY\n");
++	len += scnprintf(buf + len, buf_len - len, "last_locked_page_idx = %u\n",
++			 dword_lock ? dword_lock - 1 : (ATH12K_PAGER_MAX - 1));
++	for (i = 0; i < ATH12K_PAGER_MAX; i++) {
++		memset(str_buf, 0x0, ATH12K_HTT_MAX_STRING_LEN);
++		ath12k_htt_print_dlpager_entry(&stat_buf->pgs_info[pg_locked][i],
++					       i, str_buf);
++		len += scnprintf(buf + len, buf_len - len, "%s", str_buf);
++	}
++
++	len += scnprintf(buf + len, buf_len - len, "\nUNLOCKED PAGES HISTORY\n");
++	len += scnprintf(buf + len, buf_len - len, "last_unlocked_page_idx = %u\n",
++			 dword_unlock ? dword_unlock - 1 : ATH12K_PAGER_MAX - 1);
++	for (i = 0; i < ATH12K_PAGER_MAX; i++) {
++		memset(str_buf, 0x0, ATH12K_HTT_MAX_STRING_LEN);
++		ath12k_htt_print_dlpager_entry(&stat_buf->pgs_info[pg_unlock][i],
++					       i, str_buf);
++		len += scnprintf(buf + len, buf_len - len, "%s", str_buf);
++	}
++	len += scnprintf(buf + len, buf_len - len, "\n");
++
++	stats_req->buf_len = len;
++}
++
+ static void
+ ath12k_htt_print_dmac_reset_stats_tlv(const void *tag_buf, u16 tag_len,
+ 				      struct debug_htt_stats_req *stats_req)
+@@ -2869,6 +2952,9 @@ static int ath12k_dbg_htt_ext_stats_parse(struct ath12k_base *ab,
+ 	case HTT_STATS_PDEV_OBSS_PD_TAG:
+ 		ath12k_htt_print_pdev_obss_pd_stats_tlv(tag_buf, len, stats_req);
+ 		break;
++	case HTT_STATS_DLPAGER_STATS_TAG:
++		ath12k_htt_print_dlpager_stats_tlv(tag_buf, len, stats_req);
++		break;
+ 	case HTT_STATS_DMAC_RESET_STATS_TAG:
+ 		ath12k_htt_print_dmac_reset_stats_tlv(tag_buf, len, stats_req);
+ 		break;
+diff --git a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
+index ac86cab234ec..dfb6538585d5 100644
+--- a/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
++++ b/drivers/net/wireless/ath/ath12k/debugfs_htt_stats.h
+@@ -135,6 +135,7 @@ enum ath12k_dbg_htt_ext_stats_type {
+ 	ATH12K_DBG_HTT_EXT_STATS_PDEV_TX_MU		= 17,
+ 	ATH12K_DBG_HTT_EXT_STATS_PDEV_CCA_STATS		= 19,
+ 	ATH12K_DBG_HTT_EXT_STATS_PDEV_OBSS_PD_STATS	= 23,
++	ATH12K_DBG_HTT_EXT_STATS_DLPAGER_STATS		= 36,
+ 	ATH12K_DBG_HTT_EXT_STATS_SOC_ERROR		= 45,
+ 	ATH12K_DBG_HTT_EXT_STATS_PDEV_SCHED_ALGO	= 49,
+ 	ATH12K_DBG_HTT_EXT_STATS_MANDATORY_MUOFDMA	= 51,
+@@ -194,6 +195,7 @@ enum ath12k_dbg_htt_tlv_tag {
+ 	HTT_STATS_PDEV_CTRL_PATH_TX_STATS_TAG		= 102,
+ 	HTT_STATS_TX_SELFGEN_AC_SCHED_STATUS_STATS_TAG	= 111,
+ 	HTT_STATS_TX_SELFGEN_AX_SCHED_STATUS_STATS_TAG	= 112,
++	HTT_STATS_DLPAGER_STATS_TAG			= 120,
+ 	HTT_STATS_MU_PPDU_DIST_TAG			= 129,
+ 	HTT_STATS_TX_PDEV_MUMIMO_GRP_STATS_TAG		= 130,
+ 	HTT_STATS_TX_PDEV_RATE_STATS_BE_OFDMA_TAG	= 135,
+@@ -1054,6 +1056,35 @@ struct ath12k_htt_pdev_obss_pd_stats_tlv {
+ 	__le32 num_sr_ppdu_abort_flush_cnt;
+ } __packed;
+ 
++enum ath12k_htt_stats_page_lock_state {
++	ATH12K_HTT_STATS_PAGE_LOCKED	= 0,
++	ATH12K_HTT_STATS_PAGE_UNLOCKED	= 1,
++	ATH12K_NUM_PG_LOCK_STATE
++};
++
++#define ATH12K_PAGER_MAX	10
++
++#define ATH12K_HTT_DLPAGER_ASYNC_LOCK_PG_CNT_INFO0	GENMASK(7, 0)
++#define ATH12K_HTT_DLPAGER_SYNC_LOCK_PG_CNT_INFO0	GENMASK(15, 8)
++#define ATH12K_HTT_DLPAGER_TOTAL_LOCK_PAGES_INFO1	GENMASK(15, 0)
++#define ATH12K_HTT_DLPAGER_TOTAL_FREE_PAGES_INFO1	GENMASK(31, 16)
++#define ATH12K_HTT_DLPAGER_TOTAL_LOCK_PAGES_INFO2	GENMASK(15, 0)
++#define ATH12K_HTT_DLPAGER_TOTAL_FREE_PAGES_INFO2	GENMASK(31, 16)
++
++struct ath12k_htt_pgs_info {
++	__le32 page_num;
++	__le32 num_pgs;
++	__le32 ts_lsb;
++	__le32 ts_msb;
++} __packed;
++
++struct ath12k_htt_dl_pager_stats_tlv {
++	__le32 info0;
++	__le32 info1;
++	__le32 info2;
++	struct ath12k_htt_pgs_info pgs_info[ATH12K_NUM_PG_LOCK_STATE][ATH12K_PAGER_MAX];
++} __packed;
++
+ struct ath12k_htt_dmac_reset_stats_tlv {
+ 	__le32 reset_count;
+ 	__le32 reset_time_lo_ms;
 -- 
 2.25.1
 
