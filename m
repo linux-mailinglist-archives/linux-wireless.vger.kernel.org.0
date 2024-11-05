@@ -1,203 +1,182 @@
-Return-Path: <linux-wireless+bounces-14914-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14915-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 450389BC5F0
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2024 07:48:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98F2F9BC6E1
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2024 08:25:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24D621C20CEA
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2024 06:48:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D86E3B226FA
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2024 07:25:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E30A1714A0;
-	Tue,  5 Nov 2024 06:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D64231FDF96;
+	Tue,  5 Nov 2024 07:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="XlCadiTX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K14EgAS6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E66186284
-	for <linux-wireless@vger.kernel.org>; Tue,  5 Nov 2024 06:48:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E871FCC73;
+	Tue,  5 Nov 2024 07:25:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730789310; cv=none; b=pEJFZDcmyu0onPRic17oK0154sram8QijZQ/VWfA2duS7IPG5/yXqAHo1wh2gu8x7b9Vj9K3sC3ocuQTyL6aqiLBrjPXgugminI4QhfdB16q6WKoocyOFkOOJaFCChY/YO2uUHNKzmm8OcbDGhF9r1OM3bHGeVuocmFB7qcYsQE=
+	t=1730791501; cv=none; b=mgGnvMBpkg2pB8Qv5xh2EOwQk1NbdKd8frEFgdPMU4A5If4QoCiWp4jCrwZwtr10tpkZED+JF8gD0cwOuWEnX3yr4cvHwZBbJPZfdvwL7RpF914NyWU5DQVIlAk/pIwkKegR1Zh+u8Lse7RlULkyvEBYCyZaHyGxngCyC1/tqb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730789310; c=relaxed/simple;
-	bh=5STOPZ1DISJ6sxPFC6Jj5t+kg2SUYn4l6FQvztXxPmQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ENY8we08TbPZRjJxh1HVNRQ4earG4D/jpR2MtYTWVCqUWPOBQ/xnLzyXYTN9q3VtPmKdrAGyFgpXsGGOGpT9Uer8kFb4NQy/kqFcjBJzP6C/9I6O4h0E1MwoneOCms/Q+hZa4BXE/RgPER77iqnojo9mVokZyMSheN9TSBM3LdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=XlCadiTX; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A4LIlBq028840;
-	Tue, 5 Nov 2024 06:48:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=6gWf8PM3qhADCSfQKQ1gjQotnB8DriADqXr
-	T756Gu7U=; b=XlCadiTXbh6S5VwONZnosR44VkbzwxBulEzOs2WrmNvh3MHLjuH
-	wKLuli0B+xhstR9MBEYSh3OF3DxpDxDm7/wdjaNu6fa/9fvVUSuIuixO6lZbUuEH
-	GyZJbmA9pxJ0i5aqHKfVSdeRcp3ThXMFdb46jsIc9D1Orli0Rf4HNf9+zext3UAF
-	jMi8K56gZ/hm4g2/lvZAsASPylvkh7v6FSts66S6Fbg2a/+I797KESKsvRjArzQ+
-	yuOJCMeomEVsQkD5C23ECaE0E43PlLfYjRTGTHpDmdj0/Zq2g251FbRlo27wa8xt
-	hpUm2qQgt8c+E514R+hRi9Iatyj1AHDLSPA==
-Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42nd286nve-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 Nov 2024 06:48:15 +0000 (GMT)
-Received: from pps.filterd (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 4A56mCCp020369;
-	Tue, 5 Nov 2024 06:48:12 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 42nd5kvpgr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 Nov 2024 06:48:12 +0000
-Received: from APBLRPPMTA02.qualcomm.com (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 4A56mCrd020362;
-	Tue, 5 Nov 2024 06:48:12 GMT
-Received: from hu-devc-blr-u22-a.qualcomm.com (hu-mrajraje-blr.qualcomm.com [10.190.104.79])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 4A56mCeD020361
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 Nov 2024 06:48:12 +0000
-Received: by hu-devc-blr-u22-a.qualcomm.com (Postfix, from userid 4581094)
-	id 7911B410E8; Tue,  5 Nov 2024 12:18:11 +0530 (+0530)
-From: Mohan Raj <quic_mrajraje@quicinc.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org, Mohan Raj <quic_mrajraje@quicinc.com>
-Subject: [PATCH 1/1] wifi: iw: Add support to display  max number of simultaneous links in phy info
-Date: Tue,  5 Nov 2024 12:18:09 +0530
-Message-Id: <20241105064809.2091332-1-quic_mrajraje@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1730791501; c=relaxed/simple;
+	bh=eGZxOOO0qWTRtmyQ0DkH96remcaIk4dbRJWRtFjc1lI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rQVWXY3ZNFRnVVgLfzOscmd0lr0jX724ZQ4O1UBdZM/OxCucXWNJOja6cZ3GFJ/YaqSLA2qPCrNtgS4qqOKXndKhYJn69FBq0Qfuyv+zQWEhHA5GXPRcIW4LsC0VaLTrk1LsjHp37YazpNA9wO/bZM1gM8qBLD8yWrr9AUxwnwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K14EgAS6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2289DC4CECF;
+	Tue,  5 Nov 2024 07:24:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730791501;
+	bh=eGZxOOO0qWTRtmyQ0DkH96remcaIk4dbRJWRtFjc1lI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=K14EgAS6cDnTl21odnotu2jbCE8UH0RU0svMLudd6nSUM/Uypckng9DUUeJcf7uy1
+	 7WMup32SpBZ4FFT7474tkrYsoj3bB5Vz2uPit3OJh41bDq/mGK2jKrlaOtDHNrFIFO
+	 ZcHjKjZx7spAna2uRBPMaY363DM+N7qhKL6f+xSfRCdAWraEO7t5u5hP9/YLjlQjyy
+	 MAG09FxHOJ/gMyXpjJsxNkga1U183WuOTWmgyOpqKo1VAoTBBKJt3DjGUIdHnbtoMR
+	 yvWL+jm9w0TVbccw/l8g9940aSJ7tphWXZfftLUKLT1lCcqsYhwM63GIFT4JXuMG9y
+	 sJUaop/OYgL8w==
+Message-ID: <74c84937-fa12-4ab2-922b-7889eb5dda47@kernel.org>
+Date: Tue, 5 Nov 2024 08:24:55 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: I9mUALOcq6j_s72QhwbPkwI4_IV-3Ml9
-X-Proofpoint-GUID: I9mUALOcq6j_s72QhwbPkwI4_IV-3Ml9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=999
- clxscore=1011 lowpriorityscore=0 impostorscore=0 priorityscore=1501
- spamscore=0 phishscore=0 bulkscore=0 malwarescore=0 suspectscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411050048
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v2 1/5] dt-bindings: net: wireless: ath12k: describe
+ WSI properties for QCN9274
+To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>, ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+References: <20241029173050.2188150-1-quic_rajkbhag@quicinc.com>
+ <20241029173050.2188150-2-quic_rajkbhag@quicinc.com>
+ <764f8f22-146d-4edc-9d46-7fe3c7d9a2f2@kernel.org>
+ <cb69c30f-8230-4a8f-a538-3ec964b79084@quicinc.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <cb69c30f-8230-4a8f-a538-3ec964b79084@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-To display the max number of simultaneous links in phy info	
+On 04/11/2024 19:44, Raj Kumar Bhagat wrote:
+>>>  $id: http://devicetree.org/schemas/net/wireless/qcom,ath12k.yaml#
+>>> @@ -18,10 +19,17 @@ properties:
+>>>    compatible:
+>>>      enum:
+>>>        - pci17cb,1107  # WCN7850
+>>> +      - pci17cb,1109  # QCN9274
+>>
+>> I asked for separate binding because it is quite a different device.
+>> Unless it is not... but then commit msg is quite not precise here.
+>>
+> 
+> sure, will create a separate binding, may be "qcom,ath12k_wsi.yaml".
 
-    The maximum number of simultaneous links affiliated to an AP-MLD
-    Present as a subfield in MLD capabilities and operations,the
-    Capability is extracted through nl80211 specific attribute
-    and added as part of phy information.
+Underscores are not allowed in compatibles and the file name follows
+compatible name, so use hyphen.
+>>> +    type: object
+>>> +    description: |
+>>> +      The ath12k devices (QCN9274) feature WSI support. WSI stands for
+>>> +      WLAN Serial Interface. It is used for the exchange of specific
+>>> +      control information across radios based on the doorbell mechanism.
+>>> +      This WSI connection is essential to exchange control information
+>>> +      among these devices.
+>>> +
+>>> +      Diagram to represent one WSI connection (one WSI group) among
+>>> +      three devices.
+>>> +
+>>> +               +-------+        +-------+        +-------+
+>>> +               | pcie2 |        | pcie3 |        | pcie1 |
+>>> +               |       |        |       |        |       |
+>>> +        +----->|  wsi  |------->|  wsi  |------->|  wsi  |-----+
+>>> +        |      | grp 0 |        | grp 0 |        | grp 2 |     |
+>>> +        |      +-------+        +-------+        +-------+     |
+>>> +        +------------------------------------------------------+
+>>> +
+>>> +      Diagram to represent two WSI connections (two separate WSI groups)
+>>> +      among four devices.
+>>> +
+>>> +           +-------+    +-------+          +-------+    +-------+
+>>> +           | pcie2 |    | pcie3 |          | pcie1 |    | pcie0 |
+>>> +           |       |    |       |          |       |    |       |
+>>> +       +-->|  wsi  |--->|  wsi  |--+   +-->|  wsi  |--->|  wsi  |--+
+>>> +       |   | grp 0 |    | grp 0 |  |   |   | grp 1 |    | grp 1 |  |
+>>> +       |   +-------+    +-------+  |   |   +-------+    +-------+  |
+>>> +       +---------------------------+   +---------------------------+
+>>> +
+>>> +    properties:
+>>> +      qcom,wsi-group-id:
+>>> +        $ref: /schemas/types.yaml#/definitions/uint32
+>>> +        description:
+>>> +          It represents the identifier assigned to the WSI connection. All
+>>> +          the ath12k devices connected to same WSI connection have the
+>>> +          same wsi-group-id.
+>>
+>> That's not needed according to description. Entire group is defined by
+>> graph.
+>>
+> 
+> So this mean "qcom,wsi-group-id" to be dropped and we can assign the
+> group ID (in ath12k driver implementation) by using the graph?
 
-usage: iw <phy interface>
+Yes
 
-output:
-Wiphy phy00
-        wiphy index: 0
-        max # scan SSIDs: 16
-        max scan IEs length: 83 bytes
-        max # sched scan SSIDs: 0
-        max # match sets: 0
-        Retry short limit: 7
-        Retry long limit: 4
-        Coverage class: 0 (up to 0m)
-        Device supports AP-side u-APSD.
-        Available Antennas: TX 0xf RX 0xf
-        Configured Antennas: TX 0xf RX 0xf
-        Supported interface modes:
-                 * managed
-                 * AP
-                 * AP/VLAN
-                 * monitor
-                 * mesh point
-        Band 1:
-                Capabilities: 0x19ef
-                        RX LDPC
-                        HT20/HT40
-                        SM Power Save disabled
-                        RX HT20 SGI
-                        RX HT40 SGI
-                        TX STBC
-                        RX STBC 1-stream
-                        Max AMSDU length: 7935 bytes
-                        DSSS/CCK HT40
-				.
-				.
-				.
-				.
-				.
-				.
-				.
-				.
-				.
-              * [ BSS_COLOR ]: BSS coloring support
-                * [ RADAR_BACKGROUND ]: Radar background support
-                * [ STA_MGMT_RTS_CTS ]: station management RTS CTS support
-        MLD Capability: 0x44
-                Max Number of Simultaneous Links: 4
-
-        hw_idx 0 channel list:
-                1 2 3 4 5 6 7 8 9 10 11 12 13 14
-        hw_idx 1 channel list:
-                36 40 44 48 52 56 60 64 100 104 108 112 116 120 124 128 
-		132 136 140 144 149 153 157 161 165 169 173 177
-        hw_idx 2 channel list:
-                1 2 5 9 13 17 21 25 29 33 37 41 45 49 53 57 61 65 69 73
-                77 81 85 89 93 97 101 105 109 113 117 121 125 129 133 
-		137 141 145 149 153 157 161 165 169 173 177 181 185 189
-		193 197 201 205 209 213 217 221 225 229 233
-
-Signed-off-by: Mohan Raj <quic_mrajraje@quicinc.com>
----
- info.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
-
-diff --git a/info.c b/info.c
-index c5e863f..0d19d99 100644
---- a/info.c
-+++ b/info.c
-@@ -884,6 +884,31 @@ broken_combination:
- 	if (tb_msg[NL80211_ATTR_MAX_AP_ASSOC_STA])
- 		printf("\tMaximum associated stations in AP mode: %u\n",
- 		       nla_get_u32(tb_msg[NL80211_ATTR_MAX_AP_ASSOC_STA]));
-+	if (tb_msg[NL80211_ATTR_IFTYPE_EXT_CAPA]) {
-+		int rem_ext = 0;
-+		struct nlattr *tb1[NL80211_ATTR_MAX + 1];
-+		struct nlattr *ext_attr;
-+		__u8 max_simul_links;
-+		__u16 mld_cap;
-+
-+		nla_for_each_nested(ext_attr, tb_msg[NL80211_ATTR_IFTYPE_EXT_CAPA], rem_ext) {
-+			nla_parse(tb1, NL80211_ATTR_MAX, nla_data(ext_attr),
-+				 nla_len(ext_attr), NULL);
-+			if (tb1[NL80211_ATTR_EML_CAPABILITY] &&
-+			   tb1[NL80211_ATTR_MLD_CAPA_AND_OPS]) {
-+				mld_cap = nla_get_u16(tb1[NL80211_ATTR_MLD_CAPA_AND_OPS]);
-+
-+				if (mld_cap != 0) {
-+					printf("\tMLD Capability: 0x%x\n",
-+					      nla_get_u16(tb1[NL80211_ATTR_MLD_CAPA_AND_OPS]));
-+					max_simul_links = mld_cap & 0xf;
-+					printf("\t\tMax Number of Simultaneous Links: %d\n",
-+					      max_simul_links);
-+				}
-+			}
-+		}
-+	}
-+
- 
- 	return NL_SKIP;
- }
--- 
-2.34.1
+> 
+Best regards,
+Krzysztof
 
 
