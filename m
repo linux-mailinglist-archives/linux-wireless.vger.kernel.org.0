@@ -1,127 +1,111 @@
-Return-Path: <linux-wireless+bounces-14901-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14902-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB5259BC0CC
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Nov 2024 23:23:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 623B49BC447
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2024 05:18:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC9841C21C3A
-	for <lists+linux-wireless@lfdr.de>; Mon,  4 Nov 2024 22:23:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1492F1F21F7C
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2024 04:18:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 606F11FCC6B;
-	Mon,  4 Nov 2024 22:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F24716BE2A;
+	Tue,  5 Nov 2024 04:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gUThltp6"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Cnoj65eV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9543C1FCC69
-	for <linux-wireless@vger.kernel.org>; Mon,  4 Nov 2024 22:23:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79646376E0
+	for <linux-wireless@vger.kernel.org>; Tue,  5 Nov 2024 04:18:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730759008; cv=none; b=JRzmHXle0QHI8tRU/puqV5690Ozzgr/bsVwOvcsHlVa92MgrSVrrPbDQlTB3U1mzs42VFKokxFYXwWTsrJqlY1oQkQBUu6tiU21/TSlep36li5JpVxKg1U+b1UgEAlFwtJE7p79+fERDsz61ZRGeR/BiOUHXWQblQHBqSIgzl1Y=
+	t=1730780325; cv=none; b=clNANCDhnxH0XvV1pzsSSQghnyVwiDtgK4VbcdFY8V48jkKsA7qAUKAVZxCU4kxlvEwgnB1ugSZZooPIMsMNWXQhH9wTfyCIoVDrmBo/nNoxORJxXvsvxMBLFoB04LMsai3T8ajxFjYzp3jr55ve+57tl0FeS8493+s1ZKHc10c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730759008; c=relaxed/simple;
-	bh=5aZ4rN+V3tZIqwKEGyMkKz8Q872/oU+WDr8s/OyAhT8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tROAxBLpd9Dut+xMtAzaa0slr4U5pJUJNMmzVE2QuSdmpivNxuyt5O/JLEsQpuZshHI24Xp3T2JCIzVqX71WS84dpcR1p2fFIY0P8ocUxJH4XYqxZ5h4gvNNYoVaazOQcCB6T18CkgDlsx++EbM5NHRR1moznKR/PU+u14Uk52c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gUThltp6; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4315eac969aso29828625e9.1
-        for <linux-wireless@vger.kernel.org>; Mon, 04 Nov 2024 14:23:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1730759005; x=1731363805; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GHNu8odpsTM4XqBAMuGgYmLrbmeSY9TiYv7pcBRrj7w=;
-        b=gUThltp6e5rBNK7K8eUQFWkiyd2JO00/Xf2HakIdiyzwo+4NBKjKx4oPn69Y9XokyT
-         JkZO9qo6H8JeZA4ujWDYdeRrpt624b0rvEeJg85iadkhWbFznup7FJzBAzhmiNvqis+M
-         7G1GAuM9yQXWGy5gabhMLSLy79EqMg2lvwHU2WC+EYdRV7LZ7Us8v3p40WhMgojAqBBE
-         fypvd0gptpFLBo3fw0g9CEdAHUN8HA9pS8b1YScKbUEgoTAORHHvcdpR8ovgkE3d79Qt
-         oxf3RaJrO0/Nppzh3HQta8/gUwXDbPuO1FHweLRbdgF6M52wF8C20vBHMXdLbmp0IWqv
-         Ottg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730759005; x=1731363805;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GHNu8odpsTM4XqBAMuGgYmLrbmeSY9TiYv7pcBRrj7w=;
-        b=QYG8astSmAA6HqbcbfAoFtLTtlLhevAxKGbhDJ7+mCQtEM6jUHRRF44U41Txcy7glM
-         ckumSee9F0MUdhgzPt47qVYlZ3czJgXDzUMsxcvfH3b7EWffQLLanvRpW5Gkz66baBI9
-         5QT3enbxYwlnngReAlJFMQO1HGI8i5eu9wGsYp8YG78XTSHeXltCuCgckRE0oyrxBoiC
-         HEerId1sNkJ7pqyhGc8w4OfyEVGd+BASJzMFwPgpq9WodAryft6AQCTbw7Nbz6I/k+if
-         ERM1QlJFydbUGlD+RiazV3DhfSODwrFZYLUnfSxWMP2Il5H2wZVQ0fswPypt8wLsa09g
-         9yOg==
-X-Forwarded-Encrypted: i=1; AJvYcCX1PS0gnzx0Ehcqty+YMq9ZCSo6ZQGt9mhzK4smGVOnBC5OyJZhFaHmaXjdM64XPzLDKKTJ9s5aFlO9SgU9Zg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdtWjAdw2Vg/rQQAdknvqpqLq5yuMXvejAYfA6BpcgsMNSTyEv
-	HlV4bHb7Ovrxt2k+BHB9FcYB836Nt2NjT0jQrIPDnFyFwT4jEvmhNzIavAcoIG0=
-X-Google-Smtp-Source: AGHT+IEST4pFb7N6NqT24LHT0qD9HpQC+scjfouwyiscDUX7D18ufBHRphhTDbRNmFAOLCKZvA8/gg==
-X-Received: by 2002:a05:600c:354e:b0:431:4fbd:f571 with SMTP id 5b1f17b1804b1-4327dac6ab4mr141238035e9.13.1730759004756;
-        Mon, 04 Nov 2024 14:23:24 -0800 (PST)
-Received: from [192.168.0.40] ([176.61.106.227])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c10b7f80sm14343743f8f.20.2024.11.04.14.23.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 04 Nov 2024 14:23:24 -0800 (PST)
-Message-ID: <78405309-b28d-4a7f-8cca-5410a9c05cb1@linaro.org>
-Date: Mon, 4 Nov 2024 22:23:22 +0000
+	s=arc-20240116; t=1730780325; c=relaxed/simple;
+	bh=HemS6j1CcDIjI52HDF8mptggeEnrOP1UI5f//aY0Sh0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qaXyAAmi0YqJLM4Vxu+xa7mVe8Bn+LT4Fk1a+CrUXBf+ho25ed7sfNCzWLb4lMh6LuY1i7VzHnG0IO/n3mnaJIMQvJoqHvX9i8Tmzt8b8O7SNq1RaJYJ0N8lLCLXjYP6UABY7IWKaYCxQNVFb7cdM6+0tYEEQHQNsBU++mRXgNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Cnoj65eV; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A4LIjTo012122;
+	Tue, 5 Nov 2024 04:18:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=ycUlWrOY/pHCrQ2QjBmK29
+	HvigH7sdArj1aB3IQ58eI=; b=Cnoj65eV9d+V715Y4OtuBngvXOjyihTXOdIVp+
+	yeK3GIjkebiiP7q1mUG7tLCt6oDP6aZ8kjteJdcgl8KBts5IvyFsxScjsBWM7Tcl
+	xLKCmpZfx9/TtftmruQPZ7/Lo9wVJpwCyPT520HuYsDf+uY8+OW5O3dpy+dgtsR8
+	Bdey5idc0l8hoa+czUdeU1CtAAToMwgkxxJiTTmBWJaLdjaElve4tETdrQ22nSlb
+	oEbXjgnNkGEdEJ050WojzZWgv7wSedOrPAtqcW4Y2BokkJU9i1Ny2c5F3ucBLeEV
+	vO2OXPQTRanBOf7asIhqG1xE3YpyDjw7w5PKfCN2mMFQGTpw==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42nd11xa80-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 Nov 2024 04:18:38 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4A54IbbB014446
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 5 Nov 2024 04:18:37 GMT
+Received: from hu-rdevanat-blr.qualcomm.com (10.80.80.8) by
+ nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Mon, 4 Nov 2024 20:18:36 -0800
+From: Roopni Devanathan <quic_rdevanat@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Roopni Devanathan
+	<quic_rdevanat@quicinc.com>
+Subject: [PATCH v2 0/4] wifi: ath12k: Support Pager, Counter, SoC, Transmit Rate Stats
+Date: Tue, 5 Nov 2024 09:48:18 +0530
+Message-ID: <20241105041822.2039214-1-quic_rdevanat@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: wcn36xx: fix channel survey memory allocation size
-To: =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <barnabas.czeman@mainlining.org>,
- Loic Poulain <loic.poulain@linaro.org>, Kalle Valo <kvalo@kernel.org>
-Cc: Kalle Valo <quic_kvalo@quicinc.com>, wcn36xx@lists.infradead.org,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20241104-wcn36xx-memory-allocation-v1-1-5ec901cf37b6@mainlining.org>
-Content-Language: en-US
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <20241104-wcn36xx-memory-allocation-v1-1-5ec901cf37b6@mainlining.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: e9JDxh3Xby1uYNQvC-QXm57wKkXKSNsE
+X-Proofpoint-ORIG-GUID: e9JDxh3Xby1uYNQvC-QXm57wKkXKSNsE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=883
+ mlxscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0
+ priorityscore=1501 impostorscore=0 spamscore=0 bulkscore=0 suspectscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411050029
 
-On 04/11/2024 20:00, Barnabás Czémán wrote:
-> KASAN reported a memory allocation issue in wcn->chan_survey
-> due to incorrect size calculation.
-> This commit uses kcalloc to allocate memory for wcn->chan_survey,
-> ensuring proper initialization and preventing the use of uninitialized
-> values when there are no frames on the channel.
-> 
-> Fixes: 29696e0aa413 ("wcn36xx: Track SNR and RSSI for each RX frame")
-> Signed-off-by: Barnabás Czémán <barnabas.czeman@mainlining.org>
-> ---
->   drivers/net/wireless/ath/wcn36xx/main.c | 5 ++++-
->   1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
-> index 408776562a7e56da3017aa074396bcd241d62f8c..cd36cab6db75d300f4f6617a6a9e1550f62921c7 100644
-> --- a/drivers/net/wireless/ath/wcn36xx/main.c
-> +++ b/drivers/net/wireless/ath/wcn36xx/main.c
-> @@ -1590,7 +1590,10 @@ static int wcn36xx_probe(struct platform_device *pdev)
->   	}
->   
->   	n_channels = wcn_band_2ghz.n_channels + wcn_band_5ghz.n_channels;
-> -	wcn->chan_survey = devm_kmalloc(wcn->dev, n_channels, GFP_KERNEL);
-> +	wcn->chan_survey = devm_kcalloc(wcn->dev,
-> +					n_channels,
-> +					sizeof(struct wcn36xx_chan_survey),
-> +					GFP_KERNEL);
->   	if (!wcn->chan_survey) {
->   		ret = -ENOMEM;
->   		goto out_wq;
-> 
-> ---
-> base-commit: 1ffec08567f426a1c593e038cadc61bdc38cb467
-> change-id: 20241104-wcn36xx-memory-allocation-803e4e3de9a6
-> 
-> Best regards,
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Add support to request HTT stats type 36, 37, 38 and 40 from firmware.
+These stat types give downlink pager stats, counter and TPC stats, SoC
+common stats and Transmit PER rate stats, respectively.
+
+-v2:
+ - Removed dependencies. No change in code.
+
+Dinesh Karthikeyan (4):
+  wifi: ath12k: Support Downlink Pager Stats
+  wifi: ath12k: Support phy counter and TPC stats
+  wifi: ath12k: Support SoC Common Stats
+  wifi: ath12k: Support Transmit PER Rate Stats
+
+ .../wireless/ath/ath12k/debugfs_htt_stats.c   | 627 +++++++++++++++++-
+ .../wireless/ath/ath12k/debugfs_htt_stats.h   | 200 +++++-
+ 2 files changed, 824 insertions(+), 3 deletions(-)
+
+
+base-commit: e7e2957f403ba4655199f2ba9920c1a015a7be44
+-- 
+2.25.1
+
 
