@@ -1,111 +1,133 @@
-Return-Path: <linux-wireless+bounces-14920-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14921-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2691B9BCB1E
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2024 11:59:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 467AA9BCB50
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2024 12:10:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D25001F237FF
-	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2024 10:59:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B742EB211B6
+	for <lists+linux-wireless@lfdr.de>; Tue,  5 Nov 2024 11:10:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8CCC1D2F72;
-	Tue,  5 Nov 2024 10:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0026F1D279B;
+	Tue,  5 Nov 2024 11:10:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=triops.cz header.i=@triops.cz header.b="hhdUsOUe";
-	dkim=pass (2048-bit key) header.d=triops.cz header.i=@triops.cz header.b="hhdUsOUe"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="o5dssEIm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from h4.cmg1.smtp.forpsi.com (h4.cmg1.smtp.forpsi.com [185.129.138.163])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4C01D1500
-	for <linux-wireless@vger.kernel.org>; Tue,  5 Nov 2024 10:59:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.129.138.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF771D2716
+	for <linux-wireless@vger.kernel.org>; Tue,  5 Nov 2024 11:10:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730804374; cv=none; b=DJxeI23nX7EFqj+FD4ma5CbpTvA0owlAMk44daA8XfCV8F6cc+zb/K0Pcegok5MDmpf30NMQoByBySEkJfaaoet/uErLcybDm1pReknTpUksSuL7SwtIQOmB8pKZ28DKAM7IKt31yX0Z+pZPDPggS0vlFTPaphMSrHu1D4GZfDM=
+	t=1730805030; cv=none; b=VQTH1SeSEiih9j4vEW30rOXAYGV/uD12SwIZiuJ+1c0kuP8pBJXg7Yz07ynyiLS0Laum6dg2EI47oAlLNEfuh8yhRyYYafAP+p3FqaWNfwcnVLVb8AaghizkpRFTu2S96Y49yhRcmaiLF+FAD9nEu+Dbncir0hsuvKRrXIPBJJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730804374; c=relaxed/simple;
-	bh=46ouxS92JHhhp1/gpd2OtLeVjNUoT7qeGH2MWNkKMWg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ES8JNiYO4cYerce2KM2sXqQRd447Aejml84cgQ4cs2JvCwadRRq3BgD3mB7HX+nqWWSVgSyxJHQ209U2vAiCwJtybsEFDuMiuA37DwXVLPOkzFDTHT2P2WUmGTXk2LjI1ftEFV1raL9fNxFc+QQjUZtXNfkLZhbE3UwCUwNQ3DY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=triops.cz; spf=none smtp.mailfrom=triops.cz; dkim=pass (2048-bit key) header.d=triops.cz header.i=@triops.cz header.b=hhdUsOUe; dkim=pass (2048-bit key) header.d=triops.cz header.i=@triops.cz header.b=hhdUsOUe; arc=none smtp.client-ip=185.129.138.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=triops.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=triops.cz
-Received: from lenoch ([91.218.190.200])
-	by cmgsmtp with ESMTPSA
-	id 8HCUtJjLn5hDk8HCVtIKjb; Tue, 05 Nov 2024 11:54:20 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triops.cz; s=f2019;
-	t=1730804060; bh=YGCoasgVytO01V7dHEHB94nSK2uhOXBPPbFCWwq2mo8=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	b=hhdUsOUeZYGbNa2JHvuO5HGAMdBW2kJ3Bpjo0GQiaXlVQXCfT5FAj5P2iIKJ8eZOA
-	 deVv0nvL51Qwzgz7K32ICgeQnoDLWD7n1/G5daD9VvwJZt8EoXzn6bAJtGlCXyDRwW
-	 61gX1UK0dQ4j3I6AoBt7RKvvs+rK1NCEz2uBw7omhhsm5mTA4vVMqbB6Vn7Wiy4yoR
-	 08d9ziv03TKou0hK+5fQW5RAhrLMmDHArW+mOmTaKi4V2KM5xnCdmDTNwTYgZdXMV3
-	 b7ol+zNdyo3zC0+GIjIs+XlAnlcPs75bqWGMg1ipUKbfSrcbALSMeIRVfWArzkGyNX
-	 a7hhhDJugSMmw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triops.cz; s=f2019;
-	t=1730804060; bh=YGCoasgVytO01V7dHEHB94nSK2uhOXBPPbFCWwq2mo8=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	b=hhdUsOUeZYGbNa2JHvuO5HGAMdBW2kJ3Bpjo0GQiaXlVQXCfT5FAj5P2iIKJ8eZOA
-	 deVv0nvL51Qwzgz7K32ICgeQnoDLWD7n1/G5daD9VvwJZt8EoXzn6bAJtGlCXyDRwW
-	 61gX1UK0dQ4j3I6AoBt7RKvvs+rK1NCEz2uBw7omhhsm5mTA4vVMqbB6Vn7Wiy4yoR
-	 08d9ziv03TKou0hK+5fQW5RAhrLMmDHArW+mOmTaKi4V2KM5xnCdmDTNwTYgZdXMV3
-	 b7ol+zNdyo3zC0+GIjIs+XlAnlcPs75bqWGMg1ipUKbfSrcbALSMeIRVfWArzkGyNX
-	 a7hhhDJugSMmw==
-Date: Tue, 5 Nov 2024 11:54:17 +0100
-From: Ladislav Michl <oss-lists@triops.cz>
-To: Ping-Ke Shih <pkshih@realtek.com>
-Cc: johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
-	pbrobinson@gmail.com
-Subject: Re: [PATCH v2 2/2] wifi: rtw88: use ieee80211_purge_tx_queue() to
- purge TX skb
-Message-ID: <Zyn5WcUGoibH7-s8@lenoch>
-References: <20240822014255.10211-1-pkshih@realtek.com>
- <20240822014255.10211-2-pkshih@realtek.com>
+	s=arc-20240116; t=1730805030; c=relaxed/simple;
+	bh=Rk/L/b5a1SYIOXYwBXB3IfXyFIJZViPjAxbw2r+wGPk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=vCH8oUMyLeOKblYWRG/R38HYjdX+0xqU2U8EJgmcabAiGb2vPlPGIAaZxb0jKauemZV168ZE3CqdKl2zMKdndBBvVHyMZBYk17cJ79J3HNHupVGaRirSpTJ2hG0rzE0H06Qi0KE12fj4iyPnOr9L+CbpiUAupMib4A3dQ0pPZ6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=o5dssEIm; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 8b1a62469b6611efb88477ffae1fc7a5-20241105
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=RSz7cs1n97k6WaksJyKwqqco8iIMeAqTrUt8H55VRcs=;
+	b=o5dssEIm7AwhLtRfbuOaAGpvmaoE61E9OP3hPOxurHwxmJYD1uROrd+rbyP22nKILG/mhwzEAT5N/0Rb9Q2lghffm2fv5/cDEB3fIy7HSoY5KIRoVzJBEJ+KSFaE1riWAhedSzRjbAVacTt05trdF9Xnqr3lQd8Z2dGddN2GjEs=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.42,REQID:8c8b7fff-6044-4764-9b92-59c7cf672e83,IP:0,U
+	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-25
+X-CID-META: VersionHash:b0fcdc3,CLOUDID:903f9407-7990-429c-b1a0-768435f03014,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
+	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 8b1a62469b6611efb88477ffae1fc7a5-20241105
+Received: from mtkmbs10n2.mediatek.inc [(172.21.101.183)] by mailgw01.mediatek.com
+	(envelope-from <mingyen.hsieh@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 339990393; Tue, 05 Nov 2024 19:10:19 +0800
+Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Tue, 5 Nov 2024 19:10:18 +0800
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Tue, 5 Nov 2024 19:10:18 +0800
+From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
+	<Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
+	<Michael.Lo@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+	<km.lin@mediatek.com>, <robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>,
+	<posh.sun@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
+	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>, Michael Lo
+	<michael.lo@mediatek.corp-partner.google.com>, Ming Yen Hsieh
+	<mingyen.hsieh@mediatek.com>
+Subject: [PATCH] wifi: mt76: mt7925: config the dwell time by firmware
+Date: Tue, 5 Nov 2024 19:10:16 +0800
+Message-ID: <20241105111016.23564-1-mingyen.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.18.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240822014255.10211-2-pkshih@realtek.com>
-X-CMAE-Envelope: MS4xfPacqMSXX9/39ZfRZRqEyPsZkn678wL4Gz7izxtFpjPROAF6bU2qdXrV5Kv/F+58QDU5c2fGoMf8ohxU3jau9vaWEmVWlkRKF4hfm7TmJ0oKndpYu74u
- +Y8LzAu4LrM2Eq3tU08xkrGDuzXS4LTTOlC1XkRw1sCdsP+h9HHVV+dlaU4YFF6lO+Dda+WDoDyF6bAT9+yb88uqRy1ivm9d3F2CJ8to0BnwjPkRfUJYfghC
- eScBn2TkoTFEpxnmtW3P1u94v/gIfCqEk2GTZiv8UqUr97P6b/oFFp41SdRmRj07
+Content-Type: text/plain
 
-On Thu, Aug 22, 2024 at 09:42:55AM +0800, Ping-Ke Shih wrote:
-> When removing kernel modules by:
->    rmmod rtw88_8723cs rtw88_8703b rtw88_8723x rtw88_sdio rtw88_core
-> 
-> Driver uses skb_queue_purge() to purge TX skb, but not report tx status
-> causing "Have pending ack frames!" warning. Use ieee80211_purge_tx_queue()
-> to correct this.
-> 
-> Since ieee80211_purge_tx_queue() doesn't take locks, to prevent racing
-> between TX work and purge TX queue, flush and destroy TX work in advance.
+From: Michael Lo <michael.lo@mediatek.corp-partner.google.com>
 
-A the very same problem exists in 6.1 kernel series, where this patch
-becomes oneliner:
+To optimize the scan time of mt7925, remove the dwell time
+setting for the scan command and let it be controlled by
+the firmware as mt7921.
+
+Signed-off-by: Michael Lo <michael.lo@mediatek.corp-partner.google.com>
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 ---
- drivers/net/wireless/realtek/rtw88/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index 81f3112923f1..d7d4b0f05da9 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -2145,7 +2145,7 @@ void rtw_core_deinit(struct rtw_dev *rtwdev)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index 0c2a2337c313..4226baf3cfcb 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -2643,14 +2643,12 @@ int mt7925_mcu_set_dbdc(struct mt76_phy *phy)
+ 	return err;
+ }
  
- 	destroy_workqueue(rtwdev->tx_wq);
- 	spin_lock_irqsave(&rtwdev->tx_report.q_lock, flags);
--	skb_queue_purge(&rtwdev->tx_report.queue);
-+	ieee80211_purge_tx_queue(rtwdev->hw, &rtwdev->tx_report.queue);
- 	skb_queue_purge(&rtwdev->coex.queue);
- 	spin_unlock_irqrestore(&rtwdev->tx_report.q_lock, flags);
+-#define MT76_CONNAC_SCAN_CHANNEL_TIME		60
+-
+ int mt7925_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 		       struct ieee80211_scan_request *scan_req)
+ {
+ 	struct mt76_vif *mvif = (struct mt76_vif *)vif->drv_priv;
+ 	struct cfg80211_scan_request *sreq = &scan_req->req;
+-	int n_ssids = 0, err, i, duration;
++	int n_ssids = 0, err, i;
+ 	struct ieee80211_channel **scan_list = sreq->channels;
+ 	struct mt76_dev *mdev = phy->dev;
+ 	struct mt76_connac_mcu_scan_channel *chan;
+@@ -2686,14 +2684,6 @@ int mt7925_mcu_hw_scan(struct mt76_phy *phy, struct ieee80211_vif *vif,
+ 	req->scan_type = sreq->n_ssids ? 1 : 0;
+ 	req->probe_req_num = sreq->n_ssids ? 2 : 0;
  
+-	duration = MT76_CONNAC_SCAN_CHANNEL_TIME;
+-	/* increase channel time for passive scan */
+-	if (!sreq->n_ssids)
+-		duration *= 2;
+-	req->timeout_value = cpu_to_le16(sreq->n_channels * duration);
+-	req->channel_min_dwell_time = cpu_to_le16(duration);
+-	req->channel_dwell_time = cpu_to_le16(duration);
+-
+ 	tlv = mt76_connac_mcu_add_tlv(skb, UNI_SCAN_SSID, sizeof(*ssid));
+ 	ssid = (struct scan_ssid_tlv *)tlv;
+ 	for (i = 0; i < sreq->n_ssids; i++) {
 -- 
-2.39.5
+2.45.2
+
 
