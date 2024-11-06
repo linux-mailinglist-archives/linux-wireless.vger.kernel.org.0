@@ -1,181 +1,103 @@
-Return-Path: <linux-wireless+bounces-14990-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14991-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE9F19BEF9E
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 14:57:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 923629BEFDD
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 15:13:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1ECB71C246F1
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 13:57:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57FAE2833D8
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 14:13:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E801F9ABF;
-	Wed,  6 Nov 2024 13:57:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D1781F9ABD;
+	Wed,  6 Nov 2024 14:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lC3lZN2B"
+	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="ToWgAjQF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A58200CB4
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Nov 2024 13:57:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD2517DFF2
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Nov 2024 14:13:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730901435; cv=none; b=HcMUW06WjWiEFNhfaFbzx1mKY9+VsSUTqb7S6qkpRpUiuI8mQrHc4aU+ucgu1WluJqPKozxKRg2HV/RpWVZoAOI81kVJFLsFMCe1MEFtuYy5bbuFWJ2A8sLR1DXfG+T9KP9YltHX5gUpdAb1P+YmXUx2oji0sRHNANnD2a7Tgnw=
+	t=1730902389; cv=none; b=fYBXV0Rv3KdprOMuwLEeK7hBBwhpCZTDgLbhsnHJb3uEBE54qhF2ASvEczVyhGOAAaoHpoUXmm8qOe5DenWsW+t8YlkwMATEZQrmUXE2bbipumxqb7M2v9wmivgSk6Q6Mayo9hLmA3ztpYwbKehW8vlu3Akxx24rMp+m6FwNYKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730901435; c=relaxed/simple;
-	bh=yWMiTcE+5tywQnmXx6CBjZDWsrcSaLFF1O8Yqd8Q8zA=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Lw0HT7twk2Bj+P30ct+H31XlFjyUx9XzdvBw2tiFAy3QR3LpCXdABrKsvWxeoLs5U9krV0a7rlkcGQG8PBCxPB4UwG2ZlpFiYGwyS9sI0w5m0fIRqPI6rTiOzvap0mrFmtdKKWbQzQ257JCWIv/K9KG5qqkPFa2jMcV3TpbrE+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lC3lZN2B; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-53b13ea6b78so10552072e87.2
-        for <linux-wireless@vger.kernel.org>; Wed, 06 Nov 2024 05:57:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730901432; x=1731506232; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=lgksvteD+clw/Xy/GePAMIB/HqDwUTYZPzpjg4HGS1s=;
-        b=lC3lZN2B6Hwlwhq6RbNNKCjYPngWdpi2Lpl/joUwgqGjcskvjYa7a7+f5y37IZdcb+
-         kSHcYxxtz1cFr0KqFEHP6x+J17hlZoqWOVzraIflJiKC5K/kY9dyL1o2hfbbn5c9Kal0
-         1ARX+mtyApSrc+akRvZfhV23DW5NFteAYg6rQChVr4tL/hJrXEPKvknmLaLfIAhIK2rN
-         H9k2EwW9KLT1g0UGuK84v3cgiBPp7t57GdlxOsKUdbotxSvLjmW4O8cu4a++spJfe2Gv
-         isvf8YTF1Xeq8Q12q2oVASvzocoKGfLVwqDrax/bdIHoNJHBBakCSsbE524Pphz8P/LE
-         v0pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730901432; x=1731506232;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lgksvteD+clw/Xy/GePAMIB/HqDwUTYZPzpjg4HGS1s=;
-        b=pflxekLOY3wr+Q8kHWqlI1c2xYGmkzvMIhuMEe61VG1quYfjYlS5b692xueg2mw+st
-         0cgSZC1qerwyhQLBw0rL1MKwDG+JHA/TPsdXtQXuatuU1TimoAsNcOcMYHog67KqLVYs
-         uV0p4Cqg221GDPN0fGHK2aCKc7s9dem1mx+m8WUZrrUjfwEw8gLQTQJ/3j0U8OTEkmDL
-         TWxdgKnXs5zN6ieWZcSA+ZDUgB8U8fHIKQ3IteMqEUYM24V/KOi99XaQLpEUIYRSDBfh
-         2lgW4w6OGzwTIKMEvM3g3G758wE6P9qqUFqctxznN7+AD/MGXj/t1Y415qS56S6LJpSz
-         udEQ==
-X-Gm-Message-State: AOJu0YxxmDhrE0CZA+y57N8b6mPcFP1YWSsGGXallOW9TZLuNHitq4HR
-	NZ5zj+mSL9iakmCsv+hMojDLZBVWjzIf18vQBC4gex8PO6H2jJsX0Ez/KQ==
-X-Google-Smtp-Source: AGHT+IEVjKfe4DxUA5FPIyTlbQbh/P2tqJWtC4s2RslgHtlvaB6I12w4CvGT1GTlLWE29h90kPceWg==
-X-Received: by 2002:a05:6512:3043:b0:52c:9ae0:beed with SMTP id 2adb3069b0e04-53d65e1688cmr14733877e87.52.1730901431494;
-        Wed, 06 Nov 2024 05:57:11 -0800 (PST)
-Received: from [192.168.0.50] ([79.113.150.231])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9eb1813368sm285516566b.180.2024.11.06.05.57.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Nov 2024 05:57:11 -0800 (PST)
-Message-ID: <31b7ee6b-f96d-43e0-a32f-a9eb1174a0c1@gmail.com>
-Date: Wed, 6 Nov 2024 15:57:10 +0200
+	s=arc-20240116; t=1730902389; c=relaxed/simple;
+	bh=XgmpvKM/3tN/k7Piv+U060GJx68qRrXsEJqtXLy7//I=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=lHt+Sa9WgIrE+GhIK1ndsT4e8GIvFWcGCUdIMEGX4CR57cmfI1OSkpgjvoxpszuR6DK/USyco19LgK5NYlmXzRdNlorVwb5GMEHUotpt8jZE6BtR7JIpgkRmxKZtFMSPWoKvbOgCK85l6avi5AeFw82OGDskSW24GVaZGKjPx3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=ToWgAjQF; arc=none smtp.client-ip=45.145.95.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
+From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
+	t=1730902380; bh=XgmpvKM/3tN/k7Piv+U060GJx68qRrXsEJqtXLy7//I=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=ToWgAjQFS+F51ltRgpTXgc1vp+WgbOTKMBoj7BTfQU3VbEaF7HJX4Tv845PVFC8w4
+	 LfA15jWb06pNcdcFJl/rOpijnUATcK0gI6zKW4GyV75WuzkNstsM3dD8ZlpPk5pjEV
+	 mM0qzITXQHmyyJjkWRqzbOKX4xGJtmnWQTP0OZuSDdZyJ/nf78KqMbMYapFLCs0vXm
+	 Po3sNSPE597HlHawqmzHVEaj1gt3o+olVetVFXR+ayI4SfBYf9ntU74l6TtSHdblLg
+	 MbExuSzUR3wagb51uxF9k5tGItbwQb9EZpx+kK+oedZRvzZKKxgxemoDtl2FjmEfIK
+	 OUY65zxRXm8sA==
+To: Sven Eckelmann <se@simonwunderlich.de>, Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, Simon Wunderlich
+ <sw@simonwunderlich.de>, Felix Fietkau <nbd@nbd.name>,
+ ih@simonwunderlich.de
+Subject: Re: [PATCH] ath9k: Add RX inactivity detection and reset chip when
+ it occurs
+In-Reply-To: <3288096.AJdgDx1Vlc@ripper>
+References: <20241106-ath9k-deaf-detection-v1-1-736a150d2425@redhat.com>
+ <3288096.AJdgDx1Vlc@ripper>
+Date: Wed, 06 Nov 2024 15:12:59 +0100
+X-Clacks-Overhead: GNU Terry Pratchett
+Message-ID: <87msic78no.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH 2/2] wifi: rtw88: 8812au: Add more device IDs
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>
-References: <da05b866-a9ff-428c-a008-35e8cf200a98@gmail.com>
-Content-Language: en-US
-In-Reply-To: <da05b866-a9ff-428c-a008-35e8cf200a98@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Nick Morrow <usbwifi2024@gmail.com>
+Sven Eckelmann <se@simonwunderlich.de> writes:
 
-From https://github.com/morrownr/8812au-20210820.
+> Hi,
+>
+> Thank you for submitting the patch.
+>
+> On Wednesday, 6 November 2024 13:41:44 CET Toke H=C3=B8iland-J=C3=B8rgens=
+en wrote:
+>> Since this is based on ideas by all three people, but not actually
+>> directly derived from any of the patches, I'm including Suggested-by
+>> tags from Simon, Sven and Felix below, which should hopefully serve as
+>> proper credit.
+>
+> At least for me, this is more than enough. Thanks.
+>
+> I don't have the setup at the moment to test it again - maybe Issam can d=
+o=20
+> this. One concern I would have (because I don't find the notes regarding =
+this=20
+> problem), is whether this check is now breaking because we count more thi=
+ngs.=20
+> In the past, rxlp/rxok was used for the check. And now I don't know wheth=
+er=20
+> the count for the other ones were still increasing.
+>
+> * RXHP (rather sure that "high priority frame" wasn't increasing)
+> * RXEOL ("no RX descriptors available" - I would guess no, but I can't sa=
+y for
+>   sure)
+> * RXORN ("FIFO overrun" I would guess no, but I can't say for sure)
+>
+> Reviewed-by: Sven Eckelmann <se@simonwunderlich.de>
 
-Signed-off-by: Nick Morrow <usbwifi2024@gmail.com>
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
----
- .../net/wireless/realtek/rtw88/rtw8812au.c    | 68 ++++++++++++++++++-
- 1 file changed, 67 insertions(+), 1 deletion(-)
+Great, thanks for the review! I'll let it sit in patchwork for a little
+while to give people a chance to test it out before sending it over to
+Kalle to be applied :)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8812au.c b/drivers/net/wireless/realtek/rtw88/rtw8812au.c
-index 4da69590a423..e18995f4cc78 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8812au.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8812au.c
-@@ -9,8 +9,74 @@
- #include "usb.h"
- 
- static const struct usb_device_id rtw_8812au_id_table[] = {
--	{ USB_DEVICE_AND_INTERFACE_INFO(0x2604, 0x0012, 0xff, 0xff, 0xff),
-+	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0x8812, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0x881a, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0x881b, 0xff, 0xff, 0xff),
- 	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(RTW_USB_VENDOR_ID_REALTEK, 0x881c, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x0409, 0x0408, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* NEC */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x0411, 0x025d, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* Buffalo */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x04bb, 0x0952, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* I-O DATA */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x050d, 0x1106, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* Belkin */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x050d, 0x1109, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* Belkin */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x0586, 0x3426, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* ZyXEL */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x0789, 0x016e, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* Logitec */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x07b8, 0x8812, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* Abocom */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9051, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* Netgear */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x0b05, 0x17d2, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* ASUS */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x0df6, 0x0074, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* Sitecom */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x0e66, 0x0022, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* Hawking */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x1058, 0x0632, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* WD */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x13b1, 0x003f, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* Linksys */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x148f, 0x9097, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* Amped Wireless */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x1740, 0x0100, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* EnGenius */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x330e, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* D-Link */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x3313, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* D-Link */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x3315, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* D-Link */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x3316, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* D-Link */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2019, 0xab30, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* Planex */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x20f4, 0x805b, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* TRENDnet */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2357, 0x0101, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* TP-Link */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2357, 0x0103, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* TP-Link */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2357, 0x010d, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* TP-Link */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2357, 0x010e, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* TP-Link */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2357, 0x010f, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* TP-Link */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2357, 0x0122, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* TP-Link */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x2604, 0x0012, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* Tenda */
-+	{ USB_DEVICE_AND_INTERFACE_INFO(0x7392, 0xa822, 0xff, 0xff, 0xff),
-+	  .driver_info = (kernel_ulong_t)&(rtw8812a_hw_spec) }, /* Edimax */
- 	{},
- };
- MODULE_DEVICE_TABLE(usb, rtw_8812au_id_table);
--- 
-2.47.0
-
+-Toke
 
