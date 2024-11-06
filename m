@@ -1,43 +1,43 @@
-Return-Path: <linux-wireless+bounces-14984-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14980-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E0809BEC2A
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 14:03:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBCEC9BEB1B
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 13:56:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC8BEB24A31
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 13:03:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC28C282028
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 12:56:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65A821FAF09;
-	Wed,  6 Nov 2024 12:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7892F1E22E2;
+	Wed,  6 Nov 2024 12:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WDy5ji7P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVW/1HeC"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2A51FB3C5;
-	Wed,  6 Nov 2024 12:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D00F1E0491;
+	Wed,  6 Nov 2024 12:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730897563; cv=none; b=hNzdtWHi7Uqy7HDeu8DFjr1seege8p+YzFuAwhSLV0bw9QCJB+H7N94Ed0HJb7cMOS1H4F/ledufbERQklDs/Hu85GqSxEdeoMx29WnF5OD4138HBfb/sSG57x48S92cHpcMJbhh+fsRJNL/M2Y/VFUmevv7+B4JoLjpKKlYCz4=
+	t=1730896848; cv=none; b=Ns1aCgPF7lNHjqeZsUyyQbr3ZehfS3x+H6TlEFfkd7hpiVhJalazcS6EoPmt7D51Lfqhcz51y9UHWdusdJo5yJNiDaYYYi+jIFBrO+RJAuW3EiXJ0ma0dtoNXZb5GXWhZ3dVdkyHtlFX1RT7oqhxp2Oon4uydFyHCLlVRp+vKSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730897563; c=relaxed/simple;
-	bh=2M2I++DUSdEn1sGEWVFtsJyB/I35YML1tyUWBNfgQ18=;
+	s=arc-20240116; t=1730896848; c=relaxed/simple;
+	bh=24QHYSz9XQnAGOtnakh6oCNnK+AcTt/1YJZtqL+VBZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lXIxfJmbApw3tR9b3a37nuQWB5YLpD4oalWSHcI/XDZTOdHYfKrtlKfN5ZcwMzc2FCXX4ZZQqhZjSKL4dMGmdU8B5MTu9wfO8LvXfJ6dSwjy8gxbh0HAPfRxVMwUOEA2fl/TqP9OYL+GM/q/FugU38v8gg9WvYHTzVI3HvO4sek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WDy5ji7P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 697F1C4CECD;
-	Wed,  6 Nov 2024 12:52:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fNyzeilt1sC9RQP8B6LUIWHISlpTYSn/Ln1vZCd0hUx54IF4vTA5w6FqOfOWfSaxahZc8mviJUllxrghOCIC+BzBaIs9lGbVQDOgCKKvmVpkCLMOKFthCXoNDMJw5fD+vhePVCSHVF/dxZmA3tpYj1zN4ruebLkwRjeNE6l6a9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVW/1HeC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89AFFC4CECD;
+	Wed,  6 Nov 2024 12:40:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1730897562;
-	bh=2M2I++DUSdEn1sGEWVFtsJyB/I35YML1tyUWBNfgQ18=;
+	s=korg; t=1730896847;
+	bh=24QHYSz9XQnAGOtnakh6oCNnK+AcTt/1YJZtqL+VBZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WDy5ji7Py4CZxrkqwCTLq53RHDfUYRJqTt5+MFLWW/U4yisEVyHDGsSiTmp1PHeoT
-	 8RYrGdFDLUD51YhsuapGMlUS7YyY3YnKoUv34YKjXVO5bGOLDwklGA2Vy5zkZLsfl1
-	 fV3+FuwklLBC+u+b1ZoBBahA4sv9EYpl3PHAM/WE=
+	b=gVW/1HeCXE0TCRrEUXLQrzoi3pO4G/6++7BPF/d69o4CMlrb2N8xTQh0jk6G0u9UI
+	 2jv2MqE7luUodsBgtBLFKq2FwIamkJoU+zb8VuKOemmZyj43Q0aZ8liUbpD5ezigcI
+	 FGzgKM92n8vlxNiivnaGWIFzIu5ItaMj6DovYl3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Kalle Valo <kvalo@kernel.org>,
 	linux-wireless@vger.kernel.org,
 	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>
-Subject: [PATCH 6.6 095/151] wifi: iwlegacy: Clear stale interrupts before resuming device
-Date: Wed,  6 Nov 2024 13:04:43 +0100
-Message-ID: <20241106120311.488852278@linuxfoundation.org>
+Subject: [PATCH 5.10 092/110] wifi: iwlegacy: Clear stale interrupts before resuming device
+Date: Wed,  6 Nov 2024 13:04:58 +0100
+Message-ID: <20241106120305.727160133@linuxfoundation.org>
 X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241106120308.841299741@linuxfoundation.org>
-References: <20241106120308.841299741@linuxfoundation.org>
+In-Reply-To: <20241106120303.135636370@linuxfoundation.org>
+References: <20241106120303.135636370@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -225,7 +225,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/net/wireless/intel/iwlegacy/common.c
 +++ b/drivers/net/wireless/intel/iwlegacy/common.c
-@@ -4972,6 +4972,8 @@ il_pci_resume(struct device *device)
+@@ -4963,6 +4963,8 @@ il_pci_resume(struct device *device)
  	 */
  	pci_write_config_byte(pdev, PCI_CFG_RETRY_TIMEOUT, 0x00);
  
