@@ -1,82 +1,145 @@
-Return-Path: <linux-wireless+bounces-14970-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14971-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B70AC9BE37A
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 11:05:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5183B9BE38A
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 11:06:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EA1B285E7D
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 10:05:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 015F81F21C92
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 10:06:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1B91DB36B;
-	Wed,  6 Nov 2024 10:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC76E1DD0E1;
+	Wed,  6 Nov 2024 10:06:01 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053151D359E
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Nov 2024 10:05:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE1E1DD0C9
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Nov 2024 10:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730887551; cv=none; b=azyi2pdYNuBdwg737P1sI0kGKyVcWKc/LH+4tlQF3fZg16Wc2fATXJ+Kc1YWmgP4r1PnQTq+utogwo+uIK96d6EfjzPZ+gUUdnaWbWfQnSnhZBqInKCcXlTUs5sNW9hre8d4Eo0arja/d0OqpvpMcCsk8EVkpt7P2RpvP2Br41o=
+	t=1730887561; cv=none; b=txPyvBXG74PW+agp4K8P0/e3rUlHjKnXrsqR+5hIl0iGUGtWtBrpzumCGfHtgI1Vy318VlpgOnRR8uxxPGVT46ztIHLsyAcBkeluZmt27X9oKmDK8IOtPobLwKzEV0p8aBS39ryvKgy4dE1wN6WQP6nim3ft4PQkhwbt3DobGK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730887551; c=relaxed/simple;
-	bh=TLTWLHmo++V8W770IMkakLxtca+XMNZElS3p8QFm9Ak=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uFluMwKIZFn8f78Z7Grt/3gAIqEnZkjwnY/RQlZBplKFeW0rjOz6rGSnrb55HH1+Adz0FFt0sWGVb2nfEaflPChVJD78Uougj//xg+kdMTUZ2UwJkod/upDbkjEC+H5Bk06+qpqThp4MQFhOEFy9iurtLMgqYgzlJWzoHTydpXQ=
+	s=arc-20240116; t=1730887561; c=relaxed/simple;
+	bh=IxdoOAb5WQ9naKf5vugHcySsg869Zl/VjRdb63NSN7o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GJnzJJETVFPfH3BmuaYOyXH04+PoF6PizQVPKkH2AUb4uDLPlI3400+xJHgj+6kOrsqQT1YlI+lqnvqNwiifoLp7B7TOKmECVQZ1uWTT19frLw+Ja6FKoXvnpUnCMLo0c7auZsOpftKu86xffZAxQ4qN6AyKH87rXP5dzuYIoXk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
-Received: from [IPV6:2003:c5:970b:9290::32b] (p200300c5970B9290000000000000032b.dip0.t-ipconnect.de [IPv6:2003:c5:970b:9290::32b])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+Received: from ripper.localnet (p200300c5970b92e00000000000000c00.dip0.t-ipconnect.de [IPv6:2003:c5:970b:92e0::c00])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 92041FA132;
-	Wed,  6 Nov 2024 11:05:46 +0100 (CET)
-Message-ID: <cf2bd918-f03c-4810-985a-b72635797f0a@simonwunderlich.de>
-Date: Wed, 6 Nov 2024 11:05:46 +0100
+	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 7D196FA132;
+	Wed,  6 Nov 2024 11:05:57 +0100 (CET)
+From: Sven Eckelmann <se@simonwunderlich.de>
+To: ih@simonwunderlich.de, Issam Hamdi <ih@simonwunderlich.de>,
+ sw@simonwunderlich.de
+Cc: johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
+ mathias.kretschmer@fit.fraunhofer.de
+Subject: Re: [PATCH v2 2/2] wifi: ath9k: Reset chip on potential deaf state
+Date: Wed, 06 Nov 2024 11:05:57 +0100
+Message-ID: <865447434.0ifERbkFSE@ripper>
+In-Reply-To: <20241106090439.3487958-2-ih@simonwunderlich.de>
+References:
+ <20241104171627.3789199-1-ih@simonwunderlich.de>
+ <20241106090439.3487958-1-ih@simonwunderlich.de>
+ <20241106090439.3487958-2-ih@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] wifi: ath9k: Reset chip on potential deaf state
-Content-Language: en-US
-To: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>,
- Simon Wunderlich <sw@simonwunderlich.de>, johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org, mathias.kretschmer@fit.fraunhofer.de,
- Simon Wunderlich <simon.wunderlich@open-mesh.com>,
- Sven Eckelmann <se@simonwunderlich.de>
-References: <20241104171627.3789199-1-ih@simonwunderlich.de>
- <20241104171627.3789199-2-ih@simonwunderlich.de> <87h68l96l4.fsf@toke.dk>
- <6688984.G0QQBjFxQf@prime> <874j4l90nj.fsf@toke.dk>
-From: Hamdi Issam <ih@simonwunderlich.de>
-In-Reply-To: <874j4l90nj.fsf@toke.dk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-On 11/5/24 16:10, Toke Høiland-Jørgensen wrote:
-> Right, okay. I guess that is also why you prefer this one to Felix'
-> similar patch that was also linked from that gluon issue[0]?
->
-> However, I still don't like tying this to the debugfs: if this is
-> something that the driver needs to react to, it should not depend on
-> debug features. Even if OpenWrt and derivatives always compile-in the
-> debugfs, not everyone does, as we discovered back when we accidentally
-> broke the driver when it wasn't there :)
->
-> So how about something like the patch below - it keeps the "average per
-> time interval" behaviour, but uses the same approach as Felix' patch to
-> avoid relying on debugfs. WDYT?
-Yes, you are right, I will update the patch to not depend on debugfs.
+On Wednesday, 6 November 2024 10:04:39 CET Issam Hamdi wrote:
+[...]
+> This patch originally developed by "Simon Wunderlich <simon.wunderlich@open-mesh.com>"
+> and "Sven Eckelmann <sven.eckelmann@open-mesh.com>"
 
-Regards,
+Am I the only person which finds this style of adding information about "Co-
+authors" weird?
 
-Issam
+[...]
+> Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+> Signed-off-by: Sven Eckelmann <se@simonwunderlich.de>
+> Signed-off-by: Issam Hamdi <ih@simonwunderlich.de>
+> ---
+> v2: change the "Co-developed-by" to "Signed-off-by", remove the dependency
+
+I think Kalle meant that "Co-developed-by" should be followed by a 
+"Signed-off-by" - not that "Co-developed-by" should be removed.
+
+I was not part of the delivery path for this version of the patch. But
+current Signed-off-by seem to suggest this.
+
+> on CONFIG_ATH9K_DEBUGFS and add more information in the commit description
+
+And please don't reply to the old thread when sending a new patchset - this 
+becomes really unreadable after a while. You can simply use the method which 
+b4 uses and just reference the old thread in your mail. Something like:
+
+Changes in v2:
+- change the "Co-developed-by" to "Signed-off-by"
+- remove the dependency on CONFIG_ATH9K_DEBUGFS
+- add more information in the commit description
+- Link to v1: https://lore.kernel.org/r/20241104171627.3789199-1-ih@simonwunderlich.de
+
+[...]
+> +static bool ath_hw_hang_deaf(struct ath_softc *sc)
+> +{
+> +#ifdef CONFIG_ATH9K_TX99
+> +	return false;
+> +#else
+> +	struct ath_common *common = ath9k_hw_common(sc->sc_ah);
+> +	u32 interrupts, interrupt_per_s;
+> +	unsigned int interval;
+> +
+> +	/* get historic data */
+> +	interval = jiffies_to_msecs(jiffies - sc->last_check_time);
+> +	if (sc->sc_ah->caps.hw_caps & ATH9K_HW_CAP_EDMA)
+> +		interrupts = sc->debug.stats.istats.rxlp;
+> +	else
+> +		interrupts = sc->debug.stats.istats.rxok;
+
+You can't simply access sc->debug.stats.istats. sc->debug is only available 
+when building with CONFIG_ATH9K_DEBUGFS. See ath9k.c
+
+struct ath_softc {
+[...]
+#ifdef CONFIG_ATH9K_DEBUGFS
+	struct ath9k_debug debug;
+#endif
+[...]
+}
+
+> +       /* sanity check, should be 4 seconds */
+> +       if (interval > 10000 || interval < 1000)
+
+Here you have hardcoded values but the actual interval is hidden behind 
+ATH_HANG_WORK_INTERVAL. Two things which now are rather disconnected and might 
+cause problems in the future (when somebody fiddles around with 
+ATH_HANG_WORK_INTERVAL).
+
+Overall, the proposal from Toke seems to be a lot better integrated in the HW 
+check style which was introduced by Felix in the beginning of 2017 [1].
+
+At the same time there was a proposal by Felix [2] - which diverged too much 
+from our original patch (and as a result caused too many resets) [3]. I would 
+therefore propose to check Toke's version and test handles the problem 
+correctly.
+
+Kind regards,
+	Sven
+
+[1] https://github.com/openwrt/openwrt/commit/b94177e10fc72f9309eae7459c3570e5c080e960
+[2] https://patchwork.kernel.org/project/linux-wireless/patch/20170125163654.66431-3-nbd@nbd.name/
+[3] https://lore.kernel.org/all/2081606.z26xgMiW1A@prime/
 
 
 
