@@ -1,134 +1,114 @@
-Return-Path: <linux-wireless+bounces-15014-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15015-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 229B19BF66F
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 20:28:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAE789BF675
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 20:29:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99407B20DDC
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 19:28:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7222D1F23396
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 19:29:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875F620968D;
-	Wed,  6 Nov 2024 19:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9F7209691;
+	Wed,  6 Nov 2024 19:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=alfmarius.net header.i=@alfmarius.net header.b="I8jIXwmS";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="H/d9Bv8s"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QzGAa+uz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2F920967F
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Nov 2024 19:28:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98201209F38;
+	Wed,  6 Nov 2024 19:29:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730921284; cv=none; b=ut6XXJNY4tyipfS3Z3lP8jLgrv3RXDppPFpIAbR9ZZOAnxYk9fRD4VgLtKnCMt+bZGRTbabqkIz2Mibcr5VNUiLXY23AgLWu77KzGPBbj8yMxpZLYVbPxTEiwLWRSKgbUG52/BGbHKrm55oi1EZqAeF8pI6Zzi+S0BqSJOchAQs=
+	t=1730921356; cv=none; b=CRkD1UD1ssQzOt6kKE7Q6nahRBr41Z0vn9l20Slp6oILslIcJIt3P8e4DuiSJqSbK5EkhcTjvIjCDQTuh3n02COWTNLRGDm5jMaWF1xAjvGAKLO5708ltpGtyezEDSrxTnbzwyyZy39IInYauIlHexpmyWHMcoj/GRJc5tgBtgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730921284; c=relaxed/simple;
-	bh=tlM/sZHStcrCKHsoFfOWzATgeMBo+hmNY87ZzsaLpJk=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=JI5Imp2ulHhwJsefhUpLMYfZp7XvPQJp1jnZCwfEp70ToJKCwmTvkegj6/zLXdpWBRGrDCI9zfKsFWBDsCozYLqS1390AmJ7PJdFENqGjhx4a7Ti7M+a6XrnZ0B3EbSUJ5Bj6kCL8JLZbXU1wohWOYO09NDhnYaVZ52b641SUs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alfmarius.net; spf=pass smtp.mailfrom=alfmarius.net; dkim=pass (2048-bit key) header.d=alfmarius.net header.i=@alfmarius.net header.b=I8jIXwmS; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=H/d9Bv8s; arc=none smtp.client-ip=202.12.124.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alfmarius.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alfmarius.net
-Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 8B4BE254019A;
-	Wed,  6 Nov 2024 14:28:01 -0500 (EST)
-Received: from phl-imap-08 ([10.202.2.84])
-  by phl-compute-03.internal (MEProxy); Wed, 06 Nov 2024 14:28:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alfmarius.net;
-	 h=cc:cc:content-transfer-encoding:content-type:content-type
-	:date:date:from:from:in-reply-to:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=fm3;
-	 t=1730921281; x=1731007681; bh=BaEaFKaTnG703b9BvW3lVoDkejMPTTOS
-	KfcihRJehvY=; b=I8jIXwmST4yh5uc1VzhfbX5ScuZooT75pgazQ2nZ1CQ01lng
-	7FIoqt9aHJN9A9ym9CTHJhhEK5lchSFC7IAn23R7RzV3ZHBIhL6WYmM9CowVyBhv
-	OsyAOquSydHrZGrAIj09MzYzcOrGOTnUGMWCRhr7J3115TJuZ7e/EeQJnWf4FcK0
-	UKl9YTYkK03WHyvr401Fs3cmTf6l1zQY5jpXuBuoJiyVG6JbTsZAuxyA5GgjWFB6
-	9ugmhoV21mBepDd2uMDf13ZBW961aTuCbgUzJatckLtlEU9vJz7RPYM9SDzoBxgM
-	VR1Hsirmsir9+cuQx6Vrg5iMNTbsX0zfER5Q2g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1730921281; x=
-	1731007681; bh=BaEaFKaTnG703b9BvW3lVoDkejMPTTOSKfcihRJehvY=; b=H
-	/d9Bv8skKtcyi4DpqIUTzDqJ1A3HnFxid6My2EDjBoBQAc32oLwsGgXwQ1cqN7NA
-	7erHq+JVLfa99xrdeNtrsHKnAQBqbND4ZUdA9KHOWzrKaM48PDNBJtkeE76acntE
-	hCOuBPqf/+OJh8fqGrsjczklCqD4jwPqaDKt9nWw42AX4yf/PLGsxGuhkigVmDEk
-	bMwHa6k+wEBoTU31YUA2HCvNCYP/rganO+74R5ZUX8cB3FYZ/NT7pyS4Ieg+AqsQ
-	HfcGEzPd2ryKadgBmOTsgIFHo/Tx7ucRQGkwZhMnzGG7KjrOtCPJk8mT1wGpoPXc
-	Ie4xihFt6LwMmGBbN/9Vg==
-X-ME-Sender: <xms:QcMrZxgOleHOuu3Df8xUa9fL6gsiRM1i5UunMsmSDRnNKVmWsoLKrw>
-    <xme:QcMrZ2CsNg3LMooFydswJQCgBTuEKTx4RV9hc_uxk-LGEQPMEOXZdI5SK-9vU8h-B
-    p9bqwHXS3pJfg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrtddvgdduvdefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
-    necuhfhrohhmpedftehlfhcuofgrrhhiuhhsfdcuoehpohhsthesrghlfhhmrghrihhush
-    drnhgvtheqnecuggftrfgrthhtvghrnhepudehhfetgeejkeejhfehvdfftdehgfduteeg
-    hefgffehteeggfetffelvdejfffhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepphhoshhtsegrlhhfmhgrrhhiuhhsrdhnvghtpdhnsggprhgt
-    phhtthhopeegpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegsrghthihivghvse
-    hgmhgrihhlrdgtohhmpdhrtghpthhtohepkhhvrghloheskhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtoheprhgvghhrvghsshhiohhnsheslhhishhtshdrlhhinhhugidruggvvhdprh
-    gtphhtthhopehlihhnuhigqdifihhrvghlvghsshesvhhgvghrrdhkvghrnhgvlhdrohhr
-    gh
-X-ME-Proxy: <xmx:QcMrZxH9Bd8QWgy4QEHsZuoSTPjcnG0vczHLzs2QR7ztlV1c_j7_LQ>
-    <xmx:QcMrZ2RyeaWoJ-Rqz23OJLWC1Sco_hBUQ2AieJxac4ZQSzGhmqYNVQ>
-    <xmx:QcMrZ-xQ7_mby2zfYe63c5HVMyQoQ8VlLq1ye3618Vv6cfxrWPNWuw>
-    <xmx:QcMrZ84YEDAuQdWkHm90yDFTJJbG40FiAkh1I_27iRdHSP_3W6s8aA>
-    <xmx:QcMrZy-K6Z6gaPnmU8yJc_OBWPKYTRGZELaPfMSf9tQjX0n9eEGOB0Bc>
-Feedback-ID: ib5844192:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 25D4C18A0068; Wed,  6 Nov 2024 14:28:01 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1730921356; c=relaxed/simple;
+	bh=wRXdvUkid6+WJT7OHlkdaJG33tESqCLQbCEaOYmhIeI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=KRiIJ5lhcMnocFHIGJw5B3sw/NZymzgoYVWui2oi0Us9rNlwg8bfAPVGpxpS2mYD7LFrf/AtpoqaNDncHjzVJGDjAo98GR3H9MelW+nJ2mIxoBum6v5LMDqC74oUPjwE+z6X0YWZ73JNxGhFCK0yTXluZkhHBPd/7MvEmXdGYUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QzGAa+uz; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A69LUOt003865;
+	Wed, 6 Nov 2024 19:29:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	OQCQQkC9LSn1cPdQAofsX2DCjllx1SA7Oub3ZxyLGn8=; b=QzGAa+uzBDgUn4qY
+	orflcgR3tR5btQxEY+xvMh8MCSZUTU2l9w/IKBmTdx9HX7DnrVl8pZspg7TfnoK3
+	QAKKsH+vulmcgTFVHLYR88LgBw+z3iX2U9vRHLc8kFJmWapiZv3nqNYDvRaOglxo
+	RmUQ3PNGKuNvEPjYpk9iP2he94ECHAgGjA0HYawDvgcTqLxNVQ/uOQfCULX7oR+M
+	A4SGx3FNRYjbchMv7I+AWMnOdS2TpNHBLdf0+rSHbqiwn1Kh0x6OEbnMz4VbNUSu
+	0WJCH0fRrQuoaawbE3eBoxKX1OANZGkY7WYceGWIwbiGCWDr891yIdF0rpd6aKq8
+	JkTa9A==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42qhbucy3x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 06 Nov 2024 19:29:08 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4A6JT70B027884
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 6 Nov 2024 19:29:07 GMT
+Received: from [10.48.242.250] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 6 Nov 2024
+ 11:29:07 -0800
+Message-ID: <1c248298-da83-42a5-8c96-c3db7f64b39a@quicinc.com>
+Date: Wed, 6 Nov 2024 11:29:06 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 06 Nov 2024 20:27:40 +0100
-From: "Alf Marius" <post@alfmarius.net>
-To: "Andrey Batyiev" <batyiev@gmail.com>, "Kalle Valo" <kvalo@kernel.org>
-Cc: regressions@lists.linux.dev, linux-wireless@vger.kernel.org
-Message-Id: <4f689121-f2c1-45ec-bd5b-105a770af935@app.fastmail.com>
-In-Reply-To: 
- <CAEQQxWx7PXw3O_j1FWn7G+DhUUXt3sEB0qDyA2+udRQ6r28FUA@mail.gmail.com>
-References: <60f752e8-787e-44a8-92ae-48bdfc9b43e7@app.fastmail.com>
- <87wmhg61yp.fsf@kernel.org>
- <CAEQQxWx7PXw3O_j1FWn7G+DhUUXt3sEB0qDyA2+udRQ6r28FUA@mail.gmail.com>
-Subject: Re: [REGRESSION] The iwl4965 driver broke somewhere between 6.10.10 and 6.11.5
- (probably 6.11rc)
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/3] wifi: ath11k: miscellaneous spelling fixes
+To: Dmitry Antipov <dmantipov@yandex.ru>, Jeff Johnson <jjohnson@kernel.org>
+CC: Kalle Valo <kvalo@kernel.org>, Kees Cook <kees@kernel.org>,
+        "Gustavo A . R
+ . Silva" <gustavoars@kernel.org>,
+        <linux-wireless@vger.kernel.org>, <linux-hardening@vger.kernel.org>,
+        <lvc-project@linuxtesting.org>
+References: <20241024111921.93105-1-dmantipov@yandex.ru>
+ <20241024111921.93105-3-dmantipov@yandex.ru>
+Content-Language: en-US
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+In-Reply-To: <20241024111921.93105-3-dmantipov@yandex.ru>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: mDdyY346GDDxxcX2r4rLH61Dhzk1JUDx
+X-Proofpoint-GUID: mDdyY346GDDxxcX2r4rLH61Dhzk1JUDx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ mlxlogscore=624 clxscore=1015 priorityscore=1501 adultscore=0 bulkscore=0
+ suspectscore=0 phishscore=0 lowpriorityscore=0 spamscore=0 malwarescore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411060148
 
-Good evening folks :)
+On 10/24/2024 4:19 AM, Dmitry Antipov wrote:
+> Correct spelling here and there as suggested by codespell.
+> 
+> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+> ---
+> v2: join the series
+> ---
+>  drivers/net/wireless/ath/ath11k/hal.h | 6 +++---
+>  drivers/net/wireless/ath/ath11k/mac.c | 4 ++--
+>  2 files changed, 5 insertions(+), 5 deletions(-)
 
-[Andrey Batyiev]
-> Hello everyone,
-> I've only tested it on my 3945. I have no equipment to test it on 4965, sorry.
+feel free to submit this separately
 
-Yes the commit message says "Tested on iwl3945 only."
-..which I did find a bit strange. Is it normal to deploy code to the mainline
-that is untested? Why was this also applied to 4965?
+ath.git is not taking any of your __counted_by() changes that aren't tested on
+actual hardware
 
-I'm just asking questions here, as I have no direct knownledge of C or
-kernel driver programming. I've 20 yrs of web-dev experience though
-and know from experience that shipping untested code is a bad idea.
 
-Anyway, not trying to point fingers here! Just curious to find those who
-wrote the actual code, maybe get some info on why this was added
-and if it is really important. If not, maybe a revert is in order
-
-Regarding testing, I obviously have a laptop with the 4965 card and
-I'm more than willing to test stuff out if needed.
-
--Alf
--- 
-"The generation of random numbers is too important to be left to chance."
 
