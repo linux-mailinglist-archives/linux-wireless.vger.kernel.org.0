@@ -1,92 +1,111 @@
-Return-Path: <linux-wireless+bounces-14976-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14977-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 114189BE565
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 12:16:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E2719BE570
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 12:23:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9535284394
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 11:16:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E41061F24BAD
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 11:23:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D83501D434E;
-	Wed,  6 Nov 2024 11:16:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 335711DD0F3;
+	Wed,  6 Nov 2024 11:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="NFw5g8EW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bB7btOgM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4822418C00E
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Nov 2024 11:16:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09ECC1D434E;
+	Wed,  6 Nov 2024 11:22:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730891805; cv=none; b=XpF1QeuT28YYTq8GDPXgyXO7FG/WJ1FxHM/nmwfq+u7mNvjg4YwjQsuOVnoOl8XaCzHV/4kKzzZSNbUZn+p9iaNy5vXCTyKjgO+HOwad/nN1+8E97U1LremmN1O+5N1PFgJUB2BPkOZNoZzY1nZYxrNZe4KxY/Inrx7psvyeabs=
+	t=1730892178; cv=none; b=KVUK7FwJFetGNmH1j9TwRuFIZy6etDV++pfD92eRMhdfUsVyAQ4bdZfHsJGVUBOyOYCjTZ6XKTnC6vU2pCSf0DaL/CV2ugFohcof6uxKO4I3Vk/LZwdqY58WDd7Yt7HazFA7Y8UvRm6KCQIeoZUZskvnjwI+I2zgPO6wv8FPT1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730891805; c=relaxed/simple;
-	bh=u2OJHC3GFG0xeeuojpOzUK0RzPCFfRBF08cxfp2Tt9g=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=NSL7Y08NvBPGQC7mKLSOY5aKYYDOf0LdaF1f9RLdSJTlCMxNyCDHkHJMbqjNWKLiTae9/nq6LjFDwhg1veqq2dHKmo99owtv2a873mDMDiyU6DwKdMSLXYNtPpPbPy49OKJZe3Mj7qnLg672SapCGR+XyQd03tRxynaCyrx+BJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=NFw5g8EW; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=u2OJHC3GFG0xeeuojpOzUK0RzPCFfRBF08cxfp2Tt9g=;
-	t=1730891804; x=1732101404; b=NFw5g8EWl+VbjeE1f0Bfkx2hOFENepNipPAxgDP+wzaF2fB
-	jCEUGi9sGtebpBELzw5nPldqeuCYSlafXcevh2VIDhUF3eJ/uHYSfEcz0RhPRFj40XoI0i1OOyMu7
-	SWUkh8seoUknmj/VIp14pxMRh9JnTjjPvEblkVgRF68zQTqBK7bqlVYvVW5A2A7DWPk527Z123kVH
-	dHvTK0eQ0z0xtqOAoCw5Dild6jBo983asFWAjnBgoY3oRnzOZyVYV5ZzL0mku0zZma+5bxJD48v+D
-	WnVwfEWE/og3rPNmitaC3iT2BezyKTSMiNQNqpw0CaYAJPyxZXI0pg44YeD8+xkQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1t8e1h-0000000FatA-2bB2;
-	Wed, 06 Nov 2024 12:16:41 +0100
-Message-ID: <de027142c37024b2a2777011ae278b50e5fcd4fb.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: mac80211: fix mbss changed flags corruption on 32
- bit systems
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Issam Hamdi <ih@simonwunderlich.de>
-Cc: linux-wireless@vger.kernel.org, sw@simonwunderlich.de, Kretschmer
- Mathias <mathias.kretschmer@fit.fraunhofer.de>
-Date: Wed, 06 Nov 2024 12:16:40 +0100
-In-Reply-To: <eb4b7856fe814038de1673d47afabbbfef8e97c5.camel@sipsolutions.net>
-References: <20241104172415.3790038-1-ih@simonwunderlich.de>
-	 <df6c3317a71c8fa76f2b64623a0278f1fd0a68dd.camel@sipsolutions.net>
-	 <eb4b7856fe814038de1673d47afabbbfef8e97c5.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1730892178; c=relaxed/simple;
+	bh=xXiA+fwcm0+kb/0qjLRbZF8bv0p/PuAEplcvU6cxXsw=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=LrdbZ/3JeihKxWkezE7QcSZZLo3evM20iQR2PEWF7/NJUJ++LRPfT8kWZr5BqCVa1P7tcYdGZ59OST3GKNNVcL/y5FPvRsU7juPO0Z7QdIQr+a9lixVYnTtPJhOvgAcUqCogeDtBO0gREmoVGN5NcwoPw22dfGezC+jBnZTx5ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bB7btOgM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB59C4CECD;
+	Wed,  6 Nov 2024 11:22:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730892177;
+	bh=xXiA+fwcm0+kb/0qjLRbZF8bv0p/PuAEplcvU6cxXsw=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=bB7btOgMImW7cmMrSqlmHFSsYIoU3KRAVoiMSZC976giIFTcG2vaHa0SrQw2kJC38
+	 5eu2zq325MhzhgH7GrM1xDrShGGLHolPFyIuT5Nwgo4FB8rQbE8VdwzZpzMbiJtqvu
+	 Ha4dStLkb0m+3Afruwfx3kinFQTwqZlmYsWwDENBm+QnHRIT9wItEgDx3Gm1b5A5Fd
+	 uW2V57uFpP+2PNdxv53xuD4G9rdPFtXDnpoVfN9/XmkYTjThAh3hDH9dbaLnLoio0S
+	 tKMXWWdRw9mtyPjwEIjTzQWdMUTESOowhuNPum2Gb5yPo2nQbzm4fuywvLtpS/YNLJ
+	 oYLHaR3LkX5ug==
+From: Kalle Valo <kvalo@kernel.org>
+To: "Alf Marius" <post@alfmarius.net>
+Cc: regressions@lists.linux.dev,  "Andrii Batyiev" <batyiev@gmail.com>,
+    linux-wireless@vger.kernel.org
+Subject: Re: [REGRESSION] The iwl4965 driver broke somewhere between 6.10.10
+ and 6.11.5 (probably 6.11rc)
+References: <60f752e8-787e-44a8-92ae-48bdfc9b43e7@app.fastmail.com>
+Date: Wed, 06 Nov 2024 13:22:54 +0200
+In-Reply-To: <60f752e8-787e-44a8-92ae-48bdfc9b43e7@app.fastmail.com> (Alf
+	Marius's message of "Tue, 05 Nov 2024 23:47:08 +0100")
+Message-ID: <87wmhg61yp.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain
 
-On Wed, 2024-11-06 at 12:11 +0100, Johannes Berg wrote:
-> On Wed, 2024-11-06 at 12:09 +0100, Johannes Berg wrote:
-> >=20
-> > > +++ b/net/mac80211/mesh.c
-> > > @@ -1164,7 +1164,7 @@ void ieee80211_mbss_info_change_notify(struct i=
-eee80211_sub_if_data *sdata,
-> >=20
-> > You evidently have _hundreds_ of out-of-tree lines, probably some of
-> > those cause this bug too.
->=20
-> Ahrg, sorry, no. I take it all back, I was looking at the completely
-> wrong tree by accident.
->=20
-> Still this seems like the wrong fix, it would be better to take care of
-> all the 64 bits?
->=20
+(dropping stable, adding linux-wireless)
 
-Also, a Fixes: tag would be nice.
+"Alf Marius" <post@alfmarius.net> writes:
 
-johannes
+> Hi,
+> I recently installed Arch Linux on an old laptop (Fujitsu-Siemens AMILO Xi 2550) and noticed that:
+>
+> - when booting Linux from the Arch ISO (kernel version 6.10.10) WIFI is working fine
+> - after installing Arch Linux from the ISO and booting (kernel version 6.11.5) WIFI was not working properly
+>
+> By "not working properly" I mean: 
+> downloading small files or installing a few small packages was working
+> ok, but when downloading larger files or installing larger packages
+> with lots of dependencies, the connection would gradually slow down
+> and eventually die.
+>
+> I reported this on the Arch Linux forum (https://bbs.archlinux.org/viewtopic.php?pid=2206757)
+> and some helpful memeber suggested that this might be the commit that broke things:
+> https://github.com/torvalds/linux/commit/02b682d54598f61cbb7dbb14d98ec1801112b878
+>
+> An Arch Linux packet manager (gromit) helped me debug this issue by building a couple of kernels that I tested.
+>
+> - https://pkgbuild.com/\~gromit/linux-bisection-kernels/linux-mainline-6.12rc5-1-x86_64.pkg.tar.zst
+> - https://pkgbuild.com/\~gromit/linux-bisection-kernels/linux-mainline-6.12rc5-1.1-x86_64.pkg.tar.zst
+>
+> The first one didn't work, but the second (in which he reverted the commit linked above) did fix my problem.
+> So, I guess this commit should be investigated by those in the know.
+> Thats why I also added Andrii and Kalle to CC as they are listed in the commit message.
+>
+> My network controller: Intel corporation PRO/Wireless 4965 AG or AGN [Kedron] Network Connection (rev 61)
+> Kernel driver in use: iwl4965
+>
+> This is my first kernel bug report, hope I did everything right :)
+
+Perfect report, thanks.
+
+> I'm ofc willing to help provide more info and debug locally here to help solve this issue.
+
+Andrii, any ideas? Unless we can fix this quickly I think we need to
+revert commit 02b682d5459.
+
+#regzbot introduced: 02b682d54598f61cbb7dbb14d98ec1801112b878 ^
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
