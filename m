@@ -1,65 +1,66 @@
-Return-Path: <linux-wireless+bounces-14959-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14960-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6680E9BDED5
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 07:28:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F01929BDEE4
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 07:32:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11CFA1F21F2A
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 06:28:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4EF1283998
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 06:32:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6740192581;
-	Wed,  6 Nov 2024 06:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0167118FDC2;
+	Wed,  6 Nov 2024 06:32:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="OP17jV5n"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="d077eUMm"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2AFE191494
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Nov 2024 06:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0E7191494
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Nov 2024 06:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730874497; cv=none; b=eFGKQzRNNu+CnwmK19f8e7hhHZ8FarqV2wlu9VLNuIZnKQI1vYpId+nVLT7yDBGLfQqwYLCYR9q7jGRnjDtqeyYNqGwYBJn8hdy5ifdEWkQQ+3oQtwekF0F96xPtJBfpcAreX/4TvFUq3Ve4iTtVAjKz0mHhmiapYPqI63sTSEk=
+	t=1730874727; cv=none; b=jcvN0n0UXV/oFQkFsbiSnrYAqZr53YIw0H6ECuoh/J+LnsLg3xvKcEbszRVbHdmPg4a/tpOfa2YZcgYPM+A17qFCVP8wTPfRhGEQm5+jg5WTvVgJZKpI9BUoIU1tNC3z0wvuKruVrUYIN646upCRZ6XZ01ppnYllzg3TP2aoH7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730874497; c=relaxed/simple;
-	bh=oUSZuhZYd05nILZ3o+mHRYFZdPgbzNWDiwFXuKQUayw=;
+	s=arc-20240116; t=1730874727; c=relaxed/simple;
+	bh=4rAJe2o0Hs+9TLmwLJ/S8IeIw4bXmSevkksvHRhFAR0=;
 	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
-	 Content-Type:Message-ID:Date; b=jMz8h5ZN88LvXjIPgG356x9WThCd0F4qNhdwcKtajR+05DwkrKfBCHATaI4vercWZpbXFwST4c+k8xMngldzbMElGvL2FD35972Ahym8xevzBEZ8s/BVPyAVl8Axj4EsyV4+m3ne8D88lf160IpdZqpF09M+mR1AuGU321mnEJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=OP17jV5n; arc=none smtp.client-ip=211.75.126.72
+	 Content-Type:Message-ID:Date; b=iH3b8PqIUKaJvbvgANp/qQ3HWJuHacZNBexmWCad08WLnTRyYouYIT6MTrgtBXHkI0WOmYefxUsbYNn+iJXdjPkyPXfY9+wuzVN0ME3WZ82nOIJjYDnfN6T7oB1cEgXbp+fv7XtBvtQRMr9Lzb2zPiNXy6a2f380mnJ8xCy3KP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=d077eUMm; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4A66SDtgC2311626, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4A66W1Q402313880, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1730874493; bh=oUSZuhZYd05nILZ3o+mHRYFZdPgbzNWDiwFXuKQUayw=;
+	t=1730874721; bh=4rAJe2o0Hs+9TLmwLJ/S8IeIw4bXmSevkksvHRhFAR0=;
 	h=From:To:CC:Subject:In-Reply-To:References:MIME-Version:
 	 Content-Type:Message-ID:Date;
-	b=OP17jV5nA3qzsXjg5SlmTZaQdhZYogjJ2uJ8GacyOokacsHBBBU/m3rIoUxzhkCUK
-	 dkfuXJQmCgMFr1DZmgQfQ7I7ubs575yUKDZ1nheLpjz3SAlpYDUwPL/TyyojNoA2NU
-	 xH37HYhtlF5SLGFfd7EeId9g782lHolu4I/tb5qxjJc+8MxriHaNzPr/PjkzyNuLjD
-	 BUxYQmCofNpc1xqygQN4JJ7OhZ1HkQgiCk/vSb8doHkK29Pr+T3crzWMZYbbzautV2
-	 7hcHnHQuHyXlWHMjvqZZ3Q4+u6m/+Nsqh7FY3i6ZFFdt21ejAYcZ4PBhp5Tzt0QmES
-	 KsLmO7jTF9iYg==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4A66SDtgC2311626
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Wed, 6 Nov 2024 14:28:13 +0800
+	b=d077eUMmBGuLeIgrLhRCsjP4IU4vT9U9N54l6SYBwG+cVZyl6gzCvIAz1R+aJ1tcx
+	 JTqM5zCZ9ByDzrLVCJ9CxhxgG7w7+eGgLAfa55w9uAypbKW8aiK+VL/jZf0OKYfLd5
+	 MAoiF1zaHDAcUf1PiI5mFglglpRRPF34tzCtRRBE1oPtSQ36wCZbuSrxdL4ZonkNWg
+	 nJF4ocD4sg5z3k3fFhQ/islvp16ZVve/9lY1/hO9myW2njAnJrIcxTXQgny0C8Sxls
+	 gwMMOz8t19R/URD4t0MUBP3gLuTa98wpmjykPDgbCL9aFeVbLwirhccmsNemO1Zp4Z
+	 OjT/Od2lxeOkQ==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4A66W1Q402313880
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 6 Nov 2024 14:32:01 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 6 Nov 2024 14:28:13 +0800
+ 15.1.2507.39; Wed, 6 Nov 2024 14:32:02 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 6 Nov
- 2024 14:28:12 +0800
+ 2024 14:32:01 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
-To: Ping-Ke Shih <pkshih@realtek.com>, <linux-wireless@vger.kernel.org>
-CC: <ku920601@realtek.com>
-Subject: Re: [PATCH] wifi: rtw89: coex: set higher priority to BT when WL scan and BT A2DP exist
-In-Reply-To: <20241031023032.7102-1-pkshih@realtek.com>
-References: <20241031023032.7102-1-pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: Ping-Ke Shih <pkshih@realtek.com>
+Subject: Re: [PATCH v4 1/7] wifi: rtw88: Add rtw8812a_table.{c,h}
+In-Reply-To: <086f476c-e832-4867-963c-a64a63252fd6@gmail.com>
+References: <435af284-0794-48e0-81a5-5a88b3c454bf@gmail.com> <086f476c-e832-4867-963c-a64a63252fd6@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -67,26 +68,27 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
-Message-ID: <b84d1b73-5c11-4fa0-a2b5-d4c27477b869@RTEXMBS04.realtek.com.tw>
-Date: Wed, 6 Nov 2024 14:28:12 +0800
+Message-ID: <05dca2fd-880e-40f8-a5b2-849deae8c239@RTEXMBS04.realtek.com.tw>
+Date: Wed, 6 Nov 2024 14:32:01 +0800
 X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
  RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-Ping-Ke Shih <pkshih@realtek.com> wrote:
+Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
 
-> From: Ching-Te Ku <ku920601@realtek.com>
+> These contain various arrays for initialising RTL8812AU. Also TX power
+> limits.
 > 
-> If WiFi operation channel & scan channel both at 2.4GHz, original will keep
-> going at WL > BT priority table for a long time. It makes A2DP can not sent
-> audio data to SUT device in time then performed a lag audio. Assign
-> a BT > WL priority table when A2DP exist, to avoid the issue.
-> 
-> Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
-> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-1 patch(es) applied to rtw-next branch of rtw.git, thanks.
+7 patch(es) applied to rtw-next branch of rtw.git, thanks.
 
-1b1350e2008c wifi: rtw89: coex: set higher priority to BT when WL scan and BT A2DP exist
+528f902ecc0e wifi: rtw88: Add rtw8812a_table.{c,h}
+4b81da5cd2b4 wifi: rtw88: Add rtw8821a_table.{c,h}
+b870b9d31c9e wifi: rtw88: Add rtw88xxa.{c,h}
+32e284a23880 wifi: rtw88: Add rtw8821a.{c,h}
+4f8ec8927bc2 wifi: rtw88: Add rtw8812a.{c,h}
+8f82bb2cfaf7 wifi: rtw88: Add rtw8821au.c and rtw8812au.c
+0e3e8284f8e1 wifi: rtw88: Enable the new RTL8821AU/RTL8812AU drivers
 
 ---
 https://github.com/pkshih/rtw.git
