@@ -1,53 +1,53 @@
-Return-Path: <linux-wireless+bounces-14946-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14947-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 596359BDBF1
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 03:11:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 109399BDC21
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 03:15:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F32DF1F25C40
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 02:11:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD57D1F246C9
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 02:15:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC255192B7C;
-	Wed,  6 Nov 2024 02:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FD651D934B;
+	Wed,  6 Nov 2024 02:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DfaJ/vJ5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ubqNXaTy"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B226718FC84;
-	Wed,  6 Nov 2024 02:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E611922CD;
+	Wed,  6 Nov 2024 02:10:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730858969; cv=none; b=gBetxuC1+4hqDQbsRFwDnOk3U/1ztNVGc1yayGbqN9t/7+yr1rDfehxqjIdsq2ugrng/AtoNqKz5cOHml2uauSzaexKCSBrHrH0Z+I/S+/ojPhJfJEFCPb0hc0k/bUgt1xKQX0dFw8QRn57A0FxH8m1soQ4bwlKVfNG6qELyANE=
+	t=1730859033; cv=none; b=fhMLsDjwf1/AeNqk7HQ3jiiZUva4KJIyYrMmw0otQp5vqY4UA7UgGb/IH2Pc1g8BMeYUflHiYL3HjsjK/n7/1ha5/eASsTJQMjDoFjmL2FHzv5b3YRth79jrGMXLR2XKgl9WjOMRLcnl6iCH5NMD4wByIaXFd5KOfpDotfCmu3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730858969; c=relaxed/simple;
-	bh=pzPy2AymgTet41TuBvckhGh6NcwJxAzsOOgSMIQvJg4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tQsAdCRFfyGeFL/pN9h687rfxl8KhfP9YFN99RwO86vfPTmHetyDSg0F/kGz4xo1GzPlTOHWuMZRO3zTaI8Rapwgm03xeu7iWbV+dyrMOr+6L7pYKYu3V/k/hbnG4H7ifBAGoSk3rhdpbRv2Rg692JIn9dRYyC78yFDt8TLZVG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DfaJ/vJ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E1DC4CECF;
-	Wed,  6 Nov 2024 02:09:28 +0000 (UTC)
+	s=arc-20240116; t=1730859033; c=relaxed/simple;
+	bh=XCUWwc5I3W9gb8RnELP6CKlJ7l+b+BwME4lcyD2FhG0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tm9zpSU9OvO1o9vTGBdEJRBcNtWvpCPgPETsD6Jh4oGZgGWvBPkNGERDqn5raTjysOffeW0gPZN9N3K/M14e81YfTVQn5UJP/Ksqmo4wFHzPyC+FwXj+2gwRmupeYXbJVjYKUcZDCQDNtkYKfqcELH+T64CGNZRn/mfHxOoQglw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ubqNXaTy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF0DC4CECF;
+	Wed,  6 Nov 2024 02:10:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730858969;
-	bh=pzPy2AymgTet41TuBvckhGh6NcwJxAzsOOgSMIQvJg4=;
+	s=k20201202; t=1730859033;
+	bh=XCUWwc5I3W9gb8RnELP6CKlJ7l+b+BwME4lcyD2FhG0=;
 	h=From:To:Cc:Subject:Date:From;
-	b=DfaJ/vJ56ECR1EP2rM/YnkiadQjHdUsZeOiZZ5wVnKWXjj4irIDon9bF2rYcx/oyo
-	 DElo5wsJGMGlEHRyWk/fC1jtmBLoLTwCyte8/BClhcRVis+UkmBskynrzHNcwBcwqW
-	 pjxmJG855nV8/p2ZzibTpuNV4HgGE4d3bU255UF6phphxx0SF8kwWm30e8IaUlxFeB
-	 yvlmYTgldEUj/XFEvW3AOJ66ZwsWahK0BNdwdOh1uU7e7iZ9eJ2gGBbtvZj3C0/LG4
-	 DDfkP9VU6GkA8vbZKdGAHNTkVbOcvzSDwvdLiQScYOWC2SPjICfHNI4Sb1wcNdamBY
-	 5d8KGFiQVBQwQ==
+	b=ubqNXaTyry6n1tOBGvV9ydqxi10JUW6e14y2nAK6x+yaUTVUKGWm7QU3b+1aoM156
+	 Hx3DMK+AJFChxTjUNd8Z7zbiNhhHYFAQew5mT1HyJy5skQeqR7jTMK+VHZL79ZNH3O
+	 v9HxgO3TjPhw3F+PhMHvdde43JD0vzep0TTkbypY4tCNlr/UKQ2wO6DpRW/VcqrYC5
+	 5Yi9ICrqnjhEvb+52zpkVwxpcS7JBJLdJ7Z4GLrhHupEEvD0srrjppKRWC1Qc/HZmh
+	 dpzBPAYNg8AKO21cETbQwgNCI6ETWmbfBBDbYB9F2oyplyQ7ouufPks+s4qx93sj8v
+	 aCDsJ7jFQJGrw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
 	johannes.berg@intel.com
 Cc: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: FAILED: Patch "wifi: iwlwifi: mvm: fix 6 GHz scan construction" failed to apply to v6.6-stable tree
-Date: Tue,  5 Nov 2024 21:09:24 -0500
-Message-ID: <20241106020927.164821-1-sashal@kernel.org>
+Subject: FAILED: Patch "wifi: iwlwifi: mvm: fix 6 GHz scan construction" failed to apply to v6.1-stable tree
+Date: Tue,  5 Nov 2024 21:10:30 -0500
+Message-ID: <20241106021031.181319-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -59,7 +59,7 @@ X-Patchwork-Hint: ignore
 X-stable: review
 Content-Transfer-Encoding: 8bit
 
-The patch below does not apply to the v6.6-stable tree.
+The patch below does not apply to the v6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
