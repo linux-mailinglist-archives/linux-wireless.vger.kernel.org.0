@@ -1,116 +1,366 @@
-Return-Path: <linux-wireless+bounces-15010-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15011-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E372A9BF34E
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 17:34:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A46B9BF3F2
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 18:07:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72E4AB20DA3
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 16:34:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4970228729E
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 17:07:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B336204F96;
-	Wed,  6 Nov 2024 16:33:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4CC12064EC;
+	Wed,  6 Nov 2024 17:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="DVvPv8GQ"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="GfV6yICY"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2B81E9099
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Nov 2024 16:33:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9232F1DEFE7
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Nov 2024 17:07:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730910828; cv=none; b=SwNtCtUl5rpLincJmCG+twkq2E/P7zlN3sSd2Vp0AJBGrI7EZCfF1WQWb/byXqQPcz2HP2mI6APNkNoIVa7rMjJSHjDSeQV9OnuL7flUzsw55gnjc4FaYYww0XcD6fBCQGhpuCwu1gj3txxWjEZz3/bV2a0/nd7kxnzgdOwrd30=
+	t=1730912846; cv=none; b=XpHq7JNzibkon7FPk5YGpVZ3u6JUQBYhF/9zVhvP8VsXIA8ORWKGAl+Y/5/6+I7TlnDE6YbhpmOLkUVCCGvbysnSnHV2jMBHbZbp7aa3GT6RkYAWhn56PYEZj1cRA7iiQN34u0pY84uhwrHmPCGHQqB23sjp8eBv6S3VEPVvR7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730910828; c=relaxed/simple;
-	bh=KtbOnQu96h7Bqpd0a9tJweDsl7db+b2vi9BkYbopxkk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=t/ziyyyWOe3q2NQjQaSUG53ZIpKjrKBLxFYdKWHDQcrFVjZK/fBHad9n8meES6opqv1k2PtWITKZML11PSyXjQv40hTiV+0BzAd9jHf8GGwADl9Uj0IvHuoqvu327d1JBos6IfDq+xdwa2o1Qd6Gn88NOB+KY6cm1LPvBVOc8aQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=DVvPv8GQ; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A6EEbsm002132;
-	Wed, 6 Nov 2024 16:33:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	ZSDpocEV0yz3CEoMlXviiQK6lBU9fkj3mTfj16J0P+8=; b=DVvPv8GQsH2Rv9eg
-	29VYjsd7OR6GNLQVibIbikfT5edKIcmOl5vGPVHzQvzMYXWKXWGyLQ9+iERs2mJw
-	gdZ8PMRguNmxy/Cd+VADiVpBa7g7EOy+kPdp8LLteDY1qejN/c9OOa7WCj/i5ant
-	tMEyDRzyu7LT6xFB9h4GofRCfMefFppIswYlOtUGm23t41i+8tgETwufcQMMbkzg
-	u0JJ4PX8mseG5SzZFyNki2jkP5fjaer8H6mDS7Taylv76x+BiW9QicJp8l30rt9M
-	t8bX63EkBzjBiJ7dW3JJeLRBKlHkpNJy22fNh/4ngdJPYdl2XD6q4hIjsx3/kGdj
-	3F22PQ==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42r072hycv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 06 Nov 2024 16:33:43 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4A6GXgeO004804
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 6 Nov 2024 16:33:42 GMT
-Received: from [10.48.242.250] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 6 Nov 2024
- 08:33:42 -0800
-Message-ID: <bf2dc4c5-1735-4ead-815c-03d11d0cb6eb@quicinc.com>
-Date: Wed, 6 Nov 2024 08:33:42 -0800
+	s=arc-20240116; t=1730912846; c=relaxed/simple;
+	bh=KMwi4wYhZdlHLCX2G2Q9HUhUPG50WPecsWOZ3KoLi9k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=H3Ti+g7A2cT+8uo8Ov25Dkm6Z5Oq3uQ/aCSUp8XHMINNR+RoAb9rBuYFNz8FA/kgimE/uZpCtJL498f9BVPP0Ycs0PBWvXZcWlYZ8Qt3sBkUwXjG5TFI/L11teXXuTroFdqjI0oCjvg9f4FvdbUAVHv5I9yCgWW4Gmh1h5BHcHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=GfV6yICY; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-539f2b95775so8108078e87.1
+        for <linux-wireless@vger.kernel.org>; Wed, 06 Nov 2024 09:07:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730912842; x=1731517642; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=XHM9QeNlhOTneChj4bKhI5LC9ZZcmDxqXuZBfNBpX+4=;
+        b=GfV6yICYim76GziDYolEZZe6vlimYRpkbFGdP7agCtieA5SGDEa/F8IhyhGCgH0CDA
+         BXoMA0pPEWv9WijxuFJ+VoFgGGBjnv2ymq3lSz7DBoBfkF7CpN1pXYdYoA6saD7emvTM
+         usllUz37rCHj5qxziBlBhLelVhmNeM8PDsUvmTwy9JMHORdYmiK821us0/Gw88cF1oLS
+         zKQ0kHQ+RF4fIZmVYYR1gKzjoM4rGX3cMttKgFiiHzIxpsDeUNBI8FpMTi8Et+mZBEe3
+         Lh8WftBHtJPdg/jzwbmxyZ7Qj3RJ+aR5UFLTpXl+/Drw+3inXjq6nVLoT29Isahot1kT
+         Wu5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730912842; x=1731517642;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XHM9QeNlhOTneChj4bKhI5LC9ZZcmDxqXuZBfNBpX+4=;
+        b=pxvDik3JU7gqD76kboozUUSPnXVdlJnLsRJOrPW4pB15lbDK0T7eH8CxBagA0cNM3F
+         /vD+Y0zbs0YDkZGpwG93pgToOczycMSMHTBDUlIu1y95FwqHE0mgpXtPfHEII498agiZ
+         EgaOy25j0h1xe2bQgvVSWj85PcaTURXvWcFlI5idRyu8VLJsfbNCsKVuy9aZJFP7yKzW
+         cO284nJBoWyuinrDxKF+OgUMQxonHx5bLbcARBUfbOmjHq122Xn1pmboDonGebJI2JCl
+         rY+Lo1hD0l9DXQN55F6LIzAAr4/ygZDBmiq5RBFdz3agiNavWw23lTiZCjCU+h6zcfW3
+         t3aw==
+X-Forwarded-Encrypted: i=1; AJvYcCXB1yN3mGft/QbFie5K8vna8HwvNLS19DyITl3b24r4WW8YF+zXpAR3KF9Y1ZYmoJK/VNML5AgREaFV4ENQ6Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxcyBUpz39bLDrM2vqqYfCTvkg6PminR+r3E3MXuurKxWFn8Qa
+	2I/6A0gBux+iZG7RzPKPwkU498Y6qsV3Kt100GeTgxf8ubxDphmwHg1nZXxhoCM=
+X-Google-Smtp-Source: AGHT+IGhBvl6PJej/erZYenNszqbzeKKntvkwDvg4ctncTyHT7L1mvB9FrEIevg7TtOD7POmTVj7AQ==
+X-Received: by 2002:a05:6512:e9b:b0:535:6951:9e1c with SMTP id 2adb3069b0e04-53d65de3305mr15940463e87.15.1730912841533;
+        Wed, 06 Nov 2024 09:07:21 -0800 (PST)
+Received: from localhost (p200300f65f28bb0063ffae39110fa2df.dip0.t-ipconnect.de. [2003:f6:5f28:bb00:63ff:ae39:110f:a2df])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9eb16daf14sm303710566b.80.2024.11.06.09.07.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Nov 2024 09:07:21 -0800 (PST)
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Jeff Johnson <jjohnson@kernel.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Nick Kossifidis <mickflemm@gmail.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	=?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Loic Poulain <loic.poulain@linaro.org>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Ryder Lee <ryder.lee@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Peter Chiu <chui-hao.chiu@mediatek.com>,
+	Breno Leitao <leitao@debian.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	linux-wireless@vger.kernel.org,
+	ath10k@lists.infradead.org,
+	ath11k@lists.infradead.org,
+	wcn36xx@lists.infradead.org,
+	brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH] wifi: Switch back to struct platform_driver::remove()
+Date: Wed,  6 Nov 2024 18:07:06 +0100
+Message-ID: <20241106170706.38922-2-u.kleine-koenig@baylibre.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 8/8] wifi: ath12k: Use mac80211 sta's link_sta instead of
- deflink
-To: Kalle Valo <kvalo@kernel.org>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20241106142617.660901-1-kvalo@kernel.org>
- <20241106142617.660901-9-kvalo@kernel.org>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Content-Language: en-US
-In-Reply-To: <20241106142617.660901-9-kvalo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: Lu1a-pZ-vVaRpaA0tavUOrQzkUoVVr8j
-X-Proofpoint-GUID: Lu1a-pZ-vVaRpaA0tavUOrQzkUoVVr8j
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- priorityscore=1501 mlxscore=0 suspectscore=0 mlxlogscore=544 spamscore=0
- adultscore=0 malwarescore=0 phishscore=0 impostorscore=0 bulkscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411060128
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=9551; i=u.kleine-koenig@baylibre.com; h=from:subject; bh=KMwi4wYhZdlHLCX2G2Q9HUhUPG50WPecsWOZ3KoLi9k=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBnK6I7k3QwBHx4LDlthAT30A0zDc9WSJ6yBQ3NF 4O0KVmRJ9aJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZyuiOwAKCRCPgPtYfRL+ ThLbB/wNHseXuNO6BSs0X7tJr80GSCYLop1HgRzFN6qlnsLebiHcY7/fxrQIk4qvEabG2PB6fW1 7hZIqip47uQZYg+b+djnq7b1LAvKA+1hMzBs2MDcmIZbgfVtcmbBPt3UbZDo8krGzBj80RcVoJ7 3glArVF/Hp0VNmM+6IWIzxLKKWUr5lEPQk2lUPBd/9O8pbSrizA4gRnMP2Rif6goEFsYwWDgmZF yOTyIGlVcWgm86js57VuSJ+x+ys3kUiz2O67dCQEQiXLzRlCFyi7TKysdToW9E/jMTucq28WmUh J1zg5EM/JY/sa9jMUt7vzYlpMFHU8LP1xFH7gzizoH34q0Ts
+X-Developer-Key: i=u.kleine-koenig@baylibre.com; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
-On 11/6/2024 6:26 AM, Kalle Valo wrote:
-> From: Sriram R <quic_srirrama@quicinc.com>
-> 
-> Currently mac80211's struct ieee80211_sta deflink is used to fetch any sta
-> related configurations in driver. With MLO multiple link sta's (struct
-> ieee80211_link_sta) are affiliated to an ML sta and corresponding link configs
-> are present in sta->link[]. Fetch link sta of corresponding link from ML sta
-> and use the same for configurations.
-> 
-> Add ath12k_get_link_sta() helper to fetch ieee80211_link_sta from arsta. But as
-> ath12k_mac_op_sta_rc_update() is called in atomic context the helper cannot be
-> used and instead rcu_dereference() has to be called directly.
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-> 
-> Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
-> Co-developed-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-> Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
+return void") .remove() is (again) the right callback to implement for
+platform drivers.
+
+Convert all platform drivers below drivers/net/wireless to use
+.remove(), with the eventual goal to drop struct
+platform_driver::remove_new(). As .remove() and .remove_new() have the
+same prototypes, conversion is done by just changing the structure
+member name in the driver initializer.
+
+En passant several whitespace changes are done to make indentation
+consistent in the struct initializers.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+---
+Hello,
+
+I did a single patch for all of drivers/net/wireless. While I usually
+prefer to do one logical change per patch, this seems to be
+overengineering here as the individual changes are really trivial and
+shouldn't be much in the way for stable backports. But I'll happily
+split the patch if you prefer it split. Also if you object the
+indentation stuff, I can rework that.
+
+This is based on today's next, if conflicts arise when you apply it at
+some later time and don't want to resolve them, feel free to just drop
+the changes to the conflicting files. I'll notice and followup at a
+later time then. Or ask me for a fixed resend. (Having said that, I
+recommend b4 am -3 + git am -3 which should resolve most conflicts just
+fine.)
+
+Best regards
+Uwe
+
+ drivers/net/wireless/ath/ath10k/ahb.c                  |  8 ++++----
+ drivers/net/wireless/ath/ath10k/snoc.c                 |  6 +++---
+ drivers/net/wireless/ath/ath11k/ahb.c                  |  8 ++++----
+ drivers/net/wireless/ath/ath5k/ahb.c                   |  8 ++++----
+ drivers/net/wireless/ath/ath9k/ahb.c                   | 10 +++++-----
+ drivers/net/wireless/ath/wcn36xx/main.c                |  8 ++++----
+ .../net/wireless/broadcom/brcm80211/brcmfmac/common.c  |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt7603/soc.c        |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt7615/soc.c        |  2 +-
+ drivers/net/wireless/mediatek/mt76/mt7915/soc.c        |  2 +-
+ drivers/net/wireless/ti/wl12xx/main.c                  |  2 +-
+ drivers/net/wireless/ti/wl18xx/main.c                  |  4 ++--
+ 12 files changed, 31 insertions(+), 31 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/ahb.c b/drivers/net/wireless/ath/ath10k/ahb.c
+index f0441b3d7dcb..db9f9ebcb62d 100644
+--- a/drivers/net/wireless/ath/ath10k/ahb.c
++++ b/drivers/net/wireless/ath/ath10k/ahb.c
+@@ -837,12 +837,12 @@ static void ath10k_ahb_remove(struct platform_device *pdev)
+ }
+ 
+ static struct platform_driver ath10k_ahb_driver = {
+-	.driver         = {
+-		.name   = "ath10k_ahb",
++	.driver = {
++		.name = "ath10k_ahb",
+ 		.of_match_table = ath10k_ahb_of_match,
+ 	},
+-	.probe  = ath10k_ahb_probe,
+-	.remove_new = ath10k_ahb_remove,
++	.probe = ath10k_ahb_probe,
++	.remove = ath10k_ahb_remove,
+ };
+ 
+ int ath10k_ahb_init(void)
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index 0fe47d51013c..d436a874cd5a 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -1885,11 +1885,11 @@ static void ath10k_snoc_shutdown(struct platform_device *pdev)
+ }
+ 
+ static struct platform_driver ath10k_snoc_driver = {
+-	.probe  = ath10k_snoc_probe,
+-	.remove_new = ath10k_snoc_remove,
++	.probe = ath10k_snoc_probe,
++	.remove = ath10k_snoc_remove,
+ 	.shutdown = ath10k_snoc_shutdown,
+ 	.driver = {
+-		.name   = "ath10k_snoc",
++		.name = "ath10k_snoc",
+ 		.of_match_table = ath10k_snoc_dt_match,
+ 	},
+ };
+diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
+index 916402ad06b8..f2fc04596d48 100644
+--- a/drivers/net/wireless/ath/ath11k/ahb.c
++++ b/drivers/net/wireless/ath/ath11k/ahb.c
+@@ -1313,12 +1313,12 @@ static void ath11k_ahb_shutdown(struct platform_device *pdev)
+ }
+ 
+ static struct platform_driver ath11k_ahb_driver = {
+-	.driver         = {
+-		.name   = "ath11k",
++	.driver = {
++		.name = "ath11k",
+ 		.of_match_table = ath11k_ahb_of_match,
+ 	},
+-	.probe  = ath11k_ahb_probe,
+-	.remove_new = ath11k_ahb_remove,
++	.probe = ath11k_ahb_probe,
++	.remove = ath11k_ahb_remove,
+ 	.shutdown = ath11k_ahb_shutdown,
+ };
+ 
+diff --git a/drivers/net/wireless/ath/ath5k/ahb.c b/drivers/net/wireless/ath/ath5k/ahb.c
+index f27308ccb2f1..cb3e891ee1bd 100644
+--- a/drivers/net/wireless/ath/ath5k/ahb.c
++++ b/drivers/net/wireless/ath/ath5k/ahb.c
+@@ -218,10 +218,10 @@ static void ath_ahb_remove(struct platform_device *pdev)
+ }
+ 
+ static struct platform_driver ath_ahb_driver = {
+-	.probe      = ath_ahb_probe,
+-	.remove_new = ath_ahb_remove,
+-	.driver		= {
+-		.name	= "ar231x-wmac",
++	.probe = ath_ahb_probe,
++	.remove = ath_ahb_remove,
++	.driver = {
++		.name = "ar231x-wmac",
+ 	},
+ };
+ 
+diff --git a/drivers/net/wireless/ath/ath9k/ahb.c b/drivers/net/wireless/ath/ath9k/ahb.c
+index 1a6697b6e3b4..d4805e02b927 100644
+--- a/drivers/net/wireless/ath/ath9k/ahb.c
++++ b/drivers/net/wireless/ath/ath9k/ahb.c
+@@ -158,12 +158,12 @@ static void ath_ahb_remove(struct platform_device *pdev)
+ }
+ 
+ static struct platform_driver ath_ahb_driver = {
+-	.probe      = ath_ahb_probe,
+-	.remove_new = ath_ahb_remove,
+-	.driver		= {
+-		.name	= "ath9k",
++	.probe = ath_ahb_probe,
++	.remove = ath_ahb_remove,
++	.driver = {
++		.name = "ath9k",
+ 	},
+-	.id_table    = ath9k_platform_id_table,
++	.id_table = ath9k_platform_id_table,
+ };
+ 
+ MODULE_DEVICE_TABLE(platform, ath9k_platform_id_table);
+diff --git a/drivers/net/wireless/ath/wcn36xx/main.c b/drivers/net/wireless/ath/wcn36xx/main.c
+index 408776562a7e..8557d4826a46 100644
+--- a/drivers/net/wireless/ath/wcn36xx/main.c
++++ b/drivers/net/wireless/ath/wcn36xx/main.c
+@@ -1679,10 +1679,10 @@ static const struct of_device_id wcn36xx_of_match[] = {
+ MODULE_DEVICE_TABLE(of, wcn36xx_of_match);
+ 
+ static struct platform_driver wcn36xx_driver = {
+-	.probe      = wcn36xx_probe,
+-	.remove_new = wcn36xx_remove,
+-	.driver         = {
+-		.name   = "wcn36xx",
++	.probe = wcn36xx_probe,
++	.remove = wcn36xx_remove,
++	.driver = {
++		.name = "wcn36xx",
+ 		.of_match_table = wcn36xx_of_match,
+ 	},
+ };
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+index 58d50918dd17..cfcf01eb0daa 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/common.c
+@@ -594,7 +594,7 @@ static void brcmf_common_pd_remove(struct platform_device *pdev)
+ }
+ 
+ static struct platform_driver brcmf_pd = {
+-	.remove_new	= brcmf_common_pd_remove,
++	.remove		= brcmf_common_pd_remove,
+ 	.driver		= {
+ 		.name	= BRCMFMAC_PDATA_NAME,
+ 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/soc.c b/drivers/net/wireless/mediatek/mt76/mt7603/soc.c
+index ec02148a7f1f..08590aa68356 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7603/soc.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7603/soc.c
+@@ -71,7 +71,7 @@ MODULE_FIRMWARE(MT7628_FIRMWARE_E2);
+ 
+ struct platform_driver mt76_wmac_driver = {
+ 	.probe		= mt76_wmac_probe,
+-	.remove_new	= mt76_wmac_remove,
++	.remove		= mt76_wmac_remove,
+ 	.driver = {
+ 		.name = "mt76_wmac",
+ 		.of_match_table = of_wmac_match,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/soc.c b/drivers/net/wireless/mediatek/mt76/mt7615/soc.c
+index 12e3e4a91d27..06a0f2a141e8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/soc.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/soc.c
+@@ -63,7 +63,7 @@ struct platform_driver mt7622_wmac_driver = {
+ 		.of_match_table = mt7622_wmac_of_match,
+ 	},
+ 	.probe = mt7622_wmac_probe,
+-	.remove_new = mt7622_wmac_remove,
++	.remove = mt7622_wmac_remove,
+ };
+ 
+ MODULE_FIRMWARE(MT7622_FIRMWARE_N9);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/soc.c b/drivers/net/wireless/mediatek/mt76/mt7915/soc.c
+index 90a6f61d1089..c823a7554a3a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/soc.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/soc.c
+@@ -1303,7 +1303,7 @@ struct platform_driver mt798x_wmac_driver = {
+ 		.of_match_table = mt798x_wmac_of_match,
+ 	},
+ 	.probe = mt798x_wmac_probe,
+-	.remove_new = mt798x_wmac_remove,
++	.remove = mt798x_wmac_remove,
+ };
+ 
+ MODULE_FIRMWARE(MT7986_FIRMWARE_WA);
+diff --git a/drivers/net/wireless/ti/wl12xx/main.c b/drivers/net/wireless/ti/wl12xx/main.c
+index b26d42b4e3cc..ffbf54776330 100644
+--- a/drivers/net/wireless/ti/wl12xx/main.c
++++ b/drivers/net/wireless/ti/wl12xx/main.c
+@@ -1939,7 +1939,7 @@ MODULE_DEVICE_TABLE(platform, wl12xx_id_table);
+ 
+ static struct platform_driver wl12xx_driver = {
+ 	.probe		= wl12xx_probe,
+-	.remove_new	= wl12xx_remove,
++	.remove		= wl12xx_remove,
+ 	.id_table	= wl12xx_id_table,
+ 	.driver = {
+ 		.name	= "wl12xx_driver",
+diff --git a/drivers/net/wireless/ti/wl18xx/main.c b/drivers/net/wireless/ti/wl18xx/main.c
+index 39d8eebb9b6e..4be1110bac88 100644
+--- a/drivers/net/wireless/ti/wl18xx/main.c
++++ b/drivers/net/wireless/ti/wl18xx/main.c
+@@ -2097,9 +2097,9 @@ MODULE_DEVICE_TABLE(platform, wl18xx_id_table);
+ 
+ static struct platform_driver wl18xx_driver = {
+ 	.probe		= wl18xx_probe,
+-	.remove_new	= wlcore_remove,
++	.remove		= wlcore_remove,
+ 	.id_table	= wl18xx_id_table,
+-	.driver = {
++	.driver		= {
+ 		.name	= "wl18xx_driver",
+ 	}
+ };
+
+base-commit: 5b913f5d7d7fe0f567dea8605f21da6eaa1735fb
+-- 
+2.45.2
 
 
