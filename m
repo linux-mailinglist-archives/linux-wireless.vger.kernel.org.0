@@ -1,103 +1,94 @@
-Return-Path: <linux-wireless+bounces-14991-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14992-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 923629BEFDD
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 15:13:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D6E09BF00E
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 15:26:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57FAE2833D8
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 14:13:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EC2E1C22404
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 14:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D1781F9ABD;
-	Wed,  6 Nov 2024 14:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E9F0201102;
+	Wed,  6 Nov 2024 14:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="ToWgAjQF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pf8Dz24j"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD2517DFF2
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Nov 2024 14:13:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7DB2010FF
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Nov 2024 14:26:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730902389; cv=none; b=fYBXV0Rv3KdprOMuwLEeK7hBBwhpCZTDgLbhsnHJb3uEBE54qhF2ASvEczVyhGOAAaoHpoUXmm8qOe5DenWsW+t8YlkwMATEZQrmUXE2bbipumxqb7M2v9wmivgSk6Q6Mayo9hLmA3ztpYwbKehW8vlu3Akxx24rMp+m6FwNYKQ=
+	t=1730903180; cv=none; b=fdT+rOBT52N+vfjoU4NvtU9HXffPDrfJtXwDRS9gAK5v7QiUfwzlXFlxXwM2D8qpNZUwTeYlyI6bERyIkUmGY6W8nYk+X6XF0MVqvgwMuYC2+E7cLXZtgoM2G/7OxWc7wX1XA7u8/5vCsxl+j9U2DN9JUrOmdOe3IsMhkw8s4/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730902389; c=relaxed/simple;
-	bh=XgmpvKM/3tN/k7Piv+U060GJx68qRrXsEJqtXLy7//I=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=lHt+Sa9WgIrE+GhIK1ndsT4e8GIvFWcGCUdIMEGX4CR57cmfI1OSkpgjvoxpszuR6DK/USyco19LgK5NYlmXzRdNlorVwb5GMEHUotpt8jZE6BtR7JIpgkRmxKZtFMSPWoKvbOgCK85l6avi5AeFw82OGDskSW24GVaZGKjPx3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=ToWgAjQF; arc=none smtp.client-ip=45.145.95.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-	t=1730902380; bh=XgmpvKM/3tN/k7Piv+U060GJx68qRrXsEJqtXLy7//I=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=ToWgAjQFS+F51ltRgpTXgc1vp+WgbOTKMBoj7BTfQU3VbEaF7HJX4Tv845PVFC8w4
-	 LfA15jWb06pNcdcFJl/rOpijnUATcK0gI6zKW4GyV75WuzkNstsM3dD8ZlpPk5pjEV
-	 mM0qzITXQHmyyJjkWRqzbOKX4xGJtmnWQTP0OZuSDdZyJ/nf78KqMbMYapFLCs0vXm
-	 Po3sNSPE597HlHawqmzHVEaj1gt3o+olVetVFXR+ayI4SfBYf9ntU74l6TtSHdblLg
-	 MbExuSzUR3wagb51uxF9k5tGItbwQb9EZpx+kK+oedZRvzZKKxgxemoDtl2FjmEfIK
-	 OUY65zxRXm8sA==
-To: Sven Eckelmann <se@simonwunderlich.de>, Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, Simon Wunderlich
- <sw@simonwunderlich.de>, Felix Fietkau <nbd@nbd.name>,
- ih@simonwunderlich.de
-Subject: Re: [PATCH] ath9k: Add RX inactivity detection and reset chip when
- it occurs
-In-Reply-To: <3288096.AJdgDx1Vlc@ripper>
-References: <20241106-ath9k-deaf-detection-v1-1-736a150d2425@redhat.com>
- <3288096.AJdgDx1Vlc@ripper>
-Date: Wed, 06 Nov 2024 15:12:59 +0100
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87msic78no.fsf@toke.dk>
+	s=arc-20240116; t=1730903180; c=relaxed/simple;
+	bh=D1YYTFPj2QFVAITbV4+lhQ1jReiar+IinCTKBPU40y0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=EjryfSudMhg1s7EiBVYI1rAMcnHBxEmxb1yA50tCw6H02t9ZVFZLC9LW4kaPMfzmyan2XuFpCLifh/9+g/Gytu9XfMVspxm0TbAVdw8Vv6Y2k+2NC4FFAnFQZpPv2kJdzQg/tX1s3O3nKtCz9oTj5komcpkpXEK23NcMn+aT9ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pf8Dz24j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC81C4CEC6;
+	Wed,  6 Nov 2024 14:26:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1730903180;
+	bh=D1YYTFPj2QFVAITbV4+lhQ1jReiar+IinCTKBPU40y0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=pf8Dz24jqa2mQ+A4A69SSUiBR2yfhtK7JHq5beqdYbhjVQcr2UPSVQNYYX1qC/l57
+	 ggO2/eAgEe7VN/EJRmGGnOpnrv5dVSl0X3jRHQaLXomoIblC081f0n0cxWn3NFvPK0
+	 RF8EJ6rszWJKNIUtInNgqkNzcEg5qQ56sU25sS/B6bZkArT+nObMvpCL6guSNg83Zx
+	 H4mGr7Kx0QMRP8ISoRowPphu0invI1VJymAQDd7VpIBA03z9bYY0KnOSwdl4myDV5K
+	 Zpw8ZxGDdWd0gZi6CBFZo66TJjuRGvlzVMcYIO/wU8IqeIpkIw18gfJv4BMkrph6dd
+	 47nRwx20qEyrQ==
+From: Kalle Valo <kvalo@kernel.org>
+To: ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH 0/8] [0/8] wifi: ath12k: MLO support part 3
+Date: Wed,  6 Nov 2024 16:26:09 +0200
+Message-Id: <20241106142617.660901-1-kvalo@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Sven Eckelmann <se@simonwunderlich.de> writes:
+From: Kalle Valo <quic_kvalo@quicinc.com>
 
-> Hi,
->
-> Thank you for submitting the patch.
->
-> On Wednesday, 6 November 2024 13:41:44 CET Toke H=C3=B8iland-J=C3=B8rgens=
-en wrote:
->> Since this is based on ideas by all three people, but not actually
->> directly derived from any of the patches, I'm including Suggested-by
->> tags from Simon, Sven and Felix below, which should hopefully serve as
->> proper credit.
->
-> At least for me, this is more than enough. Thanks.
->
-> I don't have the setup at the moment to test it again - maybe Issam can d=
-o=20
-> this. One concern I would have (because I don't find the notes regarding =
-this=20
-> problem), is whether this check is now breaking because we count more thi=
-ngs.=20
-> In the past, rxlp/rxok was used for the check. And now I don't know wheth=
-er=20
-> the count for the other ones were still increasing.
->
-> * RXHP (rather sure that "high priority frame" wasn't increasing)
-> * RXEOL ("no RX descriptors available" - I would guess no, but I can't sa=
-y for
->   sure)
-> * RXORN ("FIFO overrun" I would guess no, but I can't say for sure)
->
-> Reviewed-by: Sven Eckelmann <se@simonwunderlich.de>
+We continue refactoring ath12k in preparation for supporting Multi-Link
+Operation. For example, in this patchset we modify station state handling and
+start to use more link level configuration.
 
-Great, thanks for the review! I'll let it sit in patchwork for a little
-while to give people a chance to test it out before sending it over to
-Kalle to be applied :)
+Please review.
 
--Toke
+Rameshkumar Sundaram (2):
+  wifi: ath12k: add reo queue lookup table for ML peers
+  wifi: ath12k: modify chanctx iterators for MLO
+
+Sriram R (6):
+  wifi: ath12k: Add MLO station state change handling
+  wifi: ath12k: support change_sta_links() mac80211 op
+  wifi: ath12k: add primary link for data path operations
+  wifi: ath12k: use arsta instead of sta
+  wifi: ath12k: Use mac80211 vif's link_conf instead of bss_conf
+  wifi: ath12k: Use mac80211 sta's link_sta instead of deflink
+
+ drivers/net/wireless/ath/ath12k/core.h  |   4 +
+ drivers/net/wireless/ath/ath12k/dp.c    |  44 +-
+ drivers/net/wireless/ath/ath12k/dp.h    |   1 +
+ drivers/net/wireless/ath/ath12k/dp_rx.c |  58 +-
+ drivers/net/wireless/ath/ath12k/mac.c   | 993 ++++++++++++++++++------
+ drivers/net/wireless/ath/ath12k/mac.h   |   1 +
+ drivers/net/wireless/ath/ath12k/peer.c  | 117 ++-
+ drivers/net/wireless/ath/ath12k/peer.h  |  11 +-
+ drivers/net/wireless/ath/ath12k/wmi.c   |  16 +-
+ 9 files changed, 987 insertions(+), 258 deletions(-)
+
+
+base-commit: d63fbff74ab1af1573c1dca20cfe1e876f8ffa62
+-- 
+2.39.5
+
 
