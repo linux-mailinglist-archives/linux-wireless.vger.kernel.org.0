@@ -1,292 +1,217 @@
-Return-Path: <linux-wireless+bounces-14965-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14966-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE8DB9BDF94
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 08:41:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C751F9BE1CE
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 10:08:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E7562835A3
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 07:41:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58CF61F23696
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 09:08:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 469181D27A9;
-	Wed,  6 Nov 2024 07:41:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="trxhU5Zm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4511D7E4C;
+	Wed,  6 Nov 2024 09:04:53 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09F541CF2A6
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Nov 2024 07:41:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091771D5AA8
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Nov 2024 09:04:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730878866; cv=none; b=FS6o/+8vLJMRNOeqnDYGmlJh4IDggHb/0x3FwYnflcZ6ckBTPssVv6CubrPtKubFIkNUN4a836llUiKGQovX393cWm4oaS4BvqvhVnIuIdCshq2O+FIkTTei3P2atcR0gg9RLqv0IJkL92GQ2DB05V11b39a5eSa2DGMTuge6Ro=
+	t=1730883892; cv=none; b=l5srd+6VdypwGYJt+sl/owzM2o8wsVpaW03QTNknbDeJMxuvGaWkNgm3Xe4hLHmLyJCsoMbHGeQin92yQPYlqJ/Ru1j4ELBKK3qMUyq2ubZQJnd29gVKAhpOvHmKvIM2VJa5ouVJEFeJN4Y+BqHu9+Ehv9s1xM0YLeFNA+qKoXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730878866; c=relaxed/simple;
-	bh=2xG40PLG+7LNH36Jf4qWz3ke6gBzHABewMI7HXayeyg=;
-	h=From:To:Subject:MIME-Version:Content-Type:Message-ID:Date; b=X/sFYNns2jNHsKEztE/fXXcmM2DJhTp4NVDNplQHDUFZkBVPa+mFintqClOzO2GegpmxfGrSsfL4Z6ZB5p88JRP7AFyA9+I7Wu/cccpjAYOMOoCJZJw0QgaHFlSENBjMtRdHxhxfljSHGxmqMQCz6NLp6IjENZuUK3DVqPzY+MY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=trxhU5Zm; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4A67exXkB2393667, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1730878859; bh=2xG40PLG+7LNH36Jf4qWz3ke6gBzHABewMI7HXayeyg=;
-	h=From:To:Subject:MIME-Version:Content-Type:Message-ID:Date;
-	b=trxhU5Zm3i0cSsFlx1QVd1jiGzY1FZPT/6JPVDvf6HozNGO4A4433OkygPsOewmEQ
-	 1/5PbgElwqkjiKfQE6fWHcwNPYOBHV3/KO83zWWlG4mehLKY+oGrfyHSgM6sFqoo/I
-	 2RfJKVcNNTOtINp45pjmLICBDTzzXSm/2c/1juzC0GsYonFzNLomh49uIyK5jhn5jT
-	 pdMCZ4QqoPadE0MeyZzbyymVFKCEzvyZIkGhFa3yX50oXV0BAudUBHA3FklNp6weY4
-	 bNSJXiNPmMy5gVmc1pfOBIM6ZbnpO1CuMCY0hxU5tsvhhRdj5qZRgKS23ITrCH8YO4
-	 vJ5FZMzGr85Aw==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4A67exXkB2393667
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Wed, 6 Nov 2024 15:40:59 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Wed, 6 Nov 2024 15:40:59 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 6 Nov
- 2024 15:40:59 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-Subject: pull-request: rtw-next-2024-11-06
+	s=arc-20240116; t=1730883892; c=relaxed/simple;
+	bh=4hjDbd/trsCIn2aRjgB2V2YG7yTSRZegeGRPUq5XKTQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=iv5/NHQM2OZId/SNV1vKo/WIdWOjNOAWF0/U8uAbJO+CP3T3xE59QXXjiQaI7MevC2XflGZXRQbD1Mkwe+xTVP8Us1GGURr7YS7ksEIj1WEZ5MD9Ucsm3rEepV3Y6yg+LuGUy15AAaEavONNc8z0iGMD4xdSu7cvLZf52AK9vQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
+Received: from localhost (p200300C5970b9290000000000000032B.dip0.t-ipconnect.de [IPv6:2003:c5:970b:9290::32b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.simonwunderlich.de (Postfix) with ESMTPSA id BCDA8FA132;
+	Wed,  6 Nov 2024 10:04:41 +0100 (CET)
+From: Issam Hamdi <ih@simonwunderlich.de>
+To: ih@simonwunderlich.de
+Cc: johannes@sipsolutions.net,
+	linux-wireless@vger.kernel.org,
+	mathias.kretschmer@fit.fraunhofer.de,
+	se@simonwunderlich.de,
+	simon.wunderlich@open-mesh.com,
+	sw@simonwunderlich.de
+Subject: [PATCH v2 1/2] wifi: ath9k: work around AR_CFG 0xdeadbeef chip hang
+Date: Wed,  6 Nov 2024 10:04:38 +0100
+Message-Id: <20241106090439.3487958-1-ih@simonwunderlich.de>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20241104171627.3789199-1-ih@simonwunderlich.de>
+References: <20241104171627.3789199-1-ih@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Message-ID: <32a36217-21db-4234-bd05-b05fae3eaea4@RTEXMBS04.realtek.com.tw>
-Date: Wed, 6 Nov 2024 15:40:59 +0800
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Simon Wunderlich <simon.wunderlich@open-mesh.com>
 
-A pull-request of rtw-next to wireless-next tree, more info below. Please
-let me know if any problems.
+QCA 802.11n chips (especially AR9330/AR9340) sometimes end up in a state in
+which a read of AR_CFG always returns 0xdeadbeef. This should not happen
+when the power_mode of the device is ATH9K_PM_AWAKE.
 
-Thanks
-Ping-Ke
+This problem is not yet detected by any other workaround in ath9k. No way
+is known to reproduce the problem easily.
 
+This patch originally developed by "Simon Wunderlich <simon.wunderlich@open-mesh.com>"
+and "Sven Eckelmann <sven.eckelmann@open-mesh.com>"
+
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Sven Eckelmann <se@simonwunderlich.de>
+Signed-off-by: Issam Hamdi <ih@simonwunderlich.de>
 ---
+v2: update the Co-developed-by to Signed-off-by
+---
+ drivers/net/wireless/ath/ath9k/ath9k.h |  3 +++
+ drivers/net/wireless/ath/ath9k/debug.c |  1 +
+ drivers/net/wireless/ath/ath9k/debug.h |  1 +
+ drivers/net/wireless/ath/ath9k/init.c  |  1 +
+ drivers/net/wireless/ath/ath9k/link.c  | 31 ++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath9k/main.c  |  4 ++++
+ 6 files changed, 41 insertions(+)
 
-The following changes since commit 1f3de77752a7bf0d1beb44603f048eb46948b9fe:
+diff --git a/drivers/net/wireless/ath/ath9k/ath9k.h b/drivers/net/wireless/ath/ath9k/ath9k.h
+index 29ca65a732a6..c1ce081445a9 100644
+--- a/drivers/net/wireless/ath/ath9k/ath9k.h
++++ b/drivers/net/wireless/ath/ath9k/ath9k.h
+@@ -739,11 +739,13 @@ void ath9k_csa_update(struct ath_softc *sc);
+ #define ATH_ANI_MAX_SKIP_COUNT    10
+ #define ATH_PAPRD_TIMEOUT         100 /* msecs */
+ #define ATH_PLL_WORK_INTERVAL     100
++#define ATH_HANG_WORK_INTERVAL    4000
+ 
+ void ath_hw_check_work(struct work_struct *work);
+ void ath_reset_work(struct work_struct *work);
+ bool ath_hw_check(struct ath_softc *sc);
+ void ath_hw_pll_work(struct work_struct *work);
++void ath_hw_hang_work(struct work_struct *work);
+ void ath_paprd_calibrate(struct work_struct *work);
+ void ath_ani_calibrate(struct timer_list *t);
+ void ath_start_ani(struct ath_softc *sc);
+@@ -1044,6 +1046,7 @@ struct ath_softc {
+ #endif
+ 	struct delayed_work hw_check_work;
+ 	struct delayed_work hw_pll_work;
++	struct delayed_work hw_hang_work;
+ 	struct timer_list sleep_timer;
+ 
+ #ifdef CONFIG_ATH9K_BTCOEX_SUPPORT
+diff --git a/drivers/net/wireless/ath/ath9k/debug.c b/drivers/net/wireless/ath/ath9k/debug.c
+index eff894958a73..6b2469a01f17 100644
+--- a/drivers/net/wireless/ath/ath9k/debug.c
++++ b/drivers/net/wireless/ath/ath9k/debug.c
+@@ -750,6 +750,7 @@ static int read_file_reset(struct seq_file *file, void *data)
+ 		[RESET_TYPE_CALIBRATION] = "Calibration error",
+ 		[RESET_TX_DMA_ERROR] = "Tx DMA stop error",
+ 		[RESET_RX_DMA_ERROR] = "Rx DMA stop error",
++		[RESET_TYPE_DEADBEEF] = "deadbeef hang",
+ 	};
+ 	int i;
+ 
+diff --git a/drivers/net/wireless/ath/ath9k/debug.h b/drivers/net/wireless/ath/ath9k/debug.h
+index 389459c04d14..6ebb6053a8c1 100644
+--- a/drivers/net/wireless/ath/ath9k/debug.h
++++ b/drivers/net/wireless/ath/ath9k/debug.h
+@@ -53,6 +53,7 @@ enum ath_reset_type {
+ 	RESET_TYPE_CALIBRATION,
+ 	RESET_TX_DMA_ERROR,
+ 	RESET_RX_DMA_ERROR,
++	RESET_TYPE_DEADBEEF,
+ 	__RESET_TYPE_MAX
+ };
+ 
+diff --git a/drivers/net/wireless/ath/ath9k/init.c b/drivers/net/wireless/ath/ath9k/init.c
+index f9e77c4624d9..833474d7281f 100644
+--- a/drivers/net/wireless/ath/ath9k/init.c
++++ b/drivers/net/wireless/ath/ath9k/init.c
+@@ -740,6 +740,7 @@ static int ath9k_init_softc(u16 devid, struct ath_softc *sc,
+ 	INIT_WORK(&sc->paprd_work, ath_paprd_calibrate);
+ 	INIT_DELAYED_WORK(&sc->hw_pll_work, ath_hw_pll_work);
+ 	INIT_DELAYED_WORK(&sc->hw_check_work, ath_hw_check_work);
++	INIT_DELAYED_WORK(&sc->hw_hang_work, ath_hw_hang_work);
+ 
+ 	ath9k_init_channel_context(sc);
+ 
+diff --git a/drivers/net/wireless/ath/ath9k/link.c b/drivers/net/wireless/ath/ath9k/link.c
+index d1e5767aab3c..37438960c278 100644
+--- a/drivers/net/wireless/ath/ath9k/link.c
++++ b/drivers/net/wireless/ath/ath9k/link.c
+@@ -142,6 +142,37 @@ void ath_hw_pll_work(struct work_struct *work)
+ 				     msecs_to_jiffies(ATH_PLL_WORK_INTERVAL));
+ }
+ 
++static bool ath_hw_hang_deadbeef(struct ath_softc *sc)
++{
++	struct ath_common *common = ath9k_hw_common(sc->sc_ah);
++	u32 reg;
++
++	/* check for stucked MAC */
++	ath9k_ps_wakeup(sc);
++	reg = REG_READ(sc->sc_ah, AR_CFG);
++	ath9k_ps_restore(sc);
++
++	if (reg != 0xdeadbeef)
++		return false;
++
++	ath_dbg(common, RESET,
++		"0xdeadbeef hang is detected. Schedule chip reset\n");
++	ath9k_queue_reset(sc, RESET_TYPE_DEADBEEF);
++
++	return true;
++}
++
++void ath_hw_hang_work(struct work_struct *work)
++{
++	struct ath_softc *sc = container_of(work, struct ath_softc,
++					    hw_hang_work.work);
++
++	ath_hw_hang_deadbeef(sc);
++
++	ieee80211_queue_delayed_work(sc->hw, &sc->hw_hang_work,
++				     msecs_to_jiffies(ATH_HANG_WORK_INTERVAL));
++}
++
+ /*
+  * PA Pre-distortion.
+  */
+diff --git a/drivers/net/wireless/ath/ath9k/main.c b/drivers/net/wireless/ath/ath9k/main.c
+index b92c89dad8de..024028ce8417 100644
+--- a/drivers/net/wireless/ath/ath9k/main.c
++++ b/drivers/net/wireless/ath/ath9k/main.c
+@@ -186,6 +186,7 @@ static void __ath_cancel_work(struct ath_softc *sc)
+ 	cancel_work_sync(&sc->paprd_work);
+ 	cancel_delayed_work_sync(&sc->hw_check_work);
+ 	cancel_delayed_work_sync(&sc->hw_pll_work);
++	cancel_delayed_work_sync(&sc->hw_hang_work);
+ 
+ #ifdef CONFIG_ATH9K_BTCOEX_SUPPORT
+ 	if (ath9k_hw_mci_is_enabled(sc->sc_ah))
+@@ -208,6 +209,9 @@ void ath_restart_work(struct ath_softc *sc)
+ 		ieee80211_queue_delayed_work(sc->hw, &sc->hw_pll_work,
+ 				     msecs_to_jiffies(ATH_PLL_WORK_INTERVAL));
+ 
++	ieee80211_queue_delayed_work(sc->hw, &sc->hw_hang_work,
++				     msecs_to_jiffies(ATH_HANG_WORK_INTERVAL));
++
+ 	ath_start_ani(sc);
+ }
+ 
 
-  Merge tag 'rtw-next-2024-10-10' of https://github.com/pkshih/rtw (2024-10-17 20:21:22 +0300)
+base-commit: 2b94751626a6d49bbe42a19cc1503bd391016bd5
+-- 
+2.39.2
 
-are available in the Git repository at:
-
-  https://github.com/pkshih/rtw.git tags/rtw-next-2024-11-06
-
-for you to fetch changes up to d41df04183dbeea02b9bffdedb3dd14e4b3d3334:
-
-  wifi: rtlwifi: Remove some exhalbtc deadcode (2024-11-06 14:35:54 +0800)
-
-----------------------------------------------------------------
-rtw-next patches for v6.13
-
-Major changes are listed:
-
-rtw88:
- - support two USB adapters 8821au and 8812au
-
-rtw89:
- - add thermal protection
- - fine tune BT-coexsitence to improve user experience
- - firmware secure boot for WiFi 6 chip
- - more materials for MLO
-
-----------------------------------------------------------------
-Arnd Bergmann (1):
-      wifi: rtw89: fix -Wenum-compare-conditional warnings
-
-Bitterblue Smith (23):
-      wifi: rtw88: Report the signal strength only if it's known
-      wifi: rtw88: Add some definitions for RTL8821AU/RTL8812AU
-      wifi: rtw88: Dump the HW features only for some chips
-      wifi: rtw88: Allow different C2H RA report sizes
-      wifi: rtw88: Extend the init table parsing for RTL8812AU
-      wifi: rtw88: Allow rtw_chip_info.ltecoex_addr to be NULL
-      wifi: rtw88: Let each driver control the power on/off process
-      wifi: rtw88: Enable data rate fallback for older chips
-      wifi: rtw88: Make txagc_remnant_ofdm an array
-      wifi: rtw88: Support TX page sizes bigger than 128
-      wifi: rtw88: Move pwr_track_tbl to struct rtw_rfe_def
-      wifi: rtw88: usb: Set pkt_info.ls for the reserved page
-      wifi: rtw88: Detect beacon loss with chips other than 8822c
-      wifi: rtw88: coex: Support chips without a scoreboard
-      wifi: rtw88: 8821a: Regularly ask for BT info updates
-      wifi: rtw88: 8812a: Mitigate beacon loss
-      wifi: rtw88: Add rtw8812a_table.{c,h}
-      wifi: rtw88: Add rtw8821a_table.{c,h}
-      wifi: rtw88: Add rtw88xxa.{c,h}
-      wifi: rtw88: Add rtw8821a.{c,h}
-      wifi: rtw88: Add rtw8812a.{c,h}
-      wifi: rtw88: Add rtw8821au.c and rtw8812au.c
-      wifi: rtw88: Enable the new RTL8821AU/RTL8812AU drivers
-
-Chih-Kang Chang (2):
-      wifi: rtw89: set pause_data field to avoid transmitting data in scan channels
-      wifi: rtw89: 8852b: change RF mode to normal mode when set channel
-
-Chin-Yen Lee (1):
-      wifi: rtw89: don't check done-ack for entering PS
-
-Ching-Te Ku (2):
-      wifi: rtw89: coex: Set Wi-Fi/Bluetooth priority for Wi-Fi scan case
-      wifi: rtw89: coex: set higher priority to BT when WL scan and BT A2DP exist
-
-Dan Carpenter (1):
-      wifi: rtw89: unlock on error path in rtw89_ops_unassign_vif_chanctx()
-
-Dr. David Alan Gilbert (1):
-      wifi: rtlwifi: Remove some exhalbtc deadcode
-
-Guilherme G. Piccoli (1):
-      wifi: rtlwifi: Drastically reduce the attempts to read efuse in case of failures
-
-Kuan-Chung Chen (1):
-      wifi: rtw89: 8922a: fill the missing OP1dB configuration
-
-Mohammed Anees (1):
-      wifi: rtw88: Refactor looping in rtw_phy_store_tx_power_by_rate
-
-Pei Xiao (1):
-      wifi: rtw89: coex: check NULL return of kmalloc in btc_fw_set_monreg()
-
-Ping-Ke Shih (18):
-      wifi: rtw89: wow: cast nd_config->delay to u64 in tsf arithmetic
-      wifi: rtw89: pci: use 'int' as return type of error code in poll_{tx,rx}dma_ch_idle()
-      wifi: rtw89: 8851b: use 'int' as return type of error code pwr_{on,off}_func()
-      wifi: rtw89: 8852b: use 'int' as return type of error code pwr_{on,off}_func()
-      wifi: rtw89: 8852bt: use 'int' as return type of error code pwr_{on,off}_func()
-      wifi: rtw89: 8852c: use 'int' as return type of error code pwr_{on,off}_func()
-      wifi: rtw89: sar: add supported UNII-4 frequency range along with UNII-3 of SAR subband
-      wifi: rtw89: add thermal protection
-      wifi: rtw89: pci: add quirks by PCI subsystem ID for thermal protection
-      wifi: rtlwifi: use MODULE_FIRMWARE() to declare used firmware
-      wifi: rtw89: efuse: move reading efuse of fw secure info to common
-      wifi: rtw89: efuse: move recognize firmware MSS info v1 to common
-      wifi: rtw89: efuse: read firmware secure info v0 from efuse for WiFi 6 chips
-      wifi: rtw89: fw: shrink download size of security section for RTL8852B
-      wifi: rtw89: fw: set recorded IDMEM share mode in firmware header to register
-      wifi: rtw89: fw: move v1 MSSC out of __parse_security_section() to share with v0
-      wifi: rtw89: fw: use common function to parse security section for WiFi 6 chips
-      wifi: rtw89: mac: no configure CMAC/DMAC tables for firmware secure boot
-
-Po-Hao Huang (3):
-      wifi: rtw89: Fix TX fail with A2DP after scanning
-      wifi: rtw89: Add header conversion for MLO connections
-      wifi: rtw89: Add encryption support for MLO connections
-
-Zong-Zhe Yang (4):
-      wifi: rtw89: regd: block 6 GHz if marked as N/A in regd map
-      wifi: rtw89: chan: manage active interfaces
-      wifi: rtw89: tweak setting of channel and TX power for MLO
-      wifi: rtw89: 8922a: extend RFK handling and consider MLO
-
- .../realtek/rtlwifi/btcoexist/halbtc8723b1ant.c    |   11 -
- .../realtek/rtlwifi/btcoexist/halbtc8723b1ant.h    |    1 -
- .../realtek/rtlwifi/btcoexist/halbtcoutsrc.c       |   79 -
- .../realtek/rtlwifi/btcoexist/halbtcoutsrc.h       |   10 -
- drivers/net/wireless/realtek/rtlwifi/efuse.c       |   11 +-
- .../net/wireless/realtek/rtlwifi/rtl8723ae/sw.c    |    3 +-
- .../net/wireless/realtek/rtlwifi/rtl8821ae/sw.c    |    3 +
- drivers/net/wireless/realtek/rtw88/Kconfig         |   33 +
- drivers/net/wireless/realtek/rtw88/Makefile        |   15 +
- drivers/net/wireless/realtek/rtw88/coex.c          |   37 +-
- drivers/net/wireless/realtek/rtw88/coex.h          |   11 +
- drivers/net/wireless/realtek/rtw88/debug.c         |    2 +-
- drivers/net/wireless/realtek/rtw88/fw.c            |   44 +-
- drivers/net/wireless/realtek/rtw88/fw.h            |   17 +-
- drivers/net/wireless/realtek/rtw88/mac.c           |   13 +-
- drivers/net/wireless/realtek/rtw88/mac.h           |    3 +
- drivers/net/wireless/realtek/rtw88/main.c          |   35 +-
- drivers/net/wireless/realtek/rtw88/main.h          |   39 +-
- drivers/net/wireless/realtek/rtw88/pci.c           |    2 +-
- drivers/net/wireless/realtek/rtw88/phy.c           |   80 +-
- drivers/net/wireless/realtek/rtw88/reg.h           |  174 ++
- drivers/net/wireless/realtek/rtw88/rtw8703b.c      |   21 +-
- drivers/net/wireless/realtek/rtw88/rtw8723d.c      |   21 +-
- drivers/net/wireless/realtek/rtw88/rtw8723x.c      |    3 +-
- drivers/net/wireless/realtek/rtw88/rtw8812a.c      | 1102 ++++++++
- drivers/net/wireless/realtek/rtw88/rtw8812a.h      |   10 +
- .../net/wireless/realtek/rtw88/rtw8812a_table.c    | 2812 ++++++++++++++++++++
- .../net/wireless/realtek/rtw88/rtw8812a_table.h    |   26 +
- drivers/net/wireless/realtek/rtw88/rtw8812au.c     |   28 +
- drivers/net/wireless/realtek/rtw88/rtw8821a.c      | 1197 +++++++++
- drivers/net/wireless/realtek/rtw88/rtw8821a.h      |   10 +
- .../net/wireless/realtek/rtw88/rtw8821a_table.c    | 2350 ++++++++++++++++
- .../net/wireless/realtek/rtw88/rtw8821a_table.h    |   21 +
- drivers/net/wireless/realtek/rtw88/rtw8821au.c     |   28 +
- drivers/net/wireless/realtek/rtw88/rtw8821c.c      |   22 +-
- drivers/net/wireless/realtek/rtw88/rtw8821c.h      |   24 -
- drivers/net/wireless/realtek/rtw88/rtw8822b.c      |   20 +-
- drivers/net/wireless/realtek/rtw88/rtw8822b.h      |   12 -
- drivers/net/wireless/realtek/rtw88/rtw8822c.c      |   28 +-
- drivers/net/wireless/realtek/rtw88/rtw88xxa.c      | 1989 ++++++++++++++
- drivers/net/wireless/realtek/rtw88/rtw88xxa.h      |  175 ++
- drivers/net/wireless/realtek/rtw88/rx.c            |   12 +-
- drivers/net/wireless/realtek/rtw88/sdio.c          |    2 +-
- drivers/net/wireless/realtek/rtw88/tx.c            |    6 +-
- drivers/net/wireless/realtek/rtw88/tx.h            |    4 +-
- drivers/net/wireless/realtek/rtw88/usb.c           |    5 +-
- drivers/net/wireless/realtek/rtw89/cam.c           |   51 +
- drivers/net/wireless/realtek/rtw89/cam.h           |   24 +-
- drivers/net/wireless/realtek/rtw89/chan.c          |  183 +-
- drivers/net/wireless/realtek/rtw89/chan.h          |    8 +
- drivers/net/wireless/realtek/rtw89/coex.c          |   10 +-
- drivers/net/wireless/realtek/rtw89/core.c          |  188 +-
- drivers/net/wireless/realtek/rtw89/core.h          |   62 +-
- drivers/net/wireless/realtek/rtw89/debug.c         |   10 +-
- drivers/net/wireless/realtek/rtw89/efuse.c         |  150 ++
- drivers/net/wireless/realtek/rtw89/efuse.h         |    2 +
- drivers/net/wireless/realtek/rtw89/efuse_be.c      |   52 +-
- drivers/net/wireless/realtek/rtw89/fw.c            |  190 +-
- drivers/net/wireless/realtek/rtw89/fw.h            |   23 +
- drivers/net/wireless/realtek/rtw89/mac.c           |   40 +-
- drivers/net/wireless/realtek/rtw89/mac.h           |   13 +
- drivers/net/wireless/realtek/rtw89/mac80211.c      |    3 +
- drivers/net/wireless/realtek/rtw89/mac_be.c        |    2 +
- drivers/net/wireless/realtek/rtw89/pci.c           |   37 +-
- drivers/net/wireless/realtek/rtw89/pci.h           |   15 +
- drivers/net/wireless/realtek/rtw89/phy.c           |   34 +-
- drivers/net/wireless/realtek/rtw89/reg.h           |    2 +
- drivers/net/wireless/realtek/rtw89/regd.c          |   32 +-
- drivers/net/wireless/realtek/rtw89/rtw8851b.c      |    5 +-
- drivers/net/wireless/realtek/rtw89/rtw8851be.c     |    2 +
- drivers/net/wireless/realtek/rtw89/rtw8852a.c      |    1 +
- drivers/net/wireless/realtek/rtw89/rtw8852ae.c     |    2 +
- drivers/net/wireless/realtek/rtw89/rtw8852b.c      |    5 +-
- .../net/wireless/realtek/rtw89/rtw8852b_common.c   |    8 +-
- drivers/net/wireless/realtek/rtw89/rtw8852be.c     |    2 +
- drivers/net/wireless/realtek/rtw89/rtw8852bt.c     |    5 +-
- drivers/net/wireless/realtek/rtw89/rtw8852bte.c    |    2 +
- drivers/net/wireless/realtek/rtw89/rtw8852c.c      |    5 +-
- drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c  |    6 +-
- drivers/net/wireless/realtek/rtw89/rtw8852ce.c     |    2 +
- drivers/net/wireless/realtek/rtw89/rtw8922a.c      |   88 +-
- drivers/net/wireless/realtek/rtw89/rtw8922a_rfk.c  |   61 +-
- drivers/net/wireless/realtek/rtw89/rtw8922ae.c     |    8 +
- drivers/net/wireless/realtek/rtw89/sar.c           |    6 +-
- 84 files changed, 11390 insertions(+), 500 deletions(-)
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8812a.c
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8812a.h
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8812a_table.c
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8812a_table.h
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8812au.c
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821a.c
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821a.h
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821a_table.c
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821a_table.h
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821au.c
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw88xxa.c
- create mode 100644 drivers/net/wireless/realtek/rtw88/rtw88xxa.h
 
