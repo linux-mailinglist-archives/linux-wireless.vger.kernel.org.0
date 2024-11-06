@@ -1,743 +1,117 @@
-Return-Path: <linux-wireless+bounces-15000-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15001-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 867B59BF016
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 15:26:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F7E9BF21B
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 16:48:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 110991F24894
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 14:26:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7328A1C262E9
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 15:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6690820110E;
-	Wed,  6 Nov 2024 14:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E141202F87;
+	Wed,  6 Nov 2024 15:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ufTSJr3z"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eU7sXoXt"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4273F202636
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Nov 2024 14:26:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9378A1DED78;
+	Wed,  6 Nov 2024 15:46:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730903189; cv=none; b=g2ii6XzZSC40D4X7TM54XM+rD9MdPq2UD8c8JDNOFomKPGOwBnLluK4Ec4v7Xhji0cTpzYK4TIsnCCUJ13TuWEhdzCrpNW1duF0indDOZ57ezl4x7YyYJEZ6Pk3G0dfk2mEGKtDtzxuOGp4+KGhsFxckTDmw+22NFEE6ToPqszk=
+	t=1730908006; cv=none; b=Pecb4pK29Dfr1KU/rCkkVUWhswcs85u+4vGed+zUWDzULGxdK58dBBcVhC8HeqGxnKQx5DWTIOlzy6Tw1OBFFbod4w5nIn+AnMDNFc/B4AL2CfUaitC8N9vYB7mM5PRwsjF4cKDcCicaKayjmyOSCUPHthDEaiDVSsWxiDNj30s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730903189; c=relaxed/simple;
-	bh=vXG17R75jHPMNvniY+lHxfEFGSe0lhLY+DafsfvHaN8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PdSDSvV0GHlDE1GfiE+AldlSK4pIWCbNyLWhG9uZj5Rn7/eYy7mvaB/6oSeQfmuuNc4RTlqoSjY4pqQysntPU0p/duiJ6K4ps+hlniIOZh+zMVbmOwsSV+3Q0YgywjfauzBdd9LARU52T9OnbbGQdgUtbaOodzKBaxYH+/QS/6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ufTSJr3z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87C4AC4CECD;
-	Wed,  6 Nov 2024 14:26:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730903189;
-	bh=vXG17R75jHPMNvniY+lHxfEFGSe0lhLY+DafsfvHaN8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ufTSJr3z29TbS25wRmzaMAhzPhPHn5YzMAcAzKFZtUWwro2t7YBvPHBWlA8YqNSaz
-	 l+AvWBjMEY8QMimg3STWuEIQd83PDqGiJa4wM03rZWdifz7L+ayDFLgg07v2iknivF
-	 fIncupwv/sNpfFjx3KtKMQFSMIdoKYRbcjDRCpityyVbHasMv1LVTT9zZAHWgBAx7M
-	 M06u7td3io4qpX2L39JDYcdYQMJrd3rY4NAIZwa/5FjebUhI6aGLchpMcYy9SazLLX
-	 ZePj5OaJQhjOSwcI6uxoOPfNltUwKbJMSMQd4kMLWxGmb3SLj/LC2FArgM84NlIjH9
-	 7qombPA5jdRnQ==
-From: Kalle Valo <kvalo@kernel.org>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 8/8] wifi: ath12k: Use mac80211 sta's link_sta instead of deflink
-Date: Wed,  6 Nov 2024 16:26:17 +0200
-Message-Id: <20241106142617.660901-9-kvalo@kernel.org>
+	s=arc-20240116; t=1730908006; c=relaxed/simple;
+	bh=G8zBc1oEplggrSzM+Oq3oTQta1iek8SOWLMNciD4Ih8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=nYepZeopsKOMQWC1x/UACYlygpkzXES0j/+lV9kucWc31neYTU7A3Ld6uRvBq0kQnNLdz/E/vUjAH5e3H2w5Ksqn8+qCT7VctTO3itERRlUEGUszhyEs1FzOlXK0vp37VNB4WqEDSuiQLBSxjLQ9HjMdn0hSGuvSYTWjrtf6pPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eU7sXoXt; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-37d6a2aa748so4125932f8f.1;
+        Wed, 06 Nov 2024 07:46:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730908003; x=1731512803; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0EC5VDHqSWLfCPmVYOJBa2WEZ3CWt2YCpwg/25w5EPY=;
+        b=eU7sXoXte0xD8O5bNEZN1OIlZysXgMQE7VgTpiJxhqbB889PwQ+K80qElNLTNoT78n
+         kkETqxk1eziak7mneMjrJIH6xIgq56+C2cJbaXYIx2yv1GZMrFLnUHNghofg6D6YGwsL
+         A4R8H/pThxxGcldAZpmtOhd2ojLINInMIS7t3Wbuygs2Z5FYQ708IpPDECs+cJlTljrl
+         SOvMrfmGvBqtXE4IWD1WbJE8N6enIIh+51TUML+krI4UZkPCHSeYYteSzBRa2KIrYEmF
+         Sj39eIBScLDyEScPoMp992JCLyhkXIMs+qt5G3im1Zq+CKXNnw0ZwmoW3cdeAUNJXASd
+         LaXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730908003; x=1731512803;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0EC5VDHqSWLfCPmVYOJBa2WEZ3CWt2YCpwg/25w5EPY=;
+        b=Ru2P8hsFva2oUX6DpHy/jN1jns0PcLm8YPK+tYXK1pJ+JaRR13JmSie+8d+m2xpaJh
+         MqhcKHktwK5AK5GHOumfym7Ra/p+VBRKoGzImWO0tAZN4f5WwEzyX7smr0iuXXDrE123
+         mkqp6km7t5SZTgp4dDwtNYXqOhfcamDpi+VYUoiNC0p2z0Bpo0QkIK1J7Jc4PS1bterL
+         gwuLVRhUsKhl2eu8NDFOMookbXxOtIfgj3mPMHZOuYPPJxMuMu7HyGoMyPHnHUufwhxg
+         yPxN3RTuXHNFIM1tSdR273D5F79tR502Za057Di9E3ntv5Mxm3Z4Fi3f9UuJ+KzZEzz5
+         HrjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV9Rr7WHaEGqJ+bi77Y8/3VeTCKbWYM7GcMaqghoq8lzz+K7gIq8gLEMCfyMDWRJjS1FH7oRpJn@vger.kernel.org, AJvYcCW5JDXxpJp140+idjBd9hJ25qyZLXykYo5syNoYaxkjqkEoi8cuvFohJsjt4KgeVMu6iCNcqpqCPF0PDsw=@vger.kernel.org, AJvYcCXr6bOgSo3T0UMukhX+lDpIy2MdtDc7uHtDhURlzWd6P7JAK3KQx/ofXPvQZm1+EQtEd4BGpsTqoZZKoBZNttA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywv9XmQp5+/u7vEiICTcs70TzITxgxuIP2nckAJJSaUpTa9l4RY
+	ey9aLx4hoW2W6ph8SrxzVFz60Y1gcelMOwWJ+nm5PHzWXLmnjdeeOgYnfzPe
+X-Google-Smtp-Source: AGHT+IF0gS5uvSc6VBJvVmYfWGVw97ZH6XEwCzJ1W2ZqRxljLrNtNME6ZvLIl6VN+GC+0i3AfJJErQ==
+X-Received: by 2002:a05:6000:3c6:b0:37d:3650:fae5 with SMTP id ffacd0b85a97d-381c7ab60efmr19184695f8f.52.1730908002781;
+        Wed, 06 Nov 2024 07:46:42 -0800 (PST)
+Received: from localhost ([194.120.133.65])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c10b7b97sm19740853f8f.2.2024.11.06.07.46.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Nov 2024 07:46:42 -0800 (PST)
+From: Colin Ian King <colin.i.king@gmail.com>
+To: Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Su Hui <suhui@nfschina.com>,
+	linux-wireless@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] wifi: rtlwifi: rtl8821ae: phy: restore removed code to fix infinite loop
+Date: Wed,  6 Nov 2024 15:46:42 +0000
+Message-Id: <20241106154642.1627886-1-colin.i.king@gmail.com>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241106142617.660901-1-kvalo@kernel.org>
-References: <20241106142617.660901-1-kvalo@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-From: Sriram R <quic_srirrama@quicinc.com>
+A previous clean-up fix removed the assignment of v2 inside a while loop
+that turned it into an infinite loop. Fix this by restoring the assignment
+of v2 from array[] so that v2 is updated inside the loop.
 
-Currently mac80211's struct ieee80211_sta deflink is used to fetch any sta
-related configurations in driver. With MLO multiple link sta's (struct
-ieee80211_link_sta) are affiliated to an ML sta and corresponding link configs
-are present in sta->link[]. Fetch link sta of corresponding link from ML sta
-and use the same for configurations.
-
-Add ath12k_get_link_sta() helper to fetch ieee80211_link_sta from arsta. But as
-ath12k_mac_op_sta_rc_update() is called in atomic context the helper cannot be
-used and instead rcu_dereference() has to be called directly.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
-Co-developed-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Fixes: cda37445718d ("wifi: rtlwifi: rtl8821ae: phy: remove some useless code")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 292 ++++++++++++++++++--------
- 1 file changed, 209 insertions(+), 83 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 5d25543258a3..c603d46201cd 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -522,6 +522,23 @@ ath12k_mac_get_link_bss_conf(struct ath12k_link_vif *arvif)
- 	return link_conf;
- }
- 
-+static struct ieee80211_link_sta *ath12k_mac_get_link_sta(struct ath12k_link_sta *arsta)
-+{
-+	struct ath12k_sta *ahsta = arsta->ahsta;
-+	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(ahsta);
-+	struct ieee80211_link_sta *link_sta;
-+
-+	lockdep_assert_wiphy(ahsta->ahvif->ah->hw->wiphy);
-+
-+	if (arsta->link_id >= IEEE80211_MLD_MAX_NUM_LINKS)
-+		return NULL;
-+
-+	link_sta = wiphy_dereference(ahsta->ahvif->ah->hw->wiphy,
-+				     sta->link[arsta->link_id]);
-+
-+	return link_sta;
-+}
-+
- static bool ath12k_mac_bitrate_is_cck(int bitrate)
- {
- 	switch (bitrate) {
-@@ -1905,6 +1922,7 @@ static void ath12k_peer_assoc_h_rates(struct ath12k *ar,
- 	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(arvif->ahvif);
- 	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
- 	struct wmi_rate_set_arg *rateset = &arg->peer_legacy_rates;
-+	struct ieee80211_link_sta *link_sta;
- 	struct cfg80211_chan_def def;
- 	const struct ieee80211_supported_band *sband;
- 	const struct ieee80211_rate *rates;
-@@ -1919,9 +1937,16 @@ static void ath12k_peer_assoc_h_rates(struct ath12k *ar,
- 	if (WARN_ON(ath12k_mac_vif_link_chan(vif, arvif->link_id, &def)))
- 		return;
- 
-+	link_sta = ath12k_mac_get_link_sta(arsta);
-+	if (!link_sta) {
-+		ath12k_warn(ar->ab, "unable to access link sta in peer assoc rates for sta %pM link %u\n",
-+			    sta->addr, arsta->link_id);
-+		return;
-+	}
-+
- 	band = def.chan->band;
- 	sband = hw->wiphy->bands[band];
--	ratemask = sta->deflink.supp_rates[band];
-+	ratemask = link_sta->supp_rates[band];
- 	ratemask &= arvif->bitrate_mask.control[band].legacy;
- 	rates = sband->bitrates;
- 
-@@ -1968,7 +1993,8 @@ static void ath12k_peer_assoc_h_ht(struct ath12k *ar,
- {
- 	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(arvif->ahvif);
- 	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
--	const struct ieee80211_sta_ht_cap *ht_cap = &sta->deflink.ht_cap;
-+	const struct ieee80211_sta_ht_cap *ht_cap;
-+	struct ieee80211_link_sta *link_sta;
- 	struct cfg80211_chan_def def;
- 	enum nl80211_band band;
- 	const u8 *ht_mcs_mask;
-@@ -1981,6 +2007,14 @@ static void ath12k_peer_assoc_h_ht(struct ath12k *ar,
- 	if (WARN_ON(ath12k_mac_vif_link_chan(vif, arvif->link_id, &def)))
- 		return;
- 
-+	link_sta = ath12k_mac_get_link_sta(arsta);
-+	if (!link_sta) {
-+		ath12k_warn(ar->ab, "unable to access link sta in peer assoc ht for sta %pM link %u\n",
-+			    sta->addr, arsta->link_id);
-+		return;
-+	}
-+
-+	ht_cap = &link_sta->ht_cap;
- 	if (!ht_cap->ht_supported)
- 		return;
- 
-@@ -2004,7 +2038,7 @@ static void ath12k_peer_assoc_h_ht(struct ath12k *ar,
- 	if (ht_cap->cap & IEEE80211_HT_CAP_LDPC_CODING)
- 		arg->ldpc_flag = true;
- 
--	if (sta->deflink.bandwidth >= IEEE80211_STA_RX_BW_40) {
-+	if (link_sta->bandwidth >= IEEE80211_STA_RX_BW_40) {
- 		arg->bw_40 = true;
- 		arg->peer_rate_caps |= WMI_HOST_RC_CW40_FLAG;
- 	}
-@@ -2054,7 +2088,7 @@ static void ath12k_peer_assoc_h_ht(struct ath12k *ar,
- 			arg->peer_ht_rates.rates[i] = i;
- 	} else {
- 		arg->peer_ht_rates.num_rates = n;
--		arg->peer_nss = min(sta->deflink.rx_nss, max_nss);
-+		arg->peer_nss = min(link_sta->rx_nss, max_nss);
- 	}
- 
- 	ath12k_dbg(ar->ab, ATH12K_DBG_MAC, "mac ht peer %pM mcs cnt %d nss %d\n",
-@@ -2130,7 +2164,8 @@ static void ath12k_peer_assoc_h_vht(struct ath12k *ar,
- {
- 	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(arvif->ahvif);
- 	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
--	const struct ieee80211_sta_vht_cap *vht_cap = &sta->deflink.vht_cap;
-+	const struct ieee80211_sta_vht_cap *vht_cap;
-+	struct ieee80211_link_sta *link_sta;
- 	struct cfg80211_chan_def def;
- 	enum nl80211_band band;
- 	const u16 *vht_mcs_mask;
-@@ -2144,6 +2179,14 @@ static void ath12k_peer_assoc_h_vht(struct ath12k *ar,
- 	if (WARN_ON(ath12k_mac_vif_link_chan(vif, arvif->link_id, &def)))
- 		return;
- 
-+	link_sta = ath12k_mac_get_link_sta(arsta);
-+	if (!link_sta) {
-+		ath12k_warn(ar->ab, "unable to access link sta in peer assoc vht for sta %pM link %u\n",
-+			    sta->addr, arsta->link_id);
-+		return;
-+	}
-+
-+	vht_cap = &link_sta->vht_cap;
- 	if (!vht_cap->vht_supported)
- 		return;
- 
-@@ -2176,10 +2219,10 @@ static void ath12k_peer_assoc_h_vht(struct ath12k *ar,
- 				 (1U << (IEEE80211_HT_MAX_AMPDU_FACTOR +
- 					ampdu_factor)) - 1);
- 
--	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_80)
-+	if (link_sta->bandwidth == IEEE80211_STA_RX_BW_80)
- 		arg->bw_80 = true;
- 
--	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_160)
-+	if (link_sta->bandwidth == IEEE80211_STA_RX_BW_160)
- 		arg->bw_160 = true;
- 
- 	/* Calculate peer NSS capability from VHT capabilities if STA
-@@ -2193,7 +2236,7 @@ static void ath12k_peer_assoc_h_vht(struct ath12k *ar,
- 		    vht_mcs_mask[i])
- 			max_nss = i + 1;
- 	}
--	arg->peer_nss = min(sta->deflink.rx_nss, max_nss);
-+	arg->peer_nss = min(link_sta->rx_nss, max_nss);
- 	arg->rx_max_rate = __le16_to_cpu(vht_cap->vht_mcs.rx_highest);
- 	arg->rx_mcs_set = __le16_to_cpu(vht_cap->vht_mcs.rx_mcs_map);
- 	arg->tx_max_rate = __le16_to_cpu(vht_cap->vht_mcs.tx_highest);
-@@ -2228,8 +2271,9 @@ static void ath12k_peer_assoc_h_he(struct ath12k *ar,
- {
- 	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(arvif->ahvif);
- 	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
--	const struct ieee80211_sta_he_cap *he_cap = &sta->deflink.he_cap;
-+	const struct ieee80211_sta_he_cap *he_cap;
- 	struct ieee80211_bss_conf *link_conf;
-+	struct ieee80211_link_sta *link_sta;
- 	int i;
- 	u8 ampdu_factor, max_nss;
- 	u8 rx_mcs_80 = IEEE80211_HE_MCS_NOT_SUPPORTED;
-@@ -2245,6 +2289,14 @@ static void ath12k_peer_assoc_h_he(struct ath12k *ar,
- 		return;
- 	}
- 
-+	link_sta = ath12k_mac_get_link_sta(arsta);
-+	if (!link_sta) {
-+		ath12k_warn(ar->ab, "unable to access link sta in peer assoc he for sta %pM link %u\n",
-+			    sta->addr, arsta->link_id);
-+		return;
-+	}
-+
-+	he_cap = &link_sta->he_cap;
- 	if (!he_cap->has_he)
- 		return;
- 
-@@ -2282,7 +2334,7 @@ static void ath12k_peer_assoc_h_he(struct ath12k *ar,
- 	else
- 		max_nss = rx_mcs_80;
- 
--	arg->peer_nss = min(sta->deflink.rx_nss, max_nss);
-+	arg->peer_nss = min(link_sta->rx_nss, max_nss);
- 
- 	memcpy(&arg->peer_he_cap_macinfo, he_cap->he_cap_elem.mac_cap_info,
- 	       sizeof(he_cap->he_cap_elem.mac_cap_info));
-@@ -2309,10 +2361,10 @@ static void ath12k_peer_assoc_h_he(struct ath12k *ar,
- 				   IEEE80211_HE_MAC_CAP3_MAX_AMPDU_LEN_EXP_MASK);
- 
- 	if (ampdu_factor) {
--		if (sta->deflink.vht_cap.vht_supported)
-+		if (link_sta->vht_cap.vht_supported)
- 			arg->peer_max_mpdu = (1 << (IEEE80211_HE_VHT_MAX_AMPDU_FACTOR +
- 						    ampdu_factor)) - 1;
--		else if (sta->deflink.ht_cap.ht_supported)
-+		else if (link_sta->ht_cap.ht_supported)
- 			arg->peer_max_mpdu = (1 << (IEEE80211_HE_HT_MAX_AMPDU_FACTOR +
- 						    ampdu_factor)) - 1;
- 	}
-@@ -2353,7 +2405,7 @@ static void ath12k_peer_assoc_h_he(struct ath12k *ar,
- 	if (he_cap->he_cap_elem.mac_cap_info[0] & IEEE80211_HE_MAC_CAP0_TWT_REQ)
- 		arg->twt_requester = true;
- 
--	switch (sta->deflink.bandwidth) {
-+	switch (link_sta->bandwidth) {
- 	case IEEE80211_STA_RX_BW_160:
- 		if (he_cap->he_cap_elem.phy_cap_info[0] &
- 		    IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PLUS80_MHZ_IN_5G) {
-@@ -2393,7 +2445,8 @@ static void ath12k_peer_assoc_h_he_6ghz(struct ath12k *ar,
- {
- 	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(arvif->ahvif);
- 	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
--	const struct ieee80211_sta_he_cap *he_cap = &sta->deflink.he_cap;
-+	const struct ieee80211_sta_he_cap *he_cap;
-+	struct ieee80211_link_sta *link_sta;
- 	struct cfg80211_chan_def def;
- 	enum nl80211_band band;
- 	u8 ampdu_factor, mpdu_density;
-@@ -2403,22 +2456,31 @@ static void ath12k_peer_assoc_h_he_6ghz(struct ath12k *ar,
- 
- 	band = def.chan->band;
- 
--	if (!arg->he_flag || band != NL80211_BAND_6GHZ || !sta->deflink.he_6ghz_capa.capa)
-+	link_sta = ath12k_mac_get_link_sta(arsta);
-+	if (!link_sta) {
-+		ath12k_warn(ar->ab, "unable to access link sta in peer assoc he 6ghz for sta %pM link %u\n",
-+			    sta->addr, arsta->link_id);
-+		return;
-+	}
-+
-+	he_cap = &link_sta->he_cap;
-+
-+	if (!arg->he_flag || band != NL80211_BAND_6GHZ || !link_sta->he_6ghz_capa.capa)
- 		return;
- 
--	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_40)
-+	if (link_sta->bandwidth == IEEE80211_STA_RX_BW_40)
- 		arg->bw_40 = true;
- 
--	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_80)
-+	if (link_sta->bandwidth == IEEE80211_STA_RX_BW_80)
- 		arg->bw_80 = true;
- 
--	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_160)
-+	if (link_sta->bandwidth == IEEE80211_STA_RX_BW_160)
- 		arg->bw_160 = true;
- 
--	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_320)
-+	if (link_sta->bandwidth == IEEE80211_STA_RX_BW_320)
- 		arg->bw_320 = true;
- 
--	arg->peer_he_caps_6ghz = le16_to_cpu(sta->deflink.he_6ghz_capa.capa);
-+	arg->peer_he_caps_6ghz = le16_to_cpu(link_sta->he_6ghz_capa.capa);
- 
- 	mpdu_density = u32_get_bits(arg->peer_he_caps_6ghz,
- 				    IEEE80211_HE_6GHZ_CAP_MIN_MPDU_START);
-@@ -2462,10 +2524,23 @@ static void ath12k_peer_assoc_h_smps(struct ath12k_link_sta *arsta,
- 				     struct ath12k_wmi_peer_assoc_arg *arg)
- {
- 	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
--	const struct ieee80211_he_6ghz_capa *he_6ghz_capa = &sta->deflink.he_6ghz_capa;
--	const struct ieee80211_sta_ht_cap *ht_cap = &sta->deflink.ht_cap;
-+	const struct ieee80211_he_6ghz_capa *he_6ghz_capa;
-+	struct ath12k_link_vif *arvif = arsta->arvif;
-+	const struct ieee80211_sta_ht_cap *ht_cap;
-+	struct ieee80211_link_sta *link_sta;
-+	struct ath12k *ar = arvif->ar;
- 	int smps;
- 
-+	link_sta = ath12k_mac_get_link_sta(arsta);
-+	if (!link_sta) {
-+		ath12k_warn(ar->ab, "unable to access link sta in peer assoc he for sta %pM link %u\n",
-+			    sta->addr, arsta->link_id);
-+		return;
-+	}
-+
-+	he_6ghz_capa = &link_sta->he_6ghz_capa;
-+	ht_cap = &link_sta->ht_cap;
-+
- 	if (!ht_cap->ht_supported && !he_6ghz_capa->capa)
- 		return;
- 
-@@ -2591,17 +2666,17 @@ static int ath12k_peer_assoc_qos_ap(struct ath12k *ar,
- 	return ret;
- }
- 
--static bool ath12k_mac_sta_has_ofdm_only(struct ieee80211_sta *sta)
-+static bool ath12k_mac_sta_has_ofdm_only(struct ieee80211_link_sta *sta)
- {
--	return sta->deflink.supp_rates[NL80211_BAND_2GHZ] >>
-+	return sta->supp_rates[NL80211_BAND_2GHZ] >>
- 	       ATH12K_MAC_FIRST_OFDM_RATE_IDX;
- }
- 
- static enum wmi_phy_mode ath12k_mac_get_phymode_vht(struct ath12k *ar,
--						    struct ieee80211_sta *sta)
-+						    struct ieee80211_link_sta *link_sta)
- {
--	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_160) {
--		switch (sta->deflink.vht_cap.cap &
-+	if (link_sta->bandwidth == IEEE80211_STA_RX_BW_160) {
-+		switch (link_sta->vht_cap.cap &
- 			IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_MASK) {
- 		case IEEE80211_VHT_CAP_SUPP_CHAN_WIDTH_160MHZ:
- 			return MODE_11AC_VHT160;
-@@ -2613,74 +2688,74 @@ static enum wmi_phy_mode ath12k_mac_get_phymode_vht(struct ath12k *ar,
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
+index 1be51ea3f3c8..0d4d787e8be5 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
+@@ -2033,8 +2033,10 @@ static bool _rtl8821ae_phy_config_bb_with_pgheaderfile(struct ieee80211_hw *hw,
+ 			if (!_rtl8821ae_check_condition(hw, v1)) {
+ 				i += 2; /* skip the pair of expression*/
+ 				v2 = array[i+1];
+-				while (v2 != 0xDEAD)
++				while (v2 != 0xDEAD) {
+ 					i += 3;
++					v2 = array[i + 1];
++				}
+ 			}
  		}
  	}
- 
--	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_80)
-+	if (link_sta->bandwidth == IEEE80211_STA_RX_BW_80)
- 		return MODE_11AC_VHT80;
- 
--	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_40)
-+	if (link_sta->bandwidth == IEEE80211_STA_RX_BW_40)
- 		return MODE_11AC_VHT40;
- 
--	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_20)
-+	if (link_sta->bandwidth == IEEE80211_STA_RX_BW_20)
- 		return MODE_11AC_VHT20;
- 
- 	return MODE_UNKNOWN;
- }
- 
- static enum wmi_phy_mode ath12k_mac_get_phymode_he(struct ath12k *ar,
--						   struct ieee80211_sta *sta)
-+						   struct ieee80211_link_sta *link_sta)
- {
--	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_160) {
--		if (sta->deflink.he_cap.he_cap_elem.phy_cap_info[0] &
-+	if (link_sta->bandwidth == IEEE80211_STA_RX_BW_160) {
-+		if (link_sta->he_cap.he_cap_elem.phy_cap_info[0] &
- 		     IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G)
- 			return MODE_11AX_HE160;
--		else if (sta->deflink.he_cap.he_cap_elem.phy_cap_info[0] &
-+		else if (link_sta->he_cap.he_cap_elem.phy_cap_info[0] &
- 		     IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PLUS80_MHZ_IN_5G)
- 			return MODE_11AX_HE80_80;
- 		/* not sure if this is a valid case? */
- 		return MODE_11AX_HE160;
- 	}
- 
--	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_80)
-+	if (link_sta->bandwidth == IEEE80211_STA_RX_BW_80)
- 		return MODE_11AX_HE80;
- 
--	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_40)
-+	if (link_sta->bandwidth == IEEE80211_STA_RX_BW_40)
- 		return MODE_11AX_HE40;
- 
--	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_20)
-+	if (link_sta->bandwidth == IEEE80211_STA_RX_BW_20)
- 		return MODE_11AX_HE20;
- 
- 	return MODE_UNKNOWN;
- }
- 
- static enum wmi_phy_mode ath12k_mac_get_phymode_eht(struct ath12k *ar,
--						    struct ieee80211_sta *sta)
-+						    struct ieee80211_link_sta *link_sta)
- {
--	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_320)
--		if (sta->deflink.eht_cap.eht_cap_elem.phy_cap_info[0] &
-+	if (link_sta->bandwidth == IEEE80211_STA_RX_BW_320)
-+		if (link_sta->eht_cap.eht_cap_elem.phy_cap_info[0] &
- 		    IEEE80211_EHT_PHY_CAP0_320MHZ_IN_6GHZ)
- 			return MODE_11BE_EHT320;
- 
--	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_160) {
--		if (sta->deflink.he_cap.he_cap_elem.phy_cap_info[0] &
-+	if (link_sta->bandwidth == IEEE80211_STA_RX_BW_160) {
-+		if (link_sta->he_cap.he_cap_elem.phy_cap_info[0] &
- 		    IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G)
- 			return MODE_11BE_EHT160;
- 
--		if (sta->deflink.he_cap.he_cap_elem.phy_cap_info[0] &
-+		if (link_sta->he_cap.he_cap_elem.phy_cap_info[0] &
- 			 IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_80PLUS80_MHZ_IN_5G)
- 			return MODE_11BE_EHT80_80;
- 
- 		ath12k_warn(ar->ab, "invalid EHT PHY capability info for 160 Mhz: %d\n",
--			    sta->deflink.he_cap.he_cap_elem.phy_cap_info[0]);
-+			    link_sta->he_cap.he_cap_elem.phy_cap_info[0]);
- 
- 		return MODE_11BE_EHT160;
- 	}
- 
--	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_80)
-+	if (link_sta->bandwidth == IEEE80211_STA_RX_BW_80)
- 		return MODE_11BE_EHT80;
- 
--	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_40)
-+	if (link_sta->bandwidth == IEEE80211_STA_RX_BW_40)
- 		return MODE_11BE_EHT40;
- 
--	if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_20)
-+	if (link_sta->bandwidth == IEEE80211_STA_RX_BW_20)
- 		return MODE_11BE_EHT20;
- 
- 	return MODE_UNKNOWN;
-@@ -2691,6 +2766,7 @@ static void ath12k_peer_assoc_h_phymode(struct ath12k *ar,
- 					struct ath12k_link_sta *arsta,
- 					struct ath12k_wmi_peer_assoc_arg *arg)
- {
-+	struct ieee80211_link_sta *link_sta;
- 	struct cfg80211_chan_def def;
- 	enum nl80211_band band;
- 	const u8 *ht_mcs_mask;
-@@ -2709,33 +2785,40 @@ static void ath12k_peer_assoc_h_phymode(struct ath12k *ar,
- 	ht_mcs_mask = arvif->bitrate_mask.control[band].ht_mcs;
- 	vht_mcs_mask = arvif->bitrate_mask.control[band].vht_mcs;
- 
-+	link_sta = ath12k_mac_get_link_sta(arsta);
-+	if (!link_sta) {
-+		ath12k_warn(ar->ab, "unable to access link sta in peer assoc he for sta %pM link %u\n",
-+			    sta->addr, arsta->link_id);
-+		return;
-+	}
-+
- 	switch (band) {
- 	case NL80211_BAND_2GHZ:
--		if (sta->deflink.eht_cap.has_eht) {
--			if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_40)
-+		if (link_sta->eht_cap.has_eht) {
-+			if (link_sta->bandwidth == IEEE80211_STA_RX_BW_40)
- 				phymode = MODE_11BE_EHT40_2G;
- 			else
- 				phymode = MODE_11BE_EHT20_2G;
--		} else if (sta->deflink.he_cap.has_he) {
--			if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_80)
-+		} else if (link_sta->he_cap.has_he) {
-+			if (link_sta->bandwidth == IEEE80211_STA_RX_BW_80)
- 				phymode = MODE_11AX_HE80_2G;
--			else if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_40)
-+			else if (link_sta->bandwidth == IEEE80211_STA_RX_BW_40)
- 				phymode = MODE_11AX_HE40_2G;
- 			else
- 				phymode = MODE_11AX_HE20_2G;
--		} else if (sta->deflink.vht_cap.vht_supported &&
-+		} else if (link_sta->vht_cap.vht_supported &&
- 		    !ath12k_peer_assoc_h_vht_masked(vht_mcs_mask)) {
--			if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_40)
-+			if (link_sta->bandwidth == IEEE80211_STA_RX_BW_40)
- 				phymode = MODE_11AC_VHT40;
- 			else
- 				phymode = MODE_11AC_VHT20;
--		} else if (sta->deflink.ht_cap.ht_supported &&
-+		} else if (link_sta->ht_cap.ht_supported &&
- 			   !ath12k_peer_assoc_h_ht_masked(ht_mcs_mask)) {
--			if (sta->deflink.bandwidth == IEEE80211_STA_RX_BW_40)
-+			if (link_sta->bandwidth == IEEE80211_STA_RX_BW_40)
- 				phymode = MODE_11NG_HT40;
- 			else
- 				phymode = MODE_11NG_HT20;
--		} else if (ath12k_mac_sta_has_ofdm_only(sta)) {
-+		} else if (ath12k_mac_sta_has_ofdm_only(link_sta)) {
- 			phymode = MODE_11G;
- 		} else {
- 			phymode = MODE_11B;
-@@ -2744,16 +2827,16 @@ static void ath12k_peer_assoc_h_phymode(struct ath12k *ar,
- 	case NL80211_BAND_5GHZ:
- 	case NL80211_BAND_6GHZ:
- 		/* Check EHT first */
--		if (sta->deflink.eht_cap.has_eht) {
--			phymode = ath12k_mac_get_phymode_eht(ar, sta);
--		} else if (sta->deflink.he_cap.has_he) {
--			phymode = ath12k_mac_get_phymode_he(ar, sta);
--		} else if (sta->deflink.vht_cap.vht_supported &&
-+		if (link_sta->eht_cap.has_eht) {
-+			phymode = ath12k_mac_get_phymode_eht(ar, link_sta);
-+		} else if (link_sta->he_cap.has_he) {
-+			phymode = ath12k_mac_get_phymode_he(ar, link_sta);
-+		} else if (link_sta->vht_cap.vht_supported &&
- 		    !ath12k_peer_assoc_h_vht_masked(vht_mcs_mask)) {
--			phymode = ath12k_mac_get_phymode_vht(ar, sta);
--		} else if (sta->deflink.ht_cap.ht_supported &&
-+			phymode = ath12k_mac_get_phymode_vht(ar, link_sta);
-+		} else if (link_sta->ht_cap.ht_supported &&
- 			   !ath12k_peer_assoc_h_ht_masked(ht_mcs_mask)) {
--			if (sta->deflink.bandwidth >= IEEE80211_STA_RX_BW_40)
-+			if (link_sta->bandwidth >= IEEE80211_STA_RX_BW_40)
- 				phymode = MODE_11NA_HT40;
- 			else
- 				phymode = MODE_11NA_HT20;
-@@ -2841,15 +2924,25 @@ static void ath12k_peer_assoc_h_eht(struct ath12k *ar,
- 				    struct ath12k_wmi_peer_assoc_arg *arg)
- {
- 	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
--	const struct ieee80211_sta_eht_cap *eht_cap = &sta->deflink.eht_cap;
--	const struct ieee80211_sta_he_cap *he_cap = &sta->deflink.he_cap;
- 	const struct ieee80211_eht_mcs_nss_supp_20mhz_only *bw_20;
- 	const struct ieee80211_eht_mcs_nss_supp_bw *bw;
-+	const struct ieee80211_sta_eht_cap *eht_cap;
-+	const struct ieee80211_sta_he_cap *he_cap;
-+	struct ieee80211_link_sta *link_sta;
- 	u32 *rx_mcs, *tx_mcs;
- 
- 	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
- 
--	if (!sta->deflink.he_cap.has_he || !eht_cap->has_eht)
-+	link_sta = ath12k_mac_get_link_sta(arsta);
-+	if (!link_sta) {
-+		ath12k_warn(ar->ab, "unable to access link sta in peer assoc eht for sta %pM link %u\n",
-+			    sta->addr, arsta->link_id);
-+		return;
-+	}
-+
-+	eht_cap = &link_sta->eht_cap;
-+	he_cap = &link_sta->he_cap;
-+	if (!he_cap->has_he || !eht_cap->has_eht)
- 		return;
- 
- 	arg->eht_flag = true;
-@@ -2868,7 +2961,7 @@ static void ath12k_peer_assoc_h_eht(struct ath12k *ar,
- 	rx_mcs = arg->peer_eht_rx_mcs_set;
- 	tx_mcs = arg->peer_eht_tx_mcs_set;
- 
--	switch (sta->deflink.bandwidth) {
-+	switch (link_sta->bandwidth) {
- 	case IEEE80211_STA_RX_BW_320:
- 		bw = &eht_cap->eht_mcs_nss_supp.bw._320;
- 		ath12k_mac_set_eht_mcs(bw->rx_tx_mcs9_max_nss,
-@@ -4665,6 +4758,7 @@ static int ath12k_mac_station_assoc(struct ath12k *ar,
- 	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(arvif->ahvif);
- 	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
- 	struct ath12k_wmi_peer_assoc_arg peer_arg;
-+	struct ieee80211_link_sta *link_sta;
- 	int ret;
- 	struct cfg80211_chan_def def;
- 	enum nl80211_band band;
-@@ -4710,7 +4804,13 @@ static int ath12k_mac_station_assoc(struct ath12k *ar,
- 	 * fixed param.
- 	 * Note that all other rates and NSS will be disabled for this peer.
- 	 */
--	if (sta->deflink.vht_cap.vht_supported && num_vht_rates == 1) {
-+	link_sta = ath12k_mac_get_link_sta(arsta);
-+	if (!link_sta) {
-+		ath12k_warn(ar->ab, "unable to access link sta in station assoc\n");
-+		return -EINVAL;
-+	}
-+
-+	if (link_sta->vht_cap.vht_supported && num_vht_rates == 1) {
- 		ret = ath12k_mac_set_peer_vht_fixed_rate(arvif, arsta, mask,
- 							 band);
- 		if (ret)
-@@ -4724,8 +4824,7 @@ static int ath12k_mac_station_assoc(struct ath12k *ar,
- 		return 0;
- 
- 	ret = ath12k_setup_peer_smps(ar, arvif, arsta->addr,
--				     &sta->deflink.ht_cap,
--				     &sta->deflink.he_6ghz_capa);
-+				     &link_sta->ht_cap, &link_sta->he_6ghz_capa);
- 	if (ret) {
- 		ath12k_warn(ar->ab, "failed to setup peer SMPS for vdev %d: %d\n",
- 			    arvif->vdev_id, ret);
-@@ -4769,6 +4868,7 @@ static int ath12k_mac_station_disassoc(struct ath12k *ar,
- 
- static void ath12k_sta_rc_update_wk(struct wiphy *wiphy, struct wiphy_work *wk)
- {
-+	struct ieee80211_link_sta *link_sta;
- 	struct ath12k *ar;
- 	struct ath12k_link_vif *arvif;
- 	struct ieee80211_sta *sta;
-@@ -4903,7 +5003,14 @@ static void ath12k_sta_rc_update_wk(struct wiphy *wiphy, struct wiphy_work *wk)
- 		 * TODO: Check RATEMASK_CMDID to support auto rates selection
- 		 * across HT/VHT and for multiple VHT MCS support.
- 		 */
--		if (sta->deflink.vht_cap.vht_supported && num_vht_rates == 1) {
-+		link_sta = ath12k_mac_get_link_sta(arsta);
-+		if (!link_sta) {
-+			ath12k_warn(ar->ab, "unable to access link sta in peer assoc he for sta %pM link %u\n",
-+				    sta->addr, arsta->link_id);
-+			return;
-+		}
-+
-+		if (link_sta->vht_cap.vht_supported && num_vht_rates == 1) {
- 			ath12k_mac_set_peer_vht_fixed_rate(arvif, arsta, mask,
- 							   band);
- 		} else {
-@@ -5621,10 +5728,23 @@ static void ath12k_mac_op_sta_rc_update(struct ieee80211_hw *hw,
- 
- 	spin_unlock_bh(&ar->ab->base_lock);
- 
-+	if (arsta->link_id >= IEEE80211_MLD_MAX_NUM_LINKS) {
-+		rcu_read_unlock();
-+		return;
-+	}
-+
-+	link_sta = rcu_dereference(sta->link[arsta->link_id]);
-+	if (!link_sta) {
-+		rcu_read_unlock();
-+		ath12k_warn(ar->ab, "unable to access link sta in rc update for sta %pM link %u\n",
-+			    sta->addr, arsta->link_id);
-+		return;
-+	}
-+
- 	ath12k_dbg(ar->ab, ATH12K_DBG_MAC,
- 		   "mac sta rc update for %pM changed %08x bw %d nss %d smps %d\n",
--		   arsta->addr, changed, sta->deflink.bandwidth, sta->deflink.rx_nss,
--		   sta->deflink.smps_mode);
-+		   arsta->addr, changed, link_sta->bandwidth, link_sta->rx_nss,
-+		   link_sta->smps_mode);
- 
- 	spin_lock_bh(&ar->data_lock);
- 
-@@ -5635,12 +5755,12 @@ static void ath12k_mac_op_sta_rc_update(struct ieee80211_hw *hw,
- 	}
- 
- 	if (changed & IEEE80211_RC_NSS_CHANGED)
--		arsta->nss = sta->deflink.rx_nss;
-+		arsta->nss = link_sta->rx_nss;
- 
- 	if (changed & IEEE80211_RC_SMPS_CHANGED) {
- 		smps = WMI_PEER_SMPS_PS_NONE;
- 
--		switch (sta->deflink.smps_mode) {
-+		switch (link_sta->smps_mode) {
- 		case IEEE80211_SMPS_AUTOMATIC:
- 		case IEEE80211_SMPS_OFF:
- 			smps = WMI_PEER_SMPS_PS_NONE;
-@@ -5652,8 +5772,8 @@ static void ath12k_mac_op_sta_rc_update(struct ieee80211_hw *hw,
- 			smps = WMI_PEER_SMPS_DYNAMIC;
- 			break;
- 		default:
--			ath12k_warn(ar->ab, "Invalid smps %d in sta rc update for %pM\n",
--				    sta->deflink.smps_mode, arsta->addr);
-+			ath12k_warn(ar->ab, "Invalid smps %d in sta rc update for %pM link %u\n",
-+				    link_sta->smps_mode, arsta->addr, link_sta->link_id);
- 			smps = WMI_PEER_SMPS_PS_NONE;
- 			break;
- 		}
-@@ -9259,10 +9379,11 @@ static void ath12k_mac_set_bitrate_mask_iter(void *data,
- {
- 	struct ath12k_link_vif *arvif = data;
- 	struct ath12k_sta *ahsta = ath12k_sta_to_ahsta(sta);
--	struct ath12k_link_sta *arsta = &ahsta->deflink;
-+	struct ath12k_link_sta *arsta;
- 	struct ath12k *ar = arvif->ar;
- 
--	if (arsta->arvif != arvif)
-+	arsta = rcu_dereference(ahsta->link[arvif->link_id]);
-+	if (!arsta || arsta->arvif != arvif)
- 		return;
- 
- 	spin_lock_bh(&ar->data_lock);
-@@ -9277,11 +9398,16 @@ static void ath12k_mac_disable_peer_fixed_rate(void *data,
- {
- 	struct ath12k_link_vif *arvif = data;
- 	struct ath12k_sta *ahsta = ath12k_sta_to_ahsta(sta);
--	struct ath12k_link_sta *arsta = &ahsta->deflink;
-+	struct ath12k_link_sta *arsta;
- 	struct ath12k *ar = arvif->ar;
- 	int ret;
- 
--	if (arsta->arvif != arvif)
-+	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
-+
-+	arsta = wiphy_dereference(ath12k_ar_to_hw(ar)->wiphy,
-+				  ahsta->link[arvif->link_id]);
-+
-+	if (!arsta || arsta->arvif != arvif)
- 		return;
- 
- 	ret = ath12k_wmi_set_peer_param(ar, arsta->addr,
 -- 
 2.39.5
 
