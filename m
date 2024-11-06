@@ -1,106 +1,97 @@
-Return-Path: <linux-wireless+bounces-14973-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-14974-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F08FB9BE41F
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 11:20:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D0FC9BE53D
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 12:09:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DBDA1C23175
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 10:20:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 977BAB211DB
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 11:09:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D66391DDC0F;
-	Wed,  6 Nov 2024 10:20:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94BE51DE3D5;
+	Wed,  6 Nov 2024 11:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ut/+8wcH"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Zio44dHF"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A581F1DACAA;
-	Wed,  6 Nov 2024 10:20:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA9C1DDA15
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Nov 2024 11:09:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730888415; cv=none; b=RfatBXdtdWlCrDxNll7OyNw9MmYL5cDVa4wyG0CU1t1bEmrQQ9qEYbnOEt8QyIk+ILWxoxS4Ny2Ap60sSF/Npb1iNBXsr3LW6cY8WFkamxWODHQqzUcbPzNxMuQSqOTUa/rjaX2NKJQStPYi2l6t21ws+h504OYUwBMenXGEny4=
+	t=1730891375; cv=none; b=GkR8osWcRQJRCsL7eApykvX9mxOeO3Qo6ON2C5qRMov3A2eXZd/f9NX9hFqsAQbSCiQOokrJAbKYZkxF+7hvefu06yyntsL0R+gZ+S+BBOQrUcdANH0luMenZYlT7tw8vMkp24KnAK1sq//wJMqOBaPfioCqFrNg+eoUE0Ns4Qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730888415; c=relaxed/simple;
-	bh=lXpB45YEiKcKgz5mKJKvT1SzNckif79TOWmyG/tgmZw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VnvX/RsHuudM36dCB5xARYo568rxcPNOzEObuhQkkEcR6sCjAkloUnw+Ly0sqORsq+WapDznOD7THE+5HsMkX+oMUkjY0AOfFmdxarPrGQ7/dgKKLoOw6Qia88O44qRRkITyhmRGv/hbdmWiGFb8Pze1O2uEphqSc7qmsOYUkfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ut/+8wcH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D91CCC4CECD;
-	Wed,  6 Nov 2024 10:20:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730888415;
-	bh=lXpB45YEiKcKgz5mKJKvT1SzNckif79TOWmyG/tgmZw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ut/+8wcHMoHlEah+z1uEA09kuKP1PPJjtCkUptqxPo+CPvuPAm71BTxkR945Ht+ZW
-	 xL7hMe364LooETN3T87cqFTEYhAL8mEJy3X+Ql4+i3yHPYN9FD5MrCTIb42tKHcBGV
-	 tIGJORhucoV8CjDu/K1VBOTn1RLjnBmjqghYD4PDVbYLx2XlewK2JoT1IqsM4xMF5T
-	 uccr0sQHILtsz9FpxP/WuMnI7K0FyMQ4+YmP1ClURfsom3qDTkCUUJyXYY7Zjxu4Bd
-	 PhdjzhpkKnDZ7DPAqU9ngWAX11qJaLd8t04UCZsF+YhBNjgNJvdgEtSPKrBl/A8qO9
-	 TDiZ3YgHQd4bw==
-Date: Wed, 6 Nov 2024 10:20:10 +0000
-From: Simon Horman <horms@kernel.org>
-To: "Nemanov, Michael" <michael.nemanov@ti.com>
-Cc: Kalle Valo <kvalo@kernel.org>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Sabeeh Khan <sabeeh-khan@ti.com>
-Subject: Re: [PATCH v3 12/17] wifi: cc33xx: Add scan.c, scan.h
-Message-ID: <20241106102010.GN4507@kernel.org>
-References: <20240806170018.638585-1-michael.nemanov@ti.com>
- <20240806170018.638585-13-michael.nemanov@ti.com>
- <20240809160355.GD1951@kernel.org>
- <33f3b6a4-f907-4374-90ac-d81a81700936@ti.com>
- <20241102120030.GG1838431@kernel.org>
- <d9640623-4b93-4fce-991f-f881a230b143@ti.com>
+	s=arc-20240116; t=1730891375; c=relaxed/simple;
+	bh=VI3ws/fM4UGfWMPbcUp9n+7P4ZC9x39Rchidleai794=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MQt1MjGiVsINdzH+EsK+OVACRL+lJuvpy+7qcqNVe09eQESn6H0f1pKjT0b/Bl2Or42OpiL/fuA86A3z9zGLv2Sx+1x89AnQ1NZz7wX6mMQ0nWn8DKTBldZkvNwS5HfDHoVgjeccpavjJi4OhakLpG5MslUADm5Q70bO9RW4VgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Zio44dHF; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=VI3ws/fM4UGfWMPbcUp9n+7P4ZC9x39Rchidleai794=;
+	t=1730891373; x=1732100973; b=Zio44dHF9gnRO23FJueRIsOPKVRfxqCE5AxAH25C1dMTfKO
+	ugs+pbqB6bqHc36dla9+An0V/OHw5esP2X7mxk9DSQR2KNnfTBj75YAnZRcfm2fLEtlG3S0Pgdse9
+	9+4oyq28nTElmzrtECoACTp9+ADGeNajw9LM12nfYbN2kT81NN1bkiSah4JBQQztpSQ35G39Hh/Mh
+	yNLuPwBNNOwhHeKbz/T+sbt1gg6CKlfKEpfhx/FBOVgTMoDwGH5k7uS1RRyY/1a+o7X++K/T2QvS5
+	/I2gnih+VRkuofS1owKOCfnkiLNOJkCEbgUBMJyn5OLgMDqdyuk8zuk/RWGTKVww==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1t8duk-0000000Fagl-2Xj0;
+	Wed, 06 Nov 2024 12:09:30 +0100
+Message-ID: <df6c3317a71c8fa76f2b64623a0278f1fd0a68dd.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: mac80211: fix mbss changed flags corruption on 32
+ bit systems
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Issam Hamdi <ih@simonwunderlich.de>
+Cc: linux-wireless@vger.kernel.org, sw@simonwunderlich.de, Kretschmer
+ Mathias <mathias.kretschmer@fit.fraunhofer.de>
+Date: Wed, 06 Nov 2024 12:09:29 +0100
+In-Reply-To: <20241104172415.3790038-1-ih@simonwunderlich.de>
+References: <20241104172415.3790038-1-ih@simonwunderlich.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d9640623-4b93-4fce-991f-f881a230b143@ti.com>
+X-malware-bazaar: not-scanned
 
-On Sun, Nov 03, 2024 at 03:09:22PM +0200, Nemanov, Michael wrote:
-> On 11/2/2024 2:00 PM, Simon Horman wrote:
-> 
-> ...
-> 
-> > 
-> > I'm a but unsure why you see that, but what I was referring to is this:
-> > 
-> > $ ./scripts/kernel-doc -none drivers/net/wireless/ti/cc33xx/scan.h
-> > drivers/net/wireless/ti/cc33xx/scan.h:104: warning: Function parameter or struct member 'header' not described in 'cc33xx_cmd_ssid_list'
-> > drivers/net/wireless/ti/cc33xx/scan.h:104: warning: Function parameter or struct member 'scan_type' not described in 'cc33xx_cmd_ssid_list'
-> > drivers/net/wireless/ti/cc33xx/scan.h:104: warning: Function parameter or struct member 'n_ssids' not described in 'cc33xx_cmd_ssid_list'
-> > drivers/net/wireless/ti/cc33xx/scan.h:104: warning: Function parameter or struct member 'ssids' not described in 'cc33xx_cmd_ssid_list'
-> > drivers/net/wireless/ti/cc33xx/scan.h:104: warning: Function parameter or struct member 'padding' not described in 'cc33xx_cmd_ssid_list'
-> > drivers/net/wireless/ti/cc33xx/scan.h:104: warning: Excess struct member 'num_of_ssids' description in 'cc33xx_cmd_ssid_list'
-> > drivers/net/wireless/ti/cc33xx/scan.h:104: warning: Excess struct member 'ssid_list' description in 'cc33xx_cmd_ssid_list'
-> > drivers/net/wireless/ti/cc33xx/scan.h:149: warning: bad line:
-> > drivers/net/wireless/ti/cc33xx/scan.h:177: warning: cannot understand function prototype: 'struct sched_scan_plan_cmd '
-> > drivers/net/wireless/ti/cc33xx/scan.h:227: warning: Function parameter or struct member 'u' not described in 'scan_param'
-> > drivers/net/wireless/ti/cc33xx/scan.h:227: warning: Excess struct member 'one_shot' description in 'scan_param'
-> > drivers/net/wireless/ti/cc33xx/scan.h:227: warning: Excess struct member 'periodic' description in 'scan_param'
-> > drivers/net/wireless/ti/cc33xx/scan.h:269: warning: Function parameter or struct member 'header' not described in 'cc33xx_cmd_scan_params'
-> > drivers/net/wireless/ti/cc33xx/scan.h:269: warning: Function parameter or struct member 'padding' not described in 'cc33xx_cmd_scan_params'
-> > drivers/net/wireless/ti/cc33xx/scan.h:295: warning: Function parameter or struct member 'header' not described in 'cc33xx_cmd_set_ies'
-> > drivers/net/wireless/ti/cc33xx/scan.h:319: warning: Function parameter or struct member 'header' not described in 'cc33xx_cmd_scan_stop'
-> > drivers/net/wireless/ti/cc33xx/scan.h:319: warning: Function parameter or struct member 'padding' not described in 'cc33xx_cmd_scan_stop'
-> 
-> Right, fixed in v4, thanks.
-> 
-> In general, all of those structs are internal to scan.c and not part of an
-> interface so I think I'll move them there and drop the comments.
+On Mon, 2024-11-04 at 18:24 +0100, Issam Hamdi wrote:
+> On 32-bit systems, the size of an unsigned long is 4 bytes,
 
-Thanks, I think that makes sense.
+yes
+
+> while a u64 is 8 bytes.
+
+yes
+
+
+> Therefore, when using
+> or_each_set_bit(bit, &bits, sizeof(changed) * BITS_PER_BYTE),
+> the code is incorrectly searching for a bit in a 32-bit
+> variable that is expected to be 64 bits in size,
+> leading to incorrect bit finding.
+
+No.
+
+> +++ b/net/mac80211/mesh.c
+> @@ -1164,7 +1164,7 @@ void ieee80211_mbss_info_change_notify(struct ieee8=
+0211_sub_if_data *sdata,
+
+You evidently have _hundreds_ of out-of-tree lines, probably some of
+those cause this bug too.
+
+johannes
+
 
