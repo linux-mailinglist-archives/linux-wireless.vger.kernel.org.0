@@ -1,147 +1,112 @@
-Return-Path: <linux-wireless+bounces-15002-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15003-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CB769BF284
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 17:05:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E307E9BF347
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 17:33:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDEE51C24FF4
-	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 16:05:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CF3FB23B81
+	for <lists+linux-wireless@lfdr.de>; Wed,  6 Nov 2024 16:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EDA0207A26;
-	Wed,  6 Nov 2024 16:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCFA81DE4C8;
+	Wed,  6 Nov 2024 16:33:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="jxopp3eJ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58CDE20651D
-	for <linux-wireless@vger.kernel.org>; Wed,  6 Nov 2024 16:03:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 796DE18C006
+	for <linux-wireless@vger.kernel.org>; Wed,  6 Nov 2024 16:33:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730909016; cv=none; b=OncgkChFUEL3j3TDtoLC3xHjlZE0G1nYhB8AI5+MCbs7pQVsBPd8pc/E2RoVd9HIkfqrCTN4TtnkFENCiUk2g5QXC11olym7TfWxPOceHXNsF4A3kyyxMfuU0LFMNaoKCy7LMdvC7A/xlEjIQNV6reoqkgzC0oZxEm7ubdb5zXE=
+	t=1730910816; cv=none; b=riaOCaRU1JIsgLaCLg1xJXbm7R5nQMyGi51E/G8osbt74QcRhk3HoNnJ2fFYXX8Cpusy9VoT1yFswhIMe9cmKSoJQ519nYhDICFsYSjZjlWOduor6+EvN7xgAx2QgABdwwIP7aOLUDZB5oEhmiHIBeW46vi+q4nvVVDEONc0wP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730909016; c=relaxed/simple;
-	bh=pYnLyeRIOGl7ILblxkvKP3fj8mdw/52D14Kx6IwEMz8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aGRSL0GrKRCEvdHOKm++5aV2MqqkVstw92LMeOSpmORHbTHr5Yi8ThWg3pCAM3r3KDQnmrnkQrm49B9xpZz/+WhlJdylwcb65Mh64DEZzAOkhvlpTZe2HKgmVcehqIs5r8v1/hak6b6eE/08UdOV4NxWmUxcpVjwp+IOQycOlAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
-Received: from prime.localnet (p200300c5970b92D8e31DdA1625464252.dip0.t-ipconnect.de [IPv6:2003:c5:970b:92d8:e31d:da16:2546:4252])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 5E80EFA132;
-	Wed,  6 Nov 2024 17:03:31 +0100 (CET)
-From: Simon Wunderlich <sw@simonwunderlich.de>
-To: Sven Eckelmann <se@simonwunderlich.de>, Kalle Valo <kvalo@kernel.org>,
- Toke =?ISO-8859-1?Q?H=F8iland=2DJ=F8rgensen?= <toke@toke.dk>
-Cc: linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>,
- ih@simonwunderlich.de
-Subject:
- Re: [PATCH] ath9k: Add RX inactivity detection and reset chip when it occurs
-Date: Wed, 06 Nov 2024 17:03:30 +0100
-Message-ID: <5009451.31r3eYUQgx@prime>
-In-Reply-To: <87msic78no.fsf@toke.dk>
-References:
- <20241106-ath9k-deaf-detection-v1-1-736a150d2425@redhat.com>
- <3288096.AJdgDx1Vlc@ripper> <87msic78no.fsf@toke.dk>
+	s=arc-20240116; t=1730910816; c=relaxed/simple;
+	bh=TOjT+zshhFpdo6lBx6fcteXiF2VcYA1Ba4TvPy9nWQs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=grpFKs1iNFNaNLm/lf8zG9k/5cD7WplFqsSjGK9M6ImzXyYSp3jhjooBGFWqmHRCm4bEasnmXvDC2VRsC1nE3DAhCsu3qdCir4BEU3UJ2Wob00IW85FdHSxmgQ2B6TZgQbQZzc3UOPIxbhpYzyxuyr79XqweuGFh+juqxlDcMvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=jxopp3eJ; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A6EEbsj002132;
+	Wed, 6 Nov 2024 16:33:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	ZQKIT6c74vByRYBdMjUT89Dd/ZlSwel2Hjs5bBgGbYM=; b=jxopp3eJsEERLr4K
+	tvAlbb8uJbBe8eub5rdJOkOC3e9s6Fn5fMYM55+Pnk+0wki2ws8y4KeCIbAJmlCD
+	GQeboA4TtWWpys8UQMdr3m899sO3DOlaz6VqFu0+87aa9WSlXX5lGF8f1x8QvahV
+	Oxa10uRkDAY9zR80vzhf4kV5FdOBl23Z36pVwqDgqotJTWcU89IXb6LDISdFS65B
+	wLJOiXkEgMfttkN9zFErRycMpyFza2jnmm4RQywxhViNZ81ZpTkOdtgQ4a/fTmK6
+	PkM6l0R7VKsqWXyU7tzhepKOCL2gRHAHz1/gfHuuc/mheVdtPqE2bMh2KPDNiSVi
+	mYVJNw==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42r072hybd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 06 Nov 2024 16:33:19 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4A6GXIex001001
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 6 Nov 2024 16:33:18 GMT
+Received: from [10.48.242.250] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 6 Nov 2024
+ 08:33:18 -0800
+Message-ID: <c1303d43-47a0-4369-b5ab-e307c05dfd2b@quicinc.com>
+Date: Wed, 6 Nov 2024 08:33:17 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart4653308.LvFx2qVVIh";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/8] wifi: ath12k: Add MLO station state change handling
+To: Kalle Valo <kvalo@kernel.org>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20241106142617.660901-1-kvalo@kernel.org>
+ <20241106142617.660901-2-kvalo@kernel.org>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <20241106142617.660901-2-kvalo@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: YUBtJy1rWW3ooa7UlRf8Ut0jdmTp2-EB
+X-Proofpoint-GUID: YUBtJy1rWW3ooa7UlRf8Ut0jdmTp2-EB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ priorityscore=1501 mlxscore=0 suspectscore=0 mlxlogscore=877 spamscore=0
+ adultscore=0 malwarescore=0 phishscore=0 impostorscore=0 bulkscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411060128
 
---nextPart4653308.LvFx2qVVIh
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="iso-8859-1"; protected-headers="v1"
-From: Simon Wunderlich <sw@simonwunderlich.de>
-Date: Wed, 06 Nov 2024 17:03:30 +0100
-Message-ID: <5009451.31r3eYUQgx@prime>
-In-Reply-To: <87msic78no.fsf@toke.dk>
-MIME-Version: 1.0
-
-On Wednesday, November 6, 2024 3:12:59 PM CET Toke H=F8iland-J=F8rgensen wr=
-ote:
-> Sven Eckelmann <se@simonwunderlich.de> writes:
-> > Hi,
-> >=20
-> > Thank you for submitting the patch.
-> >=20
-> > On Wednesday, 6 November 2024 13:41:44 CET Toke H=F8iland-J=F8rgensen w=
-rote:
-> >> Since this is based on ideas by all three people, but not actually
-> >> directly derived from any of the patches, I'm including Suggested-by
-> >> tags from Simon, Sven and Felix below, which should hopefully serve as
-> >> proper credit.
-> >=20
-> > At least for me, this is more than enough. Thanks.
-> >=20
-> > I don't have the setup at the moment to test it again - maybe Issam can=
- do
-> > this. One concern I would have (because I don't find the notes regarding
-> > this problem), is whether this check is now breaking because we count
-> > more things. In the past, rxlp/rxok was used for the check. And now I
-> > don't know whether the count for the other ones were still increasing.
-> >=20
-> > * RXHP (rather sure that "high priority frame" wasn't increasing)
-> > * RXEOL ("no RX descriptors available" - I would guess no, but I can't =
-say
-> > for>=20
-> >   sure)
-> >=20
-> > * RXORN ("FIFO overrun" I would guess no, but I can't say for sure)
-> >=20
-> > Reviewed-by: Sven Eckelmann <se@simonwunderlich.de>
->=20
-> Great, thanks for the review! I'll let it sit in patchwork for a little
-> while to give people a chance to test it out before sending it over to
-> Kalle to be applied :)
->=20
-> -Toke
-
-Hi Toke,
-
-this looks good to me in general. I'm not sure either about the particular =
-RX=20
-interrupts. We can test this by putting the AP in a shield box and verify t=
-hat=20
-the counters are actually increasing, and that should be good enough.
-
-Acked-by: Simon Wunderlich <sw@simonwunderlich.de>
-
-Thank you!
-      Simon
-
---nextPart4653308.LvFx2qVVIh
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE1ilQI7G+y+fdhnrfoSvjmEKSnqEFAmcrk1MACgkQoSvjmEKS
-nqGa3Q//ShTg2V0elDv9t9qZLNeyDo1nG3ucqXHvKIenKNOzCUjp8ohWDXUQXdaP
-3oVaMEgFdOFnRFucZ001eHbXfxGmPJOR1ZXNhJ0XhpeaEAf7swA2+4yUWh07W9Po
-Duj7YNgPW3M1HvRomhwL1EVb+gJWM/gZYHAJULahNJgAn7wJ8Orexb/EyGvIqryU
-A6v15VfHtE8FMP6maKaLvnHodNcD1YslUYtWpBKLkWhEVIwbFshKklprIgN0Q7Jg
-fkVfS1MY9AcB7gK6JwBZniJ4CQ94iHxvhg+rXVipRdDna3f0WlDeL/d0ZO/mDFSl
-RalcYaMbdU9UwQ5H2T4HIB02612cAR9K6Wsdce5FLvcjqb3Ms2BzESxwtKTUZda9
-xz5HiJRX8BpxzlRFfRSuSBC1kj4W3MOrO29t4w4MbVcRNNcPogHZiL9WX/04+f6u
-GC00mO0ExMPFkr7CwmaMh9jP6kZNxsgN+weNZYIaWFFPpbBActQa0wbAlT7furVm
-NSIjbaUSRH2t6Ghq01P3dbad27n90iVJtUX86OS3iemzuK8qySMH6DCvXnEE3KfL
-dZecEfhotqVb/X0XDXUNB3/Jrpg4hWkzuXJj8+1+zhton7dq/wB8lziHIsOmcO8O
-xfJq3O6Y3P7HPT3zanLAtHdwEDWt89Q3hSj/8lZRuf4ocAlChuo=
-=cCxw
------END PGP SIGNATURE-----
-
---nextPart4653308.LvFx2qVVIh--
-
+On 11/6/2024 6:26 AM, Kalle Valo wrote:
+> From: Sriram R <quic_srirrama@quicinc.com>
+> 
+> Add changes to handle multi-link station state change with proper
+> link handling and add code changes for ML peer creation, peer deletion.
+> 
+> In ath12k_mac_assign_link_sta() initialise all arsta fields first and only then
+> call rcu_assign_pointer(). This is to make sure that readers don't have access
+> to arsta which is still modified.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
+> Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
+> Signed-off-by: Harshitha Prem <quic_hprem@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
 
 
