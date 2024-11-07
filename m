@@ -1,143 +1,108 @@
-Return-Path: <linux-wireless+bounces-15105-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15106-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AC7C9C0B0C
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 17:14:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1D7D9C0CD7
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 18:24:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8B84B23F98
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 16:14:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A1151F22873
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 17:24:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C166216DE8;
-	Thu,  7 Nov 2024 16:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4CA8215F72;
+	Thu,  7 Nov 2024 17:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="vqIW2SJA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bPuEi8ki"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609E5215F78;
-	Thu,  7 Nov 2024 16:10:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0E7DDBE;
+	Thu,  7 Nov 2024 17:24:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730995859; cv=none; b=pcWTuPcFWFaH7u2HB/j/dMfEdAwPWvUXDOAXxK0kOoetXszO95cLGTR6qllc3Sn24cqZoFwU8Ddw0wblQC6ExC882DY36ORPmtfL854H0i2Owg8PB8eeuoQ1dZlM1gXp/TvFAvn7OVy4nINf/5LawcuokUatibnMcAsiwxnQU5I=
+	t=1731000286; cv=none; b=kyrQfoVM4KoV9MYRoIFhzyFBeG7Ejag0qkt4Bd82tmaSuu4gohEJzRSYNMP5uaKUH92W3DK4N1So3YAbg3PcujwDpqFsZuOOlO18ZGRVdcA6JCWJa2g8nr9E/X/0YgxZMuK+vRnTLJyyZVqxjC8NGkyFQNONOS4Njt7+MQWaEPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730995859; c=relaxed/simple;
-	bh=A9w+u3CsqskKvuGeLw6D4GG/x+d1Y3h3vOx2YposhFU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Xvl/hQOfrp60PSmQZIZFvGkCX3dhTAi0ll/mUlDPNznF5HiCuKFfJdanFtdB0ZVBkrBue2Lp/0xHmsLbtp0Tl3+vmkegmJEJ4eaIhrLOnTDqiSKntplnwdraYRht82aezrWFdfdACE0sL/1+gF3LPc3AVGIgVNnel00oU2wD2QM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=vqIW2SJA; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id BAF4188EFB;
-	Thu,  7 Nov 2024 17:10:48 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1730995850;
-	bh=tc9Yi/GcN5ZUBUaiPp9JFPJV349+IorIcrOsLbesgS8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=vqIW2SJAS1XrOUfrR8XNirugxJLH7+gWouXUwJl9bVpZrJQy9YYzigwMpePr5X97o
-	 oDxki4xEPXi0vtfT1HtB0x02X8yeWcLhMERGetNZDRUup9IRGKSYjWaV6hYRn/IEvD
-	 wkbj4RrKKFE9Ry2VKFORTi9X8G93oSLf+Ed6eHT77xHkuibQ+XNjpXq5D5yjcVkVlm
-	 Oymenkt/364BxAG2WsUXqDOFmWLGgW1cTEV/LXk8Az7My/Iul8T7H9lLWRWl2Y8CgG
-	 hEW9R/a06g6CM9WVIuR8qYL2TyUhFnbmpczB2p4DQ3OPzuMKFhZc12/ch8soGwXmyA
-	 uFue+xYdJHtPA==
-Message-ID: <fcdfa93a-2db4-49ad-8947-ca43be329250@denx.de>
-Date: Thu, 7 Nov 2024 17:10:13 +0100
+	s=arc-20240116; t=1731000286; c=relaxed/simple;
+	bh=sg2Dc3F6xQkzhFA7IWW2guSDvBgmwZwByl6ILrJ9EIA=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=QfxejUWRxtievDJbB0eVV8+YKncmjFGYOzS1gBQLLUXz5tB3LuXgIPCJ2O5nu16/VxdbSHmZ0b5hKNV0h3BjxZt2lNnzCORjkPAOWW46KiBGuyhYxJFySpbr+fruAMp6kidcEXd4++ms4tTJomrxNWP50+ep6XgKCPAB2L6xlYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bPuEi8ki; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EB0EC4CECC;
+	Thu,  7 Nov 2024 17:24:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731000286;
+	bh=sg2Dc3F6xQkzhFA7IWW2guSDvBgmwZwByl6ILrJ9EIA=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=bPuEi8kiWS44lOnll1Q/XLOMk/lcyjmhgKQbSGeTenMDfSJBp0eHXTbsoknYLst1B
+	 9a2Vvnx8mRGNMBp6mA421mcjI9UkdRcGJ/BaD8ndSKNVQBWJNra3KmJMyWng1UP1Gg
+	 POG+cX8YpVsC6hgn+r1W7z1p7M9T86cYVLPuTwFKzRkE1yx1IpqPMGF20neVE8KPPK
+	 tYvw8OOPZ+uIAYakDV29TDow2CI6BpDo3azWV+OMdZODWR9Ij+US3ntNePmf/Y1SOQ
+	 DHZck/gS/x1ecVsbDqUb5i8W65h9n4iykdOUm6O5d0UoiELmfWIYGNKDr09tT3eVe+
+	 NuD5xZjpadh3A==
+From: Kalle Valo <kvalo@kernel.org>
+To: N van Bolhuis <nvbolhuis@gmail.com>
+Cc: brcm80211@lists.linux.dev,  linux-wireless@vger.kernel.org,
+  arend.vanspriel@broadcom.com
+Subject: Re: [PATCH v2] wifi: brcmfmac: Fix oops due to NULL pointer
+ dereference in 'brcmf_sdiod_sglist_rw'
+References: <20241107132903.13513-1-nvbolhuis@gmail.com>
+	<87ed3n5dxu.fsf@kernel.org>
+	<CAP6rjy=gjbQg6hF4xzKZjabdtGVYijrPhn7zUHiw3ZHFJbQfWA@mail.gmail.com>
+Date: Thu, 07 Nov 2024 19:24:43 +0200
+In-Reply-To: <CAP6rjy=gjbQg6hF4xzKZjabdtGVYijrPhn7zUHiw3ZHFJbQfWA@mail.gmail.com>
+	(N. van Bolhuis's message of "Thu, 7 Nov 2024 17:09:36 +0100")
+Message-ID: <875xoz5544.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: wilc1000: Rework bus locking
-To: Ajay.Kathat@microchip.com, alexis.lothore@bootlin.com,
- linux-wireless@vger.kernel.org
-Cc: davem@davemloft.net, adham.abozaeid@microchip.com,
- claudiu.beznea@tuxon.dev, conor+dt@kernel.org, edumazet@google.com,
- kuba@kernel.org, kvalo@kernel.org, krzk+dt@kernel.org, pabeni@redhat.com,
- robh@kernel.org, devicetree@vger.kernel.org, netdev@vger.kernel.org
-References: <20241022013855.284783-1-marex@denx.de>
- <c9e98811-15f5-427a-82f7-2e7fff4a9873@bootlin.com>
- <8e28ba76-ecfa-49b6-89b5-1edabb22129d@denx.de>
- <a4c8c489-c6b9-4a38-84ab-f08409baccff@microchip.com>
- <5e2a5056-78ac-4be0-83ca-4aa55f524535@denx.de>
- <880baad9-be3d-41b2-bea3-620f915ca397@microchip.com>
- <9d20b408-72a4-49f0-aca6-108dfdd65f99@denx.de>
- <16e5c8d7-64ac-424e-9430-b683ae16a34e@denx.de>
- <9888f605-ee68-4bd3-8d1d-aeef247d23d0@microchip.com>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <9888f605-ee68-4bd3-8d1d-aeef247d23d0@microchip.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain
 
-On 11/7/24 2:28 AM, Ajay.Kathat@microchip.com wrote:
-> Hi Marek,
+N van Bolhuis <nvbolhuis@gmail.com> writes:
 
-Hello Ajay,
-
-> On 11/4/24 04:44, Marek Vasut wrote:
->> EXTERNAL EMAIL: Do not click links or open attachments unless you know the
->> content is safe
+> Op do 7 nov 2024 om 15:14 schreef Kalle Valo <kvalo@kernel.org>:
+>
 >>
->> On 10/23/24 8:47 PM, Marek Vasut wrote:
+>> nvbolhuis@gmail.com writes:
 >>
->> Hello again,
+>> > From: Norbert van Bolhuis <nvbolhuis@gmail.com>
+>> >
+>> > This patch fixes a NULL pointer dereference bug in brcmfmac that occurs
+>> > when a high 'sd_sgentry_align' value applies (e.g. 512) and a lot of queued SKBs
+>> > are sent from the pkt queue.
+>> >
+>> > The problem is the number of entries in the pre-allocated sgtable, it is
+>> > nents = max(rxglom_size, txglom_size) + max(rxglom_size, txglom_size) >> 4 + 1.
+>> > Given the default [rt]xglom_size=32 it's actually 35 which is too small.
+>> > Worst case, the pkt queue can end up with 64 SKBs. This occurs when a new SKB
+>> > is added for each original SKB if tailroom isn't enough to hold tail_pad.
+>> > At least one sg entry is needed for each SKB. So, eventually the "skb_queue_walk loop"
+>> > in brcmf_sdiod_sglist_rw may run out of sg entries. This makes sg_next return
+>> > NULL and this causes the oops.
+>> >
+>> > The patch sets nents to max(rxglom_size, txglom_size) * 2 to be able handle
+>> > the worst-case.
+>> > Btw. this requires only 64-35=29 * 16 (or 20 if CONFIG_NEED_SG_DMA_LENGTH) = 464
+>> > additional bytes of memory.
+>> >
+>> > Signed-off-by: Norbert van Bolhuis <nvbolhuis@gmail.com>
 >>
->>>> Is power-save enabled during the test. With PS enabled, The SDIO
->>>> commands may
->>>> fail momentarily but it should recover.
->>>
->>> It seems it gets enabled after first ifconfig up, that's a good hint,
->>> I'll try to disable it and see if that makes them errors go away. Thanks!
->>>
->>> Do you have any details on WHY would such sporadic errors occur and how
->>> to make those go away even with PS enabled ?
->> Can you explain why does uAPSD (iw ...set power_save off) adversely
->> affect SDIO bus stability ?
+>> What changed from v1? Please include a list of changes after '--' line,
+>> but no need to resend because of this.
 >>
-> 
-> SDIO bus errors can occur for different reasons and those errors can be of
-> recoverable or non-recoverable type. For non-recoverable failures like
-> firmware crashes, the retry mechanism may not help to resolve the issue. If
-> the error is recoverable then driver should work with retry attempts.
-> I think you are observing the bus errors messages and it is recovering after
-> that. Is my understanding correct?
+>
+> Nothing changed, I just added the s-o-b.
 
-I don't know. Is there any way to make the WILC firmware produce debug 
-output , so we can figure out what is going on "on the other side" ?
+That's still something you should mention in the changelog, but this
+mail is good enough this time.
 
-Are you able to provide me (maybe off-list) some debug firmware build ?
-(or can I get firmware sources and build and debug my own WILC firmware 
-on the Cortus CPU?)
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-> With the previous shared test procedure, which makes the interface up/down
-> continuously, the station may not go into the Doze/Awake sequence since that
-> mode switching gets activated after connection with AP.
-
-What does this mean ? I can trigger the SDIO errors even without being 
-connected to any AP , so this is something between the WILC and the SDIO 
-host, the radio is likely not involved , right ?
-
->> Can you explain how to prevent that or shall we disable uAPSD altogether ?
-> 
-> Could you please share the test procedure and logs. I am occupied at the
-> moment but I shall make some time to look into it and get a better understanding.
-
-The simplest test procedure is this:
-
-$ while true ; do ifconfig wlan0 up ; ifconfig wlan0 down ; done
-
-As for the logs, MMCI controller sporadically reports either Command or 
-Data CRC error, so likely the SDIO response (from WILC to Host) is 
-corrupted.
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
