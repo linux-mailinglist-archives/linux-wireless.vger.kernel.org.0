@@ -1,173 +1,468 @@
-Return-Path: <linux-wireless+bounces-15061-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15062-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B4B29C0579
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 13:17:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8A789C0614
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 13:43:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EC641C22670
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 12:17:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18DAA1C209D3
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 12:43:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E2961DE4F1;
-	Thu,  7 Nov 2024 12:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6F5B20EA56;
+	Thu,  7 Nov 2024 12:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ryA6Q4qV"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="j+/ebFvh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEBDD17BB0D;
-	Thu,  7 Nov 2024 12:17:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A3F1F4FA7;
+	Thu,  7 Nov 2024 12:43:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730981822; cv=none; b=KXDuHM+BtHYHCN2r6ZKTWmoewZ/hWc+9oz5Epg+OM/+/jYJdp2Bt80DfZaoNhVbv8JWTuaU2UAa7g0rR5Y0UhfEeN7YXcEZTnhnt0JkzWL0iEJgPzPJ6P/cYECmTxg2GX8/uqX7mvP4VTy4EHWneCnyCBgN8d+P3k8Ox7dWb/7c=
+	t=1730983424; cv=none; b=aw6r85KJc/AjJ1Rqs2slV5hLJ4toWdyOTaTT7IXj80YbOBjzdgw0ngEOWNqK9iGL/Xlx0C2OPcrNElK3/78eGVsUsU0hjwlnfrQ8LtxexRNNeY8LQ/fZvfu0YbTBZrE8hbM6qaCb+O5XHIiCIdusXLFlA3B0qTc6WWXtSZQUVyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730981822; c=relaxed/simple;
-	bh=EIyzkWslkWt3z9X5/Kx+ztKigmF58WmnDqUUe3ffxEY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=d4sy5lTyJWBysne6jpuaou+0vLEVbMiMEkb2C8X6Y8WfDMUVXknJwLFffiYjcJemkPhaSRhLB/JsgQLsZG4Vb4gYlyJF/fvB8ane34vXnYl8DhAYmV2EiAIyghf6seKDYz6Fp/+sFl1uaQga/HH6uyVycOB5RMGb1MoPIdmpMC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ryA6Q4qV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7019C4CECC;
-	Thu,  7 Nov 2024 12:16:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730981822;
-	bh=EIyzkWslkWt3z9X5/Kx+ztKigmF58WmnDqUUe3ffxEY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ryA6Q4qV9QVvx2vOqi74IWrkCacGjAuIxRVyqu/QjCx+tvBBGd6zjYLU5VPC4N2gV
-	 Sxq5nOE55+AlNfP0Rzgp8uQv0rDVkm9+TxCwd01JdNW+C+5ni7TPWWDXvMUVzD0kOV
-	 2/JOWUw6WtWObo1PQEdVUCL3dOPW5TWRrP+n3HoF6WuJpckNlACbf1ZTcr3DnR1HAC
-	 8WNLwPcs2hqXZvhCGLIKCTpOkzJThdc9CMQl8Y1vjFSCmyHG48GKPRZsih2s85pbne
-	 tNF2pUqBdlXfnUzHIjSWZlau2+UdUG2A1zrc9v1dXncSdgJeJUfY1cAWVWOZ04DsWi
-	 Ek2zC2CQ87zjw==
-Message-ID: <9d158c25-197a-49fd-b639-45287a46438f@kernel.org>
-Date: Thu, 7 Nov 2024 13:16:56 +0100
+	s=arc-20240116; t=1730983424; c=relaxed/simple;
+	bh=F+56qLLJVFPVLI7AgJtMEwe8KPMTXXwq3PA9OO/QsZE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eqkp9YvGgvC1gbcli0VLCzVrepQt/+jAZqXBi8HLnGX+DUK2cIJ5eXcs7/faZMc9zzKgeSe8/t325K3+ReSTJ5z5sEdVPF16G5/xKojTzG6+p2bWNCaSWaYlsH9mMCs5w22l0pyS/ed0W5Oit6JMQlF45VORxCMpY3yfUNRsPCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=j+/ebFvh; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
+	Resent-Message-ID:In-Reply-To:References;
+	bh=H/aeDULeW5fqnR+HFweikYqVWkc7jOPQwvomXeZf3Kw=; t=1730983422; x=1732193022; 
+	b=j+/ebFvhL+JzrF8WqDNIj2pF1zlDee8nfsJQ54td6K5xkPPqPyqELFoFMs3YhbzQDBGWbzK7yKr
+	+wtHeRYY0XxyO1M2B7FSv2+Bs6D5nbU5aznJxACUo0ctgv7X1hELfTePeQisbsyceRDYAYUgat4TL
+	4Ozleul0n1R5yGyCG2GNpRum/xroC6JsfPtqpAN2FARYsj2GHoP+dpfu+PtsT9zn6fHJVHAKy8M60
+	1rg9CRTbODx3Pdptsaq8MaD/deWqEyATm1YXunARP79VS2IuwBGw90MKZLO3KWXCPqV6M8YgohXh/
+	SaDajx8ODlCDPsA1N56zXLu5SW7cOUT4ECdQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1t91rJ-0000000GPSP-43jP;
+	Thu, 07 Nov 2024 13:43:34 +0100
+From: Johannes Berg <johannes@sipsolutions.net>
+To: linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH v2 1/2] net: netlink: add nla_get_*_default() accessors
+Date: Thu,  7 Nov 2024 13:43:30 +0100
+Message-ID: <20241107134331.cbacbd7d40e0.I3df6aac71d38a5baa1c0a03d0c7e82d4395c030e@changeid>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v3 0/5] wifi: ath12k: Add wifi device node with WSI
- for QCN9274 in RDP433
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>, ath12k@lists.infradead.org,
- linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-References: <20241105180444.770951-1-quic_rajkbhag@quicinc.com>
- <49a6ec0d-8a0b-49aa-a9eb-1174cff930f6@kernel.org>
- <cmvfpctliqggra33u6ituguoxh3jxcuxiyjpbtcjbcgpu6lhoi@4zdthfkc2ed3>
- <692503b8-cf39-4d6b-b70e-910fcc710d69@kernel.org>
- <CAA8EJpqMCbyK0dodMNyfs8dNjV2QoB2nyWm233eOS9xo8BaFJg@mail.gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <CAA8EJpqMCbyK0dodMNyfs8dNjV2QoB2nyWm233eOS9xo8BaFJg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-On 07/11/2024 13:03, Dmitry Baryshkov wrote:
-> On Thu, 7 Nov 2024 at 11:29, Krzysztof Kozlowski <krzk@kernel.org> wrote:
->>
->> On 07/11/2024 12:06, Dmitry Baryshkov wrote:
->>> On Thu, Nov 07, 2024 at 11:23:20AM +0100, Krzysztof Kozlowski wrote:
->>>> On 05/11/2024 19:04, Raj Kumar Bhagat wrote:
->>>>> The RDP433 is a Qualcomm Reference Design Platform based on the
->>>>> IPQ9574. It features three QCN9274 WiFi devices connected to PCIe1,
->>>>> PCIe2, and PCIe3. These devices are also interconnected via a WLAN
->>>>> Serial Interface (WSI) connection. This WSI connection is essential
->>>>> for exchanging control information among these devices.
->>>>>
->>>>> This patch series describes the WSI interface found in QCN9274 in
->>>>> device tree and uses this device tree node in the Ath12k driver to get the
->>>>> details of WSI connection for Multi Link Operation (MLO) among multiple
->>>>> QCN9274 devices.
->>>>>
->>>>> NOTES:
->>>>> 1. As ath12k MLO patches are not ready yet, this patchset does not apply
->>>>>    to the ath.git ath-next branch and that's why the patchset is marked
->>>>>    as RFC. These are the work-in-progress patches we have at the moment.
->>>>>    The full set of MLO patches is available at:
->>>>>    https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git/log/?h=ath12k-mlo-qcn9274
->>>>>
->>>>> 2. The dependency marked below applies only to the DTS patch. The
->>>>>    dt-bindings patches do not have this dependency.
->>>>>
->>>>> Depends-On: [PATCH V7 0/4] Add PCIe support for IPQ9574
->>>>> Link: https://lore.kernel.org/linux-pci/20240801054803.3015572-1-quic_srichara@quicinc.com/
->>>>>
->>>>> v3:
->>>>> - Created a separate binding "qcom,ath12k-wsi.yaml" to describe ath12k PCI
->>>>>   devices with WSI interface.
->>>>
->>>> Thanks for the changes. When you finish with testing/RFC, please send
->>>> proper version for review (just remember to keep numbering, next one is
->>>> v4 regardless whether this is RFC or not).
->>>
->>> Isn't the 'RFC' being an invitation for review per the nature of the tag
->>> itself?
->>
->> No, RFC means patch is not ready, might change. This was brought on the
->> lists multiple times and some maintainers clearly ignore RFC. Including me.
-> 
-> Thanks, point noted. I'll stop marking my patches with RFC tag.
+From: Johannes Berg <johannes.berg@intel.com>
 
-Wait, you can keep marking them RFC! It all depends what do you want to
-achieve. Get some comments on early work or actual review for something
-you believe is a finished work.
+There are quite a number of places that use patterns
+such as
 
-I looked here briefly, no comments from me and I assume that was the
-intention of RFC.
+  if (attr)
+     val = nla_get_u16(attr);
+  else
+     val = DEFAULT;
 
-Best regards,
-Krzysztof
+Add nla_get_u16_default() and friends like that to
+not have to type this out all the time.
+
+Acked-by: Toke Høiland-Jørgensen <toke@kernel.org>
+Acked-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+---
+v2: switch to individual inline functions
+---
+ include/net/netlink.h | 237 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 237 insertions(+)
+
+diff --git a/include/net/netlink.h b/include/net/netlink.h
+index 2dc671c977ff..e3035997aa41 100644
+--- a/include/net/netlink.h
++++ b/include/net/netlink.h
+@@ -142,6 +142,8 @@
+  *   nla_get_flag(nla)			return 1 if flag is true
+  *   nla_get_msecs(nla)			get payload for a msecs attribute
+  *
++ *   The same functions also exist with _default().
++ *
+  * Attribute Misc:
+  *   nla_memcpy(dest, nla, count)	copy attribute into memory
+  *   nla_memcmp(nla, data, size)	compare attribute with memory area
+@@ -1695,6 +1697,19 @@ static inline u32 nla_get_u32(const struct nlattr *nla)
+ 	return *(u32 *) nla_data(nla);
+ }
+ 
++/**
++ * nla_get_u32_default - return payload of u32 attribute or default
++ * @nla: u32 netlink attribute, may be %NULL
++ * @defvalue: default value to use if @nla is %NULL
++ */
++static inline u32 nla_get_u32_default(const struct nlattr *nla,
++				      u32 defvalue)
++{
++	if (!nla)
++		return defvalue;
++	return nla_get_u32(nla);
++}
++
+ /**
+  * nla_get_be32 - return payload of __be32 attribute
+  * @nla: __be32 netlink attribute
+@@ -1704,6 +1719,19 @@ static inline __be32 nla_get_be32(const struct nlattr *nla)
+ 	return *(__be32 *) nla_data(nla);
+ }
+ 
++/**
++ * nla_get_be32_default - return payload of be32 attribute or default
++ * @nla: __be32 netlink attribute, may be %NULL
++ * @defvalue: default value to use if @nla is %NULL
++ */
++static inline __be32 nla_get_be32_default(const struct nlattr *nla,
++					  __be32 defvalue)
++{
++	if (!nla)
++		return defvalue;
++	return nla_get_be32(nla);
++}
++
+ /**
+  * nla_get_le32 - return payload of __le32 attribute
+  * @nla: __le32 netlink attribute
+@@ -1713,6 +1741,19 @@ static inline __le32 nla_get_le32(const struct nlattr *nla)
+ 	return *(__le32 *) nla_data(nla);
+ }
+ 
++/**
++ * nla_get_le32_default - return payload of le32 attribute or default
++ * @nla: __le32 netlink attribute, may be %NULL
++ * @defvalue: default value to use if @nla is %NULL
++ */
++static inline __le32 nla_get_le32_default(const struct nlattr *nla,
++					  __le32 defvalue)
++{
++	if (!nla)
++		return defvalue;
++	return nla_get_le32(nla);
++}
++
+ /**
+  * nla_get_u16 - return payload of u16 attribute
+  * @nla: u16 netlink attribute
+@@ -1722,6 +1763,19 @@ static inline u16 nla_get_u16(const struct nlattr *nla)
+ 	return *(u16 *) nla_data(nla);
+ }
+ 
++/**
++ * nla_get_u16_default - return payload of u16 attribute or default
++ * @nla: u16 netlink attribute, may be %NULL
++ * @defvalue: default value to use if @nla is %NULL
++ */
++static inline u16 nla_get_u16_default(const struct nlattr *nla,
++				      u16 defvalue)
++{
++	if (!nla)
++		return defvalue;
++	return nla_get_u16(nla);
++}
++
+ /**
+  * nla_get_be16 - return payload of __be16 attribute
+  * @nla: __be16 netlink attribute
+@@ -1731,6 +1785,19 @@ static inline __be16 nla_get_be16(const struct nlattr *nla)
+ 	return *(__be16 *) nla_data(nla);
+ }
+ 
++/**
++ * nla_get_be16_default - return payload of be16 attribute or default
++ * @nla: __be16 netlink attribute, may be %NULL
++ * @defvalue: default value to use if @nla is %NULL
++ */
++static inline __be16 nla_get_be16_default(const struct nlattr *nla,
++					  __be16 defvalue)
++{
++	if (!nla)
++		return defvalue;
++	return nla_get_be16(nla);
++}
++
+ /**
+  * nla_get_le16 - return payload of __le16 attribute
+  * @nla: __le16 netlink attribute
+@@ -1740,6 +1807,19 @@ static inline __le16 nla_get_le16(const struct nlattr *nla)
+ 	return *(__le16 *) nla_data(nla);
+ }
+ 
++/**
++ * nla_get_le16_default - return payload of le16 attribute or default
++ * @nla: __le16 netlink attribute, may be %NULL
++ * @defvalue: default value to use if @nla is %NULL
++ */
++static inline __le16 nla_get_le16_default(const struct nlattr *nla,
++					  __le16 defvalue)
++{
++	if (!nla)
++		return defvalue;
++	return nla_get_le16(nla);
++}
++
+ /**
+  * nla_get_u8 - return payload of u8 attribute
+  * @nla: u8 netlink attribute
+@@ -1749,6 +1829,19 @@ static inline u8 nla_get_u8(const struct nlattr *nla)
+ 	return *(u8 *) nla_data(nla);
+ }
+ 
++/**
++ * nla_get_u8_default - return payload of u8 attribute or default
++ * @nla: u8 netlink attribute, may be %NULL
++ * @defvalue: default value to use if @nla is %NULL
++ */
++static inline u8 nla_get_u8_default(const struct nlattr *nla,
++				    u8 defvalue)
++{
++	if (!nla)
++		return defvalue;
++	return nla_get_u8(nla);
++}
++
+ /**
+  * nla_get_u64 - return payload of u64 attribute
+  * @nla: u64 netlink attribute
+@@ -1762,6 +1855,19 @@ static inline u64 nla_get_u64(const struct nlattr *nla)
+ 	return tmp;
+ }
+ 
++/**
++ * nla_get_u64_default - return payload of u64 attribute or default
++ * @nla: u64 netlink attribute, may be %NULL
++ * @defvalue: default value to use if @nla is %NULL
++ */
++static inline u64 nla_get_u64_default(const struct nlattr *nla,
++				      u64 defvalue)
++{
++	if (!nla)
++		return defvalue;
++	return nla_get_u64(nla);
++}
++
+ /**
+  * nla_get_uint - return payload of uint attribute
+  * @nla: uint netlink attribute
+@@ -1773,6 +1879,19 @@ static inline u64 nla_get_uint(const struct nlattr *nla)
+ 	return nla_get_u64(nla);
+ }
+ 
++/**
++ * nla_get_uint_default - return payload of uint attribute or default
++ * @nla: uint netlink attribute, may be %NULL
++ * @defvalue: default value to use if @nla is %NULL
++ */
++static inline u64 nla_get_uint_default(const struct nlattr *nla,
++				       u64 defvalue)
++{
++	if (!nla)
++		return defvalue;
++	return nla_get_uint(nla);
++}
++
+ /**
+  * nla_get_be64 - return payload of __be64 attribute
+  * @nla: __be64 netlink attribute
+@@ -1786,6 +1905,19 @@ static inline __be64 nla_get_be64(const struct nlattr *nla)
+ 	return tmp;
+ }
+ 
++/**
++ * nla_get_be64_default - return payload of be64 attribute or default
++ * @nla: __be64 netlink attribute, may be %NULL
++ * @defvalue: default value to use if @nla is %NULL
++ */
++static inline __be64 nla_get_be64_default(const struct nlattr *nla,
++					  __be64 defvalue)
++{
++	if (!nla)
++		return defvalue;
++	return nla_get_be64(nla);
++}
++
+ /**
+  * nla_get_le64 - return payload of __le64 attribute
+  * @nla: __le64 netlink attribute
+@@ -1795,6 +1927,19 @@ static inline __le64 nla_get_le64(const struct nlattr *nla)
+ 	return *(__le64 *) nla_data(nla);
+ }
+ 
++/**
++ * nla_get_le64_default - return payload of le64 attribute or default
++ * @nla: __le64 netlink attribute, may be %NULL
++ * @defvalue: default value to use if @nla is %NULL
++ */
++static inline __le64 nla_get_le64_default(const struct nlattr *nla,
++					  __le64 defvalue)
++{
++	if (!nla)
++		return defvalue;
++	return nla_get_le64(nla);
++}
++
+ /**
+  * nla_get_s32 - return payload of s32 attribute
+  * @nla: s32 netlink attribute
+@@ -1804,6 +1949,19 @@ static inline s32 nla_get_s32(const struct nlattr *nla)
+ 	return *(s32 *) nla_data(nla);
+ }
+ 
++/**
++ * nla_get_s32_default - return payload of s32 attribute or default
++ * @nla: s32 netlink attribute, may be %NULL
++ * @defvalue: default value to use if @nla is %NULL
++ */
++static inline s32 nla_get_s32_default(const struct nlattr *nla,
++				      s32 defvalue)
++{
++	if (!nla)
++		return defvalue;
++	return nla_get_s32(nla);
++}
++
+ /**
+  * nla_get_s16 - return payload of s16 attribute
+  * @nla: s16 netlink attribute
+@@ -1813,6 +1971,19 @@ static inline s16 nla_get_s16(const struct nlattr *nla)
+ 	return *(s16 *) nla_data(nla);
+ }
+ 
++/**
++ * nla_get_s16_default - return payload of s16 attribute or default
++ * @nla: s16 netlink attribute, may be %NULL
++ * @defvalue: default value to use if @nla is %NULL
++ */
++static inline s16 nla_get_s16_default(const struct nlattr *nla,
++				      s16 defvalue)
++{
++	if (!nla)
++		return defvalue;
++	return nla_get_s16(nla);
++}
++
+ /**
+  * nla_get_s8 - return payload of s8 attribute
+  * @nla: s8 netlink attribute
+@@ -1822,6 +1993,19 @@ static inline s8 nla_get_s8(const struct nlattr *nla)
+ 	return *(s8 *) nla_data(nla);
+ }
+ 
++/**
++ * nla_get_s8_default - return payload of s8 attribute or default
++ * @nla: s8 netlink attribute, may be %NULL
++ * @defvalue: default value to use if @nla is %NULL
++ */
++static inline s8 nla_get_s8_default(const struct nlattr *nla,
++				    s8 defvalue)
++{
++	if (!nla)
++		return defvalue;
++	return nla_get_s8(nla);
++}
++
+ /**
+  * nla_get_s64 - return payload of s64 attribute
+  * @nla: s64 netlink attribute
+@@ -1835,6 +2019,19 @@ static inline s64 nla_get_s64(const struct nlattr *nla)
+ 	return tmp;
+ }
+ 
++/**
++ * nla_get_s64_default - return payload of s64 attribute or default
++ * @nla: s64 netlink attribute, may be %NULL
++ * @defvalue: default value to use if @nla is %NULL
++ */
++static inline s64 nla_get_s64_default(const struct nlattr *nla,
++				      s64 defvalue)
++{
++	if (!nla)
++		return defvalue;
++	return nla_get_s64(nla);
++}
++
+ /**
+  * nla_get_sint - return payload of uint attribute
+  * @nla: uint netlink attribute
+@@ -1846,6 +2043,19 @@ static inline s64 nla_get_sint(const struct nlattr *nla)
+ 	return nla_get_s64(nla);
+ }
+ 
++/**
++ * nla_get_sint_default - return payload of sint attribute or default
++ * @nla: sint netlink attribute, may be %NULL
++ * @defvalue: default value to use if @nla is %NULL
++ */
++static inline s64 nla_get_sint_default(const struct nlattr *nla,
++				       s64 defvalue)
++{
++	if (!nla)
++		return defvalue;
++	return nla_get_sint(nla);
++}
++
+ /**
+  * nla_get_flag - return payload of flag attribute
+  * @nla: flag netlink attribute
+@@ -1868,6 +2078,20 @@ static inline unsigned long nla_get_msecs(const struct nlattr *nla)
+ 	return msecs_to_jiffies((unsigned long) msecs);
+ }
+ 
++
++/**
++ * nla_get_msecs_default - return payload of msecs attribute or default
++ * @nla: msecs netlink attribute, may be %NULL
++ * @defvalue: default value to use if @nla is %NULL
++ */
++static inline unsigned long nla_get_msecs_default(const struct nlattr *nla,
++						  unsigned long defvalue)
++{
++	if (!nla)
++		return defvalue;
++	return nla_get_msecs(nla);
++}
++
+ /**
+  * nla_get_in_addr - return payload of IPv4 address attribute
+  * @nla: IPv4 address netlink attribute
+@@ -1877,6 +2101,19 @@ static inline __be32 nla_get_in_addr(const struct nlattr *nla)
+ 	return *(__be32 *) nla_data(nla);
+ }
+ 
++/**
++ * nla_get_in_addr_default - return payload of be32 attribute or default
++ * @nla: IPv4 address netlink attribute, may be %NULL
++ * @defvalue: default value to use if @nla is %NULL
++ */
++static inline __be32 nla_get_in_addr_default(const struct nlattr *nla,
++					     __be32 defvalue)
++{
++	if (!nla)
++		return defvalue;
++	return nla_get_in_addr(nla);
++}
++
+ /**
+  * nla_get_in6_addr - return payload of IPv6 address attribute
+  * @nla: IPv6 address netlink attribute
+-- 
+2.47.0
 
 
