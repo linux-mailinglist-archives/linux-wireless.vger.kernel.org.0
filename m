@@ -1,186 +1,118 @@
-Return-Path: <linux-wireless+bounces-15097-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15098-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB3469C08CE
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 15:23:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55E9D9C08DD
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 15:27:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEFC31C21607
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 14:23:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A4AA283E58
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 14:27:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D413B21264A;
-	Thu,  7 Nov 2024 14:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D3EF212164;
+	Thu,  7 Nov 2024 14:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lKxv7Qlo"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="k/7T0C50"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE304212164;
-	Thu,  7 Nov 2024 14:23:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B5029CF4
+	for <linux-wireless@vger.kernel.org>; Thu,  7 Nov 2024 14:27:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730989390; cv=none; b=iDZqgytjzhJdTPeRH+xhUBw5yg3uqVbuwYkEItoovqvnryupVOfsH97Sz4KAITvtlEn2DVZ5zKIuJIcAoCnJ0HstfDqSXXaHiuSzGXULUe1piVy6zfyvGw+c09wiKA+D6KIAfqvbijyvu048hwJiV3nn7UA73HuUMWoKg5sP1uw=
+	t=1730989662; cv=none; b=OgLneFZRnqGkHmg+tWKpX6z7ANvXykMUE2bGId9x5PnfrZNa87awBB0+i/GWDCikRJxAzbAHKEDSZ0NIganaxX4lJesuO9c6Gs8opbAeKaoBu5Tw+Vhm6vjyPNn6YGzTTnkzPg4ZTCS1HPhRaJvlfxibo3rlz2WXn8RD1bJ8y5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730989390; c=relaxed/simple;
-	bh=1vS1iTnD6kK4Vka3ccpXTZnspc8FPKXdaTMnnwk/7ZA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iW/3ejjmrsB+2RskZB7qVZU9Xl/BPz9uItL9F433dyVhzquUVx8IhhMwN/5iPkEy5cfzy7ZYnCtyXi2DZUQnrEjLIy5FJ1W/zISaPpRJOMVykELR+SHeCm/qx6OGp7+zZFeEqjy+9s6aaYE1PHvjuC7eJmr65d1aT53T5Al8oIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lKxv7Qlo; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2fb3da341c9so10037891fa.2;
-        Thu, 07 Nov 2024 06:23:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730989387; x=1731594187; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=KUgnIDdh1cnD0LhNQIlH/p+vDLHIa3VLvsqit2GvoCs=;
-        b=lKxv7QloqV8mAWVPG5Ts/5fReg07+eXjWW/vN/x+ZWvVK+GqhAyko2urUtes95Wnr3
-         uQ8FMQqHwP9o1TRZqKpsnDBfgffL+La4FE2ovSdHvAteLcvHfT5F12BvtDVNR4aJwiVU
-         lkPQUGPSyw9HAI59hHhaR5N2d5r6E2nUsrusDGnfZbydvO6cg7V/jG1GNxR+pBEkgzF9
-         2+zLiJmulCsoKWLCchywABeuX0rrGcjLWFJEIfxg/FTK+ILxv08qT0sjUlUeZeQuhUn9
-         5WevkcrkNWMtCknryIktHSWfDbELZVPK8ahh18X4CDBCVBHI8a6HDIIPNrC/te3Yru4S
-         C2sA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730989387; x=1731594187;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KUgnIDdh1cnD0LhNQIlH/p+vDLHIa3VLvsqit2GvoCs=;
-        b=U75GMYazqf7+4oG/N/RNIdyg65FP62SJYgM5TJGuADZdr7pKbsC91KqOmnLfIJHC4a
-         0bdqTSWPYEncC6U49mSKFEDxDGtZGrulWgES8aDSuht/yoGrMaZRkVDrenaLdOApwxix
-         qXO54j9/b409Ct4J5tJN5w0h7edIHcG8NN1TH0xI3RRtAvBOkELyZAcY/l+pxjtaM7yP
-         BRl5IjJznWbOQreG0vBEiVf4JBW6jDdYAJQfayaF/plwsXPqwIfkBi5KaORB1H2k8W2W
-         Z/6b6VbS6iZhLNcbiM8lqqTCAqn8AWPvrc5XppoYnMo/zj3Rli00hsAi/luQOXmHdbeI
-         22eg==
-X-Forwarded-Encrypted: i=1; AJvYcCV5tZ/JOcQa6z470OdS5eQIjeHMHvB9GQGqhtTZSou4DbFhn8QQAOYVkmlWRuJx7MMJjaykRly9TFhAeOVN5Q==@vger.kernel.org, AJvYcCVVFXOonDVXQ1vSs1jZQoP16khTpXETTHlNnOJjKi0c3ksvVDJITGMD5wzcxl9WolXyZ5ok5i0M@vger.kernel.org
-X-Gm-Message-State: AOJu0YxyyMGKXDaNCSMenY+h2FvZyGK5VziM6/Z+Os3nEZwH4v4SsEmd
-	eNOEhQ/NOvYGMNdNCHocHXZZKYl3zF/y+dlnYfslV9Z+LsoI89g0d4cFMUFeM8xkZ80eBc7hPb7
-	rPqDCBbfriYmlROsOzveeQWO+g2I=
-X-Google-Smtp-Source: AGHT+IEUEm3f71Y+xcPEHsVfb+45JuNmoETWADbk+LZEUtK440SzmhyijTfpIVOoxaoBy19kekKKnMEtDcPAFd5vmcY=
-X-Received: by 2002:a2e:bea0:0:b0:2fa:bad7:70fc with SMTP id
- 38308e7fff4ca-2fedb7d8ae8mr133468261fa.29.1730989386881; Thu, 07 Nov 2024
- 06:23:06 -0800 (PST)
+	s=arc-20240116; t=1730989662; c=relaxed/simple;
+	bh=aNG6Em7lHPnigCNUOAeIXCJO5DUJNa8lHK4za2TMaHs=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mmvm/VI/h8ax0Nngy/qv2M8nPZZQnQfZYSux9K05FljMDtSF/XseTMwJgrWdX4aRGlXqBYqc39+ItV5foVtsbEUjAe6gdC7H779DDD6fgORifp+Z5VdqBzfFcJQy8459TWDXQghixBr/vnvQLA2OhQJt3h403kG8I31bkS9Hb/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=k/7T0C50; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=gr9sNLNmBx5Qe21s13KccHsdL8XkpXpb/tTPabEY9M4=;
+	t=1730989660; x=1732199260; b=k/7T0C50PRkUElZkwI9TPRIKgPRI1XKy3X+wKbPs/jQ96SH
+	QHFuGGmZHbEyRsCx4ipeNv8/cBsVRGq+py8bfU843KP+gEtpEhskzkbxu4/D1SJ2LyhX0AefPuq9d
+	ZRn9LNLSPYG2PgbSPKSVYFbOv9kFDhXgSJTWNtwlgyySxaMPZjqcB2XmrUrstJlBwUj19ud17/lhU
+	IsxQytK4sQxzdYFL7TcS1lSLCLU0Cj/uZz6zW6B8gSvnm1bj5LNQHHFQ8pvRiYA6OmDzzt6IB7r6v
+	FAUsWE62915rcLTw6I40Vg0sFL9Ffg2iTZqH2FgkbnXDV+4P9tc+mTHjzgGfomNQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1t93U0-0000000GS6l-2NqP;
+	Thu, 07 Nov 2024 15:27:36 +0100
+Message-ID: <1a2ab64996bb76b3503362696cfc1b935ec57c9e.camel@sipsolutions.net>
+Subject: Re: [PATCH 1/1] wifi: iw: Add support to display  max number of
+ simultaneous links in phy info
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Mohan Raj <quic_mrajraje@quicinc.com>
+Cc: linux-wireless@vger.kernel.org
+Date: Thu, 07 Nov 2024 15:27:35 +0100
+In-Reply-To: <20241105064809.2091332-1-quic_mrajraje@quicinc.com>
+References: <20241105064809.2091332-1-quic_mrajraje@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241107140833.274986-1-hdegoede@redhat.com>
-In-Reply-To: <20241107140833.274986-1-hdegoede@redhat.com>
-From: Peter Robinson <pbrobinson@gmail.com>
-Date: Thu, 7 Nov 2024 14:22:55 +0000
-Message-ID: <CALeDE9PXj+gD=CzwaANLPThbDMFx-Y0AiGYfFmeMb9jJVu=Ynw@mail.gmail.com>
-Subject: Re: [PATCH] wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
-To: Hans de Goede <hdegoede@redhat.com>
-Cc: Jes Sorensen <Jes.Sorensen@gmail.com>, Kalle Valo <kvalo@kernel.org>, 
-	linux-wireless@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-malware-bazaar: not-scanned
 
-On Thu, 7 Nov 2024 at 14:08, Hans de Goede <hdegoede@redhat.com> wrote:
->
-> The rtl8xxxu has all the rtl8192cu USB IDs from rtlwifi/rtl8192cu/sw.c
-> except for the following 10, add these to the untested section so they
-> can be used with the rtl8xxxu as the rtl8192cu are well supported.
->
-> This fixes these wifi modules not working on distributions which have
-> disabled CONFIG_RTL8192CU replacing it with CONFIG_RTL8XXXU_UNTESTED,
-> like Fedora.
->
-> Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2321540
-> Cc: stable@vger.kernel.org
-> Cc: Peter Robinson <pbrobinson@gmail.com>
-> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Peter Robinson <pbrobinson@gmail.com>
+First, iw patches don't need "wifi:" prefix :)
 
-> ---
->  drivers/net/wireless/realtek/rtl8xxxu/core.c | 20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
->
-> diff --git a/drivers/net/wireless/realtek/rtl8xxxu/core.c b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-> index 7891c988dd5f..bd8e0076baac 100644
-> --- a/drivers/net/wireless/realtek/rtl8xxxu/core.c
-> +++ b/drivers/net/wireless/realtek/rtl8xxxu/core.c
-> @@ -8145,6 +8145,8 @@ static const struct usb_device_id dev_table[] = {
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x817e, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
-> +{USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x8186, 0xff, 0xff, 0xff),
-> +       .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x818a, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x317f, 0xff, 0xff, 0xff),
-> @@ -8155,12 +8157,18 @@ static const struct usb_device_id dev_table[] = {
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x050d, 0x1102, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
-> +{USB_DEVICE_AND_INTERFACE_INFO(0x050d, 0x11f2, 0xff, 0xff, 0xff),
-> +       .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x06f8, 0xe033, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
-> +{USB_DEVICE_AND_INTERFACE_INFO(0x07b8, 0x8188, 0xff, 0xff, 0xff),
-> +       .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x07b8, 0x8189, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9041, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
-> +{USB_DEVICE_AND_INTERFACE_INFO(0x0846, 0x9043, 0xff, 0xff, 0xff),
-> +       .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x0b05, 0x17ba, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(USB_VENDOR_ID_REALTEK, 0x1e1e, 0xff, 0xff, 0xff),
-> @@ -8177,6 +8185,10 @@ static const struct usb_device_id dev_table[] = {
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x13d3, 0x3357, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
-> +{USB_DEVICE_AND_INTERFACE_INFO(0x13d3, 0x3358, 0xff, 0xff, 0xff),
-> +       .driver_info = (unsigned long)&rtl8192cu_fops},
-> +{USB_DEVICE_AND_INTERFACE_INFO(0x13d3, 0x3359, 0xff, 0xff, 0xff),
-> +       .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x330b, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x2019, 0x4902, 0xff, 0xff, 0xff),
-> @@ -8191,6 +8203,8 @@ static const struct usb_device_id dev_table[] = {
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x4856, 0x0091, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
-> +{USB_DEVICE_AND_INTERFACE_INFO(0x9846, 0x9041, 0xff, 0xff, 0xff),
-> +       .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0xcdab, 0x8010, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x04f2, 0xaff7, 0xff, 0xff, 0xff),
-> @@ -8216,6 +8230,8 @@ static const struct usb_device_id dev_table[] = {
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x0586, 0x341f, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
-> +{USB_DEVICE_AND_INTERFACE_INFO(0x06f8, 0xe033, 0xff, 0xff, 0xff),
-> +       .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x06f8, 0xe035, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x0b05, 0x17ab, 0xff, 0xff, 0xff),
-> @@ -8224,6 +8240,8 @@ static const struct usb_device_id dev_table[] = {
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x0df6, 0x0070, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
-> +{USB_DEVICE_AND_INTERFACE_INFO(0x0df6, 0x0077, 0xff, 0xff, 0xff),
-> +       .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x0789, 0x016d, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x07aa, 0x0056, 0xff, 0xff, 0xff),
-> @@ -8246,6 +8264,8 @@ static const struct usb_device_id dev_table[] = {
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x330a, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
-> +{USB_DEVICE_AND_INTERFACE_INFO(0x2001, 0x330d, 0xff, 0xff, 0xff),
-> +       .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x2019, 0xab2b, 0xff, 0xff, 0xff),
->         .driver_info = (unsigned long)&rtl8192cu_fops},
->  {USB_DEVICE_AND_INTERFACE_INFO(0x20f4, 0x624d, 0xff, 0xff, 0xff),
-> --
-> 2.47.0
->
+
+>         MLD Capability: 0x44
+>                 Max Number of Simultaneous Links: 4
+
+I think we should print the other MLD capabilities too?
+
+>         hw_idx 0 channel list:
+>                 1 2 3 4 5 6 7 8 9 10 11 12 13 14
+>         hw_idx 1 channel list:
+>                 36 40 44 48 52 56 60 64 100 104 108 112 116 120 124 128=
+=20
+> 		132 136 140 144 149 153 157 161 165 169 173 177
+>         hw_idx 2 channel list:
+>                 1 2 5 9 13 17 21 25 29 33 37 41 45 49 53 57 61 65 69 73
+>                 77 81 85 89 93 97 101 105 109 113 117 121 125 129 133=20
+> 		137 141 145 149 153 157 161 165 169 173 177 181 185 189
+> 		193 197 201 205 209 213 217 221 225 229 233
+
+I don't believe this exists upstream, so not sure why you included it in
+the example.
+
+>  	if (tb_msg[NL80211_ATTR_MAX_AP_ASSOC_STA])
+>  		printf("\tMaximum associated stations in AP mode: %u\n",
+>  		       nla_get_u32(tb_msg[NL80211_ATTR_MAX_AP_ASSOC_STA]));
+> +	if (tb_msg[NL80211_ATTR_IFTYPE_EXT_CAPA]) {
+
+blank line before that would be nice
+
+> +		int rem_ext =3D 0;
+> +		struct nlattr *tb1[NL80211_ATTR_MAX + 1];
+> +		struct nlattr *ext_attr;
+> +		__u8 max_simul_links;
+> +		__u16 mld_cap;
+> +
+> +		nla_for_each_nested(ext_attr, tb_msg[NL80211_ATTR_IFTYPE_EXT_CAPA], re=
+m_ext) {
+> +			nla_parse(tb1, NL80211_ATTR_MAX, nla_data(ext_attr),
+> +				 nla_len(ext_attr), NULL);
+
+there's some bad indentation here and later
+
+> +	}
+> +
+
+And here you didn't need an extra blank line.
+
+johannes
 
