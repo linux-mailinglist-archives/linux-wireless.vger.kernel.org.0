@@ -1,96 +1,138 @@
-Return-Path: <linux-wireless+bounces-15090-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15091-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ED9B9C079E
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 14:35:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC3279C083F
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 14:57:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83383B2249C
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 13:35:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6082EB21228
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 13:57:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F056212D05;
-	Thu,  7 Nov 2024 13:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D4420FA81;
+	Thu,  7 Nov 2024 13:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="P9xQk2d+"
+	dkim=pass (2048-bit key) header.d=rosalinux.ru header.i=@rosalinux.ru header.b="f/h0W3EH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+Received: from mail.rosalinux.ru (mail.rosalinux.ru [195.19.76.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9C3212180
-	for <linux-wireless@vger.kernel.org>; Thu,  7 Nov 2024 13:33:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4578620F5AA;
+	Thu,  7 Nov 2024 13:57:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.19.76.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730986436; cv=none; b=uPJ93FB78KOe7/KKVu5+VDOB2ojbqyecJa/4ENw9WlPL2r9SDorWdpMprD5LMjjrIZJDdCqXSWg3RTLzY7lZ4cRZZQWYL1CxpitpvTHKQxFEJoHlhS2q1SNEU3o4Vc9i5/aNg0mflR9NgJvvgcY7bDDXzuSEUknLVoAJqHg807Y=
+	t=1730987845; cv=none; b=rq1agPNwpRFp8tLfOxUDCLI6076P/C2JuXFBUbLYG4yZ3S+e6iDX1pvvaie9ez3r7eIT7n3od8fvYiXBa/gx76cTvIWNi3AdeY2jwm4ehSq1uZvjJsuzIAeLJy1W1ju+cQZPZpE/WdRwJxwZUcAFLr+RJxYEdk9Qhcxu0O3/Ss8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730986436; c=relaxed/simple;
-	bh=eQNfJTTXuBMkIld/UqlY+MLCw44+Vjr8DRGWIIITx3A=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=b3RJuCuw4EnfTs/ze3i3qC5hhR3AHJdr3CWhQ62/n6/bnw00M1kV1P//5zXHbHVU2y+QqPtDaMfAuZdnB0LMthBgpV6Ic0g59JGoLa+xyJPhFctYj5CcxFp1BghPSzrXJP1lFdTtl+LG7mhyKWbcDRHZ1bIhPGh1LZQ8Pw1V0Mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=P9xQk2d+; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=aPMeNjBGCE7sdNVWDvuDbCesnkKVRkTEHukCFI1Mqdc=; b=P9xQk2d+71aBiW0Hjg6ggv5J8w
-	zIMAwvbTgvBoAmhVd2IdyZJ5hauFWwV/hzE1eI9cbDFII0Op7YhcbV5O1/aYkMHJxfGoE9DirhQY9
-	6MW8XwBzql26VxrVkRQ7t2Tx9EzsteMCJmopmumCGPv1GcvbSkUx95o9MGM5FTIP9qCdE0t14at/e
-	DGnVqYnCjMYFGjjL2rMh2kpWcAkTrPjLULKKmd71zjC/7JRWfc7XoDLPPqbmq7m0PZkuzWppgVInr
-	7qrRU9V4B6j0uJ+jF4Z6EO9r6TKLPolZpE0M+scZZPf4WNDkvKJm4+DN/axsBVUgjfrfyTuDuoPlF
-	NDZY6o7Q==;
-Received: from 179-125-64-253-dinamico.pombonet.net.br ([179.125.64.253] helo=quatroqueijos.lan)
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1t92dz-003Zsz-V8; Thu, 07 Nov 2024 14:33:52 +0100
-From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-To: linux-wireless@vger.kernel.org
-Cc: Ping-Ke Shih <pkshih@realtek.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	kernel-dev@igalia.com,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH net 5/5] wifi: rtlwifi: usb: fix workqueue leak when probe fails
-Date: Thu,  7 Nov 2024 10:33:22 -0300
-Message-Id: <20241107133322.855112-6-cascardo@igalia.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241107133322.855112-1-cascardo@igalia.com>
-References: <20241107133322.855112-1-cascardo@igalia.com>
+	s=arc-20240116; t=1730987845; c=relaxed/simple;
+	bh=2fXu02djOUbW12f9rN17PdMppmReu0y1sKJC/M4mSbQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Wp+N+98stHsnGaG4sOwNe/hVOWZUKOxZFY1KrXbcUl7Op954ILiVS1v/51PERi7ktO3kiqSRRgOtwtf+46s6ZzHxmOD+J2SId9XYTuFnr4N/Rr+mSqVy8OcH89WoGjMKeSpW5OcWwFG6NuXVqrPwF19xbILJPywlTXG5Ds1VJgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosalinux.ru; spf=pass smtp.mailfrom=rosalinux.ru; dkim=pass (2048-bit key) header.d=rosalinux.ru header.i=@rosalinux.ru header.b=f/h0W3EH; arc=none smtp.client-ip=195.19.76.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rosalinux.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rosalinux.ru
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rosalinux.ru (Postfix) with ESMTP id 434F81E745C14;
+	Thu,  7 Nov 2024 16:47:17 +0300 (MSK)
+Received: from mail.rosalinux.ru ([127.0.0.1])
+	by localhost (mail.rosalinux.ru [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id Sv7eHPjlQN2k; Thu,  7 Nov 2024 16:47:17 +0300 (MSK)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rosalinux.ru (Postfix) with ESMTP id 116111E745C18;
+	Thu,  7 Nov 2024 16:47:17 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rosalinux.ru 116111E745C18
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosalinux.ru;
+	s=1D4BB666-A0F1-11EB-A1A2-F53579C7F503; t=1730987237;
+	bh=yeTJJf0j6OBQT2TE53J81tDrRIh7LJlEe8Kf/bwPuZI=;
+	h=Message-ID:Date:MIME-Version:To:From;
+	b=f/h0W3EHkyzCEERzZftR+hy1q43FV1KmbtX2gggJbVv2ZeZ6wJGhCESrvazrLnf+X
+	 qCG3ZaYq/uGxy4AOLLKOktqR09pE3xRAg21TOJOIaym9S9D67ADvbapNKYXp8bQh3x
+	 k7bcIZLfhbGQTBPzvyNxEystZFxnqvXw4ZOGXChDB/xSrNPXaDjA91kqRPGAxFPzZf
+	 86ETu0yBw9LZ2zVffpwsUBnaXZ2PDAGv24k+MAp2z2ULjFmJ36b9gPlLIH4H/E4W4v
+	 Uv+HbvZOI3hTCy8VsfKgUvrTi8i2fZT+y9sbSgJaux9Zw5RT26Wf/JfMJcb41/+c7l
+	 GBf4rRWJRGJvA==
+X-Virus-Scanned: amavisd-new at rosalinux.ru
+Received: from mail.rosalinux.ru ([127.0.0.1])
+	by localhost (mail.rosalinux.ru [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id NVhiVd6hBdlb; Thu,  7 Nov 2024 16:47:16 +0300 (MSK)
+Received: from [10.254.65.205] (unknown [92.242.54.217])
+	by mail.rosalinux.ru (Postfix) with ESMTPSA id 267F01E745C14;
+	Thu,  7 Nov 2024 16:47:16 +0300 (MSK)
+Message-ID: <57d4fa02-0b03-0a46-dc97-320fa5e5b540@rosalinux.ru>
+Date: Thu, 7 Nov 2024 16:47:15 +0300
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.0
+Subject: Re: [PATCH] wifi: rtw88: Add additional USB IDs for RTL8812BU
+Content-Language: en-US
+To: Zenm Chen <zenmchen@gmail.com>, linux-wireless@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, pkshih@realtek.com, kvalo@kernel.org,
+ rtl8821cerfe2@gmail.com, usbwifi2024@gmail.com
+References: <20241107002846.13748-1-zenmchen@gmail.com>
+From: Mikhail Novosyolov <m.novosyolov@rosalinux.ru>
+In-Reply-To: <20241107002846.13748-1-zenmchen@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-rtl_init_core creates a workqueue that is then assigned to rtl_wq.
-rtl_deinit_core does not destroy it. It is left to rtl_usb_deinit, which
-must be called in the probe error path.
+07.11.2024 03:28, Zenm Chen =D0=BF=D0=B8=D1=88=D0=B5=D1=82:
+> From: Nick Morrow <usbwifi2024@gmail.com>
+>
+> Add three additional USB IDs found in
+> https://github.com/morrownr/88x2bu-20210702
+> to support more RTL8812BU devices.
+>
+> Signed-off-by: Nick Morrow <usbwifi2024@gmail.com>
+> Signed-off-by: Zenm Chen <zenmchen@gmail.com>
 
-Fixes: 2ca20f79e0d8 ("rtlwifi: Add usb driver")
-Fixes: 851639fdaeac ("rtlwifi: Modify some USB de-initialize code.")
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
----
- drivers/net/wireless/realtek/rtlwifi/usb.c | 1 +
- 1 file changed, 1 insertion(+)
+Signed-off-by: Mikhail Novosyolov <m.novosyolov@rosalinux.ru>
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
-index 8ec687fab572..0368ecea2e81 100644
---- a/drivers/net/wireless/realtek/rtlwifi/usb.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
-@@ -1039,6 +1039,7 @@ int rtl_usb_probe(struct usb_interface *intf,
- 	wait_for_completion(&rtlpriv->firmware_loading_complete);
- 	rtlpriv->cfg->ops->deinit_sw_vars(hw);
- error_out:
-+	rtl_usb_deinit(hw);
- 	rtl_deinit_core(hw);
- error_out2:
- 	_rtl_usb_io_handler_release(hw);
--- 
-2.34.1
+> ---
+>  drivers/net/wireless/realtek/rtw88/rtw8822bu.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822bu.c b/drivers/n=
+et/wireless/realtek/rtw88/rtw8822bu.c
+> index ab620a0b1dfc..8883300fc6ad 100644
+> --- a/drivers/net/wireless/realtek/rtw88/rtw8822bu.c
+> +++ b/drivers/net/wireless/realtek/rtw88/rtw8822bu.c
+> @@ -67,6 +67,12 @@ static const struct usb_device_id rtw_8822bu_id_tabl=
+e[] =3D {
+>  	  .driver_info =3D (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* LiteOn *=
+/
+>  	{ USB_DEVICE_AND_INTERFACE_INFO(0x20f4, 0x808a, 0xff, 0xff, 0xff),
+>  	  .driver_info =3D (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* TRENDnet=
+ TEW-808UBM */
+> +	{ USB_DEVICE_AND_INTERFACE_INFO(0x20f4, 0x805a, 0xff, 0xff, 0xff),
+> +	  .driver_info =3D (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* TRENDnet=
+ TEW-805UBH */
+> +	{ USB_DEVICE_AND_INTERFACE_INFO(0x056e, 0x4011, 0xff, 0xff, 0xff),
+> +	  .driver_info =3D (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* ELECOM W=
+DB-867DU3S */
 
+> +	{ USB_DEVICE_AND_INTERFACE_INFO(0x2c4e, 0x0107, 0xff, 0xff, 0xff),
+> +	  .driver_info =3D (kernel_ulong_t)&(rtw8822b_hw_spec) }, /* Mercusys=
+ MA30H */
+
+I have verified that the vendor website
+
+https://www.mercusys.com/en/download/ma30h#Software
+
+suggests to download Realtek's 88x2bu driver for hardware v2.
+
+This device also exists in the wild: https://linux-hardware.org/?id=3Dusb=
+:2c4e-0107
+
+All hardware probes by that link show that this device did not work -- wa=
+s not supported by any in-kernel driver.
+
+LGTM.
+
+>  	{},
+>  };
+>  MODULE_DEVICE_TABLE(usb, rtw_8822bu_id_table);
 
