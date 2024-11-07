@@ -1,95 +1,76 @@
-Return-Path: <linux-wireless+bounces-15093-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15094-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C99219C08A8
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 15:14:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C65419C08AB
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 15:15:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0754F1C2343D
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 14:14:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F3A11F24226
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 14:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D91021265F;
-	Thu,  7 Nov 2024 14:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F9B20C48C;
+	Thu,  7 Nov 2024 14:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sXezYgZ7"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="MN30PC4g"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4276A18FDAF;
-	Thu,  7 Nov 2024 14:14:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0402F1F8EFF
+	for <linux-wireless@vger.kernel.org>; Thu,  7 Nov 2024 14:15:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730988849; cv=none; b=cDwbRIhT5bkWuW2KMHNb1R/NTfZGkcscgbvxruR9KOsyi1B9ZARL91TI3kythft1wJYUY/IddTI/dJ8+27BwBq6ArNXZdLjFYkU6mV3ijUaybzxFZZQl25ngv9M0gNidatrkAS/2u5sddAcm93dprlNzMzfr0xKqMahr1hTFL+k=
+	t=1730988946; cv=none; b=b52ZOiJoTczppaFJoRd27QUuISC6ver8GYimTFrhn1XfmNcZQVkRAgEYZksG70wwEd13sNiImdx+Pq+OsJtjiRnv+MVaT8xPg9hfERDXqTnrWjFkyAJUVvGZ8RTAEehfhzFMFnoxqMp83pyQoi6q8Rb/mhmfA4HDR3q+RrcHFj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730988849; c=relaxed/simple;
-	bh=cIS71sUh+FXHRudnOBVoewZ7qIlAZ24IeOQvYY7sPfE=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=AYhlknpNVQS/VsVhzyyjpleROQre9K0G999CQV8B1a5TC4E7Xh1wuAFg2p64DwpKI2ann0Umo1Xaqrjyrps40otVdvhRWbMQTGMtWiv8D/aikidfS7MUGUR/RIAQkRTwBpnjdHVxXNJ1nM7M8o5L0NC8ht9XaDU20GI5Q0xCDLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sXezYgZ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 947D3C4CECC;
-	Thu,  7 Nov 2024 14:14:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730988848;
-	bh=cIS71sUh+FXHRudnOBVoewZ7qIlAZ24IeOQvYY7sPfE=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=sXezYgZ7Q/VrooSwIyo0O4VmqPD20fOdNIGWD02y+ik338p9djoGhwFhD/HoawVLw
-	 VAWAapSJqfCqRM7nmMDA5qV/oF5lboHhgOW9yMW/fpTtmCqqfL1JjXR5rN67xnClyy
-	 aF15WlWqLkTzjitx6g4LrLGMXSRoCisbRSFr5nGJJgLEUn8TUzNzQf2/Klx2NP6hGw
-	 eBWirnlnbxAZdPPAkU7HAPiyKmgnFBOjPK7wvbUTnEX5+AzVVdIQ5xuFoW9rq9So/Y
-	 7vZG0JXKDb5WFzVaEfebs0zDYWgx50ksPDnAsd1pOo8o60KSt4SP8nrjlr8e5Q4QzU
-	 wLt6DDH24j4Vg==
-From: Kalle Valo <kvalo@kernel.org>
-To: nvbolhuis@gmail.com
-Cc: brcm80211@lists.linux.dev,  linux-wireless@vger.kernel.org,
-  arend.vanspriel@broadcom.com
-Subject: Re: [PATCH v2] wifi: brcmfmac: Fix oops due to NULL pointer
- dereference in 'brcmf_sdiod_sglist_rw'
-References: <20241107132903.13513-1-nvbolhuis@gmail.com>
-Date: Thu, 07 Nov 2024 16:14:05 +0200
-In-Reply-To: <20241107132903.13513-1-nvbolhuis@gmail.com>
-	(nvbolhuis@gmail.com's message of "Thu, 7 Nov 2024 14:28:13 +0100")
-Message-ID: <87ed3n5dxu.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1730988946; c=relaxed/simple;
+	bh=vIvEAuo7CXsKsZVFoyHDp3t6/FR9gqCJHRpMaq/nXbQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=nOV5887IOZ+3bSXfPLiy2bPyda64MRYm/uHiPWms3QidGDkbhxBRt6m2OMd/Lwxsf0Jl1ub76iLtI1mjq1zM1K3Fu4F5qIeA1W3ALMPmkD4B25MUNxfXi5IPLMJ1YkKnC7KYq2LmRTNhlj1Hg6M3OQnZFSh8v+TkaHN7uyiVjNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=MN30PC4g; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=vIvEAuo7CXsKsZVFoyHDp3t6/FR9gqCJHRpMaq/nXbQ=;
+	t=1730988945; x=1732198545; b=MN30PC4gJ0aoptVadDTDbh+qLNecPpn/PkysuoBY6ZsXybV
+	SWW00ZZfXqZTk5jXMJfOLXxexzPW2IMFNjfpwIzqFlWeY+OqVLUyxeiO/NDCqhW9aMduU0+GX2fTN
+	+xry0wpckTjP7elRMvKwHrR1VINOYpgGZzdqqX3WST3WhS427bN04YNeBDj7spAvQwKAyQlgMFphu
+	1cQbrboC3z6rtTf1mIrODkDf7HfopeFHvgNJIDdnA1nGU7e3DAxv5hFkXDB6cKvN6+LV5T72CgXeb
+	eZzzh2s3sV2F6rTXJL3XghehKPhf2GxJ9KtbQJC7/HHkyCYE4+Y4rE2tzH5vsrfA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1t93IU-0000000GRoe-2kyy;
+	Thu, 07 Nov 2024 15:15:42 +0100
+Message-ID: <971cd1e3376a839047711b15961d4a118c40feaa.camel@sipsolutions.net>
+Subject: Re: [PATCH 1/3] iw: scan: add enum for ie ids
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Dylan Eskew <dylan.eskew@candelatech.com>
+Cc: linux-wireless@vger.kernel.org
+Date: Thu, 07 Nov 2024 15:15:41 +0100
+In-Reply-To: <20240930181145.1043048-2-dylan.eskew@candelatech.com>
+References: <20240930181145.1043048-1-dylan.eskew@candelatech.com>
+	 <20240930181145.1043048-2-dylan.eskew@candelatech.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-malware-bazaar: not-scanned
 
-nvbolhuis@gmail.com writes:
+On Mon, 2024-09-30 at 11:11 -0700, Dylan Eskew wrote:
+> Formerly, ie ids were hardcoded. This change will improve
+> readability of logic which may explicitly reference an ie id.
 
-> From: Norbert van Bolhuis <nvbolhuis@gmail.com>
->
-> This patch fixes a NULL pointer dereference bug in brcmfmac that occurs
-> when a high 'sd_sgentry_align' value applies (e.g. 512) and a lot of queued SKBs
-> are sent from the pkt queue.
->
-> The problem is the number of entries in the pre-allocated sgtable, it is
-> nents = max(rxglom_size, txglom_size) + max(rxglom_size, txglom_size) >> 4 + 1.
-> Given the default [rt]xglom_size=32 it's actually 35 which is too small.
-> Worst case, the pkt queue can end up with 64 SKBs. This occurs when a new SKB
-> is added for each original SKB if tailroom isn't enough to hold tail_pad.
-> At least one sg entry is needed for each SKB. So, eventually the "skb_queue_walk loop"
-> in brcmf_sdiod_sglist_rw may run out of sg entries. This makes sg_next return
-> NULL and this causes the oops.
->
-> The patch sets nents to max(rxglom_size, txglom_size) * 2 to be able handle
-> the worst-case.
-> Btw. this requires only 64-35=29 * 16 (or 20 if CONFIG_NEED_SG_DMA_LENGTH) = 464
-> additional bytes of memory.
->
-> Signed-off-by: Norbert van Bolhuis <nvbolhuis@gmail.com>
+I've applied this, with some changes.
 
-What changed from v1? Please include a list of changes after '--' line,
-but no need to resend because of this.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+johannes
 
