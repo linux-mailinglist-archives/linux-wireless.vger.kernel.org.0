@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-15019-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15020-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CBD99BFA95
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 01:14:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C13D9BFA98
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 01:15:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 22B5DB20A8E
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 00:14:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74AE3282CB7
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 00:15:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32ADC366;
-	Thu,  7 Nov 2024 00:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EE2763D;
+	Thu,  7 Nov 2024 00:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="bc7TuT9A"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="PVIAGo6j"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E80A621
-	for <linux-wireless@vger.kernel.org>; Thu,  7 Nov 2024 00:14:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD44624
+	for <linux-wireless@vger.kernel.org>; Thu,  7 Nov 2024 00:15:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730938450; cv=none; b=fDdHmk4OtduGxMFSRgRL1jUKHbhCkHKoEcgGlKAJb+bOvMjP4QYtfh0MsCItwkxIc86CH3uVw0Ta7UQJFXIg6lnLfHU1HmgmhJZ647xzhj8OHxZYmXEZG67JKWY2h2wV6/jQ8fmllEsQT9a0+SeYZTMztJ1pwTYPqVzDRlE0yRQ=
+	t=1730938514; cv=none; b=gfRqCGJTB4P40bjxTEdjXjk7STScnCqSuyXeaxQjVKw2FYdqGBww9uEjiYuY0mmZpJ11H/Tl32UL6UH2E5WJ34gIKHu3gNUhLonU3VZWewmkUu/W8i2KGkBZsBfHUcrbzXZh9uP4Ol8VWDEAHzxVN2tsB0NxHTmTulVY8UYeqcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730938450; c=relaxed/simple;
-	bh=7Kr+xBS8nCfcu7u1riulC21jmhfB5ehrhYD/Tyg6X+o=;
+	s=arc-20240116; t=1730938514; c=relaxed/simple;
+	bh=yMTIGMxSsmy0RP15BqJQbeDpv4WmtdZLIhRjdx9cYXE=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Nje37FTY41XXN1m7JCTT8oRZart6f5sSgUXRTKQVg2HS5NeKTffgxsK623ZXVI8GPRuzje1mEW6QXFTK63L8z0rKQbLj4K+6O1I333A4HThBjKJShf7Hek4fafghVZ5OWEVkZPtzmuGNFKwe+iIZBcwS7JgJnR8MP12ZS/A2z5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=bc7TuT9A; arc=none smtp.client-ip=205.220.180.131
+	 In-Reply-To:Content-Type; b=VSKFM5Bd3eFbFNOX5AIZPcgWRaItjeCwU7AGXFRWmRibgmK25Bv6Aq1uZhdObXEnaNjEiS6TU63B1r+62vUstAdc8ZsoZxGTvCmDFC41a7MWmvlfQg6tTnEsRXMWujEk86ku/OrPEqycFPxZpSrmcRliYYdB6PDcOEKVr7Q8DDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=PVIAGo6j; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A6HkgpE028840;
-	Thu, 7 Nov 2024 00:14:05 GMT
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A6M8hJk015673;
+	Thu, 7 Nov 2024 00:15:10 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	4o4oDhBwaou2FC37R3e+JEtwsqqNeCqd2aFyl1njSVA=; b=bc7TuT9AQh3FIE70
-	MTAV1u9kb8wzjjJHMqCj6/iRbIadaIbk0L/FQY6bFp/eL+X/H8QEIvf3j6Xg3TBt
-	UKoVXiC8w3X9Vr2z0qVkityAcG9iOgcY8nGatmo2E4ANKhLozA2sMb481sqz2rci
-	PsAELodo5KM6aIHgZoP06w6QlKKCQx06GVg0Eziox01kOxJx8eKPb7fbTJ1V5SIA
-	hV4M9ape3QI+GWk2UbGm8OTzONtUdvZuOh3ZxvVsFsPNPQADFyENfwoJhm5eSamU
-	JH47KhjyGTmYET/mqNMK8CjlZgDjd0ZX/vo74oVQECciFD8QQhYm71kbCanbRDwN
-	V8i0iQ==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42nd28ctu8-1
+	Kxbd82ch1M5jS8FmBwduEv1Knck7CcQmjM3RT1ky96Q=; b=PVIAGo6j4ARNsRTQ
+	VYGxQixJopV9KvaRYUafZPlHPgVqO71SzGOdnokfqdcQfKsmyBMYeMaFfuQBNJC9
+	F5xXqVYML1dEWCelmpm+omCkWHt81WCOKXGgaacj3qiKLN5mnryhoHhU9OMrCura
+	hR0GZ/OyqC0QJx8DDoeFqV6qek9/qBVWHru/i3Zwza8D2HJOMmUJVYepgWCTn5QC
+	68JlCra8XajL3Qc2FWdxZu2q5Z4gZ53/iEaXbOh9IuYiy9picWUdbj4fEn2MMO+Z
+	Vw2P8TYC11VqpI2aooBSZNF1SlJoPdDDzY49z2yrG6xvrX1PNuTVV3+vkWq7WRwF
+	aBOUIA==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42q5n8q7mn-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Nov 2024 00:14:04 +0000 (GMT)
+	Thu, 07 Nov 2024 00:15:09 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4A70E3Wn026781
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4A70F95G011406
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 7 Nov 2024 00:14:03 GMT
+	Thu, 7 Nov 2024 00:15:09 GMT
 Received: from [10.48.242.250] (10.49.16.6) by nalasex01a.na.qualcomm.com
  (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 6 Nov 2024
- 16:14:03 -0800
-Message-ID: <32b84dff-b547-4154-8959-8386815f0ab7@quicinc.com>
-Date: Wed, 6 Nov 2024 16:14:02 -0800
+ 16:15:08 -0800
+Message-ID: <6f995c95-d9db-4169-8216-fd1959fce2a7@quicinc.com>
+Date: Wed, 6 Nov 2024 16:15:08 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,74 +65,55 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/4] wifi: ath12k: Support Transmit PER Rate Stats
+Subject: Re: [PATCH v4 0/4] wifi: ath12k: Support Pager, Counter, SoC,
+ Transmit Rate Stats
 To: Roopni Devanathan <quic_rdevanat@quicinc.com>,
         <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Dinesh Karthikeyan
-	<quic_dinek@quicinc.com>
+CC: <linux-wireless@vger.kernel.org>
 References: <20241106044548.3530128-1-quic_rdevanat@quicinc.com>
- <20241106044548.3530128-5-quic_rdevanat@quicinc.com>
 From: Jeff Johnson <quic_jjohnson@quicinc.com>
 Content-Language: en-US
-In-Reply-To: <20241106044548.3530128-5-quic_rdevanat@quicinc.com>
+In-Reply-To: <20241106044548.3530128-1-quic_rdevanat@quicinc.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: t5Ni30mFdffCyJ5gfFLxaM5GTiWjpo8q
-X-Proofpoint-GUID: t5Ni30mFdffCyJ5gfFLxaM5GTiWjpo8q
+X-Proofpoint-GUID: Rb8b6eTeK-hTruHi0FxJtLeTBeQEg989
+X-Proofpoint-ORIG-GUID: Rb8b6eTeK-hTruHi0FxJtLeTBeQEg989
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=877
- clxscore=1015 lowpriorityscore=0 impostorscore=0 priorityscore=1501
- spamscore=0 phishscore=0 bulkscore=0 malwarescore=0 suspectscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
+ suspectscore=0 lowpriorityscore=0 mlxlogscore=999 mlxscore=0
+ priorityscore=1501 bulkscore=0 adultscore=0 malwarescore=0 phishscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2409260000 definitions=main-2411070000
 
 On 11/5/2024 8:45 PM, Roopni Devanathan wrote:
-> From: Dinesh Karthikeyan <quic_dinek@quicinc.com>
+> Add support to request HTT stats type 36, 37, 38 and 40 from firmware.
+> These stat types give downlink pager stats, counter and TPC stats, SoC
+> common stats and Transmit PER rate stats, respectively.
 > 
-> Add support to request per rate stats through HTT stats type
-> 40. These stats give information about rates of PPDUs and
-> MPDUs for single user and for OFDMA and MUMIMO technologies
-> corresponding to multiple users.
+> v4:
+>  - Addressed Jeff's comments pertaining to data type conversions.
+> v3:
+>  - Added macros to fix compilation issues.
+> v2:
+>  - Removed dependencies. No change in code.
 > 
-> Sample output:
-> -------------
-> echo 40 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
-> cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats
-> HTT_TX_PER_STATS:
+> Dinesh Karthikeyan (4):
+>   wifi: ath12k: Support Downlink Pager Stats
+>   wifi: ath12k: Support phy counter and TPC stats
+>   wifi: ath12k: Support SoC Common Stats
+>   wifi: ath12k: Support Transmit PER Rate Stats
 > 
-> PER_STATS_SU:
+>  .../wireless/ath/ath12k/debugfs_htt_stats.c   | 630 +++++++++++++++++-
+>  .../wireless/ath/ath12k/debugfs_htt_stats.h   | 204 +++++-
+>  2 files changed, 831 insertions(+), 3 deletions(-)
 > 
-> PER per BW:
-> ppdus_tried_su =  0:0  1:0  2:0  3:0  4:0
-> ppdus_ack_failed_su =  0:0  1:0  2:0  3:0  4:0
-> mpdus_tried_su =  0:0  1:0  2:0  3:0  4:0
-> mpdus_failed_su =  0:0 1:0 2:0 3:0 4:0
 > 
-> PER per NSS:
-> ppdus_tried_su =  0:0  1:0  2:0  3:0  4:0  5:0  6:0  7:0
-> ppdus_ack_failed_su =  0:0  1:0  2:0  3:0  4:0  5:0  6:0  7:0
-> mpdus_tried_su =  0:0  1:0  2:0  3:0  4:0  5:0  6:0  7:0
-> mpdus_failed_su =  0:0  1:0  2:0  3:0  4:0  5:0  6:0  7:0
-> 
-> PER per MCS:
-> ppdus_tried_su =  0:0  1:0  2:0  3:0  4:0  5:0  6:0  7:0  8:0  9:0  10:0  11:0  12:0  13:0
-> ppdus_ack_failed_su =  0:0  1:0  2:0  3:0  4:0  5:0  6:0  7:0  8:0  9:0  10:0  11:0  12:0  13:0
-> mpdus_tried_su =  0:0  1:0  2:0  3:0  4:0  5:0  6:0  7:0  8:0  9:0  10:0  11:0  12:0  13:0
-> mpdus_failed_su =  0:0  1:0  2:0  3:0  4:0  5:0  6:0  7:0  8:0  9:0  10:0  11:0  12:0  13:0
-> .....
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
-> 
-> Signed-off-by: Dinesh Karthikeyan <quic_dinek@quicinc.com>
-> Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-
+> base-commit: d63fbff74ab1af1573c1dca20cfe1e876f8ffa62
+I acked 2-4/4. I can fix 1/4 in pending so no need to spin v5
 
