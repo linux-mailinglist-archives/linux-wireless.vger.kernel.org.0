@@ -1,34 +1,34 @@
-Return-Path: <linux-wireless+bounces-15088-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15089-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A48D9C0799
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 14:34:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 880969C079A
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 14:34:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B57F31F23558
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 13:34:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA92E1C22D35
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 13:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08C86210197;
-	Thu,  7 Nov 2024 13:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07030212623;
+	Thu,  7 Nov 2024 13:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="S/Ci8Dax"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="FvHK6Rg+"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E072101BF
-	for <linux-wireless@vger.kernel.org>; Thu,  7 Nov 2024 13:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4342B212183
+	for <linux-wireless@vger.kernel.org>; Thu,  7 Nov 2024 13:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730986429; cv=none; b=EA+sLZ1kG5p+iJi2J9S0E6AS3kRnlv4H3UNGd/IYvJAbVGlfBeETBncOV9qWciLRhIjGD/ZmKJsP0TLvDyoHFpMeGQRVt0ne0GO40e3MYlvHzTNRh3EW+5+BTWQ1LdkE1gmBKMGHDvyOJUuDgj2IR3hO+001p0HQClDuzyHm2Ts=
+	t=1730986432; cv=none; b=J/oyJHBw9w6TO4EyO61R3PaI2NQSZ0hVBIfZFg9sBqqlyX8nLLmE61pbHWxyevpBMeAiue1CHVD+Apywfc97FHQePgUiYa3qe6SNHWKqd5nYAVBNJMomCZB/pUi1R1TrKXt9HBDGn78pYB75n4k/K0b7jKek+1bqFoMe8Sh57jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730986429; c=relaxed/simple;
-	bh=bzAU50gtgYaeYf5HMsuxid0+7GYR7kmuUtzYsGfLrBQ=;
+	s=arc-20240116; t=1730986432; c=relaxed/simple;
+	bh=DHFZyEm/apIJ/dTvbijqwmQUA2e7pWObYwPzrk3pPXo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Rrpw+PBckFt6O4xB8WzjS67c1Jwq70OtJ2ZHmI7Ezk1vWAlQ0fpDTM6Vg8GCWH2puS3QqjwuALDfg1Yo+ekH21ZsoKG9EQhXNEDVKwiNLXKUeOnlbfNd+XgcosYJiCp7NBqMU82w2RnxxqFY7N+nMPGYOdrtWQ03zbo+sN0HKJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=S/Ci8Dax; arc=none smtp.client-ip=178.60.130.6
+	 MIME-Version; b=imyYXuc4PMepNW5fIRTnhYgKsyN+v559B8w/YT8P/2SsS20GwmzdYKyICREhMn9eAp+Xkgaj13cB1/dLgqqtLpAm6nOAbS6TqDroCtTyJSNgE5hOfo2gD/IwIEmGNE3KkcpdlBa3TaWwBhgSZlSci0ysJqoZAc5whRuzu8Hvz40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=FvHK6Rg+; arc=none smtp.client-ip=178.60.130.6
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
@@ -37,25 +37,25 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=nKAkaAVraMrH3KpRPmD+jKtH0uUtbhfUjK9MHwH4FyU=; b=S/Ci8DaxO2o35lmIiC6Kg4jKnG
-	IEz7hkoFBb1veYwv2zrVmTezIYhnCz4GQIaDp7Yk+nJUck4kfHhxXXJu6Lw33z21Q7bwk1XqQ4vDM
-	PWZpLqCLj9pGDCjxTJvSeR29R9QGDUR4uIcZF9mGtOeo25VmY3KgHeoSVk9OELqXWYIMPsTdJyUIR
-	fja5lT4rNlUxS13zqhvx+vy/CSsOGJKpY7W9EPiFhyRpiom1e74PhkaJyCm2n7RF1R3uju8JqaedR
-	d6liM1M7OZUiFnatLp57Ki6C8m6C7xOd+Ag3sDfysknwPMmObE/9pjXWTYqD2Nq8I9AYUB4jnVgHj
-	giL0Mdqg==;
+	bh=DNfyb8bUHFkUSScg467npum/PYZA6co9bIdPu4qi2Xo=; b=FvHK6Rg+mwBCESdI94GEaLeXhJ
+	YmVE6Y21Sxr+CIiKMjUA25wQqbbE7urTUTW1JECUHHdKpsjLxZL72IE6OHyOMogErH45Gw4MJY2qf
+	WQR3/6g+Q3DyWDHWxwWEHBVp/DVp5C1bEQa30dZCgW9JYmFJhyzZekzz8C7Np0PKtEiVoJnSo+r2w
+	OUEnQCg452QgzeqQzzmGKM1d1gsAFVHdILS4g7+iWgUfTxcVTZDDUytS0bLMA6MbGx05qFwRticMx
+	pVCeqTtgS8MMBlV2Af9X/ZR+02CN4Pis7+nffUErMt1tnw1kGWL62pbYu3mKyoK6xBwiaAXd5FAST
+	gnOxdq0g==;
 Received: from 179-125-64-253-dinamico.pombonet.net.br ([179.125.64.253] helo=quatroqueijos.lan)
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1t92dt-003Zsz-HL; Thu, 07 Nov 2024 14:33:46 +0100
+	id 1t92dw-003Zsz-Mr; Thu, 07 Nov 2024 14:33:49 +0100
 From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 To: linux-wireless@vger.kernel.org
 Cc: Ping-Ke Shih <pkshih@realtek.com>,
 	Kalle Valo <kvalo@kernel.org>,
 	kernel-dev@igalia.com,
 	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH net 3/5] wifi: rtlwifi: wait for firmware loading before releasing memory
-Date: Thu,  7 Nov 2024 10:33:20 -0300
-Message-Id: <20241107133322.855112-4-cascardo@igalia.com>
+Subject: [PATCH net 4/5] wifi: rtlwifi: fix init_sw_vars leak when probe fails
+Date: Thu,  7 Nov 2024 10:33:21 -0300
+Message-Id: <20241107133322.855112-5-cascardo@igalia.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241107133322.855112-1-cascardo@igalia.com>
 References: <20241107133322.855112-1-cascardo@igalia.com>
@@ -67,35 +67,25 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-At probe error path, the firmware loading work may have already been
-queued. In such a case, it will try to access memory allocated by the probe
-function, which is about to be released. In such paths, wait for the
-firmware worker to finish before releasing memory.
+If ieee80211_register_hw fails, the memory allocated for the firmware will
+not be released. Call deinit_sw_vars as the function that undoes the
+allocationes done by init_sw_vars.
 
-Fixes: a7f7c15e945a ("rtlwifi: rtl8192cu: Free ieee80211_hw if probing fails")
+Fixes: cefe3dfdb9f5 ("rtl8192cu: Call ieee80211_register_hw from rtl_usb_probe")
 Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 ---
- drivers/net/wireless/realtek/rtlwifi/usb.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/usb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
-index c3aa0cd9ff21..c27b116ccdff 100644
+index c27b116ccdff..8ec687fab572 100644
 --- a/drivers/net/wireless/realtek/rtlwifi/usb.c
 +++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
-@@ -1028,13 +1028,15 @@ int rtl_usb_probe(struct usb_interface *intf,
- 	err = ieee80211_register_hw(hw);
- 	if (err) {
- 		pr_err("Can't register mac80211 hw.\n");
--		goto error_out;
-+		goto error_init_vars;
- 	}
- 	rtlpriv->mac80211.mac80211_registered = 1;
+@@ -1037,6 +1037,7 @@ int rtl_usb_probe(struct usb_interface *intf,
  
- 	set_bit(RTL_STATUS_INTERFACE_START, &rtlpriv->status);
- 	return 0;
- 
-+error_init_vars:
-+	wait_for_completion(&rtlpriv->firmware_loading_complete);
+ error_init_vars:
+ 	wait_for_completion(&rtlpriv->firmware_loading_complete);
++	rtlpriv->cfg->ops->deinit_sw_vars(hw);
  error_out:
  	rtl_deinit_core(hw);
  error_out2:
