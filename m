@@ -1,119 +1,171 @@
-Return-Path: <linux-wireless+bounces-15020-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15021-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C13D9BFA98
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 01:15:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 687B99BFA9B
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 01:17:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74AE3282CB7
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 00:15:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64EC7B21865
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 00:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EE2763D;
-	Thu,  7 Nov 2024 00:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88829802;
+	Thu,  7 Nov 2024 00:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="PVIAGo6j"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="WwXLfNQz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD44624
-	for <linux-wireless@vger.kernel.org>; Thu,  7 Nov 2024 00:15:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A4E7F9
+	for <linux-wireless@vger.kernel.org>; Thu,  7 Nov 2024 00:17:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730938514; cv=none; b=gfRqCGJTB4P40bjxTEdjXjk7STScnCqSuyXeaxQjVKw2FYdqGBww9uEjiYuY0mmZpJ11H/Tl32UL6UH2E5WJ34gIKHu3gNUhLonU3VZWewmkUu/W8i2KGkBZsBfHUcrbzXZh9uP4Ol8VWDEAHzxVN2tsB0NxHTmTulVY8UYeqcA=
+	t=1730938659; cv=none; b=p/aMLpfG3unHTcSoVUzqRzowvc9yMr97jV2CpDSRyq5p5TBT2+YX6J7ThjxV+90L++nurkSeWYhfw0Zr6W4vcdSOJ4Qu6jRgb2WvyGf0R8S1+4qgOF+vzTRwvU2+tLzo6JMFnMTTHXIRl1kmYyxCOhXAvdcDKwLdUQiCHa4+Pw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730938514; c=relaxed/simple;
-	bh=yMTIGMxSsmy0RP15BqJQbeDpv4WmtdZLIhRjdx9cYXE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=VSKFM5Bd3eFbFNOX5AIZPcgWRaItjeCwU7AGXFRWmRibgmK25Bv6Aq1uZhdObXEnaNjEiS6TU63B1r+62vUstAdc8ZsoZxGTvCmDFC41a7MWmvlfQg6tTnEsRXMWujEk86ku/OrPEqycFPxZpSrmcRliYYdB6PDcOEKVr7Q8DDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=PVIAGo6j; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A6M8hJk015673;
-	Thu, 7 Nov 2024 00:15:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Kxbd82ch1M5jS8FmBwduEv1Knck7CcQmjM3RT1ky96Q=; b=PVIAGo6j4ARNsRTQ
-	VYGxQixJopV9KvaRYUafZPlHPgVqO71SzGOdnokfqdcQfKsmyBMYeMaFfuQBNJC9
-	F5xXqVYML1dEWCelmpm+omCkWHt81WCOKXGgaacj3qiKLN5mnryhoHhU9OMrCura
-	hR0GZ/OyqC0QJx8DDoeFqV6qek9/qBVWHru/i3Zwza8D2HJOMmUJVYepgWCTn5QC
-	68JlCra8XajL3Qc2FWdxZu2q5Z4gZ53/iEaXbOh9IuYiy9picWUdbj4fEn2MMO+Z
-	Vw2P8TYC11VqpI2aooBSZNF1SlJoPdDDzY49z2yrG6xvrX1PNuTVV3+vkWq7WRwF
-	aBOUIA==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42q5n8q7mn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 Nov 2024 00:15:09 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4A70F95G011406
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 7 Nov 2024 00:15:09 GMT
-Received: from [10.48.242.250] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 6 Nov 2024
- 16:15:08 -0800
-Message-ID: <6f995c95-d9db-4169-8216-fd1959fce2a7@quicinc.com>
-Date: Wed, 6 Nov 2024 16:15:08 -0800
+	s=arc-20240116; t=1730938659; c=relaxed/simple;
+	bh=XR5CPjtvZ9s0cmstv99RTNQqKlRec8iCXpqWNaomN6Q=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=bMqzPulHvMXRWHN994fhHs9MtRemcs5a6r7m8qNDiuhUDEgVJZc8RK2y2+MiiqGD4nqcu+9lnOwvGgLXFzHS0QpHsU4Bw2EkfKAF2kBV7HVZ4udgUWJD1dZg7q7C8tVglcIwCFuTZ28hL/Ee3aDyfkeH5sbAVbKfo04zHkISvPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=WwXLfNQz; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4A70HFt943562195, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1730938635; bh=XR5CPjtvZ9s0cmstv99RTNQqKlRec8iCXpqWNaomN6Q=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=WwXLfNQzADNnz/gabRMtRxEsaLOyLtzGS0tiBYv/JJzu0yPfzLSX+JiCDI1K4kobl
+	 Lg48ZWBtHZDuHNP6RwLBxZE3ou6Z5cwFcF2Sn1XkLGD+7kSsRDvv+rhVtmcI3A4d85
+	 JncRFqyydwfQjSjSmjvkWKpVn/uNb8RmYzM/p/UtZZiPupUjoBlGA8pgc4nRvNTjnh
+	 SFgU8KSwi7ARX2NveuR49VL5s6UXDxlAaFPx0S8uTd6n7183lex7jugeYkrVGXZTFL
+	 nbWUjaHotvNXo5PyVrBYmWGejNy+9STwrGbVJUyEyTr93/DkfAxBiN0M0UxSXxwbni
+	 RVqHx7Pe8VEEA==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4A70HFt943562195
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 7 Nov 2024 08:17:15 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 7 Nov 2024 08:17:15 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 7 Nov 2024 08:17:15 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
+ 15.01.2507.035; Thu, 7 Nov 2024 08:17:15 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Ladislav Michl <oss-lists@triops.cz>
+CC: "johannes@sipsolutions.net" <johannes@sipsolutions.net>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "pbrobinson@gmail.com" <pbrobinson@gmail.com>
+Subject: RE: [PATCH v2 2/2] wifi: rtw88: use ieee80211_purge_tx_queue() to purge TX skb
+Thread-Topic: [PATCH v2 2/2] wifi: rtw88: use ieee80211_purge_tx_queue() to
+ purge TX skb
+Thread-Index: AQHa9DSxPPAHrjHHCkiWzpTbPs2zeLKoc5iAgAGerMD//90HgIABfEmA
+Date: Thu, 7 Nov 2024 00:17:14 +0000
+Message-ID: <5e49875a73214c89bb6220ddb54a1c15@realtek.com>
+References: <20240822014255.10211-1-pkshih@realtek.com>
+ <20240822014255.10211-2-pkshih@realtek.com> <Zyn5WcUGoibH7-s8@lenoch>
+ <d78848f7768a4bdabf92e053525d232d@realtek.com> <Zys33cLsOuMGaRek@lenoch>
+In-Reply-To: <Zys33cLsOuMGaRek@lenoch>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/4] wifi: ath12k: Support Pager, Counter, SoC,
- Transmit Rate Stats
-To: Roopni Devanathan <quic_rdevanat@quicinc.com>,
-        <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20241106044548.3530128-1-quic_rdevanat@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Content-Language: en-US
-In-Reply-To: <20241106044548.3530128-1-quic_rdevanat@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: Rb8b6eTeK-hTruHi0FxJtLeTBeQEg989
-X-Proofpoint-ORIG-GUID: Rb8b6eTeK-hTruHi0FxJtLeTBeQEg989
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
- suspectscore=0 lowpriorityscore=0 mlxlogscore=999 mlxscore=0
- priorityscore=1501 bulkscore=0 adultscore=0 malwarescore=0 phishscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411070000
 
-On 11/5/2024 8:45 PM, Roopni Devanathan wrote:
-> Add support to request HTT stats type 36, 37, 38 and 40 from firmware.
-> These stat types give downlink pager stats, counter and TPC stats, SoC
-> common stats and Transmit PER rate stats, respectively.
-> 
-> v4:
->  - Addressed Jeff's comments pertaining to data type conversions.
-> v3:
->  - Added macros to fix compilation issues.
-> v2:
->  - Removed dependencies. No change in code.
-> 
-> Dinesh Karthikeyan (4):
->   wifi: ath12k: Support Downlink Pager Stats
->   wifi: ath12k: Support phy counter and TPC stats
->   wifi: ath12k: Support SoC Common Stats
->   wifi: ath12k: Support Transmit PER Rate Stats
-> 
->  .../wireless/ath/ath12k/debugfs_htt_stats.c   | 630 +++++++++++++++++-
->  .../wireless/ath/ath12k/debugfs_htt_stats.h   | 204 +++++-
->  2 files changed, 831 insertions(+), 3 deletions(-)
-> 
-> 
-> base-commit: d63fbff74ab1af1573c1dca20cfe1e876f8ffa62
-I acked 2-4/4. I can fix 1/4 in pending so no need to spin v5
+Ladislav Michl <oss-lists@triops.cz> wrote:
+> On Wed, Nov 06, 2024 at 03:43:24AM +0000, Ping-Ke Shih wrote:
+> > Ladislav Michl <oss-lists@triops.cz> wrote:
+> > > On Thu, Aug 22, 2024 at 09:42:55AM +0800, Ping-Ke Shih wrote:
+> > > > When removing kernel modules by:
+> > > >    rmmod rtw88_8723cs rtw88_8703b rtw88_8723x rtw88_sdio rtw88_core
+> > > >
+> > > > Driver uses skb_queue_purge() to purge TX skb, but not report tx st=
+atus
+> > > > causing "Have pending ack frames!" warning. Use ieee80211_purge_tx_=
+queue()
+> > > > to correct this.
+> > > >
+> > > > Since ieee80211_purge_tx_queue() doesn't take locks, to prevent rac=
+ing
+> > > > between TX work and purge TX queue, flush and destroy TX work in ad=
+vance.
+> > >
+> > > A the very same problem exists in 6.1 kernel series, where this patch
+> > > becomes oneliner:
+> >
+> > linux-6.1.y branch doesn't have patch that exports ieee80211_purge_tx_q=
+ueue().
+>=20
+> Sure, but that one applies with a little fuzz.
+>=20
+> > > ---
+> > >  drivers/net/wireless/realtek/rtw88/main.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/=
+wireless/realtek/rtw88/main.c
+> > > index 81f3112923f1..d7d4b0f05da9 100644
+> > > --- a/drivers/net/wireless/realtek/rtw88/main.c
+> > > +++ b/drivers/net/wireless/realtek/rtw88/main.c
+> > > @@ -2145,7 +2145,7 @@ void rtw_core_deinit(struct rtw_dev *rtwdev)
+> > >
+> > >         destroy_workqueue(rtwdev->tx_wq);
+> > >         spin_lock_irqsave(&rtwdev->tx_report.q_lock, flags);
+> > > -       skb_queue_purge(&rtwdev->tx_report.queue);
+> > > +       ieee80211_purge_tx_queue(rtwdev->hw, &rtwdev->tx_report.queue=
+);
+> > >         skb_queue_purge(&rtwdev->coex.queue);
+> > >         spin_unlock_irqrestore(&rtwdev->tx_report.q_lock, flags);
+> > >
+> >
+> > Seemingly, we need below also?
+>=20
+> Perhaps I was lucky enough I never hit it here, but for a sake of complet=
+eness
+> it should be there as well.
+>=20
+> > diff --git a/drivers/net/wireless/realtek/rtw88/tx.c b/drivers/net/wire=
+less/realtek/rtw88/tx.c
+> > index 6ed470dd6f22..224678b9c38b 100644
+> > --- a/drivers/net/wireless/realtek/rtw88/tx.c
+> > +++ b/drivers/net/wireless/realtek/rtw88/tx.c
+> > @@ -188,7 +188,7 @@ void rtw_tx_report_purge_timer(struct timer_list *t=
+)
+> >         rtw_warn(rtwdev, "failed to get tx report from firmware\n");
+> >
+> >         spin_lock_irqsave(&tx_report->q_lock, flags);
+> > -       skb_queue_purge(&tx_report->queue);
+> > +       ieee80211_purge_tx_queue(&tx_report->queue);
+> >         spin_unlock_irqrestore(&tx_report->q_lock, flags);
+> >  }
+> >
+> > Have you seen "Have pending ack frames!" in your side?
+>=20
+> Yes.
+>=20
+> > If so, use above changes to verify again on the latest kernel, and send=
+ a patch?
+>=20
+> Do you mean to send a patch against linux-6.1.y stable tree? I can see yo=
+ur
+> patch in wireless-next only, so I do not think sending it to stable now w=
+ould
+> work. But in general, having this fix in the stable trees is a good idea.
+
+I meant to send a patch to wireless-next. After it gets merged, send anothe=
+r
+backport patchset related to the warning to 6.1 and 6.6.=20
+
+
 
