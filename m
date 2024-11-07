@@ -1,95 +1,88 @@
-Return-Path: <linux-wireless+bounces-15084-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15085-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF4959C0776
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 14:32:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29A3E9C0795
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 14:34:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89A35B21660
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 13:32:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0A351F216F2
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 13:34:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC4AE1EF0A2;
-	Thu,  7 Nov 2024 13:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC9141EF0A2;
+	Thu,  7 Nov 2024 13:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jT8EEkG2"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="TwbCupFV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731A01DDD1
-	for <linux-wireless@vger.kernel.org>; Thu,  7 Nov 2024 13:30:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30CEE1F4FA5
+	for <linux-wireless@vger.kernel.org>; Thu,  7 Nov 2024 13:33:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730986221; cv=none; b=MWveoPqn1QUrxLo6w1E11nnR3Bf3+l0lAtWfz404ZcGh0RO7zmOXlnFazGrQf9ThF63Ywez28snDe2Djn8efbUFPnKFPKdm4eiNJV/SMdp95/bvZEMGiHDC/eKOmdJ8vvOU6MsVXLatoSsZnM39kRoO+FWwu3wHdZVDl1uWOwD4=
+	t=1730986422; cv=none; b=dU1pYF++IC/aY83houdsdJlY7RgrliXhhI9+PDDLDxP/QkDHHdF5nslq1pmajrMvfFIpi2e5bYeyfK3SXaDNbFIOl+HhWLDApKjZkbqkFbGCnBTontGHZx10yyEl1JC176NBDFGlftG3NDXUY7PJ6G3Y/7DXGq68Ggp4eQQCQcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730986221; c=relaxed/simple;
-	bh=EdUHy+dJaT2hjot9BfU5nIFtHsjfeKtMy7/W74D8iDw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RxyCBMTiNW2tcTOFa5P+rHYfEYO0Cfl053tebiNmPP0r9Ax/k+nVcpzplZMIsOfnErALiPvXfyqxS3GX1NORQvyNQyYKktl6lo+Ds/B4I/QJlFHt0WK4HOa2wttRxfX4YuPhRBafF26qCCPDQrlVVefMC3ysh121lmr+SD5S3Dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jT8EEkG2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 001CBC4CED2
-	for <linux-wireless@vger.kernel.org>; Thu,  7 Nov 2024 13:30:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730986221;
-	bh=EdUHy+dJaT2hjot9BfU5nIFtHsjfeKtMy7/W74D8iDw=;
-	h=References:In-Reply-To:From:Date:Subject:To:List-Id:Cc:From;
-	b=jT8EEkG2MOmhdwILypbKO2JgvVuLL2Z3GlKsn3sB3HnrOK/NxM4eMCj9BxtAplynJ
-	 O9xUxyYAzeE5w1d9poy4UgUq8HEXGvDNcsjlmvjTDOkZWqoLHIr3dyE2m9Z77FMvZA
-	 CwloSZwyXOzpiSTXq+lkVccIVcZgXfSb+EhCYQG/6tBJRhPOnXNE4IIb0o1vEkxZf3
-	 3gNdw1omujeObgVIzeJrkvQez17sN/PqjiqKH7oU0pr05gVfLwndSKa0/Na5Sj77aI
-	 nuLGJxH1TQLw7M/KmIbIHI4qd5r53hc6lDzxe6uzFYOJdan93GecfgfqH18zBOeQkP
-	 HAIKjy0KFJhBA==
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-6e9ba45d67fso8908497b3.1
-        for <linux-wireless@vger.kernel.org>; Thu, 07 Nov 2024 05:30:20 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXgm8r3TWS2q1IDF1/RnMKD4wxyVGhqe4SjCwGECQuJhoKWVzkXfHToLxEXi77K1Ho0uDDiQOZrGhx9iaZm3A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyuF5TxsTY5Z27+g05nYLX3itiY0XXCgk0oIDZDoBhhIM8F9hcp
-	85PxBA7y8DbnrN1ZSvfkTH+YmhDBGGt1IfdZfN4sO0BQBxztTNkOlMY635roRXBrpuxtzoAH6d1
-	rykhtCCXm/+T3SNRYAgtZK/1Mmdc=
-X-Google-Smtp-Source: AGHT+IFqE9SiTrIbIR3jW1Lp8HrntjO9jRGgJASZJSv9BBpyfB81D2bbgfkCGLbvPr1HXnR0Wyz0hNG1id8V5iS89dU=
-X-Received: by 2002:a05:690c:48c4:b0:6ea:7861:799f with SMTP id
- 00721157ae682-6ead609d958mr12503357b3.38.1730986220252; Thu, 07 Nov 2024
- 05:30:20 -0800 (PST)
+	s=arc-20240116; t=1730986422; c=relaxed/simple;
+	bh=pXzzdAP812U7JcUzvhc9z1v3q/R9jowSfX4n47mTGjQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NMKT2lsXxDqgQTtqrv56QyecvuSP/P5RvRDaHPA6vyiNt6RhYb/oSA0MddPcCScsJHVDbm+HlzlLRdCA56xfaNNiYdRBjrq808TgYBUqtxKD57gTZKS0AotIWi2RNdFMzHTtSxNhPNHPU8hHBhyy7aeIOFVbKM3r9VqLZgP70z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=TwbCupFV; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=RLG7x9CcTtr4f1udDLlhxq6gGzQrPxUpumuIcDoU8IY=; b=TwbCupFVhTpGr+AYyK5KSQlhSu
+	OJOg2UP6TJDbgHr/iSb/DDReD9NWQ+g0VtZQmG+x28Y8YlJ5y/Os9HGU30f0tAJcRD+DUuuKXwPkp
+	gY8SgdKOKuFGD0GIzp+NFdiWa53TDHzEOpG2Mg1i/CPYX/A6w5Ix74BWZkJJOGplWIkFFUsMPrLgx
+	iiWgB2vgz4Z2u78r+S4VkAxI7pPI3X/1Itrb/wu1vif9Q3bjNUtOg2sZCVwU/2Zd2IitC90Weypgu
+	pSeuJEtyK69flYH0ZI2xXhGaoQSPHWN49OuUmT9O7VBU57YimLdMoGL1F1YpvVgRvaT+eqWYtHW+B
+	2jKkd8YA==;
+Received: from 179-125-64-253-dinamico.pombonet.net.br ([179.125.64.253] helo=quatroqueijos.lan)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1t92di-003Zsz-Ta; Thu, 07 Nov 2024 14:33:35 +0100
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+To: linux-wireless@vger.kernel.org
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	kernel-dev@igalia.com,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH net 0/5] wifi: rtlwifi: usb probe error path fixes
+Date: Thu,  7 Nov 2024 10:33:17 -0300
+Message-Id: <20241107133322.855112-1-cascardo@igalia.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241107004830.14261-1-zenmchen@gmail.com> <20241107070707.1438-1-zenmchen@gmail.com>
-In-Reply-To: <20241107070707.1438-1-zenmchen@gmail.com>
-From: Josh Boyer <jwboyer@kernel.org>
-Date: Thu, 7 Nov 2024 08:30:09 -0500
-X-Gmail-Original-Message-ID: <CA+5PVA6u5hnYf+5Z7MP1oJPF-ubETiY5oPPJDpa4FPjdAvKgtA@mail.gmail.com>
-Message-ID: <CA+5PVA6u5hnYf+5Z7MP1oJPF-ubETiY5oPPJDpa4FPjdAvKgtA@mail.gmail.com>
-Subject: Re: [PATCH] rtw88: Add firmware v52.14.0 for RTL8812AU
-To: Zenm Chen <zenmchen@gmail.com>
-Cc: linux-firmware@kernel.org, linux-wireless@vger.kernel.org, 
-	pkshih@realtek.com, rtl8821cerfe2@gmail.com, usbwifi2024@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Nov 7, 2024 at 2:07=E2=80=AFAM Zenm Chen <zenmchen@gmail.com> wrote=
-:
->
-> > This file contains the firmware for RTL8812AU and was was extracted fro=
-m
->
-> Hi Josh,
->
-> I found I typed one more "was" in my commit message, could you please fix
-> this typo before merge the patch? many thanks!
+These are fixes that affect mostly the usb probe error path. It fixes UAF
+due to firmware loading touching freed memory by waiting for the load
+completion before releasing that memory. It also fixes a couple of
+identified memory leaks.
 
-Fixed.
+Thadeu Lima de Souza Cascardo (5):
+  wifi: rtlwifi: do not complete firmware loading needlessly
+  wifi: rtlwifi: rtl8192se: rise completion of firmware loading as last
+    step
+  wifi: rtlwifi: wait for firmware loading before releasing memory
+  wifi: rtlwifi: fix init_sw_vars leak when probe fails
+  wifi: rtlwifi: usb: fix workqueue leak when probe fails
 
-Merged and pushed out.
+ drivers/net/wireless/realtek/rtlwifi/pci.c          | 1 -
+ drivers/net/wireless/realtek/rtlwifi/rtl8192se/sw.c | 7 ++++---
+ drivers/net/wireless/realtek/rtlwifi/usb.c          | 7 +++++--
+ 3 files changed, 9 insertions(+), 6 deletions(-)
 
-https://gitlab.com/kernel-firmware/linux-firmware/-/merge_requests/358
+-- 
+2.34.1
 
-josh
-
->
-> > the vendor driver v5.13.6-23-g232107d9b.20210820 from
-> > https://github.com/morrownr/8812au-20210820
 
