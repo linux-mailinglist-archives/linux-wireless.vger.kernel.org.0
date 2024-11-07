@@ -1,84 +1,116 @@
-Return-Path: <linux-wireless+bounces-15103-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15104-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E45219C0AB2
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 17:03:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EC2B9C0B00
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 17:13:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 620A6B22D1D
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 16:03:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1328B281157
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 16:13:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22E75212181;
-	Thu,  7 Nov 2024 16:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38754216E0F;
+	Thu,  7 Nov 2024 16:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="QMDXrHRK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lIrPnG8p"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9111120F5D1
-	for <linux-wireless@vger.kernel.org>; Thu,  7 Nov 2024 16:03:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F44A215F58
+	for <linux-wireless@vger.kernel.org>; Thu,  7 Nov 2024 16:09:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730995416; cv=none; b=IiTJ2Nqtya/2HuY0m0uXzxKZUmUooag4ipyN4MQvXD2ANOjZepc4lbNUwVgmlkkAnYVhZcFfKHSQcZg3Pb+0AueXCTYc2LF12Wc3QxuUNyzvmz3Nyfl/OXjGvMPtJe5sgOejxsaz/o0LZkPlD/UFG2iUO1aEnUH4gF7wzsPk1h8=
+	t=1730995790; cv=none; b=GRh0kyhQBDGuIQ/5EDtNmS7ZM3OVMe5p1LnqR5KchzbyCF175KY4nT8Lum1sCNBL6LUhayjrsERhsWA9ZuJU+H/Epyli1/NCEPSNqe/hpUp7vV/l6N9x6rJU0JnExSKJTcwvXOuxjP/fSw/qlwuszmI/Ikr9kMOhbNn1MwtViMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730995416; c=relaxed/simple;
-	bh=UwD12zxoINccKUkOXLWaCWi2yMDdFbo6CeI1/2JPhIY=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fxPASs/WVnrhYCtaB3DITxdblXv48d3xibvTRBbgtweamEol1R+u2ODIV3/tqdZ4a+Nh+vMLmQSqkfEMMjzACRdwBrehNxYHyFc3A2ZapSUA9o7BYl+w3Cz19AWUr5fUTunVwF/KK2KpCdbsUYnShSe7+rFBubyN4rBDPonF+iI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=QMDXrHRK; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=UwD12zxoINccKUkOXLWaCWi2yMDdFbo6CeI1/2JPhIY=;
-	t=1730995414; x=1732205014; b=QMDXrHRKEJFV/B4aWI2J2XAXavehiwgOdEYvZ2Lpn73gnSd
-	a62nyAk+Jaa83SSyxj5huinpMBjSndohFAVQZWvYRF4ltBcNUVlNdkVhaYEnjStPA2s8xKeP9ynDm
-	KdxSeKxDP8dD1gKi95biWQkK1I9zgkrDIHlr/13nedAYlx+i+5OH+Qa/lXtAtCqRGOQZxnBxJ5kuD
-	ytlWM4K/rvsy5G49bjRugcB5stD3pYAj2YlLN0EASjNlT56bz+YzaNss1KbKkN9RyrhZWVKSo8nwo
-	oj8tnC3Zf0B2wikQXpIMQFgSQCx2JlHpwfjaBxFVzU0u1QQUVayQtMcGI/H4o3gw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1t94yq-0000000GU6F-0B08;
-	Thu, 07 Nov 2024 17:03:32 +0100
-Message-ID: <6acbfb8eac3e14983a877334bd0470c424e752a4.camel@sipsolutions.net>
-Subject: Re: [PATCH v3 2/2] wifi: mac80211: Assign tx-stats to the proper
- link.
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Ben Greear <greearb@candelatech.com>, linux-wireless@vger.kernel.org
-Date: Thu, 07 Nov 2024 17:03:31 +0100
-In-Reply-To: <f42ab1f0-83d0-0a12-1389-2e37463ac910@candelatech.com>
-References: <20241009164904.3906438-1-greearb@candelatech.com>
-	 <20241009164904.3906438-2-greearb@candelatech.com>
-	 <73b1eb45e666aff20cf1debfdee1b60b44b82b46.camel@sipsolutions.net>
-	 <f42ab1f0-83d0-0a12-1389-2e37463ac910@candelatech.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1730995790; c=relaxed/simple;
+	bh=9uYl92ESq+nadkWJZNuYCmrQzUN+fm/5Hmarg7Tf1/c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jP0JJqIQRYp7pDc3s+ZOZ4he7wlEfl30U5cF7/YMCwES3OMva8/oAth+p21cryUNvPt3QeJHx5iyYNRlim2qEc34W+AC0630d7u7wQHCP8C+ZCY6NZhpT0tZOjj8a5lpnlGvJfW5Ofp+bLHjAO6vSvTwBISms3WOHotzbDCAtGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lIrPnG8p; arc=none smtp.client-ip=209.85.161.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5ec4a40e95bso533647eaf.1
+        for <linux-wireless@vger.kernel.org>; Thu, 07 Nov 2024 08:09:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1730995788; x=1731600588; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=9uYl92ESq+nadkWJZNuYCmrQzUN+fm/5Hmarg7Tf1/c=;
+        b=lIrPnG8pmFIZK8EGlcSz3X2/v0Yn18hj7aY5Nkr3spfUtxxAlvyMBRqrktR/C9mNll
+         y+rOLuR9j39/WOJMqMRls4ZxdxEMiJ3hC/WN2zb3MV8O0NDLRtGIUqaRQnz2vCuDQTJ2
+         uyCTP+VcWUOgvHuDPH3cdbMSOcY0c97oK+LK7/RiEf7dThVFntZPHAAZQy0fo0ZZr5f/
+         bgtE1JQuklQ4ftsk8nx72kd2IWcOE96MQqX/C1dyETb4DwsZSdUaTLhrDyhM2OEhv7Jh
+         wEOUVuZdDIkvPgzKm9uGC9GkGxQJpKFmJsXv6ufoGef1IB85cKit/c7ylGLz0FSoGh2R
+         RumA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730995788; x=1731600588;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9uYl92ESq+nadkWJZNuYCmrQzUN+fm/5Hmarg7Tf1/c=;
+        b=m57P+XSBly6ZtONFr6UZRnsj6bgl89ZFsWrMopSULvYfEN0MAEKKzb+K6quvpQq/xV
+         RLnGDi+mR7kNzebm0k+1ajJj2h9wPNzpBS7lutzWZAmeQVTJZz+YTz5dQaZXMsrs6VE8
+         fc+3jXoyx1NmsoMm4/UAVHeuihsVb5zTrrf7sJM/u08ThxRM3MLFc+HHJnv2vCkp/YnL
+         PRarNJS7lfJZe2JI/l+LYOpSGQWc517xwnntZDFz3vnZQYsYkj3Y8hPPdMNT2NPVHyTM
+         LXkXfXjGN+ywf9+eZVAsYkqL4fM3bgTfjAD1Az9Z5DPw3LT6hDJ1G2qCTSFntEz9KSPZ
+         tT2g==
+X-Forwarded-Encrypted: i=1; AJvYcCUQiiKJ/0nPd+pxMAuNJ5TX0uBmW1HmpUn1ps7GEaZ9kD6Lp3I9iQi4qYesBZTbidL2GFpw4IUWOsOe/n67bg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwyO4rlNQtacqpab/8c+b6ifREcaLNlllCQg3Cy8xaUE5Or3UQ1
+	W0CmGkBE/hUdwMkA/fCLEXYEVtLjYuoawQBth2TxL0aHdLYf593DrG9bVnNksI2wz8ad6D/usp2
+	Dux3ouY9gF74US5GvGCYdRZa/5vY=
+X-Google-Smtp-Source: AGHT+IGQQIFZL+MrWbuYkkS7QZpc3zw9tWtjHqxeTsQBeP2mETzg4Sf07f4Ezu6h1CcSuzpKSFVcrRIxtftMCE+KO+M=
+X-Received: by 2002:a05:6820:1b08:b0:5ba:ec8b:44b5 with SMTP id
+ 006d021491bc7-5ee56982567mr60610eaf.3.1730995787702; Thu, 07 Nov 2024
+ 08:09:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+References: <20241107132903.13513-1-nvbolhuis@gmail.com> <87ed3n5dxu.fsf@kernel.org>
+In-Reply-To: <87ed3n5dxu.fsf@kernel.org>
+From: N van Bolhuis <nvbolhuis@gmail.com>
+Date: Thu, 7 Nov 2024 17:09:36 +0100
+Message-ID: <CAP6rjy=gjbQg6hF4xzKZjabdtGVYijrPhn7zUHiw3ZHFJbQfWA@mail.gmail.com>
+Subject: Re: [PATCH v2] wifi: brcmfmac: Fix oops due to NULL pointer
+ dereference in 'brcmf_sdiod_sglist_rw'
+To: Kalle Valo <kvalo@kernel.org>
+Cc: brcm80211@lists.linux.dev, linux-wireless@vger.kernel.org, 
+	arend.vanspriel@broadcom.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 2024-11-07 at 07:51 -0800, Ben Greear wrote:
-> >=20
-> > So rather than reusing this, we probably just need to introduce a new
-> > _status_ field for it. And probably make it link_id+1 so 0 means no
-> > value (this works because link ID 15 is invalid).
->=20
-> Where would you like this new field added?
+Op do 7 nov 2024 om 15:14 schreef Kalle Valo <kvalo@kernel.org>:
+>
+> nvbolhuis@gmail.com writes:
+>
+> > From: Norbert van Bolhuis <nvbolhuis@gmail.com>
+> >
+> > This patch fixes a NULL pointer dereference bug in brcmfmac that occurs
+> > when a high 'sd_sgentry_align' value applies (e.g. 512) and a lot of queued SKBs
+> > are sent from the pkt queue.
+> >
+> > The problem is the number of entries in the pre-allocated sgtable, it is
+> > nents = max(rxglom_size, txglom_size) + max(rxglom_size, txglom_size) >> 4 + 1.
+> > Given the default [rt]xglom_size=32 it's actually 35 which is too small.
+> > Worst case, the pkt queue can end up with 64 SKBs. This occurs when a new SKB
+> > is added for each original SKB if tailroom isn't enough to hold tail_pad.
+> > At least one sg entry is needed for each SKB. So, eventually the "skb_queue_walk loop"
+> > in brcmf_sdiod_sglist_rw may run out of sg entries. This makes sg_next return
+> > NULL and this causes the oops.
+> >
+> > The patch sets nents to max(rxglom_size, txglom_size) * 2 to be able handle
+> > the worst-case.
+> > Btw. this requires only 64-35=29 * 16 (or 20 if CONFIG_NEED_SG_DMA_LENGTH) = 464
+> > additional bytes of memory.
+> >
+> > Signed-off-by: Norbert van Bolhuis <nvbolhuis@gmail.com>
+>
+> What changed from v1? Please include a list of changes after '--' line,
+> but no need to resend because of this.
+>
 
-Well I guess we can take four bits from ieee80211_tx_info::status.pad or
-ieee80211_tx_info::status.pad2. We could also do it out of status.flags,
-but that doesn't seem worth it as long as we still have the pad?
-
-johannes
+Nothing changed, I just added the s-o-b.
 
