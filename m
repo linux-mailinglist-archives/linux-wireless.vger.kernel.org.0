@@ -1,106 +1,145 @@
-Return-Path: <linux-wireless+bounces-15053-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15054-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B6A59C0180
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 10:53:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F81F9C01BE
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 11:01:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 278B31F23B40
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 09:53:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A656B22C38
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 10:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4E31E885A;
-	Thu,  7 Nov 2024 09:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B481EABCC;
+	Thu,  7 Nov 2024 10:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oICwKLaA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oJtqxUS4"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0381B1E6DC1;
-	Thu,  7 Nov 2024 09:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6311EABB3;
+	Thu,  7 Nov 2024 10:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730973095; cv=none; b=c4vlCIC9obzvxlawj+tIk0jGBdFBnFczvW2JceyO0do/ACGlUwDDOsJfE3SvdAyzkeiIxrc9jS16f83NcUsz7+Kbk8DL6gYdN6pzb2UXT2kxyLAOFPft4wKafrNCWvRDIESl+lrvTOoZcDF85Bubqai9UrkFTLHXkzl2+rgTfrI=
+	t=1730973681; cv=none; b=J2gI2CYOQ+S/P/gRFonZAJIBTVUZswN2HZtdEamx1C8k+3jcDmelWrhoMyNe5HNUSqwPfuzv7k4TvRSbxTaV02wOxKRRQe4zkUQOrvNNKdvl7RJ26jZT7geZBcJ1VWfZX7jcAZ21xwQEOD9rMomUIM45q9urXOgvLf6NHZQFWEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730973095; c=relaxed/simple;
-	bh=/IdXjqlAmCFhFABuq2r8X4m9cv2M7M7fh/5gnWXWKjY=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=MoeNhiS4H7yyngLiVp4tYm/nMuug1AHv9WJu1Z2HdYvpYp9iwrMFzWGGP3HgfrUe/zuQQO94sGYAKKfhGLHo2LpcZGY7F98N3c/ZqpSXzuZ0j8OUd8XkxNTfgUr3SusRZMlaywty4j2HLxDPgX73z/L0tq9XvX9jHg7kVG3VkNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oICwKLaA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79056C4CECC;
-	Thu,  7 Nov 2024 09:51:32 +0000 (UTC)
+	s=arc-20240116; t=1730973681; c=relaxed/simple;
+	bh=kZpnoeo+yOi6IwHGZQ6A9p+1Cx22KzYBk6XOMAh7Phk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hjLt8xc3f1g2F+GlSNvi95IQP+IHPOVvVdT1vSwfk6dyMd8eOq7tUDkkHCoC8P5bC8u3LjQUvO0816/j3Z5MrQzAOqkt8tKAdFPnv29H/+UX/ShMLchMqPwnjocLwbj3xGu0NHKj3ZfqWG8u+9zVY9uVsZ7X+SW/PYhIXARCWMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oJtqxUS4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA20C4CECC;
+	Thu,  7 Nov 2024 10:01:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1730973093;
-	bh=/IdXjqlAmCFhFABuq2r8X4m9cv2M7M7fh/5gnWXWKjY=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=oICwKLaAX+Sv7KWhk5XM25wPgtlhX5oiH7E40PJpLP6QcgBYq1ShlQZeVLrv9DSjr
-	 SVjzSBVYDcsIIKuTC7sRDcbCclM0J7TwIctxKK7RjhsmESVp1S2Q3vpb8XDKrvUlrS
-	 8rsUWEm65NfSU5q2ECzMtB7Sr6uyRMtysGTCXfbhVHo+/zA+8Kpnel9p0THau0Lu07
-	 esTFaS1DWGvndd3xePsn0ueeW2CDrsLWJRbw00xn/tl6JbHXJoeI0KLfpZPDjSwd4j
-	 4Ulg7Kxd/zVeV3D1Z0LwXu7RJ8spO2YIgTbY6nswAnorZUZXIl9pwD1Hwp2Vv1lSaT
-	 R4yMT+pDBltxw==
-From: Kalle Valo <kvalo@kernel.org>
-To: Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc: Norbert van Bolhuis <nvbolhuis@gmail.com>,
-  linux-wireless@vger.kernel.org,  Norbert van Bolhuis
- <norbert.vanbolhuis@ev-box.com>, brcm80211@lists.linux.dev
-Subject: Re: [PATCH] wifi: brcmfmac: Fix oops due to NULL pointer
- dereference in 'brcmf_sdiod_sglist_rw'
-References: <20241105204011.1603148-1-norbert.vanbolhuis@ev-box.com>
-	<87bjyrxy9r.fsf@kernel.org>
-	<a2699327-0f86-4c70-8ca4-1225f3e712d1@broadcom.com>
-Date: Thu, 07 Nov 2024 11:51:30 +0200
-In-Reply-To: <a2699327-0f86-4c70-8ca4-1225f3e712d1@broadcom.com> (Arend van
-	Spriel's message of "Thu, 7 Nov 2024 10:31:53 +0100")
-Message-ID: <87iksz5q3h.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=k20201202; t=1730973681;
+	bh=kZpnoeo+yOi6IwHGZQ6A9p+1Cx22KzYBk6XOMAh7Phk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=oJtqxUS4FXmDdr1yfaBhzU6v24y9OW2HxGiEoHdouDekEi/I3KzujWaWJgTRMFQcT
+	 e0pkdBSaq/+iRrDPQy1sFtsyt5TlyxjPkknnjoru/NXTEYQ2VZXavCPdV2ncG7XpCm
+	 dqyHAZQE8Y7rdHUJJACt0AuJ7aGUTwgvj4WaHhPleu+18c05ut/D9bzIEUCWW/b2YW
+	 345yZCgo0MO4jyYGpqtdaKwpr1iSYbvt9Jb3YiyTIiPcoqsHjGoAZSik4TuztdWHKv
+	 roxt/Uqf/1KfcWuXwcj/TFeI853KRhgs54trIvSgipCyWIW8rYLs0EcIRSxFjlGQOZ
+	 xxHILT/8TPxMA==
+Message-ID: <d3890b5e-26e1-46ef-81ba-5427892517bf@kernel.org>
+Date: Thu, 7 Nov 2024 11:01:14 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: Switch back to struct platform_driver::remove()
+To: =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+ Kalle Valo <kvalo@kernel.org>
+Cc: Jeff Johnson <jjohnson@kernel.org>, Nick Kossifidis
+ <mickflemm@gmail.com>, Luis Chamberlain <mcgrof@kernel.org>,
+ =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+ Loic Poulain <loic.poulain@linaro.org>,
+ Arend van Spriel <arend.vanspriel@broadcom.com>, Felix Fietkau
+ <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>,
+ Sean Wang <sean.wang@mediatek.com>, Matthias Brugger
+ <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Peter Chiu <chui-hao.chiu@mediatek.com>, Breno Leitao <leitao@debian.org>,
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+ linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
+ ath11k@lists.infradead.org, wcn36xx@lists.infradead.org,
+ brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
+References: <20241106170706.38922-2-u.kleine-koenig@baylibre.com>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <20241106170706.38922-2-u.kleine-koenig@baylibre.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Arend van Spriel <arend.vanspriel@broadcom.com> writes:
+On 06. 11. 24, 18:07, Uwe Kleine-König wrote:
+> After commit 0edb555a65d1 ("platform: Make platform_driver::remove()
+> return void") .remove() is (again) the right callback to implement for
+> platform drivers.
+> 
+> Convert all platform drivers below drivers/net/wireless to use
+> .remove(), with the eventual goal to drop struct
+> platform_driver::remove_new(). As .remove() and .remove_new() have the
+> same prototypes, conversion is done by just changing the structure
+> member name in the driver initializer.
+> 
+> En passant several whitespace changes are done to make indentation
+> consistent in the struct initializers.
+...
+>   drivers/net/wireless/ath/ath5k/ahb.c                   |  8 ++++----
 
-> On 11/7/2024 9:07 AM, Kalle Valo wrote:
->
->> Norbert van Bolhuis <nvbolhuis@gmail.com> writes:
->> 
->>> This patch fixes a NULL pointer dereference bug in brcmfmac that occurs
->>> when a high 'sd_sgentry_align' value applies (e.g. 512) and a lot of queued SKBs
->>> are sent from the pkt queue.
->>>
->>> The problem is the number of entries in the pre-allocated sgtable, it is
->>> nents = max(rxglom_size, txglom_size) + max(rxglom_size, txglom_size) >> 4 + 1.
->>> Given the default [rt]xglom_size=32 it's actually 35 which is too small.
->>> Worst case, the pkt queue can end up with 64 SKBs. This occurs when a new SKB
->>> is added for each original SKB if tailroom isn't enough to hold tail_pad.
->>> At least one sg entry is needed for each SKB. So, eventually the "skb_queue_walk loop"
->>> in brcmf_sdiod_sglist_rw may run out of sg entries. This makes sg_next return
->>> NULL and this causes the oops.
->> BTW it would be good to fix (in a separate patch) the sg handling so
->> that the kernel won't oops when sg entries rung. That's not really
->> robust behaviour.
->> 
->>> The patch sets nents to max(rxglom_size, txglom_size) * 2 to be able handle
->>> the worst-case.
->>> Btw. this requires only 64-35=29 * 16 (or 20 if CONFIG_NEED_SG_DMA_LENGTH) = 464
->>> additional bytes of memory.
->> s-o-b missing, please read our documentation from the link below.
->
-> I have not seen the actual patch. Which mailing list was it sent to?
+For the above:
 
-Only to linux-wireless, adding brcm80211 now. But the patch is in
-patchwork:
-
-https://patchwork.kernel.org/project/linux-wireless/patch/20241105204011.1603148-1-norbert.vanbolhuis@ev-box.com/
+Acked-by: Jiri Slaby <jirislaby@kernel.org>
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+js
+suse labs
 
