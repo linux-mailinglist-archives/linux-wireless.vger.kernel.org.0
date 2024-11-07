@@ -1,99 +1,151 @@
-Return-Path: <linux-wireless+bounces-15036-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15037-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 268B99BFEC5
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 08:07:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42ED19BFED5
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 08:15:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBE2D1F22691
-	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 07:07:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E84F81F22AB7
+	for <lists+linux-wireless@lfdr.de>; Thu,  7 Nov 2024 07:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE3D1195985;
-	Thu,  7 Nov 2024 07:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A311993B6;
+	Thu,  7 Nov 2024 07:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MdoeqA7o"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="CiI28Nu6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89BF3802
-	for <linux-wireless@vger.kernel.org>; Thu,  7 Nov 2024 07:07:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D840198E77
+	for <linux-wireless@vger.kernel.org>; Thu,  7 Nov 2024 07:15:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730963233; cv=none; b=aC/Tl/0aBQusDtxaxbkrC7uFWC2SGl7lEot6v3FgDUF/eL8AvNr2yv1kfjKhUNWEqxNMLM+eSmOOR0YoTOykUOlC3GKJbfgACVU8TipcygxBi0azecwwCq7uYXtxoFKCtjv1+zed2Ea5UeKjqzjMSyIOKCIvN1Nmi11tcP7lPTc=
+	t=1730963707; cv=none; b=Dl5MewhQhZfT4H8kKsx0nlJVG9j9+QT/ACLKzPCBv7WWeZetQQYK5PDMUN1DbqbuTlpCeG0OiUoFscwV8KbtoE+ApLV0V4kUpmkAoviD228gyAeZhJWeqbGjib1/+ASmYvUcfVQvElZW9eLvqe8n45H1GZxOSZXLrMvTr7ECh7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730963233; c=relaxed/simple;
-	bh=wHOIxj+8w3p90uKoUrKdvo0IqQru6g4KW5z+9GrrHDU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eNHwyNnyYsfKQ/ERmpc7SDvKjWTKpFniA2WHmn+rQizOSvv5yNW9aGUs1ii9Q1m5XzYv4rLqvriqd7AUijETF1JcJj5PpyWkAk4iCdZkhx8WyNLK/xuwKdGac1J+rwdIdYweFOqIoE8O+BCCG/EbYCs5boqyC0sRfAPn+RyonVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MdoeqA7o; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-210e5369b7dso6383385ad.3
-        for <linux-wireless@vger.kernel.org>; Wed, 06 Nov 2024 23:07:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1730963232; x=1731568032; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gXwvkzuMSWisEHYi6gtfRWt+2t/5l3MicfA9CZimLuQ=;
-        b=MdoeqA7oz3txLTh3AOPdf1ynPQi4It/mMt62AM+YZaMQbwVlQk8ivo/7u0O2dK+8Gy
-         rigmqG15QyaOlTDcGtImOdzq3DsDdHhHKgc2suL8phtFszMN9AiWgHmt1BFg7Acz8onj
-         bh6/N40EBdjgDCoFFQ1z2gVJp/F+S3VOpiyEg49wNcJvuXjdhRnjQYwPOC9PamGKptJj
-         QzOxcba4xJsYeruCmMnM9F/1HRoIgYrx92lIdfOiRn1X7cLCN8hXf3UtXEUqFkzi/JzJ
-         q+Uva/gVfHrvvXSVeAcS79+vfVoct6DAIMJfaxauZlxdSb6ARcInPBxBdW+A99hxu7KP
-         v+Qg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730963232; x=1731568032;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gXwvkzuMSWisEHYi6gtfRWt+2t/5l3MicfA9CZimLuQ=;
-        b=YaU/ZJoxJ112uH+lpCvVbm7KLLKcrwpc3H76t9Xs/E7zHrDMhCpwy7pBiBMpUZV13T
-         HqiIH0auYIoARFytkt8czguQNb0Q5qo/hCoYxFI8AqlSi9lVM47GCla+NwNIhyAMZmFC
-         oJVgheBBVS87hMWo+k/bJpfuE718ADUrLP1hXZ+lGcPrFZJKBvGVZhRvQ4LtxVEfplLj
-         9QTASzcHRCZMKepEwrcfEHIdAToHRzOAp/6ihp3wTYhq83+5hk1YGQ2udLfbCPXptMxQ
-         9NKVDD6VbinGReCxOTnvKhtpiMUcV/aRwENveb47zfULLElgjbdVSpWnEBePuI0FZzhQ
-         PepA==
-X-Gm-Message-State: AOJu0YwEXIONeXb6g6AJXiJe6vtA5dTvJLpk4hvFczybr/v8c5+FQeYu
-	zTj1NliAE7nHb4jc/PuAlbGO2I4v3yJE5Ouxg4iOp/Wc6vfkXkQK
-X-Google-Smtp-Source: AGHT+IG7IOCRivpdcJe2O+DzhjtHX7RPugR1UINku9p6l+02xj3o//FPA3Ns9jYNQ04QZBy3n45vbw==
-X-Received: by 2002:a17:902:da83:b0:20b:5ea2:e06 with SMTP id d9443c01a7336-2111b018c41mr302354805ad.56.1730963231495;
-        Wed, 06 Nov 2024 23:07:11 -0800 (PST)
-Received: from localhost.localdomain ([1.200.146.98])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-21177e45ef0sm5621315ad.153.2024.11.06.23.07.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Nov 2024 23:07:11 -0800 (PST)
-From: Zenm Chen <zenmchen@gmail.com>
-To: linux-firmware@kernel.org
-Cc: linux-wireless@vger.kernel.org,
-	pkshih@realtek.com,
-	rtl8821cerfe2@gmail.com,
-	usbwifi2024@gmail.com,
-	zenmchen@gmail.com
-Subject: RE: [PATCH] rtw88: Add firmware v52.14.0 for RTL8812AU
-Date: Thu,  7 Nov 2024 15:07:07 +0800
-Message-ID: <20241107070707.1438-1-zenmchen@gmail.com>
-X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241107004830.14261-1-zenmchen@gmail.com>
-References: <20241107004830.14261-1-zenmchen@gmail.com>
+	s=arc-20240116; t=1730963707; c=relaxed/simple;
+	bh=Ad9EvsrIhyZoo1Zn9ld2nb237dA3okLxS8BTWEmIV6M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=fmaEH2HMJbnMINEY//WCxtetttLhC0rZcOqe4yxkzYW3/JXabhjD9586F7yttznx68qu5mGLX1C/eCWRtdgcrB4ZIwV+RrMoLUPdqIY9KNlZFR7Y6s27R75gJ4N0EPq1bg7hZObKDqli+vkZBgpoOSZanan5ivkyqc+dB9NDQUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=CiI28Nu6; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4A6GR5xw024800;
+	Thu, 7 Nov 2024 07:14:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	5GyVFeKjPDh+r9v38j1LkPtGP9YGIVQdB+W3N7dW7gU=; b=CiI28Nu60RgjTjm4
+	r2s8b9mXiT+S6i72iMlwCo/z/vdWhiCAJ0JGHQELtKvGZeCx8FzPG2LvLArUfHcs
+	uyRl4cpLtRwtP1WOPUBuXb7/SYoEzGCp9asDjlF+ab+R6tk4ULqQB7QrjjjNR/d/
+	5c9e7S9DVdNd/FqqzcMJmeP1aH2nNJr+SbFcA9ABD6MfbkQkiqs1/4EzWnWUTmu9
+	wQHXGNls36qIXDApCaT0KIAkSqebhbGYSWejERXd+vcsVwJrvfKrH3y2RBYpuOk4
+	ndima01wBa4Ba8/nkPSMv4qn5rB9JXK7qeVDkb8jW6sMTY5H7/UHRB3EmQe6n8cC
+	hH7MnA==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42r2uguhhb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 Nov 2024 07:14:58 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4A77Ev23013015
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 7 Nov 2024 07:14:57 GMT
+Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 6 Nov 2024
+ 23:14:56 -0800
+Message-ID: <e028f65c-9faa-46e0-ae34-35815a121ba9@quicinc.com>
+Date: Thu, 7 Nov 2024 15:14:55 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/8] wifi: ath12k: support change_sta_links() mac80211 op
+To: Kalle Valo <kvalo@kernel.org>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>
+References: <20241106142617.660901-1-kvalo@kernel.org>
+ <20241106142617.660901-3-kvalo@kernel.org>
+Content-Language: en-US
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+In-Reply-To: <20241106142617.660901-3-kvalo@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 08IIgzso3jVlBt8-RTdl8tny2qgCyD5n
+X-Proofpoint-GUID: 08IIgzso3jVlBt8-RTdl8tny2qgCyD5n
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ adultscore=0 mlxscore=0 suspectscore=0 priorityscore=1501 phishscore=0
+ clxscore=1015 impostorscore=0 malwarescore=0 bulkscore=0 mlxlogscore=999
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411070053
 
-> This file contains the firmware for RTL8812AU and was was extracted from
 
-Hi Josh,
 
-I found I typed one more "was" in my commit message, could you please fix 
-this typo before merge the patch? many thanks!
+On 11/6/2024 10:26 PM, Kalle Valo wrote:
+> From: Sriram R <quic_srirrama@quicinc.com>
+> 
+> Add ath12k_mac_op_change_sta_links() for adding and removing
+> link station.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
+> Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
+> Signed-off-by: Harshitha Prem <quic_hprem@quicinc.com>
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+> ---
+>  drivers/net/wireless/ath/ath12k/mac.c | 97 ++++++++++++++++++++++++++-
+>  1 file changed, 96 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+> index 0ff886e4b3ed..c0cc4e51a4d1 100644
+> --- a/drivers/net/wireless/ath/ath12k/mac.c
+> +++ b/drivers/net/wireless/ath/ath12k/mac.c
+> @@ -5572,6 +5572,101 @@ static void ath12k_mac_op_sta_rc_update(struct ieee80211_hw *hw,
+>  	rcu_read_unlock();
+>  }
+>  
+> +static struct ath12k_link_sta *
+> +ath12k_mac_alloc_assign_link_sta(struct ath12k_hw *ah,
+> +				 struct ath12k_sta *ahsta,
+> +				 struct ath12k_vif *ahvif, u8 link_id)
+> +{
+> +	struct ath12k_link_sta *arsta;
+> +	int ret;
+> +
+> +	lockdep_assert_wiphy(ah->hw->wiphy);
+> +
+> +	if (link_id >= IEEE80211_MLD_MAX_NUM_LINKS)
+> +		return NULL;
+> +
+> +	arsta = wiphy_dereference(ah->hw->wiphy, ahsta->link[link_id]);
+> +	if (arsta)
+> +		return NULL;
+> +
+> +	arsta = kzalloc(sizeof(*arsta), GFP_KERNEL);
+kmalloc() is preferred as ath12k_mac_assign_link_sta() will do 'zero'?
 
-> the vendor driver v5.13.6-23-g232107d9b.20210820 from
-> https://github.com/morrownr/8812au-20210820
+> +	if (!arsta)
+> +		return NULL;
+> +
+> +	ret = ath12k_mac_assign_link_sta(ah, ahsta, arsta, ahvif, link_id);
+> +	if (ret) {
+> +		kfree(arsta);
+> +		return NULL;
+> +	}
+> +
+> +	return arsta;
+> +}
+> +
 
