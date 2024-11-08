@@ -1,58 +1,76 @@
-Return-Path: <linux-wireless+bounces-15132-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15133-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4B019C17D0
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2024 09:22:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEDAF9C186C
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2024 09:51:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5232F1F2426E
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2024 08:22:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86281286734
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2024 08:51:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 887CC1F5FA;
-	Fri,  8 Nov 2024 08:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940741DEFDD;
+	Fri,  8 Nov 2024 08:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="XRSCQR14"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="fGma0MaG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtpbgeu2.qq.com (smtpbgeu2.qq.com [18.194.254.142])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70C91CBE89
-	for <linux-wireless@vger.kernel.org>; Fri,  8 Nov 2024 08:22:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8518F1494D4;
+	Fri,  8 Nov 2024 08:51:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.194.254.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731054154; cv=none; b=ZIGpnN0sWunmv7kFU/jyHv1g0iCUgFlDKK0fQpOKeAwwQ+SAjnAzQ7zTM/bQPl9rJTA2e08j6bEvDtt+vpCexmM1qzpqKvgcgNxj5ZhioDIix6LqIQGawOmdiAR2rfvUwStK1ncrnRtQ4nKorBSvI9mJd9e2WGdJs/QGynzm3To=
+	t=1731055889; cv=none; b=McshR7OgRrHTc6EWntonJi+VbnH6Hxs2GLayQj90XKoI1lQiGfsoKDh++alLvqunMpf10M3bjPKHYv8mHEyd4WmZEwbQqSy8M5lAsJi4oO+nkVl7BmwgeYbV7lXABkxgX6zx/eFbmh9mWI3kVCg0hRoiXptMPivPZ4lQKYSfD8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731054154; c=relaxed/simple;
-	bh=eBXUIoY0PAfZwIywxjDlHaOSbCkgT8gC6BYT+9E/jAY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DwPhgvCez8ot3WQ/F6nSkpkCERfF233gOjyiGcbwYoLEdIL56eYG1oxmZAtNv4tm6XpB/niprLTK//ZjcuZj6gDj8YdhP2balWZvocu4NKXAyyIzjWR+rtk9aSFuYJZ0u0EoVr4WAzQ15MAItLk0PJxspv0NQlzNXbmNrKsmork=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=XRSCQR14; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=FQeHemll8eJ6xFGML3YYQVNXMnHaZ9+dyOAKJuRc/2Q=; t=1731054153; x=1732263753; 
-	b=XRSCQR14f+bOVkXII4G2KNsX6yElIs5rZRaa0/+p3w7T4yAFMm3A6xsBQTrllVVr5EsF+NNpqIk
-	k5f9siHDhItmWvf4STtC9+AkudjCK9W6T5prXgdY4GbsdLUSM/3n7vPeVDfFT2liz7msGTzWUlFHK
-	J3CjSuHAQ+/H521loG7dSdZOir5X061azUzoHYc5gFRdWMmvfO1T56V7Q40qEjalEuwQu4JJ0GjfZ
-	dId0WwmXixBovPyzjCqNoeU705Z/bcBz15uDkrw4469SDO5Avyqd16RvkZxm5f/Ss+Z29vosKfxh/
-	K3hIxLePZt6wNx+LZE/Cxu19Dj+XAEol5nCA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1t9KGD-0000000HAqN-41oe;
-	Fri, 08 Nov 2024 09:22:30 +0100
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH] wifi: mac80211: pass MBSSID config by reference
-Date: Fri,  8 Nov 2024 09:22:27 +0100
-Message-ID: <20241108092227.48fbd8a00112.I64abc1296a7557aadf798d88db931024486ab3b6@changeid>
-X-Mailer: git-send-email 2.47.0
+	s=arc-20240116; t=1731055889; c=relaxed/simple;
+	bh=4axLk3F3w0ykKUkmu2YQGXDfaHagaySoaKyMLvysj2Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Tps8lfBvi7ZCcaZMGshdz1snjiSp84IYmlOTr9LONTChYNsNHfFSJ9NMuaH0SAitjK+9Cjbbp06Kh49NUPxOJKBwJmWW8QAwlXDnVPgxx06Ml9UGVm/9Czjl3hJXEHVb+vp1zNxnk5BTWMToySU2fqqD8kQLYeQNxFjzwOmM5aI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=fGma0MaG; arc=none smtp.client-ip=18.194.254.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1731055772;
+	bh=rGntS9xOFiEeM/CMGDTBCcX5N9b7TzQhEkYEMSmKp44=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=fGma0MaGXJqvSiRMFhmXZuzSAbOrQ+E+T2PjWQN4kISfXB7+v2P5lhcZiDccqkN4B
+	 P1rIzIv3DujMeJ2qxJoeQ1N9MmLhZqnkyQdQ7Sl7DUM6oOffvJqemITdzVXIm3Q8yB
+	 R5gngfRDt/O00amCBzAnz6b2xHHpiGfwiuPhZssk=
+X-QQ-mid: bizesmtpsz7t1731055731tg3r48f
+X-QQ-Originating-IP: HMuPYdKxHaX+3uAFUvJr/WnEj9U/cZBw6s5Od/w6wdk=
+Received: from localhost.localdomain ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 08 Nov 2024 16:48:49 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 9163737178640773369
+From: WangYuli <wangyuli@uniontech.com>
+To: nbd@nbd.name,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	kvalo@kernel.org,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	raoxu@uniontech.com,
+	guanwentao@uniontech.com,
+	zhanjun@uniontech.com,
+	cug_yangyuancong@hotmail.com,
+	lorenzo.bianconi@redhat.com,
+	kvalo@codeaurora.org,
+	sidhayn@gmail.com,
+	lorenzo.bianconi83@gmail.com,
+	WangYuli <wangyuli@uniontech.com>
+Subject: [RESEND. PATCH] mt76: mt76u_vendor_request: Do not print error messages when -EPROTO
+Date: Fri,  8 Nov 2024 16:48:44 +0800
+Message-ID: <76949420D67A0377+20241108084844.216593-1-wangyuli@uniontech.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -60,66 +78,54 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+X-QQ-XMAILINFO: MR/iVh5QLeie+eRnscg9XS0zFUrlUzPpdNyEUKgvat6AFV1JFtHsyuqO
+	Y/BEbAtUHcx8vNoaTFdTsw2GUjVqX9vvWxS7lI8S4+rLbCEPomdxr7DPr+xaPWyS5eyU0vk
+	n0skLV4BuMa6SAQ2Nk9WEv3oeEQbYbLwKcrnQMXKSSm2aELnsDbVluQuislP/jwHYh0c2fh
+	cJZvn5p8ws2zRl30cGKTuVmxCumpdG976iy6eqKWfziKdSaIxP3rtNd4U1ZDArYwkGQkaZe
+	gu7xBCDxoub7x9eV/RZdaQgMAuPy9qndcPEod/EgIoEle9XQGGqWRgdpwoIKzz431A84Z9B
+	JJSllxQswbwLqvth+ViZYFShZDyJ3wmLsfomneMTmd9yNiMUh/qFIVvlsoYACJUHy8T3EzU
+	0iuzXVAARxtt1nvGiTIrzYnlOb8ITK4voSrTM1TIaVh2bTKm5pN3u7IPJ9fZYAbdIIIdumD
+	fIPWNPlysmYlljYtO68b+M5icxvewTOZLu5rwRvHJJ2Dyvrd6uVzqMfhmCnTHx74SHxjjeF
+	6ef5jOZUI4ApnO5YDFgS/b8NdLKe662zRcSepEL1dYmzLvdVVpTgxjPmuZHufTv+TGI01cl
+	zc6fI2A5RQ3Mz1VaIfh2T2oaXnzLbXUaTcZE0Cf3zQisoLJwlpKhhghNXRDkKBOsd+dD1Cy
+	DJqpNZtVz9xuK53M/LBp9vUEpsQU07r9HY391V7NpqGg0aT50S81LoXptJmELYlXovJ26fT
+	LE/K6sOF0h1sGXP2kLZ3CHKoRCh9141MNBn2ycQjT5GjwDDR+OLZUcyzF7MUE6R690Yzkuz
+	bInwNzeh7P1uQ5L2eO1tk0ddo5lLY3ruMW4jQJhOnidSCp1fi4ZB6Uy2KcFQG7w3ZoaVhNj
+	D2olJ0Q3oyjRh0cWh609rs6jNrsHPON3SVeuzAX3YLhsouNWL4fx2XeHqs2eOh7/6zlqukO
+	enle2q/araNXGtqPO9eqqSIxOvX1KFGWjrtgMc1h7BvUi0RNUt7HqtTBvxvA39dKSC6ThRL
+	dLi0Z5gOhJbiF6zlTcoMmC0Su7fE8=
+X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
+X-QQ-RECHKSPAM: 0
 
-From: Johannes Berg <johannes.berg@intel.com>
+When initializing the network card, unplugging the device will
+trigger an -EPROTO error, resulting in a flood of error messages
+being printed frantically.
 
-It's inefficient and confusing to pass the MBSSID config
-by value, requiring the whole struct to be copied. Pass
-it by reference instead.
-
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Xu Rao <raoxu@uniontech.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
 ---
- net/mac80211/cfg.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/wireless/mediatek/mt76/usb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 6c0b228523cb..132e194c8d72 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -143,7 +143,7 @@ static int ieee80211_set_mon_options(struct ieee80211_sub_if_data *sdata,
- }
+diff --git a/drivers/net/wireless/mediatek/mt76/usb.c b/drivers/net/wireless/mediatek/mt76/usb.c
+index 58ff06823389..f9e67b8c3b3c 100644
+--- a/drivers/net/wireless/mediatek/mt76/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/usb.c
+@@ -33,9 +33,9 @@ int __mt76u_vendor_request(struct mt76_dev *dev, u8 req, u8 req_type,
  
- static int ieee80211_set_ap_mbssid_options(struct ieee80211_sub_if_data *sdata,
--					   struct cfg80211_mbssid_config params,
-+					   struct cfg80211_mbssid_config *params,
- 					   struct ieee80211_bss_conf *link_conf)
- {
- 	struct ieee80211_sub_if_data *tx_sdata;
-@@ -154,10 +154,10 @@ static int ieee80211_set_ap_mbssid_options(struct ieee80211_sub_if_data *sdata,
- 	link_conf->ema_ap = false;
- 	link_conf->bssid_indicator = 0;
- 
--	if (sdata->vif.type != NL80211_IFTYPE_AP || !params.tx_wdev)
-+	if (sdata->vif.type != NL80211_IFTYPE_AP || !params->tx_wdev)
- 		return -EINVAL;
- 
--	tx_sdata = IEEE80211_WDEV_TO_SUB_IF(params.tx_wdev);
-+	tx_sdata = IEEE80211_WDEV_TO_SUB_IF(params->tx_wdev);
- 	if (!tx_sdata)
- 		return -EINVAL;
- 
-@@ -166,9 +166,9 @@ static int ieee80211_set_ap_mbssid_options(struct ieee80211_sub_if_data *sdata,
- 	} else {
- 		sdata->vif.mbssid_tx_vif = &tx_sdata->vif;
- 		link_conf->nontransmitted = true;
--		link_conf->bssid_index = params.index;
-+		link_conf->bssid_index = params->index;
+ 		ret = usb_control_msg(udev, pipe, req, req_type, val,
+ 				      offset, buf, len, MT_VEND_REQ_TOUT_MS);
+-		if (ret == -ENODEV)
++		if (ret == -ENODEV || ret == -EPROTO)
+ 			set_bit(MT76_REMOVED, &dev->phy.state);
+-		if (ret >= 0 || ret == -ENODEV)
++		if (ret >= 0 || ret == -ENODEV || ret == -EPROTO)
+ 			return ret;
+ 		usleep_range(5000, 10000);
  	}
--	if (params.ema)
-+	if (params->ema)
- 		link_conf->ema_ap = true;
- 
- 	return 0;
-@@ -1414,7 +1414,7 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
- 	if (sdata->vif.type == NL80211_IFTYPE_AP &&
- 	    params->mbssid_config.tx_wdev) {
- 		err = ieee80211_set_ap_mbssid_options(sdata,
--						      params->mbssid_config,
-+						      &params->mbssid_config,
- 						      link_conf);
- 		if (err)
- 			return err;
 -- 
-2.47.0
+2.45.2
 
 
