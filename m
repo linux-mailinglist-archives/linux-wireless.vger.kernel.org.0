@@ -1,129 +1,133 @@
-Return-Path: <linux-wireless+bounces-15147-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15148-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71C499C2207
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2024 17:26:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 001959C251B
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2024 19:52:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 297361F235EE
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2024 16:26:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC81C1F2405B
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2024 18:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8EB1917F4;
-	Fri,  8 Nov 2024 16:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CAE5199385;
+	Fri,  8 Nov 2024 18:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="CP8IuocG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bGkNLkxz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.15.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f169.google.com (mail-il1-f169.google.com [209.85.166.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794AA18B09;
-	Fri,  8 Nov 2024 16:26:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9566B233D96;
+	Fri,  8 Nov 2024 18:52:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731083190; cv=none; b=prsL2q/EzxHG2ptznzPrypnMSBF1N24wP0XIkm7dfXc40eBm5sOg+NzU9XQ7wuXX63fLPdUeVeCH3J17W2gX6xzo3Rru+QTjxGEBiweaDHMaqUiV9CXDjGxxuhDUZs+uM4rq5bLH/n0Uk5J+FM9ySPXxwtIuUUt4pL3donk/m+U=
+	t=1731091943; cv=none; b=osR7CVGBhVPuj6hKDSV7ZTg+fI7QGvjVOk3S6NeocUwE2qgPrcGvRjKdbdOIOT8Rx5nM2X9AReF9wNJjUcqi8DeDug8RJSv8ZGUh58RuY0cLIPOKE/anDOFw13LK1aw4R/jW9mxyx+C99oNmS0z8uo86TpVTgOgdiOYPuZJGPZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731083190; c=relaxed/simple;
-	bh=3mqsLDsEJoqwjI9HvUfDwlPxiJr4yDQLDVMDWRt1DVI=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=LvrRUvfpG6mOZxrLjI23tcHaOrv4sDvum52BbhLeqrgFG+FXTe1c6+yjXGeO0a0uWufbFDY112vtYWcCNRwc4aJtNeDwvreUSE0/W5b3sevsc4jPU3SE9CWtUXyBFFsJqUQNhl2dYluF+Ipn4mzIjItzKQhTt+LZRHDqOdz93FM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=CP8IuocG; arc=none smtp.client-ip=212.227.15.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1731083160; x=1731687960; i=markus.elfring@web.de;
-	bh=VUWzv8LrvIWA8ImsvyiR/6cd2EOKf5wJRkCX4vH4NoA=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=CP8IuocGGHD5URq/63LeC/3fmDzoljQJO5d0AqkwBfNyM7jiu8PaqBeCZ2SdMJSy
-	 xZGjvMLCkdLO+M+fDP2mR21WMp1yQ8+NX4NO/N1ymAd2HfQLZmAthUMtrstcSQscE
-	 rVTu2i/ZinZOVHp8rNuuUvkVbJfn2bYLh3Sucl5+C3oQpOQtAJdoAWYqvNV+vxkFh
-	 Rgsa682UbDS9ykrjGSbSt5yiTcdLssDMLQzLitqgcWcMuopJLH95RoMXD6objVGNu
-	 0PGHmy0yrN2TIAen0hwkEbOnOBH+uKYvGQstSN+Z+abVDr/hBtYUPdUc3JGQyYAx5
-	 T2RKBN+bGWkhRhJnMg==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.80.95]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MVaYi-1tHBbI0wMe-00Nvtn; Fri, 08
- Nov 2024 17:26:00 +0100
-Message-ID: <5a707eb5-8695-4f0d-bb08-6de95017d2b1@web.de>
-Date: Fri, 8 Nov 2024 17:25:56 +0100
+	s=arc-20240116; t=1731091943; c=relaxed/simple;
+	bh=A2hSK+sHXgxm3OEIytBivzn6hGIJD6/8WxFeB9ebGnI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FZxhZLTSCY+XLmxiIuJTCz/NEluAJ4G7z9CKtOM1iYhalDWOJrk2L3FQStjv8evxfr4uYiV4Hguy7Eb6a2GahcaoyGgiGWURTKufI8T26WLdK2fD3cPIgKVSrLDoV9wo6GDGNhIQzT2ah/KEVnScS5U0W0v4MK2PqGBJ3MDz1oA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bGkNLkxz; arc=none smtp.client-ip=209.85.166.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-il1-f169.google.com with SMTP id e9e14a558f8ab-3a6ace3b6a5so8967185ab.1;
+        Fri, 08 Nov 2024 10:52:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731091941; x=1731696741; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lBssO/4mh3YLOsQWkyDKnQfteClw73MBYYg3Qpci+rU=;
+        b=bGkNLkxz2hXHMPd+8MHkzXP7CGPbjwLZDiNTNr6J8IlzVgk0Kx+U1FUKW1roHk+NYh
+         FnRCR9RXyRY39LTqhuWQmkdYQl7x0LG3VK/tyz7VXxvoCNzqmSlQ2D8STHBU5MUksBGH
+         qQwGYbi+ytz9ri/HBxIBHReEUZfTU4/TrvsLVj61u17lC5UXs2m0nQj9p7O3uibPFqWO
+         LJiBNPvJi7lT+m1Jt/ouqF7jAmF4X/1K0LGhTkIHclTTFHXVfAtRR2f/8tFc0Y914KZb
+         gus4b+MssA9+nwFiPDxxJQyBOUuv8UBZbVNsJNQjvJsLf2flA5jkwpitB5dGsBKWTPM0
+         ab3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731091941; x=1731696741;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lBssO/4mh3YLOsQWkyDKnQfteClw73MBYYg3Qpci+rU=;
+        b=bx9/LzbsAsqC9Z3SMNreL79XRs1PY2qtVm5qWFbaftrxfmm6x9Q47StznWZehrwXN+
+         MOyDI+m3AZqI0IPE55afWxpWmhuGIqL0ocKFP4tWF5/+9zX8AgnWVHrV/8dnX6wLg9p5
+         wMVociJW2Arq5sFLxqVoXupCRi9Bv7W6sWaCSpdipv4rJJZQu3jMkDidK+WIz/aWaxOD
+         seqbp2jBlabzA6QLXsTzszOAhXzg3X+rbhs1Q9xZZUznlY8Ndh46pjbOPcvAezChB+pr
+         3RnLSeCiYyL3NO88eNFiCQqfT4jJUrRAmf3o6tLlT+moy3fa+N4D7YwiiDmLH19ctaWq
+         Qqhw==
+X-Forwarded-Encrypted: i=1; AJvYcCW+6DQeYNW75QNBGP34h5RTiuWld2Vikzh01crikpksZUR73YtPUApesI89zHVpReTrwvKsK40nTYhzLmE=@vger.kernel.org, AJvYcCWW9KXAeB3MYpnjXBameUBCigwsreWINzQ1Qbp+0OjfVGfEULTXsSoEHtIuqb/zawTGZbRcg3HOnsVThYA64Og=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVFUU6AnovzaZVfTkDuTwv00BQoE70hSMNXBljhZt+MDiNtg4k
+	I+4Cumh8XM5Rkm4onZ+nJ8ZP0Zif/SZZWuOSNUNkK+xlGzD4FGFr
+X-Google-Smtp-Source: AGHT+IH7E9Tpdy+oYZSCJw+j/sq/o9JFvHAPDnz0UMIdvHx4z60xHlxbqw+kRFUgL5PIWkzNAVgibA==
+X-Received: by 2002:a92:501:0:b0:3a6:b445:dc92 with SMTP id e9e14a558f8ab-3a6f19a0823mr38227315ab.10.1731091940650;
+        Fri, 08 Nov 2024 10:52:20 -0800 (PST)
+Received: from localhost.localdomain ([128.10.127.250])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4de5f7e3e81sm977715173.25.2024.11.08.10.52.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Nov 2024 10:52:19 -0800 (PST)
+From: Mingwei Zheng <zmw12306@gmail.com>
+To: johannes@sipsolutions.net
+Cc: linville@tuxdriver.com,
+	rklein@nvidia.com,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mingwei Zheng <zmw12306@gmail.com>,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Subject: [PATCH] net: rfkill: gpio: Add check for clk_enable()
+Date: Fri,  8 Nov 2024 13:55:59 -0500
+Message-Id: <20241108185559.1832652-1-zmw12306@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Michael Nemanov <michael.nemanov@ti.com>, linux-wireless@vger.kernel.org,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- Conor Dooley <conor+dt@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
- Kalle Valo <kvalo@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Sabeeh Khan <sabeeh-khan@ti.com>,
- Simon Horman <horms@kernel.org>
-References: <20241107125209.1736277-6-michael.nemanov@ti.com>
-Subject: Re: [PATCH v5 05/17] wifi: cc33xx: Add cmd.c, cmd.h
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20241107125209.1736277-6-michael.nemanov@ti.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:kCejPMohxqmb4402vvVYhccZ9wh2wv6TVh1jzzZXVxjdncvL2ET
- 53vZwdWPFjuyS0q8f0oDfTe+LtQUk00Mv+sqUdvH+EjtzuSiAAidCgVhZQ5tqnvBITkjtsP
- +aJcmAzFYk8n312MiU/eAxRfJaagHa23iqjTjt+zunmJCVgCyOuEf8p4l0yvBxSYNJz2VIx
- CZMCPWzsfQoLQ0ZUUoeHA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:S6CwSfd+LOc=;P9Wg40faTP/Ttw0CrWOuNvN+G3O
- rhLHdGT5u7OzXQelvdwgcrI1PUA/Huuyei/Nz4oNptn/AE8UpDeG8qc1D5klR+U+uU1SmuG0j
- 0kB7lFau2y18CbZ+NAzYvGuYURA0ky1BTqwHsPBaogO38Hh2llhbLXblIjI8DXzYQHsHVWz1+
- X6xbZVam9+2BYZ+EXv3VWXHFhH7BaMJm/I+XY+5ostG8fyZneehcZIB+I3tQbv7Mg4h1ymrWf
- 6aU11MSBDUKs+5KFsq7UjjxJeCfeE0fJokUdnBhb7VDJBYkmD9y1h32Y/GvnVL8xQkU8ncHBN
- zFFEzO+z2OsNiO3dhvCVCaaikVnlh/Yj8NG7rT1myAmOPB3fwvv12XsHKDZyfeP1LGP+T/XYK
- iQjMaKrKx77JwsC27eAqvp146wIOntJl/SXNnBym3DcOHI+OcTO0VDuN0vj1pH8crglboiJ4Q
- ktVissq+ZITbeVUKOlOXVf6tKLr4pC2BQnr3Vb59jJA7Rb0oBomZh1w15xzJ3w4OVIub+mFua
- f5i31UDV9e+Bsd3qduNJQ4urgFZIFKqkLK0BQTPbMaVDnbLpcwPlZIpW5pjLEGQu1KPUOhUpH
- mIEzozOM+SRGAG0gjatyi5a7JHz45jf9HRX2r2lLvvog2ixR7NcRqFchIMBqWE1WJbmBae9C7
- nVWKrf5ZiSt3Du7M4fRXzwYcQFgFxx3lJk0JQGMFaY7uZ+T0AqIXfV2r8fopmO8n4T+Wnw3qs
- xaz9/UARNiLOH8+5nPwej9l982t/lhQo7bTFWEi4rALqqvpcG8BVtCg8V8S9/ELpfdTgcOpmw
- QAYKupqVKXr3F01tC2Arh7ZatclUivECKKMqNQvui2P7zyJQ0ffTC2ly1XlLqCCL2CX90u+CT
- jjwKAyZNGisp3DWu5qXN3JxNHr8QxT51Mjgz1fPUcdkJrAvTFQKUKsNAQ
+Content-Transfer-Encoding: 8bit
 
-=E2=80=A6
-> Similar to wlcore, all commands eventually reach
-> __cc33xx_cmd_send which fills a generic command
-> header and send the buffer via the IO abstraction layer.
-=E2=80=A6
+Add check for the return value of clk_enable() to catch the potential
+error.
 
-You may occasionally put more than 56 characters into text lines
-for an improved change description.
+Fixes: 7176ba23f8b5 ("net: rfkill: add generic gpio rfkill driver")
+Signed-off-by: Mingwei Zheng <zmw12306@gmail.com>
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+---
+Changelog:
 
+v2 -> v3
 
-=E2=80=A6
-> +++ b/drivers/net/wireless/ti/cc33xx/cmd.c
-> @@ -0,0 +1,1920 @@
-=E2=80=A6
-> +int cc33xx_set_link(struct cc33xx *cc, struct cc33xx_vif *wlvif, u8 lin=
-k)
-> +{
-> +	unsigned long flags;
-> +
-> +	/* these bits are used by op_tx */
-> +	spin_lock_irqsave(&cc->cc_lock, flags);
-> +	__set_bit(link, cc->links_map);
-> +	__set_bit(link, wlvif->links_map);
-> +	spin_unlock_irqrestore(&cc->cc_lock, flags);
-=E2=80=A6
+1. Move int ret declaration into if.
+2. Replace if (!ret) with if (ret).
+---
+Changelog:
 
-Under which circumstances would you become interested to apply a macro cal=
-l
-like =E2=80=9Cscoped_guard(spinlock_irqsave, &cc->cc_lock)=E2=80=9D?
-https://elixir.bootlin.com/linux/v6.12-rc6/source/include/linux/spinlock.h=
-#L572
+v1 -> v2
 
-Regards,
-Markus
+1. Replace expection with error in commit msg.
+---
+ net/rfkill/rfkill-gpio.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/net/rfkill/rfkill-gpio.c b/net/rfkill/rfkill-gpio.c
+index c268c2b011f4..a8e21060112f 100644
+--- a/net/rfkill/rfkill-gpio.c
++++ b/net/rfkill/rfkill-gpio.c
+@@ -32,8 +32,12 @@ static int rfkill_gpio_set_power(void *data, bool blocked)
+ {
+ 	struct rfkill_gpio_data *rfkill = data;
+ 
+-	if (!blocked && !IS_ERR(rfkill->clk) && !rfkill->clk_enabled)
+-		clk_enable(rfkill->clk);
++	if (!blocked && !IS_ERR(rfkill->clk) && !rfkill->clk_enabled) {
++		int ret = clk_enable(rfkill->clk);
++
++		if (ret)
++			return ret;
++	}
+ 
+ 	gpiod_set_value_cansleep(rfkill->shutdown_gpio, !blocked);
+ 	gpiod_set_value_cansleep(rfkill->reset_gpio, !blocked);
+-- 
+2.34.1
+
 
