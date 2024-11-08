@@ -1,77 +1,78 @@
-Return-Path: <linux-wireless+bounces-15136-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15135-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 600469C18D8
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2024 10:11:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A06A79C18D6
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2024 10:11:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3CFB1F21A9A
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2024 09:11:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C41161C23116
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2024 09:11:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B841E103B;
-	Fri,  8 Nov 2024 09:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A2091E0DD7;
+	Fri,  8 Nov 2024 09:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FSifCGmH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UK9qYCqF"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 527231E0DDC;
-	Fri,  8 Nov 2024 09:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9595D1E00AC;
+	Fri,  8 Nov 2024 09:11:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731057065; cv=none; b=jZPhR9OvO+ToLLeJtchf0/bWDGCP4Lr+oB3xUG1vSl8WFsvlP2HH9ZPbAdNaeL8Ia4CbFTfCK0KeK+UiQ7ZEBVG8v3MM8r/18T+VzXlxsCneSf8XEPmqEgT4NVT5kLLgqnAmDEt/cLuUhGW7K68rUI/Qu7i7TxP0NB7LkbfOAUI=
+	t=1731057063; cv=none; b=ZoIsYgFcdA/HyPMdm7UrdVgCJbfZNSC5PuglMZeJefd9kN9SCUi/tmK0eLkP7odHDkNKia4Y0ZnbU2c9v7f9jlGiAVAyMrShD0mG0lRqOc1+F5qerLNbA29KS32ylBwWs4X6wB608VJNx7P1sqsE9ggjDVn/41PnZIFW1FFkxhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731057065; c=relaxed/simple;
-	bh=BDOzONkZ2cgnFx3zIeWH6wdDGJPqgkivPauC1vIWhrw=;
+	s=arc-20240116; t=1731057063; c=relaxed/simple;
+	bh=7y7+2Fk1QIr+WK3Rimae+4gKnLT1X/9v8Uy+PYWgLr8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bt3OHsUzr5KQMe/UCJEI7ezt5ZH5oihIvPXzGhObWQl6bwPOUYlNk9RuEta+eEvskPP0ay2z9wIx8bR1O+oU+7VsQ6QefTSE28R5CEK1kjFjZiRyhsFrJOv2jN/VGVxId3jQj2VZAxOoMlfWOYHaTmbnjeQOqpVStCB6v3RQLY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FSifCGmH; arc=none smtp.client-ip=192.198.163.9
+	 Content-Type:Content-Disposition:In-Reply-To; b=biUZ+27v7+kd+JAfQFMGlxd8QqZHvCxqiFdV65i1buFP4eNlS+MC9liUNodc/n00LQbkBk1zQL7x1pkeUdKJwbc73D4ucKXoDYe+Hbw7DePLGCIG21XaEyHbYuq9oAodRodr529uwUF9GP/EpmbJFu8r7Em4pJEaJ9hEHe6PfYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UK9qYCqF; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731057063; x=1762593063;
+  t=1731057061; x=1762593061;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=BDOzONkZ2cgnFx3zIeWH6wdDGJPqgkivPauC1vIWhrw=;
-  b=FSifCGmHYam4RO1fAcYpXxyVfOzfHbjkjFGIf8Dly8+83Q+xwgd9bo6S
-   fJwbLmMawWJN8SmTKfOnYGa0TI/xJFpDBQenw/fZKD8poalXuBwNts230
-   IE1ZrALxNPHmz+Xu71fYm6FEfAILHxTJE49pUAhC0swSgu1xEI10bHhLn
-   bZGZwAoF0bPzluf8/SPuGu6pRN8RudbyaLacj9V7lpdYAldWIN5kVUal5
-   1meOHTI8LLMHwnXVfAirj+HDkhz7vz82tUIaaveeGdrYgx08jgAIATq2b
-   SbY1Ae/JCFCM6EmVMvNrcAODDQpLRnA6dWHDhaJJOhRilVgCG3yY3Q9rD
+  bh=7y7+2Fk1QIr+WK3Rimae+4gKnLT1X/9v8Uy+PYWgLr8=;
+  b=UK9qYCqFTOzNNIlGyXJf4b8NfcCFt5JoleQyhee4vRHV4Nn8j3ASqSmE
+   Ek3PE7wPmEUQee4kcbjqBhFp5AibzVX0LJQHPGAjxK1jzjOnWo8Rj5wZm
+   VkfHa6T9ZUaNoU5MfiRAfulWPnGh51JmpqFghUzVyOYXXN6mM8JEuuVBs
+   bCw5y4SkACU78p2l6ZiKdr0Xw+LS2FXGQ7pSA9/4JmcKEiK6xvVK/MWPl
+   eshDFqs7jiVsLBBkS1v2uc7KJDX7PnS/apVa4ZBLVqlxo/5FhJP2vxWVL
+   xR8ggzcAQgWU3PPqEyFOoXVlP/gQWERgOvCQ9TZDAK+Ngrkz7kpu/+AHM
    w==;
-X-CSE-ConnectionGUID: mqLuNnxwTo6ayfy2f8QhkQ==
-X-CSE-MsgGUID: PdmuqxMGQEamojW94UXxyg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11249"; a="41548438"
+X-CSE-ConnectionGUID: yDxoNjsRQK2EtN92jtHwfw==
+X-CSE-MsgGUID: aI5QNHB1RxCCakStMb6m4Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11249"; a="41548451"
 X-IronPort-AV: E=Sophos;i="6.12,137,1728975600"; 
-   d="scan'208";a="41548438"
+   d="scan'208";a="41548451"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2024 01:10:59 -0800
-X-CSE-ConnectionGUID: 5NUzoZ0uS2ms29zG29vpKA==
-X-CSE-MsgGUID: odqMnD4oQCi3mDgiENhthQ==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2024 01:11:00 -0800
+X-CSE-ConnectionGUID: jeHofmArRXenqQOFeDXg/w==
+X-CSE-MsgGUID: BXQKvnMKR1KcbmQqyN1xUQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,137,1728975600"; 
-   d="scan'208";a="85372045"
+   d="scan'208";a="85372043"
 Received: from lkp-server01.sh.intel.com (HELO a48cf1aa22e8) ([10.239.97.150])
   by orviesa009.jf.intel.com with ESMTP; 08 Nov 2024 01:10:57 -0800
 Received: from kbuild by a48cf1aa22e8 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1t9L14-000rFE-2Q;
+	id 1t9L14-000rFC-2N;
 	Fri, 08 Nov 2024 09:10:54 +0000
 Date: Fri, 8 Nov 2024 17:10:05 +0800
 From: kernel test robot <lkp@intel.com>
 To: Saru2003 <sarvesh20123@gmail.com>, johannes@sipsolutions.net
-Cc: oe-kbuild-all@lists.linux.dev, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, linux-wireless@vger.kernel.org,
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, linux-wireless@vger.kernel.org,
 	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
 	Saru2003 <sarvesh20123@gmail.com>
 Subject: Re: [PATCH] Fix: Ensure auth_data and ap_addr are properly set
  before marking STA as authenticated
-Message-ID: <202411081625.6Qy8h3Mu-lkp@intel.com>
+Message-ID: <202411081640.YeO04UUX-lkp@intel.com>
 References: <20241108022828.6571-1-sarvesh20123@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -97,25 +98,47 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Saru2003/Fix-Ensure-auth_
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
 patch link:    https://lore.kernel.org/r/20241108022828.6571-1-sarvesh20123%40gmail.com
 patch subject: [PATCH] Fix: Ensure auth_data and ap_addr are properly set before marking STA as authenticated
-config: x86_64-rhel-8.3 (https://download.01.org/0day-ci/archive/20241108/202411081625.6Qy8h3Mu-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241108/202411081625.6Qy8h3Mu-lkp@intel.com/reproduce)
+config: x86_64-kexec (https://download.01.org/0day-ci/archive/20241108/202411081640.YeO04UUX-lkp@intel.com/config)
+compiler: clang version 19.1.3 (https://github.com/llvm/llvm-project ab51eccf88f5321e7c60591c5546b254b6afab99)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241108/202411081640.YeO04UUX-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202411081625.6Qy8h3Mu-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202411081640.YeO04UUX-lkp@intel.com/
 
 All warnings (new ones prefixed by >>):
 
-   net/mac80211/mlme.c: In function 'ieee80211_mark_sta_auth':
->> net/mac80211/mlme.c:4341:34: warning: the comparison will always evaluate as 'true' for the address of 'ap_addr' will never be NULL [-Waddress]
+   In file included from net/mac80211/mlme.c:16:
+   In file included from include/linux/if_ether.h:19:
+   In file included from include/linux/skbuff.h:17:
+   In file included from include/linux/bvec.h:10:
+   In file included from include/linux/highmem.h:8:
+   In file included from include/linux/cacheflush.h:5:
+   In file included from arch/x86/include/asm/cacheflush.h:5:
+   In file included from include/linux/mm.h:2213:
+   include/linux/vmstat.h:504:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     504 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     505 |                            item];
+         |                            ~~~~
+   include/linux/vmstat.h:511:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     511 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     512 |                            NR_VM_NUMA_EVENT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/vmstat.h:518:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
+     518 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
+         |                               ~~~~~~~~~~~ ^ ~~~
+   include/linux/vmstat.h:524:43: warning: arithmetic between different enumeration types ('enum zone_stat_item' and 'enum numa_stat_item') [-Wenum-enum-conversion]
+     524 |         return vmstat_text[NR_VM_ZONE_STAT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~ ^
+     525 |                            NR_VM_NUMA_EVENT_ITEMS +
+         |                            ~~~~~~~~~~~~~~~~~~~~~~
+>> net/mac80211/mlme.c:4341:46: warning: address of array 'ifmgd->auth_data->ap_addr' will always evaluate to 'true' [-Wpointer-bool-conversion]
     4341 |         if (!ifmgd->auth_data || !ifmgd->auth_data->ap_addr) {
-         |                                  ^
-   In file included from net/mac80211/mlme.c:28:
-   net/mac80211/ieee80211_i.h:414:12: note: 'ap_addr' declared here
-     414 |         u8 ap_addr[ETH_ALEN] __aligned(2);
-         |            ^~~~~~~
+         |                                  ~~~~~~~~~~~~~~~~~~~^~~~~~~
+   5 warnings generated.
 
 
 vim +4341 net/mac80211/mlme.c
