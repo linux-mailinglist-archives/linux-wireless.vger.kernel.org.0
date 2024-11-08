@@ -1,133 +1,125 @@
-Return-Path: <linux-wireless+bounces-15148-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15149-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 001959C251B
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2024 19:52:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC04C9C25AB
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2024 20:40:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC81C1F2405B
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2024 18:52:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 671201F213B6
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2024 19:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CAE5199385;
-	Fri,  8 Nov 2024 18:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C26831AA1E0;
+	Fri,  8 Nov 2024 19:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bGkNLkxz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EDFWM0b4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-il1-f169.google.com (mail-il1-f169.google.com [209.85.166.169])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9566B233D96;
-	Fri,  8 Nov 2024 18:52:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141A41AA1EF;
+	Fri,  8 Nov 2024 19:40:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731091943; cv=none; b=osR7CVGBhVPuj6hKDSV7ZTg+fI7QGvjVOk3S6NeocUwE2qgPrcGvRjKdbdOIOT8Rx5nM2X9AReF9wNJjUcqi8DeDug8RJSv8ZGUh58RuY0cLIPOKE/anDOFw13LK1aw4R/jW9mxyx+C99oNmS0z8uo86TpVTgOgdiOYPuZJGPZQ=
+	t=1731094802; cv=none; b=NRxRdc2E0t3EGZyUPLVVWrGpTk4MLPN/OKYhb8bYU7yG89t87Q5nsckYVhCbShUq1bedhunOfA2CbuLOZtaFYP9y1Kjq/gn/X6wXeO8QitFgmPTsIR/z3Zvonrz7elhruY92TZLc4vOimqkL+TJVqqq3ywnpEenFlzYfuZc+KQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731091943; c=relaxed/simple;
-	bh=A2hSK+sHXgxm3OEIytBivzn6hGIJD6/8WxFeB9ebGnI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FZxhZLTSCY+XLmxiIuJTCz/NEluAJ4G7z9CKtOM1iYhalDWOJrk2L3FQStjv8evxfr4uYiV4Hguy7Eb6a2GahcaoyGgiGWURTKufI8T26WLdK2fD3cPIgKVSrLDoV9wo6GDGNhIQzT2ah/KEVnScS5U0W0v4MK2PqGBJ3MDz1oA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bGkNLkxz; arc=none smtp.client-ip=209.85.166.169
+	s=arc-20240116; t=1731094802; c=relaxed/simple;
+	bh=1NLTe76swh5AGV5tzwgpkAKMOgKGsa/SijxcncDbQUs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dL5LVqOb9I9lWzeT/AFCLpoR8AoqKh1Ijj+pX8OFozYP8f12WQUgj287Vt535t7lpxHgSfutzVGG37/Jdq7o1IYArKlWlgaUX2wbI6ZpHEdQ5cJqENVj0J2irqVu3sj5snYJ/e0Fu+6F05ECBM76BoPDh3UIBPVG49stQyLxBoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EDFWM0b4; arc=none smtp.client-ip=209.85.208.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-il1-f169.google.com with SMTP id e9e14a558f8ab-3a6ace3b6a5so8967185ab.1;
-        Fri, 08 Nov 2024 10:52:21 -0800 (PST)
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5c9c28c1e63so3072830a12.0;
+        Fri, 08 Nov 2024 11:40:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731091941; x=1731696741; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lBssO/4mh3YLOsQWkyDKnQfteClw73MBYYg3Qpci+rU=;
-        b=bGkNLkxz2hXHMPd+8MHkzXP7CGPbjwLZDiNTNr6J8IlzVgk0Kx+U1FUKW1roHk+NYh
-         FnRCR9RXyRY39LTqhuWQmkdYQl7x0LG3VK/tyz7VXxvoCNzqmSlQ2D8STHBU5MUksBGH
-         qQwGYbi+ytz9ri/HBxIBHReEUZfTU4/TrvsLVj61u17lC5UXs2m0nQj9p7O3uibPFqWO
-         LJiBNPvJi7lT+m1Jt/ouqF7jAmF4X/1K0LGhTkIHclTTFHXVfAtRR2f/8tFc0Y914KZb
-         gus4b+MssA9+nwFiPDxxJQyBOUuv8UBZbVNsJNQjvJsLf2flA5jkwpitB5dGsBKWTPM0
-         ab3A==
+        d=gmail.com; s=20230601; t=1731094799; x=1731699599; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=853KUZ8Dj0DGzjFqpwaFczZ9tX7evR6TG4RoMElhOW4=;
+        b=EDFWM0b4+2ROfUKjxy5Nk9HgMODJ3cdP5kSIiV/hL//e6Cgan3gkcqvN0lLELaxV6+
+         BllYE3X5QziiTldAO8R6td91383iIgUDYmcTQ4JkeyyLHft+RV21nQ5nnBdsPRZ7JESh
+         Xk1slspCx53HsUZf7+HBJo2DFTAfHmf1LKLibYCwkBByFYwBwla9VNm3vm6xmsgwW9C0
+         jWmYw8WWzze0OUy4XYWtPD1DRn0GaNfBsbFamRyfO8Prbhf+eIapDrAyfOS1ral0w8w7
+         MIMxuL37tspCRWOYeaxldCMkv9n3so8YZzVGmvH6Ovp2MaWI0QERcGGMuf+fITAHE5HS
+         TcQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731091941; x=1731696741;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lBssO/4mh3YLOsQWkyDKnQfteClw73MBYYg3Qpci+rU=;
-        b=bx9/LzbsAsqC9Z3SMNreL79XRs1PY2qtVm5qWFbaftrxfmm6x9Q47StznWZehrwXN+
-         MOyDI+m3AZqI0IPE55afWxpWmhuGIqL0ocKFP4tWF5/+9zX8AgnWVHrV/8dnX6wLg9p5
-         wMVociJW2Arq5sFLxqVoXupCRi9Bv7W6sWaCSpdipv4rJJZQu3jMkDidK+WIz/aWaxOD
-         seqbp2jBlabzA6QLXsTzszOAhXzg3X+rbhs1Q9xZZUznlY8Ndh46pjbOPcvAezChB+pr
-         3RnLSeCiYyL3NO88eNFiCQqfT4jJUrRAmf3o6tLlT+moy3fa+N4D7YwiiDmLH19ctaWq
-         Qqhw==
-X-Forwarded-Encrypted: i=1; AJvYcCW+6DQeYNW75QNBGP34h5RTiuWld2Vikzh01crikpksZUR73YtPUApesI89zHVpReTrwvKsK40nTYhzLmE=@vger.kernel.org, AJvYcCWW9KXAeB3MYpnjXBameUBCigwsreWINzQ1Qbp+0OjfVGfEULTXsSoEHtIuqb/zawTGZbRcg3HOnsVThYA64Og=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVFUU6AnovzaZVfTkDuTwv00BQoE70hSMNXBljhZt+MDiNtg4k
-	I+4Cumh8XM5Rkm4onZ+nJ8ZP0Zif/SZZWuOSNUNkK+xlGzD4FGFr
-X-Google-Smtp-Source: AGHT+IH7E9Tpdy+oYZSCJw+j/sq/o9JFvHAPDnz0UMIdvHx4z60xHlxbqw+kRFUgL5PIWkzNAVgibA==
-X-Received: by 2002:a92:501:0:b0:3a6:b445:dc92 with SMTP id e9e14a558f8ab-3a6f19a0823mr38227315ab.10.1731091940650;
-        Fri, 08 Nov 2024 10:52:20 -0800 (PST)
-Received: from localhost.localdomain ([128.10.127.250])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4de5f7e3e81sm977715173.25.2024.11.08.10.52.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Nov 2024 10:52:19 -0800 (PST)
-From: Mingwei Zheng <zmw12306@gmail.com>
-To: johannes@sipsolutions.net
-Cc: linville@tuxdriver.com,
-	rklein@nvidia.com,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mingwei Zheng <zmw12306@gmail.com>,
-	Jiasheng Jiang <jiashengjiangcool@gmail.com>
-Subject: [PATCH] net: rfkill: gpio: Add check for clk_enable()
-Date: Fri,  8 Nov 2024 13:55:59 -0500
-Message-Id: <20241108185559.1832652-1-zmw12306@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1731094799; x=1731699599;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=853KUZ8Dj0DGzjFqpwaFczZ9tX7evR6TG4RoMElhOW4=;
+        b=vnNDHHT1jBLddYt4GfRnwrFrUx5dboIlo3WxUIuzG89JLkKBqYBg6EUmx/St0E00Ro
+         XyEX03Aci4mvlMZ7hYkX4eihkj/FL1mROZ1K5DArCPRx97AxpWIT0Ewlt+2/fseSIBRc
+         fHkciqPkymezAKb2n7dvrTMxI7Z6uK9Yw8RCcm3sHOo6FpMGj90lMXGGFx5Y1K8y8bkE
+         lJ0x47XGfShkbfVO3JixVul8pMLdkDJDK56WFuG/D52OBvLGVZXpwLZG5E/xRr8ovQF1
+         933pHTLr3Pe3rUNf+sgnEPy2ncNEuYCohSqEs1RDB8HOIBvesq2FKWJAO85fA85dy1gZ
+         +vuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVUAlIv9RKd6Vls4zarOH4Au7VzC/xqzqph62oiv378PvJ5FUDdyrJMSe1zL5hz/9vpJHjgmr/EvLZNy2n9bCY=@vger.kernel.org, AJvYcCWBq0FsQyP7QLbrBVEvxSurzGQXFfGBjiykT/QnRdTuidhB80goekziVqzlwHh3kgpkt89Y3uOcuN0QBmQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwI6HLOIZFvylR26qZ10L3QELkOdrv6qgtuknKlhF7gR0enVC46
+	kjHAxxn3bPNvYEyi+tam6ROfORmlHoIG3DeA9fLkkfMI8PVczUMrUHi5cAds8G0fUQ/9/pHSMHj
+	TFpmg+skP9fOaudCcQjSUQSgVjtE=
+X-Google-Smtp-Source: AGHT+IHfyiKMOejHvMRZO/zyz+qflgSFoDwj1FsOF7d4WVd4pk8vMUzCFg05i04c74H48+3Tc//fkteIZK7hEvN1E5A=
+X-Received: by 2002:a05:6402:34cc:b0:5ce:de0f:e4f6 with SMTP id
+ 4fb4d7f45d1cf-5cf0a30af57mr2539131a12.1.1731094799072; Fri, 08 Nov 2024
+ 11:39:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241107222043.1414437-1-zmw12306@gmail.com> <f1a0801e4ce55cdccfa809a6e49d839aabf1a0ae.camel@sipsolutions.net>
+In-Reply-To: <f1a0801e4ce55cdccfa809a6e49d839aabf1a0ae.camel@sipsolutions.net>
+From: Mingwei Zheng <zmw12306@gmail.com>
+Date: Fri, 8 Nov 2024 14:39:47 -0500
+Message-ID: <CAN4iqtS8GG4AMuAzi4jssqZBqyOUgwV21MP8FQeefGznhgcY9A@mail.gmail.com>
+Subject: Re: [PATCH v2] net: rfkill: gpio: Add check for clk_enable()
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linville@tuxdriver.com, rklein@nvidia.com, linux-wireless@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add check for the return value of clk_enable() to catch the potential
-error.
+On Fri, Nov 8, 2024 at 2:47=E2=80=AFAM Johannes Berg <johannes@sipsolutions=
+.net> wrote:
+>
+> On Thu, 2024-11-07 at 17:20 -0500, Mingwei Zheng wrote:
+> > Add check for the return value of clk_enable() to catch the potential
+> > error.
+>
+> Wait ... is someone running an experiment again? ;-)
+> >
+> > diff --git a/net/rfkill/rfkill-gpio.c b/net/rfkill/rfkill-gpio.c
+> > index c268c2b011f4..a87bb99231a6 100644
+> > --- a/net/rfkill/rfkill-gpio.c
+> > +++ b/net/rfkill/rfkill-gpio.c
+> > @@ -31,9 +31,13 @@ struct rfkill_gpio_data {
+> >  static int rfkill_gpio_set_power(void *data, bool blocked)
+> >  {
+> >       struct rfkill_gpio_data *rfkill =3D data;
+> > +     int ret;
+>
+> You could move that into the if.
+>
+> > -     if (!blocked && !IS_ERR(rfkill->clk) && !rfkill->clk_enabled)
+> > -             clk_enable(rfkill->clk);
+> > +     if (!blocked && !IS_ERR(rfkill->clk) && !rfkill->clk_enabled) {
+> > +             ret =3D clk_enable(rfkill->clk);
+> > +             if (!ret)
+> > +                     return ret;
+> > +     }
+> >
+>
+> but this is obviously wrong anyway.
+>
+> johannes
 
-Fixes: 7176ba23f8b5 ("net: rfkill: add generic gpio rfkill driver")
-Signed-off-by: Mingwei Zheng <zmw12306@gmail.com>
-Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
----
-Changelog:
+Thank you for your suggestion. I=E2=80=99ll make the corrections and send a=
+ v3 patch.
 
-v2 -> v3
-
-1. Move int ret declaration into if.
-2. Replace if (!ret) with if (ret).
----
-Changelog:
-
-v1 -> v2
-
-1. Replace expection with error in commit msg.
----
- net/rfkill/rfkill-gpio.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/net/rfkill/rfkill-gpio.c b/net/rfkill/rfkill-gpio.c
-index c268c2b011f4..a8e21060112f 100644
---- a/net/rfkill/rfkill-gpio.c
-+++ b/net/rfkill/rfkill-gpio.c
-@@ -32,8 +32,12 @@ static int rfkill_gpio_set_power(void *data, bool blocked)
- {
- 	struct rfkill_gpio_data *rfkill = data;
- 
--	if (!blocked && !IS_ERR(rfkill->clk) && !rfkill->clk_enabled)
--		clk_enable(rfkill->clk);
-+	if (!blocked && !IS_ERR(rfkill->clk) && !rfkill->clk_enabled) {
-+		int ret = clk_enable(rfkill->clk);
-+
-+		if (ret)
-+			return ret;
-+	}
- 
- 	gpiod_set_value_cansleep(rfkill->shutdown_gpio, !blocked);
- 	gpiod_set_value_cansleep(rfkill->reset_gpio, !blocked);
--- 
-2.34.1
-
+Best,
+Mingwei
 
