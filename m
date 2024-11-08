@@ -1,128 +1,135 @@
-Return-Path: <linux-wireless+bounces-15124-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15125-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99A579C140E
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2024 03:28:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B81009C1423
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2024 03:36:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67C052849CE
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2024 02:28:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8130B2516E
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2024 02:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFFD51DFCB;
-	Fri,  8 Nov 2024 02:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69F01126C0A;
+	Fri,  8 Nov 2024 02:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="grR3Ei54"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="PI/mmkuU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C8239FD6;
-	Fri,  8 Nov 2024 02:28:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027522940B
+	for <linux-wireless@vger.kernel.org>; Fri,  8 Nov 2024 02:36:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731032927; cv=none; b=DKc6NQdmLrYyvdLxYRvIQ/y+yqqbUf/tUEJ8BvUN9V/8s3VZqTVYNxL0r467MwR4SB4qxpXgapa10w/BovwE6q/rcGy1b7trlXAKQ0eGZzZUBw/xe6IlDtnu7ogoQaRu2MAWcT1c/ZQzvOe66V9PPQF4uD7stsMH+2XS9vQ8qgk=
+	t=1731033366; cv=none; b=mIFhXeUfH7MF5v87JN4PIL8dEyQ4Bd5G+eeuHDYAtvYqFGmWUXGfJ5A/5owfHglZP9uhadiTTvucdJ/QQbWinHPNS2InhBKlBLdhii3VcJAV3AesFy7veMNxzPOU5tvBDbJL2mAF39AWDs2sW6k3aOcVWTWo3GMYIL2TQszpEK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731032927; c=relaxed/simple;
-	bh=hEQygF4m8DjrDBiR5+IO9YBL5x2uHYH3btJu+BhLG0E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BseYYQ/GYR2QDi9hLG5UHibiLvbBuV4x9k5zlmreTepm1YbRfzKQVA5djW3QGy8JyKjgbKTINAU9fPB+ZdJ3QXMFoezI2QdGJF5d960YyQkqRcdUoBDglLtQNHh3QSQYvu6YDKaP0hMpLgfMo+yiYDvzVXjjEjC3TO4wWcUkxTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=grR3Ei54; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-71e681bc315so1248120b3a.0;
-        Thu, 07 Nov 2024 18:28:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731032926; x=1731637726; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=BRhYlWrr+h7c7N/+/EIXt40Xsz1hnVz9xjst1BA0/tw=;
-        b=grR3Ei54VFpAt9n04ZCax2/R/AFIar+ZNbg2fLqpZk0CifgSbwOMiQGqJ4+gLu0fsB
-         LcYcJHf0DIsGty+DiC3RgIe7PymlYPYVqAD9wxEoc7aUwVolnTCg8O/1S6Y3nc3KgVj0
-         SyfMF0tKhgirY7bYMP8SQp1p5AaCAL+urd/dpzy2MTGFz6/xzAUAN4EvSiK9r0Vws+sq
-         ivI3aaM8SvjczCw7V0bQ3mCd5H5NSCADSrzFE2xQxWx4ogsJJOj40A0RErxgvwMOXSZk
-         I+srzB8UIHqwXgmnZ+nvytP6JGNkZUqBvU8V3cvDRJ92aVtHiXQRjIZqiR1caNSgoZGt
-         uLww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731032926; x=1731637726;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BRhYlWrr+h7c7N/+/EIXt40Xsz1hnVz9xjst1BA0/tw=;
-        b=mkRQI1A/CtXM9PHcu0T4aTvXnkJWDir3R6d57SK9rVq9+zSq7dR11idY6TGfOO6d4g
-         iGB+vXufivGiwpOZ7XOFsGtwWhFj2NzbE7uiYuCmxYkVonWXi7jHqz75ui9GkR/UwFfs
-         nWdnB7UCAyI1TAGK93qR11SHa82e8wt2/JX1YJiXO7lgdH2Fk02gBmlaBRxq3eYja+Iq
-         R/UU+3VDrc57xUMM2qNs3LFn6Lewa277rqWx3fQY+zw6aTAnRtlQ0OQsFcs5PR7xIuzL
-         RNhVl3GFfIX7iaSfSlNrD46Xi7HdQ3RYUiJqSLZis/pEN8a2VeLUBYbdmr330cX7q0KC
-         Dvnw==
-X-Forwarded-Encrypted: i=1; AJvYcCUOP7wrjqZ6P3k97RHQeM0bx6tonKpqHjyqE/8+IUCYFV1XfkRmJpC4lPbE++T+gxrQCQgbkB8l7wXCuk0=@vger.kernel.org, AJvYcCUeGUgABaTe2JnAR10dyEHIZcDKCgFMwFWbVqn/Zywn5VLVziRKzddS46yO+d7h2ouTZdmp8xsbXe3gw1Lprow=@vger.kernel.org, AJvYcCXqYAtDhvmMvdUn0jb2u2xYFOBoZe3VTMRfj6Nei3EbWXiHR8jK2bqruvsjPj+YoKfqPzPKoMsF@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9FQf5e4UP9unMt2jBc8j0x2iIFrGjdcXXjjVpK1HpxdhL5zEf
-	n/Kp3xMKDw3k/eVzUQn8VHvI8qBF61OZG058s+V0y1NJQHyLZ6NO
-X-Google-Smtp-Source: AGHT+IEZDoZVjLwxmtQY0g554/k/EBW12ojyO61yIKTJ/8pjxKfSjIeFDjtlfjJkQIVnght6o7lz9A==
-X-Received: by 2002:a05:6a00:4b56:b0:71e:7174:3a6 with SMTP id d2e1a72fcca58-72413da856cmr1726998b3a.0.1731032925477;
-        Thu, 07 Nov 2024 18:28:45 -0800 (PST)
-Received: from sarvesh-ROG-Zephyrus-M15.. ([49.206.113.92])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-724078a9ad4sm2465304b3a.78.2024.11.07.18.28.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Nov 2024 18:28:44 -0800 (PST)
-From: Saru2003 <sarvesh20123@gmail.com>
-To: johannes@sipsolutions.net
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Saru2003 <sarvesh20123@gmail.com>
-Subject: [PATCH] Fix: Ensure auth_data and ap_addr are properly set before marking STA as authenticated
-Date: Fri,  8 Nov 2024 07:58:28 +0530
-Message-ID: <20241108022828.6571-1-sarvesh20123@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1731033366; c=relaxed/simple;
+	bh=idzzoF11zVrdrhWql71yYWDHwkGjZk3yjIYoUrLDr2A=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=ipR7oNLFQMEP800g+ySafDKsSEvWseNsNSfW7WnGlSncQqH0adjLNw798TlL8UUVSO2c+lq41JradAkHi5k627SLYUQwsTwYBYfLFqGnCIMqt4RuM+0lVwwveWd2Ty6dLjnxGCHeN1aQ95BFcH0Qe4l4VvNaxmy2YRtbu5PBZKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=PI/mmkuU; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4A82a0yN51244141, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1731033360; bh=idzzoF11zVrdrhWql71yYWDHwkGjZk3yjIYoUrLDr2A=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=PI/mmkuU6jKV6TZb1aSXWerynsUasMvkWHeX4YpPhpdSc6mFsVPtoa4/ZNQvDW+Mo
+	 YjZ9QH2UtrQgjQqtknCskyElJE1bYcDZ+/4Uzqd6syv5P1GlJJte3We42E416Ie4/e
+	 NqYu6DwOBNy+sSIpD/MEoLC9ObY+3iKzfVwucsZby87HX0IzBsWmddeXhTHHCJSdWz
+	 yTr18IiQRF7AviTZc4VB5jDPicc/PCaP1hkPvedE5YIx5J0gLr87FzYPM02eaK3RkU
+	 CjAB52piqELq62kl5jSryREsE3U7VH250C4xKivZAFW0kalasBBlcNi4akTkwETirQ
+	 jI4ZH3G4FylyQ==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4A82a0yN51244141
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 8 Nov 2024 10:36:00 +0800
+Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 8 Nov 2024 10:36:00 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 8 Nov 2024 10:36:00 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
+ 15.01.2507.035; Fri, 8 Nov 2024 10:36:00 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH 1/2] wifi: rtw88: usb: Support USB 3 with RTL8812AU
+Thread-Topic: [PATCH 1/2] wifi: rtw88: usb: Support USB 3 with RTL8812AU
+Thread-Index: AQHbMW6KnqXz5qplSkmBk0FRdNVE87KsqmjQ
+Date: Fri, 8 Nov 2024 02:36:00 +0000
+Message-ID: <c053ea160bd1469e8b076247f3641193@realtek.com>
+References: <78ca9bcb-cd48-4c53-8514-7967bad6dfcf@gmail.com>
+In-Reply-To: <78ca9bcb-cd48-4c53-8514-7967bad6dfcf@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-Signed-off-by: Saru2003 <sarvesh20123@gmail.com>
----
- net/mac80211/mlme.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 735e78adb0db..a1ca7385dc1b 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -4247,8 +4247,15 @@ static void ieee80211_auth_challenge(struct ieee80211_sub_if_data *sdata,
- static bool ieee80211_mark_sta_auth(struct ieee80211_sub_if_data *sdata)
- {
- 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
--	const u8 *ap_addr = ifmgd->auth_data->ap_addr;
-+	const u8 *ap_addr;
- 	struct sta_info *sta;
-+	
-+	if (!ifmgd->auth_data || !ifmgd->auth_data->ap_addr) {
-+		sdata_info(sdata, "auth_data not set or ap_addr missing\n");
-+		return false;
-+	}
-+
-+	ap_addr = ifmgd->auth_data->ap_addr;
- 
- 	lockdep_assert_wiphy(sdata->local->hw.wiphy);
- 
-@@ -4261,7 +4268,7 @@ static bool ieee80211_mark_sta_auth(struct ieee80211_sub_if_data *sdata)
- 	/* move station state to auth */
- 	sta = sta_info_get(sdata, ap_addr);
- 	if (!sta) {
--		WARN_ONCE(1, "%s: STA %pM not found", sdata->name, ap_addr);
-+	        sdata_info(sdata, "STA %pM not found, skipping authentication mark\n", ap_addr);
- 		return false;
- 	}
- 	if (sta_info_move_state(sta, IEEE80211_STA_AUTH)) {
--- 
-2.43.0
-
+Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBBZGQg
+dGhlIGZ1bmN0aW9uIHRvIGF1dG9tYXRpY2FsbHkgc3dpdGNoIHRoZSBSVEw4ODEyQVUgaW50byBV
+U0IgMyBtb2RlLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogQml0dGVyYmx1ZSBTbWl0aCA8cnRsODgy
+MWNlcmZlMkBnbWFpbC5jb20+DQo+IC0tLQ0KPiAgZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRl
+ay9ydHc4OC91c2IuYyB8IDM0ICsrKysrKysrKysrKysrKysrKysrKystLQ0KPiAgMSBmaWxlIGNo
+YW5nZWQsIDMyIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0
+IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC91c2IuYyBiL2RyaXZlcnMvbmV0
+L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvdXNiLmMNCj4gaW5kZXggNmZhM2MzNzIwNWY1Li43NTJi
+Y2EwNWI5YWYgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3
+ODgvdXNiLmMNCj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC91c2Iu
+Yw0KPiBAQCAtOTMxLDYgKzkzMSwzMiBAQCBzdGF0aWMgdm9pZCBydHdfdXNiX2ludGZfZGVpbml0
+KHN0cnVjdCBydHdfZGV2ICpydHdkZXYsDQo+ICAgICAgICAgdXNiX3NldF9pbnRmZGF0YShpbnRm
+LCBOVUxMKTsNCj4gIH0NCj4gDQo+ICtzdGF0aWMgaW50IHJ0d191c2Jfc3dpdGNoX21vZGVfb2xk
+KHN0cnVjdCBydHdfZGV2ICpydHdkZXYpDQo+ICt7DQo+ICsgICAgICAgc3RydWN0IHJ0d191c2Ig
+KnJ0d3VzYiA9IHJ0d19nZXRfdXNiX3ByaXYocnR3ZGV2KTsNCj4gKyAgICAgICBlbnVtIHVzYl9k
+ZXZpY2Vfc3BlZWQgY3VyX3NwZWVkID0gcnR3dXNiLT51ZGV2LT5zcGVlZDsNCj4gKyAgICAgICB1
+OCBoY2lfb3B0Ow0KPiArDQo+ICsgICAgICAgaWYgKGN1cl9zcGVlZCA9PSBVU0JfU1BFRURfSElH
+SCkgew0KPiArICAgICAgICAgICAgICAgaGNpX29wdCA9IHJ0d19yZWFkOChydHdkZXYsIFJFR19I
+Q0lfT1BUX0NUUkwpOw0KPiArDQo+ICsgICAgICAgICAgICAgICBpZiAoKGhjaV9vcHQgJiAoQklU
+KDIpIHwgQklUKDMpKSkgIT0gQklUKDMpKSB7DQo+ICsgICAgICAgICAgICAgICAgICAgICAgIHJ0
+d193cml0ZTgocnR3ZGV2LCBSRUdfSENJX09QVF9DVFJMLCAweDgpOw0KPiArICAgICAgICAgICAg
+ICAgICAgICAgICBydHdfd3JpdGU4KHJ0d2RldiwgUkVHX1NZU19TRElPX0NUUkwsIDB4Mik7DQo+
+ICsgICAgICAgICAgICAgICAgICAgICAgIHJ0d193cml0ZTgocnR3ZGV2LCBSRUdfQUNMS19NT04s
+IDB4MSk7DQo+ICsgICAgICAgICAgICAgICAgICAgICAgIHJ0d193cml0ZTgocnR3ZGV2LCAweDNk
+LCAweDMpOw0KPiArICAgICAgICAgICAgICAgICAgICAgICAvKiB1c2IgZGlzY29ubmVjdCAqLw0K
+PiArICAgICAgICAgICAgICAgICAgICAgICBydHdfd3JpdGU4KHJ0d2RldiwgUkVHX1NZU19QV19D
+VFJMICsgMSwgMHg4MCk7DQo+ICsgICAgICAgICAgICAgICAgICAgICAgIHJldHVybiAxOw0KPiAr
+ICAgICAgICAgICAgICAgfQ0KPiArICAgICAgIH0gZWxzZSBpZiAoY3VyX3NwZWVkID09IFVTQl9T
+UEVFRF9TVVBFUikgew0KPiArICAgICAgICAgICAgICAgcnR3X3dyaXRlOF9jbHIocnR3ZGV2LCBS
+RUdfU1lTX1NESU9fQ1RSTCwgQklUKDEpKTsNCj4gKyAgICAgICAgICAgICAgIHJ0d193cml0ZThf
+Y2xyKHJ0d2RldiwgUkVHX0FDTEtfTU9OLCBCSVQoMCkpOw0KPiArICAgICAgIH0NCj4gKw0KPiAr
+ICAgICAgIHJldHVybiAwOw0KPiArfQ0KPiArDQo+ICBzdGF0aWMgaW50IHJ0d191c2Jfc3dpdGNo
+X21vZGVfbmV3KHN0cnVjdCBydHdfZGV2ICpydHdkZXYpDQo+ICB7DQo+ICAgICAgICAgZW51bSB1
+c2JfZGV2aWNlX3NwZWVkIGN1cl9zcGVlZDsNCj4gQEAgLTk4NCw3ICsxMDEwLDggQEAgc3RhdGlj
+IGludCBydHdfdXNiX3N3aXRjaF9tb2RlKHN0cnVjdCBydHdfZGV2ICpydHdkZXYpDQo+ICB7DQo+
+ICAgICAgICAgdTggaWQgPSBydHdkZXYtPmNoaXAtPmlkOw0KPiANCj4gLSAgICAgICBpZiAoaWQg
+IT0gUlRXX0NISVBfVFlQRV84ODIyQyAmJiBpZCAhPSBSVFdfQ0hJUF9UWVBFXzg4MjJCKQ0KPiAr
+ICAgICAgIGlmIChpZCAhPSBSVFdfQ0hJUF9UWVBFXzg4MjJDICYmIGlkICE9IFJUV19DSElQX1RZ
+UEVfODgyMkIgJiYNCj4gKyAgICAgICAgICAgaWQgIT0gUlRXX0NISVBfVFlQRV84ODEyQSkNCg0K
+V291bGQgaXQgYmUgY2xlYXIgdG8gbGlzdCBwb3NpdGl2ZSBjaGlwcyBpbiBhIGZ1bmN0aW9uPyBh
+bmQgcmV0dXJuIG5ldy9vbGQgdHlwZQ0KY2hpcCBpcyB1c2luZyBmb3IgbGF0dGVyIGNvbmRpdGlv
+bi4gDQoNCj4gICAgICAgICAgICAgICAgIHJldHVybiAwOw0KPiANCj4gICAgICAgICBpZiAoIXJ0
+d2Rldi0+ZWZ1c2UudXNiX21vZGVfc3dpdGNoKSB7DQo+IEBAIC05OTksNyArMTAyNiwxMCBAQCBz
+dGF0aWMgaW50IHJ0d191c2Jfc3dpdGNoX21vZGUoc3RydWN0IHJ0d19kZXYgKnJ0d2RldikNCj4g
+ICAgICAgICAgICAgICAgIHJldHVybiAwOw0KPiAgICAgICAgIH0NCj4gDQo+IC0gICAgICAgcmV0
+dXJuIHJ0d191c2Jfc3dpdGNoX21vZGVfbmV3KHJ0d2Rldik7DQo+ICsgICAgICAgaWYgKGlkID09
+IFJUV19DSElQX1RZUEVfODgxMkEpDQo+ICsgICAgICAgICAgICAgICByZXR1cm4gcnR3X3VzYl9z
+d2l0Y2hfbW9kZV9vbGQocnR3ZGV2KTsNCj4gKyAgICAgICBlbHNlIC8qIFJUTDg4MjJDVSwgUlRM
+ODgyMkJVICovDQo+ICsgICAgICAgICAgICAgICByZXR1cm4gcnR3X3VzYl9zd2l0Y2hfbW9kZV9u
+ZXcocnR3ZGV2KTsNCj4gIH0NCg0KDQoNCg==
 
