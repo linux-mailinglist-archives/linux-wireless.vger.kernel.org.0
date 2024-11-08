@@ -1,140 +1,128 @@
-Return-Path: <linux-wireless+bounces-15123-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15124-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68A079C1404
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2024 03:24:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99A579C140E
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2024 03:28:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE67DB21089
-	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2024 02:24:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67C052849CE
+	for <lists+linux-wireless@lfdr.de>; Fri,  8 Nov 2024 02:28:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B2311BD9E5;
-	Fri,  8 Nov 2024 02:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFFD51DFCB;
+	Fri,  8 Nov 2024 02:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="L/HyMBib"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="grR3Ei54"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7DC1BD9D1
-	for <linux-wireless@vger.kernel.org>; Fri,  8 Nov 2024 02:24:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C8239FD6;
+	Fri,  8 Nov 2024 02:28:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731032651; cv=none; b=LwA5Ys4X/apaKjRPjOGYwM/xHb2oZ99OO4UzKmUtAurXIDsefw39ALQ+bQnMrg4DnKvNqz/gk3oeEX3wSuRTl4gOvJTQcxya2FByQBECAQ+HixXptMOCH6oKi0IHe+8n4YXmyCK/EdPYFquL04Ku9V0WiCM/vlK1AAE84SyScxI=
+	t=1731032927; cv=none; b=DKc6NQdmLrYyvdLxYRvIQ/y+yqqbUf/tUEJ8BvUN9V/8s3VZqTVYNxL0r467MwR4SB4qxpXgapa10w/BovwE6q/rcGy1b7trlXAKQ0eGZzZUBw/xe6IlDtnu7ogoQaRu2MAWcT1c/ZQzvOe66V9PPQF4uD7stsMH+2XS9vQ8qgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731032651; c=relaxed/simple;
-	bh=0kXv0rRTNkhlD26cSxK+RkowHbSAjk1/tM9bRheCoEA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=NXvVZBgOjC07TvH7jF8uWULCDuUf5Rai8xHGXJePuZH8FTLjOx5jkiwj88tTGPvtiixk/YFOjkIiR649UwYCWUKYDfM+cXkyzoRSbV0fj8I2Hy+Q2gMdb/QJQALUbIRmA/rO5v3zms/KCKzHnppueMMZq+fbR3lbjVRCrUzuuyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=L/HyMBib; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4A82NnA521231689, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1731032629; bh=0kXv0rRTNkhlD26cSxK+RkowHbSAjk1/tM9bRheCoEA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=L/HyMBibiSt+FveZsu439AxmMedNmPHDOfnEaVAQi8VV8QnGaLtBUhTb25YJDbX0Y
-	 QLgI5lluuy8dDy5FPD2mkGJ5xF6/bkr9c9Un3fmNCWnY/dMzxsGkodrMfZpz6iS77p
-	 3jFZH/LRR44l951VgGmmGvrlOt0e+Biq0RfbBBQXzTEJbG55y+KkWfWmGbsJiU+NqI
-	 o2cv0FNY6+lM01VvE9guA3MIgQji0ZSaCqnqMs+F3KWWg+oiSp0IPCKh/wnyMgByjm
-	 j7Siue1BrY1RFSdBIrbLISckHS3BUI3DY6PW+X2Pici+5SNLKGp26XdrF0o5ysoSLz
-	 wsy5ChyUpSmPg==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4A82NnA521231689
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 8 Nov 2024 10:23:49 +0800
-Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 8 Nov 2024 10:23:49 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Fri, 8 Nov 2024 10:23:49 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
- RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
- 15.01.2507.035; Fri, 8 Nov 2024 10:23:48 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: Kalle Valo <kvalo@kernel.org>,
-        "kernel-dev@igalia.com"
-	<kernel-dev@igalia.com>
-Subject: RE: [PATCH net 5/5] wifi: rtlwifi: usb: fix workqueue leak when probe fails
-Thread-Topic: [PATCH net 5/5] wifi: rtlwifi: usb: fix workqueue leak when
- probe fails
-Thread-Index: AQHbMRmyetrUO5Ddvk2+060ZgCtCdrKsp0/g
-Date: Fri, 8 Nov 2024 02:23:48 +0000
-Message-ID: <d66c4ae9004c43058c89fcc3d97f4b41@realtek.com>
-References: <20241107133322.855112-1-cascardo@igalia.com>
- <20241107133322.855112-6-cascardo@igalia.com>
-In-Reply-To: <20241107133322.855112-6-cascardo@igalia.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1731032927; c=relaxed/simple;
+	bh=hEQygF4m8DjrDBiR5+IO9YBL5x2uHYH3btJu+BhLG0E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BseYYQ/GYR2QDi9hLG5UHibiLvbBuV4x9k5zlmreTepm1YbRfzKQVA5djW3QGy8JyKjgbKTINAU9fPB+ZdJ3QXMFoezI2QdGJF5d960YyQkqRcdUoBDglLtQNHh3QSQYvu6YDKaP0hMpLgfMo+yiYDvzVXjjEjC3TO4wWcUkxTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=grR3Ei54; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-71e681bc315so1248120b3a.0;
+        Thu, 07 Nov 2024 18:28:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731032926; x=1731637726; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=BRhYlWrr+h7c7N/+/EIXt40Xsz1hnVz9xjst1BA0/tw=;
+        b=grR3Ei54VFpAt9n04ZCax2/R/AFIar+ZNbg2fLqpZk0CifgSbwOMiQGqJ4+gLu0fsB
+         LcYcJHf0DIsGty+DiC3RgIe7PymlYPYVqAD9wxEoc7aUwVolnTCg8O/1S6Y3nc3KgVj0
+         SyfMF0tKhgirY7bYMP8SQp1p5AaCAL+urd/dpzy2MTGFz6/xzAUAN4EvSiK9r0Vws+sq
+         ivI3aaM8SvjczCw7V0bQ3mCd5H5NSCADSrzFE2xQxWx4ogsJJOj40A0RErxgvwMOXSZk
+         I+srzB8UIHqwXgmnZ+nvytP6JGNkZUqBvU8V3cvDRJ92aVtHiXQRjIZqiR1caNSgoZGt
+         uLww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731032926; x=1731637726;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BRhYlWrr+h7c7N/+/EIXt40Xsz1hnVz9xjst1BA0/tw=;
+        b=mkRQI1A/CtXM9PHcu0T4aTvXnkJWDir3R6d57SK9rVq9+zSq7dR11idY6TGfOO6d4g
+         iGB+vXufivGiwpOZ7XOFsGtwWhFj2NzbE7uiYuCmxYkVonWXi7jHqz75ui9GkR/UwFfs
+         nWdnB7UCAyI1TAGK93qR11SHa82e8wt2/JX1YJiXO7lgdH2Fk02gBmlaBRxq3eYja+Iq
+         R/UU+3VDrc57xUMM2qNs3LFn6Lewa277rqWx3fQY+zw6aTAnRtlQ0OQsFcs5PR7xIuzL
+         RNhVl3GFfIX7iaSfSlNrD46Xi7HdQ3RYUiJqSLZis/pEN8a2VeLUBYbdmr330cX7q0KC
+         Dvnw==
+X-Forwarded-Encrypted: i=1; AJvYcCUOP7wrjqZ6P3k97RHQeM0bx6tonKpqHjyqE/8+IUCYFV1XfkRmJpC4lPbE++T+gxrQCQgbkB8l7wXCuk0=@vger.kernel.org, AJvYcCUeGUgABaTe2JnAR10dyEHIZcDKCgFMwFWbVqn/Zywn5VLVziRKzddS46yO+d7h2ouTZdmp8xsbXe3gw1Lprow=@vger.kernel.org, AJvYcCXqYAtDhvmMvdUn0jb2u2xYFOBoZe3VTMRfj6Nei3EbWXiHR8jK2bqruvsjPj+YoKfqPzPKoMsF@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9FQf5e4UP9unMt2jBc8j0x2iIFrGjdcXXjjVpK1HpxdhL5zEf
+	n/Kp3xMKDw3k/eVzUQn8VHvI8qBF61OZG058s+V0y1NJQHyLZ6NO
+X-Google-Smtp-Source: AGHT+IEZDoZVjLwxmtQY0g554/k/EBW12ojyO61yIKTJ/8pjxKfSjIeFDjtlfjJkQIVnght6o7lz9A==
+X-Received: by 2002:a05:6a00:4b56:b0:71e:7174:3a6 with SMTP id d2e1a72fcca58-72413da856cmr1726998b3a.0.1731032925477;
+        Thu, 07 Nov 2024 18:28:45 -0800 (PST)
+Received: from sarvesh-ROG-Zephyrus-M15.. ([49.206.113.92])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-724078a9ad4sm2465304b3a.78.2024.11.07.18.28.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Nov 2024 18:28:44 -0800 (PST)
+From: Saru2003 <sarvesh20123@gmail.com>
+To: johannes@sipsolutions.net
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Saru2003 <sarvesh20123@gmail.com>
+Subject: [PATCH] Fix: Ensure auth_data and ap_addr are properly set before marking STA as authenticated
+Date: Fri,  8 Nov 2024 07:58:28 +0530
+Message-ID: <20241108022828.6571-1-sarvesh20123@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thadeu Lima de Souza Cascardo <cascardo@igalia.com> wrote:
-> rtl_init_core creates a workqueue that is then assigned to rtl_wq.
-> rtl_deinit_core does not destroy it. It is left to rtl_usb_deinit, which
-> must be called in the probe error path.
->=20
-> Fixes: 2ca20f79e0d8 ("rtlwifi: Add usb driver")
-> Fixes: 851639fdaeac ("rtlwifi: Modify some USB de-initialize code.")
-> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-> ---
->  drivers/net/wireless/realtek/rtlwifi/usb.c | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wir=
-eless/realtek/rtlwifi/usb.c
-> index 8ec687fab572..0368ecea2e81 100644
-> --- a/drivers/net/wireless/realtek/rtlwifi/usb.c
-> +++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
-> @@ -1039,6 +1039,7 @@ int rtl_usb_probe(struct usb_interface *intf,
->         wait_for_completion(&rtlpriv->firmware_loading_complete);
->         rtlpriv->cfg->ops->deinit_sw_vars(hw);
->  error_out:
-> +       rtl_usb_deinit(hw);
->         rtl_deinit_core(hw);
->  error_out2:
->         _rtl_usb_io_handler_release(hw);
+Signed-off-by: Saru2003 <sarvesh20123@gmail.com>
+---
+ net/mac80211/mlme.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-I think deinit should be in reverse order of init step by step:
-
---- a/drivers/net/wireless/realtek/rtlwifi/usb.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
-@@ -1017,7 +1017,7 @@ int rtl_usb_probe(struct usb_interface *intf,
-        err =3D rtl_init_core(hw);
-        if (err) {
-                pr_err("Can't allocate sw for mac80211\n");
--               goto error_out2;
-+               goto error_out_usb_deinit;
-        }
-        if (rtlpriv->cfg->ops->init_sw_vars(hw)) {
-                pr_err("Can't init_sw_vars\n");
-@@ -1040,6 +1040,8 @@ int rtl_usb_probe(struct usb_interface *intf,
-        rtlpriv->cfg->ops->deinit_sw_vars(hw);
- error_out:
-        rtl_deinit_core(hw);
-+error_out_usb_deinit:
-+       rtl_usb_deinit(hw);
- error_out2:
-        _rtl_usb_io_handler_release(hw);
-        usb_put_dev(udev);
-
-Have you also considered PCI? It seems that rtl_pci_deinit() isn't called i=
-f
-PCI probe fails.=20
-
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 735e78adb0db..a1ca7385dc1b 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -4247,8 +4247,15 @@ static void ieee80211_auth_challenge(struct ieee80211_sub_if_data *sdata,
+ static bool ieee80211_mark_sta_auth(struct ieee80211_sub_if_data *sdata)
+ {
+ 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
+-	const u8 *ap_addr = ifmgd->auth_data->ap_addr;
++	const u8 *ap_addr;
+ 	struct sta_info *sta;
++	
++	if (!ifmgd->auth_data || !ifmgd->auth_data->ap_addr) {
++		sdata_info(sdata, "auth_data not set or ap_addr missing\n");
++		return false;
++	}
++
++	ap_addr = ifmgd->auth_data->ap_addr;
+ 
+ 	lockdep_assert_wiphy(sdata->local->hw.wiphy);
+ 
+@@ -4261,7 +4268,7 @@ static bool ieee80211_mark_sta_auth(struct ieee80211_sub_if_data *sdata)
+ 	/* move station state to auth */
+ 	sta = sta_info_get(sdata, ap_addr);
+ 	if (!sta) {
+-		WARN_ONCE(1, "%s: STA %pM not found", sdata->name, ap_addr);
++	        sdata_info(sdata, "STA %pM not found, skipping authentication mark\n", ap_addr);
+ 		return false;
+ 	}
+ 	if (sta_info_move_state(sta, IEEE80211_STA_AUTH)) {
+-- 
+2.43.0
 
 
