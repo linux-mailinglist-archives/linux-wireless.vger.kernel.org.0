@@ -1,95 +1,81 @@
-Return-Path: <linux-wireless+bounces-15177-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15178-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD6C69C3D93
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2024 12:39:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B1B29C3DD3
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2024 12:59:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04F2E1C2198C
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2024 11:39:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39B321C20EB3
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2024 11:59:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA7418990D;
-	Mon, 11 Nov 2024 11:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ADD71991A3;
+	Mon, 11 Nov 2024 11:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MBHMwjMY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dJen1G85"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A89139578;
-	Mon, 11 Nov 2024 11:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057E7139578
+	for <linux-wireless@vger.kernel.org>; Mon, 11 Nov 2024 11:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731325144; cv=none; b=rl99vYnWkRiSzfuLECV7Z03roFhTXDAKpxilEaI+lbnGHOjBEvOeNc9wWcmjQso0Z3nblOHGdwVw1C8JyWrIcjSBnfGR0LPBnvuAq4qOHmxDedX0aA8DwuYrvyufzy1R3bEAfNkkg5aX5WSg2+F9RSU1tI5wtMq3Cu+I+Z4yAfY=
+	t=1731326355; cv=none; b=V9WzUJYgykLCv69JfIbBhKTf3snuYVLpHfloZxBqdd3t5urFwlaSa365jiaM7NmtQ2i6VubkmZ9uBzJm0I5uGp9ltMvYiB7CnNXzMtPzf+W5KAT+WnCZvkcSlaPGD9j6MTJACYIRcHDDGxV6/H46EbIA+aYR3B/wXhn0dFV8IKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731325144; c=relaxed/simple;
-	bh=awS5dN+X4Ie3viCfpwkaNH+GZOItv8oSj0ZeFRm8cNg=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=ur/lumuLHcXDZ56FCGzywSA97TOufZuQmxn74v5+33I9Bnah0Jat9xUMwukGfO4UG/xU9/W1X4gu8dVCJTatG69cqp+t4QKzIIERio8vTOq3MDv7neAgSnHLTaLsambn95eaUSZSl+cAOdhm7AdpA+XqanvtiR1WLI22z0k9MEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MBHMwjMY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12000C4CECF;
-	Mon, 11 Nov 2024 11:39:00 +0000 (UTC)
+	s=arc-20240116; t=1731326355; c=relaxed/simple;
+	bh=p/Svc7WA3G2fJQL+0RERQhNWfr7D1xYW1HxSUpkMJh0=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=jP+UqY8oyJmKGTz1A/x02yX0aUplcfUbhT/IN7e4Qeotze7xEPWLmXjjuzKAEarKPiVsX41nHD3g30lsLr+FAO+RBdHmxmLKR0ZYOWD03TBn63yU4vbEtexvk6nlKhe94yvd6Q5asJ3y3SPjdFvOE84oq3VXX14381nMXOJZFMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dJen1G85; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F00FC4CECF;
+	Mon, 11 Nov 2024 11:59:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731325143;
-	bh=awS5dN+X4Ie3viCfpwkaNH+GZOItv8oSj0ZeFRm8cNg=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=MBHMwjMY8Bewc44C302prC+Tn3iwhfcwLBcZsKDXtleyvpIAL554HS67L76xDdVsb
-	 zSVlfSoj/E4Y1aNpM93fHnNteD3FkPwwIHiZDZCXQhMwhiCWvREYb0ynNxxMtu1vic
-	 M1EhWEZLfSOvKMBgFXabrtxGX4fkqmz0PJttsay9exxJWfQLtgO+HHwIFBDck92jMT
-	 rwUHvqvw0ta2zTGGwjttqk53D8BLhSGf+vQLEVlgHjj3btGhw5oyCTgXepFzBpcnF7
-	 pfQyI7NIMFxgI/N/7iBj0PpqL9bDGB8eLTTYMUoon3JKJmOPW5LoY5wV73CYlDVhXz
-	 STqU9WsFQzTUg==
-From: Kalle Valo <kvalo@kernel.org>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Michael Nemanov <michael.nemanov@ti.com>,  "David S . Miller"
- <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
- Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,  Rob Herring
- <robh@kernel.org>,  Krzysztof Kozlowski <krzk+dt@kernel.org>,  Conor
- Dooley <conor+dt@kernel.org>,  linux-wireless@vger.kernel.org,
-  netdev@vger.kernel.org,  devicetree@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  Sabeeh Khan <sabeeh-khan@ti.com>
-Subject: Re: [PATCH v5 09/17] wifi: cc33xx: Add main.c
-References: <20241107125209.1736277-1-michael.nemanov@ti.com>
-	<20241107125209.1736277-10-michael.nemanov@ti.com>
-	<685d782d68bfc664c4fcc594dff96546ffc30e5f.camel@sipsolutions.net>
-Date: Mon, 11 Nov 2024 13:38:59 +0200
-In-Reply-To: <685d782d68bfc664c4fcc594dff96546ffc30e5f.camel@sipsolutions.net>
-	(Johannes Berg's message of "Fri, 08 Nov 2024 12:42:59 +0100")
-Message-ID: <87seryvw30.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=k20201202; t=1731326353;
+	bh=p/Svc7WA3G2fJQL+0RERQhNWfr7D1xYW1HxSUpkMJh0=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=dJen1G85/UjXvY2tb1xOLyYpiw4zWoIQrkkWDVKlEf8B8PCVYo67C1e2enQsh4doZ
+	 ZB9yodv+SsOQLcdGrm5pxyuiq5tCLqJI5UFPnBM4Qj24lJk6/z+t/SJUc+ekoIk//I
+	 3k8FqtQSAOnB3d45GUHoC8Xhl4q00aMlyj4KrZz0MWp+tMfsd3uK5jUj9UJXT2gfaE
+	 7TzRxJnvznUtWM24sNL9kPFhHeOXoBEARLNUvyLTe3rYpnAUC2n9LUzbDjjvl3+wDg
+	 NvOCld3pQlLM6a6c2G3ZgZyQFDMTpbGZBo81aWmw3+kwywxUm91HdHzqrnVrgJUJK3
+	 IiC7WtY5x4Ghw==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+Subject: Re: pull-request: rtw-next-2024-11-06
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <32a36217-21db-4234-bd05-b05fae3eaea4@RTEXMBS04.realtek.com.tw>
+References: <32a36217-21db-4234-bd05-b05fae3eaea4@RTEXMBS04.realtek.com.tw>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: <linux-wireless@vger.kernel.org>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <173132635106.852485.3079553751820545715.kvalo@kernel.org>
+Date: Mon, 11 Nov 2024 11:59:12 +0000 (UTC)
 
-Johannes Berg <johannes@sipsolutions.net> writes:
+Ping-Ke Shih <pkshih@realtek.com> wrote:
 
->> +static void cc33xx_rc_update_work(struct work_struct *work)
->> +{
->> +	struct cc33xx_vif *wlvif = container_of(work, struct cc33xx_vif,
->> +						rc_update_work);
->> +	struct cc33xx *cc = wlvif->cc;
->> +	struct ieee80211_vif *vif = cc33xx_wlvif_to_vif(wlvif);
->> +
->> +	mutex_lock(&cc->mutex);
->
-> Given the way the wiphy mutex now works, I'd strongly recommend not
-> having your own mutex any more - it's a huge simplification in a lot of
-> places, and there's very little downside since everything coming from
-> higher layers holds the wiphy mutex already (and almost certainly needs
-> to acquire your own mutex.)
+> Hi,
+> 
+> A pull-request of rtw-next to wireless-next tree, more info below. Please
+> let me know if any problems.
+> 
+> Thanks
+> Ping-Ke
 
-I can recommend using wiphy_lock(), at least in ath12k it made the
-locking so much simpler. The more wireless drivers start to use it the
-better.
+Pulled, thanks.
+
+5255ee958f58 Merge tag 'rtw-next-2024-11-06' of https://github.com/pkshih/rtw
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+https://patchwork.kernel.org/project/linux-wireless/patch/32a36217-21db-4234-bd05-b05fae3eaea4@RTEXMBS04.realtek.com.tw/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
