@@ -1,115 +1,140 @@
-Return-Path: <linux-wireless+bounces-15186-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15187-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27A049C43DD
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2024 18:40:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C95499C44F5
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2024 19:29:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0B042812FB
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2024 17:40:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BAA9B25276
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2024 17:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EAE91B4F30;
-	Mon, 11 Nov 2024 17:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B2B61A76CD;
+	Mon, 11 Nov 2024 17:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="GKP5YPsp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pwgmUV20"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E271AC445
-	for <linux-wireless@vger.kernel.org>; Mon, 11 Nov 2024 17:37:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB0C14D283;
+	Mon, 11 Nov 2024 17:58:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731346637; cv=none; b=NvEoDV98s9XjoBT+6Ci1GBGq78j3M4P8Vb/ia8BfIejXxKd5XtULDccxwyHdLZPYWOiM1Z96Jxjc0aAW8Vuk7SpW1pRWl4Vvk+2u5EULV7LxwHhlVUU7g7k9HnJR6+fhRYH6qIdMFl65o46st6NpGlB9CMVIdVWxRftPxgu808w=
+	t=1731347885; cv=none; b=YKMvvy/T09FBjpsqV2I91hoFdNWUnS3GCs9xaTLTCRIi91IL3LrgJ5LqyYurYVqfHTGtu6y47sCu34TayzjCyC8dMhgOyNP5u+QzelKOxav0ZcPDpF+EGhcz74AN0Fmm84VXufj/nNtbBiMLUt5XQ6y8eNyigVZilSO3dEWbNjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731346637; c=relaxed/simple;
-	bh=zTCAy2MehzCGs+UcioLDPnG/D5PTNaRLCDoVS9Kj2LY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=JfSRlQIM1+iRDs1geqVZWi4zRGQvm/+FZv+enXJWb3S/xNgxAceWSqTlCekIVccOt8EdsFb8RNj3ir6l/sS1Q+zFEhuC/HZAhvm4af1bGxwOo6ILyREZob4dE/uPWhqznO9oFdU7I6aZ9VZe4HxzJhIWnnSJwBNY6ZDygS6i46s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=GKP5YPsp; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4ABCkoCT027759;
-	Mon, 11 Nov 2024 17:37:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	spsnP7/d5TGkknZrThW2nWqYvznGB9baSmq00S1T9Rk=; b=GKP5YPspdBB7Aye4
-	41OutnnjIhl+6P0RcJ9dzv6rNEy6rmDIOqwI5fkldClwxzB922v/B9to4xurUFvd
-	bzp3mAUzhWzcBoLKXt5/Hj+cL3smxf8J4+8RXL6PHPyNXNYVzrb9Fqo2MZawWcB9
-	z+n2xscugfNmBa6D4c9uM3pzbMS/paGoMxJ7WUJYsuNyG6u/EG0u5oLN6Ll1qfkS
-	zXtafcmQjGld2CXs+Ia2486TBbBMLPd2pGHrZDQ2dwYA5GM84tUtQ6de1t/D8UVm
-	3yxaoHeLGkmzDZXd3Qh+w01oDNBHG7l4LHsoOxITqqwK4Qb0Ip0ipAYhKmOVO0BE
-	JdnyhA==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42sxr5vyeg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 Nov 2024 17:37:08 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4ABHb7gN003194
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 Nov 2024 17:37:08 GMT
-Received: from [10.48.243.207] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 11 Nov
- 2024 09:37:07 -0800
-Message-ID: <a5503b65-2722-467a-8bee-0130b3807a4a@quicinc.com>
-Date: Mon, 11 Nov 2024 09:37:06 -0800
+	s=arc-20240116; t=1731347885; c=relaxed/simple;
+	bh=o3CQlzBRpJV7aSV4DDZJsHMn6BJpLIqcjJ/aGt/TrPw=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=ld88jEZGV8e54PtKxDrp1xGBOJiGb7x7GmEzLOFkv6wYFZbyklkmvMKT93KbrOH4xV50RsTwUCIjNhakKk9IOEDGyuFjAxdyir+MS2C1cvcnSJyO4Wmvvu/5QACAJk+q3FjJxqeXviecGrAA/+6Tz+mT+m3M7rcZEYycE9X6CEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pwgmUV20; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97DC7C4CECF;
+	Mon, 11 Nov 2024 17:58:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731347884;
+	bh=o3CQlzBRpJV7aSV4DDZJsHMn6BJpLIqcjJ/aGt/TrPw=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=pwgmUV20E5aFcgwiIvoi9A192iBJ8Zm9CVa0R7SLCKwUtHCxAbSDAhm7yBGz2lqNr
+	 jETq5UW1TzB8BWPmXi8TZ9WhuhNv5gfmYbIQmJTr83Mm/DKDsdONzg3sARLRzUTLWr
+	 XtqGGPVPnT812jB0Nw6XJ/yj6Yozw1dhC0of3Q98xk9yfk19deIkHKE2a+pfV4HYG1
+	 MWhjiyluh/cLJH6+4dSS2Z5awGosMnSLw+gxt4NuzZZJRbdS0MvpmJCqiO5NUSUSGw
+	 t18OJG06Wdk8UweroCF29N+UUt7Y7igbWNkx2Gl2hi43SzSmreioKTylBHJVD2u1LF
+	 LgbFFtHfTLqUQ==
+From: Kalle Valo <kvalo@kernel.org>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,  Raj Kumar Bhagat
+ <quic_rajkbhag@quicinc.com>,  ath12k@lists.infradead.org,
+  linux-wireless@vger.kernel.org,  Rob Herring <robh@kernel.org>,
+  Krzysztof Kozlowski <krzk+dt@kernel.org>,  Conor Dooley
+ <conor+dt@kernel.org>,  Jeff Johnson <jjohnson@kernel.org>,  Bjorn
+ Andersson <andersson@kernel.org>,  Konrad Dybcio <konradybcio@kernel.org>,
+  devicetree@vger.kernel.org,  linux-kernel@vger.kernel.org,
+  linux-arm-msm@vger.kernel.org
+Subject: Re: [RFC PATCH v3 0/5] wifi: ath12k: Add wifi device node with WSI
+ for QCN9274 in RDP433
+References: <20241105180444.770951-1-quic_rajkbhag@quicinc.com>
+	<49a6ec0d-8a0b-49aa-a9eb-1174cff930f6@kernel.org>
+	<cmvfpctliqggra33u6ituguoxh3jxcuxiyjpbtcjbcgpu6lhoi@4zdthfkc2ed3>
+	<692503b8-cf39-4d6b-b70e-910fcc710d69@kernel.org>
+	<CAA8EJpqMCbyK0dodMNyfs8dNjV2QoB2nyWm233eOS9xo8BaFJg@mail.gmail.com>
+	<9d158c25-197a-49fd-b639-45287a46438f@kernel.org>
+Date: Mon, 11 Nov 2024 19:57:59 +0200
+In-Reply-To: <9d158c25-197a-49fd-b639-45287a46438f@kernel.org> (Krzysztof
+	Kozlowski's message of "Thu, 7 Nov 2024 13:16:56 +0100")
+Message-ID: <87wmh94pqw.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: ath9k: miscellaneous spelling fixes
-To: Dmitry Antipov <dmantipov@yandex.ru>,
-        =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-CC: Kalle Valo <kvalo@kernel.org>, <linux-wireless@vger.kernel.org>
-References: <87frny5bcl.fsf@toke.dk>
- <20241111104724.484586-1-dmantipov@yandex.ru>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Content-Language: en-US
-In-Reply-To: <20241111104724.484586-1-dmantipov@yandex.ru>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: beMI21aHjpNu1UYFP6TKTwxqVTSmoXyl
-X-Proofpoint-GUID: beMI21aHjpNu1UYFP6TKTwxqVTSmoXyl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- mlxscore=0 malwarescore=0 priorityscore=1501 spamscore=0
- lowpriorityscore=0 impostorscore=0 suspectscore=0 adultscore=0
- mlxlogscore=939 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2409260000 definitions=main-2411110143
+Content-Type: text/plain
 
-On 11/11/2024 2:47 AM, Dmitry Antipov wrote:
-> Correct spelling here and there as suggested by codespell.
-> 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-> ---
-...
-> @@ -747,7 +747,7 @@ int ar9003_mci_end_reset(struct ath_hw *ah, struct ath9k_channel *chan,
->  	 * BT is sleeping. Check if BT wakes up during
->  	 * WLAN calibration. If BT wakes up during
->  	 * WLAN calibration, need to go through all
-> -	 * message exchanges again and recal.
-> +	 * message exchanges again and recall.
+Krzysztof Kozlowski <krzk@kernel.org> writes:
 
-this one is incorrect. recal in this context is an abbreviation for recalibrate.
+> On 07/11/2024 13:03, Dmitry Baryshkov wrote:
+>
+>> On Thu, 7 Nov 2024 at 11:29, Krzysztof Kozlowski <krzk@kernel.org> wrote:
+>>>
+>>> On 07/11/2024 12:06, Dmitry Baryshkov wrote:
+>>>> On Thu, Nov 07, 2024 at 11:23:20AM +0100, Krzysztof Kozlowski wrote:
+>>>>> On 05/11/2024 19:04, Raj Kumar Bhagat wrote:
+>>>>>> The RDP433 is a Qualcomm Reference Design Platform based on the
+>>>>>> IPQ9574. It features three QCN9274 WiFi devices connected to PCIe1,
+>>>>>> PCIe2, and PCIe3. These devices are also interconnected via a WLAN
+>>>>>> Serial Interface (WSI) connection. This WSI connection is essential
+>>>>>> for exchanging control information among these devices.
+>>>>>>
+>>>>>> This patch series describes the WSI interface found in QCN9274 in
+>>>>>> device tree and uses this device tree node in the Ath12k driver to get the
+>>>>>> details of WSI connection for Multi Link Operation (MLO) among multiple
+>>>>>> QCN9274 devices.
+>>>>>>
+>>>>>> NOTES:
+>>>>>> 1. As ath12k MLO patches are not ready yet, this patchset does not apply
+>>>>>>    to the ath.git ath-next branch and that's why the patchset is marked
+>>>>>>    as RFC. These are the work-in-progress patches we have at the moment.
+>>>>>>    The full set of MLO patches is available at:
+>>>>>>    https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git/log/?h=ath12k-mlo-qcn9274
+>>>>>>
+>>>>>> 2. The dependency marked below applies only to the DTS patch. The
+>>>>>>    dt-bindings patches do not have this dependency.
+>>>>>>
+>>>>>> Depends-On: [PATCH V7 0/4] Add PCIe support for IPQ9574
+>>>>>> Link: https://lore.kernel.org/linux-pci/20240801054803.3015572-1-quic_srichara@quicinc.com/
+>>>>>>
+>>>>>> v3:
+>>>>>> - Created a separate binding "qcom,ath12k-wsi.yaml" to describe ath12k PCI
+>>>>>>   devices with WSI interface.
+>>>>>
+>>>>> Thanks for the changes. When you finish with testing/RFC, please send
+>>>>> proper version for review (just remember to keep numbering, next one is
+>>>>> v4 regardless whether this is RFC or not).
+>>>>
+>>>> Isn't the 'RFC' being an invitation for review per the nature of the tag
+>>>> itself?
+>>>
+>>> No, RFC means patch is not ready, might change. This was brought on the
+>>> lists multiple times and some maintainers clearly ignore RFC. Including me.
+>> 
+>> Thanks, point noted. I'll stop marking my patches with RFC tag.
+>
+> Wait, you can keep marking them RFC! It all depends what do you want to
+> achieve. Get some comments on early work or actual review for something
+> you believe is a finished work.
+>
+> I looked here briefly, no comments from me and I assume that was the
+> intention of RFC.
 
-I'll s/recall/recalibrate/ in ath/pending
+Exactly, we just wanted to have early feedback how to handle this
+feature. We will now incorporate these changes to our work-in-progress
+ath12kl-mlo branches, test them and once everything else in ath12k is
+ready we will submit the next patchset without RFC tag.
 
-/jeff
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
