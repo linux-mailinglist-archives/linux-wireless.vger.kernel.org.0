@@ -1,97 +1,112 @@
-Return-Path: <linux-wireless+bounces-15182-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15183-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A54FC9C3E0C
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2024 13:11:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDC2B9C3FA7
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2024 14:41:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D75321C21741
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2024 12:11:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94ED31F22892
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2024 13:41:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0486219CC31;
-	Mon, 11 Nov 2024 12:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97FCE19D884;
+	Mon, 11 Nov 2024 13:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f47wYn0x"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="O8PY86N9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-26.smtpout.orange.fr [80.12.242.26])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04E919CC29;
-	Mon, 11 Nov 2024 12:11:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A057D55C29;
+	Mon, 11 Nov 2024 13:40:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.26
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731327089; cv=none; b=IZ1tdPwP4iMmNc1AdAuVUQ/wNnSgD4KxtIY9Off9UuA/ohI7zzOROQYR765Bl/bEDpM7AfxD0qIBYKsHtLslMJ0pvjdehWhAjAasbRFBU4Nyf3foxgR7A2AgNOamut1AgGjt/kuKZm7ZPBXTfUlbvOfkoR/hRJbg3UwqDfyBUqQ=
+	t=1731332455; cv=none; b=aObiklIwSLNGa82Uq2OUY0JiCD3K4zcAd1j6XoyNsWQkodve7hbevEwhSPXYVR/9Oxl2Qu1N/cjEqTsr+T8jOip4ReUpMIWjyn5uIVafzuzOmxxGXgIs2ALb+NuPg3cFWpqWNYqKbm1ARe9yiCqNSXfdIKkBB8OqR4h2+AGPMI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731327089; c=relaxed/simple;
-	bh=DetFYAnfOFBjfg4pSj54b1ubIovVT0/G93VdF00jwzo=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=MzJr5hG+BCGFL2jULMec8+7FphJtAnr4Xv0Br/Z02JXGjn0qmExu2loGOxU3J+z47bpQNeTpewSNKItGpVEZHg4Sybi0r/Pyim8JFEY0noQPY0cuArGbpME+prI4k6w3859wq7B5QOkkdR0OkQzhTugYYQJDK2SK3f9YMyQL/9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f47wYn0x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44D05C4CED5;
-	Mon, 11 Nov 2024 12:11:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731327089;
-	bh=DetFYAnfOFBjfg4pSj54b1ubIovVT0/G93VdF00jwzo=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=f47wYn0xzipkkXnTQmtgEVy2XTMJKKVMCjsoBiaSgYiUEnw88tOxgUbADfGE1a86Y
-	 IiUa6F540AdtiS8C/Aw7DXKcf6eKqUulsyLsrKZK/WADVwhNpsVtlySM6PMmAHIAXy
-	 ppuVb47MrVqraY1Ys9p7IW4bSS3PkRQsYasSz9QUjNrhUFeuarm+rB7bDyUolVDNi4
-	 GxQuJzAtRTjNl/QP+WuCvQGvFLuZf3QoFPsemy2Uxo9NSh1mhWdn15Zfp4SFQJCBTx
-	 IjNvWlA45UP7cs6dcRdNooAVXNUCCUBB9hZc4gjmSBOgxHV2noWVgevnyuyUMhx+3R
-	 kmJ76KVXkYY5w==
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1731332455; c=relaxed/simple;
+	bh=/lRgHsdUwoCuJ9prqAOMcFVLNmskl71F/Sic+hVnauo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UjI3y1sjMTB08bjOIJlC/+nfLSk7JHCMm7kUkMQVXvlBkgQCwmDPZONsihN0CUNZunUzNvMbaF95vhlVRfxK/WIcf3gvWtUejizL/q0s+MdYdRm3W7tDr6/zwejTXH/R4lpsEGPJrZc6jxqOXfhnEdaYo/PmEyBMKOwRGK1vBzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=O8PY86N9; arc=none smtp.client-ip=80.12.242.26
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from localhost.localdomain ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id AUeotDgOMjazzAUeotYuEf; Mon, 11 Nov 2024 14:40:45 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1731332445;
+	bh=aySs7bPSbKHWLCsqe0IIm6YT4GwJ1SdufWSYkYaSwbI=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=O8PY86N9o1YxVmAvOi+EPQ182u26D9pzzm1S1y6qWETG6+O2hE66wviD3oAwa2Gt6
+	 9nIIMvC4ADzLn1TvnNYhVDo//mJuQAavXJjQC6yx1YZjwPgmeVckyMGIMtLCLyVh25
+	 3iHLtI2DuUTMNTE5pt4ejl8e/Fwe4XPqrmKXA+agqkg2S+0uIO4dhvkaxH3VwA2X/M
+	 RumGr+FGQoTQ6ePSEu5YlXfHNydANZ+b0jeS/GU14Twiu4J8nLBOAruIITf/XiHhxo
+	 SDj8578AqRNmy7e4E2VJ4OK5xTwtsHVtDGINf+5TS3aWJI9Q3Z4W7h+nr9KyDCuuq7
+	 bbGJtXZuY83ig==
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 11 Nov 2024 14:40:45 +0100
+X-ME-IP: 90.11.132.44
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Kalle Valo <kvalo@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	linux-wireless@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] wlcore: testmode: Constify strutc nla_policy
+Date: Mon, 11 Nov 2024 14:40:35 +0100
+Message-ID: <78810e3ebb74ddbd3a4538f182bf1143b89baba7.1731332414.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [v2] wifi: brcmfmac: Fix oops due to NULL pointer dereference in
- brcmf_sdiod_sglist_rw()
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20241107132903.13513-1-nvbolhuis@gmail.com>
-References: <20241107132903.13513-1-nvbolhuis@gmail.com>
-To: nvbolhuis@gmail.com
-Cc: brcm80211@lists.linux.dev, linux-wireless@vger.kernel.org,
- arend.vanspriel@broadcom.com, Norbert van Bolhuis <nvbolhuis@gmail.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <173132708642.852485.9343648144353048729.kvalo@kernel.org>
-Date: Mon, 11 Nov 2024 12:11:28 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 
-nvbolhuis@gmail.com wrote:
+'struct nla_policy' is not modified in this driver.
 
-> From: Norbert van Bolhuis <nvbolhuis@gmail.com>
-> 
-> This patch fixes a NULL pointer dereference bug in brcmfmac that occurs
-> when a high 'sd_sgentry_align' value applies (e.g. 512) and a lot of queued SKBs
-> are sent from the pkt queue.
-> 
-> The problem is the number of entries in the pre-allocated sgtable, it is
-> nents = max(rxglom_size, txglom_size) + max(rxglom_size, txglom_size) >> 4 + 1.
-> Given the default [rt]xglom_size=32 it's actually 35 which is too small.
-> Worst case, the pkt queue can end up with 64 SKBs. This occurs when a new SKB
-> is added for each original SKB if tailroom isn't enough to hold tail_pad.
-> At least one sg entry is needed for each SKB. So, eventually the "skb_queue_walk loop"
-> in brcmf_sdiod_sglist_rw may run out of sg entries. This makes sg_next return
-> NULL and this causes the oops.
-> 
-> The patch sets nents to max(rxglom_size, txglom_size) * 2 to be able handle
-> the worst-case.
-> Btw. this requires only 64-35=29 * 16 (or 20 if CONFIG_NEED_SG_DMA_LENGTH) = 464
-> additional bytes of memory.
-> 
-> Signed-off-by: Norbert van Bolhuis <nvbolhuis@gmail.com>
+Constifying this structure moves some data to a read-only section, so
+increase overall security, especially when the structure holds some
+function pointers.
 
-Patch applied to wireless-next.git, thanks.
+On a x86_64, with allmodconfig:
+Before:
+======
+   text	   data	    bss	    dec	    hex	filename
+   5062	    528	      0	   5590	   15d6	drivers/net/wireless/ti/wlcore/testmode.o
 
-857282b819cb wifi: brcmfmac: Fix oops due to NULL pointer dereference in brcmf_sdiod_sglist_rw()
+After:
+=====
+   text	   data	    bss	    dec	    hex	filename
+   5178	    404	      0	   5582	   15ce	drivers/net/wireless/ti/wlcore/testmode.o
 
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Compile tested only
+---
+ drivers/net/wireless/ti/wlcore/testmode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ti/wlcore/testmode.c b/drivers/net/wireless/ti/wlcore/testmode.c
+index 3f338b8096c7..fc8ea58bc165 100644
+--- a/drivers/net/wireless/ti/wlcore/testmode.c
++++ b/drivers/net/wireless/ti/wlcore/testmode.c
+@@ -45,7 +45,7 @@ enum wl1271_tm_attrs {
+ };
+ #define WL1271_TM_ATTR_MAX (__WL1271_TM_ATTR_AFTER_LAST - 1)
+ 
+-static struct nla_policy wl1271_tm_policy[WL1271_TM_ATTR_MAX + 1] = {
++static const struct nla_policy wl1271_tm_policy[WL1271_TM_ATTR_MAX + 1] = {
+ 	[WL1271_TM_ATTR_CMD_ID] =	{ .type = NLA_U32 },
+ 	[WL1271_TM_ATTR_ANSWER] =	{ .type = NLA_U8 },
+ 	[WL1271_TM_ATTR_DATA] =		{ .type = NLA_BINARY,
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20241107132903.13513-1-nvbolhuis@gmail.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.47.0
 
 
