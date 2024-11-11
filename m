@@ -1,87 +1,83 @@
-Return-Path: <linux-wireless+bounces-15189-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15190-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 728AE9C44EB
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2024 19:26:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A244B9C451C
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2024 19:39:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A6F31F221C3
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2024 18:26:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59A161F25961
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2024 18:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE49414EC55;
-	Mon, 11 Nov 2024 18:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 860DD1AA1FC;
+	Mon, 11 Nov 2024 18:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="hDBhFv2/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NGZ1QO1Z"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08E1F450EE
-	for <linux-wireless@vger.kernel.org>; Mon, 11 Nov 2024 18:25:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8B91A2567;
+	Mon, 11 Nov 2024 18:39:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731349557; cv=none; b=re624fubvkzo7g5Z4x11LcQXj/nbsXPli2+0UBGgE7cH9huhBJ0t7PHJ0pXuKPigWg9G2NOa17WSHPAdEvw1FsKbIV+CCha0ul1Fy13WbHr4/pRevH9NOHQGBJzrImREZCtw1DQpF223JmQnXtBBh9GkGpSZ+1P/e1hJEDcTois=
+	t=1731350352; cv=none; b=DiVaqxH6oJdx3Y++AHnyQAMzR5V3dsL63om9LFW6l2ZgRqEvZNeJMSwdAQqgSQRCDvhbkokB2YR4KpUgvqKlKsoTIkVawOOOLZF2WBlfg1sqTdlwq0jthVvNNcrWWNot4gkw8fYqCToBACw0fdE6vrDlvN5WPvqv6dnFFXStgGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731349557; c=relaxed/simple;
-	bh=vTo6T3XavLxH7ZTOyjAvle/VfQOddRVJxAFO1HtVIbE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=t0zLAR+05Keo97MZ7Nk+HGtS/Z+DuOaaZYGoML1k4N74WVTZjoByvd/RxSWs9DgdGnohY51WYHcELO9jTaB64pYzpQWuAWa1wACv0DVVZzJwrHQ65ATlJKIun7ixiEeTi9E6v8Mm+IlCbOLY6M4TlCcEcN3oEEirpnVU0DMRVwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=hDBhFv2/; arc=none smtp.client-ip=45.145.95.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-	t=1731349548; bh=vTo6T3XavLxH7ZTOyjAvle/VfQOddRVJxAFO1HtVIbE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=hDBhFv2/upl+0hxswO+lEn5RPg4yy3hHfk1A9jpSY1Sf39mx/ojreNgosm0djfHmC
-	 bOZrpUTwAePCbsKgdjIktCEnu4mfw89gZ6KmdbMgIyRB+/6Pl1RVHeQ9zagy3MroNW
-	 +TtZCQMQw6fi8i5S13RE9guTvvLyoYA/EYXxLoURAf0solg0yXoMJG3/OfY9wJJ1c9
-	 9/gguSXDRAXEBVconamsQtbWejbhjt8knISCEkc5qjGTwqzA1UzXYs2bVj1iaQ2QnE
-	 aCyhMchgIy1EWTQ+68Nh5C4m+/S7B6ImgtlWhDwf7hA416K5xk8rEXHpaKqjPq3erS
-	 6Eo+Dq+obpV4g==
-To: Jeff Johnson <quic_jjohnson@quicinc.com>, Dmitry Antipov
- <dmantipov@yandex.ru>
-Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2] wifi: ath9k: miscellaneous spelling fixes
-In-Reply-To: <a5503b65-2722-467a-8bee-0130b3807a4a@quicinc.com>
-References: <87frny5bcl.fsf@toke.dk>
- <20241111104724.484586-1-dmantipov@yandex.ru>
- <a5503b65-2722-467a-8bee-0130b3807a4a@quicinc.com>
-Date: Mon, 11 Nov 2024 19:25:48 +0100
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87ttcd4ogj.fsf@toke.dk>
+	s=arc-20240116; t=1731350352; c=relaxed/simple;
+	bh=m6RnQzTjzeLUIXctOT39qWK9ZuWdkcil+4kDnLcEvaA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GtydbuYMO9z69yGdxTQ6iplKuNVFG5VpCYCxZyUb4aCALLROW4DiKA0IzzEcwtC0YAP6Q747nCLAguFm8e9h4xIen3LP3IEsoVlzwb0EJqgQNZkNoYHZF3kgpdcZmx9gVkw0lHHN72cZTS0sWRnnQwlHOtLaWMYql5U4kjEXeF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NGZ1QO1Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FF48C4CECF;
+	Mon, 11 Nov 2024 18:39:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731350351;
+	bh=m6RnQzTjzeLUIXctOT39qWK9ZuWdkcil+4kDnLcEvaA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=NGZ1QO1Z1Yk0jLMwzf3eIUBvbbWykGkvS1pafgtJ5lcLQEaVYzXgloz8wJDtc/BTK
+	 OU+bgWyF61hV7ZfmmGvEp6n1Hpu/xAeLxt1aKMTo2tkLtBBj1pcEvS+0nolw6pEUoK
+	 1HMnhwcy/Ynhq1uZ0cY0c43eoCNn9nZcZgTTWQ1dbxqCnq3bhIJljY2489njK0c8Yp
+	 ni1zUyoZNs+KqYIz64kJGUGzb0uni27lf5ugwa5o16lnMbkUyOI1uigdK6d6U7T5Zc
+	 r3RwlJYP1FrpexTJNCxkNHJOIRX/3j8brYDaZpxfQYdj95837uZ1kgTAy6QPGr4HX4
+	 w6hDXbgREsX4Q==
+Date: Mon, 11 Nov 2024 10:39:10 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org, Johannes Berg
+ <johannes.berg@intel.com>, Toke =?UTF-8?B?SMO4aWxhbmQtSsO4cmdlbnNlbg==?=
+ <toke@kernel.org>
+Subject: Re: [PATCH net-next v3 1/2] net: netlink: add nla_get_*_default()
+ accessors
+Message-ID: <20241111103910.37379ad8@kernel.org>
+In-Reply-To: <20241108114145.acd2aadb03ac.I3df6aac71d38a5baa1c0a03d0c7e82d4395c030e@changeid>
+References: <20241108114145.acd2aadb03ac.I3df6aac71d38a5baa1c0a03d0c7e82d4395c030e@changeid>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Jeff Johnson <quic_jjohnson@quicinc.com> writes:
+On Fri,  8 Nov 2024 11:41:44 +0100 Johannes Berg wrote:
+> From: Johannes Berg <johannes.berg@intel.com>
+>=20
+> There are quite a number of places that use patterns
+> such as
+>=20
+>   if (attr)
+>      val =3D nla_get_u16(attr);
+>   else
+>      val =3D DEFAULT;
+>=20
+> Add nla_get_u16_default() and friends like that to
+> not have to type this out all the time.
+>=20
+> Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@kernel.org>
+> Acked-by: Jakub Kicinski <kuba@kernel.org>
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 
-> On 11/11/2024 2:47 AM, Dmitry Antipov wrote:
->> Correct spelling here and there as suggested by codespell.
->> 
->> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
->> ---
-> ...
->> @@ -747,7 +747,7 @@ int ar9003_mci_end_reset(struct ath_hw *ah, struct ath9k_channel *chan,
->>  	 * BT is sleeping. Check if BT wakes up during
->>  	 * WLAN calibration. If BT wakes up during
->>  	 * WLAN calibration, need to go through all
->> -	 * message exchanges again and recal.
->> +	 * message exchanges again and recall.
->
-> this one is incorrect. recal in this context is an abbreviation for recalibrate.
-
-Ah, nice catch!
-
-> I'll s/recall/recalibrate/ in ath/pending
-
-Thanks!
-
--Toke
+Applied with some minor whitespace fixes, thanks!
 
