@@ -1,59 +1,63 @@
-Return-Path: <linux-wireless+bounces-15176-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15177-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DDE79C3D60
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2024 12:33:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD6C69C3D93
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2024 12:39:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA8C01F26579
-	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2024 11:33:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04F2E1C2198C
+	for <lists+linux-wireless@lfdr.de>; Mon, 11 Nov 2024 11:39:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE25213C670;
-	Mon, 11 Nov 2024 11:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA7418990D;
+	Mon, 11 Nov 2024 11:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sfrwpL/s"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MBHMwjMY"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9317139578
-	for <linux-wireless@vger.kernel.org>; Mon, 11 Nov 2024 11:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A89139578;
+	Mon, 11 Nov 2024 11:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731324829; cv=none; b=k3KXDWKi12jvWeyq6HygjrsFfuNaAWZ6eA+2LLvVIIzyEVdKSsMl+ujmmTtp1AzvJyfUwli99o2NjLNZ3OqAt1tfyObsht2tzkW1k1m2xZo+haUxhZSvAwzW4/N3mTWJ3tqTzMubQK5LvcLOJ+hdlWJqmmRdm7jUJKxk8AgGfNA=
+	t=1731325144; cv=none; b=rl99vYnWkRiSzfuLECV7Z03roFhTXDAKpxilEaI+lbnGHOjBEvOeNc9wWcmjQso0Z3nblOHGdwVw1C8JyWrIcjSBnfGR0LPBnvuAq4qOHmxDedX0aA8DwuYrvyufzy1R3bEAfNkkg5aX5WSg2+F9RSU1tI5wtMq3Cu+I+Z4yAfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731324829; c=relaxed/simple;
-	bh=p4GOM1pUubneDS/MhVgg5m+EflLOrK1KEv8vLfpVWvM=;
+	s=arc-20240116; t=1731325144; c=relaxed/simple;
+	bh=awS5dN+X4Ie3viCfpwkaNH+GZOItv8oSj0ZeFRm8cNg=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=CHdN/pRBNGlz0BoCyoX78ttY19/4DCF0A9GSvObx+8RnYSsO/xOiGVDiTYrCoAIva5UkKYPhR/TYETq2yv71NtWADMByYXkqGdQnADd1VLvFwPArF13VG03g2TMuPuEFwRr29la4BRJyGdP1wMP7aceeKK7l4i7U22AfRowNwGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sfrwpL/s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CAA5C4CED5;
-	Mon, 11 Nov 2024 11:33:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ur/lumuLHcXDZ56FCGzywSA97TOufZuQmxn74v5+33I9Bnah0Jat9xUMwukGfO4UG/xU9/W1X4gu8dVCJTatG69cqp+t4QKzIIERio8vTOq3MDv7neAgSnHLTaLsambn95eaUSZSl+cAOdhm7AdpA+XqanvtiR1WLI22z0k9MEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MBHMwjMY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12000C4CECF;
+	Mon, 11 Nov 2024 11:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731324829;
-	bh=p4GOM1pUubneDS/MhVgg5m+EflLOrK1KEv8vLfpVWvM=;
+	s=k20201202; t=1731325143;
+	bh=awS5dN+X4Ie3viCfpwkaNH+GZOItv8oSj0ZeFRm8cNg=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=sfrwpL/srwXQKNtIWzguIc3GMTCm1TfHe8raLiOVar7RHU1KDpye/oHmKkrY6IA72
-	 5bxq/4g+z2oAmdiNfm4nwwapyNgCEcpumwGCFoswAN3YoxaFpbmPb1Jmq3kYoexz3R
-	 EpFk2qTJVwXZ8f/ERhIKcooEZPoiGAIBqGWthMIf5HcvUmw5f9Wh042GoF5+EZUE4S
-	 PGUsjdF4/54vB9YvH+AhbOP3HewB6SlRTXOCPOUDSfSsJrWtgOylHnealr2hMOgpIQ
-	 8WucdPl4PN0L0zOZG+XjSW1PJW2guHA5YfRIbznC9gMcrGfts3K0YroS7IFA9h6WsF
-	 Kf71xrarB201w==
+	b=MBHMwjMY8Bewc44C302prC+Tn3iwhfcwLBcZsKDXtleyvpIAL554HS67L76xDdVsb
+	 zSVlfSoj/E4Y1aNpM93fHnNteD3FkPwwIHiZDZCXQhMwhiCWvREYb0ynNxxMtu1vic
+	 M1EhWEZLfSOvKMBgFXabrtxGX4fkqmz0PJttsay9exxJWfQLtgO+HHwIFBDck92jMT
+	 rwUHvqvw0ta2zTGGwjttqk53D8BLhSGf+vQLEVlgHjj3btGhw5oyCTgXepFzBpcnF7
+	 pfQyI7NIMFxgI/N/7iBj0PpqL9bDGB8eLTTYMUoon3JKJmOPW5LoY5wV73CYlDVhXz
+	 STqU9WsFQzTUg==
 From: Kalle Valo <kvalo@kernel.org>
-To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Cc: Ping-Ke Shih <pkshih@realtek.com>,  "linux-wireless@vger.kernel.org"
- <linux-wireless@vger.kernel.org>,  "kernel-dev@igalia.com"
- <kernel-dev@igalia.com>
-Subject: Re: [PATCH net 0/5] wifi: rtlwifi: usb probe error path fixes
-References: <20241107133322.855112-1-cascardo@igalia.com>
-	<7f14133bbf0c4f2b8d7889e65c3ccf2a@realtek.com>
-	<Zy3uKIzbZXluWcJ8@quatroqueijos.cascardo.eti.br>
-Date: Mon, 11 Nov 2024 13:33:46 +0200
-In-Reply-To: <Zy3uKIzbZXluWcJ8@quatroqueijos.cascardo.eti.br> (Thadeu Lima de
-	Souza Cascardo's message of "Fri, 8 Nov 2024 07:55:36 -0300")
-Message-ID: <87wmhavwbp.fsf@kernel.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Michael Nemanov <michael.nemanov@ti.com>,  "David S . Miller"
+ <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
+ Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,  Rob Herring
+ <robh@kernel.org>,  Krzysztof Kozlowski <krzk+dt@kernel.org>,  Conor
+ Dooley <conor+dt@kernel.org>,  linux-wireless@vger.kernel.org,
+  netdev@vger.kernel.org,  devicetree@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  Sabeeh Khan <sabeeh-khan@ti.com>
+Subject: Re: [PATCH v5 09/17] wifi: cc33xx: Add main.c
+References: <20241107125209.1736277-1-michael.nemanov@ti.com>
+	<20241107125209.1736277-10-michael.nemanov@ti.com>
+	<685d782d68bfc664c4fcc594dff96546ffc30e5f.camel@sipsolutions.net>
+Date: Mon, 11 Nov 2024 13:38:59 +0200
+In-Reply-To: <685d782d68bfc664c4fcc594dff96546ffc30e5f.camel@sipsolutions.net>
+	(Johannes Berg's message of "Fri, 08 Nov 2024 12:42:59 +0100")
+Message-ID: <87seryvw30.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -63,38 +67,26 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Thadeu Lima de Souza Cascardo <cascardo@igalia.com> writes:
+Johannes Berg <johannes@sipsolutions.net> writes:
 
-> On Fri, Nov 08, 2024 at 01:41:45AM +0000, Ping-Ke Shih wrote:
->> Thadeu Lima de Souza Cascardo <cascardo@igalia.com> wrote:
->> > These are fixes that affect mostly the usb probe error path. It fixes UAF
->> > due to firmware loading touching freed memory by waiting for the load
->> > completion before releasing that memory. It also fixes a couple of
->> > identified memory leaks.
->> 
->> This goes via wireless tree, not net. Just send to linux-wireless (you have done).
->> No need "net" in patch subject. 
->> 
->> I would quickly check if you did really encounter problems and
->> have tested this patchset with real hardware?
->> 
->> 
+>> +static void cc33xx_rc_update_work(struct work_struct *work)
+>> +{
+>> +	struct cc33xx_vif *wlvif = container_of(work, struct cc33xx_vif,
+>> +						rc_update_work);
+>> +	struct cc33xx *cc = wlvif->cc;
+>> +	struct ieee80211_vif *vif = cc33xx_wlvif_to_vif(wlvif);
+>> +
+>> +	mutex_lock(&cc->mutex);
 >
-> Yeah, I was playing it safe here, in case some of the same rules apply, and
-> "PATCH net" was required.
->
-> If found this with a reproducer emulating a usb gadget device (by using
-> /dev/raw-gadget), and then injecting memory allocation failures at
-> different points in the probe path (at ieee80211_register_hw and then at
-> init_sw_vars).
->
-> I haven't tested this with real hardware, but given this lies in the probe
-> error path, I suppose it would be harder to test for the bugs that they
-> fix. On the other hand, it would be nice to at least confirm that it
-> doesn't break them, though I find it hard that it would.
+> Given the way the wiphy mutex now works, I'd strongly recommend not
+> having your own mutex any more - it's a huge simplification in a lot of
+> places, and there's very little downside since everything coming from
+> higher layers holds the wiphy mutex already (and almost certainly needs
+> to acquire your own mutex.)
 
-Yeah, regressions are what we maintainers are most worried. We certainly
-do not want cleanup patches breaking existing setups.
+I can recommend using wiphy_lock(), at least in ath12k it made the
+locking so much simpler. The more wireless drivers start to use it the
+better.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
