@@ -1,57 +1,56 @@
-Return-Path: <linux-wireless+bounces-15198-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15199-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D320B9C5337
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2024 11:25:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE7C29C5311
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2024 11:20:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE871B231BC
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2024 10:14:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3540281F1D
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2024 10:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70DFC20D51D;
-	Tue, 12 Nov 2024 10:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D9F2213EE2;
+	Tue, 12 Nov 2024 10:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k8Z7EnP8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cKKDas/z"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E2F4C91;
-	Tue, 12 Nov 2024 10:14:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A6A3213ECC
+	for <linux-wireless@vger.kernel.org>; Tue, 12 Nov 2024 10:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731406441; cv=none; b=lS/afKQAaxCjQkhxZtqrW5E9K2RitPhRGX8fugnqD/lRHric9uh1zIpJBS4BX1/XtdlyCPRkltPUzlOS+4TITLwYInhwprxwMIRtlttggHA8m+R33Rfj/qGTrY1rHp/47OqLhd1Y6/CLbIZjXQRipiAfbEe0YppQAprLBSnoUFM=
+	t=1731406650; cv=none; b=F+Gp02wT7StQQ/ti8bwc20W/MeGOSNmr2Le4CTwYfzL6pqUzQzY3Nwl6ioON5qVmKLlYOzGObvB+vPrOJCn158Mdk0XPuKnXdDRRcKVrEyCORglc/psswpz5QcrJAbgU2dQAEWYk9rDpeh1V9aKZtgjCdXVl59GgcA1TQVpHVxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731406441; c=relaxed/simple;
-	bh=JOL53HhCG+jCAg5RprMfpeMshNGT3dJE9VpaSRZ3Q2I=;
+	s=arc-20240116; t=1731406650; c=relaxed/simple;
+	bh=XWmn24pqEPofhFjs8lrl+hPSdZSxeKaJt9Se7NbgBW0=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=n9J5/FvxJQLr6cQYzLXYkICEybJWnIeqrxFLcOSLi4UDrfTogx5WvRJqUDL4HPHsBVdMqVa7qw96n1A1+OwxispDkOPKzif0HOKFRlGFRZwgKZRipA5Fg75j1z0UJdwTmefsUVD6k/a5MnaH+DUnd3WB+XlgERiaT4rdjrFAerY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k8Z7EnP8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9068DC4CECD;
-	Tue, 12 Nov 2024 10:13:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uhdHAaIqMFX9Y3iLXvj/DkIzqHVL1uD6fhTLN5rG73j4g2TYVWJBpkA6LFW/mEHofcOUpwc+k9K+BR78XBsfwom+vmaH85//pgCdN1RPS+U/ULBvBMyZBXBSEA1M3qfpe/BTJOBmxASlVvCu9T6sLzuI55025Tfzu+AIpBKqzfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cKKDas/z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6985C4CECD;
+	Tue, 12 Nov 2024 10:17:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731406440;
-	bh=JOL53HhCG+jCAg5RprMfpeMshNGT3dJE9VpaSRZ3Q2I=;
+	s=k20201202; t=1731406649;
+	bh=XWmn24pqEPofhFjs8lrl+hPSdZSxeKaJt9Se7NbgBW0=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=k8Z7EnP8E4ROUfNXBXvCffHzpj7zHij1LE1EdzZ+b7eh6cX4QIXc3ZuYLmzKIWQPg
-	 swvfUWWdc2zCJi8gmXYVVbUhOcGTfDXXIuyfhDN6rLOJcJYRgRvt4ikBMlFn3ccK77
-	 wGoO6bfHuXRgf9gBHstXKHGixFf3OXnIVQnHrNN0+dLiFA+Goo8hUw/yXbMKimkhgc
-	 qo1C8hz/kev96vmhcFXb2Y70OiSbEqdvfdWda2i7OvZQqXjZLve3dYvbNRwmdJ1wU2
-	 bKcQYkrGxqr3wDDwJCKG6E5ezMcb+vssse06CDjeVjGnHFXDjByg4qCwMrXIVT2xE4
-	 wXhgMtY8zMRHg==
+	b=cKKDas/zpQdOak9itVtHzqbH6UTuJHMPoHop8sWlodS2g9ZCWIFMQ2H34TtOyfjzk
+	 wdZ4XROZG0+L4ewXHcC+dyT80+50EEJ62/0uOOLYWSrxIzshlm+1w7gHOhuf2YA6Js
+	 6pUCCA+o4Ndq3nhxv3xutYG98I5j//X3lIn/WI6zQr0gRytC5TREai1awliy5Vk5av
+	 k/g9HS87SeZ6Hma449Xke1KtczVBsK5i6VHdb+ITXSq2wTUEskwLjeV4h3OFTAxVeb
+	 Ixekeme0Ea6mGMESDgmvLRDkfdH4r8QPy0nKyg5kyIcDYyHr/AXYWSfszIcIF5JNiP
+	 zOLYYJ4c7IzpA==
 From: Kalle Valo <kvalo@kernel.org>
-To: Karol Przybylski <karprzy7@gmail.com>
-Cc: jjohnson@kernel.org,  linux-wireless@vger.kernel.org,
-  ath12k@lists.infradead.org,  linux-kernel@vger.kernel.org,
-  skhan@linuxfoundation.org
-Subject: Re: [PATCH v3] wifi: ath12k: Fix for out-of bound access error
-References: <20241105101132.374372-1-karprzy7@gmail.com>
-Date: Tue, 12 Nov 2024 12:13:57 +0200
-In-Reply-To: <20241105101132.374372-1-karprzy7@gmail.com> (Karol Przybylski's
-	message of "Tue, 5 Nov 2024 11:11:31 +0100")
-Message-ID: <87frnwwyhm.fsf@kernel.org>
+To: Balaji Pothunoori <quic_bpothuno@quicinc.com>
+Cc: ath11k@lists.infradead.org,  linux-wireless@vger.kernel.org
+Subject: Re: [PATCH] wifi: ath11k: Fix unexpected return buffer manager
+ error for WCN6750/WCN6855
+References: <20241030114625.2416942-1-quic_bpothuno@quicinc.com>
+Date: Tue, 12 Nov 2024 12:17:27 +0200
+In-Reply-To: <20241030114625.2416942-1-quic_bpothuno@quicinc.com> (Balaji
+	Pothunoori's message of "Wed, 30 Oct 2024 17:16:25 +0530")
+Message-ID: <87bjykwybs.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -61,19 +60,28 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Karol Przybylski <karprzy7@gmail.com> writes:
+Balaji Pothunoori <quic_bpothuno@quicinc.com> writes:
 
-> Selfgen stats are placed in a buffer using print_array_to_buf_index() function.
-> Array length parameter passed to the function is too big, resulting in possible
-> out-of bound memory error.
-> Decreasing buffer size by one fixes faulty upper bound of passed array.
+> The following error messages were encountered while parsing fragmented RX
+> packets for WCN6750/WCN6855:
 >
-> Discovered in coverity scan, CID 1600742 and CID 1600758
+> ath11k 17a10040.wifi: invalid return buffer manager 4
 >
-> Signed-off-by: Karol Przybylski <karprzy7@gmail.com>
-
-I assume you only compile tested this, it's always good to mention that
-in the commit message. But no need resend because of this.
+> This issue arose due to a hardcoded check for HAL_RX_BUF_RBM_SW3_BM
+> introduced in 'commit 71c748b5e01e ("ath11k: Fix unexpected return buffer
+> manager error for QCA6390")'
+>
+> For WCN6750 and WCN6855, the return buffer manager ID should be
+> HAL_RX_BUF_RBM_SW1_BM. The incorrect conditional check caused fragmented
+> packets to be dropped, resulting in the above error log.
+>
+> Fix this by adding a check for HAL_RX_BUF_RBM_SW1_BM.
+>
+> Tested-on: WCN6750 hw1.0 AHB WLAN.MSL.2.0.c2-00258-QCAMSLSWPL-1
+> Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-04479-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1
+>
+> Fixes: 71c748b5e01e ("ath11k: Fix unexpected return buffer manager error for QCA6390")
+> Signed-off-by: Balaji Pothunoori <quic_bpothuno@quicinc.com>
 
 Acked-by: Kalle Valo <kvalo@kernel.org>
 
