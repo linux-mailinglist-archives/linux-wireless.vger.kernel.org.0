@@ -1,56 +1,57 @@
-Return-Path: <linux-wireless+bounces-15197-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15198-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA1E9C530E
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2024 11:20:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D320B9C5337
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2024 11:25:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92058B2BCCB
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2024 10:13:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE871B231BC
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2024 10:14:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CB8D2123DC;
-	Tue, 12 Nov 2024 10:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70DFC20D51D;
+	Tue, 12 Nov 2024 10:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KLyO475+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k8Z7EnP8"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E6220EA32
-	for <linux-wireless@vger.kernel.org>; Tue, 12 Nov 2024 10:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E2F4C91;
+	Tue, 12 Nov 2024 10:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731406352; cv=none; b=uWJpddkQ6C1GXn73yjdFEm1v7foc7tR+mOJlwlZFLV+Vx4De7UHcQUjxoAGfpLLNCRDQUh5EYL3iDlnCJSWdGmEgbUJHUfIt6rEmVikB70e1e6FVhFAA/d3Dn0mz2OLxnvua2x/QsSDL9hxOZt24rxzxU7kPTm6wZsWTscgbcGs=
+	t=1731406441; cv=none; b=lS/afKQAaxCjQkhxZtqrW5E9K2RitPhRGX8fugnqD/lRHric9uh1zIpJBS4BX1/XtdlyCPRkltPUzlOS+4TITLwYInhwprxwMIRtlttggHA8m+R33Rfj/qGTrY1rHp/47OqLhd1Y6/CLbIZjXQRipiAfbEe0YppQAprLBSnoUFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731406352; c=relaxed/simple;
-	bh=Fd1Ey/xvSs8MLl8eDHlLf2EcdKORJxcgeuDQKWpdshs=;
+	s=arc-20240116; t=1731406441; c=relaxed/simple;
+	bh=JOL53HhCG+jCAg5RprMfpeMshNGT3dJE9VpaSRZ3Q2I=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=G9Pe2WsSzp78WDVdRppQ1dLLODcxIgnRR5Mx5tFO7QHACfo1DPJR5cmm9heqHIixk96cdrPoW+cbhqxoTBJBw+TtajO2WskoARJEmtp3gkTvJOCVG0btGPi0p+k4k0nWNcnESxVZeJQv32JnTDCccWH7Q5Ha0DTRj1akwJdoJTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KLyO475+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C4BC4CED4;
-	Tue, 12 Nov 2024 10:12:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=n9J5/FvxJQLr6cQYzLXYkICEybJWnIeqrxFLcOSLi4UDrfTogx5WvRJqUDL4HPHsBVdMqVa7qw96n1A1+OwxispDkOPKzif0HOKFRlGFRZwgKZRipA5Fg75j1z0UJdwTmefsUVD6k/a5MnaH+DUnd3WB+XlgERiaT4rdjrFAerY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k8Z7EnP8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9068DC4CECD;
+	Tue, 12 Nov 2024 10:13:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731406352;
-	bh=Fd1Ey/xvSs8MLl8eDHlLf2EcdKORJxcgeuDQKWpdshs=;
+	s=k20201202; t=1731406440;
+	bh=JOL53HhCG+jCAg5RprMfpeMshNGT3dJE9VpaSRZ3Q2I=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=KLyO475+MkOHS+QlXJIWcWJpS4vYGlVV8YgR7JhXtnDzGDVBpfNj/irerqLU9RCEz
-	 AvJBvQNOBhwotDtAgqCURQaEL14o9Q6aFAOzO8ss+u8Lf7n4UFjnyAXaWy3noCp+HV
-	 +nQ7piFPsmtzCwAOSP5EqmOwCmqgwSAipfo3StVUYfzvcrNMRHF/v1ffPPmB5nUrsv
-	 oxvpt8rDWFHTxEXz/dfJCQ6GGvr5mrLNEXW9Ia5HBWFuZCKxKUO9B91Dew4sVwWRcU
-	 XNaAyw49DXhnkUtskuZ3jaakFlK+ZBLmE5TNc4jGrNYh5vMqdYSp8xeV2xyFYeYCYe
-	 a5EvT/KUQzlzQ==
+	b=k8Z7EnP8E4ROUfNXBXvCffHzpj7zHij1LE1EdzZ+b7eh6cX4QIXc3ZuYLmzKIWQPg
+	 swvfUWWdc2zCJi8gmXYVVbUhOcGTfDXXIuyfhDN6rLOJcJYRgRvt4ikBMlFn3ccK77
+	 wGoO6bfHuXRgf9gBHstXKHGixFf3OXnIVQnHrNN0+dLiFA+Goo8hUw/yXbMKimkhgc
+	 qo1C8hz/kev96vmhcFXb2Y70OiSbEqdvfdWda2i7OvZQqXjZLve3dYvbNRwmdJ1wU2
+	 bKcQYkrGxqr3wDDwJCKG6E5ezMcb+vssse06CDjeVjGnHFXDjByg4qCwMrXIVT2xE4
+	 wXhgMtY8zMRHg==
 From: Kalle Valo <kvalo@kernel.org>
-To: Roopni Devanathan <quic_rdevanat@quicinc.com>
-Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>,
-  Sidhanta Sahu <quic_sidhanta@quicinc.com>
-Subject: Re: [PATCH v2] wifi: ath12k: Support MBSSID Control Frame Stats
-References: <20241105052854.2118987-1-quic_rdevanat@quicinc.com>
-Date: Tue, 12 Nov 2024 12:12:29 +0200
-In-Reply-To: <20241105052854.2118987-1-quic_rdevanat@quicinc.com> (Roopni
-	Devanathan's message of "Tue, 5 Nov 2024 10:58:54 +0530")
-Message-ID: <87jzd8wyk2.fsf@kernel.org>
+To: Karol Przybylski <karprzy7@gmail.com>
+Cc: jjohnson@kernel.org,  linux-wireless@vger.kernel.org,
+  ath12k@lists.infradead.org,  linux-kernel@vger.kernel.org,
+  skhan@linuxfoundation.org
+Subject: Re: [PATCH v3] wifi: ath12k: Fix for out-of bound access error
+References: <20241105101132.374372-1-karprzy7@gmail.com>
+Date: Tue, 12 Nov 2024 12:13:57 +0200
+In-Reply-To: <20241105101132.374372-1-karprzy7@gmail.com> (Karol Przybylski's
+	message of "Tue, 5 Nov 2024 11:11:31 +0100")
+Message-ID: <87frnwwyhm.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -60,38 +61,19 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Roopni Devanathan <quic_rdevanat@quicinc.com> writes:
+Karol Przybylski <karprzy7@gmail.com> writes:
 
-> From: Sidhanta Sahu <quic_sidhanta@quicinc.com>
+> Selfgen stats are placed in a buffer using print_array_to_buf_index() function.
+> Array length parameter passed to the function is too big, resulting in possible
+> out-of bound memory error.
+> Decreasing buffer size by one fixes faulty upper bound of passed array.
 >
-> Add support to request MBSSID control frame stats from firmware
-> through HTT stats type 54. These stats give information such as
-> basic trigger, BSR trigger, multi-user RTS and uplink MUMIMO
-> trigger within and across various BSS.
+> Discovered in coverity scan, CID 1600742 and CID 1600758
 >
-> Note: WCN7850 firmware version -
-> WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4 does not
-> support HTT stats type 54.
->
-> Sample output:
-> -------------
-> echo 54 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
-> cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats
-> HTT_MBSSID_CTRL_FRAME_STATS_TLV:
-> mac_id = 0
-> basic_trigger_across_bss = 0
-> basic_trigger_within_bss = 0
-> bsr_trigger_across_bss = 0
-> bsr_trigger_within_bss = 0
-> mu_rts_across_bss = 0
-> mu_rts_within_bss = 0
-> ul_mumimo_trigger_across_bss = 0
-> ul_mumimo_trigger_within_bss = 0
->
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00214-QCAHKSWPL_SILICONZ-1
->
-> Signed-off-by: Sidhanta Sahu <quic_sidhanta@quicinc.com>
-> Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
+> Signed-off-by: Karol Przybylski <karprzy7@gmail.com>
+
+I assume you only compile tested this, it's always good to mention that
+in the commit message. But no need resend because of this.
 
 Acked-by: Kalle Valo <kvalo@kernel.org>
 
