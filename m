@@ -1,127 +1,203 @@
-Return-Path: <linux-wireless+bounces-15208-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15209-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 804E39C5C13
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2024 16:40:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D8BF9C5C7A
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2024 16:54:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27A6C2812DF
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2024 15:40:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C4EF284150
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2024 15:54:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1848201266;
-	Tue, 12 Nov 2024 15:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0D120262A;
+	Tue, 12 Nov 2024 15:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="n+25dFhC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KWKk+5gK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B7F1FEFA8;
-	Tue, 12 Nov 2024 15:39:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6859202628
+	for <linux-wireless@vger.kernel.org>; Tue, 12 Nov 2024 15:50:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731425994; cv=none; b=WWQkbWaWc1fjU3NvqUBhYJePTCWGppcqbRE/dnseAFnXslOX9KuhQTMFEwgNZwxEe+sc4CIC+zcIzHBHrunSN7ZPAmhEcxFXAaBck0AL8qPUYGdt35hAHkxeOWEv6VXdIIDc2DZWHa86qYAYqsrbDHnE5LUALHgTgNfTYZxnF4E=
+	t=1731426656; cv=none; b=bmoL9Upz7g4sHTzeho6VKwZXXIP4Jlc3VmqTE3iNEWXpVC2OHrgdIQQElzvvBcXuJSChmNiZV8tu0c55Ty5iHNwptLnBbrFe/mnk5U5nQHfD5+e6r2+ClyjC5yMRUymhPG9kB6r5kXZEm6Qtb7ai2nBzUVjZ/OFGRARIYMKI+rI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731425994; c=relaxed/simple;
-	bh=fvrNxzwDp2P3iPosrFRowJKvdfK7Cu3AryWdKt0N3Ls=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=eiCp7cBwobU3vo5wU7Oz8Wk7qNMvBr63xuPwkwFsyC6GpfjFpFMBexEh696PyvIkbHydEzLqKyIhE+PpfByQPTPwmBcI2BIlM33k0fpxO/t3xH4pwGq9+SJ1+ZNOIvbvIlYF4NRowj3MtxIHnFrj4UjYcqEDG/3KRPODh+vyd6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=n+25dFhC; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=yC4PgO0iUg1E/9QX5QiVdbAl0FhMlHnWwAy+hx8zLyU=;
-	t=1731425993; x=1732635593; b=n+25dFhCEMsvZSJ+77KWS4+QeyK3HpzmWVj3lDZbVhXkBVK
-	iw9POVHy/1O36NwC8m1YrTkNw3NHwxlqSP4OnvNlw1HVcJrhFevAeT1Zzw0BH9QJCIARISV+Mpfc4
-	MXLu/wyejOcVmwSzslUW3HyOeo2xwD920oTB+yRrnbU3e8DALso3CO/h62kbtIoE19sMz88YsiMwu
-	GrMRaMlywOCenNPEtD8R76dNEr9QyRTPe4dsCq0HfLImkZgdwpwDnnl/5Z9GgdAwrhxuo9Z3EsHku
-	RzmrbxbfjTCFOtw5f059uYS4yw7gpTSYHLSMD6Epp+51Y+YKGO9IdivU7Wk7wpIQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1tAszb-000000031hp-0UTN;
-	Tue, 12 Nov 2024 16:39:47 +0100
-Message-ID: <59b318b2d6719a009189e10949df35f855790d63.camel@sipsolutions.net>
-Subject: Re: [PATCH v5 09/17] wifi: cc33xx: Add main.c
-From: Johannes Berg <johannes@sipsolutions.net>
-To: "Nemanov, Michael" <michael.nemanov@ti.com>, Kalle Valo
- <kvalo@kernel.org>,  "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,  Krzysztof Kozlowski
- <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Sabeeh Khan <sabeeh-khan@ti.com>
-Date: Tue, 12 Nov 2024 16:39:45 +0100
-In-Reply-To: <2dbf1cba-0b16-413b-947e-dacf32c85687@ti.com>
-References: <20241107125209.1736277-1-michael.nemanov@ti.com>
-	 <20241107125209.1736277-10-michael.nemanov@ti.com>
-	 <685d782d68bfc664c4fcc594dff96546ffc30e5f.camel@sipsolutions.net>
-	 <2dbf1cba-0b16-413b-947e-dacf32c85687@ti.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1731426656; c=relaxed/simple;
+	bh=hRPj4clhocGqNEn4CH8MQoODgrwCA8SvKrYXdlNXTwk=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=V+xXpdovFSasjYon63E7DojnaoU0x62huH8Opr8EJmhBT0rqaHKdRPXYcsVLdQFJuEsWcKPvk4vnD97X1cqUdPP8bqwwiEd0aGtoty1+eJirBqoWO3KeblFqsC5kSPLO4wR3Y/Rk7WfCC/fpOuxHgohDjwrYVQEqFl92QrJM5Zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KWKk+5gK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34632C4CECD;
+	Tue, 12 Nov 2024 15:50:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731426656;
+	bh=hRPj4clhocGqNEn4CH8MQoODgrwCA8SvKrYXdlNXTwk=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=KWKk+5gKig31WFZ6Hw7DUmWDBYQAx7w+WvUP47uBAUeq4l4pYaQQxmj38GfJ8D6vk
+	 hpmk+7MJ7a16+VA7PHVahCXFp4B5mFMXvFJ4OXetGrImvPlDtcKPhrk2FLe0zCw/q6
+	 ixvPNygJNpVXq4m343XQmrC5upU7ckWV5w4J9O4r2w9/heNfzYuxPDuf11K2Lcfma+
+	 iNaZekG9oss26XuEM+xOCZE1NDZuPZPX+bBvyOiutzGIAQndA5bPgOnF91NAkrrmqh
+	 AGZ3jyrUdypJ0E2agwXam92xOan7OixdF1aj++dEeoaRtq5syRLQF8RNr1qd2RZQy+
+	 Dznx8ST8uUEKQ==
+From: Kalle Valo <kvalo@kernel.org>
+To: Roopni Devanathan <quic_rdevanat@quicinc.com>
+Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>,  Dinesh
+ Karthikeyan <quic_dinek@quicinc.com>
+Subject: Re: [PATCH v4 1/4] wifi: ath12k: Support Downlink Pager Stats
+References: <20241106044548.3530128-1-quic_rdevanat@quicinc.com>
+	<20241106044548.3530128-2-quic_rdevanat@quicinc.com>
+Date: Tue, 12 Nov 2024 17:50:53 +0200
+In-Reply-To: <20241106044548.3530128-2-quic_rdevanat@quicinc.com> (Roopni
+	Devanathan's message of "Wed, 6 Nov 2024 10:15:45 +0530")
+Message-ID: <87frnw4fj6.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain
 
-On Tue, 2024-11-12 at 17:34 +0200, Nemanov, Michael wrote:
->=20
-> > > +static int parse_control_message(struct cc33xx *cc,
-> > > +				 const u8 *buffer, size_t buffer_length)
-> > > +{
-> > > +	u8 *const end_of_payload =3D (u8 *const)buffer + buffer_length;
-> > > +	u8 *const start_of_payload =3D (u8 *const)buffer;
-> >=20
-> > I don't think the "u8 *const" is useful here, and the cast is awkward.
-> > If anything you'd want "const u8 *const" (which should make it not need
-> > the cast), but the const you have adds no value... do you even know wha=
-t
-> > it means? ;-)
-> >=20
->=20
-> My intent was to express that start and end pointers are fixed and will=
-=20
-> not change in the loop below. When reading this again I agree this hurts=
-=20
-> more than it helps, I'll drop it.
+Roopni Devanathan <quic_rdevanat@quicinc.com> writes:
 
-Well, I don't even mind the const so much rather than the cast, I'd
-probably not have commented on it if it were
+> From: Dinesh Karthikeyan <quic_dinek@quicinc.com>
+>
+> Add support to request downlink pager stats from firmware through HTT
+> stats type 36. These stats give paging information like number of pages,
+> their timestamp, number of locked and free pages, synchronous and
+> asynchronous locked pages.
+>
+> Note: MCC firmware version -
+> WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4 responds to
+> the event requesting stats, but it does not give any data.
+>
+> Sample output:
+> -------------
+> echo 36 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
+> cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats
+> HTT_DLPAGER_STATS_TLV:
+> ASYNC locked pages = 2
+> SYNC locked pages = 0
+> Total locked pages = 2
+> Total free pages = 127
+>
+> LOCKED PAGES HISTORY
+> last_locked_page_idx = 0
+> Index - 0 ; Page Number - 8495 ; Num of pages - 1 ; Timestamp - 4031009360us
+> Index - 1 ; Page Number - 7219 ; Num of pages - 2 ; Timestamp - 885379515us
+> Index - 2 ; Page Number - 0 ; Num of pages - 0 ; Timestamp - 0us
+> Index - 3 ; Page Number - 0 ; Num of pages - 0 ; Timestamp - 0us
+> .....
+> UNLOCKED PAGES HISTORY
+> last_unlocked_page_idx = 0
+> Index - 0 ; Page Number - 7144 ; Num of pages - 2 ; Timestamp - 4032070008us
+> Index - 1 ; Page Number - 7214 ; Num of pages - 2 ; Timestamp - 885379512us
+> Index - 2 ; Page Number - 0 ; Num of pages - 0 ; Timestamp - 0us
+> Index - 3 ; Page Number - 0 ; Num of pages - 0 ; Timestamp - 0us
+> .....
+>
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+>
+> Signed-off-by: Dinesh Karthikeyan <quic_dinek@quicinc.com>
+> Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
 
-	const u8 *const end_of_payload =3D buffer + buffer_length;
-	const u8 *const start_of_payload =3D buffer;
+[...]
 
-I'd still think the second const (for the variable) isn't all that
-useful, but really the lack of first const (for the object pointed to)
-makes the casts necessary and (IMHO) that's what hurts.
+> +static void ath12k_htt_print_dlpager_entry(const struct ath12k_htt_pgs_info *pg_info,
+> +					   int idx, char *str_buf)
+> +{
+> +	u32 ts_lo;
+> +	u32 ts_hi;
+> +	u64 page_timestamp;
+> +	u16 index = 0;
 
-> const u8 *buffer in the prototype illustrates that parse_control_message=
-=20
-> will not change the data so I'll keep it if there a re no objections.
+Nitpicking but please strive for reverse xmas style and no need to have
+just one variable per line:
 
-Sure.
+        u64 page_timestamp;
+        u32 ts_lo, ts_hi;
+        u16 index = 0;
 
-> > > +	struct NAB_header *nab_header;
-> >=20
-> > surely checkpatch complained about CamelCase or so with the struct name
-> > like that?
-> >=20
->=20
-> Double-checked, no warnings from checkpatch:
+> +static void
+> +ath12k_htt_print_dlpager_stats_tlv(const void *tag_buf, u16 tag_len,
+> +				   struct debug_htt_stats_req *stats_req)
+> +{
+> +	const struct ath12k_htt_dl_pager_stats_tlv *stat_buf = tag_buf;
+> +	u8 *buf = stats_req->buf;
+> +	u32 len = stats_req->buf_len;
+> +	u32 buf_len = ATH12K_HTT_STATS_BUF_SIZE;
+> +	u32 info0;
+> +	u32 info1;
+> +	u32 info2;
+> +	u32 dword_lock;
+> +	u32 dword_unlock;
+> +	u8 pg_locked;
+> +	u8 pg_unlock;
+> +	int i;
+> +	char str_buf[ATH12K_HTT_MAX_STRING_LEN] = {0};
 
-Hah, ok :) I'm surprised because it complained about _Generic in my
-patch, and that's something you really can't even change since it's C11
-standard ...
+Same here. And maybe initialise buf_len separately to keep the
+declarations clean?
 
-johannes
+
+> +	if (tag_len < sizeof(*stat_buf))
+> +		return;
+> +
+> +	info0 = le32_to_cpu(stat_buf->info0);
+> +	info1 = le32_to_cpu(stat_buf->info1);
+> +	info2 = le32_to_cpu(stat_buf->info2);
+> +	dword_lock = u32_get_bits(info2, ATH12K_HTT_DLPAGER_TOTAL_LOCK_PAGES_INFO2);
+> +	dword_unlock = u32_get_bits(info2, ATH12K_HTT_DLPAGER_TOTAL_FREE_PAGES_INFO2);
+
+There's le32_get_bits() so you can simplify this function quite a lot.
+
+> +	pg_locked = ATH12K_HTT_STATS_PAGE_LOCKED;
+> +	pg_unlock = ATH12K_HTT_STATS_PAGE_UNLOCKED;
+> +
+> +	len += scnprintf(buf + len, buf_len - len, "HTT_DLPAGER_STATS_TLV:\n");
+> +	len += scnprintf(buf + len, buf_len - len, "ASYNC locked pages = %u\n",
+> +			 u32_get_bits(info0, ATH12K_HTT_DLPAGER_ASYNC_LOCK_PG_CNT_INFO0));
+> +	len += scnprintf(buf + len, buf_len - len, "SYNC locked pages = %u\n",
+> +			 u32_get_bits(info0, ATH12K_HTT_DLPAGER_SYNC_LOCK_PG_CNT_INFO0));
+> +	len += scnprintf(buf + len, buf_len - len, "Total locked pages = %u\n",
+> +			 u32_get_bits(info1, ATH12K_HTT_DLPAGER_TOTAL_LOCK_PAGES_INFO1));
+> +	len += scnprintf(buf + len, buf_len - len, "Total free pages = %u\n",
+> +			 u32_get_bits(info1, ATH12K_HTT_DLPAGER_TOTAL_FREE_PAGES_INFO1));
+> +
+> +	len += scnprintf(buf + len, buf_len - len, "\nLOCKED PAGES HISTORY\n");
+> +	len += scnprintf(buf + len, buf_len - len, "last_locked_page_idx = %u\n",
+> +			 dword_lock ? dword_lock - 1 : (ATH12K_PAGER_MAX - 1));
+> +	for (i = 0; i < ATH12K_PAGER_MAX; i++) {
+
+Empty line before for.
+
+> +		memset(str_buf, 0x0, ATH12K_HTT_MAX_STRING_LEN);
+> +		ath12k_htt_print_dlpager_entry(&stat_buf->pgs_info[pg_locked][i],
+> +					       i, str_buf);
+> +		len += scnprintf(buf + len, buf_len - len, "%s", str_buf);
+> +	}
+> +
+> +	len += scnprintf(buf + len, buf_len - len, "\nUNLOCKED PAGES HISTORY\n");
+> +	len += scnprintf(buf + len, buf_len - len, "last_unlocked_page_idx = %u\n",
+> +			 dword_unlock ? dword_unlock - 1 : ATH12K_PAGER_MAX - 1);
+> +	for (i = 0; i < ATH12K_PAGER_MAX; i++) {
+
+Empty line before for.
+
+> +		memset(str_buf, 0x0, ATH12K_HTT_MAX_STRING_LEN);
+> +		ath12k_htt_print_dlpager_entry(&stat_buf->pgs_info[pg_unlock][i],
+> +					       i, str_buf);
+> +		len += scnprintf(buf + len, buf_len - len, "%s", str_buf);
+> +	}
+> +	len += scnprintf(buf + len, buf_len - len, "\n");
+
+Empty line after '}'.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
