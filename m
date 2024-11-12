@@ -1,97 +1,141 @@
-Return-Path: <linux-wireless+bounces-15218-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15219-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5015A9C64F1
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2024 00:12:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A26239C65EA
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2024 01:24:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1393B293D5
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2024 21:14:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3813B29039
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2024 23:45:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC657219E58;
-	Tue, 12 Nov 2024 21:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657CB21830E;
+	Tue, 12 Nov 2024 23:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="IgMVOqtu"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Llj46RG/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289A2215018
-	for <linux-wireless@vger.kernel.org>; Tue, 12 Nov 2024 21:14:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.184
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731446080; cv=none; b=nzjBAMU0gSKZg+4bBpADszqJtt85EKerPYQ5P9sRuYVLmfPNuQd/dognDxQuBEGp6TVBuLbmV5zzXk0Tu9NVn1wqzRaaCHtQodBq7MNIlwG8dUErW4N83Erqsaa/t3IwrrXcyf5G/PdF1pBxdomtaXnfFfVniXAnD2wnHY7+4Kg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731446080; c=relaxed/simple;
-	bh=nSGox+NJkLEWmTkTIaTsk+J6QSaUMvzD0mCcBoJ9v8A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dK+EjtK7Rhs6pDJXitSINRwNyhRKT3LfmU8/1LKvxuGM4hNgMTSY/Ki8Aa3ZT/hqfco2eCd1F2K5gccsjw0pZHHStfOI6ZWM+d6SycKX5IbwzkxamtFbciXeLfCqWI2q6uNvCcm3Re42HRnpKYxOzTf5GWwSLLCBbT6zUo1/ezE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=IgMVOqtu; arc=none smtp.client-ip=67.231.154.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id C0F333C0073;
-	Tue, 12 Nov 2024 21:14:29 +0000 (UTC)
-Received: from popkern.candelatech.com (unknown [50.251.239.81])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 4468C13C2B0;
-	Tue, 12 Nov 2024 13:14:29 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 4468C13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1731446069;
-	bh=nSGox+NJkLEWmTkTIaTsk+J6QSaUMvzD0mCcBoJ9v8A=;
-	h=From:To:Cc:Subject:Date:From;
-	b=IgMVOqtu0hiWfSNp0l7MqP4OnhaD9TbUUu/D12nx3NuQEYKdohZqd6t2iYSCxFe60
-	 GGTHiHrAogsbOq7BB1LlRaA7i6u6WtD2mouNtllYy2eJQrwER4E5quE7SzHY56dOld
-	 xmRLBMotXKEPtdr+uQiOfELqvllaizGBdDpetus8=
-From: Dylan Eskew <dylan.eskew@candelatech.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Dylan Eskew <dylan.eskew@candelatech.com>
-Subject: [PATCH] wifi: ethtool: add monitor channel reporting
-Date: Tue, 12 Nov 2024 13:14:22 -0800
-Message-ID: <20241112211422.331928-1-dylan.eskew@candelatech.com>
-X-Mailer: git-send-email 2.47.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A355415443B;
+	Tue, 12 Nov 2024 23:45:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1731455125; cv=none; b=TDoFECGwzOpEFg5mRnJFDLsgE2xb8fnNPU5g0S96FNEe5QCr4SFZX6wL4g/SneV1pr7y0kKelj2793ILCFkauBVndmjGA8RLaePMrfVEpmQpnyL3NyNMicT3xKqX1FlhWTJzbx3NflH/u4tLTMYtmBUd0j0x50OsCjrLJl3fcD0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1731455125; c=relaxed/simple;
+	bh=KWB4wWEk81+K7swPNTEEFSn4Bj0MbWLdZqCX27PFTvU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=jDvuFUk5ezZI9YHkCe4HzLF7t0HDPKMxnTv5YSTDqVrV3r+zs5Riwqyh4vyH4uhLaZzXU2vuGO4MLJZnOHUi3ojwQ2Q+2Epm7jWr2E4OvOpbSQPMTiTMq6nJgKVWr988i666T0A9AATRnWC+tzXRMHlDB3cISfDKopsvdXll3mI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Llj46RG/; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4ACMTbS2007483;
+	Tue, 12 Nov 2024 23:45:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	30OmWzI8bY1NgWJeTzK26aydq5gBzrLGNDeVe/D6eIw=; b=Llj46RG/3j9c4EQF
+	qCaWZYkQap95t5u0KygYnhHV77w7wYmy/aF+T0aysuWGyA+eJMCIrVmzcPcD17nF
+	TaNV4bTjncpRuCCwDiDCulhZQBJAsP/7diU+hAOt+fMGANlB9+W7Zo3Em4/Nqsod
+	EydU+nlD5iLx/Cd+wKIaYbz/J4rhQGBw+E3LEXp3QJ+8VZg5CLkfCcyTSRsIvV+L
+	xdq/k26VW5P6yMwRF0htqT7CPnH+1zOHB1VFbU/WGYFY56EAk2LoONwcwUiDHlsu
+	fF0SUTjRNxYTKKRHTL2jFp4Y0bchSU+np5xB4xLja8fR0pJtVo03L4T+yWRvKANK
+	Kn9PWg==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42t0gm0vpb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Nov 2024 23:45:04 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4ACNj3BF022675
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 Nov 2024 23:45:03 GMT
+Received: from [10.48.243.207] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 12 Nov
+ 2024 15:45:02 -0800
+Message-ID: <c504da22-abb5-4dd5-ad57-8e7b25733237@quicinc.com>
+Date: Tue, 12 Nov 2024 15:45:02 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MDID: 1731446070-EsSIcNaq-t87
-X-MDID-O:
- us5;at1;1731446070;EsSIcNaq-t87;<dylan.eskew@candelatech.com>;b42792dba290a1257c3f0aaf1c60b0ff
-X-PPE-TRUSTED: V=1;DIR=OUT;
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wlcore: testmode: Constify strutc nla_policy
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Kalle Valo
+	<kvalo@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre
+ Torgue <alexandre.torgue@foss.st.com>
+CC: <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        <linux-wireless@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>
+References: <78810e3ebb74ddbd3a4538f182bf1143b89baba7.1731332414.git.christophe.jaillet@wanadoo.fr>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <78810e3ebb74ddbd3a4538f182bf1143b89baba7.1731332414.git.christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: AQmCJZ-ADAi0H-gp8rhXAlFr50GaOSo0
+X-Proofpoint-GUID: AQmCJZ-ADAi0H-gp8rhXAlFr50GaOSo0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
+ spamscore=0 clxscore=1011 mlxscore=0 mlxlogscore=961 lowpriorityscore=0
+ impostorscore=0 adultscore=0 priorityscore=1501 malwarescore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
+ definitions=main-2411120191
 
-When running ethtool on a monitor interface, the channel
-wasn't reporting properly. This adds logic to properly report
-the channel for monitor interfaces in ethtool.
+On 11/11/2024 5:40 AM, Christophe JAILLET wrote:
+> 'struct nla_policy' is not modified in this driver.
+> 
+> Constifying this structure moves some data to a read-only section, so
+> increase overall security, especially when the structure holds some
+> function pointers.
+> 
+> On a x86_64, with allmodconfig:
+> Before:
+> ======
+>    text	   data	    bss	    dec	    hex	filename
+>    5062	    528	      0	   5590	   15d6	drivers/net/wireless/ti/wlcore/testmode.o
+> 
+> After:
+> =====
+>    text	   data	    bss	    dec	    hex	filename
+>    5178	    404	      0	   5582	   15ce	drivers/net/wireless/ti/wlcore/testmode.o
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-Signed-off-by: Dylan Eskew <dylan.eskew@candelatech.com>
----
- net/mac80211/ethtool.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/net/mac80211/ethtool.c b/net/mac80211/ethtool.c
-index 99f6174a9d69..d36f4e22230b 100644
---- a/net/mac80211/ethtool.c
-+++ b/net/mac80211/ethtool.c
-@@ -160,6 +160,10 @@ static void ieee80211_get_stats(struct net_device *dev,
- 	chanctx_conf = rcu_dereference(sdata->vif.bss_conf.chanctx_conf);
- 	if (chanctx_conf)
- 		channel = chanctx_conf->def.chan;
-+	else if (local->open_count > 0 &&
-+		 local->open_count == local->monitors &&
-+		 sdata->vif.type == NL80211_IFTYPE_MONITOR)
-+		channel = local->monitor_chanreq.oper.chan;
- 	else
- 		channel = NULL;
- 	rcu_read_unlock();
--- 
-2.47.0
+> ---
+> Compile tested only
+> ---
+>  drivers/net/wireless/ti/wlcore/testmode.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ti/wlcore/testmode.c b/drivers/net/wireless/ti/wlcore/testmode.c
+> index 3f338b8096c7..fc8ea58bc165 100644
+> --- a/drivers/net/wireless/ti/wlcore/testmode.c
+> +++ b/drivers/net/wireless/ti/wlcore/testmode.c
+> @@ -45,7 +45,7 @@ enum wl1271_tm_attrs {
+>  };
+>  #define WL1271_TM_ATTR_MAX (__WL1271_TM_ATTR_AFTER_LAST - 1)
+>  
+> -static struct nla_policy wl1271_tm_policy[WL1271_TM_ATTR_MAX + 1] = {
+> +static const struct nla_policy wl1271_tm_policy[WL1271_TM_ATTR_MAX + 1] = {
+>  	[WL1271_TM_ATTR_CMD_ID] =	{ .type = NLA_U32 },
+>  	[WL1271_TM_ATTR_ANSWER] =	{ .type = NLA_U8 },
+>  	[WL1271_TM_ATTR_DATA] =		{ .type = NLA_BINARY,
 
 
