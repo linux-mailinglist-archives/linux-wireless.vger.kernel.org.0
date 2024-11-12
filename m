@@ -1,169 +1,97 @@
-Return-Path: <linux-wireless+bounces-15217-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15218-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2BC69C6295
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2024 21:30:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5015A9C64F1
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2024 00:12:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B0231F23833
-	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2024 20:30:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1393B293D5
+	for <lists+linux-wireless@lfdr.de>; Tue, 12 Nov 2024 21:14:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACDFD218D7C;
-	Tue, 12 Nov 2024 20:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC657219E58;
+	Tue, 12 Nov 2024 21:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=ijzerbout.nl header.i=@ijzerbout.nl header.b="ElWnp6yW"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="IgMVOqtu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from bout3.ijzerbout.nl (bout3.ijzerbout.nl [136.144.140.114])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA8C72185B3
-	for <linux-wireless@vger.kernel.org>; Tue, 12 Nov 2024 20:29:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.144.140.114
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289A2215018
+	for <linux-wireless@vger.kernel.org>; Tue, 12 Nov 2024 21:14:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731443395; cv=none; b=O/uMgnEsEkpkpqut6leeF2E3tsEXE5iRygu+Lxv1haZls6QuyjUXqoe/91TpHiCIIjHLWT7oq+Yr2C6IxkYv/VvGyMKiVSAD3803AOd+ciCKD8y/yO/4q3NM1Z+4iMA53lfaK+22nKueDrf2F7coeAB404qSuf71D2Xb79qG+WA=
+	t=1731446080; cv=none; b=nzjBAMU0gSKZg+4bBpADszqJtt85EKerPYQ5P9sRuYVLmfPNuQd/dognDxQuBEGp6TVBuLbmV5zzXk0Tu9NVn1wqzRaaCHtQodBq7MNIlwG8dUErW4N83Erqsaa/t3IwrrXcyf5G/PdF1pBxdomtaXnfFfVniXAnD2wnHY7+4Kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731443395; c=relaxed/simple;
-	bh=QxRKYQVqbAmRALwOjSZYmG18JSk0pW3AtOi87IeEqYA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UzdoGa/MskNlKqkfhLeULjCTAzjeW4xTBDSyJp2WRoBf3y6IbudXtCf22vAIAhuSjyEoIypbHh4UecQ4lqCqqBIgoc6M91Ko7t+ilE0WxAIb0OBSKs62V8D747m31K/jwjlc10MH3ycF8iV40S5V2zGD4N/SKjI2VE6kbyz8Lus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ijzerbout.nl; spf=pass smtp.mailfrom=ijzerbout.nl; dkim=pass (4096-bit key) header.d=ijzerbout.nl header.i=@ijzerbout.nl header.b=ElWnp6yW; arc=none smtp.client-ip=136.144.140.114
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ijzerbout.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ijzerbout.nl
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ijzerbout.nl; s=key;
-	t=1731443390; bh=QxRKYQVqbAmRALwOjSZYmG18JSk0pW3AtOi87IeEqYA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ElWnp6yW4x627PW/AMjj7lKWW6ZcvqytIItBbMG0RpJMszuj+49Jlrn7LvkFVuP+F
-	 elUeZ1EY7i5QZfKfbL5YqX2r/Gj9DwNy2DW1jezYKtvg/MV18Xx8hZq3DW74Bm3gcd
-	 ycKIyNtfjySnLZhlT0NLlHgGeNfNELJnVR2rSISHXmX2L1TVKACoqqYguFZtxaXPfo
-	 DnR3aDzabNbuxL5yhxLKFHymG7igKUmVJqTkloArtscYngm0pOoTnXpetL9mirUzqc
-	 zj2jj0/6egAWEIEikof+Me56u3g5hBryo1qpnlC1dkmZn7XmqdwFxNq3HLUvOdpm/i
-	 qtqznRzuvtepE5Iji8zBN5Dy5yW09jf/vzEGStOXSVb7PwJFOs5SbDz3kpHo2ewDgo
-	 SjGsE9rH+lOE1NJCZhJy543JhrlnD2GO83/ee7H6nkpbpE5Q0FtQ+ZNMdPzXgSh8jt
-	 kq/QCVjvoYDGqlMDDwt+mQTjsQrcjza7D5Ma5vdalOQ26dHfaDn3oJXPSvoSW1EHeU
-	 fkgDmfKB7xpc+s9Tqtwtfw6I7pu1jpFznh3WNLYQUYeb1+1DNvrsXaonaGltjicCdz
-	 xctEA7eS04yQb3ZOrLwjinDGnvrCduTfzQ5RqrvbzSsHfg6WECO+xilT/IUIdepHci
-	 AeMatceTIjmWc5pwcDNWYpPU=
-Received: from [IPV6:2a10:3781:99:1:1ac0:4dff:fea7:ec3a] (racer.ijzerbout.nl [IPv6:2a10:3781:99:1:1ac0:4dff:fea7:ec3a])
-	by bout3.ijzerbout.nl (Postfix) with ESMTPSA id 5C5FF18DEE7;
-	Tue, 12 Nov 2024 21:29:50 +0100 (CET)
-Message-ID: <4737329a-6d7d-4244-92f0-3ec4849f5893@ijzerbout.nl>
-Date: Tue, 12 Nov 2024 21:29:47 +0100
+	s=arc-20240116; t=1731446080; c=relaxed/simple;
+	bh=nSGox+NJkLEWmTkTIaTsk+J6QSaUMvzD0mCcBoJ9v8A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dK+EjtK7Rhs6pDJXitSINRwNyhRKT3LfmU8/1LKvxuGM4hNgMTSY/Ki8Aa3ZT/hqfco2eCd1F2K5gccsjw0pZHHStfOI6ZWM+d6SycKX5IbwzkxamtFbciXeLfCqWI2q6uNvCcm3Re42HRnpKYxOzTf5GWwSLLCBbT6zUo1/ezE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=IgMVOqtu; arc=none smtp.client-ip=67.231.154.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id C0F333C0073;
+	Tue, 12 Nov 2024 21:14:29 +0000 (UTC)
+Received: from popkern.candelatech.com (unknown [50.251.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 4468C13C2B0;
+	Tue, 12 Nov 2024 13:14:29 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 4468C13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1731446069;
+	bh=nSGox+NJkLEWmTkTIaTsk+J6QSaUMvzD0mCcBoJ9v8A=;
+	h=From:To:Cc:Subject:Date:From;
+	b=IgMVOqtu0hiWfSNp0l7MqP4OnhaD9TbUUu/D12nx3NuQEYKdohZqd6t2iYSCxFe60
+	 GGTHiHrAogsbOq7BB1LlRaA7i6u6WtD2mouNtllYy2eJQrwER4E5quE7SzHY56dOld
+	 xmRLBMotXKEPtdr+uQiOfELqvllaizGBdDpetus8=
+From: Dylan Eskew <dylan.eskew@candelatech.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org,
+	Dylan Eskew <dylan.eskew@candelatech.com>
+Subject: [PATCH] wifi: ethtool: add monitor channel reporting
+Date: Tue, 12 Nov 2024 13:14:22 -0800
+Message-ID: <20241112211422.331928-1-dylan.eskew@candelatech.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/7] wifi: rtw88: Add rtw8821a.{c,h}
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>
-References: <435af284-0794-48e0-81a5-5a88b3c454bf@gmail.com>
- <37218648-ada7-4fad-b7bd-d2aee28cefb9@gmail.com>
-Content-Language: en-US
-From: Kees Bakker <kees@ijzerbout.nl>
-In-Reply-To: <37218648-ada7-4fad-b7bd-d2aee28cefb9@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-MDID: 1731446070-EsSIcNaq-t87
+X-MDID-O:
+ us5;at1;1731446070;EsSIcNaq-t87;<dylan.eskew@candelatech.com>;b42792dba290a1257c3f0aaf1c60b0ff
+X-PPE-TRUSTED: V=1;DIR=OUT;
 
-Op 30-10-2024 om 19:28 schreef Bitterblue Smith:
-> These contain code specific to RTL8821AU.
->
-> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-> ---
-> v2:
->   - Patch is new in v2.
->   - All of this used to be in patch 18/20 in v1.
->   - Use "k < 3" instead of "k <= 2" in the IQK code.
->   - Replace some while loops with for loops in the IQK code.
->   - Use rtw_write8 instead of rtw_write8_mask in
->     rtw8821a_coex_cfg_ant_switch. The mask was 0xff.
->   - Constify structs/arrays.
->
-> v3:
->   - No change.
->
-> v4:
->   - No change.
-> ---
->   drivers/net/wireless/realtek/rtw88/rtw8821a.c | 1197 +++++++++++++++++
->   drivers/net/wireless/realtek/rtw88/rtw8821a.h |   10 +
->   2 files changed, 1207 insertions(+)
->   create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821a.c
->   create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821a.h
->
-> diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821a.c b/drivers/net/wireless/realtek/rtw88/rtw8821a.c
-> [...]
-> +		for (cal_retry = 0; cal_retry < 10; cal_retry++) {
-> +			/* one shot */
-> +			rtw_write32(rtwdev, REG_IQK_COM64, 0xfa000000);
-> +			rtw_write32(rtwdev, REG_IQK_COM64, 0xf8000000);
-> +
-> +			mdelay(10);
-> +
-> +			rtw_write32(rtwdev, REG_RFECTL_A, 0x00000000);
-> +
-> +			for (delay_count = 0; delay_count < 20; delay_count++) {
-> +				iqk_ready = rtw_read32_mask(rtwdev,
-> +							    REG_IQKA_END,
-> +							    BIT(10));
-> +
-> +				/* Originally: if (~iqk_ready || delay_count > 20)
-> +				 * that looks like a typo so make it more explicit
-> +				 */
-> +				iqk_ready = true;
-This looks a bit suspicious. Why ignore the result from rtw_read32_mask()?
-What do you mean by "Originally ... so make it more explicit"?
-> +
-> +				if (iqk_ready)
-> +					break;
-> +
-> +				mdelay(1);
-> +			}
-> +
-> +			if (delay_count < 20) {
-> +				/* ============TXIQK Check============== */
-> +				tx_fail = rtw_read32_mask(rtwdev,
-> +							  REG_IQKA_END,
-> +							  BIT(12));
-> +
-> +				/* Originally: if (~tx_fail) {
-> +				 * It looks like a typo, so make it more explicit.
-> +				 */
-> +				tx_fail = false;
-This also looks suspicious. Again, why ignore the result of 
-rtw_read32_mask()?
-> +
-> +				if (!tx_fail) {
-> +					rtw_write32(rtwdev, REG_RFECTL_A,
-> +						    0x02000000);
-> +					vdf_x[k] = rtw_read32_mask(rtwdev,
-> +								   REG_IQKA_END,
-> +								   0x07ff0000);
-> +					vdf_x[k] <<= 21;
-> +
-> +					rtw_write32(rtwdev, REG_RFECTL_A,
-> +						    0x04000000);
-> +					vdf_y[k] = rtw_read32_mask(rtwdev,
-> +								   REG_IQKA_END,
-> +								   0x07ff0000);
-> +					vdf_y[k] <<= 21;
-> +
-> +					*tx0iqkok = true;
-> +					break;
-> +				}
-> +
-The next rtw_write32_mask()'s are dead code because of tx_fail = false
-> +				rtw_write32_mask(rtwdev, REG_IQC_Y,
-> +						 0x000007ff, 0x0);
-> +				rtw_write32_mask(rtwdev, REG_IQC_X,
-> +						 0x000007ff, 0x200);
-> +			}
-> +
-> +			*tx0iqkok = false;
-> +		}
-> +	}
-> +
->
+When running ethtool on a monitor interface, the channel
+wasn't reporting properly. This adds logic to properly report
+the channel for monitor interfaces in ethtool.
+
+Signed-off-by: Dylan Eskew <dylan.eskew@candelatech.com>
+---
+ net/mac80211/ethtool.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/net/mac80211/ethtool.c b/net/mac80211/ethtool.c
+index 99f6174a9d69..d36f4e22230b 100644
+--- a/net/mac80211/ethtool.c
++++ b/net/mac80211/ethtool.c
+@@ -160,6 +160,10 @@ static void ieee80211_get_stats(struct net_device *dev,
+ 	chanctx_conf = rcu_dereference(sdata->vif.bss_conf.chanctx_conf);
+ 	if (chanctx_conf)
+ 		channel = chanctx_conf->def.chan;
++	else if (local->open_count > 0 &&
++		 local->open_count == local->monitors &&
++		 sdata->vif.type == NL80211_IFTYPE_MONITOR)
++		channel = local->monitor_chanreq.oper.chan;
+ 	else
+ 		channel = NULL;
+ 	rcu_read_unlock();
+-- 
+2.47.0
+
 
