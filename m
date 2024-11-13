@@ -1,57 +1,57 @@
-Return-Path: <linux-wireless+bounces-15244-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15245-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C1109C6D7B
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2024 12:12:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C414E9C6DE8
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2024 12:33:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 442071F23862
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2024 11:12:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CCD5B2B9DB
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2024 11:18:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 981E51FEFA4;
-	Wed, 13 Nov 2024 11:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88B4C1FF609;
+	Wed, 13 Nov 2024 11:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A+Y/T4Dk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m7kgDf0O"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B2B1FE0EB
-	for <linux-wireless@vger.kernel.org>; Wed, 13 Nov 2024 11:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D151F81A0
+	for <linux-wireless@vger.kernel.org>; Wed, 13 Nov 2024 11:14:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731496364; cv=none; b=QRL9R6FSS/xXSlVbCSdpSD4DSfABYyPE3sZIRKD7T/rChYZo6hDtcMJR11GMM5LEFf0fg/gNr22uzp3I8rIF1lH0em8ICGP8A+FEEmvU9RCNLk8Wh8H528MknVGt43No0rXGuK5J4v85LqlxWlB1EvL0I0w9Mm0gDvl1fkHwNHQ=
+	t=1731496489; cv=none; b=R1mNLmBS9HspkjW8xnQZ1TYmaXPchEggRAlLMPXIBDSGx01xCa1F3MIPSBt7bMtY2CkE1aog4EmeEpMdyWsaXerK9C0IS5/y6aCHgGiaENmXZwMfrUa7Z5KGy9+8Dbfw209XqXahI+0S59ITDcllxBkv99WcWMkXqHua1LnwK2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731496364; c=relaxed/simple;
-	bh=mIGdVzGsC4Nk+b93weI7HLWPEXwroJOOnErhV0tcHrY=;
+	s=arc-20240116; t=1731496489; c=relaxed/simple;
+	bh=SfRuX/dV9mIBPRr+FPdrIt+g6zw+cc9zzZ61VvNw6Dw=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=IpNLv0HuRRdi+0xDsKAnhpEsmNMBExVfGcFXXL4mQTSXEbJesRZ6DomfK49M+dHtCd1CScPRmWhUYZ81XXKROAcf/9y2HF45X19ZF4GeRpCIV2yppLoYItb7PEZSlEnHLZtHd0CmOcB/WcW65OMbqYyhX7ohTUR/jAEJNZnSMBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A+Y/T4Dk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49629C4CECD;
-	Wed, 13 Nov 2024 11:12:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uoYyHNOTNMZH8YqNpWInaDRCgnJ77zwpKNby+wt6jZo1iDYcrR4DyKYmdaJZqaTm9VtDhHZ/dciV/X75D8XIJZJ2BPohQzQU5ihPO3esF88MNuk2NNHHXvrnhqdj6jlFurX49szVgTzPfoKN5YGfyA6DOnH3VTy15e6N/OmIvMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m7kgDf0O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28587C4CECD;
+	Wed, 13 Nov 2024 11:14:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731496364;
-	bh=mIGdVzGsC4Nk+b93weI7HLWPEXwroJOOnErhV0tcHrY=;
+	s=k20201202; t=1731496488;
+	bh=SfRuX/dV9mIBPRr+FPdrIt+g6zw+cc9zzZ61VvNw6Dw=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=A+Y/T4Dkar86c5J2gKa6jC48JAiRut7QMWQ7m0RBpXvd8maYY6xEX8xiIBFUFMC9+
-	 +Ks29tuWTOdx/HUSI3rt1mALI2uMU0tvPpdGirD0R2ONKVSz38aQI3+jJs5dPMoypQ
-	 NZ7nL0eiIEG6szQhh8hQA2nGSIBmRjGtC9Lre/4GMIp/tp6yhrk6j4RQDcsXREZBrl
-	 /mMDjMYHnjMar3bSI5zAGb65JZqv126sGtqO3YKMtZyKxuAu/vG5cvDyf3sO1jzTHt
-	 lszd6fjsNONG0xg9egQ84NV4KXalXyfBV6X1Fyhq+zzmPfmQxPSzHmAz3EvS+R9V9G
-	 IFEPtEMkM3kAA==
+	b=m7kgDf0OGkfTdnZopKqitXbSpnQwMTFiBH4V2k59gWg9Wtik/J5bi6dQTNa2Q7leW
+	 66+qyjCFnpw3HZUzN7AsY0MkX9nKGdMLNdupNwOert3yYX5fqotDQSHY2LGX6oE6SL
+	 JJvbhsgUy+G9kTywKsHCHfqjxHqsmfRdKQ8xfE5OF24P0vhel06RHnmQTX0Old717n
+	 Qkr5R//TH656yJHY1fyE7Y8HQlA1Ssx/CHRNyklIShhyr+JF7C/wepkKrKqNQQehpa
+	 fodJ/tE0f8C7qUFhm/jDit5aONZ6JRuhfEdVRLYsOEnoO9fUKHG2rSMT+pkKpM7mf/
+	 WIueLMTcW6tPQ==
 From: Kalle Valo <kvalo@kernel.org>
 To: Baochen Qiang <quic_bqiang@quicinc.com>
 Cc: <ath11k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 1/6] wifi: ath11k: avoid burning CPU in
- ath11k_debugfs_fw_stats_request()
+Subject: Re: [PATCH 3/6] wifi: ath11k: move some firmware stats related
+ functions outside of debugfs
 References: <20241113015631.3105-1-quic_bqiang@quicinc.com>
-	<20241113015631.3105-2-quic_bqiang@quicinc.com>
-Date: Wed, 13 Nov 2024 13:12:41 +0200
-In-Reply-To: <20241113015631.3105-2-quic_bqiang@quicinc.com> (Baochen Qiang's
-	message of "Wed, 13 Nov 2024 09:56:26 +0800")
-Message-ID: <877c972xqu.fsf@kernel.org>
+	<20241113015631.3105-4-quic_bqiang@quicinc.com>
+Date: Wed, 13 Nov 2024 13:14:46 +0200
+In-Reply-To: <20241113015631.3105-4-quic_bqiang@quicinc.com> (Baochen Qiang's
+	message of "Wed, 13 Nov 2024 09:56:28 +0800")
+Message-ID: <8734jv2xnd.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -63,77 +63,15 @@ Content-Type: text/plain
 
 Baochen Qiang <quic_bqiang@quicinc.com> writes:
 
-> We get report [1] that CPU is running a hot loop in
-> ath11k_debugfs_fw_stats_request():
->
-> 94.60%     0.00%  i3status         [kernel.kallsyms]                 [k] do_syscall_64
->         |
->          --94.60%--do_syscall_64
->                    |
->                     --94.55%--__sys_sendmsg
->                               ___sys_sendmsg
->                               ____sys_sendmsg
->                               netlink_sendmsg
->                               netlink_unicast
->                               genl_rcv
->                               netlink_rcv_skb
->                               genl_rcv_msg
->                               |
->                                --94.55%--genl_family_rcv_msg_dumpit
->                                          __netlink_dump_start
->                                          netlink_dump
->                                          genl_dumpit
->                                          nl80211_dump_station
->                                          |
->                                           --94.55%--ieee80211_dump_station
->                                                     sta_set_sinfo
->                                                     |
->                                                      --94.55%--ath11k_mac_op_sta_statistics
->                                                                ath11k_debugfs_get_fw_stats
->                                                                |
->                                                                 --94.55%--ath11k_debugfs_fw_stats_request
->                                                                           |
->                                                                           |--41.73%--_raw_spin_lock_bh
->                                                                           |
->                                                                           |--22.74%--__local_bh_enable_ip
->                                                                           |
->                                                                           |--9.22%--_raw_spin_unlock_bh
->                                                                           |
->                                                                            --6.66%--srso_alias_safe_ret
->
-> This is because, if for whatever reason ar->fw_stats_done is not set by
-> ath11k_update_stats_event(), ath11k_debugfs_fw_stats_request() won't yield
-> CPU before an up to 3s timeout.
->
-> Add 100ms sleep to avoid CPU burning.
->
-> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.37
->
-> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-> Reported-by: Yury Vostrikov <mon@unformed.ru>
-> Closes: https://lore.kernel.org/all/7324ac7a-8b7a-42a5-aa19-de52138ff638@app.fastmail.com/ # [1]
-> Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-> ---
->  drivers/net/wireless/ath/ath11k/debugfs.c | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/drivers/net/wireless/ath/ath11k/debugfs.c b/drivers/net/wireless/ath/ath11k/debugfs.c
-> index 57281a135dd7..a5e0f2092da5 100644
-> --- a/drivers/net/wireless/ath/ath11k/debugfs.c
-> +++ b/drivers/net/wireless/ath/ath11k/debugfs.c
-> @@ -207,6 +207,9 @@ static int ath11k_debugfs_fw_stats_request(struct ath11k *ar,
->  			break;
->  		}
->  		spin_unlock_bh(&ar->data_lock);
-> +
-> +		/* 100ms is empirical, change if required */
-> +		msleep(100);
->  	}
->  	return 0;
->  }
+> Commit b488c766442f ("ath11k: report rssi of each chain to mac80211 for QCA6390/WCN6855")
+> and commit c3b39553fc77 ("ath11k: add signal report to mac80211 for QCA6390 and WCN6855")
+> call debugfs functions in mac ops. Those functions are no-ops if CONFIG_ATH11K_DEBUGFS is
+> not enabled, thus cause wrong status reported.
 
-Please don't reinvent the wheel. Why not just use completion instead of
-this ugly spinning hack?
+What do you mean exactly with wrong status reported?
+
+mac.c is quite large already, making it even bigger is something I would
+like to avoid.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
