@@ -1,74 +1,74 @@
-Return-Path: <linux-wireless+bounces-15282-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15283-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DA1D9C7EF1
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2024 00:50:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DAE79C7EF7
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2024 00:53:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 125871F21C77
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2024 23:50:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42672B22785
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2024 23:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108B118BB82;
-	Wed, 13 Nov 2024 23:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06FA818C01A;
+	Wed, 13 Nov 2024 23:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KOonnaN/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jADJj31k"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384AC18C01F
-	for <linux-wireless@vger.kernel.org>; Wed, 13 Nov 2024 23:50:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236D018A6A0
+	for <linux-wireless@vger.kernel.org>; Wed, 13 Nov 2024 23:53:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731541808; cv=none; b=u/kvjSoWG3cheTIj/TVb/G6uti7R9mAH/AL9CYsOqapdOVL8j4k+nVWrALWJmoV55P1L2ruFJkgBrLHIQpjJfXiXisscX0LQNo5rLyq5yLCbHohMx43N0EwGMnU0+/Bpkq95vkQqglbK9dYFCmWuFuQLjOkXHdDiC9kyzFlABTw=
+	t=1731542007; cv=none; b=k65ifw9p04NTlItdAGhwuh5oajZtchTDlNmvEuhYH8gDWHmzK+Qe4Doxpiuh4SxCaAFPdCyVsgM4uWu8snTs81+CD05xZnjjtLOkhhiqR0a9Ma65gKDu1W8nVqJiksjduWBFwOU9CHXSdUTfkS38HUy7lXgkP4LVj5QRIlHmhYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731541808; c=relaxed/simple;
-	bh=SX5RQBrVs199g7Qo51fsyXxM1Ai9YfO+CkK8tObeo9c=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:References:
-	 In-Reply-To:Content-Type; b=rD3bPjVnqjQLBP7Fv3Pb45/OOPlqnsVAZocShPMNUjBRELTPoTIoBgrZAyjYWKTPh9UeMYugSHqCje5jJdO5xIEtEBfCzMxQ9997cdrVHNpZ8OJrf8If9LRlTWZhHlaijTVeaIOLMbwRkxie/optct2cKfk7Q66m+iaBs7Bwios=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KOonnaN/; arc=none smtp.client-ip=209.85.167.50
+	s=arc-20240116; t=1731542007; c=relaxed/simple;
+	bh=DCr5X77cAcShmSW6ZHC2JRxKtF/yAaihWtjq3TNiNsc=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=GrRUWVpp0FQwq35uh+mI/zjduix7a3iQ2w+IfYeuUr/4aKzdXp9yd7rqyXsVbFq0/7CGOzwpe6if9ox2O3fSV7r9pCL9Jpu2h9c4NfX2aTPn+bA9WQ2+ae6Xqa8S1JYwu3edyQi5LzHWYH1/sCeqrtbiFl29yq0D/wyOPIiXRwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jADJj31k; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-539f2b95775so1387e87.1
-        for <linux-wireless@vger.kernel.org>; Wed, 13 Nov 2024 15:50:05 -0800 (PST)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a9ed49ec0f1so512666b.1
+        for <linux-wireless@vger.kernel.org>; Wed, 13 Nov 2024 15:53:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731541804; x=1732146604; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1731542004; x=1732146804; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:subject:from:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TbiB3M4CrSuuQ3+5hb3yF9mlQ1appiO/e0gheUQs82w=;
-        b=KOonnaN/ZWp5FQCd05eLjp+4AMm8eRznHKaiXDoEM8RpWUDvXkmZEoc8x+r4k52/jI
-         OscL+pgUSMN3FNvu2CirmFvRxyzHAbUyKAGKkDoYnWMjUhbu1QT+zC7LadoM2TymqqeO
-         Z9rHzW/q6ABioZMguIIs4QDdQ/hqTX/j3veLjWpTQq8YjzQNaBIbMrobqIpMY6RRfgec
-         VzLlORwkRmFPzBdUSTHXDmyCeG84rkxan0z2gs67UC9r4QkxBfeH031oVTD4Ln2EIjCP
-         lN2QE3I3TgliT1xJP5bJ5eO5vBQGrPjeRX8G04ZnkCN1eTew/gPVmdpjsrEQxTz3Up7t
-         NL2w==
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=DCr5X77cAcShmSW6ZHC2JRxKtF/yAaihWtjq3TNiNsc=;
+        b=jADJj31kxeibebJg09e/0ZJkTlttVjsw91gvbH7srIEM/cWfUSW1AYTKp7nBYlrRVJ
+         tm93ovN81aqDgDP9WbAts3vH3ktNw+aIU8uAAfmbEmFZmDKtxPvaKeMRXLtYhFdJGJTn
+         MwiAxMs2GCiUrhq+5oLI7ahpe47HhbFnau2yVwep2d7tTcuSZws2mdR+qSZAQW43NBdh
+         6g78EoFHeA/MUXLPnvLYY+honTDM+V1wBv6IdQHFuVE80KoApkswkK6DPws5dMtNGViI
+         +t1GfTWaSfbQ25JKb7m9Qxdz/GYM4PLC87Wnn32NAMhRJ5s/NaxWP32OIK2SveVbFx+o
+         taXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731541804; x=1732146604;
+        d=1e100.net; s=20230601; t=1731542004; x=1732146804;
         h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:subject:from:user-agent:mime-version:date:message-id
+         :cc:to:subject:from:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TbiB3M4CrSuuQ3+5hb3yF9mlQ1appiO/e0gheUQs82w=;
-        b=Xf7q4rXt4WUOxrYtMfGM4VQkyTFJFlA4z/CaiG3dM2HkXhxhe/XO50WmSuL7eW3K85
-         4vy5Bka4NoL4mDIhZZGGVi55DwcPYjneYPWJaGyPajDbKymHtZZ0XFbUYIoT6pfiNIS5
-         AXtpBf64JcqyeZdM06Dj/q+4jKktnRf/5P9vcbK1QrRBhSsTsjymk3Ch+7CHwFE5BoTj
-         ZYKnnNiguFbQd398VX2W7iSKfsZDjH9bhcao5Fkv+Ixq3ZtAZGlybIVQxIzDLtYXwARM
-         QFuxhrb9jsuQdQkyM+YvQ4tJfW5c1wIMTuVC8cNncG4Um5OIuHJ8ovn6okfxOUlBwWCU
-         DNjw==
-X-Forwarded-Encrypted: i=1; AJvYcCUrCQu3DkglnG+xJf4WtVr+938oa1YtEqL1nEefssEmNSeTZO1ouN+LQYgZrOvgpUo0c2xKptjesMvSn7MsQw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzm/HlWAsz+SecRBBtOG2phNmNDU6a9gNTKhI2/VR2Cs4FzvzUS
-	FoexfluLRLuQzlDMBARdWwOrq2m6eyQJ58k0K8SNqy+CzVpp2nihvfXeqw==
-X-Google-Smtp-Source: AGHT+IHQ5RANP+n8or+6zL+BL0TEFQLSqOpiOJjmhpnpuSyMWYTF7yXtDMdeWqOz4fmbpxqCrW9+EA==
-X-Received: by 2002:a05:6512:3c88:b0:536:53e3:feae with SMTP id 2adb3069b0e04-53da5c2755dmr117612e87.11.1731541803860;
-        Wed, 13 Nov 2024 15:50:03 -0800 (PST)
+        bh=DCr5X77cAcShmSW6ZHC2JRxKtF/yAaihWtjq3TNiNsc=;
+        b=CDsjPNZk0tquJPwsNwx5U5GSKSdVB8i7o55rhTtpYkJNxN3io1q6RgGwPxlsXI+iSV
+         2qVRaaCINzT2h4/ZTSieRpFeZaEltrEKCCiI1Kyx6Ru9gV5RT3CCpD8rxAXMYS9eow7G
+         t/L8gZ3cKMeUIZxHGGlAfCJENbBOYuEQuXZ4VigRXSJeNO5b5gG/CPuNiaFAbM/PjFjB
+         n449oMKpwfa70bVTqIiH23iW3WSLZ6Mv32EddJ/PsI5yfh0e7qGK8RSu+EugBuuRZAnM
+         kXePrLvOoWYAEE7eLhE3VN7zJtjrXGphrWTJxDBJSbRbhCv4BymKjfwUUhoRSgFRTFSj
+         OYBg==
+X-Forwarded-Encrypted: i=1; AJvYcCXJkEyamzE8Vg+YY7MkpT8bojR3jrQDUz95LLmUR/dtj9K2viulZPUnamAcPxHVc5Mz3UX1KJV3/UukbTcYqA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSMeZG4UYKXlAH0TzYTvOyqaCIw4L7wabBu/6XRuHS+3GUDFru
+	Yk0J35jtQH9l7D8bU3InKESPHJ3Nvx+GgRtwokaMFEDF5Rgnl9pr
+X-Google-Smtp-Source: AGHT+IHiV6tPKJU6xFMFKChTRvEoSmEhzOHxZY6ROFGufEmzbeWXU2MDxsZIoFwYfMUj+4BZGq9rtg==
+X-Received: by 2002:a17:907:c29:b0:a9e:b0a3:db75 with SMTP id a640c23a62f3a-aa1b10a4aaemr815730066b.35.1731542004284;
+        Wed, 13 Nov 2024 15:53:24 -0800 (PST)
 Received: from [192.168.0.50] ([79.113.150.231])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9ee0a4c210sm927800466b.78.2024.11.13.15.50.01
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9ee0def026sm930823266b.163.2024.11.13.15.53.21
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 13 Nov 2024 15:50:02 -0800 (PST)
-Message-ID: <f9223971-a679-42ec-b0df-44f60a93a10f@gmail.com>
-Date: Thu, 14 Nov 2024 01:50:00 +0200
+        Wed, 13 Nov 2024 15:53:23 -0800 (PST)
+Message-ID: <cffda704-eba8-4c5b-bdad-5176c3f11af9@gmail.com>
+Date: Thu, 14 Nov 2024 01:53:19 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -77,92 +77,128 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: Re: [PATCH 2/2] wifi: rtw88: usb: Enable RX aggregation for
- 8821au/8812au
-To: Ping-Ke Shih <pkshih@realtek.com>,
+Subject: Re: [PATCH v4 4/7] wifi: rtw88: Add rtw8821a.{c,h}
+To: Kees Bakker <kees@ijzerbout.nl>,
  "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <78ca9bcb-cd48-4c53-8514-7967bad6dfcf@gmail.com>
- <c7f9a5c0-a90f-4ebe-b7a0-401d300bfa13@gmail.com>
- <dbba24025d024b31948dc23cd0c2f772@realtek.com>
+Cc: Ping-Ke Shih <pkshih@realtek.com>
+References: <435af284-0794-48e0-81a5-5a88b3c454bf@gmail.com>
+ <37218648-ada7-4fad-b7bd-d2aee28cefb9@gmail.com>
+ <4737329a-6d7d-4244-92f0-3ec4849f5893@ijzerbout.nl>
 Content-Language: en-US
-In-Reply-To: <dbba24025d024b31948dc23cd0c2f772@realtek.com>
+In-Reply-To: <4737329a-6d7d-4244-92f0-3ec4849f5893@ijzerbout.nl>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 08/11/2024 04:40, Ping-Ke Shih wrote:
-> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->>>
->> USB RX aggregation improves the RX speed on certain ARM systems, like
->> the NanoPi NEO Core2. With RTL8811AU, before: 30 Mbps, after: 224 Mbps.
->>
->> The out-of-tree driver uses aggregation size of 7 in USB 3 mode, but
->> that doesn't work here. rtw88 advertises support for receiving AMSDU
->> in AMPDU, so the AP sends larger frames, up to ~5100 bytes. With a size
->> of 7 RTL8812AU frequently tries to aggregate more frames than will fit
->> in 32768 bytes. Use a size of 6 instead.
+On 12/11/2024 22:29, Kees Bakker wrote:
+> Op 30-10-2024 om 19:28 schreef Bitterblue Smith:
+>> These contain code specific to RTL8821AU.
 >>
 >> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 >> ---
->>  drivers/net/wireless/realtek/rtw88/usb.c | 30 ++++++++++++++++++++++++
->>  1 file changed, 30 insertions(+)
+>> v2:
+>>   - Patch is new in v2.
+>>   - All of this used to be in patch 18/20 in v1.
+>>   - Use "k < 3" instead of "k <= 2" in the IQK code.
+>>   - Replace some while loops with for loops in the IQK code.
+>>   - Use rtw_write8 instead of rtw_write8_mask in
+>>     rtw8821a_coex_cfg_ant_switch. The mask was 0xff.
+>>   - Constify structs/arrays.
 >>
->> diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
->> index 752bca05b9af..9172af63500b 100644
->> --- a/drivers/net/wireless/realtek/rtw88/usb.c
->> +++ b/drivers/net/wireless/realtek/rtw88/usb.c
->> @@ -790,6 +790,32 @@ static void rtw_usb_dynamic_rx_agg_v1(struct rtw_dev *rtwdev, bool enable)
->>         rtw_write16(rtwdev, REG_RXDMA_AGG_PG_TH, val16);
->>  }
+>> v3:
+>>   - No change.
 >>
->> +static void rtw_usb_dynamic_rx_agg_v2(struct rtw_dev *rtwdev, bool enable)
->> +{
->> +       struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
->> +       u8 size, timeout;
->> +       u16 val16;
+>> v4:
+>>   - No change.
+>> ---
+>>   drivers/net/wireless/realtek/rtw88/rtw8821a.c | 1197 +++++++++++++++++
+>>   drivers/net/wireless/realtek/rtw88/rtw8821a.h |   10 +
+>>   2 files changed, 1207 insertions(+)
+>>   create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821a.c
+>>   create mode 100644 drivers/net/wireless/realtek/rtw88/rtw8821a.h
+>>
+>> diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821a.c b/drivers/net/wireless/realtek/rtw88/rtw8821a.c
+>> [...]
+>> +        for (cal_retry = 0; cal_retry < 10; cal_retry++) {
+>> +            /* one shot */
+>> +            rtw_write32(rtwdev, REG_IQK_COM64, 0xfa000000);
+>> +            rtw_write32(rtwdev, REG_IQK_COM64, 0xf8000000);
 >> +
-> 
-> How about a shortcut?
-> 
-> if (!enable) {
-> 	size = 0x0;
-> 	timeout = 0x1;
-> 
-> 	goto rx_agg;
-> }
-> 
->> +       if (rtwusb->udev->speed == USB_SPEED_SUPER) {
->> +               size = 0x6;
->> +               timeout = 0x1a;
->> +       } else {
->> +               size = 0x5;
->> +               timeout = 0x20;
->> +       }
+>> +            mdelay(10);
 >> +
->> +       if (!enable) {
->> +               size = 0x0;
->> +               timeout = 0x1;
->> +       }
+>> +            rtw_write32(rtwdev, REG_RFECTL_A, 0x00000000);
 >> +
-> 
-> rx_agg:
-> 
->> +       val16 = u16_encode_bits(size, BIT_RXDMA_AGG_PG_TH) |
->> +               u16_encode_bits(timeout, BIT_DMA_AGG_TO_V1);
+>> +            for (delay_count = 0; delay_count < 20; delay_count++) {
+>> +                iqk_ready = rtw_read32_mask(rtwdev,
+>> +                                REG_IQKA_END,
+>> +                                BIT(10));
 >> +
->> +       rtw_write16(rtwdev, REG_RXDMA_AGG_PG_TH, val16);
->> +       rtw_write8_set(rtwdev, REG_TXDMA_PQ_MAP, BIT_RXDMA_AGG_EN);
->> +}
+>> +                /* Originally: if (~iqk_ready || delay_count > 20)
+>> +                 * that looks like a typo so make it more explicit
+>> +                 */
+>> +                iqk_ready = true;
+> This looks a bit suspicious. Why ignore the result from rtw_read32_mask()?
+> What do you mean by "Originally ... so make it more explicit"?
 
-Hmm, I don't like it. What about this?
+Yes, that's strange. I'm guessing the practice didn't align
+with the theory--the hardware is not working as expected.
+I tried it, bit 10 of REG_IQKA_END doesn't turn 1 in those
+20 iterations.
 
-	if (!enable) {
-		size = 0x0;
-		timeout = 0x1;
-	} else if (rtwusb->udev->speed == USB_SPEED_SUPER) {
-		size = 0x6;
-		timeout = 0x1a;
-	} else {
-		size = 0x5;
-		timeout = 0x20;
-	}
+"Originally" means as seen in the driver released by Realtek:
+https://github.com/morrownr/8821au-20210708/blob/0b12ea54b7d6dcbfa4ce94eb403b1447565407f1/hal/phydm/halrf/rtl8821a/halrf_iqk_8821a_ce.c#L328
+
+>> +
+>> +                if (iqk_ready)
+>> +                    break;
+>> +
+>> +                mdelay(1);
+>> +            }
+>> +
+>> +            if (delay_count < 20) {
+>> +                /* ============TXIQK Check============== */
+>> +                tx_fail = rtw_read32_mask(rtwdev,
+>> +                              REG_IQKA_END,
+>> +                              BIT(12));
+>> +
+>> +                /* Originally: if (~tx_fail) {
+>> +                 * It looks like a typo, so make it more explicit.
+>> +                 */
+>> +                tx_fail = false;
+> This also looks suspicious. Again, why ignore the result of rtw_read32_mask()?
+>> +
+>> +                if (!tx_fail) {
+>> +                    rtw_write32(rtwdev, REG_RFECTL_A,
+>> +                            0x02000000);
+>> +                    vdf_x[k] = rtw_read32_mask(rtwdev,
+>> +                                   REG_IQKA_END,
+>> +                                   0x07ff0000);
+>> +                    vdf_x[k] <<= 21;
+>> +
+>> +                    rtw_write32(rtwdev, REG_RFECTL_A,
+>> +                            0x04000000);
+>> +                    vdf_y[k] = rtw_read32_mask(rtwdev,
+>> +                                   REG_IQKA_END,
+>> +                                   0x07ff0000);
+>> +                    vdf_y[k] <<= 21;
+>> +
+>> +                    *tx0iqkok = true;
+>> +                    break;
+>> +                }
+>> +
+> The next rtw_write32_mask()'s are dead code because of tx_fail = false
+
+Yes, looks that way.
+
+>> +                rtw_write32_mask(rtwdev, REG_IQC_Y,
+>> +                         0x000007ff, 0x0);
+>> +                rtw_write32_mask(rtwdev, REG_IQC_X,
+>> +                         0x000007ff, 0x200);
+>> +            }
+>> +
+>> +            *tx0iqkok = false;
+>> +        }
+>> +    }
+>> +
+>>
+
 
