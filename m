@@ -1,170 +1,115 @@
-Return-Path: <linux-wireless+bounces-15272-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15273-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CB459C7764
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2024 16:38:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 479869C77D6
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2024 16:52:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D6B0B3E669
-	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2024 15:25:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3BF11F21238
+	for <lists+linux-wireless@lfdr.de>; Wed, 13 Nov 2024 15:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B78681514EE;
-	Wed, 13 Nov 2024 15:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 473D715B130;
+	Wed, 13 Nov 2024 15:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jEpL3axQ"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="J1jbnrB2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2F913B29B;
-	Wed, 13 Nov 2024 15:24:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901A415AAC1;
+	Wed, 13 Nov 2024 15:49:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731511475; cv=none; b=UxDgmxzn8mYByoUX0EX0IWb6/SBoKSpxbvA4do0GiWmw5e5gmlUYjlsS5fj6AdJlu2xQMcEXcuqW3Sf6XIXGbx9TkHewpLuKrcpXk+nVmbxqSVHlIhc3D/B6A30tDKFYZEbUV98Zm/UQkFV6d4IE0+vCVT1HcD7JLdCxy+7kRbA=
+	t=1731512951; cv=none; b=sR1odcfZQ7dOuc3LjR4IV/+gxAorPn3AHDTlTLBkafiscXmR+6f/1Nc/Rm9tggjTxLu/8w+54F5qrqGHgpRf4JQ9Zg8+KFk6G0GY/8GByG2xfNm3s9fdlIMokOmdltvfXsPq6rGBSIV8kH5n0S8+wC1oaMkwThPBMP990bQiEG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731511475; c=relaxed/simple;
-	bh=/Qs+Z4ETO6HBDD0/r4vq50xWIIZZXaOFQHJesHfkTbA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VvKg0AVMOaRLlep0RkdBiY0X4Q6nH3jsF7yXOs960sZI2JzosBYHmLqsHZvHvR+UXxYLuUy+0stepgPrh/9RYxke833rjN9JqM/K8ODeSykfNmro5WvRndl46LgonJFTxdjSTlww0D7tbRnbYL909kzmLZMhV95NdRJX81lFIq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jEpL3axQ; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731511474; x=1763047474;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=/Qs+Z4ETO6HBDD0/r4vq50xWIIZZXaOFQHJesHfkTbA=;
-  b=jEpL3axQI5kZQvhWzQW1WgefqUXhGYEPMJsFyBsVRq8L/IJvsGg1iz6Y
-   wQ/G7eyoNLWHaUiZ5DjzPmVkGItHyIEMyFw0fbpmY0P70iZbtj2gEwVOE
-   56qnSDVS3DT8Dv5v44zSLn/aKTMUDFp439beeHamqBguNpZVolUEmPi3H
-   TCq2GsCIrsO/LxsXJzhzX/vRhmw6hW5weE3a1/QSc5cTVdVyDsSFunPCy
-   OHq+bbOUMDd6pdCoSPtZGD0QG1KqJntWOcyGIZ+GxQhN83Po/VPtDpz0R
-   PHOXz1N+GmYHe69Dt9+vgc/2IaiKX8luo5nkRLDt8GtnZ0Ly66Zp1f3sO
-   w==;
-X-CSE-ConnectionGUID: hufD5M6HQ5ahAp19Uixp0A==
-X-CSE-MsgGUID: N/JRjFZKROO6Qy00GI0UCQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11254"; a="42038092"
-X-IronPort-AV: E=Sophos;i="6.12,151,1728975600"; 
-   d="scan'208";a="42038092"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2024 07:24:33 -0800
-X-CSE-ConnectionGUID: Eu78RBWmRsK0vvilN+bwhQ==
-X-CSE-MsgGUID: u7LspSQgTTqwqS7xt+wrPQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,151,1728975600"; 
-   d="scan'208";a="111214069"
-Received: from spandruv-desk1.amr.corp.intel.com (HELO [10.125.111.237]) ([10.125.111.237])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Nov 2024 07:24:28 -0800
-Message-ID: <decf5296-1c9b-49ab-8556-55a199e214ed@intel.com>
-Date: Wed, 13 Nov 2024 08:24:27 -0700
+	s=arc-20240116; t=1731512951; c=relaxed/simple;
+	bh=+QiNbq/ncgEeIIZal9GuY+cJkz3gyibPzGvuc/TlFtU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=YZwWOYzPOyErSVWYy1Y7eHZfrybBD8A3GBtlWh8jU/wLqYNhE3ksVxgI25O8Xw7USYzcQ44VE/fMCvF8oQiJo+PWow++/RxC1R7N1085XEDRmR3pcA7vyxxlg8jRBCcpvWlACBDOV6pzoufxpYmpgfFTJmH3q+zLS0YXukF7YwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=J1jbnrB2; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=F8q1bykgWYZ3SXIlGtZYQzZ4/a15gbuKD+cXU4a6HBM=;
+	t=1731512949; x=1732722549; b=J1jbnrB2OjGYDsnaVyK3iw5aZozRk8P91DCkPXQEi7nNjq7
+	PXVvelzgJCKycJDlAL0ciy+5xYvas39WuQRMVy9YP3Jr/f8eOji+v1qJTBRfRo675C9rOeUKJT0pP
+	p4BJAodpZazxyhp72Yw09qE1kaxn9awtK4G2UiBOGcSgcyMw6EBzV1ihKMtk/Mr7J63wpfpatIzxz
+	0771coO3h6z5KFSPcAFcPpVFMYGqFClHfwxmfttZx8cxgqKXdvVxxU/iKpHNKLyAi6XLb2QeYSCA1
+	nuuUa0svhFZjinXHu8F7kupoo6M/QZ1Hql+uN375L6QQkhWS3yjTdlZ+FjvaTAnQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1tBFc3-00000003wM5-2Cqm;
+	Wed, 13 Nov 2024 16:49:00 +0100
+Message-ID: <6b59e7a5f90b85dfc9146fa2cbdfe56c0a307a3e.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: cfg80211: fix WARN_ON during CAC cancelling
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Aditya Kumar Singh <quic_adisi@quicinc.com>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Wed, 13 Nov 2024 16:48:58 +0100
+In-Reply-To: <383a616d-50c7-4538-9e94-fc8526405c94@quicinc.com>
+References: <20241113-mlo_dfs_fix-v1-1-e4326736347b@quicinc.com>
+	 <d0eb18d4a302e4be5251106fbfa8f5e10dd36477.camel@sipsolutions.net>
+	 <383a616d-50c7-4538-9e94-fc8526405c94@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 04/11] net/ntb: Use never-managed version of pci_intx()
-To: Philipp Stanner <pstanner@redhat.com>, Damien Le Moal
- <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>,
- Basavaraj Natikar <basavaraj.natikar@amd.com>, Jiri Kosina
- <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alex Dubov
- <oakad@yahoo.com>, Sudarsana Kalluru <skalluru@marvell.com>,
- Manish Chopra <manishc@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rasesh Mody <rmody@marvell.com>, GR-Linux-NIC-Dev@marvell.com,
- Igor Mitsyanko <imitsyanko@quantenna.com>,
- Sergey Matyukevich <geomatsi@gmail.com>, Kalle Valo <kvalo@kernel.org>,
- Sanjay R Mehta <sanju.mehta@amd.com>,
- Shyam Sundar S K <Shyam-sundar.S-k@amd.com>, Jon Mason <jdmason@kudzu.us>,
- Allen Hubbe <allenbh@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
- Alex Williamson <alex.williamson@redhat.com>, Juergen Gross
- <jgross@suse.com>, Stefano Stabellini <sstabellini@kernel.org>,
- Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
- Mario Limonciello <mario.limonciello@amd.com>, Chen Ni <nichen@iscas.ac.cn>,
- Ricky Wu <ricky_wu@realtek.com>, Al Viro <viro@zeniv.linux.org.uk>,
- Breno Leitao <leitao@debian.org>, Kevin Tian <kevin.tian@intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Mostafa Saleh <smostafa@google.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Yi Liu <yi.l.liu@intel.com>,
- Kunwu Chan <chentao@kylinos.cn>, Ankit Agrawal <ankita@nvidia.com>,
- Christian Brauner <brauner@kernel.org>,
- Reinette Chatre <reinette.chatre@intel.com>,
- Eric Auger <eric.auger@redhat.com>, Ye Bin <yebin10@huawei.com>
-Cc: linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-input@vger.kernel.org, netdev@vger.kernel.org,
- linux-wireless@vger.kernel.org, ntb@lists.linux.dev,
- linux-pci@vger.kernel.org, kvm@vger.kernel.org,
- xen-devel@lists.xenproject.org
-References: <20241113124158.22863-2-pstanner@redhat.com>
- <20241113124158.22863-6-pstanner@redhat.com>
-Content-Language: en-US
-From: Dave Jiang <dave.jiang@intel.com>
-In-Reply-To: <20241113124158.22863-6-pstanner@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-malware-bazaar: not-scanned
 
+On Wed, 2024-11-13 at 20:13 +0530, Aditya Kumar Singh wrote:
+> On 11/13/24 14:59, Johannes Berg wrote:
+> > >=20
+> > > diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
+> > > index a5eb92d93074e6ce1e08fcc2790b80cf04ff08f8..2a932a036225a3e0587cf=
+5c18a4e80e91552313b 100644
+> > > --- a/net/wireless/mlme.c
+> > > +++ b/net/wireless/mlme.c
+> > > @@ -1112,10 +1112,6 @@ void cfg80211_cac_event(struct net_device *net=
+dev,
+> > >   	struct cfg80211_registered_device *rdev =3D wiphy_to_rdev(wiphy);
+> > >   	unsigned long timeout;
+> > >  =20
+> > > -	if (WARN_ON(wdev->valid_links &&
+> > > -		    !(wdev->valid_links & BIT(link_id))))
+> > > -		return;
+> > > -
+> > >   	trace_cfg80211_cac_event(netdev, event, link_id);
+> > >  =20
+> > >   	if (WARN_ON(!wdev->links[link_id].cac_started &&
+> > >=20
+> >=20
+> > This really doesn't seem right.
+> >=20
+> > Perhaps the order in teardown should be changed?
+>=20
+> I thought about it but couldn't really come down to a convincing approach=
+.
+>=20
+> The thing is when CAC in ongoing and hostapd process is killed, there is=
+=20
+> no specific event apart from link delete which hostapd sends.
+>=20
 
+so we do have link removal, why doesn't that work?
 
-On 11/13/24 5:41 AM, Philipp Stanner wrote:
-> pci_intx() is a hybrid function which can sometimes be managed through
-> devres. To remove this hybrid nature from pci_intx(), it is necessary to
-> port users to either an always-managed or a never-managed version.
-> 
-> hw/amd and how/intel enable their PCI-Device with pci_enable_device().
-> Thus, they need the never-managed version.
-> 
-> Replace pci_intx() with pci_intx_unmanaged().
-> 
-> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-> Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com> #for ntb_hw_amd.c
+> Will it be=20
+> okay to add a new NL command to stop radar detection? Something opposite=
+=20
+> of what start_radar_detection command does?
+>=20
 
-Acked-by: Dave Jiang <dave.jiang@intel.com> # for ntb_hw_gen1.c
-> ---
->  drivers/ntb/hw/amd/ntb_hw_amd.c    | 4 ++--
->  drivers/ntb/hw/intel/ntb_hw_gen1.c | 2 +-
->  2 files changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/ntb/hw/amd/ntb_hw_amd.c b/drivers/ntb/hw/amd/ntb_hw_amd.c
-> index d687e8c2cc78..b146f170e839 100644
-> --- a/drivers/ntb/hw/amd/ntb_hw_amd.c
-> +++ b/drivers/ntb/hw/amd/ntb_hw_amd.c
-> @@ -791,7 +791,7 @@ static int ndev_init_isr(struct amd_ntb_dev *ndev,
->  err_msi_enable:
->  
->  	/* Try to set up intx irq */
-> -	pci_intx(pdev, 1);
-> +	pci_intx_unmanaged(pdev, 1);
->  
->  	rc = request_irq(pdev->irq, ndev_irq_isr, IRQF_SHARED,
->  			 "ndev_irq_isr", ndev);
-> @@ -831,7 +831,7 @@ static void ndev_deinit_isr(struct amd_ntb_dev *ndev)
->  		if (pci_dev_msi_enabled(pdev))
->  			pci_disable_msi(pdev);
->  		else
-> -			pci_intx(pdev, 0);
-> +			pci_intx_unmanaged(pdev, 0);
->  	}
->  }
->  
-> diff --git a/drivers/ntb/hw/intel/ntb_hw_gen1.c b/drivers/ntb/hw/intel/ntb_hw_gen1.c
-> index 079b8cd79785..9ad9d7fe227e 100644
-> --- a/drivers/ntb/hw/intel/ntb_hw_gen1.c
-> +++ b/drivers/ntb/hw/intel/ntb_hw_gen1.c
-> @@ -445,7 +445,7 @@ int ndev_init_isr(struct intel_ntb_dev *ndev,
->  
->  	/* Try to set up intx irq */
->  
-> -	pci_intx(pdev, 1);
-> +	pci_intx_unmanaged(pdev, 1);
->  
->  	rc = request_irq(pdev->irq, ndev_irq_isr, IRQF_SHARED,
->  			 "ndev_irq_isr", ndev);
+No, obviously not.
 
+johannes
 
