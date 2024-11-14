@@ -1,98 +1,95 @@
-Return-Path: <linux-wireless+bounces-15296-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15297-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D2F39C8786
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2024 11:29:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D124C9C8909
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2024 12:34:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E603D289721
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2024 10:29:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8493A2814C9
+	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2024 11:34:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E24481F893E;
-	Thu, 14 Nov 2024 10:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D81D21F7799;
+	Thu, 14 Nov 2024 11:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Jm2qBYMn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GlE02iS+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0FE1FA247;
-	Thu, 14 Nov 2024 10:19:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43DC18B49F
+	for <linux-wireless@vger.kernel.org>; Thu, 14 Nov 2024 11:34:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731579542; cv=none; b=Vo+f89riijv6zU9Cs/A4/oD8NG0boHJyz7rd7xjLL2unfC1QA5XUEZPJIsUI2cL7SasDxvWVi3JHRCtWKY/hPETVCT2SrblrnN78adjSrJRHJn2j7U9v0867vVMK3zS6HfPwVVncv73PsM7T2YJd7Sce+KLc4gcKi2UP4a55q2I=
+	t=1731584048; cv=none; b=fsu9EmUs3iRctIvNdpOzxGbqNl5juOuCTOiEByj7BjiLZzRWZIUFAL80RfxOtNgHpkWjMYDXvCGM7ljXglqVRuLgv5n8qIwbBLbdQAE+2SfPIR7Gu5Bl5z2vKBHO0NgSRukpClHwf1zxRh5xMcG73ccxi+FYRZqMbJVca2YIrDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731579542; c=relaxed/simple;
-	bh=RjbxQmoUMvyuuDnTElsRG7JQbkfwHHxLkpG1Mksd7GQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=darYKM3/aV90Oh3vPEEev/lp7SP/nGlmxLG37j0pbihrHICf1Khe3c6NZq4IGf4guUg67j3+VPle5dDLimF+d1ydS5MCb7hxSV/TUi/cnB7Lly5Hk9AQY6+/GvpH20Fo6JDKwgLMgLSe9ApydxGvw7QdOdlyb/zQ7awwjAFnWrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Jm2qBYMn; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=RjbxQmoUMvyuuDnTElsRG7JQbkfwHHxLkpG1Mksd7GQ=;
-	t=1731579541; x=1732789141; b=Jm2qBYMngGeHhPq9tD9Dkn0U+mNww09OdRRwawAr9/nH0HH
-	rLKHRDWtPOCe4s5/fvlXzxPFTechSRWqeIZK3m76k/l4DTMu22rrYwXuOMe7oD0h19f+oo0GXFq9X
-	1kEOpSJjy32yaefSySxJERKweEyYMxBe4FV5+V451R6fbiJ2r258r9SWGVW8veyW71KWVRrOgBKOk
-	9UdxlOA8Uq2/moogA58AiPmjvR7y3lZrwp/NaRRB/XyfG5ddm4aaFqcw0ZwM0/kLpOHnOgFIrIpFr
-	umzpZqUSoKaUxrJPdToNkSmk/CSieBytT9Ij5Xlf0ClVI8hYuzyw+9rk/zyJ+2cw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1tBWwE-00000004h4d-2oLK;
-	Thu, 14 Nov 2024 11:18:58 +0100
-Message-ID: <35bee1c6146cf261ad6b47f585a5b454ad0763ec.camel@sipsolutions.net>
-Subject: Re: [REGRESSION] The iwl4965 driver broke somewhere between 6.10.10
- and 6.11.5 (probably 6.11rc)
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Linux regressions mailing list <regressions@lists.linux.dev>, Kalle Valo
-	 <kvalo@kernel.org>, Alf Marius <post@alfmarius.net>
-Cc: Andrey Batyiev <batyiev@gmail.com>, linux-wireless@vger.kernel.org
-Date: Thu, 14 Nov 2024 11:18:57 +0100
-In-Reply-To: <9fa869ddec6c22c0bb299676e27b7b33d3e3b5d7.camel@sipsolutions.net>
-References: <60f752e8-787e-44a8-92ae-48bdfc9b43e7@app.fastmail.com>
-	 <87wmhg61yp.fsf@kernel.org>
-	 <CAEQQxWx7PXw3O_j1FWn7G+DhUUXt3sEB0qDyA2+udRQ6r28FUA@mail.gmail.com>
-	 <4f689121-f2c1-45ec-bd5b-105a770af935@app.fastmail.com>
-	 <87ttcauv7x.fsf@kernel.org>
-	 <5f64abc6-017f-4283-bf08-dba1aea28e9d@leemhuis.info>
-	 <9fa869ddec6c22c0bb299676e27b7b33d3e3b5d7.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1731584048; c=relaxed/simple;
+	bh=aItY16j4fLjubP3L0+j69GJGChn5EcSz3OuryUOJVB8=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=k3ldaQfz3a2LNy2zvqN4YunDkP29nQ8EsUPk6ROvlyrdm/m4qEQnbx9CAwIdN4dsLNXmcCxaQ745M6Icmv/7Kb2sGXIBVy6UIa9gEPTJUF6Url2hfuiZWgf9z5KYhagheQIo9w7iggiMIr33fX4uQIfytsV43quLjgVkAT1cKJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GlE02iS+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7620CC4CECD;
+	Thu, 14 Nov 2024 11:34:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731584048;
+	bh=aItY16j4fLjubP3L0+j69GJGChn5EcSz3OuryUOJVB8=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=GlE02iS++DBIjn2Sb7fQzS2AgZgc84iVkvbpe38Z7Bt87G1Rx5PyeqhLhKk7l440W
+	 NywP223zwFUteRc/QECV/6ALX0Vkfm0aWbqf+J9qZW9apWoaCn985fVdLtwAKOkUhR
+	 mgMwPZbQobrMrDA14hMNIzWYD8jdUte+IfIQEBiAELxZ6rh4wB0sEmKxF8C2LOUKP1
+	 34RY8zjOcmW+OcuSTnZOCDQu//6nPTZtcm9NFIsMlPozW5TEEjXF6UR0PddhBTH/eU
+	 4pfXiiK70GvyWZ9jXV8e2hOz/h775Z365UPyzN7KsjSNk/bQ0FRd0MnSIs0kBitCyp
+	 jcnlqqBpjr9Cw==
+From: Kalle Valo <kvalo@kernel.org>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: <ath11k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 3/6] wifi: ath11k: move some firmware stats related
+ functions outside of debugfs
+References: <20241113015631.3105-1-quic_bqiang@quicinc.com>
+	<20241113015631.3105-4-quic_bqiang@quicinc.com>
+	<8734jv2xnd.fsf@kernel.org>
+	<7917a344-82aa-4ef8-9558-554743c5dd15@quicinc.com>
+Date: Thu, 14 Nov 2024 13:34:05 +0200
+In-Reply-To: <7917a344-82aa-4ef8-9558-554743c5dd15@quicinc.com> (Baochen
+	Qiang's message of "Thu, 14 Nov 2024 14:05:28 +0800")
+Message-ID: <878qtm1236.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain
 
-On Thu, 2024-11-14 at 10:52 +0100, Johannes Berg wrote:
-> On Thu, 2024-11-14 at 10:24 +0100, Linux regression tracking (Thorsten
-> Leemhuis) wrote:
-> >=20
-> > Sigh.
->=20
-> Please. You really should consider adjusting your attitude on all this.=
-=C2=A0
+Baochen Qiang <quic_bqiang@quicinc.com> writes:
 
-Also, btw, you're always the most vocal about this, and pretty much the
-only feedback at all.
+> On 11/13/2024 7:14 PM, Kalle Valo wrote:
+>> Baochen Qiang <quic_bqiang@quicinc.com> writes:
+>> 
+>>> Commit b488c766442f ("ath11k: report rssi of each chain to mac80211 for QCA6390/WCN6855")
+>>> and commit c3b39553fc77 ("ath11k: add signal report to mac80211 for QCA6390 and WCN6855")
+>>> call debugfs functions in mac ops. Those functions are no-ops if CONFIG_ATH11K_DEBUGFS is
+>>> not enabled, thus cause wrong status reported.
+>> 
+>> What do you mean exactly with wrong status reported?
+>
+> ah, thanks for pointing that. actually no wrong values reported, since
+> we are not even reporting anything in that case. will be accurate.
+>
+>> 
+>> mac.c is quite large already, making it even bigger is something I would
+>> like to avoid.
+>
+> then can you suggest any other place?
 
-As a result (at least to me), you're creating a reverse incentive. Since
-I'm going to get shouted at all the time _anyway_, why bother putting in
-any extra effort some of the time (realistically can't do it all or even
-most of the time). Just do the simplest thing possible and throw it into
-the tree that'll make it upstream somewhere without any risks (like
-here, what if wireless won't get pulled quickly, Jakub had been on
-vacation recently and things got delayed, and if you miss then it's a
-lot of work, etc.)
+I first need to understand the issue we are fixing. Is it ath11k does
+not report rssi and signal via ath11k_mac_op_sta_statistics() when
+CONFIG_ATH11K_DEBUGFS is disabled?
 
-johannes
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
