@@ -1,96 +1,132 @@
-Return-Path: <linux-wireless+bounces-15324-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15325-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6D9A9CDD10
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Nov 2024 11:55:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B78B9CDE3A
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Nov 2024 13:26:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 758F8B24CFF
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Nov 2024 10:55:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0337D1F21920
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Nov 2024 12:26:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9325A1B3920;
-	Fri, 15 Nov 2024 10:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774B01B2195;
+	Fri, 15 Nov 2024 12:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="Lt6LSMoK"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="gv1bfRIR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982B3136338;
-	Fri, 15 Nov 2024 10:55:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7850C1A3035
+	for <linux-wireless@vger.kernel.org>; Fri, 15 Nov 2024 12:26:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731668144; cv=none; b=Abxmzbb+KAIY0WLjADVha/K+a9PEkj2AHVQo7iV25hmwhpb+/vCSgm/nw1USGK/Nc7rAu86IsvTcQQ4A0U36MHVV/Ig4/f11UAwlXOvwaKfzBQOp+y/agT2MTG6N6Ys7Fa1RGL+WbnZ3nObOWG2nnbD52dXeTOOe5FwzC6ehvEk=
+	t=1731673607; cv=none; b=if3CIns8eYwBQSlo9W92TAX+d8dKz7Dwo0TRDwDJnxmMkgQbdM6MqdxaOq3B9fjbnu5F0I8VKrG+m8IpaqtSI3TigYIKnZSfuOyAeXBeGuWK0dCbIRzx9Uajtmtk1tQuEBqyQUbW0pe7eF5UKo0/i+z+O8plIDIrDl+8HNO3wQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731668144; c=relaxed/simple;
-	bh=7pJa2BsQ8b5xkSAQMM5pofcqK61ow5jhOB4wej/1srM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b+JJqbcIo8SXl63V8MfQiQ0kYUHbA6lxjAYNBYEYNy8aixNtGsom0ysgvHpElX+f2YLNHm1PRZ6lidylPscU+KXiKH0jCLSOjzoD4wUaPfXMe1y0Rgi99kjsDl3YARmTNSSZDBNyB6+hppdjvopJ3TZb6jvbV2C2SXevnkP8OLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=Lt6LSMoK; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=7pJa2BsQ8b5xkSAQMM5pofcqK61ow5jhOB4wej/1srM=;
-	t=1731668142; x=1732100142; b=Lt6LSMoKrF+HHJcBHi7hwxnvRpeeffNrChm3UNGeH2hbhsi
-	7NlFVacaRYW5iWUTFf7bF8XJuPWgoE5JTnxLaQwiZz7Sm3OVMGswnznnh64B25bZ06RCfcLOx+eTo
-	qvxdz30kzaxLhEGFFFG5oHYH5mjEqoqcgqvxBMICw1GGM5PjN19lq9wI45tH/O36zzDKjwLYQaL3u
-	RyavIxeOAIuHvV6wrDmt7P3oAGLheD8CBkBMqkZ6taIkLEmRyxqo98qCaNEWAzL2DWgBsbFb1Ir+r
-	vB9U1vRqFj6a7M+ZGfUKssz5apYzHxcyD8xO6rajc+sbRh/scvldJWrruATS0rRw==;
-Received: from [2a02:8108:8980:2478:87e9:6c79:5f84:367d]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1tBtzG-0008Ij-PB; Fri, 15 Nov 2024 11:55:38 +0100
-Message-ID: <3fac9b27-829c-4357-8d82-2b5789b35216@leemhuis.info>
-Date: Fri, 15 Nov 2024 11:55:28 +0100
+	s=arc-20240116; t=1731673607; c=relaxed/simple;
+	bh=zK/gBPIfrVwkQqupyvcan+fwZGCtuc/pTr/BrdVlrWI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fSPvKa7P/z7rPgpEuyMMOnTOZoiLhfKtvTdDm+2H8CM+Kj+ScvN6clwfQuhBj9O3xeEe6/qC/oRjh6RD64iYmKfygqGgXrz3h6AONRiITZSU9KhAgN0V5uTnBGjwZb0a7t8kTB69oTxS2Zqdpavj9rXR4IWsZFBf0YgLzFmX2/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=gv1bfRIR; arc=none smtp.client-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=khAASZaDv9hYkam4PTNQ47g8zgtNGqn0oXBf136erdk=; b=gv1bfRIReEGVH1sBrbuVY5cFu+
+	mWh8+3KgQsQrLr/syZYj2NeRnST2zEJ/3Ll5dmO8D5YDJqLc88fYMovK75s1cpmJZoL4dYU5ooglo
+	jzrKNhZEDH69Bk5ALboCzkX2vLosIeViT+vxOe7CqiPfHXMvit/1FP4O0kXeeU3t7lfc=;
+Received: from p4ff1321f.dip0.t-ipconnect.de ([79.241.50.31] helo=Maecks.lan)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+	(Exim 4.96)
+	(envelope-from <nbd@nbd.name>)
+	id 1tBuyR-008302-0g;
+	Fri, 15 Nov 2024 12:58:51 +0100
+From: Felix Fietkau <nbd@nbd.name>
+To: linux-wireless@vger.kernel.org
+Cc: johannes@sipsolutions.net,
+	syzbot+9ea265d998de25ac6a46@syzkaller.appspotmail.com
+Subject: [PATCH] wifi: mac80211: fix vif addr when switching from monitor to station
+Date: Fri, 15 Nov 2024 12:58:50 +0100
+Message-ID: <20241115115850.37449-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] The iwl4965 driver broke somewhere between 6.10.10
- and 6.11.5 (probably 6.11rc)
-To: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@kernel.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Johannes Berg <johannes@sipsolutions.net>
-Cc: Andrey Batyiev <batyiev@gmail.com>, linux-wireless@vger.kernel.org,
- Greg KH <gregkh@linuxfoundation.org>,
- Linux regressions mailing list <regressions@lists.linux.dev>,
- Kalle Valo <kvalo@kernel.org>, Alf Marius <post@alfmarius.net>
-References: <60f752e8-787e-44a8-92ae-48bdfc9b43e7@app.fastmail.com>
- <87wmhg61yp.fsf@kernel.org>
- <CAEQQxWx7PXw3O_j1FWn7G+DhUUXt3sEB0qDyA2+udRQ6r28FUA@mail.gmail.com>
- <4f689121-f2c1-45ec-bd5b-105a770af935@app.fastmail.com>
- <87ttcauv7x.fsf@kernel.org>
- <5f64abc6-017f-4283-bf08-dba1aea28e9d@leemhuis.info>
- <9fa869ddec6c22c0bb299676e27b7b33d3e3b5d7.camel@sipsolutions.net>
- <8a647709-8c33-4ac9-92da-bbf83ae2ed93@leemhuis.info> <87bjyhr1s9.fsf@toke.dk>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-MW
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <87bjyhr1s9.fsf@toke.dk>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1731668142;1df3a95b;
-X-HE-SMSGID: 1tBtzG-0008Ij-PB
 
-On 14.11.24 21:36, Toke Høiland-Jørgensen wrote:
-> I understand your frustration, certainly, and I get that you are tasked
-> with a thankless job in trying to improve the regression handling
-> situation. However, I also agree with Johannes that by letting your
-> frustration shine through [...]
+Since adding support for opting out of virtual monitor support, a zero vif
+addr was used to indicate passive vs active monitor to the driver.
+This would break the vif->addr when changing the netdev mac address before
+switching the interface from monitor to sta mode.
+Fix the regression by adding a separate flag to indicate whether vif->addr
+is valid.
 
-Thx for the mail. Yeah, you are right, apparently my frustration took
-more hold of me than I was aware of/willing to admit.
+Reported-by: syzbot+9ea265d998de25ac6a46@syzkaller.appspotmail.com
+Fixes: 9d40f7e32774 ("wifi: mac80211: add flag to opt out of virtual monitor support")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ include/net/mac80211.h |  3 +++
+ net/mac80211/iface.c   | 11 ++++-------
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-Apologies to everyone I steered up, I'll try to do better.
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 7e953720821b..2282cce7f732 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -1987,6 +1987,8 @@ enum ieee80211_neg_ttlm_res {
+  * @neg_ttlm: negotiated TID to link mapping info.
+  *	see &struct ieee80211_neg_ttlm.
+  * @addr: address of this interface
++ * @addr_valid: indicates if the address is actively used. Set to false for
++ *	passive monitor interfaces, true in all other cases.
+  * @p2p: indicates whether this AP or STA interface is a p2p
+  *	interface, i.e. a GO or p2p-sta respectively
+  * @netdev_features: tx netdev features supported by the hardware for this
+@@ -2026,6 +2028,7 @@ struct ieee80211_vif {
+ 	u16 valid_links, active_links, dormant_links, suspended_links;
+ 	struct ieee80211_neg_ttlm neg_ttlm;
+ 	u8 addr[ETH_ALEN] __aligned(2);
++	bool addr_valid;
+ 	bool p2p;
+ 
+ 	u8 cab_queue;
+diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
+index a8fbedd530f4..551da6145a67 100644
+--- a/net/mac80211/iface.c
++++ b/net/mac80211/iface.c
+@@ -278,13 +278,8 @@ static int _ieee80211_change_mac(struct ieee80211_sub_if_data *sdata,
+ 	ret = eth_mac_addr(sdata->dev, sa);
+ 
+ 	if (ret == 0) {
+-		if (check_dup) {
+-			memcpy(sdata->vif.addr, sa->sa_data, ETH_ALEN);
+-			ether_addr_copy(sdata->vif.bss_conf.addr, sdata->vif.addr);
+-		} else {
+-			memset(sdata->vif.addr, 0, ETH_ALEN);
+-			memset(sdata->vif.bss_conf.addr, 0, ETH_ALEN);
+-		}
++		memcpy(sdata->vif.addr, sa->sa_data, ETH_ALEN);
++		ether_addr_copy(sdata->vif.bss_conf.addr, sdata->vif.addr);
+ 	}
+ 
+ 	/* Regardless of eth_mac_addr() return we still want to add the
+@@ -1323,6 +1318,8 @@ int ieee80211_do_open(struct wireless_dev *wdev, bool coming_up)
+ 		}
+ 	}
+ 
++	sdata->vif.addr_valid = sdata->vif.type != NL80211_IFTYPE_MONITOR ||
++				(sdata->u.mntr.flags & MONITOR_FLAG_ACTIVE);
+ 	switch (sdata->vif.type) {
+ 	case NL80211_IFTYPE_AP_VLAN:
+ 		/* no need to tell driver, but set carrier and chanctx */
+-- 
+2.47.0
 
-Ciao, Thorsten
 
