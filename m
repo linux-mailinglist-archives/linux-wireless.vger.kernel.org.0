@@ -1,328 +1,156 @@
-Return-Path: <linux-wireless+bounces-15308-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15309-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 131819C95CD
-	for <lists+linux-wireless@lfdr.de>; Fri, 15 Nov 2024 00:08:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE0909CD4C8
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Nov 2024 01:46:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7585284B1A
-	for <lists+linux-wireless@lfdr.de>; Thu, 14 Nov 2024 23:08:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 364D81F2297F
+	for <lists+linux-wireless@lfdr.de>; Fri, 15 Nov 2024 00:46:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56881B219B;
-	Thu, 14 Nov 2024 23:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D81147082C;
+	Fri, 15 Nov 2024 00:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ACQ9zNLb"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QOnTTM3u";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="B6FonATM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDFAC1B218F
-	for <linux-wireless@vger.kernel.org>; Thu, 14 Nov 2024 23:07:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06C81EA84;
+	Fri, 15 Nov 2024 00:45:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731625680; cv=none; b=GZXj+y0C4AmSpyEOdR0pH9+LGQ9BcYLKcpjmkEtVRavDkerYd/K/4jPLgx+0a0lrXnThHQkvXNf9CSNYDSBN0r5F1TwIm365Mc9yfDot/qU+/ifZ+d3BiXQnpwQHlh9aB29MK8QmaLuRQhyaOj9fbPZ6qZLvO0yfWb/Kt7V9q5o=
+	t=1731631561; cv=none; b=A83j3i7xN++23o4chNbTfvFs8CMc7YwnQBkJAq+Wf5QoD2bCxA19dQssx+pGzSvwhuod/jjjPLDBUmVTcwC35Ye/TcShPQTQFDN0ylwM3b1VwOfZir92VlhiK/S0aABfBsHKY0I7RqAb8+ns/0swK2QfIq+VZ8vObohswGuT4v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731625680; c=relaxed/simple;
-	bh=IV57Jts+oFVcI9FNsSNDKTh4IhqBP0DIGV+Wzyzw3hM=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=V1AB6PgNQLpLMjXphH51dSE7Ukma5E7eRA82mKWlXmbB5F8EF2ue/zgye+8Xw7O6czdp6tXZilNHwTRFqhdiM8tLRAuKAUv9/vAs8aebhg/Qu1yKLd9UmAc8YUp72Mty/wwubMB8nA1vsGUwuqmSY3iB67oR89NloB1ZWPj+LUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ACQ9zNLb; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a9a0ec0a94fso177344166b.1
-        for <linux-wireless@vger.kernel.org>; Thu, 14 Nov 2024 15:07:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731625677; x=1732230477; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=MgJmzUrXPTEJvqLp3f27cCPRtCUqVYWqFMfFL6djntg=;
-        b=ACQ9zNLbpG9aQbMtAytWA0cWQUYpWLx0aMKxF+UTPsxcxH5ijfaFifeo/H/RhzOVv1
-         fqQpd9/l9MU+LDj7v1bkDB4P68Rx3Vy5g1A6E0u83liN+OmZu19Xmy90ICFa0DVatqkY
-         b7Xs3Wd9ou21lwYGj0fBIXCbd18kUGQhMfICK/nbLTcUg0tc0I7KIAn94jfjKhnQShaW
-         pcQoH2h6x2tuzKO1glXxnHsUfCIkpwHbcKpVjQC35N24984id0Ud+cmzuATA2FdtgFgU
-         qhEG+Rd3HfFImH45fBEcYgpZUPsGz+oOjc+8X2Vf7kS66WD+E50ZleSh1f719WhXeIK0
-         iRjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731625677; x=1732230477;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MgJmzUrXPTEJvqLp3f27cCPRtCUqVYWqFMfFL6djntg=;
-        b=IehlFVbFOKfU42IXwEmGpr14j2qNStiDLMZT9QsrMFMfAsx/hL67g6ruENicSteeDW
-         LV0rts2OZwuN1Tl32FIpYojSoPcZ5LcEHGKC8n9pNtH/FTxfskduQV9xnRK6Vme1Ec+W
-         aLpIObQAi1YS8EfKEdZlbs85fshRAyppq1BPZV7ECNqma83AGRd7YHsioveSCNbNI+T+
-         cmSlC75JN/+Oe2Y7BU/BpvT1b7DhLnLC9/p7Q1fHzgSyaPbqmuBxF4CHFqJFiNtc5FJh
-         LSdCxsgLg/NMPuCAvmilEDLY3bR0rLPk3rlrHS31mB6oGNsPmD7M+3NUPlFJS9DxOlwb
-         M2YA==
-X-Gm-Message-State: AOJu0YzB6Ihym6SFobR9uwXQ5zT/fFhv0aAhZ2rkh5bDJ1v3KwYavm/F
-	nCI3Km3dqQQfA1kmQn1xa37/h0FB3CJ3iryrEuZ8bxzZkIb2R01yhSqTIw==
-X-Google-Smtp-Source: AGHT+IG+iAdb6zAs4pBbBKtad/ZAPgqf6hiqHmMGeQrO+1Z+NHkXPtqdfI3U4JGJd4mNaTO7dIOLNA==
-X-Received: by 2002:a17:907:3e0c:b0:a9a:825:4c46 with SMTP id a640c23a62f3a-aa4834826b8mr29873166b.28.1731625676707;
-        Thu, 14 Nov 2024 15:07:56 -0800 (PST)
-Received: from [192.168.0.50] ([79.113.150.231])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa20e046ea8sm111069266b.169.2024.11.14.15.07.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Nov 2024 15:07:56 -0800 (PST)
-Message-ID: <4e83ae71-60e2-4f24-a251-18cd59543d6d@gmail.com>
-Date: Fri, 15 Nov 2024 01:07:53 +0200
+	s=arc-20240116; t=1731631561; c=relaxed/simple;
+	bh=wmlctHEns5HH4kuTaBjX2JNcI1LzVOydASF++UAbmDY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=J6ZP0fgAXh4pOIEA1FkAq4AS0llScqZOcz1AFijov8qEZzxv8WsbPDx/Ysryx6HFPAJ+feXIKVa1r0rw14OT4qY+TBKQ61q5SKlpO5AknhQyKbssvUh5QEEgm4KlB4mbi//55EIJH97WKEv6GbGkSjG6oaOUMmKQSUhleMVQREc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QOnTTM3u; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=B6FonATM; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1731631556;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wmlctHEns5HH4kuTaBjX2JNcI1LzVOydASF++UAbmDY=;
+	b=QOnTTM3upVgvLOqHHkULAR/Sd+IXv2/jwWShAxdu/d9Ou3VRQKwRFQcKkxYFlQbNCHuDKC
+	qmtZIl1QGU9LvuaVEHVi6mN8leBtPwfqyHUmV8sQ4okR7sVQBV4nqtQqHtK44NZWa+achm
+	KJtmcrXFernLrXFh8br79W+BBZcbUPnfW6G5ETbNxP5n4/wMMrok/VJbm/1lHIAX31JScD
+	X4TbcxeFRb0UaQ4ZOxoYrise9V26pZtUHGM6uIGxT7DAWZfdtWm58X+EkXZorarJx6j3sJ
+	jv7CYR1gtAzR1m3FucHfJnoCrMS9Ay9Ifg0KTixSjK7w1MQSxCZuE9xVfV0ltA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1731631556;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wmlctHEns5HH4kuTaBjX2JNcI1LzVOydASF++UAbmDY=;
+	b=B6FonATMAX4OxdtMR8JNBP8qWfBOIV1vFazP675PCOfWlXztCY+avvBu11Vcb9coe6V9WE
+	q7IVbFH9tV+539Aw==
+To: Philipp Stanner <pstanner@redhat.com>, Damien Le Moal
+ <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, Basavaraj Natikar
+ <basavaraj.natikar@amd.com>, Jiri Kosina <jikos@kernel.org>, Benjamin
+ Tissoires <bentiss@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Alex Dubov <oakad@yahoo.com>,
+ Sudarsana Kalluru <skalluru@marvell.com>, Manish Chopra
+ <manishc@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rasesh Mody
+ <rmody@marvell.com>, GR-Linux-NIC-Dev@marvell.com, Igor Mitsyanko
+ <imitsyanko@quantenna.com>, Sergey Matyukevich <geomatsi@gmail.com>, Kalle
+ Valo <kvalo@kernel.org>, Sanjay R Mehta <sanju.mehta@amd.com>, Shyam Sundar
+ S K <Shyam-sundar.S-k@amd.com>, Jon Mason <jdmason@kudzu.us>, Dave Jiang
+ <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>, Bjorn Helgaas
+ <bhelgaas@google.com>, Alex Williamson <alex.williamson@redhat.com>,
+ Juergen Gross <jgross@suse.com>, Stefano Stabellini
+ <sstabellini@kernel.org>, Oleksandr Tyshchenko
+ <oleksandr_tyshchenko@epam.com>, Mario Limonciello
+ <mario.limonciello@amd.com>, Chen Ni <nichen@iscas.ac.cn>, Ricky Wu
+ <ricky_wu@realtek.com>, Al Viro <viro@zeniv.linux.org.uk>, Breno Leitao
+ <leitao@debian.org>, Kevin Tian <kevin.tian@intel.com>, Mostafa Saleh
+ <smostafa@google.com>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, Yi
+ Liu <yi.l.liu@intel.com>, Kunwu Chan <chentao@kylinos.cn>, Ankit Agrawal
+ <ankita@nvidia.com>, Christian Brauner <brauner@kernel.org>, Reinette
+ Chatre <reinette.chatre@intel.com>, Eric
+ Auger <eric.auger@redhat.com>, Ye Bin <yebin10@huawei.com>
+Cc: linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-input@vger.kernel.org, netdev@vger.kernel.org,
+ linux-wireless@vger.kernel.org, ntb@lists.linux.dev,
+ linux-pci@vger.kernel.org, kvm@vger.kernel.org,
+ xen-devel@lists.xenproject.org
+Subject: Re: [PATCH v2 11/11] Remove devres from pci_intx()
+In-Reply-To: <49bb6fc9ebff3cae844da0465ceadeef8d3217c7.camel@redhat.com>
+References: <20241113124158.22863-2-pstanner@redhat.com>
+ <20241113124158.22863-13-pstanner@redhat.com> <87msi3ksru.ffs@tglx>
+ <49bb6fc9ebff3cae844da0465ceadeef8d3217c7.camel@redhat.com>
+Date: Fri, 15 Nov 2024 01:46:13 +0100
+Message-ID: <8734jtl3xm.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: [PATCH 2/2] wifi: rtw88: usb: Preallocate and reuse the RX skbs
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Ping-Ke Shih <pkshih@realtek.com>, Sascha Hauer <sha@pengutronix.de>
-References: <28b09f4d-5271-470d-99b6-a0bbe0224739@gmail.com>
-Content-Language: en-US
-In-Reply-To: <28b09f4d-5271-470d-99b6-a0bbe0224739@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: base64
 
-The USB driver uses four USB Request Blocks for RX. Before submitting
-one, it allocates a 32768 byte skb for the RX data. This allocation can
-fail, maybe due to temporary memory fragmentation. When the allocation
-fails, the corresponding URB is never submitted again. After four such
-allocation failures, all RX stops because the driver is not requesting
-data from the device anymore.
-
-Don't allocate a 32768 byte skb when submitting a USB Request Block
-(which happens very often). Instead preallocate 8 such skbs, and reuse
-them over and over. If all 8 are busy, allocate a new one. This is
-pretty rare. If the allocation fails, use a work to try again later.
-When there are enough free skbs again, free the excess skbs.
-
-Also, use WQ_BH for the RX workqueue. With a normal or high priority
-workqueue the skbs are processed too slowly when the system is even a
-little busy, like when opening a new page in a browser, and the driver
-runs out of free skbs and allocates a lot of new ones.
-
-Move C2H_ADAPTIVITY to the c2h workqueue instead of handling it directly
-from rtw_fw_c2h_cmd_rx_irqsafe(), which runs in the RX workqueue. It
-reads hardware registers, which is not "irqsafe" with USB.
-
-This is more or less what the out-of-tree Realtek drivers do, except
-they use a tasklet instead of a BH workqueue.
-
-Tested with RTL8723DU, RTL8821AU, RTL8812AU, RTL8812BU, RTL8822CU,
-RTL8811CU.
-
-Closes: https://lore.kernel.org/linux-wireless/6e7ecb47-7ea0-433a-a19f-05f88a2edf6b@gmail.com/
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
----
- drivers/net/wireless/realtek/rtw88/fw.c  |  7 +--
- drivers/net/wireless/realtek/rtw88/usb.c | 73 ++++++++++++++++++++----
- drivers/net/wireless/realtek/rtw88/usb.h |  3 +
- 3 files changed, 67 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
-index e6e9946fbf44..02389b7c6876 100644
---- a/drivers/net/wireless/realtek/rtw88/fw.c
-+++ b/drivers/net/wireless/realtek/rtw88/fw.c
-@@ -332,6 +332,9 @@ void rtw_fw_c2h_cmd_handle(struct rtw_dev *rtwdev, struct sk_buff *skb)
- 	case C2H_RA_RPT:
- 		rtw_fw_ra_report_handle(rtwdev, c2h->payload, len);
- 		break;
-+	case C2H_ADAPTIVITY:
-+		rtw_fw_adaptivity_result(rtwdev, c2h->payload, len);
-+		break;
- 	default:
- 		rtw_dbg(rtwdev, RTW_DBG_FW, "C2H 0x%x isn't handled\n", c2h->id);
- 		break;
-@@ -367,10 +370,6 @@ void rtw_fw_c2h_cmd_rx_irqsafe(struct rtw_dev *rtwdev, u32 pkt_offset,
- 		rtw_fw_scan_result(rtwdev, c2h->payload, len);
- 		dev_kfree_skb_any(skb);
- 		break;
--	case C2H_ADAPTIVITY:
--		rtw_fw_adaptivity_result(rtwdev, c2h->payload, len);
--		dev_kfree_skb_any(skb);
--		break;
- 	default:
- 		/* pass offset for further operation */
- 		*((u32 *)skb->cb) = pkt_offset;
-diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
-index 727569d4ef4b..5c2dfa2ced92 100644
---- a/drivers/net/wireless/realtek/rtw88/usb.c
-+++ b/drivers/net/wireless/realtek/rtw88/usb.c
-@@ -585,7 +585,7 @@ static void rtw_usb_rx_handler(struct work_struct *work)
- 				goto skip_packet;
- 			}
- 
--			skb = alloc_skb(skb_len, GFP_KERNEL);
-+			skb = alloc_skb(skb_len, GFP_ATOMIC);
- 			if (!skb) {
- 				rtw_dbg(rtwdev, RTW_DBG_USB,
- 					"failed to allocate RX skb of size %u\n",
-@@ -612,7 +612,11 @@ static void rtw_usb_rx_handler(struct work_struct *work)
- 			rx_desc += next_pkt;
- 		} while (rx_desc + pkt_desc_sz < rx_skb->data + rx_skb->len);
- 
--		dev_kfree_skb_any(rx_skb);
-+		if (skb_queue_len(&rtwusb->rx_free_queue) >=
-+		    RTW_USB_RX_SKB_NUM - RTW_USB_RXCB_NUM)
-+			dev_kfree_skb_any(rx_skb);
-+		else
-+			skb_queue_tail(&rtwusb->rx_free_queue, rx_skb);
- 	}
- }
- 
-@@ -621,23 +625,57 @@ static void rtw_usb_read_port_complete(struct urb *urb);
- static void rtw_usb_rx_resubmit(struct rtw_usb *rtwusb, struct rx_usb_ctrl_block *rxcb)
- {
- 	struct rtw_dev *rtwdev = rtwusb->rtwdev;
-+	struct sk_buff *rx_skb;
-+	gfp_t priority = in_interrupt() ? GFP_ATOMIC : GFP_KERNEL;
- 	int error;
- 
--	rxcb->rx_skb = alloc_skb(RTW_USB_MAX_RECVBUF_SZ, GFP_ATOMIC);
--	if (!rxcb->rx_skb)
--		return;
-+	rx_skb = skb_dequeue(&rtwusb->rx_free_queue);
-+	if (!rx_skb)
-+		rx_skb = alloc_skb(RTW_USB_MAX_RECVBUF_SZ, priority);
-+
-+	if (!rx_skb)
-+		goto try_later;
-+
-+	rxcb->rx_skb = rx_skb;
-+
-+	skb_reset_tail_pointer(rxcb->rx_skb);
-+	rxcb->rx_skb->len = 0;
- 
- 	usb_fill_bulk_urb(rxcb->rx_urb, rtwusb->udev,
- 			  usb_rcvbulkpipe(rtwusb->udev, rtwusb->pipe_in),
- 			  rxcb->rx_skb->data, RTW_USB_MAX_RECVBUF_SZ,
- 			  rtw_usb_read_port_complete, rxcb);
- 
--	error = usb_submit_urb(rxcb->rx_urb, GFP_ATOMIC);
-+	error = usb_submit_urb(rxcb->rx_urb, priority);
- 	if (error) {
--		kfree_skb(rxcb->rx_skb);
-+		skb_queue_tail(&rtwusb->rx_free_queue, rxcb->rx_skb);
-+
- 		if (error != -ENODEV)
- 			rtw_err(rtwdev, "Err sending rx data urb %d\n",
- 				error);
-+
-+		if (error == -ENOMEM)
-+			goto try_later;
-+	}
-+
-+	return;
-+
-+try_later:
-+	rxcb->rx_skb = NULL;
-+	queue_work(rtwusb->rxwq, &rtwusb->rx_urb_work);
-+}
-+
-+static void rtw_usb_rx_resubmit_work(struct work_struct *work)
-+{
-+	struct rtw_usb *rtwusb = container_of(work, struct rtw_usb, rx_urb_work);
-+	struct rx_usb_ctrl_block *rxcb;
-+	int i;
-+
-+	for (i = 0; i < RTW_USB_RXCB_NUM; i++) {
-+		rxcb = &rtwusb->rx_cb[i];
-+
-+		if (!rxcb->rx_skb)
-+			rtw_usb_rx_resubmit(rtwusb, rxcb);
- 	}
- }
- 
-@@ -653,8 +691,7 @@ static void rtw_usb_read_port_complete(struct urb *urb)
- 		    urb->actual_length < 24) {
- 			rtw_err(rtwdev, "failed to get urb length:%d\n",
- 				urb->actual_length);
--			if (skb)
--				dev_kfree_skb_any(skb);
-+			skb_queue_tail(&rtwusb->rx_free_queue, skb);
- 		} else {
- 			skb_put(skb, urb->actual_length);
- 			skb_queue_tail(&rtwusb->rx_queue, skb);
-@@ -662,6 +699,8 @@ static void rtw_usb_read_port_complete(struct urb *urb)
- 		}
- 		rtw_usb_rx_resubmit(rtwusb, rxcb);
- 	} else {
-+		skb_queue_tail(&rtwusb->rx_free_queue, skb);
-+
- 		switch (urb->status) {
- 		case -EINVAL:
- 		case -EPIPE:
-@@ -679,8 +718,6 @@ static void rtw_usb_read_port_complete(struct urb *urb)
- 			rtw_err(rtwdev, "status %d\n", urb->status);
- 			break;
- 		}
--		if (skb)
--			dev_kfree_skb_any(skb);
- 	}
- }
- 
-@@ -868,16 +905,26 @@ static struct rtw_hci_ops rtw_usb_ops = {
- static int rtw_usb_init_rx(struct rtw_dev *rtwdev)
- {
- 	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
-+	struct sk_buff *rx_skb;
-+	int i;
- 
--	rtwusb->rxwq = create_singlethread_workqueue("rtw88_usb: rx wq");
-+	rtwusb->rxwq = alloc_workqueue("rtw88_usb: rx wq", WQ_BH, 0);
- 	if (!rtwusb->rxwq) {
- 		rtw_err(rtwdev, "failed to create RX work queue\n");
- 		return -ENOMEM;
- 	}
- 
- 	skb_queue_head_init(&rtwusb->rx_queue);
-+	skb_queue_head_init(&rtwusb->rx_free_queue);
- 
- 	INIT_WORK(&rtwusb->rx_work, rtw_usb_rx_handler);
-+	INIT_WORK(&rtwusb->rx_urb_work, rtw_usb_rx_resubmit_work);
-+
-+	for (i = 0; i < RTW_USB_RX_SKB_NUM; i++) {
-+		rx_skb = alloc_skb(RTW_USB_MAX_RECVBUF_SZ, GFP_KERNEL);
-+		if (rx_skb)
-+			skb_queue_tail(&rtwusb->rx_free_queue, rx_skb);
-+	}
- 
- 	return 0;
- }
-@@ -902,6 +949,8 @@ static void rtw_usb_deinit_rx(struct rtw_dev *rtwdev)
- 
- 	flush_workqueue(rtwusb->rxwq);
- 	destroy_workqueue(rtwusb->rxwq);
-+
-+	skb_queue_purge(&rtwusb->rx_free_queue);
- }
- 
- static int rtw_usb_init_tx(struct rtw_dev *rtwdev)
-diff --git a/drivers/net/wireless/realtek/rtw88/usb.h b/drivers/net/wireless/realtek/rtw88/usb.h
-index 86697a5c0103..9b695b688b24 100644
---- a/drivers/net/wireless/realtek/rtw88/usb.h
-+++ b/drivers/net/wireless/realtek/rtw88/usb.h
-@@ -38,6 +38,7 @@
- #define RTW_USB_RXAGG_TIMEOUT		10
- 
- #define RTW_USB_RXCB_NUM		4
-+#define RTW_USB_RX_SKB_NUM		8
- 
- #define RTW_USB_EP_MAX			4
- 
-@@ -81,7 +82,9 @@ struct rtw_usb {
- 
- 	struct rx_usb_ctrl_block rx_cb[RTW_USB_RXCB_NUM];
- 	struct sk_buff_head rx_queue;
-+	struct sk_buff_head rx_free_queue;
- 	struct work_struct rx_work;
-+	struct work_struct rx_urb_work;
- };
- 
- static inline struct rtw_usb_tx_data *rtw_usb_get_tx_data(struct sk_buff *skb)
--- 
-2.47.0
-
+T24gVGh1LCBOb3YgMTQgMjAyNCBhdCAxMDowNSwgUGhpbGlwcCBTdGFubmVyIHdyb3RlOg0KPiBP
+biBXZWQsIDIwMjQtMTEtMTMgYXQgMTc6MjIgKzAxMDAsIFRob21hcyBHbGVpeG5lciB3cm90ZToN
+Cj4+IE9uIFdlZCwgTm92IDEzIDIwMjQgYXQgMTM6NDEsIFBoaWxpcHAgU3Rhbm5lciB3cm90ZToN
+Cj4+ID4gcGNpX2ludHgoKSBpcyBhIGh5YnJpZCBmdW5jdGlvbiB3aGljaCBjYW4gc29tZXRpbWVz
+IGJlIG1hbmFnZWQNCj4+ID4gdGhyb3VnaA0KPj4gPiBkZXZyZXMuIFRoaXMgaHlicmlkIG5hdHVy
+ZSBpcyB1bmRlc2lyYWJsZS4NCj4+ID4gDQo+PiA+IFNpbmNlIGFsbCB1c2VycyBvZiBwY2lfaW50
+eCgpIGhhdmUgYnkgbm93IGJlZW4gcG9ydGVkIGVpdGhlciB0bw0KPj4gPiBhbHdheXMtbWFuYWdl
+ZCBwY2ltX2ludHgoKSBvciBuZXZlci1tYW5hZ2VkIHBjaV9pbnR4X3VubWFuYWdlZCgpLA0KPj4g
+PiB0aGUNCj4+ID4gZGV2cmVzIGZ1bmN0aW9uYWxpdHkgY2FuIGJlIHJlbW92ZWQgZnJvbSBwY2lf
+aW50eCgpLg0KPj4gPiANCj4+ID4gQ29uc2VxdWVudGx5LCBwY2lfaW50eF91bm1hbmFnZWQoKSBp
+cyBub3cgcmVkdW5kYW50LCBiZWNhdXNlDQo+PiA+IHBjaV9pbnR4KCkNCj4+ID4gaXRzZWxmIGlz
+IG5vdyB1bm1hbmFnZWQuDQo+PiA+IA0KPj4gPiBSZW1vdmUgdGhlIGRldnJlcyBmdW5jdGlvbmFs
+aXR5IGZyb20gcGNpX2ludHgoKS4gSGF2ZSBhbGwgdXNlcnMgb2YNCj4+ID4gcGNpX2ludHhfdW5t
+YW5hZ2VkKCkgY2FsbCBwY2lfaW50eCgpLiBSZW1vdmUgcGNpX2ludHhfdW5tYW5hZ2VkKCkuDQo+
+PiA+IA0KPj4gPiBTaWduZWQtb2ZmLWJ5OiBQaGlsaXBwIFN0YW5uZXIgPHBzdGFubmVyQHJlZGhh
+dC5jb20+DQo+PiA+IC0tLQ0KPj4gPiDCoGRyaXZlcnMvbWlzYy9jYXJkcmVhZGVyL3J0c3hfcGNy
+LmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoCAyICstDQo+PiA+IMKgZHJpdmVycy9taXNjL3Rp
+Zm1fN3h4MS5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoCA2
+ICstLQ0KPj4gPiDCoC4uLi9uZXQvZXRoZXJuZXQvYnJvYWRjb20vYm54MngvYm54MnhfbWFpbi5j
+wqAgfMKgIDIgKy0NCj4+ID4gwqBkcml2ZXJzL25ldC9ldGhlcm5ldC9icm9jYWRlL2JuYS9ibmFk
+LmPCoMKgwqDCoMKgwqAgfMKgIDIgKy0NCj4+ID4gwqBkcml2ZXJzL250Yi9ody9hbWQvbnRiX2h3
+X2FtZC5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqAgNCArLQ0KPj4gPiDCoGRyaXZl
+cnMvbnRiL2h3L2ludGVsL250Yl9od19nZW4xLmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoCAy
+ICstDQo+PiA+IMKgZHJpdmVycy9wY2kvZGV2cmVzLmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqAgNCArLQ0KPj4gPiDCoGRyaXZlcnMvcGNpL21z
+aS9hcGkuY8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8
+wqAgMiArLQ0KPj4gPiDCoGRyaXZlcnMvcGNpL21zaS9tc2kuY8KgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqAgMiArLQ0KPj4gPiDCoGRyaXZlcnMvcGNp
+L3BjaS5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqAgfCA0MyArLS0tLS0tLS0tLS0tLS0NCj4+ID4gLS0tLQ0KPj4gPiDCoGRyaXZlcnMvdmZp
+by9wY2kvdmZpb19wY2lfY29yZS5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgIDIgKy0N
+Cj4+ID4gwqBkcml2ZXJzL3ZmaW8vcGNpL3ZmaW9fcGNpX2ludHJzLmPCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqAgfCAxMCArKy0tLQ0KPj4gPiDCoGRyaXZlcnMveGVuL3hlbi1wY2liYWNrL2NvbmZf
+c3BhY2VfaGVhZGVyLmPCoMKgIHzCoCAyICstDQo+PiA+IMKgaW5jbHVkZS9saW51eC9wY2kuaMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgIDEg
+LQ0KPj4gPiDCoDE0IGZpbGVzIGNoYW5nZWQsIDIyIGluc2VydGlvbnMoKyksIDYyIGRlbGV0aW9u
+cygtKQ0KPj4gDQo+PiBOb3cgSSdtIHV0dGVybHkgY29uZnVzZWQuIFRoaXMgdW5kb2VzIHRoZSBw
+Y2lfaW50eF91bm1hbmFnZWQoKSBjaHVybg0KPj4gd2hpY2ggeW91IGNhcmVmdWxseSBzcGxpdCBp
+bnRvIHNldmVyYWwgcGF0Y2hlcyBmaXJzdC4NCj4NCj4gSGF2ZSB5b3UgcmVhZCB0aGUgZW1haWwg
+SSBoYXZlIGxpbmtlZD8NCj4NCj4gVGhlcmUgaXMgYWxzbyB0aGUgY292ZXItbGV0dGVyIChkb2Vz
+IGFueW9uZSBpbiB0aGUgY29tbXVuaXR5IGV2ZXIgcmVhZA0KPiB0aG9zZT8pIHdoaWNoIGV4cGxp
+Y2l0bHkgc3RhdGVzOg0KPg0KPiAiUGF0Y2ggIlJlbW92ZSBkZXZyZXMgZnJvbSBwY2lfaW50eCgp
+IiBvYnZpb3VzbHkgcmV2ZXJ0cyB0aGUgcHJldmlvdXMNCj4gcGF0Y2hlcyB0aGF0IG1hZGUgZHJp
+dmVycyB1c2UgcGNpX2ludHhfdW5tYW5hZ2VkKCkuIEJ1dCB0aGlzIHdheSBpdCdzDQo+IGVhc2ll
+ciB0byByZXZpZXcgYW5kIGFwcHJvdmUuIEl0IGFsc28gbWFrZXMgc3VyZSB0aGF0IGVhY2ggY2hl
+Y2tlZCBvdXQNCj4gY29tbWl0IHNob3VsZCBwcm92aWRlIGNvcnJlY3QgYmVoYXZpb3IsIG5vdCBq
+dXN0IHRoZSBlbnRpcmUgc2VyaWVzIGFzIGENCj4gd2hvbGUuIg0KDQpJIHJlYWQgaXQgYW5kIEkg
+YXNzdW1lIHlvdXIgaW50ZW50aW9uIHdhcyB0byBmb3JjZSBhbiBleWUgb24gZXZlcnkgdXNlDQpj
+YXNlIG9mIHBjaV9pbnR4KCkgYW5kIG5vdCBqdXN0IG9uIHRob3NlIHdoaWNoIG5lZWQgdG8gYmUg
+Y29udmVydGVkIHRvDQpwY2ltX2ludHgoKS4NCg0KSSdtIG5vdCBjb252aW5jZWQgdGhhdCB0aGlz
+IGlzIG5lZWRlZCwgYnV0IGZhaXIgZW5vdWdoLg0KDQoNCg0KDQo=
 
