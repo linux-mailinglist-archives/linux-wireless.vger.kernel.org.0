@@ -1,121 +1,194 @@
-Return-Path: <linux-wireless+bounces-15403-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15404-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D72EB9CFD68
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2024 09:59:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDC229CFD92
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2024 10:40:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96B78286BF1
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2024 08:59:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 645191F258D8
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2024 09:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443D51917D2;
-	Sat, 16 Nov 2024 08:58:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kMPFMWaQ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD529194A65;
+	Sat, 16 Nov 2024 09:40:45 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F12524C
-	for <linux-wireless@vger.kernel.org>; Sat, 16 Nov 2024 08:58:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8144F2F29;
+	Sat, 16 Nov 2024 09:40:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731747537; cv=none; b=ubeM93sxC6JqJXMaWVmRWKbQmuv60EUQ8NS7HUpVoz2F6efI1xsE5RrgK9qogzpvATeuTZ2gnB9sUy0GjvlfASSqp/mEqb8LlSxxSfR5fZzq2GGoDkNQby8T2kj2nnZzB501JlrB6gcEruTYQVn6jN+q6HpiqChIXXkVq8ZtfrE=
+	t=1731750045; cv=none; b=nKci6P9ChIYbUUbESp0XSYHfKPTpt2rkoFthPx307Sq8WAEpuBYt/C8pbUYXaQo6XYICJkRhYCgMTHQ5PcdvB7C3VBcVLq9bUSQbt6mqaDynATAmYicljBhsNlyT7GprxMqmUhJFw+S8DePkjyWbf8GP8YzxZ55AXZP9yUbNs8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731747537; c=relaxed/simple;
-	bh=lX2mz6euq31gOzNNmcgqZAwIoI03oMF5nZ0eHul497E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cJF5p77vR5xHbbAEkafcYUTwv5gk33I/+qL5QTMNL70j1vMzKCHgt++YiBdx0pSU400Nr4ZWH0rkbd4mUCETYlZ4Gc+7s4px1KpiKwbEiTaBco82LkJASxom8Aee7QDzdDmj0vGeHRpWqiDM9S9buqc/Z24ukRSPAokm0eVqXnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kMPFMWaQ; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a99f3a5a44cso342240566b.3
-        for <linux-wireless@vger.kernel.org>; Sat, 16 Nov 2024 00:58:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731747534; x=1732352334; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=lX2mz6euq31gOzNNmcgqZAwIoI03oMF5nZ0eHul497E=;
-        b=kMPFMWaQVsWfmQ1U5zw0Ka+4CXHROXzaCX5kj627xcss5K42k4EHVD+7Acly2tLetX
-         oqyDfc3b6c7uqqekDWbxaOpxp4d3gePWMdCQm4AGbXDgG4RWWB7h54zM0IsDO4L0sBTN
-         SyaocZ3X47MTzh0PMOItyQWHJzdskHJDSddktF/DoMZUrrcwHTvAxO9WTdwv7Sy5ejo8
-         SQVK8Q37j89JN/doX/LO8OSzV2BSZwnatv9GDdRRGrZ3UzH4Ygwjx44VYwaAIjXg0yl9
-         qUtLr8cEW4CvGkE4y/zCtAELGRVt84O97ptk1Na5Q+E9ef5bXEYFFKe+X/wgIcJ+jvCD
-         nDlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731747534; x=1732352334;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lX2mz6euq31gOzNNmcgqZAwIoI03oMF5nZ0eHul497E=;
-        b=We7U9/ffFTvARAWpKtmGDvTdOk8XMOnG6NvJglBaTvUhfF/o1Lp0wByh6UGNgjYJjX
-         ie7dQctsWDuE8cYaQmonkd9Dbn7/Ou954ji137ulQAJyX3kKSyvY0z02ZoVc+GuUXH+A
-         fG3icwgD35PsS9UqTiC7Zq78htmKTdRotBc/sTX9EJMgc2YbWlhnhJnruyZpfWM4bp94
-         K/WfHoe9RAe7YYM4fiPr7xPv3Q+dNUH6sO2DmmAgc0uaqmCjAmGw909EgP3qk5IcJWxt
-         7CYadTjYEm4XPLxu+bINTJIgb8IEq93lVOmolSeJG7OsdCRjDAX9/Gda4W6713s/5Khp
-         /TLw==
-X-Forwarded-Encrypted: i=1; AJvYcCVnBNG6p461XLBaiLnQ3R6goH/FMm3oHb4zBpHMLW/uaGfXjVBUQZ8xcoQBJOuyaw3XG8n5jQkfqfb2a5xc/w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxnmL+5HbBwRb3ixwL4/7SSRQaC/KkfpgfPwPWpd+hsVbYNRcsr
-	R4P5zyEGPJItZ0DFEoX37my+J1iDGlcMIBzJoX4r7WwZ7pB8MyzUVS8bOhM0OVFAjZTNAEAe81W
-	BimYLD1MCDsFa27rYV90JHh6ElbU=
-X-Google-Smtp-Source: AGHT+IHIzVuyy9zeCiS+HpgWMOmLGakMMuu4pEwqaCJOEh4vmj719Xb4gwHWTATrNNNa7xs9o7MhLpOie5hCf9efviE=
-X-Received: by 2002:a17:906:ee8b:b0:a9a:13f8:60b9 with SMTP id
- a640c23a62f3a-aa483489427mr564127666b.36.1731747533738; Sat, 16 Nov 2024
- 00:58:53 -0800 (PST)
+	s=arc-20240116; t=1731750045; c=relaxed/simple;
+	bh=AYdjEchhZ5mrm6nYKh972kd0ZosjG1lq2iB4ht9KhII=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=G9p87YQrzyvr9ZgC4UnYmX4PV8h1ms//bFN4cqu6cx2VOL2xUm+JY8ZKFHIQhCb0t/iCMQRjjRaujTMld3nwNvQqfK1s+5RzPYoN6V2Nh60Vkz+iHn/8tGJEKhdTtehwXlB1X8qZR/fPD56bbhCQWpi+KTekh9n8uER5DHCkUx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4Xr85N5Gv6z9sSR;
+	Sat, 16 Nov 2024 10:40:40 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id RSlaypuNxNm4; Sat, 16 Nov 2024 10:40:40 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4Xr85N41fnz9sSL;
+	Sat, 16 Nov 2024 10:40:40 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6B8F18B7A0;
+	Sat, 16 Nov 2024 10:40:40 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id 9RKIVUrbVgoj; Sat, 16 Nov 2024 10:40:40 +0100 (CET)
+Received: from [192.168.232.159] (POS169858.IDSI0.si.c-s.fr [192.168.232.159])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id EDBE28B763;
+	Sat, 16 Nov 2024 10:40:36 +0100 (CET)
+Message-ID: <b370e8d0-2f87-4819-8f30-1181946295d9@csgroup.eu>
+Date: Sat, 16 Nov 2024 10:40:36 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241116082417.8720-1-pkshih@gmail.com> <ca8e16a2dbc9c38e5bf2f3e426a2132393b381be.camel@sipsolutions.net>
- <d783a6d6a429feec6763077126e76445b6f186e2.camel@sipsolutions.net>
-In-Reply-To: <d783a6d6a429feec6763077126e76445b6f186e2.camel@sipsolutions.net>
-From: Ping-Ke Shih <pkshih@gmail.com>
-Date: Sat, 16 Nov 2024 16:58:07 +0800
-Message-ID: <CAHrRpukU-6MOoDsX+HRQ1XbdvoDMpUDuR4s=J-_9ODm3jreU9g@mail.gmail.com>
-Subject: Re: [PATCH] wireless-regdb: assert and correct maximum bandwidth
- within frequency difference
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: wens@kernel.org, linux-wireless@vger.kernel.org, 
-	wireless-regdb@lists.infradead.org, combuster@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/21] netfilter: conntrack: Cleanup timeout
+ definitions
+To: Easwar Hariharan <eahariha@linux.microsoft.com>,
+ Pablo Neira Ayuso <pablo@netfilter.org>,
+ Jozsef Kadlecsik <kadlec@netfilter.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Julia Lawall <Julia.Lawall@inria.fr>,
+ Nicolas Palix <nicolas.palix@imag.fr>, Daniel Mack <daniel@zonque.org>,
+ Haojian Zhuang <haojian.zhuang@gmail.com>,
+ Robert Jarzmik <robert.jarzmik@free.fr>, Russell King
+ <linux@armlinux.org.uk>, Heiko Carstens <hca@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
+ <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Ofir Bitton <obitton@habana.ai>,
+ Oded Gabbay <ogabbay@kernel.org>, Lucas De Marchi
+ <lucas.demarchi@intel.com>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Jeroen de Borst <jeroendb@google.com>,
+ Praveen Kaligineedi <pkaligineedi@google.com>,
+ Shailend Chand <shailend@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ James Smart <james.smart@broadcom.com>,
+ Dick Kennedy <dick.kennedy@broadcom.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
+ Jens Axboe <axboe@kernel.dk>, Kalle Valo <kvalo@kernel.org>,
+ Jeff Johnson <jjohnson@kernel.org>, Catalin Marinas
+ <catalin.marinas@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Jack Wang <jinpu.wang@cloud.ionos.com>, Marcel Holtmann
+ <marcel@holtmann.org>, Johan Hedberg <johan.hedberg@gmail.com>,
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
+ <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Xiubo Li <xiubli@redhat.com>,
+ Ilya Dryomov <idryomov@gmail.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
+ Jiri Kosina <jikos@kernel.org>, Miroslav Benes <mbenes@suse.cz>,
+ Petr Mladek <pmladek@suse.com>, Joe Lawrence <joe.lawrence@redhat.com>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ Lucas Stach <l.stach@pengutronix.de>,
+ Russell King <linux+etnaviv@armlinux.org.uk>,
+ Christian Gmeiner <christian.gmeiner@gmail.com>,
+ Louis Peens <louis.peens@corigine.com>, Michael Ellerman
+ <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, cocci@inria.fr,
+ linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ linux-scsi@vger.kernel.org, xen-devel@lists.xenproject.org,
+ linux-block@vger.kernel.org, linux-wireless@vger.kernel.org,
+ ath11k@lists.infradead.org, linux-mm@kvack.org,
+ linux-bluetooth@vger.kernel.org, linux-staging@lists.linux.dev,
+ linux-rpi-kernel@lists.infradead.org, ceph-devel@vger.kernel.org,
+ live-patching@vger.kernel.org, linux-sound@vger.kernel.org,
+ etnaviv@lists.freedesktop.org, oss-drivers@corigine.com,
+ linuxppc-dev@lists.ozlabs.org, Anna-Maria Behnsen <anna-maria@linutronix.de>
+References: <20241115-converge-secs-to-jiffies-v2-0-911fb7595e79@linux.microsoft.com>
+ <20241115-converge-secs-to-jiffies-v2-1-911fb7595e79@linux.microsoft.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20241115-converge-secs-to-jiffies-v2-1-911fb7595e79@linux.microsoft.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Johannes Berg <johannes@sipsolutions.net> wrote:
->
-> On Sat, 2024-11-16 at 09:33 +0100, Johannes Berg wrote:
-> > On Sat, 2024-11-16 at 16:24 +0800, Ping-Ke Shih wrote:
-> > > From: Ping-Ke Shih <pkshih@realtek.com>
-> > >
-> > > Since kernel will reject max bandwidth being larger than freq_diff in
-> > > is_valid_reg_rule(), as well reject it ahead.
-> >
-> > Not sure that's generally true, if you have AUTO-BW I think it should be
-> > OK?
-> >
->
-> Sorry, no, I guess AUTO-BW just lets it expand the bandwidth beyond the
-> listed, if there are adjacent ranges. Been ages since I looked at this.
->
 
-I have similar thought as you, but I should admit I have not yet
-looked into reg.c
-to know the detail.
 
-I quickly check the warning reported by user "kernel: cfg80211:
-Invalid regulatory domain detected: RS.",
-and lookup possible cause could be is_valid_reg_rule() to make this patch.
+Le 15/11/2024 à 22:26, Easwar Hariharan a écrit :
+> [Vous ne recevez pas souvent de courriers de eahariha@linux.microsoft.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+> 
+> None of the higher order definitions are used anymore, so remove
+> definitions for minutes, hours, and days timeouts. Convert the seconds
+> denominated timeouts to secs_to_jiffies()
 
-I hope original reporter can help to test this, or I will try it when
-I have free time.
+There is very similar things with tcp_timeouts[] in 
+nf_conntrack_proto_tcp.c, why not convert it as well ?
 
-> Anyway this probably doesn't fix the user's problem, it just makes it
-> rejected when compiling already ;-)
+> 
+> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+> ---
+>   net/netfilter/nf_conntrack_proto_sctp.c | 21 ++++++++-------------
+>   1 file changed, 8 insertions(+), 13 deletions(-)
+> 
+> diff --git a/net/netfilter/nf_conntrack_proto_sctp.c b/net/netfilter/nf_conntrack_proto_sctp.c
+> index 4cc97f971264ed779434ab4597dd0162586b3736..6c95ac96fa42a39acafb5b88a7cf8898010e911c 100644
+> --- a/net/netfilter/nf_conntrack_proto_sctp.c
+> +++ b/net/netfilter/nf_conntrack_proto_sctp.c
+> @@ -39,20 +39,15 @@ static const char *const sctp_conntrack_names[] = {
+>          [SCTP_CONNTRACK_HEARTBEAT_SENT]         = "HEARTBEAT_SENT",
+>   };
+> 
+> -#define SECS  * HZ
+> -#define MINS  * 60 SECS
+> -#define HOURS * 60 MINS
+> -#define DAYS  * 24 HOURS
+> -
+>   static const unsigned int sctp_timeouts[SCTP_CONNTRACK_MAX] = {
+> -       [SCTP_CONNTRACK_CLOSED]                 = 10 SECS,
+> -       [SCTP_CONNTRACK_COOKIE_WAIT]            = 3 SECS,
+> -       [SCTP_CONNTRACK_COOKIE_ECHOED]          = 3 SECS,
+> -       [SCTP_CONNTRACK_ESTABLISHED]            = 210 SECS,
+> -       [SCTP_CONNTRACK_SHUTDOWN_SENT]          = 3 SECS,
+> -       [SCTP_CONNTRACK_SHUTDOWN_RECD]          = 3 SECS,
+> -       [SCTP_CONNTRACK_SHUTDOWN_ACK_SENT]      = 3 SECS,
+> -       [SCTP_CONNTRACK_HEARTBEAT_SENT]         = 30 SECS,
+> +       [SCTP_CONNTRACK_CLOSED]                 = secs_to_jiffies(10),
+> +       [SCTP_CONNTRACK_COOKIE_WAIT]            = secs_to_jiffies(3),
+> +       [SCTP_CONNTRACK_COOKIE_ECHOED]          = secs_to_jiffies(3),
+> +       [SCTP_CONNTRACK_ESTABLISHED]            = secs_to_jiffies(210),
+> +       [SCTP_CONNTRACK_SHUTDOWN_SENT]          = secs_to_jiffies(3),
+> +       [SCTP_CONNTRACK_SHUTDOWN_RECD]          = secs_to_jiffies(3),
+> +       [SCTP_CONNTRACK_SHUTDOWN_ACK_SENT]      = secs_to_jiffies(3),
+> +       [SCTP_CONNTRACK_HEARTBEAT_SENT]         = secs_to_jiffies(3),
 
-Honestly these mistakes were made by me. I should fix them.
-Since rtw89 still use wireless-regdb, I will keep updating the
-regulatory especially
-lack of 6GHz frequencies.
+Was 30 before, if you think it must be changed to 3 you must explain it 
+in the commit message, or maybe do another patch for that change.
+
+>   };
+> 
+>   #define        SCTP_FLAG_HEARTBEAT_VTAG_FAILED 1
+> 
+> --
+> 2.34.1
+> 
+
+Christophe
+
 
