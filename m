@@ -1,153 +1,113 @@
-Return-Path: <linux-wireless+bounces-15399-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15400-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43FFA9CFD52
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2024 09:26:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BD519CFD58
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2024 09:31:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03D76283711
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2024 08:26:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D18E91F24547
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2024 08:31:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33FEB192B96;
-	Sat, 16 Nov 2024 08:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE54314A4E9;
+	Sat, 16 Nov 2024 08:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P3ufXE7X"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="Uo/Y8gpD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F0C20DF4
-	for <linux-wireless@vger.kernel.org>; Sat, 16 Nov 2024 08:25:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7867163C
+	for <linux-wireless@vger.kernel.org>; Sat, 16 Nov 2024 08:30:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731745556; cv=none; b=aiOoNoYaKo0b+JCJLNmpBQIY6VMH+3GDPqPk0k2dOD91Rp+3L3XvQg76fw11aToxwQWvSIkRFMGzZzPpeVExI7hNGELJTdNMxzdkdegGYl11lHfFYn8WP3yzqfHS04VBHXNFy7wRTDI/KXSCEfdihuZnaBx5eNbQrfo+aGcVVEs=
+	t=1731745861; cv=none; b=U2vHB6ACqQ1GigIup7tJNJ8AnqJ7o8/MolyJu2xohC+R/3L4YDfwkQBLb94F1PzUPZK+neo/ZLq+t8lmuhF8CwV8NKvDZqC+hIIqo9KY63cBVa0gWkzAfwX3rZrGm2yylqzsoqoekr0cNd2U+HgKqvXHFfRkS5ZFYjQV3E+RkYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731745556; c=relaxed/simple;
-	bh=+B6bc7Z0FMcQiQephLXLFmLgurFI2YVax/WR7mcbadM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cKcbYFxrlKWDzSe46ghEO7IbQtFolDCgwCVVJ6aC/PN89grup8N4/zXCSWm21yssb51HY8+Kg4a1OEsJjYzllaCJ27iAxfuRG3js32dLWzmlYsBimioibhTtzYZpRmV/InBL3Pe+XWC4NMXMM1tB8Uc07Cyd2127EEF2JPrshHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P3ufXE7X; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-20e576dbc42so16195665ad.0
-        for <linux-wireless@vger.kernel.org>; Sat, 16 Nov 2024 00:25:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731745554; x=1732350354; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0UxS0/3N00vpPB7ijCRLU5kaQylJVug8qDcI6jU8NoQ=;
-        b=P3ufXE7XoFQvWRHB0JO2lN5A7SkohMniOuxrkGBs965MHoeLLa62FB7hVeb2gidjMq
-         qDZx1vqX7lbJu1Sc3mjXnpfBnw83NYNtR75fGrZtPUZ98hGRQpyi/jWbD1UcDyxyzsJn
-         bKauCAg2rAU4pxfojOcKC9KKTiK0z6XUBzgCydLZERbZ0E9uW86EiaCMcJXt4cE1uOxG
-         YX9TV7kagic+lxolyrF5KDOUsrJhOia+MHjGiimV+SPh7asD7dDKOlYbo8+OxIupbECP
-         yq7T5G6StrcNDRbGVzeeuRu8xLQFG8tSBZWOS5P7ciqGrac7evoZFemZF5ke1slgNe0R
-         JWKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731745554; x=1732350354;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0UxS0/3N00vpPB7ijCRLU5kaQylJVug8qDcI6jU8NoQ=;
-        b=Lpr91BFcuWp8ji9c8krF2uHauca3HpuXH89QMawIzVGxbaMJzmpVLHXeIe9FYqGWn+
-         gmcGO8yVUVlbeWmL7q5ERMMuSrDrqSW6dwYTqY1hdAzJ630wioFoqhSi0YHb12upYRhA
-         ZPy9w+q4tgIc9ReIXGs6X5c1cNzy+DK++AUeFJvfYr9jIjVjdgeaB13JhEf5zYPihfyk
-         bhTQJfhCuhLU3JNTM2wUyMg0+6WIe/e6fyhkhMqZdfnD+L37iqJ6rRRpk/XL2LRLFJd4
-         CFQvB8tpx95C41RdBE6rpU5cnX5n5LX2JkUvPngSRlmrZArwVaWNVAuBlpjuw/IyZz+X
-         h9yw==
-X-Gm-Message-State: AOJu0YzAzb5kiQmt+i33iDkrmaKwvihjq7ka/4hZR9SFS9ZvN/zjMuwZ
-	xA7ZrJtPgc5IuXDSbk533E2wG3hZoNOQyN7VVtc/C6aM1Mz9k5iH
-X-Google-Smtp-Source: AGHT+IED/u8d1RBUMm6XxFi9IuWea83oKUuGb1FozvnJAyHh5eli0C0xfrUHrnsyjSaIq2wzyZ+zVQ==
-X-Received: by 2002:a17:902:f705:b0:20c:b700:6e10 with SMTP id d9443c01a7336-211d0d83b0dmr85313035ad.34.1731745553673;
-        Sat, 16 Nov 2024 00:25:53 -0800 (PST)
-Received: from pkshih-B33E.realtek.com (125-231-72-119.dynamic-ip.hinet.net. [125.231.72.119])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-211d0f32008sm23685975ad.157.2024.11.16.00.25.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 Nov 2024 00:25:53 -0800 (PST)
-From: Ping-Ke Shih <pkshih@gmail.com>
-To: wens@kernel.org
-Cc: linux-wireless@vger.kernel.org,
-	wireless-regdb@lists.infradead.org
-Subject: [PATCH] wireless-regdb: Update regulatory info for Syria (SY) for 2020
-Date: Sat, 16 Nov 2024 16:25:16 +0800
-Message-Id: <20241116082516.8819-1-pkshih@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1731745861; c=relaxed/simple;
+	bh=Ri0eg7gKdjHmGK2hWY43/N8F2vmAcQkYsTr75PnHb+4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=gfeEF8j6rhV29+ePq7Gpyd7MHgmla2MGEIWGkvNd62FNrxS+qH61dlNN5cxBvN0ccmyPdxNnsCACPUJrqkgxdz7BJWDm/4MDfocNvC7jylHt45lPyNmovv2zNM1eHihc8bypUM2ssUAmBeIKahzQz6Jf2GNragrgraL8w3Qzco0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=Uo/Y8gpD; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4AG8URnhC1735143, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1731745827; bh=Ri0eg7gKdjHmGK2hWY43/N8F2vmAcQkYsTr75PnHb+4=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=Uo/Y8gpD8z+IVGQvCuUOmxu11drPDdFSLlcPXk8HH+2W06SAx8xwKPG422+2FJS8J
+	 supQQVz33+YmP2/mPsL5DaMDx1e52gGktCwcPePzjeV7iDUAVoZMEoudAly3Rn3xry
+	 hrrd8i5Poil+qi0WLIj0A6eCddi1nGI4756DUbTP6rIDTpLMo/ZfkaTzSENc3o/PlX
+	 OsOvHkyZ8GXF2hhCnqNZUqF4+ZltJshcZJXfCgWn0sPc2dg75WpcAS9M/YeJKdUbHh
+	 oMe9RuXwFcCi5U/7Mi51sDNrV/8RpU4BrAqiSCVHcSn5GlrFxyd1vdweA1sGpBrfV1
+	 Q2FkbldMVKK+w==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4AG8URnhC1735143
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 16 Nov 2024 16:30:27 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Sat, 16 Nov 2024 16:30:28 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Sat, 16 Nov 2024 16:30:27 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
+ 15.01.2507.035; Sat, 16 Nov 2024 16:30:27 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Ivan Bulatovic <combuster@gmail.com>,
+        "linux-wireless@vger.kernel.org"
+	<linux-wireless@vger.kernel.org>
+CC: "wireless-regdb@lists.infradead.org" <wireless-regdb@lists.infradead.org>
+Subject: Re: wireless-regdb: Updated regulatory rules for Serbia (RS) fails to load
+Thread-Topic: wireless-regdb: Updated regulatory rules for Serbia (RS) fails
+ to load
+Thread-Index: AQHbN5pK4ua2Zr/+SEyysODfPGm0mLK5k1H5
+Date: Sat, 16 Nov 2024 08:30:27 +0000
+Message-ID: <2dcd4763853b4645bab7911482209de6@realtek.com>
+References: <CAPGdDAmPp80VEZ0TG=cS3QAYKqELHfqChid0wYZ7eLAENFY86Q@mail.gmail.com>
+In-Reply-To: <CAPGdDAmPp80VEZ0TG=cS3QAYKqELHfqChid0wYZ7eLAENFY86Q@mail.gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: en-US
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+Ivan Bulatovic <combuster@gmail.com> wrote:
+>=20
+> since commit b44edb2eaf3a917fbd7005f05c6faa202c984152 regulatory.db
+> fails to load when country is set to RS with message:
+>=20
+> kernel: cfg80211: Invalid regulatory domain detected: RS.
+>=20
+> Offending lines are:
+>=20
+> 1646: (5725 - 5850 @ 80), (24), DFS, AUTO-BW
+> 1647: (5850 - 5875 @ 80), (24), AUTO-BW
+>=20
+> OpenWRT is impacted, but I can reproduce this on Linux also.
+>=20
 
-Syrian Arab Republic, Telecommunications and Post Regulatory Authority
-released regulations for Short range devices approved by Board of
-Commissioners Resolution No. 18 dated 3/14/2020 [2] via page [1].
+I sent a patch [1] to correct this. Could you please give it a try and ack =
+the patch if
+it works to you?
 
-In page 8, section WIDEBAND DATA TRANSMISSION SYSTEMS defines
+Thanks.=20
+Ping-Ke
 
-* 2400-2483.5 MHz
-  - 100 mW EIRP
-  - Indoor only
-  - EN 300 328
-* 5150-5250 MHz
-  - 200 mW EIRP
-  - Indoor only
-  - EN 301 893
-* 5250-5350 MHz
-  - 200 mW EIRP
-  - Indoor only
-  - EN 301 893
-    * DFS
-* 5470-5725 MHz
-  - 200 mW EIRP
-  - Indoor
-  - EN 301 893
-    * DFS
-* 5725-5875 MHz
-  - 200 mW EIRP
-  - Indoor only
-  - EN 302 502 (In [2], EN 301 893 should be a typo)
-    * DFS: 5725 - 5850
-* 57-66 GHz
-  - 40 dBm EIRP
-  - Indoor only
-  - EN 302 567
-
-[1] https://sytpra.gov.sy/pages/%D9%84%D9%88%D8%A7%D8%A6%D8%AD-%D8%AA%D9%86%D8%B8%D9%8A%D9%85%D9%8A%D8%A9/%D9%84%D9%88%D8%A7%D8%A6%D8%AD-%D8%A7%D9%84%D8%B7%D9%8A%D9%81-%D8%A7%D9%84%D8%AA%D8%B1%D8%AF%D8%AF%D9%8A-%D8%A7%D9%84%D8%B1%D8%A7%D8%AF%D9%8A%D9%88%D9%8A
-[2] https://sytpra.gov.sy/public/uploads/files/%D8%A7%D9%84%D8%A7%D8%B7%D8%A7%D8%B1%20%D8%A7%D9%84%D9%82%D8%A7%D9%86%D9%88%D9%86%D9%8A/%D9%84%D9%88%D8%A7%D8%A6%D8%AD%20%D8%AA%D9%86%D8%B8%D9%8A%D9%85%D9%8A%D8%A9/%D9%84%D9%88%D8%A7%D8%A6%D8%AD%20%D8%A7%D9%84%D8%B7%D9%8A%D9%81%20%D8%A7%D9%84%D8%AA%D8%B1%D8%AF%D8%AF%D9%8A%20%D8%A7%D9%84%D8%B1%D8%A7%D8%AF%D9%8A%D9%88%D9%8A/L1.pdf
-
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- db.txt | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
-diff --git a/db.txt b/db.txt
-index a12f931ef4b2..fc70e625e81a 100644
---- a/db.txt
-+++ b/db.txt
-@@ -1784,8 +1784,16 @@ country SV: DFS-FCC
- 	(5735 - 5835 @ 20), (30)
- 	(5925 - 7125 @ 320), (12), NO-OUTDOOR
- 
--country SY:
--	(2402 - 2482 @ 40), (20)
-+# Source:
-+# https://sytpra.gov.sy/public/uploads/files/%D8%A7%D9%84%D8%A7%D8%B7%D8%A7%D8%B1%20%D8%A7%D9%84%D9%82%D8%A7%D9%86%D9%88%D9%86%D9%8A/%D9%84%D9%88%D8%A7%D8%A6%D8%AD%20%D8%AA%D9%86%D8%B8%D9%8A%D9%85%D9%8A%D8%A9/%D9%84%D9%88%D8%A7%D8%A6%D8%AD%20%D8%A7%D9%84%D8%B7%D9%8A%D9%81%20%D8%A7%D9%84%D8%AA%D8%B1%D8%AF%D8%AF%D9%8A%20%D8%A7%D9%84%D8%B1%D8%A7%D8%AF%D9%8A%D9%88%D9%8A/L1.pdf
-+country SY: DFS-ETSI
-+	(2400 - 2483.5 @ 40), (100 mW), NO-OUTDOOR
-+	(5150 - 5250 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
-+	(5250 - 5350 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, DFS
-+	(5470 - 5725 @ 160), (200 mW), NO-OUTDOOR, DFS
-+	(5725 - 5850 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW, DFS
-+	(5850 - 5875 @ 20), (200 mW), NO-OUTDOOR, AUTO-BW
-+	(57000 - 66000 @ 2160), (40), NO-OUTDOOR
- 
- # Source:
- # http://www.telecommission.tc/Spectrum-plan20110324-101210.html
--- 
-2.25.1
+[1] https://lore.kernel.org/linux-wireless/20241116082417.8720-1-pkshih@gma=
+il.com/T/#u
 
 
