@@ -1,89 +1,121 @@
-Return-Path: <linux-wireless+bounces-15402-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15403-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 511B79CFD5F
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2024 09:38:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D72EB9CFD68
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2024 09:59:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9F681F23311
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2024 08:38:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96B78286BF1
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2024 08:59:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D35192598;
-	Sat, 16 Nov 2024 08:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443D51917D2;
+	Sat, 16 Nov 2024 08:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="AGyqB26n"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kMPFMWaQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC5617BB38
-	for <linux-wireless@vger.kernel.org>; Sat, 16 Nov 2024 08:38:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F12524C
+	for <linux-wireless@vger.kernel.org>; Sat, 16 Nov 2024 08:58:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731746331; cv=none; b=J1pmA1MJ+hF1S8ON9MH3b8t7OQu8XFYewZIqN9b12JF2F+b/L7zxTu8Rl9PzjrJIu3E9gK50T/hLLVA61BGp5h6kpwlGLyXdmUXp2hfObabywlJuywomB+0ssUSxWK0ethMfxzwQoZJ18NwzU3Q0MtvZnQciMPoCdTsy74STSHE=
+	t=1731747537; cv=none; b=ubeM93sxC6JqJXMaWVmRWKbQmuv60EUQ8NS7HUpVoz2F6efI1xsE5RrgK9qogzpvATeuTZ2gnB9sUy0GjvlfASSqp/mEqb8LlSxxSfR5fZzq2GGoDkNQby8T2kj2nnZzB501JlrB6gcEruTYQVn6jN+q6HpiqChIXXkVq8ZtfrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731746331; c=relaxed/simple;
-	bh=nbC9+cPkzKXQXPvFBZFEQLPR92kVzrNQW3gd9HegkaU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=SCpse9wIgFsDGag7SL/il9RFeQaRjWelD7SuO5s8yvS1jw69uiHHyaiNEDp1qQhi+sTmZoxevuZOjUWJMFjH8D8TNnIFXd/G3k0CtgZi7nwK7XCHCJHrqUYLs5rNLzTzy1ks76nyPt0EGyWsFAVksA3Mi3bJHbraQVnOVFHR8NQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=AGyqB26n; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=nbC9+cPkzKXQXPvFBZFEQLPR92kVzrNQW3gd9HegkaU=;
-	t=1731746330; x=1732955930; b=AGyqB26n0+8icWs8VLibbMG48NmeVIxM76miKG4K4zBUhr3
-	BioyTCG/KvdXgyyyDri0xIEJdWArGNyPSc039kqbY8tPXuu4pXS2B4kRjZ2FH8Lkl/4xR3z/czVMt
-	yFgPchn6+rmBMjXB7KmQEr7XtLg+Lr8HrNm0ZzLEfKx6/L9dPm26+7BV7trGJnEI5PnVVY6+NAvK+
-	gYiCyv3BRLAbFNag98aisXmiyR5B/8U9LYMr0szeBYdg5jqAa1xFLnhy37aXS5KNFYo9i5t/FnvYA
-	Ucwvk00w2sPeosVGD9rBEWmkS9anQzy6p5AaUlUDQKxlUMNlFmPdU4azbyzkGb3w==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1tCEKN-00000006Jt2-11z7;
-	Sat, 16 Nov 2024 09:38:47 +0100
-Message-ID: <d783a6d6a429feec6763077126e76445b6f186e2.camel@sipsolutions.net>
-Subject: Re: [PATCH] wireless-regdb: assert and correct maximum bandwidth
- within frequency difference
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Ping-Ke Shih <pkshih@gmail.com>, wens@kernel.org
-Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org, 
-	combuster@gmail.com
-Date: Sat, 16 Nov 2024 09:38:46 +0100
-In-Reply-To: <ca8e16a2dbc9c38e5bf2f3e426a2132393b381be.camel@sipsolutions.net>
-References: <20241116082417.8720-1-pkshih@gmail.com>
-	 <ca8e16a2dbc9c38e5bf2f3e426a2132393b381be.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
+	s=arc-20240116; t=1731747537; c=relaxed/simple;
+	bh=lX2mz6euq31gOzNNmcgqZAwIoI03oMF5nZ0eHul497E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cJF5p77vR5xHbbAEkafcYUTwv5gk33I/+qL5QTMNL70j1vMzKCHgt++YiBdx0pSU400Nr4ZWH0rkbd4mUCETYlZ4Gc+7s4px1KpiKwbEiTaBco82LkJASxom8Aee7QDzdDmj0vGeHRpWqiDM9S9buqc/Z24ukRSPAokm0eVqXnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kMPFMWaQ; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a99f3a5a44cso342240566b.3
+        for <linux-wireless@vger.kernel.org>; Sat, 16 Nov 2024 00:58:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731747534; x=1732352334; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=lX2mz6euq31gOzNNmcgqZAwIoI03oMF5nZ0eHul497E=;
+        b=kMPFMWaQVsWfmQ1U5zw0Ka+4CXHROXzaCX5kj627xcss5K42k4EHVD+7Acly2tLetX
+         oqyDfc3b6c7uqqekDWbxaOpxp4d3gePWMdCQm4AGbXDgG4RWWB7h54zM0IsDO4L0sBTN
+         SyaocZ3X47MTzh0PMOItyQWHJzdskHJDSddktF/DoMZUrrcwHTvAxO9WTdwv7Sy5ejo8
+         SQVK8Q37j89JN/doX/LO8OSzV2BSZwnatv9GDdRRGrZ3UzH4Ygwjx44VYwaAIjXg0yl9
+         qUtLr8cEW4CvGkE4y/zCtAELGRVt84O97ptk1Na5Q+E9ef5bXEYFFKe+X/wgIcJ+jvCD
+         nDlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731747534; x=1732352334;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lX2mz6euq31gOzNNmcgqZAwIoI03oMF5nZ0eHul497E=;
+        b=We7U9/ffFTvARAWpKtmGDvTdOk8XMOnG6NvJglBaTvUhfF/o1Lp0wByh6UGNgjYJjX
+         ie7dQctsWDuE8cYaQmonkd9Dbn7/Ou954ji137ulQAJyX3kKSyvY0z02ZoVc+GuUXH+A
+         fG3icwgD35PsS9UqTiC7Zq78htmKTdRotBc/sTX9EJMgc2YbWlhnhJnruyZpfWM4bp94
+         K/WfHoe9RAe7YYM4fiPr7xPv3Q+dNUH6sO2DmmAgc0uaqmCjAmGw909EgP3qk5IcJWxt
+         7CYadTjYEm4XPLxu+bINTJIgb8IEq93lVOmolSeJG7OsdCRjDAX9/Gda4W6713s/5Khp
+         /TLw==
+X-Forwarded-Encrypted: i=1; AJvYcCVnBNG6p461XLBaiLnQ3R6goH/FMm3oHb4zBpHMLW/uaGfXjVBUQZ8xcoQBJOuyaw3XG8n5jQkfqfb2a5xc/w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxnmL+5HbBwRb3ixwL4/7SSRQaC/KkfpgfPwPWpd+hsVbYNRcsr
+	R4P5zyEGPJItZ0DFEoX37my+J1iDGlcMIBzJoX4r7WwZ7pB8MyzUVS8bOhM0OVFAjZTNAEAe81W
+	BimYLD1MCDsFa27rYV90JHh6ElbU=
+X-Google-Smtp-Source: AGHT+IHIzVuyy9zeCiS+HpgWMOmLGakMMuu4pEwqaCJOEh4vmj719Xb4gwHWTATrNNNa7xs9o7MhLpOie5hCf9efviE=
+X-Received: by 2002:a17:906:ee8b:b0:a9a:13f8:60b9 with SMTP id
+ a640c23a62f3a-aa483489427mr564127666b.36.1731747533738; Sat, 16 Nov 2024
+ 00:58:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+References: <20241116082417.8720-1-pkshih@gmail.com> <ca8e16a2dbc9c38e5bf2f3e426a2132393b381be.camel@sipsolutions.net>
+ <d783a6d6a429feec6763077126e76445b6f186e2.camel@sipsolutions.net>
+In-Reply-To: <d783a6d6a429feec6763077126e76445b6f186e2.camel@sipsolutions.net>
+From: Ping-Ke Shih <pkshih@gmail.com>
+Date: Sat, 16 Nov 2024 16:58:07 +0800
+Message-ID: <CAHrRpukU-6MOoDsX+HRQ1XbdvoDMpUDuR4s=J-_9ODm3jreU9g@mail.gmail.com>
+Subject: Re: [PATCH] wireless-regdb: assert and correct maximum bandwidth
+ within frequency difference
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: wens@kernel.org, linux-wireless@vger.kernel.org, 
+	wireless-regdb@lists.infradead.org, combuster@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Sat, 2024-11-16 at 09:33 +0100, Johannes Berg wrote:
-> On Sat, 2024-11-16 at 16:24 +0800, Ping-Ke Shih wrote:
-> > From: Ping-Ke Shih <pkshih@realtek.com>
-> >=20
-> > Since kernel will reject max bandwidth being larger than freq_diff in
-> > is_valid_reg_rule(), as well reject it ahead.
->=20
-> Not sure that's generally true, if you have AUTO-BW I think it should be
-> OK?
->=20
+Johannes Berg <johannes@sipsolutions.net> wrote:
+>
+> On Sat, 2024-11-16 at 09:33 +0100, Johannes Berg wrote:
+> > On Sat, 2024-11-16 at 16:24 +0800, Ping-Ke Shih wrote:
+> > > From: Ping-Ke Shih <pkshih@realtek.com>
+> > >
+> > > Since kernel will reject max bandwidth being larger than freq_diff in
+> > > is_valid_reg_rule(), as well reject it ahead.
+> >
+> > Not sure that's generally true, if you have AUTO-BW I think it should be
+> > OK?
+> >
+>
+> Sorry, no, I guess AUTO-BW just lets it expand the bandwidth beyond the
+> listed, if there are adjacent ranges. Been ages since I looked at this.
+>
 
-Sorry, no, I guess AUTO-BW just lets it expand the bandwidth beyond the
-listed, if there are adjacent ranges. Been ages since I looked at this.
+I have similar thought as you, but I should admit I have not yet
+looked into reg.c
+to know the detail.
 
-Anyway this probably doesn't fix the user's problem, it just makes it
-rejected when compiling already ;-)
+I quickly check the warning reported by user "kernel: cfg80211:
+Invalid regulatory domain detected: RS.",
+and lookup possible cause could be is_valid_reg_rule() to make this patch.
 
-johannes
+I hope original reporter can help to test this, or I will try it when
+I have free time.
+
+> Anyway this probably doesn't fix the user's problem, it just makes it
+> rejected when compiling already ;-)
+
+Honestly these mistakes were made by me. I should fix them.
+Since rtw89 still use wireless-regdb, I will keep updating the
+regulatory especially
+lack of 6GHz frequencies.
 
