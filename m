@@ -1,145 +1,141 @@
-Return-Path: <linux-wireless+bounces-15420-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15421-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72A879D00C0
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2024 21:07:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9432B9D0107
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2024 22:41:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAA77B21613
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2024 20:07:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27DCAB22F62
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2024 21:41:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FCFD194C78;
-	Sat, 16 Nov 2024 20:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3848198E90;
+	Sat, 16 Nov 2024 21:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="JQOZxKP3"
+	dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b="Bk1faLMm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.andi.de1.cc (mail.andi.de1.cc [178.238.236.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C5D1946AA;
-	Sat, 16 Nov 2024 20:07:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D6D15E97
+	for <linux-wireless@vger.kernel.org>; Sat, 16 Nov 2024 21:41:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.238.236.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731787665; cv=none; b=No6rwdoVeUkOjRgCg2sExtSKyfSAA9jGpdk+wwpE59ZJXGEpJRNh9pF0Q+6npJD+zKotJrLMNxKDNWTdVVAz697PxV3VAWVyOl/8Kt/hkKK6Sx1VavpjVp5HhciO4wY0HAL+42JFPIz+/3KY2S0k8BQuvCSiBkOAt5CWCh4QFQw=
+	t=1731793300; cv=none; b=t+lEASpIw/tq3uTYj/QXDGA66BwuzC2fAUjRsHRAywRh04TK4axAtlE2UqPXZD0iUBho5BX+Y0bZbAet9BugqvzhiTCuI31Y10BBSTCDISaFO8y+YqIDBJRvRe0ajFPAHk32awlBMhJLrA/6RaFjR7rJLKOgATf1gWU90JgNk74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731787665; c=relaxed/simple;
-	bh=5rtxGu68PLWrXyTEJNBr68hhrntpwpZdOSN9YWdsbfY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qxiVqSsmdln+TjVfPRmDgwPyjT3nA7y3o5lzewuNKz/WLYdmENM+91eclN2OSQ85pNrv+VNgnLfiWULn69XiWdN01myxb8V8dnYLolXF2K93rwmABeR6RSQlJJLuk67IDnkt2mzYgJsuQtoozXZokA9tbqaByVGwNJIlLjCb01I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=JQOZxKP3; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 40BBA89698;
-	Sat, 16 Nov 2024 21:07:34 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1731787655;
-	bh=msWG5qnuSAmchrjZIHWSe5yibi3jg0xEpfJtIVvoQA0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JQOZxKP3VnpaHDzeb2po7GNni8qWiMQve1IWLtAaq1+5mSjtN24PUPimlzF/6AHC1
-	 U8a+ONq23zJkAah8DAfn22UvOArHyWcUDdkBSWpKHFlb6IY8OYZmywqxK4Q3295oFF
-	 fPv6GRs5arWYat28D4lnKYRN1DAbvUdj5ndlmYt9fsGrMWp+Ld34ORgN+sVhT0r5Qv
-	 qyr5Bb6JCRB98vN4avDSYVag8IDSLlol/nUZRmeok5Yrn1pzUg3Da6UxSnhJUFCLM3
-	 mLOGXtKy2197fkhOCAXvKQuWikwhkiqxMNKQxZsDmMs+clqx+AH4W0ISuqxOI+XUj1
-	 Udg2euHimVxRw==
-Message-ID: <b287f8f9-600e-4e69-b7ec-25990275575e@denx.de>
-Date: Sat, 16 Nov 2024 20:57:36 +0100
+	s=arc-20240116; t=1731793300; c=relaxed/simple;
+	bh=q4O05SJN3aOBLjXdxxOorTYju8mPNYTc4Lu3hJuqspk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cbriIUab5uBSUWyU49BI+DXermfzvYRhT/Nifv0ZlR7iW4kzNRE0LBPB6ujDVJa8Qai2WPe8ENMSKub/AEgWZrDSjVmnQcAgdqz/zpmQV0QrbCamrIYkoJXazreVYvsFzmZtg4VzMS3zvrYA3mvEtVoiPFTxEkKgpgXdN21o+Pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info; spf=pass smtp.mailfrom=kemnade.info; dkim=pass (2048-bit key) header.d=kemnade.info header.i=@kemnade.info header.b=Bk1faLMm; arc=none smtp.client-ip=178.238.236.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kemnade.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kemnade.info
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=References:In-Reply-To:Cc:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=q4O05SJN3aOBLjXdxxOorTYju8mPNYTc4Lu3hJuqspk=; b=Bk1faLMmat0pZjSdnYBOOX9lTv
+	+cGJYlox36URofaiddldbi82O8y12rdqe5UyEowzWPgOcDNtjqXPutkgmjOfdgJNkBWJalFVjDNkM
+	Hq4xrNvKJ3MVrcpL7T0ERjr+OxGMPB4M4Upha367X+FgYAUABPMWeicB+hENAnGBvirxibl603LiX
+	JVWDd1ajyq2G3qU73QkxYkyP7tqxkAmUpAAxVw7ICiYXART+5zz7x4wpBIcA5QrqZk7Ife7xQV731
+	oHHngxgaWdf9t/aWbm6XXRO6qPms/j5xVIBGIOcrW7ROyKHYo0IW30Zpj0fUCqdOkVGIZXkUPHva6
+	PwY+HCUw==;
+Date: Sat, 16 Nov 2024 22:41:27 +0100
+From: Andreas Kemnade <andreas@kemnade.info>
+To: David Lin <yu-hao.lin@nxp.com>
+Cc: Francesco Dolcini <francesco@dolcini.it>, Neeraj Sanjay Kale
+ <neeraj.sanjaykale@nxp.com>, =?UTF-8?B?VGFtw6FzIFN6xbFjcw==?=
+ <tszucs@protonmail.ch>, "linux-firmware@kernel.org"
+ <linux-firmware@kernel.org>, "briannorris@chromium.org"
+ <briannorris@chromium.org>, "linux-wireless@vger.kernel.org"
+ <linux-wireless@vger.kernel.org>, "lukas@wunner.de" <lukas@wunner.de>
+Subject: Re: [EXT] Re: mwifiex firmware mrvl/sd8987_uapsta.bin missing in
+ the firmware git
+Message-ID: <20241116224127.63efde40@akair>
+In-Reply-To: <PA4PR04MB96381A69AD86ED9C9E4AD9CDD1CD2@PA4PR04MB9638.eurprd04.prod.outlook.com>
+References: <20240605160013.6bea8d4d@aktux>
+	<_pNnwoI9WHlb2EY635KdIv6t_goU-ZYp9Vav31jkFOCf9fCE9EeKdyCea2m-L8pgfsKIQvODlnQLhQqmWSYip9e6FFZwaJHL5-u5rdOS_kY=@protonmail.ch>
+	<20240605174709.5043af8f@akair>
+	<20240606101839.GA76158@francesco-nb>
+	<PA4PR04MB9638D1FD47BFBFDDB096C778D1C02@PA4PR04MB9638.eurprd04.prod.outlook.com>
+	<ZmlEny2W0nArOf1T@gaggiata.pivistrello.it>
+	<PA4PR04MB96381A69AD86ED9C9E4AD9CDD1CD2@PA4PR04MB9638.eurprd04.prod.outlook.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: wilc1000: Rework bus locking
-To: Ajay.Kathat@microchip.com, alexis.lothore@bootlin.com,
- linux-wireless@vger.kernel.org
-Cc: davem@davemloft.net, adham.abozaeid@microchip.com,
- claudiu.beznea@tuxon.dev, conor+dt@kernel.org, edumazet@google.com,
- kuba@kernel.org, kvalo@kernel.org, krzk+dt@kernel.org, pabeni@redhat.com,
- robh@kernel.org, devicetree@vger.kernel.org, netdev@vger.kernel.org
-References: <20241022013855.284783-1-marex@denx.de>
- <c9e98811-15f5-427a-82f7-2e7fff4a9873@bootlin.com>
- <8e28ba76-ecfa-49b6-89b5-1edabb22129d@denx.de>
- <a4c8c489-c6b9-4a38-84ab-f08409baccff@microchip.com>
- <5e2a5056-78ac-4be0-83ca-4aa55f524535@denx.de>
- <880baad9-be3d-41b2-bea3-620f915ca397@microchip.com>
- <9d20b408-72a4-49f0-aca6-108dfdd65f99@denx.de>
- <16e5c8d7-64ac-424e-9430-b683ae16a34e@denx.de>
- <9888f605-ee68-4bd3-8d1d-aeef247d23d0@microchip.com>
- <fcdfa93a-2db4-49ad-8947-ca43be329250@denx.de>
- <260a505e-53ec-4f1d-94fe-2b71af48f1b7@denx.de>
- <b61b5b11-b078-4cf5-bb40-7c3ff8ffa972@microchip.com>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <b61b5b11-b078-4cf5-bb40-7c3ff8ffa972@microchip.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On 11/15/24 9:04 PM, Ajay.Kathat@microchip.com wrote:
+Hi,
 
-Hello Ajay,
+Am Mon, 17 Jun 2024 02:13:22 +0000
+schrieb David Lin <yu-hao.lin@nxp.com>:
 
->>>>> Can you explain how to prevent that or shall we disable uAPSD
->>>>> altogether ?
->>>>
->>>> Could you please share the test procedure and logs. I am occupied at the
->>>> moment but I shall make some time to look into it and get a better
->>>> understanding.
->>>
->>> The simplest test procedure is this:
->>>
->>> $ while true ; do ifconfig wlan0 up ; ifconfig wlan0 down ; done
->>>
->>> As for the logs, MMCI controller sporadically reports either Command or
->>> Data CRC error, so likely the SDIO response (from WILC to Host) is
->>> corrupted.
->>
->> Are there any news ?
-> 
-> I did test the same procedure in my setup, but I couldn't reproduce this issue
-> even after running it for a long duration. In my test setup, I used the
-> sama5d27-som1-ek1 host and wilc3000 firmware version 16.3.
-> 
-> I think this issue could be related to the host MMCI controller driver.
-> Normally, the wilc SDIO bus failures are captured by driver logs with an error
-> code (e.g., timeout), but if the MMCI controller is outputting the warning
-> message, then the error could be related to it. Does the MMCI controller error
-> point to any specific function?
+> > From: Francesco Dolcini <francesco@dolcini.it>
+> > Sent: Wednesday, June 12, 2024 2:48 PM
+> > To: David Lin <yu-hao.lin@nxp.com>
+> > Cc: Francesco Dolcini <francesco@dolcini.it>; Andreas Kemnade
+> > <andreas@kemnade.info>; Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>;
+> > Tam=C3=A1s Sz=C5=B1cs <tszucs@protonmail.ch>; linux-firmware@kernel.org;
+> > briannorris@chromium.org; linux-wireless@vger.kernel.org; lukas@wunner.=
+de
+> > Subject: Re: [EXT] Re: mwifiex firmware mrvl/sd8987_uapsta.bin missing =
+in the
+> > firmware git
+> >
+> > Caution: This is an external email. Please take care when clicking link=
+s or
+> > opening attachments. When in doubt, report the message using the 'Report
+> > this email' button
+> >
+> >
+> > Hello David,
+> >
+> > On Wed, Jun 12, 2024 at 02:17:46AM +0000, David Lin wrote: =20
+> > > > From: Francesco Dolcini <francesco@dolcini.it> On Wed, Jun 05, 2024
+> > > > at 05:47:09PM +0200, Andreas Kemnade wrote: =20
+> > > > > But that is all legalese and I am not a lawyer... Best is of
+> > > > > course something officially added from NXP. No idea if it can be
+> > > > > done otherwise. How to make NXP add something? =20
+> > > >
+> > > > Would it be possible for you to get these firmware files added to
+> > > > the official linux-firmware git repo?
+> > > >
+> > > > I am not using sd8987 myself, from what I read in the thread
+> > > > probably some file name would need to be corrected (I would say in =
+the =20
+> > mwifiex driver). =20
+> > >
+> > > I am not responsible for firmware release.
+> > > You can get updated firmware from =20
+> > https://github.co/
+> > m%2Fnxp-imx%2Fimx-firmware%2F&data=3D05%7C02%7Cyu-hao.lin%40nxp.co
+> > m%7C10acf638ebf04b0979ed08dc8aab99d5%7C686ea1d3bc2b4c6fa92cd99c5
+> > c301635%7C0%7C0%7C638537716818815780%7CUnknown%7CTWFpbGZsb3d
+> > 8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3
+> > D%7C0%7C%7C%7C&sdata=3DZrU82HbKZ%2Ff87IG2tgInfq7kbyCuV8PcksxvTWiM
+> > HtQ%3D&reserved=3D0.
+> > Yes, I am aware of both, and most of the people in this thread is aware=
+ of the
+> > second.
+> >
+> > I was wondering if you could facilitate within NXP having these firmwar=
+e files
+> > added to the linux firmware git repository, where they should be for va=
+rious
+> > reasons. To whom should I write such a request? Can you help in any way?
+> >
+> > Francesco =20
+>=20
+> I reported this issue just like Neeraj did.
+>=20
+any update on this topic?
 
-Either CMD52 or CMD53 errors out with CRC error, this is recognized by 
-the controller. That points to sporadic CRC error during SDIO transfer.
-
-> Which host was used to test this scenario, and
-> is it possible to test with different host or different configuration on the
-> same host
-
-I am observing sporadic command and data CRC errors on STM32MP157F 
-system with SDIO WILC3000.
-
-, like disabling power save on the host?
-I already tested disabling power save.
-
-Can you explain why does uAPSD (iw ...set power_save off) adversely 
-affect SDIO bus stability ?
-
-Can you explain how to prevent that or shall we disable uAPSD altogether ?
-
-Is there any way to make the WILC firmware produce debug output , so we 
-can figure out what is going on "on the other side" ?
-
-Are you able to provide me (maybe off-list) some debug firmware build ?
-(or can I get firmware sources and build and debug my own WILC firmware 
-on the Cortus CPU?)
-
-I can trigger the SDIO errors even without being connected to any AP , 
-so this is something between the WILC and the SDIO host, the radio is 
-likely not involved , right ?
+Regards,
+Andreas
 
