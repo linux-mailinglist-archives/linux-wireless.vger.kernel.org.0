@@ -1,179 +1,142 @@
-Return-Path: <linux-wireless+bounces-15397-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15398-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA679CFD24
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2024 08:59:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2D769CFD51
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2024 09:25:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43C2C287CEA
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2024 07:59:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3026DB25776
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2024 08:25:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D0D194147;
-	Sat, 16 Nov 2024 07:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74688190685;
+	Sat, 16 Nov 2024 08:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="r5iZGNuE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bIDkPDm9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356BA192B88
-	for <linux-wireless@vger.kernel.org>; Sat, 16 Nov 2024 07:59:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE10820DF4
+	for <linux-wireless@vger.kernel.org>; Sat, 16 Nov 2024 08:24:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731743978; cv=none; b=Ze6dIzETmR5mIDemE8KiaOhbPi86W7T4trMOSiMpLYf/shJF7CB5B0nRIKMxBweq1hDj9oLZ1bm/wOrDpFgakVX/i/fNnk8OKUOJcGs5APvXbryeL4xOfYzwTcCHiDOcoHDMlYTd5wTkH4kuCacZIheQrTQHEL0obIlEYncywPg=
+	t=1731745499; cv=none; b=pp3vLRDaPekHaBCFkxEdsE2yCVvvemkek3Sl3DnjoqAQWgn10eMtB2YqjWr3PHknoJMynKn1I+IGIgFSszR2gXLsjOQknT/t+pgwmt0LtMHhSLrUeU2kztvRPLWmE50lJaJcW/cjhksv85Y5VyDZaMWA5ZfW2bKKnxbDD6CHtxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731743978; c=relaxed/simple;
-	bh=syAVCylnhi0AytBImEtkvzButQ9wsAguk45yhcS0NNc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EOY2qm1QETPYvAKMBQMflfnqB9jYikZUevX4wttMEF688Y2Yo0fJS52u05OSaDMYAcN4Ixe1QxUY4W0OszD3WW+dI2aJwNW7ZhxhH6CmtL5wYqK1nLNpc//Nttams3CjgVMhTQhaPl+ghRI88H1E+voTU9OOHdICWxw9KlKMGbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=r5iZGNuE; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4315eac969aso14377225e9.1
-        for <linux-wireless@vger.kernel.org>; Fri, 15 Nov 2024 23:59:35 -0800 (PST)
+	s=arc-20240116; t=1731745499; c=relaxed/simple;
+	bh=pmziwaDf1Oi+IljbdRn1EymZkWNpxgi0hn4gxMn4I6c=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Sqky0zd40xKSkncss69hIh8IfJf8479/f8IzpUV6Z9X0IyHnp1YsVsQCeMDP2blHBIN3/i885b1270Ps2ZBWy3HybQSfC9fcGx0KFOF++G1x0lLlbcUgzHkXtwo70FMW3Yisxl7go1B/h4oP0LK+Ty4n2H2Hk3R9U4S5/owwXn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bIDkPDm9; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-72061bfec2dso314675b3a.2
+        for <linux-wireless@vger.kernel.org>; Sat, 16 Nov 2024 00:24:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1731743973; x=1732348773; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xrsdExZKqTlwoTRHJD0ZdQo7yx2uU25FrNS0bU2S5+Y=;
-        b=r5iZGNuEOfNWbi26gs/0hDufWiKU9glpkrz83hfYdk20o+8yDMVRsyZ6+cPIv/oaQN
-         1kDE9R6Vr8IhLeyXsibSIWi+i5grPibUr8CgcnTKyayifBg26F0iK5NCf/Zk+pdy13Hu
-         08u3dXU0sR2s59y+fza8gG5ZMw0Hfg8Sa3w3izBxsCrCB2Hfi3yWK+5VciZPLCvYZRaJ
-         Cm3dD99wasOBV+Vb4KvuHLxcD9cr9PRrdBxQ3n8LlNaCQDaVlvqQLTJ3YxibOJsA3aud
-         mNDVaqD9+G+4jwsF6k6bmfL3lgB8UhWpAIV/7hICAk042PQXjY0vP86Sl31MhmWRTiq6
-         Ag5Q==
+        d=gmail.com; s=20230601; t=1731745497; x=1732350297; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0wI5s4CZuvcmq2kH2NFj7Lf55gnF/3ikMJSmm8d1y6c=;
+        b=bIDkPDm9dh+D4ty+xNM9CM6IzNMzKmnUFHtIdlUmaiHk52WAwgZH8A+lK3KVn6Rkye
+         oJqzn2sLOHoG/3O52q1OXV2MhOSSfrJXBnC7XqmOdEIGkqDXxDE7YrROLF+AL3CxMRps
+         hi0av3a+j05jHsBQeMXLTcGtVpec9lQj4Nc6TrYE1vPfhVT9EUH1yljvb5sJdEqqMFsy
+         NnR6siTkEVz04/CoRLhp/39hh8z4xS3ygHZv+GlEbWT6wk3vZkzXlXeOIzgX6pVVYD5g
+         Ld+x2LcTxfBVY/WJ/PbZ/XJ07N+042qWkIbNSy6w8mJQNVnavSHF3mXZn9lraJiItLyw
+         vgXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731743973; x=1732348773;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xrsdExZKqTlwoTRHJD0ZdQo7yx2uU25FrNS0bU2S5+Y=;
-        b=l33B91vXKPP6XUanYAshYcU8Cc1HKRDxfXT9FLZzrthEpxdLliNRAtL80zU08vv8/M
-         4J0FAZecoB5fG6gStzXeTj5hHQZ34PIUE/lRj4B/3kAnbLEtipssk9yRwb6eYU5BzNHM
-         gMahiqZoXwTOu5uviFxb50q1fpWPNZIrtzN+Ekn6Ix1/OUiORirBMSHGmpFHPibq2OcY
-         48jkkmfVdszQDf9GplLXTwK8I+YttPyFGw6+inmUoD7tUPUnOVjA7XMVqruQfUrp1CZF
-         6FWMI69RnY+1AebC/mQk3qyNCH2lzhNa1ieOW7piG+KDweHHCNzoP4Ogm0Tc93nt2iEz
-         cxEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVL1UdU4RxIUpsbmtMFCdIwdhGwlsbvCRJrvbZcVrNtOHobYPQ1rn2txwIrX8gOZOxvbDWxr8/9Clp2B1HrFQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3BNzsTplcdgM2+GPx21sacgc6N5PPcWQSatQXEii8olfv0phj
-	hospFQMwXRNYm6STE0m+gAPagfbyVtJNkRE5JEOd+FeDI5gYErZyCc/Uoem+c+Y=
-X-Google-Smtp-Source: AGHT+IHwPca/r8TengkDOJBkzNMy5+IC+M/DjfY5vaIp0XwfqGKX+JdkORZRtZVKPaDZkydKQ4+r2A==
-X-Received: by 2002:a05:600c:19cb:b0:431:559d:4103 with SMTP id 5b1f17b1804b1-432defe3203mr49400585e9.7.1731743973417;
-        Fri, 15 Nov 2024 23:59:33 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432dab806e1sm81445685e9.20.2024.11.15.23.59.32
+        d=1e100.net; s=20230601; t=1731745497; x=1732350297;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0wI5s4CZuvcmq2kH2NFj7Lf55gnF/3ikMJSmm8d1y6c=;
+        b=Nk+Qn3znGr98sr74vQLspk6RKc7rALugaLni6nRtNpWXRdd/UdS8mfsBmbHEgGTOFH
+         aZb1KCEG/0Ipo1URcn5/5RP0A8krq5kpjAg7286LL5tz36WTiPJDzFHUjxioo0g3XbuM
+         LkFP/O1AB+fvs/FVZDsKMl5bBwXOY8V1rD3RjCwEA1jYLnSTxw40bre9Pj4k0EdB1eKu
+         YJ3orXHKdrNvJvRqdBiE6+suoBgs2K3EiiojNsKz7PYbl4OccqNT59bJ+9SEEpTOKyDr
+         yLeWkeDBSRtfxSjnagQKk8QWpz/Zhw755Bde75rbw3zurYTBSJ+jZvwlGh4cpM1sNh17
+         pmtw==
+X-Gm-Message-State: AOJu0YyLxZHGz4iKXHWvMJmyfD9z/noZvAEeWF2UhBlN+3UoSiYP8iJB
+	oXyDzfJ68meLe3Gw6vTc9yfpNcHNodCQ6b0bIFxJcWRz/N2XiEDPOl2Idwcn
+X-Google-Smtp-Source: AGHT+IFjjVdXIRE4mP/e67dY9BI8qNrx6Qx69NWuwuXYIMqxobLunMTVHIPdh/WdCy8fIWQOm7Xq5g==
+X-Received: by 2002:a05:6a00:843:b0:71e:fb4:6c98 with SMTP id d2e1a72fcca58-7247709d088mr7996100b3a.23.1731745495652;
+        Sat, 16 Nov 2024 00:24:55 -0800 (PST)
+Received: from pkshih-B33E.realtek.com (125-231-72-119.dynamic-ip.hinet.net. [125.231.72.119])
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-724770ee925sm2606801b3a.5.2024.11.16.00.24.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Nov 2024 23:59:32 -0800 (PST)
-Date: Sat, 16 Nov 2024 10:59:29 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Easwar Hariharan <eahariha@linux.microsoft.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Julia Lawall <Julia.Lawall@inria.fr>,
-	Nicolas Palix <nicolas.palix@imag.fr>,
-	Daniel Mack <daniel@zonque.org>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ofir Bitton <obitton@habana.ai>, Oded Gabbay <ogabbay@kernel.org>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-	Jeroen de Borst <jeroendb@google.com>,
-	Praveen Kaligineedi <pkaligineedi@google.com>,
-	Shailend Chand <shailend@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	James Smart <james.smart@broadcom.com>,
-	Dick Kennedy <dick.kennedy@broadcom.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
-	Jens Axboe <axboe@kernel.dk>, Kalle Valo <kvalo@kernel.org>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jack Wang <jinpu.wang@cloud.ionos.com>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Jiri Kosina <jikos@kernel.org>, Miroslav Benes <mbenes@suse.cz>,
-	Petr Mladek <pmladek@suse.com>,
-	Joe Lawrence <joe.lawrence@redhat.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Russell King <linux+etnaviv@armlinux.org.uk>,
-	Christian Gmeiner <christian.gmeiner@gmail.com>,
-	Louis Peens <louis.peens@corigine.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	cocci@inria.fr, linux-arm-kernel@lists.infradead.org,
-	linux-s390@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org, linux-scsi@vger.kernel.org,
-	xen-devel@lists.xenproject.org, linux-block@vger.kernel.org,
-	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-	linux-mm@kvack.org, linux-bluetooth@vger.kernel.org,
-	linux-staging@lists.linux.dev, linux-rpi-kernel@lists.infradead.org,
-	ceph-devel@vger.kernel.org, live-patching@vger.kernel.org,
-	linux-sound@vger.kernel.org, etnaviv@lists.freedesktop.org,
-	oss-drivers@corigine.com, linuxppc-dev@lists.ozlabs.org,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>
-Subject: Re: [PATCH 19/22] livepatch: Convert timeouts to secs_to_jiffies()
-Message-ID: <896c656f-6d8c-4337-8464-7557c43a80ab@stanley.mountain>
-References: <20241115-converge-secs-to-jiffies-v1-0-19aadc34941b@linux.microsoft.com>
- <20241115-converge-secs-to-jiffies-v1-19-19aadc34941b@linux.microsoft.com>
+        Sat, 16 Nov 2024 00:24:55 -0800 (PST)
+From: Ping-Ke Shih <pkshih@gmail.com>
+To: wens@kernel.org
+Cc: linux-wireless@vger.kernel.org,
+	wireless-regdb@lists.infradead.org,
+	combuster@gmail.com
+Subject: [PATCH] wireless-regdb: assert and correct maximum bandwidth within frequency difference
+Date: Sat, 16 Nov 2024 16:24:17 +0800
+Message-Id: <20241116082417.8720-1-pkshih@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241115-converge-secs-to-jiffies-v1-19-19aadc34941b@linux.microsoft.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 15, 2024 at 09:22:49PM +0000, Easwar Hariharan wrote:
-> diff --git a/samples/livepatch/livepatch-callbacks-busymod.c b/samples/livepatch/livepatch-callbacks-busymod.c
-> index 378e2d40271a9717d09eff51d3d3612c679736fc..d0fd801a7c21b7d7939c29d83f9d993badcc9aba 100644
-> --- a/samples/livepatch/livepatch-callbacks-busymod.c
-> +++ b/samples/livepatch/livepatch-callbacks-busymod.c
-> @@ -45,7 +45,7 @@ static int livepatch_callbacks_mod_init(void)
->  {
->  	pr_info("%s\n", __func__);
->  	schedule_delayed_work(&work,
-> -		msecs_to_jiffies(1000 * 0));
-> +		secs_to_jiffies(0));
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-Better to just call schedule_delayed_work(&work, 0);
+Since kernel will reject max bandwidth being larger than freq_diff in
+is_valid_reg_rule(), as well reject it ahead.
 
->  	return 0;
->  }
+Closes: https://lore.kernel.org/linux-wireless/CAPGdDAmPp80VEZ0TG=cS3QAYKqELHfqChid0wYZ7eLAENFY86Q@mail.gmail.com/T/#u
+Reported-by: Ivan Bulatovic <combuster@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ db.txt     | 8 ++++----
+ dbparse.py | 3 +++
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
-regards,
-dan carpenter
+diff --git a/db.txt b/db.txt
+index 32b533e800f5..a12f931ef4b2 100644
+--- a/db.txt
++++ b/db.txt
+@@ -787,11 +787,11 @@ country GT:
+ 	(2400 - 2483.5 @ 40), (500 mW)
+ 	(5150 - 5350 @ 80), (200 mW), NO-OUTDOOR
+ 	(5470 - 5725 @ 160), (250 mW), NO-OUTDOOR
+-	(5725 - 5850 @ 160), (500 mW), NO-OUTDOOR
++	(5725 - 5850 @ 80), (500 mW), NO-OUTDOOR
+ 	(5925 - 6425 @ 320), (200 mW), NO-OUTDOOR, AUTO-BW
+-	(6425 - 6525 @ 320), (200 mW), NO-OUTDOOR, AUTO-BW
++	(6425 - 6525 @ 80), (200 mW), NO-OUTDOOR, AUTO-BW
+ 	(6525 - 6875 @ 320), (150 mW), NO-OUTDOOR, AUTO-BW
+-	(6875 - 7125 @ 320), (150 mW), NO-OUTDOOR, AUTO-BW
++	(6875 - 7125 @ 160), (150 mW), NO-OUTDOOR, AUTO-BW
+ 	(57000 - 66000 @ 2160), (20 mW), NO-OUTDOOR
+ 
+ country GU: DFS-FCC
+@@ -1646,7 +1646,7 @@ country RS: DFS-ETSI
+ 	(5250 - 5350 @ 80), (23), DFS, AUTO-BW
+ 	(5470 - 5725 @ 160), (27), DFS
+ 	(5725 - 5850 @ 80), (24), DFS, AUTO-BW
+-	(5850 - 5875 @ 80), (24), AUTO-BW
++	(5850 - 5875 @ 20), (24), AUTO-BW
+ 	(5925 - 6425 @ 320), (23), NO-OUTDOOR
+ 	# 60 GHz band channels 1-4, ref: Etsi En 302 567
+ 	(57000 - 66000 @ 2160), (40)
+diff --git a/dbparse.py b/dbparse.py
+index 5f7e08200fa0..b27690166427 100755
+--- a/dbparse.py
++++ b/dbparse.py
+@@ -218,6 +218,9 @@ class DBParser(object):
+                 self._syntax_error("Inverted freq range (%d - %d)" % (start, end))
+             if start == end:
+                 self._syntax_error("Start and end freqs are equal (%d)" % start)
++            if bw > end - start:
++                self._syntax_error("BW is smaller than freq_diff (%d - %d) (%d)"
++                                      % (start, end, bw))
+         except ValueError:
+             self._syntax_error("band must have frequency range")
+ 
+-- 
+2.25.1
+
 
