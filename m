@@ -1,104 +1,145 @@
-Return-Path: <linux-wireless+bounces-15419-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15420-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC4AB9CFFD6
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2024 17:24:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72A879D00C0
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2024 21:07:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 749621F22653
-	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2024 16:24:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAA77B21613
+	for <lists+linux-wireless@lfdr.de>; Sat, 16 Nov 2024 20:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7DC38385;
-	Sat, 16 Nov 2024 16:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FCFD194C78;
+	Sat, 16 Nov 2024 20:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="c/DwxpEA"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="JQOZxKP3"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62D79C8C7;
-	Sat, 16 Nov 2024 16:24:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C5D1946AA;
+	Sat, 16 Nov 2024 20:07:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731774251; cv=none; b=eUms1XMw/0N3UvP/5j4ylOvS5vau5ZH3JXX/T471HwwyJWRK9CmxZJpsfIEQgl3qtjohDk/Za7+wpz4nHS57myAHtyJuQv71pUznkvlLnXAOg9SZcDpf8eUaxUUntsys0qETCBAckDg0iDpMmb9zx9gDxjSFBm2WMT4JP9xeQkA=
+	t=1731787665; cv=none; b=No6rwdoVeUkOjRgCg2sExtSKyfSAA9jGpdk+wwpE59ZJXGEpJRNh9pF0Q+6npJD+zKotJrLMNxKDNWTdVVAz697PxV3VAWVyOl/8Kt/hkKK6Sx1VavpjVp5HhciO4wY0HAL+42JFPIz+/3KY2S0k8BQuvCSiBkOAt5CWCh4QFQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731774251; c=relaxed/simple;
-	bh=ur4279Lg4Jkiv5ioc4Um20xDbX+FLxdWzXYF38k8Nsc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mDRAczN8B1UmIAs8F0Kz++/1x2553vHyDLjD0V/zJb0Bql2BPPeCcCaxItWOrSGZSYiFgLqZLIVGrAd7ywRW2A9/TAjoj2l/84XxRRwzPTdGvpJBT3IHtV+cFDocH0PT6DZ4bLaVdfAaD0pCWcyiebmsixGO3QIYEh6bZsKJRoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=c/DwxpEA; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=EalHJFRoCP7b1Ph196PU6hDFcS9BrRYGeJ156HOiPDE=; b=c/DwxpEAaOMyfP7HPhIZvJ4i7R
-	2L27n2h6b6pVSsubAULxW3oXEm/MdtI9vqFKAyqy0AXcnMPDEL3Cyau2xVE60WOW0r0SYPJrhXF0z
-	U082tLTvfW8imCuV//9EJNECF3WCA9AkKbFXcoEHlX5/GXlduutsVys8SjF3csfzf/X/RJb1aDfT3
-	A2Y9nA4NVfDFqqgwKNFUMjXGuTQXwIyKt1dy7Bo7/UiWxpQhJBAooPJds4Vefzu6nPkDpVaoHd6Rx
-	6ktktOGO3i5zpN5Ibu2lWGOGw6heIVO0i5hjjg7g6/Nu3sZxWSSnU8fQorAthh84vXnQhpATP3RVv
-	4O5/x9eg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:52222)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1tCLac-0007OI-3D;
-	Sat, 16 Nov 2024 16:24:03 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1tCLaZ-0003FM-0s;
-	Sat, 16 Nov 2024 16:23:59 +0000
-Date: Sat, 16 Nov 2024 16:23:59 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-	pabeni@redhat.com, pablo@netfilter.org, richardcochran@gmail.com,
-	johannes@sipsolutions.net, loic.poulain@linaro.org,
-	ryazanov.s.a@gmail.com, dsahern@kernel.org, wintera@linux.ibm.com,
-	hawk@kernel.org, ilias.apalodimas@linaro.org, jhs@mojatatu.com,
-	jiri@resnulli.us, ecree.xilinx@gmail.com,
-	przemyslaw.kitszel@intel.com, netfilter-devel@vger.kernel.org,
-	linux-wireless@vger.kernel.org
-Subject: Re: [PATCH net-next] net: reformat kdoc return statements
-Message-ID: <ZzjHH-L-ylLe0YhU@shell.armlinux.org.uk>
-References: <20241115163612.904906-1-kuba@kernel.org>
+	s=arc-20240116; t=1731787665; c=relaxed/simple;
+	bh=5rtxGu68PLWrXyTEJNBr68hhrntpwpZdOSN9YWdsbfY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qxiVqSsmdln+TjVfPRmDgwPyjT3nA7y3o5lzewuNKz/WLYdmENM+91eclN2OSQ85pNrv+VNgnLfiWULn69XiWdN01myxb8V8dnYLolXF2K93rwmABeR6RSQlJJLuk67IDnkt2mzYgJsuQtoozXZokA9tbqaByVGwNJIlLjCb01I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=JQOZxKP3; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 40BBA89698;
+	Sat, 16 Nov 2024 21:07:34 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1731787655;
+	bh=msWG5qnuSAmchrjZIHWSe5yibi3jg0xEpfJtIVvoQA0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=JQOZxKP3VnpaHDzeb2po7GNni8qWiMQve1IWLtAaq1+5mSjtN24PUPimlzF/6AHC1
+	 U8a+ONq23zJkAah8DAfn22UvOArHyWcUDdkBSWpKHFlb6IY8OYZmywqxK4Q3295oFF
+	 fPv6GRs5arWYat28D4lnKYRN1DAbvUdj5ndlmYt9fsGrMWp+Ld34ORgN+sVhT0r5Qv
+	 qyr5Bb6JCRB98vN4avDSYVag8IDSLlol/nUZRmeok5Yrn1pzUg3Da6UxSnhJUFCLM3
+	 mLOGXtKy2197fkhOCAXvKQuWikwhkiqxMNKQxZsDmMs+clqx+AH4W0ISuqxOI+XUj1
+	 Udg2euHimVxRw==
+Message-ID: <b287f8f9-600e-4e69-b7ec-25990275575e@denx.de>
+Date: Sat, 16 Nov 2024 20:57:36 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241115163612.904906-1-kuba@kernel.org>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: wilc1000: Rework bus locking
+To: Ajay.Kathat@microchip.com, alexis.lothore@bootlin.com,
+ linux-wireless@vger.kernel.org
+Cc: davem@davemloft.net, adham.abozaeid@microchip.com,
+ claudiu.beznea@tuxon.dev, conor+dt@kernel.org, edumazet@google.com,
+ kuba@kernel.org, kvalo@kernel.org, krzk+dt@kernel.org, pabeni@redhat.com,
+ robh@kernel.org, devicetree@vger.kernel.org, netdev@vger.kernel.org
+References: <20241022013855.284783-1-marex@denx.de>
+ <c9e98811-15f5-427a-82f7-2e7fff4a9873@bootlin.com>
+ <8e28ba76-ecfa-49b6-89b5-1edabb22129d@denx.de>
+ <a4c8c489-c6b9-4a38-84ab-f08409baccff@microchip.com>
+ <5e2a5056-78ac-4be0-83ca-4aa55f524535@denx.de>
+ <880baad9-be3d-41b2-bea3-620f915ca397@microchip.com>
+ <9d20b408-72a4-49f0-aca6-108dfdd65f99@denx.de>
+ <16e5c8d7-64ac-424e-9430-b683ae16a34e@denx.de>
+ <9888f605-ee68-4bd3-8d1d-aeef247d23d0@microchip.com>
+ <fcdfa93a-2db4-49ad-8947-ca43be329250@denx.de>
+ <260a505e-53ec-4f1d-94fe-2b71af48f1b7@denx.de>
+ <b61b5b11-b078-4cf5-bb40-7c3ff8ffa972@microchip.com>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <b61b5b11-b078-4cf5-bb40-7c3ff8ffa972@microchip.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-On Fri, Nov 15, 2024 at 08:36:12AM -0800, Jakub Kicinski wrote:
-> kernel-doc -Wall warns about missing Return: statement for non-void
-> functions. We have a number of kdocs in our headers which are missing
-> the colon, IOW they use
->  * Return some value
-> or
->  * Returns some value
+On 11/15/24 9:04 PM, Ajay.Kathat@microchip.com wrote:
+
+Hello Ajay,
+
+>>>>> Can you explain how to prevent that or shall we disable uAPSD
+>>>>> altogether ?
+>>>>
+>>>> Could you please share the test procedure and logs. I am occupied at the
+>>>> moment but I shall make some time to look into it and get a better
+>>>> understanding.
+>>>
+>>> The simplest test procedure is this:
+>>>
+>>> $ while true ; do ifconfig wlan0 up ; ifconfig wlan0 down ; done
+>>>
+>>> As for the logs, MMCI controller sporadically reports either Command or
+>>> Data CRC error, so likely the SDIO response (from WILC to Host) is
+>>> corrupted.
+>>
+>> Are there any news ?
 > 
-> Having the colon makes some sense, it should help kdoc parser avoid
-> false positives. So add them. This is mostly done with a sed script,
-> and removing the unnecessary cases (mostly the comments which aren't
-> kdoc).
+> I did test the same procedure in my setup, but I couldn't reproduce this issue
+> even after running it for a long duration. In my test setup, I used the
+> sama5d27-som1-ek1 host and wilc3000 firmware version 16.3.
+> 
+> I think this issue could be related to the host MMCI controller driver.
+> Normally, the wilc SDIO bus failures are captured by driver logs with an error
+> code (e.g., timeout), but if the MMCI controller is outputting the warning
+> message, then the error could be related to it. Does the MMCI controller error
+> point to any specific function?
 
-I wonder about this... I suspect it's going to be a constant battle to
-ensure that docs use Return: or Returns: because it's not "natural"
-when writing documentation.
+Either CMD52 or CMD53 errors out with CRC error, this is recognized by 
+the controller. That points to sporadic CRC error during SDIO transfer.
 
-Maybe the tooling should accept a sentence starting "Return(s?)" and
-convert it to "Return(s):" in generated documentation?
+> Which host was used to test this scenario, and
+> is it possible to test with different host or different configuration on the
+> same host
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+I am observing sporadic command and data CRC errors on STM32MP157F 
+system with SDIO WILC3000.
+
+, like disabling power save on the host?
+I already tested disabling power save.
+
+Can you explain why does uAPSD (iw ...set power_save off) adversely 
+affect SDIO bus stability ?
+
+Can you explain how to prevent that or shall we disable uAPSD altogether ?
+
+Is there any way to make the WILC firmware produce debug output , so we 
+can figure out what is going on "on the other side" ?
+
+Are you able to provide me (maybe off-list) some debug firmware build ?
+(or can I get firmware sources and build and debug my own WILC firmware 
+on the Cortus CPU?)
+
+I can trigger the SDIO errors even without being connected to any AP , 
+so this is something between the WILC and the SDIO host, the radio is 
+likely not involved , right ?
 
