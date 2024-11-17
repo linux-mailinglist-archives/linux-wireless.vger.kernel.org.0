@@ -1,114 +1,87 @@
-Return-Path: <linux-wireless+bounces-15422-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15423-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 890169D032C
-	for <lists+linux-wireless@lfdr.de>; Sun, 17 Nov 2024 12:04:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 507B89D03A8
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 Nov 2024 13:27:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40CED1F21BFD
-	for <lists+linux-wireless@lfdr.de>; Sun, 17 Nov 2024 11:04:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C122EB25B41
+	for <lists+linux-wireless@lfdr.de>; Sun, 17 Nov 2024 12:27:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B044E13A26F;
-	Sun, 17 Nov 2024 11:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BED2195FF0;
+	Sun, 17 Nov 2024 12:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="svn0JYOJ"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="mTU1+u6c"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84FB211CAF;
-	Sun, 17 Nov 2024 11:04:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A672B183CCA;
+	Sun, 17 Nov 2024 12:25:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731841482; cv=none; b=LCW7X2JtfRXQRFarCeWGcWjMCXAbJJHvMNOc7ey8i2yNskmyq+Xc0vH1X7i66r4huF2tSDHvmDqbxajcIjlCOY5JzNrhsFjgDzfKXgpsl03SR6lj7IwlQZYifxyUsjSXreNXsbLoTro7N9xeGBaDjI1WgT7uJT/viYGkSaEPnp0=
+	t=1731846328; cv=none; b=peEy5TPddAbekjb+CxxKwwcOyU5nRzmLXf29TFmo6qkglRFfq+JjRxQcHllvjgdX4uI2hVsNWwWlJSbkmRbRIyrdOlzPF1nEk5LDknuPAhKlflSX3kFizdFN8MCnyjYWLckaIPP/+ixYHi1Z39pd7jh+QUIU0Ko6KFeJe7stcaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731841482; c=relaxed/simple;
-	bh=5y3Xonm8SonDzHhYw0NA0WJvKXEkcXPSTpV6FxYalyw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hJ1vFxKnoOe4NZhlqMuSlwOzJDkIgv6mL6ek9BfT02xY5cRVJSi7oGQTOY5t1HQg+dR+ir949vXyd3bzejgcsFLSyTrk9kt9OCG1aeYCn4kUm+Ucg7rfGxtI0THRP5bksrQs2yIb3Cvn7gFkyFEYTlSRVwIPfTHdG5w//LJhbck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=svn0JYOJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0EF9C4CECD;
-	Sun, 17 Nov 2024 11:04:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1731841482;
-	bh=5y3Xonm8SonDzHhYw0NA0WJvKXEkcXPSTpV6FxYalyw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=svn0JYOJYF6uwle/RO/O3yzAb0y9lp2dIlpdKIyPe8KHv0lMCilSDsvcbDKtINBvO
-	 IJygecQLiO8LcCq5dqPgQme2xATpZo/cHV05WTxhFEAzRFGGBsO61aHNzz110tFYRN
-	 /Pay2nWaRYQEGXA0KgRFhrbWdU3X5HPMyJwhXElbMddTPfdPRawPN+SPon1UDyM52X
-	 2zd+UhpBhuOtrZbNbaILX4q0Tw2IGDvPH0jDqMg81PO/0HIobvOOuw4m5lySWPrytH
-	 N9aO7OeJGIdTZZJUGrb6lsOytI5Hgsm/9rFu8xtyS/Az0h8KpcDavbXWu/itpOMHp6
-	 K2iMCOR5oCFSw==
-Date: Sun, 17 Nov 2024 03:04:37 -0800
-From: Kees Cook <kees@kernel.org>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: "Gustavo A. R. Silva" <gustavo@embeddedor.com>, benjamin.berg@intel.com,
-	dmantipov@yandex.ru, gregory.greenman@intel.com,
-	gustavoars@kernel.org, haim.dreyfuss@intel.com,
-	johannes.berg@intel.com, kvalo@kernel.org,
-	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org, luciano.coelho@intel.com,
-	miriam.rachel.korenblit@intel.com, shaul.triebitz@intel.com,
-	yedidya.ben.shimol@intel.com
-Subject: Re: [PATCH] wifi: iwlwifi: mvm: Fix __counted_by usage in
- cfg80211_wowlan_nd_*
-Message-ID: <202411170303.1F0B0E2@keescook>
-References: <20240619211233.work.355-kees@kernel.org>
- <d9bdb9c1-689e-4b3f-8325-8ee813257d8f@wanadoo.fr>
- <c8404725-e4c4-453b-b72d-19ab0761da70@embeddedor.com>
- <47a71c03-0306-4239-b77c-cb63a1760d19@embeddedor.com>
- <0f7d2d25-5c7c-4a19-8af7-ce38ee630d4d@wanadoo.fr>
+	s=arc-20240116; t=1731846328; c=relaxed/simple;
+	bh=2Vzu3RlYgWlUg+kP8l3nTLXS8GOcuKbfykkwWU/BOFg=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=LNQ/gtUOCrqCVL+bkvrll8bT2wbdXPTXG/AQzCW4TNqBig9lun9ZzyhGtaoC8TmFCule8Yti7BWeCAriCC+bdZRkdQJNsC5ycPVA0+rOU5HuQ013kHkoKAw+9UV6Jvu0Txm96BfjvUC8xIX0YFwaUlYTEi5x8JaXgd1B/c5Wj/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=fail (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=mTU1+u6c reason="signature verification failed"; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1731846322;
+	bh=tp2Q+8b3zGUBih3afpuzhAn88G4uKrpXKwQ9ivMWqHM=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=mTU1+u6copmZDAjfqnXWv+2ujIPjQ3JtoGu9so550WGMXDTKHgPRUtKWL5WTQKacA
+	 ukYIXyZnvXaIaM7phYyg2ffevuNcZwkVM+fGzA0yJe4hA6ivVJfsyMN2k5es56Dca2
+	 xnyEpYxwi2vRkSTSXt4SDnE54vHeCtrhpgtS0p+MhXC1a/iPqUZ6noNUE4xD/tX6x3
+	 9xyLmagErBzssEeKDZj2zkr4owFCFT2YctuTq6qJ9KGCJplX90TRwhVHol5EujIAFV
+	 JLHuHIFQhKPYuj26daIFU9Gqj0sP+YYyQFfmqJ5wJevMLVh4tXn5ub20TQGEUboHP9
+	 4WeeB6bi4EbDw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Xrqhp5Zp2z4xf5;
+	Sun, 17 Nov 2024 23:25:14 +1100 (AEDT)
+From: Michael Ellerman <patch-notifications@ellerman.id.au>
+To: linux-gpio@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>
+Cc: kernel-janitors@vger.kernel.org, audit@vger.kernel.org, linux-mtd@lists.infradead.org, Zhihao Cheng <chengzhihao1@huawei.com>, "Rafael J. Wysocki" <rafael@kernel.org>, linux-arm-msm@vger.kernel.org, linux-pci@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-usb@vger.kernel.org, linux-mm@kvack.org, maple-tree@lists.infradead.org, alsa-devel@alsa-project.org, Sanyog Kale <sanyog.r.kale@intel.com>, Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, dccp@vger.kernel.org, linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>, drbd-dev@lists.linbit.com, linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, nvdimm@lists.linux.dev, linux-leds@vger.kernel.org, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, tipc-discussion@lists.sourceforge.
+ net, Robin Murphy <robin.murphy@arm.com>, iommu@lists.linux.dev, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, linux-trace-kernel@vger.kernel.org, Neil Brown <neilb@suse.de>, Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, linux-nfs@vger.kernel.org, amd-gfx@lists.freedesktop.org, linux-wireless@vger.kernel.org, intel-wired-lan@lists.osuosl.org
+In-Reply-To: <20240930112121.95324-1-Julia.Lawall@inria.fr>
+References: <20240930112121.95324-1-Julia.Lawall@inria.fr>
+Subject: Re: (subset) [PATCH 00/35] Reorganize kerneldoc parameter names
+Message-Id: <173184539760.890800.14513086226459117952.b4-ty@ellerman.id.au>
+Date: Sun, 17 Nov 2024 23:09:57 +1100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <0f7d2d25-5c7c-4a19-8af7-ce38ee630d4d@wanadoo.fr>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jun 20, 2024 at 08:53:45PM +0200, Christophe JAILLET wrote:
-> Le 20/06/2024 à 20:08, Gustavo A. R. Silva a écrit :
-> > 
-> > 
-> > On 6/20/24 12:02, Gustavo A. R. Silva wrote:
-> > > 
-> > > > My understanding is that 'match', is allocated by :
-> > > >      match = kzalloc(struct_size(match, channels, n_channels),
-> > > > GFP_KERNEL);
-> > > > 
-> > > > So match->n_channels is *0* when iwl_mvm_query_set_freqs() is called.
-> > > 
-> > > n_channels is updated in the line before calling kzalloc():
-> > > 
-> > > n_channels = iwl_mvm_query_num_match_chans(mvm, d3_data->nd_results, i);
-> > > 
-> > > match = kzalloc(struct_size(match, channels, n_channels), GFP_KERNEL);
-> > 
-> > then match->n_channels updated here:
-> > 
-> >           if (!match)
-> >               goto out_report_nd;
-> > +        match->n_channels = n_channels;
+On Mon, 30 Sep 2024 13:20:46 +0200, Julia Lawall wrote:
+> Reorganize kerneldoc parameter names to match the parameter
+> order in the function header.
 > 
-> Thanks for the explanation.
-> This is what I was looking for, and I missed this line.
+> The misordered cases were identified using the following
+> Coccinelle semantic patch:
 > 
-> Sorry for the noise.
+> // <smpl>
+> @initialize:ocaml@
+> @@
+> 
+> [...]
 
-Hi,
+Applied to powerpc/next.
 
-This patch is still needed and doesn't appear in -next (nor Linus's
-tree). Should I resend it?
+[11/35] powerpc/ps3: Reorganize kerneldoc parameter names
+        https://git.kernel.org/powerpc/c/276e036e5844116e563fa90f676c625bb742cc57
 
-Thanks!
-
--Kees
-
--- 
-Kees Cook
+cheers
 
