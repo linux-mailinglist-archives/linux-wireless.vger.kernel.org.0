@@ -1,133 +1,102 @@
-Return-Path: <linux-wireless+bounces-15452-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15453-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 946829D1069
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 13:12:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95AF19D1097
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 13:34:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DD80B22DA8
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 12:12:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66884283724
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 12:34:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07989190470;
-	Mon, 18 Nov 2024 12:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD111193426;
+	Mon, 18 Nov 2024 12:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="AGPKgAua"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EsmmmuSn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE3EC13A89A
-	for <linux-wireless@vger.kernel.org>; Mon, 18 Nov 2024 12:12:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987D9190665
+	for <linux-wireless@vger.kernel.org>; Mon, 18 Nov 2024 12:34:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731931944; cv=none; b=ai8N0Mq0mD0mgxNumKH61W0bv8OVdGJjSQAzMTf9JKR/9CicDN5FKW8O2WGIGbtpofRrWknBU7sr9hpC1eARR1n5TY0LQ0e3iYq+lOY4nwf2WDuB4gd/DMDbgQVOpWW1vcAVK88M6DBW+L+rtOvXUZF7UYUPgt3IHL6mp1At5ZQ=
+	t=1731933253; cv=none; b=S+nM2hkepCouT5lCWUGBvMO12wlXFcY8nF9LVmvClQQMxSdXiD2tWKVXdYDyqrx/2NPw3Y2M5BVGUWZzd6x6DRIfFaa2I8H+2iRDWNGnw+9NkHsAbVwj2zb8Ix8g9GuekFiYZfWIMpZLXJ/sxkCWgoKSvD0ggXbWGi7Ym1AnDHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731931944; c=relaxed/simple;
-	bh=0hrdceqrbjeJBAKk6bVCbKODz3f5ZWzYzkLB/MObs9g=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=eOkrZ8+v6aqDjZQQIVaZN+7GkL+EvM5fB6EpMOKUedLigPnzAsNSIB0XMKwpwyksBTmdCZUsZiY9FlH6hUtNr+QOhsNfUzcV1dBE9kJ4NA3BIXvzaW8haVRY/hv8o8X0c7ltIsbBXs5yKxV+koveKj+2WSMN+JG9fduZ6sJay68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=AGPKgAua; arc=none smtp.client-ip=45.145.95.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-	t=1731931930; bh=0hrdceqrbjeJBAKk6bVCbKODz3f5ZWzYzkLB/MObs9g=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=AGPKgAua2+aUWHpRqCcpu+iEGY0fXUSFU4bL4FS0nwooTngdaizSZ2f9b0EXHfk4Z
-	 n4rqTjOTKvnlGbXlQhu/pDW/ytRjUxKJ91QB/nYHkfIYaQchK1FIc90sjLrjEakR2j
-	 F1SaWDYAYnh3Z8wQfgdgoWupbembjpdZ0DKgTaDfFVI7teRR5XwfFW/6JrinF5ih1x
-	 Hl79TssuJkjej6pl3S5wotMBGc0lfOlasP0PFfoXtEaXWEYbeuDaaHFWM1z6uJ18eB
-	 oZSOLKWF5ZSwX/SlcThBgRWYCCNwLw7Iw1h/lPcfl+DU6XuCj58zY56WFpVaQvuL02
-	 yNHl7jdKxenNg==
-To: Hamdi Issam <ih@simonwunderlich.de>, Simon Wunderlich
- <sw@simonwunderlich.de>, Sven Eckelmann <se@simonwunderlich.de>, Kalle
- Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>
-Subject: Re: [PATCH] ath9k: Add RX inactivity detection and reset chip when
- it occurs
-In-Reply-To: <c17462eb-5013-46f8-90fd-bc9c8b0431a5@simonwunderlich.de>
-References: <20241106-ath9k-deaf-detection-v1-1-736a150d2425@redhat.com>
- <3288096.AJdgDx1Vlc@ripper> <87msic78no.fsf@toke.dk>
- <5009451.31r3eYUQgx@prime>
- <c17462eb-5013-46f8-90fd-bc9c8b0431a5@simonwunderlich.de>
-Date: Mon, 18 Nov 2024 13:12:09 +0100
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87jzd0rbae.fsf@toke.dk>
+	s=arc-20240116; t=1731933253; c=relaxed/simple;
+	bh=AK3VFBJiEXeyudp+DszCWi2dwzhFj45aH9ETUvd2rg8=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=QzztQgKBZvh4uMwIYgUo8Oe5YWewel4nc3TCWdMzQXgR+JQiMNMqaRXRp/c76PvO1EcclVW3TJs4/Ua0ZI2Qvp5ViiSeuR0GeZjEnXl7qSiyPskVC6vz58AZ94IPiJYo2/rblwMl4RfPSRLelNi6f+5fYT99OpHDUPxtI0nVmtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EsmmmuSn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60FE1C4CECC;
+	Mon, 18 Nov 2024 12:34:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1731933253;
+	bh=AK3VFBJiEXeyudp+DszCWi2dwzhFj45aH9ETUvd2rg8=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=EsmmmuSnmh7LOAuo0ljU1/LHasr+Ung1Klx9Ak8gV/xsCBKG19N1+2jxqK+cfQxvN
+	 j6/W7E8RK2UdOUNT+vEQ5cTAJkI7LM3xDx5rdHM5QpfxrSetbY2HwCaamwGQV0nhEs
+	 oegjzakisuQBZ2XBctOJG/HOZo2yxUuGQ5xHoE/OM5U7PiPDqzjFndxBcdPPv64tZj
+	 783wbGGPTm38+U4kf3H2ikPz+dOB/nvgTxBaxSyVNKtegcDevF2FuR4VdZAUGqAiZb
+	 nXxnj3wm9n6jKYPHAH+NwxzLo6UySprQm6R3X7daeuBr8rkpVCSyuRb1z7l+CuOHO3
+	 T0+bjTqJQ4Alg==
+From: Kalle Valo <kvalo@kernel.org>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: <linux-wireless@vger.kernel.org>,  <kevin_yang@realtek.com>
+Subject: Re: [PATCH v2 1/6] wifi: rtw89: 8922a: configure AP_LINK_PS if FW
+ supports
+References: <20241118040255.40854-1-pkshih@realtek.com>
+	<20241118040255.40854-2-pkshih@realtek.com>
+Date: Mon, 18 Nov 2024 14:34:09 +0200
+In-Reply-To: <20241118040255.40854-2-pkshih@realtek.com> (Ping-Ke Shih's
+	message of "Mon, 18 Nov 2024 12:02:50 +0800")
+Message-ID: <87mshwvhz2.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-Hamdi Issam <ih@simonwunderlich.de> writes:
+Ping-Ke Shih <pkshih@realtek.com> writes:
 
-> On 11/6/24 17:03, Simon Wunderlich wrote:
->> On Wednesday, November 6, 2024 3:12:59 PM CET Toke H=C3=B8iland-J=C3=B8r=
-gensen wrote:
->>> Sven Eckelmann <se@simonwunderlich.de> writes:
->>>> Hi,
->>>>
->>>> Thank you for submitting the patch.
->>>>
->>>> On Wednesday, 6 November 2024 13:41:44 CET Toke H=C3=B8iland-J=C3=B8rg=
-ensen wrote:
->>>>> Since this is based on ideas by all three people, but not actually
->>>>> directly derived from any of the patches, I'm including Suggested-by
->>>>> tags from Simon, Sven and Felix below, which should hopefully serve as
->>>>> proper credit.
->>>> At least for me, this is more than enough. Thanks.
->>>>
->>>> I don't have the setup at the moment to test it again - maybe Issam ca=
-n do
->>>> this. One concern I would have (because I don't find the notes regardi=
-ng
->>>> this problem), is whether this check is now breaking because we count
->>>> more things. In the past, rxlp/rxok was used for the check. And now I
->>>> don't know whether the count for the other ones were still increasing.
->>>>
->>>> * RXHP (rather sure that "high priority frame" wasn't increasing)
->>>> * RXEOL ("no RX descriptors available" - I would guess no, but I can't=
- say
->>>> for>
->>>>    sure)
->>>>
->>>> * RXORN ("FIFO overrun" I would guess no, but I can't say for sure)
->>>>
->>>> Reviewed-by: Sven Eckelmann <se@simonwunderlich.de>
->>> Great, thanks for the review! I'll let it sit in patchwork for a little
->>> while to give people a chance to test it out before sending it over to
->>> Kalle to be applied :)
->>>
->>> -Toke
->> Hi Toke,
->>
->> this looks good to me in general. I'm not sure either about the particul=
-ar RX
->> interrupts. We can test this by putting the AP in a shield box and verif=
-y that
->> the counters are actually increasing, and that should be good enough.
->>
->> Acked-by: Simon Wunderlich <sw@simonwunderlich.de>
->>
->> Thank you!
->>        Simon
+> From: Zong-Zhe Yang <kevin_yang@realtek.com>
 >
-> Hi Toke,
+> After FW v0.35.46.0, for AP mode, RTL8922A FW supports a new FW feature,
+> called NOTIFY_AP_INFO, to notify driver information related to AP mode.
+> And, one function of it is to monitor PS states of remote stations. Once
+> one of them changes, FW will send a C2H event to tell driver. With this
+> FW feature, we can declare AP_LINK_PS.
 >
-> I have tested this patch in mesh mode, and=C2=A0it functions as expected.
+> For now, driver still needs to determine if a frame is ps-poll or U-APSD
+> trigger. So, add the corresponding RX handling in driver, which activates
+> only when at least one AP is running.
 >
-> I conducted the test by placing one node inside a shield box and the=20
-> other outside, then verified whether a reset occurred due to RX path=20
-> inactivity.
->
-> Tested-by: Issam Hamdi <ih@simonwunderlich.de>
+> Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
+> Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
 
-Great, thanks for testing! :)
+[...]
 
--Toke
+> +static inline void rtw89_assoc_link_clr(struct rtw89_sta_link *rtwsta_link)
+> +{
+> +	struct rtw89_sta *rtwsta = rtwsta_link->rtwsta;
+> +	struct rtw89_dev *rtwdev = rtwsta->rtwdev;
+> +
+> +	rcu_assign_pointer(rtwdev->assoc_link_on_macid[rtwsta_link->mac_id],
+> +			   NULL);
+> +	synchronize_rcu();
+> +}
+
+In ath12k patches I got feedback that synchronize_rcu() should not be
+used unless we explicitly need it, for example if if we free something
+or similar. Just wanted to mention this, up to you if you want to keep
+it or not.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
