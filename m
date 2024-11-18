@@ -1,175 +1,123 @@
-Return-Path: <linux-wireless+bounces-15450-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15451-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DA7A9D0FB0
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 12:28:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFB649D0FD3
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 12:35:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 919CF1F2269D
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 11:28:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BDC21F22D2B
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 11:35:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979201990AD;
-	Mon, 18 Nov 2024 11:28:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m/8JdPtt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F49198A08;
+	Mon, 18 Nov 2024 11:35:46 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7CEB193435;
-	Mon, 18 Nov 2024 11:28:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41A0A194A7C
+	for <linux-wireless@vger.kernel.org>; Mon, 18 Nov 2024 11:35:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731929318; cv=none; b=JnrC+Kz56QPCbLm7I6ZVfVM0cpoO5CDPtSKEOWNVpXtSgXfVSJye83CT+cYeHUG2AfFGfEjU3RAZOqE1Ub43cdqrad51fWCka6hp472svUdaM4CAbIToFFnSJ+aDn9lkaCrtIE3s01jarq0m1HyLxtnaKenW2NNbsmOc7MiEwxw=
+	t=1731929746; cv=none; b=tAJZPpetqJ/O8dQrCpvDgxo8JMorxvhGZhTO0UnG9jkeZHYRljsB964zVp5KUNR/MRVLtr4DFqr7cDmJ/+1UL2ZARuPcAXLORApOeIRPQODKEaO7CHLi1GTcEmG7I/nsdZW4PeHKB64Ir9rynpVekqPhs2aK7O6IZebz+k57o8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731929318; c=relaxed/simple;
-	bh=eflO5BqcAdiHnObc19vuFxv1kFN4bcVh6FEadC6e/J0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=T6XTRc2TTB2/I+CZHGZuUSK0AknwoSwHSo949+Nym4GcNaA1BlRudEmeGAU281/nBBS5e6xY1e3dBX9ePi/Qa/XKhN9ezXEA2At2vFfYkmKSzjfzc8sJ9SnY2PWPA/JNZG0ZxnJH7JF2+GI77HKU6YblxQ9ubYC+HAUYgZ+eA/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m/8JdPtt; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1731929317; x=1763465317;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=eflO5BqcAdiHnObc19vuFxv1kFN4bcVh6FEadC6e/J0=;
-  b=m/8JdPttVwUXB5ZhVtJXKSa0qsOobC2hjqN6pZsmq5ZFypOQD0vpYCKi
-   6N1ldEbE7IX6cI/JPyGTLJphyOa8qs7J9LsaxXS2T3h8Mhe6xE4mY1tCq
-   la+qvukZUQkQzQX1jOk/yyCJz5ix7tej6qx7AKwllnCOC3Et+dvcKuxG9
-   LXStNjnOvrJXlYrTiY1ntu1sKAVgK/JY8xFxs4yjkzgF5gBfMcVG1hKyP
-   CzsFthbx3Wj2ZxKf6rqqMH7sS4Qcl9NdLn+cy8xySJrxnbQSORPrnwSim
-   f6cncK9WeAZ8+6pNGUyjtvGlSKM4rqt4BllKp/b4Xc/1nPtj0a8wp3UK6
-   A==;
-X-CSE-ConnectionGUID: NZT1qeH0SnGr7jSWfhdmHw==
-X-CSE-MsgGUID: FLXFwY+gRrWhIKX7RjAeSQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11259"; a="42396204"
-X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; 
-   d="scan'208";a="42396204"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2024 03:28:31 -0800
-X-CSE-ConnectionGUID: rRdUd/MrRkyoZEJD1Sac1Q==
-X-CSE-MsgGUID: apTDPmdSTQ+3Y3NYJwg9xw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,163,1728975600"; 
-   d="scan'208";a="89329614"
-Received: from mwiniars-desk2.ger.corp.intel.com (HELO [10.245.246.149]) ([10.245.246.149])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Nov 2024 03:28:08 -0800
-Message-ID: <62c1e9e941cec75cf8771761fb9981879fefcce5.camel@linux.intel.com>
-Subject: Re: [PATCH 08/22] drm/xe: Convert timeout to secs_to_jiffies()
-From: Thomas =?ISO-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>
-To: Easwar Hariharan <eahariha@linux.microsoft.com>, Pablo Neira Ayuso
- <pablo@netfilter.org>, Jozsef Kadlecsik <kadlec@netfilter.org>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Julia Lawall <Julia.Lawall@inria.fr>,  Nicolas Palix
- <nicolas.palix@imag.fr>, Daniel Mack <daniel@zonque.org>, Haojian Zhuang
- <haojian.zhuang@gmail.com>, Robert Jarzmik <robert.jarzmik@free.fr>,
- Russell King <linux@armlinux.org.uk>, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Christian Borntraeger
- <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Ofir
- Bitton <obitton@habana.ai>, Oded Gabbay <ogabbay@kernel.org>, Lucas De
- Marchi <lucas.demarchi@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Jeroen de Borst
- <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>,
- Shailend Chand <shailend@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- James Smart <james.smart@broadcom.com>, Dick Kennedy
- <dick.kennedy@broadcom.com>, "James E.J. Bottomley"
- <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"
- <martin.petersen@oracle.com>, Roger Pau =?ISO-8859-1?Q?Monn=E9?=
- <roger.pau@citrix.com>, Jens Axboe <axboe@kernel.dk>, Kalle Valo
- <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Andrew Morton <akpm@linux-foundation.org>, Jack
- Wang <jinpu.wang@cloud.ionos.com>, Marcel Holtmann <marcel@holtmann.org>,
- Johan Hedberg <johan.hedberg@gmail.com>, Luiz Augusto von Dentz
- <luiz.dentz@gmail.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
- <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, Broadcom
- internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Xiubo
- Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,  Josh Poimboeuf
- <jpoimboe@kernel.org>, Jiri Kosina <jikos@kernel.org>, Miroslav Benes
- <mbenes@suse.cz>, Petr Mladek <pmladek@suse.com>, Joe Lawrence
- <joe.lawrence@redhat.com>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai
- <tiwai@suse.com>, Lucas Stach <l.stach@pengutronix.de>, Russell King
- <linux+etnaviv@armlinux.org.uk>,  Christian Gmeiner
- <christian.gmeiner@gmail.com>, Louis Peens <louis.peens@corigine.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao
- <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, cocci@inria.fr, 
- linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
- linux-scsi@vger.kernel.org, xen-devel@lists.xenproject.org, 
- linux-block@vger.kernel.org, linux-wireless@vger.kernel.org, 
- ath11k@lists.infradead.org, linux-mm@kvack.org,
- linux-bluetooth@vger.kernel.org,  linux-staging@lists.linux.dev,
- linux-rpi-kernel@lists.infradead.org,  ceph-devel@vger.kernel.org,
- live-patching@vger.kernel.org,  linux-sound@vger.kernel.org,
- etnaviv@lists.freedesktop.org,  oss-drivers@corigine.com,
- linuxppc-dev@lists.ozlabs.org, Anna-Maria Behnsen <anna-maria@linutronix.de>
-Date: Mon, 18 Nov 2024 12:27:53 +0100
-In-Reply-To: <20241115-converge-secs-to-jiffies-v1-8-19aadc34941b@linux.microsoft.com>
-References: 
-	<20241115-converge-secs-to-jiffies-v1-0-19aadc34941b@linux.microsoft.com>
-	 <20241115-converge-secs-to-jiffies-v1-8-19aadc34941b@linux.microsoft.com>
-Autocrypt: addr=thomas.hellstrom@linux.intel.com; prefer-encrypt=mutual;
- keydata=mDMEZaWU6xYJKwYBBAHaRw8BAQdAj/We1UBCIrAm9H5t5Z7+elYJowdlhiYE8zUXgxcFz360SFRob21hcyBIZWxsc3Ryw7ZtIChJbnRlbCBMaW51eCBlbWFpbCkgPHRob21hcy5oZWxsc3Ryb21AbGludXguaW50ZWwuY29tPoiTBBMWCgA7FiEEbJFDO8NaBua8diGTuBaTVQrGBr8FAmWllOsCGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQuBaTVQrGBr/yQAD/Z1B+Kzy2JTuIy9LsKfC9FJmt1K/4qgaVeZMIKCAxf2UBAJhmZ5jmkDIf6YghfINZlYq6ixyWnOkWMuSLmELwOsgPuDgEZaWU6xIKKwYBBAGXVQEFAQEHQF9v/LNGegctctMWGHvmV/6oKOWWf/vd4MeqoSYTxVBTAwEIB4h4BBgWCgAgFiEEbJFDO8NaBua8diGTuBaTVQrGBr8FAmWllOsCGwwACgkQuBaTVQrGBr/P2QD9Gts6Ee91w3SzOelNjsus/DcCTBb3fRugJoqcfxjKU0gBAKIFVMvVUGbhlEi6EFTZmBZ0QIZEIzOOVfkaIgWelFEH
-Organization: Intel Sweden AB, Registration Number: 556189-6027
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-3.fc39) 
+	s=arc-20240116; t=1731929746; c=relaxed/simple;
+	bh=VoBiJ/uCzd9vE9syDFIu5G1aE5menWx73xgBxSq3Elk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VEIyIRTo6Q9//QoUy+DcCslCqkVPePF5409L4azuiZfWdsPuGUjl3aJIlAFiWgFxKv2kWUIGqiLfCxi9/FFRqNmD7b/NYpPqZWpXQzw91h2yWUlHVXNMNF3qflEOoLSvVM98q56clvaBX83LkxkOrkkqm7Qw2eNftUO2kKIX1yM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
+Received: from [IPV6:2003:c5:9731:6b90::32b] (p200300c597316B90000000000000032B.dip0.t-ipconnect.de [IPv6:2003:c5:9731:6b90::32b])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.simonwunderlich.de (Postfix) with ESMTPSA id 5AFC8FA132;
+	Mon, 18 Nov 2024 12:29:23 +0100 (CET)
+Message-ID: <c17462eb-5013-46f8-90fd-bc9c8b0431a5@simonwunderlich.de>
+Date: Mon, 18 Nov 2024 12:29:22 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ath9k: Add RX inactivity detection and reset chip when it
+ occurs
+Content-Language: en-US
+To: Simon Wunderlich <sw@simonwunderlich.de>,
+ Sven Eckelmann <se@simonwunderlich.de>, Kalle Valo <kvalo@kernel.org>,
+ =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+Cc: linux-wireless@vger.kernel.org, Felix Fietkau <nbd@nbd.name>
+References: <20241106-ath9k-deaf-detection-v1-1-736a150d2425@redhat.com>
+ <3288096.AJdgDx1Vlc@ripper> <87msic78no.fsf@toke.dk>
+ <5009451.31r3eYUQgx@prime>
+From: Hamdi Issam <ih@simonwunderlich.de>
+In-Reply-To: <5009451.31r3eYUQgx@prime>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Fri, 2024-11-15 at 21:22 +0000, Easwar Hariharan wrote:
-> Changes made with the following Coccinelle rules:
->=20
-> @@ constant C; @@
->=20
-> - msecs_to_jiffies(C * 1000)
-> + secs_to_jiffies(C)
->=20
-> @@ constant C; @@
->=20
-> - msecs_to_jiffies(C * MSEC_PER_SEC)
-> + secs_to_jiffies(C)
->=20
-> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-Reviewed-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+On 11/6/24 17:03, Simon Wunderlich wrote:
+> On Wednesday, November 6, 2024 3:12:59 PM CET Toke Høiland-Jørgensen wrote:
+>> Sven Eckelmann <se@simonwunderlich.de> writes:
+>>> Hi,
+>>>
+>>> Thank you for submitting the patch.
+>>>
+>>> On Wednesday, 6 November 2024 13:41:44 CET Toke Høiland-Jørgensen wrote:
+>>>> Since this is based on ideas by all three people, but not actually
+>>>> directly derived from any of the patches, I'm including Suggested-by
+>>>> tags from Simon, Sven and Felix below, which should hopefully serve as
+>>>> proper credit.
+>>> At least for me, this is more than enough. Thanks.
+>>>
+>>> I don't have the setup at the moment to test it again - maybe Issam can do
+>>> this. One concern I would have (because I don't find the notes regarding
+>>> this problem), is whether this check is now breaking because we count
+>>> more things. In the past, rxlp/rxok was used for the check. And now I
+>>> don't know whether the count for the other ones were still increasing.
+>>>
+>>> * RXHP (rather sure that "high priority frame" wasn't increasing)
+>>> * RXEOL ("no RX descriptors available" - I would guess no, but I can't say
+>>> for>
+>>>    sure)
+>>>
+>>> * RXORN ("FIFO overrun" I would guess no, but I can't say for sure)
+>>>
+>>> Reviewed-by: Sven Eckelmann <se@simonwunderlich.de>
+>> Great, thanks for the review! I'll let it sit in patchwork for a little
+>> while to give people a chance to test it out before sending it over to
+>> Kalle to be applied :)
+>>
+>> -Toke
+> Hi Toke,
+>
+> this looks good to me in general. I'm not sure either about the particular RX
+> interrupts. We can test this by putting the AP in a shield box and verify that
+> the counters are actually increasing, and that should be good enough.
+>
+> Acked-by: Simon Wunderlich <sw@simonwunderlich.de>
+>
+> Thank you!
+>        Simon
 
-<
-> ---
-> =C2=A0drivers/gpu/drm/xe/xe_device.c | 2 +-
-> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/gpu/drm/xe/xe_device.c
-> b/drivers/gpu/drm/xe/xe_device.c
-> index
-> a1987b554a8d2aa42b29301f2853edddfda7fda5..bb3338ef4191e76128611eeb953
-> 1c9d2089db85a 100644
-> --- a/drivers/gpu/drm/xe/xe_device.c
-> +++ b/drivers/gpu/drm/xe/xe_device.c
-> @@ -502,7 +502,7 @@ static int wait_for_lmem_ready(struct xe_device
-> *xe)
-> =C2=A0	drm_dbg(&xe->drm, "Waiting for lmem initialization\n");
-> =C2=A0
-> =C2=A0	start =3D jiffies;
-> -	timeout =3D start + msecs_to_jiffies(60 * 1000); /* 60 sec! */
-> +	timeout =3D start + secs_to_jiffies(60); /* 60 sec! */
-> =C2=A0
-> =C2=A0	do {
-> =C2=A0		if (signal_pending(current))
->=20
+Hi Toke,
+
+I have tested this patch in mesh mode, and it functions as expected.
+
+I conducted the test by placing one node inside a shield box and the 
+other outside, then verified whether a reset occurred due to RX path 
+inactivity.
+
+Tested-by: Issam Hamdi <ih@simonwunderlich.de>
+
+Regards,
+
+Issam
+
+
+-
 
 
