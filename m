@@ -1,126 +1,206 @@
-Return-Path: <linux-wireless+bounces-15444-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15445-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6A129D0A9F
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 09:08:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DAEE9D0AE5
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 09:29:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E5C51F2112E
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 08:08:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D73B282642
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 08:29:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF28C13D502;
-	Mon, 18 Nov 2024 08:08:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF81187352;
+	Mon, 18 Nov 2024 08:27:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="Bs2WsHTP"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="pVJ5a4Sb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C881405FB
-	for <linux-wireless@vger.kernel.org>; Mon, 18 Nov 2024 08:08:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCF6317BEA2;
+	Mon, 18 Nov 2024 08:27:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731917310; cv=none; b=kNur1jNAsPknBHej75UCP/G9WeR/4g7xE0lexrjYa680l4O31f7G2vGhE3+SxGDTrugrbwpXJ0vb2iJe6ZWVX80w8npLf/7No1c1eryMJ3+Vv36ev9pNskObG6yfREYcsKAvfscZ2HzkxODVcj4YyZxxIckabfkustmcEIxZDsM=
+	t=1731918440; cv=none; b=T7HQ/l74ZOipqG0NwEmR4b6iFQKq4dvsoTx6V7vgzq2qmFRWWa0QN0LTQYxW59tEd5vhcw1PW2Qq5PI+pyt5famgM2pR129QfQVVTejJggt5CS/oIOWdSNgqG9EmcVR/furP707OMnLXvC9vEkN/kR16AfAI1ufkei36q2Szx9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731917310; c=relaxed/simple;
-	bh=2JSt9Jlw7NrPjsaq3s5iFfLX5SgNGJ8eopI/H150z80=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZYpdqI3hFDHGBkN8Je6TE7w10hMEliF61TA5x92Opwz3w4LieyIFVix7LkStudVFQ37R8x1phKSmRWVs9FXRZ2PJyxg/HAU2D3I70yHgJb1Bub2GoHhg3ajFHpWf0EzWvHIDnj3JXo+nYgWq9fsBRN+1tUdvnGCPx7xkDUzEElY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=Bs2WsHTP; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 4812afa8a58411efbd192953cf12861f-20241118
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=bupWu58wFlbrYCb8nodGJcVmV3Ojq4m8SJykFoWlCUo=;
-	b=Bs2WsHTPQdisWU/qjcKVMacjZjEalWwVhgDIDoOsw/TTr35bRFKkLmDslr6NPMz+q4hV2IjOgcw7fgZRyhcbX6ukeZDjiEN/uxUfPC7JEhJ2JEp7AkkUZBNo2MaVE23CjjpASwMRTG91qQM0dpvWG6K9xcAvJmIHUfnVYPN6QbE=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.44,REQID:3c86a27c-813f-488c-983a-094610abeb8e,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:464815b,CLOUDID:6f7e394f-a2ae-4b53-acd4-c3dc8f449198,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
-	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: 4812afa8a58411efbd192953cf12861f-20241118
-Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw02.mediatek.com
-	(envelope-from <benjamin-jw.lin@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 502221233; Mon, 18 Nov 2024 16:08:23 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Mon, 18 Nov 2024 16:08:18 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Mon, 18 Nov 2024 16:08:18 +0800
-From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
-To: linux-wireless <linux-wireless@vger.kernel.org>
-CC: Johannes Berg <johannes@sipsolutions.net>, Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>, Evelyn Tsai
-	<evelyn.tsai@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>, "Money
- Wang" <money.wang@mediatek.com>, linux-mediatek
-	<linux-mediatek@lists.infradead.org>, Benjamin Lin
-	<benjamin-jw.lin@mediatek.com>
-Subject: [PATCH] wifi: mac80211: fix incorrect timing to initialize station NSS capability
-Date: Mon, 18 Nov 2024 16:07:22 +0800
-Message-ID: <20241118080722.9603-1-benjamin-jw.lin@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+	s=arc-20240116; t=1731918440; c=relaxed/simple;
+	bh=u+X9RPFT3w+sPXWt7gaBbAtIUXtN5oRIXDWvsAzav18=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FbBt4xOCG9BMTNQZuGic69z+MhyZuokfAEB+6GlYz12sXOuUSWKDln3gnYSh5QTqD7rv1Yy3chmgh64k2bg+bdfDE27Dwn3m40s5FjIFr/ieDjPQU/V3Y8h7vSBFqEwaUYSpYZyhwgppObM8tKy9wDlawbnlbNy+HU+rIdnnaeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=pVJ5a4Sb; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AHJiO3Y023687;
+	Mon, 18 Nov 2024 08:26:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=pofVBIDpbmPXxKdXBZzlW6SKJ1mpQg
+	5f+nyOC0P54ZU=; b=pVJ5a4SbiQLc7KmL6NMVUat1TeAb+E4P6v1BT086o1mEhk
+	asPz+d9pnH3oUetVu+XCwbjmIJgCChQ2Yg76ElBtpMc3MPIe4GEIJkdBOh3EDOTs
+	BshLlGoNMECAtRDAXjrNjk0/DJ4p9T1LW6K46OwdwtMNuLDXUx7tw7C0oS59z+J9
+	QShMh32WGNHKvTgEgpik3EK5hVK4TsghRPVpOZt4uDmXgH2LYgfrkGGFgYTal2qH
+	dz0ScnJgPbYohwDb0fe9yXNM0o6w8EzUNqyOgMmUN0w1gT6xXC0tgw+yBkjkz/Fh
+	q242Ut9KG7OxmdBC6tktol2tQuFTw331MM4YUGlg==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42xgtt0eh7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 Nov 2024 08:26:15 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4AI73j1E030931;
+	Mon, 18 Nov 2024 08:26:14 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42y63y27mu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 Nov 2024 08:26:14 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4AI8QAR549479982
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 18 Nov 2024 08:26:10 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BD6AD20043;
+	Mon, 18 Nov 2024 08:26:10 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A867E20040;
+	Mon, 18 Nov 2024 08:26:06 +0000 (GMT)
+Received: from osiris (unknown [9.171.77.223])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 18 Nov 2024 08:26:06 +0000 (GMT)
+Date: Mon, 18 Nov 2024 09:26:05 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
+        Jozsef Kadlecsik <kadlec@netfilter.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Julia Lawall <Julia.Lawall@inria.fr>,
+        Nicolas Palix <nicolas.palix@imag.fr>, Daniel Mack <daniel@zonque.org>,
+        Haojian Zhuang <haojian.zhuang@gmail.com>,
+        Robert Jarzmik <robert.jarzmik@free.fr>,
+        Russell King <linux@armlinux.org.uk>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, Ofir Bitton <obitton@habana.ai>,
+        Oded Gabbay <ogabbay@kernel.org>,
+        Lucas De Marchi <lucas.demarchi@intel.com>,
+        Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Jeroen de Borst <jeroendb@google.com>,
+        Praveen Kaligineedi <pkaligineedi@google.com>,
+        Shailend Chand <shailend@google.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        James Smart <james.smart@broadcom.com>,
+        Dick Kennedy <dick.kennedy@broadcom.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
+        Jens Axboe <axboe@kernel.dk>, Kalle Valo <kvalo@kernel.org>,
+        Jeff Johnson <jjohnson@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jack Wang <jinpu.wang@cloud.ionos.com>,
+        Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+        Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+        Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
+        Josh Poimboeuf <jpoimboe@kernel.org>, Jiri Kosina <jikos@kernel.org>,
+        Miroslav Benes <mbenes@suse.cz>, Petr Mladek <pmladek@suse.com>,
+        Joe Lawrence <joe.lawrence@redhat.com>,
+        Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        Russell King <linux+etnaviv@armlinux.org.uk>,
+        Christian Gmeiner <christian.gmeiner@gmail.com>,
+        Louis Peens <louis.peens@corigine.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Naveen N Rao <naveen@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org, cocci@inria.fr,
+        linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+        linux-scsi@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-block@vger.kernel.org, linux-wireless@vger.kernel.org,
+        ath11k@lists.infradead.org, linux-mm@kvack.org,
+        linux-bluetooth@vger.kernel.org, linux-staging@lists.linux.dev,
+        linux-rpi-kernel@lists.infradead.org, ceph-devel@vger.kernel.org,
+        live-patching@vger.kernel.org, linux-sound@vger.kernel.org,
+        etnaviv@lists.freedesktop.org, oss-drivers@corigine.com,
+        linuxppc-dev@lists.ozlabs.org,
+        Anna-Maria Behnsen <anna-maria@linutronix.de>
+Subject: Re: [PATCH v2 04/21] s390: kernel: Convert timeouts to use
+ secs_to_jiffies()
+Message-ID: <20241118082605.17002-A-hca@linux.ibm.com>
+References: <20241115-converge-secs-to-jiffies-v2-0-911fb7595e79@linux.microsoft.com>
+ <20241115-converge-secs-to-jiffies-v2-4-911fb7595e79@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-AS-Result: No-10--1.230800-8.000000
-X-TMASE-MatchedRID: 439J4N2hqK3S/7ipJ1OBvPVFR4sC8dPyTJDl9FKHbrn8yBPolNpM2MPr
-	YKJeXuZuuW76JsuTd2VXcbk9NdYP6o9Tk4aumaegEdFsavUQKAfJ5SXtoJPLyAHj24s7wUMNo8W
-	MkQWv6iXBcIE78YqRWvcUt5lc1lLgjMejjvPkBr6/PeWIFJydjuY+W2R+jVGyN2f4SYTMagnSAl
-	9/socB8nw6mE2j5X6hk8hwTGR/EFPXFyu5iuz7D7WMOxHu6tdLuTusilhZ2GR5lSmbrC6fdtr/T
-	o2FgNrjDLMIOOVTHz2nbLeYgH6K31Zca9RSYo/b
-X-TM-AS-User-Approved-Sender: No
-X-TM-AS-User-Blocked-Sender: No
-X-TMASE-Result: 10--1.230800-8.000000
-X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-SNTS-SMTP: 7B0B3A4090CBA7A2D500AD6C5FBB8B2633A6FC145C6DBEE76583253DD46845CC2000:8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241115-converge-secs-to-jiffies-v2-4-911fb7595e79@linux.microsoft.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: QBYvLy3JNa8evFseixOVfcUMyMppMmNG
+X-Proofpoint-ORIG-GUID: QBYvLy3JNa8evFseixOVfcUMyMppMmNG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 phishscore=0
+ mlxscore=0 malwarescore=0 mlxlogscore=858 adultscore=0 priorityscore=1501
+ bulkscore=0 impostorscore=0 spamscore=0 lowpriorityscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
+ definitions=main-2411180066
 
-Station's spatial streaming capability should be initialized before
-handling VHT OMN, because the handling requires the capability information.
+On Fri, Nov 15, 2024 at 09:26:21PM +0000, Easwar Hariharan wrote:
+> Changes made with the following Coccinelle rules:
+> 
+> @@ constant C; @@
+> 
+> - msecs_to_jiffies(C * 1000)
+> + secs_to_jiffies(C)
+> 
+> @@ constant C; @@
+> 
+> - msecs_to_jiffies(C * MSEC_PER_SEC)
+> + secs_to_jiffies(C)
+> 
+> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+> ---
+>  arch/s390/kernel/lgr.c      | 3 ++-
+>  arch/s390/kernel/time.c     | 4 ++--
+>  arch/s390/kernel/topology.c | 2 +-
+>  3 files changed, 5 insertions(+), 4 deletions(-)
 
-Fixes: a8bca3e9371d ("wifi: mac80211: track capability/opmode NSS separately")
-Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
----
- net/mac80211/cfg.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+...
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 6c0b228523cb..d58b24671a66 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1935,6 +1935,8 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
- 						    params->eht_capa_len,
- 						    link_sta);
- 
-+	ieee80211_sta_init_nss(link_sta);
-+
- 	if (params->opmode_notif_used) {
- 		/* returned value is only needed for rc update, but the
- 		 * rc isn't initialized here yet, so ignore it
-@@ -1944,8 +1946,6 @@ static int sta_link_apply_parameters(struct ieee80211_local *local,
- 					      sband->band);
- 	}
- 
--	ieee80211_sta_init_nss(link_sta);
--
- 	return 0;
- }
- 
--- 
-2.45.2
+> diff --git a/arch/s390/kernel/lgr.c b/arch/s390/kernel/lgr.c
+> index 6652e54cf3db9fbdd8cfb06f8a0dc1d4c05ae7d7..68021cb38574b122bbe3d9f70e9168305360017b 100644
+> --- a/arch/s390/kernel/lgr.c
+> +++ b/arch/s390/kernel/lgr.c
+> @@ -166,7 +166,8 @@ static struct timer_list lgr_timer;
+>   */
+>  static void lgr_timer_set(void)
+>  {
+> -	mod_timer(&lgr_timer, jiffies + msecs_to_jiffies(LGR_TIMER_INTERVAL_SECS * MSEC_PER_SEC));
+> +	mod_timer(&lgr_timer,
+> +		  jiffies + secs_to_jiffies(LGR_TIMER_INTERVAL_SECS));
+>  }
 
+Please don't add a new line break, especially not if the new line
+would be shorter than the old one.
 
