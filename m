@@ -1,180 +1,212 @@
-Return-Path: <linux-wireless+bounces-15448-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15449-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0F619D0E9C
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 11:33:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EE9A9D0F34
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 12:07:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A75E0282501
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 10:33:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5F801F22481
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 11:06:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78750194A51;
-	Mon, 18 Nov 2024 10:32:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B91319884B;
+	Mon, 18 Nov 2024 11:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B4k1UcL1"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="ekl0NLE7"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F786192D80;
-	Mon, 18 Nov 2024 10:32:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC67196C6C
+	for <linux-wireless@vger.kernel.org>; Mon, 18 Nov 2024 11:06:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731925973; cv=none; b=N7rh1bgSeVScYHmtHNZASf1NsPAJ7JR9ANO9B5YAt2IbBYM6NXJNO7zM0QnwEiP2NFaWUeKX6j7oyu22C8QqT4MAxn+uzpeKNJu0QTa09ULDH5WIbspfRM/2LFKyMrfjrQsJYQoPXuKNmFLEAVU7z/ZMifaklQhrCRmWV1EYsak=
+	t=1731928006; cv=none; b=kjlNwJTqdfp6b2ZJtDpYfZYtaJp8XN/q6wFn6EWcBMZho1/S5sS/+s45+X1QIW8Z3pk/bOzs0UhkwIVfSgRJNZ0Nvg8x6O4P/uJkWbaWc0hUDfgGkj3hX09TJeOGE80+nrSNbtNwfNI9sNcMBIvzjS+hivvbMApnrbjLNHbVQhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731925973; c=relaxed/simple;
-	bh=gWLzkKe3yBOjSr8ApJffbNKdP5Ok7maJbYZ3l2VWFzE=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=iIIueMldn6+/2xajSBULaX5X3wa5oOClqoZuKHXgpXbM2DDCAnDlAUq5g9epdbpb5yHI3wbp/5CQvgQA9gHQW6CrefM7SrjMsym9yHvufq/I4LXIjocvxuFWbnQWNYTKv0Lz63QGVfO/6hsjzy/Zy5kZcEaWZCrrQrXz8P7j4Gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B4k1UcL1; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43167ff0f91so25721055e9.1;
-        Mon, 18 Nov 2024 02:32:51 -0800 (PST)
+	s=arc-20240116; t=1731928006; c=relaxed/simple;
+	bh=IFcBtIn1LqFVelHm7kG7/Vy3ppN0z+ueq8gYg8sWEas=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U6xaeoVrTWohA6Nno+piV0FOQPuAo1rwP/4zPUbtvZwfLcnXTeRCfluZj1IWOrdabYMGVFbOi8Zxa9aQhmthuPUM8vurUWA+hJKG9nU7/wbBw+re5YucVz3fS1vySIiwpusAOifgsf9ktKAe55OtpsCw0XHHna6cgAlWqovkM+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=ekl0NLE7; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3822ec43fb0so2065620f8f.3
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Nov 2024 03:06:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731925970; x=1732530770; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-language:in-reply-to:mime-version
-         :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sXn9Mp5THOoB4QUhlxb6xYALkb/wxlQgOoJvivddYJ0=;
-        b=B4k1UcL18s/QVVyd2Awr9xRvhOGgttKWZTrGNkHisbACDzlw8NzMmQCXz3tsnYdjuU
-         2nSYJBdEpt4jjMWY9D9VdZTlZmArXjOkleHsBp4XAXBRE2EYINwwkSk+zvFmrW3He4bO
-         SQkUAG77oqhOR+szHlYAQjDYJS0aIt2sKUBvUFiAIpxQ9SrrhXDdEQgixkwqCHfZTdO3
-         81BuhLZMRL9GLbKI9TXgCuZDVmK50H6pnwoBHV6x6QXiZbC6O/D1sFo0acFnGq1McJSa
-         V4GIl7ijdDVVoFmij/FQP3tY08g4n61Pi8yKWclUo9pLZrjhV2/ap9XkH9KZDYMPy6wg
-         RY1A==
+        d=suse.com; s=google; t=1731928002; x=1732532802; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Q4K7ZFgLQYJQlGAzpq8RK54g3EqKOomWWOR+yhsr1qw=;
+        b=ekl0NLE713WVl+0iqMFWCUeOyXGpS1GTBNAadeC6CjQrpdNj1R2nypLRGP2uJjakH3
+         ma6jZAiH77JhVsgZkswVXE9+2l5Yia2YLgFg6gsC88yso321GFZfT27iEKVPgSJFNaM9
+         2W2NPkP0iv4jC4RM8EWyzp5JMVGQUDyQPWB8SMNIP/y8oyb8Hywli7WQnPgfo82zPfG6
+         rQCdFl5UhQJc+FctTaghJ0W1GD9XLogikkThFP7hwAl0gs65J49G1fTmGWNGUnJTfluX
+         zSVJrdJLD7Qsye3TVFGals+IXJ9hPI7Ba9b3ytrQIA7bHxP9wm9EHtPjUxegLnu5oju/
+         lOmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731925970; x=1732530770;
-        h=content-transfer-encoding:content-language:in-reply-to:mime-version
-         :user-agent:date:message-id:from:references:cc:to:subject
+        d=1e100.net; s=20230601; t=1731928002; x=1732532802;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sXn9Mp5THOoB4QUhlxb6xYALkb/wxlQgOoJvivddYJ0=;
-        b=rQePg6TbVCOkLPTqkEioFGOHpEJ+EvBMiS6vDvUnZXW+MRXmlKuKDZ1SoyNRscQ+z3
-         GS8X4JDCe4OJcL7wvAfJyb9eahWPaDR1bRu16m3xM/4TPFmNucK8QokXKhg9jj/ssw/l
-         mTi7qNURW9jiB6PP07TSnzfjKX5AqUu/BV8+pzY9LWBNPcjz+iKPkwNZ9mG3B3gluecb
-         o9Lz1kvi/iotFnd9i7stcHr2gCRtegLGGy/cCNgoJJAnKMzrKSS/wLzKqd/lsWJiq0/i
-         Wpo7rvSnaCGst/qiQ9nY9reZfv331VcdJDw13OwK5JomiBz8nONxr9SVfUQxf2NsPEWz
-         M1mg==
-X-Forwarded-Encrypted: i=1; AJvYcCWJlh4x48z2EpWglpRHtrY+1oXZRHLgN7iRHo5oVolxTGTTOMmE++sH96PNpzBWh0y/SkoThTQpaZWNxYYZ+g==@vger.kernel.org, AJvYcCXl0SUvJJ46S2pbNonsgWGqpKkmzms066s+4OUijfZQfPWVDNErG+sTlpYbrYN57O/+7LKKu94PF4hTGJQR6WVJ@vger.kernel.org
-X-Gm-Message-State: AOJu0YxU8BfEyqaTioGfuqu02PytqS3/yTUvqLVrJBYkPBLvdO+CsbPt
-	8z7BHa9yo+m3/+ywf8yXeLHpoE3026c3Kz3ek2HMFXWWku9Z6tA6py6YXw==
-X-Google-Smtp-Source: AGHT+IGMZCLEQ4H1S3ifcXM7+c7qdvm3S0RsbsRMkcS1ZOXoJduf/i024yQ3orBm+5uoTd396DiOxw==
-X-Received: by 2002:a05:600c:34d2:b0:426:66a2:b200 with SMTP id 5b1f17b1804b1-432df676328mr103076875e9.0.1731925969691;
-        Mon, 18 Nov 2024 02:32:49 -0800 (PST)
-Received: from [192.168.1.122] (cpc159313-cmbg20-2-0-cust161.5-4.cable.virginm.net. [82.0.78.162])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3821ae161d8sm12629064f8f.78.2024.11.18.02.32.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 Nov 2024 02:32:49 -0800 (PST)
-Subject: Re: [PATCH net-next] net: reformat kdoc return statements
-To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
-Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
- pablo@netfilter.org, linux@armlinux.org.uk, richardcochran@gmail.com,
- johannes@sipsolutions.net, loic.poulain@linaro.org, ryazanov.s.a@gmail.com,
- dsahern@kernel.org, wintera@linux.ibm.com, hawk@kernel.org,
- ilias.apalodimas@linaro.org, jhs@mojatatu.com, jiri@resnulli.us,
- przemyslaw.kitszel@intel.com, netfilter-devel@vger.kernel.org,
- linux-wireless@vger.kernel.org
-References: <20241115163612.904906-1-kuba@kernel.org>
-From: Edward Cree <ecree.xilinx@gmail.com>
-Message-ID: <3c75efb4-dc04-ebad-ce1d-98bcc6569c84@gmail.com>
-Date: Mon, 18 Nov 2024 10:32:47 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        bh=Q4K7ZFgLQYJQlGAzpq8RK54g3EqKOomWWOR+yhsr1qw=;
+        b=QL8RjTePWc0gTMGQRuWwz/X7EqsD/36rBbvzAUIZnRqvfdKMHUsVXcRz8kWsc0i8BG
+         QMpUzRqLyGgHhim/RflWsoj6Bj5B3qskD8pQ9zxYq1I5PI53qMm98Nb5nSXuMLXwQYlJ
+         2xJUwOqyweFW0Hc+UriZQ8P2eAse7/LOz3dSB3o4hF2FoqZppglxXmCM2qDZdpZApgYf
+         HNa8hkaLVH609EeQF8cGI7+nNsLiF+WBy8ivKXyHEIUK1thIB8XzFYQO8gulBAwfUYT8
+         3Q5A9rwjRMTQTn/4QdZWxpGyZePWeEo4qRz2nzuIDa2irSlMVNjfZvz8P73HdlbwywiD
+         eMRg==
+X-Forwarded-Encrypted: i=1; AJvYcCVOCddJPBHgg10iT9v4CbsqD8i8+1OFMfFUIAEcKYN3x7+qTLAN9z7Ij6V0PWizB8DsHJApBmpbcLYlZfI6+g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrCzLfAieIci4/uPFElkZVNt4RJuZh4AnmtGx0Fm0GAq4ZoxSl
+	rSUayrupG6iRwGRG2A79nclcxlPzI1aLU7OpcY+XVwnx53EAkKhkNTV+qPf8HGw=
+X-Google-Smtp-Source: AGHT+IEHvVmgRYFNhCs4UC7E5RjVk5JwGYVdnUZOYcUXsiEIWSohYFEZO8cTVp2lMrq4C8xPl0BQ1Q==
+X-Received: by 2002:a05:6000:18af:b0:37d:4ef1:1820 with SMTP id ffacd0b85a97d-38225a91e80mr10392779f8f.40.1731928002298;
+        Mon, 18 Nov 2024 03:06:42 -0800 (PST)
+Received: from pathway.suse.cz ([176.114.240.50])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38242eef982sm4319340f8f.8.2024.11.18.03.06.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Nov 2024 03:06:41 -0800 (PST)
+Date: Mon, 18 Nov 2024 12:06:34 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Easwar Hariharan <eahariha@linux.microsoft.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Julia Lawall <Julia.Lawall@inria.fr>,
+	Nicolas Palix <nicolas.palix@imag.fr>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Ofir Bitton <obitton@habana.ai>, Oded Gabbay <ogabbay@kernel.org>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Jeroen de Borst <jeroendb@google.com>,
+	Praveen Kaligineedi <pkaligineedi@google.com>,
+	Shailend Chand <shailend@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	James Smart <james.smart@broadcom.com>,
+	Dick Kennedy <dick.kennedy@broadcom.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
+	Jens Axboe <axboe@kernel.dk>, Kalle Valo <kvalo@kernel.org>,
+	Jeff Johnson <jjohnson@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jack Wang <jinpu.wang@cloud.ionos.com>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Jiri Kosina <jikos@kernel.org>, Miroslav Benes <mbenes@suse.cz>,
+	Joe Lawrence <joe.lawrence@redhat.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Russell King <linux+etnaviv@armlinux.org.uk>,
+	Christian Gmeiner <christian.gmeiner@gmail.com>,
+	Louis Peens <louis.peens@corigine.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	cocci@inria.fr, linux-arm-kernel@lists.infradead.org,
+	linux-s390@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org, linux-scsi@vger.kernel.org,
+	xen-devel@lists.xenproject.org, linux-block@vger.kernel.org,
+	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+	linux-mm@kvack.org, linux-bluetooth@vger.kernel.org,
+	linux-staging@lists.linux.dev, linux-rpi-kernel@lists.infradead.org,
+	ceph-devel@vger.kernel.org, live-patching@vger.kernel.org,
+	linux-sound@vger.kernel.org, etnaviv@lists.freedesktop.org,
+	oss-drivers@corigine.com, linuxppc-dev@lists.ozlabs.org,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>
+Subject: Re: [PATCH v2 19/21] livepatch: Convert timeouts to secs_to_jiffies()
+Message-ID: <Zzsfuuv3AVomkMxn@pathway.suse.cz>
+References: <20241115-converge-secs-to-jiffies-v2-0-911fb7595e79@linux.microsoft.com>
+ <20241115-converge-secs-to-jiffies-v2-19-911fb7595e79@linux.microsoft.com>
+ <718febc4-59ee-4701-ad62-8b7a8fa7a910@csgroup.eu>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20241115163612.904906-1-kuba@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <718febc4-59ee-4701-ad62-8b7a8fa7a910@csgroup.eu>
 
-On 15/11/2024 16:36, Jakub Kicinski wrote:
-> kernel-doc -Wall warns about missing Return: statement for non-void
-> functions. We have a number of kdocs in our headers which are missing
-> the colon, IOW they use
->  * Return some value
-> or
->  * Returns some value
+On Sat 2024-11-16 11:10:52, Christophe Leroy wrote:
 > 
-> Having the colon makes some sense, it should help kdoc parser avoid
-> false positives. So add them. This is mostly done with a sed script,
-> and removing the unnecessary cases (mostly the comments which aren't
-> kdoc).
 > 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-...
-> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-> index 0aae346d919e..ed549a2e02b2 100644
-> --- a/include/linux/netdevice.h
-> +++ b/include/linux/netdevice.h
-...
-> @@ -3548,7 +3548,7 @@ static inline void netdev_tx_sent_queue(struct netdev_queue *dev_queue,
->   * that they should not test BQL status themselves.
->   * We do want to change __QUEUE_STATE_STACK_XOFF only for the last
->   * skb of a batch.
-> - * Returns true if the doorbell must be used to kick the NIC.
-> + * Return true if the doorbell must be used to kick the NIC.
+> Le 15/11/2024 à 22:26, Easwar Hariharan a écrit :
+> > [Vous ne recevez pas souvent de courriers de eahariha@linux.microsoft.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+> > 
+> > Changes made with the following Coccinelle rules:
+> > 
+> > @@ constant C; @@
+> > 
+> > - msecs_to_jiffies(C * 1000)
+> > + secs_to_jiffies(C)
+> > 
+> > @@ constant C; @@
+> > 
+> > - msecs_to_jiffies(C * MSEC_PER_SEC)
+> > + secs_to_jiffies(C)
+> > 
+> > Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+> > ---
+> >   samples/livepatch/livepatch-callbacks-busymod.c |  2 +-
+> >   samples/livepatch/livepatch-shadow-fix1.c       |  2 +-
+> >   samples/livepatch/livepatch-shadow-mod.c        | 10 +++++-----
+> >   3 files changed, 7 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/samples/livepatch/livepatch-callbacks-busymod.c b/samples/livepatch/livepatch-callbacks-busymod.c
+> > index 378e2d40271a9717d09eff51d3d3612c679736fc..d0fd801a7c21b7d7939c29d83f9d993badcc9aba 100644
+> > --- a/samples/livepatch/livepatch-callbacks-busymod.c
+> > +++ b/samples/livepatch/livepatch-callbacks-busymod.c
+> > @@ -45,7 +45,7 @@ static int livepatch_callbacks_mod_init(void)
+> >   {
+> >          pr_info("%s\n", __func__);
+> >          schedule_delayed_work(&work,
+> > -               msecs_to_jiffies(1000 * 0));
+> > +               secs_to_jiffies(0));
+> 
+> Using secs_to_jiffies() is pointless, 0 is universal, should become
+> schedule_delayed_work(&work, 0);
 
-Think the colon went missing here.
+Yes, schedule_delayed_work(&work, 0) looks like the right solution.
 
->   */
->  static inline bool __netdev_tx_sent_queue(struct netdev_queue *dev_queue,
->  					  unsigned int bytes,
-> @@ -3802,7 +3802,7 @@ static inline bool netif_attr_test_mask(unsigned long j,
->   *	@online_mask: bitmask for CPUs/Rx queues that are online
->   *	@nr_bits: number of bits in the bitmask
->   *
-> - * Returns true if a CPU/Rx queue is online.
-> + * Returns: true if a CPU/Rx queue is online.
->   */
->  static inline bool netif_attr_test_online(unsigned long j,
->  					  const unsigned long *online_mask,
-> @@ -3822,7 +3822,7 @@ static inline bool netif_attr_test_online(unsigned long j,
->   *	@srcp: the cpumask/Rx queue mask pointer
->   *	@nr_bits: number of bits in the bitmask
->   *
-> - * Returns >= nr_bits if no further CPUs/Rx queues set.
-> + * Returns: >= nr_bits if no further CPUs/Rx queues set.
->   */
->  static inline unsigned int netif_attrmask_next(int n, const unsigned long *srcp,
->  					       unsigned int nr_bits)
+Or even better, it seems that the delayed work might get replaced by
+a normal workqueue work.
 
-I agree with Johannes here, it ought to be something like
- * Returns: next CPU in mask, or >= nr_bits if no further CPUs/Rx
- * queues set.
-but understand if you don't want to include a semantic change in
-this mechanical reformat patch.
+Anyway, I am working on a patchset which would remove this sample
+module. There is no need to put much effort into the clean up
+of this particular module. Do whatever is easiest for you.
 
-> diff --git a/include/linux/phylink.h b/include/linux/phylink.h
-> index 5c01048860c4..fe0d005cd5d8 100644
-> --- a/include/linux/phylink.h
-> +++ b/include/linux/phylink.h
-...> @@ -464,8 +464,8 @@ struct phylink_pcs_ops {
->   * mask. Phylink will propagate the changes to the advertising mask. See the
->   * &struct phylink_mac_ops validate() method.
->   *
-> - * Returns -EINVAL if the interface mode/autoneg mode is not supported.
-> - * Returns non-zero positive if the link state can be supported.
-> + * Returns: -EINVAL if the interface mode/autoneg mode is not supported.
-> + * Returns: non-zero positive if the link state can be supported.
-
-Does having multiple 'Returns:' sections in kdoc work?  I think the
-right way to write this is
- * Returns:
- * * -EINVAL if the interface mode/autoneg mode is not supported.
- * * non-zero positive if the link state can be supported.
-(Although I'm not sure about the accuracy of this documentation; it
-looks like the calling code only treats <0 as error, and several
-implementations of the method return 0 in what look like success
-cases.  So that "non-zero positive" looks sus.)
-
-IDK which part of the patch got me on the CC list but fwiw you can
-add my
-Reviewed-by: Edward Cree <ecree.xilinx@gmail.com>
-for the whole thing to v2 with the double-Returns fixed.
+Best Regards,
+Petr
 
