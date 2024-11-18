@@ -1,190 +1,180 @@
-Return-Path: <linux-wireless+bounces-15447-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15448-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64EB99D0B7B
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 10:16:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0F619D0E9C
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 11:33:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF4981F21513
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 09:16:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A75E0282501
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 10:33:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECCC61714B7;
-	Mon, 18 Nov 2024 09:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78750194A51;
+	Mon, 18 Nov 2024 10:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="rg06Luxu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B4k1UcL1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2E92F30
-	for <linux-wireless@vger.kernel.org>; Mon, 18 Nov 2024 09:16:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F786192D80;
+	Mon, 18 Nov 2024 10:32:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731921376; cv=none; b=Motb7YOm13RGwk1ZFzT2Cm8Kq2Fms6hCsB8+UjkdxQkSnMK0xp2RkLkfqTtiJ5979/nFbGak8nUdJYfgnh1WammoXhoLH9tFNatEHbMvKfUti/aJVRrsRKvHYQNIW/truif9PkLhkmFKNSLbAzWhAjuN4WRGLLPqkk+OR5B2ses=
+	t=1731925973; cv=none; b=N7rh1bgSeVScYHmtHNZASf1NsPAJ7JR9ANO9B5YAt2IbBYM6NXJNO7zM0QnwEiP2NFaWUeKX6j7oyu22C8QqT4MAxn+uzpeKNJu0QTa09ULDH5WIbspfRM/2LFKyMrfjrQsJYQoPXuKNmFLEAVU7z/ZMifaklQhrCRmWV1EYsak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731921376; c=relaxed/simple;
-	bh=acjQnazkfCch0x/GBrgvVkjfooTudoCAb8YmDQz9u/Q=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=p7p7j7ysGG7a/IF3iRVZphoTWHpAERDT9ZmRl0TZl74R8Q23eBszbSdppZ0oWF4bBpd0uwnL1cPSwDm0EE0NIbikNpECPVYgJ3H+/0vLicNJ0JidgC9YYVNN4JWgEOfGVs5qZupXX0YqSjQnhVUnKBzZplfuOMunEAsMxd7eNUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=rg06Luxu; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4AI9G2Nl8459205, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1731921362; bh=acjQnazkfCch0x/GBrgvVkjfooTudoCAb8YmDQz9u/Q=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=rg06LuxuFRAvo6DiWnrtILN+zKsvLmtpSM07cDPvZBqVfy+KpmBmNXWpVI2/Cnt9X
-	 +Y458zSfuQ6jzoD/ipT8yGL9341ZGnPv6HsMnw90bDKmHPhtMu8WOeUKQdw5B9HYcX
-	 4bKCe6EGN9izOzJZyjQ9VB5u/bukzUjrRmf3WCceSZul8LABzqPh2uBGWhh4ufNFAL
-	 7hAmQvtRWbix0g7M7O0x2RXbpM0s5DP4nkQ/StZ/akL+cOsowIU+qaNLh9ti1+zJmL
-	 4CQVjEalEgRy4P8Oypi4kqfu5WVvNO1NAXj+7t9zY+2ARAn5754wJmHydBtTrOu42a
-	 J2b20BSZLQx9A==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4AI9G2Nl8459205
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 18 Nov 2024 17:16:02 +0800
-Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 18 Nov 2024 17:16:03 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 18 Nov 2024 17:16:02 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
- RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
- 15.01.2507.035; Mon, 18 Nov 2024 17:16:02 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: Sascha Hauer <sha@pengutronix.de>
-Subject: RE: [PATCH 1/2] wifi: rtw88: usb: Copy instead of cloning the RX skb
-Thread-Topic: [PATCH 1/2] wifi: rtw88: usb: Copy instead of cloning the RX skb
-Thread-Index: AQHbNunhfAIW7sBif0O9mAF2MSEZA7K8xUbg
-Date: Mon, 18 Nov 2024 09:16:02 +0000
-Message-ID: <e9f32f00c63945bfb97dff12d081478e@realtek.com>
-References: <28b09f4d-5271-470d-99b6-a0bbe0224739@gmail.com>
-In-Reply-To: <28b09f4d-5271-470d-99b6-a0bbe0224739@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1731925973; c=relaxed/simple;
+	bh=gWLzkKe3yBOjSr8ApJffbNKdP5Ok7maJbYZ3l2VWFzE=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=iIIueMldn6+/2xajSBULaX5X3wa5oOClqoZuKHXgpXbM2DDCAnDlAUq5g9epdbpb5yHI3wbp/5CQvgQA9gHQW6CrefM7SrjMsym9yHvufq/I4LXIjocvxuFWbnQWNYTKv0Lz63QGVfO/6hsjzy/Zy5kZcEaWZCrrQrXz8P7j4Gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B4k1UcL1; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-43167ff0f91so25721055e9.1;
+        Mon, 18 Nov 2024 02:32:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731925970; x=1732530770; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sXn9Mp5THOoB4QUhlxb6xYALkb/wxlQgOoJvivddYJ0=;
+        b=B4k1UcL18s/QVVyd2Awr9xRvhOGgttKWZTrGNkHisbACDzlw8NzMmQCXz3tsnYdjuU
+         2nSYJBdEpt4jjMWY9D9VdZTlZmArXjOkleHsBp4XAXBRE2EYINwwkSk+zvFmrW3He4bO
+         SQkUAG77oqhOR+szHlYAQjDYJS0aIt2sKUBvUFiAIpxQ9SrrhXDdEQgixkwqCHfZTdO3
+         81BuhLZMRL9GLbKI9TXgCuZDVmK50H6pnwoBHV6x6QXiZbC6O/D1sFo0acFnGq1McJSa
+         V4GIl7ijdDVVoFmij/FQP3tY08g4n61Pi8yKWclUo9pLZrjhV2/ap9XkH9KZDYMPy6wg
+         RY1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731925970; x=1732530770;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=sXn9Mp5THOoB4QUhlxb6xYALkb/wxlQgOoJvivddYJ0=;
+        b=rQePg6TbVCOkLPTqkEioFGOHpEJ+EvBMiS6vDvUnZXW+MRXmlKuKDZ1SoyNRscQ+z3
+         GS8X4JDCe4OJcL7wvAfJyb9eahWPaDR1bRu16m3xM/4TPFmNucK8QokXKhg9jj/ssw/l
+         mTi7qNURW9jiB6PP07TSnzfjKX5AqUu/BV8+pzY9LWBNPcjz+iKPkwNZ9mG3B3gluecb
+         o9Lz1kvi/iotFnd9i7stcHr2gCRtegLGGy/cCNgoJJAnKMzrKSS/wLzKqd/lsWJiq0/i
+         Wpo7rvSnaCGst/qiQ9nY9reZfv331VcdJDw13OwK5JomiBz8nONxr9SVfUQxf2NsPEWz
+         M1mg==
+X-Forwarded-Encrypted: i=1; AJvYcCWJlh4x48z2EpWglpRHtrY+1oXZRHLgN7iRHo5oVolxTGTTOMmE++sH96PNpzBWh0y/SkoThTQpaZWNxYYZ+g==@vger.kernel.org, AJvYcCXl0SUvJJ46S2pbNonsgWGqpKkmzms066s+4OUijfZQfPWVDNErG+sTlpYbrYN57O/+7LKKu94PF4hTGJQR6WVJ@vger.kernel.org
+X-Gm-Message-State: AOJu0YxU8BfEyqaTioGfuqu02PytqS3/yTUvqLVrJBYkPBLvdO+CsbPt
+	8z7BHa9yo+m3/+ywf8yXeLHpoE3026c3Kz3ek2HMFXWWku9Z6tA6py6YXw==
+X-Google-Smtp-Source: AGHT+IGMZCLEQ4H1S3ifcXM7+c7qdvm3S0RsbsRMkcS1ZOXoJduf/i024yQ3orBm+5uoTd396DiOxw==
+X-Received: by 2002:a05:600c:34d2:b0:426:66a2:b200 with SMTP id 5b1f17b1804b1-432df676328mr103076875e9.0.1731925969691;
+        Mon, 18 Nov 2024 02:32:49 -0800 (PST)
+Received: from [192.168.1.122] (cpc159313-cmbg20-2-0-cust161.5-4.cable.virginm.net. [82.0.78.162])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3821ae161d8sm12629064f8f.78.2024.11.18.02.32.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 Nov 2024 02:32:49 -0800 (PST)
+Subject: Re: [PATCH net-next] net: reformat kdoc return statements
+To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+ pablo@netfilter.org, linux@armlinux.org.uk, richardcochran@gmail.com,
+ johannes@sipsolutions.net, loic.poulain@linaro.org, ryazanov.s.a@gmail.com,
+ dsahern@kernel.org, wintera@linux.ibm.com, hawk@kernel.org,
+ ilias.apalodimas@linaro.org, jhs@mojatatu.com, jiri@resnulli.us,
+ przemyslaw.kitszel@intel.com, netfilter-devel@vger.kernel.org,
+ linux-wireless@vger.kernel.org
+References: <20241115163612.904906-1-kuba@kernel.org>
+From: Edward Cree <ecree.xilinx@gmail.com>
+Message-ID: <3c75efb4-dc04-ebad-ce1d-98bcc6569c84@gmail.com>
+Date: Mon, 18 Nov 2024 10:32:47 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+In-Reply-To: <20241115163612.904906-1-kuba@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 
-Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiAiaXBl
-cmYzIC1jIDE5Mi4xNjguMC4xIC1SIC0tdWRwIC1iIDAiIHNob3dzIGFib3V0IDQwJSBvZiBkYXRh
-Z3JhbXMNCj4gYXJlIGxvc3QuIE1hbnkgdG9ycmVudHMgZG9uJ3QgZG93bmxvYWQgZmFzdGVyIHRo
-YW4gMyBNaUIvcywgcHJvYmFibHkNCj4gYmVjYXVzZSB0aGUgQml0dG9ycmVudCBwcm90b2NvbCB1
-c2VzIFVEUC4gVGhpcyBpcyBzb21laG93IHJlbGF0ZWQgdG8NCj4gdGhlIHVzZSBvZiBza2JfY2xv
-bmUoKSBpbiB0aGUgUlggcGF0aC4NCg0KVXNpbmcgc2tiX2Nsb25lKCkgY2FuIGltcHJvdmUgdGhy
-b3VnaHB1dCBpcyB3ZWlyZCB0byBtZSB0b28uIERvIHlvdSBjaGVjaw0KdG9wIHdpdGggMTAwJSBj
-cHUgdXNhZ2U/DQoNCj4gDQo+IERvbid0IHVzZSBza2JfY2xvbmUoKS4gSW5zdGVhZCBhbGxvY2F0
-ZSBhIG5ldyBza2IgZm9yIGVhY2ggODAyLjExIGZyYW1lDQo+IHJlY2VpdmVkIGFuZCBjb3B5IHRo
-ZSBkYXRhIGZyb20gdGhlIGJpZyAoMzI3NjggYnl0ZSkgc2tiLg0KPiANCj4gV2l0aCB0aGlzIHBh
-dGNoLCAiaXBlcmYzIC1jIDE5Mi4xNjguMC4xIC1SIC0tdWRwIC1iIDAiIHNob3dzIG9ubHkgMS0y
-JQ0KPiBvZiBkYXRhZ3JhbXMgYXJlIGxvc3QsIGFuZCB0b3JyZW50cyBjYW4gcmVhY2ggZG93bmxv
-YWQgc3BlZWRzIG9mIDM2DQo+IE1pQi9zLg0KPiANCj4gVGVzdGVkIHdpdGggUlRMODgxMkFVIGFu
-ZCBSVEw4ODIyQ1UuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBCaXR0ZXJibHVlIFNtaXRoIDxydGw4
-ODIxY2VyZmUyQGdtYWlsLmNvbT4NCj4gLS0tDQo+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFs
-dGVrL3J0dzg4L3VzYi5jIHwgNTIgKysrKysrKysrKysrKystLS0tLS0tLS0tDQo+ICAxIGZpbGUg
-Y2hhbmdlZCwgMzEgaW5zZXJ0aW9ucygrKSwgMjEgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0t
-Z2l0IGEvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC91c2IuYyBiL2RyaXZlcnMv
-bmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvdXNiLmMNCj4gaW5kZXggOTNhYzQ4MzdlMWI1Li43
-Mjc1NjlkNGVmNGIgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsv
-cnR3ODgvdXNiLmMNCj4gKysrIGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydHc4OC91
-c2IuYw0KPiBAQCAtNyw2ICs3LDcgQEANCj4gICNpbmNsdWRlIDxsaW51eC9tdXRleC5oPg0KPiAg
-I2luY2x1ZGUgIm1haW4uaCINCj4gICNpbmNsdWRlICJkZWJ1Zy5oIg0KPiArI2luY2x1ZGUgIm1h
-Yy5oIg0KPiAgI2luY2x1ZGUgInJlZy5oIg0KPiAgI2luY2x1ZGUgInR4LmgiDQo+ICAjaW5jbHVk
-ZSAicnguaCINCj4gQEAgLTU0Niw0OSArNTQ3LDU4IEBAIHN0YXRpYyB2b2lkIHJ0d191c2Jfcnhf
-aGFuZGxlcihzdHJ1Y3Qgd29ya19zdHJ1Y3QgKndvcmspDQo+ICB7DQo+ICAgICAgICAgc3RydWN0
-IHJ0d191c2IgKnJ0d3VzYiA9IGNvbnRhaW5lcl9vZih3b3JrLCBzdHJ1Y3QgcnR3X3VzYiwgcnhf
-d29yayk7DQo+ICAgICAgICAgc3RydWN0IHJ0d19kZXYgKnJ0d2RldiA9IHJ0d3VzYi0+cnR3ZGV2
-Ow0KPiAtICAgICAgIGNvbnN0IHN0cnVjdCBydHdfY2hpcF9pbmZvICpjaGlwID0gcnR3ZGV2LT5j
-aGlwOw0KPiAtICAgICAgIHUzMiBwa3RfZGVzY19zeiA9IGNoaXAtPnJ4X3BrdF9kZXNjX3N6Ow0K
-PiAgICAgICAgIHN0cnVjdCBpZWVlODAyMTFfcnhfc3RhdHVzIHJ4X3N0YXR1czsNCj4gLSAgICAg
-ICB1MzIgcGt0X29mZnNldCwgbmV4dF9wa3QsIHVyYl9sZW47DQo+ICAgICAgICAgc3RydWN0IHJ0
-d19yeF9wa3Rfc3RhdCBwa3Rfc3RhdDsNCj4gLSAgICAgICBzdHJ1Y3Qgc2tfYnVmZiAqbmV4dF9z
-a2I7DQo+ICsgICAgICAgc3RydWN0IHNrX2J1ZmYgKnJ4X3NrYjsNCj4gICAgICAgICBzdHJ1Y3Qg
-c2tfYnVmZiAqc2tiOw0KPiArICAgICAgIHUzMiBwa3RfZGVzY19zeiA9IHJ0d2Rldi0+Y2hpcC0+
-cnhfcGt0X2Rlc2Nfc3o7DQo+ICsgICAgICAgdTMyIG1heF9za2JfbGVuID0gcGt0X2Rlc2Nfc3og
-KyBQSFlfU1RBVFVTX1NJWkUgKiA4ICsNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgICBJRUVF
-ODAyMTFfTUFYX01QRFVfTEVOX1ZIVF8xMTQ1NDsNCj4gKyAgICAgICB1MzIgcGt0X29mZnNldCwg
-bmV4dF9wa3QsIHNrYl9sZW47DQo+ICAgICAgICAgdTggKnJ4X2Rlc2M7DQo+ICAgICAgICAgaW50
-IGxpbWl0Ow0KPiANCj4gICAgICAgICBmb3IgKGxpbWl0ID0gMDsgbGltaXQgPCAyMDA7IGxpbWl0
-KyspIHsNCj4gLSAgICAgICAgICAgICAgIHNrYiA9IHNrYl9kZXF1ZXVlKCZydHd1c2ItPnJ4X3F1
-ZXVlKTsNCj4gLSAgICAgICAgICAgICAgIGlmICghc2tiKQ0KPiArICAgICAgICAgICAgICAgcnhf
-c2tiID0gc2tiX2RlcXVldWUoJnJ0d3VzYi0+cnhfcXVldWUpOw0KPiArICAgICAgICAgICAgICAg
-aWYgKCFyeF9za2IpDQo+ICAgICAgICAgICAgICAgICAgICAgICAgIGJyZWFrOw0KPiANCj4gICAg
-ICAgICAgICAgICAgIGlmIChza2JfcXVldWVfbGVuKCZydHd1c2ItPnJ4X3F1ZXVlKSA+PSBSVFdf
-VVNCX01BWF9SWFFfTEVOKSB7DQo+ICAgICAgICAgICAgICAgICAgICAgICAgIGRldl9kYmdfcmF0
-ZWxpbWl0ZWQocnR3ZGV2LT5kZXYsICJmYWlsZWQgdG8gZ2V0IHJ4X3F1ZXVlLCBvdmVyZmxvd1xu
-Iik7DQo+IC0gICAgICAgICAgICAgICAgICAgICAgIGRldl9rZnJlZV9za2JfYW55KHNrYik7DQo+
-ICsgICAgICAgICAgICAgICAgICAgICAgIGRldl9rZnJlZV9za2JfYW55KHJ4X3NrYik7DQo+ICAg
-ICAgICAgICAgICAgICAgICAgICAgIGNvbnRpbnVlOw0KPiAgICAgICAgICAgICAgICAgfQ0KPiAN
-Cj4gLSAgICAgICAgICAgICAgIHVyYl9sZW4gPSBza2ItPmxlbjsNCj4gKyAgICAgICAgICAgICAg
-IHJ4X2Rlc2MgPSByeF9za2ItPmRhdGE7DQo+IA0KPiAgICAgICAgICAgICAgICAgZG8gew0KPiAt
-ICAgICAgICAgICAgICAgICAgICAgICByeF9kZXNjID0gc2tiLT5kYXRhOw0KPiAgICAgICAgICAg
-ICAgICAgICAgICAgICBydHdfcnhfcXVlcnlfcnhfZGVzYyhydHdkZXYsIHJ4X2Rlc2MsICZwa3Rf
-c3RhdCwNCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgJnJ4
-X3N0YXR1cyk7DQo+ICAgICAgICAgICAgICAgICAgICAgICAgIHBrdF9vZmZzZXQgPSBwa3RfZGVz
-Y19zeiArIHBrdF9zdGF0LmRydl9pbmZvX3N6ICsNCj4gICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgIHBrdF9zdGF0LnNoaWZ0Ow0KPiANCj4gLSAgICAgICAgICAgICAgICAgICAg
-ICAgbmV4dF9wa3QgPSByb3VuZF91cChwa3Rfc3RhdC5wa3RfbGVuICsgcGt0X29mZnNldCwgOCk7
-DQo+ICsgICAgICAgICAgICAgICAgICAgICAgIHNrYl9sZW4gPSBwa3Rfc3RhdC5wa3RfbGVuICsg
-cGt0X29mZnNldDsNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgaWYgKHNrYl9sZW4gPiBtYXhf
-c2tiX2xlbikgew0KDQpUaGlzIHNlZW1zIGEgbmV3IHJ1bGUgaW50cm9kdWNlZCBieSB0aGlzIHBh
-dGNoLiBEbyB5b3UgcmVhbGx5IGVuY291bnRlciB0aGlzDQpjYXNlPyBNYXliZSB0aGlzIGlzIHRo
-ZSBjYXVzZSBvZiBzbG93IGRvd25sb2FkIHRocm91Z2hwdXQ/DQoNCj4gKyAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICBydHdfZGJnKHJ0d2RldiwgUlRXX0RCR19VU0IsDQo+ICsgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAic2tpcHBpbmcgdG9vIGJpZyBwYWNrZXQ6
-ICV1XG4iLA0KPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2tiX2xl
-bik7DQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZ290byBza2lwX3BhY2tldDsN
-Cj4gKyAgICAgICAgICAgICAgICAgICAgICAgfQ0KPiANCj4gLSAgICAgICAgICAgICAgICAgICAg
-ICAgaWYgKHVyYl9sZW4gPj0gbmV4dF9wa3QgKyBwa3RfZGVzY19zeikNCj4gLSAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICBuZXh0X3NrYiA9IHNrYl9jbG9uZShza2IsIEdGUF9LRVJORUwp
-Ow0KPiAtICAgICAgICAgICAgICAgICAgICAgICBlbHNlDQo+IC0gICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgbmV4dF9za2IgPSBOVUxMOw0KPiArICAgICAgICAgICAgICAgICAgICAgICBz
-a2IgPSBhbGxvY19za2Ioc2tiX2xlbiwgR0ZQX0tFUk5FTCk7DQo+ICsgICAgICAgICAgICAgICAg
-ICAgICAgIGlmICghc2tiKSB7DQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcnR3
-X2RiZyhydHdkZXYsIFJUV19EQkdfVVNCLA0KPiArICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgImZhaWxlZCB0byBhbGxvY2F0ZSBSWCBza2Igb2Ygc2l6ZSAldVxuIiwNCj4g
-KyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNrYl9sZW4pOw0KPiArICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgIGdvdG8gc2tpcF9wYWNrZXQ7DQo+ICsgICAgICAg
-ICAgICAgICAgICAgICAgIH0NCj4gKw0KPiArICAgICAgICAgICAgICAgICAgICAgICBza2JfcHV0
-X2RhdGEoc2tiLCByeF9kZXNjLCBza2JfbGVuKTsNCj4gDQo+ICAgICAgICAgICAgICAgICAgICAg
-ICAgIGlmIChwa3Rfc3RhdC5pc19jMmgpIHsNCj4gLSAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICBza2JfdHJpbShza2IsIHBrdF9zdGF0LnBrdF9sZW4gKyBwa3Rfb2Zmc2V0KTsNCj4gICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICBydHdfZndfYzJoX2NtZF9yeF9pcnFzYWZlKHJ0
-d2RldiwgcGt0X29mZnNldCwgc2tiKTsNCj4gICAgICAgICAgICAgICAgICAgICAgICAgfSBlbHNl
-IHsNCj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBza2JfcHVsbChza2IsIHBrdF9v
-ZmZzZXQpOw0KPiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNrYl90cmltKHNrYiwg
-cGt0X3N0YXQucGt0X2xlbik7DQo+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcnR3
-X3VwZGF0ZV9yeF9mcmVxX2Zvcl9pbnZhbGlkKHJ0d2Rldiwgc2tiLA0KPiAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAmcnhfc3Rh
-dHVzLA0KPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAmcGt0X3N0YXQpOw0KPiBAQCAtNTk3LDEyICs2MDcsMTIgQEAgc3RhdGlj
-IHZvaWQgcnR3X3VzYl9yeF9oYW5kbGVyKHN0cnVjdCB3b3JrX3N0cnVjdCAqd29yaykNCj4gICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICBpZWVlODAyMTFfcnhfaXJxc2FmZShydHdkZXYt
-Pmh3LCBza2IpOw0KPiAgICAgICAgICAgICAgICAgICAgICAgICB9DQo+IA0KPiAtICAgICAgICAg
-ICAgICAgICAgICAgICBza2IgPSBuZXh0X3NrYjsNCj4gLSAgICAgICAgICAgICAgICAgICAgICAg
-aWYgKHNrYikNCj4gLSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBza2JfcHVsbChza2Is
-IG5leHRfcGt0KTsNCj4gK3NraXBfcGFja2V0Og0KPiArICAgICAgICAgICAgICAgICAgICAgICBu
-ZXh0X3BrdCA9IHJvdW5kX3VwKHNrYl9sZW4sIDgpOw0KPiArICAgICAgICAgICAgICAgICAgICAg
-ICByeF9kZXNjICs9IG5leHRfcGt0Ow0KPiArICAgICAgICAgICAgICAgfSB3aGlsZSAocnhfZGVz
-YyArIHBrdF9kZXNjX3N6IDwgcnhfc2tiLT5kYXRhICsgcnhfc2tiLT5sZW4pOw0KPiANCj4gLSAg
-ICAgICAgICAgICAgICAgICAgICAgdXJiX2xlbiAtPSBuZXh0X3BrdDsNCj4gLSAgICAgICAgICAg
-ICAgIH0gd2hpbGUgKHNrYik7DQo+ICsgICAgICAgICAgICAgICBkZXZfa2ZyZWVfc2tiX2FueShy
-eF9za2IpOw0KPiAgICAgICAgIH0NCj4gIH0NCj4gDQo+IC0tDQo+IDIuNDcuMA0KDQo=
+On 15/11/2024 16:36, Jakub Kicinski wrote:
+> kernel-doc -Wall warns about missing Return: statement for non-void
+> functions. We have a number of kdocs in our headers which are missing
+> the colon, IOW they use
+>  * Return some value
+> or
+>  * Returns some value
+> 
+> Having the colon makes some sense, it should help kdoc parser avoid
+> false positives. So add them. This is mostly done with a sed script,
+> and removing the unnecessary cases (mostly the comments which aren't
+> kdoc).
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+...
+> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+> index 0aae346d919e..ed549a2e02b2 100644
+> --- a/include/linux/netdevice.h
+> +++ b/include/linux/netdevice.h
+...
+> @@ -3548,7 +3548,7 @@ static inline void netdev_tx_sent_queue(struct netdev_queue *dev_queue,
+>   * that they should not test BQL status themselves.
+>   * We do want to change __QUEUE_STATE_STACK_XOFF only for the last
+>   * skb of a batch.
+> - * Returns true if the doorbell must be used to kick the NIC.
+> + * Return true if the doorbell must be used to kick the NIC.
+
+Think the colon went missing here.
+
+>   */
+>  static inline bool __netdev_tx_sent_queue(struct netdev_queue *dev_queue,
+>  					  unsigned int bytes,
+> @@ -3802,7 +3802,7 @@ static inline bool netif_attr_test_mask(unsigned long j,
+>   *	@online_mask: bitmask for CPUs/Rx queues that are online
+>   *	@nr_bits: number of bits in the bitmask
+>   *
+> - * Returns true if a CPU/Rx queue is online.
+> + * Returns: true if a CPU/Rx queue is online.
+>   */
+>  static inline bool netif_attr_test_online(unsigned long j,
+>  					  const unsigned long *online_mask,
+> @@ -3822,7 +3822,7 @@ static inline bool netif_attr_test_online(unsigned long j,
+>   *	@srcp: the cpumask/Rx queue mask pointer
+>   *	@nr_bits: number of bits in the bitmask
+>   *
+> - * Returns >= nr_bits if no further CPUs/Rx queues set.
+> + * Returns: >= nr_bits if no further CPUs/Rx queues set.
+>   */
+>  static inline unsigned int netif_attrmask_next(int n, const unsigned long *srcp,
+>  					       unsigned int nr_bits)
+
+I agree with Johannes here, it ought to be something like
+ * Returns: next CPU in mask, or >= nr_bits if no further CPUs/Rx
+ * queues set.
+but understand if you don't want to include a semantic change in
+this mechanical reformat patch.
+
+> diff --git a/include/linux/phylink.h b/include/linux/phylink.h
+> index 5c01048860c4..fe0d005cd5d8 100644
+> --- a/include/linux/phylink.h
+> +++ b/include/linux/phylink.h
+...> @@ -464,8 +464,8 @@ struct phylink_pcs_ops {
+>   * mask. Phylink will propagate the changes to the advertising mask. See the
+>   * &struct phylink_mac_ops validate() method.
+>   *
+> - * Returns -EINVAL if the interface mode/autoneg mode is not supported.
+> - * Returns non-zero positive if the link state can be supported.
+> + * Returns: -EINVAL if the interface mode/autoneg mode is not supported.
+> + * Returns: non-zero positive if the link state can be supported.
+
+Does having multiple 'Returns:' sections in kdoc work?  I think the
+right way to write this is
+ * Returns:
+ * * -EINVAL if the interface mode/autoneg mode is not supported.
+ * * non-zero positive if the link state can be supported.
+(Although I'm not sure about the accuracy of this documentation; it
+looks like the calling code only treats <0 as error, and several
+implementations of the method return 0 in what look like success
+cases.  So that "non-zero positive" looks sus.)
+
+IDK which part of the patch got me on the CC list but fwiw you can
+add my
+Reviewed-by: Edward Cree <ecree.xilinx@gmail.com>
+for the whole thing to v2 with the double-Returns fixed.
 
