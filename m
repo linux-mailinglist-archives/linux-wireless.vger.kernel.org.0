@@ -1,127 +1,145 @@
-Return-Path: <linux-wireless+bounces-15465-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15466-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9CA59D14C3
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 16:52:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 561019D1657
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 17:56:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CE9D1F237E4
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 15:52:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD66F1F22338
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 16:56:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B321DFFB;
-	Mon, 18 Nov 2024 15:52:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ozwjawsd"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 558FE1BD9FE;
+	Mon, 18 Nov 2024 16:56:31 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51CE013D251
-	for <linux-wireless@vger.kernel.org>; Mon, 18 Nov 2024 15:52:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B58731A00F8
+	for <linux-wireless@vger.kernel.org>; Mon, 18 Nov 2024 16:56:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731945173; cv=none; b=f0WuugtfsGYppecNMSFJ/SnyXsNXgnnSS3vKfuYg0qgzZ0Iif4GHUqcpOOkCwSJ/x3cC8/LUib+X8M/Yo/f1oQysN8j5RxVmJ0BsBzvjOxaiGVjaDYt3C2WFQCRNSgHSfaitIe8dzPjGJe5cAenLEteAgssu80C3y4AlQUDz8og=
+	t=1731948991; cv=none; b=qcrHFuqjhyGVuLMtihk9mxFllfvAPm8tPtIljdI6s/eEtYAWssh7fZRdrPjQuI3dbPUvc2zXSr6W/Sa5I1bWl1ZINkbZOU6nxaheOVdmXyIskWjOlBxZk8SnQq35lNVEVJfscDneZ1CmUSjqhAqnRrETpj0uS7oS+S43rKsLsGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731945173; c=relaxed/simple;
-	bh=2OuFl0bUVPgcyFU+iqutdgB1eEqfurnmLZmnFJGiJuE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:CC:
-	 In-Reply-To:Content-Type; b=HkH8h/nVVralvQSzodAiaSZOBlaDEYt+cD7LSPe8EJPXVniW+EnX+pJB7xGmnrxC91HTnJP6Yt6RWSJVbG0mZgMeLYXYiWamTeGzJWo1SoZOYxqnNLjNC1TmVhZV6wznF4Nk2S1wJimP5B5KT4ge3tIDkCknkbOvwuzaOK3ff6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ozwjawsd; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AIECvcj004229;
-	Mon, 18 Nov 2024 15:52:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	t7ZSWrSrcg5o61XWcz8hWD8eaRzY8YGThlUqTefC6aU=; b=ozwjawsdpU2wVwYP
-	O/IKlnVXmrM+rPqTaBeEUSijFAtgv7OjBqrzIXRZnKzS6/4NmkT/2acw0jNQSyh/
-	1OuFoKg3KYhI95LXUnZDNMkuVNK3KF/d+ErmfvAmSy4aYmV/W0GxzbsTzeWu62On
-	C0ksnL7PEuye5x0LzZuAkS/DTV027O6OoNIFX7AJo82ZhnO1Z2uDFQIygv4F0iws
-	ZXqPdwtrqZZZpoNKpe077AAXDVkUoRO5XngVry7y+6chSBH63W4Ye8Ad0zbVzRfQ
-	bhZV4kmZkqtvK7ustdq5S4/86GG0VcL8pu3addgtGhEVIxGSSthHuYbGAzz6sKRV
-	7ZnnJg==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 42xm5g5343-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 Nov 2024 15:52:44 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4AIFqhtP024988
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 Nov 2024 15:52:43 GMT
-Received: from [10.111.176.82] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 18 Nov
- 2024 07:52:43 -0800
-Message-ID: <6b9c0664-f58a-4978-a371-741c6e6eb133@quicinc.com>
-Date: Mon, 18 Nov 2024 07:52:42 -0800
+	s=arc-20240116; t=1731948991; c=relaxed/simple;
+	bh=vSauUQbqQRm+D9Sxdbn4/Gv0ov6NEV3lh/o1vp3dGzc=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=YuPSJgJxh7nC264VdoeLFgyCr58eDqbs2keajMUulRLCmTWZWWar71EcdYHQ+AwtzwIFUbICgnAUAu7dvDBTJ7Yu8chzZviRL30cMqj4spQ/DqNIs3/EwyOMln9/yD+oKy77qPzG/dw3Tx5uIHvXDC6bcO7yr1gJJWe+XJDjBd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-3a6b9f3239dso23593495ab.0
+        for <linux-wireless@vger.kernel.org>; Mon, 18 Nov 2024 08:56:29 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731948989; x=1732553789;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=j4Bnyr5J+1A12yJaaALa01BifYyba1Nn08q6McE9/0s=;
+        b=GZkT0VTEWF3yKDo6VP9cUxNJjR/8nddUEBPtvoEtxSrQSvhhRZM44dMfrcipySCsfv
+         uMf03B9vZ3ycAJ+Avh9kogRlIMJ7BxFLRT4VTWXT6lexnVyCen7pOxEidRBXcfGM7fXm
+         cHxxP3Ilp1gV+xX8IXIXGywgqfsY6qKiZvrzY8ZRXDsdnLrZVSjgpctJdmfiverZGqNz
+         L+kg0tcTqhs6nmpXKiQbn3r38hrCnHrzrycO/xD4eZ0Is1d3Gp+wzTLUmVYLDaY8iFCk
+         AiU0M1s932NlfTyF3q+yLd6o80UVfh9ZeQFt3Ez+GBnuhRW3N9iP32roz5u5Z8jVS+fy
+         y8Kw==
+X-Forwarded-Encrypted: i=1; AJvYcCXRGGEk7llrCQKyMtgNvFuMkK9dQdQ/2XyAedEF/HLqB5+UEB5MtvrsCWAAvcLBp4exrdAbke0xUI5KIzFvWw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxk7raRLctWsPK6RwD0XMNuJuYSzBTybL4P2/02ldnCe0H0F6at
+	h+wTDpqcUhG1KO9UwpAMmPJB2kmR9F/Pj9haYfNF8irprvEdkcJ7jtyXJDUrujsFNgUqiJf56TK
+	CYu71vpyEN4mtk0ALj8i8EcLhnawbURhi6NEBjmbCoodHd4rxWfYjrcA=
+X-Google-Smtp-Source: AGHT+IHC5DXB+ncNKrBTrSgiiRPB8eY+Tyj7FSJZH/ocRI+BEF08rpezB+dRjHBAJOw44RD0QVnKWnAJrlLkYEIYHFT0r+2B/buS
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] [PATCH 00/13] ath1{1,2}k: support multiple PCI devices in
- one system
-To: Mihai Moldovan <ionic@ionic.de>, <ath11k@lists.infradead.org>
-References: <cover.1731858971.git.ionic@ionic.de>
- <4c5a9c95-13a3-440a-9947-a11209876c0b@ionic.de>
-Content-Language: en-US
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-CC: linux-wireless <linux-wireless@vger.kernel.org>
-In-Reply-To: <4c5a9c95-13a3-440a-9947-a11209876c0b@ionic.de>
+X-Received: by 2002:a05:6e02:214f:b0:3a7:432d:912f with SMTP id
+ e9e14a558f8ab-3a74800f3e4mr123928455ab.1.1731948988827; Mon, 18 Nov 2024
+ 08:56:28 -0800 (PST)
+Date: Mon, 18 Nov 2024 08:56:28 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <673b71bc.050a0220.87769.004d.GAE@google.com>
+Subject: [syzbot] [wireless?] WARNING in sta_info_insert_rcu (4)
+From: syzbot <syzbot+8b512026a7ec10dcbdd9@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: hwWyFJ6YAI5nTb7wKLYHYGciDitBxP15
-X-Proofpoint-ORIG-GUID: hwWyFJ6YAI5nTb7wKLYHYGciDitBxP15
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- priorityscore=1501 mlxscore=0 impostorscore=0 clxscore=1015 malwarescore=0
- adultscore=0 suspectscore=0 mlxlogscore=706 phishscore=0
- lowpriorityscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2409260000 definitions=main-2411180132
 
-On 11/17/2024 8:59 AM, Mihai Moldovan wrote:
-> Just some spelling fixes I'll stage for a v2, since mistakes naturally only 
-> become obvious after reading what was sent out...
-> 
-> 
-> * On 11/17/24 17:05, Mihai Moldovan wrote:
->> [...]
->> socket and bound to for client sockets, which will automatically filter
->> messages from other endpoints and also make sure that messages clients
->> send are routed to the correct endpoint.
-> 
-> [...] and also make sure that client messages are routed to the correct endpoint.
-> 
-> 
->> [...]
->> and additionally new API is introduced so that other parts in the kernel
->> can either get an endpoint ID for given endpoint-specific data or even
->> register endpoint-specific with a new endpoint ID that is generated by
->> the QRTR driver. [...]
-> 
-> [...] or even attach endpoint-specific data to a new endpoint ID generated by 
-> the QRTR driver.
-> 
-> 
-> 
-> Mihai
+Hello,
 
-When you post v2, please use scripts/get_maintainer.pl to identify all of the
-maintainers and mailing lists that should be notified of this RFC.
+syzbot found the following issue on:
 
-I suspect you won't get much feedback without doing so.
+HEAD commit:    0a9b9d17f3a7 Merge tag 'pm-6.12-rc8' of git://git.kernel.o..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=179ef4c0580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=d2aeec8c0b2e420c
+dashboard link: https://syzkaller.appspot.com/bug?extid=8b512026a7ec10dcbdd9
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
 
-/jeff
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/7feb34a89c2a/non_bootable_disk-0a9b9d17.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/b80dd0292210/vmlinux-0a9b9d17.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/42a07c5c6678/bzImage-0a9b9d17.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+8b512026a7ec10dcbdd9@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 1025 at net/mac80211/sta_info.c:738 sta_info_insert_check net/mac80211/sta_info.c:737 [inline]
+WARNING: CPU: 0 PID: 1025 at net/mac80211/sta_info.c:738 sta_info_insert_rcu+0x322/0x1900 net/mac80211/sta_info.c:942
+Modules linked in:
+CPU: 0 UID: 0 PID: 1025 Comm: kworker/u4:4 Not tainted 6.12.0-rc7-syzkaller-00070-g0a9b9d17f3a7 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Workqueue: events_unbound cfg80211_wiphy_work
+RIP: 0010:sta_info_insert_check net/mac80211/sta_info.c:737 [inline]
+RIP: 0010:sta_info_insert_rcu+0x322/0x1900 net/mac80211/sta_info.c:942
+Code: 85 db 4c 8b 6c 24 28 0f 84 90 00 00 00 e8 16 6e 4a f6 84 c0 0f 84 b4 00 00 00 e8 b9 80 64 f6 e9 0d 01 00 00 e8 af 80 64 f6 90 <0f> 0b 90 41 be ea ff ff ff 4c 8b 6c 24 28 4c 89 ee e8 98 d0 ff ff
+RSP: 0018:ffffc9000227f9c0 EFLAGS: 00010293
+RAX: ffffffff8b306961 RBX: 0000000000000001 RCX: ffff88803581a440
+RDX: 0000000000000000 RSI: 00000000ffffffff RDI: 0000000000000000
+RBP: 00000000ffffffff R08: ffffffff8b3068ee R09: 1ffff11009fc6ace
+R10: dffffc0000000000 R11: ffffed1009fc6acf R12: 00000000ffeeffff
+R13: 000000000000ffff R14: 000000000000feff R15: ffff88804fe34cc0
+FS:  0000000000000000(0000) GS:ffff88801fc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fca30a06fb8 CR3: 00000000363e4000 CR4: 0000000000352ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ieee80211_ocb_finish_sta net/mac80211/ocb.c:102 [inline]
+ ieee80211_ocb_work+0x2fd/0x550 net/mac80211/ocb.c:136
+ cfg80211_wiphy_work+0x2db/0x490 net/wireless/core.c:440
+ process_one_work kernel/workqueue.c:3229 [inline]
+ process_scheduled_works+0xa63/0x1850 kernel/workqueue.c:3310
+ worker_thread+0x870/0xd30 kernel/workqueue.c:3391
+ kthread+0x2f0/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
