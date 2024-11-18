@@ -1,108 +1,91 @@
-Return-Path: <linux-wireless+bounces-15457-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15458-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 223149D11D3
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 14:27:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 611859D11DA
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 14:28:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E085B27CE0
-	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 13:26:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2845028401B
+	for <lists+linux-wireless@lfdr.de>; Mon, 18 Nov 2024 13:28:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C311991C6;
-	Mon, 18 Nov 2024 13:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F438192B79;
+	Mon, 18 Nov 2024 13:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hKS7VT/L"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="W2THjwn2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BF7192B79
-	for <linux-wireless@vger.kernel.org>; Mon, 18 Nov 2024 13:26:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8B919ABB6
+	for <linux-wireless@vger.kernel.org>; Mon, 18 Nov 2024 13:28:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731936412; cv=none; b=gEkNYVsSTbCPNo4bzzI4ZI7bKjPjN7H07Xb/A1kmUOvys+sPhGkbFDmGLi3WJ2VXylMoNgmJrMr9fI6FV18Vjih/lYZextdV4VRz/7RgF9XhbKLAawWjYqnAPgBl4AICWSwtm7023LeprRcZmv+oE3eyIJDrJ+qeD+VwZCUTX1Q=
+	t=1731936513; cv=none; b=uXT2XcLNBrTqFRXqxDrUImgpy915PmT/6YgXhUxuRG17v4bP6U+PTJvK3qO5W30wyVdh7d2DVHqx5A8YwCbqgxMrLN6CWOYrIZ3lE88ga7VcUw+tS4XWJHS9wRgdLgpriyQxw5JZ/u3FBSvDymDF6nDoms3YhIaI0ROy4nO9wI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731936412; c=relaxed/simple;
-	bh=mzABEeJKUm1eL+WcWI6hDHAKgti2PIy5NGeq/Kfg3tA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kLpLgvjtgPxqBTPy2vphvTYSJDhj8ZcXfrEaxYmgXqiK84BEnQRvaKnQ6XfT135E0g5A4Be5H+zzaAZvajvIpm9hIJPiCs8uCxt3IcUKhPOxFSAHpEYcHLJKBHNcXXR94hLUT2CTUqtcxy6eSpa21CRuFiY60TgnywzgeBdR+4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hKS7VT/L; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5cfa1ec3b94so2919840a12.2
-        for <linux-wireless@vger.kernel.org>; Mon, 18 Nov 2024 05:26:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1731936409; x=1732541209; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=SBjJKgdG5EC8SWkozbzG11SkJAaLQDNNNnMlI930MwM=;
-        b=hKS7VT/LZ2S0OkfXXIbXvcwNg20ihKCc91BeAy/tXRRfiOU4ugaIXcghJ6ekbwkEH0
-         5ecz7JVhca0GbZa1V2cqr4ntXXxwPAjOxZlEGFCQdI6rEV0LlGOBumA+7ybnjp1NGklq
-         YZ5nbjjM8Y/u/tltTKKsoXuhBwVUeHnJWeXctoqDFhsqSdwRaV9z4TH8uNV3Ti9/2KyG
-         CT1AdBVu95oN9PShe+vHFCPD0l7J09n+GAfq936r59AXAH/cAsbcC8jXpcbdBinxFoTS
-         fRbu2WnyRfihJFm1dOCEq3+3XWjel7CpM1CYZ6ocfEjYAOkNv130iLxqsGaJ5uAXdzpM
-         o1tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731936409; x=1732541209;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SBjJKgdG5EC8SWkozbzG11SkJAaLQDNNNnMlI930MwM=;
-        b=VdFHyCgRnv71ZXVPjLucTnl0SNQ7i2cfiA/UtvyrCF+DxkaEblw48L8CHC/v1C16c/
-         Y51p2089NFsXyoYRNg/X7dULXaEzqDRvAZGzxjYdlvBzowyXEFx4t3vH61xg1kNLd1Rm
-         N5VCEHdiYFuaUzfPmGqREDxmCWLQYhg946f4xjJtUxW6Ps8SB2HnEfrUMovHW1uY20Yi
-         1T+j/jP83XYr0Os3TbQJsz3izS0dsGrdcC459tJLL2M9NwAX54BT5BN4+44lR8XX4Kay
-         q0PJViQjgsC8m6JOx/VII4cN2kn5vvClHNuVqpABiBgaev34Kg3rtEs94jUEEK89e/Rq
-         YVXA==
-X-Forwarded-Encrypted: i=1; AJvYcCWx+eFWJRyvcIKcYB0hLNkpf2ldE7rEXj6AISIp42M29Qv6tzfeRu8LKvJEwy0jKITZRoK/zfvWNTi1bsn8Ww==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGnVbZCDuQdwRI7KSmVMi8MFeUaj4cmjlEWycZKIVZNrgRt5T+
-	IzENp63/gmDxILUHFU9BL+EZd/3J3z+pmGqzwj5fTntsQxN95O+DW1Og17nPcifjLMw70KyD95T
-	3mcKxuI9sIWmqWoGZ7l/Hvlc5uVI=
-X-Google-Smtp-Source: AGHT+IFEK7vYgvpT4WORH4EXepTqY8KMjvzX2UScsboQW9v2yeGd1yA6yRy4NZUc1y6Z3escciDRl2KSgnvfuzBFVUE=
-X-Received: by 2002:a17:907:7ba3:b0:a9e:45e6:42cb with SMTP id
- a640c23a62f3a-aa4834263aemr1253258466b.18.1731936408764; Mon, 18 Nov 2024
- 05:26:48 -0800 (PST)
+	s=arc-20240116; t=1731936513; c=relaxed/simple;
+	bh=4SK7ote8cNyNFQgpTUSWFq72KPKkoEyWlEulH55zzo4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=PF1t8By44FYG4zJwiDi6cGyl/s5I/bNU/41VBUXwV3buzEUeRCB2/g3UMFlMCnxj1C2v970b/lxyyXn499f5HjVxkxPXqLmYrJVCB3wn5ZenElLUb78KXMJ6beVMAJxczG6C3SqjBsJBQkAd0ZfePEz0e9CDsU4TPxOuyUuPu6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=W2THjwn2; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=BoKgedustos3Kv9zIRtLB088XLOgAwhYc+p/zYeAzzM=;
+	t=1731936511; x=1733146111; b=W2THjwn2KA6fmQp1VJ4yaLaTCbiv0IsFN3CwiIme/b34y5t
+	rXGLirwW/A/Qp3BgJcEWdYFBhjBvO8PLrqWSaQfHyri8oDLez3sXFQj9ki8qkhLHfA0feacRcsiWs
+	y01DTHRCAv+cEMnREc86dLlNbpQY41LQhEVNPbI8j+ApGWHfdU7rpa5DgW8lPIXcyyWPw2thSyB4b
+	PyodZPlzKmDFcYEb1iZLtm1YJh46EMu3TQtVKZcww5Gpi10+eVuhKWEZ5bbbPG6XVRImsh0DKO3fv
+	2Yz1S0XT+Cnua4ShwM5SdSvQafg4ZFfoNFpS5kGEJND4r57PUDksDDdw8Xs2WcLg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1tD1nj-00000007ygv-2FE0;
+	Mon, 18 Nov 2024 14:28:23 +0100
+Message-ID: <338a2b7e26318588053be79f44fe3a76c1881236.camel@sipsolutions.net>
+Subject: Re: [PATCH v2] wifi: mac80211: fix mbss changed flags corruption on
+ 32 bit systems
+From: Johannes Berg <johannes@sipsolutions.net>
+To: James Dutton <james.dutton@gmail.com>, Issam Hamdi
+ <ih@simonwunderlich.de>
+Cc: linux-wireless@vger.kernel.org, mathias.kretschmer@fit.fraunhofer.de, 
+	sw@simonwunderlich.de
+Date: Mon, 18 Nov 2024 14:28:22 +0100
+In-Reply-To: <CAAMvbhEy9CtTN4-sw1jEb5Y+4gEdaKE3OR839xA-4nL2WZ9FpQ@mail.gmail.com>
+References: <20241104172415.3790038-1-ih@simonwunderlich.de>
+	 <20241118125640.1110502-1-ih@simonwunderlich.de>
+	 <CAAMvbhEy9CtTN4-sw1jEb5Y+4gEdaKE3OR839xA-4nL2WZ9FpQ@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241104172415.3790038-1-ih@simonwunderlich.de> <20241118125640.1110502-1-ih@simonwunderlich.de>
-In-Reply-To: <20241118125640.1110502-1-ih@simonwunderlich.de>
-From: James Dutton <james.dutton@gmail.com>
-Date: Mon, 18 Nov 2024 13:26:12 +0000
-Message-ID: <CAAMvbhEy9CtTN4-sw1jEb5Y+4gEdaKE3OR839xA-4nL2WZ9FpQ@mail.gmail.com>
-Subject: Re: [PATCH v2] wifi: mac80211: fix mbss changed flags corruption on
- 32 bit systems
-To: Issam Hamdi <ih@simonwunderlich.de>
-Cc: johannes@sipsolutions.net, linux-wireless@vger.kernel.org, 
-	mathias.kretschmer@fit.fraunhofer.de, sw@simonwunderlich.de
-Content-Type: text/plain; charset="UTF-8"
+X-malware-bazaar: not-scanned
 
-On Mon, 18 Nov 2024 at 12:56, Issam Hamdi <ih@simonwunderlich.de> wrote:
-> ---
-> Changes in v2:
-> - Use BITMAP_FROM_U64() to map all the 64 bits.
-> - Update the commit description.
-> ---
->  net/mac80211/mesh.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
-> index cb5f16366b9c..e420eb4797a8 100644
-> --- a/net/mac80211/mesh.c
-> +++ b/net/mac80211/mesh.c
-> @@ -1157,14 +1157,14 @@ void ieee80211_mbss_info_change_notify(struct ieee80211_sub_if_data *sdata,
->                                        u64 changed)
->  {
->         struct ieee80211_if_mesh *ifmsh = &sdata->u.mesh;
-> -       unsigned long bits = changed;
-> +       unsigned long bits[] = { BITMAP_FROM_U64(changed) };
+On Mon, 2024-11-18 at 13:26 +0000, James Dutton wrote:
+>=20
+> > @@ -1157,14 +1157,14 @@ void ieee80211_mbss_info_change_notify(struct i=
+eee80211_sub_if_data *sdata,
+> >                                        u64 changed)
+> >  {
+> >         struct ieee80211_if_mesh *ifmsh =3D &sdata->u.mesh;
+> > -       unsigned long bits =3D changed;
+> > +       unsigned long bits[] =3D { BITMAP_FROM_U64(changed) };
+>=20
+> Wouldn't it be easier to use this instead:
+> -       unsigned long bits =3D changed;
+> +       u64 bits =3D changed;
 
-Wouldn't it be easier to use this instead:
--       unsigned long bits = changed;
-+       u64 bits = changed;
+No, that's incorrect for set_bit() etc. at least on 32-bit big-endian
+systems. Then you can't use for_each_set_bit() etc.
+
+johannes
 
