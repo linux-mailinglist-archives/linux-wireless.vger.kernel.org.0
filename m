@@ -1,104 +1,130 @@
-Return-Path: <linux-wireless+bounces-15515-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15516-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F17C59D2E69
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2024 19:55:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0D599D2F5C
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2024 21:16:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E312CB2CA71
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2024 18:17:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F77DB23464
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2024 20:16:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 322581D0F56;
-	Tue, 19 Nov 2024 18:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C651D2B30;
+	Tue, 19 Nov 2024 20:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="of0VzLVV"
+	dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b="aaqr4Sju"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A144840BE0
-	for <linux-wireless@vger.kernel.org>; Tue, 19 Nov 2024 18:17:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A9B16A956
+	for <linux-wireless@vger.kernel.org>; Tue, 19 Nov 2024 20:16:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732040261; cv=none; b=A7NSaxexRTva5xZWnQOjjW7FLSGG6ZrJPJ7BKUm4vHymrrRyl8VNKlXLc1HiBIvYoqYMDL5wzJ3fV6G/iBwtHFpBdf1fQSCQzwvwAeRQnCsVkfp7amqx/vqp8R7teaDIY4w+zmv1RS1vme6rb6DJLNPFFcCY+EwT8IGUwOtH2FI=
+	t=1732047375; cv=none; b=TFtCfcPEn/rscPdJryPe8qCr/4DDJQ5mAL3JCq2V/owzRqh8FXwlSpmrpPxvTgzyJUPQuVggC2dSXqOS6zp+YVJ9/0iVcAWjsxLTih0rcgUi96lkjGIaAoVEZIgEwMajnaX3gh1M+30p+mnmJzoxQEat6mVHDhwswnqV1ulTnNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732040261; c=relaxed/simple;
-	bh=XJEsrxqEaFuMfdZq8NRtKm6RzLRqj8pQABhd4iLMtD4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ogCx05rHQcVZRoWlM/AbVWpmlXxoOAXaYGhuCMvQp6up9cvUYSTPgayoD6X1S90C/0mUZpTLBEltG2akOezTfJd0+x2PzAUL9GWCfXK1qmK/7vGv+kMQa37vV++eCF9t9Po34nJTUcFE6/vp4+9HxrQ9iywvM8Wcjs6PsHVulNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=of0VzLVV; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AJICtQu027393;
-	Tue, 19 Nov 2024 18:17:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	OA7MrYZlCaav4NenyipKox8rxFNAojc9AIoQx95kSxI=; b=of0VzLVVAORsAYX2
-	c0redQBP1enn7UByQbrk6noJL4hAoPJxwYd/GOnoxJCMijTlsRJm5Przokwf9xlj
-	qfZd9zZhTt6KpNvCRJddpc/o9/05BF4zCnpG8sZvZ3Bt2v7U41lrNKt1PQVfLqzw
-	U7kDVHSnSPoDt/OQqEpxDRgw70NjSDa7QH24blPI8ElCF+MqWSnlq+HbrdCJ2xzc
-	7Bo9dMZqMDuOJLV6nMfbhqZKRQsLVjfpdJlKoqNLavnaWhD2q9B+aWH1TF70qHdh
-	vueOhFFtPbJXg7ugj81j7rsT/KtiNjfWnB5P9bW7qDuWRPpuW3MNbAWadreua1xJ
-	qoi2aw==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4308y6ugn4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 Nov 2024 18:17:34 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4AJIHVAP018488
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 Nov 2024 18:17:31 GMT
-Received: from [10.111.176.82] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 19 Nov
- 2024 10:17:30 -0800
-Message-ID: <d8bb8bd5-c353-4a2b-b22b-5b24ba423e10@quicinc.com>
-Date: Tue, 19 Nov 2024 10:17:29 -0800
+	s=arc-20240116; t=1732047375; c=relaxed/simple;
+	bh=3Cbep4/jPphKomPPOlqRGVE/VNikNv4j8Vy/HmySlm4=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=Kb1oLYKcGak0jqd9NwBD9mAlV+vdDRamTdoGUcefxr+h0mrWOk83JX5InBo9YYQG8nYeDP9JCLbAJMSyrGfF8JD3+rh6MoxyRqPMNrzJVna8rY5VLj5W8DHY41Q+G71Ee5dXZI3yiREGVGosm0+DlXES4r6rtszS6lqaxnsYBng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b=aaqr4Sju; arc=none smtp.client-ip=209.85.219.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
+Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e3824e1adcdso3157416276.3
+        for <linux-wireless@vger.kernel.org>; Tue, 19 Nov 2024 12:16:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gateworks.com; s=google; t=1732047371; x=1732652171; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=KgWpOKHATV4YeR+Un0eRHbRg2ztCrtw2oUnFHzweI6Y=;
+        b=aaqr4SjuvtynEu83ijOsnOPkJyvu0tfeqO9uBOIbjOfPYw+xq+Nxtz90SJZJfGk7fL
+         dglSuWNPARrJhkKtDsIquXOCvJ13GCC4NDOVN6FvxyPcRNsNlkXilhR6aFZCKvwfiWJd
+         iHxiCOwAcckT7EzUDxNjHXXsolJVne5pzySNY8cm3nFlw0tbyUqYgZTOphK0LCB4r/CP
+         nq0j63mQyRL4yABItMdaEA/U+uju1v0HiAGuEYZksI47uLk/sIXIopB1Jfq+HRjbDV3Y
+         vc5qD5rNiWB+lm6YKUWp6sOyOy1Dobj2bmgBrWmbpxIyTEO1885M60sTa8kwAyjPoyCE
+         xOjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732047371; x=1732652171;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KgWpOKHATV4YeR+Un0eRHbRg2ztCrtw2oUnFHzweI6Y=;
+        b=gE3ijgGmwop7VF400Lw+T/4K/eNUROvqh2RXNFjxpsHC7Ejy8PTJRlFApytE9ANPS0
+         TrA0P2PzpgSJEqeXx2m4kR8Koz/SHvkmDnAIBJBjnTY9Own3fd6WiI4Hf3Dm7eZbpJsY
+         Y5HLcanPOefvY6w7a/TXQ9NnmcLl3aYa8m/9p0zmEMId9uN8RIrJzUSylmQcOKcqvLBb
+         N6mlF+dqfDR3EbZaosA24ZuNiT1HDMyrusRsGIGqPopy8IthGbEvWsBOMhFzOx3uzAJ/
+         2EBFCokw0FZqzKcdEGuAjP1bd2ERME9ZOg9RA4X5+Gbl7GHCaoUNbq0oTnbrU/46cFvL
+         UUlg==
+X-Forwarded-Encrypted: i=1; AJvYcCU2h8iPX7j2RMGwIcXWydP5aT9H121zToHPTrob+mT8wS2pyju0ncM8RPsDJqH5hLzTYwRYwfxUl2krD2XZoQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMmbYaILjAbD37TtlzzEf72+hTg+bugzX7OxdV22v/zgkB/AVZ
+	I4NBLsCalvrQ337VzlHnZzNon3uH2CDLAgVgfkw/ZoyEDmMwfx1QTLdFFnYN6l8WannraVauFSF
+	9CvUroATvz0ugMAe71doGdBVBpN6qtlKsV+gdfPrhdLTPDmdHJ0A=
+X-Google-Smtp-Source: AGHT+IFIGoS5c0Sgz4TtH9ip/vT18yheZrm4GNWm5kgq7Tyare9DQG7i5JIN9B5P7dc9QHZDKavFxMYENugU59McLDw=
+X-Received: by 2002:a05:690c:9a8c:b0:6ee:5cf9:f893 with SMTP id
+ 00721157ae682-6eebd0e61b4mr3481347b3.2.1732047371675; Tue, 19 Nov 2024
+ 12:16:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath12k: Fix endianness issue in struct
- hal_tlv_64_hdr
-To: P Praneesh <quic_ppranees@quicinc.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20241119164516.756478-1-quic_ppranees@quicinc.com>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Content-Language: en-US
-In-Reply-To: <20241119164516.756478-1-quic_ppranees@quicinc.com>
+From: Tim Harvey <tharvey@gateworks.com>
+Date: Tue, 19 Nov 2024 12:16:00 -0800
+Message-ID: <CAJ+vNU0dCV7-2gFDPTiOjAV-HCeHZ3H1DjGdqYKo+MGadfrSbA@mail.gmail.com>
+Subject: ath11k swiotlb buffer is full
+To: ath11k@lists.infradead.org, 
+	linux-wireless <linux-wireless@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: 3FDQpSSGsHhyeGHr3i6s3S0ILxNxxoFY
-X-Proofpoint-GUID: 3FDQpSSGsHhyeGHr3i6s3S0ILxNxxoFY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 suspectscore=0
- impostorscore=0 bulkscore=0 mlxscore=0 malwarescore=0 mlxlogscore=904
- phishscore=0 spamscore=0 priorityscore=1501 lowpriorityscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411190136
 
-On 11/19/2024 8:45 AM, P Praneesh wrote:
-> struct hal_tlv_64_hdr has a 64-bit member that should be in little-endian
-> format, but the current definition uses host byte order. Fix this by
-> changing the definition and updating the corresponding helper functions
-> used for the byte order conversion.
-> 
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-> 
-> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Greetings,
 
+I've got an ath11k card that is failing to init on an IMX8MM system
+with 4GB of DRAM:
+[    7.551582] ath11k_pci 0000:01:00.0: BAR 0 [mem
+0x18000000-0x181fffff 64bit]: assigned
+[    7.551713] ath11k_pci 0000:01:00.0: enabling device (0000 -> 0002)
+[    7.552401] ath11k_pci 0000:01:00.0: MSI vectors: 16
+[    7.552440] ath11k_pci 0000:01:00.0: qcn9074 hw1.0
+[    7.887186] mhi mhi0: Loaded FW: ath11k/QCN9074/hw1.0/amss.bin,
+sha256: 5ee1b7b204541b5f99984f21d694ececaec08fbce1b520ffe6fe740b02a4afd7
+[    8.435964] ath11k_pci 0000:01:00.0: chip_id 0x0 chip_family 0x0
+board_id 0xff soc_id 0xffffffff
+[    8.435991] ath11k_pci 0000:01:00.0: fw_version 0x270206d0
+fw_build_timestamp 2022-08-04 12:48 fw_build_id
+WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+[    8.441700] ath11k_pci 0000:01:00.0: Loaded FW:
+ath11k/QCN9074/hw1.0/board-2.bin, sha256:
+dbf0ca14aa1229eccd48f26f1026901b9718b143bd30b51b8ea67c84ba6207f1
+[    9.753764] ath11k_pci 0000:01:00.0: Loaded FW:
+ath11k/QCN9074/hw1.0/m3.bin, sha256:
+b6d957f335073a15a8de809398e1506f0200a08747eaf7189c843cf519ffc1de
+[    9.789791] ath11k_pci 0000:01:00.0: swiotlb buffer is full (sz:
+1048583 bytes), total 32768 (slots), used 2528 (slots)
+[    9.789853] ath11k_pci 0000:01:00.0: failed to set up tcl_comp ring (0) :-12
+[    9.790238] ath11k_pci 0000:01:00.0: failed to init DP: -12
+root@noble-venice:~# cat /proc/cmdline
+console=ttymxc1,115200 earlycon=ec_imx6q,0x30890000,115200
+root=PARTUUID=5cdde84f-01 rootwait net.ifnames=0 cma=196M
+
+The IMX8MM's DRAM base is at 1GB so anything above 3GB hits the 32bit
+address boundary. If I pass in a mem=3096M the device registers just
+fine.
+
+I found this to be the case with modern kernels however I found
+differing behavior with older kernels:
+- 6.6 and 6.1 the device registers with 4GB DRAM but crashes on client connect
+- 5.15 devices registers with 4GB DRAM and appears to work just fine
+
+Could anyone explain what is going on here? Obviously there have been
+changes at some point to start using swiotlb which I believe was all
+about avoiding 32bit DMA limitations but I'm not clear how I should be
+configuring this for IMX8MM with 4GB DRAM. Maybe my kernel IOMMU
+configuration is incorrect somehow?
+
+I'm also unclear why there was no apparent problem with older kernels
+such as 5.15.
+
+Best Regards,
+
+Tim
 
