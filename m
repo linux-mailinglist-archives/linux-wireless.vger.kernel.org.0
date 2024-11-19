@@ -1,149 +1,278 @@
-Return-Path: <linux-wireless+bounces-15500-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15501-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9224D9D2227
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2024 10:08:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CBFC9D222D
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2024 10:10:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57603281DFF
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2024 09:08:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01CDD1F245C0
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2024 09:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40FD11925B3;
-	Tue, 19 Nov 2024 09:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ECB41A9B24;
+	Tue, 19 Nov 2024 09:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="k0lhAKUY"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="SIRiPqoh";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="eLQee8Kl";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="SIRiPqoh";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="eLQee8Kl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A091A12CDAE;
-	Tue, 19 Nov 2024 09:08:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F77314F9E7;
+	Tue, 19 Nov 2024 09:09:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732007297; cv=none; b=jEgd9NXxrF+QJsxzicIMJIPA8HfRL0FmE6nVBBcZO4l78vvGcTAgrv5PpESwwH5LtG6Anoog0h/SVrNymf3vq7a0bT/RFVolGvZMU+4us4cfEThFqUb4Y6XGeUGl9P7iOTJBt0cPzNrj/zF4vcFkeVAOUfwuj+xlOu5x4DaK4fQ=
+	t=1732007400; cv=none; b=lU+W41mnMqaAhgWt1gKu5IVxEhY91gqMALW6qTmiynVTAr3NFfbUUZJ504hv+5/Ou54EpnVOeF5MGlRrV6J/32sg9hR6hufWaUurxoi59Ja6ZZ2KYy1qG4HhaUZsz/9xRdpdyAdTGH05LRSYe0LDSGyCR6PabMgSC+8bqRKvCOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732007297; c=relaxed/simple;
-	bh=zyp0FBBhS1CmIsQ+5S05zVbEtc0LE59r5jqk5h+utP8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n41lWAq1l9UgdZROtl5yVJiOC31riGfJ03jpT3oYmJuSTX/RqieQGc3fplksj8tRdpEpZQoceeVJezUB1wRhVrciL7v0WjFai8wXw5O3aD8g9rMv5wv4Cmk6o8cJnwhF3a0Xvo+/kpmBrtHo7uUc1vvjaJlehzmivEqyehtX2yE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=k0lhAKUY; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AJ3XOcc017807;
-	Tue, 19 Nov 2024 09:07:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=LBTvq5
-	FeQcEXe0HB2u4KxzCe+2KBG1BVObW72wTO6nM=; b=k0lhAKUYLfWeQR/iruaeBL
-	sT36zBPtE39kDpzCoMu2DRWrobuiIG2L1eqFq1vXqJzf0/gb7CQUeh38WrcozwQQ
-	M6aI6jMlHJCaBpCM59mOy+SuptIYsKXHs/f74IAk9ehsyjtLh/sF7deqktMlAIJe
-	+zbQOtrpFF515rH+AD3k1XoCTptdYWW8NJqaUB5o6KYdnjPl1NrGA5yXVBD3rB2T
-	mtbenxOouH3NvGd2NSkjUp7ehCNpmBq3MOvH39UJX0KKXLDC2JIuAVaSQn9YmTdg
-	zxGjOYsVJO0DeEorU33F9dleyLdO/GqvIwIua5IMuZdsal2i1C5ib5w9TP5aIeTA
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42xjw7y4et-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 Nov 2024 09:07:51 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4AJ8tcWY029951;
-	Tue, 19 Nov 2024 09:07:50 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 42xjw7y4eq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 Nov 2024 09:07:50 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4AJ92u4j030928;
-	Tue, 19 Nov 2024 09:07:49 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 42y63ydxuk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 Nov 2024 09:07:49 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4AJ97lj859834866
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 19 Nov 2024 09:07:47 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6A31B20040;
-	Tue, 19 Nov 2024 09:07:47 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BC0A820049;
-	Tue, 19 Nov 2024 09:07:46 +0000 (GMT)
-Received: from [9.152.224.73] (unknown [9.152.224.73])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 19 Nov 2024 09:07:46 +0000 (GMT)
-Message-ID: <4b718b5b-8cf4-437b-b068-69e4fb729440@linux.ibm.com>
-Date: Tue, 19 Nov 2024 10:07:46 +0100
+	s=arc-20240116; t=1732007400; c=relaxed/simple;
+	bh=rTSC72Q3RUvCXGNxls7pNO6M4v16CSV9HDax5AEJtQA=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=SSVe9AvJk0beZ/AsUxIRSj8xfF6CFTOiTyX2xwVbaocG1s7CPVxT3ckllwKTgJEMrp5FsXMawQHAT59numAyi+TIumk6LHtF3Slsha1rGN0XTDdxjMSCM8idy7d1xYr/VaRnZ9qDYMInpYmQpTH7YWS43U/wwF9XxnoRhBX1DgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=SIRiPqoh; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=eLQee8Kl; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=SIRiPqoh; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=eLQee8Kl; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from pobox.suse.cz (unknown [10.100.2.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id D475321901;
+	Tue, 19 Nov 2024 09:09:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1732007396; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d3ZUiM0v/u9S5PwB6Ydqo1vhiAlHB49FGA/7ikHpEDE=;
+	b=SIRiPqohnfZsfiR8rWfugglV6kBt9WZNkpsbbr+OOaRL3B/gLbNYdP82bjB0S/Sjpyp4Dh
+	6DaUo1iD8tvsOcOGm8MLnAkvlYyhNoN/BKk+Nu5/yLAfPrF9/Eu//yrmX3tKwCADYf1zxx
+	7juTShWa4+8m5I6ysJKabU6DZBznQQA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1732007396;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d3ZUiM0v/u9S5PwB6Ydqo1vhiAlHB49FGA/7ikHpEDE=;
+	b=eLQee8Kl//Z+uAJMSQ8O/3uMhn0cIi08Nnfcslit1gjRhYGbaqZ6swdcVqziESyeoUyf0K
+	N0AZng7gJdnO9PAg==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1732007396; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d3ZUiM0v/u9S5PwB6Ydqo1vhiAlHB49FGA/7ikHpEDE=;
+	b=SIRiPqohnfZsfiR8rWfugglV6kBt9WZNkpsbbr+OOaRL3B/gLbNYdP82bjB0S/Sjpyp4Dh
+	6DaUo1iD8tvsOcOGm8MLnAkvlYyhNoN/BKk+Nu5/yLAfPrF9/Eu//yrmX3tKwCADYf1zxx
+	7juTShWa4+8m5I6ysJKabU6DZBznQQA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1732007396;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d3ZUiM0v/u9S5PwB6Ydqo1vhiAlHB49FGA/7ikHpEDE=;
+	b=eLQee8Kl//Z+uAJMSQ8O/3uMhn0cIi08Nnfcslit1gjRhYGbaqZ6swdcVqziESyeoUyf0K
+	N0AZng7gJdnO9PAg==
+Date: Tue, 19 Nov 2024 10:09:55 +0100 (CET)
+From: Miroslav Benes <mbenes@suse.cz>
+To: Petr Mladek <pmladek@suse.com>
+cc: Easwar Hariharan <eahariha@linux.microsoft.com>, 
+    Christophe Leroy <christophe.leroy@csgroup.eu>, 
+    Pablo Neira Ayuso <pablo@netfilter.org>, 
+    Jozsef Kadlecsik <kadlec@netfilter.org>, 
+    "David S. Miller" <davem@davemloft.net>, 
+    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+    Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+    Julia Lawall <Julia.Lawall@inria.fr>, 
+    Nicolas Palix <nicolas.palix@imag.fr>, Daniel Mack <daniel@zonque.org>, 
+    Haojian Zhuang <haojian.zhuang@gmail.com>, 
+    Robert Jarzmik <robert.jarzmik@free.fr>, 
+    Russell King <linux@armlinux.org.uk>, Heiko Carstens <hca@linux.ibm.com>, 
+    Vasily Gorbik <gor@linux.ibm.com>, 
+    Alexander Gordeev <agordeev@linux.ibm.com>, 
+    Christian Borntraeger <borntraeger@linux.ibm.com>, 
+    Sven Schnelle <svens@linux.ibm.com>, Ofir Bitton <obitton@habana.ai>, 
+    Oded Gabbay <ogabbay@kernel.org>, 
+    Lucas De Marchi <lucas.demarchi@intel.com>, 
+    =?ISO-8859-15?Q?Thomas_Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>, 
+    Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+    Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+    Maxime Ripard <mripard@kernel.org>, 
+    Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, 
+    Simona Vetter <simona@ffwll.ch>, Jeroen de Borst <jeroendb@google.com>, 
+    Praveen Kaligineedi <pkaligineedi@google.com>, 
+    Shailend Chand <shailend@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+    James Smart <james.smart@broadcom.com>, 
+    Dick Kennedy <dick.kennedy@broadcom.com>, 
+    "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+    "Martin K. Petersen" <martin.petersen@oracle.com>, 
+    =?ISO-8859-15?Q?Roger_Pau_Monn=E9?= <roger.pau@citrix.com>, 
+    Jens Axboe <axboe@kernel.dk>, Kalle Valo <kvalo@kernel.org>, 
+    Jeff Johnson <jjohnson@kernel.org>, 
+    Catalin Marinas <catalin.marinas@arm.com>, 
+    Andrew Morton <akpm@linux-foundation.org>, 
+    Jack Wang <jinpu.wang@cloud.ionos.com>, 
+    Marcel Holtmann <marcel@holtmann.org>, 
+    Johan Hedberg <johan.hedberg@gmail.com>, 
+    Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+    Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+    Florian Fainelli <florian.fainelli@broadcom.com>, 
+    Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
+    Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+    Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>, 
+    Josh Poimboeuf <jpoimboe@kernel.org>, Jiri Kosina <jikos@kernel.org>, 
+    Joe Lawrence <joe.lawrence@redhat.com>, Jaroslav Kysela <perex@perex.cz>, 
+    Takashi Iwai <tiwai@suse.com>, Lucas Stach <l.stach@pengutronix.de>, 
+    Russell King <linux+etnaviv@armlinux.org.uk>, 
+    Christian Gmeiner <christian.gmeiner@gmail.com>, 
+    Louis Peens <louis.peens@corigine.com>, 
+    Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+    Naveen N Rao <naveen@kernel.org>, 
+    Madhavan Srinivasan <maddy@linux.ibm.com>, netfilter-devel@vger.kernel.org, 
+    coreteam@netfilter.org, netdev@vger.kernel.org, 
+    linux-kernel@vger.kernel.org, cocci@inria.fr, 
+    linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org, 
+    dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
+    linux-scsi@vger.kernel.org, xen-devel@lists.xenproject.org, 
+    linux-block@vger.kernel.org, linux-wireless@vger.kernel.org, 
+    ath11k@lists.infradead.org, linux-mm@kvack.org, 
+    linux-bluetooth@vger.kernel.org, linux-staging@lists.linux.dev, 
+    linux-rpi-kernel@lists.infradead.org, ceph-devel@vger.kernel.org, 
+    live-patching@vger.kernel.org, linux-sound@vger.kernel.org, 
+    etnaviv@lists.freedesktop.org, oss-drivers@corigine.com, 
+    linuxppc-dev@lists.ozlabs.org, 
+    Anna-Maria Behnsen <anna-maria@linutronix.de>
+Subject: Re: [PATCH v2 19/21] livepatch: Convert timeouts to
+ secs_to_jiffies()
+In-Reply-To: <ZzxR3uAcWFEPUIUK@pathway.suse.cz>
+Message-ID: <alpine.LSU.2.21.2411191006340.15289@pobox.suse.cz>
+References: <20241115-converge-secs-to-jiffies-v2-0-911fb7595e79@linux.microsoft.com> <20241115-converge-secs-to-jiffies-v2-19-911fb7595e79@linux.microsoft.com> <718febc4-59ee-4701-ad62-8b7a8fa7a910@csgroup.eu> <Zzsfuuv3AVomkMxn@pathway.suse.cz>
+ <96f3b51b-c28c-4ea8-b61e-a4982196215f@linux.microsoft.com> <ZzxR3uAcWFEPUIUK@pathway.suse.cz>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: reformat kdoc return statements
-To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
-Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
-        pablo@netfilter.org, linux@armlinux.org.uk, richardcochran@gmail.com,
-        johannes@sipsolutions.net, loic.poulain@linaro.org,
-        ryazanov.s.a@gmail.com, dsahern@kernel.org, hawk@kernel.org,
-        ilias.apalodimas@linaro.org, jhs@mojatatu.com, jiri@resnulli.us,
-        ecree.xilinx@gmail.com, przemyslaw.kitszel@intel.com,
-        netfilter-devel@vger.kernel.org, linux-wireless@vger.kernel.org
-References: <20241115163612.904906-1-kuba@kernel.org>
-Content-Language: en-US
-From: Alexandra Winter <wintera@linux.ibm.com>
-In-Reply-To: <20241115163612.904906-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: UjO_0PDyXYBIf731U8jF1w3Qb4A3iVRi
-X-Proofpoint-ORIG-GUID: l2kWDXORmQCdCZd90FYMQrvCGk1mb_Hd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 spamscore=0
- adultscore=0 priorityscore=1501 bulkscore=0 malwarescore=0 phishscore=0
- lowpriorityscore=0 mlxscore=0 mlxlogscore=999 suspectscore=0 clxscore=1011
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
- definitions=main-2411190064
+Content-Type: multipart/mixed; BOUNDARY="1678380546-1247530484-1732007229=:15289"
+Content-ID: <alpine.LSU.2.21.2411191007130.15289@pobox.suse.cz>
+X-Spam-Level: 
+X-Spamd-Result: default: False [-5.80 / 50.00];
+	REPLY(-4.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	CTYPE_MIXED_BOGUS(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.998];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain];
+	FROM_EQ_ENVFROM(0.00)[];
+	ARC_NA(0.00)[];
+	REDIRECTOR_URL(0.00)[aka.ms];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[linux.microsoft.com,csgroup.eu,netfilter.org,davemloft.net,google.com,kernel.org,redhat.com,inria.fr,imag.fr,zonque.org,gmail.com,free.fr,armlinux.org.uk,linux.ibm.com,habana.ai,intel.com,linux.intel.com,suse.de,ffwll.ch,lunn.ch,broadcom.com,hansenpartnership.com,oracle.com,citrix.com,kernel.dk,arm.com,linux-foundation.org,cloud.ionos.com,holtmann.org,linuxfoundation.org,perex.cz,suse.com,pengutronix.de,corigine.com,ellerman.id.au,vger.kernel.org,lists.infradead.org,lists.freedesktop.org,lists.xenproject.org,kvack.org,lists.linux.dev,lists.ozlabs.org,linutronix.de];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+];
+	TO_MATCH_ENVRCPT_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[netdev,etnaviv];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	RCPT_COUNT_GT_50(0.00)[94];
+	RCVD_COUNT_ZERO(0.00)[0];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	R_RATELIMIT(0.00)[to_ip_from(RLst1ywfnn8h7y4sspo7cfrpds)];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,free.fr]
+X-Spam-Score: -5.80
+X-Spam-Flag: NO
 
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
+--1678380546-1247530484-1732007229=:15289
+Content-Type: text/plain; CHARSET=ISO-8859-15
+Content-Transfer-Encoding: 8BIT
+Content-ID: <alpine.LSU.2.21.2411191007131.15289@pobox.suse.cz>
 
-On 15.11.24 17:36, Jakub Kicinski wrote:
-> kernel-doc -Wall warns about missing Return: statement for non-void
-> functions. We have a number of kdocs in our headers which are missing
-> the colon, IOW they use
->  * Return some value
-> or
->  * Returns some value
+On Tue, 19 Nov 2024, Petr Mladek wrote:
+
+> On Mon 2024-11-18 10:18:49, Easwar Hariharan wrote:
+> > On 11/18/2024 3:06 AM, Petr Mladek wrote:
+> > > On Sat 2024-11-16 11:10:52, Christophe Leroy wrote:
+> > >>
+> > >>
+> > >> Le 15/11/2024 à 22:26, Easwar Hariharan a écrit :
+> > >>> [Vous ne recevez pas souvent de courriers de eahariha@linux.microsoft.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+> > >>>
+> > >>> Changes made with the following Coccinelle rules:
+> > >>>
+> > >>> @@ constant C; @@
+> > >>>
+> > >>> - msecs_to_jiffies(C * 1000)
+> > >>> + secs_to_jiffies(C)
+> > >>>
+> > >>> @@ constant C; @@
+> > >>>
+> > >>> - msecs_to_jiffies(C * MSEC_PER_SEC)
+> > >>> + secs_to_jiffies(C)
+> > >>>
+> > >>> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+> > >>> ---
+> > >>>   samples/livepatch/livepatch-callbacks-busymod.c |  2 +-
+> > >>>   samples/livepatch/livepatch-shadow-fix1.c       |  2 +-
+> > >>>   samples/livepatch/livepatch-shadow-mod.c        | 10 +++++-----
+> > >>>   3 files changed, 7 insertions(+), 7 deletions(-)
+> > >>>
+> > >>> diff --git a/samples/livepatch/livepatch-callbacks-busymod.c b/samples/livepatch/livepatch-callbacks-busymod.c
+> > >>> index 378e2d40271a9717d09eff51d3d3612c679736fc..d0fd801a7c21b7d7939c29d83f9d993badcc9aba 100644
+> > >>> --- a/samples/livepatch/livepatch-callbacks-busymod.c
+> > >>> +++ b/samples/livepatch/livepatch-callbacks-busymod.c
+> > >>> @@ -45,7 +45,7 @@ static int livepatch_callbacks_mod_init(void)
+> > >>>   {
+> > >>>          pr_info("%s\n", __func__);
+> > >>>          schedule_delayed_work(&work,
+> > >>> -               msecs_to_jiffies(1000 * 0));
+> > >>> +               secs_to_jiffies(0));
+> > >>
+> > >> Using secs_to_jiffies() is pointless, 0 is universal, should become
+> > >> schedule_delayed_work(&work, 0);
+> > > 
+> > > Yes, schedule_delayed_work(&work, 0) looks like the right solution.
+> > > 
+> > > Or even better, it seems that the delayed work might get replaced by
+> > > a normal workqueue work.
+> > > 
+> > > Anyway, I am working on a patchset which would remove this sample
+> > > module. There is no need to put much effort into the clean up
+> > > of this particular module. Do whatever is easiest for you.
+> > > 
+> > > Best Regards,
+> > > Petr
+> > 
+> > If we're removing the module, I'll drop it from the series. Just to
+> > clarify, do you mean to remove all of samples/livepatch/* or some
+> > particular file(s)?
 > 
-> Having the colon makes some sense, it should help kdoc parser avoid
-> false positives. So add them. This is mostly done with a sed script,
-> and removing the unnecessary cases (mostly the comments which aren't
-> kdoc).
+> To be precise, I am going to replace:
 > 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> LMK if I should have split this into smaller chunks, I don't really
-> expect much review here, TBH.
-> ---
-> CC: pablo@netfilter.org
-> CC: linux@armlinux.org.uk
-> CC: richardcochran@gmail.com
-> CC: johannes@sipsolutions.net
-> CC: loic.poulain@linaro.org
-> CC: ryazanov.s.a@gmail.com
-> CC: dsahern@kernel.org
-> CC: wintera@linux.ibm.com
-[...]
->  include/net/iucv/iucv.h            | 30 ++++++++++----------
+> 	samples/livepatch/livepatch-callbacks-demo.c
+> 	samples/livepatch/livepatch-callbacks-mod.c
+> 	samples/livepatch/livepatch-callbacks-busymod.c
+> 
+> with a completely different modules because I am reworking the
+> callbacks API.
+> 
+> All other sample modules are going to stay.
+> 
+> Feel free to remove livepatch-callbacks-busymod.c from the patchset.
+> But also feel free to keep it. The API rework goes slowly. I am not
+> sure if it would be ready for 6.14.
 
+I would propose that Easwar goes on with his work and prepares an updated 
+version of the patch based on Christophe's feedback. That is, disregarding 
+Petr's rework for now. The patch set has a higher chance to be merged 
+sooner. Petr can then easily rebase. If there is a conflict, we will 
+handle it as usual. What do you think?
 
-Thank you Jakub.
-For the iucv part:
-Acked-by: Alexandra Winter <wintera@linux.ibm.com>
+Miroslav
+--1678380546-1247530484-1732007229=:15289--
 
