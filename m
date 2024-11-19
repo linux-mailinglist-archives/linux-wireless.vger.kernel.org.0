@@ -1,114 +1,122 @@
-Return-Path: <linux-wireless+bounces-15505-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15506-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79B399D2867
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2024 15:43:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BBB19D29B4
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2024 16:34:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48EE3283869
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2024 14:43:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DBF21281DFE
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2024 15:34:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276D31CEEA3;
-	Tue, 19 Nov 2024 14:42:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B5021CF2B6;
+	Tue, 19 Nov 2024 15:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="T+Skah1F"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="hdC+QXIh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7527D1CBEAD;
-	Tue, 19 Nov 2024 14:42:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF3578C76
+	for <linux-wireless@vger.kernel.org>; Tue, 19 Nov 2024 15:34:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732027373; cv=none; b=fIlajtE0XDUdHgeO0jqZuBxe2+J/OWnPiE3cb1WcNn4+Zdr6768IRkUiwDoti+VIdfi6NiShosqjeV0R9YnH8dE9hZplGayQulmciVWup/b8yI9WJvdx9IAepadB5LdcOWZKNuwdZyUajFk1r/9VdRXo8JRMDtRnH8G6nG9fTXw=
+	t=1732030482; cv=none; b=KqdRbXqSXKGPmWOkmWvpjR8CW4e/6GSdEmSUx+tkcQodb2dAXWeLetHUL5o9VzbeZmTlWyYkM3dMeR8WD/HlKbUXUAOPEkG8IlddxB1nViKZfE0NoB+ydscA0VdzJwkjJ/2UxRMo/ICqTb9J6pJbE/MYb8isf0XffEBdDxTM1WU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732027373; c=relaxed/simple;
-	bh=hrOJnp6uw/S7AuyjkakdDSA5Zg13TNT4jJ6P95hU7JI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=EDtkBINshaeO7Yl7vcA4GdXAUTthZDNvz1LtiLnAsDEg7yuirUgmUfZt7j6iDc366NpbTPm2TMh3t8SHroKRL4bL9svwhSDkdjYv0NgBTWbkLKKLoCtjXjRop/cTML1IEOgwJNo5V3bu4K/4GvlGhr8OR2mkaHQktKKpPIVs3+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=T+Skah1F; arc=none smtp.client-ip=45.79.88.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 620B2403E5
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1732027370; bh=S7Mai6xFGBYX5PLF0oowGY9tbWsB+DPe1mZxbg4En+o=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=T+Skah1FkKdt0HwItZfkgqz0YLC5XTymeP4Oz+Q/qvhI4hpIZEEnUXyf/iD67yZHd
-	 qmSL4sp9T2i/m30/zSVP/Bqk44q/QL269v7OR0w9w82+RAzrKzfCRX5pk37fZcELdX
-	 jGJJyzEzNwgOfDaZYSxXzDhFzAfxjLeqZCWTz161GAjQsn4OaBJJZqw9dzwBQWEufW
-	 vGBSNBqHtMAKy/jGSaSWddASbH+x3j/T6H5RjOe99PzgAGlRaov4kIrzmR97L4I4jb
-	 9Z6yQfQ+mqGCT0gTLzMSXyzSYQL40RS7agcP1gygRdtEd9Ygm8xhkdfdjVP657Jebu
-	 kiZh3BQdMQsnA==
-Received: from localhost (unknown [IPv6:2601:280:5e00:625::1fe])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 620B2403E5;
-	Tue, 19 Nov 2024 14:42:50 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Jakub Kicinski <kuba@kernel.org>, "Russell King (Oracle)"
- <linux@armlinux.org.uk>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, pablo@netfilter.org, richardcochran@gmail.com,
- johannes@sipsolutions.net, loic.poulain@linaro.org,
- ryazanov.s.a@gmail.com, dsahern@kernel.org, wintera@linux.ibm.com,
- hawk@kernel.org, ilias.apalodimas@linaro.org, jhs@mojatatu.com,
- jiri@resnulli.us, ecree.xilinx@gmail.com, przemyslaw.kitszel@intel.com,
- netfilter-devel@vger.kernel.org, linux-wireless@vger.kernel.org,
- linux-doc@vger.kernel.org
-Subject: Re: [PATCH net-next] net: reformat kdoc return statements
-In-Reply-To: <20241118163308.318d8a6b@kernel.org>
-References: <20241115163612.904906-1-kuba@kernel.org>
- <ZzjHH-L-ylLe0YhU@shell.armlinux.org.uk>
- <20241118163308.318d8a6b@kernel.org>
-Date: Tue, 19 Nov 2024 07:42:49 -0700
-Message-ID: <87v7wjffo6.fsf@trenco.lwn.net>
+	s=arc-20240116; t=1732030482; c=relaxed/simple;
+	bh=8elBXPFfBZMz/YhqRxf2P6P7knt/FLy0S+9I0Ey5my0=;
+	h=From:To:CC:In-Reply-To:References:Subject:Message-ID:Date:
+	 MIME-Version:Content-Type; b=Z7etdjD4iZ+5wFuNliQ6JV8LA2w2MmNnJErcPT+bD12JvSvJ9OFWP6E8kPseaK4lrVfNO0VKr+YsBr14u1Yk3vZYFMpOQvzv2ANv3h+4vzEosnVCoH431DeMzlfC2cBQ7xihbTBfH+LFAJqQgSWEjsUty3ntYrUO38BHpK0wIHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=hdC+QXIh; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AJ7iT5I004712;
+	Tue, 19 Nov 2024 15:34:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	5QykAg1FWy0/Ynvq/cWizV2FyfeR47E/OB1t9XvGt7c=; b=hdC+QXIhVip67IRW
+	ocfNv7je8Tf1VV0BQ0uSc0UiXiPCSLycAWc6qqMgdlPBUIz8M9X647nnb9h060i4
+	OWGdZlMHb7Ouyaord3H6NJjo0AyZVwoZ0xi0FKftiHQxUulD+dX6o3KArpa60yYP
+	KhyWVpkFdS3DTi7NMcP8IOqqLSGjruNMc9dmlhixjIm0rviTMRAwV/bwWbZtnacu
+	/NmtAaFqN+QL5u2tRjEkxLzA+t9JZHAfSqIrnhDS2u4/TnJ5iKTzooLPi1wcrMOA
+	3mCa76sYjnCVfbFLuqkYSTLwbsVNl4xgS99JGVhK0Lljj76k66LMDS54GnqwkLNt
+	FsfR+w==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4308y7twwa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 19 Nov 2024 15:34:31 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4AJFYUYp018968
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 19 Nov 2024 15:34:30 GMT
+Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 19 Nov
+ 2024 07:34:29 -0800
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+To: Kalle Valo <kvalo@kernel.org>,
+        =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
+CC: <linux-wireless@vger.kernel.org>,
+        Simon Wunderlich
+	<sw@simonwunderlich.de>,
+        Sven Eckelmann <se@simonwunderlich.de>, Felix
+ Fietkau <nbd@nbd.name>
+In-Reply-To: <20241106-ath9k-deaf-detection-v1-1-736a150d2425@redhat.com>
+References: <20241106-ath9k-deaf-detection-v1-1-736a150d2425@redhat.com>
+Subject: Re: [PATCH] ath9k: Add RX inactivity detection and reset chip when
+ it occurs
+Message-ID: <173203046976.60288.346351687516567007.b4-ty@quicinc.com>
+Date: Tue, 19 Nov 2024 07:34:29 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.14.0
+X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: SiOYmwf1qA0JlH46Bp0R-Uxl1wPTjSyZ
+X-Proofpoint-ORIG-GUID: SiOYmwf1qA0JlH46Bp0R-Uxl1wPTjSyZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 mlxlogscore=277 adultscore=0 mlxscore=0 phishscore=0
+ spamscore=0 bulkscore=0 malwarescore=0 lowpriorityscore=0 suspectscore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411190114
 
-Jakub Kicinski <kuba@kernel.org> writes:
 
-> On Sat, 16 Nov 2024 16:23:59 +0000 Russell King (Oracle) wrote:
->> On Fri, Nov 15, 2024 at 08:36:12AM -0800, Jakub Kicinski wrote:
->> > kernel-doc -Wall warns about missing Return: statement for non-void
->> > functions. We have a number of kdocs in our headers which are missing
->> > the colon, IOW they use
->> >  * Return some value
->> > or
->> >  * Returns some value
->> > 
->> > Having the colon makes some sense, it should help kdoc parser avoid
->> > false positives. So add them. This is mostly done with a sed script,
->> > and removing the unnecessary cases (mostly the comments which aren't
->> > kdoc).  
->> 
->> I wonder about this... I suspect it's going to be a constant battle to
->> ensure that docs use Return: or Returns: because it's not "natural"
->> when writing documentation.
->> 
->> Maybe the tooling should accept a sentence starting "Return(s?)" and
->> convert it to "Return(s):" in generated documentation?
->
-> I missed this merge window, so we have time, let's ask Jon.
->
-> Jon, do you have a preference on making the kernel-doc formatting
-> accept "* Return" without the colon? vs fixing all the mis-formatting?
-> Looks like we have roughly 100 of those in networking headers 
-> (just counting those under include/).
+On Wed, 06 Nov 2024 13:41:44 +0100, Toke Høiland-Jørgensen wrote:
+> Some ath9k chips can, seemingly at random, end up in a state which can
+> be described as "deaf". No or nearly no interrupts are generated anymore
+> for incoming packets. Existing links either break down after a while and
+> new links will not be established.
+> 
+> The circumstances leading to this "deafness" is still unclear, but some
+> particular chips (especially 2-stream 11n SoCs, but also others) can go
+> 'deaf' when running AP or mesh (or both) after some time. It's probably
+> a hardware issue, and doing a channel scan to trigger a chip
+> reset (which one normally can't do on an AP interface) recovers the
+> hardware.
+> 
+> [...]
 
-I guess my preference would be to fix the comments and keep the tighter
-rule for the format.  It's not something I feel hugely strongly about,
-though, so I don't think I would try to block an attempt to go the other
-way.
+Applied, thanks!
 
-Thanks,
+[1/1] ath9k: Add RX inactivity detection and reset chip when it occurs
+      commit: b5f871ab4913b2403a7cdcbcde16d39d0b071fb3
 
-jon
+Best regards,
+-- 
+Jeff Johnson <quic_jjohnson@quicinc.com>
+
 
