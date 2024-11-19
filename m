@@ -1,226 +1,238 @@
-Return-Path: <linux-wireless+bounces-15498-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15499-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E40D39D21E0
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2024 09:52:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A0C79D21F0
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2024 09:53:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D7FD1F21558
-	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2024 08:52:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97F13B2366F
+	for <lists+linux-wireless@lfdr.de>; Tue, 19 Nov 2024 08:53:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7742B197A7A;
-	Tue, 19 Nov 2024 08:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971BB1C0DCB;
+	Tue, 19 Nov 2024 08:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fbbv24pD"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="YwX88J07"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA75313C8F3;
-	Tue, 19 Nov 2024 08:52:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D2A21AF0AC
+	for <linux-wireless@vger.kernel.org>; Tue, 19 Nov 2024 08:52:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732006356; cv=none; b=gdloTm7LqGXKw0REojoxZVw/w1Fql9N9RIgK3pqxGDK8bNblTAShwvFOp9augYrXoSjLxPEEpzQGGCkABXAVbnXQuEQYHFnO6Lz4/aJOQCSxvwruLAuJlRL/4Shaqd0nwFe9givz8kEnputFvH3lfn3iltnNvD8xo4e0INOzbeI=
+	t=1732006380; cv=none; b=slWfV3fbnYEqt3eCRpIRrtYWuLjVk2LDWyUQOF80JEYNYCHQ+LLUowQOp4CjSFFBy0rzsSZA8j3I0yRtJBz7WBBbfDlGCxavpPQl+5pVpZvckK1hIhAytmTQkTtJMRvukNRStygtze6irybgJxZexxyEiLwvMokaOdqdtM8bcpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732006356; c=relaxed/simple;
-	bh=UAsTUyY0fHhTZjbPvR5l8EhE92x+1fw/zMhbScAb7Tw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=THScn8cDuJnBtap4On3EZZEypA48f6nDzVBZh2mtEIUsIba6BbQARw0JSV3S1DMQpBwJDftIHSljV/fhYeJiNfSm5L3Ws/a0uoXy7NeHxPT+DZS/WjruJFxmOJqH4EthylaERXyLggCZgBkWkGpLGrJY50JbNbFZw+KE7xysmXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fbbv24pD; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4314b316495so33761515e9.2;
-        Tue, 19 Nov 2024 00:52:34 -0800 (PST)
+	s=arc-20240116; t=1732006380; c=relaxed/simple;
+	bh=1PQE1f1xCJGY7Tky1gUdhI5mXqSifmAXMo1KKarsrpI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZBKoLwSXUeABlEvsnq5T1QGrWkIr1QaGBFKwmjJmrTatxym6RkEm+nVfH8eRU7zeqi+Esn53n9yIuihXk7EJNlrUOsj7ZcL1KYo3UG9CBvqwa/bW9BsxG3s+qwEdqKJKUHqgD6YEUjvWyqElWnFXWzX7LlQv3ky41NDkC1ozGLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=YwX88J07; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-432d866f70fso5658835e9.2
+        for <linux-wireless@vger.kernel.org>; Tue, 19 Nov 2024 00:52:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732006353; x=1732611153; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sJJ6Qh9/cJn/S1mD4JxORrTt4yPsQ4TBPTItPsiRXrA=;
-        b=Fbbv24pD/1PmgJKcf/+ofFCe0irDiUA2XBc9nvmXvm1SIB48yFmhWMT+iOzXJtM/Gz
-         6PpUQVrLDMoNRegQyzu8LA/3uQRiQc11zecx/KSibFe83Od+l2AkxqrgimkNfc/hEEo6
-         yiWwqePjttRMhC3+XrFdSBP9rGWVy9Pl+fS0JLMJqSyk6UiDfOtPdr3xKGyv4wplEOse
-         YIE03dCoLP7HgBAYtvmL2d71cOfDqIwyQUGTP2Hl5x6y6x656AA280zCpidJfPQuZr8d
-         X9ILrbsBvZwgcR3oRwwhFebplSAU+rVxOA9c/0slSgcpYLFalPoLwk4fRZh0xwRMonKK
-         S04Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732006353; x=1732611153;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+        d=suse.com; s=google; t=1732006375; x=1732611175; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=sJJ6Qh9/cJn/S1mD4JxORrTt4yPsQ4TBPTItPsiRXrA=;
-        b=HHVAi66lFO6ythZp4kgld9RXlEHtzAuvkTbxYFMIXRrIJVbhnzLBOs8RNQp0Cv9aSh
-         SnfAsv6+Go1gc6ltyGdJRtAgrkbJJfdl8da7Bf26xUu0VO81tgZRQ9ZiH+cd2KQ08bNU
-         UuXxC6U8fcgzUjaAUSFcsYcCqX5w73sSDnyGX6GcUb26ucT9MdLOvJ9badP9Hw65IMne
-         UOhX9XxdcmFlaOQaK6jHZs8BU9c0i6+cLt5HwWy0AaqjJVyla6j5XYDazsSk9DW0201M
-         PzegJjobq219+YD+tItiqulbDbLx5JssgwyG7FZPmTn1bK5T5nIb145U4YKSJWaExbZY
-         ZEHA==
-X-Forwarded-Encrypted: i=1; AJvYcCWtPmNKyH8ebgNmdhbssYFQ8jk+Tu660E/nO8lGDyI+YUBFeH4kp2wBUlkXw65OexyWou6Pc2U+IEMCLfU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSuVMVr9mDOO6ExOtj1/wuT8M/FvORs1/cE6gD11RW2lpIRgZ/
-	dCb97r6msBTvJl9gWGK/CWwGyWAgB+LLDPlY2yf87TMdjqd3vBPBGGQfDQ==
-X-Google-Smtp-Source: AGHT+IGIEPh/1yaHnfAopF2mwL/6Z2kZykGcfp15AvtWpsFIO62caqpTfT2h9LdjwWvAjsa1DtcVgw==
-X-Received: by 2002:a05:600c:3b20:b0:431:5f9e:3f76 with SMTP id 5b1f17b1804b1-432df74d896mr151575045e9.16.1732006352900;
-        Tue, 19 Nov 2024 00:52:32 -0800 (PST)
-Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-432dab80a28sm185160435e9.24.2024.11.19.00.52.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 19 Nov 2024 00:52:32 -0800 (PST)
+        bh=qaBG3Z7R9DOuiOybc185RSD4M8rIPEBBhrkZgjFmOxU=;
+        b=YwX88J07/QkBNEkAjW82kPZVlFUMTCMLsjf6gwhsceK2l+pfQq+2IhMEYkPxcbHwhM
+         iIQcYiE8dfVaomj+NhbmG33a7kOfZvnjheNotc1ehgHzsh9k5KiMvqplMIWd1Ktpn9J3
+         Jl0NwUBhIo15kB0LHJKNp3KvnQt5IzMLrmOUt5OqKtW5fSa8heyxjOg/WBK+TsNjc4QK
+         7m994E+mkEwkTIETkvQ3HV9EOmS6rF7kT/r6PvKAWOsvp3P9FDmpG8UYYfYu5j2pKTin
+         nV23yVqo7cve/XHz6GfmTRniT88Dp7udY5CmrOUKjj10LxJKyDd7AoBmqCML/ASfnVOk
+         i85A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732006375; x=1732611175;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qaBG3Z7R9DOuiOybc185RSD4M8rIPEBBhrkZgjFmOxU=;
+        b=gey/SkWBQ9e0icLgJkTzdeP+5RUWpQVckUY63fCziDv68pD+B+czrUAibnKTMXUW+h
+         ySijvtq/nx4PGixp71BYSsmcrXMkYWzA9+MDCs0h4xq9zV5/rS38/gbT9UU24rE8WKPG
+         QX2vbpkJ2mNe6N+QrkCq1Rk+Z6uYFsep0wIR0xzNa5r3MKZqx/Hq1sx2RDMatHBBfvIU
+         /uy8C73Gldw9jJcx9aT7+/ojktFEmomC5GvqLFH3pFpe+q/vK7gZyrqntiU1JmqfPFip
+         v4ySBr52JD3fNJrfi41fxabcZtqRQc2cW3u2m6qIYanMmnJ1rUozRcJX58z4zcjEcXM+
+         JOxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXco245olBqqKbklSQKG/ddhHYDDGFEncHT5n7If4pVNNH41NNEknJMopkzhsRTz8ywaKLZ3sAtyniHX/cbfg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzuM9mn8Ql0qkfpZvY+YhDOIWqytjhnC+vf9vyaH8aiIU0fXbAs
+	8kA1OapZuY8pSGUMVNs39XCwA0na4MraUZZbOl/uVd9cl/Wxvvf+FB0lRvS36DI=
+X-Google-Smtp-Source: AGHT+IHrqP9nC2rPwknktgIKbjWoIt1yh0m5e2N0IUvcTBAuP3H8V/AdHOWp2OIw94YWQU//ijQi/A==
+X-Received: by 2002:a5d:6d0f:0:b0:382:2492:3218 with SMTP id ffacd0b85a97d-38225aaee39mr12773115f8f.47.1732006374705;
+        Tue, 19 Nov 2024 00:52:54 -0800 (PST)
+Received: from pathway.suse.cz ([176.114.240.50])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3824a8109a7sm3705943f8f.104.2024.11.19.00.52.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Nov 2024 00:52:54 -0800 (PST)
+Date: Tue, 19 Nov 2024 09:52:46 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Julia Lawall <Julia.Lawall@inria.fr>,
+	Nicolas Palix <nicolas.palix@imag.fr>,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Ofir Bitton <obitton@habana.ai>, Oded Gabbay <ogabbay@kernel.org>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+	Jeroen de Borst <jeroendb@google.com>,
+	Praveen Kaligineedi <pkaligineedi@google.com>,
+	Shailend Chand <shailend@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	James Smart <james.smart@broadcom.com>,
+	Dick Kennedy <dick.kennedy@broadcom.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Roger Pau =?iso-8859-1?Q?Monn=E9?= <roger.pau@citrix.com>,
+	Jens Axboe <axboe@kernel.dk>, Kalle Valo <kvalo@kernel.org>,
+	Jeff Johnson <jjohnson@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jack Wang <jinpu.wang@cloud.ionos.com>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Jiri Kosina <jikos@kernel.org>, Miroslav Benes <mbenes@suse.cz>,
+	Joe Lawrence <joe.lawrence@redhat.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	Lucas Stach <l.stach@pengutronix.de>,
+	Russell King <linux+etnaviv@armlinux.org.uk>,
+	Christian Gmeiner <christian.gmeiner@gmail.com>,
+	Louis Peens <louis.peens@corigine.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	cocci@inria.fr, linux-arm-kernel@lists.infradead.org,
+	linux-s390@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org, linux-scsi@vger.kernel.org,
+	xen-devel@lists.xenproject.org, linux-block@vger.kernel.org,
+	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+	linux-mm@kvack.org, linux-bluetooth@vger.kernel.org,
+	linux-staging@lists.linux.dev, linux-rpi-kernel@lists.infradead.org,
+	ceph-devel@vger.kernel.org, live-patching@vger.kernel.org,
+	linux-sound@vger.kernel.org, etnaviv@lists.freedesktop.org,
+	oss-drivers@corigine.com, linuxppc-dev@lists.ozlabs.org,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>
+Subject: Re: [PATCH v2 19/21] livepatch: Convert timeouts to secs_to_jiffies()
+Message-ID: <ZzxR3uAcWFEPUIUK@pathway.suse.cz>
+References: <20241115-converge-secs-to-jiffies-v2-0-911fb7595e79@linux.microsoft.com>
+ <20241115-converge-secs-to-jiffies-v2-19-911fb7595e79@linux.microsoft.com>
+ <718febc4-59ee-4701-ad62-8b7a8fa7a910@csgroup.eu>
+ <Zzsfuuv3AVomkMxn@pathway.suse.cz>
+ <96f3b51b-c28c-4ea8-b61e-a4982196215f@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 19 Nov 2024 09:52:32 +0100
-Message-Id: <D5Q10DQM9OC7.3VR13L1UINUVF@gmail.com>
-Cc: <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- "Sathishkumar Muruganandam" <quic_murugana@quicinc.com>
-Subject: Re: [PATCH 1/2] wifi: mac80211: add EHT 320 MHz support for mesh
-From: "Nicolas Escande" <nico.escande@gmail.com>
-To: "Aditya Kumar Singh" <quic_adisi@quicinc.com>, "Johannes Berg"
- <johannes@sipsolutions.net>, "Kalle Valo" <kvalo@kernel.org>
-X-Mailer: aerc 0.18.2-0-ge037c095a049
-References: <20241119-mesh_320mhz_support-v1-0-f9463338d584@quicinc.com>
- <20241119-mesh_320mhz_support-v1-1-f9463338d584@quicinc.com>
-In-Reply-To: <20241119-mesh_320mhz_support-v1-1-f9463338d584@quicinc.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <96f3b51b-c28c-4ea8-b61e-a4982196215f@linux.microsoft.com>
 
-On Tue Nov 19, 2024 at 5:27 AM CET, Aditya Kumar Singh wrote:
-> From: Sathishkumar Muruganandam <quic_murugana@quicinc.com>
->
-> Currently, ieee80211_ie_build_he_oper() lacks support for 320 MHz handlin=
-g
-> (already noted as a TODO). This is because 320 MHz is not included in
-> IEEE 802.11-ax. However, IEEE 802.11-be introduces 320 MHz support and if
-> the chandef indicates a 320 MHz bandwidth and is used directly as it is, =
-it
-> will result in an incorrect HE Operation Information Element.
->
-> In order to support EHT 320 MHz, HE Operation Element should indicate
-> bandwidth as 160 MHz only. In EHT Operation IE, the correct bandwidth wil=
-l
-> be present. Devices capable of EHT can parse EHT Information Element and
-> connect in 320 MHz and other HE capable devices can parse HE and can
-> connect in 160 MHz.
->
-> Add support to downgrade the bandwidth in ieee80211_ie_build_he_oper()
-> during 320 MHz operation and advertise it.
->
-> Signed-off-by: Sathishkumar Muruganandam <quic_murugana@quicinc.com>
-> Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
-> ---
->  net/mac80211/util.c | 29 ++++++++++++++++++-----------
->  1 file changed, 18 insertions(+), 11 deletions(-)
->
-> diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-> index a4e1301cc999d24d6ab1bd899742a2ff04229040..c88ce537aaa7ea5d59dc42e5f=
-30805c6eb4a5c6d 100644
-> --- a/net/mac80211/util.c
-> +++ b/net/mac80211/util.c
-> @@ -2762,6 +2762,7 @@ u8 *ieee80211_ie_build_he_oper(u8 *pos, const struc=
-t cfg80211_chan_def *chandef)
->  {
->  	struct ieee80211_he_operation *he_oper;
->  	struct ieee80211_he_6ghz_oper *he_6ghz_op;
-> +	struct cfg80211_chan_def he_chandef;
->  	u32 he_oper_params;
->  	u8 ie_len =3D 1 + sizeof(struct ieee80211_he_operation);
-> =20
-> @@ -2793,27 +2794,33 @@ u8 *ieee80211_ie_build_he_oper(u8 *pos, const str=
-uct cfg80211_chan_def *chandef)
->  	if (chandef->chan->band !=3D NL80211_BAND_6GHZ)
->  		goto out;
-> =20
-> +	cfg80211_chandef_create(&he_chandef, chandef->chan, NL80211_CHAN_NO_HT)=
-;
-> +	he_chandef.center_freq1 =3D chandef->center_freq1;
-> +	he_chandef.center_freq2 =3D chandef->center_freq2;
-> +	he_chandef.width =3D chandef->width;
-> +
->  	/* TODO add VHT operational */
->  	he_6ghz_op =3D (struct ieee80211_he_6ghz_oper *)pos;
->  	he_6ghz_op->minrate =3D 6; /* 6 Mbps */
->  	he_6ghz_op->primary =3D
-> -		ieee80211_frequency_to_channel(chandef->chan->center_freq);
-> +		ieee80211_frequency_to_channel(he_chandef.chan->center_freq);
->  	he_6ghz_op->ccfs0 =3D
-> -		ieee80211_frequency_to_channel(chandef->center_freq1);
-> -	if (chandef->center_freq2)
-> +		ieee80211_frequency_to_channel(he_chandef.center_freq1);
-> +	if (he_chandef.center_freq2)
->  		he_6ghz_op->ccfs1 =3D
-> -			ieee80211_frequency_to_channel(chandef->center_freq2);
-> +			ieee80211_frequency_to_channel(he_chandef.center_freq2);
->  	else
->  		he_6ghz_op->ccfs1 =3D 0;
-> =20
-> -	switch (chandef->width) {
-> +	switch (he_chandef.width) {
->  	case NL80211_CHAN_WIDTH_320:
-> -		/*
-> -		 * TODO: mesh operation is not defined over 6GHz 320 MHz
-> -		 * channels.
-> +		/* Downgrade EHT 320 MHz BW to 160 MHz for HE and set new
-> +		 * center_freq1
->  		 */
-> -		WARN_ON(1);
-> -		break;
-> +		ieee80211_chandef_downgrade(&he_chandef, NULL);
-> +		he_6ghz_op->ccfs0 =3D
-> +			ieee80211_frequency_to_channel(he_chandef.center_freq1);
-I don't understand the full implication of those two calls but I made 320MH=
-z
-work by doing the same as for 160 but with +/- =3D 16 instead of 8.
-> +		fallthrough;
->  	case NL80211_CHAN_WIDTH_160:
->  		/* Convert 160 MHz channel width to new style as interop
->  		 * workaround.
-> @@ -2821,7 +2828,7 @@ u8 *ieee80211_ie_build_he_oper(u8 *pos, const struc=
-t cfg80211_chan_def *chandef)
->  		he_6ghz_op->control =3D
->  			IEEE80211_HE_6GHZ_OPER_CTRL_CHANWIDTH_160MHZ;
->  		he_6ghz_op->ccfs1 =3D he_6ghz_op->ccfs0;
-> -		if (chandef->chan->center_freq < chandef->center_freq1)
-> +		if (he_chandef.chan->center_freq < he_chandef.center_freq1)
->  			he_6ghz_op->ccfs0 -=3D 8;
->  		else
->  			he_6ghz_op->ccfs0 +=3D 8;
+On Mon 2024-11-18 10:18:49, Easwar Hariharan wrote:
+> On 11/18/2024 3:06 AM, Petr Mladek wrote:
+> > On Sat 2024-11-16 11:10:52, Christophe Leroy wrote:
+> >>
+> >>
+> >> Le 15/11/2024 à 22:26, Easwar Hariharan a écrit :
+> >>> [Vous ne recevez pas souvent de courriers de eahariha@linux.microsoft.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+> >>>
+> >>> Changes made with the following Coccinelle rules:
+> >>>
+> >>> @@ constant C; @@
+> >>>
+> >>> - msecs_to_jiffies(C * 1000)
+> >>> + secs_to_jiffies(C)
+> >>>
+> >>> @@ constant C; @@
+> >>>
+> >>> - msecs_to_jiffies(C * MSEC_PER_SEC)
+> >>> + secs_to_jiffies(C)
+> >>>
+> >>> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+> >>> ---
+> >>>   samples/livepatch/livepatch-callbacks-busymod.c |  2 +-
+> >>>   samples/livepatch/livepatch-shadow-fix1.c       |  2 +-
+> >>>   samples/livepatch/livepatch-shadow-mod.c        | 10 +++++-----
+> >>>   3 files changed, 7 insertions(+), 7 deletions(-)
+> >>>
+> >>> diff --git a/samples/livepatch/livepatch-callbacks-busymod.c b/samples/livepatch/livepatch-callbacks-busymod.c
+> >>> index 378e2d40271a9717d09eff51d3d3612c679736fc..d0fd801a7c21b7d7939c29d83f9d993badcc9aba 100644
+> >>> --- a/samples/livepatch/livepatch-callbacks-busymod.c
+> >>> +++ b/samples/livepatch/livepatch-callbacks-busymod.c
+> >>> @@ -45,7 +45,7 @@ static int livepatch_callbacks_mod_init(void)
+> >>>   {
+> >>>          pr_info("%s\n", __func__);
+> >>>          schedule_delayed_work(&work,
+> >>> -               msecs_to_jiffies(1000 * 0));
+> >>> +               secs_to_jiffies(0));
+> >>
+> >> Using secs_to_jiffies() is pointless, 0 is universal, should become
+> >> schedule_delayed_work(&work, 0);
+> > 
+> > Yes, schedule_delayed_work(&work, 0) looks like the right solution.
+> > 
+> > Or even better, it seems that the delayed work might get replaced by
+> > a normal workqueue work.
+> > 
+> > Anyway, I am working on a patchset which would remove this sample
+> > module. There is no need to put much effort into the clean up
+> > of this particular module. Do whatever is easiest for you.
+> > 
+> > Best Regards,
+> > Petr
+> 
+> If we're removing the module, I'll drop it from the series. Just to
+> clarify, do you mean to remove all of samples/livepatch/* or some
+> particular file(s)?
 
-Something along this lines seemed to be enough:
+To be precise, I am going to replace:
 
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index a4e1301cc999..f24479f74813 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -2808,18 +2808,15 @@ u8 *ieee80211_ie_build_he_oper(u8 *pos, const struc=
-t cfg80211_chan_def *chandef)
-=20
- 	switch (chandef->width) {
- 	case NL80211_CHAN_WIDTH_320:
--		/*
--		 * TODO: mesh operation is not defined over 6GHz 320 MHz
--		 * channels.
--		 */
--		WARN_ON(1);
--		break;
-+		if (chandef->chan->center_freq < chandef->center_freq1)
-+			he_6ghz_op->ccfs0 -=3D 16;
-+		else
-+			he_6ghz_op->ccfs0 +=3D 16;
-+		fallthrough;
- 	case NL80211_CHAN_WIDTH_160:
- 		/* Convert 160 MHz channel width to new style as interop
- 		 * workaround.
- 		 */
--		he_6ghz_op->control =3D
--			IEEE80211_HE_6GHZ_OPER_CTRL_CHANWIDTH_160MHZ;
- 		he_6ghz_op->ccfs1 =3D he_6ghz_op->ccfs0;
- 		if (chandef->chan->center_freq < chandef->center_freq1)
- 			he_6ghz_op->ccfs0 -=3D 8;
---=20
-2.47.0
+	samples/livepatch/livepatch-callbacks-demo.c
+	samples/livepatch/livepatch-callbacks-mod.c
+	samples/livepatch/livepatch-callbacks-busymod.c
 
+with a completely different modules because I am reworking the
+callbacks API.
+
+All other sample modules are going to stay.
+
+Feel free to remove livepatch-callbacks-busymod.c from the patchset.
+But also feel free to keep it. The API rework goes slowly. I am not
+sure if it would be ready for 6.14.
+
+Best Regards,
+Petr
 
