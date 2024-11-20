@@ -1,209 +1,129 @@
-Return-Path: <linux-wireless+bounces-15530-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15532-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D0869D36E0
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2024 10:20:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE7699D3F4E
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2024 16:45:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA1111F269E8
-	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2024 09:20:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84F061F21472
+	for <lists+linux-wireless@lfdr.de>; Wed, 20 Nov 2024 15:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E957119F101;
-	Wed, 20 Nov 2024 09:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1E185C5E;
+	Wed, 20 Nov 2024 15:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=formulatrix.com header.i=@formulatrix.com header.b="H6aEQaal"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ioFmYfDp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089D719D06D
-	for <linux-wireless@vger.kernel.org>; Wed, 20 Nov 2024 09:17:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88145130AC8
+	for <linux-wireless@vger.kernel.org>; Wed, 20 Nov 2024 15:45:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732094257; cv=none; b=Do/xVIXrGWF2djoKoFiCcAlEGm9+JmvoOrnLVwc/CdbU9zSMBHNeOrZ5/dt+rOkZM7r41m9VngjHBn945OYkNlSY2G2zOnSXWcv4u41DTVtxzXXbQmDLUIZEzCC1yAEATGnSR/6OJg7ZkgOu//5Mh+M/qdfzoWCNh5jXesXT6Dk=
+	t=1732117545; cv=none; b=eup6L3i9c1GBacpV3S+PEpV0UCBf2Gvh9xzNrMYQ3GIa9dLWI+nXY46vB7S039tDjLVkIDoeriFRMDJxHjVNjgaSRf5qfXso5/1WLtDukdujqbbN57gakFH4Kd1KkaWo3T07IOV/ff6DXJIkAIASZfYBQVcCPrJyrMgX7CtMxBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732094257; c=relaxed/simple;
-	bh=IZ6jzVkrBcmn1RvO9Kg/OEPrQfhC7jvMivLi8P6phgs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ioIEAC3t56ZTaZ69RhgaPk1qpHuc84cAHuuhiPQUFJ+iyQ7w2AO7J+jNyPwZb8tMm/bIDshYAPpG6gYXMWsKD02jily90e3Bkx8L93My8T6hBbT8T/TYZ5PW4FaUZ77rZXfpQcb9zptELrz/ImWiVFZoZ03kQn+lvsqbVy5LBCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=formulatrix.com; spf=pass smtp.mailfrom=formulatrix.com; dkim=pass (1024-bit key) header.d=formulatrix.com header.i=@formulatrix.com header.b=H6aEQaal; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=formulatrix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=formulatrix.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-21270d64faeso2217975ad.1
-        for <linux-wireless@vger.kernel.org>; Wed, 20 Nov 2024 01:17:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=formulatrix.com; s=google; t=1732094255; x=1732699055; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bsHNONFaqk43oNnRZWyT1/nNWm6QloTnFfX1mn6cx1s=;
-        b=H6aEQaalP7XwKUcR5ZHSgssAt5inFPrqkdN9xL7BrCmDEHF+u5SbD8YvRNOW7cqEOG
-         0PpiluIu3jApFCsNtWJ67yHUETJdbA2+7g48F4H98goC8kMtmjkfa+ZrlsbuNZvo1J7c
-         FxsYhaDw+DsMj9hdGXtnFKKlQDM5zl7MqL47Q=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732094255; x=1732699055;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bsHNONFaqk43oNnRZWyT1/nNWm6QloTnFfX1mn6cx1s=;
-        b=gvk+A9goleLRAhQWPxvIUKJ/dv/KA/425j/paeYDwSF0mYLqHVox+O0VoukrRFScxq
-         i2WlKZXAg9T7W98G2iIvLjzU6FnhaAPYn2UayESB1OJfyBjKjhnHs+ezSIW298ZyQgW1
-         Mw6OIJyDQt6lhIe/vrSWJ04rVtkN7byjpBfAt+uV51zDOyo/qSgs8LpSzNWu35rJDT7+
-         tbKxHbdvBrb18+lojmmAcuCuolOLN2wuf6tt6ZSmeEUXEnC0w8OAznz1TkxDOi/okDsS
-         Y6O60RJD1UwI+lBcrrHIIZtF5hFqSSQy8yBgtd8+I18moH3/PxNZLSdJm/mt1wtP0LoA
-         XkHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWb+E+ZvXn8WKEGRKBDSPpvSO1c2FtoQ6i72UisECrsvp5Q+ux46r8hbUnIa+9iTV1Zxj632DW7ipSM5m84uQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/Y4nyphrLXZOISmFj4wgvcXp/uJHi26/zQ7ez84JewqAkA//y
-	fTy7giteDa2wu4ZiNPsYxTxLBEyzL+yiOqeAL5Y7d+Av+QfSXmqJVH5osMxowg==
-X-Google-Smtp-Source: AGHT+IHmfLOZ11KQdKWckfvGTxCQ+WKU1Ma+u7hHvjoo/qqPJ5waauqswtRLuCVnLIaLkAjbOynAQg==
-X-Received: by 2002:a17:902:e804:b0:20c:bbac:2013 with SMTP id d9443c01a7336-2126b04804dmr26631675ad.48.1732094255255;
-        Wed, 20 Nov 2024 01:17:35 -0800 (PST)
-Received: from SE-151.formulatrix.internal ([36.73.154.2])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2124b56a3c3sm28139765ad.204.2024.11.20.01.17.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Nov 2024 01:17:34 -0800 (PST)
-From: Renjaya Raga Zenta <renjaya.zenta@formulatrix.com>
-To: johannes@sipsolutions.net
-Cc: SHA-cyfmac-dev-list@infineon.com,
-	arend.vanspriel@broadcom.com,
-	aspriel@gmail.com,
-	brcm80211-dev-list.pdl@broadcom.com,
-	franky.lin@broadcom.com,
-	hante.meuleman@broadcom.com,
-	kvalo@kernel.org,
-	linux-wireless@vger.kernel.org,
-	marcan@marcan.st,
-	wahrenst@gmx.net
-Subject: Re: brcmfmac: Unexpected brcmf_set_channel: set chanspec 0xd022 fail, reason -52 - Part 2
-Date: Wed, 20 Nov 2024 16:17:29 +0700
-Message-ID: <20241120091729.57361-1-renjaya.zenta@formulatrix.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <1268ad6f22b61f1c9b3c7e20c45c1a0050aa3631.camel@sipsolutions.net>
-References: <1268ad6f22b61f1c9b3c7e20c45c1a0050aa3631.camel@sipsolutions.net>
+	s=arc-20240116; t=1732117545; c=relaxed/simple;
+	bh=8CRnXq3BWDq9g7p39rv+Xi6RJlccirlNQ9b6n26/Bq8=;
+	h=From:To:CC:In-Reply-To:References:Subject:Message-ID:Date:
+	 MIME-Version:Content-Type; b=RUMGpKsNEsoOYNzXID0Gun+G6qHUZVmTYxE3otM9OYhys+F3GzYFr2gbix+ULSrRAqQWaTjTMCJGYUgb+oQlbc/n5QzcUg63TpndhkX95GF9QPT1ZkyAZ2gjGtiwGVvVzl5pJJ1kz8DYRnXTB0ioE0VY484t8tnrG/fgR7QoYFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ioFmYfDp; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AK9GWCA025955;
+	Wed, 20 Nov 2024 15:45:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	4I9IAPmHbPMdgV0FRhO6QubwegIcwZ54FzVt8fiZ134=; b=ioFmYfDp7LiMfhVE
+	NoCmJt2GLeYdtlEhfHpeUSrK+yfuOAC9U1ryw5dRTR2n/XIDfUZSSPsWgGB4R1qi
+	oK1p4lg1UrdAHfacrwDpOM9TyMoH253aaTVNKVsxZ9A+57SJAx/Cc1VLd6F5W5Cw
+	sqS996qixXKWbtC2l6auNKOP+6BOiGDCn6D2mpp3kWrv2GEnO3OeMHWg6v2/M7yC
+	xna3XgCPLzW6p4kQ5yVHHOIcpfenuXi1iqpFZ3Blu2WD+XXFkt/2pNgLf4/YZ8aG
+	rlA1PGw95pk8AcVzmu0Qxl/2fLmWsOQjFXxSiccC2Cqc5GMoMeZvKEgSH3J3PE+4
+	mODNRA==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 431byjh6tr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 20 Nov 2024 15:45:39 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4AKFjckx015825
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 20 Nov 2024 15:45:38 GMT
+Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 20 Nov
+ 2024 07:45:38 -0800
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+To: <ath12k@lists.infradead.org>,
+        Roopni Devanathan
+	<quic_rdevanat@quicinc.com>
+CC: <linux-wireless@vger.kernel.org>
+In-Reply-To: <20241115062854.1919672-1-quic_rdevanat@quicinc.com>
+References: <20241115062854.1919672-1-quic_rdevanat@quicinc.com>
+Subject: Re: [PATCH v6 0/4] wifi: ath12k: Support Pager, Counter, SoC,
+ Transmit Rate Stats
+Message-ID: <173211753819.1671164.11446246438526962981.b4-ty@quicinc.com>
+Date: Wed, 20 Nov 2024 07:45:38 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-
-Hi,
-
-I've been observing this issue for a couple of days. I added pr_err (before and after) to debug this to find the culprit
-who change the flags from 0x0001 to 0x80020. Please see below. I used Raspberry Pi 5 with kernel 6.6.51.
-
-I think the flags are actually changed:
-
-1) to 0x80000 in cfg80211.handle_channel_single_rule, then
-2) to 0x80020 in cfg80211.reg_process_ht_flags_channel.
-
-/* initial boot */
-
-[    3.114181] cfg80211: handle_channel_custom: before hw_value: 0x0c, orig_flags: 0x0000, flags: 0x0000
-[    3.123453] cfg80211: handle_channel_custom: after  hw_value: 0x0c, orig_flags: 0x0000, flags: 0x80180
-[    3.132813] cfg80211: handle_channel_custom: before hw_value: 0x0d, orig_flags: 0x0000, flags: 0x0000
-[    3.142074] cfg80211: handle_channel_custom: after  hw_value: 0x0d, orig_flags: 0x0000, flags: 0x80180
-[    3.151421] cfg80211: handle_channel_custom: before hw_value: 0x0e, orig_flags: 0x0000, flags: 0x0000
-[    3.160681] cfg80211: handle_channel_custom: after  hw_value: 0x0e, orig_flags: 0x0000, flags: 0x801b0
-[    3.170030] cfg80211: handle_channel_custom: before hw_value: 0x22, orig_flags: 0x0000, flags: 0x0000
-[    3.179291] cfg80211: handle_channel_custom: after  hw_value: 0x22, orig_flags: 0x0000, flags: 0x80000
-[    3.188638] cfg80211: handle_channel_custom: before hw_value: 0x24, orig_flags: 0x0000, flags: 0x0000
-[    3.197897] cfg80211: handle_channel_custom: after  hw_value: 0x24, orig_flags: 0x0000, flags: 0x80000
-[    3.207245] cfg80211: handle_channel_custom: before hw_value: 0x26, orig_flags: 0x0000, flags: 0x0000
-[    3.216512] cfg80211: handle_channel_custom: after  hw_value: 0x26, orig_flags: 0x0000, flags: 0x80000
-[    3.225955] cfg80211: handle_channel_single_rule: before hw_value: 0x22, orig_flags: 0x80000, flags: 0x80000
-[    3.235837] cfg80211: handle_channel_single_rule: after  hw_value: 0x22, orig_flags: 0x80000, flags: 0x80000
-[    3.235841] cfg80211: handle_channel_single_rule: before hw_value: 0x24, orig_flags: 0x80000, flags: 0x80000
-[    3.235843] cfg80211: handle_channel_single_rule: after  hw_value: 0x24, orig_flags: 0x80000, flags: 0x80000
-[    3.265464] cfg80211: handle_channel_single_rule: before hw_value: 0x26, orig_flags: 0x80000, flags: 0x80000
-[    3.275338] cfg80211: handle_channel_single_rule: after  hw_value: 0x26, orig_flags: 0x80000, flags: 0x80000
-[    3.285218] cfg80211: reg_process_ht_flags_channel: before hw_value: 0x0c, orig_flags: 0x80180, flags: 0x80181
-[    3.295270] cfg80211: reg_process_ht_flags_channel: before hw_value: 0x0d, orig_flags: 0x80180, flags: 0x80181
-[    3.305318] cfg80211: reg_process_ht_flags_channel: before hw_value: 0x0e, orig_flags: 0x801b0, flags: 0x801b1
-[    3.305320] cfg80211: reg_process_ht_flags_channel: before hw_value: 0x22, orig_flags: 0x80000, flags: 0x80000
-[    3.305323] cfg80211: reg_process_ht_flags_channel: after  hw_value: 0x22, orig_flags: 0x80000, flags: 0x80020
-[    3.335460] cfg80211: reg_process_ht_flags_channel: before hw_value: 0x24, orig_flags: 0x80000, flags: 0x80000
-[    3.335462] cfg80211: reg_process_ht_flags_channel: after  hw_value: 0x24, orig_flags: 0x80000, flags: 0x80020
-[    3.335463] cfg80211: reg_process_ht_flags_channel: before hw_value: 0x26, orig_flags: 0x80000, flags: 0x80000
-[    3.335465] cfg80211: reg_process_ht_flags_channel: after  hw_value: 0x26, orig_flags: 0x80000, flags: 0x80000
-[    3.406614] brcmfmac: brcmf_construct_chaninfo: hw_value: 0x0c, orig_flags: 0x80180, flags: 0x0001
-[    3.415666] brcmfmac: brcmf_construct_chaninfo: hw_value: 0x0d, orig_flags: 0x80180, flags: 0x0001
-[    3.424668] brcmfmac: brcmf_construct_chaninfo: hw_value: 0x0e, orig_flags: 0x801b0, flags: 0x0001
-[    3.433669] brcmfmac: brcmf_construct_chaninfo: hw_value: 0x22, orig_flags: 0x80000, flags: 0x0001
-[    3.442668] brcmfmac: brcmf_construct_chaninfo: hw_value: 0x24, orig_flags: 0x80000, flags: 0x0120
-[    3.451667] brcmfmac: brcmf_construct_chaninfo: hw_value: 0x26, orig_flags: 0x80000, flags: 0x0001
-[    3.464673] brcmfmac: brcmf_setup_wiphybands: hw_value: 0x0c, orig_flags: 0x80180, flags: 0x0001
-[    3.473504] brcmfmac: brcmf_setup_wiphybands: hw_value: 0x0d, orig_flags: 0x80180, flags: 0x0001
-[    3.482336] brcmfmac: brcmf_setup_wiphybands: hw_value: 0x0e, orig_flags: 0x801b0, flags: 0x0001
-[    3.491162] brcmfmac: brcmf_setup_wiphybands: hw_value: 0x22, orig_flags: 0x80000, flags: 0x0001
-[    3.499988] brcmfmac: brcmf_setup_wiphybands: hw_value: 0x24, orig_flags: 0x80000, flags: 0x0120
-[    3.508812] brcmfmac: brcmf_setup_wiphybands: hw_value: 0x26, orig_flags: 0x80000, flags: 0x0001
-
-/* wpa_supplicant connect, the flags are changed here */
-
-[   10.493324] cfg80211: handle_channel_single_rule: before hw_value: 0x22, orig_flags: 0x80000, flags: 0x0001
-[   10.503174] cfg80211: handle_channel_single_rule: after  hw_value: 0x22, orig_flags: 0x80000, flags: 0x80000
-[   10.513094] cfg80211: handle_channel_single_rule: before hw_value: 0x24, orig_flags: 0x80000, flags: 0x0120
-[   10.522898] cfg80211: handle_channel_single_rule: after  hw_value: 0x24, orig_flags: 0x80000, flags: 0x80000
-[   10.532785] cfg80211: handle_channel_single_rule: before hw_value: 0x26, orig_flags: 0x80000, flags: 0x0001
-[   10.542601] cfg80211: handle_channel_single_rule: after  hw_value: 0x26, orig_flags: 0x80000, flags: 0x80000
-[   10.552496] cfg80211: reg_process_ht_flags_channel: before hw_value: 0x0c, orig_flags: 0x80180, flags: 0x0001
-[   10.562479] cfg80211: reg_process_ht_flags_channel: before hw_value: 0x0d, orig_flags: 0x80180, flags: 0x0001
-[   10.572453] cfg80211: reg_process_ht_flags_channel: before hw_value: 0x0e, orig_flags: 0x801b0, flags: 0x0001
-[   10.582438] cfg80211: reg_process_ht_flags_channel: before hw_value: 0x22, orig_flags: 0x80000, flags: 0x80000
-[   10.592498] cfg80211: reg_process_ht_flags_channel: after  hw_value: 0x22, orig_flags: 0x80000, flags: 0x80020
-[   10.602557] cfg80211: reg_process_ht_flags_channel: before hw_value: 0x24, orig_flags: 0x80000, flags: 0x80000
-[   10.612624] cfg80211: reg_process_ht_flags_channel: after  hw_value: 0x24, orig_flags: 0x80000, flags: 0x80020
-[   10.622683] cfg80211: reg_process_ht_flags_channel: before hw_value: 0x26, orig_flags: 0x80000, flags: 0x80000
-[   10.632740] cfg80211: reg_process_ht_flags_channel: after  hw_value: 0x26, orig_flags: 0x80000, flags: 0x80000
-
-/* wpa_supplicant disconnect */
-
-[   78.902910] cfg80211: handle_channel_single_rule: before hw_value: 0x22, orig_flags: 0x80000, flags: 0x80000
-[   78.912850] cfg80211: handle_channel_single_rule: after  hw_value: 0x22, orig_flags: 0x80000, flags: 0x80000
-[   78.922781] cfg80211: handle_channel_single_rule: before hw_value: 0x24, orig_flags: 0x80000, flags: 0x80000
-[   78.932705] cfg80211: handle_channel_single_rule: after  hw_value: 0x24, orig_flags: 0x80000, flags: 0x80000
-[   78.942623] cfg80211: handle_channel_single_rule: before hw_value: 0x26, orig_flags: 0x80000, flags: 0x80000
-[   78.952518] cfg80211: handle_channel_single_rule: after  hw_value: 0x26, orig_flags: 0x80000, flags: 0x80000
-[   78.962433] cfg80211: reg_process_ht_flags_channel: before hw_value: 0x0c, orig_flags: 0x80180, flags: 0x80181
-[   78.972500] cfg80211: reg_process_ht_flags_channel: before hw_value: 0x0d, orig_flags: 0x80180, flags: 0x80181
-[   78.982563] cfg80211: reg_process_ht_flags_channel: before hw_value: 0x0e, orig_flags: 0x801b0, flags: 0x801b1
-[   78.992623] cfg80211: reg_process_ht_flags_channel: before hw_value: 0x22, orig_flags: 0x80000, flags: 0x80000
-[   79.002694] cfg80211: reg_process_ht_flags_channel: after  hw_value: 0x22, orig_flags: 0x80000, flags: 0x80020
-[   79.012765] cfg80211: reg_process_ht_flags_channel: before hw_value: 0x24, orig_flags: 0x80000, flags: 0x80000
-[   79.022835] cfg80211: reg_process_ht_flags_channel: after  hw_value: 0x24, orig_flags: 0x80000, flags: 0x80020
-[   79.032891] cfg80211: reg_process_ht_flags_channel: before hw_value: 0x26, orig_flags: 0x80000, flags: 0x80000
-[   79.042969] cfg80211: reg_process_ht_flags_channel: after  hw_value: 0x26, orig_flags: 0x80000, flags: 0x80000
-
-/* wpa_supplicant re-connect */
-
-[  156.971916] brcmfmac: brcmf_set_channel: set chanspec 0xd022 fail, reason -52
-[  157.087904] brcmfmac: brcmf_set_channel: set chanspec 0xd026 fail, reason -52
-[  157.199928] brcmfmac: brcmf_set_channel: set chanspec 0xd02a fail, reason -52
-[  157.310944] brcmfmac: brcmf_set_channel: set chanspec 0xd02e fail, reason -52
-[  159.774209] cfg80211: handle_channel_single_rule: before hw_value: 0x22, orig_flags: 0x80000, flags: 0x80020
-[  159.784166] cfg80211: handle_channel_single_rule: after  hw_value: 0x22, orig_flags: 0x80000, flags: 0x80000
-[  159.794073] cfg80211: handle_channel_single_rule: before hw_value: 0x24, orig_flags: 0x80000, flags: 0x80020
-[  159.803977] cfg80211: handle_channel_single_rule: after  hw_value: 0x24, orig_flags: 0x80000, flags: 0x80000
-[  159.813887] cfg80211: handle_channel_single_rule: before hw_value: 0x26, orig_flags: 0x80000, flags: 0x80000
-[  159.823792] cfg80211: handle_channel_single_rule: after  hw_value: 0x26, orig_flags: 0x80000, flags: 0x80000
-[  159.833689] cfg80211: reg_process_ht_flags_channel: before hw_value: 0x0c, orig_flags: 0x80180, flags: 0x801b1
-[  159.843751] cfg80211: reg_process_ht_flags_channel: before hw_value: 0x0d, orig_flags: 0x80180, flags: 0x801b1
-[  159.853814] cfg80211: reg_process_ht_flags_channel: before hw_value: 0x0e, orig_flags: 0x801b0, flags: 0x801b1
-[  159.863889] cfg80211: reg_process_ht_flags_channel: before hw_value: 0x22, orig_flags: 0x80000, flags: 0x80000
-[  159.873958] cfg80211: reg_process_ht_flags_channel: after  hw_value: 0x22, orig_flags: 0x80000, flags: 0x80020
-[  159.884038] cfg80211: reg_process_ht_flags_channel: before hw_value: 0x24, orig_flags: 0x80000, flags: 0x80000
-[  159.894100] cfg80211: reg_process_ht_flags_channel: after  hw_value: 0x24, orig_flags: 0x80000, flags: 0x80020
-[  159.904187] cfg80211: reg_process_ht_flags_channel: before hw_value: 0x26, orig_flags: 0x80000, flags: 0x80000
-[  159.914248] cfg80211: reg_process_ht_flags_channel: after  hw_value: 0x26, orig_flags: 0x80000, flags: 0x80000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.0
+X-ClientProxiedBy: nalasex01c.na.qualcomm.com (10.47.97.35) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: b9p2iL4oStbprYruGPHX5kXisgr9ju2T
+X-Proofpoint-ORIG-GUID: b9p2iL4oStbprYruGPHX5kXisgr9ju2T
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1015
+ suspectscore=0 phishscore=0 lowpriorityscore=0 impostorscore=0
+ malwarescore=0 priorityscore=1501 bulkscore=0 adultscore=0 mlxlogscore=963
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411200106
 
 
-Is there any workaround for this or is this behavior expected?
+On Fri, 15 Nov 2024 11:58:50 +0530, Roopni Devanathan wrote:
+> Add support to request HTT stats type 36, 37, 38 and 40 from firmware.
+> These stat types give downlink pager stats, counter and TPC stats, SoC
+> common stats and Transmit PER rate stats, respectively.
+> 
+> v6:
+>  - Removed unused variables.
+>  - Used le32_get_bits() instead of u32_get_bits().
+> v5:
+>  - Addressed Kalle's comments pertaining to variable declaration order.
+> v4:
+>  - Addressed Jeff's comments pertaining to data type conversions.
+> v3:
+>  - Added macros to fix compilation issues.
+> v2:
+>  - Removed dependencies. No change in code.
+> 
+> [...]
 
-Regards.
+Applied, thanks!
 
-Renjaya
+[1/4] wifi: ath12k: Support Downlink Pager Stats
+      commit: a93d125ebfdd530ea1980a45b7ad2e9471b82c87
+[2/4] wifi: ath12k: Support phy counter and TPC stats
+      commit: c3527cdfcdf70dcd613c4582283e28e4f81df9ea
+[3/4] wifi: ath12k: Support SoC Common Stats
+      commit: 3a660e7fa44d556f41cbef6d2430f7227ef3f3ef
+[4/4] wifi: ath12k: Support Transmit PER Rate Stats
+      commit: c8f314703bcbade1bcef8dfee9ffc6a1d66b9d8f
+
+Best regards,
+-- 
+Jeff Johnson <quic_jjohnson@quicinc.com>
+
 
