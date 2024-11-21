@@ -1,62 +1,61 @@
-Return-Path: <linux-wireless+bounces-15551-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15552-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 984749D4B7D
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2024 12:20:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 019AD9D4F5C
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2024 16:03:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B186AB25E57
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2024 11:20:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06F99B295F8
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2024 14:56:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CEFE1CFEC2;
-	Thu, 21 Nov 2024 11:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BACA91DB943;
+	Thu, 21 Nov 2024 14:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HAp+d4bV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g4JNW5KY"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B441CB32F;
-	Thu, 21 Nov 2024 11:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 937CC1D86C0
+	for <linux-wireless@vger.kernel.org>; Thu, 21 Nov 2024 14:51:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732188048; cv=none; b=aL836xgaA5ZsUPe14u8dOoTbLqIjMqEzu3asI6m4n90Dz1r67xUcL8QYcwjJiuPQbKKhjPUByEGZ8juJhRiZjrhQh037yISiVXJ9/uEXpM5wgajiBY2nWB7NXtcVtCwCo8mlUwIZRPQDGVPuLy30zmFolKzXtQGAK3QTN7uW62c=
+	t=1732200692; cv=none; b=JM7eZS2ylxV3Hs1SVDNtKi2OGFPg5QYrkwUhbzAlyd9zufJT+8vA7ElNBe8nC4CSE0ohX12zP/EsP4s9QidnfxNBjPSWeLBhsB/6GS1ROfqVWyZuJPx7YTuedDunO7OVMvoi4TA9SbtFCLiaVqmGfsaHPKYi83zYMNDrnvZfivA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732188048; c=relaxed/simple;
-	bh=V1qwmYpUnP1CiJot/3EBrHXVUBv8JOAa6S7kT+VjG8M=;
+	s=arc-20240116; t=1732200692; c=relaxed/simple;
+	bh=LngvGLFZC5Qou5Dlop/OMXQo8eWU8KDZaEVR0Requvs=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=dClLOgfD8ipC1ZSzx7HA2c/Y6Pgnnd0L9mpqGuFi4zxd2dGzSzCrOARCSjlOrBPtCPtFthtnXsBJjuv/LH5S2czVVhLmwKMSvqM+9Zj8+IeoWPHEbDa9t+4mFTceG8KSA2Qr7cxNfHVVuzBQ2UECb2pb4igkveWnlVDdcKwYS6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HAp+d4bV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E5FEC4CECC;
-	Thu, 21 Nov 2024 11:20:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AS5hFKxIMku60mokp7+oFQeTnHvTcZI9ZeRxen8a+Il7mevodP0qdge3AnIFROaRqRgP0Eu5oAgTjSNulA2CZNGKMETYEuaLQwLIquG9oRvm9eSPed6mmWzsQq+9qkqaQVROxFKpDEbjKlluHhNcey1Bx+M5AzcWNwZs2TxEUXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g4JNW5KY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62DDCC4CECC;
+	Thu, 21 Nov 2024 14:51:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732188047;
-	bh=V1qwmYpUnP1CiJot/3EBrHXVUBv8JOAa6S7kT+VjG8M=;
+	s=k20201202; t=1732200692;
+	bh=LngvGLFZC5Qou5Dlop/OMXQo8eWU8KDZaEVR0Requvs=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=HAp+d4bVQao54y/cn2DsJqZy9Yb14gtl7gGMwhxXfbV26TwD7zGxFVlX86SoLzAoP
-	 AWJ1CVS3QD9B3lZGgOOvGpLtIbRyRhdCVxr3k1pF42aRFCoTsfAr5iCQwZcCpJ1cMK
-	 2VIU4X1uR2iQUj055G2YcsfFotF3WZK9XNVnWw/ZnS2QQob915sBVMpxpeAglEaCSz
-	 KY77A1Mv9lR3KwElj0G9LBb/AWeo9vmLThlaRMnv98rb9RPQ7aPbFeFWMiTwHZytpC
-	 Ici219Mz2XWVLuB9R7tkcPmD/k5W/MMHuXRSGTVeLMl8X5Jq2kx+UrQMfo1eEviU9s
-	 Gblr7G0UBxW5A==
+	b=g4JNW5KYADtwNCUdxfO2dazs6BM0Eo6zK23MtkcpjV9Pl1nTUYiV2viZaolwCuS1h
+	 xux8VSpZ0rvk0Pw2+Y26B9Co/1g/7hGViCDY4TJJIZw+W7MzJwlzdHWEY6QGeccmQa
+	 1bPJZyysepzJIwqq0yH1JVCEa/+VUyLY77zM9ZyVilVneOVvSsBUhPh0tBpEpFudOA
+	 KLHAXz3WeayeRjq+BVRMx4fDY0SD2vFWemOUsvYv/Ll9e15vmb7mUGP1ZFrVI+9Rbh
+	 yAOB3FhI1eYDeCpr4J8eTuwT0QHR4NT23rlgT7y2GIvk4gog+mb/ooWNuGtEW/N9gG
+	 gBxH4I4jBdnxg==
 From: Kalle Valo <kvalo@kernel.org>
-To: Jeff Johnson <quic_jjohnson@quicinc.com>
-Cc: Jeff Johnson <jjohnson@kernel.org>,  "Nathan Chancellor"
- <nathan@kernel.org>,  Nick Desaulniers <ndesaulniers@google.com>,  Bill
- Wendling <morbo@google.com>,  Justin Stitt <justinstitt@google.com>,
-  "Arnd Bergmann" <arnd@kernel.org>,  <linux-wireless@vger.kernel.org>,
-  <ath11k@lists.infradead.org>,  <linux-kernel@vger.kernel.org>,
-  <llvm@lists.linux.dev>
-Subject: Re: [PATCH 3/3] wifi: ath11k: mark
- ath11k_wow_convert_8023_to_80211() as noinline
-References: <20241119-ath11k-noinline-v1-0-4ec0a8aa30b2@quicinc.com>
-	<20241119-ath11k-noinline-v1-3-4ec0a8aa30b2@quicinc.com>
-Date: Thu, 21 Nov 2024 13:20:43 +0200
-In-Reply-To: <20241119-ath11k-noinline-v1-3-4ec0a8aa30b2@quicinc.com> (Jeff
-	Johnson's message of "Tue, 19 Nov 2024 07:47:40 -0800")
-Message-ID: <87plmox27o.fsf@kernel.org>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 1/8] wifi: ath12k: Add MLO station state change handling
+References: <20241106142617.660901-1-kvalo@kernel.org>
+	<20241106142617.660901-2-kvalo@kernel.org>
+	<2e706d58-5d83-4867-9963-c62441cdd4da@quicinc.com>
+	<87y11o2x9h.fsf@kernel.org>
+	<97f3f465-6ebd-4ca1-b672-4c8c7f42220d@quicinc.com>
+	<87bjy9zonx.fsf@kernel.org>
+	<d7a0d62c-4723-4e9f-a362-2ea51aaba3ed@quicinc.com>
+Date: Thu, 21 Nov 2024 16:51:29 +0200
+In-Reply-To: <d7a0d62c-4723-4e9f-a362-2ea51aaba3ed@quicinc.com> (Baochen
+	Qiang's message of "Thu, 21 Nov 2024 11:35:30 +0800")
+Message-ID: <87jzcwwsge.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -66,36 +65,33 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Jeff Johnson <quic_jjohnson@quicinc.com> writes:
+Baochen Qiang <quic_bqiang@quicinc.com> writes:
 
-> When compiling the ath11k driver using clang with KASAN enabled, the
-> following warning is observed:
+>> Ok, I think I now get what you mean. Does this look better:
+>> 
+>> static void ath12k_mac_free_unassign_link_sta(struct ath12k_hw *ah,
+>> 					      struct ath12k_sta *ahsta,
+>> 					      u8 link_id)
+>> {
+>> 	struct ath12k_link_sta *arsta;
+>> 
+>> 	lockdep_assert_wiphy(ah->hw->wiphy);
+>> 
+>> 	if (WARN_ON(link_id >= IEEE80211_MLD_MAX_NUM_LINKS))
+>> 		return;
+>> 
+>> 	arsta = wiphy_dereference(ah->hw->wiphy, ahsta->link[link_id]);
+>> 	if (WARN_ON(!arsta))
+>> 		return;
+>> 
+>> 	ahsta->links_map &= ~BIT(link_id);
+>> 	rcu_assign_pointer(ahsta->link[link_id], NULL);
 >
-> drivers/net/wireless/ath/ath11k/wow.c:672:5: warning: stack frame size (1336) exceeds limit (1024) in 'ath11k_wow_op_suspend' [-Wframe-larger-than]
->
-> This is similar to the issue found in ath12k/qmi.c that was discussed
-> in [1] and fixed with [2]. The issue is that clang inlining can
-> explode stack usage.
->
-> ath11k_wow_op_suspend() itself is a pretty lightweight function, but
-> it dispatches to several other functions which do the real work. One
-> path in particular is:
->
-> ath11k_wow_op_suspend()
-> 	ath11k_wow_set_wakeups()
-> 		ath11k_vif_wow_set_wakeups()
-> 			ath11k_wow_convert_8023_to_80211()
->
-> Of these, ath11k_wow_convert_8023_to_80211() has non-trivial stack
-> usage, so mark it as 'noinline_for_stack' to prevent it from being
-> inlined in ath11k_wow_op_suspend(), thereby eliminating the excessive
-> stack usage.
->
-> Link: https://msgid.link/bc214795-1c51-4cb7-922f-67d6ef98bff2@quicinc.com # [1]
-> Link: https://patch.msgid.link/20241028-ath12k_qmi_driver_event_work-v1-1-0d532eb593fa@quicinc.com # [2]
-> Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+> below synchronize_rcu() should be moved to here, such that any change
+> to arsta can happen only AFTER all existing RCU readers finish
+> accessing it.
 
-Acked-by: Kalle Valo <kvalo@kernel.org>
+Good point, I'll move it.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
