@@ -1,58 +1,56 @@
-Return-Path: <linux-wireless+bounces-15542-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15543-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BFE59D4894
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2024 09:13:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A6F49D4B17
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2024 11:54:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01DCC2828CE
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2024 08:13:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20B99281755
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2024 10:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14861C9B8C;
-	Thu, 21 Nov 2024 08:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487FE1C2DCF;
+	Thu, 21 Nov 2024 10:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QqkRj3xp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O95CaL+c"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86B8146A6B;
-	Thu, 21 Nov 2024 08:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243F51BBBDC
+	for <linux-wireless@vger.kernel.org>; Thu, 21 Nov 2024 10:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732176801; cv=none; b=qhTkHMrZ8iWVGyGIbIdjA4hrYtCk2dX7hRQGGk+SewAwCFGYHfXmX9lQ3EXmtSGl6ol3TuSk4SxHxdnh+qVgWp+1FAlbepqXKr+14NPeZMYzz8Do+t+Axjg/WnRVh4QnARHw1sg8XkT17vK3yF5st5LvUHEebPjEZBKepnxfD6U=
+	t=1732186440; cv=none; b=WsVNY/PvG3mHgMsBDb7olcvlwDrabKYGxKp+dVNxXpuhVObaR97Locr4GV+lbpIm91uRHAIyILHzpXyNiLT/2EByACzip+PcpuV8y1W3PwyuCRc6u9ettgcMbeDJjooMp7/20fpChQwwfKzgC/Knfqd2w8mfFD5Dp7RTE3gDlTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732176801; c=relaxed/simple;
-	bh=yYU77W5hMPwN/8MGum399jtWX0B3yXjlv1mt4BYMu/Q=;
+	s=arc-20240116; t=1732186440; c=relaxed/simple;
+	bh=qnEmZ1q4aRHhC+DGzQ0EUXHnh+YiuLzBeV4gA2ljTxE=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=XNTQVhF6JyQh70LfM8cIzrls/CdPxIN8YlMuJ908EFKHV6Zjl/XLvOiatorGBJHn1AC2EFC28b2s3hE4HSaHBxLtgDwtGMCLyoKH/fGdT+vDtE/q11uZu4nLhmluWv6Vc79zdKlTuMUKjTyv3BTEFi1tgTMg4/HtlVC4GOHBy8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QqkRj3xp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D27C4CECC;
-	Thu, 21 Nov 2024 08:13:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HdTfNARVXTDdL+ua21xjN61Awfxiqq3qUNKKgKMJssjydXOnnhLbIJyQIoaW6iQ1Odo9aI2vIjS3ivAbpsgJCNtiBF7UgJfOUgn2vwbpPxGkAyXmxqcD8rf1X+eerctRwIYYjHZHmWi1Fae/bDI1jnzuNDMKthe+eJYcsHCWgAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O95CaL+c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF189C4CECC;
+	Thu, 21 Nov 2024 10:53:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732176799;
-	bh=yYU77W5hMPwN/8MGum399jtWX0B3yXjlv1mt4BYMu/Q=;
+	s=k20201202; t=1732186439;
+	bh=qnEmZ1q4aRHhC+DGzQ0EUXHnh+YiuLzBeV4gA2ljTxE=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=QqkRj3xpp/DAV81o0ivaN6X048i7YtJgQF0oHhyNyuTg9bCcdzE+JlHpgZr4IY4OY
-	 6Kpq3aqgSQyLPtxiwINyf5fpEWaay0MTw+cQ0jYm0cnPFuvCyQU9ACtFzDm0wdxrkc
-	 KL0FUu04qAK6+8Y4js0MJ2xt6JwZU0zJEicmZlC/4i38lJgIVdRvRrPeNX6JicNqBR
-	 7n/N0mnAbSWvoCGFrnpbtQkbqSY5Psi36uAtMVKO4bU1ISHV4VcD+aQsHqa4Bu2DhP
-	 ajuAbE7HPkqks+PYo82Xsh3uNR5kbkBrHTlseJ7iuxMyAXdyEIFY+mIyRf4GeJpSz/
-	 NHFBJr36h2CPw==
+	b=O95CaL+cxyAAtsbKvuiMvRAmrGJf3dQrQ3hN1YBYrhoqmbNpi2b40mVRcvb1R/ihv
+	 aqXWy7HevZUafV8FpiGWCdgK20gmRHtlhMxsF5u1uhoT0FVMnLyhRPxf0PWzIp7Bgb
+	 xag3welmWiAjz5S3kFZYUVC8M0XUPIuldC0PqN+GZWIYLsQ5xWGmb3ev7i0ywEVrB/
+	 ZeImhmlNEAas4O3B3AIDyRHWFs+ckdyKyfmFgrzx0RvdDzVCcikJfiw91onvHtfg6s
+	 xsXqPKCn3SEzvHsCZwsxIcF4+SVvR13C2Inv1siC3BQ+GLQF5q0+BcNx0mNYb09GHI
+	 hVhz6bOWfmsfQ==
 From: Kalle Valo <kvalo@kernel.org>
-To: Renjaya Raga Zenta <ragazenta@gmail.com>
-Cc: Arend van Spriel <aspriel@gmail.com>,  Franky Lin
- <franky.lin@broadcom.com>,  Hante Meuleman <hante.meuleman@broadcom.com>,
-  linux-wireless@vger.kernel.org,  brcm80211-dev-list.pdl@broadcom.com,
-  SHA-cyfmac-dev-list@infineon.com,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] brcmfmac: fix brcmf_vif_clear_mgmt_ies when stopping AP
-References: <20241121-brcmfmac-v1-1-02fc3fb427c2@gmail.com>
-Date: Thu, 21 Nov 2024 10:13:15 +0200
-In-Reply-To: <20241121-brcmfmac-v1-1-02fc3fb427c2@gmail.com> (Renjaya Raga
-	Zenta's message of "Thu, 21 Nov 2024 14:09:27 +0700")
-Message-ID: <8734jlypgk.fsf@kernel.org>
+To: Roopni Devanathan <quic_rdevanat@quicinc.com>
+Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] wifi: ath12k: Fix inappropriate use of
+ print_array_to_buf_index()
+References: <20241118035722.1755373-1-quic_rdevanat@quicinc.com>
+Date: Thu, 21 Nov 2024 12:53:56 +0200
+In-Reply-To: <20241118035722.1755373-1-quic_rdevanat@quicinc.com> (Roopni
+	Devanathan's message of "Mon, 18 Nov 2024 09:27:22 +0530")
+Message-ID: <87serkyi0r.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -62,25 +60,24 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Renjaya Raga Zenta <ragazenta@gmail.com> writes:
+Roopni Devanathan <quic_rdevanat@quicinc.com> writes:
 
-> This removes the following error log when stopping AP:
+> Currently in ath12k_htt_print_tx_pdev_mumimo_grp_stats_tlv() the
+> htt_stats_buf->ul_mumimo_grp_best_usrs array is printed using
+> print_array_to_buf_index() with a stats_index of 1. This is meant
+> to convey the semantic that first entry in ul_mumimo_grp_best_usrs
+> is associated with user 1. However, unlike some of the other "usr"
+> arrays which have that semantic, ul_mumimo_grp_best_usrs does not
+> have that semantic. Instead the first entry corresponds to user 0.
 >
-> ieee80211 phy0: brcmf_vif_set_mgmt_ie: vndr ie set error : -52
+> Fix the issue by calling the API - print_array_to_buf(), instead of
+> print_array_to_buf_index().
 >
-> It happened if
-> 1) previously wlan interface was in station mode (wpa_supplicant) and
->    connected to a hotspot
-> 2) then started AP mode (hostapd)
-> 3) and then stopped AP mode.
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 >
-> The error happened when it tried to clear BRCMF_VNDR_IE_PRBREQ_FLAG.
-> This flag is not set in `brcmf_config_ap_mgmt_ie`, but
-> BRCMF_VNDR_IE_ASSOCRSP_FLAG is set instead.
->
-> Signed-off-by: Renjaya Raga Zenta <ragazenta@gmail.com>
+> Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
 
-'wifi:' missing but I can fix that, no need to resend because of this.
+Acked-by: Kalle Valo <kvalo@kernel.org>
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
