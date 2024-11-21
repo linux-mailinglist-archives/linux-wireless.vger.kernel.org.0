@@ -1,105 +1,166 @@
-Return-Path: <linux-wireless+bounces-15568-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15569-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 094B59D5132
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2024 18:02:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26A129D5134
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2024 18:03:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2AD628ACA6
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2024 17:02:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9DBE1F24FEE
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2024 17:03:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E61DC157490;
-	Thu, 21 Nov 2024 17:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B45B4130E27;
+	Thu, 21 Nov 2024 17:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="f2AHhKKv"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Kw8KMGxS";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="jRTJ3JuV";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Kw8KMGxS";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="jRTJ3JuV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB9113F43B
-	for <linux-wireless@vger.kernel.org>; Thu, 21 Nov 2024 17:01:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D722E155CBF;
+	Thu, 21 Nov 2024 17:03:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732208506; cv=none; b=ABg96QMzz1Kwi4duVvDllJyaJAegUwmvKwRn+z4RCEGJn8XKprfdKjn+T+QbzSee6pXjml5d//ifMIu3OGyF4xrT9xa2juC48snpOUaklcXEgSW5dIeBjDhP7AlZY0hRXBiWlWWxQ1tdXszmXW3lnPisBFK8MJ6fzIrKZUCVM8A=
+	t=1732208592; cv=none; b=uIhnBcoij9uvCV+fBksOB+hgWICsxEtmvDZro/JsatGxHkUkGo7QqBVnTaaGf06n0paOkbHDELOEMIMULG9g+bNB1XvHHyAkUiqtsK0bqvJhDtSx0YUqcRvUvL3L9Hpe300deCkJPb5FO+FW9HpYL7ktElB4DtTUYmWFxs/CA0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732208506; c=relaxed/simple;
-	bh=ErgiNabBoMj1x1tAaQXvUQ8Ctvar1pWlAnBNZGK0oRI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=r4HZfZnJ+ZuPl8q+JneJRhN17PVhIJbRyb75iW+uuPzWszD8OkAndHI2JxVLChHOfeJqDqsPPK0uSRGhpDVdNbkOp8e+CqUvfdL7NZ7yxF0qwupBymGZzbGdoYnr9qtCCuJ8uX4OhDFvLnBO5GiZ8iaGIfzEHbZTt/0OjKg/Nw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=f2AHhKKv; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4ALGcE8D020888;
-	Thu, 21 Nov 2024 17:01:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	WOsQw/isK5Gq94pZWcM8QifvJN+tvzJYJuNI1tyaojs=; b=f2AHhKKvR0o7V/zL
-	jo6P3fYcGFeAXrzmCutezOpVrTcTT7EGsSv/E0kHcqxKKlfMaHveGejrhU1NoFYp
-	y4aRNuDGcHATdQyd/ZuBcviMTApGxWqg/bMN0OuBHXlLpYSiq/zAwJIkiNsrmsvC
-	5L1YscTe/vj56/ljlTUWBMP42Ehaqa6z19MbsI0uC6/iYmk3zRczk/C7vnief44u
-	gppNiENJ93D7PBdIUYxSarNGpAHBnPcIKPOKAYbcMV7yPfGxYiT3N1+hJZ4XNt8f
-	53VQrjDvIVPi2tHLGAasblq1jqAXLvXB1KOCNFbvq2ULRXC77yF8up81MvI8xK53
-	BvATtw==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4320wk1ju3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 Nov 2024 17:01:35 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4ALH1X2o030685
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 Nov 2024 17:01:34 GMT
-Received: from [10.111.176.168] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 21 Nov
- 2024 09:01:33 -0800
-Message-ID: <43157125-9cc4-4312-8005-05bcc670b89c@quicinc.com>
-Date: Thu, 21 Nov 2024 09:01:32 -0800
+	s=arc-20240116; t=1732208592; c=relaxed/simple;
+	bh=ETuVPTT97CvsZzZcWxJfVEpaFVBhNL/nzYNN4iEgBjA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NWNd83cyCTg5LV50B4v4QFFe4sDK/NjAlkv3OBBYB2Kl5uoVblGBNyGpQVUafuY9Rmwwjnkcv8SYwjVWfzxneT5rqHTXLr4lfZCgkeUDwegJXdI+q7e9CdLmYlUOcfmmJKhPG4QmL4dAWs876iddg66byni6nJojLOOzsxgncM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Kw8KMGxS; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=jRTJ3JuV; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Kw8KMGxS; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=jRTJ3JuV; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0FB2021A21;
+	Thu, 21 Nov 2024 17:03:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1732208589; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=fwG7AxuiiYPfThnC0iA0U1eLd/gFoEF/ZqTxDY6XnZM=;
+	b=Kw8KMGxSd9iHLVcbjxO0k/kaet+ldFxW3Zp5PokRSHSso157LOWYBeG6w02BVr/N5mK/Cp
+	YpZoAoQ5rmKEvjyScnn4+/EFZITvZVa/1ZJvCYFJ7eV9GFxci2nKMRXVG6tzz6Bx+XOLx4
+	jQyDINmGkAQx06TZFw2yKbTZTabpn0I=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1732208589;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=fwG7AxuiiYPfThnC0iA0U1eLd/gFoEF/ZqTxDY6XnZM=;
+	b=jRTJ3JuVyho0Qk9wVmQw/Y7QnIisz2f3zbNRj9R/WS6GXlheuJGFqH+Wn+fWR53IFE9+b0
+	lo02LO6LOwpp0cBQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1732208589; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=fwG7AxuiiYPfThnC0iA0U1eLd/gFoEF/ZqTxDY6XnZM=;
+	b=Kw8KMGxSd9iHLVcbjxO0k/kaet+ldFxW3Zp5PokRSHSso157LOWYBeG6w02BVr/N5mK/Cp
+	YpZoAoQ5rmKEvjyScnn4+/EFZITvZVa/1ZJvCYFJ7eV9GFxci2nKMRXVG6tzz6Bx+XOLx4
+	jQyDINmGkAQx06TZFw2yKbTZTabpn0I=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1732208589;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=fwG7AxuiiYPfThnC0iA0U1eLd/gFoEF/ZqTxDY6XnZM=;
+	b=jRTJ3JuVyho0Qk9wVmQw/Y7QnIisz2f3zbNRj9R/WS6GXlheuJGFqH+Wn+fWR53IFE9+b0
+	lo02LO6LOwpp0cBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9D668137CF;
+	Thu, 21 Nov 2024 17:03:08 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id x2XzI8xnP2eVawAAD6G6ig
+	(envelope-from <pperego@suse.de>); Thu, 21 Nov 2024 17:03:08 +0000
+From: Paolo Perego <pperego@suse.de>
+To: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Shaul Triebitz <shaul.triebitz@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Yedidya Benshimol <yedidya.ben.shimol@intel.com>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Paolo Perego <pperego@suse.de>
+Subject: [PATCH] drivers:wireless: Fix a dereference before null check issue
+Date: Thu, 21 Nov 2024 18:02:57 +0100
+Message-ID: <20241121170257.275607-1-pperego@suse.de>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/8] [0/8] wifi: ath12k: MLO support part 3
-To: Kalle Valo <kvalo@kernel.org>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20241121155806.1862733-1-kvalo@kernel.org>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Content-Language: en-US
-In-Reply-To: <20241121155806.1862733-1-kvalo@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: t3eftc6TwQCIuQFVnqZt9gNUT69AdjoH
-X-Proofpoint-GUID: t3eftc6TwQCIuQFVnqZt9gNUT69AdjoH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 impostorscore=0
- malwarescore=0 lowpriorityscore=0 suspectscore=0 mlxlogscore=843
- adultscore=0 mlxscore=0 bulkscore=0 clxscore=1015 priorityscore=1501
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2409260000 definitions=main-2411210129
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid];
+	RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -2.80
+X-Spam-Flag: NO
 
-On 11/21/2024 7:57 AM, Kalle Valo wrote:
-> From: Kalle Valo <quic_kvalo@quicinc.com>
-> 
-> We continue refactoring ath12k in preparation for supporting Multi-Link
-> Operation. For example, in this patchset we modify station state handling and
-> start to use more link level configuration.
-> 
-> Please review.
-> 
-> v2:
+This patch fixes a dereference before null check issue discovered by 
+Coverity (CID 1601547)
 
-FYI "v2" wasn't captured in the subject, but please don't resend due to this :)
+In iwl_mvm_parse_wowlan_info_notif() routine data is checked against
+NULL value at line 2501 but it has been dereferenced three lines before
+when calculating sizeof() in an assignment.
+
+Signed-off-by: Paolo Perego <pperego@suse.de>
+---
+ drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+index f85c01e04ebf..f733c16ffd8e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
+@@ -2495,8 +2495,7 @@ static void iwl_mvm_parse_wowlan_info_notif(struct iwl_mvm *mvm,
+ 					    struct iwl_wowlan_status_data *status,
+ 					    u32 len)
+ {
+-	u32 expected_len = sizeof(*data) +
+-		data->num_mlo_link_keys * sizeof(status->mlo_keys[0]);
++	u32 expected_len = 0;
+ 
+ 	if (!data) {
+ 		IWL_ERR(mvm, "iwl_wowlan_info_notif data is NULL\n");
+@@ -2504,6 +2503,8 @@ static void iwl_mvm_parse_wowlan_info_notif(struct iwl_mvm *mvm,
+ 		return;
+ 	}
+ 
++	expected_len = sizeof(*data) + data->num_mlo_link_keys * sizeof(status->mlo_keys[0]);
++
+ 	if (len < expected_len) {
+ 		IWL_ERR(mvm, "Invalid WoWLAN info notification!\n");
+ 		status = NULL;
+-- 
+2.47.0
 
 
