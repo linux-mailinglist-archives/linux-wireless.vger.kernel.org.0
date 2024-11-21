@@ -1,57 +1,58 @@
-Return-Path: <linux-wireless+bounces-15547-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15548-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FEB49D4B2B
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2024 12:01:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADDC39D4B41
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2024 12:05:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65959283273
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2024 11:00:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 315B9B24AD3
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2024 11:05:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470FE1CB515;
-	Thu, 21 Nov 2024 11:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 287E01D0DE6;
+	Thu, 21 Nov 2024 11:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JaNOzGy6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fRD2Xue4"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C911CB506
-	for <linux-wireless@vger.kernel.org>; Thu, 21 Nov 2024 11:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F397815C120;
+	Thu, 21 Nov 2024 11:05:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732186852; cv=none; b=sbLVp8zzDsTTtAufbwdi52x+9Rm9Pb9t30JiXOwoozSrzOWDD3CztlTZvjIGWgNrdmBNG7OsbwwjUz6FGdkYd9oMp7NrIM197KuPcF/eF5xZd9kOmtwbO4bNtm7taJAxM9ZvvANYItH+SEHbpp5zJKzvOPoQ/lSEMVvtTxNeb8M=
+	t=1732187126; cv=none; b=cz8jxg6zFI9xhYVqmVqTYpyYoXjT+TOVqh7YFVPdRWsritMqKK6kdPTzc9WnRd2XayeUW9SJ8t+1zOdMQttUkOt/g2GaQTuhovPP6Le/0XHfi0Od3qUzNzmDH9l3aSywxbHGDWCwf17cT9XKbX1dwZxlAmCPjqdcH2WZ402d4hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732186852; c=relaxed/simple;
-	bh=vkK7dhEzDZlHSoKxdWBYT5h9qXJXR4t0Gs/plAHsc+4=;
+	s=arc-20240116; t=1732187126; c=relaxed/simple;
+	bh=AGvZ1bo3QHRClGESY5fZrGfulh5ci0G55GUsSOsJW/0=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=md9cWjOnBEY3MBe0cDj7LQGLzXYSTJmh9zqkly9qmMsSHm0e7wxZ36vaB5u+ElRgMsQIrbheR3CK7KzbOxq4BWd887n3QuEjr1b4XUj3pGzBDxhLVAnQ4lZUuCAqLNiwemVZGV7dxo1jYm8usDRpNbNTDzHT8u4eQl6bsyppNbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JaNOzGy6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB14EC4CECC;
-	Thu, 21 Nov 2024 11:00:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nsboL5AI+H75JR3pf5dbt//oM4jmshNDbZhpAXaPwS/9dea6rg3ZZn1QPG/kuFdxht4IZhWExX1p21kFACO+506pdoyIZesFtfD9uDbswve8+OQ+UH91ywFpt81624Qyk7SgPJ4NO7dB/zm9Cy6W6wCs9EeOAR6sZNz69g5B3RU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fRD2Xue4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50339C4CECC;
+	Thu, 21 Nov 2024 11:05:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732186851;
-	bh=vkK7dhEzDZlHSoKxdWBYT5h9qXJXR4t0Gs/plAHsc+4=;
+	s=k20201202; t=1732187125;
+	bh=AGvZ1bo3QHRClGESY5fZrGfulh5ci0G55GUsSOsJW/0=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=JaNOzGy68FJSCeakcLg0/xTX7H5o1PLXCVEsE0Eq0C1wZKyxCKnHz/cn99/FZtg++
-	 8dtR+FWGXRMit3tCvbY0fvKtbc1G+MQGI3XQp+pGRrV9tOT0GE7ftjU1UYZ3OZv33n
-	 8ATdjxdF0/zmF3QP2ADVGz8wIpS4UO5DELiEYvosMtsLZ+lHh6AAWZqeStcnmNS5wx
-	 e5kzJOr4gOR8WiXgVgm78FThBaJaHS2emnHWSTmcJiQUb1TuGbXbrPjy0ykMXNbRyO
-	 i+9SDjAp6scaLh1vrNaq94uoX0HIo5iOab7RKv9JbUDg5eHOifrrdu3dfxmQJQz1j7
-	 uKwFCFKNXwWig==
+	b=fRD2Xue4Xe8kLpjImXWNySN6VFB4vwlhRNmaIIzFG+J/AmjGSi1XkwyVCSBYY7Ftr
+	 m8QOCcdySMJY8jQMPNm0BmdfVHoUjxpw2VIqwKgde/502FfxjuVRkxwzxDCmfPLiTx
+	 OJ+dixkc6BMlkbaTtVgtYCQ5YqzjQ66omikQn6JXQDlvQ/29yclCpwsPlirPT2Tjj3
+	 eTUjYrXNeIiRvK3pR6UstKtSa9GR04SRqs7oA7KVpCFowTW1o7Oh/U0E0hAGafUCCk
+	 cH5+V6co5+86F4u/ot/RsrO7ber5Faii9f4FQIrLJ+0lfghC/CxrazN1+KpjxH51jQ
+	 3STOPPNMBveJQ==
 From: Kalle Valo <kvalo@kernel.org>
-To: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: Jeff Johnson <jjohnson@kernel.org>,  ath11k@lists.infradead.org,
-  linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2 4/4] wifi: ath11k: miscellaneous spelling fixes
-References: <20241111070152.85140-1-dmantipov@yandex.ru>
-	<20241111070152.85140-4-dmantipov@yandex.ru>
-Date: Thu, 21 Nov 2024 13:00:49 +0200
-In-Reply-To: <20241111070152.85140-4-dmantipov@yandex.ru> (Dmitry Antipov's
-	message of "Mon, 11 Nov 2024 10:01:52 +0300")
-Message-ID: <87bjy8yhpa.fsf@kernel.org>
+To: Jeff Johnson <quic_jjohnson@quicinc.com>
+Cc: Miaoqing Pan <quic_miaoqing@quicinc.com>,  <ath11k@lists.infradead.org>,
+  <linux-wireless@vger.kernel.org>,  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] wifi: ath11k: add support for QCA6698AQ
+References: <20241031000541.3331606-1-quic_miaoqing@quicinc.com>
+	<bb1c77cb-7efc-4c85-a946-5394b9105416@quicinc.com>
+	<87o72k4hxk.fsf@kernel.org>
+Date: Thu, 21 Nov 2024 13:05:22 +0200
+In-Reply-To: <87o72k4hxk.fsf@kernel.org> (Kalle Valo's message of "Tue, 12 Nov
+	2024 16:59:03 +0200")
+Message-ID: <8734jkyhhp.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -61,11 +62,37 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Dmitry Antipov <dmantipov@yandex.ru> writes:
+Kalle Valo <kvalo@kernel.org> writes:
 
-> Correct spelling here and there as suggested by codespell.
+> Jeff Johnson <quic_jjohnson@quicinc.com> writes:
 >
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+>> On 10/30/2024 5:05 PM, Miaoqing Pan wrote:
+>>> QCA6698AQ IP core is the same as WCN6855 hw2.1, they share the same
+>>> PCI device ID, the same major and minor version numbers, the same
+>>> register address, and same HAL descriptors, etc. The most significant
+>>> difference is that QCA6698AQ has different RF, IPA, thermal, etc.
+>>> 
+>>> Follow the approach done in commit 5dc9d1a55e95 ("wifi: ath11k: add
+>>> support for QCA2066"), enumerate the subversion number to identify the
+>>> specific card.
+>>> 
+>>> Tested-on: QCA6698AQ hw2.1 PCI WLAN.HSP.1.1-04479-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1
+>>> 
+>>> Signed-off-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
+>>
+>> Am I correct that this satisfies at least a subset of the devices you were
+>> trying to support with the following?
+>> https://lore.kernel.org/all/20241024002514.92290-1-quic_miaoqing@quicinc.com/
+>>
+>> If so, can you reply to that thread, pointing to this new patch, and elaborate
+>> on what is now supported and what still requires ath11k to support
+>> board-specific firmware overrides?
+>
+> That question is still open but otherwise this patch looks good to me.
+> But I'll give an Acked-by only after I understand what's that "NFA765
+> m.2 card for IoT platforms" mentioned in the other thread is.
+
+Miaoqing provided the info offlist so:
 
 Acked-by: Kalle Valo <kvalo@kernel.org>
 
