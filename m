@@ -1,57 +1,57 @@
-Return-Path: <linux-wireless+bounces-15546-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15547-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA1069D4B26
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2024 12:00:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FEB49D4B2B
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2024 12:01:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F1671F21218
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2024 11:00:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65959283273
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2024 11:00:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B948C1CC8B3;
-	Thu, 21 Nov 2024 11:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470FE1CB515;
+	Thu, 21 Nov 2024 11:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pzxKa/Pe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JaNOzGy6"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965D51CEAB8
-	for <linux-wireless@vger.kernel.org>; Thu, 21 Nov 2024 11:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C911CB506
+	for <linux-wireless@vger.kernel.org>; Thu, 21 Nov 2024 11:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732186804; cv=none; b=RhXLoyzviRPjM2tnPfIdV2kh0V9CSW9i0b/xzaZlCf+jNGzm7F9YiXhbjaDsaZncVfT3SNjPJUq3tesMJrAc/n3deSA/bK3WaRT82ACszBldTlbn8tz+YA0ziETcFDqIQtTCMfezc0/fPZPM2fB3mVmScjTYbaYtWXO6fWgzcKg=
+	t=1732186852; cv=none; b=sbLVp8zzDsTTtAufbwdi52x+9Rm9Pb9t30JiXOwoozSrzOWDD3CztlTZvjIGWgNrdmBNG7OsbwwjUz6FGdkYd9oMp7NrIM197KuPcF/eF5xZd9kOmtwbO4bNtm7taJAxM9ZvvANYItH+SEHbpp5zJKzvOPoQ/lSEMVvtTxNeb8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732186804; c=relaxed/simple;
-	bh=f/43QzehujPcbsQhIGSMhRy+9gJFgqsbw5YlCcBeeZQ=;
+	s=arc-20240116; t=1732186852; c=relaxed/simple;
+	bh=vkK7dhEzDZlHSoKxdWBYT5h9qXJXR4t0Gs/plAHsc+4=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=FFUrKZPN+mqFrlN77h4vcA7Oz6s7nlAjpd0uDXSwWw9Xsy4WEWWYh5kMOWwo6ryEl3Kc96ZMrGeZ06dK4FPfj20IosZKApbbGSVzhurc6O0bH0bhCyG0SIUyh3cuuA+/5JvQ4ThWvybK94GIPBLvQXr2pYWHagVDQ947ytcrhLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pzxKa/Pe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E161C4CECC;
-	Thu, 21 Nov 2024 11:00:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=md9cWjOnBEY3MBe0cDj7LQGLzXYSTJmh9zqkly9qmMsSHm0e7wxZ36vaB5u+ElRgMsQIrbheR3CK7KzbOxq4BWd887n3QuEjr1b4XUj3pGzBDxhLVAnQ4lZUuCAqLNiwemVZGV7dxo1jYm8usDRpNbNTDzHT8u4eQl6bsyppNbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JaNOzGy6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB14EC4CECC;
+	Thu, 21 Nov 2024 11:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732186804;
-	bh=f/43QzehujPcbsQhIGSMhRy+9gJFgqsbw5YlCcBeeZQ=;
+	s=k20201202; t=1732186851;
+	bh=vkK7dhEzDZlHSoKxdWBYT5h9qXJXR4t0Gs/plAHsc+4=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=pzxKa/PeUVNJRXke5bX1N35Tc7GXlJdj+1k3xidUNpFiSYK6ZOC/F78ktAZ+gNgSJ
-	 fOlFAbuuGeyu9kyModEsYIQ6RfOr8Ww5QHKseKnozr6r9InYcX0mn32JcHEhqJqtYG
-	 VsoE14XXYmG+csGyVAJd7MTLeOV+sGhVUwvRXzJfLHTxaikBhQSvQEC37F0yagjaGT
-	 E4APCuSc7CF5SkHDnYidwOdVKAlYbgbQGtM0Nvj1pjFOP+uKyo3QDaKf+STTfLjBNR
-	 fICZNZByq+eN21DNHQ/D7l/RNP2mMU7WqDMWaqwFFwWWBBorr1jG9U39JzIZljPj8o
-	 irZmaMw4+3I6g==
+	b=JaNOzGy68FJSCeakcLg0/xTX7H5o1PLXCVEsE0Eq0C1wZKyxCKnHz/cn99/FZtg++
+	 8dtR+FWGXRMit3tCvbY0fvKtbc1G+MQGI3XQp+pGRrV9tOT0GE7ftjU1UYZ3OZv33n
+	 8ATdjxdF0/zmF3QP2ADVGz8wIpS4UO5DELiEYvosMtsLZ+lHh6AAWZqeStcnmNS5wx
+	 e5kzJOr4gOR8WiXgVgm78FThBaJaHS2emnHWSTmcJiQUb1TuGbXbrPjy0ykMXNbRyO
+	 i+9SDjAp6scaLh1vrNaq94uoX0HIo5iOab7RKv9JbUDg5eHOifrrdu3dfxmQJQz1j7
+	 uKwFCFKNXwWig==
 From: Kalle Valo <kvalo@kernel.org>
 To: Dmitry Antipov <dmantipov@yandex.ru>
 Cc: Jeff Johnson <jjohnson@kernel.org>,  ath11k@lists.infradead.org,
   linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v2 3/4] wifi: ath11k: cleanup struct ath11k_mon_data
+Subject: Re: [PATCH v2 4/4] wifi: ath11k: miscellaneous spelling fixes
 References: <20241111070152.85140-1-dmantipov@yandex.ru>
-	<20241111070152.85140-3-dmantipov@yandex.ru>
-Date: Thu, 21 Nov 2024 13:00:01 +0200
-In-Reply-To: <20241111070152.85140-3-dmantipov@yandex.ru> (Dmitry Antipov's
-	message of "Mon, 11 Nov 2024 10:01:51 +0300")
-Message-ID: <87frnkyhqm.fsf@kernel.org>
+	<20241111070152.85140-4-dmantipov@yandex.ru>
+Date: Thu, 21 Nov 2024 13:00:49 +0200
+In-Reply-To: <20241111070152.85140-4-dmantipov@yandex.ru> (Dmitry Antipov's
+	message of "Mon, 11 Nov 2024 10:01:52 +0300")
+Message-ID: <87bjy8yhpa.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -63,11 +63,8 @@ Content-Type: text/plain
 
 Dmitry Antipov <dmantipov@yandex.ru> writes:
 
-> Remove initialized but otherwise unused 'rx_status_q' member of
-> 'struct ath11k_mon_data' and adjust 'ath11k_dp_rx_pdev_mon_status_attach'
-> accordingly. Compile tested only.
+> Correct spelling here and there as suggested by codespell.
 >
-> Fixes: 67a9d399fcb0 ("ath11k: enable RX PPDU stats in monitor co-exist mode")
 > Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 
 Acked-by: Kalle Valo <kvalo@kernel.org>
