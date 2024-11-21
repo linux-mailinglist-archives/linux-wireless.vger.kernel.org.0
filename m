@@ -1,188 +1,136 @@
-Return-Path: <linux-wireless+bounces-15575-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15576-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39ABA9D53F4
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2024 21:25:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47BA89D54C7
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2024 22:34:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2CA61F23177
-	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2024 20:25:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0696A282C03
+	for <lists+linux-wireless@lfdr.de>; Thu, 21 Nov 2024 21:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09C121AAE38;
-	Thu, 21 Nov 2024 20:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A0DD1D9A50;
+	Thu, 21 Nov 2024 21:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="StsbVsMm"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PprbqiKd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9669C1D4144
-	for <linux-wireless@vger.kernel.org>; Thu, 21 Nov 2024 20:25:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681F51D12E1
+	for <linux-wireless@vger.kernel.org>; Thu, 21 Nov 2024 21:33:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732220703; cv=none; b=ChK2+VxSzbYDOAsifsUyvYmLSiWKKRQ+oLa/I62g8xov7KoFqC7eQ0nTjb/HpXbh0qP+oLFF42AYRDHt+Wo0E/orYGb9TCtOM7k8sOJKg0xmfPmWh+6Tf5uTmfa6Ds0h24g0YzsjnBeVtygjhZmE5+K96E1XT641dlc0s5UoVgU=
+	t=1732224838; cv=none; b=UmGkBIpSfNTlxFG8dQiGuj0rFg0vLP/n+FyqSz6qi2het5ysGJfiWqO1lpXnFp5RZ2kDWC2BTuxiyVeJVH1CLzeZRUbiVPYG8F1WGOqitzjKz3PJF2pvQv0S+j6YGG7w5/+h921PH77oIWfpP2Xq1Mj9hNzYR9ewskPEPJGjW0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732220703; c=relaxed/simple;
-	bh=Wv9HSib9QQ/0Juvmh266G1Jw/M46TEzFq80KfgWGHYI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=Bj7MotYeicpGwPGQxCFknIAx47IzvkvlsiTAV/nL9S/szJhA8qBCcGYaqUQrRUWdOw+BhebPFrb+XgZnjesVshl3AFVoFu17l7Ixh1KtuKUG08ko6SCKCUzRg6Z5e6zupxaLAXXoqZai+NalMxOnP/2JduxOwANNVndb7T83Tk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=StsbVsMm; arc=none smtp.client-ip=148.163.129.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 4D427C0081;
-	Thu, 21 Nov 2024 20:24:53 +0000 (UTC)
-Received: from [IPV6:2607:fb90:731f:1540:c582:3c6e:e21c:730a] (unknown [172.56.240.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 7E29113C2B0;
-	Thu, 21 Nov 2024 12:24:52 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 7E29113C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1732220692;
-	bh=Wv9HSib9QQ/0Juvmh266G1Jw/M46TEzFq80KfgWGHYI=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=StsbVsMmxhFoWQtMXIMQo5mT/J7BbXPnngsNNkdN72wI0EpJY0yMpxdLjRbL2rlE6
-	 uJrB3F+rbEq58AoKTSpr5lfddQYu7CHM7mLxsaO4ff1dgkxHcGD21b1vvXJAt3Zas5
-	 ZVBCPYpICq+H3+q5my0nt5/YLbDbBs6WFI/GJLkE=
-Message-ID: <2eb6cc22-4148-42c4-8cea-b1db0846a63b@candelatech.com>
-Date: Thu, 21 Nov 2024 12:24:49 -0800
+	s=arc-20240116; t=1732224838; c=relaxed/simple;
+	bh=KI2QnyWouYbxSsgicLUMYAWLBUtyDiglIHC+tI6A3bc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hKP3l3U0Ujy20P34+mICtTVZizwGUB5VX3TA5NTQ+XbqIm4wwODaU/trEhfv+OPveHob7mBZSVNxXmL8u6+c1FlbFH6VEZvqT6pDX6ZoAVSoS12MJIUkmUyynty+7bUzR95zXSbtSq2TZmXyXHhZk343DxMbpz17ne9bEkZ9fco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PprbqiKd; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1732224837; x=1763760837;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=KI2QnyWouYbxSsgicLUMYAWLBUtyDiglIHC+tI6A3bc=;
+  b=PprbqiKdKP/OVeE6H2mDgc+UAmbJPP5qVRcXmT6Dy1M1VGWey3J6f1Tw
+   5ftRAOICK6CF8PkKqmTmEprD/gMb/spPM9kRwmtH2gZnf0fNl56sYHokD
+   KxtjTJAtr7/8hPIju6n9tupr8PvMZQAeAfg5tlocVXNx7aViXOZV06L/M
+   10WRRYbbF4hNq0LbsT7CUud6hUV4lrKmJgC2yOaNYfFa2th6ucoFt4gNx
+   GjZ/Rm+W5zswNlGZyWB/IZclt0dwX+wK+i7sw95vMoOTtfSmLfPHZ8kYu
+   PX9o069LcdKOROT6Rz57cMrQ3SEt2X+jFdzBO7HLKzzllPKzzOlK2jKYJ
+   g==;
+X-CSE-ConnectionGUID: LMkCeeJuQ1uaM3AMCSbORg==
+X-CSE-MsgGUID: dxhWA/wZQSmTgNtgyYlEPA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11263"; a="32421865"
+X-IronPort-AV: E=Sophos;i="6.12,173,1728975600"; 
+   d="scan'208";a="32421865"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Nov 2024 13:33:55 -0800
+X-CSE-ConnectionGUID: bjUlHcedTs6EPtGgJCJ0yA==
+X-CSE-MsgGUID: HNjleCPuQxSCxIq2LBPe4A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,173,1728975600"; 
+   d="scan'208";a="95323279"
+Received: from lkp-server01.sh.intel.com (HELO 8122d2fc1967) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 21 Nov 2024 13:33:53 -0800
+Received: from kbuild by 8122d2fc1967 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tEEoB-0003NI-0Q;
+	Thu, 21 Nov 2024 21:33:51 +0000
+Date: Fri, 22 Nov 2024 05:33:33 +0800
+From: kernel test robot <lkp@intel.com>
+To: Issam Hamdi <ih@simonwunderlich.de>
+Cc: oe-kbuild-all@lists.linux.dev, johannes@sipsolutions.net,
+	linux-wireless@vger.kernel.org,
+	mathias.kretschmer@fit.fraunhofer.de, sw@simonwunderlich.de
+Subject: Re: [PATCH v2] wifi: mac80211: fix mbss changed flags corruption on
+ 32 bit systems
+Message-ID: <202411220516.wuQOEE8t-lkp@intel.com>
+References: <20241118125640.1110502-1-ih@simonwunderlich.de>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] wifi: iwlwifi: Fix eMLSR band comparison.
-To: "Korenblit, Miriam Rachel" <miriam.rachel.korenblit@intel.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-References: <20240828202630.2151365-1-greearb@candelatech.com>
- <MW5PR11MB5810BAD7A2731D2DDACF5F7BA3222@MW5PR11MB5810.namprd11.prod.outlook.com>
-Content-Language: en-MW
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <MW5PR11MB5810BAD7A2731D2DDACF5F7BA3222@MW5PR11MB5810.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1732220694-aQv__jDbPQRN
-X-MDID-O:
- us5;ut7;1732220694;aQv__jDbPQRN;<greearb@candelatech.com>;b05365583a7ac22983513582f8b41fd7
-X-PPE-TRUSTED: V=1;DIR=OUT;
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241118125640.1110502-1-ih@simonwunderlich.de>
 
-On 11/21/24 12:11 PM, Korenblit, Miriam Rachel wrote:
-> 
-> 
->> -----Original Message-----
->> From: greearb@candelatech.com <greearb@candelatech.com>
->> Sent: Wednesday, 28 August 2024 23:26
->> To: linux-wireless@vger.kernel.org
->> Cc: Ben Greear <greearb@candelatech.com>
->> Subject: [PATCH 1/2] wifi: iwlwifi: Fix eMLSR band comparison.
->>
->> From: Ben Greear <greearb@candelatech.com>
->>
->> Do not make assumptions about what band 'a' or 'b' are on.
->> And add new reason code for when eMLSR is disabled due to band.
->>
->> Signed-off-by: Ben Greear <greearb@candelatech.com>
->> ---
->>   drivers/net/wireless/intel/iwlwifi/mvm/link.c | 13 ++++++++++---
->> drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  2 ++
->>   2 files changed, 12 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/link.c
->> b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
->> index bb3de07bc6be..f3fb37fec8a8 100644
->> --- a/drivers/net/wireless/intel/iwlwifi/mvm/link.c
->> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/link.c
->> @@ -16,6 +16,7 @@
->>   	HOW(EXIT_LOW_RSSI)		\
->>   	HOW(EXIT_COEX)			\
->>   	HOW(EXIT_BANDWIDTH)		\
->> +	HOW(EXIT_BAND)			\
->>   	HOW(EXIT_CSA)			\
->>   	HOW(EXIT_LINK_USAGE)
->>
->> @@ -750,11 +751,17 @@ bool iwl_mvm_mld_valid_link_pair(struct
->> ieee80211_vif *vif,
->>   	    iwl_mvm_esr_disallowed_with_link(mvm, vif, b, false))
->>   		return false;
->>
->> -	if (a->chandef->width != b->chandef->width ||
->> -	    !(a->chandef->chan->band == NL80211_BAND_6GHZ &&
->> -	      b->chandef->chan->band == NL80211_BAND_5GHZ))
->> +	if (a->chandef->width != b->chandef->width)
->>   		ret |= IWL_MVM_ESR_EXIT_BANDWIDTH;
->>
->> +	/* Only supports 5g and 6g bands at the moment */
->> +	if (((a->chandef->chan->band != NL80211_BAND_6GHZ) &&
->> +	     (a->chandef->chan->band != NL80211_BAND_5GHZ)) ||
->> +	    ((b->chandef->chan->band != NL80211_BAND_6GHZ) &&
->> +	     (b->chandef->chan->band != NL80211_BAND_5GHZ)) ||
->> +	    (a->chandef->chan->band == b->chandef->chan->band))
->> +		ret |= IWL_MVM_ESR_EXIT_BAND;
->> +
->>   	if (ret) {
->>   		IWL_DEBUG_INFO(mvm,
->>   			       "Links %d and %d are not a valid pair for EMLSR, a-
->>> chwidth: %d  b: %d band-a: %d  band-b: %d\n", diff --git
->> a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
->> b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
->> index ac4e135ed91b..22bec9ca46bb 100644
->> --- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
->> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
->> @@ -368,6 +368,7 @@ struct iwl_mvm_vif_link_info {
->>    *	preventing the enablement of EMLSR
->>    * @IWL_MVM_ESR_EXIT_CSA: CSA happened, so exit EMLSR
->>    * @IWL_MVM_ESR_EXIT_LINK_USAGE: Exit EMLSR due to low tpt on secondary
->> link
->> + * @IWL_MVM_ESR_EXIT_BAND: Exit EMLSR due to incompatible Bands
->>    */
->>   enum iwl_mvm_esr_state {
->>   	IWL_MVM_ESR_BLOCKED_PREVENTION	= 0x1,
->> @@ -382,6 +383,7 @@ enum iwl_mvm_esr_state {
->>   	IWL_MVM_ESR_EXIT_BANDWIDTH	= 0x80000,
->>   	IWL_MVM_ESR_EXIT_CSA		= 0x100000,
->>   	IWL_MVM_ESR_EXIT_LINK_USAGE	= 0x200000,
->> +	IWL_MVM_ESR_EXIT_BAND		= 0x400000,
->>   };
->>
->>   #define IWL_MVM_BLOCK_ESR_REASONS 0xffff
->> --
->> 2.42.0
->>
-> Hi Ben.
-> 
-> It is actually required that a (the better link) will be on 6 GHz and b on 5 GHz
-> Regarding the new exit reason, it is not really needed as we can easily differentiate between the cases (from other logs)
+Hi Issam,
 
-Hello Miri,
+kernel test robot noticed the following build warnings:
 
-I tested this patch, and it fixed problems for me when I ran a test that created
-interfering traffic on 5ghz and then later on 6Ghz.  I expected eMLSR mode to stay
-active no matter where the interfering traffic existed.  With this patch, and a few
-others I posted, the be200 then works fairly well.
+[auto build test WARNING on dfc14664794a4706e0c2186a0c082386e6b14c4d]
 
-6Ghz is not always better, for instance in case where it is congested with
-external traffic.
+url:    https://github.com/intel-lab-lkp/linux/commits/Issam-Hamdi/wifi-mac80211-fix-mbss-changed-flags-corruption-on-32-bit-systems/20241121-150801
+base:   dfc14664794a4706e0c2186a0c082386e6b14c4d
+patch link:    https://lore.kernel.org/r/20241118125640.1110502-1-ih%40simonwunderlich.de
+patch subject: [PATCH v2] wifi: mac80211: fix mbss changed flags corruption on 32 bit systems
+config: arm64-randconfig-004-20241122 (https://download.01.org/0day-ci/archive/20241122/202411220516.wuQOEE8t-lkp@intel.com/config)
+compiler: aarch64-linux-gcc (GCC) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241122/202411220516.wuQOEE8t-lkp@intel.com/reproduce)
 
-Can you please let me know *why* you think the better link must always be 6ghz in this case?
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202411220516.wuQOEE8t-lkp@intel.com/
 
-Thanks,
-Ben
+All warnings (new ones prefixed by >>):
 
-> 
-> NACK.
-> 
-> Thanks,
-> Miri
+   net/mac80211/mesh.c: In function 'ieee80211_mbss_info_change_notify':
+>> net/mac80211/mesh.c:1163:13: warning: the address of 'bits' will always evaluate as 'true' [-Waddress]
+    1163 |         if (!bits)
+         |             ^
 
+
+vim +1163 net/mac80211/mesh.c
+
+2b5e19677592c1 Thomas Pedersen 2013-02-14  1155  
+2b5e19677592c1 Thomas Pedersen 2013-02-14  1156  void ieee80211_mbss_info_change_notify(struct ieee80211_sub_if_data *sdata,
+15ddba5f43114c Anjaneyulu      2023-06-04  1157  				       u64 changed)
+2b5e19677592c1 Thomas Pedersen 2013-02-14  1158  {
+f81a9dedaff434 Thomas Pedersen 2013-06-13  1159  	struct ieee80211_if_mesh *ifmsh = &sdata->u.mesh;
+f0e1110ae72964 Issam Hamdi     2024-11-18  1160  	unsigned long bits[] = { BITMAP_FROM_U64(changed) };
+f81a9dedaff434 Thomas Pedersen 2013-06-13  1161  	u32 bit;
+f81a9dedaff434 Thomas Pedersen 2013-06-13  1162  
+f81a9dedaff434 Thomas Pedersen 2013-06-13 @1163  	if (!bits)
+2b5e19677592c1 Thomas Pedersen 2013-02-14  1164  		return;
+f81a9dedaff434 Thomas Pedersen 2013-06-13  1165  
+f81a9dedaff434 Thomas Pedersen 2013-06-13  1166  	/* if we race with running work, worst case this work becomes a noop */
+f0e1110ae72964 Issam Hamdi     2024-11-18  1167  	for_each_set_bit(bit, bits, sizeof(changed) * BITS_PER_BYTE)
+6e48ebffc2db54 Felix Fietkau   2023-09-13  1168  		set_bit(bit, ifmsh->mbss_changed);
+f81a9dedaff434 Thomas Pedersen 2013-06-13  1169  	set_bit(MESH_WORK_MBSS_CHANGED, &ifmsh->wrkq_flags);
+16114496d684a3 Johannes Berg   2023-06-06  1170  	wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
+2b5e19677592c1 Thomas Pedersen 2013-02-14  1171  }
+2b5e19677592c1 Thomas Pedersen 2013-02-14  1172  
 
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
