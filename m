@@ -1,124 +1,126 @@
-Return-Path: <linux-wireless+bounces-15611-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15612-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 863CE9D63BA
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2024 19:05:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A7CA9D646B
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2024 20:10:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BFA3282708
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2024 18:05:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E7CCB21E63
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2024 19:10:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08D631DFE22;
-	Fri, 22 Nov 2024 18:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA7E1DE4E4;
+	Fri, 22 Nov 2024 19:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i622NzyH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xv3nCgt+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15FE31DFE0A;
-	Fri, 22 Nov 2024 18:04:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B291C70823;
+	Fri, 22 Nov 2024 19:10:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732298687; cv=none; b=RLkZzRztQK9m19SIfa8MOptxxcpzgeYocqY0lKv/wBbquQlgXlvfew7kOa7SOtD1CNG64qVuK3+dCi8e+podPPE3KtyL+SyOSIxf3ybfO8u+KAGPEkMuuCayPkkV3wRPUpWKoukkyUVjuY6EOs1AT+LvsZaw1IgIosvvWXTYGJI=
+	t=1732302616; cv=none; b=n2oj9cd/muPIkDMUZBi7t//TL2Z7OUmV1O8+fxHFopeMnsCQi0sjN3mY1Rh97td1EP1culBlrMayMPydaztOJE1vlzIEbfSaBLe2NHq8KZjjQ2m4J7FsBokb65uBk3UwjUp9Ql31ICTOmkIAqMMLfKBP7Fdx+NuN0gf1xYdnLfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732298687; c=relaxed/simple;
-	bh=GE9aQ4845Qpv/Mv6MUtLgA2EMelQ8RiZvoVebfNEeho=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rOA2Dxfg0ORBPVITg7g2Ihn3fB8fIgIeRHx8BejyreUDddEVV74qgUVc3W+4mcQtSNF8J8y5xRv836SLb8Fq398ypUAATA7KS8yrVzBMEQTMtVQv32PCKSiyoTM03a3wivy7RyQMiv72KeEgZDcPTZTAI2qPsh/Lg5qmnrm7iGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i622NzyH; arc=none smtp.client-ip=209.85.208.174
+	s=arc-20240116; t=1732302616; c=relaxed/simple;
+	bh=7Js9725yuDTaqZx4v6vLyqGvlwmpzX48vHgFV4IOGeY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eGO943RsIpg518w3hQ9hmH3hy+HwX0QTlRPk/dctLU2kVfJ1Ez0lSfpbY23+CY5YjynGHWK3pdt9Ae+rls+KkoKV5wTxVethzCRDCrm/wWJpUfMWyk8fDxvri4SgY61N9MwfGb4/eDmsGFlE1qwPirhBWRJQob+p78aJ/hch+Vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xv3nCgt+; arc=none smtp.client-ip=209.85.208.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2fb49510250so29451781fa.0;
-        Fri, 22 Nov 2024 10:04:45 -0800 (PST)
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2ffa12ad18cso25917341fa.2;
+        Fri, 22 Nov 2024 11:10:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732298684; x=1732903484; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kYyJYDqDJe69p5MWqb9Lql4avTJsJYhKFAm40pVHp2o=;
-        b=i622NzyHyWCzLKDPR0jZ/vGBJlkMNvIDfMDTJphQCYMvMgI7TNnH9UXCEcil2n0OWI
-         dVyZolwPJCn1LKR57Zs9smkkZ/m5VilQjWP/Zj+99iO//WzeVOIyWfVIKFPd4Gigw0mp
-         /4Rlm/he3eyOVH9w2HHjt6HhVuFE6zWMOaxT33bUOdOBvTQoo0QarB6HsbOyG04sfHaW
-         pWjrUOuweSMGxjK9Opi0BlNu0Kg3AjcQyxLEX8arxWnOnToYj7wOJA8tIDsoLiy56w86
-         67QHK3tL8bQonW3+neYeK4XPfsBaEBzOs6nIuPc+c1rR8dgcxINZEeAn+G0X9qwXlrhI
-         iUTw==
+        d=gmail.com; s=20230601; t=1732302613; x=1732907413; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EC3Zv8ppd5odVr8KSpm+U6T+1AdhI4uzCIwkEFj3kNY=;
+        b=Xv3nCgt+hdxGQiX2N+10Mx2pQxlBupVEp5+cDVm4AbFBo3fZPGx1yHtgwEH8PHiYYG
+         GS15h67LfdNLy+3ZTFJ7UC4ldmVJF2rDJqVMOecjcraKNVlLlyhulClcKhWRWjCDnPF/
+         6UayX8Fknz/WjJHsJ+GqGu+1Vp8LMHzUkeKNG0iG5ODM0N4dcntEH4blqlVIWEHm81UH
+         IS3aA6Apk1O6D0a2fPh5W9TpedA32WbXHncdcwOn43hizcy4288Hs3Px5zF014iJhXMx
+         9PaYttyIQ9ukdwg5E/yp8G3WvsquZA3GwDu8aCMe8jEaxO7FlOGxohd/cBkWaX1Lq8SO
+         /OUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732298684; x=1732903484;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kYyJYDqDJe69p5MWqb9Lql4avTJsJYhKFAm40pVHp2o=;
-        b=fOc+oHHTJ7I9ml0YY2IwYDNrErsAUDABafNA5+I2pSBn48mBYKxibVtXtwKXNDD/hY
-         JSeaD15Dyk4bgS5Zk8M4SpbGUcWqRN5P7QLJoLMkp/DtE7EjIxVx30Fx6ENF00blKvQ4
-         BM6wVzbQIUQxp4ohrkfJYj4s8yJ3+J93SAsBLIt6lgEcV7RPtQt4WN7r9i9IOlCD+YF7
-         tp/RPrqqCUYYqVyd+XqCiy0L9EA9oV4SKsnlp3pzoxjDUolPRPDLAl1zW7igoMfH8c9E
-         4fWwXnCGVW3W6zw3KPAUYmyBgLxeeasqc+oxR9AGdcbypC8/C8aK2XJsJiS1zEEDxLa2
-         cRew==
-X-Forwarded-Encrypted: i=1; AJvYcCX+OtR4X9kB0k2eFVkumZl/qqnuFtDP2g6GDUJC5+VAreaVbe8qRUfRUpayga9Qa9cNoSOxYVYeg0Qd02Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjwoNbxzcsx5cJz1tcjTr4Eu6GfYsJS+r+V5Fv2d1DfBE6xkoG
-	F8Y9DgUja7Pxg4p6+X67ZT6dxdwB6OBlCtICnroF4LAxCu+EB89qQiJzNEoPGew=
-X-Gm-Gg: ASbGncul/ciKZVWl962Vt9vbggUK1+YTmq90AOtvH1BGBf8I1C+CqvPiz70OmJII3i9
-	gFZfTf3lJsKB6FRAyC7dPhvfQEuOI6GGW0RZeEzqNHOfT5FyW5B7L/a+QGsAA7QeZWQLqHreo/Z
-	z2RJVoSM078cTREMzjl6vV4uN/3D3eS3gCP5Jm2iNclJEbC23RBtlbgCkiN6d9sng5RxKczXrKd
-	2c/Ec5X6Rr6ErEU8ySYjZhEObaxo86oZ1yZd5vq0iKw3xbGuBgBnWgSkDY=
-X-Google-Smtp-Source: AGHT+IFMT1jZ0OG+uq5izFMfMfSmIicgWhHMQIScinvKrk/fbovg8oIImmx/lrryRLrCRN/udLycOA==
-X-Received: by 2002:a05:651c:98e:b0:2fb:4982:daea with SMTP id 38308e7fff4ca-2ffa718296amr27123141fa.32.1732298683522;
-        Fri, 22 Nov 2024 10:04:43 -0800 (PST)
-Received: from alex3d.netup (team.netup.ru. [91.213.249.1])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ffa53a112dsm4330891fa.119.2024.11.22.10.04.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Nov 2024 10:04:42 -0800 (PST)
-From: Alex Shumsky <alexthreed@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: Alex Shumsky <alexthreed@gmail.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	brcm80211-dev-list.pdl@broadcom.com,
-	brcm80211@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] wifi: brcmfmac: remove misleading log messages
-Date: Fri, 22 Nov 2024 21:04:35 +0300
-Message-Id: <20241122180435.1637479-1-alexthreed@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1732302613; x=1732907413;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EC3Zv8ppd5odVr8KSpm+U6T+1AdhI4uzCIwkEFj3kNY=;
+        b=TVHXZACpmkXsXsbLoYmVFAxFbm2CCeuKh0seANiHMKb+ZXgXdn+SnH+cMtGOHz/8jI
+         l7HHOYwSrvVq989fK+sfsq2gnup2G/lrnlVOickDsrybhzynrIDAylrv7noOCSgte8SG
+         YuHYKTLHLTfzA8+KK9BvSwnjHa6avFtBwtMQbmMNdy+UE40KzrF/ORKbclZGcBfVnCV6
+         Q9DJ93Sx9je0SwB5VuQOW9Zi+dc9KxGtradRKDRBa829Qsz3GDO+p6umIW9GzwwRGSxH
+         tsj/BMYKq4GGYBgKoslG79b5xiLhvfhfdO1cyXw1oiAXJ3TJNH3XjYhLkZX+W0To8PQX
+         tzyw==
+X-Forwarded-Encrypted: i=1; AJvYcCUMshvTEKAGxIWdnUVJJrg5yNAB9v68O196lx7zzRFUwIyrPaU1YYgGIVTlXePTUF0bUFlmZGm2cEUjlR2cQYE=@vger.kernel.org, AJvYcCV4Jlr7ByyV+JZhBrSXfqrZo8zXXFnGk56q5w0bvPJnPm4DUfwZhhaIR/j4k2b/jo2kU0rRWzPMKThHpts=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxYU7g5NNuB+JtCYzQiJCugnnirMhAWZxBD/OJUb4kx3aJtkTNV
+	jP6oK5gDjEmhRXeDFbhrCqPuqMuRxhkuhbTRegil1QhOhyQz5DY0
+X-Gm-Gg: ASbGncuJebPKS6AEnOObzF8brUZvaZqfKjeGfnaM0dw3DPlBMApjPhJ0HLu5BKCL0vS
+	6XkFdcdMqLMiIyYEkxDHrMhtij26wJutf8hxNad9XLmmVorvDpGxmjgP23RUfIZFs81fIDh2zmO
+	o2n1y9FVMyIUJocUFJRTbk6A2cpoUKjWHy99T/NYggBnPxX0aR1r72v94teFqX1bonjZk59PMx0
+	yujpfHViXSoMQQUufjdw1V8kymsWmPK7Tl1p/14j/gubjR2HqTrZUJz
+X-Google-Smtp-Source: AGHT+IHO0TeGbqkaOfQW2+IKeKdpnqM3Ct4QNhv9ccJAX31oRz7/MdACaTtHpxTcQrx5kpCbmVnsWA==
+X-Received: by 2002:a05:651c:1992:b0:2ff:a928:a22f with SMTP id 38308e7fff4ca-2ffa928a4ddmr27044621fa.28.1732302612596;
+        Fri, 22 Nov 2024 11:10:12 -0800 (PST)
+Received: from [192.168.0.50] ([81.196.40.57])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d021179e8bsm1074416a12.23.2024.11.22.11.10.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 22 Nov 2024 11:10:11 -0800 (PST)
+Message-ID: <773afd3d-91f0-4dc6-abf8-481d3125c047@gmail.com>
+Date: Fri, 22 Nov 2024 21:10:09 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless-next] wifi: rtw88: Fix an unreachable code issue
+To: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>,
+ pkshih@realtek.com, linux-wireless@vger.kernel.org
+Cc: kvalo@kernel.org, linux-kernel@vger.kernel.org
+References: <20241122121459.134107-1-dheeraj.linuxdev@gmail.com>
+Content-Language: en-US
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+In-Reply-To: <20241122121459.134107-1-dheeraj.linuxdev@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Currently when debug info enabled, dmesg spammed every few minutes with
-misleading messages like:
-  brcmf_netdev_start_xmit phy0-sta0: insufficient headroom (0)
+On 22/11/2024 14:14, Dheeraj Reddy Jonnalagadda wrote:
+> The error handling in rtw8821a_iqk_tx_vdf_true() contained unreachable
+> code due to tx_fail being explicitly set to false before the error check.
+> This prevented proper handling of failures and resulted in dead code.
+> 
+> Signed-off-by: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
+> ---
+>  drivers/net/wireless/realtek/rtw88/rtw8821a.c | 2 --
+>  1 file changed, 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821a.c b/drivers/net/wireless/realtek/rtw88/rtw8821a.c
+> index db242c9ad68f..c06ba7d615df 100644
+> --- a/drivers/net/wireless/realtek/rtw88/rtw8821a.c
+> +++ b/drivers/net/wireless/realtek/rtw88/rtw8821a.c
+> @@ -221,8 +221,6 @@ static void rtw8821a_iqk_tx_vdf_true(struct rtw_dev *rtwdev, u32 cal,
+>  				/* Originally: if (~tx_fail) {
+>  				 * It looks like a typo, so make it more explicit.
+>  				 */
+> -				tx_fail = false;
+> -
+>  				if (!tx_fail) {
+>  					rtw_write32(rtwdev, REG_RFECTL_A,
+>  						    0x02000000);
 
-Do not log this when headroom is actually sufficient.
+It's like that on purpose, as you can see from the comment.
 
-Signed-off-by: Alex Shumsky <alexthreed@gmail.com>
----
+Your patch changes the behaviour of the code. If it really bothers you,
+fix it without changing the behaviour.
 
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-index da72fd2d541f..25c77014af9c 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/core.c
-@@ -327,8 +327,9 @@ static netdev_tx_t brcmf_netdev_start_xmit(struct sk_buff *skb,
- 	if (skb_headroom(skb) < drvr->hdrlen || skb_header_cloned(skb)) {
- 		head_delta = max_t(int, drvr->hdrlen - skb_headroom(skb), 0);
- 
--		brcmf_dbg(INFO, "%s: insufficient headroom (%d)\n",
--			  brcmf_ifname(ifp), head_delta);
-+		if (head_delta > 0)
-+			brcmf_dbg(INFO, "%s: insufficient headroom (%d)\n",
-+				  brcmf_ifname(ifp), head_delta);
- 		atomic_inc(&drvr->bus_if->stats.pktcowed);
- 		ret = pskb_expand_head(skb, ALIGN(head_delta, NET_SKB_PAD), 0,
- 				       GFP_ATOMIC);
--- 
-2.34.1
-
+Also, you should mention in the commit message if you tested
+with real hardware or not, and what tool brought this problem
+to your attention.
 
