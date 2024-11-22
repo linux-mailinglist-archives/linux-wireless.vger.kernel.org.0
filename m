@@ -1,153 +1,142 @@
-Return-Path: <linux-wireless+bounces-15614-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15615-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BC3D9D6511
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2024 22:04:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F004C9D6516
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2024 22:07:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05CAF2828EA
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2024 21:04:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67FECB2312D
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2024 21:07:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 381C84A0C;
-	Fri, 22 Nov 2024 21:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A42A4A0C;
+	Fri, 22 Nov 2024 21:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ce9fHwUB"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="L+tzG9l2"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737A57E111;
-	Fri, 22 Nov 2024 21:04:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D6B1531C8
+	for <linux-wireless@vger.kernel.org>; Fri, 22 Nov 2024 21:07:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732309471; cv=none; b=sRNU4b16GLdXwneJOBa5//6F84+jkSA/Z+6AY7c7I3F1aboZ4O8UjaCIaMBQ/9gyC/pSdAmU+vGp8lUS5Zv+xLDs+8Jso1atl6MvR793D171mG+iPpKZBIdnkLcTVOigqYKiUn/5DCq6z1C1Ho4SOmMkfIoW8SUCKHJu30niy1g=
+	t=1732309643; cv=none; b=KWZtnwkfZYQ5ulVRfrxlsiCC4Lk2uMkSYzovCI7lQ4xxX4eriAA6q+hvR7lDwPy1iT8AYBHT1yZId3HCwMvbLCoOMo+5t6VOYDEyPap1fAEoyVzAGXikZhmQjhDZ/VlXCiY8AcxwGSupQF6emWfX0FMvwOGXtufcU98ElxMd/i4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732309471; c=relaxed/simple;
-	bh=F+v1Ru0uni2FPXIKtFvxarAFHqaEna9u93F4JIgKyaM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fEgZE/myTNaib2yOmmH6yJrGl+m9MhCE3ZW10j465HPetNxKC4RpziEmZhzZ1N8xkwEhBhud+Jr0r8lhNmZ2dtvSsmcuEZdmQFrIL27kobnAMfXi74pmzDiqTN9wYo4xMxb3tyO76ykUEMGHIaeedZ7Gv+qnORwds8Qymefm6BE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ce9fHwUB; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2ffa8092e34so14589431fa.1;
-        Fri, 22 Nov 2024 13:04:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732309467; x=1732914267; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=c9ZyOhR/EEzpu2AnEc2F9Koo0OBv6NsVpKPmnIREooA=;
-        b=Ce9fHwUBXJRKrLuqcnugSfEJT0FmjzHjJ+DF8JwebgowCwpwY2NCkIpgOO1DV8CIIx
-         MwRo3H60Gt5YpGoBeVIvm7e3GoC5KeklHDddvaWRZXJjBmzNjA+iy1Ucz1X3nv3IEiQ3
-         NjvbRhAlopiGPxebB/D/BCW03dikG7G/EpqzB0uaua/ZyOLPjm4RxVPSRyfjnhtD90PA
-         ar24HEgq3pWmIdHm1/sBZ8m1u0FkEDKwukd2p5PdMKb8T74lMj+f8v94FRztnuBW/aMz
-         e+JKiglF/rSlOpCeldKt63+KuRAt2w7bHstzZcgNNbvtOndp/hwW1vpmdrsWsck5Xjng
-         71Zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732309467; x=1732914267;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=c9ZyOhR/EEzpu2AnEc2F9Koo0OBv6NsVpKPmnIREooA=;
-        b=fyaop8M8iHnfAPpkq7bh19TXw4SmsUgy3mdm6u14KYdRi+2T3+ZWNk906G/RTnyHuQ
-         bipXONDIuTolfR6nM1aJHCK4wTGmB/1iD9iQmPjrWBFleTLVWn7HxPQHrOsh5DqmPfpU
-         WY5obs+XiE9gvxBrZ8TEL5SAO00jq2zk8QZ1QTKigKDYNzv8ONzkRWFLzrXThsiyb0Z1
-         eQZhCuh5v8M6coKCstj2pDgFZqx3vHQdYXDkaNMXKTjX4WEeUsHQs4p6JryhIRkkSDOt
-         YwslM3GsKhV9pvKM4gHgg+c/pb/ypj24cv0lr5Icr8tlVYf+SxtNnSAOi61gKeNHGaYG
-         VQnA==
-X-Forwarded-Encrypted: i=1; AJvYcCU3KGbTakCgxMtNr96IIwxwEH5Q6WX3gectrDPc569r3W0h1QYDHpiMebq4utXClaSx24eWKrB1n6JKe/U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0ZAdzuxtXRKwvwX3QMbZLj/Bp2edT78yECURbQMg4Bty753TG
-	SAx61AOD2C8hOv/KGoKqO+htKrQJqMK+YpumcguR21hbPWhSSzWfUQ1+O6pVwmo=
-X-Gm-Gg: ASbGnct/M5nMjGU0OrmgG35DavQmWFcL3/HkFH1Eki+gn34AgZjMcDpSCad6DTd6A/C
-	Sjpy2pmQlyc6SHipdz/fDqISBtDgLq8jmuYDNa8WrmKEz8XrgQ4NlXJH4P2CT+URbBnDLrmHtvA
-	h4mBTMeepSEE9AYMfLJeoL0aLiHsiz0uKMHMs2rKd5B4ZYFekNFvZkyMreXbE03rpJIygSgKCbX
-	713wDpifaevOUzlxtxNmfJw5gukHZmokuR9Pk5kcnFrg9casue5/5GDNpo=
-X-Google-Smtp-Source: AGHT+IFgi7IRzgMOCobKQO08D1Yo0MM15YLhVt2WwafSJCD+NT8rwDNMGy4Kzx1yLRSvIfJ9sNo3Xg==
-X-Received: by 2002:ac2:5688:0:b0:53d:abc8:b6d3 with SMTP id 2adb3069b0e04-53dd35a53c8mr2834143e87.12.1732309467004;
-        Fri, 22 Nov 2024 13:04:27 -0800 (PST)
-Received: from alex3d.netup (team.netup.ru. [91.213.249.1])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53dd2445850sm550072e87.41.2024.11.22.13.04.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Nov 2024 13:04:26 -0800 (PST)
-From: Alex Shumsky <alexthreed@gmail.com>
-To: linux-wireless@vger.kernel.org
-Cc: Alex Shumsky <alexthreed@gmail.com>,
-	Alexey Berezhok <a@bayrepo.ru>,
-	=?UTF-8?q?Alvin=20=C5=A0ipraga?= <ALSI@bang-olufsen.dk>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Hector Martin <marcan@marcan.st>,
-	Janne Grunau <j@jannau.net>,
-	Kalle Valo <kvalo@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Neal Gompa <neal@gompa.dev>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	brcm80211-dev-list.pdl@broadcom.com,
-	brcm80211@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] brcmfmac: fix RSSI report in AP mode
-Date: Sat, 23 Nov 2024 00:03:46 +0300
-Message-Id: <20241122210346.2848578-1-alexthreed@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1732309643; c=relaxed/simple;
+	bh=2swiKz5R60kV3lCGT4ko3famJAs96YsvVH1H317H6yY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=jgpYTxuTkeNmieFLBBw/dxTjdy2+/8PLhefJl7iSdakIRzdbVDlnf6QsVrQ9/EbjIVtPILIIrnmNP8W87hKgrBIq5hlCGYbVSNGWLwT5bYTS8WuaI7ZaWKMIpSYEc4+KO9wQouOPK0DIlij3cBp0Bmg17D9+BfkAK88qb16AsPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=L+tzG9l2; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AMIXuCm003632;
+	Fri, 22 Nov 2024 21:07:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	AhY8e9WMw3LtuvmwOUonOFh5kzu++uTPDYZjxS7rYfU=; b=L+tzG9l2u1gL7dDB
+	sDBi2B3YZyHpJj8KW3VgX+yiA7lU34r9il3ZFilFCCT/QwefCFZNi8hI+QEo8bkK
+	hBBWZbGKEGgeTv9EnT1yBI2cr+u7K8G/Jy1r66wbZpfRHWbjwFzZrHTiCIFkjWuI
+	oUYP2rFlfo0WrZm7IGz7KhAnmBEJHHD7z+KEWVeHspxpB1yYaRdyZEt9u3+dw7Fp
+	hU1vbk19MouxfT16nwAqxGaMvp/vkGab55+jFkbgXoiwfPpRpYIbtIAOvFRiX+hv
+	5PtdqJVz3pAAu94pZ9+zaGTgNCZO9XMoSC9tosNZTOTj7J2ZCa1DJUwKkZUxK/qQ
+	fmTsag==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 432p0d9wc4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Nov 2024 21:07:14 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4AML7D94024568
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Nov 2024 21:07:13 GMT
+Received: from [10.111.176.168] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 22 Nov
+ 2024 13:07:12 -0800
+Message-ID: <75c641d9-26f5-4d42-bd48-14b1606ba4d9@quicinc.com>
+Date: Fri, 22 Nov 2024 13:07:12 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath12k: Fix invalid data access in
+ ath12k_dp_rx_h_undecap_nwifi
+To: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Manish Dharanenthiran
+	<quic_mdharane@quicinc.com>
+References: <20241122174252.2067375-1-quic_tamizhr@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Content-Language: en-US
+In-Reply-To: <20241122174252.2067375-1-quic_tamizhr@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 4F_fRWRxrwMsqKFecAngmYgvDENK1rQJ
+X-Proofpoint-GUID: 4F_fRWRxrwMsqKFecAngmYgvDENK1rQJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
+ clxscore=1015 lowpriorityscore=0 impostorscore=0 mlxlogscore=999
+ suspectscore=0 spamscore=0 phishscore=0 bulkscore=0 adultscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2409260000 definitions=main-2411220178
 
-After commit 9a1590934d9a ("brcmfmac: correctly report average RSSI in
-station info") it is required from firmware to provide rx_lastpkt_rssi.
-If this field is not provided brcmfmac doesn't report any RSSI at all.
-Unfortunately some firmwares doesn't provide it. One example is firmware
-for BCM43455 found in Raspbberry Pi.
-See https://github.com/raspberrypi/linux/issues/4574
+On 11/22/2024 9:42 AM, Tamizh Chelvam Raja wrote:
+> From: Manish Dharanenthiran <quic_mdharane@quicinc.com>
+> 
+> In certain cases, hardware might provide packets with a
+> length greater than the maximum native Wi-Fi header length.
+> This can lead to accessing and modifying fields in the header
+> within the ath12k_dp_rx_h_undecap_nwifi function for
+> DP_RX_DECAP_TYPE_NATIVE_WIFI decap type and
+> potentially resulting in invalid data access and memory corruption.
+> 
+> Add a sanity check before processing the SKB to prevent invalid
+> data access in the undecap native Wi-Fi function for the
+> DP_RX_DECAP_TYPE_NATIVE_WIFI decap type.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+> 
+> Signed-off-by: Manish Dharanenthiran <quic_mdharane@quicinc.com>
+> Signed-off-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
 
-Fix it by falling back to rssi field if rx_lastpkt_rssi is not provided
-(like it was before 9a1590934d9a).
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-Fixes: 9a1590934d9a ("brcmfmac: correctly report average RSSI in station info")
-Signed-off-by: Alex Shumsky <alexthreed@gmail.com>
----
+One nit...
 
- .../wireless/broadcom/brcm80211/brcmfmac/cfg80211.c  | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+> ---
+>  drivers/net/wireless/ath/ath12k/dp_rx.c | 42 +++++++++++++++++++++++--
+>  1 file changed, 40 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+> index 0fb39c174475..26ff9a346dca 100644
+> --- a/drivers/net/wireless/ath/ath12k/dp_rx.c
+> +++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+> @@ -2474,6 +2474,29 @@ static void ath12k_dp_rx_deliver_msdu(struct ath12k *ar, struct napi_struct *nap
+>  	ieee80211_rx_napi(ath12k_ar_to_hw(ar), pubsta, msdu, napi);
+>  }
+>  
+> +static bool ath12k_dp_rx_check_nwifi_hdr_len_valid(struct ath12k_base *ab,
+> +						   struct hal_rx_desc *rx_desc,
+> +						   struct sk_buff *msdu)
+> +{
+> +	u8 decap_type;
+> +	struct ieee80211_hdr *hdr;
+> +	u32 hdr_len;
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-index 349aa3439502..8fc10858e936 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
-@@ -3125,6 +3125,7 @@ brcmf_cfg80211_get_station(struct wiphy *wiphy, struct net_device *ndev,
- 	s32 total_rssi = 0;
- 	s32 count_rssi = 0;
- 	int rssi;
-+	int rx_lastpkt_rssi;
- 	u32 i;
- 
- 	brcmf_dbg(TRACE, "Enter, MAC %pM\n", mac);
-@@ -3190,15 +3191,16 @@ brcmf_cfg80211_get_station(struct wiphy *wiphy, struct net_device *ndev,
- 			sinfo->rx_bytes = le64_to_cpu(sta_info_le.rx_tot_bytes);
- 		}
- 		for (i = 0; i < BRCMF_ANT_MAX; i++) {
--			if (sta_info_le.rssi[i] == 0 ||
--			    sta_info_le.rx_lastpkt_rssi[i] == 0)
-+			if (sta_info_le.rssi[i] == 0)
- 				continue;
-+			rx_lastpkt_rssi = sta_info_le.rx_lastpkt_rssi[i] != 0 ?
-+				sta_info_le.rx_lastpkt_rssi[i] :
-+				sta_info_le.rssi[i];
- 			sinfo->chains |= BIT(count_rssi);
--			sinfo->chain_signal[count_rssi] =
--				sta_info_le.rx_lastpkt_rssi[i];
-+			sinfo->chain_signal[count_rssi] = rx_lastpkt_rssi;
- 			sinfo->chain_signal_avg[count_rssi] =
- 				sta_info_le.rssi[i];
--			total_rssi += sta_info_le.rx_lastpkt_rssi[i];
-+			total_rssi += rx_lastpkt_rssi;
- 			total_rssi_avg += sta_info_le.rssi[i];
- 			count_rssi++;
- 		}
--- 
-2.34.1
+try to keep reverse xmas tree format
+
 
 
