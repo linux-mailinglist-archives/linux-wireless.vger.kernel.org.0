@@ -1,60 +1,74 @@
-Return-Path: <linux-wireless+bounces-15600-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15601-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BA0F9D6210
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2024 17:21:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B9F39D6289
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2024 17:49:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83CA1160F08
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2024 16:20:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27586160E55
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2024 16:49:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4740A1DF267;
-	Fri, 22 Nov 2024 16:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 715357082F;
+	Fri, 22 Nov 2024 16:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="reVFcEIS"
+	dkim=fail reason="unknown key version" (0-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="g3+bb/En";
+	dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b="Jg/GYaCl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DDA81DF250
-	for <linux-wireless@vger.kernel.org>; Fri, 22 Nov 2024 16:19:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732292388; cv=none; b=qTGB4TjheJMBDVcPnc0h6b3awJ+JdMKn/fk9vvZ5S/ZsQmtAuLDzDlDoDligCL8ZYc2fbjeSmRKfxDhKQ+GSGwiXH2JDFF0mOTNEgTOR6pgNzx57s3vnV3zgJ7E3A34D1dVfXojDOS4l69v3CRcV0fsFyLtUf+GsSey6vAMVoiU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732292388; c=relaxed/simple;
-	bh=ZUeda5+wsgCoyXO4oGpJVdYcRsuyvId6rlqRvmLwCc8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=G61zXUeW/Ju8he9woXyk5vIa2MIxtphdoN62KIRKwJGriHW4LjiW/7PzGyF/XXpc/RtJ8y3yUoeF5eF8c6ma/6JrHCpIWB2D5NOJD6QxPAhzDEPQZcVhmq55Voq8hebnBNbP7sHz3eDx7jTAbGpccjs3Qv4pGW7dxcsXapm0WZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=reVFcEIS; arc=none smtp.client-ip=148.163.129.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id A9073C00075;
-	Fri, 22 Nov 2024 16:19:42 +0000 (UTC)
-Received: from corvid-conspiracy.candelatech.com (unknown [50.251.239.81])
+Received: from e2i340.smtp2go.com (e2i340.smtp2go.com [103.2.141.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id AF26F13C2B0;
-	Fri, 22 Nov 2024 08:19:40 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com AF26F13C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1732292380;
-	bh=ZUeda5+wsgCoyXO4oGpJVdYcRsuyvId6rlqRvmLwCc8=;
-	h=From:To:Cc:Subject:Date:From;
-	b=reVFcEISHLHluSlsMOoSq+VueA67zoHNAV3ovfiTG4fdQlQNyhrsOinWCFi+QTHZP
-	 h0f8WY1DPyArpiOoJvZOCXtOxU6xoZ053MVeX0kVdSJNweTZcaAYZmj/rLpvQG9ZS2
-	 4vgViLNC8E/EXVG4fZ9CYLcreYqAr0IIYXM9kXn4=
-From: Dylan Eskew <dylan.eskew@candelatech.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Dylan Eskew <dylan.eskew@candelatech.com>
-Subject: [PATCH v2 2/3] iw: scan: replace passed ie buffer with ie context
-Date: Fri, 22 Nov 2024 08:18:51 -0800
-Message-ID: <20241122161851.647214-1-dylan.eskew@candelatech.com>
-X-Mailer: git-send-email 2.47.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C6B2E3EE
+	for <linux-wireless@vger.kernel.org>; Fri, 22 Nov 2024 16:49:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.2.141.84
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1732294187; cv=none; b=lOs3X8Jiths6Pd1+OLl5TX4nWqyToRUoJDfGsi05ekKWvozRgmZQp9H5ipjml5B57iS+sxv/9UUvb5BCZ2s9XUhgsMpqAxNDzapxX6iGXeaFVdCA928xwUQnch/UbAKXWPclYmGiP0elWHzM1XBPuCEG2IMAuSt3dvZU8Jrh/zo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1732294187; c=relaxed/simple;
+	bh=fbJyDxZN+U0aLs51zdRPYgn56ap1jOvu70jSaT0aEik=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=E0HgpByG4ogTCSVAUTpAgg8pzz5OQq18eOu5GUgtPBvntCr2bEadgstckOho6ep6fyR7I/8BEZ911A1tIcKLt/MSCte40SJJvpEXSF/WnrU1+Pjau1W3mH0SR6WmpKTq5p1h/9tfjtmW54sAdGPm5RivUzngWJy0XyPI8I74IHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt; spf=pass smtp.mailfrom=em510616.triplefau.lt; dkim=fail (0-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=g3+bb/En reason="unknown key version"; dkim=pass (2048-bit key) header.d=triplefau.lt header.i=@triplefau.lt header.b=Jg/GYaCl; arc=none smtp.client-ip=103.2.141.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=triplefau.lt
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em510616.triplefau.lt
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=smtpservice.net; s=maxzs0.a1-4.dyn; x=1732295084; h=Feedback-ID:
+	X-Smtpcorp-Track:Message-Id:Date:Subject:To:From:Reply-To:Sender:
+	List-Unsubscribe:List-Unsubscribe-Post;
+	bh=wm5L+Qoo/ioFGQt3DT4pcDXXIVurmW309DoYLq1KaIc=; b=g3+bb/En8YiJ9/4rkGFgznnG8s
+	tkM3auW7zN1vFk5isXDOprpUXQV2M4swbI4Ec+xi8/3tp0r6TXGwp1jSHAvaR6PUZ+MrRbwJwXYCy
+	Pj9EFDB31CvHzm9b9kHqovURpbUtS9/EAf7KOtyKLQ0gu3KeArJYyf0f+xUxdMFgXH7+BAhSQdvif
+	cy/WbYzf5BktwHuf2Uc8mRlz0vqlFEb/dP4v7AlUmhEXIJZLYdD3vPC33azJyMWiFVMEcrE0OEg4J
+	+zJ2Po8foNWTx/j8eFfG0jEgj7uawHVuK2MiaXU59S1Su2BY3hn/zd9Cka1Y3PHyPL65Gmq8sMrcx
+	K6eJP86g==;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=triplefau.lt;
+ i=@triplefau.lt; q=dns/txt; s=s510616; t=1732294184; h=from : subject
+ : to : message-id : date;
+ bh=wm5L+Qoo/ioFGQt3DT4pcDXXIVurmW309DoYLq1KaIc=;
+ b=Jg/GYaClat8wXpi5pDlix24y/rgFHbZGbkpChYmMUtfSQsJkr9wNFFe9l3ixheSVojxZC
+ vyaBgdqF8yTbTQs1nXlpYH9i+5Tsh3zaBfcJOFg/6VtOEcGLxzkMCBW3t41dTznG9/qKtMz
+ gWlwO9EyPFYV0iE+2qUUxpTSWVLcav95FmWEEiYKLXLn7h6OylyQKFu3rsnTwcJ5BkVOM1A
+ zLWYkk9AWIXYB70TNd8k2dWcIQVRepfKPQti6WsoMmLyOdnJ91F10NgZoF43OB99cdSLZSp
+ j24DEK7V2SVkUQf7NVDBd4rRYxeAsMTNNJ8//VivpbEUHZX9Wm7ZBz3xALpQ==
+Received: from [10.139.162.187] (helo=SmtpCorp) by smtpcorp.com with esmtpsa
+ (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+ (Exim 4.94.2-S2G) (envelope-from <repk@triplefau.lt>)
+ id 1tEWqR-TRjyJk-P1; Fri, 22 Nov 2024 16:49:23 +0000
+Received: from [10.12.239.196] (helo=localhost) by smtpcorp.com with esmtpsa
+ (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+ (Exim 4.97.1-S2G) (envelope-from <repk@triplefau.lt>)
+ id 1tEWqR-4o5NDgrgcby-m1Zz; Fri, 22 Nov 2024 16:49:23 +0000
+From: Remi Pommarel <repk@triplefau.lt>
+To: ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+ Cedric Veilleux <veilleux.cedric@gmail.com>,
+ Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>,
+ Remi Pommarel <repk@triplefau.lt>
+Subject: [RESEND PATCH v3 0/2] Improve ath10k flush queue mechanism
+Date: Fri, 22 Nov 2024 17:48:00 +0100
+Message-Id: <cover.1732293922.git.repk@triplefau.lt>
+X-Mailer: git-send-email 2.40.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -62,493 +76,60 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MDID: 1732292383-87nvSACQhpLA
-X-MDID-O:
- us5;ut7;1732292383;87nvSACQhpLA;<dylan.eskew@candelatech.com>;b42792dba290a1257c3f0aaf1c60b0ff
-X-PPE-TRUSTED: V=1;DIR=OUT;
+X-Smtpcorp-Track: Y6S9SgXWrjh7.dhVOshQdXleK.FmgH6gvpF81
+Feedback-ID: 510616m:510616apGKSTK:510616saXhY0s_Pe
+X-Report-Abuse: Please forward a copy of this message, including all headers,
+ to <abuse-report@smtp2go.com>
 
-Since some ies require references to other ies, parse
-the ie list once before to create a context and prevent
-parsing more than the two times required.
+It has been reported [0] that a 3-4 seconds (actually up to 5 sec) of
+radio silence could be observed followed by the error below on ath10k
+devices:
 
-Signed-off-by: Dylan Eskew <dylan.eskew@candelatech.com>
----
-v2:
-  - Replace in-place parsing with building a context in a first pass
----
- scan.c | 141 +++++++++++++++++++++++++++++++--------------------------
- 1 file changed, 78 insertions(+), 63 deletions(-)
+ ath10k_pci 0000:04:00.0: failed to flush transmit queue (skip 0 ar-state 1): 0
 
-diff --git a/scan.c b/scan.c
-index 3bc6fb4..de0dd38 100644
---- a/scan.c
-+++ b/scan.c
-@@ -554,13 +554,12 @@ static void tab_on_first(bool *first)
- 		*first = false;
- }
- 
--struct print_ies_data {
--	unsigned char *ie;
--	int ielen;
-+struct ie_context {
-+	bool is_vht_cap;
- };
- 
- static void print_ssid(const uint8_t type, uint8_t len, const uint8_t *data,
--		       const struct print_ies_data *ie_buffer)
-+		       const struct ie_context *ctx)
- {
- 	printf(" ");
- 	print_ssid_escaped(len, data);
-@@ -572,7 +571,7 @@ static void print_ssid(const uint8_t type, uint8_t len, const uint8_t *data,
- 
- static void print_supprates(const uint8_t type, uint8_t len,
- 			    const uint8_t *data,
--			    const struct print_ies_data *ie_buffer)
-+			    const struct ie_context *ctx)
- {
- 	int i;
- 
-@@ -595,7 +594,7 @@ static void print_supprates(const uint8_t type, uint8_t len,
- 
- static void print_rm_enabled_capabilities(const uint8_t type, uint8_t len,
- 			    const uint8_t *data,
--			    const struct print_ies_data *ie_buffer)
-+			    const struct ie_context *ctx)
- {
- 	__u64 capa = ((__u64) data[0]) |
- 		     ((__u64) data[1]) << 8 |
-@@ -649,7 +648,7 @@ static void print_rm_enabled_capabilities(const uint8_t type, uint8_t len,
- }
- 
- static void print_ds(const uint8_t type, uint8_t len, const uint8_t *data,
--		     const struct print_ies_data *ie_buffer)
-+		     const struct ie_context *ctx)
- {
- 	printf(" channel %d\n", data[0]);
- }
-@@ -669,7 +668,7 @@ static const char *country_env_str(char environment)
- }
- 
- static void print_country(const uint8_t type, uint8_t len, const uint8_t *data,
--			  const struct print_ies_data *ie_buffer)
-+			  const struct ie_context *ctx)
- {
- 	printf(" %.*s", 2, data);
- 
-@@ -716,21 +715,21 @@ static void print_country(const uint8_t type, uint8_t len, const uint8_t *data,
- 
- static void print_powerconstraint(const uint8_t type, uint8_t len,
- 				  const uint8_t *data,
--				  const struct print_ies_data *ie_buffer)
-+				  const struct ie_context *ctx)
- {
- 	printf(" %d dB\n", data[0]);
- }
- 
- static void print_tpcreport(const uint8_t type, uint8_t len,
- 			    const uint8_t *data,
--			    const struct print_ies_data *ie_buffer)
-+			    const struct ie_context *ctx)
- {
- 	printf(" TX power: %d dBm\n", data[0]);
- 	/* printf(" Link Margin (%d dB) is reserved in Beacons\n", data[1]); */
- }
- 
- static void print_erp(const uint8_t type, uint8_t len, const uint8_t *data,
--		      const struct print_ies_data *ie_buffer)
-+		      const struct ie_context *ctx)
- {
- 	if (data[0] == 0x00)
- 		printf(" <no flags>");
-@@ -744,7 +743,7 @@ static void print_erp(const uint8_t type, uint8_t len, const uint8_t *data,
- }
- 
- static void print_ap_channel_report(const uint8_t type, uint8_t len, const uint8_t *data,
--				    const struct print_ies_data *ie_buffer)
-+				    const struct ie_context *ctx)
- {
- 	uint8_t oper_class = data[0];
- 	int i;
-@@ -1084,13 +1083,13 @@ static void print_osen_ie(const char *defcipher, const char *defauth,
- }
- 
- static void print_rsn(const uint8_t type, uint8_t len, const uint8_t *data,
--		      const struct print_ies_data *ie_buffer)
-+		      const struct ie_context *ctx)
- {
- 	print_rsn_ie("CCMP", "IEEE 802.1X", len, data);
- }
- 
- static void print_ht_capa(const uint8_t type, uint8_t len, const uint8_t *data,
--			  const struct print_ies_data *ie_buffer)
-+			  const struct ie_context *ctx)
- {
- 	printf("\n");
- 	print_ht_capability(data[0] | (data[1] << 8));
-@@ -1135,7 +1134,7 @@ static const char* vgroup_11u(uint8_t t)
- 
- static void print_interworking(const uint8_t type, uint8_t len,
- 			       const uint8_t *data,
--			       const struct print_ies_data *ie_buffer)
-+			       const struct ie_context *ctx)
- {
- 	/* See Section 7.3.2.92 in the 802.11u spec. */
- 	printf("\n");
-@@ -1168,7 +1167,7 @@ static void print_interworking(const uint8_t type, uint8_t len,
- 
- static void print_11u_advert(const uint8_t type, uint8_t len,
- 			     const uint8_t *data,
--			     const struct print_ies_data *ie_buffer)
-+			     const struct ie_context *ctx)
- {
- 	/* See Section 7.3.2.93 in the 802.11u spec. */
- 	/* TODO: This code below does not decode private protocol IDs */
-@@ -1201,7 +1200,7 @@ static void print_11u_advert(const uint8_t type, uint8_t len,
- }
- 
- static void print_11u_rcon(const uint8_t type, uint8_t len, const uint8_t *data,
--			   const struct print_ies_data *ie_buffer)
-+			   const struct ie_context *ctx)
- {
- 	/* See Section 7.3.2.96 in the 802.11u spec. */
- 	int idx = 0;
-@@ -1254,7 +1253,7 @@ static void print_11u_rcon(const uint8_t type, uint8_t len, const uint8_t *data,
- 
- static void print_tx_power_envelope(const uint8_t type, uint8_t len,
- 				    const uint8_t *data,
--				    const struct print_ies_data *ie_buffer)
-+				    const struct ie_context *ctx)
- {
- 	const uint8_t local_max_tx_power_count = data[0] & 7;
- 	const uint8_t local_max_tx_power_unit_interp = (data[0] >> 3) & 7;
-@@ -1290,7 +1289,7 @@ static const char *ht_secondary_offset[4] = {
- };
- 
- static void print_ht_op(const uint8_t type, uint8_t len, const uint8_t *data,
--			const struct print_ies_data *ie_buffer)
-+			const struct ie_context *ctx)
- {
- 	static const char *protection[4] = {
- 		"no",
-@@ -1322,21 +1321,11 @@ static void print_ht_op(const uint8_t type, uint8_t len, const uint8_t *data,
- 
- static void print_capabilities(const uint8_t type, uint8_t len,
- 			       const uint8_t *data,
--			       const struct print_ies_data *ie_buffer)
-+			       const struct ie_context *ctx)
- {
- 	int i, base, bit, si_duration = 0, max_amsdu = 0;
--	bool s_psmp_support = false, is_vht_cap = false;
--	unsigned char *ie = ie_buffer->ie;
--	int ielen = ie_buffer->ielen;
-+	bool s_psmp_support = false;
- 
--	while (ielen >= 2 && ielen >= ie[1]) {
--		if (ie[0] == 191) {
--			is_vht_cap = true;
--			break;
--		}
--		ielen -= ie[1] + 2;
--		ie += ie[1] + 2;
--	}
- 
- 	for (i = 0; i < len; i++) {
- 		base = i * 8;
-@@ -1432,8 +1421,8 @@ static void print_capabilities(const uint8_t type, uint8_t len,
- 			CAPA(61, "TDLS Wider Bandwidth");
- 			CAPA(62, "Operating Mode Notification");
- 
--			ADD_BIT_VAL(63, is_vht_cap, max_amsdu, 1);
--			ADD_BIT_VAL(64, is_vht_cap, max_amsdu, 2);
-+			ADD_BIT_VAL(63, ctx->is_vht_cap, max_amsdu, 1);
-+			ADD_BIT_VAL(64, ctx->is_vht_cap, max_amsdu, 2);
- 
- 			CAPA(65, "Channel Schedule Management");
- 			CAPA(66, "Geodatabase Inband Enabling Signal");
-@@ -1462,7 +1451,7 @@ static void print_capabilities(const uint8_t type, uint8_t len,
- 		printf("\n\t\t * Service Interval Granularity is %d ms",
- 		       (si_duration + 1) * 5);
- 
--	if (is_vht_cap) {
-+	if (ctx->is_vht_cap) {
- 		printf("\n\t\t * Max Number Of MSDUs In A-MSDU is ");
- 		switch (max_amsdu) {
- 		case 0:
-@@ -1486,7 +1475,7 @@ static void print_capabilities(const uint8_t type, uint8_t len,
- }
- 
- static void print_tim(const uint8_t type, uint8_t len, const uint8_t *data,
--		      const struct print_ies_data *ie_buffer)
-+		      const struct ie_context *ctx)
- {
- 	printf(" DTIM Count %u DTIM Period %u Bitmap Control 0x%x "
- 	       "Bitmap[0] 0x%x",
-@@ -1497,13 +1486,13 @@ static void print_tim(const uint8_t type, uint8_t len, const uint8_t *data,
- }
- 
- static void print_ibssatim(const uint8_t type, uint8_t len, const uint8_t *data,
--			   const struct print_ies_data *ie_buffer)
-+			   const struct ie_context *ctx)
- {
- 	printf(" %d TUs\n", (data[1] << 8) + data[0]);
- }
- 
- static void print_vht_capa(const uint8_t type, uint8_t len, const uint8_t *data,
--			   const struct print_ies_data *ie_buffer)
-+			   const struct ie_context *ctx)
- {
- 	printf("\n");
- 	print_vht_info((__u32) data[0] | ((__u32)data[1] << 8) |
-@@ -1512,7 +1501,7 @@ static void print_vht_capa(const uint8_t type, uint8_t len, const uint8_t *data,
- }
- 
- static void print_vht_oper(const uint8_t type, uint8_t len, const uint8_t *data,
--			   const struct print_ies_data *ie_buffer)
-+			   const struct ie_context *ctx)
- {
- 	const char *chandwidths[] = {
- 		[0] = "20 or 40 MHz",
-@@ -1531,7 +1520,7 @@ static void print_vht_oper(const uint8_t type, uint8_t len, const uint8_t *data,
- 
- static void print_supp_op_classes(const uint8_t type, uint8_t len,
- 				  const uint8_t *data,
--				  const struct print_ies_data *ie_buffer)
-+				  const struct ie_context *ctx)
- {
- 	uint8_t *p = (uint8_t*) data;
- 	const uint8_t *next_data = p + len;
-@@ -1565,7 +1554,7 @@ static void print_supp_op_classes(const uint8_t type, uint8_t len,
- 
- static void print_measurement_pilot_tx(const uint8_t type, uint8_t len,
- 				       const uint8_t *data,
--				       const struct print_ies_data *ie_buffer)
-+				       const struct ie_context *ctx)
- {
- 	uint8_t *p, len_remaining;
- 
-@@ -1614,7 +1603,7 @@ static void print_measurement_pilot_tx(const uint8_t type, uint8_t len,
- 
- static void print_obss_scan_params(const uint8_t type, uint8_t len,
- 				   const uint8_t *data,
--				   const struct print_ies_data *ie_buffer)
-+				   const struct ie_context *ctx)
- {
- 	printf("\n");
- 	printf("\t\t * passive dwell: %d TUs\n", (data[1] << 8) | data[0]);
-@@ -1629,7 +1618,7 @@ static void print_obss_scan_params(const uint8_t type, uint8_t len,
- 
- static void print_secchan_offs(const uint8_t type, uint8_t len,
- 			       const uint8_t *data,
--			       const struct print_ies_data *ie_buffer)
-+			       const struct ie_context *ctx)
- {
- 	if (data[0] < ARRAY_SIZE(ht_secondary_offset))
- 		printf(" %s (%d)\n", ht_secondary_offset[data[0]], data[0]);
-@@ -1638,7 +1627,7 @@ static void print_secchan_offs(const uint8_t type, uint8_t len,
- }
- 
- static void print_bss_load(const uint8_t type, uint8_t len, const uint8_t *data,
--			   const struct print_ies_data *ie_buffer)
-+			   const struct ie_context *ctx)
- {
- 	printf("\n");
- 	printf("\t\t * station count: %d\n", (data[1] << 8) | data[0]);
-@@ -1648,7 +1637,7 @@ static void print_bss_load(const uint8_t type, uint8_t len, const uint8_t *data,
- 
- static void print_mesh_conf(const uint8_t type, uint8_t len,
- 			    const uint8_t *data,
--			    const struct print_ies_data *ie_buffer)
-+			    const struct ie_context *ctx)
- {
- 	printf("\n");
- 	printf("\t\t * Active Path Selection Protocol ID: %d\n", data[0]);
-@@ -1681,7 +1670,7 @@ static void print_mesh_conf(const uint8_t type, uint8_t len,
- 
- static void print_s1g_capa(const uint8_t type, uint8_t len,
- 			    const uint8_t *data,
--			    const struct print_ies_data *ie_buffer)
-+			    const struct ie_context *ctx)
- {
- 	printf("\n");
- 	print_s1g_capability(data);
-@@ -1689,14 +1678,14 @@ static void print_s1g_capa(const uint8_t type, uint8_t len,
- 
- static void print_short_beacon_int(const uint8_t type, uint8_t len,
- 			    const uint8_t *data,
--			    const struct print_ies_data *ie_buffer)
-+			    const struct ie_context *ctx)
- {
- 	printf(" %d\n", (data[1] << 8) | data[0]);
- }
- 
- static void print_s1g_oper(const uint8_t type, uint8_t len,
- 			    const uint8_t *data,
--			    const struct print_ies_data *ie_buffer)
-+			    const struct ie_context *ctx)
- {
- 	int oper_ch_width, prim_ch_width;
- 	int prim_ch_width_subfield = data[0] & 0x1;
-@@ -1777,14 +1766,14 @@ static void print_s1g_oper(const uint8_t type, uint8_t len,
- struct ie_print {
- 	const char *name;
- 	void (*print)(const uint8_t type, uint8_t len, const uint8_t *data,
--		      const struct print_ies_data *ie_buffer);
-+		      const struct ie_context *ctx);
- 	uint8_t minlen, maxlen;
- 	uint8_t flags;
- };
- 
- static void print_ie(const struct ie_print *p, const uint8_t type, uint8_t len,
- 		     const uint8_t *data,
--		     const struct print_ies_data *ie_buffer)
-+		     const struct ie_context *ctx)
- {
- 	int i;
- 
-@@ -1805,7 +1794,7 @@ static void print_ie(const struct ie_print *p, const uint8_t type, uint8_t len,
- 		return;
- 	}
- 
--	p->print(type, len, data, ie_buffer);
-+	p->print(type, len, data, ctx);
- }
- 
- #define PRINT_IGN {		\
-@@ -1867,14 +1856,14 @@ static const struct ie_print ieprinters[] = {
- };
- 
- static void print_wifi_wpa(const uint8_t type, uint8_t len, const uint8_t *data,
--			   const struct print_ies_data *ie_buffer)
-+			   const struct ie_context *ctx)
- {
- 	print_rsn_ie("TKIP", "IEEE 802.1X", len, data);
- }
- 
- static void print_wifi_osen(const uint8_t type, uint8_t len,
- 			    const uint8_t *data,
--			    const struct print_ies_data *ie_buffer)
-+			    const struct ie_context *ctx)
- {
- 	print_osen_ie("OSEN", "OSEN", len, data);
- }
-@@ -1922,7 +1911,7 @@ static bool print_wifi_wmm_param(const uint8_t *data, uint8_t len)
- }
- 
- static void print_wifi_wmm(const uint8_t type, uint8_t len, const uint8_t *data,
--			   const struct print_ies_data *ie_buffer)
-+			   const struct ie_context *ctx)
- {
- 	int i;
- 
-@@ -1965,7 +1954,7 @@ static const char * wifi_wps_dev_passwd_id(uint16_t id)
- }
- 
- static void print_wifi_wps(const uint8_t type, uint8_t len, const uint8_t *data,
--			   const struct print_ies_data *ie_buffer)
-+			   const struct ie_context *ctx)
- {
- 	bool first = true;
- 	__u16 subtype, sublen;
-@@ -2205,7 +2194,7 @@ static const struct ie_print wifiprinters[] = {
- 
- static inline void print_p2p(const uint8_t type, uint8_t len,
- 			     const uint8_t *data,
--			     const struct print_ies_data *ie_buffer)
-+			     const struct ie_context *ctx)
- {
- 	bool first = true;
- 	__u8 subtype;
-@@ -2287,7 +2276,7 @@ static inline void print_p2p(const uint8_t type, uint8_t len,
- 
- static inline void print_hs20_ind(const uint8_t type, uint8_t len,
- 				  const uint8_t *data,
--				  const struct print_ies_data *ie_buffer)
-+				  const struct ie_context *ctx)
- {
- 	/* I can't find the spec for this...just going off what wireshark uses. */
- 	printf("\n");
-@@ -2299,7 +2288,7 @@ static inline void print_hs20_ind(const uint8_t type, uint8_t len,
- 
- static void print_wifi_owe_tarns(const uint8_t type, uint8_t len,
- 				 const uint8_t *data,
--				 const struct print_ies_data *ie_buffer)
-+				 const struct ie_context *ctx)
- {
- 	char mac_addr[20];
- 	int ssid_len;
-@@ -2392,14 +2381,14 @@ static void print_vendor(unsigned char len, unsigned char *data,
- }
- 
- static void print_he_capa(const uint8_t type, uint8_t len, const uint8_t *data,
--			  const struct print_ies_data *ie_buffer)
-+			  const struct ie_context *ctx)
- {
- 	printf("\n");
- 	print_he_capability(data, len);
- }
- 
- static void print_he_oper(const uint8_t type, uint8_t len, const uint8_t *data,
--			  const struct print_ies_data *ie_buffer)
-+			  const struct ie_context *ctx)
- {
- 	printf("\n");
- 	print_he_operation(data, len);
-@@ -2437,23 +2426,49 @@ static void print_extension(unsigned char len, unsigned char *ie,
- 	}
- }
- 
-+static void set_context(unsigned char *ie, int ielen, struct ie_context *ctx)
-+{
-+	unsigned char *pos = ie;
-+	int remaining = ielen;
-+
-+	if (ie == NULL || ielen == 0 || ctx == NULL)
-+		return;
-+
-+	while (remaining >= 2 && remaining - 2 >= pos[1]) {
-+		if (pos[0] == EID_EXTENSION) {
-+			/*switch (pos[2]) {
-+			 * for future use
-+			}*/
-+		} else {
-+			switch (pos[0]) {
-+			case EID_VHT_CAPABILITY:
-+				ctx->is_vht_cap = true;
-+				break;
-+			}
-+		}
-+
-+		remaining -= pos[1] + 2;
-+		pos += pos[1] + 2;
-+	}
-+}
-+
- void print_ies(unsigned char *ie, int ielen, bool unknown,
- 	       enum print_ie_type ptype)
- {
--	struct print_ies_data ie_buffer = {
--		.ie = ie,
--		.ielen = ielen };
-+	struct ie_context ctx = { 0 };
- 
- 	if (ie == NULL || ielen < 0)
- 		return;
- 
-+	set_context(ie, ielen, &ctx);
-+
- 	while (ielen >= 2 && ielen - 2 >= ie[1]) {
- 		if (ie[0] < ARRAY_SIZE(ieprinters) &&
- 		    ieprinters[ie[0]].name &&
- 		    ieprinters[ie[0]].flags & BIT(ptype) &&
- 			    ie[1] > 0) {
- 			print_ie(&ieprinters[ie[0]],
--				 ie[0], ie[1], ie + 2, &ie_buffer);
-+				 ie[0], ie[1], ie + 2, &ctx);
- 		} else if (ie[0] == 221 /* vendor */) {
- 			print_vendor(ie[1], ie + 2, unknown, ptype);
- 		} else if (ie[0] == 255 /* extension */) {
+This is due to how the TX queues are flushed in ath10k. When a STA is
+removed, mac80211 need to flush queues [1], but because ath10k does not
+have a lightweight .flush_sta operation, ieee80211_flush_queues() is
+called instead effectively blocking the whole queue during the drain
+causing this radio silence. Also because ath10k_flush() waits for all
+queued to be emptied, not only the flushed ones it could more easily
+take up to 5 seconds to finish making the whole situation worst.
+
+The first patch of this series adds a .flush_sta operation to flush only
+specific STA traffic avoiding the need to stop whole queues and should
+be enough in itself to fix the reported issue.
+
+The second patch of this series is a proposal to improve ath10k_flush so
+that it will be less likely to timeout waiting for non related queues to
+drain.
+
+The abose kernel warning could still be observed (e.g. flushing a dead
+STA) but should be now harmless.
+
+[0]: https://lore.kernel.org/all/CA+Xfe4FjUmzM5mvPxGbpJsF3SvSdE5_wgxvgFJ0bsdrKODVXCQ@mail.gmail.com/
+[1]: commit 0b75a1b1e42e ("wifi: mac80211: flush queues on STA removal")
+
+V3:
+  - Initialize empty to true to fix smatch error
+
+V2:
+  - Add Closes tag
+  - Use atomic instead of spinlock for per sta pending frame counter
+  - Call ath10k_htt_tx_sta_dec_pending within rcu
+  - Rename pending_per_queue[] to num_pending_per_queue[]
+
+Remi Pommarel (2):
+  wifi: ath10k: Implement ieee80211 flush_sta callback
+  wifi: ath10k: Flush only requested txq in ath10k_flush()
+
+ drivers/net/wireless/ath/ath10k/core.h   |  2 +
+ drivers/net/wireless/ath/ath10k/htt.h    | 11 +++-
+ drivers/net/wireless/ath/ath10k/htt_tx.c | 49 +++++++++++++++-
+ drivers/net/wireless/ath/ath10k/mac.c    | 75 ++++++++++++++++++++----
+ drivers/net/wireless/ath/ath10k/txrx.c   | 11 ++--
+ 5 files changed, 127 insertions(+), 21 deletions(-)
+
 -- 
-2.47.0
+2.40.0
 
 
