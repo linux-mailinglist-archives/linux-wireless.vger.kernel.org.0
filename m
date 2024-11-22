@@ -1,61 +1,84 @@
-Return-Path: <linux-wireless+bounces-15596-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15598-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B7079D5B35
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2024 09:44:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF38E9D5EA5
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2024 13:16:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 246781F22E3D
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2024 08:44:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68853282E35
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2024 12:16:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF6218B488;
-	Fri, 22 Nov 2024 08:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C919F1BC091;
+	Fri, 22 Nov 2024 12:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Q9b5QFqf"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XYvS/doG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CC618BC32
-	for <linux-wireless@vger.kernel.org>; Fri, 22 Nov 2024 08:42:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D65217BB1E;
+	Fri, 22 Nov 2024 12:16:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732264955; cv=none; b=MP0/nDAGv7SUDw27vrZsZWJGPuSS/y3OOHJabv9XYClHhpYNU8avDZieUXV1pRRv5tbtvmXDSx9QYZxMDx7nzeW3s0ol1HenTydEhxsLoUf4IzYCY060diO5uaV1F1uu5B1A44Vsgh9tWDdKiWa5TJQ3IW0eZhUzGCBGXk8R9m0=
+	t=1732277776; cv=none; b=WDfUYwtE/iIzvl0f5Y7mrkULmCVUxNST1gPYE9zr8gHHm3yPI2DiWXLfRK+IjtxyG/aBtlBAwSWSBn7idYbjDRC9CMRpGkQmADoNZ5kV/WLXCyHRArn4THGwXGEJNknqxoSBnhTRtCM/yGrF4Bcv8tA7F10xhAx3ESJ1xJ3G4vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732264955; c=relaxed/simple;
-	bh=Ok66XvNbWyampkHkZPi4xCC9/qISuihV4Ppy2XTGDQg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UEh/a7le+G1xn7JOvWnWC5YWKtjtBxmJOJLdiRgoaz2ZWmoqZQOXdd4g0DQZZMQ8zsbPLAeAlXF/j+4Ssac9UWuFZGFV7Nj5qibMtMHtGiGPNQVi2z2Qtqu71QnL2N1sCEOyRNAhPwyIfMti63KL8aVovPUBBctmynSep3bPUp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Q9b5QFqf; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=+MSbIZ4S+yvV8SURt+BpEWUYQotp3qdTgZdfBgrRgOw=;
-	t=1732264953; x=1733474553; b=Q9b5QFqfsRk41Er9CJFiUNY6G8MaNgcBgU+2fnvHLX7SMYX
-	XgtuBqO+4I/OzodegZr+BViax6nbHnqhGiiWKLzKVS+QcattWXkvG7nfquRiMnY8sMS5P+6LQajca
-	rfxqwMxi4/wJJAoNIfo7U6tDmNfF3iLKOi6h0+tRRw3eKA9CLMulyutT/2lbyWFpBy8f5lLD85kPU
-	GpOvQfXM06xaUEbt9GU2n2aTwMqcKlZqCyDqesOFYk3CJxCyVRwFbix2o2kPHco5e/U+QSdnk8ORo
-	GyxHU77jMn+c2MVoTK32caM3BmP6LOQodSXhZmUD09otgdYJXugIuXx/bZ3yBGZA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1tEPFF-0000000BUoF-1Olf;
-	Fri, 22 Nov 2024 09:42:29 +0100
-From: Johannes Berg <johannes@sipsolutions.net>
-To: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>
-Subject: [PATCH v3 2/2] wifi: mac80211: use wiphy guard
-Date: Fri, 22 Nov 2024 09:42:26 +0100
-Message-ID: <20241122094225.cea65b2d2fd4.Icc168c4bbeddec98ea096aee9077211a7b88b69e@changeid>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241122094225.88765cbaab65.I610c9b14f36902e75e1d13f0db29f8bef2298804@changeid>
-References: <20241122094225.88765cbaab65.I610c9b14f36902e75e1d13f0db29f8bef2298804@changeid>
+	s=arc-20240116; t=1732277776; c=relaxed/simple;
+	bh=1cflV98fpYB8xd/R5BOqnnBFLifW9rz4McpZgrW+eFQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NwWbCmuagNOscP60xPE5pMIHohXu2/mxmSW91mrH55n1vM+TDJkiYvTrOgZxDYqeCYQRjiuMuYE4iJYI2HTO1n56xjG0qp1GbgP0T/hWfWVcLgxA3uEwnlUpI8wzFtzEWvrP/rMCs+fPqQm7Nz4ipAeg7sHokM7looROz2ckw5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XYvS/doG; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-71e52582cf8so1530280b3a.2;
+        Fri, 22 Nov 2024 04:16:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732277774; x=1732882574; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LqXOl/PSXyglI0oDidHV6t6fKE3phqIkCC9fHoLh0YQ=;
+        b=XYvS/doGhFVXTtMstfynFeCxjy64moSqbSUEnAAex9juGYwx7HmQpgnOQyDj2LGS/a
+         i78NA/NZTOticU+Lv56O6Ij3TjgJ3rgTiRnMlqw21B2PHd7JYOMjSBpiOFbdYRlaUbNb
+         aZZLk5KaQHDQvdm9HTrsPFIsbzy5wmOrAibbE3CxxMf3DCrRFUtOFglz5CoBX0PrZDYn
+         RwyP9htjZCEOpuyV3TzuOXabIFW+2Xq9XnxUxxd7y9EVdaSiYHa/WCQSz785ob/iqv6Y
+         xbOXvtOVjOTUxf5q3VZqhBcTHUkYKP5aoFq0AqbqzWSuCViBkKxSHzGy0mIJRxIdDbmf
+         Ik3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732277774; x=1732882574;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LqXOl/PSXyglI0oDidHV6t6fKE3phqIkCC9fHoLh0YQ=;
+        b=R6EHGnsMWULpt6+xnwxC5CnO6+9C2w2P3Ure0tMnFJu4/43IgIDfD5llzcMLyW+HGV
+         87DBleFuFPeHzS2VOyzdw4a0WyzmDZgjaxJcuvB0PRacKV9TNVIlmgr9G15OvgbcbyFd
+         xZVt1ncIgPmQ6vxh7GptSjERFBS9XfofBkvJMscxQMbLIwBEFPg6x9k+15mxD5AhVcfS
+         8nMgIOmN+lUlt419YOLKtEtpsfOgtWsm3BhEAVjYk4CegRE9kaJbQzCUFIWLkYfEo5Hk
+         bT5X20enXVg9ZW5bLvg4AP7obq08P1tWAevSEJkhqBpaponxGOiJdWv73J9XmEDNek/A
+         g1pg==
+X-Forwarded-Encrypted: i=1; AJvYcCVHXQidflK/8urVY9+jKFZuVwCc7OkDbRbODDMYg0vFXEB+Q7PYBHQ2CMowg6ywBmZ7K6sViJNhSw1irJw=@vger.kernel.org, AJvYcCWIMJbtU3j3gBSIty3eE8YzyEFAnqfCmUZCPj+lu8WLFSEGZIxh4/S6aYLVQuJt72hQ+hadb+Sh626nfPrC+L0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyX2M9CMK4SG9TCHtNGhcaZ222FNx5bQ9FGDhmpAXzzt5QQS7yI
+	Cio6bTQt68bwIdLuT6k2mYp4JzL5VUTXUGT/qVQtVvzO6lvy88NO
+X-Gm-Gg: ASbGncvxCAOpVV59RhwG9haOUdHA8moklOSTzsrebqvj+LYiYyabjETel91sLNxl/4f
+	Lin7K7T/bFJd/al+wbyVrH/RyU0Fvovg0i0GbZMr6ggqZzJozNhtUTnUnkMWgxE+XqCm56st465
+	2/Aoh9lylkDlubBrl3dC0t/2PoJl4q18y3fUl5EsQxQHzrC6u70S3gLc9KvtiP4pp/mliiuKDuv
+	KElG7Hm2qOXtWLEs+j7Po+vRmgWARP+4m3LMu/eT9+/5Gpthib/tn4=
+X-Google-Smtp-Source: AGHT+IHsel+VwvXElFGnOc1q576P4SVtlcB5yqj8Z5+V23oqwFAmikG1t0CJ7Q3rBcvYyBSS0S4dOA==
+X-Received: by 2002:a17:903:18b:b0:212:37e:3fcd with SMTP id d9443c01a7336-2129f290e12mr32197255ad.56.1732277774510;
+        Fri, 22 Nov 2024 04:16:14 -0800 (PST)
+Received: from HOME-PC ([223.185.134.211])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2129dbfb2fdsm14805865ad.156.2024.11.22.04.16.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Nov 2024 04:16:14 -0800 (PST)
+From: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
+To: pkshih@realtek.com,
+	linux-wireless@vger.kernel.org
+Cc: kvalo@kernel.org,
+	linux-kernel@vger.kernel.org,
+	Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
+Subject: [PATCH wireless-next] wifi: rtw88: Fix an unreachable code issue
+Date: Fri, 22 Nov 2024 17:44:59 +0530
+Message-Id: <20241122121459.134107-1-dheeraj.linuxdev@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -64,179 +87,29 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+The error handling in rtw8821a_iqk_tx_vdf_true() contained unreachable
+code due to tx_fail being explicitly set to false before the error check.
+This prevented proper handling of failures and resulted in dead code.
 
-The wiphy guard simplifies some code here, so use it.
-
-Reviewed-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
 ---
- net/mac80211/debugfs.c |  4 ++--
- net/mac80211/ethtool.c | 18 ++++++------------
- net/mac80211/iface.c   | 25 +++++++++----------------
- 3 files changed, 17 insertions(+), 30 deletions(-)
+ drivers/net/wireless/realtek/rtw88/rtw8821a.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
-index be2e486907f9..bf0a2902d93c 100644
---- a/net/mac80211/debugfs.c
-+++ b/net/mac80211/debugfs.c
-@@ -284,7 +284,8 @@ static ssize_t aql_txq_limit_write(struct file *file,
- 	q_limit_low_old = local->aql_txq_limit_low[ac];
- 	q_limit_high_old = local->aql_txq_limit_high[ac];
- 
--	wiphy_lock(local->hw.wiphy);
-+	guard(wiphy)(local->hw.wiphy);
-+
- 	local->aql_txq_limit_low[ac] = q_limit_low;
- 	local->aql_txq_limit_high[ac] = q_limit_high;
- 
-@@ -296,7 +297,6 @@ static ssize_t aql_txq_limit_write(struct file *file,
- 			sta->airtime[ac].aql_limit_high = q_limit_high;
- 		}
- 	}
--	wiphy_unlock(local->hw.wiphy);
- 
- 	return count;
- }
-diff --git a/net/mac80211/ethtool.c b/net/mac80211/ethtool.c
-index 99f6174a9d69..069aa05139cd 100644
---- a/net/mac80211/ethtool.c
-+++ b/net/mac80211/ethtool.c
-@@ -19,16 +19,13 @@ static int ieee80211_set_ringparam(struct net_device *dev,
- 				   struct netlink_ext_ack *extack)
- {
- 	struct ieee80211_local *local = wiphy_priv(dev->ieee80211_ptr->wiphy);
--	int ret;
- 
- 	if (rp->rx_mini_pending != 0 || rp->rx_jumbo_pending != 0)
- 		return -EINVAL;
- 
--	wiphy_lock(local->hw.wiphy);
--	ret = drv_set_ringparam(local, rp->tx_pending, rp->rx_pending);
--	wiphy_unlock(local->hw.wiphy);
-+	guard(wiphy)(local->hw.wiphy);
- 
--	return ret;
-+	return drv_set_ringparam(local, rp->tx_pending, rp->rx_pending);
- }
- 
- static void ieee80211_get_ringparam(struct net_device *dev,
-@@ -40,10 +37,10 @@ static void ieee80211_get_ringparam(struct net_device *dev,
- 
- 	memset(rp, 0, sizeof(*rp));
- 
--	wiphy_lock(local->hw.wiphy);
-+	guard(wiphy)(local->hw.wiphy);
-+
- 	drv_get_ringparam(local, &rp->tx_pending, &rp->tx_max_pending,
- 			  &rp->rx_pending, &rp->rx_max_pending);
--	wiphy_unlock(local->hw.wiphy);
- }
- 
- static const char ieee80211_gstrings_sta_stats[][ETH_GSTRING_LEN] = {
-@@ -109,7 +106,7 @@ static void ieee80211_get_stats(struct net_device *dev,
- 	 * network device.
- 	 */
- 
--	wiphy_lock(local->hw.wiphy);
-+	guard(wiphy)(local->hw.wiphy);
- 
- 	if (sdata->vif.type == NL80211_IFTYPE_STATION) {
- 		sta = sta_info_get_bss(sdata, sdata->deflink.u.mgd.bssid);
-@@ -205,13 +202,10 @@ static void ieee80211_get_stats(struct net_device *dev,
- 	else
- 		data[i++] = -1LL;
- 
--	if (WARN_ON(i != STA_STATS_LEN)) {
--		wiphy_unlock(local->hw.wiphy);
-+	if (WARN_ON(i != STA_STATS_LEN))
- 		return;
--	}
- 
- 	drv_get_et_stats(sdata, stats, &(data[STA_STATS_LEN]));
--	wiphy_unlock(local->hw.wiphy);
- }
- 
- static void ieee80211_get_strings(struct net_device *dev, u32 sset, u8 *data)
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index a8fbedd530f4..32aaf3856ccf 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -300,7 +300,6 @@ static int ieee80211_change_mac(struct net_device *dev, void *addr)
- {
- 	struct ieee80211_sub_if_data *sdata = IEEE80211_DEV_TO_SUB_IF(dev);
- 	struct ieee80211_local *local = sdata->local;
--	int ret;
- 
- 	/*
- 	 * This happens during unregistration if there's a bond device
-@@ -310,11 +309,9 @@ static int ieee80211_change_mac(struct net_device *dev, void *addr)
- 	if (!dev->ieee80211_ptr->registered)
- 		return 0;
- 
--	wiphy_lock(local->hw.wiphy);
--	ret = _ieee80211_change_mac(sdata, addr);
--	wiphy_unlock(local->hw.wiphy);
-+	guard(wiphy)(local->hw.wiphy);
- 
--	return ret;
-+	return _ieee80211_change_mac(sdata, addr);
- }
- 
- static inline int identical_mac_addr_allowed(int type1, int type2)
-@@ -450,16 +447,13 @@ static int ieee80211_open(struct net_device *dev)
- 	if (!is_valid_ether_addr(dev->dev_addr))
- 		return -EADDRNOTAVAIL;
- 
--	wiphy_lock(sdata->local->hw.wiphy);
-+	guard(wiphy)(sdata->local->hw.wiphy);
-+
- 	err = ieee80211_check_concurrent_iface(sdata, sdata->vif.type);
- 	if (err)
--		goto out;
-+		return err;
- 
--	err = ieee80211_do_open(&sdata->wdev, true);
--out:
--	wiphy_unlock(sdata->local->hw.wiphy);
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821a.c b/drivers/net/wireless/realtek/rtw88/rtw8821a.c
+index db242c9ad68f..c06ba7d615df 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821a.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821a.c
+@@ -221,8 +221,6 @@ static void rtw8821a_iqk_tx_vdf_true(struct rtw_dev *rtwdev, u32 cal,
+ 				/* Originally: if (~tx_fail) {
+ 				 * It looks like a typo, so make it more explicit.
+ 				 */
+-				tx_fail = false;
 -
--	return err;
-+	return ieee80211_do_open(&sdata->wdev, true);
- }
- 
- static void ieee80211_do_stop(struct ieee80211_sub_if_data *sdata, bool going_down)
-@@ -780,11 +774,11 @@ static int ieee80211_stop(struct net_device *dev)
- 		ieee80211_stop_mbssid(sdata);
- 	}
- 
--	wiphy_lock(sdata->local->hw.wiphy);
-+	guard(wiphy)(sdata->local->hw.wiphy);
-+
- 	wiphy_work_cancel(sdata->local->hw.wiphy, &sdata->activate_links_work);
- 
- 	ieee80211_do_stop(sdata, true);
--	wiphy_unlock(sdata->local->hw.wiphy);
- 
- 	return 0;
- }
-@@ -2282,7 +2276,7 @@ void ieee80211_remove_interfaces(struct ieee80211_local *local)
- 	 */
- 	cfg80211_shutdown_all_interfaces(local->hw.wiphy);
- 
--	wiphy_lock(local->hw.wiphy);
-+	guard(wiphy)(local->hw.wiphy);
- 
- 	WARN(local->open_count, "%s: open count remains %d\n",
- 	     wiphy_name(local->hw.wiphy), local->open_count);
-@@ -2312,7 +2306,6 @@ void ieee80211_remove_interfaces(struct ieee80211_local *local)
- 		if (!netdev)
- 			kfree(sdata);
- 	}
--	wiphy_unlock(local->hw.wiphy);
- }
- 
- static int netdev_notify(struct notifier_block *nb,
+ 				if (!tx_fail) {
+ 					rtw_write32(rtwdev, REG_RFECTL_A,
+ 						    0x02000000);
 -- 
-2.47.0
+2.34.1
 
 
