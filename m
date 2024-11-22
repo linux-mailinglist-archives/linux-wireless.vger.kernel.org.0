@@ -1,78 +1,63 @@
-Return-Path: <linux-wireless+bounces-15612-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15613-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A7CA9D646B
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2024 20:10:24 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CA8E9D650F
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2024 22:02:37 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E857616133F
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2024 21:02:33 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A877E111;
+	Fri, 22 Nov 2024 21:02:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="fJDOVmmu"
+X-Original-To: linux-wireless@vger.kernel.org
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E7CCB21E63
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2024 19:10:21 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA7E1DE4E4;
-	Fri, 22 Nov 2024 19:10:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xv3nCgt+"
-X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B291C70823;
-	Fri, 22 Nov 2024 19:10:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A044A0C
+	for <linux-wireless@vger.kernel.org>; Fri, 22 Nov 2024 21:02:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732302616; cv=none; b=n2oj9cd/muPIkDMUZBi7t//TL2Z7OUmV1O8+fxHFopeMnsCQi0sjN3mY1Rh97td1EP1culBlrMayMPydaztOJE1vlzIEbfSaBLe2NHq8KZjjQ2m4J7FsBokb65uBk3UwjUp9Ql31ICTOmkIAqMMLfKBP7Fdx+NuN0gf1xYdnLfw=
+	t=1732309353; cv=none; b=LxNvBy8cXGa3wlJcXMYsT4fNKqkPpsBBArL6M0aFzLq0zBn2+bb2y3jovw0hNJaxEPjvfr28EHlSp+DcwkShmrxkD662a3WdsyCBMJb8jFGLmyOiLoaO0EikdO1wWasEIQWCowrBX3AZmHQlJ/7oSoxCWThXd1I0o2jHFwxUT5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732302616; c=relaxed/simple;
-	bh=7Js9725yuDTaqZx4v6vLyqGvlwmpzX48vHgFV4IOGeY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eGO943RsIpg518w3hQ9hmH3hy+HwX0QTlRPk/dctLU2kVfJ1Ez0lSfpbY23+CY5YjynGHWK3pdt9Ae+rls+KkoKV5wTxVethzCRDCrm/wWJpUfMWyk8fDxvri4SgY61N9MwfGb4/eDmsGFlE1qwPirhBWRJQob+p78aJ/hch+Vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xv3nCgt+; arc=none smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2ffa12ad18cso25917341fa.2;
-        Fri, 22 Nov 2024 11:10:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732302613; x=1732907413; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=EC3Zv8ppd5odVr8KSpm+U6T+1AdhI4uzCIwkEFj3kNY=;
-        b=Xv3nCgt+hdxGQiX2N+10Mx2pQxlBupVEp5+cDVm4AbFBo3fZPGx1yHtgwEH8PHiYYG
-         GS15h67LfdNLy+3ZTFJ7UC4ldmVJF2rDJqVMOecjcraKNVlLlyhulClcKhWRWjCDnPF/
-         6UayX8Fknz/WjJHsJ+GqGu+1Vp8LMHzUkeKNG0iG5ODM0N4dcntEH4blqlVIWEHm81UH
-         IS3aA6Apk1O6D0a2fPh5W9TpedA32WbXHncdcwOn43hizcy4288Hs3Px5zF014iJhXMx
-         9PaYttyIQ9ukdwg5E/yp8G3WvsquZA3GwDu8aCMe8jEaxO7FlOGxohd/cBkWaX1Lq8SO
-         /OUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732302613; x=1732907413;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EC3Zv8ppd5odVr8KSpm+U6T+1AdhI4uzCIwkEFj3kNY=;
-        b=TVHXZACpmkXsXsbLoYmVFAxFbm2CCeuKh0seANiHMKb+ZXgXdn+SnH+cMtGOHz/8jI
-         l7HHOYwSrvVq989fK+sfsq2gnup2G/lrnlVOickDsrybhzynrIDAylrv7noOCSgte8SG
-         YuHYKTLHLTfzA8+KK9BvSwnjHa6avFtBwtMQbmMNdy+UE40KzrF/ORKbclZGcBfVnCV6
-         Q9DJ93Sx9je0SwB5VuQOW9Zi+dc9KxGtradRKDRBa829Qsz3GDO+p6umIW9GzwwRGSxH
-         tsj/BMYKq4GGYBgKoslG79b5xiLhvfhfdO1cyXw1oiAXJ3TJNH3XjYhLkZX+W0To8PQX
-         tzyw==
-X-Forwarded-Encrypted: i=1; AJvYcCUMshvTEKAGxIWdnUVJJrg5yNAB9v68O196lx7zzRFUwIyrPaU1YYgGIVTlXePTUF0bUFlmZGm2cEUjlR2cQYE=@vger.kernel.org, AJvYcCV4Jlr7ByyV+JZhBrSXfqrZo8zXXFnGk56q5w0bvPJnPm4DUfwZhhaIR/j4k2b/jo2kU0rRWzPMKThHpts=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYU7g5NNuB+JtCYzQiJCugnnirMhAWZxBD/OJUb4kx3aJtkTNV
-	jP6oK5gDjEmhRXeDFbhrCqPuqMuRxhkuhbTRegil1QhOhyQz5DY0
-X-Gm-Gg: ASbGncuJebPKS6AEnOObzF8brUZvaZqfKjeGfnaM0dw3DPlBMApjPhJ0HLu5BKCL0vS
-	6XkFdcdMqLMiIyYEkxDHrMhtij26wJutf8hxNad9XLmmVorvDpGxmjgP23RUfIZFs81fIDh2zmO
-	o2n1y9FVMyIUJocUFJRTbk6A2cpoUKjWHy99T/NYggBnPxX0aR1r72v94teFqX1bonjZk59PMx0
-	yujpfHViXSoMQQUufjdw1V8kymsWmPK7Tl1p/14j/gubjR2HqTrZUJz
-X-Google-Smtp-Source: AGHT+IHO0TeGbqkaOfQW2+IKeKdpnqM3Ct4QNhv9ccJAX31oRz7/MdACaTtHpxTcQrx5kpCbmVnsWA==
-X-Received: by 2002:a05:651c:1992:b0:2ff:a928:a22f with SMTP id 38308e7fff4ca-2ffa928a4ddmr27044621fa.28.1732302612596;
-        Fri, 22 Nov 2024 11:10:12 -0800 (PST)
-Received: from [192.168.0.50] ([81.196.40.57])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d021179e8bsm1074416a12.23.2024.11.22.11.10.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 Nov 2024 11:10:11 -0800 (PST)
-Message-ID: <773afd3d-91f0-4dc6-abf8-481d3125c047@gmail.com>
-Date: Fri, 22 Nov 2024 21:10:09 +0200
+	s=arc-20240116; t=1732309353; c=relaxed/simple;
+	bh=grh45kAwHO/bKLC17vTryybvQ8Tj/JK/PA1featYDDg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ebhaqiBY5zbHTfzD3WAPpGimLi3drxLRxJjVN44Dktq9LEW1YUZ7FaUZsRYYgBxkBypsUEbeBbb45kLDjh71XfZsQ17pSE0taRS/pXE70NhQDU4SfSygSLbKErEX5ispsRtf0YCwuAu3AUJvqQM6omwANgDq3hhqh9n8X0JKwR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=fJDOVmmu; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AMD5Xg2020741;
+	Fri, 22 Nov 2024 21:02:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	eEoADqBo8Y2ihGtHgqXwVWkc/iPbd+mNJfFXRwUM//I=; b=fJDOVmmuYi2Qybus
+	DhhIuD1Duky7mqGIHI9xr9anq0lTMfQLgtnJQ3i7AFl+uN35jFL3imUJ4Q46qqc+
+	Y96P9CfBAnJx3E+BVuaIbo3+b6/VPnKoe0ICsrGHzbaKfrRmAEty5beo2CUt4kCn
+	yJRc1YrE3Z6bgrrB8yi66TREPBGcTIfwfTE8XOiQVoZddJHgyITOGT9OAWXHdQqv
+	i1HCbyoJf8gAkVfjIQPAiRcbLBFZVSn9sFFvPVy9s771b9XJcTfzQHnz+LUGGH0H
+	RWEooNqTI3qtee/+rNmL2OW/Ur3Yxlzc2bXiosvi5R8XQaZC/ZxsXywhznHaCsqN
+	YbxYVA==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 432thph35q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Nov 2024 21:02:27 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4AML2QVQ028222
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 Nov 2024 21:02:26 GMT
+Received: from [10.111.176.168] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 22 Nov
+ 2024 13:02:26 -0800
+Message-ID: <f5573d77-ed6c-4b23-b58f-da0fc5f22f9d@quicinc.com>
+Date: Fri, 22 Nov 2024 13:02:25 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -80,47 +65,53 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless-next] wifi: rtw88: Fix an unreachable code issue
-To: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>,
- pkshih@realtek.com, linux-wireless@vger.kernel.org
-Cc: kvalo@kernel.org, linux-kernel@vger.kernel.org
-References: <20241122121459.134107-1-dheeraj.linuxdev@gmail.com>
+Subject: Re: [PATCH] wifi: ath12k: Report proper tx completion status to
+ mac80211
+To: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>,
+        <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Vinith Kumar R
+	<quic_vinithku@quicinc.com>
+References: <20241122173432.2064858-1-quic_tamizhr@quicinc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
 Content-Language: en-US
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <20241122121459.134107-1-dheeraj.linuxdev@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20241122173432.2064858-1-quic_tamizhr@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: _3nj9n3HZlrXFMDpbymNmhoaQYD-4TiN
+X-Proofpoint-ORIG-GUID: _3nj9n3HZlrXFMDpbymNmhoaQYD-4TiN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ lowpriorityscore=0 mlxlogscore=999 priorityscore=1501 phishscore=0
+ suspectscore=0 mlxscore=0 spamscore=0 clxscore=1015 adultscore=0
+ bulkscore=0 impostorscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2409260000 definitions=main-2411220177
 
-On 22/11/2024 14:14, Dheeraj Reddy Jonnalagadda wrote:
-> The error handling in rtw8821a_iqk_tx_vdf_true() contained unreachable
-> code due to tx_fail being explicitly set to false before the error check.
-> This prevented proper handling of failures and resulted in dead code.
+On 11/22/2024 9:34 AM, Tamizh Chelvam Raja wrote:
+> From: Vinith Kumar R <quic_vinithku@quicinc.com>
 > 
-> Signed-off-by: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
-> ---
->  drivers/net/wireless/realtek/rtw88/rtw8821a.c | 2 --
->  1 file changed, 2 deletions(-)
+> Currently Tx completion for few exception packets are received from
+> firmware and the tx status updated to mac80211. The tx status values of
+> HAL_WBM_REL_HTT_TX_COMP_STATUS_DROP and HAL_WBM_REL_HTT_TX_COMP_STATUS_TTL
+> are considered as tx failure and reported as tx failure to mac80211.
+> But these failure status is due to internal firmware tx drop and these
+> packets were not tried to transmit in the air.
+> In case of mesh this invalid tx status report might trigger mpath broken
+> issue due to increase in mpath fail average.
+> So do not report these tx status as tx failure instead free the skb
+> by calling ieee80211_free_txskb(), and that will be accounted as dropped
+> frame.
 > 
-> diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821a.c b/drivers/net/wireless/realtek/rtw88/rtw8821a.c
-> index db242c9ad68f..c06ba7d615df 100644
-> --- a/drivers/net/wireless/realtek/rtw88/rtw8821a.c
-> +++ b/drivers/net/wireless/realtek/rtw88/rtw8821a.c
-> @@ -221,8 +221,6 @@ static void rtw8821a_iqk_tx_vdf_true(struct rtw_dev *rtwdev, u32 cal,
->  				/* Originally: if (~tx_fail) {
->  				 * It looks like a typo, so make it more explicit.
->  				 */
-> -				tx_fail = false;
-> -
->  				if (!tx_fail) {
->  					rtw_write32(rtwdev, REG_RFECTL_A,
->  						    0x02000000);
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+> 
+> Signed-off-by: Vinith Kumar R <quic_vinithku@quicinc.com>
+> Signed-off-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-It's like that on purpose, as you can see from the comment.
-
-Your patch changes the behaviour of the code. If it really bothers you,
-fix it without changing the behaviour.
-
-Also, you should mention in the commit message if you tested
-with real hardware or not, and what tool brought this problem
-to your attention.
 
