@@ -1,34 +1,34 @@
-Return-Path: <linux-wireless+bounces-15606-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15607-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F5E99D630E
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2024 18:28:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F3B5B9D630F
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2024 18:28:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75EE5B21A35
-	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2024 17:28:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75370B23688
+	for <lists+linux-wireless@lfdr.de>; Fri, 22 Nov 2024 17:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A1E11DF255;
-	Fri, 22 Nov 2024 17:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3963B1DEFC6;
+	Fri, 22 Nov 2024 17:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="U80MHH/k"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="mYD0xa2U"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686A81DEFC6
-	for <linux-wireless@vger.kernel.org>; Fri, 22 Nov 2024 17:28:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A501DEFF0
+	for <linux-wireless@vger.kernel.org>; Fri, 22 Nov 2024 17:28:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732296502; cv=none; b=ZI3mafB5VSBZUeD/dXB+BCnlxEmmr2tTTmVqkPgtUtqawy8EC80ZJbkLbVON+JsNRiyGXShs9Ba2nvgTxNv/iu87++v3AJp63LBtdDRQT51fCF3nbpFAD56FTb9ssyIEXEvxM8oCue4XdPGHrpj2DeVlBhWA6SzhBO4wg6TmOys=
+	t=1732296504; cv=none; b=mVcx923xMHZeg5LKancAe/Lhxx13sCrce5E0yxMiWkRn4cOxTBFfzrq1WryrZdKDmN51oUbHM2IzIVv/yuuGOepIUUkz/aFB8apD8spaUefUihijWJ6BlcGIc+1dgpTTS0Y0XiBHg60nxXAKgzrnBhVC+XSsFlBnulQRX0hpQfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732296502; c=relaxed/simple;
-	bh=iWPQ8g7th1w3oWFGbY9qUDIEz6ZHYKxaUceh3CGcUYo=;
+	s=arc-20240116; t=1732296504; c=relaxed/simple;
+	bh=6sLqr8T5oNllPie0FXtuPfOux4BMIjy1DXSCtbETzj0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NF0QmmC70FoQbbrJmRFZSrKY0XLj5MrQA4hEd1jLmUsr6VXwvCW1TuaqDMTj/VIY7Vc2tNqczCdx/ClInn6rBWF2s3d+fjLXYF46eKqAt+3HVFSXqhagWUDqyf9NnoOip+Q6MO1KAG7uvkr8lGUdsXF7VqIz8p7PWPUtWeZ8X9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=U80MHH/k; arc=none smtp.client-ip=178.60.130.6
+	 MIME-Version; b=avSZ7KlOU4+XfEpoC6ruugK026sdrWmCPFpRVIypBLkNmfb/JIzA8RaCjqjiLtaFw67lHb/u6JgULjaNIiXf9PSx4A8LC3Mt7MNILQWgGkT5tZlQJG0Rg2HiKfnz+Lmmmvb+ksauyHUyunzUzmCt6diQY1OCMlKH7+uMEYepEl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=mYD0xa2U; arc=none smtp.client-ip=178.60.130.6
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
@@ -37,25 +37,25 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=/f64KhTC5hBXeQ4DukwxE514rk0rPBksaCe/5QmBVJY=; b=U80MHH/knAiM8MFx0fPcIAY58x
-	LST6Zqr7D0oHyYNjEj7BxNsuKWnEvo/Y3GjFG/u32/hzpbZYW7KVQ1SYZR6fPfR24ja8sMf2MzxSJ
-	rtFuqjjzYW+VCTJzlN/UfxxC32TzLNjgeDbFGJ4vSDyuQtNGcWoTMFltF/az//2CRzwD1fhgaLWTy
-	TbOaSnGaP1copqEISvWHUgAKYupfRSzum1oKKPgmTBrvmWm1p3zPt/ZYsrHIpjh0YQUQdZ11rur1H
-	fYl1lgY0H+flYeEpX59e/RqHtXqsHTRQc2EIJ5ApOoIF14kfxJX3wbPwyQdZmqOwapbrg+X7AxiHu
-	DUzaO/eQ==;
+	bh=nDEN/3ps0ao/Me8pYKHt+y4J4UsZ7gYnppCHKQT8FCg=; b=mYD0xa2UNPcnKt4+8dreGNhx9a
+	CtZbAi9iGxYAtjXYvd/FthUBTaGUpFPtuCLM0aJ42HoqA4NKPidvY91tjJCtlrkEP7n5acVbCXkmS
+	/nDXLm5Q/KDH54BSvxFUkMdeMf/X8nOPAyKGOktaFxDHhL+c2VukdhIuzA6KzKVrRbThaKEQraIry
+	TK8mp35HGYUnzsqSeyMflKd9MMr45b3anWxv8C5E3C0CD4mX7F7egvmIjEDefRmr8IYKo+5iMIzt/
+	IA+VDgUfZK8TeLvdsIbhsiRu9Z0NLr4Bdk7ncA0JyZX/Fmgnq9iUlG94QgeUvvSggQo8MDXPLbxBD
+	4QJDPV5Q==;
 Received: from 179-125-75-203-dinamico.pombonet.net.br ([179.125.75.203] helo=quatroqueijos.lan)
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1tEXS4-00B3IM-QF; Fri, 22 Nov 2024 18:28:17 +0100
+	id 1tEXS7-00B3IM-Oc; Fri, 22 Nov 2024 18:28:20 +0100
 From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 To: linux-wireless@vger.kernel.org
 Cc: Ping-Ke Shih <pkshih@realtek.com>,
 	Kalle Valo <kvalo@kernel.org>,
 	kernel-dev@igalia.com,
 	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 2/4] wifi: rltwifi: destroy workqueue at rtl_deinit_core
-Date: Fri, 22 Nov 2024 14:27:16 -0300
-Message-Id: <20241122172718.465539-3-cascardo@igalia.com>
+Subject: [PATCH 3/4] wifi: rtlwifi: fix memory leaks and invalid access at probe error path
+Date: Fri, 22 Nov 2024 14:27:17 -0300
+Message-Id: <20241122172718.465539-4-cascardo@igalia.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241122172718.465539-1-cascardo@igalia.com>
 References: <20241122172718.465539-1-cascardo@igalia.com>
@@ -67,78 +67,70 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-rtl_wq is allocated at rtl_init_core, so it makes more sense to destroy it
-at rtl_deinit_core. In the case of USB, where _rtl_usb_init does not
-require anything to be undone, that is fine. But for PCI, rtl_pci_init,
-which is called after rtl_init_core, needs to deallocate data, but only if
-it has been called.
+Deinitialize at reverse order when probe fails.
 
-That means that destroying the workqueue needs to be done whether
-rtl_pci_init has been called or not. And since rtl_pci_deinit was doing it,
-it has to be moved out of there.
+When init_sw_vars fails, rtl_deinit_core should not be called, specially
+now that it destroys the rtl_wq workqueue.
 
-It makes more sense to move it to rtl_deinit_core and have it done in both
-cases, USB and PCI.
+And call rtl_pci_deinit and deinit_sw_vars, otherwise, memory will be
+leaked.
 
-Since this is a requirement for a followup memory leak fix, mark this as
-fixing such memory leak.
+Remove pci_set_drvdata call as it will already be cleaned up by the core
+driver code and could lead to memory leaks too. cf. commit 8d450935ae7f
+("wireless: rtlwifi: remove unnecessary pci_set_drvdata()") and commit
+3d86b93064c7 ("rtlwifi: Fix PCI probe error path orphaned memory").
 
 Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
 Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 ---
- drivers/net/wireless/realtek/rtlwifi/base.c | 5 +++++
- drivers/net/wireless/realtek/rtlwifi/pci.c  | 2 --
- drivers/net/wireless/realtek/rtlwifi/usb.c  | 5 -----
- 3 files changed, 5 insertions(+), 7 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/pci.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/base.c b/drivers/net/wireless/realtek/rtlwifi/base.c
-index fd28c7a722d8..062d5a0a4c11 100644
---- a/drivers/net/wireless/realtek/rtlwifi/base.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/base.c
-@@ -575,9 +575,14 @@ static void rtl_free_entries_from_ack_queue(struct ieee80211_hw *hw,
- 
- void rtl_deinit_core(struct ieee80211_hw *hw)
- {
-+	struct rtl_priv *rtlpriv = rtl_priv(hw);
- 	rtl_c2hcmd_launcher(hw, 0);
- 	rtl_free_entries_from_scan_list(hw);
- 	rtl_free_entries_from_ack_queue(hw, false);
-+	if (rtlpriv->works.rtl_wq) {
-+		destroy_workqueue(rtlpriv->works.rtl_wq);
-+		rtlpriv->works.rtl_wq = NULL;
-+	}
- }
- EXPORT_SYMBOL_GPL(rtl_deinit_core);
- 
 diff --git a/drivers/net/wireless/realtek/rtlwifi/pci.c b/drivers/net/wireless/realtek/rtlwifi/pci.c
-index 4388066eb9e2..e60ac910e750 100644
+index e60ac910e750..a870117cf12a 100644
 --- a/drivers/net/wireless/realtek/rtlwifi/pci.c
 +++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -1656,8 +1656,6 @@ static void rtl_pci_deinit(struct ieee80211_hw *hw)
- 	synchronize_irq(rtlpci->pdev->irq);
- 	tasklet_kill(&rtlpriv->works.irq_tasklet);
- 	cancel_work_sync(&rtlpriv->works.lps_change_work);
--
--	destroy_workqueue(rtlpriv->works.rtl_wq);
- }
+@@ -2165,7 +2165,7 @@ int rtl_pci_probe(struct pci_dev *pdev,
+ 	if (rtlpriv->cfg->ops->init_sw_vars(hw)) {
+ 		pr_err("Can't init_sw_vars\n");
+ 		err = -ENODEV;
+-		goto fail3;
++		goto fail2;
+ 	}
+ 	rtl_init_sw_leds(hw);
  
- static int rtl_pci_init(struct ieee80211_hw *hw, struct pci_dev *pdev)
-diff --git a/drivers/net/wireless/realtek/rtlwifi/usb.c b/drivers/net/wireless/realtek/rtlwifi/usb.c
-index 0368ecea2e81..f5718e570011 100644
---- a/drivers/net/wireless/realtek/rtlwifi/usb.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/usb.c
-@@ -629,11 +629,6 @@ static void _rtl_usb_cleanup_rx(struct ieee80211_hw *hw)
- 	tasklet_kill(&rtlusb->rx_work_tasklet);
- 	cancel_work_sync(&rtlpriv->works.lps_change_work);
+@@ -2183,14 +2183,14 @@ int rtl_pci_probe(struct pci_dev *pdev,
+ 	err = rtl_pci_init(hw, pdev);
+ 	if (err) {
+ 		pr_err("Failed to init PCI\n");
+-		goto fail3;
++		goto fail4;
+ 	}
  
--	if (rtlpriv->works.rtl_wq) {
--		destroy_workqueue(rtlpriv->works.rtl_wq);
--		rtlpriv->works.rtl_wq = NULL;
--	}
--
- 	skb_queue_purge(&rtlusb->rx_queue);
+ 	err = ieee80211_register_hw(hw);
+ 	if (err) {
+ 		pr_err("Can't register mac80211 hw.\n");
+ 		err = -ENODEV;
+-		goto fail3;
++		goto fail5;
+ 	}
+ 	rtlpriv->mac80211.mac80211_registered = 1;
  
- 	while ((urb = usb_get_from_anchor(&rtlusb->rx_cleanup_urbs))) {
+@@ -2213,9 +2213,12 @@ int rtl_pci_probe(struct pci_dev *pdev,
+ 	set_bit(RTL_STATUS_INTERFACE_START, &rtlpriv->status);
+ 	return 0;
+ 
+-fail3:
+-	pci_set_drvdata(pdev, NULL);
++fail5:
++	rtl_pci_deinit(hw);
++fail4:
+ 	rtl_deinit_core(hw);
++fail3:
++	rtlpriv->cfg->ops->deinit_sw_vars(hw);
+ 
+ fail2:
+ 	if (rtlpriv->io.pci_mem_start != 0)
 -- 
 2.34.1
 
