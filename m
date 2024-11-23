@@ -1,109 +1,125 @@
-Return-Path: <linux-wireless+bounces-15618-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15619-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BA619D6885
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Nov 2024 10:54:56 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C4329D6A7B
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Nov 2024 18:09:05 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FD24161212
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Nov 2024 09:54:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C841C281CEF
+	for <lists+linux-wireless@lfdr.de>; Sat, 23 Nov 2024 17:09:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54BB516FF44;
-	Sat, 23 Nov 2024 09:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C10977CF16;
+	Sat, 23 Nov 2024 17:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ajaYIf4F"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YikKy8BM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9031915FD01
-	for <linux-wireless@vger.kernel.org>; Sat, 23 Nov 2024 09:54:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52AF2182C5;
+	Sat, 23 Nov 2024 17:08:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732355692; cv=none; b=jQfCGcCsu+u4j950l+rRb0uQSUtFcxX1wAg2gbcjfg1kuF7Zy+CmpF9Gab75LtPAE7PLROfKM1nbqrN5+ThdsrHBeMqpl5NsL44pm/fFTnLinOjavGING+coQycqf7eTdqnuxqMTtBZbJdNmIYoX+7eYn2Npw22qE/zzk9imfcw=
+	t=1732381739; cv=none; b=MB/TpfenA8wWV9ylyTtrlekYCh1wPjM3USswoNGMQ5JKInRcB3wv477di2RJ29QWq45DWCmWuFNZXJo7Id30YAdVI3xUDrm/WnS0LMGDkOBS5UGsUoT5VBdRs7xo8MZNjRKOyK5/BrB/TnZ969i5ToFoI+hxqgLPHedHlMXgqf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732355692; c=relaxed/simple;
-	bh=0xeKW3wJPpF2PUd0ri5LXoi13kAp2hX49JxJZYu9dKo=;
-	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=REin669G3+z54FVT2zCUp/APX2KqLKpZkr+0hCN5KuYVFjpCgLqNCGVpiS5e9yKTUQNN5dN1OYlPPhLND0M9T8NLX8HR85af80eERtd6UkxKrFKu8zh211GgmLhdWXqvsdVrbHHENwHK8ajL1i3/HBRzi8gRz/ukydapXxAN8hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ajaYIf4F; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a9f1c590ecdso483387966b.1
-        for <linux-wireless@vger.kernel.org>; Sat, 23 Nov 2024 01:54:50 -0800 (PST)
+	s=arc-20240116; t=1732381739; c=relaxed/simple;
+	bh=5cPMr1DNbqYnFPyBfwKQvLi2clCHwTN2t1b2+wRxcrA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OjIGmNZ01AjrisjysV835tJeSjddfLqeaO7RNFMJenVPEcVam/BpoxCZH1yK3/dVH9tSfP3RDloe86AAmdfzdLctsP8zSJhuwIj0hQHW7qdNydpTgJEI516XQuBc0tj8F5C/DljVyAfAOtIZt86hZOMt3SxmmsCuxM6TWZ8CQf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YikKy8BM; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2ea1e605193so2683002a91.0;
+        Sat, 23 Nov 2024 09:08:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1732355689; x=1732960489; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Jskvo10CVA4Da00nnFjYPJVsVIavc3tS0OmXyKuBx5o=;
-        b=ajaYIf4FP2rou0UCRS5mgzmZ8ZNCLw15yDEXTp1aouJUKRCYbymSTwxeMDGFxKEv5O
-         F7BCrYkPo6l1DfpcO5Wu17ptGRpmdgOj2xuY78XaHglw4pfzpWZeZKLcu5/QYCiNDQLz
-         ugHzAqcrRRgmnSpF38OCDDcKPR0Mva/OiGf0U=
+        d=gmail.com; s=20230601; t=1732381737; x=1732986537; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rEgZ1O0VIRFiEEKyO5T6PVpXFre8ATx/DXxzHlxKxNg=;
+        b=YikKy8BMzgs42Y4SLSoHDBCH/t5jPQxLmJHYzdywwZJbwZQiJZ/xahs3S6yx0OZahG
+         nhIGg/rSKru9QABw6qo8EvZWt0+XQbei8DP4NxQ83NqLEtNBxsSP6GCEpoE74V5A7SOr
+         lVuJQqTido7FYKkqieB/vfFgv2Rizex2tWC6V9BCQixJrhKz5kLKzPUHP8Gbz2V8lmio
+         xGfhRvuX8N4y87kdofi2S8mUXXYrZ0rOLL715T+xYb/dHVDTXerNmhBoqme3X2bOjkwO
+         BdjkFhaVxWKzoYXi/jkogD84ToWnYFs2wQrEsF5MtLvSwfkiaxM7acVTUcxjHzowE/6k
+         DqJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732355689; x=1732960489;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Jskvo10CVA4Da00nnFjYPJVsVIavc3tS0OmXyKuBx5o=;
-        b=wci7MjENPiKe5mOP2xukERZKWifkvyyBAhgWgKrZFPnMtt8Eu2qAoMo/8/CUURxlPl
-         NhlsiaIqNp5yQ0Ffgc9ALW9kom9XAh6sSpfwXUPyPj46dZibNyg1bXk17Jap8MdQPsiO
-         LpKnd0+XQp5HpKPgDlTYEt5XSzex1BHbbx7MI2me0xEW2nUfNvXdpLu7qRjgd/yg3ZG9
-         CjQ5daYkVqv5/gQYsh2NnAd4wdch3qSGL/mhrzyHusZSny8gbX6eH5maDJYyXw6vMbpY
-         Ft1FOI7TgbtY3JSEvwbuvIY3rYGPiBbRLpsk2pNe6c4JOpRMf7qfEcvvn02nwpQ/lbhL
-         CN2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWE9Ld0aDIcWXcv9lFSHyEtB2qHH57s+v/11vaq+CbeUtuHpkUgRCt85OQZ09DcNMLom8sYHPQnd8Kqm91RfQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQs6eZO2/sX+hb5XmnCNBjO7qvgBLTPJGaQ0uk6rfwDW88CfGl
-	UQYnz08FbO4QPPt2sKprEZF9rQazM+9nyQXs5YQ+cJ/qLj6j/ZbbjPWJDubnsA==
-X-Gm-Gg: ASbGncsV+NriJ8DbtZM02Q/mdRZ0DtjRmAJH/4XLLs8s6uE0P5/w0keKgoBL1nWnvKa
-	RKG496K2IkHAYWB49F0JZTyn4Xiz1dGvxv/U+8quP8jtP1fu7fhsLmd57FHvYRIMDc0mZgeTB//
-	2eCrWzFbtufvYZGgfJRtg5XeWx+B939HlgRLhD6A3Lo5kRDwu2uuRt5gawUwNHYR1bbs7iwwAQd
-	fZrjFzHdjyCu/qFN6zvfbeJz/e4V0gQzJewjrkHFDvRPrU4ch1tliqSm9ZAVyxVAoRncV1MuZZh
-	m3z1wuDrq+5/
-X-Google-Smtp-Source: AGHT+IHluXPF/pYOS9YSUAOtKPUEudAL91vxuW77YbTnFsV0ymaS3yEhun2Xd02I9CAKgcZ5feUfkg==
-X-Received: by 2002:a17:906:310b:b0:aa5:2237:67af with SMTP id a640c23a62f3a-aa522376878mr236531766b.9.1732355688946;
-        Sat, 23 Nov 2024 01:54:48 -0800 (PST)
-Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa50b28ddeesm206271866b.27.2024.11.23.01.54.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 23 Nov 2024 01:54:48 -0800 (PST)
-From: Arend Van Spriel <arend.vanspriel@broadcom.com>
-To: Renjaya Raga Zenta <renjaya.zenta@formulatrix.com>, <johannes@sipsolutions.net>
-CC: <SHA-cyfmac-dev-list@infineon.com>, <aspriel@gmail.com>, <brcm80211-dev-list.pdl@broadcom.com>, <franky.lin@broadcom.com>, <hante.meuleman@broadcom.com>, <kvalo@kernel.org>, <linux-wireless@vger.kernel.org>, <marcan@marcan.st>, <wahrenst@gmx.net>
-Date: Sat, 23 Nov 2024 10:54:49 +0100
-Message-ID: <19358720a28.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <20241120091729.57361-1-renjaya.zenta@formulatrix.com>
-References: <1268ad6f22b61f1c9b3c7e20c45c1a0050aa3631.camel@sipsolutions.net>
- <20241120091729.57361-1-renjaya.zenta@formulatrix.com>
-User-Agent: AquaMail/1.53.0 (build: 105300523)
-Subject: Re: brcmfmac: Unexpected brcmf_set_channel: set chanspec 0xd022 fail, reason -52 - Part 2
+        d=1e100.net; s=20230601; t=1732381737; x=1732986537;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rEgZ1O0VIRFiEEKyO5T6PVpXFre8ATx/DXxzHlxKxNg=;
+        b=L12KaXJcKuXh955wML1i++NgVOqWvz8IBPJZvCXOhgQNrd5b9CCtSCyZvs2uLfA6pz
+         prrjzFd22QoZCSBiuMGAb2gRoEP+WHwslKzq7hoZ6fbeelNOOAh4ZbDDfKqVP+ig48Xs
+         s5kCEShQIbLlIQhsEnke8OCjWwC/agyXJrrh11miskW/d2ZsO0/btYRwSsC9AEBBmf3G
+         JlLA1P2G9Y3wAYp4m22jYqPmpRmFX3XE6WHYmawKRVRPYzJ2nmLcN6I5o3aCVzfTXEGT
+         vhr3TyNSBJnaLu0BfSw7WteqfXqIQ2rF56q7JStiKMFCi6wGB8ViN1Mr+yP0G0XQG0st
+         VuuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUIQ5d58FT0YUA4zsQQqHWN+1VulO7wfobPneVUtYvv77ZVWQmwhu94R3bwxWsAydO1eH+nfq6RLa9Tic1ykQc=@vger.kernel.org, AJvYcCUQs6AJ8igX206Zm/hq7Lu/nlHhTDWwzwQMAojTpWywquLdmeobdWgqI9/UC6MSAays2XbDThV/xkUYOpXF@vger.kernel.org, AJvYcCWpF/RPR9cf+gTwa83qiRbvMJLnXXLX9UVsohBYwxblnxkwkZAy2VASyFH8Zw32bLGBPCpo+Og6wYbzWRaQyJQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxybs2ubAeS1rScrcngGHIgBx9V3AhYsDK29ffQECXwqRPLCWjo
+	/wdQZl58mjZg3WkfaUi0XZrfVPba1UheP7yxaC0Wubvkwa2PF3uT
+X-Gm-Gg: ASbGncukCuav8eG6Z4DLpieVI6At56LsDWdMroe8LXgmKV0XtnCWEcUfa0k84ceRNR1
+	Mm13HSDQoOVrTl8uqELG5srvtWCwqDznxB8HoE7tqU9VJLSCIF8fQnhLFoi69nOTwr204Pl389f
+	B5nOHm5Vj/Cp9FlediNL7Z7fgwlmSLbKBmJ1yu67XfwH3ZDdS9yMZr8R3XpXjsjscc3+x5IkdpK
+	no8+Zwjx9fIkhKyEPDeUmg0remyAir5YCzVSLjpyFGohixDaqCHgQ==
+X-Google-Smtp-Source: AGHT+IFDejkdBKcCM04yTLOZf6qc2Kp6goUQ83wubq/BVryb3qqSxvFFIkvL2TJ53uOZB3bpHaExAw==
+X-Received: by 2002:a17:90b:1d49:b0:2ea:696d:732f with SMTP id 98e67ed59e1d1-2eb0e841915mr9065634a91.29.1732381736978;
+        Sat, 23 Nov 2024 09:08:56 -0800 (PST)
+Received: from ubuntuxuelab.. ([58.246.183.50])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2eb0cff8fe8sm3598268a91.14.2024.11.23.09.08.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 23 Nov 2024 09:08:56 -0800 (PST)
+From: Haoyu Li <lihaoyu499@gmail.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Kees Cook <kees@kernel.org>,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	Haoyu Li <lihaoyu499@gmail.com>
+Subject: [PATCH] net: mac80211: cfg: Initialize cnt before accessing elem
+Date: Sun, 24 Nov 2024 01:08:48 +0800
+Message-Id: <20241123170848.309264-1-lihaoyu499@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset="us-ascii"
 Content-Transfer-Encoding: 8bit
 
-On November 20, 2024 10:17:35 AM Renjaya Raga Zenta 
-<renjaya.zenta@formulatrix.com> wrote:
+With the new __counted_by annocation in cfg80211_rnr_elems, the "cnt"
+struct member must be set before accessing the "elem" array. Failing to
+do so will trigger a runtime warning when enabling CONFIG_UBSAN_BOUNDS
+and CONFIG_FORTIFY_SOURCE.
 
-> Hi,
->
-> I've been observing this issue for a couple of days. I added pr_err (before 
-> and after) to debug this to find the culprit
-> who change the flags from 0x0001 to 0x80020. Please see below. I used 
-> Raspberry Pi 5 with kernel 6.6.51.
+Fixes: 7b6d7087031b ("wifi: cfg80211: Annotate struct cfg80211_rnr_elems with __counted_by")
+Signed-off-by: Haoyu Li <lihaoyu499@gmail.com>
+---
+ net/mac80211/cfg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This was reported earlier by Stefan Wahren, but the thread ran dry.
-
-So what changed a couple of days ago? System upgrade?
-
-Regards,
-Arend
-
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 61a824ec33da..6936b1303e81 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1105,13 +1105,13 @@ ieee80211_copy_rnr_beacon(u8 *pos, struct cfg80211_rnr_elems *dst,
+ {
+ 	int i, offset = 0;
+ 
++	dst->cnt = src->cnt;
+ 	for (i = 0; i < src->cnt; i++) {
+ 		memcpy(pos + offset, src->elem[i].data, src->elem[i].len);
+ 		dst->elem[i].len = src->elem[i].len;
+ 		dst->elem[i].data = pos + offset;
+ 		offset += dst->elem[i].len;
+ 	}
+-	dst->cnt = src->cnt;
+ 
+ 	return offset;
+ }
+-- 
+2.34.1
 
 
