@@ -1,58 +1,64 @@
-Return-Path: <linux-wireless+bounces-15646-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15647-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48CB39D745E
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 Nov 2024 16:07:06 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 729F39D7461
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 Nov 2024 16:07:39 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DFEE285659
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 Nov 2024 15:07:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 799CB16772F
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 Nov 2024 15:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A179D237B71;
-	Sun, 24 Nov 2024 13:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323C21E3DC8;
+	Sun, 24 Nov 2024 13:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tCj5NFAG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PSqiQh5D"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727D2237B6B;
-	Sun, 24 Nov 2024 13:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008711E3797;
+	Sun, 24 Nov 2024 13:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456409; cv=none; b=B++oj+gJEHjiahxpa5fmWTD8jbOPpBGhntomn4jwbB3wvoAZUtFmjVokeF5Cr6U9ucMRO7uSWNlGGqjqW1STt5hszzzPCARzWQ2NHnYRriKq11EaM3RKLnDysx0rysczDbeVQQR/8bIG3WfchaV9BNURSQqUhlCxxut3jueH4Uw=
+	t=1732456413; cv=none; b=mJhHDN1H4PGIol2fvjYfpN85JT87RiLBbNnS5bHZqw4Z0w54TlsTTHb1UtsB9rba5zNDd2sR03ceVbWDybKspS1bKQlEQU09wBI001mqUJ4gOW01cGuEdjjvqKppwiouzPvxhVUfTklp7o81zVjILwkQ1zx691B4HYBhxB0tdg8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456409; c=relaxed/simple;
-	bh=e0a/25+MmNItWmdk8EGb0vTjKRwEHoX7pg++9FJSlrk=;
+	s=arc-20240116; t=1732456413; c=relaxed/simple;
+	bh=w9oMkrzwqPiAs7gTYKlGYbAnryqRc5nHyfstGEFMIzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UN7G8Wv3euL/SOTrjUPfzJ6ESJBahXq8Q35g4X91WJUATAqbrxs5Ry0QBJCBSVBILjtk3UyHIqysW++gGLxliXVhJPEqNoThAF7pyfxRRVDLvxFWnpyxAL3uuR7W9DEW4CqgjJzGrSaYSl8N4rdWrG07GbrvMmidc86iEIGhw9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tCj5NFAG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2118AC4CECC;
-	Sun, 24 Nov 2024 13:53:28 +0000 (UTC)
+	 MIME-Version; b=vAFcBQnMW6r/aznD1OVm463t0hP9r0IKh5YECJLyPV/BYJ/FluUakKXntr7IHGUdveOAS4VQ3gzDR8p6ox2bYXadHaSyTZgF4Ety4BqV69w6oJAnbLtlZqIhjrCSqv82rnr8ooYKrA3T+1sdci48NXbVPW+hYJ6GAUygBs3ssWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PSqiQh5D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13FD9C4CED3;
+	Sun, 24 Nov 2024 13:53:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456409;
-	bh=e0a/25+MmNItWmdk8EGb0vTjKRwEHoX7pg++9FJSlrk=;
+	s=k20201202; t=1732456412;
+	bh=w9oMkrzwqPiAs7gTYKlGYbAnryqRc5nHyfstGEFMIzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tCj5NFAGnqsb7Af31FpkJxu6NLP7PQ8sfejhdZPnnB3YlIzT8MOQY885uThF+PNXx
-	 Knr7OAtURyBN1+/zildQ4LMe1D0ZSLuzNptQVYmGxklz0RRIdxgWsk/zsfCoszyo4j
-	 cA7druTZ1LuB0ZQ+md9OgRTGRKkqz/hrRevHw7TLIO43aBs1H/XArFLdg0DhlQaPEC
-	 HZYA2Dr/eGMLJFmmH3Fb6hK/zeZnlJAB0Wzh444Aj4uX0JR7lhCmTYEZmVyLSqbbkt
-	 4ShOETCW0mj5R4ISb90Fa19NVABJsqugxceAgvTZGkz1dJ9TEAWuLl5HF6hX0d/fVs
-	 zvbkgaFe2VQkQ==
+	b=PSqiQh5DpqNPBpqH5glz7wTwnhOM1X/RnseRD3xpTnr61CaOxOfpGsrfo8dLlXQO5
+	 SlrFFvDOBDwn/JOerIcU2QtgrMbBV7ep3y02KkCAiSTiwIi4gnuOd7R3MqcPwD141w
+	 IRwytiPtnvvnXBFa86yTJonUO8Q/kdMaocOjm0puTgHmxVVRhEP6L7kKhMXaydQDmE
+	 CafOoZ9MvgCIQViMJDHH23yXKWlJaxsMZ6laOyDde3z9Vf7fLlXnoRBVjUFUe5G69r
+	 5bsqIpQrIFVZBfgqe4fVROqk2oxPEs8JWzlPzabL0h4v947FcZZmiMzx3l950NVh1m
+	 MIAyK+gHfAZig==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
-	Abaci Robot <abaci@linux.alibaba.com>,
+Cc: Norbert van Bolhuis <nvbolhuis@gmail.com>,
 	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	stas.yakovlev@gmail.com,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 30/36] wifi: ipw2x00: libipw_rx_any(): fix bad alignment
-Date: Sun, 24 Nov 2024 08:51:44 -0500
-Message-ID: <20241124135219.3349183-30-sashal@kernel.org>
+	arend.vanspriel@broadcom.com,
+	saikrishnag@marvell.com,
+	megi@xff.cz,
+	krzysztof.kozlowski@linaro.org,
+	erick.archer@outlook.com,
+	jacobe.zang@wesion.com,
+	linux-wireless@vger.kernel.org,
+	brcm80211@lists.linux.dev,
+	brcm80211-dev-list.pdl@broadcom.com
+Subject: [PATCH AUTOSEL 5.15 31/36] wifi: brcmfmac: Fix oops due to NULL pointer dereference in brcmf_sdiod_sglist_rw()
+Date: Sun, 24 Nov 2024 08:51:45 -0500
+Message-ID: <20241124135219.3349183-31-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124135219.3349183-1-sashal@kernel.org>
 References: <20241124135219.3349183-1-sashal@kernel.org>
@@ -67,51 +73,49 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.173
 Content-Transfer-Encoding: 8bit
 
-From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+From: Norbert van Bolhuis <nvbolhuis@gmail.com>
 
-[ Upstream commit 4fa4f049dc0d9741b16c96bcbf0108c85368a2b9 ]
+[ Upstream commit 857282b819cbaa0675aaab1e7542e2c0579f52d7 ]
 
-This patch fixes incorrect code alignment.
+This patch fixes a NULL pointer dereference bug in brcmfmac that occurs
+when a high 'sd_sgentry_align' value applies (e.g. 512) and a lot of queued SKBs
+are sent from the pkt queue.
 
-./drivers/net/wireless/intel/ipw2x00/libipw_rx.c:871:2-3: code aligned with following code on line 882.
-./drivers/net/wireless/intel/ipw2x00/libipw_rx.c:886:2-3: code aligned with following code on line 900.
+The problem is the number of entries in the pre-allocated sgtable, it is
+nents = max(rxglom_size, txglom_size) + max(rxglom_size, txglom_size) >> 4 + 1.
+Given the default [rt]xglom_size=32 it's actually 35 which is too small.
+Worst case, the pkt queue can end up with 64 SKBs. This occurs when a new SKB
+is added for each original SKB if tailroom isn't enough to hold tail_pad.
+At least one sg entry is needed for each SKB. So, eventually the "skb_queue_walk loop"
+in brcmf_sdiod_sglist_rw may run out of sg entries. This makes sg_next return
+NULL and this causes the oops.
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=11381
-Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+The patch sets nents to max(rxglom_size, txglom_size) * 2 to be able handle
+the worst-case.
+Btw. this requires only 64-35=29 * 16 (or 20 if CONFIG_NEED_SG_DMA_LENGTH) = 464
+additional bytes of memory.
+
+Signed-off-by: Norbert van Bolhuis <nvbolhuis@gmail.com>
 Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20241101060725.54640-1-jiapeng.chong@linux.alibaba.com
+Link: https://patch.msgid.link/20241107132903.13513-1-nvbolhuis@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/ipw2x00/libipw_rx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
-index 7a684b76f39b7..ae9d026374953 100644
---- a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
-+++ b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
-@@ -870,8 +870,8 @@ void libipw_rx_any(struct libipw_device *ieee,
- 	switch (ieee->iw_mode) {
- 	case IW_MODE_ADHOC:
- 		/* our BSS and not from/to DS */
--		if (ether_addr_equal(hdr->addr3, ieee->bssid))
--		if ((fc & (IEEE80211_FCTL_TODS+IEEE80211_FCTL_FROMDS)) == 0) {
-+		if (ether_addr_equal(hdr->addr3, ieee->bssid) &&
-+		    ((fc & (IEEE80211_FCTL_TODS + IEEE80211_FCTL_FROMDS)) == 0)) {
- 			/* promisc: get all */
- 			if (ieee->dev->flags & IFF_PROMISC)
- 				is_packet_for_us = 1;
-@@ -885,8 +885,8 @@ void libipw_rx_any(struct libipw_device *ieee,
- 		break;
- 	case IW_MODE_INFRA:
- 		/* our BSS (== from our AP) and from DS */
--		if (ether_addr_equal(hdr->addr2, ieee->bssid))
--		if ((fc & (IEEE80211_FCTL_TODS+IEEE80211_FCTL_FROMDS)) == IEEE80211_FCTL_FROMDS) {
-+		if (ether_addr_equal(hdr->addr2, ieee->bssid) &&
-+		    ((fc & (IEEE80211_FCTL_TODS + IEEE80211_FCTL_FROMDS)) == IEEE80211_FCTL_FROMDS)) {
- 			/* promisc: get all */
- 			if (ieee->dev->flags & IFF_PROMISC)
- 				is_packet_for_us = 1;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+index ac02244a6fdf1..16c46845566ef 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bcmsdh.c
+@@ -770,7 +770,7 @@ void brcmf_sdiod_sgtable_alloc(struct brcmf_sdio_dev *sdiodev)
+ 
+ 	nents = max_t(uint, BRCMF_DEFAULT_RXGLOM_SIZE,
+ 		      sdiodev->settings->bus.sdio.txglomsz);
+-	nents += (nents >> 4) + 1;
++	nents *= 2;
+ 
+ 	WARN_ON(nents > sdiodev->max_segment_count);
+ 
 -- 
 2.43.0
 
