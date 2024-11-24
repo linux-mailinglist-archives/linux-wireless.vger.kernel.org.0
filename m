@@ -1,60 +1,60 @@
-Return-Path: <linux-wireless+bounces-15630-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15631-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F5A49D751B
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 Nov 2024 16:27:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 55F9E9D76A6
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 Nov 2024 18:26:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D93C7BA0C37
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 Nov 2024 14:10:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0327B2357A
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 Nov 2024 14:11:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA0971FCF6B;
-	Sun, 24 Nov 2024 13:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F5C81FF608;
+	Sun, 24 Nov 2024 13:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MgIcOM/u"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XddKBOMd"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD11F1FCF65;
-	Sun, 24 Nov 2024 13:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453BE1FF602;
+	Sun, 24 Nov 2024 13:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732455793; cv=none; b=EwC80eIr1o7fRi6LapsRE5bdvIsSTJRzzCFMT9jbOaaEzb4jpWXOII34YiWqNqm3VXMnGm4h+7SuktXzfXsoD91D9KaioC4IKclWwNlMsoW+uCbMoJOTbgADplEnDPny/HUTN8h7dKktj/LbMWwk/kgskF+a9rjrI/sRxcz4o+8=
+	t=1732455795; cv=none; b=ofKnl/sNTXPZJ/ztKvPtPtk//JkESrsU5a0SqQ1d4ycI/rpWST8SuU+JaVomxF6lIvz0kgKsvnXsArHN63sov87ZtNuHD9xC+t8eTZ/TfPYRZOx0QSv+C4ZiUEAnKV6Wg62IpdjjTji1rgusySDAc4PvaVD3DPwd2RU31K/+kM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732455793; c=relaxed/simple;
-	bh=8oreY0imW4H/APsYD40vBOOhKAUrw0TwBDohPYNmXws=;
+	s=arc-20240116; t=1732455795; c=relaxed/simple;
+	bh=N2DxJvzUNidz+elY9CCWZGSztHwVPDMe5MnXE8+gXbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fBvbo6RofKQSLwmjj3hyrQ8T0zg0GG2Nuglfxe386rnc6/3FCRt/+znhxRcRIYxwkY9yF3+2Quq3WEorzI2YkoHLhA/6ndDMSTpaPNfBE3gNJAuiMEYmY2RelJawiV+TUZd+r1GnvlqYXItcddPUrqrCHwSwXIWuml6LTgbdM0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MgIcOM/u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AA57C4CECC;
-	Sun, 24 Nov 2024 13:43:12 +0000 (UTC)
+	 MIME-Version; b=tBc1P4GZsEeltEGobMP3lIHi+RcHfEwS+lklxYvQyacdg6xPDMUx4SyaEt4nvAs82aWIbAr9tQWrKOxXq876Y8fDdiH5f0Aw0u6J8TYJbMeQ/5gHlWEmkm7MRhrI4+4DuzEoXcrBX8dPiBcIhQwlbwaNiRPhMJfKk3M4wh/0Egs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XddKBOMd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D366FC4CED3;
+	Sun, 24 Nov 2024 13:43:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732455793;
-	bh=8oreY0imW4H/APsYD40vBOOhKAUrw0TwBDohPYNmXws=;
+	s=k20201202; t=1732455795;
+	bh=N2DxJvzUNidz+elY9CCWZGSztHwVPDMe5MnXE8+gXbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MgIcOM/u+BCXFmx9jNppUukgcKnXs9nHIxKZbjfSKxOpisM4l0RZW+hfA5UnDusq9
-	 LO2W7AsRMKl9UVJ395dYUUNBPgNrviCKuN4n1d67gajo440gkO87fKPKVunochI484
-	 8gCAxICaz8uwYFz8g6klXkrRN/TOnXouqbyWG4riLqyVlXWmR0MmAt9DyFlkYyO8AO
-	 79OJDjMfNpwXaZpQ0YSGmqaqwDGCeCpRuOsWkwKsthyN4XFGcHqZTGmEsbclqDFwnk
-	 ncrm3C0Cot7D2NhvodzznugQnxIXRveYV18j9NKxuUBNGwZpFfJ3PEET34IMAKWRY0
-	 N5e0Xk3065yzw==
+	b=XddKBOMdxNfxAx124lGyly7M/ZmUTxC1SJy0wFjTCMZA2sBrAEZOu3hZ4voeGYek0
+	 9CtKjcpIQuZFR4x6NMsuQTruMRRK5BDr3vClBaAG1YgIvaQAF09SXoSQdaFmVNnLa/
+	 gDeDVuf2FNg7Mk7BS85Nss6+LiEOeoGbN5wpCrQ2+MKgsACb4OyRHAr17t4kc30mua
+	 5e+EoYc+cobN+a828XwmVjsoy3fXBKKi+N8S51y5JOc9kHd4g378pRyYh2zARKvPCi
+	 QNmBv0X34AJ8+pIQ8suagWsj5LNiTYt81noZL/9N35K2bUSTfqdZpVOR6tsUlmjnxH
+	 1bjMrcrGIwJQQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kang Yang <quic_kangyang@quicinc.com>,
-	David Ruth <druth@chromium.org>,
+Cc: Rosen Penev <rosenp@gmail.com>,
 	Jeff Johnson <quic_jjohnson@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>,
+	jirislaby@kernel.org,
+	mickflemm@gmail.com,
+	mcgrof@kernel.org,
 	kvalo@kernel.org,
-	jjohnson@kernel.org,
-	linux-wireless@vger.kernel.org,
-	ath10k@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.11 39/87] wifi: ath10k: avoid NULL pointer error during sdio remove
-Date: Sun, 24 Nov 2024 08:38:17 -0500
-Message-ID: <20241124134102.3344326-39-sashal@kernel.org>
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 40/87] wifi: ath5k: add PCI ID for SX76X
+Date: Sun, 24 Nov 2024 08:38:18 -0500
+Message-ID: <20241124134102.3344326-40-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124134102.3344326-1-sashal@kernel.org>
 References: <20241124134102.3344326-1-sashal@kernel.org>
@@ -64,106 +64,37 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.10
 Content-Transfer-Encoding: 8bit
 
-From: Kang Yang <quic_kangyang@quicinc.com>
+From: Rosen Penev <rosenp@gmail.com>
 
-[ Upstream commit 95c38953cb1ecf40399a676a1f85dfe2b5780a9a ]
+[ Upstream commit da0474012402d4729b98799d71a54c35dc5c5de3 ]
 
-When running 'rmmod ath10k', ath10k_sdio_remove() will free sdio
-workqueue by destroy_workqueue(). But if CONFIG_INIT_ON_FREE_DEFAULT_ON
-is set to yes, kernel panic will happen:
-Call trace:
- destroy_workqueue+0x1c/0x258
- ath10k_sdio_remove+0x84/0x94
- sdio_bus_remove+0x50/0x16c
- device_release_driver_internal+0x188/0x25c
- device_driver_detach+0x20/0x2c
+This is in two devices made by Gigaset, SX762 and SX763.
 
-This is because during 'rmmod ath10k', ath10k_sdio_remove() will call
-ath10k_core_destroy() before destroy_workqueue(). wiphy_dev_release()
-will finally be called in ath10k_core_destroy(). This function will free
-struct cfg80211_registered_device *rdev and all its members, including
-wiphy, dev and the pointer of sdio workqueue. Then the pointer of sdio
-workqueue will be set to NULL due to CONFIG_INIT_ON_FREE_DEFAULT_ON.
-
-After device release, destroy_workqueue() will use NULL pointer then the
-kernel panic happen.
-
-Call trace:
-ath10k_sdio_remove
-  ->ath10k_core_unregister
-    ……
-    ->ath10k_core_stop
-      ->ath10k_hif_stop
-        ->ath10k_sdio_irq_disable
-    ->ath10k_hif_power_down
-      ->del_timer_sync(&ar_sdio->sleep_timer)
-  ->ath10k_core_destroy
-    ->ath10k_mac_destroy
-      ->ieee80211_free_hw
-        ->wiphy_free
-    ……
-          ->wiphy_dev_release
-  ->destroy_workqueue
-
-Need to call destroy_workqueue() before ath10k_core_destroy(), free
-the work queue buffer first and then free pointer of work queue by
-ath10k_core_destroy(). This order matches the error path order in
-ath10k_sdio_probe().
-
-No work will be queued on sdio workqueue between it is destroyed and
-ath10k_core_destroy() is called. Based on the call_stack above, the
-reason is:
-Only ath10k_sdio_sleep_timer_handler(), ath10k_sdio_hif_tx_sg() and
-ath10k_sdio_irq_disable() will queue work on sdio workqueue.
-Sleep timer will be deleted before ath10k_core_destroy() in
-ath10k_hif_power_down().
-ath10k_sdio_irq_disable() only be called in ath10k_hif_stop().
-ath10k_core_unregister() will call ath10k_hif_power_down() to stop hif
-bus, so ath10k_sdio_hif_tx_sg() won't be called anymore.
-
-Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00189
-
-Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
-Tested-by: David Ruth <druth@chromium.org>
-Reviewed-by: David Ruth <druth@chromium.org>
-Link: https://patch.msgid.link/20241008022246.1010-1-quic_kangyang@quicinc.com
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Link: https://patch.msgid.link/20240930180716.139894-2-rosenp@gmail.com
 Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/sdio.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath5k/pci.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
-index 08a6f36a6be9c..6805357ee29e6 100644
---- a/drivers/net/wireless/ath/ath10k/sdio.c
-+++ b/drivers/net/wireless/ath/ath10k/sdio.c
-@@ -3,7 +3,7 @@
-  * Copyright (c) 2004-2011 Atheros Communications Inc.
-  * Copyright (c) 2011-2012,2017 Qualcomm Atheros, Inc.
-  * Copyright (c) 2016-2017 Erik Stromdahl <erik.stromdahl@gmail.com>
-- * Copyright (c) 2022-2023 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #include <linux/module.h>
-@@ -2648,9 +2648,9 @@ static void ath10k_sdio_remove(struct sdio_func *func)
- 
- 	netif_napi_del(&ar->napi);
- 
--	ath10k_core_destroy(ar);
--
- 	destroy_workqueue(ar_sdio->workqueue);
-+
-+	ath10k_core_destroy(ar);
- }
- 
- static const struct sdio_device_id ath10k_sdio_devices[] = {
+diff --git a/drivers/net/wireless/ath/ath5k/pci.c b/drivers/net/wireless/ath/ath5k/pci.c
+index b51fce5ae2602..b3137f60e8791 100644
+--- a/drivers/net/wireless/ath/ath5k/pci.c
++++ b/drivers/net/wireless/ath/ath5k/pci.c
+@@ -46,6 +46,7 @@ static const struct pci_device_id ath5k_pci_id_table[] = {
+ 	{ PCI_VDEVICE(ATHEROS, 0x001b) }, /* 5413 Eagle */
+ 	{ PCI_VDEVICE(ATHEROS, 0x001c) }, /* PCI-E cards */
+ 	{ PCI_VDEVICE(ATHEROS, 0x001d) }, /* 2417 Nala */
++	{ PCI_VDEVICE(ATHEROS, 0xff16) }, /* Gigaset SX76[23] AR241[34]A */
+ 	{ PCI_VDEVICE(ATHEROS, 0xff1b) }, /* AR5BXB63 */
+ 	{ 0 }
+ };
 -- 
 2.43.0
 
