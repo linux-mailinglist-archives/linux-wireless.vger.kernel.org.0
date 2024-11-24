@@ -1,60 +1,58 @@
-Return-Path: <linux-wireless+bounces-15657-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15658-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17F169D7521
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 Nov 2024 16:28:44 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 005BA9D752A
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 Nov 2024 16:29:46 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EE90167FF2
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 Nov 2024 15:28:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9E80287A3E
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 Nov 2024 15:29:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D0C1EB9E6;
-	Sun, 24 Nov 2024 13:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B1C01EB9F6;
+	Sun, 24 Nov 2024 13:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fb9Vu2QN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lKEkt07C"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C2D1EABAC;
-	Sun, 24 Nov 2024 13:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138141FF808;
+	Sun, 24 Nov 2024 13:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732456653; cv=none; b=JVpelxpafmULsAGlWEFP31bqUHL3B3nKqjb0XO42cNuz3v8ECCI36/fREEkJDZ1eM0w6oO9vbWXNoRT7HEPd1Dx7hlfL2EcZeCqdh2v1hLQglA8dX3PnOGh4nVqZo/P7cbqEbC5qdIsjt01ReBH0sE28j3SQ02Pc92gSh92QaVk=
+	t=1732456666; cv=none; b=IZqVQoFG1AsIoHmh0u70YFyWZzA3x27JRc3Xzuu3sMs/SwGVO4GNsRMwC5DnR+JEDm2/SpFTBL8I7LjR8mZFdhoGFSUcUKU9oITE8KsoCBKpnwAgK78H3nRM1p1ciNu8uoaGJq1ELbLvIs9SL0gilOUDEuUCOZ5LyrLDJDti0PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732456653; c=relaxed/simple;
-	bh=OjXQeUT86j6QKuAEdC1oE0IZg6ca8uAkpSl5XRepojo=;
+	s=arc-20240116; t=1732456666; c=relaxed/simple;
+	bh=rITjNJPCl0Y8kGIrAWcsXQazJIUmkW8z/wHPAcWSIFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WEJlhmn2gAuP/b4GQ2Gml3wpbzzJInvfjgUgYQTJApNb5VzgIeIa+nMP2qLfoG8Qp9hSWCIybN9Mg8EhkOR8U6Y/yD8cZYfWPspmeGQnfubW02tv7SC4iH6oeka803WnM4Vu3KvXZ49hOkmSyQHMaHgRyF211NTBW8Ox8IQELck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fb9Vu2QN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1F50C4CED1;
-	Sun, 24 Nov 2024 13:57:31 +0000 (UTC)
+	 MIME-Version; b=oNYt1imEhnG5+mQe9Ba+LFlZZ4YciCnVpBud7YEqOHWmLl2Ph6gI+inyNrFg2fmzwucw+XmXyA0tx0FIpj86yiqdRpJCdnGKjtwCxb1YjKrwf7/8WTTAFfXTJLyBGUvqXocWvhIQcA5aY0s/DV4OTIIP29BNrnXP2jrYFz+Mdw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lKEkt07C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD15C4CEDC;
+	Sun, 24 Nov 2024 13:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732456652;
-	bh=OjXQeUT86j6QKuAEdC1oE0IZg6ca8uAkpSl5XRepojo=;
+	s=k20201202; t=1732456665;
+	bh=rITjNJPCl0Y8kGIrAWcsXQazJIUmkW8z/wHPAcWSIFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fb9Vu2QNKAgUodUdGpOlsDubNRnToC5T6K1e+ltYki8tCnciS/Nd//6BZFmeya99d
-	 Y3VwbroZ/2Da4soXEpdDzAYJv9szJvhxLOxpeO/LhTE/JXfnpJlskrSXmXQL4tkeDd
-	 C/kce115dtPt/Y1W+q/CCjH4bfoIa+dE3saNkKr6a7fZvFccBZDRfkIaSPVV/0xApo
-	 x70OhnXf1Bksp1h/ucC7HcGANqECa0FjxOn7/3RzhdmRABOH+XLb/tPJL6afQW9Wgp
-	 vgy7/snU79TpfLYDAS2XPj624HMM7yaH7m5uMTBbNVe985SVETf7GqLqIM0BLjnC4c
-	 +YxCVhbb5dFnw==
+	b=lKEkt07C54BQd97E30uZ/ktvjPEY3kkmaKt9nHjvxwvXj1xxH6bfJaLqFFPYEbP1Z
+	 F633hjZFWg0FJQPtNUYXpJGcWM7HDp5cCUKwf0p15DoDs3FmtZSAxB+hYDVaPjG7Oe
+	 bfypDt00voiOs8cVM6JQnCE/KksCMEpnnBGtVPut21ypj/PX432t6hdsUaxeGbsIF7
+	 rl557BjhodYKGxhM7VqGPd1YmokZeKxcY963+qtEY+Jf2IQ5J/DPk7nrTG0BfA48bZ
+	 WXW3fqY2ztxw9mYBw1d/UR0Qpav4Qp6COLUrpINbg+8urpnlX4wK6dFKgrA0WSZe8v
+	 Yql2scUxwsk4Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Rosen Penev <rosenp@gmail.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
+Cc: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+	Abaci Robot <abaci@linux.alibaba.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jirislaby@kernel.org,
-	mickflemm@gmail.com,
-	mcgrof@kernel.org,
-	kvalo@kernel.org,
+	stas.yakovlev@gmail.com,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 12/21] wifi: ath5k: add PCI ID for Arcadyan devices
-Date: Sun, 24 Nov 2024 08:56:45 -0500
-Message-ID: <20241124135709.3351371-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 17/21] wifi: ipw2x00: libipw_rx_any(): fix bad alignment
+Date: Sun, 24 Nov 2024 08:56:50 -0500
+Message-ID: <20241124135709.3351371-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124135709.3351371-1-sashal@kernel.org>
 References: <20241124135709.3351371-1-sashal@kernel.org>
@@ -69,32 +67,51 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 4.19.324
 Content-Transfer-Encoding: 8bit
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
 
-[ Upstream commit f3ced9bb90b0a287a1fa6184d16b0f104a78fa90 ]
+[ Upstream commit 4fa4f049dc0d9741b16c96bcbf0108c85368a2b9 ]
 
-Arcadyan made routers with this PCI ID containing an AR2417.
+This patch fixes incorrect code alignment.
 
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Link: https://patch.msgid.link/20240930180716.139894-3-rosenp@gmail.com
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+./drivers/net/wireless/intel/ipw2x00/libipw_rx.c:871:2-3: code aligned with following code on line 882.
+./drivers/net/wireless/intel/ipw2x00/libipw_rx.c:886:2-3: code aligned with following code on line 900.
+
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=11381
+Signed-off-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20241101060725.54640-1-jiapeng.chong@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath5k/pci.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/ipw2x00/libipw_rx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath5k/pci.c b/drivers/net/wireless/ath/ath5k/pci.c
-index 75526d8cc82c4..bce3f67275414 100644
---- a/drivers/net/wireless/ath/ath5k/pci.c
-+++ b/drivers/net/wireless/ath/ath5k/pci.c
-@@ -48,6 +48,7 @@ static const struct pci_device_id ath5k_pci_id_table[] = {
- 	{ PCI_VDEVICE(ATHEROS, 0x001c) }, /* PCI-E cards */
- 	{ PCI_VDEVICE(ATHEROS, 0x001d) }, /* 2417 Nala */
- 	{ PCI_VDEVICE(ATHEROS, 0xff16) }, /* Gigaset SX76[23] AR241[34]A */
-+	{ PCI_VDEVICE(ATHEROS, 0xff1a) }, /* Arcadyan ARV45XX AR2417 */
- 	{ PCI_VDEVICE(ATHEROS, 0xff1b) }, /* AR5BXB63 */
- 	{ 0 }
- };
+diff --git a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
+index 6df19f03355af..e58a5162c10e3 100644
+--- a/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
++++ b/drivers/net/wireless/intel/ipw2x00/libipw_rx.c
+@@ -874,8 +874,8 @@ void libipw_rx_any(struct libipw_device *ieee,
+ 	switch (ieee->iw_mode) {
+ 	case IW_MODE_ADHOC:
+ 		/* our BSS and not from/to DS */
+-		if (ether_addr_equal(hdr->addr3, ieee->bssid))
+-		if ((fc & (IEEE80211_FCTL_TODS+IEEE80211_FCTL_FROMDS)) == 0) {
++		if (ether_addr_equal(hdr->addr3, ieee->bssid) &&
++		    ((fc & (IEEE80211_FCTL_TODS + IEEE80211_FCTL_FROMDS)) == 0)) {
+ 			/* promisc: get all */
+ 			if (ieee->dev->flags & IFF_PROMISC)
+ 				is_packet_for_us = 1;
+@@ -889,8 +889,8 @@ void libipw_rx_any(struct libipw_device *ieee,
+ 		break;
+ 	case IW_MODE_INFRA:
+ 		/* our BSS (== from our AP) and from DS */
+-		if (ether_addr_equal(hdr->addr2, ieee->bssid))
+-		if ((fc & (IEEE80211_FCTL_TODS+IEEE80211_FCTL_FROMDS)) == IEEE80211_FCTL_FROMDS) {
++		if (ether_addr_equal(hdr->addr2, ieee->bssid) &&
++		    ((fc & (IEEE80211_FCTL_TODS + IEEE80211_FCTL_FROMDS)) == IEEE80211_FCTL_FROMDS)) {
+ 			/* promisc: get all */
+ 			if (ieee->dev->flags & IFF_PROMISC)
+ 				is_packet_for_us = 1;
 -- 
 2.43.0
 
