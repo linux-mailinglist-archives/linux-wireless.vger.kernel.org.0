@@ -1,125 +1,192 @@
-Return-Path: <linux-wireless+bounces-15620-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15621-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85F0B9D6A92
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Nov 2024 18:25:23 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EFC99D707D
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 Nov 2024 14:35:05 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9B3D163276
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 Nov 2024 13:35:00 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEFC9192D64;
+	Sun, 24 Nov 2024 13:33:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mqAO+hjN"
+X-Original-To: linux-wireless@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 17BCBB21BF3
-	for <lists+linux-wireless@lfdr.de>; Sat, 23 Nov 2024 17:25:21 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 565737CF16;
-	Sat, 23 Nov 2024 17:25:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ko/bhx+0"
-X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5766195;
-	Sat, 23 Nov 2024 17:25:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3098192D61;
+	Sun, 24 Nov 2024 13:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732382711; cv=none; b=KaS2amBSz+SkkKXxXcLzLCTi1shxhShlO0qRg17H72uU+5rzDtxK1iM33dgrX1KkMklbRvsR6XkV9/+oJEgJfHJFfeAOM2urJhXvMiQ2T+YQcTtknko2IRpA4HjbJuE4JT1VYASha1yhATqGa4vfDGGs7hBuZOaL109M8a/O9xA=
+	t=1732455197; cv=none; b=rJzFzakN3JA+z6a8N/Sn1dVbFkx3pRlaabar8Yt0Y2j9BPaWCkHBYatqzPxRH9WBglgaFQ0LCkqKwshtTXK3axU6xi4tEE22TG+kUrK0lHMH+RN+XWkBbOHi5buXR0J/K8UX0X/F22GszYh4FcZ6wjILASydcxqUFxPM3F/8ngw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732382711; c=relaxed/simple;
-	bh=do5FpcXe+YPGqzUKIa7gtHLJOU1MBH7h7I39m14jIuQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=L5nl4sgl97MqTCbzJai1JTv9VsbPRPz7bSV7/l167/HyJVQDbvr/nJ3jfTRHJBaipUWlFoq968KPHIvKUtO4AYO82qg5UhGbHylvxGrMyG1cgkJWXGqmKcwU3YWd6bbK1a58l7xNj+pKH65DBTIeNF601FEklphRlwGX6ypJw4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ko/bhx+0; arc=none smtp.client-ip=209.85.215.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-7f8cc29aaf2so2431687a12.3;
-        Sat, 23 Nov 2024 09:25:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732382709; x=1732987509; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=DW0N1eG0yxuVH6pEtyWsL2STLDTPWc/PAMyAqXq+1as=;
-        b=ko/bhx+0vIJRizMX3MkgYLR8YqFre5YVOEqzwiBlWI+cGQlxBXzgzSZ6l37LZgIdkZ
-         /lOOJBuXhcfWOzt4Cve3C8wNIJSWp6mjlDY8CvwV/TauviqEoL19crBMrA03FXSsPk1k
-         3HE+4NJ5GZG0ADqFJJsiv7TWmD5eS9yPNw5gvJnHa3h/tkmNciSLOeQ8yCietVd7Rzos
-         e+V/SdO5uOqFSpwIcwYMdMXa+xoeyhfQFlWP54pP0x2tkRoNx53kjzUFw2qxxv1DuCGO
-         sSeXVVTSACKv7q4lVzoZdTVrc4YoQtGmmGbe0HN4gkPz6f4mr9WdO+Crvp0hsgaOIJQK
-         wfgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732382709; x=1732987509;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DW0N1eG0yxuVH6pEtyWsL2STLDTPWc/PAMyAqXq+1as=;
-        b=nxLfofs2kicB3Ep74e2EsWstrXdTD+RVjoIRLG2jAZFhcU5NpvlvWBSG3evDItQtlR
-         NLY+Xh9WGoc6yG/pRzNDffoe2Sh55pv8lbYBKvLmRjbmcfPIGmnHQ9eRrDVEjsoqDtuu
-         cpjMgU4hfSwxePsKZC0rYAS3CRsPkrtPU7/JmGP3WfAdW4Xy6TlvfPb3dxiGuNMYV9Fz
-         K96Pme913VDTPcmBKo5yApcOuk45YKE4VERshHdFL0y8Hy2OOznIMXZ0KBChTlN1t4gW
-         QzQYGJRV5GkHN1vLttII1So4OWExlWFyUBpN8T+hZ/Fq8dXaCrtOjdfmtf+SHIXkpHnG
-         QI4A==
-X-Forwarded-Encrypted: i=1; AJvYcCUGHxFkJdSCKr5nL4ofgDxwnsU9iBLEsXVeG+YRrSalgAkfkJquE/zEoFFaSbKkrcbvoWRK3FeE6gHCKkR0@vger.kernel.org, AJvYcCWEBvLK5GV3MPfRwGAtLL/zK57+Hwfx4y4nlfKO/m7B5/qX0fRfuV4vczokzOTDEBmKOVrJsiRdW4qEPxrjv20=@vger.kernel.org, AJvYcCXvPCNPYU8YZ8Ic1lkOlxAF/+YA1mSapZLnbBVIJvkFv4yeCWdjPw4/D2RnokbkIYclXfHY5ruBuz61HsDWhCI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfZS6f9VtdZA05XtjemfSUMyBLU2XqI3O8p0OpyhE1j+6uxvmr
-	6Gbr45yB8dcQRM70ZPIM4xeGHHUx7xawChmEl5wqCNaxiQ51FGgoriYivHcVxpBTvK7/
-X-Gm-Gg: ASbGncvC7wChNB79cL81LcQNxTsId8Uu0cYodm/AfQFiQR1cCzRrswBAdQAT56el5+A
-	1SBpvNaVlCSJKGHJBdUc5w6IffmaI6CcpDWOK+4QXJ/V1ZIe670/KFM+k7tF1VDrCi4iwadVXab
-	dCufeantepq1z9DUI8ZaQvDoF5xZ2eIERMOO73TyW8zKDT+/oPrPzqoPpuPD+5dRqifcfMhZ/Z0
-	4dGdnrhn8ehkbY8N67Xupkp7cSny+6xhUZi3bU0JgKexdiNu2+s7Q==
-X-Google-Smtp-Source: AGHT+IG1PhaCoRwezIi0opqFOZ1+jE+e8RYz3APjscqDtcqIIdEaXJeTQaDRBchS0Yw2waNsl3Ro2A==
-X-Received: by 2002:a05:6a21:114f:b0:1e0:bf98:42dc with SMTP id adf61e73a8af0-1e0bf98435amr1574448637.28.1732382708694;
-        Sat, 23 Nov 2024 09:25:08 -0800 (PST)
-Received: from ubuntuxuelab.. ([58.246.183.50])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-724de47955asm3621038b3a.65.2024.11.23.09.25.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 Nov 2024 09:25:08 -0800 (PST)
-From: Haoyu Li <lihaoyu499@gmail.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Kees Cook <kees@kernel.org>,
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	Haoyu Li <lihaoyu499@gmail.com>
-Subject: [PATCH] net: mac80211: cfg: Initialize cnt before accessing elem in ieee80211_copy_mbssid_beacon
-Date: Sun, 24 Nov 2024 01:25:00 +0800
-Message-Id: <20241123172500.311853-1-lihaoyu499@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1732455197; c=relaxed/simple;
+	bh=fXjFAP9o3L9NJQ4trWUYtBcHl9hlse8x8GuECP8pCMg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=owcEHjRoTG+NUMhWPUIR407Isl641UjO83EIVMCCnvw8ntj4dQnTua3u3y6o5eB+4WkiY0RIsdt0B1+HX2FZo3K/wpHytbxr+SM2lVsq+3d9BzEOw/cHNBpMEqkoA+cp+9C2Rf/oI3B2lqFuErPwBywQeT42ATx9/+HRCYK4moI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mqAO+hjN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE7C6C4CED7;
+	Sun, 24 Nov 2024 13:33:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732455195;
+	bh=fXjFAP9o3L9NJQ4trWUYtBcHl9hlse8x8GuECP8pCMg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=mqAO+hjNGSdqGv5ojSfd3kz3L3az3dDz/avbwqgUpCdQuWFdocPR2vITCt0RiJR1F
+	 u2F10Xwd5uw1u2YhbDMsuKa94rtun+dPizDoUsW0UYoG2Jdb4aMxZZ3eBDUzLNv9gR
+	 Vmro549Pp7z0/++vHoaArID7S7dSIaxvTkWvgIxvplL7Kz81t+RpYVEbmhAS87Ox1N
+	 T7c4jdvRrVKyctawii2LHAlxuEGMVKbgZI04GKkTmfvJH1tYfeDq5P/WAbNfalqq33
+	 2+NO6UqELzAtR6wR1+fb+pExX4eKjRHjV35/eLfRQ9oiwiIUbDPnjf9HSGb/pazyvK
+	 OXLGwabafVEcw==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
+	Peter Robinson <pbrobinson@gmail.com>,
+	Sasha Levin <sashal@kernel.org>,
+	kvalo@kernel.org,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 007/107] wifi: rtw88: use ieee80211_purge_tx_queue() to purge TX skb
+Date: Sun, 24 Nov 2024 08:28:27 -0500
+Message-ID: <20241124133301.3341829-7-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20241124133301.3341829-1-sashal@kernel.org>
+References: <20241124133301.3341829-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.12.1
 Content-Transfer-Encoding: 8bit
 
-With the new __counted_by annocation in cfg80211_mbssid_elems,
-the "cnt" struct member must be set before accessing the "elem"
-array. Failing to do so will trigger a runtime warning when enabling
-CONFIG_UBSAN_BOUNDS and CONFIG_FORTIFY_SOURCE.
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-Fixes: c14679d7005a ("wifi: cfg80211: Annotate struct cfg80211_mbssid_elems with __counted_by")
-Signed-off-by: Haoyu Li <lihaoyu499@gmail.com>
+[ Upstream commit 3e5e4a801aaf4283390cc34959c6c48f910ca5ea ]
+
+When removing kernel modules by:
+   rmmod rtw88_8723cs rtw88_8703b rtw88_8723x rtw88_sdio rtw88_core
+
+Driver uses skb_queue_purge() to purge TX skb, but not report tx status
+causing "Have pending ack frames!" warning. Use ieee80211_purge_tx_queue()
+to correct this.
+
+Since ieee80211_purge_tx_queue() doesn't take locks, to prevent racing
+between TX work and purge TX queue, flush and destroy TX work in advance.
+
+   wlan0: deauthenticating from aa:f5:fd:60:4c:a8 by local
+     choice (Reason: 3=DEAUTH_LEAVING)
+   ------------[ cut here ]------------
+   Have pending ack frames!
+   WARNING: CPU: 3 PID: 9232 at net/mac80211/main.c:1691
+       ieee80211_free_ack_frame+0x5c/0x90 [mac80211]
+   CPU: 3 PID: 9232 Comm: rmmod Tainted: G         C
+       6.10.1-200.fc40.aarch64 #1
+   Hardware name: pine64 Pine64 PinePhone Braveheart
+      (1.1)/Pine64 PinePhone Braveheart (1.1), BIOS 2024.01 01/01/2024
+   pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+   pc : ieee80211_free_ack_frame+0x5c/0x90 [mac80211]
+   lr : ieee80211_free_ack_frame+0x5c/0x90 [mac80211]
+   sp : ffff80008c1b37b0
+   x29: ffff80008c1b37b0 x28: ffff000003be8000 x27: 0000000000000000
+   x26: 0000000000000000 x25: ffff000003dc14b8 x24: ffff80008c1b37d0
+   x23: ffff000000ff9f80 x22: 0000000000000000 x21: 000000007fffffff
+   x20: ffff80007c7e93d8 x19: ffff00006e66f400 x18: 0000000000000000
+   x17: ffff7ffffd2b3000 x16: ffff800083fc0000 x15: 0000000000000000
+   x14: 0000000000000000 x13: 2173656d61726620 x12: 6b636120676e6964
+   x11: 0000000000000000 x10: 000000000000005d x9 : ffff8000802af2b0
+   x8 : ffff80008c1b3430 x7 : 0000000000000001 x6 : 0000000000000001
+   x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
+   x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff000003be8000
+   Call trace:
+    ieee80211_free_ack_frame+0x5c/0x90 [mac80211]
+    idr_for_each+0x74/0x110
+    ieee80211_free_hw+0x44/0xe8 [mac80211]
+    rtw_sdio_remove+0x9c/0xc0 [rtw88_sdio]
+    sdio_bus_remove+0x44/0x180
+    device_remove+0x54/0x90
+    device_release_driver_internal+0x1d4/0x238
+    driver_detach+0x54/0xc0
+    bus_remove_driver+0x78/0x108
+    driver_unregister+0x38/0x78
+    sdio_unregister_driver+0x2c/0x40
+    rtw_8723cs_driver_exit+0x18/0x1000 [rtw88_8723cs]
+    __do_sys_delete_module.isra.0+0x190/0x338
+    __arm64_sys_delete_module+0x1c/0x30
+    invoke_syscall+0x74/0x100
+    el0_svc_common.constprop.0+0x48/0xf0
+    do_el0_svc+0x24/0x38
+    el0_svc+0x3c/0x158
+    el0t_64_sync_handler+0x120/0x138
+    el0t_64_sync+0x194/0x198
+   ---[ end trace 0000000000000000 ]---
+
+Reported-by: Peter Robinson <pbrobinson@gmail.com>
+Closes: https://lore.kernel.org/linux-wireless/CALeDE9OAa56KMzgknaCD3quOgYuEHFx9_hcT=OFgmMAb+8MPyA@mail.gmail.com/
+Tested-by: Ping-Ke Shih <pkshih@realtek.com> # 8723DU
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20240822014255.10211-2-pkshih@realtek.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/cfg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/sdio.c | 6 +++---
+ drivers/net/wireless/realtek/rtw88/usb.c  | 5 +++--
+ 2 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 61a824ec33da..1dd61c9bb8f1 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1088,13 +1088,13 @@ ieee80211_copy_mbssid_beacon(u8 *pos, struct cfg80211_mbssid_elems *dst,
- {
- 	int i, offset = 0;
+diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wireless/realtek/rtw88/sdio.c
+index 21d0754dd7f6a..b67e551fcee3e 100644
+--- a/drivers/net/wireless/realtek/rtw88/sdio.c
++++ b/drivers/net/wireless/realtek/rtw88/sdio.c
+@@ -1297,12 +1297,12 @@ static void rtw_sdio_deinit_tx(struct rtw_dev *rtwdev)
+ 	struct rtw_sdio *rtwsdio = (struct rtw_sdio *)rtwdev->priv;
+ 	int i;
  
-+	dst->cnt = src->cnt;
- 	for (i = 0; i < src->cnt; i++) {
- 		memcpy(pos + offset, src->elem[i].data, src->elem[i].len);
- 		dst->elem[i].len = src->elem[i].len;
- 		dst->elem[i].data = pos + offset;
- 		offset += dst->elem[i].len;
- 	}
--	dst->cnt = src->cnt;
- 
- 	return offset;
+-	for (i = 0; i < RTK_MAX_TX_QUEUE_NUM; i++)
+-		skb_queue_purge(&rtwsdio->tx_queue[i]);
+-
+ 	flush_workqueue(rtwsdio->txwq);
+ 	destroy_workqueue(rtwsdio->txwq);
+ 	kfree(rtwsdio->tx_handler_data);
++
++	for (i = 0; i < RTK_MAX_TX_QUEUE_NUM; i++)
++		ieee80211_purge_tx_queue(rtwdev->hw, &rtwsdio->tx_queue[i]);
  }
+ 
+ int rtw_sdio_probe(struct sdio_func *sdio_func,
+diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
+index b17a429bcd299..07695294767ac 100644
+--- a/drivers/net/wireless/realtek/rtw88/usb.c
++++ b/drivers/net/wireless/realtek/rtw88/usb.c
+@@ -423,10 +423,11 @@ static void rtw_usb_tx_handler(struct work_struct *work)
+ 
+ static void rtw_usb_tx_queue_purge(struct rtw_usb *rtwusb)
+ {
++	struct rtw_dev *rtwdev = rtwusb->rtwdev;
+ 	int i;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(rtwusb->tx_queue); i++)
+-		skb_queue_purge(&rtwusb->tx_queue[i]);
++		ieee80211_purge_tx_queue(rtwdev->hw, &rtwusb->tx_queue[i]);
+ }
+ 
+ static void rtw_usb_write_port_complete(struct urb *urb)
+@@ -888,9 +889,9 @@ static void rtw_usb_deinit_tx(struct rtw_dev *rtwdev)
+ {
+ 	struct rtw_usb *rtwusb = rtw_get_usb_priv(rtwdev);
+ 
+-	rtw_usb_tx_queue_purge(rtwusb);
+ 	flush_workqueue(rtwusb->txwq);
+ 	destroy_workqueue(rtwusb->txwq);
++	rtw_usb_tx_queue_purge(rtwusb);
+ }
+ 
+ static int rtw_usb_intf_init(struct rtw_dev *rtwdev,
 -- 
-2.34.1
+2.43.0
 
 
