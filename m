@@ -1,56 +1,60 @@
-Return-Path: <linux-wireless+bounces-15629-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15630-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0195B9D7245
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 Nov 2024 15:04:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F5A49D751B
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 Nov 2024 16:27:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB3CC2858F1
-	for <lists+linux-wireless@lfdr.de>; Sun, 24 Nov 2024 14:04:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D93C7BA0C37
+	for <lists+linux-wireless@lfdr.de>; Sun, 24 Nov 2024 14:10:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C85DD1F7542;
-	Sun, 24 Nov 2024 13:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA0971FCF6B;
+	Sun, 24 Nov 2024 13:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LY2jdrCu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MgIcOM/u"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06DF1CDFBC;
-	Sun, 24 Nov 2024 13:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD11F1FCF65;
+	Sun, 24 Nov 2024 13:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732455690; cv=none; b=qST3mGrcrlvM7U3MhkyeocKUYWK3/pIcq4U3jdh1zmyezj5C9POPhmwkTde5NVG8/61DrxpfhXEufpzn51/uhc6lVKVir9fYSeAL/ZBi0gkwLLsgieBN3Bw1F11jSPfrO0xuWeIa44YNrqMXtAjBXOx02LT/POKzqWYJG6T8JQ8=
+	t=1732455793; cv=none; b=EwC80eIr1o7fRi6LapsRE5bdvIsSTJRzzCFMT9jbOaaEzb4jpWXOII34YiWqNqm3VXMnGm4h+7SuktXzfXsoD91D9KaioC4IKclWwNlMsoW+uCbMoJOTbgADplEnDPny/HUTN8h7dKktj/LbMWwk/kgskF+a9rjrI/sRxcz4o+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732455690; c=relaxed/simple;
-	bh=exnPifNKMFL2qwocsopuzvq958r8D/QZRvnmi2RFrYI=;
+	s=arc-20240116; t=1732455793; c=relaxed/simple;
+	bh=8oreY0imW4H/APsYD40vBOOhKAUrw0TwBDohPYNmXws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Of5a3H+6fUa7s3vsEJEE60CNPwmLVyNDtu7j1mcP+BAlEuVtorIv8IUd62+fgDMzjaXrjGjJg+68eEJ+SCXarfhK0BYQiWuxVVaM0M1Wh2JE81uvrgiXJ9yD2FqvtIwUjnKjP2Z79UBq2PcE1/uftw+j7xuOdoopzgxlRczBQW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LY2jdrCu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA07EC4CED1;
-	Sun, 24 Nov 2024 13:41:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fBvbo6RofKQSLwmjj3hyrQ8T0zg0GG2Nuglfxe386rnc6/3FCRt/+znhxRcRIYxwkY9yF3+2Quq3WEorzI2YkoHLhA/6ndDMSTpaPNfBE3gNJAuiMEYmY2RelJawiV+TUZd+r1GnvlqYXItcddPUrqrCHwSwXIWuml6LTgbdM0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MgIcOM/u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AA57C4CECC;
+	Sun, 24 Nov 2024 13:43:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732455690;
-	bh=exnPifNKMFL2qwocsopuzvq958r8D/QZRvnmi2RFrYI=;
+	s=k20201202; t=1732455793;
+	bh=8oreY0imW4H/APsYD40vBOOhKAUrw0TwBDohPYNmXws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LY2jdrCu/Xf3nkuZzIjU0qFdVlVSaENZjWNhUcooFzywyD8fLYieANI9/faraXAvN
-	 tUxEXM2XHMjUK/c2RsrG7s08B+Ht6mLFOPE36bRziC0XzihoNJoJ1MDfeErmACSXR5
-	 XwlK/fsq+aRIG/KotAoOmXOSMQTqhKQ4IfcKwiiAJICGYO9rLBzB3E4+X0L/DrbaHD
-	 xUEurHqwY3L5/qKpEhy45ND1z7CiYUzJm68YL8/LeGKar531KK88uKIO34Wq6goS3n
-	 NBe1LuuTqMo7YYLuVhNNDotuAZKjl455byMnlQ1KNnZ3GA+xs79d2JkjV47iwFWAc5
-	 Mx8079nQxPtZQ==
+	b=MgIcOM/u+BCXFmx9jNppUukgcKnXs9nHIxKZbjfSKxOpisM4l0RZW+hfA5UnDusq9
+	 LO2W7AsRMKl9UVJ395dYUUNBPgNrviCKuN4n1d67gajo440gkO87fKPKVunochI484
+	 8gCAxICaz8uwYFz8g6klXkrRN/TOnXouqbyWG4riLqyVlXWmR0MmAt9DyFlkYyO8AO
+	 79OJDjMfNpwXaZpQ0YSGmqaqwDGCeCpRuOsWkwKsthyN4XFGcHqZTGmEsbclqDFwnk
+	 ncrm3C0Cot7D2NhvodzznugQnxIXRveYV18j9NKxuUBNGwZpFfJ3PEET34IMAKWRY0
+	 N5e0Xk3065yzw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Kang Yang <quic_kangyang@quicinc.com>,
+	David Ruth <druth@chromium.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>,
 	kvalo@kernel.org,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 14/87] wifi: rtw89: check return value of ieee80211_probereq_get() for RNR
-Date: Sun, 24 Nov 2024 08:37:52 -0500
-Message-ID: <20241124134102.3344326-14-sashal@kernel.org>
+	jjohnson@kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath10k@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.11 39/87] wifi: ath10k: avoid NULL pointer error during sdio remove
+Date: Sun, 24 Nov 2024 08:38:17 -0500
+Message-ID: <20241124134102.3344326-39-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241124134102.3344326-1-sashal@kernel.org>
 References: <20241124134102.3344326-1-sashal@kernel.org>
@@ -60,41 +64,106 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11.10
 Content-Transfer-Encoding: 8bit
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Kang Yang <quic_kangyang@quicinc.com>
 
-[ Upstream commit 630d5d8f2bf6b340202b6bc2c05d794bbd8e4c1c ]
+[ Upstream commit 95c38953cb1ecf40399a676a1f85dfe2b5780a9a ]
 
-The return value of ieee80211_probereq_get() might be NULL, so check it
-before using to avoid NULL pointer access.
+When running 'rmmod ath10k', ath10k_sdio_remove() will free sdio
+workqueue by destroy_workqueue(). But if CONFIG_INIT_ON_FREE_DEFAULT_ON
+is set to yes, kernel panic will happen:
+Call trace:
+ destroy_workqueue+0x1c/0x258
+ ath10k_sdio_remove+0x84/0x94
+ sdio_bus_remove+0x50/0x16c
+ device_release_driver_internal+0x188/0x25c
+ device_driver_detach+0x20/0x2c
 
-Addresses-Coverity-ID: 1529805 ("Dereference null return value")
+This is because during 'rmmod ath10k', ath10k_sdio_remove() will call
+ath10k_core_destroy() before destroy_workqueue(). wiphy_dev_release()
+will finally be called in ath10k_core_destroy(). This function will free
+struct cfg80211_registered_device *rdev and all its members, including
+wiphy, dev and the pointer of sdio workqueue. Then the pointer of sdio
+workqueue will be set to NULL due to CONFIG_INIT_ON_FREE_DEFAULT_ON.
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20240919081216.28505-2-pkshih@realtek.com
+After device release, destroy_workqueue() will use NULL pointer then the
+kernel panic happen.
+
+Call trace:
+ath10k_sdio_remove
+  ->ath10k_core_unregister
+    ……
+    ->ath10k_core_stop
+      ->ath10k_hif_stop
+        ->ath10k_sdio_irq_disable
+    ->ath10k_hif_power_down
+      ->del_timer_sync(&ar_sdio->sleep_timer)
+  ->ath10k_core_destroy
+    ->ath10k_mac_destroy
+      ->ieee80211_free_hw
+        ->wiphy_free
+    ……
+          ->wiphy_dev_release
+  ->destroy_workqueue
+
+Need to call destroy_workqueue() before ath10k_core_destroy(), free
+the work queue buffer first and then free pointer of work queue by
+ath10k_core_destroy(). This order matches the error path order in
+ath10k_sdio_probe().
+
+No work will be queued on sdio workqueue between it is destroyed and
+ath10k_core_destroy() is called. Based on the call_stack above, the
+reason is:
+Only ath10k_sdio_sleep_timer_handler(), ath10k_sdio_hif_tx_sg() and
+ath10k_sdio_irq_disable() will queue work on sdio workqueue.
+Sleep timer will be deleted before ath10k_core_destroy() in
+ath10k_hif_power_down().
+ath10k_sdio_irq_disable() only be called in ath10k_hif_stop().
+ath10k_core_unregister() will call ath10k_hif_power_down() to stop hif
+bus, so ath10k_sdio_hif_tx_sg() won't be called anymore.
+
+Tested-on: QCA6174 hw3.2 SDIO WLAN.RMH.4.4.1-00189
+
+Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
+Tested-by: David Ruth <druth@chromium.org>
+Reviewed-by: David Ruth <druth@chromium.org>
+Link: https://patch.msgid.link/20241008022246.1010-1-quic_kangyang@quicinc.com
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/ath/ath10k/sdio.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index c322148d6daf5..20b2730a9ac11 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -5893,6 +5893,9 @@ static int rtw89_update_6ghz_rnr_chan(struct rtw89_dev *rtwdev,
+diff --git a/drivers/net/wireless/ath/ath10k/sdio.c b/drivers/net/wireless/ath/ath10k/sdio.c
+index 08a6f36a6be9c..6805357ee29e6 100644
+--- a/drivers/net/wireless/ath/ath10k/sdio.c
++++ b/drivers/net/wireless/ath/ath10k/sdio.c
+@@ -3,7 +3,7 @@
+  * Copyright (c) 2004-2011 Atheros Communications Inc.
+  * Copyright (c) 2011-2012,2017 Qualcomm Atheros, Inc.
+  * Copyright (c) 2016-2017 Erik Stromdahl <erik.stromdahl@gmail.com>
+- * Copyright (c) 2022-2023 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2022-2024 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
  
- 		skb = ieee80211_probereq_get(rtwdev->hw, rtwvif->mac_addr,
- 					     NULL, 0, req->ie_len);
-+		if (!skb)
-+			return -ENOMEM;
+ #include <linux/module.h>
+@@ -2648,9 +2648,9 @@ static void ath10k_sdio_remove(struct sdio_func *func)
+ 
+ 	netif_napi_del(&ar->napi);
+ 
+-	ath10k_core_destroy(ar);
+-
+ 	destroy_workqueue(ar_sdio->workqueue);
 +
- 		skb_put_data(skb, ies->ies[NL80211_BAND_6GHZ], ies->len[NL80211_BAND_6GHZ]);
- 		skb_put_data(skb, ies->common_ies, ies->common_ie_len);
- 		hdr = (struct ieee80211_hdr *)skb->data;
++	ath10k_core_destroy(ar);
+ }
+ 
+ static const struct sdio_device_id ath10k_sdio_devices[] = {
 -- 
 2.43.0
 
