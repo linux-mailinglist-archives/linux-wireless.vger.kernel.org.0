@@ -1,44 +1,44 @@
-Return-Path: <linux-wireless+bounces-15672-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15670-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3219D9D7A9F
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2024 05:00:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAEA69D7A99
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2024 05:00:30 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB335162FED
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2024 04:00:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 591A4B21C17
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2024 04:00:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D0E6145B2C;
-	Mon, 25 Nov 2024 04:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE60762E0;
+	Mon, 25 Nov 2024 04:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b="Z6iKAJH5"
+	dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b="Q2dlXsmY"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mail.ionic.de (ionic.de [145.239.234.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47CA02AE7F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F112B9A8;
 	Mon, 25 Nov 2024 04:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.234.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732507225; cv=none; b=RWLU+cA6Mgya9RspFp5/HY/AhbqvwPYAGHDkt0VrAZ6ipwo0176sEvagzmTaEIytc5r5OtZFhmXKdtpN6YH4IjkyNGgPZuztiOoqO3SfM0ERPop6T5tsvX+GRGHAZQbeS6TQwEwer/DTQkvxv04mwSMHD0CA4e5uhwFbh4Nmaig=
+	t=1732507224; cv=none; b=U58N04u3XTXULvf1BwDsRgbMS+0HupETB3G1baMK7PxQjSsGzuulAideIke7XZuhcR4n75Vg3AcvxBrKCOOzSHxWBiUhhc9UcPY/LhjV1GYTK4oO1TLPccYymrYbHZA72JY5VkjX8Ap1fNgsWxQLvauMc2BEskF/yy82Pi/57OY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732507225; c=relaxed/simple;
-	bh=CcApLCzMROUQU/RunBcPJFusQCj4QXpyFrT2DKnQP7w=;
+	s=arc-20240116; t=1732507224; c=relaxed/simple;
+	bh=WaJt0MbfiLuCLmsPYGY3mx15UPFsO9CVWdVbdNYCpxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=krjAmOZwkNqfS0dxXQf/Dpd8aB5dFe27kYufXkT0hPbRLEecmTyD3BOowVImxZB9F4pgv5/fTSD5UNz/1eYExNVC0FRvucIQxl8JbrrXUN6xWGNkQ+BD2pOfbTFaK5X7lr+rWR/CW84KklY/TnTwBGyxWRW+cCMva410FDsukBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de; spf=pass smtp.mailfrom=ionic.de; dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b=Z6iKAJH5; arc=none smtp.client-ip=145.239.234.145
+	 MIME-Version; b=DrIrfzZ0IQEfFZP74fcZcSbYnG88xi72weMgurTnKSDz7u4TVCaUb8amooQK4LlgmlALnjPv0h+TFAyon+Gis+SkrUMSmCZ+s34uv8h8pggwxqjRO5KH6kCV1DCUNaMJbebpUdCvf2YBX7LRBVVel3ZzCbHoSEUhXmn44Kk45ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de; spf=pass smtp.mailfrom=ionic.de; dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b=Q2dlXsmY; arc=none smtp.client-ip=145.239.234.145
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionic.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ionic.de; s=default;
-	t=1732506708; bh=CcApLCzMROUQU/RunBcPJFusQCj4QXpyFrT2DKnQP7w=;
+	t=1732506708; bh=WaJt0MbfiLuCLmsPYGY3mx15UPFsO9CVWdVbdNYCpxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z6iKAJH5JsYjx4sr75/4g+0kGMhiOlbPLMXkjy/593ut3Vv9MlfrTHweTGOyyKuVx
-	 a7l3hJfWA+3Vu3SQvc1L2CDnRxjAcWmHMe06c6vMEicH+eItRog4Dq2fJCuW9V7s5+
-	 qxFIbLzWWVxmZLKUUJPYoQXvbwcOJYueiNdmGegA=
+	b=Q2dlXsmYZNtjt+BaM/dXnrvh/kDHw8Xwzol01zB9m94ZFaQ2M88DmD4bE137cK/Sz
+	 /6rKf6Aia2xOF3UQj3AKKTAy8kL8XLTkFvCbp9xLRo2s+RtOhnBzOYsglpLi6FjCkP
+	 TfaNUhiDUBZK1NCjhJbiiTVVtyh80ZmXNeJoHIgw=
 Received: from grml.local.home.ionic.de (unknown [IPv6:2a00:11:fb41:7a00:21b:21ff:fe5e:dddc])
-	by mail.ionic.de (Postfix) with ESMTPSA id 28705148839C;
+	by mail.ionic.de (Postfix) with ESMTPSA id 6BD2314886FD;
 	Mon, 25 Nov 2024 04:51:48 +0100 (CET)
 From: Mihai Moldovan <ionic@ionic.de>
 To: ath11k@lists.infradead.org,
@@ -56,9 +56,9 @@ Cc: Bjorn Andersson <andersson@kernel.org>,
 	linux-wireless@vger.kernel.org,
 	linux-arm-msm@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [RFC] [PATCH v2 03/13] net: qrtr: smd: register rpmsg_device as endpoint-specific data
-Date: Mon, 25 Nov 2024 04:50:18 +0100
-Message-ID: <aa1aa32b42c0d052c907b53e8dae4877e63b2b2f.1732506261.git.ionic@ionic.de>
+Subject: [RFC] [PATCH v2 04/13] net: qrtr: tun: register inode as endpoint-specific data
+Date: Mon, 25 Nov 2024 04:50:19 +0100
+Message-ID: <c9644b9d169c22ccaed87b186ecca0bfc08129b0.1732506261.git.ionic@ionic.de>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.1732506261.git.ionic@ionic.de>
 References: <cover.1732506261.git.ionic@ionic.de>
@@ -70,26 +70,26 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-For the SMD backend, we will use the rpmsg_device pointer as the
+For the TUN backend, we will use the inode pointer as the
 endpoint-specific data.
 
 Signed-off-by: Mihai Moldovan <ionic@ionic.de>
 ---
- net/qrtr/smd.c | 1 +
+ net/qrtr/tun.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/net/qrtr/smd.c b/net/qrtr/smd.c
-index c91bf030fbc7..cb3eeb6835ca 100644
---- a/net/qrtr/smd.c
-+++ b/net/qrtr/smd.c
-@@ -68,6 +68,7 @@ static int qcom_smd_qrtr_probe(struct rpmsg_device *rpdev)
- 	qdev->channel = rpdev->ept;
- 	qdev->dev = &rpdev->dev;
- 	qdev->ep.xmit = qcom_smd_qrtr_send;
-+	qdev->ep.endpoint_data = rpdev;
+diff --git a/net/qrtr/tun.c b/net/qrtr/tun.c
+index 304b41fea5ab..9dcfecd529f7 100644
+--- a/net/qrtr/tun.c
++++ b/net/qrtr/tun.c
+@@ -41,6 +41,7 @@ static int qrtr_tun_open(struct inode *inode, struct file *filp)
+ 	init_waitqueue_head(&tun->readq);
  
- 	rc = qrtr_endpoint_register(&qdev->ep, QRTR_EP_NID_AUTO);
- 	if (rc)
+ 	tun->ep.xmit = qrtr_tun_send;
++	tun->ep.endpoint_data = inode;
+ 
+ 	filp->private_data = tun;
+ 
 -- 
 2.45.2
 
