@@ -1,284 +1,181 @@
-Return-Path: <linux-wireless+bounces-15688-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15689-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E7169D857C
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2024 13:37:25 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AE219D8679
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2024 14:32:16 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DB0228716F
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2024 12:37:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 267BC1696A0
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2024 13:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8539519F120;
-	Mon, 25 Nov 2024 12:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D46C28F5E;
+	Mon, 25 Nov 2024 13:32:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lq2zzXw6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB2A199EB7;
-	Mon, 25 Nov 2024 12:37:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC9A2B9B7
+	for <linux-wireless@vger.kernel.org>; Mon, 25 Nov 2024 13:32:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732538241; cv=none; b=YOwSeUm4MdZrYp3GCisODbZAaYyjzVLCa7/hFY48FA9P8lYBw8JclyEF3Bgdps9k0JSWxI7mb3j1ht9au7TmlZBhNkO5uyEl35lB6Rljn4dMtuoTYSco17Sq6T5AjL2Ya4dZlDq9WU4S4RbDzsqsdPue/UB+uGwRLtuJuBNmyYc=
+	t=1732541532; cv=none; b=cccjWVU55zODK/PI5a15QKmG+HVNive7Wrf9knB3xP6hvsUUTQsES84+TAQbzqeBIJTGNzF2+cJwMI1wrg4f5iVO5Y9rF3R6ycq4al0dqlr97Jl4K1IoQA9Jtin88FkyEgL/E+6gz+8HrqxuVODlJ8UePawlQ8dpD3Kd4kaNhTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732538241; c=relaxed/simple;
-	bh=FXd94cOQtbf3ElQGJhsLavBZtZ3IdYaJXAS/35jCjWE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MmrqE6bypmElXuRyaxtEbPqYQlcvv4n6qvARZXzWTwrhXHYNHCd4o222WBy59mruW+JkhmGcgObITJIF6+5VCVYqg6Gi6b1gdcVwNffzQaDKMSXFWycgLEFbeysNk88RP1SxHucaNfRknUTOEUMYGcMIG/ed5RULn6+vNvCPhh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.219.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+	s=arc-20240116; t=1732541532; c=relaxed/simple;
+	bh=TrFWoAzyBqhpPUx2G3g1QyOzcfjPBmsWren5yar13Do=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=tFISZsiiTWqm4SEDqUdBtaq8G+/N4w6KJ7b4qd3eYYiJzkOkorksWTj6cgeU+ltlK6XrT4mk/nfSNsgbzRljlSZcox3/sbsh7wIdgsFzgQHs5TJ/AbjBIktltayUwfuf7/D28aMJGAnkqPjhMfCbKJvJ5TWp6Nkmht3PUSrG+Ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lq2zzXw6; arc=none smtp.client-ip=209.85.222.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e388e1fd582so4326047276.2;
-        Mon, 25 Nov 2024 04:37:18 -0800 (PST)
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7b150dc7bc0so294782585a.1
+        for <linux-wireless@vger.kernel.org>; Mon, 25 Nov 2024 05:32:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732541530; x=1733146330; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ZhQpteI+JLPbTs96NH5Q2R+bV4YCuAlyZ2+sdKHomVw=;
+        b=Lq2zzXw6MxdKojA25k/HeCoViQVDFcIoBGiKPOITGTlnFtZv/janrfaUpTYgKbhRNu
+         gU6pLkLVvpnpsOAqeHViHLS9/ehXZmp/HMjfMCAaTvU7xjdVcqP+kGfgsBEzYnDamzfp
+         K54btAKHEoQvQt6nRhsH0ebNJDdjREs/IbjDRmVvMVfYBgGb0PNkxYIPJRZNalt41Ag+
+         p0VmDp9DQH9cN5xfVakQxmMF5XA76+UiOKLlEW3J5SrnY5mVZUDHLt5SX744TI3L/SzU
+         yJfv91KtXtm5KitphMGRTxLrKRGBbDthqNSu4fdXdK3FjT8nBLvxHKbEAevGnB9OJBtZ
+         q6Qw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732538237; x=1733143037;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7jDTUnR+iAlcoHbj6WgacjmHkCIwMIUy0wV0qU2IATk=;
-        b=m1paU3bnk5cGbcD80zQE2dvWayAYrpgf3UeFL0reBm7aAAC3itXdGP5p26QwQ4HN+F
-         aI+TIn8inFNd8kQcsNuVuybNyr4tTaGTqdf0g/Pd+SZcGLf7gejiKoEhKkS/AbG8Fdgh
-         KDF/8aKAZHm4oF2gBlctF7FxyJmsIml4XS4qFnz7Ndvb+L79GnIMWps2gjy8hezofe8q
-         0QqKfXgjGrQ+wrsLgMZNEkIVhQDNZxuiuVYXBvhIoXX80UgX3FQYaL+uGwN578byOQXd
-         mjlnSrdDvswrJiiyZgmrIe56lMa0bG2wNWLWv1BkQknOi79AFaSW/GgBRB6qMDT0E7p3
-         IgLA==
-X-Forwarded-Encrypted: i=1; AJvYcCXLsMqZCYF8RC+enE3l6KZNUXg1XwIHRlnNOl4eJDuSeW2dSGFSwRGkPkVPOUFyUCJMoJm/ZUBCZO2z47A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHQaKsILK5AbH2DpK/y3mBp4hoC1ZxI/cQY4lJ/HmQvesCiRB/
-	CTfbkn9JaN0eBJiNjfm2Uu9NHmDN47AlwsYb3x1P7aGJbt4t2QzZKplr3NFv
-X-Gm-Gg: ASbGnctMlMLkhoP7LGXvQRlQ8UKJMyUCHADAroJqSl5KmQ8VzhMmCQT8g7j41GRPLcu
-	KcZuwN29wj+hMpGqfr9JDZOYce8EPqgpal5HuTywWzpnxpefpjmOmwdA2G35fLzLOsV8Tb60S1m
-	ImjNkHW81DAuZnWEW2dfcKGl/Tlq4DjXshMgqRUVyFm99Vtl6W405792G4CKMT0LfVLVEEl5wdl
-	HgwBrX8SyB1/jp643rI3U8/iHWnWQCPFm//CHJDNgPJTnIMmled68zaxkF/AO9nkx2bjoz1F1hU
-	IbXypNACl2Ya+V3R
-X-Google-Smtp-Source: AGHT+IEGObkd39Ew+bSVzl7V8lMlbdsW81Lzzy3i/pprxtOI2SCLIwMFWhjFMtncYVi05jH8XN/dbg==
-X-Received: by 2002:a05:6902:18d0:b0:e33:1492:cd63 with SMTP id 3f1490d57ef6-e38f8ad733fmr9241288276.8.1732538237002;
-        Mon, 25 Nov 2024 04:37:17 -0800 (PST)
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com. [209.85.128.174])
-        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e38f604b594sm2478166276.18.2024.11.25.04.37.16
+        d=1e100.net; s=20230601; t=1732541530; x=1733146330;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZhQpteI+JLPbTs96NH5Q2R+bV4YCuAlyZ2+sdKHomVw=;
+        b=ldlMNEm76EjGmrghb6iQd0QwfO1m/6qIBnXC2wnX/sdiGTZnb69vsCkOIiHAdJX2jx
+         ORB+bl8E/ltmIBId0LRRxElaFslSBtCaUwvacVDYbYcVmsLdgDVRPMC8dA5acq+kzcsT
+         RK4jqknNa8+Y4gJl5ORBKaT0Jb25kYMy/3n+hvHdh2CKbh1YHVN0jwtv6GNr2Wryouwg
+         3lE9GpI06Kuzcv6HCDxqAUoagfppJCzdaXJJ5JXJE02eVe/WdWEkWiEynBwni9ETbxAc
+         mhw/Wa4ZWBTo5YJQTvuOiL7cKHLlIngDEaQ+xl61jdoUW2a5cf/NN7rIsi/dWpmCOwma
+         UpZw==
+X-Forwarded-Encrypted: i=1; AJvYcCU8MZZ5rIc3PMflrAFE8LW3XGj9dNbPbXik14qUUBximjDgrq0NRg3+jWbfXRXOrVI3RyPBPNQSJXSR0jdKKg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUwCEPPiRNgJUz3stVynELpIBlieDtpbLvcoBcVgxfocMaL4FS
+	vSBqHqAIm9tHaTBudyQfRxUWm/JCu2sNOBD9Hh3gB67yNkm6rIHf
+X-Gm-Gg: ASbGncsCqWHrDCuLxtueKDoZ5442It5dbJ/+8uaaVX9OkkLdH65DQ4BbCUjh9d4V2VQ
+	c3Ele9qu2j/ozChb8a29XtY7zsEXo2uN7G3fxSH2ClywJTul12FzUhH661OjCUjk9OoZov9kmRJ
+	DIvxM7UI6LGe98OCaL34Mi65W301eNZe12hXSBWEis856rTBbrFEdncxr4sVnrIHiObWFq8BeJN
+	iKN3JXTaWUBTOZKW7addMGJRxrHcDRRNLZ6Fp3SBQw/2SAdaYstXQ==
+X-Google-Smtp-Source: AGHT+IEURwGuMC4Gy8Zr5QFKX+tkbku+wwToefBd6e+40wJ70jL4HPvic9pgjmPB0UZbuDDNXbTE6g==
+X-Received: by 2002:a05:620a:44cf:b0:7a9:b268:3655 with SMTP id af79cd13be357-7b5145909d5mr1812046485a.43.1732541529780;
+        Mon, 25 Nov 2024 05:32:09 -0800 (PST)
+Received: from [10.100.121.195] ([152.193.78.90])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b6676409casm133541585a.50.2024.11.25.05.32.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Nov 2024 04:37:16 -0800 (PST)
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-6eee6874ef8so26515727b3.2;
-        Mon, 25 Nov 2024 04:37:16 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCW22+6eM19f508hMQ4BlWmdzJ7cnsZJuIPoZEdpphhgzJ7ds15Vjr/Vuqg3chEU4xjSdlGIs8aHplbalEw=@vger.kernel.org
-X-Received: by 2002:a05:690c:7084:b0:6ee:3f37:919c with SMTP id
- 00721157ae682-6eee08d3f6dmr113218247b3.14.1732538236154; Mon, 25 Nov 2024
- 04:37:16 -0800 (PST)
+        Mon, 25 Nov 2024 05:32:09 -0800 (PST)
+Message-ID: <87c9bf22-9534-4292-bf9f-013cc710a3bc@gmail.com>
+Date: Mon, 25 Nov 2024 05:32:06 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241022151838.26f9925fb959.Ia80b55e934bbfc45ce0df42a3233d34b35508046@changeid>
-In-Reply-To: <20241022151838.26f9925fb959.Ia80b55e934bbfc45ce0df42a3233d34b35508046@changeid>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 25 Nov 2024 13:37:04 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdWu_9-L2Te101w8hU7H_2yobJFPXSwwUmGHSJfaPWDKiQ@mail.gmail.com>
-Message-ID: <CAMuHMdWu_9-L2Te101w8hU7H_2yobJFPXSwwUmGHSJfaPWDKiQ@mail.gmail.com>
-Subject: Re: [PATCH 1/2] debugfs: add small file operations for most files
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	"Rafael J . Wysocki" <rafael@kernel.org>, Johannes Berg <johannes.berg@intel.com>, 
-	linux-m68k <linux-m68k@lists.linux-m68k.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: ath10k "failed to install key for vdev 0 peer <mac>: -110"
+To: Baochen Qiang <quic_bqiang@quicinc.com>,
+ Jeff Johnson <quic_jjohnson@quicinc.com>, linux-wireless@vger.kernel.org,
+ ath10k@lists.infradead.org, Kalle Valo <kvalo@kernel.org>
+References: <e780560a-86eb-4189-ab5d-3bed3ee5825e@gmail.com>
+ <54fac081-7d70-4d31-9f2a-07f5d75d675d@quicinc.com>
+ <ea2e7c62-f6e9-4cba-ae81-19fc9abed8b7@gmail.com>
+ <22978701-ca79-4e90-8ceb-16bdaf230e8f@quicinc.com>
+ <dda85730-3f19-490e-bb0f-99b13511c062@quicinc.com>
+Content-Language: en-US
+From: James Prestwood <prestwoj@gmail.com>
+In-Reply-To: <dda85730-3f19-490e-bb0f-99b13511c062@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Johannes,
+Hi Baochen,
 
-On Tue, Oct 22, 2024 at 3:19=E2=80=AFPM Johannes Berg <johannes@sipsolution=
-s.net> wrote:
-> From: Johannes Berg <johannes.berg@intel.com>
+On 9/4/24 6:46 PM, Baochen Qiang wrote:
 >
-> As struct file_operations is really big, but (most) debugfs
-> files only use simple_open, read, write and perhaps seek, and
-> don't need anything else, this wastes a lot of space for NULL
-> pointers.
->
-> Add a struct debugfs_short_fops and some bookkeeping code in
-> debugfs so that users can use that with debugfs_create_file()
-> using _Generic to figure out which function to use.
->
-> Converting mac80211 to use it where possible saves quite a
-> bit of space:
->
-> 1010127  205064    1220 1216411  128f9b net/mac80211/mac80211.ko (before)
->  981199  205064    1220 1187483  121e9b net/mac80211/mac80211.ko (after)
-> -------
->  -28928 =3D ~28KiB
->
-> With a marginal space cost in debugfs:
->
->    8701     550      16    9267    2433 fs/debugfs/inode.o (before)
->   25233     325      32   25590    63f6 fs/debugfs/file.o  (before)
->    8914     558      16    9488    2510 fs/debugfs/inode.o (after)
->   25380     325      32   25737    6489 fs/debugfs/file.o  (after)
-> ---------------
->    +360      +8
->
-> (All on x86-64)
->
-> A simple spatch suggests there are more than 300 instances,
-> not even counting the ones hidden in macros like in mac80211,
-> that could be trivially converted, for additional savings of
-> about 240 bytes for each.
->
-> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+> On 9/5/2024 2:03 AM, Jeff Johnson wrote:
+>> On 8/16/2024 5:04 AM, James Prestwood wrote:
+>>> Hi Baochen,
+>>>
+>>> On 8/16/24 3:19 AM, Baochen Qiang wrote:
+>>>> On 7/12/2024 9:11 PM, James Prestwood wrote:
+>>>>> Hi,
+>>>>>
+>>>>> I've seen this error mentioned on random forum posts, but its always associated with a kernel crash/warning or some very obvious negative behavior. I've noticed this occasionally and at one location very frequently during FT roaming, specifically just after CMD_ASSOCIATE is issued. For our company run networks I'm not seeing any negative behavior apart from a 3 second delay in sending the re-association frame since the kernel waits for this timeout. But we have some networks our clients run on that we do not own (different vendor), and we are seeing association timeouts after this error occurs and in some cases the AP is sending a deauthentication with reason code 8 instead of replying with a reassociation reply and an error status, which is quite odd.
+>>>>>
+>>>>> We are chasing down this with the vendor of these APs as well, but the behavior always happens after we see this key removal failure/timeout on the client side. So it would appear there is potentially a problem on both the client and AP. My guess is _something_ about the re-association frame changes when this error is encountered, but I cannot see how that would be the case. We are working to get PCAPs now, but its through a 3rd party, so that timing is out of my control.
+>>>>>
+>>>>>   From the kernel code this error would appear innocuous, the old key is failing to be removed but it gets immediately replaced by the new key. And we don't see that addition failing. Am I understanding that logic correctly? I.e. this logic:
+>>>>>
+>>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/net/mac80211/key.c#n503
+>>>>>
+>>>>> Below are a few kernel logs of the issue happening, some with the deauth being sent by the AP, some with just timeouts:
+>>>>>
+>>>>> --- No deauth frame sent, just association timeouts after the error ---
+>>>>>
+>>>>> Jul 11 00:05:30 kernel: wlan0: disconnect from AP <previous BSS> for new assoc to <new BSS>
+>>>>> Jul 11 00:05:33 kernel: ath10k_pci 0000:02:00.0: failed to install key for vdev 0 peer <previous BSS>: -110
+>>>>> Jul 11 00:05:33 kernel: wlan0: failed to remove key (0, <previous BSS>) from hardware (-110)
+>>>>> Jul 11 00:05:33 kernel: wlan0: associate with <new BSS> (try 1/3)
+>>>>> Jul 11 00:05:33 kernel: wlan0: associate with <new BSS> (try 2/3)
+>>>>> Jul 11 00:05:33 kernel: wlan0: associate with <new BSS> (try 3/3)
+>>>>> Jul 11 00:05:33 kernel: wlan0: association with <new BSS> timed out
+>>>>> Jul 11 00:05:36 kernel: wlan0: authenticate with <new BSS>
+>>>>> Jul 11 00:05:36 kernel: wlan0: send auth to <new BSS>a (try 1/3)
+>>>>> Jul 11 00:05:36 kernel: wlan0: authenticated
+>>>>> Jul 11 00:05:36 kernel: wlan0: associate with <new BSS> (try 1/3)
+>>>>> Jul 11 00:05:36 kernel: wlan0: RX AssocResp from <new BSS> (capab=0x1111 status=0 aid=16)
+>>>>> Jul 11 00:05:36 kernel: wlan0: associated
+>>>>>
+>>>>> --- Deauth frame sent amidst the association timeouts ---
+>>>>>
+>>>>> Jul 11 00:43:18 kernel: wlan0: disconnect from AP <previous BSS> for new assoc to <new BSS>
+>>>>> Jul 11 00:43:21 kernel: ath10k_pci 0000:02:00.0: failed to install key for vdev 0 peer <previous BSS>: -110
+>>>>> Jul 11 00:43:21 kernel: wlan0: failed to remove key (0, <previous BSS>) from hardware (-110)
+>>>>> Jul 11 00:43:21 kernel: wlan0: associate with <new BSS> (try 1/3)
+>>>>> Jul 11 00:43:21 kernel: wlan0: deauthenticated from <new BSS> while associating (Reason: 8=DISASSOC_STA_HAS_LEFT)
+>>>>> Jul 11 00:43:24 kernel: wlan0: authenticate with <new BSS>
+>>>>> Jul 11 00:43:24 kernel: wlan0: send auth to <new BSS> (try 1/3)
+>>>>> Jul 11 00:43:24 kernel: wlan0: authenticated
+>>>>> Jul 11 00:43:24 kernel: wlan0: associate with <new BSS> (try 1/3)
+>>>>> Jul 11 00:43:24 kernel: wlan0: RX AssocResp from <new BSS> (capab=0x1111 status=0 aid=101)
+>>>>> Jul 11 00:43:24 kernel: wlan0: associated
+>>>>>
+>>>> Hi James, this is QCA6174, right? could you also share firmware version?
+>>> Yep, using:
+>>>
+>>> qca6174 hw3.2 target 0x05030000 chip_id 0x00340aff sub 1dac:0261
+>>> firmware ver WLAN.RM.4.4.1-00288- api 6 features wowlan,ignore-otp,mfp
+>>> crc32 bf907c7c
+>>>
+>>> I did try in one instance the latest firmware, 309, and still saw the
+>>> same behavior but 288 is what all our devices are running.
+>>>
+>>> Thanks,
+>>>
+>>> James
+>> Baochen, are you looking more into this? Would prefer to fix the root cause
+>> rather than take "[RFC 0/1] wifi: ath10k: improvement on key removal failure"
+> I asked CST team to try to reproduce this issue such that we can get firmware dump for debug further. What I got is that CST team is currently busy at other critical schedules and they are planning to debug this ath10k issue after those schedules get finished.
 
-Thanks for your patch, which is now commit 8dc6d81c6b2acc43 ("debugfs:
-add small file operations for most files") upstream.
+Any movement on this front? We are still carrying that RFC patch to work 
+around the associated compatibility issues with Cisco APs when this 
+timeout occurs.
 
-> --- a/fs/debugfs/inode.c
-> +++ b/fs/debugfs/inode.c
+While I do agree the RFC patch isn't optimal, trying to get a firmware 
+fix for ~6 year old hardware also may not be very easy. fwiw we've been 
+running the RFC patch for about 3 months now, as of today its running on 
+over 4000 client devices. So IMO the patch itself is safe if there was 
+any concern.
 
-> -struct dentry *debugfs_create_file(const char *name, umode_t mode,
-> -                                  struct dentry *parent, void *data,
-> -                                  const struct file_operations *fops)
-> +struct dentry *debugfs_create_file_full(const char *name, umode_t mode,
-> +                                       struct dentry *parent, void *data=
-,
-> +                                       const struct file_operations *fop=
-s)
->  {
-> +       if (WARN_ON((unsigned long)fops &
-> +                   (DEBUGFS_FSDATA_IS_SHORT_FOPS_BIT |
-> +                    DEBUGFS_FSDATA_IS_REAL_FOPS_BIT)))
-> +               return ERR_PTR(-EINVAL);
->
+Thanks,
 
-This warning is triggered during boot on m68k:
+James
 
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 1 at fs/debugfs/inode.c:457
-debugfs_create_file_full+0x36/0x70
-Modules linked in:
-CPU: 0 UID: 0 PID: 1 Comm: swapper Not tainted
-6.12.0-atari-11072-gdeea1aa0a8f2 #1787
-Stack from 0102fe78:
-        0102fe78 0051acfd 0051acfd 00000000 00200188 005321b8 0042af36 0051=
-acfd
-        0002459c 00000000 005321b8 000001c9 00000009 00000000 005aff3c 0060=
-f4d8
-        00024644 005321b8 000001c9 00200188 00000009 00000000 00000000 0000=
-00b8
-        00000008 01020c00 00000000 0000209c 005f13e0 00000000 00000000 0102=
-ff88
-        00200188 005321b8 000001c9 00000009 00000000 005f13fa 005139e6 0000=
-0124
-        00000000 00000000 004370c2 000020f6 000000b8 00000008 01020c00 0003=
-b03e
-Call Trace: [<00200188>] debugfs_create_file_full+0x36/0x70
- [<0042af36>] dump_stack+0xc/0x10
- [<0002459c>] __warn+0x82/0xbc
- [<00024644>] warn_slowpath_fmt+0x6e/0xc4
- [<00200188>] debugfs_create_file_full+0x36/0x70
- [<0000209c>] do_one_initcall+0x0/0x198
- [<005f13e0>] tk_debug_sleep_time_init+0x0/0x22
- [<00200188>] debugfs_create_file_full+0x36/0x70
- [<005f13fa>] tk_debug_sleep_time_init+0x1a/0x22
- [<000020f6>] do_one_initcall+0x5a/0x198
- [<0003b03e>] parse_args+0x0/0x202
- [<0000209c>] do_one_initcall+0x0/0x198
- [<0041c948>] strcpy+0x0/0x1c
- [<00070007>] alarmtimer_suspend+0x6f/0x1fc
- [<005e9628>] kernel_init_freeable+0x140/0x198
- [<0041c948>] strcpy+0x0/0x1c
- [<005e9676>] kernel_init_freeable+0x18e/0x198
- [<005f13e0>] tk_debug_sleep_time_init+0x0/0x22
- [<0042b2d2>] kernel_init+0x0/0xf2
- [<0042b2e6>] kernel_init+0x14/0xf2
- [<0042b2d2>] kernel_init+0x0/0xf2
- [<00002524>] ret_from_kernel_thread+0xc/0x14
-
----[ end trace 0000000000000000 ]---
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 1 at fs/debugfs/inode.c:457
-debugfs_create_file_full+0x36/0x70
-Modules linked in:
-CPU: 0 UID: 0 PID: 1 Comm: swapper Tainted: G        W
-6.12.0-atari-11072-gdeea1aa0a8f2 #1787
-Tainted: [W]=3DWARN
-Stack from 0102fe70:
-        0102fe70 0051acfd 0051acfd 00000000 00200188 005321b8 0042af36 0051=
-acfd
-        0002459c 00000000 005321b8 000001c9 00000009 00000000 005aff3c 0060=
-f53c
-        00024644 005321b8 000001c9 00200188 00000009 00000000 00000000 0000=
-00b8
-        00000008 01020c00 00000000 0000209c 002a44f0 0029c032 005b8a1a 0102=
-ff88
-        00200188 005321b8 000001c9 00000009 00000000 002a450e 00539121 0000=
-0124
-        00000000 00000000 00462a86 002a44f0 0060f53c 000020f6 000000b8 0000=
-0008
-Call Trace: [<00200188>] debugfs_create_file_full+0x36/0x70
- [<0042af36>] dump_stack+0xc/0x10
- [<0002459c>] __warn+0x82/0xbc
- [<00024644>] warn_slowpath_fmt+0x6e/0xc4
- [<00200188>] debugfs_create_file_full+0x36/0x70
- [<0000209c>] do_one_initcall+0x0/0x198
- [<002a44f0>] deferred_probe_initcall+0x0/0x8a
- [<0029c032>] _mix_pool_bytes+0x14/0x1a
- [<00200188>] debugfs_create_file_full+0x36/0x70
- [<002a450e>] deferred_probe_initcall+0x1e/0x8a
- [<002a44f0>] deferred_probe_initcall+0x0/0x8a
- [<000020f6>] do_one_initcall+0x5a/0x198
- [<0003b03e>] parse_args+0x0/0x202
- [<0000209c>] do_one_initcall+0x0/0x198
- [<0041c948>] strcpy+0x0/0x1c
- [<00070007>] alarmtimer_suspend+0x6f/0x1fc
- [<005e9628>] kernel_init_freeable+0x140/0x198
- [<0041c948>] strcpy+0x0/0x1c
- [<005e9676>] kernel_init_freeable+0x18e/0x198
- [<002a44f0>] deferred_probe_initcall+0x0/0x8a
- [<0042b2d2>] kernel_init+0x0/0xf2
- [<0042b2e6>] kernel_init+0x14/0xf2
- [<0042b2d2>] kernel_init+0x0/0xf2
- [<00002524>] ret_from_kernel_thread+0xc/0x14
-
----[ end trace 0000000000000000 ]---
-
-> --- a/fs/debugfs/internal.h
-> +++ b/fs/debugfs/internal.h
-> @@ -18,6 +18,7 @@ extern const struct file_operations debugfs_full_proxy_=
-file_operations;
->
->  struct debugfs_fsdata {
->         const struct file_operations *real_fops;
-> +       const struct debugfs_short_fops *short_fops;
->         union {
->                 /* automount_fn is used when real_fops is NULL */
->                 debugfs_automount_t automount;
-> @@ -39,6 +40,11 @@ struct debugfs_fsdata {
->   * pointer gets its lowest bit set.
->   */
->  #define DEBUGFS_FSDATA_IS_REAL_FOPS_BIT BIT(0)
-> +/*
-> + * A dentry's ->d_fsdata, when pointing to real fops, is with
-> + * short fops instead of full fops.
-> + */
-> +#define DEBUGFS_FSDATA_IS_SHORT_FOPS_BIT BIT(1)
-
-As the minimum alignment is 2 on m68k, you cannot use bit 1 in pointers
-for your own private use.  See also the comment at
-https://elixir.bootlin.com/linux/v6.12.1/source/include/linux/maple_tree.h#=
-L44
-
-Reverting commit 8dc6d81c6b2acc43 fixes the issue, and reduces the
-atari_defconfig kernel size by 447 bytes, according to bloat-o-meter.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
 
