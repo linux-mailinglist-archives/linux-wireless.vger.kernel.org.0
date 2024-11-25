@@ -1,67 +1,85 @@
-Return-Path: <linux-wireless+bounces-15665-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15675-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCC959D7A80
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2024 04:52:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CE7A9D7AFA
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2024 06:10:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91E3E28115D
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2024 03:52:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00D76281F4C
+	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2024 05:10:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DFA01534F7;
-	Mon, 25 Nov 2024 03:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E0914F9F7;
+	Mon, 25 Nov 2024 05:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b="AqEXqkJH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l17D3MGN"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.ionic.de (ionic.de [145.239.234.145])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8122E38382;
-	Mon, 25 Nov 2024 03:51:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=145.239.234.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC8F14D43D;
+	Mon, 25 Nov 2024 05:09:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732506719; cv=none; b=T5ClZnqPYCeAVvX69T6j+N6o92fxghA7u9t8shuyaWr+v8bjOqww3lreqd7n3UqFdwXYr4d00X19/YZIT+5NrbkKH0cZpgms1+FdYQlhfbZCsm6GxNarWSKDTId2AVrVtMZnoNtbCb4+Chs2SJRRqZr4eFMQd3cm1I2IaTIzGUo=
+	t=1732511356; cv=none; b=UKeL/ga8HRIp+faAUhqROVhorYqrjN7tqM95H3SHwpP5MwQaP/FfNXVnNRCxlf+7RFxrKdpLzfk9qUXLpVLyvF4MgpMXrE+yplTkZOl9VfeEONzILxivtx03HegrPIEPY7qyfxDjuCdoorZVUgVaIpD7ajz+YS1aHqaBcVV6RfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732506719; c=relaxed/simple;
-	bh=uKVKRmRDkN/eSoUbniCNPAitj2cpMMyzr4m9wHpkjkM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fppbDxsy9f0dGZdfZXzzQz59GFwFjd5neTTULauKL1pkGxs4uBQAMUYHl8+BQy/LoWFuR46xEb1K4CREEclRhr7fFe76fm6ddsu2e28oV/EPw8VNmLOPwY0VluzQGXsvIajDBol+CzRXAM6L3605v2HHbD3x8Rkf9GYMgaDxyVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de; spf=pass smtp.mailfrom=ionic.de; dkim=pass (1024-bit key) header.d=ionic.de header.i=@ionic.de header.b=AqEXqkJH; arc=none smtp.client-ip=145.239.234.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ionic.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionic.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ionic.de; s=default;
-	t=1732506710; bh=uKVKRmRDkN/eSoUbniCNPAitj2cpMMyzr4m9wHpkjkM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AqEXqkJHG/9LQ53Vq3mgTjeMfkWYogi1qAhApXi/U20Ul2/8jiXZyPjyLRHyQNXwy
-	 XeGMlirfy/6uT5ceN+LP9gCQQ9YIgIMfOJImBdcoLbQjk0jTLcfOkOgLhuH+5mv/gL
-	 uWwoH3qUyxMnD5vAxjl2hj+kpvRF1VgBeNvReHGA=
-Received: from grml.local.home.ionic.de (unknown [IPv6:2a00:11:fb41:7a00:21b:21ff:fe5e:dddc])
-	by mail.ionic.de (Postfix) with ESMTPSA id C02871488DDC;
-	Mon, 25 Nov 2024 04:51:50 +0100 (CET)
-From: Mihai Moldovan <ionic@ionic.de>
-To: ath11k@lists.infradead.org,
-	ath12k@lists.infradead.org,
-	Kalle Valo <kvalo@kernel.org>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
+	s=arc-20240116; t=1732511356; c=relaxed/simple;
+	bh=oBpCpFwzKOS9kNJbMir6VNoqd576gfiE///ekgUQy2c=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=D2PZJ+hGVHz2hj59mlkmnUBREObMqyT/vDFyQBojPFpzkT4sxwxIVcH/NkN3g80kdJ5tPP66XLB2eCxcWapxjglQbtX03ZMf22QNx6OvjdLZjjlxglICuu9vO2DVhL4+JY1qcXW8atE5zc/turbViNZgyPyBaPRxJXPJ2s2+ZD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l17D3MGN; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-21288d3b387so29041665ad.1;
+        Sun, 24 Nov 2024 21:09:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732511354; x=1733116154; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ksHQJb34QqtN+KT+UEF2FYuZsjJBthTlyXY3J2CcoiA=;
+        b=l17D3MGNvLYqnoCLj4cgJbeXJ04Vq5FHqm4CtPI+wTpv5Pks7FTU/EhE9D/C2Goh44
+         857yG1jagoxhQVZjvRFp0ijWQ0qLS83jGDWhE21s8dDNwDSc/QAhpwmIiyQnghcux75N
+         dnEEmhg5T2dC9vF19Fx6TVDaufl61MvroYjk8UX0sc2Jjl5PuiG6RfqMBpSoitSZFT2r
+         7EVRyXHb2CvAsSU3cxIT1Hx8T1YN/cXrT3jktMAT1/V/JQpN+nqlXNUPUosW74bD8jAH
+         3RcvpFHLm5cD30zfb0Tcz1sfCPl6IT4cDvP4K83KWhTJR8qKW0JicpX2/MbiJGK1xyaw
+         u1ag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732511354; x=1733116154;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ksHQJb34QqtN+KT+UEF2FYuZsjJBthTlyXY3J2CcoiA=;
+        b=pat6Le3R0aAWJUE/EmQyQY0iQEG1FRzYi7JxMj7X2sY/Lz0133Rd9jy20deyXz8J1e
+         QH9ScHHRgSDNmsdGtTlFf3VivxU/Jl8Ovw+a7H/yTrm1uDb4eHzVbokzJRAo+tvLf7s5
+         4BURVtrb9RONsWU3httFKzoiwppiCpiJ8FCgUeSYSyfR4tLAxpeNma0h82ze8osvuSzr
+         m1b0vUDFa6A+sJMhBa6Xus/fTJ6roomCDRxmYYteFBZ4qPhiTDUU+6O+LqIe5rrMH9Jr
+         TA2QKhiUQYMmTFnrxwSlOJ+0C3HYv0An3Xr7PHdd2okJO1A15c0C5IOthhAcpNMdhupQ
+         tS1w==
+X-Forwarded-Encrypted: i=1; AJvYcCVJ5ORMvlBKORMu4lVBdh3xIH1LQEKhEamq5nbiCPgWdoVorusjRI7YhaXShJysbZ/+Uhzx54NXgorVcfk=@vger.kernel.org, AJvYcCXcJEyYfrEWAh3+NF5W9K6une1TqJZWky+nwcmcASEHP1l9w3/Ec9leDenkKTKN9y2+O64QGTLPTsabPUOfv5k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzc/Gf3DkbSZ3+a2TjukrBxjDkwwW4PgpdoX6N9bvXV0/0ktMEX
+	IL9ItS3Uim3mJIHJLxEIXPZKLDTCojrV12JpxUqyzZJANHOEmRg9
+X-Gm-Gg: ASbGncsHOoRDGWaM0MPARPhUaZS8+f0zv7jkg8AhhH8cuUAAt5GClKfW+D+/WI/3DLT
+	b5oiFGmvKb4c/xP6AlCOFLbKMRATOqsFVBS5NyVV4iTt4O8ikaJtMMxJb8WP3UJLRqIETAwmUS2
+	6FVfOEuKxST1O3CQOmVbWi5svTp6QAmkIg5PGYy9q1I+F8iN9zcKQNyeU8owrZ9H2nMMCsufG6D
+	Zk6P4xur2H+FZXzW+fX6BQ9E/dDUgrj9vnWx8CFfNHGywhMG3G3/gkflyQ=
+X-Google-Smtp-Source: AGHT+IG63PxHo5iTotrnTrhDmCs9a973/JWeKIYwPi+EO97WB1upfgy+iNKydb5IhZi+y2Qjw7diaA==
+X-Received: by 2002:a17:902:da81:b0:20c:ee32:759f with SMTP id d9443c01a7336-2129f680ca4mr157420345ad.39.1732511353664;
+        Sun, 24 Nov 2024 21:09:13 -0800 (PST)
+Received: from LAPTOP-SQ5KB8RN.lan ([222.249.179.118])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2129dc21a1asm55071445ad.222.2024.11.24.21.09.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 24 Nov 2024 21:09:12 -0800 (PST)
+From: Baichuan Qi <zghbqbc@gmail.com>
+To: kvalo@kernel.org
+Cc: jjohnson@kernel.org,
 	linux-wireless@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [RFC] [PATCH v2 13/13] wifi: ath12k: bind to QRTR endpoint ID in ath12k_qmi_init_service
-Date: Mon, 25 Nov 2024 04:50:28 +0100
-Message-ID: <b5f7ea340f8b03bec6916f9c1bf8a970932ebe14.1732506261.git.ionic@ionic.de>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <cover.1732506261.git.ionic@ionic.de>
-References: <cover.1732506261.git.ionic@ionic.de>
+	ath11k@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Baichuan Qi <zghbqbc@gmail.com>
+Subject: [PATCH] wifi: ath11k: Fix NULL pointer check in ath11k_ce_rx_post_pipe()
+Date: Mon, 25 Nov 2024 13:08:21 +0800
+Message-Id: <20241125050821.149898-1-zghbqbc@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -70,51 +88,36 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-If possible, fetch the QRTR endpoint ID in ath12k_qmi_init_service, just
-before calling qmi_handle_init, and make it available in the qmi_handle.
+The previous code used OR for NULL pointer check, whitch can not
+guarantee the pipe->dest_ring pointer is NON-NULL. When certain
+errors occur, causing pipe->dest_ring to be NULL while
+pipe->status_ring remains NON-NULL, the subsequent call to
+ath11k_ce_rx_buf_enqueue_pipe() will access the NULL pointer,
+resulting in a driver crash.
+If it is assumed that these two pointers will not become NULL
+for any reason, then only need to check pipe->dest_ring is or
+not a NULL pointer, and no need to check NULL pointer on
+pipe->status_ring.
 
-qmi_helpers will then automatically bind to this endpoint for us.
-
-This finally allows using multiple ath12k-based cards with the same QRTR
-node/port combination to work simultanenous (and, for that matter, at
-all), including combinations of ath11k-based and ath12k-based cards.
-
-Signed-off-by: Mihai Moldovan <ionic@ionic.de>
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+Signed-off-by: Baichuan Qi <zghbqbc@gmail.com>
 ---
- drivers/net/wireless/ath/ath12k/qmi.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/wireless/ath/ath11k/ce.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
-index d2d9d03c7a28..a96bad490b10 100644
---- a/drivers/net/wireless/ath/ath12k/qmi.c
-+++ b/drivers/net/wireless/ath/ath12k/qmi.c
-@@ -9,8 +9,10 @@
- #include "qmi.h"
- #include "core.h"
- #include "debug.h"
-+#include "hif.h"
- #include <linux/of.h>
- #include <linux/firmware.h>
-+#include <net/sock.h>
+diff --git a/drivers/net/wireless/ath/ath11k/ce.c b/drivers/net/wireless/ath/ath11k/ce.c
+index e66e86bdec20..cc9ad014d800 100644
+--- a/drivers/net/wireless/ath/ath11k/ce.c
++++ b/drivers/net/wireless/ath/ath11k/ce.c
+@@ -324,7 +324,7 @@ static int ath11k_ce_rx_post_pipe(struct ath11k_ce_pipe *pipe)
+ 	dma_addr_t paddr;
+ 	int ret = 0;
  
- #define SLEEP_CLOCK_SELECT_INTERNAL_BIT	0x02
- #define HOST_CSTATE_BIT			0x04
-@@ -3371,6 +3373,13 @@ int ath12k_qmi_init_service(struct ath12k_base *ab)
- 	ab->qmi.ab = ab;
+-	if (!(pipe->dest_ring || pipe->status_ring))
++	if (!(pipe->dest_ring && pipe->status_ring))
+ 		return 0;
  
- 	ab->qmi.target_mem_mode = ATH12K_QMI_TARGET_MEM_MODE_DEFAULT;
-+
-+	ret = ath12k_hif_set_qrtr_endpoint_id(ab);
-+	if (ret) {
-+		ath12k_warn(ab, "failed to set QRTR endpoint ID: %d\n", ret);
-+		ath12k_warn(ab, "only one device per system will be supported\n");
-+	}
-+
- 	ret = qmi_handle_init(&ab->qmi.handle, ATH12K_QMI_RESP_LEN_MAX,
- 			      &ath12k_qmi_ops, ath12k_qmi_msg_handlers);
- 	if (ret < 0) {
+ 	spin_lock_bh(&ab->ce.ce_lock);
 -- 
-2.45.2
+2.34.1
 
 
