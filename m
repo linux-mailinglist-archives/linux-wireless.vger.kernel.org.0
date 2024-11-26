@@ -1,288 +1,211 @@
-Return-Path: <linux-wireless+bounces-15699-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15700-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8408F9D8F4C
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2024 00:49:51 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4AB29D8FB8
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2024 02:17:35 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D74D1B2142F
-	for <lists+linux-wireless@lfdr.de>; Mon, 25 Nov 2024 23:49:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B5B316A7D2
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2024 01:17:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD8118FDA5;
-	Mon, 25 Nov 2024 23:49:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0316A2FB2;
+	Tue, 26 Nov 2024 01:17:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="keSxGk+3"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="W5T0jhBa"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051E9848C
-	for <linux-wireless@vger.kernel.org>; Mon, 25 Nov 2024 23:49:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89DFB366
+	for <linux-wireless@vger.kernel.org>; Tue, 26 Nov 2024 01:17:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732578584; cv=none; b=NTLzD7HzNJeKewORK+BzRiEXuUKwLHe3KAuN+RXteoTnyWxXqbKAqJ4/rxQgUFZ/8l0IEN8SDkPTZfVN8QpROaGTfUa3ujBNIgJfgwW8f5/lJTvcMDUNEpWvAE8uwVNZvzQRleYKRxIYEVmPnkUitg8qaecyeqB8JbBj2Nfazc8=
+	t=1732583851; cv=none; b=rSZFpLDvCDVFVKOSBrxJl/nig2rC4rDDoqOCc3W3oS/TlrtJ6Joe0lrk8LaKnsQGZJZ4E2JzhNvR4QRljKdSnpW8tUkbMg4sXm5O5xipyW91ZIZD5honkcRW+t0Q05u4rJJsP96B5K0fPvLxsPOFcAJecoTv0IwVtZYH5xcNmTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732578584; c=relaxed/simple;
-	bh=gvnTJsW3t/aZI47S4TWWlUa+19o8BofmU1xHW+PUmeM=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=ZpA4kfgTkeUxCQn5X5VvjcYt+rmGnyFaurXlWgqtNwUbZs6Obg8pAYueeFMVffhMDXSPCwvD0RTenTw/bzwTBOmh9eBHh6SnfT16Vi5Dlb36iRXVoD7Il1SxNDGaa+FCGBDyQESpQLLt91F1+MRP5VQ6APQSY1jxtEtKa5Z2bBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=keSxGk+3; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-382376fcc4fso2925431f8f.2
-        for <linux-wireless@vger.kernel.org>; Mon, 25 Nov 2024 15:49:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732578581; x=1733183381; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=X3LMmTb6OTx+I3fuoDFQqKkOuQdkntQ7/i2LEZePVz8=;
-        b=keSxGk+3gJilUAsCwtWeH+B6U9fERJDBEzoy97k5rsYEiA2Z7aSlCdJSHdYpowIkjV
-         SPOfg99ocKojL4tntBvAvd0rsLcpLCOnvruECRwLYU4Ozw1WYl8ncw5XNq//0szGb6b6
-         4aRkpaD1H1ShjIKUOx0rkgAGjhWtciRzrlmvQ16wOzJ46RigEAD2G/W//7diYjO0Ojg2
-         BDjSTzH28vQ2aIU48tz/iK0MNxn0LFuAXlzhm1wa8CmIXw5TdjsUYa6IWIcNhn+qimdb
-         zbAuskpSpZMTWX9o2tOjntCj8JRTzE6R/TJmlZXaPNgiaL31vKXA01aESv+BTvlNNh9Q
-         aAGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732578581; x=1733183381;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=X3LMmTb6OTx+I3fuoDFQqKkOuQdkntQ7/i2LEZePVz8=;
-        b=EPPSTgdnfb0HNJS4D1Z6mhSGtELgVU3llR0Edz/lrfk0f3ZLVZprgercz20uaD6vzs
-         O9OXa+bbutMCLGT1mCcJjH/6wpW9INNPN5GSV4NnxUXtfLvHqSxFKCt9ZfFAdtv0FiW0
-         6rXRhMvf+GGV7sCALYT/ChvVf+49pD6epHQpjwspmWevQ67a9PIGryYeuIVtnlWXq72U
-         p9/RK4huLa6NR44qm61gdoQeW3gikGiCRKadBZl3a4wB8NmtRnKwWEuzZmFtR5SXvgLg
-         gjiDG4L8nRZL7VN4TDIQ13jTekT1FKOM9LnoUXDpujM1bCUZ9GyQLlddv8FfeQQgWY64
-         EpmA==
-X-Forwarded-Encrypted: i=1; AJvYcCW6lj9yxMoj58/S8ZXU0bJhc0AW+9wc0uxz6DeYeMwFY51+Z6crjKWbuKjuj1FvxlnytvviOw1IDE9uuD2s0Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy/SfwPl+QCyLi/QEchzjT6/LfN0FmF+/4fIrizY9RBybyotZ4N
-	xZHK7PQEwca9omPewnYYYF0rPPoNsA0GvljwHUQAmAtqyVgk4+nm
-X-Gm-Gg: ASbGncudHWYhIiST1Nw/+NZ0ohVQthm2erCuKGEwHouiKWiZy1qKET4hRZgELJVSnKj
-	h05CERjkUBHEsMXLAJZ065Dxhn6YOGCE8C2dwLTRVFcxdTHuXyTu2pjf9m6AXax7+mT8sR/EHrR
-	DAtARapB/PmcD/XR9TGCHUi65xGzIpnJgirqK8nQbG7tz0os/eV/t7ajESMw+UEnug4Ry6M494c
-	Z7JT1QNFo/kn4KhgcZgzgES2u0foHddLCONvaDOMVnEIFHkJ7V1B6Z8
-X-Google-Smtp-Source: AGHT+IG9WdnqJozTTkiu9HzMJDzFq25YLhTjqoJGkxVqy5MGSwnam/EX2qFMHTyIZvv1n8NvJXGFEw==
-X-Received: by 2002:a5d:5849:0:b0:382:59c1:ccdf with SMTP id ffacd0b85a97d-38260bcbb70mr11048466f8f.46.1732578581042;
-        Mon, 25 Nov 2024 15:49:41 -0800 (PST)
-Received: from [192.168.0.50] ([81.196.40.57])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d01d3b0b50sm4662566a12.30.2024.11.25.15.49.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Nov 2024 15:49:39 -0800 (PST)
-Message-ID: <1546573d-ce4d-4629-8d05-925fff079493@gmail.com>
-Date: Tue, 26 Nov 2024 01:49:37 +0200
+	s=arc-20240116; t=1732583851; c=relaxed/simple;
+	bh=xd/+n+wzKW1FuFoTJFcPxqP207bgvVTtlrEcce6yLtk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=INxEGBH0Qe4xjHM5KzJ7Tjmh17vLplW4a8/uycSNnfeWrzkmF0jl5BULNl+QH2+DK4DHEuFQtGR/ACTcGyWjhbAUk9ztbdkY5MqT781Z+c7f3+hT4zxeVEev7SeE86a4yEpGN2mT8hnkwNj7xQQ0abG+tljvSKFpG0gLYd7azWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=W5T0jhBa; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4AQ1HC6S0198901, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1732583832; bh=xd/+n+wzKW1FuFoTJFcPxqP207bgvVTtlrEcce6yLtk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=W5T0jhBafOx56NHM0MUhYzjRerGLPHxL8df+Dn35PwHJ3ttK3MzkE86dB0GquEPK6
+	 L/FcztogP91IWi+TGJUDIX7pdYHQ1jt13Mh8an4fvjgzK3NMzdl85sEU3VVLRAbeuI
+	 utgTcwqbWebLYiQdIsSgJln0wDvw8lV5k1HGQi6XwfA8fGEvCezRi2e763kC7+gfTm
+	 k9fv481eeGGaoeWpwY4xVo7mM9tM91P2tywbfmPrdVm4z8106ob5DLfs1sfgnmyXSg
+	 k+IiJo5XcUKrrqo9ZcN2h/cln9Xa+jZzcdmLtssZkJCxRg1UodDYc5oahwo4uOyQTZ
+	 kCjCYnD89RXXg==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4AQ1HC6S0198901
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 26 Nov 2024 09:17:12 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Tue, 26 Nov 2024 09:17:12 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Tue, 26 Nov 2024 09:17:12 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
+ 15.01.2507.035; Tue, 26 Nov 2024 09:17:12 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: Sascha Hauer <sha@pengutronix.de>
+Subject: RE: [PATCH 1/2] wifi: rtw88: usb: Copy instead of cloning the RX skb
+Thread-Topic: [PATCH 1/2] wifi: rtw88: usb: Copy instead of cloning the RX skb
+Thread-Index: AQHbNunhfAIW7sBif0O9mAF2MSEZA7K8xUbggAtv0ICAAJuq4A==
+Date: Tue, 26 Nov 2024 01:17:12 +0000
+Message-ID: <15f83014e5c54762b34e11a1aa552934@realtek.com>
+References: <28b09f4d-5271-470d-99b6-a0bbe0224739@gmail.com>
+ <e9f32f00c63945bfb97dff12d081478e@realtek.com>
+ <133b8a9d-55e2-4483-ab2d-9ed06ef5ed96@gmail.com>
+In-Reply-To: <133b8a9d-55e2-4483-ab2d-9ed06ef5ed96@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Subject: Re: [PATCH 2/2] wifi: rtw88: usb: Preallocate and reuse the RX skbs
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Sascha Hauer <sha@pengutronix.de>
-References: <28b09f4d-5271-470d-99b6-a0bbe0224739@gmail.com>
- <4e83ae71-60e2-4f24-a251-18cd59543d6d@gmail.com>
- <3a9104bb97db4df6a285e94291fd84c7@realtek.com>
-Content-Language: en-US
-In-Reply-To: <3a9104bb97db4df6a285e94291fd84c7@realtek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-On 19/11/2024 02:50, Ping-Ke Shih wrote:
-> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
->> The USB driver uses four USB Request Blocks for RX. Before submitting
->> one, it allocates a 32768 byte skb for the RX data. This allocation can
->> fail, maybe due to temporary memory fragmentation. When the allocation
->> fails, the corresponding URB is never submitted again. After four such
->> allocation failures, all RX stops because the driver is not requesting
->> data from the device anymore.
->>
->> Don't allocate a 32768 byte skb when submitting a USB Request Block
->> (which happens very often). Instead preallocate 8 such skbs, and reuse
->> them over and over. If all 8 are busy, allocate a new one. This is
->> pretty rare. If the allocation fails, use a work to try again later.
->> When there are enough free skbs again, free the excess skbs.
->>
->> Also, use WQ_BH for the RX workqueue. With a normal or high priority
->> workqueue the skbs are processed too slowly when the system is even a
->> little busy, like when opening a new page in a browser, and the driver
->> runs out of free skbs and allocates a lot of new ones.
->>
->> Move C2H_ADAPTIVITY to the c2h workqueue instead of handling it directly
->> from rtw_fw_c2h_cmd_rx_irqsafe(), which runs in the RX workqueue. It
->> reads hardware registers, which is not "irqsafe" with USB.
-> 
-> This part should be in a separated patch. 
-> 
-
-Do you mean just C2H_ADAPTIVITY or WQ_BH as well?
-
->>
->> This is more or less what the out-of-tree Realtek drivers do, except
->> they use a tasklet instead of a BH workqueue.
->>
->> Tested with RTL8723DU, RTL8821AU, RTL8812AU, RTL8812BU, RTL8822CU,
->> RTL8811CU.
->>
->> Closes: https://lore.kernel.org/linux-wireless/6e7ecb47-7ea0-433a-a19f-05f88a2edf6b@gmail.com/
->> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
->> ---
->>  drivers/net/wireless/realtek/rtw88/fw.c  |  7 +--
->>  drivers/net/wireless/realtek/rtw88/usb.c | 73 ++++++++++++++++++++----
->>  drivers/net/wireless/realtek/rtw88/usb.h |  3 +
->>  3 files changed, 67 insertions(+), 16 deletions(-)
->>
->> diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
->> index e6e9946fbf44..02389b7c6876 100644
->> --- a/drivers/net/wireless/realtek/rtw88/fw.c
->> +++ b/drivers/net/wireless/realtek/rtw88/fw.c
->> @@ -332,6 +332,9 @@ void rtw_fw_c2h_cmd_handle(struct rtw_dev *rtwdev, struct sk_buff *skb)
->>         case C2H_RA_RPT:
->>                 rtw_fw_ra_report_handle(rtwdev, c2h->payload, len);
->>                 break;
->> +       case C2H_ADAPTIVITY:
->> +               rtw_fw_adaptivity_result(rtwdev, c2h->payload, len);
->> +               break;
->>         default:
->>                 rtw_dbg(rtwdev, RTW_DBG_FW, "C2H 0x%x isn't handled\n", c2h->id);
->>                 break;
->> @@ -367,10 +370,6 @@ void rtw_fw_c2h_cmd_rx_irqsafe(struct rtw_dev *rtwdev, u32 pkt_offset,
->>                 rtw_fw_scan_result(rtwdev, c2h->payload, len);
->>                 dev_kfree_skb_any(skb);
->>                 break;
->> -       case C2H_ADAPTIVITY:
->> -               rtw_fw_adaptivity_result(rtwdev, c2h->payload, len);
->> -               dev_kfree_skb_any(skb);
->> -               break;
->>         default:
->>                 /* pass offset for further operation */
->>                 *((u32 *)skb->cb) = pkt_offset;
->> diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
->> index 727569d4ef4b..5c2dfa2ced92 100644
->> --- a/drivers/net/wireless/realtek/rtw88/usb.c
->> +++ b/drivers/net/wireless/realtek/rtw88/usb.c
->> @@ -585,7 +585,7 @@ static void rtw_usb_rx_handler(struct work_struct *work)
->>                                 goto skip_packet;
->>                         }
->>
->> -                       skb = alloc_skb(skb_len, GFP_KERNEL);
->> +                       skb = alloc_skb(skb_len, GFP_ATOMIC);
->>                         if (!skb) {
->>                                 rtw_dbg(rtwdev, RTW_DBG_USB,
->>                                         "failed to allocate RX skb of size %u\n",
->> @@ -612,7 +612,11 @@ static void rtw_usb_rx_handler(struct work_struct *work)
->>                         rx_desc += next_pkt;
->>                 } while (rx_desc + pkt_desc_sz < rx_skb->data + rx_skb->len);
->>
->> -               dev_kfree_skb_any(rx_skb);
->> +               if (skb_queue_len(&rtwusb->rx_free_queue) >=
->> +                   RTW_USB_RX_SKB_NUM - RTW_USB_RXCB_NUM)
->> +                       dev_kfree_skb_any(rx_skb);
->> +               else
->> +                       skb_queue_tail(&rtwusb->rx_free_queue, rx_skb);
-> 
-> Why not just queue and reuse rx_skb for all? That would be simpler. 
-> 
-
-I didn't want to let it allocate too many skbs. I didn't find any kind
-of limit in the official drivers, so maybe it would be fine.
-
->>         }
->>  }
->>
->> @@ -621,23 +625,57 @@ static void rtw_usb_read_port_complete(struct urb *urb);
->>  static void rtw_usb_rx_resubmit(struct rtw_usb *rtwusb, struct rx_usb_ctrl_block *rxcb)
->>  {
->>         struct rtw_dev *rtwdev = rtwusb->rtwdev;
->> +       struct sk_buff *rx_skb;
->> +       gfp_t priority = in_interrupt() ? GFP_ATOMIC : GFP_KERNEL;
-> 
-> I remember in_interrupt() is not recommended. Can't we pass necessary gfp_t
-> via function argument by callers?
-> 
-
-Yes, I can do that.
-
->>         int error;
->>
->> -       rxcb->rx_skb = alloc_skb(RTW_USB_MAX_RECVBUF_SZ, GFP_ATOMIC);
->> -       if (!rxcb->rx_skb)
->> -               return;
->> +       rx_skb = skb_dequeue(&rtwusb->rx_free_queue);
->> +       if (!rx_skb)
->> +               rx_skb = alloc_skb(RTW_USB_MAX_RECVBUF_SZ, priority);
->> +
->> +       if (!rx_skb)
->> +               goto try_later;
->> +
->> +       rxcb->rx_skb = rx_skb;
->> +
->> +       skb_reset_tail_pointer(rxcb->rx_skb);
->> +       rxcb->rx_skb->len = 0;
-> 
-> How about moving these initialization upward before ' rxcb->rx_skb = rx_skb;'?
-> Statements can be shorter, and it is reasonable to initialize data before
-> assignment. 
-> 
->>
->>         usb_fill_bulk_urb(rxcb->rx_urb, rtwusb->udev,
->>                           usb_rcvbulkpipe(rtwusb->udev, rtwusb->pipe_in),
->>                           rxcb->rx_skb->data, RTW_USB_MAX_RECVBUF_SZ,
->>                           rtw_usb_read_port_complete, rxcb);
->>
->> -       error = usb_submit_urb(rxcb->rx_urb, GFP_ATOMIC);
->> +       error = usb_submit_urb(rxcb->rx_urb, priority);
-> 
-> Not sure if 'priority' fits the meaning. Maybe many kernel code just
-> uses 'gfp'.
-> 
->>         if (error) {
->> -               kfree_skb(rxcb->rx_skb);
->> +               skb_queue_tail(&rtwusb->rx_free_queue, rxcb->rx_skb);
->> +
->>                 if (error != -ENODEV)
->>                         rtw_err(rtwdev, "Err sending rx data urb %d\n",
->>                                 error);
-> 
-> Since here rxcb->rx_skb != NULL, will it be a problem? The rxcb will not be
-> submitted again? Should all error cases go to try_later label?
-> 
-
-Right, the rxcb will be submitted again only if the error was ENOMEM
-I don't know what other errors can be considered temporary. I never
-ran into the case where the error is not ENODEV.
-
-> 
->> +
->> +               if (error == -ENOMEM)
->> +                       goto try_later;
->> +       }
->> +
->> +       return;
->> +
->> +try_later:
->> +       rxcb->rx_skb = NULL;
->> +       queue_work(rtwusb->rxwq, &rtwusb->rx_urb_work);
->> +}
->> +
->> +static void rtw_usb_rx_resubmit_work(struct work_struct *work)
->> +{
->> +       struct rtw_usb *rtwusb = container_of(work, struct rtw_usb, rx_urb_work);
->> +       struct rx_usb_ctrl_block *rxcb;
->> +       int i;
->> +
->> +       for (i = 0; i < RTW_USB_RXCB_NUM; i++) {
->> +               rxcb = &rtwusb->rx_cb[i];
->> +
->> +               if (!rxcb->rx_skb)
->> +                       rtw_usb_rx_resubmit(rtwusb, rxcb);
->>         }
->>  }
->>
-
+Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBPbiAx
+OC8xMS8yMDI0IDExOjE2LCBQaW5nLUtlIFNoaWggd3JvdGU6DQo+ID4gQml0dGVyYmx1ZSBTbWl0
+aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiA+PiAiaXBlcmYzIC1jIDE5Mi4x
+NjguMC4xIC1SIC0tdWRwIC1iIDAiIHNob3dzIGFib3V0IDQwJSBvZiBkYXRhZ3JhbXMNCj4gPj4g
+YXJlIGxvc3QuIE1hbnkgdG9ycmVudHMgZG9uJ3QgZG93bmxvYWQgZmFzdGVyIHRoYW4gMyBNaUIv
+cywgcHJvYmFibHkNCj4gPj4gYmVjYXVzZSB0aGUgQml0dG9ycmVudCBwcm90b2NvbCB1c2VzIFVE
+UC4gVGhpcyBpcyBzb21laG93IHJlbGF0ZWQgdG8NCj4gPj4gdGhlIHVzZSBvZiBza2JfY2xvbmUo
+KSBpbiB0aGUgUlggcGF0aC4NCj4gPg0KPiA+IFVzaW5nIHNrYl9jbG9uZSgpIGNhbiBpbXByb3Zl
+IHRocm91Z2hwdXQgaXMgd2VpcmQgdG8gbWUgdG9vLiBEbyB5b3UgY2hlY2sNCj4gPiB0b3Agd2l0
+aCAxMDAlIGNwdSB1c2FnZT8NCj4gPg0KPiANCj4gSSBjaGVja2VkIHRoZSBDUFUgdXNhZ2Ugbm93
+IGFuZCB0aGUgcmVzdWx0cyBhcmUgaW50ZXJlc3RpbmcuIEluIHNob3J0LA0KPiBwYXRjaCAxLzIg
+c2xpZ2h0bHkgcmFpc2VzIHRoZSBDUFUgdXNhZ2UsIGFuZCBwYXRjaCAyLzIgbG93ZXJzIGl0IGEg
+bG90Lg0KDQpPcmlnaW5hbGx5IEkganVzdCB3YW50ZWQgdG8ga25vdyBpZiB0aHJvdWdocHV0IGlz
+IGEgbGltaXQgb2YgQ1BVIGJvdW5kLg0KQW55d2F5IGdvb2QgdG8ga25vdyB0aGlzIHBhdGNoc2V0
+IGNhbiBpbXByb3ZlIENQVSB1c2FnZS4gDQoNCj4gPj4NCj4gPj4gRG9uJ3QgdXNlIHNrYl9jbG9u
+ZSgpLiBJbnN0ZWFkIGFsbG9jYXRlIGEgbmV3IHNrYiBmb3IgZWFjaCA4MDIuMTEgZnJhbWUNCj4g
+Pj4gcmVjZWl2ZWQgYW5kIGNvcHkgdGhlIGRhdGEgZnJvbSB0aGUgYmlnICgzMjc2OCBieXRlKSBz
+a2IuDQo+ID4+DQo+ID4+IFdpdGggdGhpcyBwYXRjaCwgImlwZXJmMyAtYyAxOTIuMTY4LjAuMSAt
+UiAtLXVkcCAtYiAwIiBzaG93cyBvbmx5IDEtMiUNCj4gPj4gb2YgZGF0YWdyYW1zIGFyZSBsb3N0
+LCBhbmQgdG9ycmVudHMgY2FuIHJlYWNoIGRvd25sb2FkIHNwZWVkcyBvZiAzNg0KPiA+PiBNaUIv
+cy4NCj4gPj4NCj4gPj4gVGVzdGVkIHdpdGggUlRMODgxMkFVIGFuZCBSVEw4ODIyQ1UuDQo+ID4+
+DQo+ID4+IFNpZ25lZC1vZmYtYnk6IEJpdHRlcmJsdWUgU21pdGggPHJ0bDg4MjFjZXJmZTJAZ21h
+aWwuY29tPg0KPiA+PiAtLS0NCj4gPj4gIGRyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3
+ODgvdXNiLmMgfCA1MiArKysrKysrKysrKysrKy0tLS0tLS0tLS0NCj4gPj4gIDEgZmlsZSBjaGFu
+Z2VkLCAzMSBpbnNlcnRpb25zKCspLCAyMSBkZWxldGlvbnMoLSkNCj4gPj4NCj4gPj4gZGlmZiAt
+LWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvdXNiLmMgYi9kcml2ZXJz
+L25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3VzYi5jDQo+ID4+IGluZGV4IDkzYWM0ODM3ZTFi
+NS4uNzI3NTY5ZDRlZjRiIDEwMDY0NA0KPiA+PiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9y
+ZWFsdGVrL3J0dzg4L3VzYi5jDQo+ID4+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0
+ZWsvcnR3ODgvdXNiLmMNCj4gPj4gQEAgLTcsNiArNyw3IEBADQo+ID4+ICAjaW5jbHVkZSA8bGlu
+dXgvbXV0ZXguaD4NCj4gPj4gICNpbmNsdWRlICJtYWluLmgiDQo+ID4+ICAjaW5jbHVkZSAiZGVi
+dWcuaCINCj4gPj4gKyNpbmNsdWRlICJtYWMuaCINCj4gPj4gICNpbmNsdWRlICJyZWcuaCINCj4g
+Pj4gICNpbmNsdWRlICJ0eC5oIg0KPiA+PiAgI2luY2x1ZGUgInJ4LmgiDQo+ID4+IEBAIC01NDYs
+NDkgKzU0Nyw1OCBAQCBzdGF0aWMgdm9pZCBydHdfdXNiX3J4X2hhbmRsZXIoc3RydWN0IHdvcmtf
+c3RydWN0ICp3b3JrKQ0KPiA+PiAgew0KPiA+PiAgICAgICAgIHN0cnVjdCBydHdfdXNiICpydHd1
+c2IgPSBjb250YWluZXJfb2Yod29yaywgc3RydWN0IHJ0d191c2IsIHJ4X3dvcmspOw0KPiA+PiAg
+ICAgICAgIHN0cnVjdCBydHdfZGV2ICpydHdkZXYgPSBydHd1c2ItPnJ0d2RldjsNCj4gPj4gLSAg
+ICAgICBjb25zdCBzdHJ1Y3QgcnR3X2NoaXBfaW5mbyAqY2hpcCA9IHJ0d2Rldi0+Y2hpcDsNCj4g
+Pj4gLSAgICAgICB1MzIgcGt0X2Rlc2Nfc3ogPSBjaGlwLT5yeF9wa3RfZGVzY19zejsNCj4gPj4g
+ICAgICAgICBzdHJ1Y3QgaWVlZTgwMjExX3J4X3N0YXR1cyByeF9zdGF0dXM7DQo+ID4+IC0gICAg
+ICAgdTMyIHBrdF9vZmZzZXQsIG5leHRfcGt0LCB1cmJfbGVuOw0KPiA+PiAgICAgICAgIHN0cnVj
+dCBydHdfcnhfcGt0X3N0YXQgcGt0X3N0YXQ7DQo+ID4+IC0gICAgICAgc3RydWN0IHNrX2J1ZmYg
+Km5leHRfc2tiOw0KPiA+PiArICAgICAgIHN0cnVjdCBza19idWZmICpyeF9za2I7DQo+ID4+ICAg
+ICAgICAgc3RydWN0IHNrX2J1ZmYgKnNrYjsNCj4gPj4gKyAgICAgICB1MzIgcGt0X2Rlc2Nfc3og
+PSBydHdkZXYtPmNoaXAtPnJ4X3BrdF9kZXNjX3N6Ow0KPiA+PiArICAgICAgIHUzMiBtYXhfc2ti
+X2xlbiA9IHBrdF9kZXNjX3N6ICsgUEhZX1NUQVRVU19TSVpFICogOCArDQo+ID4+ICsgICAgICAg
+ICAgICAgICAgICAgICAgICAgSUVFRTgwMjExX01BWF9NUERVX0xFTl9WSFRfMTE0NTQ7DQo+ID4+
+ICsgICAgICAgdTMyIHBrdF9vZmZzZXQsIG5leHRfcGt0LCBza2JfbGVuOw0KPiA+PiAgICAgICAg
+IHU4ICpyeF9kZXNjOw0KPiA+PiAgICAgICAgIGludCBsaW1pdDsNCj4gPj4NCj4gPj4gICAgICAg
+ICBmb3IgKGxpbWl0ID0gMDsgbGltaXQgPCAyMDA7IGxpbWl0KyspIHsNCj4gPj4gLSAgICAgICAg
+ICAgICAgIHNrYiA9IHNrYl9kZXF1ZXVlKCZydHd1c2ItPnJ4X3F1ZXVlKTsNCj4gPj4gLSAgICAg
+ICAgICAgICAgIGlmICghc2tiKQ0KPiA+PiArICAgICAgICAgICAgICAgcnhfc2tiID0gc2tiX2Rl
+cXVldWUoJnJ0d3VzYi0+cnhfcXVldWUpOw0KPiA+PiArICAgICAgICAgICAgICAgaWYgKCFyeF9z
+a2IpDQo+ID4+ICAgICAgICAgICAgICAgICAgICAgICAgIGJyZWFrOw0KPiA+Pg0KPiA+PiAgICAg
+ICAgICAgICAgICAgaWYgKHNrYl9xdWV1ZV9sZW4oJnJ0d3VzYi0+cnhfcXVldWUpID49IFJUV19V
+U0JfTUFYX1JYUV9MRU4pIHsNCj4gPj4gICAgICAgICAgICAgICAgICAgICAgICAgZGV2X2RiZ19y
+YXRlbGltaXRlZChydHdkZXYtPmRldiwgImZhaWxlZCB0byBnZXQgcnhfcXVldWUsIG92ZXJmbG93
+XG4iKTsNCj4gPj4gLSAgICAgICAgICAgICAgICAgICAgICAgZGV2X2tmcmVlX3NrYl9hbnkoc2ti
+KTsNCj4gPj4gKyAgICAgICAgICAgICAgICAgICAgICAgZGV2X2tmcmVlX3NrYl9hbnkocnhfc2ti
+KTsNCj4gPj4gICAgICAgICAgICAgICAgICAgICAgICAgY29udGludWU7DQo+ID4+ICAgICAgICAg
+ICAgICAgICB9DQo+ID4+DQo+ID4+IC0gICAgICAgICAgICAgICB1cmJfbGVuID0gc2tiLT5sZW47
+DQo+ID4+ICsgICAgICAgICAgICAgICByeF9kZXNjID0gcnhfc2tiLT5kYXRhOw0KPiA+Pg0KPiA+
+PiAgICAgICAgICAgICAgICAgZG8gew0KPiA+PiAtICAgICAgICAgICAgICAgICAgICAgICByeF9k
+ZXNjID0gc2tiLT5kYXRhOw0KPiA+PiAgICAgICAgICAgICAgICAgICAgICAgICBydHdfcnhfcXVl
+cnlfcnhfZGVzYyhydHdkZXYsIHJ4X2Rlc2MsICZwa3Rfc3RhdCwNCj4gPj4gICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgJnJ4X3N0YXR1cyk7DQo+ID4+ICAgICAg
+ICAgICAgICAgICAgICAgICAgIHBrdF9vZmZzZXQgPSBwa3RfZGVzY19zeiArIHBrdF9zdGF0LmRy
+dl9pbmZvX3N6ICsNCj4gPj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHBr
+dF9zdGF0LnNoaWZ0Ow0KPiA+Pg0KPiA+PiAtICAgICAgICAgICAgICAgICAgICAgICBuZXh0X3Br
+dCA9IHJvdW5kX3VwKHBrdF9zdGF0LnBrdF9sZW4gKyBwa3Rfb2Zmc2V0LCA4KTsNCj4gPj4gKyAg
+ICAgICAgICAgICAgICAgICAgICAgc2tiX2xlbiA9IHBrdF9zdGF0LnBrdF9sZW4gKyBwa3Rfb2Zm
+c2V0Ow0KPiA+PiArICAgICAgICAgICAgICAgICAgICAgICBpZiAoc2tiX2xlbiA+IG1heF9za2Jf
+bGVuKSB7DQo+ID4NCj4gPiBUaGlzIHNlZW1zIGEgbmV3IHJ1bGUgaW50cm9kdWNlZCBieSB0aGlz
+IHBhdGNoLiBEbyB5b3UgcmVhbGx5IGVuY291bnRlciB0aGlzDQo+ID4gY2FzZT8gTWF5YmUgdGhp
+cyBpcyB0aGUgY2F1c2Ugb2Ygc2xvdyBkb3dubG9hZCB0aHJvdWdocHV0Pw0KPiA+DQo+IA0KPiBO
+bywgSSBuZXZlciBzYXcgdGhpcyBjYXNlLiBJdCBqdXN0IHNlZW1lZCBsaWtlIGEgZ29vZCBpZGVh
+IHRvIGNoZWNrIHRoZQ0KPiBzaXplIHBhc3NlZCB0byBhbGxvY19za2IuIE1heWJlIGl0J3Mgbm90
+IG5lZWRlZD8NCg0KSSB0aGluayBpdCBpcyBmaW5lLiANCg0KQXNraW5nIHNvbWUgcXVlc3Rpb25z
+IGJlZm9yZSwgSSBqdXN0IHRyaWVkIHRvIGZpbmQgYSBjYXVzZSB3aHkgNDAlIGRhdGFncmFtIGdl
+dA0KbG9zdCBhcyB5b3UgbWVudGlvbmVkIGluIGNvbW1pdCBtZXNzYWdlLCBidXQgSSBjYW4ndC4g
+DQoNCj4gDQo+ID4+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcnR3X2RiZyhydHdk
+ZXYsIFJUV19EQkdfVVNCLA0KPiA+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgInNraXBwaW5nIHRvbyBiaWcgcGFja2V0OiAldVxuIiwNCj4gPj4gKyAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNrYl9sZW4pOw0KPiA+PiArICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgIGdvdG8gc2tpcF9wYWNrZXQ7DQo+ID4+ICsgICAgICAgICAgICAg
+ICAgICAgICAgIH0NCj4gPj4NCj4gPj4gLSAgICAgICAgICAgICAgICAgICAgICAgaWYgKHVyYl9s
+ZW4gPj0gbmV4dF9wa3QgKyBwa3RfZGVzY19zeikNCj4gPj4gLSAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICBuZXh0X3NrYiA9IHNrYl9jbG9uZShza2IsIEdGUF9LRVJORUwpOw0KPiA+PiAt
+ICAgICAgICAgICAgICAgICAgICAgICBlbHNlDQo+ID4+IC0gICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgbmV4dF9za2IgPSBOVUxMOw0KPiA+PiArICAgICAgICAgICAgICAgICAgICAgICBz
+a2IgPSBhbGxvY19za2Ioc2tiX2xlbiwgR0ZQX0tFUk5FTCk7DQo+ID4+ICsgICAgICAgICAgICAg
+ICAgICAgICAgIGlmICghc2tiKSB7DQo+ID4+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgcnR3X2RiZyhydHdkZXYsIFJUV19EQkdfVVNCLA0KPiA+PiArICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgImZhaWxlZCB0byBhbGxvY2F0ZSBSWCBza2Igb2Ygc2l6ZSAl
+dVxuIiwNCj4gPj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNrYl9s
+ZW4pOw0KPiA+PiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGdvdG8gc2tpcF9wYWNr
+ZXQ7DQo+ID4+ICsgICAgICAgICAgICAgICAgICAgICAgIH0NCj4gPj4gKw0KPiA+PiArICAgICAg
+ICAgICAgICAgICAgICAgICBza2JfcHV0X2RhdGEoc2tiLCByeF9kZXNjLCBza2JfbGVuKTsNCj4g
+Pj4NCj4gPj4gICAgICAgICAgICAgICAgICAgICAgICAgaWYgKHBrdF9zdGF0LmlzX2MyaCkgew0K
+PiA+PiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHNrYl90cmltKHNrYiwgcGt0X3N0
+YXQucGt0X2xlbiArIHBrdF9vZmZzZXQpOw0KPiA+PiAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIHJ0d19md19jMmhfY21kX3J4X2lycXNhZmUocnR3ZGV2LCBwa3Rfb2Zmc2V0LCBza2Ip
+Ow0KPiA+PiAgICAgICAgICAgICAgICAgICAgICAgICB9IGVsc2Ugew0KPiA+PiAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgIHNrYl9wdWxsKHNrYiwgcGt0X29mZnNldCk7DQo+ID4+IC0g
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2tiX3RyaW0oc2tiLCBwa3Rfc3RhdC5wa3Rf
+bGVuKTsNCj4gPj4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBydHdfdXBkYXRlX3J4
+X2ZyZXFfZm9yX2ludmFsaWQocnR3ZGV2LCBza2IsDQo+ID4+ICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICZyeF9zdGF0dXMsDQo+
+ID4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICZwa3Rfc3RhdCk7DQo+ID4+IEBAIC01OTcsMTIgKzYwNywxMiBAQCBzdGF0aWMg
+dm9pZCBydHdfdXNiX3J4X2hhbmRsZXIoc3RydWN0IHdvcmtfc3RydWN0ICp3b3JrKQ0KPiA+PiAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGllZWU4MDIxMV9yeF9pcnFzYWZlKHJ0d2Rl
+di0+aHcsIHNrYik7DQo+ID4+ICAgICAgICAgICAgICAgICAgICAgICAgIH0NCj4gPj4NCj4gPj4g
+LSAgICAgICAgICAgICAgICAgICAgICAgc2tiID0gbmV4dF9za2I7DQo+ID4+IC0gICAgICAgICAg
+ICAgICAgICAgICAgIGlmIChza2IpDQo+ID4+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgc2tiX3B1bGwoc2tiLCBuZXh0X3BrdCk7DQo+ID4+ICtza2lwX3BhY2tldDoNCj4gPj4gKyAg
+ICAgICAgICAgICAgICAgICAgICAgbmV4dF9wa3QgPSByb3VuZF91cChza2JfbGVuLCA4KTsNCj4g
+Pj4gKyAgICAgICAgICAgICAgICAgICAgICAgcnhfZGVzYyArPSBuZXh0X3BrdDsNCj4gPj4gKyAg
+ICAgICAgICAgICAgIH0gd2hpbGUgKHJ4X2Rlc2MgKyBwa3RfZGVzY19zeiA8IHJ4X3NrYi0+ZGF0
+YSArIHJ4X3NrYi0+bGVuKTsNCj4gPj4NCj4gPj4gLSAgICAgICAgICAgICAgICAgICAgICAgdXJi
+X2xlbiAtPSBuZXh0X3BrdDsNCj4gPj4gLSAgICAgICAgICAgICAgIH0gd2hpbGUgKHNrYik7DQo+
+ID4+ICsgICAgICAgICAgICAgICBkZXZfa2ZyZWVfc2tiX2FueShyeF9za2IpOw0KPiA+PiAgICAg
+ICAgIH0NCj4gPj4gIH0NCj4gPj4NCj4gPj4gLS0NCj4gPj4gMi40Ny4wDQo+ID4NCg0K
 
