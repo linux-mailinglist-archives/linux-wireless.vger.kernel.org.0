@@ -1,124 +1,181 @@
-Return-Path: <linux-wireless+bounces-15714-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15715-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8086A9D98BD
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2024 14:45:37 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEC6A9D9970
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2024 15:17:35 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96C00B22A1A
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2024 13:45:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97FAA168A75
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2024 14:17:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D1051CDFA7;
-	Tue, 26 Nov 2024 13:44:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="Pyp7gdG4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F9F1CB32A;
+	Tue, 26 Nov 2024 14:17:16 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.web.de (mout.web.de [217.72.192.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02A3B652;
-	Tue, 26 Nov 2024 13:44:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1736AD515;
+	Tue, 26 Nov 2024 14:17:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732628698; cv=none; b=i/Qu41oz884zcql5T+5oEvGZvM6VjlG+S7C8rI4ZyGM/0wYl9dGVjbFgr0OyIOXcOVrNNgzS03x+6zSzxZ1CwSr1G7qRsedrSVEJc1z2cO0hq1veF3+YLUu5kTroAnvokbo/EgUXBXx/pIqGR/dyGuVJB0M0ZevKwhlxJblWJqA=
+	t=1732630635; cv=none; b=JCekQQOWVfoIjhfjyfi1myw9VDESCbEa76kpAxBwq2FnYj9R3Umyj4e8ex6SPkQ+raM7Zsj6QVzAgsD/1Src9MWKqqwOeEBhZw0IHo+Qb7iC7/4INBVSAJHwj7XSiVHHD7nrLhTG6F9zDylTyaHIPstMcGzhS53TBDzfQTI8n1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732628698; c=relaxed/simple;
-	bh=Wo98UZ03rJ4ph9vGG0mj88f90tnP38UMs5ZY21JIVRM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dLWplVhw94f4dsp3C18S8CAPtKHH9Uj038+gI4BuP/+CGvEqw/mk5ID0UtdyRWnR/E4KDmLzwobfia32y1EUzvjm7aSDb9XBp27mso2GRVrU5I9OpyH7Mk/88bXOcOLQEmdLucWuRdCwU0aaHyqNCFK9LBErGuHk+YErdT9OkeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=Pyp7gdG4; arc=none smtp.client-ip=217.72.192.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1732628682; x=1733233482; i=markus.elfring@web.de;
-	bh=S+3lhfowuHUDjDqZ7fevoqD7+4vMhYt2ikMvfvG4nUA=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=Pyp7gdG4nFptFLC2iJZlXEA9JqWF9Uha5mAVWQ6PIa42RuLQGCA/qcoBa5AtfOKm
-	 995Z1wk9oA0Pan03QvcMBDA/R3XmmBfjiIPqIVMHFkKWHiq9zjBbgC5usbxhV0djh
-	 D19Yj/iZuC6aaA5oSMgz2byloViAquMmGoHLdSAP6eCm4ACgeqH16yUoTEG9RMp+H
-	 luLyJiJrEs4AILw2CyMfNWaG9Vxywg8Cvdrr+UCgNsvm3HIs07WvmiYyJ8xrcQSJ4
-	 mkQosjx02gkuHvjnboZvWpMlwzxiOtnEgAWd671pV2fsmUrzb3zYnBkzxX12s4fmV
-	 oXajm7h0f0uycxh/TQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.91.95]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MoNV4-1u4Pv02MlE-00ozsu; Tue, 26
- Nov 2024 14:44:42 +0100
-Message-ID: <a9ccc947-20b2-4322-84e5-c96aaa604e63@web.de>
-Date: Tue, 26 Nov 2024 14:44:41 +0100
+	s=arc-20240116; t=1732630635; c=relaxed/simple;
+	bh=Af8h1x2GkRXVSShLvaf0DhS8aMbO/cKYrKI0lw1igO8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NIOcc5p18hVb/ZpJSCMop8J4/yCyHlAms2MNnx9Lw7oBsOXBw8W20fffezW2eVRP4VCVE1SD8aaFxcSdLZ+88F4RVnFXC5yMtRrzhljU/QK8jlDr1BZIGStMWOOe9mrPUe/unm7kqWfhWrwMCIVqeN2VD7BzNf1f9CkFcTCgYgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-6eeb2680092so56530477b3.1;
+        Tue, 26 Nov 2024 06:17:13 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732630632; x=1733235432;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DMlKAosx+8F5oQA944QEaviPdmzNr2nURUNr2vUH2Fg=;
+        b=cPyTszDipHNPhx1JvUT91zmmYnq1JdRRZOFWU1Wuq/IvZzIq+V6q8RQqiD3By5W7zp
+         D3LAQBBrTpiUhm0jOE5e1NXbz1MAH0oENuwuUgAWGYr85F5wmKE2pvR6nMDFukKdM2Ih
+         wwKZLjDy7QVALWTl210Q8+KHZ0oH5e28QF6KnCn/kSapYUY8Z6pS+2CFeEhZOvH0mKLt
+         h0EVcxPYgtM9riMvNu76MqTFBroyQLkNd1UUpgZIpMjwO6F4oZh4DnTvv5I/bTB+4xHQ
+         Cacv27MNaW9suUHoL7xED1e9qZBlpemPVxwx3GVsQjCKkh0CLu2WoKxQuK+GvDwZtFGh
+         slhg==
+X-Forwarded-Encrypted: i=1; AJvYcCVw3eGkmVXqmfPZ7R7GwwA1MwpgSZ/Qv7a0RrUlXjzUQvAWlTaTkLqgQR9kQSkQQSMxzRRSiwKzokbaN7U=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1/E37FhOcQS2VhiHo/uHdITs3jqNo7DkIuF2doqianoI7qWFL
+	/sFfu6QacXBZE14yXWLCjlQkiVojbuiPrwlxS0N2j34YKwFswmqi4e1RI4Sb
+X-Gm-Gg: ASbGncuTbQ7cne7lnALjYT5wI4wCqDR1/Hf7bNK7SYSo6NqIlQEm0394db0SjWlRXJf
+	6Zk2mfF1YHjG9pbyREMWE3AVB5Nf9IJS7sHScxas2Yn3IbG3CqaUTpLo3DJ7gLTMV1/ik6+DLlQ
+	Btt8fBCUs84DT4oQOvnG3X0z0djHz8nQhIFM1/6Y3E0FYkmdLgF9dR2962MEeMnqWtHNQ4IlkKM
+	acITh+M9zKkBGCX5eKtodQxKFi6Dqm1eE6kQDadwga0kucXjEMvPHgBS+MEWgSaXddXa0D14JmZ
+	nPl1MiVXsGxAwmj5
+X-Google-Smtp-Source: AGHT+IFBchqzOT0RNGF3KcSaIzd2T7wuyqBh2cE/WpfXrfrI1EMnCRKUUnKTc+qC/InZyC8KP2I2Cg==
+X-Received: by 2002:a05:690c:4512:b0:6e3:ca30:25f with SMTP id 00721157ae682-6eee08e8ce4mr163739067b3.25.1732630632459;
+        Tue, 26 Nov 2024 06:17:12 -0800 (PST)
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com. [209.85.128.180])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-6eee00835e1sm22950947b3.93.2024.11.26.06.17.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 Nov 2024 06:17:12 -0800 (PST)
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-6ee7a48377cso52524837b3.3;
+        Tue, 26 Nov 2024 06:17:12 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWj1SCjrkHHrbVsKxQpmZ1e3eU3nPgWKyKQ20hP5Lu+Fy5Xv4ZifZRK0UyU84JLnqpvG81kH2Tej/Vaw4c=@vger.kernel.org
+X-Received: by 2002:a05:690c:3193:b0:6ee:f2fa:b8a3 with SMTP id
+ 00721157ae682-6eef2fab97emr74621687b3.5.1732630631703; Tue, 26 Nov 2024
+ 06:17:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath11k: Fix NULL pointer check in
- ath11k_ce_rx_post_pipe()
-To: Baichuan Qi <zghbqbc@gmail.com>, ath11k@lists.infradead.org,
- linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Jeff Johnson <jjohnson@kernel.org>
-References: <4b1b5c12-3f81-4004-8eb4-44a9fbcc7223@web.de>
- <20241126023349.46421-1-zghbqbc@gmail.com>
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20241126023349.46421-1-zghbqbc@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+References: <20241022151838.26f9925fb959.Ia80b55e934bbfc45ce0df42a3233d34b35508046@changeid>
+ <CAMuHMdWu_9-L2Te101w8hU7H_2yobJFPXSwwUmGHSJfaPWDKiQ@mail.gmail.com>
+ <CAMuHMdXbnZc7rYc7ibRNWY6EfRLh-7g0yDeZ3Zk5OXCQ9Cr=cA@mail.gmail.com> <8221a4a01cb838159828961b6d8d99753ecc31b9.camel@sipsolutions.net>
+In-Reply-To: <8221a4a01cb838159828961b6d8d99753ecc31b9.camel@sipsolutions.net>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 26 Nov 2024 15:16:59 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdXbCaMBwjrb+ZJj+MMQvOm8Y=xKfaxVhYVb79WyO4Z-4Q@mail.gmail.com>
+Message-ID: <CAMuHMdXbCaMBwjrb+ZJj+MMQvOm8Y=xKfaxVhYVb79WyO4Z-4Q@mail.gmail.com>
+Subject: Re: [PATCH 1/2] debugfs: add small file operations for most files
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	"Rafael J . Wysocki" <rafael@kernel.org>, linux-m68k <linux-m68k@lists.linux-m68k.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:xb09GLcy7iN1LTFduA2WL60gcNOz8k/VgMDjmiDYpH8s1JlYBEM
- F45rME3zaiWi3qpRliexFTq0e9R4Uh6zb4jO/OEc9zW+o+QnxdbDk/uQ93sdFogN/hQp8Y3
- ef99SrtJQ2gTvxYKgxGwNV7KGBULMMJ7vMnedy1xbqRckZosFgG6wSePVrkoPzRXLkpNE2Z
- gC2laZgpGwoLFXSDPSO1Q==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:2l3Gn42M+Zs=;+gf0qVuRTnfaDwbr6tIlNLetJ23
- DuTN6W7pT9Uldu+dE6BpRy6x5nfudDHl5cCwcCHxtlb651vzgDJfcRj5r0NgfYLUxSk2/D7v1
- 2t/1hxKMSjZqAmp4IKDyR5wav0gp9L6BbA4PvdtoVxYEsDMVLQNj5zRgvJaSI5QfpO1srd7cZ
- Wj7T5niqjE3F1/yJscEEQ/Bf1Xk2PqXvzbab9YgDrkt9aiPoSIo9lmA/lhYhfgVqvtYMnq8n4
- 41wxYkuxOWXoRsREOavSHUzQk3PIqehrvSOSOop/7jZ73CsIrpKqOYCSMJPKuq2aRc9AnSPSS
- quSkZC9AFV7Kjwt02ol182vihslDiY5flyw+kUo74djBmYqqudByObdJYEwPcmNXKpe064nut
- ijx+VyIB7FOrgY4D8wyaWadf7vvdz+BX/f1cIrRSqeolcglg2HNP5BUYmtsXnlF1cnjscFdtO
- +E4oHyF6Q+P87j24GVu7fO1C068IGCB4F3gOuAlpHQXw2BQ0tCaRdfpUGZNDqYBa3nfJ1iFxB
- znjNUlzA+9QiYCjuLCMuWk4YJRS6zNwggOzx0lyjdMmxl9NRbEg4y14M358r/00aNwtWkr4dy
- 3qauRRssOkpk0GpLJLx1nRSgv2naSiQBkFdKG3ghN7Q7zFGLYDMLf4D96G3bC44t5IrfAUrlh
- LIFjlIivDboGbk2iRYPp0UIJo9l7RutbeJdFv9F42YYcOWk9nVGzZGwghSEdbLs5diJ+IyZer
- SnBlWb23Xx3K7zAB1Ju2fJ+N6LBHS5GnEcHsNGJZVQJrKSU5ZeWkwBl+kiCczkKNfQxTUzXlx
- v3tN9TwfLOIDf1Z3cTz1cl+bacftXf5F+jmZA7qP6FrZEOoN3kKc8kcagV2aUZVUeJdzAMA4V
- FG29w5mDgC1nyNwpGhNb7uS+kO8B8HOrgirvxiMyCaEUuWIa0vf8ITAeH
 
-> Change the OR to AND.
-> The previous code =E2=80=A6
+Hi Johannes,
 
-I would appreciate further improvements for the change description.
-
-* How do you think about to add any tags (like =E2=80=9CFixes=E2=80=9D and=
- =E2=80=9CCc=E2=80=9D) accordingly?
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
-Documentation/process/submitting-patches.rst?h=3Dv6.12#n145
-
-* See also:
-  https://lore.kernel.org/all/?q=3D%22This+looks+like+a+new+version+of+a+p=
-reviously+submitted+patch%22
-
-
-=E2=80=A6
-> +++ b/drivers/net/wireless/ath/ath11k/ce.c
-> @@ -324,7 +324,7 @@ static int ath11k_ce_rx_post_pipe(struct ath11k_ce_p=
-ipe *pipe)
->  	dma_addr_t paddr;
->  	int ret =3D 0;
+On Tue, Nov 26, 2024 at 10:37=E2=80=AFAM Johannes Berg
+<johannes@sipsolutions.net> wrote:
+> On Tue, 2024-11-26 at 09:38 +0100, Geert Uytterhoeven wrote:
+> > > Thanks for your patch, which is now commit 8dc6d81c6b2acc43 ("debugfs=
+:
+> > > add small file operations for most files") upstream.
 >
-> -	if (!(pipe->dest_ring || pipe->status_ring))
-> +	if (!(pipe->dest_ring && pipe->status_ring))
->  		return 0;
-=E2=80=A6
+> Or rather "no thanks" ;-)
+>
+> > > > +#define DEBUGFS_FSDATA_IS_SHORT_FOPS_BIT BIT(1)
+> > >
+> > > As the minimum alignment is 2 on m68k, you cannot use bit 1 in pointe=
+rs
+> > > for your own private use.
+>
+> D'oh. Sorry about that. Though honestly even if I _had_ seen such a
+> comment deep in maple tree code, on that struct I'd probably have
+> assumed it's because there's no pointer in it and thus no alignment
+> anyway...
+>
+> But sounds like you're pointers don't need to be naturally aligned, and
+> so 2-byte alignment is sufficient.
+>
+> I guess we _could_ solve that by __aligned(4) on the fops structs, but
+> ... I'm not sure that makes sense.
+>
+> > Reverting commit 8dc6d81c6b2acc43 fixes the issue,
+>
+> Clearly. Though have to also revert the related patch in wireless :)
+>
+> > and reduces the
+> > atari_defconfig kernel size by 447 bytes, according to bloat-o-meter.
+>
+> Well, fair point, but if we care about size then we can win back more
+> than this by converting about a handful of debugfs files to short ops,
+> and if there are no debugfs files then we wouldn't need debugfs either,
+> I'd think.
+>
+> So I think in a way the size argument goes the other way (with a little
+> bit of extra work), if that was meant to be an argument at all? :-)
 
-Is there a need to reconsider also such a return value?
+Assuming non-wireless drivers can be converted, too?  As none of the
+classical m68k machines support wireless, so far nothing is gained...
 
-Regards,
-Markus
+> From: Johannes Berg <johannes.berg@intel.com>
+> Date: Tue, 26 Nov 2024 10:29:23 +0100
+> Subject: [PATCH] fs: debugfs: differentiate short fops with proxy ops
+>
+> Geert reported that my previous short fops debugfs changes
+> broke m68k, because it only has mandatory alignement of two,
+> so we can't stash the "is it short" information into the
+> pointer (as we already did with the "is it real" bit.)
+>
+> Instead, exploit the fact that debugfs_file_get() called on
+> an already open file will already find that the fsdata is
+> no longer the real fops but rather the allocated data that
+> already distinguishes full/short ops, so only open() needs
+> to be able to distinguish. We can achieve that by using two
+> different open functions.
+>
+> Unfortunately this requires another set of full file ops,
+> increasing the size by 536 bytes (x86-64), but that's still
+
+226 on m68k.
+
+> a reasonable trade-off given that only converting some of
+> the wireless stack gained over 28k. This brings the total
+> cost of this to around 1k, for wins of 28k (all x86-64).
+>
+> Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+> Link: https://lore.kernel.org/CAMuHMdWu_9-L2Te101w8hU7H_2yobJFPXSwwUmGHSJ=
+faPWDKiQ@mail.gmail.com
+> Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+
+Thanks, that fixed the issue!
+Tested-by: Geert Uytterhoeven <geert@linux-m68k.org>
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 
