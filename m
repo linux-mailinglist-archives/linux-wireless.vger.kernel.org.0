@@ -1,78 +1,56 @@
-Return-Path: <linux-wireless+bounces-15713-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15714-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19E329D97D1
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2024 13:59:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8086A9D98BD
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2024 14:45:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE423286170
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2024 12:59:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96C00B22A1A
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2024 13:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95B541D45EA;
-	Tue, 26 Nov 2024 12:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D1051CDFA7;
+	Tue, 26 Nov 2024 13:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P+2KvSVg"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="Pyp7gdG4"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [217.72.192.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D45151D514C;
-	Tue, 26 Nov 2024 12:59:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02A3B652;
+	Tue, 26 Nov 2024 13:44:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732625981; cv=none; b=kYAdtboxSWFnzcAvaRcXRYvNHZR4FGt6J+R76J8oa5y5gccrtMjGbMpNTBRKQvBo1COzzBZkc0oE0nUkZ3ym52IbbEjy5yD1ux+seXKJi57V/ooeXnGeNblKK08axbeV4qo771WkqnBTamRwNvioXt0eGbM4MXVYdkgV+LplY04=
+	t=1732628698; cv=none; b=i/Qu41oz884zcql5T+5oEvGZvM6VjlG+S7C8rI4ZyGM/0wYl9dGVjbFgr0OyIOXcOVrNNgzS03x+6zSzxZ1CwSr1G7qRsedrSVEJc1z2cO0hq1veF3+YLUu5kTroAnvokbo/EgUXBXx/pIqGR/dyGuVJB0M0ZevKwhlxJblWJqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732625981; c=relaxed/simple;
-	bh=gxiuB8hExTw7LLDjIePZKOvEBBraCRY4tr26I2kdQpw=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=vA8OH7gzcjCOnZO+A4AOvycKgwGZcGSUQoInWa4oISljsFavU5KcgyyN4T1lwWWhu6yXx2vdr6nBojB5WvOsteDzOb8Rg8MsGnnjHFTXqHA+nHsJviN6Bl6v60ZMdOwDnzsr5JoLXGnzbnlECimPXcf35UmCVeBc2kGyW28+hBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P+2KvSVg; arc=none smtp.client-ip=209.85.219.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6d41176505fso51420166d6.2;
-        Tue, 26 Nov 2024 04:59:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732625979; x=1733230779; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=tmuzQHP8M/5vwjzhJEB1na265cXygkcCdDHq3RqQfr4=;
-        b=P+2KvSVglFFB87n7YmkH7ekKQuC83oiojX3RNwen/YLS+I05f+JgmOgYOjWgCAYC9J
-         cKVQmjzlVMKc/M3VJCArKMOFuo2SNIbgtTsAra0x2RVEqoZxE446jrcLdflbT+4b/nBJ
-         nkJ2kcVMRoIgqPj0EEAvgze75+UHhSJE6hR0MoWoRL69mjtKDyv4rNRFa4pHdGsW4t2D
-         4xJUStySTwWYvenmr4f7x4AzBcK2VWxf3HfHwTyMFAZre+4XpBmxabQ4AbeGtSvMCqZQ
-         S7UNZ5y07G+L1/FOvBOCcm+EBh2pcEmVUPr1o82TVUhRGqPLJQGmsVoSl7jmpWVHFSX5
-         S+yA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732625979; x=1733230779;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tmuzQHP8M/5vwjzhJEB1na265cXygkcCdDHq3RqQfr4=;
-        b=tvEJF7taMsAsthxSfaWiZzW/ZkcX20OKGx5T24Td1otNGAV9tJFVH/0wLD1TBuWrM9
-         7UDaPLFp82KwYq8sztebKaXIQ1/KojD4AIjvbBSIRmyVYmsZwqKlwreqZLYo8ZaK/wvm
-         wMZ2MOBGrztbgzZNQTSe9eftd6b/UEFBMtUv6RSRwMHf+kRYdNm7l4UR3FOKBkdviiV7
-         a7fg6TEtdQIsozzkFvXlUuhRiY6DDrpBFvFPpuwSXTR2eVJ/sL53Lj2QZa9gQKOrwTa2
-         VpfdpA2pk6Uwrr9YSg2v/AcwZ6nu0Zbz9dvvFg8gH5eNOwgzQ3pTRk45V6eRq0M/OqxV
-         0yGw==
-X-Forwarded-Encrypted: i=1; AJvYcCU5Pzaz1LStraaDkapMPGhajjWo5tT2mgA36WNxm7b6YhMDdRX7q33bdpD2WY1ihuPPxSsA+l/VCxDkeJoNbPs=@vger.kernel.org, AJvYcCWiOiSU5Y9hb4PBBkjnuO0NlHI72S+eq8QG49+ZN/BdfS2AtyQ7LW1LuGf0N/sMesaQykMKYsiHpnLi9U8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzt1qBRAGHx51FLQepLlNgcmbwrE4Ed2MCT69D7vK10RT/M/5aH
-	WX8DAVjk0LuQhhMe+zoCCukuoW+3bwWMaX7UrjmeSn+HnyB4XItl
-X-Gm-Gg: ASbGncs+cCYyAIonmxOw3Q5ch3KB1lpLfMt8WcSgLSobW8hhYvvstau06UUn34I8EA0
-	Zbfg7loSw6VTyUWWWutkn8wYYmO8kAMkf/qI1LiXS/s24n7kibu6Lsh+21nMo0KMxKMlgfXT3Wb
-	Gw8WpxZSikRcAzDyE3oxFTJvIC3qgaB2HAYDT/rsSmMpiPU2eIcsQsIdMqXBfsWwibti7xIsUsB
-	Y2XHqp9/v1FbG2L1OgrKbZ7Pz6yvTbuhu3UCSAMT6nfgxGsr7veIQ==
-X-Google-Smtp-Source: AGHT+IFyie6MMV1m5Z0np/9hEs9i8B3quTAjMwTDJzLJDJ2GdA7uHhlYgt7uUdvINSCAXbnRqtmhow==
-X-Received: by 2002:a05:6214:2a4c:b0:6d4:1a99:427f with SMTP id 6a1803df08f44-6d45136853cmr296619076d6.49.1732625978632;
-        Tue, 26 Nov 2024 04:59:38 -0800 (PST)
-Received: from [10.100.121.195] ([152.193.78.90])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d451b6670dsm54649206d6.124.2024.11.26.04.59.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Nov 2024 04:59:38 -0800 (PST)
-Message-ID: <8c2f274b-cf05-4fad-b9d6-fa9de1363d42@gmail.com>
-Date: Tue, 26 Nov 2024 04:59:35 -0800
+	s=arc-20240116; t=1732628698; c=relaxed/simple;
+	bh=Wo98UZ03rJ4ph9vGG0mj88f90tnP38UMs5ZY21JIVRM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dLWplVhw94f4dsp3C18S8CAPtKHH9Uj038+gI4BuP/+CGvEqw/mk5ID0UtdyRWnR/E4KDmLzwobfia32y1EUzvjm7aSDb9XBp27mso2GRVrU5I9OpyH7Mk/88bXOcOLQEmdLucWuRdCwU0aaHyqNCFK9LBErGuHk+YErdT9OkeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=Pyp7gdG4; arc=none smtp.client-ip=217.72.192.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1732628682; x=1733233482; i=markus.elfring@web.de;
+	bh=S+3lhfowuHUDjDqZ7fevoqD7+4vMhYt2ikMvfvG4nUA=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=Pyp7gdG4nFptFLC2iJZlXEA9JqWF9Uha5mAVWQ6PIa42RuLQGCA/qcoBa5AtfOKm
+	 995Z1wk9oA0Pan03QvcMBDA/R3XmmBfjiIPqIVMHFkKWHiq9zjBbgC5usbxhV0djh
+	 D19Yj/iZuC6aaA5oSMgz2byloViAquMmGoHLdSAP6eCm4ACgeqH16yUoTEG9RMp+H
+	 luLyJiJrEs4AILw2CyMfNWaG9Vxywg8Cvdrr+UCgNsvm3HIs07WvmiYyJ8xrcQSJ4
+	 mkQosjx02gkuHvjnboZvWpMlwzxiOtnEgAWd671pV2fsmUrzb3zYnBkzxX12s4fmV
+	 oXajm7h0f0uycxh/TQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.91.95]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MoNV4-1u4Pv02MlE-00ozsu; Tue, 26
+ Nov 2024 14:44:42 +0100
+Message-ID: <a9ccc947-20b2-4322-84e5-c96aaa604e63@web.de>
+Date: Tue, 26 Nov 2024 14:44:41 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -80,119 +58,67 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND PATCH v3 0/2] Improve ath10k flush queue mechanism
-From: James Prestwood <prestwoj@gmail.com>
-To: Remi Pommarel <repk@triplefau.lt>, ath10k@lists.infradead.org,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
- Cedric Veilleux <veilleux.cedric@gmail.com>,
- Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>
-References: <cover.1732293922.git.repk@triplefau.lt>
- <20215f63-e2e6-4f9a-bbbe-d7535c5ce9d2@gmail.com>
-Content-Language: en-US
-In-Reply-To: <20215f63-e2e6-4f9a-bbbe-d7535c5ce9d2@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] wifi: ath11k: Fix NULL pointer check in
+ ath11k_ce_rx_post_pipe()
+To: Baichuan Qi <zghbqbc@gmail.com>, ath11k@lists.infradead.org,
+ linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Jeff Johnson <jjohnson@kernel.org>
+References: <4b1b5c12-3f81-4004-8eb4-44a9fbcc7223@web.de>
+ <20241126023349.46421-1-zghbqbc@gmail.com>
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20241126023349.46421-1-zghbqbc@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:xb09GLcy7iN1LTFduA2WL60gcNOz8k/VgMDjmiDYpH8s1JlYBEM
+ F45rME3zaiWi3qpRliexFTq0e9R4Uh6zb4jO/OEc9zW+o+QnxdbDk/uQ93sdFogN/hQp8Y3
+ ef99SrtJQ2gTvxYKgxGwNV7KGBULMMJ7vMnedy1xbqRckZosFgG6wSePVrkoPzRXLkpNE2Z
+ gC2laZgpGwoLFXSDPSO1Q==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:2l3Gn42M+Zs=;+gf0qVuRTnfaDwbr6tIlNLetJ23
+ DuTN6W7pT9Uldu+dE6BpRy6x5nfudDHl5cCwcCHxtlb651vzgDJfcRj5r0NgfYLUxSk2/D7v1
+ 2t/1hxKMSjZqAmp4IKDyR5wav0gp9L6BbA4PvdtoVxYEsDMVLQNj5zRgvJaSI5QfpO1srd7cZ
+ Wj7T5niqjE3F1/yJscEEQ/Bf1Xk2PqXvzbab9YgDrkt9aiPoSIo9lmA/lhYhfgVqvtYMnq8n4
+ 41wxYkuxOWXoRsREOavSHUzQk3PIqehrvSOSOop/7jZ73CsIrpKqOYCSMJPKuq2aRc9AnSPSS
+ quSkZC9AFV7Kjwt02ol182vihslDiY5flyw+kUo74djBmYqqudByObdJYEwPcmNXKpe064nut
+ ijx+VyIB7FOrgY4D8wyaWadf7vvdz+BX/f1cIrRSqeolcglg2HNP5BUYmtsXnlF1cnjscFdtO
+ +E4oHyF6Q+P87j24GVu7fO1C068IGCB4F3gOuAlpHQXw2BQ0tCaRdfpUGZNDqYBa3nfJ1iFxB
+ znjNUlzA+9QiYCjuLCMuWk4YJRS6zNwggOzx0lyjdMmxl9NRbEg4y14M358r/00aNwtWkr4dy
+ 3qauRRssOkpk0GpLJLx1nRSgv2naSiQBkFdKG3ghN7Q7zFGLYDMLf4D96G3bC44t5IrfAUrlh
+ LIFjlIivDboGbk2iRYPp0UIJo9l7RutbeJdFv9F42YYcOWk9nVGzZGwghSEdbLs5diJ+IyZer
+ SnBlWb23Xx3K7zAB1Ju2fJ+N6LBHS5GnEcHsNGJZVQJrKSU5ZeWkwBl+kiCczkKNfQxTUzXlx
+ v3tN9TwfLOIDf1Z3cTz1cl+bacftXf5F+jmZA7qP6FrZEOoN3kKc8kcagV2aUZVUeJdzAMA4V
+ FG29w5mDgC1nyNwpGhNb7uS+kO8B8HOrgirvxiMyCaEUuWIa0vf8ITAeH
+
+> Change the OR to AND.
+> The previous code =E2=80=A6
+
+I would appreciate further improvements for the change description.
+
+* How do you think about to add any tags (like =E2=80=9CFixes=E2=80=9D and=
+ =E2=80=9CCc=E2=80=9D) accordingly?
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
+Documentation/process/submitting-patches.rst?h=3Dv6.12#n145
+
+* See also:
+  https://lore.kernel.org/all/?q=3D%22This+looks+like+a+new+version+of+a+p=
+reviously+submitted+patch%22
 
 
-On 11/26/24 4:57 AM, James Prestwood wrote:
-> Hi Remi,
+=E2=80=A6
+> +++ b/drivers/net/wireless/ath/ath11k/ce.c
+> @@ -324,7 +324,7 @@ static int ath11k_ce_rx_post_pipe(struct ath11k_ce_p=
+ipe *pipe)
+>  	dma_addr_t paddr;
+>  	int ret =3D 0;
 >
-> On 11/22/24 8:48 AM, Remi Pommarel wrote:
->> It has been reported [0] that a 3-4 seconds (actually up to 5 sec) of
->> radio silence could be observed followed by the error below on ath10k
->> devices:
->>
->>   ath10k_pci 0000:04:00.0: failed to flush transmit queue (skip 0 
->> ar-state 1): 0
->>
->> This is due to how the TX queues are flushed in ath10k. When a STA is
->> removed, mac80211 need to flush queues [1], but because ath10k does not
->> have a lightweight .flush_sta operation, ieee80211_flush_queues() is
->> called instead effectively blocking the whole queue during the drain
->> causing this radio silence. Also because ath10k_flush() waits for all
->> queued to be emptied, not only the flushed ones it could more easily
->> take up to 5 seconds to finish making the whole situation worst.
->>
->> The first patch of this series adds a .flush_sta operation to flush only
->> specific STA traffic avoiding the need to stop whole queues and should
->> be enough in itself to fix the reported issue.
->>
->> The second patch of this series is a proposal to improve ath10k_flush so
->> that it will be less likely to timeout waiting for non related queues to
->> drain.
->>
->> The abose kernel warning could still be observed (e.g. flushing a dead
->> STA) but should be now harmless.
->>
->> [0]: 
->> https://lore.kernel.org/all/CA+Xfe4FjUmzM5mvPxGbpJsF3SvSdE5_wgxvgFJ0bsdrKODVXCQ@mail.gmail.com/
->> [1]: commit 0b75a1b1e42e ("wifi: mac80211: flush queues on STA removal")
->
-> I saw in the original report that it indicated it was only for AP mode 
-> but after seeing this and checking some of our clients I saw that this 
-> is also happening in station mode too. I only have clients on 6.2 and 
-> 6.8. I can confirm its not occurring on 6.2, but is on 6.8. I also 
-> tried your set of patches but did not notice any behavior difference 
-> with or without them. When it happens, its always just after a roam 
-> scan, ~4 seconds go by and we get the failure followed by a 
-> "Connection to AP <mac> lost". Oddly the MAC address is all zeros.
->
-> Nov 25 09:09:50 iwd[16256]: src/station.c:station_start_roam() Using 
-> cached neighbor report for roam
-> Nov 25 09:09:54 kernel: ath10k_pci 0000:02:00.0: failed to flush 
-> transmit queue (skip 0 ar-state 1): 0
-> Nov 25 09:09:54 iwd[16256]: src/netdev.c:netdev_mlme_notify() MLME 
-> notification Del Station(20)
-> Nov 25 09:09:54 iwd[16256]: src/netdev.c:netdev_link_notify() event 16 
-> on ifindex 7
-> Nov 25 09:09:54 iwd[16256]: src/netdev.c:netdev_mlme_notify() MLME 
-> notification Deauthenticate(39)
-> Nov 25 09:09:54 iwd[16256]: src/netdev.c:netdev_deauthenticate_event()
-> Nov 25 09:09:54 iwd[16256]: src/netdev.c:netdev_mlme_notify() MLME 
-> notification Disconnect(48)
-> Nov 25 09:09:54 iwd[16256]: src/netdev.c:netdev_disconnect_event()
-> Nov 25 09:09:54 iwd[16256]: Received Deauthentication event, reason: 
-> 4, from_ap: false
-> Nov 25 09:09:54 kernel: wlan0: Connection to AP 00:00:00:00:00:00 lost
->
-> Other times, the above logs are preceded by this:
->
-> Nov 26 00:25:25 kernel: ath10k_pci 0000:02:00.0: failed to flush sta 
-> txq (sta ca:55:b8:7a:91:4b skip 0 ar-state 1): 0
->
-> Note, the above logs are with your patches applied. Maybe this is a 
-> separate issue? Or do you think its related?
+> -	if (!(pipe->dest_ring || pipe->status_ring))
+> +	if (!(pipe->dest_ring && pipe->status_ring))
+>  		return 0;
+=E2=80=A6
 
-Forgot to mention, this is on the QCA6174 hw 3.2
+Is there a need to reconsider also such a return value?
 
-firmware ver WLAN.RM.4.4.1-00288- api 6 features wowlan,ignore-otp,mfp 
-crc32 bf907c7c
-
->
-> Thanks,
->
-> James
->
->>
->> V3:
->>    - Initialize empty to true to fix smatch error
->>
->> V2:
->>    - Add Closes tag
->>    - Use atomic instead of spinlock for per sta pending frame counter
->>    - Call ath10k_htt_tx_sta_dec_pending within rcu
->>    - Rename pending_per_queue[] to num_pending_per_queue[]
->>
->> Remi Pommarel (2):
->>    wifi: ath10k: Implement ieee80211 flush_sta callback
->>    wifi: ath10k: Flush only requested txq in ath10k_flush()
->>
->>   drivers/net/wireless/ath/ath10k/core.h   |  2 +
->>   drivers/net/wireless/ath/ath10k/htt.h    | 11 +++-
->>   drivers/net/wireless/ath/ath10k/htt_tx.c | 49 +++++++++++++++-
->>   drivers/net/wireless/ath/ath10k/mac.c    | 75 ++++++++++++++++++++----
->>   drivers/net/wireless/ath/ath10k/txrx.c   | 11 ++--
->>   5 files changed, 127 insertions(+), 21 deletions(-)
->>
+Regards,
+Markus
 
