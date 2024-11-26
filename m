@@ -1,137 +1,206 @@
-Return-Path: <linux-wireless+bounces-15730-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15731-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52FE99D9C2A
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2024 18:12:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9BCF9D9E75
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2024 21:40:24 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 187742825EC
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2024 17:12:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73CCC166E06
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2024 20:40:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 008931DDA18;
-	Tue, 26 Nov 2024 17:11:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FD987E782;
+	Tue, 26 Nov 2024 20:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t8eEbBlP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TyIwCwpk"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3041DDA16
-	for <linux-wireless@vger.kernel.org>; Tue, 26 Nov 2024 17:11:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73658149C64
+	for <linux-wireless@vger.kernel.org>; Tue, 26 Nov 2024 20:40:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732641112; cv=none; b=aaHnMawLW1Qh0MCz/m/UbjMxicZhi5YehBd+MazGIodqfcCASt/lEao9VT6kTzdfHUdeU1o4aCe1fCSec6YOGDnDlnNC+PB9rTGbeWkbYkCxq0EUfPrHEcu8NeuEd7IsQHClAg1iPS26IVDoNF6XAIKVoEnpxvY8kXCIS309tMs=
+	t=1732653621; cv=none; b=rZn8lWjBlnvxJ7+0Bb3sqLFBpyrna6FnDl7CFWU7Pph8OBEbPHr/XAT3bKut3mdQky9fBgVeHj/VEF+KQuSgenA/1ye3PwoBx4dQIf97wgDaq++SvY28lhJl86j0W2uYSXlGSusQ2x3h4X9Ig1jcRKedKXdBo9ZjPnlCQ2pyN5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732641112; c=relaxed/simple;
-	bh=5zCC/YdFWWxBJ7fJkYtfZKtr8YGh1fyzP8LdtP0IzJc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rQ4/ju4uuZS4tlmmhDPibuWfCy6feNYi0OxnCtybCdCfq0japuMFgLYagT2q5NdzZOnF74AfVUBuz9RL0QdULuFl13Hx1E4p7XUfuLxdAicXq4H/xteVaiwo1xCB2cyp+0Tt4h3cGa6T+oCX9/GSAo7pryftCC74NjuXbnOW3hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t8eEbBlP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28DA3C4CECF;
-	Tue, 26 Nov 2024 17:11:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732641112;
-	bh=5zCC/YdFWWxBJ7fJkYtfZKtr8YGh1fyzP8LdtP0IzJc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t8eEbBlPRgzvFSk/Qhh3etKr9/vBUuABFpnoNN69EwNv6JCGDfgC8E3zuSNp2JwCm
-	 GcXsOifmnFrSe7xdeW85pohfldfhG+dpA5vg1rK0XqfpWRBtmuO6Z8aG7mEv+fko5p
-	 NAHjjDphnrWHh2gVe45nzXMS/3DxSdz5T6E17MJohgYeWVb2cEmm7vLcNWSWpBhN5p
-	 hOI0oooMVdTgwpXsxJ2VNq0CV0BBcgBdE5bGqL9Jcam5pvtPp+B0KnfdhKJ3rSemlX
-	 oEOP2Svdz2m0cZOe67UhvInYJn66ulciFHwE8zvq5/OFQoXKalRh1YZ9YU0HJoffWw
-	 fkcU2f7aa2D0w==
-From: Kalle Valo <kvalo@kernel.org>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 10/10] wifi: ath12k: ath12k_mac_op_sta_rc_update(): use mac80211 provided link id
-Date: Tue, 26 Nov 2024 19:11:39 +0200
-Message-Id: <20241126171139.2350704-11-kvalo@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241126171139.2350704-1-kvalo@kernel.org>
-References: <20241126171139.2350704-1-kvalo@kernel.org>
+	s=arc-20240116; t=1732653621; c=relaxed/simple;
+	bh=jhYbxegr/2Mc7DDgxQHy/lmPh4E/N8yr4zu2A8wH7Ao=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=ejik37iNXUzFzYa5jH0NfZpQeo9sr3WCZEFMZ6H5e1rpNs6lQa9LP9wuHit7kH9z/TF5dZxeQcwVa9MHeI6jI2V0y/G0yH9ewtRCX1+McuOHNGuI0mli0s9WDW7ME/xoCKeO5gwKFOpNSk9Ht4x38eTTRXKZUZP80jCFVIfAUeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TyIwCwpk; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5cfabc686c8so7027028a12.0
+        for <linux-wireless@vger.kernel.org>; Tue, 26 Nov 2024 12:40:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732653618; x=1733258418; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=5kf3es1ZxDHTjs3N9kNh+y8y/WNVZLha2qy2c3MXSf4=;
+        b=TyIwCwpkGGpem9563GFlfjq8w9+JnZM0KNQJDxWOPENljdli+n5saewcn0fk7AXT1v
+         Nuv41S4RehJ8pdTeVAK0YupGcPMzKd/aX9G1GKbx6TNhxjY9eJIIufUROiA5msgpDoZa
+         8xu6WbtEiud84XEn6v1AYLEXlYFGTGQMLMe2hWQ/FOI4oNeGdgvYNAmzPCtJcbWuKDv1
+         X6JuPvxl33UXpORLuYIIZKD/fhhxREO+mbBxE25u3daYaFO80PBer+YETxP8Np+jSa1E
+         UYvmlc5q9pTFXV9n92Y3Su99jRXsVo7j8rAPqVJFr5TztXaVYUxLBM3FOMwxJrKA7OdV
+         E4VA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732653618; x=1733258418;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5kf3es1ZxDHTjs3N9kNh+y8y/WNVZLha2qy2c3MXSf4=;
+        b=Qd1C+qALccpxG7zdbHACdVKjZm8Uj7NMRnuRpk3kXcL5NmO7MxK1Z7kOniZ8R9dQtB
+         S4y7LfC9wMBEWmav89+3TX4rYHnbF3VIiAjrvc57EXhnfUEyIgMKWiPg5sNPC+sgJQRD
+         Yf6i5LEeVBLqfHldloOu0jKoOvJNRuKctUMxUlGZZFK55jKzp8JuC1pVXNfm/Zr9+DFo
+         UOXin1MEmtmDjKI75ZdffdV6Y6SI2JU/LtLISA1sjfGgALcywwVNIdSeaLoyFxdteotr
+         b5g70Mb+B06pBJBA8PmHdn8OtJcrCxQ+8eJ+UMgp6I1l2uQpjYu5bhYcE3xZl54W4uhx
+         CMew==
+X-Forwarded-Encrypted: i=1; AJvYcCVx21+vjsvuEXstYNlcQbBHMfKoLSynskEKitbp8EQoubFpYkl5K51bR7I7fMPqQEL96ruFGf9NHwB0/wRQ1Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz71btvhIBSkIlqEwG8skLX6uY61wQWfSSNN5Y9IvR8CjCa/ryT
+	/zUHJt9D3s5Rr2hFUJ9wJB4opnxD8/YRR5Np+pUESFxGuL7BNV7n
+X-Gm-Gg: ASbGnctelw+n9PHn8tz61bpG2CZykRQg0+5/StaJ1Ng8FuSXIZRMmCVgkCcUkcF8mmU
+	DihuIIZsN3kpxp/qCRbXERpVXSOD4TsNq7J25rj1Qkj6EkJH/OmrzxjJI12f5DIczcc0DM25ssn
+	Uje7FeieSp1dhyNlL9lZ1nxg1mJJYSTMgmTKATeA7IcN/lM+lU9UEwGK8LnkTjmiSEed7i4SKIo
+	oj9L2piGxGfLFWGxLbNpVIuALeov6fwWWxPp3YtdNZuy5zTOlg+cJgt
+X-Google-Smtp-Source: AGHT+IFo08qX1UQNuyGPr1xIQXVVZrjqLBCtE/5WogO9+Y25n+WbKoaHotTd4Jff84E7syedp647Lw==
+X-Received: by 2002:a05:6402:50c9:b0:5cf:de72:c140 with SMTP id 4fb4d7f45d1cf-5d080b8cdc6mr538695a12.7.1732653617543;
+        Tue, 26 Nov 2024 12:40:17 -0800 (PST)
+Received: from [192.168.0.50] ([81.196.40.57])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d01d3fc777sm5467364a12.68.2024.11.26.12.40.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 26 Nov 2024 12:40:16 -0800 (PST)
+Message-ID: <13504753-c105-47ba-b98f-160daf06965b@gmail.com>
+Date: Tue, 26 Nov 2024 22:40:13 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: Re: [PATCH 1/2] wifi: rtw88: usb: Copy instead of cloning the RX skb
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Sascha Hauer <sha@pengutronix.de>
+References: <28b09f4d-5271-470d-99b6-a0bbe0224739@gmail.com>
+ <e9f32f00c63945bfb97dff12d081478e@realtek.com>
+ <133b8a9d-55e2-4483-ab2d-9ed06ef5ed96@gmail.com>
+ <15f83014e5c54762b34e11a1aa552934@realtek.com>
+Content-Language: en-US
+In-Reply-To: <15f83014e5c54762b34e11a1aa552934@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Kalle Valo <quic_kvalo@quicinc.com>
+On 26/11/2024 03:17, Ping-Ke Shih wrote:
+> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>> On 18/11/2024 11:16, Ping-Ke Shih wrote:
+>>> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>>>> "iperf3 -c 192.168.0.1 -R --udp -b 0" shows about 40% of datagrams
+>>>> are lost. Many torrents don't download faster than 3 MiB/s, probably
+>>>> because the Bittorrent protocol uses UDP. This is somehow related to
+>>>> the use of skb_clone() in the RX path.
+>>>
+>>> Using skb_clone() can improve throughput is weird to me too. Do you check
+>>> top with 100% cpu usage?
+>>>
+>>
+>> I checked the CPU usage now and the results are interesting. In short,
+>> patch 1/2 slightly raises the CPU usage, and patch 2/2 lowers it a lot.
+> 
+> Originally I just wanted to know if throughput is a limit of CPU bound.
+> Anyway good to know this patchset can improve CPU usage. 
+> 
+>>>>
+>>>> Don't use skb_clone(). Instead allocate a new skb for each 802.11 frame
+>>>> received and copy the data from the big (32768 byte) skb.
+>>>>
+>>>> With this patch, "iperf3 -c 192.168.0.1 -R --udp -b 0" shows only 1-2%
+>>>> of datagrams are lost, and torrents can reach download speeds of 36
+>>>> MiB/s.
+>>>>
+>>>> Tested with RTL8812AU and RTL8822CU.
+>>>>
+>>>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>>>> ---
+>>>>  drivers/net/wireless/realtek/rtw88/usb.c | 52 ++++++++++++++----------
+>>>>  1 file changed, 31 insertions(+), 21 deletions(-)
+>>>>
+>>>> diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
+>>>> index 93ac4837e1b5..727569d4ef4b 100644
+>>>> --- a/drivers/net/wireless/realtek/rtw88/usb.c
+>>>> +++ b/drivers/net/wireless/realtek/rtw88/usb.c
+>>>> @@ -7,6 +7,7 @@
+>>>>  #include <linux/mutex.h>
+>>>>  #include "main.h"
+>>>>  #include "debug.h"
+>>>> +#include "mac.h"
+>>>>  #include "reg.h"
+>>>>  #include "tx.h"
+>>>>  #include "rx.h"
+>>>> @@ -546,49 +547,58 @@ static void rtw_usb_rx_handler(struct work_struct *work)
+>>>>  {
+>>>>         struct rtw_usb *rtwusb = container_of(work, struct rtw_usb, rx_work);
+>>>>         struct rtw_dev *rtwdev = rtwusb->rtwdev;
+>>>> -       const struct rtw_chip_info *chip = rtwdev->chip;
+>>>> -       u32 pkt_desc_sz = chip->rx_pkt_desc_sz;
+>>>>         struct ieee80211_rx_status rx_status;
+>>>> -       u32 pkt_offset, next_pkt, urb_len;
+>>>>         struct rtw_rx_pkt_stat pkt_stat;
+>>>> -       struct sk_buff *next_skb;
+>>>> +       struct sk_buff *rx_skb;
+>>>>         struct sk_buff *skb;
+>>>> +       u32 pkt_desc_sz = rtwdev->chip->rx_pkt_desc_sz;
+>>>> +       u32 max_skb_len = pkt_desc_sz + PHY_STATUS_SIZE * 8 +
+>>>> +                         IEEE80211_MAX_MPDU_LEN_VHT_11454;
+>>>> +       u32 pkt_offset, next_pkt, skb_len;
+>>>>         u8 *rx_desc;
+>>>>         int limit;
+>>>>
+>>>>         for (limit = 0; limit < 200; limit++) {
+>>>> -               skb = skb_dequeue(&rtwusb->rx_queue);
+>>>> -               if (!skb)
+>>>> +               rx_skb = skb_dequeue(&rtwusb->rx_queue);
+>>>> +               if (!rx_skb)
+>>>>                         break;
+>>>>
+>>>>                 if (skb_queue_len(&rtwusb->rx_queue) >= RTW_USB_MAX_RXQ_LEN) {
+>>>>                         dev_dbg_ratelimited(rtwdev->dev, "failed to get rx_queue, overflow\n");
+>>>> -                       dev_kfree_skb_any(skb);
+>>>> +                       dev_kfree_skb_any(rx_skb);
+>>>>                         continue;
+>>>>                 }
+>>>>
+>>>> -               urb_len = skb->len;
+>>>> +               rx_desc = rx_skb->data;
+>>>>
+>>>>                 do {
+>>>> -                       rx_desc = skb->data;
+>>>>                         rtw_rx_query_rx_desc(rtwdev, rx_desc, &pkt_stat,
+>>>>                                              &rx_status);
+>>>>                         pkt_offset = pkt_desc_sz + pkt_stat.drv_info_sz +
+>>>>                                      pkt_stat.shift;
+>>>>
+>>>> -                       next_pkt = round_up(pkt_stat.pkt_len + pkt_offset, 8);
+>>>> +                       skb_len = pkt_stat.pkt_len + pkt_offset;
+>>>> +                       if (skb_len > max_skb_len) {
+>>>
+>>> This seems a new rule introduced by this patch. Do you really encounter this
+>>> case? Maybe this is the cause of slow download throughput?
+>>>
+>>
+>> No, I never saw this case. It just seemed like a good idea to check the
+>> size passed to alloc_skb. Maybe it's not needed?
+> 
+> I think it is fine. 
+> 
+> Asking some questions before, I just tried to find a cause why 40% datagram get
+> lost as you mentioned in commit message, but I can't. 
+> 
 
-There's a todo comment to use mac80211 provided link id. As mac80211 now
-provides it use it in ath12k and remove the comment.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/mac.c | 22 +++++++++-------------
- 1 file changed, 9 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index f6c3128a675a..164c974fb5f4 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -5696,10 +5696,10 @@ static int ath12k_mac_op_sta_set_txpwr(struct ieee80211_hw *hw,
- 	return ret;
- }
- 
--static void ath12k_mac_op_sta_rc_update(struct ieee80211_hw *hw,
--					struct ieee80211_vif *vif,
--					struct ieee80211_link_sta *link_sta,
--					u32 changed)
-+static void ath12k_mac_op_link_sta_rc_update(struct ieee80211_hw *hw,
-+					     struct ieee80211_vif *vif,
-+					     struct ieee80211_link_sta *link_sta,
-+					     u32 changed)
- {
- 	struct ieee80211_sta *sta = link_sta->sta;
- 	struct ath12k *ar;
-@@ -5710,27 +5710,23 @@ static void ath12k_mac_op_sta_rc_update(struct ieee80211_hw *hw,
- 	struct ath12k_link_vif *arvif;
- 	struct ath12k_peer *peer;
- 	u32 bw, smps;
--	/* TODO: use proper link id once link sta specific rc update support is
--	 * available in mac80211.
--	 */
--	u8 link_id = ATH12K_DEFAULT_LINK_ID;
- 
- 	rcu_read_lock();
--	arvif = rcu_dereference(ahvif->link[link_id]);
-+	arvif = rcu_dereference(ahvif->link[link_sta->link_id]);
- 	if (!arvif) {
- 		ath12k_hw_warn(ah, "mac sta rc update failed to fetch link vif on link id %u for peer %pM\n",
--			       link_id, sta->addr);
-+			       link_sta->link_id, sta->addr);
- 		rcu_read_unlock();
- 		return;
- 	}
- 
- 	ar = arvif->ar;
- 
--	arsta = rcu_dereference(ahsta->link[link_id]);
-+	arsta = rcu_dereference(ahsta->link[link_sta->link_id]);
- 	if (!arsta) {
- 		rcu_read_unlock();
- 		ath12k_warn(ar->ab, "mac sta rc update failed to fetch link sta on link id %u for peer %pM\n",
--			    link_id, sta->addr);
-+			    link_sta->link_id, sta->addr);
- 		return;
- 	}
- 	spin_lock_bh(&ar->ab->base_lock);
-@@ -10165,7 +10161,7 @@ static const struct ieee80211_ops ath12k_ops = {
- 	.set_rekey_data	                = ath12k_mac_op_set_rekey_data,
- 	.sta_state                      = ath12k_mac_op_sta_state,
- 	.sta_set_txpwr			= ath12k_mac_op_sta_set_txpwr,
--	.link_sta_rc_update		= ath12k_mac_op_sta_rc_update,
-+	.link_sta_rc_update		= ath12k_mac_op_link_sta_rc_update,
- 	.conf_tx                        = ath12k_mac_op_conf_tx,
- 	.set_antenna			= ath12k_mac_op_set_antenna,
- 	.get_antenna			= ath12k_mac_op_get_antenna,
--- 
-2.39.5
+By the way, I saw 30-40% datagrams lost with RTL8822CE as well. But the
+PCI driver is not using skb_clone so I'm not sure what is going on there.
 
 
