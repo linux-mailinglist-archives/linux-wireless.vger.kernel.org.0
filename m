@@ -1,77 +1,78 @@
-Return-Path: <linux-wireless+bounces-15711-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15712-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E6299D960B
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2024 12:14:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E9BE9D97CE
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2024 13:59:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B76FCB24EB2
-	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2024 11:13:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B1FCB277E2
+	for <lists+linux-wireless@lfdr.de>; Tue, 26 Nov 2024 12:57:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB7621CD215;
-	Tue, 26 Nov 2024 11:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84E2C1D416B;
+	Tue, 26 Nov 2024 12:57:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="fwuhfsOV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fUyhUpSR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565861CACE2
-	for <linux-wireless@vger.kernel.org>; Tue, 26 Nov 2024 11:13:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1FE41D4169;
+	Tue, 26 Nov 2024 12:57:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732619633; cv=none; b=Y7nm5VC7FGd345GMQyhzXzBdS67qr+eoFWRnNMXpQvt9HLThnvNBTVnv/8wBDy3CSq4WwK3Nc+HhFxJuKff8qWYqNlJZoKTi1QRZmULt75fWbXKqer0jd2ZjSvc4S3S7KN7ylw1zQ2amy1E0GtcgpqqasKIIxzRcfRJzAU2ltSo=
+	t=1732625863; cv=none; b=bxUg1TcS2Ye/BPtX22bk2JK99METwWUtpMUpteDvsdLqkJSTt4bn4urgxcAX8NJUshNf4SX8uMYdoPdqo7B223qkidAcz3oHsz+MOlQ214EgG+VYkdMr0CrVQeQTlzUKYYBPaW1HeHtnwI5p2KZ8boGWcQqF1sFNDNCjh7TfONA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732619633; c=relaxed/simple;
-	bh=P+f4x4cp34/QK2b5aXO1a6r0IdOJPje9zK6YfmUgAng=;
+	s=arc-20240116; t=1732625863; c=relaxed/simple;
+	bh=pAXvbAY21IjprYSWZVB5ThcCCa74QSWQQFIKi5caw4A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eYrRl72v5CjxvnXUQpytt4HTnUbzvBx3DvCKW25/b2kwru1MGxY70OrbrGPxapuJyi0OJxjSvueMbaGE9yiQ7AHrzxfT6l9DV98N20zSeKxHa9GiXFW0aRR9AwLpvRMsPwGlz8eJ/24mtdvya2KF/XrdSfvlMjaAI5s817jzEZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=fwuhfsOV; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2ea2dd09971so4683673a91.3
-        for <linux-wireless@vger.kernel.org>; Tue, 26 Nov 2024 03:13:52 -0800 (PST)
+	 In-Reply-To:Content-Type; b=Oupy9aytY1Z9EQwHAMl32DVmOZ+sKDiYk8b7fN4bvWXxvlGtloPyEVYzl7F5CSS7mtn/jgWe5NS534oBFThyL6QLbGp0NPpuHC+YEejGs8XDyD9ntsTJCgyXwbufn05Cyd8fGqZ/eniLDSOmbO6DpThgu5UkDuiUJhqZhNaBbLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fUyhUpSR; arc=none smtp.client-ip=209.85.219.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-6d40ae72d35so38100346d6.1;
+        Tue, 26 Nov 2024 04:57:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1732619631; x=1733224431; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=WaedEROScXbmZLW2dLxh5VEj9F18yKa88b9QQRbmaog=;
-        b=fwuhfsOVJ1c7p5BuMrgBoVe20N4T+CdHU20hCnWx1FqAVCsDkh8FWJVaDYV6qHDQQE
-         7GpulNq/8TSEFdbVAunQYG9DCHRu0CLNbqGulMVsXnADjtOCCKlNknyO1KpjN27Lev1B
-         UBvOvC7i0XRXFJNTV3qbCIQtaTEO6K36/ukWo=
+        d=gmail.com; s=20230601; t=1732625860; x=1733230660; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kPMLzMmK0KKzaO0NVovKhOpAnvw6uWElGaIczBWn2T0=;
+        b=fUyhUpSRWCJbEmpk/f5hx/0MSSZWuCc3adItJWi+Qnd/TC4R88RavSfDQYASEXQcCX
+         Mf5kSs1F1cYMKxjHoq5ZfclGnf8rydyA7mohTmvcUj2Im8uAKhKdpEUOxKMPPvqyF9nb
+         ILRXIlBSX52h8edM4zg4Bh0EIhzd0MvgLWXv5Od+9q0xlrezDgkSmxH49N91IC5/sO71
+         u+IxoPluYMsyyfGVD/FzkjHSQJx7jLoqTaBWDMl6g5OzpcFKA2t47PicVO3ixuGXcB4n
+         fsJnBZWzgAkv+BO0npBhJ/fsxlH8k9Ky2MqT7ESf2Zfb6k31D+s/GoyVEMHelA283SoG
+         EKlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732619631; x=1733224431;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WaedEROScXbmZLW2dLxh5VEj9F18yKa88b9QQRbmaog=;
-        b=vaXtwmKX7MCZtWbzkYJlUrI8TWuFFE5KyONlZ9/I9XjXewTEdOAdX2KPqmjzrMJb0q
-         AWWBkauSMaSl+6edfXAnt3rDCyBTh46OYPmyxA154i9uFrGehPO5LZ4fVi6TR3rzvUf/
-         GfxB0IXF70fKDjlrCu1a1hexkFUs3rk7uY+c9RkkFdoK56lgDgO8mHJ/uXGtBeA8YZRK
-         PVtnTyit3mW1TQBmAscj+b6s0WyDkQE1l0kKQUMYunpwRkka6MCjtJcg0EuJmCSyPbWV
-         pkyIPhYRx+S8uXNc5Ac9J9OdT9Ugzv3VvcJKMsktaFHOEprosXfpH1/AqdSeuLrWw2PU
-         SpbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXUUc+VeZYeCRT96F3GJDj6NKKLMs5uS5nxdcpN+LHjrBySCM443Qt6qBQAegCtbPaliBbzzXIV0cAhFua4TA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyb1grzCtK2roiguHhxpnsZ4rM2Zn/IXvs5B5HHsBfP4Aeo6Itm
-	pAqAS3OKQDKTljIuBKks8hCQVckiU3DwxarHzvMoOTzAjgsHwDnAGmUc7v1JJA==
-X-Gm-Gg: ASbGncsjb0jwg9H3AcvU9PBmlJWy7R0IEUnMl6fSdr4OSKZd72aUJTJZqVnz43h+V25
-	xSla3jsyaIKA7xkMviS/NYo6N/+pKEa4/SdGNMygIx+3Ek3grmg8SuH/wOlZj76CUAjAFNDIZXI
-	BgVRWcsZFr0efFizDmkx4BrJ7Y4MIATuNI4alTtQUX+nKqWV02LFc8ajlna9RL+N7FlivtzpXZt
-	Q+o5GLaxjng/krQkJw5+Kdsg12OXtj78VZqajQr+ZWEoL7J3Yhda4P2w1KIcC/N/FX4mkcMzysU
-	Hw==
-X-Google-Smtp-Source: AGHT+IEx0dge3AH0eYaowfAlKd02/aR04hcx31QrPIxtxydsY8h2mdiB4Ia2A2kz1H2Z+4+2qJx63A==
-X-Received: by 2002:a17:90b:4c89:b0:2ea:97b6:c466 with SMTP id 98e67ed59e1d1-2eb0e22f524mr25752876a91.12.1732619631574;
-        Tue, 26 Nov 2024 03:13:51 -0800 (PST)
-Received: from [10.176.68.139] ([192.19.176.250])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2eb0cff9c88sm8541644a91.19.2024.11.26.03.13.48
+        d=1e100.net; s=20230601; t=1732625860; x=1733230660;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kPMLzMmK0KKzaO0NVovKhOpAnvw6uWElGaIczBWn2T0=;
+        b=TCiU+isjf8o6ph2DfKDFWTIZyfNZ/utHu/9cmqD37aIvw9Gz0ovz25U33wR0wdjDPp
+         p4o+vJ5gBTGuVDVavzbilU/xSQlTHm8fbDpglfbX79NarXSLW2AR6bgPlwEv0pE6umGS
+         NgLWIcf4Jx3GecWWYWKFZrVNGWDUSGKlAKKP5QTFilOTTBnPhiihWf8GriqTjFUtgHWd
+         XNABDIUuKczWVoF6E78+3OWgyxl9wArklyjPOzxxlfKujLvELwxELU6GPjI/2W+WpV7L
+         F/c5ChTuacgh2aHh7S1HZxl9LDiW0vNc2AVfYYgtIpAk2LTmMYHD7qy0Ea02SXz1D8Qj
+         9tlg==
+X-Forwarded-Encrypted: i=1; AJvYcCUEuYR2nSZwzIbgoZl/ktkhjtJzWkvYqNmPsKg6IqodDPV5L+UeHivpDZ7J21CqZUHZhBz+r4+qt3lcXrQ=@vger.kernel.org, AJvYcCVzLZmfu4Nx1ejvYFalpbHif05e1NTe7pcSkB8byd4ui2fjzW/fbAoF/x+1QLx0hB00LbctIHWnjf7dUOWxXkM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUpsgBNWxo4ptRV/mn6waoP8egXvEclOp5nS80XpLU4VF52CTr
+	RN95qNJGlPI8Ld+OcHZnY+VMK01KCMX7EOCOedlKlt0fgIi3V/Ku
+X-Gm-Gg: ASbGnctQZ3pCjIwXhBZuwyUDOnXAZUkGYpl8K5ojink6u6uiDMlnJjcEOD3au1StBBS
+	sgbFIKzoAcgucf1eqnU2L0lbiJIdrbMtw0trPBh/H/hnOBv8LItKPyOoBtW7fnGCOz+YLmLaKSi
+	As0CgOWnms/7v5P7DmeEtxsRC6lc5hqJCOGJeWf7ITfqxEDLyowwDlYv6wpFX3ZwD8ogdnAVvot
+	LRzXN+km8CZ13DQcFHS/exkvnMnmQIs5MGAJDmuSTY0o+2WTNBlCQ==
+X-Google-Smtp-Source: AGHT+IFnP2Gi8gvg7R66MTjJ+gzk2OF2AsbQsoaxzJZu2XBdwQXekD9jcmse+lTjI945O7/0K3D1Mw==
+X-Received: by 2002:ad4:5fca:0:b0:6d4:12af:be77 with SMTP id 6a1803df08f44-6d451345773mr282199186d6.38.1732625860511;
+        Tue, 26 Nov 2024 04:57:40 -0800 (PST)
+Received: from [10.100.121.195] ([152.193.78.90])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6d451b23e25sm54289396d6.89.2024.11.26.04.57.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 26 Nov 2024 03:13:51 -0800 (PST)
-Message-ID: <980c5cee-2dc3-4d26-b749-6ba00b9c2091@broadcom.com>
-Date: Tue, 26 Nov 2024 12:13:44 +0100
+        Tue, 26 Nov 2024 04:57:40 -0800 (PST)
+Message-ID: <20215f63-e2e6-4f9a-bbbe-d7535c5ce9d2@gmail.com>
+Date: Tue, 26 Nov 2024 04:57:36 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -79,85 +80,108 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] brcmfmac: fix RSSI report in AP mode
-To: Alex Shumsky <alexthreed@gmail.com>, linux-wireless@vger.kernel.org
-Cc: Alexey Berezhok <a@bayrepo.ru>, =?UTF-8?Q?Alvin_=C5=A0ipraga?=
- <ALSI@bang-olufsen.dk>, Hector Martin <marcan@marcan.st>,
- Janne Grunau <j@jannau.net>, Kalle Valo <kvalo@kernel.org>,
- Kees Cook <kees@kernel.org>, Neal Gompa <neal@gompa.dev>,
- Wolfram Sang <wsa+renesas@sang-engineering.com>,
- brcm80211-dev-list.pdl@broadcom.com, brcm80211@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <20241122210346.2848578-1-alexthreed@gmail.com>
+Subject: Re: [RESEND PATCH v3 0/2] Improve ath10k flush queue mechanism
+To: Remi Pommarel <repk@triplefau.lt>, ath10k@lists.infradead.org,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+ Cedric Veilleux <veilleux.cedric@gmail.com>,
+ Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>
+References: <cover.1732293922.git.repk@triplefau.lt>
 Content-Language: en-US
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
-Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
- 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
-In-Reply-To: <20241122210346.2848578-1-alexthreed@gmail.com>
+From: James Prestwood <prestwoj@gmail.com>
+In-Reply-To: <cover.1732293922.git.repk@triplefau.lt>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 11/22/2024 10:03 PM, Alex Shumsky wrote:
-> After commit 9a1590934d9a ("brcmfmac: correctly report average RSSI in
-> station info") it is required from firmware to provide rx_lastpkt_rssi.
-> If this field is not provided brcmfmac doesn't report any RSSI at all.
-> Unfortunately some firmwares doesn't provide it. One example is firmware
-> for BCM43455 found in Raspbberry Pi.
-> See https://github.com/raspberrypi/linux/issues/4574
-> 
-> Fix it by falling back to rssi field if rx_lastpkt_rssi is not provided
-> (like it was before 9a1590934d9a).
+Hi Remi,
 
-Sounds like a reasonable approach. However, I would like to learn more 
-about the issue. Maybe it is a per-vendor issue so I am interested what 
-the sta_info version is that we get from firmware. It is printed in 
-brcmf_cfg80211_get_station() with brcmf_dbg(). You can make it a 
-bphy_err() call instead or enable TRACE level debug messages in the driver.
+On 11/22/24 8:48 AM, Remi Pommarel wrote:
+> It has been reported [0] that a 3-4 seconds (actually up to 5 sec) of
+> radio silence could be observed followed by the error below on ath10k
+> devices:
+>
+>   ath10k_pci 0000:04:00.0: failed to flush transmit queue (skip 0 ar-state 1): 0
+>
+> This is due to how the TX queues are flushed in ath10k. When a STA is
+> removed, mac80211 need to flush queues [1], but because ath10k does not
+> have a lightweight .flush_sta operation, ieee80211_flush_queues() is
+> called instead effectively blocking the whole queue during the drain
+> causing this radio silence. Also because ath10k_flush() waits for all
+> queued to be emptied, not only the flushed ones it could more easily
+> take up to 5 seconds to finish making the whole situation worst.
+>
+> The first patch of this series adds a .flush_sta operation to flush only
+> specific STA traffic avoiding the need to stop whole queues and should
+> be enough in itself to fix the reported issue.
+>
+> The second patch of this series is a proposal to improve ath10k_flush so
+> that it will be less likely to timeout waiting for non related queues to
+> drain.
+>
+> The abose kernel warning could still be observed (e.g. flushing a dead
+> STA) but should be now harmless.
+>
+> [0]: https://lore.kernel.org/all/CA+Xfe4FjUmzM5mvPxGbpJsF3SvSdE5_wgxvgFJ0bsdrKODVXCQ@mail.gmail.com/
+> [1]: commit 0b75a1b1e42e ("wifi: mac80211: flush queues on STA removal")
 
-Also would be good to know the firmware version and kernel version of 
-the BCM43455.
+I saw in the original report that it indicated it was only for AP mode 
+but after seeing this and checking some of our clients I saw that this 
+is also happening in station mode too. I only have clients on 6.2 and 
+6.8. I can confirm its not occurring on 6.2, but is on 6.8. I also tried 
+your set of patches but did not notice any behavior difference with or 
+without them. When it happens, its always just after a roam scan, ~4 
+seconds go by and we get the failure followed by a "Connection to AP 
+<mac> lost". Oddly the MAC address is all zeros.
 
-Regards,
-Arend
+Nov 25 09:09:50 iwd[16256]: src/station.c:station_start_roam() Using 
+cached neighbor report for roam
+Nov 25 09:09:54 kernel: ath10k_pci 0000:02:00.0: failed to flush 
+transmit queue (skip 0 ar-state 1): 0
+Nov 25 09:09:54 iwd[16256]: src/netdev.c:netdev_mlme_notify() MLME 
+notification Del Station(20)
+Nov 25 09:09:54 iwd[16256]: src/netdev.c:netdev_link_notify() event 16 
+on ifindex 7
+Nov 25 09:09:54 iwd[16256]: src/netdev.c:netdev_mlme_notify() MLME 
+notification Deauthenticate(39)
+Nov 25 09:09:54 iwd[16256]: src/netdev.c:netdev_deauthenticate_event()
+Nov 25 09:09:54 iwd[16256]: src/netdev.c:netdev_mlme_notify() MLME 
+notification Disconnect(48)
+Nov 25 09:09:54 iwd[16256]: src/netdev.c:netdev_disconnect_event()
+Nov 25 09:09:54 iwd[16256]: Received Deauthentication event, reason: 4, 
+from_ap: false
+Nov 25 09:09:54 kernel: wlan0: Connection to AP 00:00:00:00:00:00 lost
+
+Other times, the above logs are preceded by this:
+
+Nov 26 00:25:25 kernel: ath10k_pci 0000:02:00.0: failed to flush sta txq 
+(sta ca:55:b8:7a:91:4b skip 0 ar-state 1): 0
+
+Note, the above logs are with your patches applied. Maybe this is a 
+separate issue? Or do you think its related?
+
+Thanks,
+
+James
+
+>
+> V3:
+>    - Initialize empty to true to fix smatch error
+>
+> V2:
+>    - Add Closes tag
+>    - Use atomic instead of spinlock for per sta pending frame counter
+>    - Call ath10k_htt_tx_sta_dec_pending within rcu
+>    - Rename pending_per_queue[] to num_pending_per_queue[]
+>
+> Remi Pommarel (2):
+>    wifi: ath10k: Implement ieee80211 flush_sta callback
+>    wifi: ath10k: Flush only requested txq in ath10k_flush()
+>
+>   drivers/net/wireless/ath/ath10k/core.h   |  2 +
+>   drivers/net/wireless/ath/ath10k/htt.h    | 11 +++-
+>   drivers/net/wireless/ath/ath10k/htt_tx.c | 49 +++++++++++++++-
+>   drivers/net/wireless/ath/ath10k/mac.c    | 75 ++++++++++++++++++++----
+>   drivers/net/wireless/ath/ath10k/txrx.c   | 11 ++--
+>   5 files changed, 127 insertions(+), 21 deletions(-)
+>
 
