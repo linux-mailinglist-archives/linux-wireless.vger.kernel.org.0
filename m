@@ -1,71 +1,70 @@
-Return-Path: <linux-wireless+bounces-15766-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15767-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A16C89DAD96
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 20:10:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 517559DAD97
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 20:14:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49CD028663F
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 19:10:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 061F8282695
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 19:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA301FE45C;
-	Wed, 27 Nov 2024 19:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE05E1FE45C;
+	Wed, 27 Nov 2024 19:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IR0hjjCF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gGNN2PyG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DB12581
-	for <linux-wireless@vger.kernel.org>; Wed, 27 Nov 2024 19:10:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35DBE2581
+	for <linux-wireless@vger.kernel.org>; Wed, 27 Nov 2024 19:14:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732734606; cv=none; b=NOa3hMlqpoIKgZ6o45TLS3pzfvTj8pXQJNUHPFfgRZ3/BadYLFDLrg4H3lFw6G+CtDkA8eY5I7d+rNlwsmkC+Hsmv6BN77YIOb/v92vArhRM7EWyjsSiDV+4lfLnDknNWBQ5ocuZXLR3fkuFG1tpyPwkLDqPcMfUsuTVXhJBIhE=
+	t=1732734860; cv=none; b=PmRzJHz7qxFxMh6/Im0/MU3fSqyUcJIzTqfgTd33wVbOI3M0ibpMQkAVUAcs+sAmdHF6ORxHUgRI+G59+RRDTm9rKO3ns27XR91xzC42p/a+CtUJ0yWJbTuB1nHhZnBI/oGVhQXDLJPwam8Y8Qg0Lb8boZtbpLNsRDwAkr2ZOCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732734606; c=relaxed/simple;
-	bh=U953UA/fK9ldmY2Fs3cg8EMeTS8MZzrQGMnmKLysCZM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=m/P5HPAR+cD5RZvVwnpV+36b0Y2PQWw+X6Qnje76s7x+DuodPVCmZ/rabNHyPeRv62GQJUIS0C5raSLmIezMfBmWS1oioBv+oqml38/RN+irCVifPyxM/qiw+5oXhi6GgI6PxBWlvZp7/KyU3yneVUev9tg0WDwrxa+B9EP0dp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IR0hjjCF; arc=none smtp.client-ip=198.175.65.12
+	s=arc-20240116; t=1732734860; c=relaxed/simple;
+	bh=46O4DpBAMZPxyzGT9UQ3v8Lu+sb6GAV0DgpfjgiFYlE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OJHp7HQWpcqA9lqyW5Su9yZBu4tVPw0OkA8gObXE9E2mHOercxuPaTNxgZjWcbk4YdrQp/UrxttemG+SWsz7UMZ50paI+1qCFdCO/WlGRNRUdL1Q50p52OfuTeT/CwUheLqWSsHh3c57cQKloLPEQVdiH63klrviZzx+kv+9Hoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gGNN2PyG; arc=none smtp.client-ip=192.198.163.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732734605; x=1764270605;
+  t=1732734859; x=1764270859;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=U953UA/fK9ldmY2Fs3cg8EMeTS8MZzrQGMnmKLysCZM=;
-  b=IR0hjjCF5jxWTm3mj3TYke2iOoh4ShiPkRXasDSUALVMiMr1UyvUPdfc
-   JazvTMZfIkSki/TYdV31dsNLghJLwMP6J/nPVOwg5qBqqxEZtGZXiW4oP
-   nHGu9nQWR+c7Zh1JuKXTFgl8eEAy3R0ycbJ0xtFaOTKMWcRDT81UxEH9P
-   0J1pX377uQVzsjO6C28HUuqubNNtQ9NkQGT7MLt0hWzioGhTxgoCPyi03
-   814K2tLjUMWxJyRWoh3ODEr3FE0pKFlfRKkbsMSn6/1NbO5o9AegK0qtr
-   fmcWGHkluKa6FORSpR2GHzCnn4VYyHXdTi4yCm+t/kL1gaJ+xMTwpNILc
-   g==;
-X-CSE-ConnectionGUID: Rd0rU1RcTz+XfuKdbUN/FA==
-X-CSE-MsgGUID: 2zC7x6uJRq2PcyUbiUqiGQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11269"; a="44332719"
+  bh=46O4DpBAMZPxyzGT9UQ3v8Lu+sb6GAV0DgpfjgiFYlE=;
+  b=gGNN2PyGo6hsYVnUMji6GRKHwORou9PyFqt7I5HVsGerCoOwywcKqV/9
+   aWvq+s+xg0NAyBYh7LTyQ5mgIuosIpOgoZesHEHl24q3cnzf9IfXvQQaD
+   AVxaSB98vfzQbSt5Hxm8tQum3o7jA51RTUhHmlcCKOb1i0IjHcYZ+L7CR
+   2KXl5yoqAuEPXPVPS043XIo0N01dXZucS+sDG+/CYnxbRybc1zsQM2GLV
+   h5Qd/V4uda/6knDyiRlq+AqEMXDnl/0m1MO/0Q9m25VYWip6twe33Wq48
+   J7Owr6OAZz4l3fjTQk0vWgksHlgtfnya863UFflGescj0OhEKmNanCUNN
+   A==;
+X-CSE-ConnectionGUID: xZxrRJClTFyElQHlUMB1Aw==
+X-CSE-MsgGUID: yPFFysYpTWujHXuCwhTMug==
+X-IronPort-AV: E=McAfee;i="6700,10204,11269"; a="58362948"
 X-IronPort-AV: E=Sophos;i="6.12,190,1728975600"; 
-   d="scan'208";a="44332719"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2024 11:10:05 -0800
-X-CSE-ConnectionGUID: UDt8VvmBQ767zrR2TfYDyw==
-X-CSE-MsgGUID: bsZqsaagQ6y/4o5hKgxg9A==
+   d="scan'208";a="58362948"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2024 11:14:18 -0800
+X-CSE-ConnectionGUID: KuXIt8ANRIuMQ9aCkKTvuA==
+X-CSE-MsgGUID: 0zftBBHLTAGXQn3nVq1yQw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,190,1728975600"; 
-   d="scan'208";a="91955531"
+   d="scan'208";a="92119116"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2024 11:10:03 -0800
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Nov 2024 11:14:17 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Andrei Otcheretianski <andrei.otcheretianski@intel.com>,
-	iil_jenkins iil_jenkins <EC.GER.UNIX.IIL.JENKINS@INTEL.COM>,
 	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Subject: [RESEND] [PATCH v2] wifi: mac80211: Accept authentication frames on P2P device
-Date: Wed, 27 Nov 2024 21:09:49 +0200
-Message-Id: <20241127210848.5bebdce84c95.Ib3074ffbe7b296e0f162b2543e84346b190dfbeb@changeid>
+Subject: [RESEND] [PATCH v3] wifi: mac80211: Accept authentication frames on P2P device
+Date: Wed, 27 Nov 2024 21:14:04 +0200
+Message-Id: <20241127211312.60ccc73a916b.Ib3074ffbe7b296e0f162b2543e84346b190dfbeb@changeid>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -84,13 +83,10 @@ type=feature
 ticket=none
 
 Signed-off-by: Andrei Otcheretianski <andrei.otcheretianski@intel.com>
-Reviewed-on: https://gerritwcs.ir.intel.com/c/iwlwifi-stack-dev/+/94282
-automatic-review: iil_jenkins iil_jenkins <EC.GER.UNIX.IIL.JENKINS@INTEL.COM>
-tested: iil_jenkins iil_jenkins <EC.GER.UNIX.IIL.JENKINS@INTEL.COM>
-Tested-by: iil_jenkins iil_jenkins <EC.GER.UNIX.IIL.JENKINS@INTEL.COM>
 Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
 ---
-v2: fix the commit message title
+v2: fixed commit message title
+v3: removed internal tags
 
  net/mac80211/main.c | 9 +++++++--
  net/mac80211/rx.c   | 4 +++-
