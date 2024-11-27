@@ -1,145 +1,155 @@
-Return-Path: <linux-wireless+bounces-15762-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15763-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2A779DA9FE
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 15:39:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 374E69DAAB5
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 16:23:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82BB0B21C5D
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 14:39:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA43DB20C44
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 15:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2813F1FF7B0;
-	Wed, 27 Nov 2024 14:39:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACCCB1FF7C2;
+	Wed, 27 Nov 2024 15:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EZYl3n3N"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="lKN3ZFe/"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33581FF7AD;
-	Wed, 27 Nov 2024 14:39:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2F61FF7C0;
+	Wed, 27 Nov 2024 15:23:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732718350; cv=none; b=Sdpk1c7Z6CgFji5mSlNX1/mDNTafVFYntGnuQjYq7zEqf7eVztevyGOGIH2Jsri1+daEIphQ+pCr8EqIrGA6Pm9G3k8nCcmxm7MCI3la1Gir720G2RRQT0HR5jrENJruwJZwXyeXi+sFnuTkahVk/hDF+6/mN1f5wAmrEYbYLvQ=
+	t=1732721004; cv=none; b=IOg7rb/R0u++qGN+nyr7NuyP9KvmymqxRPDetkm69rM+jhfTbg0utwTKtS84isgCkHeZ5hcV8jCyIslBSjSGLo7CisCl4TgAsda+LAlwOSUtakjdgGlMVvXbrPuxFysy/N40bwtbiwgWFP4MnnMaE7Meq8s2op/zqbpkSl+tBXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732718350; c=relaxed/simple;
-	bh=mDQqoxIO5PKh0RoG54oJcz1aIJI+TYXjqYyt/RdxkJo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CR1S48xunYDClB2RiWbg5+au9tn4e8R5waV+rFnt33jOMGKQtftaJQGoCWnN63LZdfcxi8soownAOeKId6/xXgOh5qfpz53ysYLbRDUIpxPLMLcddGVgGdWorUjbiDWjBI5yivrDSQ13q9A6dfbC+rKH3oR5Vs31JokLWyudNDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EZYl3n3N; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-723f37dd76cso6707038b3a.0;
-        Wed, 27 Nov 2024 06:39:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732718348; x=1733323148; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uTFIHkewMEaROQgyzcIc2iMfdAKBZdNTPyDszGdNlRo=;
-        b=EZYl3n3NXUsEgIuhf3OBJrfZukQh9MVx3RplmCbwHI+Gh0b+JCPGZavBaENyH/prZG
-         CwryBcMkBd0qr4xnLjEDZvv9oCNhxmSnzRY8qIOT6wEmQ4H++cmvFmixKqkc81eoFjGu
-         R+zQX8Stty7uzGVNif6PW6AQw/OmP7N9FYIHcZqH3Jzf+3fyPjpyQ7V9OhKdaE9e5DTI
-         AlbK1aVZ9gh1s/O+C5c+24GNJuLqauLL3oIDFFND3n7wOCXkQ6fbcm0BA7yXCPWNJnin
-         l7tmvFUxg2cSvYEh0Fd5A2ADQY6Iwjb48cMGPwWXvaiBMEjKmJFiPNV69rEeQjL0ST1P
-         iVJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732718348; x=1733323148;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uTFIHkewMEaROQgyzcIc2iMfdAKBZdNTPyDszGdNlRo=;
-        b=LOWSy9Z8cfXtIBmUXxJCgBGHFGnC1l8FUOVYDZGZ57A++FOOOap4b4wWws4Idp/MHN
-         HyIRkKY56t5JK9nfj1xVml1ctFhhDOBBzhyfjlotldtJlNi3ELRptJcqxxjAaV4uZFO0
-         R/TAzoW+HH6kmzl4PzzopGW39an34OwPZDmHyk8KLacxrgywbpQ/HBigzNzSyz4o9V2i
-         w1cl2q5WLwcPViZ2xK9A4meUbybGicvrX2vHqw/JYKK64uZtyR4T7DtU20+5DrJhHSeX
-         +ptirDcuML4lt8z/byklDKE4FfHNlne8U9v9x7zbBDtqNOH6EN0JNewbKYJ+z3E1OT2y
-         56pA==
-X-Forwarded-Encrypted: i=1; AJvYcCUnqfxoEZRy+1+BW9d9NcH0gaJuBCN4LEdHZyGDpKXvEER1AZnb4a8CyoOrfws+so4zrEeH5dKyMOs0XHo=@vger.kernel.org, AJvYcCWfLaP9i1L1Uc5YJW5sw2amipBBJYva9m+XB1HGiEyq83EMFVSTPWkkyFrvnCksBCi4VpuM3pQaRsWVIbqXLgI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWK9AW2gSdyKnB+u0desCSD28KZh+GxuAMtHN9B9r1dDDglUlQ
-	+5Y0IB2jjz+6sWArHaooEBjc47KpyzQMPMX5DwdXxnGVOMwc3dNC
-X-Gm-Gg: ASbGncup0nd/fXQ0uF/T8cmyFHDqAml/66k3tT9VhPJ/2LoJ7dM/m5aw1P9TSfyJhgq
-	iFMGGO3f7GwinSyLr3VIp5VPSRhTlA/axTkF50zJ8NeXdsM5l34auaXrI1eKiM+HWajG1qEJ2RG
-	WLoqcKB10Nfdz+TsI5a9Ng8v/2KjXj/5s2PC0Nln/J6i9kPHM4Pc4QlfbZUmyAszSghxBrapO52
-	YPCY5SDnZifGVuns2Ofe5hmlpla4RPsLUuTJD8bGVRieM6V6ipJy8cYYoY=
-X-Google-Smtp-Source: AGHT+IEXUD2cpVkmiuKSnu34vZ5p7LGeLXhOUINW5LByyCy0AAGXpoRkp3T+IjRRZa6bkvRWJ0H7oQ==
-X-Received: by 2002:a05:6a00:b81:b0:724:fac6:35f2 with SMTP id d2e1a72fcca58-725300107f4mr3650429b3a.9.1732718347283;
-        Wed, 27 Nov 2024 06:39:07 -0800 (PST)
-Received: from localhost.localdomain ([223.72.121.77])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-724de456472sm10283606b3a.14.2024.11.27.06.39.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Nov 2024 06:39:06 -0800 (PST)
-From: Baichuan Qi <zghbqbc@gmail.com>
-To: markus.elfring@web.de
-Cc: ath11k@lists.infradead.org,
-	jjohnson@kernel.org,
-	kvalo@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	zghbqbc@gmail.com
-Subject: [PATCH v5] wifi: ath11k: Fix NULL pointer check in ath11k_ce_rx_post_pipe()
-Date: Wed, 27 Nov 2024 22:38:04 +0800
-Message-Id: <20241127143804.30075-1-zghbqbc@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <30b208e0-55a2-400f-9638-1765e7ed3bfa@web.de>
-References: <30b208e0-55a2-400f-9638-1765e7ed3bfa@web.de>
+	s=arc-20240116; t=1732721004; c=relaxed/simple;
+	bh=NYhwksv5Pxsyvcsc4XKuWCWXnkZX3QeMCw80wDvn12w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=QWc6rLKqvjFVnkrv2XrV/PuDbxRbVM6ZqfQecUIgE/oX4cDrTMNjk1BEkoVRgP0AIEww6+IIpoKHZiQm4f01tLCf7m60bT9xMr2fwXun/qXCWJ62TSyYW7JaQapwyZcn4OcGuPOe7Ypn9Tjve+Yfudqnlz2lHA6ht/VKFwxrv4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=lKN3ZFe/; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4ARAgRUA018284;
+	Wed, 27 Nov 2024 15:23:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	SHYAX+xAbeW/GuhoTfgzvsc/2BcrL6l2T6Lxp5gCdD4=; b=lKN3ZFe/eg6DG5DI
+	2+mKeRd93up7hbmsVhcnP1Wb6HNVPZKNYM87ygdg6Eab0JPfTY90dReEfS+AwUAs
+	5gzRn4tnO3shxYsatcoK2Jr3kODo/5ZOgWNXwMMp1eF5mxFY/cZ9u7vndeIF+f0i
+	AieDO708Xr1krHPCWy1wN/9R+nd3i/jNv9cdi3u0qbePB5iA7QUTWM1JZd+sjZmn
+	M+4V40g366VX7RFhi7ttz45kYe+dBKus5sbY29PbNXW06ZkD8h1ERr8y+GPajS83
+	/XKnPnzjyNzs+XybImuP5h0+ZGtI+L/uF6YqOZ0uNzsIG8wFBZ2XcziPTCzVIXC/
+	xYnauw==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4361wcgtdu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 27 Nov 2024 15:23:15 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4ARFNEXs017002
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 27 Nov 2024 15:23:14 GMT
+Received: from [10.216.34.221] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 27 Nov
+ 2024 07:23:11 -0800
+Message-ID: <f0077f4f-922d-56b1-a5b7-bb01e4462e87@quicinc.com>
+Date: Wed, 27 Nov 2024 20:53:07 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v5] wifi: ath11k: Fix NULL pointer check in
+ ath11k_ce_rx_post_pipe()
+Content-Language: en-US
+To: Baichuan Qi <zghbqbc@gmail.com>, <markus.elfring@web.de>
+CC: <ath11k@lists.infradead.org>, <jjohnson@kernel.org>, <kvalo@kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-wireless@vger.kernel.org>
+References: <30b208e0-55a2-400f-9638-1765e7ed3bfa@web.de>
+ <20241127143804.30075-1-zghbqbc@gmail.com>
+From: Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>
+In-Reply-To: <20241127143804.30075-1-zghbqbc@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: ISkNkP16tpVYkKOeT4Yi-iLlLqHFkxZS
+X-Proofpoint-ORIG-GUID: ISkNkP16tpVYkKOeT4Yi-iLlLqHFkxZS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=999
+ malwarescore=0 priorityscore=1501 clxscore=1011 mlxscore=0 phishscore=0
+ lowpriorityscore=0 spamscore=0 impostorscore=0 adultscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2409260000
+ definitions=main-2411270122
 
-Current implementation of `ath11k_ce_rx_post_pipe()` checks for
-NON-NULL of either `dest_ring` or `status_ring` using an OR (||).
-Both rings, especially `dest_ring`, should be ensured to be
-NON-NULL in this function.
 
-If only one of the rings is valid, such as `dest_ring` is NULL
-and `status_ring` is NON-NULL, the OR (||) check would not stop
-`ath11k_ce_rx_post_pipe()`, the subsequent call to
-`ath11k_ce_rx_buf_enqueue_pipe()` will access the NULL pointer,
-resulting in a driver crash.
 
-Fix the NON-NULL check by changing the OR (||) to AND (&&),
-and return an error code `-EIO` to indicate
-`ath11k_ce_rx_post_pipe()` is stopped with an NULL pointer 
-error, ensuring that the function only proceeds when both 
-`dest_ring` and `status_ring` are NON-NULL.
+On 11/27/2024 8:08 PM, Baichuan Qi wrote:
+> Current implementation of `ath11k_ce_rx_post_pipe()` checks for
+> NON-NULL of either `dest_ring` or `status_ring` using an OR (||).
+> Both rings, especially `dest_ring`, should be ensured to be
+> NON-NULL in this function.
+> 
+> If only one of the rings is valid, such as `dest_ring` is NULL
+> and `status_ring` is NON-NULL, the OR (||) check would not stop
+> `ath11k_ce_rx_post_pipe()`, the subsequent call to
+> `ath11k_ce_rx_buf_enqueue_pipe()` will access the NULL pointer,
+> resulting in a driver crash.
+> 
+> Fix the NON-NULL check by changing the OR (||) to AND (&&),
+> and return an error code `-EIO` to indicate
+> `ath11k_ce_rx_post_pipe()` is stopped with an NULL pointer
+> error, ensuring that the function only proceeds when both
+> `dest_ring` and `status_ring` are NON-NULL.
+> 
+> Link: https://lore.kernel.org/ath11k/a9ccc947-20b2-4322-84e5-c96aaa604e63@web.de
+> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
 
-Link: https://lore.kernel.org/ath11k/a9ccc947-20b2-4322-84e5-c96aaa604e63@web.de
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Signed-off-by: Baichuan Qi <zghbqbc@gmail.com>
----
-V4 -> V5: add err code in NULL check
-V3 -> V4: reorder describe info
-V2 -> V3: add Link URL to mailing list archives
-V1 -> V2: rewrite commit message and fix tag
+This does not really fix any real issue. Please check ath11k_ce_alloc_pipe()
+where initialization would fail if anyone of pipe->dest_ring and
+pipe->status_ring allocation fails for ce pipe used for Rx.
 
- drivers/net/wireless/ath/ath11k/ce.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+> Signed-off-by: Baichuan Qi <zghbqbc@gmail.com>
+> ---
+> V4 -> V5: add err code in NULL check
+> V3 -> V4: reorder describe info
+> V2 -> V3: add Link URL to mailing list archives
+> V1 -> V2: rewrite commit message and fix tag
+> 
+>   drivers/net/wireless/ath/ath11k/ce.c | 6 ++++--
+>   1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/ath/ath11k/ce.c b/drivers/net/wireless/ath/ath11k/ce.c
+> index e66e86bdec20..223dab928453 100644
+> --- a/drivers/net/wireless/ath/ath11k/ce.c
+> +++ b/drivers/net/wireless/ath/ath11k/ce.c
+> @@ -324,8 +324,10 @@ static int ath11k_ce_rx_post_pipe(struct ath11k_ce_pipe *pipe)
+>   	dma_addr_t paddr;
+>   	int ret = 0;
+>   
+> -	if (!(pipe->dest_ring || pipe->status_ring))
+> -		return 0;
+> +	if (!(pipe->dest_ring && pipe->status_ring)) {
+> +		ret = -EIO;
+> +		return ret;
+> +	}
 
-diff --git a/drivers/net/wireless/ath/ath11k/ce.c b/drivers/net/wireless/ath/ath11k/ce.c
-index e66e86bdec20..223dab928453 100644
---- a/drivers/net/wireless/ath/ath11k/ce.c
-+++ b/drivers/net/wireless/ath/ath11k/ce.c
-@@ -324,8 +324,10 @@ static int ath11k_ce_rx_post_pipe(struct ath11k_ce_pipe *pipe)
- 	dma_addr_t paddr;
- 	int ret = 0;
- 
--	if (!(pipe->dest_ring || pipe->status_ring))
--		return 0;
-+	if (!(pipe->dest_ring && pipe->status_ring)) {
-+		ret = -EIO;
-+		return ret;
-+	}
- 
- 	spin_lock_bh(&ab->ce.ce_lock);
- 	while (pipe->rx_buf_needed) {
--- 
-2.34.1
+This will always fail as the caller loops through all the supported ce pipes
+and ce pipes used for Tx will not have either dest_ring or status_ring.
+Please ensure the patch is tested properly.
 
+So NAK
+
+Vasanth
 
