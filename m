@@ -1,131 +1,93 @@
-Return-Path: <linux-wireless+bounces-15756-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15757-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 139009DA68C
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 12:08:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 88CF49DA6E7
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 12:37:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10716B291C9
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 11:00:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7BCD5B2171E
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 11:36:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A041E0DEB;
-	Wed, 27 Nov 2024 10:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B061E1F8AFB;
+	Wed, 27 Nov 2024 11:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Afk2R8G2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qQCK0hz1"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C43A1E0DD7
-	for <linux-wireless@vger.kernel.org>; Wed, 27 Nov 2024 10:58:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795051E0DCD;
+	Wed, 27 Nov 2024 11:36:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732705127; cv=none; b=HHcc7KxSKIn1KnpQSKR9UVfDGP70vmPm+hcBxfRg1r/fGeZtkrfD9vE2c8wz7X7gLuhfW9DMtMrAcL0XVX+ALur6EZY/2VPv/ywI/kY4bNnPe4WAgTOWqzByvatn7E7r92X0UNFXujXOlO4bOcFXZBAe80N250Qwfwn16qDX3kM=
+	t=1732707413; cv=none; b=JYgnitmnrLMwdyC8wR9ImRLVFGA0UhZOfU63kr+PlLXlLwYjGtCAQdVwOEJBPinNBSRQjpLXvRgTxt1IEbKAij71LFSBpS+wi0IxcI/kIbvQAaQI39NZATpcl+fZzrj2QGbNDvUONcfQZvHC+E2i3RdItfK1WlsNjx/FY28isIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732705127; c=relaxed/simple;
-	bh=S7LPZ+3y6FWIMJsp5Ouu+DK3lPX6vaJw3it09f2Ne+Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R0uoGzsKnWhOyprg5m8AIE59yRCT0TpUXczx7nKXYYR6FssPLaZ+msWINLZuA+fz9FtwKOmDIxNob/kFOmL3yEydNr97367CYogmi7VGB3dG+6zTMIprbO/clD9p+InW/XlTUjvc9OmIzC6wAq8HbQHSoAhLk6x7eqqwRtFJ4MQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Afk2R8G2; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-7eae96e6624so5115231a12.2
-        for <linux-wireless@vger.kernel.org>; Wed, 27 Nov 2024 02:58:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1732705125; x=1733309925; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cJl3kb5XMLhtXCrbkEMR/4kHcfh7IzK3UV5gKDYZwhw=;
-        b=Afk2R8G21GIWVC+W0lbOF6px0gMudIA9JtbHDynGABu0sO36zPptK7mNOzCUYIWG2z
-         nG9zMiB7KReDqofLojXkBtDtIBdB0FLKdIULbeS/CTmOXCfdRFsmX7KJAbnxFrR0d5MQ
-         e+9zzm234kaQwOFrABpid10g5CTaJOdfKqDYY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732705125; x=1733309925;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cJl3kb5XMLhtXCrbkEMR/4kHcfh7IzK3UV5gKDYZwhw=;
-        b=rK/IvngZkKXk4hZLkeoxIlYwWlq1KkK2HI2c3bc4qFrWlta3AmP7yys0bvfHBApdmw
-         wp6BTKe9ztOIQ6d6xqvx4FhAaDbOWtR7YnXiVYviXeDAv6WoV7JjkjkuynzTLtPb7ar+
-         9JFziGmJGpynQojlPbo57hgZtSj3+pv7FdAPrkivcDcSpNh3mQ2m5dJA+69BEmY7XPDF
-         tH1DDRLwB0QOHKERw6ICPJo4eV8Nh8rzZIWBWPJfE44FYgQrh+O9JLPNot0Rh049FOSB
-         uJXu+XZJnMU38h2xOO1DyKKdmitp0Zhgq0oX1WcoqkuAU5plWSOmsgD+5ucVkNNWFq69
-         t3xw==
-X-Forwarded-Encrypted: i=1; AJvYcCXLzMG0Ba9+o5MHnT5llQEe5ktKvM9IYi+12StFdc3AAnTlfqZGfQeZSp9nLEMP0qxoFYQHuLYrzV9pmIBinQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxw0YcQ+Pj0zUmkj8W9JR/vPob3LOm3xMI9caY/lialAEsln6pj
-	6wrvtm5+PRfHHzyftTl/GsNw3AZeuU2DeUXGRT/KYeueS78nTLcrGgfmTgcagg==
-X-Gm-Gg: ASbGncv/gRwC8ibbDVjttiMh688wCCUCG3htTkqIt/N1kCMvlFUWs/Z3tVa6j82TzsG
-	NDj1JhKVqogNE64MTAStPOBJqegKMXj0pLonTnKp88qja461mWMaRx8Vka+z0qcIZOoOBdrst5t
-	Ohsbyi+CmjXK+NgYHFwg0JvcxOC5N1KD7R1T1XCXU+QT4z6p2l8tmmXZNVMhL4CmgVqSRgZ7hHH
-	axc0ZqpJVZPDtwN25HA9DHgI7TN3ILTJqx9bMRq30OWlW71sTkVsyX76PpJ1Rp0Hqe5JvG5Lw==
-X-Google-Smtp-Source: AGHT+IGL+fUYN25nrPPTc6QN4yfjwK4zt5HoSmXI1qXJXe97hGTkF/f4uxfX713K4ZM4XUZIFaEH6Q==
-X-Received: by 2002:a05:6a20:3945:b0:1e0:d1db:4d8a with SMTP id adf61e73a8af0-1e0e0b207demr3923440637.10.1732705124764;
-        Wed, 27 Nov 2024 02:58:44 -0800 (PST)
-Received: from treapking.tpe.corp.google.com ([2401:fa00:1:10:a2e8:8551:482f:404b])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ee0fa860a9sm1196835a91.33.2024.11.27.02.58.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Nov 2024 02:58:44 -0800 (PST)
-From: Pin-yen Lin <treapking@chromium.org>
-To: Francesco Dolcini <francesco@dolcini.it>,
-	Kalle Valo <kvalo@kernel.org>
-Cc: David Lin <yu-hao.lin@nxp.com>,
-	Pin-yen Lin <treapking@chromium.org>,
-	Doug Anderson <dianders@chromium.org>,
-	linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH] wifi: mwifiex: decrease timeout waiting for host sleep from 10s to 5s
-Date: Wed, 27 Nov 2024 18:55:43 +0800
-Message-ID: <20241127105709.4014302-1-treapking@chromium.org>
-X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
+	s=arc-20240116; t=1732707413; c=relaxed/simple;
+	bh=Id9ko+s5htGXfNjMB0EdrVaOKZQiusdnbpWHrvTf2EU=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=FN8A0nvcls/BwW9KznI3UPOw2JX3enbe8qpAiNO1wl/T1z38BMH8+2aY48VK+mY2tj0rAwpTbHdM/rsZVW9GWNBLJiP4B44o75m4wBeHyzVJkv1L7Scir2wKL381qsdoP+K/zsUj4IUqlPpef5MHhKj2g4zOlX6W281OswrSCAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qQCK0hz1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE18DC4CECC;
+	Wed, 27 Nov 2024 11:36:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732707412;
+	bh=Id9ko+s5htGXfNjMB0EdrVaOKZQiusdnbpWHrvTf2EU=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=qQCK0hz106So74q2QhKkrS2G3wxMb6bMIo4pOXz31vSiAtFDS71elBx4rDmgLjPsn
+	 oARzQhNiRX2MABLd0Zya0o3uuVeWyrRX32dSG56weg66NhcPA+KHKkg0mcFXCx9a7v
+	 zkU4xYyso+LDXPLcGY7H2crliOzlBTIJzzbXBPLNMjDsJwIQl2qoARjQRMuHUMAqOe
+	 dKF8Go3v2RsDM8GvZHGPuLhncoGTkrNCZa819+nwV6FHXVc3m21ECwClcD1zZt0TBe
+	 218oqATIBndIhzynWtzzHISzeiUjMSCahZx7aAU5ADLKcmSzzncc7bQgUlZ7cXq/Kj
+	 l8UBzFwpVvEMA==
+From: Kalle Valo <kvalo@kernel.org>
+To: Paul Menzel <pmenzel@molgen.mpg.de>
+Cc: linux-wireless@vger.kernel.org,  ath10k@lists.infradead.org,  LKML
+ <linux-kernel@vger.kernel.org>,  regressions@lists.linux.dev
+Subject: Re: WARNING: drivers/net/wireless/ath/ath10k/mac.c:8750
+ ath10k_mac_update_vif_chan+0x237/0x2e0 [ath10k_core]
+References: <637c5bb4-5278-44be-9ac3-9c0ef9297162@molgen.mpg.de>
+Date: Wed, 27 Nov 2024 13:36:49 +0200
+In-Reply-To: <637c5bb4-5278-44be-9ac3-9c0ef9297162@molgen.mpg.de> (Paul
+	Menzel's message of "Tue, 26 Nov 2024 09:58:22 +0100")
+Message-ID: <8734jcx60e.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-In commit 52250cbee7f6 ("mwifiex: use timeout variant for
-wait_event_interruptible") it was noted that sometimes we seemed
-to miss the signal that our host sleep settings took effect. A
-10 second timeout was added to the code to make sure we didn't
-hang forever waiting. It appears that this problem still exists
-and we hit the timeout sometimes for Chromebooks in the field.
+Paul Menzel <pmenzel@molgen.mpg.de> writes:
 
-Recently on ChromeOS we've started setting the DPM watchdog
-to trip if full system suspend takes over 10 seconds. Given
-the timeout in the original patch, obviously we're hitting
-the DPM watchdog before mwifiex gets a chance to timeout.
+> On the Dell XPS 13 9360 with Linux 6.12.0-08446-g228a1157fb9f, I
+> noticed the trace below:
 
-While we could increase the DPM watchdog in ChromeOS to avoid
-this problem, it's probably better to simply decrease the
-timeout. Any time we're waiting several seconds for the
-firmware to respond it's likely that the firmware won't ever
-respond. With that in mind, decrease the timeout in mwifiex
-from 10 seconds to 5 seconds.
+For others, commit 228a1157fb9f is from current merge window so the
+first release will be in v6.13-rc1.
 
-Suggested-by: Doug Anderson <dianders@chromium.org>
-Signed-off-by: Pin-yen Lin <treapking@chromium.org>
----
+> [16805.002289] ------------[ cut here ]------------
+> [16805.002296] WARNING: CPU: 3 PID: 65835 at
+> drivers/net/wireless/ath/ath10k/mac.c:8750
+> ath10k_mac_update_vif_chan+0x237/0x2e0 [ath10k_core]
 
- drivers/net/wireless/marvell/mwifiex/sta_ioctl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+[...]
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/sta_ioctl.c b/drivers/net/wireless/marvell/mwifiex/sta_ioctl.c
-index e06a0622973e..f79589cafe57 100644
---- a/drivers/net/wireless/marvell/mwifiex/sta_ioctl.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sta_ioctl.c
-@@ -545,7 +545,7 @@ int mwifiex_enable_hs(struct mwifiex_adapter *adapter)
- 
- 	if (wait_event_interruptible_timeout(adapter->hs_activate_wait_q,
- 					     adapter->hs_activate_wait_q_woken,
--					     (10 * HZ)) <= 0) {
-+					     (5 * HZ)) <= 0) {
- 		mwifiex_dbg(adapter, ERROR,
- 			    "hs_activate_wait_q terminated\n");
- 		return false;
--- 
-2.47.0.338.g60cca15819-goog
+> I do not see such a message in the logs since September 19th, so I
+> believe it=E2=80=99s a regression.
 
+Have you seen it only this one time or multiple times?
+
+What kernels have you been testing prior? I'm trying to pinpoint what
+versions kernel version work and what have this warning.
+
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
 
