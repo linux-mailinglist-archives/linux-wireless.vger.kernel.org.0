@@ -1,130 +1,109 @@
-Return-Path: <linux-wireless+bounces-15733-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15752-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB7129DA049
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 02:32:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DBB69DA4DA
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 10:36:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AEA92845AF
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 01:32:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30B0628149D
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 09:36:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88F328E8;
-	Wed, 27 Nov 2024 01:32:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EC61189905;
+	Wed, 27 Nov 2024 09:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KOSuL26f"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="X7VAQKf0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A79A23
-	for <linux-wireless@vger.kernel.org>; Wed, 27 Nov 2024 01:32:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95E0192D66
+	for <linux-wireless@vger.kernel.org>; Wed, 27 Nov 2024 09:36:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732671135; cv=none; b=IeGwb/K+xV8j6jC6NkTxctfz0XzERDSju5hyrt7vXmBSjsVV53x3BBDKPzwhxltC9FPqHfuUDh62VKceLuzDWSZKZ7qpz/nEL3gt6oMLv2Vu9mfeBaqe03NlG1I9T3BBLPVNOhwxRCXv014w9dot6c1ommXjVumCQGnKNOftm9A=
+	t=1732700165; cv=none; b=kn9cyJJSpd8fdsZGhflG3bRFnClbwhTU0KiISbdnoIQ17ED1ak2pT1XZNe/zIoRT8S+mPpiYOt9cFVPksPgNzxOoxJo9WgWwaiRPDq/ikR2FTJoy6PTj79KulI3Vu958CKjw12hgamsG87g40dgrwnxVuMre80LoxZ5C9Q0sQ7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732671135; c=relaxed/simple;
-	bh=Xs8py6+DQDcAhivKKHrp24KumOs1jpd1Y6aTw86UFfY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XOfAbANV78PIdF7XkbGvcwtLNBncNB7gZRUTVc3OuA7apsGPZt8hw+fc96Ne30cJhrsBbd7oUjF1z/huEmG06RnEylHSYQVp7zy4umaYR20+6sxChR/nrHpK6zP9WdqRQsJ5VvCZAkRxXo7M6oSg6X6HrL2oh+NfFXSZkPVafqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KOSuL26f; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-7fc88476a02so387217a12.2
-        for <linux-wireless@vger.kernel.org>; Tue, 26 Nov 2024 17:32:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732671133; x=1733275933; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=aVKiElbX1G/Llu1UB7E/2V7jIT5D9hjhB8BONhE5Lhc=;
-        b=KOSuL26fxsJA3mPkK9hZMH1q59Aa413LKAaLjGy0M8wDiocmwUlisQQv64TLaKAMYp
-         V1cls9XfNBEUGtgP1Ceh+K3kVPG84vBh1EApzqcjJT4Ro/YI/tIaAY11Ck5fc9X4oN4j
-         9Y5bIL/ECzXehmJ4hir6rL3gwOrsp84LGOIFW6eno6zwy4zQri1PISAackykBkqyhq5J
-         PvUHY/5hLKVoR8VwNjnt0FLq4aDygVxLxKPDauNgDTftuf9CadjfZsJVOxMYQMe9LQxY
-         HfbMyoUXo/DoesvKHQ5Vf6GxH3xo1vJC4pogga2zXlUhVi0iLSwMm+mdHUL9SeXTIdR7
-         4nOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732671133; x=1733275933;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aVKiElbX1G/Llu1UB7E/2V7jIT5D9hjhB8BONhE5Lhc=;
-        b=OlRWll9SHJUDz6n7nDjakXMslDqnnGunOMCzt/DJ0sdGwBVnHlaokfudqw5Kg+IkUL
-         GdcWR7bn0vrXbMx0GKsNiODeWAR/LBd1Hsxzy9uVCOLoAvxhO/q6GtpbDPRH2NiLZ0a9
-         eL6PHxVcTmuMVFu0x32Q6EFWxoHCZ6kbaR6rmiG9eTtp8wulH8TNcH8aWaPrwPluu4nb
-         kLaf9KuoQ1ZdV/fTIS0bikP/nBMv42WEmxXc9aT2/vdECWJ3eJDcTjXhos0xjVQiLSFN
-         5wVQWIcvgCG09KXxa7/wuqKRbR2OWCYxIbARP/tLy3mQtGRUSxTjErppI/tZIAp8k1s+
-         jGeA==
-X-Gm-Message-State: AOJu0YxvozYw190+dyP0SALiGEf2I1dT/+/0FMscdRMUPX75kWLVh1C0
-	s/OLtl0XsBnY/zeFtyIxoNqEVcHaqSsbpwEgK+s50qdFyHRjESuj
-X-Gm-Gg: ASbGncucexREY3peNoKSILAcYwrWdZ9/3uCgNXr8esGqAnwsjjOJLESDDHRY314aip5
-	X5o1+7R19oMs20YccEg65tyDXhV3yDqGXkGLPfm0GB/z2J+jzc9MFjsm5nCFNcX7nTkFk0bRBFm
-	nmaxcNYn4EvHsBPYsY3bd0Emiu4AmCUcxSVrSv2MCFu/THtPm/iNnGEVwMd0SpEPZ4EanXdHoQj
-	DXec5QMTfM1e9A8jTr2CqAfszbp8cvcNd2+/Po79+XAymQ67Xpke0+OacwJDozhHdCMWxrEacdB
-	4wYfRN/DG8oV37TQ
-X-Google-Smtp-Source: AGHT+IGF0AWXVhwQgKp852jMAYbzZeHUusfk5AVedXEbtlYU3QAlauARD3i8MDGg8I1fO4/aUsRJDg==
-X-Received: by 2002:a05:6a20:2444:b0:1db:a919:27ea with SMTP id adf61e73a8af0-1e0e0b71e9emr2343943637.41.1732671133234;
-        Tue, 26 Nov 2024 17:32:13 -0800 (PST)
-Received: from localhost.localdomain (59-124-166-19.hinet-ip.hinet.net. [59.124.166.19])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-724e3e636f7sm8964534b3a.183.2024.11.26.17.32.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Nov 2024 17:32:12 -0800 (PST)
-From: Ping-Ke Shih <pkshih@gmail.com>
-To: wens@kernel.org
-Cc: linux-wireless@vger.kernel.org,
-	wireless-regdb@lists.infradead.org
-Subject: [PATCH] wireless-regdb: Update regulatory info for Azerbaijan (AZ) on 6GHz for 2024
-Date: Wed, 27 Nov 2024 17:32:08 +0800
-Message-Id: <20241127093208.4693-1-pkshih@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1732700165; c=relaxed/simple;
+	bh=JENMomMYhBi38d+XuNsmypWSmnK5f9rrhoSRpuRZ6Js=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=FTlPjAjS0aGYYUfWsBMx5Kp13or6PVmqYfCd0Xq99Yf54zlBfNK4TUUDgBwEDdfFF1Y3DsOnS8/WMcf9GyOgh1v359H+T+ALgdiABLtIcQkaqQ/hctHx2JTcdaBbSDlSn6v3yPPZHc/Y3/inyFiRzGM2itpxESXAxAOwYxVCUYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=X7VAQKf0; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4AR9Za5A22497001, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1732700136; bh=JENMomMYhBi38d+XuNsmypWSmnK5f9rrhoSRpuRZ6Js=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=X7VAQKf0UBkVhtlIgn/6tx4HdnOyDcYXt+4WxCz/FR0r5ITH+XSjturt2XMhd67kd
+	 L/sgBxRt2iK89qWmS3sGTA+Ly6QvH3nzSMEDJeEsf2UeJYUL9aHaTHtBzOAP9iY3iF
+	 OWS1DLIslEJL4gkRSd/255wCzWBUBQpdewCSo3IVlrHSQE13jVnYAUFq/n7dh3e4do
+	 vRGNTtHdhC+SnZkMKetTrkPI1BBgXFL7/+VV/noO6XB2/6ueXuou+VHmzmp0Sxi4lj
+	 dHO0UIqHbuf9noP3kiPXbQjkR6SJ7Ayf+mg7B0VE5cMt1/+q3Bx6NjPPyrmKXlyEei
+	 XR4IT8SJa8GTw==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4AR9Za5A22497001
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 27 Nov 2024 17:35:36 +0800
+Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 27 Nov 2024 17:35:37 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 27 Nov 2024 17:35:36 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
+ 15.01.2507.035; Wed, 27 Nov 2024 17:35:36 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "Kalle
+ Valo" <kvalo@kernel.org>,
+        "kernel-dev@igalia.com" <kernel-dev@igalia.com>
+Subject: RE: [PATCH 2/4] wifi: rltwifi: destroy workqueue at rtl_deinit_core
+Thread-Topic: [PATCH 2/4] wifi: rltwifi: destroy workqueue at rtl_deinit_core
+Thread-Index: AQHbPQPtuhSVOKRI70Kht440h06pSrLKoYkg//+5VwCAAIocMA==
+Date: Wed, 27 Nov 2024 09:35:36 +0000
+Message-ID: <5ca4e7fb3ec643a287aad8fc08646886@realtek.com>
+References: <20241122172718.465539-1-cascardo@igalia.com>
+ <20241122172718.465539-3-cascardo@igalia.com>
+ <3b967b62f2954e799a856140aa4b0796@realtek.com>
+ <Z0bkNuVvv1eJMFyo@quatroqueijos.cascardo.eti.br>
+In-Reply-To: <Z0bkNuVvv1eJMFyo@quatroqueijos.cascardo.eti.br>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+Thadeu Lima de Souza Cascardo <cascardo@igalia.com> wrote:
+> On Wed, Nov 27, 2024 at 05:35:23AM +0000, Ping-Ke Shih wrote:
+> > Thadeu Lima de Souza Cascardo <cascardo@igalia.com> wrote:
+> > > index fd28c7a722d8..062d5a0a4c11 100644
+> > > --- a/drivers/net/wireless/realtek/rtlwifi/base.c
+> > > +++ b/drivers/net/wireless/realtek/rtlwifi/base.c
+> > > @@ -575,9 +575,14 @@ static void rtl_free_entries_from_ack_queue(stru=
+ct ieee80211_hw *hw,
+> > >
+> > >  void rtl_deinit_core(struct ieee80211_hw *hw)
+> > >  {
+> > > +       struct rtl_priv *rtlpriv =3D rtl_priv(hw);
+> >
+> > A blank line between declarations and statements.
+> >
+>=20
+> Same here.
 
-The ICTA established under the Ministry of Digital Development and
-Transport of the Republic of Azerbaijan announced in June-September,
-the State Commission for Radio Frequencies responded positively to 17
-applications.
+Prefer you send v2 to prevent I mess up the code.=20
 
-At the meeting of the State Commission, taking into account the
-Decision No. (20) 01 of the Electronic Communications Committee of the
-Pan-European Conference of Postal and Telecommunications Administrations
-(ECC Decision (20) 01) and international experience, the "Conditions for
-the use of the 5945-6425 MHz radio frequency band for Wireless Access
-Systems (WAS), including Radio Local Area Networks (RLAN)" were approved.
 
-ECC/DEC(20)01 defines:
-
-* 5945-6425 MHz
-  - LPI, 23 dBm, indoor use only (adopted)
-  - VLP, 14 dBm, indoor/outdoor
-
-[1] https://icta.az/show-media-news/iyun-sentyabr-aylarinda-radiotezlikler-uzre-dovlet-komissiyasi-17-muracieti-musbet-cavablandirib?
-
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- db.txt | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/db.txt b/db.txt
-index 5710545da0b6..24195fcac004 100644
---- a/db.txt
-+++ b/db.txt
-@@ -180,6 +180,7 @@ country AZ: DFS-ETSI
- 	(2402 - 2482 @ 40), (20)
- 	(5170 - 5250 @ 80), (18), AUTO-BW
- 	(5250 - 5330 @ 80), (18), DFS, AUTO-BW
-+	(5945 - 6425 @ 320), (23), NO-OUTDOOR
- 
- # BA as part of CEPT accepted decisions 2005/513/EC (5GHz RLAN, EN 301 893)
- # and 2006/771/EC (amended by 2008/432/EC, Short-Range Devices, EN 300 440)
--- 
-2.25.1
 
 
