@@ -1,34 +1,34 @@
-Return-Path: <linux-wireless+bounces-15748-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15749-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E25A59DA48E
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 10:14:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 361E99DA4A0
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 10:17:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 660A3B25EAF
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 09:14:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0C34281FA0
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 09:17:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44F81917E7;
-	Wed, 27 Nov 2024 09:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63EE190685;
+	Wed, 27 Nov 2024 09:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="XVuSRdSG"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="dU6HQfRK"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E813B13D278
-	for <linux-wireless@vger.kernel.org>; Wed, 27 Nov 2024 09:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08F0A47F69
+	for <linux-wireless@vger.kernel.org>; Wed, 27 Nov 2024 09:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732698836; cv=none; b=JPRJvWnOGv9/NyhqRJ/8+6/PlhmgkzDMV8Wi5oKgA/yxP0m/N3ebFZTZtuuqQM/SoMR1dC9u6jsOde4UDQYqJR2R8wtgg8ppvm5CImDPW6U6i/ccU7uxnyg3g1eAn0Nueq54zjmXLpCx6RTMzmfoZE8kTh1wbuRMb3DCeG4bqrI=
+	t=1732699038; cv=none; b=OkXIzixZCz73r+bBlPpLs/OOKU2nwlLSWu/ub1YEdMK4lIIt0T7fIeELu3w5G4Pg83T5FKy7ljqUe72kUiO+AO3tK1ofk99smgRRcYCXmk50ZHBA2jcahQer0iCgm4JWeKzZrsgkMGLfE1Qgh2CliDkzdi3Rj86p5ave4I+VZ+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732698836; c=relaxed/simple;
-	bh=xJtkvUaB/JWlGuYJXIGfctvTyaUneWxxGY80+/2LVcs=;
+	s=arc-20240116; t=1732699038; c=relaxed/simple;
+	bh=yU8VnIfd9ueAtH1yvZwh7LIae02ywSDhelW2p3GAyQQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jI1L0IRgH3AvhIpZbP1Kgv5EvGTvYl5gzzbFjiXRWGeDmO6nrfkvFT9NSzon3purftzORHH4fziRcRFY8Zw/UvNy86vLp2Z/BGB+irgysvFBCVqv/3WDFc8AS06yvkx2KV42V9Qb0HJvYXn1r9x1+DrtfCvfajqYLlKcjNCBgkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=XVuSRdSG; arc=none smtp.client-ip=178.60.130.6
+	 Content-Type:Content-Disposition:In-Reply-To; b=JlT9cGmKvqt2dHPyvMT03FmLCdwjcp6hIJSFgbymtO9TQrH0bRU7yi28Tp84NUF3mPqzbZQdJkrrLaaVvHnBCLbEi7rqtOYfyaMDiY5FBwcFGozkSmqBkJ5MxHOtXK4dGI0yxxiMPmN3DjQ2ImBKHS9swoKCOuQPriszAvVLEmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=dU6HQfRK; arc=none smtp.client-ip=178.60.130.6
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
@@ -37,26 +37,27 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=wyETpKO51eTl1fCkJFT713v0ML1NP/KOl9aF2zsls+c=; b=XVuSRdSGKcZVkvs7T1cyQde2tQ
-	GWQCO6BqPmta3hCr+VAXKe//z6C7a9hL+WcHtJMyi6cvcbowtSEfsu+OtRfNvWO/zzT/uekOvhvBu
-	NOtBW/U5jnfeQUGocEol2eOe4OrrBeYzrwAg1ZD8b4zoQW9JAA1q4hWyKArdS4RLzdWPyJb8iWR31
-	rAFQiFER/T3/mz/iAqanJ5rC79idHawAktsu9FK1NLuphxFQW4Bzc2B7vRJcAa/vG2R6/6E72fpvc
-	WjuZoFVjaeV0Zjmoskpb/6aQjS9MycoTRtlxcfh9nuNRlvnZ9WQZbYt9D/a4pRcAS0BR7Hv26OfiD
-	y8sACTGw==;
+	bh=OYZy7hV2grEDsvvjkCO6Oerw6OCHBUCsHWSuOpP9xZ4=; b=dU6HQfRKLocWkfu3bN96PlWNOm
+	V5rCsvmUKB2BP08HyEvyvCSROBHwZ68RygtfEegQDqoh8A/Ue5kaUpDSDJmn5lHLxDmeGLNAyFJte
+	hknVK/YUMddkDHSL7AdiIRoKiRPL5QKFJQ2RAMeCESdMUvpbDJoaq5I3ad/vTrPtOgx29XNSw8k6G
+	YpoF+YRfsJGfoji633lk2HEh0iaVoY6k78ysxfE5ksLRSbIsYbnUHB14Kdy5te59whd12QP/xXfoK
+	1A0HEtnE/3qOUWiuhyiyQ5poL4wbZm2JlqWZ7298vDWt5fT8gQ/3gs+fE4E47sCvVqaoGnrCzvXLs
+	cFbQMjPg==;
 Received: from 179-125-64-246-dinamico.pombonet.net.br ([179.125.64.246] helo=quatroqueijos.cascardo.eti.br)
 	by fanzine2.igalia.com with esmtpsa 
 	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1tGE7I-00DXSC-E3; Wed, 27 Nov 2024 10:13:49 +0100
-Date: Wed, 27 Nov 2024 06:13:41 -0300
+	id 1tGEAa-00DXWb-E1; Wed, 27 Nov 2024 10:17:13 +0100
+Date: Wed, 27 Nov 2024 06:17:08 -0300
 From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 To: Ping-Ke Shih <pkshih@realtek.com>
 Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
 	Kalle Valo <kvalo@kernel.org>,
 	"kernel-dev@igalia.com" <kernel-dev@igalia.com>
-Subject: Re: [PATCH 0/4] wifi: rtlwifi probe error path fixes
-Message-ID: <Z0bixXh/zDeCjcBm@quatroqueijos.cascardo.eti.br>
+Subject: Re: [PATCH 1/4] wifi: rtlwifi: remove unused check_buddy_priv
+Message-ID: <Z0bjlC5kU5Yk8Puy@quatroqueijos.cascardo.eti.br>
 References: <20241122172718.465539-1-cascardo@igalia.com>
- <b2b4bf1246054c9a97d56893c3dd4371@realtek.com>
+ <20241122172718.465539-2-cascardo@igalia.com>
+ <65b5fa04242744bc93e26a137f1fbe58@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,46 +66,39 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b2b4bf1246054c9a97d56893c3dd4371@realtek.com>
+In-Reply-To: <65b5fa04242744bc93e26a137f1fbe58@realtek.com>
 
-On Wed, Nov 27, 2024 at 06:44:44AM +0000, Ping-Ke Shih wrote:
+On Wed, Nov 27, 2024 at 05:32:41AM +0000, Ping-Ke Shih wrote:
 > Thadeu Lima de Souza Cascardo <cascardo@igalia.com> wrote:
-> > These fix different bugs when the probe fails. One of them is the addition
-> > to a global list, which is not removed during the error path. That list has
-> > been removed.
+> > Commit 2461c7d60f9f ("rtlwifi: Update header file") introduced a global
+> > list of private data structures.
 > > 
-> > Then, some memory leaks are fixed, which require a change in where the
-> > workqueue is destroyed.
+> > Later on, commit 26634c4b1868 ("rtlwifi Modify existing bits to match
+> > vendor version 2013.02.07") started adding the private data to that list at
+> > probe time and added a hook, check_buddy_priv to find the private data from
+> > a similar device.
 > > 
-> > Finally, the firmware completion is waited to prevent its callback from
-> > accessing freed data.
+> > However, that function was never used.
 > > 
-> > These were tested against an "emulated" rtl8192se. It was a changed rtl8139
-> > device under qemu with the rtl8192se PCI ID.
+> > Besides, though there is a lock for that list, it is never used. And when
+> > the probe fails, the private data is never removed from the list. This
+> > would cause a second probe to access freed memory.
+> > 
+> > Remove the unused hook, structures and members, which will prevent the
+> > potential race condition on the list and its corruption during a second
+> > probe when probe fails.
+> > 
+> > Fixes: 26634c4b1868 ("rtlwifi Modify existing bits to match vendor version 2013.02.07")
 > 
-> Interesting. Does it mean qemu can support PCI pass-through to work with
-> real hardware? 
-> 
-
-Well, it does, but since I don't have real hardware available, I did a
-quick change in qemu such that linux would probe the rtl8192se driver. It
-wouldn't work as a complete device, but it would be sufficient to complete
-the probe process and let me test the many error paths.
-
-> > Memory allocation failures
-> > were injected over 4 different places: init_sw_vars, rtl_pci_init,
-> > rtl_init_core and ieee80211_register_hw.
-> > 
-> 
-> For the Fixes tag of cleanup patches, I'm not sure if it should be or not.
-> We can keep them and leave maintainers to decide taking to stable tree or not.
-> If that happens, please carefully check the dependency of these patches. 
+> This is a cleanup patch, so I don't think we need a strong Fixes tag. 
 > 
 > 
 
-I decided to add the Fixes: tags on the cleanup patches as they are either
-dependencies and necessary for the followup patches or really fix a problem
-of their own. I will comment on those two patches.
+Well, there is a real bug here. Since the private data is not removed in
+the probe error path, a second probe leads to the corruption of the list.
+But since that list is not used for anything useful (the check_buddy_priv
+is removed as part of this patch as it was never used), instead of adding
+the list removal in the error path, we simply remove the entire list.
 
 Thanks.
 Cascardo.
