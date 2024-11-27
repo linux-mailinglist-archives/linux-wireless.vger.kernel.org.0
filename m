@@ -1,63 +1,56 @@
-Return-Path: <linux-wireless+bounces-15746-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15747-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5295D9DA303
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 08:25:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18D229DA478
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 10:06:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17BBA283D61
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 07:25:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9914DB2316F
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 09:06:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468AE149E0E;
-	Wed, 27 Nov 2024 07:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E323190470;
+	Wed, 27 Nov 2024 09:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="h8Fc8TA0"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="O3/1brLO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mout.web.de (mout.web.de [217.72.192.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6461114;
-	Wed, 27 Nov 2024 07:24:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06FD1891B2;
+	Wed, 27 Nov 2024 09:06:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732692301; cv=none; b=I7cBYjJjKa5R7kgmlcvRoiQ+EoTPS7UqowT6E+3fBLeHapZgwk2jMJzM0xE1GvY1/tvlajRMf9rougxE4Fi7x9Ls8aik4rwgVuU/PLf5BUhnXxdGsF6hklp2txCRrGH5WHyCoDCQqGbHuyb/gEMjsma4xUV5fG5qh1mTYdhPox4=
+	t=1732698391; cv=none; b=E/GYWffoI5SePUNrLVpRYD7aWKHiqwhipJ5Du3er07kZYEbHSpPGL644X756yr+vsJ2hWVRsJdGFyyF7ZgC6r07WGA6qWUEzSvA7lectXil6WqBOayOIf7seu8XIu7fuj9eZBkIxS/A9FGPyyBoxDbMdpB1RIFNYf1gFXjCe7Rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732692301; c=relaxed/simple;
-	bh=P8kFsxDlZKWl7Xli/WBLMhjNY2vCFvtxZpeE++EhU68=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=g3nqD5b2EoX4REhVZiJE8LR3PXhB3iHmUIDhZPHYyzIHD5vxxMkn+ti6hAqMjPe3zxEusTtaZlJzwyvLuV7cS9Om4wNefrdBM5t9L0xmx8hx62laFkC/H2Y8+A/YDzCjakOapvHMp416DS/SCounQpYaD5DMYE2nrq/I8CkWOmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=h8Fc8TA0; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4AQKLZME007169;
-	Wed, 27 Nov 2024 07:24:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	S2AWkEyxvmsl1kvKldkRb2KMSlvYt9LKy1TqsWTIG5A=; b=h8Fc8TA0mzTfkfDB
-	tW0wPDETYDLRFUJLZX4LDurH6YMdAYN04rPUXRaAAKDgM6CxeIKKHzvGWSFfg5e3
-	lzONddtNv8kAf7rbzWDdOn8FmNCISbALj25PS+8rlKPLgHDoAiS/pHF0w4iVye/+
-	YIW8ZKjFY3asWlmXs1T56f6tbNVsmAaiV5Q38mucSJDQUlcDRBVQe9Pz8hbEzar4
-	LjgxXG6XQOczQFL6DwX3GlsV0HRHQHCy+niOfNVHxqgJB6/3d19bQus9oScj8LZH
-	nkxMVfwn7xkqqe3WZeU3V5jx6oCSALP8GAgr1DZd0huf0nf1SE0s6DOiS/4lKScB
-	esmOkg==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 434sw9dukf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 27 Nov 2024 07:24:53 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4AR7Oq46012527
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 27 Nov 2024 07:24:52 GMT
-Received: from [10.216.30.52] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 26 Nov
- 2024 23:24:48 -0800
-Message-ID: <2d10224e-102c-4508-99f4-5743588d0686@quicinc.com>
-Date: Wed, 27 Nov 2024 12:54:31 +0530
+	s=arc-20240116; t=1732698391; c=relaxed/simple;
+	bh=wg4nGisT0ebEQftfFVY4gvb3jWyAAg8FS55l08gOQIA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=stlomJDE9JNpz3VLJ78EN2pfoZuZ62115in6m+fVGAuj60IqtT0r6ihGBp7CZQ7eQElrTvciGlxXcqdEGOuIZo2py4JHZLWBpEWMiaVac53UPPCrWy7Hucp1xvPiSPiqyVXnvrzPVaQcyVVcQBP2TwgfOsIUmb0IRTmSB6bQchc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=O3/1brLO; arc=none smtp.client-ip=217.72.192.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1732698365; x=1733303165; i=markus.elfring@web.de;
+	bh=r2N93lXlkkWmnK3QygTnOg7BE1lU6KCWvJYDtF78mQU=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=O3/1brLODTDDwNzbukpTD33n5fgI9xMf8dXNgVSljawzRpd4vk+DR4ULEHVEAnyc
+	 1K56PtvWD1QmXziLcE2x/uawTINAYmmodzOCy8m639NrPXs3KIx+THcryL+FNt2aP
+	 KgGHFzTekmd5wFJcfvWhgRIJA+oDv7D3NDCs3S2k/ygRdmUZOm1JR8l1W0y4HfhBK
+	 0VoozSHNTtdgo7e60CRpTHiPU/x0Sxo+A34uPhbI+8dGudlm4oihMXUTYmwb15L+h
+	 g3Etxnq084K8vddaeGwXSl8PnvlZxrllqV+BMyNg3HDIlHsJ93NC917UVy1KsfxvC
+	 4C4YM42EmkC4IgU3lQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.91.95]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MT7aP-1t8A9j3mRz-00UQDP; Wed, 27
+ Nov 2024 10:06:04 +0100
+Message-ID: <a77fe99d-079b-4ef3-a1ce-6aea10256860@web.de>
+Date: Wed, 27 Nov 2024 10:05:51 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,81 +58,54 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 01/22] dt-bindings: net: wireless: describe the ath12k
- AHB module
-To: Krzysztof Kozlowski <krzk@kernel.org>
-CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
-        Kalle Valo
-	<kvalo@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski
-	<krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Jeff Johnson
-	<jjohnson@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio
-	<konradybcio@kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>
-References: <20241015182637.955753-1-quic_rajkbhag@quicinc.com>
- <20241015182637.955753-2-quic_rajkbhag@quicinc.com>
- <h4xel7xh3vyljxi7jn2afqasfmbsiqjtgpvqthrviovode6cxt@ey5nnzi4dwtv>
- <708e9d22-0513-4646-aeac-2187c052e208@quicinc.com>
- <b5f352e8-19a5-4c06-b9ba-44af791f6a81@kernel.org>
-Content-Language: en-US
-From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-In-Reply-To: <b5f352e8-19a5-4c06-b9ba-44af791f6a81@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: a33gLwOSBQYVf_Bonnz9Mjr4doGl8QAp
-X-Proofpoint-ORIG-GUID: a33gLwOSBQYVf_Bonnz9Mjr4doGl8QAp
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- mlxlogscore=901 adultscore=0 spamscore=0 impostorscore=0
- priorityscore=1501 phishscore=0 clxscore=1015 mlxscore=0
- lowpriorityscore=0 bulkscore=0 malwarescore=0 classifier=spam adjust=0
- reason=mlx scancount=1 engine=8.19.0-2409260000
- definitions=main-2411270060
+Subject: Re: [PATCH v4?] wifi: ath11k: Fix NULL pointer check in
+ ath11k_ce_rx_post_pipe()
+To: Baichuan Qi <zghbqbc@gmail.com>, ath11k@lists.infradead.org,
+ linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, Jeff Johnson <jjohnson@kernel.org>
+References: <a9ccc947-20b2-4322-84e5-c96aaa604e63@web.de>
+ <20241127033241.60478-1-zghbqbc@gmail.com>
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20241127033241.60478-1-zghbqbc@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ZCgGeWswJhW4qQl74iKNQqJJsw3uVk6d6t2h0sBzF1JJbAf7EfF
+ CKyNdwyRYFEtZBlR9tB30prKCqhEf0mppZXgepJHTirdA0k6IlnRltNUoueVyLQ/rovSqFv
+ VGsg/rAob0P642Bel9DBGlS4t+c4n+eKY/GRIG7Gu+n5dZKb/aD62befocNMV5RB916abVJ
+ 6g0sAtU7b49OCMm5n8rDA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:8RNY/ZCRYK4=;H+R6xGo8OAVw+2fkqDaS6mMHccv
+ n7CfkWqidCE697R4smazxW3hprt/iCth6rNITrVuLhnfjBWbH8Tiq/My94oQnUxDaTnPg5H2n
+ kPsc+d3D4QWZbSgAJju+pVxNMVaeCkLBwmh6LPl9/dED+9D90H8EpdP5XzlDTIGu7CbXW2pln
+ Ly4Q1kkVY80lKJR897e6hivuQerNxg4K42CXFKqew428gP1H/R62ZYPujp9oqzjjhbmkKHVuL
+ fjk+V9FhaZ/bjewWNeosSsKUaYYzSlYZ8dQfuZIF0dKMRBaryl6VSkCvT/q5mSQDdmn40f9ix
+ 0Mx1HEgA0H2a4EdK2z6+z6n80X7ahYr+1EbWZ74sISXb5D1BoNE/KaZqE4sRcLsMrGewOo85K
+ H53ayriDILFhx82RtpkZRrhLVOlHI/qtGQS5w859GvDYXr72ODmt02ZpwDPDbOMFBB3fDo+mu
+ PdO4xs3Gfq8mbkjGiu6HznqEP6IXcrEFHPWW00Q4yrjwO0wa+h9LFh4xHgKe2S2gt1ieOIe7c
+ POBc2w2iPO20oZbPQGpwpJTx0wx2MSgNsjxXvVkaXYgIXaD4BC4uBEpx60NLDdJR2GyS0q40k
+ o0s+FJtGm4MRS3AZcHA8QY67kLFQNMMtFPTB2e379Zc/JERHsGwJ/e6PRx2yoefJHv4cAA8+X
+ p3r2pOdRy6/oQVg8NJEhfDAnaSo13rsYNbepQCsqrajqu4bqkEN+SAookz2MsFlCintg2qgRZ
+ 3UOt3GAXwPuyHgCzKfqO4JV9h5MdXHmSlF+pENS1EwFp9aCuQMcCbORYJiOOiQKnza+9vY7HO
+ sAdrB26XKdCQJVl+CTc0wc+XbYpwgXnHD5T4UQ1upSnx8XBnizoXNU4y9h0SlJcKzdC7dsoUO
+ prKh8ijN+At6SdmFZ5ToKPAZADxAtX3H5sDLdez0UhL4lPcOkLK9QQeYT
 
-On 10/16/2024 2:30 PM, Krzysztof Kozlowski wrote:
->>>> +    description:
->>>> +      phandle to a node describing reserved memory (System RAM memory)
->>>> +      used by ath12k firmware (see bindings/reserved-memory/reserved-memory.txt)
->>>> +
->>>> +  qcom,rproc:
->>>> +    $ref: /schemas/types.yaml#/definitions/phandle
->>>> +    description:
->>>> +      DT entry of a WCSS node. WCSS node is the child node of q6 remoteproc driver.
->>>> +      (see bindings/remoteproc/qcom,multipd-pil.yaml)
->>> DT nodes are not children of drivers. But other DT nodes. Explain why
->>> this phandle is needed, what is it for.
->>>
->>> To me it looks like you incorrectly organized your nodes.
->>>
->> This phandle is required by wifi driver (ath12k) to retrieve the correct remote processor
->> (rproc_get_by_phandle()). Ath12k driver needs this rproc to interact with the remote
->> processor (example: booting-up remote processor).
-> That's driver aspect. Why does the hardware needs it?
-> 
-> WiFi is the remote processor, so I would expect this being a child. Or
-> just drop entirely.
-> 
-> You keep using here arguments how you designed your drivers, which is
-> not valid. Sorry, fix your drivers... or use arguments in terms of hardware.
-> 
-> 
->> In next version, will correct the description based on existing bindings (qcom,ath11k.yaml).
-> Sorry, let's don't copy existing solutions just because they exist.
+> This patch fixes the NON-NULL check by =E2=80=A6
 
-In the IPQ5332 platform, the WiFi component, known as the Wireless Control Subsystem (WCSS),
-functions as the wireless controller. Additionally, there is a separate hardware module, the
-Qualcomm Hexagon DSP(q6 remote processor), which is utilized for offloading WiFi processing
-tasks. These two hardware modules operate in conjunction, necessitating a phandle in the WiFi
-node that references the remote processor. Despite their interdependence, these modules are
-distinct from a hardware perspective.
+> ---
+>  drivers/net/wireless/ath/ath11k/ce.c | 2 +-
+=E2=80=A6
+
+Did you overlook any guidance once more?
+
+See also:
+* https://lore.kernel.org/all/?q=3D%22This+looks+like+a+new+version+of+a+p=
+reviously+submitted+patch%22
+
+* https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
+Documentation/process/submitting-patches.rst?h=3Dv6.12#n94
+
+
+Regards,
+Markus
 
