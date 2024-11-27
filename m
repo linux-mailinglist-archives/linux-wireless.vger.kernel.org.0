@@ -1,111 +1,111 @@
-Return-Path: <linux-wireless+bounces-15747-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15748-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18D229DA478
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 10:06:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E25A59DA48E
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 10:14:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9914DB2316F
-	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 09:06:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 660A3B25EAF
+	for <lists+linux-wireless@lfdr.de>; Wed, 27 Nov 2024 09:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E323190470;
-	Wed, 27 Nov 2024 09:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44F81917E7;
+	Wed, 27 Nov 2024 09:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="O3/1brLO"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="XVuSRdSG"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mout.web.de (mout.web.de [217.72.192.78])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06FD1891B2;
-	Wed, 27 Nov 2024 09:06:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E813B13D278
+	for <linux-wireless@vger.kernel.org>; Wed, 27 Nov 2024 09:13:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732698391; cv=none; b=E/GYWffoI5SePUNrLVpRYD7aWKHiqwhipJ5Du3er07kZYEbHSpPGL644X756yr+vsJ2hWVRsJdGFyyF7ZgC6r07WGA6qWUEzSvA7lectXil6WqBOayOIf7seu8XIu7fuj9eZBkIxS/A9FGPyyBoxDbMdpB1RIFNYf1gFXjCe7Rc=
+	t=1732698836; cv=none; b=JPRJvWnOGv9/NyhqRJ/8+6/PlhmgkzDMV8Wi5oKgA/yxP0m/N3ebFZTZtuuqQM/SoMR1dC9u6jsOde4UDQYqJR2R8wtgg8ppvm5CImDPW6U6i/ccU7uxnyg3g1eAn0Nueq54zjmXLpCx6RTMzmfoZE8kTh1wbuRMb3DCeG4bqrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732698391; c=relaxed/simple;
-	bh=wg4nGisT0ebEQftfFVY4gvb3jWyAAg8FS55l08gOQIA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=stlomJDE9JNpz3VLJ78EN2pfoZuZ62115in6m+fVGAuj60IqtT0r6ihGBp7CZQ7eQElrTvciGlxXcqdEGOuIZo2py4JHZLWBpEWMiaVac53UPPCrWy7Hucp1xvPiSPiqyVXnvrzPVaQcyVVcQBP2TwgfOsIUmb0IRTmSB6bQchc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=O3/1brLO; arc=none smtp.client-ip=217.72.192.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1732698365; x=1733303165; i=markus.elfring@web.de;
-	bh=r2N93lXlkkWmnK3QygTnOg7BE1lU6KCWvJYDtF78mQU=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=O3/1brLODTDDwNzbukpTD33n5fgI9xMf8dXNgVSljawzRpd4vk+DR4ULEHVEAnyc
-	 1K56PtvWD1QmXziLcE2x/uawTINAYmmodzOCy8m639NrPXs3KIx+THcryL+FNt2aP
-	 KgGHFzTekmd5wFJcfvWhgRIJA+oDv7D3NDCs3S2k/ygRdmUZOm1JR8l1W0y4HfhBK
-	 0VoozSHNTtdgo7e60CRpTHiPU/x0Sxo+A34uPhbI+8dGudlm4oihMXUTYmwb15L+h
-	 g3Etxnq084K8vddaeGwXSl8PnvlZxrllqV+BMyNg3HDIlHsJ93NC917UVy1KsfxvC
-	 4C4YM42EmkC4IgU3lQ==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.91.95]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MT7aP-1t8A9j3mRz-00UQDP; Wed, 27
- Nov 2024 10:06:04 +0100
-Message-ID: <a77fe99d-079b-4ef3-a1ce-6aea10256860@web.de>
-Date: Wed, 27 Nov 2024 10:05:51 +0100
+	s=arc-20240116; t=1732698836; c=relaxed/simple;
+	bh=xJtkvUaB/JWlGuYJXIGfctvTyaUneWxxGY80+/2LVcs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jI1L0IRgH3AvhIpZbP1Kgv5EvGTvYl5gzzbFjiXRWGeDmO6nrfkvFT9NSzon3purftzORHH4fziRcRFY8Zw/UvNy86vLp2Z/BGB+irgysvFBCVqv/3WDFc8AS06yvkx2KV42V9Qb0HJvYXn1r9x1+DrtfCvfajqYLlKcjNCBgkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=XVuSRdSG; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=wyETpKO51eTl1fCkJFT713v0ML1NP/KOl9aF2zsls+c=; b=XVuSRdSGKcZVkvs7T1cyQde2tQ
+	GWQCO6BqPmta3hCr+VAXKe//z6C7a9hL+WcHtJMyi6cvcbowtSEfsu+OtRfNvWO/zzT/uekOvhvBu
+	NOtBW/U5jnfeQUGocEol2eOe4OrrBeYzrwAg1ZD8b4zoQW9JAA1q4hWyKArdS4RLzdWPyJb8iWR31
+	rAFQiFER/T3/mz/iAqanJ5rC79idHawAktsu9FK1NLuphxFQW4Bzc2B7vRJcAa/vG2R6/6E72fpvc
+	WjuZoFVjaeV0Zjmoskpb/6aQjS9MycoTRtlxcfh9nuNRlvnZ9WQZbYt9D/a4pRcAS0BR7Hv26OfiD
+	y8sACTGw==;
+Received: from 179-125-64-246-dinamico.pombonet.net.br ([179.125.64.246] helo=quatroqueijos.cascardo.eti.br)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1tGE7I-00DXSC-E3; Wed, 27 Nov 2024 10:13:49 +0100
+Date: Wed, 27 Nov 2024 06:13:41 -0300
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+	Kalle Valo <kvalo@kernel.org>,
+	"kernel-dev@igalia.com" <kernel-dev@igalia.com>
+Subject: Re: [PATCH 0/4] wifi: rtlwifi probe error path fixes
+Message-ID: <Z0bixXh/zDeCjcBm@quatroqueijos.cascardo.eti.br>
+References: <20241122172718.465539-1-cascardo@igalia.com>
+ <b2b4bf1246054c9a97d56893c3dd4371@realtek.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4?] wifi: ath11k: Fix NULL pointer check in
- ath11k_ce_rx_post_pipe()
-To: Baichuan Qi <zghbqbc@gmail.com>, ath11k@lists.infradead.org,
- linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, Jeff Johnson <jjohnson@kernel.org>
-References: <a9ccc947-20b2-4322-84e5-c96aaa604e63@web.de>
- <20241127033241.60478-1-zghbqbc@gmail.com>
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20241127033241.60478-1-zghbqbc@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ZCgGeWswJhW4qQl74iKNQqJJsw3uVk6d6t2h0sBzF1JJbAf7EfF
- CKyNdwyRYFEtZBlR9tB30prKCqhEf0mppZXgepJHTirdA0k6IlnRltNUoueVyLQ/rovSqFv
- VGsg/rAob0P642Bel9DBGlS4t+c4n+eKY/GRIG7Gu+n5dZKb/aD62befocNMV5RB916abVJ
- 6g0sAtU7b49OCMm5n8rDA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:8RNY/ZCRYK4=;H+R6xGo8OAVw+2fkqDaS6mMHccv
- n7CfkWqidCE697R4smazxW3hprt/iCth6rNITrVuLhnfjBWbH8Tiq/My94oQnUxDaTnPg5H2n
- kPsc+d3D4QWZbSgAJju+pVxNMVaeCkLBwmh6LPl9/dED+9D90H8EpdP5XzlDTIGu7CbXW2pln
- Ly4Q1kkVY80lKJR897e6hivuQerNxg4K42CXFKqew428gP1H/R62ZYPujp9oqzjjhbmkKHVuL
- fjk+V9FhaZ/bjewWNeosSsKUaYYzSlYZ8dQfuZIF0dKMRBaryl6VSkCvT/q5mSQDdmn40f9ix
- 0Mx1HEgA0H2a4EdK2z6+z6n80X7ahYr+1EbWZ74sISXb5D1BoNE/KaZqE4sRcLsMrGewOo85K
- H53ayriDILFhx82RtpkZRrhLVOlHI/qtGQS5w859GvDYXr72ODmt02ZpwDPDbOMFBB3fDo+mu
- PdO4xs3Gfq8mbkjGiu6HznqEP6IXcrEFHPWW00Q4yrjwO0wa+h9LFh4xHgKe2S2gt1ieOIe7c
- POBc2w2iPO20oZbPQGpwpJTx0wx2MSgNsjxXvVkaXYgIXaD4BC4uBEpx60NLDdJR2GyS0q40k
- o0s+FJtGm4MRS3AZcHA8QY67kLFQNMMtFPTB2e379Zc/JERHsGwJ/e6PRx2yoefJHv4cAA8+X
- p3r2pOdRy6/oQVg8NJEhfDAnaSo13rsYNbepQCsqrajqu4bqkEN+SAookz2MsFlCintg2qgRZ
- 3UOt3GAXwPuyHgCzKfqO4JV9h5MdXHmSlF+pENS1EwFp9aCuQMcCbORYJiOOiQKnza+9vY7HO
- sAdrB26XKdCQJVl+CTc0wc+XbYpwgXnHD5T4UQ1upSnx8XBnizoXNU4y9h0SlJcKzdC7dsoUO
- prKh8ijN+At6SdmFZ5ToKPAZADxAtX3H5sDLdez0UhL4lPcOkLK9QQeYT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b2b4bf1246054c9a97d56893c3dd4371@realtek.com>
 
-> This patch fixes the NON-NULL check by =E2=80=A6
+On Wed, Nov 27, 2024 at 06:44:44AM +0000, Ping-Ke Shih wrote:
+> Thadeu Lima de Souza Cascardo <cascardo@igalia.com> wrote:
+> > These fix different bugs when the probe fails. One of them is the addition
+> > to a global list, which is not removed during the error path. That list has
+> > been removed.
+> > 
+> > Then, some memory leaks are fixed, which require a change in where the
+> > workqueue is destroyed.
+> > 
+> > Finally, the firmware completion is waited to prevent its callback from
+> > accessing freed data.
+> > 
+> > These were tested against an "emulated" rtl8192se. It was a changed rtl8139
+> > device under qemu with the rtl8192se PCI ID.
+> 
+> Interesting. Does it mean qemu can support PCI pass-through to work with
+> real hardware? 
+> 
 
-> ---
->  drivers/net/wireless/ath/ath11k/ce.c | 2 +-
-=E2=80=A6
+Well, it does, but since I don't have real hardware available, I did a
+quick change in qemu such that linux would probe the rtl8192se driver. It
+wouldn't work as a complete device, but it would be sufficient to complete
+the probe process and let me test the many error paths.
 
-Did you overlook any guidance once more?
+> > Memory allocation failures
+> > were injected over 4 different places: init_sw_vars, rtl_pci_init,
+> > rtl_init_core and ieee80211_register_hw.
+> > 
+> 
+> For the Fixes tag of cleanup patches, I'm not sure if it should be or not.
+> We can keep them and leave maintainers to decide taking to stable tree or not.
+> If that happens, please carefully check the dependency of these patches. 
+> 
+> 
 
-See also:
-* https://lore.kernel.org/all/?q=3D%22This+looks+like+a+new+version+of+a+p=
-reviously+submitted+patch%22
+I decided to add the Fixes: tags on the cleanup patches as they are either
+dependencies and necessary for the followup patches or really fix a problem
+of their own. I will comment on those two patches.
 
-* https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
-Documentation/process/submitting-patches.rst?h=3Dv6.12#n94
-
-
-Regards,
-Markus
+Thanks.
+Cascardo.
 
