@@ -1,68 +1,91 @@
-Return-Path: <linux-wireless+bounces-15775-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15776-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB9029DB2A5
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2024 06:55:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 822C99DB2B5
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2024 07:09:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C846B22A4E
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2024 05:55:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E48D2825BC
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2024 06:09:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB32B13D61B;
-	Thu, 28 Nov 2024 05:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1952D140E30;
+	Thu, 28 Nov 2024 06:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="TEET1fQD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JVYCFcgd"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCEB31422B8
-	for <linux-wireless@vger.kernel.org>; Thu, 28 Nov 2024 05:55:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A482A5A79B;
+	Thu, 28 Nov 2024 06:09:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732773309; cv=none; b=BlGm4EYtp2McuwapzcBTy6amhbfZQvtFUffsgwBBLZha/iuc7ZuhflIT01vH73aRDEnfqSzsVzj0CUvi1naU06+Os1xYlbAxIoXUml2wB6zevPDASZ2BIpoXK6drMbXLPs/P2pg9Y+0JqyedSXFAG/cXokDdUHfCLPWPXNbNUgE=
+	t=1732774186; cv=none; b=kisRzzAoM1BtLZyo7vFI0HXvnuSE9PguypTrH/QebnUQJlwHONjQiwxTMYIEcaacPl0ApxtkJ3aOru7s7ppNUtZG4MtWTwbUxlM+HFYzws1k0cbCElzDnBRqzU4hmasAGCe6WK3mR08A0phphMvc9jQdBLgGpG/1kHBwGSH0Ikg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732773309; c=relaxed/simple;
-	bh=elsonpzuf4eOO/OdpKAUzeG82g3dMl5Fgt1Xg8g2uuw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IFlqw2uUCHNOU3/lpycBkK/WWfyOmHji34W556htIVVWIMT3BuEytW3LFijb4zp/vbazXYe3P9vvzy9U2pp8x/lj42xEzyp749UshjgF1wNgTZxTP6vE+ICXQtSAJcWr1B1Z40CGL4tWmtl4twxRurL8xV9eVi4ZeLcyeNjSduU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=TEET1fQD; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4AS5t5cvD3960618, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1732773305; bh=elsonpzuf4eOO/OdpKAUzeG82g3dMl5Fgt1Xg8g2uuw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=TEET1fQDW6qXMwzi90ysiEychnd1RTl/y4XG1yTJ85INFEYO2WNvKZD7CCBapPmJp
-	 k1E8bqF+F8pyuLcZaGY+wGszPJ/5qR25DMr2oYX/VsRCtZuXEogwbDnaxlOFZltsrG
-	 Geo9EBRI7C7k7zOPdivYEej/Jy3e3FAjB3bFc+rzONKNQOIAkhJYWd7iFtje7JK9nl
-	 tRYn8aHzxbxUp6DaHQad5sHc2qVxxCM+F0x12+TeeGZ8rE/Ha2yScCF1q8n0FZu21E
-	 c2S4MSuM/jXhdR+oNDx2amkPylSX1RdcXLbKLUt0REFU23lnFjESCqa+DaQiVjhxSY
-	 XfXwjYoNbux2w==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4AS5t5cvD3960618
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Thu, 28 Nov 2024 13:55:05 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 28 Nov 2024 13:55:06 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 28 Nov
- 2024 13:55:05 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-CC: <gary.chang@realtek.com>, <phhuang@realtek.com>, <kevin_yang@realtek.com>
-Subject: [PATCH 6/6] wifi: rtw89: add crystal_cap check to avoid setting as overflow value
-Date: Thu, 28 Nov 2024 13:54:33 +0800
-Message-ID: <20241128055433.11851-7-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241128055433.11851-1-pkshih@realtek.com>
-References: <20241128055433.11851-1-pkshih@realtek.com>
+	s=arc-20240116; t=1732774186; c=relaxed/simple;
+	bh=FNFX5D6OzAkZN2wzTw875Y3hkNNVy9wZYzC+ym6hvSM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=muLvEskLxJIH4xnYVJKLj6HZPN6zwS5DuSiqCrQEK95DomMP/uJtqLt5IWr/TZd10kgrD1S99cVYQ3J0LkFQDWvO+HAAZJTDLi5ZYxb4dJ4v6P6+eda7gl8azPVw5npKekENCtsaC+sOUwL91VmPEZ0tgtPMj1uGY67mpX3n69k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JVYCFcgd; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-7e6d04f74faso328590a12.1;
+        Wed, 27 Nov 2024 22:09:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1732774184; x=1733378984; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n2sl7DBRBj5Zmz6ctNu6EcUwAGJvkhaL3L7D0PuR0LU=;
+        b=JVYCFcgd+FzHGFVljUFGLBJTckFmzVR4VN/b5uJ/MQUdlpEWpHPUeK02eOtaAGkYsU
+         +kSj5OIJw3srFJeboQ5iuHrxJUX4nE8JRJ5Hq8GT9aL6ujnypUEJWk4UW34qTGfb8TgH
+         AuL/NGnLMI/i5DAAYfU5sYAqqm59Qye9CW6dT6PQfgJAK7FaK+42k8NBQgrLbJ0z9w69
+         LX6b+dEXRSUhH9g3/W36npTjAMkrsOgV/H47Uq9B75o9bz+a788hN61+fNv1hrj+mwWu
+         ZmvhHCT6dmrdgQzGk/HL4+7WxGAjHfJccay+cBj8A8wtTGe1+IebpfosVO+l5BkyQFxG
+         o0gw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732774184; x=1733378984;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=n2sl7DBRBj5Zmz6ctNu6EcUwAGJvkhaL3L7D0PuR0LU=;
+        b=T6iglUW+72v20H3WO9NOkNQ2roMllBcipatl0HgFHu8SKPvcZAJlzplpa5zLAJTQft
+         o1UbH2NwuQWvcUxdeQcSamb3Qps95ifHAxeQ3+tT5q7F1SrT0n+S/DEaTpiMTm9doG/M
+         3QDSrai5fgdPSZIxdzIR8KOoRPv/rMbxV6R5AU7WF5BAJskY4DODnwlDhv7O+5DSMdA3
+         M/3bVvkSdpNZldEr1fUQDuL1tqYfbWqB5LdoWvDZMK2/3RaL9Jqz0TiKESLj21+cJEAE
+         u4qc6gLYuzYjOYTSCwqfgMaGMkpdKXdeYHUMtNgITrvku23GNjCchbdKuNvnF8qNjozU
+         icCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX6hPohhm1AElJ1WxSH6fIjijCyxBGdPA923GO9rof92Kww9Pd4FB9QBNmpUlugxpX+2UTmabpEbHBZW76dBJc=@vger.kernel.org, AJvYcCX8ZPYxhLCR6Km5gV+Tq1vK5xXn9ofKJEO2r0CiJk5RzxlQEUZs/PPZLXCOkV7gDnJs2exCzbijdRqm9WU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyO4gXBBhjNN2yM734quxxYK5XhVoeoyrv6Om53HzzXg4KpOP7T
+	ufwduQSjT9mBEFzXG11WQG5Qnqu/iQYcqImf/3xzd4JIncforxO9
+X-Gm-Gg: ASbGncsYRoPhfjB5kag0MOOuzdDlGRdYapL76azPE/SgFWn5NltlBLH/kCTsGqotvMm
+	RbMjnozxWalPsKkHGP/+TZOMNTlfovk/oOK6cPCm4psVMzXiNO7Q2RHaQz43Gd5T88vw6QKWhXd
+	T2kpXSWxcnepAHw8usojp8K0TfR2frtISjSdgGsGu56vPkXo6M+1n43/2Lb0kvZ2TVq9rmEfuR8
+	yxEKBYTFe6zR0wT42SZrwLmjQcBGdjfpXpep4GYU7f5iEYIgGYbCjDwH6M=
+X-Google-Smtp-Source: AGHT+IFZPjyCmsQWAiAm+6M27f4qo+6s3Q2xz+nj6OTaaxFwdNlTWRqmmwWrbADa4Y/wOn9Ajf8AmA==
+X-Received: by 2002:a17:902:ebc4:b0:205:7007:84fa with SMTP id d9443c01a7336-2151d870174mr34999085ad.28.1732774183312;
+        Wed, 27 Nov 2024 22:09:43 -0800 (PST)
+Received: from LAPTOP-SQ5KB8RN.lan ([222.249.179.118])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-215218f479asm5642875ad.41.2024.11.27.22.09.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 Nov 2024 22:09:42 -0800 (PST)
+From: Baichuan Qi <zghbqbc@gmail.com>
+To: quic_vthiagar@quicinc.com
+Cc: ath11k@lists.infradead.org,
+	jjohnson@kernel.org,
+	kvalo@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-wireless@vger.kernel.org,
+	markus.elfring@web.de,
+	zghbqbc@gmail.com
+Subject: Re: Re: [PATCH v5] NAK
+Date: Thu, 28 Nov 2024 14:09:31 +0800
+Message-Id: <20241128060931.94100-1-zghbqbc@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <f0077f4f-922d-56b1-a5b7-bb01e4462e87@quicinc.com>
+References: <f0077f4f-922d-56b1-a5b7-bb01e4462e87@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -70,80 +93,45 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-From: Chih-Kang Chang <gary.chang@realtek.com>
+Thanks for your reply
 
-In the original flow, the crystal_cap might be calculated as a negative
-value and set as an overflow value. Therefore, we added a check to limit
-the calculated crystal_cap value. Additionally, we shrank the crystal_cap
-adjustment according to specific CFO.
+The reason I submit this patch is that the current 
+`ath11k_ce_rx_post_pipe()` NULL pointer check does not ensure 
+that `dest_ring` is NON-NULL. And it is not clear to show the 
+filtering of tx ce pipes
 
-Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+> This does not really fix any real issue. Please check ath11k_ce_alloc_pipe()
+> where initialization would fail if anyone of pipe->dest_ring and
+> pipe->status_ring allocation fails for ce pipe used for Rx.
+
+When the driver is running normally, the results of the 
+following three are equal:
 ---
- drivers/net/wireless/realtek/rtw89/phy.c | 11 ++++++-----
- drivers/net/wireless/realtek/rtw89/phy.h |  2 +-
- 2 files changed, 7 insertions(+), 6 deletions(-)
+(pipe->dest_ring || pipe->status_ring) // current code
+(pipe->dest_ring && pipe->status_ring)
+(pipe->dest_ring)
+---
+However, when some errors occur and `dest_ring` is abnormal,
+the OR operation cannot guarantee that the pointer is NON-NULL.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index e88ed9ec57c5..8d36bf962732 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -4266,7 +4266,6 @@ static void rtw89_phy_cfo_set_crystal_cap(struct rtw89_dev *rtwdev,
- 
- 	if (!force && cfo->crystal_cap == crystal_cap)
- 		return;
--	crystal_cap = clamp_t(u8, crystal_cap, 0, 127);
- 	if (chip->chip_id == RTL8852A || chip->chip_id == RTL8851B) {
- 		rtw89_phy_cfo_set_xcap_reg(rtwdev, true, crystal_cap);
- 		rtw89_phy_cfo_set_xcap_reg(rtwdev, false, crystal_cap);
-@@ -4389,7 +4388,7 @@ static void rtw89_phy_cfo_crystal_cap_adjust(struct rtw89_dev *rtwdev,
- 					     s32 curr_cfo)
- {
- 	struct rtw89_cfo_tracking_info *cfo = &rtwdev->cfo_tracking;
--	s8 crystal_cap = cfo->crystal_cap;
-+	int crystal_cap = cfo->crystal_cap;
- 	s32 cfo_abs = abs(curr_cfo);
- 	int sign;
- 
-@@ -4410,15 +4409,17 @@ static void rtw89_phy_cfo_crystal_cap_adjust(struct rtw89_dev *rtwdev,
- 	}
- 	sign = curr_cfo > 0 ? 1 : -1;
- 	if (cfo_abs > CFO_TRK_STOP_TH_4)
--		crystal_cap += 7 * sign;
-+		crystal_cap += 3 * sign;
- 	else if (cfo_abs > CFO_TRK_STOP_TH_3)
--		crystal_cap += 5 * sign;
--	else if (cfo_abs > CFO_TRK_STOP_TH_2)
- 		crystal_cap += 3 * sign;
-+	else if (cfo_abs > CFO_TRK_STOP_TH_2)
-+		crystal_cap += 1 * sign;
- 	else if (cfo_abs > CFO_TRK_STOP_TH_1)
- 		crystal_cap += 1 * sign;
- 	else
- 		return;
-+
-+	crystal_cap = clamp(crystal_cap, 0, 127);
- 	rtw89_phy_cfo_set_crystal_cap(rtwdev, (u8)crystal_cap, false);
- 	rtw89_debug(rtwdev, RTW89_DBG_CFO,
- 		    "X_cap{Curr,Default}={0x%x,0x%x}\n",
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
-index 08a026ac9d38..e6d06f0a6c09 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.h
-+++ b/drivers/net/wireless/realtek/rtw89/phy.h
-@@ -57,7 +57,7 @@
- #define CFO_TRK_STOP_TH_4 (30 << 2)
- #define CFO_TRK_STOP_TH_3 (20 << 2)
- #define CFO_TRK_STOP_TH_2 (10 << 2)
--#define CFO_TRK_STOP_TH_1 (00 << 2)
-+#define CFO_TRK_STOP_TH_1 (03 << 2)
- #define CFO_TRK_STOP_TH (2 << 2)
- #define CFO_SW_COMP_FINE_TUNE (2 << 2)
- #define CFO_PERIOD_CNT 15
--- 
-2.25.1
+> This will always fail as the caller loops through all the supported ce pipes
+> and ce pipes used for Tx will not have either dest_ring or status_ring.
+> Please ensure the patch is tested properly.
 
+I tested [PATCH v5] and indeed the wrong return value will lead 
+to wrong results when the pointer is null.
+
+Please refer to [PATCH v4].
+Link: https://lore.kernel.org/ath11k/20241127114310.26085-1-zghbqbc@gmail.com/
+Although it does not return an error code, it can ensure that 
+when an unknown error occurs and causes the status of 
+`dest_ring` and `status_ring` to be different, the subsequent 
+code will not access the null pointer, which will only 
+cause the driver to fall into loops.
+
+Thanks for you read.
+
+Thanks
+Baichuan Qi
 
