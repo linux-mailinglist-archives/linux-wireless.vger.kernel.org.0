@@ -1,186 +1,180 @@
-Return-Path: <linux-wireless+bounces-15783-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15784-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95CC29DB79F
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2024 13:29:40 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBD279DB7B1
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2024 13:32:31 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56BEC2858E1
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2024 12:29:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7224A162EE6
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2024 12:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F0F19DF81;
-	Thu, 28 Nov 2024 12:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E1E19CC11;
+	Thu, 28 Nov 2024 12:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NF86R7YP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I4bgbDDE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E2819D064
-	for <linux-wireless@vger.kernel.org>; Thu, 28 Nov 2024 12:29:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B144B19C558
+	for <linux-wireless@vger.kernel.org>; Thu, 28 Nov 2024 12:32:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732796957; cv=none; b=X3G8j1O0FAAFrNFBEFNYn9oa/WSoj1jCXTVttwpnT2DCtuxpgyyWRG2+ZUIAvtVhFtcp5BFp3h/OFjy4DlcPVmapnnE8WMPJIv6nkOrGyjsIFNPtO0QYG0UzKA3UymoLNs5xfdqCbEziajtIkOKRKAyxp0gShV9Er4zM12eEko0=
+	t=1732797148; cv=none; b=uRw4gbeC+GhoRO+vbbyoD9lw4rBukmCVOEZbtV7AeW3NH9EJjh4wxqe+CRIUpBchiN8AWcafAlnmcJDWgvVRLx4eXRxDc0ZH0m8DNTvu6DsQ8OcmbEFHYw/83t+f+yk1xMrRSl7Z1HurQWdvD74PZl4z+M/ZsYQfSAuHN1iU0a4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732796957; c=relaxed/simple;
-	bh=JpPbSJkGmB+FiXHSVu+2bxdWkGhcoXfBF30rmHgjyGg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bQXyNQViHw40lBZYcK34FqyiBYROqiZ/tdvVje2EKDZoBDhMTVm+CKIvfj/hZctGiN7vSOEhjKduGeAB9Kpome07RvHFOKlfn4CvkbGdmSwEPRhwc5OFycmnROK8xCAEzLPMZnSq32YmgbGDH0+mAJaHnjrmbznhOJNP4aC2Hhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NF86R7YP; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1732796954;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0Nxf6CkGK3NslY+JLgqPcTLt32q1OCumzkrHYUKQkbE=;
-	b=NF86R7YPaO4OmYapdN/YmkctK36hyatOwgFnMmypDgOYs+5hDSzw9VI6kPrX1Sfwh9Y/oh
-	pkRUEbh4+BmMaTxCAagWRlwi7lwQxDFd7HAWNdry//JprUXWVkYB37Tpxs4gq9uxDC5E3q
-	Hb7mXLh0aj/aMRbdo2tBNwPWG0P55Bs=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-633-e70nC0IfN9yWqFW-DyOOSg-1; Thu, 28 Nov 2024 07:29:13 -0500
-X-MC-Unique: e70nC0IfN9yWqFW-DyOOSg-1
-X-Mimecast-MFC-AGG-ID: e70nC0IfN9yWqFW-DyOOSg
-Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-5cfb912729dso487210a12.3
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Nov 2024 04:29:13 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732796952; x=1733401752;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0Nxf6CkGK3NslY+JLgqPcTLt32q1OCumzkrHYUKQkbE=;
-        b=KSD7/AJL82q8UBJFeXEz7Bh7VbjjbJl1hNTv/fFFVzKhHXD5g8DvXrN++TW3Fgvzct
-         /PtH7Fv2io4V4kt0DSSLP+1kfXArBf5KDEyj70qjvCaeigY09+wFG5b1bBCBG+//lDDY
-         GEaeacQ5h4UnCoEeKae6rAA9P/sI7/mX2Ew33tPonUaldTXvvkFSLmz2OQe2jZjuKJ1M
-         5YGTq23zq+ncfOB9ODyNUhGCsiIDAk2WHxEJnDftN1HQtJQefKtk8DNXWztEiLCzut/j
-         opK2uZv5uFZQxpttvbBJRVP2qBM5j4EYl7tWsYGKaruEusgNtk7SMu5Xst+IoleaLQVi
-         pl5A==
-X-Forwarded-Encrypted: i=1; AJvYcCUASbHcuYGC6x/tdzV7FjdwoaCkCfx2LEnzhRW6AF8G3uNVEJyUEEqqs6D0aMiTM705gLsya/a7KH4isVTl0w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyV/uUVLY9ErW/iHoJIBZOfHSU+jvVI6LenQm5EvOid5oTQEi8E
-	tscZzTtiiCSbz+WgClOABLzt15MpPoCwpW32lsSR94fFYi5gHFP6fPkdsWkyl9Kw/PEef0MVW6u
-	qZG1p3/KHHQZqmFNbFA1TfMj7nKfEh3XwwLXvgDEsRaxlxQorx9XqKG4dcSuVKyIzJbUOxbd+CI
-	uXo5tV1w0pu5ULgKPBNgmbNZRjEcH0oikc1fkcVuU=
-X-Gm-Gg: ASbGncsaqzpt7F0r6NslTRS43ocMRY8CV6DcfrGpMoGs4eLKzvnnoBwHApBTUt+25Oo
-	Og6ixObzgFjTL3Re/6JbAmqIhKGp+Qgk=
-X-Received: by 2002:a05:6402:5243:b0:5cf:e26b:9797 with SMTP id 4fb4d7f45d1cf-5d080c604fcmr5605087a12.29.1732796951914;
-        Thu, 28 Nov 2024 04:29:11 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGuE0zkJ6zJza+fGet7qX+06h7Jmet7/bu0xRwgqC9A06SMAgod8PaoQJd1k5pY7KRDfw0cJAGqmNIglvOyUZo=
-X-Received: by 2002:a05:6402:5243:b0:5cf:e26b:9797 with SMTP id
- 4fb4d7f45d1cf-5d080c604fcmr5605060a12.29.1732796951475; Thu, 28 Nov 2024
- 04:29:11 -0800 (PST)
+	s=arc-20240116; t=1732797148; c=relaxed/simple;
+	bh=z55rZ5wrhdyhw6V1NlACku/0MHLUshsG+jTuIobXNV4=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=oo2iAz9Mcu62OAym5GhINNcNberYEFsKZKGYzXI322iKgPBtlxJC+GIRv+gcH7dsknG/AnIMmbPaQ6rLOf8Tg8IOrRbxdWQKAKex/j01S/L1symiiHvCmr7d2vk6P+YXwujxOlB74qUFPxuZdCLEOEFVnwycVvv4y2t1QT+PfpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I4bgbDDE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33ED7C4CECE;
+	Thu, 28 Nov 2024 12:32:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732797146;
+	bh=z55rZ5wrhdyhw6V1NlACku/0MHLUshsG+jTuIobXNV4=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=I4bgbDDEAmVhjUL35qcUKHJqdEd4qty+/dssZbML9bXvaugv9rWswMtn/WqbyCvcr
+	 1waNZfrQR8mUVMbtBkNOoqpFFBzfX7wd429iBYR+v1KhvgprPiTLg7y8ou0cLuDA7/
+	 cW3YrAEICxGIlhvnj+bP5l01uA1vaj2M/0KoOHKeRwUfhORUelqjLiE/2bq1wYGC/f
+	 daLAJS0tL0lBbVVrizsF1JPuv5z6DlfkOcSZSKLmlOchxugHI5NKdg96XJENDBAeZn
+	 7zvQnUsZ4sWk0ONk9w2YTLh2nbHlQrrXvLQi6Qqi6f228gvwVnPOhiw244mMaQ3i/a
+	 a9rTHzbh7C37w==
+From: Kalle Valo <kvalo@kernel.org>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 02/10] wifi: ath12k: ath12k_mac_op_tx(): MLO support
+References: <20241126171139.2350704-1-kvalo@kernel.org>
+	<20241126171139.2350704-3-kvalo@kernel.org>
+	<28bdb726-a7cf-40e7-8bc4-f7602bba1e93@quicinc.com>
+Date: Thu, 28 Nov 2024 14:32:23 +0200
+In-Reply-To: <28bdb726-a7cf-40e7-8bc4-f7602bba1e93@quicinc.com> (Baochen
+	Qiang's message of "Wed, 27 Nov 2024 10:49:13 +0800")
+Message-ID: <87ttbrv8rs.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241115-converge-secs-to-jiffies-v1-0-19aadc34941b@linux.microsoft.com>
- <20241115-converge-secs-to-jiffies-v1-18-19aadc34941b@linux.microsoft.com>
-In-Reply-To: <20241115-converge-secs-to-jiffies-v1-18-19aadc34941b@linux.microsoft.com>
-From: Alex Markuze <amarkuze@redhat.com>
-Date: Thu, 28 Nov 2024 14:29:00 +0200
-Message-ID: <CAO8a2SjKS2nWWVkAcqXkZhR+Q1TocULkwRk09ABf8XQjjzwJPQ@mail.gmail.com>
-Subject: Re: [PATCH 18/22] ceph: Convert timeouts to secs_to_jiffies()
-To: Easwar Hariharan <eahariha@linux.microsoft.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Jozsef Kadlecsik <kadlec@netfilter.org>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>, 
-	Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>, 
-	Robert Jarzmik <robert.jarzmik@free.fr>, Russell King <linux@armlinux.org.uk>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Ofir Bitton <obitton@habana.ai>, 
-	Oded Gabbay <ogabbay@kernel.org>, Lucas De Marchi <lucas.demarchi@intel.com>, 
-	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, 
-	Shailend Chand <shailend@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	James Smart <james.smart@broadcom.com>, Dick Kennedy <dick.kennedy@broadcom.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>, 
-	Jens Axboe <axboe@kernel.dk>, Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Jack Wang <jinpu.wang@cloud.ionos.com>, Marcel Holtmann <marcel@holtmann.org>, 
-	Johan Hedberg <johan.hedberg@gmail.com>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
-	Scott Branden <sbranden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Xiubo Li <xiubli@redhat.com>, 
-	Ilya Dryomov <idryomov@gmail.com>, Josh Poimboeuf <jpoimboe@kernel.org>, Jiri Kosina <jikos@kernel.org>, 
-	Miroslav Benes <mbenes@suse.cz>, Petr Mladek <pmladek@suse.com>, 
-	Joe Lawrence <joe.lawrence@redhat.com>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
-	Lucas Stach <l.stach@pengutronix.de>, Russell King <linux+etnaviv@armlinux.org.uk>, 
-	Christian Gmeiner <christian.gmeiner@gmail.com>, Louis Peens <louis.peens@corigine.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, netfilter-devel@vger.kernel.org, 
-	coreteam@netfilter.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	cocci@inria.fr, linux-arm-kernel@lists.infradead.org, 
-	linux-s390@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	intel-xe@lists.freedesktop.org, linux-scsi@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, linux-block@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
-	linux-mm@kvack.org, linux-bluetooth@vger.kernel.org, 
-	linux-staging@lists.linux.dev, linux-rpi-kernel@lists.infradead.org, 
-	ceph-devel@vger.kernel.org, live-patching@vger.kernel.org, 
-	linux-sound@vger.kernel.org, etnaviv@lists.freedesktop.org, 
-	oss-drivers@corigine.com, linuxppc-dev@lists.ozlabs.org, 
-	Anna-Maria Behnsen <anna-maria@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-looks good
+Baochen Qiang <quic_bqiang@quicinc.com> writes:
 
-On Fri, Nov 15, 2024 at 11:35=E2=80=AFPM Easwar Hariharan
-<eahariha@linux.microsoft.com> wrote:
+> On 11/27/2024 1:11 AM, Kalle Valo wrote:
+>> From: Sriram R <quic_srirrama@quicinc.com>
+>> 
+>> @@ -6848,6 +6848,7 @@ static void ath12k_mgmt_over_wmi_tx_purge(struct ath12k *ar)
+>>  static void ath12k_mgmt_over_wmi_tx_work(struct wiphy *wiphy, struct wiphy_work *work)
+>>  {
+>>  	struct ath12k *ar = container_of(work, struct ath12k, wmi_mgmt_tx_work);
+>> +	struct ath12k_hw *ah = ar->ah;
+>>  	struct ath12k_skb_cb *skb_cb;
+>>  	struct ath12k_vif *ahvif;
+>>  	struct ath12k_link_vif *arvif;
+>> @@ -6865,7 +6866,15 @@ static void ath12k_mgmt_over_wmi_tx_work(struct wiphy *wiphy, struct wiphy_work
+>>  		}
+>>  
+>>  		ahvif = ath12k_vif_to_ahvif(skb_cb->vif);
+>> -		arvif = &ahvif->deflink;
+>> +		if (!(ahvif->links_map & BIT(skb_cb->link_id))) {
+>> +			ath12k_warn(ar->ab,
+>> +				    "invalid linkid %u in mgmt over wmi tx with linkmap 0x%X\n",
 >
-> Changes made with the following Coccinelle rules:
->
-> @@ constant C; @@
->
-> - msecs_to_jiffies(C * 1000)
-> + secs_to_jiffies(C)
->
-> @@ constant C; @@
->
-> - msecs_to_jiffies(C * MSEC_PER_SEC)
-> + secs_to_jiffies(C)
->
-> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-> ---
->  fs/ceph/quota.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/fs/ceph/quota.c b/fs/ceph/quota.c
-> index 06ee397e0c3a6172592e62dba95cd267cfff0db1..d90eda19bcc4618f98bfed833=
-c10a6071cf2e2ac 100644
-> --- a/fs/ceph/quota.c
-> +++ b/fs/ceph/quota.c
-> @@ -166,7 +166,7 @@ static struct inode *lookup_quotarealm_inode(struct c=
-eph_mds_client *mdsc,
->         if (IS_ERR(in)) {
->                 doutc(cl, "Can't lookup inode %llx (err: %ld)\n", realm->=
-ino,
->                       PTR_ERR(in));
-> -               qri->timeout =3D jiffies + msecs_to_jiffies(60 * 1000); /=
-* XXX */
-> +               qri->timeout =3D jiffies + secs_to_jiffies(60); /* XXX */
->         } else {
->                 qri->timeout =3D 0;
->                 qri->inode =3D in;
->
-> --
-> 2.34.1
->
->
+> s/0x%X/0x%x/ ?
 
+Fixed.
+
+>
+>> +				    skb_cb->link_id, ahvif->links_map);
+>> +			ath12k_mgmt_over_wmi_tx_drop(ar, skb);
+>> +			continue;
+>> +		}
+>> +
+>> +		arvif = wiphy_dereference(ah->hw->wiphy, ahvif->link[skb_cb->link_id]);
+>>  		if (ar->allocated_vdev_map & (1LL << arvif->vdev_id)) {
+>>  			ret = ath12k_mac_mgmt_tx_wmi(ar, arvif, skb);
+>>  			if (ret) {
+>> @@ -6875,9 +6884,10 @@ static void ath12k_mgmt_over_wmi_tx_work(struct wiphy *wiphy, struct wiphy_work
+>>  			}
+>>  		} else {
+>>  			ath12k_warn(ar->ab,
+>> -				    "dropping mgmt frame for vdev %d, is_started %d\n",
+>> +				    "dropping mgmt frame for vdev %d link_id %u, is_started %d\n",
+>>  				    arvif->vdev_id,
+>> -				    arvif->is_started);
+>> +				    arvif->is_started,
+>> +				    skb_cb->link_id);
+>
+> swap 'arvif->is_started' and 'skb_cb->link_id'.
+
+Good catch! Fixed as well.
+
+>> +/* Note: called under rcu_read_lock() */
+>> +static u8 ath12k_mac_get_tx_link(struct ieee80211_sta *sta, struct ieee80211_vif *vif,
+>> +				 u8 link, struct sk_buff *skb, u32 info_flags)
+>> +{
+>> +	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+>> +	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
+>> +	struct ieee80211_link_sta *link_sta;
+>> +	struct ieee80211_bss_conf *bss_conf;
+>> +	struct ath12k_sta *ahsta;
+>
+> better to assert RCU read lock here?
+
+You mean something like WARN_ON(!rcu_read_lock_held())? I'm not really a
+fan of that, I think it's better that we discuss this also once we
+document locking design properly.
+
+>> +/* Note: called under rcu_read_lock() */
+>>  static void ath12k_mac_op_tx(struct ieee80211_hw *hw,
+>>  			     struct ieee80211_tx_control *control,
+>>  			     struct sk_buff *skb)
+>> @@ -6945,13 +7054,16 @@ static void ath12k_mac_op_tx(struct ieee80211_hw *hw,
+>>  	struct ieee80211_vif *vif = info->control.vif;
+>>  	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
+>>  	struct ath12k_link_vif *arvif = &ahvif->deflink;
+>> -	struct ath12k *ar = arvif->ar;
+>>  	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+>>  	struct ieee80211_key_conf *key = info->control.hw_key;
+>> +	struct ieee80211_sta *sta = control->sta;
+>>  	u32 info_flags = info->flags;
+>> +	struct ath12k *ar;
+>>  	bool is_prb_rsp;
+>> +	u8 link_id;
+>>  	int ret;
+>>  
+> better to assert RCU read lock here?
+
+Same comment here as above.
+
+>
+>> +	link_id = u32_get_bits(info->control.flags, IEEE80211_TX_CTRL_MLO_LINK);
+>>  	memset(skb_cb, 0, sizeof(*skb_cb));
+>>  	skb_cb->vif = vif;
+>>  
+>> @@ -6960,6 +7072,27 @@ static void ath12k_mac_op_tx(struct ieee80211_hw *hw,
+>>  		skb_cb->flags |= ATH12K_SKB_CIPHER_SET;
+>>  	}
+>>  
+>> +	/* handle only for MLO case, use deflink for non MLO case */
+>> +	if (vif->valid_links) {
+>
+> better to use ieee80211_vif_is_mld() helper?
+
+Indeed, fixed.
+
+I did all the changes directly in the pending branch:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git/commit/?h=pending&id=57ee27f3b3aa13c63978f03ce544c2f4210a9cd7
+
+BTW when you reply please include an empty line between the quote and
+your reply, this improves readability.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
