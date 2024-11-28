@@ -1,52 +1,52 @@
-Return-Path: <linux-wireless+bounces-15789-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15790-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8D629DBB84
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2024 17:50:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CF149DBB86
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2024 17:50:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8EEA280A86
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2024 16:50:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85BFEB22A16
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2024 16:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA7851AE016;
-	Thu, 28 Nov 2024 16:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A1E1BD9FD;
+	Thu, 28 Nov 2024 16:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MzJuezd0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="It8hPg64"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0B7A1AA1E4
-	for <linux-wireless@vger.kernel.org>; Thu, 28 Nov 2024 16:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B741AA1E4
+	for <linux-wireless@vger.kernel.org>; Thu, 28 Nov 2024 16:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732812630; cv=none; b=D+jZMPbk2fQPHyDFSv/R6B2HU99CbnAQeNPDebdxRWEDmCR98fZ3tWjQ0EnulPIRlm/8uV/Y1HdtBrDRQuKyC4RsUsioFdaeb8ZQxCs90B4EZhsJuCnoL7NO6dLmJCrUi1DDt0ZI6UD33C6myfOcfFLcgYcxEA/Iv0l2NV7ILos=
+	t=1732812632; cv=none; b=FfkU4jZQhgZf73muwJlr+LFgqi0InNuhaSCuKQzbPR1/930gyzB4dx4wnfRUXARBfONCLJc8fxWG5etYx/1QYCro34g3XtBNJ5Fh/o6hVnJjT+l1zXp/kU0KY9NwURD7QAozbRce5tNCMbvGQ0eqwa9rix1rQmkU03jVa8+BI8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732812630; c=relaxed/simple;
-	bh=ZP5C0PE1cibmD1295T5bQ3/he8sNMjT7Zg7i8eeJ3X8=;
+	s=arc-20240116; t=1732812632; c=relaxed/simple;
+	bh=vEh0qvVVLDemau2Z4sQp0eiz2HLCMuAfK1/h3EmQnpI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ax7iAV/RClgBUvTMzCoSqdbF2yVtnntOJ9ShaPttmjgOiaH2/CwDIaWWQsYevKkhJMlpaf6fVMAMUrPjRsDgLPLuZBY1iTDI8yjAKybBNr3iX7XmzmY37ZY/DYHsngi4jeR7vdeS2VbZg5cO7jqFKla7MT6YITAx5nw4yj7uDO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MzJuezd0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF4CC4CED2;
-	Thu, 28 Nov 2024 16:50:29 +0000 (UTC)
+	 MIME-Version; b=Mm6E+zvBqYOKENhuTvXVXP0K1Kg756y1GRKDjxvLxP3g2pNdEO1LOT7zbI2B915+AEMI7FTrhO0mEp0LARCCEF1x4WJCqm7SsOO5/SPzYsUa9eoKyfFjrQOQYWf2PW6LjskhSMya3jcsJ5QYhHwx6uhkJJzvRPjGl2eYOMUNh/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=It8hPg64; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3E7AC4CED3;
+	Thu, 28 Nov 2024 16:50:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732812630;
-	bh=ZP5C0PE1cibmD1295T5bQ3/he8sNMjT7Zg7i8eeJ3X8=;
+	s=k20201202; t=1732812631;
+	bh=vEh0qvVVLDemau2Z4sQp0eiz2HLCMuAfK1/h3EmQnpI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MzJuezd0ZhDM5EwM8X7jQ1TVkyDrbl25cLp8moJ5VXPmqyd4+hXvJllHRAYedVrFB
-	 1VsC5PUpefzT9nUH9dTuNhOD1wHjqVCFb5el45150VNEgANbVrUJt6Wfn2TFCOcRry
-	 ff+nLvBg6pVNbwCdFs7AE3Mv4tbQhINWSDqFM8PPS8piVoOJj/xz6ernlJ+nKl026e
-	 nYBK5TRfL6ezh8q9Bp+8Ym/fxFPefK/a90sryDUPzvxg20NSWA3sN/Wm/0BxI4sZsL
-	 wLHDNGCRzrVFzbp7mJGPehv/TpTG9ZH2nX7P4z7PyyWaZLA2eQciKz4kTdIA8USYRU
-	 qcZJgPkAcSVZA==
+	b=It8hPg64Nd4dgXRTSzQa5Y3OMfX4wUYIrN66x6RsYRWsr5JYpZVLunYbkel5oDoOH
+	 YRU/g6eGqE5Sa/hfSjP2x9N1EyOdxALrxCMMTHciixiY67vUVy8/hoPxeh79wqHshT
+	 WwuQdhEvqgCXc6mKXSX1B/sunXe8TTh5RBIk5xWB7v9oi1XKSSXd0D5lSADBfCrSHl
+	 XSFyAyZe9qkrbXG8WZAxcECAFYmNxxDXb3J3+eirdRumJh+GyT3SX3iWAlkKKI0HL3
+	 C3amGheIChjlyirJGkEpAxALXdfW1hKgQJyQ53OsNFeCCOEIlmoMLOgIYbgFhIPX78
+	 u7tyLIo9nssmQ==
 From: Kalle Valo <kvalo@kernel.org>
 To: ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 1/4] wifi: ath12k: Refactor core startup
-Date: Thu, 28 Nov 2024 18:50:23 +0200
-Message-Id: <20241128165026.2618331-2-kvalo@kernel.org>
+Subject: [PATCH 2/4] wifi: ath12k: add ath12k_ab_to_ah() and ath12k_ab_set_ah()
+Date: Thu, 28 Nov 2024 18:50:24 +0200
+Message-Id: <20241128165026.2618331-3-kvalo@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241128165026.2618331-1-kvalo@kernel.org>
 References: <20241128165026.2618331-1-kvalo@kernel.org>
@@ -60,16 +60,14 @@ Content-Transfer-Encoding: 8bit
 
 From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 
-In the upcoming hardware device group abstraction radios across different
-devices can be grouped together to support multi-link operation and register as
-a device group to mac80211.
+Currently, one or more ath12k_hw is part of a device (struct ath12k_base) but
+in future, it would be part of device group abstraction (struct
+ath12k_hw_group), i.e., when multiple radios (ar) across different devices can
+be combined together in a device group (struct ath12k_hw_group).
 
-Currently, ath12k_mac_allocate() and ath12k_mac_register() are part of
-ath12k_core_start() and ath12k_core_pdev_create() respectively and are based on
-per device (struct ath12k_base). These APIs can be decoupled and moved out to
-ath12k_core_qmi_firmware_ready() itself. This refactor is helpful for device
-group abstraction when mac80211 allocate and register will be changed from per
-device (struct ath12k_base) to per device group (struct ath12k_hw_group).
+In order to facilitate the above transition, introduce helpers
+ath12k_ab_to_ah() and ath12k_ab_set_ah() to get and set values of ath12k_hw
+respectively.
 
 Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
 Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
@@ -78,255 +76,151 @@ Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 Signed-off-by: Harshitha Prem <quic_hprem@quicinc.com>
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/core.c | 63 ++++++++++++--------------
- drivers/net/wireless/ath/ath12k/dp.c   |  7 +++
- drivers/net/wireless/ath/ath12k/pci.c  |  9 ++++
- drivers/net/wireless/ath/ath12k/qmi.c  |  4 ++
- 4 files changed, 50 insertions(+), 33 deletions(-)
+ drivers/net/wireless/ath/ath12k/core.c |  8 ++++----
+ drivers/net/wireless/ath/ath12k/core.h | 11 +++++++++++
+ drivers/net/wireless/ath/ath12k/mac.c  | 23 +++++++++++++----------
+ 3 files changed, 28 insertions(+), 14 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index 263a7c789122..5313b0267307 100644
+index 5313b0267307..14d0aa26d850 100644
 --- a/drivers/net/wireless/ath/ath12k/core.c
 +++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -604,9 +604,10 @@ static void ath12k_core_stop(struct ath12k_base *ab)
+@@ -986,7 +986,7 @@ static void ath12k_rfkill_work(struct work_struct *work)
+ 	spin_unlock_bh(&ab->base_lock);
  
- 	ath12k_acpi_stop(ab);
+ 	for (i = 0; i < ab->num_hw; i++) {
+-		ah = ab->ah[i];
++		ah = ath12k_ab_to_ah(ab, i);
+ 		if (!ah)
+ 			continue;
  
-+	ath12k_dp_rx_pdev_reo_cleanup(ab);
- 	ath12k_hif_stop(ab);
- 	ath12k_wmi_detach(ab);
--	ath12k_dp_rx_pdev_reo_cleanup(ab);
-+	ath12k_dp_free(ab);
+@@ -1038,7 +1038,7 @@ static void ath12k_core_pre_reconfigure_recovery(struct ath12k_base *ab)
+ 		set_bit(ATH12K_FLAG_CRASH_FLUSH, &ab->dev_flags);
  
- 	/* De-Init of components as needed */
- }
-@@ -708,7 +709,7 @@ static int ath12k_core_soc_create(struct ath12k_base *ab)
+ 	for (i = 0; i < ab->num_hw; i++) {
+-		ah = ab->ah[i];
++		ah = ath12k_ab_to_ah(ab, i);
+ 		if (!ah || ah->state == ATH12K_HW_STATE_OFF)
+ 			continue;
  
- static void ath12k_core_soc_destroy(struct ath12k_base *ab)
- {
--	ath12k_dp_free(ab);
-+	ath12k_hif_power_down(ab, false);
- 	ath12k_reg_free(ab);
- 	ath12k_debugfs_soc_destroy(ab);
- 	ath12k_qmi_deinit_service(ab);
-@@ -718,30 +719,17 @@ static int ath12k_core_pdev_create(struct ath12k_base *ab)
- {
- 	int ret;
+@@ -1077,7 +1077,7 @@ static void ath12k_core_post_reconfigure_recovery(struct ath12k_base *ab)
+ 	int i, j;
  
--	ret = ath12k_mac_register(ab);
--	if (ret) {
--		ath12k_err(ab, "failed register the radio with mac80211: %d\n", ret);
--		return ret;
--	}
--
- 	ret = ath12k_dp_pdev_alloc(ab);
- 	if (ret) {
- 		ath12k_err(ab, "failed to attach DP pdev: %d\n", ret);
--		goto err_mac_unregister;
-+		return ret;
+ 	for (i = 0; i < ab->num_hw; i++) {
+-		ah = ab->ah[i];
++		ah = ath12k_ab_to_ah(ab, i);
+ 		if (!ah || ah->state == ATH12K_HW_STATE_OFF)
+ 			continue;
+ 
+@@ -1131,7 +1131,7 @@ static void ath12k_core_restart(struct work_struct *work)
+ 
+ 	if (ab->is_reset) {
+ 		for (i = 0; i < ab->num_hw; i++) {
+-			ah = ab->ah[i];
++			ah = ath12k_ab_to_ah(ab, i);
+ 			ieee80211_restart_hw(ah->hw);
+ 		}
  	}
- 
- 	return 0;
--
--err_mac_unregister:
--	ath12k_mac_unregister(ab);
--
--	return ret;
- }
- 
- static void ath12k_core_pdev_destroy(struct ath12k_base *ab)
- {
--	ath12k_mac_unregister(ab);
--	ath12k_hif_irq_disable(ab);
- 	ath12k_dp_pdev_free(ab);
- }
- 
-@@ -799,19 +787,12 @@ static int ath12k_core_start(struct ath12k_base *ab,
- 		goto err_hif_stop;
- 	}
- 
--	ret = ath12k_mac_allocate(ab);
--	if (ret) {
--		ath12k_err(ab, "failed to create new hw device with mac80211 :%d\n",
--			   ret);
--		goto err_hif_stop;
--	}
--
- 	ath12k_dp_cc_config(ab);
- 
- 	ret = ath12k_dp_rx_pdev_reo_setup(ab);
- 	if (ret) {
- 		ath12k_err(ab, "failed to initialize reo destination rings: %d\n", ret);
--		goto err_mac_destroy;
-+		goto err_hif_stop;
- 	}
- 
- 	ath12k_dp_hal_rx_desc_init(ab);
-@@ -854,8 +835,6 @@ static int ath12k_core_start(struct ath12k_base *ab,
- 
- err_reo_cleanup:
- 	ath12k_dp_rx_pdev_reo_cleanup(ab);
--err_mac_destroy:
--	ath12k_mac_destroy(ab);
- err_hif_stop:
- 	ath12k_hif_stop(ab);
- err_wmi_detach:
-@@ -909,28 +888,46 @@ int ath12k_core_qmi_firmware_ready(struct ath12k_base *ab)
- 		goto err_dp_free;
- 	}
- 
-+	ret = ath12k_mac_allocate(ab);
-+	if (ret) {
-+		ath12k_err(ab, "failed to create new hw device with mac80211 :%d\n",
-+			   ret);
-+		goto err_core_stop;
-+	}
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index f4a710d49584..ba52be1cfd0f 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -1160,4 +1160,15 @@ static inline struct ieee80211_hw *ath12k_ar_to_hw(struct ath12k *ar)
+ #define for_each_ar(ah, ar, index) \
+ 	for ((index) = 0; ((index) < (ah)->num_radio && \
+ 	     ((ar) = &(ah)->radio[(index)])); (index)++)
 +
-+	ret = ath12k_mac_register(ab);
-+	if (ret) {
-+		ath12k_err(ab, "failed register the radio with mac80211: %d\n", ret);
-+		goto err_mac_destroy;
-+	}
++static inline struct ath12k_hw *ath12k_ab_to_ah(struct ath12k_base *ab, int idx)
++{
++	return ab->ah[idx];
++}
 +
- 	ret = ath12k_core_pdev_create(ab);
- 	if (ret) {
- 		ath12k_err(ab, "failed to create pdev core: %d\n", ret);
--		goto err_core_stop;
-+		goto err_mac_unregister;
- 	}
-+
- 	ath12k_hif_irq_enable(ab);
++static inline void ath12k_ab_set_ah(struct ath12k_base *ab, int idx,
++				    struct ath12k_hw *ah)
++{
++	ab->ah[idx] = ah;
++}
+ #endif /* _CORE_H_ */
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 8d4207707867..8cafb67523c9 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -10832,7 +10832,7 @@ int ath12k_mac_register(struct ath12k_base *ab)
+ 	ab->free_vdev_map = (1LL << (ab->num_radios * TARGET_NUM_VDEVS)) - 1;
  
- 	ret = ath12k_core_rfkill_config(ab);
- 	if (ret && ret != -EOPNOTSUPP) {
- 		ath12k_err(ab, "failed to config rfkill: %d\n", ret);
--		goto err_core_pdev_destroy;
-+		goto err_hif_irq_disable;
- 	}
+ 	for (i = 0; i < ab->num_hw; i++) {
+-		ah = ab->ah[i];
++		ah = ath12k_ab_to_ah(ab, i);
  
- 	mutex_unlock(&ab->core_lock);
+ 		ret = ath12k_mac_hw_register(ah);
+ 		if (ret)
+@@ -10843,7 +10843,7 @@ int ath12k_mac_register(struct ath12k_base *ab)
  
- 	return 0;
+ err:
+ 	for (i = i - 1; i >= 0; i--) {
+-		ah = ab->ah[i];
++		ah = ath12k_ab_to_ah(ab, i);
+ 		if (!ah)
+ 			continue;
  
--err_core_pdev_destroy:
-+err_hif_irq_disable:
-+	ath12k_hif_irq_disable(ab);
- 	ath12k_core_pdev_destroy(ab);
-+err_mac_unregister:
-+	ath12k_mac_unregister(ab);
-+err_mac_destroy:
-+	ath12k_mac_destroy(ab);
- err_core_stop:
- 	ath12k_core_stop(ab);
--	ath12k_mac_destroy(ab);
- err_dp_free:
- 	ath12k_dp_free(ab);
- 	mutex_unlock(&ab->core_lock);
-@@ -1270,15 +1267,15 @@ void ath12k_core_deinit(struct ath12k_base *ab)
- 
- 	mutex_lock(&ab->core_lock);
- 
-+	ath12k_hif_irq_disable(ab);
- 	ath12k_core_pdev_destroy(ab);
-+	ath12k_mac_unregister(ab);
-+	ath12k_mac_destroy(ab);
- 	ath12k_core_stop(ab);
- 
- 	mutex_unlock(&ab->core_lock);
- 
--	ath12k_hif_power_down(ab, false);
--	ath12k_mac_destroy(ab);
- 	ath12k_core_soc_destroy(ab);
--	ath12k_fw_unmap(ab);
- }
- 
- void ath12k_core_free(struct ath12k_base *ab)
-diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
-index 328be2c635d6..ce823b1c175f 100644
---- a/drivers/net/wireless/ath/ath12k/dp.c
-+++ b/drivers/net/wireless/ath/ath12k/dp.c
-@@ -982,6 +982,9 @@ void ath12k_dp_pdev_free(struct ath12k_base *ab)
- {
+@@ -10859,7 +10859,7 @@ void ath12k_mac_unregister(struct ath12k_base *ab)
  	int i;
  
-+	if (!ab->mon_reap_timer.function)
-+		return;
-+
- 	del_timer_sync(&ab->mon_reap_timer);
+ 	for (i = ab->num_hw - 1; i >= 0; i--) {
+-		ah = ab->ah[i];
++		ah = ath12k_ab_to_ah(ab, i);
+ 		if (!ah)
+ 			continue;
  
- 	for (i = 0; i < ab->num_radios; i++)
-@@ -1289,6 +1292,9 @@ void ath12k_dp_free(struct ath12k_base *ab)
- 	struct ath12k_dp *dp = &ab->dp;
+@@ -10917,6 +10917,7 @@ static struct ath12k_hw *ath12k_mac_hw_allocate(struct ath12k_base *ab,
+ void ath12k_mac_destroy(struct ath12k_base *ab)
+ {
+ 	struct ath12k_pdev *pdev;
++	struct ath12k_hw *ah;
  	int i;
  
-+	if (!dp->ab)
-+		return;
-+
- 	ath12k_dp_link_desc_cleanup(ab, dp->link_desc_banks,
- 				    HAL_WBM_IDLE_LINK, &dp->wbm_idle_ring);
+ 	for (i = 0; i < ab->num_radios; i++) {
+@@ -10928,11 +10929,12 @@ void ath12k_mac_destroy(struct ath12k_base *ab)
+ 	}
  
-@@ -1306,6 +1312,7 @@ void ath12k_dp_free(struct ath12k_base *ab)
+ 	for (i = 0; i < ab->num_hw; i++) {
+-		if (!ab->ah[i])
++		ah = ath12k_ab_to_ah(ab, i);
++		if (!ah)
+ 			continue;
  
- 	ath12k_dp_rx_free(ab);
- 	/* Deinit any SOC level resource */
-+	dp->ab = NULL;
+-		ath12k_mac_hw_destroy(ab->ah[i]);
+-		ab->ah[i] = NULL;
++		ath12k_mac_hw_destroy(ah);
++		ath12k_ab_set_ah(ab, i, NULL);
+ 	}
  }
  
- void ath12k_dp_cc_config(struct ath12k_base *ab)
-diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
-index cf907550e6a4..8dbc7377ae7c 100644
---- a/drivers/net/wireless/ath/ath12k/pci.c
-+++ b/drivers/net/wireless/ath/ath12k/pci.c
-@@ -1123,6 +1123,9 @@ void ath12k_pci_ext_irq_enable(struct ath12k_base *ab)
+@@ -10965,7 +10967,7 @@ int ath12k_mac_allocate(struct ath12k_base *ab)
  
- void ath12k_pci_ext_irq_disable(struct ath12k_base *ab)
- {
-+	if (!test_bit(ATH12K_FLAG_EXT_IRQ_ENABLED, &ab->dev_flags))
-+		return;
-+
- 	__ath12k_pci_ext_irq_disable(ab);
- 	ath12k_pci_sync_ext_irqs(ab);
- }
-@@ -1147,6 +1150,11 @@ int ath12k_pci_hif_resume(struct ath12k_base *ab)
+ 		ah->dev = ab->dev;
  
- void ath12k_pci_stop(struct ath12k_base *ab)
- {
-+	struct ath12k_pci *ab_pci = ath12k_pci_priv(ab);
-+
-+	if (!test_bit(ATH12K_PCI_FLAG_INIT_DONE, &ab_pci->flags))
-+		return;
-+
- 	ath12k_pci_ce_irq_disable_sync(ab);
- 	ath12k_ce_cleanup_pipes(ab);
- }
-@@ -1725,6 +1733,7 @@ static void ath12k_pci_remove(struct pci_dev *pdev)
- 	cancel_work_sync(&ab->reset_work);
- 	cancel_work_sync(&ab->dump_work);
- 	ath12k_core_deinit(ab);
-+	ath12k_fw_unmap(ab);
+-		ab->ah[i] = ah;
++		ath12k_ab_set_ah(ab, i, ah);
+ 	}
  
- qmi_fail:
- 	ath12k_mhi_unregister(ab_pci);
-diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
-index d2d9d03c7a28..f5388eae01dc 100644
---- a/drivers/net/wireless/ath/ath12k/qmi.c
-+++ b/drivers/net/wireless/ath/ath12k/qmi.c
-@@ -3402,11 +3402,15 @@ int ath12k_qmi_init_service(struct ath12k_base *ab)
+ 	ath12k_dp_pdev_pre_alloc(ab);
+@@ -10974,11 +10976,12 @@ int ath12k_mac_allocate(struct ath12k_base *ab)
  
- void ath12k_qmi_deinit_service(struct ath12k_base *ab)
- {
-+	if (!ab->qmi.ab)
-+		return;
-+
- 	qmi_handle_release(&ab->qmi.handle);
- 	cancel_work_sync(&ab->qmi.event_work);
- 	destroy_workqueue(ab->qmi.event_wq);
- 	ath12k_qmi_m3_free(ab);
- 	ath12k_qmi_free_target_mem_chunk(ab);
-+	ab->qmi.ab = NULL;
- }
+ err:
+ 	for (i = i - 1; i >= 0; i--) {
+-		if (!ab->ah[i])
++		ah = ath12k_ab_to_ah(ab, i);
++		if (!ah)
+ 			continue;
  
- void ath12k_qmi_free_resource(struct ath12k_base *ab)
+-		ath12k_mac_hw_destroy(ab->ah[i]);
+-		ab->ah[i] = NULL;
++		ath12k_mac_hw_destroy(ah);
++		ath12k_ab_set_ah(ab, i, NULL);
+ 	}
+ 
+ 	return ret;
 -- 
 2.39.5
 
