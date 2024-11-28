@@ -1,133 +1,186 @@
-Return-Path: <linux-wireless+bounces-15781-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15782-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3244C9DB720
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2024 13:09:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 367D69DB795
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2024 13:29:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB881281A76
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2024 12:08:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95DFDB20936
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2024 12:29:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF7419004B;
-	Thu, 28 Nov 2024 12:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F217C19D092;
+	Thu, 28 Nov 2024 12:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QGha05sh"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SR+2143n"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458E22CCC0
-	for <linux-wireless@vger.kernel.org>; Thu, 28 Nov 2024 12:08:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7078019C560
+	for <linux-wireless@vger.kernel.org>; Thu, 28 Nov 2024 12:28:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732795736; cv=none; b=al+T+cRXAt/YbRSTjUJzq54A6+g5Iw8xAytcNwMgP6u9kff5ljnonRqOU+M7piDLjPYOGXb9wVYtLRfs6K8G6taK7v9sE2UuzxGjrqGQDi7uzaE3HknGwgqfW5Xf63Cex8dqyI9FcbetmDBO5oLF+FvIHidMmqkXsTZDxX/trow=
+	t=1732796937; cv=none; b=PZ4zjg5kuI608SXS7lEfsU3YCO87+/3hkeEo88fw4sBc0cWTOJV+aMaY6gZ6SH7FPiJhCty9NgZLQup9AxYPEnnwwgbzmd7W23CwpFJyfw9/p4AiBeAp4nCGniPTpIZ+RhIOCsY2xy21jmxwPxM9ngAjPwEZ5MY9pAbE3v/KrsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732795736; c=relaxed/simple;
-	bh=M7XUhFj2CBG6AIiPB6HZ7jrcFq/PWCF9szTudLUMOfU=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=pJDk4AMhb7xzh+/SSwOJP/sWvHe8ozdetwBWEkZ21Dx+gy49OIH+O9YFPptojA1qIsO8gNhW0U9F6bQXh32+fRPEGhDJNU2lbK6aK2UPYmXeBk7ZpqMU4qRSqg61BD+kQoNb6RlKxMv3QIzpI4ztXV3xhZNRiGwNN4V1PAaQB/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QGha05sh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F235C4CECE;
-	Thu, 28 Nov 2024 12:08:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732795735;
-	bh=M7XUhFj2CBG6AIiPB6HZ7jrcFq/PWCF9szTudLUMOfU=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=QGha05shSD5jCag2NbDx724fWeOoFzQuuRyWiJgJx4wl27x401l9esfEsfAhdrEac
-	 s7ndBJhbaqGcmBv8zwsKsVprKvqSMoOsfyYnmgrqWivg15efRHSZpxWqmum+1L1oAf
-	 mjpzgy5pKqHLK9wcCP8v253shAagrttzWqldKGZ9cyhqgv5AK9mL3n7ZGUkWIyI3Zg
-	 /QEMIL39nUCyLosRYKFQJ4UNWzvfbxj3U/Ls2HGZE2qYIMRHOidE5lPHMcbodzmXsc
-	 fEdh+h00YxbPIFWLnlWy88spFs9A4IGz00SDTdSy8V4Nqn6d8hHcL7zxeTxhYgRiDv
-	 auaCPNqBkubMA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Baochen Qiang <quic_bqiang@quicinc.com>
-Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 01/10] wifi: ath12k: convert struct
- ath12k::wmi_mgmt_tx_work to struct wiphy_work
-References: <20241126171139.2350704-1-kvalo@kernel.org>
-	<20241126171139.2350704-2-kvalo@kernel.org>
-	<83b2325e-4d98-49a1-ae32-a69d7962e4a3@quicinc.com>
-Date: Thu, 28 Nov 2024 14:08:53 +0200
-In-Reply-To: <83b2325e-4d98-49a1-ae32-a69d7962e4a3@quicinc.com> (Baochen
-	Qiang's message of "Wed, 27 Nov 2024 10:34:00 +0800")
-Message-ID: <87y113v9uy.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1732796937; c=relaxed/simple;
+	bh=7YyGrl4KoRmc0JeVQNy93UMWTak4tQ4PB7z7wqFR2wU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=h78Kww+S9CDrsLeX8M2bzE97FXq1Uygmo4e7/ANK0pRl1CSiSBkrhb7TAbCi/zDnuWQUf8CIWoFBkAw/u6kz9BOnc8jYpe4ooXBPZWwV6MZiWpJengDjeUvoqpkrffcUZuct1pQxKtoMpbYSKx9BEwnW3PxPp6XAPXeWpO+TlLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SR+2143n; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1732796934;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZACMslqIaF7iVtmlx12c8LPoSlN7TzLegXngDuX2z78=;
+	b=SR+2143n/ny/c1ljGZjDnEADm/Ip4JnzZKHEGegX2fSpQuWWcE1/kNzNUvhvIvpffUaami
+	pQnV8KfkLGfnmwFF1tW7gB4vxoTu6M1GGF94HZMZeKWCvFMHdHksmJydcDHl7j7pLyw10t
+	usmZaRSuxFMIGWqNTbACv75cFVGLQL0=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-663-K3JSF4JmNLiacHc4BxjYVg-1; Thu, 28 Nov 2024 07:28:53 -0500
+X-MC-Unique: K3JSF4JmNLiacHc4BxjYVg-1
+X-Mimecast-MFC-AGG-ID: K3JSF4JmNLiacHc4BxjYVg
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-385d6ee042eso94041f8f.0
+        for <linux-wireless@vger.kernel.org>; Thu, 28 Nov 2024 04:28:53 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732796932; x=1733401732;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZACMslqIaF7iVtmlx12c8LPoSlN7TzLegXngDuX2z78=;
+        b=RFQ48zw4qKMo04FGPlu2usTDPKSi40JCCd+7+ZpvA3Gn4AlAOTt8mpeIB7eZ0UQ4RH
+         VRL1GcoKKT88Vlq1H/TZr26bSxPfu6P+7cRXBmw9762oHCZucMjfn7LcHq5rySP1rrxS
+         9oWL/aFDkck0vuOnNMORBgYcPUVFOYB1+WN/TmGXR/kG2zzgx4oAjdCRuFw9fY31uYhr
+         MTxWMEgtYNoEVG0HSmX1fecjDB9Dd35FHPrezepw86ivqRnINLS5khgyU4NDv0yQ7VzG
+         XXdyEUHS70R7Jm2nxgk1s6bUbKYykr5tWNLv22Z9be6NtFQSCpYykN+Sjszy2utPAQ6h
+         VIFw==
+X-Forwarded-Encrypted: i=1; AJvYcCXSAl5KTEi1+HKb9xgngp2ndgXrxusPl3dPzCqODy43qHdPWVO5Lr7snMYxwt2KJsTODLEY/3aewSAvFpcR2w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOx4/En1UENOZwBZcNtLMfOvGV0NifiJ8pKfnjmVHEBLdBeJUO
+	MMiRtEAonlXZIH8jqRZWGnacMKN+f7LFR5KnHOZPYpf6v2tGu2jYy3wzIDzn/FUsGnYTGsM/roC
+	v7KGP0LOU39qyrsagcRXQkOJYuwMErzgvAWCWG1ux+BNiIulwOBkISRGbJ/jFIoD069RKZ+W9RE
+	K7G57vUNyXVAs+lF7DGX17BaXuNg3zA4EcaA9m4Po=
+X-Gm-Gg: ASbGncv1DwgA7rl1wGciOpH5vN0D4LkmxozC8cDIKqd8tHN/Jw39XDAk8xLj5A3iXsJ
+	Ye48YuSxpXlbrlIgBM/LtAsHDqXXgieA=
+X-Received: by 2002:a05:6000:18ac:b0:382:4a27:1319 with SMTP id ffacd0b85a97d-385c6eb5840mr5776159f8f.6.1732796932007;
+        Thu, 28 Nov 2024 04:28:52 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGGOqoP8tsZ6KQpRsoqtGa6KHF61EJ3NUmj3Aw3MlprtODTvHQ/TDY7uTpa3Nw0Vy2Is2RlK3QrcXMwzmVV8rU=
+X-Received: by 2002:a05:6000:18ac:b0:382:4a27:1319 with SMTP id
+ ffacd0b85a97d-385c6eb5840mr5776067f8f.6.1732796931576; Thu, 28 Nov 2024
+ 04:28:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20241115-converge-secs-to-jiffies-v2-0-911fb7595e79@linux.microsoft.com>
+ <20241115-converge-secs-to-jiffies-v2-18-911fb7595e79@linux.microsoft.com>
+In-Reply-To: <20241115-converge-secs-to-jiffies-v2-18-911fb7595e79@linux.microsoft.com>
+From: Alex Markuze <amarkuze@redhat.com>
+Date: Thu, 28 Nov 2024 14:28:40 +0200
+Message-ID: <CAO8a2SgQ-==SjhDFZpi2s3r9FUGA96jwuJL7kTDwE=Hw4UcgUg@mail.gmail.com>
+Subject: Re: [PATCH v2 18/21] ceph: Convert timeouts to secs_to_jiffies()
+To: Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Jozsef Kadlecsik <kadlec@netfilter.org>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>, 
+	Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>, 
+	Robert Jarzmik <robert.jarzmik@free.fr>, Russell King <linux@armlinux.org.uk>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Ofir Bitton <obitton@habana.ai>, 
+	Oded Gabbay <ogabbay@kernel.org>, Lucas De Marchi <lucas.demarchi@intel.com>, 
+	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+	Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, 
+	Shailend Chand <shailend@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	James Smart <james.smart@broadcom.com>, Dick Kennedy <dick.kennedy@broadcom.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	"Martin K. Petersen" <martin.petersen@oracle.com>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>, 
+	Jens Axboe <axboe@kernel.dk>, Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Jack Wang <jinpu.wang@cloud.ionos.com>, Marcel Holtmann <marcel@holtmann.org>, 
+	Johan Hedberg <johan.hedberg@gmail.com>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
+	Scott Branden <sbranden@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Xiubo Li <xiubli@redhat.com>, 
+	Ilya Dryomov <idryomov@gmail.com>, Josh Poimboeuf <jpoimboe@kernel.org>, Jiri Kosina <jikos@kernel.org>, 
+	Miroslav Benes <mbenes@suse.cz>, Petr Mladek <pmladek@suse.com>, 
+	Joe Lawrence <joe.lawrence@redhat.com>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
+	Lucas Stach <l.stach@pengutronix.de>, Russell King <linux+etnaviv@armlinux.org.uk>, 
+	Christian Gmeiner <christian.gmeiner@gmail.com>, Louis Peens <louis.peens@corigine.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, netfilter-devel@vger.kernel.org, 
+	coreteam@netfilter.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	cocci@inria.fr, linux-arm-kernel@lists.infradead.org, 
+	linux-s390@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	intel-xe@lists.freedesktop.org, linux-scsi@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, linux-block@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
+	linux-mm@kvack.org, linux-bluetooth@vger.kernel.org, 
+	linux-staging@lists.linux.dev, linux-rpi-kernel@lists.infradead.org, 
+	ceph-devel@vger.kernel.org, live-patching@vger.kernel.org, 
+	linux-sound@vger.kernel.org, etnaviv@lists.freedesktop.org, 
+	oss-drivers@corigine.com, linuxppc-dev@lists.ozlabs.org, 
+	Anna-Maria Behnsen <anna-maria@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Baochen Qiang <quic_bqiang@quicinc.com> writes:
+looks good
 
-> On 11/27/2024 1:11 AM, Kalle Valo wrote:
->> From: Kalle Valo <quic_kvalo@quicinc.com>
->> 
->> --- a/drivers/net/wireless/ath/ath12k/mac.c
->> +++ b/drivers/net/wireless/ath/ath12k/mac.c
->> @@ -6726,6 +6726,8 @@ static void ath12k_mgmt_over_wmi_tx_drop(struct ath12k *ar, struct sk_buff *skb)
->>  {
->>  	int num_mgmt;
->>  
->> +	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
+On Sat, Nov 16, 2024 at 12:32=E2=80=AFAM Easwar Hariharan
+<eahariha@linux.microsoft.com> wrote:
 >
-> why would we need wiphy lock protect here? I don;t see anything in this function need it.
+> Changes made with the following Coccinelle rules:
 >
->> +
->>  	ieee80211_free_txskb(ath12k_ar_to_hw(ar), skb);
->>  
->>  	num_mgmt = atomic_dec_if_positive(&ar->num_pending_mgmt_tx);
->> @@ -6787,6 +6789,8 @@ static int ath12k_mac_mgmt_tx_wmi(struct ath12k *ar, struct ath12k_link_vif *arv
->>  	int buf_id;
->>  	int ret;
->>  
->> +	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
+> @@ constant C; @@
 >
-> and here the same question as above. I know this function is only called from
-> ath12k_mgmt_over_wmi_tx_work() which is under wiphy lock protection. But the function
-> itself doesn't need to assert it if the function does not need its protection.
+> - msecs_to_jiffies(C * 1000)
+> + secs_to_jiffies(C)
 >
->> +
->>  	ATH12K_SKB_CB(skb)->ar = ar;
->>  	spin_lock_bh(&ar->txmgmt_idr_lock);
->>  	buf_id = idr_alloc(&ar->txmgmt_idr, skb, 0,
->> @@ -6841,7 +6845,7 @@ static void ath12k_mgmt_over_wmi_tx_purge(struct ath12k *ar)
->>  		ath12k_mgmt_over_wmi_tx_drop(ar, skb);
->>  }
->>  
->> -static void ath12k_mgmt_over_wmi_tx_work(struct work_struct *work)
->> +static void ath12k_mgmt_over_wmi_tx_work(struct wiphy *wiphy, struct wiphy_work *work)
->>  {
->>  	struct ath12k *ar = container_of(work, struct ath12k, wmi_mgmt_tx_work);
->>  	struct ath12k_skb_cb *skb_cb;
->> @@ -6850,6 +6854,8 @@ static void ath12k_mgmt_over_wmi_tx_work(struct work_struct *work)
->>  	struct sk_buff *skb;
->>  	int ret;
->>  
->> +	lockdep_assert_wiphy(wiphy);
+> @@ constant C; @@
 >
-> we are definitely under wiphy lock protection since this is a wiphy_work item, hence no
-> need to assert it explicitly. see also
+> - msecs_to_jiffies(C * MSEC_PER_SEC)
+> + secs_to_jiffies(C)
 >
-> ieee80211_sta_monitor_work()
-> ieee80211_beacon_connection_loss_work()
-> ieee80211_csa_connection_drop_work()
-> ieee80211_teardown_ttlm_work()
+> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+> ---
+>  fs/ceph/quota.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/fs/ceph/quota.c b/fs/ceph/quota.c
+> index 06ee397e0c3a6172592e62dba95cd267cfff0db1..d90eda19bcc4618f98bfed833=
+c10a6071cf2e2ac 100644
+> --- a/fs/ceph/quota.c
+> +++ b/fs/ceph/quota.c
+> @@ -166,7 +166,7 @@ static struct inode *lookup_quotarealm_inode(struct c=
+eph_mds_client *mdsc,
+>         if (IS_ERR(in)) {
+>                 doutc(cl, "Can't lookup inode %llx (err: %ld)\n", realm->=
+ino,
+>                       PTR_ERR(in));
+> -               qri->timeout =3D jiffies + msecs_to_jiffies(60 * 1000); /=
+* XXX */
+> +               qri->timeout =3D jiffies + secs_to_jiffies(60); /* XXX */
+>         } else {
+>                 qri->timeout =3D 0;
+>                 qri->inode =3D in;
+>
+> --
+> 2.34.1
+>
+>
 
-I have deliberately added all these lockdep_assert_wiphy() calls to
-document which functions are called with wiphy_lock() held, otherwise
-doing any locking analysis is much harder. My plan is that once MLO
-support has landed to ath-next my plan is to document ath12k locking
-design properly in the code. I think at that point we can also discuss
-how we should use lockdep_assert_wiphy() in ath12k and should we drop
-the extra calls.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
