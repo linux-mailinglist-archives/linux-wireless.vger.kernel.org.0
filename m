@@ -1,94 +1,133 @@
-Return-Path: <linux-wireless+bounces-15780-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15781-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55F679DB707
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2024 12:58:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3244C9DB720
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2024 13:09:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDC4FB20AD2
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2024 11:58:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB881281A76
+	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2024 12:08:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B0F19AD86;
-	Thu, 28 Nov 2024 11:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF7419004B;
+	Thu, 28 Nov 2024 12:08:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QGha05sh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-io1-f69.google.com (mail-io1-f69.google.com [209.85.166.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A463819AA56
-	for <linux-wireless@vger.kernel.org>; Thu, 28 Nov 2024 11:58:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458E22CCC0
+	for <linux-wireless@vger.kernel.org>; Thu, 28 Nov 2024 12:08:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732795084; cv=none; b=PJedSpHh1pQh4UUOazOezqeDLeyOy1goGpTMhFlmrFt4oVm63e9OP8MGk+avwFGJGL1QFfyncwq5b2JkXv4IXY+NC5WRdQUjOYRj4AYdtSjpDTViQ7WwKjMbQzp9gwTncZjEXkIaIJB3M+Qkini8g8r2NCDsA4sa1JkrjZJUAtg=
+	t=1732795736; cv=none; b=al+T+cRXAt/YbRSTjUJzq54A6+g5Iw8xAytcNwMgP6u9kff5ljnonRqOU+M7piDLjPYOGXb9wVYtLRfs6K8G6taK7v9sE2UuzxGjrqGQDi7uzaE3HknGwgqfW5Xf63Cex8dqyI9FcbetmDBO5oLF+FvIHidMmqkXsTZDxX/trow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732795084; c=relaxed/simple;
-	bh=OCJWJ+u4Yh9hvmQMZXkM8KRn/EgI9awMfpPqzOpmNeQ=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=q1MvDOJMHAr6Hf9IZELsr6I/4qX/ua0C8pgdTHaxfEoYCZE8WCfKAmQFkCJH9e9+3yxz8SpWTBxzJLMXn88typ/YtcUPht+Mo0uZ/BvnxGDBAP4xsa+x2XARZBKRxMlrRyAwPLENY3JjMkuEwLyWHKJDdXYLz02vP27l7J36KXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-io1-f69.google.com with SMTP id ca18e2360f4ac-843e5314cb8so64715339f.0
-        for <linux-wireless@vger.kernel.org>; Thu, 28 Nov 2024 03:58:02 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732795082; x=1733399882;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=E4G4wt0qmrICABsL3fTmVUbz6tUyHRU/aFIpdT35VU4=;
-        b=MZBWwo9nd37jY5ujJSXgb3goPxgT6sW9+EpbL1At3hlSnS4OGsuIIOjPaXM+Dhs7MD
-         6Q1zUYXBEj8kukNq8ZvV2bu018N9qjDAw0gt/Pd42UEOxaJWkbqZKFQGYuEx/NN9MQO3
-         e2S5xK6KaTqnmVzPhYMhHm7ctS6cFFlIJ182c07ECO5Ib9qxqAaZM146h/dYJTCRiqiL
-         Azi9XWGa6944+ZkXzgptqpFyoVym0unVVu8dZ5naCOFvnWAz4VQBl+SqH3TbWwcHCvqT
-         bdm9XuIee51GhRNoUAEkd95MnbIJ+qdIdztCeyKcIQAXOxlRy3NQi1jdPKapOZ6wXIZZ
-         pF0g==
-X-Forwarded-Encrypted: i=1; AJvYcCUSaaiieSnseSdO6jbUXsZ+Oe2Pa8+ku0BwRlkoOJXtiUvkFmnoxNGKW33eSpMQ/6IKKflN4eA/ngYTpI1KvA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzisAsUNRg4Qh94PyutlRDphqvcWxzA8b25H7V6YN5RfYkjLohJ
-	6AzdHI7qvzTbb/ydtU6Jj6ZfS3/EPtFc1fQRepIJUHiuqjFAk71VE4Pov1T0FA85LYmAtbMQFcj
-	AUwcAUZtxCu4r2/SCoC7D7bR4IOgenhc1imR55pL1qdcNhPApfcQF5dk=
-X-Google-Smtp-Source: AGHT+IEVZ7aUJUgjShFgHR95vCPF7KZvaAgWHrtmMp9hLIBxTo6zaewL/H4pbgsZ6+AQhlvQFduZe6J/eDefsrYwF1fpY7cEo7si
+	s=arc-20240116; t=1732795736; c=relaxed/simple;
+	bh=M7XUhFj2CBG6AIiPB6HZ7jrcFq/PWCF9szTudLUMOfU=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=pJDk4AMhb7xzh+/SSwOJP/sWvHe8ozdetwBWEkZ21Dx+gy49OIH+O9YFPptojA1qIsO8gNhW0U9F6bQXh32+fRPEGhDJNU2lbK6aK2UPYmXeBk7ZpqMU4qRSqg61BD+kQoNb6RlKxMv3QIzpI4ztXV3xhZNRiGwNN4V1PAaQB/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QGha05sh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F235C4CECE;
+	Thu, 28 Nov 2024 12:08:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732795735;
+	bh=M7XUhFj2CBG6AIiPB6HZ7jrcFq/PWCF9szTudLUMOfU=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=QGha05shSD5jCag2NbDx724fWeOoFzQuuRyWiJgJx4wl27x401l9esfEsfAhdrEac
+	 s7ndBJhbaqGcmBv8zwsKsVprKvqSMoOsfyYnmgrqWivg15efRHSZpxWqmum+1L1oAf
+	 mjpzgy5pKqHLK9wcCP8v253shAagrttzWqldKGZ9cyhqgv5AK9mL3n7ZGUkWIyI3Zg
+	 /QEMIL39nUCyLosRYKFQJ4UNWzvfbxj3U/Ls2HGZE2qYIMRHOidE5lPHMcbodzmXsc
+	 fEdh+h00YxbPIFWLnlWy88spFs9A4IGz00SDTdSy8V4Nqn6d8hHcL7zxeTxhYgRiDv
+	 auaCPNqBkubMA==
+From: Kalle Valo <kvalo@kernel.org>
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH 01/10] wifi: ath12k: convert struct
+ ath12k::wmi_mgmt_tx_work to struct wiphy_work
+References: <20241126171139.2350704-1-kvalo@kernel.org>
+	<20241126171139.2350704-2-kvalo@kernel.org>
+	<83b2325e-4d98-49a1-ae32-a69d7962e4a3@quicinc.com>
+Date: Thu, 28 Nov 2024 14:08:53 +0200
+In-Reply-To: <83b2325e-4d98-49a1-ae32-a69d7962e4a3@quicinc.com> (Baochen
+	Qiang's message of "Wed, 27 Nov 2024 10:34:00 +0800")
+Message-ID: <87y113v9uy.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:160a:b0:3a7:6dde:c78b with SMTP id
- e9e14a558f8ab-3a7c55446e3mr62921795ab.8.1732795081892; Thu, 28 Nov 2024
- 03:58:01 -0800 (PST)
-Date: Thu, 28 Nov 2024 03:58:01 -0800
-In-Reply-To: <000000000000ac553b061e675573@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <67485ac9.050a0220.253251.0082.GAE@google.com>
-Subject: Re: [syzbot] [wireless?] WARNING in plfxlc_mac_release
-From: syzbot <syzbot+51a42f7c2e399392ea82@syzkaller.appspotmail.com>
-To: davem@davemloft.net, eadavis@qq.com, kuba@kernel.org, kvalo@kernel.org, 
-	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
-	srini.raju@purelifi.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 
-syzbot has bisected this issue to:
+Baochen Qiang <quic_bqiang@quicinc.com> writes:
 
-commit 68d57a07bfe5bb29b80cd8b8fa24c9d1ea104124
-Author: Srinivasan Raju <srini.raju@purelifi.com>
-Date:   Thu Feb 24 18:20:07 2022 +0000
+> On 11/27/2024 1:11 AM, Kalle Valo wrote:
+>> From: Kalle Valo <quic_kvalo@quicinc.com>
+>> 
+>> --- a/drivers/net/wireless/ath/ath12k/mac.c
+>> +++ b/drivers/net/wireless/ath/ath12k/mac.c
+>> @@ -6726,6 +6726,8 @@ static void ath12k_mgmt_over_wmi_tx_drop(struct ath12k *ar, struct sk_buff *skb)
+>>  {
+>>  	int num_mgmt;
+>>  
+>> +	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
+>
+> why would we need wiphy lock protect here? I don;t see anything in this function need it.
+>
+>> +
+>>  	ieee80211_free_txskb(ath12k_ar_to_hw(ar), skb);
+>>  
+>>  	num_mgmt = atomic_dec_if_positive(&ar->num_pending_mgmt_tx);
+>> @@ -6787,6 +6789,8 @@ static int ath12k_mac_mgmt_tx_wmi(struct ath12k *ar, struct ath12k_link_vif *arv
+>>  	int buf_id;
+>>  	int ret;
+>>  
+>> +	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
+>
+> and here the same question as above. I know this function is only called from
+> ath12k_mgmt_over_wmi_tx_work() which is under wiphy lock protection. But the function
+> itself doesn't need to assert it if the function does not need its protection.
+>
+>> +
+>>  	ATH12K_SKB_CB(skb)->ar = ar;
+>>  	spin_lock_bh(&ar->txmgmt_idr_lock);
+>>  	buf_id = idr_alloc(&ar->txmgmt_idr, skb, 0,
+>> @@ -6841,7 +6845,7 @@ static void ath12k_mgmt_over_wmi_tx_purge(struct ath12k *ar)
+>>  		ath12k_mgmt_over_wmi_tx_drop(ar, skb);
+>>  }
+>>  
+>> -static void ath12k_mgmt_over_wmi_tx_work(struct work_struct *work)
+>> +static void ath12k_mgmt_over_wmi_tx_work(struct wiphy *wiphy, struct wiphy_work *work)
+>>  {
+>>  	struct ath12k *ar = container_of(work, struct ath12k, wmi_mgmt_tx_work);
+>>  	struct ath12k_skb_cb *skb_cb;
+>> @@ -6850,6 +6854,8 @@ static void ath12k_mgmt_over_wmi_tx_work(struct work_struct *work)
+>>  	struct sk_buff *skb;
+>>  	int ret;
+>>  
+>> +	lockdep_assert_wiphy(wiphy);
+>
+> we are definitely under wiphy lock protection since this is a wiphy_work item, hence no
+> need to assert it explicitly. see also
+>
+> ieee80211_sta_monitor_work()
+> ieee80211_beacon_connection_loss_work()
+> ieee80211_csa_connection_drop_work()
+> ieee80211_teardown_ttlm_work()
 
-    wireless: add plfxlc driver for pureLiFi X, XL, XC devices
+I have deliberately added all these lockdep_assert_wiphy() calls to
+document which functions are called with wiphy_lock() held, otherwise
+doing any locking analysis is much harder. My plan is that once MLO
+support has landed to ath-next my plan is to document ath12k locking
+design properly in the code. I think at that point we can also discuss
+how we should use lockdep_assert_wiphy() in ath12k and should we drop
+the extra calls.
 
-bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=15001f5f980000
-start commit:   cfba9f07a1d6 Add linux-next specific files for 20241122
-git tree:       linux-next
-final oops:     https://syzkaller.appspot.com/x/report.txt?x=17001f5f980000
-console output: https://syzkaller.appspot.com/x/log.txt?x=13001f5f980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=45719eec4c74e6ba
-dashboard link: https://syzkaller.appspot.com/bug?extid=51a42f7c2e399392ea82
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=101a59c0580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=12bcc778580000
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-Reported-by: syzbot+51a42f7c2e399392ea82@syzkaller.appspotmail.com
-Fixes: 68d57a07bfe5 ("wireless: add plfxlc driver for pureLiFi X, XL, XC devices")
-
-For information about bisection process see: https://goo.gl/tpsmEJ#bisection
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
