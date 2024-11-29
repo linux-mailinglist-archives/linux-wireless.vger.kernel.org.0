@@ -1,43 +1,63 @@
-Return-Path: <linux-wireless+bounces-15793-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15794-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45BA79DBDD5
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2024 00:02:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03CBB9DBE67
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2024 02:40:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7490B21190
-	for <lists+linux-wireless@lfdr.de>; Thu, 28 Nov 2024 23:02:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5129281A3A
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2024 01:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89CC1C07FC;
-	Thu, 28 Nov 2024 23:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B394F23CB;
+	Fri, 29 Nov 2024 01:40:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="SbdQup5O"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD8D14D6ED;
-	Thu, 28 Nov 2024 23:02:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 195261EA65
+	for <linux-wireless@vger.kernel.org>; Fri, 29 Nov 2024 01:40:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732834958; cv=none; b=S9Wjd6dIEGvBqvzeM0fv1QQpMDI8EB4rvJ1dCM1+g714kV2ea9gGFG7qUZ8MKbreC++UoIMBvUmt5Ib+wsJJbUzQ1ipi7AAXxZiNNuG4JOiBD5icp1R8IcH3E9bKljH+KlJxN1oBV2C4OdR3C5051Xfv0C9Cg/bFJNiBweCEY3A=
+	t=1732844422; cv=none; b=XM+lr9vRoil0ncuLmB9Ktu3dW4hXUmBIsX4gKtbWdK0SwcK6RojtTzzWl9J47jucx4xEMyooQbzmlR2mEi2r6oUYa/sFpCPd8D/16onK8wTzwslopYShY1N7cTqv1VMHqS3AGUbS+rx9npWLapJ46d6OX8aCMdpzQHbkn6UzEwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732834958; c=relaxed/simple;
-	bh=uWjIpIEOgElQIMv1XFirw5baSTrsZqB12pjmk7cD6bY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Nxe+puo/QpOb4GbmQ1Oy5Yfg/qurl7sqgszz03juKfvRLxaZFTSRnAsPIPC4nJCDyVy9yV6wb4iFhifWoBzKv08i9Ab8UcDBaLTIO5wLfPhXhP3gECeC+2Qub5uHMG+We26L0LOSSxq7txfRWGI3G8yTFhPptbqYD1WzvZgdJhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [192.168.0.2] (ip5f5af40d.dynamic.kabel-deutschland.de [95.90.244.13])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 33CAF61E5FE05;
-	Fri, 29 Nov 2024 00:01:56 +0100 (CET)
-Message-ID: <5c9bf757-a035-499c-a1ef-ac33c1c6e75b@molgen.mpg.de>
-Date: Fri, 29 Nov 2024 00:01:55 +0100
+	s=arc-20240116; t=1732844422; c=relaxed/simple;
+	bh=y4yZ6wohfOKtEDDITqRC4yUeDp0kD5FAfP/e7wM057c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=VUDfnGSIdmSlVlzPPO1w0shi7NH4kg15SThEZ+rTt/jELLWqxqwZPsMuP7gnNTUGrkVfRIPZiBSxnjpiFmkLIalJwUOjZ164fjXi0XDEqoBejaks9FsqB/inSmKM34cZ3jauHgUsX9W23kzEI2wJwyyw8Qg41RRsKJZySx3lCKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=SbdQup5O; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4ASNRnV8026932;
+	Fri, 29 Nov 2024 01:40:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	BI0nDHVN2YG8aqCX9puolvFRLtBz+BMZe+/WOT6AGQs=; b=SbdQup5OUczSpKQi
+	y1gxtna7lIM+lD/nSF0DPYLlqmpsJVwadnjaAy8cjkX01ZgBdI7tmet9kq6mVkYo
+	7rEt2V45II6P+FZMGqU2XAmMpNiBkosb/g/XFZXL216SlA3AhecKWUFjvZbef4+2
+	LmOTn61w37Zahk4nuVBXjEiD8eHhwOEOUIK4PVP7sVQoDuAx23UehBPB7lKk9pPy
+	ejpK2ayAh9ehOJGg/7jv4PLrpP21q4ylRMFkv5wSQI4j0DXDCt+PUsz8+O1d73Za
+	o+VcRRFmyBUJI8DtGc1TafTs+RupF63nGjQE4HZsf57lhCzafzMaAjo8PeGMsmiW
+	8RjV6Q==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43671ec195-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 Nov 2024 01:40:11 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4AT1eBTi012714
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 29 Nov 2024 01:40:11 GMT
+Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 28 Nov
+ 2024 17:40:09 -0800
+Message-ID: <c7fe0222-9dea-4a57-8bd3-f51b11eb5f21@quicinc.com>
+Date: Fri, 29 Nov 2024 09:40:08 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -45,77 +65,102 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: WARNING: drivers/net/wireless/ath/ath10k/mac.c:8750
- ath10k_mac_update_vif_chan+0x237/0x2e0 [ath10k_core]
+Subject: Re: [PATCH 01/10] wifi: ath12k: convert struct
+ ath12k::wmi_mgmt_tx_work to struct wiphy_work
 To: Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, ath10k@lists.infradead.org,
- LKML <linux-kernel@vger.kernel.org>, regressions@lists.linux.dev
-References: <637c5bb4-5278-44be-9ac3-9c0ef9297162@molgen.mpg.de>
- <8734jcx60e.fsf@kernel.org>
+CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20241126171139.2350704-1-kvalo@kernel.org>
+ <20241126171139.2350704-2-kvalo@kernel.org>
+ <83b2325e-4d98-49a1-ae32-a69d7962e4a3@quicinc.com>
+ <87y113v9uy.fsf@kernel.org>
 Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <8734jcx60e.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+In-Reply-To: <87y113v9uy.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: g_zypTBwZJ8WR6eo2J3bp7eaRULO1-U2
+X-Proofpoint-GUID: g_zypTBwZJ8WR6eo2J3bp7eaRULO1-U2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
+ impostorscore=0 mlxscore=0 phishscore=0 priorityscore=1501 clxscore=1015
+ bulkscore=0 lowpriorityscore=0 spamscore=0 adultscore=0 mlxlogscore=897
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2411290011
 
-Dear Kalle,
 
 
-Thank you for your reply.
-
-
-Am 27.11.24 um 12:36 schrieb Kalle Valo:
-> Paul Menzel writes:
+On 11/28/2024 8:08 PM, Kalle Valo wrote:
+> Baochen Qiang <quic_bqiang@quicinc.com> writes:
 > 
->> On the Dell XPS 13 9360 with Linux 6.12.0-08446-g228a1157fb9f, I
->> noticed the trace below:
+>> On 11/27/2024 1:11 AM, Kalle Valo wrote:
+>>> From: Kalle Valo <quic_kvalo@quicinc.com>
+>>>
+>>> --- a/drivers/net/wireless/ath/ath12k/mac.c
+>>> +++ b/drivers/net/wireless/ath/ath12k/mac.c
+>>> @@ -6726,6 +6726,8 @@ static void ath12k_mgmt_over_wmi_tx_drop(struct ath12k *ar, struct sk_buff *skb)
+>>>  {
+>>>  	int num_mgmt;
+>>>  
+>>> +	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
+>>
+>> why would we need wiphy lock protect here? I don;t see anything in this function need it.
+>>
+>>> +
+>>>  	ieee80211_free_txskb(ath12k_ar_to_hw(ar), skb);
+>>>  
+>>>  	num_mgmt = atomic_dec_if_positive(&ar->num_pending_mgmt_tx);
+>>> @@ -6787,6 +6789,8 @@ static int ath12k_mac_mgmt_tx_wmi(struct ath12k *ar, struct ath12k_link_vif *arv
+>>>  	int buf_id;
+>>>  	int ret;
+>>>  
+>>> +	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
+>>
+>> and here the same question as above. I know this function is only called from
+>> ath12k_mgmt_over_wmi_tx_work() which is under wiphy lock protection. But the function
+>> itself doesn't need to assert it if the function does not need its protection.
+>>
+>>> +
+>>>  	ATH12K_SKB_CB(skb)->ar = ar;
+>>>  	spin_lock_bh(&ar->txmgmt_idr_lock);
+>>>  	buf_id = idr_alloc(&ar->txmgmt_idr, skb, 0,
+>>> @@ -6841,7 +6845,7 @@ static void ath12k_mgmt_over_wmi_tx_purge(struct ath12k *ar)
+>>>  		ath12k_mgmt_over_wmi_tx_drop(ar, skb);
+>>>  }
+>>>  
+>>> -static void ath12k_mgmt_over_wmi_tx_work(struct work_struct *work)
+>>> +static void ath12k_mgmt_over_wmi_tx_work(struct wiphy *wiphy, struct wiphy_work *work)
+>>>  {
+>>>  	struct ath12k *ar = container_of(work, struct ath12k, wmi_mgmt_tx_work);
+>>>  	struct ath12k_skb_cb *skb_cb;
+>>> @@ -6850,6 +6854,8 @@ static void ath12k_mgmt_over_wmi_tx_work(struct work_struct *work)
+>>>  	struct sk_buff *skb;
+>>>  	int ret;
+>>>  
+>>> +	lockdep_assert_wiphy(wiphy);
+>>
+>> we are definitely under wiphy lock protection since this is a wiphy_work item, hence no
+>> need to assert it explicitly. see also
+>>
+>> ieee80211_sta_monitor_work()
+>> ieee80211_beacon_connection_loss_work()
+>> ieee80211_csa_connection_drop_work()
+>> ieee80211_teardown_ttlm_work()
 > 
-> For others, commit 228a1157fb9f is from current merge window so the
-> first release will be in v6.13-rc1.
+> I have deliberately added all these lockdep_assert_wiphy() calls to
+> document which functions are called with wiphy_lock() held, otherwise
+> doing any locking analysis is much harder. My plan is that once MLO
+> support has landed to ath-next my plan is to document ath12k locking
+> design properly in the code. I think at that point we can also discuss
+> how we should use lockdep_assert_wiphy() in ath12k and should we drop
+> the extra calls.
+Ah, good to know. thanks for sharing the plan.
+
 > 
->> [16805.002289] ------------[ cut here ]------------
->> [16805.002296] WARNING: CPU: 3 PID: 65835 at drivers/net/wireless/ath/ath10k/mac.c:8750 ath10k_mac_update_vif_chan+0x237/0x2e0 [ath10k_core]
-> 
-> [...]
-> 
->> I do not see such a message in the logs since September 19th, so I
->> believe it’s a regression.
-> 
-> Have you seen it only this one time or multiple times?
 
-I have seen it only this one time.
-
-> What kernels have you been testing prior? I'm trying to pinpoint what
-> versions kernel version work and what have this warning.
-Before I ran 6.12.0-07749-g28eb75e178d3 without seeing this. As it only 
-occurred once, that does not give any pointer though.
-
-
-Kind regards,
-
-Paul
-
-
-PS:
-
-$ last reboot
-reboot   system boot  6.12.0-10296-gaa Thu Nov 28 22:42 - still running
-reboot   system boot  6.12-rc6-amd64   Wed Nov 27 14:04 - 22:42 (1+08:37)
-reboot   system boot  6.12.0-10296-gaa Wed Nov 27 13:21 - 14:02  (00:40)
-reboot   system boot  6.12.0-09568-g2f Tue Nov 26 18:41 - crash
-reboot   system boot  6.12.0-08446-g22 Sat Nov 23 12:27 - 18:40 (3+06:13)
-reboot   system boot  6.12.0-07749-g28 Fri Nov 22 10:14 - 10:24 (1+00:09)
-reboot   system boot  6.12.0           Wed Nov 20 09:24 - crash
-reboot   system boot  6.12.0-rc7       Wed Nov 20 09:22 - 09:23  (00:01)
-reboot   system boot  6.12.0-rc7       Tue Nov 12 08:19 - 23:27 (7+15:08)
-reboot   system boot  6.12.0-rc7       Mon Nov 11 21:54 - 00:16  (02:21)
-reboot   system boot  6.11-amd64       Mon Nov 11 21:52 - crash
-reboot   system boot  6.12.0-rc7       Mon Nov 11 20:43 - 21:52  (01:08)
-reboot   system boot  6.12.0-rc7       Mon Nov 11 17:51 - 17:52  (00:01)
-reboot   system boot  6.12.0-rc6-00077 Fri Nov  8 08:39 - 17:50 (3+09:11)
-reboot   system boot  6.12.0-rc6-00077 Thu Nov  7 07:26 - 23:24  (15:58)
-reboot   system boot  6.12.0-rc5-00047 Mon Nov  4 08:26 - crash
-reboot   system boot  6.12.0-rc5-00047 Mon Nov  4 05:42 - 05:43  (00:00)
-reboot   system boot  6.12.0-rc5-00047 Sun Nov  3 06:54 - 22:10  (15:15)
-reboot   system boot  6.12.0-rc5-00047 Sat Nov  2 07:34 - 22:05  (14:31)
 
