@@ -1,345 +1,137 @@
-Return-Path: <linux-wireless+bounces-15799-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15800-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B45669DBF9D
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2024 08:08:00 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0D0F9DC0E1
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2024 09:54:12 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10F72B21276
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2024 07:07:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42AD5165366
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2024 08:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C481386DA;
-	Fri, 29 Nov 2024 07:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CFB216DEB5;
+	Fri, 29 Nov 2024 08:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="naJ6Qa3H"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VBLEKQrV"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BAF1537C3
-	for <linux-wireless@vger.kernel.org>; Fri, 29 Nov 2024 07:07:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6FD21714D3;
+	Fri, 29 Nov 2024 08:53:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732864069; cv=none; b=RGRGyn7PuveBuT1DaDRu71Hxsl0AeXf/RJuM63VcdI8fGnBUmIzfQe/rcbRUCeI7fxzGS7wItag4M7IdbualV/kHFaCC7v/I3/Ml1haymlPdZeh76PgHYaiNHLl1ydVvjBaJi5PwbXgaGcR5AuKjgiK5ifj7jCwhATA8HdenIMc=
+	t=1732870433; cv=none; b=MvqxlINwWAV2Ved/KhvtYKaOfR/fvK/8Q6Xhe3c9y0D2Tw9pjpsWWN3nninb8y8U4yLlftUQo+oEf8kn7PUBIiGWXxvZP3ma4VdT8FYIrTzQ1ZQjeDY4F/Y3nwGIoiJv1cSC0EJ8xOhfn6AGUIdJXmMA7ITe//6rcTpbSd/YL7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732864069; c=relaxed/simple;
-	bh=UMxPFO1u9mPbktTOiPeEiFrjKbaty0g99m/HIyhu4cM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C4cdqUx9Z3ZSO/BnrXA+0C1muRVnpfsHz6mVooMiF0UFcBFQ0x/SP+IlUC0S9DFWswVSO6r/CK+yH8aG1ngR1osIPucn3+v/bf3TUdqPBlSpBPJiUoc/6EcQKpyqa8QkfTWzKrlFtA4TcjaUU85VDOtYAbU+UR5caDohFcL6b6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=naJ6Qa3H; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4ASNVVaL005944;
-	Fri, 29 Nov 2024 07:07:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	s6TRipWxEAsot0oabh/vmYokg5LTx9TksDliUoALJiU=; b=naJ6Qa3HTEosXwwD
-	tlXoJcDl+iRr3DzZD7SkG01AyZsGAFCHqlHy5Rlrsp4FYNzxoLzXEc/l8Wf/3eUv
-	be1S9Oo0r0IbmiR5mXyRsSvi6wkgAnyAriQUqqFD/Zu0QIEfT8VhP4Ax68TfjjN5
-	VfhiargqilE1zmfXlpk/yBWRFdGCijQCvT6ExdE3LTx+k35rLW+O4cUkyDsnQKRo
-	1F3aog2KugUa9gaYMT97s8xiy8ZxD/GVSjljiDA3lJbdPRyTi9jiG9lVulMrkVEK
-	CVlfjyVLdGYFaDlHBsoq7cG5Rgu03zbdFSzWe/ErENCoWTdRhYD1/zG5OsVGjRbZ
-	OQVJHw==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 436h2mkdjh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Nov 2024 07:07:44 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4AT77hja004881
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 29 Nov 2024 07:07:43 GMT
-Received: from kangyang.ap.qualcomm.com (10.80.80.8) by
- nalasex01b.na.qualcomm.com (10.47.209.197) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Thu, 28 Nov 2024 23:07:41 -0800
-From: Kang Yang <quic_kangyang@quicinc.com>
-To: <ath11k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>, <quic_kangyang@quicinc.com>
-Subject: [PATCH v3 2/2] wifi: ath11k: move update channel list to worker for wait flag
-Date: Fri, 29 Nov 2024 15:07:14 +0800
-Message-ID: <20241129070714.226-3-quic_kangyang@quicinc.com>
-X-Mailer: git-send-email 2.34.1.windows.1
-In-Reply-To: <20241129070714.226-1-quic_kangyang@quicinc.com>
-References: <20241129070714.226-1-quic_kangyang@quicinc.com>
+	s=arc-20240116; t=1732870433; c=relaxed/simple;
+	bh=PWjGAU76nJzuPec0ckBdi9FcYElbQvNbyAFXD40o/MY=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=M8NqWm1z0fqhoKar5QLIEF2TPFDp1eSKc1YJVeXPtbRfaAKikjSy54CxI574pCJrs6T0hrC1SxT+w8xOq0SQ0/4gHTAYTHek07T4esUcQNioexPZ0V0QaSxvml0Floc79JezaHZgGdWssHGNs2v9QJvAdVusiWmeSk1yeW5xyx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VBLEKQrV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DED1C4CED2;
+	Fri, 29 Nov 2024 08:53:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1732870432;
+	bh=PWjGAU76nJzuPec0ckBdi9FcYElbQvNbyAFXD40o/MY=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=VBLEKQrV000Q1wZNquGeBb4ypPUKC6cnNAoJnOtXORzuqE+c+xHNqnMjNFZ5C4QXX
+	 qMakgu6HRuTKDtUoCeFQrHRewR25vEepbHPN/x1nJgjC5Dea0i77fXr2Uhdim16Ibg
+	 0qGcskpXexy+GBIp7FYhjJB6e4psoTb3vMht7kcWszhJcSb16eE0QUYQ+natd8BNJI
+	 jWIiIdvGSQxLCCzb//wiuvaNaO13RsAcBtI+hfLwDjz+TKRGbAaAs6L2ubufayHT7z
+	 Hok3kGlV9/GeWTHrfUU5QXnXyK7mc6pA/Zytl4BUzoY4R4zMw+QNKgL5TOupHxuuiV
+	 Igl4NeIyQfxwA==
+From: Kalle Valo <kvalo@kernel.org>
+To: Paul Menzel <pmenzel@molgen.mpg.de>
+Cc: linux-wireless@vger.kernel.org,  ath10k@lists.infradead.org,  LKML
+ <linux-kernel@vger.kernel.org>,  regressions@lists.linux.dev
+Subject: Re: WARNING: drivers/net/wireless/ath/ath10k/mac.c:8750
+ ath10k_mac_update_vif_chan+0x237/0x2e0 [ath10k_core]
+References: <637c5bb4-5278-44be-9ac3-9c0ef9297162@molgen.mpg.de>
+	<8734jcx60e.fsf@kernel.org>
+	<5c9bf757-a035-499c-a1ef-ac33c1c6e75b@molgen.mpg.de>
+Date: Fri, 29 Nov 2024 10:53:48 +0200
+In-Reply-To: <5c9bf757-a035-499c-a1ef-ac33c1c6e75b@molgen.mpg.de> (Paul
+	Menzel's message of "Fri, 29 Nov 2024 00:01:55 +0100")
+Message-ID: <8734jav2sj.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: svaxKgqNHb4yRtYPoqpCsI_-0Kb3mWdy
-X-Proofpoint-ORIG-GUID: svaxKgqNHb4yRtYPoqpCsI_-0Kb3mWdy
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- bulkscore=0 malwarescore=0 phishscore=0 suspectscore=0 adultscore=0
- spamscore=0 lowpriorityscore=0 mlxscore=0 impostorscore=0 clxscore=1011
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2411290057
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Wen Gong <quic_wgong@quicinc.com>
+Paul Menzel <pmenzel@molgen.mpg.de> writes:
 
-When wait flag is set for ath11k_reg_update_chan_list(), it will wait
-the completion of 11d/hw scan if 11d/hw scan is running.
+> Dear Kalle,
+>
+>
+> Thank you for your reply.
+>
+>
+> Am 27.11.24 um 12:36 schrieb Kalle Valo:
+>> Paul Menzel writes:
+>>=20
+>>> On the Dell XPS 13 9360 with Linux 6.12.0-08446-g228a1157fb9f, I
+>>> noticed the trace below:
+>> For others, commit 228a1157fb9f is from current merge window so the
+>> first release will be in v6.13-rc1.
+>>=20
+>>> [16805.002289] ------------[ cut here ]------------
+>>> [16805.002296] WARNING: CPU: 3 PID: 65835 at drivers/net/wireless/ath/a=
+th10k/mac.c:8750 ath10k_mac_update_vif_chan+0x237/0x2e0 [ath10k_core]
+>> [...]
+>>=20
+>>> I do not see such a message in the logs since September 19th, so I
+>>> believe it=E2=80=99s a regression.
+>> Have you seen it only this one time or multiple times?
+>
+> I have seen it only this one time.
 
-With the previous patch "wifi: ath11k: move update channel list from
-update reg worker to reg notifier", ath11k_reg_update_chan_list() will
-be called when reg_work is running. The global lock rtnl_lock will be
-held by reg_work in the meantime. If the wait_for_completion_timeout()
-is called due to 11d/hw scan is running, the occupation time of
-rtnl_lock will increase. This will increase blocking time for other
-threads if they want to use rtnl_lock.
+Ok. Was it a network you regularly connect to or a new network? That
+could also make a difference.
 
-Move update channel list operation in ath11k_reg_update_chan_list() to
-a new worker, then the wait of completion of 11d/hw scan will not
-happen in reg_work and not increase the occupation time of the rtnl_lock.
+>> What kernels have you been testing prior? I'm trying to pinpoint what
+>> versions kernel version work and what have this warning.
+>
+> Before I ran 6.12.0-07749-g28eb75e178d3 without seeing this. As it
+> only occurred once, that does not give any pointer though.
 
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
+Yeah, if you have seen it only once it is difficult to make any
+conclusions. It could be as well an older bug which happens rarely. If
+you see it again, let us know.
 
-Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
-Co-developed-by: Kang Yang <quic_kangyang@quicinc.com>
-Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
----
- drivers/net/wireless/ath/ath11k/core.c |  1 +
- drivers/net/wireless/ath/ath11k/core.h |  4 ++
- drivers/net/wireless/ath/ath11k/mac.c  | 15 +++++
- drivers/net/wireless/ath/ath11k/reg.c  | 90 ++++++++++++++++++--------
- drivers/net/wireless/ath/ath11k/reg.h  |  1 +
- drivers/net/wireless/ath/ath11k/wmi.h  |  1 +
- 6 files changed, 84 insertions(+), 28 deletions(-)
+> PS:
+>
+> $ last reboot
+> reboot   system boot  6.12.0-10296-gaa Thu Nov 28 22:42 - still running
+> reboot   system boot  6.12-rc6-amd64   Wed Nov 27 14:04 - 22:42 (1+08:37)
+> reboot   system boot  6.12.0-10296-gaa Wed Nov 27 13:21 - 14:02  (00:40)
+> reboot   system boot  6.12.0-09568-g2f Tue Nov 26 18:41 - crash
+> reboot   system boot  6.12.0-08446-g22 Sat Nov 23 12:27 - 18:40 (3+06:13)
+> reboot   system boot  6.12.0-07749-g28 Fri Nov 22 10:14 - 10:24 (1+00:09)
+> reboot   system boot  6.12.0           Wed Nov 20 09:24 - crash
+> reboot   system boot  6.12.0-rc7       Wed Nov 20 09:22 - 09:23  (00:01)
+> reboot   system boot  6.12.0-rc7       Tue Nov 12 08:19 - 23:27 (7+15:08)
+> reboot   system boot  6.12.0-rc7       Mon Nov 11 21:54 - 00:16  (02:21)
+> reboot   system boot  6.11-amd64       Mon Nov 11 21:52 - crash
+> reboot   system boot  6.12.0-rc7       Mon Nov 11 20:43 - 21:52  (01:08)
+> reboot   system boot  6.12.0-rc7       Mon Nov 11 17:51 - 17:52  (00:01)
+> reboot   system boot  6.12.0-rc6-00077 Fri Nov  8 08:39 - 17:50 (3+09:11)
+> reboot   system boot  6.12.0-rc6-00077 Thu Nov  7 07:26 - 23:24  (15:58)
+> reboot   system boot  6.12.0-rc5-00047 Mon Nov  4 08:26 - crash
+> reboot   system boot  6.12.0-rc5-00047 Mon Nov  4 05:42 - 05:43  (00:00)
+> reboot   system boot  6.12.0-rc5-00047 Sun Nov  3 06:54 - 22:10  (15:15)
+> reboot   system boot  6.12.0-rc5-00047 Sat Nov  2 07:34 - 22:05  (14:31)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index c576bbba52bf..e4db3cdecf29 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -2056,6 +2056,7 @@ void ath11k_core_halt(struct ath11k *ar)
- 	ath11k_mac_scan_finish(ar);
- 	ath11k_mac_peer_cleanup_all(ar);
- 	cancel_delayed_work_sync(&ar->scan.timeout);
-+	cancel_work_sync(&ar->channel_update_work);
- 	cancel_work_sync(&ar->regd_update_work);
- 	cancel_work_sync(&ab->update_11d_work);
- 
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index a9dc7fe7765a..b4bcfe0b98d2 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -743,6 +743,10 @@ struct ath11k {
- 	struct completion bss_survey_done;
- 
- 	struct work_struct regd_update_work;
-+	struct work_struct channel_update_work;
-+	struct list_head channel_update_queue;
-+	/* protects channel_update_queue data */
-+	spinlock_t channel_update_lock;
- 
- 	struct work_struct wmi_mgmt_tx_work;
- 	struct sk_buff_head wmi_mgmt_tx_queue;
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 31ae9b384a29..958997b51e41 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -6288,6 +6288,7 @@ static void ath11k_mac_op_stop(struct ieee80211_hw *hw, bool suspend)
- {
- 	struct ath11k *ar = hw->priv;
- 	struct htt_ppdu_stats_info *ppdu_stats, *tmp;
-+	struct scan_chan_list_params *params;
- 	int ret;
- 
- 	ath11k_mac_drain_tx(ar);
-@@ -6303,6 +6304,7 @@ static void ath11k_mac_op_stop(struct ieee80211_hw *hw, bool suspend)
- 	mutex_unlock(&ar->conf_mutex);
- 
- 	cancel_delayed_work_sync(&ar->scan.timeout);
-+	cancel_work_sync(&ar->channel_update_work);
- 	cancel_work_sync(&ar->regd_update_work);
- 	cancel_work_sync(&ar->ab->update_11d_work);
- 
-@@ -6318,6 +6320,15 @@ static void ath11k_mac_op_stop(struct ieee80211_hw *hw, bool suspend)
- 	}
- 	spin_unlock_bh(&ar->data_lock);
- 
-+	spin_lock_bh(&ar->channel_update_lock);
-+	while ((params = list_first_entry_or_null(&ar->channel_update_queue,
-+						  struct scan_chan_list_params,
-+						  list))) {
-+		list_del(&params->list);
-+		kfree(params);
-+	}
-+	spin_unlock_bh(&ar->channel_update_lock);
-+
- 	rcu_assign_pointer(ar->ab->pdevs_active[ar->pdev_idx], NULL);
- 
- 	synchronize_rcu();
-@@ -10018,6 +10029,7 @@ static const struct wiphy_iftype_ext_capab ath11k_iftypes_ext_capa[] = {
- 
- static void __ath11k_mac_unregister(struct ath11k *ar)
- {
-+	cancel_work_sync(&ar->channel_update_work);
- 	cancel_work_sync(&ar->regd_update_work);
- 
- 	ieee80211_unregister_hw(ar->hw);
-@@ -10417,6 +10429,9 @@ int ath11k_mac_allocate(struct ath11k_base *ab)
- 		init_completion(&ar->thermal.wmi_sync);
- 
- 		INIT_DELAYED_WORK(&ar->scan.timeout, ath11k_scan_timeout_work);
-+		INIT_WORK(&ar->channel_update_work, ath11k_regd_update_chan_list_work);
-+		INIT_LIST_HEAD(&ar->channel_update_queue);
-+		spin_lock_init(&ar->channel_update_lock);
- 		INIT_WORK(&ar->regd_update_work, ath11k_regd_update_work);
- 
- 		INIT_WORK(&ar->wmi_mgmt_tx_work, ath11k_mgmt_over_wmi_tx_work);
-diff --git a/drivers/net/wireless/ath/ath11k/reg.c b/drivers/net/wireless/ath/ath11k/reg.c
-index cb2cf9b63d18..8df7503997db 100644
---- a/drivers/net/wireless/ath/ath11k/reg.c
-+++ b/drivers/net/wireless/ath/ath11k/reg.c
-@@ -124,32 +124,7 @@ int ath11k_reg_update_chan_list(struct ath11k *ar, bool wait)
- 	struct channel_param *ch;
- 	enum nl80211_band band;
- 	int num_channels = 0;
--	int i, ret, left;
--
--	if (wait && ar->state_11d != ATH11K_11D_IDLE) {
--		left = wait_for_completion_timeout(&ar->completed_11d_scan,
--						   ATH11K_SCAN_TIMEOUT_HZ);
--		if (!left) {
--			ath11k_dbg(ar->ab, ATH11K_DBG_REG,
--				   "failed to receive 11d scan complete: timed out\n");
--			ar->state_11d = ATH11K_11D_IDLE;
--		}
--		ath11k_dbg(ar->ab, ATH11K_DBG_REG,
--			   "11d scan wait left time %d\n", left);
--	}
--
--	if (wait &&
--	    (ar->scan.state == ATH11K_SCAN_STARTING ||
--	    ar->scan.state == ATH11K_SCAN_RUNNING)) {
--		left = wait_for_completion_timeout(&ar->scan.completed,
--						   ATH11K_SCAN_TIMEOUT_HZ);
--		if (!left)
--			ath11k_dbg(ar->ab, ATH11K_DBG_REG,
--				   "failed to receive hw scan complete: timed out\n");
--
--		ath11k_dbg(ar->ab, ATH11K_DBG_REG,
--			   "hw scan wait left time %d\n", left);
--	}
-+	int i, ret = 0;
- 
- 	if (ar->state == ATH11K_STATE_RESTARTING)
- 		return 0;
-@@ -231,8 +206,15 @@ int ath11k_reg_update_chan_list(struct ath11k *ar, bool wait)
- 		}
- 	}
- 
--	ret = ath11k_wmi_send_scan_chan_list_cmd(ar, params);
--	kfree(params);
-+	if (wait) {
-+		spin_lock_bh(&ar->channel_update_lock);
-+		list_add_tail(&params->list, &ar->channel_update_queue);
-+		spin_unlock_bh(&ar->channel_update_lock);
-+		queue_work(ar->ab->workqueue, &ar->channel_update_work);
-+	} else {
-+		ret = ath11k_wmi_send_scan_chan_list_cmd(ar, params);
-+		kfree(params);
-+	}
- 
- 	return ret;
- }
-@@ -811,6 +793,58 @@ ath11k_reg_build_regd(struct ath11k_base *ab,
- 	return new_regd;
- }
- 
-+void ath11k_regd_update_chan_list_work(struct work_struct *work)
-+{
-+	struct ath11k *ar = container_of(work, struct ath11k,
-+					 channel_update_work);
-+	struct scan_chan_list_params *params;
-+	struct list_head local_update_list;
-+	int left;
-+
-+	INIT_LIST_HEAD(&local_update_list);
-+
-+	spin_lock_bh(&ar->channel_update_lock);
-+	while ((params = list_first_entry_or_null(&ar->channel_update_queue,
-+						  struct scan_chan_list_params,
-+						  list))) {
-+		list_del(&params->list);
-+		list_add_tail(&params->list, &local_update_list);
-+	}
-+	spin_unlock_bh(&ar->channel_update_lock);
-+
-+	while ((params = list_first_entry_or_null(&local_update_list,
-+						  struct scan_chan_list_params,
-+						  list))) {
-+		if (ar->state_11d != ATH11K_11D_IDLE) {
-+			left = wait_for_completion_timeout(&ar->completed_11d_scan,
-+							   ATH11K_SCAN_TIMEOUT_HZ);
-+			if (!left) {
-+				ath11k_dbg(ar->ab, ATH11K_DBG_REG,
-+					   "failed to receive 11d scan complete: timed out\n");
-+				ar->state_11d = ATH11K_11D_IDLE;
-+			}
-+			ath11k_dbg(ar->ab, ATH11K_DBG_REG,
-+				   "reg 11d scan wait left time %d\n", left);
-+		}
-+
-+		if ((ar->scan.state == ATH11K_SCAN_STARTING ||
-+		     ar->scan.state == ATH11K_SCAN_RUNNING)) {
-+			left = wait_for_completion_timeout(&ar->scan.completed,
-+							   ATH11K_SCAN_TIMEOUT_HZ);
-+			if (!left)
-+				ath11k_dbg(ar->ab, ATH11K_DBG_REG,
-+					   "failed to receive hw scan complete: timed out\n");
-+
-+			ath11k_dbg(ar->ab, ATH11K_DBG_REG,
-+				   "reg hw scan wait left time %d\n", left);
-+		}
-+
-+		ath11k_wmi_send_scan_chan_list_cmd(ar, params);
-+		list_del(&params->list);
-+		kfree(params);
-+	}
-+}
-+
- static bool ath11k_reg_is_world_alpha(char *alpha)
- {
- 	if (alpha[0] == '0' && alpha[1] == '0')
-diff --git a/drivers/net/wireless/ath/ath11k/reg.h b/drivers/net/wireless/ath/ath11k/reg.h
-index 263ea9061948..0d5e10bb5730 100644
---- a/drivers/net/wireless/ath/ath11k/reg.h
-+++ b/drivers/net/wireless/ath/ath11k/reg.h
-@@ -33,6 +33,7 @@ void ath11k_reg_init(struct ath11k *ar);
- void ath11k_reg_reset_info(struct cur_regulatory_info *reg_info);
- void ath11k_reg_free(struct ath11k_base *ab);
- void ath11k_regd_update_work(struct work_struct *work);
-+void ath11k_regd_update_chan_list_work(struct work_struct *work);
- struct ieee80211_regdomain *
- ath11k_reg_build_regd(struct ath11k_base *ab,
- 		      struct cur_regulatory_info *reg_info, bool intersect,
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.h b/drivers/net/wireless/ath/ath11k/wmi.h
-index 8982b909c821..30b4b0c17682 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.h
-+++ b/drivers/net/wireless/ath/ath11k/wmi.h
-@@ -3817,6 +3817,7 @@ struct wmi_stop_scan_cmd {
- };
- 
- struct scan_chan_list_params {
-+	struct list_head list;
- 	u32 pdev_id;
- 	u16 nallchans;
- 	struct channel_param ch_param[];
--- 
-2.34.1
+Oh nice, looks really useful. I need to install that.
 
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
 
