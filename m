@@ -1,137 +1,98 @@
-Return-Path: <linux-wireless+bounces-15800-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15801-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0D0F9DC0E1
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2024 09:54:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98B3C9DC2AE
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2024 12:18:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42AD5165366
-	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2024 08:54:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4AFFC16206A
+	for <lists+linux-wireless@lfdr.de>; Fri, 29 Nov 2024 11:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CFB216DEB5;
-	Fri, 29 Nov 2024 08:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 273F7199953;
+	Fri, 29 Nov 2024 11:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VBLEKQrV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jrkvyFq2"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6FD21714D3;
-	Fri, 29 Nov 2024 08:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FAE199949
+	for <linux-wireless@vger.kernel.org>; Fri, 29 Nov 2024 11:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732870433; cv=none; b=MvqxlINwWAV2Ved/KhvtYKaOfR/fvK/8Q6Xhe3c9y0D2Tw9pjpsWWN3nninb8y8U4yLlftUQo+oEf8kn7PUBIiGWXxvZP3ma4VdT8FYIrTzQ1ZQjeDY4F/Y3nwGIoiJv1cSC0EJ8xOhfn6AGUIdJXmMA7ITe//6rcTpbSd/YL7E=
+	t=1732879095; cv=none; b=qUG1jqN4IoZFYGk3060inupHxftM9mkcIkMeM/xcRd6OOsDFozg6vlslxendJ1A0Xgc1Sp5ujGAnDus3OYciKSjp1SHfrfWyoMMlt6jj27pDuOqJhKdCUt9XjiK5CSgjlJAN62Cfe89X9qXqkHtSiwqRyJBO0s71GNhsJchLfOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732870433; c=relaxed/simple;
-	bh=PWjGAU76nJzuPec0ckBdi9FcYElbQvNbyAFXD40o/MY=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=M8NqWm1z0fqhoKar5QLIEF2TPFDp1eSKc1YJVeXPtbRfaAKikjSy54CxI574pCJrs6T0hrC1SxT+w8xOq0SQ0/4gHTAYTHek07T4esUcQNioexPZ0V0QaSxvml0Floc79JezaHZgGdWssHGNs2v9QJvAdVusiWmeSk1yeW5xyx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VBLEKQrV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DED1C4CED2;
-	Fri, 29 Nov 2024 08:53:51 +0000 (UTC)
+	s=arc-20240116; t=1732879095; c=relaxed/simple;
+	bh=L7FEE3bo3MjpveP8AdFhKLca7ndLKC43nXLD1+RJwD4=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=JjChpB2Glc8aj9Pdy3KNH60+gCQs68B/4HuWrGbUMsyBcEsbsSr9BLM+w7gnDVns13z/5E9v1/rjD+WqzjcDd17/SxM3GwQieMpZnN4NTCEe5/k8HUbjWXns7yuPnfDjJ++lPElr5FnpI7mTfTT6e3DqQuhvt9OYUVl+0uEdPpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jrkvyFq2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAB65C4CECF;
+	Fri, 29 Nov 2024 11:18:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732870432;
-	bh=PWjGAU76nJzuPec0ckBdi9FcYElbQvNbyAFXD40o/MY=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=VBLEKQrV000Q1wZNquGeBb4ypPUKC6cnNAoJnOtXORzuqE+c+xHNqnMjNFZ5C4QXX
-	 qMakgu6HRuTKDtUoCeFQrHRewR25vEepbHPN/x1nJgjC5Dea0i77fXr2Uhdim16Ibg
-	 0qGcskpXexy+GBIp7FYhjJB6e4psoTb3vMht7kcWszhJcSb16eE0QUYQ+natd8BNJI
-	 jWIiIdvGSQxLCCzb//wiuvaNaO13RsAcBtI+hfLwDjz+TKRGbAaAs6L2ubufayHT7z
-	 Hok3kGlV9/GeWTHrfUU5QXnXyK7mc6pA/Zytl4BUzoY4R4zMw+QNKgL5TOupHxuuiV
-	 Igl4NeIyQfxwA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Paul Menzel <pmenzel@molgen.mpg.de>
-Cc: linux-wireless@vger.kernel.org,  ath10k@lists.infradead.org,  LKML
- <linux-kernel@vger.kernel.org>,  regressions@lists.linux.dev
-Subject: Re: WARNING: drivers/net/wireless/ath/ath10k/mac.c:8750
- ath10k_mac_update_vif_chan+0x237/0x2e0 [ath10k_core]
-References: <637c5bb4-5278-44be-9ac3-9c0ef9297162@molgen.mpg.de>
-	<8734jcx60e.fsf@kernel.org>
-	<5c9bf757-a035-499c-a1ef-ac33c1c6e75b@molgen.mpg.de>
-Date: Fri, 29 Nov 2024 10:53:48 +0200
-In-Reply-To: <5c9bf757-a035-499c-a1ef-ac33c1c6e75b@molgen.mpg.de> (Paul
-	Menzel's message of "Fri, 29 Nov 2024 00:01:55 +0100")
-Message-ID: <8734jav2sj.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=k20201202; t=1732879094;
+	bh=L7FEE3bo3MjpveP8AdFhKLca7ndLKC43nXLD1+RJwD4=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=jrkvyFq2nquwh/lK6hhi3EsqkffOX2v4iKgUgBkX1CCaj8x0gwKXBIP4sPY+EISXi
+	 bClmteav4VEI27chnqLv7OkrHtGlDA2sSNKaOcc6+ofoP1qQnUWlisvTk5to4+GO6o
+	 299ElkZvKDkLrQzh1zC5bMnc7l3Ef1kwd1jPV6HRH/Wj+7LMIAOgHxBvweAQShwqMt
+	 Yali7TO01xbyX+Glq+wr9buigitpn+ntPgqMyzt7b5cWTDfTWviezwnxMoxAeFfA3y
+	 rxSqMZ0B6jfL3M2aThKicRQrxWjr5p0Msb5VHOOeN+/xXI7c977XBS6/2pQZ9/8H1D
+	 2q8eqSdFbOSqQ==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 01/10] wifi: ath12k: convert struct
+ ath12k::wmi_mgmt_tx_work
+ to struct wiphy_work
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20241126171139.2350704-2-kvalo@kernel.org>
+References: <20241126171139.2350704-2-kvalo@kernel.org>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <173287909210.2696951.465159497492949082.kvalo@kernel.org>
+Date: Fri, 29 Nov 2024 11:18:13 +0000 (UTC)
 
-Paul Menzel <pmenzel@molgen.mpg.de> writes:
+Kalle Valo <kvalo@kernel.org> wrote:
 
-> Dear Kalle,
->
->
-> Thank you for your reply.
->
->
-> Am 27.11.24 um 12:36 schrieb Kalle Valo:
->> Paul Menzel writes:
->>=20
->>> On the Dell XPS 13 9360 with Linux 6.12.0-08446-g228a1157fb9f, I
->>> noticed the trace below:
->> For others, commit 228a1157fb9f is from current merge window so the
->> first release will be in v6.13-rc1.
->>=20
->>> [16805.002289] ------------[ cut here ]------------
->>> [16805.002296] WARNING: CPU: 3 PID: 65835 at drivers/net/wireless/ath/a=
-th10k/mac.c:8750 ath10k_mac_update_vif_chan+0x237/0x2e0 [ath10k_core]
->> [...]
->>=20
->>> I do not see such a message in the logs since September 19th, so I
->>> believe it=E2=80=99s a regression.
->> Have you seen it only this one time or multiple times?
->
-> I have seen it only this one time.
+> To simplify locking for the next patches convert struct
+> ath12k::wmi_mgmt_tx_work to use wiphy_work. After this
+> ath12k_mgmt_over_wmi_tx_work() is called with wiphy_lock() taken. In
+> ath12k_core_suspend() we need to take wiphy_lock() because
+> ath12k_mac_wait_tx_complete() requires it.
+> 
+> Also add lockdep_assert_wiphy() to document when wiphy_lock() is held.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
+> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-Ok. Was it a network you regularly connect to or a new network? That
-could also make a difference.
+10 patches applied to ath-next branch of ath.git, thanks.
 
->> What kernels have you been testing prior? I'm trying to pinpoint what
->> versions kernel version work and what have this warning.
->
-> Before I ran 6.12.0-07749-g28eb75e178d3 without seeing this. As it
-> only occurred once, that does not give any pointer though.
+56dcbf0b5207 wifi: ath12k: convert struct ath12k::wmi_mgmt_tx_work to struct wiphy_work
+648a121bafa3 wifi: ath12k: ath12k_mac_op_tx(): MLO support
+2197feb0249d wifi: ath12k: ath12k_mac_op_flush(): MLO support
+5419ef950da4 wifi: ath12k: ath12k_mac_op_ampdu_action(): MLO support
+85edf16384d1 wifi: ath12k: ath12k_mac_station_add(): fix potential rx_stats leak
+90570ba4610b wifi: ath12k: do not return invalid link id for scan link
+1833a2ce5d7d wifi: ath12k: ath12k_bss_assoc(): MLO support
+aa80f12f3bed wifi: ath12k: defer vdev creation for MLO
+ad969bc9ee73 wifi: ath12k: ath12k_mac_op_set_key(): fix uninitialized symbol 'ret'
+8c2143702d07 wifi: ath12k: ath12k_mac_op_sta_rc_update(): use mac80211 provided link id
 
-Yeah, if you have seen it only once it is difficult to make any
-conclusions. It could be as well an older bug which happens rarely. If
-you see it again, let us know.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20241126171139.2350704-2-kvalo@kernel.org/
 
-> PS:
->
-> $ last reboot
-> reboot   system boot  6.12.0-10296-gaa Thu Nov 28 22:42 - still running
-> reboot   system boot  6.12-rc6-amd64   Wed Nov 27 14:04 - 22:42 (1+08:37)
-> reboot   system boot  6.12.0-10296-gaa Wed Nov 27 13:21 - 14:02  (00:40)
-> reboot   system boot  6.12.0-09568-g2f Tue Nov 26 18:41 - crash
-> reboot   system boot  6.12.0-08446-g22 Sat Nov 23 12:27 - 18:40 (3+06:13)
-> reboot   system boot  6.12.0-07749-g28 Fri Nov 22 10:14 - 10:24 (1+00:09)
-> reboot   system boot  6.12.0           Wed Nov 20 09:24 - crash
-> reboot   system boot  6.12.0-rc7       Wed Nov 20 09:22 - 09:23  (00:01)
-> reboot   system boot  6.12.0-rc7       Tue Nov 12 08:19 - 23:27 (7+15:08)
-> reboot   system boot  6.12.0-rc7       Mon Nov 11 21:54 - 00:16  (02:21)
-> reboot   system boot  6.11-amd64       Mon Nov 11 21:52 - crash
-> reboot   system boot  6.12.0-rc7       Mon Nov 11 20:43 - 21:52  (01:08)
-> reboot   system boot  6.12.0-rc7       Mon Nov 11 17:51 - 17:52  (00:01)
-> reboot   system boot  6.12.0-rc6-00077 Fri Nov  8 08:39 - 17:50 (3+09:11)
-> reboot   system boot  6.12.0-rc6-00077 Thu Nov  7 07:26 - 23:24  (15:58)
-> reboot   system boot  6.12.0-rc5-00047 Mon Nov  4 08:26 - crash
-> reboot   system boot  6.12.0-rc5-00047 Mon Nov  4 05:42 - 05:43  (00:00)
-> reboot   system boot  6.12.0-rc5-00047 Sun Nov  3 06:54 - 22:10  (15:15)
-> reboot   system boot  6.12.0-rc5-00047 Sat Nov  2 07:34 - 22:05  (14:31)
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+https://docs.kernel.org/process/submitting-patches.html
 
-Oh nice, looks really useful. I need to install that.
-
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
 
