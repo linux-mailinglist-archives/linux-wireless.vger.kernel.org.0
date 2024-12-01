@@ -1,133 +1,152 @@
-Return-Path: <linux-wireless+bounces-15808-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15809-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F91E9DF229
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 Nov 2024 18:11:33 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57C679DF524
+	for <lists+linux-wireless@lfdr.de>; Sun,  1 Dec 2024 10:47:36 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7957161AC9
-	for <lists+linux-wireless@lfdr.de>; Sat, 30 Nov 2024 17:11:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D6012811A0
+	for <lists+linux-wireless@lfdr.de>; Sun,  1 Dec 2024 09:47:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A49EE1A2574;
-	Sat, 30 Nov 2024 17:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377D77E575;
+	Sun,  1 Dec 2024 09:47:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="poc+1Opg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from zju.edu.cn (spam.zju.edu.cn [61.164.42.155])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D2968468;
-	Sat, 30 Nov 2024 17:11:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.164.42.155
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05CE70834;
+	Sun,  1 Dec 2024 09:47:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732986689; cv=none; b=MeGkVf1Wlv+lqdb3RyeVedjWxLtZCLM0xrjYiH2OYGaQ+I6idJ+O776p6ZQV/gy7Aj1AyKCTnK0NZwuQt8ZMjaABQz/gtRDWJfehir/sKqG50WCIvYJT1iCgnC61MTk+LN96O5VexC0rckscO9d9aI44IOtXFkadzS9hpEOwBj8=
+	t=1733046452; cv=none; b=jr/MfL8Hfu4AdooU7SBkFEY2/HRPPnikItkKFNMyQDTsX+JTfKR7wyE84xCcKm8F1MQpkpv2ltc6lEUYqoihceN9L0p2Vmr0R5xWTmDEn27yZzwwfyyKveDjfA8ylxeb0c6TT8G00jAjYX0rCRsdf1YPYIw5qu4LFncidfHuaM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732986689; c=relaxed/simple;
-	bh=Dso1V0rhy/zLY7zeRFRdzfAdFp+fu8jhZhMvQReLTk4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ULSLIVEuKPIen9uOYayOFl+u0k7VwNGDToAxnnHZlOtAhYKXenfv/CcD/7cwuBywMbfSFpkkBZfdgovImMiDS06A7KnddRHxSmdtkyV6wc1ENBLHXyfJ5HvqDGiaxrHc9HEl8gF0A2uKOojqkAZH3j3eN/8dfuXucJv0nEzc4XU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn; spf=pass smtp.mailfrom=zju.edu.cn; arc=none smtp.client-ip=61.164.42.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zju.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zju.edu.cn
-Received: from localhost (unknown [10.193.223.147])
-	by mail-app3 (Coremail) with SMTP id cC_KCgA3o8DrRUtnvL8pAQ--.36275S2;
-	Sun, 01 Dec 2024 01:05:47 +0800 (CST)
-From: Lin Ma <linma@zju.edu.cn>
-To: johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Lin Ma <linma@zju.edu.cn>,
-	Cengiz Can <cengiz.can@canonical.com>
-Subject: [PATCH net] wifi: nl80211: fix NL80211_ATTR_MLO_LINK_ID off-by-one
-Date: Sun,  1 Dec 2024 01:05:26 +0800
-Message-Id: <20241130170526.96698-1-linma@zju.edu.cn>
-X-Mailer: git-send-email 2.39.0
+	s=arc-20240116; t=1733046452; c=relaxed/simple;
+	bh=as5tR6OwsTVcSX5GRX3q+z9vBr6Wgj7yFmegZs8oYs4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=CmvVL4VvwGQxzgeEesUqb3iDiy35SH4mhKt7dWLZ8GoAMe2nWmiBDCQBzBI7j4NBZymDWjJOjtLf/5xP+mDTn7pUq/D6eIf3YcF9HW+kQQlicOrH+jL0efQsxhKReeNbb8DBYCWXM80N1U4qkw3XcqEVDQJg4TxU0cPn/JlB4yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=poc+1Opg; arc=none smtp.client-ip=198.47.19.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4B19l6HS036337;
+	Sun, 1 Dec 2024 03:47:06 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1733046426;
+	bh=mX/4YXm19qrr2j4Z5gLyYBNF+BgxM8nmBWvl0k/FUHs=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=poc+1OpgGHeGn2N7HxoqgWr0xsrc6KrrKmsrXQEgfK2VJinjszwQJ6syPntApacgO
+	 Q3T6n7UmDisVeE/jsgtIjn45DCzIOSohPm26bP/SR9cy/YEiA1sC7VHR9vOC3bSp32
+	 2Br4VMTFn9RhydIPC5f9DWHbjt4+2xmnqAM5D9BI=
+Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4B19l6j2003143
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Sun, 1 Dec 2024 03:47:06 -0600
+Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE103.ent.ti.com
+ (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Sun, 1
+ Dec 2024 03:47:05 -0600
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Sun, 1 Dec 2024 03:47:05 -0600
+Received: from [10.250.214.214] ([10.250.214.214])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4B19l2q2015175;
+	Sun, 1 Dec 2024 03:47:02 -0600
+Message-ID: <b3446a0d-43e5-47ea-b3b0-f3e81d9c41c0@ti.com>
+Date: Sun, 1 Dec 2024 11:47:01 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:cC_KCgA3o8DrRUtnvL8pAQ--.36275S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxXw4kJry3ZrWrJr1fKFy3urg_yoW5ZrW8pF
-	WkGryxJF1UK34vqFWfGF48GFyxXFs8Zr1UCw4xtr1fCFnYqry8GryjgFsxXrnxuF1qyayf
-	Z3WDJF4avw15J37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvq1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
-	w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
-	IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2
-	z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzx
-	vE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
-	JVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7V
-	AKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY
-	0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r4fKr1UJr1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr
-	1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE
-	14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7
-	IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E
-	87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0x
-	ZFpf9x0JUBVbkUUUUU=
-X-CM-SenderInfo: qtrwiiyqvtljo62m3hxhgxhubq/
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 09/17] wifi: cc33xx: Add main.c
+To: Johannes Berg <johannes@sipsolutions.net>, Kalle Valo <kvalo@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Rob
+ Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor
+ Dooley <conor+dt@kernel.org>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC: Sabeeh Khan <sabeeh-khan@ti.com>
+References: <20241107125209.1736277-1-michael.nemanov@ti.com>
+ <20241107125209.1736277-10-michael.nemanov@ti.com>
+ <685d782d68bfc664c4fcc594dff96546ffc30e5f.camel@sipsolutions.net>
+Content-Language: en-US
+From: "Nemanov, Michael" <michael.nemanov@ti.com>
+In-Reply-To: <685d782d68bfc664c4fcc594dff96546ffc30e5f.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-Since the netlink attribute range validation provides inclusive
-checking, the *max* of attribute NL80211_ATTR_MLO_LINK_ID should be
-IEEE80211_MLD_MAX_NUM_LINKS - 1 otherwise causing an off-by-one.
+On 11/8/2024 1:42 PM, Johannes Berg wrote:
+>> +static void cc33xx_op_tx(struct ieee80211_hw *hw,
+>> +			 struct ieee80211_tx_control *control,
+>> +			 struct sk_buff *skb)
+>> +{
+>> +	struct cc33xx *cc = hw->priv;
+>> +	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
+>> +	struct ieee80211_vif *vif = info->control.vif;
+>> +	struct cc33xx_vif *wlvif = NULL;
+>> +	enum cc33xx_queue_stop_reason stop_reason = CC33XX_QUEUE_STOP_REASON_WATERMARK;
+>> +	unsigned long flags;
+>> +	int q, mapping;
+>> +	u8 hlid;
+>> +
+>> +	if (!vif) {
+>> +		ieee80211_free_txskb(hw, skb);
+>> +		return;
+>> +	}
+>> +
+>> +	wlvif = cc33xx_vif_to_data(vif);
+>> +	mapping = skb_get_queue_mapping(skb);
+>> +	q = cc33xx_tx_get_queue(mapping);
+>> +
+>> +	hlid = cc33xx_tx_get_hlid(cc, wlvif, skb, control->sta);
+>> +
+>> +	spin_lock_irqsave(&cc->cc_lock, flags);
+>> +
+>> +	/* drop the packet if the link is invalid or the queue is stopped
+>> +	 * for any reason but watermark. Watermark is a "soft"-stop so we
+>> +	 * allow these packets through.
+>> +	 */
+>> +
+>> +	if (hlid == CC33XX_INVALID_LINK_ID ||
+>> +	    (!test_bit(hlid, wlvif->links_map)) ||
+>> +	    (cc33xx_is_queue_stopped_locked(cc, wlvif, q) &&
+>> +	    !cc33xx_is_queue_stopped_by_reason_locked(cc, wlvif, q,
+>> +						      stop_reason))) {
+>> +		cc33xx_debug(DEBUG_TX, "DROP skb hlid %d q %d ", hlid, q);
+>> +		ieee80211_free_txskb(hw, skb);
+>> +		goto out;
+>> +	}
+> 
+> I'd consider converting to itxq APIs, you already use them anyway via
+> ieee80211_handle_wake_tx_queue so you don't gain anything from not doing
+> it, but you gain a lot of flexibility from doing it and don't have to do
+> things like this?
+> 
+> It's not _that_ hard.
 
-One crash stack for demonstration:
-==================================================================
-BUG: KASAN: wild-memory-access in ieee80211_tx_control_port+0x3b6/0xca0 net/mac80211/tx.c:5939
-Read of size 6 at addr 001102080000000c by task fuzzer.386/9508
+OK, so just to make sure I understand - mac80211 now has Tx queues per 
+AC (struct ieee80211_txq) and it makes more sense to do something like 
+ath10k ([1])?
 
-CPU: 1 PID: 9508 Comm: syz.1.386 Not tainted 6.1.70 #2
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x177/0x231 lib/dump_stack.c:106
- print_report+0xe0/0x750 mm/kasan/report.c:398
- kasan_report+0x139/0x170 mm/kasan/report.c:495
- kasan_check_range+0x287/0x290 mm/kasan/generic.c:189
- memcpy+0x25/0x60 mm/kasan/shadow.c:65
- ieee80211_tx_control_port+0x3b6/0xca0 net/mac80211/tx.c:5939
- rdev_tx_control_port net/wireless/rdev-ops.h:761 [inline]
- nl80211_tx_control_port+0x7b3/0xc40 net/wireless/nl80211.c:15453
- genl_family_rcv_msg_doit+0x22e/0x320 net/netlink/genetlink.c:756
- genl_family_rcv_msg net/netlink/genetlink.c:833 [inline]
- genl_rcv_msg+0x539/0x740 net/netlink/genetlink.c:850
- netlink_rcv_skb+0x1de/0x420 net/netlink/af_netlink.c:2508
- genl_rcv+0x24/0x40 net/netlink/genetlink.c:861
- netlink_unicast_kernel net/netlink/af_netlink.c:1326 [inline]
- netlink_unicast+0x74b/0x8c0 net/netlink/af_netlink.c:1352
- netlink_sendmsg+0x882/0xb90 net/netlink/af_netlink.c:1874
- sock_sendmsg_nosec net/socket.c:716 [inline]
- __sock_sendmsg net/socket.c:728 [inline]
- ____sys_sendmsg+0x5cc/0x8f0 net/socket.c:2499
- ___sys_sendmsg+0x21c/0x290 net/socket.c:2553
- __sys_sendmsg net/socket.c:2582 [inline]
- __do_sys_sendmsg net/socket.c:2591 [inline]
- __se_sys_sendmsg+0x19e/0x270 net/socket.c:2589
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x45/0x90 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
+Frames pushed via original Tx op are non-QoS traffic, right? (i.e, no 
+need to worry about frame order between the two handlers)
 
-Update the policy to ensure correct validation.
+Thank and regards,
+Michael.
 
-Fixes: 7b0a0e3c3a88 ("wifi: cfg80211: do some rework towards MLO link APIs")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Suggested-by: Cengiz Can <cengiz.can@canonical.com>
----
- net/wireless/nl80211.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 9d2edb71f981..dd84fc54fb9b 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -814,7 +814,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_MLO_LINKS] =
- 		NLA_POLICY_NESTED_ARRAY(nl80211_policy),
- 	[NL80211_ATTR_MLO_LINK_ID] =
--		NLA_POLICY_RANGE(NLA_U8, 0, IEEE80211_MLD_MAX_NUM_LINKS),
-+		NLA_POLICY_RANGE(NLA_U8, 0, IEEE80211_MLD_MAX_NUM_LINKS - 1),
- 	[NL80211_ATTR_MLD_ADDR] = NLA_POLICY_EXACT_LEN(ETH_ALEN),
- 	[NL80211_ATTR_MLO_SUPPORT] = { .type = NLA_FLAG },
- 	[NL80211_ATTR_MAX_NUM_AKM_SUITES] = { .type = NLA_REJECT },
--- 
-2.39.2
+[1] 
+https://elixir.bootlin.com/linux/v6.12/source/drivers/net/wireless/ath/ath10k/mac.c#L4728
 
 
