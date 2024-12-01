@@ -1,63 +1,64 @@
-Return-Path: <linux-wireless+bounces-15809-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15810-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57C679DF524
-	for <lists+linux-wireless@lfdr.de>; Sun,  1 Dec 2024 10:47:36 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BE299DF68C
+	for <lists+linux-wireless@lfdr.de>; Sun,  1 Dec 2024 18:10:15 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D6012811A0
-	for <lists+linux-wireless@lfdr.de>; Sun,  1 Dec 2024 09:47:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DF25162353
+	for <lists+linux-wireless@lfdr.de>; Sun,  1 Dec 2024 17:10:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377D77E575;
-	Sun,  1 Dec 2024 09:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD9F1D61AC;
+	Sun,  1 Dec 2024 17:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="poc+1Opg"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="yX+sWY3U"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+Received: from lelvem-ot01.ext.ti.com (lelvem-ot01.ext.ti.com [198.47.23.234])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05CE70834;
-	Sun,  1 Dec 2024 09:47:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF35B33086;
+	Sun,  1 Dec 2024 17:10:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733046452; cv=none; b=jr/MfL8Hfu4AdooU7SBkFEY2/HRPPnikItkKFNMyQDTsX+JTfKR7wyE84xCcKm8F1MQpkpv2ltc6lEUYqoihceN9L0p2Vmr0R5xWTmDEn27yZzwwfyyKveDjfA8ylxeb0c6TT8G00jAjYX0rCRsdf1YPYIw5qu4LFncidfHuaM4=
+	t=1733073010; cv=none; b=e4R7zvaEAP3ASbMlXyw4Q+UG0VHHNpV9tX2uhoL+GmVeDji16hJmwOSYLa6YRrY7keUm5sgY7z7V44V54T42zgY4a2hpONFWsf3phZdxEm+PfplgI70qJ0vbP4si/rBUcB1H//3lduPc2y83aMnSrSw4J/gdgdobhjOX/e1Olpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733046452; c=relaxed/simple;
-	bh=as5tR6OwsTVcSX5GRX3q+z9vBr6Wgj7yFmegZs8oYs4=;
+	s=arc-20240116; t=1733073010; c=relaxed/simple;
+	bh=AHh6wZo9hURws++aV/42XxavFaokSvbg6imNNWwMBD4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=CmvVL4VvwGQxzgeEesUqb3iDiy35SH4mhKt7dWLZ8GoAMe2nWmiBDCQBzBI7j4NBZymDWjJOjtLf/5xP+mDTn7pUq/D6eIf3YcF9HW+kQQlicOrH+jL0efQsxhKReeNbb8DBYCWXM80N1U4qkw3XcqEVDQJg4TxU0cPn/JlB4yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=poc+1Opg; arc=none smtp.client-ip=198.47.19.141
+	 In-Reply-To:Content-Type; b=DiF6+bhz1olrC54E46qT7PVsjQVF+H8uMCGnh3wiiCjHW83GjKU1fjHgLjNwQFQmB4fj4PJKdyiwAqR3QhcB/9rOVK/gRCKKc0TQglBNKf3Lw3v+EqSeuTiOdB8RrNGlMpjXTttSm4X+ZVdtxcR1Ravud3hjiCCgZ1Ig/sfRysc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=yX+sWY3U; arc=none smtp.client-ip=198.47.23.234
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 4B19l6HS036337;
-	Sun, 1 Dec 2024 03:47:06 -0600
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by lelvem-ot01.ext.ti.com (8.15.2/8.15.2) with ESMTPS id 4B1H9gVu1591953
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 1 Dec 2024 11:09:42 -0600
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1733046426;
-	bh=mX/4YXm19qrr2j4Z5gLyYBNF+BgxM8nmBWvl0k/FUHs=;
+	s=ti-com-17Q1; t=1733072982;
+	bh=oN/TNhxxv2ynjLBjJ9OZ5gYYDHMlfWmbssUcpigYGIQ=;
 	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=poc+1OpgGHeGn2N7HxoqgWr0xsrc6KrrKmsrXQEgfK2VJinjszwQJ6syPntApacgO
-	 Q3T6n7UmDisVeE/jsgtIjn45DCzIOSohPm26bP/SR9cy/YEiA1sC7VHR9vOC3bSp32
-	 2Br4VMTFn9RhydIPC5f9DWHbjt4+2xmnqAM5D9BI=
-Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4B19l6j2003143
+	b=yX+sWY3Uf57X38xrsL5qyWcxCiAuJIQ4SxT+dMZ47UNVMJA2eSF3+HbNQZZFZO45U
+	 xHgDghmAbKwAkkiIW9NyBGnKKxbhsCIfxYsyRL0uWQ+Nkh+6KHU3fBC/FvrCtG9vPS
+	 MY1vbgjwd69rNpCZEZeGF2ehHvq4Rs68kgoQm3YY=
+Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 4B1H9gSL000899
 	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Sun, 1 Dec 2024 03:47:06 -0600
-Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
+	Sun, 1 Dec 2024 11:09:42 -0600
+Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Sun, 1
- Dec 2024 03:47:05 -0600
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE108.ent.ti.com
- (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ Dec 2024 11:09:42 -0600
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Sun, 1 Dec 2024 03:47:05 -0600
-Received: from [10.250.214.214] ([10.250.214.214])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4B19l2q2015175;
-	Sun, 1 Dec 2024 03:47:02 -0600
-Message-ID: <b3446a0d-43e5-47ea-b3b0-f3e81d9c41c0@ti.com>
-Date: Sun, 1 Dec 2024 11:47:01 +0200
+ Frontend Transport; Sun, 1 Dec 2024 11:09:42 -0600
+Received: from [137.167.1.99] (lt5cg1094w5k.dhcp.ti.com [137.167.1.99])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 4B1H9cI6080016;
+	Sun, 1 Dec 2024 11:09:39 -0600
+Message-ID: <39af5076-7e96-4968-943d-bb33359f0573@ti.com>
+Date: Sun, 1 Dec 2024 19:09:38 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -88,65 +89,99 @@ Content-Transfer-Encoding: 7bit
 X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
 On 11/8/2024 1:42 PM, Johannes Berg wrote:
->> +static void cc33xx_op_tx(struct ieee80211_hw *hw,
->> +			 struct ieee80211_tx_control *control,
->> +			 struct sk_buff *skb)
+>> +static void cc33xx_rc_update_work(struct work_struct *work)
 >> +{
->> +	struct cc33xx *cc = hw->priv;
->> +	struct ieee80211_tx_info *info = IEEE80211_SKB_CB(skb);
->> +	struct ieee80211_vif *vif = info->control.vif;
->> +	struct cc33xx_vif *wlvif = NULL;
->> +	enum cc33xx_queue_stop_reason stop_reason = CC33XX_QUEUE_STOP_REASON_WATERMARK;
->> +	unsigned long flags;
->> +	int q, mapping;
->> +	u8 hlid;
+>> +	struct cc33xx_vif *wlvif = container_of(work, struct cc33xx_vif,
+>> +						rc_update_work);
+>> +	struct cc33xx *cc = wlvif->cc;
+>> +	struct ieee80211_vif *vif = cc33xx_wlvif_to_vif(wlvif);
 >> +
->> +	if (!vif) {
->> +		ieee80211_free_txskb(hw, skb);
+>> +	mutex_lock(&cc->mutex);
+> 
+> Given the way the wiphy mutex now works, I'd strongly recommend not
+> having your own mutex any more - it's a huge simplification in a lot of
+> places, and there's very little downside since everything coming from
+> higher layers holds the wiphy mutex already (and almost certainly needs
+> to acquire your own mutex.)
+
+Yeah I see how it simplifies things. I'll get rid of cc->mutex and use 
+wiphy_lock() for whatever code that is not called exclusively from 
+ieee80211_ops.
+
+>> +static void cc33xx_recovery_work(struct work_struct *work)
+>> +{
+>> +	struct cc33xx *cc = container_of(work, struct cc33xx, recovery_work);
+>> +	struct cc33xx_vif *wlvif;
+>> +	struct ieee80211_vif *vif;
+>> +
+>> +	cc33xx_notice("CC33xx driver attempting recovery");
+>> +
+>> +	if (cc->conf.core.no_recovery) {
+>> +		cc33xx_info("Recovery disabled by configuration, driver will not restart.");
 >> +		return;
 >> +	}
 >> +
->> +	wlvif = cc33xx_vif_to_data(vif);
->> +	mapping = skb_get_queue_mapping(skb);
->> +	q = cc33xx_tx_get_queue(mapping);
->> +
->> +	hlid = cc33xx_tx_get_hlid(cc, wlvif, skb, control->sta);
->> +
->> +	spin_lock_irqsave(&cc->cc_lock, flags);
->> +
->> +	/* drop the packet if the link is invalid or the queue is stopped
->> +	 * for any reason but watermark. Watermark is a "soft"-stop so we
->> +	 * allow these packets through.
->> +	 */
->> +
->> +	if (hlid == CC33XX_INVALID_LINK_ID ||
->> +	    (!test_bit(hlid, wlvif->links_map)) ||
->> +	    (cc33xx_is_queue_stopped_locked(cc, wlvif, q) &&
->> +	    !cc33xx_is_queue_stopped_by_reason_locked(cc, wlvif, q,
->> +						      stop_reason))) {
->> +		cc33xx_debug(DEBUG_TX, "DROP skb hlid %d q %d ", hlid, q);
->> +		ieee80211_free_txskb(hw, skb);
->> +		goto out;
+>> +	if (test_bit(CC33XX_FLAG_DRIVER_REMOVED, &cc->flags)) {
+>> +		cc33xx_info("Driver being removed, recovery disabled");
+>> +		return;
 >> +	}
+>> +
+>> +	cc->state = CC33XX_STATE_RESTARTING;
+>> +	set_bit(CC33XX_FLAG_RECOVERY_IN_PROGRESS, &cc->flags);
+>> +
+>> +	mutex_lock(&cc->mutex);
+>> +	while (!list_empty(&cc->wlvif_list)) {
+>> +		wlvif = list_first_entry(&cc->wlvif_list,
+>> +					 struct cc33xx_vif, list);
+>> +		vif = cc33xx_wlvif_to_vif(wlvif);
+>> +
+>> +		if (test_bit(WLVIF_FLAG_STA_ASSOCIATED, &wlvif->flags))
+>> +			ieee80211_connection_loss(vif);
+>> +
+>> +		__cc33xx_op_remove_interface(cc, vif, false);
+>> +	}
+>> +	mutex_unlock(&cc->mutex);
+>> +
+>> +	cc33xx_turn_off(cc);
+>> +	msleep(500);
+>> +
+>> +	mutex_lock(&cc->mutex);
+>> +	cc33xx_init_fw(cc);
+>> +	mutex_unlock(&cc->mutex);
+>> +
+>> +	ieee80211_restart_hw(cc->hw);
+>> +
+>> +	mutex_lock(&cc->mutex);
+>> +	clear_bit(CC33XX_FLAG_RECOVERY_IN_PROGRESS, &cc->flags);
+>> +	mutex_unlock(&cc->mutex);
 > 
-> I'd consider converting to itxq APIs, you already use them anyway via
-> ieee80211_handle_wake_tx_queue so you don't gain anything from not doing
-> it, but you gain a lot of flexibility from doing it and don't have to do
-> things like this?
+> even more so with the awful locking/unlocking/... here (also no need to
+> unlock to call restart_hw, I think?)
 > 
-> It's not _that_ hard.
+> and using both a mutex and atomic ops seems ... odd?
 
-OK, so just to make sure I understand - mac80211 now has Tx queues per 
-AC (struct ieee80211_txq) and it makes more sense to do something like 
-ath10k ([1])?
+cc33xx_turn_off() is called in the driver remove path so it expects the 
+mutex to be unlocked while cc33xx_init_fw() touches many driver members 
+and requires the lock.
+OK if i keep it?
 
-Frames pushed via original Tx op are non-QoS traffic, right? (i.e, no 
-need to worry about frame order between the two handlers)
+Mutex protection for the flags is indeed redundant and will be removed.
 
-Thank and regards,
+>> +unlock:
+>> +	mutex_unlock(&cc->mutex);
+>> +
+>> +	cancel_work_sync(&wlvif->rc_update_work);
+>> +	cancel_delayed_work_sync(&wlvif->connection_loss_work);
+>> +	cancel_delayed_work_sync(&wlvif->channel_switch_work);
+>> +	cancel_delayed_work_sync(&wlvif->pending_auth_complete_work);
+>> +	cancel_delayed_work_sync(&wlvif->roc_timeout_work);
+>> +
+>> +	mutex_lock(&cc->mutex);
+> 
+> also this kind of thing ... just use wiphy mutex/work
+>
+Yeah all this work use cc->mutex so it seems safe, will do.
+
+Thanks and regards,
 Michael.
-
-[1] 
-https://elixir.bootlin.com/linux/v6.12/source/drivers/net/wireless/ath/ath10k/mac.c#L4728
-
 
