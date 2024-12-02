@@ -1,166 +1,110 @@
-Return-Path: <linux-wireless+bounces-15828-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15831-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 394D59E0412
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Dec 2024 14:55:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC499E04BB
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Dec 2024 15:23:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D582B4386C
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Dec 2024 13:04:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04EA4283B9C
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Dec 2024 14:23:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0745203705;
-	Mon,  2 Dec 2024 13:02:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 389EC203714;
+	Mon,  2 Dec 2024 14:23:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OVNV3im+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72DD01FF5EF
-	for <linux-wireless@vger.kernel.org>; Mon,  2 Dec 2024 13:02:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B1D1FECB5
+	for <linux-wireless@vger.kernel.org>; Mon,  2 Dec 2024 14:23:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733144551; cv=none; b=KFQv/0Hg/ulhrmpqMwBT/EBCSoFxVZk5leIv5RV3Fxwr5sHdJ/liecezXBKUrdRnWoBvy8tlRoFP/v+7v6NQVEVFlGgFSkr414899SIaUQHb8gknRswzjh6aM1bkvD0a3gGBVXI9azVV2Qa6GkwydtMIRfIH51bgi/IeMwZ8OTs=
+	t=1733149419; cv=none; b=Jv+JrTsal8/clP94IqAdmFbUUnOxXB84bMqJ56/k7Jnb7e6q8yshGhha2Sa+QFfyQco76OQkg7I8Z4xPrbqbZ0tv7uD6pxarAXq6BJwqejm8E3AL0QFCF64bnqq5AZmVJ9mZ9pwMlWSN2eHRXXO5WCMMpcripCOgeNkq/V0HKrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733144551; c=relaxed/simple;
-	bh=7zvvUqfJMerN1dudzoqv+U2wF5Z3UUUimESx3IGTZBg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=UcG4sYoWWO+mKdezOCgMVnRq0XGT20OVRVSt6shPOmIUe5IPi2gi3AH070Xu2T2oAK9tR8I2OJVeTVqi/ma+ekCIpuahmIJKG4Evwouub6U14MNQn40mB3Z/LRkrfxWH2uoEW5PKav6L9PL2dK7VaMlXpESe8gEJAPS1u5M6U5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tI64J-0002GB-Hr; Mon, 02 Dec 2024 14:02:27 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tI64I-001IeN-1J;
-	Mon, 02 Dec 2024 14:02:27 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1tI608-00Boj9-03;
-	Mon, 02 Dec 2024 13:58:08 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 02 Dec 2024 13:58:10 +0100
-Subject: [PATCH v3 11/12] wifi: mwifiex: move common settings out of
- switch/case
+	s=arc-20240116; t=1733149419; c=relaxed/simple;
+	bh=ddXyzgpGt4YfD/0sGUPWPz0YagqWpiS9hsBrxijCS28=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KMGfyDg5bq+jA3pHSLRfj7B7cVelbUGKAkAp3/u3vlR99rjXbm3B3Iwdv+H2GHEar4VrcR6mfzVwRJt0gwbM+b6r6YJzsYf/ES65UirOBYONEqB1cXPRRx5PxraIl28iKPlXLa/nPMHFqPrtOZSRZ5ZanRxXVrA9huf2IzEWuTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OVNV3im+; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2127d4140bbso39460775ad.1
+        for <linux-wireless@vger.kernel.org>; Mon, 02 Dec 2024 06:23:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733149417; x=1733754217; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ddXyzgpGt4YfD/0sGUPWPz0YagqWpiS9hsBrxijCS28=;
+        b=OVNV3im+UI8NsFk+23i4y4iM/W6vj7B20IdUgntTJ0lepKmKw6ai0coDBtOaM87l7G
+         1CVuguydDk3OSduFINIIlRNcQ1gEiYgZ8rtf3WHE8r/NgybPvEr80C0hhnHT4Ay7mwWg
+         WVrRPyRe+WGWk2BmalOew1p+NKPeIF+GTpOcsmcOSMk9zblEF7yvo3KzNJT7MqV3/DLN
+         RyC9CQ4p5vV0lfzq73Pdt1rUe/id+McuQ8C2RMq5/2VtqMFqnXi4o3bRtL+O0k76pq77
+         NkbbrtDZNecNxjnfUQ+gcDrOqBTvAdA4ZeImLTmUnIiSEoaXQsQ7ARulvHwe0RybPuv+
+         gHdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733149417; x=1733754217;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ddXyzgpGt4YfD/0sGUPWPz0YagqWpiS9hsBrxijCS28=;
+        b=B4Iv2/4Dz9k4R/PmSmnR8hFLLp1+zEhxVwAwFpY3+ZSUXC/nhg+Jl7jD0fb6RM/AuK
+         7FeUoZrnfxluQmL7oNZtod1S4P1cZMeW7f9MK2qMh03ev4g3cdv4rkzL1aeQRvH+D5Lq
+         Nj0DKQCimHXkE53OdNFyjV+5GT96VnjeJsmS/VzIQmSMjKk9rKjhHXqScH4NaTT9Xr4o
+         eN5varNcxUvyOaT4IEorH+tOp3gFx6GMk/4p6xrA1AI6D/8yrMpBh56MgEDhNeK6R870
+         PYcxJaSyRwYSeA8DdmtZ4mkIEa2shBaKArcOiXMUl0Q0NmmOu9VBZyfTXOG6F8wlnUeM
+         +zMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXpR1H2nqdHuRVbTQwkr4P8M5O7qHXQTDJDWO7UxetIn3PCYg7/h+/zzHscfoLjDGd5RPqzQusgD/F52rI3cw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGlcJIDgxXkYcNFhl9HXWggoALHrL0qD8U7QBKl3Tf91DPQDrM
+	dLiP9KIikJOUTXHrA8GAOdjAdC2vpI1GVLVniaN1d41PKjOJmki5Bu4ZeVXtZbmbP17TLxYIZAp
+	sG9DN+PEkBlQVYOuH+dI6URVp8jI=
+X-Gm-Gg: ASbGncvYtymkmoLE4W86cC0D0ozzt+SkQ3RuT9M5D4Jy5RjongNWvwnQqEjlAB0AmkM
+	M35VDIeab2rJ9ZvqTLsRpwa/k3CkilaXPPQ==
+X-Google-Smtp-Source: AGHT+IFCPg3KH7kpAUHkaK/AmiADjjAqfIg07HCx93mKaGC+w/Sgl/IIaxp011A1W6qGEXZU3GLH11/lgUjFaVwY9Zk=
+X-Received: by 2002:a17:903:1cb:b0:212:68e2:6c81 with SMTP id
+ d9443c01a7336-21501289b60mr358035355ad.24.1733149416838; Mon, 02 Dec 2024
+ 06:23:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241202-mwifiex-cleanup-1-v3-11-317a6ce0dd5b@pengutronix.de>
-References: <20241202-mwifiex-cleanup-1-v3-0-317a6ce0dd5b@pengutronix.de>
-In-Reply-To: <20241202-mwifiex-cleanup-1-v3-0-317a6ce0dd5b@pengutronix.de>
-To: Brian Norris <briannorris@chromium.org>, 
- Francesco Dolcini <francesco@dolcini.it>, Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
- David Lin <yu-hao.lin@nxp.com>, kernel@pengutronix.de, 
- Sascha Hauer <s.hauer@pengutronix.de>
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1733144287; l=2972;
- i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=7zvvUqfJMerN1dudzoqv+U2wF5Z3UUUimESx3IGTZBg=;
- b=ifLCn7M7/mnR86YYTxxW+WA1YQQnSTtQ2/81GImMNfgi/Xjtsih3bEeRgyMW/fDKEIaytiL46
- jOpdtnLGOfWBzAZ0Vl5JVPNbT4p8Zb93EW9Mxyp/9ymFrgTDJjU8HC7
-X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
- pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: s.hauer@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-wireless@vger.kernel.org
+References: <CAG17S_P=bz0DFU71jEnV4RkT-Vxwvb2GpPwvLnjmD_n=2hLfUw@mail.gmail.com>
+ <20241202042100.6384-1-renjaya.zenta@formulatrix.com>
+In-Reply-To: <20241202042100.6384-1-renjaya.zenta@formulatrix.com>
+From: KeithG <ys3al35l@gmail.com>
+Date: Mon, 2 Dec 2024 08:23:26 -0600
+Message-ID: <CAG17S_O03v6YAK2aUa9kN7ZGgCk2=Lb5B6KeX9qihfFTJPZikA@mail.gmail.com>
+Subject: Re: brcmfmac: Unexpected brcmf_set_channel: set chanspec 0xd022 fail,
+ reason -52 - Part 2
+To: Renjaya Raga Zenta <renjaya.zenta@formulatrix.com>
+Cc: arend.vanspriel@broadcom.com, linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In mwifiex_add_virtual_intf() several settings done in a switch/case
-are the same in all cases. Move them out of the switch/case to
-deduplicate the code.
+Renjaya,
 
-bss_started is not initialized in all switch/case branches, but it is
-only used in AP mode in the driver, so it doesn't hurt to move its
-initialization out of the switch/case as well.
+Thanks! I am assuming this is done by setting a flag in the driver?
+Can you detail what that is, exactly?
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Reviewed-by: Francesco Dolcini <francesco@dolcini.it>
----
- drivers/net/wireless/marvell/mwifiex/cfg80211.c | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+Keith
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-index 8746943c17788..2ce54a3fc32f8 100644
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -3005,7 +3005,6 @@ struct wireless_dev *mwifiex_add_virtual_intf(struct wiphy *wiphy,
- 			return ERR_PTR(-EFAULT);
- 		}
- 
--		priv->wdev.wiphy = wiphy;
- 		priv->wdev.iftype = NL80211_IFTYPE_STATION;
- 
- 		if (type == NL80211_IFTYPE_UNSPECIFIED)
-@@ -3014,8 +3013,6 @@ struct wireless_dev *mwifiex_add_virtual_intf(struct wiphy *wiphy,
- 			priv->bss_mode = type;
- 
- 		priv->bss_type = MWIFIEX_BSS_TYPE_STA;
--		priv->frame_type = MWIFIEX_DATA_FRAME_TYPE_ETH_II;
--		priv->bss_priority = 0;
- 		priv->bss_role = MWIFIEX_BSS_ROLE_STA;
- 
- 		break;
-@@ -3035,14 +3032,10 @@ struct wireless_dev *mwifiex_add_virtual_intf(struct wiphy *wiphy,
- 			return ERR_PTR(-EFAULT);
- 		}
- 
--		priv->wdev.wiphy = wiphy;
- 		priv->wdev.iftype = NL80211_IFTYPE_AP;
- 
- 		priv->bss_type = MWIFIEX_BSS_TYPE_UAP;
--		priv->frame_type = MWIFIEX_DATA_FRAME_TYPE_ETH_II;
--		priv->bss_priority = 0;
- 		priv->bss_role = MWIFIEX_BSS_ROLE_UAP;
--		priv->bss_started = 0;
- 		priv->bss_mode = type;
- 
- 		break;
-@@ -3062,7 +3055,6 @@ struct wireless_dev *mwifiex_add_virtual_intf(struct wiphy *wiphy,
- 			return ERR_PTR(-EFAULT);
- 		}
- 
--		priv->wdev.wiphy = wiphy;
- 		/* At start-up, wpa_supplicant tries to change the interface
- 		 * to NL80211_IFTYPE_STATION if it is not managed mode.
- 		 */
-@@ -3075,10 +3067,7 @@ struct wireless_dev *mwifiex_add_virtual_intf(struct wiphy *wiphy,
- 		 */
- 		priv->bss_type = MWIFIEX_BSS_TYPE_P2P;
- 
--		priv->frame_type = MWIFIEX_DATA_FRAME_TYPE_ETH_II;
--		priv->bss_priority = 0;
- 		priv->bss_role = MWIFIEX_BSS_ROLE_STA;
--		priv->bss_started = 0;
- 
- 		if (mwifiex_cfg80211_init_p2p_client(priv)) {
- 			memset(&priv->wdev, 0, sizeof(priv->wdev));
-@@ -3092,6 +3081,11 @@ struct wireless_dev *mwifiex_add_virtual_intf(struct wiphy *wiphy,
- 		return ERR_PTR(-EINVAL);
- 	}
- 
-+	priv->wdev.wiphy = wiphy;
-+	priv->bss_priority = 0;
-+	priv->bss_started = 0;
-+	priv->frame_type = MWIFIEX_DATA_FRAME_TYPE_ETH_II;
-+
- 	dev = alloc_netdev_mqs(sizeof(struct mwifiex_private *), name,
- 			       name_assign_type, ether_setup,
- 			       IEEE80211_NUM_ACS, 1);
-
--- 
-2.39.5
-
+On Sun, Dec 1, 2024 at 10:21=E2=80=AFPM Renjaya Raga Zenta
+<renjaya.zenta@formulatrix.com> wrote:
+>
+> I believe those errors are not fatal but I still hope this can be fixed
+> in the kernel (or firmware? (or wpa_supplicant?)).
+>
+> Fortunately, you can disable DUMP_OBSS feature to disable dump_survey
+> which triggers those error messages.
+>
+> See: https://github.com/raspberrypi/linux/issues/6049#issuecomment-248543=
+1104
+>
+> Regards,
+> Renjaya
 
