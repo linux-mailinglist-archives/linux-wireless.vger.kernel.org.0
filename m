@@ -1,89 +1,84 @@
-Return-Path: <linux-wireless+bounces-15814-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15815-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 124579DF975
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Dec 2024 04:20:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 398D39DF9CF
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Dec 2024 05:21:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8132EB21BBF
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Dec 2024 03:20:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 038832817DF
+	for <lists+linux-wireless@lfdr.de>; Mon,  2 Dec 2024 04:21:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516D72B2D7;
-	Mon,  2 Dec 2024 03:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21911273FE;
+	Mon,  2 Dec 2024 04:21:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=formulatrix.com header.i=@formulatrix.com header.b="BxNMWPjT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f68.google.com (mail-pj1-f68.google.com [209.85.216.68])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2EB22EED;
-	Mon,  2 Dec 2024 03:20:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009D810F1
+	for <linux-wireless@vger.kernel.org>; Mon,  2 Dec 2024 04:21:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733109610; cv=none; b=oO1wnJ3nmQtZiVkr9HVrMrH8lCvGxLO6+2Vf2uu/4zlczTPFpb6dVM+hjVKik4986kCJ/vNjONLqcjxQna0uvmZho/c5RweFrWaGVAnvDZhqy96pc3YdOEVe5bg6BW96WWgCDjj+mwXZgLGlYoTV71hQhH5B+lBNDrLoXuk+o48=
+	t=1733113271; cv=none; b=ZHKvt+GkWygLyW0UoLyFUYOn80/kh854mH6AFfyMmvzLPUDOnhJUXobPO1G7BGO2bt1vXZvHAbEZwZH/LuUbLKvzdU9kpt7iWLTt3wOWVx2euaRit/cpBs+jJ7xe669DShXTmHBDfV7PgO/4bOzJaDEgD3uSDNIQ8iZmWaKsRlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733109610; c=relaxed/simple;
-	bh=AjrFy7cB+gFSVEX8oiD8J1a7UEL1dWiZDBP73ip2qdo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=as6+an93meoGzUKZrZMk9m0MJwR3FxfZuCk86nDPVELAldc6KtQvMShp4qQogLVaH2x+sVP274mv1oxJjg2o5vow6wDQEN8x57PUM1Ak4enNSmE74Ep22BtKx+9m0J1HVfRDJHXVyrmaafbJsJGn7JZwQTXWjYLItQ1Zqustm08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.216.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f68.google.com with SMTP id 98e67ed59e1d1-2eb1433958dso2416947a91.2;
-        Sun, 01 Dec 2024 19:20:08 -0800 (PST)
+	s=arc-20240116; t=1733113271; c=relaxed/simple;
+	bh=7USzoEU6Xcui4TulsJfKEW7xW48TUJZVi5W+nJEQxOM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tDO6SP7U9bB/U7kGTjzFUSErnZfX+ezcDJ1bGz+5xhDPq9HvcWK8ZxWsCHOotY5Li6fLBO0odIbOr/CZvRvxZwmSVWPPfeiZXuKsZYYWp/NDB7Kx4UIY4CkkFc2N0av9LBRoxZyfEofEeg4kFUyjiWz0FGNrrWerKKmqIxw2GxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=formulatrix.com; spf=pass smtp.mailfrom=formulatrix.com; dkim=pass (1024-bit key) header.d=formulatrix.com header.i=@formulatrix.com header.b=BxNMWPjT; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=formulatrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=formulatrix.com
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7250c199602so3104197b3a.1
+        for <linux-wireless@vger.kernel.org>; Sun, 01 Dec 2024 20:21:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=formulatrix.com; s=google; t=1733113264; x=1733718064; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7USzoEU6Xcui4TulsJfKEW7xW48TUJZVi5W+nJEQxOM=;
+        b=BxNMWPjTBPwc16FYNg3Qg9BMg4wVA6HDYvUCbST1zkUVCmOeO2OF1v1aSpZP/70V7j
+         lD3G5g0LHvGGnFBwejzdJQCcvUhlD78sHdsWeenZf9DmnI7aJxkvyYpllmJl6IsRWaAL
+         q3recrLlPedzvI0yiomQVNVN57Fyt5iTgPEtQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733109608; x=1733714408;
+        d=1e100.net; s=20230601; t=1733113264; x=1733718064;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cTsDv6X/TDHosGjWCj6G12vDDaZPM/8Azm3atM3kxEg=;
-        b=DYu890YPhTA1CwOS9k4H0C52pvcakOz1eNoDJozzApx1hdd9LFJQFxg5I8zQUwNEj0
-         FnYOOyrQ3QqD5nhMht8TQe2dhTPNdOFNC86JCBv6H4eH+Ht5yfS2mKT8OpaiR7/MQ9Om
-         x7AussZTY6sM34016Yk/df/jS+9QMLhKW81cUBuHdxZXoMOTah8UAsPVbUscs5hV+F/I
-         teQ1bjNNAzQuqZNZXpET8W94WWJlKyMkRIcgKu4rrMGPpMoToFYiPo31XjxDjecCDo+l
-         Y9qk1ni14pGtYqQKF5Ud6ES1jwbDWxAYeYixW3FQ0F41HXjyECCyTHAgWBvWD4abfMCz
-         GnNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUgC4E45jStaZV9KNVGt4SSVDsS0oGYOVpBNu2S919GulTYzldEGI115qN17p0WiExQEmmnps2BEKf3zIz6h5k=@vger.kernel.org, AJvYcCV20imhE/YuO31YT8jxss+9fosF49qLYmJ0EtzP1U/1paYKsNllsOBH0GyVu8kiTXkHIszU2lQvLChqrVs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzS0gcUVoD62rQPT7fPN/YazYVE7wfOlqiUgjh0X9rgWdFyZi6L
-	hlCm8v7sMeUWmPbVZRRQcO2JSdRvSnIbrF9Nl5tEW619lTqEfzat
-X-Gm-Gg: ASbGnct02bklPvCSy6tEBhKSWU2Lm4rMJ7dZqIImUWSE+i7xEhgtuuwZzGzYLfrsno8
-	B7poegyOsIDGOMlsaOeCfoVry4wU/7OQnzgh5gZAGaC+EmGw8CdlMjTfUkxq/cKAKCniFkVvv1F
-	yCjz+yw9FtVxblln1UzLab8zMXX1eRDJw+N1d1KoUOS02RuBWklHQutdlQ1U30MR49oZK2u8RGs
-	cWJIM6jmOn64JoP/KgvU7pZbUrYeKjrKI4vBhu3ls4NmVU8sZ05qi6PrLXXcwp3it07a1hSvw==
-X-Google-Smtp-Source: AGHT+IEZfu+l1o1hoQ1rEHsHEhSrUCQ+IgltJe4rj/iDVEpIiZTQOzNjgMefNIoGfMKiTtnF13E2Dg==
-X-Received: by 2002:a17:90b:180f:b0:2ee:d024:e4f7 with SMTP id 98e67ed59e1d1-2eed024e5d9mr3157086a91.0.1733109607587;
-        Sun, 01 Dec 2024 19:20:07 -0800 (PST)
-Received: from kylin-ThinkBook-15-G2-ITL.. ([116.128.244.171])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2eed19aa971sm540723a91.1.2024.12.01.19.20.00
+        bh=7USzoEU6Xcui4TulsJfKEW7xW48TUJZVi5W+nJEQxOM=;
+        b=fje9HIpT/Ms62JmEMEOpgURVp8juabmEAHMALl6XNvxo3v4G7I3FF/dEVNxQSMw7qs
+         CPGl+6FUysgRHkZ/3+BRBJw8ra5PkU83Xyt2tyWLzi7TdjpK0zXZpjvVXQV9R2gGqqja
+         Cmp8zr1QMKnpYSu7lwJX2XeuRuJb5RwfMZCiyq/Xq5o2RfEDtTFZFNpwC6NEAtioIaCh
+         +qiCPRruZ9GT7bXahk3PdTL5E/+xIbTrmbzmFR682af0mJWoY2Va8S8I3RJ94TdQFjKy
+         OYrRlY5Fyk4GxipzfC3Pytb9MXjpcsU8igqcxf65gwjgiNh7qNi+kp0Rwn1V1s8eqPPe
+         t3OQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX6VG/bOJj3QzERXl9pC7B9lx1shMnvaQ8G69ipVFvWvqqdBD0gvjUPKv6NpckjKsyiPTkYI2OYm4teLYaC8g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEcg0oCfYBDWf6RhAt8jQPicxpksl/1IC/AjvR+pPauRSWMTeh
+	I92TwdfLrUzzKQxqu6wmSGWjzXqs3jvy/aQuH53q5MAbNh3yHBx4T4ToQk+LLg==
+X-Gm-Gg: ASbGncvaxWAuCxgyDeqQOS4XVSPPf5J3P/8ACnKBO/e4YbYCWovw3qxffdhCjAI3JpL
+	ukv6EN3gbxjxQoEr33NfhTr6OxxZgWi3ilgf0pk1SlqIfE/Ds0aI0Ah3ZvE0lojd/gLbVzRxzOV
+	Ohenu6P0DmDVChgzcKFOR3etgwWVBd5/SdEaOS9+MxXBr75c84wLXWMM3CyTpV0BSmiKfPVdf/r
+	OGC/YD+pfXyW5Yoks49UuKL8lqb/n3dx0dKK31Kk4Q97+11MkwNKYs9sL7sd2Wke+QIWNzsmtIM
+	ILS1jBc=
+X-Google-Smtp-Source: AGHT+IE0d77tTzHu3w/uhDBXIxj6sTADlB76crZC4Q8OZi/5uEJoQ3bK2deCXGIuZ7wYwPVbxCTF2w==
+X-Received: by 2002:a17:902:ef4d:b0:215:5d43:6f0e with SMTP id d9443c01a7336-2155d4373d5mr118961885ad.41.1733113264308;
+        Sun, 01 Dec 2024 20:21:04 -0800 (PST)
+Received: from SE-151.formulatrix.internal ([103.12.224.66])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-215413d0579sm49266695ad.133.2024.12.01.20.21.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Dec 2024 19:20:07 -0800 (PST)
-From: xueqin Luo <luoxueqin@kylinos.cn>
-To: nbd@nbd.name,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	kvalo@kernel.org,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com
-Cc: howard-yh.hsu@mediatek.com,
-	benjamin-jw.lin@mediatek.com,
-	StanleyYP.Wang@mediatek.com,
-	Bo.Jiao@mediatek.com,
-	sujuan.chen@mediatek.com,
-	chui-hao.chiu@mediatek.com,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	make24@iscas.ac.cn,
-	xueqin Luo <luoxueqin@kylinos.cn>
-Subject: [PATCH -next 2/2] mt76: mt7915: fix overflows seen when writing limit attributes
-Date: Mon,  2 Dec 2024 11:19:17 +0800
-Message-Id: <20241202031917.23741-3-luoxueqin@kylinos.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241202031917.23741-1-luoxueqin@kylinos.cn>
-References: <20241202031917.23741-1-luoxueqin@kylinos.cn>
+        Sun, 01 Dec 2024 20:21:03 -0800 (PST)
+From: Renjaya Raga Zenta <renjaya.zenta@formulatrix.com>
+To: ys3al35l@gmail.com
+Cc: arend.vanspriel@broadcom.com,
+	linux-wireless@vger.kernel.org
+Subject: Re: brcmfmac: Unexpected brcmf_set_channel: set chanspec 0xd022 fail, reason -52 - Part 2
+Date: Mon,  2 Dec 2024 11:21:00 +0700
+Message-ID: <20241202042100.6384-1-renjaya.zenta@formulatrix.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <CAG17S_P=bz0DFU71jEnV4RkT-Vxwvb2GpPwvLnjmD_n=2hLfUw@mail.gmail.com>
+References: <CAG17S_P=bz0DFU71jEnV4RkT-Vxwvb2GpPwvLnjmD_n=2hLfUw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -92,31 +87,14 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-DIV_ROUND_CLOSEST() after kstrtoul() results in an overflow if a large
-number such as 18446744073709551615 is provided by the user.
-Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
-This commit was inspired by commit: 57ee12b6c514.
+I believe those errors are not fatal but I still hope this can be fixed
+in the kernel (or firmware? (or wpa_supplicant?)).
 
-Fixes: 02ee68b95d81 ("mt76: mt7915: add control knobs for thermal throttling")
-Signed-off-by: xueqin Luo <luoxueqin@kylinos.cn>
----
- drivers/net/wireless/mediatek/mt76/mt7915/init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Fortunately, you can disable DUMP_OBSS feature to disable dump_survey
+which triggers those error messages.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 6bef96e3d2a3..77d82ccd7307 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -82,7 +82,7 @@ static ssize_t mt7915_thermal_temp_store(struct device *dev,
- 		return ret;
- 
- 	mutex_lock(&phy->dev->mt76.mutex);
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 60, 130);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, 60 * 1000, 130 * 1000), 1000);
- 
- 	if ((i - 1 == MT7915_CRIT_TEMP_IDX &&
- 	     val > phy->throttle_temp[MT7915_MAX_TEMP_IDX]) ||
--- 
-2.34.1
+See: https://github.com/raspberrypi/linux/issues/6049#issuecomment-2485431104
 
+Regards,
+Renjaya
 
