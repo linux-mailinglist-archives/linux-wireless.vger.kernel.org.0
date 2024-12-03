@@ -1,134 +1,105 @@
-Return-Path: <linux-wireless+bounces-15838-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15839-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DC4D9E0F67
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Dec 2024 00:49:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38AD69E0F7B
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Dec 2024 01:04:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1EF9B2226F
-	for <lists+linux-wireless@lfdr.de>; Mon,  2 Dec 2024 23:49:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3535B21DE1
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Dec 2024 00:04:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DB501DFD80;
-	Mon,  2 Dec 2024 23:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36C1B646;
+	Tue,  3 Dec 2024 00:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mpoxTxFd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MRgH8+go"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0FB1DF972
-	for <linux-wireless@vger.kernel.org>; Mon,  2 Dec 2024 23:49:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ECE0645
+	for <linux-wireless@vger.kernel.org>; Tue,  3 Dec 2024 00:04:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733183382; cv=none; b=CZtGlGFg9yiAb5FV605YPO9dvuKAO90w47TuwisO+6RJk/yezeonDJqj5wKaf/W6VaNPdoTUOEv1LYmwe0Q0OoQmu7rpab01xL4hjseZl42RivPy3XN460eNsc+SHRUaX9gJI05+qW2J0T8KtEHTCIIQ6DOtMApOkoitLVPorYo=
+	t=1733184273; cv=none; b=b16DMvcCmpRb9pXpb7XKKoNHdY06FFT1jvVS4Upss1vKVDibQ1lCPblujK1YFETbuGlrDm+NtLDQgwOAz5pI98lzk2IvUbYgYEOB1qxebjY25fPJptl+UvOd8YF+CupjJCp9aM9r448OooEbvAqfQtLrxPeyHwj6lGxprui+bgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733183382; c=relaxed/simple;
-	bh=030Lr2uBlPApQpK+RsVmnSP5J3APa3CYpYGVR3knTOw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XjAB9Bcb8ouErgpwa1A+UJsxPrbgufE7+wTutIZRtwfi5C4NVaogfDIdv2x3xVy03IySiSgffqJbIQj5NQ2ML1uQ/0fFqHplGjYWm15vvTsSLSOkZNVtUNRT74ovHzCxRSWfyBaPwq3kWE4p2FmPZkNkaQrcW/tKxFCb0FcHI+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mpoxTxFd; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2ee74291415so1990337a91.3
-        for <linux-wireless@vger.kernel.org>; Mon, 02 Dec 2024 15:49:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733183380; x=1733788180; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=030Lr2uBlPApQpK+RsVmnSP5J3APa3CYpYGVR3knTOw=;
-        b=mpoxTxFdL6c7rkQEQWYQoY7vmsno+KRjMHgA3mD8VEeXMGHzhcTM2XRUHjpt/Vj15F
-         erQABVaOZmls5Bz3oGmCvCA2gg7TCWJR1ZshZ6s0274UKhExYrKFS8UHH6hnZsCrSb/h
-         E8NeNOpNsJpuJai0e70j8MEDx5jMmL/tI7NXqtPhXIL073AiTpbZm+92XZoEjlQauugE
-         MKxm8Zo4LfjB2C7DaXRpoGADdAUkT6r+FVSkoWn3teab5dhxe/4sXso4tqbIbYl69Qn0
-         WZVI98YYQ0GngQVi8BGzHm09W4fZOX1za7iPKCnekCRxxebpZfMm1E9yqqLPphpeahqK
-         ifmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733183380; x=1733788180;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=030Lr2uBlPApQpK+RsVmnSP5J3APa3CYpYGVR3knTOw=;
-        b=IZsHXMZ37sOGERYx2FIHh++FY0MHY6ou5npbNywFry9N/wN8CpIWUm12Ok/FLfMmFe
-         5IBRkxsB/DZiCQDXVJ5qMg6TTCUpBvlHLdwT0BtD8+IWate5DX1p1vC+L2NMis9ixXRi
-         lKOqkx4paZuizjxMeZ6kN68Zy0iBgClkxwSY5YS65UbinipNuso152lE1z1kaFoDFIn5
-         wj7YpizBBLPC9/Hw7ZF/j2p4JVRmdme9WiEnN81TtOZR+2MeKBTs7K45udFvPgNfQoDy
-         sfJkhi6L2bRJtto00+mD79H3sMecU91eXBEgiYpmX2oZnLm+5JLSMrI4geHpHhW1/ZOa
-         Lsng==
-X-Gm-Message-State: AOJu0YzVUcHFuDC46R+yCH+rTLPp/Ptwsywc2LRY1kZKtsBSkPgiMhag
-	XuXGuof+baZCNEomihGWWaqB435a2+X+Lk1HfxBtUfiVuqWT+spzUFQ55CQQiTi5jQswZWF2pik
-	+Q/ZuMM/x7fQLXRKIudpaeK2uXr0=
-X-Gm-Gg: ASbGncv6imBE+0YdnmTF/faB2GKUxKOwVRj1yS5LKO36/aRne4IgVWKpTr+LLkYY5Yg
-	/aqAyd+4s//W6gUjWdWk9M/n0V95IhOl+GQ==
-X-Google-Smtp-Source: AGHT+IGFGI6lxGZFYz/CwnA2xA/qyP6jMULGfd4sW4NG9SAiN+JVyevwkruNg/k5T2N0x1JJa0pSWcsGe3HntYcpKDA=
-X-Received: by 2002:a17:90b:4fca:b0:2ee:e961:3052 with SMTP id
- 98e67ed59e1d1-2ef01201297mr814633a91.14.1733183379881; Mon, 02 Dec 2024
- 15:49:39 -0800 (PST)
+	s=arc-20240116; t=1733184273; c=relaxed/simple;
+	bh=hw6FnVa5vFrqLftPuCTEe23nXWJG217ueihs4BGmRv4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k2xvlGmog4cIqEV/L3ZNFckUV1reOnPTOGo70WdTM/exxW2islaH+oWEwMgA1sKgb27Wj5NRdZcGQkvd20bkuInLyunw6CQ1Zd5V6li/Sn2soWC6NI9usQSrtn8gr34KCxwKGZ3kWgmQz6BAL1hSo0XlPTOjTepXuzHGaFEBmX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MRgH8+go; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE70C4CED2;
+	Tue,  3 Dec 2024 00:04:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733184272;
+	bh=hw6FnVa5vFrqLftPuCTEe23nXWJG217ueihs4BGmRv4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=MRgH8+goTM3SRnmzY0aYWZ1iI2+RpvEzFrvnJHwmPzaBrbnHRN2RSJCttObH5KUtt
+	 2pIL0kyCBzrZ/etSdQS1dKd/NCKFLMMeb9ntB73EbnfXBVROQQ7vjcLZKcinC6BYsH
+	 ZAn8l/Vm48zv0YzeSAOxbvOng9Gp8JOsmpNVi0GH5GMdMZrOJ2qTRopuq8FYOiQkPN
+	 qlTNOIeohlw8gpgjfVU0dzzSwXMPOmPTC7XTpBCabNu2CyfYcwOf2/0ePdn61O5eZa
+	 5TGijgfH0oEqGSsvXJLWWG8dAw+oXju78rA9eTAcwhntQZ340qbXXSsaY/XcNHs5q9
+	 N+yPUdSh9HVnA==
+Message-ID: <c3641fa9-b016-465c-ad16-bd7d952b090e@kernel.org>
+Date: Mon, 2 Dec 2024 16:04:31 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAG17S_P=bz0DFU71jEnV4RkT-Vxwvb2GpPwvLnjmD_n=2hLfUw@mail.gmail.com>
- <19388725ac0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <19388725ac0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-From: KeithG <ys3al35l@gmail.com>
-Date: Mon, 2 Dec 2024 17:49:28 -0600
-Message-ID: <CAG17S_MJZ4VHvXiGj0qoimfQ8GLE6OEZe4DHZLx0H+0U_1X4pQ@mail.gmail.com>
-Subject: Re: brcmfmac: Unexpected brcmf_set_channel: set chanspec 0xd022 fail,
- reason -52 - Part 2
-To: Arend Van Spriel <arend.vanspriel@broadcom.com>
-Cc: linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] wifi: ath12k: Support Transmit Rate Buffer Stats
+To: Roopni Devanathan <quic_rdevanat@quicinc.com>, ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org,
+ Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+References: <20241128110949.3672364-1-quic_rdevanat@quicinc.com>
+ <20241128110949.3672364-2-quic_rdevanat@quicinc.com>
+From: Jeff Johnson <jjohnson@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20241128110949.3672364-2-quic_rdevanat@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Arend,
+On 11/28/2024 3:09 AM, Roopni Devanathan wrote:
+> From: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+> 
+> Add support to request transmit rate buffer stats from firmware through
+> HTT stats type 31. These stats give information such as MCS, NSS and
+> bandwidth of transmit and input buffer.
+> 
+> Sample output:
+> -------------
+> echo 31 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
+> cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats
+> HTT_STATS_PDEV_TX_RATE_TXBF_STATS:
+> Legacy OFDM Rates: 6 Mbps: 0, 9 Mbps: 0, 12 Mbps: 0, 18 Mbps: 0
+> 24 Mbps: 0, 36 Mbps: 0, 48 Mbps: 0, 54 Mbps: 0
+> tx_ol_mcs =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0
+> tx_ibf_mcs =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0
+> tx_txbf_mcs =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0
+> tx_ol_nss =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0
+> tx_ibf_nss =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0
+> tx_txbf_nss =  0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0
+> tx_ol_bw =  0:0, 1:0, 2:0, 3:0, 4:0
+> half_tx_ol_bw =  0:0, 1:0, 2:0, 3:0, 4:0
+> quarter_tx_ol_bw =  0:0, 1:0, 2:0, 3:0, 4:0
+> tx_ibf_bw =  0:0, 1:0, 2:0, 3:0, 4:0
+> half_tx_ibf_bw =  0:0, 1:0, 2:0, 3:0, 4:0
+> quarter_tx_ibf_bw =  0:0, 1:0, 2:0, 3:0, 4:0
+> tx_txbf_bw =  0:0, 1:0, 2:0, 3:0, 4:0
+> half_tx_txbf_bw =  0:0, 1:0, 2:0, 3:0, 4:0
+> quarter_tx_txbf_bw =  0:0, 1:0, 2:0, 3:0, 4:0
+> 
+> HTT_STATS_PDEV_TXBF_FLAG_RETURN_STATS:
+> TXBF_reason_code_stats: 0:0, 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00214-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
+> Signed-off-by: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+> Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
 
-Yes, I can build and test patches.
-
-I will build a current kernel version tonight and will then be able to
-add any patches you may develop to address this issue.
-
-If I may ask, could you also patch the WPA3 External_Auth
-functionality as well? I can test patches to that as well.
-
-Regards,
-
-Keith
-
-On Mon, Dec 2, 2024 at 11:36=E2=80=AFAM Arend Van Spriel
-<arend.vanspriel@broadcom.com> wrote:
->
-> On December 1, 2024 10:55:26 PM KeithG <ys3al35l@gmail.com> wrote:
->
-> > This floods the journal of my Pi ev ery 6 seconds:
-> > Dec 01 15:51:30 pi5 kernel: brcmfmac: brcmf_set_channel: set chanspec
-> > 0xd022 fail, reason -52
-> > Dec 01 15:51:31 pi5 kernel: brcmfmac: brcmf_set_channel: set chanspec
-> > 0xd026 fail, reason -52
-> > Dec 01 15:51:31 pi5 kernel: brcmfmac: brcmf_set_channel: set chanspec
-> > 0xd02a fail, reason -52
-> > Dec 01 15:51:31 pi5 kernel: brcmfmac: brcmf_set_channel: set chanspec
-> > 0xd02e fail, reason -52
-> >
-> > Is there something that can be done? Is there something I can help
-> > with to fix this? I can test on multiple Pis, but cannot actually code
-> > anything. Is this going to wait for the new infineon driver
-> > development? The latest kernel where this has been seen is:
-> > Linux pi5 6.6.62+rpt-rpi-2712 #1 SMP PREEMPT Debian 1:6.6.62-1+rpt1
-> > (2024-11-25) aarch64 GNU/Linux
->
-> You can build and test patches? Is it only those specific channels as
-> listed above? Those are pre -802.11b allowed in Japan. I don't think any =
-of
-> the brcmfmac devices actually support those channels.
->
-> Regards,
-> Arend
->
->
->
+Acked-by: Jeff Johnson <jjohnson@kernel.org>
 
