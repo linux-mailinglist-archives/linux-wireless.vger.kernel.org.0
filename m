@@ -1,192 +1,121 @@
-Return-Path: <linux-wireless+bounces-15860-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15861-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0838B9E2275
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Dec 2024 16:24:58 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3437A16B8A0
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Dec 2024 15:20:37 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69EC61F4709;
-	Tue,  3 Dec 2024 15:20:14 +0000 (UTC)
-X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFC7D9E2225
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Dec 2024 16:21:18 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B04B1DA3D
-	for <linux-wireless@vger.kernel.org>; Tue,  3 Dec 2024 15:20:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733239214; cv=none; b=DvwZsp90wZaZB4Y+c1dXRDYtPrm2e+fO03NN4MSU9mavlqZsCYlVstb6bocmMQ5bid+8XHtHIw/rV5sEwV45YODTGgVarxVmL32dcEe/nFQ7mmRHXtnUeg/NL8vv4FMGDC4vwNFYCjMJ/P8BviPtA2o/ugnXRfkb1WaA1UJZITA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733239214; c=relaxed/simple;
-	bh=Rwel+CPAN1EvhrUDTIQLtVBjBf5mu/zpBvul9mXq5JE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I7vLI3AITOOBI5XkY8fpXKftjxXnkpAOq9CZxQGBkCpWmrDPiXXHoQ/baRKBm+pDon+UM+UO3bLzHr0bm+OzUx/VbDkAZschDvXy52Q81YVW6u9ocAPdlUMqxxNdIUfdiL9dMv+SFIjXO9E85tlixu2KT0zMSv6l5wFzWC9271M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; arc=none smtp.client-ip=23.88.38.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
-Received: from prime.localnet (p200300c59742eEd82663beCA53814B0F.dip0.t-ipconnect.de [IPv6:2003:c5:9742:eed8:2663:beca:5381:4b0f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5C192829E7
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Dec 2024 15:21:17 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 545061F757D;
+	Tue,  3 Dec 2024 15:21:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Leqn7NoZ"
+X-Original-To: linux-wireless@vger.kernel.org
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with ESMTPSA id D8878FA132;
-	Tue,  3 Dec 2024 16:10:49 +0100 (CET)
-From: Simon Wunderlich <sw@simonwunderlich.de>
-To: lkp@intel.com, johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
- Issam Hamdi <ih@simonwunderlich.de>
-Cc: Issam Hamdi <ih@simonwunderlich.de>
-Subject:
- Re: [RFC] wifi: intel: incorrect RSSI values on beacons from APs using legacy
- rates
-Date: Tue, 03 Dec 2024 16:10:49 +0100
-Message-ID: <7743427.EvYhyI6sBW@prime>
-In-Reply-To: <20241125164034.2712936-1-ih@simonwunderlich.de>
-References: <20241125164034.2712936-1-ih@simonwunderlich.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9821F7550;
+	Tue,  3 Dec 2024 15:21:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1733239266; cv=none; b=bXAHLGjT5LQCSkjqKqHlSnLHWeceRDNHL1UVbXZqaP7kiKx2jjzvi2clMUp1fKA8i+ILt5ZISsxer3mfBksOVmPoAEOsw4X2pd6VUKkVu6MSsdIhEXAjHU66KrbKnJ+A9xQ5XFfzI/quslh/0FhUHetn1u+UTBjx8dtBiysdmZ0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1733239266; c=relaxed/simple;
+	bh=ZOVJrKZpqP/qN6d0VanJ/N+xrDibb3SB3TcMyv/HC0A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Cgb+hieTMvAKvIyZoyVqydRShB5wr2By3XjXqD0GNZ+dkNMOlstwR0/SpL0q9TlRLNmPn7IRO5npnG7Q+4PJvr3MankLf8wiGydZTGM1ECPq/RknP7vAzV1Qsg5H4e+y4AHQ70lrr+lbM4Pu1f2IQ8hMmXJ2kT6Vu45urmcQIIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Leqn7NoZ; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-215c54e5f24so6687065ad.2;
+        Tue, 03 Dec 2024 07:21:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733239264; x=1733844064; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QxUB0u3+R5bx7OygSfFY/wa3IquwZ32J6yrPPJN5bDg=;
+        b=Leqn7NoZrhfSJGfxheWVyNDc7DBCW5dpOyuVVS2CsCDv7qdtRLuJvC9xwPZ/z0EDlN
+         3qxM6b8PwjAseWiKyETAqJhimaZOuUVMHDBbOS+2Gcr/Jcg1GdNLZnN6f814FFqJtyvP
+         /lZtQEazQmD52T5HNqUaK04upSyrAkxbnsqYZsBSsFG5dKNbdpEiN65mZgrPd8Nyr0kY
+         Ghgq1gl6hLDbxWeBZp8DL5dldMmNWMZKIVC2B3thfv5kRpytIYdn0DEcmaizImpYbdne
+         RBVD6Uc2eW2lHxiRnMxVFUWv9iLwAq2GO8Y/h9rZoSqW16bxZtc99RBSYfxjJ76h6TAL
+         LGKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733239264; x=1733844064;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=QxUB0u3+R5bx7OygSfFY/wa3IquwZ32J6yrPPJN5bDg=;
+        b=lBdcNLZtq3n5zx3ACknvw4DbXkIu27ynsyLLCuOi4ErJnOeZRNaCyyWmuq/d7qpriu
+         6FKqM2Bw2oE9YmjpRnPv3BFKFiDwL4KTGcVeXHXeSPGsvBjKKoBQFG7AGuVHYUKi4ZhL
+         0W7vucvhJ4D30hE5cSry1MdygAKHUvHIwkFrx5xalxaXFVhqKxxGBWVnaG/sBWTR4339
+         ivY5bQTGfjryAkfTHjYXfoCkvWBaYtNpiPgtaOUOwaFCxVzzSVtvQsXyhkHavpO8WvSB
+         4rIFptSM14H0Ok7TfXSL1Zlj/yPa9GVCmG1crRAARxdpOW1lM9AIRPRZh/2NHkkyQV7x
+         kKlA==
+X-Forwarded-Encrypted: i=1; AJvYcCVJVzPHGMTtHnqLLbCv2YzQxFYnXKhJP169LcNuHVY2AcJFGLL439behu2xGVHr6VX5pDFON199@vger.kernel.org, AJvYcCWLR6UjNZo1GjUtkd2+Ocw2wF1CDV+LPCJjcxArqb++ubYasCAOAWMwDPXHmoQY7Ba5avVB8cVVZAIRUIo2@vger.kernel.org, AJvYcCWdJ8SqqEFWo5NaCzs5HQsBdS3RCWW7O9bB0RVsTzfMTRGsl5eMw8QHiFhoikVw73KDmYKwNeLNeNwFXiC/Z44=@vger.kernel.org, AJvYcCXTAGSidZD15qz5UNKcOKvZqbkjrJxUx2EgnSJOXV/d32V45m61e1uyfaleGMn79GJSxQFW7eEzWJKOPB6zmVA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwRhRWxJxfUd1mqrKbs7JEgGiTgc+UzvLu+Hn+8ypB0TOJZJHV0
+	zTSrsb1MnqVUNzyYYA7trQu8+aEo1aN4lpteyqgNVOo2JSaLBema
+X-Gm-Gg: ASbGnctj4miFdNRyW1UV5Gb46Knbdj/83dkHBBmdAtBnyYm79MYA8piOBgORtwVaWtl
+	4luoKwRhWoraYkW3m4uwojb0cMRy3gHcBQlquo10oJt7rmlWItHz8pV7vj59m2+4Lw3TIZAH2dw
+	Wk9En55yNPOxzpNUHc0+rrr18vpLVUqT9jAo+BWuyEEVu7ITGeRbBLOJZ30I1yj/KDBXxsuX1y3
+	k/9DXEsLeXWJUPXfTXvf405GTC5CfBOL9oW/js7hnvAFlEEADKE6w==
+X-Google-Smtp-Source: AGHT+IFP28tEUaXc+jsg6TNlhSwrUvGZ1LuMMkn2qz87wLbIGrbxwtznFrY+h1Z0IdtybAtEFt8roQ==
+X-Received: by 2002:a17:902:e5ca:b0:215:9f5a:a236 with SMTP id d9443c01a7336-215bcfbcebbmr37415365ad.6.1733239263473;
+        Tue, 03 Dec 2024 07:21:03 -0800 (PST)
+Received: from ubuntuxuelab.. ([58.246.183.50])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21561b30f26sm60095605ad.274.2024.12.03.07.20.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Dec 2024 07:21:03 -0800 (PST)
+From: Haoyu Li <lihaoyu499@gmail.com>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Kees Cook <kees@kernel.org>,
+	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	stable@vger.kernel.org,
+	Haoyu Li <lihaoyu499@gmail.com>
+Subject: [PATCH] net: wireless: sme: Initialize n_channels before accessing channels in cfg80211_conn_scan
+Date: Tue,  3 Dec 2024 23:20:49 +0800
+Message-Id: <20241203152049.348806-1-lihaoyu499@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart3848856.kQq0lBPeGt";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Transfer-Encoding: 8bit
 
---nextPart3848856.kQq0lBPeGt
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"; protected-headers="v1"
-From: Simon Wunderlich <sw@simonwunderlich.de>
-Cc: Issam Hamdi <ih@simonwunderlich.de>
-Date: Tue, 03 Dec 2024 16:10:49 +0100
-Message-ID: <7743427.EvYhyI6sBW@prime>
-In-Reply-To: <20241125164034.2712936-1-ih@simonwunderlich.de>
-References: <20241125164034.2712936-1-ih@simonwunderlich.de>
-MIME-Version: 1.0
+With the new __counted_by annocation in cfg80211_scan_request struct,
+the "n_channels" struct member must be set before accessing the
+"channels" array. Failing to do so will trigger a runtime warning
+when enabling CONFIG_UBSAN_BOUNDS and CONFIG_FORTIFY_SOURCE.
 
-Hi Johannes, all,
+Fixes: e3eac9f32ec0 ("wifi: cfg80211: Annotate struct cfg80211_scan_request with __counted_by")
 
-just wanted to bump on this issue one more time. We basically want to 
-passively receive packets and evaluate the signal strength, and getting bogus 
-signal strength (-128) for DSSS packets makes this unusable for this 
-application. At the same time, we would like to be able to use the 6 GHz band, 
-but we can only do that when we scan to have the firmware detect the country 
-code and enable the 6 GHz band.
+Signed-off-by: Haoyu Li <lihaoyu499@gmail.com>
+---
+ net/wireless/sme.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-We have found a way to get the RSSI reporting working, but only if we don't 
-scan, as Issam explained in more detail.
-
-This looks like a firmware bug to us, it seems the firmware writes the RSSI too 
-late. We don't have the means to debug this further, though.
-
-Is this mailing list even the right place to report this kind of issue, or 
-should we contact somebody else?
-
-Thank you,
-        Simon
-
-On Monday, November 25, 2024 5:40:34 PM CET Issam Hamdi wrote:
-> We identified an issue where the RSSI values for beacons from
-> legacy rates AP are incorrect, consistently showing -128.
-> 
-> This issue was identified on the Intel AX210 WiFi chip with
-> firmware version "89.202a2f7b.0 ty-a0-gf-a0-89.ucode op_mode iwlmvm"
-> 
-> To reproduce this issue :
->     - Setup an AP with legacy rates on the frequency 2422Mhz
->     - And on the device with Intel AX210 chip run:
->         iw phy0 interface add mon0 type monitor
->         ip link set mon0 up
->         iw dev mon0 set freq 2422
->         tcpdump -i mon0 -v
-> 
-> After debugging, we discovered that the RSSI values become
-> correct when a printk() statement is added to the RX path
-> in the iwlwifi driver, as shown the patch below.
-> 
-> Alternatively, adding udelay() instead of printk() also corrects
-> the incorrect RSSI values; however, this approach leads to
-> firmware warnings and errors:
-> 
-> ````
-> --- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-> @@ -1543,7 +1543,7 @@ restart:
->          }
-> 
->          IWL_DEBUG_RX(trans, "Q %d: HW = %d, SW = %d\n", rxq->id, r, i);
-> -
-> +        udelay(500);
->          rxb = iwl_pcie_get_rxb(trans, rxq, i, &join);
->          if (!rxb)
->              goto out;
-> ````
-> 
-> Additionally, we found that deleting all existing interfaces on
-> the PHY and then creating a monitor interface resolves this issue:
->     iw dev wlan0 interface del   # In case we have wlan0 as the existing
-> interface. iw phy0 interface add mon0 type monitor
->     ip link set mon0 up
->     iw dev mon0 set freq 2422
-> 
-> However, in this case, it will not be possible to execute the scan
-> command with the monitor interface to prompt the firmware to
-> trigger the country code.
-> 
-> Has anyone encountered this issue before or have any insights
-> into the potential root cause ?
-> 
-> Signed-off-by: Issam Hamdi <ih@simonwunderlich.de>
-> ---
->  drivers/net/wireless/intel/iwlwifi/pcie/rx.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-> b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c index
-> afb88eab8174..b0ce71e6260b 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-> @@ -1544,6 +1544,8 @@ static int iwl_pcie_rx_handle(struct iwl_trans *trans,
-> int queue, int budget)
-> 
->  		IWL_DEBUG_RX(trans, "Q %d: HW = %d, SW = %d\n", 
-rxq->id, r, i);
-> 
-> +		printk(KERN_DEBUG "Got new packet\n");
-> +
->  		rxb = iwl_pcie_get_rxb(trans, rxq, i, &join);
->  		if (!rxb)
->  			goto out;
-> 
-> base-commit: 2b94751626a6d49bbe42a19cc1503bd391016bd5
-
-
---nextPart3848856.kQq0lBPeGt
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE1ilQI7G+y+fdhnrfoSvjmEKSnqEFAmdPH3kACgkQoSvjmEKS
-nqE3fxAAxr66zQAU16neGQeuysSu56UXLGpD6JCuAhLBHpFX+CDaltI0/klKtI5g
-RCo5ZubTpjXcJm2nuLp+m5mHS2HJRcOolRaMnuNM8D3IvVr0Fts7Mn9IFZ0rzoWA
-Md5rYAVz5ZpsDISQv70+wTQRNd5USd8YsQW/q+JJcaTz1h8UUjmbCoTIA/dfZCtZ
-WPsONHddqXP9jco2XFzAgosBcxuI8R7GRkMCKpQe9aXYnSZRLuH5Hib5JUP84gks
-mNK68YWP6zpvcHLcmnBSQdW5CSqpQ0ilIrIx+ArF7c3NDP7AXnrtpaMPXBEVkE9X
-XLitSqFWVFjY2gATCBILne9sg+qqZkiP6vMIFBv2io5m8GKk02s3Ob/H1wBRl5xP
-JbxuJRpMyUhyPw9qpOkV7YH00Yq/bAtTpqB0YA/F6h+P8zXNTgVe6dZrBMDN2EXD
-/2eDm6ISO/RulztbPQgQD2i1VOgM/9frjbCdHsGiq8jQXz1NLv1gXFCu59v+qevO
-Wm/chY5Mi9EVl1lHCu/bFIswmEwLm7ckClI33nFPJnoSSac+6M9imsgOao/pmfP9
-n1yZXV9yYq4U3ncLReqkRzHO3w/SXFU3gzwREvPwwHR8urNd14d7gBCDGeaW6x5d
-gOCmrRjODqYzc7hKM14lMb8sBlA3dS4qAQpLpaeEuQZ4EMSYoVI=
-=NvVX
------END PGP SIGNATURE-----
-
---nextPart3848856.kQq0lBPeGt--
-
-
+diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+index 431da30817a6..268171600087 100644
+--- a/net/wireless/sme.c
++++ b/net/wireless/sme.c
+@@ -83,6 +83,7 @@ static int cfg80211_conn_scan(struct wireless_dev *wdev)
+ 	if (!request)
+ 		return -ENOMEM;
+ 
++	request->n_channels = n_channels;
+ 	if (wdev->conn->params.channel) {
+ 		enum nl80211_band band = wdev->conn->params.channel->band;
+ 		struct ieee80211_supported_band *sband =
+-- 
+2.34.1
 
 
