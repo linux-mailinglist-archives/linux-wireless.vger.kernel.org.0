@@ -1,243 +1,124 @@
-Return-Path: <linux-wireless+bounces-15850-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15851-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C7A19E19CC
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Dec 2024 11:49:19 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6DCB1613B5
-	for <lists+linux-wireless@lfdr.de>; Tue,  3 Dec 2024 10:49:15 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C6EE1E1C17;
-	Tue,  3 Dec 2024 10:49:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="RR4ARQhm"
-X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 170D99E1FDA
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Dec 2024 15:44:05 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95ACC1E0E06;
-	Tue,  3 Dec 2024 10:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B3A1B23041
+	for <lists+linux-wireless@lfdr.de>; Tue,  3 Dec 2024 13:07:10 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C04611E5721;
+	Tue,  3 Dec 2024 13:07:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="boNrvG3g"
+X-Original-To: linux-wireless@vger.kernel.org
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6681E47C4;
+	Tue,  3 Dec 2024 13:07:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733222955; cv=none; b=B67m03DfJzTk597ARjPSqzU9hOSmfb3BzUgCgpW8ArtrXMvbzM9SAOWvvINXusoppkIO/3vAPBlD1OHhZkBXeRGWDAL+uyT4TwjqSvsRCaIsXx8byNu5uau1dp9Nx6asdrZivVeH0tUplb2548mj+FskAYNqwGRafp1asrjcH2g=
+	t=1733231226; cv=none; b=kbsDSHJQvYcs++idKHP+zSw8Juiq4L+dTLidVgupjXRUJIHugX56xrs93QnqWLGIFdGEJyy2/gMqQ3U4bePnmcOEnTv4Ft+h92WC+EzJjXvsPpGAtzJY726pmjEk/9hdIodEPYGODOKv9kBGGpD/58km2XS8R5YRh/yX5zU6YI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733222955; c=relaxed/simple;
-	bh=5Z4X0EAWcr5p4VVQqtsIZbtRervKtcuPtRuQeOBrjfM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=OUabxql2ZMYAcS2lhFIfwCwbsh8Q2FHXM7gD8110XRfQKZ8TAtKv75gseu3XELFQhj4HLcKbiUO6fIuESKe2VSyGHr8MLHWvE3C5tHdl8to3eQ0FbVrgpNlJghzv6jzdVDM5qwpSDYIknlc4OeXeqfNcJJmLojniSowM3WwATUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=RR4ARQhm; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B39qtDA026206;
-	Tue, 3 Dec 2024 10:49:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	gg4Lw6AUq6SV1FhaAaFneT1sAjYVNu0Q1HHTBk/S4b8=; b=RR4ARQhmjaixtGDB
-	msaXKXL+Cv19LWozbVadj3UmSavjDy0rHqwFvimMvw+GQC3EDsHmBRXgdZW4baZi
-	DL/P26LXh7kUspmS5Wdm1BxOcETfWE8eRbxQKD/fCnjaBjy0YgXG2c/3gST9wJVw
-	ZIGKkPQLbiSmGWST+Nxts/l9jQt/mHbULXKtYaGPNuuzePPn4tBrH+26x20xU+rC
-	ZOzAgcLDx0gviKr+PAcaP8iGnrF4dEZedthJInfi/56/NmBJDEN4oXnkFvMdFZHI
-	0ay0c64/6InvyFbpZCnVhBTc1pdhYvGUBOv8QISNf6itPp4GBJxpc9OheJ3qdRJR
-	kMwa4g==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 439yr9g42p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Dec 2024 10:49:05 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4B3An4Bk019314
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 3 Dec 2024 10:49:04 GMT
-Received: from [10.231.194.79] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 3 Dec 2024
- 02:49:01 -0800
-Message-ID: <99359cc4-2279-4a8a-80a1-d5475fd5208d@quicinc.com>
-Date: Tue, 3 Dec 2024 18:48:58 +0800
+	s=arc-20240116; t=1733231226; c=relaxed/simple;
+	bh=13AvOjllZFtUPseTAIkpqJNhcrRiFcBFx1+nJUBP8Rc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=keJYV/3tG2Q6eD5TJ/Mqhdn3gFkaIhv+yE00iOrFfpu9+sbmi6/qmfAidOrgLcSTlrxVUrOc53+HfinX5ODCqtoe9s8XCzCjyNMK2jyqouIWAUhr3PvS0MqBl3ZohZfl1WAICie+tbcGq3BNkhhgpP/EuC8FdUk0v8Gp/kJ9w+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=boNrvG3g; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-434aa472617so46936685e9.3;
+        Tue, 03 Dec 2024 05:07:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733231223; x=1733836023; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sKfu+etQ5ANxcOuW4h0fJXGVNERyNRtmAMyY5LefJQY=;
+        b=boNrvG3g++eAOBhaJDtUfwb68Qr3oB3nUb9ntsammY1jC0kvRlhA6KxJs849Um7cT4
+         eBpA75Uu62611k2Ezv0yLqGVl6YbJdxC2PMpMfpTxRmnP2HveNRNOfKU9HONAUQuhX3V
+         gWCZK8ztJoc++3rvKh5Fx1ehGMSUYu8O7kvfj77GqiEC2pgN2DvVMMk2DfgjklHmOpwv
+         YPQ21Mu/TWb7IFt9/Z/+xNCi95YqK6ONV/sE/mKOr2SVR2Fp7wgvYBUgQMUPDxevx/yK
+         K2X6itQfUBhbHJNsTsUL7T+JBlVze7lzJ2FIDo76asvZmBQRETjfRHDaPu6yW3jBcT7c
+         eyPw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733231223; x=1733836023;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sKfu+etQ5ANxcOuW4h0fJXGVNERyNRtmAMyY5LefJQY=;
+        b=wWj1DyDLIg9cEQo0rXlg2yIHW1+3qtsm1f53l6nrt4sst+k8flsT3aPYCOn7Z1mFSr
+         27YqV8gYM374F92HWap73KpBS6Nl8mPXgTscSvxpR1I/ySWGtvk2Zk9QDdRiQTrx6o4h
+         QQyqxhw23sNF8jBZ/1h8rF5a8heqgjeXov/XTIvdthCxGLpz10sWgzfYe+AlYEVXvnFI
+         C7dbcAF8OXGgpYrZHED15MbcDJhIvdHzHSaUsB29HGVjT7U6YP3IUJOdimrSFTtN6IYm
+         tBqGjAGc1fY0Y5LRWvDB9hUZYkoAsw2ZpwmpNmpeIRbhFajzbngFIWPj3Wp+M0AVYoCf
+         WMTw==
+X-Forwarded-Encrypted: i=1; AJvYcCWl8amAmTOt7WIt7gK1ljfFPg2CrAq/qq45E9bXIGBuqeIangC79T9VhUNkL11/rfrfO91gKz2vrs+zNZlGrA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJOjgCO3wZlJtemeCQLjK3MdKXz6iAOEPVDNOe8TJOcxvqc9SI
+	nzO1kC8UqzhW7c18KQ2z1hrTm9CCYU3mJVAmEfa0uLrmLH0lXFzrVk7dzA==
+X-Gm-Gg: ASbGncvEcoebu0sYFYusAtHKyc8LF28H/nIFXfTib/JD3omJuhw+Rgw8MCJhVeiw4YZ
+	hRoie7Z8eUHqw9PVynRokif4p6Qei+/5frDF7qGyoz83w/Di3FCg41PBIyMe7b/oNXTgOltI2fJ
+	SPzDXhIYYIVKp7yD/uBt8xKEzqtKfqNF7sy48j3RFl2+8HeMHYbdTvtLopUSi9msJYrYY2fHt/Y
+	IwryY7mxszzECF3OUPaNqrZCMj1kUh33/rP4A/Ggbl/O87vgB5dpLeA6wD6RTAWCH4=
+X-Google-Smtp-Source: AGHT+IHzNPKTBGNXnOjpWN1ppThaEh7Y2/EUOJW84nb0Yj5tjocTMudOght1ODqNrNFOZj+kfWRU1w==
+X-Received: by 2002:a05:600c:1c8b:b0:434:a386:6ae with SMTP id 5b1f17b1804b1-434d09b14c7mr20224995e9.7.1733231222527;
+        Tue, 03 Dec 2024 05:07:02 -0800 (PST)
+Received: from imac.lan ([2a02:8010:60a0:0:6140:2ef3:aaa:55ca])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434aa7e4d42sm219142365e9.37.2024.12.03.05.07.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Dec 2024 05:07:02 -0800 (PST)
+From: Donald Hunter <donald.hunter@gmail.com>
+To: netdev@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	linux-wireless@vger.kernel.org
+Cc: donald.hunter@redhat.com,
+	Donald Hunter <donald.hunter@gmail.com>
+Subject: [PATCH net-next v1 0/7] netlink: specs: add a spec for nl80211 wiphy
+Date: Tue,  3 Dec 2024 13:06:48 +0000
+Message-ID: <20241203130655.45293-1-donald.hunter@gmail.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: ath11k: allow APs combination when dual stations
- are supported
-To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-CC: <ath11k@lists.infradead.org>, <jjohnson@kernel.org>, <kvalo@kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
-        <quic_cjhuang@quicinc.com>, <vbenes@redhat.com>
-References: <20bf2693-ce53-48e9-8b54-7e3273815033@quicinc.com>
- <20241203094820.106225-1-jtornosm@redhat.com>
-Content-Language: en-US
-From: "Yu Zhang (Yuriy)" <quic_yuzha@quicinc.com>
-In-Reply-To: <20241203094820.106225-1-jtornosm@redhat.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: czjW776TEvtDxPyjodd6NLP1DK-ddMHT
-X-Proofpoint-GUID: czjW776TEvtDxPyjodd6NLP1DK-ddMHT
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
- clxscore=1015 priorityscore=1501 mlxlogscore=999 phishscore=0
- lowpriorityscore=0 malwarescore=0 mlxscore=0 suspectscore=0 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412030093
+Content-Transfer-Encoding: 8bit
 
+Add a rudimentary YNL spec for nl80211 that includes get-wiphy and
+get-interface, along with some required enhancements to YNL and the
+netlink schemas.
 
+Patch 1 is a minor cleanup to prepare for patch 2
+Patches 2-4 are new features for YNL
+Patches 5-6 are schema updates for feature parity
+Patch 7 is the new nl80211 spec
 
-On 12/3/2024 5:48 PM, Jose Ignacio Tornos Martinez wrote:
->> Which chip do you use?
-> Since I am not totally sure about the useful information, let me show you
-> the kernel logs:
-> $ dmesg | grep ath11k
-> [    3.659388] ath11k_pci 0000:01:00.0: BAR 0 [mem 0x84200000-0x843fffff 64bit]: assigned
-> [    3.659405] ath11k_pci 0000:01:00.0: enabling device (0000 -> 0002)
-> [    3.659649] ath11k_pci 0000:01:00.0: MSI vectors: 32
-> [    3.659653] ath11k_pci 0000:01:00.0: wcn6855 hw2.1
-> [    4.871571] ath11k_pci 0000:01:00.0: chip_id 0x2 chip_family 0xb board_id 0xff soc_id 0x400c0210
-> [    4.871586] ath11k_pci 0000:01:00.0: fw_version 0x11088c35 fw_build_timestamp 2024-04-17 08:34 fw_build_id WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
-> [    5.241485] ath11k_pci 0000:01:00.0 wlp1s0: renamed from wlan0
-> 
-yes, you also use wcn6855 hw2.1.
-> If I try to setup 2 APs with your interface combination I get this:
-> # iw list | grep -A6 "valid interface combinations:"
-> 	valid interface combinations:
-> 		 * #{ managed } <= 2, #{ AP, P2P-client, P2P-GO } <= 16, #{ P2P-device } <= 1,
-> 		   total <= 16, #channels <= 1, STA/AP BI must match, radar detect widths: { 20 MHz (no HT), 20 MHz, 40 MHz, 80 MHz, 80+80 MHz, 160 MHz }
-> 
-> 		 * #{ managed } <= 2, #{ AP, P2P-client, P2P-GO } <= 16, #{ P2P-device } <= 1,
-> 		   total <= 3, #channels <= 2, STA/AP BI must match
-> 	HT Capability overrides:
-2 combinations are to support DBS and DFS.
-Combinations is correct. channels=2, max interfaces=3.
+Donald Hunter (7):
+  tools/net/ynl: remove extraneous plural from variable names
+  tools/net/ynl: support decoding indexed arrays as enums
+  tools/net/ynl: support decoding C arrays as enums
+  tools/net/ynl: accept IP string inputs
+  netlink: specs: support nested structs in genetlink legacy
+  netlink: specs: add s8, s16 to genetlink schemas
+  netlink: specs: wireless: add a spec for nl80211
 
-And you want setup sta + sap + sap, right?
-When up the second sap will meet error? Could you pls share the error logs?
+ Documentation/netlink/genetlink-c.yaml      |    2 +-
+ Documentation/netlink/genetlink-legacy.yaml |    5 +-
+ Documentation/netlink/genetlink.yaml        |    2 +-
+ Documentation/netlink/specs/nl80211.yaml    | 1775 +++++++++++++++++++
+ tools/net/ynl/lib/ynl.py                    |   42 +-
+ 5 files changed, 1812 insertions(+), 14 deletions(-)
+ create mode 100644 Documentation/netlink/specs/nl80211.yaml
 
-I'm not very sure if you add all interface with managed type, and do 
-"ifconfig xxx up" before running hostapd.
-
-You can try add second and third interface with
-"iw dev xx interface add xx type __ap".
-
-
-> # iw dev
-> phy#0
-> 	Interface wlp1s0_1
-> 		ifindex 6
-> 		wdev 0x4
-> 		addr a2:42:d2:1e:89:a3
-> 		type managed
-> 		txpower 16.00 dBm
-> 		multicast TXQ:
-> 			qsz-byt	qsz-pkt	flows	drops	marks	overlmt	hashcol	tx-bytes	tx-packets
-> 			0	0	0	0	0	0	0	0		0
-> 	Interface wlp1s0_0
-> 		ifindex 5
-> 		wdev 0x3
-> 		addr 52:e9:be:33:6a:61
-> 		ssid test-qe-wpa2-psk
-> 		type AP
-> 		channel 13 (2472 MHz), width: 20 MHz, center1: 2472 MHz
-> 		txpower 14.00 dBm
-> 		multicast TXQ:
-> 			qsz-byt	qsz-pkt	flows	drops	marks	overlmt	hashcol	tx-bytes	tx-packets
-> 			0	0	0	0	0	0	0	0		0
-> 	Interface wlp1s0
-> 		ifindex 3
-> 		wdev 0x1
-> 		addr c8:94:02:b5:fe:fb
-> 		type managed
-> 		txpower 16.00 dBm
-> 		multicast TXQ:
-> 			qsz-byt	qsz-pkt	flows	drops	marks	overlmt	hashcol	tx-bytes	tx-packets
-> 			0	0	0	0	0	0	0	0		0
-> Or even this with no AP up:
-> # iw dev
-> phy#0
-> 	Interface wlp1s0_1
-> 		ifindex 6
-> 		wdev 0x4
-> 		addr ca:e5:84:22:10:ec
-> 		type managed
-> 		txpower 16.00 dBm
-> 		multicast TXQ:
-> 			qsz-byt	qsz-pkt	flows	drops	marks	overlmt	hashcol	tx-bytes	tx-packets
-> 			0	0	0	0	0	0	0	0		0
-> 	Interface wlp1s0_0
-> 		ifindex 5
-> 		wdev 0x3
-> 		addr 9e:4e:c5:ea:4c:e9
-> 		type AP
-> 		txpower 16.00 dBm
-> 		multicast TXQ:
-> 			qsz-byt	qsz-pkt	flows	drops	marks	overlmt	hashcol	tx-bytes	tx-packets
-> 			0	0	0	0	0	0	0	0		0
-> 	Interface wlp1s0
-> 		ifindex 3
-> 		wdev 0x1
-> 		addr c8:94:02:b5:fe:fb
-> 		type managed
-> 		txpower 16.00 dBm
-> 		multicast TXQ:
-> 			qsz-byt	qsz-pkt	flows	drops	marks	overlmt	hashcol	tx-bytes	tx-packets
-> 			0	0	0	0	0	0	0	0		0
-> 
-> If I use the parameter to ignore the feature and configure the interface combination as before:
-> # iw list | grep -A4 "valid interface combinations:"
-> 	valid interface combinations:
-> 		 * #{ managed } <= 1, #{ AP, P2P-client, P2P-GO } <= 16, #{ P2P-device } <= 1,
-> 		   total <= 16, #channels <= 1, STA/AP BI must match, radar detect widths: { 20 MHz (no HT), 20 MHz, 40 MHz, 80 MHz }
-> 
-> 	HT Capability overrides:
-> # iw dev
-> phy#1
-> 	Interface wlp1s0_1
-> 		ifindex 7
-> 		wdev 0x100000004
-> 		addr 82:90:89:90:c1:37
-> 		ssid test-qe-wpa3-psk
-> 		type AP
-> 		channel 13 (2472 MHz), width: 20 MHz, center1: 2472 MHz
-> 		txpower 16.00 dBm
-> 		multicast TXQ:
-> 			qsz-byt	qsz-pkt	flows	drops	marks	overlmt	hashcol	tx-bytes	tx-packets
-> 			0	0	0	0	0	0	0	0		0
-> 	Interface wlp1s0_0
-> 		ifindex 6
-> 		wdev 0x100000003
-> 		addr 6a:ef:d0:db:10:f0
-> 		ssid test-qe-wpa2-psk
-> 		type AP
-> 		channel 13 (2472 MHz), width: 20 MHz, center1: 2472 MHz
-> 		txpower 16.00 dBm
-> 		multicast TXQ:
-> 			qsz-byt	qsz-pkt	flows	drops	marks	overlmt	hashcol	tx-bytes	tx-packets
-> 			0	0	0	0	0	0	0	0		0
-> 	Interface wlp1s0
-> 		ifindex 4
-> 		wdev 0x100000001
-> 		addr c8:94:02:b5:fe:fb
-> 		type managed
-> 		txpower 16.00 dBm
-> 		multicast TXQ:
-> 			qsz-byt	qsz-pkt	flows	drops	marks	overlmt	hashcol	tx-bytes	tx-packets
-> 			0	0	0	0	0	0	0	0		0
-> 
-> Thanks
-> 
-> Best regards
-> Jose Ignacio
-> 
+-- 
+2.47.1
 
 
