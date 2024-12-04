@@ -1,93 +1,122 @@
-Return-Path: <linux-wireless+bounces-15892-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15893-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7332A9E3FB3
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Dec 2024 17:32:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F79C9E3FB4
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Dec 2024 17:32:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 333F62824D5
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Dec 2024 16:32:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EBCB282AB9
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Dec 2024 16:32:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DB6920ADCA;
-	Wed,  4 Dec 2024 16:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C6B156C6A;
+	Wed,  4 Dec 2024 16:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D08VRphc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M1m2QM/I"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197FF156C6A
-	for <linux-wireless@vger.kernel.org>; Wed,  4 Dec 2024 16:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CAD620C48F
+	for <linux-wireless@vger.kernel.org>; Wed,  4 Dec 2024 16:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733329940; cv=none; b=WTPlKNMcbDDZbrpA8YdSQM1msQJ1ZmYUuKcGFcNm+mVUrXtLXYBhyjBgzBDsmh+YBQfnMf/EDQLlWoogRnrv5SwqJz3hexMQ1rsx0sEmcooCokAORn5KOA1/Tj3drJpFAP/jdOydvd0AMg+2LN0PzEOaK35ysii7QRg1vbWXPvM=
+	t=1733329941; cv=none; b=gT9Bn368OCAXnc46svVE8y/h74Uufyd4qguU19I7PsO7zIYMc+90pIDwR8mMYH31G8gtG/D5WWlaMvkl6zrvIW9tJqNYFs1aSyMRLOWCZYrPl+ns712c4TDjLj55Xs2zM7B8Dec77HoQRwROY2HRMvcg0F3AQoOa6gd6B1LkaAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733329940; c=relaxed/simple;
-	bh=OwPJmCes64j6esiKcT95YSy4YtWsyeSNOeyY0UC2m8w=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=SmuWsdkhMbd6avHjYC7CWiVgL3U305lelq7NogIfFhjUSpqEyelVu2v4C8xbjNuOBalh8d5+DLSh9RD923gFyQWpF1NEAZyUquxlKrbM3WYlAdypD++oOOrkVYteefz50ajGL8pCz5KRoxdFx4k0YPdsHfNavPzBz4PXB5fE4Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D08VRphc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10D19C4CECD;
-	Wed,  4 Dec 2024 16:32:18 +0000 (UTC)
+	s=arc-20240116; t=1733329941; c=relaxed/simple;
+	bh=5NgdQtgdx9L6DLYrc7Hr1UkgwpKbPHyj9dlHR5lrHxs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=DXWwyFda2yaPPmF/OEIKLNRrhpkUOrCd7eqlGIRNJEzbkXGeROMxufvIpm5pUExK0Pi3smqnAOSrd+zeD1zj3tAEUsMgeFuY2PNhhSLGtF97Xq4wQHquVlBYTOX/8QV3BnMz7BGh+og9rPQa4cBwS4qqrvrsdNJigw1Ns7ZGCS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M1m2QM/I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17390C4CEDF;
+	Wed,  4 Dec 2024 16:32:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733329939;
-	bh=OwPJmCes64j6esiKcT95YSy4YtWsyeSNOeyY0UC2m8w=;
-	h=From:To:Cc:Subject:Date:From;
-	b=D08VRphcW4iFvMr4oB7zjcIWFALSwt0n8pnLpt+aW9rqfkkA5UTPzVOFf4mnrdh47
-	 7ZcVDajUXkbuiky0FDLbC0abuDILbnyaKfTtLeVLZ58j73H7P5a0pple829UhAZTWn
-	 UNbBhdk3ckZsE7/wkR8aIMcHp3jbLP3QL0RChNqnuA2yJh6pbyEsKnLmY8BPABXcr5
-	 dPlPFgg09kPgZl94GyV+N1efslQbY3J/o7NvxdmbZaPYaP46rQ2+z8jyhyvKulKjFp
-	 xo3DL5MOle+yrSaXgL+VlAnjudiTefszcW2eQiM9jS3tI6NQ0A5ySmDIwb6uliDl2z
-	 rgPOFk6MqpGCQ==
+	s=k20201202; t=1733329940;
+	bh=5NgdQtgdx9L6DLYrc7Hr1UkgwpKbPHyj9dlHR5lrHxs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=M1m2QM/IYsHu2P2KI6NHqw9tdNSanIGypnbAcJj1LXuOyGN17Et6mduC96xLnUOA6
+	 jZwtdB9yDntUULDrPOLY5sbclYcEeIESbQaY5hItdwXSp7GlzWQjKnYeEoXZUZJHTG
+	 veIlPpAf+PP+N/eqjcbrPITvRKO3AbxxPKFMoOHJfLtsmgEkLmybmKrmXqsXSNfL4N
+	 Yyc1qqhyVVBeh3gq6QcwSBWxlqXTZYN+5QSyXM/m/dLLT85AheOc+yIlNbOWVJKKC4
+	 ngrI0cQ7A2lSHKnroavj+ZpbhLBSSmOxwBHqOmPBKLWR9B5h15z0nq/RJ279npM0TF
+	 6ARz2WWZXpnOQ==
 From: Kalle Valo <kvalo@kernel.org>
 To: ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 0/7] wifi: ath12k: MLO support part 6
-Date: Wed,  4 Dec 2024 18:32:09 +0200
-Message-Id: <20241204163216.433795-1-kvalo@kernel.org>
+Subject: [PATCH 1/7] wifi: ath12k: move ATH12K_FLAG_REGISTERED handling to ath12k_mac_register()
+Date: Wed,  4 Dec 2024 18:32:10 +0200
+Message-Id: <20241204163216.433795-2-kvalo@kernel.org>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241204163216.433795-1-kvalo@kernel.org>
+References: <20241204163216.433795-1-kvalo@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Kalle Valo <quic_kvalo@quicinc.com>
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 
-In this patchset there's refactoring to support hardware grouping, meaning
-multiple hardware devices can be registered to mac80211 as a single device.
+When hardware device group abstraction is introduced, a group abstraction is
+registered to mac80211 rather than a particular single device.  So we cannot
+set the device registered when the QMI firmware ready event is received, only
+after all the devices in group have received the event. To do that set and
+unset ATH12K_FLAG_REGISTERED flag inside ath12k_mac_register() and
+ath12k_mac_unregister() respectively.
 
-Please review.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-Aditya Kumar Singh (1):
-  wifi: ath12k: rename mlo_capable_flags to single_chip_mlo_supp
+Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Signed-off-by: Harshitha Prem <quic_hprem@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+---
+ drivers/net/wireless/ath/ath12k/mac.c | 4 ++++
+ drivers/net/wireless/ath/ath12k/qmi.c | 4 +---
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-Karthikeyan Periyasamy (6):
-  wifi: ath12k: move ATH12K_FLAG_REGISTERED handling to
-    ath12k_mac_register()
-  wifi: ath12k: introduce device group abstraction
-  wifi: ath12k: refactor core start based on hardware group
-  wifi: ath12k: move struct ath12k_hw from per device to group
-  wifi: ath12k: send QMI host capability after device group is ready
-  wifi: ath12k: introduce mlo_capable flag for device group
-
- drivers/net/wireless/ath/ath12k/core.c | 449 ++++++++++++++++++++++---
- drivers/net/wireless/ath/ath12k/core.h |  88 +++--
- drivers/net/wireless/ath/ath12k/dp.c   |  19 +-
- drivers/net/wireless/ath/ath12k/dp.h   |   2 +-
- drivers/net/wireless/ath/ath12k/mac.c  |  97 ++++--
- drivers/net/wireless/ath/ath12k/mac.h  |   9 +-
- drivers/net/wireless/ath/ath12k/pci.c  |   1 +
- drivers/net/wireless/ath/ath12k/qmi.c  | 123 +++++--
- drivers/net/wireless/ath/ath12k/qmi.h  |  20 ++
- 9 files changed, 658 insertions(+), 150 deletions(-)
-
-
-base-commit: 3b2ab397d31f926523f2781d7f0a14a387415bf4
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 129607ac6c1a..1180070278da 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -10839,6 +10839,8 @@ int ath12k_mac_register(struct ath12k_base *ab)
+ 			goto err;
+ 	}
+ 
++	set_bit(ATH12K_FLAG_REGISTERED, &ab->dev_flags);
++
+ 	return 0;
+ 
+ err:
+@@ -10858,6 +10860,8 @@ void ath12k_mac_unregister(struct ath12k_base *ab)
+ 	struct ath12k_hw *ah;
+ 	int i;
+ 
++	clear_bit(ATH12K_FLAG_REGISTERED, &ab->dev_flags);
++
+ 	for (i = ath12k_get_num_hw(ab) - 1; i >= 0; i--) {
+ 		ah = ath12k_ab_to_ah(ab, i);
+ 		if (!ah)
+diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
+index 77d8ee14bf33..20382b751829 100644
+--- a/drivers/net/wireless/ath/ath12k/qmi.c
++++ b/drivers/net/wireless/ath/ath12k/qmi.c
+@@ -3349,11 +3349,9 @@ static void ath12k_qmi_driver_event_work(struct work_struct *work)
+ 				  &ab->dev_flags);
+ 			clear_bit(ATH12K_FLAG_RECOVERY, &ab->dev_flags);
+ 			ret = ath12k_core_qmi_firmware_ready(ab);
+-			if (!ret) {
++			if (!ret)
+ 				set_bit(ATH12K_FLAG_QMI_FW_READY_COMPLETE,
+ 					&ab->dev_flags);
+-				set_bit(ATH12K_FLAG_REGISTERED, &ab->dev_flags);
+-			}
+ 
+ 			break;
+ 		default:
 -- 
 2.39.5
 
