@@ -1,146 +1,131 @@
-Return-Path: <linux-wireless+bounces-15890-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15891-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6358F9E3C38
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Dec 2024 15:09:39 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08DD89E3E6D
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Dec 2024 16:36:09 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6B3616387B
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Dec 2024 14:09:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B96742843A6
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Dec 2024 15:36:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B0E620898A;
-	Wed,  4 Dec 2024 14:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7068B1B87C6;
+	Wed,  4 Dec 2024 15:35:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SZNvK6XS"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="ChIseoEu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF4561F7096;
-	Wed,  4 Dec 2024 14:08:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE53820B816
+	for <linux-wireless@vger.kernel.org>; Wed,  4 Dec 2024 15:35:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733321330; cv=none; b=jfpH/V8jmXo8BlQtkjQ8Vzzilfs6tUi5jRCH4W9ttuu/LezVL6DtErddp4JAXbJbzsGjD4uY2bF31yR3w2XjbAl2YjvbFD1pQixhMP32cCST/OfHcVL2ecJAjfg5pYVrwDm4/L4Iw3AGICDxQbeytTUj998j7KdEczJrjrLoGS8=
+	t=1733326559; cv=none; b=oRGoclNSgXWby93vbyewTzNGcn9qM3WUAKXdQkxuItn2KQUpQNm1TFB8E6HNsTb08zJvSdRt855q/IUvPg6aROFRreRoYVviJ1wOA2pweJX3+wqbHEU5OGIA3solQBO1Q9gl0BNoUnaqvC/FYATeHn+roHcGpJIBB5ulV9lzPpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733321330; c=relaxed/simple;
-	bh=1okdIYs91H96snC5/ndQeyXzr6F826zbfhNCRycItLc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QdeGfuM3idVTb9isfoZe0IqjQXRu/FvksxrlRktACXNHe5ObTOn99jnSegvHVXiaoJ2AAh8Q5TGVADQp1y0+1Oy7oplDeXvrsCTTr7yI1yA5GYbr3I2mBb4gmWgcSd5LRd1NQ7dNxiLddmADt9RVAbD8N9C686nd64kdWL/fMhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SZNvK6XS; arc=none smtp.client-ip=209.85.161.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-5f1e79c2f81so3215739eaf.2;
-        Wed, 04 Dec 2024 06:08:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733321327; x=1733926127; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=vx0u3vo0+JUIMPSAFw/f3+EyZZy7ixLIYC9U8AZ9zVg=;
-        b=SZNvK6XSLRaGKZoji3Kq5o5BhKpbEIXrFxLtqcxY9lLRfW/T3vwIjWOkGTDRR6Tol9
-         VR6bAOpsXGzohUvo5QUp+aLIEg4RHVr3FyZIPg/1QZMR8+y5ecVHYlUq2n8Aunz580gX
-         Gzf6koUYSzCsuSw0zC6VTgp91yc+IF5yEcI4jEnRWQENoNa2vX+HkCrLJLKrTkGyqrYg
-         SQm5TXIQ84Uko1TFEuqk1MILtFjpK0YgYC+nUNckqtrka6eh+B7XTULgPkDtIfIzGbNW
-         ik5KegMTAB81GNqPp2rqTNgnYzHDXkfQ3QYifd7vsGUlBywdmBBPVFTYVgKW97ixRaFb
-         EBTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733321327; x=1733926127;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vx0u3vo0+JUIMPSAFw/f3+EyZZy7ixLIYC9U8AZ9zVg=;
-        b=bS0k+rYB1pSv4R8/s9Tw6axvUiClJpjf8PoAb6up5v65mTG85Bx30kqk8ws+48uKL/
-         sZ6BKOCIfcIFj26EAEHnrLKqKkIURtrHS6xPk/8ChVdD4D53RARmR75fziA/Iwlj0V3M
-         Z5ORpKoSPedr8Z8+R9pIpFk1JX++/OvkT0RBXAKX2ehCzvNxbiWoC445cXerq9YB9GJY
-         iAXg5FUZJk/089XXKgy74JzSKaClIwMEYnC0TYx+PIwG2kOzspikWefd8WmSSheKWmhN
-         BV50Z+wS0GYVT7Ufs+N2Wdj/5BHx7bkisA/JwPJ7tAxcuvrA7xzmZLNDAIkdF9QfjcLW
-         CMrg==
-X-Forwarded-Encrypted: i=1; AJvYcCXXJiOKvkdoq54gvREGdLjg733X5hZItI1c9+kC/e3ytVW6nR1RW+7VsIKkmYQs76Yzg8vN8xfFzfARK58y6A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwIoAByv+duatNOgItrl/3IuWGXTy4Hj2rMp1OwZVrYYYwyItHX
-	KoLpzhpdfqNppE/6r4htDrEUzY9jsA21oXnuGGe+eGtOJQmaQ8qZbpYMjJdZCK7wdeoMv80grG2
-	DCKYdvWx5ru1c3oxeNGANTRMS9EgRAw==
-X-Gm-Gg: ASbGncvYPNr/YnPqs6YcJFq5EUk16tIK+vG7ZU1zWrkmLFGsgVm/n4ETie6ZGeOfRrK
-	fgXro2MAFHQhA3DNInzf4JD1aUR7GYltCFhnhdieOoXzlb/fmV/ILCFTDz6UDdw==
-X-Google-Smtp-Source: AGHT+IF0BqOExzj4u/H/mCCNIyAfyv+H3I4HsOxvBOgLtMLfNdBmAHGcjzh4GFjo5NNZ7IxIn7jIpmEBATx1iNJ0RT8=
-X-Received: by 2002:a05:6830:490d:b0:71d:634a:e0d6 with SMTP id
- 46e09a7af769-71dad6069d1mr8141136a34.6.1733321327458; Wed, 04 Dec 2024
- 06:08:47 -0800 (PST)
+	s=arc-20240116; t=1733326559; c=relaxed/simple;
+	bh=3X52+hgrpU3zglle4WWr39Ph7ZouLUAjtD00mop/n4A=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=bbQxm4esmM1F/Y2XZSQX53zxzkj9rww7SiAKtHQzeUdqL6kpSu4CJpq+yTNQtFt1GUl14DAcXBIzTBDG6FiQ2+W66G1MpLhOpAxYGKN0n3tsdosP9beEmBtO7/sbH9wDaY9uH4VyGWilKmY7er0byNwrOhIYy8P67SmW9QQkIBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=ChIseoEu; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=udwzpl60/Y7Zpu+pqgUTc4BExYxEc5MCVhQyr38EDWk=;
+	t=1733326557; x=1734536157; b=ChIseoEuIpcrFr2mFU3vUNwVbZEH2ls/abSYN7eKKCGd/kz
+	OLX/19laV513Z/1fGqmLngHtJVDFaQkh2Z88mZxaMZ5+hQXPWWBjT0nRNV5MEijWzLu3sNP8fueMb
+	Z+DVTJWWPzlZzSdmmEuqt6VwPMnxqJ7fY+nioMGer17wCgw+hrI4eRtV4cOF8zRsgi83av20vAvLR
+	Aht2nl7RUpx/WSrwW3dv1rAQcnynqe43PTDnLLjPvF7k0DOIPPru6VEaAYFW+CSLv33qW393BV1ml
+	EbEaYsXEanhl5d3L2hPysOKN39cGG1KLMGj6iNBLM4NP6ExpbSUBZy4cNxnMBHyQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1tIrPu-00000006vgK-1TqO;
+	Wed, 04 Dec 2024 16:35:54 +0100
+Message-ID: <cc95ac5eb124ff46484a44beb0e2ec300d1d6392.camel@sipsolutions.net>
+Subject: Re: [PATCH v2] wifi: cfg80211: skip regulatory checks when the
+ channel is punctured
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Kavita Kavita <quic_kkavita@quicinc.com>
+Cc: linux-wireless@vger.kernel.org, quic_mpaluri@quicinc.com
+Date: Wed, 04 Dec 2024 16:35:53 +0100
+In-Reply-To: <20241125051624.29085-1-quic_kkavita@quicinc.com>
+References: <20241125051624.29085-1-quic_kkavita@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-2.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241203130655.45293-1-donald.hunter@gmail.com>
- <20241203130655.45293-8-donald.hunter@gmail.com> <016ba49a8b072f89fc4340341be166e26cc1b9a8.camel@sipsolutions.net>
- <CAD4GDZyCPiw1r02BHA_atDQdhsyVhxg=W1dnwi-Bc_tnkxtVeA@mail.gmail.com> <cc0a13f9674238d3b7607e9d9b58ee6e5cc4aa5c.camel@sipsolutions.net>
-In-Reply-To: <cc0a13f9674238d3b7607e9d9b58ee6e5cc4aa5c.camel@sipsolutions.net>
-From: Donald Hunter <donald.hunter@gmail.com>
-Date: Wed, 4 Dec 2024 14:08:36 +0000
-Message-ID: <CAD4GDZxa-=_8DcVjz+=AQAyyiORey2U2sv6qmayoF34nTTN_cA@mail.gmail.com>
-Subject: Re: [PATCH net-next v1 7/7] netlink: specs: wireless: add a spec for nl80211
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, linux-wireless@vger.kernel.org, 
-	donald.hunter@redhat.com
-Content-Type: text/plain; charset="UTF-8"
+X-malware-bazaar: not-scanned
 
-On Wed, 4 Dec 2024 at 13:28, Johannes Berg <johannes@sipsolutions.net> wrote:
->
-> > > Also, I don't know how we will maintain this if it's not tied to any
-> > > kernel code. What do you suggest? Do you want to just maintain it
-> > > following the nl80211.h spec all the time?
-> >
-> > It's a good question. I am okay with maintaining it alongside the
-> > nl80211.h file, which will likely motivate me to write some automation
-> > at least for notifying any divergence. There might come a time when it
-> > becomes desirable to generate some of nl80211.h from the spec, as
-> > Stanislav Fomichev is doing for ethtool here:
-> >
-> > https://lore.kernel.org/netdev/20241202162936.3778016-1-sdf@fomichev.me/
->
-> I think I wouldn't mind that - I'm hoping it'll also generate policies
-> etc.? Though on that front we probably have weird quirks too ...
+The subject is a bit misleading IMHO - you don't skip all checks when
+there's puncturing ...
 
-Yes, the policies are generated, quirks notwithstanding ;-)
+maybe just say "wifi: cfg80211: skip regulatory for punctured
+subchannels"
 
-> But until then I guess someone's going to have to maintain it, and I'm
-> not sure I want that to be me right now :)
+> However, these checks are also performed on frequencies that
+> have been punctured, which should not be examined as they are
+> not in use.
 
-Ack that. The burden is on me.
+I'd argue subchannels are punctured (or really disabled, the whole
+channel is punctured ... but we mix that up already), not frequencies
 
-> > > > +      name: get-wiphy
-> > > > +      doc: Get information about a wiphy or dump a list of all wiphys
-> > > > +      attribute-set: nl80211-attrs
-> > > > +      do:
-> > > > +        request:
-> > > > +          value: 1
-> > > > +          attributes:
-> > > > +            - wiphy
-> > > > +        reply:
-> > > > +          value: 3
-> > > > +      dump:
-> > > > +        request:
-> > > > +          attributes:
-> > > > +            - wiphy
-> > > >
-> > >
-> > > This already seems wrong - dump wiphy really should unconditionally
-> > > include NL80211_ATTR_SPLIT_WIPHY_DUMP these days.
-> >
-> > Yes, the valid parameter attributes should be wiphy, wdev, ifindex and
-> > split-wiphy-dump by the look of it.
->
-> Well there's that about valid parameters, but also no (new) tools today
-> should ever *not* include the split-wiphy-dump attribute. I guess that
-> can't be expressed here, but it's a gotcha for implementers that just
-> follow the YNL spec?
+>  static void cfg80211_set_chans_dfs_state(struct wiphy *wiphy, u32 center=
+_freq,
+> -					 u32 bandwidth,
+> +					 u32 bandwidth, u16 punctured,
+>  					 enum nl80211_dfs_state dfs_state)
+>  {
+>  	struct ieee80211_channel *c;
+>  	u32 freq;
+> +	int subchan =3D 0;
+> =20
+>  	for (freq =3D center_freq - bandwidth/2 + 10;
+>  	     freq <=3D center_freq + bandwidth/2 - 10;
+>  	     freq +=3D 20) {
+> +		if (punctured & BIT(subchan))
+> +			continue;
+> +		subchan++;
+>=20
 
-There's no way to specify that, but the constraint can be described
-clearly in the doc string. I'll do that for v2.
+You never tested this code properly, it's clearly broken.
 
-Thanks,
-Donald.
+but anyway - for_each_subchan()?
+
+> +#define for_each_subchan(wiphy, center_freq, bandwidth, punctured,	\
+> +			       subchan)						\
+
+I feel like we really should make this work on a chandef, not all these
+arguments ... and cover both center_freq1 and center_freq2, because we
+have all these duplicate calls like cfg80211_chandef_dfs_cac_time().
+
+> +	for (subchan =3D ieee80211_next_subchan(wiphy, center_freq, bandwidth,	=
+\
+> +					      punctured, NULL);			\
+
+It should be especially easy if you're pulling it out into iterator
+functions? Worst case, keep some extra state in the loop, like
+
+for (u32 punctured =3D chandef->punctured,
+     freq =3D cfg80211_get_start_freq(chandef, 1),
+     _cf =3D 1;
+     freq =3D _cf =3D=3D 1 ? 20, punctured >>=3D 1;
+     ...)
+  if (!(punctured & 1))
+
+
+I don't really mind a bit more complexity here, if it means we can get
+rid of all the functions like cfg80211_get_chans_dfs_required() that get
+called twice ...
+
+johannes
 
