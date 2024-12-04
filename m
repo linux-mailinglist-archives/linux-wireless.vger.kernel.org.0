@@ -1,453 +1,163 @@
-Return-Path: <linux-wireless+bounces-15896-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15901-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51DC79E40D9
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Dec 2024 18:12:52 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C5BF9E42DA
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Dec 2024 19:05:59 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 42466B3C049
-	for <lists+linux-wireless@lfdr.de>; Wed,  4 Dec 2024 16:32:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1222B16A917
+	for <lists+linux-wireless@lfdr.de>; Wed,  4 Dec 2024 18:05:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E9C20CCEB;
-	Wed,  4 Dec 2024 16:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF202391AB;
+	Wed,  4 Dec 2024 17:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ir10Dx82"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="bPH6Na9t"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D771F20CCE2
-	for <linux-wireless@vger.kernel.org>; Wed,  4 Dec 2024 16:32:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34931239180
+	for <linux-wireless@vger.kernel.org>; Wed,  4 Dec 2024 17:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733329943; cv=none; b=b7yL3Gn5exlg+HSyqDkl95TmIAec5Cqo6J/NQOb4tJiCIaMRoSnXb0DAPHaeqTmMAoGelmeq92Mnzo+1RXp1Je9+JZk9QHb6Tr07XqqWdlFGH8OeSg1aJDQIuhnYaG/R0NTH4yjvex6KpG7OQf4d/UVq+O8ii8qxJhI+774XlB0=
+	t=1733335001; cv=none; b=jbaQO4HCwwKCx6gD6o1BsmCCH6ZhRNrvlZ9FYZsnifzRpO92V2AoAHNIdxoly0AG3VZwukyr2RTMmzhYGxYc1r0Tb6WNIigEswCavoGvnN45ZjcEagjOLFTA/kDrTzCzKy+c4XSmR3MI2UEEUo1J9iyysFLVAlq+b8qxX0pql4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733329943; c=relaxed/simple;
-	bh=yNWBoLpuMM1CGqIEGRaxfmG2n8G7gEySqM67EG1DS44=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GpvFlSYsstLv12rxY7gymtbFDOxpKBu0M8JvOYcY7BYHINVAt/OJHqaljGl4rszrlVigDsDqZq/0PwDeiWBHCeDGa6M10wh/imMD4Plh1YZNGxohKloC2CsXGYIpdGSwnM1z4mVfyvkdOmKiLhq7Bcf6CvhNM3Fr0Z98Pgd/IuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ir10Dx82; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CB69C4CECD;
-	Wed,  4 Dec 2024 16:32:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733329943;
-	bh=yNWBoLpuMM1CGqIEGRaxfmG2n8G7gEySqM67EG1DS44=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ir10Dx82sh1N3rCqVjnJSMyHOmwz+xsxTzQ5ZdKoDvh3I1zbqx6+oJRGc7zgr9EQ6
-	 WY58fIdYGWCBRcpeVkl2wbjpdzSfDcA1mz0xDlkMI5J5ksf/SoR0r4FcYI3WN7d9+A
-	 6xKhJB3yZblgsC7rEjQnQwvRNv08AFz/Pipd3FVgg7ykxRpXbqnTBLwWlueU2/3btU
-	 70rbx9xf7ANWPpZKXdlkIiO/dyFOO0LnB71JbRaJUXKpec0FJuJuIZ4LEDcmaF2Lwv
-	 Mi1No4zw2SHN4Ia/VB3lej2IWMrizq9fUVFSwRIVDCG1nMVYY/9s7+fmIoYGFbo+vH
-	 ASk8ZshJv9tVA==
-From: Kalle Valo <kvalo@kernel.org>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 4/7] wifi: ath12k: refactor core start based on hardware group
-Date: Wed,  4 Dec 2024 18:32:13 +0200
-Message-Id: <20241204163216.433795-5-kvalo@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241204163216.433795-1-kvalo@kernel.org>
-References: <20241204163216.433795-1-kvalo@kernel.org>
+	s=arc-20240116; t=1733335001; c=relaxed/simple;
+	bh=s/MHza7MJXkG1nFdbn0QPB47+YtSmoXdrGZrnxOt8A8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TYA+7lcWT4ujp4LjDyIwEWvA/2qkYw9aX9ig56ylzNWUlyXRA4Vy2WAZMyT5O6q1CrU+3JE2tYKe1fDVEmpy8Ji7UJ2zxO8PG4LyaVwTbbBUoru0lU+imoz7ReFT1qB5/6KL8CuV2lQLS5mRR0y0dQQwJPOsdjjd1FuXQj49pWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=bPH6Na9t; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-53df7f6a133so44816e87.3
+        for <linux-wireless@vger.kernel.org>; Wed, 04 Dec 2024 09:56:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1733334997; x=1733939797; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HHj3vJrbaX31W8+69i1XvzHVe+zVu7K9ouv5A/K5k60=;
+        b=bPH6Na9t9yMwKrFxmnR6RCCxrkqS4LAkw+b6Hyr/V8CPX5SLSNoJCfl3XuQnrdNZT2
+         CGtCvneWyX2c0pOCrDJ4qbCNILJ4korLnI3zE5sphNG2yYfCxx+8koq6D7bKawraJocN
+         sTHKacKjSYiogEkTc011VBbkmLMwitrsuoU5I=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733334997; x=1733939797;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HHj3vJrbaX31W8+69i1XvzHVe+zVu7K9ouv5A/K5k60=;
+        b=cmKQ+SeyMoxHolf/UTx/Se5qSD0dtjRTbuDZ6WC8RNVVK7bLMTyFbiTlX2VZne5czN
+         z91ooBQs57i+E9qtgcznOmAuVnSFXr4nz/GmjkLSHmvuXGJFBrKTDgKQJMG+X6iIcLNU
+         BJBJ4R7U3sL6ELZWujhsAjnXZewLR2I+vunY5UA+w8ofeknakP7D4JhYbd+cyWEetS2U
+         kf2yINpcsZbCv+1f4vtKt3gnomw5D77ucCj60LHap4eQvIzCwg4xPVaVJbnaLA8ndYuJ
+         GA2LyWFplBKzjLWsMbTp2cFbV08eHXzytW1wFfJnuJLecKRIxMPchpQnS3saW1J+yUFb
+         cU6g==
+X-Forwarded-Encrypted: i=1; AJvYcCWgKr1EXPe+FjiEbLTPCogxBCMMgkycYMsLVIa8auD1D8J1B2zTtIo3T6W4JnDVN0lmvBjjbuNiRBJUP+cDNw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxy6EbsrTtTnNQ9QNSjvcyg4Ud5fkQ1LFbJ7thuEpIli263rN3A
+	l86Ht6rPAF108sRXoc6Bepw5exVjR89wFEKjH4Oimlct3oMu9TTppTPpqtqr8EnVMNHF1/v6clO
+	Z7QnI
+X-Gm-Gg: ASbGncuu6zXPg/Sd7lp0OmfTY0xNtArcMie6bkDgBjPiem4Fk2ieWt/ifGNXBjSkV+z
+	DTbNRLbN1I4TJbyaFI0tKN98AVfNU8z121jV8N7Nd1i1vX2O5XaW2KwRuKW0MX/mcDON2Xmy511
+	CRDDvf3XuJ2Dev5CiDe1J+mKRIdScbLIuQSpdd1dx/SFYN3IU5cPVaLk7vuvrcVnKOcofGmusG4
+	j61Ek7YGMlRsdNlBrU7DSXTM/cOchU63xv4kMBQwtuBYQ1Kv6tjQ/rGoG7782elzHUSKUj49WSN
+	UDQKlzROG+5ltVW4kA==
+X-Google-Smtp-Source: AGHT+IGZMZ1vejmPmVdJNcnw4Zwc2zAIVlcx7GWBfW6s+UDBt6AfBHooFjEKwrehKltLP6dXsgUelA==
+X-Received: by 2002:a05:6512:3195:b0:53e:1b34:fed3 with SMTP id 2adb3069b0e04-53e1b34ff4emr2245153e87.14.1733334996809;
+        Wed, 04 Dec 2024 09:56:36 -0800 (PST)
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com. [209.85.208.170])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53e1ca78b62sm320910e87.243.2024.12.04.09.56.36
+        for <linux-wireless@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Dec 2024 09:56:36 -0800 (PST)
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-3001f123009so148161fa.3
+        for <linux-wireless@vger.kernel.org>; Wed, 04 Dec 2024 09:56:36 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCVNADwx+N35ikUrgrrggCscoTvi/Spg94WhwFX/Wf3Ft0iXc8NRnBRCFAy7k46Wc51z4AsrohR4P3i49aEIFQ==@vger.kernel.org
+X-Received: by 2002:a05:651c:892:b0:2ff:d3c6:9cf4 with SMTP id
+ 38308e7fff4ca-30009c0f677mr35650171fa.1.1733334995614; Wed, 04 Dec 2024
+ 09:56:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241127105709.4014302-1-treapking@chromium.org>
+ <CAD=FV=XhDdBJXfC72PZAbgaSpVx4ubtKSRFptock0SMRg=+Miw@mail.gmail.com>
+ <CA+ASDXPXiyga6mKLBacupCXa0wsBbXCrmq20RFo7T2eSF8kbzQ@mail.gmail.com>
+ <CAD=FV=XuResyZK1ke1NtaGREfwm_3MB-u5t6vw459kYPt0LZwQ@mail.gmail.com> <Z0-4umP9TnNAbJXO@google.com>
+In-Reply-To: <Z0-4umP9TnNAbJXO@google.com>
+From: Doug Anderson <dianders@chromium.org>
+Date: Wed, 4 Dec 2024 09:56:24 -0800
+X-Gmail-Original-Message-ID: <CAD=FV=XnFuerG3VG6DRtPZzPSBObxP4T4vBcTb5DAA1CaAPgRw@mail.gmail.com>
+Message-ID: <CAD=FV=XnFuerG3VG6DRtPZzPSBObxP4T4vBcTb5DAA1CaAPgRw@mail.gmail.com>
+Subject: Re: [PATCH] wifi: mwifiex: decrease timeout waiting for host sleep
+ from 10s to 5s
+To: Brian Norris <briannorris@chromium.org>
+Cc: Pin-yen Lin <treapking@chromium.org>, Francesco Dolcini <francesco@dolcini.it>, 
+	Kalle Valo <kvalo@kernel.org>, David Lin <yu-hao.lin@nxp.com>, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Hi,
 
-Currently, mac allocate/register and core_pdev_create are initiated immediately
-when QMI firmware ready event is received for a particular device. With
-hardware device group abstraction, QMI firmware ready event can be received
-simultaneously for different devices in the group and so, it should not be
-registered immediately rather it has to be deferred until all devices in the
-group has received QMI firmware ready.
+On Tue, Dec 3, 2024 at 6:04=E2=80=AFPM Brian Norris <briannorris@chromium.o=
+rg> wrote:
+>
+> 10 seconds is likely that *something* is wrong (or at least suboptimal),
+> but IMO, it's not quite at unreasonable levels. But yes, my point was
+> mainly that it's squishy, and I personally wouldn't want to be the one
+> running with the lowest CONFIG_DPM_WATCHDOG_TIMEOUT out there, given the
+> known behavior of multiple drivers and the timeout-means-panic behavior.
+>
+> > Maybe the ChromeOS should change to 15 seconds for the DPM Watchdog
+> > timer and that's a better solution and leave the WiFi driver how it
+> > is?
+>
+> That seems reasonable.
 
-To handle this, refactor the code of core start to have registering within
-ath12k_core_hw_group_start() and unregistering in ath12k_core_hw_group_stop().
+FWIW, I created a public feature request for this:
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+https://issuetracker.google.com/382269699
 
-Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-Co-developed-by: Harshitha Prem <quic_hprem@quicinc.com>
-Signed-off-by: Harshitha Prem <quic_hprem@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/core.c | 199 ++++++++++++++++++-------
- drivers/net/wireless/ath/ath12k/core.h |  22 +++
- drivers/net/wireless/ath/ath12k/qmi.c  |   4 +-
- 3 files changed, 172 insertions(+), 53 deletions(-)
+...we'll see if we can get anyone to bite on it. ...and then see if
+upstream folks like the idea too.
 
-diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index 41e3454b60f5..dea2c53bcc07 100644
---- a/drivers/net/wireless/ath/ath12k/core.c
-+++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -604,6 +604,8 @@ u32 ath12k_core_get_max_num_tids(struct ath12k_base *ab)
- 
- static void ath12k_core_stop(struct ath12k_base *ab)
- {
-+	ath12k_core_stopped(ab);
-+
- 	if (!test_bit(ATH12K_FLAG_CRASH_FLUSH, &ab->dev_flags))
- 		ath12k_qmi_firmware_stop(ab);
- 
-@@ -743,6 +745,8 @@ static int ath12k_core_start(struct ath12k_base *ab,
- {
- 	int ret;
- 
-+	lockdep_assert_held(&ab->core_lock);
-+
- 	ret = ath12k_wmi_attach(ab);
- 	if (ret) {
- 		ath12k_err(ab, "failed to attach wmi: %d\n", ret);
-@@ -836,6 +840,10 @@ static int ath12k_core_start(struct ath12k_base *ab,
- 		/* ACPI is optional so continue in case of an error */
- 		ath12k_dbg(ab, ATH12K_DBG_BOOT, "acpi failed: %d\n", ret);
- 
-+	if (!test_bit(ATH12K_FLAG_RECOVERY, &ab->dev_flags))
-+		/* Indicate the core start in the appropriate group */
-+		ath12k_core_started(ab);
-+
- 	return 0;
- 
- err_reo_cleanup:
-@@ -847,6 +855,96 @@ static int ath12k_core_start(struct ath12k_base *ab,
- 	return ret;
- }
- 
-+static void ath12k_core_device_cleanup(struct ath12k_base *ab)
-+{
-+	mutex_lock(&ab->core_lock);
-+
-+	ath12k_hif_irq_disable(ab);
-+	ath12k_core_pdev_destroy(ab);
-+	ath12k_mac_unregister(ab);
-+	ath12k_mac_destroy(ab);
-+
-+	mutex_unlock(&ab->core_lock);
-+}
-+
-+static void ath12k_core_hw_group_stop(struct ath12k_hw_group *ag)
-+{
-+	struct ath12k_base *ab;
-+	int i;
-+
-+	lockdep_assert_held(&ag->mutex);
-+
-+	for (i = ag->num_devices - 1; i >= 0; i--) {
-+		ab = ag->ab[i];
-+		if (!ab)
-+			continue;
-+		ath12k_core_device_cleanup(ab);
-+	}
-+}
-+
-+static int ath12k_core_hw_group_start(struct ath12k_hw_group *ag)
-+{
-+	struct ath12k_base *ab;
-+	int ret, i;
-+
-+	lockdep_assert_held(&ag->mutex);
-+
-+	for (i = 0; i < ag->num_devices; i++) {
-+		ab = ag->ab[i];
-+		if (!ab)
-+			continue;
-+
-+		mutex_lock(&ab->core_lock);
-+
-+		/* Check if already registered or not, since same flow
-+		 * execute for HW restart case.
-+		 */
-+		if (test_bit(ATH12K_FLAG_REGISTERED, &ab->dev_flags))
-+			goto core_pdev_create;
-+
-+		ret = ath12k_mac_allocate(ab);
-+		if (ret) {
-+			ath12k_err(ab, "failed to create new hw device with mac80211 :%d\n",
-+				   ret);
-+			mutex_unlock(&ab->core_lock);
-+			return ret;
-+		}
-+
-+		ret = ath12k_mac_register(ab);
-+		if (ret) {
-+			ath12k_err(ab, "failed to register radio with mac80211: %d\n",
-+				   ret);
-+			mutex_unlock(&ab->core_lock);
-+			goto err;
-+		}
-+
-+core_pdev_create:
-+		ret = ath12k_core_pdev_create(ab);
-+		if (ret) {
-+			ath12k_err(ab, "failed to create pdev core %d\n", ret);
-+			mutex_unlock(&ab->core_lock);
-+			goto err;
-+		}
-+
-+		ath12k_hif_irq_enable(ab);
-+
-+		ret = ath12k_core_rfkill_config(ab);
-+		if (ret && ret != -EOPNOTSUPP) {
-+			mutex_unlock(&ab->core_lock);
-+			goto err;
-+		}
-+
-+		mutex_unlock(&ab->core_lock);
-+	}
-+
-+	return 0;
-+
-+err:
-+	ath12k_core_hw_group_stop(ag);
-+
-+	return ret;
-+}
-+
- static int ath12k_core_start_firmware(struct ath12k_base *ab,
- 				      enum ath12k_firmware_mode mode)
- {
-@@ -864,9 +962,18 @@ static int ath12k_core_start_firmware(struct ath12k_base *ab,
- 	return ret;
- }
- 
-+static inline
-+bool ath12k_core_hw_group_start_ready(struct ath12k_hw_group *ag)
-+{
-+	lockdep_assert_held(&ag->mutex);
-+
-+	return (ag->num_started == ag->num_devices);
-+}
-+
- int ath12k_core_qmi_firmware_ready(struct ath12k_base *ab)
- {
--	int ret;
-+	struct ath12k_hw_group *ag = ath12k_ab_to_ag(ab);
-+	int ret, i;
- 
- 	ret = ath12k_core_start_firmware(ab, ATH12K_FIRMWARE_MODE_NORMAL);
- 	if (ret) {
-@@ -886,59 +993,50 @@ int ath12k_core_qmi_firmware_ready(struct ath12k_base *ab)
- 		goto err_firmware_stop;
- 	}
- 
-+	mutex_lock(&ag->mutex);
- 	mutex_lock(&ab->core_lock);
-+
- 	ret = ath12k_core_start(ab, ATH12K_FIRMWARE_MODE_NORMAL);
- 	if (ret) {
- 		ath12k_err(ab, "failed to start core: %d\n", ret);
- 		goto err_dp_free;
- 	}
- 
--	ret = ath12k_mac_allocate(ab);
--	if (ret) {
--		ath12k_err(ab, "failed to create new hw device with mac80211 :%d\n",
--			   ret);
--		goto err_core_stop;
--	}
--
--	ret = ath12k_mac_register(ab);
--	if (ret) {
--		ath12k_err(ab, "failed register the radio with mac80211: %d\n", ret);
--		goto err_mac_destroy;
--	}
--
--	ret = ath12k_core_pdev_create(ab);
--	if (ret) {
--		ath12k_err(ab, "failed to create pdev core: %d\n", ret);
--		goto err_mac_unregister;
--	}
--
--	ath12k_hif_irq_enable(ab);
--
--	ret = ath12k_core_rfkill_config(ab);
--	if (ret && ret != -EOPNOTSUPP) {
--		ath12k_err(ab, "failed to config rfkill: %d\n", ret);
--		goto err_hif_irq_disable;
--	}
--
- 	mutex_unlock(&ab->core_lock);
- 
-+	if (ath12k_core_hw_group_start_ready(ag)) {
-+		ret = ath12k_core_hw_group_start(ag);
-+		if (ret) {
-+			ath12k_warn(ab, "unable to start hw group\n");
-+			goto err_core_stop;
-+		}
-+		ath12k_dbg(ab, ATH12K_DBG_BOOT, "group %d started\n", ag->id);
-+	}
-+
-+	mutex_unlock(&ag->mutex);
-+
- 	return 0;
- 
--err_hif_irq_disable:
--	ath12k_hif_irq_disable(ab);
--	ath12k_core_pdev_destroy(ab);
--err_mac_unregister:
--	ath12k_mac_unregister(ab);
--err_mac_destroy:
--	ath12k_mac_destroy(ab);
- err_core_stop:
--	ath12k_core_stop(ab);
-+	for (i = ag->num_devices - 1; i >= 0; i--) {
-+		ab = ag->ab[i];
-+		if (!ab)
-+			continue;
-+
-+		mutex_lock(&ab->core_lock);
-+		ath12k_core_stop(ab);
-+		mutex_unlock(&ab->core_lock);
-+	}
-+	goto exit;
-+
- err_dp_free:
- 	ath12k_dp_free(ab);
- 	mutex_unlock(&ab->core_lock);
- err_firmware_stop:
- 	ath12k_qmi_firmware_stop(ab);
- 
-+exit:
-+	mutex_unlock(&ag->mutex);
- 	return ret;
- }
- 
-@@ -1135,6 +1233,14 @@ static void ath12k_core_restart(struct work_struct *work)
- 	}
- 
- 	if (ab->is_reset) {
-+		if (!test_bit(ATH12K_FLAG_REGISTERED, &ab->dev_flags)) {
-+			atomic_dec(&ab->reset_count);
-+			complete(&ab->reset_complete);
-+			ab->is_reset = false;
-+			atomic_set(&ab->fail_cont_count, 0);
-+			ath12k_dbg(ab, ATH12K_DBG_BOOT, "reset success\n");
-+		}
-+
- 		for (i = 0; i < ath12k_get_num_hw(ab); i++) {
- 			ah = ath12k_ab_to_ah(ab, i);
- 			ieee80211_restart_hw(ah->hw);
-@@ -1319,7 +1425,7 @@ static struct ath12k_hw_group *ath12k_core_hw_group_assign(struct ath12k_base *a
- 
- void ath12k_core_hw_group_unassign(struct ath12k_base *ab)
- {
--	struct ath12k_hw_group *ag = ab->ag;
-+	struct ath12k_hw_group *ag = ath12k_ab_to_ag(ab);
- 	u8 device_id = ab->device_id;
- 	int num_probed;
- 
-@@ -1353,19 +1459,6 @@ void ath12k_core_hw_group_unassign(struct ath12k_base *ab)
- 		ath12k_core_hw_group_free(ag);
- }
- 
--static void ath12k_core_device_cleanup(struct ath12k_base *ab)
--{
--	mutex_lock(&ab->core_lock);
--
--	ath12k_hif_irq_disable(ab);
--	ath12k_core_pdev_destroy(ab);
--	ath12k_mac_unregister(ab);
--	ath12k_mac_destroy(ab);
--	ath12k_core_stop(ab);
--
--	mutex_unlock(&ab->core_lock);
--}
--
- static void ath12k_core_hw_group_destroy(struct ath12k_hw_group *ag)
- {
- 	struct ath12k_base *ab;
-@@ -1393,12 +1486,16 @@ static void ath12k_core_hw_group_cleanup(struct ath12k_hw_group *ag)
- 
- 	mutex_lock(&ag->mutex);
- 
-+	ath12k_core_hw_group_stop(ag);
-+
- 	for (i = 0; i < ag->num_devices; i++) {
- 		ab = ag->ab[i];
- 		if (!ab)
- 			continue;
- 
--		ath12k_core_device_cleanup(ab);
-+		mutex_lock(&ab->core_lock);
-+		ath12k_core_stop(ab);
-+		mutex_unlock(&ab->core_lock);
- 	}
- 
- 	mutex_unlock(&ag->mutex);
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index dca4b9a3538f..b8b1ee8d3302 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -824,6 +824,8 @@ struct ath12k_hw_group {
- 	u8 id;
- 	u8 num_devices;
- 	u8 num_probed;
-+	u8 num_started;
-+	unsigned long flags;
- 	struct ath12k_base *ab[ATH12K_MAX_SOCS];
- 
- 	/* protects access to this struct */
-@@ -1175,4 +1177,24 @@ static inline int ath12k_get_num_hw(struct ath12k_base *ab)
- {
- 	return ab->num_hw;
- }
-+
-+static inline struct ath12k_hw_group *ath12k_ab_to_ag(struct ath12k_base *ab)
-+{
-+	return ab->ag;
-+}
-+
-+static inline void ath12k_core_started(struct ath12k_base *ab)
-+{
-+	lockdep_assert_held(&ab->ag->mutex);
-+
-+	ab->ag->num_started++;
-+}
-+
-+static inline void ath12k_core_stopped(struct ath12k_base *ab)
-+{
-+	lockdep_assert_held(&ab->ag->mutex);
-+
-+	ab->ag->num_started--;
-+}
-+
- #endif /* _CORE_H_ */
-diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
-index efcf2dfac4ac..8b4d500fe426 100644
---- a/drivers/net/wireless/ath/ath12k/qmi.c
-+++ b/drivers/net/wireless/ath/ath12k/qmi.c
-@@ -3321,7 +3321,6 @@ static void ath12k_qmi_driver_event_work(struct work_struct *work)
- 			break;
- 		case ATH12K_QMI_EVENT_SERVER_EXIT:
- 			set_bit(ATH12K_FLAG_CRASH_FLUSH, &ab->dev_flags);
--			set_bit(ATH12K_FLAG_RECOVERY, &ab->dev_flags);
- 			break;
- 		case ATH12K_QMI_EVENT_REQUEST_MEM:
- 			ret = ath12k_qmi_event_mem_request(qmi);
-@@ -3338,13 +3337,14 @@ static void ath12k_qmi_driver_event_work(struct work_struct *work)
- 			if (test_bit(ATH12K_FLAG_QMI_FW_READY_COMPLETE, &ab->dev_flags)) {
- 				if (ab->is_reset)
- 					ath12k_hal_dump_srng_stats(ab);
-+
-+				set_bit(ATH12K_FLAG_RECOVERY, &ab->dev_flags);
- 				queue_work(ab->workqueue, &ab->restart_work);
- 				break;
- 			}
- 
- 			clear_bit(ATH12K_FLAG_CRASH_FLUSH,
- 				  &ab->dev_flags);
--			clear_bit(ATH12K_FLAG_RECOVERY, &ab->dev_flags);
- 			ret = ath12k_core_qmi_firmware_ready(ab);
- 			if (!ret)
- 				set_bit(ATH12K_FLAG_QMI_FW_READY_COMPLETE,
--- 
-2.39.5
 
+> To be clear, I'm OK with this patch, if we can get a little more
+> confidence in it (like the timing data and HW info). I *think* 5 vs 10
+> isn't a big deal here, but I don't have much other than my guess at the
+> moment.
+>
+> > Another thought: I wonder if it's possible to be dynamic and somehow
+> > set the timeout as "max(10, dpm_watchdog_timeout / 2)". Not that I've
+>
+> You probably meant min()?
+
+Yeah, I always screw that up. Sigh.
+
+
+> > >  Can you try testing (and gather timing numbers) when
+> > > suspending soon after initiating scans? It's hard to judge what the
+> > > lower limit of this timeout should really be without any numbers, jus=
+t
+> > > like it's hard to judge whether your 10 second watchdog is reasonable=
+.
+> >
+> > Pin-yen: is this something you could gather?
+> >
+> >
+> > > Also, for the record, since we might have to field regression reports
+> > > for other systems: what hardware (chip variant, FW version) are you
+> > > seeing problems on?
+> >
+> > Pin-yen: I'm assuming you'll provide this.
+>
+> I'll leave it up to y'all (Doug and Pin-Yen) whether you want to provide
+> the above to provide a little more confidence, or if you want to
+> reconsider your use of CONFIG_DPM_WATCHDOG_TIMEOUT.
+
+Possibly the answer could be both?
 
