@@ -1,192 +1,149 @@
-Return-Path: <linux-wireless+bounces-15918-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15919-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94A229E4DD9
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Dec 2024 08:00:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C1099E4FE8
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Dec 2024 09:39:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A9C6281DD4
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Dec 2024 06:59:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12CF3285090
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Dec 2024 08:38:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89FE919A2B0;
-	Thu,  5 Dec 2024 06:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569F61D433C;
+	Thu,  5 Dec 2024 08:38:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Iv9q2Qxm"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="VlJoL1q8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFBA441C92;
-	Thu,  5 Dec 2024 06:59:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 238F21D4339;
+	Thu,  5 Dec 2024 08:38:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733381996; cv=none; b=Xd/SiITIO7hXDYiOaksBX3ibUEB4qmmhkyK72dYW3ijWybiCvzfJC97vTXUj56aAIeWbs3JCt9QEdRdd55wfHjU7j3UDFLjr2/e82AG7ia33/AY7h6g1lYIinTYQzIX7bAMGo8MhMqX4yRAmbl3OIm8glZq34uOPRa8nI5F3PK8=
+	t=1733387934; cv=none; b=OZxz8N1EPWj/tIofsnZN8RQ06DhcuQYbvr+/sZNJXk9FIYHMBhcI55FRD0+WzcTBdqH4H/WyFaMW/ctbf3TulJYjxvhOAngkav3jIVtKjtidJfKsyFK8wXWiscQZPEmMOso7zvm0zgrxNPAZeWAUGvRqcU3U007idIXvtFclH0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733381996; c=relaxed/simple;
-	bh=JQYPwugyUj9jKvmbjblvHsew22Ptk9It2ss44YppIgI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=l1tpOnD9JXTt7QznDP244ERHAPz3Irm/eAg8SNgKi/0XFTLFRNCqK6XOlRgUg1QusYnPuBKOStvOHH2SIqP3az0Qm4a0zsrrlgr9YXlrldl01RzBb38MXzK7Ca1wl1mJYf0zlnav1hCyFiIaRkrgTwBUqfnNdQUyFmAT8IT1p1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Iv9q2Qxm; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B4NP5Nl025869;
-	Thu, 5 Dec 2024 06:59:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=+okP/dHU+CdjRsXfg1HtzK
-	0pejk+R0Bah+ClpjfRk8o=; b=Iv9q2Qxm3qMrqD8bTD2V1CiIfOiJgimFwOCnZY
-	mkw7blKzIbO/lWzIKV6qJ5MjkqMA+hbrQBhc7kpA8N1xCkglG15/CIfbdjNbO73T
-	uyUYp/GbjO1LrvLKAZ19fgRVY1D4KsGhnfXu31q0d7iLPFxtgDtNw5LqdO2ZvMIm
-	yiorvuwOit1kd7zDv/b5kCq5MNMSbyT2TRvL15Lk8m1htNqAEejoeI0wnE6zrAHW
-	cmTW7CB6Rzzz+s1wsQoxqqTZDh7oCmhROuxyRNec0L5QAEVQcdVeEjBwXKHf7RUz
-	xTC/bo+xVdECLFV2MewL5iBsUNSlk2InWeFDTKd+aQnDBzzw==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 439yr9p3dp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 05 Dec 2024 06:59:50 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4B56xnTb029686
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 5 Dec 2024 06:59:49 GMT
-Received: from hu-adisi-blr.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+	s=arc-20240116; t=1733387934; c=relaxed/simple;
+	bh=PAObXDiXmDWj70ESEgFGl1tLxCTLl4RM/SgAzyfuJbE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=cA7aO0Pd+2AZkQXJBTFc8BiXxjL2eVig4+1rPFaB+wJLpdKtZLbage9TdsBODs3Z13C3BohlY5WPxKMTyR2v3psfI2OHrydC9a0Cw+oi0eEItaCV9iDMLxZcRmzp2ikgN9VMuIRdDWXLu9eLbLl4OZIYZjnmGpI1pnOmOzkYj8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=VlJoL1q8; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4B58cbNxB2684906, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1733387917; bh=PAObXDiXmDWj70ESEgFGl1tLxCTLl4RM/SgAzyfuJbE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=VlJoL1q8ZTk6O9d5R6UjmtoV+NB/XXTiRt+mT3xvPjfoKDyuZkGIYMirOtqKI6Jnp
+	 GIM1CZtJs/izmbEV4t5YdCS6JFTiB0ZbnY4KpbWf1NAbLn7EMPba3n6/PWocEzjgnh
+	 C9wG3H4RzeaK4MU3KrHh3vn+fhFbxAsJNv1FlmjIQ69kkJQPsd0/rvf8bt+JrCH3pq
+	 EvTCWRSII6Qvw6CV/hPQ1LuAbR2Kau8l+r2yYw5HVrYf5VkwMtWcI3sxd2v4+6nSAt
+	 fUVicuWYI0rXKE8Cb9zt3P739cFgMWBTSDO15dhdgK47ew6yOyaVgNj/QJlQGhbgLe
+	 OjZTMHhI4fVCA==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4B58cbNxB2684906
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 5 Dec 2024 16:38:37 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Wed, 4 Dec 2024 22:59:47 -0800
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
-Date: Thu, 5 Dec 2024 12:29:29 +0530
-Subject: [PATCH] wifi: mac80211: re-order unassigning channel in activate
+ 15.1.2507.39; Thu, 5 Dec 2024 16:38:37 +0800
+Received: from RTEXMBS03.realtek.com.tw (172.21.6.96) by
+ RTEXMBS03.realtek.com.tw (172.21.6.96) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 5 Dec 2024 16:38:37 +0800
+Received: from RTEXMBS03.realtek.com.tw ([fe80::80c2:f580:de40:3a4f]) by
+ RTEXMBS03.realtek.com.tw ([fe80::80c2:f580:de40:3a4f%2]) with mapi id
+ 15.01.2507.035; Thu, 5 Dec 2024 16:38:37 +0800
+From: Zong-Zhe Yang <kevin_yang@realtek.com>
+To: Aditya Kumar Singh <quic_adisi@quicinc.com>,
+        Johannes Berg
+	<johannes@sipsolutions.net>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH] wifi: mac80211: re-order unassigning channel in activate links
+Thread-Topic: [PATCH] wifi: mac80211: re-order unassigning channel in activate
  links
+Thread-Index: AQHbRuNSBxvPvyW8HE26pTx5nrDmYLLXTWQA
+Date: Thu, 5 Dec 2024 08:38:37 +0000
+Message-ID: <65d22960ca6e47e19cf7c1c6a60dd72a@realtek.com>
+References: <20241205-unassign_activate_links-v1-1-84097a1abdeb@quicinc.com>
+In-Reply-To: <20241205-unassign_activate_links-v1-1-84097a1abdeb@quicinc.com>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS03.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20241205-unassign_activate_links-v1-1-84097a1abdeb@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIAFBPUWcC/x3MQQqDMBBA0avIrA1oMKbxKiIy1akdKtOSUSkE7
- 25w+Rb/J1CKTApdkSDSwcpfyajLAqY3ykKG52ywlW1qWzmzC6ryIiNOGx+40biyfNS06HzzcOE
- Zgodc/yK9+H+f++E8L49fX89pAAAA
-X-Change-ID: 20241205-unassign_activate_links-6a574859b997
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        "Aditya
- Kumar Singh" <quic_adisi@quicinc.com>
-X-Mailer: b4 0.14.2
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: BSOHpOIE2j23DLCTSClGVHCk3_5NPvX2
-X-Proofpoint-GUID: BSOHpOIE2j23DLCTSClGVHCk3_5NPvX2
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
- clxscore=1015 priorityscore=1501 mlxlogscore=999 phishscore=0
- lowpriorityscore=0 malwarescore=0 mlxscore=0 suspectscore=0 adultscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412050052
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-The current flow in _ieee80211_set_active_links() during link removal
-does not align with the operational requirements of drivers that groups
-multiple hardware under a single wiphy. These drivers (e.g ath12k) rely on
-channel information to determine the appropriate hardware for each link.
-
-Now, during the link removal process, the channel is first unassigned from
-the links via a call to __ieee80211_link_release_channel(). After this, the
-state of all connected stations is updated via drv_change_sta_links().
-This is followed by handling keys in the links, and finally, removing the
-link by calling drv_change_vif_links().
-
-For above mentioned drivers (such as ath12k), with the above flow, once the
-channel is unassigned from the link, the link would be deleted at the
-driver and firmware level. However, at this point, the station still exist,
-leading to failures in deactivating the links.
-
-Additionally, if we consider the link addition flow [1], channels are first
-assigned, and then stations are created. So conversely, during removal,
-ideally, the station should be removed first, and then the channel should
-be unassigned.
-
-Therefore, re-order the logic so that stations are handled first and then
-channel is unassigned.
-
-[1]: https://lore.kernel.org/linux-wireless/20241001085034.2745669-1-quic_adisi@quicinc.com/
-
-Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
----
- net/mac80211/link.c | 44 ++++++++++++++++++++++----------------------
- 1 file changed, 22 insertions(+), 22 deletions(-)
-
-diff --git a/net/mac80211/link.c b/net/mac80211/link.c
-index 58a76bcd6ae68670fbbe7fa7d07540c04ff996f8..3c46d2b2ee254fab324d57f4d0fbe94ace76d89d 100644
---- a/net/mac80211/link.c
-+++ b/net/mac80211/link.c
-@@ -367,28 +367,6 @@ static int _ieee80211_set_active_links(struct ieee80211_sub_if_data *sdata,
- 		}
- 	}
- 
--	for_each_set_bit(link_id, &rem, IEEE80211_MLD_MAX_NUM_LINKS) {
--		struct ieee80211_link_data *link;
--
--		link = sdata_dereference(sdata->link[link_id], sdata);
--
--		ieee80211_teardown_tdls_peers(link);
--
--		__ieee80211_link_release_channel(link, true);
--
--		/*
--		 * If CSA is (still) active while the link is deactivated,
--		 * just schedule the channel switch work for the time we
--		 * had previously calculated, and we'll take the process
--		 * from there.
--		 */
--		if (link->conf->csa_active)
--			wiphy_delayed_work_queue(local->hw.wiphy,
--						 &link->u.mgd.csa.switch_work,
--						 link->u.mgd.csa.time -
--						 jiffies);
--	}
--
- 	for_each_set_bit(link_id, &add, IEEE80211_MLD_MAX_NUM_LINKS) {
- 		struct ieee80211_link_data *link;
- 
-@@ -458,6 +436,28 @@ static int _ieee80211_set_active_links(struct ieee80211_sub_if_data *sdata,
- 		__ieee80211_sta_recalc_aggregates(sta, active_links);
- 	}
- 
-+	for_each_set_bit(link_id, &rem, IEEE80211_MLD_MAX_NUM_LINKS) {
-+		struct ieee80211_link_data *link;
-+
-+		link = sdata_dereference(sdata->link[link_id], sdata);
-+
-+		ieee80211_teardown_tdls_peers(link);
-+
-+		__ieee80211_link_release_channel(link, true);
-+
-+		/*
-+		 * If CSA is (still) active while the link is deactivated,
-+		 * just schedule the channel switch work for the time we
-+		 * had previously calculated, and we'll take the process
-+		 * from there.
-+		 */
-+		if (link->conf->csa_active)
-+			wiphy_delayed_work_queue(local->hw.wiphy,
-+						 &link->u.mgd.csa.switch_work,
-+						 link->u.mgd.csa.time -
-+						 jiffies);
-+	}
-+
- 	for_each_set_bit(link_id, &add, IEEE80211_MLD_MAX_NUM_LINKS) {
- 		struct ieee80211_link_data *link;
- 
-
----
-base-commit: b81e0211e9c70be9eb70924e4e29698bfbbbc03a
-change-id: 20241205-unassign_activate_links-6a574859b997
-
+QWRpdHlhIEt1bWFyIFNpbmdoIDxxdWljX2FkaXNpQHF1aWNpbmMuY29tPiB3cm90ZToNCj4gDQo+
+IFsuLi5dDQo+IA0KPiAgbmV0L21hYzgwMjExL2xpbmsuYyB8IDQ0ICsrKysrKysrKysrKysrKysr
+KysrKystLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQo+ICAxIGZpbGUgY2hhbmdlZCwgMjIgaW5zZXJ0
+aW9ucygrKSwgMjIgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvbmV0L21hYzgwMjEx
+L2xpbmsuYyBiL25ldC9tYWM4MDIxMS9saW5rLmMgaW5kZXgNCj4gNThhNzZiY2Q2YWU2ODY3MGZi
+YmU3ZmE3ZDA3NTQwYzA0ZmY5OTZmOC4uM2M0NmQyYjJlZTI1NGZhYjMyNGQ1N2Y0ZDBmYmU5NGFj
+ZTc2ZDgNCj4gOWQgMTAwNjQ0DQo+IC0tLSBhL25ldC9tYWM4MDIxMS9saW5rLmMNCj4gKysrIGIv
+bmV0L21hYzgwMjExL2xpbmsuYw0KPiBAQCAtMzY3LDI4ICszNjcsNiBAQCBzdGF0aWMgaW50IF9p
+ZWVlODAyMTFfc2V0X2FjdGl2ZV9saW5rcyhzdHJ1Y3QgaWVlZTgwMjExX3N1Yl9pZl9kYXRhDQo+
+ICpzZGF0YSwNCj4gICAgICAgICAgICAgICAgIH0NCj4gICAgICAgICB9DQo+IA0KPiAtICAgICAg
+IGZvcl9lYWNoX3NldF9iaXQobGlua19pZCwgJnJlbSwgSUVFRTgwMjExX01MRF9NQVhfTlVNX0xJ
+TktTKSB7DQo+IC0gICAgICAgICAgICAgICBzdHJ1Y3QgaWVlZTgwMjExX2xpbmtfZGF0YSAqbGlu
+azsNCj4gLQ0KPiAtICAgICAgICAgICAgICAgbGluayA9IHNkYXRhX2RlcmVmZXJlbmNlKHNkYXRh
+LT5saW5rW2xpbmtfaWRdLCBzZGF0YSk7DQo+IC0NCj4gLSAgICAgICAgICAgICAgIGllZWU4MDIx
+MV90ZWFyZG93bl90ZGxzX3BlZXJzKGxpbmspOw0KPiAtDQo+IC0gICAgICAgICAgICAgICBfX2ll
+ZWU4MDIxMV9saW5rX3JlbGVhc2VfY2hhbm5lbChsaW5rLCB0cnVlKTsNCj4gLQ0KPiAtICAgICAg
+ICAgICAgICAgLyoNCj4gLSAgICAgICAgICAgICAgICAqIElmIENTQSBpcyAoc3RpbGwpIGFjdGl2
+ZSB3aGlsZSB0aGUgbGluayBpcyBkZWFjdGl2YXRlZCwNCj4gLSAgICAgICAgICAgICAgICAqIGp1
+c3Qgc2NoZWR1bGUgdGhlIGNoYW5uZWwgc3dpdGNoIHdvcmsgZm9yIHRoZSB0aW1lIHdlDQo+IC0g
+ICAgICAgICAgICAgICAgKiBoYWQgcHJldmlvdXNseSBjYWxjdWxhdGVkLCBhbmQgd2UnbGwgdGFr
+ZSB0aGUgcHJvY2Vzcw0KPiAtICAgICAgICAgICAgICAgICogZnJvbSB0aGVyZS4NCj4gLSAgICAg
+ICAgICAgICAgICAqLw0KPiAtICAgICAgICAgICAgICAgaWYgKGxpbmstPmNvbmYtPmNzYV9hY3Rp
+dmUpDQo+IC0gICAgICAgICAgICAgICAgICAgICAgIHdpcGh5X2RlbGF5ZWRfd29ya19xdWV1ZShs
+b2NhbC0+aHcud2lwaHksDQo+IC0gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAmbGluay0+dS5tZ2QuY3NhLnN3aXRjaF93b3JrLA0KPiAtICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgbGluay0+dS5tZ2QuY3NhLnRpbWUg
+LQ0KPiAtICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgamlm
+Zmllcyk7DQo+IC0gICAgICAgfQ0KPiAtDQo+ICAgICAgICAgZm9yX2VhY2hfc2V0X2JpdChsaW5r
+X2lkLCAmYWRkLCBJRUVFODAyMTFfTUxEX01BWF9OVU1fTElOS1MpIHsNCj4gICAgICAgICAgICAg
+ICAgIHN0cnVjdCBpZWVlODAyMTFfbGlua19kYXRhICpsaW5rOw0KPiANCj4gQEAgLTQ1OCw2ICs0
+MzYsMjggQEAgc3RhdGljIGludCBfaWVlZTgwMjExX3NldF9hY3RpdmVfbGlua3Moc3RydWN0IGll
+ZWU4MDIxMV9zdWJfaWZfZGF0YQ0KPiAqc2RhdGEsDQo+ICAgICAgICAgICAgICAgICBfX2llZWU4
+MDIxMV9zdGFfcmVjYWxjX2FnZ3JlZ2F0ZXMoc3RhLCBhY3RpdmVfbGlua3MpOw0KPiAgICAgICAg
+IH0NCj4gDQo+ICsgICAgICAgZm9yX2VhY2hfc2V0X2JpdChsaW5rX2lkLCAmcmVtLCBJRUVFODAy
+MTFfTUxEX01BWF9OVU1fTElOS1MpIHsNCj4gKyAgICAgICAgICAgICAgIHN0cnVjdCBpZWVlODAy
+MTFfbGlua19kYXRhICpsaW5rOw0KPiArDQo+ICsgICAgICAgICAgICAgICBsaW5rID0gc2RhdGFf
+ZGVyZWZlcmVuY2Uoc2RhdGEtPmxpbmtbbGlua19pZF0sIHNkYXRhKTsNCj4gKw0KPiArICAgICAg
+ICAgICAgICAgaWVlZTgwMjExX3RlYXJkb3duX3RkbHNfcGVlcnMobGluayk7DQo+ICsNCj4gKyAg
+ICAgICAgICAgICAgIF9faWVlZTgwMjExX2xpbmtfcmVsZWFzZV9jaGFubmVsKGxpbmssIHRydWUp
+Ow0KPiArDQo+ICsgICAgICAgICAgICAgICAvKg0KPiArICAgICAgICAgICAgICAgICogSWYgQ1NB
+IGlzIChzdGlsbCkgYWN0aXZlIHdoaWxlIHRoZSBsaW5rIGlzIGRlYWN0aXZhdGVkLA0KPiArICAg
+ICAgICAgICAgICAgICoganVzdCBzY2hlZHVsZSB0aGUgY2hhbm5lbCBzd2l0Y2ggd29yayBmb3Ig
+dGhlIHRpbWUgd2UNCj4gKyAgICAgICAgICAgICAgICAqIGhhZCBwcmV2aW91c2x5IGNhbGN1bGF0
+ZWQsIGFuZCB3ZSdsbCB0YWtlIHRoZSBwcm9jZXNzDQo+ICsgICAgICAgICAgICAgICAgKiBmcm9t
+IHRoZXJlLg0KPiArICAgICAgICAgICAgICAgICovDQo+ICsgICAgICAgICAgICAgICBpZiAobGlu
+ay0+Y29uZi0+Y3NhX2FjdGl2ZSkNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgd2lwaHlfZGVs
+YXllZF93b3JrX3F1ZXVlKGxvY2FsLT5ody53aXBoeSwNCj4gKyAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICZsaW5rLT51Lm1nZC5jc2Euc3dpdGNoX3dvcmss
+DQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBsaW5r
+LT51Lm1nZC5jc2EudGltZSAtDQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICBqaWZmaWVzKTsNCj4gKyAgICAgICB9DQo+ICsNCj4gICAgICAgICBmb3Jf
+ZWFjaF9zZXRfYml0KGxpbmtfaWQsICZhZGQsIElFRUU4MDIxMV9NTERfTUFYX05VTV9MSU5LUykg
+ew0KPiAgICAgICAgICAgICAgICAgc3RydWN0IGllZWU4MDIxMV9saW5rX2RhdGEgKmxpbms7DQo+
+IA0KDQpDb3VsZCB5b3UgYWxzbyB1cGRhdGUgdGhlIGRlc2NyaXB0aW9uIG9mIGllZWU4MDIxMV9z
+ZXRfYWN0aXZlX2xpbmtzKCkgKGluY2x1ZGUvbmV0L21hYzgwMjExLmgpIHRvIGFsaWduIHRoZSBj
+aGFuZ2VzPw0KSSB0aGluayBpdCB3b3VsZCBiZSBsaWtlOg0KDQogIGNoYW5nZV92aWZfbGlua3Mo
+MHgxMSkNCiAgYXNzaWduX3ZpZl9jaGFuY3R4KGxpbmtfaWQ9NCkNCiAgY2hhbmdlX3N0YV9saW5r
+cygweDExKSBmb3IgZWFjaCBhZmZlY3RlZCBTVEEgKHRoZSBBUCkNCiAgWy4uLl0NCiAgY2hhbmdl
+X3N0YV9saW5rcygweDEwKSBmb3IgZWFjaCBhZmZlY3RlZCBTVEEgKHRoZSBBUCkNCiAgdW5hc3Np
+Z25fdmlmX2NoYW5jdHgobGlua19pZD0wKQ0KICBjaGFuZ2VfdmlmX2xpbmtzKDB4MTApDQoNCg==
 
