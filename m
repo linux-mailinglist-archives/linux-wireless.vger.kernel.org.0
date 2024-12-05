@@ -1,235 +1,198 @@
-Return-Path: <linux-wireless+bounces-15926-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15927-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E56D9E563B
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Dec 2024 14:11:02 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20A179E57C7
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Dec 2024 14:49:20 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3655D2845F9
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Dec 2024 13:11:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A02D1883692
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Dec 2024 13:48:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18007218847;
-	Thu,  5 Dec 2024 13:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E71231D52B;
+	Thu,  5 Dec 2024 13:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="PVl0tRPy"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="PX91DB/e"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A9421770D
-	for <linux-wireless@vger.kernel.org>; Thu,  5 Dec 2024 13:10:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F631219A6A
+	for <linux-wireless@vger.kernel.org>; Thu,  5 Dec 2024 13:46:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733404259; cv=none; b=kvs5kIBYZUkoB9OiLXg96C77VJdQ7AlSNBVwWXseNs37QUDBKG5QdOfDiLHCeK9JjQovP27eKHFI+/dmU7iE4VQAe00C1QQ5rJb07f6VUaUugtOwY1eeMPGXtxJlrtmib2bBToiFCg/XrAamUlIuyUUQGHLbTVxZebE3oLYaHb8=
+	t=1733406393; cv=none; b=MWYBcfLKDZKVpqQOsiWYVIl8X9Btu3E1cem7RYhnwWZoxFs76MWo6W3X0EyJZ8/QePWznYqyJcNztlEPXW7g0261RBbpM1j6PaxJ7/6sTz4B8pvFePBfp0jXmgATovkgkPBHATur8j3ho+SHVZpd2+1rS98wK3MMRx5Q6AYWnZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733404259; c=relaxed/simple;
-	bh=tXJRiFavBk5Y67bEBO6QAAaW+2R1zBHGkwkuzQ8MryQ=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=SidelMqXVBXBQrmgrhPEi4UlOGP2ubOU/ADQxFdgOqQ9MaJkyJHGkJ8zkIivZpIPiCyqZpeGWCtlHXSozDryp6TSEIG7MtSL19V4GxcM5DTGEhcw+xKbsEBOTEmhDoxak2+bj5JQKXMGcCOlFnCQRg9/7H9/19SiMsT2w/+LRCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=PVl0tRPy; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2156e078563so6407395ad.2
-        for <linux-wireless@vger.kernel.org>; Thu, 05 Dec 2024 05:10:57 -0800 (PST)
+	s=arc-20240116; t=1733406393; c=relaxed/simple;
+	bh=JF3MqJZziorqpBOYbWa97I4GmjXX7snHvfvD6fsYzCo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oKK1v8Ddww1cUERhw9cFwGLFA5GtXN3ssNpGhpMXF2qUESPWFTbYBD15NaAySugF7/9B4krpGplcBRL+KaXIDoAay0NOO8CURfREz1tine7/xPHOzkd6hVynHOnBpriwgPdTshnl3rinWjiSYfyu0OfZ/4M2igl/9KKxceMDgY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=PX91DB/e; arc=none smtp.client-ip=209.85.161.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-5f1dc7c6c67so246765eaf.2
+        for <linux-wireless@vger.kernel.org>; Thu, 05 Dec 2024 05:46:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1733404257; x=1734009057; darn=vger.kernel.org;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=tXJRiFavBk5Y67bEBO6QAAaW+2R1zBHGkwkuzQ8MryQ=;
-        b=PVl0tRPy4iWw0Ea+Eonv9LbNx698YUr5XXJEjdYMBREkanIgdWxrsailrEDv9KBV/l
-         7nC2fM3QHdt09zwVh5QeviOb7vipcy1sE5JRarnPbI6Q2LWCcFrqIgeW/j7fwhJp51VY
-         7gwBAmiFGGwuAoqgDoC6N2OS86SWKMxD+7jCQ=
+        d=chromium.org; s=google; t=1733406391; x=1734011191; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GDXqwdvsRrw3EZaw3V5kPaSP4x/qw64uE3sG+rSHwXg=;
+        b=PX91DB/eg9/OwXaTxNj01Q0Fb2yd3GeV6RLl5oYW27ee4NNfPWH27aVm1uHZDJO4qz
+         pa+mWPtsAGEFCSwT4NafleAu/HSsk9kdTf0yjzTOy46+1OiVxMua69RQtmfaTJUKim8G
+         Tuw8da6QnjjO+tZmoc02IqvNja9nPDQ+2eats=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733404257; x=1734009057;
-        h=in-reply-to:autocrypt:from:content-language:references:cc:to
-         :subject:user-agent:mime-version:date:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tXJRiFavBk5Y67bEBO6QAAaW+2R1zBHGkwkuzQ8MryQ=;
-        b=Yfye65FZeJLB2/mpjiyz3BqvMgifS8mjXmr5v8l+fgwYiX6/s/L6Xyz1oLImOZDULF
-         GqnZcb9lLhhQDMUVB/kwbx9i+dzOHcXQhD6Z9/2p0TYb8unvN7/p+sLS3ImTqVNUj0V/
-         Aia7ZFhCLrzSFa7RnPwHE8xovgcCDFDu6X58OkfTVp42zamVbWMs26f4pzzHkYgGXcMv
-         CztESqhX184nmERpNzmRaUYDCWE86HX+S29BiHoTQ8taYGY5gGYpdFIjVsAErpY05WCL
-         /N74+OSyB3taHL86j9UNy6B3fkDPMHud5GVbISSaq5e2blEXpqnLKKFdx3kY8rXwhYEJ
-         mIGg==
-X-Gm-Message-State: AOJu0YyyeO+hFllY85h9sU9GygSejhzWlwjArpZgmU+6cStFYtv+e6pW
-	kv1dRrm8f724jMYcLbdtMkhPFY2DzBhO7IRSkY6dBGGICN0pABw+dc2qR+we/w==
-X-Gm-Gg: ASbGncuVbVe+nRZHSnysYC4OOUPITgdZ3ZT8MUzOwTFygZy3JHo3864YdRchEmhMR18
-	O9nl8L6gY7xIkgTt0KlhEsaj/Vo66J5gbObVUg/iaEkpeEE5dQSscXh7IFIyA5lexRsqn4i/VWb
-	RNRp5FJROlTWlI4EKyvQqn/uKNfibqQphzEI661EpACz4pVj6vTQwW5DHKdL05QyovBu32jsTJd
-	xQS8B3RXofCQWX370hyrQ68B9OuFCG8Djp55DYfvy6UaKoMWrxpBhUv+ikDK4bm9gFCQODeiXED
-X-Google-Smtp-Source: AGHT+IG1r5T2xgZjXQRBvGTrj5MYVU4mVCnLPxxddQTaOrxQJFAS2hM+1tg4mceX/OdWIduvS/2vqg==
-X-Received: by 2002:a17:903:1ca:b0:20b:8a71:b5c1 with SMTP id d9443c01a7336-215bd1b4604mr150384445ad.1.1733404256567;
-        Thu, 05 Dec 2024 05:10:56 -0800 (PST)
-Received: from [10.176.68.83] ([192.19.176.250])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-215f8e3e446sm12206095ad.9.2024.12.05.05.10.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Dec 2024 05:10:55 -0800 (PST)
-Content-Type: multipart/mixed; boundary="------------0kMsNbHUpNusmzrfzjHMuXuZ"
-Message-ID: <6b2fcdb4-f00d-4a17-909d-f92ed0240cbf@broadcom.com>
-Date: Thu, 5 Dec 2024 14:10:51 +0100
+        d=1e100.net; s=20230601; t=1733406391; x=1734011191;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GDXqwdvsRrw3EZaw3V5kPaSP4x/qw64uE3sG+rSHwXg=;
+        b=cOjaUQcAGY2moZ1K518nr/NFDltSz499eGkPIyqVJx1Vb0vA1c7Tvp1VKtjYbIw+r0
+         2KfpYHMUIscE9nEtj1jnyVz8wMJW/7F0R3yZtK76ByAUU3BqooUxQD0Qfpu5khH1PPjt
+         E8+XKUO5GSNl/r3DBD5iPGKybMZzM71e6MP52JwHSe88U7huGbzaMqISyDQViNnSo88q
+         hkYXBWp1RDRqGo8l6mAfAmUjReZJK3PJoViu9iZsQc9k8+WoLKxqqQ/SMpe1SxDmrULa
+         vOwNC/Sr1NayRuFAnEQd8/k0fRYz0VESCg5Rjc5uEEn5q3pAZqWFY2GkWoN2kzZYo/7T
+         neuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWsI8ti8OmZssOnt2isWegRfOSVdjA66yat4JrVP74xaj9hHPyBnFByWDqi485dlugjcNFcySOrzO5z70gAKw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyoV+mVZqRRowt+M1P+RkW8CBQESzfBGvmOX1wgAEArC+gUDofy
+	ICOQ7Wk9Jy3mpfVh7Lb0Eh5QkfpjYAZdAuBBpiV+s9dFn1Q2RgABoPsxpWIWNFnEJ9kNoglD0Yo
+	F7iCe23MQbbIly8oBx2/ZVoOR31sT7z64607s
+X-Gm-Gg: ASbGnct8ngXX0QCgTz+Q5IWD6XilNFpTsMFq2LhUeVBvcG8IRrbHxbGGW5JdzYXYRDo
+	yICKsdkS7hS+UIHAsXgkDElfbDD8t1FTXUsQpSxfx6BqJ1CW3DqNRWYDrEKs=
+X-Google-Smtp-Source: AGHT+IHnSL2+Mv5305oRNs68OmnNwoGk9Pcl4Kh3qFrISCF6EurpTgK8aDuSZWA88krip9K21KldOi+jmx4v+GTTxbM=
+X-Received: by 2002:a05:6830:6f8e:b0:71d:5336:df80 with SMTP id
+ 46e09a7af769-71dad6cc7b4mr8558823a34.20.1733406391316; Thu, 05 Dec 2024
+ 05:46:31 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: brcmfmac: Unexpected brcmf_set_channel: set chanspec 0xd022 fail,
- reason -52 - Part 2
-To: KeithG <ys3al35l@gmail.com>
-Cc: linux-wireless@vger.kernel.org
-References: <CAG17S_P=bz0DFU71jEnV4RkT-Vxwvb2GpPwvLnjmD_n=2hLfUw@mail.gmail.com>
- <19388725ac0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <CAG17S_MJZ4VHvXiGj0qoimfQ8GLE6OEZe4DHZLx0H+0U_1X4pQ@mail.gmail.com>
- <CAG17S_NQ4vhKv153Hf_sfvseTpGjLr-UZQ0vEeqr-+q-op+R5w@mail.gmail.com>
-Content-Language: en-US
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
-Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
- 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
-In-Reply-To: <CAG17S_NQ4vhKv153Hf_sfvseTpGjLr-UZQ0vEeqr-+q-op+R5w@mail.gmail.com>
+References: <20241127105709.4014302-1-treapking@chromium.org>
+ <CAD=FV=XhDdBJXfC72PZAbgaSpVx4ubtKSRFptock0SMRg=+Miw@mail.gmail.com>
+ <CA+ASDXPXiyga6mKLBacupCXa0wsBbXCrmq20RFo7T2eSF8kbzQ@mail.gmail.com>
+ <CAD=FV=XuResyZK1ke1NtaGREfwm_3MB-u5t6vw459kYPt0LZwQ@mail.gmail.com>
+ <Z0-4umP9TnNAbJXO@google.com> <CAEXTbpeeZVwCYWR0wzX8QMYJ7okj=zmziwt9Nvtu2kzA4iMCmA@mail.gmail.com>
+ <CAD=FV=Vrv6cJVMpm-vUQTG5p-k6Td1KFKvX6epDfiOzUOAON+w@mail.gmail.com>
+In-Reply-To: <CAD=FV=Vrv6cJVMpm-vUQTG5p-k6Td1KFKvX6epDfiOzUOAON+w@mail.gmail.com>
+From: Pin-yen Lin <treapking@chromium.org>
+Date: Thu, 5 Dec 2024 21:46:20 +0800
+Message-ID: <CAEXTbpeEPw66aJAfNBYDGCuQP=UsHvrqBTG7cdQJ3D+w6AiCcA@mail.gmail.com>
+Subject: Re: [PATCH] wifi: mwifiex: decrease timeout waiting for host sleep
+ from 10s to 5s
+To: Doug Anderson <dianders@chromium.org>
+Cc: Brian Norris <briannorris@chromium.org>, Francesco Dolcini <francesco@dolcini.it>, 
+	Kalle Valo <kvalo@kernel.org>, David Lin <yu-hao.lin@nxp.com>, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is a multi-part message in MIME format.
---------------0kMsNbHUpNusmzrfzjHMuXuZ
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Hi Doug,
 
-On 12/5/2024 1:54 AM, KeithG wrote:
-> On Mon, Dec 2, 2024 at 5:49 PM KeithG <ys3al35l@gmail.com> wrote:
->>
->> Arend,
->>
->> Yes, I can build and test patches.
->>
->> I will build a current kernel version tonight and will then be able to
->> add any patches you may develop to address this issue.
->>
->> If I may ask, could you also patch the WPA3 External_Auth
->> functionality as well? I can test patches to that as well.
->>
->> Regards,
->>
->> Keith
->>
->> On Mon, Dec 2, 2024 at 11:36 AM Arend Van Spriel
->> <arend.vanspriel@broadcom.com> wrote:
->>>
->>> On December 1, 2024 10:55:26 PM KeithG <ys3al35l@gmail.com> wrote:
->>>
->>>> This floods the journal of my Pi ev ery 6 seconds:
->>>> Dec 01 15:51:30 pi5 kernel: brcmfmac: brcmf_set_channel: set chanspec
->>>> 0xd022 fail, reason -52
->>>> Dec 01 15:51:31 pi5 kernel: brcmfmac: brcmf_set_channel: set chanspec
->>>> 0xd026 fail, reason -52
->>>> Dec 01 15:51:31 pi5 kernel: brcmfmac: brcmf_set_channel: set chanspec
->>>> 0xd02a fail, reason -52
->>>> Dec 01 15:51:31 pi5 kernel: brcmfmac: brcmf_set_channel: set chanspec
->>>> 0xd02e fail, reason -52
->>>>
->>>> Is there something that can be done? Is there something I can help
->>>> with to fix this? I can test on multiple Pis, but cannot actually code
->>>> anything. Is this going to wait for the new infineon driver
->>>> development? The latest kernel where this has been seen is:
->>>> Linux pi5 6.6.62+rpt-rpi-2712 #1 SMP PREEMPT Debian 1:6.6.62-1+rpt1
->>>> (2024-11-25) aarch64 GNU/Linux
->>>
->>> You can build and test patches? Is it only those specific channels as
->>> listed above? Those are pre -802.11b allowed in Japan. I don't think any of
->>> the brcmfmac devices actually support those channels.
->>>
->>> Regards,
->>> Arend
->>>
->>>
->>>
-> I built a fresh kernel and can build and test brcmfmac driver mods on
-> my Pis. Awaiting further instructions.
+On Thu, Dec 5, 2024 at 2:11=E2=80=AFAM Doug Anderson <dianders@chromium.org=
+> wrote:
+>
+> Hi,
+>
+> On Wed, Dec 4, 2024 at 5:45=E2=80=AFAM Pin-yen Lin <treapking@chromium.or=
+g> wrote:
+> >
+> > > > >  Can you try testing (and gather timing numbers) when
+> > > > > suspending soon after initiating scans? It's hard to judge what t=
+he
+> > > > > lower limit of this timeout should really be without any numbers,=
+ just
+> > > > > like it's hard to judge whether your 10 second watchdog is reason=
+able.
+> > > >
+> > > > Pin-yen: is this something you could gather?
+> >
+> > I tried entering suspend right after wifi scans, and the time spent in
+> > mwifiex_enable_hs() is always around 100ms. It seems initiating
+> > suspend does not increase the execution time for mwifiex_enable_hs(),
+> > so I think the driver is capable of interrupting a scan.
+> > > >
+> > > >
+> > > > > Also, for the record, since we might have to field regression rep=
+orts
+> > > > > for other systems: what hardware (chip variant, FW version) are y=
+ou
+> > > > > seeing problems on?
+> > > >
+> > > > Pin-yen: I'm assuming you'll provide this.
+> >
+> > From the debugfs entry:
+> >
+> > driver_name =3D "mwifiex"
+> > driver_version =3D mwifiex 1.0 (15.68.19.p54)
+> > verext =3D w8897o-B0, RF87XX, FP68, 15.68.19.p54
+> >
+> > The compatible string of the DT is "marvell,sd8897".
+> > >
+> > > I'll leave it up to y'all (Doug and Pin-Yen) whether you want to prov=
+ide
+> > > the above to provide a little more confidence, or if you want to
+> > > reconsider your use of CONFIG_DPM_WATCHDOG_TIMEOUT.
+> >
+> > It looks okay to me to decrease the timeout here given that scanning
+> > doesn't seem to affect the suspend time. What's your thought, Doug?
+>
+> I think Brian is right and that we should change how we're using the
+> DPM watchdog, but IMO that doesn't mean that we couldn't also change
+> this timeout.
+>
+> If nothing else, you'd want to post a v2 of your patch containing a
+> summary of the info you've gathered so it's recorded with the patch.
+>
+> Maybe what makes the most sense, though, is to put our money where our
+> mouth is and land some sort of patch in the ChromeOS tree and then
+> report back to upstream in a month when we have data about it. If
+> things look good in the field then presumably that would give some
+> confidence for upstream to be willing to land the patch?
+>
+> Probably about the best data we could gather would be to break the
+> existing timeout into two halves. You could wait half the time, then
+> print a warning, and then wait the other half the time. We could even
+> land that change _without_ changing the timeout to 5 seconds. Then if
+> we ever see the warning print but then the suspend succeeds we know
+> that there are cases where waiting longer would have helped. If we
+> made that a WARN_ON() our existing infrastructure would help us gather
+> that info...
 
-Can you try the patch attached?
+I just realized that mwifiex_wait_queue_complete() has another 12s
+timeout[1], though they are not directly involved in suspend/resume.
+
+Should we also add a warning to that and see if we can make it half?
+This starts to make me think how many timeouts we want to consider.
+Does it make sense to only focus on the one in mwifiex_enable_hs()? Or
+should we check other timeouts in mwifiex or even other drivers?
+
+[1]: https://elixir.bootlin.com/linux/v6.12.1/source/drivers/net/wireless/m=
+arvell/mwifiex/sta_ioctl.c#L51
+
+>
+> ...so I guess summarizing my rambling, a good plan would be:
+>
+> 1. Change the ChromeOS DPM watchdog timeout to 15 seconds to avoid the
+> problem for now.
+>
+> 2. Land a patch to do a WARN_ON() in mwifiex if we take 5 seconds.
+> Actually, you could (probably) send this upstream and land it
+> FROMLIST?
+>
+> 3. Wait ~1-2 months and see if we ever see the WARN_ON() trigger but
+> then things succeed after 10 seconds. If this never happens then send
+> a v2 patch changing the timeout to 5 seconds with details in the
+> commit message.
+>
+> 4. In the background, see if we can convince folks to make the DPM
+> Watchdog less panicky.
+>
+>
+> -Doug
 
 Regards,
-Arend
---------------0kMsNbHUpNusmzrfzjHMuXuZ
-Content-Type: text/plain; charset=UTF-8;
- name="0001-wifi-brcmfmac-remove-old-802.11a-channels-for-Japan.patch"
-Content-Disposition: attachment;
- filename*0="0001-wifi-brcmfmac-remove-old-802.11a-channels-for-Japan.pat";
- filename*1="ch"
-Content-Transfer-Encoding: base64
-
-RnJvbSA1OTlmZmVjMTYzMzllMjNlNTY1MTI3YmU1ZGY4YjhlNGJmYzc2NDM5IE1vbiBTZXAg
-MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBBcmVuZCB2YW4gU3ByaWVsIDxhcmVuZC52YW5zcHJp
-ZWxAYnJvYWRjb20uY29tPgpEYXRlOiBUaHUsIDUgRGVjIDIwMjQgMTQ6MDE6MzYgKzAxMDAK
-U3ViamVjdDogW1BBVENIXSB3aWZpOiBicmNtZm1hYzogcmVtb3ZlIG9sZCA4MDIuMTFhIGNo
-YW5uZWxzIGZvciBKYXBhbgoKQ2hhbm5lbHMgMzQsIDM4LCBldGMuIHdlcmUgY2hhbm5lbHMg
-YWxsb3dlZCBmb3IgdW5saWNlbnNlZCB1c2UgaW4KSmFwYW4gaW4gdGhlIDgwMi4xMWEgZXJh
-LiBUaGVzZSBjaGFubmVscyBhcmUgY2F1c2luZyAocXVpdGUpIGEgYml0Cm9mIHNwYW0gaW4g
-dGhlIGtlcm5lbCBsb2cuIEFsc28gdGhlIHdpcmVsZXNzLXJlZ2RiIGRvZXMgbm90IGNvbnRh
-aW4KdGhlc2UgYW55bW9yZSBzbyBsZXQncyBnZXQgcmlkIG9mIHRoZW0uCgpTaWduZWQtb2Zm
-LWJ5OiBBcmVuZCB2YW4gU3ByaWVsIDxhcmVuZC52YW5zcHJpZWxAYnJvYWRjb20uY29tPgot
-LS0KIGRyaXZlcnMvbmV0L3dpcmVsZXNzL2Jyb2FkY29tL2JyY204MDIxMS9icmNtZm1hYy9j
-Zmc4MDIxMS5jIHwgMyArLS0KIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMiBk
-ZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9icm9hZGNv
-bS9icmNtODAyMTEvYnJjbWZtYWMvY2ZnODAyMTEuYyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNz
-L2Jyb2FkY29tL2JyY204MDIxMS9icmNtZm1hYy9jZmc4MDIxMS5jCmluZGV4IDJhOTBiYjI0
-YmE3Ny4uZGJhZGIzZjg1ZWIzIDEwMDY0NAotLS0gYS9kcml2ZXJzL25ldC93aXJlbGVzcy9i
-cm9hZGNvbS9icmNtODAyMTEvYnJjbWZtYWMvY2ZnODAyMTEuYworKysgYi9kcml2ZXJzL25l
-dC93aXJlbGVzcy9icm9hZGNvbS9icmNtODAyMTEvYnJjbWZtYWMvY2ZnODAyMTEuYwpAQCAt
-MTg2LDggKzE4Niw3IEBAIHN0YXRpYyBzdHJ1Y3QgaWVlZTgwMjExX2NoYW5uZWwgX193bF8y
-Z2h6X2NoYW5uZWxzW10gPSB7CiB9OwogCiBzdGF0aWMgc3RydWN0IGllZWU4MDIxMV9jaGFu
-bmVsIF9fd2xfNWdoel9jaGFubmVsc1tdID0gewotCUNIQU41RygzNCksIENIQU41RygzNiks
-IENIQU41RygzOCksIENIQU41Ryg0MCksIENIQU41Ryg0MiksCi0JQ0hBTjVHKDQ0KSwgQ0hB
-TjVHKDQ2KSwgQ0hBTjVHKDQ4KSwgQ0hBTjVHKDUyKSwgQ0hBTjVHKDU2KSwKKwlDSEFONUco
-MzYpLCBDSEFONUcoNDApLCBDSEFONUcoNDQpLCBDSEFONUcoNDgpLCBDSEFONUcoNTIpLCBD
-SEFONUcoNTYpLAogCUNIQU41Ryg2MCksIENIQU41Ryg2NCksIENIQU41RygxMDApLCBDSEFO
-NUcoMTA0KSwgQ0hBTjVHKDEwOCksCiAJQ0hBTjVHKDExMiksIENIQU41RygxMTYpLCBDSEFO
-NUcoMTIwKSwgQ0hBTjVHKDEyNCksIENIQU41RygxMjgpLAogCUNIQU41RygxMzIpLCBDSEFO
-NUcoMTM2KSwgQ0hBTjVHKDE0MCksIENIQU41RygxNDQpLCBDSEFONUcoMTQ5KSwKCmJhc2Ut
-Y29tbWl0OiBmZmMyNTMyNjNhMTM3NWE2NWZhNmM5ZjYyYTg5M2U5NzY3ZmJlYmZhCi0tIAoy
-LjMyLjAKCg==
-
---------------0kMsNbHUpNusmzrfzjHMuXuZ--
+Pin-yen
 
