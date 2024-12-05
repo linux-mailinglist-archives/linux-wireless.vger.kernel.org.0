@@ -1,216 +1,145 @@
-Return-Path: <linux-wireless+bounces-15930-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15931-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECE469E5CA0
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Dec 2024 18:13:59 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FA699E5D8B
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Dec 2024 18:43:09 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E27FF162111
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Dec 2024 17:43:05 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD2F22579A;
+	Thu,  5 Dec 2024 17:43:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="I6Fm9oz4"
+X-Original-To: linux-wireless@vger.kernel.org
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0761281F10
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Dec 2024 17:13:58 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DAD4224B07;
-	Thu,  5 Dec 2024 17:13:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="i+aW88um"
-X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8826021C16C
-	for <linux-wireless@vger.kernel.org>; Thu,  5 Dec 2024 17:13:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C957D224AEA
+	for <linux-wireless@vger.kernel.org>; Thu,  5 Dec 2024 17:43:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733418833; cv=none; b=AVcMmlr7Da6v7bNCXhe86jEHqBQ+jh3Kzu+Nx8Ne7YOGTvFdRM54HzDK+AShaGKzyUAQC5e3SqFf0hvAalfroB+f4/DOZBoA3KZq8+zorFHCJC29tt6RDnqELIcO9K15I9hLgnImbJ/UG4neikrKpEvw3Jv2Wu32LIjzwgC3rqM=
+	t=1733420583; cv=none; b=rlPRRarGV/nkfPVVowHEo8qnx5GtLzAakBXBgN9sGNIRl4JrVzzF/mpiwAbOC7xDNcJGdd6SnHCrYQHfaIRPbk637UMNZLV9niijvZp6B030Oh4OR2w7bSm/keDR5LMZulIeAj3Td81IGNUFKh2V3Whp4E7u9taHjjrJaIeNwk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733418833; c=relaxed/simple;
-	bh=ibuxcH9X0KJd9ISnHUuuoisGxnAvgdnrSWtBco98quk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cfnTxzBAw+Ze/BIMh730WdvuWFm7EKmzfW2gJkYwfGgc7OTT3bTk63U7nhxXgYi7j140lngh5k7bRMYqTaK1tnoDXxzj3GsG3Ir0L+yr9YOLzdlOd1qFXqEba1uo2B5hcW0bbVqC+Bwd6HXfK/glCX1NNA4OgPaFnWBKZ5TsFa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=i+aW88um; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-53e152731d0so2000378e87.0
-        for <linux-wireless@vger.kernel.org>; Thu, 05 Dec 2024 09:13:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1733418828; x=1734023628; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8u7/aYzJxX31d++q2E25pi18VA+QiD6xbJwhkvq0pjg=;
-        b=i+aW88ume3k1pjm7MTasb6MvsXWJ5zIjseR0ad3xz1rJ85p2Rs8Q5XYYlKf+5f6Y78
-         1EPzMScw+gNW1+A4N+0cAjS9jbVwmZMfH0pel2H+IZA408ti8+hS9tswWo9tPaaY/rig
-         UpoOgfZe0MIEgqTTjV0rP0mjKnAyZ2iotah0M=
+	s=arc-20240116; t=1733420583; c=relaxed/simple;
+	bh=83LLzNzqiW7Cv7hs/AaVSW4+DKsidQGfdG7Ia9j+bnc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Vcy96+CDq6ste9kPxP5mByWB23cwizYqq0JuoRQSyBB+xml5BjmOFXMZKehZ04Xx5n86kGWkK4kG0Dhjng1y5MwD7IT74p8fKyDG3f3yz6ErGltBJwWnDg/89fwnIuFWmbSVbLitdUtrMuAO6UeZkX4RC+koIzIECM1UBkOAs/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=I6Fm9oz4; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B5Ha1Ho019021
+	for <linux-wireless@vger.kernel.org>; Thu, 5 Dec 2024 17:43:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	hx57Lu41ib8MxOqYtwF0SnxIqxAgV7Fue5Y4OtnFhH8=; b=I6Fm9oz4a1EJ7ENG
+	PsbiW0IRJMvanLT1b9O8hYQ4fjnKE5m5MnpbeVEjgveE9lo/7NOchAiXMv+8Iu4K
+	i7iWuzZ582HcXBmKdY/07iKVFf+bgv5DVpRHBEcdH/1TSGMVRk750D3jtEOHEeHf
+	9e6HAOEat3PO6YoEwX1HoDEZs7JRj/FUuezoSRSLIEPka8mHcrNP3u8ulxkVDpZL
+	83ErgxQFuDcEdaTCVMHd0lzTbLaleatr+fK+J29Dgg9wWyhNa0WmVUzC2NpADBeF
+	sh2xeVw8yQSBe7m3xmDGcLDXSUWtecJPRnLBgXqG9MUi4GGeNZ36p9ydt9paBbak
+	bnBO3g==
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 439w910eh3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Thu, 05 Dec 2024 17:43:00 +0000 (GMT)
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-7b66ef699afso3451485a.3
+        for <linux-wireless@vger.kernel.org>; Thu, 05 Dec 2024 09:43:00 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733418828; x=1734023628;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8u7/aYzJxX31d++q2E25pi18VA+QiD6xbJwhkvq0pjg=;
-        b=gXacvB2y4GmfpPmjrTBHh/WGhnqJvAdZL+RCHlhEmyzbaXQ7kV5Ujw441xx5V7ABf0
-         F6xc7aETIQb9x4jefVKCs42LpbkHsJawYylTpQWfFFLsXaJuiXhXaXpYP5WAojaYYDkj
-         XqjQK0sex+4heEQIDGPReXoTdhLWbA3/YkXdwiycU/J6/GZ3a0kAI99gLxhAnGtkzJZH
-         5RVQ/ZW11KnSCXbMHMgkMzzOYLwq38Y73i0pLIIC4xlcGvVCJSWFj7OXYYlGErAQNmJ2
-         sOeQskew1BQnSF1Eu/+3oqUX1zg8/mySowoizPk/SpWqLcdQLLq6eO8eD55e44SEjbTs
-         0E4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWOKe41lcFur4hyA32XK4rsg9FyKH2U9M5yowbx8gZaazmOC5YT8IR1/pznm4IDIyIwbf0YSbvAhE5qSp/Z8g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyS8GI+A6uamFs4kxzukNHr4Ms2UawIZRqN40lncD0pMerbzvoA
-	BjgYOrKaHWpkIcOLYfBTrXcY/oLZCLgl0XpEzcl45yHSAFgUYGHmr2B03OER6epqHeqZqixP4my
-	t+JyW
-X-Gm-Gg: ASbGncscRV2Mg3sGDIs2m9JPRWPN+1Wz9N1K2acOIDN824ZcUdSoE0Ht/GqeQ5DyW/3
-	i1VDOxDGkvu/JqeLLtZ37IQovJroiWJupY1TrtchNiM2Gm7FwZrWZVLWM/+yeUnCjrVOJ2VAuYz
-	EP9DNCNrEKQiFSfEA0hg+r9NfmoQzJq2+8/FktX+6tNmqsXieOCJOgoTdTJe1M0FVuOeSitwOLL
-	ONnsbe31Voj8OGO0FppOew0wb11PLkc8kZE/KGrE2KOyTtEetl2BS92isNtdcIL+OnuRu4H/nxw
-	pxxmmOkU1lcLRw==
-X-Google-Smtp-Source: AGHT+IEU/vSrXQLJMwq/TZNGRiUUfbogR0Z369WeuoB9u3l7jxky29AhV7QjlN9ryLP740h4Ku97xA==
-X-Received: by 2002:a05:6512:31c9:b0:53d:f786:c364 with SMTP id 2adb3069b0e04-53e2b73259cmr39768e87.19.1733418828301;
-        Thu, 05 Dec 2024 09:13:48 -0800 (PST)
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com. [209.85.167.42])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53e22947254sm294266e87.34.2024.12.05.09.13.46
-        for <linux-wireless@vger.kernel.org>
+        d=1e100.net; s=20230601; t=1733420579; x=1734025379;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hx57Lu41ib8MxOqYtwF0SnxIqxAgV7Fue5Y4OtnFhH8=;
+        b=RLkM10Ni3VPr7n6YTHsgwFk3TGr9f8mUkvHsTv6u/Kk0gXT59gwu1eJKc8mSv1Jh3c
+         A8kuoE1vXa40TVOXJM/Rt9kv5vaW2/EByxigXyGzIsB0EuhCmxYaY++/BLu0JUUoIZ2g
+         KQysrR6whFi13FZe8BKYmEr899k4yjlBjm/x/U0iq6cktVdx9sBugfEeAUtYgki1yz9D
+         RSSGVCAlf73oQP3OLMML8hvBZu4EgPDBupM7w6a9HTV8mB4B7ocVgRnIvEy7TM1XhRx9
+         u7ssaGkjnflhP6nrz7Ffk2Jy4bvxeVRUrqHx+7AVaLAbVqX6EIHjBMGzUk95+zSfdlbw
+         d/uQ==
+X-Gm-Message-State: AOJu0YzDRszsShlmlCqfJpxhrGigVVLjzM7YWa/GbiwzVchOlSo+M3e8
+	YSb5A8uvgoDD9Wx2L0cj6BkTodWZDzefOSnn+IokJFLmBb1KRMcREG3rfNiTfGAs9DO6ErGswbO
+	sXgz8cBBSnzt4sMf+2U3/iabCZXFHEpeFBZukMCftvz5UDDp74eo7B8H4BieFcNLbbw==
+X-Gm-Gg: ASbGncskQJaEcq/NQhRfxpOQuw6rse4HyHl2SmVoFRKsAW4LVgrgLEK1/u/Y2yjJkKb
+	s/3I3WhOT5oAcB4FuFB5T8P7lsHDjAmK91ELSuwtIZMqe4XZbhPW/odRooKKTCGrwTzkDTMzLPc
+	ZD9i1zGMS0Rvtyfc2pF+41DST7w3uGvRlhLr4EjJviY/6o9rAOgP01ww4WsmArPOgDEJXdyYH5E
+	HWjLB2+MiEHQ6RJyEgLNksw1dR24SGf5+Flzv2hmvLYTaB175bn5OFmP9fEZWJbeCMoS7FhdNIG
+	aKe9b21MPOuDclEmm5ouLAIZ60QqQvQ=
+X-Received: by 2002:a05:620a:2a0a:b0:7b1:3bf8:b3c4 with SMTP id af79cd13be357-7b6bca1437cmr6492785a.0.1733420579469;
+        Thu, 05 Dec 2024 09:42:59 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGqTIBVAUtYMFwIH7nMUAnsmsAxJGz+whkQJCNEPVEIPV7Fzd+DE/MjzrxB52NAzHD9Q0SRpg==
+X-Received: by 2002:a05:620a:2a0a:b0:7b1:3bf8:b3c4 with SMTP id af79cd13be357-7b6bca1437cmr6491285a.0.1733420579088;
+        Thu, 05 Dec 2024 09:42:59 -0800 (PST)
+Received: from [192.168.212.120] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa625e4dbf3sm121879066b.12.2024.12.05.09.42.56
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Dec 2024 09:13:47 -0800 (PST)
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-53e203d77a9so1066073e87.0
-        for <linux-wireless@vger.kernel.org>; Thu, 05 Dec 2024 09:13:46 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUBaFsEQKDjMZS5LhNCrhqraoAs3e+tPSdmaYEmi8s5llsk3EBM5DmiesRm01Yr24fjKAmOS7xCcM3+z1Ntpw==@vger.kernel.org
-X-Received: by 2002:a05:6512:23a7:b0:53e:1c46:e01d with SMTP id
- 2adb3069b0e04-53e219159cdmr1448759e87.19.1733418826029; Thu, 05 Dec 2024
- 09:13:46 -0800 (PST)
+        Thu, 05 Dec 2024 09:42:58 -0800 (PST)
+Message-ID: <83d216c4-bf9e-4eb4-86d3-e189602f37cc@oss.qualcomm.com>
+Date: Thu, 5 Dec 2024 18:42:55 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241127105709.4014302-1-treapking@chromium.org>
- <CAD=FV=XhDdBJXfC72PZAbgaSpVx4ubtKSRFptock0SMRg=+Miw@mail.gmail.com>
- <CA+ASDXPXiyga6mKLBacupCXa0wsBbXCrmq20RFo7T2eSF8kbzQ@mail.gmail.com>
- <CAD=FV=XuResyZK1ke1NtaGREfwm_3MB-u5t6vw459kYPt0LZwQ@mail.gmail.com>
- <Z0-4umP9TnNAbJXO@google.com> <CAEXTbpeeZVwCYWR0wzX8QMYJ7okj=zmziwt9Nvtu2kzA4iMCmA@mail.gmail.com>
- <CAD=FV=Vrv6cJVMpm-vUQTG5p-k6Td1KFKvX6epDfiOzUOAON+w@mail.gmail.com> <CAEXTbpeEPw66aJAfNBYDGCuQP=UsHvrqBTG7cdQJ3D+w6AiCcA@mail.gmail.com>
-In-Reply-To: <CAEXTbpeEPw66aJAfNBYDGCuQP=UsHvrqBTG7cdQJ3D+w6AiCcA@mail.gmail.com>
-From: Doug Anderson <dianders@chromium.org>
-Date: Thu, 5 Dec 2024 09:13:33 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=XdPzA8jO+4xMpYJU_1k8dp1GNGt7fnmLA4WX1f=civ4g@mail.gmail.com>
-Message-ID: <CAD=FV=XdPzA8jO+4xMpYJU_1k8dp1GNGt7fnmLA4WX1f=civ4g@mail.gmail.com>
-Subject: Re: [PATCH] wifi: mwifiex: decrease timeout waiting for host sleep
- from 10s to 5s
-To: Pin-yen Lin <treapking@chromium.org>
-Cc: Brian Norris <briannorris@chromium.org>, Francesco Dolcini <francesco@dolcini.it>, 
-	Kalle Valo <kvalo@kernel.org>, David Lin <yu-hao.lin@nxp.com>, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 15/22] wifi: ath12k: add BDF address in hardware
+ parameter
+To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>,
+        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+        ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+References: <20241015182637.955753-1-quic_rajkbhag@quicinc.com>
+ <20241015182637.955753-16-quic_rajkbhag@quicinc.com>
+ <142f92d7-72e1-433b-948d-2c7e7d37ecfc@oss.qualcomm.com>
+ <0796510c-20bd-4a81-bd60-40aacbcf61c0@quicinc.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <0796510c-20bd-4a81-bd60-40aacbcf61c0@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: WalowwbOJgoFmx13vZRlIGy99MTeyqhS
+X-Proofpoint-GUID: WalowwbOJgoFmx13vZRlIGy99MTeyqhS
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 bulkscore=0
+ impostorscore=0 phishscore=0 suspectscore=0 adultscore=0 mlxscore=0
+ spamscore=0 clxscore=1015 priorityscore=1501 malwarescore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412050128
 
-Hi,
+On 3.12.2024 10:18 AM, Raj Kumar Bhagat wrote:
+> On 11/4/2024 7:46 PM, Konrad Dybcio wrote:
+>> On 15.10.2024 8:26 PM, Raj Kumar Bhagat wrote:
+>>> The Ath2k AHB device (IPQ5332) firmware requests BDF_MEM_REGION_TYPE
+>>> memory during QMI memory requests. This memory is part of the
+>>> HOST_DDR_REGION_TYPE. Therefore, add the BDF memory address to the
+>>> hardware parameter and provide this memory address to the firmware
+>>> during QMI memory requests.
+>>
+>> Sounds like something to put in the device tree, no?
+>>
+> 
+> This BDF memory address is the RAM offset. We did add this in device tree in
+> version 1. This is removed from device tree in v2 based on the review comment that
+> DT should not store RAM offset.
+> 
+> refer below link:
+> Link: https://lore.kernel.org/all/f8cd9c3d-47e1-4709-9334-78e4790acef0@kernel.org/
 
-On Thu, Dec 5, 2024 at 5:46=E2=80=AFAM Pin-yen Lin <treapking@chromium.org>=
- wrote:
->
-> Hi Doug,
->
-> On Thu, Dec 5, 2024 at 2:11=E2=80=AFAM Doug Anderson <dianders@chromium.o=
-rg> wrote:
-> >
-> > Hi,
-> >
-> > On Wed, Dec 4, 2024 at 5:45=E2=80=AFAM Pin-yen Lin <treapking@chromium.=
-org> wrote:
-> > >
-> > > > > >  Can you try testing (and gather timing numbers) when
-> > > > > > suspending soon after initiating scans? It's hard to judge what=
- the
-> > > > > > lower limit of this timeout should really be without any number=
-s, just
-> > > > > > like it's hard to judge whether your 10 second watchdog is reas=
-onable.
-> > > > >
-> > > > > Pin-yen: is this something you could gather?
-> > >
-> > > I tried entering suspend right after wifi scans, and the time spent i=
-n
-> > > mwifiex_enable_hs() is always around 100ms. It seems initiating
-> > > suspend does not increase the execution time for mwifiex_enable_hs(),
-> > > so I think the driver is capable of interrupting a scan.
-> > > > >
-> > > > >
-> > > > > > Also, for the record, since we might have to field regression r=
-eports
-> > > > > > for other systems: what hardware (chip variant, FW version) are=
- you
-> > > > > > seeing problems on?
-> > > > >
-> > > > > Pin-yen: I'm assuming you'll provide this.
-> > >
-> > > From the debugfs entry:
-> > >
-> > > driver_name =3D "mwifiex"
-> > > driver_version =3D mwifiex 1.0 (15.68.19.p54)
-> > > verext =3D w8897o-B0, RF87XX, FP68, 15.68.19.p54
-> > >
-> > > The compatible string of the DT is "marvell,sd8897".
-> > > >
-> > > > I'll leave it up to y'all (Doug and Pin-Yen) whether you want to pr=
-ovide
-> > > > the above to provide a little more confidence, or if you want to
-> > > > reconsider your use of CONFIG_DPM_WATCHDOG_TIMEOUT.
-> > >
-> > > It looks okay to me to decrease the timeout here given that scanning
-> > > doesn't seem to affect the suspend time. What's your thought, Doug?
-> >
-> > I think Brian is right and that we should change how we're using the
-> > DPM watchdog, but IMO that doesn't mean that we couldn't also change
-> > this timeout.
-> >
-> > If nothing else, you'd want to post a v2 of your patch containing a
-> > summary of the info you've gathered so it's recorded with the patch.
-> >
-> > Maybe what makes the most sense, though, is to put our money where our
-> > mouth is and land some sort of patch in the ChromeOS tree and then
-> > report back to upstream in a month when we have data about it. If
-> > things look good in the field then presumably that would give some
-> > confidence for upstream to be willing to land the patch?
-> >
-> > Probably about the best data we could gather would be to break the
-> > existing timeout into two halves. You could wait half the time, then
-> > print a warning, and then wait the other half the time. We could even
-> > land that change _without_ changing the timeout to 5 seconds. Then if
-> > we ever see the warning print but then the suspend succeeds we know
-> > that there are cases where waiting longer would have helped. If we
-> > made that a WARN_ON() our existing infrastructure would help us gather
-> > that info...
->
-> I just realized that mwifiex_wait_queue_complete() has another 12s
-> timeout[1], though they are not directly involved in suspend/resume.
->
-> Should we also add a warning to that and see if we can make it half?
-> This starts to make me think how many timeouts we want to consider.
-> Does it make sense to only focus on the one in mwifiex_enable_hs()? Or
-> should we check other timeouts in mwifiex or even other drivers?
->
-> [1]: https://elixir.bootlin.com/linux/v6.12.1/source/drivers/net/wireless=
-/marvell/mwifiex/sta_ioctl.c#L51
+Right, I think this could be something under /reserved-memory instead
 
-IMO any of these "arbitrary and really long timeout to make sure we
-don't hang forever" type things probably should have a warning so we
-know if we're getting close to the timeout. It wouldn't be very hard
-to make a wrapper around wait_event_interruptible_timeout() to handle
-this. I suppose that wrapper could just be local to mwifiex, though if
-other drivers found it useful it would make sense to put it somewhere
-more common.
-
-That being said, if we aren't actually hitting these other timeouts I
-don't know that we need to do an extensive audit right now to find
-every one of them.
-
-Of course, Brian also said he'd be OK with just setting the timeout to
-5 seconds based on the research you've already done. In that case I
-don't know if we'd want a WARNing after 2.5 seconds. Maybe? 2.5
-seconds is still pretty long, but I don't know if it's WARN-worthy. It
-could at least be dev_warn() worthy...
-
-
-
--Doug
+Konrad
 
