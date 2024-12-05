@@ -1,135 +1,113 @@
-Return-Path: <linux-wireless+bounces-15921-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15922-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07BF49E5358
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Dec 2024 12:07:21 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D5439E536E
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Dec 2024 12:11:00 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCD24285561
-	for <lists+linux-wireless@lfdr.de>; Thu,  5 Dec 2024 11:07:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 575C7165567
+	for <lists+linux-wireless@lfdr.de>; Thu,  5 Dec 2024 11:10:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A45A190059;
-	Thu,  5 Dec 2024 11:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83AEA1DB92E;
+	Thu,  5 Dec 2024 11:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XWVRBTXM"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="gdlpBoF8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F42D1DB929
-	for <linux-wireless@vger.kernel.org>; Thu,  5 Dec 2024 11:07:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3BE18DF6E;
+	Thu,  5 Dec 2024 11:10:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733396836; cv=none; b=YBjUxLAuS6AS+AazT8EajR1S04AEWWRNvdI18eQOUvYl5Z3s9ytkWaBQWh7y1Y7yWTzu2W94NbujWx8P3/ntAyYUz10OVSdt0xUh/PES3l1w2oA3l5XpYG2sIWqMpdkNmqHvT9ZOTRq2XrVy+b5QT1FmStEnInPjHsyeXmDc1vE=
+	t=1733397056; cv=none; b=QIwzGygy3UBqURtcPZYr2OtY+hti6exAG6nXUN3zDX6MaUvcVvhto6NGUKg54k6jeSgZDcHy0ZzdHf/fu7LwN4weR3C7ul8o+o1EBBhq7hAnqzYujrjzP3Q5OWGGE8xsZi0C9/PecDKKmbxZH2AiJJuycqtCSDDTiASVoMWlv9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733396836; c=relaxed/simple;
-	bh=N8V5pPraudmb9UYYMzMET/ZOntl/aHfXk5dIlWeZm3Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XqhNGvZ57OeFwi6PCav94JqYEF7BeDpuMut8kk8j6oh+0bV3ewxos8/BGN2YlXDZDOl2EFj1SL7gQSMDoA/n9pvV8TDGwAt5VqgZfiv6CqkQewvVuQ92qo1u/armQ1Vi5ieky7SgCqQZr6n3aFkJTXxZ0J7dl5DFwk4Xnb6zCVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XWVRBTXM; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733396834;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YCjNRJrSktMlDO/Ks0uxEWXTnrnlOc73abdK3jrL0nE=;
-	b=XWVRBTXMQraEL/rTC+yniLdFOzFUrb183yEV7WKvwJkZtddVzmBXBlc/xl/t2Bbz1Mxqph
-	lu/lfx1d0IMoSzpCb2ffkx0UkAoCWyiyK4svJCVt4fvAyh+hwXbndcbczZzCPeKh9KxYTM
-	XuMvuSHrZBJutWAFhRsfJZrOLrbsaJ8=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-554-5YFsSwcCNGO14L4FqOgbuQ-1; Thu,
- 05 Dec 2024 06:07:11 -0500
-X-MC-Unique: 5YFsSwcCNGO14L4FqOgbuQ-1
-X-Mimecast-MFC-AGG-ID: 5YFsSwcCNGO14L4FqOgbuQ
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4ADB31956087;
-	Thu,  5 Dec 2024 11:07:09 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.39.192.37])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C3D6E3000197;
-	Thu,  5 Dec 2024 11:07:05 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: quic_yuzha@quicinc.com
-Cc: ath11k@lists.infradead.org,
-	jjohnson@kernel.org,
-	jtornosm@redhat.com,
-	kvalo@kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	quic_cjhuang@quicinc.com,
-	vbenes@redhat.com
-Subject: Re: [PATCH] wifi: ath11k: allow APs combination when dual stations are supported
-Date: Thu,  5 Dec 2024 12:07:02 +0100
-Message-ID: <20241205110704.232725-1-jtornosm@redhat.com>
-In-Reply-To: <f75a1655-fa5d-4675-85d0-b9b97dceba6f@quicinc.com>
-References: <f75a1655-fa5d-4675-85d0-b9b97dceba6f@quicinc.com>
+	s=arc-20240116; t=1733397056; c=relaxed/simple;
+	bh=kb/2Mt8EUGXgFsWvSiXqRIjyzMwKbUYeOPB3f6pe2nw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=G/lZ/1hGxyBz23+zRACHsplKHnfn5+gkHK8U6FMJk6Fyvy5llbEFlnHtDW4LR+u94cY4NE0PG5t9RjTxfrCfCnJ9FU7SIckph5B8xjfI/elmUoFCsMv49u3JPvRB3llVVj+J05BypZprakpsmV7EAPY7QsvOolSZ51/Nd9OAO14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=gdlpBoF8; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B57heSV005920;
+	Thu, 5 Dec 2024 11:10:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	dH6Nc8qSBHFcLSjD+BCzYNw6b/7zxQKMdpGyGFMU2Og=; b=gdlpBoF8C5+eqCp7
+	CNcFKqjvbBOmy+CPIvKnimf6K63jr+UDdBgVN4PoBNZt8MpFv2ufBoMHwStbhVY/
+	wwSwu3Du6isoY6igIZ2Z93fI4z/8/nssq7R2fUKVIfhRmIT/hd+TdB/WYtDRlZUb
+	Bq3CBFaJMxi02EbG0IiZjsdchrS57GQ1Eb56LNtMT0V5zKNwxb7x0hiQOp6G3ASz
+	Ic6jUeG58af1L0VVYYN6cfLHlvIRIphiVPLcX3rvRg2Wca6U3ULMidZueCoS/9pY
+	obvCg8L+eyYdqHTO1gFxxsM2MgChAoUG7B6nfm46dSFOX7oTmqTBlstNz3PhCQAf
+	EVZC6A==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 439w3eqaw2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 05 Dec 2024 11:10:47 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4B5BAkF5015572
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 5 Dec 2024 11:10:47 GMT
+Received: from [10.216.3.193] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 5 Dec 2024
+ 03:10:45 -0800
+Message-ID: <ec6cb28c-ec3e-4695-b0da-97c452127d5e@quicinc.com>
+Date: Thu, 5 Dec 2024 16:40:41 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: mac80211: re-order unassigning channel in activate
+ links
+To: Zong-Zhe Yang <kevin_yang@realtek.com>,
+        Johannes Berg
+	<johannes@sipsolutions.net>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20241205-unassign_activate_links-v1-1-84097a1abdeb@quicinc.com>
+ <65d22960ca6e47e19cf7c1c6a60dd72a@realtek.com>
+Content-Language: en-US
+From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+In-Reply-To: <65d22960ca6e47e19cf7c1c6a60dd72a@realtek.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 49iXbVkRfX_sDXyshYRWoK7eeYVlNkyN
+X-Proofpoint-ORIG-GUID: 49iXbVkRfX_sDXyshYRWoK7eeYVlNkyN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 impostorscore=0
+ bulkscore=0 mlxscore=0 adultscore=0 priorityscore=1501 mlxlogscore=936
+ spamscore=0 malwarescore=0 suspectscore=0 phishscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2412050080
 
-> But I see your interfaces all be added with managed， right?
-Yes
+On 12/5/24 14:08, Zong-Zhe Yang wrote:
+> Could you also update the description of ieee80211_set_active_links() (include/net/mac80211.h) to align the changes?
+> I think it would be like:
+> 
+>    change_vif_links(0x11)
+>    assign_vif_chanctx(link_id=4)
+>    change_sta_links(0x11) for each affected STA (the AP)
+>    [...]
+>    change_sta_links(0x10) for each affected STA (the AP)
+>    unassign_vif_chanctx(link_id=0)
+>    change_vif_links(0x10)
 
-> Test steps:
-> ...
-Ok, I am using a bridge with the AP interfaces in addition but it is
-the same.
-Indeed I have tested in the same way as you too (even using your
-hostapd.conf with the suitable name for the interfaces).
-So I have started to debug (current upstream linux +
-https://lore.kernel.org/all/20241127022742.4016870-1-quic_yuzha@quicinc.com/ +
-dump_stack() in ath11k_mac_op_add_interface, enabling ath11k_dbg),
-let me show you this:
-[    5.703295] ath11k_pci 0000:01:00.0: vdev a2:d8:da:c5:7b:79 created, vdev_id 0
-[    5.703304] CPU: 4 UID: 0 PID: 945 Comm: NetworkManager Tainted: G        W          6.12.0+ #104
-[    5.703315] Tainted: [W]=WARN
-[    5.703317] Hardware name: ASUS System Product Name/PRIME B660-PLUS D4, BIOS 1620 08/12/2022
-[    5.703320] Call Trace:
-[    5.703325]  <TASK>
-[    5.703330]  dump_stack_lvl+0x5d/0x80
-[    5.703344]  ath11k_mac_op_add_interface.cold+0x4ed/0xa92 [ath11k]
-[    5.703399]  drv_add_interface+0x4f/0x230 [mac80211]
-[    5.703512]  ieee80211_do_open+0x4b3/0x770 [mac80211]
-[    5.703669]  ieee80211_open+0x8a/0x90 [mac80211]
-...
-[    5.804755] ath11k_pci 0000:01:00.0: vdev c8:94:02:b5:fe:fb created, vdev_id 1
-[    5.804759] CPU: 1 UID: 0 PID: 1011 Comm: wpa_supplicant Tainted: G        W          6.12.0+ #104
-[    5.804763] Tainted: [W]=WARN
-[    5.804765] Hardware name: ASUS System Product Name/PRIME B660-PLUS D4, BIOS 1620 08/12/2022
-[    5.804766] Call Trace:
-[    5.804770]  <TASK>
-[    5.804773]  dump_stack_lvl+0x5d/0x80
-[    5.804783]  ath11k_mac_op_add_interface.cold+0x4ed/0xa92 [ath11k]
-[    5.804809]  drv_add_interface+0x4f/0x230 [mac80211]
-[    5.804868]  ieee80211_do_open+0x4b3/0x770 [mac80211]
-[    5.804934]  nl80211_start_p2p_device+0x8b/0x160 [cfg80211]
-...
-So, since the normal sta interface and p2p interface are initialized,
-with your proposed interface combination, only one AP interface can be
-added for me (vdev limit is 3).
-I like your idea to have a common interface combination set for everything,
-but I think it is not possible here.
-My patch with the new parameter at least allow to select what to do, dual
-stations support or APs support for all the cases.
+Good point! I will do it in next version, thanks for pointing it out.
 
-Thanks
-
-Best regards
-Jose Ignacio
-
+-- 
+Aditya
 
