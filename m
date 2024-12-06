@@ -1,86 +1,63 @@
-Return-Path: <linux-wireless+bounces-15965-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15966-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AB959E6C88
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2024 11:49:27 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCCBF1884038
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2024 10:49:26 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FEDF1F543F;
-	Fri,  6 Dec 2024 10:49:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="O1qqw887"
-X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C6309E6CBF
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2024 12:07:58 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97CAF1D47A2
-	for <linux-wireless@vger.kernel.org>; Fri,  6 Dec 2024 10:49:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28B082824B7
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2024 11:07:57 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16D251FC7E9;
+	Fri,  6 Dec 2024 11:07:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="dy5rMnjI"
+X-Original-To: linux-wireless@vger.kernel.org
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9FF155C94;
+	Fri,  6 Dec 2024 11:07:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733482162; cv=none; b=M3NtowCOF4PNGI/QWhVVBpgBipUSyBMv+O05grJWuRAsClcs+ImXWFVNsig2Cd+UvWROiktICCyM0nuJs59SPPURQyfDzkr4ZfMwU6nIRHhY5muMtjiA9WQn9kfLUF9pn2XyQSuCxiRSpTTuao9OQIaRa/8Jqj3355QxX5NCZc4=
+	t=1733483270; cv=none; b=VjPzWPDkKkO4M8QMMRGN7N8iQMdHypVe4rynMgFPmQ933KkkpZdZHm5LeEDRy5n5DYpiM65deAKpqnJeUP76g8vyon5gZ0HZznCW4cabZMyVtlFxyGzX4oXG9MQhb0AiA4DJZPxPeFHY1A/VdWpWNAeoHkAzLlsgSl9WqQ7y/hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733482162; c=relaxed/simple;
-	bh=uXsgG7LYBOGMYkTiXI15pI94Az2NTHCvQ93iz6S8zdA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Lo1rV+tSDk+J0h/QpGJ2K5ji1ZyTgCb5lM5kXZn2ge09K2GccQjGNFdTdDHviE0jjSAktDiLGi6TIeTaIvQcbcd2RSzr8uAeNsBr5+7eN7HQByRUarPKa68r3VOjI7R+NaQ4gZwCnK9w0D3pdBfey3NoQ9f7q+pEy9bcoQT9+7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=O1qqw887; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B688Eg3004011
-	for <linux-wireless@vger.kernel.org>; Fri, 6 Dec 2024 10:49:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	s=arc-20240116; t=1733483270; c=relaxed/simple;
+	bh=y5vOAzuNQWniC5L3Do5/e/IVCLQaEme8W9EdB+yFzXQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=g29jR/Xpg0usg5/v5UsrAukQ/liRzzSH91ndsQ+TACZmtXpF4/KtSQtPEcKhOnwqDnayzkm9C/wkklNShTUTnz+bxNSJNOKIrphJOKU3bKQ3C/91SwbiVzKi2EbDuz22YfxF6dsh6SkWR5S5f/n7Bk+F8tyN8OgqcnMe/VQGtsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=dy5rMnjI; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B66kkrY016877;
+	Fri, 6 Dec 2024 11:07:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	rmzSUIXipKayF3xY1od8zx8fw3lJ7UPJ30/Nq5MaUlM=; b=O1qqw88731XtBylV
-	g5W3rltm9Bj0Oo9ofChkoRJ6tEtMQ1v+2lFYhL/PKUxGpcV2HogsaiXE7YJy/A2K
-	LVNStJg1gRd1GFjMczVs1Xy0p+6EPhcdZSRXTYs8jYD7lzTkMq0ka2UczSipuIEt
-	ThHJyDcnd5qC089b91HL+46xXw7B3KOvCXQqBY2vbqHndZfqkOdEdyH8Zo6lysi4
-	/tHZZdl7AFJn6ivlSvvR9SNULc/x1xwo37lihMClzn6cSGnA1MrZH0PdIGzzqxRT
-	tealzV4VfhPUXIHuwu0Q9MVUHQUJn65AnFCPQtOO3D16VfWNvrdmpSDGi4HgMcqK
-	rD7emA==
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43bbqm3acm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 06 Dec 2024 10:49:19 +0000 (GMT)
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-46680667b3aso4731061cf.2
-        for <linux-wireless@vger.kernel.org>; Fri, 06 Dec 2024 02:49:19 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733482158; x=1734086958;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rmzSUIXipKayF3xY1od8zx8fw3lJ7UPJ30/Nq5MaUlM=;
-        b=s2v9b6IajvJWvHoaG7wVupblc+hi311euyUfeJ6ycIAd8Pm0Zo/jP5CTJZnCyHScvS
-         4Wn8aTwJLt2+VcRrWP/DKW1w4iEHAlGEP26haEul6TC9ZHkq4Vw+h2ZPjPHtSJ5dCGDx
-         aFNjLIjHQ5rL7X9hhV12fB70/4LCPlgpWu5rdKnAh4tJklmj1Exaaqed3ANvkq1cGyY3
-         zBbiPPmcUsYk/jY0yrFQCkh5layo+Zs4bgTotoauyNwlKPKWtw2Ltzltf+vK8Wz0PBoi
-         c4TSY4h0T4zJ6nvtYnW8fmcN2TyaJczY2S8RQs9PhsvaZbcWka2kvtjKfx5NKi56PU4T
-         qadg==
-X-Gm-Message-State: AOJu0YyvZaE5ZQiHtafI7o1+yY91tybmpCynxU3e0UvPi+3EtoGJBTty
-	cRLEFTMizZ9noRLdKIO/Clk4CDfyV68xKyaFzf590h7SAPmHJ9wKGEy+GeUtfPldu0ap5iSTyKS
-	zQbxX30FxmPaJSc8vRFiITT+gcqNsslLY+poeTe6wBpGzaHj3qXiCIVBFQndru+5t6Q==
-X-Gm-Gg: ASbGncvzz3S+QkmRDURe4FW9rgWpp/c7RIak0GmfqEFKD68Zo8Bcr17oVXgyiB/dDc8
-	B63JhTR2tyIjfFmIElgGe3isSlE8Tbgd/Ih+MOkYtDjY4pyavVS6VwlyugGmxqFY6jUs3RnBQzt
-	bpXUQ4JIXIngb0vW2bg5sAuD78njb7Ce3N+e23Jt2N1irBJXKoyG9G6//p78wHpgp173XQc0SD8
-	m6bqeajS3+R3ykIoDYTaODfvFZuXEbQqprGKFBjB4LiVrhjVO45h9sMZYHv/cGLoOv+bRxiA6P0
-	5R25h1kJbMTASJNgHq9J5XKmhPcJD28=
-X-Received: by 2002:a05:620a:2905:b0:7a9:b9dc:1b95 with SMTP id af79cd13be357-7b6bcb04ec6mr134939285a.9.1733482158480;
-        Fri, 06 Dec 2024 02:49:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFNXW/loUXUOCTdG4RUTS4LHcC86Y48mc4tNSrPbk0WXGI8Acu/+JWm0senE7i5qm0oyG2niw==
-X-Received: by 2002:a05:620a:2905:b0:7a9:b9dc:1b95 with SMTP id af79cd13be357-7b6bcb04ec6mr134937585a.9.1733482158106;
-        Fri, 06 Dec 2024 02:49:18 -0800 (PST)
-Received: from [192.168.212.120] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d14c7aa3besm1975925a12.75.2024.12.06.02.49.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Dec 2024 02:49:16 -0800 (PST)
-Message-ID: <e63af513-5fd8-40b0-a1b2-daa9821ebf5a@oss.qualcomm.com>
-Date: Fri, 6 Dec 2024 11:49:14 +0100
+	1lLeIj9ZC2mS5g76o4o6f2hDmvee13oLz6cpCNvUnj8=; b=dy5rMnjIK+eVLGV0
+	DRi3yvvhbGzm0GRgSVNXASuBB53vAacRbiImSrU42xFRiiUFtfYHMStJTfKZOtYi
+	I3aT7wmNdWEbwwjQJtzlFWjSRKQBBBRSsk8HSO6NSHmugQdN64FRgGV9ZM6u+hto
+	qpn3a67NQRov7lkdT+/bdsTOc0uoNwPYeQy9AMRlOrFyVcnbJ26cglVDDiLodQ5Y
+	FoDoR5tItjU1LATal8Umo6pjqIWmmnNhP4rVTeibkSlsiqNeTY6F8D7AUqZK2wVr
+	u9J226wOmU2KmpcUh4qlB9eXqCs4zoDEwSU8HIkFfeSVnnwJFkaegft8JrGLt2JC
+	GfpkbA==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43bbnmkbv1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 06 Dec 2024 11:07:42 +0000 (GMT)
+Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4B6B7f2x031107
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 6 Dec 2024 11:07:41 GMT
+Received: from [10.151.41.184] (10.80.80.8) by nalasex01b.na.qualcomm.com
+ (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 6 Dec 2024
+ 03:07:36 -0800
+Message-ID: <0b2f8734-f502-42d7-bdc5-b0d382d2aa70@quicinc.com>
+Date: Fri, 6 Dec 2024 16:37:33 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -88,71 +65,77 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 15/22] wifi: ath12k: add BDF address in hardware
- parameter
-To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-        ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+Subject: Re: [PATCH v2 00/22] wifi: ath12k: add Ath12k AHB driver support for
+ IPQ5332
+To: Krzysztof Kozlowski <krzk@kernel.org>
+CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        Kalle Valo
+	<kvalo@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Jeff Johnson
+	<jjohnson@kernel.org>,
         Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+        Konrad Dybcio
+	<konradybcio@kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>
 References: <20241015182637.955753-1-quic_rajkbhag@quicinc.com>
- <20241015182637.955753-16-quic_rajkbhag@quicinc.com>
- <142f92d7-72e1-433b-948d-2c7e7d37ecfc@oss.qualcomm.com>
- <0796510c-20bd-4a81-bd60-40aacbcf61c0@quicinc.com>
- <83d216c4-bf9e-4eb4-86d3-e189602f37cc@oss.qualcomm.com>
- <30e5d714-2e52-4a0e-9dc8-b6cacf6ad382@quicinc.com>
+ <ou5kgedz5aga4dtda6k23uhybcjy7mfwie74p6q3qyn5bdajz7@ftejp7lqrise>
 Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <30e5d714-2e52-4a0e-9dc8-b6cacf6ad382@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
+From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+In-Reply-To: <ou5kgedz5aga4dtda6k23uhybcjy7mfwie74p6q3qyn5bdajz7@ftejp7lqrise>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: 8Runx6KPsPIho5CT4EcOO8AQd4NdRaK3
-X-Proofpoint-ORIG-GUID: 8Runx6KPsPIho5CT4EcOO8AQd4NdRaK3
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01b.na.qualcomm.com (10.47.209.197)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: eOj5rPgQ7y1SBrL_GUqGg7AwhE9HK2UZ
+X-Proofpoint-GUID: eOj5rPgQ7y1SBrL_GUqGg7AwhE9HK2UZ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- lowpriorityscore=0 mlxlogscore=999 spamscore=0 adultscore=0 suspectscore=0
- malwarescore=0 mlxscore=0 impostorscore=0 bulkscore=0 phishscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412060079
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ mlxlogscore=999 priorityscore=1501 spamscore=0 impostorscore=0 bulkscore=0
+ suspectscore=0 adultscore=0 clxscore=1015 phishscore=0 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412060082
 
-On 6.12.2024 5:34 AM, Raj Kumar Bhagat wrote:
-> On 12/5/2024 11:12 PM, Konrad Dybcio wrote:
->> On 3.12.2024 10:18 AM, Raj Kumar Bhagat wrote:
->>> On 11/4/2024 7:46 PM, Konrad Dybcio wrote:
->>>> On 15.10.2024 8:26 PM, Raj Kumar Bhagat wrote:
->>>>> The Ath2k AHB device (IPQ5332) firmware requests BDF_MEM_REGION_TYPE
->>>>> memory during QMI memory requests. This memory is part of the
->>>>> HOST_DDR_REGION_TYPE. Therefore, add the BDF memory address to the
->>>>> hardware parameter and provide this memory address to the firmware
->>>>> during QMI memory requests.
->>>>
->>>> Sounds like something to put in the device tree, no?
->>>>
->>>
->>> This BDF memory address is the RAM offset. We did add this in device tree in
->>> version 1. This is removed from device tree in v2 based on the review comment that
->>> DT should not store RAM offset.
->>>
->>> refer below link:
->>> Link: https://lore.kernel.org/all/f8cd9c3d-47e1-4709-9334-78e4790acef0@kernel.org/
+On 10/16/2024 12:27 PM, Krzysztof Kozlowski wrote:
+> On Tue, Oct 15, 2024 at 11:56:15PM +0530, Raj Kumar Bhagat wrote:
+>> Currently, Ath12k driver only supports WiFi devices that are based on
+>> PCI bus. New Ath12k device IPQ5332 is based on AHB bus. Hence, add
+>> Ath12k AHB support for IPQ5332.
 >>
->> Right, I think this could be something under /reserved-memory instead
+>> IPQ5332 is IEEE802.11be 2 GHz 2x2 Wifi device. To bring-up IPQ5332
+>> device:
+>> - Add hardware parameters for IPQ5332.
+>> - CE and CMEM register address space in IPQ5332 is separate from WCSS
+>>   register space. Hence, add logic to remap CE and CMEM register
+>>   address.
+>> - Add support for fixed QMI firmware memory for IPQ5332.
+>> - Support userPD handling for WCSS secure PIL driver to enable ath12k
+>>   AHB support.
 >>
+>> Depends-On: [PATCH V7 0/5] remove unnecessary q6 clocks
+>> Depends-On: [PATCH V2 0/4] Add new driver for WCSS secure PIL loading
+>> Link: https://lore.kernel.org/all/20240820055618.267554-1-quic_gokulsri@quicinc.com/
+>> Link: https://lore.kernel.org/all/20240829134021.1452711-1-quic_gokulsri@quicinc.com/
 > 
-> Thanks for the suggestion. However, the BDF_MEM_REGION_TYPE is already within the
-> memory reserved for HOST_DDR_REGION_TYPE through /reserved-memory. Therefore, reserving
-> the memory for BDF_MEM_REGION_TYPE again in the Device Tree (DT) will cause a warning
-> for 'overlapping memory reservation'.
+> These are series targetting other subsystems. I do not understand why
+> you created such dependency. It does not look needed and for sure is not
+> good: nothing here can be tested, nothing can be applied.
 
-Then you can grab a handle to it with of_reserved_mem_lookup()
-and of_reserved_mem_device_init_by_idx()
+To validate this series, the dependencies mentioned above were necessary, which
+is why they were included.
 
-Konrad
+Currently, the "[PATCH V7 0/5] remove unnecessary q6 clocks" has been merged,
+so this dependency will not be required in the next version.
+
+The "[PATCH V2 0/4] Add new driver for WCSS secure PIL loading" series is still
+under review and is required for validation.
+
+However, this series can still be applied and compiled without these dependencies.
+Please let us know if we should remove the dependency in the next version.
 
