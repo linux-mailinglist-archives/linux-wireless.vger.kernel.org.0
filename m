@@ -1,113 +1,83 @@
-Return-Path: <linux-wireless+bounces-15979-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15980-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A9A09E72D5
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2024 16:13:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0C779E7498
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2024 16:42:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B73F016DEF9
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2024 15:12:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E56B18817F9
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2024 15:42:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7997920B213;
-	Fri,  6 Dec 2024 15:12:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="gGpkSVA2"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1440C1FCD11;
+	Fri,  6 Dec 2024 15:42:05 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D6D207658
-	for <linux-wireless@vger.kernel.org>; Fri,  6 Dec 2024 15:12:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF9D71FC7CB
+	for <linux-wireless@vger.kernel.org>; Fri,  6 Dec 2024 15:42:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733497952; cv=none; b=nHoOeMmAu7FZMW50MXZo0xCAwzDyzQagqHN2mBw2R9zUsEIYFUawAMSexAv4y2yUJcO3jfTRHniiJL0rnINJFV9kbk/S/iVdyVyDhy8E0k11Xg4jWOgmhXH2bGvPLFPrZ4a4WV1+Rdl3K/VBLqceIgQPEkam0z/NLd5T+Z7Sxuc=
+	t=1733499725; cv=none; b=G/xpSINwouoPjNTRbtU6QU7BsTPf40oH0zpWGBPQPjVqe0vcMoWpck15DxMj4/FI6Xhl9jQCQ8YszMsyWHb8zxBUUyaT+7m26E0RLkw/Xet+CBfVBm94FhD4UR7BJjBRczBlSE4EIZHWFFmbXf4M8kncBTdNDJm3AmSf2CuC+3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733497952; c=relaxed/simple;
-	bh=9uKTWqnil5oe1e27X3SHy2PkmpX+vzBYYigxRKNIb2k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KRQk1rbvZeYfjvrU/K7a8wgOnKXNyyNXihuiCKCYRwIfJhm4NN0qvomczrRCSxJg5D4/Ois2Yh3Qp10u4OWz8pbeR/+p6jdgOb2mH5I8qka8o8oT5jEyaKMR6QXmQuVt8qfUqGaehcl+V8Uy8WlP08eoOQ9L0gSeO+iQmOGFuJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=gGpkSVA2; arc=none smtp.client-ip=67.231.154.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id DD8E26C006F;
-	Fri,  6 Dec 2024 15:12:21 +0000 (UTC)
-Received: from [192.168.1.23] (unknown [98.97.36.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id D7CE313C2B0;
-	Fri,  6 Dec 2024 07:12:20 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com D7CE313C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1733497941;
-	bh=9uKTWqnil5oe1e27X3SHy2PkmpX+vzBYYigxRKNIb2k=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gGpkSVA2NfK9u8TVM2SYNOUdDQ0wHiTigAJ17O+7YV9eOS8ypn05Bvl9vb47Kr1Dd
-	 2qe17rYoFypwDFrhPEFD+lmvxfVdb9VOMp9+sJuLPXfvXb5hF+9od4WuKG/3LDtXYu
-	 jIwVOb1/nq5mZvPY0yuzVKmTZ5FFK7QAeshlUxJM=
-Message-ID: <a830c9cf-9256-42b7-8a3b-582df8b3b8ef@candelatech.com>
-Date: Fri, 6 Dec 2024 07:12:20 -0800
+	s=arc-20240116; t=1733499725; c=relaxed/simple;
+	bh=qst2g2RoMHSpg6nySsNylskaVinTB4lSH/2RTi+L0D8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=U9P/fPOjjNiPP7N6budiMcEt5TUklGdw2z7NznRB6qdbBM29xXio+Ul/4217kIu4IVyfrBmwG+fWJLqcHNxwXTsV354kMyuqXjlwV/FeANFE1xx6gKSEjJe/7bAtqTfTH31WR0g075pEcs8lCzThXkiJwuyaKy7J1si34EXaurM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64632C4CED1;
+	Fri,  6 Dec 2024 15:42:04 +0000 (UTC)
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+To: ath12k@lists.infradead.org, Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org
+In-Reply-To: <20241204163216.433795-1-kvalo@kernel.org>
+References: <20241204163216.433795-1-kvalo@kernel.org>
+Subject: Re: [PATCH 0/7] wifi: ath12k: MLO support part 6
+Message-Id: <173349972434.1649864.17683658768076689357.b4-ty@oss.qualcomm.com>
+Date: Fri, 06 Dec 2024 07:42:04 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: wireless: Remove adhoc and beacon_int_min_gcd check.
-To: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org
-Cc: nbd@nbd.name
-References: <20241205225502.878928-1-greearb@candelatech.com>
- <4c127a8e7e03882c4b26e480350453ef5a59ff54.camel@sipsolutions.net>
-Content-Language: en-MW
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <4c127a8e7e03882c4b26e480350453ef5a59ff54.camel@sipsolutions.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-MDID: 1733497942-3NhjEL4lwIlh
-X-MDID-O:
- us5;at1;1733497942;3NhjEL4lwIlh;<greearb@candelatech.com>;20e01846ddffb15f370631a0b8aff2f7
-X-PPE-TRUSTED: V=1;DIR=OUT;
+X-Mailer: b4 0.14.0
 
-On 12/6/24 01:43, Johannes Berg wrote:
-> On Thu, 2024-12-05 at 14:55 -0800, greearb@candelatech.com wrote:
->> From: Ben Greear <greearb@candelatech.com>
->>
->> This check keeps mtk7996 from loading.  If someone thinks
->> they can get ADHOC to work, let them try it.  If the
->> kernel really needs to restrict some combination, then
->> it should be done at time user attempts to actually
->> use that combination, not at driver load.
->>
+
+On Wed, 04 Dec 2024 18:32:09 +0200, Kalle Valo wrote:
+> In this patchset there's refactoring to support hardware grouping, meaning
+> multiple hardware devices can be registered to mac80211 as a single device.
 > 
-> I disagree, the driver shouldn't advertise non-sense interface
-> combinations that cannot possibly work correctly.
+> Please review.
+> 
+> Aditya Kumar Singh (1):
+>   wifi: ath12k: rename mlo_capable_flags to single_chip_mlo_supp
+> 
+> [...]
 
- From the code comment, it looks like it might be possible to get into
-a bad configuration if peer ADHOC uses a small beacon time, and if
-that also messes up mtk7996 firmware somehow.  But also,
-it could work just fine if they did not use a small beacon time,
-or if firmware magically deals with this somehow with work-arounds
-specific to ADHOC (and yet still want normal APs to use 100 or larger
-for beacon timer).  So 'cannot possibly work correctly'
-is a bit of overreach I think.
+Applied, thanks!
 
-Hello Felix,
+[1/7] wifi: ath12k: move ATH12K_FLAG_REGISTERED handling to ath12k_mac_register()
+      commit: a5686ae820fa7ab03226a3b0ff529720b7bac599
+[2/7] wifi: ath12k: rename mlo_capable_flags to single_chip_mlo_supp
+      commit: 46d16f7e1d1413ad7ff99c1334d8874623717745
+[3/7] wifi: ath12k: introduce device group abstraction
+      commit: 6f245ea0ec6c29b90c8fa4fdf6e178c646125d7e
+[4/7] wifi: ath12k: refactor core start based on hardware group
+      commit: ee146e11b4d9183e01d8b7e4963941730ed4af6d
+[5/7] wifi: ath12k: move struct ath12k_hw from per device to group
+      commit: a343d97f27f514015e6d5e789672cf4ab4111720
+[6/7] wifi: ath12k: send QMI host capability after device group is ready
+      commit: d302ac65ac938516487f57ae20f11e9cf6327606
+[7/7] wifi: ath12k: introduce mlo_capable flag for device group
+      commit: da8656797ae10b524a7a0c3d5eeb6237fa3ddd70
 
-Any suggestions for how to fix this?  Disable ADHOC in 7996, or set the beacon_int_min_gcd
-to zero to allow it to be any duration?
-
-What is openwrt doing to allow mtk7996 to load?
-
-Thanks,
-Ben
-
+Best regards,
 -- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 
 
