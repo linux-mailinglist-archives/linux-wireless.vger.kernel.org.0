@@ -1,117 +1,162 @@
-Return-Path: <linux-wireless+bounces-15970-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15971-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E14D69E6E97
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2024 13:52:52 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5159E9E6EAE
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2024 13:57:21 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A67E188343D
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2024 12:55:21 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2161200109;
+	Fri,  6 Dec 2024 12:55:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W2CHW3jJ"
+X-Original-To: linux-wireless@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A3529281F92
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2024 12:52:51 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1FD206F33;
-	Fri,  6 Dec 2024 12:52:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uB+CD3kU"
-X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD88205AC9
-	for <linux-wireless@vger.kernel.org>; Fri,  6 Dec 2024 12:52:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9115C1F6681;
+	Fri,  6 Dec 2024 12:55:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733489557; cv=none; b=TXACqT7aQgNb2caOLp6guTlosz8V6xal+WSDTbjW/f4LBBSLe7B4n5SNoJq4t7ZdqJ16x2XsRymZQuxWMhcqF+xE5lpqGzKbZvKSwYE7nkOqna/JPrhuQhDDwaYUwtRN35vmFKxt5rCYiVP464QdXTzHQL5abndQjdwpF9ryd6k=
+	t=1733489717; cv=none; b=qpBtw/CLPClp0kfZmWBVcFZDBIQOzOLAxsGWZHEQwMVAgLDi8vRPHZI86j1VgJbVYZKGk4r1h3pSq36axou5ZJERfSE3gMMzHVicavcxiQOvcxGQ1B+KRO7gDE52tZALyVeY1MDqGZwzK1O7SSsM0C0IKNStcgtGkF2eY9dVxvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733489557; c=relaxed/simple;
-	bh=f+27fzhEEViDzKM3BdD9NsjlQj3nr6zdqL/DbQ0dhcs=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=gWpbTc86KikwzoWhC4KUKn29XNl6TG9pce5fgMFgMKRzUvfcRfn/HWVX9I+1QaGcnS9qIOIpgefEnh99Lk7WdDd56MAskj1e+mQnVBv+4/NWUhshOJOPcBk8wsTnwUDVB8EBiE6bc0In6ME2+KV2dHmMnnJ80k8Ilm4B2viWk9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uB+CD3kU; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-434a7ee3d60so18625915e9.1
-        for <linux-wireless@vger.kernel.org>; Fri, 06 Dec 2024 04:52:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1733489553; x=1734094353; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QrDABpUIa8XNiUd2yRie5JLoWvXscChzPwT5Xcajj3I=;
-        b=uB+CD3kULrEBu9yaY++G1hkEM/iCyLHs4FFa+5H7UgK7p3Oh0iYfpLu1YpJ955ezoU
-         yhP+J7czsqhRrvVeQXCTWqGcIkDAwsLxlxRbO9aG78n1+3aZrpSaLwF3wcOQ40pDsgSi
-         MokuefxG8BIhh40ot0xnpySjf/wcJnGX3s/CF/3RwYuPMccOsTUe5UpOSMpkRt7hIYD3
-         fB5cd+zsQEo3qsUKw71QAviVZHTonFQWhLhnKnFKP1nTX9sB7hjrjFEzsJ2q1Rny/SKw
-         PdXuU3LGRIasKCb8czjez4dzitkJvpdRR7Qk1DED92MwSvMvS8jK1YNcFn0nbMkLktuR
-         XyhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733489553; x=1734094353;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QrDABpUIa8XNiUd2yRie5JLoWvXscChzPwT5Xcajj3I=;
-        b=UcMS2zifdJCPrByYgtFUsSW1CQ12JmUZD8/XeYzxWaHL9vxM2oEHrNUXDxjE//dBe9
-         Si2N5zj9oqBfTknjQnmiKmsXxTX2w7A/JvwxYmQnhWm6i7y/GV+JMVaz80L3wh6x8Byl
-         vm4dxQXPMd/KpsumDbNS27KGLh93PQjY/DD06E2N7UpFnzgU4nHq8gZtOCyzeFwO0Qy4
-         AnLAygvezXd5ET9qDIO0Pfaf4m1pjM0FF6o8b26O2EomjfoutmK0jD0EU4/EU0IvRyJF
-         KF7D3An3vHhUjh0uh+2NAQXQ4PKB9bZOkWVAw7N9NiDZWA1vMHGPdLWDTvvqx4K1MZnc
-         LxcA==
-X-Forwarded-Encrypted: i=1; AJvYcCWxh7ddEyl2JacOpYpwzxlyGj4Y9sDdL5zase9HckRpCoujthG2oU4r9JwEQgswNASjEJUCxUjOYz2QuGiuzw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBCgWit9c4jalwd9jFdIQJbJkChAlpORGYMCvY+VoyAan3uCEY
-	XrJpYp5o9RXhQppT56tdeUMDufe8iTWkDMQZpOa3SUcIMy21tQcQVP0bWIu4nGo=
-X-Gm-Gg: ASbGncttoF003aRbS6RMN3N5iprWMaymnt+mbFHb57yFOKsD2REGLo0uN9kLOLFP/Fs
-	9EXM35mxmWNn2e8ayN55Z67YFD207nnFZJLt+UmBCVU9sJdrW7pXD1pRjEEZsSzZ1q+ubz0Mz6u
-	IJBZS5xGSFYapWe1XskraNzt7Pc+8Z0UZk2DuRHe1FsoEockB2KtbH6ZzCgifesLxDpHAgY55X1
-	ApP/y4SFb3pD6kgzPWSHQEqqWqzc9HuNCYLKhvpaAjhN8xeuzsLCA0=
-X-Google-Smtp-Source: AGHT+IHm8JzdfN+FTAHMT8Z6wMEGsSN1pUfe5dL+iyuyKffu7U5Grq3ElPDgSbj9GKe3ItmO5v0RPw==
-X-Received: by 2002:a5d:588a:0:b0:385:f9ed:1637 with SMTP id ffacd0b85a97d-3861bf98719mr4466825f8f.28.1733489553444;
-        Fri, 06 Dec 2024 04:52:33 -0800 (PST)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434da1134b9sm55104575e9.33.2024.12.06.04.52.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Dec 2024 04:52:32 -0800 (PST)
-Date: Fri, 6 Dec 2024 15:52:29 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Sriram R <quic_srirrama@quicinc.com>
-Cc: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
-	Rameshkumar Sundaram <quic_ramess@quicinc.com>,
-	linux-wireless@vger.kernel.org, ath12k@lists.infradead.org,
-	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH next] wifi: ath12k: Off by one in
- ath12k_wmi_process_csa_switch_count_event()
-Message-ID: <755becb1-819b-484d-8fac-9a2db53ced1b@stanley.mountain>
+	s=arc-20240116; t=1733489717; c=relaxed/simple;
+	bh=ut+n6OkeEePipWNKkILbIw1fd3nezu+R13ATMigoLes=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BJYgtcdXOpv82c190+qk0d060Da8ZKkJCz1BXIaKxt/XgIp7O+mg7J7WGTeFL7xLht27UAGb0+6sqkyH+AJ7bN+rkdgMYJ/VbKWJAaGTc64k9IraCdK/5iCytBmOYH8Jd5qAnhi7Y7kVNJ4TZfcs4DO4Q0S3mxcS2G18RjvqKn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W2CHW3jJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 915C6C4CED1;
+	Fri,  6 Dec 2024 12:55:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733489717;
+	bh=ut+n6OkeEePipWNKkILbIw1fd3nezu+R13ATMigoLes=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=W2CHW3jJc24Sw0orGRez001VEhUVd30dX9BD9pO5031wGocVLxDblhdG4rJV3pewp
+	 wkV9jDnJ54AZKZJBqIn9J/zXCiPcnSxtIkad6velCia5lDH9ayz7UR7FaoPdJ6gubQ
+	 cpoOdGaf1t+Eyd+ppx4ySRBJBZNip5LbSBGRrpMoA5IHkduDdx0gah/weQPrBrK4Ph
+	 qNGe861N9yb5uEMeFsAL7QiJSRXtfydImiy1JXa5dKZmD2Ac6nByXmoUItRvWrFdQA
+	 00CfBV2bb/oYsu+ZjffbI91NLFN9jtMQXSB8eM14QwcaDcL1gLVwf6WWSKIFyVPjl6
+	 s26MAdx7mXzUQ==
+Message-ID: <cda109c9-a1e2-42cb-b830-6764c6eef519@kernel.org>
+Date: Fri, 6 Dec 2024 13:55:11 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/22] wifi: ath12k: add Ath12k AHB driver support for
+ IPQ5332
+To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
+ Kalle Valo <kvalo@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+References: <20241015182637.955753-1-quic_rajkbhag@quicinc.com>
+ <ou5kgedz5aga4dtda6k23uhybcjy7mfwie74p6q3qyn5bdajz7@ftejp7lqrise>
+ <0b2f8734-f502-42d7-bdc5-b0d382d2aa70@quicinc.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <0b2f8734-f502-42d7-bdc5-b0d382d2aa70@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The ahvif->vif->link_conf[] array has IEEE80211_MLD_MAX_NUM_LINKS elements
-so this should be >= instead of > to avoid an out of bounds access.
+On 06/12/2024 12:07, Raj Kumar Bhagat wrote:
+> On 10/16/2024 12:27 PM, Krzysztof Kozlowski wrote:
+>> On Tue, Oct 15, 2024 at 11:56:15PM +0530, Raj Kumar Bhagat wrote:
+>>> Currently, Ath12k driver only supports WiFi devices that are based on
+>>> PCI bus. New Ath12k device IPQ5332 is based on AHB bus. Hence, add
+>>> Ath12k AHB support for IPQ5332.
+>>>
+>>> IPQ5332 is IEEE802.11be 2 GHz 2x2 Wifi device. To bring-up IPQ5332
+>>> device:
+>>> - Add hardware parameters for IPQ5332.
+>>> - CE and CMEM register address space in IPQ5332 is separate from WCSS
+>>>   register space. Hence, add logic to remap CE and CMEM register
+>>>   address.
+>>> - Add support for fixed QMI firmware memory for IPQ5332.
+>>> - Support userPD handling for WCSS secure PIL driver to enable ath12k
+>>>   AHB support.
+>>>
+>>> Depends-On: [PATCH V7 0/5] remove unnecessary q6 clocks
+>>> Depends-On: [PATCH V2 0/4] Add new driver for WCSS secure PIL loading
+>>> Link: https://lore.kernel.org/all/20240820055618.267554-1-quic_gokulsri@quicinc.com/
+>>> Link: https://lore.kernel.org/all/20240829134021.1452711-1-quic_gokulsri@quicinc.com/
+>>
+>> These are series targetting other subsystems. I do not understand why
+>> you created such dependency. It does not look needed and for sure is not
+>> good: nothing here can be tested, nothing can be applied.
+> 
+> To validate this series, the dependencies mentioned above were necessary, which
+> is why they were included.
 
-Fixes: 3952657848c0 ("wifi: ath12k: Use mac80211 vif's link_conf instead of bss_conf")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
----
- drivers/net/wireless/ath/ath12k/wmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+What does it mean "validate"? You are supposed to describe how upstream
+can consume this.
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index 402ae477da61..46c5027e4f1c 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -6873,7 +6873,7 @@ ath12k_wmi_process_csa_switch_count_event(struct ath12k_base *ab,
- 		}
- 		ahvif = arvif->ahvif;
- 
--		if (arvif->link_id > IEEE80211_MLD_MAX_NUM_LINKS) {
-+		if (arvif->link_id >= IEEE80211_MLD_MAX_NUM_LINKS) {
- 			ath12k_warn(ab, "Invalid CSA switch count even link id: %d\n",
- 				    arvif->link_id);
- 			continue;
--- 
-2.45.2
+> 
+> Currently, the "[PATCH V7 0/5] remove unnecessary q6 clocks" has been merged,
+> so this dependency will not be required in the next version.
+> 
+> The "[PATCH V2 0/4] Add new driver for WCSS secure PIL loading" series is still
+> under review and is required for validation.
+> 
+> However, this series can still be applied and compiled without these dependencies.
+> Please let us know if we should remove the dependency in the next version.
 
+So write proper cover letter not bringing up fake dependencies.
+Otherwise answer is: this cannot be tested, thus it will not be reviewed.
+
+Best regards,
+Krzysztof
 
