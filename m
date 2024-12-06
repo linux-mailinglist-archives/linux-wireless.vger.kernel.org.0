@@ -1,86 +1,79 @@
-Return-Path: <linux-wireless+bounces-15968-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15969-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9450B9E6D91
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2024 12:46:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A599E6E17
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2024 13:27:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08072163976
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2024 11:46:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF6171882E68
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2024 12:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C005F1FF601;
-	Fri,  6 Dec 2024 11:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 879CA1D9A4E;
+	Fri,  6 Dec 2024 12:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="m2eMtTxj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eLc4kZuQ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3341F9A81
-	for <linux-wireless@vger.kernel.org>; Fri,  6 Dec 2024 11:46:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D6C2010F4
+	for <linux-wireless@vger.kernel.org>; Fri,  6 Dec 2024 12:27:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733485592; cv=none; b=IWliJL771RX0/GfbDxTPOd11Kx48DLKqoJeuIeVBpfI/SVtK9iGVeo/c+sEXJeIjraAaMLfA64tdSq/5Mea6f1ThWM2Zqib8RYSu2/VWxogSRvJ3aQvEVEvbgnjeGqehNwJZRa7MNSllyBW19Ghnv7dqfKL9lv2rzOF59+OA9ps=
+	t=1733488045; cv=none; b=LPXsI30LncdRyF19y6Jv+3prcFx7ieAZtFJGwytxDT2AQx+PXr2ITyToS5BCHM1F7IiUvmbGwJdKB6J+Ibt9lizTQ7oGegbjipNc9IktH+d0XdMDlCZHryRBKVCPJxcSR2QvUJGQV+mgUehwYeCn87Zvp/cBurbjpflZCe9S7QQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733485592; c=relaxed/simple;
-	bh=jTMtrDLnjk5W3t/iPqQBtaBROJ7vQIK3Plh8o9UC2sc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TwF+QJL2qiBxjubVDhk5aWVkswL8u9XpmyYig/svyE1Htov+BJvXSqNmVWi/alRqVBobXoFsVjZp4GyOfHNa2UKNuSmwzxS+S9Rg4Z/tqkKLHkKxDjrN7gTf2be8YT61Lhan0gJK4Sy0oWDGJVAZX35GSjDsLwd5f47rSko7vWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=m2eMtTxj; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B67YSdW016410
-	for <linux-wireless@vger.kernel.org>; Fri, 6 Dec 2024 11:46:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	5hUY1e/YxiySi/wLCkZ/A7ok8yUIQYxm2Ew51lyeXS4=; b=m2eMtTxjm3bJXk29
-	l5wPFxi/4jimYBJzvV9mpPXTAA3Z1gI6uNZYM2ZB7W+REvLS+NTmbRFCr6wv/K73
-	O75U48bocJPWLGWM9Mn1uew6H8Uc7jzEbMKj5mVgiO+BRLZydmmfHydYkTiZCQsG
-	RuCu/YUxFciy4wllLrDTSuvmcIastvTRJtYxWaEhOK6VNvWPWZCpLGDoqQhdn5Qv
-	qpzhXVlYdOf8e4YRS4yx456wmd6GidtE8A/sCC3mU0Fo/7pS4L3GYctTH9F6MP4t
-	Knu5OonPBr8MrpeuYUIo0OV4dx9qxCfAw5mgDtP+KvqJhQL8D4fTeBITQqTJn6F+
-	qDvh4A==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43bbnmkf1g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Fri, 06 Dec 2024 11:46:28 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-7b67c9624d1so7408285a.3
-        for <linux-wireless@vger.kernel.org>; Fri, 06 Dec 2024 03:46:28 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733485588; x=1734090388;
+	s=arc-20240116; t=1733488045; c=relaxed/simple;
+	bh=js5htYTqIT+yjjdW3GG+ip0utxJcW2mmg0QTtTRWtR8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=qqwBbGdZJ+v5QuYaVz4LLTA1Q7tmcykIKUCawb+JTW597HMofdTAcp+hN+zd+d5OU9dbEKtzo3/odLuKKAztxel6UWHo8WPX28yRUIhaFVRfyA6rzo872JDWmKiabQho3HYCb3e+Whu6iFpkPzCyPtJ86BbeEqRDjQIiEDOZDjA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eLc4kZuQ; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-21619108a6bso3588375ad.3
+        for <linux-wireless@vger.kernel.org>; Fri, 06 Dec 2024 04:27:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733488043; x=1734092843; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=/7cxDYGURsL5gkV+0SpqL58pd20ALFslfNYgsoF4uBM=;
+        b=eLc4kZuQJ9n97SF/jyQ3JdzkzJlvauGkYLFLmkvS5bM2sCMKK6pAHjv3UhRGmPFIyK
+         M/lczQkM8YuEw7razEaRkIPz+5eRTWG6maHq7pp4T4xqHs91G8lpjwL7lnVapJ1vct6j
+         Ef2bfL2mflJYqMCvTUCDL42Ob02z8apLh6p0KpkbkYnZSCtN+ODPP3pHtVFqTWTQ4/Ch
+         RSKB4DJIsUQgiuxCoDKOnVFuewETHzL0V0akAYhTHKlFFxMtclveInmUVs0YIBb5TLmD
+         4KzqDD06KEJsfjUqKliDRskBQt1qRo+qBpK0kFGOIqPQqv9BMV03QNF10lQYiE02ONvK
+         N2iA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733488043; x=1734092843;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5hUY1e/YxiySi/wLCkZ/A7ok8yUIQYxm2Ew51lyeXS4=;
-        b=Er85X20nSkxqboMkmbQI3hAvn5CgiTK8FvPER0C+ZCq7R0rb+eay5By6hUTKZs9UNy
-         XbdQcqrYAGzXi9ALmtzvTHUJi9R0XfLv+u2RS8DLg2rLrc1bYguKiyyzljIQxQ1vpo9g
-         jeIGC/O71pV3H7bMcfsWyie7hKZcp0gkBSS9abnHgGb/tdp/zDKu+5dtI0nkeAj5b5DS
-         Ijw1vDYgDAhB+mdCB/7gWWNWtrjwYK9YI6DwX3ZDTRvXhS8kR6dQJdSYWyBCi4O7q9Ha
-         /lDXb1gYSrUhW94an1VzD6n/mqdb8fGsx2NYd/Sg/hKXsn5ng3BjIyx5Z9jhh8Y9CW7Q
-         uDGQ==
-X-Gm-Message-State: AOJu0YzZaZDghNV0NHLOO9GXhyKoFG1nYT4ag1JU7FXlW4ISJo0lCxQ3
-	LyYchck4aMuET96fzMjTMshdenKA1iD72YFuyL7H8+Uuis5hltu5VjOE/f7qg2d6t0eLi7Re8vO
-	G4Xcya69bX0GukAeQk8XtGb6wBvUmhVpL6pCi8llrUDClTSLdWOhhDJ30PtEQK1xNgw==
-X-Gm-Gg: ASbGnctnCz5hnz9qycLKBsxghzURXtRGuBpz/n6owOi9bRrp6ZzQo2FnDCrY4eguRJg
-	j/gxoWbL5uD+fpoYs7ZC3CS0pTzjcHma6aDd8Os+0Z7PJrfXlusgGyNsdietphHSdjulviNOcxx
-	tEgtU+5QbiwJL/LR/nm5m+IPBQPoXaFyYJ+HV6kF/icvhlSTgCO7TbWDXfCdzEWdtZ+/JxwKCAM
-	yCn0rPKvSa2oNYf3rX5mL+c7E2wqu79FH2zyT4QYdLNrmm4eKZLSlopWfQ+tDw7pBDVAZC1YOxS
-	43S0QmOAmy9/YQeMbeKy5wN4lKakYpY=
-X-Received: by 2002:a05:620a:469f:b0:7b6:6634:5a3a with SMTP id af79cd13be357-7b6bcace083mr134724585a.6.1733485587822;
-        Fri, 06 Dec 2024 03:46:27 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE2ztyWlSb4kx6b26cpg9MuRvCCN2v3JqU/i03b5FNDZ8dzZTlaEdkLBo8DgxUk1CP0/Qt3mw==
-X-Received: by 2002:a05:620a:469f:b0:7b6:6634:5a3a with SMTP id af79cd13be357-7b6bcace083mr134722785a.6.1733485587363;
-        Fri, 06 Dec 2024 03:46:27 -0800 (PST)
-Received: from [192.168.212.120] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa625e96aebsm229571566b.65.2024.12.06.03.46.24
+        bh=/7cxDYGURsL5gkV+0SpqL58pd20ALFslfNYgsoF4uBM=;
+        b=xIPWNZR3B+7aKsTP+GeWgW3LH2wsnb5cUUORgz0Xk8WTVTCo2pqyGc7JO9LdRRxicF
+         AmOrU8lu2cfOMXooB6owhqDnLi7Yos0BtVcS/w/lWV12d5NOca2oKm1SkQ2VLadtHIJZ
+         VfQsi7mrixTpBvSuuT1a4HpU0ZpiM7e1UHplPJyocJltyAwnqO1ozTLlmcnn2Dm+nGPj
+         AswAWQ+F0T2rkQE5W9xU62K6DTXg8lL2WkAU72V2TOSnSlQVjtZozhSYwT7PjpB5Sjix
+         JOmE8WjAWYd7cWcrhwyJ3D3B29gxU4OvjkPe4O3wx8WCsmBsvhPjBEc8Ls8eLJWmF1wv
+         cvgw==
+X-Forwarded-Encrypted: i=1; AJvYcCWEthTrLj26M3E7Qj73cYg8xKLdmhxgr/odjYQfh6ApBUgQa4lISvsAzhDjLdg8iCCQ0j6nx7NPfMkbP4dmoA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrWgUUCIt5ew9BwQAHzNKTFelVg/0JEVp91pnLhDrjjBL21f45
+	hD7+tv/dSfY3AjwDW/6kwm7yWKcU76YrQ0ZOtZnoqAaQHRVvt9L+sa6h8Q==
+X-Gm-Gg: ASbGncvMG4bdqSVi3fI0oaVysncbkvcO+jMrJ9nrgfSEEDRkJo3hHOWByHbPeoB4wwF
+	xKy6CqdZvWCCfE1nTvQKNOyI8CmnQ6Aayo+xmoEFjS7xVDp/RNrcTkkBDhYgkbDhqfvsGn0rsPj
+	ScJfyY0WvK26Ue03BFyW8eDX1OOtg0w7un4d/OzPArkHk6LoTp0xDi3nvAIT1tU8T9GZNlO+1TS
+	X1QG5pTP9zn0/1QIqSrJ71wm+xHz1AU/CYA0vomeqD4y7hR2RsbGrE6jndxsMV13tm/8pO4tHUu
+	8jNw5D6oVoTfmvGD3GHXcFV/z5sx
+X-Google-Smtp-Source: AGHT+IHwgi3jIg5cM3Gld+lrQWC8IKCrJk7nBa4AWQoviVQ28seWu7ZgnDFsMF6uuPvBU1PWa2gvnw==
+X-Received: by 2002:a17:903:230e:b0:215:aee1:7e3e with SMTP id d9443c01a7336-21614d19681mr42519275ad.5.1733488043015;
+        Fri, 06 Dec 2024 04:27:23 -0800 (PST)
+Received: from [192.168.1.164] (h69-130-12-20.bendor.broadband.dynamic.tds.net. [69.130.12.20])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-215f8e3fd47sm27705445ad.39.2024.12.06.04.27.22
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Dec 2024 03:46:26 -0800 (PST)
-Message-ID: <153a9d51-6fc8-47d8-934b-4c53365077bc@oss.qualcomm.com>
-Date: Fri, 6 Dec 2024 12:46:23 +0100
+        Fri, 06 Dec 2024 04:27:22 -0800 (PST)
+Message-ID: <d5587bb4-4622-4ba2-bb4d-71a21e237021@gmail.com>
+Date: Fri, 6 Dec 2024 04:27:21 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -88,145 +81,102 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 17/22] wifi: ath12k: add AHB driver support for IPQ5332
-To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-        ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        Balamurugan S <quic_bselvara@quicinc.com>,
-        P Praneesh <quic_ppranees@quicinc.com>
-References: <20241015182637.955753-1-quic_rajkbhag@quicinc.com>
- <20241015182637.955753-18-quic_rajkbhag@quicinc.com>
- <243cd21d-6a35-4ff0-9b38-ec519a804670@oss.qualcomm.com>
- <9093b41c-986d-4304-8414-61e4ee2d9950@quicinc.com>
+Subject: Re: ath10k "failed to install key for vdev 0 peer <mac>: -110"
+To: Baochen Qiang <quic_bqiang@quicinc.com>,
+ Jeff Johnson <quic_jjohnson@quicinc.com>, linux-wireless@vger.kernel.org,
+ ath10k@lists.infradead.org
+References: <e780560a-86eb-4189-ab5d-3bed3ee5825e@gmail.com>
+ <54fac081-7d70-4d31-9f2a-07f5d75d675d@quicinc.com>
+ <ea2e7c62-f6e9-4cba-ae81-19fc9abed8b7@gmail.com>
+ <22978701-ca79-4e90-8ceb-16bdaf230e8f@quicinc.com>
+ <dda85730-3f19-490e-bb0f-99b13511c062@quicinc.com>
+ <54f29515-047d-483d-8d9f-a0315a71ad7a@quicinc.com>
 Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <9093b41c-986d-4304-8414-61e4ee2d9950@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: wt9HDlN8eUAkUr1o-rRFjC4uPeHJIkOL
-X-Proofpoint-GUID: wt9HDlN8eUAkUr1o-rRFjC4uPeHJIkOL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- mlxlogscore=999 priorityscore=1501 spamscore=0 impostorscore=0 bulkscore=0
- suspectscore=0 adultscore=0 clxscore=1015 phishscore=0 mlxscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412060088
+From: James Prestwood <prestwoj@gmail.com>
+In-Reply-To: <54f29515-047d-483d-8d9f-a0315a71ad7a@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 6.12.2024 10:56 AM, Raj Kumar Bhagat wrote:
-> On 10/19/2024 1:59 AM, Konrad Dybcio wrote:
->> On 15.10.2024 8:26 PM, Raj Kumar Bhagat wrote:
->>> From: Balamurugan S <quic_bselvara@quicinc.com>
->>>
->>> Add Initial Ath12k AHB driver support for IPQ5332. IPQ5332 is AHB
->>> based IEEE802.11be 2 GHz 2x2 WiFi device.
->>>
->>> Tested-on: IPQ5332 hw1.0 AHB WLAN.WBE.1.3.1-00130-QCAHKSWPL_SILICONZ-1
->>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00210-QCAHKSWPL_SILICONZ-1
->>>
->>> Signed-off-by: Balamurugan S <quic_bselvara@quicinc.com>
->>> Co-developed-by: P Praneesh <quic_ppranees@quicinc.com>
->>> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
->>> Co-developed-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
->>> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
->>> ---
->>
->> [...]
->>
->>> +enum ext_irq_num {
->>> +	host2wbm_desc_feed = 16,
->>> +	host2reo_re_injection,
->>
->> Why?
->>
-> 
-> This enum is used as a IRQ number for Ath12k AHB. Based on this enum
-> we can get the IRQ name from irq_name[]. This helps to request the original
-> IRQ number from the DT.
-> It is starting from 16 becasue, in irq_name[], the name for ext IRQ starts
-> from 16 index.
+Hi Baochen,
 
-[...]
-
-> 
->>> +				irq_grp->irqs[num_irq++] =
->>> +					reo2host_destination_ring1 - j;
->>> +			}
->>> +
->>> +			if (ab->hw_params->ring_mask->rx_err[i] & BIT(j))
->>> +				irq_grp->irqs[num_irq++] = reo2host_exception;
->>> +
->>> +			if (ab->hw_params->ring_mask->rx_wbm_rel[i] & BIT(j))
->>> +				irq_grp->irqs[num_irq++] = wbm2host_rx_release;
->>> +
->>> +			if (ab->hw_params->ring_mask->reo_status[i] & BIT(j))
->>> +				irq_grp->irqs[num_irq++] = reo2host_status;
->>> +
->>> +			if (ab->hw_params->ring_mask->rx_mon_dest[i] & BIT(j))
->>> +				irq_grp->irqs[num_irq++] =
->>> +					rxdma2host_monitor_destination_mac1;
->>> +		}
->>> +
->>> +		irq_grp->num_irq = num_irq;
->>> +
->>> +		for (j = 0; j < irq_grp->num_irq; j++) {
->>> +			irq_idx = irq_grp->irqs[j];
->>> +
->>> +			irq = platform_get_irq_byname(ab->pdev,
->>> +						      irq_name[irq_idx]);
->>> +			ab->irq_num[irq_idx] = irq;
->>> +			irq_set_status_flags(irq, IRQ_NOAUTOEN | IRQ_DISABLE_UNLAZY);
->>> +			ret = request_irq(irq, ath12k_ahb_ext_interrupt_handler,
->>> +					  IRQF_TRIGGER_RISING,
->>> +					  irq_name[irq_idx], irq_grp);
->>> +			if (ret) {
->>> +				ath12k_err(ab, "failed request_irq for %d\n",
->>> +					   irq);
->>> +			}
->>> +		}
+On 12/5/24 6:47 PM, Baochen Qiang wrote:
+>
+> On 9/5/2024 9:46 AM, Baochen Qiang wrote:
 >>
->> Instead of doing all this magic, can we request the IRQs manually, as we
->> have interrupt-names in dt?
+>> On 9/5/2024 2:03 AM, Jeff Johnson wrote:
+>>> On 8/16/2024 5:04 AM, James Prestwood wrote:
+>>>> Hi Baochen,
+>>>>
+>>>> On 8/16/24 3:19 AM, Baochen Qiang wrote:
+>>>>> On 7/12/2024 9:11 PM, James Prestwood wrote:
+>>>>>> Hi,
+>>>>>>
+>>>>>> I've seen this error mentioned on random forum posts, but its always associated with a kernel crash/warning or some very obvious negative behavior. I've noticed this occasionally and at one location very frequently during FT roaming, specifically just after CMD_ASSOCIATE is issued. For our company run networks I'm not seeing any negative behavior apart from a 3 second delay in sending the re-association frame since the kernel waits for this timeout. But we have some networks our clients run on that we do not own (different vendor), and we are seeing association timeouts after this error occurs and in some cases the AP is sending a deauthentication with reason code 8 instead of replying with a reassociation reply and an error status, which is quite odd.
+>>>>>>
+>>>>>> We are chasing down this with the vendor of these APs as well, but the behavior always happens after we see this key removal failure/timeout on the client side. So it would appear there is potentially a problem on both the client and AP. My guess is _something_ about the re-association frame changes when this error is encountered, but I cannot see how that would be the case. We are working to get PCAPs now, but its through a 3rd party, so that timing is out of my control.
+>>>>>>
+>>>>>>   From the kernel code this error would appear innocuous, the old key is failing to be removed but it gets immediately replaced by the new key. And we don't see that addition failing. Am I understanding that logic correctly? I.e. this logic:
+>>>>>>
+>>>>>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/net/mac80211/key.c#n503
+>>>>>>
+>>>>>> Below are a few kernel logs of the issue happening, some with the deauth being sent by the AP, some with just timeouts:
+>>>>>>
+>>>>>> --- No deauth frame sent, just association timeouts after the error ---
+>>>>>>
+>>>>>> Jul 11 00:05:30 kernel: wlan0: disconnect from AP <previous BSS> for new assoc to <new BSS>
+>>>>>> Jul 11 00:05:33 kernel: ath10k_pci 0000:02:00.0: failed to install key for vdev 0 peer <previous BSS>: -110
+>>>>>> Jul 11 00:05:33 kernel: wlan0: failed to remove key (0, <previous BSS>) from hardware (-110)
+>>>>>> Jul 11 00:05:33 kernel: wlan0: associate with <new BSS> (try 1/3)
+>>>>>> Jul 11 00:05:33 kernel: wlan0: associate with <new BSS> (try 2/3)
+>>>>>> Jul 11 00:05:33 kernel: wlan0: associate with <new BSS> (try 3/3)
+>>>>>> Jul 11 00:05:33 kernel: wlan0: association with <new BSS> timed out
+>>>>>> Jul 11 00:05:36 kernel: wlan0: authenticate with <new BSS>
+>>>>>> Jul 11 00:05:36 kernel: wlan0: send auth to <new BSS>a (try 1/3)
+>>>>>> Jul 11 00:05:36 kernel: wlan0: authenticated
+>>>>>> Jul 11 00:05:36 kernel: wlan0: associate with <new BSS> (try 1/3)
+>>>>>> Jul 11 00:05:36 kernel: wlan0: RX AssocResp from <new BSS> (capab=0x1111 status=0 aid=16)
+>>>>>> Jul 11 00:05:36 kernel: wlan0: associated
+>>>>>>
+>>>>>> --- Deauth frame sent amidst the association timeouts ---
+>>>>>>
+>>>>>> Jul 11 00:43:18 kernel: wlan0: disconnect from AP <previous BSS> for new assoc to <new BSS>
+>>>>>> Jul 11 00:43:21 kernel: ath10k_pci 0000:02:00.0: failed to install key for vdev 0 peer <previous BSS>: -110
+>>>>>> Jul 11 00:43:21 kernel: wlan0: failed to remove key (0, <previous BSS>) from hardware (-110)
+>>>>>> Jul 11 00:43:21 kernel: wlan0: associate with <new BSS> (try 1/3)
+>>>>>> Jul 11 00:43:21 kernel: wlan0: deauthenticated from <new BSS> while associating (Reason: 8=DISASSOC_STA_HAS_LEFT)
+>>>>>> Jul 11 00:43:24 kernel: wlan0: authenticate with <new BSS>
+>>>>>> Jul 11 00:43:24 kernel: wlan0: send auth to <new BSS> (try 1/3)
+>>>>>> Jul 11 00:43:24 kernel: wlan0: authenticated
+>>>>>> Jul 11 00:43:24 kernel: wlan0: associate with <new BSS> (try 1/3)
+>>>>>> Jul 11 00:43:24 kernel: wlan0: RX AssocResp from <new BSS> (capab=0x1111 status=0 aid=101)
+>>>>>> Jul 11 00:43:24 kernel: wlan0: associated
+>>>>>>
+>>>>> Hi James, this is QCA6174, right? could you also share firmware version?
+>>>> Yep, using:
+>>>>
+>>>> qca6174 hw3.2 target 0x05030000 chip_id 0x00340aff sub 1dac:0261
+>>>> firmware ver WLAN.RM.4.4.1-00288- api 6 features wowlan,ignore-otp,mfp
+>>>> crc32 bf907c7c
+>>>>
+>>>> I did try in one instance the latest firmware, 309, and still saw the
+>>>> same behavior but 288 is what all our devices are running.
+>>>>
+>>>> Thanks,
+>>>>
+>>>> James
+>>> Baochen, are you looking more into this? Would prefer to fix the root cause
+>>> rather than take "[RFC 0/1] wifi: ath10k: improvement on key removal failure"
+>> I asked CST team to try to reproduce this issue such that we can get firmware dump for debug further. What I got is that CST team is currently busy at other critical schedules and they are planning to debug this ath10k issue after those schedules get finished.
 >>
-> 
-> I'm not sure if I fully understood this comment.
-> If we manually request IRQs using their names from the DT, we won't be able to
-> group the IRQs. Grouping the IRQs is one of our main objectives here. Additionally,
-> we are not using all the IRQ names defined in the DT, so the logic in this function
-> is crucial for grouping and requesting the IRQs according to the ring-mask.
+> Jeff, I am notified that CST team can not reproduce this issue.
 
-Surely you can name these "foo_bar_ring%d" in DT and use the OF APIs
+Thanks for reaching out to them at least. Maybe the firmware team can 
+provide some info about how long it _should_ take to remove a key and we 
+can make the timeout reflect that?
 
-[...]
+Thanks,
 
->>
->>> +	/* Set fixed_mem_region to true for platforms that support fixed memory
->>> +	 * reservation from DT. If memory is reserved from DT for FW, ath12k driver
->>> +	 * need not to allocate memory.
->>> +	 */
->>> +	if (!of_property_read_u32(ab->dev->of_node, "memory-region", &addr)) {
->>> +		set_bit(ATH12K_FLAG_FIXED_MEM_REGION, &ab->dev_flags);
->>> +		mem_node = of_find_node_by_name(NULL, "mlo_global_mem_0");
->>
->> This is not mentioned or documented anywhere.
->>
-> 
-> In next version, will document the below info:
-> 
-> "If the platform supports fixed memory, then it should define/reserve
-> MLO global memory in DT to support Multi Link Operation.
-> If MLO global memory is not reserved in fixed memory mode, then
-> MLO cannot be supported."
+James
 
-You should also explain what Multi Link Operation means
 
-Konrad
 
