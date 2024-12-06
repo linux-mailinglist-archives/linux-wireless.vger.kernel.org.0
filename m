@@ -1,137 +1,114 @@
-Return-Path: <linux-wireless+bounces-15957-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15958-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 296E99E67FE
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2024 08:35:55 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E2F19E6805
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2024 08:36:47 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEE571882F5B
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2024 07:35:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F7E5281C67
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2024 07:36:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 051641B87F6;
-	Fri,  6 Dec 2024 07:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2959F32C8B;
+	Fri,  6 Dec 2024 07:36:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YFIkdjZE"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="XjRE00tC"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FBFE193416;
-	Fri,  6 Dec 2024 07:35:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B96F1DB37A
+	for <linux-wireless@vger.kernel.org>; Fri,  6 Dec 2024 07:36:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733470550; cv=none; b=fvZXZGDFtENuKOXlSdR3XzT1kn92S44fBZzHayAxDIWof1S8l3A8PAUOlPeMzWePCQoMhK0kihpuSdIWGfDYURnoRiaxOQ+AE7MeMXrKpHFOCAP/kGOd5uketg40W65EOzw+XcBCtP7ANRRGYg4UuyQxgdI6MhwS3kmas/L5jak=
+	t=1733470604; cv=none; b=FIr2zx32r0NXIlHdgm//e/qEI15Z6CKhTa48C5HYlmvhJQxjQisD8OQNTYDY7QdBx+anRlseJW+dOqfE+z4M6/q9yY86f9A3Xf2oig5ICQuotsiB14ahvpPHRHN6dB16c01ICsbyn2yCa1P52JSxStfcE0TIxaxHRUVS4P5Okhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733470550; c=relaxed/simple;
-	bh=uoBVnc/X3iISs39icolnHNEdtqyPvFkWR6P0eYgohZ4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NmjExvuZQAXfkqL0u87P73GVtIneldbO0LXsqTM2cZHNz5GusVBpelEXDZcgkIwgXMRD5zjhuajy8iUzV/38JCYc6VXmrtfZ1aP4K5dkkdbmmjdBdQUsVOwaUdTeR5jLVC7MAKRDTLUAUvv6FdfQod+DzRmnBbUQr5ZPX8Sb8so=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YFIkdjZE; arc=none smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-7fd23d9160dso720168a12.2;
-        Thu, 05 Dec 2024 23:35:49 -0800 (PST)
+	s=arc-20240116; t=1733470604; c=relaxed/simple;
+	bh=R2b8JPFNZvtT/qnecpDd8JlyC1t9QuWbx638Oxi9YIw=;
+	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=Jhnzz99wQ2U4siBVQEu1P6+W7E4iGe8jGzgVps0jd9kUJIZ97F8zSn1PRC9nebc5sDUkH6rLDnZuYSfbLWUlRM8J9S/FWTeolwzobIngEbrnKqu1Yn0kDibgMZjqpK09BOHzaYVLoezU/IpGLJJW2UEGgSbwHg3QKTlMinqwkho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=XjRE00tC; arc=none smtp.client-ip=209.85.217.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-4afae40c8bcso519917137.0
+        for <linux-wireless@vger.kernel.org>; Thu, 05 Dec 2024 23:36:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733470549; x=1734075349; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=VUVAK9sW01x7/UJNB//zngqTlDnV1jFf5ZhFyhScFnc=;
-        b=YFIkdjZEXR4ccuwCG1anwmZpNJ6Xs8wrKPVle+T4KGCKce6S42dBUI81iWQPyI4F1A
-         EYJE9ykWDAtdutAec8EViNHLaMzh5TmTiZKF5o5VroIK1ppsfsUh9PlQIgL3J0cxB8wX
-         hL0sjBZBPTupJ2lgGekjEuYD+uZyG7uFxy5Hs8+iwtfjVbMx0un92oHroOyr9GYx+Mqb
-         54shUIWptAXXXvV9ZOZJHU6Hf3Mgu+ZSOy3WuW+G3ukyr8R/Plz9awxDrqn1rHCRuWMH
-         kPD6vbVo9a+LrOSdgrwzarm9JckRTxceeQJ25bBVXm0BhLEc49pGItDVc+8IrQy8icfS
-         WttQ==
+        d=broadcom.com; s=google; t=1733470601; x=1734075401; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vvTef5XrjTteTCmC/XIUI4aDXbisTR8qCV0PsXvWYbk=;
+        b=XjRE00tCtKCr7VogVxgiahq8wRDL+PCrbZUasvuIM8W44iUI9YClRgegHG6bWs91wd
+         yrq0hcuRmzSDK/PWkJqVjJ8DdUoldiG5cAv3vCjuEopaI7iFoRLkd3nAnusTHum+4Yaf
+         6QgSAneQgNeX7g/diKqpUWuPPKsr+pdhppSE8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733470549; x=1734075349;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VUVAK9sW01x7/UJNB//zngqTlDnV1jFf5ZhFyhScFnc=;
-        b=B3DJt7/ZU+MJHXSYlC3BrruF4Bs9QVPCIxQjFYyNDt8iJXCkF90hZxENKv06QorfOD
-         oZC4u8X4LIRN5BZ+cNOuPddrGbUksK/XZovARZJ35Es1vrbJvrqsmOQozx4/J5EgFVVk
-         OpU2S758OiEUkgzxIRY6VI5+AfFDLWVYgNc5UqX+4lgMOB2gc0rSkp0k65LwXfsvB+KT
-         XyRmB7H4YZmXLQss3mSgfeWqYFRb7cohGAXBFVldoa461EFvp8vpuxyID6aGLSsadJ95
-         QqbHgWzVPm+msrdsAJqNxYYthRAeg4iPwCUb1DHwJuqXcLSXhVjrxxREAzF6YDejPgVr
-         SUgw==
-X-Forwarded-Encrypted: i=1; AJvYcCUel1QPcpR8S0VrsjgU3I2Kr5HEH8uN9LaDODYzKMvzvIKI6986F38MO3ufBf8biDQsUd31DWg1jbeK2Rws6v8=@vger.kernel.org, AJvYcCX53YH4skwIufyAG/eNV1ccyKExxnOHuDw8BV+uXfZ8acX4FDwQDvqpQ8GdBbkMHuNzrQ0HPArt9v/5WV4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMqSZcbrPBhvwCtbcUw6oXEF0oc0CyFQXSc6AsAm1uO3NgrDeB
-	sfrFz3ENSnUrhlGQ3edQCyRxJDFvuao3YiD1EOTYf22m7iW0d1iD
-X-Gm-Gg: ASbGncvCk56nP+eyUN8FWXHza6SZ2oeKLF3/jNuJ6jMTxY5+O/nAa5LCsRqQWYe911e
-	6g0sDQxpA4m0uBqhJLjyAr7PPujcinoYTz0tg8/LwQy7nyiAglLpG1jWOA5oc2VNNrSPhiOwvg4
-	T/W1sfExEPdq+eYX9eVf8pMDiAy1hboMxssPSXCz9XaoWwEwwoq9gpeigBluCCMi13iBE+o2aQ1
-	fFtyn96VkqQ56Gz0GV+axrfqSqDXzH1aTB5urHBD5HcPjPEQIUbS3Y=
-X-Google-Smtp-Source: AGHT+IHHKMowzfRZqo/yrxckrktsXFddOpWRgdDwk2tLcCRDBXvPAQ1jymmDN6Mz8n0W8ujCfq1Rgg==
-X-Received: by 2002:a05:6a20:7f99:b0:1e0:bedf:5902 with SMTP id adf61e73a8af0-1e1870ad3acmr3032805637.6.1733470548723;
-        Thu, 05 Dec 2024 23:35:48 -0800 (PST)
-Received: from HOME-PC ([223.185.130.193])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-725a2ca671asm2363763b3a.153.2024.12.05.23.35.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Dec 2024 23:35:48 -0800 (PST)
-From: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
-To: kvalo@kernel.org,
-	ath12k@lists.infradead.org
-Cc: jjohnson@kernel.org,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
-Subject: [PATCH wireless-next] wifi: ath12k: Fix out-of-bounds read
-Date: Fri,  6 Dec 2024 13:05:42 +0530
-Message-Id: <20241206073542.315095-1-dheeraj.linuxdev@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1733470601; x=1734075401;
+        h=content-transfer-encoding:mime-version:subject:user-agent
+         :references:in-reply-to:message-id:date:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vvTef5XrjTteTCmC/XIUI4aDXbisTR8qCV0PsXvWYbk=;
+        b=COYlVN0ZkNF+I8Gz15jaqusODpAf5tPbCPxiDG/qsYuvB/7blYwK3elGfAgZ2fUCkW
+         Z9Y4Cs1RwXTWwBQ9/9Gsq3gM5B0mET/Cyby6OC4lbg+4Fk3XoolNqemvQ9WUPBhO0haP
+         PpReojo0b3mYTa/cwOizsYETF3s0kgCVg8/4Ma9wb93soy8wqDWernUFIu1vc1Gw6Gdb
+         saYfTrW5k0Hz9lLOFD7GLfXkIkHvBc4g4Qmolm7xjN8rZV83DC8zqtwgoKoHU2Ue5UkX
+         CkAfZAEnLKovfET6uozEg9g9qgqv6Q3/KtzP4LKYp1Qh2/jLa2l845nw22BdA+lvIgcC
+         ptHA==
+X-Gm-Message-State: AOJu0YyctI/xn3atJSSSlTkbF6f7EM9Z5pCbJQx/PmWJ4cxPx/+ynJij
+	Rr4cLi1GALu6uT7zmMBKZ6rO8fgUNj+3sTiXwZd/xy2Ahcci6+tj0dB4L+WrTA==
+X-Gm-Gg: ASbGncvaNdke8S85f+qdqhZ2WaA1hEKx23juqGLA7+kdr2cRhwjVaxa3to3KAuEs0rX
+	WHOIJwc7Vf8aB8rWwczNSQt+E9VX3v+CLwkAP+5hX/Ff2aqx2H/26A2Fy11ptI78PcBM3ltFrda
+	7WIVG0yaSpYf8AhBncGsvLQGaHAphve2ti3xa30zI1ORArPeANX6NE8a9WpFDhAeZw98igsG+FP
+	R56tshV5Hdzja3JAfZats8rNtUOaYOSkIyHAFbsJuZ+xKDN5sHPvS3qVFjC3B6GA5ySjjeACvpk
+	Xf8qdTn2Xxrn
+X-Google-Smtp-Source: AGHT+IEdrJA5kZdzSk/bqOIxvCD9St6CvmkAFVvX0NSNo11j2E2dNBNdxQ9JgiXGwkZU3crEsGs8mw==
+X-Received: by 2002:a05:6102:e0c:b0:4ad:4895:ce1f with SMTP id ada2fe7eead31-4afcaaecf4bmr2669897137.17.1733470601037;
+        Thu, 05 Dec 2024 23:36:41 -0800 (PST)
+Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-467297c2356sm17955551cf.80.2024.12.05.23.36.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Dec 2024 23:36:39 -0800 (PST)
+From: Arend Van Spriel <arend.vanspriel@broadcom.com>
+To: Renjaya Raga Zenta <renjaya.zenta@formulatrix.com>
+CC: <linux-wireless@vger.kernel.org>, <ys3al35l@gmail.com>
+Date: Fri, 06 Dec 2024 08:36:34 +0100
+Message-ID: <1939ae623d0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+In-Reply-To: <20241206065324.91702-1-renjaya.zenta@formulatrix.com>
+References: <6b2fcdb4-f00d-4a17-909d-f92ed0240cbf@broadcom.com>
+ <20241206065324.91702-1-renjaya.zenta@formulatrix.com>
+User-Agent: AquaMail/1.53.0 (build: 105300523)
+Subject: Re: brcmfmac: Unexpected brcmf_set_channel: set chanspec 0xd022 fail, reason -52 - Part 2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; format=flowed; charset="us-ascii"
 Content-Transfer-Encoding: 8bit
 
-This patch addresses the Out-of-bounds read issue detected by
-Coverity (CID 1602214). The function ath12k_mac_vdev_create() accesses
-the vif->link_conf array using link_id, which is derived from
-arvif->link_id. In cases where arvif->link_id equals 15, the index
-exceeds the bounds of the array, which contains only 15 elements.This
-results in an out-of-bounds read.
+On December 6, 2024 7:53:28 AM Renjaya Raga Zenta 
+<renjaya.zenta@formulatrix.com> wrote:
 
-This issue occurs in the following branch of the code:
+> On Thu, 5 Dec 2024 14:10:51 +0100 Arend Van Spriel wrote:
+>> Can you try the patch attached?
+>
+> I've just tried this in 6.6, obviously the errors disappear. Tested with
+> DUMP_OBSS enabled.
 
-    if (arvif->link_id == ATH12K_DEFAULT_SCAN_LINK && vif->valid_links)
-        link_id = ffs(vif->valid_links) - 1;
-    else
-        link_id = arvif->link_id;
+Thanks, Renjaya
 
-When arvif->link_id equals 15 and the else branch is taken, link_id is
-set to 15.
+It was the pragmatic fix. There still seems a potential issue in how 
+brcmfmac provides the channels to cfg80211.
 
-This patch adds a bounds check to ensure that link_id does not exceed
-the valid range of the vif->link_conf array. If the check fails, a
-warning is logged, and the function returns an error code (-EINVAL).
+> Will this also land to stable?
 
-Signed-off-by: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
----
- drivers/net/wireless/ath/ath12k/mac.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+I have not formally submitted it to linux-wireless. I will add the 
+appropriate tags for stable.
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 129607ac6c1a..c19b10e66f4a 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -7725,6 +7725,12 @@ int ath12k_mac_vdev_create(struct ath12k *ar, struct ath12k_link_vif *arvif)
- 	else
- 		link_id = arvif->link_id;
- 
-+	if (link_id >= ARRAY_SIZE(vif->link_conf)) {
-+		ath12k_warn(ar->ab, "link_id %u exceeds max valid links for vif %pM\n",
-+			    link_id, vif->addr);
-+		return -EINVAL;
-+	}
-+
- 	link_conf = wiphy_dereference(hw->wiphy, vif->link_conf[link_id]);
- 	if (!link_conf) {
- 		ath12k_warn(ar->ab, "unable to access bss link conf in vdev create for vif %pM link %u\n",
--- 
-2.34.1
+Regards,
+Arend
+
+
 
 
