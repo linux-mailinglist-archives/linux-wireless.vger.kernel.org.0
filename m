@@ -1,114 +1,110 @@
-Return-Path: <linux-wireless+bounces-15958-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15959-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E2F19E6805
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2024 08:36:47 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0951D9E6831
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2024 08:48:09 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B412A1885AB0
+	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2024 07:48:08 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A9A1D63C4;
+	Fri,  6 Dec 2024 07:47:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PmyxtJ05"
+X-Original-To: linux-wireless@vger.kernel.org
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F7E5281C67
-	for <lists+linux-wireless@lfdr.de>; Fri,  6 Dec 2024 07:36:46 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2959F32C8B;
-	Fri,  6 Dec 2024 07:36:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="XjRE00tC"
-X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B96F1DB37A
-	for <linux-wireless@vger.kernel.org>; Fri,  6 Dec 2024 07:36:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B474813DDDF
+	for <linux-wireless@vger.kernel.org>; Fri,  6 Dec 2024 07:47:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733470604; cv=none; b=FIr2zx32r0NXIlHdgm//e/qEI15Z6CKhTa48C5HYlmvhJQxjQisD8OQNTYDY7QdBx+anRlseJW+dOqfE+z4M6/q9yY86f9A3Xf2oig5ICQuotsiB14ahvpPHRHN6dB16c01ICsbyn2yCa1P52JSxStfcE0TIxaxHRUVS4P5Okhk=
+	t=1733471260; cv=none; b=OAs63mEjwOPb6Yov8NKxygypVlCYHV44AZl0ixNOnVfi9MoKwiR45mrKATl9LlpWiyjLUpZZdVdYksF65BoE0YK8RohvBilR+O7YHY1IctBfk8phn252/jLph4OG1euUAkp9ECsIsPR8ybrPoVm6sI6XUmQLoT7S0jrl44LpcRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733470604; c=relaxed/simple;
-	bh=R2b8JPFNZvtT/qnecpDd8JlyC1t9QuWbx638Oxi9YIw=;
-	h=From:To:CC:Date:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=Jhnzz99wQ2U4siBVQEu1P6+W7E4iGe8jGzgVps0jd9kUJIZ97F8zSn1PRC9nebc5sDUkH6rLDnZuYSfbLWUlRM8J9S/FWTeolwzobIngEbrnKqu1Yn0kDibgMZjqpK09BOHzaYVLoezU/IpGLJJW2UEGgSbwHg3QKTlMinqwkho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=XjRE00tC; arc=none smtp.client-ip=209.85.217.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-4afae40c8bcso519917137.0
-        for <linux-wireless@vger.kernel.org>; Thu, 05 Dec 2024 23:36:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1733470601; x=1734075401; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vvTef5XrjTteTCmC/XIUI4aDXbisTR8qCV0PsXvWYbk=;
-        b=XjRE00tCtKCr7VogVxgiahq8wRDL+PCrbZUasvuIM8W44iUI9YClRgegHG6bWs91wd
-         yrq0hcuRmzSDK/PWkJqVjJ8DdUoldiG5cAv3vCjuEopaI7iFoRLkd3nAnusTHum+4Yaf
-         6QgSAneQgNeX7g/diKqpUWuPPKsr+pdhppSE8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733470601; x=1734075401;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vvTef5XrjTteTCmC/XIUI4aDXbisTR8qCV0PsXvWYbk=;
-        b=COYlVN0ZkNF+I8Gz15jaqusODpAf5tPbCPxiDG/qsYuvB/7blYwK3elGfAgZ2fUCkW
-         Z9Y4Cs1RwXTWwBQ9/9Gsq3gM5B0mET/Cyby6OC4lbg+4Fk3XoolNqemvQ9WUPBhO0haP
-         PpReojo0b3mYTa/cwOizsYETF3s0kgCVg8/4Ma9wb93soy8wqDWernUFIu1vc1Gw6Gdb
-         saYfTrW5k0Hz9lLOFD7GLfXkIkHvBc4g4Qmolm7xjN8rZV83DC8zqtwgoKoHU2Ue5UkX
-         CkAfZAEnLKovfET6uozEg9g9qgqv6Q3/KtzP4LKYp1Qh2/jLa2l845nw22BdA+lvIgcC
-         ptHA==
-X-Gm-Message-State: AOJu0YyctI/xn3atJSSSlTkbF6f7EM9Z5pCbJQx/PmWJ4cxPx/+ynJij
-	Rr4cLi1GALu6uT7zmMBKZ6rO8fgUNj+3sTiXwZd/xy2Ahcci6+tj0dB4L+WrTA==
-X-Gm-Gg: ASbGncvaNdke8S85f+qdqhZ2WaA1hEKx23juqGLA7+kdr2cRhwjVaxa3to3KAuEs0rX
-	WHOIJwc7Vf8aB8rWwczNSQt+E9VX3v+CLwkAP+5hX/Ff2aqx2H/26A2Fy11ptI78PcBM3ltFrda
-	7WIVG0yaSpYf8AhBncGsvLQGaHAphve2ti3xa30zI1ORArPeANX6NE8a9WpFDhAeZw98igsG+FP
-	R56tshV5Hdzja3JAfZats8rNtUOaYOSkIyHAFbsJuZ+xKDN5sHPvS3qVFjC3B6GA5ySjjeACvpk
-	Xf8qdTn2Xxrn
-X-Google-Smtp-Source: AGHT+IEdrJA5kZdzSk/bqOIxvCD9St6CvmkAFVvX0NSNo11j2E2dNBNdxQ9JgiXGwkZU3crEsGs8mw==
-X-Received: by 2002:a05:6102:e0c:b0:4ad:4895:ce1f with SMTP id ada2fe7eead31-4afcaaecf4bmr2669897137.17.1733470601037;
-        Thu, 05 Dec 2024 23:36:41 -0800 (PST)
-Received: from [192.168.178.38] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-467297c2356sm17955551cf.80.2024.12.05.23.36.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Dec 2024 23:36:39 -0800 (PST)
-From: Arend Van Spriel <arend.vanspriel@broadcom.com>
-To: Renjaya Raga Zenta <renjaya.zenta@formulatrix.com>
-CC: <linux-wireless@vger.kernel.org>, <ys3al35l@gmail.com>
-Date: Fri, 06 Dec 2024 08:36:34 +0100
-Message-ID: <1939ae623d0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <20241206065324.91702-1-renjaya.zenta@formulatrix.com>
-References: <6b2fcdb4-f00d-4a17-909d-f92ed0240cbf@broadcom.com>
- <20241206065324.91702-1-renjaya.zenta@formulatrix.com>
-User-Agent: AquaMail/1.53.0 (build: 105300523)
-Subject: Re: brcmfmac: Unexpected brcmf_set_channel: set chanspec 0xd022 fail, reason -52 - Part 2
+	s=arc-20240116; t=1733471260; c=relaxed/simple;
+	bh=wfGCMWZ6xexpjcMNpgFhCbMlBLvMZEm37v71W1xQsQs=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=DuQK4vjHuoF2/Es2obCQjgWIIjMFdO3M+zO2drtv84yAC3x+P5WjIK7SFJGuNUM5MuajMY+4bZvhCgLwOZ0kY7sR/5nusLFeAA16tLe186uRMu/T5SoqS7BUpXNuniae056o3CC6w4et/DfCqpCvgsb51Fh66g5eiLEFWGGB4UU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PmyxtJ05; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 770F7C4CEDD;
+	Fri,  6 Dec 2024 07:47:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733471260;
+	bh=wfGCMWZ6xexpjcMNpgFhCbMlBLvMZEm37v71W1xQsQs=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=PmyxtJ05QgQtBVF38iApkrYqWtNl1OoPlixogjNxOFhYHlPwInftDxzIL7CUbpOAK
+	 62CBRhuxexSDcFlBXTruH1HQKDp6XNcfq99tNlzdUUGa5BWFlDoPqPw5gEgRvw6IBw
+	 Mr5UIkh7zH85aBkJ/R10FvZubNj5g6xd1GIy3vcT0UZ9Z34UITslHUReyCwtgKIZku
+	 N1OXz5pb1gg7uHeYvpyI52E4DgFvMDkAInvZ8Sr4MtVYbBmD1oMWwOfH3m01xtlWV3
+	 V22fYkGvojSuoxXmc7gX46iUfqrpT9Heml6FviVUG463ZTCzSg3akX5wKTNGSuaSxe
+	 2M26iyrAhT/Dw==
+From: Kalle Valo <kvalo@kernel.org>
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Cc: ath12k@lists.infradead.org,  linux-wireless@vger.kernel.org
+Subject: Re: [PATCH 2/7] wifi: ath12k: rename mlo_capable_flags to
+ single_chip_mlo_supp
+References: <20241204163216.433795-1-kvalo@kernel.org>
+	<20241204163216.433795-3-kvalo@kernel.org>
+	<88e0116c-778f-4861-8751-b30a09d3d2b4@oss.qualcomm.com>
+Date: Fri, 06 Dec 2024 09:47:37 +0200
+In-Reply-To: <88e0116c-778f-4861-8751-b30a09d3d2b4@oss.qualcomm.com> (Jeff
+	Johnson's message of "Thu, 5 Dec 2024 14:32:38 -0800")
+Message-ID: <87zfl9jlra.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset="us-ascii"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On December 6, 2024 7:53:28 AM Renjaya Raga Zenta 
-<renjaya.zenta@formulatrix.com> wrote:
+Jeff Johnson <jeff.johnson@oss.qualcomm.com> writes:
 
-> On Thu, 5 Dec 2024 14:10:51 +0100 Arend Van Spriel wrote:
->> Can you try the patch attached?
+> On 12/4/2024 8:32 AM, Kalle Valo wrote:
 >
-> I've just tried this in 6.6, obviously the errors disappear. Tested with
-> DUMP_OBSS enabled.
+>> From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+>>=20
+>> At present, the mlo_capable_flags in ath12k_base is used to indicate whe=
+ther
+>> the chip supports inter (QCN9274) or intra (WCN7850) chip MLO. However, =
+it=E2=80=99s
+>> possible that the chip supports neither, especially with older firmware
+>> versions. Additionally, if intra chip MLO is not supported, inter chip M=
+LO will
+>> also be non-functional. Therefore, having two separate flags for this is
+>> unnecessary.
+>>=20
+>> Therefore, rename this flag to single_chip_mlo_supp. At the same time co=
+nvert
+>> it into a bool data type. Also, get rid of the enums defined earlier.
+>>=20
+>> For the QCN9274 family of chipsets, this will be set only when firmware
+>> advertises the support during the QMI exchange.
+>>=20
+>> For the WCN7850 family of chipsets, since the event is not supported,
+>> assumption is made that single chip MLO is supported.
+>>=20
+>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+>> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_=
+SILICONZ-3
+>>=20
+>> Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
+>
+> Kalle, this patch is missing your SOB.
+> Please reply with the tag and I'll fix in 'pending'
 
-Thanks, Renjaya
+Oh darn, sorry about that. Here it is:
 
-It was the pragmatic fix. There still seems a potential issue in how 
-brcmfmac provides the channels to cfg80211.
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 
-> Will this also land to stable?
+--=20
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-I have not formally submitted it to linux-wireless. I will add the 
-appropriate tags for stable.
-
-Regards,
-Arend
-
-
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
+hes
 
