@@ -1,144 +1,182 @@
-Return-Path: <linux-wireless+bounces-16112-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16113-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 716AC9E9E82
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 19:57:10 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8416F9E9F40
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 20:15:22 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C17DB281B43
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 18:57:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1E0A161C78
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 19:15:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885781991BE;
-	Mon,  9 Dec 2024 18:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 116CA198842;
+	Mon,  9 Dec 2024 19:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OVQU831Y"
+	dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b="iN27mpf6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 648B71991AF
-	for <linux-wireless@vger.kernel.org>; Mon,  9 Dec 2024 18:54:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3468B1946DA
+	for <linux-wireless@vger.kernel.org>; Mon,  9 Dec 2024 19:15:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733770473; cv=none; b=a4PMehSu9l09YEz23MuExQDmePny8JdF277fT/FGpV5qt28zL6N8yd9iCdz9ZO1JoW1C3cSmGgrenEma5ReDKBO+F39saM6n3f6OCuNGTxpTEETV3oYj5XvGbKuGvt3Z73ueapnQMkzSG+V/7BUc3BQ/B2rZWKiZsHkyWdT1HWU=
+	t=1733771717; cv=none; b=NBB7WsG5QXyrSVLBTmpf3Cxz/P+tYgPJ7KRUx4FZlmSD9palJZYM90xHcxapIOBiWTA7bj3iuSJqttSl/eGF93KwtFWjZLVhdYD+VENWVTIPibfxJZxnKcEgjWk/rf97ZQJVD31aPhgnEmQJ653MIF1ApWw+n21fCrDgkjfSPzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733770473; c=relaxed/simple;
-	bh=+eODcYiOK2lvd0sDtM4IPRRyMxPqg1E76bdc5gjjHbs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RAd0Mx8dSezHZ6+eZpQIouiylEM41Kf4jQAn1u82KMwUd93cRnVmMFsYnbwXEPJ8rPu5T5uNgQtJp6PrRyPH4CWB1ymozcJUQwQZ6upJePzaeqiBZhmXpHkn8JaKzk98mBpM0Wpu/BUNP7wqpXcZ1UXPh80YBaTXZPcmUckWwas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OVQU831Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB8FC4CEE1;
-	Mon,  9 Dec 2024 18:54:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733770473;
-	bh=+eODcYiOK2lvd0sDtM4IPRRyMxPqg1E76bdc5gjjHbs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OVQU831Yz3p4TKWP+Wd4f0SZ20yn4aBFDPw97KC0dyXU9npdLte21FhsMTM73Hhz+
-	 1tl9BCquG8ytHFeSkYwgp4uUD9Rc5Jp8Id0eQLTjmvurgiJJ5RPO6zVjvzF3kwbRdZ
-	 JmHmRyrnyaKO8yF9Zxfy+QubtQVzfWGmz6EzTqxtKrcOSYog2NpcENtGsVn5h5KusR
-	 LblyKVf+p5pwvIEuzeApLTsfURM4OOR8QCGzEbKLiMJPCGcuP4v8kws2TbVavMvgz7
-	 fhFEstS2RRZo6RD6bI0ahBMQR8bucomlm7m36x4GCHvMRU1uxepH8Q62NlYF7j9uW9
-	 2ffyBAT+gbviQ==
-From: Kalle Valo <kvalo@kernel.org>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 9/9] wifi: ath12k: pass link ID during MLO while delivering skb
-Date: Mon,  9 Dec 2024 20:54:21 +0200
-Message-Id: <20241209185421.376381-10-kvalo@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241209185421.376381-1-kvalo@kernel.org>
-References: <20241209185421.376381-1-kvalo@kernel.org>
+	s=arc-20240116; t=1733771717; c=relaxed/simple;
+	bh=V3Lot97r1vXyev3SYHCUBIR8IfuPtsIyk6738RhXCsM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DisNEbR10pKkt/YmDPeLB1g2/JPYvg/jbvOvxEymdK7Y5Bs1sUEGgCA2/0ynd0SR/YWtqku1xex5VdBbNDDEy54GemZPtrcP2bui4K/pb1Tpimp3q9HVDyAqBHtD6mgOlrVBFlefwSgdBWZqPmJrofeQo1JTpFGAs1ZR61XZvsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b=iN27mpf6; arc=none smtp.client-ip=209.85.219.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
+Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e398273d6ffso3659982276.0
+        for <linux-wireless@vger.kernel.org>; Mon, 09 Dec 2024 11:15:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gateworks.com; s=google; t=1733771714; x=1734376514; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2kLjgnxaHMn5y0gTT+3dvOLNzEd5yWQ0Er4eRA/5e+Q=;
+        b=iN27mpf6UI+BA5V1+ot8f82iKDgQz9r3sWGxZZE3mES8u6LnDB+lVyg9wQK1ayMovm
+         24gawwH3Xf3LKYiskXQU0ShtFvyhTjfwPw9Wn1UVT4mNSdy2+O1ZjFZoxiiYtpEI3gFd
+         wIGZtGrbo6AIv/1pK1DN2WbvO1NL69NIGgGQf1lezXWDfwr2+sDTx4rzCns0oXmfmupD
+         69j8iGrPTKJdj+Svif0/GBk0TLrGaVAD+mW7dc1nvcAxoAj0/xHISGT5XosB9zInMmvk
+         UiV8RXwU5baQsqwFz7J3jMcHcVcLhtqC7dvP+S3W72SryvnpiwxuXYptPvERigNksra7
+         rXUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733771714; x=1734376514;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2kLjgnxaHMn5y0gTT+3dvOLNzEd5yWQ0Er4eRA/5e+Q=;
+        b=MNSTSL731XfJDQtsss39J5CgVO/bjwwJrFB2/0GOQCVR8QSW4vFxIYOWR++EqwaDcs
+         fS8bBxE2nEa8FBm2ftjrCq0Qrd1Do+uDyAfJKHUvZ9qW5bSNpQbYV17KOcDzHwpTnPs0
+         ym/zoaAkpUQDvdk0ZR4Kop7QrXdsHIRiBm61vebnvU5YNUxwCp1S41u+JzaEew8+LJ0q
+         fPJ71lO7G7/RqjFKH3/1ttHGHT4YPzEFeVGcszgv8QQi2WHXsHE3ziWRfdu5kdJCJezG
+         h5x1hfaeJu5LYUL/xkl0tEJl7xHZTT6tfHI7gbOeMgc606IDyUAx9S/IOewCw897cFoU
+         eCHw==
+X-Forwarded-Encrypted: i=1; AJvYcCXXyG3NKZoeTjRfwLHjPmlJ1kjY34A0eUluQPy47z1dwOd2zRAB5Bpqvio4nwAhTNXuok2Sf+t3Vw9nSiQbDg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8uWu5dcS9n9rQtcX1BWXzDfv0dK5/79v79Qmn1501WnqlKa3p
+	8Qsdw1ffrCzDPjn+moj/zpLbCeXIWTlh/Kp5jE/ZQn746D617aUNq/CvvXOnAuA667fGta2eLau
+	8pIKvz6La8hq2mAJUwfWy5NTGSedxHYN8Rj2J2Q==
+X-Gm-Gg: ASbGnctFR7fADLdZqKyvNEu9Pdhh4psk0W/7nLgPt86nhMekocd5ip7x2Nz16YCVyDP
+	CxnOgi35MVwFCycCuQ/nq2BnaaCwpaJw=
+X-Google-Smtp-Source: AGHT+IGEl64T8fh4w41xF5QeO5D03WN4PRl4tWrD5C7XLi4pHuR/6CFrIf/3ED6k/l9Dz+t1Bywo3Kx6XChWXHllhco=
+X-Received: by 2002:a05:6902:124b:b0:e3a:32a9:82cc with SMTP id
+ 3f1490d57ef6-e3a59bade21mr1582408276.36.1733771714002; Mon, 09 Dec 2024
+ 11:15:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAJ+vNU0EL3T+GyNAbVbGqYYQ5NM3h7cgAwqxxBMuZjh+-YQ3bA@mail.gmail.com>
+ <1b2ea8b2-6fbe-4118-b6c6-742c8f0be476@quicinc.com> <CAJ+vNU1-OZ3y4p2L+zf64AiVtUv70yZNqkT20jTxyE0_gJb6Jg@mail.gmail.com>
+ <0282be95-9094-4d49-b79e-4f7c976dad00@quicinc.com> <CAJ+vNU32EMHjtchJRb1sODBrUKG2vZW4ZEu1_F0+dCCEjCn7Dg@mail.gmail.com>
+ <20241209081714.GA25363@lst.de> <593c0d63-d8fd-4439-a57a-97340212c197@arm.com>
+In-Reply-To: <593c0d63-d8fd-4439-a57a-97340212c197@arm.com>
+From: Tim Harvey <tharvey@gateworks.com>
+Date: Mon, 9 Dec 2024 11:15:02 -0800
+Message-ID: <CAJ+vNU2ypE_Mn_6iKCmf5LYk9Sth=ryWXyewc5MhOKK8VoAKCA@mail.gmail.com>
+Subject: Re: ath11k swiotlb buffer is full (on IMX8M with 4GiB DRAM)
+To: Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>
+Cc: Baochen Qiang <quic_bqiang@quicinc.com>, ath11k@lists.infradead.org, 
+	linux-wireless <linux-wireless@vger.kernel.org>, Fabio Estevam <festevam@gmail.com>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, iommu@lists.linux.dev, 
+	P Praneesh <ppranees@codeaurora.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+On Mon, Dec 9, 2024 at 2:49=E2=80=AFAM Robin Murphy <robin.murphy@arm.com> =
+wrote:
+>
+> On 09/12/2024 8:17 am, Christoph Hellwig wrote:
+> > I scrolled three pages before giving up as it was just quotes over
+> > quotas.  Can you please write an email that contains whatever you're
+> > trying to tell instead of just quotes?  Same for the person replying.
+>
 
-mac80211 expects link_id in some scenarios or else the packet might
-get dropped. Hence, add link_id information before delivering the skb.
+Christoph,
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+Understood; there was a lot of back and forth and likely some
+misinformation from my early replies. Let me recap here.
 
-Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/dp_mon.c | 8 +++++++-
- drivers/net/wireless/ath/ath12k/dp_rx.c  | 5 +++++
- drivers/net/wireless/ath/ath12k/peer.c   | 2 ++
- drivers/net/wireless/ath/ath12k/peer.h   | 3 +++
- 4 files changed, 17 insertions(+), 1 deletion(-)
+The issue I run into is that with Linux 6.9 and beyond on an IMX8M
+Mini SoC (no IMOMMU) with >3GiB DRAM (which requires more than 32 bits
+of address due to IMX8M's DRAM base being at 0x40000000) the ath11k
+driver will fail to register a netdev and errors out with 'ath11k
+swiotlb buffer is full':
+[    8.057077] ath11k_pci 0000:04:00.0: BAR 0 [mem
+0x18200000-0x183fffff 64bit]: assigned
+[    8.057151] ath11k_pci 0000:04:00.0: enabling device (0000 -> 0002)
+[    8.091920] ath11k_pci 0000:04:00.0: MSI vectors: 16
+[    8.091960] ath11k_pci 0000:04:00.0: qcn9074 hw1.0
+[    8.832924] ath11k_pci 0000:04:00.0: chip_id 0x0 chip_family 0x0
+board_id 0xff soc_id 0xffffffff
+[    8.832951] ath11k_pci 0000:04:00.0: fw_version 0x270206d0
+fw_build_timestamp 2022-08-04 12:48 fw_build_id
+WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+[   10.194343] ath11k_pci 0000:04:00.0: swiotlb buffer is full (sz:
+1048583 bytes), total 32768 (slots), used 2529 (slots)
+[   10.194406] ath11k_pci 0000:04:00.0: failed to set up tcl_comp ring (0) =
+:-12
+[   10.194781] ath11k_pci 0000:04:00.0: failed to init DP: -12
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
-index 494984133a91..2d53404095d6 100644
---- a/drivers/net/wireless/ath/ath12k/dp_mon.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
-@@ -1093,8 +1093,14 @@ static void ath12k_dp_mon_rx_deliver_msdu(struct ath12k *ar, struct napi_struct
- 		decap = ath12k_dp_rx_h_decap_type(ar->ab, rxcb->rx_desc);
- 	spin_lock_bh(&ar->ab->base_lock);
- 	peer = ath12k_dp_rx_h_find_peer(ar->ab, msdu);
--	if (peer && peer->sta)
-+	if (peer && peer->sta) {
- 		pubsta = peer->sta;
-+		if (pubsta->valid_links) {
-+			status->link_valid = 1;
-+			status->link_id = peer->link_id;
-+		}
-+	}
-+
- 	spin_unlock_bh(&ar->ab->base_lock);
- 
- 	ath12k_dbg(ar->ab, ATH12K_DBG_DATA,
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index adbd7bbcef6f..1cc7f6ce55b9 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -2474,6 +2474,11 @@ static void ath12k_dp_rx_deliver_msdu(struct ath12k *ar, struct napi_struct *nap
- 
- 	pubsta = peer ? peer->sta : NULL;
- 
-+	if (pubsta && pubsta->valid_links) {
-+		status->link_valid = 1;
-+		status->link_id = peer->link_id;
-+	}
-+
- 	spin_unlock_bh(&ab->base_lock);
- 
- 	ath12k_dbg(ab, ATH12K_DBG_DATA,
-diff --git a/drivers/net/wireless/ath/ath12k/peer.c b/drivers/net/wireless/ath/ath12k/peer.c
-index 5763c5a40cfc..792cca8a3fb1 100644
---- a/drivers/net/wireless/ath/ath12k/peer.c
-+++ b/drivers/net/wireless/ath/ath12k/peer.c
-@@ -388,6 +388,8 @@ int ath12k_peer_create(struct ath12k *ar, struct ath12k_link_vif *arvif,
- 		arsta = wiphy_dereference(ath12k_ar_to_hw(ar)->wiphy,
- 					  ahsta->link[link_id]);
- 
-+		peer->link_id = arsta->link_id;
-+
- 		/* Fill ML info into created peer */
- 		if (sta->mlo) {
- 			ml_peer_id = ahsta->ml_peer_id;
-diff --git a/drivers/net/wireless/ath/ath12k/peer.h b/drivers/net/wireless/ath/ath12k/peer.h
-index 7e6231cb2b52..5870ee11a8c7 100644
---- a/drivers/net/wireless/ath/ath12k/peer.h
-+++ b/drivers/net/wireless/ath/ath12k/peer.h
-@@ -59,6 +59,9 @@ struct ath12k_peer {
- 
- 	/* To ensure only certain work related to dp is done once */
- 	bool primary_link;
-+
-+	/* for reference to ath12k_link_sta */
-+	u8 link_id;
- };
- 
- struct ath12k_ml_peer {
--- 
-2.39.5
+After a lot of back and forth and investigation this is due to the
+IMX8M SoC's not having an IOMMU thus swiotlb is being used and ath11k
+is requesting some buffers that are too large for swiotlb to provide.
+There is a specific patch which added the HAL_WBM2SW_RELEASE buffers
+to cacheable memory that could be reverted to fix this but the concern
+was that it would impact performance moving those buffers to
+non-cacheable memory (there are three ~1MiB buffers being allocated):
+commit d0e2523bfa9cb ("ath11k: allocate HAL_WBM2SW_RELEASE ring from
+cacheable memory").
 
+> TBH I'm hesitant to look too closely since everything those Atheros WiFi
+> drivers do with DMA tends to be sketchy, but from what I could make out
+> from skimming until I also gave up, I think it might be an attempt to
+> reinvent dma_alloc_pages(), or possibly dma_alloc_noncoherent().
+
+Robin,
+
+Agreed - I'm not sure how much attention, review, or testing these
+ath11k patches originally got due to the fact that there appears to be
+breakage for a couple of years here.
+
+The chain of events as best I can tell are:
+
+commit 6452f0a3d565 ("ath11k: allocate dst ring descriptors from
+cacheable memory")
+- Nov 12 2021 (made it into Linux 5.17)
+- changes allocation of reo_dst rings to cacheable memory to allow
+cached descriptor access to optimize CPU usage
+- this is flawed because it uses virt_to_phys() to allocate cacheable
+memory which does not work on systems with an IOMMU enabled or using
+software IOMMU (swiotlb); this causes a kernel crash on client
+association
+
+commit d0e2523bfa9c ("ath11k: allocate HAL_WBM2SW_RELEASE ring from
+cacheable memory)
+- Nov 12 2021 (made it into Linux Linux 5.17)
+- furthers the previous patch by also including the WBM2SW buffers in
+cacheable memory which are about 1MiB in size
+
+commit aaf244141ed7 ("wifi: ath11k: fix IOMMU errors on buffer rings")
+- Dec 20 2023 (made it into Linux 6.9)
+- resolves the issue from commit 6452f0a3d565 (but missing a Fixes
+tag) by changing the virt_to_phys calls to dma_map_single() but on
+systems that need software IOMMUC (IMX8MM > 3GiB) this exposes the
+'swiotlb buffer is full' limitation due to commit d0e2523bfa9c which
+allocates buffers exceeding the 256KiB limit imposed by swiotlb
+
+Therefore in the case of an IOMMU'less system with DMA address
+limitations of 32bit and >3GiB DRAM (as many IMX8M boards have) the
+ath11k driver has been broken since 5.17.
+
+Best Regards,
+
+Tim
 
