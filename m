@@ -1,161 +1,99 @@
-Return-Path: <linux-wireless+bounces-16015-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16017-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA8A9E8AF2
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 06:12:27 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E9539E8B21
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 06:43:49 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37B29280E67
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 05:12:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4223A1636E0
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 05:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AD9C15A85E;
-	Mon,  9 Dec 2024 05:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B7D71C1F31;
+	Mon,  9 Dec 2024 05:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="gloKXBXB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kMlMB6zX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954537BB1D;
-	Mon,  9 Dec 2024 05:12:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72F11C1F22
+	for <linux-wireless@vger.kernel.org>; Mon,  9 Dec 2024 05:43:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733721143; cv=none; b=CgerfCKCKu0r762XFqEhN//wHJ5wndaI09WvAAEfZhqbkL0OZdv7Ygj4ToEODJTJJjK3kasCWGWnocbwpfpb5xgxMa+woMhtzLqzvEoXUquwjnH+waSfLa3/woIiH1+xy/xZ8Pq4G9fNrwsZNRvLqo1N+t6XRfloZdRXFfWy3YE=
+	t=1733723023; cv=none; b=K7JPUszjyRSJ7p1UyFN53h8fgvmDXn7rL0kRr0IvvVCCwmf68z/DkroT1UKfwXoFeqbfIB+7+GGmDPShmgoiugifiZV9Oa4my2uy/O/MLwcDTvS2L6Tp3al/CJjeQRiVI20RV/FieTc3bT4pjFGgBXtKZmojYUAOdzdMiKUxoQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733721143; c=relaxed/simple;
-	bh=+p1+Lly/BJl98UA+ewGdoNGEBOUllQSEubwfsLcVyfg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=OcuAwaqdvIEN9Fa9D7rbbaiMcF8YiTeaca6plnYY2AA82edGdFD2vBvkRHIOw5aA7jG4PVqVoeLmaM02sEV3Tom+fVQmorUgMAZbK26aUMZs5yN9G5LmtnK9rDwwebwPRNY2a4n3lfdpfu5GGktK38zk1v5mZFjH0l825T0BnVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=gloKXBXB; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B8McVGB026370;
-	Mon, 9 Dec 2024 05:12:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	3dODJF6D5lrf04DsAPoK2qZT0I7ShTbOVXYS0+WSISM=; b=gloKXBXBRemO+cIH
-	94tSiiy/OoU7Mnmw3Q/s9cgPfWzB5Hr1FJegOM6ma0KcO8XmyDkIJ7U/+9kUz4+V
-	iEMnjHCjoczF+KPorP/bxIAUkUR8HRMmZrffVDXeS2gIRDOxF/gAB+4li72NgGqD
-	IGXzsmZm9Q7TUuHlOWJgwtzfuu+U9ZPADAQegR1/VFgv2trsTd+IDtjPZLt/AEzL
-	iyoM/5+5i8TT/rEz+QtfSOThe1DO+X/gX+tmjQi/VuCsaVwQrhsQsIZQoVe0n4Z4
-	CVwp77FFDHqiBkxoLUSnFCjnqlMMjt5VyrvXUeIjI9pw4OfA9tlWVpSFkgiSmYR0
-	ELlD2Q==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43cdxxbcup-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Dec 2024 05:12:16 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4B95CFKZ024058
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 9 Dec 2024 05:12:15 GMT
-Received: from [10.216.53.59] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Sun, 8 Dec 2024
- 21:12:13 -0800
-Message-ID: <8d9fdf00-8c04-430d-b5a5-edcdccbd21e7@quicinc.com>
-Date: Mon, 9 Dec 2024 10:42:10 +0530
+	s=arc-20240116; t=1733723023; c=relaxed/simple;
+	bh=2XGS5XE2xWUUOq2FbFiSDqlbztXyN40EGyjjOW3tvcE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=e6XB0CluXJ3CR7+KQ19mrdnY+8d0bdZKWhFI8H1MInJVCLUorGW4l4rKt0Dlyi/9cdio7nvt0TvG3DJjDZ/WCLatddx0hDGWZMNXL4fmUC/iQ4i9cH5mFQd7WTEyCTMd5iX3PAbYE3sgvQ17wsDO+f2zE23bi0F9h3ghrE5WcTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kMlMB6zX; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-aa67af4dc60so133056566b.2
+        for <linux-wireless@vger.kernel.org>; Sun, 08 Dec 2024 21:43:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733723020; x=1734327820; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LvxE9KWeFX/OQsOjGIozVp+veKIzqMmU1Jx+cc8a3is=;
+        b=kMlMB6zXnCSRW11XxudyjTvqngpTQBgL5unlvBSnSw+EjWA0EDQPXWAUc6/5IU8XbR
+         D6kIuiezLEopksvmuzTNGcMG11r/H2fV0M2XP5JMkFMqFbUg6U+4dwRse8HBrVQcJcR8
+         S/5WE5Uw7vCc46i+q/ZLPa0tu3tDrloD5ISeqMtyuNCLtU7FgCUu4vdw2vHhDbZQ+15F
+         uowkiXLrd+2gYSN0vfXXu3KIbvDt4vfbonwZI7EoNW/wBT8TRHuOnbSUAnHabjnONavz
+         70oa1pW1Ld3Kei2RDeBKrSS32sqtayzR2oEFMfAHx+h4dNITnBAAsPkPqANs4oeeK66V
+         uv2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733723020; x=1734327820;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LvxE9KWeFX/OQsOjGIozVp+veKIzqMmU1Jx+cc8a3is=;
+        b=gB41dbkn5SlCgzqm03iOWbn6AT7Wememh3YeMxhIgF15Tr6awjDteK7HRbLrGXeNNJ
+         5HSavZpxprLIReD3GAcCAtEBSZS15X32sV9GxrlJbSBsDsdh9MOuCgX7mze2Ssj9but0
+         8EI1gIz2SeG6G4N7Ew8wvHKgsxYkNVjIpMaGGX+qaoNgZzH7aWgWNLxF8pO00dM1rbub
+         SoA0E8hn/+EErH76StOlqmiJp50WZAeiz9T6Gy02oNnQgeMInQ/jbUjrWqAYxpeBrz3r
+         DUBHhR/FEx723OKFBLJEe5lbm0TydCDqwB4MeVakfuft+SbdAXyNhUq5hkfdl5mARxZ5
+         +McQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVvCy5Dl8e102KbZ44velREcW5ktVtU2msVMFdRHlhOR8BH2PMQCyhqV9JV+QLpBx5J3gC1VWRbwM3m9Y3yBQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyAQZDJKdUbkBC4WLR7VzA7EJl3YKL9lwH728eC2e+5ZLBHdW4R
+	RGqPGxcpysms+0SLoV7D3kj2NyuWhj3vJ+aPqWqeOANifkYFjC1HMufRJtCsK5gC1rO8awYCAOY
+	MEQKFKryt6O2kFEuUz/ZhkbW/7Qc=
+X-Gm-Gg: ASbGncsUVvRKf7WY/tss0XCSnlQbFU8QljNrfMSj6Y0WxXFQ3KaoaRLfiK7idQYCFqV
+	nT7bioRZD7aOXetmhkqsATXt7l2z730o=
+X-Google-Smtp-Source: AGHT+IGGePJo+9N4Of4PeXOzooY+Gs9piE89hotQoUrmoId59x6OpJsYaqkpE1HlgA0Tb6qsnt0CfpTgn3festfQL9Y=
+X-Received: by 2002:a17:906:3090:b0:aa6:800a:1292 with SMTP id
+ a640c23a62f3a-aa6800a1c31mr295375066b.25.1733723019879; Sun, 08 Dec 2024
+ 21:43:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] wifi: mac80211: re-order unassigning channel in
- activate links
-To: Johannes Berg <johannes@sipsolutions.net>
-CC: <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20241205-unassign_activate_links-v2-1-ba3f0a2bb4a4@quicinc.com>
- <d0acd2178504d76770e9267ef6e7f5c04b50eab3.camel@sipsolutions.net>
- <d421f8067ea54bcfc38a9b021ebda13515145c45.camel@sipsolutions.net>
- <a60eb1a7-9739-4dbc-a683-417ac6d47adc@quicinc.com>
- <9c497dca795ed9f62f0505daf7f9311a803334c8.camel@sipsolutions.net>
-Content-Language: en-US
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
-In-Reply-To: <9c497dca795ed9f62f0505daf7f9311a803334c8.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: -UrC0Q3M0YRT1pdPlja0Bev0bzx08MOu
-X-Proofpoint-GUID: -UrC0Q3M0YRT1pdPlja0Bev0bzx08MOu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
- phishscore=0 mlxlogscore=999 priorityscore=1501 clxscore=1015
- malwarescore=0 impostorscore=0 bulkscore=0 lowpriorityscore=0 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412090041
+References: <20241021071506.24320-1-pkshih@gmail.com> <CAGb2v64FojDNF+9fhdE5LhMJRYr0Tk9s+uPkVYD=pYsdHLggrA@mail.gmail.com>
+In-Reply-To: <CAGb2v64FojDNF+9fhdE5LhMJRYr0Tk9s+uPkVYD=pYsdHLggrA@mail.gmail.com>
+From: Ping-Ke Shih <pkshih@gmail.com>
+Date: Mon, 9 Dec 2024 13:43:28 +0800
+Message-ID: <CAHrRpu=q-AQyp15iqDyB=6hcPL289BgpQnDRNNDoOEz6FrAFzg@mail.gmail.com>
+Subject: Re: [PATCH] wireless-regdb: Update regulatory info for Oman (OM)
+To: wens@kernel.org
+Cc: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org, 
+	wireless-regdb@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 12/6/24 15:37, Johannes Berg wrote:
-> On Thu, 2024-12-05 at 20:43 +0530, Aditya Kumar Singh wrote:
->> On 12/5/24 18:30, Johannes Berg wrote:
->>> On Thu, 2024-12-05 at 12:43 +0100, Johannes Berg wrote:
->>>>>
->>>>> Therefore, re-order the logic so that stations are handled first and then
->>>>> channel is unassigned.
->>>>>
->>>>
->>>> This causes memory leaks in my tests with iwlwifi.
->>>>
->>>
->>> And also firmware crashes because the station is removed while it's
->>> still being used.
->>>
->>
->> So is this exposing some underlying issue with iwlwifi?
-> 
-> I don't think so?
-> 
->> Or this change
->> will break drivers which does not group multiple hardware into single
->> wiphy?
-> 
-> Not necessarily, but it breaks iwlwifi because of the changed order of
-> operations, and what it does with the firmware.
-> 
-> I think the issue here is that we treat link active == link has channel
-> context in iwlwifi, and an active link in client mode requires a station
-> in firmware. Otherwise you cannot even deactivate a link, since that
-> requires sending an NDP to the AP, but if you don't have the AP STA you
-> can't do that ...
+Chen-Yu Tsai <wens@kernel.org> wrote=EF=BC=9A
 
-Fair enough ...
+> > +       (5490 - 5725 @ 160), (27), DFS
+>              ^
+>            typo? It says 5470 above.
+>
+> I can fix it when applying.
+>
 
-> 
-> I guess the driver could be changed to treat station links as active
-> when they have the AP STA entry, but that seems ... difficult and
-> strange, it would make it different between AP and client modes?
-> 
-> Looking at your commit message more, I wonder if it really even makes
-> sense to *delete* the link when the channel context is unassigned,
-> rather than (similarly to iwlwifi) deactivating it and deleting it later
-> when it's actually removed (change_vif_links)? You do know which
-> hardware it is/was on, after all. And these two operations can *never*
-> be atomic. Removing the STAs first might be something that's appropriate
-> for AP mode, but I guess I'm more with iwlwifi here in that it doesn't
-> seem quite right for client mode?
-
-I see your point. I need to experiment and see whether this way works or 
-not for ath12k. Let me try that out.
-
-> 
->> Also, how about non-ML scenario in iwlwifi? There, first station is
->> removed and then the interface goes down right?
-> 
-> It's not so much about the interface but the link, it seems.
-> 
-
-Sure..
-
-
--- 
-Aditya
+Sorry for the typo.
+Please fix it. Thanks.
 
