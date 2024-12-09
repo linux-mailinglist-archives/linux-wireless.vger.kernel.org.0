@@ -1,116 +1,114 @@
-Return-Path: <linux-wireless+bounces-15999-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16000-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D6F49E88B3
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 01:26:54 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 296159E892F
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 03:29:23 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A2901882CB4
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 02:29:23 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 536C317741;
+	Mon,  9 Dec 2024 02:29:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="aLoI5MLL"
+X-Original-To: linux-wireless@vger.kernel.org
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00AE1280EDD
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 00:26:53 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6381446B8;
-	Mon,  9 Dec 2024 00:26:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="MZoMsfeY"
-X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38E85234;
-	Mon,  9 Dec 2024 00:26:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C969D9474;
+	Mon,  9 Dec 2024 02:29:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733704010; cv=none; b=K7WRz+SvQniwx9mKna8ZTQ9ZldI73bpltM9t6h0CgTljTSg/QEY8HGKEzCg75B3e4qRjGZs/zXlG+7KoffcDwXTpaXGhDJWwM1LChb91jORdabHPzf+IKmgHx12+FeVg7d81x9KbMBJgIPnNSN3KKul0lFiAu06ZtDt5dhTCHB4=
+	t=1733711359; cv=none; b=pPZR0LVNdN24yWRyID4K62lD0/Qxq2e1NUQPg3yQxhGz5Pp057Ajfsh6bn4ZFF0VU8om3J5BsLIXONqS6rnMHb0VgZfTcySCXHUgeVdexQeX45myh7sPXBgEIFfzAvtrf5757qtgdh9zY4B+hj1dno3VKrr8kQAk0UZli/QRgjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733704010; c=relaxed/simple;
-	bh=Xy8TrOhAejEC7lIReBFuEnDvP0P9w1gRCS6WWCa7QeI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Z356lZFmypsu361leOBSb9DhGzVf0dkOcGRcVJm2+1+N1NcVBWpJW9xsGMdseCnFYBbTENdj2tr0X9gBkaUlnfNGEhkCcPO+AU2aUGoVI6Xv0GP8gJlCGOBit3Y7AtksN3SpBK4wSlgADVaEoJ7sqh2aY3fviNQokSi8NXJ0jK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=MZoMsfeY; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4B90QQHW03911839, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1733703986; bh=Xy8TrOhAejEC7lIReBFuEnDvP0P9w1gRCS6WWCa7QeI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=MZoMsfeYP8Fq5Za2ExEXNoQhB6P6Zml23IZE4F6Li9bBssI1bwFc8QM8tLTcE2c8P
-	 mpaBJkm7O+ZZpGC99LVGercquGeviPp+ZIcwLnvuWVZJi/I5WHLsUSbDQw1yUYYxee
-	 3qdrBenjhA+6/lkrHbEQUT7ae2A4htcMtpS0eWuwfHpmkDdoJHFg+Ksmtl4cMrTf2p
-	 tptHTu4kjczXWc5TjXSyCGvNpzRjlaItutI2827UkSMIKuBhA6pVmzruCyGKrD+q9A
-	 humnoVDrU4NWQ/b2s3rACVPDorRLyhm9gyBCcNV3n9VBWTonOAr5DMuH7RhRv7trl8
-	 izkQauC/k+8lQ==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4B90QQHW03911839
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 9 Dec 2024 08:26:26 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 9 Dec 2024 08:26:27 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Mon, 9 Dec 2024 08:26:26 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
- RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
- 15.01.2507.035; Mon, 9 Dec 2024 08:26:26 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Hans de Goede <hdegoede@redhat.com>,
-        Jes Sorensen
-	<Jes.Sorensen@gmail.com>, Kalle Valo <kvalo@kernel.org>
-CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Peter Robinson
-	<pbrobinson@gmail.com>
-Subject: RE: [PATCH] wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
-Thread-Topic: [PATCH] wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
-Thread-Index: AQHbMR7R6Gvee4SdJkqElRUs0WKrm7K72VoAgCAvYgCAATWcgA==
-Date: Mon, 9 Dec 2024 00:26:26 +0000
-Message-ID: <8e0a643ecdc2469f936c607dbd555b4c@realtek.com>
-References: <20241107140833.274986-1-hdegoede@redhat.com>
- <6cf370a2-4777-4f25-95ab-43f5c7add127@RTEXMBS04.realtek.com.tw>
- <094431c4-1f82-43e0-b3f0-e9c127198e98@redhat.com>
-In-Reply-To: <094431c4-1f82-43e0-b3f0-e9c127198e98@redhat.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1733711359; c=relaxed/simple;
+	bh=vAeVK8k9eLgDWD7NrbBu2SEg2upIUWl8Mn5mO8s5hoQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=pUSMtqwuuCzjsosAf9vFy2o7Zd2/Un7e/7EsFPce5YGqL9SQN5LZXhXcdN/7WhZ+Y3oJ24r/nr14L/OmZCa2x5vkkAkdWIMxksbWnGwJHWLYZXlrKjrUxboBdtZvmztaITA5BmnQkyxzY9PWhufZtmVx+59dh6+96yqkSH4PElo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=aLoI5MLL; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B8NOr9P022763;
+	Mon, 9 Dec 2024 02:29:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	hkDMC4n+nmNheTZrmeWXtlAoFZY5epZRSAMxvpIPWdU=; b=aLoI5MLLrcCarm1h
+	xPOX0f64GN6qIBUxn/Jx2XBZBQFtzgmjHGzFLnEyQa/+OoxkRyelJWDvf1wMUlGy
+	L/T2F0jv3ehEyURgQmj6Bwdw2rKFaqni9z9ZEOtT/esIXIbr3kw48hMTi6MdCYRy
+	QRp92pRnbEWVnn/rsIW+FFaqKpRS0VwaucMPUC10BfeeXrYV5sQri7QnGbx53jRo
+	lqwRwI9/9UCwUySjEFpLTusSC+TT/4sCUEaD1H7eUS7kkyTTOCRuvUR3QmyvqrrL
+	B+CH/gEtK5s1vOAkz8eWJ7g20OTfNvT5hQAWeU/K+QskydwD9DcGD7HhX1VNRE9n
+	jvRVHQ==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43cer6k2cq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 09 Dec 2024 02:29:09 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4B92T8dq032403
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 9 Dec 2024 02:29:08 GMT
+Received: from [10.231.194.79] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Sun, 8 Dec 2024
+ 18:29:06 -0800
+Message-ID: <1123551c-1a6d-4d0d-b3c7-f65c15509280@quicinc.com>
+Date: Mon, 9 Dec 2024 10:29:03 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath11k: allow APs combination when dual stations
+ are supported
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+CC: <ath11k@lists.infradead.org>, <jjohnson@kernel.org>, <kvalo@kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+        <quic_cjhuang@quicinc.com>, <vbenes@redhat.com>
+References: <0f24e115-e76d-4c8a-8a1b-591a157ee78e@quicinc.com>
+ <20241208121321.9760-1-jtornosm@redhat.com>
+Content-Language: en-US
+From: "Yu Zhang (Yuriy)" <quic_yuzha@quicinc.com>
+In-Reply-To: <20241208121321.9760-1-jtornosm@redhat.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: hAWil-3zcNZNZj6diss3URCGw0hEV4V1
+X-Proofpoint-ORIG-GUID: hAWil-3zcNZNZj6diss3URCGw0hEV4V1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
+ suspectscore=0 impostorscore=0 adultscore=0 priorityscore=1501 spamscore=0
+ mlxlogscore=565 clxscore=1011 phishscore=0 bulkscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2412090019
 
-SGFucyBkZSBHb2VkZSA8aGRlZ29lZGVAcmVkaGF0LmNvbT4gd3JvdGU6DQo+IEhpLA0KPiANCj4g
-T24gMTgtTm92LTI0IDM6MjMgQU0sIFBpbmctS2UgU2hpaCB3cm90ZToNCj4gPiBIYW5zIGRlIEdv
-ZWRlIDxoZGVnb2VkZUByZWRoYXQuY29tPiB3cm90ZToNCj4gPg0KPiA+PiBUaGUgcnRsOHh4eHUg
-aGFzIGFsbCB0aGUgcnRsODE5MmN1IFVTQiBJRHMgZnJvbSBydGx3aWZpL3J0bDgxOTJjdS9zdy5j
-DQo+ID4+IGV4Y2VwdCBmb3IgdGhlIGZvbGxvd2luZyAxMCwgYWRkIHRoZXNlIHRvIHRoZSB1bnRl
-c3RlZCBzZWN0aW9uIHNvIHRoZXkNCj4gPj4gY2FuIGJlIHVzZWQgd2l0aCB0aGUgcnRsOHh4eHUg
-YXMgdGhlIHJ0bDgxOTJjdSBhcmUgd2VsbCBzdXBwb3J0ZWQuDQo+ID4+DQo+ID4+IFRoaXMgZml4
-ZXMgdGhlc2Ugd2lmaSBtb2R1bGVzIG5vdCB3b3JraW5nIG9uIGRpc3RyaWJ1dGlvbnMgd2hpY2gg
-aGF2ZQ0KPiA+PiBkaXNhYmxlZCBDT05GSUdfUlRMODE5MkNVIHJlcGxhY2luZyBpdCB3aXRoIENP
-TkZJR19SVEw4WFhYVV9VTlRFU1RFRCwNCj4gPj4gbGlrZSBGZWRvcmEuDQo+ID4+DQo+ID4+IENs
-b3NlczogaHR0cHM6Ly9idWd6aWxsYS5yZWRoYXQuY29tL3Nob3dfYnVnLmNnaT9pZD0yMzIxNTQw
-DQo+ID4+IENjOiBzdGFibGVAdmdlci5rZXJuZWwub3JnDQo+ID4+IENjOiBQZXRlciBSb2JpbnNv
-biA8cGJyb2JpbnNvbkBnbWFpbC5jb20+DQo+ID4+IFNpZ25lZC1vZmYtYnk6IEhhbnMgZGUgR29l
-ZGUgPGhkZWdvZWRlQHJlZGhhdC5jb20+DQo+ID4+IFJldmlld2VkLWJ5OiBQZXRlciBSb2JpbnNv
-biA8cGJyb2JpbnNvbkBnbWFpbC5jb20+DQo+ID4NCj4gPiAxIHBhdGNoKGVzKSBhcHBsaWVkIHRv
-IHJ0dy1uZXh0IGJyYW5jaCBvZiBydHcuZ2l0LCB0aGFua3MuDQo+ID4NCj4gPiAzMWJlMzE3NWJk
-N2Igd2lmaTogcnRsOHh4eHU6IGFkZCBtb3JlIG1pc3NpbmcgcnRsODE5MmN1IFVTQiBJRHMNCj4g
-DQo+IFRoYW5rIHlvdSBmb3IgbWVyZ2luZyB0aGlzLCBzaW5jZSB0aGlzIGlzIGEgYnVnZml4IHBh
-dGNoLCBzZWUgZS5nLiA6DQo+IA0KPiBodHRwczovL2J1Z3ppbGxhLnJlZGhhdC5jb20vc2hvd19i
-dWcuY2dpP2lkPTIzMjE1NDANCj4gDQo+IEkgd2FzIGV4cGVjdGluZyB0aGlzIHBhdGNoIHRvIHNo
-b3cgdXAgaW4gNi4xMy1yYzEgYnV0IGl0IGRvZXMNCj4gbm90IGFwcGVhciB0byBiZSB0aGVyZS4N
-Cj4gDQo+IENhbiB5b3UgcGxlYXNlIGluY2x1ZGUgdGhpcyBpbiBhIGZpeGVzLXB1bGwtcmVxdWVz
-dCB0byB0aGUgbmV0d29yaw0KPiBtYWludGFpbmVyIHNvIHRoYXQgZ2V0cyBhZGRlZCB0byBhIDYu
-MTMtcmMjIHJlbGVhc2Ugc29vbiBhbmQgdGhlbg0KPiBjYW4gYmUgYmFja3BvcnRlZCB0byB2YXJp
-b3VzIHN0YWJsZSBrZXJuZWxzID8NCj4gDQoNClRoaXMgcGF0Y2ggc3RheXMgaW4gcnR3LmdpdCBh
-bmQgNi4xNCB3aWxsIGhhdmUgaXQsIGFuZCB0aGVuIGRyYWluIHRvIHN0YWJsZQ0KdHJlZXMuIEZv
-ciB0aGUgcmVkaGF0IHVzZXJzLCBjb3VsZCB5b3UgYXNrIHRoZSBkaXN0cm8gbWFpbnRhaW5lciB0
-byB0YWtlIHRoaXMNCnBhdGNoIGFoZWFkPyANCg0KUGluZy1LZQ0KDQo=
+
+
+On 12/8/2024 8:13 PM, Jose Ignacio Tornos Martinez wrote:
+>> My point is that you can try setup with ap type interface,
+> This is what I am doing!
+So you can't up with ap type or can't up with managed interface?
+>> now combination limits not allow up 3 inferfaces with managed interface.
+> Why? The limits were bigger previously.
+> Why cannot allow the old configuration (previous to the commit f019f4dff2e4
+> ("wifi: ath11k: support 2 station interfaces"a))?
+> In another way, your proposed configuration is limited for me.
+> 
+> Thanks
+> 
+> Best regards
+> Jose Ignacio
+> 
+
 
