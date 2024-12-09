@@ -1,75 +1,132 @@
-Return-Path: <linux-wireless+bounces-16030-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16031-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95CFC9E90EB
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 11:50:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6F1A9E914A
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 12:03:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E0D21881306
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 10:50:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D6441887180
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 11:03:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9744217702;
-	Mon,  9 Dec 2024 10:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9372218ACE;
+	Mon,  9 Dec 2024 11:01:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FFjo47Rv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE61217F3F
-	for <linux-wireless@vger.kernel.org>; Mon,  9 Dec 2024 10:49:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84849217656;
+	Mon,  9 Dec 2024 11:01:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733741394; cv=none; b=DIlHzEiK6kVyaklVzrj4cYG9gwaXpjVbGo04mDsCL8Wd1FJSbhJRhKmTFNH3m4WJmjbmUavuxq6KpDOQ4M+g4UyyfB/3Pkld4VO2aXvWF8YEa8DhtmPrr1NMfV5vUe0MNmBjSWFWm6/WtbQ9Macj317BvLHXhFQtgfkcaQRd8So=
+	t=1733742115; cv=none; b=AA8MwbSsd34Ig5F+NFe0N9DcvzmZDcifGsGXml1IRKxzvygVtHrCjLXVm8ciSsUbvLK6i+f6Ygx9KSBLzLOE/bgiF0mC0R3TB9gGwPE0Hu43e5g8IiYK/dIojefrHva1R77hhxSm7gwfpfCq9Rqr8kbS2/9UiaEDmLUzVnaz9Qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733741394; c=relaxed/simple;
-	bh=qDYE6sm06wT5iAye49l+JIErayXfaHy2n7nmUt4z920=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uRP4b6qrnsR3xc+eDXArA1btHqCaIGXFXHUMVrliHrNZp0Arz0YH2+LedfB9p1wk3ZwQK0fgEYhHQL5NcZU/z5d09TJ7YAzWCeOasUm7UUYkNXqwSxwBBHblYVkNKHJZh4tTR5gSlUVaAUPh3jw5sFMn9WJQH8XE7om/DdI2Nj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 23CE0113E;
-	Mon,  9 Dec 2024 02:50:20 -0800 (PST)
-Received: from [10.1.196.40] (e121345-lin.cambridge.arm.com [10.1.196.40])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 27C9D3F5A1;
-	Mon,  9 Dec 2024 02:49:51 -0800 (PST)
-Message-ID: <593c0d63-d8fd-4439-a57a-97340212c197@arm.com>
-Date: Mon, 9 Dec 2024 10:49:49 +0000
+	s=arc-20240116; t=1733742115; c=relaxed/simple;
+	bh=BTD6Nq7Hyt9oanQjIFlZhjxksd0IkVLulg5hidZbUPw=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=Dek2PgQJHErQfqjo3U3KIBUNAgn/Rb5rRRI2qgDJqE4VipZJUKo9MVaXZuRX/QWNRI5sbiLm3HGNCwJLI/rP5fVr9+eQqrYlv+NLp4GtfElHKh4Jnhqg4bQ3HYmquIWeuyAHWdjKs6dgiOKBetG95c7uIgOlIxwnP60tE5XBH0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FFjo47Rv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7451C4CEDE;
+	Mon,  9 Dec 2024 11:01:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733742115;
+	bh=BTD6Nq7Hyt9oanQjIFlZhjxksd0IkVLulg5hidZbUPw=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=FFjo47Rvx1IsuaSfSG5z9G6Gzj1XQU8xH7qMipu2oo3C+ror65st/MjmkdWHOb9iL
+	 hD1H9cP1l9/gVRBZlF4K1zPm0nJgdk6AFQhFtIGIdML7hV7+mP4ENk2p/JAJXuYIJ4
+	 CY1LBVHhKwJ/+k74e2dw/szo7u71R7LuxdmlbcaKpP3dEBLAlkH02CwkkGoUsz/u02
+	 rDUG79gJZTYb6AMq2uUzm4CnV3/pAN6ZW1Iy0O8ae2GCusew8zx3QkakCAl9/Fq7G7
+	 nQit97q7gGTiADXP95qpVIRkh0shnKtiXXkhf+87jwAlVvtDkn8+NLya7QdrEWD/Yn
+	 cf8CoFZFPmgSA==
+From: Kalle Valo <kvalo@kernel.org>
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: Ping-Ke Shih <pkshih@realtek.com>,  Jes Sorensen
+ <Jes.Sorensen@gmail.com>,  "linux-wireless@vger.kernel.org"
+ <linux-wireless@vger.kernel.org>,  "stable@vger.kernel.org"
+ <stable@vger.kernel.org>,  Peter Robinson <pbrobinson@gmail.com>
+Subject: Re: [PATCH] wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
+References: <20241107140833.274986-1-hdegoede@redhat.com>
+	<6cf370a2-4777-4f25-95ab-43f5c7add127@RTEXMBS04.realtek.com.tw>
+	<094431c4-1f82-43e0-b3f0-e9c127198e98@redhat.com>
+	<8e0a643ecdc2469f936c607dbd555b4c@realtek.com>
+	<1d59a602-053a-47f1-9dac-5c95483d07b6@redhat.com>
+Date: Mon, 09 Dec 2024 13:01:51 +0200
+In-Reply-To: <1d59a602-053a-47f1-9dac-5c95483d07b6@redhat.com> (Hans de
+	Goede's message of "Mon, 9 Dec 2024 09:30:39 +0100")
+Message-ID: <87ldwpt90g.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: ath11k swiotlb buffer is full (on IMX8M with 4GiB DRAM)
-To: Christoph Hellwig <hch@lst.de>, Tim Harvey <tharvey@gateworks.com>
-Cc: Baochen Qiang <quic_bqiang@quicinc.com>, ath11k@lists.infradead.org,
- linux-wireless <linux-wireless@vger.kernel.org>,
- Fabio Estevam <festevam@gmail.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>, iommu@lists.linux.dev
-References: <CAJ+vNU0EL3T+GyNAbVbGqYYQ5NM3h7cgAwqxxBMuZjh+-YQ3bA@mail.gmail.com>
- <1b2ea8b2-6fbe-4118-b6c6-742c8f0be476@quicinc.com>
- <CAJ+vNU1-OZ3y4p2L+zf64AiVtUv70yZNqkT20jTxyE0_gJb6Jg@mail.gmail.com>
- <0282be95-9094-4d49-b79e-4f7c976dad00@quicinc.com>
- <CAJ+vNU32EMHjtchJRb1sODBrUKG2vZW4ZEu1_F0+dCCEjCn7Dg@mail.gmail.com>
- <20241209081714.GA25363@lst.de>
-From: Robin Murphy <robin.murphy@arm.com>
-Content-Language: en-GB
-In-Reply-To: <20241209081714.GA25363@lst.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On 09/12/2024 8:17 am, Christoph Hellwig wrote:
-> I scrolled three pages before giving up as it was just quotes over
-> quotas.  Can you please write an email that contains whatever you're
-> trying to tell instead of just quotes?  Same for the person replying.
+Hans de Goede <hdegoede@redhat.com> writes:
 
-TBH I'm hesitant to look too closely since everything those Atheros WiFi 
-drivers do with DMA tends to be sketchy, but from what I could make out 
-from skimming until I also gave up, I think it might be an attempt to 
-reinvent dma_alloc_pages(), or possibly dma_alloc_noncoherent().
+> Hi,
+>
+> On 9-Dec-24 1:26 AM, Ping-Ke Shih wrote:
+>> Hans de Goede <hdegoede@redhat.com> wrote:
+>>> Hi,
+>>>
+>>> On 18-Nov-24 3:23 AM, Ping-Ke Shih wrote:
+>>>> Hans de Goede <hdegoede@redhat.com> wrote:
+>>>>
+>>>>> The rtl8xxxu has all the rtl8192cu USB IDs from rtlwifi/rtl8192cu/sw.c
+>>>>> except for the following 10, add these to the untested section so they
+>>>>> can be used with the rtl8xxxu as the rtl8192cu are well supported.
+>>>>>
+>>>>> This fixes these wifi modules not working on distributions which have
+>>>>> disabled CONFIG_RTL8192CU replacing it with CONFIG_RTL8XXXU_UNTESTED,
+>>>>> like Fedora.
+>>>>>
+>>>>> Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2321540
+>>>>> Cc: stable@vger.kernel.org
+>>>>> Cc: Peter Robinson <pbrobinson@gmail.com>
+>>>>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>>>>> Reviewed-by: Peter Robinson <pbrobinson@gmail.com>
+>>>>
+>>>> 1 patch(es) applied to rtw-next branch of rtw.git, thanks.
+>>>>
+>>>> 31be3175bd7b wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
+>>>
+>>> Thank you for merging this, since this is a bugfix patch, see e.g. :
+>>>
+>>> https://bugzilla.redhat.com/show_bug.cgi?id=2321540
+>>>
+>>> I was expecting this patch to show up in 6.13-rc1 but it does
+>>> not appear to be there.
+>>>
+>>> Can you please include this in a fixes-pull-request to the network
+>>> maintainer so that gets added to a 6.13-rc# release soon and then
+>>> can be backported to various stable kernels ?
+>>>
+>> 
+>> This patch stays in rtw.git and 6.14 will have it, and then drain to stable
+>> trees. For the redhat users, could you ask the distro maintainer to take this
+>> patch ahead?
+>
+> That is not how things are supposed to work. You are supposed to have a fixes
+> tree/branch and a next tree/branch and fixes should be send out ASAP.
 
-Cheers,
-Robin.
+Please understand that we are more or less volunteers and working with
+limited time.
+
+> Ideally you would have already send this out as a fixes pull-request for
+> 6.12 but waiting till 6.14 really is not acceptable IMHO.
+
+If you have an important fix please document that somehow, for example
+"[PATCH wireless]" or "[PATCH v6.13]". If there's nothing like that most
+likely the patch goes to -next, we (in wireless) don't take every fix to
+-rc.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
