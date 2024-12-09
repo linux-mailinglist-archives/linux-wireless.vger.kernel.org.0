@@ -1,108 +1,131 @@
-Return-Path: <linux-wireless+bounces-16039-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16040-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92EA19E9482
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 13:40:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E4919E94A4
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 13:45:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FD691887A40
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 12:40:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2441318837A8
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 12:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A9D22371C;
-	Mon,  9 Dec 2024 12:40:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DvKX0PSS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8237A2248BF;
+	Mon,  9 Dec 2024 12:45:22 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B036321E0BE;
-	Mon,  9 Dec 2024 12:40:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB8E221D86;
+	Mon,  9 Dec 2024 12:45:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.17.235.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733748015; cv=none; b=kn8VyxXLrCevohqjeS5SYC0ihsLJCUuyxA13aPfKTlTEEbYTrQia4FEyR5vQEWO2gMYU/zO2wNL3EEPq3S3Hlu4IIc6hZVHcq/BKVXuzx8XUiU4dVDIc0Gj0+mYuP6GRg836h/EPHRcdPlBr6C2hsNknxKAO/yy42r6uyUDKL2k=
+	t=1733748322; cv=none; b=TAHtoVwD4vAR5+UBe9t0NrBgiiBeB6T/W63ZzpT/MIBiA2dLXWHQtWP8VXtzN6RD64W6KXkp7K2feKndl2GK3QMTkoeE/rwkK4Ma/+6pqXRn/E3RQys5y+IKBL/2+ojqZjspO+L772nCFuzSwmiDxmu35DQzm/EIxoFTgL+Iruk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733748015; c=relaxed/simple;
-	bh=0mvBxn0PSgu6FsrYzgn8Ezm4CL9y/d3xpE2xs78uGIc=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=Oz5NKlQHNr1KwSgxUbaz2IeMnLpA5L0HFraUIQya7YQOmdGBJsuV13/grjouPy/TUUVxea0P9TKTZ1sFs6F8s1BRp4l/C1HjcgWHOoOjVF0vtqXiHgzu677HVHKbjWegONqWK4tBaUkwqa/gWk8L1b3ryQtnd+pKhYs3Q8Kqp7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DvKX0PSS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B271C4CED1;
-	Mon,  9 Dec 2024 12:40:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733748015;
-	bh=0mvBxn0PSgu6FsrYzgn8Ezm4CL9y/d3xpE2xs78uGIc=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=DvKX0PSSLEL7SzgRIFSjtJnTkDB+faBBGcovuhW2QCWLjthDYv0xCKQ9i/JhKK7NL
-	 RuUXsQvFItOVdv5YTFk5qjZiWrmUfZjbJr7LbZhUTuDuqpaQZlj0laXNSkwM49KiGJ
-	 +xTgITS+ALwCcaIL+hSC7/eYLCx+q2hZlO7YIKRBlnRevXIeVtTwBeoak0a+VieG4Y
-	 YLYQT4+USZ9++lEbMsAowxhEOo60/uJ2qHZgZqRmqYAF4cnQ1yZH9ZvnKRvAiEgX/R
-	 RGlJvl/PS+kQW+3KFLCn6LTqHIY8pSTEPmH9J9s9pwXcdVpj9qE5yj8+NV0CwKSnNK
-	 6Q2hNQcy62axQ==
-From: Kalle Valo <kvalo@kernel.org>
-To: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
-Cc: ath12k@lists.infradead.org,  jjohnson@kernel.org,
-  linux-wireless@vger.kernel.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 wireless-next] wifi: ath12k: Fix out-of-bounds read
- in ath12k_mac_vdev_create
-References: <20241207071306.325641-1-dheeraj.linuxdev@gmail.com>
-Date: Mon, 09 Dec 2024 14:40:12 +0200
-In-Reply-To: <20241207071306.325641-1-dheeraj.linuxdev@gmail.com> (Dheeraj
-	Reddy Jonnalagadda's message of "Sat, 7 Dec 2024 12:43:06 +0530")
-Message-ID: <87r06hrpw3.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1733748322; c=relaxed/simple;
+	bh=A5ejJ/BX/PS60+9iiR3WDF+uIu660h9qKllHzZGc5G4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aja6EPjtZHUpZZmSplvcLsW0eIEjuh1rJTC6a/b8nIUMdqAY/pAmZexUdHl+LDK+4rEX7PDTSn1KPfbY+5Jxnl3hi4nsl4AK4UMu9cjwAxR7BBGP/CY+6Jb/8MQbmEvKa5M2RlTWoTYIqLyfbw3UjdLwwzGu0HYYxyvOCdFKUk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass smtp.mailfrom=csgroup.eu; arc=none smtp.client-ip=93.17.235.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csgroup.eu
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4Y6M5p179vz9tBf;
+	Mon,  9 Dec 2024 13:45:18 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id ad8aC7rBW98b; Mon,  9 Dec 2024 13:45:18 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4Y6M5p0DxHz9tBd;
+	Mon,  9 Dec 2024 13:45:18 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id E8A068B766;
+	Mon,  9 Dec 2024 13:45:17 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id OUa8UHFVNS_8; Mon,  9 Dec 2024 13:45:17 +0100 (CET)
+Received: from [10.25.209.139] (unknown [10.25.209.139])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id A70C18B763;
+	Mon,  9 Dec 2024 13:45:17 +0100 (CET)
+Message-ID: <95a461ca-3ed6-4380-ad1a-da12e1109675@csgroup.eu>
+Date: Mon, 9 Dec 2024 13:45:17 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/21] Converge on using secs_to_jiffies()
+To: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, cocci@inria.fr,
+ linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ linux-scsi@vger.kernel.org, xen-devel@lists.xenproject.org,
+ linux-block@vger.kernel.org, linux-wireless@vger.kernel.org,
+ ath11k@lists.infradead.org, linux-mm@kvack.org,
+ linux-bluetooth@vger.kernel.org, linux-staging@lists.linux.dev,
+ linux-rpi-kernel@lists.infradead.org, ceph-devel@vger.kernel.org,
+ live-patching@vger.kernel.org, linux-sound@vger.kernel.org,
+ etnaviv@lists.freedesktop.org, oss-drivers@corigine.com,
+ linuxppc-dev@lists.ozlabs.org, Anna-Maria Behnsen <anna-maria@linutronix.de>
+References: <20241115-converge-secs-to-jiffies-v2-0-911fb7595e79@linux.microsoft.com>
+ <b9fcb12a-b7a4-4c33-836e-67109ce07deb@intel.com>
+ <dab77729-682f-4182-9fb2-cd522ac29b5f@linux.microsoft.com>
+ <72c8eb66-eb67-4f8b-b0c0-13f1aa001698@intel.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <72c8eb66-eb67-4f8b-b0c0-13f1aa001698@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com> writes:
 
-> Add a bounds check to ath12k_mac_vdev_create() to prevent an out-of-bounds
-> read in the vif->link_conf array. The function uses link_id, derived from
-> arvif->link_id, to index the array. When link_id equals 15, the index
-> exceeds the bounds of the array, which contains only 15 elements.
->
-> This issue occurs in the following code branch:
->
->     if (arvif->link_id == ATH12K_DEFAULT_SCAN_LINK && vif->valid_links)
->         link_id = ffs(vif->valid_links) - 1;
->     else
->         link_id = arvif->link_id;
->
-> When the first condition in the if statement is true and the second
-> condition is false, it implies that arvif->link_id equals 15 and
-> the else branch is taken, where link_id is set to 15, causing an
-> out-of-bounds access when vif->link_conf array is read using link_id
-> as index.
->
-> Add a check to ensure that link_id does not exceed the valid range of the
-> vif->link_conf array. Log a warning and return -EINVAL if the check fails
-> to prevent undefined behavior.
->
-> Changelog:
->
-> v2:
-> 	- Updated the commit message as per the reviewer's suggestions
-> 	- Clarified the description of the bug in the commit message
-> 	- Added Fixes and Closes tags with relevant information
->
-> Fixes: 90570ba4610 ("wifi: ath12k: do not return invalid link id for scan link")
-> Closes: https://scan7.scan.coverity.com/#/project-view/52337/11354?selectedIssue=1602214
->
-> Signed-off-by: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>
-> ---
 
-In wireless we prefer to have changelog after the '---' line so it's not
-included in git. Not sure if Jeff can fix this during commit or not.
+Le 09/12/2024 à 13:01, Przemek Kitszel a écrit :
+> On 12/6/24 9:58 PM, Easwar Hariharan wrote:
+>> On 11/29/2024 4:57 AM, Przemek Kitszel wrote:
+>>>
+>>> [removed most non-list recipients, it's just too much]
+>>>
+>>> On 11/15/24 10:26 PM, Easwar Hariharan wrote:
+>> <snip>
+> 
+>>>
+>>> Regarding code - you could also convert msecs_to_jiffies(const * HZ),
+>>> there are 10 that are greppable.
+>>>
+>>
+>> Those seem to be mistakes. const*HZ is a seconds-denominated timeout,
+>> being passed to msecs_to_jiffies() which will treat it as a
+>> millisecond-denominated timeout resulting in an excessively long
+>> timeout. I suppose that's better than a too-short timeout, and
+>> apparently it's been working fine all along since hardware responds
+>> before the too-long timeout expires. Half of them are in
+>> drivers/scsi/arcmsr/arcmsr_hba.c and the pattern has apparently been
+>> there since 2010.
+> 
+> my point was that, the default value of HZ is 1000, and most of the code
+> that is just `$value*HZ` was meant as "$value seconds, in ms unit".
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+I can't follow you here. The default value of HZ is 250 as far as I can see.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Regardless, HZ is the number of jiffies per second, nothing else.
+
+> 
+> Same for HZ/const, HZ/2 being 500ms.
+> 
+> HZ is awful in that it is not 1s but 1/s, but it was easy to abuse the
+> value in simple context.
+
+Why is that awful ?
+
+HZ is a nice macro that gives you the number of ticks per second, so 
+that you are able to easily calculate the number of ticks for a given 
+duration, regardless of the configured number of ticks per second.
+
+Christophe
 
