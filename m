@@ -1,149 +1,105 @@
-Return-Path: <linux-wireless+bounces-16052-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16053-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DEAB9E965C
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 14:19:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC019E9813
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 15:02:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A76AB1883FE6
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 13:16:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23F041885760
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 14:02:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 214B6225A8B;
-	Mon,  9 Dec 2024 13:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AC211A2383;
+	Mon,  9 Dec 2024 14:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GeLkMs42"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zo1QlyJu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86601ACED2
-	for <linux-wireless@vger.kernel.org>; Mon,  9 Dec 2024 13:07:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F62435971;
+	Mon,  9 Dec 2024 14:02:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733749638; cv=none; b=LTuZZE8XIt++auZJqyM3i01NO3vmemOSw0nVHNIsxIw6LRLoZVifPjOkwNKm2ZJe4ZIK0joroseBQ7S0FLdTBWzUzq/+bbfGKo8yMo0Ez/uDFeOY5AkHRNzRvMjNzQN+SsnYLV3jbwFmIooEz2pOzbyETnh8kCGDIO7pGAvcQZg=
+	t=1733752950; cv=none; b=Lz+3oGG15a7YMNKobOSXtZ0zVd2DWFloBdr31RSN6TLFP/gKqg/jpdJG8dFmZ5HZR9xgm9vd9xmWS5plCh2tGaiSXs8yH4M8ls9L61o2OsUoKSSz0IjMYn7582rkbbtAY5e9ALIMjhmseDgj2EG1V3vpRDljiEcXrqpluD7S0Ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733749638; c=relaxed/simple;
-	bh=iQxm4QfjlR4Q7L78H1eAEsRALrLF6d6wl8eA0eVuu8s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c8jjz11awaBj/USPOvLpBQGlym4vkgcexP5I5kZ4NrK/FoIj/6tNW6mFoAqr5RfGhT1GulpM0yEWss9EuL3SpxSLo6d3MGZrarrCWUtgA0FV28LCeii5q2Und+TfNJ0SQ83gyMNFaux7m8z5wMx9Wwp4JkKrxwnQ6bYJR/37M/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GeLkMs42; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733749634;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6HNQFFZFNBo2fKXDk5eFuu7P7NBI6b9tUTkzIaFtOWU=;
-	b=GeLkMs4274hrXI2F80eB2gT6McGzmzHIbOgp0znDKyre23yhi8wMfRlrJI8gNVb9TrCmBx
-	8V/aw16xCa+0Ql60cgdtLEa4aXNwMM+G4tIpw+3kE7XLDeUo7F3P+RF0ZG7JH9zioVGCcV
-	8frd4k7ONf1YJb6WgMCBY7mlNqE4BTA=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-602-Fwc4PNPWMJK85xjhhnQBQg-1; Mon, 09 Dec 2024 08:07:13 -0500
-X-MC-Unique: Fwc4PNPWMJK85xjhhnQBQg-1
-X-Mimecast-MFC-AGG-ID: Fwc4PNPWMJK85xjhhnQBQg
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-434f0d1484bso9051885e9.1
-        for <linux-wireless@vger.kernel.org>; Mon, 09 Dec 2024 05:07:13 -0800 (PST)
+	s=arc-20240116; t=1733752950; c=relaxed/simple;
+	bh=03xiu9pYOCrdNfcv/qw+gwiZHTNUJB2+YIld69kTu/Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hYRgf5hx29N50KuLNLiVN89h/etY7Dcf5MY0SZPfjXCiRNzHcC66qbPdOFMVZitH/J1KY/hPl7eVYyfcnFKeO0hHc2G/rrujEi2f2hFUPe/gvHxDdF44M9VJ+eoaycnWquvD55Y/OjdnAq3O7Tfto8b6Ecfte3gHmOF0PRyrzHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zo1QlyJu; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2165448243fso9431105ad.1;
+        Mon, 09 Dec 2024 06:02:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733752948; x=1734357748; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OAhPp2pGpsvDTqVI2eQ221kABd4Y8/kh7k1mWyeQzTw=;
+        b=Zo1QlyJu+XBbTOO3w8tdc1A3K2lJwyV/8N78TenKl/WSv6/43Mh7ynbcJQrT7vuJEB
+         VZit3+tvX2NY/mI42fkzQoSLYEW3NT/9F2egqk0KFHPOCbC6N0K6X1e1r586nvaa2Yng
+         Btx9WB9mwHnpmkyoB5eUWqQz1r8gNo4MmlxqhoGWoJapaff6XG/oBURLapB2gsYB/yKZ
+         dE44RyCUSMneeMPQYUhg3wpdx73MVunOvpT+K+ThEnmI1lwrGGZqg3ybUXBJFkSr/h4U
+         Y58cYcTR3OdBAR09eBO3kUrvEIbxNMdIPybE1boYdMKyQEzLCqKzPX43Qe7DNxizHkFz
+         tmOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733749631; x=1734354431;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6HNQFFZFNBo2fKXDk5eFuu7P7NBI6b9tUTkzIaFtOWU=;
-        b=Or05H1NkmtIFMLqOnd+Whwvm/sgbt8JKW4uwv2/5pnGZ0tzLub6GZRbQHLDV0It+6b
-         4pGJl+039lNII67RA+sCH3I8l5Plxf7ZzH2ZsFiQJHBdR9DkpM6su92o7DyQBPEnHcbL
-         t8PexNCzN4euqk/3uRLcC+BokMWtmWk2H0s/D7TszDb+/ufXEPPEgKeMc1Nsl3oVarpB
-         O4u8il7D9M1D8dUU8FSShQyASKIo5CaFIsFB4y1TOX0cp2H8WVqymk5uWIGkPnDLUSEw
-         ono6tolcdKmiDCrqubokkWySU9exUtOH7pLtSDZIyn2vYHhe+WvCeMVgSgeIZsY6AMUz
-         FO5g==
-X-Forwarded-Encrypted: i=1; AJvYcCVjYVHcheN/eLbJB6FDB03z4dg4YqKT4cLXF63a5ljHUyn+3ppCdhv5kXHkDs42UXxQ6DH7RemFBGQQ8VIQ2w==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxnr21uqi1kqDQozgAGo4OXzVNue+l/m8sy+6rZkelVDkXeXlTu
-	YYFElKvbMtSAB6AIWXiRNCklfgV7C3mXmIX8c4Pl/nkArskGzHnhCMffCyZU0lDKuIB476E2FvJ
-	9JTy0diL4GDkwu+rlC0rMSMFNe4cadvBVk3qbr48SlelE7MZqpIXKSrRgvtjOjbGx
-X-Gm-Gg: ASbGnctRk4bOeSL+FAXgdicl5L/vM8lPA4WNzked5i0fvj+SZEJaLtVp+TQuUxDKDb1
-	wQ/uZvqyyfPBZtXoVGg+vNsLEKG12+FSO5x+Ehe/v1GwDoY24O05odPgf6zzTOCAoJiw0flhiaE
-	fHkspB6DArkm1v0g+joDeuL0RgfVdArBPARa+cSfqn84pY313PngJtxDXbKo4np4v/Yk0i9TKQ3
-	xOOf/pA0qaOQj0uu0FrfCGpSHXVszIX5zfEGl5eavlM/TRXfmn4Rz7W44Dthh+/h6y2EvjVImPa
-	TJH2PcGa
-X-Received: by 2002:a05:600c:3547:b0:434:a525:7257 with SMTP id 5b1f17b1804b1-434fffd0490mr3115955e9.21.1733749630750;
-        Mon, 09 Dec 2024 05:07:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IELX86PBcQHpAJDUmCcFKSGck+5vkGUq7O4wFXOdXDUx7b79IoLlNFEza+cDwu9qun6lbiQKA==
-X-Received: by 2002:a05:600c:3547:b0:434:a525:7257 with SMTP id 5b1f17b1804b1-434fffd0490mr3115205e9.21.1733749630127;
-        Mon, 09 Dec 2024 05:07:10 -0800 (PST)
-Received: from eisenberg.redhat.com (nat-pool-muc-u.redhat.com. [149.14.88.27])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3862190965asm13200127f8f.82.2024.12.09.05.07.08
+        d=1e100.net; s=20230601; t=1733752948; x=1734357748;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OAhPp2pGpsvDTqVI2eQ221kABd4Y8/kh7k1mWyeQzTw=;
+        b=viUPrGf0LTdi2fKoIcPWM6KEiBrdjAbXkS7TyclAjmP5uaG4ASY5zbYncggROaOgWz
+         AIw17krdv5HlX91kMP1v+AIBVIim3dVPaeaFFcatxTlkOc7xTmJ77ajDjTyKEPiAlppx
+         zmrkbLl+PeVfhrQp+nUKzNfIWgtMfE4mQ6i1JIcNtV2mWpYfgVxtQG1D0lgRmQJVpSqh
+         W0O12xyCmoMV58k/ErBXZrHNaN/Oi2yBDxaqAUDAcmIGfec3xLoHBizX1v5Sn1GXovm9
+         4B39Klvm5eZXO9t7QX8IbcGmpXafpZSFaz5vHWZi4cJC6DoEwm1dnL87dpL8WpRQlDJM
+         1KBA==
+X-Forwarded-Encrypted: i=1; AJvYcCU0lTN3rPXi3GK74dAIoY+HvFm2QvDwqGRWibMh3iUyvuK8z9AtURRUTg1XrQuiJXnjuv8=@vger.kernel.org, AJvYcCU8zqng2OpiE4vF46u6tgfE0IiNPcMXclVlVkGR1a+l2E49IxSxOGK9HnZuHwVBiSrjexlQ5ZQ3yHq65Q==@vger.kernel.org, AJvYcCUut6kck6f7uekoEuNhbB+dMXd4pNcViDq+Xt0z+Q8bXjY7AGzwurKu4Li2rsGWmP6tjSNyIfrzWmq7TQP5@vger.kernel.org, AJvYcCVP5UPLy/lrrB+k231xlOjSzzsrEL0VSPAVimVEzQjKEQ/XekITzjBmddfFmNxRv/TASU7ctTSdh71Y/RzR0L0=@vger.kernel.org, AJvYcCVd87fNDyW6jeItN+eFfXEW3vY78KV05tGRUWfG9kTW6ptS8j/vAaplk4MDQEKUzcDSeX5OC+JV4nTE@vger.kernel.org, AJvYcCWTDJdpCu/thTEae5mrZaHodfTkRkdESIjSKkYYkKoRpfV/+9PCLlK2oEgK3i7dL4jYVNVRZD3V496uhQ==@vger.kernel.org, AJvYcCWeqcqxbgFTCL/2FbBgD0RIawwsIUdaUc2OKMjU+fCcVtNOn9m/DBpyoN0iGN/3OqPuZxVlUKEDKrEXlgFvknQ7@vger.kernel.org, AJvYcCWqr0rJjQoksMWKY1Rbp3RDMyUZRfRqzepzLYxuDUwdOaX9FHMMlL0gQ/5MaK0vHTR23IENwoaeUsqI@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8Y2iJ6sjZX0kqTyUavxQoPxS+LN7DE9T4BpL9iEH9f/ZtlDxe
+	rLO+azhVPQKKYXayWI/Qo+U7nTHa64llceccduYhdUFZpeV1Kak8TIpUMdOfvnY=
+X-Gm-Gg: ASbGncvT4vtOE3nJYWZzhvSf/xsuFhmXbmcOEWuKpbAgae6Dtc/WY1q/zZw8yw65iFq
+	iKlooPPJE1cc+grS0rKaoCVdrpa6+rL3OLTctBwB56koLbRtTofkzdn/tI47k2OzxPdzkYrWssN
+	l1rLpC/5ElH0lmP34DMBWD1BhwE6hOmp+UecQ22yxrj7uuDyI4AMtai07Xx7Gzj0RVTPJLHlzQU
+	PcQbXKemkhmX2sceCS4pjKPmq2SUWmtwOqPqNfYvIfqTQ4=
+X-Google-Smtp-Source: AGHT+IEziqjANISe8V7T1b1Vo9dS8nge43qoErTxjCtNhfTplDp9qnHGPIzO4tjQCtyFccSJFTBRCw==
+X-Received: by 2002:a17:902:e74f:b0:216:4122:925f with SMTP id d9443c01a7336-21641229442mr90363145ad.14.1733752948110;
+        Mon, 09 Dec 2024 06:02:28 -0800 (PST)
+Received: from nova-ws.. ([103.167.140.11])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-216221db645sm49605645ad.46.2024.12.09.06.02.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Dec 2024 05:07:09 -0800 (PST)
-From: Philipp Stanner <pstanner@redhat.com>
-To: amien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Basavaraj Natikar <basavaraj.natikar@amd.com>,
-	Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Alex Dubov <oakad@yahoo.com>,
-	Sudarsana Kalluru <skalluru@marvell.com>,
-	Manish Chopra <manishc@marvell.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
+        Mon, 09 Dec 2024 06:02:26 -0800 (PST)
+From: Xiao Liang <shaw.leon@gmail.com>
+To: netdev@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Jakub Kicinski <kuba@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Rasesh Mody <rmody@marvell.com>,
-	GR-Linux-NIC-Dev@marvell.com,
-	Igor Mitsyanko <imitsyanko@quantenna.com>,
-	Sergey Matyukevich <geomatsi@gmail.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sanjay R Mehta <sanju.mehta@amd.com>,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Jon Mason <jdmason@kudzu.us>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Allen Hubbe <allenbh@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Philipp Stanner <pstanner@redhat.com>,
-	Ricky Wu <ricky_wu@realtek.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Breno Leitao <leitao@debian.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mostafa Saleh <smostafa@google.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Yi Liu <yi.l.liu@intel.com>,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"Dr. David Alan Gilbert" <linux@treblig.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Ye Bin <yebin10@huawei.com>
-Cc: linux-ide@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-input@vger.kernel.org,
-	netdev@vger.kernel.org,
+	Ido Schimmel <idosch@nvidia.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	linux-rdma@vger.kernel.org,
+	linux-can@vger.kernel.org,
+	osmocom-net-gprs@lists.osmocom.org,
+	bpf@vger.kernel.org,
+	linux-ppp@vger.kernel.org,
+	wireguard@lists.zx2c4.com,
 	linux-wireless@vger.kernel.org,
-	ntb@lists.linux.dev,
-	linux-pci@vger.kernel.org,
-	kvm@vger.kernel.org,
-	xen-devel@lists.xenproject.org
-Subject: [PATCH v3 11/11] Remove devres from pci_intx()
-Date: Mon,  9 Dec 2024 14:06:33 +0100
-Message-ID: <20241209130632.132074-13-pstanner@redhat.com>
+	b.a.t.m.a.n@lists.open-mesh.org,
+	bridge@lists.linux.dev,
+	linux-wpan@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v5 0/5] net: Improve netns handling in RTNL and ip_tunnel
+Date: Mon,  9 Dec 2024 22:01:46 +0800
+Message-ID: <20241209140151.231257-1-shaw.leon@gmail.com>
 X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241209130632.132074-2-pstanner@redhat.com>
-References: <20241209130632.132074-2-pstanner@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -152,343 +108,108 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-pci_intx() is a hybrid function which can sometimes be managed through
-devres. This hybrid nature is undesirable.
+This patch series includes some netns-related improvements and fixes for
+RTNL and ip_tunnel, to make link creation more intuitive:
 
-Since all users of pci_intx() have by now been ported either to
-always-managed pcim_intx() or never-managed pci_intx_unmanaged(), the
-devres functionality can be removed from pci_intx().
+ - Creating link in another net namespace doesn't conflict with link names
+   in current one.
+ - Refector rtnetlink link creation. Create link in target namespace
+   directly. Pass both source and link netns to drivers via newlink()
+   callback.
 
-Consequently, pci_intx_unmanaged() is now redundant, because pci_intx()
-itself is now unmanaged.
+So that
 
-Remove the devres functionality from pci_intx(). Have all users of
-pci_intx_unmanaged() call pci_intx(). Remove pci_intx_unmanaged().
+  # ip link add netns ns1 link-netns ns2 tun0 type gre ...
 
-Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+will create tun0 in ns1, rather than create it in ns2 and move to ns1.
+And don't conflict with another interface named "tun0" in current netns.
+
 ---
- drivers/misc/cardreader/rtsx_pcr.c            |  2 +-
- drivers/misc/tifm_7xx1.c                      |  6 +--
- .../net/ethernet/broadcom/bnx2x/bnx2x_main.c  |  2 +-
- drivers/net/ethernet/brocade/bna/bnad.c       |  2 +-
- drivers/ntb/hw/amd/ntb_hw_amd.c               |  4 +-
- drivers/ntb/hw/intel/ntb_hw_gen1.c            |  2 +-
- drivers/pci/devres.c                          |  4 +-
- drivers/pci/msi/api.c                         |  2 +-
- drivers/pci/msi/msi.c                         |  2 +-
- drivers/pci/pci.c                             | 43 +------------------
- drivers/vfio/pci/vfio_pci_core.c              |  2 +-
- drivers/vfio/pci/vfio_pci_intrs.c             | 10 ++---
- drivers/xen/xen-pciback/conf_space_header.c   |  2 +-
- include/linux/pci.h                           |  1 -
- 14 files changed, 22 insertions(+), 62 deletions(-)
 
-diff --git a/drivers/misc/cardreader/rtsx_pcr.c b/drivers/misc/cardreader/rtsx_pcr.c
-index e25e6d560dd7..be3d4e0e50cc 100644
---- a/drivers/misc/cardreader/rtsx_pcr.c
-+++ b/drivers/misc/cardreader/rtsx_pcr.c
-@@ -1057,7 +1057,7 @@ static int rtsx_pci_acquire_irq(struct rtsx_pcr *pcr)
- 	}
- 
- 	pcr->irq = pcr->pci->irq;
--	pci_intx_unmanaged(pcr->pci, !pcr->msi_en);
-+	pci_intx(pcr->pci, !pcr->msi_en);
- 
- 	return 0;
- }
-diff --git a/drivers/misc/tifm_7xx1.c b/drivers/misc/tifm_7xx1.c
-index 5f9c7ccae8d2..1d54680d6ed2 100644
---- a/drivers/misc/tifm_7xx1.c
-+++ b/drivers/misc/tifm_7xx1.c
-@@ -327,7 +327,7 @@ static int tifm_7xx1_probe(struct pci_dev *dev,
- 		goto err_out;
- 	}
- 
--	pci_intx_unmanaged(dev, 1);
-+	pci_intx(dev, 1);
- 
- 	fm = tifm_alloc_adapter(dev->device == PCI_DEVICE_ID_TI_XX21_XX11_FM
- 				? 4 : 2, &dev->dev);
-@@ -368,7 +368,7 @@ static int tifm_7xx1_probe(struct pci_dev *dev,
- err_out_free:
- 	tifm_free_adapter(fm);
- err_out_int:
--	pci_intx_unmanaged(dev, 0);
-+	pci_intx(dev, 0);
- 	pci_release_regions(dev);
- err_out:
- 	if (!pci_dev_busy)
-@@ -392,7 +392,7 @@ static void tifm_7xx1_remove(struct pci_dev *dev)
- 		tifm_7xx1_sock_power_off(tifm_7xx1_sock_addr(fm->addr, cnt));
- 
- 	iounmap(fm->addr);
--	pci_intx_unmanaged(dev, 0);
-+	pci_intx(dev, 0);
- 	pci_release_regions(dev);
- 
- 	pci_disable_device(dev);
-diff --git a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c
-index 2ae63d6e6792..678829646cec 100644
---- a/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c
-+++ b/drivers/net/ethernet/broadcom/bnx2x/bnx2x_main.c
-@@ -1669,7 +1669,7 @@ static void bnx2x_igu_int_enable(struct bnx2x *bp)
- 	REG_WR(bp, IGU_REG_PF_CONFIGURATION, val);
- 
- 	if (val & IGU_PF_CONF_INT_LINE_EN)
--		pci_intx_unmanaged(bp->pdev, true);
-+		pci_intx(bp->pdev, true);
- 
- 	barrier();
- 
-diff --git a/drivers/net/ethernet/brocade/bna/bnad.c b/drivers/net/ethernet/brocade/bna/bnad.c
-index 2b37462d406e..ece6f3b48327 100644
---- a/drivers/net/ethernet/brocade/bna/bnad.c
-+++ b/drivers/net/ethernet/brocade/bna/bnad.c
-@@ -2669,7 +2669,7 @@ bnad_enable_msix(struct bnad *bnad)
- 		}
- 	}
- 
--	pci_intx_unmanaged(bnad->pcidev, 0);
-+	pci_intx(bnad->pcidev, 0);
- 
- 	return;
- 
-diff --git a/drivers/ntb/hw/amd/ntb_hw_amd.c b/drivers/ntb/hw/amd/ntb_hw_amd.c
-index b146f170e839..d687e8c2cc78 100644
---- a/drivers/ntb/hw/amd/ntb_hw_amd.c
-+++ b/drivers/ntb/hw/amd/ntb_hw_amd.c
-@@ -791,7 +791,7 @@ static int ndev_init_isr(struct amd_ntb_dev *ndev,
- err_msi_enable:
- 
- 	/* Try to set up intx irq */
--	pci_intx_unmanaged(pdev, 1);
-+	pci_intx(pdev, 1);
- 
- 	rc = request_irq(pdev->irq, ndev_irq_isr, IRQF_SHARED,
- 			 "ndev_irq_isr", ndev);
-@@ -831,7 +831,7 @@ static void ndev_deinit_isr(struct amd_ntb_dev *ndev)
- 		if (pci_dev_msi_enabled(pdev))
- 			pci_disable_msi(pdev);
- 		else
--			pci_intx_unmanaged(pdev, 0);
-+			pci_intx(pdev, 0);
- 	}
- }
- 
-diff --git a/drivers/ntb/hw/intel/ntb_hw_gen1.c b/drivers/ntb/hw/intel/ntb_hw_gen1.c
-index 9ad9d7fe227e..079b8cd79785 100644
---- a/drivers/ntb/hw/intel/ntb_hw_gen1.c
-+++ b/drivers/ntb/hw/intel/ntb_hw_gen1.c
-@@ -445,7 +445,7 @@ int ndev_init_isr(struct intel_ntb_dev *ndev,
- 
- 	/* Try to set up intx irq */
- 
--	pci_intx_unmanaged(pdev, 1);
-+	pci_intx(pdev, 1);
- 
- 	rc = request_irq(pdev->irq, ndev_irq_isr, IRQF_SHARED,
- 			 "ndev_irq_isr", ndev);
-diff --git a/drivers/pci/devres.c b/drivers/pci/devres.c
-index 3594eea37993..cc3195134721 100644
---- a/drivers/pci/devres.c
-+++ b/drivers/pci/devres.c
-@@ -416,7 +416,7 @@ static void pcim_intx_restore(struct device *dev, void *data)
- 	struct pci_dev *pdev = to_pci_dev(dev);
- 	struct pcim_intx_devres *res = data;
- 
--	pci_intx_unmanaged(pdev, res->orig_intx);
-+	pci_intx(pdev, res->orig_intx);
- }
- 
- static struct pcim_intx_devres *get_or_create_intx_devres(struct device *dev)
-@@ -453,7 +453,7 @@ int pcim_intx(struct pci_dev *pdev, int enable)
- 		return -ENOMEM;
- 
- 	res->orig_intx = !enable;
--	pci_intx_unmanaged(pdev, enable);
-+	pci_intx(pdev, enable);
- 
- 	return 0;
- }
-diff --git a/drivers/pci/msi/api.c b/drivers/pci/msi/api.c
-index c95e2e7dc9ab..b956ce591f96 100644
---- a/drivers/pci/msi/api.c
-+++ b/drivers/pci/msi/api.c
-@@ -289,7 +289,7 @@ int pci_alloc_irq_vectors_affinity(struct pci_dev *dev, unsigned int min_vecs,
- 			 */
- 			if (affd)
- 				irq_create_affinity_masks(1, affd);
--			pci_intx_unmanaged(dev, 1);
-+			pci_intx(dev, 1);
- 			return 1;
- 		}
- 	}
-diff --git a/drivers/pci/msi/msi.c b/drivers/pci/msi/msi.c
-index 53f13b09db50..3a45879d85db 100644
---- a/drivers/pci/msi/msi.c
-+++ b/drivers/pci/msi/msi.c
-@@ -268,7 +268,7 @@ EXPORT_SYMBOL_GPL(pci_write_msi_msg);
- static void pci_intx_for_msi(struct pci_dev *dev, int enable)
- {
- 	if (!(dev->dev_flags & PCI_DEV_FLAGS_MSI_INTX_DISABLE_BUG))
--		pci_intx_unmanaged(dev, enable);
-+		pci_intx(dev, enable);
- }
- 
- static void pci_msi_set_enable(struct pci_dev *dev, int enable)
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 30d17ec771fc..121eb7b0b1b7 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -4483,17 +4483,13 @@ void pci_disable_parity(struct pci_dev *dev)
- }
- 
- /**
-- * pci_intx_unmanaged - enables/disables PCI INTx for device dev,
-- * unmanaged version
-+ * pci_intx - enables/disables PCI INTx for device dev
-  * @pdev: the PCI device to operate on
-  * @enable: boolean: whether to enable or disable PCI INTx
-  *
-  * Enables/disables PCI INTx for device @pdev
-- *
-- * This function behavios identically to pci_intx(), but is never managed with
-- * devres.
-  */
--void pci_intx_unmanaged(struct pci_dev *pdev, int enable)
-+void pci_intx(struct pci_dev *pdev, int enable)
- {
- 	u16 pci_command, new;
- 
-@@ -4509,41 +4505,6 @@ void pci_intx_unmanaged(struct pci_dev *pdev, int enable)
- 
- 	pci_write_config_word(pdev, PCI_COMMAND, new);
- }
--EXPORT_SYMBOL_GPL(pci_intx_unmanaged);
--
--/**
-- * pci_intx - enables/disables PCI INTx for device dev
-- * @pdev: the PCI device to operate on
-- * @enable: boolean: whether to enable or disable PCI INTx
-- *
-- * Enables/disables PCI INTx for device @pdev
-- *
-- * NOTE:
-- * This is a "hybrid" function: It's normally unmanaged, but becomes managed
-- * when pcim_enable_device() has been called in advance. This hybrid feature is
-- * DEPRECATED! If you want managed cleanup, use pcim_intx() instead.
-- */
--void pci_intx(struct pci_dev *pdev, int enable)
--{
--	u16 pci_command, new;
--
--	pci_read_config_word(pdev, PCI_COMMAND, &pci_command);
--
--	if (enable)
--		new = pci_command & ~PCI_COMMAND_INTX_DISABLE;
--	else
--		new = pci_command | PCI_COMMAND_INTX_DISABLE;
--
--	if (new != pci_command) {
--		/* Preserve the "hybrid" behavior for backwards compatibility */
--		if (pci_is_managed(pdev)) {
--			WARN_ON_ONCE(pcim_intx(pdev, enable) != 0);
--			return;
--		}
--
--		pci_write_config_word(pdev, PCI_COMMAND, new);
--	}
--}
- EXPORT_SYMBOL_GPL(pci_intx);
- 
- /**
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 90240c8d51aa..1ab58da9f38a 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -498,7 +498,7 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
- 		if (vfio_pci_nointx(pdev)) {
- 			pci_info(pdev, "Masking broken INTx support\n");
- 			vdev->nointx = true;
--			pci_intx_unmanaged(pdev, 0);
-+			pci_intx(pdev, 0);
- 		} else
- 			vdev->pci_2_3 = pci_intx_mask_supported(pdev);
- 	}
-diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
-index 40abb0b937a2..8382c5834335 100644
---- a/drivers/vfio/pci/vfio_pci_intrs.c
-+++ b/drivers/vfio/pci/vfio_pci_intrs.c
-@@ -118,7 +118,7 @@ static bool __vfio_pci_intx_mask(struct vfio_pci_core_device *vdev)
- 	 */
- 	if (unlikely(!is_intx(vdev))) {
- 		if (vdev->pci_2_3)
--			pci_intx_unmanaged(pdev, 0);
-+			pci_intx(pdev, 0);
- 		goto out_unlock;
- 	}
- 
-@@ -132,7 +132,7 @@ static bool __vfio_pci_intx_mask(struct vfio_pci_core_device *vdev)
- 		 * mask, not just when something is pending.
- 		 */
- 		if (vdev->pci_2_3)
--			pci_intx_unmanaged(pdev, 0);
-+			pci_intx(pdev, 0);
- 		else
- 			disable_irq_nosync(pdev->irq);
- 
-@@ -178,7 +178,7 @@ static int vfio_pci_intx_unmask_handler(void *opaque, void *data)
- 	 */
- 	if (unlikely(!is_intx(vdev))) {
- 		if (vdev->pci_2_3)
--			pci_intx_unmanaged(pdev, 1);
-+			pci_intx(pdev, 1);
- 		goto out_unlock;
- 	}
- 
-@@ -296,7 +296,7 @@ static int vfio_intx_enable(struct vfio_pci_core_device *vdev,
- 	 */
- 	ctx->masked = vdev->virq_disabled;
- 	if (vdev->pci_2_3) {
--		pci_intx_unmanaged(pdev, !ctx->masked);
-+		pci_intx(pdev, !ctx->masked);
- 		irqflags = IRQF_SHARED;
- 	} else {
- 		irqflags = ctx->masked ? IRQF_NO_AUTOEN : 0;
-@@ -569,7 +569,7 @@ static void vfio_msi_disable(struct vfio_pci_core_device *vdev, bool msix)
- 	 * via their shutdown paths.  Restore for NoINTx devices.
- 	 */
- 	if (vdev->nointx)
--		pci_intx_unmanaged(pdev, 0);
-+		pci_intx(pdev, 0);
- 
- 	vdev->irq_type = VFIO_PCI_NUM_IRQS;
- }
-diff --git a/drivers/xen/xen-pciback/conf_space_header.c b/drivers/xen/xen-pciback/conf_space_header.c
-index 8d26d64232e8..fc0332645966 100644
---- a/drivers/xen/xen-pciback/conf_space_header.c
-+++ b/drivers/xen/xen-pciback/conf_space_header.c
-@@ -106,7 +106,7 @@ static int command_write(struct pci_dev *dev, int offset, u16 value, void *data)
- 
- 	if (dev_data && dev_data->allow_interrupt_control &&
- 	    ((cmd->val ^ value) & PCI_COMMAND_INTX_DISABLE))
--		pci_intx_unmanaged(dev, !(value & PCI_COMMAND_INTX_DISABLE));
-+		pci_intx(dev, !(value & PCI_COMMAND_INTX_DISABLE));
- 
- 	cmd->val = value;
- 
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index b5eb8bda655d..f05903dd7695 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -1350,7 +1350,6 @@ int __must_check pcim_set_mwi(struct pci_dev *dev);
- int pci_try_set_mwi(struct pci_dev *dev);
- void pci_clear_mwi(struct pci_dev *dev);
- void pci_disable_parity(struct pci_dev *dev);
--void pci_intx_unmanaged(struct pci_dev *pdev, int enable);
- void pci_intx(struct pci_dev *dev, int enable);
- bool pci_check_and_mask_intx(struct pci_dev *dev);
- bool pci_check_and_unmask_intx(struct pci_dev *dev);
+v5:
+ - Fix function doc in batman-adv.
+ - Include peer_net in rtnl newlink parameters.
+
+v4:
+ link: https://lore.kernel.org/all/20241118143244.1773-1-shaw.leon@gmail.com/
+ - Pack newlink() parameters to a single struct.
+ - Use ynl async_msg_queue.empty() in selftest.
+
+v3:
+ link: https://lore.kernel.org/all/20241113125715.150201-1-shaw.leon@gmail.com/
+ - Drop "netns_atomic" flag and module parameter. Add netns parameter to
+   newlink() instead, and convert drivers accordingly.
+ - Move python NetNSEnter helper to net selftest lib.
+
+v2:
+ link: https://lore.kernel.org/all/20241107133004.7469-1-shaw.leon@gmail.com/
+ - Check NLM_F_EXCL to ensure only link creation is affected.
+ - Add self tests for link name/ifindex conflict and notifications
+   in different netns.
+ - Changes in dummy driver and ynl in order to add the test case.
+
+v1:
+ link: https://lore.kernel.org/all/20241023023146.372653-1-shaw.leon@gmail.com/
+
+
+Xiao Liang (5):
+  net: ip_tunnel: Build flow in underlay net namespace
+  rtnetlink: Lookup device in target netns when creating link
+  rtnetlink: Decouple net namespaces in rtnl_newlink_create()
+  selftests: net: Add python context manager for netns entering
+  selftests: net: Add two test cases for link netns
+
+ drivers/infiniband/ulp/ipoib/ipoib_netlink.c  | 11 +++--
+ drivers/net/amt.c                             | 13 +++---
+ drivers/net/bareudp.c                         | 11 +++--
+ drivers/net/bonding/bond_netlink.c            |  8 ++--
+ drivers/net/can/dev/netlink.c                 |  4 +-
+ drivers/net/can/vxcan.c                       |  9 ++--
+ .../ethernet/qualcomm/rmnet/rmnet_config.c    | 11 +++--
+ drivers/net/geneve.c                          | 11 +++--
+ drivers/net/gtp.c                             |  9 ++--
+ drivers/net/ipvlan/ipvlan.h                   |  4 +-
+ drivers/net/ipvlan/ipvlan_main.c              | 11 +++--
+ drivers/net/ipvlan/ipvtap.c                   |  7 ++-
+ drivers/net/macsec.c                          | 11 +++--
+ drivers/net/macvlan.c                         |  8 ++--
+ drivers/net/macvtap.c                         |  8 ++--
+ drivers/net/netkit.c                          |  9 ++--
+ drivers/net/pfcp.c                            |  8 ++--
+ drivers/net/ppp/ppp_generic.c                 | 10 +++--
+ drivers/net/team/team_core.c                  |  7 +--
+ drivers/net/veth.c                            |  9 ++--
+ drivers/net/vrf.c                             |  7 +--
+ drivers/net/vxlan/vxlan_core.c                | 11 +++--
+ drivers/net/wireguard/device.c                |  8 ++--
+ drivers/net/wireless/virtual/virt_wifi.c      | 10 +++--
+ drivers/net/wwan/wwan_core.c                  | 15 +++++--
+ include/net/ip_tunnels.h                      |  5 ++-
+ include/net/rtnetlink.h                       | 44 ++++++++++++++++---
+ net/8021q/vlan_netlink.c                      | 11 +++--
+ net/batman-adv/soft-interface.c               | 12 ++---
+ net/bridge/br_netlink.c                       |  8 ++--
+ net/caif/chnl_net.c                           |  6 +--
+ net/core/rtnetlink.c                          | 35 ++++++++-------
+ net/hsr/hsr_netlink.c                         | 14 +++---
+ net/ieee802154/6lowpan/core.c                 |  9 ++--
+ net/ipv4/ip_gre.c                             | 27 ++++++++----
+ net/ipv4/ip_tunnel.c                          | 16 ++++---
+ net/ipv4/ip_vti.c                             | 10 +++--
+ net/ipv4/ipip.c                               | 10 +++--
+ net/ipv6/ip6_gre.c                            | 28 +++++++-----
+ net/ipv6/ip6_tunnel.c                         | 16 +++----
+ net/ipv6/ip6_vti.c                            | 15 +++----
+ net/ipv6/sit.c                                | 16 +++----
+ net/xfrm/xfrm_interface_core.c                | 14 +++---
+ tools/testing/selftests/net/Makefile          |  1 +
+ .../testing/selftests/net/lib/py/__init__.py  |  2 +-
+ tools/testing/selftests/net/lib/py/netns.py   | 18 ++++++++
+ tools/testing/selftests/net/netns-name.sh     | 10 +++++
+ tools/testing/selftests/net/netns_atomic.py   | 39 ++++++++++++++++
+ 48 files changed, 385 insertions(+), 211 deletions(-)
+ create mode 100755 tools/testing/selftests/net/netns_atomic.py
+
 -- 
 2.47.1
 
