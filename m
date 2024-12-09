@@ -1,270 +1,279 @@
-Return-Path: <linux-wireless+bounces-16096-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16098-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 912599E9C5D
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 18:01:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E34A19E9C66
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 18:02:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E459918893AC
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 17:01:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 297DE188858A
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 17:01:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07DAC222D7F;
-	Mon,  9 Dec 2024 16:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A407414F121;
+	Mon,  9 Dec 2024 16:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dipier.ro header.i=@dipier.ro header.b="eewYTkEk"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="KnZDB9Dm"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from qs51p00im-qukt01072701.me.com (qs51p00im-qukt01072701.me.com [17.57.155.16])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35C54595B
-	for <linux-wireless@vger.kernel.org>; Mon,  9 Dec 2024 16:57:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.57.155.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C291C14F9F3
+	for <linux-wireless@vger.kernel.org>; Mon,  9 Dec 2024 16:59:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733763480; cv=none; b=UFdLsnV9UYWSJQX+Tuj3U9ChO5flKH4H2ujVSJycBaMfJ/ClL6mh8/Dt294jM+udZZNr9vTAQloZoI9vYkA6/sFIVt7i1765swGAYBbs1mE2gNxYx8qUMvdsAvlkChyPuem12WsoqOsLG4oY8WYlDlKJiAozDdfysF++jVAaVvk=
+	t=1733763565; cv=none; b=pwpRi/0r7/UUuTyCScCb2dEE4TNJ0hXpvS8TBTIPhk5CQm6D90bNKMD1M4pbtjCfQI/RwJcMHjwOia8n69//qlf7g3UsIOddtRTMPoYeo8EIy/+Guso4PhSvNMmemh0AYiuMPeyJJSekpb6AzftXWeLvDFp+fHoXks/X98hXEIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733763480; c=relaxed/simple;
-	bh=J/vgKVnD4j1vYalxwLRQJdhdgHLGYdMP8l/5D3kcYWY=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=a1HV/f77ONq4ganum/GlWvVtRaKCX9M+RwNgGYjrf8Bbi9InHpMfq7B7rFqhOXuJjgY/yjrPbWnFnerndTgFUJ9v/VjlHS5iaUDbP3r2OU95cXb80kwZ0Ul6HKrw2R2alDKfo5Q/cs8wrz2jcwfmiFU4yf7quWIvoVWnLCAvc38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dipier.ro; spf=pass smtp.mailfrom=dipier.ro; dkim=pass (2048-bit key) header.d=dipier.ro header.i=@dipier.ro header.b=eewYTkEk; arc=none smtp.client-ip=17.57.155.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dipier.ro
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dipier.ro
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dipier.ro; s=sig1;
-	t=1733763477; bh=MhpSVw6RvVcKy+r3Tw1mNQDofiWbW3UYoObtKGtzFkA=;
-	h=Content-Type:Mime-Version:Subject:From:Date:Message-Id:To:
-	 x-icloud-hme;
-	b=eewYTkEkWeY07zp0m0fd52SiVNapjR3+hKv+KNPdat+W4TK6lGhtIY5gqSUsJDbDw
-	 dCtekYMlibdvZkV3vDxsfOENs2e8VoMrlT/3vYzJ+zSb/B6Z1SaIZ8qjTfw0VTqduI
-	 NFXa9pODfs1rnfQzRKHuGbLVJ0+ioPFdlVshaCL2fV3rdnm5YRlo+iEqRDwD/dZMPT
-	 agUN2KhHbMjPaOT1bI53C0gZc3gU+zjHlUfR6Mz+P7CXXtwJu6oeM3uL3pRkrwsxjq
-	 SxD12Wr7QwlRT6sWBWzkAfSxAb5na+SdFrUoZp2ClLv6IQjirOXek9/Gx785oOmrJd
-	 xHb2901gJYc+g==
-Received: from smtpclient.apple (qs51p00im-dlb-asmtp-mailmevip.me.com [17.57.155.28])
-	by qs51p00im-qukt01072701.me.com (Postfix) with ESMTPSA id 2F83A15C0619;
-	Mon,  9 Dec 2024 16:57:55 +0000 (UTC)
-Content-Type: multipart/signed;
-	boundary="Apple-Mail=_75ED10CC-16C3-4411-9BFA-EC6073F8A0DF";
-	protocol="application/pgp-signature";
-	micalg=pgp-sha256
+	s=arc-20240116; t=1733763565; c=relaxed/simple;
+	bh=FbVMyUbjHZe0YiaBg4dwHYEgjTViDfUdOA0iGinnFF8=;
+	h=Message-ID:Date:MIME-Version:To:Cc:Subject:From:Content-Type; b=LJxkhWGVCONpGlzxOo+JJmrSzUMPu+8Lslntl18mzgfqRIPgwOkF5fH9+2/iHeI+UHx+zKeHCbL4ZEQ6tNPPJdrlJnmQcThfjVG/zrxtCEzEMTsQUk37rYyZ19wOBBPiEO2p2QnerUPajxKDrLX5V4kjSo09lA2b3SwBg8zFMKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=KnZDB9Dm; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B9Aw5cR015555
+	for <linux-wireless@vger.kernel.org>; Mon, 9 Dec 2024 16:59:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=Cqe63yc5xMHZNxkyy44oKS
+	u0NiQwLPXvmI/sCAdZVs4=; b=KnZDB9DmYlvUmWzXYdoGodEbX4bfnwZsP2SFG2
+	jTYaAGOrO5PoChf0XgDWuIqyJPvyottdzc0Cyjl+CgDMTcl1J8vC/qO22wATaFqV
+	RN2P8jir0x7vTLe/G3Z4QJBPIVODhTC4k29Dse/U1i2eeY76BFRJkix2v5hUC5je
+	GC0nqQQ18FGrO3uMDvSLftSowubRI9OFHR1YoMWIny318hmxELAY1+EHzHubxqT6
+	z9c6hxOe5nfan/00P6UHbbeg+UR7ZRHYKkXgvpX+5+pgkffFT8mXXkFJQcNPCvoe
+	tWKSpvqgpU0vV89UbS3v2jTkVRk/I+kVHCiX74/7gQ4lkqXw==
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43dy8ts75v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 09 Dec 2024 16:59:22 +0000 (GMT)
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-2ee6b027a90so7214979a91.1
+        for <linux-wireless@vger.kernel.org>; Mon, 09 Dec 2024 08:59:22 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733763562; x=1734368362;
+        h=content-transfer-encoding:from:content-language:subject:cc:to
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Cqe63yc5xMHZNxkyy44oKSu0NiQwLPXvmI/sCAdZVs4=;
+        b=N1F8p2pJg41yw3wZT3Z1vSqpHWenKzdofNR0YkmTxVkR7kHik1PmdnCfZPk61WLdI2
+         i753H9TS4+pzjKwLwNgzOmRPn/cJKJu2SNuDKTic4AFH7mCWyxBkQZdGA1Fhbln+C/VC
+         KR2Mlt6sXgnEnWsFv3WxUA1cpXNGodr9SXjb6q7ZdMRUTYdhyMytIizwiMotMVsylsc1
+         hkLKWEh5Vs3Hb2wrMXFAx344+bEbJmo3tTlN5CNjTqjtAY9V9UInW4wNyR9PTdjsDftt
+         gJ8Jqg6z/mF9fqvMlNhQxR788zH+8KL2/JyYhylMW36Bj1PiVaMBwovv1NT26MTVdPu9
+         tjzg==
+X-Gm-Message-State: AOJu0YzOzP742jURUCB1eiPf9g3DRm0ER3/N5/ZpgZw0mkgqcXh9C2JN
+	7I5dQdXoNHbZZ19tz+TCAx6FFkPrMd6yKeu3WmZ/T9WXbe7SyEjnS21Zqk6VwP/Vcx/eKKJfmUt
+	8BAhn+lZYrqNTl0O+ArYHeOLVFedmtX9kYNcCBtCA0mHwS6gZ2h8Pkw8RJ+EFVKfhFpanQr3c5Q
+	==
+X-Gm-Gg: ASbGnct0W0Xrm+anSUraiWMxgSy5dtlPavrbfVpH7KgyJxjudj7yQGiWl4yVXSM+Gs6
+	WgEr/+0cBgngUFKDzG7S8MsqRhCyovkW9ppOswa+EdVot9RBLoBPATjCqSIPTuArZaI7oup7G+L
+	0eTmTc2rFNWCJgnmTGwjawzPqcvxK3yQaqRHM41jOtLbZsJDTR3ReyWLdIC5VPE7+ThdBNoyHKK
+	f16ZIdcRLzzsE5tjzldWQkGu02O7EZEweN6RPkfVJrl2FBDNHQfKMZGhQuiZeyE26AIR/dHlC2i
+	gPmf3Mftraw=
+X-Received: by 2002:a17:90b:4a:b0:2ee:f80c:6892 with SMTP id 98e67ed59e1d1-2efcf136579mr1784495a91.3.1733763561666;
+        Mon, 09 Dec 2024 08:59:21 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGZTS9C4BJCt9kyZwlO+HpR3HB57Lvf55z4w/IcHcKXNKbG36kHwnh/zlS856HJiwhcX+J1gQ==
+X-Received: by 2002:a17:90b:4a:b0:2ee:f80c:6892 with SMTP id 98e67ed59e1d1-2efcf136579mr1784451a91.3.1733763561217;
+        Mon, 09 Dec 2024 08:59:21 -0800 (PST)
+Received: from [10.81.24.74] (Global_NAT1.qualcomm.com. [129.46.96.20])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ef2701def5sm10113787a91.31.2024.12.09.08.59.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 Dec 2024 08:59:20 -0800 (PST)
+Message-ID: <1bcdaf98-6078-4f79-a989-2e5db9400585@oss.qualcomm.com>
+Date: Mon, 9 Dec 2024 08:59:19 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.2\))
-Subject: Re: wireless-regdb: Update regulatory rules for Armenia (AM) on 2.4
- and 5 GHz
-From: Avgustina DiPierro <tina@dipier.ro>
-In-Reply-To: <CAGb2v651G_dtC4Nzh4f9rQQ4w8KajAR0xb-8DbcedXiYcnz7jA@mail.gmail.com>
-Date: Mon, 9 Dec 2024 20:57:42 +0400
-Cc: linux-wireless@vger.kernel.org,
- wireless-regdb@lists.infradead.org
-Message-Id: <FCC80FC4-5A96-4BC5-A0A2-99986F7869F4@dipier.ro>
-References: <274D81C2-56C7-4042-96F9-A04A92BEAEFD@dipier.ro>
- <CAGb2v651G_dtC4Nzh4f9rQQ4w8KajAR0xb-8DbcedXiYcnz7jA@mail.gmail.com>
-To: wens@kernel.org
-X-Mailer: Apple Mail (2.3826.300.87.4.2)
-X-Proofpoint-GUID: uYbEJHw_p2txyajJGIvZYrauf3AS3Gvj
-X-Proofpoint-ORIG-GUID: uYbEJHw_p2txyajJGIvZYrauf3AS3Gvj
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: linux-wireless@vger.kernel.org
+Cc: ath10k@lists.infradead.org, ath11k@lists.infradead.org,
+        ath12k@lists.infradead.org, jjohnson@kernel.org, kvalo@kernel.org
+Subject: pull-request: ath-next-20241209
+Content-Language: en-US
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-ORIG-GUID: SrUKrMipqPqjI-PRW3fosgC7Hml9r4_W
+X-Proofpoint-GUID: SrUKrMipqPqjI-PRW3fosgC7Hml9r4_W
 X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-09_12,2024-12-09_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0
- malwarescore=0 bulkscore=0 clxscore=1030 mlxscore=0 suspectscore=0
- phishscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2412090132
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
+ priorityscore=1501 mlxlogscore=999 clxscore=1015 mlxscore=0 spamscore=0
+ lowpriorityscore=0 malwarescore=0 bulkscore=0 phishscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2412090132
 
+The following changes since commit 2b94751626a6d49bbe42a19cc1503bd391016bd5:
 
---Apple-Mail=_75ED10CC-16C3-4411-9BFA-EC6073F8A0DF
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;
-	charset=utf-8
+  wifi: cw1200: Fix potential NULL dereference (2024-10-31 16:20:02 +0200)
 
-Hi Chen-Yu,
+are available in the Git repository at:
 
-I greatly appreciate your assistance, as it is my first time sending Git =
-patches with e-mail.
-I will re-create this thread with proper formatting and improved commit. =
-Thank you.
+  git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath.git tags/ath-next-20241209
 
-=E2=80=94
-Tina
+for you to fetch changes up to da8656797ae10b524a7a0c3d5eeb6237fa3ddd70:
 
-> On 9 Dec 2024, at 20:16, Chen-Yu Tsai <wens@kernel.org> wrote:
->=20
-> Hi,
->=20
-> On Mon, Dec 9, 2024 at 11:49=E2=80=AFPM <tina@dipier.ro> wrote:
->>=20
->> Public Services Regulatory Commission of the Republic of Armenia has =
-released two amendments to its 2011 Decision =E2=84=96169=D5=86 on =
-Approval of the Procedure for Issuing Permits for the Use of Radio =
-Frequencies.
->>=20
->> 1. Amendment =E2=84=96159=D5=86, on permit of usage of radio =
-frequency ranges without permit, released on May 11, 2012, available at =
-https://www.psrc.am/contents/document/4749 (choose language =E2=86=92 =
-HY)
->>=20
->> <=E2=80=A6> Based on Article 5, Part 1, Point 1(d) and Point 2(b), =
-Article 6, Part 1 and Part 2, Point 1, and Article 17, Part 5 of the Law =
-of the Republic of Armenia "On Electronic Communication," as well as =
-Article 70, Part 1 of the Law of the Republic of Armenia "On Legal =
-Acts," the Public Services Regulatory Commission of the Republic of =
-Armenia decides:
->> To amend Points 4 and 5 of the annex to the decision =E2=84=96169N of =
-April 13, 2011, by the Public Services Regulatory Commission of the =
-Republic of Armenia titled "Approval of the Procedure for Granting =
-Permissions for the Use of Radio Frequencies," by restating them with a =
-new wording. <=E2=80=A6>
->> "4. No permission is required for:
->> <=E2=80=A6>
->> 9) The use of broadband wireless access equipment operating in the =
-2400=E2=80=932483.5 MHz radio frequency band with a power of up to 100 =
-mW.
->> <=E2=80=A6>=E2=80=9D
->>=20
->>=20
->> 2. Amendment =E2=84=96295-=D5=86, on permit of usage of radio =
-frequency ranges without permit, released on August 23, 2023, available =
-at https://www.psrc.am/contents/document/11375 (choose language =E2=86=92 =
-HY)
->=20
-> Please try to change any non-ASCII characters down to ASCII.
-> And please wrap commit messages to under 80 characters per line.
->=20
->> <=E2=80=A6> Based on Articles 33 and 34 of the Law "On Normative =
-Legal Acts," the Public Services Regulatory Commission of the Republic =
-of Armenia decides:
->> To amend Subpoint 10 of Point 4 of the annex to Decision =E2=84=96169-N=
- of April 13, 2011, of the Public Services Regulatory Commission of the =
-Republic of Armenia, titled "Approval of the Procedure for Granting =
-Permissions for the Use of Radio Frequencies," as follows:
->> "10) For the use of local network equipment operating in the =
-5150-5350 MHz and 5470-5875 MHz radio frequency bands with an effective =
-radiated power (e.r.p.) of up to 100 mW (only indoors, as well as in =
-airplanes during all phases of flight), utilizing dynamic frequency =
-selection (DFS) and transmitter power control (TPC).=E2=80=9D <=E2=80=A6>
->=20
-> This mentions TPC, which we don't actually support. We adopted =
-reducing
-> the maximum EIRP by 3 dBm, on the basis of that is what the ETSI =
-regulations
-> do.
->=20
-> You don't need to include the actual text, which makes the commit
-> message really long.
->=20
-> Just list the bits that are updated, and provide links to the =
-justification.
-> And pointers to the actual item would be nice. So something like the
-> following:
->=20
-> 1. For 2.4 GHz range, based on reworded subparagraph 9 from
->   https://www.psrc.am/contents/document/4749
->=20
->   * 2400 - 2483.5
->     - 100 mW EIRP
->     - indoor use only
->=20
-> 2. For 5 GHz range, based on reworded subparagraph 10 from
->   https://www.psrc.am/contents/document/11375
->   which also supersedes the previous document
->=20
->   * 5150 - 5350
->     - 100 mW EIRP
->     - indoor use only
->     - DFS required
->     - TPC required, reduce limit by 3 dBm to 17 dBm
->=20
->    same for the other range.
->=20
->> Essentially, this two documents define this frequencies as permitted:
->> - 2400 - 2483.5 MHz @ 100 mW
->> - 5150 - 5350 MHz @ 100 mW with DFS, outdoor usage forbidden
->> - 5470 - 5875 MHz @ 100 mW) with DFS, outdoor usage forbidden
->>=20
->> However, I am not sure if AUTO-BW option here is required. As far as =
-I know, there is currently no limitation on bandwidth usage in IEEE =
-802.11 set of protocols in Armenia.
->=20
-> Normally any additional notes should be written under the "---" so =
-that
-> when we apply the patch, it doesn't get included.
->=20
-> AUTO-BW is just for stitching together adjacent bands that have =
-different
-> requirements. Since you aren't doing that here, it isn't needed.
->=20
->=20
-> Also, we require a Signed-off-by line from you, like with all kernel =
-patches.
->=20
->> ---
->> db.txt | 10 +++++++---
->> 1 file changed, 7 insertions(+), 3 deletions(-)
->>=20
->> diff --git a/db.txt b/db.txt
->> index e282e3b..5d5ba22 100644
->> --- a/db.txt
->> +++ b/db.txt
->> @@ -81,10 +81,14 @@ country AL: DFS-ETSI
->>        # short range devices (ETSI EN 300 440-1)
->>        (5725 - 5875 @ 80), (25 mW)
->>=20
->> +# Source (in Armenian):
->> +# 2.4 GHz https://www.psrc.am/contents/document/4749
->> +# 5 GHz https://www.psrc.am/contents/document/11375
->> +
->> country AM: DFS-ETSI
->> -       (2402 - 2482 @ 40), (20)
->> -       (5170 - 5250 @ 20), (18)
->> -       (5250 - 5330 @ 20), (18), DFS
->> +       (2400 - 2483.5 @ 40), (100 mW)
->> +       (5150 - 5350 @ 160), (100 mW), NO-OUTDOOR, AUTO-BW, DFS
->> +       (5470 - 5875 @ 160), (100 mW), NO-OUTDOOR, AUTO-BW, DFS
->=20
-> Drop the AUTO-BW, as mentioned.
->=20
-> ChenYu
->=20
->=20
->> country AN: DFS-ETSI
->>        (2402 - 2482 @ 40), (20)
->> --
->> 2.45.2
+  wifi: ath12k: introduce mlo_capable flag for device group (2024-12-05 14:34:10 -0800)
 
+----------------------------------------------------------------
+ath.git patches for v6.14
 
+This development cycle featured multiple patchsets to ath12k to
+support the new 802.11be MLO feature, although the feature is still
+incomplete. Also in ath12k, there were other feature patches.  In
+ath11k, support was added for QCA6698AQ. And there was the usual set
+of bug fixes and cleanups across most drivers, notable being the
+addition of "noinline_for_stack" to some functions to avoid "stack
+frame size" warnings when compiling with clang.
 
+----------------------------------------------------------------
+Aditya Kumar Singh (2):
+      wifi: ath12k: ath12k_bss_assoc(): MLO support
+      wifi: ath12k: rename mlo_capable_flags to single_chip_mlo_supp
 
+Balaji Pothunoori (2):
+      wifi: ath11k: Suspend hardware before firmware mode off for WCN6750
+      wifi: ath11k: Fix unexpected return buffer manager error for WCN6750/WCN6855
 
+Barnabás Czémán (1):
+      wifi: wcn36xx: fix channel survey memory allocation size
 
---Apple-Mail=_75ED10CC-16C3-4411-9BFA-EC6073F8A0DF
-Content-Transfer-Encoding: 7bit
-Content-Disposition: attachment;
-	filename=signature.asc
-Content-Type: application/pgp-signature;
-	name=signature.asc
-Content-Description: Message signed with OpenPGP
+Dinesh Karthikeyan (4):
+      wifi: ath12k: Support Downlink Pager Stats
+      wifi: ath12k: Support phy counter and TPC stats
+      wifi: ath12k: Support SoC Common Stats
+      wifi: ath12k: Support Transmit PER Rate Stats
 
------BEGIN PGP SIGNATURE-----
+Dmitry Antipov (5):
+      wifi: ath9k: miscellaneous spelling fixes
+      wifi: ath11k: cleanup struct ath11k_vif
+      wifi: ath11k: cleanup struct ath11k_reg_tpc_power_info
+      wifi: ath11k: cleanup struct ath11k_mon_data
+      wifi: ath11k: miscellaneous spelling fixes
 
-iQIzBAEBCAAdFiEEvCu0pyMKUrP7kHuNENjZHNl7IMkFAmdXIYYACgkQENjZHNl7
-IMkrOw/5AWXFlkrEsrI58ZnCv1ny3Dp5O7rW3s8riGQArft92pEiScpo7DxIqwgn
-rMJw4VzN9HmXaRvJT8zbVKb9lAiE2zP8hH444sjG6V7tgIQbCWGcFa5tJZkDT9fr
-HCsl3mt95wxLvjHegeX62FVAMU9zvPY11k/sjsiS86QVI5W9gU9RnQfYFnV+w9S+
-bf7iuiIOjq38JDYYfIHkgcfCp2NH0WSwjSk8ky+CfLJdwyMRcxeNfkccjEeXmnL+
-sjlYXZYHfOGiBEGpYC3jzdR2akUGHhynFvprj97vFrBvBpa3zVuCelOMo9A/CCW1
-Fox1jK65bDpHbNMGjy4VPBBZ1IZQJ+9aFZYENLFdt6JL01ynhtA/iwGSWz/iiT3l
-pMJQijnQXP+6YTaIkY3BFwvmJG876h9dh9nu7VAE8/Gst/Y85o5a2PdBmzgy708k
-q4cgJZAywraw2PrynpJcxKz4/YANp8YRbMLkrcuQi/gD3Oc1ReQOE+0fpHliLYeI
-Ry618+3Y+/Mrm7D3j8PXC3Tnr+kkAz7Q2kcYUUVts6dg+Np5MnZ1PNk/hFfrOJLe
-/x77dOakGfE/GMTliGMWM3DT4UXG/bHBQsMHaaVd5pIYh2lsN/t+Cza8f46havYB
-cUGno6IYS077yKjT888CSTSoD8Ex7YVUM6u0rWTND611bKRQzUw=
-=w7k5
------END PGP SIGNATURE-----
+Jeff Johnson (4):
+      wifi: ath12k: mark QMI driver event helpers as noinline
+      wifi: ath11k: mark some QMI driver event helpers as noinline
+      wifi: ath11k: mark ath11k_dp_rx_mon_mpdu_pop() as noinline
+      wifi: ath11k: mark ath11k_wow_convert_8023_to_80211() as noinline
 
---Apple-Mail=_75ED10CC-16C3-4411-9BFA-EC6073F8A0DF--
+Kalle Valo (5):
+      wifi: ath12k: ath12k_mac_vdev_create(): use goto for error handling
+      wifi: ath12k: introduce ath12k_hw_warn()
+      wifi: ath12k: convert struct ath12k::wmi_mgmt_tx_work to struct wiphy_work
+      wifi: ath12k: ath12k_mac_op_set_key(): fix uninitialized symbol 'ret'
+      wifi: ath12k: ath12k_mac_op_sta_rc_update(): use mac80211 provided link id
+
+Karol Przybylski (1):
+      wifi: ath12k: Fix for out-of bound access error
+
+Karthikeyan Periyasamy (10):
+      wifi: ath12k: Refactor core startup
+      wifi: ath12k: add ath12k_ab_to_ah() and ath12k_ab_set_ah()
+      wifi: ath12k: add ath12k_get_num_hw()
+      wifi: ath12k: introduce QMI firmware ready flag
+      wifi: ath12k: move ATH12K_FLAG_REGISTERED handling to ath12k_mac_register()
+      wifi: ath12k: introduce device group abstraction
+      wifi: ath12k: refactor core start based on hardware group
+      wifi: ath12k: move struct ath12k_hw from per device to group
+      wifi: ath12k: send QMI host capability after device group is ready
+      wifi: ath12k: introduce mlo_capable flag for device group
+
+Miaoqing Pan (1):
+      wifi: ath11k: add support for QCA6698AQ
+
+P Praneesh (1):
+      wifi: ath12k: Fix endianness issue in struct hal_tlv_64_hdr
+
+Rameshkumar Sundaram (4):
+      wifi: ath12k: add reo queue lookup table for ML peers
+      wifi: ath12k: modify chanctx iterators for MLO
+      wifi: ath12k: ath12k_mac_station_add(): fix potential rx_stats leak
+      wifi: ath12k: defer vdev creation for MLO
+
+Roopni Devanathan (1):
+      wifi: ath12k: Fix inappropriate use of print_array_to_buf_index()
+
+Sidhanta Sahu (1):
+      wifi: ath12k: Support MBSSID Control Frame Stats
+
+Sriram R (16):
+      wifi: ath12k: MLO vdev bringup changes
+      wifi: ath12k: Refactor sta state machine
+      wifi: ath12k: Add helpers for multi link peer creation and deletion
+      wifi: ath12k: add multi-link flag in peer create command
+      wifi: ath12k: add helper to find multi-link station
+      wifi: ath12k: Add MLO peer assoc command support
+      wifi: ath12k: Add MLO station state change handling
+      wifi: ath12k: support change_sta_links() mac80211 op
+      wifi: ath12k: add primary link for data path operations
+      wifi: ath12k: use arsta instead of sta
+      wifi: ath12k: Use mac80211 vif's link_conf instead of bss_conf
+      wifi: ath12k: Use mac80211 sta's link_sta instead of deflink
+      wifi: ath12k: ath12k_mac_op_tx(): MLO support
+      wifi: ath12k: ath12k_mac_op_flush(): MLO support
+      wifi: ath12k: ath12k_mac_op_ampdu_action(): MLO support
+      wifi: ath12k: do not return invalid link id for scan link
+
+Toke Høiland-Jørgensen (1):
+      wifi: ath9k: Add RX inactivity detection and reset chip when it occurs
+
+ drivers/net/wireless/ath/ath11k/core.c             |  132 ++
+ drivers/net/wireless/ath/ath11k/core.h             |    4 +-
+ drivers/net/wireless/ath/ath11k/dp.h               |    1 -
+ drivers/net/wireless/ath/ath11k/dp_rx.c            |   14 +-
+ drivers/net/wireless/ath/ath11k/hal.h              |    6 +-
+ drivers/net/wireless/ath/ath11k/hal_rx.c           |    3 +-
+ drivers/net/wireless/ath/ath11k/hw.h               |    1 +
+ drivers/net/wireless/ath/ath11k/mac.c              |    6 +-
+ drivers/net/wireless/ath/ath11k/mhi.c              |    1 +
+ drivers/net/wireless/ath/ath11k/pci.c              |    3 +
+ drivers/net/wireless/ath/ath11k/pcic.c             |   13 +-
+ drivers/net/wireless/ath/ath11k/qmi.c              |    8 +-
+ drivers/net/wireless/ath/ath11k/wow.c              |    6 +-
+ drivers/net/wireless/ath/ath12k/core.c             |  482 ++++-
+ drivers/net/wireless/ath/ath12k/core.h             |  134 +-
+ drivers/net/wireless/ath/ath12k/debug.c            |    6 +-
+ drivers/net/wireless/ath/ath12k/debug.h            |    5 +-
+ .../net/wireless/ath/ath12k/debugfs_htt_stats.c    |  681 ++++++-
+ .../net/wireless/ath/ath12k/debugfs_htt_stats.h    |  218 ++-
+ drivers/net/wireless/ath/ath12k/dp.c               |   70 +-
+ drivers/net/wireless/ath/ath12k/dp.h               |    3 +-
+ drivers/net/wireless/ath/ath12k/dp_rx.c            |   96 +-
+ drivers/net/wireless/ath/ath12k/dp_rx.h            |    6 +-
+ drivers/net/wireless/ath/ath12k/hal_desc.h         |    2 +-
+ drivers/net/wireless/ath/ath12k/hal_rx.c           |   12 +-
+ drivers/net/wireless/ath/ath12k/mac.c              | 2003 +++++++++++++++-----
+ drivers/net/wireless/ath/ath12k/mac.h              |   16 +-
+ drivers/net/wireless/ath/ath12k/pci.c              |   10 +
+ drivers/net/wireless/ath/ath12k/peer.c             |  223 ++-
+ drivers/net/wireless/ath/ath12k/peer.h             |   23 +-
+ drivers/net/wireless/ath/ath12k/qmi.c              |  167 +-
+ drivers/net/wireless/ath/ath12k/qmi.h              |   20 +
+ drivers/net/wireless/ath/ath12k/wmi.c              |  207 +-
+ drivers/net/wireless/ath/ath12k/wmi.h              |  115 ++
+ drivers/net/wireless/ath/ath9k/antenna.c           |    2 +-
+ drivers/net/wireless/ath/ath9k/ar9002_hw.c         |    2 +-
+ drivers/net/wireless/ath/ath9k/ar9003_hw.c         |    2 +-
+ drivers/net/wireless/ath/ath9k/ar9003_mci.c        |    4 +-
+ drivers/net/wireless/ath/ath9k/ar9003_phy.h        |    2 +-
+ drivers/net/wireless/ath/ath9k/ath9k.h             |    2 +
+ drivers/net/wireless/ath/ath9k/channel.c           |    2 +-
+ drivers/net/wireless/ath/ath9k/common-spectral.c   |    2 +-
+ drivers/net/wireless/ath/ath9k/debug.c             |    1 +
+ drivers/net/wireless/ath/ath9k/debug.h             |    1 +
+ drivers/net/wireless/ath/ath9k/dfs.c               |    2 +-
+ drivers/net/wireless/ath/ath9k/hif_usb.c           |    2 +-
+ drivers/net/wireless/ath/ath9k/hw.c                |    4 +-
+ drivers/net/wireless/ath/ath9k/hw.h                |    2 +-
+ drivers/net/wireless/ath/ath9k/link.c              |   33 +-
+ drivers/net/wireless/ath/ath9k/mac.h               |    2 +-
+ drivers/net/wireless/ath/ath9k/main.c              |    3 +-
+ drivers/net/wireless/ath/ath9k/wow.c               |    6 +-
+ drivers/net/wireless/ath/ath9k/xmit.c              |    2 +-
+ drivers/net/wireless/ath/wcn36xx/main.c            |    5 +-
+ 54 files changed, 4042 insertions(+), 736 deletions(-)
 
