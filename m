@@ -1,93 +1,75 @@
-Return-Path: <linux-wireless+bounces-16029-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16030-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E56D9E8F23
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 10:49:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95CFC9E90EB
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 11:50:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94153163590
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 09:49:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E0D21881306
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 10:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D515A2163B6;
-	Mon,  9 Dec 2024 09:49:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xn+qMvvb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9744217702;
+	Mon,  9 Dec 2024 10:49:54 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A779D83CD2;
-	Mon,  9 Dec 2024 09:49:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE61217F3F
+	for <linux-wireless@vger.kernel.org>; Mon,  9 Dec 2024 10:49:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733737751; cv=none; b=jM3vuvPIlYrU1tlBhKGMV7mIvAfZKPFYywTwfjRScPiN1cHwufsSqa+9ILh11fmOMrG+zzP9YNiado79OGIxQ0UGHGDWW+0jO6ZApmxeVkrvs0pHeu2Vvi7LxwMQV8yJMFO1mWPnvaINxBFbxKGAt/Nm6VVGsyVIdJz44Hjm/Cg=
+	t=1733741394; cv=none; b=DIlHzEiK6kVyaklVzrj4cYG9gwaXpjVbGo04mDsCL8Wd1FJSbhJRhKmTFNH3m4WJmjbmUavuxq6KpDOQ4M+g4UyyfB/3Pkld4VO2aXvWF8YEa8DhtmPrr1NMfV5vUe0MNmBjSWFWm6/WtbQ9Macj317BvLHXhFQtgfkcaQRd8So=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733737751; c=relaxed/simple;
-	bh=qhrx3ojEXBzEaAfZ+IYNq03LjibZUpkxxO/wLrw5KxA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=tCXWSal8TGVvzeXXc/+XiS1doUPDwuzp85eWlRJstriMo0f+OkLYeThVQAeFqnDaEvnZpeJI9nKzCwKn8Q+iqCaSbnBaa/xdOiFCCnVllFYgtrDQh0LSePKPf7bj8nxcXYIz5efpPw/7idE9I5C6SI9Fsp49PBQBNOuLf5zt6VY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xn+qMvvb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4738AC4CEDE;
-	Mon,  9 Dec 2024 09:49:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733737751;
-	bh=qhrx3ojEXBzEaAfZ+IYNq03LjibZUpkxxO/wLrw5KxA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=Xn+qMvvbUXfDiIJZ4474c8UVpIOt4pSffXzuVqUvjAIrPAzgJwmJ5K/gTXQKAvmEn
-	 4TJKKTsIu3MrD7gIU2K//yTQzOk5EHiSR2Toyxp5u9FgB0ZJIVBTDycXnCiQKEROHq
-	 Vxk07kmPKtt7JQhH6+6KpM7OpmJ58ANg1hkto1IdjPmSo6B2aNJsgTK7IGDOVNCCj3
-	 k9dhto7AEeh9WzQrnegSkkSlDJS3VOt1SA5rOCZYXRZbSF3vN+bEJxOlrtRzwGBdEE
-	 nxoAR3ZoaFuA9I1Pe5zZxwZOOLuK3r1uHEWFA58cIhhWdg0b6+ZVDppVuWyzHvWn8n
-	 7O9Yvoqa8cTEg==
-From: Kalle Valo <kvalo@kernel.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: ath12k@lists.infradead.org,  linux-wireless@vger.kernel.org,
-  devicetree@vger.kernel.org
-Subject: Re: [PATCH 1/8] dt-bindings: net: wireless: Describe ath12k PCI
- module with WSI
-In-Reply-To: <20241206-sugar-surely-9efffa93aa5c@spud> (Conor Dooley's message
-	of "Fri, 6 Dec 2024 17:05:03 +0000")
-References: <20241205203044.589499-1-kvalo@kernel.org>
-	<20241205203044.589499-2-kvalo@kernel.org>
-	<20241206-sugar-surely-9efffa93aa5c@spud>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
-Date: Mon, 09 Dec 2024 11:49:08 +0200
-Message-ID: <87zfl5rxt7.fsf@kernel.org>
+	s=arc-20240116; t=1733741394; c=relaxed/simple;
+	bh=qDYE6sm06wT5iAye49l+JIErayXfaHy2n7nmUt4z920=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uRP4b6qrnsR3xc+eDXArA1btHqCaIGXFXHUMVrliHrNZp0Arz0YH2+LedfB9p1wk3ZwQK0fgEYhHQL5NcZU/z5d09TJ7YAzWCeOasUm7UUYkNXqwSxwBBHblYVkNKHJZh4tTR5gSlUVaAUPh3jw5sFMn9WJQH8XE7om/DdI2Nj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 23CE0113E;
+	Mon,  9 Dec 2024 02:50:20 -0800 (PST)
+Received: from [10.1.196.40] (e121345-lin.cambridge.arm.com [10.1.196.40])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 27C9D3F5A1;
+	Mon,  9 Dec 2024 02:49:51 -0800 (PST)
+Message-ID: <593c0d63-d8fd-4439-a57a-97340212c197@arm.com>
+Date: Mon, 9 Dec 2024 10:49:49 +0000
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: ath11k swiotlb buffer is full (on IMX8M with 4GiB DRAM)
+To: Christoph Hellwig <hch@lst.de>, Tim Harvey <tharvey@gateworks.com>
+Cc: Baochen Qiang <quic_bqiang@quicinc.com>, ath11k@lists.infradead.org,
+ linux-wireless <linux-wireless@vger.kernel.org>,
+ Fabio Estevam <festevam@gmail.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>, iommu@lists.linux.dev
+References: <CAJ+vNU0EL3T+GyNAbVbGqYYQ5NM3h7cgAwqxxBMuZjh+-YQ3bA@mail.gmail.com>
+ <1b2ea8b2-6fbe-4118-b6c6-742c8f0be476@quicinc.com>
+ <CAJ+vNU1-OZ3y4p2L+zf64AiVtUv70yZNqkT20jTxyE0_gJb6Jg@mail.gmail.com>
+ <0282be95-9094-4d49-b79e-4f7c976dad00@quicinc.com>
+ <CAJ+vNU32EMHjtchJRb1sODBrUKG2vZW4ZEu1_F0+dCCEjCn7Dg@mail.gmail.com>
+ <20241209081714.GA25363@lst.de>
+From: Robin Murphy <robin.murphy@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20241209081714.GA25363@lst.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Conor Dooley <conor@kernel.org> writes:
+On 09/12/2024 8:17 am, Christoph Hellwig wrote:
+> I scrolled three pages before giving up as it was just quotes over
+> quotas.  Can you please write an email that contains whatever you're
+> trying to tell instead of just quotes?  Same for the person replying.
 
-> On Thu, Dec 05, 2024 at 10:30:37PM +0200, Kalle Valo wrote:
->> +  qcom,wsi-controller:
->> +    type: boolean
->> +    description:
->> +      The WSI controller device in the WSI group aids (is capable) to
->> +      synchronize the Timing Synchronization Function (TSF) clock across
->> +      all devices in the WSI group.
->
-> This should be type: flag btw.
+TBH I'm hesitant to look too closely since everything those Atheros WiFi 
+drivers do with DMA tends to be sketchy, but from what I could make out 
+from skimming until I also gave up, I think it might be an attempt to 
+reinvent dma_alloc_pages(), or possibly dma_alloc_noncoherent().
 
-Just so that I understand correctly, do you mean it should be like this:
-
-  qcom,wsi-controller:
-    $ref: /schemas/types.yaml#/definitions/flag
-    description:
-      The WSI controller device in the WSI group aids (is capable) to
-      synchronize the Timing Synchronization Function (TSF) clock across
-      all devices in the WSI group.
-
-And no changes in the code?
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Cheers,
+Robin.
 
