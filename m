@@ -1,124 +1,99 @@
-Return-Path: <linux-wireless+bounces-16099-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16100-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D2C29E9C73
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 18:03:53 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19D379E9D04
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 18:26:22 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B007A28444B
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 17:03:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0730E1881E6E
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 17:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F12A815252D;
-	Mon,  9 Dec 2024 17:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BC4F14F9F8;
+	Mon,  9 Dec 2024 17:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dipier.ro header.i=@dipier.ro header.b="BxHgg+xn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SQdbv32M"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from qs51p00im-qukt01071502.me.com (qs51p00im-qukt01071502.me.com [17.57.155.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31604152E0C
-	for <linux-wireless@vger.kernel.org>; Mon,  9 Dec 2024 17:02:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.57.155.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE4D4409;
+	Mon,  9 Dec 2024 17:26:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733763754; cv=none; b=abaKKmE/Sv1i76ho6NGAwtICSCHcPmKhKRoQ97q1qCwbktUazaejNVWADAXxnz89jZLryPLuMIHZg4Zq3zjDmCWWD2j6kKVC2GQh3dhXaCm/qrgIHlv45xWZGZb4OnubW5D2bmANtZ76rb4C2s5I4iEXyMv+Gm2/WzdPl2X2jZ8=
+	t=1733765178; cv=none; b=W75JfrV1VI4TwZY6bosEiKrK8/Bz7NuCl7b+ujM9UVhc+/nAwkKrOjlm5rVYUmOjFHhPAuFRDfYL4gvXUmNX0zzK+RecmhJw3AUMk44v3b6tvxtc0fUrzfUjrW6UG0wb4JceTwY/rxqfjo26KZXNa0pjbfGt6Ik32R01QQR0xkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733763754; c=relaxed/simple;
-	bh=gRwOE5hGnQ3OMzY7tCzJ7/9N5frjAoaCIM8UhDy3mYc=;
-	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=L2wcr/BCOvx30ql6m2llPj/u4CxFv6MHsbW+Ua/hpL/toupb9n4dqnC8H+6aXwVUP4CYW6QwIVO0lTT6wfd0yDJMEhvXQMVdQ8J3IuZcAMKKdF3eILfsndpi+qFCQWHPPvlqHOe+qZQXook+JmEZAzJ550QgbyfsgPsSlpfDDFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dipier.ro; spf=pass smtp.mailfrom=dipier.ro; dkim=pass (2048-bit key) header.d=dipier.ro header.i=@dipier.ro header.b=BxHgg+xn; arc=none smtp.client-ip=17.57.155.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dipier.ro
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dipier.ro
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dipier.ro; s=sig1;
-	t=1733763752; bh=FKhrpIUmEQktQ66Pi5QIstHWcM46OciWNPxUSEpxgSA=;
-	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:To:
-	 x-icloud-hme;
-	b=BxHgg+xnvITDR9Jk2O7GBTyoNfDLjaAi/p0Izskfr40Om+oU20kCgz30TfBgPf0b5
-	 6CD4lKhdnhsAqUOXny+X8/xMw2WXE65OYLl2CY33/KINkKNRuTuWB5it07I+biZE/n
-	 2Mwl1xhT+LFqmuXLuiOhPg9rvLhFcqryq3T7S8bNNsXxHJagBtXz8bjm9KXYeUU2wv
-	 dLFfijYCtOkHn/KKum+O649nxcznsd636SVWblbRiRx0qqjGEn1vlOwRcsTO/etnp3
-	 35tiFcgdyajUX7lRH+wASfrwwcUIzpyrr7XDVLbeVkstNVTAMFSseU4o47WgUrtuif
-	 h12qzBzCuyduA==
-Received: from smtpclient.apple (qs51p00im-dlb-asmtp-mailmevip.me.com [17.57.155.28])
-	by qs51p00im-qukt01071502.me.com (Postfix) with ESMTPSA id 79E7466803DA;
-	Mon,  9 Dec 2024 17:02:30 +0000 (UTC)
-From: Avgustina DiPierro <tina@dipier.ro>
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: 7bit
+	s=arc-20240116; t=1733765178; c=relaxed/simple;
+	bh=DbEW8HiEN8UrWTm2ai5cXE5Unx4Lt0hypX28FJ3zTkI=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=biBGoq19RYR6n5VnHM9RCG1Lg5IitlxsYIyVbc/OfFPlOfC6Kjt7D+NAY3MAf0JvQE18BeUtybRB9Bd+Pn/tjmKbaL8zzdv1qwZPdilpz/GNd6Le45lj2ClBBCge0mFJU69q95RloCUG35sSTItQuQREVlly3z6cmC0Lv648778=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SQdbv32M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD1F1C4CED1;
+	Mon,  9 Dec 2024 17:26:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733765177;
+	bh=DbEW8HiEN8UrWTm2ai5cXE5Unx4Lt0hypX28FJ3zTkI=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=SQdbv32M4gQfi9aL+m0N6a0fpwF6PUXBwwdopOppQ3QfliOy+UR05w1z7Aew+lk8w
+	 tBF9Yrqe1thB/xvp707bYe6Vd0m+O0WMa+BdLluei4HltbGcR38U2jb2p+V8GbjB7m
+	 pQVMeVr6WeFGjt9tB2yJ0i9MVRw0wsV3nzNu6cn/q7bhr/KciaOHKrPrr3W/Z0XDoS
+	 EQ4NoG542UvaMERya0nKonWZ/nboV1147wMcNe3ZxUcx8FG8+68Rqb53ikI/Lk7Mph
+	 Y/j/fYA7dAxAlAWRi+duqZlxLyoMM7Yio/4yxC5RhCqNOPnLeRqV+RlxtZML8djoR8
+	 5K6LpBoog8cTg==
+From: Kalle Valo <kvalo@kernel.org>
+To: Conor Dooley <conor@kernel.org>
+Cc: ath12k@lists.infradead.org,  linux-wireless@vger.kernel.org,
+  devicetree@vger.kernel.org
+Subject: Re: [PATCH 1/8] dt-bindings: net: wireless: Describe ath12k PCI
+ module with WSI
+References: <20241205203044.589499-1-kvalo@kernel.org>
+	<20241205203044.589499-2-kvalo@kernel.org>
+	<20241206-sugar-surely-9efffa93aa5c@spud> <87zfl5rxt7.fsf@kernel.org>
+Date: Mon, 09 Dec 2024 19:26:15 +0200
+In-Reply-To: <87zfl5rxt7.fsf@kernel.org> (Kalle Valo's message of "Mon, 09 Dec
+	2024 11:49:08 +0200")
+Message-ID: <87a5d4sr7s.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.2\))
-Subject: [PATCH] wireless-regdb: Update regulatory rules for Armenia (AM) on
- 2.4 and 5 GHz
-Message-Id: <EC8B2D35-4EE1-42B1-91D0-46F788EF6C61@dipier.ro>
-Date: Mon, 9 Dec 2024 21:02:17 +0400
-Cc: wireless-regdb@lists.infradead.org
-To: linux-wireless@vger.kernel.org
-X-Mailer: Apple Mail (2.3826.300.87.4.2)
-X-Proofpoint-ORIG-GUID: E-a5PuBRSGVKhEETKUHckZYbPOv7O_W8
-X-Proofpoint-GUID: E-a5PuBRSGVKhEETKUHckZYbPOv7O_W8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2024-12-09_12,2024-12-09_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 spamscore=0 adultscore=0
- clxscore=1030 suspectscore=0 mlxscore=0 malwarescore=0 mlxlogscore=740
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2412090133
+MIME-Version: 1.0
+Content-Type: text/plain
 
-1. For 2.4 GHz range, based on reworded subparagraph 9 from
-  https://www.psrc.am/contents/document/4749
+Kalle Valo <kvalo@kernel.org> writes:
 
-  * 2400 - 2483.5
-    - 100 mW EIRP
+> Conor Dooley <conor@kernel.org> writes:
+>
+>> On Thu, Dec 05, 2024 at 10:30:37PM +0200, Kalle Valo wrote:
+>>> +  qcom,wsi-controller:
+>>> +    type: boolean
+>>> +    description:
+>>> +      The WSI controller device in the WSI group aids (is capable) to
+>>> +      synchronize the Timing Synchronization Function (TSF) clock across
+>>> +      all devices in the WSI group.
+>>
+>> This should be type: flag btw.
+>
+> Just so that I understand correctly, do you mean it should be like this:
+>
+>   qcom,wsi-controller:
+>     $ref: /schemas/types.yaml#/definitions/flag
+>     description:
+>       The WSI controller device in the WSI group aids (is capable) to
+>       synchronize the Timing Synchronization Function (TSF) clock across
+>       all devices in the WSI group.
+>
+> And no changes in the code?
 
-2. For 5 GHz range, based on amended subparagraph 10 from
-  https://www.psrc.am/contents/document/11375
-  which also supersedes the previous document
+I submitted v2 now:
 
-  * 5150 - 5350
-    - 100 mW EIRP
-    - indoor use only
-    - DFS required
-    - TPC required, reduce limit by 3 dBm to 17 dBm
+https://lore.kernel.org/ath12k/20241209153034.50558-1-kvalo@kernel.org/
 
-  * 5470 - 5875
-    - 100 mW EIRP
-    - indoor use only
-    - DFS required
-    - TPC required, reduce limit by 3 dBm to 17 dBm
-
-Signed-off-by: Avgustina DiPierro <tina@dipier.ro>
----
- db.txt | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/db.txt b/db.txt
-index e282e3b..7e6c3b0 100644
---- a/db.txt
-+++ b/db.txt
-@@ -81,10 +81,13 @@ country AL: DFS-ETSI
- 	# short range devices (ETSI EN 300 440-1)
- 	(5725 - 5875 @ 80), (25 mW)
- 
-+# Source:
-+# 2.4 GHz https://www.psrc.am/contents/document/4749
-+# 5 GHz https://www.psrc.am/contents/document/11375
- country AM: DFS-ETSI
--	(2402 - 2482 @ 40), (20)
--	(5170 - 5250 @ 20), (18)
--	(5250 - 5330 @ 20), (18), DFS
-+	(2400 - 2483.5 @ 40), (100 mW)
-+	(5150 - 5350 @ 160), (17), NO-OUTDOOR, DFS
-+	(5470 - 5875 @ 160), (17), NO-OUTDOOR, DFS
- 
- country AN: DFS-ETSI
- 	(2402 - 2482 @ 40), (20)
 -- 
-2.45.2
+https://patchwork.kernel.org/project/linux-wireless/list/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
