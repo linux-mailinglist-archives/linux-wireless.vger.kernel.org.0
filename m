@@ -1,46 +1,46 @@
-Return-Path: <linux-wireless+bounces-16074-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16077-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 211C99E9AE8
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 16:51:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 417389E9B03
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 16:58:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EB1A280E27
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 15:51:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 612A22828DC
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 15:58:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3071126F1E;
-	Mon,  9 Dec 2024 15:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F6F913665B;
+	Mon,  9 Dec 2024 15:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZnDoptEG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HzeqfDen"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C88A878C9C;
-	Mon,  9 Dec 2024 15:51:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1395D132122;
+	Mon,  9 Dec 2024 15:58:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733759478; cv=none; b=QMqAE2jAKRYQ5/sP56+VWAxWy+awzBNn6VH6ZcMqUU8ypxBrshTD495PthKDRbU0NAbVnIgBd3pNhBNaGJBFeC/o7iNe83J2mcyuvc6AYAZvMZ0AV5b1nQpnWMJOn1z95A8+kaYPMe5IBvhLOLLPzCBwhkrvLsiaZTiMRVf58VU=
+	t=1733759910; cv=none; b=iuMHOC3Ne4HP52sngOyBjx57Sbz/YO2TcC/lsEcRdZD8t/B24Q43S+fZmVPnpNNEAKFQEFTDRWBVatBuz+HJgzQ8WD3DrDJSt+7o1FjOaA4MUQaZbVVBUXlGL9tW7KAmHgNKP3j3kgSf3idAHYQYadi1npjyLt9OrjiFNfe6VYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733759478; c=relaxed/simple;
-	bh=JVerLY/R5ex77RCp2JkuVu4YnL7bEhF/hr/WI/k6+f0=;
+	s=arc-20240116; t=1733759910; c=relaxed/simple;
+	bh=b/BWXOW4C5BHuN5jt5sHWd88sXYszdCVTaD+HT3YLZY=;
 	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=UT+iwIFXMpPBy0oqsmNrjCGIBXPXINVUnWdRcVU+Fuu/3/POVtNqGNiEh6ltl7QqNrx0whb44F8OQyLMYex1LhHCF57H7v0H5A5vR6ckjfhnkbwTlbkY90zXVpi3CMDT08Do2D20ZFP/EPixYZOZ1Ms1M+By39mtxLE8iHhrrhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZnDoptEG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB4E3C4CED1;
-	Mon,  9 Dec 2024 15:51:16 +0000 (UTC)
+	 Cc:Message-ID:Date; b=cT2a1wyVrTZ2GWIdbM1Fa8pU4CWemCF57YA/k7vNQGJmQwuVK48AtDNBYBoRcBUJfKG7fPjlQnCTffppnhUr90fsYAlSo4LVqJ1hdaEh2LhmC64oY5W0v+L+iwp6NtCIJXf31/DcqNus6H6+ZvvtKO0GhJt6SWaFzfgpi1JMChU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HzeqfDen; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B66BC4CED1;
+	Mon,  9 Dec 2024 15:58:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733759478;
-	bh=JVerLY/R5ex77RCp2JkuVu4YnL7bEhF/hr/WI/k6+f0=;
+	s=k20201202; t=1733759909;
+	bh=b/BWXOW4C5BHuN5jt5sHWd88sXYszdCVTaD+HT3YLZY=;
 	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=ZnDoptEGPQd377O3B2C59RujbxgZTrOT23FQZLDv8Rgi8/8l25/+n+wmU318ZstNf
-	 UxD6cQ7JmhlHTou/z4uPJydJFY5cht1M0OGB3io3Jfr/lMhyLZ0uZmaW01FKB+mdx7
-	 ZU+6+EE7rUmnf7lWY7GWAfMEP2jTpuKzRs+4VQfOtTLf3/LQlAfx8fD9h1lauHaUSJ
-	 DS6LVYiwRSTmke6SOd0rtp2h0TgV3YtBnoCXk/3/MU6A/V0urmEpio93cOEuOkFq49
-	 Lts7pV0rcJMJvhnd+if4Rij0xjBfGU1cp6Rnh5KJvMFk3jEaaAch9o+ZuEb9W7yRQX
-	 u6Nqe52NQZNGA==
+	b=HzeqfDenLhXlStbpUky8L79eIQOsav0BrDclQV/kTnESJ+2+e+hqLOWHsbpaV85Es
+	 GBpGU0tZ9IOw9QiP0ayJrkznLxrEmHTOw4MlwM1Ax8Hn/HmOH2aSJn2xeczeCLOELR
+	 joqhEk+5zPA57CpDwD5gPwyJSUQFGUOystFUnFluQJHKdvaVf6zBm5yRkuZ6v7uUxv
+	 1VLwRhMBKmT0XYpEAZAQ1L833Zum78EZ9xrpE7NvMT9j6kRBOCWKfdzfE4gbZYZ5je
+	 jYEI9x6EaoNjOVttHt905i8AYEDjVR+yqVb9u1GNPbMj0u1iIlpxVrOnbWWd6dhhvF
+	 qVnu3TPdK0b2Q==
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -49,39 +49,35 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: wlcore: fix unbalanced pm_runtime calls
+Subject: Re: [PATCH] wifi: brcmfmac: fix scatter-gather handling by detecting
+ end
+ of sg list
 From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20241107181531.1774550-1-andreas@kemnade.info>
-References: <20241107181531.1774550-1-andreas@kemnade.info>
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: rmk+kernel@armlinux.org.uk, johannes.berg@intel.com, andreas@kemnade.info,
- leitao@debian.org, emmanuel.grumbach@intel.com,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20241108125609.107016-1-nvbolhuis@gmail.com>
+References: <20241108125609.107016-1-nvbolhuis@gmail.com>
+To: nvbolhuis@gmail.com
+Cc: brcm80211@lists.linux.dev, linux-wireless@vger.kernel.org,
+ arend.vanspriel@broadcom.com, Norbert van Bolhuis <nvbolhuis@gmail.com>
 User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <173375947536.157598.1252176440647591956.kvalo@kernel.org>
-Date: Mon,  9 Dec 2024 15:51:16 +0000 (UTC)
+Message-ID: <173375990682.157598.6631561096455255097.kvalo@kernel.org>
+Date: Mon,  9 Dec 2024 15:58:28 +0000 (UTC)
 
-Andreas Kemnade <andreas@kemnade.info> wrote:
+nvbolhuis@gmail.com wrote:
 
-> If firmware boot failes, runtime pm is put too often:
-> [12092.708099] wlcore: ERROR firmware boot failed despite 3 retries
-> [12092.708099] wl18xx_driver wl18xx.1.auto: Runtime PM usage count underflow!
-> Fix that by redirecting all error gotos before runtime_get so that runtime is not put.
+> From: Norbert van Bolhuis <nvbolhuis@gmail.com>
 > 
-> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+> The scatter-gather handling uses a pre-allocated list (with nents entries).
+> If the driver runs out of sg entries it will result in an oops. Let's detect
+> this instead and make the SDIO block transfer fail.
+> 
+> Signed-off-by: Norbert van Bolhuis <nvbolhuis@gmail.com>
 
-Do we know what commit broke this? A Fixes tag would be good to have.
+Patch applied to wireless-next.git, thanks.
 
-Why not change this also to use out_unlock:
-
-	role_type = wl12xx_get_role_type(wl, wlvif);
-	if (role_type == WL12XX_INVALID_ROLE_TYPE) {
-		ret = -EINVAL;
-		goto out;
-	}
+52e8726d6782 wifi: brcmfmac: fix scatter-gather handling by detecting end of sg list
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20241107181531.1774550-1-andreas@kemnade.info/
+https://patchwork.kernel.org/project/linux-wireless/patch/20241108125609.107016-1-nvbolhuis@gmail.com/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
