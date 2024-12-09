@@ -1,101 +1,206 @@
-Return-Path: <linux-wireless+bounces-16081-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16082-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC19F9E9B23
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 17:01:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D79339E9B5D
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 17:16:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E6791671F0
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 16:01:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BB1A1888B00
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 16:16:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5131369B4;
-	Mon,  9 Dec 2024 15:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA99A146A68;
+	Mon,  9 Dec 2024 16:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NwQ8DmwB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tSdTQI+I"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728C51B424E;
-	Mon,  9 Dec 2024 15:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66E97F48C
+	for <linux-wireless@vger.kernel.org>; Mon,  9 Dec 2024 16:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733759995; cv=none; b=VK2brN4+OICBAnxM9QACEHSSG9CrlgzCMkTg0eUJeIXvi/tUSO7zsuJalZJAeiWFHq8uZqpeIz6jGzHXsDI8HvRdZlgpn6g4TdApbfSLSQi1yy3v0i5Af1TEYpuRdeta2e3Ya3qa4uq5U+8cmg4lWr1OVzkiHOf3yU+q4Il65fU=
+	t=1733761004; cv=none; b=j7GjPfDEBr+Oowk+P46q9JypckF4hzS/Wu01ITLQKPRXMmgFcyWBjKpQpQ4PugXTIje6vbNDzmyrZjherALbg+J1vF82dhfbLo6O2u9PCsv4eJzo5wGLCImDP5ZNYAwX5Sgovqn3e2uNdKZLohB0oQiStKxw7U1EV0wRnzVPEeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733759995; c=relaxed/simple;
-	bh=LoZo1phuINHNiQheLhQrouah0Yc+DWfVMV7KgGTEWWY=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=g5lu07Uu+FCnyfTr5IiQAomDwZ1CNnWlvDiduck7vZvbSlHxpCgTAC1NKfaCMjJYTuDMiQLKW6SP1va+2fRTtyrpeOnl62eW8H9fiAVeneFDu0Llt0SUp4Kn8KDz4rZXhurhPxslcgBBiuwjV7Yx+XaYG1KgDzBLdcmk6kFFhkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NwQ8DmwB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CE19C4CED1;
-	Mon,  9 Dec 2024 15:59:53 +0000 (UTC)
+	s=arc-20240116; t=1733761004; c=relaxed/simple;
+	bh=8FfxgXmfC9gs/7flLYGDDNER1UbjpUe7zlpO3Odosks=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FVfzZIX6AOicfYyaUZNsqOC+cih+E5BZ4Aa8BK7ta7bNkFwC8luzye9a7iqeR32uj1liSz2LXBTlFXQN0XfGWxhiFqelwl90H/nFg1kXxDFoUsD3wlPaxKq514IuTX6pEYqP+yREbXxOCPV85VbzLgjdM//3ENQeSU5qIyjWYWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tSdTQI+I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F9C9C4CEDE
+	for <linux-wireless@vger.kernel.org>; Mon,  9 Dec 2024 16:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733759995;
-	bh=LoZo1phuINHNiQheLhQrouah0Yc+DWfVMV7KgGTEWWY=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=NwQ8DmwB/kmWKVfSDKodaWSN7HPeGfP/c79tBzPPG3l2F55LGe4dj76LaRg4WA2ec
-	 QTuADTBO8sJMqm5fKaeJ6zugorPhQ5RwkO6fzfSWnscN6mVS2Y3hmXvRUdxslpCULL
-	 UZ6nedB1YW/DY6N5e89UjshZwTkLvqBL9MUYQWL+b+EmyMdUwOpjrh/CikF7aDAnw6
-	 vbVhEuBurYqkC2pE9TWx3/lC9Dm70FlsCsu47DZpe1LfJHebVqM0qa5mPS7SCOi2eM
-	 BsBosT88YyZg15fpEuPE6gmO23pi1d7MsWoMS1W6LbXjZI2q7eW7Wqp8+b8lQ+Grsa
-	 RsUeqqtp35xWw==
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1733761004;
+	bh=8FfxgXmfC9gs/7flLYGDDNER1UbjpUe7zlpO3Odosks=;
+	h=References:In-Reply-To:Reply-To:From:Date:Subject:To:Cc:From;
+	b=tSdTQI+I2gacX+uDadoBz6DuOPYN19XqyPDwvMl5XR6XNUybS8Deh3RBaEGXXr8pe
+	 VOrudVNqhtbfR/C5OCRkFzL2z1bXRsaqYzKjcfEzcjS6nvb6dUPKOrIma9ppX+oGyS
+	 +Nh6NDkBjPk17urRVak/towuwc2VmRl1PE70+fMb0dlKjKnowNXHPx28duj76E0iJ+
+	 /94YJWMdA43V3EW1Kts76pOQj9EUzkuBHgM2ooZkn25l0y2MDBlSkJY4hDLzyL3dd6
+	 9vwKC+hpjW4iFynbTYC+GYydqXHiOdw1RdynWQRUy6Ui7H7uONPxV/Bu59rR+3yDg9
+	 4HxqRHkxWQOqw==
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-30033e07ef3so31983921fa.0
+        for <linux-wireless@vger.kernel.org>; Mon, 09 Dec 2024 08:16:44 -0800 (PST)
+X-Gm-Message-State: AOJu0YyVpz8k/1GCKEmKqtxGKEGjGAL8yy2q5CpaF03LRQ7U93E9jJut
+	5pnJfHEP05YvTQXGckr5gJoILdWFaDZSTXtcjM4TQFHw77ofBzwJ2qoLVslZOvd67n1Px/B8D/w
+	hJdrXcT+Mm+pu9rHa7fzb7ltGMM0=
+X-Google-Smtp-Source: AGHT+IGY9ZVDQM4U8JOXqDkXclkkXG/p36yYXPtJohDi7YJnFzX3vT35on1T6bKnRyhYorwaUDSU3n6PbTZIOFTprxA=
+X-Received: by 2002:a05:651c:1516:b0:2ff:e4e6:2543 with SMTP id
+ 38308e7fff4ca-3002defdce5mr44409831fa.21.1733761002675; Mon, 09 Dec 2024
+ 08:16:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wifi: mwifiex: decrease timeout waiting for host sleep
- from
- 10s to 5s
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20241127105709.4014302-1-treapking@chromium.org>
-References: <20241127105709.4014302-1-treapking@chromium.org>
-To: Pin-yen Lin <treapking@chromium.org>
-Cc: Francesco Dolcini <francesco@dolcini.it>, David Lin <yu-hao.lin@nxp.com>,
- Pin-yen Lin <treapking@chromium.org>, Doug Anderson <dianders@chromium.org>,
- linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <173375999181.157598.15598577464504869106.kvalo@kernel.org>
-Date: Mon,  9 Dec 2024 15:59:53 +0000 (UTC)
+References: <274D81C2-56C7-4042-96F9-A04A92BEAEFD@dipier.ro>
+In-Reply-To: <274D81C2-56C7-4042-96F9-A04A92BEAEFD@dipier.ro>
+Reply-To: wens@kernel.org
+From: Chen-Yu Tsai <wens@kernel.org>
+Date: Tue, 10 Dec 2024 00:16:28 +0800
+X-Gmail-Original-Message-ID: <CAGb2v651G_dtC4Nzh4f9rQQ4w8KajAR0xb-8DbcedXiYcnz7jA@mail.gmail.com>
+Message-ID: <CAGb2v651G_dtC4Nzh4f9rQQ4w8KajAR0xb-8DbcedXiYcnz7jA@mail.gmail.com>
+Subject: Re: wireless-regdb: Update regulatory rules for Armenia (AM) on 2.4
+ and 5 GHz
+To: tina@dipier.ro
+Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Pin-yen Lin <treapking@chromium.org> wrote:
+Hi,
 
-> In commit 52250cbee7f6 ("mwifiex: use timeout variant for
-> wait_event_interruptible") it was noted that sometimes we seemed
-> to miss the signal that our host sleep settings took effect. A
-> 10 second timeout was added to the code to make sure we didn't
-> hang forever waiting. It appears that this problem still exists
-> and we hit the timeout sometimes for Chromebooks in the field.
-> 
-> Recently on ChromeOS we've started setting the DPM watchdog
-> to trip if full system suspend takes over 10 seconds. Given
-> the timeout in the original patch, obviously we're hitting
-> the DPM watchdog before mwifiex gets a chance to timeout.
-> 
-> While we could increase the DPM watchdog in ChromeOS to avoid
-> this problem, it's probably better to simply decrease the
-> timeout. Any time we're waiting several seconds for the
-> firmware to respond it's likely that the firmware won't ever
-> respond. With that in mind, decrease the timeout in mwifiex
-> from 10 seconds to 5 seconds.
-> 
-> Suggested-by: Doug Anderson <dianders@chromium.org>
-> Signed-off-by: Pin-yen Lin <treapking@chromium.org>
-> Reviewed-by: Douglas Anderson <dianders@chromium.org>
-> Acked-by: Brian Norris <briannorris@chromium.org>
+On Mon, Dec 9, 2024 at 11:49=E2=80=AFPM <tina@dipier.ro> wrote:
+>
+> Public Services Regulatory Commission of the Republic of Armenia has rele=
+ased two amendments to its 2011 Decision =E2=84=96169=D5=86 on Approval of =
+the Procedure for Issuing Permits for the Use of Radio Frequencies.
+>
+> 1. Amendment =E2=84=96159=D5=86, on permit of usage of radio frequency ra=
+nges without permit, released on May 11, 2012, available at https://www.psr=
+c.am/contents/document/4749 (choose language =E2=86=92 HY)
+>
+> <=E2=80=A6> Based on Article 5, Part 1, Point 1(d) and Point 2(b), Articl=
+e 6, Part 1 and Part 2, Point 1, and Article 17, Part 5 of the Law of the R=
+epublic of Armenia "On Electronic Communication," as well as Article 70, Pa=
+rt 1 of the Law of the Republic of Armenia "On Legal Acts," the Public Serv=
+ices Regulatory Commission of the Republic of Armenia decides:
+> To amend Points 4 and 5 of the annex to the decision =E2=84=96169N of Apr=
+il 13, 2011, by the Public Services Regulatory Commission of the Republic o=
+f Armenia titled "Approval of the Procedure for Granting Permissions for th=
+e Use of Radio Frequencies," by restating them with a new wording. <=E2=80=
+=A6>
+> "4. No permission is required for:
+> <=E2=80=A6>
+> 9) The use of broadband wireless access equipment operating in the 2400=
+=E2=80=932483.5 MHz radio frequency band with a power of up to 100 mW.
+> <=E2=80=A6>=E2=80=9D
+>
+>
+> 2. Amendment =E2=84=96295-=D5=86, on permit of usage of radio frequency r=
+anges without permit, released on August 23, 2023, available at https://www=
+.psrc.am/contents/document/11375 (choose language =E2=86=92 HY)
 
-Patch applied to wireless-next.git, thanks.
+Please try to change any non-ASCII characters down to ASCII.
+And please wrap commit messages to under 80 characters per line.
 
-f143cece43dd wifi: mwifiex: decrease timeout waiting for host sleep from 10s to 5s
+> <=E2=80=A6> Based on Articles 33 and 34 of the Law "On Normative Legal Ac=
+ts," the Public Services Regulatory Commission of the Republic of Armenia d=
+ecides:
+> To amend Subpoint 10 of Point 4 of the annex to Decision =E2=84=96169-N o=
+f April 13, 2011, of the Public Services Regulatory Commission of the Repub=
+lic of Armenia, titled "Approval of the Procedure for Granting Permissions =
+for the Use of Radio Frequencies," as follows:
+> "10) For the use of local network equipment operating in the 5150-5350 MH=
+z and 5470-5875 MHz radio frequency bands with an effective radiated power =
+(e.r.p.) of up to 100 mW (only indoors, as well as in airplanes during all =
+phases of flight), utilizing dynamic frequency selection (DFS) and transmit=
+ter power control (TPC).=E2=80=9D <=E2=80=A6>
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20241127105709.4014302-1-treapking@chromium.org/
+This mentions TPC, which we don't actually support. We adopted reducing
+the maximum EIRP by 3 dBm, on the basis of that is what the ETSI regulation=
+s
+do.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+You don't need to include the actual text, which makes the commit
+message really long.
 
+Just list the bits that are updated, and provide links to the justification=
+.
+And pointers to the actual item would be nice. So something like the
+following:
+
+1. For 2.4 GHz range, based on reworded subparagraph 9 from
+   https://www.psrc.am/contents/document/4749
+
+   * 2400 - 2483.5
+     - 100 mW EIRP
+     - indoor use only
+
+2. For 5 GHz range, based on reworded subparagraph 10 from
+   https://www.psrc.am/contents/document/11375
+   which also supersedes the previous document
+
+   * 5150 - 5350
+     - 100 mW EIRP
+     - indoor use only
+     - DFS required
+     - TPC required, reduce limit by 3 dBm to 17 dBm
+
+    same for the other range.
+
+> Essentially, this two documents define this frequencies as permitted:
+> - 2400 - 2483.5 MHz @ 100 mW
+> - 5150 - 5350 MHz @ 100 mW with DFS, outdoor usage forbidden
+> - 5470 - 5875 MHz @ 100 mW) with DFS, outdoor usage forbidden
+>
+> However, I am not sure if AUTO-BW option here is required. As far as I kn=
+ow, there is currently no limitation on bandwidth usage in IEEE 802.11 set =
+of protocols in Armenia.
+
+Normally any additional notes should be written under the "---" so that
+when we apply the patch, it doesn't get included.
+
+AUTO-BW is just for stitching together adjacent bands that have different
+requirements. Since you aren't doing that here, it isn't needed.
+
+
+Also, we require a Signed-off-by line from you, like with all kernel patche=
+s.
+
+> ---
+> db.txt | 10 +++++++---
+> 1 file changed, 7 insertions(+), 3 deletions(-)
+>
+> diff --git a/db.txt b/db.txt
+> index e282e3b..5d5ba22 100644
+> --- a/db.txt
+> +++ b/db.txt
+> @@ -81,10 +81,14 @@ country AL: DFS-ETSI
+>         # short range devices (ETSI EN 300 440-1)
+>         (5725 - 5875 @ 80), (25 mW)
+>
+> +# Source (in Armenian):
+> +# 2.4 GHz https://www.psrc.am/contents/document/4749
+> +# 5 GHz https://www.psrc.am/contents/document/11375
+> +
+> country AM: DFS-ETSI
+> -       (2402 - 2482 @ 40), (20)
+> -       (5170 - 5250 @ 20), (18)
+> -       (5250 - 5330 @ 20), (18), DFS
+> +       (2400 - 2483.5 @ 40), (100 mW)
+> +       (5150 - 5350 @ 160), (100 mW), NO-OUTDOOR, AUTO-BW, DFS
+> +       (5470 - 5875 @ 160), (100 mW), NO-OUTDOOR, AUTO-BW, DFS
+
+Drop the AUTO-BW, as mentioned.
+
+ChenYu
+
+
+> country AN: DFS-ETSI
+>         (2402 - 2482 @ 40), (20)
+> --
+> 2.45.2
 
