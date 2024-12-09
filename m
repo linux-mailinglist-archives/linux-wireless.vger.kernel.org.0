@@ -1,80 +1,158 @@
-Return-Path: <linux-wireless+bounces-16071-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16072-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FC2A9E9ACD
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 16:45:50 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A6051656E3
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 15:45:47 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6273A2FC52;
-	Mon,  9 Dec 2024 15:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W3pvPSK2"
-X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7103F9E9AD8
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 16:47:24 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339073D76;
-	Mon,  9 Dec 2024 15:45:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E570280A9C
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 15:47:23 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC7C25777;
+	Mon,  9 Dec 2024 15:47:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=dipier.ro header.i=@dipier.ro header.b="UoUy1K3D"
+X-Original-To: linux-wireless@vger.kernel.org
+Received: from qs51p00im-qukt01072501.me.com (qs51p00im-qukt01072501.me.com [17.57.155.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5562F12DD88
+	for <linux-wireless@vger.kernel.org>; Mon,  9 Dec 2024 15:47:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.57.155.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733759145; cv=none; b=MFxBdQZ0Evv3Zu+m4ncPyicA1utaaJInJadsYaD1FK0AE4l/E930/4B2YKS97IFlwQn4FI3ByhdPHZN1bS0tsAhn5SDz2mBBFHiPiMwitzS9YmFIubzebe/NNJmu8TfC/b5d25QqhB6VbUecdDuUVqbjPaquKlPNQ29sb0hKYXs=
+	t=1733759240; cv=none; b=BK8x/E3SP2xfAV59aUwJFlbSoLsFfM4wDe1ORkkLOafO7FcWC83QmlpcNt//et8A3NyuXjAUTqHEmb3G49Rbk5IMyD6cgcC3AQE9ORU68wZ2qmkeETSxL6tY/DwmOcdkyZo0KXZ4j0fon8tmilmm1rPTSHDX8aaeughbTIfSkJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733759145; c=relaxed/simple;
-	bh=BEtGeaVHypoezdbTPZ5vIhGMqwRUde0JQlPRxfPmkTg=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=Y+SaPUR3n2cR4P3fgOzqI88cIYtgreZSLx0XLPwHbDk+/hOUYWcrTTeg023ADSYMKcPM03w6VuLnHwhwdP04Tb6Kh/pZ1YIPB4VxXZNE5a6TAunr1xXBYK87xrVzfaUax7u6O6R5ze8JCoqlu5Kr7ezF0RWo3F7jScCkBydc2qU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W3pvPSK2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07374C4CED1;
-	Mon,  9 Dec 2024 15:45:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733759144;
-	bh=BEtGeaVHypoezdbTPZ5vIhGMqwRUde0JQlPRxfPmkTg=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=W3pvPSK2vuLBIv5KGIc/OL0H/u6mRwibECnmQGwYhfVDHNcsakXhg2S3dio6fdbst
-	 EbLH7v34IMFQSHFdBINSW390AomZj2oSB+Yd0VHpVar5ZosblOMjCalCYBbaVchBlB
-	 yQByBCBv62lNYLausBOdawWPEm4kw4iN4o3l3w5AB/PaQoYDi+9bVEiZfaAdybHbKc
-	 /mCYdA90ylCt69H2p9Jbba0DLzTXcNB+bLBEjQcEd88cLzn3yAmzyuGomvYFh3rn/g
-	 Hb2EepfNSeczp0T6Wol0uZRAIkTKX0f9bQYLjsjUI1NXUUgdp9Zo3ftDBkZy8KgkR3
-	 z9AllRYGZ36tg==
-From: Kalle Valo <kvalo@kernel.org>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: Sriram R <quic_srirrama@quicinc.com>,  Jeff Johnson
- <jjohnson@kernel.org>,  Rameshkumar Sundaram <quic_ramess@quicinc.com>,
-  linux-wireless@vger.kernel.org,  ath12k@lists.infradead.org,
-  linux-kernel@vger.kernel.org,  kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH next] wifi: ath12k: Off by one in
- ath12k_wmi_process_csa_switch_count_event()
-References: <755becb1-819b-484d-8fac-9a2db53ced1b@stanley.mountain>
-Date: Mon, 09 Dec 2024 17:45:41 +0200
-In-Reply-To: <755becb1-819b-484d-8fac-9a2db53ced1b@stanley.mountain> (Dan
-	Carpenter's message of "Fri, 6 Dec 2024 15:52:29 +0300")
-Message-ID: <87ed2gsvve.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1733759240; c=relaxed/simple;
+	bh=z9MoGV9v8S6xE4IPLFplZaKql3sbpYbhsxHnjvU94gk=;
+	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=QmxNdRfLrK6rxx1nrdACw4LALfTvXxBLJdKFUj9g1mY0HlwKDniVv7RBCvSGx/3vh7XAXh093jn5/fCTRm8f2v4MH7AWvPyF5GIrtr+KOpE5cWMk27zgBTTpWhH9kcGDUfFCHMkZdnv/JxsuyHbUyiooKaXWbfcKf+ZpuEp9Iwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dipier.ro; spf=pass smtp.mailfrom=dipier.ro; dkim=pass (2048-bit key) header.d=dipier.ro header.i=@dipier.ro header.b=UoUy1K3D; arc=none smtp.client-ip=17.57.155.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dipier.ro
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dipier.ro
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dipier.ro; s=sig1;
+	t=1733759236; bh=D9xNsw0Z721VfzeMUB/1PkzJCgqS1qTp/54moOOD5l4=;
+	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:To:
+	 x-icloud-hme;
+	b=UoUy1K3DRtzGe/vn6duteCCDj8xEAZcxVPk266991Vb5k+PkL5wbmP40k8XhtHO9D
+	 ncQCkTbLbiyThRkHznA1GXdrv13q21jyxYUiggmmvnVutj6WM+fAvSirFIGow1Hk8k
+	 OJIN35VCRwR4TRdumrWa7HVZPVISznm+kdpMt3l24BYX1zWxhG7V11uzNnLx0R694m
+	 S5rAjhLdDNeh5JYroB/Wvg6xjN0FY1ASON2+ai+ofoeC3FvLgKqW59L/h2DJR3WxNL
+	 08XfYD5iPqD7JtKBQl3JFA2w/9QXX5RiiSxCFpNIvGHCJvM9SA5PgO47Wp+sthmDZS
+	 iRsmes7to9m6Q==
+Received: from smtpclient.apple (qs51p00im-dlb-asmtp-mailmevip.me.com [17.57.155.28])
+	by qs51p00im-qukt01072501.me.com (Postfix) with ESMTPSA id 23E6944044C;
+	Mon,  9 Dec 2024 15:47:14 +0000 (UTC)
+From: tina@dipier.ro
+Content-Type: text/plain;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.300.87.4.2\))
+Subject: wireless-regdb: Update regulatory rules for Armenia (AM) on 2.4 and 5
+ GHz
+Message-Id: <274D81C2-56C7-4042-96F9-A04A92BEAEFD@dipier.ro>
+Date: Mon, 9 Dec 2024 19:47:02 +0400
+Cc: wireless-regdb@lists.infradead.org
+To: linux-wireless@vger.kernel.org
+X-Mailer: Apple Mail (2.3826.300.87.4.2)
+X-Proofpoint-GUID: UuWCcrbY94N62xca04BbdLA8e3rv5caQ
+X-Proofpoint-ORIG-GUID: UuWCcrbY94N62xca04BbdLA8e3rv5caQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2024-12-09_12,2024-12-09_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0
+ mlxlogscore=999 bulkscore=0 clxscore=1030 phishscore=0 adultscore=0
+ suspectscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2412090123
 
-Dan Carpenter <dan.carpenter@linaro.org> writes:
+Public Services Regulatory Commission of the Republic of Armenia has =
+released two amendments to its 2011 Decision =E2=84=96169=D5=86 on =
+Approval of the Procedure for Issuing Permits for the Use of Radio =
+Frequencies.
 
-> The ahvif->vif->link_conf[] array has IEEE80211_MLD_MAX_NUM_LINKS elements
-> so this should be >= instead of > to avoid an out of bounds access.
->
-> Fixes: 3952657848c0 ("wifi: ath12k: Use mac80211 vif's link_conf instead of bss_conf")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+1. Amendment =E2=84=96159=D5=86, on permit of usage of radio frequency =
+ranges without permit, released on May 11, 2012, available at =
+https://www.psrc.am/contents/document/4749 (choose language =E2=86=92 =
+HY)
 
-Acked-by: Kalle Valo <kvalo@kernel.org>
+<=E2=80=A6> Based on Article 5, Part 1, Point 1(d) and Point 2(b), =
+Article 6, Part 1 and Part 2, Point 1, and Article 17, Part 5 of the Law =
+of the Republic of Armenia "On Electronic Communication," as well as =
+Article 70, Part 1 of the Law of the Republic of Armenia "On Legal =
+Acts," the Public Services Regulatory Commission of the Republic of =
+Armenia decides:
+To amend Points 4 and 5 of the annex to the decision =E2=84=96169N of =
+April 13, 2011, by the Public Services Regulatory Commission of the =
+Republic of Armenia titled "Approval of the Procedure for Granting =
+Permissions for the Use of Radio Frequencies," by restating them with a =
+new wording. <=E2=80=A6>
+"4. No permission is required for:
+<=E2=80=A6>
+9) The use of broadband wireless access equipment operating in the =
+2400=E2=80=932483.5 MHz radio frequency band with a power of up to 100 =
+mW.
+<=E2=80=A6>=E2=80=9D
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2. Amendment =E2=84=96295-=D5=86, on permit of usage of radio frequency =
+ranges without permit, released on August 23, 2023, available at =
+https://www.psrc.am/contents/document/11375 (choose language =E2=86=92 =
+HY)
+
+<=E2=80=A6> Based on Articles 33 and 34 of the Law "On Normative Legal =
+Acts," the Public Services Regulatory Commission of the Republic of =
+Armenia decides:
+To amend Subpoint 10 of Point 4 of the annex to Decision =E2=84=96169-N =
+of April 13, 2011, of the Public Services Regulatory Commission of the =
+Republic of Armenia, titled "Approval of the Procedure for Granting =
+Permissions for the Use of Radio Frequencies," as follows:
+"10) For the use of local network equipment operating in the 5150-5350 =
+MHz and 5470-5875 MHz radio frequency bands with an effective radiated =
+power (e.r.p.) of up to 100 mW (only indoors, as well as in airplanes =
+during all phases of flight), utilizing dynamic frequency selection =
+(DFS) and transmitter power control (TPC).=E2=80=9D <=E2=80=A6>
+
+
+Essentially, this two documents define this frequencies as permitted:
+- 2400 - 2483.5 MHz @ 100 mW
+- 5150 - 5350 MHz @ 100 mW with DFS, outdoor usage forbidden
+- 5470 - 5875 MHz @ 100 mW) with DFS, outdoor usage forbidden
+
+However, I am not sure if AUTO-BW option here is required. As far as I =
+know, there is currently no limitation on bandwidth usage in IEEE 802.11 =
+set of protocols in Armenia.
+
+---
+db.txt | 10 +++++++---
+1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/db.txt b/db.txt
+index e282e3b..5d5ba22 100644
+--- a/db.txt
++++ b/db.txt
+@@ -81,10 +81,14 @@ country AL: DFS-ETSI
+	# short range devices (ETSI EN 300 440-1)
+	(5725 - 5875 @ 80), (25 mW)
+
++# Source (in Armenian):
++# 2.4 GHz https://www.psrc.am/contents/document/4749
++# 5 GHz https://www.psrc.am/contents/document/11375
++
+country AM: DFS-ETSI
+-	(2402 - 2482 @ 40), (20)
+-	(5170 - 5250 @ 20), (18)
+-	(5250 - 5330 @ 20), (18), DFS
++	(2400 - 2483.5 @ 40), (100 mW)
++	(5150 - 5350 @ 160), (100 mW), NO-OUTDOOR, AUTO-BW, DFS
++	(5470 - 5875 @ 160), (100 mW), NO-OUTDOOR, AUTO-BW, DFS
+
+country AN: DFS-ETSI
+	(2402 - 2482 @ 40), (20)
+--=20
+2.45.2=
 
