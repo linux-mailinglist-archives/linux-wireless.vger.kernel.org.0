@@ -1,143 +1,116 @@
-Return-Path: <linux-wireless+bounces-15998-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-15999-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1266A9E858A
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Dec 2024 14:53:35 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECF39188482D
-	for <lists+linux-wireless@lfdr.de>; Sun,  8 Dec 2024 13:53:34 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 446D81420DD;
-	Sun,  8 Dec 2024 13:53:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OiYYhRh1"
-X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D6F49E88B3
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 01:26:54 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740E814883C
-	for <linux-wireless@vger.kernel.org>; Sun,  8 Dec 2024 13:53:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00AE1280EDD
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 00:26:53 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6381446B8;
+	Mon,  9 Dec 2024 00:26:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="MZoMsfeY"
+X-Original-To: linux-wireless@vger.kernel.org
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38E85234;
+	Mon,  9 Dec 2024 00:26:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733666010; cv=none; b=QLsJrS3Mbq/b6WuBEzGef+4ORN/y8aITu0Vdv9LOgNxV8yi9QP4SDk5SfY9xuVYibKwvnro0ZJc5iz8yg3xEnUFyXRVaTkMjQb1eG9XQf4TsTTFx6av/daMyTe4E/DFWKtLIBU4MdABGiEG9oYT/Yg9rTXU2IVSwZ6v/kGG/Ftw=
+	t=1733704010; cv=none; b=K7WRz+SvQniwx9mKna8ZTQ9ZldI73bpltM9t6h0CgTljTSg/QEY8HGKEzCg75B3e4qRjGZs/zXlG+7KoffcDwXTpaXGhDJWwM1LChb91jORdabHPzf+IKmgHx12+FeVg7d81x9KbMBJgIPnNSN3KKul0lFiAu06ZtDt5dhTCHB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733666010; c=relaxed/simple;
-	bh=6vmI2rNzZbPbg2XeKr3Oe5TOFkJlJ7i4jg3roFC7Oqw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FcU+O8RTzhxB1ERVHfUdkiKuU0TfwZXIeuR4oIlSB1foIPNBArT8pqd1TJ+dU2p3y2z28zFWjfO93Ww3Vg1ZEDKXZtpRa/QGKAGT+vmO0aErYUNrlFqDgL07lR8oUlUZ1QyFYvhSum+CTH4YbxC70yrWDQ7bvxuQ2ZD8POyOqiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OiYYhRh1; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1733666007;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=effItv+T4ngQBiRIY7XZjYM5/CDQslMyXd/pUoX0ZDs=;
-	b=OiYYhRh1DvNgwST7PW1oW6sit2k4wTTypdTJX6R37WnFlDgrMv1NTlzVH1eRXOFw7eyNiE
-	w2IepBNUsLk00GQlEIHNRAfvrDp9YO8S5/eRi+65T0iRFLDKib2FZwB61T8O4/LbZLskFf
-	qLvTSDk0dIn4W8z12MDJABtLikEUGpo=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-422-HDYBJmJ0Neiu8JG_9ENwxQ-1; Sun, 08 Dec 2024 08:53:25 -0500
-X-MC-Unique: HDYBJmJ0Neiu8JG_9ENwxQ-1
-X-Mimecast-MFC-AGG-ID: HDYBJmJ0Neiu8JG_9ENwxQ
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-5d3dbddb891so1261445a12.0
-        for <linux-wireless@vger.kernel.org>; Sun, 08 Dec 2024 05:53:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733666004; x=1734270804;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=effItv+T4ngQBiRIY7XZjYM5/CDQslMyXd/pUoX0ZDs=;
-        b=t1ZxrWo17Cmld/Zq8hVBJt0tNQ2zR3/84+Wgp/A8wVNRBF2hhvpGL/O2JGBkLJCvDP
-         77qo0jKeypfAunwemiw/kKofogunJa0bKKcjMTs/8a4t3J6OmgBuhaA4cQGqXZYrW5ox
-         +jFXZSRyRZ0q95KRfurgWGMBCq6UlkJhxv3fCStgzFLPX4gbMderEmIGeKpiiXvg/t5P
-         axQ/4/ur67VAoAYjKfikGROHUAsSmBaWa3lMhjqYqDNJA4lQHhr6KWzLJssyh0r9IdVy
-         fvEDRPvRUNuU/+eCEGe+CzOVo7Td5MuTS0o1ptdvifmgN4IpxF4R+DJbJTO9Z8GHVk/E
-         gJIg==
-X-Gm-Message-State: AOJu0Yx2dH9Cju/AorwUVf8Ju6eoYdPtit69G0n796LPLpgPkzB3Iw3M
-	P8/JKh0ej9JG7TIfSwCPzifT26d21O8F2KPpipNL92kRCmb6UqeUE1HIMBixD51lh45FPed2q/u
-	NSruAto6j4OkyemlMGrdYmBDGr9j/Ugk1rbhD5SzgGt2rmlAkLIjLpxwHDK3Zp1Pe
-X-Gm-Gg: ASbGncviVIGjmncU9rfu1KbuZ5IM4NwEvmwvgEEa0LZCqiMC5adN/N3LPu7WITlM97o
-	A+4Ghedghuf/GbTst2wiH6AXeGKpCPVDVtKyzbbd368P5E2M5ZSR9nXeIJpiGBCWUfQzt/ACk91
-	0nuM4Xf0r0aMULOsKs3TRhjxF/+jPBKFe9U8mZCv9mn4gnsVKoA1dLHnrdtyLUS/4uzLlFEK4yJ
-	rXdc/b+kA+2Y4vljYVsPJGynsjBnNN92+d/0Ude7oQjLIUB0e3NrKWotT8tHeTdFw8dvcoAA2Ma
-	zGcyknMZvQb2rRSn9h3kyVRab/fmYY8imJ2dFoFfgcgUaTvbtD9keBsYyd0WonH3+rA3841aPQa
-	htK07RNL7uiguGEo8G/i84C8N
-X-Received: by 2002:a05:6402:27ce:b0:5d0:d06b:cdc4 with SMTP id 4fb4d7f45d1cf-5d3bdccdb54mr9000818a12.15.1733666004590;
-        Sun, 08 Dec 2024 05:53:24 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFT6Q+gAyU4Hw06qKdr07+MmMs8jMXgZWk7VUDrfXYZHJ4HC8iwAV1xJFoNInSvuusyWJSJdw==
-X-Received: by 2002:a05:6402:27ce:b0:5d0:d06b:cdc4 with SMTP id 4fb4d7f45d1cf-5d3bdccdb54mr9000794a12.15.1733666004181;
-        Sun, 08 Dec 2024 05:53:24 -0800 (PST)
-Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d3d20c032csm2944939a12.36.2024.12.08.05.53.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 08 Dec 2024 05:53:23 -0800 (PST)
-Message-ID: <094431c4-1f82-43e0-b3f0-e9c127198e98@redhat.com>
-Date: Sun, 8 Dec 2024 14:53:22 +0100
+	s=arc-20240116; t=1733704010; c=relaxed/simple;
+	bh=Xy8TrOhAejEC7lIReBFuEnDvP0P9w1gRCS6WWCa7QeI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Z356lZFmypsu361leOBSb9DhGzVf0dkOcGRcVJm2+1+N1NcVBWpJW9xsGMdseCnFYBbTENdj2tr0X9gBkaUlnfNGEhkCcPO+AU2aUGoVI6Xv0GP8gJlCGOBit3Y7AtksN3SpBK4wSlgADVaEoJ7sqh2aY3fviNQokSi8NXJ0jK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=MZoMsfeY; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4B90QQHW03911839, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1733703986; bh=Xy8TrOhAejEC7lIReBFuEnDvP0P9w1gRCS6WWCa7QeI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=MZoMsfeYP8Fq5Za2ExEXNoQhB6P6Zml23IZE4F6Li9bBssI1bwFc8QM8tLTcE2c8P
+	 mpaBJkm7O+ZZpGC99LVGercquGeviPp+ZIcwLnvuWVZJi/I5WHLsUSbDQw1yUYYxee
+	 3qdrBenjhA+6/lkrHbEQUT7ae2A4htcMtpS0eWuwfHpmkDdoJHFg+Ksmtl4cMrTf2p
+	 tptHTu4kjczXWc5TjXSyCGvNpzRjlaItutI2827UkSMIKuBhA6pVmzruCyGKrD+q9A
+	 humnoVDrU4NWQ/b2s3rACVPDorRLyhm9gyBCcNV3n9VBWTonOAr5DMuH7RhRv7trl8
+	 izkQauC/k+8lQ==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4B90QQHW03911839
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 9 Dec 2024 08:26:26 +0800
+Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Mon, 9 Dec 2024 08:26:27 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Mon, 9 Dec 2024 08:26:26 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
+ 15.01.2507.035; Mon, 9 Dec 2024 08:26:26 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Hans de Goede <hdegoede@redhat.com>,
+        Jes Sorensen
+	<Jes.Sorensen@gmail.com>, Kalle Valo <kvalo@kernel.org>
+CC: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Peter Robinson
+	<pbrobinson@gmail.com>
+Subject: RE: [PATCH] wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
+Thread-Topic: [PATCH] wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
+Thread-Index: AQHbMR7R6Gvee4SdJkqElRUs0WKrm7K72VoAgCAvYgCAATWcgA==
+Date: Mon, 9 Dec 2024 00:26:26 +0000
+Message-ID: <8e0a643ecdc2469f936c607dbd555b4c@realtek.com>
+References: <20241107140833.274986-1-hdegoede@redhat.com>
+ <6cf370a2-4777-4f25-95ab-43f5c7add127@RTEXMBS04.realtek.com.tw>
+ <094431c4-1f82-43e0-b3f0-e9c127198e98@redhat.com>
+In-Reply-To: <094431c4-1f82-43e0-b3f0-e9c127198e98@redhat.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
-To: Ping-Ke Shih <pkshih@realtek.com>, Jes Sorensen <Jes.Sorensen@gmail.com>,
- Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, stable@vger.kernel.org,
- Peter Robinson <pbrobinson@gmail.com>
-References: <20241107140833.274986-1-hdegoede@redhat.com>
- <6cf370a2-4777-4f25-95ab-43f5c7add127@RTEXMBS04.realtek.com.tw>
-Content-Language: en-US, nl
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <6cf370a2-4777-4f25-95ab-43f5c7add127@RTEXMBS04.realtek.com.tw>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-Hi,
-
-On 18-Nov-24 3:23 AM, Ping-Ke Shih wrote:
-> Hans de Goede <hdegoede@redhat.com> wrote:
-> 
->> The rtl8xxxu has all the rtl8192cu USB IDs from rtlwifi/rtl8192cu/sw.c
->> except for the following 10, add these to the untested section so they
->> can be used with the rtl8xxxu as the rtl8192cu are well supported.
->>
->> This fixes these wifi modules not working on distributions which have
->> disabled CONFIG_RTL8192CU replacing it with CONFIG_RTL8XXXU_UNTESTED,
->> like Fedora.
->>
->> Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2321540
->> Cc: stable@vger.kernel.org
->> Cc: Peter Robinson <pbrobinson@gmail.com>
->> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
->> Reviewed-by: Peter Robinson <pbrobinson@gmail.com>
-> 
-> 1 patch(es) applied to rtw-next branch of rtw.git, thanks.
-> 
-> 31be3175bd7b wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
-
-Thank you for merging this, since this is a bugfix patch, see e.g. :
-
-https://bugzilla.redhat.com/show_bug.cgi?id=2321540
-
-I was expecting this patch to show up in 6.13-rc1 but it does
-not appear to be there.
-
-Can you please include this in a fixes-pull-request to the network
-maintainer so that gets added to a 6.13-rc# release soon and then
-can be backported to various stable kernels ?
-
-Regards,
-
-Hans
-
-
+SGFucyBkZSBHb2VkZSA8aGRlZ29lZGVAcmVkaGF0LmNvbT4gd3JvdGU6DQo+IEhpLA0KPiANCj4g
+T24gMTgtTm92LTI0IDM6MjMgQU0sIFBpbmctS2UgU2hpaCB3cm90ZToNCj4gPiBIYW5zIGRlIEdv
+ZWRlIDxoZGVnb2VkZUByZWRoYXQuY29tPiB3cm90ZToNCj4gPg0KPiA+PiBUaGUgcnRsOHh4eHUg
+aGFzIGFsbCB0aGUgcnRsODE5MmN1IFVTQiBJRHMgZnJvbSBydGx3aWZpL3J0bDgxOTJjdS9zdy5j
+DQo+ID4+IGV4Y2VwdCBmb3IgdGhlIGZvbGxvd2luZyAxMCwgYWRkIHRoZXNlIHRvIHRoZSB1bnRl
+c3RlZCBzZWN0aW9uIHNvIHRoZXkNCj4gPj4gY2FuIGJlIHVzZWQgd2l0aCB0aGUgcnRsOHh4eHUg
+YXMgdGhlIHJ0bDgxOTJjdSBhcmUgd2VsbCBzdXBwb3J0ZWQuDQo+ID4+DQo+ID4+IFRoaXMgZml4
+ZXMgdGhlc2Ugd2lmaSBtb2R1bGVzIG5vdCB3b3JraW5nIG9uIGRpc3RyaWJ1dGlvbnMgd2hpY2gg
+aGF2ZQ0KPiA+PiBkaXNhYmxlZCBDT05GSUdfUlRMODE5MkNVIHJlcGxhY2luZyBpdCB3aXRoIENP
+TkZJR19SVEw4WFhYVV9VTlRFU1RFRCwNCj4gPj4gbGlrZSBGZWRvcmEuDQo+ID4+DQo+ID4+IENs
+b3NlczogaHR0cHM6Ly9idWd6aWxsYS5yZWRoYXQuY29tL3Nob3dfYnVnLmNnaT9pZD0yMzIxNTQw
+DQo+ID4+IENjOiBzdGFibGVAdmdlci5rZXJuZWwub3JnDQo+ID4+IENjOiBQZXRlciBSb2JpbnNv
+biA8cGJyb2JpbnNvbkBnbWFpbC5jb20+DQo+ID4+IFNpZ25lZC1vZmYtYnk6IEhhbnMgZGUgR29l
+ZGUgPGhkZWdvZWRlQHJlZGhhdC5jb20+DQo+ID4+IFJldmlld2VkLWJ5OiBQZXRlciBSb2JpbnNv
+biA8cGJyb2JpbnNvbkBnbWFpbC5jb20+DQo+ID4NCj4gPiAxIHBhdGNoKGVzKSBhcHBsaWVkIHRv
+IHJ0dy1uZXh0IGJyYW5jaCBvZiBydHcuZ2l0LCB0aGFua3MuDQo+ID4NCj4gPiAzMWJlMzE3NWJk
+N2Igd2lmaTogcnRsOHh4eHU6IGFkZCBtb3JlIG1pc3NpbmcgcnRsODE5MmN1IFVTQiBJRHMNCj4g
+DQo+IFRoYW5rIHlvdSBmb3IgbWVyZ2luZyB0aGlzLCBzaW5jZSB0aGlzIGlzIGEgYnVnZml4IHBh
+dGNoLCBzZWUgZS5nLiA6DQo+IA0KPiBodHRwczovL2J1Z3ppbGxhLnJlZGhhdC5jb20vc2hvd19i
+dWcuY2dpP2lkPTIzMjE1NDANCj4gDQo+IEkgd2FzIGV4cGVjdGluZyB0aGlzIHBhdGNoIHRvIHNo
+b3cgdXAgaW4gNi4xMy1yYzEgYnV0IGl0IGRvZXMNCj4gbm90IGFwcGVhciB0byBiZSB0aGVyZS4N
+Cj4gDQo+IENhbiB5b3UgcGxlYXNlIGluY2x1ZGUgdGhpcyBpbiBhIGZpeGVzLXB1bGwtcmVxdWVz
+dCB0byB0aGUgbmV0d29yaw0KPiBtYWludGFpbmVyIHNvIHRoYXQgZ2V0cyBhZGRlZCB0byBhIDYu
+MTMtcmMjIHJlbGVhc2Ugc29vbiBhbmQgdGhlbg0KPiBjYW4gYmUgYmFja3BvcnRlZCB0byB2YXJp
+b3VzIHN0YWJsZSBrZXJuZWxzID8NCj4gDQoNClRoaXMgcGF0Y2ggc3RheXMgaW4gcnR3LmdpdCBh
+bmQgNi4xNCB3aWxsIGhhdmUgaXQsIGFuZCB0aGVuIGRyYWluIHRvIHN0YWJsZQ0KdHJlZXMuIEZv
+ciB0aGUgcmVkaGF0IHVzZXJzLCBjb3VsZCB5b3UgYXNrIHRoZSBkaXN0cm8gbWFpbnRhaW5lciB0
+byB0YWtlIHRoaXMNCnBhdGNoIGFoZWFkPyANCg0KUGluZy1LZQ0KDQo=
 
