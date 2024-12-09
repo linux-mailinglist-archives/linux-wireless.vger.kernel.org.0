@@ -1,60 +1,60 @@
-Return-Path: <linux-wireless+bounces-16121-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16120-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 728F99EA2D3
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 00:28:42 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B6E19EA2D1
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 00:28:33 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D38F618853E2
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 23:28:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E89182829A4
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 23:28:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463FA1FD790;
-	Mon,  9 Dec 2024 23:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 557BA1F709A;
+	Mon,  9 Dec 2024 23:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="QSmLtByd"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="q2XR4fmP"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.183])
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.164])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3FA1F63EF
-	for <linux-wireless@vger.kernel.org>; Mon,  9 Dec 2024 23:28:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A3C41BEF97
+	for <linux-wireless@vger.kernel.org>; Mon,  9 Dec 2024 23:28:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.164
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733786886; cv=none; b=GHvJKnbKQwcfcE/6s+2fbchZesfg3Q5UA5WVBcS7x6zspWXnDYWnjsku8KY2++6rhtTuy6DVNU0Cdr8pl/j0Pl3EdaC8sqs7u1YRpuRfJf7Ib7ftMN1Lhnxipw+AVc/8Bp1IhShRWq3PIdymYnGUgnJamioRWaykw09GdP/5kqg=
+	t=1733786885; cv=none; b=Nl4XXt+A65nWsyHI8kYOYn7YpNq9DMbSS8D0ahII0UShFLaNL5z4ZGxS4SLBXy8w8nLqdDdnyMxv7c3pyQb6SbqXAR5ylFhYYib45LK44rV+JhW+H/HlINxkquRKjYYOMhTbtxi/7u+MyAO6y8ePi0wmGbwmbiShppiW2WAt3F4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733786886; c=relaxed/simple;
-	bh=Q9AixGEPlSVomlQWQVjn/S3vz1Ts25XkrUDn8pqoCuo=;
+	s=arc-20240116; t=1733786885; c=relaxed/simple;
+	bh=LAJTxltQOCkfCzsFFsgyOAfGCMwZwPGsCBlrLueBfjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YmgFYuwY2N8eyjlrmw0N5+t/nlngOSI1ZreFCmjFlvDABOFSOSmp7imvWFWmBJT5wQxyGoe9p6nU362cGUkqG/JPIZIyS+M75hwpz+zNNV0xUslOLrFH+o2z7Z4bM2utbkdJm36OFB5kKcbIyhiLAtX63yDPcVDLud6/SVsIcLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=QSmLtByd; arc=none smtp.client-ip=67.231.154.183
+	 MIME-Version; b=f4p5a/RRj/dFmtHD/gTspgE6mPcYUGLCHyRpQppbH9NqvGyqZad462l8A18ZYYABdX9KQ5uHDI/W+GqnUJrl1d7QiMHXXh8fEWuG0fo/In5gghVpwxR9VfkxcbSNh3seOaMnO1/RmLXOLsJ5gGW6nUgNBF6DY8LicuTK0QPC12g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=q2XR4fmP; arc=none smtp.client-ip=67.231.154.164
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
 X-Virus-Scanned: Proofpoint Essentials engine
 Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 02D8A80067;
-	Mon,  9 Dec 2024 23:27:54 +0000 (UTC)
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 31C342C0078;
+	Mon,  9 Dec 2024 23:27:55 +0000 (UTC)
 Received: from corvid-conspiracy.candelatech.com (unknown [50.251.239.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 5867013C2B1;
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 8505113C2B3;
 	Mon,  9 Dec 2024 15:27:54 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 5867013C2B1
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 8505113C2B3
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
 	s=default; t=1733786874;
-	bh=Q9AixGEPlSVomlQWQVjn/S3vz1Ts25XkrUDn8pqoCuo=;
+	bh=LAJTxltQOCkfCzsFFsgyOAfGCMwZwPGsCBlrLueBfjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QSmLtBydc7loHI5zcTRtNdwCOrRUt60gNozYdQxOITqTwdKeEW4GJTUD+jyOu9jYi
-	 Kjol0SPqfRhOEwKwL94X9X7Ng7zvr8zDTg/KOpfUJvBlLyAgyeIIsRHh2uVAyg08Ql
-	 e80meduIeIfcrr9ZEtcef7fRdGRjJFXgCtp3I+sM=
+	b=q2XR4fmPXMcAHP8WwmzlLAcSJks40RNwzPWmEYVFyzrwE4+IYIS+FwHQ7R3+sRjyL
+	 oHNkuV/qQikx66J5okdzHwDdyUsFbIeO3tWh/fALBSlxhab/zech4321mJ0x7iIifl
+	 xLaEADVFGUyJQb3KJwed4rKUMZf2GyavFbzz/yIg=
 From: Dylan Eskew <dylan.eskew@candelatech.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Dylan Eskew <dylan.eskew@candelatech.com>
-Subject: [PATCH v5 1/2] iw: util: update and clean up eht capa printing
-Date: Mon,  9 Dec 2024 15:27:49 -0800
-Message-ID: <20241209232750.416604-2-dylan.eskew@candelatech.com>
+Subject: [PATCH v5 2/2] iw: scan: add eht capability parsing
+Date: Mon,  9 Dec 2024 15:27:50 -0800
+Message-ID: <20241209232750.416604-3-dylan.eskew@candelatech.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20241209232750.416604-1-dylan.eskew@candelatech.com>
 References: <20241209232750.416604-1-dylan.eskew@candelatech.com>
@@ -65,185 +65,98 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MDID: 1733786875-AHSGcfiNsxs2
+X-MDID: 1733786876-XDRhfBs0tt0W
 X-MDID-O:
- us5;at1;1733786875;AHSGcfiNsxs2;<dylan.eskew@candelatech.com>;b42792dba290a1257c3f0aaf1c60b0ff
+ us5;at1;1733786876;XDRhfBs0tt0W;<dylan.eskew@candelatech.com>;b42792dba290a1257c3f0aaf1c60b0ff
 X-PPE-TRUSTED: V=1;DIR=OUT;
 
-A number of fields were either missing or incorrect, so
-update to more aligned with 802.11be spec. Also clean up
-printout formatting.
+Add ability to print out EHT capabilities from
+AP beacons.
 
 Signed-off-by: Dylan Eskew <dylan.eskew@candelatech.com>
 ---
- iw.h   |  1 +
- util.c | 99 ++++++++++++++++++++++++++++++++++++++++++----------------
- 2 files changed, 73 insertions(+), 27 deletions(-)
+ ieee80211.h |  1 +
+ scan.c      | 21 +++++++++++++++++++--
+ 2 files changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/iw.h b/iw.h
-index dc11d2b..bce4e5b 100644
---- a/iw.h
-+++ b/iw.h
-@@ -245,6 +245,7 @@ void print_vht_info(__u32 capa, const __u8 *mcs);
- void print_he_capability(const uint8_t *ie, int len);
- void print_he_operation(const uint8_t *ie, int len);
- void print_he_info(struct nlattr *nl_iftype);
-+void print_eht_capability(const uint8_t *ie, int len, const uint8_t *he_cap);
- void print_eht_info(struct nlattr *nl_iftype, int band);
- void print_s1g_capability(const uint8_t *caps);
+diff --git a/ieee80211.h b/ieee80211.h
+index de05844..1e29371 100644
+--- a/ieee80211.h
++++ b/ieee80211.h
+@@ -99,6 +99,7 @@ enum elem_id {
+ enum elem_id_ext {
+ 	EID_EXT_HE_CAPABILITY		= 35,
+ 	EID_EXT_HE_OPERATION		= 36,
++	EID_EXT_EHT_CAPABILITY		= 108,
+ };
  
-diff --git a/util.c b/util.c
-index dc84886..8517e13 100644
---- a/util.c
-+++ b/util.c
-@@ -1535,7 +1535,6 @@ static void __print_eht_capa(int band,
- {
- 	unsigned int i;
- 	const char *pre = indent ? "\t" : "";
--	const char *mcs[] = { "0-7", "8-9", "10-11", "12-13"};
+ #define SUITE(oui, id)  (((oui) << 8) | (id))
+diff --git a/scan.c b/scan.c
+index 6cf44d2..395c7cb 100644
+--- a/scan.c
++++ b/scan.c
+@@ -556,6 +556,7 @@ static void tab_on_first(bool *first)
  
- 	#define PRINT_EHT_CAP(_var, _idx, _bit, _str) \
- 	do { \
-@@ -1550,6 +1549,7 @@ static void __print_eht_capa(int band,
- 	} while (0)
+ struct ie_context {
+ 	bool is_vht_cap;
++	const uint8_t *he_cap;
+ };
  
- 	#define PRINT_EHT_MAC_CAP(...) PRINT_EHT_CAP(mac_cap, __VA_ARGS__)
-+	#define PRINT_EHT_MAC_CAP_MASK(...) PRINT_EHT_CAP_MASK(mac_cap, __VA_ARGS__)
- 	#define PRINT_EHT_PHY_CAP(...) PRINT_EHT_CAP(phy_cap, __VA_ARGS__)
- 	#define PRINT_EHT_PHY_CAP_MASK(...) PRINT_EHT_CAP_MASK(phy_cap, __VA_ARGS__)
- 
-@@ -1558,13 +1558,22 @@ static void __print_eht_capa(int band,
- 		printf("%02x", mac_cap[i]);
- 	printf("):\n");
- 
--	PRINT_EHT_MAC_CAP(0, 0, "NSEP priority access Supported");
-+	PRINT_EHT_MAC_CAP(0, 0, "EPCS Priority Access Supported");
- 	PRINT_EHT_MAC_CAP(0, 1, "EHT OM Control Supported");
--	PRINT_EHT_MAC_CAP(0, 2, "Triggered TXOP Sharing Supported");
--	PRINT_EHT_MAC_CAP(0, 3, "ARR Supported");
--
--	printf("%s\t\tEHT PHY Capabilities: (0x", pre);
--	for (i = 0; i < 8; i++)
-+	PRINT_EHT_MAC_CAP(0, 2, "Triggered TXOP Sharing Mode 1 Supported");
-+	PRINT_EHT_MAC_CAP(0, 3, "Triggered TXOP Sharing Mode 2 Supported");
-+	PRINT_EHT_MAC_CAP(0, 4, "Restricted TWP Supported");
-+	PRINT_EHT_MAC_CAP(0, 5, "SCS Traffic Description Supported");
-+	PRINT_EHT_MAC_CAP_MASK(0, 6, 0x3, "Maximum MPDU Length");
-+
-+	PRINT_EHT_MAC_CAP(1, 1, "Maximum A_MPDU Length Exponent Extension");
-+	PRINT_EHT_MAC_CAP(1, 2, "EHT TRS Supported");
-+	PRINT_EHT_MAC_CAP(1, 3, "TXOP Return In TXOP Sharing Mode 2 Supported");
-+	PRINT_EHT_MAC_CAP(1, 4, "Two BQRs Supported");
-+	PRINT_EHT_MAC_CAP_MASK(1, 5, 0x3, "EHT Link Adaptation Supported");
-+
-+	printf("%s\t\tEHT PHY Capabilities (0x", pre);
-+	for (i = 0; i < 9; i++)
- 		printf("%02x", ((__u8 *)phy_cap)[i]);
- 	printf("):\n");
- 
-@@ -1610,39 +1619,54 @@ static void __print_eht_capa(int band,
- 	PRINT_EHT_PHY_CAP(1, 28, "MU Beamformer (80MHz)");
- 	PRINT_EHT_PHY_CAP(1, 29, "MU Beamformer (160MHz)");
- 	PRINT_EHT_PHY_CAP(1, 30, "MU Beamformer (320MHz)");
-+	PRINT_EHT_PHY_CAP(1, 31, "TB Sounding Feedback Rate Limit");
- 
--	printf("%s\t\tEHT MCS/NSS: (0x", pre);
--	for (i = 0; i < mcs_len; i++)
--		printf("%02x", ((__u8 *)mcs_set)[i]);
--	printf("):\n");
-+	PRINT_EHT_PHY_CAP(2, 0, "Rx 1024-QAM In Wider Bandwidth DL OFDMA Supported");
-+	PRINT_EHT_PHY_CAP(2, 1, "Rx 4096-QAM In Wider Bandwidth DL OFDMA Supported");
- 
- 	if (!(he_phy_cap[0] & ((BIT(2) | BIT(3) | BIT(4)) << 8))){
--		for (i = 0; i < 4; i++)
--			printf("%s\t\tEHT bw=20 MHz, max NSS for MCS %s: Rx=%u, Tx=%u\n",
--			       pre, mcs[i],
--			       mcs_set[i] & 0xf, mcs_set[i] >> 4);
-+		static const char * const mcs[] = { "0-7", "8-9", "10-11", "12-13" };
-+
-+		printf("%s\t\tEHT-MCS Map (20 Mhz Non-AP STA)\n", pre);
-+		for (i = 0; i < 4; i++) {
-+			printf("%s\t\t\tRx Max NSS for MCS %s: %u\n",
-+			       pre, mcs[i], mcs_set[i] & 0xf);
-+			printf("%s\t\t\tTx Max NSS for MCS %s: %u\n",
-+			       pre, mcs[i], mcs_set[i] >> 4);
-+		}
- 	} else {
-+		static const char * const mcs[] = { "0-9", "10-11", "12-13"};
-+
- 		if (he_phy_cap[0] & (BIT(2) << 8)) {
--			for (i = 0; i < 3; i++)
--				printf("%s\t\tEHT bw <= 80 MHz, max NSS for MCS %s: Rx=%u, Tx=%u\n",
--				       pre, mcs[i + 1],
--				       mcs_set[i] & 0xf, mcs_set[i] >> 4);
-+			printf("%s\t\tEHT-MCS Map (BW <= 80)\n", pre);
-+			for (i = 0; i < 3; i++) {
-+				printf("%s\t\t\tRx Max NSS for MCS %s: %u\n",
-+				       pre, mcs[i], mcs_set[i] & 0xf);
-+				printf("%s\t\t\tTx Max NSS for MCS %s: %u\n",
-+				       pre, mcs[i], mcs_set[i] >> 4);
-+			}
- 		}
- 		mcs_set += 3;
- 
- 		if (he_phy_cap[0] & (BIT(3) << 8)) {
--			for (i = 0; i < 3; i++)
--				printf("%s\t\tEHT bw=160 MHz, max NSS for MCS %s: Rx=%u, Tx=%u\n",
--				       pre, mcs[i + 1],
--				       mcs_set[i] & 0xf, mcs_set[i] >> 4);
-+			printf("%s\t\tEHT-MCS Map (BW = 160)\n", pre);
-+			for (i = 0; i < 3; i++) {
-+				printf("%s\t\t\tRx Max NSS for MCS %s: %u\n",
-+				       pre, mcs[i], mcs_set[i] & 0xf);
-+				printf("%s\t\t\tTx Max NSS for MCS %s: %u\n",
-+				       pre, mcs[i], mcs_set[i] >> 4);
-+			}
- 		}
- 
- 		mcs_set += 3;
- 		if (band == NL80211_BAND_6GHZ && (phy_cap[0] & BIT(1))) {
--			for (i = 0; i < 3; i++)
--				printf("%s\t\tEHT bw=320 MHz, max NSS for MCS %s: Rx=%u, Tx=%u\n",
--				       pre, mcs[i + 1],
--				       mcs_set[i] & 0xf, mcs_set[i] >> 4);
-+			printf("%s\t\tEHT-MCS Map (BW = 320)\n", pre);
-+			for (i = 0; i < 3; i++) {
-+				printf("%s\t\t\tRx Max NSS for MCS %s: %u\n",
-+				       pre, mcs[i], mcs_set[i] & 0xf);
-+				printf("%s\t\t\tTx Max NSS for MCS %s: %u\n",
-+				       pre, mcs[i], mcs_set[i] >> 4);
-+			}
- 		}
- 	}
- 
-@@ -1732,6 +1756,27 @@ void print_eht_info(struct nlattr *nl_iftype, int band)
- 			 he_phy_cap, true);
+ static void print_ssid(const uint8_t type, uint8_t len, const uint8_t *data,
+@@ -2393,12 +2394,21 @@ static void print_he_oper(const uint8_t type, uint8_t len, const uint8_t *data,
+ 	print_he_operation(data, len);
  }
  
-+void print_eht_capability(const uint8_t *ie, int len, const uint8_t *he_cap)
++static void print_eht_capa(const uint8_t type, uint8_t len,
++			   const uint8_t *data, const struct ie_context *ctx)
 +{
-+	const void *mac_cap, *phy_cap, *mcs_set, *he_phy_cap;
-+	int mcs_len;
-+	int i = 0;
-+
-+	mac_cap = &ie[i];
-+	i += 2;
-+
-+	phy_cap = &ie[i];
-+	i += 9;
-+
-+	mcs_set = &ie[i];
-+	mcs_len = len - i;
-+
-+	he_phy_cap = &he_cap[6];
-+
-+	__print_eht_capa(NL80211_BAND_6GHZ, mac_cap, phy_cap, mcs_set, mcs_len,
-+			 NULL, 0, he_phy_cap - 1, false);
++	printf("\n");
++	print_eht_capability(data, len, ctx->he_cap);
 +}
 +
- void print_he_capability(const uint8_t *ie, int len)
+ static const struct ie_print ext_printers[] = {
+ 	[EID_EXT_HE_CAPABILITY] = { "HE capabilities", print_he_capa, 21, 54, BIT(PRINT_SCAN), },
+ 	[EID_EXT_HE_OPERATION] = { "HE Operation", print_he_oper, 6, 15, BIT(PRINT_SCAN), },
++	[EID_EXT_EHT_CAPABILITY] = { "EHT capabilities", print_eht_capa, 13, 30, BIT(PRINT_SCAN), },
+ };
+ 
+ static void print_extension(unsigned char len, unsigned char *ie,
++			    const struct ie_context *ctx,
+ 			    bool unknown, enum print_ie_type ptype)
  {
- 	const void *mac_cap, *phy_cap, *mcs_set;
+ 	unsigned char tag;
+@@ -2411,7 +2421,7 @@ static void print_extension(unsigned char len, unsigned char *ie,
+ 	tag = ie[0];
+ 	if (tag < ARRAY_SIZE(ext_printers) && ext_printers[tag].name &&
+ 	    ext_printers[tag].flags & BIT(ptype)) {
+-		print_ie(&ext_printers[tag], tag, len - 1, ie + 1, NULL);
++		print_ie(&ext_printers[tag], tag, len - 1, ie + 1, ctx);
+ 		return;
+ 	}
+ 
+@@ -2441,6 +2451,13 @@ static void init_context(struct ie_context *ctx,
+ 		case EID_VHT_CAPABILITY:
+ 			ctx->is_vht_cap = true;
+ 			break;
++		case EID_EXTENSION:
++			switch (pos[2]) {
++			case EID_EXT_HE_CAPABILITY:
++				ctx->he_cap = pos + 3;
++				break;
++			}
++			break;
+ 		}
+ 
+ 		remaining -= pos[1] + 2;
+@@ -2468,7 +2485,7 @@ void print_ies(unsigned char *ie, int ielen, bool unknown,
+ 		} else if (ie[0] == 221 /* vendor */) {
+ 			print_vendor(ie[1], ie + 2, unknown, ptype);
+ 		} else if (ie[0] == 255 /* extension */) {
+-			print_extension(ie[1], ie + 2, unknown, ptype);
++			print_extension(ie[1], ie + 2, &ctx, unknown, ptype);
+ 		} else if (unknown) {
+ 			int i;
+ 
 -- 
 2.47.0
 
