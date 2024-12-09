@@ -1,99 +1,114 @@
-Return-Path: <linux-wireless+bounces-16017-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16018-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E9539E8B21
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 06:43:49 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E2E99E8B32
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 06:52:10 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4223A1636E0
-	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 05:43:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 453422814DA
+	for <lists+linux-wireless@lfdr.de>; Mon,  9 Dec 2024 05:52:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B7D71C1F31;
-	Mon,  9 Dec 2024 05:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4781820FABC;
+	Mon,  9 Dec 2024 05:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kMlMB6zX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AXZhlK9H"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E72F11C1F22
-	for <linux-wireless@vger.kernel.org>; Mon,  9 Dec 2024 05:43:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C3120FA99
+	for <linux-wireless@vger.kernel.org>; Mon,  9 Dec 2024 05:52:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733723023; cv=none; b=K7JPUszjyRSJ7p1UyFN53h8fgvmDXn7rL0kRr0IvvVCCwmf68z/DkroT1UKfwXoFeqbfIB+7+GGmDPShmgoiugifiZV9Oa4my2uy/O/MLwcDTvS2L6Tp3al/CJjeQRiVI20RV/FieTc3bT4pjFGgBXtKZmojYUAOdzdMiKUxoQA=
+	t=1733723524; cv=none; b=iSvC5OLrsqyiIlXR1V9KB4ClaD+29sK6rEHj/nSFp/1k9txT2ATq9dyF1bNm8ZA9q5b+FKMVyg8aKKDdtIxFd4QbFFhLLqYBapAs53mYeB+ePjaIbjvLKKl13QiZeZWCFApylotQm/BoCbwHTIuruLZjvX1RLqeineARHx0Eebs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733723023; c=relaxed/simple;
-	bh=2XGS5XE2xWUUOq2FbFiSDqlbztXyN40EGyjjOW3tvcE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e6XB0CluXJ3CR7+KQ19mrdnY+8d0bdZKWhFI8H1MInJVCLUorGW4l4rKt0Dlyi/9cdio7nvt0TvG3DJjDZ/WCLatddx0hDGWZMNXL4fmUC/iQ4i9cH5mFQd7WTEyCTMd5iX3PAbYE3sgvQ17wsDO+f2zE23bi0F9h3ghrE5WcTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kMlMB6zX; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-aa67af4dc60so133056566b.2
-        for <linux-wireless@vger.kernel.org>; Sun, 08 Dec 2024 21:43:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733723020; x=1734327820; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LvxE9KWeFX/OQsOjGIozVp+veKIzqMmU1Jx+cc8a3is=;
-        b=kMlMB6zXnCSRW11XxudyjTvqngpTQBgL5unlvBSnSw+EjWA0EDQPXWAUc6/5IU8XbR
-         D6kIuiezLEopksvmuzTNGcMG11r/H2fV0M2XP5JMkFMqFbUg6U+4dwRse8HBrVQcJcR8
-         S/5WE5Uw7vCc46i+q/ZLPa0tu3tDrloD5ISeqMtyuNCLtU7FgCUu4vdw2vHhDbZQ+15F
-         uowkiXLrd+2gYSN0vfXXu3KIbvDt4vfbonwZI7EoNW/wBT8TRHuOnbSUAnHabjnONavz
-         70oa1pW1Ld3Kei2RDeBKrSS32sqtayzR2oEFMfAHx+h4dNITnBAAsPkPqANs4oeeK66V
-         uv2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733723020; x=1734327820;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LvxE9KWeFX/OQsOjGIozVp+veKIzqMmU1Jx+cc8a3is=;
-        b=gB41dbkn5SlCgzqm03iOWbn6AT7Wememh3YeMxhIgF15Tr6awjDteK7HRbLrGXeNNJ
-         5HSavZpxprLIReD3GAcCAtEBSZS15X32sV9GxrlJbSBsDsdh9MOuCgX7mze2Ssj9but0
-         8EI1gIz2SeG6G4N7Ew8wvHKgsxYkNVjIpMaGGX+qaoNgZzH7aWgWNLxF8pO00dM1rbub
-         SoA0E8hn/+EErH76StOlqmiJp50WZAeiz9T6Gy02oNnQgeMInQ/jbUjrWqAYxpeBrz3r
-         DUBHhR/FEx723OKFBLJEe5lbm0TydCDqwB4MeVakfuft+SbdAXyNhUq5hkfdl5mARxZ5
-         +McQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVvCy5Dl8e102KbZ44velREcW5ktVtU2msVMFdRHlhOR8BH2PMQCyhqV9JV+QLpBx5J3gC1VWRbwM3m9Y3yBQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAQZDJKdUbkBC4WLR7VzA7EJl3YKL9lwH728eC2e+5ZLBHdW4R
-	RGqPGxcpysms+0SLoV7D3kj2NyuWhj3vJ+aPqWqeOANifkYFjC1HMufRJtCsK5gC1rO8awYCAOY
-	MEQKFKryt6O2kFEuUz/ZhkbW/7Qc=
-X-Gm-Gg: ASbGncsUVvRKf7WY/tss0XCSnlQbFU8QljNrfMSj6Y0WxXFQ3KaoaRLfiK7idQYCFqV
-	nT7bioRZD7aOXetmhkqsATXt7l2z730o=
-X-Google-Smtp-Source: AGHT+IGGePJo+9N4Of4PeXOzooY+Gs9piE89hotQoUrmoId59x6OpJsYaqkpE1HlgA0Tb6qsnt0CfpTgn3festfQL9Y=
-X-Received: by 2002:a17:906:3090:b0:aa6:800a:1292 with SMTP id
- a640c23a62f3a-aa6800a1c31mr295375066b.25.1733723019879; Sun, 08 Dec 2024
- 21:43:39 -0800 (PST)
+	s=arc-20240116; t=1733723524; c=relaxed/simple;
+	bh=mwiIiqNIdB6mZrBb7/PSo4K5yBcLR0YgHtklPxn8qaY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=JmJnSqVGh54EXHj+q/VhIA+JrLDMEcr4yPs1w5nKxc8QyJpmYp8sbzLr4SKarZllwruax040WzjA5wblU5ezm02/Jh53VZka4f0dIsO0qjVAsFB1sTHl64sWS1QoLczJ0FePykI+ycxJuhVvm5l8rSS3efPk3UwFuVNfA5V6M3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AXZhlK9H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65BAEC4CED1;
+	Mon,  9 Dec 2024 05:52:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733723523;
+	bh=mwiIiqNIdB6mZrBb7/PSo4K5yBcLR0YgHtklPxn8qaY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=AXZhlK9H9t0xiznfxZNu0Fi610flMLslYT5xoPD5edmlqHNhBay/X9FMdp9o8oI1Y
+	 7LtDDVySNDZWcYXEHaZ/xzj2dp1lvPUle6F1w4k8pTegkQQfFB4m89aMFgyYEDKw4B
+	 pWNocdEinK2e0nrXPamsrQ1GqUFwwJlY943WdVGDqy9KnkHjneqnhq9jv9nN0EeeFz
+	 n+B1Kn/aRl8osvUNqUNfjAd431rMC14jrqauUQw+6PkUn4iggBUAZqUjZgk3oyf17q
+	 z62ImsHcqGsfwcL3f3lZU/CjB2GuRO0BX5LF5AH7Sz/eQ6WH0at3iSUcdVx0X5aVcX
+	 6kFkiCz+HwYWw==
+Received: from wens.tw (localhost [127.0.0.1])
+	by wens.tw (Postfix) with ESMTP id 9F0785FD3D;
+	Mon,  9 Dec 2024 13:52:00 +0800 (CST)
+From: Chen-Yu Tsai <wens@kernel.org>
+To: Ping-Ke Shih <pkshih@gmail.com>
+Cc: linux-wireless@vger.kernel.org, wireless-regdb@lists.infradead.org
+In-Reply-To: <20241021071506.24320-1-pkshih@gmail.com>
+References: <20241021071506.24320-1-pkshih@gmail.com>
+Subject: Re: [PATCH] wireless-regdb: Update regulatory info for Oman (OM)
+Message-Id: <173372352062.3392947.8322619197587000209.b4-ty@kernel.org>
+Date: Mon, 09 Dec 2024 13:52:00 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241021071506.24320-1-pkshih@gmail.com> <CAGb2v64FojDNF+9fhdE5LhMJRYr0Tk9s+uPkVYD=pYsdHLggrA@mail.gmail.com>
-In-Reply-To: <CAGb2v64FojDNF+9fhdE5LhMJRYr0Tk9s+uPkVYD=pYsdHLggrA@mail.gmail.com>
-From: Ping-Ke Shih <pkshih@gmail.com>
-Date: Mon, 9 Dec 2024 13:43:28 +0800
-Message-ID: <CAHrRpu=q-AQyp15iqDyB=6hcPL289BgpQnDRNNDoOEz6FrAFzg@mail.gmail.com>
-Subject: Re: [PATCH] wireless-regdb: Update regulatory info for Oman (OM)
-To: wens@kernel.org
-Cc: Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org, 
-	wireless-regdb@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.2
 
-Chen-Yu Tsai <wens@kernel.org> wrote=EF=BC=9A
+On Mon, 21 Oct 2024 15:15:06 +0800, Ping-Ke Shih wrote:
+> Sultanate of Oman, Telecommunications Regulatory Authority released
+> Technical Specifications for Wideband and Broadband Data Transmission
+> Systems [1].
+> 
+> * 2400-2483.5 MHz
+>   - 100 mW max. mean EIRP
+>   - indoor use only
+> * 5150-5250 MHz
+>   - 200 mW max. mean EIRP
+> * 5250-5350 MHz
+>   - 200 mW max. mean EIRP
+>   - TPC: if TPC is not used, then the maximum permitted mean EIRP and the
+>          corresponding mean EIRP density limits shall be reduced by 3 dB.
+>          (20 dBm is adopted)
+>   - DFS
+> * 5470-5725 MHz
+>   - 1 W max. mean EIRP
+>   - TPC: if TPC is not used, then the maximum permitted mean EIRP and the
+>          corresponding mean EIRP density limits shall be reduced by 3 dB.
+>          (27 dBm is adopted)
+>   - DFS
+> * 5725-5850 MHz
+>   - 2 W max. mean EIRP
+>   - TPC: FWA systems operating in frequency band 5725-5850 MHz shall
+>          employ TPC with a range of at least 5 dB.
+>          (28 dBm Is adopted)
+>   - Outdoor use only
+>     (Since NO-INDOOR flag is not supported by current format, don't add
+>      this entry.)
+>   - DFS
+> * 5925-6425 MHz
+>   - 200 mW max. mean EIRP
+>   - Indoor use only
+> * 57-66 GHz
+>   - 40 dBm max. mean EIRP
+>   - Indoor use only
+> 
+> [...]
 
-> > +       (5490 - 5725 @ 160), (27), DFS
->              ^
->            typo? It says 5470 above.
->
-> I can fix it when applying.
->
+Applied to master in wens/wireless-regdb.git, thanks!
 
-Sorry for the typo.
-Please fix it. Thanks.
+[1/1] wireless-regdb: Update regulatory info for Oman (OM)
+      https://git.kernel.org/wens/wireless-regdb/c/f67f40d00919
+
+Best regards,
+-- 
+Chen-Yu Tsai <wens@kernel.org>
+
 
