@@ -1,160 +1,222 @@
-Return-Path: <linux-wireless+bounces-16180-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16182-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 298539EBB53
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 21:58:57 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A34759EBC89
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 23:03:10 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B64CC28452E
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 20:58:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50D4D18822B6
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 22:03:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FE2222B5B2;
-	Tue, 10 Dec 2024 20:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 944AA23D410;
+	Tue, 10 Dec 2024 22:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=ijzerbout.nl header.i=@ijzerbout.nl header.b="OArvQjGJ"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Q4SOEP0Y"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from bout3.ijzerbout.nl (bout3.ijzerbout.nl [136.144.140.114])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A833122B5AE
-	for <linux-wireless@vger.kernel.org>; Tue, 10 Dec 2024 20:58:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.144.140.114
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F80D2397B1;
+	Tue, 10 Dec 2024 22:02:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733864333; cv=none; b=mN82jxSMISLs3fRbiIFdMXCQ2XgT8bGnrKdBNdTPX2CagtjATmh/gqHOrnWj54ypE1ciZ0p87V/71r96DosaDxJzRpBlUnzM59iOc7vu3mdaSi78q3BxPwiIc+G49WEQTkKRwjoofnwcq5nIrcoOc6Evu2hweMApvoo6n+0iRho=
+	t=1733868165; cv=none; b=G4lwQw8GS+PuCiH5F4GjjKYN/ISgtAp5mW6l8OGdDKenjRgLzP/UsCemQKd8K19PFr+mNuTnoRzmIb+OL0AVeWKWSAE72v8uZn+qsX6Phw9VLwgg5ydAhbwYi168Jt4x00B8FfiFfEtJ/gWRqGNSom1BAI+F2BDuPdJpMHS7n90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733864333; c=relaxed/simple;
-	bh=v2raCaWN3IG/5w/aOn1R+icWgs90NdTA6z+LvPlbe1o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IJSJAB2rM8leJ37M3hyXc44k672SHniHtGKtZhfDxtB+Fn73GD0Y9EVwnq9B95SSczLoW2/JQMHJrmVJLOPkrSkaZvZJFBN93W7pmaABUMYj8NB8ITrCBu6Ew/y/bWrstii5e0B31xjc6V3D66sz9Oa1o96e8lGlGcuZ/7yRnG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ijzerbout.nl; spf=pass smtp.mailfrom=ijzerbout.nl; dkim=pass (4096-bit key) header.d=ijzerbout.nl header.i=@ijzerbout.nl header.b=OArvQjGJ; arc=none smtp.client-ip=136.144.140.114
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ijzerbout.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ijzerbout.nl
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ijzerbout.nl; s=key;
-	t=1733864319; bh=v2raCaWN3IG/5w/aOn1R+icWgs90NdTA6z+LvPlbe1o=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OArvQjGJNCmsOR94itS7QtZxcp/cZbSiLL9l9fSA0rrBt/8AXT1jSbc4cR2z8/tmu
-	 1OzHqoh/vyDUAvJO7k1U6X5GXLog723yXC4mTWoDS0MOcv3AQfM9k2Sx3jjwloZ71z
-	 BJnUzK6U9fS7nmNLBOvNl79OkdEsMlcJsg8qscN6mXFA0cxSmoNYNm62Fr2pC8KJhA
-	 DaPqaqh8iks88o7wNFLMB2egi+bjH/NNJ7XPCv01GBJk7F7+OlW5dXWJWb9UZ/ypPn
-	 38GOlhRVE6h2BXvmB1t0vkE0dhZinC6zfiX6RILZsYfInwKQSBZT0dJYqbVTeIO0Sl
-	 4uCGz0UmVaKh4K5GmsKgJaXrheMibsSf3lW/X0rykBE/T+WAG37xLZHRLoeRAmUgo6
-	 jXpbjwPiRNXtNQSLfaWfT4o2kGb1miFj/K//+StV37fC504TFutA/7srb4uuBm6HNt
-	 4uoWH6xj++V6Ww60iAdApQ4NP/juEavaqXe1irj7DMakfHS/heWNjb0fKIXcFYfqAt
-	 s4fnyzQH3M4+0dqeUYgPqWvPm3OUEa3BWNYkFP+LDd/69lx8qM8mowTL6tuCZoRyGx
-	 260VYLC+EvbzBe6PWSshjA8r4jWtxnRE5P5IyjVbkq2ok59tp00cENA332NYBu6Ao8
-	 vgn92l7uTueQ93G4xp4pM3ow=
-Received: from [IPV6:2a10:3781:99:1:1ac0:4dff:fea7:ec3a] (racer.ijzerbout.nl [IPv6:2a10:3781:99:1:1ac0:4dff:fea7:ec3a])
-	by bout3.ijzerbout.nl (Postfix) with ESMTPSA id 1D46118E519;
-	Tue, 10 Dec 2024 21:58:34 +0100 (CET)
-Message-ID: <bfd41680-060f-4bd8-a289-f4ef69429c30@ijzerbout.nl>
-Date: Tue, 10 Dec 2024 21:58:31 +0100
+	s=arc-20240116; t=1733868165; c=relaxed/simple;
+	bh=rtcpjXD/4KgBXkXpOwbxWNhqWuEIw5iVzq1KknY15jU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jqwdW1jRGxhIT8Phhyjp9XEmuFnDHpIasPI2UMZRaGLwN+ZslJ5MAj63stb+OaZQYZRqxH7pRxo+u9rS3llnetVHdZxjfu+bvDlc3anMdhWRSkqSu5OmKao73YeBeNNcXLJUGHM8ld1MxKsnkyYhxXcJnffAZBlThD4lXbKEzp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Q4SOEP0Y; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from eahariha-devbox.internal.cloudapp.net (unknown [40.91.112.99])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 5C8092047227;
+	Tue, 10 Dec 2024 14:02:36 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5C8092047227
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1733868156;
+	bh=3tkOAM1zqG9JeFOtral7Lfs9u46U15/2RBF6sWmMcg4=;
+	h=From:Subject:Date:To:Cc:From;
+	b=Q4SOEP0Y7h5zO78UBiHUhYnGicCTwnpmdGyeJ2NXra3aSgp4pliiNVajI48sltiC5
+	 krxOdne8IbeYxRwBBWcjRMbkm4dRwXWKZALmzr8Eqfc6Ado8XqXrVleqMCFQbV/jTu
+	 DEly4DyEWnbV/UU33Q7NVotbdGyJFxTE5SxdsOl8=
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
+Subject: [PATCH v3 00/19] Converge on using secs_to_jiffies()
+Date: Tue, 10 Dec 2024 22:02:31 +0000
+Message-Id: <20241210-converge-secs-to-jiffies-v3-0-ddfefd7e9f2a@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/7] wifi: ath12k: move struct ath12k_hw from per device
- to group
-To: Kalle Valo <kvalo@kernel.org>, ath12k@lists.infradead.org,
- Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
- Harshitha Prem <quic_hprem@quicinc.com>,
- Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Cc: linux-wireless@vger.kernel.org
-References: <20241204163216.433795-1-kvalo@kernel.org>
- <20241204163216.433795-6-kvalo@kernel.org>
-Content-Language: en-US
-From: Kees Bakker <kees@ijzerbout.nl>
-In-Reply-To: <20241204163216.433795-6-kvalo@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAHe6WGcC/42NwQ6CMBAFf4X0bAlbQFJP/ofxAO1W1ijVFhoM4
+ d8tGONFE49vkjczMY+O0LNdMjGHgTzZLo58kzDV1t0JOem4mchEAQCCK9sFdJF7VJ73lp/JmGj
+ gWkoNGWwbDcDi/ebQ0LiqD8fXdngfYqH/wJZ8b91jzQdY6LtU/i4F4BkHWdda5YUsoNlfqBvG9
+ ErKWW9Nnyp7ZYs+iH+VIiolgGmqUpZYye/KeZ6fTjplmTIBAAA=
+X-Change-ID: 20241112-converge-secs-to-jiffies-d99d1016bd11
+To: Pablo Neira Ayuso <pablo@netfilter.org>, 
+ Jozsef Kadlecsik <kadlec@netfilter.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Julia Lawall <Julia.Lawall@inria.fr>, 
+ Nicolas Palix <nicolas.palix@imag.fr>, Daniel Mack <daniel@zonque.org>, 
+ Haojian Zhuang <haojian.zhuang@gmail.com>, 
+ Robert Jarzmik <robert.jarzmik@free.fr>, 
+ Russell King <linux@armlinux.org.uk>, Heiko Carstens <hca@linux.ibm.com>, 
+ Vasily Gorbik <gor@linux.ibm.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Sven Schnelle <svens@linux.ibm.com>, Ofir Bitton <obitton@habana.ai>, 
+ Oded Gabbay <ogabbay@kernel.org>, 
+ Lucas De Marchi <lucas.demarchi@intel.com>, 
+ =?utf-8?q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
+ Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Jeroen de Borst <jeroendb@google.com>, 
+ Praveen Kaligineedi <pkaligineedi@google.com>, 
+ Shailend Chand <shailend@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ James Smart <james.smart@broadcom.com>, 
+ Dick Kennedy <dick.kennedy@broadcom.com>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ "Martin K. Petersen" <martin.petersen@oracle.com>, 
+ =?utf-8?q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>, 
+ Jens Axboe <axboe@kernel.dk>, Kalle Valo <kvalo@kernel.org>, 
+ Jeff Johnson <jjohnson@kernel.org>, 
+ Catalin Marinas <catalin.marinas@arm.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Jack Wang <jinpu.wang@cloud.ionos.com>, 
+ Marcel Holtmann <marcel@holtmann.org>, 
+ Johan Hedberg <johan.hedberg@gmail.com>, 
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Florian Fainelli <florian.fainelli@broadcom.com>, 
+ Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>, 
+ Josh Poimboeuf <jpoimboe@kernel.org>, Jiri Kosina <jikos@kernel.org>, 
+ Miroslav Benes <mbenes@suse.cz>, Petr Mladek <pmladek@suse.com>, 
+ Joe Lawrence <joe.lawrence@redhat.com>, Jaroslav Kysela <perex@perex.cz>, 
+ Takashi Iwai <tiwai@suse.com>, Louis Peens <louis.peens@corigine.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, cocci@inria.fr, 
+ linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
+ linux-scsi@vger.kernel.org, xen-devel@lists.xenproject.org, 
+ linux-block@vger.kernel.org, linux-wireless@vger.kernel.org, 
+ ath11k@lists.infradead.org, linux-mm@kvack.org, 
+ linux-bluetooth@vger.kernel.org, linux-staging@lists.linux.dev, 
+ linux-rpi-kernel@lists.infradead.org, ceph-devel@vger.kernel.org, 
+ live-patching@vger.kernel.org, linux-sound@vger.kernel.org, 
+ oss-drivers@corigine.com, linuxppc-dev@lists.ozlabs.org, 
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+ Easwar Hariharan <eahariha@linux.microsoft.com>, 
+ Jeff Johnson <quic_jjohnson@quicinc.com>
+X-Mailer: b4 0.14.2
 
-Op 04-12-2024 om 17:32 schreef Kalle Valo:
-> From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
->
-> Currently, hardware abstractions (ah) of different radio bands are tightly
-> coupled to a single device (ab). But, with hardware device group abstraction
-> (ag), multiple radios across different devices in a group can form different
-> combinations of hardware abstractions (ah) within the group. Hence, the mapping
-> between ah to ab can be removed and instead it can be mapped with struct
-> ath12k_hw_group (ag).
-> [...]
-> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-> [...]
-> -void ath12k_mac_destroy(struct ath12k_base *ab)
-> +void ath12k_mac_destroy(struct ath12k_hw_group *ag)
->   {
->   	struct ath12k_pdev *pdev;
-> +	struct ath12k_base *ab = ag->ab[0];
-> +	int i, j;
->   	struct ath12k_hw *ah;
-> -	int i;
->   
-> -	for (i = 0; i < ab->num_radios; i++) {
-> -		pdev = &ab->pdevs[i];
-> -		if (!pdev->ar)
-> +	for (i = 0; i < ag->num_devices; i++) {
-> +		ab = ag->ab[i];
-> +		if (!ab)
->   			continue;
->   
-> -		pdev->ar = NULL;
-> +		for (j = 0; j < ab->num_radios; j++) {
-> +			pdev = &ab->pdevs[j];
-> +			if (!pdev->ar)
-> +				continue;
-> +			pdev->ar = NULL;
-> +		}
->   	}
->   
->   	for (i = 0; i < ath12k_get_num_hw(ab); i++) {
-> @@ -10942,26 +10945,59 @@ void ath12k_mac_destroy(struct ath12k_base *ab)
->   	}
->   }
->   
-The new ath12k_mac_destroy() looks suspicious with respect to "ab".
-Here is the new function with comments.
+This is a series that follows up on my previous series to introduce
+secs_to_jiffies() and convert a few initial users.[1] In the review for
+that series, Anna-Maria requested converting other users with
+Coccinelle. [2] This is part 1 that converts users of msecs_to_jiffies()
+that use the multiply pattern of either of:
+- msecs_to_jiffies(N*1000), or
+- msecs_to_jiffies(N*MSEC_PER_SEC)
 
-void ath12k_mac_destroy(struct ath12k_hw_group *ag)
-{
-         struct ath12k_pdev *pdev;
-         struct ath12k_base *ab = ag->ab[0];
-==> here ag->ab[0] is used before checking if ag->num_devices is greater 
-than zero
-==> If ag->num_devices will never be zero then this first assignment 
-will be repeated in the next for-loop
-==> if ag->num_devices can be zero then you need to confirm that 
-ag->ab[0] is non-NULL
+where N is a constant, to avoid the multiplication.
 
-         int i, j;
-         struct ath12k_hw *ah;
+The entire conversion is made with Coccinelle in the script added in
+patch 2. Some changes suggested by Coccinelle have been deferred to
+later parts that will address other possible variant patterns.
 
-         for (i = 0; i < ag->num_devices; i++) {
-                 ab = ag->ab[i];
-                 if (!ab)
-=>> This if check indicates that ab can be NULL
-                         continue;
+CC: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
 
-                 for (j = 0; j < ab->num_radios; j++) {
-                         pdev = &ab->pdevs[j];
-                         if (!pdev->ar)
-                                 continue;
-                         pdev->ar = NULL;
-                 }
-         }
+[1] https://lore.kernel.org/all/20241030-open-coded-timeouts-v3-0-9ba123facf88@linux.microsoft.com/
+[2] https://lore.kernel.org/all/8734kngfni.fsf@somnus/
 
-==> Now ab is going to be used, but as shown above, ab can be NULL
-         for (i = 0; i < ath12k_get_num_hw(ab); i++) {
-                 ah = ath12k_ab_to_ah(ab, i);
-                 if (!ah)
-                         continue;
+---
+Changes in v3:
+- Rebase on next-20241210
+- Fix typo'ed timeout in net/netfilter/nf_conntrack_proto_sctp.c (Stephen Rothwell)
+- Use Coccinelle operation modes for Coccinelle script (Markus Elfring)
+- Remove redundant comments in arch/arm/mach-pxa/sharpsl_pm.c
+  (Christophe Leroy)
+- Remove excess line breaks (Heiko Carstens, Christophe Leroy)
+- Add more detail into the commit messages throughout (Christophe Leroy)
+- Pick up Reviewed-by Thomas Hellström for drm/xe
+- Drop drm/etnaviv patch already queued into etnaviv/next
+- Replace call to [m]secs_to_jiffies(0) with just 0 for livepatch (Dan
+  Carpenter, Christophe Leroy)
+- Split out nfp patch to send to net-next (Christophe Leroy)
+- Pick up Acked-by from Jeff Johnson for ath11k
+- Link to v2: https://lore.kernel.org/r/20241115-converge-secs-to-jiffies-v2-0-911fb7595e79@linux.microsoft.com
+Changes in v2:
+- Exclude already accepted patch adding secs_to_jiffies() https://git.kernel.org/tip/b35108a51cf7bab58d7eace1267d7965978bcdb8
+- Link to v1: https://lore.kernel.org/r/20241115-converge-secs-to-jiffies-v1-0-19aadc34941b@linux.microsoft.com
 
-                 ath12k_mac_hw_destroy(ah);
-                 ath12k_ab_set_ah(ab, i, NULL);
-         }
-}
+---
+Easwar Hariharan (19):
+      netfilter: conntrack: Cleanup timeout definitions
+      coccinelle: misc: Add secs_to_jiffies script
+      arm: pxa: Convert timeouts to use secs_to_jiffies()
+      s390: kernel: Convert timeouts to use secs_to_jiffies()
+      powerpc/papr_scm: Convert timeouts to secs_to_jiffies()
+      mm: kmemleak: Convert timeouts to secs_to_jiffies()
+      accel/habanalabs: Convert timeouts to secs_to_jiffies()
+      drm/xe: Convert timeout to secs_to_jiffies()
+      scsi: lpfc: Convert timeouts to secs_to_jiffies()
+      scsi: arcmsr: Convert timeouts to secs_to_jiffies()
+      scsi: pm8001: Convert timeouts to secs_to_jiffies()
+      xen/blkback: Convert timeouts to secs_to_jiffies()
+      gve: Convert timeouts to secs_to_jiffies()
+      wifi: ath11k: Convert timeouts to secs_to_jiffies()
+      Bluetooth: MGMT: Convert timeouts to secs_to_jiffies()
+      staging: vc04_services: Convert timeouts to secs_to_jiffies()
+      ceph: Convert timeouts to secs_to_jiffies()
+      livepatch: Convert timeouts to secs_to_jiffies()
+      ALSA: line6: Convert timeouts to secs_to_jiffies()
 
+ arch/arm/mach-pxa/sharpsl_pm.c                     |  8 ++++----
+ arch/powerpc/platforms/pseries/papr_scm.c          |  2 +-
+ arch/s390/kernel/lgr.c                             |  2 +-
+ arch/s390/kernel/time.c                            |  4 ++--
+ arch/s390/kernel/topology.c                        |  2 +-
+ drivers/accel/habanalabs/common/device.c           |  2 +-
+ drivers/accel/habanalabs/common/habanalabs_drv.c   |  3 +--
+ drivers/block/xen-blkback/blkback.c                |  2 +-
+ drivers/gpu/drm/xe/xe_device.c                     |  2 +-
+ drivers/net/ethernet/google/gve/gve_tx_dqo.c       |  6 ++----
+ drivers/net/wireless/ath/ath11k/debugfs.c          |  2 +-
+ drivers/scsi/arcmsr/arcmsr_hba.c                   |  2 +-
+ drivers/scsi/lpfc/lpfc_init.c                      | 18 +++++++++---------
+ drivers/scsi/lpfc/lpfc_nportdisc.c                 |  8 ++++----
+ drivers/scsi/lpfc/lpfc_nvme.c                      |  2 +-
+ drivers/scsi/lpfc/lpfc_sli.c                       |  4 ++--
+ drivers/scsi/lpfc/lpfc_vmid.c                      |  2 +-
+ drivers/scsi/pm8001/pm8001_init.c                  |  2 +-
+ .../vc04_services/bcm2835-audio/bcm2835-vchiq.c    |  2 +-
+ fs/ceph/quota.c                                    |  2 +-
+ mm/kmemleak.c                                      |  4 ++--
+ net/bluetooth/mgmt.c                               |  2 +-
+ net/netfilter/nf_conntrack_proto_sctp.c            | 21 ++++++++-------------
+ samples/livepatch/livepatch-callbacks-busymod.c    |  3 +--
+ samples/livepatch/livepatch-shadow-fix1.c          |  3 +--
+ samples/livepatch/livepatch-shadow-mod.c           | 15 +++++----------
+ scripts/coccinelle/misc/secs_to_jiffies.cocci      | 22 ++++++++++++++++++++++
+ sound/usb/line6/toneport.c                         |  2 +-
+ 28 files changed, 78 insertions(+), 71 deletions(-)
+---
+base-commit: 1b2ab8149928c1cea2d7eca30cd35bb7fe014053
+change-id: 20241112-converge-secs-to-jiffies-d99d1016bd11
+
+Best regards,
 -- 
-Kees
+Easwar Hariharan <eahariha@linux.microsoft.com>
+
 
