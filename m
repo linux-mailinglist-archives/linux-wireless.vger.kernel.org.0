@@ -1,140 +1,136 @@
-Return-Path: <linux-wireless+bounces-16204-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16206-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB2CA9EBF3E
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2024 00:26:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E40A29EBF73
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2024 00:36:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE68D2847CD
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 23:26:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 861C128200E
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 23:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2883D1F1937;
-	Tue, 10 Dec 2024 23:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1FB0225A43;
+	Tue, 10 Dec 2024 23:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="UzPgXs3M"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="JEUFC7jH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1910786324
-	for <linux-wireless@vger.kernel.org>; Tue, 10 Dec 2024 23:25:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8C321129F;
+	Tue, 10 Dec 2024 23:36:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733873160; cv=none; b=KNyPaxbw7lG9AKM7nJoRmCAEvnISELakTjRt3OH4mddcpxboJA8XxgVWV0tNphEv0mQVp2d1Wb4YItVfIhZGjVzD024bnPIp4MhbSCXTZlFluuAIcGycfo3QXrH860CD/Y6DYi02trUwxxvqZ6Lf463YHXbxfOZ3Uu1k2bymlRc=
+	t=1733873768; cv=none; b=Fk+ktcbP4Q6V0jFyhab56OCVlG3Mh/vyFT5bwgqRvorW0B8R0ggU3YjkX/rEiXi8U4BPai976EoYHOVdhcLrQj9IFdj5NGegOxkunjGEBz2Hg2alvXs2du0/f7xz/MptemPu2y0Q8ruWKTRVikzbMn9C+DXcbMA3JSbxH9HwYhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733873160; c=relaxed/simple;
-	bh=nymeM55oZwa4p0SXEYro7YSRYwZdMN+I+0M32HrtO8Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DxvaIwEZJ3jyuRYMlbIhgPBBzWAHqGjJfLid7CiFpmYwKm6+vIwIrMlVozoxx8oqJUcvIWE9KSSuNYb9SrLHxS07Jdb1SE9MFxNWJwDNciqx2o4PuvaNDR4mNS8+mMNyqUA6uAdpMeHq5pghzJ4OKokX8zYZrkMLsOzanrODr1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=UzPgXs3M; arc=none smtp.client-ip=148.163.129.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 2046DC4005D
-	for <linux-wireless@vger.kernel.org>; Tue, 10 Dec 2024 23:25:56 +0000 (UTC)
-Received: from ben-dt5.candelatech.com (unknown [50.251.239.81])
-	by mail3.candelatech.com (Postfix) with ESMTP id ADD3D13C2B1;
-	Tue, 10 Dec 2024 15:25:55 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com ADD3D13C2B1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1733873155;
-	bh=nymeM55oZwa4p0SXEYro7YSRYwZdMN+I+0M32HrtO8Y=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UzPgXs3MxpxxZp6/ZOY8g+GE7Axqio4r8EOrA8ogNTRnTm0vFmMygKoIaUgfxLHpC
-	 w7M765Hbih61aZEyc2Dj71b5v0Cjlrh+ocAxIoGzOcfvR1y9IE4V6FKEFlUa/98vZd
-	 gMo49WpYDrrMSRCYjesFRWF7W4TIVLo1wcqDSXWs=
-From: greearb@candelatech.com
-To: linux-wireless@vger.kernel.org
-Cc: Ben Greear <greearb@candelatech.com>
-Subject: [PATCH v4 2/2] wifi: iwlwifi: Report link-id for transmitted frames.
-Date: Tue, 10 Dec 2024 15:25:40 -0800
-Message-ID: <20241210232540.183582-2-greearb@candelatech.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20241210232540.183582-1-greearb@candelatech.com>
-References: <20241210232540.183582-1-greearb@candelatech.com>
+	s=arc-20240116; t=1733873768; c=relaxed/simple;
+	bh=HHHMPXzhb0ErTbk6JDPXkklA5yJiK4ykiwi4ou5ZnCc=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=j0XxbWrT9dmkQsCD+G9Zc1nlt0IjP2Qf3Qddpr5/HaM27Pu5fyUPwCetDqWWE1qpySS0TMYuGQvqKrg5DsfBV8W9nZhUNHsF5TBuwEoDWIR48bTbJ0j4P33NOV943ODOsxY1Qgpx4vgKka4KQ92Nlva1tpSkoS2nfm7vA002e6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=JEUFC7jH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 557E2C4CED6;
+	Tue, 10 Dec 2024 23:36:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1733873767;
+	bh=HHHMPXzhb0ErTbk6JDPXkklA5yJiK4ykiwi4ou5ZnCc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=JEUFC7jHRCmHI3pSRcaodXf1l/diOVpYu0xkyvRNQH8mQQn7b8CBtOxBJCrSzxiPd
+	 x5Ao+At5E5iCnmOoRtx4XFH3yzCpaefWwlAOlUrwnX+e1Xpsqclis9IS5OMX5ZHkAC
+	 NceJVwBIegWzfPrxO3hIAUaRVAN7EpBlmQG/j2MY=
+Date: Tue, 10 Dec 2024 15:36:04 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Cc: Easwar Hariharan <eahariha@linux.microsoft.com>, Pablo Neira Ayuso
+ <pablo@netfilter.org>, Jozsef Kadlecsik <kadlec@netfilter.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Julia Lawall
+ <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>, Daniel Mack
+ <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>, Robert
+ Jarzmik <robert.jarzmik@free.fr>, Russell King <linux@armlinux.org.uk>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Ofir
+ Bitton <obitton@habana.ai>, Oded Gabbay <ogabbay@kernel.org>, Lucas De
+ Marchi <lucas.demarchi@intel.com>, Thomas =?ISO-8859-1?Q?Hellstr=F6m?=
+ <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
+ <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Jeroen de Borst
+ <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>,
+ Shailend Chand <shailend@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ James Smart <james.smart@broadcom.com>, Dick Kennedy
+ <dick.kennedy@broadcom.com>, "James E.J. Bottomley"
+ <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"
+ <martin.petersen@oracle.com>, Roger Pau =?ISO-8859-1?Q?Monn=E9?=
+ <roger.pau@citrix.com>, Jens Axboe <axboe@kernel.dk>, Kalle Valo
+ <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, Catalin Marinas
+ <catalin.marinas@arm.com>, Jack Wang <jinpu.wang@cloud.ionos.com>, Marcel
+ Holtmann <marcel@holtmann.org>, Johan Hedberg <johan.hedberg@gmail.com>,
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Florian Fainelli
+ <florian.fainelli@broadcom.com>, Ray Jui <rjui@broadcom.com>, Scott Branden
+ <sbranden@broadcom.com>, Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Xiubo Li <xiubli@redhat.com>, Ilya
+ Dryomov <idryomov@gmail.com>, Josh Poimboeuf <jpoimboe@kernel.org>, Jiri
+ Kosina <jikos@kernel.org>, Miroslav Benes <mbenes@suse.cz>, Petr Mladek
+ <pmladek@suse.com>, Joe Lawrence <joe.lawrence@redhat.com>, Jaroslav Kysela
+ <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, Louis Peens
+ <louis.peens@corigine.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas
+ Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, netfilter-devel@vger.kernel.org,
+ coreteam@netfilter.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, cocci@inria.fr,
+ linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ linux-scsi@vger.kernel.org, xen-devel@lists.xenproject.org,
+ linux-block@vger.kernel.org, linux-wireless@vger.kernel.org,
+ ath11k@lists.infradead.org, linux-mm@kvack.org,
+ linux-bluetooth@vger.kernel.org, linux-staging@lists.linux.dev,
+ linux-rpi-kernel@lists.infradead.org, ceph-devel@vger.kernel.org,
+ live-patching@vger.kernel.org, linux-sound@vger.kernel.org,
+ oss-drivers@corigine.com, linuxppc-dev@lists.ozlabs.org, Anna-Maria Behnsen
+ <anna-maria@linutronix.de>
+Subject: Re: [PATCH v3 00/19] Converge on using secs_to_jiffies()
+Message-Id: <20241210153604.cf99699f264f12740ffce5c7@linux-foundation.org>
+In-Reply-To: <315e9178-5b10-4de0-bdcf-7243e0e355bb@oss.qualcomm.com>
+References: <20241210-converge-secs-to-jiffies-v3-0-ddfefd7e9f2a@linux.microsoft.com>
+	<315e9178-5b10-4de0-bdcf-7243e0e355bb@oss.qualcomm.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MDID: 1733873156-mHdLXc7OXNPF
-X-MDID-O:
- us5;ut7;1733873156;mHdLXc7OXNPF;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
-X-PPE-TRUSTED: V=1;DIR=OUT;
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Ben Greear <greearb@candelatech.com>
+On Tue, 10 Dec 2024 15:14:22 -0800 Jeff Johnson <jeff.johnson@oss.qualcomm.com> wrote:
 
-This will let upper stack properly record stats per link.
+> On 12/10/2024 2:02 PM, Easwar Hariharan wrote:
+> > This is a series that follows up on my previous series to introduce
+> > secs_to_jiffies() and convert a few initial users.[1] In the review for
+> > that series, Anna-Maria requested converting other users with
+> > Coccinelle. [2] This is part 1 that converts users of msecs_to_jiffies()
+> > that use the multiply pattern of either of:
+> > - msecs_to_jiffies(N*1000), or
+> > - msecs_to_jiffies(N*MSEC_PER_SEC)
+> > 
+> > where N is a constant, to avoid the multiplication.
+> > 
+> > The entire conversion is made with Coccinelle in the script added in
+> > patch 2. Some changes suggested by Coccinelle have been deferred to
+> > later parts that will address other possible variant patterns.
+> > 
+> > CC: Anna-Maria Behnsen <anna-maria@linutronix.de>
+> > Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+> 
+> I have the same question as before: How do you expect these to land?
+> Do you now have a maintainer who will take all of them?
+> Or do you want individual maintainers to take the ones applicable to them?
 
-Signed-off-by: Ben Greear <greearb@candelatech.com>
----
-
-v4:  Reorder patches, use new status tx_link_id field to report what
-link transmitted the frame.
-
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index c9867d26361b..c8b5d5cd3298 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -1709,6 +1709,14 @@ static void iwl_mvm_rx_tx_cmd_single(struct iwl_mvm *mvm,
- 	u8 lq_color;
- 	u16 next_reclaimed, seq_ctl;
- 	bool is_ndp = false;
-+	struct ieee80211_link_sta *link_sta;
-+	int link_sta_id = -1;
-+
-+	rcu_read_lock();
-+	link_sta = rcu_dereference(mvm->fw_id_to_link_sta[sta_id]);
-+	if (link_sta)
-+		link_sta_id = link_sta->link_id;
-+	rcu_read_unlock();
- 
- 	__skb_queue_head_init(&skbs);
- 
-@@ -1732,6 +1740,7 @@ static void iwl_mvm_rx_tx_cmd_single(struct iwl_mvm *mvm,
- 
- 		memset(&info->status, 0, sizeof(info->status));
- 		info->flags &= ~(IEEE80211_TX_STAT_ACK | IEEE80211_TX_STAT_TX_FILTERED);
-+		info->status.tx_link_id = link_sta_id + 1;
- 
- 		/* inform mac80211 about what happened with the frame */
- 		switch (status & TX_STATUS_MSK) {
-@@ -2048,6 +2057,7 @@ static void iwl_mvm_tx_reclaim(struct iwl_mvm *mvm, int sta_id, int tid,
- 	struct iwl_mvm_sta *mvmsta = NULL;
- 	struct sk_buff *skb;
- 	int freed;
-+	struct ieee80211_link_sta *link_sta;
- 
- 	if (WARN_ONCE(sta_id >= mvm->fw->ucode_capa.num_stations ||
- 		      tid > IWL_MAX_TID_COUNT,
-@@ -2064,6 +2074,8 @@ static void iwl_mvm_tx_reclaim(struct iwl_mvm *mvm, int sta_id, int tid,
- 		return;
- 	}
- 
-+	link_sta = rcu_dereference(mvm->fw_id_to_link_sta[sta_id]);
-+
- 	__skb_queue_head_init(&reclaimed_skbs);
- 
- 	/*
-@@ -2087,6 +2099,9 @@ static void iwl_mvm_tx_reclaim(struct iwl_mvm *mvm, int sta_id, int tid,
- 			info->flags |= IEEE80211_TX_STAT_ACK;
- 		else
- 			info->flags &= ~IEEE80211_TX_STAT_ACK;
-+
-+		if (link_sta)
-+			info->status.tx_link_id = link_sta->link_id + 1;
- 	}
- 
- 	/*
--- 
-2.42.0
-
+I'll just grab everything and see if anyone complains ;)
 
