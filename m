@@ -1,74 +1,76 @@
-Return-Path: <linux-wireless+bounces-16168-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16169-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FBAC9EB5CB
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 17:15:13 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74A4E9EB5CD
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 17:15:29 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 144A228168E
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 16:15:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22791164DCC
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 16:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FE841C07EE;
-	Tue, 10 Dec 2024 16:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8BF22FE1A;
+	Tue, 10 Dec 2024 16:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GZ4stD6N"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jj5ZFaHY"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4044A23DEBB;
-	Tue, 10 Dec 2024 16:14:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E7F81AAA0E;
+	Tue, 10 Dec 2024 16:15:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733847301; cv=none; b=NMJtiJsA6VwDcU6tJ3xBPkOw1bCyHJvW8SeEulZNktU1TmnxsbHaWMT1Kv49WHNU8dMQlI6NWz45DVA/KLv1DAXQL7qpQ21w9zRE0Yb9z2NRk0XL8xvxWN6eo6DzU10Gz5YE55iyPjTHdIMfa3s/mPl/Ktmrte/YnjxWnYyeZx4=
+	t=1733847302; cv=none; b=A29hFAIbgIU03dPechdfX+TdxMFNKhw3JiZHpHR0XVjmSwbNAK/G04garNtQlO2UBH+wdwKWKpOatWlWntawSv5jAC93/chtZpYE8LMc1f+TWtg9rHywkH2JCDw9/6y4mHRuZctM48THnP0RctJu+oC7K/yMCAuz221KmG3/K6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733847301; c=relaxed/simple;
-	bh=YKJueWy6tNGzFZqwMVGDkhBDz5+P0CEqnmS/Chj3Z3E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AHG+vyjR2kO2SVV6rMISwlhPXJTt2mZESpw63BlsXTo4CBqjZkcKPShlM85uTvTCH9qytYmAEWWQcK8qLxs31yFyLXL/7705k2pvzFhdfpB2bMvEKfdVAqf/WXkVjlYnx1aaNDGuFYClYdWshfpj5c4KsQlo0w/5D1b9P2JZGxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GZ4stD6N; arc=none smtp.client-ip=209.85.221.47
+	s=arc-20240116; t=1733847302; c=relaxed/simple;
+	bh=B4eDaIl47FAQp3+iBlZOG7U4kOJNew7d8XOSbl8degg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=g5cQMWQFWtsSqq1gn8jQrLue3tyHlElgOS6RpfmPC8jDBpYOAGfzRktbjJzW4eL450+MLThzoQb1+4MbZnROft9UaPw9phxTFxMZ0I8YXwCQFN0kYVh8SJhleNt7w+bPc6tZnD+t2t3jiuvI0GPMffHFDrvYet5yzyd6TGUixDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jj5ZFaHY; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3862d161947so2805066f8f.3;
-        Tue, 10 Dec 2024 08:14:58 -0800 (PST)
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4361a50e337so3337075e9.0;
+        Tue, 10 Dec 2024 08:15:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733847297; x=1734452097; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=b2kZqD7Wt0Fzg/4fk67GLv1SmsuozOqBh2njfbOzIsI=;
-        b=GZ4stD6NTwF5k+Aw8PFdXrihdFGS0YQ7BMFbzgXuesSkAX5fu1iQnCgnqlu/Yzk3uT
-         rHcs4TOsrr5rqUoQr/viyFd5vrmpEuC+xl0p95Y+DFWlAE+kyCuUsrMgfdyU/Mn6jlU9
-         Yoh45F7X8rSrNWwXmvD9GXSQNn4XbN4LAkEdhIGdTW1Cn7ke4gS9RAUEfFy0JvnuU29+
-         FZMtWb1TcbETNjzRFHDUb48jb3/C1egFvTL27NTHORqDHgzodruipKxmG1LkuOZ6Ybcv
-         LlwBuEKwnJOEgzxgm5v+5ZMRI35lUWQm/CAFkDBBxC12nakj8HS72JKdahwRSYz02zw0
-         kSeA==
+        d=gmail.com; s=20230601; t=1733847298; x=1734452098; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UfyKOgt9XE/lehI6wB+uzFWPDlGZk7iREHj4msL9Ld8=;
+        b=jj5ZFaHYDCNBMZNXIOfSahSMfmcSdPo79dBYdN1QqLpD7qaB9Q4MPAh7fJtfrqqfZY
+         0P4qJr+bXl06Ihe5bdaEagWpV/JowSSSchI18tVsccSul3vdJMaGO7Di3DX92sJfbNwQ
+         e1kyc8SstIyek0IbYFksLPI5iK6+ZWnRVwqmF0wXFwkZJEGa4uTkCU6T6V8f5JFmkOF/
+         5nZuBtMT5dHUCerX8zNq+fKZ1xT0ahvrqzbXFuaeQWBwUKuCd0to+7a26uZVq0KRM02i
+         /duDGf8oKfkHHJhuSMcO7Eiaa/6kFW3g+tDmujnqPfmesde+qE5T/YxprcTug1XPwudK
+         stJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733847297; x=1734452097;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=b2kZqD7Wt0Fzg/4fk67GLv1SmsuozOqBh2njfbOzIsI=;
-        b=tXheUrMHZ9+EaJX4LZgnqd7IGg3sqciYmzBTxh2Vvz7CE06hi2lnBwsyrzYzBXl3+R
-         EC4KM11QpgqkJWY2CkpehoVW/27YaPBUGeB1ViURjKWFwSPb/ilzJEFSjpZONOZ/268V
-         SVjEbd1VXOuYJPJA5wEMOljA1drtQ9f480rEMDg/ydJR8lMgQhIeJv8IYOR2EztupuIp
-         hpDlTStcczy5FFz5bOufXm/WOZW1WcolLZ5LXVo+bELiDsPKkkv8Pxfulnk2ADJ2ld9q
-         AGv9dUeuCGn0/EJQ0lRaWNzAyKRP+qbgZOFWc7NvK9hYH/PpDeF9IvB+uu3uTdCf13i+
-         NYpw==
-X-Forwarded-Encrypted: i=1; AJvYcCU0MRyHY0ADvbi9AQuxJzwdYRZybMkq3Q9YkxP2p9Z1Jt+pYnIenj8Tm0Vwto5qgCUwywFtsejiI7GznQeqxg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx02gdCV/vEPYnhD+2aq1eB0Rx3B2B68koh7BaX/K9GiQgt454L
-	Tf9P4yfW3/fA4ZZ2NkpKvplkhyvJeTQ7AG5j6PcpALxFxilUB7ip7pItFg==
-X-Gm-Gg: ASbGncvU8o/A+VNBpQ1omTx8Sa54AkLLSE+jnkCywI0lvE/ZrG/sXcwHKM0JelogrrY
-	ZbtkwgTvYdM3y1Cw7SB6pwIBJOKSsOmMXNvCfsPDnUwLaCfVn0efNT/stLQTNgQNpELm3qRIvAq
-	m399WfbZvkFcWSknINsIua/BU+kgpuJrVbRrH0T/ec0BmoIhTy09x6Ah+9Met0oBgxYeVRThoSo
-	CSX+Rb22TwJD23Ho2cU148H0cpA+xxTdH6H8ZrEWsqQ8GcFN3ivp0HjKFtPClnkraunDwzg
-X-Google-Smtp-Source: AGHT+IFrunASWFM+kVEDgg00JoDIUUDCUOYzzNwMirWOWSeEYV07VhTPD4RbGinhWIGL9yxmsRk3qA==
-X-Received: by 2002:a05:6000:144a:b0:385:f8bd:6e80 with SMTP id ffacd0b85a97d-3862b3e4458mr14221989f8f.56.1733847297044;
-        Tue, 10 Dec 2024 08:14:57 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733847298; x=1734452098;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UfyKOgt9XE/lehI6wB+uzFWPDlGZk7iREHj4msL9Ld8=;
+        b=vHYNOSIPLor7kY0spF5KKuAmH0Pnp1YJi5tNsxg2jf69qU5pRY9DAvsQfLotznL5NA
+         j9G0UBwNiEKrlpgSjgvyzFwUQF6pODTMlN2yzkEs+M7nBp5H1gZ4NxaLPLYJf/j3Ha6o
+         oL9hNZykKL0zn7Trt6bYT3mYauKixTPkUtaIJrYWBOCg0zm6nop2Osej+wRXiTm/aWPU
+         /NC1zGIknU2ISJFgr2w9eh0mBEXxhR3Id6uTIKu3+oyLgSXpIe7FwWUg42p4cJRGFbKr
+         8sXDZ2lD/n3TwePT1ELzueo8Clr/9aa9y95SpVoOV9iZ9R7dQ6pZ3W1ARPsahMiKlfZj
+         o6cQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVJx7jrFaNtHz9dEpepKuQq6yxHlfu+oOnInjIgZJPkM1ZKHfILdogQ1i0cUzySFeVjsfyOOyozoSD2w9aIwQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzExjFZByPh289zklRWXdf0AjxPUZKsrRIHG8u1T9E+ee4LrjUJ
+	grQMwmnEdvk8u0hXO+0XeWKyMWL/+EKWLdsxQf2SD5o6kZWVNFvUUomp1g==
+X-Gm-Gg: ASbGnct48o9x+4hZVVCX5tnNZTemDAzGJclqrGcMVy9GxzoN0W9ZLeM7ofpkPI8aWoz
+	nNMW7wZfz9nhAeUA8tqIJHlbz5IzSq0b8ORIYEgJtW3RRxB5qNl6YMg43NctHlm+gIK3ekpt54S
+	afeNUr7doYvSqm5MK0PQA4tBFhXxqUchfUnD+gBU3kdfgJWF9/lnrOz+IIhuNUyG/3Hw0KmWhY2
+	JlTMLSGDk/S3kMKlKwZ45KGkuc+ILRPCtNKhZx+VL29KCk68dExiLauAXO/zDtrs+C/Ln5O
+X-Google-Smtp-Source: AGHT+IG3QJESz/b68Kb2pqLydDF/12Q+/FhXD4BaT8iyyfmaCymhVEcl+lcGJjKHGQcuS7cmSRpYig==
+X-Received: by 2002:a05:600c:1d24:b0:434:f219:6b28 with SMTP id 5b1f17b1804b1-434fffd056fmr45145785e9.24.1733847298219;
+        Tue, 10 Dec 2024 08:14:58 -0800 (PST)
 Received: from imac.lan ([2a02:8010:60a0:0:75bb:8102:943a:2eb2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434f30bceadsm102383045e9.41.2024.12.10.08.14.55
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434f30bceadsm102383045e9.41.2024.12.10.08.14.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Dec 2024 08:14:56 -0800 (PST)
+        Tue, 10 Dec 2024 08:14:57 -0800 (PST)
 From: Donald Hunter <donald.hunter@gmail.com>
 To: netdev@vger.kernel.org,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -80,10 +82,12 @@ To: netdev@vger.kernel.org,
 	linux-wireless@vger.kernel.org
 Cc: donald.hunter@redhat.com,
 	Donald Hunter <donald.hunter@gmail.com>
-Subject: [PATCH net-next v2 0/7] netlink: specs: add a spec for nl80211 wiphy
-Date: Tue, 10 Dec 2024 16:14:41 +0000
-Message-ID: <20241210161448.76799-1-donald.hunter@gmail.com>
+Subject: [PATCH net-next v2 1/7] tools/net/ynl: remove extraneous plural from variable names
+Date: Tue, 10 Dec 2024 16:14:42 +0000
+Message-ID: <20241210161448.76799-2-donald.hunter@gmail.com>
 X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20241210161448.76799-1-donald.hunter@gmail.com>
+References: <20241210161448.76799-1-donald.hunter@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -92,37 +96,44 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a rudimentary YNL spec for nl80211 that includes get-wiphy and
-get-interface, along with some required enhancements to YNL and the
-netlink schemas.
+_decode_array_attr() uses variable subattrs in every branch when only
+one branch decodes more than a single attribute.
 
-Patch 1 is a minor cleanup to prepare for patch 2
-Patches 2-4 are new features for YNL
-Patches 5-6 are schema updates for feature parity
-Patch 7 is the new nl80211 spec
+Change the variable name to subattr in the branches that only decode a
+single attribute so that the intent is more obvious.
 
-v1 -> v2
- - Add formatting hints support to patch 3, thanks Jakub
- - Raise exception for unhandled hints in patch 4, thanks Jakub
- - Update nl80211 spec w/ split-wiphy-dump in patch 7, thanks Johannes
+Signed-off-by: Donald Hunter <donald.hunter@gmail.com>
+Acked-by: Jakub Kicinski <kuba@kernel.org>
+---
+ tools/net/ynl/lib/ynl.py | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Donald Hunter (7):
-  tools/net/ynl: remove extraneous plural from variable names
-  tools/net/ynl: support decoding indexed arrays as enums
-  tools/net/ynl: support rendering C array members to strings
-  tools/net/ynl: accept IP string inputs
-  netlink: specs: support nested structs in genetlink legacy
-  netlink: specs: add s8, s16 to genetlink schemas
-  netlink: specs: wireless: add a spec for nl80211
-
- Documentation/netlink/genetlink-c.yaml      |    2 +-
- Documentation/netlink/genetlink-legacy.yaml |    5 +-
- Documentation/netlink/genetlink.yaml        |    2 +-
- Documentation/netlink/specs/nl80211.yaml    | 1938 +++++++++++++++++++
- tools/net/ynl/lib/ynl.py                    |   45 +-
- 5 files changed, 1978 insertions(+), 14 deletions(-)
- create mode 100644 Documentation/netlink/specs/nl80211.yaml
-
+diff --git a/tools/net/ynl/lib/ynl.py b/tools/net/ynl/lib/ynl.py
+index 01ec01a90e76..dbc7a0a6ae68 100644
+--- a/tools/net/ynl/lib/ynl.py
++++ b/tools/net/ynl/lib/ynl.py
+@@ -644,15 +644,15 @@ class YnlFamily(SpecFamily):
+                 subattrs = self._decode(NlAttrs(item.raw), attr_spec['nested-attributes'])
+                 decoded.append({ item.type: subattrs })
+             elif attr_spec["sub-type"] == 'binary':
+-                subattrs = item.as_bin()
++                subattr = item.as_bin()
+                 if attr_spec.display_hint:
+-                    subattrs = self._formatted_string(subattrs, attr_spec.display_hint)
+-                decoded.append(subattrs)
++                    subattr = self._formatted_string(subattr, attr_spec.display_hint)
++                decoded.append(subattr)
+             elif attr_spec["sub-type"] in NlAttr.type_formats:
+-                subattrs = item.as_scalar(attr_spec['sub-type'], attr_spec.byte_order)
++                subattr = item.as_scalar(attr_spec['sub-type'], attr_spec.byte_order)
+                 if attr_spec.display_hint:
+-                    subattrs = self._formatted_string(subattrs, attr_spec.display_hint)
+-                decoded.append(subattrs)
++                    subattr = self._formatted_string(subattr, attr_spec.display_hint)
++                decoded.append(subattr)
+             else:
+                 raise Exception(f'Unknown {attr_spec["sub-type"]} with name {attr_spec["name"]}')
+         return decoded
 -- 
 2.47.1
 
