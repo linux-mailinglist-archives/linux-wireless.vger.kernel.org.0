@@ -1,106 +1,113 @@
-Return-Path: <linux-wireless+bounces-16156-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16157-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7B8D9EB011
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 12:42:51 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA44E166CC8
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 11:42:45 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB94F2080F4;
-	Tue, 10 Dec 2024 11:42:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="TKmZwfDW"
-X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward501d.mail.yandex.net (forward501d.mail.yandex.net [178.154.239.209])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E15A19EB055
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 13:00:51 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881AD1DC9A3
-	for <linux-wireless@vger.kernel.org>; Tue, 10 Dec 2024 11:42:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.209
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D0ED283665
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 12:00:50 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53AE19D899;
+	Tue, 10 Dec 2024 12:00:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JZSvx0mu"
+X-Original-To: linux-wireless@vger.kernel.org
+Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB2623DEBA;
+	Tue, 10 Dec 2024 12:00:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733830962; cv=none; b=odFgMkn03az03HavPmaEoQvGOUNaqWahuvpIgb09DcAr4P6ia3GDRXfychaJXUTI9dW7IG82P7zz/1YGI9Y54qw8Bayo0KDZQR+4Mpow12SqKGwX2/25aCriHs0B0aQiIGK3CtZmaWoR8oHAeeIakdmIwM6bflxckykg2CiHE2A=
+	t=1733832047; cv=none; b=HGtM0Bzn6KYG+6VxOA1m76DH5nh7/iWvujhzK8ZVKoECQJ9DuvjWL7ez7lkpMzmFghMPIIhCJhrdeqkxUaj6XSVzjlXOS9Zmn2HcEKE6HrDQ4WCqrq1+S5uqSsViEBdyesij5sWFHTRZ/7q69r3yKcPCPkLG8w1yuZ7EMdMVx0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733830962; c=relaxed/simple;
-	bh=2ZksNg/gucKQA4znLxWTLjR3ordUAaBPY9Ug/4xMDq4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GteL7Nhye23LCgbqVsaWilaV/pPMwrOmcuPbC7ActRAVUoK+eeyuwfDS/iQT/r29z6NvqscuaMbuN1+zOGezaofDW7DT9/Yq03qpxG2ftBhvHH6Gic4IR4392m0mqZ7cpuv2kIy6ENrtr+/KvBQukxv9b/8NH90jMQ9+d7Qq+/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=TKmZwfDW; arc=none smtp.client-ip=178.154.239.209
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net [IPv6:2a02:6b8:c12:519f:0:640:1bf7:0])
-	by forward501d.mail.yandex.net (Yandex) with ESMTPS id 6BF8D60FF1;
-	Tue, 10 Dec 2024 14:37:18 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id HbkcHe1OkSw0-zAvNmmo9;
-	Tue, 10 Dec 2024 14:37:17 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1733830637; bh=2ZksNg/gucKQA4znLxWTLjR3ordUAaBPY9Ug/4xMDq4=;
-	h=In-Reply-To:To:From:Cc:Date:References:Subject:Message-ID;
-	b=TKmZwfDWNIwahxba44mK8l/2O3HQIQZWabpDEZdZDnlg6gnUmYqvOmw4zkLkdf/XY
-	 7kynVW5t70QtfkGfao3IFpbNYVj8s3mRn52r4aytqxyIHNNLzXGWn/l3E4JUDO1lXR
-	 O+Xs1YzKJ5jEkD361r4ND9kadeMlGUnO4bmzY97Q=
-Authentication-Results: mail-nwsmtp-smtp-production-main-39.myt.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
-Message-ID: <e4a3a564-95b0-4c07-b60c-7c24d938a9f8@yandex.ru>
-Date: Tue, 10 Dec 2024 14:37:17 +0300
+	s=arc-20240116; t=1733832047; c=relaxed/simple;
+	bh=u44ZzZ9eJTAT0sf5MXYiGMa0FE/s7isOKW9Y0ZPiuK8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Va870A+u7w04s+NI4nwcToncA5agbZ9lqAA3VoIDRVgczeEocBxdcL3jHWdsQ5SW6ZNIGvw/0jpA1ivyaBB5UqF0aN1bNPyeno9Vo3L1C8URJEiYrwwULEj8UGasiy75UCoe3rBwpnWaRBukfTf9faB8Tqz5kDv8+RKLqrM7WXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JZSvx0mu; arc=none smtp.client-ip=209.85.160.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-29fe7ff65e6so516104fac.0;
+        Tue, 10 Dec 2024 04:00:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733832045; x=1734436845; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=CeuXANmGOguSDViAcZD5/L/A/tELl/y8XnKm6SR/fLw=;
+        b=JZSvx0muV136GY3sm1j5FkND4oYU8GmwyEgPi92Tq8ElPMxeWZ5uRg+jqIYfritsje
+         sdrFFra5dmrivXzXy0M0izb7iwdGdDjDKjWARoGl4cyh35QX72QiGkHKl5kJzv8ST6Z8
+         5eI3h1HGNqeO2OoNOF53+W+CTaVTh3M7+dHbUQ6ez5+15bx+6NDhfk4eK3BUDL4IpR6r
+         cZnzLr04XdqYu6N5m00m/vg2MDqhNktje1AD6dxaPKzC/SQlX6N/YSd5bBQThUn/LDZ5
+         lwSTF71oajQ3KiMogokaznCWVAo/FFWQGCf77pn+Gn10BWDgUJ9j9fhQ+UQpwNBtrTMt
+         YCiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733832045; x=1734436845;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CeuXANmGOguSDViAcZD5/L/A/tELl/y8XnKm6SR/fLw=;
+        b=trIkVXroRHNLSi0TFo/pGHl4z9B8nSg/7fTBR67HPrWOVd8/Pev36n42aYNMzY7ZIE
+         MEBvmul+Q7ku6Uo1/PFnzQI+Kf/JgEoIk/Ty/pvumPC7klzqcz0ZSyiy4lDEAOWjJRGn
+         9CHGGhkyvimS1paWkqr5h6t/dtqsn7k5JcIfCnTT5aT2zI4Jdqc0957WdHBHSelyXMii
+         88Vrlg+fYxAjZuzIwHX/KBv9MgVUkz1dLLZ1puxVCpMq9fGplJ4rmU+TvxWIZGt5XTpE
+         YzHSk0+lR7/87GBielfPzT/BqRTg2et34SHSZhnZZjh9L0bnN4J3dPwIMPH8X75MxgbC
+         D2PQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUQ2WPBclxH7tbNBTT/Jh4uvgvSPp1kw401udw3PK4hocWDehackviqmKFevT7YbTSMP1jMItI6LhR2QY1YSg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzrbjx3+84v0bNwuPpNwhma1ZVrhNNtGxa7XpMrDDs0sCStgWB9
+	7yt8NfxrdcW74CEbLiy/BhWR0jtuQhfwTko9IGe+RQaWwPRrucuvcGoKpuiBrePEJtSLQtMt/zw
+	5hVShHn4JV2QoJmLHvek2jiws4LU=
+X-Gm-Gg: ASbGncswKdUzoQKrqxsnuolaBzYfluMvU2phSVFqlrRQ1HdM4uhB4MhySqHIDH+BDrG
+	iH/9DJzaA8iVJ6u3dmXijotUQRiBzypi7eqz4EE6qAdRa3beSwHbdaphs//6q+GPALA==
+X-Google-Smtp-Source: AGHT+IEGTQ41KcjLQ4BiabwNoGuT16egEOvqFz0KXrZneZuslSGeftUpiWoAQbExXvvxlryZDrqPOZEnnOsfqz+325A=
+X-Received: by 2002:a05:6870:64a7:b0:296:aef8:fe9a with SMTP id
+ 586e51a60fabf-29fee50a8cdmr2406739fac.7.1733832044955; Tue, 10 Dec 2024
+ 04:00:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] wifi: ath9k: simplify internal time management
-Content-Language: en-MW
-To: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
- lvc-project@linuxtesting.org
-References: <20241209155027.636400-1-dmantipov@yandex.ru>
- <20241209155027.636400-3-dmantipov@yandex.ru> <877c877tbf.fsf@toke.dk>
-From: Dmitry Antipov <dmantipov@yandex.ru>
-Autocrypt: addr=dmantipov@yandex.ru; keydata=
- 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
- A/UwwXBRuvydGV0=
-In-Reply-To: <877c877tbf.fsf@toke.dk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+References: <20241203130655.45293-1-donald.hunter@gmail.com>
+ <20241203130655.45293-5-donald.hunter@gmail.com> <20241203180714.45a2af81@kernel.org>
+ <CAD4GDZyXDpbEoVFBzU-ExYcd_Gf-hHocPUFWAXBXJOcmMRrnSg@mail.gmail.com>
+In-Reply-To: <CAD4GDZyXDpbEoVFBzU-ExYcd_Gf-hHocPUFWAXBXJOcmMRrnSg@mail.gmail.com>
+From: Donald Hunter <donald.hunter@gmail.com>
+Date: Tue, 10 Dec 2024 12:00:33 +0000
+Message-ID: <CAD4GDZwwjZvc1YXogJFdmqAA-1W66DdjYpxAKucmVQFDzbyY6w@mail.gmail.com>
+Subject: Re: [PATCH net-next v1 4/7] tools/net/ynl: accept IP string inputs
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Johannes Berg <johannes@sipsolutions.net>, linux-wireless@vger.kernel.org, 
+	donald.hunter@redhat.com
+Content-Type: text/plain; charset="UTF-8"
 
-T24gMTIvMTAvMjQgMTI6NTggUE0sIFRva2UgSMO4aWxhbmQtSsO4cmdlbnNlbiB3cm90ZToN
-Cg0KPiBOaWNlIGNsZWFudXAhIEp1c3Qgb25lIGZvcm1hdHRpbmcgbml0Og0KDQpUaGFua3Mu
-IEZlZWwgZnJlZSB0byBtZXJnZSB3aXRoIGFueSBmb3JtYXR0aW5nIGFkanVzdG1lbnRzLg0K
-DQpEbWl0cnkNCg==
+On Wed, 4 Dec 2024 at 13:37, Donald Hunter <donald.hunter@gmail.com> wrote:
+>
+> On Wed, 4 Dec 2024 at 02:07, Jakub Kicinski <kuba@kernel.org> wrote:
+> >
+> > > +        if display_hint in ['ipv4', 'ipv6']:
+> > > +            ip = ipaddress.ip_address(string)
+> > > +            if type == 'binary':
+> > > +                raw = ip.packed
+> > > +            else:
+> > > +                raw = int(ip)
+> > > +        else:
+> >
+> > I wonder if we should raise in this case?
+> > Especially if type is binary passing the string back will just blow up
+> > later, right? We could instead rise with a nice clear error message
+> > here.
+>
+> It's actually a bit misleading that the attr is called 'string'
+> because it could be a binary input if it was supplied from python
+> code, i.e. not parsed from JSON on the command-line.
+
+I was wrong, the binary input is handled already by the caller, so
+this should just raise an exception.
 
