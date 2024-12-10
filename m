@@ -1,50 +1,51 @@
-Return-Path: <linux-wireless+bounces-16163-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16161-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A479EB3E0
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 15:48:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2C819EB3D1
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 15:47:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9934167EEF
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 14:48:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDA3E1683CE
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 14:46:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D1551A76AC;
-	Tue, 10 Dec 2024 14:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE3F91AA7A3;
+	Tue, 10 Dec 2024 14:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="et/I215R"
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="C75aKllD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from forward203a.mail.yandex.net (forward203a.mail.yandex.net [178.154.239.90])
+Received: from forward205a.mail.yandex.net (forward205a.mail.yandex.net [178.154.239.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA391AAA0E;
-	Tue, 10 Dec 2024 14:48:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983D278F38;
+	Tue, 10 Dec 2024 14:46:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.88
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733842123; cv=none; b=DuQDx71yHw3wMKNTOsUL3DoJ0SD36nHLB1Yzf0vQmgA7a3UQ5yl90QNi+hKF1+QPobgdnG8wbWjMV/Ucs60j9ajz/EMKBjoqEWeoueopODwx0GZJsJzqkcPGbCV5EOFCh3dSNt1XyGQp7AWsr2L9tmaQHo1+r45irA0kHXsiEkE=
+	t=1733842010; cv=none; b=CfZy0WEmSPbCCIjxtWdTl1zLtQpmJwzeS9LduEcGuWvdZ4Hk5t/bM2D2rlqkHzQwXx7bqFnHvaWEduxlVInYL8X/P2OLKA1sTD7a/v66+ciSAp+JcpUy+tivJJtvRz4oTdgQL/c/1+cwE31Iy6NivqneI9s6ZEMxVik9vXNbyxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733842123; c=relaxed/simple;
-	bh=Z/Vo7ZQSX8rGYLrNrs6sr86a6WbgE90w+dn33fnZAc0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cXrG93ZSy4tNZOJ9lnebOGjkrMLUknt7r2jk6HiOpsPU6iZpmrjgeldnUn6IrgcJuZYkIIU2ozW6sdKxMsvMtf6ehfEF+TYcBZbM5/Ev3XLK+aF3NGPItQ5mRVDdH2YygHaWw5Gt6XL3+V3Let+AwnWrlW+sWwCNgebotdurjfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=et/I215R; arc=none smtp.client-ip=178.154.239.90
+	s=arc-20240116; t=1733842010; c=relaxed/simple;
+	bh=IA4TyROiF1W807IEDV30/mCfk8J3N8UTj/aqgXeX+Nw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mvbITk3X/qCjmhJZwlcwwa2YlhWgggvV/tYp4g78V+NbAujbT14zPFxUQNW2sfm16b8zOnGwPRcqWoZgnXX6PNvkgot9aaVgkGG6nA9ugRJMEp/0h+r4K9SX7erF/47KQ6rlsOxHvsSrPVLm/YbAHxd4pmd2coyrmyFk8QsWfxw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=C75aKllD; arc=none smtp.client-ip=178.154.239.88
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
-Received: from forward103a.mail.yandex.net (forward103a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d103])
-	by forward203a.mail.yandex.net (Yandex) with ESMTPS id 77C5E67ED5;
-	Tue, 10 Dec 2024 17:40:10 +0300 (MSK)
+Received: from forward102a.mail.yandex.net (forward102a.mail.yandex.net [IPv6:2a02:6b8:c0e:500:1:45:d181:d102])
+	by forward205a.mail.yandex.net (Yandex) with ESMTPS id 08FDA67462;
+	Tue, 10 Dec 2024 17:40:13 +0300 (MSK)
 Received: from mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:200:0:640:1d5:0])
-	by forward103a.mail.yandex.net (Yandex) with ESMTPS id 172C360B54;
+	by forward102a.mail.yandex.net (Yandex) with ESMTPS id E098F60AF5;
 	Tue, 10 Dec 2024 17:40:02 +0300 (MSK)
-Received: by mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 0enkiN2OgCg0-K3MRZehN;
-	Tue, 10 Dec 2024 17:40:01 +0300
+Received: by mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id 0enkiN2OgCg0-MKNOj2ww;
+	Tue, 10 Dec 2024 17:40:02 +0300
 X-Yandex-Fwd: 1
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
-	t=1733841601; bh=eUKNwPVhYHVXCqE0/sWtIYARC/uoQkZRf5whvudtY58=;
-	h=Message-ID:Date:Cc:Subject:To:From;
-	b=et/I215RH01FzyCioiIvxXGar9oHaWbxENdiZSWyYxCggMMqyaUETRymRv7ClsKsA
-	 c3HDz2hzeAl5YTn3suNGLhCqtWpe4MwFBMwAIp4g0nk8tAAIpR66ujEwYS94dRdrHh
-	 DXpvH+PXIvBFGFzA3o2GbRPbKJrls4YZckuxQgpY=
+	t=1733841602; bh=b2VIYTAThn7M+4bBggR3iBohV2L5yGDB68aLTe+G0g0=;
+	h=Message-ID:Date:In-Reply-To:Cc:Subject:References:To:From;
+	b=C75aKllD4P+vimY8Y7v3yMKh7dLhCXMsfS/LFjQDplf43LlzKr3H1zFRbc0Ima7sU
+	 uzqoxuGdW7ei3x4gNMsPmZajfblerBgxyoNcHRg/C1/wrNKzbEBzZCEOX3d23imhz6
+	 J4JFuK8oIU/w4cG218lUOODpstq7SU8CjTC7cw0Y=
 Authentication-Results: mail-nwsmtp-smtp-production-main-84.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
 From: Dmitry Antipov <dmantipov@yandex.ru>
 To: Johannes Berg <johannes.berg@intel.com>
@@ -53,10 +54,12 @@ Cc: Kees Cook <kees@kernel.org>,
 	linux-hardening@vger.kernel.org,
 	linux-wireless@vger.kernel.org,
 	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH 1/2] wifi: cfg80211: annotate struct cfg80211_mgmt_registration with __counted_by()
-Date: Tue, 10 Dec 2024 17:39:50 +0300
-Message-ID: <20241210143951.5685-1-dmantipov@yandex.ru>
+Subject: [PATCH 2/2] wifi: cfg80211: simplify cfg80211_mlme_register_mgmt()
+Date: Tue, 10 Dec 2024 17:39:51 +0300
+Message-ID: <20241210143951.5685-2-dmantipov@yandex.ru>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20241210143951.5685-1-dmantipov@yandex.ru>
+References: <20241210143951.5685-1-dmantipov@yandex.ru>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,38 +68,68 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add the '__counted_by()' compiler attribute to the flexible array member
-'match[]' to improve access bounds-checking via CONFIG_UBSAN_BOUNDS and
-CONFIG_FORTIFY_SOURCE, adjust 'cfg80211_mlme_register_mgmt()' accordingly.
+Simplify 'cfg80211_mlme_register_mgmt()' to allocate an instance of
+'struct cfg80211_mgmt_registration' only if the latter is really
+needed (i.e. when the list of registrations should be updated)
+and prefer 'kmalloc()' over 'kzalloc()' since all of the members
+are explicitly initialized.
 
+Fixes: 9dba48a6ece7 ("cfg80211: support multicast RX registration")
 Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
 ---
- net/wireless/mlme.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/wireless/mlme.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/net/wireless/mlme.c b/net/wireless/mlme.c
-index 9d577523462d..4790136758d5 100644
+index 4790136758d5..c7d913c76966 100644
 --- a/net/wireless/mlme.c
 +++ b/net/wireless/mlme.c
-@@ -575,7 +575,7 @@ struct cfg80211_mgmt_registration {
+@@ -639,7 +639,7 @@ int cfg80211_mlme_register_mgmt(struct wireless_dev *wdev, u32 snd_portid,
+ 				struct netlink_ext_ack *extack)
+ {
+ 	struct cfg80211_registered_device *rdev = wiphy_to_rdev(wdev->wiphy);
+-	struct cfg80211_mgmt_registration *reg, *nreg;
++	struct cfg80211_mgmt_registration *reg;
+ 	int err = 0;
+ 	u16 mgmt_type;
+ 	bool update_multicast = false;
+@@ -680,10 +680,6 @@ int cfg80211_mlme_register_mgmt(struct wireless_dev *wdev, u32 snd_portid,
+ 		return -EINVAL;
+ 	}
  
- 	bool multicast_rx;
+-	nreg = kzalloc(sizeof(*reg) + match_len, GFP_KERNEL);
+-	if (!nreg)
+-		return -ENOMEM;
+-
+ 	spin_lock_bh(&rdev->mgmt_registrations_lock);
  
--	u8 match[];
-+	u8 match[] __counted_by(match_len);
- };
+ 	list_for_each_entry(reg, &wdev->mgmt_registrations, list) {
+@@ -707,9 +703,14 @@ int cfg80211_mlme_register_mgmt(struct wireless_dev *wdev, u32 snd_portid,
+ 	if (err)
+ 		goto out;
  
- static void cfg80211_mgmt_registrations_update(struct wireless_dev *wdev)
-@@ -710,8 +710,8 @@ int cfg80211_mlme_register_mgmt(struct wireless_dev *wdev, u32 snd_portid,
- 	if (update_multicast) {
- 		kfree(nreg);
- 	} else {
--		memcpy(nreg->match, match_data, match_len);
+-	if (update_multicast) {
+-		kfree(nreg);
+-	} else {
++	if (!update_multicast) {
++		struct cfg80211_mgmt_registration *nreg =
++			kmalloc(sizeof(*reg) + match_len, GFP_KERNEL);
++
++		if (!nreg) {
++			err = -ENOMEM;
++			goto out;
++		}
  		nreg->match_len = match_len;
-+		memcpy(nreg->match, match_data, match_len);
+ 		memcpy(nreg->match, match_data, match_len);
  		nreg->nlportid = snd_portid;
- 		nreg->frame_type = cpu_to_le16(frame_type);
- 		nreg->wdev = wdev;
+@@ -726,7 +727,6 @@ int cfg80211_mlme_register_mgmt(struct wireless_dev *wdev, u32 snd_portid,
+ 	return 0;
+ 
+  out:
+-	kfree(nreg);
+ 	spin_unlock_bh(&rdev->mgmt_registrations_lock);
+ 
+ 	return err;
 -- 
 2.47.1
 
