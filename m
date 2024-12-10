@@ -1,48 +1,48 @@
-Return-Path: <linux-wireless+bounces-16164-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16165-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C7FC9EB3F7
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 15:52:27 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 583979EB40A
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 15:54:23 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF421281BCE
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 14:52:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 505491883D75
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 14:53:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89DD01BCA05;
-	Tue, 10 Dec 2024 14:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50DFD1B3F30;
+	Tue, 10 Dec 2024 14:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PkRIw+nv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j6l/8maG"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA6B19DF9A;
-	Tue, 10 Dec 2024 14:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207F81AA786;
+	Tue, 10 Dec 2024 14:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733842241; cv=none; b=Cht62AR/PxFJYDtj/JguDfb3g1yiHadASx9dqNePKM3Ub5+vU/JUQ9EtWryOnSaQ/zVQMe0CBZGqTgshnTbJe2A2AKqyNbgX0NJhKHo8pyL1G54kyHt2ozJN8Ffv7kvfDYsycAFwGm1euM3gg/uqGKZogN2iFSyFTBF+MF9I1u4=
+	t=1733842361; cv=none; b=nsR1HlcTMQtbOoOT+/j82w42p6E8T4toqX47L3NsAL+W4pHfbMuBkxslbzgjArNM9HZQBJ5C84F72qnDVPjdFdIplk8DjVM6KbkPb94CVFkW5JdrO7o7VwPhfZexWoE4+uOaQrJw6HnrLzwQdfrAvuUJ6acV0Z2DBooAwTXNpXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733842241; c=relaxed/simple;
-	bh=gO+0AbhhxWFZWbvp7Cp2SukSKMg777+J9T31ftrsTlA=;
+	s=arc-20240116; t=1733842361; c=relaxed/simple;
+	bh=T8bfjPlMu3bOeVNznQxKg8Q5VGqihqrLN21VgNgbq9I=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mrGKYT9PFEWhn3MO7quiwVF92K6IwYK7FPrD8dFKOVmFJOIVcRDNbgeedTkQ1SY5mL+PfwRPBNkeW1xf2d/6RFoDuPm169McJG6fM4VRooDHYKmmR1P+hiPesFBVtk9GM9DlQGJ1Tmk/iVJl8HNaI+0dBmxRcSUPZK3b1uakVMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PkRIw+nv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3761C4CED6;
-	Tue, 10 Dec 2024 14:50:38 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=GMSfhBVR9+yoXCyTItugiU61y0O6zgPGsHW4O+cbWu0S9xwBwMxWhQVpFhTn34B+JYad/SD8Ddr3AJmaAF6OPQD8m9/Auelyx6U5/MmGIMw7w7JYHqM1JbPdOYzGSIJSdgQIJdkBfDIMFVfIcVnDDNgBiT9CSRinxdo3N2K+qjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j6l/8maG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 380ECC4CED6;
+	Tue, 10 Dec 2024 14:52:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733842241;
-	bh=gO+0AbhhxWFZWbvp7Cp2SukSKMg777+J9T31ftrsTlA=;
+	s=k20201202; t=1733842360;
+	bh=T8bfjPlMu3bOeVNznQxKg8Q5VGqihqrLN21VgNgbq9I=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PkRIw+nvNkGI9A3/FLV0d79ApBNE9P8ldixROdCYSyMnjp4QvMxMwK44c4nBm4md0
-	 A3ybxL25VHMEt4IoVsek8/B7XpUrCTwQsbZfYhE6Eel1eywzUBwjkL5jIZlGtrtQ3c
-	 pOkLvqD1kTgZMb/CAIzCx3gUFAGk5CB9kG0z4Hn/DH8NcY/5JGD6FtAqyTKS5fAOB0
-	 GIQyAbyFZBcP5rRB6nK9AM9FVpUFe+Pb/twiNQTdejNXU8cx+RRPDIUFktzcrl9Gbw
-	 gq2wxnwC9lcKoEmzi8Odws10PLlX/Ru89SnUhCYswatKkJ9gUo+vGG25r1KFmyv+Wi
-	 jXvexEfZij89A==
-Message-ID: <a76fca66-70ce-4a6a-ae39-dc218d57fc83@kernel.org>
-Date: Tue, 10 Dec 2024 15:50:37 +0100
+	b=j6l/8maGvxdZZRrkaMVV/zyhkr9OMKDuAGjoE2eqMLfJHJ6OdP//G2ZyAjej81Aid
+	 6YrTWgBvsXeW8B1ZCTenoL4FS4BxCaZAfXKDBQeSHTB693H3RcH+SmL+2H2fDLAKp/
+	 QhKl2vgB9Bwu+j3bCFEZPhXfrlY9wNsLyEhrYmirYXDR1mkgl01PM8f8dQO61uV3u/
+	 NXSxZGXzsw+TCNuBUDvaKBjpAFGpVgzw4yEdLjB+WRDWKpO8zWZ69IT5wHU1lr6z6x
+	 Dg3uFv6f3kdnrUsw1kcowOHA90plNnYkMKmEsENPCcQJGQIOXy0Nqt2Gd6t5m4o6Ug
+	 XXUKnL89+mwmA==
+Message-ID: <bd3f7586-4119-47f5-bbf6-a43bd02088b8@kernel.org>
+Date: Tue, 10 Dec 2024 15:52:36 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -50,7 +50,7 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 09/13] wifi: ath12k: Power up root PD
+Subject: Re: [PATCH v4 11/13] wifi: ath12k: Power up userPD
 To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>, ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -58,7 +58,7 @@ Cc: linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
  linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
  Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>
 References: <20241210074159.2637933-1-quic_rajkbhag@quicinc.com>
- <20241210074159.2637933-10-quic_rajkbhag@quicinc.com>
+ <20241210074159.2637933-12-quic_rajkbhag@quicinc.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -104,59 +104,60 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20241210074159.2637933-10-quic_rajkbhag@quicinc.com>
+In-Reply-To: <20241210074159.2637933-12-quic_rajkbhag@quicinc.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 10/12/2024 08:41, Raj Kumar Bhagat wrote:
 > +
-> +static void ath12k_ahb_unregister_rproc_notifier(struct ath12k_base *ab)
-> +{
-> +	struct ath12k_ahb *ab_ahb = ath12k_ab_to_ahb(ab);
-> +
-> +	if (!ab_ahb->root_pd_notifier) {
-> +		ath12k_err(ab, "Rproc notifier not registered\n");
-> +		return;
+> +	time_left = wait_for_completion_timeout(&ab_ahb->userpd_ready,
+> +						ATH12K_USERPD_READY_TIMEOUT);
+> +	if (!time_left) {
+> +		ath12k_err(ab, "UserPD ready wait timed out\n");
+> +		ret = -ETIMEDOUT;
+> +		goto err_fw2;
 > +	}
 > +
-> +	qcom_unregister_ssr_notifier(ab_ahb->root_pd_notifier,
-> +				     &ab_ahb->root_pd_nb);
+> +	qcom_smem_state_update_bits(ab_ahb->spawn_state, BIT(ab_ahb->spawn_bit), 0);
+> +
+> +	ath12k_info(ab, "UserPD%d is now UP\n", ab_ahb->userpd_id);
+
+Don't bug users with success messages. Your driver is supposed to be
+silent on success.
+
+> +
+> +err_fw2:
+> +	release_firmware(fw2);
+> +err_fw:
+> +	release_firmware(fw);
+> +	return ret;
 > +}
 > +
-> +static int ath12k_ahb_get_rproc(struct ath12k_base *ab)
-> +{
-> +	struct ath12k_ahb *ab_ahb = ath12k_ab_to_ahb(ab);
-> +	struct device *dev = ab->dev;
-> +	struct rproc *prproc;
-> +	phandle rproc_phandle;
-> +
-> +	if (of_property_read_u32(dev->of_node, "qcom,rproc", &rproc_phandle)) {
+>  static void ath12k_ahb_init_qmi_ce_config(struct ath12k_base *ab)
+>  {
+>  	struct ath12k_qmi_ce_cfg *cfg = &ab->qmi.ce_cfg;
+> @@ -557,6 +694,7 @@ static const struct ath12k_hif_ops ath12k_ahb_hif_ops_ipq5332 = {
+>  	.irq_enable = ath12k_ahb_ext_irq_enable,
+>  	.irq_disable = ath12k_ahb_ext_irq_disable,
+>  	.map_service_to_pipe = ath12k_ahb_map_service_to_pipe,
+> +	.power_up = ath12k_ahb_power_up,
+>  };
+>  
+>  static irqreturn_t ath12k_userpd_irq_handler(int irq, void *data)
+> diff --git a/drivers/net/wireless/ath/ath12k/ahb.h b/drivers/net/wireless/ath/ath12k/ahb.h
+> index 0999e2bbe970..0dbbbfd45eab 100644
+> --- a/drivers/net/wireless/ath/ath12k/ahb.h
+> +++ b/drivers/net/wireless/ath/ath12k/ahb.h
+> @@ -19,7 +19,15 @@
+>  #define ATH12K_PCI_IRQ_CE0_OFFSET		3
+>  #define ATH12K_ROOTPD_READY_TIMEOUT		(5 * HZ)
+>  #define ATH12K_RPROC_AFTER_POWERUP		QCOM_SSR_AFTER_POWERUP
+> -
 
-You are not supposed to read phandles as numbers but use proper phandle
-parsing API. See of.h, e.g. of_parse_phandle.
+Why? You just added this line in previous commits.
 
-> +		ath12k_err(ab, "failed to get q6_rproc handle\n");
-> +		return -ENOENT;
-> +	}
-> +
-> +	prproc = rproc_get_by_phandle(rproc_phandle);
-> +	if (!prproc) {
-> +		ath12k_err(ab, "failed to get rproc\n");
-
-This is supposed to be dev_err_probe. Lack of handling deferred probes
-and resulting dmesg flood is all over your code. You need to start
-supporting defer.
-
-> +		return -EINVAL;
-> +	}
-> +	ab_ahb->tgt_rproc = prproc;
-> +
-> +	return 0;
-> +}
-
-
-
-
+> +#define ATH12K_AHB_FW_PREFIX			"q6_fw"
+> +#define ATH12K_AHB_FW_SUFFIX			".mdt"
 Best regards,
 Krzysztof
 
