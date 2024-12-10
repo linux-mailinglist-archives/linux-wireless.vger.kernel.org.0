@@ -1,149 +1,141 @@
-Return-Path: <linux-wireless+bounces-16201-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16202-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 103D29EBEB8
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 23:58:23 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D6B39EBEF1
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2024 00:06:53 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E92E280EB2
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 22:58:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 224251887D8A
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 23:06:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70AEE1AA786;
-	Tue, 10 Dec 2024 22:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F2B32451EF;
+	Tue, 10 Dec 2024 23:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="dFa3abYS"
+	dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b="fp0rOm4H"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09491F1902
-	for <linux-wireless@vger.kernel.org>; Tue, 10 Dec 2024 22:58:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F561AAA2F
+	for <linux-wireless@vger.kernel.org>; Tue, 10 Dec 2024 23:06:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733871499; cv=none; b=Q78eFsaj8HNmi9JxZ1lhy1jhBAbpw8GI4gwGwTrqP0LEy6cd9r1menkOYe85RBnoLpJS+4KIc8uZBHdyKb+MslpflwdItB5k8PZjPppFwAj6LVH0hcl8uo2813X+n57DWZ1JjRBr758EM4SpmtR/N3Q0TY1DgNVSZ8F5GN4tUYA=
+	t=1733872005; cv=none; b=DnjyVlEPthL88Y3drd/bHAET93oZHpTz1njftRXgHY8qRUcST8cqmzkWIqUcxq71mOMslkr3iNVc+dWBdnOIYH2zs4uT3r7EIlugIjV4w0PfhxFvvXQaYZypLlvVJ4JZjd4gfN5L1dHIq6zRT/ZDzYZ60HH1KRd+wN9gjcrcos4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733871499; c=relaxed/simple;
-	bh=Kw7rYIPWl6n7kjwypCSn6jwZIpCzkXDjSFZKIk6JVao=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Zlf0GRirSESrE7O1qHjBXI/C/zjGOsQfySoNwfDDsdIv/ctyBu6IlV7drXcIc0kDUuFJ3aGrCfQf7oifCn4pXuqIoQh7pmsPTf+Dqmt+VhcazngWI9la6K0p3GAgTG31oBUQz9Gdd+RXfZrM/bAyTRxbPGOPx3IfOCuoVltkbzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=dFa3abYS; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BADSscc014600;
-	Tue, 10 Dec 2024 22:58:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	FshelQAc48t2W/JRJ3MjsJ/F6sjJqhKuxQ8OXIrd+vM=; b=dFa3abYSASQbzBQV
-	3ca5GGhY8U7nedXgsU1fLX2YGwGAFNvK1fIoDjgaKWUpZwmVdXL1Rf6py4j9Pjyr
-	H209ewKvRCcqIXpCv9JvS6hetlWPab9VeCscJbMdUNOkEuYCDISzsJ6yWZ+cn/XP
-	KAL444Bj8vko9hQr+eun11khvTjHe9Ig35WOT9jtO37hHZhVWgIU2uftE4g94BHX
-	KtpShozSiaiS69qKiCQBQBMGha+U6aPIWdhYArRBpX3rMmAx04+NdCegmat2LZPR
-	qY/0ma/dtT0xCwZjDKkngoD5Ovn7UzTyC+Cz175oL0oiwBLLV0phGYYKtf8GmUx3
-	+h33uQ==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43ee3nb0ce-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Dec 2024 22:58:00 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BAMvx4J011203
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Dec 2024 22:57:59 GMT
-Received: from [10.111.177.199] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 10 Dec
- 2024 14:57:58 -0800
-Message-ID: <2c80be7f-c680-4d05-bf8b-33828b98e856@quicinc.com>
-Date: Tue, 10 Dec 2024 14:57:57 -0800
+	s=arc-20240116; t=1733872005; c=relaxed/simple;
+	bh=sVYXJXSzW6YUxCJsxxrtVnqQTqgEA8N5VXF4bXIS/Hg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pKaOdjZsG8Y/+yb0qNMWHERUAs/+x1H0rwEbJeU6m6a3Dp/IpXp40gCan77hrUnIZt/WolcqFx4oXnT5ZFDMH+lp/AVYbpvNS8Zfm13/lRrIE2EDrd+TSYWpVYZvSHYoa19bsj2HnSXhFEXZZ/P9G4MEz4vcQYSCnWz8vIqfxrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b=fp0rOm4H; arc=none smtp.client-ip=209.85.128.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-6f006748fd1so28824837b3.3
+        for <linux-wireless@vger.kernel.org>; Tue, 10 Dec 2024 15:06:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gateworks.com; s=google; t=1733872002; x=1734476802; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UqT6g0W8wBftvp6aSxR69K7dIiruVpolHF6yT66BzYA=;
+        b=fp0rOm4H/NWQSLEw4WejfyfqwKpbqPa2p4CQyF00SAwNWydLw+H+Xh+R4KCHWdc0qy
+         8me6se4LgVVVobxbPHkJyr5ha7rcxF/Yrvz9VmHn4RVmRp5+eS27rNGqIlHTvpl6scwb
+         S0xrWK7z3RIDtEhnw1NQdr76L6Qa5TX67mR+bzYGlfZdBMieugtdgv2JUyrCJn/7JGzB
+         sHQCRfp+ss2EDJgt/HqFr5A4NuthZNJn7aksmJteA3torGa3JWhgKPgsHDVZPkqMTYyv
+         7AO61/zjdWmGEZnFkI1/NMWD/i4SW8jaArz1DtyiMtt9sMOc7TkORddvIcXOh1pkQ6nR
+         wBtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733872002; x=1734476802;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UqT6g0W8wBftvp6aSxR69K7dIiruVpolHF6yT66BzYA=;
+        b=ZGFX9/CntIZuC3BsiIUYCyG+icjmOFgarrCUFUawADCHOZQH8l/H0fuenleGud23pe
+         XfJQRoH+zQXmm9CYsa1cYIkBh7wygljEvoH8VXIv3zZtcIvVUJdeApJXekmmO8Wmn3vU
+         A4yYLrnhz3961ClfNyFrSt/SdoFmc9VLGWJezjLd3Yfi6EYyEMYMPoQ28/gwFRTseYcg
+         jgepqm8Y3wjyKEKqa2Ez4a3A7CqWiWftcn7r3b6LCHxQjL26kO9yXSQTYjnNn6oXQ9ef
+         tjAbupWImu03DekKw6nMHFer0na7Hk0iiThCcKSEmIIGV4N87KWbxaJ3UcCpHaTL1lU3
+         rOrw==
+X-Forwarded-Encrypted: i=1; AJvYcCV1BrFHmy5wu6k0bfpywBT3NQraFjmU6aw3hK0PaqYd4BfD8C4iAAVB9rQ2z9rdaQwnlTOY9Ku5QV5VMYiKaw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcrG1jvP0+BG3fax6K9zM5Zl+fe7up7cfQYl/t6lqfFPUwrCbv
+	1sPTYAS9imdMTCUSBUkqMWYmG7HGsk2RKXVLF1DDqqjuS34keRxCopyEZw3VAj9TEdb1EmrpMYg
+	LD/xXVznBTXzsNkhP6dfB3r8Ce9gs7o9No6dqIQ==
+X-Gm-Gg: ASbGnctwkGNxg2ewPLG3riOK+gxOlQBoUUK/ACdBmc24AfKizuciwBAJ2DGvas/imWS
+	xjWPfehTSr/6F3OxbdGkl+C43nwoUuSs8wmA=
+X-Google-Smtp-Source: AGHT+IHDSE8vWTo5AI2GRtvcRlxTgl5Sv9MW1qFpKY2BPLTbrUME85VaPcnBA4mMZTf7UD9AjbDzT6zqXJ7grktQ4+s=
+X-Received: by 2002:a05:6902:260c:b0:e39:8f3e:30a1 with SMTP id
+ 3f1490d57ef6-e3c8e645ca4mr949108276.46.1733872002729; Tue, 10 Dec 2024
+ 15:06:42 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/7] wifi: ath12k: move struct ath12k_hw from per device
- to group
-To: Kees Bakker <kees@ijzerbout.nl>, Kalle Valo <kvalo@kernel.org>,
-        <ath12k@lists.infradead.org>,
-        Karthikeyan Periyasamy
-	<quic_periyasa@quicinc.com>,
-        Harshitha Prem <quic_hprem@quicinc.com>,
-        "Jeff
- Johnson" <jeff.johnson@oss.qualcomm.com>
-CC: <linux-wireless@vger.kernel.org>
-References: <20241204163216.433795-1-kvalo@kernel.org>
- <20241204163216.433795-6-kvalo@kernel.org>
- <bfd41680-060f-4bd8-a289-f4ef69429c30@ijzerbout.nl>
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Content-Language: en-US
-In-Reply-To: <bfd41680-060f-4bd8-a289-f4ef69429c30@ijzerbout.nl>
+References: <CAJ+vNU0EL3T+GyNAbVbGqYYQ5NM3h7cgAwqxxBMuZjh+-YQ3bA@mail.gmail.com>
+ <1b2ea8b2-6fbe-4118-b6c6-742c8f0be476@quicinc.com> <CAJ+vNU1-OZ3y4p2L+zf64AiVtUv70yZNqkT20jTxyE0_gJb6Jg@mail.gmail.com>
+ <0282be95-9094-4d49-b79e-4f7c976dad00@quicinc.com> <CAJ+vNU32EMHjtchJRb1sODBrUKG2vZW4ZEu1_F0+dCCEjCn7Dg@mail.gmail.com>
+ <20241209081714.GA25363@lst.de> <593c0d63-d8fd-4439-a57a-97340212c197@arm.com>
+ <CAJ+vNU2ypE_Mn_6iKCmf5LYk9Sth=ryWXyewc5MhOKK8VoAKCA@mail.gmail.com> <20241210041133.GA17116@lst.de>
+In-Reply-To: <20241210041133.GA17116@lst.de>
+From: Tim Harvey <tharvey@gateworks.com>
+Date: Tue, 10 Dec 2024 15:06:31 -0800
+Message-ID: <CAJ+vNU03Cqsc+O5anwmvJW8Wfd-06LbDMVHjxVFdixf01ZLczQ@mail.gmail.com>
+Subject: Re: ath11k swiotlb buffer is full (on IMX8M with 4GiB DRAM)
+To: Christoph Hellwig <hch@lst.de>
+Cc: Robin Murphy <robin.murphy@arm.com>, Baochen Qiang <quic_bqiang@quicinc.com>, 
+	ath11k@lists.infradead.org, linux-wireless <linux-wireless@vger.kernel.org>, 
+	Fabio Estevam <festevam@gmail.com>, Marek Szyprowski <m.szyprowski@samsung.com>, iommu@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 1USOJ8PtJ0vdVKpmQj5UQLGF0lu49VQJ
-X-Proofpoint-ORIG-GUID: 1USOJ8PtJ0vdVKpmQj5UQLGF0lu49VQJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 suspectscore=0
- malwarescore=0 spamscore=0 priorityscore=1501 mlxscore=0 impostorscore=0
- mlxlogscore=759 lowpriorityscore=0 adultscore=0 clxscore=1015 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2412100164
+Content-Transfer-Encoding: quoted-printable
 
-On 12/10/2024 12:58 PM, Kees Bakker wrote:
-> Op 04-12-2024 om 17:32 schreef Kalle Valo:
->> From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
->>
->> Currently, hardware abstractions (ah) of different radio bands are tightly
->> coupled to a single device (ab). But, with hardware device group abstraction
->> (ag), multiple radios across different devices in a group can form different
->> combinations of hardware abstractions (ah) within the group. Hence, the mapping
->> between ah to ab can be removed and instead it can be mapped with struct
->> ath12k_hw_group (ag).
->> [...]
->> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
->> [...]
->> -void ath12k_mac_destroy(struct ath12k_base *ab)
->> +void ath12k_mac_destroy(struct ath12k_hw_group *ag)
->>   {
->>   	struct ath12k_pdev *pdev;
->> +	struct ath12k_base *ab = ag->ab[0];
->> +	int i, j;
->>   	struct ath12k_hw *ah;
->> -	int i;
->>   
->> -	for (i = 0; i < ab->num_radios; i++) {
->> -		pdev = &ab->pdevs[i];
->> -		if (!pdev->ar)
->> +	for (i = 0; i < ag->num_devices; i++) {
->> +		ab = ag->ab[i];
->> +		if (!ab)
->>   			continue;
->>   
->> -		pdev->ar = NULL;
->> +		for (j = 0; j < ab->num_radios; j++) {
->> +			pdev = &ab->pdevs[j];
->> +			if (!pdev->ar)
->> +				continue;
->> +			pdev->ar = NULL;
->> +		}
->>   	}
->>   
->>   	for (i = 0; i < ath12k_get_num_hw(ab); i++) {
->> @@ -10942,26 +10945,59 @@ void ath12k_mac_destroy(struct ath12k_base *ab)
->>   	}
->>   }
->>   
-> The new ath12k_mac_destroy() looks suspicious with respect to "ab".
+On Mon, Dec 9, 2024 at 8:11=E2=80=AFPM Christoph Hellwig <hch@lst.de> wrote=
+:
+>
+> On Mon, Dec 09, 2024 at 11:15:02AM -0800, Tim Harvey wrote:
+> > After a lot of back and forth and investigation this is due to the
+> > IMX8M SoC's not having an IOMMU thus swiotlb is being used and ath11k
+> > is requesting some buffers that are too large for swiotlb to provide.
+> > There is a specific patch which added the HAL_WBM2SW_RELEASE buffers
+> > to cacheable memory that could be reverted to fix this but the concern
+> > was that it would impact performance moving those buffers to
+> > non-cacheable memory (there are three ~1MiB buffers being allocated):
+> > commit d0e2523bfa9cb ("ath11k: allocate HAL_WBM2SW_RELEASE ring from
+> > cacheable memory").
+>
+> The combination of "buffers" and "swiotlb" sounds like Robin was right
+> below.
+>
+> > The chain of events as best I can tell are:
+> >
+> > commit 6452f0a3d565 ("ath11k: allocate dst ring descriptors from
+> > cacheable memory")
+> > - Nov 12 2021 (made it into Linux 5.17)
+> > - changes allocation of reo_dst rings to cacheable memory to allow
+> > cached descriptor access to optimize CPU usage
+> > - this is flawed because it uses virt_to_phys() to allocate cacheable
+> > memory which does not work on systems with an IOMMU enabled or using
+> > software IOMMU (swiotlb); this causes a kernel crash on client
+> > association
+>
+> And this is where it started to take a wrong turn, that everyhing
+> later basically made worse.  If you have long living and potentially
+> large DMA allocations, you need to use dma_alloc_* interfaces.
+>
+> 5.17 already had dma_alloc_pages for quite a while which was and still is
+> the proper interface to use.  For much older kernel you'd be stuck
+> with dma_alloc_noncoherent or dma_alloc_attrs with the right flag,
+> but even that would have been much better.
 
-There is already a patch in the internal pipeline to address this linux-next
-Coverity CID
+Christoph,
+
+I'm not clear what you are suggesting be done here. Are you suggesting
+that ath11k has been using the wrong mechanism by calling
+dma_map_single for cached DMA buffers? I'm not all that familiar with
+ath11k so I can't tell what buffers are considered long living.
+
+Best Regards,
+
+Tim
 
