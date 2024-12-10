@@ -1,153 +1,129 @@
-Return-Path: <linux-wireless+bounces-16167-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16168-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AE119EB463
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 16:13:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FBAC9EB5CB
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 17:15:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DA75282F0A
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 15:13:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 144A228168E
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 16:15:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9F8A1B0433;
-	Tue, 10 Dec 2024 15:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FE841C07EE;
+	Tue, 10 Dec 2024 16:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="enDaiYP5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GZ4stD6N"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E56F1ACDE7;
-	Tue, 10 Dec 2024 15:12:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4044A23DEBB;
+	Tue, 10 Dec 2024 16:14:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733843577; cv=none; b=J1vLhDuwlKVmS9ebk8l+gokWVTqGUncwdR8ElYZO16xSAUf4nuwmIO11YD9hsdfJXCFUjfY+g9aZ4iFZ4dBPNhJPbwGs4gwFFLYFg2OSjXggFL+T2kSKvy1zR5g8mVJJsJmNPPKnlK4fw7O5z1nCFYqDMsHlHmzYSTtBflhAYIs=
+	t=1733847301; cv=none; b=NMJtiJsA6VwDcU6tJ3xBPkOw1bCyHJvW8SeEulZNktU1TmnxsbHaWMT1Kv49WHNU8dMQlI6NWz45DVA/KLv1DAXQL7qpQ21w9zRE0Yb9z2NRk0XL8xvxWN6eo6DzU10Gz5YE55iyPjTHdIMfa3s/mPl/Ktmrte/YnjxWnYyeZx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733843577; c=relaxed/simple;
-	bh=zxUb5xnZiBQR7O22ULKVMRKeZDRwX8HSXdvIH6Vpvtw=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=VYsEb7Sid85x84MWs+DE4DITF8LsdocCo8qfnZj3g25cF6jNV/iltD2JMJzzHmZTqYAU/i+9LV2qXRzt4F4UjC/PeYXSVX9eKB2wOZbqkNaACZVQmb7H1hgZQW6B4vCwMedzVYGd5SstQ1UEOga1RTJGloysFEuagx537gsgSnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=enDaiYP5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA8EC4CED6;
-	Tue, 10 Dec 2024 15:12:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733843577;
-	bh=zxUb5xnZiBQR7O22ULKVMRKeZDRwX8HSXdvIH6Vpvtw=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=enDaiYP5qbu/9W/1wBjFAMbhveMcfaHSdnng10Zaq9zY07KCckkA8bwLMr8Mk/Qa8
-	 Rst5be8/kTwGTodTlZEr5D1+OLfMyWwiAuYcELM4zlsaRlzg6J7q8I8U/Zw1VZ6Kwl
-	 a2x4r6T5X2giHxAv1iILWECtpUwTAmUQvQbYqL0J/NIQ5s6zL1rjrLNymc8x9hT7fY
-	 Tm1JlBXTezuJeT0Zyv+XYa2dQM8qFGNEXLkepHYaY9CzpNWvGZv8ZYOqgas1YKpJGB
-	 OQAhBszrfgELTXUNmDFHUGjeBmRQdMSui6vzlq93d+SxkmW8RRqpRIRxWpH8l5dzTV
-	 NcFt6VEUuXb3w==
-Message-ID: <001ae2e4-bba8-4b76-a4b6-eda8533c5fc5@kernel.org>
-Date: Tue, 10 Dec 2024 16:12:51 +0100
+	s=arc-20240116; t=1733847301; c=relaxed/simple;
+	bh=YKJueWy6tNGzFZqwMVGDkhBDz5+P0CEqnmS/Chj3Z3E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AHG+vyjR2kO2SVV6rMISwlhPXJTt2mZESpw63BlsXTo4CBqjZkcKPShlM85uTvTCH9qytYmAEWWQcK8qLxs31yFyLXL/7705k2pvzFhdfpB2bMvEKfdVAqf/WXkVjlYnx1aaNDGuFYClYdWshfpj5c4KsQlo0w/5D1b9P2JZGxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GZ4stD6N; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3862d161947so2805066f8f.3;
+        Tue, 10 Dec 2024 08:14:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733847297; x=1734452097; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=b2kZqD7Wt0Fzg/4fk67GLv1SmsuozOqBh2njfbOzIsI=;
+        b=GZ4stD6NTwF5k+Aw8PFdXrihdFGS0YQ7BMFbzgXuesSkAX5fu1iQnCgnqlu/Yzk3uT
+         rHcs4TOsrr5rqUoQr/viyFd5vrmpEuC+xl0p95Y+DFWlAE+kyCuUsrMgfdyU/Mn6jlU9
+         Yoh45F7X8rSrNWwXmvD9GXSQNn4XbN4LAkEdhIGdTW1Cn7ke4gS9RAUEfFy0JvnuU29+
+         FZMtWb1TcbETNjzRFHDUb48jb3/C1egFvTL27NTHORqDHgzodruipKxmG1LkuOZ6Ybcv
+         LlwBuEKwnJOEgzxgm5v+5ZMRI35lUWQm/CAFkDBBxC12nakj8HS72JKdahwRSYz02zw0
+         kSeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733847297; x=1734452097;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=b2kZqD7Wt0Fzg/4fk67GLv1SmsuozOqBh2njfbOzIsI=;
+        b=tXheUrMHZ9+EaJX4LZgnqd7IGg3sqciYmzBTxh2Vvz7CE06hi2lnBwsyrzYzBXl3+R
+         EC4KM11QpgqkJWY2CkpehoVW/27YaPBUGeB1ViURjKWFwSPb/ilzJEFSjpZONOZ/268V
+         SVjEbd1VXOuYJPJA5wEMOljA1drtQ9f480rEMDg/ydJR8lMgQhIeJv8IYOR2EztupuIp
+         hpDlTStcczy5FFz5bOufXm/WOZW1WcolLZ5LXVo+bELiDsPKkkv8Pxfulnk2ADJ2ld9q
+         AGv9dUeuCGn0/EJQ0lRaWNzAyKRP+qbgZOFWc7NvK9hYH/PpDeF9IvB+uu3uTdCf13i+
+         NYpw==
+X-Forwarded-Encrypted: i=1; AJvYcCU0MRyHY0ADvbi9AQuxJzwdYRZybMkq3Q9YkxP2p9Z1Jt+pYnIenj8Tm0Vwto5qgCUwywFtsejiI7GznQeqxg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx02gdCV/vEPYnhD+2aq1eB0Rx3B2B68koh7BaX/K9GiQgt454L
+	Tf9P4yfW3/fA4ZZ2NkpKvplkhyvJeTQ7AG5j6PcpALxFxilUB7ip7pItFg==
+X-Gm-Gg: ASbGncvU8o/A+VNBpQ1omTx8Sa54AkLLSE+jnkCywI0lvE/ZrG/sXcwHKM0JelogrrY
+	ZbtkwgTvYdM3y1Cw7SB6pwIBJOKSsOmMXNvCfsPDnUwLaCfVn0efNT/stLQTNgQNpELm3qRIvAq
+	m399WfbZvkFcWSknINsIua/BU+kgpuJrVbRrH0T/ec0BmoIhTy09x6Ah+9Met0oBgxYeVRThoSo
+	CSX+Rb22TwJD23Ho2cU148H0cpA+xxTdH6H8ZrEWsqQ8GcFN3ivp0HjKFtPClnkraunDwzg
+X-Google-Smtp-Source: AGHT+IFrunASWFM+kVEDgg00JoDIUUDCUOYzzNwMirWOWSeEYV07VhTPD4RbGinhWIGL9yxmsRk3qA==
+X-Received: by 2002:a05:6000:144a:b0:385:f8bd:6e80 with SMTP id ffacd0b85a97d-3862b3e4458mr14221989f8f.56.1733847297044;
+        Tue, 10 Dec 2024 08:14:57 -0800 (PST)
+Received: from imac.lan ([2a02:8010:60a0:0:75bb:8102:943a:2eb2])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434f30bceadsm102383045e9.41.2024.12.10.08.14.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Dec 2024 08:14:56 -0800 (PST)
+From: Donald Hunter <donald.hunter@gmail.com>
+To: netdev@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	linux-wireless@vger.kernel.org
+Cc: donald.hunter@redhat.com,
+	Donald Hunter <donald.hunter@gmail.com>
+Subject: [PATCH net-next v2 0/7] netlink: specs: add a spec for nl80211 wiphy
+Date: Tue, 10 Dec 2024 16:14:41 +0000
+Message-ID: <20241210161448.76799-1-donald.hunter@gmail.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/13] wifi: ath12k: add Ath12k AHB driver support for
- IPQ5332
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>, ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-References: <20241210074159.2637933-1-quic_rajkbhag@quicinc.com>
- <fd338dd5-db11-4439-835d-b6641f3feb78@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
- QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
- gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
- /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
- iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
- VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
- 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
- xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
- eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
- AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
- MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
- Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
- ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
- vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
- oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
- lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
- t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
- uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
- 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
- 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <fd338dd5-db11-4439-835d-b6641f3feb78@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 10/12/2024 16:08, Krzysztof Kozlowski wrote:
-> On 10/12/2024 08:41, Raj Kumar Bhagat wrote:
->> Currently, Ath12k driver only supports WiFi devices that are based on
->> PCI bus. New Ath12k device IPQ5332 is based on AHB bus. Hence, add
->> Ath12k AHB support for IPQ5332.
->>
->> IPQ5332 is IEEE802.11be 2 GHz 2x2 Wifi device. To bring-up IPQ5332
->> device:
->> - Add hardware parameters for IPQ5332.
->> - CE register address space in IPQ5332 is separate from WCSS register
->>   space. Hence, add logic to remap CE register address.
->> - Add support for fixed QMI firmware memory for IPQ5332.
->> - Support userPD handling for WCSS secure PIL driver to enable ath12k
->>   AHB support.
->>
->> v4:
->> - Missed to include some review list in v3. Hence sending v4 with
->>   all review list as per - scripts/get_maintainers.pl
->>
-> The amount of undocumented ABI you add here, points to the problem that
-> either your drivers don't work or your drivers would never work with
-> upstream. Why? Because either you would have wrong DTS or drivers not
-> matching DTS, thus not working.
-> 
-> Please point us to your upstream DTS implementing (and working 100%)
-> this ABI, so we can review that you do not sneak more broken or
-> undocumented things. I will NAK also future submissions without above,
-> because I believe you usptream something which will not work.
+Add a rudimentary YNL spec for nl80211 that includes get-wiphy and
+get-interface, along with some required enhancements to YNL and the
+netlink schemas.
 
+Patch 1 is a minor cleanup to prepare for patch 2
+Patches 2-4 are new features for YNL
+Patches 5-6 are schema updates for feature parity
+Patch 7 is the new nl80211 spec
 
-I dug a bit and I found your earlier v2:
-https://lore.kernel.org/all/20241015182637.955753-3-quic_rajkbhag@quicinc.com/
+v1 -> v2
+ - Add formatting hints support to patch 3, thanks Jakub
+ - Raise exception for unhandled hints in patch 4, thanks Jakub
+ - Update nl80211 spec w/ split-wiphy-dump in patch 7, thanks Johannes
 
-which confirms:
-1. DTS not following coding style, so not possible to accept
-2. Driver relying on that exact DTS, so not really working.
+Donald Hunter (7):
+  tools/net/ynl: remove extraneous plural from variable names
+  tools/net/ynl: support decoding indexed arrays as enums
+  tools/net/ynl: support rendering C array members to strings
+  tools/net/ynl: accept IP string inputs
+  netlink: specs: support nested structs in genetlink legacy
+  netlink: specs: add s8, s16 to genetlink schemas
+  netlink: specs: wireless: add a spec for nl80211
 
-Please post in separate series updated DTS, after fixing all the issues
-pointed out by DTS coding style.
+ Documentation/netlink/genetlink-c.yaml      |    2 +-
+ Documentation/netlink/genetlink-legacy.yaml |    5 +-
+ Documentation/netlink/genetlink.yaml        |    2 +-
+ Documentation/netlink/specs/nl80211.yaml    | 1938 +++++++++++++++++++
+ tools/net/ynl/lib/ynl.py                    |   45 +-
+ 5 files changed, 1978 insertions(+), 14 deletions(-)
+ create mode 100644 Documentation/netlink/specs/nl80211.yaml
 
-Best regards,
-Krzysztof
+-- 
+2.47.1
+
 
