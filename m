@@ -1,123 +1,119 @@
-Return-Path: <linux-wireless+bounces-16132-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16133-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35CC49EA8EA
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 07:47:34 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CB2B1668DD
-	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 06:47:31 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E5722759B;
-	Tue, 10 Dec 2024 06:47:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="GRQ6iJSv"
-X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B6BB9EA937
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 08:03:39 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF741D7E31;
-	Tue, 10 Dec 2024 06:47:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A2CC28419E
+	for <lists+linux-wireless@lfdr.de>; Tue, 10 Dec 2024 07:03:38 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11AAB15C158;
+	Tue, 10 Dec 2024 07:03:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="LQyhqPHh"
+X-Original-To: linux-wireless@vger.kernel.org
+Received: from forward101a.mail.yandex.net (forward101a.mail.yandex.net [178.154.239.84])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1663622617C
+	for <linux-wireless@vger.kernel.org>; Tue, 10 Dec 2024 07:03:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733813249; cv=none; b=llVytHNPIHZZsg8r6ye1irPOp5JeGjF2MnRa6WGsH4phCmQYQznvPIA+jXKt9jaGTIFYBQAMJ0citcRmVVZU8CceQpXSzFbcLyIr9z8V4leWmNd9/oxlHmIavBbSpIouBu8h8iMJYl37t2ekeIe0g7nuQZw2gDDa7fYzeQlS/2I=
+	t=1733814218; cv=none; b=nz3QULpF4sY6xR6dI169PwB2yaH2tWeAE8FjXisMub5TNbAVd56QeIflBQ2jYUP8KMBOtzK8okHvYxU8/VfQ0sESRdrrnBs3eVT0p3BOQhpgimEf0OEYxqHowFqljvCsAt+Yfv+xLWZntPV+FjmPxq1TKWXOXS6QET8TlJ8AXTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733813249; c=relaxed/simple;
-	bh=zK7WgrLWMLHCbW7NHTd14SzjOtq3ZvDdErahwDZlSxU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=SwGyh2S/Ubpzv0DA+xhjshCrOnOm0EdHndocSyDrdCFGFbvrLFiuqonqZoLsx26zT/V58pk4BZouCknTza8E9SghW232h7v7xqrAoZCJDK6/IDxrTkkSckf3NvEFpjOEqtW5LzlLybtycJVmus5R0LZXBF0yz9vVatkGR503K2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=GRQ6iJSv; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BA6K8cI028717;
-	Tue, 10 Dec 2024 06:47:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	9F3pZqw2ZQnJtyHMhelYfJPEZgidNRK1W5f7+6gzfcQ=; b=GRQ6iJSvafh8Wmj8
-	gOJ8lGrftZ18LowL9zpkgr/kFIHzfym7FjOPDBI8AYtDsKVsg5g+g9ZxKzsw+Jqn
-	USw5lA/xfwZiLBMfYLW7iOR8dOdLmE8+2RUUfZ7l5MVear28nnNUNEbpcAGCLaZ3
-	dn5nT/bdTbU7k7R0PNuJQf37oof6C6XX3TshIhkO6zIZH3yI1Zo4o7HT1uYESw39
-	7MnMZ+1vhpjmlJqRyBj/Wp1yGEG+IytUcXWpFbIrKtZKkEzx+YwJ5oMFyqo+yD5i
-	lfpkDJU1/zlEKL+yk/bdhnwqdb9m7iz9esHC4XgyrGZRc0XL4ztKQ2CsOmYwNwB8
-	dLnemQ==
-Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43eg9eg25g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Dec 2024 06:47:19 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BA6lJlg032576
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Dec 2024 06:47:19 GMT
-Received: from [10.216.0.222] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 9 Dec 2024
- 22:47:16 -0800
-Message-ID: <3ed0ccbf-1ce8-7429-151c-d21eb5311f6a@quicinc.com>
-Date: Tue, 10 Dec 2024 12:17:13 +0530
+	s=arc-20240116; t=1733814218; c=relaxed/simple;
+	bh=2T/my89Nwxxm4xJlVyG+VFmgZEyQAl1yZJ7q0gDPOEo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=faATd28yS/cb6Au56eTrkgpzippKe9TSvsGnN4FONfIuj1TBEWBsxAmnM8PCGXp1NYZ9WIdsO6c49Zsk7k5HOhq6LDesaSsL1gYPoyp7c/ckglE+pJr0/VWsw0by5uYevlwGLgLc+dLdiY8V+56TdvNV5pUgjLIvrv2721hRoxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru; spf=pass smtp.mailfrom=yandex.ru; dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b=LQyhqPHh; arc=none smtp.client-ip=178.154.239.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+Received: from mail-nwsmtp-smtp-production-main-73.iva.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-73.iva.yp-c.yandex.net [IPv6:2a02:6b8:c0c:13a7:0:640:c5cd:0])
+	by forward101a.mail.yandex.net (Yandex) with ESMTPS id 057BA60E27;
+	Tue, 10 Dec 2024 10:03:26 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-73.iva.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id O3gRpJ7Ol0U0-IEWUIoQW;
+	Tue, 10 Dec 2024 10:03:25 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1733814205; bh=MyfwT5xqs+4KXSPn7kqvv6bOxVko7c35TySEj+ma8Bc=;
+	h=Message-ID:Date:Cc:Subject:To:From;
+	b=LQyhqPHhikfcFwwPlZJ6f7DTrqVKU9gSBE3uexKzyBEH9BhQ2xxjoEGpTT8ii2lcI
+	 DyCt/sssvyxZz3F7+lVDR8zJR4vODb4pGrgly+pkMZ0zXIQfcUvz6IkQSG66ZaeJpW
+	 N7HigNRl+NxLMj+W4zTbCIHuw35dDmcTX9q8P2RE=
+Authentication-Results: mail-nwsmtp-smtp-production-main-73.iva.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Dmitry Antipov <dmantipov@yandex.ru>
+To: Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc: Kalle Valo <kvalo@kernel.org>,
+	linux-wireless@vger.kernel.org,
+	Dmitry Antipov <dmantipov@yandex.ru>
+Subject: [PATCH] wifi: brcmfmac: handle possible pci_enable_msi() error
+Date: Tue, 10 Dec 2024 10:03:20 +0300
+Message-ID: <20241210070320.836260-1-dmantipov@yandex.ru>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2 wireless-next] wifi: ath12k: Fix out-of-bounds read in
- ath12k_mac_vdev_create
-Content-Language: en-US
-To: Dheeraj Reddy Jonnalagadda <dheeraj.linuxdev@gmail.com>,
-        <kvalo@kernel.org>, <ath12k@lists.infradead.org>
-CC: <jjohnson@kernel.org>, <linux-wireless@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-References: <20241207071306.325641-1-dheeraj.linuxdev@gmail.com>
-From: Vasanthakumar Thiagarajan <quic_vthiagar@quicinc.com>
-In-Reply-To: <20241207071306.325641-1-dheeraj.linuxdev@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: j9NyINFhCAzci3chAL6vrGITh3fJetCJ
-X-Proofpoint-ORIG-GUID: j9NyINFhCAzci3chAL6vrGITh3fJetCJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
- priorityscore=1501 phishscore=0 spamscore=0 mlxscore=0 suspectscore=0
- bulkscore=0 lowpriorityscore=0 impostorscore=0 adultscore=0
- mlxlogscore=437 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2411120000 definitions=main-2412100050
+Content-Transfer-Encoding: 8bit
 
+Generally it's a good idea to handle error which may be returned from
+'pci_enable_msi()', so add relevant check to 'brcmf_pcie_request_irq()'
+and adjust the latter to return actual 'request_threaded_irq()' error
+instead of hardcoded -EIO. Compile tested only.
 
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-On 12/7/2024 12:43 PM, Dheeraj Reddy Jonnalagadda wrote:
-> Add a bounds check to ath12k_mac_vdev_create() to prevent an out-of-bounds
-> read in the vif->link_conf array. The function uses link_id, derived from
-> arvif->link_id, to index the array. When link_id equals 15, the index
-> exceeds the bounds of the array, which contains only 15 elements.
-> 
-> This issue occurs in the following code branch:
-> 
->      if (arvif->link_id == ATH12K_DEFAULT_SCAN_LINK && vif->valid_links)
->          link_id = ffs(vif->valid_links) - 1;
->      else
->          link_id = arvif->link_id;
-> 
-> When the first condition in the if statement is true and the second
-> condition is false, it implies that arvif->link_id equals 15 and
-> the else branch is taken, where link_id is set to 15, causing an
-> out-of-bounds access when vif->link_conf array is read using link_id
-> as index.
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+---
+ .../broadcom/brcm80211/brcmfmac/pcie.c        | 20 ++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-Practically this can not happen as ath12k_mac_assign_link_vif() which
-retrieves the arvif by link_id before calling ath12k_mac_vdev_create()
-sanitizes the link_id when there are no valid_links running for that
-vif (!vif->valid_links).
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+index e4395b1f8c11..f0e05cb0cfa7 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
+@@ -963,6 +963,7 @@ static irqreturn_t brcmf_pcie_isr_thread(int irq, void *arg)
+ 
+ static int brcmf_pcie_request_irq(struct brcmf_pciedev_info *devinfo)
+ {
++	int ret;
+ 	struct pci_dev *pdev = devinfo->pdev;
+ 	struct brcmf_bus *bus = dev_get_drvdata(&pdev->dev);
+ 
+@@ -970,16 +971,21 @@ static int brcmf_pcie_request_irq(struct brcmf_pciedev_info *devinfo)
+ 
+ 	brcmf_dbg(PCIE, "Enter\n");
+ 
+-	pci_enable_msi(pdev);
+-	if (request_threaded_irq(pdev->irq, brcmf_pcie_quick_check_isr,
+-				 brcmf_pcie_isr_thread, IRQF_SHARED,
+-				 "brcmf_pcie_intr", devinfo)) {
++	ret = pci_enable_msi(pdev);
++	if (ret)
++		return ret;
++
++	ret = request_threaded_irq(pdev->irq, brcmf_pcie_quick_check_isr,
++				   brcmf_pcie_isr_thread, IRQF_SHARED,
++				   "brcmf_pcie_intr", devinfo);
++	if (ret) {
+ 		pci_disable_msi(pdev);
+ 		brcmf_err(bus, "Failed to request IRQ %d\n", pdev->irq);
+-		return -EIO;
++	} else {
++		devinfo->irq_allocated = true;
+ 	}
+-	devinfo->irq_allocated = true;
+-	return 0;
++
++	return ret;
+ }
+ 
+ 
+-- 
+2.47.1
 
-Vasanth
 
