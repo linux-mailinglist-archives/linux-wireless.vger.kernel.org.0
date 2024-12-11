@@ -1,124 +1,156 @@
-Return-Path: <linux-wireless+bounces-16226-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16227-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7973F9EC198
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2024 02:36:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD4CD9EC1FB
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2024 03:10:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 076D61881273
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2024 01:36:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2375166C52
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2024 02:10:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6677E792;
-	Wed, 11 Dec 2024 01:35:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3452A1FBCA0;
+	Wed, 11 Dec 2024 02:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lWXuqS/O"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="eLXwuQ6Q"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 287064A08;
-	Wed, 11 Dec 2024 01:35:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD3844384;
+	Wed, 11 Dec 2024 02:10:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733880954; cv=none; b=FRcd2FclOOHssh8S81vY6ScnctC+Sj9GHGzbv7/qFrIg3/boaCioaST2QRvHb2UGX88x7P8Bb6LqmTejf2cqCGZaO5kVpzbV8oK6lGEZgPvIQC90WkZ67tvUE1lS2KpMFsO7bTzdFjgY97Q1fY66dERyk3k6if25Btksww3EFvE=
+	t=1733883038; cv=none; b=Pf1jQwZunvQw3uV76ZgBH4RbHJi2OTnB8b8d5NrmyhIe3iPaAzdlYIK2Pp1WNVEvHao0JElTl2UTP5A9Y47dSb2H4NcdjpcUOW7IgGZZS1EPe1Y63Y0PF9l/O8SDF9dkabntMj93z4QDZUXhVglBdKuC/XLQ8LtsXZwgiRjqXSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733880954; c=relaxed/simple;
-	bh=Dz1h0dkmrv6Ze1cxU8t5rn465fyVUykxbTsS0X2OpsA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SbYGXO1EW8Nx/B0Ix2UEJEZF4xQdyly1BAin6X+UDXC7JThmXoJ3s6QSvSNLRzE5isfLIM4Ra45XyDap9bQL1tq7gTZoxceNGQupJ9eBvM8ed5ariMK1X4rJS0v7spUsyqAUQd37W2XhLOoJPSoVUBKkcqGGD8P+LNM+ftBVz1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lWXuqS/O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 199D6C4CED6;
-	Wed, 11 Dec 2024 01:35:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733880952;
-	bh=Dz1h0dkmrv6Ze1cxU8t5rn465fyVUykxbTsS0X2OpsA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lWXuqS/OGpuLDDn3e6rd0Ny3W9lOBqxl6ouihxGY5DI5BnIAz9k8OvBxV/WkkoGKL
-	 hvX4IUIFhNQrpaU/cm1/wigfic0JSqIb6VAvnSxeGoBEhxQ8j23ePZ7Up9KKZysBId
-	 uO/7yQ7qC/+pZb6ESDTBeZAbwesJTCLTy1XLYAF4mlcKRBKyoFjzB5pZOEDAYCVUSK
-	 PtvZkQ2HN8nf8vIhBE/HaUtHV2aj4U1eGeFDoHxYziwThc1ReVtXl39rfXh3mERvJ2
-	 23iH30lOevYf8TCz5YvtH3bGmPPNofPB05oCl1pJa3BU8K8c+a39qY+xcVUgGWrb0g
-	 vGjoGdbfKJTPg==
-Date: Tue, 10 Dec 2024 17:35:48 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, Easwar Hariharan
- <eahariha@linux.microsoft.com>
-Cc: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, Pablo Neira Ayuso
- <pablo@netfilter.org>, Jozsef Kadlecsik <kadlec@netfilter.org>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Julia Lawall
- <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>, Daniel Mack
- <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>, Robert
- Jarzmik <robert.jarzmik@free.fr>, Russell King <linux@armlinux.org.uk>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger
- <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Ofir
- Bitton <obitton@habana.ai>, Oded Gabbay <ogabbay@kernel.org>, Lucas De
- Marchi <lucas.demarchi@intel.com>, Thomas =?UTF-8?B?SGVsbHN0csO2bQ==?=
- <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Jeroen de Borst
- <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>,
- Shailend Chand <shailend@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- James Smart <james.smart@broadcom.com>, Dick Kennedy
- <dick.kennedy@broadcom.com>, "James E.J. Bottomley"
- <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"
- <martin.petersen@oracle.com>, Roger Pau =?UTF-8?B?TW9ubsOp?=
- <roger.pau@citrix.com>, Jens Axboe <axboe@kernel.dk>, Kalle Valo
- <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Jack Wang <jinpu.wang@cloud.ionos.com>, Marcel
- Holtmann <marcel@holtmann.org>, Johan Hedberg <johan.hedberg@gmail.com>,
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Florian Fainelli
- <florian.fainelli@broadcom.com>, Ray Jui <rjui@broadcom.com>, Scott Branden
- <sbranden@broadcom.com>, Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Xiubo Li <xiubli@redhat.com>, Ilya
- Dryomov <idryomov@gmail.com>, Josh Poimboeuf <jpoimboe@kernel.org>, Jiri
- Kosina <jikos@kernel.org>, Miroslav Benes <mbenes@suse.cz>, Petr Mladek
- <pmladek@suse.com>, Joe Lawrence <joe.lawrence@redhat.com>, Jaroslav Kysela
- <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, Louis Peens
- <louis.peens@corigine.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas
- Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
- Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, cocci@inria.fr,
- linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org,
- dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- linux-scsi@vger.kernel.org, xen-devel@lists.xenproject.org,
- linux-block@vger.kernel.org, linux-wireless@vger.kernel.org,
- ath11k@lists.infradead.org, linux-mm@kvack.org,
- linux-bluetooth@vger.kernel.org, linux-staging@lists.linux.dev,
- linux-rpi-kernel@lists.infradead.org, ceph-devel@vger.kernel.org,
- live-patching@vger.kernel.org, linux-sound@vger.kernel.org,
- oss-drivers@corigine.com, linuxppc-dev@lists.ozlabs.org, Anna-Maria Behnsen
- <anna-maria@linutronix.de>
-Subject: Re: [PATCH v3 00/19] Converge on using secs_to_jiffies()
-Message-ID: <20241210173548.5d32efe0@kernel.org>
-In-Reply-To: <20241210153604.cf99699f264f12740ffce5c7@linux-foundation.org>
-References: <20241210-converge-secs-to-jiffies-v3-0-ddfefd7e9f2a@linux.microsoft.com>
-	<315e9178-5b10-4de0-bdcf-7243e0e355bb@oss.qualcomm.com>
-	<20241210153604.cf99699f264f12740ffce5c7@linux-foundation.org>
+	s=arc-20240116; t=1733883038; c=relaxed/simple;
+	bh=ZISjs/hvsWRiKqvIS7x5BMxM+Zp47/6dBZVjntsLtK0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=qfSJN/MjeCPqMEG7FuJtFqtMaudEOrs5OTABrTMfrhO/3uOKCV70N0xb2+WoYDie+PnExk3pWAL9DF1t1Z9l+WWDCa0LvRYECqBxyvFDR7ePQA0HucGHxAYTgh0xRLJCz/VrXrqxnxQi8GvV89G1orR9v/PMPT57Edgmn1zSDx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=eLXwuQ6Q; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BB1fJx3014853;
+	Wed, 11 Dec 2024 02:10:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	2amnVrhJyNTdPfi+li73e2jRRi7A5M0l5Intio2miik=; b=eLXwuQ6QUjWrJptK
+	y7bblKBipQLusBt1tKkuU8Fjj7z8VDgS/XD6HED6lfGBRZE79xsUMV/dpodLMJHM
+	0WjhpsSGrYufAfz836cmLiGP2NpLRST3LAXGAM04JiI3xpKrcArRiviIyykqKXh4
+	xE/tcmtDh8mA+bhshpFheRt9CiGLP59U8nE40hTjITYSU535OQxb65qlshdxk0Bw
+	MU81bYRgw0QwbjNcYQm9O0i3ItP7xvY91iU05rRAXOk8b+pzoGZOPkhE1VO2Mkd5
+	h8TJXQFx3U6cFGaxn97OXy/G9lnvxkF7XLwSaQBHyWI59ZetSLQOKDkFShMhVpeK
+	41mhsA==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43ee3nbcwd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 11 Dec 2024 02:10:28 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BB2ASJZ012332
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 11 Dec 2024 02:10:28 GMT
+Received: from [10.231.194.79] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 10 Dec
+ 2024 18:10:25 -0800
+Message-ID: <d8705140-e335-47e0-ac70-47d8592fb18c@quicinc.com>
+Date: Wed, 11 Dec 2024 10:10:23 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath11k: allow APs combination when dual stations
+ are supported
+To: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+CC: <ath11k@lists.infradead.org>, <jjohnson@kernel.org>, <kvalo@kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+        <quic_cjhuang@quicinc.com>, <vbenes@redhat.com>
+References: <db61f998-2524-4623-8b0f-143661507e38@quicinc.com>
+ <20241210084419.126723-1-jtornosm@redhat.com>
+Content-Language: en-US
+From: "Yu Zhang (Yuriy)" <quic_yuzha@quicinc.com>
+In-Reply-To: <20241210084419.126723-1-jtornosm@redhat.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: D2iBK7HZnT67Bwi170oWgKBPTAmm2BtO
+X-Proofpoint-ORIG-GUID: D2iBK7HZnT67Bwi170oWgKBPTAmm2BtO
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 suspectscore=0
+ malwarescore=0 spamscore=0 priorityscore=1501 mlxscore=0 impostorscore=0
+ mlxlogscore=999 lowpriorityscore=0 adultscore=0 clxscore=1015 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2412110015
 
-On Tue, 10 Dec 2024 15:36:04 -0800 Andrew Morton wrote:
-> > I have the same question as before: How do you expect these to land?
-> > Do you now have a maintainer who will take all of them?
-> > Or do you want individual maintainers to take the ones applicable to them?  
+
+
+On 12/10/2024 4:44 PM, Jose Ignacio Tornos Martinez wrote:
+>> Yes, Can you pls share the complete steps and commands?
+> Sure, I offered it before.
 > 
-> I'll just grab everything and see if anyone complains ;)
+> You need NetworkManager and of course NetworkManager-wifi packages installed
+> and working.
+> We are using Fedora/rhel with the default configuration and you can configure,
+> before the next steps, the wifi interface as sta from NetworkManager or not
+> (with no wifi configuration the same result happens) because it is going to
+> be unmanaged.
+> 
+> After booting (wlp1s0 is the wifi interface for ath11k and there are no other
+> wifi cards in the system), here the necessary steps with our network
+> configuration:
+> # nmcli  device set wlp1s0 managed off
+> # ip link set wlp1s0 up
+> # ip link add name wifi_br0 type bridge
+> # ip addr add 192.168.254.1/24 dev wifi_br0
+> # ip link set wifi_br0 up
+> # iw dev wlp1s0 interface add wlp1s0_0 type __ap
+> # iw dev wlp1s0 interface add wlp1s0_1 type __ap
+> # systemd-run --unit hostapd1 hostapd -dd /tmp/hostapd1.conf
+> # systemd-run --unit hostapd2 hostapd -dd /tmp/hostapd2.conf
+> # dnsmasq \
+>      --pid-file=/tmp/dnsmasq_wireless.pid \
+>      --port=63 \
+>      --no-hosts \
+>      --interface=wifi_br0 \
+>      --bind-interfaces \
+>      --dhcp-range=192.168.254.2,192.168.254.205,60m \
+>      --dhcp-option=option:router,192.168.254.1 \
+>      --dhcp-leasefile=/var/lib/dnsmasq/hostapd.leases \
+>      --dhcp-lease-max=200
+> 
+> After booting I get the same issue just doing:
+> # nmcli  device set wlp1s0 managed off
+> # ip link set wlp1s0 up
+> And the step that you commented in a previous answer:
+> # iw dev wlp1s0 interface add wlp1s0_0 type __ap
+> # iw dev wlp1s0 interface add wlp1s0_1 type __ap
+> # hostapd hostapd1.conf &
+> # hostapd hostapd2.conf &
+> 
+Got it, you use Networkmanager, so that the add interface type will 
+always be managed. But it's still work fine in my device that I use 
+"hostapd hostapd2.conf" to up the second ap.
 
-I may, if this leads to a conflict :(
+So could you share your log about it? Enable debug and tracer about 
+ath11k and mac80211, and share the the recorded trace?
 
-Easwar, please break this up per subsystem.
+> You can use whatever hostapd configuration (with the suitable interface name).
+> 
+> Thanks
+> 
+> Best regards
+> Jose Ignacio
+> 
+
 
