@@ -1,174 +1,228 @@
-Return-Path: <linux-wireless+bounces-16267-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16268-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 081B49ED3F9
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2024 18:47:05 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F5599ED47B
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2024 19:07:15 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 501671882BB1
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2024 17:46:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FB96280AC3
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2024 18:07:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F078200B9C;
-	Wed, 11 Dec 2024 17:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F56246344;
+	Wed, 11 Dec 2024 18:07:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b="iJ1Rv1gP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WcIuBPKh"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C4C1FF5E3
-	for <linux-wireless@vger.kernel.org>; Wed, 11 Dec 2024 17:46:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81361BD9CA
+	for <linux-wireless@vger.kernel.org>; Wed, 11 Dec 2024 18:07:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733939214; cv=none; b=UXk5pllRyL/a+zcKNBzEnVWd9BxSnRAtEX5dALVdWA2VE9g75TccR6VPmQCjohT0m86fe5uANiYf3hW86tayje9YGN5+SPS/+fZkVz6+XCR7yXR0C7RgV5fhluC5h/uthEUq/NN6bmVnkNbhG1nkjZgzBI/eY4UmhF8V0aFSgZ0=
+	t=1733940429; cv=none; b=MYLpSfxtGWvyoY9fuBRGYBcUUkY0/KEwTvPmcg+DwpSjFc3VrReqVAz9+HH3W17j++kkt3hOBN/QKdT/9ewjXjUa0H/h64Hv4F7B3c2cdiVPLFP4XaIUhQbW7g7YM0EKMxr7ccP6WS3qnwUvmeZ9sYQuQBQikYF/znZCStm8/iI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733939214; c=relaxed/simple;
-	bh=xKfttj73jG1uTZpJNN82RMi2jpdXNIkxOf7nv7eMMZ0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sYtcC1u2ezzW8uBXa/vkH6VoHKvu/RXi0tNZ3SMGYikXzB+tuuUbxIg5/PLKhggGEb18KFNwyeZ0NluJm6dNo4DiP7QFNqE4+45+OLZS05G6FTFkZoyaEkJrhzVR7VkPyQUfdc2e0CKDZIZQPp8fVpehbeJFDQhcrIrcoBQPc50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raspberrypi.com; spf=pass smtp.mailfrom=raspberrypi.com; dkim=pass (2048-bit key) header.d=raspberrypi.com header.i=@raspberrypi.com header.b=iJ1Rv1gP; arc=none smtp.client-ip=209.85.219.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=raspberrypi.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=raspberrypi.com
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e398484b60bso5665553276.1
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Dec 2024 09:46:51 -0800 (PST)
+	s=arc-20240116; t=1733940429; c=relaxed/simple;
+	bh=jIp6BKgc5riWf30p+6NdJLtLqfhUE1vaIBCp9EwmpbE=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Lgz0dGGCDhG4mNTMnMaX3e1aCilQUByR9I4GP+HxQImSKBbrxHry4LhXEoy276JdtlhlkN0RV2Nr5SH9Y5h8kA0EnvB343Fd+exuNS0uHgD5NKzXT3XPZjTJvHdo3RKSRzxSl9eKkqMNLdFMjdTMrZZA27m6Jnb01mrc4WI2O3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WcIuBPKh; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-aa679ad4265so187413866b.0
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Dec 2024 10:07:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=raspberrypi.com; s=google; t=1733939211; x=1734544011; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=XX4yF9JMGXX3II/VI0ICz4h+LN+8Yz44eu6TfJ04Ugk=;
-        b=iJ1Rv1gPyVXZinfE2j1hskrQVtwOTmifZx892vfPVXmW+A4luks2PdH2B2Tl4HOqN6
-         U9LqS7pYhhesWy/EGPUEEaXNixUTWci5GU5iiVALQSIcaGNrrwa3KRwiY7NIu2Xm5M9O
-         b3bR1JInOlALvNN3xwW/FiAhOLXRWEdfW4VOahL/Xlyp3XRxMh8RsYIj5yDvN6DZJ7Ul
-         iOh4z0HBbsY9FYf1yBBSENjuPtqUFQzg036S66WXVQnVehFi4bWC3djajWjWbKhxsi1b
-         JZ7nHrGpMISaEuXqGNuZ52zlgMmrRhLWgeS7Sg8Hjg+/P5uGHHslF0Tnhj90FCLu3x1z
-         uF0g==
+        d=gmail.com; s=20230601; t=1733940426; x=1734545226; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=URwMuho4Be2SL+q2rQ/Phlv7EhxNk6teEeqfMb/gj28=;
+        b=WcIuBPKh+RHjESWnKMVXK0eWsDEbJFAEOHd99qR4sY0gOLQhs5np9FIzqIGOIRv1YI
+         gIeV2el3At+lasQljZWVqYhyfimg30tU3Y4tdFxSi3kcppIqaeDSxfXRfc5kPSGa9Y/6
+         VIIzgpmrRTSj5cfcVzJTWhARAnIN1mUFMzltI4N3bNv+Qkzy3mf3Z/tI/dzM4b7yeC9a
+         KLaYUdgNuDZs4RHOMZalJLr+aXehI2KgpCPRMPuQpiXOPj5CyNWaY4yR812JScMdaFSw
+         ooiNJU9eA9NSig5uk+Y9P5taCBvcdsVI+DE0Ils/7YrtDa1vmm+D/4xlSGr+a4Em6Rh/
+         1l3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733939211; x=1734544011;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XX4yF9JMGXX3II/VI0ICz4h+LN+8Yz44eu6TfJ04Ugk=;
-        b=efiPNLo7N8JEIfuuHskgdZOb2zYyDkkDQFQ+RWDX4k15XQcN33GVSAprvvsP8Nl6Dr
-         nfo9KDVmb6eaFOlGjWm+dkQuUhtO4wChKe+u++0rYSMdQQqU/TaBd3AEXhJBns0zHpXV
-         QWXCkUzpQE054cIraFblcbDTm2uqd/LZzVXxPOq19OHi9jJ+WsW+s+W8jQ64Y1BBfZ90
-         goOHAHtiqISFGrB9GXXPn0OXJmCz03AeeI0ET/Go/8OBjy2GEjnfFFomRcwgGiQvcj5u
-         gEHWvw9HtQ3Y9yZDe1ppZ6aPmE9zPLv0sx3srSf9AvVlrfYrxC491DDi5AiEoPod8bnJ
-         WB/w==
-X-Forwarded-Encrypted: i=1; AJvYcCUKpjy1o6xmUjwFdrRlugIyoxwrKkudbL0NcW9iO2pcOvE8equAoipXULOqt/3PGDeHOcGNw8qXX0UJP1qo3Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPmdRiOOKLAAWo8HPVwzsc+etZvSqLdurua6HihsHm4CVGWtP7
-	E5uKkSpxPIz4kCC186KHFUZK/uGYZAl/7R0DCv6pNF4tz28QmpfMGP0+SQozHTmhaL+SD6XisxJ
-	TUFVJa8QVz/7l6Ez4QM/HHqSmk0zY4sXtR+putA==
-X-Gm-Gg: ASbGncvvGOKfHL/NAThCV/3HKbjhEuepaqJi1kvlLw362zVWL65SkwrXLhmKJuzOcPq
-	Ynbg0/8ALCnsljXv5PILQdu4yV3Cn5zYH9F4=
-X-Google-Smtp-Source: AGHT+IG3lDp6pcc8WpN9DOxtNpymp29steFnShZFR78LeXrDU2v7lqz7zSz8oGrhbnT8m3jrCYcj2LxsZTVFVNmSQds=
-X-Received: by 2002:a05:6902:230d:b0:e39:8a36:5771 with SMTP id
- 3f1490d57ef6-e3da3158089mr228005276.34.1733939211006; Wed, 11 Dec 2024
- 09:46:51 -0800 (PST)
+        d=1e100.net; s=20230601; t=1733940426; x=1734545226;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=URwMuho4Be2SL+q2rQ/Phlv7EhxNk6teEeqfMb/gj28=;
+        b=EfkIGa9brDl1NTuktw2z8ZcHzLemU7nAC1QY+pCYiE9tiKOnqiT3jyfeR/KCFrDqhR
+         RdzN6BFUdFn1Ij8SPB2Wh6IyG34qVUjtQ7lRYCT37WxVhj7HfaRRFWHfDdtfqdaaWo2I
+         RpX2NkU3g81U3UKvIYXxvFrvmD40Yw12siCFWLDNX4AkzYta/kunGC4rODFOigL0mn/B
+         kFT4UJkdh6k2qfw2J5e0sFKI8OzIx1kAnNJb7TGCxvu2vyPb6pW/LfY7cA1JWUQfYzHp
+         0VpNeR39zFsfj2VGf8183Tw8QtmyICLSmQMQPqyRVEbGuM7oYdYqOB2SLz/7XLDo9wR3
+         z1HA==
+X-Forwarded-Encrypted: i=1; AJvYcCXEnVtq2Nrhurxpk1jFLS5KkupJMsQJ1W3tDDextdNLqsF0cCrYuZsv3mC+TjZSD9nSfjvKEFqmiFu1Qs00Ng==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNkk+7ai2Pkzp8Cv6k+ikqc7Tlc41ZsKc5Eng266WeZgrmjpzK
+	MbKuQEiwFh+534zEZ7SwikAIV+DVwdCqLz5Asrhi4Qad3DUHr7Kp
+X-Gm-Gg: ASbGncug1EgD5HpukfZtZvRM6wOJ8T/SnjYy7clR2GN5OaPTTIkvw+e/yaPL282UuOk
+	Yk9K/vtu+R+N0wMlUqbIQw5BuNuFyppqnInOS1xt1OE6krobTe0DSs08vJXB2fjslejQbgrLxxn
+	CZrXor7+7x/L8KSbkx0A/Q116F5Shu6RwMUVQneRpYHV+K+JA+3Wd8EPEktfoLmZKGULNQWHqqk
+	+umCTm/a4EYgbdM3G8ifulklt6yGxIQobsd6dlrEGggGNLuV9xEwFzBsuKBJhU=
+X-Google-Smtp-Source: AGHT+IGKbfXgwK/EeRUvBNXDq5JNtZs7RFi1B/YMZ9l/V35q5mmmK59GVL0nbt3ZBwEInArj64fLXQ==
+X-Received: by 2002:a17:907:7da0:b0:aa6:bedc:2e4c with SMTP id a640c23a62f3a-aa6c40bb599mr28620966b.3.1733940425431;
+        Wed, 11 Dec 2024 10:07:05 -0800 (PST)
+Received: from [192.168.0.50] ([79.119.240.129])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aa674a112c7sm607827066b.147.2024.12.11.10.07.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Dec 2024 10:07:05 -0800 (PST)
+Message-ID: <03f70884-fdc9-4523-b882-2b6b61e48133@gmail.com>
+Date: Wed, 11 Dec 2024 20:07:02 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241210-converge-secs-to-jiffies-v3-0-ddfefd7e9f2a@linux.microsoft.com>
- <20241210-converge-secs-to-jiffies-v3-16-ddfefd7e9f2a@linux.microsoft.com>
-In-Reply-To: <20241210-converge-secs-to-jiffies-v3-16-ddfefd7e9f2a@linux.microsoft.com>
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Date: Wed, 11 Dec 2024 17:46:32 +0000
-Message-ID: <CAPY8ntDHcGpsaNytY2up_54e03twqZ2fj1=JTnb8x7LLo3uGDQ@mail.gmail.com>
-Subject: Re: [PATCH v3 16/19] staging: vc04_services: Convert timeouts to secs_to_jiffies()
-To: Easwar Hariharan <eahariha@linux.microsoft.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Jozsef Kadlecsik <kadlec@netfilter.org>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>, 
-	Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>, 
-	Robert Jarzmik <robert.jarzmik@free.fr>, Russell King <linux@armlinux.org.uk>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Ofir Bitton <obitton@habana.ai>, 
-	Oded Gabbay <ogabbay@kernel.org>, Lucas De Marchi <lucas.demarchi@intel.com>, 
-	=?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, 
-	Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, 
-	Shailend Chand <shailend@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	James Smart <james.smart@broadcom.com>, Dick Kennedy <dick.kennedy@broadcom.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>, 
-	Jens Axboe <axboe@kernel.dk>, Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Jack Wang <jinpu.wang@cloud.ionos.com>, Marcel Holtmann <marcel@holtmann.org>, 
-	Johan Hedberg <johan.hedberg@gmail.com>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
-	Scott Branden <sbranden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Xiubo Li <xiubli@redhat.com>, 
-	Ilya Dryomov <idryomov@gmail.com>, Josh Poimboeuf <jpoimboe@kernel.org>, Jiri Kosina <jikos@kernel.org>, 
-	Miroslav Benes <mbenes@suse.cz>, Petr Mladek <pmladek@suse.com>, 
-	Joe Lawrence <joe.lawrence@redhat.com>, Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, 
-	Louis Peens <louis.peens@corigine.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, netfilter-devel@vger.kernel.org, 
-	coreteam@netfilter.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	cocci@inria.fr, linux-arm-kernel@lists.infradead.org, 
-	linux-s390@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	intel-xe@lists.freedesktop.org, linux-scsi@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, linux-block@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org, 
-	linux-mm@kvack.org, linux-bluetooth@vger.kernel.org, 
-	linux-staging@lists.linux.dev, linux-rpi-kernel@lists.infradead.org, 
-	ceph-devel@vger.kernel.org, live-patching@vger.kernel.org, 
-	linux-sound@vger.kernel.org, oss-drivers@corigine.com, 
-	linuxppc-dev@lists.ozlabs.org, Anna-Maria Behnsen <anna-maria@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: Re: [PATCH 2/2] wifi: rtw88: usb: Preallocate and reuse the RX skbs
+To: Ping-Ke Shih <pkshih@realtek.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Sascha Hauer <sha@pengutronix.de>
+References: <28b09f4d-5271-470d-99b6-a0bbe0224739@gmail.com>
+ <4e83ae71-60e2-4f24-a251-18cd59543d6d@gmail.com>
+ <3a9104bb97db4df6a285e94291fd84c7@realtek.com>
+ <1546573d-ce4d-4629-8d05-925fff079493@gmail.com>
+ <e467e5003335418cab2f90807ce07b7a@realtek.com>
+Content-Language: en-US
+In-Reply-To: <e467e5003335418cab2f90807ce07b7a@realtek.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, 10 Dec 2024 at 22:02, Easwar Hariharan
-<eahariha@linux.microsoft.com> wrote:
->
-> Commit b35108a51cf7 ("jiffies: Define secs_to_jiffies()") introduced
-> secs_to_jiffies(). As the value here is a multiple of 1000, use
-> secs_to_jiffies() instead of msecs_to_jiffies to avoid the multiplication.
->
-> This is converted using scripts/coccinelle/misc/secs_to_jiffies.cocci with
-> the following Coccinelle rules:
->
-> @@ constant C; @@
->
-> - msecs_to_jiffies(C * 1000)
-> + secs_to_jiffies(C)
->
-> @@ constant C; @@
->
-> - msecs_to_jiffies(C * MSEC_PER_SEC)
-> + secs_to_jiffies(C)
->
-> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+On 26/11/2024 03:26, Ping-Ke Shih wrote:
+> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>> On 19/11/2024 02:50, Ping-Ke Shih wrote:
+>>> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
+>>>> The USB driver uses four USB Request Blocks for RX. Before submitting
+>>>> one, it allocates a 32768 byte skb for the RX data. This allocation can
+>>>> fail, maybe due to temporary memory fragmentation. When the allocation
+>>>> fails, the corresponding URB is never submitted again. After four such
+>>>> allocation failures, all RX stops because the driver is not requesting
+>>>> data from the device anymore.
+>>>>
+>>>> Don't allocate a 32768 byte skb when submitting a USB Request Block
+>>>> (which happens very often). Instead preallocate 8 such skbs, and reuse
+>>>> them over and over. If all 8 are busy, allocate a new one. This is
+>>>> pretty rare. If the allocation fails, use a work to try again later.
+>>>> When there are enough free skbs again, free the excess skbs.
+>>>>
+>>>> Also, use WQ_BH for the RX workqueue. With a normal or high priority
+>>>> workqueue the skbs are processed too slowly when the system is even a
+>>>> little busy, like when opening a new page in a browser, and the driver
+>>>> runs out of free skbs and allocates a lot of new ones.
+>>>>
+>>>> Move C2H_ADAPTIVITY to the c2h workqueue instead of handling it directly
+>>>> from rtw_fw_c2h_cmd_rx_irqsafe(), which runs in the RX workqueue. It
+>>>> reads hardware registers, which is not "irqsafe" with USB.
+>>>
+>>> This part should be in a separated patch.
+>>>
+>>
+>> Do you mean just C2H_ADAPTIVITY or WQ_BH as well?
+> 
+> Just C2H_ADAPTIVITY.
+> 
+> With patch subject, people can't understand this change. 
+> 
+>>
+>>>>
+>>>> This is more or less what the out-of-tree Realtek drivers do, except
+>>>> they use a tasklet instead of a BH workqueue.
+>>>>
+>>>> Tested with RTL8723DU, RTL8821AU, RTL8812AU, RTL8812BU, RTL8822CU,
+>>>> RTL8811CU.
+>>>>
+>>>> Closes: https://lore.kernel.org/linux-wireless/6e7ecb47-7ea0-433a-a19f-05f88a2edf6b@gmail.com/
+>>>> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+>>>> ---
+>>>>  drivers/net/wireless/realtek/rtw88/fw.c  |  7 +--
+>>>>  drivers/net/wireless/realtek/rtw88/usb.c | 73 ++++++++++++++++++++----
+>>>>  drivers/net/wireless/realtek/rtw88/usb.h |  3 +
+>>>>  3 files changed, 67 insertions(+), 16 deletions(-)
+>>>>
+>>>> diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
+>>>> index e6e9946fbf44..02389b7c6876 100644
+>>>> --- a/drivers/net/wireless/realtek/rtw88/fw.c
+>>>> +++ b/drivers/net/wireless/realtek/rtw88/fw.c
+>>>> @@ -332,6 +332,9 @@ void rtw_fw_c2h_cmd_handle(struct rtw_dev *rtwdev, struct sk_buff *skb)
+>>>>         case C2H_RA_RPT:
+>>>>                 rtw_fw_ra_report_handle(rtwdev, c2h->payload, len);
+>>>>                 break;
+>>>> +       case C2H_ADAPTIVITY:
+>>>> +               rtw_fw_adaptivity_result(rtwdev, c2h->payload, len);
+>>>> +               break;
+>>>>         default:
+>>>>                 rtw_dbg(rtwdev, RTW_DBG_FW, "C2H 0x%x isn't handled\n", c2h->id);
+>>>>                 break;
+>>>> @@ -367,10 +370,6 @@ void rtw_fw_c2h_cmd_rx_irqsafe(struct rtw_dev *rtwdev, u32 pkt_offset,
+>>>>                 rtw_fw_scan_result(rtwdev, c2h->payload, len);
+>>>>                 dev_kfree_skb_any(skb);
+>>>>                 break;
+>>>> -       case C2H_ADAPTIVITY:
+>>>> -               rtw_fw_adaptivity_result(rtwdev, c2h->payload, len);
+>>>> -               dev_kfree_skb_any(skb);
+>>>> -               break;
+>>>>         default:
+>>>>                 /* pass offset for further operation */
+>>>>                 *((u32 *)skb->cb) = pkt_offset;
+>>>> diff --git a/drivers/net/wireless/realtek/rtw88/usb.c b/drivers/net/wireless/realtek/rtw88/usb.c
+>>>> index 727569d4ef4b..5c2dfa2ced92 100644
+>>>> --- a/drivers/net/wireless/realtek/rtw88/usb.c
+>>>> +++ b/drivers/net/wireless/realtek/rtw88/usb.c
+>>>> @@ -585,7 +585,7 @@ static void rtw_usb_rx_handler(struct work_struct *work)
+>>>>                                 goto skip_packet;
+>>>>                         }
+>>>>
+>>>> -                       skb = alloc_skb(skb_len, GFP_KERNEL);
+>>>> +                       skb = alloc_skb(skb_len, GFP_ATOMIC);
+>>>>                         if (!skb) {
+>>>>                                 rtw_dbg(rtwdev, RTW_DBG_USB,
+>>>>                                         "failed to allocate RX skb of size %u\n",
+>>>> @@ -612,7 +612,11 @@ static void rtw_usb_rx_handler(struct work_struct *work)
+>>>>                         rx_desc += next_pkt;
+>>>>                 } while (rx_desc + pkt_desc_sz < rx_skb->data + rx_skb->len);
+>>>>
+>>>> -               dev_kfree_skb_any(rx_skb);
+>>>> +               if (skb_queue_len(&rtwusb->rx_free_queue) >=
+>>>> +                   RTW_USB_RX_SKB_NUM - RTW_USB_RXCB_NUM)
+>>>> +                       dev_kfree_skb_any(rx_skb);
+>>>> +               else
+>>>> +                       skb_queue_tail(&rtwusb->rx_free_queue, rx_skb);
+>>>
+>>> Why not just queue and reuse rx_skb for all? That would be simpler.
+>>>
+>>
+>> I didn't want to let it allocate too many skbs. I didn't find any kind
+>> of limit in the official drivers, so maybe it would be fine.
+> 
+> The case ' skb_queue_len(&rtwusb->rx_free_queue) >= 8 - 4' is rare? 
+> If so, I think this is fine. If not, to repeatedly allocate and free 
+> would cause memory fragment, and higher probability to failed to allocate
+> memory with GFP_ATOMIC. Also seemingly additional 4 persistent rx_skb
+> is not a big cost. 
+> 
+> 
 
-Reviewed-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
+I feel like it's rare for me, but I never counted how often it happens.
 
-> ---
->  drivers/staging/vc04_services/bcm2835-audio/bcm2835-vchiq.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/staging/vc04_services/bcm2835-audio/bcm2835-vchiq.c b/drivers/staging/vc04_services/bcm2835-audio/bcm2835-vchiq.c
-> index dc0d715ed97078ad0f0a41db78428db4f4135a76..0dbe76ee557032d7861acfc002cc203ff2e6971d 100644
-> --- a/drivers/staging/vc04_services/bcm2835-audio/bcm2835-vchiq.c
-> +++ b/drivers/staging/vc04_services/bcm2835-audio/bcm2835-vchiq.c
-> @@ -59,7 +59,7 @@ static int bcm2835_audio_send_msg_locked(struct bcm2835_audio_instance *instance
->
->         if (wait) {
->                 if (!wait_for_completion_timeout(&instance->msg_avail_comp,
-> -                                                msecs_to_jiffies(10 * 1000))) {
-> +                                                secs_to_jiffies(10))) {
->                         dev_err(instance->dev,
->                                 "vchi message timeout, msg=%d\n", m->type);
->                         return -ETIMEDOUT;
->
-> --
-> 2.43.0
->
+Someone else reported that in a period of 14.5 hours additional skbs
+were allocated and freed 295 times. This is their log:
+https://github.com/user-attachments/files/17792914/dmesg_grep_rtw_8821au.txt
+This computer has i7-6700 CPU with 32 GB of RAM.
+
+Another user reported that additional skbs were allocated and freed
+3824 times in a period of 1.25 hours. This is their log:
+https://github.com/user-attachments/files/18008735/log.txt
+This computer is a Raspberry Pi 3B with 1 GB RAM.
+
+I agree that another 4 skbs would be fine. I don't know what the upper
+limit should be. The user with the Raspberry Pi 3B also tested with no
+limit and reported that the driver allocated 17 extra skbs. That seems
+like too many to me.
 
