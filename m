@@ -1,53 +1,53 @@
-Return-Path: <linux-wireless+bounces-16247-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16248-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C9C49ECFCE
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2024 16:34:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1AAA9ECFD0
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2024 16:34:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 394591671F8
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2024 15:34:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87778188A3D2
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2024 15:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C18861C07D2;
-	Wed, 11 Dec 2024 15:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7E3E1D0F50;
+	Wed, 11 Dec 2024 15:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hyeNf2pP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MG2qRlzD"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98ACE13B2A9;
-	Wed, 11 Dec 2024 15:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8601CF7C3;
+	Wed, 11 Dec 2024 15:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733931277; cv=none; b=VV5g4k7YN5rvOxXPxPmIYrS2LWSR9YtQgGt5uCD4iouvRWSii4l1dGnx6Yihr8OIa6rZJCI9VS2DBegGZZY2fLj75cecQ7S+QEx1/P1HYxTjl46c08MjN33n20oxVVQBW+d6ecq/SL1O9XkCQf8DOKgzeGQ469Hm/ei9AFgPtnc=
+	t=1733931278; cv=none; b=F+yMSanJl9PK9aXy89dElXMz7XhyT9g9UmYzdQJZvO/PXZ8N1La+e0o3Aktjzz47p9Ct3GbPLMw0UqX861ENsgUxXUw9+crxqIKdgxsI7pQZ/bYKy+R3UYyf+OMuBDoXpKn8lzLhebeEQIdBiynyxMBdR3DDeEARPt6i77cBa/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733931277; c=relaxed/simple;
-	bh=gD+erWKg1WYx/d4VCqYCo1hgx/4qc9+Utl+HoeSnyT8=;
+	s=arc-20240116; t=1733931278; c=relaxed/simple;
+	bh=4Q8+H2y5FnU0Zo2LpMai5VHA+mQYFkZLKUDC/zyQpog=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jCIfY+HssBNiZ1rqbJHzv860Peeh3W8G0J6pY6WYLVfycTNeM/yGqMPYAwvmDds1XbyGuWr6nW7frDwgGFKMixx20PFw/YAENG6dXXDsFjE6lSkO5rUkTI0YedQnarsSBTQzq1vGwj9R2PWUe1JlCtMrLeNSMb1ifqAZWMnBRbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hyeNf2pP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C17C4CED4;
-	Wed, 11 Dec 2024 15:34:36 +0000 (UTC)
+	 MIME-Version; b=WNJiuORCrFOM1KYKhpkta7300+21cQ9SrhHHhIjt9IbOzFcYIaY4gjc58ClDMM8FMegCKtE6LMDr+VSbUEPJN/TrpeWkBEFadVdIvVk7uJi1zMnicJuA/aCCDU5F5g2vOWgH+AM932vPCF7aGWVi1637tD7N5PGvC7ecoSdgE0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MG2qRlzD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95DC6C4CED2;
+	Wed, 11 Dec 2024 15:34:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733931277;
-	bh=gD+erWKg1WYx/d4VCqYCo1hgx/4qc9+Utl+HoeSnyT8=;
+	s=k20201202; t=1733931278;
+	bh=4Q8+H2y5FnU0Zo2LpMai5VHA+mQYFkZLKUDC/zyQpog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hyeNf2pPhxf8OrXPynw3ZOnsQRAiKq2XlKgysFLHjNEeondWlJi1qYzAJqvr3nyTw
-	 mz3Yah9fUlONwnwrXY7bURsih52xrL+tlzo6lDb80FE5fdDQ4fyFzI7gVc86Ixlf2p
-	 WNWGCFUq3OqYxiOvszzEAhhX8fBooyknPPE/Nq52hrip5c9etxr8so0xgEqh4c1NZa
-	 doh9hnTTIfg2em46LXr64ffSLauOZX2rWcsHViU2xFvnVAQhBpOUKg2PEPm6VJMjjl
-	 pMGMALN8PqTgZI/WFZE3lpvbAtjMP2mpzKf1JJgFI20yVOtYvPop9bOclD38FA47Wi
-	 ca2yi+7iUZbow==
+	b=MG2qRlzDJ0qSmd3eeF4x7cpDMGGQ3fb+DZtJARlQoo6aT4OfvUBFlg6udnDBHkoyv
+	 uzoIZR8Bb++DAM0Swji/YmF/acuRMG5nnXyeBxkDXleAVjWuWRGZDPvf5gu11xO1+C
+	 X1kR/TpkWoYsp7eezOkmeqJl8cmUYrJGUCxF2Kx6rFjhWC6yZeKbHgJI3lWoQ6LhqM
+	 PUAMrSuBsvpQ81DpkH5KRNe/iPbJEMo9maUfbEqYClUeWWwBTt14LkSAzOsMoVP/Ia
+	 tV98LtL1/kcCkorPRmJiJOlQl1Qlf1c+dSK7EZjMkvSwgb6ggXy1DXGZylIpDQIx6P
+	 t+T+ygd+5t17w==
 From: Kalle Valo <kvalo@kernel.org>
 To: ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org,
 	devicetree@vger.kernel.org
-Subject: [PATCH v3 1/8] dt-bindings: net: wireless: Describe ath12k PCI module with WSI
-Date: Wed, 11 Dec 2024 17:34:25 +0200
-Message-Id: <20241211153432.775335-2-kvalo@kernel.org>
+Subject: [PATCH v3 2/8] wifi: ath12k: parse multiple device information from Device Tree
+Date: Wed, 11 Dec 2024 17:34:26 +0200
+Message-Id: <20241211153432.775335-3-kvalo@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241211153432.775335-1-kvalo@kernel.org>
 References: <20241211153432.775335-1-kvalo@kernel.org>
@@ -61,232 +61,308 @@ Content-Transfer-Encoding: 8bit
 
 From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
 
-The QCN9274 WiFi device supports WSI (WLAN Serial Interface). WSI is used
-to exchange specific control information across radios using a doorbell
-mechanism. This WSI connection is essential for exchanging control
-information among these devices. The WSI interface in the QCN9274 includes
-TX and RX ports, which are used to connect multiple WSI-supported devices
-together, forming a WSI group.
+Currently, a single device is part of the device group abstraction. However,
+for multi-link operations, multiple devices need to be combined. This
+multi-device grouping is done via WSI (WLAN Serial Interface), which is
+described in the Device Tree. Information about different WSI groups and the
+number of devices involved in each group can be parsed from the Device Tree.
 
-Describe QCN9274 PCI wifi device with WSI interface.
+Add changes to parse the Device Tree and determine WSI information, such as the
+different WSI groups and the number of devices per WSI group. Assign WSI index
+zero to the WSI controller device (to synchronize the clock among the devices
+within the WSI group), and increment the WSI index of each device in the order
+of the WSI connection.
 
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Co-developed-by: Harshitha Prem <quic_hprem@quicinc.com>
+Signed-off-by: Harshitha Prem <quic_hprem@quicinc.com>
 Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 ---
- .../net/wireless/qcom,ath12k-wsi.yaml         | 204 ++++++++++++++++++
- 1 file changed, 204 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/wireless/qcom,ath12k-wsi.yaml
+ drivers/net/wireless/ath/ath12k/core.c | 183 +++++++++++++++++++++++--
+ drivers/net/wireless/ath/ath12k/core.h |   8 ++
+ 2 files changed, 178 insertions(+), 13 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-wsi.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-wsi.yaml
-new file mode 100644
-index 000000000000..cbfb559f6b69
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-wsi.yaml
-@@ -0,0 +1,204 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+# Copyright (c) 2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/wireless/qcom,ath12k-wsi.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
+index 49d1ac15cb7a..1a43e00cffb2 100644
+--- a/drivers/net/wireless/ath/ath12k/core.c
++++ b/drivers/net/wireless/ath/ath12k/core.c
+@@ -9,6 +9,7 @@
+ #include <linux/remoteproc.h>
+ #include <linux/firmware.h>
+ #include <linux/of.h>
++#include <linux/of_graph.h>
+ #include "core.h"
+ #include "dp_tx.h"
+ #include "dp_rx.h"
+@@ -1383,20 +1384,24 @@ bool ath12k_core_hw_group_create_ready(struct ath12k_hw_group *ag)
+ 	return (ag->num_probed == ag->num_devices);
+ }
+ 
+-static struct ath12k_hw_group *ath12k_core_hw_group_alloc(u8 id, u8 max_devices)
++static struct ath12k_hw_group *ath12k_core_hw_group_alloc(struct ath12k_base *ab)
+ {
+ 	struct ath12k_hw_group *ag;
++	int count = 0;
+ 
+ 	lockdep_assert_held(&ath12k_hw_group_mutex);
+ 
++	list_for_each_entry(ag, &ath12k_hw_group_list, list)
++		count++;
 +
-+title: Qualcomm Technologies ath12k wireless devices (PCIe) with WSI interface
+ 	ag = kzalloc(sizeof(*ag), GFP_KERNEL);
+ 	if (!ag)
+ 		return NULL;
+ 
+-	ag->id = id;
+-	ag->num_devices = max_devices;
++	ag->id = count;
+ 	list_add(&ag->list, &ath12k_hw_group_list);
+ 	mutex_init(&ag->mutex);
++	ag->mlo_capable = false;
+ 
+ 	return ag;
+ }
+@@ -1411,35 +1416,180 @@ static void ath12k_core_hw_group_free(struct ath12k_hw_group *ag)
+ 	mutex_unlock(&ath12k_hw_group_mutex);
+ }
+ 
++static struct ath12k_hw_group *ath12k_core_hw_group_find_by_dt(struct ath12k_base *ab)
++{
++	struct ath12k_hw_group *ag;
++	int i;
 +
-+maintainers:
-+  - Jeff Johnson <jjohnson@kernel.org>
-+  - Kalle Valo <kvalo@kernel.org>
++	if (!ab->dev->of_node)
++		return NULL;
 +
-+description: |
-+  Qualcomm Technologies IEEE 802.11be PCIe devices with WSI interface.
++	list_for_each_entry(ag, &ath12k_hw_group_list, list)
++		for (i = 0; i < ag->num_devices; i++)
++			if (ag->wsi_node[i] == ab->dev->of_node)
++				return ag;
 +
-+  The ath12k devices (QCN9274) feature WSI support. WSI stands for
-+  WLAN Serial Interface. It is used for the exchange of specific
-+  control information across radios based on the doorbell mechanism.
-+  This WSI connection is essential to exchange control information
-+  among these devices.
++	return NULL;
++}
 +
-+  The WSI interface includes TX and RX ports, which are used to connect
-+  multiple WSI-supported devices together, forming a WSI group.
++static int ath12k_core_get_wsi_info(struct ath12k_hw_group *ag,
++				    struct ath12k_base *ab)
++{
++	struct device_node *wsi_dev = ab->dev->of_node, *next_wsi_dev;
++	struct device_node *tx_endpoint, *next_rx_endpoint;
++	int device_count = 0;
 +
-+  Diagram to represent one WSI connection (one WSI group) among
-+  three devices.
++	next_wsi_dev = wsi_dev;
 +
-+           +-------+        +-------+        +-------+
-+           | pcie1 |        | pcie2 |        | pcie3 |
-+           |       |        |       |        |       |
-+    +----->|  wsi  |------->|  wsi  |------->|  wsi  |-----+
-+    |      | grp 0 |        | grp 0 |        | grp 0 |     |
-+    |      +-------+        +-------+        +-------+     |
-+    +------------------------------------------------------+
++	if (!next_wsi_dev)
++		return -ENODEV;
 +
-+  Diagram to represent two WSI connections (two separate WSI groups)
-+  among four devices.
++	do {
++		ag->wsi_node[device_count] = next_wsi_dev;
 +
-+       +-------+    +-------+          +-------+    +-------+
-+       | pcie0 |    | pcie1 |          | pcie2 |    | pcie3 |
-+       |       |    |       |          |       |    |       |
-+   +-->|  wsi  |--->|  wsi  |--+   +-->|  wsi  |--->|  wsi  |--+
-+   |   | grp 0 |    | grp 0 |  |   |   | grp 1 |    | grp 1 |  |
-+   |   +-------+    +-------+  |   |   +-------+    +-------+  |
-+   +---------------------------+   +---------------------------+
++		tx_endpoint = of_graph_get_endpoint_by_regs(next_wsi_dev, 0, -1);
++		if (!tx_endpoint) {
++			of_node_put(next_wsi_dev);
++			return -ENODEV;
++		}
 +
-+properties:
-+  compatible:
-+    enum:
-+      - pci17cb,1109  # QCN9274
++		next_rx_endpoint = of_graph_get_remote_endpoint(tx_endpoint);
++		if (!next_rx_endpoint) {
++			of_node_put(next_wsi_dev);
++			of_node_put(tx_endpoint);
++			return -ENODEV;
++		}
 +
-+  reg:
-+    maxItems: 1
++		of_node_put(tx_endpoint);
++		of_node_put(next_wsi_dev);
 +
-+  qcom,ath12k-calibration-variant:
-+    $ref: /schemas/types.yaml#/definitions/string
-+    description:
-+      String to uniquely identify variant of the calibration data for designs
-+      with colliding bus and device ids
++		next_wsi_dev = of_graph_get_port_parent(next_rx_endpoint);
++		if (!next_wsi_dev) {
++			of_node_put(next_rx_endpoint);
++			return -ENODEV;
++		}
 +
-+  qcom,wsi-controller:
-+    $ref: /schemas/types.yaml#/definitions/flag
-+    description:
-+      The WSI controller device in the WSI group aids (is capable) to
-+      synchronize the Timing Synchronization Function (TSF) clock across
-+      all devices in the WSI group.
++		of_node_put(next_rx_endpoint);
 +
-+  ports:
-+    $ref: /schemas/graph.yaml#/properties/ports
-+    properties:
-+      port@0:
-+        $ref: /schemas/graph.yaml#/properties/port
-+        description:
-+          This is the TX port of WSI interface. It is attached to the RX
-+          port of the next device in the WSI connection.
++		device_count++;
++		if (device_count > ATH12K_MAX_SOCS) {
++			ath12k_warn(ab, "device count in DT %d is more than limit %d\n",
++				    device_count, ATH12K_MAX_SOCS);
++			of_node_put(next_wsi_dev);
++			return -EINVAL;
++		}
++	} while (wsi_dev != next_wsi_dev);
 +
-+      port@1:
-+        $ref: /schemas/graph.yaml#/properties/port
-+        description:
-+          This is the RX port of WSI interface. It is attached to the TX
-+          port of the previous device in the WSI connection.
++	of_node_put(next_wsi_dev);
++	ag->num_devices = device_count;
 +
-+required:
-+  - compatible
-+  - reg
++	return 0;
++}
 +
-+additionalProperties: false
++static int ath12k_core_get_wsi_index(struct ath12k_hw_group *ag,
++				     struct ath12k_base *ab)
++{
++	int i, wsi_controller_index = -1, node_index = -1;
++	bool control;
 +
-+examples:
-+  - |
-+    pcie {
-+        #address-cells = <3>;
-+        #size-cells = <2>;
++	for (i = 0; i < ag->num_devices; i++) {
++		control = of_property_read_bool(ag->wsi_node[i], "qcom,wsi-controller");
++		if (control)
++			wsi_controller_index = i;
 +
-+        pcie@0 {
-+            device_type = "pci";
-+            reg = <0x0 0x0 0x0 0x0 0x0>;
-+            #address-cells = <3>;
-+            #size-cells = <2>;
-+            ranges;
++		if (ag->wsi_node[i] == ab->dev->of_node)
++			node_index = i;
++	}
 +
-+            wifi@0 {
-+                compatible = "pci17cb,1109";
-+                reg = <0x0 0x0 0x0 0x0 0x0>;
++	if (wsi_controller_index == -1) {
++		ath12k_dbg(ab, ATH12K_DBG_BOOT, "wsi controller is not defined in dt");
++		return -EINVAL;
++	}
 +
-+                qcom,ath12k-calibration-variant = "RDP433_1";
++	if (node_index == -1) {
++		ath12k_dbg(ab, ATH12K_DBG_BOOT, "unable to get WSI node index");
++		return -EINVAL;
++	}
 +
-+                ports {
-+                    #address-cells = <1>;
-+                    #size-cells = <0>;
++	ab->wsi_info.index = (ag->num_devices + node_index - wsi_controller_index) %
++		ag->num_devices;
 +
-+                    port@0 {
-+                        reg = <0>;
++	return 0;
++}
 +
-+                        wifi1_wsi_tx: endpoint {
-+                            remote-endpoint = <&wifi2_wsi_rx>;
-+                        };
-+                    };
+ static struct ath12k_hw_group *ath12k_core_hw_group_assign(struct ath12k_base *ab)
+ {
+-	u32 group_id = ATH12K_INVALID_GROUP_ID;
++	struct ath12k_wsi_info *wsi = &ab->wsi_info;
+ 	struct ath12k_hw_group *ag;
+ 
+ 	lockdep_assert_held(&ath12k_hw_group_mutex);
+ 
+ 	/* The grouping of multiple devices will be done based on device tree file.
+-	 * TODO: device tree file parsing to know about the devices involved in group.
++	 * The platforms that do not have any valid group information would have
++	 * each device to be part of its own invalid group.
+ 	 *
+-	 * The platforms that do not have any valid group information would have each
+-	 * device to be part of its own invalid group.
+-	 *
+-	 * Currently, we are not parsing any device tree information and hence, grouping
+-	 * of multiple devices is not involved. Thus, single device is added to device
+-	 * group.
++	 * We use group id ATH12K_INVALID_GROUP_ID for single device group
++	 * which didn't have dt entry or wrong dt entry, there could be many
++	 * groups with same group id, i.e ATH12K_INVALID_GROUP_ID. So
++	 * default group id of ATH12K_INVALID_GROUP_ID combined with
++	 * num devices in ath12k_hw_group determines if the group is
++	 * multi device or single device group
+ 	 */
+-	ag = ath12k_core_hw_group_alloc(group_id, 1);
 +
-+                    port@1 {
-+                        reg = <1>;
++	ag = ath12k_core_hw_group_find_by_dt(ab);
++	if (!ag) {
++		ag = ath12k_core_hw_group_alloc(ab);
++		if (!ag) {
++			ath12k_warn(ab, "unable to create new hw group\n");
++			return NULL;
++		}
 +
-+                        wifi1_wsi_rx: endpoint {
-+                            remote-endpoint = <&wifi3_wsi_tx>;
-+                        };
-+                    };
-+                };
-+            };
-+        };
++		if (ath12k_core_get_wsi_info(ag, ab) ||
++		    ath12k_core_get_wsi_index(ag, ab)) {
++			ath12k_dbg(ab, ATH12K_DBG_BOOT,
++				   "unable to get wsi info from dt, grouping single device");
++			ag->id = ATH12K_INVALID_GROUP_ID;
++			ag->num_devices = 1;
++			memset(ag->wsi_node, 0, sizeof(ag->wsi_node));
++			wsi->index = 0;
++		}
 +
-+        pcie@1 {
-+            device_type = "pci";
-+            reg = <0x0 0x0 0x1 0x0 0x0>;
-+            #address-cells = <3>;
-+            #size-cells = <2>;
-+            ranges;
++		goto exit;
++	} else if (test_bit(ATH12K_GROUP_FLAG_UNREGISTER, &ag->flags)) {
++		ath12k_dbg(ab, ATH12K_DBG_BOOT, "group id %d in unregister state\n",
++			   ag->id);
++		goto invalid_group;
++	} else {
++		if (ath12k_core_get_wsi_index(ag, ab))
++			goto invalid_group;
++		goto exit;
++	}
 +
-+            wifi@0 {
-+                compatible = "pci17cb,1109";
-+                reg = <0x0 0x0 0x0 0x0 0x0>;
++invalid_group:
++	ag = ath12k_core_hw_group_alloc(ab);
+ 	if (!ag) {
+ 		ath12k_warn(ab, "unable to create new hw group\n");
+ 		return NULL;
+ 	}
+ 
++	ag->id = ATH12K_INVALID_GROUP_ID;
++	ag->num_devices = 1;
++	wsi->index = 0;
 +
-+                qcom,ath12k-calibration-variant = "RDP433_2";
-+                qcom,wsi-controller;
+ 	ath12k_dbg(ab, ATH12K_DBG_BOOT, "single device added to hardware group\n");
+ 
++exit:
++	if (ag->num_probed >= ag->num_devices) {
++		ath12k_warn(ab, "unable to add new device to group, max limit reached\n");
++		goto invalid_group;
++	}
 +
-+                ports {
-+                    #address-cells = <1>;
-+                    #size-cells = <0>;
+ 	ab->device_id = ag->num_probed++;
+ 	ag->ab[ab->device_id] = ab;
+ 	ab->ag = ag;
+-	ag->mlo_capable = false;
 +
-+                    port@0 {
-+                        reg = <0>;
++	ath12k_dbg(ab, ATH12K_DBG_BOOT, "wsi group-id %d num-devices %d index %d",
++		   ag->id, ag->num_devices, wsi->index);
+ 
+ 	return ag;
+ }
+@@ -1507,6 +1657,13 @@ static void ath12k_core_hw_group_cleanup(struct ath12k_hw_group *ag)
+ 
+ 	mutex_lock(&ag->mutex);
+ 
++	if (test_bit(ATH12K_GROUP_FLAG_UNREGISTER, &ag->flags)) {
++		mutex_unlock(&ag->mutex);
++		return;
++	}
 +
-+                        wifi2_wsi_tx: endpoint {
-+                            remote-endpoint = <&wifi3_wsi_rx>;
-+                        };
-+                    };
++	set_bit(ATH12K_GROUP_FLAG_UNREGISTER, &ag->flags);
 +
-+                    port@1 {
-+                        reg = <1>;
+ 	ath12k_core_hw_group_stop(ag);
+ 
+ 	for (i = 0; i < ag->num_devices; i++) {
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index 458e3d0071a8..d0e466819036 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -219,6 +219,7 @@ enum ath12k_scan_state {
+ 
+ enum ath12k_hw_group_flags {
+ 	ATH12K_GROUP_FLAG_REGISTERED,
++	ATH12K_GROUP_FLAG_UNREGISTER,
+ };
+ 
+ enum ath12k_dev_flags {
+@@ -845,6 +846,12 @@ struct ath12k_hw_group {
+ 	struct ath12k_hw *ah[ATH12K_GROUP_MAX_RADIO];
+ 	u8 num_hw;
+ 	bool mlo_capable;
++	struct device_node *wsi_node[ATH12K_MAX_SOCS];
++};
 +
-+                        wifi2_wsi_rx: endpoint {
-+                            remote-endpoint = <&wifi1_wsi_tx>;
-+                        };
-+                    };
-+                };
-+            };
-+        };
-+
-+        pcie@2 {
-+            device_type = "pci";
-+            reg = <0x0 0x0 0x2 0x0 0x0>;
-+            #address-cells = <3>;
-+            #size-cells = <2>;
-+            ranges;
-+
-+            wifi@0 {
-+                compatible = "pci17cb,1109";
-+                reg = <0x0 0x0 0x0 0x0 0x0>;
-+
-+                qcom,ath12k-calibration-variant = "RDP433_3";
-+
-+                ports {
-+                    #address-cells = <1>;
-+                    #size-cells = <0>;
-+
-+                    port@0 {
-+                        reg = <0>;
-+
-+                        wifi3_wsi_tx: endpoint {
-+                            remote-endpoint = <&wifi1_wsi_rx>;
-+                        };
-+                    };
-+
-+                    port@1 {
-+                        reg = <1>;
-+
-+                        wifi3_wsi_rx: endpoint {
-+                            remote-endpoint = <&wifi2_wsi_tx>;
-+                        };
-+                    };
-+                };
-+            };
-+        };
-+    };
++/* Holds WSI info specific to each device, excluding WSI group info */
++struct ath12k_wsi_info {
++	u32 index;
+ };
+ 
+ /* Master structure to hold the hw data which may be used in core module */
+@@ -1028,6 +1035,7 @@ struct ath12k_base {
+ 	struct notifier_block panic_nb;
+ 
+ 	struct ath12k_hw_group *ag;
++	struct ath12k_wsi_info wsi_info;
+ 
+ 	/* must be last */
+ 	u8 drv_priv[] __aligned(sizeof(void *));
 -- 
 2.39.5
 
