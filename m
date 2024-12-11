@@ -1,201 +1,118 @@
-Return-Path: <linux-wireless+bounces-16242-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16241-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C78B99EC849
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2024 10:04:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F252A9EC823
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2024 10:00:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91FD71888444
-	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2024 09:04:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7338418837AB
+	for <lists+linux-wireless@lfdr.de>; Wed, 11 Dec 2024 09:00:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D4DD240364;
-	Wed, 11 Dec 2024 09:04:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="g42bVglG"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96612135D6;
+	Wed, 11 Dec 2024 09:00:43 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01078240361
-	for <linux-wireless@vger.kernel.org>; Wed, 11 Dec 2024 09:04:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249D62135B1;
+	Wed, 11 Dec 2024 09:00:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733907887; cv=none; b=nbSQ5tSAq0seONsp9587hlP+X/Tvjx3tRBfGrtwjjmwIEOwBihzi/nRvP6aZVF9KO28Qauu2gV58fyZgbV2LBAfw9p6o4K0VDHIYO4NegrHYE483TL1gMpMy5MPhosxOPNe5pJFzGwTMGJp8XXgW7YAuOxBYBR/mSCserogQ/Js=
+	t=1733907643; cv=none; b=V//IJpdTBDbhMwIOxPnj9bphKMbpViNKf8J105Am/P9oeFnu4gsl+pQ7cHtHiE9YLMYMt4UagvjwOFGGsUUD4GTuTzzH8YaNSDErWQuAl1ExYbUGTnLp773B9m6q4J1fcQcDanUG/x010F8CANT+6MqQF7WSiy6aXgt6cN+6l7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733907887; c=relaxed/simple;
-	bh=GQXmoo3N/u/EbFgV75OCIAQmQ/jn3/PEnSGNr5M7/RQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eYZtvo0m5Rmn4IVeSqZmn14U11epYghXqozf/wseN+i5YNy/A3Z7yfVhy2ltG/CHu8yUmw3pV548zLpma+C45hpbdWnyx/Jls+RxqOjdzEVC8wAJZOkHdsJPK4y9lUUJYJV69jF6F4c2Hw8hauOkDLK2/t2E8xFnbNDGe2LcnWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=g42bVglG; arc=none smtp.client-ip=209.85.219.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-6d8edad9932so36707246d6.0
-        for <linux-wireless@vger.kernel.org>; Wed, 11 Dec 2024 01:04:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1733907885; x=1734512685; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=3OCeLUzu3s0t+0nrCWm7hdzwL7W0M+2gSpmnee8mlAE=;
-        b=g42bVglGfTpmZL5CEljM/iz8kZAYzCUSsE4uZmKw1KoJHbsmBRbzjTsWP4S6/4t9Dv
-         e19vvSznrNfK2shp2e1fy+EMRxE2tMnK5Za5wCCrlIvEnVyqBfWJmeJ06UE4YeHvIaB5
-         fcwLN9L619GOUSdDho2dSkVIYSCy4OLOcFKzE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733907885; x=1734512685;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3OCeLUzu3s0t+0nrCWm7hdzwL7W0M+2gSpmnee8mlAE=;
-        b=NtUh7QAWm1IV+qAbKGrAtglRtyRz2ZpQlOnDQCtISvWimzOhCvMkJjCLqKTwK9hDNn
-         0/RXky/z/9pnU+GUM3c8BghvgbUnTIXwiK4AUdEI0WxbqWcJZZm9Jgto08h036o24G7t
-         EJA4LiD17YyBLRx/NUjB8tQC815qcAb2VskvGeJG6sKD4To++Qoo2jY+mSfDgsw4RSff
-         HAWsLCwiBWkr1WDWtnroerzOcryf9zWNvOaS/IIkhrJ8TN0kLIf+qcroRbA90JX01EC4
-         sxKgGx1JGBPJuZpKCAGRUtvWDw/UngIgXLYbzn7QxUConvVposl2P8jpNIFhDWhU7o/W
-         5Atw==
-X-Forwarded-Encrypted: i=1; AJvYcCVChOTVPwloXnqL+eB8jAzGvo1V+zuEPe9+F8XnNYypmAGzjqM2K+XXZoUJ8CPL8Ma+2ov90+FCFdHXFlJ+gA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9wodvV9UywFcJWSH8aHLVb3liTQDezkKV6+RAJTsdxom+jl9o
-	eXQ157ofgo3Bzr5AeAHiHlnsUe53AoO/dwIfd6BYY72thqmfhm2etYcfFyJedB2SSxZR2ayDxdi
-	XNg==
-X-Gm-Gg: ASbGncstRhsgjeWYcZ61dsI/nBg4F14C//8vD/Qh/1UrQfy7Wp7Cdc8kqXO4M4hFlHA
-	1ZI+XAnSEld2RQlA3SUJzDUhgglgGx23M12+CYh6CdLsoHAP1FK0iVl2YF61mpfyrRlR/buYzhd
-	f6ohXPk1mFQwrXCXC8MPBPxJzPSgYNbpYpr7iYTzPEAJaJN0GqfLI4X2UmnLHz6GhzO99J/tduT
-	pTWu9CbUGkvNuBylJR2DkJV65q7ju5r07re2TzS2mHBPCKxVfzw6Rx/5gQJWnKOtY8SqwJ74+WV
-	w8F6XEXxnim8/udg8GCYhCYdDSY9og==
-X-Google-Smtp-Source: AGHT+IEfMCeoAQAReffC1K6XtwrHukpBsP+1FtpMEks02p3U9Jp/5r16mP+kh+sseyZD2jBtnZF4Dg==
-X-Received: by 2002:a05:6214:c22:b0:6d8:97ea:4362 with SMTP id 6a1803df08f44-6d934bb71c9mr36525196d6.38.1733907884870;
-        Wed, 11 Dec 2024 01:04:44 -0800 (PST)
-Received: from [192.168.178.137] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b6d0071798sm336904885a.41.2024.12.11.01.04.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Dec 2024 01:04:44 -0800 (PST)
-Message-ID: <72e8c5cd-11fb-48d8-af53-589e8cb406d5@broadcom.com>
-Date: Wed, 11 Dec 2024 10:04:39 +0100
+	s=arc-20240116; t=1733907643; c=relaxed/simple;
+	bh=z7iM/covW97ys+D32rC5qV8I6qBJB+AFReA3wSZATSs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=cH+v7+e2Xp7zlF1dEyKAPuOlq0gxf1ggiZAr8JoP8aSvHgdP+2iTH1PkFPkxtHO66grehQOpCvBC1IYveZKSVXtTHS7S0CNLJiB+vsP2Fa6w9xnsBvd9RBYUPfV/XLeuow4/KqU9RHoI1qhdH8ygs9uuicG0f+N6rrsRTCIkCAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BB4K28G025502;
+	Wed, 11 Dec 2024 09:00:34 GMT
+Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 43cx4xbxya-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Wed, 11 Dec 2024 09:00:34 +0000 (GMT)
+Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Wed, 11 Dec 2024 01:00:33 -0800
+Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Wed, 11 Dec 2024 01:00:31 -0800
+From: <jianqi.ren.cn@windriver.com>
+To: <rand.sec96@gmail.com>, <gregkh@linuxfoundation.org>
+CC: <kvalo@kernel.org>, <stable@vger.kernel.org>, <m@bues.ch>,
+        <linux-wireless@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH 6.1.y] ssb: Fix potential NULL pointer dereference in ssb_device_uevent()
+Date: Wed, 11 Dec 2024 17:58:25 +0800
+Message-ID: <20241211095825.2069491-1-jianqi.ren.cn@windriver.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: brcmfmac: handle possible pci_enable_msi() error
-To: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org
-References: <20241210070320.836260-1-dmantipov@yandex.ru>
-Content-Language: en-US
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
-Autocrypt: addr=arend.vanspriel@broadcom.com; keydata=
- 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
-In-Reply-To: <20241210070320.836260-1-dmantipov@yandex.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: gQhBfs8RkGn_eSGGK_p48i-x0fkImjLL
+X-Proofpoint-ORIG-GUID: gQhBfs8RkGn_eSGGK_p48i-x0fkImjLL
+X-Authority-Analysis: v=2.4 cv=Y/UCsgeN c=1 sm=1 tr=0 ts=675954b2 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=RZcAm9yDv7YA:10 a=bC-a23v3AAAA:8 a=pGLkceISAAAA:8 a=HH5vDtPzAAAA:8 a=VwQbUJbxAAAA:8 a=t7CeM3EgAAAA:8
+ a=maAJvPpQ-1jnF_CgM8MA:9 a=-FEs8UIgK8oA:10 a=FO4_E8m0qiDe52t0p3_H:22 a=QM_-zKB-Ew0MsOlNKMB5:22 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2024-12-11_08,2024-12-10_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ bulkscore=0 mlxscore=0 clxscore=1011 malwarescore=0 priorityscore=1501
+ phishscore=0 suspectscore=0 adultscore=0 mlxlogscore=702 spamscore=0
+ impostorscore=0 classifier=spam authscore=0 adjust=0 reason=mlx
+ scancount=1 engine=8.21.0-2411120000 definitions=main-2412110067
 
-On 12/10/2024 8:03 AM, Dmitry Antipov wrote:
-> Generally it's a good idea to handle error which may be returned from
-> 'pci_enable_msi()', so add relevant check to 'brcmf_pcie_request_irq()'
-> and adjust the latter to return actual 'request_threaded_irq()' error
-> instead of hardcoded -EIO. Compile tested only.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+From: Rand Deeb <rand.sec96@gmail.com>
 
-Hi Dmitry,
+[ Upstream commit 789c17185fb0f39560496c2beab9b57ce1d0cbe7 ]
 
-I had a deja-vu regarding this patch. So scavenging around in 
-linux-wireless patchwork I found this. May look familiar ;-)
+The ssb_device_uevent() function first attempts to convert the 'dev' pointer
+to 'struct ssb_device *'. However, it mistakenly dereferences 'dev' before
+performing the NULL check, potentially leading to a NULL pointer
+dereference if 'dev' is NULL.
 
-https://patchwork.kernel.org/project/linux-wireless/patch/20230614075848.80536-2-dmantipov@yandex.ru/
+To fix this issue, move the NULL check before dereferencing the 'dev' pointer,
+ensuring that the pointer is valid before attempting to use it.
 
-Regards,
-Arend
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-> ---
->   .../broadcom/brcm80211/brcmfmac/pcie.c        | 20 ++++++++++++-------
->   1 file changed, 13 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> index e4395b1f8c11..f0e05cb0cfa7 100644
-> --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/pcie.c
-> @@ -963,6 +963,7 @@ static irqreturn_t brcmf_pcie_isr_thread(int irq, void *arg)
->   
->   static int brcmf_pcie_request_irq(struct brcmf_pciedev_info *devinfo)
->   {
-> +	int ret;
->   	struct pci_dev *pdev = devinfo->pdev;
->   	struct brcmf_bus *bus = dev_get_drvdata(&pdev->dev);
->   
-> @@ -970,16 +971,21 @@ static int brcmf_pcie_request_irq(struct brcmf_pciedev_info *devinfo)
->   
->   	brcmf_dbg(PCIE, "Enter\n");
->   
-> -	pci_enable_msi(pdev);
-> -	if (request_threaded_irq(pdev->irq, brcmf_pcie_quick_check_isr,
-> -				 brcmf_pcie_isr_thread, IRQF_SHARED,
-> -				 "brcmf_pcie_intr", devinfo)) {
-> +	ret = pci_enable_msi(pdev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = request_threaded_irq(pdev->irq, brcmf_pcie_quick_check_isr,
-> +				   brcmf_pcie_isr_thread, IRQF_SHARED,
-> +				   "brcmf_pcie_intr", devinfo);
-> +	if (ret) {
->   		pci_disable_msi(pdev);
->   		brcmf_err(bus, "Failed to request IRQ %d\n", pdev->irq);
-> -		return -EIO;
-> +	} else {
-> +		devinfo->irq_allocated = true;
->   	}
-> -	devinfo->irq_allocated = true;
-> -	return 0;
-> +
-> +	return ret;
->   }
->   
->   
+Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20240306123028.164155-1-rand.sec96@gmail.com
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+---
+ drivers/ssb/main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
+index d52e91258e98..aae50a5dfb57 100644
+--- a/drivers/ssb/main.c
++++ b/drivers/ssb/main.c
+@@ -341,11 +341,13 @@ static int ssb_bus_match(struct device *dev, struct device_driver *drv)
+ 
+ static int ssb_device_uevent(struct device *dev, struct kobj_uevent_env *env)
+ {
+-	struct ssb_device *ssb_dev = dev_to_ssb_dev(dev);
++	struct ssb_device *ssb_dev;
+ 
+ 	if (!dev)
+ 		return -ENODEV;
+ 
++	ssb_dev = dev_to_ssb_dev(dev);
++
+ 	return add_uevent_var(env,
+ 			     "MODALIAS=ssb:v%04Xid%04Xrev%02X",
+ 			     ssb_dev->id.vendor, ssb_dev->id.coreid,
+-- 
+2.25.1
 
 
