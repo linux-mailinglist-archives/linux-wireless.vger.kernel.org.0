@@ -1,226 +1,265 @@
-Return-Path: <linux-wireless+bounces-16336-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16337-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D42809EFCBB
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 20:49:31 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06E571882120
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 19:49:32 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25E3019995A;
-	Thu, 12 Dec 2024 19:49:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gjOL4fMq"
-X-Original-To: linux-wireless@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F3C09EFCE0
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 20:58:17 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5659C18A6A3
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Dec 2024 19:49:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D97128B9D6
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 19:58:16 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D79F1A76BC;
+	Thu, 12 Dec 2024 19:58:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b="hooPxx9X"
+X-Original-To: linux-wireless@vger.kernel.org
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E6F419E968
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Dec 2024 19:58:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734032966; cv=none; b=fZ20CsXKevOPYeCXNe48+6xn7qXeaHGUqcB04WhryYFN7jPosUviEvcPVNB+UR4m/Xa5n38uXT/4A9rQtqpUa4MjqYRR9qst7jf9ziUnnvQ882vk8abRRoOQbX/6E4GWjgWiSMirwmbbm0YvCab22wf3wvcDxU9XIzNLq+grfkI=
+	t=1734033492; cv=none; b=QB/XtsCSpVYw7yofeQNARFithnJcIPn3IN3p4EYgCx8YT2NKUj2zByiA4elx9v3S2lnStU7zRq+YuqqsTknGsIB2nfY354Rgl2d8YqNIRzJfr+YHXOiLj6MJsV3mqtPIR5cnx+vB5igUOWbHRtWK6Dk2CYhYwisu6X5xh55fn9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734032966; c=relaxed/simple;
-	bh=c0lIVwJsvJS8Q8StF7zcpZ/c/aEc5d0bbzatxAJuRSs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DiRCnQ5gyqjak7NKUpUSfQKjC1yJzSQuR8cax0PVla02TgrlBcbn9BR/5uR1bwKRzRe08kWOW46Qrk6qkmCDZPFpNCyhu6R4s2HV9f6Wf4hk5PwGXOUoGgLUOfSHBrmeZ/utOb9AeLx1kIjfZHLmmBnpzRKTwM5YIrPcrZcBnDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gjOL4fMq; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1734032963;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sBiPw5OuI7dlO4Z4t4oS+jtz5kPmxd4ZnxuDxig2hUM=;
-	b=gjOL4fMqzHZ/IO3tgHl8lojM40em91HWsjhswwEkjgbgXAikWI9wt319d7d6BhryRyrxqm
-	U8bs5vPMtxGGa+G4RZvgeBjb8Q04zJU94syrREkfOpe37B4YCEaOQq1abGQ8RldEtWu4ew
-	69ZGaFqQRIWJB2FvH5E8/xoT5Y/JYto=
-Received: from mail-io1-f71.google.com (mail-io1-f71.google.com
- [209.85.166.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-691-HutegGcaP9u2lKKXKjoXTw-1; Thu, 12 Dec 2024 14:49:22 -0500
-X-MC-Unique: HutegGcaP9u2lKKXKjoXTw-1
-X-Mimecast-MFC-AGG-ID: HutegGcaP9u2lKKXKjoXTw
-Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-841a803534fso10477239f.0
-        for <linux-wireless@vger.kernel.org>; Thu, 12 Dec 2024 11:49:22 -0800 (PST)
+	s=arc-20240116; t=1734033492; c=relaxed/simple;
+	bh=sJ1KNowovNm0HPubZssrDATYTz+xau5qC1DIBkbKznk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gABySBaHIbwlj+WkfVsLJNhJ+YT5Id4IrxTtDQDCA9Qxjf3REW/C8p2969nybGvQk0cehLhb3wjDg6pU6S2KX32cC0lisXOp6NofY479Erf1pxNZEUkuwq5Z8jMM1qDD3jbZW32JduFAbktpDKb4pB+GAsh3oT5+2qnou/uzO0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com; spf=pass smtp.mailfrom=gateworks.com; dkim=pass (2048-bit key) header.d=gateworks.com header.i=@gateworks.com header.b=hooPxx9X; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gateworks.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gateworks.com
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-6ef81222be7so10170197b3.3
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Dec 2024 11:58:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gateworks.com; s=google; t=1734033489; x=1734638289; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=es3BFB53+lctNKfs4aUSJijTNGpS8BvQvLSU21bgHvQ=;
+        b=hooPxx9X7Kh2Gc1yh3/8K9WwsE1aqJfQCsQcxXW4mKmTHx5PfAAk9fleVgHnPDeGY6
+         3D4M1pPLYPzUAaCMXPy077gRb1IbtiKi1lif5XqFybqgeYBcH42dPU2pLyX2uN0d8FI4
+         /PYRuk3Nm2/kKpcAh5lYXHKtvPQdNqjZljcm5bmXJOQ7BRz2r8gJQC48UkogMOMMfpPd
+         +UAReunjmzokjT6PLkqc0Qu79dgmSaogMEnKWm97D50remk1di6oU4EdhQV5Al5em1zM
+         h8Q8r3T0dT5DMy6B3ZgyUIdFCPSps7J1LQQJz6qGLBUbTWLIq4xqlvs4Vdr98qLE1/8h
+         0rOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734032961; x=1734637761;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1734033489; x=1734638289;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=sBiPw5OuI7dlO4Z4t4oS+jtz5kPmxd4ZnxuDxig2hUM=;
-        b=t0bJLskbqXVTQ79ivuR0+6axYRY/HOv6Mv6dGgymb7kxY43vRu7ImyjdZka7yRhpcg
-         ZN/PgWYxuvwM5t9HJisMdDSXwvx+XiQ3A36UFXjt1ctDyc28kYtvBGZ8PuqBCib0Nf0X
-         L8IGZoCLy7d95xRe8uyL3NYtdGHl2vgTrZXwUb9LW1/0jKVcSvmE7BbKCXQMYPdyAXeP
-         +vwCoOfPX417vkf5mXTrm1FE0bB8lAXs4EqQZckzGjKkD0nKpRaxJcJ0ppJWkV0/KJwv
-         X2SyySpyZUb6rcf296dn8ORR8B7qYv7SS+ER1T69+KcrvvfTUnYsJiz7svLtf0/rr4C6
-         tP4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCViMdzQboDsvTVBkIzYHzY0g4iTUK5u8PNHyc/e8crvpXIwxP6+TeVNLcugzcQrY4IZtl4RJARgi54suO0Skw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEtwVm9NLlDfyFZ1JfJVN5Zs8BbjAQMl4m+khuDsrdAit9aLR1
-	UsFuM4e6DWa6vV4BDO3++IszfAADkrHBcmM2vUt4QUKXaciJ6KTGjQWETNFSNYwE9z94iv4WsSG
-	YMi0Cm2B2f/D70fH4m281sxty76iW/tLpcbl9usqTq6n1vLLqrH0TsFOFtsStP7E6
-X-Gm-Gg: ASbGncvkb60Fi66D1VYx6VgEXWHA126Svfidkqp6nTDsNbR7osusn47pxpRpr73/qMd
-	0zdhf7c8ISNjcqGaEh2iMw9WF3kj5OyxKPVSkdLF4sm7rqNP5x90m63gt9Qd0ZGW5oqp5Z/V6M5
-	iWYSCrDZjos+045uN2fBsTZFoNFpn2ovGj58mfcCNqrMChbrr9tgtIjpyUm8dAVbLL0VSr1R38D
-	vGAoBOXFa26CqNYBR5hPECvZ6LgXqAlR1rpXBeOBWyMASPWm9a18LZ6X1Hm
-X-Received: by 2002:a05:6602:1593:b0:83a:acc8:5faf with SMTP id ca18e2360f4ac-844e8a3f0b7mr2642339f.5.1734032961310;
-        Thu, 12 Dec 2024 11:49:21 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IERcvaNomxn8th3z3SWMQIAn0f18rUBb5b4dBUVRvcRJcJEoHv6gpei7+xXPBScGwtQKEbPgQ==
-X-Received: by 2002:a05:6602:1593:b0:83a:acc8:5faf with SMTP id ca18e2360f4ac-844e8a3f0b7mr2638439f.5.1734032960861;
-        Thu, 12 Dec 2024 11:49:20 -0800 (PST)
-Received: from redhat.com ([38.15.36.11])
-        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-844737bc5e7sm434751139f.7.2024.12.12.11.49.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Dec 2024 11:49:20 -0800 (PST)
-Date: Thu, 12 Dec 2024 12:49:18 -0700
-From: Alex Williamson <alex.williamson@redhat.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Philipp Stanner <pstanner@redhat.com>, amien Le Moal
- <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, Basavaraj Natikar
- <basavaraj.natikar@amd.com>, Jiri Kosina <jikos@kernel.org>, Benjamin
- Tissoires <bentiss@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Alex Dubov <oakad@yahoo.com>,
- Sudarsana Kalluru <skalluru@marvell.com>, Manish Chopra
- <manishc@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rasesh Mody
- <rmody@marvell.com>, GR-Linux-NIC-Dev@marvell.com, Igor Mitsyanko
- <imitsyanko@quantenna.com>, Sergey Matyukevich <geomatsi@gmail.com>, Kalle
- Valo <kvalo@kernel.org>, Sanjay R Mehta <sanju.mehta@amd.com>, Shyam Sundar
- S K <Shyam-sundar.S-k@amd.com>, Jon Mason <jdmason@kudzu.us>, Dave Jiang
- <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>, Bjorn Helgaas
- <bhelgaas@google.com>, Juergen Gross <jgross@suse.com>, Stefano Stabellini
- <sstabellini@kernel.org>, Oleksandr Tyshchenko
- <oleksandr_tyshchenko@epam.com>, Mario Limonciello
- <mario.limonciello@amd.com>, Chen Ni <nichen@iscas.ac.cn>, Ricky Wu
- <ricky_wu@realtek.com>, Al Viro <viro@zeniv.linux.org.uk>, Breno Leitao
- <leitao@debian.org>, Thomas Gleixner <tglx@linutronix.de>, Kevin Tian
- <kevin.tian@intel.com>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Mostafa Saleh <smostafa@google.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Yi Liu <yi.l.liu@intel.com>, Kunwu Chan
- <chentao@kylinos.cn>, Dan Carpenter <dan.carpenter@linaro.org>, "Dr. David
- Alan Gilbert" <linux@treblig.org>, Ankit Agrawal <ankita@nvidia.com>,
- Reinette Chatre <reinette.chatre@intel.com>, Eric Auger
- <eric.auger@redhat.com>, Ye Bin <yebin10@huawei.com>,
- linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-input@vger.kernel.org, netdev@vger.kernel.org,
- linux-wireless@vger.kernel.org, ntb@lists.linux.dev,
- linux-pci@vger.kernel.org, kvm@vger.kernel.org,
- xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v3 06/11] vfio/pci: Use never-managed version of
- pci_intx()
-Message-ID: <20241212124918.0dd284fe.alex.williamson@redhat.com>
-In-Reply-To: <20241212192130.GA3359535@bhelgaas>
-References: <20241209130632.132074-8-pstanner@redhat.com>
-	<20241212192130.GA3359535@bhelgaas>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+        bh=es3BFB53+lctNKfs4aUSJijTNGpS8BvQvLSU21bgHvQ=;
+        b=si6d6yLzRARJckkscK/6X6avwtVt4UWXFsP3NHFPKW2ZvxWKhDweDht0Zv5nnAgZ5v
+         wGvAdM7xqmb+Yn9jxV3gDwo96/FtnH+sGMUlfMlvuMBnEW1BOND+7Uc4yPOpM1klE5tY
+         MIujAAg4/3wn0c7x8HsH4HUcscH17UJoMvJmu+Bz1uE2UsYwNyVBLUr9JHQ0ZuN+IlBz
+         XrKoOdsvB59vsArckn0cUIbrmo8GtY7y9Lr24aUQOQh/Jqt4dZlx5+hqSy5+FGo0BjbH
+         YohQJL0yX4wBolUqOvZaHssZ5/XYekONyuOGqhzi5P4nZOf8AhWb0iubij4dLq7G8orX
+         5sJg==
+X-Forwarded-Encrypted: i=1; AJvYcCUcQVPmM6KJrx8v8k6USgtJoCw2pjvk/TGnfxDj3RwWpnqX4DmGIjgiAiP1Jg04t1inaNa9utI+jr2Ig+yiyQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbfXzpx+Kw/jJ323L+OC7Xv2e/fubzo4+RKXQsVLWpLoG6JCqv
+	G39jqfus27SE1lC2zaiTFTohC0jKD3YXGedfj6tXxtYX6nunfP9RRQnrhlIbNB9Ng/wFf94rRXI
+	D3Ds/Tg/tJOT9i3aDpn2TH5rLHKlKjgi+yM63KA==
+X-Gm-Gg: ASbGnct4rvCVCU8dweKKmrymNWyHP0STSxxvYC+7iZOTA/tOmsXIAXzBtvLILPcYy7I
+	RLCScZYNr0+adkQFYjiNy4FIacVYm4AlNbrPhXw==
+X-Google-Smtp-Source: AGHT+IE+lPF/qLoY6pAEypWuIRGNZppvfbzy6XsQEdtFs6bR6IRA8406DPbu63fZQJOWbgOJrMamI9waVwE+nSHCj4A=
+X-Received: by 2002:a05:690c:3805:b0:6ef:7312:d06c with SMTP id
+ 00721157ae682-6f279b2367dmr120167b3.21.1734033488919; Thu, 12 Dec 2024
+ 11:58:08 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <CAJ+vNU0EL3T+GyNAbVbGqYYQ5NM3h7cgAwqxxBMuZjh+-YQ3bA@mail.gmail.com>
+ <1b2ea8b2-6fbe-4118-b6c6-742c8f0be476@quicinc.com> <CAJ+vNU1-OZ3y4p2L+zf64AiVtUv70yZNqkT20jTxyE0_gJb6Jg@mail.gmail.com>
+ <0282be95-9094-4d49-b79e-4f7c976dad00@quicinc.com> <CAJ+vNU32EMHjtchJRb1sODBrUKG2vZW4ZEu1_F0+dCCEjCn7Dg@mail.gmail.com>
+ <20241209081714.GA25363@lst.de> <593c0d63-d8fd-4439-a57a-97340212c197@arm.com>
+ <CAJ+vNU2ypE_Mn_6iKCmf5LYk9Sth=ryWXyewc5MhOKK8VoAKCA@mail.gmail.com>
+ <20241210041133.GA17116@lst.de> <CAJ+vNU03Cqsc+O5anwmvJW8Wfd-06LbDMVHjxVFdixf01ZLczQ@mail.gmail.com>
+ <5fe372df-ae51-4a8b-9fa3-a4a0ea2d33e3@quicinc.com> <9b2e8ffa-ba2c-46da-a478-eb1fb44b693e@arm.com>
+ <80992ae5-e329-4a34-94c8-9345b2e8a9a0@quicinc.com>
+In-Reply-To: <80992ae5-e329-4a34-94c8-9345b2e8a9a0@quicinc.com>
+From: Tim Harvey <tharvey@gateworks.com>
+Date: Thu, 12 Dec 2024 11:57:57 -0800
+Message-ID: <CAJ+vNU1v6JMTcnKhJAPtRu2A-rVjNNUd3MrqAP64EWMiNVuC4g@mail.gmail.com>
+Subject: Re: ath11k swiotlb buffer is full (on IMX8M with 4GiB DRAM)
+To: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, ath11k@lists.infradead.org, 
+	linux-wireless <linux-wireless@vger.kernel.org>, Fabio Estevam <festevam@gmail.com>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, iommu@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 12 Dec 2024 13:21:30 -0600
-Bjorn Helgaas <helgaas@kernel.org> wrote:
+On Wed, Dec 11, 2024 at 9:24=E2=80=AFPM Baochen Qiang <quic_bqiang@quicinc.=
+com> wrote:
+>
+>
+>
+> On 12/11/2024 9:44 PM, Robin Murphy wrote:
+> > On 2024-12-11 2:31 am, Baochen Qiang wrote:
+> >>
+> >>
+> >> On 12/11/2024 7:06 AM, Tim Harvey wrote:
+> >>> On Mon, Dec 9, 2024 at 8:11=E2=80=AFPM Christoph Hellwig <hch@lst.de>=
+ wrote:
+> >>>>
+> >>>> On Mon, Dec 09, 2024 at 11:15:02AM -0800, Tim Harvey wrote:
+> >>>>> After a lot of back and forth and investigation this is due to the
+> >>>>> IMX8M SoC's not having an IOMMU thus swiotlb is being used and ath1=
+1k
+> >>>>> is requesting some buffers that are too large for swiotlb to provid=
+e.
+> >>>>> There is a specific patch which added the HAL_WBM2SW_RELEASE buffer=
+s
+> >>>>> to cacheable memory that could be reverted to fix this but the conc=
+ern
+> >>>>> was that it would impact performance moving those buffers to
+> >>>>> non-cacheable memory (there are three ~1MiB buffers being allocated=
+):
+> >>>>> commit d0e2523bfa9cb ("ath11k: allocate HAL_WBM2SW_RELEASE ring fro=
+m
+> >>>>> cacheable memory").
+> >>>>
+> >>>> The combination of "buffers" and "swiotlb" sounds like Robin was rig=
+ht
+> >>>> below.
+> >>>>
+> >>>>> The chain of events as best I can tell are:
+> >>>>>
+> >>>>> commit 6452f0a3d565 ("ath11k: allocate dst ring descriptors from
+> >>>>> cacheable memory")
+> >>>>> - Nov 12 2021 (made it into Linux 5.17)
+> >>>>> - changes allocation of reo_dst rings to cacheable memory to allow
+> >>>>> cached descriptor access to optimize CPU usage
+> >>>>> - this is flawed because it uses virt_to_phys() to allocate cacheab=
+le
+> >>>>> memory which does not work on systems with an IOMMU enabled or usin=
+g
+> >>>>> software IOMMU (swiotlb); this causes a kernel crash on client
+> >>>>> association
+> >>>>
+> >>>> And this is where it started to take a wrong turn, that everyhing
+> >>>> later basically made worse.  If you have long living and potentially
+> >>>> large DMA allocations, you need to use dma_alloc_* interfaces.
+> >>>>
+> >>>> 5.17 already had dma_alloc_pages for quite a while which was and sti=
+ll is
+> >>>> the proper interface to use.  For much older kernel you'd be stuck
+> >>>> with dma_alloc_noncoherent or dma_alloc_attrs with the right flag,
+> >>>> but even that would have been much better.
+> >>>
+> >>> Christoph,
+> >>>
+> >>> I'm not clear what you are suggesting be done here. Are you suggestin=
+g
+> >>> that ath11k has been using the wrong mechanism by calling
+> >>> dma_map_single for cached DMA buffers? I'm not all that familiar with
+> >>> ath11k so I can't tell what buffers are considered long living.
+> >>
+> >> those buffers are allocated when driver load and freed when driver unl=
+oad, so IMO they are
+> >> long living.
+> >
+> > The point is that if this driver wants a notion of "cached DMA buffers"=
+, then it should
+> > allocate such buffers the proper way, not try to reinvent it badly. Tha=
+t means using
+> > dma_alloc_pages(), or modern dma_alloc_noncoherent() which is essential=
+ly the same thing
+> > but with the dma_map_page() call automatically done for you as well.
+>
+> yeah, you are right, Robin. didn't know there are convenient interfaces l=
+ike these already.
+>
+> Tim, can you work out a patch then?
+>
 
-> [cc->to: Alex W]
-> 
-> On Mon, Dec 09, 2024 at 02:06:28PM +0100, Philipp Stanner wrote:
-> > pci_intx() is a hybrid function which can sometimes be managed through
-> > devres. To remove this hybrid nature from pci_intx(), it is necessary to
-> > port users to either an always-managed or a never-managed version.
-> > 
-> > vfio enables its PCI-Device with pci_enable_device(). Thus, it
-> > needs the never-managed version.
-> > 
-> > Replace pci_intx() with pci_intx_unmanaged().
-> > 
-> > Signed-off-by: Philipp Stanner <pstanner@redhat.com>  
-> 
-> Not applied yet, pending ack from Alex.
+How about:
 
-Acked-by: Alex Williamson <alex.williamson@redhat.com>
+diff --git a/drivers/net/wireless/ath/ath11k/dp.c
+b/drivers/net/wireless/ath/ath11k/dp.c
+index fbf666d0ecf1..557e06187e95 100644
+--- a/drivers/net/wireless/ath/ath11k/dp.c
++++ b/drivers/net/wireless/ath/ath11k/dp.c
+@@ -105,9 +105,8 @@ void ath11k_dp_srng_cleanup(struct ath11k_base
+*ab, struct dp_srng *ring)
+                return;
 
-> 
-> > ---
-> >  drivers/vfio/pci/vfio_pci_core.c  |  2 +-
-> >  drivers/vfio/pci/vfio_pci_intrs.c | 10 +++++-----
-> >  2 files changed, 6 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> > index 1ab58da9f38a..90240c8d51aa 100644
-> > --- a/drivers/vfio/pci/vfio_pci_core.c
-> > +++ b/drivers/vfio/pci/vfio_pci_core.c
-> > @@ -498,7 +498,7 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
-> >  		if (vfio_pci_nointx(pdev)) {
-> >  			pci_info(pdev, "Masking broken INTx support\n");
-> >  			vdev->nointx = true;
-> > -			pci_intx(pdev, 0);
-> > +			pci_intx_unmanaged(pdev, 0);
-> >  		} else
-> >  			vdev->pci_2_3 = pci_intx_mask_supported(pdev);
-> >  	}
-> > diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
-> > index 8382c5834335..40abb0b937a2 100644
-> > --- a/drivers/vfio/pci/vfio_pci_intrs.c
-> > +++ b/drivers/vfio/pci/vfio_pci_intrs.c
-> > @@ -118,7 +118,7 @@ static bool __vfio_pci_intx_mask(struct vfio_pci_core_device *vdev)
-> >  	 */
-> >  	if (unlikely(!is_intx(vdev))) {
-> >  		if (vdev->pci_2_3)
-> > -			pci_intx(pdev, 0);
-> > +			pci_intx_unmanaged(pdev, 0);
-> >  		goto out_unlock;
-> >  	}
-> >  
-> > @@ -132,7 +132,7 @@ static bool __vfio_pci_intx_mask(struct vfio_pci_core_device *vdev)
-> >  		 * mask, not just when something is pending.
-> >  		 */
-> >  		if (vdev->pci_2_3)
-> > -			pci_intx(pdev, 0);
-> > +			pci_intx_unmanaged(pdev, 0);
-> >  		else
-> >  			disable_irq_nosync(pdev->irq);
-> >  
-> > @@ -178,7 +178,7 @@ static int vfio_pci_intx_unmask_handler(void *opaque, void *data)
-> >  	 */
-> >  	if (unlikely(!is_intx(vdev))) {
-> >  		if (vdev->pci_2_3)
-> > -			pci_intx(pdev, 1);
-> > +			pci_intx_unmanaged(pdev, 1);
-> >  		goto out_unlock;
-> >  	}
-> >  
-> > @@ -296,7 +296,7 @@ static int vfio_intx_enable(struct vfio_pci_core_device *vdev,
-> >  	 */
-> >  	ctx->masked = vdev->virq_disabled;
-> >  	if (vdev->pci_2_3) {
-> > -		pci_intx(pdev, !ctx->masked);
-> > +		pci_intx_unmanaged(pdev, !ctx->masked);
-> >  		irqflags = IRQF_SHARED;
-> >  	} else {
-> >  		irqflags = ctx->masked ? IRQF_NO_AUTOEN : 0;
-> > @@ -569,7 +569,7 @@ static void vfio_msi_disable(struct vfio_pci_core_device *vdev, bool msix)
-> >  	 * via their shutdown paths.  Restore for NoINTx devices.
-> >  	 */
-> >  	if (vdev->nointx)
-> > -		pci_intx(pdev, 0);
-> > +		pci_intx_unmanaged(pdev, 0);
-> >  
-> >  	vdev->irq_type = VFIO_PCI_NUM_IRQS;
-> >  }
-> > -- 
-> > 2.47.1
-> >   
-> 
+        if (ring->cached) {
+-               dma_unmap_single(ab->dev, ring->paddr_unaligned, ring->size=
+,
+-                                DMA_FROM_DEVICE);
+-               kfree(ring->vaddr_unaligned);
++               dma_free_noncoherent(ab->dev, ring->size, ring->vaddr_unali=
+gned,
++                                    ring->paddr_unaligned, DMA_FROM_DEVICE=
+);
+        } else {
+                dma_free_coherent(ab->dev, ring->size, ring->vaddr_unaligne=
+d,
+                                  ring->paddr_unaligned);
+@@ -249,28 +248,18 @@ int ath11k_dp_srng_setup(struct ath11k_base *ab,
+struct dp_srng *ring,
+                default:
+                        cached =3D false;
+                }
+-
+-               if (cached) {
+-                       ring->vaddr_unaligned =3D kzalloc(ring->size, GFP_K=
+ERNEL);
+-                       if (!ring->vaddr_unaligned)
+-                               return -ENOMEM;
+-
+-                       ring->paddr_unaligned =3D dma_map_single(ab->dev,
+-
+ring->vaddr_unaligned,
+-                                                              ring->size,
+-                                                              DMA_FROM_DEV=
+ICE);
+-                       if (dma_mapping_error(ab->dev, ring->paddr_unaligne=
+d)) {
+-                               kfree(ring->vaddr_unaligned);
+-                               ring->vaddr_unaligned =3D NULL;
+-                               return -ENOMEM;
+-                       }
+-               }
+        }
 
+-       if (!cached)
++       if (cached) {
++               ring->vaddr_unaligned =3D dma_alloc_noncoherent(ab->dev,
+ring->size,
++
+&ring->paddr_unaligned,
++                                                             DMA_FROM_DEVI=
+CE,
++                                                             GFP_KERNEL);
++       } else {
+                ring->vaddr_unaligned =3D dma_alloc_coherent(ab->dev, ring-=
+>size,
+
+&ring->paddr_unaligned,
+                                                           GFP_KERNEL);
++       }
+
+        if (!ring->vaddr_unaligned)
+                return -ENOMEM;
+
+If this is what we are talking about here I can submit that with a
+proper commit log. Note there are a lot of other calls to
+dma_map_single in the ath drivers and my understanding is those may be
+just fine for small short-lived buffers but I'm not clear if that is
+what they are always used for.
+
+Best Regards,
+
+Tim
+
+> >
+> > Thanks,
+> > Robin.
+>
 
