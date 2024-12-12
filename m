@@ -1,143 +1,90 @@
-Return-Path: <linux-wireless+bounces-16294-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16295-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9FAE9EE0B4
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 08:56:54 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 900129EE141
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 09:29:08 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA233285A65
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 07:56:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91C8E1621F0
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 08:29:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2365520C008;
-	Thu, 12 Dec 2024 07:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FDD020C499;
+	Thu, 12 Dec 2024 08:29:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mf5Jz7ok"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Xzps2kEz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F334420B81F
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Dec 2024 07:56:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929D920C48B;
+	Thu, 12 Dec 2024 08:29:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733990175; cv=none; b=RlnLKse/nauzc6uzzlJ+EeBVXVpULXhN8oB8URPjMZ3yY+M/EORBfoMn3piEzqAaOzwxWxWMDolawtOE3ECzRe7xvC75Z9i9eo2Sty4GcmBf9LYVzuXli6nkTekBjk+4HLpNYtLrhiXTi140DkzVOVPGk6IfBqQjSwtwcC7zNdA=
+	t=1733992143; cv=none; b=JOwsRSea3903NFuXyRXYhSCQJ/wQ6FFe7KLeluZdv8iIxukWbTe+7FGLBi6wmhtvd2pvqdZLJg+mOntIf8uwbGamXVxjt7SbQH93Di7HEiPHlTUVE37/eiPuo4xzoiTcKGZcUV3mnnjQVDMz4xDavRPD/XBEmPttdFn/afCmsEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733990175; c=relaxed/simple;
-	bh=D3zlEDcL4QLLYv4J9NPmxlbqpr4tLNzH9v7WwkjbKJI=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=X5UzO3MUgDCX3iZTww6J6vagPehzJTvMoQly5c5jppGdXfzKiuBuMfoip1HfgD0tiY1um61MPZodGD7EjOF3oAESrfrdP0uqrrmoDAF6s/hf12vev82J08fGC5y4nYOdlpF7AkLH93qTwzKcMW6uhED2jogxBI1oEJnqRrez3vQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mf5Jz7ok; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C06C4CECE;
-	Thu, 12 Dec 2024 07:56:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733990174;
-	bh=D3zlEDcL4QLLYv4J9NPmxlbqpr4tLNzH9v7WwkjbKJI=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=mf5Jz7okKQSj+bwBrfYUF7dAisuuodNaejtDAJdTyLdeFKoEclA/mOnvL3ZS+syu3
-	 lQXP4gYat2vlBZY8NKsCBebOm/7krtB40NuEx4i03+xGMSzoQ+TANRStGSiup3lDnA
-	 tNXtXvpP6XyvSJXAueJb/vUeuRTeXLVVezhk9N/uf6+wBU67EnvnPgbOX9nbVxdtJD
-	 atBZnPU4ZMCRoo8ou6oj0RkXHrL1ObKvDTgVUTVkeWYvihaB15ye17RxKPh+iEfytf
-	 Xahva59/g5gZpw6gDb1Qfdn17CfcutbvfQ5sxXoHKPEb3eGI59jpZmsz3XHaxReRyi
-	 KRkmRY2EemKVg==
-From: Kalle Valo <kvalo@kernel.org>
-To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH 4/4] wifi: ath12k: Fix uninitialized variable access in
- ath12k_mac_allocate() function
-References: <20241212004906.3087425-1-quic_periyasa@quicinc.com>
-	<20241212004906.3087425-5-quic_periyasa@quicinc.com>
-Date: Thu, 12 Dec 2024 09:56:11 +0200
-In-Reply-To: <20241212004906.3087425-5-quic_periyasa@quicinc.com> (Karthikeyan
-	Periyasamy's message of "Thu, 12 Dec 2024 06:19:06 +0530")
-Message-ID: <87v7vppc6c.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1733992143; c=relaxed/simple;
+	bh=YjRGGlIppSi8DnkcherZr7bx8xNkh8MCPS7D2+iT4kc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=oBcruIY2t7hfPu0nHf+xWSMMLcVZwc8iSGutzRJnGgSmfg+k/iFQp6/AcR7A62hHWw4Uh3j2KZEf5s3+Ja0Y7yUDp0GgoiSLXHQDzyRoRa+rsv2S8inXnj6h2h5NF67RGHbr0JeisABb/sgLKlV4jzj8HwX403ilPsdG1LQPgY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Xzps2kEz; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=YjRGGlIppSi8DnkcherZr7bx8xNkh8MCPS7D2+iT4kc=;
+	t=1733992141; x=1735201741; b=Xzps2kEzx2L1umyfohgFOC4M7EtQ1FlynLgERIzb5ZVipgo
+	y8ZyJCJq6WkVu7bbJzjeWsZj5a4yoWiToJh4iaWnAsBCKn/7LK4w2aiT9S9xOT3aOs6DIt5v32+PR
+	RAg27/+y2nfdG157DY3OoyhUGBHWrxtZPZFjbNQNSc3FlFHCwKAdx2Awht7TCo/KwNVubOg0JWUhN
+	RtjcKNO7ZkDaq8Tre1rytQjoQoNX421Bm0rv9WzGrIg0MGD3Hphxgef+MPFE1GsZa4pAzSlxEW4aV
+	Cuh4jdhmLpuJgRSEndEKAvlsaI+G0irbXrDIPDMZvsJeOR3NypFq/DvrzvsaXdTg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1tLeZ3-0000000EM2Q-0bHh;
+	Thu, 12 Dec 2024 09:28:53 +0100
+Message-ID: <bb26c5bc9f6c3fd35351b9f9d170ada583d9964d.camel@sipsolutions.net>
+Subject: Re: [PATCH 2/2] wifi: cfg80211: simplify
+ cfg80211_mlme_register_mgmt()
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Dmitry Antipov <dmantipov@yandex.ru>
+Cc: Kees Cook <kees@kernel.org>, "Gustavo A . R . Silva"
+ <gustavoars@kernel.org>, 	linux-hardening@vger.kernel.org,
+ linux-wireless@vger.kernel.org
+Date: Thu, 12 Dec 2024 09:28:52 +0100
+In-Reply-To: <20241210143951.5685-2-dmantipov@yandex.ru>
+References: <20241210143951.5685-1-dmantipov@yandex.ru>
+	 <20241210143951.5685-2-dmantipov@yandex.ru>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.2 (3.54.2-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-malware-bazaar: not-scanned
 
-Karthikeyan Periyasamy <quic_periyasa@quicinc.com> writes:
+On Tue, 2024-12-10 at 17:39 +0300, Dmitry Antipov wrote:
+> Simplify 'cfg80211_mlme_register_mgmt()' to allocate an instance of
+> 'struct cfg80211_mgmt_registration' only if the latter is really
+> needed=C2=A0
 
-> Currently, the uninitialized variable 'ab' is accessed in the
-> ath12k_mac_allocate() function. Initialize 'ab' with the first radio device
-> present in the hardware abstraction handle (ah). Additionally, move the
-> default setting procedure from the pdev mapping iteration to the total
-> radio calculating iteration for better code readability. Perform the
-> maximum radio validation check for total_radio to ensure that both num_hw
-> and radio_per_hw are validated indirectly, as these variables are derived
-> from total_radio. This also fixes the below Smatch static checker warning.
->
-> Smatch warning:
-> ath12k_mac_allocate() error: uninitialized symbol 'ab'
->
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
->
-> Fixes: a343d97f27f5 ("wifi: ath12k: move struct ath12k_hw from per device to group")
-> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-> ---
->  drivers/net/wireless/ath/ath12k/mac.c | 27 +++++++++++++++++++++------
->  1 file changed, 21 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-> index 5cdc1c38b049..98b2f853d243 100644
-> --- a/drivers/net/wireless/ath/ath12k/mac.c
-> +++ b/drivers/net/wireless/ath/ath12k/mac.c
-> @@ -10962,8 +10962,20 @@ int ath12k_mac_allocate(struct ath12k_hw_group *ag)
->  	u8 radio_per_hw;
->  
->  	total_radio = 0;
-> -	for (i = 0; i < ag->num_devices; i++)
-> -		total_radio += ag->ab[i]->num_radios;
-> +	for (i = 0; i < ag->num_devices; i++) {
-> +		ab = ag->ab[i];
-> +		if (!ab)
-> +			continue;
-> +
-> +		ath12k_mac_set_device_defaults(ab);
-> +		total_radio += ab->num_radios;
-> +	}
-> +
-> +	if (!total_radio)
-> +		return -EINVAL;
+This part is very much broken, and I don't see that it's actually useful
+to add a new "goto" just for the (unlikely) case of not needing the
+allocation.
 
-'total_radio == 0' is more readable as it's a counter. Also please add ath12k_warn()
+> (i.e. when the list of registrations should be updated)
+> and prefer 'kmalloc()' over 'kzalloc()' since all of the members
+> are explicitly initialized.
 
-> +
-> +	if (WARN_ON(total_radio > ATH12K_GROUP_MAX_RADIO))
-> +		return -ENOSPC;
+This part I disagree with, who knows what we might add. This isn't a
+path where we might possibly care about the cost of zeroing, vs. the
+added maintenance requirement.
 
-BTW ath12k_warn() is preferred over WARN_ON(), but this is just for the
-future as this WARN_ON() was already there before.
-
->  
->  	/* All pdev get combined and register as single wiphy based on
->  	 * hardware group which participate in multi-link operation else
-> @@ -10976,14 +10988,16 @@ int ath12k_mac_allocate(struct ath12k_hw_group *ag)
->  
->  	num_hw = total_radio / radio_per_hw;
->  
-> -	if (WARN_ON(num_hw >= ATH12K_GROUP_MAX_RADIO))
-> -		return -ENOSPC;
-> -
->  	ag->num_hw = 0;
->  	device_id = 0;
->  	mac_id = 0;
->  	for (i = 0; i < num_hw; i++) {
->  		for (j = 0; j < radio_per_hw; j++) {
-> +			if (device_id >= ag->num_devices || !ag->ab[device_id]) {
-> +				ret = -ENOSPC;
-> +				goto err;
-> +			}
-
-ath12k_warn()
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+johannes
 
