@@ -1,230 +1,145 @@
-Return-Path: <linux-wireless+bounces-16283-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16285-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A05A89EDE87
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 05:31:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 710D79EDE96
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 05:41:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18484281B78
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 04:31:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00158283425
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 04:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFEA31547F5;
-	Thu, 12 Dec 2024 04:31:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="oqUf4C/h"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E1C16BE3A;
+	Thu, 12 Dec 2024 04:41:26 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-il1-f205.google.com (mail-il1-f205.google.com [209.85.166.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 191AE153800
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Dec 2024 04:31:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D29165F01
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Dec 2024 04:41:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733977867; cv=none; b=sG0NxgteRBthFNiMjGtlVgo87A8vOxHp3WSImJESx0R4HPWiOmDopFC59tAlit77ycryJ3jdyC75i52byroGmdRfI9GiH8cWbB6P7WMTmpUbb94YEo2DCS8wDV9g3XrMZwx5OB63z9/jNwEx/9Mw/vli/scK226bUXa9RkGuMYg=
+	t=1733978486; cv=none; b=ceGibxCLHuFUdhsJD6yT8adLkgYcra2cWam/osMj2ofG7q19X9MexqrSUBjIKSGC53q1Ec0x00zI1vJDYlSkuPbpGpJRthCgACX6BdaugmE+pQaLuIMVNYyGpuJ/LuNWdR9b+RqPJLLdNFqCTe18VoeZuWuLYpnezEzD8PKKMUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733977867; c=relaxed/simple;
-	bh=7dl05Trlieti+GHLaASGdQ3c672266SI9NmcntDoCpY=;
-	h=From:To:Subject:MIME-Version:Content-Type:Message-ID:Date; b=oMqTp/+yD7EathGDHm9tjTXSl50+EsJVAf09SYF7atSSXxIb9aHm9ty9tzFfRDblJFaEp4sup36Buyy0ubOBms4DKg+P69YHmy6QPCqew8CtpU4fxUFPkbXyHGFbiwDqMfS9FLY39P5J0dGAkczA7vP4Hdo98GESykgcqrXkVo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=oqUf4C/h; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4BC4V2x34626272, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1733977862; bh=7dl05Trlieti+GHLaASGdQ3c672266SI9NmcntDoCpY=;
-	h=From:To:Subject:MIME-Version:Content-Type:Message-ID:Date;
-	b=oqUf4C/h2NiYUFQ+ZT2J2DDHJxaIynCSjo/C2TKG1JcrlSTQ6X7i9TGb8NTdqULER
-	 saEGk7X/PAyDFJ1H1Vd9jdnGaDOxIuw1X1lTjJaO37q391OMq7R9Lxw7dA6S5m/F6U
-	 PJjDqWq6odNIpq7ID1wJnu1ax4Jw2beGoTjNqVn5IbUvePUBvQ1Qz7DMbADRrDHPL0
-	 M7Rr/333RElrZGV3vBX4OYYxDoESX0es8NJpZT4qDil2eyRIO5ex9T/K20lyqyTcUc
-	 OdSiYn+yuEuNuGUToSV/XJhQRZIEYEO++JwSu2TXKyoQv5D9sy115g68ur8LWFctWd
-	 eo1I0tlnMNVeQ==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4BC4V2x34626272
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Dec 2024 12:31:02 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 12 Dec 2024 12:31:01 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 12 Dec
- 2024 12:31:01 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-Subject: pull-request: rtw-next-2024-12-12
+	s=arc-20240116; t=1733978486; c=relaxed/simple;
+	bh=mRUP88o1vYUkBTOYZZUrYwZIPtL1QkuhuFKt1jdzph4=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=ROsbnXZsLswcnSdsdxvSniIRe7ZTQybU5gK2Ej8y7WihfQG0ug6U4ueSOjenE5U4eTh3ecGn5lt75bqByjS/ejLAiucCE8aXsqDcGZL03h7KtOlV+dm8OB3fg+sorAkD7UEDAPjWK7oNzLltEDkM1BVNsOlDeZ1ACwAm5B8F1SI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f205.google.com with SMTP id e9e14a558f8ab-3a9d075bdc3so4481425ab.3
+        for <linux-wireless@vger.kernel.org>; Wed, 11 Dec 2024 20:41:24 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733978483; x=1734583283;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6i+UFR5QAg/htQWbJqPb5ENw5otoHq5vhy8B41aRmTk=;
+        b=V4/nA8RdKtpaQ6RkMz2CaCm6qQEt49jMX/A/Q88GZsP9ESkYyQRd/Q47vC3fV+wa0g
+         /6DSyJadAocn6yxpvimIGKJgXg88ZD9HusQGMHnaR+6YHrEO9KsqmojbV+kNsXQ62SJe
+         zbaKLP5YPWeybXcfAYOaXffTl214L+GpaJb0CwHRRfqM9hHfU7h/ws84nWfhQbB66g8g
+         MKw5Et/MC/8cczgpwSdDAp8mQjC+WyeS2juEl5TgdspH9tMzmxK6Fy6yarcZGs+vYGy9
+         9pMYxhgysjH6wmfkQD0sv7XfOds/jqWnlkhVuRaCRtffbwnILv8Rd3QzelY+xK/4oFgA
+         GUmA==
+X-Forwarded-Encrypted: i=1; AJvYcCVoBdNA3afW/eIvIpABC+tVFDRBBYrmAqvvLCOGAU0Plps/5eZU1azqKqZDpD6uucCkcvsMZVFsxTQbNq5cgw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMiqt4m9d2PqoRr9CuiKfFgMEbuDDoboCVkfrNKSm3yPYsgCvh
+	0BlBocPGptf2FkugwbFLRXBipvZA4gYvHbS/C/ECbgqWfarLJKAF6ZMOEn35fTJ6Fv4j5uZrNJN
+	mt/4E7o4qncD7RRQn2G5ZZ2eaaWn3JleqY837ZRYc3rU9PMuq88w1BiQ=
+X-Google-Smtp-Source: AGHT+IF7hZOGQsYnWyD1jmnUwVNk6byVH4UmYE20sGt2xhakUPRENmuUv35XY2FYWd8tXd4KVyiTVLHau2gQeV+IScDc0mqeyy9j
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Message-ID: <34aea27b-9825-454f-9c0a-2e8bccc8ac5f@RTEXMBS04.realtek.com.tw>
-Date: Thu, 12 Dec 2024 12:31:01 +0800
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
+X-Received: by 2002:a05:6e02:1486:b0:3a6:ad61:7ff8 with SMTP id
+ e9e14a558f8ab-3ac48d9eb3dmr23195855ab.12.1733978483669; Wed, 11 Dec 2024
+ 20:41:23 -0800 (PST)
+Date: Wed, 11 Dec 2024 20:41:23 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <675a6973.050a0220.17f54a.0050.GAE@google.com>
+Subject: [syzbot] [wireless?] BUG: sleeping function called from invalid
+ context in wext_netdev_notifier_call
+From: syzbot <syzbot+3647b9259b77c1bb8e94@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hi,
+Hello,
 
-A pull-request of rtw-next to wireless-next tree, more info below. Please
-let me know if any problems.
+syzbot found the following issue on:
 
-Thanks
-Ping-Ke
+HEAD commit:    4c49f38e20a5 net: stmmac: fix TSO DMA API usage causing oops
+git tree:       net
+console output: https://syzkaller.appspot.com/x/log.txt?x=11614820580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=1362a5aee630ff34
+dashboard link: https://syzkaller.appspot.com/bug?extid=3647b9259b77c1bb8e94
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/09256902989e/disk-4c49f38e.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/2b41c0f5233f/vmlinux-4c49f38e.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/7bb9fdcd5331/bzImage-4c49f38e.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+3647b9259b77c1bb8e94@syzkaller.appspotmail.com
+
+BUG: sleeping function called from invalid context at kernel/locking/rwsem.c:1523
+in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 12894, name: kworker/u8:18
+preempt_count: 0, expected: 0
+RCU nest depth: 1, expected: 0
+INFO: lockdep is turned off.
+CPU: 1 UID: 0 PID: 12894 Comm: kworker/u8:18 Not tainted 6.13.0-rc1-syzkaller-00183-g4c49f38e20a5 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Workqueue: bond0 bond_mii_monitor
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ __might_resched+0x5d4/0x780 kernel/sched/core.c:8758
+ down_read+0x8e/0xa40 kernel/locking/rwsem.c:1523
+ wireless_nlevent_flush net/wireless/wext-core.c:351 [inline]
+ wext_netdev_notifier_call+0x1f/0x120 net/wireless/wext-core.c:371
+ notifier_call_chain+0x1a5/0x3f0 kernel/notifier.c:85
+ netdev_state_change+0x11f/0x1a0 net/core/dev.c:1378
+ linkwatch_do_dev+0x112/0x170 net/core/link_watch.c:182
+ ethtool_op_get_link+0x15/0x60 net/ethtool/ioctl.c:62
+ bond_check_dev_link+0x1f1/0x3f0 drivers/net/bonding/bond_main.c:873
+ bond_miimon_inspect drivers/net/bonding/bond_main.c:2740 [inline]
+ bond_mii_monitor+0x49a/0x3170 drivers/net/bonding/bond_main.c:2962
+ process_one_work kernel/workqueue.c:3229 [inline]
+ process_scheduled_works+0xa66/0x1840 kernel/workqueue.c:3310
+ worker_thread+0x870/0xd30 kernel/workqueue.c:3391
+ kthread+0x2f0/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+bridge0: port 2(bridge_slave_1) entered blocking state
+bridge0: port 2(bridge_slave_1) entered forwarding state
+
 
 ---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-The following changes since commit dfc14664794a4706e0c2186a0c082386e6b14c4d:
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-  Merge branch 'net-make-rss-rxnfc-semantics-more-explicit' (2024-11-14 19:53:44 -0800)
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-are available in the Git repository at:
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
-  https://github.com/pkshih/rtw.git tags/rtw-next-2024-12-12
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
 
-for you to fetch changes up to 09489812013f9ff3850c3af9900c88012b8c1e5d:
-
-  wifi: rtw89: phy: add dummy C2H event handler for report of TAS power (2024-12-12 11:09:12 +0800)
-
-----------------------------------------------------------------
-rtw-next patches for v6.14
-
-Regular development in this period. Main changes are listed:
-
-rtl8xxxu:
-
- * add more USB devices IDs
-
-rtlwifi:
-
- * refine error path
-
-rtw88:
-
- * add more USB devices IDs
-
- * enable USB RX aggregation and USB 3 to improve performance
-
-rtw89:
-
- * implement more stuffs including PS flow for MLO
-
-----------------------------------------------------------------
-Bitterblue Smith (2):
-      wifi: rtw88: usb: Support USB 3 with RTL8812AU
-      wifi: rtw88: usb: Enable RX aggregation for 8821au/8812au
-
-Chih-Kang Chang (3):
-      wifi: rtw89: 8922a: use RSSI from PHY report in RX descriptor
-      wifi: rtw89: add crystal_cap check to avoid setting as overflow value
-      wifi: rtw89: 8922a: update format of RFK pre-notify H2C command v2
-
-Colin Ian King (1):
-      wifi: rtlwifi: rtl8821ae: phy: restore removed code to fix infinite loop
-
-Eric Huang (1):
-      wifi: rtw89: ps: update data for firmware and settings for hardware before/after PS
-
-Hans de Goede (1):
-      wifi: rtl8xxxu: add more missing rtl8192cu USB IDs
-
-Kuan-Chung Chen (5):
-      wifi: rtw89: sar: tweak 6GHz SAR subbands span
-      wifi: rtw89: introduce dynamic antenna gain feature
-      wifi: rtw89: handle different TX power between RF path
-      wifi: rtw89: disable firmware training HE GI and LTF
-      wifi: rtw89: 8852c: disable ER SU when 4x HE-LTF and 0.8 GI capability differ
-
-Larry Finger (1):
-      wifi: rtw88: 8821au: Add additional devices to the USB_DEVICE list
-
-Nick Morrow (2):
-      wifi: rtw88: 8812au: Add more device IDs
-      wifi: rtw88: Add additional USB IDs for RTL8812BU
-
-Ping-Ke Shih (6):
-      wifi: rtw89: pci: disable PCIE wake bit when PCIE deinit
-      wifi: rtw89: ps: refactor PS flow to support MLO
-      wifi: rtw89: ps: refactor channel info to firmware before entering PS
-      wifi: rtw89: 8852c: rfk: refine target channel calculation in _rx_dck_channel_calc()
-      wifi: rtw89: 8851b: rfk: remove unnecessary assignment of return value of _dpk_dgain_read()
-      wifi: rtw89: phy: add dummy C2H event handler for report of TAS power
-
-Po-Hao Huang (3):
-      wifi: rtw89: 8922a: Extend channel info field length for scan
-      wifi: rtw89: 8852b: add beacon filter and CQM support
-      wifi: rtw89: 8852bt: add beacon filter and CQM support
-
-Thadeu Lima de Souza Cascardo (9):
-      wifi: rtlwifi: do not complete firmware loading needlessly
-      wifi: rtlwifi: rtl8192se: rise completion of firmware loading as last step
-      wifi: rtlwifi: wait for firmware loading before releasing memory
-      wifi: rtlwifi: fix init_sw_vars leak when probe fails
-      wifi: rtlwifi: usb: fix workqueue leak when probe fails
-      wifi: rtlwifi: remove unused check_buddy_priv
-      wifi: rtlwifi: destroy workqueue at rtl_deinit_core
-      wifi: rtlwifi: fix memory leaks and invalid access at probe error path
-      wifi: rtlwifi: pci: wait for firmware loading before releasing memory
-
-Zong-Zhe Yang (8):
-      wifi: rtw89: 8922a: configure AP_LINK_PS if FW supports
-      wifi: rtw89: register ops of can_activate_links
-      wifi: rtw89: implement ops of change vif/sta links
-      wifi: rtw89: apply MLD pairwise key to dynamically active links
-      wifi: rtw89: pass target link_id to ieee80211_gtk_rekey_add()
-      wifi: rtw89: pass target link_id to ieee80211_nullfunc_get()
-      wifi: rtw89: refine link handling for link_sta_rc_update
-      wifi: rtw89: regd: update regulatory map to R68-R51
-
- drivers/net/wireless/realtek/rtl8xxxu/core.c       |  20 ++
- drivers/net/wireless/realtek/rtlwifi/base.c        |  13 +-
- drivers/net/wireless/realtek/rtlwifi/base.h        |   1 -
- drivers/net/wireless/realtek/rtlwifi/pci.c         |  61 +---
- .../net/wireless/realtek/rtlwifi/rtl8192se/sw.c    |   7 +-
- .../net/wireless/realtek/rtlwifi/rtl8821ae/phy.c   |   4 +-
- drivers/net/wireless/realtek/rtlwifi/usb.c         |  12 +-
- drivers/net/wireless/realtek/rtlwifi/wifi.h        |  12 -
- drivers/net/wireless/realtek/rtw88/rtw8812au.c     |  68 ++++-
- drivers/net/wireless/realtek/rtw88/rtw8821au.c     |  52 +++-
- drivers/net/wireless/realtek/rtw88/rtw8822bu.c     |   6 +
- drivers/net/wireless/realtek/rtw88/usb.c           |  72 ++++-
- drivers/net/wireless/realtek/rtw89/acpi.c          |  47 ++++
- drivers/net/wireless/realtek/rtw89/acpi.h          |   9 +
- drivers/net/wireless/realtek/rtw89/cam.c           |  32 ++-
- drivers/net/wireless/realtek/rtw89/cam.h           |   5 +
- drivers/net/wireless/realtek/rtw89/core.c          | 164 +++++++++--
- drivers/net/wireless/realtek/rtw89/core.h          | 145 ++++++++++
- drivers/net/wireless/realtek/rtw89/debug.c         |   4 +
- drivers/net/wireless/realtek/rtw89/fw.c            | 266 +++++++++++++++--
- drivers/net/wireless/realtek/rtw89/fw.h            |  69 ++++-
- drivers/net/wireless/realtek/rtw89/mac.c           |  79 +++++-
- drivers/net/wireless/realtek/rtw89/mac.h           |  43 +++
- drivers/net/wireless/realtek/rtw89/mac80211.c      | 289 ++++++++++++++++++-
- drivers/net/wireless/realtek/rtw89/mac_be.c        |  15 +
- drivers/net/wireless/realtek/rtw89/pci.c           |  16 +-
- drivers/net/wireless/realtek/rtw89/pci.h           |   9 +
- drivers/net/wireless/realtek/rtw89/pci_be.c        |   1 +
- drivers/net/wireless/realtek/rtw89/phy.c           | 313 ++++++++++++++++++---
- drivers/net/wireless/realtek/rtw89/phy.h           |  33 ++-
- drivers/net/wireless/realtek/rtw89/ps.c            |  42 +--
- drivers/net/wireless/realtek/rtw89/ps.h            |   4 +-
- drivers/net/wireless/realtek/rtw89/reg.h           |   4 +
- drivers/net/wireless/realtek/rtw89/regd.c          |  57 ++--
- drivers/net/wireless/realtek/rtw89/rtw8851b.c      |   6 +-
- drivers/net/wireless/realtek/rtw89/rtw8851b_rfk.c  |   2 +-
- drivers/net/wireless/realtek/rtw89/rtw8852a.c      |   7 +-
- drivers/net/wireless/realtek/rtw89/rtw8852b.c      |   3 +
- .../net/wireless/realtek/rtw89/rtw8852b_common.c   |  50 ++--
- drivers/net/wireless/realtek/rtw89/rtw8852bt.c     |   3 +
- drivers/net/wireless/realtek/rtw89/rtw8852c.c      |  54 ++--
- drivers/net/wireless/realtek/rtw89/rtw8852c_rfk.c  |   6 +-
- drivers/net/wireless/realtek/rtw89/rtw8922a.c      |  21 +-
- drivers/net/wireless/realtek/rtw89/sar.c           |  57 +---
- drivers/net/wireless/realtek/rtw89/ser.c           |   1 +
- drivers/net/wireless/realtek/rtw89/txrx.h          |   3 +
- drivers/net/wireless/realtek/rtw89/wow.c           |  11 +-
- 47 files changed, 1840 insertions(+), 358 deletions(-)
+If you want to undo deduplication, reply with:
+#syz undup
 
