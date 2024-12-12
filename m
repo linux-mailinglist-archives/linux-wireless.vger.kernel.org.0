@@ -1,176 +1,275 @@
-Return-Path: <linux-wireless+bounces-16288-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16289-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D5DB9EDEBC
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 06:25:18 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 209F81889B33
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 05:25:15 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 287CE15C15E;
-	Thu, 12 Dec 2024 05:25:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="nxfPyYpr"
-X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A3139EDF02
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 06:42:30 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED840152196
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Dec 2024 05:25:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1E17282A61
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 05:42:27 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1E31632F2;
+	Thu, 12 Dec 2024 05:42:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="e1ZzP5Q+"
+X-Original-To: linux-wireless@vger.kernel.org
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F278A748A
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Dec 2024 05:42:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733981111; cv=none; b=uVkAubQ3U9Y3dUW3OhyGXsB5Ny12HTyIz+K97jUjRU79dmi7oAlGxN9+PRxwLvgLDl2GciI8KK7Ea3PPrNxPGOtxjD7FxNPsd4A6ULc6YacQkHnV+iZxUxFy/2Er3P3BAYRh0NwScRHZ8zjfh/0o0I2sj8XRKabXvYPtYlCgdDk=
+	t=1733982145; cv=none; b=Kc/lyUU5VrobAEMgAM0IZqw23R71cxuwj9Hdmu2+yeZlQ9Ss+D0/wC8/xnPH3gNJPfWrK3w7YOpmlnkFd+r6+rATClG4cDhaVIPbwhAhlK8IaeP+lX8LbrwtsvKN67Bkzqv8OWrGmRJyy8apQgCUr0k8OHyYzkAlRYPboW8w0QQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733981111; c=relaxed/simple;
-	bh=SgFBayqejWCx9ISB0P2ggd1prI3UXd/nQ6plu9oT9Cc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Mome7Dzh+nXcrBhwgQDj6wsD+n7NHHy4yBbiisgF7oYvxUbXxe0TdQZBWkahpl4s4XGrM0mwo0lYRiCM//AEIB7D+xGDMZ5KKXC674jxwo+DepEZ1gjnZvGgw5bDm3/XytS1u2317wI7mUBAhGfJwjgiXeCPeMsRH70xvYAyZfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=nxfPyYpr; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BBHjejI018816;
-	Thu, 12 Dec 2024 05:24:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	da2ob7paYwwBsbs1CjtgSbAnN/c4QPrRkJNL3VpquTM=; b=nxfPyYprQk2QPr3U
-	m3Y1tuYNnUe/2HEobbRJ1j/XebBlBlcG9ntpMlpn1BEwX322ddV8v1Bvkf2YasMO
-	4fdh7rnk+KCqmqFgT6Nk1uS8P/ydWQNh23Gqgv1c82o7cAES5mIdpQFpV9uxOhAU
-	eDpbFKo7yxcFTr4PTEtQ6UVQ/qmCw2j/WxfxQPkHg6q01T2p/H7za+nU1gfoTbrm
-	g+1J9vnF/7MTTp+4rUzzH8j7dQ7l4/45Ing9Vti/xHcNJBu5Q/J9IEFYeB7W3fD/
-	jhiLBnnH78w6/0GEeEUW/EqHPoARigWDIxm9jv5NGNMrLKVxypsQrWrcjSbf23UI
-	moD04Q==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43ffdysc71-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Dec 2024 05:24:50 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BC5Onfh028162
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Dec 2024 05:24:49 GMT
-Received: from [10.231.195.67] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 11 Dec
- 2024 21:24:47 -0800
-Message-ID: <80992ae5-e329-4a34-94c8-9345b2e8a9a0@quicinc.com>
-Date: Thu, 12 Dec 2024 13:24:45 +0800
+	s=arc-20240116; t=1733982145; c=relaxed/simple;
+	bh=/7wL5CjnfAHfOVyZCfkWbZI61ZQAX1Af+77On/UUlnE=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=s7wQnnIfDEc8KOQyG0gXP43BhBt6U7b1EcLOhzvm76Evg+uhUJhM3i0KUvTexKBwymCfc9VWQNJ+2C91mfTg1HgOIEqeLhADF47oZu/6AAOFXzu5lc50RyW3847gaudU9pNcaMuHtMSbLj7X3g7QlvrljLiZUgjr61B7QvsrL4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=e1ZzP5Q+; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4BC5gJWD1683257, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1733982139; bh=/7wL5CjnfAHfOVyZCfkWbZI61ZQAX1Af+77On/UUlnE=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:
+	 Content-Transfer-Encoding:Content-Type;
+	b=e1ZzP5Q+P4zECcxJyOeP3FIkf22/gS7paF/27yNZi5pu4the1sVd8OFLwaQNZe9Gf
+	 CE9w99C5Maa2dsT7ln++Ob4iI/AVsqlpe8k4bOQjIn1yKi6xZd2lwWwihswBLX/101
+	 vagTFGOmGpG8/s0sv+ahODlO1TcE7JKDhkY9Gy86IbQ/1Gh33YgRYedFmtKdBpUAJ7
+	 JnhhpCn/orspsoorCM6EvDrrbdZtymKUxCbrgRTDjJ0yZXtQGt3UngMbcS7i+TvwfK
+	 DDNHB34ovriHNN74iDVwI73m7d1/FAd4vV22+UHHEQheJwFhqCPb0C1ahjSjjS/5U5
+	 ZnC+q2ba5OViA==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4BC5gJWD1683257
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Dec 2024 13:42:19 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 12 Dec 2024 13:42:19 +0800
+Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
+ (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Thu, 12 Dec
+ 2024 13:42:19 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: <linux-wireless@vger.kernel.org>
+Subject: [PATCH] wifi: rtw88: add __packed attribute to efuse layout struct
+Date: Thu, 12 Dec 2024 13:42:03 +0800
+Message-ID: <20241212054203.135046-1-pkshih@realtek.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: ath11k swiotlb buffer is full (on IMX8M with 4GiB DRAM)
-To: Robin Murphy <robin.murphy@arm.com>, Tim Harvey <tharvey@gateworks.com>,
-        Christoph Hellwig <hch@lst.de>
-CC: <ath11k@lists.infradead.org>,
-        linux-wireless
-	<linux-wireless@vger.kernel.org>,
-        Fabio Estevam <festevam@gmail.com>,
-        Marek
- Szyprowski <m.szyprowski@samsung.com>, <iommu@lists.linux.dev>
-References: <CAJ+vNU0EL3T+GyNAbVbGqYYQ5NM3h7cgAwqxxBMuZjh+-YQ3bA@mail.gmail.com>
- <1b2ea8b2-6fbe-4118-b6c6-742c8f0be476@quicinc.com>
- <CAJ+vNU1-OZ3y4p2L+zf64AiVtUv70yZNqkT20jTxyE0_gJb6Jg@mail.gmail.com>
- <0282be95-9094-4d49-b79e-4f7c976dad00@quicinc.com>
- <CAJ+vNU32EMHjtchJRb1sODBrUKG2vZW4ZEu1_F0+dCCEjCn7Dg@mail.gmail.com>
- <20241209081714.GA25363@lst.de>
- <593c0d63-d8fd-4439-a57a-97340212c197@arm.com>
- <CAJ+vNU2ypE_Mn_6iKCmf5LYk9Sth=ryWXyewc5MhOKK8VoAKCA@mail.gmail.com>
- <20241210041133.GA17116@lst.de>
- <CAJ+vNU03Cqsc+O5anwmvJW8Wfd-06LbDMVHjxVFdixf01ZLczQ@mail.gmail.com>
- <5fe372df-ae51-4a8b-9fa3-a4a0ea2d33e3@quicinc.com>
- <9b2e8ffa-ba2c-46da-a478-eb1fb44b693e@arm.com>
-Content-Language: en-US
-From: Baochen Qiang <quic_bqiang@quicinc.com>
-In-Reply-To: <9b2e8ffa-ba2c-46da-a478-eb1fb44b693e@arm.com>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: MyCwuV5Xo1usK8DSR4uY-XEznIn5o22C
-X-Proofpoint-GUID: MyCwuV5Xo1usK8DSR4uY-XEznIn5o22C
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
- phishscore=0 mlxlogscore=906 lowpriorityscore=0 mlxscore=0 adultscore=0
- spamscore=0 bulkscore=0 impostorscore=0 priorityscore=1501 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2412120034
+Content-Type: text/plain
+X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
+ RTEXMBS04.realtek.com.tw (172.21.6.97)
 
+Compiler should not do address alignment on layout struct of efuse.
+Otherwise it leads unexpected layout and size for certain arch suc as arm.
+In x86-64, the results are identical before and after this patch.
 
+Also adjust bit-field to prevent over adjacent byte to avoid warning:
+  rtw88/rtw8822b.h:66:1: note: offset of packed bit-field `res2` has changed in GCC 4.4
+   66 | } __packed;
+      | ^
 
-On 12/11/2024 9:44 PM, Robin Murphy wrote:
-> On 2024-12-11 2:31 am, Baochen Qiang wrote:
->>
->>
->> On 12/11/2024 7:06 AM, Tim Harvey wrote:
->>> On Mon, Dec 9, 2024 at 8:11 PM Christoph Hellwig <hch@lst.de> wrote:
->>>>
->>>> On Mon, Dec 09, 2024 at 11:15:02AM -0800, Tim Harvey wrote:
->>>>> After a lot of back and forth and investigation this is due to the
->>>>> IMX8M SoC's not having an IOMMU thus swiotlb is being used and ath11k
->>>>> is requesting some buffers that are too large for swiotlb to provide.
->>>>> There is a specific patch which added the HAL_WBM2SW_RELEASE buffers
->>>>> to cacheable memory that could be reverted to fix this but the concern
->>>>> was that it would impact performance moving those buffers to
->>>>> non-cacheable memory (there are three ~1MiB buffers being allocated):
->>>>> commit d0e2523bfa9cb ("ath11k: allocate HAL_WBM2SW_RELEASE ring from
->>>>> cacheable memory").
->>>>
->>>> The combination of "buffers" and "swiotlb" sounds like Robin was right
->>>> below.
->>>>
->>>>> The chain of events as best I can tell are:
->>>>>
->>>>> commit 6452f0a3d565 ("ath11k: allocate dst ring descriptors from
->>>>> cacheable memory")
->>>>> - Nov 12 2021 (made it into Linux 5.17)
->>>>> - changes allocation of reo_dst rings to cacheable memory to allow
->>>>> cached descriptor access to optimize CPU usage
->>>>> - this is flawed because it uses virt_to_phys() to allocate cacheable
->>>>> memory which does not work on systems with an IOMMU enabled or using
->>>>> software IOMMU (swiotlb); this causes a kernel crash on client
->>>>> association
->>>>
->>>> And this is where it started to take a wrong turn, that everyhing
->>>> later basically made worse.  If you have long living and potentially
->>>> large DMA allocations, you need to use dma_alloc_* interfaces.
->>>>
->>>> 5.17 already had dma_alloc_pages for quite a while which was and still is
->>>> the proper interface to use.  For much older kernel you'd be stuck
->>>> with dma_alloc_noncoherent or dma_alloc_attrs with the right flag,
->>>> but even that would have been much better.
->>>
->>> Christoph,
->>>
->>> I'm not clear what you are suggesting be done here. Are you suggesting
->>> that ath11k has been using the wrong mechanism by calling
->>> dma_map_single for cached DMA buffers? I'm not all that familiar with
->>> ath11k so I can't tell what buffers are considered long living.
->>
->> those buffers are allocated when driver load and freed when driver unload, so IMO they are
->> long living.
-> 
-> The point is that if this driver wants a notion of "cached DMA buffers", then it should
-> allocate such buffers the proper way, not try to reinvent it badly. That means using
-> dma_alloc_pages(), or modern dma_alloc_noncoherent() which is essentially the same thing
-> but with the dma_map_page() call automatically done for you as well.
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202412120131.qk0x6OhE-lkp@intel.com/
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+ drivers/net/wireless/realtek/rtw88/main.h     | 4 ++--
+ drivers/net/wireless/realtek/rtw88/rtw8723x.h | 8 ++++----
+ drivers/net/wireless/realtek/rtw88/rtw8821c.h | 9 +++++----
+ drivers/net/wireless/realtek/rtw88/rtw8822b.h | 9 +++++----
+ drivers/net/wireless/realtek/rtw88/rtw8822c.h | 9 +++++----
+ 5 files changed, 21 insertions(+), 18 deletions(-)
 
-yeah, you are right, Robin. didn't know there are convenient interfaces like these already.
-
-Tim, can you work out a patch then?
-
-> 
-> Thanks,
-> Robin.
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index cd09fb6f7b8b..65c7acea41af 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -510,12 +510,12 @@ struct rtw_5g_txpwr_idx {
+ 	struct rtw_5g_vht_ns_pwr_idx_diff vht_2s_diff;
+ 	struct rtw_5g_vht_ns_pwr_idx_diff vht_3s_diff;
+ 	struct rtw_5g_vht_ns_pwr_idx_diff vht_4s_diff;
+-};
++} __packed;
+ 
+ struct rtw_txpwr_idx {
+ 	struct rtw_2g_txpwr_idx pwr_idx_2g;
+ 	struct rtw_5g_txpwr_idx pwr_idx_5g;
+-};
++} __packed;
+ 
+ struct rtw_channel_params {
+ 	u8 center_chan;
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723x.h b/drivers/net/wireless/realtek/rtw88/rtw8723x.h
+index e93bfce994bf..a99af527c92c 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723x.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723x.h
+@@ -47,7 +47,7 @@ struct rtw8723xe_efuse {
+ 	u8 device_id[2];
+ 	u8 sub_vendor_id[2];
+ 	u8 sub_device_id[2];
+-};
++} __packed;
+ 
+ struct rtw8723xu_efuse {
+ 	u8 res4[48];                    /* 0xd0 */
+@@ -56,12 +56,12 @@ struct rtw8723xu_efuse {
+ 	u8 usb_option;                  /* 0x104 */
+ 	u8 res5[2];			/* 0x105 */
+ 	u8 mac_addr[ETH_ALEN];          /* 0x107 */
+-};
++} __packed;
+ 
+ struct rtw8723xs_efuse {
+ 	u8 res4[0x4a];			/* 0xd0 */
+ 	u8 mac_addr[ETH_ALEN];		/* 0x11a */
+-};
++} __packed;
+ 
+ struct rtw8723x_efuse {
+ 	__le16 rtl_id;
+@@ -96,7 +96,7 @@ struct rtw8723x_efuse {
+ 		struct rtw8723xu_efuse u;
+ 		struct rtw8723xs_efuse s;
+ 	};
+-};
++} __packed;
+ 
+ #define RTW8723X_IQK_ADDA_REG_NUM	16
+ #define RTW8723X_IQK_MAC8_REG_NUM	3
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.h b/drivers/net/wireless/realtek/rtw88/rtw8821c.h
+index 7a33ebd612ed..954e93c8020d 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821c.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.h
+@@ -27,7 +27,7 @@ struct rtw8821cu_efuse {
+ 	u8 res11[0xcf];
+ 	u8 package_type;		/* 0x1fb */
+ 	u8 res12[0x4];
+-};
++} __packed;
+ 
+ struct rtw8821ce_efuse {
+ 	u8 mac_addr[ETH_ALEN];		/* 0xd0 */
+@@ -47,7 +47,8 @@ struct rtw8821ce_efuse {
+ 	u8 ltr_en:1;
+ 	u8 res1:2;
+ 	u8 obff:2;
+-	u8 res2:3;
++	u8 res2_1:1;
++	u8 res2_2:2;
+ 	u8 obff_cap:2;
+ 	u8 res3:4;
+ 	u8 res4[3];
+@@ -63,7 +64,7 @@ struct rtw8821ce_efuse {
+ 	u8 res6:1;
+ 	u8 port_t_power_on_value:5;
+ 	u8 res7;
+-};
++} __packed;
+ 
+ struct rtw8821cs_efuse {
+ 	u8 res4[0x4a];			/* 0xd0 */
+@@ -101,7 +102,7 @@ struct rtw8821c_efuse {
+ 		struct rtw8821cu_efuse u;
+ 		struct rtw8821cs_efuse s;
+ 	};
+-};
++} __packed;
+ 
+ static inline void
+ _rtw_write32s_mask(struct rtw_dev *rtwdev, u32 addr, u32 mask, u32 data)
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.h b/drivers/net/wireless/realtek/rtw88/rtw8822b.h
+index 0514958fb57c..9fca9ba67c90 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822b.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.h
+@@ -27,7 +27,7 @@ struct rtw8822bu_efuse {
+ 	u8 res11[0xcf];
+ 	u8 package_type;		/* 0x1fb */
+ 	u8 res12[0x4];
+-};
++} __packed;
+ 
+ struct rtw8822be_efuse {
+ 	u8 mac_addr[ETH_ALEN];		/* 0xd0 */
+@@ -47,7 +47,8 @@ struct rtw8822be_efuse {
+ 	u8 ltr_en:1;
+ 	u8 res1:2;
+ 	u8 obff:2;
+-	u8 res2:3;
++	u8 res2_1:1;
++	u8 res2_2:2;
+ 	u8 obff_cap:2;
+ 	u8 res3:4;
+ 	u8 res4[3];
+@@ -63,7 +64,7 @@ struct rtw8822be_efuse {
+ 	u8 res6:1;
+ 	u8 port_t_power_on_value:5;
+ 	u8 res7;
+-};
++} __packed;
+ 
+ struct rtw8822bs_efuse {
+ 	u8 res4[0x4a];			/* 0xd0 */
+@@ -103,7 +104,7 @@ struct rtw8822b_efuse {
+ 		struct rtw8822bu_efuse u;
+ 		struct rtw8822bs_efuse s;
+ 	};
+-};
++} __packed;
+ 
+ static inline void
+ _rtw_write32s_mask(struct rtw_dev *rtwdev, u32 addr, u32 mask, u32 data)
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.h b/drivers/net/wireless/realtek/rtw88/rtw8822c.h
+index e2b383d633cd..fc62b67a15f2 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822c.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.h
+@@ -14,7 +14,7 @@ struct rtw8822cu_efuse {
+ 	u8 res1[3];
+ 	u8 mac_addr[ETH_ALEN];		/* 0x157 */
+ 	u8 res2[0x3d];
+-};
++} __packed;
+ 
+ struct rtw8822cs_efuse {
+ 	u8 res0[0x4a];			/* 0x120 */
+@@ -39,7 +39,8 @@ struct rtw8822ce_efuse {
+ 	u8 ltr_en:1;
+ 	u8 res1:2;
+ 	u8 obff:2;
+-	u8 res2:3;
++	u8 res2_1:1;
++	u8 res2_2:2;
+ 	u8 obff_cap:2;
+ 	u8 res3:4;
+ 	u8 class_code[3];
+@@ -55,7 +56,7 @@ struct rtw8822ce_efuse {
+ 	u8 res6:1;
+ 	u8 port_t_power_on_value:5;
+ 	u8 res7;
+-};
++} __packed;
+ 
+ struct rtw8822c_efuse {
+ 	__le16 rtl_id;
+@@ -102,7 +103,7 @@ struct rtw8822c_efuse {
+ 		struct rtw8822cu_efuse u;
+ 		struct rtw8822cs_efuse s;
+ 	};
+-};
++} __packed;
+ 
+ enum rtw8822c_dpk_agc_phase {
+ 	RTW_DPK_GAIN_CHECK,
+-- 
+2.25.1
 
 
