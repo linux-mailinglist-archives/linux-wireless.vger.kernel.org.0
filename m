@@ -1,100 +1,117 @@
-Return-Path: <linux-wireless+bounces-16314-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16315-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C32899EE933
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 15:44:21 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 220D09EE962
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 15:53:44 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C968168DB8
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 14:43:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7139283C6B
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 14:53:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B3A32156FC;
-	Thu, 12 Dec 2024 14:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60FA121571D;
+	Thu, 12 Dec 2024 14:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QU8G74V4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g+T6r0AN"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464A621504F
-	for <linux-wireless@vger.kernel.org>; Thu, 12 Dec 2024 14:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C92121571B
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Dec 2024 14:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734014505; cv=none; b=VdYiKI+fHyrUyyug6qu9dlzs9yGulrQ6qxzWBCOEXwPXMi3H2G55jEyCgTEtDU6T7aZBgLgw78Dd7xi0QpUjsG/cXUbAQbvEnOy/SUQBap8q7ANNL+6RFUOeIt6EE/AAIsHugRKQiofVfEgWQuZKokBE8uyMCvAD+HEJmwKm6/U=
+	t=1734015220; cv=none; b=JHCADPNEcEFZNbJDSJuowweTZ+KcChkz8pzaCA8oO7O2LlBZv1VR+AjmdBcok+rZj9D3ItJN3fm10RBgqOtcgPPbvjm3yBPSCOHmWbe3l6tK6FkE+97ID/UzXjiD8WjugCib8J2cuNsOkgQx0HypwAivPq6xgcvDBCEUBADYvpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734014505; c=relaxed/simple;
-	bh=udnd5ep7XfiooWEs5z9E+RQRDinbRyC/oY7Nx1gVPBc=;
-	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
-	 Cc:Message-ID:Date; b=ak3ZsS49vYovZLPfAkELFGhE7aEhKHdv17q+mj9LqWStB9dmphRIfSge55hyY1/2a03Q3coKvYl4zlws1bgVLxjYL3H5tT+kmlF4Uw6uhZVwS3IKeBwNtFi1gbq6jqs4H1JaEadDH4KU35gi7MPWyTL8+98ik6lNfsqssUzOZwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QU8G74V4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA9F8C4CECE;
-	Thu, 12 Dec 2024 14:41:43 +0000 (UTC)
+	s=arc-20240116; t=1734015220; c=relaxed/simple;
+	bh=OY3GhRgWTrJpMq7G4x3kgzAeJmhXstpLimNOpeOAYds=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=pLBgo3HHH0MyaWvPGVEj1HqMkqX7S8CWkeJNPd3ebgRuexuUJPX5m9VRJ2JdziLd/pPNTYu7M5kdzbfIbbIrlMjxIwps8buoL2J8ETBi9sI8KilEn3hHBouA7lqf7Oka0qC9OU8QDFLb2ByA6zSZI69TYGZTyR0bKwl50I4Ae1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g+T6r0AN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08C34C4CECE;
+	Thu, 12 Dec 2024 14:53:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734014504;
-	bh=udnd5ep7XfiooWEs5z9E+RQRDinbRyC/oY7Nx1gVPBc=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=QU8G74V4v4jtg8HVIHCG1mnlLKF+1kT6vzRHe2M64MAJUbqkHfo+22dlupzCkA8NN
-	 Hp4XAdyB5SJIzh+Z+0gm2r+LJ9am+Gu/a1unfXgC/Y9HQqw/Ycg6Emf1HtROtiRipt
-	 xjWSRuBrpEHBs/6fyDwJR6uYgaKwLVE5ivlDMs7GNOz9RyEup3brM4Wy/R80NCiHnR
-	 g121QSbikVu19hu+FwKe1Dde9UCMmSgDAXBDCFH1bTMJ4FKK1bCRTw4BMkJOGC+9uv
-	 MAB/PVhaw2wMJRGFUsB5zItgXz16Sr0G9nhDAKuInNZyRa6fLfEFG1ufayUvRQ6PIK
-	 cNG1aKoKjqEDA==
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1734015219;
+	bh=OY3GhRgWTrJpMq7G4x3kgzAeJmhXstpLimNOpeOAYds=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=g+T6r0ANPqeSEBPZVvY1SOu8liOnZnWEQcSNfPx4VkT6u25BUmENhc6/cNfmVBaVf
+	 LGSCxFJUfz0EJ948PZgvMu1VGRVZ+MOw+kpr3HvUBXRLCz0E64tIOxo2XYsdkYWxHy
+	 yRyBqOzDxAyZ2HNLxK/w1nRxfCSmHWrKfc5j9ANElDRN9MppXuc1kEH0a/t02cT9oT
+	 5cEmRsv55+YoON7gWrp0BD4GCfrpH6cyEbTIWd54jvGON76Bl82sUuWT5Dq8SabfNU
+	 6lfQiWEpYN19Ae3pQBj6+VW93UhkrNQTIN+oPQNu4kmiHjgCJkdfO2Pmf3tdMtvk47
+	 OyhVYHzxdUoag==
+From: Kalle Valo <kvalo@kernel.org>
+To: Kang Yang <quic_kangyang@quicinc.com>
+Cc: <ath11k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v3 2/2] wifi: ath11k: add srng->lock for
+ ath11k_hal_srng_* in monitor mode
+References: <20241008053744.1070-1-quic_kangyang@quicinc.com>
+	<20241008053744.1070-3-quic_kangyang@quicinc.com>
+Date: Thu, 12 Dec 2024 16:53:37 +0200
+In-Reply-To: <20241008053744.1070-3-quic_kangyang@quicinc.com> (Kang Yang's
+	message of "Tue, 8 Oct 2024 13:37:44 +0800")
+Message-ID: <87ttb9nea6.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v3 1/2] wifi: ath11k: fix RCU stall while reaping monitor
- destination ring
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20241008053744.1070-2-quic_kangyang@quicinc.com>
-References: <20241008053744.1070-2-quic_kangyang@quicinc.com>
-To: Kang Yang <quic_kangyang@quicinc.com>
-Cc: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
- <quic_kangyang@quicinc.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <173401450207.833118.1446184244363325456.kvalo@kernel.org>
-Date: Thu, 12 Dec 2024 14:41:43 +0000 (UTC)
+Content-Type: text/plain
 
-Kang Yang <quic_kangyang@quicinc.com> wrote:
+Kang Yang <quic_kangyang@quicinc.com> writes:
 
-> From: P Praneesh <quic_ppranees@quicinc.com>
-> 
-> While processing the monitor destination ring, MSDUs are reaped from the
-> link descriptor based on the corresponding buf_id.
-> 
-> However, sometimes the driver cannot obtain a valid buffer corresponding
-> to the buf_id received from the hardware. This causes an infinite loop
-> in the destination processing, resulting in a kernel crash.
-> 
-> kernel log:
-> ath11k_pci 0000:58:00.0: data msdu_pop: invalid buf_id 309
-> ath11k_pci 0000:58:00.0: data dp_rx_monitor_link_desc_return failed
-> ath11k_pci 0000:58:00.0: data msdu_pop: invalid buf_id 309
-> ath11k_pci 0000:58:00.0: data dp_rx_monitor_link_desc_return failed
-> 
-> Fix this by skipping the problematic buf_id and reaping the next entry,
-> replacing the break with the next MSDU processing.
-> 
+> ath11k_hal_srng_* should be used with srng->lock to protect srng data.
+>
+> For ath11k_dp_rx_mon_dest_process() and ath11k_dp_full_mon_process_rx(),
+> they use ath11k_hal_srng_* for many times but never call srng->lock.
+>
+> So when running (full) monitor mode, warning will occur:
+> RIP: 0010:ath11k_hal_srng_dst_peek+0x18/0x30 [ath11k]
+> Call Trace:
+>  ? ath11k_hal_srng_dst_peek+0x18/0x30 [ath11k]
+>  ath11k_dp_rx_process_mon_status+0xc45/0x1190 [ath11k]
+>  ? idr_alloc_u32+0x97/0xd0
+>  ath11k_dp_rx_process_mon_rings+0x32a/0x550 [ath11k]
+>  ath11k_dp_service_srng+0x289/0x5a0 [ath11k]
+>  ath11k_pcic_ext_grp_napi_poll+0x30/0xd0 [ath11k]
+>  __napi_poll+0x30/0x1f0
+>  net_rx_action+0x198/0x320
+>  __do_softirq+0xdd/0x319
+>
+> So add srng->lock for them to avoid such warnings.
+>
 > Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
 > Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-> 
+>
 > Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
 > Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
-> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-Acked-by: Kalle Valo <kvalo@kernel.org>
+[...]
+
+> @@ -5607,7 +5609,7 @@ static int ath11k_dp_full_mon_process_rx(struct ath11k_base *ab, int mac_id,
+>  	struct hal_sw_mon_ring_entries *sw_mon_entries;
+>  	struct ath11k_pdev_mon_stats *rx_mon_stats;
+>  	struct sk_buff *head_msdu, *tail_msdu;
+> -	void *mon_dst_srng = &ar->ab->hal.srng_list[dp->rxdma_mon_dst_ring.ring_id];
+> +	struct hal_srng *mon_dst_srng;
+>  	void *ring_entry;
+>  	u32 rx_bufs_used = 0, mpdu_rx_bufs_used;
+>  	int quota = 0, ret;
+> @@ -5623,6 +5625,9 @@ static int ath11k_dp_full_mon_process_rx(struct ath11k_base *ab, int mac_id,
+>  		goto reap_status_ring;
+>  	}
+>  
+> +	mon_dst_srng = &ar->ab->hal.srng_list[dp->rxdma_mon_dst_ring.ring_id];
+> +	spin_lock_bh(&mon_dst_srng->lock);
+
+Why initialise mon_dst_srng differently? The commit message mentions
+nothing about this change.
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20241008053744.1070-2-quic_kangyang@quicinc.com/
+https://patchwork.kernel.org/project/linux-wireless/list/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-https://docs.kernel.org/process/submitting-patches.html
-
 
