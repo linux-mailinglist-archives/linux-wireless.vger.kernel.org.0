@@ -1,121 +1,117 @@
-Return-Path: <linux-wireless+bounces-16321-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16322-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 844869EF850
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 18:41:13 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6B0C9EF7FC
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 18:38:32 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03B7A1896CD1
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 17:33:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 981FD28E6CA
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 17:38:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44A022331C;
-	Thu, 12 Dec 2024 17:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D811223C4D;
+	Thu, 12 Dec 2024 17:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="sH1e0U+K"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4rgW3kF9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7700C222D4A;
-	Thu, 12 Dec 2024 17:33:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854B2222D70
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Dec 2024 17:38:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734024792; cv=none; b=HiwgPMGs74CylY1CYQ/oFEmEeFl94VgAV8si2QIm6Guwz9/ikYGUlYKV0hs4UvTdxLsMZNJKfJ9ZF1XPsu6J2E6Wy+LGBTImqXJNZUvOuPNXxrT2bYNijvNONHUF/XmpccP/COS2lehWlY+kFm2JXARaJZgwcxu6iu+NPRZfuGM=
+	t=1734025100; cv=none; b=IUiQ0O0JAx6pH1tcKrBTOTN7DX8nhXSpBOHb9+Ik/kA4O1IUMaSuZ9uXDD8mP2fjO1jkd81ZiYLn8FZQZwnBS3Tx8+lzYt/GEAjRd3A0v1Su2NE6z4BPgOr2rjbJb8PvG3Tat56x0feRfvRLwZsO737qBV/Bg38wLGJxReztJ+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734024792; c=relaxed/simple;
-	bh=8zifT6ewWYEFbntDyJ6Ww05c6ssCJZsNoWbJSANJZng=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aXGojjT/bJyBYZkOTjBLWQJa1LMdF4buljyYxlFslbDqIAxzNsr3pHDF7KRNDVp13Z9vJ7iGCGCxbNBrZ4VMp+VGBjmEsab+9QhYbG5Wv86v0aD3OAZBbvVvC3+YQF6+AB4+uHy2XW1Lx1ZlnEQPONG5KyHZNcnqPExd5XTYNDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=sH1e0U+K; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from eahariha-devbox.5bhznamrcrmeznzvghz2s0u2eh.xx.internal.cloudapp.net (unknown [40.91.112.99])
-	by linux.microsoft.com (Postfix) with ESMTPSA id DC255204BA86;
-	Thu, 12 Dec 2024 09:33:10 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com DC255204BA86
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1734024790;
-	bh=ejEwRygxca6lQ1bnnmgGz/a6d9eFvOqci4xwtvOcijY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sH1e0U+KayP+lsFRd5cH4rW4QJHnRLOWDFCTJoPjZRvL6dwQYhPEw6wLSEiQVtzIz
-	 MGjOiqbZKlHIKC/I0x+IjPT78qNmm2OrOBklKG81Gn4wy67uMgQIlzYxTIMktAVNJA
-	 yGuIpYUjNjbN3EVimHdjo9phwdZ8Nt/bD5dSfqhA=
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
-To: Jeroen de Borst <jeroendb@google.com>,
-	Praveen Kaligineedi <pkaligineedi@google.com>,
-	Shailend Chand <shailend@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Jeff Johnson <jjohnson@kernel.org>
-Cc: Easwar Hariharan <eahariha@linux.microsoft.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org,
-	Jeff Johnson <quic_jjohnson@quicinc.com>
-Subject: [PATCH net-next v4 2/2] wifi: ath11k: Convert timeouts to secs_to_jiffies()
-Date: Thu, 12 Dec 2024 17:33:02 +0000
-Message-ID: <20241212-netdev-converge-secs-to-jiffies-v4-2-6dac97a6d6ab@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20241212-netdev-converge-secs-to-jiffies-v4-0-6dac97a6d6ab@linux.microsoft.com>
-References: <20241212-netdev-converge-secs-to-jiffies-v4-0-6dac97a6d6ab@linux.microsoft.com>
+	s=arc-20240116; t=1734025100; c=relaxed/simple;
+	bh=aWTVrxmG5W3tIhT6neWuRFNEJ1LBgRdw+hgIKFCMjK8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Vlp+bFJuDaep724ZrLVsjJef4+qBpoCPuXbTVQqMHjWprqaaShB+M9GnF3wEl1DDbx7hgrv76QUWh+qvZ3xdGzqyCCRHfguaSK1sezgpkt+EEpxndXt3EvFLV3gkJyIwGXPJhL2LuIWlSphlogKqcEgZjL3975wj4HfqB1MMGlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4rgW3kF9; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-540218726d5so887349e87.2
+        for <linux-wireless@vger.kernel.org>; Thu, 12 Dec 2024 09:38:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1734025095; x=1734629895; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aWTVrxmG5W3tIhT6neWuRFNEJ1LBgRdw+hgIKFCMjK8=;
+        b=4rgW3kF9468wmzu5vD3JP2gqmc4PdmJAWEx2DVd80dOtBAnwJwaaxmm/DAHJO3bYIY
+         dQWCVSDktLwQ7VY7erI49aRt1NVP9Nb8iMD1j9Crza7t+fvbyyFizPyhloGYOoiVmJ3c
+         ovIboTYbmYkTrK0uh2L3wuTGWqPvaAuGUf+d4VhxkefASUIIvl6HFQ8lLUc5zj8c+UOQ
+         ZQA9obp/zn2gqu7MkONKg9YGFMOCf9MGc75qK5wYbjo2pRCPS6QRmRYbxzz4/OdM7Ybo
+         W417cELTTjvLWTl56/QqSTvb3EVIQ4+Pmk1q76lMX+90km/kwUu0PzVhXFoNnPRk/QNb
+         43vA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734025095; x=1734629895;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=aWTVrxmG5W3tIhT6neWuRFNEJ1LBgRdw+hgIKFCMjK8=;
+        b=SKOJmBNUHGK6bwits6nX6vejUm/3PkFGzplJyx2jwxZvR3GrQTJn7QcI5k2kvGI14D
+         acywJMw0MfGkceDGqTwrAsENOTYbAHVhwn7KknXK2CJOZCCrg1I9zqBJqUzPg3pRgBNq
+         sJX0ux6luLXjie1SGi+m3YTAFE6qLpKhi+tb9sdV1tqNad4opnmYtQKj5v3y2UTd7wNK
+         xpgfTM+hu3GR/2+pfS9rTXC1+QDXoH+gZ8BRT9p0AwaT3yhV/LUEbmSWjT/8wYm/yhOX
+         /qbAGfVnfdm0AVyujASHHsJrCLwMvbdVG9l8p9QgbiFzROAvz9zbGCeyT5j5Npt+wrYl
+         sd7w==
+X-Forwarded-Encrypted: i=1; AJvYcCXXqXeAQKi2TQi4EImY/4IPYISy3R76Q+2od5bTg9hhnn2m/47R50fQIinkkOYAts7gQFNp5abxRjOxIMhEmw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyUHoIoyb/A5cBdL/rX+wqDGTwLz2Xux9F39El4D32BSgnJNVzz
+	oL+XJ5X+5tyupjYJEjU1iKBtmuHBMAIizR7GbKcafbni5lAhzw7ohXJQsL/StYyI4tbiNUWCnms
+	LdckwrsPK1FCEqR1z0DwPZJ3J1hpEEGXFTHMO
+X-Gm-Gg: ASbGncvHyKx5QAHpz9J8bQJR9a2Qc4lkkzQ5z+6yvfJ+RnjAJ2/iCZCoOxjxZUaUT4L
+	hZHndnhRR0pUxhoa4oN763Dqm7O+FVvvUDeU/kw==
+X-Google-Smtp-Source: AGHT+IH015phUurBpWFmQa3s3RBwJ8PNrtRSaF1ujp3Q451/4hYQAF7Ccw77Ht0ZKlUC+7RE7PoqmmdadfJXIZMtLLU=
+X-Received: by 2002:a05:6512:124f:b0:540:1e51:b919 with SMTP id
+ 2adb3069b0e04-54034112534mr504071e87.31.1734025095447; Thu, 12 Dec 2024
+ 09:38:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.14.2
+References: <20241212-netdev-converge-secs-to-jiffies-v4-0-6dac97a6d6ab@linux.microsoft.com>
+ <20241212-netdev-converge-secs-to-jiffies-v4-1-6dac97a6d6ab@linux.microsoft.com>
+In-Reply-To: <20241212-netdev-converge-secs-to-jiffies-v4-1-6dac97a6d6ab@linux.microsoft.com>
+From: Praveen Kaligineedi <pkaligineedi@google.com>
+Date: Thu, 12 Dec 2024 09:38:03 -0800
+Message-ID: <CA+f9V1OK39b5hNoVZqu6AfPJqGsB4_5iyAK24Oit-tjmxrk7jA@mail.gmail.com>
+Subject: Re: [PATCH net-next v4 1/2] gve: Convert timeouts to secs_to_jiffies()
+To: Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: Jeroen de Borst <jeroendb@google.com>, Shailend Chand <shailend@google.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	ath11k@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Commit b35108a51cf7 ("jiffies: Define secs_to_jiffies()") introduced=0D
-secs_to_jiffies(). As the value here is a multiple of 1000, use=0D
-secs_to_jiffies() instead of msecs_to_jiffies to avoid the multiplication.=
-=0D
-=0D
-This is converted using scripts/coccinelle/misc/secs_to_jiffies.cocci with=
-=0D
-the following Coccinelle rules:=0D
-=0D
-@@ constant C; @@=0D
-=0D
-- msecs_to_jiffies(C * 1000)=0D
-+ secs_to_jiffies(C)=0D
-=0D
-@@ constant C; @@=0D
-=0D
-- msecs_to_jiffies(C * MSEC_PER_SEC)=0D
-+ secs_to_jiffies(C)=0D
-=0D
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>=0D
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>=0D
----=0D
- drivers/net/wireless/ath/ath11k/debugfs.c | 2 +-=0D
- 1 file changed, 1 insertion(+), 1 deletion(-)=0D
-=0D
-diff --git a/drivers/net/wireless/ath/ath11k/debugfs.c b/drivers/net/wirele=
-ss/ath/ath11k/debugfs.c=0D
-index 57281a135dd7fa6b8610636f47873c8bba21053c..bf192529e3fe26a91e72105a77b=
-4c6f849b905ec 100644=0D
---- a/drivers/net/wireless/ath/ath11k/debugfs.c=0D
-+++ b/drivers/net/wireless/ath/ath11k/debugfs.c=0D
-@@ -178,7 +178,7 @@ static int ath11k_debugfs_fw_stats_request(struct ath11=
-k *ar,=0D
- 	 * received 'update stats' event, we keep a 3 seconds timeout in case,=0D
- 	 * fw_stats_done is not marked yet=0D
- 	 */=0D
--	timeout =3D jiffies + msecs_to_jiffies(3 * 1000);=0D
-+	timeout =3D jiffies + secs_to_jiffies(3);=0D
- =0D
- 	ath11k_debugfs_fw_stats_reset(ar);=0D
- =0D
-=0D
--- =0D
-2.43.0=0D
-=0D
+On Thu, Dec 12, 2024 at 9:33=E2=80=AFAM Easwar Hariharan
+<eahariha@linux.microsoft.com> wrote:
+>
+> Commit b35108a51cf7 ("jiffies: Define secs_to_jiffies()") introduced
+> secs_to_jiffies(). As the value here is a multiple of 1000, use
+> secs_to_jiffies() instead of msecs_to_jiffies to avoid the multiplication=
+.
+>
+> This is converted using scripts/coccinelle/misc/secs_to_jiffies.cocci wit=
+h
+> the following Coccinelle rules:
+>
+> @@ constant C; @@
+>
+> - msecs_to_jiffies(C * 1000)
+> + secs_to_jiffies(C)
+>
+> @@ constant C; @@
+>
+> - msecs_to_jiffies(C * MSEC_PER_SEC)
+> + secs_to_jiffies(C)
+>
+> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+Reviewed-by: Praveen Kaligineedi <pkaligineedi@google.com>
 
