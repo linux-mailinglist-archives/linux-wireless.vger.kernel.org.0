@@ -1,100 +1,122 @@
-Return-Path: <linux-wireless+bounces-16297-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16298-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5DC49EE1E7
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 09:52:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DFEE9EE2CA
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 10:24:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DC371675D4
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 08:52:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3B2A161796
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 09:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CA7620E013;
-	Thu, 12 Dec 2024 08:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD25B20CCE7;
+	Thu, 12 Dec 2024 09:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="vRrG1WX1"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="X0EipQOn"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D491A209F41;
-	Thu, 12 Dec 2024 08:52:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED95C20E713
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Dec 2024 09:21:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733993569; cv=none; b=reNQTnry5bR1HOaANcMIpSi3DSZu6VEqMQq7XfOnJEtt/je9ZQF+2OkDWTIm7i3+qbCIJ5MAbgW02hPW6QAzgdL3mmbgsiZR1iG78g2s9joSENAnY7oi6nUpPmDU9NKFLrvSJ/rbOSA8tdphN+CwS15OXxOi896f28HI8W7lG+M=
+	t=1733995307; cv=none; b=SQbM3ateDX/ySMXicP8pUfUxf++o11L8+7DdZAYTu1mzNU8+2zjcNZY73eBIuj4XAUJIdEz8cYBcFEmaw0Ndb7DH+6ILUix04Vsh8EIw7U2DZIXcjD8Teyn2VVtLqQyq/Qh8LjXhX0Yccci8wbusutCLR3WgTbGTBcEqtH81ySg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733993569; c=relaxed/simple;
-	bh=zKYRiVDZDdBDBpZiIGg3izZHsTSSNFJWT7GjC/8Wi0s=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sh6JuCXmveYwAXCKvY+dCbETfnSJ/eODP5cvQ2HUbFBcj6vS9cI/72MQ0edPK3ZF2tUJSzM+UuGy609cePp+APlJjNX1Dfs7w9lb2vnFRN+G+Z5zz2LNGH6qeFDQRKP5Bfb65arpiEKi/kwCxtTMR3DDA9ibkC8cm+Zb8wY3W3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=vRrG1WX1; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=qLj+Afwh+9fhcCfqdeum+6vZlKylpxMDdFRhWoqXL3Y=;
-	t=1733993567; x=1735203167; b=vRrG1WX1ErFVHH0mfEJ/6xrr5hgWr8F1SxOfe48kVifU/tm
-	SUoEI96BQ4RPX6wD9643QAAMi9vGa85tK7hSpiGpJvEVDW7e33BQ39VVha1mh289Up188HxaqCCFO
-	QpQbIVa/D1MkJoecOjOVMhHOc9VGIkhy/oHaqRvLrAD4gzxuPvyBj91tHK5DiSkxi3EkffAPIYsh4
-	P/6sFOre7K9VDrsD9d5S2KX+nIfPtnxnlAt2X3vw1ZvI3n5/3qYTG1dguST3nzDaPAQSK0cuIyYlM
-	9IvJxxepJ2bGNX8DHNx5/fvLdtfvhacMu4pDfTjxKfD3widmlSFbNJSgUFco77Rg==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1tLew9-0000000EMrs-1QBk;
-	Thu, 12 Dec 2024 09:52:45 +0100
-Message-ID: <301ccb4cf2451c748d2b9b68648be7cfadf75c6a.camel@sipsolutions.net>
-Subject: Re: [syzbot] [wireless?] BUG: sleeping function called from invalid
- context in wext_netdev_notifier_call
-From: Johannes Berg <johannes@sipsolutions.net>
-To: syzbot <syzbot+3647b9259b77c1bb8e94@syzkaller.appspotmail.com>, 
-	linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Cc: Jay Vosburgh <jv@jvosburgh.net>
-Date: Thu, 12 Dec 2024 09:52:44 +0100
-In-Reply-To: <675a6973.050a0220.17f54a.0050.GAE@google.com>
-References: <675a6973.050a0220.17f54a.0050.GAE@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.2 (3.54.2-1.fc41) 
+	s=arc-20240116; t=1733995307; c=relaxed/simple;
+	bh=CxBRH2HLaH/29+kZKV2b0wONblCMp4VC5TUyt4bDxUg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=FKC2eqtE0hp/7tqqMCQDdaREBlJUvmKwwehqO1LtkQBTG7sHdNJPGWI/vOUt7P+8SJxUJrMFniyiu1VU/3rGrNbAoxNGd62XjnoyccmYBtCvbcUNo+mA2fFEKBU0XzRSJ7lIPFbcmrx9UUYwDzaS34E9hsrS+TYFWdub9Fjh7YY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=X0EipQOn; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BC7YbXO032522;
+	Thu, 12 Dec 2024 09:21:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	ort0GV31p2YM3MvyRNsoGkSoXOVVWpb4ngbvI+xOaDA=; b=X0EipQOn/rTDLZdK
+	TOz/fcWTZlbkYaZLywngtoWu5nAZlzdMnfpYnflha6NqomhVaq7otN1o0J0v/aC4
+	mNxrv3Efz1HXY4NxrbJW/2UaQL64cnEEMfzLHoU3qRthwFPpFj+pWh51tmWUD7Oi
+	IwowjwHb9IHKusNsdtO4n9hCVGt9W1DWDVJCFan5jvNlhjInwxjJAw+3xt9YqUQM
+	5/+Buem0Z8HEzJFZfsKsHedGj4YUq9ibu29nFHV+qPhATD2fKvJEN3ADEKgxPD4t
+	kQFwqW5XA5cx7uAs8aVddQ+tYPWiH+NgYPB1Y3dYR+UJB61jodF2NHWW9xBhqdf4
+	eVz0zg==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43f6tfbn8u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Dec 2024 09:21:39 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BC9LXna002207
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 12 Dec 2024 09:21:33 GMT
+Received: from [10.50.0.236] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 12 Dec
+ 2024 01:21:31 -0800
+Message-ID: <c9605cae-809b-6f52-927e-9bc59a6d9c02@quicinc.com>
+Date: Thu, 12 Dec 2024 14:51:28 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH 1/4] wifi: ath12k: Refactor ath12k_hw set helper function
+ argument
+To: Kalle Valo <kvalo@kernel.org>
+CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
+References: <20241212004906.3087425-1-quic_periyasa@quicinc.com>
+ <20241212004906.3087425-2-quic_periyasa@quicinc.com>
+ <878qslqr70.fsf@kernel.org>
+Content-Language: en-US
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+In-Reply-To: <878qslqr70.fsf@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 2I9on2QdY9TfPxn6MG3FGOCgB_rN4xVk
+X-Proofpoint-ORIG-GUID: 2I9on2QdY9TfPxn6MG3FGOCgB_rN4xVk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
+ mlxlogscore=752 malwarescore=0 spamscore=0 lowpriorityscore=0
+ impostorscore=0 adultscore=0 bulkscore=0 phishscore=0 priorityscore=1501
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412120065
 
-On Wed, 2024-12-11 at 20:41 -0800, syzbot wrote:
-> CPU: 1 UID: 0 PID: 12894 Comm: kworker/u8:18 Not tainted 6.13.0-rc1-syzka=
-ller-00183-g4c49f38e20a5 #0
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS G=
-oogle 09/13/2024
-> Workqueue: bond0 bond_mii_monitor
-> Call Trace:
->  <TASK>
->  __dump_stack lib/dump_stack.c:94 [inline]
->  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
->  __might_resched+0x5d4/0x780 kernel/sched/core.c:8758
->  down_read+0x8e/0xa40 kernel/locking/rwsem.c:1523
->  wireless_nlevent_flush net/wireless/wext-core.c:351 [inline]
->  wext_netdev_notifier_call+0x1f/0x120 net/wireless/wext-core.c:371
->  notifier_call_chain+0x1a5/0x3f0 kernel/notifier.c:85
->  netdev_state_change+0x11f/0x1a0 net/core/dev.c:1378
->  linkwatch_do_dev+0x112/0x170 net/core/link_watch.c:182
->  ethtool_op_get_link+0x15/0x60 net/ethtool/ioctl.c:62
->  bond_check_dev_link+0x1f1/0x3f0 drivers/net/bonding/bond_main.c:873
->  bond_miimon_inspect drivers/net/bonding/bond_main.c:2740 [inline]
->  bond_mii_monitor+0x49a/0x3170 drivers/net/bonding/bond_main.c:2962
 
-Yeah this isn't new. I thought we were going to just squash this with
 
-https://lore.kernel.org/netdev/2730097.1721581672@famine/
+On 12/12/2024 1:16 PM, Kalle Valo wrote:
+> Karthikeyan Periyasamy <quic_periyasa@quicinc.com> writes:
+> 
+>> Currently, ath12k_hw is placed inside the ath12k_hw_group. However, the
+>> ath12k_hw set helper function takes the device handle and the index as
+>> parameters. Here, the index parameter is specific to the group handle.
+>> Therefore, change this helper function argument from the device handle to
+>> the group handle.
+>>
+>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+>>
+>> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+> 
+> What's the user visible impact here?
+> 
 
-Whatever came of that?
+No user visible, it just help to avoid the dependency of device handle 
+(ab) for using the helper function ath12k_*_set_ah().
 
-johannes
+
+-- 
+Karthikeyan Periyasamy
+--
+கார்த்திகேயன் பெரியசாமி
 
