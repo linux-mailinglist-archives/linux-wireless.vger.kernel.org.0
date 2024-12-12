@@ -1,169 +1,119 @@
-Return-Path: <linux-wireless+bounces-16332-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16333-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F8BA9EFC70
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 20:26:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 130409EFC7F
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 20:29:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B399116B380
-	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 19:26:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 608241890ACD
+	for <lists+linux-wireless@lfdr.de>; Thu, 12 Dec 2024 19:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5775219D089;
-	Thu, 12 Dec 2024 19:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13530188713;
+	Thu, 12 Dec 2024 19:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nq8Debfn"
+	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="T8rLBdjb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0347619AA58;
-	Thu, 12 Dec 2024 19:26:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8E1168497
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Dec 2024 19:29:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734031600; cv=none; b=OVryeSA+3Ukupm6heEXldhKDMv9npCT6rwpRQQbRAu0PbQHSBwCKNQc7wF+F9bqwKL5uPfJT9Cr7+oYgIkdxCH+bopsBL7tXvm6Rx3kf7o2NdzJ8cctqqcpwyzw6pLHNeHcieWj8Z1340u0x8wKjSYIvLldMBkwnTeKz0Ji0uGY=
+	t=1734031768; cv=none; b=tY4K9friWeJhU9qaUbrAWb+Q+8Jd+kxznQMV6oORuXqBW0ZPkXcIYYt3UIVzVanNlG72Ko04KfeL5iorhT3ChP4Y/Ar1Z3UwAUc4AOaGkZsutzwcLl6W5NekayNXw4tYndvxv5GUa2Sq3WacerJs6P2hfKF0A0CCQz0AEb/UQa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734031600; c=relaxed/simple;
-	bh=GY8df68Vpq13zRfn9lQiZuhcp6ZPERGYWUjygEgKyfo=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=dU/H4ZtV9yPmTaYcfZgnosD5WodKBSn4IJCLgixT9tId17YEii18GZVZbZWENi8gtyvoFTXMIaF3QyEdNkY9ZhgwJmCtKHVIwEHcQjrvXHL1gCRAW3QjBYMOtRQQ3tTPXGkjgOzLlhUhAEZ2tMZ+9Sed90DVjiIHyf9xpK0LHDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nq8Debfn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FE3DC4CECE;
-	Thu, 12 Dec 2024 19:26:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734031599;
-	bh=GY8df68Vpq13zRfn9lQiZuhcp6ZPERGYWUjygEgKyfo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=Nq8DebfnKz6oRj40JuP2b63VJxYs2cK7koMQE4wqMV6qD2csMUAgK5AzSgqwbBYEL
-	 u9euMyyzqa7e7GkjVAp6yQfo1AZ2Co8EJsXQ4Tm39YjgSAGT4PgrOZSOipNdus0wWP
-	 5jEOuPBPs1+JKN2ABFGyBe3bAHjHJXDBdMubHDqVFWJ7Vy1RPqX8Fa+BwvWlMEiPRP
-	 qSJu+l8/ulTi3y9AwZpqtrLG6q55HekV8WDMGP0u1YdCkLSXeeoiRpw137PWbZFSeR
-	 0v5Q/aRW85aEzTfeInJqQ6lZPduXCDaQWJCKCHPvbJoZteMnM1UyL4vc31qeB26R6X
-	 PJXIBsPc6+D8Q==
-Date: Thu, 12 Dec 2024 13:26:37 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Philipp Stanner <pstanner@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Alex Dubov <oakad@yahoo.com>
-Cc: amien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>,
-	Basavaraj Natikar <basavaraj.natikar@amd.com>,
-	Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Sudarsana Kalluru <skalluru@marvell.com>,
-	Manish Chopra <manishc@marvell.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rasesh Mody <rmody@marvell.com>, GR-Linux-NIC-Dev@marvell.com,
-	Igor Mitsyanko <imitsyanko@quantenna.com>,
-	Sergey Matyukevich <geomatsi@gmail.com>,
-	Kalle Valo <kvalo@kernel.org>, Sanjay R Mehta <sanju.mehta@amd.com>,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Jon Mason <jdmason@kudzu.us>, Dave Jiang <dave.jiang@intel.com>,
-	Allen Hubbe <allenbh@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Juergen Gross <jgross@suse.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Chen Ni <nichen@iscas.ac.cn>, Ricky Wu <ricky_wu@realtek.com>,
-	Al Viro <viro@zeniv.linux.org.uk>, Breno Leitao <leitao@debian.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mostafa Saleh <smostafa@google.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Yi Liu <yi.l.liu@intel.com>, Kunwu Chan <chentao@kylinos.cn>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"Dr. David Alan Gilbert" <linux@treblig.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Eric Auger <eric.auger@redhat.com>, Ye Bin <yebin10@huawei.com>,
-	linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-input@vger.kernel.org, netdev@vger.kernel.org,
-	linux-wireless@vger.kernel.org, ntb@lists.linux.dev,
-	linux-pci@vger.kernel.org, kvm@vger.kernel.org,
-	xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v3 05/11] misc: Use never-managed version of pci_intx()
-Message-ID: <20241212192637.GA3359920@bhelgaas>
+	s=arc-20240116; t=1734031768; c=relaxed/simple;
+	bh=EccZC2QhZtm+bhoIax/bOFa7puOom5YIzC1+XYEgQJY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=oVwGVmEcvor5K65X/Yl3sTuOhH/yN8mhHEHEq7KLHy+Vn/7u/OlshBNgmP5NLdKW6Xy+iuIa88jRyZZxhh2PQkM/USRxxHbJDE/SXfF6j5wc1aTpeCppM8YsnI0aYfh/5sV7R4O95yX+YSxATGMbWiQapGrkYMlQSL/VpuJAwws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=T8rLBdjb; arc=none smtp.client-ip=148.163.129.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+X-Virus-Scanned: Proofpoint Essentials engine
+Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
+	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id C5394A800AD
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Dec 2024 19:29:23 +0000 (UTC)
+Received: from [192.168.100.159] (unknown [50.251.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by mail3.candelatech.com (Postfix) with ESMTPSA id 640ED13C2B0
+	for <linux-wireless@vger.kernel.org>; Thu, 12 Dec 2024 11:29:22 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 640ED13C2B0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
+	s=default; t=1734031762;
+	bh=EccZC2QhZtm+bhoIax/bOFa7puOom5YIzC1+XYEgQJY=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=T8rLBdjbhc4bQo7Km4zSkoz/Gj6e5W2ZpcwfeqIXmQUGD47dBTZ68EqardlXkQ1vy
+	 zJtSAVLLGSEobMXA3WAvH8bYTAETuzLzLpU/94c/++VnK5qiHVC0M/osG5QvJzHRFr
+	 O65E+Mdz3gNoOaCmTaCXBGxErWhrye2IP0yQlSxo=
+Message-ID: <0b0af4eb-855c-8c01-71e3-c4d18b6b3d61@candelatech.com>
+Date: Thu, 12 Dec 2024 11:29:22 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241209130632.132074-7-pstanner@redhat.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH] wifi: iwlwifi: Fix survey dump for be200 radios.
+Content-Language: en-US
+To: linux-wireless@vger.kernel.org
+References: <20241212044522.922351-1-greearb@candelatech.com>
+From: Ben Greear <greearb@candelatech.com>
+Organization: Candela Technologies
+In-Reply-To: <20241212044522.922351-1-greearb@candelatech.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-MDID: 1734031764-zXmPx0jAkJTy
+X-MDID-O:
+ us5;ut7;1734031764;zXmPx0jAkJTy;<greearb@candelatech.com>;f7146c1849a4b08a52804beb1c1cdf45
+X-PPE-TRUSTED: V=1;DIR=OUT;
 
-[cc->to: Arnd, Greg, Alex]
-
-On Mon, Dec 09, 2024 at 02:06:27PM +0100, Philipp Stanner wrote:
-> pci_intx() is a hybrid function which can sometimes be managed through
-> devres. To remove this hybrid nature from pci_intx(), it is necessary to
-> port users to either an always-managed or a never-managed version.
+On 12/11/24 20:45, greearb@candelatech.com wrote:
+> From: Ben Greear <greearb@candelatech.com>
 > 
-> cardreader/rtsx_pcr.c and tifm_7xx1.c enable their PCI-Device with
-> pci_enable_device(). Thus, they need the never-managed version.
+> The old code did not assign channel, so survey dump was always
+> empty.  Instead, return the info from the phy ctxts since we
+> can at least fake out the channel busy time with that.
 > 
-> Replace pci_intx() with pci_intx_unmanaged().
-> 
-> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-
-Looking for ack from Arnd, Greg, Alex.
-
+> Signed-off-by: Ben Greear <greearb@candelatech.com>
 > ---
->  drivers/misc/cardreader/rtsx_pcr.c | 2 +-
->  drivers/misc/tifm_7xx1.c           | 6 +++---
->  2 files changed, 4 insertions(+), 4 deletions(-)
+>   .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 19 +++++++++++++++++++
+>   drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  4 ++++
+>   drivers/net/wireless/intel/iwlwifi/mvm/rx.c   | 18 ++++++++++++++++++
+>   3 files changed, 41 insertions(+)
 > 
-> diff --git a/drivers/misc/cardreader/rtsx_pcr.c b/drivers/misc/cardreader/rtsx_pcr.c
-> index be3d4e0e50cc..e25e6d560dd7 100644
-> --- a/drivers/misc/cardreader/rtsx_pcr.c
-> +++ b/drivers/misc/cardreader/rtsx_pcr.c
-> @@ -1057,7 +1057,7 @@ static int rtsx_pci_acquire_irq(struct rtsx_pcr *pcr)
->  	}
->  
->  	pcr->irq = pcr->pci->irq;
-> -	pci_intx(pcr->pci, !pcr->msi_en);
-> +	pci_intx_unmanaged(pcr->pci, !pcr->msi_en);
->  
->  	return 0;
->  }
-> diff --git a/drivers/misc/tifm_7xx1.c b/drivers/misc/tifm_7xx1.c
-> index 1d54680d6ed2..5f9c7ccae8d2 100644
-> --- a/drivers/misc/tifm_7xx1.c
-> +++ b/drivers/misc/tifm_7xx1.c
-> @@ -327,7 +327,7 @@ static int tifm_7xx1_probe(struct pci_dev *dev,
->  		goto err_out;
->  	}
->  
-> -	pci_intx(dev, 1);
-> +	pci_intx_unmanaged(dev, 1);
->  
->  	fm = tifm_alloc_adapter(dev->device == PCI_DEVICE_ID_TI_XX21_XX11_FM
->  				? 4 : 2, &dev->dev);
-> @@ -368,7 +368,7 @@ static int tifm_7xx1_probe(struct pci_dev *dev,
->  err_out_free:
->  	tifm_free_adapter(fm);
->  err_out_int:
-> -	pci_intx(dev, 0);
-> +	pci_intx_unmanaged(dev, 0);
->  	pci_release_regions(dev);
->  err_out:
->  	if (!pci_dev_busy)
-> @@ -392,7 +392,7 @@ static void tifm_7xx1_remove(struct pci_dev *dev)
->  		tifm_7xx1_sock_power_off(tifm_7xx1_sock_addr(fm->addr, cnt));
->  
->  	iounmap(fm->addr);
-> -	pci_intx(dev, 0);
-> +	pci_intx_unmanaged(dev, 0);
->  	pci_release_regions(dev);
->  
->  	pci_disable_device(dev);
-> -- 
-> 2.47.1
-> 
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+> index fb341d8e8cdb..ec01350bbb34 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+> @@ -6080,6 +6080,25 @@ int iwl_mvm_mac_get_survey(struct ieee80211_hw *hw, int idx,
+>   
+>   	memset(survey, 0, sizeof(*survey));
+>   
+> +	if (mvm->trans->trans_cfg->device_family == IWL_DEVICE_FAMILY_BZ) {
+> +		/* None of the code below this if clause appears to work
+> +		 * on be200 radios, primarily because 'channel' is not assigned.
+> +		 * So special case this to do something useful on be200
+> +		 * radio:  Return channel and busy-time for the first 3
+> +		 * phy contexts.
+> +		 */
+
+I later realized that I need to skip contexts that have zero 'ref',
+so at the least that needs changing.
+
+However, I'd like to know if there are other comments before I send
+a v2...
+
+Thanks,
+Ben
+
+-- 
+Ben Greear <greearb@candelatech.com>
+Candela Technologies Inc  http://www.candelatech.com
+
+
 
