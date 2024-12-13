@@ -1,122 +1,121 @@
-Return-Path: <linux-wireless+bounces-16371-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16372-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE3F89F097B
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2024 11:31:03 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FDA79F0BF4
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2024 13:12:07 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8AF8283B26
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2024 10:31:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CC03167EC8
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2024 12:12:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA5391BAEFD;
-	Fri, 13 Dec 2024 10:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71BA61DE3BB;
+	Fri, 13 Dec 2024 12:12:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KwAmFDLe"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="KFx2usbE"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861481B6CFD;
-	Fri, 13 Dec 2024 10:30:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC620364D6
+	for <linux-wireless@vger.kernel.org>; Fri, 13 Dec 2024 12:12:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734085856; cv=none; b=ExWiUu+qloeSOTopfgIQ9bPgCOOylAEjCHTZrBRaZpNeLCL4dnSX2ydekr6qxtmiZkMZnaEakQhRa1z2Cma+cCgVmK+aNVFtVA/CPkIpNL/SDJomq/gJUJFPZSmQiTPzwAEtWoMC1yMsFSg6/aq863ygOIvMH9+ArmeNWzMJE3U=
+	t=1734091924; cv=none; b=HHh+GbePYcPN3Gko6lhcA9sY0F7hs9TfixIf24pE6ahLpZP54ObYzuEhtmHmqW7mXs1NijSk5NSmlxFzOcLowg4kO5/Q4G27nNpqUVE91C8Zbvp0b+6ZsoUFQLq9YuU4tI4gHU05JLGRutr/CzP6SE1svB4g/+ErUAygeKSJUdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734085856; c=relaxed/simple;
-	bh=BTQhG+pcPpVWdFU7M6WGNSEHiOAWlPk9OMovbRGe8jk=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=dnKbCgMEx1TUk/UVLXfkPV6OB9XV2Fse775L3/C86brW6n5/9Ax5EqtJDZ7F9AxqcmUF1IwI9wRjUcktS2q+fO2FtqFG2HaoHwFDqlDlRq6Yv+yKAoetO4sb16Z8KJQqxCGiND+c9GM/a1SvPK1W0UfXn8jxQ9lBz8mTmQ5H6kI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KwAmFDLe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65922C4CED0;
-	Fri, 13 Dec 2024 10:30:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734085855;
-	bh=BTQhG+pcPpVWdFU7M6WGNSEHiOAWlPk9OMovbRGe8jk=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=KwAmFDLewAK8qtG2JcgTDln5oAPvX7T6s21n+sVrQK/zovEQltlKTZMfOOydVCYBZ
-	 wexQmXSVYI3h7TBHmpxxuKJCAtIKDA3xJNa8/Im/UBR7LXeWQh180GN2AD0v8T0VFC
-	 xau4jIIld3rUWglJe0O5Ly1c3n+LVRPKkn4Ap2bFPikm9rfX1t0FvFxCEdhmOO7GmQ
-	 T1Kv1o7hm5xTuEGg8jC3v4laVOub2r/1lqEAAYkD9VqHdQWO6/vYMu4tQswLjScRFC
-	 qcBNgWj6+WXQRdmWrvKriaNXsmUfp6QHYu1lvvdq1sD36YHJ/Kyex37L0CjkCkv8o5
-	 SYIrwECkF64TQ==
-From: Kalle Valo <kvalo@kernel.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Philipp Stanner <pstanner@redhat.com>,  Igor Mitsyanko
- <imitsyanko@quantenna.com>,  amien Le Moal <dlemoal@kernel.org>,  Niklas
- Cassel <cassel@kernel.org>,  Basavaraj Natikar
- <basavaraj.natikar@amd.com>,  Jiri Kosina <jikos@kernel.org>,  Benjamin
- Tissoires <bentiss@kernel.org>,  Arnd Bergmann <arnd@arndb.de>,  Sergey
- Matyukevich <geomatsi@gmail.com>,  Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>,  Alex Dubov <oakad@yahoo.com>,  Sudarsana
- Kalluru <skalluru@marvell.com>,  Manish Chopra <manishc@marvell.com>,
-  Andrew Lunn <andrew+netdev@lunn.ch>,  "David S. Miller"
- <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Jakub
- Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>,  Rasesh Mody
- <rmody@marvell.com>,  GR-Linux-NIC-Dev@marvell.com,  Sanjay R Mehta
- <sanju.mehta@amd.com>,  Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,  Jon
- Mason <jdmason@kudzu.us>,  Dave Jiang <dave.jiang@intel.com>,  Allen Hubbe
- <allenbh@gmail.com>,  Bjorn Helgaas <bhelgaas@google.com>,  Alex
- Williamson <alex.williamson@redhat.com>,  Juergen Gross <jgross@suse.com>,
-  Stefano Stabellini <sstabellini@kernel.org>,  Oleksandr Tyshchenko
- <oleksandr_tyshchenko@epam.com>,  Mario Limonciello
- <mario.limonciello@amd.com>,  Chen Ni <nichen@iscas.ac.cn>,  Ricky Wu
- <ricky_wu@realtek.com>,  Al Viro <viro@zeniv.linux.org.uk>,  Breno Leitao
- <leitao@debian.org>,  Thomas Gleixner <tglx@linutronix.de>,  Kevin Tian
- <kevin.tian@intel.com>,  Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>,  Mostafa Saleh <smostafa@google.com>,
-  Jason Gunthorpe <jgg@ziepe.ca>,  Yi Liu <yi.l.liu@intel.com>,  Kunwu Chan
- <chentao@kylinos.cn>,  Dan Carpenter <dan.carpenter@linaro.org>,  "Dr.
- David Alan Gilbert" <linux@treblig.org>,  Ankit Agrawal
- <ankita@nvidia.com>,  Reinette Chatre <reinette.chatre@intel.com>,  Eric
- Auger <eric.auger@redhat.com>,  Ye Bin <yebin10@huawei.com>,
-  linux-ide@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  linux-input@vger.kernel.org,  netdev@vger.kernel.org,
-  linux-wireless@vger.kernel.org,  ntb@lists.linux.dev,
-  linux-pci@vger.kernel.org,  kvm@vger.kernel.org,
-  xen-devel@lists.xenproject.org
-Subject: Re: [PATCH v3 09/11] wifi: qtnfmac: use always-managed version of
- pcim_intx()
-References: <20241212192935.GA3360239@bhelgaas>
-Date: Fri, 13 Dec 2024 12:30:42 +0200
-In-Reply-To: <20241212192935.GA3360239@bhelgaas> (Bjorn Helgaas's message of
-	"Thu, 12 Dec 2024 13:29:35 -0600")
-Message-ID: <87cyhvoox9.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1734091924; c=relaxed/simple;
+	bh=lliztgWVjN/I1LimOcyJbuLcEnKXvN9SxkzKgquunqo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=h6h7/LkV4dFOgTp4KdXD6DXaUvCdoVzOEIQsv/4R+MwWaZxQ88yODtvaXfckiTsy67bUpsujFigV0DvyxIDDZt0HCossnZoPeKDnAT/hRzfkvTd+mQk7Y6IYYqCT2lCszbESDegqmTjUJxLo9fHQS0mCARVag20cTIfa4n78VT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=KFx2usbE; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BD3lcfc002014;
+	Fri, 13 Dec 2024 12:11:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=SlZy57Lyxs4zG+n5z/9HSt
+	QMCXEJLzeKXgcWWQkovpc=; b=KFx2usbEgWvR0lPmZDrK4YR4CGBMJbbPE7DeoU
+	hJYHexJgPxLhiqvSz07zQDKho2O0ePgFcIdLTL3Y8Orw9+M6wiOJ638/D6QSHYxQ
+	rztUxD/Q+TUpWFL/2YGqP23u58eV895lfgeABzx8WFV/iOTprn5j6VX5nPdRm+Hq
+	fcXQmcQwEJQ0tNj2LkHVNnqKAhOIZzAvcTRb56VBZiCk+NGN6uwk3POSDNkmx7FG
+	hv/GpXf74+wijSjq+qzPM4E8+Jy9o3xLxQCp4tI+QBD/nlZJ9PSgFDeJ/RmWn75m
+	vjIuVI75ckqRN/I6wAf7jtbPLGDFBuDfXcdgbOPPwm7wSOqA==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43fd40pa1r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 13 Dec 2024 12:11:58 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BDCBvZc024839
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 13 Dec 2024 12:11:57 GMT
+Received: from hu-vjakkam-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Fri, 13 Dec 2024 04:11:56 -0800
+From: Veerendranath Jakkam <quic_vjakkam@quicinc.com>
+To: <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>, <quic_vjakkam@quicinc.com>
+Subject: [PATCH] wifi: ieee80211: update Indoor AFC standard power type definition
+Date: Fri, 13 Dec 2024 17:41:46 +0530
+Message-ID: <20241213121146.2398269-1-quic_vjakkam@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: DpXtlyRAigr0nkmjzm_qSRpOwE8AEmPF
+X-Proofpoint-ORIG-GUID: DpXtlyRAigr0nkmjzm_qSRpOwE8AEmPF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
+ suspectscore=0 impostorscore=0 phishscore=0 clxscore=1011 bulkscore=0
+ lowpriorityscore=0 mlxlogscore=999 priorityscore=1501 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412130085
 
-Bjorn Helgaas <helgaas@kernel.org> writes:
+Update 6 GHz regulatory info subfield mask and Indoor AFC standard power
+type definitions to align with spec changes introduced in the Draft
+P802.11Revme_D4.2, Figure 9-896 and Table E-13.
 
-> [cc->to: Igor]
->
-> On Mon, Dec 09, 2024 at 02:06:31PM +0100, Philipp Stanner wrote:
->> pci_intx() is a hybrid function which can sometimes be managed through
->> devres. To remove this hybrid nature from pci_intx(), it is necessary to
->> port users to either an always-managed or a never-managed version.
->> 
->> qtnfmac enables its PCI-Device with pcim_enable_device(). Thus, it needs
->> the always-managed version.
->> 
->> Replace pci_intx() with pcim_intx().
->> 
->> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
->> Acked-by: Kalle Valo <kvalo@kernel.org>
->
-> Hoping for an ack from Igor, too.
+Signed-off-by: Veerendranath Jakkam <quic_vjakkam@quicinc.com>
+---
+ include/linux/ieee80211.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Igor hasn't been around for a while so I'm not expecting see an ack from
-him, I think the whole qtnfmac driver should be removed in the future.
-Feel free to take the patch as is.
-
+diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
+index 05dedc45505c..2091af5e8b8c 100644
+--- a/include/linux/ieee80211.h
++++ b/include/linux/ieee80211.h
+@@ -2764,7 +2764,7 @@ static inline bool ieee80211_he_capa_size_ok(const u8 *data, u8 len)
+ #define IEEE80211_6GHZ_CTRL_REG_SP_AP		1
+ #define IEEE80211_6GHZ_CTRL_REG_VLP_AP		2
+ #define IEEE80211_6GHZ_CTRL_REG_INDOOR_LPI_AP	3
+-#define IEEE80211_6GHZ_CTRL_REG_INDOOR_SP_AP	4
++#define IEEE80211_6GHZ_CTRL_REG_INDOOR_SP_AP	8
+ 
+ /**
+  * struct ieee80211_he_6ghz_oper - HE 6 GHz operation Information field
+@@ -2782,7 +2782,7 @@ struct ieee80211_he_6ghz_oper {
+ #define		IEEE80211_HE_6GHZ_OPER_CTRL_CHANWIDTH_80MHZ	2
+ #define		IEEE80211_HE_6GHZ_OPER_CTRL_CHANWIDTH_160MHZ	3
+ #define IEEE80211_HE_6GHZ_OPER_CTRL_DUP_BEACON	0x4
+-#define IEEE80211_HE_6GHZ_OPER_CTRL_REG_INFO	0x38
++#define IEEE80211_HE_6GHZ_OPER_CTRL_REG_INFO	0x78
+ 	u8 control;
+ 	u8 ccfs0;
+ 	u8 ccfs1;
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.34.1
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
