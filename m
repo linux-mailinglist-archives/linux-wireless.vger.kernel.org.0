@@ -1,151 +1,120 @@
-Return-Path: <linux-wireless+bounces-16360-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16361-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32F559F0671
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2024 09:36:10 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 507F69F0674
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2024 09:36:25 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22E8C188ACBF
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2024 08:36:24 +0000 (UTC)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E71E61AA1E1;
+	Fri, 13 Dec 2024 08:36:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="qE17iWIn"
+X-Original-To: linux-wireless@vger.kernel.org
+Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF86828435B
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2024 08:36:08 +0000 (UTC)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C3C1AA1DF;
-	Fri, 13 Dec 2024 08:36:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SrAGPxIe"
-X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5221A8F9D;
-	Fri, 13 Dec 2024 08:36:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDAF21A8F89;
+	Fri, 13 Dec 2024 08:36:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.49.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734078966; cv=none; b=D1FZuQI36T6WxBSlBzO7pCxNVPNZIaXG2ZWRXvs9m94jiNTMYrINSdB2omK41nlc4tqHxZygnXfNt/+5zo6KZgSeFyrhVm9E8LE0Y7RvCsniALMnPaqVs9iJAKaHWWqldNh3ye1S0AHHwKfDYgfMYj6xalfFud/Rq4Be3Ra5lU8=
+	t=1734078980; cv=none; b=TdVdFG1DToP4OBNclgVdQD3VuLcprnGmyzuO/j3VeYtCUuGdkLEstRXIpFl8HWnDN5AYRYERfhzsdPaiBnMF/8uw4/4S75/YwFM8FX6eROzN6mQRjvBJqXJEVooWKAIFyjIcYh5qHkDTwTC6x3tOEL2ybDWYsbsiIe0Pkw5qBic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734078966; c=relaxed/simple;
-	bh=cwDAQSL6vuttS2U979Dz48haJPwu372rR4K4KD1V+60=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HP5yijdPpYgvHRk/Y5XaQe//1ngDPDylpGfhR/ixghuJ/9IPcu0cQQoOW6uDB2dbC8HBR3hPLaOgosKo7PWXVaQUKyHgyAS8ONvRZUyA+gGSf08ZUpNxpMTl3dgo7hpueEAr0eHueIszmqVgGtBcnqyxJstkoh57dpFgBdSUTtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SrAGPxIe; arc=none smtp.client-ip=209.85.210.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-71e1d7130a5so776156a34.0;
-        Fri, 13 Dec 2024 00:36:04 -0800 (PST)
+	s=arc-20240116; t=1734078980; c=relaxed/simple;
+	bh=iIqF6YPbraicQQ/unRv/YNWsk5+yLSAQ9J3YLP7cLjc=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LWlyIidbOL3mrxtkhFMZ4hwcDKpGBEGjlsVvhw/3vwhdWK7VKEjQlMcPpCFJat0dvef1MHYfzE3ZdIKkGjthV1ulvtbWeSEqUbRbq5K35iR3X5/wfonzceTGtyZXCwHmt2EY3gES4Lb7YO+owCEJ8SSEOvzF7XiVQcfzOlGq4zY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b=qE17iWIn; arc=none smtp.client-ip=52.95.49.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734078964; x=1734683764; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G4mjN3RvlXaIu4Z7K4aTVENMghR+huMJZIDwJoq1+Bg=;
-        b=SrAGPxIe/ifCKM36zSQOMfWDLxZyNX5UjSj+MA55nBzaHzBFs55ChdiP8iwvorc2et
-         LPh3gwOXPaA1ysDjp+SwWsg9U3okWYlYpFLAUjbKXVverZE9vyWa+UeSBYYjdhOB8ky8
-         YCD/pmAaAIY3bu86QR23sVjbN/Jzxx6QqCAzS5ksoRtLdQGSTWE0744hixqiyWWeOIPn
-         /nrJywhGnMCuO07Wdjf9o0rZ3coWmaU+TXnp7pQDdeKL8b62+1Y/ykcX9iyzQrLLqSuK
-         ohk4WnHeh+Bjjl4cSPuOzVBCp4WJiEduPVRqejPY1oFUnzzPh5Z1M0dBN4a43SjCuByG
-         K3WQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734078964; x=1734683764;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=G4mjN3RvlXaIu4Z7K4aTVENMghR+huMJZIDwJoq1+Bg=;
-        b=ThtiX9kz7mZG1Qr6XX+EQK5t95i/rs1uoA64XICe+5Vb4m8v+DmLLEv2n3v0pU7O0R
-         FrCxlxnVtIPk0vbakYl6e7/t3TcEFiB5a6KRhcqCyEuwEtEh7sQdVKj/Dm/pBtTq68xH
-         swUhK3Bp1Amo7QN5RNsBkOd/qvKo8HxgGYvJE1SvaTIFwnYDIEs4ZBMToPUlAf9aRL9Y
-         ajBHglIVC0BNTXVb6QYX9XZaVR6/DEzy/wPbG1SYy1ZOTRSLibu7nmFbEkFY7s2pGI7g
-         UhiL+JLlbLyMyP6nxCTfiTD9+rkpjag8FR+eA7sH26kOgdVIuX0wg9Dujat3Y4NSybA4
-         tI8A==
-X-Forwarded-Encrypted: i=1; AJvYcCVA1xfEnfbhfNeDiXLT43B8P8YZPtPpEXi2sS2Wi0xZkqrEKz0mptUrmKI0tGwXfWN0bWowyj4pGaw03qw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/uvHyYJCMv7SEJgTV925m22s6Jsy+Bzxe49CO+xIhuVvHsQjD
-	M3UB/9oWcj1t3mF5AzovIKYv3jsHpobS2R71SX1ceUIytuWYFr8xuTcIxk5YKbMQ1WrE6e73J2p
-	3NU6Lr3//DyxN8Pp6x8hW1mxEHQUoUiGG1umLng==
-X-Gm-Gg: ASbGncuUpFODl1ZEJWSunmHKnuABa2O065UvRXILzze83XgbDcAi2jz5FugPVlYjfKM
-	wUjbcAcYOnFWCsyKT8ap9nUkuwmYJzYu/l24g
-X-Google-Smtp-Source: AGHT+IEjGqxi8FLoj8CpGN2+LUvhxpaV3aY/lsPFS2q6djXX+/0dDgyAdcTFPpNQeTOP7455einSNxdeVpg/wUeZCdU=
-X-Received: by 2002:a05:6870:3c08:b0:284:ff51:58ad with SMTP id
- 586e51a60fabf-2a3ac8b7939mr1173933fac.27.1734078963999; Fri, 13 Dec 2024
- 00:36:03 -0800 (PST)
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1734078980; x=1765614980;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=2AxhSclKsu32dkton7UtZYZFiO//vi/AGe7eUOoTBXg=;
+  b=qE17iWInpJcdIZKeimoCbqSN2xenhJKj5QeUhuK+DQ1bP0I2GVNBisrp
+   5s/lxbIGp4G7RQblnw7oquOkQlthH/IcMMoYafWXENB+qUfGgsuSMqesQ
+   KyEV9oFtNG8KVzKWVFC9mjjrJ4y5DnfGsfkbp5Ciz0w0mmh3BJUzGyHfL
+   I=;
+X-IronPort-AV: E=Sophos;i="6.12,230,1728950400"; 
+   d="scan'208";a="455754317"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
+  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2024 08:36:16 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [10.0.21.151:48785]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.33.57:2525] with esmtp (Farcaster)
+ id 37a2e523-9e48-4cd6-97db-f4b56a9688bf; Fri, 13 Dec 2024 08:36:14 +0000 (UTC)
+X-Farcaster-Flow-ID: 37a2e523-9e48-4cd6-97db-f4b56a9688bf
+Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Fri, 13 Dec 2024 08:36:14 +0000
+Received: from 6c7e67c6786f.amazon.com (10.119.14.208) by
+ EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1258.39;
+ Fri, 13 Dec 2024 08:36:10 +0000
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
+To: <johannes@sipsolutions.net>
+CC: <jv@jvosburgh.net>, <linux-kernel@vger.kernel.org>,
+	<linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<syzbot+3647b9259b77c1bb8e94@syzkaller.appspotmail.com>,
+	<syzkaller-bugs@googlegroups.com>, <kuniyu@amazon.com>
+Subject: Re: [syzbot] [wireless?] BUG: sleeping function called from invalid context in wext_netdev_notifier_call
+Date: Fri, 13 Dec 2024 17:36:07 +0900
+Message-ID: <20241213083607.8520-1-kuniyu@amazon.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <301ccb4cf2451c748d2b9b68648be7cfadf75c6a.camel@sipsolutions.net>
+References: <301ccb4cf2451c748d2b9b68648be7cfadf75c6a.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241122180435.1637479-1-alexthreed@gmail.com>
- <be2f054e-5ff8-4fcb-ad50-0dc0d5c03bf5@broadcom.com> <CAF4oh-NtqAX6gqz3DnLes6oR3RhZyOEvSfOk=rPPPm=1XzGAWQ@mail.gmail.com>
- <7c85313c-58e2-4bff-a525-a40f8aadcab9@broadcom.com>
-In-Reply-To: <7c85313c-58e2-4bff-a525-a40f8aadcab9@broadcom.com>
-From: Alex Shumsky <alexthreed@gmail.com>
-Date: Fri, 13 Dec 2024 11:35:53 +0300
-Message-ID: <CAF4oh-MufW98ooTQstJFRF1222hNyOdaCVUaLMpYsRzqo6FGZg@mail.gmail.com>
-Subject: Re: [PATCH] wifi: brcmfmac: remove misleading log messages
-To: Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc: linux-wireless@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>, 
-	Kalle Valo <kvalo@kernel.org>, brcm80211-dev-list.pdl@broadcom.com, 
-	brcm80211@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D031UWA004.ant.amazon.com (10.13.139.19) To
+ EX19D004ANA001.ant.amazon.com (10.37.240.138)
 
-On Thu, Dec 12, 2024 at 12:30=E2=80=AFPM Arend van Spriel
-<arend.vanspriel@broadcom.com> wrote:
->
-> On 12/9/2024 9:08 PM, Alex Shumsky wrote:
-> > On Tue, Nov 26, 2024 at 2:02=E2=80=AFPM Arend van Spriel
-> > <arend.vanspriel@broadcom.com> wrote:
-> >>
-> >> On 11/22/2024 7:04 PM, Alex Shumsky wrote:
-> >>> Currently when debug info enabled, dmesg spammed every few minutes wi=
-th
-> >>> misleading messages like:
-> >>>     brcmf_netdev_start_xmit phy0-sta0: insufficient headroom (0)
-> >>>
-> >>> Do not log this when headroom is actually sufficient.
-> >>
-> >> Thanks for your patch. The message may be misleading, but it is actual=
-ly
-> >> information that we need to cow the packet. The zero value indicates
-> >> that this is needed because skb_header_cloned(skb) is true. So it is
-> >> still useful in my opinion. If you want to make the message less
-> >> misleading for that case I would be happy to ack the patch.
-> >>
-> >> Regards,
-> >> Arend
-> >
-> > Thanks for the review and sorry for the delayed response.
-> > Do "%s: clone skb header\n" rephrase make sense to you?
->
-> I would say:
->
-> brcmf_dbg(INFO, "%s: %s headroom\n", brcmf_ifname(ifp),
->            head_delta ? "insufficient" : "unmodifiable");
+From: Johannes Berg <johannes@sipsolutions.net>
+Date: Thu, 12 Dec 2024 09:52:44 +0100
+> On Wed, 2024-12-11 at 20:41 -0800, syzbot wrote:
+> > CPU: 1 UID: 0 PID: 12894 Comm: kworker/u8:18 Not tainted 6.13.0-rc1-syzkaller-00183-g4c49f38e20a5 #0
+> > Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+> > Workqueue: bond0 bond_mii_monitor
+> > Call Trace:
+> >  <TASK>
+> >  __dump_stack lib/dump_stack.c:94 [inline]
+> >  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+> >  __might_resched+0x5d4/0x780 kernel/sched/core.c:8758
+> >  down_read+0x8e/0xa40 kernel/locking/rwsem.c:1523
+> >  wireless_nlevent_flush net/wireless/wext-core.c:351 [inline]
+> >  wext_netdev_notifier_call+0x1f/0x120 net/wireless/wext-core.c:371
+> >  notifier_call_chain+0x1a5/0x3f0 kernel/notifier.c:85
+> >  netdev_state_change+0x11f/0x1a0 net/core/dev.c:1378
+> >  linkwatch_do_dev+0x112/0x170 net/core/link_watch.c:182
+> >  ethtool_op_get_link+0x15/0x60 net/ethtool/ioctl.c:62
+> >  bond_check_dev_link+0x1f1/0x3f0 drivers/net/bonding/bond_main.c:873
+> >  bond_miimon_inspect drivers/net/bonding/bond_main.c:2740 [inline]
+> >  bond_mii_monitor+0x49a/0x3170 drivers/net/bonding/bond_main.c:2962
+> 
+> Yeah this isn't new. I thought we were going to just squash this with
+> 
+> https://lore.kernel.org/netdev/2730097.1721581672@famine/
+> 
+> Whatever came of that?
 
-Thanks.
-Sent [PATCH v2] wifi: brcmfmac: clarify unmodifiable headroom log message.
-I'm not sure whether I have to link new version with changed subject,
-I haven't found a way
+Now I remember I forgot to respin this patch.
+https://lore.kernel.org/linux-wireless/20241014205543.94787-4-kuniyu@amazon.com/
 
-> > I have no deep knowledge of this code, and if you think the original me=
-ssage
-> > is actually useful, I'm ok to leave a log message as it is.
-> > Initially I had guessed it was an unintentional log message because it =
-has
-> > misleading text and logs spammed every few minutes - too rarely to cons=
-ider
-> > It as a real performance issue.
->
-> If you enable debug prints you should expect performance impact. If you
-> want to capture debug message with negligible performance loss you
-> should use ftrace. Debug prints in brcmfmac are setup as trace events.
+If the issue above is still not fixed, I will respin it on
+wireless.git with Fixes tag.
 
-I expressed my thoughts poorly here.
-By "performance issue" I meant the clone process itself, not the log messag=
-es.
-I have read "insufficient headroom" message as "look, we need to copy heade=
-rs,
-if this happens too often, look into this issue and make it zero-copy"
+What do you think ?
 
-> Regards,
-> Arend
+
 
