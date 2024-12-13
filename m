@@ -1,77 +1,77 @@
-Return-Path: <linux-wireless+bounces-16347-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16348-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FE8D9F0455
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2024 06:47:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A6769F045A
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2024 06:47:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9937B18833DD
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2024 05:47:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64D0E18833E0
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2024 05:47:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8176C18BC06;
-	Fri, 13 Dec 2024 05:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EA4618A6D7;
+	Fri, 13 Dec 2024 05:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j6hthnqi"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l6tG50JL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A1418BBBB;
-	Fri, 13 Dec 2024 05:47:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F0D18A6BC;
+	Fri, 13 Dec 2024 05:47:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734068822; cv=none; b=UHaXOP/cYeQvPd0/c/M7ZK1q6KL3UgjI57RmveDskbUeJL4ZEu5VwNfmMuN9WLr3NAS2GpEMqLh/+am5Fv/zidijrLm0OybB5zFUYhQ1FN3rqt7hFMmDRpxdaRolf4iQtaOsmFqtHTBajrCCpTLUkPS7019di6IMknlUxiMAf8M=
+	t=1734068829; cv=none; b=d3je9aYgrGkVAAmkPNIYOOCRcsKOBywPEFxlMtQTxAl7ZOq+EpLpoosgA5iJkOiZ/VjNjRyz5FAERmrhYAAPPgcysH9+Dx+Ul4rZRPmoXVxbxqIUxRzo4dr7EL92fSvOh3+HZaGJfv6dVLs1PgNZz8TqiRAMW7jXrppfiZPi1BA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734068822; c=relaxed/simple;
-	bh=PCh1gNdVkWHp7L2j8aSJAn81J3xtchPE0tLiHOyl/eU=;
+	s=arc-20240116; t=1734068829; c=relaxed/simple;
+	bh=HwkMe9hq5hr2QRbPNXcqLtCxfZxrGOY1qad0lN7B90M=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lYutrjLRryUeFpzOqIrs78a+j9PwZkE9yc7iR0fR49ALzWkS1lr3NULPydjcKNNhLxBUFb5iBsKlAwbQlrU7DZoaX+28VdHbbLFwnIUuN4+0cD6IKFzc4wZhge1kLmiEe1mkIZolwvTDknfn3agoQjSwLlWKKkfZqedmD4uSuJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j6hthnqi; arc=none smtp.client-ip=209.85.214.179
+	 MIME-Version; b=h1oXSl0jyEO2hh4DjkkNEQO1GpLDR5fwhFsMilXyjRHsHtNnMhNZvYpmIR78GSEI1YAYkj43Fm1ES9IVdO6FL5V7dhRfuzP0kqREZCbpST28N6b7OfT4PBfP0RjRbQnirxXS+fBd4lJsNPyo8bqpJ6cZEb3w+2ohSibY+Zyvm/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l6tG50JL; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-21636268e43so18023665ad.2;
-        Thu, 12 Dec 2024 21:47:00 -0800 (PST)
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2165448243fso14748965ad.1;
+        Thu, 12 Dec 2024 21:47:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734068819; x=1734673619; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1734068827; x=1734673627; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fVaAhWgLsrOIaawWt+Es3lyBYssP2HU9Cngct4cKfGw=;
-        b=j6hthnqiW0uRrSBBNpeFstiL3xuM4Qgv8z1P0+XCJnuxbmI0zub5Nk9V+90fK9fPsv
-         IFdjrL+jez+oZFWJbnvD5/ejRxwWOX0DrzoTz0PcS39N4oMF0bJwe+5j81dPnAoipgWA
-         2IdIqPf8GzMBJDKd5V0S+m3NSqdUfyrp4gC8GF3Ns/32LixwTjAW/6c2Xrvw6rdkT7hY
-         Gc1//OVVzGKtRAJiw4uNcRx+53NaqR6/URjdcjPwPWNTQb7KhlLwUHiWV9okPYQySHx+
-         uI1TJAYVxQ11HcCkUgj1wy9FEdrazUghEUcZfJ3B9c9/d9SBWkbsYZZ2TS7yLblnRdGr
-         KpiA==
+        bh=EmVT0W96xTTbgIHaje9qHPh+sH+dkYFHuEVe3qXraIA=;
+        b=l6tG50JLpSTdsDtWqfqvnzqzDF9HmSfga8IwvtVVfkGg6uszZJUPGDlvglSs/mRd7I
+         3OznjyRkFbtWxcj7EKOsmxNWTKaAPggPZuAO6OLMOCLDIoBFSEAZefiEp3pz0FVt9TNK
+         54SxAl28+xxATGwZ7o3Ti0Lf3abJ80/IESobOxfL9iyCw1zowOzp3ha8ZLMYyjA8KO1Q
+         EzKIupYhIaK70BF8oQMFm5KKCP1ftQzE6fBWPds/eDSTVqcSx0almV3LBq06yuNyUkwI
+         f72pMrw1wTPLE9fEywnicopucedEXYphtHv+o8Uyu5m5lFDRHTeeAk0m85KreBiJNj9d
+         +C9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734068819; x=1734673619;
+        d=1e100.net; s=20230601; t=1734068827; x=1734673627;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fVaAhWgLsrOIaawWt+Es3lyBYssP2HU9Cngct4cKfGw=;
-        b=TJ07awjO7PPBHXT9quL+5D1JeFcsGzHv/99g25L6/prT//p7W2b6VHkG8kwZ/Gr6jJ
-         xM4Nt2lgc6maCiHCjb5pM+2kjyvQTM52k0e4pIRvE795zdpAp12i7bhb8JNrXH1mJT+x
-         wg+Zs2ohx13Z0v+KHaFlieRWppXEDIICKd2lvjuf+8enAKvNMgc8VvkJw6BfFg3ucvqK
-         HB4V7RZmHJ4ziDTAQeq8BHfZiOKOji1BPwwxh1qwp4KNXyTj82SPAJtqliSc90YS1MS2
-         vW1f08dEJVDJYwyuUpeIDmdEEn+3yZuvQBAHXmZzjaaBoUKI9Rnp5+rd4ZPu0ihjJmkd
-         S/MA==
-X-Forwarded-Encrypted: i=1; AJvYcCUet/wZsca1OzU40p1FEBjOyfdMFdXZFpI94hZ1wpb7DGK7uwSV7OrYdSY5w09W+LoJ1xjCc/6RjQwMl19iBYt4ZIvCbNE=@vger.kernel.org, AJvYcCXHCChkaFw9eHpdWsQtstlRAK4rc1tAQRt83PbJV08FjcaR3Bi6Ir92q0RMlundzGPedAHO8F5KXq+PkGSNdGM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEzr23w6qrGNFpLbmsEys9S0jSQ9no9/2Hkjlttv9q+Zm/cdPW
-	408oiO0wVc8jepzoGVQQvEVKy54A9QWQ6+Y71ZJ4l6a0aZnjhRsO
-X-Gm-Gg: ASbGncvKincPcacOFRsNIzGaRMbfLbPoS6GB9x/CherAYsbBnZWQqvq2s8b54C1eMXs
-	CPGDxyG52x71qkqwQjbtsTOmjEzZn6pu+DCNzVgcDEhcA4MnNKSl9bfWbB3e0HS3xl/VtwkLnnK
-	m6WznM8g9EP1a32h/YQ7cnSSPr9i4l4UtA67225qWk2Q/z6DuPR4k6xwQkj6ev19zVwh5ez8GHf
-	PVdHCwlWZKRzQ1FXZJMDl8GcL+tojh2PhBbsL+VVeULusiakTf+qyzi8buA+w/c/16SvNHcDAbg
-	GpH0qWg=
-X-Google-Smtp-Source: AGHT+IGnQMpyX4qO4c9TaUxIvkW9bvqpb4HtTDVE3C9gZFkXCVV6ksZB8lAWhFJzpiBj11HO1t8PNw==
-X-Received: by 2002:a17:902:e88b:b0:212:615f:c1 with SMTP id d9443c01a7336-218929a19c2mr20599995ad.14.1734068819460;
-        Thu, 12 Dec 2024 21:46:59 -0800 (PST)
+        bh=EmVT0W96xTTbgIHaje9qHPh+sH+dkYFHuEVe3qXraIA=;
+        b=qVhRv20IapUVSoME52dsb8k9FhDpp8IjTPSM98nGNUXVYC7L/XOfLwU//MQq3WDXTo
+         Zqxwwqasqn4opXTLHNmNChO3O+mXDkSKRhaZ8KNT5OJSW/jQ2gnMLb9iEHXLFklH1azB
+         K3FEywUnur8LO/SEnTpPQWahNM0JliHfB0UK/0HIckl2QoMPywVM1LS8ThbhDUvnU3/n
+         6Xq7KoSIkDr+qhS0Y/zX8XTbQOMxhW2C1+iTYGWpNHROZxdzew1fn/jbg83ofZ6D2HA8
+         SYjUP0dDwqdR6O+2DGVkzZw4Rd6byTvB2zgebT441elQSqpoIJhj6D9z67omnuPbqlbv
+         CPOA==
+X-Forwarded-Encrypted: i=1; AJvYcCWA21OX5tCLdBNBmdXa8KqcJ2L96klyV96A5jUnuFvqLI37Dna3bk5HzN5iUxXafL4CTMT/1/G+9o3C/Wv31C4=@vger.kernel.org, AJvYcCXpeROyOZToNx5MtS53fb47GUTdIpuEEpfdPBaMnkKAH3bW9mT4tz2+bT0cRodPL9VYgH+KYTYmhCeJ39NQyj3izzuO35g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxbR1OmDMoc79R8V0+9pctFOOG14JsLX7eoevQ3MOtWDXYWWb1E
+	on15sJj/8EAbRkjpk6szOkr56kgk6b51PfyiCjMBs/JM+poWm1Xo
+X-Gm-Gg: ASbGnctVd50g0jmJWxRK08fyazl5PZYozVT3v7E0X1iRiNRqSr4+AFV6nznY94gWA7v
+	lqHCS7bRWsBUcl7TgOBxJRALQCkkr4S7sjlDXfStbDAzHBPVStGe2BYn5drNDlJHNLPKv2f31XB
+	WVVLuIkUHPXjwLmLOES57XyvG1J+5Rl7xgENF0PDe5M/0BSO3CAs3+4lmW6uzPZNiE+2X42SPPQ
+	uJVFZj4nN57+a4RVq3M2/hBTlL2mVYm99nBBfcJV6Wgi+CzUZNiqvHid9tb76VN4h5YOT1zzF9C
+	3bjq9BQ=
+X-Google-Smtp-Source: AGHT+IGGw/OV/ScatMLc+XWrd5qwOO8iHzpYdxpzWycga8KUsVtQ1P1ntSP55wYL5SQs/JpC5cq7/g==
+X-Received: by 2002:a17:902:d484:b0:215:431f:268f with SMTP id d9443c01a7336-21892999536mr21105555ad.10.1734068827157;
+        Thu, 12 Dec 2024 21:47:07 -0800 (PST)
 Received: from localhost.localdomain ([180.159.118.224])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-216483dd292sm82564985ad.226.2024.12.12.21.46.52
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-216483dd292sm82564985ad.226.2024.12.12.21.47.00
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 12 Dec 2024 21:46:58 -0800 (PST)
+        Thu, 12 Dec 2024 21:47:06 -0800 (PST)
 From: Yafang Shao <laoar.shao@gmail.com>
 To: torvalds@linux-foundation.org,
 	akpm@linux-foundation.org
@@ -86,16 +86,15 @@ Cc: linux-kernel@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
 	ocfs2-devel@lists.linux.dev,
 	Yafang Shao <laoar.shao@gmail.com>,
-	Serge Hallyn <serge@hallyn.com>,
+	Vineet Gupta <vgupta@kernel.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Darren Hart <dvhart@infradead.org>,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	=?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>
-Subject: [PATCH 2/7] kernel: Replace get_task_comm() with %pTN
-Date: Fri, 13 Dec 2024 13:46:05 +0800
-Message-Id: <20241213054610.55843-3-laoar.shao@gmail.com>
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>
+Subject: [PATCH 3/7] arch: Replace get_task_comm() with %pTN
+Date: Fri, 13 Dec 2024 13:46:06 +0800
+Message-Id: <20241213054610.55843-4-laoar.shao@gmail.com>
 X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
 In-Reply-To: <20241213054610.55843-1-laoar.shao@gmail.com>
 References: <20241213054610.55843-1-laoar.shao@gmail.com>
@@ -105,76 +104,72 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 Since task->comm is guaranteed to be NUL-terminated, we can print it
-directly without the need to copye it into a separate buffer. This
+directly without the need to copy it into a separate buffer. This
 simplifies the code and avoids unnecessary operations.
 
 Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Cc: Serge Hallyn <serge@hallyn.com>
+Cc: Vineet Gupta <vgupta@kernel.org>
 Cc: Thomas Gleixner <tglx@linutronix.de>
 Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Darren Hart <dvhart@infradead.org>
-Cc: Davidlohr Bueso <dave@stgolabs.net>
-Cc: "André Almeida" <andrealmeid@igalia.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
 ---
- kernel/capability.c     | 12 ++++--------
- kernel/futex/waitwake.c |  5 ++---
- 2 files changed, 6 insertions(+), 11 deletions(-)
+ arch/arc/kernel/unaligned.c | 9 ++++-----
+ arch/x86/kernel/vm86_32.c   | 5 ++---
+ 2 files changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/capability.c b/kernel/capability.c
-index dac4df77e376..4512cd797f49 100644
---- a/kernel/capability.c
-+++ b/kernel/capability.c
-@@ -38,10 +38,8 @@ __setup("no_file_caps", file_caps_disable);
- 
- static void warn_legacy_capability_use(void)
+diff --git a/arch/arc/kernel/unaligned.c b/arch/arc/kernel/unaligned.c
+index d2f5ceaaed1b..fb8e995823e3 100644
+--- a/arch/arc/kernel/unaligned.c
++++ b/arch/arc/kernel/unaligned.c
+@@ -200,23 +200,22 @@ int misaligned_fixup(unsigned long address, struct pt_regs *regs,
+ 		     struct callee_regs *cregs)
  {
--	char name[sizeof(current->comm)];
+ 	struct disasm_state state;
+-	char buf[TASK_COMM_LEN];
+ 
+ 	/* handle user mode only and only if enabled by sysadmin */
+ 	if (!user_mode(regs) || !unaligned_enabled)
+ 		return 1;
+ 
+ 	if (no_unaligned_warning) {
+-		pr_warn_once("%s(%d) made unaligned access which was emulated"
++		pr_warn_once("%pTN(%d) made unaligned access which was emulated"
+ 			     " by kernel assist\n. This can degrade application"
+ 			     " performance significantly\n. To enable further"
+ 			     " logging of such instances, please \n"
+ 			     " echo 0 > /proc/sys/kernel/ignore-unaligned-usertrap\n",
+-			     get_task_comm(buf, current), task_pid_nr(current));
++			     current, task_pid_nr(current));
+ 	} else {
+ 		/* Add rate limiting if it gets down to it */
+-		pr_warn("%s(%d): unaligned access to/from 0x%lx by PC: 0x%lx\n",
+-			get_task_comm(buf, current), task_pid_nr(current),
++		pr_warn("%pTN(%d): unaligned access to/from 0x%lx by PC: 0x%lx\n",
++			current, task_pid_nr(current),
+ 			address, regs->ret);
+ 
+ 	}
+diff --git a/arch/x86/kernel/vm86_32.c b/arch/x86/kernel/vm86_32.c
+index e9e803a4d44c..1f55d5c2628d 100644
+--- a/arch/x86/kernel/vm86_32.c
++++ b/arch/x86/kernel/vm86_32.c
+@@ -246,9 +246,8 @@ static long do_sys_vm86(struct vm86plus_struct __user *user_vm86, bool plus)
+ 
+ 	/* VM86_SCREEN_BITMAP had numerous bugs and appears to have no users. */
+ 	if (v.flags & VM86_SCREEN_BITMAP) {
+-		char comm[TASK_COMM_LEN];
 -
--	pr_info_once("warning: `%s' uses 32-bit capabilities (legacy support in use)\n",
--		     get_task_comm(name, current));
-+	pr_info_once("warning: `%pTN' uses 32-bit capabilities (legacy support in use)\n",
-+		     current);
- }
+-		pr_info_once("vm86: '%s' uses VM86_SCREEN_BITMAP, which is no longer supported\n", get_task_comm(comm, current));
++		pr_info_once("vm86: '%pTN' uses VM86_SCREEN_BITMAP, which is no longer supported\n",
++			     current);
+ 		return -EINVAL;
+ 	}
  
- /*
-@@ -62,10 +60,8 @@ static void warn_legacy_capability_use(void)
- 
- static void warn_deprecated_v2(void)
- {
--	char name[sizeof(current->comm)];
--
--	pr_info_once("warning: `%s' uses deprecated v2 capabilities in a way that may be insecure\n",
--		     get_task_comm(name, current));
-+	pr_info_once("warning: `%pTN' uses deprecated v2 capabilities in a way that may be insecure\n",
-+		     current);
- }
- 
- /*
-diff --git a/kernel/futex/waitwake.c b/kernel/futex/waitwake.c
-index 3a10375d9521..df8f8c85d776 100644
---- a/kernel/futex/waitwake.c
-+++ b/kernel/futex/waitwake.c
-@@ -210,13 +210,12 @@ static int futex_atomic_op_inuser(unsigned int encoded_op, u32 __user *uaddr)
- 
- 	if (encoded_op & (FUTEX_OP_OPARG_SHIFT << 28)) {
- 		if (oparg < 0 || oparg > 31) {
--			char comm[sizeof(current->comm)];
- 			/*
- 			 * kill this print and return -EINVAL when userspace
- 			 * is sane again
- 			 */
--			pr_info_ratelimited("futex_wake_op: %s tries to shift op by %d; fix this program\n",
--					get_task_comm(comm, current), oparg);
-+			pr_info_ratelimited("futex_wake_op: %pTN tries to shift op by %d; fix this program\n",
-+					    current, oparg);
- 			oparg &= 31;
- 		}
- 		oparg = 1 << oparg;
 -- 
 2.43.5
 
