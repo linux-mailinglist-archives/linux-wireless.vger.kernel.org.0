@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-16353-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16354-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68D409F04AF
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2024 07:18:00 +0100 (CET)
-Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B9B19F0503
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2024 07:46:31 +0100 (CET)
+Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E4542842DB
-	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2024 06:17:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9658416A510
+	for <lists+linux-wireless@lfdr.de>; Fri, 13 Dec 2024 06:46:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516ED1531C1;
-	Fri, 13 Dec 2024 06:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08650188907;
+	Fri, 13 Dec 2024 06:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="YqvJmXQi"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="hnMcZSQK"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98E4313DDAA
-	for <linux-wireless@vger.kernel.org>; Fri, 13 Dec 2024 06:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC0A18785D
+	for <linux-wireless@vger.kernel.org>; Fri, 13 Dec 2024 06:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734070677; cv=none; b=t2koPwzIgrBBM9iMWFV9ZpafZhyEoks87+mgbnaJVAhyaHDOjo+0yO4TgfqmAsPCF8KQngM1zW5MpSw8G6S/rGSHdpSiL9YLXLIHTNQYV7x3Fdid93ihFTpN7Vhdm3F5QmzAnz3p4QNbRIIrx7GPv5hNEdjHdNA/TVIFvWSEE4M=
+	t=1734072387; cv=none; b=Pem91uVzCVHeVTPnvJdg6qyVxyl0LEbnHOihR4Ms7a0txpLzkNw0DJydd7orXXyYM3pUA2M19dK5XzN0dn3f6tJETSlpSivVC2aWcIIeBxC5uZOnMHM0/HisKmQJcSVRUT+j9kN4wYnPIJlo/G1+5UzGEz/1mDTfhRqAetJGLM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734070677; c=relaxed/simple;
-	bh=pfF2TLufJD+0vkORSowbEeo7Zql8fS81fczTDJOY5lE=;
+	s=arc-20240116; t=1734072387; c=relaxed/simple;
+	bh=RgqXYy1exuGWcyzdDll8oeNDgwkUUEsaRK2K3vlITMI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=EdhIU1gwke5AoE/i3qTmoRyTubB/vWoru//FFDaS2LXfR8JPJFRgKHf+FkWrbD87A+2e7+mgVTSCvUlpZppVxuNfik7sa7z20pGlOd5SLj6rAyyTTXX4nw29ST3hDRO3nyTs95Mi2tjHNlax4W+K1o/eMWLLaWzz2dXecAtIO7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=YqvJmXQi; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:Content-Type; b=IpHxUBC4lxt7OiDTAkkAuP9q/RliT0zLhvvUiIQU0tUK/TJ6vxtJLUhosAmYo1/H1BzXaWMF8zEIYhCTGyaSMZT6HQrHcsIBhkmNSG0P6s08JGlX15WRNcLfNf+hJs/iwkXjNX3F+q3ZdbJvuJwVh3q2l+uICQw2Ku++UhlDxV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=hnMcZSQK; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BCM4BX2030144;
-	Fri, 13 Dec 2024 06:17:49 GMT
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BD6MD6b026852;
+	Fri, 13 Dec 2024 06:46:18 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Y5RtScDgn522UbKDuIq3ny5JDJfsxEGeUY5/2RdTUWI=; b=YqvJmXQieKSNfuiL
-	Sw7wKOpyoijaiYuLkEFMM0k7bdJrCih/sZSIocECiZ4aCECPzVhG0X7AbNjyLiZU
-	sFb8FL/jYdCz92vue7/TlSL+tJ1jpSKGidFQr0L+So/d8m2mX3myttdOQqG3FV9v
-	twz20S2fc++GAKWfAn3rkq7pfxyFYotPJF5+mcp2LTEep8W9c1PnPwHlKFEOAV5I
-	9tqi36I7QNW1H5xaq1EeIyoeV/PcqNFJ4xR/eApBhpBJTQ42dHskjAmNC5emvl4E
-	cL2dzqTDOSZz3topYTESMcglog//PaiEfGN9BD6Z4iB8/AvgKwFXx3x3SIKhvaRY
-	WlDHRw==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43fwgejs09-1
+	7oqBkIztTMd+a0ITaA1ANvdOI20jM+UGGbXNGNgQhu0=; b=hnMcZSQKNlMaUmqb
+	68B0wLDENaGA1jU9xaQYA0YNf8YLX+Cp+7f7YGPPQEB8oJlOMVH8FX8F7xT3FiaC
+	X/oYponx0ILdrKJnWHaSas8YtfEcJ/koJGRrbxITyNQLtzqD/zsBv/fK1R7rF3nU
+	/Og0mcetwU22GqwLux5HdpOKh+r0DutQrzvSSQ/4uMm6TD8sHn+FKyEVvJDlR+L9
+	jiY6fFqrHKAKYx8n5f2FM7oCva9u0iDCVrujTZF3v8jGEb3nLCz2ZgYyxPdOiyAG
+	AIP/G7CiePI/GwzSfP4SxZtMEnAmKhzD8yCCj/mxXy1vhVNUxIGpkbDXCAi+pbVH
+	kvCeHQ==
+Received: from nasanppmta05.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43fd40nbes-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Dec 2024 06:17:49 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BD6HnWT007787
+	Fri, 13 Dec 2024 06:46:18 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BD6kDgb026577
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Dec 2024 06:17:49 GMT
-Received: from [10.110.46.166] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
+	Fri, 13 Dec 2024 06:46:13 GMT
+Received: from [10.110.46.166] (10.80.80.8) by nasanex01b.na.qualcomm.com
+ (10.46.141.250) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 12 Dec
- 2024 22:17:47 -0800
-Message-ID: <79910df2-a7fd-4880-bd32-4f2927341654@quicinc.com>
-Date: Fri, 13 Dec 2024 14:17:44 +0800
+ 2024 22:46:12 -0800
+Message-ID: <07734404-b737-4a8c-ae24-f8b0b8c16e58@quicinc.com>
+Date: Fri, 13 Dec 2024 14:46:10 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -65,98 +65,141 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] wifi: ath11k: add srng->lock for ath11k_hal_srng_*
- in monitor mode
+Subject: Re: [PATCH v3 2/2] wifi: ath11k: move update channel list to worker
+ for wait flag
 To: Kalle Valo <kvalo@kernel.org>
 CC: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20241008053744.1070-1-quic_kangyang@quicinc.com>
- <20241008053744.1070-3-quic_kangyang@quicinc.com> <87ttb9nea6.fsf@kernel.org>
+References: <20241129070714.226-1-quic_kangyang@quicinc.com>
+ <20241129070714.226-3-quic_kangyang@quicinc.com> <87y10lngf1.fsf@kernel.org>
 Content-Language: en-US
 From: Kang Yang <quic_kangyang@quicinc.com>
-In-Reply-To: <87ttb9nea6.fsf@kernel.org>
+In-Reply-To: <87y10lngf1.fsf@kernel.org>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
+ nasanex01b.na.qualcomm.com (10.46.141.250)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: W3H7-C_TEOrcTuGXp04oq2oYrbb9vCrS
-X-Proofpoint-ORIG-GUID: W3H7-C_TEOrcTuGXp04oq2oYrbb9vCrS
+X-Proofpoint-GUID: VrB9COWG6suFogTu1dDNCpfIni3U88Bx
+X-Proofpoint-ORIG-GUID: VrB9COWG6suFogTu1dDNCpfIni3U88Bx
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- suspectscore=0 bulkscore=0 mlxlogscore=983 spamscore=0 clxscore=1011
- impostorscore=0 mlxscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412130043
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
+ suspectscore=0 impostorscore=0 phishscore=0 clxscore=1015 bulkscore=0
+ lowpriorityscore=0 mlxlogscore=999 priorityscore=1501 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412130047
 
 
 
-On 12/12/2024 10:53 PM, Kalle Valo wrote:
+On 12/12/2024 10:07 PM, Kalle Valo wrote:
 > Kang Yang <quic_kangyang@quicinc.com> writes:
 > 
->> ath11k_hal_srng_* should be used with srng->lock to protect srng data.
+>> From: Wen Gong <quic_wgong@quicinc.com>
 >>
->> For ath11k_dp_rx_mon_dest_process() and ath11k_dp_full_mon_process_rx(),
->> they use ath11k_hal_srng_* for many times but never call srng->lock.
+>> When wait flag is set for ath11k_reg_update_chan_list(), it will wait
+>> the completion of 11d/hw scan if 11d/hw scan is running.
 >>
->> So when running (full) monitor mode, warning will occur:
->> RIP: 0010:ath11k_hal_srng_dst_peek+0x18/0x30 [ath11k]
->> Call Trace:
->>   ? ath11k_hal_srng_dst_peek+0x18/0x30 [ath11k]
->>   ath11k_dp_rx_process_mon_status+0xc45/0x1190 [ath11k]
->>   ? idr_alloc_u32+0x97/0xd0
->>   ath11k_dp_rx_process_mon_rings+0x32a/0x550 [ath11k]
->>   ath11k_dp_service_srng+0x289/0x5a0 [ath11k]
->>   ath11k_pcic_ext_grp_napi_poll+0x30/0xd0 [ath11k]
->>   __napi_poll+0x30/0x1f0
->>   net_rx_action+0x198/0x320
->>   __do_softirq+0xdd/0x319
+>> With the previous patch "wifi: ath11k: move update channel list from
+>> update reg worker to reg notifier", ath11k_reg_update_chan_list() will
+>> be called when reg_work is running. The global lock rtnl_lock will be
+>> held by reg_work in the meantime. If the wait_for_completion_timeout()
+>> is called due to 11d/hw scan is running, the occupation time of
+>> rtnl_lock will increase. This will increase blocking time for other
+>> threads if they want to use rtnl_lock.
 >>
->> So add srng->lock for them to avoid such warnings.
+>> Move update channel list operation in ath11k_reg_update_chan_list() to
+>> a new worker, then the wait of completion of 11d/hw scan will not
+>> happen in reg_work and not increase the occupation time of the rtnl_lock.
 >>
->> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
->> Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
+>> Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
 >>
->> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+>> Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+>> Co-developed-by: Kang Yang <quic_kangyang@quicinc.com>
 >> Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
+> 
+> Same here, I think the commit message should be more or less rewritten.
+> 
+>> --- a/drivers/net/wireless/ath/ath11k/core.h
+>> +++ b/drivers/net/wireless/ath/ath11k/core.h
+>> @@ -743,6 +743,10 @@ struct ath11k {
+>>   	struct completion bss_survey_done;
+>>   
+>>   	struct work_struct regd_update_work;
+>> +	struct work_struct channel_update_work;
+>> +	struct list_head channel_update_queue;
+>> +	/* protects channel_update_queue data */
+>> +	spinlock_t channel_update_lock;
+> 
+> Do you really need a new lock? Why not use data_lock?
+
+Seems data_lock is OK, will change in next version.
+
+> 
+>> @@ -6318,6 +6320,15 @@ static void ath11k_mac_op_stop(struct ieee80211_hw *hw, bool suspend)
+>>   	}
+>>   	spin_unlock_bh(&ar->data_lock);
+>>   
+>> +	spin_lock_bh(&ar->channel_update_lock);
+> 
+> Empty line here, please.
+> 
+>> +	while ((params = list_first_entry_or_null(&ar->channel_update_queue,
+>> +						  struct scan_chan_list_params,
+>> +						  list))) {
+>> +		list_del(&params->list);
+>> +		kfree(params);
+>> +	}
+> 
+> Here also empty line.
+> 
+>> +	spin_unlock_bh(&ar->channel_update_lock);
+>> +
+>>   	rcu_assign_pointer(ar->ab->pdevs_active[ar->pdev_idx], NULL);
+>>   
+>>   	synchronize_rcu();
 > 
 > [...]
 > 
->> @@ -5607,7 +5609,7 @@ static int ath11k_dp_full_mon_process_rx(struct ath11k_base *ab, int mac_id,
->>   	struct hal_sw_mon_ring_entries *sw_mon_entries;
->>   	struct ath11k_pdev_mon_stats *rx_mon_stats;
->>   	struct sk_buff *head_msdu, *tail_msdu;
->> -	void *mon_dst_srng = &ar->ab->hal.srng_list[dp->rxdma_mon_dst_ring.ring_id];
->> +	struct hal_srng *mon_dst_srng;
->>   	void *ring_entry;
->>   	u32 rx_bufs_used = 0, mpdu_rx_bufs_used;
->>   	int quota = 0, ret;
->> @@ -5623,6 +5625,9 @@ static int ath11k_dp_full_mon_process_rx(struct ath11k_base *ab, int mac_id,
->>   		goto reap_status_ring;
->>   	}
->>   
->> +	mon_dst_srng = &ar->ab->hal.srng_list[dp->rxdma_mon_dst_ring.ring_id];
->> +	spin_lock_bh(&mon_dst_srng->lock);
+>> +void ath11k_regd_update_chan_list_work(struct work_struct *work)
+>> +{
+>> +	struct ath11k *ar = container_of(work, struct ath11k,
+>> +					 channel_update_work);
+>> +	struct scan_chan_list_params *params;
+>> +	struct list_head local_update_list;
+>> +	int left;
+>> +
+>> +	INIT_LIST_HEAD(&local_update_list);
+>> +
+>> +	spin_lock_bh(&ar->channel_update_lock);
+>> +	while ((params = list_first_entry_or_null(&ar->channel_update_queue,
+>> +						  struct scan_chan_list_params,
+>> +						  list))) {
+>> +		list_del(&params->list);
+>> +		list_add_tail(&params->list, &local_update_list);
+>> +	}
+>> +	spin_unlock_bh(&ar->channel_update_lock);
 > 
-> Why initialise mon_dst_srng differently? The commit message mentions
-> nothing about this change.
+> What about list_splice_tail_init() or similar?
 
+Seems list_splice_tail_init() is better. The time complexity is O(1).👍
 
-Because need to fetch spin lock inside 'struct hal_srng'. If still use 
-'void *mon_dst_srng', need to perform a variable type cast.
-
-Bur 'struct hal_srng' will make this line too long:
-'struct hal_srng *mon_dst_srng = 
-&ar->ab->hal.srng_list[dp->rxdma_mon_dst_ring.ring_id];'
-So I separated the definition and initialization.
-
-ath11k_dp_rx_reap_mon_status_ring()/ath11k_dp_process_rx and others ring 
-process function is the same.
-
-
-
+> 
+>> +
+>> +	while ((params = list_first_entry_or_null(&local_update_list,
+>> +						  struct scan_chan_list_params,
+>> +						  list))) {
+>> +		if (ar->state_11d != ATH11K_11D_IDLE) {
+>> +			left = wait_for_completion_timeout(&ar->completed_11d_scan,
+>> +							   ATH11K_SCAN_TIMEOUT_HZ);
+>> +			if (!left) {
+>> +				ath11k_dbg(ar->ab, ATH11K_DBG_REG,
+>> +					   "failed to receive 11d scan complete: timed out\n");
+>> +				ar->state_11d = ATH11K_11D_IDLE;
+>> +			}
+> 
+> Empty line here.
 > 
 
 
