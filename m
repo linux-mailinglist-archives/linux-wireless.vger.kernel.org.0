@@ -1,56 +1,55 @@
-Return-Path: <linux-wireless+bounces-16427-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16428-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA6C79F3A56
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Dec 2024 20:54:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E19579F3A59
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Dec 2024 20:56:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0480D7A0342
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Dec 2024 19:54:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FB401653E8
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Dec 2024 19:56:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C1020CCCE;
-	Mon, 16 Dec 2024 19:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 723EB20CCD0;
+	Mon, 16 Dec 2024 19:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SnuoTe0B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lFO8e9lS"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A859320C481;
-	Mon, 16 Dec 2024 19:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468A9205AA8;
+	Mon, 16 Dec 2024 19:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734378876; cv=none; b=piGEPXQGjyEnAQ2c+fl7pD2fzE3xGyD47lJBW5BbLtP5iqOoKm3WXyV6+fsOxMFXZNEDsSwxYVcIcc7y22dvpnCsfzaHKQZ7eRqYQP2Wqhd9OQ9a03W9CnExhADWge5syoZBwMi2cLBwm5RbDYIr2qMluH1S2Wi+n5Opem2KdUw=
+	t=1734379013; cv=none; b=gI2eiwt+CJZkcicSFPAcrpLwdZhu74c+F5K8tYiK/y2T9c1zhXN0up9rF488U5DoLnAhqDCs9Ar930Kye8k22N1nOMQE7qMytRAQxl9QJREjqI25nmmwPzxF5xTu28F8EGb8jUP4/qXMynHihHbDLfMYkpWfilECFFtPtcbaZ5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734378876; c=relaxed/simple;
-	bh=0VFiKC4boAv/+7uBTzQJqCRPDrjkoWJN1WOJILavTrA=;
+	s=arc-20240116; t=1734379013; c=relaxed/simple;
+	bh=mfQ+UvS9zCNDDMgy2pSAaJ5A6FtaL/xqQkyF0asjCys=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ps7nx98PX8qIKGck0i/IiJM2Z77z6alztxDKEkz6a6aztPC2UEzQ4lgxLHW2K5CsqtXRuayIQRO0BMqp7wTqw5t6/NBZz2LdC3/Vhhg8zJjZwBUtuPkZODBeTy8vIlttzSmG20bTpldTnTBWdmWerrsmhc2J8fgKcnxOB9MxF+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SnuoTe0B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509C8C4CED0;
-	Mon, 16 Dec 2024 19:54:35 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=CSE7j3K9mG4XlS+13N6q3fq6BTZ/A+Jus79qUDvwyt+sINvP8u5N1NWIGVaxEf/YNkthX2rkjqo+2O3qtRX1aSi/C0Xq+aSowEjkXDUSvLxYPiswkEm8vK+4TfelsjiT2zSfU9P9a5nXzpcVtVFTrny8q7Mifa51zZ6YilVadv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lFO8e9lS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F14CCC4CED0;
+	Mon, 16 Dec 2024 19:56:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734378876;
-	bh=0VFiKC4boAv/+7uBTzQJqCRPDrjkoWJN1WOJILavTrA=;
+	s=k20201202; t=1734379013;
+	bh=mfQ+UvS9zCNDDMgy2pSAaJ5A6FtaL/xqQkyF0asjCys=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SnuoTe0Bx/1XdHewh5DSy+c7JLqOzvJYtcQwJVIdvG0VDWQz0HXA1G8NH+2GXNtrK
-	 SpgWkYblqLtUxSw5MmO3xBsSYGqNrBQgNMGEBWkdAI53VGyioAEVwLwvCMoCZIh8Dl
-	 qItmc59oNA63J9nynR5SO6qinuF8kbbvmKWA2Avyjz2PABnXz02HTgwdrzCXADzat5
-	 dPTjeXvvj/gGy7UWe4LdE2WvtXygSrqCagVpUmBOfALRSnmgUwi+dHmq9I2ppU8DP9
-	 JZJKpNQhyd6wLFA3KE0SDZVyFFLwEGDf52A1TCk2ds4k4Y0rIMq4jRwb3r2w9JJIXB
-	 xEr8JcrzHhzKQ==
-Date: Mon, 16 Dec 2024 19:54:32 +0000
+	b=lFO8e9lS7ftXOKI+ufABMtvFzYaO48rUzAhicggP7Toly8vWQD+u0j0TTVIBW338P
+	 EBgSeyHWzW5KfeBpf1SQXrwqNKtbbQxkCd3tdM2x69ue5JP50DiDlox99vEIteHyjJ
+	 rSrjnt+1OfCaJYARZi1mnmG8Kosr65ovqzGkk5pZQCHfPJbV66kv2BmZxLQqIkqUoZ
+	 lLMuJ+4JV6nia/MP4/gaAwdiQqLU0xLmfeoddi8kS5QjsRcZpIT+AJ741qpfKV3Gg6
+	 6Ygror5DsnhIkuwgZVrgtPwO5wX+35nIe1pJfRGOIFHExja3I/dcY/cSPmOO0yFfkH
+	 dyLP1DOolb7xw==
+Date: Mon, 16 Dec 2024 19:56:49 +0000
 From: Conor Dooley <conor@kernel.org>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: ath12k@lists.infradead.org, linux-wireless@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 1/8] dt-bindings: net: wireless: Describe ath12k PCI
- module with WSI
-Message-ID: <20241216-croak-outwit-207ea8d3025d@spud>
-References: <20241209153034.50558-1-kvalo@kernel.org>
- <20241209153034.50558-2-kvalo@kernel.org>
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Cc: ath12k@lists.infradead.org, Kalle Valo <kvalo@kernel.org>,
+	linux-wireless@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 0/8] wifi: ath12k: MLO support part 7
+Message-ID: <20241216-moonlight-perpetual-d49029337c17@spud>
+References: <20241211153432.775335-1-kvalo@kernel.org>
+ <173436785894.3413746.14923997859754791913.b4-ty@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -58,62 +57,51 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="aXgPcGwIaTEPwO1U"
+	protocol="application/pgp-signature"; boundary="4t8WLMfWCtEr09Pn"
 Content-Disposition: inline
-In-Reply-To: <20241209153034.50558-2-kvalo@kernel.org>
+In-Reply-To: <173436785894.3413746.14923997859754791913.b4-ty@oss.qualcomm.com>
 
 
---aXgPcGwIaTEPwO1U
+--4t8WLMfWCtEr09Pn
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 09, 2024 at 05:30:27PM +0200, Kalle Valo wrote:
-> From: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+On Mon, Dec 16, 2024 at 08:50:58AM -0800, Jeff Johnson wrote:
 >=20
-> The QCN9274 WiFi device supports WSI (WLAN Serial Interface). WSI is used
-> to exchange specific control information across radios using a doorbell
-> mechanism. This WSI connection is essential for exchanging control
-> information among these devices. The WSI interface in the QCN9274 includes
-> TX and RX ports, which are used to connect multiple WSI-supported devices
-> together, forming a WSI group.
+> On Wed, 11 Dec 2024 17:34:24 +0200, Kalle Valo wrote:
+> > Implementing Multi-Link Operation (MLO) continues. Bindings document is=
+ added
+> > to get WSI information from DT (patch 1) with the code parsing the info=
+rmation
+> > (patch 2). Rest of the patches are about configuring MLO in firmware.
+> >=20
+> > Device Tree bindings were reviewed as RFC earlier:
+> >=20
+> > [RFC PATCH v3 1/5] dt-bindings: net: wireless: Describe ath12k PCI modu=
+le with WSI
+> >=20
+> > [...]
 >=20
-> Describe QCN9274 PCI wifi device with WSI interface.
+> Applied, thanks!
 >=20
-> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-> Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-> ---
->  .../net/wireless/qcom,ath12k-wsi.yaml         | 205 ++++++++++++++++++
->  1 file changed, 205 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/net/wireless/qcom,a=
-th12k-wsi.yaml
->=20
-> diff --git a/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-w=
-si.yaml b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-wsi.ya=
-ml
-> new file mode 100644
-> index 000000000000..7fec15e10a94
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/wireless/qcom,ath12k-wsi.yaml
+> [1/8] dt-bindings: net: wireless: Describe ath12k PCI module with WSI
+>       commit: 30e36fa89d8266d9221ee992d4f43553a59a3431
 
-Usually I'd comment on the mismatch between this and the compatible, but
-naming the file after the pcie id would do noone any favours. This seems
-fine to me,
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Delayed through being unexpectedly afk last week, I left an r-b on v2 a
+few mins ago. I don't give a shit about getting credit for tags, but
+figured it was worth mentioning it on the applied version of the series.
 
-Cheers,
-Conor.
-
---aXgPcGwIaTEPwO1U
+--4t8WLMfWCtEr09Pn
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ2CFeAAKCRB4tDGHoIJi
-0jdbAQCrxn0AOA9faLcR0u5ERNVSe3bZPX9blHiLEHsON0gQgAD/U+OuTurH5kBz
-mkIDbiIEEpc/WqcExwcWJPxcwfJuPAo=
-=hKTb
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ2CGAQAKCRB4tDGHoIJi
+0vsYAQDkoxDUoc1/fj7CS11vgTGaiWCoFhMoPF5TgURTVSzXsgEA0A9T++taG4dc
+SpaXgaEwIquY2rZrISfeuuUmHJ4RoQw=
+=wprf
 -----END PGP SIGNATURE-----
 
---aXgPcGwIaTEPwO1U--
+--4t8WLMfWCtEr09Pn--
 
