@@ -1,89 +1,84 @@
-Return-Path: <linux-wireless+bounces-16418-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16419-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F56A9F34BF
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Dec 2024 16:41:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BA7A9F35AF
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Dec 2024 17:19:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF762167B6E
-	for <lists+linux-wireless@lfdr.de>; Mon, 16 Dec 2024 15:40:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A77C1882B9C
+	for <lists+linux-wireless@lfdr.de>; Mon, 16 Dec 2024 16:17:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CAAC1494B2;
-	Mon, 16 Dec 2024 15:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2160F19DF8D;
+	Mon, 16 Dec 2024 16:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="fP87Upys"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iYLJLmCg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68F61487E5;
-	Mon, 16 Dec 2024 15:40:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EE04F20C
+	for <linux-wireless@vger.kernel.org>; Mon, 16 Dec 2024 16:15:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734363656; cv=none; b=MSJcZJpsugnn2EmeGyiQXaeiuhCiuEeAfMDUoZk0j+Fje8X5JwxkRyb3TNlRvASrHHp9Ga6RnKfIEVJl5gIvXaRxsxJ1lBzgQseB9+U65SU5DfCfSzzMHdHqALOsIb4rOmRxVHkMbXkjmds2rMo56B7H30tT0kR67xatt38bpj4=
+	t=1734365717; cv=none; b=jDZ2FCI/GBvglFjGqpkHFaCg/ds+82Z735JMW/fQgyyaA7lQiFt6wt66V+gmBygEssmd30mPzpL4kqtrXAjMBaYKCBuMLhmaGA8ZcVRYvxiwKV8DfyvygmmhaibhHsLLb2nhFCXs1ysNX7VVqpqcPbfqQiH2H1hlNvGbP3tO2tU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734363656; c=relaxed/simple;
-	bh=nBlfpGHZLN/tSmadhAaGKOZKCuSup5dAG2EvrJLNhm8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BGcg0iG8kykgSTAKWyZEnMtGxIhIpUpJVG02dENRlSORiew7G/ZXzuoFFHxHbxdirrZdwvHuzWqZXmiD6UwFCKMsPFNV6oU9QoZ3IszK8EOF9RS7bCg9KsufWaNhIhIjMVl+FNIduvzT9eXnzpzUoL0Udl7uhKfKbGMukDSYSEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=fP87Upys; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=lgibr6KIaF4osjRJKvvTMTfF1EZjS2bKGRpJ4Y47g5E=; b=fP
-	87UpysOTTMwnIYBto8w3o7YSyba+R0lAQodCnE9xM3nL7ER8J2lPIg0yPQgHTmGnm3fxOWtaCrHXd
-	cC/jdRnYpClxaknx45QCZpgGni/UZTINa9D0tdO069/pycivefBA5cRGOHkB4mfGzsRZqZOVksPKu
-	eieCfUot1B6JxdM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1tNDD1-000f9s-Dg; Mon, 16 Dec 2024 16:40:35 +0100
-Date: Mon, 16 Dec 2024 16:40:35 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>
-Cc: Roopa Prabhu <roopa@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, Kalle Valo <kvalo@kernel.org>,
-	Manish Chopra <manishc@marvell.com>,
-	Rahul Verma <rahulv@marvell.com>, GR-Linux-NIC-Dev@marvell.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Shahed Shaikh <shshaikh@marvell.com>, bridge@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-wireless@vger.kernel.org
-Subject: Re: [PATCH net-next 2/5] net: phy: ks8995: constify 'struct
- bin_attribute'
-Message-ID: <1f30c688-64fa-456d-a4c5-94fb7d6eac71@lunn.ch>
-References: <20241216-sysfs-const-bin_attr-net-v1-0-ec460b91f274@weissschuh.net>
- <20241216-sysfs-const-bin_attr-net-v1-2-ec460b91f274@weissschuh.net>
+	s=arc-20240116; t=1734365717; c=relaxed/simple;
+	bh=kQc4WqYLikLO8KzFWTQDDqCMkg1YfUkr5b9oT4SpHK0=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=HddFlBNlbn36sAyXf4AtGztEBQlWUr7EfcfsCAIzrUKMrjdoAj3TXksgEGr4in/+c19uvVrKRPxwtZyIrIboyj9unK/cfk8LnpbBhrY/oV2Aql2d/n1QVWWBbdFWlf/VEXiYGo7/DglA9EstAwyqDJHlJtMAL6tIKuywnh+20vE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iYLJLmCg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACD12C4CED0;
+	Mon, 16 Dec 2024 16:15:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734365716;
+	bh=kQc4WqYLikLO8KzFWTQDDqCMkg1YfUkr5b9oT4SpHK0=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=iYLJLmCgvTP4poWfJGSsryZPzGVH2CFGrw7dhL16sSbZmY8Ek1nIoI+7C+n1mItpn
+	 CK8XFNuV7fXSjzo7UZJ1obzjV2fi18EVeqoLHU7IhWbs1dHcIXthysSYMchaovWrjw
+	 dQk8Ldm2SRmI4An4vkZ7bv8IlcNHDzoAnPOjX78scqDo1AjZR2FCUGUbV8JhpEshDT
+	 U/8t4JTBVbQ1a9FkWNStQUacUVqHsvZ4SGk54AWRzbx/9ADYn4urq6MkBiXhHoooAj
+	 J7GNhJWo4O3a9nNCRKARrsdvrMpQr5nH9tgzXM6azLtDc0f3egLGd98qQiW97Q0DX1
+	 s5gqDu+SGstow==
+From: Kalle Valo <kvalo@kernel.org>
+To: P Praneesh <quic_ppranees@quicinc.com>
+Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] wifi: ath12k: Add support for parsing 64-bit TLVs
+References: <20241204071238.948885-1-quic_ppranees@quicinc.com>
+Date: Mon, 16 Dec 2024 18:15:13 +0200
+In-Reply-To: <20241204071238.948885-1-quic_ppranees@quicinc.com> (P.
+	Praneesh's message of "Wed, 4 Dec 2024 12:42:38 +0530")
+Message-ID: <87o71bmwoe.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241216-sysfs-const-bin_attr-net-v1-2-ec460b91f274@weissschuh.net>
+Content-Type: text/plain
 
-On Mon, Dec 16, 2024 at 12:30:09PM +0100, Thomas Weiﬂschuh wrote:
-> The sysfs core now allows instances of 'struct bin_attribute' to be
-> moved into read-only memory. Make use of that to protect them against
-> accidental or malicious modifications.
-> 
-> Signed-off-by: Thomas Weiﬂschuh <linux@weissschuh.net>
+P Praneesh <quic_ppranees@quicinc.com> writes:
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> There is mismatch between the format of monitor destination TLVs received
+> and the expected format by the current implementation. The received TLVs
+> are in 64-bit format, while the implementation is designed to handle
+> 32-bit TLVs. This leads to incorrect parsing. Fix it by adding support
+> for parsing 64-bit TLVs.
+>
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+>
+> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
 
-    Andrew
+What about WCN7850? The commit message mentions nothing about it so I
+can only assume that this breaks WCN7850.
+
+Please remember that ath12k is not only a QCN9274 project. If I got 0.01
+EUR every time I say that...
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
