@@ -1,52 +1,52 @@
-Return-Path: <linux-wireless+bounces-16504-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16505-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E746B9F57AD
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 21:27:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67E619F57B0
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 21:27:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FD3716F1D8
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 20:26:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86EF016F35E
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 20:27:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 057BC1F9433;
-	Tue, 17 Dec 2024 20:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A461F9EAD;
+	Tue, 17 Dec 2024 20:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UnVRgpu5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WRLlI3z+"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59EA1F9EAD
-	for <linux-wireless@vger.kernel.org>; Tue, 17 Dec 2024 20:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0203C1F9EC1
+	for <linux-wireless@vger.kernel.org>; Tue, 17 Dec 2024 20:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734467181; cv=none; b=O1ibFVmjilRW1zmOQNBXYkfcQdrAQ4MnBcy5J2nauLybRJN9l2MTNeQXlf7PLLFEYxqFTQYXZokeZdfmJ+Bk69RY8k8knn4LZorTdDYIKtsoO/mrjRTIeKJbr2JXqlZfAG/DyFgsKHcgaclgWR5gOP2y7KLkAs1Fg871Zs6z1WM=
+	t=1734467183; cv=none; b=IwJxQiLGNI1GtdPvFjW2nPNR13pYInc+1tobubV3Yme8juHgXzq1jeGcbtvRXrhNV5ZdQLlC62l61qD4smTivQyG0+X6Tb1N23p+j0WRqnIuIZ7eQH7tPlJrW7PaPzHdetJeDHiYNxV2d5DsP6CQm/+A51Prr4B6tiOKrgE0x+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734467181; c=relaxed/simple;
-	bh=oHhMU+EKio682SB2+Dh1hNm9yIecNFwww1aqgC/Qv50=;
+	s=arc-20240116; t=1734467183; c=relaxed/simple;
+	bh=VQm3hiNA3kQgkmtCDPPom8HziQB3vh3sJutG7be7roQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Gi6cuhcxch6FVG61HDwHaFhjPzsTHCJPkoMLbk72EvucIj41OrN50qRDv+d9bJOB6zLOoVzMTIGIut1nkhyNZmjgprQMYhXlDlcg+GabUEqDLC5CA7l+bdTHlfoPF6pEUmLOleaGuohyThl/fh5hc6oB75AWpesnoDEKGTR+l+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UnVRgpu5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC24CC4CEDD;
-	Tue, 17 Dec 2024 20:26:20 +0000 (UTC)
+	 MIME-Version; b=RyqsEPFbNdmPO4mRL0XGlgcbX0IQfKgdv5TZpJyus7ZQ3byBwNONgfa7oyj4hR0WIjBEghutdNO+94u4zKDYd9OOvjR+LJFDk9glH3w0nrT8HnD5kcr6217L58BF/XUry2e33s4YtKGhsPelWigaPZaNzBP0+YKJrzMmDmQKFu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WRLlI3z+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7144C4CED3;
+	Tue, 17 Dec 2024 20:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734467181;
-	bh=oHhMU+EKio682SB2+Dh1hNm9yIecNFwww1aqgC/Qv50=;
+	s=k20201202; t=1734467182;
+	bh=VQm3hiNA3kQgkmtCDPPom8HziQB3vh3sJutG7be7roQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UnVRgpu5leLLhjvxgOkwrCuxsBcwxrb/MwHGZeGFnOSoQBJpLRN4mdKl8a9ZV7Gtb
-	 s8A8Pl7NMtZCEe/qdPdtIBzP5DfkIbLl1n6dM6PCbad7QiGtz1ZMKphIqo4qgLZ1v8
-	 ONc3S67ROBtiVKPsBAoRdamlUIs+O0S9MWnkBeopvikQCQrhRtdJiFdBGJQnhXbigD
-	 jfq4gl1PmREURcxOuASqmIpl5pZQmxNGnnIffmw0sqfRreMIFXYw3gU6Od93Vgah4p
-	 hB18k/6jZpuBve56SeTvISE9fYI2EwFw1BumrrgmX0aYvds16eXJ4d18uQAzTMWRpH
-	 hWTnTKXRdJ80A==
+	b=WRLlI3z+9qlYlrUL2d4MkKeCsOIhiJ6Ddd4O0qbRt6zBNNp+/S3HfKooLgMCADkeu
+	 p4Y5Kbb+CQja4CQoecFwAY6ZMnQFWcRQOXHPH2YPTU2nw5+LWcbbMtjdtsheL39qSi
+	 Dl11sU6ZSZQUJAJN2lK/Tm7BI6aQ7R/1IvphNxOS57lqgaB/oO5iTyf+lVuAuy/Iu5
+	 MmgDlFki8RHbRawIkd092HvzMmDRZzy2+Ats5zGNZnRnTf7v5BvtsaHlY6yFKetbwT
+	 1HlLyZ2f1ryAVc3HC/sEtEaCAea1bV3KV4p9uXGNO41Jd+G4EjewQNOjv2yCSKD1L7
+	 X5mt0HYPs5qbg==
 From: Kalle Valo <kvalo@kernel.org>
 To: ath12k@lists.infradead.org
 Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 1/4] wifi: ath12k: Decrease ath12k_mac_op_remain_on_channel() stack usage
-Date: Tue, 17 Dec 2024 22:26:15 +0200
-Message-Id: <20241217202618.1329312-2-kvalo@kernel.org>
+Subject: [PATCH 2/4] wifi: ath12k: Decrease ath12k_bss_assoc() stack usage
+Date: Tue, 17 Dec 2024 22:26:16 +0200
+Message-Id: <20241217202618.1329312-3-kvalo@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241217202618.1329312-1-kvalo@kernel.org>
 References: <20241217202618.1329312-1-kvalo@kernel.org>
@@ -60,19 +60,18 @@ Content-Transfer-Encoding: 8bit
 
 From: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-Building the ath12k driver with llvm-18.1.7-x86_64 produces the warning:
+Currently when building ath12k with gcc-14.2.0 the following warning
+is observed:
 
-drivers/net/wireless/ath/ath12k/mac.c:10028:12: warning: stack frame size (1080) exceeds limit (1024) in 'ath12k_mac_op_remain_on_channel' [-Wframe-larger-than]
+drivers/net/wireless/ath/ath12k/mac.c: In function 'ath12k_bss_assoc':
+drivers/net/wireless/ath/ath12k/mac.c:3080:1: warning: the frame size of 1040 bytes is larger than 1024 bytes [-Wframe-larger-than=]
 
 A major contributor to the stack usage in this function is:
 
-	struct ath12k_wmi_scan_req_arg arg;
+	struct ath12k_wmi_peer_assoc_arg peer_arg;
 
-Avoid the excess stack usage by dynamically allocating arg instead of
-declaring it on the stack. As part of the effort use __free() for both
-this new allocation as well as the existing chan_list allocation, and
-since then no central cleanup is required, replace all cleanup gotos
-with returns.
+Avoid the excess stack usage by dynamically allocating peer_arg
+instead of declaring it on the stack.
 
 Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
 Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
@@ -80,148 +79,47 @@ Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ
 Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 76 ++++++++++++---------------
- 1 file changed, 33 insertions(+), 43 deletions(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 186765fa95f5..05d2c75e5df2 100644
+index 05d2c75e5df2..2a30a11903c5 100644
 --- a/drivers/net/wireless/ath/ath12k/mac.c
 +++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -10054,7 +10054,6 @@ static int ath12k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
- {
- 	struct ath12k_vif *ahvif = ath12k_vif_to_ahvif(vif);
- 	struct ath12k_hw *ah = ath12k_hw_to_ah(hw);
--	struct ath12k_wmi_scan_req_arg arg;
- 	struct ath12k_link_vif *arvif;
- 	struct ath12k *ar;
- 	u32 scan_time_msec;
-@@ -10065,10 +10064,8 @@ static int ath12k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
- 	lockdep_assert_wiphy(hw->wiphy);
+@@ -3133,7 +3133,6 @@ static void ath12k_bss_assoc(struct ath12k *ar,
+ 	struct ath12k_vif *ahvif = arvif->ahvif;
+ 	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(ahvif);
+ 	struct ath12k_wmi_vdev_up_params params = {};
+-	struct ath12k_wmi_peer_assoc_arg peer_arg = {};
+ 	struct ieee80211_link_sta *link_sta;
+ 	u8 link_id = bss_conf->link_id;
+ 	struct ath12k_link_sta *arsta;
+@@ -3145,6 +3144,11 @@ static void ath12k_bss_assoc(struct ath12k *ar,
  
- 	ar = ath12k_mac_select_scan_device(hw, vif, chan->center_freq);
--	if (!ar) {
--		ret = -EINVAL;
--		goto exit;
--	}
-+	if (!ar)
-+		return -EINVAL;
+ 	lockdep_assert_wiphy(ath12k_ar_to_hw(ar)->wiphy);
  
- 	/* check if any of the links of ML VIF is already started on
- 	 * radio(ar) correpsondig to given scan frequency and use it,
-@@ -10087,15 +10084,11 @@ static int ath12k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
- 	 * always on the same band for the vif
- 	 */
- 	if (arvif->is_created) {
--		if (WARN_ON(!arvif->ar)) {
--			ret = -EINVAL;
--			goto exit;
--		}
-+		if (WARN_ON(!arvif->ar))
-+			return -EINVAL;
- 
--		if (ar != arvif->ar && arvif->is_started) {
--			ret = -EBUSY;
--			goto exit;
--		}
-+		if (ar != arvif->ar && arvif->is_started)
-+			return -EBUSY;
- 
- 		if (ar != arvif->ar) {
- 			ath12k_mac_remove_link_interface(hw, arvif);
-@@ -10112,7 +10105,7 @@ static int ath12k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
- 		if (ret) {
- 			ath12k_warn(ar->ab, "unable to create scan vdev for roc: %d\n",
- 				    ret);
--			goto exit;
-+			return ret;
- 		}
++	struct ath12k_wmi_peer_assoc_arg *peer_arg __free(kfree) =
++					kzalloc(sizeof(*peer_arg), GFP_KERNEL);
++	if (!peer_arg)
++		return;
++
+ 	ath12k_dbg(ar->ab, ATH12K_DBG_MAC,
+ 		   "mac vdev %i link id %u assoc bssid %pM aid %d\n",
+ 		   arvif->vdev_id, link_id, arvif->bssid, ahvif->aid);
+@@ -3177,11 +3181,11 @@ static void ath12k_bss_assoc(struct ath12k *ar,
+ 		return;
  	}
  
-@@ -10140,37 +10133,41 @@ static int ath12k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
- 	spin_unlock_bh(&ar->data_lock);
+-	ath12k_peer_assoc_prepare(ar, arvif, arsta, &peer_arg, false);
++	ath12k_peer_assoc_prepare(ar, arvif, arsta, peer_arg, false);
  
- 	if (ret)
--		goto exit;
-+		return ret;
+ 	rcu_read_unlock();
  
- 	scan_time_msec = hw->wiphy->max_remain_on_channel_duration * 2;
- 
--	memset(&arg, 0, sizeof(arg));
--	ath12k_wmi_start_scan_init(ar, &arg);
--	arg.num_chan = 1;
--	arg.chan_list = kcalloc(arg.num_chan, sizeof(*arg.chan_list),
--				GFP_KERNEL);
--	if (!arg.chan_list) {
--		ret = -ENOMEM;
--		goto exit;
--	}
-+	struct ath12k_wmi_scan_req_arg *arg __free(kfree) =
-+					kzalloc(sizeof(*arg), GFP_KERNEL);
-+	if (!arg)
-+		return -ENOMEM;
- 
--	arg.vdev_id = arvif->vdev_id;
--	arg.scan_id = ATH12K_SCAN_ID;
--	arg.chan_list[0] = chan->center_freq;
--	arg.dwell_time_active = scan_time_msec;
--	arg.dwell_time_passive = scan_time_msec;
--	arg.max_scan_time = scan_time_msec;
--	arg.scan_f_passive = 1;
--	arg.burst_duration = duration;
-+	ath12k_wmi_start_scan_init(ar, arg);
-+	arg->num_chan = 1;
- 
--	ret = ath12k_start_scan(ar, &arg);
-+	u32 *chan_list __free(kfree) = kcalloc(arg->num_chan, sizeof(*chan_list),
-+					       GFP_KERNEL);
-+	if (!chan_list)
-+		return -ENOMEM;
-+
-+	arg->chan_list = chan_list;
-+	arg->vdev_id = arvif->vdev_id;
-+	arg->scan_id = ATH12K_SCAN_ID;
-+	arg->chan_list[0] = chan->center_freq;
-+	arg->dwell_time_active = scan_time_msec;
-+	arg->dwell_time_passive = scan_time_msec;
-+	arg->max_scan_time = scan_time_msec;
-+	arg->scan_f_passive = 1;
-+	arg->burst_duration = duration;
-+
-+	ret = ath12k_start_scan(ar, arg);
+-	ret = ath12k_wmi_send_peer_assoc_cmd(ar, &peer_arg);
++	ret = ath12k_wmi_send_peer_assoc_cmd(ar, peer_arg);
  	if (ret) {
- 		ath12k_warn(ar->ab, "failed to start roc scan: %d\n", ret);
- 
- 		spin_lock_bh(&ar->data_lock);
- 		ar->scan.state = ATH12K_SCAN_IDLE;
- 		spin_unlock_bh(&ar->data_lock);
--		goto free_chan_list;
-+		return ret;
- 	}
- 
- 	ret = wait_for_completion_timeout(&ar->scan.on_channel, 3 * HZ);
-@@ -10179,20 +10176,13 @@ static int ath12k_mac_op_remain_on_channel(struct ieee80211_hw *hw,
- 		ret = ath12k_scan_stop(ar);
- 		if (ret)
- 			ath12k_warn(ar->ab, "failed to stop scan: %d\n", ret);
--		ret = -ETIMEDOUT;
--		goto free_chan_list;
-+		return -ETIMEDOUT;
- 	}
- 
- 	ieee80211_queue_delayed_work(hw, &ar->scan.timeout,
- 				     msecs_to_jiffies(duration));
- 
--	ret = 0;
--
--free_chan_list:
--	kfree(arg.chan_list);
--
--exit:
--	return ret;
-+	return 0;
- }
- 
- static void ath12k_mac_op_set_rekey_data(struct ieee80211_hw *hw,
+ 		ath12k_warn(ar->ab, "failed to run peer assoc for %pM vdev %i: %d\n",
+ 			    bss_conf->bssid, arvif->vdev_id, ret);
 -- 
 2.39.5
 
