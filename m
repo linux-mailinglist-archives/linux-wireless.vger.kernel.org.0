@@ -1,88 +1,77 @@
-Return-Path: <linux-wireless+bounces-16502-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16503-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89A419F573F
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 20:55:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 565A79F57AA
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 21:26:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2E7E1635D9
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 19:55:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6905A188FAE5
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 20:26:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D6551F7074;
-	Tue, 17 Dec 2024 19:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053981F9432;
+	Tue, 17 Dec 2024 20:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZIoqh219"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pg9Ap9KW"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBB7148850
-	for <linux-wireless@vger.kernel.org>; Tue, 17 Dec 2024 19:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A441F9431
+	for <linux-wireless@vger.kernel.org>; Tue, 17 Dec 2024 20:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734465354; cv=none; b=g7Vr2XVl93S+B71LJrMSrPKm9xd3+b81qAW0my18XS0wHIVOskQw0KtdieW/NLd/XyoMoU86F5GMsbjV1N1WsEqHhkMcr4B9wgqW3+Xk8fYHzKtiomMlrJSBFBrPhYGvd6KDp75NJia/wBbQ9XAgxdDeQ4oH4m1bRjvQ21+XZyY=
+	t=1734467180; cv=none; b=rVyOIEvGiojp12GhEwKbCqnAsTm6SDyEAtQoDL3EjL0GLfjmOeKknewJXcMRC/mghAVdKYgb2VmNE39Js6ZA/86dHPKaa15QBoo5zeNY4QxB80Y3CsKum9GGhpEXf9NtC1etDl5eWMX//OwRGjx6WEgpnWYDtCkH79haOCRLKsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734465354; c=relaxed/simple;
-	bh=TYTlRh42Ds3nm+yPIRcHEzgRHFbUoen/POXu7Xcy0l8=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=FW2/eKqtitWUby/oFiZJEZHt6UyfidblReE/94GqSHh3X1I3vx4wCpqYcPAVSTmhUk0nvUyhK/feQ9IOxFX3Qfrjv6F/ywWoeUHb8W2Ze/PCpDvb3Ae4YNhmXoHHtyx9ojZETOpXXrAOCZmx1Qp1cF2DQ7UskjCOwOGTmmdqzME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZIoqh219; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86D68C4CED3;
-	Tue, 17 Dec 2024 19:55:52 +0000 (UTC)
+	s=arc-20240116; t=1734467180; c=relaxed/simple;
+	bh=kEAdCKgicdHpId1rmo7Q9EFxHtgkjHwleVYsu9P1css=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mADtuBv35FK6b+sWOMiRWPvfejcO+umJVWvsiuSR68ApXwfWwXbF+mACuHWK/Nrf8+2AvyJSjSWW2bavtBC7bc/vkmGRx7o7WpGccwdXqiX53IIYT9HRxl4GfKhkNXHV7vcWsU0I+Ni1D8kwk8zbeRdGFFZMMhOJBL+sI6xORIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pg9Ap9KW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFDD1C4CED3;
+	Tue, 17 Dec 2024 20:26:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734465353;
-	bh=TYTlRh42Ds3nm+yPIRcHEzgRHFbUoen/POXu7Xcy0l8=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=ZIoqh219qSIITtkhf/DRBQBhAk0StZzfL0Es8LEZkfdNO9bFXPRhBVErSNnVN9L7H
-	 e58InBc38rMg21ljzOTglbuHnx5EoLuMfw3LfiYrpv9lLBchDmfqhq+z3bKH9pbLPs
-	 2vsCLYhyKG/86CkUdQ5d+bnZc9W9Yu9PGz1cYpKw6mwetFOL/3VyATiZurAkrCfr+r
-	 2Z60NVCHJOlCmpgbk4IYwHxH28+itUxyRBmf+BAP0vLPjYms/PynRQMIO/mD7Pao6T
-	 Cb6O53yFZ+WJ6jVhHb0aocH/P3PQLmJeLncIkUPs1IGRRBE6nFcWqL4ImabNUsUZqn
-	 WrlTynOy1Ijqg==
+	s=k20201202; t=1734467180;
+	bh=kEAdCKgicdHpId1rmo7Q9EFxHtgkjHwleVYsu9P1css=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Pg9Ap9KWmA76pkg9g0UuOCwgwu/DOvgF0uEovLKF2KldPaxS7F+jV+qtjnrWfKkHj
+	 kbUmaXjsbytYxEx9khpEitoXzxuA6G+i7K1mTk1v4Xuw2iWccMBdB4dzBMwQ/cIJ0g
+	 biQyeo29dDldwgM8Y19/DSLvg/jsLiw1JYDqU1e7Tj3b6DRV1FbR/8ykqiNR+jk6YS
+	 sz9/NHvPqiri0/KtxIXwQhQDosHHR5qoFSbZoCBS1xkW0LicO6Xb9iwd2dYB4D5DpE
+	 DjzkSyJUC1cLQoIGU4OeR28LlTr/c/ZAx8VfzDz9quUV24bP6PsmGJOuBKRi2TgLSL
+	 Tk0hwCbQbKT+Q==
 From: Kalle Valo <kvalo@kernel.org>
-To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>,  Jeff
- Johnson <quic_jjohnson@quicinc.com>
-Subject: Re: [PATCH v3 8/8] wifi: ath12k: Avoid explicit type cast in
- monitor status parse handler
-References: <20241217084511.2981515-1-quic_periyasa@quicinc.com>
-	<20241217084511.2981515-9-quic_periyasa@quicinc.com>
-Date: Tue, 17 Dec 2024 21:55:51 +0200
-In-Reply-To: <20241217084511.2981515-9-quic_periyasa@quicinc.com> (Karthikeyan
-	Periyasamy's message of "Tue, 17 Dec 2024 14:15:11 +0530")
-Message-ID: <87ed26jd88.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+To: ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH 0/4] wifi: ath12k: few fixes for clang warnings
+Date: Tue, 17 Dec 2024 22:26:14 +0200
+Message-Id: <20241217202618.1329312-1-kvalo@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 
-Karthikeyan Periyasamy <quic_periyasa@quicinc.com> writes:
+From: Kalle Valo <quic_kvalo@quicinc.com>
 
-> Currently, monitor status parse procedure handles all the supported TLV
-> tags. Each TLV tag has its own data structure for parsing. Now, this
-> handler is passed the tlv_data as a u8 pointer, so explicit type cast
-> conversion happens for every TLV tag parsing. Therefore, avoid the
-> explicit type conversion by changing the tlv_data type from a u8 pointer
-> to a const void pointer.
->
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
->
-> Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+While build testing Jeff found some clang warnings, here are his fixes. Please
+review.
 
-Nice, less void pointers the better.
+Jeff Johnson (4):
+  wifi: ath12k: Decrease ath12k_mac_op_remain_on_channel() stack usage
+  wifi: ath12k: Decrease ath12k_bss_assoc() stack usage
+  wifi: ath12k: Decrease ath12k_sta_rc_update_wk() stack usage
+  wifi: ath12k: Decrease ath12k_mac_station_assoc() stack usage
 
-Acked-by: Kalle Valo <kvalo@kernel.org>
+ drivers/net/wireless/ath/ath12k/mac.c | 114 +++++++++++++-------------
+ 1 file changed, 58 insertions(+), 56 deletions(-)
 
+
+base-commit: 9a448415ed0c46edeb9170091a03b620986ca0b2
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+2.39.5
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
