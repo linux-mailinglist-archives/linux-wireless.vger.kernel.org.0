@@ -1,57 +1,56 @@
-Return-Path: <linux-wireless+bounces-16479-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16480-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 787F39F4E94
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 15:58:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 822269F4ECB
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 16:06:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C4DA1894C78
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 14:56:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 165341894304
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 15:01:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 472DE1F706F;
-	Tue, 17 Dec 2024 14:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42261EBFE3;
+	Tue, 17 Dec 2024 15:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OuAZVrqJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vo+BQ0X0"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224221F63DD
-	for <linux-wireless@vger.kernel.org>; Tue, 17 Dec 2024 14:53:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA861F666B
+	for <linux-wireless@vger.kernel.org>; Tue, 17 Dec 2024 15:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734447194; cv=none; b=Nx93hl5Hr5r7NIpHK+fQM48en1x0bGW3J/EbvJJyBRmtk5eJgmL3rOyr5Au8Y2MwAIlemPiKiKvrC46jHdqMbduoVug6IiX9LmWbpi1fu28GwuSHYfA6kByY8lG1MKaJvtRlNBRnQtMNwcGRF1sXUkZcRsuBm9jzYV7AuPbyfug=
+	t=1734447668; cv=none; b=t7QORGaOyG5IgqllUpJLhlAfBfCo+XRqHOOTQJqghzsECb4bZTjpONKka/py2QCzPtZIyGIeVVblwVlOAPB6eWGCgVf608wFBb0qqRJiUqGFWzx+hZ0OBhAfEYCugRIpEXYF/W2FXcnN0lCg9UT0ei0OEAuvEDSsoWZ9WSijwbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734447194; c=relaxed/simple;
-	bh=+F90y8yls9W+2OroXzCpT7EdDHjsL2jMmqwYVQ7bUCw=;
+	s=arc-20240116; t=1734447668; c=relaxed/simple;
+	bh=695XyT9HylzgQMl6LI188n8hrO1dbwChaw9J5Kqj0O0=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=cgB3F5w9QyI+yXECAsxmCETCFH2PmpkuETAWZFHae+iseL/Xbt/s9uO3UzaJiAjFDHOnj5L2sNsncgFJJ5mnb4IoqwWXld6cRziTPDis3b8J7F2Ahc04YHCaMNQiiSfl+K6acmlmFG1Vzn1KVUu+B6fCM0Tu+2DS7ry50qrV6Mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OuAZVrqJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD638C4CED4;
-	Tue, 17 Dec 2024 14:53:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=U+S5VT5RTgwlr2Rqh2RbxEs5K30hzD2LHKrUEpkh4kFCAt4D0z6tq7b5jwSZecgaNt69xn41UkWk9EOQ945kXVzyy6dMtFniYsKIFVCQ6ovpgOuYeanE4UzIEtvgQSToAN3eJTmaq4GP4vAePxSCDmGCSyS4IyvX6sP6eOOssv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vo+BQ0X0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75263C4CED3;
+	Tue, 17 Dec 2024 15:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734447193;
-	bh=+F90y8yls9W+2OroXzCpT7EdDHjsL2jMmqwYVQ7bUCw=;
+	s=k20201202; t=1734447668;
+	bh=695XyT9HylzgQMl6LI188n8hrO1dbwChaw9J5Kqj0O0=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=OuAZVrqJXJn9gY7aiJM1N53OFgO7gnCfUrxldRA4Xfs/4NDkEq5MwQt2Bir94mQs8
-	 jAvqKz+cWBHpsEpDSVtSrw+NVnnVMkA2qTFTYxuHMZmWtT3rLaMGbRY5ufEAoonJr2
-	 5bIOW3VoJvK95r1c66aRHG2XsKYZnEZT3plxm8p6NKsEhmmWT2MTXHqkJEa+4kTCBp
-	 2Xb/NuUJzObkrpqTbbDW0tV0mcVd7989okmPt9WneX5zyL7pis86Cmx+hPwPpqiHVZ
-	 OdH0hJ0DaOILF0TM4NOy/pzN6NDILo82AP4xmJYxcfLdTRFOeaTsu2/SNAPj9rfa5J
-	 Lxwpw1yE9cNFw==
+	b=Vo+BQ0X0J7VQWJA07OemM6PYOC1TZBr3PjDHYZVRW4xAeVyo8RmR8hc/aiASE0Y/N
+	 FXZJQUOFMG01byk2MnFpx3cFXhkDivwLqwHmo+sNPjsRHfnpLM7poTjHJxkNMYjzQT
+	 QxOvznGMetaEmelUxC0JDmKVpqYxDRulhgmlZg6Ba6c6xXEYxam4hJQfHa4X4dH5is
+	 NBmICk9ECXCLdcZsTiSACL6IvB6mKNZeKg6nIb1LowpD0+XLcJ8r1IS0f6hXBihZUf
+	 FavK0FG6vNPt6pl0S6MFLoKV2dKTyRTWODM97fNjc3tFBKOGlfxFBtkb6E+xZcz7N/
+	 PgoMKQ9sB7O+A==
 From: Kalle Valo <kvalo@kernel.org>
-To: Kang Yang <quic_kangyang@quicinc.com>
-Cc: <ath11k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v4 2/2] wifi: ath11k: move update channel list to worker
- when wait flag is set
-References: <20241213093909.629-1-quic_kangyang@quicinc.com>
-	<20241213093909.629-3-quic_kangyang@quicinc.com>
-Date: Tue, 17 Dec 2024 16:53:11 +0200
-In-Reply-To: <20241213093909.629-3-quic_kangyang@quicinc.com> (Kang Yang's
-	message of "Fri, 13 Dec 2024 17:39:09 +0800")
-Message-ID: <87bjxamkdk.fsf@kernel.org>
+To: Roopni Devanathan <quic_rdevanat@quicinc.com>
+Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v4 1/2] wifi: ath12k: Support AST Entry Stats
+References: <20241217055408.1293764-1-quic_rdevanat@quicinc.com>
+	<20241217055408.1293764-2-quic_rdevanat@quicinc.com>
+Date: Tue, 17 Dec 2024 17:01:05 +0200
+In-Reply-To: <20241217055408.1293764-2-quic_rdevanat@quicinc.com> (Roopni
+	Devanathan's message of "Tue, 17 Dec 2024 11:24:07 +0530")
+Message-ID: <8734immk0e.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -61,86 +60,36 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Kang Yang <quic_kangyang@quicinc.com> writes:
+Roopni Devanathan <quic_rdevanat@quicinc.com> writes:
 
-> From: Wen Gong <quic_wgong@quicinc.com>
+> Add support to request Address Search Table(AST) entries stats
+> from firmware through HTT stats type 41. These stats give AST entries
+> related information such as software peer id, MAC address, pdev id,
+> vdev, id, next hop, etc.
 >
-> With previous patch "wifi: ath11k: move update channel list from update
-> reg worker to reg notifier", ath11k_reg_update_chan_list() will be
-> called during reg_process_self_managed_hint().
+> Sample output:
+> -------------
+> echo 41 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
+> cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats
+> HTT_AST_ENTRY_TLV:
+> ast_index = 10
+> mac_addr = 00:00:00:01:00:00
+> sw_peer_id = 0
+> pdev_id = 3
+> vdev_id = 255
+> next_hop = 0
+> mcast = 0
+> monitor_direct = 0
+> mesh_sta = 0
+> mec = 0
+> intra_bss = 0
 >
-> reg_process_self_managed_hint() will hold rtnl_lock all the time.
-> But ath11k_reg_update_chan_list() may increase the occupation time of
-> rtnl_lock, because wait flag is set and wait_for_completion_timeout()
-> will be called when 11d/hw scan is running.
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
 >
-> Should minimize the occupation time of rtnl_lock as much as possible.
->
-> Move update channel list operation to a new worker, so that
-> wait_for_completion_timeout() won't be called and will not increase the
-> occupation time of rtnl_lock.
+> Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
 
-Maybe the last two paragraphs could be merged (and edited) like this:
-
-We should minimize the occupation time of rtnl_lock as much as possible
-to avoid interfering with rest of the system. So move the update channel
-list operation to a new worker, so that wait_for_completion_timeout()
-won't be called and will not increase the occupation time of rtnl_lock.
-
-> --- a/drivers/net/wireless/ath/ath11k/core.h
-> +++ b/drivers/net/wireless/ath/ath11k/core.h
-> @@ -685,7 +685,7 @@ struct ath11k {
->  	struct mutex conf_mutex;
->  	/* protects the radio specific data like debug stats, ppdu_stats_info stats,
->  	 * vdev_stop_status info, scan data, ath11k_sta info, ath11k_vif info,
-> -	 * channel context data, survey info, test mode data.
-> +	 * channel context data, survey info, test mode data, channel_update_queue.
->  	 */
->  	spinlock_t data_lock;
-
-Usually is best to add a comment the data you are protecting, in this
-case the new fields in struct ath11k.
-
-> @@ -743,6 +743,8 @@ struct ath11k {
->  	struct completion bss_survey_done;
->  
->  	struct work_struct regd_update_work;
-> +	struct work_struct channel_update_work;
-> +	struct list_head channel_update_queue;
-
-So here add '/* protected with data_lock */' or similar before channel_update_queue.
-
-> @@ -231,8 +206,16 @@ int ath11k_reg_update_chan_list(struct ath11k *ar, bool wait)
->  		}
->  	}
->  
-> -	ret = ath11k_wmi_send_scan_chan_list_cmd(ar, params);
-> -	kfree(params);
-> +	if (wait) {
-> +		spin_lock_bh(&ar->data_lock);
-> +		list_add_tail(&params->list, &ar->channel_update_queue);
-> +		spin_unlock_bh(&ar->data_lock);
-> +
-> +		queue_work(ar->ab->workqueue, &ar->channel_update_work);
-> +	} else {
-> +		ret = ath11k_wmi_send_scan_chan_list_cmd(ar, params);
-> +		kfree(params);
-> +	}
-
-You can avoid the else branch like this:
-
-if (wait) {
-	spin_lock_bh(&ar->data_lock);
-	list_add_tail(&params->list, &ar->channel_update_queue);
-	spin_unlock_bh(&ar->data_lock);
-
-	queue_work(ar->ab->workqueue, &ar->channel_update_work);
-
-        return 0;
-}
-
-ret = ath11k_wmi_send_scan_chan_list_cmd(ar, params);
-kfree(params);
+Acked-by: Kalle Valo <kvalo@kernel.org>
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
