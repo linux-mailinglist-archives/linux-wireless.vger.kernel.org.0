@@ -1,128 +1,153 @@
-Return-Path: <linux-wireless+bounces-16507-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16508-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 435759F57B2
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 21:27:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C79069F5835
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 21:54:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E1F516651A
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 20:27:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C22991883DB9
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 20:53:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8DDC1F9EC8;
-	Tue, 17 Dec 2024 20:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F1571F9EB9;
+	Tue, 17 Dec 2024 20:53:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d1f67aaR"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="PN+5X7vl"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F2D1F9EDD
-	for <linux-wireless@vger.kernel.org>; Tue, 17 Dec 2024 20:26:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB5E11D89EC;
+	Tue, 17 Dec 2024 20:53:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734467184; cv=none; b=EE4WvTrEdbopxq/k6uDhTx/INkrWHiwbrM8MMlRhhrrBOetXdAx1Qla9mM6GnYwKChsBZPkwwlB2SXtPLIPUHVKRaloQhkNFvfSfVA0GwWqjCIuuGn2qjkQ2H47QXKIfGniIRvl0gbFj+841aMUauwZl3Wrtm7Gkqd/X82+fDpg=
+	t=1734468808; cv=none; b=J6iIu0jP5BI8CPgWTJ9wGjMr0xqdNB+cff313scXxM0ONuMsxvJHghfw6k8BLr2A4WFpJDIGUcLAPgn3bmiDmilYYX+A4A3QwdB3E1oyb/w98C6Sfa5PWnVbCwt3WrnEkD/igj5qk83zJ6gkmXyjuQYzeDqXP0jn6ppHUVVrvSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734467184; c=relaxed/simple;
-	bh=F/8ASNPPjOaxz0JijoyrX+VIjLjW8UFlW6ev+Y8FGTo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QYwc4mXRUKZ4OFu91btu+JVyATjx/+aeTYKaalk+cUfWUcqt+DlwwRG0+5WYeLzgv4VAHRffGPel8955TAbb/pdPiWEJLUzSyV1+EVFBaAo+DwPjRg7eqI40GtOO3/Fp9XHfjaLfzEC9By9B6JkUqD0WWeO0jHBWtPH6f4TCj48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d1f67aaR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08203C4CED3;
-	Tue, 17 Dec 2024 20:26:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734467184;
-	bh=F/8ASNPPjOaxz0JijoyrX+VIjLjW8UFlW6ev+Y8FGTo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d1f67aaRc2+G2cWv7Q17OgeduFtKjphATL9FgXJQonasr3bN6IylUu+JOOZKsy5hg
-	 XCx+ESMXTIAvMERTz4IjKNHlkmK7hNPoINqKNbQl7vVsHcgK3CEXIjs+zVrVm91mUI
-	 c1pdh1dOVGT88OGUnnvx1O1Ksh3KECJKuKvEWeFFUGXJcgyqYh6PRx/lGpuL6EnZ6s
-	 Nzt5rHvJNMONSsdLWxoCGoPpdOGAzoigOIl5zKOpIlw5AVMAAjeTWkvaLbDZftVUDe
-	 ye8t8RfJZAQYKEOoTiaI3ZpbOnj9sL91xgWow1uoF3N8/RmqVESW8oAW9J58rH4Hdh
-	 pmauThGAi5rNw==
-From: Kalle Valo <kvalo@kernel.org>
-To: ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 4/4] wifi: ath12k: Decrease ath12k_mac_station_assoc() stack usage
-Date: Tue, 17 Dec 2024 22:26:18 +0200
-Message-Id: <20241217202618.1329312-5-kvalo@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241217202618.1329312-1-kvalo@kernel.org>
-References: <20241217202618.1329312-1-kvalo@kernel.org>
+	s=arc-20240116; t=1734468808; c=relaxed/simple;
+	bh=AZ0CsLKt8J6l6W4VDxSftOcj1gfWEjTLXyKq8DV0roY=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=dwDQMpU6mk+Lo8KUOSSXsIzOLy2BKL0l6Wc83FApFCet/kF1R9z2jPo4po/j8cLEwuUqzuKojbuksb7KIOGpNU0a97g1NteXfdtoNSdHbsmJZJxqM6QI+zAbgVSCVQlUF+MEV/GIwXUn5gqKlofdjmdbhU5SqmO7Lj5x83aUlbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=PN+5X7vl; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [192.168.35.166] (c-73-118-245-227.hsd1.wa.comcast.net [73.118.245.227])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 313DC2171F96;
+	Tue, 17 Dec 2024 12:53:23 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 313DC2171F96
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1734468805;
+	bh=aVc5gziW3F5u0OxTruXlabKnVm24GGvTVYzcdDQRKKI=;
+	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
+	b=PN+5X7vl8fqADT/aII8zIGfk60UMtxJ9pR+EBirm4pXAa4JZO11zP4etUexy4ZsF1
+	 Hz5jBPkUY126l1G2C1Lf0cgYJmqJpx2Ac/wrr+Dl/I1W058j7FPkFRH8CsABxT6WHb
+	 +lq4b3CWgOR3ojB2J6CV+93O4Hyq14ifZiz9VEy4=
+Message-ID: <14ad0c08-7b3b-47b6-8cc1-8a4179238e5a@linux.microsoft.com>
+Date: Tue, 17 Dec 2024 12:53:22 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Cc: eahariha@linux.microsoft.com, Pablo Neira Ayuso <pablo@netfilter.org>,
+ Jozsef Kadlecsik <kadlec@netfilter.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Julia Lawall <Julia.Lawall@inria.fr>,
+ Nicolas Palix <nicolas.palix@imag.fr>, Daniel Mack <daniel@zonque.org>,
+ Haojian Zhuang <haojian.zhuang@gmail.com>,
+ Robert Jarzmik <robert.jarzmik@free.fr>, Russell King
+ <linux@armlinux.org.uk>, Heiko Carstens <hca@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
+ <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Ofir Bitton <obitton@habana.ai>,
+ Oded Gabbay <ogabbay@kernel.org>, Lucas De Marchi
+ <lucas.demarchi@intel.com>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+ Rodrigo Vivi <rodrigo.vivi@intel.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Jeroen de Borst <jeroendb@google.com>,
+ Praveen Kaligineedi <pkaligineedi@google.com>,
+ Shailend Chand <shailend@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ James Smart <james.smart@broadcom.com>,
+ Dick Kennedy <dick.kennedy@broadcom.com>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
+ Jens Axboe <axboe@kernel.dk>, Kalle Valo <kvalo@kernel.org>,
+ Jeff Johnson <jjohnson@kernel.org>, Catalin Marinas
+ <catalin.marinas@arm.com>, Jack Wang <jinpu.wang@cloud.ionos.com>,
+ Marcel Holtmann <marcel@holtmann.org>,
+ Johan Hedberg <johan.hedberg@gmail.com>,
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
+ <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Xiubo Li <xiubli@redhat.com>,
+ Ilya Dryomov <idryomov@gmail.com>, Josh Poimboeuf <jpoimboe@kernel.org>,
+ Jiri Kosina <jikos@kernel.org>, Miroslav Benes <mbenes@suse.cz>,
+ Petr Mladek <pmladek@suse.com>, Joe Lawrence <joe.lawrence@redhat.com>,
+ Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+ Louis Peens <louis.peens@corigine.com>, Michael Ellerman
+ <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, cocci@inria.fr,
+ linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ linux-scsi@vger.kernel.org, xen-devel@lists.xenproject.org,
+ linux-block@vger.kernel.org, linux-wireless@vger.kernel.org,
+ ath11k@lists.infradead.org, linux-mm@kvack.org,
+ linux-bluetooth@vger.kernel.org, linux-staging@lists.linux.dev,
+ linux-rpi-kernel@lists.infradead.org, ceph-devel@vger.kernel.org,
+ live-patching@vger.kernel.org, linux-sound@vger.kernel.org,
+ oss-drivers@corigine.com, linuxppc-dev@lists.ozlabs.org,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>,
+ Jeff Johnson <quic_jjohnson@quicinc.com>, paul@paul-moore.com
+Subject: Re: [PATCH v3 00/19] Converge on using secs_to_jiffies()
+To: Andrew Morton <akpm@linux-foundation.org>
+References: <20241210-converge-secs-to-jiffies-v3-0-ddfefd7e9f2a@linux.microsoft.com>
+ <20241210163520.95fa1c8aa83e1915004ed884@linux-foundation.org>
+ <422470cd-84f0-469e-93c2-493c5091391d@linux.microsoft.com>
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
+Content-Language: en-US
+In-Reply-To: <422470cd-84f0-469e-93c2-493c5091391d@linux.microsoft.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
+On 12/10/2024 5:00 PM, Easwar Hariharan wrote:
+> On 12/10/2024 4:35 PM, Andrew Morton wrote:
+>> On Tue, 10 Dec 2024 22:02:31 +0000 Easwar Hariharan <eahariha@linux.microsoft.com> wrote:
+>>
+>>> This is a series that follows up on my previous series to introduce
+>>> secs_to_jiffies() and convert a few initial users.
+>>
+>> Thanks, I added this to mm.git.  I suppressed the usual added-to-mm
+>> emails because soooo many cc's!
+>>
+>> I'd ask relevant maintainers to send in any acks and I'll paste them
+>> into the relevant changelogs.
+> 
+> Thank you, Andrew!
+> 
+> - Easwar
 
-Building the ath12k driver with llvm-18.1.7-x86_64 produces the warning:
+Hi Andrew,
 
-drivers/net/wireless/ath/ath12k/mac.c:5606:12: warning: stack frame size (1176) exceeds limit (1024) in 'ath12k_mac_op_sta_state' [-Wframe-larger-than]
+There have been a couple of comments[1][2] that came in after you queued
+the series to mm. Would you rather I send individual patches addressing
+these, or just send a v4 of the entire series (-netdev of course) so you
+can replace it wholesale?
 
-ath12k_mac_op_sta_state() itself does not consume much stack, but it
-calls ath12k_mac_handle_link_sta_state() which in turn calls
-ath12k_mac_station_add(). Since those are both static functions with
-only one caller, it is suspected that these both get inlined, and
-their stack usage is reported for ath12k_mac_op_sta_state().
+Thanks,
+Easwar
 
-A major contributor to the ath12k_mac_station_assoc() stack usage is:
-
-	struct ath12k_wmi_peer_assoc_arg peer_arg;
-
-Avoid the excess stack usage by dynamically allocating peer_arg
-instead of declaring it on the stack.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/mac.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 10293e9c1d49..6f10813d9378 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -4834,7 +4834,6 @@ static int ath12k_mac_station_assoc(struct ath12k *ar,
- {
- 	struct ieee80211_vif *vif = ath12k_ahvif_to_vif(arvif->ahvif);
- 	struct ieee80211_sta *sta = ath12k_ahsta_to_sta(arsta->ahsta);
--	struct ath12k_wmi_peer_assoc_arg peer_arg;
- 	struct ieee80211_link_sta *link_sta;
- 	int ret;
- 	struct cfg80211_chan_def def;
-@@ -4854,14 +4853,19 @@ static int ath12k_mac_station_assoc(struct ath12k *ar,
- 	band = def.chan->band;
- 	mask = &arvif->bitrate_mask;
- 
--	ath12k_peer_assoc_prepare(ar, arvif, arsta, &peer_arg, reassoc);
-+	struct ath12k_wmi_peer_assoc_arg *peer_arg __free(kfree) =
-+		kzalloc(sizeof(*peer_arg), GFP_KERNEL);
-+	if (!peer_arg)
-+		return -ENOMEM;
- 
--	if (peer_arg.peer_nss < 1) {
-+	ath12k_peer_assoc_prepare(ar, arvif, arsta, peer_arg, reassoc);
-+
-+	if (peer_arg->peer_nss < 1) {
- 		ath12k_warn(ar->ab,
--			    "invalid peer NSS %d\n", peer_arg.peer_nss);
-+			    "invalid peer NSS %d\n", peer_arg->peer_nss);
- 		return -EINVAL;
- 	}
--	ret = ath12k_wmi_send_peer_assoc_cmd(ar, &peer_arg);
-+	ret = ath12k_wmi_send_peer_assoc_cmd(ar, peer_arg);
- 	if (ret) {
- 		ath12k_warn(ar->ab, "failed to run peer assoc for STA %pM vdev %i: %d\n",
- 			    arsta->addr, arvif->vdev_id, ret);
--- 
-2.39.5
-
+[1]
+https://lore.kernel.org/all/07784753-6874-4dda-a080-2d2812f4a10a@csgroup.eu/
+[2]
+https://lore.kernel.org/all/Z2G1ZPL2cAlQOYlF@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com/
 
