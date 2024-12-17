@@ -1,96 +1,122 @@
-Return-Path: <linux-wireless+bounces-16469-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16470-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AE769F49F9
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 12:34:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80E1A9F4A80
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 13:01:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 471BF161CE2
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 11:34:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D137516381C
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 12:01:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49F4F1EBFE1;
-	Tue, 17 Dec 2024 11:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ABFD1E0490;
+	Tue, 17 Dec 2024 12:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="cCepK+gb"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LPKIrhWp"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10C32F5B;
-	Tue, 17 Dec 2024 11:33:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D82B156644;
+	Tue, 17 Dec 2024 12:01:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734435214; cv=none; b=ay+gGZVSp2h6ybumM8qh2cOvxfKAuvOhSkozvo7m/Q8RJLHRhgeQJkp2bV8dsFSR0nIJ7zwHJtJcDWoONk8R/Z/P2hRE1dGV+k15fSZpFMOj51rCi/oxzkEztfdFnZWkoIPP08hyd+oElWk/lEMlFtiaNxOKr8I8bOPnivaE0B4=
+	t=1734436877; cv=none; b=sJlGHPJ1Yey9KYC2m+ItAi0KZlk3HxlyXSnlMV6jUAq1ACq/yz1+hs+3opYNiw3GNga2/0VjUAw+fF5lB6/NKYVpdJoQHYLaWFsj8Kb5dVZeGx6qpJ7RDYCA19cI9ZHKYWwwcEFASfIWz4Dqt+iJNCymjH2xGGMExMnHx0BCg+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734435214; c=relaxed/simple;
-	bh=8eSpCFU3mFgtDlnrbHSgypbaJf+8eWWNe9euGMobuzg=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Nph+tvkepjsvveC8Mb3rniNwqxuf1GEx7T8l1gnhlkqaPtw7cDrWIZjkdytFG/UbP5l8pvX14cGDDbouqIt8tlGpil7aZEDgLAWDDz3qheaHCC7m+8Hm9mmXg3XoqTLqNgGpezRsCOvNn866iubfO84tPmHOLCE3lxSTpURAOMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=cCepK+gb; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=8eSpCFU3mFgtDlnrbHSgypbaJf+8eWWNe9euGMobuzg=;
-	t=1734435212; x=1735644812; b=cCepK+gb8j5FHcsF2e2xcw+gwq4em2WlXNpVDly7gMctMpt
-	ScYuWRhLj0TrRBXIsZ/auegXnGKUdK8Vnys2sr2ZS+KqmATWDRBRESuvmjiMlGmf7KfHTZXAGA9OE
-	ZpfjhKraefm36NE+3Urt/NCYyBhW9E4BLqy4AeHjnPMBIJ7mUQqFv0+vqTVOhN6T7TxYunq1hKN+K
-	AP+QbNehooZpQUMEsX4C82Dw+au8QTQnqZpsZ+WH7seEPoxk4rC1dP02SsWRwm2OjYwN7HyyT50jt
-	DmsxECpAUi1roIxLTT+PAoXSnS9UkFkizKzR4rs5BiCftnuXTkDOa3YWhzOQF2KQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1tNVpK-000000026Dl-3lVm;
-	Tue, 17 Dec 2024 12:33:23 +0100
-Message-ID: <de5d98be99086a7182ba2bd0676b261349a145c4.camel@sipsolutions.net>
-Subject: Re: [Bug] Deadlock between rfkill_fop_write() and
- nfc_unregister_device()
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Sam Sun <samsun1006219@gmail.com>, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, Simon Horman
-	 <horms@kernel.org>, pabeni@redhat.com, kuba@kernel.org, Eric Dumazet
-	 <edumazet@google.com>, davem@davemloft.net, krzk@kernel.org
-Date: Tue, 17 Dec 2024 12:33:22 +0100
-In-Reply-To: <b27dc4d0c3456c6796437b26b887b931d9871977.camel@sipsolutions.net>
-References: 
-	<CAEkJfYOyWgJW-WAd+GhT07zd2Y3vUWz81+pjbZT9nUAsCc7FGQ@mail.gmail.com>
-	 <b27dc4d0c3456c6796437b26b887b931d9871977.camel@sipsolutions.net>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.2 (3.54.2-1.fc41) 
+	s=arc-20240116; t=1734436877; c=relaxed/simple;
+	bh=VoT3semKVuV2WPFaeaRZbL6iWWm1byKm0Re6hZoayEA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=brXyqt/D9lNWTzPTmdzBgPQVJJ/I53/BvDphwZCy2u5+NPI82TGfDwP4ZcGHoBsBqPQWvnoQSzJ5Toy10B1y0g/xYOnEvBUtdnq53YKqdLvAl336vAlWWhVJWRxvxUrFZjpvOe9sP/WDU4xv5C0fdi8mQe9zVRv4Fzkuf9oqlK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LPKIrhWp; arc=none smtp.client-ip=209.85.219.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6d8a3e99e32so45321576d6.2;
+        Tue, 17 Dec 2024 04:01:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734436875; x=1735041675; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VoT3semKVuV2WPFaeaRZbL6iWWm1byKm0Re6hZoayEA=;
+        b=LPKIrhWpcdJrzNtBogbpK0CzCmYE44KTJqVJLYN4lcJ826elsz7tGsQhUYV3+UBDRm
+         Pn53rh8G2rkusHRodi7OrfxpjebaIL/K8LvVVtjgcQ4VE9g2glwIZrzlx8M8l+GHekU1
+         +kIXscKvVQabj9Boeq8qPmrZmhXEaodTU5/B4sXULolCoXhWgiAni+bDJO8DeQygg2jG
+         NjKTI+dmizI4+aXTGZXxW1nP5UQxpxJAc1J3BhT8WyqmmV8kh6riSwiXTMa5IM+4DNne
+         xY3OoH6OiNIQmCflT9aS9SllNZntQ/umeaKx9CfhTgAw9Tmh/IfioCLkTiNXwHKNa6om
+         ajVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734436875; x=1735041675;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VoT3semKVuV2WPFaeaRZbL6iWWm1byKm0Re6hZoayEA=;
+        b=OwCRdCKa8ZmSIZ1Oc8v+0WQpzlx6sldqrHogyHYLtgEGAQoliKUJIYjQMS/LvebKnX
+         HDS3BJ9zivIlQRoZ/TQhkAt9YR1MF8W6KzHdYwvMnqo7Zdo+v4Fd27Z5cD5F6rB3qKSt
+         Dsw+SYIQX9V/BxjCvO7ynRRhpodvSRvbgGARiSISWMzbhHoTd5BeDpA+7Xh65XtF9nyd
+         85h0/cGhmmQC4I5WWC1QeimEkSwgSe7BsmLq+gn02lWYJW0l1AIx37Eb43qNBsjrSPM8
+         szhp8Otlkl5/bhxef7ffkbrs0lzBLXPbSnSg/PrhVzOiDZ0x/4kPBJrPwLufjKKuJ8/M
+         5RmA==
+X-Forwarded-Encrypted: i=1; AJvYcCVP+YPY44FjbE9kGwnPcul8JkRNGuhSwsJDcHujOd2d3UQd1SPFIqpJPD2gpYNOixGIeNsF1qXE@vger.kernel.org, AJvYcCW0NcKngHRlrJEaeAkYKPG03hje8ElAOanukIrPhyzN53KRm6ZPSoy2Xbpjp3UuQC24588OXPXybHuBMZD9Fg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwF4MS7ZaTz1vp1P8KvHeip646T6/ETh2FDx6KuGnwDkqaLnfcN
+	3p/a9WQqD2skxrEGL5tveZOfGVedzTnpzHU1e6QcejZMuVgmnacK4lR6KJgUwLFq69aXHEwhCG2
+	Gl2InXy2lS+gFbd1U8hImGQfOw1w=
+X-Gm-Gg: ASbGncuZg2ZhtP3vcHsiHWcXWklhSSJIsKhWnkpixeuzELjzg8HBnPwKsEP8ngA73zn
+	IDgXcUEF/uOnTb43E8yVTkA5LSkqdnUD1ZFD3n2lGlpGMPN4JQ3It5VCwcnaJAz30nIU1csUH
+X-Google-Smtp-Source: AGHT+IGPuy8kYfgkFw1kFHqZNhPUceVl1N0oAa24pT4dmlIPic9KYVclc86GEDfDJ+PUKE/ZAGlPoOp1PylTwRMSwUw=
+X-Received: by 2002:a05:6214:194e:b0:6d8:accb:5a30 with SMTP id
+ 6a1803df08f44-6dc92299967mr323292606d6.36.1734436874550; Tue, 17 Dec 2024
+ 04:01:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+References: <CAEkJfYOyWgJW-WAd+GhT07zd2Y3vUWz81+pjbZT9nUAsCc7FGQ@mail.gmail.com>
+ <b27dc4d0c3456c6796437b26b887b931d9871977.camel@sipsolutions.net> <de5d98be99086a7182ba2bd0676b261349a145c4.camel@sipsolutions.net>
+In-Reply-To: <de5d98be99086a7182ba2bd0676b261349a145c4.camel@sipsolutions.net>
+From: Sam Sun <samsun1006219@gmail.com>
+Date: Tue, 17 Dec 2024 20:01:03 +0800
+Message-ID: <CAEkJfYP297P=RjvZ9-ctpYHXu7bDhVN0+ZBoMNz2xjzyqOakLQ@mail.gmail.com>
+Subject: Re: [Bug] Deadlock between rfkill_fop_write() and nfc_unregister_device()
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, Simon Horman <horms@kernel.org>, pabeni@redhat.com, 
+	kuba@kernel.org, Eric Dumazet <edumazet@google.com>, davem@davemloft.net, krzk@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2024-12-17 at 11:46 +0100, Johannes Berg wrote:
-> On Tue, 2024-12-17 at 17:33 +0800, Sam Sun wrote:
-> > Dear developers and maintainers,
-> >=20
-> > We originally encountered a task hung while using our modified
-> > syzkaller. It was tested against the latest upstream kernel. We
-> > analyzed the root cause and pinpoint the kernel crash log to the
-> > following two tasks.
-> >=20
->=20
-> This issue has been known a very long time and should be fixed in NFC,
-> but I guess nobody is around to do it.
->=20
-> https://syzkaller.appspot.com/bug?extid=3Dbb540a4bbfb4ae3b425d
->=20
+On Tue, Dec 17, 2024 at 7:33=E2=80=AFPM Johannes Berg <johannes@sipsolution=
+s.net> wrote:
+>
+> On Tue, 2024-12-17 at 11:46 +0100, Johannes Berg wrote:
+> > On Tue, 2024-12-17 at 17:33 +0800, Sam Sun wrote:
+> > > Dear developers and maintainers,
+> > >
+> > > We originally encountered a task hung while using our modified
+> > > syzkaller. It was tested against the latest upstream kernel. We
+> > > analyzed the root cause and pinpoint the kernel crash log to the
+> > > following two tasks.
+> > >
+> >
+> > This issue has been known a very long time and should be fixed in NFC,
+> > but I guess nobody is around to do it.
+> >
+> > https://syzkaller.appspot.com/bug?extid=3Dbb540a4bbfb4ae3b425d
+> >
+>
+> I think this one is also the same:
+>
+> https://syzkaller.appspot.com/bug?extid=3D9ef743bba3a17c756174
+>
+> and that's much older still.
+>
 
-I think this one is also the same:
+Thanks for your quick reply! I am sorry that I didn't double-check the
+call stack of historical bugs reported by Syzbot. I will be careful
+next time.
 
-https://syzkaller.appspot.com/bug?extid=3D9ef743bba3a17c756174
-
-and that's much older still.
-
-johannes
+Best,
+Yue
 
