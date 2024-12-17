@@ -1,58 +1,58 @@
-Return-Path: <linux-wireless+bounces-16499-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16500-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7F349F5734
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 20:53:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 814849F5743
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 20:57:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F126616348D
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 19:53:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3570B1891005
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 19:54:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC909192D69;
-	Tue, 17 Dec 2024 19:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ADF61F7074;
+	Tue, 17 Dec 2024 19:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lcrN1qvw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GZSF24PX"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D8D148850
-	for <linux-wireless@vger.kernel.org>; Tue, 17 Dec 2024 19:53:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F6D148850
+	for <linux-wireless@vger.kernel.org>; Tue, 17 Dec 2024 19:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734465215; cv=none; b=n28YKCNDxcit1O+qshGfj3VetufTY26w6lcQ3LUm+Vfr/3GsyXX4C7MgQSRjHYY9wPIs8r9vSbe+BbZ3G0h1DuedvJyJFrZ4RKrqt3r22G24ZdxLrkwVTUmX+v37y4DB0cPvHohFTPiIgud991u+FPnhtCb8aYzXH56CDBLY3oc=
+	t=1734465263; cv=none; b=PtI0LmEqIG6GtrGM/i0Ef/VvWS9y6C2f8WEcu1FypYBPMyI8Ul3dcF7BrGLDS5pldBedwUAL87qo67URvpt9cnCUZbtwtGdTXmLOlk54ce5r3igQD4ynyFJ/W6UZ/ZM+NwStlxjwUvPCVRJKcm+mTJwJ1QbaOzqWyHGOq8Xq4Ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734465215; c=relaxed/simple;
-	bh=pj+yxV8FV5mtqrf87VgeRSFczeCBpTFhHO6uGHQ6948=;
+	s=arc-20240116; t=1734465263; c=relaxed/simple;
+	bh=Ip8++RevUr73qmcoQSNejgVohU9ec7/h7Q+pmIpAEIs=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=o/WcKWAFxY+XOOBRl4wFyZGYW6OHQKJMJ0J3pN7AQ5+YEhaIKItw7BFYvP/QgZ5V05kZ4SsEiy0LqC5CjKNuZLF8Lk9agH7YPSyc9MApNAKOQM5CYj2Ebh/WoZQNt2ovj4glQLarbdCsiI+rWS26E3KizPnk2x1CMQNmfFZsmgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lcrN1qvw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 921F4C4CED3;
-	Tue, 17 Dec 2024 19:53:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=J+XvkUdpIYRi1fSLaqFOnM5RIzJZMdnb8TzW9ZuWQFNsmCZwmeQDYrFF3jCUci5tH23nOLAfai1VPyl5MiYTi+n2KCDrYoi/vGuyWd3o0o2KRuPOhFOcOy1ArLczRdqt4HSOj8054fg4SmnOZhWly13SdlmWdz6iDahyDkfVe/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GZSF24PX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A919CC4CED3;
+	Tue, 17 Dec 2024 19:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734465215;
-	bh=pj+yxV8FV5mtqrf87VgeRSFczeCBpTFhHO6uGHQ6948=;
+	s=k20201202; t=1734465262;
+	bh=Ip8++RevUr73qmcoQSNejgVohU9ec7/h7Q+pmIpAEIs=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=lcrN1qvw/3o10wYH0pYwHPzj4Zx6SOg0XuNBv+2t6EI/nImPaTq5xmqmBzfF+n3ys
-	 JYo1b9c5XKN2rjdEsKaz8xqZWVc6uHAUyKLb5nnsF3CbB7sPl4toYSC37YPjgEmv69
-	 VmHzU27UGt1jYpzfOjUgPh63Rx9c3HDNPQv6bK5HhUEcICpP/XDESzfRX4szKnybOe
-	 e7jrevrCd4SH9VM7P4EVkiXlLPXOoHGmk9HRY9z9Sdt6sg59mf9hEA3Ok08ONMF+QO
-	 xgcStRM3ESRgZ2Od1g4StNnvcE2pQ/lvJ/9ggwXmpRPXKaknmHI1tLCPVOut/pocZs
-	 qGl4BrXMWg8Ow==
+	b=GZSF24PXxFvmcWdBWgte0+debZRIqZHF3PcJKVL5Fh5iaTF9bgfz+xdiPmWWIepGm
+	 wweMgf2ZcfUKDWnRZnIk3cLxdBaJGLtaaucfkggpK6gCLjzHaos+PazKKJXMKI3QfM
+	 5q2hrO6BYBQsooWND22B0NU8zqwK+ydddL6P/8mFZ2JGnRoQplAruwhGifX4w65c+o
+	 3L5iINwIX3UvjnX5o87rpQ0b7pH2c9SjgigKC0Ile7VFkG94/VtJxrWBg3r65rlcxl
+	 DQ2TcZSLTdksSj0T6jksSe6mFqDJLys8Rf6J35NyetiDZ1c5udIO5WicqX/jh+fv25
+	 1hkHTtYlmDIDA==
 From: Kalle Valo <kvalo@kernel.org>
 To: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>,  Jeff
  Johnson <quic_jjohnson@quicinc.com>
-Subject: Re: [PATCH v3 5/8] wifi: ath12k: fix incorrect TID updation in DP
- monitor status path
+Subject: Re: [PATCH v3 6/8] wifi: ath12k: Remove unused HAL Rx mask in DP
+ monitor path
 References: <20241217084511.2981515-1-quic_periyasa@quicinc.com>
-	<20241217084511.2981515-6-quic_periyasa@quicinc.com>
-Date: Tue, 17 Dec 2024 21:53:32 +0200
-In-Reply-To: <20241217084511.2981515-6-quic_periyasa@quicinc.com> (Karthikeyan
-	Periyasamy's message of "Tue, 17 Dec 2024 14:15:08 +0530")
-Message-ID: <87r066jdc3.fsf@kernel.org>
+	<20241217084511.2981515-7-quic_periyasa@quicinc.com>
+Date: Tue, 17 Dec 2024 21:54:20 +0200
+In-Reply-To: <20241217084511.2981515-7-quic_periyasa@quicinc.com> (Karthikeyan
+	Periyasamy's message of "Tue, 17 Dec 2024 14:15:09 +0530")
+Message-ID: <87msgujdar.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -64,11 +64,9 @@ Content-Type: text/plain
 
 Karthikeyan Periyasamy <quic_periyasa@quicinc.com> writes:
 
-> Currently, an incorrect TID value gets populated in the monitor status Rx
-> path due to an incorrect bitmap value given to the ffs() built-in helper
-> function. Therefore, avoid the decrement and directly provide the TID
-> bitmap to the ffs() built-in helper function for the correct TID update
-> in the monitor status Rx path.
+> Currently, CODING and TXBF are unused masks defined in the HAL Rx monitor
+> status TLV parsing code path. Therefore, remove the unused masks to
+> prevent incorrect assumptions for code readers.
 >
 > Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
 > Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
