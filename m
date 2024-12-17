@@ -1,60 +1,56 @@
-Return-Path: <linux-wireless+bounces-16475-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16476-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6D7C9F4CCB
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 14:50:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1A499F4DCA
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 15:32:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B75F81886757
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 13:50:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDA091892F08
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 14:32:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33FCB1E0490;
-	Tue, 17 Dec 2024 13:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3711F6686;
+	Tue, 17 Dec 2024 14:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jS/IKLra"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IOEaR4Ff"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA4D1EF1D
-	for <linux-wireless@vger.kernel.org>; Tue, 17 Dec 2024 13:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4327B1F239E;
+	Tue, 17 Dec 2024 14:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734443429; cv=none; b=dnzBkA31+VSPCCyb3k8FSWg6sdXeHtTVHONWQ5rBAbiFK8UhzT0LgT5J3JHCQoAHUbnRqV8/RsdvdfxDqjSLaTvdsIJg/jk62a4KWS/EHIUtDYINsM6rsAy85vwTQQ2dSSHEgyj+s6QruNDEWAhTVm/oaB1dAab2bVJ9j7yBYJs=
+	t=1734445895; cv=none; b=kRqUZ3ZMMo3ruRBHm4chbU1ltMt5Y4JSAxgCXstX9G/H83rRTch35B6iuvZxj+qW1YHLElbiF2g74D1Whm7azGNsoktgyh7OAfwpnToKjWbB0jMbJeUANCQi1AdwsP13jsoXN3W0ZjgXVGk38qzUd2B15Q3c8CLn6+1oxMzaCCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734443429; c=relaxed/simple;
-	bh=L6ro/dPVM1xIIqywePkia8CAEFjRHPddQMMlHewnsSA=;
+	s=arc-20240116; t=1734445895; c=relaxed/simple;
+	bh=fcz6BKWN6S+wVQPiPTq0ycmlj5zAZOM1rRAiuc2cJ6U=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=FOXcCXBKUNTvTux7+gz1UCRhCWHmlZce4xRqIOn/ShI2H0138UwzmCpkDFmNyk+15oN65z8Ch2fvnWhWSJ422AGc7pJ6mANsrvixAOebTH7uQbP3+KDLOOYR0GITlUhzwO6saCKvOVTDYO92o2HwHbiv16TiggfUhOutCJBFIu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jS/IKLra; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2641C4CED3;
-	Tue, 17 Dec 2024 13:50:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KLPHDwAcixCipqvjuw9RsDJGO6DOIXeM61wt7Qv3xLRI6NzzSpw1rHKqaVR7cMFcFe0vnaE9GaO/TU06ccEKBoDjf/3Teg66hfnbkspf0/dDaIiO+Yaz4cvU/QrrInlfm+0117/qhR5q6UaCHhzZb+mJXf7Z7fTRKKf7EUojKd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IOEaR4Ff; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF82C4CED3;
+	Tue, 17 Dec 2024 14:31:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734443427;
-	bh=L6ro/dPVM1xIIqywePkia8CAEFjRHPddQMMlHewnsSA=;
+	s=k20201202; t=1734445894;
+	bh=fcz6BKWN6S+wVQPiPTq0ycmlj5zAZOM1rRAiuc2cJ6U=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=jS/IKLraMi3i3HojpHryX2WTGxWyEFN4KPK58gUZ5PLwotaw/LjLBTLQ7RkrdXqzs
-	 6GuSe+Ve2umXcL9k/7GCzz39KrSqf6W1dTGs5tJ7ZtKwQQglZEAs9qlZIsuMcAffUo
-	 UIxDoPSRvaYZnnLorxwN7yvDVtxb9SD9EGMPNDLIqH/YFj2IRwJjJ5xxlwHDNDi5Uk
-	 SWid9FtRdwxwJ4b0WlA4vpyBTYdUifc93azKOcFFyVkJRFXDAxyDx+TYPV7CK7xeym
-	 q+8tzLPUc2srRAhGhOZH3I9IZ4ub4O9MdNhfKTa5P1N/NZkrOtcXpx7FmD2dn8n4/N
-	 rNue1qismul2Q==
+	b=IOEaR4FfPCKN4CX699zU0srThw9ICy3x+WvV4qd1QY2Li9UkPZ3vDjqxZau009z1A
+	 MrqRIxPlyyOF0/HQsQ9k0q891E3wHuVWiji1zvmvlgzd89Og13RTfjcRlOwHEO5WsG
+	 suOSxkoSGQgOzA3piib1FjqYu33c4znK4gZR8MQWKS8OcH95/HnsTAnbZGx54eSEwG
+	 sfajoc+pV5ujtMz9ehQ+mqB7f2p9P0GGj3tFVLYIiwxPkbA7yAS7W+/8woT9jyBnkj
+	 uQOCKTQSPAzwsQMjhwZZiH1HNtUHAFx3fwUQYGA1OaJRW4RThsHrsZY4w/nV5wD6kC
+	 zkmDuweEOrZCw==
 From: Kalle Valo <kvalo@kernel.org>
-To: Kang Yang <quic_kangyang@quicinc.com>
-Cc: <ath11k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
-Subject: Re: [PATCH v3 2/2] wifi: ath11k: add srng->lock for
- ath11k_hal_srng_* in monitor mode
-References: <20241008053744.1070-1-quic_kangyang@quicinc.com>
-	<20241008053744.1070-3-quic_kangyang@quicinc.com>
-	<87ttb9nea6.fsf@kernel.org>
-	<79910df2-a7fd-4880-bd32-4f2927341654@quicinc.com>
-	<e0d2d1ce-0443-4eea-b3c3-ed7423875d11@quicinc.com>
-Date: Tue, 17 Dec 2024 15:50:24 +0200
-In-Reply-To: <e0d2d1ce-0443-4eea-b3c3-ed7423875d11@quicinc.com> (Kang Yang's
-	message of "Fri, 13 Dec 2024 17:41:41 +0800")
-Message-ID: <87a5cus9jz.fsf@kernel.org>
+To: Linus Walleij <linus.walleij@linaro.org>
+Cc: linux-wireless@vger.kernel.org,  linux-kernel@vger.kernel.org,  kernel
+ test robot <lkp@intel.com>,  Dan Carpenter <dan.carpenter@linaro.org>
+Subject: Re: [PATCH] wifi: cw1200: Fix potential NULL dereference
+References: <20241217-cw1200-fix-v1-1-911e6b5823ec@linaro.org>
+Date: Tue, 17 Dec 2024 16:31:31 +0200
+In-Reply-To: <20241217-cw1200-fix-v1-1-911e6b5823ec@linaro.org> (Linus
+	Walleij's message of "Tue, 17 Dec 2024 13:55:48 +0100")
+Message-ID: <87jzbymldo.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -62,40 +58,26 @@ List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-Kang Yang <quic_kangyang@quicinc.com> writes:
+Linus Walleij <linus.walleij@linaro.org> writes:
 
->>>> @@ -5623,6 +5625,9 @@ static int
->>>> ath11k_dp_full_mon_process_rx(struct ath11k_base *ab, int mac_id,
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 goto reap_statu=
-s_ring;
->>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
->>>> +=C2=A0=C2=A0=C2=A0 mon_dst_srng =3D &ar->ab->hal.srng_list[dp-
->>>> >rxdma_mon_dst_ring.ring_id];
->>>> +=C2=A0=C2=A0=C2=A0 spin_lock_bh(&mon_dst_srng->lock);
->>>
->>> Why initialise mon_dst_srng differently? The commit message mentions
->>> nothing about this change.
->> Because need to fetch spin lock inside 'struct hal_srng'. If still
->> use 'void *mon_dst_srng', need to perform a variable type cast.
->> Bur 'struct hal_srng' will make this line too long:
->> 'struct hal_srng *mon_dst_srng =3D &ar->ab->hal.srng_list[dp-
->> >rxdma_mon_dst_ring.ring_id];'
->> So I separated the definition and initialization.
->> ath11k_dp_rx_reap_mon_status_ring()/ath11k_dp_process_rx and others
->> ring process function is the same.
->>=20
+> A recent refactoring was identified by static analysis to
+> cause another potential NULL dereference, fix this!
 >
-> Do i need to send a new version for this?
+> Reported-by: kernel test robot <lkp@intel.com>
+> Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Closes: https://lore.kernel.org/r/202411271742.Xa7CNVh1-lkp@intel.com/
+> Fixes: 2719a9e7156c ("wifi: cw1200: Convert to GPIO descriptors")
+> Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 
-Yeah, please mention in the commit message why you mon_dst_srng
-initialisation.
+If it's ok for you, I'll add the smatch warning to the commit message:
 
---=20
+drivers/net/wireless/st/cw1200/cw1200_spi.c:440 cw1200_spi_disconnect() error: we previously assumed 'self' could be null (see line 433)
+
+
+-- 
 https://patchwork.kernel.org/project/linux-wireless/list/
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
