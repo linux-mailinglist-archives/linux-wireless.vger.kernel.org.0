@@ -1,123 +1,97 @@
-Return-Path: <linux-wireless+bounces-16490-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16491-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E8FB9F569B
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 19:54:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C7899F56ED
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 20:35:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1146118814F5
-	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 18:54:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 958E0169B32
+	for <lists+linux-wireless@lfdr.de>; Tue, 17 Dec 2024 19:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4A521F8ADF;
-	Tue, 17 Dec 2024 18:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67281F9419;
+	Tue, 17 Dec 2024 19:35:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QjFbzyRU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZFAOu9QA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3573D1F76AE;
-	Tue, 17 Dec 2024 18:54:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02201F9412
+	for <linux-wireless@vger.kernel.org>; Tue, 17 Dec 2024 19:35:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734461686; cv=none; b=k/AK7lKGffB4WYXYfXYkeiXtnbO3o71ctVOA1Aod+Hfl3HkRILxgqouPGE72xPLinp7jw88E7hFUdmZBtt8KTfIu4yER/+iH+hniUF28/Q+aDRYU3bArmRH0Z8TTKq8Z5Do/+JbnnZsFTmYPsSx9MwDDI9TEcaFp+XIz2lrXUeg=
+	t=1734464125; cv=none; b=CYa+CU7S0rDm4bYdXVCli8p28e941VXB4+LNMzK5Bc0QN8vj0fw2RZAAHkvhyj+0ay5at7zuk3OMbWzu32nTpZpVV7tYMAeNTRwuTNDV+KyZp9iv3sXo2qny6rV/wosdX+xB8wBA7koWd8icVZ5u2K+n/R1ZHn/1BTAHJmWsFcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734461686; c=relaxed/simple;
-	bh=dwEK2V+NwsxoqVLt4qwUPzJuZxjpRpVr3DgeyYIkTus=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tbAZ0ja/tdP+flIrBTGGNWySF0L1EHbzahnIAqnpkcJ/52/QTsY4wO8yFifSlhE+Q1+e7UWjn6JjYK29dy/wrgAvf1/6vhluV7Vf1OomiX73uFO6P1Mcn42TLsBJqJSmlIGxgw2FPeyRm7Z5rarD0IhBlZP4QOr9GZeDjYypVNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QjFbzyRU; arc=none smtp.client-ip=209.85.161.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-5f2ed0b70d6so2477042eaf.3;
-        Tue, 17 Dec 2024 10:54:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734461684; x=1735066484; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dwEK2V+NwsxoqVLt4qwUPzJuZxjpRpVr3DgeyYIkTus=;
-        b=QjFbzyRU/DApO6iDXHdYUvZQMNssZcrlCX3/zXyqcALL6A1XKJanfWYDRyNE0xk2Y2
-         x0iXfknthgthBJBUZ3gU5+rAaW6/4qwTooKTrhlrtoGM9EaCcKlolWnn/oYxeSC0O19P
-         JpVviiHZZocfLTa9xuek9gHyrMfmKREipcfARqMuO6xSRcTT8ccWvQz5NpjiunS5NgqU
-         ZnDkZbUNXLyiGSkxSSeCkTFJEGReO1XK/W5qe0RHJtI5Cf6II/mFclfsy4iggdpVRZG8
-         vS1BC3+Cq5lVuhx/iOENUVf3A+y9nZlmWgxELj5poKW8rQbLzkUiznpf4NiHyDYfvzNR
-         cSbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734461684; x=1735066484;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dwEK2V+NwsxoqVLt4qwUPzJuZxjpRpVr3DgeyYIkTus=;
-        b=F3DogWWGhARziGuPcy/URTc+U1XuqOjsTDqezAWAp6Zh4LYhBfD4SwJ/p7IZeYJVui
-         ARGKWXiJikxpvheEvv+sQr8JsW/lBqN+DoTRZz0t6kBjwXeuLxanYRq3TAdT57Kk2opF
-         IWmnN2KgDORzMLsbAMj5IRnaks8m278Fww0hCYm5y2JU8V1ou7oU2EM9k/sw0Yi3GDZA
-         sNGuws48V+QTkIJFjW2P7Cu8xF/OCNIrhki4UsLTH+w+bOIDBDogoZVy5sa7I54JqgNZ
-         GsZCagcXVRh5exNKz9Fc5fwRN+Jm/QQgnwkJVYYtwPDdbgGjPFfulrEE+d8ZC7+l2nh1
-         jLwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUU4D2bdYUKJ0hubGYEWSIkREIHBUmQ9Ntl1jaqL0tCKRWyLZ4LGzPQTuUNOcqSgGeyfzkUT/Flxe0lSPM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYAWeHqcKcG+Vwz3kYqgXcdYg1k3zYk+eUHv4l0GRzk0ipDXkr
-	dA2VMJJdEnvEjTwB4yLwbrgM6Ma+9yxOfKTErkIvdRD4xSOojSgp0/XzgxhEbMZxPOb+kx1pVi7
-	wGr93tpJCJL2MWEMgsl51k7GzgOM=
-X-Gm-Gg: ASbGncvi0KefeStAxUbdB6sVUu9e7qo2k7va34z1gZxWu0ZGhrASLPxo4LB8d4TP63h
-	Vq8OeOE9CW+M3heLND1/oxkufHMmRdInb3IwQ
-X-Google-Smtp-Source: AGHT+IGQDZLl7mfjaTH/5VIvgXt+Gr4zkRvh4UK8kHCuvd+Y3fLIH5he4Q8ShGTMod9GEHUuUogqecqkAtumrAGeHtE=
-X-Received: by 2002:a05:6870:808a:b0:29e:6211:1262 with SMTP id
- 586e51a60fabf-2a3abeeb4c0mr10681465fac.0.1734461684277; Tue, 17 Dec 2024
- 10:54:44 -0800 (PST)
+	s=arc-20240116; t=1734464125; c=relaxed/simple;
+	bh=ycbw9ZuXw274TIKiy7rOq7Ni2L30dyQsud/JiF7653U=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=BnxK1mnUaEA+woS5oQrZQ5asOPeUgmBj5BRnozIR3jQZ+IUHUTyyb0lKVcQNAGB764qyDQByp9J94XEYPdGCURCfY5xHEgJeyBIImSQwazeY5gaqT2DND74G8hEE4vO+4HXSYOlPIfbDaqhpw1au8+Xc5oCnYgsSeTKHOtCvf/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZFAOu9QA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 781A2C4CEDD;
+	Tue, 17 Dec 2024 19:35:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734464125;
+	bh=ycbw9ZuXw274TIKiy7rOq7Ni2L30dyQsud/JiF7653U=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=ZFAOu9QAo6V10O8NfAEPgEho5N79QyIhmYY+9gIYLI+1ybCodqXG3CLkXjsK/2fLA
+	 8i2J+88zYalGaaIIoz75hIrZS0o5KL/4aS9rbl9lqbm1Uo66QF9s3Ys3ZlMeBuoi5M
+	 6Dp1AF0+ZHUMN10KwPN7nKcq9Ufqj282ARDPcCvHGNlekYLwpAdKGflXJafZokEOWD
+	 QZri4OjB6iiydBFdKsWLiUqjLFZV3O7UIYiSJ+dccnRE6AY2AZOy171ZKCTDHvqUpx
+	 /pJiHyW8kEaw8i4VMocO4NZZBF+jz1eA4bKRqVjwVhulbPc4DKrA0VgsVEFfK6vkFr
+	 q6W2YJ4Iaqe9g==
+From: Kalle Valo <kvalo@kernel.org>
+To: Praneesh P <quic_ppranees@quicinc.com>
+Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH] wifi: ath12k: Add support for parsing 64-bit TLVs
+References: <20241204071238.948885-1-quic_ppranees@quicinc.com>
+	<87o71bmwoe.fsf@kernel.org>
+	<fda72aba-f878-426f-b410-a4cecf77d1c3@quicinc.com>
+Date: Tue, 17 Dec 2024 21:35:22 +0200
+In-Reply-To: <fda72aba-f878-426f-b410-a4cecf77d1c3@quicinc.com> (Praneesh P.'s
+	message of "Tue, 17 Dec 2024 15:00:48 +0530")
+Message-ID: <87ldweksqt.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241122210346.2848578-1-alexthreed@gmail.com> <980c5cee-2dc3-4d26-b749-6ba00b9c2091@broadcom.com>
-In-Reply-To: <980c5cee-2dc3-4d26-b749-6ba00b9c2091@broadcom.com>
-From: Alex Shumsky <alexthreed@gmail.com>
-Date: Tue, 17 Dec 2024 21:54:32 +0300
-Message-ID: <CAF4oh-Pbbu-LJ22yyx95Zrw0rgwRHo_tEqhCnrRHRBHqADS8CA@mail.gmail.com>
-Subject: Re: [PATCH] brcmfmac: fix RSSI report in AP mode
-To: Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc: linux-wireless@vger.kernel.org, Alexey Berezhok <a@bayrepo.ru>, 
-	=?UTF-8?Q?Alvin_=C5=A0ipraga?= <ALSI@bang-olufsen.dk>, 
-	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Kalle Valo <kvalo@kernel.org>, 
-	Kees Cook <kees@kernel.org>, Neal Gompa <neal@gompa.dev>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, brcm80211-dev-list.pdl@broadcom.com, 
-	brcm80211@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Tue, Nov 26, 2024 at 2:13=E2=80=AFPM Arend van Spriel
-<arend.vanspriel@broadcom.com> wrote:
->
-> On 11/22/2024 10:03 PM, Alex Shumsky wrote:
-> > After commit 9a1590934d9a ("brcmfmac: correctly report average RSSI in
-> > station info") it is required from firmware to provide rx_lastpkt_rssi.
-> > If this field is not provided brcmfmac doesn't report any RSSI at all.
-> > Unfortunately some firmwares doesn't provide it. One example is firmwar=
-e
-> > for BCM43455 found in Raspbberry Pi.
-> > See https://github.com/raspberrypi/linux/issues/4574
-> >
-> > Fix it by falling back to rssi field if rx_lastpkt_rssi is not provided
-> > (like it was before 9a1590934d9a).
->
-> Sounds like a reasonable approach. However, I would like to learn more
-> about the issue. Maybe it is a per-vendor issue so I am interested what
-> the sta_info version is that we get from firmware. It is printed in
-> brcmf_cfg80211_get_station() with brcmf_dbg(). You can make it a
-> bphy_err() call instead or enable TRACE level debug messages in the drive=
-r.
->
-> Also would be good to know the firmware version and kernel version of
-> the BCM43455.
->
-> Regards,
-> Arend
+Praneesh P <quic_ppranees@quicinc.com> writes:
 
-Hi Arend,
+> On 12/16/2024 9:45 PM, Kalle Valo wrote:
+>> P Praneesh <quic_ppranees@quicinc.com> writes:
+>> 
+>>> There is mismatch between the format of monitor destination TLVs received
+>>> and the expected format by the current implementation. The received TLVs
+>>> are in 64-bit format, while the implementation is designed to handle
+>>> 32-bit TLVs. This leads to incorrect parsing. Fix it by adding support
+>>> for parsing 64-bit TLVs.
+>>>
+>>> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+>>>
+>>> Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+>> What about WCN7850? The commit message mentions nothing about it so
+>> I
+>> can only assume that this breaks WCN7850.
+>> Please remember that ath12k is not only a QCN9274 project. If I got
+>> 0.01
+>> EUR every time I say that...
+>> 
+> This change is common for WCN7850 and QCN9274. Sure, I will add
+> WCN7850 tested on tag in v2.
 
-Is the info I have provided sufficient?
+I am not exactly looking for a Tested-on tag. What I'm asking is that
+people take into account WCN7850 when designing and writing patches
+ath12k. For example, is the firmware interface same and similar
+functional differences between supported hardware families.
+
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
