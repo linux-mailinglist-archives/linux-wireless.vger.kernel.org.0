@@ -1,57 +1,57 @@
-Return-Path: <linux-wireless+bounces-16610-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16611-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0BD39F7C36
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2024 14:25:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7CD89F7C59
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2024 14:30:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AD60163EB6
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2024 13:25:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82F8718957E6
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2024 13:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FFE1111AD;
-	Thu, 19 Dec 2024 13:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B658C225788;
+	Thu, 19 Dec 2024 13:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WbHgG9n0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GN30Sgdk"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF497494
-	for <linux-wireless@vger.kernel.org>; Thu, 19 Dec 2024 13:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8962122577F;
+	Thu, 19 Dec 2024 13:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734614734; cv=none; b=e4m3B4hTlOhFR7WjkUsWlC0AmBEf5hx0jpT8M20bTORPdxbyJBGouB0B0HjhKNP8NYgdsjIeZltZSk3bM0YRvXAF8B1tRdSpGYsS3Px6KHcFnVwYzlR0B5Bksgc/Ij0NBWTlMGIpFGR5vKS5hJFix/s/oBFa6+DYWPJ01fRGyxw=
+	t=1734614829; cv=none; b=tW522Dtizdlx0dDsRsoVCZDIYAu2L3ZtX7ad/v96gElbGAs4xwXWU2JqYp1B9Y8U93mYyLQX6+9isn7j0g4qKWxSv8ix4FLcdKppJpwuAUE5fjOxjwrShZCY4dMRL2s442SnvtDnVDahlGER06XuoR913fjpRra9hgObwn/6w4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734614734; c=relaxed/simple;
-	bh=InZEF5fvhkas5+2L+LvUzEfyVNN2wyINtQNf6/v4tyY=;
+	s=arc-20240116; t=1734614829; c=relaxed/simple;
+	bh=4U1rX2P9SnZIdU620uSlt8MpD5nd6cSqYravvEQbTDw=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=ZFL7mr3MTKqCWMsGGav0JTss6AnDo0LmGcKhcwy46v2hnjclc8f9Icn1v7xyI8nk9WtfJ4vrkGmqRDVeg2uU+hLF2+OZ3BoswDSOEGRAMk+KDTWsQ1J2bJMOEp6tRK8qqOiHzyu93cKbSHINh6Rhz3iJCfuv+5plAkZeTD2DfNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WbHgG9n0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE037C4CED0;
-	Thu, 19 Dec 2024 13:25:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pKy4jdYjwzFAYciX3LZC/JyWXhFwHE8k+HRWjTIIgzm7ME+b4OF/DMsgkXA0LinPIJW9FGE3IR1XDKbP1cxnm8ljC75bdD91teDYLz7osc1m9fAgGNGHGzvHbzEpji9NEwqkbgus0s1Wq1WFZDqXVyfgp63NF+zWWfZsM9aA1Ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GN30Sgdk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF174C4CECE;
+	Thu, 19 Dec 2024 13:27:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734614733;
-	bh=InZEF5fvhkas5+2L+LvUzEfyVNN2wyINtQNf6/v4tyY=;
+	s=k20201202; t=1734614829;
+	bh=4U1rX2P9SnZIdU620uSlt8MpD5nd6cSqYravvEQbTDw=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=WbHgG9n0De1iKwY1yII5OFBIpgsY5NtE9yYb4qC9fd0hfXNe9rM4H4gsqGsGaZTGj
-	 cBcFivzbJtV6X3Ftyml9HHkz+lEcf5AyinbOA2653DEV+Ps9KBk46pAqmPFfsCUpGW
-	 dd/FxiQCZbJGinR1ZBL6aJVHIcCj0ZSAyUpjNfiO/S0LSP9VVzWCYgWOkg4gfEXVpR
-	 8lA4ZMVVuvXQivfy56UbhNkJO67eWpPUCKHYAw6C5rzCObzkhzwMG3bpat2kYII5qN
-	 Q/2GaTPOAsref5FeSIP/iflwENbHQ3RcIZme1ALgAGLPLI4oVS5UkzPDiJgSsQT4ZE
-	 8pRdsIWdfXNtA==
+	b=GN30SgdkvmOgMEnxZcNJQoSEVhiU9CBERI/byc/+Zn9wLMRVWaP4oDuoTmCVpIood
+	 FGskKBEJFBR7s+CN4aEkLnpHs5di7qC6uJP7yZhnonC6zg/iGxstZLhvLMq5RE7D68
+	 LLws/hx1YIsV288MndmjnirV/6RkN5aG8Y7yGkdFqPfEkEToyqKUwSOieMp9lohQvs
+	 XAD9Q4D63ThkDdVlJUCW9IxbbQNWU6ETV3bdH1YepZu69nU3rbXsmHAZBPuZtFpXtr
+	 BOcmdfvK8tbXBozYVeqYDmPqJKq3X+uuP4piL1d5xLdrHUnPvulgyRIGqnBY4cO6Ef
+	 Uabyhp1n/GYwg==
 From: Kalle Valo <kvalo@kernel.org>
-To: Roopni Devanathan <quic_rdevanat@quicinc.com>
-Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>,  Rajat
- Soni <quic_rajson@quicinc.com>
-Subject: Re: [PATCH v5 2/2] wifi: ath12k: Support pdev Puncture Stats
-References: <20241218035711.2573584-1-quic_rdevanat@quicinc.com>
-	<20241218035711.2573584-3-quic_rdevanat@quicinc.com>
-Date: Thu, 19 Dec 2024 15:25:31 +0200
-In-Reply-To: <20241218035711.2573584-3-quic_rdevanat@quicinc.com> (Roopni
-	Devanathan's message of "Wed, 18 Dec 2024 09:27:11 +0530")
-Message-ID: <87ikrfhkj8.fsf@kernel.org>
+To: Aditya Kumar Singh <quic_adisi@quicinc.com>
+Cc: Jeff Johnson <jjohnson@kernel.org>,  <linux-wireless@vger.kernel.org>,
+  <ath12k@lists.infradead.org>,  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/3] wifi: ath12k: rename CAC_RUNNING flag
+References: <20241218-ath12k_mlo_dfs-v1-0-058e783bcfc7@quicinc.com>
+	<20241218-ath12k_mlo_dfs-v1-1-058e783bcfc7@quicinc.com>
+Date: Thu, 19 Dec 2024 15:27:06 +0200
+In-Reply-To: <20241218-ath12k_mlo_dfs-v1-1-058e783bcfc7@quicinc.com> (Aditya
+	Kumar Singh's message of "Wed, 18 Dec 2024 09:11:32 +0530")
+Message-ID: <87ed23hkgl.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -61,63 +61,16 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Roopni Devanathan <quic_rdevanat@quicinc.com> writes:
+Aditya Kumar Singh <quic_adisi@quicinc.com> writes:
 
-> From: Rajat Soni <quic_rajson@quicinc.com>
+> Rename the flag ATH12K_CAC_RUNNING to ATH12K_FLAG_CAC_RUNNING to correct
+> the naming inconsistency in the enum ath12k_dev_flags.
 >
-> Add support to request pdev puncture stats from firmware through
-> HTT stats type 46. These stats give the count of number of
-> subbands used in different wifi standards.
+> No functionality changes.
 >
-> Sample output:
-> -------------
-> echo 46 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
-> cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats
-> HTT_PDEV_PUNCTURE_STATS_TLV:
-> mac_id = 0
-> tx_ofdm_su_last_used_pattern_mask = 0x00000001
-> tx_ofdm_su_num_subbands_used_cnt_01 = 217
-> tx_ofdm_su_num_subbands_used_cnt_02 = 0
-> tx_ofdm_su_num_subbands_used_cnt_03 = 0
-> .....
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
 >
-> HTT_PDEV_PUNCTURE_STATS_TLV:
-> mac_id = 0
-> tx_ax_dl_mu_ofdma_last_used_pattern_mask = 0x00000000
-> tx_ax_dl_mu_ofdma_num_subbands_used_cnt_01 = 0
-> tx_ax_dl_mu_ofdma_num_subbands_used_cnt_02 = 0
-> tx_ax_dl_mu_ofdma_num_subbands_used_cnt_03 = 0
-> .....
->
-> HTT_PDEV_PUNCTURE_STATS_TLV:
-> mac_id = 0
-> tx_be_dl_mu_ofdma_last_used_pattern_mask = 0x00000000
-> tx_be_dl_mu_ofdma_num_subbands_used_cnt_01 = 0
-> tx_be_dl_mu_ofdma_num_subbands_used_cnt_02 = 0
-> tx_be_dl_mu_ofdma_num_subbands_used_cnt_03 = 0
-> .....
->
-> HTT_PDEV_PUNCTURE_STATS_TLV:
-> mac_id = 0
-> rx_ax_ul_mu_ofdma_last_used_pattern_mask = 0x00000000
-> rx_ax_ul_mu_ofdma_num_subbands_used_cnt_01 = 0
-> rx_ax_ul_mu_ofdma_num_subbands_used_cnt_02 = 0
-> rx_ax_ul_mu_ofdma_num_subbands_used_cnt_03 = 0
-> .....
->
-> HTT_PDEV_PUNCTURE_STATS_TLV:
-> mac_id = 0
-> rx_be_ul_mu_ofdma_last_used_pattern_mask = 0x00000000
-> rx_be_ul_mu_ofdma_num_subbands_used_cnt_01 = 0
-> rx_be_ul_mu_ofdma_num_subbands_used_cnt_02 = 0
-> rx_be_ul_mu_ofdma_num_subbands_used_cnt_03 = 0
-> .....
->
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
-> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
->
-> Signed-off-by: Rajat Soni <quic_rajson@quicinc.com>
-> Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
+> Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
 
 Acked-by: Kalle Valo <kvalo@kernel.org>
 
