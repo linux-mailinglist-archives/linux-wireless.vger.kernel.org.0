@@ -1,197 +1,155 @@
-Return-Path: <linux-wireless+bounces-16634-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16636-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 296D79F83FF
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2024 20:20:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE5E39F887E
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 00:28:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEFE8188822C
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2024 19:20:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1697D162307
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2024 23:28:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F8919E98C;
-	Thu, 19 Dec 2024 19:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75A161D6DBF;
+	Thu, 19 Dec 2024 23:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OzbK2VZc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bCGYbsVL"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6EF19E985
-	for <linux-wireless@vger.kernel.org>; Thu, 19 Dec 2024 19:20:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A926B19F41A;
+	Thu, 19 Dec 2024 23:28:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734636047; cv=none; b=Kye367F4WoOA9mRl5sRFnhhtwflfhgMzb2ncY+Wbn5PclIizKHlTVfGxLeE1dGTfDyOSn2q7xV3SOWKCmFC7b6Y7uqiJ+WODEls1wjxt1u+xmfyrkQ5NIAtDwuyw/aVvQxBWzY4w2G2H8DDgdqowAdzNJXvJw9KytYYudyUchU8=
+	t=1734650894; cv=none; b=jf58lLGHBiFbXhBBOzOSpDB+5jejTloSZSfjVL3NdOCtuBwlOwioX9Ewjh5YSNoOMtp8k6M0dh6Fm7Tg1i4PYqOQAY5iPGNfOeapllAEmbM8R2pxfX92vvDA9wHfbPte6jmzo5L4J9IrBUGF+P/e03tCMujuuQ9ivy7wT/nHSmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734636047; c=relaxed/simple;
-	bh=kjPvKh8l2onKY9iS4AUmKaWQTS31NsayEC3qxZ4Jd2U=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=PCJiv5So+km1+YkQUxWiLppMs+2cbkCOoX17BVbwzxVooV5JeUhuQmshnAMT4u65koBoTUQQE6gVjULnMiskEklg9VICrufxTq6IA6OevTF4GkcKBmedyMmJlGXjGvLJZz9d6UUkeyEUs0svD19DRNK6650d8hkCVYIaNqpr2pY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OzbK2VZc; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734636046; x=1766172046;
-  h=date:from:to:cc:subject:message-id;
-  bh=kjPvKh8l2onKY9iS4AUmKaWQTS31NsayEC3qxZ4Jd2U=;
-  b=OzbK2VZcBYuXyFx+/2lEqw+92C6ykeL+b8Rul8ptuMmMnB04cdSJdOuk
-   eIAsHaPC/3Rwb20BaNgMASpYlG+MFqwNtiQ5fWs5Tw1O/avC4uOGI/+Yp
-   5y6klVfXqN1kmvHZgwirUWvTwcYL2rZLco374NRUBS32zQhBd8eiMEpq+
-   hjRIA+HrW1YNPdT8Ab8jsH9JA05kxDfDsy6uEjF+wpBEJidHT3uxcK8At
-   80NIK7LNOSRauVuss4pex+f3Us8FjK6AzEYAj5m5imOZ0IKGnjzqf1KSD
-   TcbqLPbA+QArBRZ8f1yHF3UxX9bDSiXBmR8YiAalEwBhVgQmJOFVc1ghK
-   A==;
-X-CSE-ConnectionGUID: /TM1is2hRLWQr0gE7vsB9w==
-X-CSE-MsgGUID: QU9S5YFpRjWrRH8Ubqtplw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11291"; a="35058357"
-X-IronPort-AV: E=Sophos;i="6.12,248,1728975600"; 
-   d="scan'208";a="35058357"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2024 11:20:45 -0800
-X-CSE-ConnectionGUID: QX3vilxwRVuUffVWgUQ4DA==
-X-CSE-MsgGUID: 8JLfCWKuSlWrnTfodFOkdw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,248,1728975600"; 
-   d="scan'208";a="129106260"
-Received: from lkp-server01.sh.intel.com (HELO a46f226878e0) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 19 Dec 2024 11:20:43 -0800
-Received: from kbuild by a46f226878e0 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tOM4f-0000SZ-0l;
-	Thu, 19 Dec 2024 19:20:41 +0000
-Date: Fri, 20 Dec 2024 03:20:16 +0800
-From: kernel test robot <lkp@intel.com>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: Johannes Berg <johannes@sipsolutions.net>,
- linux-wireless@vger.kernel.org
-Subject: [wireless:for-next] BUILD SUCCESS
- 146b6057e1fd28fb1a38d300bf76a38dfba7f9fb
-Message-ID: <202412200310.CmotGc6q-lkp@intel.com>
-User-Agent: s-nail v14.9.24
+	s=arc-20240116; t=1734650894; c=relaxed/simple;
+	bh=91T4CDh+J4MnbjMEHqlDbWbhPHyManv9HM8AVh1CpQ0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:MIME-Version:
+	 Content-Type; b=SB2YwKWCzvJf2c9S8at4EVYWPsVAb32f/o+sz7i7+dFq6O6LDxH/K/Xijqqy+LLmOrCLuoba1oEpi7X4tz+UdFLMGJ3oXu0AudmLhbgGI/Q3jJgXu0hvCUOCE57YSfuTOULmZY8lJahv9OwUpzdVJ8Gkl51ZUmMj70A4+z6+wgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bCGYbsVL; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5401c68b89eso1487244e87.0;
+        Thu, 19 Dec 2024 15:28:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734650891; x=1735255691; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:in-reply-to:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=2l2kaTxVgDXZ+WZ5RNly03lP6LWl5fzxLs2ibw+q2ng=;
+        b=bCGYbsVLSF9pn3KAr+gwa9rShoT0jhM59mbBMHkXQrK8wVMbWqBvDoqoNHdu54v9/P
+         UJZKIwMsIxSEqN++xr74HRff1zoETjIbOpTkhvnQ3qHgQXSVEgU8dNlazlsDZaQbiz59
+         Jgk8A65Eok1Y63XfS3wfNCTjr7v8lWdwBv+crwJLofGDXcjvKfRob0iBW4Uiy+113tHt
+         2bJRSRdT8N4p3OXQ/K81Bd27re0H9/oIq845GRq6XquM5soRG5Be5Kl1Qolbia73UHng
+         Vx7r3DJ4x/3ausKf1oq9O4kWfbcf3CUT7dX4z9MDFv9Y5bz5rq6rZ6pmEGqkWPDGLaZE
+         HIMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734650891; x=1735255691;
+        h=content-transfer-encoding:mime-version:in-reply-to:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2l2kaTxVgDXZ+WZ5RNly03lP6LWl5fzxLs2ibw+q2ng=;
+        b=O7yJyibjemQeHf+vOF4vuZwPuWuo/d2517cEAmb3NPpQGO/iycVJvWtvcle/VFM6lN
+         EVrNYTokreP8ew16BSSyrDdLECkQ9leq20O9T6t90lje2PUwipprvxuaXIIoKxkoEsyw
+         Q0syuu9R7/Ptd9BNVSvOEziVK/yjzs2xNkii0vbfmA4Z9RVgy3JUjcWq57QJbz0J+uCt
+         89QISUEgl0TfLSEx4IGww96mssGJD0W3NEJFjqbIwfGrznO+9Uxz7ZkZ3smH6UTmFn0d
+         Dx/UKqZbzY1BJA6rwbDWxUr+s30S8parva/eyvRDEmrPPCSjmAFPEpf4WqKnq9Balhvn
+         t3fg==
+X-Forwarded-Encrypted: i=1; AJvYcCU9HvsCrk1DcmBXkxlpYfp7TDy3OiZyn2VVjyhofRz4ZeTZpfiIIPOrYVZgBDLzQdSEH3/HNR0ZdZ4+@vger.kernel.org, AJvYcCV1EPNgKKxz6JogtatFVIIVmAPjCfcAYwrYmkkZds8jvTRiVibucWzSKlufwFLr2XON3QQ+IODx@vger.kernel.org, AJvYcCVJhiVpz8adtBdkKLJUoNNdzNI/zoH34M6jHiycnnTfxv/MnU6NO1GBe3z6cDbNGPP3FyjAgrDbGCuStQkmluM=@vger.kernel.org, AJvYcCVLZR1eVE23yjxQYKBmkjWT+Kpn9rZ2EIQR9fXW5tVpo0ksRfcayviYKD3CVYVmbPNdNQD6towQvv8a8s4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1f1RY5LsgJoatrVQA3VRp0A1rHryrcsx0YGbTgZGlEXD09pu9
+	Q7wbtuYN6Vz0yUhEc/BoenP6ZAMoRQ4zRhsLQa46mMAn+gXHRA3h
+X-Gm-Gg: ASbGncu1itNiuwT9FZfr16jH3c5/cQtAIjRPb0d1BBcP+O8cwK5JANiSFADtra+b2kA
+	bcypgRRk/nnHt8EsKmadPBqzeTloIEwyP4SF6ZCL5k+a0x3m6dpD2FG7WPQ2sLCqQtmja+YQFcr
+	AtaXlCeOwJLNbKFqSz6twY78SB2c03JNgRD0BFecqCjiXY2DFEN4FElwYf2EN5ws/9n3ORjMhPF
+	suaaHI4PTAOAhW83XMkpygKItwc43Uvk0BLAnAr15tw2Wua6xymYZyfdvidwqPg2khRjE6k3A==
+X-Google-Smtp-Source: AGHT+IHwtq2DRxGiJpJfSQ3Ioq7kVn6TqoQxNI6STyt5mABoqAAJc/qvM+8M8/76Be/3GE/r3d1tWQ==
+X-Received: by 2002:a05:6512:a93:b0:542:215f:e615 with SMTP id 2adb3069b0e04-54229450a3bmr193154e87.16.1734650890368;
+        Thu, 19 Dec 2024 15:28:10 -0800 (PST)
+Received: from foxbook (adtk139.neoplus.adsl.tpnet.pl. [79.185.222.139])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5422360075dsm310172e87.104.2024.12.19.15.28.03
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Thu, 19 Dec 2024 15:28:08 -0800 (PST)
+Date: Fri, 20 Dec 2024 00:27:59 +0100
+From: =?UTF-8?B?TWljaGHFgg==?= Pecio <michal.pecio@gmail.com>
+To: aleksander.lobakin@intel.com
+Cc: Bo.Jiao@mediatek.com, StanleyYP.Wang@mediatek.com,
+ alexander.deucher@amd.com, andrew+netdev@lunn.ch, andrew@lunn.ch,
+ angelogioacchino.delregno@collabora.com, apais@linux.microsoft.com,
+ chui-hao.chiu@mediatek.com, cug_yangyuancong@hotmail.com,
+ daniel@makrotopia.org, davem@davemloft.net, deren.wu@mediatek.com,
+ dokyungs@yonsei.ac.kr, dsahern@kernel.org, dzm91@hust.edu.cn,
+ edumazet@google.com, gch981213@gmail.com, git@qrsnap.io,
+ gregkh@linuxfoundation.org, guanwentao@uniontech.com,
+ gustavoars@kernel.org, helmut.schaa@googlemail.com, horms@kernel.org,
+ jiefeng_li@hust.edu.cn, keescook@chromium.org, kuba@kernel.org,
+ kvalo@codeaurora.org, kvalo@kernel.org, leit@fb.com, leitao@debian.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mediatek@lists.infradead.org, linux-usb@vger.kernel.org,
+ linux-wireless@vger.kernel.org, lorenzo.bianconi83@gmail.com,
+ lorenzo.bianconi@redhat.com, lorenzo@kernel.org, lynxis@fe80.eu,
+ mailhol.vincent@wanadoo.fr, markus.theil@tu-ilmenau.de,
+ matthias.bgg@gmail.com, mikhail.v.gavrilov@gmail.com,
+ mingyen.hsieh@mediatek.com, mrkiko.rs@gmail.com, nbd@nbd.name,
+ nelson.yu@mediatek.com, netdev@vger.kernel.org, oliver@neukum.org,
+ pabeni@redhat.com, quan.zhou@mediatek.com, raoxu@uniontech.com,
+ rodrigo.vivi@intel.com, romain.perier@gmail.com, rong.yan@mediatek.com,
+ ryder.lee@mediatek.com, sean.wang@mediatek.com, sgruszka@redhat.com,
+ shayne.chen@mediatek.com, sidhayn@gmail.com, stern@rowland.harvard.edu,
+ stf_xl@wp.pl, sujuan.chen@mediatek.com, wang.zhao@mediatek.com,
+ wangyuli@uniontech.com, weiwan@google.com, woojung.huh@microchip.com,
+ yn.chen@mediatek.com, zhanjun@uniontech.com
+Subject: Re: mt76: dealing with disconnections, -ENODEV and -EPROTO
+Message-ID: <20241220002759.34dcfe11@foxbook>
+In-Reply-To: <a2bbdfb4-19ed-461e-a14b-e91a5636cc77@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
-branch HEAD: 146b6057e1fd28fb1a38d300bf76a38dfba7f9fb  wifi: cw1200: Fix potential NULL dereference
+> >  		ret = usb_control_msg(udev, pipe, req, req_type, val,
+> >  				      offset, buf, len, MT_VEND_REQ_TOUT_MS);
+> > -		if (ret == -ENODEV)
+> > +		if (ret == -ENODEV || ret == -EPROTO)
+> >  			set_bit(MT76_REMOVED, &dev->phy.state);
+> > -		if (ret >= 0 || ret == -ENODEV)
+> > +		if (ret >= 0 || ret == -ENODEV || ret == -EPROTO)
+> >  			return ret;
+> >  		usleep_range(5000, 10000);
+> 
+> How do other drivers handle this?
+> Can -EPROTO happen in other cases, not only unplugging, which this
+> patch would break?
 
-elapsed time: 1446m
+Yes, -EPROTO may be a transient error, although they are relatively
+rare as some retries are done before the URB fails. This patch will
+only break things if things work in the first place, i.e. the driver
+has sensible retry policies, the hardware doesn't get confused, etc.
 
-configs tested: 103
-configs skipped: 1
+Note that -EPROTO is not guaranteed in this case, see
+Documentation/driver-api/usb/error-codes.rst
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I know that xHCI gives -EPROTO and it looks like EHCI does too (IDK
+if this is reliable), but I just checked that OHCI gives -ETIME.
 
-tested configs:
-alpha                             allnoconfig    gcc-14.2.0
-alpha                            allyesconfig    gcc-14.2.0
-arc                              allmodconfig    gcc-13.2.0
-arc                               allnoconfig    gcc-13.2.0
-arc                              allyesconfig    gcc-13.2.0
-arc                   randconfig-001-20241219    gcc-13.2.0
-arc                   randconfig-002-20241219    gcc-13.2.0
-arm                              allmodconfig    gcc-14.2.0
-arm                               allnoconfig    clang-17
-arm                              allyesconfig    gcc-14.2.0
-arm                   randconfig-001-20241219    clang-18
-arm                   randconfig-002-20241219    gcc-14.2.0
-arm                   randconfig-003-20241219    clang-18
-arm                   randconfig-004-20241219    gcc-14.2.0
-arm64                            allmodconfig    clang-18
-arm64                             allnoconfig    gcc-14.2.0
-arm64                 randconfig-001-20241219    clang-16
-arm64                 randconfig-002-20241219    clang-18
-arm64                 randconfig-003-20241219    gcc-14.2.0
-arm64                 randconfig-004-20241219    gcc-14.2.0
-csky                              allnoconfig    gcc-14.2.0
-csky                  randconfig-001-20241219    gcc-14.2.0
-csky                  randconfig-002-20241219    gcc-14.2.0
-hexagon                          allmodconfig    clang-20
-hexagon                           allnoconfig    clang-20
-hexagon               randconfig-001-20241219    clang-19
-hexagon               randconfig-002-20241219    clang-20
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20241219    gcc-12
-i386        buildonly-randconfig-002-20241219    gcc-12
-i386        buildonly-randconfig-003-20241219    clang-19
-i386        buildonly-randconfig-004-20241219    clang-19
-i386        buildonly-randconfig-005-20241219    gcc-12
-i386        buildonly-randconfig-006-20241219    gcc-12
-i386                                defconfig    clang-19
-loongarch                        allmodconfig    gcc-14.2.0
-loongarch                         allnoconfig    gcc-14.2.0
-loongarch             randconfig-001-20241219    gcc-14.2.0
-loongarch             randconfig-002-20241219    gcc-14.2.0
-m68k                             allmodconfig    gcc-14.2.0
-m68k                              allnoconfig    gcc-14.2.0
-m68k                             allyesconfig    gcc-14.2.0
-microblaze                       allmodconfig    gcc-14.2.0
-microblaze                        allnoconfig    gcc-14.2.0
-microblaze                       allyesconfig    gcc-14.2.0
-mips                              allnoconfig    gcc-14.2.0
-nios2                             allnoconfig    gcc-14.2.0
-nios2                 randconfig-001-20241219    gcc-14.2.0
-nios2                 randconfig-002-20241219    gcc-14.2.0
-openrisc                          allnoconfig    gcc-14.2.0
-openrisc                         allyesconfig    gcc-14.2.0
-parisc                           allmodconfig    gcc-14.2.0
-parisc                            allnoconfig    gcc-14.2.0
-parisc                           allyesconfig    gcc-14.2.0
-parisc                randconfig-001-20241219    gcc-14.2.0
-parisc                randconfig-002-20241219    gcc-14.2.0
-powerpc                          allmodconfig    gcc-14.2.0
-powerpc                           allnoconfig    gcc-14.2.0
-powerpc                          allyesconfig    clang-16
-powerpc               randconfig-001-20241219    clang-18
-powerpc               randconfig-002-20241219    clang-16
-powerpc               randconfig-003-20241219    clang-20
-powerpc64             randconfig-001-20241219    gcc-14.2.0
-powerpc64             randconfig-002-20241219    clang-18
-powerpc64             randconfig-003-20241219    clang-16
-riscv                            allmodconfig    clang-20
-riscv                             allnoconfig    gcc-14.2.0
-riscv                            allyesconfig    clang-20
-riscv                 randconfig-001-20241219    clang-16
-riscv                 randconfig-002-20241219    gcc-14.2.0
-s390                             allmodconfig    clang-19
-s390                              allnoconfig    clang-20
-s390                             allyesconfig    gcc-14.2.0
-s390                  randconfig-001-20241219    gcc-14.2.0
-s390                  randconfig-002-20241219    gcc-14.2.0
-sh                               allmodconfig    gcc-14.2.0
-sh                                allnoconfig    gcc-14.2.0
-sh                               allyesconfig    gcc-14.2.0
-sh                    randconfig-001-20241219    gcc-14.2.0
-sh                    randconfig-002-20241219    gcc-14.2.0
-sparc                            allmodconfig    gcc-14.2.0
-sparc                             allnoconfig    gcc-14.2.0
-sparc                 randconfig-001-20241219    gcc-14.2.0
-sparc                 randconfig-002-20241219    gcc-14.2.0
-sparc64               randconfig-001-20241219    gcc-14.2.0
-sparc64               randconfig-002-20241219    gcc-14.2.0
-um                                allnoconfig    clang-18
-um                    randconfig-001-20241219    gcc-12
-um                    randconfig-002-20241219    clang-20
-x86_64                            allnoconfig    clang-19
-x86_64                           allyesconfig    clang-19
-x86_64      buildonly-randconfig-001-20241219    gcc-12
-x86_64      buildonly-randconfig-002-20241219    gcc-12
-x86_64      buildonly-randconfig-003-20241219    clang-19
-x86_64      buildonly-randconfig-004-20241219    gcc-12
-x86_64      buildonly-randconfig-005-20241219    gcc-12
-x86_64      buildonly-randconfig-006-20241219    clang-19
-x86_64                              defconfig    gcc-11
-xtensa                            allnoconfig    gcc-14.2.0
-xtensa                randconfig-001-20241219    gcc-14.2.0
-xtensa                randconfig-002-20241219    gcc-14.2.0
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+I don't have this hardware, but I played with some other wired/WiFi
+dongles and observed similar problems of varying severity.
+
+It looks to me like USB core doesn't actually return -ENODEV on
+disconnected devices, or at least doesn't react to disconnection
+until .probe() returns, I am not yet sure which of those.
+
+And drivers don't seem to expect -EPROTO or -ETIME to be fatal.
+
+And maybe they should, if they wouldn't be able to recover from it
+anyway, and I know that there are drivers which can't. But I think
+this USB subsystem behavior is suboptimal too.
+
+Regards,
+Michal
 
