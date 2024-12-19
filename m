@@ -1,93 +1,123 @@
-Return-Path: <linux-wireless+bounces-16560-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16561-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7849A9F710C
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2024 00:42:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AA219F713D
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2024 01:10:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DC00188FE8B
-	for <lists+linux-wireless@lfdr.de>; Wed, 18 Dec 2024 23:42:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CF3616A2EF
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2024 00:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7573F1FD7BE;
-	Wed, 18 Dec 2024 23:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79D023A6;
+	Thu, 19 Dec 2024 00:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SMB95StF"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="P7eFr3mb"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2947E19CCEC;
-	Wed, 18 Dec 2024 23:38:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA5B380
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Dec 2024 00:10:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734565081; cv=none; b=I4mObAh5Uz/8WJHj4fjezexar8bkfSG4/kZoQ+f0y0L/MUpbsLoBnAKBL853s4VsCm5SgpVGeFewh36EbxNTcUuQE6U1DUb7tB9OXlyNtKpuDs5zW+IaQryuy7SXUS1dN3HpuiN7qPEilzqFJGcef71bpu8+ofCFhceOVm3XJog=
+	t=1734567034; cv=none; b=q3FKKzNOzFwVnjF05LoFvGRjY/kxPZBUblrFQsAEHctb4c69jAFudV1gUD09Fqk6hvXEpfb3wCW96aNyLJMKToKv3p4Qnmn4W3kWnx33QZPJ2F1OtXiOo6PN0nJmORef3OMwOFNYfDAJTQjtkHcO5hOQeyXoaIT58g68PMzqhqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734565081; c=relaxed/simple;
-	bh=TE9MeQggFrUNHk7GnpsPc1qOO621qZHYt6YKXQvYGUs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uUFcnQ9HasVvhYRx6bQG2VCh7AJ68uSHy46mgS2LED2hmIDRPkWAPwVaNSwabrwBXmtSU+Qqqou6Rg17Nu7bet9yj1m2Qy1qc0VAkmUVavJN578pEdKt6/4cp4yk1Fsjo890fdj230dO6+dCzD6bI57uKadixfKK0u624IgY7rM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SMB95StF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9872C4CECD;
-	Wed, 18 Dec 2024 23:37:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734565080;
-	bh=TE9MeQggFrUNHk7GnpsPc1qOO621qZHYt6YKXQvYGUs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SMB95StF87lMswBTmoy5w+GFfz3iCmebU4gbeFCJK7sk9+I16C9cplpIYLf0W9Qul
-	 QxmbLpIR7/E6R0kf5eKkyEYZx8mBxxIidhrnHdr7M4IeFwaA3J5y2wWv4oQmfmxORv
-	 D1j6lmCsAMuKx+jWknHgUh8GEb58788JfHfg1N+UuccR+d6b8ALbB6vzMOTnfrbNpk
-	 nrbFqHQ3vUtoVAGtl14Lhqr/MD+oEcAwxAPHEo6k2fp/JS6ZLbq87qH4FknN0j6i1c
-	 yDKA9jZ2UNpUbRlqHX4gnIrK03GFSOZ91dNOO2mqCDLBVJi/w2/4kNnX7grOmVIZvb
-	 15jS4zu2mRPLw==
-Date: Wed, 18 Dec 2024 15:37:59 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Xiao Liang <shaw.leon@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, Kuniyuki
- Iwashima <kuniyu@amazon.com>, Donald Hunter <donald.hunter@gmail.com>,
- Paolo Abeni <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>,
- David Ahern <dsahern@kernel.org>, Eric Dumazet <edumazet@google.com>, Ido
- Schimmel <idosch@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Simon
- Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, Jiri Pirko
- <jiri@resnulli.us>, Hangbin Liu <liuhangbin@gmail.com>,
- linux-rdma@vger.kernel.org, linux-can@vger.kernel.org,
- osmocom-net-gprs@lists.osmocom.org, bpf@vger.kernel.org,
- linux-ppp@vger.kernel.org, wireguard@lists.zx2c4.com,
- linux-wireless@vger.kernel.org, b.a.t.m.a.n@lists.open-mesh.org,
- bridge@lists.linux.dev, linux-wpan@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v6 11/11] selftests: net: Add test cases for
- link and peer netns
-Message-ID: <20241218153759.672b7014@kernel.org>
-In-Reply-To: <20241218130909.2173-12-shaw.leon@gmail.com>
-References: <20241218130909.2173-1-shaw.leon@gmail.com>
-	<20241218130909.2173-12-shaw.leon@gmail.com>
+	s=arc-20240116; t=1734567034; c=relaxed/simple;
+	bh=/84B4ORWYOX9kDnWMqKZDJUF4dF0IDJxVlQX/jzXtIc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kXxb++YAXD/r3+htWiEF6giTsveOibJPO0iKuLy/7SRYOiiwo0hyD2ckvpKT6JOpl3T7mIHkoFa4dP3LIShMQpWIyzuIOvuhmu1neWKbkEhZf5/nLH8kHBrsCUxkfwUxeiyCWk9foRCVfobRu8KBPTzoiz9m01ZrKMlY4wjyDX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=P7eFr3mb; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BIMrkVu012017;
+	Thu, 19 Dec 2024 00:10:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=94C1y99zJDWALNTsLJ8XK8
+	/y9AIsrj3wUbnPi4Rb/iE=; b=P7eFr3mbZk+BHc/ht6K6HCEyqpG41B+5jkxfay
+	27p9Sive2mFGUVXJyDzmjgeUQvgtaPexn1vja9XnZ7cnmj+CKwZCJM2LCQ+rDFDt
+	lAE3fcB5rcyXMrHugIdFxyhHk6H4wABuWdwqGioiEEq1Au31SgrK2/4wYOCgNMt5
+	4YpbG9pBCIgj5tAaY78ck2mDgNp/pBKlm5mKxGzMM823T4u6q5blZyx0P3pnCgqe
+	3FQY22vUvhQDwxzB5rzluaVt3jxhc47nx0bLzbBxwMMswu+ri87JigEWqV5MXUyL
+	9X3zrj3w+KkPnfFp8T+knRY/ZXhNyZxMrRUszhJyCw1Vf5Bw==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43m7ka046w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Dec 2024 00:10:27 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BJ0AQGq029526
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Dec 2024 00:10:26 GMT
+Received: from hu-periyasa-blr.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Wed, 18 Dec 2024 16:10:25 -0800
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Karthikeyan Periyasamy
+	<quic_periyasa@quicinc.com>
+Subject: [PATCH 0/3] wifi: ath12k: Refactor monitor Rx handler
+Date: Thu, 19 Dec 2024 05:40:03 +0530
+Message-ID: <20241219001006.1036495-1-quic_periyasa@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 1m3KV6wO-DHEOVPSOH-DdbkQUFQ3wUHq
+X-Proofpoint-ORIG-GUID: 1m3KV6wO-DHEOVPSOH-DdbkQUFQ3wUHq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 phishscore=0
+ lowpriorityscore=0 spamscore=0 mlxscore=0 mlxlogscore=468 bulkscore=0
+ impostorscore=0 suspectscore=0 clxscore=1015 malwarescore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412180187
 
-On Wed, 18 Dec 2024 21:09:09 +0800 Xiao Liang wrote:
->  - Add test for creating link in another netns when a link of the same
->    name and ifindex exists in current netns.
->  - Add test to verify that link is created in target netns directly -
->    no link new/del events should be generated in link netns or current
->    netns.
->  - Add test cases to verify that link-netns is set as expected for
->    various drivers and combination of namespace-related parameters.
+Currently, monitor support is not added. However, in the future, the
+monitor will be enabled. Therefore, refactor the monitor handler, which
+help to add monitor support in the future.
 
-Nice work!
+Depends-on:
+  [PATCH] wifi: ath12k: Add support for parsing 64-bit TLVs
+  https://lore.kernel.org/all/20241204071238.948885-1-quic_ppranees@quicinc.com/
 
-You need to make sure all the drivers the test is using are enabled by
-the selftest kernel config: tools/testing/selftests/net/config
+  [PATCH 0/8] wifi: ath12k: Refactor the monitor status Rx path
+  https://lore.kernel.org/all/20241217084511.2981515-1-quic_periyasa@quicinc.com/ 
 
-This may be helpful:
-https://github.com/linux-netdev/nipa/wiki/How-to-run-netdev-selftests-CI-style#how-to-build
+Karthikeyan Periyasamy (3):
+  wifi: ath12k: Refactor the monitor Rx parser handler argument
+  wifi: ath12k: Refactor the monitor Tx/RX handler procedure arguments
+  wifi: ath12k: Refactor Rx status TLV parsing procedure argument
+
+ drivers/net/wireless/ath/ath12k/dp_mon.c | 60 ++++++++++++------------
+ drivers/net/wireless/ath/ath12k/dp_mon.h |  7 ++-
+ 2 files changed, 33 insertions(+), 34 deletions(-)
+
+
+base-commit: 9a448415ed0c46edeb9170091a03b620986ca0b2
+prerequisite-patch-id: 17dd9d2f723e951761f037999a1a7baed16e0d04
+prerequisite-patch-id: b2e45c89692e23290870fcdec73106c9a910c054
+prerequisite-patch-id: 7f6954e09b67481e7b5ea44ec495d7bf95696502
+prerequisite-patch-id: 42680e4dd84e5bf3cef644d08f1a17326915e238
+prerequisite-patch-id: 6c936b626c89ef9aefc898004826ca755367c93d
+prerequisite-patch-id: 02f5565f0ed6cec4b43e5248395845f415729321
+prerequisite-patch-id: 14dcc6fdc6722661a74bd1c9c7e459b4937c83e8
+prerequisite-patch-id: 4cce8563f290b716a4d3b18ff15b0fbf7c11a64a
+prerequisite-patch-id: 6755d0467c39a99b37e3a1f574f0ef57d6cf6399
 -- 
-pw-bot: cr
+2.34.1
+
 
