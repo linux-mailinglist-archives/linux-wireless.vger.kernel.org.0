@@ -1,57 +1,56 @@
-Return-Path: <linux-wireless+bounces-16608-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16609-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80F5A9F7C2F
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2024 14:21:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC0CE9F7C31
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2024 14:24:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E737188F19B
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2024 13:21:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8098188F7C6
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2024 13:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5985921A945;
-	Thu, 19 Dec 2024 13:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E8D39FCE;
+	Thu, 19 Dec 2024 13:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l3M6Ox9t"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AlmTkVIG"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F0B39FCE
-	for <linux-wireless@vger.kernel.org>; Thu, 19 Dec 2024 13:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD18F7494
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Dec 2024 13:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734614498; cv=none; b=k9P8N6B9I8a4EDtdadZFKRM59Hew7v8N7qs4Pt6jNW2hgtPs6TjhAq6jTW6hIIsCAavqA7h1X05x38HTzuDCQmHdPHhA0VBgaQmVoAMfIb4pay8wC5LUmcysqhrSR2uzhsGT4RzL2TP49IAHwqi/uU4zIyULC549I9q3GDqgGaI=
+	t=1734614674; cv=none; b=CPDR6+W1isL86Zrjf+HZzYVRQq4G3M2F8411TP6AjPlhiG0xbcMJuClJMFKUYs/jo/e4/W0wLIYiawGgnCcKzYP76xxTXWl1iYiO42WMJ3JSTT4tBsOATezdEd4WwTwrI6EVYvWk+yAbyXwpTfsvt/M5PDT+KZ2plpAqjYz0NYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734614498; c=relaxed/simple;
-	bh=y1/zEPlqylwaDCsgVUz2dZoDtXxLoO9nh2PfUsMnM4A=;
+	s=arc-20240116; t=1734614674; c=relaxed/simple;
+	bh=695XyT9HylzgQMl6LI188n8hrO1dbwChaw9J5Kqj0O0=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=anrws4AaaZx4eYuwLw35CTHfq1b9mvYB/YT8QQ/8CFayGFK/zEYN5QyI5Skb4pIJQHsHs4WOcT0R0QblkxnISjczpK1x54fifFFB9lzUso1mL+QGR3aLe9ME/mDR93NUTzOLhfLD6hGnFCdJhfNB2IMBUAugHfrFpxxlvEVE3VE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l3M6Ox9t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF6F1C4CECE;
-	Thu, 19 Dec 2024 13:21:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lQ42UKgUzW2MgRbJnnIqsNpglO0xan5MAxgilBuXDFu3hk/3X1eqkKJOQjT/qt8ecw6rtcEAy/F5eBO5YPLIOllywwEk10lTPJh2SH9X2nNalvoJiZcCrEZQa1DyrMCpOEGREVvz/m0jvmz283GHKfiINU7zh1BsS8+TmYE0CZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AlmTkVIG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C65C4CECE;
+	Thu, 19 Dec 2024 13:24:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734614497;
-	bh=y1/zEPlqylwaDCsgVUz2dZoDtXxLoO9nh2PfUsMnM4A=;
+	s=k20201202; t=1734614674;
+	bh=695XyT9HylzgQMl6LI188n8hrO1dbwChaw9J5Kqj0O0=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=l3M6Ox9t/Epk3FPdg6VWSl+rTkxInzE2qRc4JczUObShSNN9i5VzGN0hCm1sEr73x
-	 1ws+osEF1XbcqqfsQTCZRA9Hl9z6E0p9jv6xsW8ttE6Or/EuVJmMrKtQc5SKALaaqE
-	 JPX19eIgm50UE/YO4d2QX3i5ydLtjUSYZlRwGVt4UGtCJyy042UpX/eKpdiVsel22o
-	 d7ph7VLYW1ZXHLQVhO30hmFvbrhU37z/Q86qYJFKxBRUNGKK09FCJzlJD28tKKEOvL
-	 +SgUV0GLIt+ZTKbFsTVGMEeEST0ym1CiVfskAcYXFbyU87ZOMyxuBs4exHspS8WaGx
-	 EU792M2DsXVyg==
+	b=AlmTkVIGJZETCPhFWfBn+VwQ0mb7Sc0/7p3cJH1rL8OJS7NDzMuV9pRtUmaSvqS8G
+	 621Nnttui8+7IR6PD6uOZDCcMNLHDQ/NYZtwVRAIRS6GRROQcIcOvSOcntbRwnVwqY
+	 PnZASxL7tnv2cQvONI2kEMCFbHzhldT11m6QEL1Ho5r3zsEuspExpNArQF17dWLOKI
+	 Lo6x7MPSpX1kIUTBPAKuxls5v8CI0mHj5JdZbh6VMb4WFDulrSDy167LNer8ftoFyu
+	 syhF2gGR7k4IyBRgutAt2Ku8UveQOnaE7r81uBnli62Hx9l8PAFCnJDgDuzKkbmc69
+	 8zIW406jbnyOw==
 From: Kalle Valo <kvalo@kernel.org>
 To: Roopni Devanathan <quic_rdevanat@quicinc.com>
-Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>,  Dinesh
- Karthikeyan <quic_dinek@quicinc.com>
-Subject: Re: [PATCH 6/6] wifi: ath12k: Support Received FSE Stats
-References: <20241217095216.1543923-1-quic_rdevanat@quicinc.com>
-	<20241217095216.1543923-7-quic_rdevanat@quicinc.com>
-Date: Thu, 19 Dec 2024 15:21:34 +0200
-In-Reply-To: <20241217095216.1543923-7-quic_rdevanat@quicinc.com> (Roopni
-	Devanathan's message of "Tue, 17 Dec 2024 15:22:16 +0530")
-Message-ID: <87r063hkpt.fsf@kernel.org>
+Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>
+Subject: Re: [PATCH v5 1/2] wifi: ath12k: Support AST Entry Stats
+References: <20241218035711.2573584-1-quic_rdevanat@quicinc.com>
+	<20241218035711.2573584-2-quic_rdevanat@quicinc.com>
+Date: Thu, 19 Dec 2024 15:24:31 +0200
+In-Reply-To: <20241218035711.2573584-2-quic_rdevanat@quicinc.com> (Roopni
+	Devanathan's message of "Wed, 18 Dec 2024 09:27:10 +0530")
+Message-ID: <87msgrhkkw.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -63,14 +62,32 @@ Content-Type: text/plain
 
 Roopni Devanathan <quic_rdevanat@quicinc.com> writes:
 
-> From: Dinesh Karthikeyan <quic_dinek@quicinc.com>
+> Add support to request Address Search Table(AST) entries stats
+> from firmware through HTT stats type 41. These stats give AST entries
+> related information such as software peer id, MAC address, pdev id,
+> vdev, id, next hop, etc.
 >
-> Add support to request received FSE stats from firmware through
-> HTT stats type 28. These stats give software and hardware FSE
-> stats such as cache entry count, full cache count, current and
-> peak occupancy count, pending search counts, etc.
-
-What does FSE mean? It would be nice to spell that out.
+> Sample output:
+> -------------
+> echo 41 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
+> cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats
+> HTT_AST_ENTRY_TLV:
+> ast_index = 10
+> mac_addr = 00:00:00:01:00:00
+> sw_peer_id = 0
+> pdev_id = 3
+> vdev_id = 255
+> next_hop = 0
+> mcast = 0
+> monitor_direct = 0
+> mesh_sta = 0
+> mec = 0
+> intra_bss = 0
+>
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+>
+> Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
 
 Acked-by: Kalle Valo <kvalo@kernel.org>
 
