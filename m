@@ -1,299 +1,109 @@
-Return-Path: <linux-wireless+bounces-16573-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16574-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A3519F72B8
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2024 03:37:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5D549F7379
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2024 04:47:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B56816070B
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2024 02:37:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 841FE7A2B1A
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2024 03:47:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 399E91990AB;
-	Thu, 19 Dec 2024 02:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8004F54727;
+	Thu, 19 Dec 2024 03:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XPp9cMLX"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="gzuVsUyR"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6926F86345;
-	Thu, 19 Dec 2024 02:35:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F78A3D76
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Dec 2024 03:47:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734575729; cv=none; b=nQtXLlQeRiDJzP4L6UVhBVsIKTxbje9HV8vn9aQMJfcs3WQxoi1lhkEtVTqDhnO+SW2x6xipPUJCmMEFRi+OOlGhVrVtvhWE1KlBSzUV9a43XUeun7VESFA44Bo8w2T7Q3T5Mb/zaixTsEqJy/GieL6o1yHHq8wcOz4X1gcIeRM=
+	t=1734580043; cv=none; b=sxrvE55o2EdtdGFilxq97jGwJe+5Jciq4ZY/cTo/F0N6QWiRmhKB3JpuEeTYwmss+4eAXyAwSY7XkyMQgwux+WpXKKBcZckzu405EXvMeHSV9VQIt333ddMJJJe1RE28MglRR8ye3+MN6etwwz5pb0r9g6X+8DxnudkAQ7tH9XQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734575729; c=relaxed/simple;
-	bh=VeLbyOfvsBoD/0QCt6XTwvSQyL69DBSOWRzzq8d05w8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nHYo6jf3mgSPhu3vbSSUz+0V+a2eRGHC1xNUBKWTrcKx9jCd0Dg6hgJFPW5nfv3atbfNp2SvL3dhhAz8AIH2UNx7NHkOjbPlmPMia+zW1xF5l6NayP2FrKa2UVdNXhXlygEORnaq459Ke6q6J+W/QDjE8w9dm0nSe4hBCAiHKTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XPp9cMLX; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7273967f2f0so380879b3a.1;
-        Wed, 18 Dec 2024 18:35:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734575727; x=1735180527; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7lFqN6P61Vcxg60EP2migAvtPpkWX8ZEoCx5nNg3/cM=;
-        b=XPp9cMLXnifLLA4GGsg2+q5Q833Ki5DDLHERUPCx6TM0WtQstBGyfYD5Su2QyA6hMX
-         ropCIa7P4Gq4kOh7+UfI+PA/T5mCDx1pQodG5FG0A9wNhjiSRC9632dOwolJq/F7hPZY
-         if/+tdS87qY2Ea2ZDp2deXHG7MOZA17vYHmnQGoXpY+v7Yy2cLypd7zk4WAnzizD+7Bv
-         D9Qj3usvHB0sFf8NdtF2Id2beJL4GIpPYqNhkiP1Xp74Di+jhpLYJkeys+9RYuEUkkdi
-         CPG75xw/fz1KI2+i2DBIpvC/ZR1w2TuUt//anTQ5ajwVsvIhJZgwLlbnaK07G6p/ZvMs
-         2mmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734575727; x=1735180527;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7lFqN6P61Vcxg60EP2migAvtPpkWX8ZEoCx5nNg3/cM=;
-        b=s8rEQwBLJAlWGKqap6qxpJHZ2fcuRYt2TvvFmZhL3Hs2mzaD02LIP41X24TwczI7wj
-         BInVAiedg/JpVkKsWzMjM36rsHkng5fXPRtANA4TDeNs3s/fgG8hIOAvxsopyUiZqTnE
-         s6dXNrczS1KFozpXUvSzyh3KDFECkScQnXQX7fgzlcyapVZ5IDuLFkTc/QAQYPYbIIyt
-         tYz/+q5i/C1moXpNsgFgjkmsDenOYsg0PPKYTK9Vtp8iEEa5iD7nny2JAo5dh8MHBPqE
-         HFcthJxCtJ2gMXJ479YA6tGlQ9gkprACAq4tUoHepngLNYKo+IhbTH7P+isWySU69YYk
-         OF6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV8jO9YPQrNnyH5a4maBWRH4nOhtSe1qKQ1x+uYFoIyVdda5PEa3yIAslltSVvKJjRvSVb4Rsz3zO4ZuGA=@vger.kernel.org, AJvYcCVmb99WscVrPyYIcTJ3eeYxbAwG/UfjjccJdkRe1RGA+KtJMOS7WNAs6AnlTC2L9Gx7bHC9xL5MWUQvj1/ZU/hdUuj1FtPs@vger.kernel.org, AJvYcCWPQKLfWajNaChZ50967PKgFUtLj19OWae/SW5/tbaeM7VPV45JRd3hvnPCv5G4hvjQ/qLoMBvFtOMEEkUNpwk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMMUqUiXcsjwLcF8Gm4JehPlB8CZCfB7bSMsVguvwt/rYUF22u
-	W+MF5Bdr5IWIQOMIsKb3JMXWrmXv7cDRHyPSDVxA2jpgdgtAiRC8vzd5EOgBl9c=
-X-Gm-Gg: ASbGncs/bNb2WKKkCj5c/4GIz7zig2sq50h0IZQ0QnjlqU3//4IQyH6lOLodqHEGMxe
-	Q1+5VtBY+PYYQlZJ1b+/R06vpWbaIHBaOGPfw0vy8EPDYIUKjjbQJUmOHUZXb+ekZuWpuEifsIZ
-	8RAr9uDfGFSL8OMZ/blxE+mhRwbdgxLCBqOI/cZbSjGbAqbSgU2qdGZuYRfS196AcB0JI5wiX4v
-	zHmXmNxFXbmb6SoqM+RHm6dZzILMAxTvgRWpn6YCCHXYFIeHh20vAlDtbM694I0c9EwjtLufzdO
-	cU+Fmdg=
-X-Google-Smtp-Source: AGHT+IEASYTltYbmKh5ZDA03zBv0Z8CD36/wkPvI28CV3U8CPosE7HG5sfVxRVIBm8iQbfYV7EQNzQ==
-X-Received: by 2002:a05:6a21:788c:b0:1e1:b727:181a with SMTP id adf61e73a8af0-1e5c763cc43mr2386992637.24.1734575726666;
-        Wed, 18 Dec 2024 18:35:26 -0800 (PST)
-Received: from localhost.localdomain ([180.159.118.224])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-842b821da83sm142163a12.40.2024.12.18.18.35.20
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 18 Dec 2024 18:35:26 -0800 (PST)
-From: Yafang Shao <laoar.shao@gmail.com>
-To: akpm@linux-foundation.org
-Cc: torvalds@linux-foundation.org,
-	pmladek@suse.com,
-	kvalo@kernel.org,
-	bp@alien8.de,
-	andriy.shevchenko@linux.intel.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	x86@kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-wireless@vger.kernel.org,
-	intel-gfx@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	ocfs2-devel@lists.linux.dev,
-	Yafang Shao <laoar.shao@gmail.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Lyude Paul <lyude@redhat.com>,
-	Oded Gabbay <ogabbay@kernel.org>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Karol Herbst <kherbst@redhat.com>,
-	Danilo Krummrich <dakr@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v2 5/5] drivers: Remove get_task_comm() and print task comm directly
-Date: Thu, 19 Dec 2024 10:34:52 +0800
-Message-Id: <20241219023452.69907-6-laoar.shao@gmail.com>
-X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
-In-Reply-To: <20241219023452.69907-1-laoar.shao@gmail.com>
-References: <20241219023452.69907-1-laoar.shao@gmail.com>
+	s=arc-20240116; t=1734580043; c=relaxed/simple;
+	bh=+Z+wbMVqjxqGpowx4YW6ewKETSYI1Be8NhEKNkdz99k=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=BqyuMve2/GyFAmscNx6SEdRh6s2YE3uuwYa+Fh88HGXk0yjAM5Wple//WnEMkHwasMbwtcMo2bfx2eziJRaSRJ3o5thE5iJ9Q3udI0suAHpmpCEiqHXl1MQY9D6M5oAqx/9gRTmHmQ7y5xYd7sE+OmxFLwBne7he6im+hJFfCLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=gzuVsUyR; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4BJ3lFHT13367793, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1734580035; bh=+Z+wbMVqjxqGpowx4YW6ewKETSYI1Be8NhEKNkdz99k=;
+	h=From:To:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=gzuVsUyRsfkFe09BQnEfWqw6VMJ3yJi7APEf8GFvbCXgvTt8VrI+4ycKpNjcxVAkP
+	 H9ERMTsJp8WhxcNRtpn+NH9jY75zljyMCehxZawyXp3CNcKd+DGCF8Gz+rpZIesHXk
+	 neoMfZN/C0Z2SacxezOXPHPCWY2mhZqIRknumMp0Y3PiU74sJfpp2GOEVS49GsVkkL
+	 Jr85o0Rv0fZAdHihpJZA2Q4wxnluy0FBjCuLmIlGmsmcgQroLEry90Dxqioj53Bjqj
+	 DF6pkITmvXQNPeESXjClVfbbPZbdpYDr6rGqKcnaZY+fmIwdBf/jmZ79mOfFylogw0
+	 5AETmUwd49ZTg==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4BJ3lFHT13367793
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 19 Dec 2024 11:47:15 +0800
+Received: from RTEXDAG01.realtek.com.tw (172.21.6.100) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 19 Dec 2024 11:47:15 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXDAG01.realtek.com.tw (172.21.6.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 19 Dec 2024 11:47:15 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
+ 15.01.2507.035; Thu, 19 Dec 2024 11:47:15 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: [PATCH] wifi: rtlwifi: rtl8821ae: Fix media status report
+Thread-Topic: [PATCH] wifi: rtlwifi: rtl8821ae: Fix media status report
+Thread-Index: AQHbUNZ34DpJ6jNLJE+I7yGFX/o8crLs71nQ
+Date: Thu, 19 Dec 2024 03:47:15 +0000
+Message-ID: <c4fdab007c15450dbd37f4570095d157@realtek.com>
+References: <754785b3-8a78-4554-b80d-de5f603b410b@gmail.com>
+In-Reply-To: <754785b3-8a78-4554-b80d-de5f603b410b@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Since task->comm is guaranteed to be NUL-terminated, we can print it
-directly without the need to copy it into a separate buffer. This
-simplifies the code and avoids unnecessary operations.
-
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Reviewed-by: Jiri Slaby <jirislaby@kernel.org> (For tty)
-Reviewed-by: Lyude Paul <lyude@redhat.com> (For nouveau)
-Cc: Oded Gabbay <ogabbay@kernel.org>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Tvrtko Ursulin <tursulin@ursulin.net>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Karol Herbst <kherbst@redhat.com>
-Cc: Lyude Paul <lyude@redhat.com>
-Cc: Danilo Krummrich <dakr@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>
----
- drivers/accel/habanalabs/common/context.c           |  3 +--
- drivers/accel/habanalabs/common/habanalabs_ioctl.c  | 11 +++--------
- drivers/gpu/drm/i915/display/intel_display_driver.c |  6 ++----
- drivers/gpu/drm/nouveau/nouveau_chan.c              |  4 +---
- drivers/gpu/drm/nouveau/nouveau_drm.c               |  5 ++---
- drivers/tty/tty_io.c                                |  3 +--
- 6 files changed, 10 insertions(+), 22 deletions(-)
-
-diff --git a/drivers/accel/habanalabs/common/context.c b/drivers/accel/habanalabs/common/context.c
-index b83141f58319..9f212b17611a 100644
---- a/drivers/accel/habanalabs/common/context.c
-+++ b/drivers/accel/habanalabs/common/context.c
-@@ -199,7 +199,6 @@ int hl_ctx_create(struct hl_device *hdev, struct hl_fpriv *hpriv)
- 
- int hl_ctx_init(struct hl_device *hdev, struct hl_ctx *ctx, bool is_kernel_ctx)
- {
--	char task_comm[TASK_COMM_LEN];
- 	int rc = 0, i;
- 
- 	ctx->hdev = hdev;
-@@ -272,7 +271,7 @@ int hl_ctx_init(struct hl_device *hdev, struct hl_ctx *ctx, bool is_kernel_ctx)
- 		mutex_init(&ctx->ts_reg_lock);
- 
- 		dev_dbg(hdev->dev, "create user context, comm=\"%s\", asid=%u\n",
--			get_task_comm(task_comm, current), ctx->asid);
-+			current->comm, ctx->asid);
- 	}
- 
- 	return 0;
-diff --git a/drivers/accel/habanalabs/common/habanalabs_ioctl.c b/drivers/accel/habanalabs/common/habanalabs_ioctl.c
-index 1dd6e23172ca..8729a0c57d78 100644
---- a/drivers/accel/habanalabs/common/habanalabs_ioctl.c
-+++ b/drivers/accel/habanalabs/common/habanalabs_ioctl.c
-@@ -1279,13 +1279,10 @@ static long _hl_ioctl(struct hl_fpriv *hpriv, unsigned int cmd, unsigned long ar
- 		retcode = -EFAULT;
- 
- out_err:
--	if (retcode) {
--		char task_comm[TASK_COMM_LEN];
--
-+	if (retcode)
- 		dev_dbg_ratelimited(dev,
- 				"error in ioctl: pid=%d, comm=\"%s\", cmd=%#010x, nr=%#04x\n",
--				task_pid_nr(current), get_task_comm(task_comm, current), cmd, nr);
--	}
-+				task_pid_nr(current), current->comm, cmd, nr);
- 
- 	if (kdata != stack_kdata)
- 		kfree(kdata);
-@@ -1308,11 +1305,9 @@ long hl_ioctl_control(struct file *filep, unsigned int cmd, unsigned long arg)
- 	if (nr == _IOC_NR(DRM_IOCTL_HL_INFO)) {
- 		ioctl = &hl_ioctls_control[nr - HL_COMMAND_START];
- 	} else {
--		char task_comm[TASK_COMM_LEN];
--
- 		dev_dbg_ratelimited(hdev->dev_ctrl,
- 				"invalid ioctl: pid=%d, comm=\"%s\", cmd=%#010x, nr=%#04x\n",
--				task_pid_nr(current), get_task_comm(task_comm, current), cmd, nr);
-+				task_pid_nr(current), current->comm, cmd, nr);
- 		return -ENOTTY;
- 	}
- 
-diff --git a/drivers/gpu/drm/i915/display/intel_display_driver.c b/drivers/gpu/drm/i915/display/intel_display_driver.c
-index 56b78cf6b854..62596424a9aa 100644
---- a/drivers/gpu/drm/i915/display/intel_display_driver.c
-+++ b/drivers/gpu/drm/i915/display/intel_display_driver.c
-@@ -391,7 +391,6 @@ void intel_display_driver_resume_access(struct drm_i915_private *i915)
-  */
- bool intel_display_driver_check_access(struct drm_i915_private *i915)
- {
--	char comm[TASK_COMM_LEN];
- 	char current_task[TASK_COMM_LEN + 16];
- 	char allowed_task[TASK_COMM_LEN + 16] = "none";
- 
-@@ -400,12 +399,11 @@ bool intel_display_driver_check_access(struct drm_i915_private *i915)
- 		return true;
- 
- 	snprintf(current_task, sizeof(current_task), "%s[%d]",
--		 get_task_comm(comm, current),
--		 task_pid_vnr(current));
-+		 current->comm, task_pid_vnr(current));
- 
- 	if (i915->display.access.allowed_task)
- 		snprintf(allowed_task, sizeof(allowed_task), "%s[%d]",
--			 get_task_comm(comm, i915->display.access.allowed_task),
-+			 i915->display.access.allowed_task->comm,
- 			 task_pid_vnr(i915->display.access.allowed_task));
- 
- 	drm_dbg_kms(&i915->drm,
-diff --git a/drivers/gpu/drm/nouveau/nouveau_chan.c b/drivers/gpu/drm/nouveau/nouveau_chan.c
-index 2cb2e5675807..cd659b9fd1d9 100644
---- a/drivers/gpu/drm/nouveau/nouveau_chan.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_chan.c
-@@ -279,7 +279,6 @@ nouveau_channel_ctor(struct nouveau_cli *cli, bool priv, u64 runm,
- 	const u64 plength = 0x10000;
- 	const u64 ioffset = plength;
- 	const u64 ilength = 0x02000;
--	char name[TASK_COMM_LEN];
- 	int cid, ret;
- 	u64 size;
- 
-@@ -338,8 +337,7 @@ nouveau_channel_ctor(struct nouveau_cli *cli, bool priv, u64 runm,
- 		chan->userd = &chan->user;
- 	}
- 
--	get_task_comm(name, current);
--	snprintf(args.name, sizeof(args.name), "%s[%d]", name, task_pid_nr(current));
-+	snprintf(args.name, sizeof(args.name), "%s[%d]", current->comm, task_pid_nr(current));
- 
- 	ret = nvif_object_ctor(&device->object, "abi16ChanUser", 0, hosts[cid].oclass,
- 			       &args, sizeof(args), &chan->user);
-diff --git a/drivers/gpu/drm/nouveau/nouveau_drm.c b/drivers/gpu/drm/nouveau/nouveau_drm.c
-index 107f63f08bd9..ea7206484d22 100644
---- a/drivers/gpu/drm/nouveau/nouveau_drm.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
-@@ -1159,7 +1159,7 @@ nouveau_drm_open(struct drm_device *dev, struct drm_file *fpriv)
- {
- 	struct nouveau_drm *drm = nouveau_drm(dev);
- 	struct nouveau_cli *cli;
--	char name[32], tmpname[TASK_COMM_LEN];
-+	char name[32];
- 	int ret;
- 
- 	/* need to bring up power immediately if opening device */
-@@ -1169,10 +1169,9 @@ nouveau_drm_open(struct drm_device *dev, struct drm_file *fpriv)
- 		return ret;
- 	}
- 
--	get_task_comm(tmpname, current);
- 	rcu_read_lock();
- 	snprintf(name, sizeof(name), "%s[%d]",
--		 tmpname, pid_nr(rcu_dereference(fpriv->pid)));
-+		 current->comm, pid_nr(rcu_dereference(fpriv->pid)));
- 	rcu_read_unlock();
- 
- 	if (!(cli = kzalloc(sizeof(*cli), GFP_KERNEL))) {
-diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
-index 9771072da177..102e31f62f76 100644
---- a/drivers/tty/tty_io.c
-+++ b/drivers/tty/tty_io.c
-@@ -2622,14 +2622,13 @@ static int tty_tiocgicount(struct tty_struct *tty, void __user *arg)
- 
- static int tty_set_serial(struct tty_struct *tty, struct serial_struct *ss)
- {
--	char comm[TASK_COMM_LEN];
- 	int flags;
- 
- 	flags = ss->flags & ASYNC_DEPRECATED;
- 
- 	if (flags)
- 		pr_warn_ratelimited("%s: '%s' is using deprecated serial flags (with no effect): %.8x\n",
--				__func__, get_task_comm(comm, current), flags);
-+				__func__, current->comm, flags);
- 
- 	if (!tty->ops->set_serial)
- 		return -ENOTTY;
--- 
-2.43.5
-
+Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiANCj4g
+UlRMODgyMUFFIGlzIHN0dWNrIHRyYW5zbWl0dGluZyBhdCB0aGUgbG93ZXN0IHJhdGUgYWxsb3dl
+ZCBieSB0aGUgcmF0ZQ0KPiBtYXNrLiBUaGlzIGlzIGJlY2F1c2UgdGhlIGZpcm13YXJlIGRvZXNu
+J3Qga25vdyB0aGUgZGV2aWNlIGlzIGNvbm5lY3RlZA0KPiB0byBhIG5ldHdvcmsuDQo+IA0KPiBG
+aXggdGhlIG1hY3JvcyBTRVRfSDJDQ01EX01TUlJQVF9QQVJNX09QTU9ERSBhbmQNCj4gU0VUX0gy
+Q0NNRF9NU1JSUFRfUEFSTV9NQUNJRF9JTkQgdG8gd29yayBvbiB0aGUgZmlyc3QgYnl0ZSBvZiBf
+X2NtZCwNCj4gbm90IHRoZSBzZWNvbmQuIE5vdyB0aGUgZmlybXdhcmUgaXMgY29ycmVjdGx5IG5v
+dGlmaWVkIHdoZW4gdGhlIGRldmljZQ0KPiBpcyBjb25uZWN0ZWQgdG8gYSBuZXR3b3JrIGFuZCBp
+dCBhY3RpdmF0ZXMgdGhlIHJhdGUgY29udHJvbC4NCj4gDQo+IEJlZm9yZSAoTUNTMyk6DQo+IA0K
+PiBbICA1XSAgIDAuMDAtMS4wMCAgIHNlYyAgMTIuNSBNQnl0ZXMgICAxMDUgTWJpdHMvc2VjICAg
+IDAgICAgMzM5IEtCeXRlcw0KPiBbICA1XSAgIDEuMDAtMi4wMCAgIHNlYyAgMTAuNiBNQnl0ZXMg
+IDg5LjEgTWJpdHMvc2VjICAgIDAgICAgMzM5IEtCeXRlcw0KPiBbICA1XSAgIDIuMDAtMy4wMCAg
+IHNlYyAgMTAuNiBNQnl0ZXMgIDg5LjEgTWJpdHMvc2VjICAgIDAgICAgMzg2IEtCeXRlcw0KPiBb
+ICA1XSAgIDMuMDAtNC4wMCAgIHNlYyAgMTAuNiBNQnl0ZXMgIDg5LjEgTWJpdHMvc2VjICAgIDAg
+ICAgMzg2IEtCeXRlcw0KPiBbICA1XSAgIDQuMDAtNS4wMCAgIHNlYyAgMTAuMiBNQnl0ZXMgIDg2
+LjAgTWJpdHMvc2VjICAgIDAgICAgNDI3IEtCeXRlcw0KPiANCj4gQWZ0ZXIgKE1DUzkpOg0KPiAN
+Cj4gWyAgNV0gICAwLjAwLTEuMDAgICBzZWMgIDMzLjkgTUJ5dGVzICAgMjg0IE1iaXRzL3NlYyAg
+ICAwICAgIDc3MSBLQnl0ZXMNCj4gWyAgNV0gICAxLjAwLTIuMDAgICBzZWMgIDMxLjYgTUJ5dGVz
+ICAgMjY1IE1iaXRzL3NlYyAgICAwICAgIDg2NSBLQnl0ZXMNCj4gWyAgNV0gICAyLjAwLTMuMDAg
+ICBzZWMgIDI5LjkgTUJ5dGVzICAgMjUxIE1iaXRzL3NlYyAgICAwICAgIDk2MyBLQnl0ZXMNCj4g
+WyAgNV0gICAzLjAwLTQuMDAgICBzZWMgIDI4LjIgTUJ5dGVzICAgMjM3IE1iaXRzL3NlYyAgICAw
+ICAgIDk2MyBLQnl0ZXMNCj4gWyAgNV0gICA0LjAwLTUuMDAgICBzZWMgIDI2LjggTUJ5dGVzICAg
+MjI0IE1iaXRzL3NlYyAgICAwICAgIDk2MyBLQnl0ZXMNCj4gDQo+IEZpeGVzOiAzOWY0MDcxMGQw
+YjUgKCJydGx3aWZpOiBydGw4ODgyMWFlOiBSZW1vdmUgdXNhZ2Ugb2YgcHJpdmF0ZSBiaXQgbWFu
+aXB1bGF0aW9uIG1hY3JvcyIpDQo+IENjOiBzdGFibGVAdmdlci5rZXJuZWwub3JnDQo+IFNpZ25l
+ZC1vZmYtYnk6IEJpdHRlcmJsdWUgU21pdGggPHJ0bDg4MjFjZXJmZTJAZ21haWwuY29tPg0KDQpB
+Y2tlZC1ieTogUGluZy1LZSBTaGloIDxwa3NoaWhAcmVhbHRlay5jb20+DQoNCklzIHRoaXMgYW4g
+dXJnZW50IHBhdGNoPyBvciBpdCdzIGZpbmUgdG8gZ28gdmlhIHJ0dy1uZXh0Pw0KDQoNCg==
 
