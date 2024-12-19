@@ -1,129 +1,197 @@
-Return-Path: <linux-wireless+bounces-16633-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16634-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 131FF9F83CE
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2024 20:09:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 296D79F83FF
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2024 20:20:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B72451882B52
-	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2024 19:09:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEFE8188822C
+	for <lists+linux-wireless@lfdr.de>; Thu, 19 Dec 2024 19:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A72491A704C;
-	Thu, 19 Dec 2024 19:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F8919E98C;
+	Thu, 19 Dec 2024 19:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="EcFQrg+M"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OzbK2VZc"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A2C1A76CB
-	for <linux-wireless@vger.kernel.org>; Thu, 19 Dec 2024 19:09:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6EF19E985
+	for <linux-wireless@vger.kernel.org>; Thu, 19 Dec 2024 19:20:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734635344; cv=none; b=tUYIeWhCwmbQoxZUkroBDBoeScUjxqwlvnFtdXgzcfOlF2oaBrgaffizDkvnCRDIeNLVWftySsRR3CIr51Lw1BNYCTLRIjAylaTW+d/+BvZSTcvTKyHeHvGXaZ8o3i+3Y3lBFpcT5BCfQVck3Ny3ykaYuBF0lE/GJ0Bn+FRrgjQ=
+	t=1734636047; cv=none; b=Kye367F4WoOA9mRl5sRFnhhtwflfhgMzb2ncY+Wbn5PclIizKHlTVfGxLeE1dGTfDyOSn2q7xV3SOWKCmFC7b6Y7uqiJ+WODEls1wjxt1u+xmfyrkQ5NIAtDwuyw/aVvQxBWzY4w2G2H8DDgdqowAdzNJXvJw9KytYYudyUchU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734635344; c=relaxed/simple;
-	bh=WIMID/G/JbmjNUP8I25RgPU31SnEIrctLG+JgLp6usg=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OJxs+uGPIxdvXHPjC1CAnxS2PO+DgoDsgSQ2FRfiO6LC3hLPPzFg7sdPJvi2xGISMDzbm0fndc2fKjvnL9+gLKcCvCoao3esWG3LIlVVAZVX2TGeqGigWYaaBCqaPxYzw/ibes1GpwLEXwaqJDGLoK7yxopjabEYwShLUGZRCLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=EcFQrg+M; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BJHKmIp015057;
-	Thu, 19 Dec 2024 19:09:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=Y9feI2JUBwkJCvzz6V1r9y
-	Fr0fx6Vk4uQjBQj063kCI=; b=EcFQrg+MOtW8nFF99Dxc2FmkTzD1/YIsOE7tV7
-	i4CT50tpyEUkuKSzesGXj5C2RHKR+sW+MR/UkkahgOX3hat9PqbRG/V/kyXDQKCY
-	7GnKf5NYptlEUhYlRa+8znlNnTXySqeT1q+f7t+sAeqIQQ7D9MT1D8Zi1e1ULXDz
-	vzYRsg+Gvn8UnkQO4dWejROdzng6hBpLbPkS3ms+BGXsYGUownB4RzqV7K6z9wsK
-	JPp5p9rOa8lM2MwQLySLtg20CFknUVV6yf2HdrZgAGGWqzOARaL+BzNC9qCkK9LC
-	tDFNmjuArdyL+ivmYn40XSdbsA7cvZXn0UhDbkmeVN0ybyAw==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43mqt80821-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 19 Dec 2024 19:08:59 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BJJ8xnk009132
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 19 Dec 2024 19:08:59 GMT
-Received: from msinada-linux.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Thu, 19 Dec 2024 11:08:58 -0800
-From: Muna Sinada <quic_msinada@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Ramya Gnanasekar
-	<quic_rgnanase@quicinc.com>,
-        Muna Sinada <quic_msinada@quicinc.com>
-Subject: [PATCH] wifi: ath12k: set flag for mgmt no-ack frames in Tx completion
-Date: Thu, 19 Dec 2024 11:08:45 -0800
-Message-ID: <20241219190845.605116-1-quic_msinada@quicinc.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1734636047; c=relaxed/simple;
+	bh=kjPvKh8l2onKY9iS4AUmKaWQTS31NsayEC3qxZ4Jd2U=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=PCJiv5So+km1+YkQUxWiLppMs+2cbkCOoX17BVbwzxVooV5JeUhuQmshnAMT4u65koBoTUQQE6gVjULnMiskEklg9VICrufxTq6IA6OevTF4GkcKBmedyMmJlGXjGvLJZz9d6UUkeyEUs0svD19DRNK6650d8hkCVYIaNqpr2pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OzbK2VZc; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734636046; x=1766172046;
+  h=date:from:to:cc:subject:message-id;
+  bh=kjPvKh8l2onKY9iS4AUmKaWQTS31NsayEC3qxZ4Jd2U=;
+  b=OzbK2VZcBYuXyFx+/2lEqw+92C6ykeL+b8Rul8ptuMmMnB04cdSJdOuk
+   eIAsHaPC/3Rwb20BaNgMASpYlG+MFqwNtiQ5fWs5Tw1O/avC4uOGI/+Yp
+   5y6klVfXqN1kmvHZgwirUWvTwcYL2rZLco374NRUBS32zQhBd8eiMEpq+
+   hjRIA+HrW1YNPdT8Ab8jsH9JA05kxDfDsy6uEjF+wpBEJidHT3uxcK8At
+   80NIK7LNOSRauVuss4pex+f3Us8FjK6AzEYAj5m5imOZ0IKGnjzqf1KSD
+   TcbqLPbA+QArBRZ8f1yHF3UxX9bDSiXBmR8YiAalEwBhVgQmJOFVc1ghK
+   A==;
+X-CSE-ConnectionGUID: /TM1is2hRLWQr0gE7vsB9w==
+X-CSE-MsgGUID: QU9S5YFpRjWrRH8Ubqtplw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11291"; a="35058357"
+X-IronPort-AV: E=Sophos;i="6.12,248,1728975600"; 
+   d="scan'208";a="35058357"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Dec 2024 11:20:45 -0800
+X-CSE-ConnectionGUID: QX3vilxwRVuUffVWgUQ4DA==
+X-CSE-MsgGUID: 8JLfCWKuSlWrnTfodFOkdw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,248,1728975600"; 
+   d="scan'208";a="129106260"
+Received: from lkp-server01.sh.intel.com (HELO a46f226878e0) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 19 Dec 2024 11:20:43 -0800
+Received: from kbuild by a46f226878e0 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tOM4f-0000SZ-0l;
+	Thu, 19 Dec 2024 19:20:41 +0000
+Date: Fri, 20 Dec 2024 03:20:16 +0800
+From: kernel test robot <lkp@intel.com>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: Johannes Berg <johannes@sipsolutions.net>,
+ linux-wireless@vger.kernel.org
+Subject: [wireless:for-next] BUILD SUCCESS
+ 146b6057e1fd28fb1a38d300bf76a38dfba7f9fb
+Message-ID: <202412200310.CmotGc6q-lkp@intel.com>
+User-Agent: s-nail v14.9.24
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: NiuqUt-k5_1UNvCvZLHUTOOBWvFou5hO
-X-Proofpoint-GUID: NiuqUt-k5_1UNvCvZLHUTOOBWvFou5hO
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
- suspectscore=0 priorityscore=1501 spamscore=0 mlxlogscore=999
- malwarescore=0 impostorscore=0 phishscore=0 clxscore=1011
- lowpriorityscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2411120000 definitions=main-2412190152
 
-From: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless.git for-next
+branch HEAD: 146b6057e1fd28fb1a38d300bf76a38dfba7f9fb  wifi: cw1200: Fix potential NULL dereference
 
-IEEE80211_TX_STAT_NOACK_TRANSMITTED flag signifies that frame was
-successfully transmitted without any errors when no-ack is requested.
+elapsed time: 1446m
 
-In WMI Tx management completion path, driver is not setting
-IEEE80211_TX_STAT_NOACK_TRANSMITTED flag for the frames with
-IEEE80211_TX_CTL_NO_ACK. Without this flag, the management frame
-statistics will not track such frames.
+configs tested: 103
+configs skipped: 1
 
-Add IEEE80211_TX_STAT_NOACK_TRANSMITTED flag as part of the flags in
-skb transmit information when WMI is processing Tx completion for
-management frames.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+tested configs:
+alpha                             allnoconfig    gcc-14.2.0
+alpha                            allyesconfig    gcc-14.2.0
+arc                              allmodconfig    gcc-13.2.0
+arc                               allnoconfig    gcc-13.2.0
+arc                              allyesconfig    gcc-13.2.0
+arc                   randconfig-001-20241219    gcc-13.2.0
+arc                   randconfig-002-20241219    gcc-13.2.0
+arm                              allmodconfig    gcc-14.2.0
+arm                               allnoconfig    clang-17
+arm                              allyesconfig    gcc-14.2.0
+arm                   randconfig-001-20241219    clang-18
+arm                   randconfig-002-20241219    gcc-14.2.0
+arm                   randconfig-003-20241219    clang-18
+arm                   randconfig-004-20241219    gcc-14.2.0
+arm64                            allmodconfig    clang-18
+arm64                             allnoconfig    gcc-14.2.0
+arm64                 randconfig-001-20241219    clang-16
+arm64                 randconfig-002-20241219    clang-18
+arm64                 randconfig-003-20241219    gcc-14.2.0
+arm64                 randconfig-004-20241219    gcc-14.2.0
+csky                              allnoconfig    gcc-14.2.0
+csky                  randconfig-001-20241219    gcc-14.2.0
+csky                  randconfig-002-20241219    gcc-14.2.0
+hexagon                          allmodconfig    clang-20
+hexagon                           allnoconfig    clang-20
+hexagon               randconfig-001-20241219    clang-19
+hexagon               randconfig-002-20241219    clang-20
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20241219    gcc-12
+i386        buildonly-randconfig-002-20241219    gcc-12
+i386        buildonly-randconfig-003-20241219    clang-19
+i386        buildonly-randconfig-004-20241219    clang-19
+i386        buildonly-randconfig-005-20241219    gcc-12
+i386        buildonly-randconfig-006-20241219    gcc-12
+i386                                defconfig    clang-19
+loongarch                        allmodconfig    gcc-14.2.0
+loongarch                         allnoconfig    gcc-14.2.0
+loongarch             randconfig-001-20241219    gcc-14.2.0
+loongarch             randconfig-002-20241219    gcc-14.2.0
+m68k                             allmodconfig    gcc-14.2.0
+m68k                              allnoconfig    gcc-14.2.0
+m68k                             allyesconfig    gcc-14.2.0
+microblaze                       allmodconfig    gcc-14.2.0
+microblaze                        allnoconfig    gcc-14.2.0
+microblaze                       allyesconfig    gcc-14.2.0
+mips                              allnoconfig    gcc-14.2.0
+nios2                             allnoconfig    gcc-14.2.0
+nios2                 randconfig-001-20241219    gcc-14.2.0
+nios2                 randconfig-002-20241219    gcc-14.2.0
+openrisc                          allnoconfig    gcc-14.2.0
+openrisc                         allyesconfig    gcc-14.2.0
+parisc                           allmodconfig    gcc-14.2.0
+parisc                            allnoconfig    gcc-14.2.0
+parisc                           allyesconfig    gcc-14.2.0
+parisc                randconfig-001-20241219    gcc-14.2.0
+parisc                randconfig-002-20241219    gcc-14.2.0
+powerpc                          allmodconfig    gcc-14.2.0
+powerpc                           allnoconfig    gcc-14.2.0
+powerpc                          allyesconfig    clang-16
+powerpc               randconfig-001-20241219    clang-18
+powerpc               randconfig-002-20241219    clang-16
+powerpc               randconfig-003-20241219    clang-20
+powerpc64             randconfig-001-20241219    gcc-14.2.0
+powerpc64             randconfig-002-20241219    clang-18
+powerpc64             randconfig-003-20241219    clang-16
+riscv                            allmodconfig    clang-20
+riscv                             allnoconfig    gcc-14.2.0
+riscv                            allyesconfig    clang-20
+riscv                 randconfig-001-20241219    clang-16
+riscv                 randconfig-002-20241219    gcc-14.2.0
+s390                             allmodconfig    clang-19
+s390                              allnoconfig    clang-20
+s390                             allyesconfig    gcc-14.2.0
+s390                  randconfig-001-20241219    gcc-14.2.0
+s390                  randconfig-002-20241219    gcc-14.2.0
+sh                               allmodconfig    gcc-14.2.0
+sh                                allnoconfig    gcc-14.2.0
+sh                               allyesconfig    gcc-14.2.0
+sh                    randconfig-001-20241219    gcc-14.2.0
+sh                    randconfig-002-20241219    gcc-14.2.0
+sparc                            allmodconfig    gcc-14.2.0
+sparc                             allnoconfig    gcc-14.2.0
+sparc                 randconfig-001-20241219    gcc-14.2.0
+sparc                 randconfig-002-20241219    gcc-14.2.0
+sparc64               randconfig-001-20241219    gcc-14.2.0
+sparc64               randconfig-002-20241219    gcc-14.2.0
+um                                allnoconfig    clang-18
+um                    randconfig-001-20241219    gcc-12
+um                    randconfig-002-20241219    clang-20
+x86_64                            allnoconfig    clang-19
+x86_64                           allyesconfig    clang-19
+x86_64      buildonly-randconfig-001-20241219    gcc-12
+x86_64      buildonly-randconfig-002-20241219    gcc-12
+x86_64      buildonly-randconfig-003-20241219    clang-19
+x86_64      buildonly-randconfig-004-20241219    gcc-12
+x86_64      buildonly-randconfig-005-20241219    gcc-12
+x86_64      buildonly-randconfig-006-20241219    clang-19
+x86_64                              defconfig    gcc-11
+xtensa                            allnoconfig    gcc-14.2.0
+xtensa                randconfig-001-20241219    gcc-14.2.0
+xtensa                randconfig-002-20241219    gcc-14.2.0
 
-Signed-off-by: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
-Signed-off-by: Muna Sinada <quic_msinada@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/wmi.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index 562b0615ed06..a098d4303a63 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -5362,6 +5362,9 @@ static int wmi_process_mgmt_tx_comp(struct ath12k *ar, u32 desc_id,
- 	if ((!(info->flags & IEEE80211_TX_CTL_NO_ACK)) && !status)
- 		info->flags |= IEEE80211_TX_STAT_ACK;
- 
-+	if ((info->flags & IEEE80211_TX_CTL_NO_ACK) && !status)
-+		info->flags |= IEEE80211_TX_STAT_NOACK_TRANSMITTED;
-+
- 	ieee80211_tx_status_irqsafe(ath12k_ar_to_hw(ar), msdu);
- 
- 	num_mgmt = atomic_dec_if_positive(&ar->num_pending_mgmt_tx);
--- 
-2.34.1
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
