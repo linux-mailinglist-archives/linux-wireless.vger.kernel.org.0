@@ -1,45 +1,45 @@
-Return-Path: <linux-wireless+bounces-16656-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16657-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8315A9F982A
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 18:36:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5790A9F9849
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 18:40:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8474F7A2F9A
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 17:36:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CB39162D78
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 17:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA6E9236FB3;
-	Fri, 20 Dec 2024 17:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D8B23A18D;
+	Fri, 20 Dec 2024 17:14:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SaBLcmtG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iZ1P5c8p"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EBDB236FAF;
-	Fri, 20 Dec 2024 17:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C93523A1B7;
+	Fri, 20 Dec 2024 17:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734714849; cv=none; b=QwvlXDlGwi4LguxMMt9FgYGzqGsh5+2RB14XFFwOP3YPMyucDFlcxH3chPZYcGjWcClG562y5zjUfiE8JdW0EGPLHPgHPXcgrnJ12tmky0RytfYg03pdwnh0sWHOrR+Tj4oVlT49meDR26neg/9RRZE/h+D4EeeCHPx/gnRia8E=
+	t=1734714863; cv=none; b=BXC1kOUHuWJtaPXsJsLNhKhBpwBZxQEPkO20N0outy9BeuMNci9Ww2JRcQHbO/lK99BWnNetjpR57JDW4Ar83/XIh3q6Khhr8+/FuMND4qvO6n++NtFe6jI6CZMbyrgsjA3f6saMG+kdZZfoofj15sNqSPfsyul9gWRvQKFomxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734714849; c=relaxed/simple;
-	bh=9VHLcpfvfznCFcTQ3pZtm1AnGra7mSMg9J9I1z0KgQs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Dm3/bIu8dOd4t69Aybtd9iuzW5+hAHenHHkw9zTWUGkNnzQAutsSnCZbRqOGjNaKhVSCRrbDjYLAmXPl95BfwERlWc0+ED3Mk6K7JM/wpQ9/iDsg4wCVo7Rh9c9WctPzhDUuvtKiziADDxpzw1H+yziDagZpQ8ws/CneSKTuv1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SaBLcmtG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22179C4CED7;
-	Fri, 20 Dec 2024 17:14:08 +0000 (UTC)
+	s=arc-20240116; t=1734714863; c=relaxed/simple;
+	bh=7bJtG8AhoTYudM19HcUmlXvNCViYljPNQhacxOceofs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=opLtdX/5CfoEidVlAObsVRhj7C0EsoWDpAGr8iv84u+w3dY3Rigc/y5Fp9swPuwirky1bhkF+rbYRhfCL0DOprSfSrqHzp705Vf8gPsXHij2EaVkivMJqpbwSGUszfXNWgu8PCt/lKlG4ExpJzX7cv+UD7gAJKygiBZJavyMTwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iZ1P5c8p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC790C4CECD;
+	Fri, 20 Dec 2024 17:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734714849;
-	bh=9VHLcpfvfznCFcTQ3pZtm1AnGra7mSMg9J9I1z0KgQs=;
+	s=k20201202; t=1734714862;
+	bh=7bJtG8AhoTYudM19HcUmlXvNCViYljPNQhacxOceofs=;
 	h=From:To:Cc:Subject:Date:From;
-	b=SaBLcmtGs870reUtS+0O2wp+zwL8ejPS7qDm+04mrQ5UefnSVwSGfD0ZXOXITBHmW
-	 tU6jehMZyGBjkNyrW+ZJN9wLCOlIQoB/JEp/imajBtYNQ07u1xPvld5oTLXREhr5H/
-	 A6f5VeRjB7VYED+ERGtSEI9qUH3wYzGhrp86oVKRyeL4rWzUAD/jjkkfcF821cGTQ+
-	 A2oo+ke0yaUcJhuhNqwwGK8D3FpJhgIp3Srqarr8KsmxrdVbCACSJ3kdS+XDnDG4Zd
-	 r+/BbB9REWGBVdB41Jg0kYEQILWKyjS+ydUAjXrT5h6MmI5LicCzgSeVAVH9/EtNnh
-	 MCU3rW9rNQaVQ==
+	b=iZ1P5c8pFiq7S4nr65xnEeFg7ZOAp3KsY4b9KAjcn19a+7YQ17s8tB3tmZBNg/Zgy
+	 nN86uGo7xz6YuUAiVoS/sToqWhs2nfDxZkcxLk5S2xC1MUVM6B+rR3I/w3yErF94ti
+	 OhDAmHJ28XrdKZfd+eo0I6XZiOH9xCz5iMruM8Sv3KgZGQIuXS6foxU/FYYru7H0K8
+	 lA/dwHkuXNHOfYm55QrLTDHH085i4Q8x7yoHy8dnda9W1EzGIRQxxYZtwyXy+1wIec
+	 m/VONlC9I6XPBZftEnjGOF5/aawl++S5nEY4nn7ZxZVQ0RXoicMZgv/dN5TAG7T+5o
+	 6iQz6siZ1OOVQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -49,9 +49,9 @@ Cc: Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	johannes@sipsolutions.net,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 1/7] wifi: mac80211: wake the queues in case of failure in resume
-Date: Fri, 20 Dec 2024 12:14:00 -0500
-Message-Id: <20241220171406.512413-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 1/6] wifi: mac80211: wake the queues in case of failure in resume
+Date: Fri, 20 Dec 2024 12:14:15 -0500
+Message-Id: <20241220171420.512513-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -61,7 +61,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.232
+X-stable-base: Linux 5.4.288
 Content-Transfer-Encoding: 8bit
 
 From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
@@ -87,10 +87,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+)
 
 diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index e49355cbb1ce..0da845d9d486 100644
+index 63b66fd0a1ce..515fe1d539b4 100644
 --- a/net/mac80211/util.c
 +++ b/net/mac80211/util.c
-@@ -2351,6 +2351,9 @@ int ieee80211_reconfig(struct ieee80211_local *local)
+@@ -2209,6 +2209,9 @@ int ieee80211_reconfig(struct ieee80211_local *local)
  			WARN(1, "Hardware became unavailable upon resume. This could be a software issue prior to suspend or a hardware issue.\n");
  		else
  			WARN(1, "Hardware became unavailable during restart.\n");
