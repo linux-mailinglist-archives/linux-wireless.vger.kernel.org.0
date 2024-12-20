@@ -1,166 +1,81 @@
-Return-Path: <linux-wireless+bounces-16643-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16644-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 501A19F8C90
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 07:20:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42BC79F8D12
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 08:09:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD3A87A2C17
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 06:20:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A8E4166123
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 07:09:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C024417E00E;
-	Fri, 20 Dec 2024 06:20:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="mgiwfHNz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFAA1175D29;
+	Fri, 20 Dec 2024 07:09:54 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from torres.zugschlus.de (torres.zugschlus.de [81.169.166.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C2A61411DE
-	for <linux-wireless@vger.kernel.org>; Fri, 20 Dec 2024 06:20:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F6417333D;
+	Fri, 20 Dec 2024 07:09:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.169.166.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734675630; cv=none; b=BgFv/AxfCOjpfwLkDGKW8OlSXXIELnLT7JudnY6KE6shSM3FnqcBP7GidQ5wA//krDuCvFWTbm/BShL0EAvir/hxsHmP8uMBwWJLOhZtgpsVRKHjFr/gMoEgpeRh6UQjIehgjUsZCOiYOBxrBJa9m1akMeH9QKRiUO97Xg8xDCU=
+	t=1734678594; cv=none; b=QFsQh70bx/I1uHlyFRaAVYIU0Y0ZFjA0d0VzZyGrmaOOn6HnRIKDyGK0ZTjvzuhJq6LegeCYiBLlK4KOdyVZ+MSyENI8mxodf2XBY/usI/r6BDjOoxCwkiqqjy7qrhM8CY4SaB2UKWOe13A3spLkwMRtP12Ku8kTpxwjkILxAXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734675630; c=relaxed/simple;
-	bh=R/+17rLB+kCAZQaRFBc8FuHXyIwA9UnFgbk7J0DPJcY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=MWVjQww8GAlR8T5dMycyVFzSigvz3zi+dvC+0i1CTHQ/+6GVNu+Ph63TelwatDCEu47MCCHwdJonB3VhvKomDCzkXDMKfMHErUWFq1EuF1r9KHR0MJTOqXrMEVE6LRRq3iGwySUhaOC/3bjGwqKLOw7EH+MQnfbRgTQ29qxXfZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=mgiwfHNz; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BK4Pwhf024806;
-	Fri, 20 Dec 2024 06:20:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	MnU24+Fw7q4mmvk5xn7pDSgqZ562FtCc84GSWGV3ybo=; b=mgiwfHNzqqJ+Urog
-	y4oknaKlvOTmCh2uPhKS/yYu2pmxuNa+as5IMA6lJN4Eafe1n5RW4IAzmEVIwXZN
-	R+fF363xKPznQro9/gWvSHk5QnJi0E+YazvLlHN1mvRHnpmzQREwD6eHpPT8apSQ
-	cpXfkh3XrmKEqY/em/5MiLllzqwDfGe8JJV9EZkaelOn7cGgmKam41w0pSaxId+8
-	Niow50sbm4XtV15uGALeFFznOdFW5LYw2AgWkCt+obvASajY9XhkwC3MLKWlvI99
-	Xs7a4AxSRYDbXHvxOA+XwvmouR1z3V79VdhA0wIeKaQLS6+vKQmiKPromSDKUcgg
-	2z7yVg==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43n1hx07p2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Dec 2024 06:20:25 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BK6KOtn016580
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Dec 2024 06:20:24 GMT
-Received: from [10.110.63.62] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 19 Dec
- 2024 22:20:24 -0800
-Message-ID: <96534be8-053e-42b2-90e9-8df3fd254f97@quicinc.com>
-Date: Thu, 19 Dec 2024 22:20:23 -0800
+	s=arc-20240116; t=1734678594; c=relaxed/simple;
+	bh=Z1EeZFJMGqCNNzL8KCDVnaUC/rQxiIwxV6vU2GbW/1U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ac5xOAWfa5DdNjTRttmWTMD03Dl7R2WgDDJE7BHU9fm17J9fhd3rYX0jekpm5zp3rYR421KWD+dPZ1XKxBVS/lS9e62mBn4TeF5MnTxm17PA87QQX2GbjK+nT/EkB6wCLpcHaixBY6j7Y5pWZ9IYEipMcKSBy0qYcw0uIWyeKuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zugschlus.de; spf=pass smtp.mailfrom=zugschlus.de; arc=none smtp.client-ip=81.169.166.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zugschlus.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zugschlus.de
+Received: from mh by torres.zugschlus.de with local (Exim 4.96)
+	(envelope-from <mh+linux-kernel@zugschlus.de>)
+	id 1tOX8u-004RNC-0c;
+	Fri, 20 Dec 2024 08:09:48 +0100
+Date: Fri, 20 Dec 2024 08:09:48 +0100
+From: Marc Haber <mh+linux-kernel@zugschlus.de>
+To: Sedat Dilek <sedat.dilek@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes@sipsolutions.net>
+Subject: Re: Intel Comet Lake Wifi (8086:02f0) only working after cold start,
+ failed with error -110
+Message-ID: <Z2UYPB_64YPkMHv6@torres.zugschlus.de>
+References: <Z19G5zFhmWOfINvt@torres.zugschlus.de>
+ <Z2Q3dTbuRNh0ELo3@torres.zugschlus.de>
+ <CA+icZUW6nfJKFTUm820a4Mkc+H6_G=qDksn4SNoxCKV1gFSoXg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V8 0/9] wifi: ath12k: add MU-MIMO and 160 MHz bandwidth
- support
-To: Jeff Johnson <quic_jjohnson@quicinc.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20240918212056.4137076-1-quic_pradeepc@quicinc.com>
- <91b58719-3e8f-4a80-9be1-b998603244b3@quicinc.com>
-Content-Language: en-US
-From: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-In-Reply-To: <91b58719-3e8f-4a80-9be1-b998603244b3@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: _eCeiqdp3gTxFlwomZD472SJB1YfEN_9
-X-Proofpoint-ORIG-GUID: _eCeiqdp3gTxFlwomZD472SJB1YfEN_9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 suspectscore=0
- phishscore=0 adultscore=0 bulkscore=0 mlxlogscore=999 impostorscore=0
- malwarescore=0 priorityscore=1501 spamscore=0 lowpriorityscore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412200051
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CA+icZUW6nfJKFTUm820a4Mkc+H6_G=qDksn4SNoxCKV1gFSoXg@mail.gmail.com>
+User-Agent: Mutt/2.2.12 (2023-09-09)
 
+Hi,
 
+On Thu, Dec 19, 2024 at 04:34:03PM +0100, Sedat Dilek wrote:
+> I enhanced the CC list.
 
-On 9/30/2024 2:21 PM, Jeff Johnson wrote:
-> On 9/18/2024 2:20 PM, Pradeep Kumar Chitrapu wrote:
->> Add support for
->> 1. enabling MU-MIMO in HE and EHT modes from hardware
->> 2. setting fixed HE rate/GI/LTF
->> 3. 160 MHz bandwidth in HE mode
->> 4. extended NSS bandwidth support
->>
->> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
->> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
->>
->> changes in v8:
->>   - rebase and resolve KASAN warnings reported by Jeff in v7, in patch 6/9.
->>
->> changes in v7:
->>   - rebase and remove patch 01/10 which was merged already.
->>
->> changes in v6:
->>   - Change comment in patch 01/10 to represent only AP mode
->>     implementation.
->>
->> changes in v5:
->>   - Fix column length to 80 in patch 01/10
->>   - Fix advertises spelling in patch 09/10
->>   - Fix choosing spelling in patch 10/10
->>
->> changes in v4:
->>   - Fix ath12k-check warnings in patch 2/10 and 7/10
->>   - remove "hostapd" reference in patches 2/10 and 3/10
->>   - remove redundant prerequisite-patch-id's in cover letter
->>
->> changes in v3:
->>   - address review comments for fixing ath12k-check issues.
->>
->> changes in v2:
->>   - Amend mac80211 patch description as the patch is not specific
->>     to AP mode.
->>   - Amend EHT MU-MIMO patch description to specify future support
->>     for STA mode.
->>
->> Pradeep Kumar Chitrapu (9):
->>    wifi: ath12k: push HE MU-MIMO params to hardware
->>    wifi: ath12k: push EHT MU-MIMO params to hardware
->>    wifi: ath12k: move HE MCS mapper to a separate function
->>    wifi: ath12k: generate rx and tx mcs maps for supported HE mcs
->>    wifi: ath12k: fix TX and RX MCS rate configurations in HE mode
->>    wifi: ath12k: add support for setting fixed HE rate/GI/LTF
->>    wifi: ath12k: clean up 80P80 support
->>    wifi: ath12k: add support for 160 MHz bandwidth
->>    wifi: ath12k: add extended NSS bandwidth support for 160 MHz
->>
->>   drivers/net/wireless/ath/ath12k/core.h |    2 +
->>   drivers/net/wireless/ath/ath12k/mac.c  | 1052 ++++++++++++++++++++----
->>   drivers/net/wireless/ath/ath12k/mac.h  |   17 +
->>   drivers/net/wireless/ath/ath12k/wmi.c  |   24 +-
->>   drivers/net/wireless/ath/ath12k/wmi.h  |   98 ++-
->>   5 files changed, 985 insertions(+), 208 deletions(-)
->>
->>
->> base-commit: 92de67902177c2ea65000a87a6b24fed17d48a18
-> 
-> Although this series applies cleanly to ath/main, it does not apply cleanly to
-> ath/ath12k-mlo. So dropping this until ath12k-mlo is mainlined so that your
-> series can be rebased on that.
-> 
-Thanks Jeff..with mlo changes merged on ath.git, I will now rebase and 
-post next revision.
+That would have been my next escalation. Thanks for doing it quicker.
 
-Thanks
-Pradeep
+> Checked for newer firmware?
+
+Debian Unstable has firmware-iwlwifi dated 20240909.
+
+And, in the "bad" case, the syslog doesn't look like something is even
+trying to download firmware.
+
+Greetings
+Marc
+
+-- 
+-----------------------------------------------------------------------------
+Marc Haber         | "I don't trust Computers. They | Mailadresse im Header
+Leimen, Germany    |  lose things."    Winona Ryder | Fon: *49 6224 1600402
+Nordisch by Nature |  How to make an American Quilt | Fax: *49 6224 1600421
 
