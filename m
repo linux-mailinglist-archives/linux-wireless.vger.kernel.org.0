@@ -1,943 +1,162 @@
-Return-Path: <linux-wireless+bounces-16662-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16663-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC6EB9F9B2C
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 21:37:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AE029F9C4B
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 22:47:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B24516C24C
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 20:37:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21DAC1889DB1
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 21:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963A91A0B0E;
-	Fri, 20 Dec 2024 20:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E0C0222568;
+	Fri, 20 Dec 2024 21:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="jyVxAF+O"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="IFvZnvI8"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2B4222590
-	for <linux-wireless@vger.kernel.org>; Fri, 20 Dec 2024 20:37:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C863D21D59E
+	for <linux-wireless@vger.kernel.org>; Fri, 20 Dec 2024 21:47:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734727038; cv=none; b=Z/AhN8HsZmfhelJTuhcDwv3eT90V0Z7bnZVAhgjzjvDoI8WR4+up47Mbo/zrgXv4BVIG2kKAtQ+bpFAWOMzNskURliQdIsZU3WVrLiqQfHYICLXZ/m6NhvZ/aEqunf6JJ+qnx4Y/6F0n2aolIcMg8xDStZCuCHaM9HG79y70KgE=
+	t=1734731246; cv=none; b=cQkqIqIUx/lK+yvPjbWyshrasiq2WtUGLYWivig9Ac7UDNPzpcT3rU6/JyEXr+IURyGj2QO0BjsSOgeQIwGyNCAEU9930zgQ9UGt83Lsw9RYsXZsc6y7X1jYxXLNybAPaUuzi63vRislMi2Z0cBvM+csJVVIKwoJhSZk11EYhcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734727038; c=relaxed/simple;
-	bh=jp8jEoVj7Mh+bYJxoYLWQha8NtukiauL/1nX1C2tUbs=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=suVTzP/vNLuHkzazY5o8QiLyQNA70klq8kN+jjypT0WAgyyywyuj9I/tfdXZW/JzjxoHxn6b4z6wFyD/TWWuHXYGzuLrh310ZQRQdvQwEd25J9CtqospaQJl6jGIl8Sc2YeaP6WQsD64o4YX4NypJIVk26VUBYZTnDdMGeoug1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=jyVxAF+O; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BKJcKZK022087;
-	Fri, 20 Dec 2024 20:37:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	s=arc-20240116; t=1734731246; c=relaxed/simple;
+	bh=tJoIgHzik6ZuZQWkDQmeMQtmSddJlYHiAr5OkDHhdO8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GJkOUO6J+Gm1SRyJvx3vGvk3iM0IcJprw/f7rsAFo0qJpjCq93ymB4h68+tNNXSn49eVYZ8whUGbq2jLCeJrnJt+QkJ8E998WtrVf9T2IKVRFLlZFlMjkQx9SU1tq0JVwfVKcWkcpenvv9PppJFeLe+JBNL5m5A3bx/4uf2SuQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=IFvZnvI8; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BKLh4Qm012509
+	for <linux-wireless@vger.kernel.org>; Fri, 20 Dec 2024 21:47:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	m4o/Zy1foAz8hc1SCkBqs8VAstBaLs02AkGQWhFnQYs=; b=jyVxAF+O5EhqOBjW
-	Fzb9mMuURzFxcbkjcf9cpGsaReeIkRIcVUUaRo6YI9te9kie38FOsGqgWxOU+ZKI
-	TZH1Krxd8BeWpL+CiZ9KaYvV91kRYrPeE+u8sfB8jzYyaRJjDC/4WXUayOZOkZNC
-	iSePIYv9CauWarenqTjeVhxX2g93FP2diSawnzKgPM4GCg9PBMhWVMqpfJ/mDT9p
-	0eadgY+BqGMI28TJX6yHmnoBEENH9LoKpE+C0NP+4+NQ1cJBjwqvOOXMyeJKrPwx
-	6vu9q14RJwoN6sCluvAjMFXyFMkIKE8TrwqYS+DPqxh0mexOppG93dxhYH/apunU
-	98d8cA==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43newf83a5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Dec 2024 20:37:12 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BKKbB9l031143
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Dec 2024 20:37:11 GMT
-Received: from hu-rdevanat-blr.qualcomm.com (10.80.80.8) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Fri, 20 Dec 2024 12:37:09 -0800
-From: Roopni Devanathan <quic_rdevanat@quicinc.com>
-To: <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>,
-        Sowmiya Sree Elavalagan
-	<quic_ssreeela@quicinc.com>,
-        Ramya Gnanasekar <quic_rgnanase@quicinc.com>,
-        Roopni Devanathan <quic_rdevanat@quicinc.com>
-Subject: [PATCH 2/2] wifi: ath12k: Add Support to Calculate and Display TPC Values
-Date: Sat, 21 Dec 2024 02:06:38 +0530
-Message-ID: <20241220203638.2082002-3-quic_rdevanat@quicinc.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241220203638.2082002-1-quic_rdevanat@quicinc.com>
-References: <20241220203638.2082002-1-quic_rdevanat@quicinc.com>
+	XQaiQ79nfeCAmsipFRDSV2m//GyF9OUExjK22pq8ZDc=; b=IFvZnvI8XNn999HK
+	cWdOPPHWzR68jFjOzjtct0weYHvs0hDvEas6r8FmcINFlKVELjxA6O6YDtRucoeJ
+	JlB2XAyTKDp+HdVWRgtGJrCOulFtSdHk8ndql3VEqCTSJNfBeSVX9cml5fRrcZi1
+	I17GuXV10tmfrdAqa9gCf0fjey5GbZUM1f8PxNv+zV9riHssvF/Cv82gxzIMPZVT
+	1kCCgUnLm8cQ5nTtSFzEEBXqVuWc15c/x4Wdu7a7tFXyRgwJqhjq2ROQqw7fe5/t
+	QoJwSz4m/KrCG2MglHgyp5LN9OUOshkih+aBFE/jeGz0d5+SF0Tu8a+C/g3fQVoc
+	vAVFtQ==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43ngr08080-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Fri, 20 Dec 2024 21:47:24 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2165433e229so20213935ad.1
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Dec 2024 13:47:23 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734731243; x=1735336043;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=XQaiQ79nfeCAmsipFRDSV2m//GyF9OUExjK22pq8ZDc=;
+        b=XhmrXBsjzjKRrLQroZXuxPWj4eCj6a7KUfX8OWjW8MrPVQRxprgHpOfrJKQddo41Hv
+         W5dEDnuphB9CMweu0MPJtP4vPHKOViKgDdnU6DtB1b9joDc/mlOY168BvGU+UhKFFz/Y
+         Np62aFNN4uPd7SqHqg8pNkSVU5d6ijY0fCSACLqeDbqPLUimEh8hOxi1udurUhiohLH3
+         gddCvJYmJyALrNzD2jceZpwRMjWdfm6JhuLvMzltrDgjQhy9U7xkYmm2geI1EQdppzTW
+         H+CS8YMgs7huH4RinGrtq3qrYzQoO+l45oIwDY07tzOtezzCCLwxVC9OFd82FKSgg3Br
+         2Mtg==
+X-Gm-Message-State: AOJu0YypMtxpMPHoQdwW+GAWKUuOhYVDjnSWKE/2hsItqQPVD+fv3Bam
+	qLn1H6occEzWk5DS7G8DyMCMPZzK4RQf5kSyY1n9uRpTxUGPumDBNXIFhgaM2qkXNzXbGcEs4H/
+	bdxp7NT9fZLnvUm4ZhqLExqVxx2yqZH26KpV5YMn77aquSTezV0F97nlmEUzovrhDTA==
+X-Gm-Gg: ASbGncv3H0fYveTYZHnkHaCPmmxmtSecNJ29VFCH6YweIfz9njR7GKDx5IkNri6Yg04
+	G3T3xv36lluBznDaDwr2bkTukeJiMylp7BjbDgh3QlJq9d/0ozkzyim0vR43EqmbOqEL3RcXsTp
+	dbXwe/eoZHSYKxgOoNK7+f3SEVH5mJ9oqKzMBRsq7qzNbj/be1tq6uwZT/myHtbyq+pl6vmdu9Z
+	K5fDQKr2OZMqFBijws73mhN25AfsVJPSwPfJZxpMJkNJLJUARnTVoWpUODwPJ42JRcSyYvB2JC6
+	sQiTUECM9iw6c2jA0ZUQHosJ8rCQxodkdoVvaTWlPrWTqpeGsQ==
+X-Received: by 2002:a17:903:2449:b0:215:8809:b3b7 with SMTP id d9443c01a7336-219e6e85aeemr55579005ad.7.1734731242852;
+        Fri, 20 Dec 2024 13:47:22 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEQO1w1HHkbBSBWOz9lydmRg0CpFHp6rMiDxnhqlSkc6bDU28sTwSBlaXcgTB1B2f7vxhCoBg==
+X-Received: by 2002:a17:903:2449:b0:215:8809:b3b7 with SMTP id d9443c01a7336-219e6e85aeemr55578795ad.7.1734731242438;
+        Fri, 20 Dec 2024 13:47:22 -0800 (PST)
+Received: from [192.168.1.111] (c-73-202-227-126.hsd1.ca.comcast.net. [73.202.227.126])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dca02e60sm33381515ad.273.2024.12.20.13.47.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Dec 2024 13:47:22 -0800 (PST)
+Message-ID: <62c599b5-20b2-4e1e-810d-e4502abbc682@oss.qualcomm.com>
+Date: Fri, 20 Dec 2024 13:47:20 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: yBnnRwa88wpPzSg2CGSl3r4SFxeb4IXO
-X-Proofpoint-ORIG-GUID: yBnnRwa88wpPzSg2CGSl3r4SFxeb4IXO
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v3 1/5] dt-bindings: net: wireless: Describe ath12k
+ PCI module with WSI
+To: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+        Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>,
+        ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+References: <20241105180444.770951-1-quic_rajkbhag@quicinc.com>
+ <20241105180444.770951-2-quic_rajkbhag@quicinc.com>
+ <9cbdca90-e76c-4ebb-a236-a0edbd94a629@oss.qualcomm.com>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <9cbdca90-e76c-4ebb-a236-a0edbd94a629@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-ORIG-GUID: _bjWiOkzdDFKcF5X6OLUGYOAKg7kJ-P7
+X-Proofpoint-GUID: _bjWiOkzdDFKcF5X6OLUGYOAKg7kJ-P7
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=999
- adultscore=0 spamscore=0 clxscore=1015 impostorscore=0 suspectscore=0
- malwarescore=0 lowpriorityscore=0 phishscore=0 priorityscore=1501
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412200165
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxlogscore=999
+ spamscore=0 priorityscore=1501 bulkscore=0 phishscore=0 impostorscore=0
+ lowpriorityscore=0 malwarescore=0 adultscore=0 suspectscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2412200175
 
-From: Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>
+On 12/20/2024 12:03 PM, Konrad Dybcio wrote:
+> On 5.11.2024 7:04 PM, Raj Kumar Bhagat wrote:
+>> The QCN9274 WiFi device supports WSI (WLAN Serial Interface). WSI is used
+>> to exchange specific control information across radios using a doorbell
+>> mechanism. This WSI connection is essential for exchanging control
+>> information among these devices. The WSI interface in the QCN9274 includes
+>> TX and RX ports, which are used to connect multiple WSI-supported devices
+>> together, forming a WSI group.
+>>
+>> Describe QCN9274 PCI wifi device with WSI interface.
+>>
+>> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+>> ---
+> 
+> I think this description is missing the key points:
+> 
+> * what is that control information (power, data, radio stuff?)
+> * what happens when the OS is unaware of all of this (i.e. what happens when
+>   we don't send any configuration)
+> * is this configurable, or does this describe a physical wiring topology
+>   (what/who decides which of the group configurations detailed below take
+>    effect)
+> 
+> And the ultimate question:
+> * can the devices not just talk among themselves and negotiate that?
+> 
+> Though AFAICU PCIe P2P communication is a shaky topic, so perhaps the answer
+> to the last question is 'no'
+> 
+> Konrad
 
-Transmit Power Control(TPC) stats should display per chain TPC value per
-radio. Add debugfs support to read and display TPC stats type and TPC
-stats. Take power values for each preamble type, rate and NSS combination
-from a particular index from each power arrays based on number of chains,
-NSS, modes, MCS and tx beamforming enabled/disabled parameters. Minimum
-of the values taken from reg power table, rates and Conformance Test
-Limit(CTL) array table should give the TPC which is in 0.25 dBm steps.
+We already pushed the non-RFC version to our -next tree so we cannot update
+the commit description without a forced push.
 
-Sample Output:
--------------
-echo 1 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/tpc_stats_type
-cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/tpc_stats
+https://lore.kernel.org/all/20241211153432.775335-2-kvalo@kernel.org/
 
-*************** TPC config **************
-* powers are in 0.25 dBm steps
-reg domain-22           chan freq-5955
-power limit-126         max reg-domain Power-252
-No.of tx chain-4        No.of rates-1164
-**************** SU WITH TXBF ****************
-                                TPC values for Active chains
-Rate idx Preamble Rate code     1-Chain 2-Chain 3-Chain 4-Chain
-4        OFDM    0x000          39      15      1       -9
-5        OFDM    0x001          39      15      1       -9
-.....
-12       HT20    0x200          40      16      2       -8
-13       HT20    0x201          40      16      2       -8
-.....
-44       HT40    0x200          88      88      88      88
-45       HT40    0x201          88      88      88      88
-.....
-76       VHT20   0x300          40      16      2       -8
-77       VHT20   0x301          40      16      2       -8
-.....
-172      VHT40   0x300          88      88      88      88
-173      VHT40   0x301          88      88      88      88
-.....
-412      HE20    0x400          88      88      88      88
-413      HE20    0x401          88      88      88      88
-.....
-508      HE40    0x400          76      76      76      76
-509      HE40    0x401          76      76      76      76
-.....
-748      EHT20   0x50e          88      88      88      88
-749      EHT20   0x50f          88      88      88      88
-.....
-812      EHT40   0x50e          88      88      88      88
-813      EHT40   0x50f          88      88      88      88
-.....
+However, Raj Kumar can submit an update to the description in the file, which
+is probably the better place to have this information anyway.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00214-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Sowmiya Sree Elavalagan <quic_ssreeela@quicinc.com>
-Co-developed-by: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
-Signed-off-by: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
-Co-developed-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
-Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/core.h    |   1 +
- drivers/net/wireless/ath/ath12k/debugfs.c | 619 ++++++++++++++++++++++
- drivers/net/wireless/ath/ath12k/debugfs.h |  85 ++-
- drivers/net/wireless/ath/ath12k/wmi.h     |   1 +
- 4 files changed, 703 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index 8171af66136c..2aaedf1130f2 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -87,6 +87,7 @@ enum wme_ac {
- #define ATH12K_HT_MCS_MAX	7
- #define ATH12K_VHT_MCS_MAX	9
- #define ATH12K_HE_MCS_MAX	11
-+#define ATH12K_EHT_MCS_MAX	15
- 
- enum ath12k_crypt_mode {
- 	/* Only use hardware crypto engine */
-diff --git a/drivers/net/wireless/ath/ath12k/debugfs.c b/drivers/net/wireless/ath/ath12k/debugfs.c
-index dcfab65053a5..ece1ca337329 100644
---- a/drivers/net/wireless/ath/ath12k/debugfs.c
-+++ b/drivers/net/wireless/ath/ath12k/debugfs.c
-@@ -32,6 +32,28 @@ static const struct file_operations fops_simulate_radar = {
- 	.open = simple_open
- };
- 
-+static ssize_t ath12k_write_tpc_stats_type(struct file *file,
-+					   const char __user *user_buf,
-+					   size_t count, loff_t *ppos)
-+{
-+	struct ath12k *ar = file->private_data;
-+	u8 type;
-+	int ret;
-+
-+	ret = kstrtou8_from_user(user_buf, count, 0, &type);
-+	if (ret)
-+		return ret;
-+
-+	if (type >= WMI_HALPHY_PDEV_TX_STATS_MAX)
-+		return -EINVAL;
-+
-+	spin_lock_bh(&ar->data_lock);
-+	ar->debug.tpc_stats_type = type;
-+	spin_unlock_bh(&ar->data_lock);
-+
-+	return count;
-+}
-+
- static int ath12k_debug_tpc_stats_request(struct ath12k *ar)
- {
- 	enum wmi_halphy_ctrl_path_stats_id tpc_stats_sub_id;
-@@ -59,6 +81,593 @@ static int ath12k_debug_tpc_stats_request(struct ath12k *ar)
- 	return 0;
- }
- 
-+static int ath12k_get_tpc_ctl_mode_idx(struct wmi_tpc_stats_info *tpc_stats,
-+				       enum wmi_tpc_pream_bw pream_bw, int *mode_idx)
-+{
-+	u32 chan_freq = le32_to_cpu(tpc_stats->tpc_config.chan_freq);
-+	u8 band;
-+
-+	band = ((chan_freq > ATH12K_MIN_6G_FREQ) ? NL80211_BAND_6GHZ :
-+		((chan_freq > ATH12K_MIN_5G_FREQ) ? NL80211_BAND_5GHZ :
-+		NL80211_BAND_2GHZ));
-+
-+	if (band == NL80211_BAND_5GHZ || band == NL80211_BAND_6GHZ) {
-+		switch (pream_bw) {
-+		case WMI_TPC_PREAM_HT20:
-+		case WMI_TPC_PREAM_VHT20:
-+			*mode_idx = ATH12K_TPC_STATS_CTL_MODE_HT_VHT20_5GHZ_6GHZ;
-+			break;
-+		case WMI_TPC_PREAM_HE20:
-+		case WMI_TPC_PREAM_EHT20:
-+			*mode_idx = ATH12K_TPC_STATS_CTL_MODE_HE_EHT20_5GHZ_6GHZ;
-+			break;
-+		case WMI_TPC_PREAM_HT40:
-+		case WMI_TPC_PREAM_VHT40:
-+			*mode_idx = ATH12K_TPC_STATS_CTL_MODE_HT_VHT40_5GHZ_6GHZ;
-+			break;
-+		case WMI_TPC_PREAM_HE40:
-+		case WMI_TPC_PREAM_EHT40:
-+			*mode_idx = ATH12K_TPC_STATS_CTL_MODE_HE_EHT40_5GHZ_6GHZ;
-+			break;
-+		case WMI_TPC_PREAM_VHT80:
-+			*mode_idx = ATH12K_TPC_STATS_CTL_MODE_VHT80_5GHZ_6GHZ;
-+			break;
-+		case WMI_TPC_PREAM_EHT60:
-+			*mode_idx = ATH12K_TPC_STATS_CTL_MODE_EHT80_SU_PUNC20;
-+			break;
-+		case WMI_TPC_PREAM_HE80:
-+		case WMI_TPC_PREAM_EHT80:
-+			*mode_idx = ATH12K_TPC_STATS_CTL_MODE_HE_EHT80_5GHZ_6GHZ;
-+			break;
-+		case WMI_TPC_PREAM_VHT160:
-+			*mode_idx = ATH12K_TPC_STATS_CTL_MODE_VHT160_5GHZ_6GHZ;
-+			break;
-+		case WMI_TPC_PREAM_EHT120:
-+		case WMI_TPC_PREAM_EHT140:
-+			*mode_idx = ATH12K_TPC_STATS_CTL_MODE_EHT160_SU_PUNC20;
-+			break;
-+		case WMI_TPC_PREAM_HE160:
-+		case WMI_TPC_PREAM_EHT160:
-+			*mode_idx = ATH12K_TPC_STATS_CTL_MODE_HE_EHT160_5GHZ_6GHZ;
-+			break;
-+		case WMI_TPC_PREAM_EHT200:
-+			*mode_idx = ATH12K_TPC_STATS_CTL_MODE_EHT320_SU_PUNC120;
-+			break;
-+		case WMI_TPC_PREAM_EHT240:
-+			*mode_idx = ATH12K_TPC_STATS_CTL_MODE_EHT320_SU_PUNC80;
-+			break;
-+		case WMI_TPC_PREAM_EHT280:
-+			*mode_idx = ATH12K_TPC_STATS_CTL_MODE_EHT320_SU_PUNC40;
-+			break;
-+		case WMI_TPC_PREAM_EHT320:
-+			*mode_idx = ATH12K_TPC_STATS_CTL_MODE_HE_EHT320_5GHZ_6GHZ;
-+			break;
-+		default:
-+			/* for 5GHZ and 6GHZ, default case will be for OFDM */
-+			*mode_idx = ATH12K_TPC_STATS_CTL_MODE_LEGACY_5GHZ_6GHZ;
-+			break;
-+		}
-+	} else {
-+		switch (pream_bw) {
-+		case WMI_TPC_PREAM_OFDM:
-+			*mode_idx = ATH12K_TPC_STATS_CTL_MODE_LEGACY_2GHZ;
-+			break;
-+		case WMI_TPC_PREAM_HT20:
-+		case WMI_TPC_PREAM_VHT20:
-+		case WMI_TPC_PREAM_HE20:
-+		case WMI_TPC_PREAM_EHT20:
-+			*mode_idx = ATH12K_TPC_STATS_CTL_MODE_HT20_2GHZ;
-+			break;
-+		case WMI_TPC_PREAM_HT40:
-+		case WMI_TPC_PREAM_VHT40:
-+		case WMI_TPC_PREAM_HE40:
-+		case WMI_TPC_PREAM_EHT40:
-+			*mode_idx = ATH12K_TPC_STATS_CTL_MODE_HT40_2GHZ;
-+			break;
-+		default:
-+			/* for 2GHZ, default case will be CCK */
-+			*mode_idx = ATH12K_TPC_STATS_CTL_MODE_CCK_2GHZ;
-+			break;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static s16 ath12k_tpc_get_rate(struct ath12k *ar,
-+			       struct wmi_tpc_stats_info *tpc_stats,
-+			       u32 rate_idx, u32 num_chains, u32 rate_code,
-+			       enum wmi_tpc_pream_bw pream_bw,
-+			       enum wmi_halphy_ctrl_path_stats_id type,
-+			       u32 eht_rate_idx)
-+{
-+	u32 tot_nss, tot_modes, txbf_on_off, index_offset1, index_offset2, index_offset3;
-+	u8 chain_idx, stm_idx, num_streams;
-+	bool is_mu, txbf_enabled = 0;
-+	s8 rates_ctl_min, tpc_ctl;
-+	s16 rates, tpc, reg_pwr;
-+	u16 rate1, rate2;
-+	int mode, ret;
-+
-+	num_streams = 1 + ATH12K_HW_NSS(rate_code);
-+	chain_idx = num_chains - 1;
-+	stm_idx = num_streams - 1;
-+	mode = -1;
-+
-+	ret = ath12k_get_tpc_ctl_mode_idx(tpc_stats, pream_bw, &mode);
-+	if (ret) {
-+		ath12k_warn(ar->ab, "Invalid mode index received\n");
-+		tpc = TPC_INVAL;
-+		goto out;
-+	}
-+
-+	if (num_chains < num_streams) {
-+		tpc = TPC_INVAL;
-+		goto out;
-+	}
-+
-+	if (le32_to_cpu(tpc_stats->tpc_config.num_tx_chain) <= 1) {
-+		tpc = TPC_INVAL;
-+		goto out;
-+	}
-+
-+	if (type == WMI_HALPHY_PDEV_TX_SUTXBF_STATS ||
-+	    type == WMI_HALPHY_PDEV_TX_MUTXBF_STATS)
-+		txbf_enabled = 1;
-+
-+	if (type == WMI_HALPHY_PDEV_TX_MU_STATS ||
-+	    type == WMI_HALPHY_PDEV_TX_MUTXBF_STATS) {
-+		is_mu = true;
-+	} else {
-+		is_mu = false;
-+	}
-+
-+	/* Below is the min calculation of ctl array, rates array and
-+	 * regulator power table. tpc is minimum of all 3
-+	 */
-+	if (pream_bw >= WMI_TPC_PREAM_EHT20 && pream_bw <= WMI_TPC_PREAM_EHT320) {
-+		rate2 = tpc_stats->rates_array2.rate_array[eht_rate_idx];
-+		if (is_mu)
-+			rates = u32_get_bits(rate2, ATH12K_TPC_RATE_ARRAY_MU);
-+		else
-+			rates = u32_get_bits(rate2, ATH12K_TPC_RATE_ARRAY_SU);
-+	} else {
-+		rate1 = tpc_stats->rates_array1.rate_array[rate_idx];
-+		if (is_mu)
-+			rates = u32_get_bits(rate1, ATH12K_TPC_RATE_ARRAY_MU);
-+		else
-+			rates = u32_get_bits(rate1, ATH12K_TPC_RATE_ARRAY_SU);
-+	}
-+
-+	if (tpc_stats->tlvs_rcvd & WMI_TPC_CTL_PWR_ARRAY) {
-+		tot_nss = le32_to_cpu(tpc_stats->ctl_array.tpc_ctl_pwr.d1);
-+		tot_modes = le32_to_cpu(tpc_stats->ctl_array.tpc_ctl_pwr.d2);
-+		txbf_on_off = le32_to_cpu(tpc_stats->ctl_array.tpc_ctl_pwr.d3);
-+		index_offset1 = txbf_on_off * tot_modes * tot_nss;
-+		index_offset2 = tot_modes * tot_nss;
-+		index_offset3 = tot_nss;
-+
-+		tpc_ctl = *(tpc_stats->ctl_array.ctl_pwr_table +
-+			    chain_idx * index_offset1 + txbf_enabled * index_offset2
-+			    + mode * index_offset3 + stm_idx);
-+	} else {
-+		tpc_ctl = TPC_MAX;
-+		ath12k_info(ar->ab,
-+			    "ctl array for tpc stats not received from fw\n");
-+	}
-+
-+	rates_ctl_min = min_t(s16, rates, tpc_ctl);
-+
-+	reg_pwr = tpc_stats->max_reg_allowed_power.reg_pwr_array[chain_idx];
-+
-+	if (reg_pwr < 0)
-+		reg_pwr = TPC_INVAL;
-+
-+	tpc = min_t(s16, rates_ctl_min, reg_pwr);
-+
-+	/* MODULATION_LIMIT is the maximum power limit,tpc should not exceed
-+	 * modulation limit even if min tpc of all three array is greater
-+	 * modulation limit
-+	 */
-+	tpc = min_t(s16, tpc, MODULATION_LIMIT);
-+
-+out:
-+	return tpc;
-+}
-+
-+static u16 ath12k_get_ratecode(u16 pream_idx, u16 nss, u16 mcs_rate)
-+{
-+	u16 mode_type = ~0;
-+
-+	/* Below assignments are just for printing purpose only */
-+	switch (pream_idx) {
-+	case WMI_TPC_PREAM_CCK:
-+		mode_type = WMI_RATE_PREAMBLE_CCK;
-+		break;
-+	case WMI_TPC_PREAM_OFDM:
-+		mode_type = WMI_RATE_PREAMBLE_OFDM;
-+		break;
-+	case WMI_TPC_PREAM_HT20:
-+	case WMI_TPC_PREAM_HT40:
-+		mode_type = WMI_RATE_PREAMBLE_HT;
-+		break;
-+	case WMI_TPC_PREAM_VHT20:
-+	case WMI_TPC_PREAM_VHT40:
-+	case WMI_TPC_PREAM_VHT80:
-+	case WMI_TPC_PREAM_VHT160:
-+		mode_type = WMI_RATE_PREAMBLE_VHT;
-+		break;
-+	case WMI_TPC_PREAM_HE20:
-+	case WMI_TPC_PREAM_HE40:
-+	case WMI_TPC_PREAM_HE80:
-+	case WMI_TPC_PREAM_HE160:
-+		mode_type = WMI_RATE_PREAMBLE_HE;
-+		break;
-+	case WMI_TPC_PREAM_EHT20:
-+	case WMI_TPC_PREAM_EHT40:
-+	case WMI_TPC_PREAM_EHT60:
-+	case WMI_TPC_PREAM_EHT80:
-+	case WMI_TPC_PREAM_EHT120:
-+	case WMI_TPC_PREAM_EHT140:
-+	case WMI_TPC_PREAM_EHT160:
-+	case WMI_TPC_PREAM_EHT200:
-+	case WMI_TPC_PREAM_EHT240:
-+	case WMI_TPC_PREAM_EHT280:
-+	case WMI_TPC_PREAM_EHT320:
-+		mode_type = WMI_RATE_PREAMBLE_EHT;
-+		if (mcs_rate == 0 || mcs_rate == 1)
-+			mcs_rate += 14;
-+		else
-+			mcs_rate -= 2;
-+		break;
-+	default:
-+		return mode_type;
-+	}
-+	return ((mode_type << 8) | ((nss & 0x7) << 5) | (mcs_rate & 0x1F));
-+}
-+
-+static bool ath12k_he_supports_extra_mcs(struct ath12k *ar, int freq)
-+{
-+	struct ath12k_pdev_cap *cap = &ar->pdev->cap;
-+	struct ath12k_band_cap *cap_band;
-+	bool extra_mcs_supported;
-+
-+	if (freq <= ATH12K_2GHZ_MAX_FREQUENCY)
-+		cap_band = &cap->band[NL80211_BAND_2GHZ];
-+	else if (freq <= ATH12K_5GHZ_MAX_FREQUENCY)
-+		cap_band = &cap->band[NL80211_BAND_5GHZ];
-+	else
-+		cap_band = &cap->band[NL80211_BAND_6GHZ];
-+
-+	extra_mcs_supported = u32_get_bits(cap_band->he_cap_info[1],
-+					   HE_EXTRA_MCS_SUPPORT);
-+	return extra_mcs_supported;
-+}
-+
-+static int ath12k_tpc_fill_pream(struct ath12k *ar, char *buf, int buf_len, int len,
-+				 enum wmi_tpc_pream_bw pream_bw, u32 max_rix,
-+				 int max_nss, int max_rates, int pream_type,
-+				 enum wmi_halphy_ctrl_path_stats_id tpc_type,
-+				 int rate_idx, int eht_rate_idx)
-+{
-+	struct wmi_tpc_stats_info *tpc_stats = ar->debug.tpc_stats;
-+	int nss, rates, chains;
-+	u8 active_tx_chains;
-+	u16 rate_code;
-+	s16 tpc;
-+
-+	static const char *const pream_str[] = {
-+		[WMI_TPC_PREAM_CCK]     = "CCK",
-+		[WMI_TPC_PREAM_OFDM]    = "OFDM",
-+		[WMI_TPC_PREAM_HT20]    = "HT20",
-+		[WMI_TPC_PREAM_HT40]    = "HT40",
-+		[WMI_TPC_PREAM_VHT20]   = "VHT20",
-+		[WMI_TPC_PREAM_VHT40]   = "VHT40",
-+		[WMI_TPC_PREAM_VHT80]   = "VHT80",
-+		[WMI_TPC_PREAM_VHT160]  = "VHT160",
-+		[WMI_TPC_PREAM_HE20]    = "HE20",
-+		[WMI_TPC_PREAM_HE40]    = "HE40",
-+		[WMI_TPC_PREAM_HE80]    = "HE80",
-+		[WMI_TPC_PREAM_HE160]   = "HE160",
-+		[WMI_TPC_PREAM_EHT20]   = "EHT20",
-+
-+		[WMI_TPC_PREAM_EHT40]   = "EHT40",
-+		[WMI_TPC_PREAM_EHT60]   = "EHT60",
-+		[WMI_TPC_PREAM_EHT80]   = "EHT80",
-+		[WMI_TPC_PREAM_EHT120]   = "EHT120",
-+		[WMI_TPC_PREAM_EHT140]   = "EHT140",
-+		[WMI_TPC_PREAM_EHT160]   = "EHT160",
-+		[WMI_TPC_PREAM_EHT200]   = "EHT200",
-+		[WMI_TPC_PREAM_EHT240]   = "EHT240",
-+		[WMI_TPC_PREAM_EHT280]   = "EHT280",
-+		[WMI_TPC_PREAM_EHT320]   = "EHT320"};
-+
-+	active_tx_chains = ar->num_tx_chains;
-+
-+	for (nss = 0; nss < max_nss; nss++) {
-+		for (rates = 0; rates < max_rates; rates++, rate_idx++, max_rix++) {
-+			/* FW send extra MCS(10&11) for VHT and HE rates,
-+			 *  this is not used. Hence skipping it here
-+			 */
-+			if (pream_type == WMI_RATE_PREAMBLE_VHT &&
-+			    rates > ATH12K_VHT_MCS_MAX)
-+				continue;
-+
-+			if (pream_type == WMI_RATE_PREAMBLE_HE &&
-+			    rates > ATH12K_HE_MCS_MAX)
-+				continue;
-+
-+			if (pream_type == WMI_RATE_PREAMBLE_EHT &&
-+			    rates > ATH12K_EHT_MCS_MAX)
-+				continue;
-+
-+			rate_code = ath12k_get_ratecode(pream_bw, nss, rates);
-+			len += scnprintf(buf + len, buf_len - len,
-+				 "%d\t %s\t 0x%03x\t", max_rix,
-+				 pream_str[pream_bw], rate_code);
-+
-+			for (chains = 0; chains < active_tx_chains; chains++) {
-+				if (nss > chains) {
-+					len += scnprintf(buf + len,
-+							 buf_len - len,
-+							 "\t%s", "NA");
-+				} else {
-+					tpc = ath12k_tpc_get_rate(ar, tpc_stats, rate_idx,
-+								  chains + 1, rate_code,
-+								  pream_bw, tpc_type,
-+								  eht_rate_idx);
-+
-+					if (tpc == TPC_INVAL) {
-+						len += scnprintf(buf + len,
-+						       buf_len - len, "\tNA");
-+					} else {
-+						len += scnprintf(buf + len,
-+						       buf_len - len, "\t%d",
-+						       tpc);
-+					}
-+				}
-+			}
-+			len += scnprintf(buf + len, buf_len - len, "\n");
-+
-+			if (pream_type == WMI_RATE_PREAMBLE_EHT)
-+				/*For fetching the next eht rates pwr from rates array2*/
-+				++eht_rate_idx;
-+		}
-+	}
-+
-+	return len;
-+}
-+
-+static int ath12k_tpc_stats_print(struct ath12k *ar,
-+				  struct wmi_tpc_stats_info *tpc_stats,
-+				  char *buf, size_t len,
-+				  enum wmi_halphy_ctrl_path_stats_id type)
-+{
-+	u32 eht_idx = 0, pream_idx = 0, rate_pream_idx = 0, total_rates = 0, max_rix = 0;
-+	u32 chan_freq, num_tx_chain, caps, i, j = 1;
-+	size_t buf_len = ATH12K_TPC_STATS_BUF_SIZE;
-+	u8 nss, active_tx_chains;
-+	bool he_ext_mcs;
-+	static const char *const type_str[WMI_HALPHY_PDEV_TX_STATS_MAX] = {
-+		[WMI_HALPHY_PDEV_TX_SU_STATS]		= "SU",
-+		[WMI_HALPHY_PDEV_TX_SUTXBF_STATS]	= "SU WITH TXBF",
-+		[WMI_HALPHY_PDEV_TX_MU_STATS]		= "MU",
-+		[WMI_HALPHY_PDEV_TX_MUTXBF_STATS]	= "MU WITH TXBF"};
-+
-+	u8 max_rates[WMI_TPC_PREAM_MAX] = {
-+		[WMI_TPC_PREAM_CCK]     = ATH12K_CCK_RATES,
-+		[WMI_TPC_PREAM_OFDM]    = ATH12K_OFDM_RATES,
-+		[WMI_TPC_PREAM_HT20]    = ATH12K_HT_RATES,
-+		[WMI_TPC_PREAM_HT40]    = ATH12K_HT_RATES,
-+		[WMI_TPC_PREAM_VHT20]   = ATH12K_VHT_RATES,
-+		[WMI_TPC_PREAM_VHT40]   = ATH12K_VHT_RATES,
-+		[WMI_TPC_PREAM_VHT80]   = ATH12K_VHT_RATES,
-+		[WMI_TPC_PREAM_VHT160]  = ATH12K_VHT_RATES,
-+		[WMI_TPC_PREAM_HE20]    = ATH12K_HE_RATES,
-+		[WMI_TPC_PREAM_HE40]    = ATH12K_HE_RATES,
-+		[WMI_TPC_PREAM_HE80]    = ATH12K_HE_RATES,
-+		[WMI_TPC_PREAM_HE160]   = ATH12K_HE_RATES,
-+		[WMI_TPC_PREAM_EHT20]   = ATH12K_EHT_RATES,
-+		[WMI_TPC_PREAM_EHT40]   = ATH12K_EHT_RATES,
-+		[WMI_TPC_PREAM_EHT60]   = ATH12K_EHT_RATES,
-+		[WMI_TPC_PREAM_EHT80]   = ATH12K_EHT_RATES,
-+		[WMI_TPC_PREAM_EHT120]  = ATH12K_EHT_RATES,
-+		[WMI_TPC_PREAM_EHT140]  = ATH12K_EHT_RATES,
-+		[WMI_TPC_PREAM_EHT160]  = ATH12K_EHT_RATES,
-+		[WMI_TPC_PREAM_EHT200]  = ATH12K_EHT_RATES,
-+		[WMI_TPC_PREAM_EHT240]  = ATH12K_EHT_RATES,
-+		[WMI_TPC_PREAM_EHT280]  = ATH12K_EHT_RATES,
-+		[WMI_TPC_PREAM_EHT320]  = ATH12K_EHT_RATES};
-+	static const u8 max_nss[WMI_TPC_PREAM_MAX] = {
-+		[WMI_TPC_PREAM_CCK]     = ATH12K_NSS_1,
-+		[WMI_TPC_PREAM_OFDM]    = ATH12K_NSS_1,
-+		[WMI_TPC_PREAM_HT20]    = ATH12K_NSS_4,
-+		[WMI_TPC_PREAM_HT40]    = ATH12K_NSS_4,
-+		[WMI_TPC_PREAM_VHT20]   = ATH12K_NSS_8,
-+		[WMI_TPC_PREAM_VHT40]   = ATH12K_NSS_8,
-+		[WMI_TPC_PREAM_VHT80]   = ATH12K_NSS_8,
-+		[WMI_TPC_PREAM_VHT160]  = ATH12K_NSS_4,
-+		[WMI_TPC_PREAM_HE20]    = ATH12K_NSS_8,
-+		[WMI_TPC_PREAM_HE40]    = ATH12K_NSS_8,
-+		[WMI_TPC_PREAM_HE80]    = ATH12K_NSS_8,
-+		[WMI_TPC_PREAM_HE160]   = ATH12K_NSS_4,
-+		[WMI_TPC_PREAM_EHT20]   = ATH12K_NSS_4,
-+		[WMI_TPC_PREAM_EHT40]   = ATH12K_NSS_4,
-+		[WMI_TPC_PREAM_EHT60]   = ATH12K_NSS_4,
-+		[WMI_TPC_PREAM_EHT80]   = ATH12K_NSS_4,
-+		[WMI_TPC_PREAM_EHT120]  = ATH12K_NSS_4,
-+		[WMI_TPC_PREAM_EHT140]  = ATH12K_NSS_4,
-+		[WMI_TPC_PREAM_EHT160]  = ATH12K_NSS_4,
-+		[WMI_TPC_PREAM_EHT200]  = ATH12K_NSS_4,
-+		[WMI_TPC_PREAM_EHT240]  = ATH12K_NSS_4,
-+		[WMI_TPC_PREAM_EHT280]  = ATH12K_NSS_4,
-+		[WMI_TPC_PREAM_EHT320]  = ATH12K_NSS_4};
-+
-+	u16 rate_idx[WMI_TPC_PREAM_MAX] = {0},
-+	    eht_rate_idx[WMI_TPC_PREAM_MAX] = {0};
-+	static const u8 pream_type[WMI_TPC_PREAM_MAX] = {
-+		[WMI_TPC_PREAM_CCK]     = WMI_RATE_PREAMBLE_CCK,
-+		[WMI_TPC_PREAM_OFDM]    = WMI_RATE_PREAMBLE_OFDM,
-+		[WMI_TPC_PREAM_HT20]    = WMI_RATE_PREAMBLE_HT,
-+		[WMI_TPC_PREAM_HT40]    = WMI_RATE_PREAMBLE_HT,
-+		[WMI_TPC_PREAM_VHT20]   = WMI_RATE_PREAMBLE_VHT,
-+		[WMI_TPC_PREAM_VHT40]   = WMI_RATE_PREAMBLE_VHT,
-+		[WMI_TPC_PREAM_VHT80]   = WMI_RATE_PREAMBLE_VHT,
-+		[WMI_TPC_PREAM_VHT160]  = WMI_RATE_PREAMBLE_VHT,
-+		[WMI_TPC_PREAM_HE20]    = WMI_RATE_PREAMBLE_HE,
-+		[WMI_TPC_PREAM_HE40]    = WMI_RATE_PREAMBLE_HE,
-+		[WMI_TPC_PREAM_HE80]    = WMI_RATE_PREAMBLE_HE,
-+		[WMI_TPC_PREAM_HE160]   = WMI_RATE_PREAMBLE_HE,
-+		[WMI_TPC_PREAM_EHT20]   = WMI_RATE_PREAMBLE_EHT,
-+		[WMI_TPC_PREAM_EHT40]   = WMI_RATE_PREAMBLE_EHT,
-+		[WMI_TPC_PREAM_EHT60]   = WMI_RATE_PREAMBLE_EHT,
-+		[WMI_TPC_PREAM_EHT80]   = WMI_RATE_PREAMBLE_EHT,
-+		[WMI_TPC_PREAM_EHT120]  = WMI_RATE_PREAMBLE_EHT,
-+		[WMI_TPC_PREAM_EHT140]  = WMI_RATE_PREAMBLE_EHT,
-+		[WMI_TPC_PREAM_EHT160]  = WMI_RATE_PREAMBLE_EHT,
-+		[WMI_TPC_PREAM_EHT200]  = WMI_RATE_PREAMBLE_EHT,
-+		[WMI_TPC_PREAM_EHT240]  = WMI_RATE_PREAMBLE_EHT,
-+		[WMI_TPC_PREAM_EHT280]  = WMI_RATE_PREAMBLE_EHT,
-+		[WMI_TPC_PREAM_EHT320]  = WMI_RATE_PREAMBLE_EHT};
-+
-+	chan_freq = le32_to_cpu(tpc_stats->tpc_config.chan_freq);
-+	num_tx_chain = le32_to_cpu(tpc_stats->tpc_config.num_tx_chain);
-+	caps = le32_to_cpu(tpc_stats->tpc_config.caps);
-+
-+	active_tx_chains = ar->num_tx_chains;
-+	he_ext_mcs = ath12k_he_supports_extra_mcs(ar, chan_freq);
-+
-+	/* mcs 12&13 is sent by FW for certain HWs in rate array, skipping it as
-+	 * it is not supported
-+	 */
-+	if (he_ext_mcs) {
-+		for (i = WMI_TPC_PREAM_HE20; i <= WMI_TPC_PREAM_HE160;  ++i)
-+			max_rates[i] = ATH12K_HE_RATES;
-+	}
-+
-+	if (type == WMI_HALPHY_PDEV_TX_MU_STATS ||
-+	    type == WMI_HALPHY_PDEV_TX_MUTXBF_STATS) {
-+		pream_idx = WMI_TPC_PREAM_VHT20;
-+
-+		for (i = WMI_TPC_PREAM_CCK; i <= WMI_TPC_PREAM_HT40; ++i)
-+			max_rix += max_nss[i] * max_rates[i];
-+	}
-+	/* Enumerate all the rate indices */
-+	for (i = rate_pream_idx + 1 ; i < WMI_TPC_PREAM_MAX; i++) {
-+		nss = (max_nss[i - 1] < num_tx_chain ?
-+		       max_nss[i - 1] : num_tx_chain);
-+
-+		rate_idx[i] = rate_idx[i - 1] + max_rates[i - 1] * nss;
-+
-+		if (pream_type[i] == WMI_RATE_PREAMBLE_EHT) {
-+			eht_rate_idx[j] = eht_rate_idx[j - 1] + max_rates[i] * nss;
-+			++j;
-+		}
-+	}
-+
-+	for (i = 0 ; i < WMI_TPC_PREAM_MAX; i++) {
-+		nss = (max_nss[i] < num_tx_chain ?
-+		       max_nss[i] : num_tx_chain);
-+		total_rates += max_rates[i] * nss;
-+	}
-+
-+	len += scnprintf(buf + len, buf_len - len,
-+			 "No.of rates-%d\n", total_rates);
-+
-+	len += scnprintf(buf + len, buf_len - len,
-+			 "**************** %s ****************\n",
-+			 type_str[type]);
-+	len += scnprintf(buf + len, buf_len - len,
-+			 "\t\t\t\tTPC values for Active chains\n");
-+	len += scnprintf(buf + len, buf_len - len,
-+			 "Rate idx Preamble Rate code");
-+
-+	for (i = 1; i <= active_tx_chains; ++i) {
-+		len += scnprintf(buf + len, buf_len - len,
-+				 "\t%d-Chain", i);
-+	}
-+
-+	len += scnprintf(buf + len, buf_len - len, "\n");
-+	for (i = pream_idx; i < WMI_TPC_PREAM_MAX; i++) {
-+		if (chan_freq <= 2483) {
-+			if (i == WMI_TPC_PREAM_VHT80 ||
-+			    i == WMI_TPC_PREAM_VHT160 ||
-+			    i == WMI_TPC_PREAM_HE80 ||
-+			    i == WMI_TPC_PREAM_HE160 ||
-+			    (i >= WMI_TPC_PREAM_EHT60 &&
-+			     i <= WMI_TPC_PREAM_EHT320)) {
-+				max_rix += max_nss[i] * max_rates[i];
-+				continue;
-+			}
-+		} else {
-+			if (i == WMI_TPC_PREAM_CCK) {
-+				max_rix += max_rates[i];
-+				continue;
-+			}
-+		}
-+
-+		nss = (max_nss[i] < ar->num_tx_chains ? max_nss[i] : ar->num_tx_chains);
-+
-+		if (!(caps &
-+		    (1 << ATH12K_TPC_STATS_SUPPORT_BE_PUNC))) {
-+			if (i == WMI_TPC_PREAM_EHT60 || i == WMI_TPC_PREAM_EHT120 ||
-+			    i == WMI_TPC_PREAM_EHT140 || i == WMI_TPC_PREAM_EHT200 ||
-+			    i == WMI_TPC_PREAM_EHT240 || i == WMI_TPC_PREAM_EHT280) {
-+				max_rix += max_nss[i] * max_rates[i];
-+				continue;
-+			}
-+		}
-+
-+		len = ath12k_tpc_fill_pream(ar, buf, buf_len, len, i, max_rix, nss,
-+					    max_rates[i], pream_type[i],
-+					    type, rate_idx[i], eht_rate_idx[eht_idx]);
-+
-+		if (pream_type[i] == WMI_RATE_PREAMBLE_EHT)
-+			/*For fetch the next index eht rates from rates array2*/
-+			++eht_idx;
-+
-+		max_rix += max_nss[i] * max_rates[i];
-+	}
-+	return len;
-+}
-+
-+static void ath12k_tpc_stats_fill(struct ath12k *ar,
-+				  struct wmi_tpc_stats_info *tpc_stats,
-+				  char *buf)
-+{
-+	size_t buf_len = ATH12K_TPC_STATS_BUF_SIZE;
-+	struct wmi_tpc_config_params *tpc;
-+	size_t len = 0;
-+
-+	spin_lock_bh(&ar->data_lock);
-+	if (!tpc_stats) {
-+		ath12k_warn(ar->ab, "failed to find tpc stats\n");
-+		goto unlock;
-+	}
-+
-+	tpc = &tpc_stats->tpc_config;
-+	len += scnprintf(buf + len, buf_len - len, "\n");
-+	len += scnprintf(buf + len, buf_len - len,
-+			 "*************** TPC config **************\n");
-+	len += scnprintf(buf + len, buf_len - len,
-+			 "* powers are in 0.25 dBm steps\n");
-+	len += scnprintf(buf + len, buf_len - len,
-+			 "reg domain-%d\t\tchan freq-%d\n",
-+			 tpc->reg_domain, tpc->chan_freq);
-+	len += scnprintf(buf + len, buf_len - len,
-+			 "power limit-%d\t\tmax reg-domain Power-%d\n",
-+			 le32_to_cpu(tpc->twice_max_reg_power) / 2, tpc->power_limit);
-+	len += scnprintf(buf + len, buf_len - len,
-+			 "No.of tx chain-%d\t",
-+			 ar->num_tx_chains);
-+
-+	ath12k_tpc_stats_print(ar, tpc_stats, buf, len,
-+			       ar->debug.tpc_stats_type);
-+
-+unlock:
-+	spin_unlock_bh(&ar->data_lock);
-+}
-+
- static int ath12k_open_tpc_stats(struct inode *inode, struct file *file)
- {
- 	struct ath12k *ar = inode->i_private;
-@@ -91,6 +700,7 @@ static int ath12k_open_tpc_stats(struct inode *inode, struct file *file)
- 		return -ETIMEDOUT;
- 	}
- 
-+	ath12k_tpc_stats_fill(ar, ar->debug.tpc_stats, buf);
- 	file->private_data = no_free_ptr(buf);
- 
- 	spin_lock_bh(&ar->data_lock);
-@@ -125,6 +735,12 @@ static const struct file_operations fops_tpc_stats = {
- 	.llseek = default_llseek,
- };
- 
-+static const struct file_operations fops_tpc_stats_type = {
-+	.write = ath12k_write_tpc_stats_type,
-+	.open = simple_open,
-+	.llseek = default_llseek,
-+};
-+
- void ath12k_debugfs_soc_create(struct ath12k_base *ab)
- {
- 	bool dput_needed;
-@@ -187,6 +803,9 @@ void ath12k_debugfs_register(struct ath12k *ar)
- 
- 	debugfs_create_file("tpc_stats", 0400, ar->debug.debugfs_pdev, ar,
- 			    &fops_tpc_stats);
-+	debugfs_create_file("tpc_stats_type", 0200, ar->debug.debugfs_pdev,
-+			    ar, &fops_tpc_stats_type);
-+	init_completion(&ar->debug.tpc_complete);
- 
- 	ath12k_debugfs_htt_stats_register(ar);
- }
-diff --git a/drivers/net/wireless/ath/ath12k/debugfs.h b/drivers/net/wireless/ath/ath12k/debugfs.h
-index d086dd1d5011..d9d91cc8cd1e 100644
---- a/drivers/net/wireless/ath/ath12k/debugfs.h
-+++ b/drivers/net/wireless/ath/ath12k/debugfs.h
-@@ -13,11 +13,90 @@ void ath12k_debugfs_soc_destroy(struct ath12k_base *ab);
- void ath12k_debugfs_register(struct ath12k *ar);
- void ath12k_debugfs_unregister(struct ath12k *ar);
- 
--#define TPC_STATS_WAIT_TIME		(1 * HZ)
--#define TPC_STATS_TOT_ROW		700
--#define TPC_STATS_TOT_COLUMN		100
-+#define ATH12K_CCK_RATES			4
-+#define ATH12K_OFDM_RATES			8
-+#define ATH12K_HT_RATES				8
-+#define ATH12K_VHT_RATES			12
-+#define ATH12K_HE_RATES				12
-+#define ATH12K_HE_RATES_WITH_EXTRA_MCS		14
-+#define ATH12K_EHT_RATES			16
-+#define HE_EXTRA_MCS_SUPPORT			GENMASK(31, 16)
-+#define ATH12K_NSS_1				1
-+#define ATH12K_NSS_4				4
-+#define ATH12K_NSS_8				8
-+#define ATH12K_HW_NSS(_rcode)			(((_rcode) >> 5) & 0x7)
-+#define TPC_STATS_WAIT_TIME			(1 * HZ)
-+#define MAX_TPC_PREAM_STR_LEN			7
-+#define TPC_INVAL				-128
-+#define TPC_MAX					127
-+#define TPC_STATS_WAIT_TIME			(1 * HZ)
-+#define TPC_STATS_TOT_ROW			700
-+#define TPC_STATS_TOT_COLUMN			100
-+#define MODULATION_LIMIT			126
-+
-+#define ATH12K_2GHZ_MAX_FREQUENCY		2495
-+#define ATH12K_5GHZ_MAX_FREQUENCY		5920
- #define ATH12K_TPC_STATS_BUF_SIZE	(TPC_STATS_TOT_ROW * TPC_STATS_TOT_COLUMN)
- 
-+enum wmi_tpc_pream_bw {
-+	WMI_TPC_PREAM_CCK,
-+	WMI_TPC_PREAM_OFDM,
-+	WMI_TPC_PREAM_HT20,
-+	WMI_TPC_PREAM_HT40,
-+	WMI_TPC_PREAM_VHT20,
-+	WMI_TPC_PREAM_VHT40,
-+	WMI_TPC_PREAM_VHT80,
-+	WMI_TPC_PREAM_VHT160,
-+	WMI_TPC_PREAM_HE20,
-+	WMI_TPC_PREAM_HE40,
-+	WMI_TPC_PREAM_HE80,
-+	WMI_TPC_PREAM_HE160,
-+	WMI_TPC_PREAM_EHT20,
-+	WMI_TPC_PREAM_EHT40,
-+	WMI_TPC_PREAM_EHT60,
-+	WMI_TPC_PREAM_EHT80,
-+	WMI_TPC_PREAM_EHT120,
-+	WMI_TPC_PREAM_EHT140,
-+	WMI_TPC_PREAM_EHT160,
-+	WMI_TPC_PREAM_EHT200,
-+	WMI_TPC_PREAM_EHT240,
-+	WMI_TPC_PREAM_EHT280,
-+	WMI_TPC_PREAM_EHT320,
-+	WMI_TPC_PREAM_MAX
-+};
-+
-+enum ath12k_debug_tpc_stats_ctl_mode {
-+	ATH12K_TPC_STATS_CTL_MODE_LEGACY_5GHZ_6GHZ,
-+	ATH12K_TPC_STATS_CTL_MODE_HT_VHT20_5GHZ_6GHZ,
-+	ATH12K_TPC_STATS_CTL_MODE_HE_EHT20_5GHZ_6GHZ,
-+	ATH12K_TPC_STATS_CTL_MODE_HT_VHT40_5GHZ_6GHZ,
-+	ATH12K_TPC_STATS_CTL_MODE_HE_EHT40_5GHZ_6GHZ,
-+	ATH12K_TPC_STATS_CTL_MODE_VHT80_5GHZ_6GHZ,
-+	ATH12K_TPC_STATS_CTL_MODE_HE_EHT80_5GHZ_6GHZ,
-+	ATH12K_TPC_STATS_CTL_MODE_VHT160_5GHZ_6GHZ,
-+	ATH12K_TPC_STATS_CTL_MODE_HE_EHT160_5GHZ_6GHZ,
-+	ATH12K_TPC_STATS_CTL_MODE_HE_EHT320_5GHZ_6GHZ,
-+	ATH12K_TPC_STATS_CTL_MODE_CCK_2GHZ,
-+	ATH12K_TPC_STATS_CTL_MODE_LEGACY_2GHZ,
-+	ATH12K_TPC_STATS_CTL_MODE_HT20_2GHZ,
-+	ATH12K_TPC_STATS_CTL_MODE_HT40_2GHZ,
-+
-+	ATH12K_TPC_STATS_CTL_MODE_EHT80_SU_PUNC20 = 23,
-+	ATH12K_TPC_STATS_CTL_MODE_EHT160_SU_PUNC20,
-+	ATH12K_TPC_STATS_CTL_MODE_EHT320_SU_PUNC40,
-+	ATH12K_TPC_STATS_CTL_MODE_EHT320_SU_PUNC80,
-+	ATH12K_TPC_STATS_CTL_MODE_EHT320_SU_PUNC120
-+};
-+
-+enum ath12k_debug_tpc_stats_support_modes {
-+	ATH12K_TPC_STATS_SUPPORT_160 = 0,
-+	ATH12K_TPC_STATS_SUPPORT_320,
-+	ATH12K_TPC_STATS_SUPPORT_AX,
-+	ATH12K_TPC_STATS_SUPPORT_AX_EXTRA_MCS,
-+	ATH12K_TPC_STATS_SUPPORT_BE,
-+	ATH12K_TPC_STATS_SUPPORT_BE_PUNC,
-+};
-+
- #else
- static inline void ath12k_debugfs_soc_create(struct ath12k_base *ab)
- {
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
-index 5193f4a7fed1..ae3d62fefd3f 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.h
-+++ b/drivers/net/wireless/ath/ath12k/wmi.h
-@@ -4620,6 +4620,7 @@ enum wmi_rate_preamble {
- 	WMI_RATE_PREAMBLE_HT,
- 	WMI_RATE_PREAMBLE_VHT,
- 	WMI_RATE_PREAMBLE_HE,
-+	WMI_RATE_PREAMBLE_EHT
- };
- 
- /**
--- 
-2.25.1
-
+/jeff
 
