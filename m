@@ -1,375 +1,91 @@
-Return-Path: <linux-wireless+bounces-16646-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16647-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A4E49F9238
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 13:30:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FB489F958D
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 16:37:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBC94169F78
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 12:30:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E044716C9A0
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 15:37:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E67F22046A1;
-	Fri, 20 Dec 2024 12:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C3CD1C5F08;
+	Fri, 20 Dec 2024 15:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ppZDZjhx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iRKILxDO"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2EE21BCA19
-	for <linux-wireless@vger.kernel.org>; Fri, 20 Dec 2024 12:29:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5846D249EB
+	for <linux-wireless@vger.kernel.org>; Fri, 20 Dec 2024 15:37:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734697798; cv=none; b=RKErVTSyva+zZUVs8ONt3QKArqK01t3AnU992TQtKEeDfSrcCsa4EZXAcDNeskoGG2Sc9SrolEk86/BDt47PGCjuW4MauQVEhOXDhJL9u6Llbs1IWc40OB+E5rhD+7stK4V/9brUzRn3HuBulzxhqKkjUm0ku5AbTU6OvomP8rY=
+	t=1734709048; cv=none; b=GTfmEDIOkhrBtK1R3T9+pWasfXQofOmIAq4M8yQj2D6XkjkxSVva2zQQIKLtOwHYgj9MKRk7gLqc0heFSaH+yYJWBpMy1iRxbY+E/hBxIOatDgAyqSxYrKAL55k4dNjgW35xIrV4brdLA2dafWLLdqmyjJWfbMlRHxLeeyK2HD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734697798; c=relaxed/simple;
-	bh=66CvT6ns+hHH6BDz1EEtJ1zFnpF+MWdHM0cUPxVKIZI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Q8nFKcAhGx5Cd1cyEnxgZaiWKoAf7wgFot2LUwg+ODrw1/UVBBb+PFAlthJaxoJMK4Au8R9qJOok6gQ6cgkfdwb+r7Oyp1xlbmEv4fqsVgYulQg3QcAJRAuKfXuxx5gPR5/d4buAeix/yiYkO1nKj5pcLT+gMryu/bP6WUrAmL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ppZDZjhx; arc=none smtp.client-ip=209.85.219.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e3983426f80so1469006276.1
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Dec 2024 04:29:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1734697796; x=1735302596; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=VmRCmaPkLkPswmKEyB/ZICUJHMBmUsSjq9Yct5NQ1ro=;
-        b=ppZDZjhxB3N7WSspD6BavgGwANaKs4GCgU2/GX4iWnzqxjKuQPpfAnrcb0n+NJZQe9
-         hjlF2ocPlEbN2GFg8uhM1kkQfVDevqS6QjA9f/yiLin5KJCmeYvtBPbqdiuxpI44MaJR
-         kPrIVBnRJ621HA+fDJkJofG7Li8oUrYR5oxajpzu/44Q+9K1WNJttN4BPBHVSJEXrD6x
-         iW5n70M8++Z3C2Y8tLr2cgNJKTSNqXyClZ5u1X9/S+xNLNZKmTREFO+ni5WpoiyZOfz7
-         9SRDuhtyxOWaeah7ds1eV3Amx3JOq4pAAMg/iuh/8HdZjxuYCCUSQU92yj5Q5wy5LRHy
-         kFrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734697796; x=1735302596;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VmRCmaPkLkPswmKEyB/ZICUJHMBmUsSjq9Yct5NQ1ro=;
-        b=BK5iIM2ouYUn4LqxU+Q8W4e9H+uUYCRB4zLFreTD44geKEmkeltGJaG6eJt9lvaYuC
-         5Xu+4+D7/sN80UMGgwc4X0IeWadb03n3uYHrK4siClRDqh8/Tt2pss8Yc96heND1lnxd
-         1MWNO/tDpi+06tgnLZUGwj0xLnZM79Whf1yfnkdnHGbR4Nva3Bb7lIjEFVr2gpzOGGP6
-         +OpPk1pifuSeMHz82CbXWD2dJ4MzWfJOAPTr7VbI6srpQUYwoynvbLIjRzUxyQ/Atgar
-         YnTwQBJR3H3ndr19pwCq/S7uywUyKcTG9SZQOUkfhTs3KU6Z3C0OktZqQoXgJgnTdH2T
-         vWzw==
-X-Forwarded-Encrypted: i=1; AJvYcCWdmyaDGomlHADR2PCOdJFFfcfdmkD3MlIPIL196e++3TFZm3FSmcAzUHnu5GDnWXFy79fbhRhHU6uJD9xPXw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz+0fyFiffFYNJO6PrWYioRsgoxS8ppD2QWUBskRi0TiXOLAXz/
-	bropkIxULPeol8/sK7pDIOKooZ4KZYDNqozlQyKy3jd9euaA8XEXBBRiD0w9wQKeFpHih9Ps8Hh
-	iQniNVPxr2fDQ+OHfQ8yG/+Das1AUGF5E04eNnQ==
-X-Gm-Gg: ASbGncvIOEBq2FiWloNyFuEloMauVOdGmFs8QlKlIfdOUND9FokUFC5CRi5ji0KN8Wo
-	I8zXQoAhqC6PDRuXA//KlchKD6d3PB1BDXAJeYQ==
-X-Google-Smtp-Source: AGHT+IGSsUG4iSnRRcdUuCq27bUw63jRg+t86G+uWqSkEhiBTf+pNCH23b3m4irAGr9UmyGYIOuuYUx3ncEVJac77D0=
-X-Received: by 2002:a05:6902:982:b0:e3c:8ec9:c896 with SMTP id
- 3f1490d57ef6-e538c350d10mr1981319276.34.1734697795572; Fri, 20 Dec 2024
- 04:29:55 -0800 (PST)
+	s=arc-20240116; t=1734709048; c=relaxed/simple;
+	bh=ktv6hTJvatOdLf8QRamLBtFjYchk1/vaWBbpmEoSXsI=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=jAvN7KpsopXSOe32NySx+KsmEEebde5c6YfFuL9K3wrv4YkrXrLGqyQqcMYmeiYpJFmNdt3gbDPu6LDAXk8K0Ar8aTIsyxrBGAOej5IdBZS3smh97t6kNwVSlc0lV/pJppXBBXHXH++itjkU/I4x/NqkgkBP14WZ0ucRxMmLuq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iRKILxDO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 089ADC4CECD;
+	Fri, 20 Dec 2024 15:37:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734709048;
+	bh=ktv6hTJvatOdLf8QRamLBtFjYchk1/vaWBbpmEoSXsI=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=iRKILxDOi3tECpU7ZkQh7b3n9GJPogIwDurltPCceYyyD2nbDxMrfY0Tlbw/VkRB5
+	 mxf1/pGRRU6W0cz7z7m7elEB4qE5BIKMMnKAbWbnVFqnfhx4gTxIM+9oGpBwupXyTi
+	 haU/ANRKv0Woih2WSw97e35Yzhv1kSn6MoL+FR702ZrZVk9irHHV2q0mxIgHlwoeU8
+	 SgqpwmeZqPFuXYYsNzVmTKGiLmHb4ccXsb0IsSBaj+nqB3fGaR4b+hQOGXaAm4DDXh
+	 gaFEoktawwAxffoBXaUXOdemGfVtrWNIx2scKR9q7w7DbW44mB+ghFgzWkzoQUMF8p
+	 Fn3WtZf5g/JBA==
+From: Kalle Valo <kvalo@kernel.org>
+To: Muna Sinada <quic_msinada@quicinc.com>
+Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>,  Ramya
+ Gnanasekar <quic_rgnanase@quicinc.com>
+Subject: Re: [PATCH] wifi: ath12k: set flag for mgmt no-ack frames in Tx
+ completion
+References: <20241219190845.605116-1-quic_msinada@quicinc.com>
+Date: Fri, 20 Dec 2024 17:37:25 +0200
+In-Reply-To: <20241219190845.605116-1-quic_msinada@quicinc.com> (Muna Sinada's
+	message of "Thu, 19 Dec 2024 11:08:45 -0800")
+Message-ID: <87seqifjre.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241213122739.4050137-1-linyunsheng@huawei.com> <20241213122739.4050137-2-linyunsheng@huawei.com>
-In-Reply-To: <20241213122739.4050137-2-linyunsheng@huawei.com>
-From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Date: Fri, 20 Dec 2024 14:29:19 +0200
-Message-ID: <CAC_iWj+3Q7CAS3xH9+zWA7nXdFNSJ-XMKQB3ZT0YvUQ-Q2gMCQ@mail.gmail.com>
-Subject: Re: [PATCH RFCv5 1/8] page_pool: introduce page_pool_to_pp() API
-To: Yunsheng Lin <linyunsheng@huawei.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
-	somnath.kotur@broadcom.com, liuyonglong@huawei.com, fanghaiqing@huawei.com, 
-	zhangkun09@huawei.com, Wei Fang <wei.fang@nxp.com>, 
-	Shenwei Wang <shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>, 
-	Jeroen de Borst <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, 
-	Shailend Chand <shailend@google.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, Saeed Mahameed <saeedm@nvidia.com>, 
-	Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Felix Fietkau <nbd@nbd.name>, 
-	Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee <ryder.lee@mediatek.com>, 
-	Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>, 
-	Kalle Valo <kvalo@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>, 
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Simon Horman <horms@kernel.org>, 
-	imx@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	intel-wired-lan@lists.osuosl.org, bpf@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 
-Hi Yunsheng,
+Muna Sinada <quic_msinada@quicinc.com> writes:
 
-On Fri, 13 Dec 2024 at 14:35, Yunsheng Lin <linyunsheng@huawei.com> wrote:
+> From: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
 >
-> introduce page_pool_to_pp() API to avoid caller accessing
-> page->pp directly.
+> IEEE80211_TX_STAT_NOACK_TRANSMITTED flag signifies that frame was
+> successfully transmitted without any errors when no-ack is requested.
 >
+> In WMI Tx management completion path, driver is not setting
+> IEEE80211_TX_STAT_NOACK_TRANSMITTED flag for the frames with
+> IEEE80211_TX_CTL_NO_ACK. Without this flag, the management frame
+> statistics will not track such frames.
+>
+> Add IEEE80211_TX_STAT_NOACK_TRANSMITTED flag as part of the flags in
+> skb transmit information when WMI is processing Tx completion for
+> management frames.
+>
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+>
+> Signed-off-by: Ramya Gnanasekar <quic_rgnanase@quicinc.com>
+> Signed-off-by: Muna Sinada <quic_msinada@quicinc.com>
 
-I think we already have way too many abstractions, I'd say we need
-less not more. I don't know what others think, but I don't see what we
-gain from this
+Acked-by: Kalle Valo <kvalo@kernel.org>
 
-Thanks
-/Ilias
-> Signed-off-by: Yunsheng Lin <linyunsheng@huawei.com>
-> ---
->  drivers/net/ethernet/freescale/fec_main.c          |  8 +++++---
->  .../net/ethernet/google/gve/gve_buffer_mgmt_dqo.c  |  2 +-
->  drivers/net/ethernet/intel/iavf/iavf_txrx.c        |  6 ++++--
->  drivers/net/ethernet/intel/idpf/idpf_txrx.c        | 14 +++++++++-----
->  drivers/net/ethernet/intel/libeth/rx.c             |  2 +-
->  drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c   |  3 ++-
->  drivers/net/netdevsim/netdev.c                     |  6 ++++--
->  drivers/net/wireless/mediatek/mt76/mt76.h          |  2 +-
->  include/net/libeth/rx.h                            |  3 ++-
->  include/net/page_pool/helpers.h                    |  5 +++++
->  net/core/skbuff.c                                  |  3 ++-
->  net/core/xdp.c                                     |  3 ++-
->  12 files changed, 38 insertions(+), 19 deletions(-)
->
-> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-> index 1b55047c0237..98fce41d088c 100644
-> --- a/drivers/net/ethernet/freescale/fec_main.c
-> +++ b/drivers/net/ethernet/freescale/fec_main.c
-> @@ -1009,7 +1009,8 @@ static void fec_enet_bd_init(struct net_device *dev)
->                                 struct page *page = txq->tx_buf[i].buf_p;
->
->                                 if (page)
-> -                                       page_pool_put_page(page->pp, page, 0, false);
-> +                                       page_pool_put_page(page_pool_to_pp(page),
-> +                                                          page, 0, false);
->                         }
->
->                         txq->tx_buf[i].buf_p = NULL;
-> @@ -1549,7 +1550,7 @@ fec_enet_tx_queue(struct net_device *ndev, u16 queue_id, int budget)
->                         xdp_return_frame_rx_napi(xdpf);
->                 } else { /* recycle pages of XDP_TX frames */
->                         /* The dma_sync_size = 0 as XDP_TX has already synced DMA for_device */
-> -                       page_pool_put_page(page->pp, page, 0, true);
-> +                       page_pool_put_page(page_pool_to_pp(page), page, 0, true);
->                 }
->
->                 txq->tx_buf[index].buf_p = NULL;
-> @@ -3311,7 +3312,8 @@ static void fec_enet_free_buffers(struct net_device *ndev)
->                         } else {
->                                 struct page *page = txq->tx_buf[i].buf_p;
->
-> -                               page_pool_put_page(page->pp, page, 0, false);
-> +                               page_pool_put_page(page_pool_to_pp(page),
-> +                                                  page, 0, false);
->                         }
->
->                         txq->tx_buf[i].buf_p = NULL;
-> diff --git a/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c b/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c
-> index 403f0f335ba6..db5926152c72 100644
-> --- a/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c
-> +++ b/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c
-> @@ -210,7 +210,7 @@ void gve_free_to_page_pool(struct gve_rx_ring *rx,
->         if (!page)
->                 return;
->
-> -       page_pool_put_full_page(page->pp, page, allow_direct);
-> +       page_pool_put_full_page(page_pool_to_pp(page), page, allow_direct);
->         buf_state->page_info.page = NULL;
->  }
->
-> diff --git a/drivers/net/ethernet/intel/iavf/iavf_txrx.c b/drivers/net/ethernet/intel/iavf/iavf_txrx.c
-> index 26b424fd6718..658d8f9a6abb 100644
-> --- a/drivers/net/ethernet/intel/iavf/iavf_txrx.c
-> +++ b/drivers/net/ethernet/intel/iavf/iavf_txrx.c
-> @@ -1050,7 +1050,8 @@ static void iavf_add_rx_frag(struct sk_buff *skb,
->                              const struct libeth_fqe *rx_buffer,
->                              unsigned int size)
->  {
-> -       u32 hr = rx_buffer->page->pp->p.offset;
-> +       struct page_pool *pool = page_pool_to_pp(rx_buffer->page);
-> +       u32 hr = pool->p.offset;
->
->         skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, rx_buffer->page,
->                         rx_buffer->offset + hr, size, rx_buffer->truesize);
-> @@ -1067,7 +1068,8 @@ static void iavf_add_rx_frag(struct sk_buff *skb,
->  static struct sk_buff *iavf_build_skb(const struct libeth_fqe *rx_buffer,
->                                       unsigned int size)
->  {
-> -       u32 hr = rx_buffer->page->pp->p.offset;
-> +       struct page_pool *pool = page_pool_to_pp(rx_buffer->page);
-> +       u32 hr = pool->p.offset;
->         struct sk_buff *skb;
->         void *va;
->
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> index da2a5becf62f..38ad32678bcc 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> +++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> @@ -385,7 +385,8 @@ static void idpf_rx_page_rel(struct libeth_fqe *rx_buf)
->         if (unlikely(!rx_buf->page))
->                 return;
->
-> -       page_pool_put_full_page(rx_buf->page->pp, rx_buf->page, false);
-> +       page_pool_put_full_page(page_pool_to_pp(rx_buf->page), rx_buf->page,
-> +                               false);
->
->         rx_buf->page = NULL;
->         rx_buf->offset = 0;
-> @@ -3097,7 +3098,8 @@ idpf_rx_process_skb_fields(struct idpf_rx_queue *rxq, struct sk_buff *skb,
->  void idpf_rx_add_frag(struct idpf_rx_buf *rx_buf, struct sk_buff *skb,
->                       unsigned int size)
->  {
-> -       u32 hr = rx_buf->page->pp->p.offset;
-> +       struct page_pool *pool = page_pool_to_pp(rx_buf->page);
-> +       u32 hr = pool->p.offset;
->
->         skb_add_rx_frag(skb, skb_shinfo(skb)->nr_frags, rx_buf->page,
->                         rx_buf->offset + hr, size, rx_buf->truesize);
-> @@ -3129,8 +3131,10 @@ static u32 idpf_rx_hsplit_wa(const struct libeth_fqe *hdr,
->         if (!libeth_rx_sync_for_cpu(buf, copy))
->                 return 0;
->
-> -       dst = page_address(hdr->page) + hdr->offset + hdr->page->pp->p.offset;
-> -       src = page_address(buf->page) + buf->offset + buf->page->pp->p.offset;
-> +       dst = page_address(hdr->page) + hdr->offset +
-> +               page_pool_to_pp(hdr->page)->p.offset;
-> +       src = page_address(buf->page) + buf->offset +
-> +               page_pool_to_pp(buf->page)->p.offset;
->         memcpy(dst, src, LARGEST_ALIGN(copy));
->
->         buf->offset += copy;
-> @@ -3148,7 +3152,7 @@ static u32 idpf_rx_hsplit_wa(const struct libeth_fqe *hdr,
->   */
->  struct sk_buff *idpf_rx_build_skb(const struct libeth_fqe *buf, u32 size)
->  {
-> -       u32 hr = buf->page->pp->p.offset;
-> +       u32 hr = page_pool_to_pp(buf->page)->p.offset;
->         struct sk_buff *skb;
->         void *va;
->
-> diff --git a/drivers/net/ethernet/intel/libeth/rx.c b/drivers/net/ethernet/intel/libeth/rx.c
-> index f20926669318..385afca0e61d 100644
-> --- a/drivers/net/ethernet/intel/libeth/rx.c
-> +++ b/drivers/net/ethernet/intel/libeth/rx.c
-> @@ -207,7 +207,7 @@ EXPORT_SYMBOL_NS_GPL(libeth_rx_fq_destroy, LIBETH);
->   */
->  void libeth_rx_recycle_slow(struct page *page)
->  {
-> -       page_pool_recycle_direct(page->pp, page);
-> +       page_pool_recycle_direct(page_pool_to_pp(page), page);
->  }
->  EXPORT_SYMBOL_NS_GPL(libeth_rx_recycle_slow, LIBETH);
->
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-> index 94b291662087..78866b5473da 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-> @@ -716,7 +716,8 @@ static void mlx5e_free_xdpsq_desc(struct mlx5e_xdpsq *sq,
->                                 /* No need to check ((page->pp_magic & ~0x3UL) == PP_SIGNATURE)
->                                  * as we know this is a page_pool page.
->                                  */
-> -                               page_pool_recycle_direct(page->pp, page);
-> +                               page_pool_recycle_direct(page_pool_to_pp(page),
-> +                                                        page);
->                         } while (++n < num);
->
->                         break;
-> diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
-> index 0be47fed4efc..088f4836a0e2 100644
-> --- a/drivers/net/netdevsim/netdev.c
-> +++ b/drivers/net/netdevsim/netdev.c
-> @@ -632,7 +632,8 @@ nsim_pp_hold_write(struct file *file, const char __user *data,
->                 if (!ns->page)
->                         ret = -ENOMEM;
->         } else {
-> -               page_pool_put_full_page(ns->page->pp, ns->page, false);
-> +               page_pool_put_full_page(page_pool_to_pp(ns->page), ns->page,
-> +                                       false);
->                 ns->page = NULL;
->         }
->         rtnl_unlock();
-> @@ -831,7 +832,8 @@ void nsim_destroy(struct netdevsim *ns)
->
->         /* Put this intentionally late to exercise the orphaning path */
->         if (ns->page) {
-> -               page_pool_put_full_page(ns->page->pp, ns->page, false);
-> +               page_pool_put_full_page(page_pool_to_pp(ns->page), ns->page,
-> +                                       false);
->                 ns->page = NULL;
->         }
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
-> index 0b75a45ad2e8..94a277290909 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76.h
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76.h
-> @@ -1688,7 +1688,7 @@ static inline void mt76_put_page_pool_buf(void *buf, bool allow_direct)
->  {
->         struct page *page = virt_to_head_page(buf);
->
-> -       page_pool_put_full_page(page->pp, page, allow_direct);
-> +       page_pool_put_full_page(page_pool_to_pp(page), page, allow_direct);
->  }
->
->  static inline void *
-> diff --git a/include/net/libeth/rx.h b/include/net/libeth/rx.h
-> index 43574bd6612f..beee7ddd77a5 100644
-> --- a/include/net/libeth/rx.h
-> +++ b/include/net/libeth/rx.h
-> @@ -137,7 +137,8 @@ static inline bool libeth_rx_sync_for_cpu(const struct libeth_fqe *fqe,
->                 return false;
->         }
->
-> -       page_pool_dma_sync_for_cpu(page->pp, page, fqe->offset, len);
-> +       page_pool_dma_sync_for_cpu(page_pool_to_pp(page), page, fqe->offset,
-> +                                  len);
->
->         return true;
->  }
-> diff --git a/include/net/page_pool/helpers.h b/include/net/page_pool/helpers.h
-> index 793e6fd78bc5..1659f1995985 100644
-> --- a/include/net/page_pool/helpers.h
-> +++ b/include/net/page_pool/helpers.h
-> @@ -83,6 +83,11 @@ static inline u64 *page_pool_ethtool_stats_get(u64 *data, const void *stats)
->  }
->  #endif
->
-> +static inline struct page_pool *page_pool_to_pp(struct page *page)
-> +{
-> +       return page->pp;
-> +}
-> +
->  /**
->   * page_pool_dev_alloc_pages() - allocate a page.
->   * @pool:      pool from which to allocate
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index 6841e61a6bd0..54e8e7cf2bc9 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-> @@ -1033,7 +1033,8 @@ bool napi_pp_put_page(netmem_ref netmem)
->         if (unlikely(!is_pp_netmem(netmem)))
->                 return false;
->
-> -       page_pool_put_full_netmem(netmem_get_pp(netmem), netmem, false);
-> +       page_pool_put_full_netmem(page_pool_to_pp(netmem_to_page(netmem)),
-> +                                 netmem, false);
->
->         return true;
->  }
-> diff --git a/net/core/xdp.c b/net/core/xdp.c
-> index bcc5551c6424..e8582036b411 100644
-> --- a/net/core/xdp.c
-> +++ b/net/core/xdp.c
-> @@ -384,7 +384,8 @@ void __xdp_return(void *data, struct xdp_mem_info *mem, bool napi_direct,
->                 /* No need to check ((page->pp_magic & ~0x3UL) == PP_SIGNATURE)
->                  * as mem->type knows this a page_pool page
->                  */
-> -               page_pool_put_full_page(page->pp, page, napi_direct);
-> +               page_pool_put_full_page(page_pool_to_pp(page), page,
-> +                                       napi_direct);
->                 break;
->         case MEM_TYPE_PAGE_SHARED:
->                 page_frag_free(data);
-> --
-> 2.33.0
->
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
