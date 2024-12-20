@@ -1,152 +1,142 @@
-Return-Path: <linux-wireless+bounces-16648-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16649-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A4869F9775
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 18:10:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D58839F97AC
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 18:19:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF856189A578
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 17:03:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A16D31891254
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 17:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63FA821A450;
-	Fri, 20 Dec 2024 16:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AB6721A453;
+	Fri, 20 Dec 2024 17:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b="Ap3Xr1wJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A5hLmrz0"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.as201155.net (mail.as201155.net [185.84.6.188])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7945221C169
-	for <linux-wireless@vger.kernel.org>; Fri, 20 Dec 2024 16:56:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.84.6.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D92221A43B;
+	Fri, 20 Dec 2024 17:11:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734713766; cv=none; b=bqsk8QjFHqfvZ/6PsOvYeUGksLciKxSH6a9hXm5n8LNjY2z76WzvA76bAH9rV085ZwnxJJUyohdvirWyICaX57L8lwPCDTZaSxl9uUEBGqMf6yEjUref7mPkoNqr139cqFs7FiqWQJYfO2GR20n+HnggdT0mDGfzIdfG7NQuwC0=
+	t=1734714694; cv=none; b=eLGyrXPzHZPEOQwBOSC/u9NRTvOZ43Yf2MXGeAvE8H3Ms3LrqlD0MwxlqbRlJ4CSEFFonrL+J72efs5t7EhoLXeEqsF7ZCRDs2wAPHRITGd6J7y3+W5J0pYt96qpbjL9+TGiNAzeHYMHlQsgxhFJUk2Wc/I7IcmI6UMzDCoZQ3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734713766; c=relaxed/simple;
-	bh=CA6oZ97OzVkjm4kYVeThGAUyAFEGrQTm6SIWkv5hnd8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iC6M8nUySWVxXYqYg8Y4po0SqzppXaCiGrCm2uugP3hdH2C+RHe0P5pvDbD7nRuwm4DmRREJDXBArbAaxoxVuXW9DRdRFk0wxHZs2D95Q7KL2zo6jOCacr2MGRf16g+HmvFuKnTwmBRLgpsOK3CGbUxtb3PiS3lLBvXVXZclTkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dd-wrt.com; spf=pass smtp.mailfrom=dd-wrt.com; dkim=pass (1024-bit key) header.d=dd-wrt.com header.i=@dd-wrt.com header.b=Ap3Xr1wJ; arc=none smtp.client-ip=185.84.6.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dd-wrt.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dd-wrt.com
-Received: from smtps.newmedia-net.de ([2a05:a1c0:0:de::167]:56196 helo=webmail.newmedia-net.de)
-	by mail.as201155.net with esmtps  (TLS1) tls TLS_RSA_WITH_AES_256_CBC_SHA
-	(Exim 4.97.1)
-	(envelope-from <s.gottschall@dd-wrt.com>)
-	id 1tOgFY-000000003pU-0l0R;
-	Fri, 20 Dec 2024 17:53:16 +0100
-X-SASI-Hits: BODYTEXTP_SIZE_3000_LESS 0.000000, BODY_SIZE_1500_1599 0.000000,
-	BODY_SIZE_2000_LESS 0.000000, BODY_SIZE_5000_LESS 0.000000,
-	BODY_SIZE_7000_LESS 0.000000, CTE_8BIT 0.000000, DKIM_ALIGNS 0.000000,
-	DKIM_SIGNATURE 0.000000, HTML_00_01 0.050000, HTML_00_10 0.050000,
-	IN_REP_TO 0.000000, LEGITIMATE_SIGNS 0.000000,
-	MSGID_SAMEAS_FROM_HEX_844412 0.100000, MSG_THREAD 0.000000,
-	MULTIPLE_RCPTS 0.100000, MULTIPLE_REAL_RCPTS 0.000000, NO_CTA_FOUND 0.000000,
-	NO_CTA_URI_FOUND 0.000000, NO_FUR_HEADER 0.000000, NO_URI_HTTPS 0.000000,
-	OUTBOUND 0.000000, OUTBOUND_SOPHOS 0.000000, REFERENCES 0.000000,
-	SENDER_NO_AUTH 0.000000, SUSP_DH_NEG 0.000000, USER_AGENT 0.000000,
-	__ANY_URI 0.000000, __BODY_NO_MAILTO 0.000000,
-	__BOUNCE_CHALLENGE_SUBJ 0.000000, __BOUNCE_NDR_SUBJ_EXEMPT 0.000000,
-	__BULK_NEGATE 0.000000, __COURIER_PHRASE 0.000000, __CT 0.000000,
-	__CTE 0.000000, __CT_TEXT_PLAIN 0.000000, __DKIM_ALIGNS_1 0.000000,
-	__DKIM_ALIGNS_2 0.000000, __DQ_NEG_DOMAIN 0.000000, __DQ_NEG_HEUR 0.000000,
-	__DQ_NEG_IP 0.000000, __FORWARDED_MSG 0.000000, __FRAUD_URGENCY 0.000000,
-	__FROM_DOMAIN_NOT_IN_BODY 0.000000, __FROM_NAME_NOT_IN_BODY 0.000000,
-	__FUR_RDNS_SOPHOS 0.000000, __HAS_CC_HDR 0.000000, __HAS_FROM 0.000000,
-	__HAS_MSGID 0.000000, __HAS_REFERENCES 0.000000,
-	__HEADER_ORDER_FROM 0.000000, __IN_REP_TO 0.000000, __MAIL_CHAIN 0.000000,
-	__MIME_BOUND_CHARSET 0.000000, __MIME_TEXT_ONLY 0.000000,
-	__MIME_TEXT_P 0.000000, __MIME_TEXT_P1 0.000000, __MIME_VERSION 0.000000,
-	__MOZILLA_USER_AGENT 0.000000, __MSGID_HEX_844412 0.000000,
-	__MULTIPLE_RCPTS_CC_X2 0.000000, __MULTIPLE_RCPTS_TO_X2 0.000000,
-	__NO_HTML_TAG_RAW 0.000000, __OUTBOUND_SOPHOS_FUR 0.000000,
-	__OUTBOUND_SOPHOS_FUR_IP 0.000000, __OUTBOUND_SOPHOS_FUR_RDNS 0.000000,
-	__PHISH_SPEAR_SUBJ_ALERT 0.000000, __RCVD_PASS 0.000000,
-	__REFERENCES 0.000000, __SANE_MSGID 0.000000, __SCAN_D_NEG 0.000000,
-	__SCAN_D_NEG2 0.000000, __SCAN_D_NEG_HEUR 0.000000,
-	__SCAN_D_NEG_HEUR2 0.000000, __SUBJ_ALPHA_NEGATE 0.000000,
-	__SUBJ_REPLY 0.000000, __TO_MALFORMED_2 0.000000, __TO_NAME 0.000000,
-	__TO_NAME_DIFF_FROM_ACC 0.000000, __TO_REAL_NAMES 0.000000,
-	__URI_NO_MAILTO 0.000000, __URI_NO_WWW 0.000000, __USER_AGENT 0.000000,
-	__X_MAILSCANNER 0.000000
-X-SASI-Probability: 8%
-X-SASI-RCODE: 200
-X-SASI-Version: Antispam-Engine: 5.1.4, AntispamData: 2024.12.20.161246
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=dd-wrt.com; s=mikd;
-	h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID; bh=tdv9e/Jt/cPRciMakOMf1qco3ohYpd0DydId7EL4h5w=;
-	b=Ap3Xr1wJbBrM2QVb37Ic73N4t4MFBbTNyVUR9pF4j4LXtm97k8LbJlv9ofcrOc1/eBwpEC/a5NqrQYfdQ96izJpwvMf+WbP0DPFGYGJYS8wSVTkkQTZovA0P0xko4/tumV9GAkdgrmtTJm/JPEj0lBtePO1hwSCD1RIXMD4NhFk=;
-Message-ID: <12798910-71aa-46da-b7b4-139669abfdb0@dd-wrt.com>
-Date: Fri, 20 Dec 2024 17:52:56 +0100
+	s=arc-20240116; t=1734714694; c=relaxed/simple;
+	bh=VV6KKTzpVo3hjmrO+OROnbwBZJ9ynx0um7DIRRvF6zE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=bzRC0E5OiMaZ3Db16Jnh6eoEDZTFsGBkx7PgjIroOh8ErAAHwkJ3zORKgmBducX1RFpRUwb2aIEDbu1ZV81GwhibQjDq9VA8MOzTmNcZ+H1LuWnxKyyAcXU64JPJYUxBvZn3RmLIBjS2cvd4gP9ROlt7AYOMoUJD1BIyA8RxBOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A5hLmrz0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77048C4CEDC;
+	Fri, 20 Dec 2024 17:11:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734714694;
+	bh=VV6KKTzpVo3hjmrO+OROnbwBZJ9ynx0um7DIRRvF6zE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=A5hLmrz0SXwSHF0DfMKMyiOyvuUKgFr3sT9BH1KbPHIhPb3p7zY11VDm/+KLXUIvw
+	 nq2uC8CwPMkYA1PfVHNVkr3pmyF0dIhCnnI3AAA0aMBGTQZAbFVA/O+/sv61HpdgQB
+	 gIUQYPN/aniT48xdHeIe2mNOOi2/Ke7pAJyATANtNJu/q+Y3QbNinwq/uN4eEfIufj
+	 DU7HM5A+ajjaTIiZgE5Im+zEGCJ9gonkaURkqEyr3WmsBAasCbFbjyOHFd+hlDaPjj
+	 aG75s/V5lqX2LWzuEQdo9WCCxw/EKfGUGtwOHK/UuF4GGD7844DWEnsM/CjJsi4Wbf
+	 84hLbTfYU6g0Q==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Issam Hamdi <ih@simonwunderlich.de>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	johannes@sipsolutions.net,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 02/29] wifi: mac80211: fix mbss changed flags corruption on 32 bit systems
+Date: Fri, 20 Dec 2024 12:11:03 -0500
+Message-Id: <20241220171130.511389-2-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241220171130.511389-1-sashal@kernel.org>
+References: <20241220171130.511389-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: Potential Broadcast Issues After GTK Key Exchange on ath11k with
- IPQ8072A (QCN5024/QCN5054)
-To: Remi Pommarel <repk@triplefau.lt>, Steffen Moser <lists@steffen-moser.de>
-Cc: linux-wireless@vger.kernel.org, ath11k@lists.infradead.org
-References: <c6366409-9928-4dd7-bf7b-ba7fcf20eabf@steffen-moser.de>
- <Z2Q9POuV-6MIdzRf@pilgrim>
-From: Sebastian Gottschall <s.gottschall@dd-wrt.com>
-In-Reply-To: <Z2Q9POuV-6MIdzRf@pilgrim>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.12.6
 Content-Transfer-Encoding: 8bit
-Received-SPF: pass (webmail.newmedia-net.de: localhost is always allowed.) client-ip=127.0.0.1; envelope-from=s.gottschall@dd-wrt.com; helo=webmail.newmedia-net.de;
-X-SA-Exim-Connect-IP: 127.0.0.1
-X-SA-Exim-Mail-From: s.gottschall@dd-wrt.com
-X-SA-Exim-Scanned: No (on webmail.newmedia-net.de); SAEximRunCond expanded to false
-X-NMN-MailScanner-Information: Please contact the ISP for more information
-X-NMN-MailScanner-ID: 1tOgFG-000DFv-9R
-X-NMN-MailScanner: Found to be clean
-X-NMN-MailScanner-From: s.gottschall@dd-wrt.com
-X-Received:  from localhost.localdomain ([127.0.0.1] helo=webmail.newmedia-net.de)
-	by webmail.newmedia-net.de with esmtp (Exim 4.72)
-	(envelope-from <s.gottschall@dd-wrt.com>)
-	id 1tOgFG-000DFv-9R; Fri, 20 Dec 2024 17:52:58 +0100
 
-Hi Remi
+From: Issam Hamdi <ih@simonwunderlich.de>
 
-Am 19.12.2024 um 16:35 schrieb Remi Pommarel:
-> Hi Steffen.
->
-> On Thu, Dec 19, 2024 at 04:02:30PM +0100, Steffen Moser wrote:
->> Hello everyone,
->>
->> I've encountered a possible issue in a DD-WRT [1] setup where broadcast
->> packets stop being delivered after a GTK (Group Temporal Key) exchange. This
->> issue occurs on a system with the following hardware:
->>
->>      Access Point Hardware: DynaLink DL-WRX36
->>      Router Software: DD-WRT v3.0-r58819 std (12/13/24)
->>      CPU: Qualcomm IPQ8072A
->>      WiFi Chips: Qualcomm QCN5024 and Qualcomm QCN5054
->>      WiFi Driver: ath11k
->>      Firmware: WLAN.HK.2.12-01460-QCAHKSWPL_SILICONZ-1
->>      NSS FW version: NSS.FW.12.5-210-HK.R
->>      Kernel: Linux WL-AP-EG 6.6.64-rt29 #1791 SMP Thu Dec 12 16:41:51 +07
->> 2024 aarch64 DD-WRT
->>
->> The behavior is such that after a GTK exchange, the AP can get into a "weird
->> state". When being there, broadcast frames like ARP or mDNS are no longer
->> reliably delivered to connected clients while unicasts come still through.
->> In this "weird state", the channel quality (active time vs. busy time) goes
->> down and latencies to the still reachable WIFI clients rise.
-> This looks a lot like an issue we hit a while back. There is this patch
-> [0] from Qualcomm's wlan-open repository. It is a revert of [1]. Using
-> that the issue was never reproduced. Maybe this can help.
->
-> Also adding ath11k list.
->
-> Regards.
+[ Upstream commit 49dba1ded8dd5a6a12748631403240b2ab245c34 ]
 
-thank you for that hint. i  will integrate it into dd-wrt asap
+On 32-bit systems, the size of an unsigned long is 4 bytes,
+while a u64 is 8 bytes. Therefore, when using
+or_each_set_bit(bit, &bits, sizeof(changed) * BITS_PER_BYTE),
+the code is incorrectly searching for a bit in a 32-bit
+variable that is expected to be 64 bits in size,
+leading to incorrect bit finding.
 
-Sebastian
+Solution: Ensure that the size of the bits variable is correctly
+adjusted for each architecture.
 
->
+ Call Trace:
+  ? show_regs+0x54/0x58
+  ? __warn+0x6b/0xd4
+  ? ieee80211_link_info_change_notify+0xcc/0xd4 [mac80211]
+  ? report_bug+0x113/0x150
+  ? exc_overflow+0x30/0x30
+  ? handle_bug+0x27/0x44
+  ? exc_invalid_op+0x18/0x50
+  ? handle_exception+0xf6/0xf6
+  ? exc_overflow+0x30/0x30
+  ? ieee80211_link_info_change_notify+0xcc/0xd4 [mac80211]
+  ? exc_overflow+0x30/0x30
+  ? ieee80211_link_info_change_notify+0xcc/0xd4 [mac80211]
+  ? ieee80211_mesh_work+0xff/0x260 [mac80211]
+  ? cfg80211_wiphy_work+0x72/0x98 [cfg80211]
+  ? process_one_work+0xf1/0x1fc
+  ? worker_thread+0x2c0/0x3b4
+  ? kthread+0xc7/0xf0
+  ? mod_delayed_work_on+0x4c/0x4c
+  ? kthread_complete_and_exit+0x14/0x14
+  ? ret_from_fork+0x24/0x38
+  ? kthread_complete_and_exit+0x14/0x14
+  ? ret_from_fork_asm+0xf/0x14
+  ? entry_INT80_32+0xf0/0xf0
+
+Signed-off-by: Issam Hamdi <ih@simonwunderlich.de>
+Link: https://patch.msgid.link/20241125162920.2711462-1-ih@simonwunderlich.de
+[restore no-op path for no changes]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/mac80211/mesh.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
+index 640239f4425b..50eb1d8cd43d 100644
+--- a/net/mac80211/mesh.c
++++ b/net/mac80211/mesh.c
+@@ -1157,14 +1157,14 @@ void ieee80211_mbss_info_change_notify(struct ieee80211_sub_if_data *sdata,
+ 				       u64 changed)
+ {
+ 	struct ieee80211_if_mesh *ifmsh = &sdata->u.mesh;
+-	unsigned long bits = changed;
++	unsigned long bits[] = { BITMAP_FROM_U64(changed) };
+ 	u32 bit;
+ 
+-	if (!bits)
++	if (!changed)
+ 		return;
+ 
+ 	/* if we race with running work, worst case this work becomes a noop */
+-	for_each_set_bit(bit, &bits, sizeof(changed) * BITS_PER_BYTE)
++	for_each_set_bit(bit, bits, sizeof(changed) * BITS_PER_BYTE)
+ 		set_bit(bit, ifmsh->mbss_changed);
+ 	set_bit(MESH_WORK_MBSS_CHANGED, &ifmsh->wrkq_flags);
+ 	wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
+-- 
+2.39.5
+
 
