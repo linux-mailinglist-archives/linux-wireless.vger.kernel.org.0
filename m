@@ -1,139 +1,173 @@
-Return-Path: <linux-wireless+bounces-16638-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16639-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A46FF9F88F7
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 01:26:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7160E9F8913
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 01:43:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BBCF189278B
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 00:26:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B592D16CF5D
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 00:43:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512C817C2;
-	Fri, 20 Dec 2024 00:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59CB12594B6;
+	Fri, 20 Dec 2024 00:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="pT1BZCwf"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="WDQc15kX"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77D6DA50
-	for <linux-wireless@vger.kernel.org>; Fri, 20 Dec 2024 00:26:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A64312B93
+	for <linux-wireless@vger.kernel.org>; Fri, 20 Dec 2024 00:42:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734654412; cv=none; b=nq1EsFp8UZLi41QXMn/EZlRWQELQZIcvykZCdE/9MpYb30V2PqQTg+kKckx5D1UsIv73Ic8e10ooHURRO7JwECI7GMIcG2HxCmKSgDK14/Qi9SMkq1XGU2x+67/CPwPtM/aVOH3o7tcQvfG6uFCIqIJOy/BBIrsykLTBccXDePw=
+	t=1734655380; cv=none; b=aBc54Ga7/amwe6kfYvsJN/GlnY3vcAerFFsOKEzm3L6pKNoWcbnK/Yv9y4cfu7krTgGRRwgkTqsFiP7RfmVsAm2lXdevNuGWPgbefAozfvyi7Oj4vhTbn8GCdc3mc0MEEsoCdvfCltJK0qVauo2SKSrFMGPoFotu4Txlj/A81OA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734654412; c=relaxed/simple;
-	bh=osFUgx8CuOuNhPX+feRvGDly4Bhu+Q6eXjrU01U14pQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=MDuFUtDzu70v/t4ye+xdi8FQ0Ydrr701A7NoaU9BrdNXrO88XrhylWrvEV9UMhagowKy2SE107v+X8NbH/HN2fj72VNQPvgEaFF3AmEmUwEMLm40xmdkAeibaDG2rASqkQNSL5JP7pUZ7l3eKVPsdZsdk9O+oMuuXpGPCuo1IUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=pT1BZCwf; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BJF4WM9028800;
-	Fri, 20 Dec 2024 00:26:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	rrUDHRiJqEvt0TTWtLWXntm3iPCzAJ27Jpur0qArd6w=; b=pT1BZCwfTwPMwXyR
-	LGCNm6Xwb4cFnq2TXhngdv1uBOj1IYc7F+h1Zt4J2/ePQqKQK0TDxf2/pXPm9K4M
-	kFZYZy9WGKfi/f5veB7R0Pfa0SyPXoDbs/jkIdidKtWKtIQJDlzp0agQA0UNJPBh
-	xUHhYk/FQXAcD+kvDqm59HW31tnTKoocfvTfz5GDDyJn9tWpG7D5BcL3BHk5jUag
-	iItnPMEqQ1dx+2KiGZlLpY/eoLJuyPyovS1oIrY7QMCjju9WcDaPRsTLgs162XGf
-	ohuyL/ThKFI/Q3fnmkxgTupXcTIxMbxlAiVIQjBYVlGBcM7lJZ42kEYLlMRIblOt
-	JvhoeA==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43mntf17na-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Dec 2024 00:26:44 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BK0Qitc016465
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Dec 2024 00:26:44 GMT
-Received: from [10.50.43.89] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 19 Dec
- 2024 16:26:42 -0800
-Message-ID: <fe0b1e1f-97eb-acf4-816a-bf3093c8bdaa@quicinc.com>
-Date: Fri, 20 Dec 2024 05:56:39 +0530
+	s=arc-20240116; t=1734655380; c=relaxed/simple;
+	bh=HoPtHvh/Xq68FVlC/mT3Q3uAiKhvqW0XvWUK1ImhAFI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=IiU0IE4sSjSFI6BK0dei4Wk+IEkFtfvbIJOTjmmah26cIucwMcASgr9N6GGRFo73y+gj7JPoJsjFhBCjO0qhvoKzo0dXqGCw8RjOJiYfQ09o8BSvmbHjInx/2gZzN4A6O3fQmatiUcFJkWzZOWbC4aTI+sP0pThGvX71sW72vy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=WDQc15kX; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4BK0glv97622469, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1734655367; bh=HoPtHvh/Xq68FVlC/mT3Q3uAiKhvqW0XvWUK1ImhAFI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=WDQc15kXy80vY+PvqsLGjSYF717BjQgXg5cQB3fnb7PSg8knYWJ6Ro5w36f9y94Z8
+	 IFfNFX7m1R/OwA5uMoINntfNiPiEDLBRaOrfwHEgssF3E2lqpDayjO/jlc+s5CMNd5
+	 V1pJZS2/HVfNDR8cZMvSXVZnck8HcvLVVFQRsMuakpMI/wGW3GyqMVcFeToIzArcrK
+	 cVrqLqSzlqCp1cocitBOKr/IUhZOkGbobdSG6xVOFoX6+dWk+T2cC/0YKoyAH/ToWv
+	 rC8co2GfdpX5GnD47dzJ5GSdQ0GGwLAtV3Y/2eZsO3z2GWdSpw1R+DF8SHl0xLI6eI
+	 /y25vDNyyFXww==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4BK0glv97622469
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 20 Dec 2024 08:42:47 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Fri, 20 Dec 2024 08:42:48 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS04.realtek.com.tw (172.21.6.97) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Fri, 20 Dec 2024 08:42:47 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
+ 15.01.2507.035; Fri, 20 Dec 2024 08:42:47 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+CC: Sascha Hauer <sha@pengutronix.de>
+Subject: RE: [PATCH] wifi: rtw88: Add USB PHY configuration
+Thread-Topic: [PATCH] wifi: rtw88: Add USB PHY configuration
+Thread-Index: AQHbUjHyD5bs1Y5Kp0O9qQAueHs6ILLuRu2g
+Date: Fri, 20 Dec 2024 00:42:47 +0000
+Message-ID: <8cc7b4d2051a4b2abe02f6359243bff4@realtek.com>
+References: <a3b87566-4e11-4fc2-8c51-db592e56af13@gmail.com>
+In-Reply-To: <a3b87566-4e11-4fc2-8c51-db592e56af13@gmail.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH 3/3] wifi: ath12k: Refactor Rx status TLV parsing
- procedure argument
-Content-Language: en-US
-To: Kalle Valo <kvalo@kernel.org>
-CC: <ath12k@lists.infradead.org>, <linux-wireless@vger.kernel.org>
-References: <20241219001006.1036495-1-quic_periyasa@quicinc.com>
- <20241219001006.1036495-4-quic_periyasa@quicinc.com>
- <87seqjj48p.fsf@kernel.org>
- <44bfd319-caf2-7459-f62e-0f61de452a84@quicinc.com>
- <87wmfvfqq9.fsf@kernel.org>
-From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-In-Reply-To: <87wmfvfqq9.fsf@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: i8cJ_uRg4SDQBwXTRLBokH5-5Bp8v8ae
-X-Proofpoint-ORIG-GUID: i8cJ_uRg4SDQBwXTRLBokH5-5Bp8v8ae
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
- impostorscore=0 adultscore=0 priorityscore=1501 bulkscore=0
- lowpriorityscore=0 clxscore=1015 mlxscore=0 malwarescore=0 mlxlogscore=330
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412200002
 
-
-
-On 12/20/2024 12:24 AM, Kalle Valo wrote:
-> Karthikeyan Periyasamy <quic_periyasa@quicinc.com> writes:
-> 
->> On 12/19/2024 5:04 PM, Kalle Valo wrote:
->>> Karthikeyan Periyasamy <quic_periyasa@quicinc.com> writes:
->>>
->>>> Currently, ath12k_dp_mon_rx_parse_status_tlv() takes the TLV tag, TLV data
->>>> and TLV userid as separate arguments from the caller. These argument can
->>>> be fetched from the TLV header itself. Therefore, pass the TLV header and
->>>> retrieve the necessary fields from the header instead of passing them from
->>>> the caller.
->>> The commit message doesn't reply to "why?". Is there a clear benefit
->>> in
->>> the future or are you just doing random code cleanup?
->>>
->>
->> It benefit in the future for supporting EHT monitor functionality.
-> 
-> How does it help exactly? Having even just one sentence explaining the
-> motivation in the commit message would help a lot. Otherwise these just
-> look random changes.
-> 
-
-
-Currently, ath12k_dp_mon_rx_parse_status_tlv() takes the TLV tag, TLV 
-data and TLV user ID as separate arguments from the caller. In the 
-future, the TLV length will be needed for the EHT monitor TLV tags. 
-These arguments can be fetched from the TLV header itself. Therefore, 
-instead of increasing the arguments, pass the TLV header and retrieve 
-the necessary fields from the TLV header instead of passing them from 
-the caller.
-
-Above commit is ok ?
-
-
--- 
-Karthikeyan Periyasamy
---
-கார்த்திகேயன் பெரியசாமி
+Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBBZGQg
+c29tZSBleHRyYSBjb25maWd1cmF0aW9uIGZvciBVU0IgZGV2aWNlcy4gQ3VycmVudGx5IG9ubHkg
+UlRMODgyMkJVDQo+IHZlcnNpb24gKGN1dCkgRCBuZWVkcyB0aGlzLiBUaGUgbmV3IGNvZGUgbWFr
+ZXMgdXNlIG9mIHRoZSBleGlzdGluZw0KPiB1c2IzX3BhcmFtXzg4MjJiIGFycmF5IGZyb20gcnR3
+ODgyMmIuYy4NCj4gDQo+IEEgdXNlciByZXBvcnRlZCB0aGF0IFRQLUxpbmsgQXJjaGVyIFQzVSBp
+biBVU0IgMyBtb2RlIHdhcyByYW5kb21seQ0KPiBkaXNjb25uZWN0aW5nIGZyb20gVVNCOg0KPiAN
+Cj4gWyAyNi4wMzY1MDJdIHVzYiAyLTI6IG5ldyBTdXBlclNwZWVkIFVTQiBkZXZpY2UgbnVtYmVy
+IDMgdXNpbmcgeGhjaV9oY2QNCj4gLi4uDQo+IFsgMjcuNTc2NDkxXSB1c2IgMi0yOiBVU0IgZGlz
+Y29ubmVjdCwgZGV2aWNlIG51bWJlciAzDQo+IFsgMjguNjIxNTI4XSB1c2IgMi0yOiBuZXcgU3Vw
+ZXJTcGVlZCBVU0IgZGV2aWNlIG51bWJlciA0IHVzaW5nIHhoY2lfaGNkDQo+IC4uLg0KPiBbIDQ1
+Ljk4NDUyMV0gdXNiIDItMjogVVNCIGRpc2Nvbm5lY3QsIGRldmljZSBudW1iZXIgNA0KPiAuLi4N
+Cj4gWyA0Ni44NDU1ODVdIHVzYiAyLTI6IG5ldyBTdXBlclNwZWVkIFVTQiBkZXZpY2UgbnVtYmVy
+IDUgdXNpbmcgeGhjaV9oY2QNCj4gLi4uDQo+IFsgOTQuNDAwMzgwXSB1c2IgMi0yOiBVU0IgZGlz
+Y29ubmVjdCwgZGV2aWNlIG51bWJlciA1DQo+IC4uLg0KPiBbIDk1LjU5MDQyMV0gdXNiIDItMjog
+bmV3IFN1cGVyU3BlZWQgVVNCIGRldmljZSBudW1iZXIgNiB1c2luZyB4aGNpX2hjZA0KPiANCj4g
+VGhpcyBwYXRjaCBmaXhlcyB0aGF0Lg0KPiANCj4gTGluazogaHR0cHM6Ly9naXRodWIuY29tL2x3
+ZmluZ2VyL3J0dzg4L2lzc3Vlcy8yNjIuDQoNCkFzIEthbGxlIG1lbnRpb25lZCwgcGxlYXNlIHJl
+bW92ZSB0aGUgZG90IGluIHRoZSBlbmQuIA0KDQpCeSB0aGUgd2F5LCBJIGNhbiBtb2RpZnkgY29t
+bWl0IG1lc3NhZ2UgZHVyaW5nIGNvbW1pdHRpbmcgaWYgbmVlZGVkLiANCg0KPiBTaWduZWQtb2Zm
+LWJ5OiBCaXR0ZXJibHVlIFNtaXRoIDxydGw4ODIxY2VyZmUyQGdtYWlsLmNvbT4NCj4gLS0tDQo+
+ICBkcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3VzYi5jIHwgNzAgKysrKysrKysr
+KysrKysrKysrKysrKysrDQo+ICAxIGZpbGUgY2hhbmdlZCwgNzAgaW5zZXJ0aW9ucygrKQ0KPiAN
+Cj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0ZWsvcnR3ODgvdXNiLmMg
+Yi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0dzg4L3VzYi5jDQo+IGluZGV4IGI0MDVm
+ODMxNzAyMS4uYjVlZjdlMzFkZjE5IDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC93aXJlbGVz
+cy9yZWFsdGVrL3J0dzg4L3VzYi5jDQo+ICsrKyBiL2RyaXZlcnMvbmV0L3dpcmVsZXNzL3JlYWx0
+ZWsvcnR3ODgvdXNiLmMNCj4gQEAgLTExMjcsNiArMTEyNyw3MyBAQCBzdGF0aWMgaW50IHJ0d191
+c2Jfc3dpdGNoX21vZGUoc3RydWN0IHJ0d19kZXYgKnJ0d2RldikNCj4gICAgICAgICAgICAgICAg
+IHJldHVybiBydHdfdXNiX3N3aXRjaF9tb2RlX25ldyhydHdkZXYpOw0KPiAgfQ0KPiANCj4gKyNk
+ZWZpbmUgVVNCX1JFR19QQUdFICAgMHhmNA0KPiArI2RlZmluZSBVU0JfUEhZX1BBR0UwICAweDli
+DQo+ICsjZGVmaW5lIFVTQl9QSFlfUEFHRTEgIDB4YmINCj4gKw0KPiArc3RhdGljIHZvaWQgcnR3
+X3VzYl9waHlfd3JpdGUoc3RydWN0IHJ0d19kZXYgKnJ0d2RldiwgdTE2IGFkZHIsIHUxNiBkYXRh
+LA0KPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICBlbnVtIHVzYl9kZXZpY2Vfc3BlZWQg
+c3BlZWQpDQo+ICt7DQo+ICsgICAgICAgaWYgKHNwZWVkID09IFVTQl9TUEVFRF9TVVBFUikgew0K
+PiArICAgICAgICAgICAgICAgcnR3X3dyaXRlOChydHdkZXYsIDB4ZmYwZCwgKHU4KWRhdGEpOw0K
+PiArICAgICAgICAgICAgICAgcnR3X3dyaXRlOChydHdkZXYsIDB4ZmYwZSwgKHU4KShkYXRhID4+
+IDgpKTsNCj4gKyAgICAgICAgICAgICAgIHJ0d193cml0ZTgocnR3ZGV2LCAweGZmMGMsIGFkZHIg
+fCBCSVQoNykpOw0KDQpUaGUgY2FzdGluZyBvZiB1OCBpcyBub3QgdW5uZWNlc3NhcnkuDQoNClRo
+ZSByZWdpc3RlciBuYW1lcyAobm9uLW9mZmljaWFsIG5hbWluZyk6DQoNCiNkZWZpbmUgVTNfUEhZ
+X0RBVF9MIDB4ZmYwZA0KI2RlZmluZSBVM19QSFlfREFUX0ggMHhmZjBlDQojZGVmaW5lIFUzX1BI
+WV9BRFIgMHhmZjBjDQojZGVmaW5lIFUzX1BIWV9BRFJfV1IgQklUKDcpDQojZGVmaW5lIFUzX1BI
+WV9BRFJfUkQgQklUKDYpDQojZGVmaW5lIFUzX1BIWV9BRFJfTUFTSyBHRU5NQVNLKDUsIDApDQoN
+Cg0KPiArICAgICAgIH0gZWxzZSBpZiAoc3BlZWQgPT0gVVNCX1NQRUVEX0hJR0gpIHsNCj4gKyAg
+ICAgICAgICAgICAgIHJ0d193cml0ZTgocnR3ZGV2LCAweGZlNDEsICh1OClkYXRhKTsNCj4gKyAg
+ICAgICAgICAgICAgIHJ0d193cml0ZTgocnR3ZGV2LCAweGZlNDAsIGFkZHIpOw0KPiArICAgICAg
+ICAgICAgICAgcnR3X3dyaXRlOChydHdkZXYsIDB4ZmU0MiwgMHg4MSk7DQoNClRoZSByZWdpc3Rl
+ciBuYW1lcyAobm9uLW9mZmljaWFsIG5hbWluZyk6DQoNCiNkZWZpbmUgVTJfUEhZX0RBVCAweGZl
+NDENCiNkZWZpbmUgVTJfUEhZX0FEUiAweGZlNDANCiNkZWZpbmUgVTJfUEhZX0NNRCAweGZlNDIN
+CiNkZWZpbmUgVTJfUEhZX0NNRF9UUkcgMHg4MQ0KDQo+ICsgICAgICAgfQ0KPiArfQ0KPiArDQo+
+ICtzdGF0aWMgdm9pZCBydHdfdXNiX3BhZ2Vfc3dpdGNoKHN0cnVjdCBydHdfZGV2ICpydHdkZXYs
+DQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZW51bSB1c2JfZGV2aWNlX3NwZWVk
+IHNwZWVkLCB1OCBwYWdlKQ0KPiArew0KPiArICAgICAgIGlmIChzcGVlZCA9PSBVU0JfU1BFRURf
+U1VQRVIpDQo+ICsgICAgICAgICAgICAgICByZXR1cm47DQo+ICsNCj4gKyAgICAgICBydHdfdXNi
+X3BoeV93cml0ZShydHdkZXYsIFVTQl9SRUdfUEFHRSwgcGFnZSwgc3BlZWQpOw0KPiArfQ0KPiAr
+DQo+ICtzdGF0aWMgdm9pZCBydHdfdXNiX3BoeV9jZmcoc3RydWN0IHJ0d19kZXYgKnJ0d2RldiwN
+Cj4gKyAgICAgICAgICAgICAgICAgICAgICAgICAgIGVudW0gdXNiX2RldmljZV9zcGVlZCBzcGVl
+ZCkNCj4gK3sNCj4gKyAgICAgICBjb25zdCBzdHJ1Y3QgcnR3X2ludGZfcGh5X3BhcmEgKnBhcmEg
+PSBOVUxMOw0KPiArICAgICAgIHUxNiBjdXQsIG9mZnNldDsNCj4gKw0KPiArICAgICAgIGlmICgh
+cnR3ZGV2LT5jaGlwLT5pbnRmX3RhYmxlKQ0KPiArICAgICAgICAgICAgICAgcmV0dXJuOw0KPiAr
+DQo+ICsgICAgICAgaWYgKHNwZWVkID09IFVTQl9TUEVFRF9TVVBFUikNCj4gKyAgICAgICAgICAg
+ICAgIHBhcmEgPSBydHdkZXYtPmNoaXAtPmludGZfdGFibGUtPnVzYjNfcGFyYTsNCj4gKyAgICAg
+ICBlbHNlIGlmIChzcGVlZCA9PSBVU0JfU1BFRURfSElHSCkNCj4gKyAgICAgICAgICAgICAgIHBh
+cmEgPSBydHdkZXYtPmNoaXAtPmludGZfdGFibGUtPnVzYjJfcGFyYTsNCj4gKw0KPiArICAgICAg
+IGlmICghcGFyYSkNCj4gKyAgICAgICAgICAgICAgIHJldHVybjsNCj4gKw0KPiArICAgICAgIGN1
+dCA9IEJJVCgwKSA8PCBydHdkZXYtPmhhbC5jdXRfdmVyc2lvbjsNCg0KY3V0ID0gQklUKHJ0d2Rl
+di0+aGFsLmN1dF92ZXJzaW9uKTsNCg0KPiArDQo+ICsgICAgICAgZm9yICggOyBwYXJhLT5vZmZz
+ZXQgIT0gMHhmZmZmOyBwYXJhKyspIHsNCj4gKyAgICAgICAgICAgICAgIGlmICghKHBhcmEtPmN1
+dF9tYXNrICYgY3V0KSkNCj4gKyAgICAgICAgICAgICAgICAgICAgICAgY29udGludWU7DQo+ICsN
+Cj4gKyAgICAgICAgICAgICAgIG9mZnNldCA9IHBhcmEtPm9mZnNldDsNCj4gKw0KPiArICAgICAg
+ICAgICAgICAgaWYgKHBhcmEtPmlwX3NlbCA9PSBSVFdfSVBfU0VMX01BQykgew0KPiArICAgICAg
+ICAgICAgICAgICAgICAgICBydHdfd3JpdGU4KHJ0d2Rldiwgb2Zmc2V0LCBwYXJhLT52YWx1ZSk7
+DQo+ICsgICAgICAgICAgICAgICB9IGVsc2Ugew0KPiArICAgICAgICAgICAgICAgICAgICAgICBp
+ZiAob2Zmc2V0ID4gMHgxMDApDQo+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcnR3
+X3VzYl9wYWdlX3N3aXRjaChydHdkZXYsIHNwZWVkLCBVU0JfUEhZX1BBR0UxKTsNCj4gKyAgICAg
+ICAgICAgICAgICAgICAgICAgZWxzZQ0KPiArICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+IHJ0d191c2JfcGFnZV9zd2l0Y2gocnR3ZGV2LCBzcGVlZCwgVVNCX1BIWV9QQUdFMCk7DQo+ICsN
+Cj4gKyAgICAgICAgICAgICAgICAgICAgICAgb2Zmc2V0ICY9IDB4ZmY7DQo+ICsNCj4gKyAgICAg
+ICAgICAgICAgICAgICAgICAgcnR3X3VzYl9waHlfd3JpdGUocnR3ZGV2LCBvZmZzZXQsIHBhcmEt
+PnZhbHVlLCBzcGVlZCk7DQoNClRoZSBhcmd1bWVudCB0eXBlIG9mIG9mZnNldCBjYW4gYmUgJ3U4
+Jywgc28geW91IGRvbid0IHdvcnJ5IGFib3V0IHR5cGUgY2FzdGluZy4NCg0KPiArICAgICAgICAg
+ICAgICAgfQ0KPiArICAgICAgIH0NCj4gK30NCj4gKw0KPiAgaW50IHJ0d191c2JfcHJvYmUoc3Ry
+dWN0IHVzYl9pbnRlcmZhY2UgKmludGYsIGNvbnN0IHN0cnVjdCB1c2JfZGV2aWNlX2lkICppZCkN
+Cj4gIHsNCj4gICAgICAgICBzdHJ1Y3QgcnR3X2RldiAqcnR3ZGV2Ow0KPiBAQCAtMTE4Miw2ICsx
+MjQ5LDkgQEAgaW50IHJ0d191c2JfcHJvYmUoc3RydWN0IHVzYl9pbnRlcmZhY2UgKmludGYsIGNv
+bnN0IHN0cnVjdCB1c2JfZGV2aWNlX2lkICppZCkNCj4gICAgICAgICAgICAgICAgIGdvdG8gZXJy
+X2Rlc3Ryb3lfcnh3cTsNCj4gICAgICAgICB9DQo+IA0KPiArICAgICAgIHJ0d191c2JfcGh5X2Nm
+ZyhydHdkZXYsIFVTQl9TUEVFRF9ISUdIKTsNCj4gKyAgICAgICBydHdfdXNiX3BoeV9jZmcocnR3
+ZGV2LCBVU0JfU1BFRURfU1VQRVIpOw0KPiArDQo+ICAgICAgICAgcmV0ID0gcnR3X3VzYl9zd2l0
+Y2hfbW9kZShydHdkZXYpOw0KPiAgICAgICAgIGlmIChyZXQpIHsNCj4gICAgICAgICAgICAgICAg
+IC8qIE5vdCBhIGZhaWwsIGJ1dCB3ZSBkbyBuZWVkIHRvIHNraXAgcnR3X3JlZ2lzdGVyX2h3LiAq
+Lw0KPiAtLQ0KPiAyLjQ3LjENCg0K
 
