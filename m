@@ -1,138 +1,148 @@
-Return-Path: <linux-wireless+bounces-16658-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16659-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 682CB9F9898
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 18:49:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82DAC9F9AE5
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 21:03:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E127C162C49
-	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 17:49:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2EE116A397
+	for <lists+linux-wireless@lfdr.de>; Fri, 20 Dec 2024 20:03:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACEA922B5A6;
-	Fri, 20 Dec 2024 17:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FE872210F8;
+	Fri, 20 Dec 2024 20:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Sux4smDW"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="oGWLRAl5"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D84A422ACD3
-	for <linux-wireless@vger.kernel.org>; Fri, 20 Dec 2024 17:27:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F81121E092
+	for <linux-wireless@vger.kernel.org>; Fri, 20 Dec 2024 20:03:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734715663; cv=none; b=tyCvIr8ETKeN5drTC7BaWftHxhd1hJFfh2rxkCalaX0SRB+lIcH/S8B8pl2MVAkYgdMCBysBVHWtrB0hbk7wt1Fikr154iE5Q7QSvh6Dpd6AxQFgpqfzeDCsCXSzph+/85pRMtqFen3yDmGDDcnN+kbCRh3sbDJs+vCYDc+Y4Qs=
+	t=1734725008; cv=none; b=FbLZdz0VCt3uHvPaWstTkFMPEWC5DeyAKHmxRmfd24iHk32q1IVZILjqnByZLISkUhiNbWvyUlieI1ZC5lzHAEZqvk2bAL0pnHblwqxiuidfNRsC8JJWwc8sv8N3ejTiiK4SGUOhiYZ4et+nnfEyAN5LkALD7Sd69PnbfZk0uxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734715663; c=relaxed/simple;
-	bh=ftFlFL8Hf6gjCPdcRFrVx2YclVhyvU0X+h6fy2EfzIQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=cFO3PXzGsB6yixtV/5l0MAknzrfdpXUu4gXI6KNn9m3t3JXaOeDaBwkBabo9S53Yi5b5hTn0zg0PK2jgBiYr9aW3Dy4Ln7JPbMbua/zDGJWwKKNCPfgwfJ5cKid3cBo4D8hpMXMzCqCrGWNmHGcWXedVvFhsPzDkymmibR1m6c0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Sux4smDW; arc=none smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3862d16b4f5so1519569f8f.0
-        for <linux-wireless@vger.kernel.org>; Fri, 20 Dec 2024 09:27:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1734715658; x=1735320458; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rl2GUGW1SKIB73yuGvAyVPoBfBy5XbBiVj4hV5yN+VI=;
-        b=Sux4smDWvhRYVAocCLrB8sH5Gn4iglVnvLOtYXjw2SwmbrW98B6c98IdTir+VF+VQJ
-         W10BWI4R3GFC1zT/iJoBlxuzYK0hnggsfABamHJxaKShxH8tLAyw6SYs1kiT5Zpq5DY/
-         y8F5G+SxDNISHMSnfr/J8ZC+W2oNrTFwJ0KMsYltX1nRmRejzvK8hykx9rw4E4PSCPjK
-         hBR+wlIXLMxbiloh7lXnf5z8TBJg0j3ePqZ9LWqb7cYYzpaMr36BzlgWIDpW6dDQHpe5
-         znRcS8BpCe/go3BIeiuQzZZSpEoYEyOJCj8IeINw++6FJJgIOUIPFK+PvAzsigdqsUly
-         aZ0A==
+	s=arc-20240116; t=1734725008; c=relaxed/simple;
+	bh=Zs4JlprWkRWYL9R6G/5v6VnIua89C6vTZlubdjcHDVk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TnN2wX2XFpFLpbUpFoCpAzTww5W3dnZvCW0fzGHTTC8qq/bs82HIIjbMypR5IzKuiFGnpn3kSd7JvioPkyrAU//7yeqyKfz2uSp9/OiqOBsDJtnolDPVCSxKNEuKnMU35VkXKl/e5EaMsxb+ohK6ZZieB77rmnz0kpSHSZ4MV7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=oGWLRAl5; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BKBcIEE024466
+	for <linux-wireless@vger.kernel.org>; Fri, 20 Dec 2024 20:03:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	jjz4Sq36hjRrUju32Ul73yf+4eJ4TQw8j+POxAHkw6U=; b=oGWLRAl5+IHXStqi
+	BuIYkO6QcmyJtbmJirgCxxb4AGmWJTSYFDq4KQx/ItAD00CgQbz0qv5OQbBdbwJ/
+	YACVnW+5UhSxvf11eDzIq8Mo5sa0hvThJ1LQ5ZfenD8ynbmMSUWcUgM/kE7247nj
+	/fn/em1aSY4IQTVzFxpNUraO/a21l10ZW9VVEz9vuupoKaszp43miFHvUtrDLA2c
+	zYC6YIXLanddOZZ15+VzhAKwEJzUAMcG0JW7iSExoK/MEFb4e3djHpK4/ul7PZvZ
+	je+OMzU3WdU4r6sIOVELA9HKSZ4r19PE+46qWH9Zi997E4mqH4IYWf6TKSRRBKG6
+	cRa1og==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43n7vg1aae-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Fri, 20 Dec 2024 20:03:26 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-467a0d7fb9fso5711991cf.2
+        for <linux-wireless@vger.kernel.org>; Fri, 20 Dec 2024 12:03:26 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734715658; x=1735320458;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rl2GUGW1SKIB73yuGvAyVPoBfBy5XbBiVj4hV5yN+VI=;
-        b=rcL23a2M8ZevdzzUe8qtoZAbqJsYU7+gyzWdHRfRu8M4F0+xBENJfYELUFGF0Mh3lw
-         0hEhNq7xCiUw70GeR7PTm290Xit6VS1e3CScSTlfhBfQo2teVOKkZBr2Qeu0nOvPcSdM
-         84h7jCbyG1/CiHEbjvaTr9L3QcbohoQP0bjw3NwvYIt/1VoQh7n9R+SXkoVW6ymDTx/U
-         r+hxNMSZWQone2yuhF5SEMM5GntJkCGDj74r0RBXXLsnbBGrgqikBn0kLJJA5kH3LExP
-         BP0XawBH6VXOD4CUUboLvhgUPpgAC3N/UUGDJ5N5fyPeRAENL2VsyuVsXW7ruzr0YXgY
-         7r0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUceXwh45/f3K5rnCFDDMWvTsBNqtorCHLhZXuOzSIOpZOwbpsPJuYOI5hCGVh2//CGve2T7iD06XYNenSn0Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxnmxet1/69qK4iJWQ2QZmZUMh5h7yAph4GpBbhR5xKRK9cue6y
-	E4Wui31NycfP76CyOeTYycSV8WfLl4AwTt8CbdgydtLe0S65TFBpL9Ca7rguDMc=
-X-Gm-Gg: ASbGncuqutpY4HYkNekR59saeFYin+xTDxIVLpIqBBSW3UuPvInR2UIvOdcVZJJ/Wr/
-	//e64EAKA87lbfWIom0cmw6mC86QD9qOt49QF36z9U1AYmduQ4yU6OSy4F88+1i1jt5h6ferMA9
-	yodTI+q02Lcj/WAlLxgfBpNGwRYftL+Vg58hjbt627TsEnRTpBHWHFQsaSi/nL4NO8gE28eT+Hv
-	CA1T2BJlivk6+h6jTzDndA3j4lbmxbbIMXSFOITtNQ/ob2K65PFNosYUr16MCT529/48eNJe6Q=
-X-Google-Smtp-Source: AGHT+IHQofl14bIpVpiQqz6qAEwAjKsEmWVjRCOjis6wH9jKfvKMjWLHCbYlsDgmYPDOjR7ci+Y7xw==
-X-Received: by 2002:a5d:47c3:0:b0:388:cacf:24b0 with SMTP id ffacd0b85a97d-38a1a1f7253mr6745803f8f.2.1734715658179;
-        Fri, 20 Dec 2024 09:27:38 -0800 (PST)
-Received: from [192.168.68.114] ([5.133.47.210])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c89e357sm4642915f8f.72.2024.12.20.09.27.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Dec 2024 09:27:37 -0800 (PST)
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-To: linux-gpio@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>
-Cc: kernel-janitors@vger.kernel.org, audit@vger.kernel.org, 
- linux-mtd@lists.infradead.org, Zhihao Cheng <chengzhihao1@huawei.com>, 
- "Rafael J. Wysocki" <rafael@kernel.org>, linux-arm-msm@vger.kernel.org, 
- linux-pci@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- linux-usb@vger.kernel.org, linux-mm@kvack.org, 
- maple-tree@lists.infradead.org, alsa-devel@alsa-project.org, 
- Sanyog Kale <sanyog.r.kale@intel.com>, 
- Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, dccp@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>, 
- drbd-dev@lists.linbit.com, linux-sound@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, 
- nvdimm@lists.linux.dev, linux-leds@vger.kernel.org, 
- Nicholas Piggin <npiggin@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
- linuxppc-dev@lists.ozlabs.org, tipc-discussion@lists.sourceforge.net, 
- Robin Murphy <robin.murphy@arm.com>, iommu@lists.linux.dev, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- linux-trace-kernel@vger.kernel.org, Neil Brown <neilb@suse.de>, 
- Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
- Tom Talpey <tom@talpey.com>, linux-nfs@vger.kernel.org, 
- amd-gfx@lists.freedesktop.org, linux-wireless@vger.kernel.org, 
- intel-wired-lan@lists.osuosl.org
-In-Reply-To: <20240930112121.95324-1-Julia.Lawall@inria.fr>
-References: <20240930112121.95324-1-Julia.Lawall@inria.fr>
-Subject: Re: (subset) [PATCH 00/35] Reorganize kerneldoc parameter names
-Message-Id: <173471565665.227782.7244101246430956449.b4-ty@linaro.org>
-Date: Fri, 20 Dec 2024 17:27:36 +0000
+        d=1e100.net; s=20230601; t=1734725005; x=1735329805;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jjz4Sq36hjRrUju32Ul73yf+4eJ4TQw8j+POxAHkw6U=;
+        b=IzzVEamf6juo3FA6cFb0OV5il6Qe3WvxGnm7S/wKP5U2nlxnysj8uSHocQAeKgYtKe
+         tBapBgwezJwWt1SocJfjqb/4uWnD59Bdg3/ta520JGevceyUi026gahI2D5TYglzu84d
+         tjFNQvqgmLP6Ul1+yXOu9UxsHatPHVGYVg9f3JdF1wYnhvvIxw6po7nbFxvq34sjJ57X
+         T+0IZKJlQbUgzxgRgpHRcS1kNblHpHoHB+CX3ZU0tVGsVoRUiLxUKkRIPA2R70G3SwX3
+         8qQCiuG5M2ZpKiwLOBZk3G/JfXHfqBV8EYXozeCZdmSRlGn5PhJcZuHf8udMdKQBxAvg
+         2S2A==
+X-Gm-Message-State: AOJu0YxvBDxc0NMqquGR/MHG6xds+hApr6+pBmQV9BtJqsJ6ysnVMgWS
+	yZjbFOn7w9l+pAsff1y3tuoHDodbiM8PRtQYCC7VJb3AobbP/Z0m/fElwe1zCT8Z+AdFCD+ZXTY
+	0ZDNLGLCClvHsHGaL5YeiP2w9bn5dGDDFWDZF96g8/oznyluz5CKcDuNp6362I1hHmA==
+X-Gm-Gg: ASbGncs611VY3Pyj1wqZo8UiQAT2dwy1aGixJgMo/Acb9C2o/oQRlbVCxSIWnHG+eWS
+	E5eacgHI0aoUBYtTN2nFLc0wXNlAD9DepVA9wvP7QLshVhT6c9HKeIOY6DiZvTIOIOVT48X/COZ
+	59LpMFKEeueTQgfDETXoUqe3oD3pvybRIn5kMNhPv9m1KdXYU5FoS4enCXJYrfQAqmVrTzvk1UJ
+	OMctM26GdxO+yr8l4JM4VtDWB2ySSkUlfmCloH9Ecj/+NhER3LBQZRBGeoN/arrodP2LUMEulU4
+	cj14ytC51i3Rb5YL/5P3ueII2uRAZw9AEUs=
+X-Received: by 2002:a05:620a:2496:b0:7b6:e61b:3e60 with SMTP id af79cd13be357-7b9ba742c0cmr237021585a.7.1734725005275;
+        Fri, 20 Dec 2024 12:03:25 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGGOU1M+QO2EF012zHKw00KoR9fn6Wc1NfhNg0vW4QRfK/giOH6H62ekNUf3K/h976xQT1AJw==
+X-Received: by 2002:a05:620a:2496:b0:7b6:e61b:3e60 with SMTP id af79cd13be357-7b9ba742c0cmr237019085a.7.1734725004858;
+        Fri, 20 Dec 2024 12:03:24 -0800 (PST)
+Received: from [192.168.65.90] (078088045245.garwolin.vectranet.pl. [78.88.45.245])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0e830b2dsm206705966b.8.2024.12.20.12.03.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Dec 2024 12:03:24 -0800 (PST)
+Message-ID: <9cbdca90-e76c-4ebb-a236-a0edbd94a629@oss.qualcomm.com>
+Date: Fri, 20 Dec 2024 21:03:21 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH v3 1/5] dt-bindings: net: wireless: Describe ath12k
+ PCI module with WSI
+To: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>, ath12k@lists.infradead.org
+Cc: linux-wireless@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+References: <20241105180444.770951-1-quic_rajkbhag@quicinc.com>
+ <20241105180444.770951-2-quic_rajkbhag@quicinc.com>
+Content-Language: en-US
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+In-Reply-To: <20241105180444.770951-2-quic_rajkbhag@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.2
+X-Proofpoint-GUID: QZaSekK1HT8QyS_twFfxTqCh4rJtmi1h
+X-Proofpoint-ORIG-GUID: QZaSekK1HT8QyS_twFfxTqCh4rJtmi1h
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ lowpriorityscore=0 mlxlogscore=999 mlxscore=0 phishscore=0 malwarescore=0
+ suspectscore=0 bulkscore=0 adultscore=0 spamscore=0 priorityscore=1501
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412200161
 
-
-On Mon, 30 Sep 2024 13:20:46 +0200, Julia Lawall wrote:
-> Reorganize kerneldoc parameter names to match the parameter
-> order in the function header.
+On 5.11.2024 7:04 PM, Raj Kumar Bhagat wrote:
+> The QCN9274 WiFi device supports WSI (WLAN Serial Interface). WSI is used
+> to exchange specific control information across radios using a doorbell
+> mechanism. This WSI connection is essential for exchanging control
+> information among these devices. The WSI interface in the QCN9274 includes
+> TX and RX ports, which are used to connect multiple WSI-supported devices
+> together, forming a WSI group.
 > 
-> The misordered cases were identified using the following
-> Coccinelle semantic patch:
+> Describe QCN9274 PCI wifi device with WSI interface.
 > 
-> // <smpl>
-> @initialize:ocaml@
-> @@
-> 
-> [...]
+> Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+> ---
 
-Applied, thanks!
+I think this description is missing the key points:
 
-[31/35] slimbus: messaging: Reorganize kerneldoc parameter names
-        commit: 52d3d7f7a77ee9afc6a846b415790e13e1434847
+* what is that control information (power, data, radio stuff?)
+* what happens when the OS is unaware of all of this (i.e. what happens when
+  we don't send any configuration)
+* is this configurable, or does this describe a physical wiring topology
+  (what/who decides which of the group configurations detailed below take
+   effect)
 
-Best regards,
--- 
-Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+And the ultimate question:
+* can the devices not just talk among themselves and negotiate that?
 
+Though AFAICU PCIe P2P communication is a shaky topic, so perhaps the answer
+to the last question is 'no'
+
+Konrad
 
