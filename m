@@ -1,71 +1,70 @@
-Return-Path: <linux-wireless+bounces-16690-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16691-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E12E59F9E81
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Dec 2024 06:24:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93D9A9F9E82
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Dec 2024 06:24:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B82A18885BA
-	for <lists+linux-wireless@lfdr.de>; Sat, 21 Dec 2024 05:23:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 262FB188A199
+	for <lists+linux-wireless@lfdr.de>; Sat, 21 Dec 2024 05:23:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6036B3594C;
-	Sat, 21 Dec 2024 05:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E27C1EC4E5;
+	Sat, 21 Dec 2024 05:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="jCdTdB3L"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="WgnaSEHF"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4BED1EC4DE
-	for <linux-wireless@vger.kernel.org>; Sat, 21 Dec 2024 05:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 895371EC4E0
+	for <linux-wireless@vger.kernel.org>; Sat, 21 Dec 2024 05:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734758596; cv=none; b=Q4BqlD99Ch4pN9aqNKgj6sEtz3bCthRUP3D3KkOAZUa38f1JEeJ8qov4RsnFPD6oDZS8zDk6giasZklbk1PeTsN157yqWk0w5fhLfpEwkv5ed+GjDSjt1idKGT7x1FcH/nE/JDl4QIynxQcuCl8TOAOHDXhiCShc5KAL/OuwSXQ=
+	t=1734758597; cv=none; b=jUo8Tr5oQMznB8mz00kwjlii0Dli37PArC8E09RfeH9ELTzrX3wJGvqJvZAu4wBHk3kEIwZ16gGURKeftFAA+JLvl5cdGwoe02XjIIXBN9a8zZQtq/Hd7a0CnxY/jlLWEiflZfKwvNTco7JSd7ikBTXzA21XdZUH0pdOaLJFmGo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734758596; c=relaxed/simple;
-	bh=C4FilEtwCmj4ADwz0EU3rhn/ysizT57PyJZlUI1MtwI=;
+	s=arc-20240116; t=1734758597; c=relaxed/simple;
+	bh=99tS2wujcuakUJRF8X4XZWvEUn9iQYpkUK5D3I+aqMo=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q6Hg6k23GWKs7SI6AGNabM/2SVuyyhJvyumVcnnD7bo+yfrtrEw4M80Z/73y9ZS+qzz4/U3qFgHYn2znce+j+hXjEUnGbXl7yZtatSC39R+zXoXLoX46plaQQshCE0hZ1beB3S8qEtJwh8uYwLPu9IFTzjBFRzRz1HLpKedavJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=jCdTdB3L; arc=none smtp.client-ip=205.220.168.131
+	 MIME-Version:Content-Type; b=RPastg85By36HAVLj98oegtDAbn+jAsjQyhHFHhRKZtVZZ/8eFuEKc5gyA1pqMuCptqLR/msUAfq+nUSzN5yHPOul5qOGq3IixBQDIUkrf21Dz/8QqviI3s0TSpL80J2mq6v5lzdThjFYn54nA9u4j132eEEaToOnsrC6nYJ4AU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=WgnaSEHF; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BL3YXK3001042;
-	Sat, 21 Dec 2024 05:23:12 GMT
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BL1PMXe015472;
+	Sat, 21 Dec 2024 05:23:15 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	kXbpoKp6SS0yX4Eg7qvj+ybb03oEOhD/C7WN8uYTeEo=; b=jCdTdB3Ln05IuTds
-	mZeSByoCmzy3+5IWc1Qx0xbUXz4P4597Q7nuTsNOgG8Ki+IdCytPCbrIK4D75Ci1
-	BIN1fYpFuvdfC9GoIItPfnAbyQHuN/eQNM/KQnr/OPWAQfNZYSPkW+eDV0hiIPIt
-	19N6Lxf3uZcFl1zuNka9mYNfXNmJtSQaWOF2DrChR21WIfi2FSxDyvtXoFRtHiTk
-	KFAhn4hfUgOuFl1uz66JeZFhyb0NghI0jt5axy9tg0V3Z1uLHvktVK8+/71554BW
-	N+EqebNVSHtsxp4wP8yIMGuoxcAEPNQ6/fW/WISf+8zhymy7dvOuboRwCxqSsp4x
-	mOyw/g==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43nnw1g9bc-1
+	woPoc25xzCoyxWUhxzIknoBHAl3zc8AO1jYiVTGjUzI=; b=WgnaSEHF+JTXuPZ3
+	V670+a21vZTw3humRrA49lR2SJJhNuBtS32CG0B0ZNu0vPJWMz8ZWpCqM9S8V5EP
+	J8bL7LUlu9rOcqE2LpyGifCmg+RpNrYKmuvIpHwfHylfaJiPqZ7J+kj3/CFA+xxN
+	M6muqmGcvOVy8+KSYvqrzWKFs5edcssU8/KP5l77L70rzHnydsaVXwHUAgl1ZZcp
+	YXNA4VaPYw2RJTQqDQ1XHqzR5LxYvWhyxLX14dYDO1i8pQSAKMdGS5CdapuvMqhV
+	322xPFzvJW+S1W2IZg3y8o5Jd847nKcsKyy/s+IZzWIJMtRu5EmDJvGNQTX0+J/F
+	/IfKjQ==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43nkcc8jav-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 21 Dec 2024 05:23:12 +0000 (GMT)
+	Sat, 21 Dec 2024 05:23:14 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BL5NCRs017085
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BL5NEXE004813
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 21 Dec 2024 05:23:12 GMT
+	Sat, 21 Dec 2024 05:23:14 GMT
 Received: from hu-periyasa-blr.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Fri, 20 Dec 2024 21:23:10 -0800
+ 15.2.1544.9; Fri, 20 Dec 2024 21:23:12 -0800
 From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 To: <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>,
-        Balamurugan Mahalingam
-	<quic_bmahalin@quicinc.com>,
         Karthikeyan Periyasamy
-	<quic_periyasa@quicinc.com>
-Subject: [PATCH 08/10] wifi: ath12k: Refactor the format of peer rate table information
-Date: Sat, 21 Dec 2024 10:49:17 +0530
-Message-ID: <20241221051919.686500-9-quic_periyasa@quicinc.com>
+	<quic_periyasa@quicinc.com>,
+        P Praneesh <quic_ppranees@quicinc.com>
+Subject: [PATCH 09/10] wifi: ath12k: Add EHT rate statistics support
+Date: Sat, 21 Dec 2024 10:49:18 +0530
+Message-ID: <20241221051919.686500-10-quic_periyasa@quicinc.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241221051919.686500-1-quic_periyasa@quicinc.com>
 References: <20241221051919.686500-1-quic_periyasa@quicinc.com>
@@ -81,118 +80,85 @@ X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: UDcfCSicMdKdWgLpNXx3ZDwi0RpXsFv3
-X-Proofpoint-ORIG-GUID: UDcfCSicMdKdWgLpNXx3ZDwi0RpXsFv3
+X-Proofpoint-ORIG-GUID: ntyMfBD7TwaekP22G2flZQT6WfyHe0b4
+X-Proofpoint-GUID: ntyMfBD7TwaekP22G2flZQT6WfyHe0b4
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxlogscore=999
- mlxscore=0 malwarescore=0 impostorscore=0 bulkscore=0 lowpriorityscore=0
- phishscore=0 priorityscore=1501 suspectscore=0 spamscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2412210043
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
+ lowpriorityscore=0 adultscore=0 mlxlogscore=932 priorityscore=1501
+ impostorscore=0 malwarescore=0 bulkscore=0 phishscore=0 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412210043
 
-From: Balamurugan Mahalingam <quic_bmahalin@quicinc.com>
-
-Currently, peer rate table information involves complex computation for
-the rate index to update the rate table. To simplify this process, avoid
-the rate index calculation by defining the rate table with bandwidth, GI,
-NSS, MCS. Therefore, update the rate information based on the bandwidth,
-GI, NSS and MCS information from the TLV data of monitor status Rx path.
+Currently, EHT rate information is not populated. Therefore, populate the
+EHT rate information from the status TLV data in the monitor Rx path. In
+the future, this information will be used in the peer extended Rx
+statistics dump.
 
 Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
 Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-Signed-off-by: Balamurugan Mahalingam <quic_bmahalin@quicinc.com>
+Co-developed-by: P Praneesh <quic_ppranees@quicinc.com>
+Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
 Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/core.h   |  6 +----
- drivers/net/wireless/ath/ath12k/dp_mon.c | 29 +++++++++++-------------
- 2 files changed, 14 insertions(+), 21 deletions(-)
+ drivers/net/wireless/ath/ath12k/core.h    |  1 +
+ drivers/net/wireless/ath/ath12k/dp_rx.c   | 15 +++++++++++++++
+ drivers/net/wireless/ath/ath12k/rx_desc.h |  2 ++
+ 3 files changed, 18 insertions(+)
 
 diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index f934faad51bc..96510ead55c6 100644
+index 96510ead55c6..5b4ac0568a00 100644
 --- a/drivers/net/wireless/ath/ath12k/core.h
 +++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -52,8 +52,6 @@
+@@ -85,6 +85,7 @@ enum wme_ac {
+ #define ATH12K_HT_MCS_MAX	7
+ #define ATH12K_VHT_MCS_MAX	9
+ #define ATH12K_HE_MCS_MAX	11
++#define ATH12K_EHT_MCS_MAX	15
  
- #define ATH12K_INVALID_HW_MAC_ID	0xFF
- #define ATH12K_CONNECTION_LOSS_HZ	(3 * HZ)
--#define	ATH12K_RX_RATE_TABLE_NUM	320
--#define	ATH12K_RX_RATE_TABLE_11AX_NUM	576
- 
- #define ATH12K_MON_TIMER_INTERVAL  10
- #define ATH12K_RESET_TIMEOUT_HZ			(20 * HZ)
-@@ -358,8 +356,6 @@ struct ath12k_vif_iter {
- #define HAL_RX_MAX_MCS_BE	15
- #define HAL_RX_MAX_NSS		8
- #define HAL_RX_MAX_NUM_LEGACY_RATES 12
--#define ATH12K_RX_RATE_TABLE_11AX_NUM	576
--#define ATH12K_RX_RATE_TABLE_NUM 320
- 
- struct ath12k_rx_peer_rate_stats {
- 	u64 ht_mcs_count[HAL_RX_MAX_MCS_HT + 1];
-@@ -370,7 +366,7 @@ struct ath12k_rx_peer_rate_stats {
- 	u64 bw_count[HAL_RX_BW_MAX];
- 	u64 gi_count[HAL_RX_GI_MAX];
- 	u64 legacy_count[HAL_RX_MAX_NUM_LEGACY_RATES];
--	u64 rx_rate[ATH12K_RX_RATE_TABLE_11AX_NUM];
-+	u64 rx_rate[HAL_RX_BW_MAX][HAL_RX_GI_MAX][HAL_RX_MAX_NSS][HAL_RX_MAX_MCS_HT + 1];
- };
- 
- struct ath12k_rx_peer_stats {
-diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
-index 7e5c1ac6d0cd..c87886d0a9af 100644
---- a/drivers/net/wireless/ath/ath12k/dp_mon.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
-@@ -2938,34 +2938,31 @@ ath12k_dp_mon_rx_update_peer_rate_table_stats(struct ath12k_rx_peer_stats *rx_st
- 					      struct hal_rx_user_status *user_stats,
- 					      u32 num_msdu)
- {
--	u32 rate_idx = 0;
-+	struct ath12k_rx_peer_rate_stats *stats;
- 	u32 mcs_idx = (user_stats) ? user_stats->mcs : ppdu_info->mcs;
- 	u32 nss_idx = (user_stats) ? user_stats->nss - 1 : ppdu_info->nss - 1;
- 	u32 bw_idx = ppdu_info->bw;
- 	u32 gi_idx = ppdu_info->gi;
-+	u32 len;
- 
--	if ((mcs_idx > HAL_RX_MAX_MCS_HE) || (nss_idx >= HAL_RX_MAX_NSS) ||
--	    (bw_idx >= HAL_RX_BW_MAX) || (gi_idx >= HAL_RX_GI_MAX)) {
-+	if (mcs_idx > HAL_RX_MAX_MCS_HT || nss_idx >= HAL_RX_MAX_NSS ||
-+	    bw_idx >= HAL_RX_BW_MAX || gi_idx >= HAL_RX_GI_MAX) {
- 		return;
+ enum ath12k_crypt_mode {
+ 	/* Only use hardware crypto engine */
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index 5c5a3aae393b..689a011439f8 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -2392,6 +2392,21 @@ static void ath12k_dp_rx_h_rate(struct ath12k *ar, struct hal_rx_desc *rx_desc,
+ 		rx_status->he_gi = ath12k_he_gi_to_nl80211_he_gi(sgi);
+ 		rx_status->bw = ath12k_mac_bw_to_mac80211_bw(bw);
+ 		break;
++	case RX_MSDU_START_PKT_TYPE_11BE:
++		rx_status->rate_idx = rate_mcs;
++		if (rate_mcs > ATH12K_EHT_MCS_MAX) {
++			ath12k_warn(ar->ab,
++				    "Received with invalid mcs in EHT mode %d\n",
++				    rate_mcs);
++			break;
++		}
++		rx_status->encoding = RX_ENC_EHT;
++		rx_status->nss = nss;
++		rx_status->he_gi = ath12k_he_gi_to_nl80211_he_gi(sgi);
++		rx_status->bw = ath12k_mac_bw_to_mac80211_bw(bw);
++		break;
++	default:
++		break;
  	}
- 
--	if (ppdu_info->preamble_type == HAL_RX_PREAMBLE_11N ||
--	    ppdu_info->preamble_type == HAL_RX_PREAMBLE_11AC) {
--		rate_idx = mcs_idx * 8 + 8 * 10 * nss_idx;
--		rate_idx += bw_idx * 2 + gi_idx;
--	} else if (ppdu_info->preamble_type == HAL_RX_PREAMBLE_11AX) {
-+	if (ppdu_info->preamble_type == HAL_RX_PREAMBLE_11AX ||
-+	    ppdu_info->preamble_type == HAL_RX_PREAMBLE_11BE)
- 		gi_idx = ath12k_he_gi_to_nl80211_he_gi(ppdu_info->gi);
--		rate_idx = mcs_idx * 12 + 12 * 12 * nss_idx;
--		rate_idx += bw_idx * 3 + gi_idx;
--	} else {
--		return;
--	}
- 
--	rx_stats->pkt_stats.rx_rate[rate_idx] += num_msdu;
-+	rx_stats->pkt_stats.rx_rate[bw_idx][gi_idx][nss_idx][mcs_idx] += num_msdu;
-+	stats = &rx_stats->byte_stats;
-+
- 	if (user_stats)
--		rx_stats->byte_stats.rx_rate[rate_idx] += user_stats->mpdu_ok_byte_count;
-+		len = user_stats->mpdu_ok_byte_count;
- 	else
--		rx_stats->byte_stats.rx_rate[rate_idx] += ppdu_info->mpdu_len;
-+		len = ppdu_info->mpdu_len;
-+
-+	stats->rx_rate[bw_idx][gi_idx][nss_idx][mcs_idx] += len;
  }
  
- static void ath12k_dp_mon_rx_update_peer_su_stats(struct ath12k *ar,
+diff --git a/drivers/net/wireless/ath/ath12k/rx_desc.h b/drivers/net/wireless/ath/ath12k/rx_desc.h
+index bfd554b55ca1..863481f367a4 100644
+--- a/drivers/net/wireless/ath/ath12k/rx_desc.h
++++ b/drivers/net/wireless/ath/ath12k/rx_desc.h
+@@ -637,6 +637,8 @@ enum rx_msdu_start_pkt_type {
+ 	RX_MSDU_START_PKT_TYPE_11N,
+ 	RX_MSDU_START_PKT_TYPE_11AC,
+ 	RX_MSDU_START_PKT_TYPE_11AX,
++	RX_MSDU_START_PKT_TYPE_11BA,
++	RX_MSDU_START_PKT_TYPE_11BE,
+ };
+ 
+ enum rx_msdu_start_sgi {
 -- 
 2.34.1
 
