@@ -1,58 +1,58 @@
-Return-Path: <linux-wireless+bounces-16709-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16707-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C3CB9FA900
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2024 02:34:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF4E59FA8FB
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2024 02:32:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73E8D1884E8C
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2024 01:34:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4CFAF7A205B
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2024 01:32:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5B57D531;
-	Mon, 23 Dec 2024 01:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B1A138DE0;
+	Mon, 23 Dec 2024 01:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="hAjtiWKo"
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="kKre8Kil"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02605D51C;
-	Mon, 23 Dec 2024 01:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B931DDA8;
+	Mon, 23 Dec 2024 01:32:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734917540; cv=none; b=C6NiJclHe5KUZf/ZjkT85xcXzRkz3tlYg0iOCgCgNHw+tZxdCzfJ0UvKLumXvWTAWfGj1u3OWPl1lfJPaqhGrQVcXIjSWnf0D0Ngi/RlHs6SWoy7gdrPv6ZeKzzYipVW6BvJQLXTBh2BkX4M9Xe38zFOonjQ2ZuZi+CEOjCrxdk=
+	t=1734917532; cv=none; b=EO2ZpGvs4+5kQl4IU9hKuD/VWNCvXVR5NMmoAveUTgetKGciqn33+KTtw7ef3sjqSANPe2dP3OFNlbVqLnBGAR7RWyVuRH3cHXxRmejO1GlOEy4J64oyhtkN65MqtaHgg2YQLNj3/l2aopGSidUD7O1QAj4gikZqNxRHBu5untk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734917540; c=relaxed/simple;
-	bh=Vzt2yWayyGwEtq8qqinHsCHCd+kyX4AP0wsBNlM9wGU=;
+	s=arc-20240116; t=1734917532; c=relaxed/simple;
+	bh=8ou9LlguTwyEV+M74zW3vdjCQ+MGHuYcOWdmmX96lEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rqNST7X48PXO4sDy+kEionN5YdQgtvejlLwmcMPAtLI4kRHcD2UHyD1WRCRbXc4yU/tAQadfS0VhfxaZf0IWD5KTVFRfjQXJnZ2wMCcmRVU2ZQkHLzXVTRm1+OVc1pzm863lyu704b58K+O1fIQXyMWOY+e/t4OicQ+3TgwMl/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=hAjtiWKo; arc=none smtp.client-ip=46.235.229.95
+	 MIME-Version; b=O+Apvy6Ip4gMZnvYXvEfWux8xJbM9RCCJlpc7jpBXyZBEVP4lzlAwmmA299O/AHjz1ZfxgEUzXnN6mplpmM4YLK0Os3l2b7ncfL7TsRH1AtQxMEtI4D7DdGhCqKuVP+mfIT42nmTLcUJ8MYUi5dkHF016EYefGAbDhvLeRuozMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=kKre8Kil; arc=none smtp.client-ip=46.235.229.95
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
 	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
-	:Subject; bh=VSlmuOAizwRPWEm5J9NFh9+rLZv8nYz4wRTA61eWOmg=; b=hAjtiWKoHUkKFM9K
-	fBSrTfNFGTS1jZlshaf3Mjcwe2cBlti3uxNjy0GN7ejGgR9o/ErklSynjpyHEbbo2HM7Ym0PR5St0
-	jeAQY3Lc3KnbRe9AZUEGFA0IpkV6pHaDI2zVqp12+jOLY1/UGBwG4C6EY6skJLxzb0B5kBIzo7Imo
-	Gfr/c+7wj4m2Q16V2LAC9RqOqCn/rWmae5Qao8AsxgPf/Lg6jLbAgJzquhHaT0epCboUGHDl+mt+1
-	hR8fzKhBfFQxvArzY7hndTxK20swJXTJPQ0sg8ofkRRTVl0GVDVFq3GzoPcGc5jbyyuP8Eug1FPg1
-	S/Np++w6oKpKI+XNpQ==;
+	:Subject; bh=HquINi6LMi37dKa43YAg1uxOYXWj2/1Hvuwsih+Xmkk=; b=kKre8KilghFdqaE+
+	e2ZND1ztlnG5eFtIZFDwMbhn5w/GfYWZqXj1OAW1vLOJ7mUJ2/pYRbMXWw+tcrQAwBOIEe2Q1Y0ZB
+	vP7GeTno+gMBeH9k7HsMOwBFRmElutHoM3EQGFbNiZnlGfHoHt0DU8UbO/9sPu0OmYZQpMMtgI5r6
+	/SDYj+do7sAelEzOROZR2Mp+U7FCJ4/eRo9kELaDoKDAoBcMOzALEqkich0cODKp+JklQ31B/wPlg
+	WbcCd7oDz8M2vI1/dUx5+J5qliycSAkrmIaagp5q/qBKO0wJhw0fvqNSFPgoNbJeaHBsW2doV+89O
+	rJTfEp1WQu9dOERiMw==;
 Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
 	by mx.treblig.org with esmtp (Exim 4.96)
 	(envelope-from <linux@treblig.org>)
-	id 1tPXIk-006oGv-2I;
-	Mon, 23 Dec 2024 01:32:06 +0000
+	id 1tPXIl-006oGv-0t;
+	Mon, 23 Dec 2024 01:32:07 +0000
 From: linux@treblig.org
 To: miriam.rachel.korenblit@intel.com,
 	kvalo@kernel.org,
 	linux-wireless@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
 	"Dr. David Alan Gilbert" <linux@treblig.org>
-Subject: [PATCH 4/6] iwlwifi: Remove unused iwl_mvm_ftm_add_pasn_sta
-Date: Mon, 23 Dec 2024 01:32:00 +0000
-Message-ID: <20241223013202.340180-5-linux@treblig.org>
+Subject: [PATCH 5/6] iwlwifi: Remove unused iwl_bz_name
+Date: Mon, 23 Dec 2024 01:32:01 +0000
+Message-ID: <20241223013202.340180-6-linux@treblig.org>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241223013202.340180-1-linux@treblig.org>
 References: <20241223013202.340180-1-linux@treblig.org>
@@ -66,150 +66,41 @@ Content-Transfer-Encoding: 8bit
 
 From: "Dr. David Alan Gilbert" <linux@treblig.org>
 
-iwl_mvm_ftm_add_pasn_sta() was added in 2020 by
-commit 0739a7d70e00 ("iwlwifi: mvm: initiator: add option for adding a
-PASN responder")
-but hasn't been used.
-
-Remove it.
-
-That was the only caller of iwl_mvm_ftm_remove_pasn_sta().
+iwl_bz_name[] has been unused since the resent
+commit 6795a37161fb ("wifi: iwlwifi: Print a specific device name.")
 
 Remove it.
 
 Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
 ---
- .../intel/iwlwifi/mvm/ftm-initiator.c         | 101 ------------------
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |   4 -
- 2 files changed, 105 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/cfg/bz.c     | 1 -
+ drivers/net/wireless/intel/iwlwifi/iwl-config.h | 1 -
+ 2 files changed, 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-index b26141c30c61..f7034fa40c26 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ftm-initiator.c
-@@ -46,107 +46,6 @@ struct iwl_mvm_ftm_iter_data {
- 	u8 *tk;
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
+index cd1fe8490ae5..589fba0cc045 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/bz.c
+@@ -159,7 +159,6 @@ const struct iwl_cfg_trans_params iwl_gl_trans_cfg = {
+ 	.low_latency_xtal = true,
  };
  
--int iwl_mvm_ftm_add_pasn_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
--			     u8 *addr, u32 cipher, u8 *tk, u32 tk_len,
--			     u8 *hltk, u32 hltk_len)
--{
--	struct iwl_mvm_ftm_pasn_entry *pasn = kzalloc(sizeof(*pasn),
--						      GFP_KERNEL);
--	u32 expected_tk_len;
--
--	lockdep_assert_held(&mvm->mutex);
--
--	if (!pasn)
--		return -ENOBUFS;
--
--	iwl_mvm_ftm_remove_pasn_sta(mvm, addr);
--
--	pasn->cipher = iwl_mvm_cipher_to_location_cipher(cipher);
--
--	switch (pasn->cipher) {
--	case IWL_LOCATION_CIPHER_CCMP_128:
--	case IWL_LOCATION_CIPHER_GCMP_128:
--		expected_tk_len = WLAN_KEY_LEN_CCMP;
--		break;
--	case IWL_LOCATION_CIPHER_GCMP_256:
--		expected_tk_len = WLAN_KEY_LEN_GCMP_256;
--		break;
--	default:
--		goto out;
--	}
--
--	/*
--	 * If associated to this AP and already have security context,
--	 * the TK is already configured for this station, so it
--	 * shouldn't be set again here.
--	 */
--	if (vif->cfg.assoc) {
--		struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
--		struct ieee80211_bss_conf *link_conf;
--		unsigned int link_id;
--		struct ieee80211_sta *sta;
--		u8 sta_id;
--
--		rcu_read_lock();
--		for_each_vif_active_link(vif, link_conf, link_id) {
--			if (memcmp(addr, link_conf->bssid, ETH_ALEN))
--				continue;
--
--			sta_id = mvmvif->link[link_id]->ap_sta_id;
--			sta = rcu_dereference(mvm->fw_id_to_mac_id[sta_id]);
--			if (!IS_ERR_OR_NULL(sta) && sta->mfp)
--				expected_tk_len = 0;
--			break;
--		}
--		rcu_read_unlock();
--	}
--
--	if (tk_len != expected_tk_len ||
--	    (hltk_len && hltk_len != sizeof(pasn->hltk))) {
--		IWL_ERR(mvm, "Invalid key length: tk_len=%u hltk_len=%u\n",
--			tk_len, hltk_len);
--		goto out;
--	}
--
--	if (!expected_tk_len && !hltk_len) {
--		IWL_ERR(mvm, "TK and HLTK not set\n");
--		goto out;
--	}
--
--	memcpy(pasn->addr, addr, sizeof(pasn->addr));
--
--	if (hltk_len) {
--		memcpy(pasn->hltk, hltk, sizeof(pasn->hltk));
--		pasn->flags |= IWL_MVM_PASN_FLAG_HAS_HLTK;
--	}
--
--	if (tk && tk_len)
--		memcpy(pasn->tk, tk, sizeof(pasn->tk));
--
--	list_add_tail(&pasn->list, &mvm->ftm_initiator.pasn_list);
--	return 0;
--out:
--	kfree(pasn);
--	return -EINVAL;
--}
--
--void iwl_mvm_ftm_remove_pasn_sta(struct iwl_mvm *mvm, u8 *addr)
--{
--	struct iwl_mvm_ftm_pasn_entry *entry, *prev;
--
--	lockdep_assert_held(&mvm->mutex);
--
--	list_for_each_entry_safe(entry, prev, &mvm->ftm_initiator.pasn_list,
--				 list) {
--		if (memcmp(entry->addr, addr, sizeof(entry->addr)))
--			continue;
--
--		list_del(&entry->list);
--		kfree(entry);
--		return;
--	}
--}
--
- static void iwl_mvm_ftm_reset(struct iwl_mvm *mvm)
- {
- 	struct iwl_mvm_loc_entry *e, *t;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index e8a82dc49892..fbb2cf6ab0be 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -2530,10 +2530,6 @@ int iwl_mvm_ftm_start(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- void iwl_mvm_ftm_abort(struct iwl_mvm *mvm, struct cfg80211_pmsr_request *req);
- void iwl_mvm_ftm_initiator_smooth_config(struct iwl_mvm *mvm);
- void iwl_mvm_ftm_initiator_smooth_stop(struct iwl_mvm *mvm);
--int iwl_mvm_ftm_add_pasn_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
--			     u8 *addr, u32 cipher, u8 *tk, u32 tk_len,
--			     u8 *hltk, u32 hltk_len);
--void iwl_mvm_ftm_remove_pasn_sta(struct iwl_mvm *mvm, u8 *addr);
- 
- /* TDLS */
- 
+-const char iwl_bz_name[] = "Intel(R) TBD Bz device";
+ const char iwl_fm_name[] = "Intel(R) Wi-Fi 7 BE201 320MHz";
+ const char iwl_gl_name[] = "Intel(R) Wi-Fi 7 BE200 320MHz";
+ const char iwl_mtp_name[] = "Intel(R) Wi-Fi 7 BE202 160MHz";
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-config.h b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
+index 34c91deca57b..e17fadfc0227 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-config.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-config.h
+@@ -543,7 +543,6 @@ extern const char iwl_ax211_name[];
+ extern const char iwl_ax221_name[];
+ extern const char iwl_ax231_name[];
+ extern const char iwl_ax411_name[];
+-extern const char iwl_bz_name[];
+ extern const char iwl_fm_name[];
+ extern const char iwl_gl_name[];
+ extern const char iwl_mtp_name[];
 -- 
 2.47.1
 
