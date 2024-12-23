@@ -1,52 +1,63 @@
-Return-Path: <linux-wireless+bounces-16734-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16735-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A171A9FB0E1
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2024 16:47:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D30469FB2BE
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2024 17:23:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE40F165FAD
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2024 15:47:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49A04166CE2
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2024 16:23:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0BA817BB0D;
-	Mon, 23 Dec 2024 15:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40EFB1B395E;
+	Mon, 23 Dec 2024 16:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="LJBugzfj"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Qjlv+YvY"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9CE1392;
-	Mon, 23 Dec 2024 15:47:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0441B392B;
+	Mon, 23 Dec 2024 16:21:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734968836; cv=none; b=MLL3kPtjOPy/J+dz3pmBafBhQcD1+Km8Sly/YX6DiN+oWKnYU3luPZ1b1aXc8DU+sJfuCjS6tiPu0A18u1Z7tm8AJJwleDgHTaWrG05WjAOh8FZY8vw2YV9MfZMGM6jVwuzpjGk/q/ZlLDSAr476rhotPs8cK7ef4d4lzt4bnbg=
+	t=1734970918; cv=none; b=TkBv5NgEEvuVxNZNuqZ/imtYLWjGI8j9gyCEojtMFY8nZnTJesMllzfBf/1dddhGsQ+debi6yu9OYCFCrxcJy9VJjjry9gpsbpMVbaYi/OG7lnkbaLuXwo5tDPc/zthQppq/GendEUM7yoxOdVBhdPS/MqYuAPhNBeovZ7mZ+YI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734968836; c=relaxed/simple;
-	bh=4Qn2q61tUxHAF1fzLiqELFRHhk5hSoPWzOHX9cKsWcQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=YFYCkYZSZuscrJJTGCF5UO3kJbnm7M3mxjcgrCSCkWH1JdvMG50DbFofOBJyUEQDOSG4rVx2O3UqRZ6XLo0j0FRw8K82VmHmLmr68NSfqPDl1Kn7LuUBnvVv9DVEeFFae+YF1zGocjvKO8d9l2Aph4xsr7xM6Rl4BF2wIk1SP6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=LJBugzfj; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8ECEC1BF204;
-	Mon, 23 Dec 2024 15:47:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1734968832;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=GUJu1Sd/MM0fZAqwu+qR+ZOHyutrBoq4u2/CkZK+wCw=;
-	b=LJBugzfjc7M68QcCPy5Z/IapIV1dCcAKYV75c7uloz82qKiVCGnb2IQZvOAEyiZMP4HKAQ
-	q4IpjrnjsfkUdMKeo2p1RckZA92DFfJJk+t7rkPNyQKHibUd8XOUmwtsC7gYT3YmoZ/S8+
-	JtfPeo7Q4mbbY3dBG9/5TcaVnWSP/drsDSnIW0DbaiVlOk3TYMxYYz4AWjlt2XWroT2cBY
-	knHv/JSpa456DGlROCEZiKXqCklTwhmf1IR6mhrgNT2bGxtkyqK7qAm17qpxQPiBdmXWQd
-	PNL7W53t7Bp+9LDh3cEZS4NjqBPB/GAFcfGGlvAWf2L1anI2oin9JhPi3aKahQ==
-From: =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-Date: Mon, 23 Dec 2024 16:46:48 +0100
-Subject: [PATCH wireless] wifi: wilc1000: unregister wiphy only if it has
- been registered
+	s=arc-20240116; t=1734970918; c=relaxed/simple;
+	bh=L5r6e1t7r4UgrDgrkfIpWhONtNo1zKUlzjf+9Rso+7A=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=gN89Eh8f1Mw5w1lSFOWKdTifaxyB2vaP+fNT10Fqknxkvn4Octq5ZQqxnR2AJ5jNXMd+eKiF24FoKx6GfaWtntdV6t512pbHplMYByiZpsNelO3nEwIaH61RCHcoHA5zgLagdoeEkg3sVT0oIZmOHhPFZ3viKbOA05X1LM4+Gig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Qjlv+YvY; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BNCudEw002191;
+	Mon, 23 Dec 2024 16:21:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=/XSNYODY+Vqtrgdh3Hv94w
+	hQ4qyzy25uWL/29oGKgoU=; b=Qjlv+YvYoP+EWeivMXVSSNTjPjEFzpXViS586o
+	rv/krUF5xUoelBjqYPeM+Num7TbNFQmnFsO0cs98hz3dNHXvOC/gwVMTnGfDTsf4
+	jfM9g3pXZE6YVykK7IWlN2bVHYuqBR7x+lsAzLzhgizNSAAhay1tcLuoEHiRqZa9
+	vhRm2j7V5ipYNxN/QIRfQk1G/3yHKYqF02rF2FV04AYB71xnc6KB6YmAaqffcXb2
+	DzhRfwd8WT8BkasOlmomlEbAVcXH303oN2rjav76d0+1zjjbsqAgQ8KPR9ST5h00
+	nAfIuV1ZkfnHpiw2EPLoZ2Kvk8Kuzm6/kOeltxGINHLQ3T6w==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43q8ah8tqm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Dec 2024 16:21:49 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BNGLmVN011372
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Dec 2024 16:21:48 GMT
+Received: from hu-adisi-blr.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Mon, 23 Dec 2024 08:21:46 -0800
+From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+Subject: [PATCH 0/4] wifi: ath12k: add MLO CSA support
+Date: Mon, 23 Dec 2024 21:51:35 +0530
+Message-ID: <20241223-ath12k_mlo_csa-v1-0-78b6d7515568@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -54,176 +65,55 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20241223-wilc_fix_probe_error_path-v1-1-91fa7bd8e5b6@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAOeFaWcC/x2MUQqDMBAFryL7baAmUrBXKSVs7GtdEBN2RQXx7
- g39HJiZkwwqMHo0Jyk2MclLha5taJx4+cLJuzL5m+8774PbZR7jR45YNCdEqGaNhdfJ8b1PCDy
- kMDDVviiq938/aRfFDDN6XdcPFPn8eXUAAAA=
-X-Change-ID: 20241223-wilc_fix_probe_error_path-a64be3a9b39a
-To: Ajay Singh <ajay.kathat@microchip.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Kalle Valo <kvalo@kernel.org>, 
- Marek Vasut <marex@denx.de>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
- =?utf-8?q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABCOaWcC/x3M0QqDMAxA0V+RPFswcWWwXxGRqHEN26w0Mjak/
+ 77Ox/Nw7wEmScXgVh2Q5K2mcS3AuoIp8HoXp3MxUEMXJLw63gPSY3g94zAZu9aPs0fixrNAibY
+ ki37OYdcXB7U9pu//n3P+Ac4aeSRvAAAA
+X-Change-ID: 20241217-ath12k_mlo_csa-35bd512a05ae
+To: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
+CC: <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>,
+        Aditya Kumar Singh <quic_adisi@quicinc.com>
 X-Mailer: b4 0.14.2
-X-GND-Sasl: alexis.lothore@bootlin.com
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 2U75hCg3LIE3fkwJHpJL4ulhp0djN0eh
+X-Proofpoint-ORIG-GUID: 2U75hCg3LIE3fkwJHpJL4ulhp0djN0eh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 suspectscore=0 bulkscore=0 malwarescore=0 mlxlogscore=738
+ mlxscore=0 clxscore=1015 adultscore=0 phishscore=0 lowpriorityscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412230146
 
-There is a specific error path in probe functions in wilc drivers (both
-sdio and spi) which can lead to kernel panic, as this one for example
-when using SPI:
+Patch 1 and 2 are pre-req fixes (applies to non-MLO as well)
 
-Unable to handle kernel paging request at virtual address 9f000000 when read
-[9f000000] *pgd=00000000
-Internal error: Oops: 5 [#1] ARM
-Modules linked in: wilc1000_spi(+) crc_itu_t crc7 wilc1000 cfg80211 bluetooth ecdh_generic ecc
-CPU: 0 UID: 0 PID: 106 Comm: modprobe Not tainted 6.13.0-rc3+ #22
-Hardware name: Atmel SAMA5
-PC is at wiphy_unregister+0x244/0xc40 [cfg80211]
-LR is at wiphy_unregister+0x1c0/0xc40 [cfg80211]
-[...]
- wiphy_unregister [cfg80211] from wilc_netdev_cleanup+0x380/0x494 [wilc1000]
- wilc_netdev_cleanup [wilc1000] from wilc_bus_probe+0x360/0x834 [wilc1000_spi]
- wilc_bus_probe [wilc1000_spi] from spi_probe+0x15c/0x1d4
- spi_probe from really_probe+0x270/0xb2c
- really_probe from __driver_probe_device+0x1dc/0x4e8
- __driver_probe_device from driver_probe_device+0x5c/0x140
- driver_probe_device from __driver_attach+0x220/0x540
- __driver_attach from bus_for_each_dev+0x13c/0x1a8
- bus_for_each_dev from bus_add_driver+0x2a0/0x6a4
- bus_add_driver from driver_register+0x27c/0x51c
- driver_register from do_one_initcall+0xf8/0x564
- do_one_initcall from do_init_module+0x2e4/0x82c
- do_init_module from load_module+0x59a0/0x70c4
- load_module from init_module_from_file+0x100/0x148
- init_module_from_file from sys_finit_module+0x2fc/0x924
- sys_finit_module from ret_fast_syscall+0x0/0x1c
+Patch 3 basically uses arvif->link_id to enable MLO for CSA while adding
+support to update counters throughout the CSA time.
 
-The issue can easily be reproduced, for example by not wiring correctly
-a wilc device through SPI (and so, make it unresponsive to early SPI
-commands). It is due to a recent change decoupling wiphy allocation from
-wiphy registration, however wilc_netdev_cleanup has not been updated
-accordingly, letting it possibly call wiphy unregister on a wiphy which
-has never been registered.
-
-Fix this crash by moving wiphy_unregister/wiphy_free out of
-wilc_netdev_cleanup, and by adjusting error paths in both drivers
-
-Fixes: fbdf0c5248dc ("wifi: wilc1000: Register wiphy after reading out chipid")
-Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
----
- drivers/net/wireless/microchip/wilc1000/netdev.c | 2 --
- drivers/net/wireless/microchip/wilc1000/sdio.c   | 9 +++++++--
- drivers/net/wireless/microchip/wilc1000/spi.c    | 9 +++++++--
- 3 files changed, 14 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/microchip/wilc1000/netdev.c b/drivers/net/wireless/microchip/wilc1000/netdev.c
-index 7e84fc0fd91188b411863b9de647b6d182c6c187..af298021e05041ba4b16a94c8ee768407a208dfc 100644
---- a/drivers/net/wireless/microchip/wilc1000/netdev.c
-+++ b/drivers/net/wireless/microchip/wilc1000/netdev.c
-@@ -925,8 +925,6 @@ void wilc_netdev_cleanup(struct wilc *wilc)
- 
- 	wilc_wlan_cfg_deinit(wilc);
- 	wlan_deinit_locks(wilc);
--	wiphy_unregister(wilc->wiphy);
--	wiphy_free(wilc->wiphy);
- }
- EXPORT_SYMBOL_GPL(wilc_netdev_cleanup);
- 
-diff --git a/drivers/net/wireless/microchip/wilc1000/sdio.c b/drivers/net/wireless/microchip/wilc1000/sdio.c
-index 5262c8846c13df28cf65ec8c5ad0ef9d6677c98b..3751e2ee1ca95918b589ba9be032984705fa822a 100644
---- a/drivers/net/wireless/microchip/wilc1000/sdio.c
-+++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
-@@ -193,7 +193,7 @@ static int wilc_sdio_probe(struct sdio_func *func,
- 	ret = wilc_load_mac_from_nv(wilc);
- 	if (ret) {
- 		pr_err("Can not retrieve MAC address from chip\n");
--		goto dispose_irq;
-+		goto unregister_wiphy;
- 	}
- 
- 	wilc_sdio_deinit(wilc);
-@@ -202,15 +202,18 @@ static int wilc_sdio_probe(struct sdio_func *func,
- 				   NL80211_IFTYPE_STATION, false);
- 	if (IS_ERR(vif)) {
- 		ret = PTR_ERR(vif);
--		goto dispose_irq;
-+		goto unregister_wiphy;
- 	}
- 
- 	dev_info(&func->dev, "Driver Initializing success\n");
- 	return 0;
- 
-+unregister_wiphy:
-+	wiphy_unregister(wilc->wiphy);
- dispose_irq:
- 	irq_dispose_mapping(wilc->dev_irq_num);
- 	wilc_netdev_cleanup(wilc);
-+	wiphy_free(wilc->wiphy);
- free:
- 	kfree(sdio_priv->cmd53_buf);
- 	kfree(sdio_priv);
-@@ -222,7 +225,9 @@ static void wilc_sdio_remove(struct sdio_func *func)
- 	struct wilc *wilc = sdio_get_drvdata(func);
- 	struct wilc_sdio *sdio_priv = wilc->bus_data;
- 
-+	wiphy_unregister(wilc->wiphy);
- 	wilc_netdev_cleanup(wilc);
-+	wiphy_free(wilc->wiphy);
- 	kfree(sdio_priv->cmd53_buf);
- 	kfree(sdio_priv);
- }
-diff --git a/drivers/net/wireless/microchip/wilc1000/spi.c b/drivers/net/wireless/microchip/wilc1000/spi.c
-index ce2a9cdd6aa7877ed4c2517f9549a00bdc8dc874..31219fd0cfb3fc6df071b3e9be5af17087ccf583 100644
---- a/drivers/net/wireless/microchip/wilc1000/spi.c
-+++ b/drivers/net/wireless/microchip/wilc1000/spi.c
-@@ -256,7 +256,7 @@ static int wilc_bus_probe(struct spi_device *spi)
- 	ret = wilc_load_mac_from_nv(wilc);
- 	if (ret) {
- 		pr_err("Can not retrieve MAC address from chip\n");
--		goto power_down;
-+		goto unregister_wiphy;
- 	}
- 
- 	wilc_wlan_power(wilc, false);
-@@ -264,14 +264,17 @@ static int wilc_bus_probe(struct spi_device *spi)
- 				   NL80211_IFTYPE_STATION, false);
- 	if (IS_ERR(vif)) {
- 		ret = PTR_ERR(vif);
--		goto power_down;
-+		goto unregister_wiphy;
- 	}
- 	return 0;
- 
-+unregister_wiphy:
-+	wiphy_unregister(wilc->wiphy);
- power_down:
- 	wilc_wlan_power(wilc, false);
- netdev_cleanup:
- 	wilc_netdev_cleanup(wilc);
-+	wiphy_free(wilc->wiphy);
- free:
- 	kfree(spi_priv);
- 	return ret;
-@@ -282,7 +285,9 @@ static void wilc_bus_remove(struct spi_device *spi)
- 	struct wilc *wilc = spi_get_drvdata(spi);
- 	struct wilc_spi *spi_priv = wilc->bus_data;
- 
-+	wiphy_unregister(wilc->wiphy);
- 	wilc_netdev_cleanup(wilc);
-+	wiphy_free(wilc->wiphy);
- 	kfree(spi_priv);
- }
- 
+Patch 4 fixes a potential problem seen when medium is busy. Again this
+applies to both MLO and non-MLO. But this is exposed only when Patch 3 is
+there.
 
 ---
-base-commit: 96997ddfc7c249dbcb6e248986dc2d56ba29ec8b
-change-id: 20241223-wilc_fix_probe_error_path-a64be3a9b39a
+Aditya Kumar Singh (4):
+      wifi: ath12k: update beacon template function to use arvif structure
+      wifi: ath12k: fix handling of CSA offsets in beacon template command
+      wifi: ath12k: update the latest CSA counter
+      wifi: ath12k: prevent CSA counter to reach 0 and hit WARN_ON_ONCE
 
-Best regards,
--- 
-Alexis Lothoré, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+ drivers/net/wireless/ath/ath12k/core.h |  2 ++
+ drivers/net/wireless/ath/ath12k/mac.c  |  7 ++--
+ drivers/net/wireless/ath/ath12k/mac.h  |  1 +
+ drivers/net/wireless/ath/ath12k/wmi.c  | 61 +++++++++++++++++++++++++++-------
+ drivers/net/wireless/ath/ath12k/wmi.h  |  2 +-
+ 5 files changed, 56 insertions(+), 17 deletions(-)
+---
+base-commit: 09fa3b6974a1245ddd0751747609431494ba5b4f
+change-id: 20241217-ath12k_mlo_csa-35bd512a05ae
 
 
