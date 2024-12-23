@@ -1,171 +1,120 @@
-Return-Path: <linux-wireless+bounces-16739-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16740-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41B559FB2C5
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2024 17:24:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56A439FB4B5
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2024 20:35:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3756B18823CE
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2024 16:24:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD532165B6D
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2024 19:35:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 797991C5F3D;
-	Mon, 23 Dec 2024 16:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D81391AF0C2;
+	Mon, 23 Dec 2024 19:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="jtVnve3B"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="IE68FGZf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1D61C5CD6;
-	Mon, 23 Dec 2024 16:22:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA85F28DA1;
+	Mon, 23 Dec 2024 19:35:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734970925; cv=none; b=HrW0i7Z9Gp+1tlm7ct6UOfdJtUbC3WAxakSkgIYuCm9muWPSbd77PIaVAA+xY+lAs1awpSGpe4Ay0FeUYeRAt1Vw/qc0FrIjpq9ovjgaweKOhaNE8N7y2hsD+jUt+K8sCiG6pQIz3ymB1ZVgc/8nz6if05Gvx7I7mZpamId8RHA=
+	t=1734982518; cv=none; b=NPW4R0e6Xz/tad1Io05pKh0Cn82RG267ZsRByxRPwGyPFkwAChCnKduIqoGEPXU70FRRZzMghyulCBfdpZ9jFLqbYziojt+evpmUWpAsJhfgQNFU/VsjqLNzSsfgRCwX2+dLqGWFWYwFxV1HkZrfJHNbsFHeThobRswK7+WUe3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734970925; c=relaxed/simple;
-	bh=70w7R33lXSSzqb9MRpqnWrVZzFp/qKw931lPuyMjbeI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=rwTt/NaEQ7RfAoXofWLI+v1toyTHcGmFFt1j7v6spdXmdA4OnIE9GVUtMMd+wxDKuYyK5k5ufPCWGHEzIrcuGQNlZhQt5R2dURreNqTyt0dEl4xBhvGiJZG3xdl6AX69Zq2pFMMg9Qpe/9QJGWZ1hngFhVrxt/uCJ/yTHsI36wA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=jtVnve3B; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BNCahNG004009;
-	Mon, 23 Dec 2024 16:21:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	L6uYF29f9et72+SEQzet3hQ1OKO/acLLyHYfWfsblww=; b=jtVnve3BM1ARwz3/
-	0bPVTtyAFNXMPRrRD9fJid42XDYEwi3rfvHlc6kDcTI8iN4eZSFYq/cZFM/Lj3LM
-	phGo5auGudjfBUc4Q6Al8wbS+/D0xIW1dCtD86hIFE0y/k7gMF/keJAJ7ZGM887t
-	icSIOd3Fik5RKD48JHEaU4ms7rkhtVd7N69WOlmPXKl9SAOrZADsmpeBGSbM4pD2
-	qLm8us2H9C8vEf3P8TTqq0WHhx3cgw6uPctJI+JE0Tb8kripD6LUL8ZNEsdO7yRR
-	Kem5yhKGDf56bkZtcYwJXmNgP1e2S5Rx+LC/iKNXwduUZ9vZu3ird6frMMafkmr9
-	c1bnbg==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43q8168vp7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Dec 2024 16:21:58 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BNGLvPA011415
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Dec 2024 16:21:57 GMT
-Received: from hu-adisi-blr.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Mon, 23 Dec 2024 08:21:55 -0800
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
-Date: Mon, 23 Dec 2024 21:51:39 +0530
-Subject: [PATCH 4/4] wifi: ath12k: prevent CSA counter to reach 0 and hit
- WARN_ON_ONCE
+	s=arc-20240116; t=1734982518; c=relaxed/simple;
+	bh=Tsn1m5ywEzXvBJ6UNgZ4dbd5ZmgJuAvlLtvIOx4S2S8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QYBGf+OEnOkmmVFN5R8TQakBFIxa6cXIlzldh4n8p8VGAotHOzfMLpwpZVbZEkP9GAJjb2aqj39UFQ6+z5rGCTuHIwuQXxNRemFRkUdlvNd82IAuXGSZUBfUD9QQio8XO0qNtjB9OOJO+Fi2WHT2bkYcGBJUPlf+VZ3OaCAtV7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=IE68FGZf; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 727D71048588C;
+	Mon, 23 Dec 2024 20:35:11 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1734982514;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Xm0Ik8769Z7PxV+QPZ/CDNASXKO2C+1xCfZ8ziHTxy8=;
+	b=IE68FGZf4UMTwvoLQFfBK568CLW9HDck822WnpzASOUgLCManLKfXNiFPSy7De+Atpwrux
+	klAS2dEVA+0FgEjMk9cjl73iMei8qyJHEANmtHLUfLoD3CRXpnlcMqbEE3PeoqFTTmu6EY
+	u81rEaK1hBNQkmfBLdmNWHLa3EwufqAojfzq9Xb5EL9raG5m3jrDKn1nqYlK/yEXhoh2A0
+	IRLZ7jjjGNzfGf5YDFBbVWjR7HDdQJtBtAf5DCpN0k2mP2WAMcWURZ6Fe8rdH8Ul3W2E2W
+	K2sjUZ8Hcw5u1dkD9okS6gMsmRLrnWFSnqhs8gl083wMkQMcBLp0JcCwXdFEsg==
+Message-ID: <81554a5e-5b86-4944-9565-4e2aed5fd0ef@denx.de>
+Date: Mon, 23 Dec 2024 20:19:10 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20241223-ath12k_mlo_csa-v1-4-78b6d7515568@quicinc.com>
-References: <20241223-ath12k_mlo_csa-v1-0-78b6d7515568@quicinc.com>
-In-Reply-To: <20241223-ath12k_mlo_csa-v1-0-78b6d7515568@quicinc.com>
-To: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>
-CC: <linux-wireless@vger.kernel.org>, <ath12k@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>,
-        Aditya Kumar Singh <quic_adisi@quicinc.com>
-X-Mailer: b4 0.14.2
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: jBGF_yed_wbkBG75ybDcTSMCFkcdY8VN
-X-Proofpoint-GUID: jBGF_yed_wbkBG75ybDcTSMCFkcdY8VN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
- suspectscore=0 malwarescore=0 lowpriorityscore=0 bulkscore=0 adultscore=0
- clxscore=1015 mlxscore=0 priorityscore=1501 mlxlogscore=999
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412230146
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH wireless] wifi: wilc1000: unregister wiphy only if it has
+ been registered
+To: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+ Ajay Singh <ajay.kathat@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Kalle Valo <kvalo@kernel.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20241223-wilc_fix_probe_error_path-v1-1-91fa7bd8e5b6@bootlin.com>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <20241223-wilc_fix_probe_error_path-v1-1-91fa7bd8e5b6@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Currently, when the driver receives a channel switch count WMI event from
-the firmware with a count greater than 1, it calls
-ieee80211_beacon_update_cntdwn(). If the beacon transmission fails, the
-event will be received again with the previous count value. In this
-scenario, the host decrements the mac80211 counter again, causing it to
-move ahead of the firmware counter. Ultimately, when the firmware count
-reaches 1, the mac80211 counter will reach zero, triggering a
-WARN_ON_ONCE(). Therefore, there is a need to check the count value in the
-event.
+On 12/23/24 4:46 PM, Alexis Lothoré wrote:
+> There is a specific error path in probe functions in wilc drivers (both
+> sdio and spi) which can lead to kernel panic, as this one for example
+> when using SPI:
+> 
+> Unable to handle kernel paging request at virtual address 9f000000 when read
+> [9f000000] *pgd=00000000
+> Internal error: Oops: 5 [#1] ARM
+> Modules linked in: wilc1000_spi(+) crc_itu_t crc7 wilc1000 cfg80211 bluetooth ecdh_generic ecc
+> CPU: 0 UID: 0 PID: 106 Comm: modprobe Not tainted 6.13.0-rc3+ #22
+> Hardware name: Atmel SAMA5
+> PC is at wiphy_unregister+0x244/0xc40 [cfg80211]
+> LR is at wiphy_unregister+0x1c0/0xc40 [cfg80211]
+> [...]
+>   wiphy_unregister [cfg80211] from wilc_netdev_cleanup+0x380/0x494 [wilc1000]
+>   wilc_netdev_cleanup [wilc1000] from wilc_bus_probe+0x360/0x834 [wilc1000_spi]
+>   wilc_bus_probe [wilc1000_spi] from spi_probe+0x15c/0x1d4
+>   spi_probe from really_probe+0x270/0xb2c
+>   really_probe from __driver_probe_device+0x1dc/0x4e8
+>   __driver_probe_device from driver_probe_device+0x5c/0x140
+>   driver_probe_device from __driver_attach+0x220/0x540
+>   __driver_attach from bus_for_each_dev+0x13c/0x1a8
+>   bus_for_each_dev from bus_add_driver+0x2a0/0x6a4
+>   bus_add_driver from driver_register+0x27c/0x51c
+>   driver_register from do_one_initcall+0xf8/0x564
+>   do_one_initcall from do_init_module+0x2e4/0x82c
+>   do_init_module from load_module+0x59a0/0x70c4
+>   load_module from init_module_from_file+0x100/0x148
+>   init_module_from_file from sys_finit_module+0x2fc/0x924
+>   sys_finit_module from ret_fast_syscall+0x0/0x1c
+> 
+> The issue can easily be reproduced, for example by not wiring correctly
+> a wilc device through SPI (and so, make it unresponsive to early SPI
+> commands). It is due to a recent change decoupling wiphy allocation from
+> wiphy registration, however wilc_netdev_cleanup has not been updated
+> accordingly, letting it possibly call wiphy unregister on a wiphy which
+> has never been registered.
+> 
+> Fix this crash by moving wiphy_unregister/wiphy_free out of
+> wilc_netdev_cleanup, and by adjusting error paths in both drivers
+> 
+> Fixes: fbdf0c5248dc ("wifi: wilc1000: Register wiphy after reading out chipid")
+> Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+Nice find, thank you for fixing it.
 
-Hence to fix this, maintain the current ongoing counter in arvif. If the
-count in the event does not match the expected value, silently discard the
-event.
+Reviewed-by: Marek Vasut <marex@denx.de>
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/core.h |  2 ++
- drivers/net/wireless/ath/ath12k/wmi.c  | 19 ++++++++++++++++---
- 2 files changed, 18 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
-index b789b375b891c87a4c00374ba81ea12ef0f994f9..61f07d378aaa9676385bcb0b597170ad20febbe3 100644
---- a/drivers/net/wireless/ath/ath12k/core.h
-+++ b/drivers/net/wireless/ath/ath12k/core.h
-@@ -298,6 +298,8 @@ struct ath12k_link_vif {
- 	u8 link_id;
- 	struct ath12k_vif *ahvif;
- 	struct ath12k_rekey_data rekey_data;
-+
-+	u8 current_cntdown_counter;
- };
- 
- struct ath12k_vif {
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index 99f6dc2fbbe3d0aa71ab96e500cfaa8e4bf9930f..d0f328fc9f379cacd1c3beeaeb64a025f2fcef06 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -1934,6 +1934,7 @@ int ath12k_wmi_bcn_tmpl(struct ath12k_link_vif *arvif,
- 		cmd->ext_csa_switch_count_offset =
- 				cpu_to_le32(offs->cntdwn_counter_offs[1]);
- 		cmd->csa_event_bitmap = cpu_to_le32(0xFFFFFFFF);
-+		arvif->current_cntdown_counter = bcn->data[offs->cntdwn_counter_offs[0]];
- 	}
- 
- 	cmd->buf_len = cpu_to_le32(bcn->len);
-@@ -6912,10 +6913,22 @@ ath12k_wmi_process_csa_switch_count_event(struct ath12k_base *ab,
- 			continue;
- 
- 		/* Finish CSA when counter reaches zero */
--		if (!current_switch_count)
-+		if (!current_switch_count) {
- 			ieee80211_csa_finish(ahvif->vif, arvif->link_id);
--		else if (current_switch_count > 1)
--			ieee80211_beacon_update_cntdwn(ahvif->vif, arvif->link_id);
-+			arvif->current_cntdown_counter = 0;
-+		} else if (current_switch_count > 1) {
-+			/* If the count in event is not what we expect, don't update the
-+			 * mac80211 count. Since during beacon Tx failure, count in the
-+			 * firmware will not decrement and this event will come with the
-+			 * previous count value again
-+			 */
-+			if (current_switch_count != arvif->current_cntdown_counter)
-+				continue;
-+
-+			arvif->current_cntdown_counter =
-+				ieee80211_beacon_update_cntdwn(ahvif->vif,
-+							       arvif->link_id);
-+		}
- 	}
- 	rcu_read_unlock();
- }
-
--- 
-2.34.1
-
+Thanks !
 
