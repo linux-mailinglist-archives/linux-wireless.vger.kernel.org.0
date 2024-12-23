@@ -1,78 +1,76 @@
-Return-Path: <linux-wireless+bounces-16732-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16733-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6CBE9FB02A
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2024 15:40:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E4619FB076
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2024 16:02:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E52D16AB43
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2024 14:37:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0DFE1882626
+	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2024 15:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB0C11F941;
-	Mon, 23 Dec 2024 14:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 733B21AB6D8;
+	Mon, 23 Dec 2024 15:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YL6n39uZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D8IwmvSD"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A80418622
-	for <linux-wireless@vger.kernel.org>; Mon, 23 Dec 2024 14:32:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4B114287
+	for <linux-wireless@vger.kernel.org>; Mon, 23 Dec 2024 15:02:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734964353; cv=none; b=u2t5v0emKJPmbJp4ULRiKzRbZCuUXII93VL7j01qpaOj4zFpXFgXz/kus1Vza/fKc3nRE03ExemI1LcEv5oFoQ31QTUNqQ4HULQQ8esslLX1Wn7pQC9DDcwuWsWRalFd2/v8kBzTQc2AMyFWAPaTeZMgaxG/tC67kmSZRBoE+Gg=
+	t=1734966124; cv=none; b=heTx9E2vbaDvWqICQfv0evf4Xe7zvI2i/xlLMaXxt8ROSREfEvzwaLQADByHwOEpG1WkdkWcERPRGboOyhhoZJsAi+DaUwk8J3WhFZQI9foGsYe7YE4p+/yE2rz17cBJLIErscR0ebx1Hjj/QnnX8WuII96njyQzLtlPNbBPR5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734964353; c=relaxed/simple;
-	bh=honSO1g2qJ85elsKV/S+Uhie2sCmKFhhVOWoyePC74Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Sbe4HWseWBvE5J3k9nvbwmY+FQK6AY6nHeiZVSDcT/X+3PIVgJZSC0HDVHPho1TGcFM92HQLGneuSQ8s4j2tHRSpyqR9UMLao2NDNRde1sJ+kE/k5YBJRWR6Iz721XV372dbgSp0gLoJFpkcIZKKL9uU0OMtV8bs+EMQMgnPvn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YL6n39uZ; arc=none smtp.client-ip=209.85.208.43
+	s=arc-20240116; t=1734966124; c=relaxed/simple;
+	bh=5o+dgMZ+xIgZjPEqIlqEebpdkE7foAkE+SukklpdU8k=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=mMPwz7Jup0UjlUVFt/ftM4DszZDGNvxML53Zj56lUqp2f6gpWLJ6CKw++jU/xu5uarlzt9Ivf/cwXyF6n1CwBqXjdoYfFU+JSyYnntQhPV85+3JDCqC1EtXky47ahCjzicqjrmiryevd8AVDpvrkqw9p/wD+nz0fKdqIKLvLz5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D8IwmvSD; arc=none smtp.client-ip=209.85.218.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5d414b8af7bso7926212a12.0
-        for <linux-wireless@vger.kernel.org>; Mon, 23 Dec 2024 06:32:31 -0800 (PST)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-aaee2c5ee6eso95456866b.1
+        for <linux-wireless@vger.kernel.org>; Mon, 23 Dec 2024 07:02:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734964350; x=1735569150; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bqbmweGP4OkjKTS5Z7Bgv0pOh8qhZkH7hrzN1ioiLfs=;
-        b=YL6n39uZIoPmH4a/YaWfJQ1HkQLtoplKa+Cu6NbIEd8drfu7N7HCt0TnNmH0uXK0jc
-         ED0tOFS4MUmA6f4SRnSxEKkRmhmKqm6fG+JpX5lEo9cCdfC+b39CVBw3OhBeePQjCLeB
-         r6E+hudpU9udkgM2bv2lqF6cgtH9ZKIdGq9IgT+cHabF+EMDI5g+7K2YNtm8UCQfCxiR
-         e0HacE6ls9/txLV7jJ7v7Aprh3fKzF8FzDHs0Uw5LcUvvi0pQyces3+rf8cwI8Q69PYl
-         74nMkE4XWViBvtKlF7Yyt6+a8zZt/mIGmiLhUo8R45Wid31A5ZuQYRTzwKwEPI1tLWp6
-         WyXA==
+        d=gmail.com; s=20230601; t=1734966121; x=1735570921; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6R6wjeG2XEa6ElBWIK/lDlXFOawkRZyij1If6/QC2oI=;
+        b=D8IwmvSDlfIezK8i363C8j5Y6vwnTtQOk0HBvKvGjiZ+/UIXkwVtj3V/qOPnBvWBFW
+         tgSMp3UkTclu/nCAjwkC44CaMUI3ak6fb3UexAhyHzG4UG0GROyJuZyg+ODt3ljkVkDN
+         +Zrr03qI5AIQYO0D87eblnf0pY61Bxyzdw79TcnaoAuNxCpGGwOcVvkicRSLt172JEZz
+         qc2+AwXEg8CnNyvDJ5Ls+pxoUytdgxV4X3U0w7KR6EEUedPwvBQnITUVrkBLB0KkL2/2
+         edEFQJRMguCvYfmlt1ECg2n9DSM6lvcCqUApuymxkjACcynUx5VjQCxjbLJD/Ruzbymd
+         k5qA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734964350; x=1735569150;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bqbmweGP4OkjKTS5Z7Bgv0pOh8qhZkH7hrzN1ioiLfs=;
-        b=KBtx0+prWB2Sz8yF7XWGFST3EG2FcfCKyoP+neOvlRVf3jC5Jt68Cbywz4m+oqDYFt
-         PDKvsdTv+NGzhVAZZgZoSy85+IxzooAfK/CY4SdkVKPh4E83GuBiw0ZK8dXGFCkukiVF
-         xE4hq1cstqZRjkjB4nl4B5mcLlvO3gzgQCoqnbOzsY6YefBVTVzGkPLLEHASt1l5lut5
-         UOI8yJjWQN+o4A7mdBY4a3IYznaCB9trMMFo8lxIsEnYSuNQJFkXMeLE919ZVZSyvjlc
-         08fz1P5jscnuJsu0iHhpQDKMIRp4fe9iK3KX445gNHrw5kuZUl7Mtp77PWGVx/OvemwY
-         5ZSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWxkhiZBEyRXI85/kOG1f+sYokriehplXaph5k/VpYM6nDl/UTIuhzjvzxs93ixkL9hHNo3Ql4R7IYGsBD1Jw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdKS4VMUwyO/ERYvhNBefRJ1LXsz5EjAhVz7zIcYm9ecMsfzvf
-	Sr7xkn+Zwsi1ZTAZL/J2gXpMDIBIZjKfE8HTMlBPxBou4epm53O8
-X-Gm-Gg: ASbGncv7YywFyYH058MRRhLVAqU46/p4dbo+CUeOfmGzW4y7sr9FMrtvjJT3yFTZcG1
-	j9BSyJmgvVdl9LhW9+0/zA+sagRlu/X+r7g9oIYDLN9OgG4PGqb3KuD9iZ7cUDZtM+zYkms6yb1
-	h+aCNpIk0tibxaR3fkPRKE2iEfwuPI8ipiRRE1IHdBOZSS+1QbzPN4EHINuMwF5k+YNAO1VdQN7
-	AXQCOq8xB9TxwHzm6R7g2VQvf0uoEBUDDLpPjwIn/YzCPihkHxyk29PiR+mHlAf
-X-Google-Smtp-Source: AGHT+IE3MoERIFp4sYcmhGUXR4KZlcD2Mns+QpbVkGDAGZsW65LrRdhzusyT8SXYIcW9gwWXl5+Zdw==
-X-Received: by 2002:a17:907:968a:b0:aab:f014:fc9a with SMTP id a640c23a62f3a-aac2b383cb3mr992564966b.22.1734964350002;
-        Mon, 23 Dec 2024 06:32:30 -0800 (PST)
+        d=1e100.net; s=20230601; t=1734966121; x=1735570921;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=6R6wjeG2XEa6ElBWIK/lDlXFOawkRZyij1If6/QC2oI=;
+        b=S3DwiH7h8X2dqNY5CUKzEfA1xVjVsPNQfX8v7y//FWOgGYPILuWX/fgqFLMx6Rmtzl
+         4U92hchcz8Zi7pwA8InS2YZBEcx6n8KgmOt/UoTOrrpbIGXIsNxXC+2FVLLV4yXWIlZK
+         H//8ds3Jp7d3XpDAzRa/7VYacthbkAvMDXWIxAMu+7o5/nvMfqpYlfiwAdkhs0UXPee5
+         nAM1GW0/g7aX6oAZ0D1sZhrh+MOGyXQQ5i7iMKLaEoPJ3wewsfGvwPoGGGFoZ6ho/J6d
+         aYlLDwuShyP22RPpQvvj14ZO0qo2U3Aey7qXbHGLaeCzXzDbNnsSko7o/QXl/JVb9uEo
+         RaIQ==
+X-Gm-Message-State: AOJu0Yx0iOPzp3SgT6ATQltHfWxM8VEK5XJrjTH5kgryBTErzeV68UXU
+	X6mS6Xy8hPK/dSqm946jdja4gkCwzOjQ6uUXbtpMFFvBZzhiC4vtOElpUg==
+X-Gm-Gg: ASbGnctt3rLE09f0HWOipkKEn3FITG//Saa4H+22EUSs2VngCSmbBB6SSTziRdBgNqf
+	80olEMHEt0/hc117qoghUE1ZsSUexsyRV2n50VlRsZq4vA5CspuHtz3CfUfICC++YSiInX6x8cz
+	ImOPsBsRX6RGQKPvE4wjzcz0s9Dp1Q+WtG9GPQeiO4GDdQ5A2glOR+93FpFqM43Y0aguRc5I97N
+	6h49iokTP/eheHNFn6u0n5I4LzkqwGpXz7NJNzncTAc+W/gld8kTg18oBPGG2fD
+X-Google-Smtp-Source: AGHT+IHLIbiJ5akkYauEsRub6B6px931aZ+73yBn2J5MO2juSC+RoXh/9OH2IObvH1A92BvsJkaTiw==
+X-Received: by 2002:a17:907:2d8b:b0:aa6:6e41:ea53 with SMTP id a640c23a62f3a-aac271316a3mr1380100566b.7.1734966119964;
+        Mon, 23 Dec 2024 07:01:59 -0800 (PST)
 Received: from [192.168.0.50] ([79.119.240.80])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0efe4971sm531148366b.107.2024.12.23.06.32.28
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-aac0f06e0c3sm523740266b.199.2024.12.23.07.01.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Dec 2024 06:32:29 -0800 (PST)
-Message-ID: <40530de4-73de-40ef-87d3-66f1da5d3877@gmail.com>
-Date: Mon, 23 Dec 2024 16:32:27 +0200
+        Mon, 23 Dec 2024 07:01:59 -0800 (PST)
+Message-ID: <cba8e2f2-32c4-4174-90ba-0219f29dbdde@gmail.com>
+Date: Mon, 23 Dec 2024 17:01:57 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -80,39 +78,41 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: rtl8xxxu: Fix RTL8188EU firmware upload block size
-To: Ping-Ke Shih <pkshih@realtek.com>,
- "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Cc: Jes Sorensen <Jes.Sorensen@gmail.com>
-References: <146b1077-768a-44f9-86b3-a36814edf92a@gmail.com>
- <99202479-fe1c-4f62-b756-8d5bd818f223@RTEXMBS04.realtek.com.tw>
 Content-Language: en-US
+To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>, Jes Sorensen <Jes.Sorensen@gmail.com>
 From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-In-Reply-To: <99202479-fe1c-4f62-b756-8d5bd818f223@RTEXMBS04.realtek.com.tw>
+Subject: [PATCH v2] wifi: rtl8xxxu: Fix RTL8188EU firmware upload block size
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 23/12/2024 10:05, Ping-Ke Shih wrote:
-> Bitterblue Smith <rtl8821cerfe2@gmail.com> wrote:
-> 
->> A user reports that the firmware upload consistently fails when it's
->> uploaded in chunks of 128 bytes, but it works when uploaded in chunks
->> of 196 bytes. The official driver uses 196 bytes also.
->>
->> Link: https://github.com/a5a5aa555oo/rtl8xxxu/issues/2
->> Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
->> Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-> 
-> Failed to apply patch. Set patchset state to Changes Requested.
-> 
-> Applying: wifi: rtl8xxxu: Fix RTL8188EU firmware upload block size
-> error: patch failed: drivers/net/wireless/realtek/rtl8xxxu/8188e.c:1827
-> error: drivers/net/wireless/realtek/rtl8xxxu/8188e.c: patch does not apply
-> Patch failed at 0001 wifi: rtl8xxxu: Fix RTL8188EU firmware upload block size
-> 
-> ---
-> https://github.com/pkshih/rtw.git
-> 
+A user reports that the firmware upload consistently fails when it's
+uploaded in chunks of 128 bytes, but it works when uploaded in chunks
+of 196 bytes. The official driver uses 196 bytes also.
 
-Sorry, I will send v2.
+Link: https://github.com/a5a5aa555oo/rtl8xxxu/issues/2
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+---
+v2:
+ - Make the patch apply.
+---
+ drivers/net/wireless/realtek/rtl8xxxu/8188e.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/realtek/rtl8xxxu/8188e.c b/drivers/net/wireless/realtek/rtl8xxxu/8188e.c
+index 3d04df0f5bf4..766a7a7c7d28 100644
+--- a/drivers/net/wireless/realtek/rtl8xxxu/8188e.c
++++ b/drivers/net/wireless/realtek/rtl8xxxu/8188e.c
+@@ -1860,7 +1860,7 @@ struct rtl8xxxu_fileops rtl8188eu_fops = {
+ 	.set_crystal_cap = rtl8188f_set_crystal_cap,
+ 	.cck_rssi = rtl8188e_cck_rssi,
+ 	.led_classdev_brightness_set = rtl8188eu_led_brightness_set,
+-	.writeN_block_size = 128,
++	.writeN_block_size = 196,
+ 	.rx_desc_size = sizeof(struct rtl8xxxu_rxdesc16),
+ 	.tx_desc_size = sizeof(struct rtl8xxxu_txdesc32),
+ 	.has_tx_report = 1,
+-- 
+2.47.1
+
 
