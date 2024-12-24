@@ -1,120 +1,95 @@
-Return-Path: <linux-wireless+bounces-16740-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16741-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56A439FB4B5
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2024 20:35:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CFE79FB849
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Dec 2024 02:33:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD532165B6D
-	for <lists+linux-wireless@lfdr.de>; Mon, 23 Dec 2024 19:35:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2FBD165898
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Dec 2024 01:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D81391AF0C2;
-	Mon, 23 Dec 2024 19:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE76DA927;
+	Tue, 24 Dec 2024 01:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="IE68FGZf"
+	dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b="eWJ7o3xA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from mx.treblig.org (mx.treblig.org [46.235.229.95])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA85F28DA1;
-	Mon, 23 Dec 2024 19:35:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469E018D;
+	Tue, 24 Dec 2024 01:33:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.229.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1734982518; cv=none; b=NPW4R0e6Xz/tad1Io05pKh0Cn82RG267ZsRByxRPwGyPFkwAChCnKduIqoGEPXU70FRRZzMghyulCBfdpZ9jFLqbYziojt+evpmUWpAsJhfgQNFU/VsjqLNzSsfgRCwX2+dLqGWFWYwFxV1HkZrfJHNbsFHeThobRswK7+WUe3o=
+	t=1735003983; cv=none; b=qQ9/kmA8WExSwXcO4kA4yJ97QZ3259ki1ILZNixCKAu2YJo+JybmDMIjaME2laKei4NC9NDcwg+qcznv56tfylo/OZqYhL63Jsjpy7+LLClWZaB+2B2/exkds6nFKR4PAb2pSMwr2jfjkdwCUiYDPYE68COI0WLnl4N+40R7794=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1734982518; c=relaxed/simple;
-	bh=Tsn1m5ywEzXvBJ6UNgZ4dbd5ZmgJuAvlLtvIOx4S2S8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QYBGf+OEnOkmmVFN5R8TQakBFIxa6cXIlzldh4n8p8VGAotHOzfMLpwpZVbZEkP9GAJjb2aqj39UFQ6+z5rGCTuHIwuQXxNRemFRkUdlvNd82IAuXGSZUBfUD9QQio8XO0qNtjB9OOJO+Fi2WHT2bkYcGBJUPlf+VZ3OaCAtV7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=IE68FGZf; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 727D71048588C;
-	Mon, 23 Dec 2024 20:35:11 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1734982514;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Xm0Ik8769Z7PxV+QPZ/CDNASXKO2C+1xCfZ8ziHTxy8=;
-	b=IE68FGZf4UMTwvoLQFfBK568CLW9HDck822WnpzASOUgLCManLKfXNiFPSy7De+Atpwrux
-	klAS2dEVA+0FgEjMk9cjl73iMei8qyJHEANmtHLUfLoD3CRXpnlcMqbEE3PeoqFTTmu6EY
-	u81rEaK1hBNQkmfBLdmNWHLa3EwufqAojfzq9Xb5EL9raG5m3jrDKn1nqYlK/yEXhoh2A0
-	IRLZ7jjjGNzfGf5YDFBbVWjR7HDdQJtBtAf5DCpN0k2mP2WAMcWURZ6Fe8rdH8Ul3W2E2W
-	K2sjUZ8Hcw5u1dkD9okS6gMsmRLrnWFSnqhs8gl083wMkQMcBLp0JcCwXdFEsg==
-Message-ID: <81554a5e-5b86-4944-9565-4e2aed5fd0ef@denx.de>
-Date: Mon, 23 Dec 2024 20:19:10 +0100
+	s=arc-20240116; t=1735003983; c=relaxed/simple;
+	bh=I6HsCen+wr2tjtFGdSqX+iivqi08LwcSwoLbs4zwjes=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N0UrzUHM9HTWlb2Oq8MAQrdcd7aPBJclb2bBFCxolaGdgUo+RqC5D3ZxBEO1ep2fhj5OLTdvlrGu3WLf0uR74yqAl5zD2aepe94GAqLRh/gzSdwuYGJC83t21p6OOZdCEVwpnRL71tfrONjuj/O91k4JadueP0Kgt6Lo6IIgw/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org; spf=pass smtp.mailfrom=treblig.org; dkim=pass (2048-bit key) header.d=treblig.org header.i=@treblig.org header.b=eWJ7o3xA; arc=none smtp.client-ip=46.235.229.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=treblig.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=treblig.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=treblig.org
+	; s=bytemarkmx; h=MIME-Version:Message-ID:Date:Subject:From:Content-Type:From
+	:Subject; bh=HE7Dpqf5uSd1NhKlnSd3V1r/CToo4kCxt2SjpZIIs+k=; b=eWJ7o3xA3PQOle8y
+	eUXRXWio/9iXstFNRqaZzY1Py6ztMEG7jd3geq57sGUcgtPZCDMmPi0HhvGn34jUwxytMlgrdn5qx
+	Ed1Brye1p0mdooqqlq94lydN+uTGrOIq5/UHqD+c1FvoIOWDCKpaM6x3n083l6q3/zkGVooU7UHXq
+	UQX3qt4StyvT1DfNDxguw8+AeuG50ol3BRqLnAAI5Sn7AJ5wKwBSJESO57TzoJjs49RECn7wb7WBn
+	VgMqVTS1hBmZUrbkzdfg5eYQ5auyemN9UWB8sIqwTaN+Mhu6kM+L78BrnwlOX4/TPkftjPMJLiJmi
+	5CWDFYeDaV2ywyCAwQ==;
+Received: from localhost ([127.0.0.1] helo=dalek.home.treblig.org)
+	by mx.treblig.org with esmtp (Exim 4.96)
+	(envelope-from <linux@treblig.org>)
+	id 1tPtn8-006wDg-2B;
+	Tue, 24 Dec 2024 01:32:58 +0000
+From: linux@treblig.org
+To: johannes@sipsolutions.net,
+	linux-wireless@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	"Dr. David Alan Gilbert" <linux@treblig.org>
+Subject: [PATCH 0/2] wifi: mac80211: Deadcode cleanup
+Date: Tue, 24 Dec 2024 01:32:55 +0000
+Message-ID: <20241224013257.185742-1-linux@treblig.org>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH wireless] wifi: wilc1000: unregister wiphy only if it has
- been registered
-To: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
- Ajay Singh <ajay.kathat@microchip.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Kalle Valo <kvalo@kernel.org>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20241223-wilc_fix_probe_error_path-v1-1-91fa7bd8e5b6@bootlin.com>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <20241223-wilc_fix_probe_error_path-v1-1-91fa7bd8e5b6@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-On 12/23/24 4:46 PM, Alexis Lothoré wrote:
-> There is a specific error path in probe functions in wilc drivers (both
-> sdio and spi) which can lead to kernel panic, as this one for example
-> when using SPI:
-> 
-> Unable to handle kernel paging request at virtual address 9f000000 when read
-> [9f000000] *pgd=00000000
-> Internal error: Oops: 5 [#1] ARM
-> Modules linked in: wilc1000_spi(+) crc_itu_t crc7 wilc1000 cfg80211 bluetooth ecdh_generic ecc
-> CPU: 0 UID: 0 PID: 106 Comm: modprobe Not tainted 6.13.0-rc3+ #22
-> Hardware name: Atmel SAMA5
-> PC is at wiphy_unregister+0x244/0xc40 [cfg80211]
-> LR is at wiphy_unregister+0x1c0/0xc40 [cfg80211]
-> [...]
->   wiphy_unregister [cfg80211] from wilc_netdev_cleanup+0x380/0x494 [wilc1000]
->   wilc_netdev_cleanup [wilc1000] from wilc_bus_probe+0x360/0x834 [wilc1000_spi]
->   wilc_bus_probe [wilc1000_spi] from spi_probe+0x15c/0x1d4
->   spi_probe from really_probe+0x270/0xb2c
->   really_probe from __driver_probe_device+0x1dc/0x4e8
->   __driver_probe_device from driver_probe_device+0x5c/0x140
->   driver_probe_device from __driver_attach+0x220/0x540
->   __driver_attach from bus_for_each_dev+0x13c/0x1a8
->   bus_for_each_dev from bus_add_driver+0x2a0/0x6a4
->   bus_add_driver from driver_register+0x27c/0x51c
->   driver_register from do_one_initcall+0xf8/0x564
->   do_one_initcall from do_init_module+0x2e4/0x82c
->   do_init_module from load_module+0x59a0/0x70c4
->   load_module from init_module_from_file+0x100/0x148
->   init_module_from_file from sys_finit_module+0x2fc/0x924
->   sys_finit_module from ret_fast_syscall+0x0/0x1c
-> 
-> The issue can easily be reproduced, for example by not wiring correctly
-> a wilc device through SPI (and so, make it unresponsive to early SPI
-> commands). It is due to a recent change decoupling wiphy allocation from
-> wiphy registration, however wilc_netdev_cleanup has not been updated
-> accordingly, letting it possibly call wiphy unregister on a wiphy which
-> has never been registered.
-> 
-> Fix this crash by moving wiphy_unregister/wiphy_free out of
-> wilc_netdev_cleanup, and by adjusting error paths in both drivers
-> 
-> Fixes: fbdf0c5248dc ("wifi: wilc1000: Register wiphy after reading out chipid")
-> Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-Nice find, thank you for fixing it.
+From: "Dr. David Alan Gilbert" <linux@treblig.org>
 
-Reviewed-by: Marek Vasut <marex@denx.de>
+Hi,
+  This pair of patches removes a bunch of functions that haven't
+been called for more than a few years.
 
-Thanks !
+I suspect I could go further; in particular I wonder
+if
+  ieee80211_debugfs_key_remove_beacon_default()
+and
+  ieee80211_debugfs_key_remove_mgmt_default()
+
+could go together with a data structure somewhere?
+
+Also, ieee80211_nan_func_match() was the last use of
+cfg80211_nan_match(); but that would be in a separate area.
+
+Dave
+
+Dr. David Alan Gilbert (2):
+  wifi: mac80211: Clean up debugfs_key deadcode
+  wifi: mac80211: Remove unused ieee80211_nan_func_match
+
+ include/net/mac80211.h     | 15 ------------
+ net/mac80211/cfg.c         | 25 --------------------
+ net/mac80211/debugfs_key.c | 47 --------------------------------------
+ net/mac80211/debugfs_key.h | 15 ------------
+ 4 files changed, 102 deletions(-)
+
+-- 
+2.47.1
+
 
