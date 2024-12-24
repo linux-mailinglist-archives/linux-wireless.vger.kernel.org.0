@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-16789-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16790-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75D039FC0F9
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Dec 2024 18:28:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D33309FC0FA
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Dec 2024 18:28:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87A9E7A1C79
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Dec 2024 17:28:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D5D9164F6A
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Dec 2024 17:28:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4300F212D71;
-	Tue, 24 Dec 2024 17:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 837C7212D85;
+	Tue, 24 Dec 2024 17:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cMZWVFT3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aC1VnpVl"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B20212D85
-	for <linux-wireless@vger.kernel.org>; Tue, 24 Dec 2024 17:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26E1212D94
+	for <linux-wireless@vger.kernel.org>; Tue, 24 Dec 2024 17:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735061274; cv=none; b=qQtAfM/Iu9oqDWBEIyrn/ec9TpK6uh2xvQUAX/2KBkEZL7PwntaVbGEEvSLeg5mB1E4ZytUho6TAD92V771wsJW2iIP6MzBVEA/j7zrxBhuh4ymM8t8W7xDLlAsd60QzqBxPSxlMBv6TrBzpv45B/A2J1acswWfHYvWzgYk8r4g=
+	t=1735061275; cv=none; b=f2iHIU7kdWwwoIgCMdLURL6Gos5juNXBZMmuECeCBNeagVIIk+kBJuwE3CQc6/nrhExdKEexVJFkRjVIPdQVKf25cbGkzUFoR5fJQ+gYQ9+yU0p617tKOz9Ixapa+eWA9PK7I2uvAIBUry/dozOwZelrTNc3SSYsr7JC3V4XcEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735061274; c=relaxed/simple;
-	bh=ea9eZaSVVD4xIzR1LCtTKf+/Ls7hd+u7eTEXNmZ98xc=;
+	s=arc-20240116; t=1735061275; c=relaxed/simple;
+	bh=2puN5Kg20AOWdMyK/Ut1Z26EneYlIRr+5o7SHZhMX9s=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=b4sPxCS/GJd4pgGrw/ySSQM4aZRp2+2yiiRFJZV6ONqFMiB241eKHP74XaZZviuHA+CkUPnzeov2tw6JxYk50/V5Ng07QhSbgvHDEJK2nlJq6Ifr0hpLOhNba5Nm4GXLbodiWK+qKOEctkceb8uXMQmvJonsD+TVoGbgRBXfVNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cMZWVFT3; arc=none smtp.client-ip=198.175.65.14
+	 MIME-Version; b=Kl/qGJWVUA/LWl/ujbjnuEuS5W7l8XAnHCS5bBe5xVQ99g0KXe20XB3jTHJcbvjcKEsl/F/i2RaEdSPqyoz7JzAk86Chu0kRoORVNdFAOn8XvULY/U7M7cDXxxBVHk+QOjsrQAIESnSKyj3Q8qRz8LeLlC9gzLWMNOyetc82Sh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aC1VnpVl; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1735061272; x=1766597272;
+  t=1735061274; x=1766597274;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=ea9eZaSVVD4xIzR1LCtTKf+/Ls7hd+u7eTEXNmZ98xc=;
-  b=cMZWVFT3rCz/NbT5Nz+TjF5FWwcjgIKvrZMIqmePqhK11+1f7xh7yCcI
-   cmHB7WosDjwUobWQapl3jftAY4ehcs5Fx+KXqmMtlJqUHkc4JAaDyv3WI
-   4iSFYkk3d8fw0aGgHBwAOPgswCwYQ1MDOFkxO4GTEPgQgTmjEt73UttHD
-   uwrimpO7/4iXYxdt/PBS34CHOi64Xqp553Sv0gp0UOpwdQy4La7b3kKah
-   cTzyLogyIhsUBMyNAG4uCHJI0fCMm2Jeajcbq/tpYfnwPsO7YreN6zc5l
-   oMOCTr4Q3GdIlZ7XoZzh3Jba3XDifBm9wC6WeslPto12JX1j+kYdbykJL
-   A==;
-X-CSE-ConnectionGUID: bPRMrGciThaKEaTXfeqhDA==
-X-CSE-MsgGUID: JuYzMHUoRX2cxMEfajRTXw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11296"; a="39311134"
+  bh=2puN5Kg20AOWdMyK/Ut1Z26EneYlIRr+5o7SHZhMX9s=;
+  b=aC1VnpVl2MI0hUm+AiMRkU2sGU8RGZ5VaDy8WfL/2LlTMwg5thaiAFqS
+   bvZdmPLHjBrwyRoTB6VWGR4oVKTCroY7UjfzKy5qSGEpr1nAMmNvz73ul
+   uoBmEzrEaogaV0gC2YL30Jr1kSJUdp1g0G9HJlGY/NqLBrZQ0EOmN00Nj
+   sYtSFYLuAn/I4tCkWvT0DM/kACIcHNWWnB4vCsKrN0ON/EpvWkkA9LYgV
+   J4syFrQWpWgz6NO2H7Gqkrm6sCeczKQdy8euQcuGlkLdDiUwgQ4wDTOPz
+   SdAmiXAMgh0Lfj27I4mBp4YqjIPXVZOJpk3wD2Eg+Yl7r/4s4rjV/vrQZ
+   w==;
+X-CSE-ConnectionGUID: S3SF3HiETaiD5Os+0Y2M+w==
+X-CSE-MsgGUID: 7mbf6LEhTbKrnmYP3pUahg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11296"; a="39311136"
 X-IronPort-AV: E=Sophos;i="6.12,260,1728975600"; 
-   d="scan'208";a="39311134"
+   d="scan'208";a="39311136"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Dec 2024 09:27:52 -0800
-X-CSE-ConnectionGUID: jjZIemFSR/GWK/j8+tQRnw==
-X-CSE-MsgGUID: k8LE8WJkTbW4UgyN3TGk4Q==
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Dec 2024 09:27:54 -0800
+X-CSE-ConnectionGUID: DcAQrDFoREyDRPSTWwE8wA==
+X-CSE-MsgGUID: 9kp3p0InRbePnNmuzKy9gA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,260,1728975600"; 
-   d="scan'208";a="99341041"
+   d="scan'208";a="99341050"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Dec 2024 09:27:51 -0800
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Dec 2024 09:27:52 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [RESEND][PATCH 4/5] wifi: mac80211: change disassoc sequence a bit
-Date: Tue, 24 Dec 2024 19:27:30 +0200
-Message-Id: <20241224192322.996ad1be6cb3.I7815d33415aa1d65c0120b54be7a15a45388f807@changeid>
+Subject: [RESEND][PATCH 5/5] wifi: iwlwifi: mvm: cleanup iwl_mvm_sta_del
+Date: Tue, 24 Dec 2024 19:27:31 +0200
+Message-Id: <20241224192322.ecebfa16c62c.Ia1cc352b871593be4f51cb3db98f9eedd5267857@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241224172731.2640748-1-miriam.rachel.korenblit@intel.com>
 References: <20241224172731.2640748-1-miriam.rachel.korenblit@intel.com>
@@ -77,240 +77,167 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-Currently, the sequence goes like this (among others):
-1. flush all stations (including the AP ones) -> this will tell the
-   drivers to remove the stations
-2. notify the driver the vif is not associated.
-
-Which means that in between 1 and 2, the state is that the vif is
-associated, but there is no AP station, which makes no sense, and may be
-problematic for some drivers (for example iwlwifi)
-
-Change the sequence to:
-1. flush the TDLS stations
-2. move the AP station to IEEE80211_STA_NONE
-3. notify the driver about the vif being unassociated
-4. flush the AP station
-
-In order to not break other drivers, add a vif flag to indicate whether
-the driver wants to new sequence or not. If the flag is not set, then
-things will be done in the old sequence.
+Now it neither sets the ret argument or return something else than
+false.
+Cleanup this function to be void and to not receive the ret argument.
+This also allows to get rid of the sta_in_fw parameter in
+iwl_mvm_mld_free_sta_link.
 
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c | 29 ++-------------
- .../wireless/intel/iwlwifi/mvm/mld-mac80211.c | 35 ++-----------------
- drivers/net/wireless/intel/iwlwifi/mvm/sta.c  |  5 ---
- include/net/mac80211.h                        |  4 +++
- net/mac80211/mlme.c                           | 24 +++++++++++--
- 5 files changed, 30 insertions(+), 67 deletions(-)
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  2 +-
+ .../net/wireless/intel/iwlwifi/mvm/mld-sta.c  | 27 ++++++-------------
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.c  |  9 +++----
+ drivers/net/wireless/intel/iwlwifi/mvm/sta.h  |  7 +++--
+ 4 files changed, 15 insertions(+), 30 deletions(-)
 
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 07778d55878b..54275374815a 100644
+index 54275374815a..e22c9172bf02 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -1802,6 +1802,8 @@ static int iwl_mvm_mac_add_interface(struct ieee80211_hw *hw,
- 	mvmvif->deflink.active = 0;
- 	mvmvif->link[0] = &mvmvif->deflink;
+@@ -1153,7 +1153,7 @@ static void iwl_mvm_cleanup_sta_iterator(void *data, struct ieee80211_sta *sta)
+ 			 * Delete the stale data to avoid issues later on.
+ 			 */
+ 			iwl_mvm_mld_free_sta_link(mvm, mvm_sta, mvm_link_sta,
+-						  link_id, false);
++						  link_id);
+ 		}
+ 	}
+ }
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
+index 019839604011..2f159024eeb8 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-sta.c
+@@ -518,14 +518,12 @@ static int iwl_mvm_mld_cfg_sta(struct iwl_mvm *mvm, struct ieee80211_sta *sta,
+ void iwl_mvm_mld_free_sta_link(struct iwl_mvm *mvm,
+ 			       struct iwl_mvm_sta *mvm_sta,
+ 			       struct iwl_mvm_link_sta *mvm_sta_link,
+-			       unsigned int link_id,
+-			       bool is_in_fw)
++			       unsigned int link_id)
+ {
+ 	lockdep_assert_wiphy(mvm->hw->wiphy);
+ 	lockdep_assert_held(&mvm->mutex);
  
-+	vif->driver_flags = IEEE80211_VIF_REMOVE_AP_AFTER_DISASSOC;
-+
- 	ret = iwl_mvm_set_link_mapping(mvm, vif, &vif->bss_conf);
- 	if (ret)
- 		goto out;
-@@ -2967,33 +2969,6 @@ static void iwl_mvm_bss_info_changed_station(struct iwl_mvm *mvm,
- 					    &mvm->status),
- 				  "Failed to update SF upon disassociation\n");
+-	RCU_INIT_POINTER(mvm->fw_id_to_mac_id[mvm_sta_link->sta_id],
+-			 is_in_fw ? ERR_PTR(-EINVAL) : NULL);
++	RCU_INIT_POINTER(mvm->fw_id_to_mac_id[mvm_sta_link->sta_id], NULL);
+ 	RCU_INIT_POINTER(mvm->fw_id_to_link_sta[mvm_sta_link->sta_id], NULL);
+ 	RCU_INIT_POINTER(mvm_sta->link[link_id], NULL);
  
--			/*
--			 * If we get an assert during the connection (after the
--			 * station has been added, but before the vif is set
--			 * to associated), mac80211 will re-add the station and
--			 * then configure the vif. Since the vif is not
--			 * associated, we would remove the station here and
--			 * this would fail the recovery.
--			 */
--			if (!test_bit(IWL_MVM_STATUS_IN_HW_RESTART,
--				      &mvm->status)) {
--				/* first remove remaining keys */
--				iwl_mvm_sec_key_remove_ap(mvm, vif,
--							  &mvmvif->deflink, 0);
--
--				/*
--				 * Remove AP station now that
--				 * the MAC is unassoc
--				 */
--				ret = iwl_mvm_rm_sta_id(mvm, vif,
--							mvmvif->deflink.ap_sta_id);
--				if (ret)
--					IWL_ERR(mvm,
--						"failed to remove AP station\n");
--
--				mvmvif->deflink.ap_sta_id = IWL_INVALID_STA;
--			}
--
- 			/* remove quota for this interface */
- 			ret = iwl_mvm_update_quotas(mvm, false, NULL);
- 			if (ret)
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-index b807046144c0..d02114b093b6 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-@@ -18,6 +18,8 @@ static int iwl_mvm_mld_mac_add_interface(struct ieee80211_hw *hw,
+@@ -546,7 +544,7 @@ static void iwl_mvm_mld_sta_rm_all_sta_links(struct iwl_mvm *mvm,
+ 		if (!link)
+ 			continue;
  
- 	mvmvif->mvm = mvm;
- 
-+	vif->driver_flags |= IEEE80211_VIF_REMOVE_AP_AFTER_DISASSOC;
-+
- 	/* Not much to do here. The stack will not allow interface
- 	 * types or combinations that we didn't advertise, so we
- 	 * don't really have to check the types.
-@@ -831,30 +833,6 @@ static bool iwl_mvm_mld_vif_have_valid_ap_sta(struct iwl_mvm_vif *mvmvif)
- 	return false;
+-		iwl_mvm_mld_free_sta_link(mvm, mvm_sta, link, link_id, false);
++		iwl_mvm_mld_free_sta_link(mvm, mvm_sta, link, link_id);
+ 	}
  }
  
--static void iwl_mvm_mld_vif_delete_all_stas(struct iwl_mvm *mvm,
--					    struct ieee80211_vif *vif)
--{
--	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
--	int i, ret;
--
--	if (test_bit(IWL_MVM_STATUS_IN_HW_RESTART, &mvm->status))
--		return;
--
--	for_each_mvm_vif_valid_link(mvmvif, i) {
--		struct iwl_mvm_vif_link_info *link = mvmvif->link[i];
--
--		if (!link)
--			continue;
--
--		iwl_mvm_sec_key_remove_ap(mvm, vif, link, i);
--		ret = iwl_mvm_mld_rm_sta_id(mvm, link->ap_sta_id);
--		if (ret)
--			IWL_ERR(mvm, "failed to remove AP station\n");
--
--		link->ap_sta_id = IWL_INVALID_STA;
--	}
--}
--
- static void iwl_mvm_mld_vif_cfg_changed_station(struct iwl_mvm *mvm,
- 						struct ieee80211_vif *vif,
- 						u64 changes)
-@@ -938,15 +916,6 @@ static void iwl_mvm_mld_vif_cfg_changed_station(struct iwl_mvm *mvm,
- 				  !test_bit(IWL_MVM_STATUS_HW_RESTART_REQUESTED,
- 					    &mvm->status),
- 				  "Failed to update SF upon disassociation\n");
--
--			/* If we get an assert during the connection (after the
--			 * station has been added, but before the vif is set
--			 * to associated), mac80211 will re-add the station and
--			 * then configure the vif. Since the vif is not
--			 * associated, we would remove the station here and
--			 * this would fail the recovery.
--			 */
--			iwl_mvm_mld_vif_delete_all_stas(mvm, vif);
- 		}
+@@ -844,18 +842,11 @@ int iwl_mvm_mld_rm_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 		struct iwl_mvm_link_sta *mvm_link_sta =
+ 			rcu_dereference_protected(mvm_sta->link[link_id],
+ 						  lockdep_is_held(&mvm->mutex));
+-		bool stay_in_fw;
++		iwl_mvm_sta_del(mvm, vif, sta, link_sta);
  
- 		iwl_mvm_bss_info_changed_station_assoc(mvm, vif, changes);
+-		stay_in_fw = iwl_mvm_sta_del(mvm, vif, sta, link_sta, &ret);
+-		if (ret)
+-			break;
+-
+-		if (!stay_in_fw)
+-			ret = iwl_mvm_mld_rm_sta_from_fw(mvm,
+-							 mvm_link_sta->sta_id);
++		ret = iwl_mvm_mld_rm_sta_from_fw(mvm, mvm_link_sta->sta_id);
+ 
+-		iwl_mvm_mld_free_sta_link(mvm, mvm_sta, mvm_link_sta,
+-					  link_id, stay_in_fw);
++		iwl_mvm_mld_free_sta_link(mvm, mvm_sta, mvm_link_sta, link_id);
+ 	}
+ 	kfree(mvm_sta->mpdu_counters);
+ 	mvm_sta->mpdu_counters = NULL;
+@@ -1122,8 +1113,7 @@ int iwl_mvm_mld_update_sta_links(struct iwl_mvm *mvm,
+ 		if (vif->type == NL80211_IFTYPE_STATION)
+ 			mvm_vif_link->ap_sta_id = IWL_INVALID_STA;
+ 
+-		iwl_mvm_mld_free_sta_link(mvm, mvm_sta, mvm_sta_link, link_id,
+-					  false);
++		iwl_mvm_mld_free_sta_link(mvm, mvm_sta, mvm_sta_link, link_id);
+ 	}
+ 
+ 	for_each_set_bit(link_id, &links_to_add, IEEE80211_MLD_MAX_NUM_LINKS) {
+@@ -1227,8 +1217,7 @@ int iwl_mvm_mld_update_sta_links(struct iwl_mvm *mvm,
+ 			rcu_dereference_protected(mvm_sta->link[link_id],
+ 						  lockdep_is_held(&mvm->mutex));
+ 
+-		iwl_mvm_mld_free_sta_link(mvm, mvm_sta, mvm_sta_link, link_id,
+-					  false);
++		iwl_mvm_mld_free_sta_link(mvm, mvm_sta, mvm_sta_link, link_id);
+ 	}
+ 
+ 	return ret;
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-index d3fa2c4feb0f..35f4ca89920e 100644
+index 35f4ca89920e..9d9d385f67ac 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.c
-@@ -2065,15 +2065,10 @@ bool iwl_mvm_sta_del(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
- 
- 	if (vif->type == NL80211_IFTYPE_STATION &&
- 	    mvm_link->ap_sta_id == sta_id) {
--		/* if associated - we can't remove the AP STA now */
--		if (vif->cfg.assoc)
--			return true;
--
- 		/* first remove remaining keys */
- 		iwl_mvm_sec_key_remove_ap(mvm, vif, mvm_link,
- 					  link_sta->link_id);
- 
--		/* unassoc - go ahead - remove the AP STA now */
- 		mvm_link->ap_sta_id = IWL_INVALID_STA;
- 	}
- 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 9320d4bc22ee..769c1fe30e34 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -1855,6 +1855,9 @@ struct ieee80211_channel_switch {
-  *	operation on this interface and request a channel context without
-  *	the AP definition. Use this e.g. because the device is able to
-  *	handle OFDMA (downlink and trigger for uplink) on a per-AP basis.
-+ * @IEEE80211_VIF_REMOVE_AP_AFTER_DISASSOC: indicates that the AP sta should
-+ *	be removed only after setting the vif as unassociated, and not the
-+ *	opposite. Only relevant for STA vifs.
+@@ -2045,9 +2045,9 @@ int iwl_mvm_wait_sta_queues_empty(struct iwl_mvm *mvm,
+  * Returns if we're done with removing the station, either
+  * with error or success
   */
- enum ieee80211_vif_flags {
- 	IEEE80211_VIF_BEACON_FILTER		= BIT(0),
-@@ -1863,6 +1866,7 @@ enum ieee80211_vif_flags {
- 	IEEE80211_VIF_GET_NOA_UPDATE		= BIT(3),
- 	IEEE80211_VIF_EML_ACTIVE	        = BIT(4),
- 	IEEE80211_VIF_IGNORE_OFDMA_WIDER_BW	= BIT(5),
-+	IEEE80211_VIF_REMOVE_AP_AFTER_DISASSOC	= BIT(6),
- };
- 
- 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 61c318f5239f..e502f6d57289 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -3599,6 +3599,7 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
+-bool iwl_mvm_sta_del(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
++void iwl_mvm_sta_del(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 		     struct ieee80211_sta *sta,
+-		     struct ieee80211_link_sta *link_sta, int *ret)
++		     struct ieee80211_link_sta *link_sta)
  {
- 	struct ieee80211_if_managed *ifmgd = &sdata->u.mgd;
- 	struct ieee80211_local *local = sdata->local;
-+	struct sta_info *ap_sta = sta_info_get(sdata, sdata->vif.cfg.ap_addr);
- 	unsigned int link_id;
- 	u64 changed = 0;
- 	struct ieee80211_prep_tx_info info = {
-@@ -3609,6 +3610,9 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+ 	struct iwl_mvm_vif_link_info *mvm_link =
+@@ -2080,8 +2080,6 @@ bool iwl_mvm_sta_del(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 		mvm->tdls_cs.peer.sta_id = IWL_INVALID_STA;
+ 		cancel_delayed_work(&mvm->tdls_cs.dwork);
+ 	}
+-
+-	return false;
+ }
  
- 	lockdep_assert_wiphy(local->hw.wiphy);
- 
-+	if (WARN_ON(!ap_sta))
-+		return;
-+
- 	if (WARN_ON_ONCE(tx && !frame_buf))
- 		return;
- 
-@@ -3672,8 +3676,16 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
- 
- 	sdata->vif.cfg.ssid_len = 0;
- 
--	/* remove AP and TDLS peers */
--	sta_info_flush(sdata, -1);
-+	/* Remove TDLS peers */
-+	__sta_info_flush(sdata, false, -1, ap_sta);
-+
-+	if (sdata->vif.driver_flags & IEEE80211_VIF_REMOVE_AP_AFTER_DISASSOC) {
-+		/* Only move the AP state */
-+		sta_info_move_state(ap_sta, IEEE80211_STA_NONE);
-+	} else {
-+		/* Remove AP peer */
-+		sta_info_flush(sdata, -1);
-+	}
- 
- 	/* finally reset all BSS / config parameters */
- 	if (!ieee80211_vif_is_mld(&sdata->vif))
-@@ -3724,6 +3736,14 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
- 		ieee80211_vif_cfg_change_notify(sdata, changed);
+ int iwl_mvm_rm_sta(struct iwl_mvm *mvm,
+@@ -2137,8 +2135,7 @@ int iwl_mvm_rm_sta(struct iwl_mvm *mvm,
+ 		*status = IWL_MVM_QUEUE_FREE;
  	}
  
-+	if (sdata->vif.driver_flags & IEEE80211_VIF_REMOVE_AP_AFTER_DISASSOC) {
-+		/*
-+		 * After notifying the driver about the disassoc,
-+		 * remove the ap sta.
-+		 */
-+		sta_info_flush(sdata, -1);
-+	}
-+
- 	/* disassociated - set to defaults now */
- 	ieee80211_set_wmm_default(&sdata->deflink, false, false);
+-	if (iwl_mvm_sta_del(mvm, vif, sta, &sta->deflink, &ret))
+-		return ret;
++	iwl_mvm_sta_del(mvm, vif, sta, &sta->deflink);
  
+ 	ret = iwl_mvm_rm_sta_common(mvm, mvm_sta->deflink.sta_id);
+ 	RCU_INIT_POINTER(mvm->fw_id_to_mac_id[mvm_sta->deflink.sta_id], NULL);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/sta.h b/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
+index 4a3799ae7c18..54d8c0df2284 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/sta.h
+@@ -507,9 +507,9 @@ void iwl_mvm_realloc_queues_after_restart(struct iwl_mvm *mvm,
+ 					  struct ieee80211_sta *sta);
+ int iwl_mvm_wait_sta_queues_empty(struct iwl_mvm *mvm,
+ 				  struct iwl_mvm_sta *mvm_sta);
+-bool iwl_mvm_sta_del(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
++void iwl_mvm_sta_del(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ 		     struct ieee80211_sta *sta,
+-		     struct ieee80211_link_sta *link_sta, int *ret);
++		     struct ieee80211_link_sta *link_sta);
+ int iwl_mvm_rm_sta(struct iwl_mvm *mvm,
+ 		   struct ieee80211_vif *vif,
+ 		   struct ieee80211_sta *sta);
+@@ -665,8 +665,7 @@ int iwl_mvm_mld_rm_sta(struct iwl_mvm *mvm, struct ieee80211_vif *vif,
+ void iwl_mvm_mld_free_sta_link(struct iwl_mvm *mvm,
+ 			       struct iwl_mvm_sta *mvm_sta,
+ 			       struct iwl_mvm_link_sta *mvm_sta_link,
+-			       unsigned int link_id,
+-			       bool is_in_fw);
++			       unsigned int link_id);
+ int iwl_mvm_mld_rm_sta_id(struct iwl_mvm *mvm, u8 sta_id);
+ int iwl_mvm_mld_update_sta_links(struct iwl_mvm *mvm,
+ 				 struct ieee80211_vif *vif,
 -- 
 2.34.1
 
