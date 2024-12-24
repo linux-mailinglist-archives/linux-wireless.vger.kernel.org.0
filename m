@@ -1,72 +1,68 @@
-Return-Path: <linux-wireless+bounces-16768-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16769-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DFAE9FBF20
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Dec 2024 15:20:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 588859FBF3D
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Dec 2024 15:36:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20496163636
-	for <lists+linux-wireless@lfdr.de>; Tue, 24 Dec 2024 14:20:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C07951884DF7
+	for <lists+linux-wireless@lfdr.de>; Tue, 24 Dec 2024 14:36:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A3441D79BE;
-	Tue, 24 Dec 2024 14:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C51D1B87FF;
+	Tue, 24 Dec 2024 14:36:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Cb23h5l3"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Zjt9AckV"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6DC21C5F3D
-	for <linux-wireless@vger.kernel.org>; Tue, 24 Dec 2024 14:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D41A1991DD
+	for <linux-wireless@vger.kernel.org>; Tue, 24 Dec 2024 14:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735050004; cv=none; b=jJZj68gLGE5tdZVzbhQGjzcKpqlXfhP685wh91vYK8CtcjmEsRdeICl4Z5hey8sofW5WOCVOa3yEEIFB6i25OOWm/Q6xvihzPXCetEn6PqfU/HuzQkp6K0BEokSoxfxoDS3yY0ISBXKjXn7aBvmxfax5orPm57FVW8UKEHk3tt0=
+	t=1735050994; cv=none; b=T3FjhJowCZPiArgfQgttWIRmLOpNpl8PxkwOBj0TShYAvzVg6i7rA9aPRCemoTBz6BO5awfhB7YjZ129u8wYQ+BVC4PH4Pu5/8Lloudy2oYa0DKk/koRyf10oYS10zN31PvHzwa8pkwWI8xSZjOSU5Ji78xvcYu7WDga/XcZ2BA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735050004; c=relaxed/simple;
-	bh=IhAjZPpG7VLcYW4JiVCxcKavpCiqsm5JyUvpx9ucxx0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jRjl+3T20quudOuCA3WxW+X7ZEvIpiEUlsLNaM3HYLxLlwEnX0ggRTjADYa6wfhPRLrQFSN7hlV5G2cRisYi1RRjciAQIJ13o2EzjcWVLc/z/DpD6BX8ii2kXkHEioox+JApDf+Peo6cdk9ASsaSOHN1f+o0aeHjYi01HMEfF+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Cb23h5l3; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1735050994; c=relaxed/simple;
+	bh=Bb+FiQUqEqn0JbB0Bqrfc70K9NUlAsh6055ee040bm8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fkqYJrPO1xWmWljFHf+KF4RExA947uIDyZqmIEcRgApdDcqOuPUZT0IBhqVwFLZpU3/9Bywmjk4HYI/2BfhQBK7WAlLeJ9dGUngalzsGA+O2HcZN0MpV8+/vMy04WupX6mwq6GmPP9eIlSmDBOyIwF8KdfqTV/83c3eax+PCZZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Zjt9AckV; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BO9Ft8u027519;
-	Tue, 24 Dec 2024 14:19:59 GMT
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BOAIJ0C028368;
+	Tue, 24 Dec 2024 14:36:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Y0VkCqJ101JZZLJ0WEanHWOAZOCqIBi5TYxy1tkpZ1s=; b=Cb23h5l3DhBYJUKJ
-	NlMlF1DdYlBjTdhhBHN2Den2de31WxXR2xRSccRqgxtykUfP3mQVfuFzvxyW/ZRy
-	4CNgJ0U4RKM00t6TmfrnOZfR/R+LniHvO2EYPtZEQhCrPZwixQOeSPcw4RqDDoUX
-	cUvwMpgPQ4hPjZwyFFz4nPXgHEb9DgKyz4GeVyTyf0j8KH0PID2qcPoUYJP0Ovil
-	Du1ReF1nFvKHrGXMHcpiFaJezqbm7y2g1AuWS7Ah+SiPGDUlzK0MSA9zbEfGoo27
-	GimR399PA7wjKEs3LqcWNSYWp2OTEmOGDWk43iYPYwoPek6eykoMG0SVZkFz9flW
-	Gej0Tw==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43qt5w9hp8-1
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=pZt4+FN6WJwRQLIdr0HirI
+	DOXlHPflQ3XebmXHdBgUM=; b=Zjt9AckVArz84CEvakV8QNLq5gKtLwQRBdAU8v
+	GwoZOOgpFaqdKmHmPijJbcsFCir1OWqVM+DCjwl7s0x7oso9oC57WtWDTqB1QTWy
+	KCCRKbpOt1yo4LAuSIkJi0BMJ9DjEibk/Swi7FyGB0VCLZdr/bGs+rdILLzZsGJZ
+	pU/xyGAtJhXTFiYzAHeLIuCX7QnZzal+jL9f9e6kDHKe4jlBVSp6Fibp0PiAzCjo
+	dLLQFltXOWeBGs6XWuAJA4M3luK4jhe+fBj1hQshiPvsizk8X0Zo+WR7++yUn1cI
+	O+sNTRxVOVGTAhY4z+rfvasUJJpqGIZ5VwZQmZmr427/59sA==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43qjqvkjp0-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Dec 2024 14:19:59 +0000 (GMT)
+	Tue, 24 Dec 2024 14:36:29 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BOEJwde006012
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 4BOEaSKY015182
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Dec 2024 14:19:58 GMT
+	Tue, 24 Dec 2024 14:36:28 GMT
 Received: from hu-periyasa-blr.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Tue, 24 Dec 2024 06:19:56 -0800
+ 15.2.1544.9; Tue, 24 Dec 2024 06:36:26 -0800
 From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 To: <ath12k@lists.infradead.org>
 CC: <linux-wireless@vger.kernel.org>,
         Karthikeyan Periyasamy
 	<quic_periyasa@quicinc.com>
-Subject: [PATCH v2 3/3] wifi: ath12k: Refactor Rx status TLV parsing procedure argument
-Date: Tue, 24 Dec 2024 19:49:20 +0530
-Message-ID: <20241224141920.129339-4-quic_periyasa@quicinc.com>
+Subject: [PATCH v3 0/3] wifi: ath12k: Refactor monitor Rx handler
+Date: Tue, 24 Dec 2024 20:06:10 +0530
+Message-ID: <20241224143613.164921-1-quic_periyasa@quicinc.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241224141920.129339-1-quic_periyasa@quicinc.com>
-References: <20241224141920.129339-1-quic_periyasa@quicinc.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -79,88 +75,38 @@ X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 1xPzaUIfVtwU3Yc6xSdG0l_dM2aj8i7o
-X-Proofpoint-ORIG-GUID: 1xPzaUIfVtwU3Yc6xSdG0l_dM2aj8i7o
+X-Proofpoint-ORIG-GUID: cWyxDFCURiO_QaKdAPer3Mh1JmWKWmoq
+X-Proofpoint-GUID: cWyxDFCURiO_QaKdAPer3Mh1JmWKWmoq
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 clxscore=1015 phishscore=0 impostorscore=0 spamscore=0
- mlxscore=0 lowpriorityscore=0 adultscore=0 suspectscore=0 mlxlogscore=999
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412240124
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
+ priorityscore=1501 phishscore=0 bulkscore=0 mlxscore=0 lowpriorityscore=0
+ mlxlogscore=548 clxscore=1015 adultscore=0 impostorscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2412240126
 
-Currently, ath12k_dp_mon_rx_parse_status_tlv() takes the TLV tag, TLV data
-and TLV userid as separate arguments from the caller. In the future, the
-TLV length will be needed for parsing the EHT TLV tag. Therefore, instead
-of increasing the number of arguments, pass the TLV header and retrieve the
-necessary fields from the TLV header itself.
+Currently, monitor support is not added. However, in the future, the
+monitor will be enabled. Therefore, refactor the monitor handler, which
+help to add monitor support in the future.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+v3:
+ - Remove the Acked-by tag
+v2:
+ wifi: ath12k: Refactor Rx status TLV parsing procedure argument
+  - Updated more details in the commit message
 
-Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
----
- drivers/net/wireless/ath/ath12k/dp_mon.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+Karthikeyan Periyasamy (3):
+  wifi: ath12k: Refactor the monitor Rx parser handler argument
+  wifi: ath12k: Refactor the monitor Tx/RX handler procedure arguments
+  wifi: ath12k: Refactor Rx status TLV parsing procedure argument
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
-index ae2f6847bc88..53f8e8f8959a 100644
---- a/drivers/net/wireless/ath/ath12k/dp_mon.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
-@@ -565,12 +565,16 @@ static void ath12k_dp_mon_parse_he_sig_su(const struct hal_rx_he_sig_a_su_info *
- static enum hal_rx_mon_status
- ath12k_dp_mon_rx_parse_status_tlv(struct ath12k *ar,
- 				  struct ath12k_mon_data *pmon,
--				  u32 tlv_tag, const void *tlv_data,
--				  u32 userid)
-+				  const struct hal_tlv_64_hdr *tlv)
- {
- 	struct ath12k_base *ab = ar->ab;
- 	struct hal_rx_mon_ppdu_info *ppdu_info = &pmon->mon_ppdu_info;
--	u32 info[7];
-+	const void *tlv_data = tlv->value;
-+	u32 info[7], userid;
-+	u16 tlv_tag;
-+
-+	tlv_tag = le64_get_bits(tlv->tl, HAL_TLV_64_HDR_TAG);
-+	userid = le64_get_bits(tlv->tl, HAL_TLV_64_USR_ID);
- 
- 	switch (tlv_tag) {
- 	case HAL_RX_PPDU_START: {
-@@ -1187,7 +1191,6 @@ ath12k_dp_mon_parse_rx_dest(struct ath12k *ar, struct ath12k_mon_data *pmon,
- 	struct hal_rx_mon_ppdu_info *ppdu_info = &pmon->mon_ppdu_info;
- 	struct hal_tlv_64_hdr *tlv;
- 	enum hal_rx_mon_status hal_status;
--	u32 tlv_userid;
- 	u16 tlv_tag, tlv_len;
- 	u8 *ptr = skb->data;
- 
-@@ -1196,9 +1199,6 @@ ath12k_dp_mon_parse_rx_dest(struct ath12k *ar, struct ath12k_mon_data *pmon,
- 	do {
- 		tlv = (struct hal_tlv_64_hdr *)ptr;
- 		tlv_tag = le64_get_bits(tlv->tl, HAL_TLV_64_HDR_TAG);
--		tlv_len = le64_get_bits(tlv->tl, HAL_TLV_64_HDR_LEN);
--		tlv_userid = le64_get_bits(tlv->tl, HAL_TLV_64_USR_ID);
--		ptr += sizeof(*tlv);
- 
- 		/* The actual length of PPDU_END is the combined length of many PHY
- 		 * TLVs that follow. Skip the TLV header and
-@@ -1208,10 +1208,11 @@ ath12k_dp_mon_parse_rx_dest(struct ath12k *ar, struct ath12k_mon_data *pmon,
- 
- 		if (tlv_tag == HAL_RX_PPDU_END)
- 			tlv_len = sizeof(struct hal_rx_rxpcu_classification_overview);
-+		else
-+			tlv_len = le64_get_bits(tlv->tl, HAL_TLV_64_HDR_LEN);
- 
--		hal_status = ath12k_dp_mon_rx_parse_status_tlv(ar, pmon,
--							       tlv_tag, ptr, tlv_userid);
--		ptr += tlv_len;
-+		hal_status = ath12k_dp_mon_rx_parse_status_tlv(ar, pmon, tlv);
-+		ptr += sizeof(*tlv) + tlv_len;
- 		ptr = PTR_ALIGN(ptr, HAL_TLV_64_ALIGN);
- 
- 		if ((ptr - skb->data) >= DP_RX_BUFFER_SIZE)
+ drivers/net/wireless/ath/ath12k/dp_mon.c | 60 ++++++++++++------------
+ drivers/net/wireless/ath/ath12k/dp_mon.h |  7 ++-
+ 2 files changed, 33 insertions(+), 34 deletions(-)
+
+
+base-commit: 09fa3b6974a1245ddd0751747609431494ba5b4f
 -- 
 2.34.1
 
