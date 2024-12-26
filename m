@@ -1,69 +1,73 @@
-Return-Path: <linux-wireless+bounces-16805-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16806-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A0F09FCB9F
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Dec 2024 16:45:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0729E9FCBA0
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Dec 2024 16:45:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 061F21615D3
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Dec 2024 15:45:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67069188322D
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Dec 2024 15:45:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF7412E5B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43BB754279;
 	Thu, 26 Dec 2024 15:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kksIJpjl"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Go6yy8F+"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B504C481B1
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Dec 2024 15:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F54D1EEE9
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Dec 2024 15:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735227918; cv=none; b=FTgge9cUfJBUkV2ofQeDbQuShTjOtQn4hzbYrVVbKCwj7QxTAXzw5q9bUuHdUdBIeuSl8QLhaXBIFb90ahavy3MJ28SX7fwS/zAKfSH5OUqobE4wEEMn6wY/uc42I1OjKyZ/NtVwmpXwqbG1DHAot/k9t4UNvutQMzULsNrI6sQ=
+	t=1735227919; cv=none; b=qDYslkvoXDKnH/D/qoZuuLsIK38yTy44+G39dUsn9KbSbV2BLKr3mI7ym1006GzGa8xg0QJg/W3oPgB705bZDVa7nseNrZsbKcC+0XHXEcN/+0BK0OwpRv9I2sdjZx03ZM3Fm9QAGQYAkpdb0LIsDZDCCVQzKNIU+Vrhls5bliU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735227918; c=relaxed/simple;
-	bh=tINwQtv5LIiOg3EkmcrY1ZfQabw7VB7cXVPvuT78AYU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Smq1iyBYzZXO2ZE1K4sL0+IBc0R5l4Yf2j9N+VsyDGLv9LKOWsIInxHifCHHQzFaAe7Hv0dnl7QM3KAP/IYRtByLSpDGt9GsbX044WnTBeGhDpnoXQnZQV4Vgc4tBo6yoecEpI4cxCDmi5RavLpsDX2WF4Jp6ZGpiDoPJzBhNYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kksIJpjl; arc=none smtp.client-ip=192.198.163.14
+	s=arc-20240116; t=1735227919; c=relaxed/simple;
+	bh=/m7FfTK+fae122oakqDPoISKqDM1EJw5PK+MO5HEcfg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=ut3qaV3H9TK/yHAkSYtsehQtr35IjRTfjhyFDLpZXe3k5LqmTAGw1NC7F0a2ZV+6PLsIWNi2D68/HcbzSJrCQMdXPRzDrcEgToMYUNNyPay2KHZlAbi0RHaEhsi5Pd/EiUO6GIb2mSlHcn6tuDZmLFMjJOFeur9IqmhZq2aGlB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Go6yy8F+; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1735227916; x=1766763916;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=tINwQtv5LIiOg3EkmcrY1ZfQabw7VB7cXVPvuT78AYU=;
-  b=kksIJpjlXlYjMFRwEU5tjtzu3IqijI/Avk6w+jf/ZG6LX31m5aQKxul3
-   qAy9ElMbebW2U3YjGDp/1W3uYA+EaNTYnDIKzffH+Y1IELTspFdxkdAhj
-   uCa4eC4CmBvJ+B61nhS/r5p5lRB2tokPn/3gBis0mVMrAaUn/bFAfGnee
-   ICBn94uq4y32+J6DLsjqICbee+EC67C2EcbNQXE+xySYBmuLTk8XFXWfN
-   +MKxDB7BC5aQ/AO3qAspt3gDcaj4XcOf4C2n8kcJJ4twzlOEIM6argwEw
-   y1QZvErlq7yg2NbsfC6FksxBzXrXG/Vlb+/3h6eW7+yiQ8GL8MvfIwGxK
+  t=1735227917; x=1766763917;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=/m7FfTK+fae122oakqDPoISKqDM1EJw5PK+MO5HEcfg=;
+  b=Go6yy8F+SJT06e9FQd9Rjawm5VQceC1E7PelLZvjdmimRhvOWLvlQmBQ
+   0a6GqfmTAGJIcITZjULvZ+5HWSx3XZKVeV5TBSAZAYK+fixDjQbFiCbuL
+   H86VL6JIjp8ktJzmeWLslw3cxa/XglYe4imKAm0tQ0nNd5u6nESvQWk9Y
+   cqiZ4YDcxfG1ltFmPWTwmcIe86zZvOt3MRr3LdZeznYkuAJOpSVWSUscQ
+   gGAFlHZ+wj6rkBlfmvdKhFxxLvcnt6PsINMa/LYKnsxGpahS9L6Nl/+Em
+   92GlchwxXy/MnVwiS7W+8CWVHXsuKTclSul0fsVy0mDIeDt/RPANY4Lr9
    g==;
-X-CSE-ConnectionGUID: JxaYcKAeQkepPEakLe9tOA==
-X-CSE-MsgGUID: ltfRIvXlQdqveQNBoSOn4A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11296"; a="35878124"
+X-CSE-ConnectionGUID: x2MDSIlzQ0my24oBUOBWGQ==
+X-CSE-MsgGUID: AtB97dv0TJeoc+7XTBRoNw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11296"; a="35878126"
 X-IronPort-AV: E=Sophos;i="6.12,266,1728975600"; 
-   d="scan'208";a="35878124"
+   d="scan'208";a="35878126"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
   by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Dec 2024 07:45:15 -0800
-X-CSE-ConnectionGUID: t9MvDsX6Q/+P58INeoaJTA==
-X-CSE-MsgGUID: dSpiX+J8RBijR2deZ87rTQ==
+X-CSE-ConnectionGUID: 3P2Qk+HxT7yjZMs9/7oleg==
+X-CSE-MsgGUID: mjKk9T44R1C5DsA5WYTqbA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,266,1728975600"; 
-   d="scan'208";a="99777972"
+   d="scan'208";a="99777975"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Dec 2024 07:45:09 -0800
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Dec 2024 07:45:12 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org
-Subject: [PATCH 00/15] wifi: iwlwifi: updates - 26-12-24
-Date: Thu, 26 Dec 2024 17:44:41 +0200
-Message-Id: <20241226154456.473690-1-miriam.rachel.korenblit@intel.com>
+Cc: linux-wireless@vger.kernel.org,
+	Yedidya Benshimol <yedidya.ben.shimol@intel.com>
+Subject: [PATCH 01/15] wifi: iwlwifi: remove mvm from session protection cmd's name
+Date: Thu, 26 Dec 2024 17:44:42 +0200
+Message-Id: <20241226174257.0cd9ae2499b6.If228310b0578e5da88ccb28ff8dceb56e1c61b27@changeid>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20241226154456.473690-1-miriam.rachel.korenblit@intel.com>
+References: <20241226154456.473690-1-miriam.rachel.korenblit@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -73,80 +77,161 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
 
-A few features and cleanups from our internal tree.
+As the session protection command will be used in mld, it shouldn't
+be associated by name to mvm
 
-Miri
+Signed-off-by: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
 ---
+ .../net/wireless/intel/iwlwifi/fw/api/mac-cfg.h  |  2 +-
+ .../wireless/intel/iwlwifi/fw/api/time-event.h   | 16 ++++++++--------
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c     |  2 +-
+ .../net/wireless/intel/iwlwifi/mvm/time-event.c  | 10 +++++-----
+ 4 files changed, 15 insertions(+), 15 deletions(-)
 
-Anjaneyulu (3):
-  wifi: iwlwifi: mvm: update documentation for iwl_nvm_channel_flags
-  wifi: iwlwifi: mvm: add UHB canada support in TAS_CONFIG cmd
-  wifi: iwlwifi: mvm: add UHB canada support in GET_TAS_STATUS cmd resp
-
-Benjamin Berg (1):
-  wifi: iwlwifi: mvm: log error for failures after D3
-
-Daniel Gabay (4):
-  wifi: iwlwifi: Remove mvm prefix from iwl_mvm_compressed_ba_notif
-  wifi: iwlwifi: mvm: Check BAR packet size before accessing data
-  wifi: iwlwifi: mvm: Move TSO code to shared utility
-  wifi: iwlwifi: mvm: Use IWL_FW_CHECK() for BAR notif size validation
-
-Emmanuel Grumbach (1):
-  wifi: iwlwifi: add a new NMI type
-
-Miri Korenblit (3):
-  wifi: iwlwifi: bump FW API to 95 for BZ/SC devices
-  wifi: iwlwifi: support BIOS override for UNII4 in CA/US also in LARI
-    versions < 12
-  wifi: iwlwifi: support BIOS override for 5G9 in CA also in LARI
-    version 8
-
-Somashekhar(Som) (2):
-  wifi: mvm: Request periodic system statistics earlier
-  wifi: iwlwifi: pcie: Add support for new device ids
-
-Yedidya Benshimol (1):
-  wifi: iwlwifi: remove mvm from session protection cmd's name
-
- drivers/net/wireless/intel/iwlwifi/Makefile   |   3 +-
- drivers/net/wireless/intel/iwlwifi/cfg/bz.c   |   2 +-
- drivers/net/wireless/intel/iwlwifi/cfg/dr.c   | 167 ++++++++++++++++++
- drivers/net/wireless/intel/iwlwifi/cfg/sc.c   |   2 +-
- drivers/net/wireless/intel/iwlwifi/fw/acpi.c  |   6 +-
- .../wireless/intel/iwlwifi/fw/api/commands.h  |   2 +-
- .../net/wireless/intel/iwlwifi/fw/api/debug.h |   6 +-
- .../wireless/intel/iwlwifi/fw/api/mac-cfg.h   |   2 +-
- .../wireless/intel/iwlwifi/fw/api/nvm-reg.h   |  15 +-
- .../intel/iwlwifi/fw/api/time-event.h         |  16 +-
- .../net/wireless/intel/iwlwifi/fw/api/tx.h    |  20 +--
- drivers/net/wireless/intel/iwlwifi/fw/file.h  |  10 +-
- drivers/net/wireless/intel/iwlwifi/fw/img.c   |   2 +
- .../wireless/intel/iwlwifi/fw/regulatory.c    |  29 ++-
- .../wireless/intel/iwlwifi/fw/regulatory.h    |  21 +--
- drivers/net/wireless/intel/iwlwifi/fw/uefi.c  |   7 +-
- drivers/net/wireless/intel/iwlwifi/fw/uefi.h  |   3 +-
- .../net/wireless/intel/iwlwifi/iwl-config.h   |  10 ++
- .../wireless/intel/iwlwifi/iwl-nvm-parse.c    |   6 +-
- .../net/wireless/intel/iwlwifi/iwl-utils.c    |  85 +++++++++
- .../net/wireless/intel/iwlwifi/iwl-utils.h    |  36 ++++
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c   |   4 +-
- .../net/wireless/intel/iwlwifi/mvm/debugfs.c  |   8 +
- drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |   4 +
- .../net/wireless/intel/iwlwifi/mvm/mac80211.c |   4 -
- .../wireless/intel/iwlwifi/mvm/mld-mac80211.c |  15 +-
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |   2 +-
- drivers/net/wireless/intel/iwlwifi/mvm/rxmq.c |  23 ++-
- .../wireless/intel/iwlwifi/mvm/time-event.c   |  10 +-
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c   |  87 +--------
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c |  16 ++
- 31 files changed, 462 insertions(+), 161 deletions(-)
- create mode 100644 drivers/net/wireless/intel/iwlwifi/cfg/dr.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/iwl-utils.c
- create mode 100644 drivers/net/wireless/intel/iwlwifi/iwl-utils.h
-
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
+index b23d5fc4bbe6..37bb7002c1c9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
+@@ -74,7 +74,7 @@ enum iwl_mac_conf_subcmd_ids {
+ 	 */
+ 	ROC_NOTIF = 0xF8,
+ 	/**
+-	 * @SESSION_PROTECTION_NOTIF: &struct iwl_mvm_session_prot_notif
++	 * @SESSION_PROTECTION_NOTIF: &struct iwl_session_prot_notif
+ 	 */
+ 	SESSION_PROTECTION_NOTIF = 0xFB,
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/time-event.h b/drivers/net/wireless/intel/iwlwifi/fw/api/time-event.h
+index f4b827b58bd3..18d030334a6a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/api/time-event.h
++++ b/drivers/net/wireless/intel/iwlwifi/fw/api/time-event.h
+@@ -395,7 +395,7 @@ struct iwl_roc_notif {
+ } __packed; /* ROC_NOTIF_API_S_VER_1 */
+ 
+ /**
+- * enum iwl_mvm_session_prot_conf_id - session protection's configurations
++ * enum iwl_session_prot_conf_id - session protection's configurations
+  * @SESSION_PROTECT_CONF_ASSOC: Start a session protection for association.
+  *	The firmware will allocate two events.
+  *	Valid for BSS_STA and P2P_STA.
+@@ -424,7 +424,7 @@ struct iwl_roc_notif {
+  *	be taken into account.
+  * @SESSION_PROTECT_CONF_MAX_ID: not used
+  */
+-enum iwl_mvm_session_prot_conf_id {
++enum iwl_session_prot_conf_id {
+ 	SESSION_PROTECT_CONF_ASSOC,
+ 	SESSION_PROTECT_CONF_GO_CLIENT_ASSOC,
+ 	SESSION_PROTECT_CONF_P2P_DEVICE_DISCOV,
+@@ -433,12 +433,12 @@ enum iwl_mvm_session_prot_conf_id {
+ }; /* SESSION_PROTECTION_CONF_ID_E_VER_1 */
+ 
+ /**
+- * struct iwl_mvm_session_prot_cmd - configure a session protection
++ * struct iwl_session_prot_cmd - configure a session protection
+  * @id_and_color: the id and color of the link (or mac, for command version 1)
+  *	for which this session protection is sent
+  * @action: can be either FW_CTXT_ACTION_ADD or FW_CTXT_ACTION_REMOVE,
+  *	see &enum iwl_ctxt_action
+- * @conf_id: see &enum iwl_mvm_session_prot_conf_id
++ * @conf_id: see &enum iwl_session_prot_conf_id
+  * @duration_tu: the duration of the whole protection in TUs.
+  * @repetition_count: not used
+  * @interval: not used
+@@ -448,7 +448,7 @@ enum iwl_mvm_session_prot_conf_id {
+  * The firmware supports only one concurrent session protection per vif.
+  * Adding a new session protection will remove any currently running session.
+  */
+-struct iwl_mvm_session_prot_cmd {
++struct iwl_session_prot_cmd {
+ 	/* COMMON_INDEX_HDR_API_S_VER_1 hdr */
+ 	__le32 id_and_color;
+ 	__le32 action;
+@@ -462,17 +462,17 @@ struct iwl_mvm_session_prot_cmd {
+  */
+ 
+ /**
+- * struct iwl_mvm_session_prot_notif - session protection started / ended
++ * struct iwl_session_prot_notif - session protection started / ended
+  * @mac_link_id: the mac id (or link id, for notif ver > 2) for which the
+  *	session protection started / ended
+  * @status: 1 means success, 0 means failure
+  * @start: 1 means the session protection started, 0 means it ended
+- * @conf_id: see &enum iwl_mvm_session_prot_conf_id
++ * @conf_id: see &enum iwl_session_prot_conf_id
+  *
+  * Note that any session protection will always get two notifications: start
+  * and end even the firmware could not schedule it.
+  */
+-struct iwl_mvm_session_prot_notif {
++struct iwl_session_prot_notif {
+ 	__le32 mac_link_id;
+ 	__le32 status;
+ 	__le32 start;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index 30fcc733395e..0deaf6ed8994 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -408,7 +408,7 @@ static const struct iwl_rx_handlers iwl_mvm_rx_handlers[] = {
+ 		   RX_HANDLER_SYNC, struct iwl_time_event_notif),
+ 	RX_HANDLER_GRP(MAC_CONF_GROUP, SESSION_PROTECTION_NOTIF,
+ 		       iwl_mvm_rx_session_protect_notif, RX_HANDLER_SYNC,
+-		       struct iwl_mvm_session_prot_notif),
++		       struct iwl_session_prot_notif),
+ 	RX_HANDLER(MCC_CHUB_UPDATE_CMD, iwl_mvm_rx_chub_update_mcc,
+ 		   RX_HANDLER_ASYNC_LOCKED, struct iwl_mcc_chub_notif),
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
+index 72fa7ac86516..9216c43a35c4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
+@@ -751,7 +751,7 @@ static void iwl_mvm_cancel_session_protection(struct iwl_mvm *mvm,
+ 					      u32 id, s8 link_id)
+ {
+ 	int mac_link_id = iwl_mvm_get_session_prot_id(mvm, vif, link_id);
+-	struct iwl_mvm_session_prot_cmd cmd = {
++	struct iwl_session_prot_cmd cmd = {
+ 		.id_and_color = cpu_to_le32(mac_link_id),
+ 		.action = cpu_to_le32(FW_CTXT_ACTION_REMOVE),
+ 		.conf_id = cpu_to_le32(id),
+@@ -955,7 +955,7 @@ void iwl_mvm_rx_session_protect_notif(struct iwl_mvm *mvm,
+ 				      struct iwl_rx_cmd_buffer *rxb)
+ {
+ 	struct iwl_rx_packet *pkt = rxb_addr(rxb);
+-	struct iwl_mvm_session_prot_notif *notif = (void *)pkt->data;
++	struct iwl_session_prot_notif *notif = (void *)pkt->data;
+ 	unsigned int ver =
+ 		iwl_fw_lookup_notif_ver(mvm->fw, MAC_CONF_GROUP,
+ 					SESSION_PROTECTION_NOTIF, 2);
+@@ -1148,7 +1148,7 @@ iwl_mvm_start_p2p_roc_session_protection(struct iwl_mvm *mvm,
+ 					 enum ieee80211_roc_type type)
+ {
+ 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
+-	struct iwl_mvm_session_prot_cmd cmd = {
++	struct iwl_session_prot_cmd cmd = {
+ 		.id_and_color =
+ 			cpu_to_le32(iwl_mvm_get_session_prot_id(mvm, vif, 0)),
+ 		.action = cpu_to_le32(FW_CTXT_ACTION_ADD),
+@@ -1417,7 +1417,7 @@ static bool iwl_mvm_session_prot_notif(struct iwl_notif_wait_data *notif_wait,
+ {
+ 	struct iwl_mvm *mvm =
+ 		container_of(notif_wait, struct iwl_mvm, notif_wait);
+-	struct iwl_mvm_session_prot_notif *resp;
++	struct iwl_session_prot_notif *resp;
+ 	int resp_len = iwl_rx_packet_payload_len(pkt);
+ 
+ 	if (WARN_ON(pkt->hdr.cmd != SESSION_PROTECTION_NOTIF ||
+@@ -1449,7 +1449,7 @@ void iwl_mvm_schedule_session_protection(struct iwl_mvm *mvm,
+ 	const u16 notif[] = { WIDE_ID(MAC_CONF_GROUP, SESSION_PROTECTION_NOTIF) };
+ 	struct iwl_notification_wait wait_notif;
+ 	int mac_link_id = iwl_mvm_get_session_prot_id(mvm, vif, (s8)link_id);
+-	struct iwl_mvm_session_prot_cmd cmd = {
++	struct iwl_session_prot_cmd cmd = {
+ 		.id_and_color = cpu_to_le32(mac_link_id),
+ 		.action = cpu_to_le32(FW_CTXT_ACTION_ADD),
+ 		.conf_id = cpu_to_le32(SESSION_PROTECT_CONF_ASSOC),
 -- 
 2.34.1
 
