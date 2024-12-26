@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-16806-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16807-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0729E9FCBA0
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Dec 2024 16:45:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8321C9FCBA1
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Dec 2024 16:45:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67069188322D
-	for <lists+linux-wireless@lfdr.de>; Thu, 26 Dec 2024 15:45:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E498418832A8
+	for <lists+linux-wireless@lfdr.de>; Thu, 26 Dec 2024 15:45:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43BB754279;
-	Thu, 26 Dec 2024 15:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B3A136E3F;
+	Thu, 26 Dec 2024 15:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Go6yy8F+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hjy6EoBE"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F54D1EEE9
-	for <linux-wireless@vger.kernel.org>; Thu, 26 Dec 2024 15:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7E425760
+	for <linux-wireless@vger.kernel.org>; Thu, 26 Dec 2024 15:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735227919; cv=none; b=qDYslkvoXDKnH/D/qoZuuLsIK38yTy44+G39dUsn9KbSbV2BLKr3mI7ym1006GzGa8xg0QJg/W3oPgB705bZDVa7nseNrZsbKcC+0XHXEcN/+0BK0OwpRv9I2sdjZx03ZM3Fm9QAGQYAkpdb0LIsDZDCCVQzKNIU+Vrhls5bliU=
+	t=1735227920; cv=none; b=o/LMMs464OFrIT0hyZj3V7/531GX33OjGTCxwvp8124iO+R9fDzipF4D8yCrQwwFbn7+d+Rz3W9azhlwqd1304cLPWKJ4b8s8AVA/Pp2+bLVH4gftI/xJJKu58JZ1KkmXY4E6sU7I9NBhpRDnDdd/rDQew/mnZI6BT4rZQZlaLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735227919; c=relaxed/simple;
-	bh=/m7FfTK+fae122oakqDPoISKqDM1EJw5PK+MO5HEcfg=;
+	s=arc-20240116; t=1735227920; c=relaxed/simple;
+	bh=BK5ubLpyyBys6V6kJxqdZOGjV/+8nA00B/08+3U/+Bc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ut3qaV3H9TK/yHAkSYtsehQtr35IjRTfjhyFDLpZXe3k5LqmTAGw1NC7F0a2ZV+6PLsIWNi2D68/HcbzSJrCQMdXPRzDrcEgToMYUNNyPay2KHZlAbi0RHaEhsi5Pd/EiUO6GIb2mSlHcn6tuDZmLFMjJOFeur9IqmhZq2aGlB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Go6yy8F+; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=I4mEDL3i4X6cc+1EWNo/MFzg+Gtz2bZgU6sXl2fmTMB09WWgboIURWLylzUPjaNV1IEy1/FeX8gplfMnVQmlAP7EUC3hkvrmGggkMcr9XBiMpKrpO4aQFtobwdrS0Wi+zbL9swBL+3keQCPgJseHgoiacS/SaabP7xymBeG0LD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hjy6EoBE; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1735227917; x=1766763917;
+  t=1735227918; x=1766763918;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=/m7FfTK+fae122oakqDPoISKqDM1EJw5PK+MO5HEcfg=;
-  b=Go6yy8F+SJT06e9FQd9Rjawm5VQceC1E7PelLZvjdmimRhvOWLvlQmBQ
-   0a6GqfmTAGJIcITZjULvZ+5HWSx3XZKVeV5TBSAZAYK+fixDjQbFiCbuL
-   H86VL6JIjp8ktJzmeWLslw3cxa/XglYe4imKAm0tQ0nNd5u6nESvQWk9Y
-   cqiZ4YDcxfG1ltFmPWTwmcIe86zZvOt3MRr3LdZeznYkuAJOpSVWSUscQ
-   gGAFlHZ+wj6rkBlfmvdKhFxxLvcnt6PsINMa/LYKnsxGpahS9L6Nl/+Em
-   92GlchwxXy/MnVwiS7W+8CWVHXsuKTclSul0fsVy0mDIeDt/RPANY4Lr9
+  bh=BK5ubLpyyBys6V6kJxqdZOGjV/+8nA00B/08+3U/+Bc=;
+  b=hjy6EoBElpQLNWRDn9f5yL9q5BezMzWMwk+mXIlbv9r9SAgQXTfvgIsj
+   90L2RTujbZjak6RFF5DICmgxn8k+TL7cdYPAdWmx2bAT3ChNmWpHxM22P
+   KK00YRWjCLnVwQjmFI9Vjyhrsf5eqNspYkHG7hJXvDgT9NajEpyT+Ng6P
+   zzzsIHG72/bvIT5H7W1NH17KQcOOMy76ifALbkOBE5QmTxD7N3vGkIEo0
+   zdg59yGzuhbX+m996tsjVrAVbEiZK26d9bsWi9NSd+ICVfHjUEkJcREl1
+   +5HavsAAAfQYVuwCNowWZuXadFKz0Q/g19RERWt25PavkBd4ZjPSljMzO
    g==;
-X-CSE-ConnectionGUID: x2MDSIlzQ0my24oBUOBWGQ==
-X-CSE-MsgGUID: AtB97dv0TJeoc+7XTBRoNw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11296"; a="35878126"
+X-CSE-ConnectionGUID: J4/cv3xMSJyLRSZPvqBtBA==
+X-CSE-MsgGUID: RIBvPYWSTcqNJ7/mtQGteg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11296"; a="35878128"
 X-IronPort-AV: E=Sophos;i="6.12,266,1728975600"; 
-   d="scan'208";a="35878126"
+   d="scan'208";a="35878128"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
   by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Dec 2024 07:45:15 -0800
-X-CSE-ConnectionGUID: 3P2Qk+HxT7yjZMs9/7oleg==
-X-CSE-MsgGUID: mjKk9T44R1C5DsA5WYTqbA==
+X-CSE-ConnectionGUID: Kc2c1/9ZRw68uBF+RMpQCQ==
+X-CSE-MsgGUID: v8NqzyVURl2Xg/evTizr6A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,266,1728975600"; 
-   d="scan'208";a="99777975"
+   d="scan'208";a="99777978"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Dec 2024 07:45:12 -0800
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Dec 2024 07:45:14 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Yedidya Benshimol <yedidya.ben.shimol@intel.com>
-Subject: [PATCH 01/15] wifi: iwlwifi: remove mvm from session protection cmd's name
-Date: Thu, 26 Dec 2024 17:44:42 +0200
-Message-Id: <20241226174257.0cd9ae2499b6.If228310b0578e5da88ccb28ff8dceb56e1c61b27@changeid>
+	"Somashekhar(Som)" <somashekhar.puttagangaiah@intel.com>
+Subject: [PATCH 02/15] wifi: mvm: Request periodic system statistics earlier
+Date: Thu, 26 Dec 2024 17:44:43 +0200
+Message-Id: <20241226174257.4ca59fe0e060.Ic46280aad4dc7087a7d6d0773b86c255133cb7d6@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241226154456.473690-1-miriam.rachel.korenblit@intel.com>
 References: <20241226154456.473690-1-miriam.rachel.korenblit@intel.com>
@@ -77,161 +77,91 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
+From: "Somashekhar(Som)" <somashekhar.puttagangaiah@intel.com>
 
-As the session protection command will be used in mld, it shouldn't
-be associated by name to mvm
+Currently driver requests periodic statistics after entering EMLSR.
+This means that when not in EMLSR, link selection decisions will be
+done based on old statistics, from the association time.
 
-Signed-off-by: Yedidya Benshimol <yedidya.ben.shimol@intel.com>
+Request periodic statistics already at association instead,
+
+Signed-off-by: Somashekhar(Som) <somashekhar.puttagangaiah@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/fw/api/mac-cfg.h  |  2 +-
- .../wireless/intel/iwlwifi/fw/api/time-event.h   | 16 ++++++++--------
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c     |  2 +-
- .../net/wireless/intel/iwlwifi/mvm/time-event.c  | 10 +++++-----
- 4 files changed, 15 insertions(+), 15 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c |  4 ----
+ .../net/wireless/intel/iwlwifi/mvm/mld-mac80211.c | 15 ++++++++-------
+ 2 files changed, 8 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-index b23d5fc4bbe6..37bb7002c1c9 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/mac-cfg.h
-@@ -74,7 +74,7 @@ enum iwl_mac_conf_subcmd_ids {
- 	 */
- 	ROC_NOTIF = 0xF8,
- 	/**
--	 * @SESSION_PROTECTION_NOTIF: &struct iwl_mvm_session_prot_notif
-+	 * @SESSION_PROTECTION_NOTIF: &struct iwl_session_prot_notif
- 	 */
- 	SESSION_PROTECTION_NOTIF = 0xFB,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 07778d55878b..cd93fbf40eb6 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -4113,10 +4113,6 @@ iwl_mvm_sta_state_authorized_to_assoc(struct iwl_mvm *mvm,
+ 		wiphy_work_cancel(mvm->hw->wiphy, &mvmvif->unblock_esr_tpt_wk);
+ 		wiphy_delayed_work_cancel(mvm->hw->wiphy,
+ 					  &mvmvif->unblock_esr_tmp_non_bss_wk);
+-
+-		/* No need for the periodic statistics anymore */
+-		if (ieee80211_vif_is_mld(vif) && mvmvif->esr_active)
+-			iwl_mvm_request_periodic_system_statistics(mvm, false);
+ 	}
  
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/api/time-event.h b/drivers/net/wireless/intel/iwlwifi/fw/api/time-event.h
-index f4b827b58bd3..18d030334a6a 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/api/time-event.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/api/time-event.h
-@@ -395,7 +395,7 @@ struct iwl_roc_notif {
- } __packed; /* ROC_NOTIF_API_S_VER_1 */
+ 	return 0;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+index b807046144c0..cc54c33dcb02 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+@@ -267,9 +267,6 @@ static int iwl_mvm_esr_mode_active(struct iwl_mvm *mvm,
+ 	else
+ 		mvmvif->primary_link = __ffs(vif->active_links);
  
- /**
-- * enum iwl_mvm_session_prot_conf_id - session protection's configurations
-+ * enum iwl_session_prot_conf_id - session protection's configurations
-  * @SESSION_PROTECT_CONF_ASSOC: Start a session protection for association.
-  *	The firmware will allocate two events.
-  *	Valid for BSS_STA and P2P_STA.
-@@ -424,7 +424,7 @@ struct iwl_roc_notif {
-  *	be taken into account.
-  * @SESSION_PROTECT_CONF_MAX_ID: not used
-  */
--enum iwl_mvm_session_prot_conf_id {
-+enum iwl_session_prot_conf_id {
- 	SESSION_PROTECT_CONF_ASSOC,
- 	SESSION_PROTECT_CONF_GO_CLIENT_ASSOC,
- 	SESSION_PROTECT_CONF_P2P_DEVICE_DISCOV,
-@@ -433,12 +433,12 @@ enum iwl_mvm_session_prot_conf_id {
- }; /* SESSION_PROTECTION_CONF_ID_E_VER_1 */
+-	/* Needed for tracking RSSI */
+-	iwl_mvm_request_periodic_system_statistics(mvm, true);
+-
+ 	/*
+ 	 * Restart the MPDU counters and the counting window, so when the
+ 	 * statistics arrive (which is where we look at the counters) we
+@@ -323,7 +320,6 @@ __iwl_mvm_mld_assign_vif_chanctx(struct iwl_mvm *mvm,
+ 		ret = iwl_mvm_esr_mode_active(mvm, vif);
+ 		if (ret) {
+ 			IWL_ERR(mvm, "failed to activate ESR mode (%d)\n", ret);
+-			iwl_mvm_request_periodic_system_statistics(mvm, false);
+ 			goto out;
+ 		}
+ 	}
+@@ -449,8 +445,6 @@ static int iwl_mvm_esr_mode_inactive(struct iwl_mvm *mvm,
+ 			break;
+ 	}
  
- /**
-- * struct iwl_mvm_session_prot_cmd - configure a session protection
-+ * struct iwl_session_prot_cmd - configure a session protection
-  * @id_and_color: the id and color of the link (or mac, for command version 1)
-  *	for which this session protection is sent
-  * @action: can be either FW_CTXT_ACTION_ADD or FW_CTXT_ACTION_REMOVE,
-  *	see &enum iwl_ctxt_action
-- * @conf_id: see &enum iwl_mvm_session_prot_conf_id
-+ * @conf_id: see &enum iwl_session_prot_conf_id
-  * @duration_tu: the duration of the whole protection in TUs.
-  * @repetition_count: not used
-  * @interval: not used
-@@ -448,7 +448,7 @@ enum iwl_mvm_session_prot_conf_id {
-  * The firmware supports only one concurrent session protection per vif.
-  * Adding a new session protection will remove any currently running session.
-  */
--struct iwl_mvm_session_prot_cmd {
-+struct iwl_session_prot_cmd {
- 	/* COMMON_INDEX_HDR_API_S_VER_1 hdr */
- 	__le32 id_and_color;
- 	__le32 action;
-@@ -462,17 +462,17 @@ struct iwl_mvm_session_prot_cmd {
-  */
+-	iwl_mvm_request_periodic_system_statistics(mvm, false);
+-
+ 	/* Start a new counting window */
+ 	iwl_mvm_restart_mpdu_count(mvm, mvmvif);
  
- /**
-- * struct iwl_mvm_session_prot_notif - session protection started / ended
-+ * struct iwl_session_prot_notif - session protection started / ended
-  * @mac_link_id: the mac id (or link id, for notif ver > 2) for which the
-  *	session protection started / ended
-  * @status: 1 means success, 0 means failure
-  * @start: 1 means the session protection started, 0 means it ended
-- * @conf_id: see &enum iwl_mvm_session_prot_conf_id
-+ * @conf_id: see &enum iwl_session_prot_conf_id
-  *
-  * Note that any session protection will always get two notifications: start
-  * and end even the firmware could not schedule it.
-  */
--struct iwl_mvm_session_prot_notif {
-+struct iwl_session_prot_notif {
- 	__le32 mac_link_id;
- 	__le32 status;
- 	__le32 start;
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index 30fcc733395e..0deaf6ed8994 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -408,7 +408,7 @@ static const struct iwl_rx_handlers iwl_mvm_rx_handlers[] = {
- 		   RX_HANDLER_SYNC, struct iwl_time_event_notif),
- 	RX_HANDLER_GRP(MAC_CONF_GROUP, SESSION_PROTECTION_NOTIF,
- 		       iwl_mvm_rx_session_protect_notif, RX_HANDLER_SYNC,
--		       struct iwl_mvm_session_prot_notif),
-+		       struct iwl_session_prot_notif),
- 	RX_HANDLER(MCC_CHUB_UPDATE_CMD, iwl_mvm_rx_chub_update_mcc,
- 		   RX_HANDLER_ASYNC_LOCKED, struct iwl_mcc_chub_notif),
+@@ -881,8 +875,13 @@ static void iwl_mvm_mld_vif_cfg_changed_station(struct iwl_mvm *mvm,
+ 		if (vif->cfg.assoc) {
+ 			mvmvif->session_prot_connection_loss = false;
  
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-index 72fa7ac86516..9216c43a35c4 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/time-event.c
-@@ -751,7 +751,7 @@ static void iwl_mvm_cancel_session_protection(struct iwl_mvm *mvm,
- 					      u32 id, s8 link_id)
- {
- 	int mac_link_id = iwl_mvm_get_session_prot_id(mvm, vif, link_id);
--	struct iwl_mvm_session_prot_cmd cmd = {
-+	struct iwl_session_prot_cmd cmd = {
- 		.id_and_color = cpu_to_le32(mac_link_id),
- 		.action = cpu_to_le32(FW_CTXT_ACTION_REMOVE),
- 		.conf_id = cpu_to_le32(id),
-@@ -955,7 +955,7 @@ void iwl_mvm_rx_session_protect_notif(struct iwl_mvm *mvm,
- 				      struct iwl_rx_cmd_buffer *rxb)
- {
- 	struct iwl_rx_packet *pkt = rxb_addr(rxb);
--	struct iwl_mvm_session_prot_notif *notif = (void *)pkt->data;
-+	struct iwl_session_prot_notif *notif = (void *)pkt->data;
- 	unsigned int ver =
- 		iwl_fw_lookup_notif_ver(mvm->fw, MAC_CONF_GROUP,
- 					SESSION_PROTECTION_NOTIF, 2);
-@@ -1148,7 +1148,7 @@ iwl_mvm_start_p2p_roc_session_protection(struct iwl_mvm *mvm,
- 					 enum ieee80211_roc_type type)
- {
- 	struct iwl_mvm_vif *mvmvif = iwl_mvm_vif_from_mac80211(vif);
--	struct iwl_mvm_session_prot_cmd cmd = {
-+	struct iwl_session_prot_cmd cmd = {
- 		.id_and_color =
- 			cpu_to_le32(iwl_mvm_get_session_prot_id(mvm, vif, 0)),
- 		.action = cpu_to_le32(FW_CTXT_ACTION_ADD),
-@@ -1417,7 +1417,7 @@ static bool iwl_mvm_session_prot_notif(struct iwl_notif_wait_data *notif_wait,
- {
- 	struct iwl_mvm *mvm =
- 		container_of(notif_wait, struct iwl_mvm, notif_wait);
--	struct iwl_mvm_session_prot_notif *resp;
-+	struct iwl_session_prot_notif *resp;
- 	int resp_len = iwl_rx_packet_payload_len(pkt);
+-			/* clear statistics to get clean beacon counter */
++			/*
++			 * Clear statistics to get clean beacon counter, and ask for
++			 * periodic statistics, as they are needed for link
++			 * selection and RX OMI decisions.
++			 */
+ 			iwl_mvm_request_statistics(mvm, true);
++			iwl_mvm_request_periodic_system_statistics(mvm, true);
+ 			iwl_mvm_sf_update(mvm, vif, false);
+ 			iwl_mvm_power_vif_assoc(mvm, vif);
  
- 	if (WARN_ON(pkt->hdr.cmd != SESSION_PROTECTION_NOTIF ||
-@@ -1449,7 +1449,7 @@ void iwl_mvm_schedule_session_protection(struct iwl_mvm *mvm,
- 	const u16 notif[] = { WIDE_ID(MAC_CONF_GROUP, SESSION_PROTECTION_NOTIF) };
- 	struct iwl_notification_wait wait_notif;
- 	int mac_link_id = iwl_mvm_get_session_prot_id(mvm, vif, (s8)link_id);
--	struct iwl_mvm_session_prot_cmd cmd = {
-+	struct iwl_session_prot_cmd cmd = {
- 		.id_and_color = cpu_to_le32(mac_link_id),
- 		.action = cpu_to_le32(FW_CTXT_ACTION_ADD),
- 		.conf_id = cpu_to_le32(SESSION_PROTECT_CONF_ASSOC),
+@@ -930,6 +929,8 @@ static void iwl_mvm_mld_vif_cfg_changed_station(struct iwl_mvm *mvm,
+ 		} else if (iwl_mvm_mld_vif_have_valid_ap_sta(mvmvif)) {
+ 			iwl_mvm_mei_host_disassociated(mvm);
+ 
++			iwl_mvm_request_periodic_system_statistics(mvm, false);
++
+ 			/* If update fails - SF might be running in associated
+ 			 * mode while disassociated - which is forbidden.
+ 			 */
 -- 
 2.34.1
 
