@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-16830-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16831-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30D579FD1B9
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Dec 2024 09:02:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8E819FD1BA
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Dec 2024 09:02:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 379087A11E0
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Dec 2024 08:02:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C5F2163E7D
+	for <lists+linux-wireless@lfdr.de>; Fri, 27 Dec 2024 08:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6A3014D2B9;
-	Fri, 27 Dec 2024 08:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B71E14AD3D;
+	Fri, 27 Dec 2024 08:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H3OwkdG/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ghHxJMoK"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10CC614AD3D
-	for <linux-wireless@vger.kernel.org>; Fri, 27 Dec 2024 08:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7301B7083A
+	for <linux-wireless@vger.kernel.org>; Fri, 27 Dec 2024 08:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735286499; cv=none; b=OcB2vNKHu3VAazmNIA/FAdrKcnIT58BYgnAm9qUVknfasqkntIPfzdF/c9+jdkIsqW25tl8YrE/6sqotSAo60WU7w5Rde+fWLRWDkrOsaCCfUKx32pksMCHudZJCNJkwZh54X1c+R166o4AQ4nAMcc1sR1B2pKfGQD1eCZMJiaU=
+	t=1735286501; cv=none; b=reIgKNt8b4nRPLDPRY7YevF2BFfcAf3GKjBYzzcSz1U1kHfShdU8XbTPGvgueXFjg6zZVIRLLcTBPyLAKdgHV72KQYs5bQQ0Sm+uK1gPF2Re+GkdZ3zt2ikcgNONmZvAxiZjCLoKHkxbdnTEoikrwo5MXfKArFpEGnnT564XmKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735286499; c=relaxed/simple;
-	bh=5Aob6PSefLellkmKLr0+OnWET7v5npiSOTkOyydEpZs=;
+	s=arc-20240116; t=1735286501; c=relaxed/simple;
+	bh=ODRkovnb1kujw9VH74R/cFKQdM8A6Y+ABp8F0/B2j9k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=swGNlvmULlubX3riEBuZL1174ktSktX0nLKLwxjMmJ7JRpbbqWLCZRY/rPEUajiRb61JJSJJrlQXWAm9l8h9N29t6UGdHMCvpMyHXNBaCWmxB6Ou14OvVh5OIQy9LIUJYf2aqhO/xej9Ktgb7IyO+7OOKKx454XkHqG6uKxf+W4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H3OwkdG/; arc=none smtp.client-ip=198.175.65.13
+	 MIME-Version; b=CB/UjRUJ/slkHaX2vW8TpPfoxHTAs3iaTeXQ+q86OchVmRUhtP0x8pFDx0iZnspPLxOFhsSkgXkYzfPzwyPt8gq1BLhbbA3lTfUCEKOpYPXKHWh4RTohdQY20qnOT7xZwAluniWHY5aoGWrC6xbx0tq7Z+kPbDJyyZqYLp6l8SU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ghHxJMoK; arc=none smtp.client-ip=198.175.65.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1735286498; x=1766822498;
+  t=1735286499; x=1766822499;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=5Aob6PSefLellkmKLr0+OnWET7v5npiSOTkOyydEpZs=;
-  b=H3OwkdG/7Ne11Lhy9hLUS/8NPWEZmH7snBEOXsDlKDzWTwh6Lfv8AcjK
-   e0v6AF2SDZ0o8B/pmsr+kvwV4XKaHKGM37t1xsqfsMf+q3WOvSTvf1Bhw
-   CYZSustgR6oijqv3gs2Q8wGQkA01fKBlg4dY4W+88Sp4SsiGb2SwaDpwC
-   y1Y6OCdkMQyLapn9w9f8p0LyN8YSgR6DKTcH1nO6nYIhWLValcPuNk/kT
-   fS3GZzAP1cSPbmM1b2gs2Mwhbmcd/zCjDTeuTeuNCqb9eLBJrcLVHNHZK
-   0S1u5lXw+O9ZJhRoyI8bCfUuZ4DCEqYPmh6bLQA1j5InS2c3RG9qSUzOZ
+  bh=ODRkovnb1kujw9VH74R/cFKQdM8A6Y+ABp8F0/B2j9k=;
+  b=ghHxJMoKtZJ6Bv1PaYGTv8fYS/iFh8B/HIeyUYPc0AKH9x8glXJarvPt
+   Na2HvtvvVgbVYgItKpokTV0FgS62Jjw4fKIM2YR9z94iCY5Ml38kVARnt
+   qhrwVMWP7aWyPdJR0VhXHEeREiHEwT3TKRXJqcp4y4QOG0WxpMHKt2nbf
+   Lymaq6p3x31wFlWuW7kVebneb9/9ROF4Gs3SNk3SpIQZ9ANygJCQxA8x2
+   J3GOUnL4ytClSz51n/G+eD+kxr3XBX2VGmmw8PuTM6m8e0zhG4bym1nYR
+   ySshlqDv8r+hAT0Nc7wlEuj6C2drdmBdJQDQahTMK8+L3E+4oLfUCD2PB
    g==;
-X-CSE-ConnectionGUID: VYgnWFtpS6ixWfApX9XTtQ==
-X-CSE-MsgGUID: tjc5o3k4SkKeVje0NDUBLg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11297"; a="46690948"
+X-CSE-ConnectionGUID: ewUIEiFlRbiAOiS+6kiLYg==
+X-CSE-MsgGUID: 0wP9eoh1TjKnIu3AIVSwow==
+X-IronPort-AV: E=McAfee;i="6700,10204,11297"; a="46690952"
 X-IronPort-AV: E=Sophos;i="6.12,268,1728975600"; 
-   d="scan'208";a="46690948"
+   d="scan'208";a="46690952"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2024 00:01:37 -0800
-X-CSE-ConnectionGUID: m0dKtUkYSt2uuHusuL+spQ==
-X-CSE-MsgGUID: GQYBxsLbSyGmpj5Y1/0Z0w==
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2024 00:01:39 -0800
+X-CSE-ConnectionGUID: FiWPU2/AS/2yP5dwfssvNg==
+X-CSE-MsgGUID: c5XKbPh2QwGhMKxSu89MJQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,268,1728975600"; 
-   d="scan'208";a="99858313"
+   d="scan'208";a="99858341"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2024 00:01:36 -0800
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2024 00:01:37 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 08/17] wifi: iwlwifi: context-info: add kernel-doc markers
-Date: Fri, 27 Dec 2024 10:01:03 +0200
-Message-Id: <20241227095718.c5c04b641479.I702b8122d307a0d9d09df038cda10be063f7f2d7@changeid>
+Subject: [PATCH 09/17] wifi: iwlwifi: return ERR_PTR from opmode start()
+Date: Fri, 27 Dec 2024 10:01:04 +0200
+Message-Id: <20241227095718.3fe5031d5784.I7307996c91dac69619ff9c616b8a077423fac19f@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241227080112.1098419-1-miriam.rachel.korenblit@intel.com>
 References: <20241227080112.1098419-1-miriam.rachel.korenblit@intel.com>
@@ -79,264 +79,227 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-These comments have kernel-doc markup and were meant to
-be handled as such, add the right /** marker to them.
-
-Add missing entries where needed.
+In order to restrict the retry loops for timeouts, first
+pass the error code up using ERR_PTR(). This of course
+requires all existing functions to be updated accordingly.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../intel/iwlwifi/iwl-context-info-gen3.h     | 25 +++++++++-------
- .../wireless/intel/iwlwifi/iwl-context-info.h | 30 ++++++++++++-------
- 2 files changed, 34 insertions(+), 21 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/dvm/main.c | 34 ++++++++++++-------
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c  |  2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  | 24 +++++++++----
+ 3 files changed, 40 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-context-info-gen3.h b/drivers/net/wireless/intel/iwlwifi/iwl-context-info-gen3.h
-index 6b246ec3ff03..cd25a1b9f2ff 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-context-info-gen3.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-context-info-gen3.h
-@@ -86,7 +86,7 @@ enum iwl_prph_scratch_ext_flags {
- 	IWL_PRPH_SCRATCH_EXT_URM_PERM	= BIT(5),
- };
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/main.c b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
+index 2c4363662efd..4f5846953fa3 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/main.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/main.c
+@@ -1241,7 +1241,7 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
+ 		STATISTICS_NOTIFICATION,
+ 		REPLY_TX,
+ 	};
+-	int i;
++	int i, err;
  
--/*
-+/**
-  * struct iwl_prph_scratch_version - version structure
-  * @mac_id: SKU and revision id
-  * @version: prph scratch information version id
-@@ -100,7 +100,7 @@ struct iwl_prph_scratch_version {
- 	__le16 reserved;
- } __packed; /* PERIPH_SCRATCH_VERSION_S */
+ 	/************************
+ 	 * 1. Allocating HW data
+@@ -1249,6 +1249,7 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
+ 	hw = iwl_alloc_all();
+ 	if (!hw) {
+ 		pr_err("%s: Cannot allocate network device\n", trans->name);
++		err = -ENOMEM;
+ 		goto out;
+ 	}
  
--/*
-+/**
-  * struct iwl_prph_scratch_control - control structure
-  * @control_flags: context information flags see &enum iwl_prph_scratch_flags
-  * @control_flags_ext: context information for extended flags,
-@@ -111,7 +111,7 @@ struct iwl_prph_scratch_control {
- 	__le32 control_flags_ext;
- } __packed; /* PERIPH_SCRATCH_CONTROL_S */
+@@ -1299,8 +1300,10 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
+ 		break;
+ 	}
  
--/*
-+/**
-  * struct iwl_prph_scratch_pnvm_cfg - PNVM scratch
-  * @pnvm_base_addr: PNVM start address
-  * @pnvm_size: the size of the PNVM image in bytes
-@@ -131,7 +131,8 @@ struct iwl_prph_scratch_pnvm_cfg {
- struct iwl_prph_scrath_mem_desc_addr_array {
- 	__le64 mem_descs[IPC_DRAM_MAP_ENTRY_NUM_MAX];
- } __packed; /* PERIPH_SCRATCH_MEM_DESC_ADDR_ARRAY_S_VER_1 */
--/*
-+
-+/**
-  * struct iwl_prph_scratch_hwm_cfg - hwm config
-  * @hwm_base_addr: hwm start address
-  * @hwm_size: hwm size in DWs
-@@ -143,7 +144,7 @@ struct iwl_prph_scratch_hwm_cfg {
- 	__le32 debug_token_config;
- } __packed; /* PERIPH_SCRATCH_HWM_CFG_S */
+-	if (WARN_ON(!priv->lib))
++	if (WARN_ON(!priv->lib)) {
++		err = -ENODEV;
+ 		goto out_free_hw;
++	}
  
--/*
-+/**
-  * struct iwl_prph_scratch_rbd_cfg - RBDs configuration
-  * @free_rbd_addr: default queue free RB CB base address
-  * @reserved: reserved
-@@ -153,10 +154,11 @@ struct iwl_prph_scratch_rbd_cfg {
- 	__le32 reserved;
- } __packed; /* PERIPH_SCRATCH_RBD_CFG_S */
+ 	/*
+ 	 * Populate the state variables that the transport layer needs
+@@ -1377,12 +1380,14 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
+ 	IWL_INFO(priv, "Detected %s, REV=0x%X\n",
+ 		priv->trans->name, priv->trans->hw_rev);
  
--/*
-+/**
-  * struct iwl_prph_scratch_uefi_cfg - prph scratch reduce power table
-  * @base_addr: reduce power table address
-  * @size: the size of the entire power table image
-+ * @reserved: (reserved)
-  */
- struct iwl_prph_scratch_uefi_cfg {
- 	__le64 base_addr;
-@@ -164,7 +166,7 @@ struct iwl_prph_scratch_uefi_cfg {
- 	__le32 reserved;
- } __packed; /* PERIPH_SCRATCH_UEFI_CFG_S */
+-	if (iwl_trans_start_hw(priv->trans))
++	err = iwl_trans_start_hw(priv->trans);
++	if (err)
+ 		goto out_free_hw;
  
--/*
-+/**
-  * struct iwl_prph_scratch_step_cfg - prph scratch step configuration
-  * @mbx_addr_0: [0:7] revision,
-  *		[8:15] cnvi_to_cnvr length,
-@@ -178,13 +180,14 @@ struct iwl_prph_scratch_step_cfg {
- 	__le32 mbx_addr_1;
- } __packed;
+ 	/* Read the EEPROM */
+-	if (iwl_read_eeprom(priv->trans, &priv->eeprom_blob,
+-			    &priv->eeprom_blob_size)) {
++	err = iwl_read_eeprom(priv->trans, &priv->eeprom_blob,
++			      &priv->eeprom_blob_size);
++	if (err) {
+ 		IWL_ERR(priv, "Unable to init EEPROM\n");
+ 		goto out_free_hw;
+ 	}
+@@ -1393,13 +1398,17 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
+ 	priv->nvm_data = iwl_parse_eeprom_data(priv->trans, priv->cfg,
+ 					       priv->eeprom_blob,
+ 					       priv->eeprom_blob_size);
+-	if (!priv->nvm_data)
++	if (!priv->nvm_data) {
++		err = -ENOMEM;
+ 		goto out_free_eeprom_blob;
++	}
  
--/*
-+/**
-  * struct iwl_prph_scratch_ctrl_cfg - prph scratch ctrl and config
-  * @version: version information of context info and HW
-  * @control: control flags of FH configurations
-  * @pnvm_cfg: ror configuration
-  * @hwm_cfg: hwm configuration
-  * @rbd_cfg: default RX queue configuration
-+ * @reduce_power_cfg: UEFI power reduction table
-  * @step_cfg: step configuration
-  */
- struct iwl_prph_scratch_ctrl_cfg {
-@@ -197,7 +200,7 @@ struct iwl_prph_scratch_ctrl_cfg {
- 	struct iwl_prph_scratch_step_cfg step_cfg;
- } __packed; /* PERIPH_SCRATCH_CTRL_CFG_S */
+-	if (iwl_nvm_check_version(priv->nvm_data, priv->trans))
++	err = iwl_nvm_check_version(priv->nvm_data, priv->trans);
++	if (err)
+ 		goto out_free_eeprom;
  
--/*
-+/**
-  * struct iwl_prph_scratch - peripheral scratch mapping
-  * @ctrl_cfg: control and configuration of prph scratch
-  * @dram: firmware images addresses in DRAM
-@@ -213,7 +216,7 @@ struct iwl_prph_scratch {
- 	struct iwl_context_info_dram dram;
- } __packed; /* PERIPH_SCRATCH_S */
+-	if (iwl_eeprom_init_hw_params(priv))
++	err = iwl_eeprom_init_hw_params(priv);
++	if (err)
+ 		goto out_free_eeprom;
  
--/*
-+/**
-  * struct iwl_prph_info - peripheral information
-  * @boot_stage_mirror: reflects the value in the Boot Stage CSR register
-  * @ipc_status_mirror: reflects the value in the IPC Status CSR register
-@@ -227,7 +230,7 @@ struct iwl_prph_info {
- 	__le32 reserved;
- } __packed; /* PERIPH_INFO_S */
+ 	/* extract MAC Address */
+@@ -1446,7 +1455,8 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
+ 		atomic_set(&priv->queue_stop_count[i], 0);
+ 	}
  
--/*
-+/**
-  * struct iwl_context_info_gen3 - device INIT configuration
-  * @version: version of the context information
-  * @size: size of context information in DWs
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-context-info.h b/drivers/net/wireless/intel/iwlwifi/iwl-context-info.h
-index 1a1321db137c..7abd153d56f9 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-context-info.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-context-info.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /*
-  * Copyright (C) 2017 Intel Deutschland GmbH
-- * Copyright (C) 2018-2020, 2022 Intel Corporation
-+ * Copyright (C) 2018-2020, 2022, 2024 Intel Corporation
-  */
- #ifndef __iwl_context_info_file_h__
- #define __iwl_context_info_file_h__
-@@ -53,11 +53,12 @@ enum iwl_context_info_flags {
- 	IWL_CTXT_INFO_RB_SIZE_32K	= 0xe,
- };
+-	if (iwl_init_drv(priv))
++	err = iwl_init_drv(priv);
++	if (err)
+ 		goto out_free_eeprom;
  
--/*
-+/**
-  * struct iwl_context_info_version - version structure
-  * @mac_id: SKU and revision id
-  * @version: context information version id
-  * @size: the size of the context information in DWs
-+ * @reserved: (reserved)
-  */
- struct iwl_context_info_version {
- 	__le16 mac_id;
-@@ -66,16 +67,17 @@ struct iwl_context_info_version {
- 	__le16 reserved;
- } __packed;
+ 	/* At this point both hw and priv are initialized. */
+@@ -1480,7 +1490,8 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
+ 	 *
+ 	 * 7. Setup and register with mac80211 and debugfs
+ 	 **************************************************/
+-	if (iwlagn_mac_setup_register(priv, &fw->ucode_capa))
++	err = iwlagn_mac_setup_register(priv, &fw->ucode_capa);
++	if (err)
+ 		goto out_destroy_workqueue;
  
--/*
-+/**
-  * struct iwl_context_info_control - version structure
-  * @control_flags: context information flags see &enum iwl_context_info_flags
-+ * @reserved: (reserved)
-  */
- struct iwl_context_info_control {
- 	__le32 control_flags;
- 	__le32 reserved;
- } __packed;
+ 	iwl_dbgfs_register(priv, dbgfs_dir);
+@@ -1500,8 +1511,7 @@ static struct iwl_op_mode *iwl_op_mode_dvm_start(struct iwl_trans *trans,
+ out_free_hw:
+ 	ieee80211_free_hw(priv->hw);
+ out:
+-	op_mode = NULL;
+-	return op_mode;
++	return ERR_PTR(err);
+ }
  
--/*
-+/**
-  * struct iwl_context_info_dram - images DRAM map
-  * each entry in the map represents a DRAM chunk of up to 32 KB
-  * @umac_img: UMAC image DRAM map
-@@ -88,7 +90,7 @@ struct iwl_context_info_dram {
- 	__le64 virtual_img[IWL_MAX_DRAM_ENTRY];
- } __packed;
+ static void iwl_op_mode_dvm_stop(struct iwl_op_mode *op_mode)
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+index c620911a1193..d7bf996d3a82 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-drv.c
+@@ -1429,7 +1429,7 @@ _iwl_op_mode_start(struct iwl_drv *drv, struct iwlwifi_opmode_table *op)
+ 		op_mode = ops->start(drv->trans, drv->trans->cfg,
+ 				     &drv->fw, dbgfs_dir);
  
--/*
-+/**
-  * struct iwl_context_info_rbd_cfg - RBDs configuration
-  * @free_rbd_addr: default queue free RB CB base address
-  * @used_rbd_addr: default queue used RB CB base address
-@@ -100,10 +102,11 @@ struct iwl_context_info_rbd_cfg {
- 	__le64 status_wr_ptr;
- } __packed;
+-		if (op_mode)
++		if (!IS_ERR(op_mode))
+ 			return op_mode;
  
--/*
-+/**
-  * struct iwl_context_info_hcmd_cfg  - command queue configuration
-  * @cmd_queue_addr: address of command queue
-  * @cmd_queue_size: number of entries
-+ * @reserved: (reserved)
-  */
- struct iwl_context_info_hcmd_cfg {
- 	__le64 cmd_queue_addr;
-@@ -111,10 +114,11 @@ struct iwl_context_info_hcmd_cfg {
- 	u8 reserved[7];
- } __packed;
+ 		if (test_bit(STATUS_TRANS_DEAD, &drv->trans->status))
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index 06b05e076cd2..623122cadd32 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -1285,6 +1285,7 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
+ 	size_t scan_size;
+ 	u32 min_backoff;
+ 	struct iwl_mvm_csme_conn_info *csme_conn_info __maybe_unused;
++	int err;
  
--/*
-+/**
-  * struct iwl_context_info_dump_cfg - Core Dump configuration
-  * @core_dump_addr: core dump (debug DRAM address) start address
-  * @core_dump_size: size, in DWs
-+ * @reserved: (reserved)
-  */
- struct iwl_context_info_dump_cfg {
- 	__le64 core_dump_addr;
-@@ -122,10 +126,11 @@ struct iwl_context_info_dump_cfg {
- 	__le32 reserved;
- } __packed;
+ 	/*
+ 	 * We use IWL_STATION_COUNT_MAX to check the validity of the station
+@@ -1302,7 +1303,7 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
+ 				iwl_mvm_has_mld_api(fw) ? &iwl_mvm_mld_hw_ops :
+ 				&iwl_mvm_hw_ops);
+ 	if (!hw)
+-		return NULL;
++		return ERR_PTR(-ENOMEM);
  
--/*
-+/**
-  * struct iwl_context_info_pnvm_cfg - platform NVM data configuration
-  * @platform_nvm_addr: Platform NVM data start address
-  * @platform_nvm_size: size in DWs
-+ * @reserved: (reserved)
-  */
- struct iwl_context_info_pnvm_cfg {
- 	__le64 platform_nvm_addr;
-@@ -133,11 +138,12 @@ struct iwl_context_info_pnvm_cfg {
- 	__le32 reserved;
- } __packed;
+ 	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_BZ)
+ 		max_agg = 512;
+@@ -1347,8 +1348,10 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
+ 		trans->rx_mpdu_cmd_hdr_size =
+ 			sizeof(struct iwl_rx_mpdu_res_start);
  
--/*
-+/**
-  * struct iwl_context_info_early_dbg_cfg - early debug configuration for
-  *	dumping DRAM addresses
-  * @early_debug_addr: early debug start address
-  * @early_debug_size: size in DWs
-+ * @reserved: (reserved)
-  */
- struct iwl_context_info_early_dbg_cfg {
- 	__le64 early_debug_addr;
-@@ -145,16 +151,20 @@ struct iwl_context_info_early_dbg_cfg {
- 	__le32 reserved;
- } __packed;
+-		if (WARN_ON(trans->num_rx_queues > 1))
++		if (WARN_ON(trans->num_rx_queues > 1)) {
++			err = -EINVAL;
+ 			goto out_free;
++		}
+ 	}
  
--/*
-+/**
-  * struct iwl_context_info - device INIT configuration
-  * @version: version information of context info and HW
-  * @control: control flags of FH configurations
-+ * @reserved0: (reserved)
-  * @rbd_cfg: default RX queue configuration
-  * @hcmd_cfg: command queue configuration
-+ * @reserved1: (reserved)
-  * @dump_cfg: core dump data
-  * @edbg_cfg: early debug configuration
-  * @pnvm_cfg: platform nvm configuration
-+ * @reserved2: (reserved)
-  * @dram: firmware image addresses in DRAM
-+ * @reserved3: (reserved)
-  */
- struct iwl_context_info {
- 	struct iwl_context_info_version version;
+ 	mvm->fw_restart = iwlwifi_mod_params.fw_restart ? -1 : 0;
+@@ -1425,8 +1428,10 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
+ 		iwl_fw_lookup_notif_ver(mvm->fw, LOCATION_GROUP,
+ 					TOF_RANGE_RESPONSE_NOTIF, 5);
+ 	/* we only support up to version 9 */
+-	if (WARN_ON_ONCE(mvm->cmd_ver.range_resp > 9))
++	if (WARN_ON_ONCE(mvm->cmd_ver.range_resp > 9)) {
++		err = -EINVAL;
+ 		goto out_free;
++	}
+ 
+ 	/*
+ 	 * Populate the state variables that the transport layer needs
+@@ -1489,6 +1494,7 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
+ 	mvm->phy_db = iwl_phy_db_init(trans);
+ 	if (!mvm->phy_db) {
+ 		IWL_ERR(mvm, "Cannot init phy_db\n");
++		err = -ENOMEM;
+ 		goto out_free;
+ 	}
+ 
+@@ -1501,8 +1507,10 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
+ 	scan_size = iwl_mvm_scan_size(mvm);
+ 
+ 	mvm->scan_cmd = kmalloc(scan_size, GFP_KERNEL);
+-	if (!mvm->scan_cmd)
++	if (!mvm->scan_cmd) {
++		err = -ENOMEM;
+ 		goto out_free;
++	}
+ 	mvm->scan_cmd_size = scan_size;
+ 
+ 	/* invalidate ids to prevent accidental removal of sta_id 0 */
+@@ -1531,7 +1539,8 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
+ 
+ 	iwl_mvm_mei_scan_filter_init(&mvm->mei_scan_filter);
+ 
+-	if (iwl_mvm_start_get_nvm(mvm)) {
++	err = iwl_mvm_start_get_nvm(mvm);
++	if (err) {
+ 		/*
+ 		 * Getting NVM failed while CSME is the owner, but we are
+ 		 * registered to MEI, we'll get the NVM later when it'll be
+@@ -1544,7 +1553,8 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
+ 	}
+ 
+ 
+-	if (iwl_mvm_start_post_nvm(mvm))
++	err = iwl_mvm_start_post_nvm(mvm);
++	if (err)
+ 		goto out_thermal_exit;
+ 
+ 	return op_mode;
+@@ -1564,7 +1574,7 @@ iwl_op_mode_mvm_start(struct iwl_trans *trans, const struct iwl_cfg *cfg,
+ 	iwl_trans_op_mode_leave(trans);
+ 
+ 	ieee80211_free_hw(mvm->hw);
+-	return NULL;
++	return ERR_PTR(err);
+ }
+ 
+ void iwl_mvm_stop_device(struct iwl_mvm *mvm)
 -- 
 2.34.1
 
