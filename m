@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-16843-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16844-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59C6A9FDC2B
-	for <lists+linux-wireless@lfdr.de>; Sat, 28 Dec 2024 21:34:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4FC59FDC2C
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 Dec 2024 21:34:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B58E161532
-	for <lists+linux-wireless@lfdr.de>; Sat, 28 Dec 2024 20:34:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6641C1881802
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 Dec 2024 20:34:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06B27192D95;
-	Sat, 28 Dec 2024 20:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4FF38DC8;
+	Sat, 28 Dec 2024 20:34:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CCWTu2OM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TQE1BC7B"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C864138DC8
-	for <linux-wireless@vger.kernel.org>; Sat, 28 Dec 2024 20:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C4478F5B
+	for <linux-wireless@vger.kernel.org>; Sat, 28 Dec 2024 20:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735418077; cv=none; b=fgFDWD7FfNBkvuqIAxqyCqUNh/EKRaJzDAR+egoi9mdm0Fs4kQmzgeIAfxwzkU72+rW7K9fAl6KBoWxuioCk6UbBabpYyPECBFZXrSEzScAIxLXTL8aOWTJm9LVtRRit3Z53ub1xlfVlgLsmSqVddfbcj6Cg+Wbb4AF4CLFxjFA=
+	t=1735418079; cv=none; b=ITMhvZqE2E4C5u7CvRAMLc/fq7CHRp1JD3CWVI3U9BrrWAvJbv1aBX1HMm4ZIYSX0EZeSqDasyrmjcIntOBijMTdibU+ZUmlmKnXZBqgtf/00uOp+kfI8DVqil9SQoXQBRsAIEnEncuV6PggG2tQANmlfgknqMDYEtmzd/G+91s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735418077; c=relaxed/simple;
-	bh=D55MPvQ/LgGYGYUWkB/rb/govWTif7mKh16tSAyR1Io=;
+	s=arc-20240116; t=1735418079; c=relaxed/simple;
+	bh=3bJJU0d6ZdWjYX1AEwzEdxbEnuu1q75GYZCV5jtFEFI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=njl8lBOi58q3HfG7wIOr8KEOVwl4iAxUBsGorRhr0DW57mdQAnpg5CjTwjgg0TT/5Wg5kQxOHGIpAsZi4y1ONFjzVoWrRSlv5+FXzN0p7nOeAO4cb6ty2GoBGXF8czFadDC3SBBIWU/2DG9DP8Qf0ojk2wZYd50sHUElFla01bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CCWTu2OM; arc=none smtp.client-ip=198.175.65.20
+	 MIME-Version; b=mIVZpBzNsjAJDsldtFcWpPMHZvV6+mhO1VX8mNE639BAoO93rU5CV+9w/3z4rQ9aVnb6exrLsHE7nd3qJkyUVcuyIwbbquX53i+YmZg+cwzvgvdysuux7A+1Mbl3jedG8uVcoYuJ94dLep5QN+e6LOqZsOgB2nZgWj70jWdsGVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TQE1BC7B; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1735418076; x=1766954076;
+  t=1735418077; x=1766954077;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=D55MPvQ/LgGYGYUWkB/rb/govWTif7mKh16tSAyR1Io=;
-  b=CCWTu2OMDHnkCJ71EpNvGYK4TfMrKgNN6EuDzhL50UnUX/FsUQfg+Khg
-   IVEWqE9gkhfD1l6ZR2/pfOO5msg9Gd7BpXqLH+0VgdSQaR8X5Wob5k2HF
-   Zsv/fvMPEPFDx6Yb5mfV0acFq2pFExy5zgh0eJDgDGqxTAsaZGZe5DNw5
-   CtRyoL9arOgC9BKUHRHa14f1kZPPVnTK4/4SofQeCRr9g0Ytb778MtYjY
-   qkfJ1qyn87OOK8fhMymyJchZGO8zY054s9PkvrV9h29Wbel0t12K6zHo5
-   sNKcH1G+L2Sr6ZTcL4PtwMs684/cPEJPHjUdjWhQtNTdggbv0uy7LQvAc
+  bh=3bJJU0d6ZdWjYX1AEwzEdxbEnuu1q75GYZCV5jtFEFI=;
+  b=TQE1BC7BY1ETfwb6x/+KTvVsJpe51Pt/Xr43SCX4GjPv8Hl22Zca8S/0
+   jPtyku2ZIsnGCiopJYznbhyLtk4EksebHsg4LjWYRVE35dUAW9AbBZB07
+   OFhbhdnHO58HTJqIBw3ocT3Huw1TioAQdvSI72lWqtJUfLBzyOOZmWQlu
+   tTaiEL7VYLfWEISuLQNGEsHHQ4apb11AdletGMR6oVsvC+bh2hoHPzsu5
+   I5HUjiLLaOB7uR7S6VRl/raz2K1EAg0O/0tvE1W5PBOWTgKhEccVpu5it
+   uop73xHsqxN6HJNblpw3piodMbcQJnFMN9BTPipnxa8eiL2FONVziFf8N
    Q==;
-X-CSE-ConnectionGUID: U07oDJahSzK4MwpGbSa3kQ==
-X-CSE-MsgGUID: TvjrYNcRSY+3uAzyRCYwnQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11299"; a="35479750"
+X-CSE-ConnectionGUID: wkOoy8aGTEaDcwkTAK1xYg==
+X-CSE-MsgGUID: 1VcFvJtTTn6o5R4sDHf6vw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11299"; a="35479752"
 X-IronPort-AV: E=Sophos;i="6.12,273,1728975600"; 
-   d="scan'208";a="35479750"
+   d="scan'208";a="35479752"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2024 12:34:35 -0800
-X-CSE-ConnectionGUID: gQerue8uSbyLUv8nU1e5Ag==
-X-CSE-MsgGUID: nU4PHyJIT8SH6IfmU5Cn0A==
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2024 12:34:37 -0800
+X-CSE-ConnectionGUID: f4qnMzlBR2mEV9T5OkVa9Q==
+X-CSE-MsgGUID: tVfMtpdERwyGM8YF7ZSeLQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="104488355"
+   d="scan'208";a="104488358"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2024 12:34:34 -0800
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2024 12:34:36 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
 	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH 01/15] wifi: iwlwifi: mld: make iwl_mvm_find_ie_offset a iwlwifi util
-Date: Sat, 28 Dec 2024 22:34:05 +0200
-Message-Id: <20241228223206.a36373eefbf2.Ib1f305b78508c98934f6000720d6455c88a860cb@changeid>
+Subject: [PATCH 02/15] wifi: iwlwifi: move fw_ver debugfs to firmware runtime
+Date: Sat, 28 Dec 2024 22:34:06 +0200
+Message-Id: <20241228223206.98bdc5e62828.Iee7a8365dd63ebf580d324f90e1e04466d8ef5d5@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241228203419.2443350-1-miriam.rachel.korenblit@intel.com>
 References: <20241228203419.2443350-1-miriam.rachel.korenblit@intel.com>
@@ -77,177 +77,119 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-This is needed also for more opmodes, and is really not opmode dependent.
-Make it a iwlwifi util.
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
+This is really where it belongs.
+
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/iwl-utils.h    | 20 ++++++++
- .../net/wireless/intel/iwlwifi/mvm/debugfs.c  |  7 +--
- .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 48 +++++++------------
- drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  1 -
- 4 files changed, 40 insertions(+), 36 deletions(-)
+ .../net/wireless/intel/iwlwifi/fw/debugfs.c   | 23 ++++++++++++-
+ .../net/wireless/intel/iwlwifi/mvm/debugfs.c  | 32 -------------------
+ 2 files changed, 22 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-utils.h b/drivers/net/wireless/intel/iwlwifi/iwl-utils.h
-index b43703afdff2..909460316995 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-utils.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-utils.h
-@@ -5,6 +5,8 @@
- #ifndef __iwl_utils_h__
- #define __iwl_utils_h__
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+index 893b21fcaf87..e79fdb5fe387 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2012-2014, 2018-2023 Intel Corporation
++ * Copyright (C) 2012-2014, 2018-2024 Intel Corporation
+  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
+  */
+@@ -282,6 +282,26 @@ static ssize_t iwl_dbgfs_fw_dbg_domain_read(struct iwl_fw_runtime *fwrt,
  
-+#include <net/cfg80211.h>
-+
- #ifdef CONFIG_INET
- /**
-  * iwl_tx_tso_segment - Segments a TSO packet into subframes for A-MSDU.
-@@ -33,4 +35,22 @@ int iwl_tx_tso_segment(struct sk_buff *skb, unsigned int num_subframes,
- }
- #endif /* CONFIG_INET */
+ FWRT_DEBUGFS_READ_FILE_OPS(fw_dbg_domain, 20);
  
-+static inline
-+u32 iwl_find_ie_offset(u8 *beacon, u8 eid, u32 frame_size)
++static ssize_t iwl_dbgfs_fw_ver_read(struct iwl_fw_runtime *fwrt,
++				     size_t size, char *buf)
 +{
-+	struct ieee80211_mgmt *mgmt = (void *)beacon;
-+	const u8 *ie;
++	char *pos = buf;
++	char *endpos = buf + size;
 +
-+	if (WARN_ON_ONCE(frame_size <= (mgmt->u.beacon.variable - beacon)))
-+		return 0;
++	pos += scnprintf(pos, endpos - pos, "FW id: %s\n",
++			 fwrt->fw->fw_version);
++	pos += scnprintf(pos, endpos - pos, "FW: %s\n",
++			 fwrt->fw->human_readable);
++	pos += scnprintf(pos, endpos - pos, "Device: %s\n",
++			 fwrt->trans->name);
++	pos += scnprintf(pos, endpos - pos, "Bus: %s\n",
++			 fwrt->dev->bus->name);
 +
-+	frame_size -= mgmt->u.beacon.variable - beacon;
-+
-+	ie = cfg80211_find_ie(eid, mgmt->u.beacon.variable, frame_size);
-+	if (!ie)
-+		return 0;
-+
-+	return ie - beacon;
++	return pos - buf;
 +}
 +
- #endif /* __iwl_utils_h__ */
++FWRT_DEBUGFS_READ_FILE_OPS(fw_ver, 1024);
++
+ struct iwl_dbgfs_fw_info_priv {
+ 	struct iwl_fw_runtime *fwrt;
+ };
+@@ -404,4 +424,5 @@ void iwl_fwrt_dbgfs_register(struct iwl_fw_runtime *fwrt,
+ 	FWRT_DEBUGFS_ADD_FILE(send_hcmd, dbgfs_dir, 0200);
+ 	FWRT_DEBUGFS_ADD_FILE(enabled_severities, dbgfs_dir, 0200);
+ 	FWRT_DEBUGFS_ADD_FILE(fw_dbg_domain, dbgfs_dir, 0400);
++	FWRT_DEBUGFS_ADD_FILE(fw_ver, dbgfs_dir, 0400);
+ }
 diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-index 7fbfec6750c1..b8ae86039045 100644
+index b8ae86039045..340f3a026c42 100644
 --- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
 +++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-@@ -16,6 +16,7 @@
- #include "debugfs.h"
- #include "iwl-modparams.h"
- #include "iwl-drv.h"
-+#include "iwl-utils.h"
- #include "fw/error-dump.h"
- #include "fw/api/phy-ctxt.h"
- 
-@@ -1413,9 +1414,9 @@ static int _iwl_dbgfs_inject_beacon_ie(struct iwl_mvm *mvm, char *bin, int len)
- 
- 		if (iwl_fw_lookup_cmd_ver(mvm->fw,
- 					  BEACON_TEMPLATE_CMD, 0) >= 14) {
--			u32 offset = iwl_mvm_find_ie_offset(beacon->data,
--							    WLAN_EID_S1G_TWT,
--							    beacon->len);
-+			u32 offset = iwl_find_ie_offset(beacon->data,
-+							WLAN_EID_S1G_TWT,
-+							beacon->len);
- 
- 			beacon_cmd.btwt_offset = cpu_to_le32(offset);
- 		}
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-index 51ee62ae70fb..bbf0f2753f9f 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-@@ -12,6 +12,7 @@
- #include "fw-api.h"
- #include "mvm.h"
- #include "time-event.h"
-+#include "iwl-utils.h"
- 
- const u8 iwl_mvm_ac_to_tx_fifo[] = {
- 	IWL_MVM_TX_FIFO_VO,
-@@ -868,23 +869,6 @@ void iwl_mvm_mac_ctxt_set_tim(struct iwl_mvm *mvm,
- 	}
+@@ -538,36 +538,6 @@ static ssize_t iwl_dbgfs_disable_power_off_write(struct iwl_mvm *mvm, char *buf,
+ 	return ret ?: count;
  }
  
--u32 iwl_mvm_find_ie_offset(u8 *beacon, u8 eid, u32 frame_size)
+-static ssize_t iwl_dbgfs_fw_ver_read(struct file *file, char __user *user_buf,
+-				     size_t count, loff_t *ppos)
 -{
--	struct ieee80211_mgmt *mgmt = (void *)beacon;
--	const u8 *ie;
+-	struct iwl_mvm *mvm = file->private_data;
+-	char *buff, *pos, *endpos;
+-	static const size_t bufsz = 1024;
+-	int ret;
 -
--	if (WARN_ON_ONCE(frame_size <= (mgmt->u.beacon.variable - beacon)))
--		return 0;
+-	buff = kmalloc(bufsz, GFP_KERNEL);
+-	if (!buff)
+-		return -ENOMEM;
 -
--	frame_size -= mgmt->u.beacon.variable - beacon;
+-	pos = buff;
+-	endpos = pos + bufsz;
 -
--	ie = cfg80211_find_ie(eid, mgmt->u.beacon.variable, frame_size);
--	if (!ie)
--		return 0;
+-	pos += scnprintf(pos, endpos - pos, "FW id: %s\n",
+-			 mvm->fwrt.fw->fw_version);
+-	pos += scnprintf(pos, endpos - pos, "FW: %s\n",
+-			 mvm->fwrt.fw->human_readable);
+-	pos += scnprintf(pos, endpos - pos, "Device: %s\n",
+-			 mvm->fwrt.trans->name);
+-	pos += scnprintf(pos, endpos - pos, "Bus: %s\n",
+-			 mvm->fwrt.dev->bus->name);
 -
--	return ie - beacon;
+-	ret = simple_read_from_buffer(user_buf, count, ppos, buff, pos - buff);
+-	kfree(buff);
+-
+-	return ret;
 -}
 -
- u8 iwl_mvm_mac_ctxt_get_lowest_rate(struct iwl_mvm *mvm,
- 				    struct ieee80211_tx_info *info,
- 				    struct ieee80211_vif *vif)
-@@ -1078,13 +1062,13 @@ static int iwl_mvm_mac_ctxt_send_beacon_v7(struct iwl_mvm *mvm,
- 					 beacon->data, beacon->len);
- 
- 	beacon_cmd.csa_offset =
--		cpu_to_le32(iwl_mvm_find_ie_offset(beacon->data,
--						   WLAN_EID_CHANNEL_SWITCH,
--						   beacon->len));
-+		cpu_to_le32(iwl_find_ie_offset(beacon->data,
-+					       WLAN_EID_CHANNEL_SWITCH,
-+					       beacon->len));
- 	beacon_cmd.ecsa_offset =
--		cpu_to_le32(iwl_mvm_find_ie_offset(beacon->data,
--						   WLAN_EID_EXT_CHANSWITCH_ANN,
--						   beacon->len));
-+		cpu_to_le32(iwl_find_ie_offset(beacon->data,
-+					       WLAN_EID_EXT_CHANSWITCH_ANN,
-+					       beacon->len));
- 
- 	return iwl_mvm_mac_ctxt_send_beacon_cmd(mvm, beacon, &beacon_cmd,
- 						sizeof(beacon_cmd));
-@@ -1151,20 +1135,20 @@ static int iwl_mvm_mac_ctxt_send_beacon_v9(struct iwl_mvm *mvm,
- 					 beacon->data, beacon->len);
- 
- 	beacon_cmd.csa_offset =
--		cpu_to_le32(iwl_mvm_find_ie_offset(beacon->data,
--						   WLAN_EID_CHANNEL_SWITCH,
--						   beacon->len));
-+		cpu_to_le32(iwl_find_ie_offset(beacon->data,
-+					       WLAN_EID_CHANNEL_SWITCH,
-+					       beacon->len));
- 	beacon_cmd.ecsa_offset =
--		cpu_to_le32(iwl_mvm_find_ie_offset(beacon->data,
--						   WLAN_EID_EXT_CHANSWITCH_ANN,
--						   beacon->len));
-+		cpu_to_le32(iwl_find_ie_offset(beacon->data,
-+					       WLAN_EID_EXT_CHANSWITCH_ANN,
-+					       beacon->len));
- 
- 	if (vif->type == NL80211_IFTYPE_AP &&
- 	    iwl_fw_lookup_cmd_ver(mvm->fw, BEACON_TEMPLATE_CMD, 0) >= 14)
- 		beacon_cmd.btwt_offset =
--			cpu_to_le32(iwl_mvm_find_ie_offset(beacon->data,
--							   WLAN_EID_S1G_TWT,
--							   beacon->len));
-+			cpu_to_le32(iwl_find_ie_offset(beacon->data,
-+						       WLAN_EID_S1G_TWT,
-+						       beacon->len));
- 
- 	return iwl_mvm_mac_ctxt_send_beacon_cmd(mvm, beacon, &beacon_cmd,
- 						sizeof(beacon_cmd));
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-index dbf32bf5760b..43e304f22475 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mvm.h
-@@ -1819,7 +1819,6 @@ u8 iwl_mvm_next_antenna(struct iwl_mvm *mvm, u8 valid, u8 last_idx);
- void iwl_mvm_get_sync_time(struct iwl_mvm *mvm, int clock_type, u32 *gp2,
- 			   u64 *boottime, ktime_t *realtime);
- u32 iwl_mvm_get_systime(struct iwl_mvm *mvm);
--u32 iwl_mvm_find_ie_offset(u8 *beacon, u8 eid, u32 frame_size);
- 
- /* Tx / Host Commands */
- int __must_check iwl_mvm_send_cmd(struct iwl_mvm *mvm,
+ static ssize_t iwl_dbgfs_tas_get_status_read(struct file *file,
+ 					     char __user *user_buf,
+ 					     size_t count, loff_t *ppos)
+@@ -1969,7 +1939,6 @@ MVM_DEBUGFS_READ_WRITE_FILE_OPS(disable_power_off, 64);
+ MVM_DEBUGFS_READ_FILE_OPS(fw_rx_stats);
+ MVM_DEBUGFS_READ_FILE_OPS(drv_rx_stats);
+ MVM_DEBUGFS_READ_FILE_OPS(fw_system_stats);
+-MVM_DEBUGFS_READ_FILE_OPS(fw_ver);
+ MVM_DEBUGFS_READ_FILE_OPS(phy_integration_ver);
+ MVM_DEBUGFS_READ_FILE_OPS(tas_get_status);
+ MVM_DEBUGFS_WRITE_FILE_OPS(fw_restart, 10);
+@@ -2169,7 +2138,6 @@ void iwl_mvm_dbgfs_register(struct iwl_mvm *mvm)
+ 	MVM_DEBUGFS_ADD_FILE(force_ctkill, mvm->debugfs_dir, 0200);
+ 	MVM_DEBUGFS_ADD_FILE(stations, mvm->debugfs_dir, 0400);
+ 	MVM_DEBUGFS_ADD_FILE(disable_power_off, mvm->debugfs_dir, 0600);
+-	MVM_DEBUGFS_ADD_FILE(fw_ver, mvm->debugfs_dir, 0400);
+ 	MVM_DEBUGFS_ADD_FILE(fw_rx_stats, mvm->debugfs_dir, 0400);
+ 	MVM_DEBUGFS_ADD_FILE(drv_rx_stats, mvm->debugfs_dir, 0400);
+ 	MVM_DEBUGFS_ADD_FILE(fw_system_stats, mvm->debugfs_dir, 0400);
 -- 
 2.34.1
 
