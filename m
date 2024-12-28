@@ -1,70 +1,70 @@
-Return-Path: <linux-wireless+bounces-16844-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16845-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4FC59FDC2C
-	for <lists+linux-wireless@lfdr.de>; Sat, 28 Dec 2024 21:34:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C50D59FDC2D
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 Dec 2024 21:34:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6641C1881802
-	for <lists+linux-wireless@lfdr.de>; Sat, 28 Dec 2024 20:34:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D81216151F
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 Dec 2024 20:34:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4FF38DC8;
-	Sat, 28 Dec 2024 20:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C4578F5B;
+	Sat, 28 Dec 2024 20:34:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TQE1BC7B"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZGf2Xv45"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C4478F5B
-	for <linux-wireless@vger.kernel.org>; Sat, 28 Dec 2024 20:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B1D198A0D
+	for <linux-wireless@vger.kernel.org>; Sat, 28 Dec 2024 20:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735418079; cv=none; b=ITMhvZqE2E4C5u7CvRAMLc/fq7CHRp1JD3CWVI3U9BrrWAvJbv1aBX1HMm4ZIYSX0EZeSqDasyrmjcIntOBijMTdibU+ZUmlmKnXZBqgtf/00uOp+kfI8DVqil9SQoXQBRsAIEnEncuV6PggG2tQANmlfgknqMDYEtmzd/G+91s=
+	t=1735418080; cv=none; b=g0A6NdVG3SpxcGn2gWGKR+h2JsEXd6WLBUK1B+YmUYeyDGGHzn/+BCK6uRZKciadTzCIexMRSchagkC75sJEWXr3XmsCqxbh4HlfzWp+BYQRhEggcZhjmKa/hxLIovEB7/Er5nQIRpYVAz+H1cy4+xNhTgFIyxS13bgxL/YzoVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735418079; c=relaxed/simple;
-	bh=3bJJU0d6ZdWjYX1AEwzEdxbEnuu1q75GYZCV5jtFEFI=;
+	s=arc-20240116; t=1735418080; c=relaxed/simple;
+	bh=dKI7gOaNuFnmLluch8bgiP13d1AyP0C6Af2sRm1ZaDw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mIVZpBzNsjAJDsldtFcWpPMHZvV6+mhO1VX8mNE639BAoO93rU5CV+9w/3z4rQ9aVnb6exrLsHE7nd3qJkyUVcuyIwbbquX53i+YmZg+cwzvgvdysuux7A+1Mbl3jedG8uVcoYuJ94dLep5QN+e6LOqZsOgB2nZgWj70jWdsGVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TQE1BC7B; arc=none smtp.client-ip=198.175.65.20
+	 MIME-Version; b=ZE3u4S8r7ATtC9LkuRR+kUpN2HK/AkR3b2upZLTyAVSq+UmfZXMSOOiMpjzhcVuahhuikq15OXFDWcNf7b9UK2zWefYOxtqgw9SnfI8P8fjMOVlLl5FzhhMvzZXgkdZsebTgqpqegZ6jjzXEIEgkRkCxAdTB35WxvGZSrOvk3ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZGf2Xv45; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1735418077; x=1766954077;
+  t=1735418078; x=1766954078;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=3bJJU0d6ZdWjYX1AEwzEdxbEnuu1q75GYZCV5jtFEFI=;
-  b=TQE1BC7BY1ETfwb6x/+KTvVsJpe51Pt/Xr43SCX4GjPv8Hl22Zca8S/0
-   jPtyku2ZIsnGCiopJYznbhyLtk4EksebHsg4LjWYRVE35dUAW9AbBZB07
-   OFhbhdnHO58HTJqIBw3ocT3Huw1TioAQdvSI72lWqtJUfLBzyOOZmWQlu
-   tTaiEL7VYLfWEISuLQNGEsHHQ4apb11AdletGMR6oVsvC+bh2hoHPzsu5
-   I5HUjiLLaOB7uR7S6VRl/raz2K1EAg0O/0tvE1W5PBOWTgKhEccVpu5it
-   uop73xHsqxN6HJNblpw3piodMbcQJnFMN9BTPipnxa8eiL2FONVziFf8N
-   Q==;
-X-CSE-ConnectionGUID: wkOoy8aGTEaDcwkTAK1xYg==
-X-CSE-MsgGUID: 1VcFvJtTTn6o5R4sDHf6vw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11299"; a="35479752"
+  bh=dKI7gOaNuFnmLluch8bgiP13d1AyP0C6Af2sRm1ZaDw=;
+  b=ZGf2Xv45Ri97hjhhXfCshIy9O6oyMP5YExUCn24wdgUQ0dfGLUzMI6EJ
+   iohufNQ0kfNvfA+FUSCQZQbNO52gasFqTNe+x5mAnbYD0A8paK9I4YUk4
+   W0Hf/e1J0FDNgGvoVp+zO1H9I8vlSDP0UlJ+tKD8HvavmQ+2oq3YeOOk3
+   frv43CVhPOjh78cEQeU4HxAIMcs4doEAD5xzndRkc1/7D03tBS18d6ioa
+   hLbAes6eGhkDfMdXNlP85+azKtoKu1OELA4Iwx5TyX6vqw22fUF3Om4+v
+   kfunPq+Anj+8jocybme60bGyfIo8Cj1WT47NDNyJ67CXz/Sxzj35QOgNH
+   A==;
+X-CSE-ConnectionGUID: pyeUcCrWTqy4zNG5GPM21Q==
+X-CSE-MsgGUID: HMct4hCETPmxqVGtadoX7Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11299"; a="35479754"
 X-IronPort-AV: E=Sophos;i="6.12,273,1728975600"; 
-   d="scan'208";a="35479752"
+   d="scan'208";a="35479754"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2024 12:34:37 -0800
-X-CSE-ConnectionGUID: f4qnMzlBR2mEV9T5OkVa9Q==
-X-CSE-MsgGUID: tVfMtpdERwyGM8YF7ZSeLQ==
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2024 12:34:38 -0800
+X-CSE-ConnectionGUID: Qyf49ZOtRMOrzoqjgw3dvA==
+X-CSE-MsgGUID: HRhoB17WR4KwobFibcdNHw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="104488358"
+   d="scan'208";a="104488363"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2024 12:34:36 -0800
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Dec 2024 12:34:37 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Subject: [PATCH 02/15] wifi: iwlwifi: move fw_ver debugfs to firmware runtime
-Date: Sat, 28 Dec 2024 22:34:06 +0200
-Message-Id: <20241228223206.98bdc5e62828.Iee7a8365dd63ebf580d324f90e1e04466d8ef5d5@changeid>
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 03/15] wifi: iwlwifi: rename bits in config/boot control register
+Date: Sat, 28 Dec 2024 22:34:07 +0200
+Message-Id: <20241228223206.6f25be160619.I3ffc9601e99dc414a9ae54a0d90c9d20c0253da5@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241228203419.2443350-1-miriam.rachel.korenblit@intel.com>
 References: <20241228203419.2443350-1-miriam.rachel.korenblit@intel.com>
@@ -77,119 +77,168 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-This is really where it belongs.
+The register 0x000 is now really boot control, and some
+of the old bit names were (even for old hardware) not
+reflecting the names on the hardware side; rename them
+in the driver to align the naming.
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- .../net/wireless/intel/iwlwifi/fw/debugfs.c   | 23 ++++++++++++-
- .../net/wireless/intel/iwlwifi/mvm/debugfs.c  | 32 -------------------
- 2 files changed, 22 insertions(+), 33 deletions(-)
+ .../net/wireless/intel/iwlwifi/dvm/eeprom.c    |  8 ++++----
+ drivers/net/wireless/intel/iwlwifi/iwl-csr.h   | 15 ++++++++-------
+ .../wireless/intel/iwlwifi/pcie/trans-gen2.c   |  6 +++---
+ .../net/wireless/intel/iwlwifi/pcie/trans.c    | 18 +++++++++---------
+ 4 files changed, 24 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-index 893b21fcaf87..e79fdb5fe387 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2012-2014, 2018-2023 Intel Corporation
-+ * Copyright (C) 2012-2014, 2018-2024 Intel Corporation
-  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
-  * Copyright (C) 2016-2017 Intel Deutschland GmbH
-  */
-@@ -282,6 +282,26 @@ static ssize_t iwl_dbgfs_fw_dbg_domain_read(struct iwl_fw_runtime *fwrt,
+diff --git a/drivers/net/wireless/intel/iwlwifi/dvm/eeprom.c b/drivers/net/wireless/intel/iwlwifi/dvm/eeprom.c
+index 931aa3f5798d..cdc05f7e75a6 100644
+--- a/drivers/net/wireless/intel/iwlwifi/dvm/eeprom.c
++++ b/drivers/net/wireless/intel/iwlwifi/dvm/eeprom.c
+@@ -676,12 +676,12 @@ static int iwl_eeprom_acquire_semaphore(struct iwl_trans *trans)
+ 	for (count = 0; count < IWL_EEPROM_SEM_RETRY_LIMIT; count++) {
+ 		/* Request semaphore */
+ 		iwl_set_bit(trans, CSR_HW_IF_CONFIG_REG,
+-			    CSR_HW_IF_CONFIG_REG_BIT_EEPROM_OWN_SEM);
++			    CSR_HW_IF_CONFIG_REG_EEPROM_OWN_SEM);
  
- FWRT_DEBUGFS_READ_FILE_OPS(fw_dbg_domain, 20);
- 
-+static ssize_t iwl_dbgfs_fw_ver_read(struct iwl_fw_runtime *fwrt,
-+				     size_t size, char *buf)
-+{
-+	char *pos = buf;
-+	char *endpos = buf + size;
-+
-+	pos += scnprintf(pos, endpos - pos, "FW id: %s\n",
-+			 fwrt->fw->fw_version);
-+	pos += scnprintf(pos, endpos - pos, "FW: %s\n",
-+			 fwrt->fw->human_readable);
-+	pos += scnprintf(pos, endpos - pos, "Device: %s\n",
-+			 fwrt->trans->name);
-+	pos += scnprintf(pos, endpos - pos, "Bus: %s\n",
-+			 fwrt->dev->bus->name);
-+
-+	return pos - buf;
-+}
-+
-+FWRT_DEBUGFS_READ_FILE_OPS(fw_ver, 1024);
-+
- struct iwl_dbgfs_fw_info_priv {
- 	struct iwl_fw_runtime *fwrt;
- };
-@@ -404,4 +424,5 @@ void iwl_fwrt_dbgfs_register(struct iwl_fw_runtime *fwrt,
- 	FWRT_DEBUGFS_ADD_FILE(send_hcmd, dbgfs_dir, 0200);
- 	FWRT_DEBUGFS_ADD_FILE(enabled_severities, dbgfs_dir, 0200);
- 	FWRT_DEBUGFS_ADD_FILE(fw_dbg_domain, dbgfs_dir, 0400);
-+	FWRT_DEBUGFS_ADD_FILE(fw_ver, dbgfs_dir, 0400);
- }
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-index b8ae86039045..340f3a026c42 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-@@ -538,36 +538,6 @@ static ssize_t iwl_dbgfs_disable_power_off_write(struct iwl_mvm *mvm, char *buf,
- 	return ret ?: count;
+ 		/* See if we got it */
+ 		ret = iwl_poll_bit(trans, CSR_HW_IF_CONFIG_REG,
+-				CSR_HW_IF_CONFIG_REG_BIT_EEPROM_OWN_SEM,
+-				CSR_HW_IF_CONFIG_REG_BIT_EEPROM_OWN_SEM,
++				CSR_HW_IF_CONFIG_REG_EEPROM_OWN_SEM,
++				CSR_HW_IF_CONFIG_REG_EEPROM_OWN_SEM,
+ 				IWL_EEPROM_SEM_TIMEOUT);
+ 		if (ret >= 0) {
+ 			IWL_DEBUG_EEPROM(trans->dev,
+@@ -697,7 +697,7 @@ static int iwl_eeprom_acquire_semaphore(struct iwl_trans *trans)
+ static void iwl_eeprom_release_semaphore(struct iwl_trans *trans)
+ {
+ 	iwl_clear_bit(trans, CSR_HW_IF_CONFIG_REG,
+-		      CSR_HW_IF_CONFIG_REG_BIT_EEPROM_OWN_SEM);
++		      CSR_HW_IF_CONFIG_REG_EEPROM_OWN_SEM);
  }
  
--static ssize_t iwl_dbgfs_fw_ver_read(struct file *file, char __user *user_buf,
--				     size_t count, loff_t *ppos)
--{
--	struct iwl_mvm *mvm = file->private_data;
--	char *buff, *pos, *endpos;
--	static const size_t bufsz = 1024;
--	int ret;
--
--	buff = kmalloc(bufsz, GFP_KERNEL);
--	if (!buff)
--		return -ENOMEM;
--
--	pos = buff;
--	endpos = pos + bufsz;
--
--	pos += scnprintf(pos, endpos - pos, "FW id: %s\n",
--			 mvm->fwrt.fw->fw_version);
--	pos += scnprintf(pos, endpos - pos, "FW: %s\n",
--			 mvm->fwrt.fw->human_readable);
--	pos += scnprintf(pos, endpos - pos, "Device: %s\n",
--			 mvm->fwrt.trans->name);
--	pos += scnprintf(pos, endpos - pos, "Bus: %s\n",
--			 mvm->fwrt.dev->bus->name);
--
--	ret = simple_read_from_buffer(user_buf, count, ppos, buff, pos - buff);
--	kfree(buff);
--
--	return ret;
--}
--
- static ssize_t iwl_dbgfs_tas_get_status_read(struct file *file,
- 					     char __user *user_buf,
- 					     size_t count, loff_t *ppos)
-@@ -1969,7 +1939,6 @@ MVM_DEBUGFS_READ_WRITE_FILE_OPS(disable_power_off, 64);
- MVM_DEBUGFS_READ_FILE_OPS(fw_rx_stats);
- MVM_DEBUGFS_READ_FILE_OPS(drv_rx_stats);
- MVM_DEBUGFS_READ_FILE_OPS(fw_system_stats);
--MVM_DEBUGFS_READ_FILE_OPS(fw_ver);
- MVM_DEBUGFS_READ_FILE_OPS(phy_integration_ver);
- MVM_DEBUGFS_READ_FILE_OPS(tas_get_status);
- MVM_DEBUGFS_WRITE_FILE_OPS(fw_restart, 10);
-@@ -2169,7 +2138,6 @@ void iwl_mvm_dbgfs_register(struct iwl_mvm *mvm)
- 	MVM_DEBUGFS_ADD_FILE(force_ctkill, mvm->debugfs_dir, 0200);
- 	MVM_DEBUGFS_ADD_FILE(stations, mvm->debugfs_dir, 0400);
- 	MVM_DEBUGFS_ADD_FILE(disable_power_off, mvm->debugfs_dir, 0600);
--	MVM_DEBUGFS_ADD_FILE(fw_ver, mvm->debugfs_dir, 0400);
- 	MVM_DEBUGFS_ADD_FILE(fw_rx_stats, mvm->debugfs_dir, 0400);
- 	MVM_DEBUGFS_ADD_FILE(drv_rx_stats, mvm->debugfs_dir, 0400);
- 	MVM_DEBUGFS_ADD_FILE(fw_system_stats, mvm->debugfs_dir, 0400);
+ static int iwl_eeprom_verify_signature(struct iwl_trans *trans, bool nvm_is_otp)
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-csr.h b/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
+index 98563757ce2c..c2cd5c24646b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-csr.h
+@@ -167,13 +167,14 @@
+ #define CSR_HW_IF_CONFIG_REG_POS_PHY_DASH	(12)
+ #define CSR_HW_IF_CONFIG_REG_POS_PHY_STEP	(14)
+ 
+-#define CSR_HW_IF_CONFIG_REG_BIT_HAP_WAKE_L1A	(0x00080000)
+-#define CSR_HW_IF_CONFIG_REG_BIT_EEPROM_OWN_SEM	(0x00200000)
+-#define CSR_HW_IF_CONFIG_REG_BIT_NIC_READY	(0x00400000) /* PCI_OWN_SEM */
+-#define CSR_HW_IF_CONFIG_REG_BIT_NIC_PREPARE_DONE (0x02000000) /* ME_OWN */
+-#define CSR_HW_IF_CONFIG_REG_PREPARE		  (0x08000000) /* WAKE_ME */
+-#define CSR_HW_IF_CONFIG_REG_ENABLE_PME		  (0x10000000)
+-#define CSR_HW_IF_CONFIG_REG_PERSIST_MODE	  (0x40000000) /* PERSISTENCE */
++#define CSR_HW_IF_CONFIG_REG_HAP_WAKE			0x00080000
++/* NOTE: EEPROM_OWN_SEM is no longer defined for new HW */
++#define CSR_HW_IF_CONFIG_REG_EEPROM_OWN_SEM		0x00200000
++#define CSR_HW_IF_CONFIG_REG_PCI_OWN_SET		0x00400000
++#define CSR_HW_IF_CONFIG_REG_ME_OWN			0x02000000
++#define CSR_HW_IF_CONFIG_REG_WAKE_ME			0x08000000
++#define CSR_HW_IF_CONFIG_REG_WAKE_ME_PCIE_OWNER_EN	0x10000000
++#define CSR_HW_IF_CONFIG_REG_PERSISTENCE		0x40000000
+ 
+ #define CSR_MBOX_SET_REG_OS_ALIVE		BIT(5)
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
+index 5f6cd60b50b9..3677e0154888 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans-gen2.c
+@@ -43,7 +43,7 @@ int iwl_pcie_gen2_apm_init(struct iwl_trans *trans)
+ 	 * wake device's PCI Express link L1a -> L0s
+ 	 */
+ 	iwl_set_bit(trans, CSR_HW_IF_CONFIG_REG,
+-		    CSR_HW_IF_CONFIG_REG_BIT_HAP_WAKE_L1A);
++		    CSR_HW_IF_CONFIG_REG_HAP_WAKE);
+ 
+ 	iwl_pcie_apm_config(trans);
+ 
+@@ -68,8 +68,8 @@ static void iwl_pcie_gen2_apm_stop(struct iwl_trans *trans, bool op_mode_leave)
+ 		iwl_set_bit(trans, CSR_DBG_LINK_PWR_MGMT_REG,
+ 			    CSR_RESET_LINK_PWR_MGMT_DISABLED);
+ 		iwl_set_bit(trans, CSR_HW_IF_CONFIG_REG,
+-			    CSR_HW_IF_CONFIG_REG_PREPARE |
+-			    CSR_HW_IF_CONFIG_REG_ENABLE_PME);
++			    CSR_HW_IF_CONFIG_REG_WAKE_ME |
++			    CSR_HW_IF_CONFIG_REG_WAKE_ME_PCIE_OWNER_EN);
+ 		mdelay(1);
+ 		iwl_clear_bit(trans, CSR_DBG_LINK_PWR_MGMT_REG,
+ 			      CSR_RESET_LINK_PWR_MGMT_DISABLED);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index 86f1d87a909c..053f0ac756be 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -311,7 +311,7 @@ static int iwl_pcie_apm_init(struct iwl_trans *trans)
+ 	 * wake device's PCI Express link L1a -> L0s
+ 	 */
+ 	iwl_set_bit(trans, CSR_HW_IF_CONFIG_REG,
+-		    CSR_HW_IF_CONFIG_REG_BIT_HAP_WAKE_L1A);
++		    CSR_HW_IF_CONFIG_REG_HAP_WAKE);
+ 
+ 	iwl_pcie_apm_config(trans);
+ 
+@@ -439,7 +439,7 @@ static void iwl_pcie_apm_lp_xtal_enable(struct iwl_trans *trans)
+ 	 * SHRD_HW_RST is applied in S3.
+ 	 */
+ 	iwl_set_bit(trans, CSR_HW_IF_CONFIG_REG,
+-		    CSR_HW_IF_CONFIG_REG_PERSIST_MODE);
++		    CSR_HW_IF_CONFIG_REG_PERSISTENCE);
+ 
+ 	/*
+ 	 * Clear "initialization complete" bit to move adapter from
+@@ -508,8 +508,8 @@ static void iwl_pcie_apm_stop(struct iwl_trans *trans, bool op_mode_leave)
+ 			iwl_set_bit(trans, CSR_DBG_LINK_PWR_MGMT_REG,
+ 				    CSR_RESET_LINK_PWR_MGMT_DISABLED);
+ 			iwl_set_bit(trans, CSR_HW_IF_CONFIG_REG,
+-				    CSR_HW_IF_CONFIG_REG_PREPARE |
+-				    CSR_HW_IF_CONFIG_REG_ENABLE_PME);
++				    CSR_HW_IF_CONFIG_REG_WAKE_ME |
++				    CSR_HW_IF_CONFIG_REG_WAKE_ME_PCIE_OWNER_EN);
+ 			mdelay(1);
+ 			iwl_clear_bit(trans, CSR_DBG_LINK_PWR_MGMT_REG,
+ 				      CSR_RESET_LINK_PWR_MGMT_DISABLED);
+@@ -581,12 +581,12 @@ static int iwl_pcie_set_hw_ready(struct iwl_trans *trans)
+ 	int ret;
+ 
+ 	iwl_set_bit(trans, CSR_HW_IF_CONFIG_REG,
+-		    CSR_HW_IF_CONFIG_REG_BIT_NIC_READY);
++		    CSR_HW_IF_CONFIG_REG_PCI_OWN_SET);
+ 
+ 	/* See if we got it */
+ 	ret = iwl_poll_bit(trans, CSR_HW_IF_CONFIG_REG,
+-			   CSR_HW_IF_CONFIG_REG_BIT_NIC_READY,
+-			   CSR_HW_IF_CONFIG_REG_BIT_NIC_READY,
++			   CSR_HW_IF_CONFIG_REG_PCI_OWN_SET,
++			   CSR_HW_IF_CONFIG_REG_PCI_OWN_SET,
+ 			   HW_READY_TIMEOUT);
+ 
+ 	if (ret >= 0)
+@@ -620,7 +620,7 @@ int iwl_pcie_prepare_card_hw(struct iwl_trans *trans)
+ 
+ 		/* If HW is not ready, prepare the conditions to check again */
+ 		iwl_set_bit(trans, CSR_HW_IF_CONFIG_REG,
+-			    CSR_HW_IF_CONFIG_REG_PREPARE);
++			    CSR_HW_IF_CONFIG_REG_WAKE_ME);
+ 
+ 		do {
+ 			ret = iwl_pcie_set_hw_ready(trans);
+@@ -1566,7 +1566,7 @@ int iwl_trans_pcie_d3_suspend(struct iwl_trans *trans, bool test, bool reset)
+ 	if (!reset)
+ 		/* Enable persistence mode to avoid reset */
+ 		iwl_set_bit(trans, CSR_HW_IF_CONFIG_REG,
+-			    CSR_HW_IF_CONFIG_REG_PERSIST_MODE);
++			    CSR_HW_IF_CONFIG_REG_PERSISTENCE);
+ 
+ 	ret = iwl_pcie_d3_handshake(trans, true);
+ 	if (ret)
 -- 
 2.34.1
 
