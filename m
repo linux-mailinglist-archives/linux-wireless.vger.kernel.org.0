@@ -1,136 +1,120 @@
-Return-Path: <linux-wireless+bounces-16839-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16840-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31BBC9FD1C2
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Dec 2024 09:02:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 848509FD9D5
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 Dec 2024 11:14:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D311D1623D3
-	for <lists+linux-wireless@lfdr.de>; Fri, 27 Dec 2024 08:02:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7C9F7A03E6
+	for <lists+linux-wireless@lfdr.de>; Sat, 28 Dec 2024 10:13:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC7D15574E;
-	Fri, 27 Dec 2024 08:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085508633F;
+	Sat, 28 Dec 2024 10:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z4fr0ddX"
+	dkim=pass (2048-bit key) header.d=steffen-moser.de header.i=@steffen-moser.de header.b="gzWNowYv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from dd54106.kasserver.com (dd54106.kasserver.com [85.13.166.165])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC31155725
-	for <linux-wireless@vger.kernel.org>; Fri, 27 Dec 2024 08:01:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD39E78F52
+	for <linux-wireless@vger.kernel.org>; Sat, 28 Dec 2024 10:13:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.13.166.165
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735286511; cv=none; b=XLnYecLvEbgZ6YDA0FvrvJQSRvOR11VBarCMQqW+ExBA91g6XIMXxXtripy8XAkDGk3Wm5hgeYUXw6VRx4u5O7VGcS20WN/nWkpxrgAohJbpi1sEvwkVc2ymUmzHj0oApJ9uwJ1XXLk/Xvf8zcJOLMpGeT9Hvgc4BTlkVprnyz4=
+	t=1735380837; cv=none; b=h2jCBz0nXC4RntJuPi34rnyoRy/OtM1k81+2HKv8iaSzSehcDfV2yxq/N+E6jBxg35BPPJxsuP7VFlFfYCQCkcOx6aDp/Av/rq6M46n19WQXj2V381GsN1or/7Is7zphmTkgqNgfpIFxmCxFMJynrI22Y0ksRUBEr62EFLxAt8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735286511; c=relaxed/simple;
-	bh=Bm6wGP3hYpm9WChvuBYK0N6CJ4H7XQFeemKHbnOnop4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=n1XyISs/DsV3Du1SLYPwDzWd5msve4hupcf6VwWIZWEYjD46wjkTZkEDJbdkP1L7ILYqsG4cT1KdANji3Wzsp7oLaYxA67fpq2K1CZVOAG3jvNNc/dC/mKcGsNKoHx0OeuZK15in+74EPzTd76Rq/3YY/j7tU21WfEITEaH/m9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z4fr0ddX; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1735286510; x=1766822510;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=Bm6wGP3hYpm9WChvuBYK0N6CJ4H7XQFeemKHbnOnop4=;
-  b=Z4fr0ddXmVwBPKQAM+eGVyxtRPIXUtQ6t4USxWb4CqVC7Tu44AXyIbr6
-   whgdoSGJy8PQ9yXv8mwHel50qdxsW+qxfcLMPUUIwfc4Rq1GRI0YznNbL
-   AHqar6A2D/x0ruNIj6LyVwcCnsNgA9m0v1gx2yYGHqxIwAd9cFGdBloJu
-   EwGnCX7qlRJfJHJr2DiTTnRZFlCX0CaMy5r01xiBkgz5Len2/mSLs6Oxa
-   KGgnhzSlhughOJgxC/Ty9gWflN1lljzJF5wEwQVn54gfu1iHsPU5bRvwl
-   9vKRcWgQNhog3Ly5g/fblqlikSSWoVMFTaFfvzT97mWOw1RRbxM8Vmwbm
-   A==;
-X-CSE-ConnectionGUID: SyxOxvyJQPqrHQygDYcbHA==
-X-CSE-MsgGUID: uws2EHpNQeelV4r2DcxWgA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11297"; a="46691010"
-X-IronPort-AV: E=Sophos;i="6.12,268,1728975600"; 
-   d="scan'208";a="46691010"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2024 00:01:49 -0800
-X-CSE-ConnectionGUID: b5rudYTdRMOEEOAU3qKXsg==
-X-CSE-MsgGUID: ullKYErsQlCjF5OiQSaBkg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,268,1728975600"; 
-   d="scan'208";a="99858500"
-Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Dec 2024 00:01:48 -0800
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 17/17] wifi: iwlwifi: iwl_fw_error_collect() is always called sync
-Date: Fri, 27 Dec 2024 10:01:12 +0200
-Message-Id: <20241227095718.08f515513e88.I780a557743ca7f029f46a1cc75d0799542e39d83@changeid>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20241227080112.1098419-1-miriam.rachel.korenblit@intel.com>
-References: <20241227080112.1098419-1-miriam.rachel.korenblit@intel.com>
+	s=arc-20240116; t=1735380837; c=relaxed/simple;
+	bh=HsymhzJSDOtPa19UM4KGlsCuJJzU8jcyZev8yStGfNY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=l/pI8sCZDEHS1oYkdwUbnrhhmBJ6fuWEq7/vfrDYBK4/1D/GUwI7b+TZRNB/3ZQFdqGlHA4dq8HqCyu9SJqPsBuw+mT3rnLJQfzPN648J/Bsj/uqPnq5sSKt0CXsaFUAjgGQjAleTdP1DF1PT/rXr21ydCOJIFqbTbruPebJrfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=steffen-moser.de; spf=pass smtp.mailfrom=steffen-moser.de; dkim=pass (2048-bit key) header.d=steffen-moser.de header.i=@steffen-moser.de header.b=gzWNowYv; arc=none smtp.client-ip=85.13.166.165
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=steffen-moser.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=steffen-moser.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=steffen-moser.de;
+	s=kas202408292216; t=1735380831;
+	bh=XS3W6Nm33y8lf/E3f46CoorgvUQmeVLhar9Ww+z/EqE=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=gzWNowYv4YlvX3VoF4Fql17e30OHgBgj2ZutUcoIIbq+3up32DNEKJA7xlLZEx/kw
+	 oTEox7nMrN88SGmuRuj9J+aU4DUlbSSzgejmUmvsapM8K9OJLIAuTfCbIwKQBWi7pe
+	 H4sjJ2ymS20JA5GCyLV3ZO1L39UOhRdAfAa9PC2A/qtM9C2ldqOq1ubj8QAx0kYE5y
+	 qVKCYMP6hARUJu4i75HU/5BDN8DV5FoxqHnk0Chl9jGfkjCKzae4kQd0qGucpC5L8N
+	 Fhvfxah4v+M/nofu1Jgp0Qj2hiwI6T4a/z5WYi4Ui1msGcR+yMjBSNqQeSNGAH3yoP
+	 OWaqUKu0KfI2Q==
+Received: from [192.168.1.101] (p54a3711d.dip0.t-ipconnect.de [84.163.113.29])
+	by dd54106.kasserver.com (Postfix) with ESMTPSA id 39B85E4A034A;
+	Sat, 28 Dec 2024 11:13:51 +0100 (CET)
+Message-ID: <b18ede18-0c33-4d14-a7c5-0066cbec39c9@steffen-moser.de>
+Date: Sat, 28 Dec 2024 11:13:50 +0100
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
+User-Agent: Mozilla Thunderbird
+Subject: Re: Potential Broadcast Issues After GTK Key Exchange on ath11k with
+ IPQ8072A (QCN5024/QCN5054)
+To: ath11k@lists.infradead.org, linux-wireless@vger.kernel.org
+References: <c6366409-9928-4dd7-bf7b-ba7fcf20eabf@steffen-moser.de>
+ <Z2Q9POuV-6MIdzRf@pilgrim>
+Content-Language: de-DE, en-US
+From: Steffen Moser <lists@steffen-moser.de>
+In-Reply-To: <Z2Q9POuV-6MIdzRf@pilgrim>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Spamd-Bar: /
 
-From: Johannes Berg <johannes.berg@intel.com>
+Dear Remi,
 
-Since iwl_fw_error_collect() is now always called with the sync
-argument set to true, to collect data synchronously, remove the
-argument from it entirely.
+thank you very much for the pointer to the patch. Sebastian integrated 
+it into DD-WRT. Now the DynaLink DL-WRX36 runs absolutely smoothly, the 
+WLAN links are stable, the packet loss is gone. No weird states anymore, 
+independent from the group key exchange interval:
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
- drivers/net/wireless/intel/iwlwifi/fw/dbg.h  | 4 ++--
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+https://data.saps.uni-ulm.de/index.php/s/NLNpWqjc8iGsaEM
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.h b/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
-index f4803b55adb9..87998374f459 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.h
-@@ -287,7 +287,7 @@ static inline void iwl_fw_umac_set_alive_err_table(struct iwl_trans *trans,
- 		trans->dbg.umac_error_event_table = umac_error_event_table;
- }
- 
--static inline void iwl_fw_error_collect(struct iwl_fw_runtime *fwrt, bool sync)
-+static inline void iwl_fw_error_collect(struct iwl_fw_runtime *fwrt)
- {
- 	enum iwl_fw_ini_time_point tp_id;
- 
-@@ -303,7 +303,7 @@ static inline void iwl_fw_error_collect(struct iwl_fw_runtime *fwrt, bool sync)
- 		tp_id = IWL_FW_INI_TIME_POINT_FW_ASSERT;
- 	}
- 
--	_iwl_dbg_tlv_time_point(fwrt, tp_id, NULL, sync);
-+	iwl_dbg_tlv_time_point_sync(fwrt, tp_id, NULL);
- }
- 
- static inline void iwl_fwrt_update_fw_versions(struct iwl_fw_runtime *fwrt,
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index 08c59df593b2..7250c85fb6e6 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -2043,11 +2043,11 @@ static void iwl_mvm_dump_error(struct iwl_op_mode *op_mode,
- 	/* if we come in from opmode we have the mutex held */
- 	if (mode->context == IWL_ERR_CONTEXT_FROM_OPMODE) {
- 		lockdep_assert_held(&mvm->mutex);
--		iwl_fw_error_collect(&mvm->fwrt, true);
-+		iwl_fw_error_collect(&mvm->fwrt);
- 	} else {
- 		mutex_lock(&mvm->mutex);
- 		if (mode->context != IWL_ERR_CONTEXT_ABORT)
--			iwl_fw_error_collect(&mvm->fwrt, true);
-+			iwl_fw_error_collect(&mvm->fwrt);
- 		mutex_unlock(&mvm->mutex);
- 	}
- }
--- 
-2.34.1
+So your idea was a direct hit! Thank you very, very much. Several months 
+of debugging have come to an end...
+
+Thank you very much and all the best for 2025!
+
+Kind regards,
+Steffen
+
+On 19.12.24 4:35 PM, Remi Pommarel wrote:
+> Hi Steffen.
+> 
+> On Thu, Dec 19, 2024 at 04:02:30PM +0100, Steffen Moser wrote:
+>> Hello everyone,
+>> 
+>> I've encountered a possible issue in a DD-WRT [1] setup where broadcast
+>> packets stop being delivered after a GTK (Group Temporal Key) exchange. This
+>> issue occurs on a system with the following hardware:
+>> 
+>>     Access Point Hardware: DynaLink DL-WRX36
+>>     Router Software: DD-WRT v3.0-r58819 std (12/13/24)
+>>     CPU: Qualcomm IPQ8072A
+>>     WiFi Chips: Qualcomm QCN5024 and Qualcomm QCN5054
+>>     WiFi Driver: ath11k
+>>     Firmware: WLAN.HK.2.12-01460-QCAHKSWPL_SILICONZ-1
+>>     NSS FW version: NSS.FW.12.5-210-HK.R
+>>     Kernel: Linux WL-AP-EG 6.6.64-rt29 #1791 SMP Thu Dec 12 16:41:51 +07
+>> 2024 aarch64 DD-WRT
+>> 
+>> The behavior is such that after a GTK exchange, the AP can get into a "weird
+>> state". When being there, broadcast frames like ARP or mDNS are no longer
+>> reliably delivered to connected clients while unicasts come still through.
+>> In this "weird state", the channel quality (active time vs. busy time) goes
+>> down and latencies to the still reachable WIFI clients rise.
+> 
+> This looks a lot like an issue we hit a while back. There is this patch
+> [0] from Qualcomm's wlan-open repository. It is a revert of [1]. Using
+> that the issue was never reproduced. Maybe this can help.
+> 
+> Also adding ath11k list.
+> 
+> Regards.
+> 
 
 
