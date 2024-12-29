@@ -1,70 +1,71 @@
-Return-Path: <linux-wireless+bounces-16874-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16875-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D9129FDF4B
-	for <lists+linux-wireless@lfdr.de>; Sun, 29 Dec 2024 15:45:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 467BD9FDF4C
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Dec 2024 15:46:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED1C61882193
-	for <lists+linux-wireless@lfdr.de>; Sun, 29 Dec 2024 14:45:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C57F3A1999
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Dec 2024 14:45:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D2518A956;
-	Sun, 29 Dec 2024 14:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48776190692;
+	Sun, 29 Dec 2024 14:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OhWPeoiT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gfev4JAr"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEAAD197A8E
-	for <linux-wireless@vger.kernel.org>; Sun, 29 Dec 2024 14:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5CA19883C
+	for <linux-wireless@vger.kernel.org>; Sun, 29 Dec 2024 14:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735483528; cv=none; b=Rpsyf6QviMOYsHV6oOSI3Dcy6zIhrww7zE5frBNArZ2hCjwc5UPEEwUw0yyHq5+EWcGxMbL6UM/yg9ezxgPgfaGqeQuIOA7+IIskYEh1G+N77tKSMWpiB4dyMYt+CUk8cEUhSIp6ehhFnthOxvKgJRC1yEG2tl5u2Y538cOwCuU=
+	t=1735483530; cv=none; b=Z7V+HUBUfEdOPiOTT4vs00hx1P8ruipwXH/2mKhgQ0+nPL0rYDvxMhH5hKFUub12yEOkJ0LzN1VS/Brwc9/jCjqNEDZH8BzkDq7r/0c0o4luFc/3ItsPE+NtXro4ZfgF4cv8ExPgBujLr08PSKCQ+BJlbmajZTNYX94Ug2eaTFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735483528; c=relaxed/simple;
-	bh=BhJojQ3XYGLVpmd8UbNE9TZR54T6i37Tyf/JryGoY8Q=;
+	s=arc-20240116; t=1735483530; c=relaxed/simple;
+	bh=CFvbiM7q2ncfW/FkuHO+TjO4es/gYLM4+ocmcO6p688=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fyuBi7g8ilcZyLmdpSvGNZRs/FNAIN3pWcreOKOw+zlE1zNXPST5nD8lx0VaAxnHTdtoD1U+BnHwAi8eiTXBSGAmIs+Lge+Iex7l2lYW9mIM4y7Uq8erPj/kLgx60Gitlta6v7tUi4k5P1PlQIQTAv4hFkwcXEjZIbRcIaYqeVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OhWPeoiT; arc=none smtp.client-ip=198.175.65.14
+	 MIME-Version; b=aIjoOBoZpPIxR4ZlTZkXj2x0/lTL+eqk206jHB80UgWrBgmw3MSZky+0+L4frAlIyAq7t2bk86k7JGF3SASZIChf8jUis9t7MY+7mf6xUsM8elcmTjmNfgghiJ1AYxgAO8hy1YQQtO/zzDQqqR3E6OKed8eMDMifn7BYpFijYxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gfev4JAr; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1735483527; x=1767019527;
+  t=1735483529; x=1767019529;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=BhJojQ3XYGLVpmd8UbNE9TZR54T6i37Tyf/JryGoY8Q=;
-  b=OhWPeoiT32Y7c1+E+Kid8yt5v74Cbtt4lWsXjD+tnDPqa8UimZYnqfSv
-   ZG0XzNCDWP6io9wVgItP97vBXMY5+Vpx2Xc89lQSoHInyjLY3cmLTvbpi
-   CV0hbva7jApknOpmcIs3AHU2GsCVnnL13WCPJC9tbFYogamtNzntHQCQv
-   VYRQ79ZFFzmZQdTMiBinnnTyVRtnhZgU++XDGSmnNezVZB2CQ63nml9n/
-   30uqIUe2p2sQWv5/dwfbrv8sdsm+32ZGbp5KvdQDICyLcR1AF2klO3xEI
-   CaHDBcP/vOz5ptGcxiDOyIp1AomXdxIOa8f3rKW1rr/1B92fogDSsaJbS
-   A==;
-X-CSE-ConnectionGUID: EwzphfQYRvq5oWisVLoFbw==
-X-CSE-MsgGUID: mTWOc6ZQQk+e69WWGxWATw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11299"; a="39572461"
+  bh=CFvbiM7q2ncfW/FkuHO+TjO4es/gYLM4+ocmcO6p688=;
+  b=Gfev4JAr26xjKzgSbnNXLKl97OprS35YdViqe7s2goG5Tf8wx08NpGic
+   2jwkMi6MkG4ULQtCw/DKsIls7yLaIbyyRPOS74vH/dzE4XvNNeioNPtuS
+   +uM4YNMl4/25NeUALD4uJhXi5Rb9A+GpZ8awPKch+olZe7GQnKHcNizjd
+   vkFv2Eq1PaLWi9q9yUgl40GbImXlt5ov2T1ulB5xmyG7yJZ9qmubIGDnU
+   b8YB5h/nhLuFbjjNjFtfzb58+vgpx/TOSO/EHBACufcSS+BfLAk/j9+0z
+   rWBRmLUDhIZ6mTGKh+sIQU8FbL+a5jEinPFOmzmOQcMutrkev3N96eTbp
+   g==;
+X-CSE-ConnectionGUID: p0JPTqG/Raa1bcx/znZrAQ==
+X-CSE-MsgGUID: INgDhFnfRsC9vN4HZOUdMQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11299"; a="39572464"
 X-IronPort-AV: E=Sophos;i="6.12,274,1728975600"; 
-   d="scan'208";a="39572461"
+   d="scan'208";a="39572464"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Dec 2024 06:45:27 -0800
-X-CSE-ConnectionGUID: +jCzXOLMT3mQOvNMIx/+yQ==
-X-CSE-MsgGUID: nA0kyRv2RYSGlkmzFeTH6g==
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Dec 2024 06:45:29 -0800
+X-CSE-ConnectionGUID: TMgDu8U8R4qXuJVtfsHJtw==
+X-CSE-MsgGUID: dVvKoIZPTWqqOicrVFvV9w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="105656977"
+   d="scan'208";a="105656988"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Dec 2024 06:45:25 -0800
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Dec 2024 06:45:27 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Ruan Jinjie <ruanjinjie@huawei.com>
-Subject: [PATCH 13/17] wifi: iwlwifi: mvm: Use helper function IS_ERR_OR_NULL()
-Date: Sun, 29 Dec 2024 16:44:48 +0200
-Message-Id: <20241229164246.d3423626d981.I3b4cc7f19d1bfecdb2e6a4eba8da1c7a41461115@changeid>
+	Minjie Du <duminjie@vivo.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Subject: [PATCH 14/17] wifi: iwlwifi: Remove a duplicate assignment in iwl_dbgfs_amsdu_len_write()
+Date: Sun, 29 Dec 2024 16:44:49 +0200
+Message-Id: <20241229164246.b1b0dadc2e9e.Ie57cbe8039b9f388632141447ac910b6fcc3d0c0@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241229144452.3151163-1-miriam.rachel.korenblit@intel.com>
 References: <20241229144452.3151163-1-miriam.rachel.korenblit@intel.com>
@@ -77,46 +78,30 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-Use IS_ERR_OR_NULL() instead of open-coding it
-to simplify the code.
+From: Minjie Du <duminjie@vivo.com>
 
-Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
+Delete a duplicate statement from this function implementation.
+
+Signed-off-by: Minjie Du <duminjie@vivo.com>
+Link: https://msgid.link/20230705114934.16523-1-duminjie@vivo.com
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/tdls.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c b/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c
-index 65927ebbabb7..36379b738de1 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c
-@@ -24,7 +24,7 @@ void iwl_mvm_teardown_tdls_peers(struct iwl_mvm *mvm)
- 	for (i = 0; i < mvm->fw->ucode_capa.num_stations; i++) {
- 		sta = rcu_dereference_protected(mvm->fw_id_to_mac_id[i],
- 						lockdep_is_held(&mvm->mutex));
--		if (!sta || IS_ERR(sta) || !sta->tdls)
-+		if (IS_ERR_OR_NULL(sta) || !sta->tdls)
- 			continue;
- 
- 		mvmsta = iwl_mvm_sta_from_mac80211(sta);
-@@ -47,7 +47,7 @@ int iwl_mvm_tdls_sta_count(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
- 	for (i = 0; i < mvm->fw->ucode_capa.num_stations; i++) {
- 		sta = rcu_dereference_protected(mvm->fw_id_to_mac_id[i],
- 						lockdep_is_held(&mvm->mutex));
--		if (!sta || IS_ERR(sta) || !sta->tdls)
-+		if (IS_ERR_OR_NULL(sta) || !sta->tdls)
- 			continue;
- 
- 		if (vif) {
-@@ -472,7 +472,7 @@ void iwl_mvm_tdls_ch_switch_work(struct work_struct *work)
- 				mvm->fw_id_to_mac_id[mvm->tdls_cs.peer.sta_id],
- 				lockdep_is_held(&mvm->mutex));
- 	/* the station may not be here, but if it is, it must be a TDLS peer */
--	if (!sta || IS_ERR(sta) || WARN_ON(!sta->tdls))
-+	if (IS_ERR_OR_NULL(sta) || WARN_ON(!sta->tdls))
- 		return;
- 
- 	mvmsta = iwl_mvm_sta_from_mac80211(sta);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+index 2472a78ada47..6ec1cae5314a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+@@ -463,7 +463,6 @@ static ssize_t iwl_dbgfs_amsdu_len_write(struct ieee80211_link_sta *link_sta,
+ 	if (amsdu_len) {
+ 		mvm_link_sta->orig_amsdu_len = link_sta->agg.max_amsdu_len;
+ 		link_sta->agg.max_amsdu_len = amsdu_len;
+-		link_sta->agg.max_amsdu_len = amsdu_len;
+ 		for (i = 0; i < ARRAY_SIZE(link_sta->agg.max_tid_amsdu_len); i++)
+ 			link_sta->agg.max_tid_amsdu_len[i] = amsdu_len;
+ 	} else {
 -- 
 2.34.1
 
