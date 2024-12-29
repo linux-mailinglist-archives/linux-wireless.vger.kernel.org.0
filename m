@@ -1,71 +1,70 @@
-Return-Path: <linux-wireless+bounces-16873-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16874-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1C2A9FDF4A
-	for <lists+linux-wireless@lfdr.de>; Sun, 29 Dec 2024 15:45:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D9129FDF4B
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Dec 2024 15:45:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D6943A0FB1
-	for <lists+linux-wireless@lfdr.de>; Sun, 29 Dec 2024 14:45:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED1C61882193
+	for <lists+linux-wireless@lfdr.de>; Sun, 29 Dec 2024 14:45:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8910A1607B7;
-	Sun, 29 Dec 2024 14:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D2518A956;
+	Sun, 29 Dec 2024 14:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cEE3A2/O"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OhWPeoiT"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D0E192598
-	for <linux-wireless@vger.kernel.org>; Sun, 29 Dec 2024 14:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEAAD197A8E
+	for <linux-wireless@vger.kernel.org>; Sun, 29 Dec 2024 14:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735483527; cv=none; b=ZTzmnfC5nDkr2pLAJviEqoGnefWymBveLqX17xxqjHVe+UVX2sgoPsa6R8Xp4G2h7kHvOHVObozwwonVEYV2oBRKy/yqqpqDUfUAgk8LyAYjYmQ1qjLgh4J8cqf6YEoVtLm8dd6dvvzA2CDDo9Ir497t+YCDSrtUPw09YWjmrjw=
+	t=1735483528; cv=none; b=Rpsyf6QviMOYsHV6oOSI3Dcy6zIhrww7zE5frBNArZ2hCjwc5UPEEwUw0yyHq5+EWcGxMbL6UM/yg9ezxgPgfaGqeQuIOA7+IIskYEh1G+N77tKSMWpiB4dyMYt+CUk8cEUhSIp6ehhFnthOxvKgJRC1yEG2tl5u2Y538cOwCuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735483527; c=relaxed/simple;
-	bh=9hVgdxZwZatw2wmwvxjUIB8dpsOq42FdWVlDY8lR/Gg=;
+	s=arc-20240116; t=1735483528; c=relaxed/simple;
+	bh=BhJojQ3XYGLVpmd8UbNE9TZR54T6i37Tyf/JryGoY8Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Gig8dScHkiFQIIC8Mhh8IoF1lsgyA6NY5R6PtvmoNu+ei028xtPAlLiWzCIlM7643YIHSCTrk5hcO6bDEjm2ajl/6P+PdeDN57Zohut0NY8WR/o7jy/8z+8zolTX2WukY/6WM92Vke7ZdVKhDGDh9miknAO6mGWlyHuzDQfTW9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cEE3A2/O; arc=none smtp.client-ip=198.175.65.14
+	 MIME-Version; b=fyuBi7g8ilcZyLmdpSvGNZRs/FNAIN3pWcreOKOw+zlE1zNXPST5nD8lx0VaAxnHTdtoD1U+BnHwAi8eiTXBSGAmIs+Lge+Iex7l2lYW9mIM4y7Uq8erPj/kLgx60Gitlta6v7tUi4k5P1PlQIQTAv4hFkwcXEjZIbRcIaYqeVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OhWPeoiT; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1735483526; x=1767019526;
+  t=1735483527; x=1767019527;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=9hVgdxZwZatw2wmwvxjUIB8dpsOq42FdWVlDY8lR/Gg=;
-  b=cEE3A2/OMC8Jjh+IYMv0+veT1yY/+J/aj/uMmY3CbS9yf+EWfsLsvCLd
-   9IYW15uswxUodAfu7gfCSSFohM1ik6ziP/rcEGXb4Oo+BXHFQ1SGFxU2T
-   nRs2Sf+Mkhl1s/BEB23aB/u2wS/DuhVPxEgjELwH3pQp1VV3BaGyKeulz
-   MCNvjOByYHCO+ofLnJyborl1VSYZzkWVOFJeVH4ACJby94aE94FJUOW8K
-   BbJc9jbswJWT/CHhOa31atESS3uZtdF6XDaroFOD/SYwzaQ3H/1inNFvS
-   FL24sra3iCzQcBXvY/8L33zy9WFMc/U6+pJBTG7x2e/9rQwWoJ6o00G9N
-   g==;
-X-CSE-ConnectionGUID: i7gLXLIwRcWXde55suXW5A==
-X-CSE-MsgGUID: htZG3xXYQv+40WP1n4KUew==
-X-IronPort-AV: E=McAfee;i="6700,10204,11299"; a="39572458"
+  bh=BhJojQ3XYGLVpmd8UbNE9TZR54T6i37Tyf/JryGoY8Q=;
+  b=OhWPeoiT32Y7c1+E+Kid8yt5v74Cbtt4lWsXjD+tnDPqa8UimZYnqfSv
+   ZG0XzNCDWP6io9wVgItP97vBXMY5+Vpx2Xc89lQSoHInyjLY3cmLTvbpi
+   CV0hbva7jApknOpmcIs3AHU2GsCVnnL13WCPJC9tbFYogamtNzntHQCQv
+   VYRQ79ZFFzmZQdTMiBinnnTyVRtnhZgU++XDGSmnNezVZB2CQ63nml9n/
+   30uqIUe2p2sQWv5/dwfbrv8sdsm+32ZGbp5KvdQDICyLcR1AF2klO3xEI
+   CaHDBcP/vOz5ptGcxiDOyIp1AomXdxIOa8f3rKW1rr/1B92fogDSsaJbS
+   A==;
+X-CSE-ConnectionGUID: EwzphfQYRvq5oWisVLoFbw==
+X-CSE-MsgGUID: mTWOc6ZQQk+e69WWGxWATw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11299"; a="39572461"
 X-IronPort-AV: E=Sophos;i="6.12,274,1728975600"; 
-   d="scan'208";a="39572458"
+   d="scan'208";a="39572461"
 Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Dec 2024 06:45:26 -0800
-X-CSE-ConnectionGUID: Idbs8qazSE2OTD5GjFNzhg==
-X-CSE-MsgGUID: e4ans1BST1GoOTRn9U59iQ==
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Dec 2024 06:45:27 -0800
+X-CSE-ConnectionGUID: +jCzXOLMT3mQOvNMIx/+yQ==
+X-CSE-MsgGUID: nA0kyRv2RYSGlkmzFeTH6g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
-   d="scan'208";a="105656972"
+   d="scan'208";a="105656977"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Dec 2024 06:45:24 -0800
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Dec 2024 06:45:25 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	shitao <shitao@kylinos.cn>,
-	k2ci <kernel-bot@kylinos.cn>
-Subject: [PATCH 12/17] wifi: iwlwifi: Fix spelling typo in comment
-Date: Sun, 29 Dec 2024 16:44:47 +0200
-Message-Id: <20241229164246.c79c132f811b.Ie07a0007b96359b3552878e23c4b9efeb07bba8d@changeid>
+	Ruan Jinjie <ruanjinjie@huawei.com>
+Subject: [PATCH 13/17] wifi: iwlwifi: mvm: Use helper function IS_ERR_OR_NULL()
+Date: Sun, 29 Dec 2024 16:44:48 +0200
+Message-Id: <20241229164246.d3423626d981.I3b4cc7f19d1bfecdb2e6a4eba8da1c7a41461115@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241229144452.3151163-1-miriam.rachel.korenblit@intel.com>
 References: <20241229144452.3151163-1-miriam.rachel.korenblit@intel.com>
@@ -78,31 +77,46 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: shitao <shitao@kylinos.cn>
+Use IS_ERR_OR_NULL() instead of open-coding it
+to simplify the code.
 
-Fix spelling typo in iwl-context-info.h comment.
-
-Reported-by: k2ci <kernel-bot@kylinos.cn>
-Signed-off-by: shitao <shitao@kylinos.cn>
-Link: https://msgid.link/20231212093424.3104329-1-shitao@kylinos.cn
+Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-context-info.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/tdls.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-context-info.h b/drivers/net/wireless/intel/iwlwifi/iwl-context-info.h
-index 7abd153d56f9..dfd44fabf237 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-context-info.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-context-info.h
-@@ -6,7 +6,7 @@
- #ifndef __iwl_context_info_file_h__
- #define __iwl_context_info_file_h__
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c b/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c
+index 65927ebbabb7..36379b738de1 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tdls.c
+@@ -24,7 +24,7 @@ void iwl_mvm_teardown_tdls_peers(struct iwl_mvm *mvm)
+ 	for (i = 0; i < mvm->fw->ucode_capa.num_stations; i++) {
+ 		sta = rcu_dereference_protected(mvm->fw_id_to_mac_id[i],
+ 						lockdep_is_held(&mvm->mutex));
+-		if (!sta || IS_ERR(sta) || !sta->tdls)
++		if (IS_ERR_OR_NULL(sta) || !sta->tdls)
+ 			continue;
  
--/* maximmum number of DRAM map entries supported by FW */
-+/* maximum number of DRAM map entries supported by FW */
- #define IWL_MAX_DRAM_ENTRY	64
- #define CSR_CTXT_INFO_BA	0x40
+ 		mvmsta = iwl_mvm_sta_from_mac80211(sta);
+@@ -47,7 +47,7 @@ int iwl_mvm_tdls_sta_count(struct iwl_mvm *mvm, struct ieee80211_vif *vif)
+ 	for (i = 0; i < mvm->fw->ucode_capa.num_stations; i++) {
+ 		sta = rcu_dereference_protected(mvm->fw_id_to_mac_id[i],
+ 						lockdep_is_held(&mvm->mutex));
+-		if (!sta || IS_ERR(sta) || !sta->tdls)
++		if (IS_ERR_OR_NULL(sta) || !sta->tdls)
+ 			continue;
  
+ 		if (vif) {
+@@ -472,7 +472,7 @@ void iwl_mvm_tdls_ch_switch_work(struct work_struct *work)
+ 				mvm->fw_id_to_mac_id[mvm->tdls_cs.peer.sta_id],
+ 				lockdep_is_held(&mvm->mutex));
+ 	/* the station may not be here, but if it is, it must be a TDLS peer */
+-	if (!sta || IS_ERR(sta) || WARN_ON(!sta->tdls))
++	if (IS_ERR_OR_NULL(sta) || WARN_ON(!sta->tdls))
+ 		return;
+ 
+ 	mvmsta = iwl_mvm_sta_from_mac80211(sta);
 -- 
 2.34.1
 
