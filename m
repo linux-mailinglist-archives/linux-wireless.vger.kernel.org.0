@@ -1,120 +1,147 @@
-Return-Path: <linux-wireless+bounces-16899-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16900-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18A139FE2AB
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Dec 2024 06:38:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BA2E9FE399
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Dec 2024 09:07:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E34F3A19B6
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Dec 2024 05:38:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC48D3A04C5
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Dec 2024 08:07:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B592165F01;
-	Mon, 30 Dec 2024 05:38:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="udGWBdKD"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD8C11A0730;
+	Mon, 30 Dec 2024 08:07:24 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f208.google.com (mail-il1-f208.google.com [209.85.166.208])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF07415746E;
-	Mon, 30 Dec 2024 05:38:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D79E1A0718
+	for <linux-wireless@vger.kernel.org>; Mon, 30 Dec 2024 08:07:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.208
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735537091; cv=none; b=EAlRLY0NYM5dV+aUX/uifhWpUk1UswOXt7GxUAsHsJdV6ylCVs/Vj+t1N/t+x7IMPPDVPoB83qp8WMxBWxf5RF5wte5b24y6WWdrMUVUkkmeFlJHhUBwRpBCMx0LqNO9GeqhueNaKkvn9N7VMA1p8ky8MJ58/OF6DfNkF9vbJfM=
+	t=1735546044; cv=none; b=FJXYHBN79JhzDK/pJnI5xROyoIfHxvdtd70b8naNavvPTxS9q/+0wfLAV9U1ymo5Hk13+SzwWLTsvDDCDoGLOF8icg+gAdmQwmbfwICYuc+wXoiPsZc2KlxXjbDP2u3Ul8guIXw9lgPsK9AuWavXJsxlZa4X/EqP0g3sKg6TN8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735537091; c=relaxed/simple;
-	bh=Lst7XNAKcOZd0nU9L0bmu0BfVZvL3jfyMPy40z56/Y4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WoYgaqsAQpahTnn07NZGS0eXcBTa8yqXKw02E1U8VoAVFDEyRsmkGGYG9ZuTNLvrt6jMEyvpmWAcHgRoAl4wAzDJnwIRiTc0dnslgO2eh88D6hnPb07MPXvQsirl+0xabNiYjsDSaAyyPYHnnKU/eEyRm72vmdn0G5MVpvcMVN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=udGWBdKD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB0CFC4CED0;
-	Mon, 30 Dec 2024 05:38:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735537091;
-	bh=Lst7XNAKcOZd0nU9L0bmu0BfVZvL3jfyMPy40z56/Y4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=udGWBdKDMeyCMOUIIWxljdTQtPdTgBMPyXUNeEn0H/bIu2AzEA7Elr3n9QRuwgJ6b
-	 PX4Zw5Jf6w0g8wn5zeoYz88vpykNGwYsKLVOQKDOikYxpIqZM1M7E/QwPCnaPIxs0f
-	 Y+Dbs2BEKLR1N8a4HpiSXFeZXGNE/R6tuEpdp9DAuTx3f3E7XbGusU9a7NeAt8wnL6
-	 9Uv+bHkhTkj7kefehjl3fOu5HhNEhJCQSBhTpDmF088m4jDZT79wKsy+Z9vxaOR86E
-	 LPmzPXkVFhfx0zUsHGn73KbgYLJhgwgwJEgVyjC2WSBJrQbKRgWl7ib0RWICn0pp2J
-	 hOZj39HCxfrJg==
-Date: Sun, 29 Dec 2024 22:38:06 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: John Rowley <lkml@johnrowley.me>
-Cc: johannes@sipsolutions.net, linux-wireless@vger.kernel.org,
-	stable@vger.kernel.org, kees@kernel.org, gustavoars@kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: Re: UBSAN array-index-out-of-bounds: cfg80211_scan_6ghz
-Message-ID: <20241230053806.GA129354@ax162>
-References: <1815535c709ba9d9.156c6a5c9cdf6e59.b249b6b6a5ee4634@localhost.localdomain>
+	s=arc-20240116; t=1735546044; c=relaxed/simple;
+	bh=OIM1Y4NWbpcMyvZVBjutclcMuYNLDE1DrkEVY49eH2Y=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=sWvcQSpPl9pgQ+r1MvSGSNlUibw/ypkKmolEv2CoZkgt9f4q4DQg1YLyChay2rZSlu0wEmw/TyfAI7yNxvu1xsJ2kxTeLPVZQfzNGT6ujt0imIyp83t14eJnZBMeKXFxrsTESzlIpt7EkpfGwXcHLcaATZWT9+uO0OVDBCk+Rb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.208
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f208.google.com with SMTP id e9e14a558f8ab-3a9d303a5ccso181398595ab.3
+        for <linux-wireless@vger.kernel.org>; Mon, 30 Dec 2024 00:07:23 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735546042; x=1736150842;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=rUynRFj7VEaV10r6/OF/rVuvmpEf0FuTJOYT9ttzejI=;
+        b=VsVgIyFYKWiHjzAsliY3dqEin48gG6BuoRh37QtK0e9yeLLkn8qu7b/sG18j6nniFp
+         xNBErsm5WFstzs/zI5vdie7nAo/XmpTTuvYbvTecP9GxoOYhLTAzzpF4WAntDDSxiPXO
+         C1+j1uPvhD+L1PdTBkER+LhSElHKkBe4ZoPNTKr82BnCXFupgOM4xUbbFqDLLlORdwcf
+         l03K2rhO9SA0//oTf/D/5UzRQlLkg0gl5iz5ksWn4XY3whuhEbNt3ny9opqAOkPGXNDj
+         SpGNmyqNWXbZCOTjTx/ggFRMRCIskoz5rCioAYPGy3bNWRRCFM2TfDAw2lEsxZ/FLut6
+         g+oQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVX5hG7KlXGGzVK4GxQ+i2WCpfdbsQ3P2MwIFoI9lD2XtzEX/GlFqFkR0tnQdof7MO6K2Yhn13w4qWPy4b08Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyds9FPQIBXY+0agqv8WNdQLfVTVaiOSupNrp/lnBdnEG2BY07i
+	DtHfzF8JG+MGtTWk/IgkqMvvBIzJlpZkHx8cG+MER/dDaWqSDSuDenYDeIoUi3ifsjZ8GYu76zi
+	hZ6FZ5D9rs9hm7kBLD2WC0ZjkysUMmHkyr1sZS/d2QwnYzduwF5onVH0=
+X-Google-Smtp-Source: AGHT+IHcas72jpuAKR45Az0d9LXedHbJuJbMmRnepkwBxyRbY3YVOKrSHZNR0PnX0Cs2Di1qnyJJSNij0pxxa8x+QDPY5ZbRNgDE
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1815535c709ba9d9.156c6a5c9cdf6e59.b249b6b6a5ee4634@localhost.localdomain>
+X-Received: by 2002:a05:6e02:1686:b0:3a7:bc2a:2522 with SMTP id
+ e9e14a558f8ab-3c2d277f709mr274937865ab.7.1735546042375; Mon, 30 Dec 2024
+ 00:07:22 -0800 (PST)
+Date: Mon, 30 Dec 2024 00:07:22 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <677254ba.050a0220.2f3838.04ba.GAE@google.com>
+Subject: [syzbot] [wireless?] WARNING in ieee80211_set_active_links
+From: syzbot <syzbot+0c5d8e65f23569a8ffec@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Hi John,
+Hello,
 
-On Sat, Dec 28, 2024 at 11:21:27AM +0000, John Rowley wrote:
-> Hi, I'm experiencing UBSAN array-index-out-of-bounds errors while using
-> my Framework 13" AMD laptop with its Mediatek MT7922 wifi adapter
-> (mt7921e).
-> 
-> It seems to happen only once on boot, and occurs with both kernel
-> versions 6.12.7 and 6.13-rc4, both compiled from vanilla upstream kernel 
-> sources on Fedora 41 using the kernel.org LLVM toolchain (19.1.6).
-> 
-> I can try some other kernel series if necessary, and also a bisect if I
-> find a working version, but that may take me a while.
+syzbot found the following issue on:
 
-This looks related to UBSAN_BOUNDS and the fact that version of clang
-supports the __counted_by attribute. I do not have much time at the
-moment to look at this but I have added Kees, Gustavo, and
-linux-hardening for further analysis.
+HEAD commit:    9b2ffa6148b1 Merge tag 'mtd/fixes-for-6.13-rc5' of git://g..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=172402c4580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=c078001e66e4a17e
+dashboard link: https://syzkaller.appspot.com/bug?extid=0c5d8e65f23569a8ffec
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=17aa690f980000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=155ce2f8580000
 
-Cheers,
-Nathan
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/c1d66e09941d/disk-9b2ffa61.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/8aa24ea0a81d/vmlinux-9b2ffa61.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/0d9c0b1e880a/bzImage-9b2ffa61.xz
 
-> I wasn't sure if I should mark this as a regression, as I'm not sure
-> which/if there is a working kernel version at this point.
-> 
-> Thanks.
-> 
-> ----
-> 
-> [   17.754417] UBSAN: array-index-out-of-bounds in /data/linux/net/wireless/scan.c:766:2
-> [   17.754423] index 0 is out of range for type 'struct ieee80211_channel *[] __counted_by(n_channels)' (aka 'struct ieee80211_channel *[]')
-> [   17.754427] CPU: 13 UID: 0 PID: 620 Comm: kworker/u64:10 Tainted: G                T  6.13.0-rc4 #9
-> [   17.754433] Tainted: [T]=RANDSTRUCT
-> [   17.754435] Hardware name: Framework Laptop 13 (AMD Ryzen 7040Series)/FRANMDCP07, BIOS 03.05 03/29/2024
-> [   17.754438] Workqueue: events_unbound cfg80211_wiphy_work
-> [   17.754446] Call Trace:
-> [   17.754449]  <TASK>
-> [   17.754452]  dump_stack_lvl+0x82/0xc0
-> [   17.754459]  __ubsan_handle_out_of_bounds+0xe7/0x110
-> [   17.754464]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [   17.754470]  ? __kmalloc_noprof+0x1a7/0x280
-> [   17.754477]  cfg80211_scan_6ghz+0x3bb/0xfd0
-> [   17.754482]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [   17.754486]  ? try_to_wake_up+0x368/0x4c0
-> [   17.754491]  ? try_to_wake_up+0x1a9/0x4c0
-> [   17.754496]  ___cfg80211_scan_done+0xa9/0x1e0
-> [   17.754500]  cfg80211_wiphy_work+0xb7/0xe0
-> [   17.754504]  process_scheduled_works+0x205/0x3a0
-> [   17.754509]  worker_thread+0x24a/0x300
-> [   17.754514]  ? __cfi_worker_thread+0x10/0x10
-> [   17.754519]  kthread+0x158/0x180
-> [   17.754524]  ? __cfi_kthread+0x10/0x10
-> [   17.754528]  ret_from_fork+0x40/0x50
-> [   17.754534]  ? __cfi_kthread+0x10/0x10
-> [   17.754538]  ret_from_fork_asm+0x11/0x30
-> [   17.754544]  </TASK>
-> 
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+0c5d8e65f23569a8ffec@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+WARNING: CPU: 0 PID: 52 at net/mac80211/link.c:504 ieee80211_set_active_links+0x7ba/0x9c0 net/mac80211/link.c:504
+Modules linked in:
+CPU: 0 UID: 0 PID: 52 Comm: kworker/u8:3 Not tainted 6.13.0-rc4-syzkaller-00012-g9b2ffa6148b1 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Workqueue: events_unbound cfg80211_wiphy_work
+RIP: 0010:ieee80211_set_active_links+0x7ba/0x9c0 net/mac80211/link.c:504
+Code: 94 c4 31 ff 44 89 e6 e8 f4 b5 04 f7 45 84 e4 0f 84 81 fc ff ff e8 06 b4 04 f7 e8 21 46 77 f6 e9 72 fc ff ff e8 f7 b3 04 f7 90 <0f> 0b 90 b8 ea ff ff ff e9 74 fa ff ff e8 e4 b3 04 f7 e8 bf 7f ea
+RSP: 0018:ffffc90000bd7b78 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffff8880276ce9d0 RCX: ffffffff8a949444
+RDX: ffff8880206b9e00 RSI: ffffffff8a949b59 RDI: 0000000000000003
+RBP: 0000000000000000 R08: 0000000000000003 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000003 R12: ffffffff901d16d4
+R13: 0000000000000001 R14: ffff8880277f8e40 R15: ffff8880276cd720
+FS:  0000000000000000(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00005556f9227000 CR3: 00000000757fe000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ieee80211_if_parse_active_links+0xa4/0x110 net/mac80211/debugfs_netdev.c:733
+ wiphy_locked_debugfs_write_work+0xe3/0x1c0 net/wireless/debugfs.c:215
+ cfg80211_wiphy_work+0x3de/0x560 net/wireless/core.c:440
+ process_one_work+0x958/0x1b30 kernel/workqueue.c:3229
+ process_scheduled_works kernel/workqueue.c:3310 [inline]
+ worker_thread+0x6c8/0xf00 kernel/workqueue.c:3391
+ kthread+0x2c1/0x3a0 kernel/kthread.c:389
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
