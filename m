@@ -1,70 +1,71 @@
-Return-Path: <linux-wireless+bounces-16896-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16897-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9CFF9FE286
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Dec 2024 05:56:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20A1B9FE287
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Dec 2024 05:57:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 988BC16099F
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Dec 2024 04:56:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD2541611D2
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Dec 2024 04:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B89813B5A0;
-	Mon, 30 Dec 2024 04:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A8ED13D52E;
+	Mon, 30 Dec 2024 04:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nSzj5/mH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="BZVGl6Zn"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B027613633F
-	for <linux-wireless@vger.kernel.org>; Mon, 30 Dec 2024 04:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7AD183CA9
+	for <linux-wireless@vger.kernel.org>; Mon, 30 Dec 2024 04:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735534589; cv=none; b=aHQSY+JibgLM3dco3utoKvg7aC6BqpiemqzEm+D6geywstw3OpEBpuR++GlZ+gub3RBNf1SHRmGvOlfqtBxtdxjlpk8UQXYfHeP67Oj3NX3lLozWx0XlMDgs0oQZi26wK1CcdteuZnWnWcP+JNEuUYAKKvgxOvy2FuiezMNWfGU=
+	t=1735534591; cv=none; b=KNGnysx16vu0NlYGRfxAnEmo73HmcnISqBtLhPoh3e3Bhe4zLfiJCKkVuq+X2j+LsuvXBn14kslN3NvLgUyoXbaqVGYUQI35Qs8F0vdLk9t4lc7Z/Aj9P1MmAlqxLN/AaFEOWwLuU+YhwCEXrFoGG0/KtoRX3V/IG+a42NHXsHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735534589; c=relaxed/simple;
-	bh=VDW3rg7ARkiIglozU0f/ot3xbvoccbySeQJaWq1dBtI=;
+	s=arc-20240116; t=1735534591; c=relaxed/simple;
+	bh=d9tknz9yvTJGrWyGgZ47yVZtGOZCDZkPwAn4fFnYETI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Nz/2A2EQIq9EWWt6cqadRK2g75BmPE0mvtqUTTSCY4ABdRUT2zA9S2Fc/AdaI4hOn4dPOqVmlUw+adc9oxngvOahV8j9XmaHK1hhAgFkE0I+Hbs0kdlh2zyo4aAFBxXNbyzqOIDbKoSR9VfNUf2Z+hO9XTnlB+ZduU0WUf5nZXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nSzj5/mH; arc=none smtp.client-ip=192.198.163.11
+	 MIME-Version; b=DyCsy1q6RiJRT/fwlqaSGPq9ydL7xLt+N+g+HqPhsT7gR+Znl+7kV2GwgBgRIxhJbimQQ8EspLOOnUB4dwPljmjdoHrF8F0I5lGGhSQWKCzNIEABQPpF8x52StvD16mfltl+u7iBLNqpZkRkYqtVPH0BaP/C0HJKVjgF7uJIDg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=BZVGl6Zn; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1735534588; x=1767070588;
+  t=1735534590; x=1767070590;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=VDW3rg7ARkiIglozU0f/ot3xbvoccbySeQJaWq1dBtI=;
-  b=nSzj5/mHOXzsPsR3mjAiVO7zkkGe7+zpstmp5ePkfri0eSRLxt4zHsy6
-   6bpQECI0HSz5Ulfm1w77kGeZ9C8rggI4DGu8TQ+f/QYwA0bPxxfnbL9DG
-   z9XiHHaNuiqdxsqjQt4urUKaRFPiHIoJMsI07lo2Sm4GvbZxM7m5wqESP
-   IUCUXuopHqubKIyBcNrOqBbHatbOmYC3vubwNp9CDFezfSwPk9WF2s9u8
-   xlCbGWc8YAV6+bXelZaEb6mnakEMJLLFHG9RAjTZ/TLwMcmviQ0u8/+jX
-   1HIU83IZC4eiCkIGToEy2oG1tBaNCCbnEz4hjKi/j0pYqTkys2XrCEQbN
-   w==;
-X-CSE-ConnectionGUID: EJOgD8YQRImQ1P2R4RUljg==
-X-CSE-MsgGUID: GX4HAAVZTPCpzW0r+JW8fA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11299"; a="46405032"
+  bh=d9tknz9yvTJGrWyGgZ47yVZtGOZCDZkPwAn4fFnYETI=;
+  b=BZVGl6Zn217Mhfp1xyUBeQo3+BZmwxiadzmr2gODi18WnKr6YqujajxD
+   EkRtDpCvd7Yf/Pn9FL3PpU4fEywdiGmZXwbNxqt5x95Ig3/wt9hwte3Tb
+   +4L8DaQGzvXN4dWlFY1jlMre8gj8YaQnbjnOvplWAgwRQamlHAwlRlarQ
+   g5m7LRMSRI7Efqic0DAA19xo14L1Rs1W+39IZwNwyDOMvrK5RyKJVtmxn
+   6YUgJhTNEOKeowTV3zQeFwoFqmtG75T1y2PPRv4s3PiMNvgptgRuFdFug
+   JAd3pOLpbhEkHwSZZwcuxgwF8y2LhG01oC+brVQe5ig0tRXee+7RE3Yax
+   A==;
+X-CSE-ConnectionGUID: Y3osPcoKRv6n7nqoKmmoog==
+X-CSE-MsgGUID: rrowkVl8QGiHNqC6k5ix6w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11299"; a="46405035"
 X-IronPort-AV: E=Sophos;i="6.12,275,1728975600"; 
-   d="scan'208";a="46405032"
+   d="scan'208";a="46405035"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Dec 2024 20:56:28 -0800
-X-CSE-ConnectionGUID: Rm0deqMtTcSftPsaajpoyw==
-X-CSE-MsgGUID: gCLUz4coS4mJP4Fv2sBYtg==
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Dec 2024 20:56:29 -0800
+X-CSE-ConnectionGUID: voNmoSVPScS1yuC/22fD/A==
+X-CSE-MsgGUID: AHnQwqzQSCG6uw+XVaEw+g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="104758923"
+   d="scan'208";a="104758930"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Dec 2024 20:56:26 -0800
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Dec 2024 20:56:27 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Ilan Peer <ilan.peer@intel.com>
-Subject: [PATCH 13/15] wifi: ieee80211: Add some missing MLO related definitions
-Date: Mon, 30 Dec 2024 06:55:52 +0200
-Message-Id: <20241230065327.fa8f392cc8ba.Ibe7f6108cd0e04b8c739a8e35a4f485f664a17e6@changeid>
+	Ilan Peer <ilan.peer@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 14/15] wifi: nl80211: Split the links handling of an association request
+Date: Mon, 30 Dec 2024 06:55:53 +0200
+Message-Id: <20241230065327.d13b00994d12.I27a51c8c1d455f0a6d5b59f93f2c9ac49282febb@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241230045554.3746143-1-miriam.rachel.korenblit@intel.com>
 References: <20241230045554.3746143-1-miriam.rachel.korenblit@intel.com>
@@ -79,86 +80,211 @@ Content-Transfer-Encoding: 8bit
 
 From: Ilan Peer <ilan.peer@intel.com>
 
-As a preparation to support ML reconfiguration request and
-response, add additional ML reconfiguration definitions
-required to support the flow. See Section 9.4.2.321.4 in
-Draft P802.11be_D6.0.
+And move it to a separate function so it could later be reused for
+dynamic addition of links.
 
 Signed-off-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- include/linux/ieee80211.h | 30 ++++++++++++++++++++++++++++--
- 1 file changed, 28 insertions(+), 2 deletions(-)
+ net/wireless/nl80211.c | 151 +++++++++++++++++++++--------------------
+ 1 file changed, 76 insertions(+), 75 deletions(-)
 
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index 9c0e2617fe8f..3751c4bf71ca 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -3883,6 +3883,16 @@ enum ieee80211_protected_eht_actioncode {
- 	WLAN_PROTECTED_EHT_ACTION_TTLM_REQ = 0,
- 	WLAN_PROTECTED_EHT_ACTION_TTLM_RES = 1,
- 	WLAN_PROTECTED_EHT_ACTION_TTLM_TEARDOWN = 2,
-+	WLAN_PROTECTED_EHT_ACTION_EPCS_ENABLE_REQ = 3,
-+	WLAN_PROTECTED_EHT_ACTION_EPCS_ENABLE_RESP = 4,
-+	WLAN_PROTECTED_EHT_ACTION_EPCS_ENABLE_TEARDOWN = 5,
-+	WLAN_PROTECTED_EHT_ACTION_EML_OP_MODE_NOTIF = 6,
-+	WLAN_PROTECTED_EHT_ACTION_LINK_RECOMMEND = 7,
-+	WLAN_PROTECTED_EHT_ACTION_ML_OP_UPDATE_REQ = 8,
-+	WLAN_PROTECTED_EHT_ACTION_ML_OP_UPDATE_RESP = 9,
-+	WLAN_PROTECTED_EHT_ACTION_LINK_RECONFIG_NOTIF = 10,
-+	WLAN_PROTECTED_EHT_ACTION_LINK_RECONFIG_REQ = 11,
-+	WLAN_PROTECTED_EHT_ACTION_LINK_RECONFIG_RESP = 12,
- };
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 8789d8b73f0f..dd9340990ffe 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -11088,12 +11088,83 @@ static struct cfg80211_bss *nl80211_assoc_bss(struct cfg80211_registered_device
+ 	return bss;
+ }
  
- /* Security key length */
-@@ -5019,6 +5029,8 @@ struct ieee80211_multi_link_elem {
- #define IEEE80211_MLD_CAP_OP_TID_TO_LINK_MAP_NEG_SUPP_DIFF	3
- #define IEEE80211_MLD_CAP_OP_FREQ_SEP_TYPE_IND		0x0f80
- #define IEEE80211_MLD_CAP_OP_AAR_SUPPORT		0x1000
-+#define IEEE80211_MLD_CAP_OP_LINK_RECONF_SUPPORT	0x2000
-+#define IEEE80211_MLD_CAP_OP_ALIGNED_TWT_SUPPORT	0x4000
++static int nl80211_process_links(struct cfg80211_registered_device *rdev,
++				 struct cfg80211_assoc_link *links,
++				 const u8 *ssid, int ssid_len,
++				 struct genl_info *info)
++{
++	unsigned int attrsize = NUM_NL80211_ATTR * sizeof(struct nlattr *);
++	struct nlattr **attrs __free(kfree) = kzalloc(attrsize, GFP_KERNEL);
++	struct nlattr *link;
++	unsigned int link_id;
++	int rem, err;
++
++	if (!attrs)
++		return -ENOMEM;
++
++	nla_for_each_nested(link, info->attrs[NL80211_ATTR_MLO_LINKS], rem) {
++		memset(attrs, 0, attrsize);
++
++		nla_parse_nested(attrs, NL80211_ATTR_MAX, link, NULL, NULL);
++
++		if (!attrs[NL80211_ATTR_MLO_LINK_ID]) {
++			NL_SET_BAD_ATTR(info->extack, link);
++			return -EINVAL;
++		}
++
++		link_id = nla_get_u8(attrs[NL80211_ATTR_MLO_LINK_ID]);
++		/* cannot use the same link ID again */
++		if (links[link_id].bss) {
++			NL_SET_BAD_ATTR(info->extack, link);
++			return -EINVAL;
++		}
++		links[link_id].bss =
++			nl80211_assoc_bss(rdev, ssid, ssid_len, attrs,
++					  link_id, link_id);
++		if (IS_ERR(links[link_id].bss)) {
++			err = PTR_ERR(links[link_id].bss);
++			links[link_id].bss = NULL;
++			NL_SET_ERR_MSG_ATTR(info->extack, link,
++					    "Error fetching BSS for link");
++			return err;
++		}
++
++		if (attrs[NL80211_ATTR_IE]) {
++			links[link_id].elems = nla_data(attrs[NL80211_ATTR_IE]);
++			links[link_id].elems_len =
++				nla_len(attrs[NL80211_ATTR_IE]);
++
++			if (cfg80211_find_elem(WLAN_EID_FRAGMENT,
++					       links[link_id].elems,
++					       links[link_id].elems_len)) {
++				NL_SET_ERR_MSG_ATTR(info->extack,
++						    attrs[NL80211_ATTR_IE],
++						    "cannot deal with fragmentation");
++				return -EINVAL;
++			}
++
++			if (cfg80211_find_ext_elem(WLAN_EID_EXT_NON_INHERITANCE,
++						   links[link_id].elems,
++						   links[link_id].elems_len)) {
++				NL_SET_ERR_MSG_ATTR(info->extack,
++						    attrs[NL80211_ATTR_IE],
++						    "cannot deal with non-inheritance");
++				return -EINVAL;
++			}
++		}
++
++		links[link_id].disabled =
++			nla_get_flag(attrs[NL80211_ATTR_MLO_LINK_DISABLED]);
++	}
++
++	return 0;
++}
++
+ static int nl80211_associate(struct sk_buff *skb, struct genl_info *info)
+ {
+ 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
+ 	struct net_device *dev = info->user_ptr[1];
+ 	struct cfg80211_assoc_request req = {};
+-	struct nlattr **attrs = NULL;
+ 	const u8 *ap_addr, *ssid;
+ 	unsigned int link_id;
+ 	int err, ssid_len;
+@@ -11225,10 +11296,6 @@ static int nl80211_associate(struct sk_buff *skb, struct genl_info *info)
+ 	req.link_id = nl80211_link_id_or_invalid(info->attrs);
  
- struct ieee80211_mle_basic_common_info {
- 	u8 len;
-@@ -5034,6 +5046,9 @@ struct ieee80211_mle_preq_common_info {
- } __packed;
+ 	if (info->attrs[NL80211_ATTR_MLO_LINKS]) {
+-		unsigned int attrsize = NUM_NL80211_ATTR * sizeof(*attrs);
+-		struct nlattr *link;
+-		int rem = 0;
+-
+ 		if (req.link_id < 0)
+ 			return -EINVAL;
  
- #define IEEE80211_MLC_RECONF_PRES_MLD_MAC_ADDR		0x0010
-+#define IEEE80211_MLC_RECONF_PRES_EML_CAPA		0x0020
-+#define IEEE80211_MLC_RECONF_PRES_MLD_CAPA_OP		0x0040
-+#define IEEE80211_MLC_RECONF_PRES_EXT_MLD_CAPA_OP	0x0080
+@@ -11243,72 +11310,10 @@ static int nl80211_associate(struct sk_buff *skb, struct genl_info *info)
+ 		req.ap_mld_addr = nla_data(info->attrs[NL80211_ATTR_MLD_ADDR]);
+ 		ap_addr = req.ap_mld_addr;
  
- /* no fixed fields in RECONF */
+-		attrs = kzalloc(attrsize, GFP_KERNEL);
+-		if (!attrs)
+-			return -ENOMEM;
+-
+-		nla_for_each_nested(link,
+-				    info->attrs[NL80211_ATTR_MLO_LINKS],
+-				    rem) {
+-			memset(attrs, 0, attrsize);
+-
+-			nla_parse_nested(attrs, NL80211_ATTR_MAX,
+-					 link, NULL, NULL);
+-
+-			if (!attrs[NL80211_ATTR_MLO_LINK_ID]) {
+-				err = -EINVAL;
+-				NL_SET_BAD_ATTR(info->extack, link);
+-				goto free;
+-			}
+-
+-			link_id = nla_get_u8(attrs[NL80211_ATTR_MLO_LINK_ID]);
+-			/* cannot use the same link ID again */
+-			if (req.links[link_id].bss) {
+-				err = -EINVAL;
+-				NL_SET_BAD_ATTR(info->extack, link);
+-				goto free;
+-			}
+-			req.links[link_id].bss =
+-				nl80211_assoc_bss(rdev, ssid, ssid_len, attrs,
+-						  req.link_id, link_id);
+-			if (IS_ERR(req.links[link_id].bss)) {
+-				err = PTR_ERR(req.links[link_id].bss);
+-				req.links[link_id].bss = NULL;
+-				NL_SET_ERR_MSG_ATTR(info->extack,
+-						    link, "Error fetching BSS for link");
+-				goto free;
+-			}
+-
+-			if (attrs[NL80211_ATTR_IE]) {
+-				req.links[link_id].elems =
+-					nla_data(attrs[NL80211_ATTR_IE]);
+-				req.links[link_id].elems_len =
+-					nla_len(attrs[NL80211_ATTR_IE]);
+-
+-				if (cfg80211_find_elem(WLAN_EID_FRAGMENT,
+-						       req.links[link_id].elems,
+-						       req.links[link_id].elems_len)) {
+-					NL_SET_ERR_MSG_ATTR(info->extack,
+-							    attrs[NL80211_ATTR_IE],
+-							    "cannot deal with fragmentation");
+-					err = -EINVAL;
+-					goto free;
+-				}
+-
+-				if (cfg80211_find_ext_elem(WLAN_EID_EXT_NON_INHERITANCE,
+-							   req.links[link_id].elems,
+-							   req.links[link_id].elems_len)) {
+-					NL_SET_ERR_MSG_ATTR(info->extack,
+-							    attrs[NL80211_ATTR_IE],
+-							    "cannot deal with non-inheritance");
+-					err = -EINVAL;
+-					goto free;
+-				}
+-			}
+-
+-			req.links[link_id].disabled =
+-				nla_get_flag(attrs[NL80211_ATTR_MLO_LINK_DISABLED]);
+-		}
++		err = nl80211_process_links(rdev, req.links, ssid, ssid_len,
++					    info);
++		if (err)
++			goto free;
  
-@@ -5352,6 +5367,12 @@ static inline bool ieee80211_mle_size_ok(const u8 *data, size_t len)
- 	case IEEE80211_ML_CONTROL_TYPE_RECONF:
- 		if (control & IEEE80211_MLC_RECONF_PRES_MLD_MAC_ADDR)
- 			common += ETH_ALEN;
-+		if (control & IEEE80211_MLC_RECONF_PRES_EML_CAPA)
-+			common += 2;
-+		if (control & IEEE80211_MLC_RECONF_PRES_MLD_CAPA_OP)
-+			common += 2;
-+		if (control & IEEE80211_MLC_RECONF_PRES_EXT_MLD_CAPA_OP)
-+			common += 2;
- 		break;
- 	case IEEE80211_ML_CONTROL_TYPE_TDLS:
- 		common += sizeof(struct ieee80211_mle_tdls_common_info);
-@@ -5502,8 +5523,13 @@ ieee80211_mle_basic_sta_prof_bss_param_ch_cnt(const struct ieee80211_mle_per_sta
- #define IEEE80211_MLE_STA_RECONF_CONTROL_COMPLETE_PROFILE		0x0010
- #define IEEE80211_MLE_STA_RECONF_CONTROL_STA_MAC_ADDR_PRESENT		0x0020
- #define IEEE80211_MLE_STA_RECONF_CONTROL_AP_REM_TIMER_PRESENT		0x0040
--#define IEEE80211_MLE_STA_RECONF_CONTROL_OPERATION_UPDATE_TYPE		0x0780
--#define IEEE80211_MLE_STA_RECONF_CONTROL_OPERATION_PARAMS_PRESENT	0x0800
-+#define	IEEE80211_MLE_STA_RECONF_CONTROL_OPERATION_TYPE                 0x0780
-+#define IEEE80211_MLE_STA_RECONF_CONTROL_OPERATION_TYPE_AP_REM          0
-+#define IEEE80211_MLE_STA_RECONF_CONTROL_OPERATION_TYPE_OP_PARAM_UPDATE 1
-+#define IEEE80211_MLE_STA_RECONF_CONTROL_OPERATION_TYPE_ADD_LINK        2
-+#define IEEE80211_MLE_STA_RECONF_CONTROL_OPERATION_TYPE_DEL_LINK        3
-+#define IEEE80211_MLE_STA_RECONF_CONTROL_OPERATION_TYPE_NSTR_STATUS     4
-+#define IEEE80211_MLE_STA_RECONF_CONTROL_OPERATION_PARAMS_PRESENT       0x0800
+ 		if (!req.links[req.link_id].bss) {
+ 			err = -EINVAL;
+@@ -11328,9 +11333,6 @@ static int nl80211_associate(struct sk_buff *skb, struct genl_info *info)
+ 			err = -EINVAL;
+ 			goto free;
+ 		}
+-
+-		kfree(attrs);
+-		attrs = NULL;
+ 	} else {
+ 		if (req.link_id >= 0)
+ 			return -EINVAL;
+@@ -11390,7 +11392,6 @@ static int nl80211_associate(struct sk_buff *skb, struct genl_info *info)
+ 	for (link_id = 0; link_id < ARRAY_SIZE(req.links); link_id++)
+ 		cfg80211_put_bss(&rdev->wiphy, req.links[link_id].bss);
+ 	cfg80211_put_bss(&rdev->wiphy, req.bss);
+-	kfree(attrs);
  
- /**
-  * ieee80211_mle_reconf_sta_prof_size_ok - validate reconfiguration multi-link
+ 	return err;
+ }
 -- 
 2.34.1
 
