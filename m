@@ -1,137 +1,155 @@
-Return-Path: <linux-wireless+bounces-16907-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16916-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AE3A9FEA54
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Dec 2024 20:26:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC4789FEA66
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Dec 2024 20:42:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11B9818835C1
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Dec 2024 19:26:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97AFE1882B03
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Dec 2024 19:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D93CC191F88;
-	Mon, 30 Dec 2024 19:26:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AEDF19CC20;
+	Mon, 30 Dec 2024 19:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="bgUDk4ok"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="CW77xFYf"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD85EAD0
-	for <linux-wireless@vger.kernel.org>; Mon, 30 Dec 2024 19:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14500EAD0
+	for <linux-wireless@vger.kernel.org>; Mon, 30 Dec 2024 19:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735586784; cv=none; b=EGTxa3ahZ2M4RgHZnPOUN91L/uTAokI8/IbjeebRQnH3E+7WhbyJ7q5rcxg9Z3FQMPp19pEGnQx+8EsdHP1tnND4no7UPyEqhnttQdusLQlfRyymzvrhsIkCr47PN8qwKBeElo7wd7niGaAaUzneJmWAwKmNftR2hc0L9Vv3j2o=
+	t=1735587734; cv=none; b=AJJj5++C0hz3Ivb8mkyN/yp9TWFK/GfZitGF+gXfIEVvHUKxU964EtXdiXYNd0WdGklthlF8/K97g7axgf2aiY9FT5qQGjoxnH4DjqZ/wwd6FD1QjakK09ggMssx6yJ6PSn6rqVrTZWEype9CiZMjWS+RK8kXTeNG+hGd1A87Ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735586784; c=relaxed/simple;
-	bh=3E2YWKkd9uaBCMhIzlgDN21dOXXKTEJWo7ufyWWd9v8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jDfxvCSc5cUcttUPwWJLppyQ+JLVyvrQelW6Hxi6N9xlJTsvIYA0yWsD5+44WoGU+/9W3qPNFhy+jdgMaiuEevto7roClxBjtKg5r0PwGhkeiFRAsBXO63AicoBzGPWAHea4En4ZMmaaJxOu2nmcr+kqh59ad0KrBmUKsqM4Hes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=bgUDk4ok; arc=none smtp.client-ip=46.4.11.11
+	s=arc-20240116; t=1735587734; c=relaxed/simple;
+	bh=cfF00UFwyD87wBF6ebvJtSDP17fno48kUalaR2qkYGw=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=vGY0z7L3qy1MzkrjzJ8MrYwF+N5fO9JufVAouIW8/DzKCn9WWLfzjRQJVOMmuMz0Shmn7KSmEjpeEM4q57JS737Z+Gn9YwrEQWbd3yCHkRS3e8mgDU3y4CP1sL/GmFMKk3gW7X69nTIrrLF1bTUPjJFkvuN205lcRFiSUl/e23g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=CW77xFYf; arc=none smtp.client-ip=46.4.11.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=uvDeDR9Oa70KelI0kN2Nd7YiH226dpawgt4F8xNVEXc=; b=bgUDk4okfWHD2WCrHdBvM6GV0b
-	WbuZ7TyM6QWA8yPr7UO8sUOBOdogfTF2mA/G3A6+byxX8W1KN+jHsi3N6EVoFrlR0JNFt/b9E9+w7
-	KgIC7R6Qim+i4zkXzSykmkB0rf0IyrTtr17ZGb3cBhhn32UB19EGPUvZhCLn1pq5WSRk=;
-Received: from p4ff13c5f.dip0.t-ipconnect.de ([79.241.60.95] helo=nf.local)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	s=20160729; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
+	To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=cwvSys7HlITzva1LpN8DG4b5Si8Q/BfcxICPb5nPogI=; b=CW77xFYfWjDg/5w3vfCwLJCBHs
+	f5DZ6COd8VZO7mm7AuC3p1M4+m/6gASQsedWQhjQNB9SeyFFO2Q6XvmqYW3e4WszZChUW2iZO/azo
+	7RsH2fAc2gk3nWt4PYq09WK3VQHp7fb4VRcLSjzqMw1tm/NLOgd4boUR3bgkvT8k96tA=;
+Received: from p4ff13c5f.dip0.t-ipconnect.de ([79.241.60.95] helo=Maecks.lan)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
 	(Exim 4.96)
 	(envelope-from <nbd@nbd.name>)
-	id 1tSL4s-00GKGy-24;
-	Mon, 30 Dec 2024 20:05:22 +0100
-Message-ID: <0ec8b1bd-6bd8-49e9-86c1-33ba36709331@nbd.name>
-Date: Mon, 30 Dec 2024 20:05:20 +0100
+	id 1tSLeT-00GKzc-0m
+	for linux-wireless@vger.kernel.org;
+	Mon, 30 Dec 2024 20:42:09 +0100
+From: Felix Fietkau <nbd@nbd.name>
+To: linux-wireless@vger.kernel.org
+Subject: [PATCH 01/14] wifi: mt76: remove mt76_calculate_default_rate()
+Date: Mon, 30 Dec 2024 20:41:49 +0100
+Message-ID: <20241230194202.95065-1-nbd@nbd.name>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] wifi: mt76: mt7921: avoid undesired changes of the preset
- regulatory domain
-To: Mingyen Hsieh <mingyen.hsieh@mediatek.com>, lorenzo@kernel.org
-Cc: deren.wu@mediatek.com, Sean.Wang@mediatek.com, Soul.Huang@mediatek.com,
- Leon.Yen@mediatek.com, Eric-SY.Chang@mediatek.com, km.lin@mediatek.com,
- robin.chiu@mediatek.com, ch.yeh@mediatek.com, posh.sun@mediatek.com,
- Quan.Zhou@mediatek.com, Ryder.Lee@mediatek.com, Shayne.Chen@mediatek.com,
- linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org
-References: <20240412085357.13756-1-mingyen.hsieh@mediatek.com>
-Content-Language: en-US
-From: Felix Fietkau <nbd@nbd.name>
-Autocrypt: addr=nbd@nbd.name; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
- cL98efvrjdstUfTCP2pfetyN
-In-Reply-To: <20240412085357.13756-1-mingyen.hsieh@mediatek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 12.04.24 10:53, Mingyen Hsieh wrote:
-> From: Leon Yen <leon.yen@mediatek.com>
-> 
-> Some countries have strict RF restrictions where changing the regulatory
-> domain dynamically based on the connected AP is not acceptable.
-> This patch disables Beacon country IE hinting when a valid country code
-> is set from usersland (e.g., by system using iw or CRDA).
-> 
-> Signed-off-by: Leon Yen <leon.yen@mediatek.com>
-> Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-> ---
->   drivers/net/wireless/mediatek/mt76/mt7921/init.c | 7 +++++++
->   1 file changed, 7 insertions(+)
-> 
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> index ef0c721d26e3..3c9a5fcd6924 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-> @@ -135,6 +135,13 @@ mt7921_regd_notifier(struct wiphy *wiphy,
->   	dev->mt76.region = request->dfs_region;
->   	dev->country_ie_env = request->country_ie_env;
->   
-> +	if (request->initiator == NL80211_REGDOM_SET_BY_USER) {
-> +		if (dev->mt76.alpha2[0] == '0' && dev->mt76.alpha2[1] == '0')
-> +			wiphy->regulatory_flags &= ~REGULATORY_COUNTRY_IE_IGNORE;
-> +		else
-> +			wiphy->regulatory_flags |= REGULATORY_COUNTRY_IE_IGNORE;
-> +	}
-> +
+It is only used in mt76_connac2_mac_tx_rate_val, inline it there.
 
-Sorry for the late response, I just noticed that I completely forgot to 
-review this one.
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+---
+ drivers/net/wireless/mediatek/mt76/mac80211.c | 24 -------------------
+ drivers/net/wireless/mediatek/mt76/mt76.h     |  2 --
+ .../wireless/mediatek/mt76/mt76_connac_mac.c  | 14 ++++++++++-
+ 3 files changed, 13 insertions(+), 27 deletions(-)
 
-In principle, it makes sense to me to ignore the country IE in this 
-case, however I don't understand why the change is done in the mt7921 
-driver. Isn't this a generic issue that should be consistent across 
-drivers and thus better handled in mac80211?
+diff --git a/drivers/net/wireless/mediatek/mt76/mac80211.c b/drivers/net/wireless/mediatek/mt76/mac80211.c
+index 7fbce5e757df..57c7b681645a 100644
+--- a/drivers/net/wireless/mediatek/mt76/mac80211.c
++++ b/drivers/net/wireless/mediatek/mt76/mac80211.c
+@@ -1808,30 +1808,6 @@ mt76_init_queue(struct mt76_dev *dev, int qid, int idx, int n_desc,
+ }
+ EXPORT_SYMBOL_GPL(mt76_init_queue);
+ 
+-u16 mt76_calculate_default_rate(struct mt76_phy *phy,
+-				struct ieee80211_vif *vif, int rateidx)
+-{
+-	struct mt76_vif *mvif = (struct mt76_vif *)vif->drv_priv;
+-	struct cfg80211_chan_def *chandef = mvif->ctx ?
+-					    &mvif->ctx->def :
+-					    &phy->chandef;
+-	int offset = 0;
+-
+-	if (chandef->chan->band != NL80211_BAND_2GHZ)
+-		offset = 4;
+-
+-	/* pick the lowest rate for hidden nodes */
+-	if (rateidx < 0)
+-		rateidx = 0;
+-
+-	rateidx += offset;
+-	if (rateidx >= ARRAY_SIZE(mt76_rates))
+-		rateidx = offset;
+-
+-	return mt76_rates[rateidx].hw_value;
+-}
+-EXPORT_SYMBOL_GPL(mt76_calculate_default_rate);
+-
+ void mt76_ethtool_worker(struct mt76_ethtool_worker_info *wi,
+ 			 struct mt76_sta_stats *stats, bool eht)
+ {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 599123967af6..3bc591c14b65 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -1192,8 +1192,6 @@ int mt76_get_of_data_from_nvmem(struct mt76_dev *dev, void *eep,
+ struct mt76_queue *
+ mt76_init_queue(struct mt76_dev *dev, int qid, int idx, int n_desc,
+ 		int ring_base, void *wed, u32 flags);
+-u16 mt76_calculate_default_rate(struct mt76_phy *phy,
+-				struct ieee80211_vif *vif, int rateidx);
+ static inline int mt76_init_tx_queue(struct mt76_phy *phy, int qid, int idx,
+ 				     int n_desc, int ring_base, void *wed,
+ 				     u32 flags)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+index a3db65254e37..a72551ba27e4 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+@@ -299,6 +299,7 @@ u16 mt76_connac2_mac_tx_rate_val(struct mt76_phy *mphy,
+ 					    &mvif->ctx->def : &mphy->chandef;
+ 	u8 nss = 0, mode = 0, band = chandef->chan->band;
+ 	int rateidx = 0, mcast_rate;
++	int offset = 0;
+ 
+ 	if (!vif)
+ 		goto legacy;
+@@ -330,7 +331,18 @@ u16 mt76_connac2_mac_tx_rate_val(struct mt76_phy *mphy,
+ 		rateidx = ffs(vif->bss_conf.basic_rates) - 1;
+ 
+ legacy:
+-	rateidx = mt76_calculate_default_rate(mphy, vif, rateidx);
++	if (band != NL80211_BAND_2GHZ)
++		offset = 4;
++
++	/* pick the lowest rate for hidden nodes */
++	if (rateidx < 0)
++		rateidx = 0;
++
++	rateidx += offset;
++	if (rateidx >= ARRAY_SIZE(mt76_rates))
++		rateidx = offset;
++
++	rateidx = mt76_rates[rateidx].hw_value;
+ 	mode = rateidx >> 8;
+ 	rateidx &= GENMASK(7, 0);
+ out:
+-- 
+2.47.1
 
-Thanks,
-
-- Felix
 
