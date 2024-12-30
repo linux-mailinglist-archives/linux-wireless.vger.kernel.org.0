@@ -1,34 +1,34 @@
-Return-Path: <linux-wireless+bounces-16917-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16919-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B128C9FEA67
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Dec 2024 20:42:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED4CE9FEA69
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Dec 2024 20:42:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A802D1882910
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Dec 2024 19:42:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AB485161E3D
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Dec 2024 19:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88DD19CD0E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E227D198E7B;
 	Mon, 30 Dec 2024 19:42:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="Cg/8cN/L"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="Z97bWBYN"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0B5199239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044DE199948
 	for <linux-wireless@vger.kernel.org>; Mon, 30 Dec 2024 19:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735587734; cv=none; b=bo0YQBq8KXcXf0xzByWGNsu8ze8nSfPpJZi9MFrQLJkRisR68HDwf+tWp6Xzka7Lpl5kAa2OHLuGxXlclbPPZDfcZensIb6AS5MJJZChAfukXK8RAD8k4Zdm4NLjdJj3EqhIDPBjZGfy5jEZX8rerzklJpSU35WfSUTRElnasfI=
+	t=1735587734; cv=none; b=SUAAYCBBP3JrzBMsINH7YFx4gcp7fSL+0IdhcmZu19BuNunQN9yzjY2oNNlbPD0tWndsTej0DtwcPrXVfihcXxnICTWmYa095u1cOpz/0vkygEg9PXD+jO6MuTgQN/1IqON4NGqfKtjj6a3u4htWRu+uisSJMbwGkKicL36eN40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1735587734; c=relaxed/simple;
-	bh=pTf9uhR1HwlZ+soMlkK38UIRVXh9fqs8tsLEkzaLZW8=;
+	bh=NRNR2WIulWgduH6oGAUWLnQZ0jNlinGCTFOnM/6gsCo=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o2QNTAtt04DWrcjOy9C5z3JymR0pftKuHePzYW+WVaBQ24eTGKKyYF5rPFjL9B20EVV167PzK1zRKD5b8+dlG3fIdYt2g9OGS6ctWSWemC3ueNUi+I8oZSyPEECmrpp+ZWXqeG+QiHWbqoKRyCtVvMCGOYv77+KA/tZHtdXYQNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=Cg/8cN/L; arc=none smtp.client-ip=46.4.11.11
+	 MIME-Version; b=rw6vFTVS1fLc8/LnsZAuti1aeFgqnpEJFv33CHPMh2wHJtEtBZNmsz7Sn28M48e5i44TZULwTPDnRnVG6PQXpreJrGLG9auMbh21GWUpxvLHuEkx2u1NMwtKCN7DrnSWBJQ/TQWs2Muh7kMTlgLX9G4AG/nOVSCxBguc0btNq/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=Z97bWBYN; arc=none smtp.client-ip=46.4.11.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
@@ -37,21 +37,21 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=WY6NKapy3IhvOS+IgMFpSYa19SNn9ZBnMgIOk5zBFec=; b=Cg/8cN/LG95eEwmck/Bg7/K37D
-	h9hMxvmdwNWUvq53LAcLqS+ae5KtHLp3BxbB76AsbK3766GXp6RqwuoUBpd8r16DdWiSwaxFge4zH
-	xQePn2aZOj/xUz+WDADqaNPAKYqZYypNNeYIItBDtSNyJOWfb8cgI1BmaEDwP8NfsNf4=;
+	bh=iDAAUn/siem5nM/CSjqTtCJcwHPylgU8TPBYNDc2ViE=; b=Z97bWBYNGfJUn2GCSx+RA2YwM2
+	c7rxiuGJjxdEybncFKoSaC5KZx4EXG9X5dfRn6QJ5NcbwkLy/dDeXI+/co4C5h73OV8HjFKg8fUqk
+	RV3mAxMYirzTj/UG76bVjkM89eQBy3hr3OggtfqYe4lAvLIwsWDBmptZ7jWNRLXAluV4=;
 Received: from p4ff13c5f.dip0.t-ipconnect.de ([79.241.60.95] helo=Maecks.lan)
 	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
 	(Exim 4.96)
 	(envelope-from <nbd@nbd.name>)
-	id 1tSLeV-00GKzc-05
+	id 1tSLeV-00GKzc-0h
 	for linux-wireless@vger.kernel.org;
 	Mon, 30 Dec 2024 20:42:11 +0100
 From: Felix Fietkau <nbd@nbd.name>
 To: linux-wireless@vger.kernel.org
-Subject: [PATCH 10/14] wifi: mt76: mt7915: hold dev->mutex while interacting with the thermal state
-Date: Mon, 30 Dec 2024 20:41:58 +0100
-Message-ID: <20241230194202.95065-10-nbd@nbd.name>
+Subject: [PATCH 11/14] wifi: mt76: mt7915: firmware restart on devices with a second pcie link
+Date: Mon, 30 Dec 2024 20:41:59 +0100
+Message-ID: <20241230194202.95065-11-nbd@nbd.name>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241230194202.95065-1-nbd@nbd.name>
 References: <20241230194202.95065-1-nbd@nbd.name>
@@ -63,48 +63,56 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Avoid issuing MCU calls during a hardware restart
+It seems that the firmware checks the register used for detecting matching
+PCIe links in order to figure out if a secondary PCIe link is enabled.
+Write the register again just before starting the firmware on hw reset,
+in order to fix an issue that left the second band unusable after restart.
 
+Fixes: 9093cfff72e3 ("mt76: mt7915: add support for using a secondary PCIe link for gen1")
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/init.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/mac.c    | 2 ++
+ drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h | 1 +
+ drivers/net/wireless/mediatek/mt76/mt7915/pci.c    | 1 +
+ 3 files changed, 4 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-index 4282857d8ce9..c530435b19b5 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
-@@ -53,7 +53,9 @@ static ssize_t mt7915_thermal_temp_show(struct device *dev,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+index 1b9dcdec142b..9b9158fdd4d9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mac.c
+@@ -1388,6 +1388,8 @@ mt7915_mac_restart(struct mt7915_dev *dev)
+ 	if (dev_is_pci(mdev->dev)) {
+ 		mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0xff);
+ 		if (dev->hif2) {
++			mt76_wr(dev, MT_PCIE_RECOG_ID,
++				dev->hif2->index | MT_PCIE_RECOG_ID_SEM);
+ 			if (is_mt7915(mdev))
+ 				mt76_wr(dev, MT_PCIE1_MAC_INT_ENABLE, 0xff);
+ 			else
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+index ac0b1f0eb27c..5fe872ef2e93 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mt7915.h
+@@ -191,6 +191,7 @@ struct mt7915_hif {
+ 	struct device *dev;
+ 	void __iomem *regs;
+ 	int irq;
++	u32 index;
+ };
  
- 	switch (i) {
- 	case 0:
-+		mutex_lock(&phy->dev->mt76.mutex);
- 		temperature = mt7915_mcu_get_temperature(phy);
-+		mutex_unlock(&phy->dev->mt76.mutex);
- 		if (temperature < 0)
- 			return temperature;
- 		/* display in millidegree celcius */
-@@ -95,9 +97,8 @@ static ssize_t mt7915_thermal_temp_store(struct device *dev,
+ struct mt7915_phy {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/pci.c b/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
+index 39132894e8ea..07b0a5766eab 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/pci.c
+@@ -42,6 +42,7 @@ static struct mt7915_hif *mt7915_pci_get_hif2(u32 idx)
+ 			continue;
+ 
+ 		get_device(hif->dev);
++		hif->index = idx;
+ 		goto out;
  	}
- 
- 	phy->throttle_temp[i - 1] = val;
--	mutex_unlock(&phy->dev->mt76.mutex);
--
- 	ret = mt7915_mcu_set_thermal_protect(phy);
-+	mutex_unlock(&phy->dev->mt76.mutex);
- 	if (ret)
- 		return ret;
- 
-@@ -159,7 +160,9 @@ mt7915_thermal_set_cur_throttle_state(struct thermal_cooling_device *cdev,
- 	 * cooling_device convention: 0 = no cooling, more = more cooling
- 	 * mcu convention: 1 = max cooling, more = less cooling
- 	 */
-+	mutex_lock(&phy->dev->mt76.mutex);
- 	ret = mt7915_mcu_set_thermal_throttling(phy, throttling);
-+	mutex_unlock(&phy->dev->mt76.mutex);
- 	if (ret)
- 		return ret;
- 
+ 	hif = NULL;
 -- 
 2.47.1
 
