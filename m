@@ -1,70 +1,72 @@
-Return-Path: <linux-wireless+bounces-16888-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16889-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EBC79FE27E
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Dec 2024 05:56:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1D279FE27F
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Dec 2024 05:56:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 58FBC1881FFE
-	for <lists+linux-wireless@lfdr.de>; Mon, 30 Dec 2024 04:56:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD0E71881C28
+	for <lists+linux-wireless@lfdr.de>; Mon, 30 Dec 2024 04:56:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2BA217084F;
-	Mon, 30 Dec 2024 04:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927CE1632EF;
+	Mon, 30 Dec 2024 04:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VkosnRDG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hGSoRjMj"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2014A172767
-	for <linux-wireless@vger.kernel.org>; Mon, 30 Dec 2024 04:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EABE4185B76
+	for <linux-wireless@vger.kernel.org>; Mon, 30 Dec 2024 04:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735534577; cv=none; b=hk9HJYI/qtJuX+KjJHj33q6VVuf/brg42nTiJy+n3Ju8v9c58pGKe57sPKhdkA0v0l9DmC9oEmgf+JANjzy6Beg+NbwZqU5cz3rMUGzRoPI0YqzRgCapl11mluR8bfsSlAgoEdpu4p2pYP3IhZszSM1c5N1cLJOmFrD2RGxXxss=
+	t=1735534579; cv=none; b=ttFemlfSXo04dqkNApwBon1mwSz5boczufN18lIXz+uI0jAst1nRvP0g1BB1mj4AOyIe/syoJVTs9jT3qNw6NeV1YEV019x/OSOgUxBysNfXSvq6PLIAhVk9muJDoxxx8HOEVRbQnYXDLAN1EqmfTdr0Z/PmQL++Bp5b70QaUMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735534577; c=relaxed/simple;
-	bh=kkcGuKEh2GYRESUCmLuTT08iIN03tijid9pgeJO5T1Y=;
+	s=arc-20240116; t=1735534579; c=relaxed/simple;
+	bh=rusKcqkfOzlDl8iJ0ZFjQpY5Xy7NX6J/IG24+cx1ZMI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pHruZU6MkrwtzpvQlZmCaGCGeRUwr8knc8rtHkGdI//6VSXz5Sgx/jeHQzyPSPsDZ7dGrNa9rmrdtkqbRqZQORCtOkqiVXHMtX3v1slKXDlnDzn7BkZwlsv/2ZN8e1WmA+bITVTD986/GfcbTUprUK61GXTd/DNYHC+M039+N8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VkosnRDG; arc=none smtp.client-ip=192.198.163.11
+	 MIME-Version; b=FUrTnvuNjpvsdcGoKsDzVr7V78eJ1tQld6CFIBh2RgLtLFE+8ZNf3c1PAw+Ip+ws6SttrN7t+uKvQzhjoQqlI+NGMKif8A/o+ezF3yemAaHCUEZcgucf+3qF95J/hQuc4e8vZPmyCh10Nvx01x95/kjkE1XK8VVJjo/A4uG4xHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hGSoRjMj; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1735534576; x=1767070576;
+  t=1735534578; x=1767070578;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=kkcGuKEh2GYRESUCmLuTT08iIN03tijid9pgeJO5T1Y=;
-  b=VkosnRDGnO0EJxANkGURhy5qCoZoupSnkn7AEVqfodZKKvZ2ZqcvxreP
-   e/YFUE+6LqW+i/RWTdXk708TAQ6FdMazTVwJDgqYpmU6kCCKEhdf7ET/3
-   zIuvTrQMG1Bu11yK4fmo6/AIzOIOweMdTgPcT0FgNds2KiS3YMLIfXXD4
-   xStr4Fu4Q9G1fXhnHzmmdtVBlalsdk5ZfYeIEPIczPGr6OOpY21iZh+55
-   +IZCGzGqYHQIRf3wzUxKVL8NVX04gCsJVEwMRAkGjwTHNdTPjUgYwiiRZ
-   mUjHUAo+OoXrOA47k7+GH8GxB5S8We4I+aQv+t/aCC/HcrMhRFSoIJnmH
-   w==;
-X-CSE-ConnectionGUID: AYkWyKgTQLWHwAvSnxwwtw==
-X-CSE-MsgGUID: Kvu1RzBrQ4OKoBwzh4ALZw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11299"; a="46405010"
+  bh=rusKcqkfOzlDl8iJ0ZFjQpY5Xy7NX6J/IG24+cx1ZMI=;
+  b=hGSoRjMjuNg73DDjHvhNtnl64O3zwpmzCY7hyObcocW/YnnIOj28gudP
+   klAjR6eZ/ElubvJSY45LtNw03vgBqW3qiGRfoqdwa7742UZp9o0TNrsG3
+   2cR5uYn8DtrWjE6PBIzQO6/I1Fo6Q/Brgo/bGiSeGfq907ujro1V4hXji
+   RuBbx0OTDqfc9/b3wsW9GB4AF+HRHWyNbVkxGv6IhAkunoYum+FrdyJ5b
+   HrP4FWalRzJIU7zFMOJGxCT/ToxiRBgGyOLwfwBBxaTA0ac/4yPjFLoNJ
+   h4Il39Ubbi0he5BrRIoPwvOglH6+eoJE5Q9r/eOMB2es+jwfOzT8Dkt+U
+   A==;
+X-CSE-ConnectionGUID: OEtJMSn8Ti+UlY2GNz5N2w==
+X-CSE-MsgGUID: /V2pit8mTo64+i0OXGeHvQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11299"; a="46405012"
 X-IronPort-AV: E=Sophos;i="6.12,275,1728975600"; 
-   d="scan'208";a="46405010"
+   d="scan'208";a="46405012"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Dec 2024 20:56:16 -0800
-X-CSE-ConnectionGUID: M3CS+2K4Qv2potfVu3tLoA==
-X-CSE-MsgGUID: TVYdEpDPQeOzpd8hv+udLA==
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Dec 2024 20:56:17 -0800
+X-CSE-ConnectionGUID: 1JriUH5BQuy2A3vhFRXfIg==
+X-CSE-MsgGUID: yqfXCGyGTMud8MFbmyf1TA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="104758884"
+   d="scan'208";a="104758889"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Dec 2024 20:56:14 -0800
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Dec 2024 20:56:15 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 05/15] wifi: mac80211: mlme: improve messages from config_bw()
-Date: Mon, 30 Dec 2024 06:55:44 +0200
-Message-Id: <20241230065327.ee574cf7553b.Ie7c78877d20b5e9de4cce3cf8e4f1b9e0c7ee005@changeid>
+	Johannes Berg <johannes.berg@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Benjamin Berg <benjamin.berg@intel.com>
+Subject: [PATCH 06/15] wifi: cfg80211: scan: skip duplicate RNR entries
+Date: Mon, 30 Dec 2024 06:55:45 +0200
+Message-Id: <20241230065327.b0012c70f503.Id6fcad979434c1437340aa283abae2906345cca1@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241230045554.3746143-1-miriam.rachel.korenblit@intel.com>
 References: <20241230045554.3746143-1-miriam.rachel.korenblit@intel.com>
@@ -79,94 +81,51 @@ Content-Transfer-Encoding: 8bit
 
 From: Johannes Berg <johannes.berg@intel.com>
 
-The ieee80211_config_bw() function is called in different
-contexts: during association with the association response
-and during beacon tracking with the beacon. This can be a
-bit misleading, so disambiguate the messages for those.
+There really shouldn't be duplicate entries when we give
+the list to the driver, and since we already have a list
+it's easy to avoid.
+
+While at it, remove the unnecessary allocation there.
 
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Benjamin Berg <benjamin.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- net/mac80211/mlme.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ net/wireless/scan.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 61c318f5239f..956eb265fe78 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -988,7 +988,8 @@ ieee80211_determine_chan_mode(struct ieee80211_sub_if_data *sdata,
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index d056248c43d2..ec9c071915f3 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -704,7 +704,7 @@ cfg80211_parse_colocated_ap_iter(void *_data, u8 type,
+ 					   bss_params)))
+ 		return RNR_ITER_CONTINUE;
  
- static int ieee80211_config_bw(struct ieee80211_link_data *link,
- 			       struct ieee802_11_elems *elems,
--			       bool update, u64 *changed)
-+			       bool update, u64 *changed,
-+			       const char *frame)
- {
- 	struct ieee80211_channel *channel = link->conf->chanreq.oper.chan;
- 	struct ieee80211_sub_if_data *sdata = link->sdata;
-@@ -1013,9 +1014,10 @@ static int ieee80211_config_bw(struct ieee80211_link_data *link,
+-	entry = kzalloc(sizeof(*entry) + IEEE80211_MAX_SSID_LEN, GFP_ATOMIC);
++	entry = kzalloc(sizeof(*entry), GFP_ATOMIC);
+ 	if (!entry)
+ 		return RNR_ITER_ERROR;
  
- 	if (ap_mode != link->u.mgd.conn.mode) {
- 		link_info(link,
--			  "AP appears to change mode (expected %s, found %s), disconnect\n",
-+			  "AP %pM appears to change mode (expected %s, found %s) in %s, disconnect\n",
-+			  link->u.mgd.bssid,
- 			  ieee80211_conn_mode_str(link->u.mgd.conn.mode),
--			  ieee80211_conn_mode_str(ap_mode));
-+			  ieee80211_conn_mode_str(ap_mode), frame);
- 		return -EINVAL;
- 	}
+@@ -713,6 +713,17 @@ cfg80211_parse_colocated_ap_iter(void *_data, u8 type,
  
-@@ -1060,16 +1062,16 @@ static int ieee80211_config_bw(struct ieee80211_link_data *link,
- 		return 0;
- 
- 	link_info(link,
--		  "AP %pM changed bandwidth, new used config is %d.%03d MHz, width %d (%d.%03d/%d MHz)\n",
--		  link->u.mgd.bssid, chanreq.oper.chan->center_freq,
-+		  "AP %pM changed bandwidth in %s, new used config is %d.%03d MHz, width %d (%d.%03d/%d MHz)\n",
-+		  link->u.mgd.bssid, frame, chanreq.oper.chan->center_freq,
- 		  chanreq.oper.chan->freq_offset, chanreq.oper.width,
- 		  chanreq.oper.center_freq1, chanreq.oper.freq1_offset,
- 		  chanreq.oper.center_freq2);
- 
- 	if (!cfg80211_chandef_valid(&chanreq.oper)) {
- 		sdata_info(sdata,
--			   "AP %pM changed caps/bw in a way we can't support - disconnect\n",
--			   link->u.mgd.bssid);
-+			   "AP %pM changed caps/bw in %s in a way we can't support - disconnect\n",
-+			   link->u.mgd.bssid, frame);
- 		return -EINVAL;
- 	}
- 
-@@ -1098,8 +1100,8 @@ static int ieee80211_config_bw(struct ieee80211_link_data *link,
- 	ret = ieee80211_link_change_chanreq(link, &chanreq, changed);
- 	if (ret) {
- 		sdata_info(sdata,
--			   "AP %pM changed bandwidth to incompatible one - disconnect\n",
--			   link->u.mgd.bssid);
-+			   "AP %pM changed bandwidth in %s to incompatible one - disconnect\n",
-+			   link->u.mgd.bssid, frame);
- 		return ret;
- 	}
- 
-@@ -4898,7 +4900,7 @@ static bool ieee80211_assoc_config_link(struct ieee80211_link_data *link,
- 	/* check/update if AP changed anything in assoc response vs. scan */
- 	if (ieee80211_config_bw(link, elems,
- 				link_id == assoc_data->assoc_link_id,
--				changed)) {
-+				changed, "assoc response")) {
- 		ret = false;
- 		goto out;
- 	}
-@@ -7056,7 +7058,7 @@ static void ieee80211_rx_mgmt_beacon(struct ieee80211_link_data *link,
- 
- 	changed |= ieee80211_recalc_twt_req(sdata, sband, link, link_sta, elems);
- 
--	if (ieee80211_config_bw(link, elems, true, &changed)) {
-+	if (ieee80211_config_bw(link, elems, true, &changed, "beacon")) {
- 		ieee80211_set_disassoc(sdata, IEEE80211_STYPE_DEAUTH,
- 				       WLAN_REASON_DEAUTH_LEAVING,
- 				       true, deauth_buf);
+ 	if (!cfg80211_parse_ap_info(entry, tbtt_info, tbtt_info_len,
+ 				    data->ssid_elem, data->s_ssid_tmp)) {
++		struct cfg80211_colocated_ap *tmp;
++
++		/* Don't add duplicate BSSIDs on the same channel. */
++		list_for_each_entry(tmp, &data->ap_list, list) {
++			if (ether_addr_equal(tmp->bssid, entry->bssid) &&
++			    tmp->center_freq == entry->center_freq) {
++				kfree(entry);
++				return RNR_ITER_CONTINUE;
++			}
++		}
++
+ 		data->n_coloc++;
+ 		list_add_tail(&entry->list, &data->ap_list);
+ 	} else {
 -- 
 2.34.1
 
