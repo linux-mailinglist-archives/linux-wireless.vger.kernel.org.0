@@ -1,497 +1,142 @@
-Return-Path: <linux-wireless+bounces-16931-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16932-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EA6C9FED29
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Dec 2024 07:10:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36E1C9FEF37
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Dec 2024 12:59:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62BE83A2ADC
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Dec 2024 06:10:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32D0E1882BD7
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Dec 2024 11:59:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D421547CC;
-	Tue, 31 Dec 2024 06:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B6EF195962;
+	Tue, 31 Dec 2024 11:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="Wq3Ey6dm"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eyyiXkp6"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7A7186E27
-	for <linux-wireless@vger.kernel.org>; Tue, 31 Dec 2024 06:10:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A57217ADE8
+	for <linux-wireless@vger.kernel.org>; Tue, 31 Dec 2024 11:59:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735625445; cv=none; b=tN+6H2KzlhZYRKtXjfg0ekEGNqFP+GvM7btNi8piNsOlDKlYPdJ6mhIAIls6K3ItJWuawxwDj6jmrrJkygM7KUPT62QPmgC9AUoAW/5BI2OyAy7UewbJXg4QCmQTe08ogLvV1xEl6ngKmiUAssSPQjCAIlg/A3HyFRXBQW+ouxI=
+	t=1735646372; cv=none; b=JqiponD6LD/OWA1RdVK5Roi7u6QVkyRp/zmGubPsBQG/IJL31aEe1noOk8dINREuDPO1v4PuYPeSKmlka+9E0BwkUILmvOXK4JVx81mtmYSfUm4Wo4Dluz3+s4IzNyFOcEOlo6sE3+7Gh/7yLOJo/SrqWhoXYm40VYkCuUjYMVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735625445; c=relaxed/simple;
-	bh=uarY7k24i3beKhpqNjEo8HAWez0t12KHd+9zBRBnt/U=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qI1jMejdoly8s6sDpYfQXoaUyIsOJ/qIt6LRydww+pmb/sI07akENisZk+DbxJY9dTcCL6Vjxe6XZPmsZinf7BnTg6fBPvwayr9MDyt3SNn4EzJTBeTfUW9hZZx7DgQ2Mu5pki1EnX2GylI/nzXoZD7tbZKO01IIBrO6dRidz0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=Wq3Ey6dm; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 4BV6AeCD21173393, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1735625440; bh=uarY7k24i3beKhpqNjEo8HAWez0t12KHd+9zBRBnt/U=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=Wq3Ey6dmiTCruVzvETjF0QL2NKQFaZ816fCbui5qYFtqIG3qhzchl7Xaa3RSBDccz
-	 TuhbFN3LtHM3rIcJ0leRf8oaA1xj0/F4i2HbPdfaLub3SoAj/lgVSqY2Oe2HIgTMVG
-	 asyMqyj/a3f86fLIG1uJ9FuX0HCqydBd3PBIjqh9SyRgmKr2blPWnAvTKr1EiksNZe
-	 vlB9jd+Yra3UFD1TIsnC16wUWLqxed+2r2OcUoaAI1T7X7mPC9Z3j/aBx+j4MVprjR
-	 b6xumb7OzbLoiT/r2vIs02v6UyznDgy5QRHOk+cDXcSZMBdBIeczhL1DX+7Q4nPDxL
-	 AwklRbH9eXq9Q==
-Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 4BV6AeCD21173393
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Tue, 31 Dec 2024 14:10:40 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 31 Dec 2024 14:10:40 +0800
-Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
- (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 31 Dec
- 2024 14:10:40 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: <linux-wireless@vger.kernel.org>
-Subject: [PATCH 2/2] wifi: rtw89: 8922ae: add variant info to support RTL8922AE-VS
-Date: Tue, 31 Dec 2024 14:09:56 +0800
-Message-ID: <20241231060956.41314-3-pkshih@realtek.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20241231060956.41314-1-pkshih@realtek.com>
-References: <20241231060956.41314-1-pkshih@realtek.com>
+	s=arc-20240116; t=1735646372; c=relaxed/simple;
+	bh=Gz+9sI3M+woGuLBoxrWM4remiLMXlWML2GprX0PE9oM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Pwr55IYq0EGRZAo5ofsuvIYrO0QpFiTdqBf0Z+cmbG1dpg8f6h8Nz/f2o29oimV8w1ScVeAa1YXwmIh7U+vgsUD4LwQZeWUWsmYR6kLFIXlqtSOyRY8uYJR+TK3mwW11YBAUWYRXZuDXrq5LRB3USWJtIOxgPMpgg1EcT1IvUoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eyyiXkp6; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1735646370; x=1767182370;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Gz+9sI3M+woGuLBoxrWM4remiLMXlWML2GprX0PE9oM=;
+  b=eyyiXkp6H37o7utg6Q2P4J38M6NzQJ3aApNUb7MKcfWhLxhBMLobSYbn
+   2urtGiYhpIzCB4/nq+FKsq1El6IOwAGks8MnEslTJldF6MegSGztcV06R
+   OLRELNulhl3qVSPnwkC4fMiJtLzYUGttuih4tg84AzytW14CM98ZXakWl
+   oxU08FctsRtJ0Yrr9rM9fioXPtx60QJqNpdpSUU+JzkTMidXk5Vu4GjN5
+   ux2jVEopmI5igxy6jxQPKdKu0yfYtw1rPxTzxE34/+AMAk8zzVBGLSOIK
+   tmnty1HF3utnooHNvs1YHqzrx/tsC42BPfW+AS5tte10hfcqLoLDbTl1t
+   g==;
+X-CSE-ConnectionGUID: b2jqvnO+R7WOoroVcOcLEg==
+X-CSE-MsgGUID: 6BWjJ2TSR8+4Q94LhyeFbQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11302"; a="53330150"
+X-IronPort-AV: E=Sophos;i="6.12,279,1728975600"; 
+   d="scan'208";a="53330150"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Dec 2024 03:59:29 -0800
+X-CSE-ConnectionGUID: 39hjWb7+S6q1S90YP9b/HQ==
+X-CSE-MsgGUID: JdDxoUibTIijR2+0O8VLrw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="138380247"
+Received: from weis0040.iil.intel.com ([10.12.217.108])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Dec 2024 03:59:29 -0800
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+To: johannes@sipsolutions.net
+Cc: linux-wireless@vger.kernel.org
+Subject: [PATCH 00/15] wifi: iwlwifi: updates - 31-12-24
+Date: Tue, 31 Dec 2024 13:59:00 +0200
+Message-Id: <20241231115915.1082656-1-miriam.rachel.korenblit@intel.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: RTEXMBS02.realtek.com.tw (172.21.6.95) To
- RTEXMBS04.realtek.com.tw (172.21.6.97)
 
-RTL8922AE-VS is a variant of RTL8922AE, which is supported by firmware
-version after 0.35.54.0 and only can support up to MCS11. Add a variant
-struct to describe these requirements accordingly.
+Hi,
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
----
- drivers/net/wireless/realtek/rtw89/Kconfig    |  6 +++--
- drivers/net/wireless/realtek/rtw89/core.c     | 18 +++++++++----
- drivers/net/wireless/realtek/rtw89/core.h     | 12 ++++++++-
- drivers/net/wireless/realtek/rtw89/fw.c       | 25 +++++++++++++++++++
- drivers/net/wireless/realtek/rtw89/mac.c      |  9 ++++++-
- drivers/net/wireless/realtek/rtw89/pci.c      |  2 +-
- drivers/net/wireless/realtek/rtw89/phy.c      | 10 +++++++-
- drivers/net/wireless/realtek/rtw89/phy.h      |  4 +++
- .../net/wireless/realtek/rtw89/rtw8851be.c    |  1 +
- .../net/wireless/realtek/rtw89/rtw8852ae.c    |  1 +
- .../net/wireless/realtek/rtw89/rtw8852be.c    |  1 +
- .../net/wireless/realtek/rtw89/rtw8852bte.c   |  1 +
- .../net/wireless/realtek/rtw89/rtw8852ce.c    |  1 +
- drivers/net/wireless/realtek/rtw89/rtw8922a.c |  6 +++++
- drivers/net/wireless/realtek/rtw89/rtw8922a.h |  1 +
- .../net/wireless/realtek/rtw89/rtw8922ae.c    | 16 +++++++++++-
- 16 files changed, 102 insertions(+), 12 deletions(-)
+A few features, cleanups and bugfixes from our internal tree.
 
-diff --git a/drivers/net/wireless/realtek/rtw89/Kconfig b/drivers/net/wireless/realtek/rtw89/Kconfig
-index d2a3361669d7..b1c86cdd9c0e 100644
---- a/drivers/net/wireless/realtek/rtw89/Kconfig
-+++ b/drivers/net/wireless/realtek/rtw89/Kconfig
-@@ -96,17 +96,19 @@ config RTW89_8852CE
- 	  802.11ax PCIe wireless network (Wi-Fi 6E) adapter
- 
- config RTW89_8922AE
--	tristate "Realtek 8922AE PCI wireless network (Wi-Fi 7) adapter"
-+	tristate "Realtek 8922AE/8922AE-VS PCI wireless network (Wi-Fi 7) adapter"
- 	depends on PCI
- 	select RTW89_CORE
- 	select RTW89_PCI
- 	select RTW89_8922A
- 	help
--	  Select this option will enable support for 8922AE chipset
-+	  Select this option will enable support for 8922AE/8922AE-VS chipset
- 
- 	  802.11be PCIe wireless network (Wi-Fi 7) adapter
- 	  supporting 2x2 2GHz/5GHz/6GHz 4096-QAM 160MHz channels.
- 
-+	  The variant 8922AE-VS has the same features except 1024-QAM.
-+
- config RTW89_DEBUG
- 	bool
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
-index f848185e2ced..80b7b7cc5983 100644
---- a/drivers/net/wireless/realtek/rtw89/core.c
-+++ b/drivers/net/wireless/realtek/rtw89/core.c
-@@ -4228,13 +4228,17 @@ static void rtw89_init_eht_cap(struct rtw89_dev *rtwdev,
- 	struct ieee80211_eht_mcs_nss_supp *eht_nss;
- 	struct ieee80211_sta_eht_cap *eht_cap;
- 	struct rtw89_hal *hal = &rtwdev->hal;
-+	bool support_mcs_12_13 = true;
- 	bool support_320mhz = false;
-+	u8 val, val_mcs13;
- 	int sts = 8;
--	u8 val;
- 
- 	if (chip->chip_gen == RTW89_CHIP_AX)
- 		return;
- 
-+	if (hal->no_mcs_12_13)
-+		support_mcs_12_13 = false;
-+
- 	if (band == NL80211_BAND_6GHZ &&
- 	    chip->support_bandwidths & BIT(NL80211_CHAN_WIDTH_320))
- 		support_320mhz = true;
-@@ -4292,16 +4296,18 @@ static void rtw89_init_eht_cap(struct rtw89_dev *rtwdev,
- 
- 	val = u8_encode_bits(hal->rx_nss, IEEE80211_EHT_MCS_NSS_RX) |
- 	      u8_encode_bits(hal->tx_nss, IEEE80211_EHT_MCS_NSS_TX);
-+	val_mcs13 = support_mcs_12_13 ? val : 0;
-+
- 	eht_nss->bw._80.rx_tx_mcs9_max_nss = val;
- 	eht_nss->bw._80.rx_tx_mcs11_max_nss = val;
--	eht_nss->bw._80.rx_tx_mcs13_max_nss = val;
-+	eht_nss->bw._80.rx_tx_mcs13_max_nss = val_mcs13;
- 	eht_nss->bw._160.rx_tx_mcs9_max_nss = val;
- 	eht_nss->bw._160.rx_tx_mcs11_max_nss = val;
--	eht_nss->bw._160.rx_tx_mcs13_max_nss = val;
-+	eht_nss->bw._160.rx_tx_mcs13_max_nss = val_mcs13;
- 	if (support_320mhz) {
- 		eht_nss->bw._320.rx_tx_mcs9_max_nss = val;
- 		eht_nss->bw._320.rx_tx_mcs11_max_nss = val;
--		eht_nss->bw._320.rx_tx_mcs13_max_nss = val;
-+		eht_nss->bw._320.rx_tx_mcs13_max_nss = val_mcs13;
- 	}
- }
- 
-@@ -5336,7 +5342,8 @@ EXPORT_SYMBOL(rtw89_core_unregister);
- 
- struct rtw89_dev *rtw89_alloc_ieee80211_hw(struct device *device,
- 					   u32 bus_data_size,
--					   const struct rtw89_chip_info *chip)
-+					   const struct rtw89_chip_info *chip,
-+					   const struct rtw89_chip_variant *variant)
- {
- 	struct rtw89_fw_info early_fw = {};
- 	const struct firmware *firmware;
-@@ -5394,6 +5401,7 @@ struct rtw89_dev *rtw89_alloc_ieee80211_hw(struct device *device,
- 	rtwdev->dev = device;
- 	rtwdev->ops = ops;
- 	rtwdev->chip = chip;
-+	rtwdev->variant = variant;
- 	rtwdev->fw.req.firmware = firmware;
- 	rtwdev->fw.fw_format = fw_format;
- 	rtwdev->support_mlo = support_mlo;
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 5b086ab36a3c..be642d5c6f72 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -4364,12 +4364,18 @@ struct rtw89_chip_info {
- 	const struct rtw89_xtal_info *xtal_info;
- };
- 
-+struct rtw89_chip_variant {
-+	bool no_mcs_12_13: 1;
-+	u32 fw_min_ver_code;
-+};
-+
- union rtw89_bus_info {
- 	const struct rtw89_pci_info *pci;
- };
- 
- struct rtw89_driver_info {
- 	const struct rtw89_chip_info *chip;
-+	const struct rtw89_chip_variant *variant;
- 	const struct dmi_system_id *quirks;
- 	union rtw89_bus_info bus;
- };
-@@ -4744,6 +4750,8 @@ struct rtw89_hal {
- 	bool ant_diversity_fixed;
- 	bool support_cckpd;
- 	bool support_igi;
-+	bool no_mcs_12_13;
-+
- 	atomic_t roc_chanctx_idx;
- 
- 	DECLARE_BITMAP(changes, NUM_OF_RTW89_CHANCTX_CHANGES);
-@@ -5602,6 +5610,7 @@ struct rtw89_dev {
- 	enum rtw89_mlo_dbcc_mode mlo_dbcc_mode;
- 	struct rtw89_hw_scan_info scan_info;
- 	const struct rtw89_chip_info *chip;
-+	const struct rtw89_chip_variant *variant;
- 	const struct rtw89_pci_info *pci_info;
- 	const struct rtw89_rfe_parms *rfe_parms;
- 	struct rtw89_hal hal;
-@@ -7037,7 +7046,8 @@ int rtw89_core_register(struct rtw89_dev *rtwdev);
- void rtw89_core_unregister(struct rtw89_dev *rtwdev);
- struct rtw89_dev *rtw89_alloc_ieee80211_hw(struct device *device,
- 					   u32 bus_data_size,
--					   const struct rtw89_chip_info *chip);
-+					   const struct rtw89_chip_info *chip,
-+					   const struct rtw89_chip_variant *variant);
- void rtw89_free_ieee80211_hw(struct rtw89_dev *rtwdev);
- u8 rtw89_acquire_mac_id(struct rtw89_dev *rtwdev);
- void rtw89_release_mac_id(struct rtw89_dev *rtwdev, u8 mac_id);
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 8175191767a3..100448237b16 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -806,6 +806,27 @@ rtw89_early_fw_feature_recognize(struct device *device,
- 	return firmware;
- }
- 
-+static int rtw89_fw_validate_ver_required(struct rtw89_dev *rtwdev)
-+{
-+	const struct rtw89_chip_variant *variant = rtwdev->variant;
-+	const struct rtw89_fw_suit *fw_suit;
-+	u32 suit_ver_code;
-+
-+	if (!variant)
-+		return 0;
-+
-+	fw_suit = rtw89_fw_suit_get(rtwdev, RTW89_FW_NORMAL);
-+	suit_ver_code = RTW89_FW_SUIT_VER_CODE(fw_suit);
-+
-+	if (variant->fw_min_ver_code > suit_ver_code) {
-+		rtw89_err(rtwdev, "minimum required firmware version is 0x%x\n",
-+			  variant->fw_min_ver_code);
-+		return -ENOENT;
-+	}
-+
-+	return 0;
-+}
-+
- int rtw89_fw_recognize(struct rtw89_dev *rtwdev)
- {
- 	const struct rtw89_chip_info *chip = rtwdev->chip;
-@@ -822,6 +843,10 @@ int rtw89_fw_recognize(struct rtw89_dev *rtwdev)
- 		return ret;
- 
- normal_done:
-+	ret = rtw89_fw_validate_ver_required(rtwdev);
-+	if (ret)
-+		return ret;
-+
- 	/* It still works if wowlan firmware isn't existing. */
- 	__rtw89_fw_recognize(rtwdev, RTW89_FW_WOWLAN, false);
- 
-diff --git a/drivers/net/wireless/realtek/rtw89/mac.c b/drivers/net/wireless/realtek/rtw89/mac.c
-index e362214669db..a37c6d525d6f 100644
---- a/drivers/net/wireless/realtek/rtw89/mac.c
-+++ b/drivers/net/wireless/realtek/rtw89/mac.c
-@@ -3001,8 +3001,10 @@ static int rtw89_mac_setup_phycap_part0(struct rtw89_dev *rtwdev)
- 
- static int rtw89_mac_setup_phycap_part1(struct rtw89_dev *rtwdev)
- {
-+	const struct rtw89_chip_variant *variant = rtwdev->variant;
- 	const struct rtw89_c2hreg_phycap *phycap;
- 	struct rtw89_mac_c2h_info c2h_info = {};
-+	struct rtw89_hal *hal = &rtwdev->hal;
- 	u8 qam_raw, qam;
- 	int ret;
- 
-@@ -3025,7 +3027,12 @@ static int rtw89_mac_setup_phycap_part1(struct rtw89_dev *rtwdev)
- 		break;
- 	}
- 
--	rtw89_debug(rtwdev, RTW89_DBG_FW, "phycap qam=%d/%d\n", qam_raw, qam);
-+	if ((variant && variant->no_mcs_12_13) ||
-+	    qam <= RTW89_C2HREG_PHYCAP_P1_W2_QAM_1024)
-+		hal->no_mcs_12_13 = true;
-+
-+	rtw89_debug(rtwdev, RTW89_DBG_FW, "phycap qam=%d/%d no_mcs_12_13=%d\n",
-+		    qam_raw, qam, hal->no_mcs_12_13);
- 
- 	return 0;
- }
-diff --git a/drivers/net/wireless/realtek/rtw89/pci.c b/drivers/net/wireless/realtek/rtw89/pci.c
-index c3a027735d0f..7a34e773e2b6 100644
---- a/drivers/net/wireless/realtek/rtw89/pci.c
-+++ b/drivers/net/wireless/realtek/rtw89/pci.c
-@@ -4410,7 +4410,7 @@ int rtw89_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 
- 	rtwdev = rtw89_alloc_ieee80211_hw(&pdev->dev,
- 					  sizeof(struct rtw89_pci),
--					  info->chip);
-+					  info->chip, info->variant);
- 	if (!rtwdev) {
- 		dev_err(&pdev->dev, "failed to allocate hw\n");
- 		return -ENOMEM;
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index 4e3754fd18fd..c7c05f7fda1d 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -261,6 +261,9 @@ rtw89_ra_mask_he_rates[4] = {RA_MASK_HE_1SS_RATES, RA_MASK_HE_2SS_RATES,
- static const u64
- rtw89_ra_mask_eht_rates[4] = {RA_MASK_EHT_1SS_RATES, RA_MASK_EHT_2SS_RATES,
- 			      RA_MASK_EHT_3SS_RATES, RA_MASK_EHT_4SS_RATES};
-+static const u64
-+rtw89_ra_mask_eht_mcs0_11[4] = {RA_MASK_EHT_1SS_MCS0_11, RA_MASK_EHT_2SS_MCS0_11,
-+				RA_MASK_EHT_3SS_MCS0_11, RA_MASK_EHT_4SS_MCS0_11};
- 
- static void rtw89_phy_ra_gi_ltf(struct rtw89_dev *rtwdev,
- 				struct rtw89_sta_link *rtwsta_link,
-@@ -330,7 +333,12 @@ static void rtw89_phy_ra_sta_update(struct rtw89_dev *rtwdev,
- 	if (link_sta->eht_cap.has_eht) {
- 		mode |= RTW89_RA_MODE_EHT;
- 		ra_mask |= get_eht_ra_mask(link_sta);
--		high_rate_masks = rtw89_ra_mask_eht_rates;
-+
-+		if (rtwdev->hal.no_mcs_12_13)
-+			high_rate_masks = rtw89_ra_mask_eht_mcs0_11;
-+		else
-+			high_rate_masks = rtw89_ra_mask_eht_rates;
-+
- 		rtw89_phy_ra_gi_ltf(rtwdev, rtwsta_link, link_sta,
- 				    chan, &fix_giltf_en, &fix_giltf);
- 	} else if (link_sta->he_cap.has_he) {
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.h b/drivers/net/wireless/realtek/rtw89/phy.h
-index 697ee47fe325..08b635c93ac3 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.h
-+++ b/drivers/net/wireless/realtek/rtw89/phy.h
-@@ -51,6 +51,10 @@
- #define RA_MASK_EHT_2SS_RATES	GENMASK_ULL(43, 28)
- #define RA_MASK_EHT_3SS_RATES	GENMASK_ULL(59, 44)
- #define RA_MASK_EHT_4SS_RATES	GENMASK_ULL(62, 60)
-+#define RA_MASK_EHT_1SS_MCS0_11	GENMASK_ULL(23, 12)
-+#define RA_MASK_EHT_2SS_MCS0_11	GENMASK_ULL(39, 28)
-+#define RA_MASK_EHT_3SS_MCS0_11	GENMASK_ULL(55, 44)
-+#define RA_MASK_EHT_4SS_MCS0_11	GENMASK_ULL(62, 60)
- #define RA_MASK_EHT_RATES	GENMASK_ULL(62, 12)
- 
- #define CFO_TRK_ENABLE_TH (2 << 2)
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8851be.c b/drivers/net/wireless/realtek/rtw89/rtw8851be.c
-index 651cbce1dd7e..56078545289e 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8851be.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8851be.c
-@@ -66,6 +66,7 @@ static const struct rtw89_pci_info rtw8851b_pci_info = {
- 
- static const struct rtw89_driver_info rtw89_8851be_info = {
- 	.chip = &rtw8851b_chip_info,
-+	.variant = NULL,
- 	.quirks = NULL,
- 	.bus = {
- 		.pci = &rtw8851b_pci_info,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852ae.c b/drivers/net/wireless/realtek/rtw89/rtw8852ae.c
-index 701187d69e14..a8c5e6f61c9d 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852ae.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852ae.c
-@@ -64,6 +64,7 @@ static const struct rtw89_pci_info rtw8852a_pci_info = {
- 
- static const struct rtw89_driver_info rtw89_8852ae_info = {
- 	.chip = &rtw8852a_chip_info,
-+	.variant = NULL,
- 	.quirks = NULL,
- 	.bus = {
- 		.pci = &rtw8852a_pci_info,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852be.c b/drivers/net/wireless/realtek/rtw89/rtw8852be.c
-index a13ea1cce4a7..531389c74d1e 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852be.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852be.c
-@@ -66,6 +66,7 @@ static const struct rtw89_pci_info rtw8852b_pci_info = {
- 
- static const struct rtw89_driver_info rtw89_8852be_info = {
- 	.chip = &rtw8852b_chip_info,
-+	.variant = NULL,
- 	.quirks = NULL,
- 	.bus = {
- 		.pci = &rtw8852b_pci_info,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852bte.c b/drivers/net/wireless/realtek/rtw89/rtw8852bte.c
-index d1eebecfcd73..175276467bd1 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852bte.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852bte.c
-@@ -72,6 +72,7 @@ static const struct rtw89_pci_info rtw8852bt_pci_info = {
- 
- static const struct rtw89_driver_info rtw89_8852bte_info = {
- 	.chip = &rtw8852bt_chip_info,
-+	.variant = NULL,
- 	.quirks = NULL,
- 	.bus = {
- 		.pci = &rtw8852bt_pci_info,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852ce.c b/drivers/net/wireless/realtek/rtw89/rtw8852ce.c
-index 1a46878be96b..bfcefd018c0e 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852ce.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852ce.c
-@@ -95,6 +95,7 @@ static const struct dmi_system_id rtw8852c_pci_quirks[] = {
- 
- static const struct rtw89_driver_info rtw89_8852ce_info = {
- 	.chip = &rtw8852c_chip_info,
-+	.variant = NULL,
- 	.quirks = rtw8852c_pci_quirks,
- 	.bus = {
- 		.pci = &rtw8852c_pci_info,
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922a.c b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-index f04cb3b11372..11d66bfceb15 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8922a.c
-@@ -2838,6 +2838,12 @@ const struct rtw89_chip_info rtw8922a_chip_info = {
- };
- EXPORT_SYMBOL(rtw8922a_chip_info);
- 
-+const struct rtw89_chip_variant rtw8922ae_vs_variant = {
-+	.no_mcs_12_13 = true,
-+	.fw_min_ver_code = RTW89_FW_VER_CODE(0, 35, 54, 0),
-+};
-+EXPORT_SYMBOL(rtw8922ae_vs_variant);
-+
- MODULE_FIRMWARE(RTW8922A_MODULE_FIRMWARE);
- MODULE_AUTHOR("Realtek Corporation");
- MODULE_DESCRIPTION("Realtek 802.11be wireless 8922A driver");
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922a.h b/drivers/net/wireless/realtek/rtw89/rtw8922a.h
-index 597317ab6af7..a29cfa5b4291 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8922a.h
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8922a.h
-@@ -69,5 +69,6 @@ struct rtw8922a_efuse {
- } __packed;
- 
- extern const struct rtw89_chip_info rtw8922a_chip_info;
-+extern const struct rtw89_chip_variant rtw8922ae_vs_variant;
- 
- #endif
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8922ae.c b/drivers/net/wireless/realtek/rtw89/rtw8922ae.c
-index edfb1f220af0..f0dd7d5d5038 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8922ae.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8922ae.c
-@@ -70,6 +70,16 @@ static const struct rtw89_pci_info rtw8922a_pci_info = {
- 
- static const struct rtw89_driver_info rtw89_8922ae_info = {
- 	.chip = &rtw8922a_chip_info,
-+	.variant = NULL,
-+	.quirks = NULL,
-+	.bus = {
-+		.pci = &rtw8922a_pci_info,
-+	},
-+};
-+
-+static const struct rtw89_driver_info rtw89_8922ae_vs_info = {
-+	.chip = &rtw8922a_chip_info,
-+	.variant = &rtw8922ae_vs_variant,
- 	.quirks = NULL,
- 	.bus = {
- 		.pci = &rtw8922a_pci_info,
-@@ -81,6 +91,10 @@ static const struct pci_device_id rtw89_8922ae_id_table[] = {
- 		PCI_DEVICE(PCI_VENDOR_ID_REALTEK, 0x8922),
- 		.driver_data = (kernel_ulong_t)&rtw89_8922ae_info,
- 	},
-+	{
-+		PCI_DEVICE(PCI_VENDOR_ID_REALTEK, 0x892B),
-+		.driver_data = (kernel_ulong_t)&rtw89_8922ae_vs_info,
-+	},
- 	{},
- };
- MODULE_DEVICE_TABLE(pci, rtw89_8922ae_id_table);
-@@ -95,5 +109,5 @@ static struct pci_driver rtw89_8922ae_driver = {
- module_pci_driver(rtw89_8922ae_driver);
- 
- MODULE_AUTHOR("Realtek Corporation");
--MODULE_DESCRIPTION("Realtek 802.11be wireless 8922AE driver");
-+MODULE_DESCRIPTION("Realtek 802.11be wireless 8922AE/8922AE-VS driver");
- MODULE_LICENSE("Dual BSD/GPL");
+Thanks,
+Miri
+----
+
+Anjaneyulu (4):
+  wifi: iwlwifi: add WIKO to PPAG approved list
+  wifi: iwlwifi: extend TAS_CONFIG cmd support for v5
+  wifi: iwlwifi: mvm: handle version 3 GET_TAS_STATUS notification
+  wifi: iwlwifi: mvm: remove unused tas_rsp variable
+
+Emmanuel Grumbach (1):
+  wifi: iwlwifi: get the max number of links from the firmware
+
+Johannes Berg (9):
+  wifi: iwlwifi: pcie: check for WiAMT/CSME presence
+  wifi: iwlwifi: implement product reset for TOP errors
+  wifi: iwlwifi: implement reset escalation
+  wifi: iwlwifi: mvm: improve/fix chanctx min_def use logic
+  wifi: iwlwifi: config: unify fw/pnvm MODULE_FIRMWARE
+  wifi: iwlwifi: mvm: support EMLSR on WH/PE
+  wifi: iwlwifi: remove Mr/Ms radio
+  wifi: iwlwifi: pcie: make _iwl_trans_pcie_gen2_stop_device() static
+  wifi: iwlwifi: pcie: make iwl_pcie_d3_complete_suspend() static
+
+Miri Korenblit (1):
+  wifi: iwlwifi: rename iwl_datapath_monitor_notif::mac_id to link_id
+
+ .../net/wireless/intel/iwlwifi/cfg/ax210.c    |  46 +--
+ drivers/net/wireless/intel/iwlwifi/cfg/bz.c   |  31 +-
+ drivers/net/wireless/intel/iwlwifi/cfg/sc.c   |  36 +--
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.c  |  52 ++--
+ drivers/net/wireless/intel/iwlwifi/fw/acpi.h  |  33 ++-
+ .../wireless/intel/iwlwifi/fw/api/datapath.h  |   2 +-
+ .../wireless/intel/iwlwifi/fw/api/nvm-reg.h   |  42 ++-
+ drivers/net/wireless/intel/iwlwifi/fw/file.h  |   1 +
+ drivers/net/wireless/intel/iwlwifi/fw/img.h   |   3 +-
+ .../wireless/intel/iwlwifi/fw/regulatory.c    |  40 +--
+ .../wireless/intel/iwlwifi/fw/regulatory.h    |  29 +-
+ drivers/net/wireless/intel/iwlwifi/fw/uefi.c  |  28 +-
+ .../net/wireless/intel/iwlwifi/iwl-config.h   |   5 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-csr.h  |   2 +-
+ .../net/wireless/intel/iwlwifi/iwl-debug.h    |   3 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-drv.c  |  15 +
+ drivers/net/wireless/intel/iwlwifi/iwl-prph.h |   4 +
+ .../net/wireless/intel/iwlwifi/iwl-trans.c    | 160 ++++++++--
+ .../net/wireless/intel/iwlwifi/iwl-trans.h    |  23 +-
+ .../net/wireless/intel/iwlwifi/mvm/debugfs.c  |   7 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/fw.c   |  93 +++---
+ .../net/wireless/intel/iwlwifi/mvm/mac-ctxt.c |   5 +-
+ .../net/wireless/intel/iwlwifi/mvm/mac80211.c |  44 ++-
+ drivers/net/wireless/intel/iwlwifi/mvm/mvm.h  |  28 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c  |   3 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c |  48 +++
+ .../wireless/intel/iwlwifi/pcie/internal.h    |   6 +-
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c  |   4 +-
+ .../wireless/intel/iwlwifi/pcie/trans-gen2.c  |   5 +-
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   | 273 +++++++++++++++++-
+ 30 files changed, 790 insertions(+), 281 deletions(-)
+
 -- 
-2.25.1
+2.34.1
 
 
