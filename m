@@ -1,192 +1,108 @@
-Return-Path: <linux-wireless+bounces-16948-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16949-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B85F59FF0C9
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Dec 2024 18:00:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84DAB9FF1E2
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Dec 2024 22:47:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59B99162483
-	for <lists+linux-wireless@lfdr.de>; Tue, 31 Dec 2024 17:00:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8605818829BB
+	for <lists+linux-wireless@lfdr.de>; Tue, 31 Dec 2024 21:47:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A603D19AD70;
-	Tue, 31 Dec 2024 17:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C15A51A83E0;
+	Tue, 31 Dec 2024 21:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GC4MTdRj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BIAZrtyf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2477133CFC
-	for <linux-wireless@vger.kernel.org>; Tue, 31 Dec 2024 17:00:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16CEE18871D
+	for <linux-wireless@vger.kernel.org>; Tue, 31 Dec 2024 21:47:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735664455; cv=none; b=Wke2WCGMOnETkWVnExHQC5Ea+OG+dk0iT74U57UR5xs3QKp/IjvnkxZsHya2zlvgFUoJ0EHERRvW6iGGzH7rq6MfERvOzVvHlcKggwfxOYAtIiOlgspuOlO13C1T7p4wxKVyCFrp9cVqinwKWW0YkZj/+e0i089+fQWON60HWuU=
+	t=1735681658; cv=none; b=oN1x4ZQey2IyC0yaR5+8XjJOgFFKyQ15pKnuN82dbnRqMIQU6zoEEFs+sKibT95hI1zCuyxosIAW4raYGT0LCdEqu4mpVWNRXE1kvPeGyJnkglBOlWQVi9fWk7Ia7FF6NbjR7EdXOtbYFGF1HJE+zWu/n8lgcWsb7x5GIvShisc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735664455; c=relaxed/simple;
-	bh=wAx6jU+wiTpUn7XDg7n3yTBDsYxGO4w1hJDUYRU7LQM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=H2nICAFNNNpFZkbrkBjxssNEVT4g8pFEihrrgXTLTWle8FbKcaj4pHdDLWxTXFrTXGOcanFz0m3PVDuM5vH0h7bBz/eaqqOhVr6u09yGKulpQZJE8Xrf8Ml4FbSdnYtGojhpEchoq3KW2syfYF8izn7AcsjlPKofS8JSMYlZjOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GC4MTdRj; arc=none smtp.client-ip=209.85.216.46
+	s=arc-20240116; t=1735681658; c=relaxed/simple;
+	bh=eMOuGzkMREkVWG49W9lq8tYjMA14B0Sf7+VYdzgkigA=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=cu60qcGraNo678LvarTx3IeEjspPsO/aKZbJi8AgGDOpntqo4y8z2TLKsOUmEA5WoXq7PLZN3KQZvzAzuS238yGVvc7JZSR08zbe8bVcJHsO5ctTr7F2gOXMV2lsksBhXA4zwlQ0MF9yrojtxgLVgQSoBVzLUXn1y1Zx+J3bGHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BIAZrtyf; arc=none smtp.client-ip=209.85.218.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2ef87d24c2dso11178848a91.1
-        for <linux-wireless@vger.kernel.org>; Tue, 31 Dec 2024 09:00:53 -0800 (PST)
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-aa6b4cc7270so1472037366b.0
+        for <linux-wireless@vger.kernel.org>; Tue, 31 Dec 2024 13:47:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1735664453; x=1736269253; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HM+euzvcGBU1BG7kciJaDpg3mpYlp/vuYIUydkBefoA=;
-        b=GC4MTdRjJUM9g1Bu5Z6gTQsCM7PWmB5nH4oRJH53bap21z2VjO1OqoRqPxNE1Bbyn9
-         sthCC/sG0UF2xAMXS29k/f0q+97jw3HxdDR6nQzVbJyOM7o9BDlQD85uTx56OMtYHo62
-         uDqG9llUkg+FhlYNbFvCUajG+jAlpne+5yNO2hACbdd7rkfP/DH1PpF6OTXf5zGkFpFo
-         UaJHsMI0C6wfKwx7K7Z1/y659Rw3+ZAUOhurHDOWQNNuJMZVxaUF+dvOXY1kyqDyBy+7
-         r2r/a71L/sse8D/i6q3HwIggGIBpuZRe9vdAW6f1JRmIZkT6cN2nMaoCdku7LpR6fJcx
-         0brw==
+        d=gmail.com; s=20230601; t=1735681655; x=1736286455; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=pjj/zYjd8/OfCiSbvc+u05DecshFCs6NNjQx1IIb0S0=;
+        b=BIAZrtyfsC1V4daLdjnf8ucTz1QbIqX+UX/CK+BsxQNJYvw8yvET8ka9QF9xcHzyuC
+         vxdmBGZmnlfumypTNMxwqyVfZR6qgnnNCbTu76TsA8JkwEzcoQLArREVUK69m4YHitm2
+         xBdYDrAtKCHwpC6kFUN2SuHX708ReImAV8z9yCmDmUpRhvsVPoM3ACAW98MQnM6I5JH1
+         rC2i5mlW0v3ai4mxLyVCAts9uyVilVROiaZckthy21pTFCNZLoe9QBP7C0oXvByTBD6v
+         /CNE+/A9UtnnFThz/IMGWEtF3I/CQ5Z/mjC/dgANRw+4SSjQT3+WsdEmkLYl28Tj8nkw
+         xJpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735664453; x=1736269253;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HM+euzvcGBU1BG7kciJaDpg3mpYlp/vuYIUydkBefoA=;
-        b=KV5MCryLdZFpLqXane8ZQ4ugg2otAwjGSIqjxeo5YXd8e9nmm43poDDnLurmUZGbSI
-         ctMreoGEjlQo28oIGJOAYMat60fUfaqpjMLvuUJiB8xqLn1NBGecIlcxsVlWK5rSDp73
-         yUtFRJ1LTMuOYfCrEvT//PL2lP+iba0hSNVTyXHK0P+D5tFKTvL4w8Yv7IeJbPaqXH0Q
-         ZWvGYvGdbjnFau6hLQUq7kV8fotEHjrBk2XAGsZ0Kg5s9BVvTam+h+bHrMmL7O0wsk2j
-         S8lAOQFcGV78CHOVjLgDvZ8mx51AWoErteBAUfTOj7XPqZQohQNJS99jMEE+JHbm4/W6
-         rdig==
-X-Forwarded-Encrypted: i=1; AJvYcCVZphiiOUd0iia0W1rNNJIkgIr+u3gxsJ2/FYWmBIbLM2o6jw7SzlS5l47aZ3DMttkGCJRkfj8f5fyvyAy2LA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzuahfJsE+eGA53jhOSLqKDsEdx9fXiK9MYwP4J3g9C0rwNkWCV
-	OE14Kngz4NhR/oNmekApyN++NiCU6cFbNkrSdP0U5I33OiCN4sTupAG3HfdDSohMp/Q5yGTEPrC
-	G2akKsZBGPRMhGv5yhNcMpG3UV2U=
-X-Gm-Gg: ASbGncuU3BzhX1ZhJXMlgvu/cFPYFCo0DNO7asUxqOQ3aqYX7aNVbJPpQfUoa90lkFR
-	eArnylg3ChPhfYGBzwiNFnWZ47RCnTcZ6uBI4pA==
-X-Google-Smtp-Source: AGHT+IHsK0loIxnf5jfB1LJLVizfGPYzLnbkhGtyRO72OcRynQCr/lu1bC+jGWYWMXdofzfvp9O4X1WVNqusQS/VUuk=
-X-Received: by 2002:a17:90b:2dc3:b0:2ee:8e75:4ae1 with SMTP id
- 98e67ed59e1d1-2f452e48804mr52143343a91.21.1735664453055; Tue, 31 Dec 2024
- 09:00:53 -0800 (PST)
+        d=1e100.net; s=20230601; t=1735681655; x=1736286455;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pjj/zYjd8/OfCiSbvc+u05DecshFCs6NNjQx1IIb0S0=;
+        b=MJ05jnnNBrQS20gsntX30jx57whte7u5iCz1s6cm8SqGRI0Lu4G6hr+yphIlv2OLXt
+         0HcLuFZ8OvQWwwjgP00GTxbI1uoVDHXsHJJQu6rev9Ulz4fwIkhcX9m8ZJYKKwrjpr7M
+         r/gYFTRXaPNFyOXSXV2XTlj/JSfcwdEkiohqItiwsikQD9IH1sHrw7gegYG77ti5YiHN
+         7LqQzDzS0Tp/cpqjPW67PsVpx0r7xd4RSU3HDXJnY72uosMsmpAinP+Y7zuVVWfsxGaK
+         QvOYrHLt4/UZ7iq6++PCEBOXQmGq9d+zgWWY+GQKUmUSFsslbw/LNnjgTzPKnP/U5PuQ
+         CX3Q==
+X-Gm-Message-State: AOJu0Yyq9447WaS89KPh8RwLHGIB4y8SqnCG4t2jrTFdeeiGw+LTBpXe
+	RZxwAjmQcYOYvF3AjJ3dYeDTNX+S98a9PAm2h0Vffs6URRN7/jXcxntQSYgod+0YuMrH5IuchpI
+	ekA2WmonxHuLVaB/g+lLoPFWymqGWjzvg
+X-Gm-Gg: ASbGncuA0PZaH2uP+eJhCfKZv0mGoMaEoMuIKPr80o/K/AllAFFBm/CfAfBCtINRZqu
+	xG2HbdR+Tr6KK74XDk/YlFJ4iJyC1GduU/92lomLNG4DA+ka+FfRBnwnwXz97cbKzJDbtcMvX
+X-Google-Smtp-Source: AGHT+IG73rjttZogQABMCdNFsFwSGuvlJHVPDu/F8Bu2p6S7A430b3ZKTftfnZQPLWEGN1b3nAvru2ringixUIAP7a0=
+X-Received: by 2002:a05:6402:4403:b0:5d0:d2ed:ebb with SMTP id
+ 4fb4d7f45d1cf-5d81dd83a72mr102550827a12.3.1735681654560; Tue, 31 Dec 2024
+ 13:47:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <6b2fcdb4-f00d-4a17-909d-f92ed0240cbf@broadcom.com>
- <20241206065324.91702-1-renjaya.zenta@formulatrix.com> <1939ae623d0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <CAG17S_Mv=GemEk=7Rwp-vPsi2Lb=2AY8rPQHFHHaNHde2Rq2Rg@mail.gmail.com>
- <1939c554048.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com> <CAG17S_MSHWUxK_PzHJw6zSV+8OMWxK6ip0ROG0nPNmDEcsM05w@mail.gmail.com>
-In-Reply-To: <CAG17S_MSHWUxK_PzHJw6zSV+8OMWxK6ip0ROG0nPNmDEcsM05w@mail.gmail.com>
-From: KeithG <ys3al35l@gmail.com>
-Date: Tue, 31 Dec 2024 11:00:41 -0600
-Message-ID: <CAG17S_MfSSwYtqU9Hm=1ZcC4DdpDA07UN0qm=vOMvOZ6wUwrpQ@mail.gmail.com>
-Subject: Re: brcmfmac: Unexpected brcmf_set_channel: set chanspec 0xd022 fail,
- reason -52 - Part 2
-To: Arend Van Spriel <arend.vanspriel@broadcom.com>
-Cc: Renjaya Raga Zenta <renjaya.zenta@formulatrix.com>, linux-wireless@vger.kernel.org
+From: Mark Baily <mark16829@gmail.com>
+Date: Wed, 1 Jan 2025 08:47:23 +1100
+Message-ID: <CACZGwE92CovpNv5qGefCKeffk+Y0zgqrhgq-pqOmQ8eDmXzA4w@mail.gmail.com>
+Subject: MediaTek MT7922 or similar
+To: linux-wireless@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Dec 6, 2024 at 10:44=E2=80=AFPM KeithG <ys3al35l@gmail.com> wrote:
->
-> On Fri, Dec 6, 2024 at 8:17=E2=80=AFAM Arend Van Spriel
-> <arend.vanspriel@broadcom.com> wrote:
-> >
-> > On December 6, 2024 2:29:06 PM KeithG <ys3al35l@gmail.com> wrote:
-> >
-> > > I built the kernel and got this:
-> > > root@jackrune(rw):~# uname -a
-> > > Linux jackrune 6.6.63-v8+ #3 SMP PREEMPT Tue Dec  3 10:09:16 CST 2024
-> > > aarch64 GNU/Linux
-> > >
-> > > I must've done something wrong, though, as I get this:
-> > > Dec 06 07:08:10 jackrune kernel: ------------[ cut here ]------------
-> > > Dec 06 07:08:10 jackrune kernel: WARNING: CPU: 0 PID: 42 at
-> > > net/wireless/nl80211.c:3822 nl80211_send_chandef+0x188/0x1a0
-> > > [cfg80211]
-> >
-> > The warning originates from here:
-> >
-> > int nl80211_send_chandef(struct sk_buff *msg, const struct
-> > cfg80211_chan_def *chandef)
-> > {
-> >  if (WARN_ON(!cfg80211_chandef_valid(chandef)))
-> >   return -EINVAL;
-> >
-> > Let me know if next round goes better/same/worse.
-> >
-> > Regards,
-> > Arend
-> >
-> >
-> I re-built the kernel clean (w/o the patch) and I get the fail message:
-> Dec 06 22:38:24 jackrune kernel: brcmfmac: brcmf_set_channel: set
-> chanspec 0x100c fail, reason -52
-> Dec 06 22:38:24 jackrune kernel: brcmfmac: brcmf_set_channel: set
-> chanspec 0x100d fail, reason -52
-> Dec 06 22:38:24 jackrune kernel: brcmfmac: brcmf_set_channel: set
-> chanspec 0x100e fail, reason -52
-> Dec 06 22:38:24 jackrune kernel: brcmfmac: brcmf_set_channel: set
-> chanspec 0xd022 fail, reason -52
-> Dec 06 22:38:24 jackrune kernel: brcmfmac: brcmf_set_channel: set
-> chanspec 0xd026 fail, reason -52
-> Dec 06 22:38:24 jackrune kernel: brcmfmac: brcmf_set_channel: set
-> chanspec 0xd02a fail, reason -52
-> Dec 06 22:38:24 jackrune kernel: brcmfmac: brcmf_set_channel: set
-> chanspec 0xd02e fail, reason -52
-> When I re-build with the patch, I get the kernel panic
-> Is there a revised patch?
-> Keith
+Hi,
+I have a Lenovo E14 AMD laptop with Ryzen 5625U processor and Mediatek
+wifi / bluetooth adapter. The kernel module it uses is mt7921e.
 
-With the newest brcmfmax firmware and teh kernel patch to make WPA3
-work on the Pis, I get lost of this in the journal:
-Dec 30 23:20:25 runeaudio kernel: brcmfmac: brcmf_set_channel: set
-chanspec 0xd022 fail, reason -52
-Dec 30 23:20:25 runeaudio kernel: brcmfmac: brcmf_set_channel: set
-chanspec 0xd026 fail, reason -52
-Dec 30 23:20:25 runeaudio kernel: brcmfmac: brcmf_set_channel: set
-chanspec 0xd02a fail, reason -52
-Dec 30 23:20:25 runeaudio kernel: brcmfmac: brcmf_set_channel: set
-chanspec 0xd02e fail, reason -52
-Dec 30 23:20:26 runeaudio kernel: brcmfmac: brcmf_set_channel: set
-chanspec 0xd034 fail, reason -52
-Dec 30 23:20:26 runeaudio kernel: brcmfmac: brcmf_set_channel: set
-chanspec 0xd038 fail, reason -52
-Dec 30 23:20:26 runeaudio kernel: brcmfmac: brcmf_set_channel: set
-chanspec 0xd03c fail, reason -52
-Dec 30 23:20:26 runeaudio kernel: brcmfmac: brcmf_set_channel: set
-chanspec 0xd040 fail, reason -52
-Dec 30 23:20:26 runeaudio kernel: brcmfmac: brcmf_set_channel: set
-chanspec 0xd064 fail, reason -52
-Dec 30 23:20:26 runeaudio kernel: brcmfmac: brcmf_set_channel: set
-chanspec 0xd068 fail, reason -52
-Dec 30 23:20:26 runeaudio kernel: brcmfmac: brcmf_set_channel: set
-chanspec 0xd06c fail, reason -52
-Dec 30 23:20:26 runeaudio kernel: brcmfmac: brcmf_set_channel: set
-chanspec 0xd070 fail, reason -52
-Dec 30 23:20:26 runeaudio kernel: brcmfmac: brcmf_set_channel: set
-chanspec 0xd074 fail, reason -52
-Dec 30 23:20:26 runeaudio kernel: brcmfmac: brcmf_set_channel: set
-chanspec 0xd078 fail, reason -52
-Dec 30 23:20:26 runeaudio kernel: brcmfmac: brcmf_set_channel: set
-chanspec 0xd07c fail, reason -52
-Dec 30 23:20:26 runeaudio kernel: brcmfmac: brcmf_set_channel: set
-chanspec 0xd080 fail, reason -52
-Dec 30 23:20:26 runeaudio kernel: brcmfmac: brcmf_set_channel: set
-chanspec 0xd084 fail, reason -52
-Dec 30 23:20:26 runeaudio kernel: brcmfmac: brcmf_set_channel: set
-chanspec 0xd088 fail, reason -52
-Dec 30 23:20:26 runeaudio kernel: brcmfmac: brcmf_set_channel: set
-chanspec 0xd08c fail, reason -52
-Dec 30 23:20:26 runeaudio kernel: brcmfmac: brcmf_set_channel: set
-chanspec 0xd090 fail, reason -52
+Starting with the 6.11 and including the 6.12  Linux kernel, the
+laptop won't resume from suspend with the bluetooth turned on. If I
+turn bluetooth off, then the laptop resumes OK.
 
-I tried the line in  /etc/modprobe.d/brcmfmac.conf
-brcmfmac feature_disable=3D0x200000
-but do not know what to do with the rest of these. The messages repeat
-over and over and fill the log.
+I have read a handful of other people's online posts with the same problem.
+I am using the Debian Trixie 6.12 kernel but have tested with 6.11 and
+6.12 on Debian bookworm - same issue.
+I am using a fairly recent linux firmware package downloaded from
+kernel.org (like from Dec 2024).
 
-it does not seem to affect the function of the wlan as I can still
-connect to APs
+Just wondering when or if this is likely to be fixed as testing
+upgrading from Debian bookworm (which works fine with the stock 6.1.0
+kernel) to Debian Trixie results in this issue occurring.
+
+Here is a snippet from my laptop's journalctl which seems relevant:
+
+Dec 31 20:45:38 debian kernel: mt7921e 0000:02:00.0: Message 00020007
+(seq 5) timeout
+Dec 31 20:45:38 debian kernel: mt7921e 0000:02:00.0: PM:
+dpm_run_callback(): pci_pm_resume returns -110
+Dec 31 20:45:38 debian kernel: mt7921e 0000:02:00.0: PM: failed to
+resume async: error -110
+
+Thanks
+Mark
 
