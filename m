@@ -1,71 +1,70 @@
-Return-Path: <linux-wireless+bounces-16987-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16988-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6A729FFA62
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jan 2025 15:21:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB8249FFA63
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jan 2025 15:21:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9E163A2BF6
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jan 2025 14:21:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2F413A1096
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jan 2025 14:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 300661B4259;
-	Thu,  2 Jan 2025 14:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1029B1B4F21;
+	Thu,  2 Jan 2025 14:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VdRGoqLr"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mI8rpLfq"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFB31B4245
-	for <linux-wireless@vger.kernel.org>; Thu,  2 Jan 2025 14:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 505101B3948
+	for <linux-wireless@vger.kernel.org>; Thu,  2 Jan 2025 14:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735827640; cv=none; b=MhktVMAqG14owvXQ8wqIc04l0uo5g0yMUSSKEOYMw/pgoy7+D/tskhQAzgSWQRfXDjbmcoT8hjLNXOZaq2xzexZKfR+YT1MwcqNh+HxcgZeZucHBHRBHGYwA1f49A+gdqyy4IAiiE43lbigVTaOFjwvGxS81NFTMAy/Vc4KYk+4=
+	t=1735827641; cv=none; b=fDeCPU4likfj3bmjfBq4ffMtIPtmIZydfSurlQEq7JguZlCuFLtx2vsCKBYP6tSUnrYWFd7RHwzuXwNPkr1R0KqG0ZXsjorU63eGh8wFyS4d32C47MytEIcv/nJ533nG4YB2RVZOEzyf6Rmu1ZQP5nzzajNLeX4EwK8Euz5uBm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735827640; c=relaxed/simple;
-	bh=FdjyHsSsaQOf6iSENrU6HnAqaXiXVLUCn/0aplTnKe8=;
+	s=arc-20240116; t=1735827641; c=relaxed/simple;
+	bh=H3iGrCkmStFfjtjiMU1XNNXU/ht//ydnzW3d9b0r79g=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kHX7lVZdKWm9gHG11zCgD6mc61J4UdSz7ZOvDH677z8yDkByzNhPd9YYAoojREL/l807PwbEcsF6vr42OoLteHhI9/pCyA2p6x88ynacWK7g6cNqr1nm7Bpt12aX0hYtWR8d3Trzb2jzqI4b15PPkHj7QcLzhBWSLLXjaTV+ci0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VdRGoqLr; arc=none smtp.client-ip=192.198.163.9
+	 MIME-Version; b=IzMkyQYzfChlk9XdU52wu/NjgiPipIrJHEotV+ynJxNLyzPRpz2Bxm8mz14WSnsJu+5GqrhYEQXq+F+7O0/aB9hH9tYI8QKQ+E1YqmkBUhFlpCbVKfT3pv0nPxXaVILWKWM/1p/zKEiQDoIKSe0OUrC2nEVyJ/t8h9ukycvy1gU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mI8rpLfq; arc=none smtp.client-ip=192.198.163.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1735827638; x=1767363638;
+  t=1735827639; x=1767363639;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=FdjyHsSsaQOf6iSENrU6HnAqaXiXVLUCn/0aplTnKe8=;
-  b=VdRGoqLrBvVFqZOdsyto7CwuSvhwFlmn4Z4P/d5RUYESPBphSCWnqeza
-   VP8Yb2nqRNcwG3JzdqplCL9BNJ4FSxkNMERZASxPPdy2uAreZriPP60yv
-   aIIHgIZOHIBxzdneg1rwRM1sJe+4Buae2Te18tqt0mH2yBuxP/ft5rpl2
-   KrjzIm7EJ55ioFAlMdbBa7mtmucgoiUqputy7nOxdsgaat85aKYJVeYye
-   oHvhVqzDB6RM8J6ggKyWsHUxlGbgls06zq8r6hR67FtIOiMrSquD3Ks3a
-   8JOLcCnKQ6YNLR7nRCWMJD8zyJ6rQiKAIyKzVezdtwllFw3yKv4aF9t1p
-   g==;
-X-CSE-ConnectionGUID: f5qhTKf3QUGPLZAL60Nebw==
-X-CSE-MsgGUID: PKXlnU6GQfqHgFxJHiY41w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11302"; a="46735116"
+  bh=H3iGrCkmStFfjtjiMU1XNNXU/ht//ydnzW3d9b0r79g=;
+  b=mI8rpLfqsQIQXcyXOcb9Z7eZqUjX69ilg0LbZVtjKB6APIoOpxhEweYs
+   lTY8U8V5hfuIesDLMY3aZ8Od/+XPEKASL2MRCerg71VI6lTuaRFqj0+Qy
+   YXa5pE/hUwytV1K/n8KJJaWkvf5MV2BaPG93+Ec86HYKXo2D49eRIn7lU
+   zBPOMnNpHnqBoSFiJOEJ+XA8HFEPJeZfqRWRwnMeUQlb5ie4d1BjfUYtQ
+   hN8F68PQUWMsIlKLLOannCwxv18UKaMrTbZwN1DOzhLil+2U37goPYygE
+   sXko3hz+Dj7NvgN1voe3yuyZzwqc8ebKZWSmHg0aBH99LNalBzcxjCXLe
+   w==;
+X-CSE-ConnectionGUID: kVY+Vt2aTPa3YiVQr/u73A==
+X-CSE-MsgGUID: HJ/EvlZAQLetolZPvDV7AQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11302"; a="46735118"
 X-IronPort-AV: E=Sophos;i="6.12,285,1728975600"; 
-   d="scan'208";a="46735116"
+   d="scan'208";a="46735118"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2025 06:20:37 -0800
-X-CSE-ConnectionGUID: Wq5VaPE/RfWQGRa7+jtcIg==
-X-CSE-MsgGUID: p/nCaoF4RvCXViBlWadiFg==
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2025 06:20:39 -0800
+X-CSE-ConnectionGUID: R07FTATqSue0TnbMFdHVKQ==
+X-CSE-MsgGUID: NXb4l7c/ReaC8GR4c2Z2XA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,285,1728975600"; 
-   d="scan'208";a="132357413"
+   d="scan'208";a="132357416"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2025 06:20:35 -0800
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2025 06:20:37 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Ilan Peer <ilan.peer@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 09/17] wifi: mac80211: Support parsing EPCS ML element
-Date: Thu,  2 Jan 2025 16:20:01 +0200
-Message-Id: <20250102161730.5afdf65cff46.I0ffa30b40fbad47bc5b608b5fd46047a8c44e904@changeid>
+Subject: [PATCH 10/17] wifi: nl80211: simplify nested if checks
+Date: Thu,  2 Jan 2025 16:20:02 +0200
+Message-Id: <20250102161730.c8bf7338aa64.Ie49dcc1ba44b507d91d5a9d8bd538d7ac2e46c54@changeid>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250102142009.3057049-1-miriam.rachel.korenblit@intel.com>
 References: <20250102142009.3057049-1-miriam.rachel.korenblit@intel.com>
@@ -78,100 +77,34 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-From: Ilan Peer <ilan.peer@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-Add support for parsing an ML element of type EPCS priority
-access, which can optionally be included in EHT protected action
-frames used to configure EPCS.
+In the absence of (an) else clause(s), "if (a) if (b)" is
+equivalent to "if (a && b)", so simplify the code a bit.
 
-Signed-off-by: Ilan Peer <ilan.peer@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 ---
- net/mac80211/ieee80211_i.h |  2 ++
- net/mac80211/parse.c       | 29 +++++++++++++++++++++++++++++
- 2 files changed, 31 insertions(+)
+ net/wireless/nl80211.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
-index 64df7d739ebf..5c5a91ead339 100644
---- a/net/mac80211/ieee80211_i.h
-+++ b/net/mac80211/ieee80211_i.h
-@@ -1762,6 +1762,7 @@ struct ieee802_11_elems {
- 	const struct ieee80211_eht_operation *eht_operation;
- 	const struct ieee80211_multi_link_elem *ml_basic;
- 	const struct ieee80211_multi_link_elem *ml_reconf;
-+	const struct ieee80211_multi_link_elem *ml_epcs;
- 	const struct ieee80211_bandwidth_indication *bandwidth_indication;
- 	const struct ieee80211_ttlm_elem *ttlm[IEEE80211_TTLM_MAX_CNT];
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index d073f14eb6ae..b3b3c30a787e 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -18536,10 +18536,9 @@ void nl80211_send_port_authorized(struct cfg80211_registered_device *rdev,
+ 	    nla_put(msg, NL80211_ATTR_MAC, ETH_ALEN, peer_addr))
+ 		goto nla_put_failure;
  
-@@ -1792,6 +1793,7 @@ struct ieee802_11_elems {
- 	/* mult-link element can be de-fragmented and thus u8 is not sufficient */
- 	size_t ml_basic_len;
- 	size_t ml_reconf_len;
-+	size_t ml_epcs_len;
+-	if ((td_bitmap_len > 0) && td_bitmap)
+-		if (nla_put(msg, NL80211_ATTR_TD_BITMAP,
+-			    td_bitmap_len, td_bitmap))
+-			goto nla_put_failure;
++	if (td_bitmap_len > 0 && td_bitmap &&
++	    nla_put(msg, NL80211_ATTR_TD_BITMAP, td_bitmap_len, td_bitmap))
++		goto nla_put_failure;
  
- 	u8 ttlm_num;
- 
-diff --git a/net/mac80211/parse.c b/net/mac80211/parse.c
-index 279c5143b335..cd318c1c67be 100644
---- a/net/mac80211/parse.c
-+++ b/net/mac80211/parse.c
-@@ -44,6 +44,9 @@ struct ieee80211_elems_parse {
- 	/* The reconfiguration Multi-Link element in the original elements */
- 	const struct element *ml_reconf_elem;
- 
-+	/* The EPCS Multi-Link element in the original elements */
-+	const struct element *ml_epcs_elem;
-+
- 	/*
- 	 * scratch buffer that can be used for various element parsing related
- 	 * tasks, e.g., element de-fragmentation etc.
-@@ -159,6 +162,9 @@ ieee80211_parse_extension_element(u32 *crc,
- 			case IEEE80211_ML_CONTROL_TYPE_RECONF:
- 				elems_parse->ml_reconf_elem = elem;
- 				break;
-+			case IEEE80211_ML_CONTROL_TYPE_PRIO_ACCESS:
-+				elems_parse->ml_epcs_elem = elem;
-+				break;
- 			default:
- 				break;
- 			}
-@@ -943,6 +949,27 @@ ieee80211_mle_defrag_reconf(struct ieee80211_elems_parse *elems_parse)
- 	elems_parse->scratch_pos += ml_len;
- }
- 
-+static void
-+ieee80211_mle_defrag_epcs(struct ieee80211_elems_parse *elems_parse)
-+{
-+	struct ieee802_11_elems *elems = &elems_parse->elems;
-+	ssize_t ml_len;
-+
-+	ml_len = cfg80211_defragment_element(elems_parse->ml_epcs_elem,
-+					     elems->ie_start,
-+					     elems->total_len,
-+					     elems_parse->scratch_pos,
-+					     elems_parse->scratch +
-+						elems_parse->scratch_len -
-+						elems_parse->scratch_pos,
-+					     WLAN_EID_FRAGMENT);
-+	if (ml_len < 0)
-+		return;
-+	elems->ml_epcs = (void *)elems_parse->scratch_pos;
-+	elems->ml_epcs_len = ml_len;
-+	elems_parse->scratch_pos += ml_len;
-+}
-+
- struct ieee802_11_elems *
- ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params)
- {
-@@ -1001,6 +1028,8 @@ ieee802_11_parse_elems_full(struct ieee80211_elems_parse_params *params)
- 
- 	ieee80211_mle_defrag_reconf(elems_parse);
- 
-+	ieee80211_mle_defrag_epcs(elems_parse);
-+
- 	if (elems->tim && !elems->parse_error) {
- 		const struct ieee80211_tim_ie *tim_ie = elems->tim;
+ 	genlmsg_end(msg, hdr);
  
 -- 
 2.34.1
