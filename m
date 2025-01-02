@@ -1,58 +1,57 @@
-Return-Path: <linux-wireless+bounces-17015-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17021-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F7539FFBE3
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jan 2025 17:38:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 746BB9FFBE8
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jan 2025 17:38:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C64D7A1AFD
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jan 2025 16:37:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61E1A3A42C6
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jan 2025 16:38:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F147015B102;
-	Thu,  2 Jan 2025 16:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57203156871;
+	Thu,  2 Jan 2025 16:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="O9PGpwXv"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="uh2NQgzl"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E701F17DE2D
-	for <linux-wireless@vger.kernel.org>; Thu,  2 Jan 2025 16:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C205D176242
+	for <linux-wireless@vger.kernel.org>; Thu,  2 Jan 2025 16:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735835727; cv=none; b=K4/ZXs5sXFPuDPAkXAzel3EKICJRjIVm1dslOopJw1JZ2pc6qzaqiVrXUC0/CF52fW+6Y7bXKULupY8hlEqiz8/ugEC4t2fZzs+b0BNiMb+wqsqRQgcq2+6tPG8o8xikyz5OzvsL98UoYzhKT/pU+aqiFwcWzcPRtMGAy7Vb9LM=
+	t=1735835732; cv=none; b=jgKqOlDc0e3894EC/hH1lEdS6mr5lCfsOAjazxf9oZKDPL5UjbWBGiYyDJCfSGu2XKuNJPWRVilOCUOzu3Bm3E9G9Vpj2gXbxxbvAF1rRoDMtCCJ2aQ+Thb9cwMC2FuMHjivOY0dOLAmJfdEBILwtkVYEtcIAOZ+Twx0mcvlUz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735835727; c=relaxed/simple;
-	bh=gtKQLquaJW3bLhwKWnIgZ6UNjbleaohRBXN0g+VMFHI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OZM3lOIswWtUtoa3azMT0EregmPwIiINxa1e0m0w9b2uriz6c05rzyOZMvAXIbnh0ugbrDSFvCpwCOLO/c92uq3i2lZMcDHuOVvs4pdDrNYbpUngsJcQIYAfzJtePKnDhIR8SE55WkKTT5KSYo6W+Ko/uJyFpoHrjy0w4EWY+zQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=O9PGpwXv; arc=none smtp.client-ip=46.4.11.11
+	s=arc-20240116; t=1735835732; c=relaxed/simple;
+	bh=JYJeqpj7Jb7+C5xYqxSqxdgbn86QTTinn76NED9VFqs=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=amk6OzW0KvEMKoiO/4cJG55pJv1OWQ0zn48Nwka+joEpJXrwitLA8FwW3TIWxQd6Im8BTQyyiT3pGDsgStTUW7aK2GwmHDTaSRZX+uoTNEwj9XmP8XygzSS4BDmk5vNdXt0oxqSlyKNxALu1ZgTMqc1RT366ZVb/BnCte6AKNo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=uh2NQgzl; arc=none smtp.client-ip=46.4.11.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
 	s=20160729; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Message-ID:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
 	List-Post:List-Owner:List-Archive;
-	bh=UD5oa82Ctj/lANEgxFjY6N2Zds6PFFCOC/CYa2zN+pU=; b=O9PGpwXvhJ681IfrmGZjIVVrpf
-	N+K8iNDwJDb1QoKXLSsL7WuoMHUVb1VAS1Hz1OPkepppsxmOxk/RTy8vFid1x6i3bpf3DvcggKQoS
-	nP9Hw1cNFOa6/QhbSDSxj0iLP4XxCv2ExbaU+m2YYyM33rr6HMaX9pISAmrLHo/CdMhc=;
+	bh=WasVNhyw6jyr/ngru/UVkzGlgcjoXsvHOp/TCI4ZKZs=; b=uh2NQgzlWedJunEWxhFBMbNth3
+	GKJiut5NIX/A1MRefM8qLyCISBbptpCAa/ousDRIckId+6v6IWmQqtpwSv1KSHyN6XlftTQ+HCHuS
+	mXD7saUIOKmOr8qtVIeTFSx4J1uKgK/aICe8OsNhWIf+2XpUoNINxqBcXJhaTzwfhIa4=;
 Received: from p4ff13c5f.dip0.t-ipconnect.de ([79.241.60.95] helo=Maecks.lan)
 	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
 	(Exim 4.96)
 	(envelope-from <nbd@nbd.name>)
-	id 1tTOAE-0008GS-2V;
-	Thu, 02 Jan 2025 17:35:14 +0100
+	id 1tTOAE-0008GS-33
+	for linux-wireless@vger.kernel.org;
+	Thu, 02 Jan 2025 17:35:15 +0100
 From: Felix Fietkau <nbd@nbd.name>
 To: linux-wireless@vger.kernel.org
-Cc: Shayne Chen <shayne.chen@mediatek.com>,
-	Bo Jiao <Bo.Jiao@mediatek.com>
-Subject: [PATCH 21/24] wifi: mt76: connac: rework connac helpers
-Date: Thu,  2 Jan 2025 17:35:05 +0100
-Message-ID: <20250102163508.52945-21-nbd@nbd.name>
+Subject: [PATCH 22/24] wifi: mt76: mt7996: move all debugfs files to the primary phy
+Date: Thu,  2 Jan 2025 17:35:06 +0100
+Message-ID: <20250102163508.52945-22-nbd@nbd.name>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250102163508.52945-1-nbd@nbd.name>
 References: <20250102163508.52945-1-nbd@nbd.name>
@@ -64,214 +63,312 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Shayne Chen <shayne.chen@mediatek.com>
+Preparation for single-wiphy support
 
-Rework connac helpers related to rate and phymode.
-This is a preliminary patch to add MLO support for mt7996 chipsets.
-
-Co-developed-by: Bo Jiao <Bo.Jiao@mediatek.com>
-Signed-off-by: Bo Jiao <Bo.Jiao@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 ---
- drivers/net/wireless/mediatek/mt76/mt76_connac.h |  2 +-
- .../net/wireless/mediatek/mt76/mt76_connac_mac.c | 16 ++++++++--------
- .../net/wireless/mediatek/mt76/mt76_connac_mcu.c |  6 +++---
- .../net/wireless/mediatek/mt76/mt76_connac_mcu.h |  2 +-
- drivers/net/wireless/mediatek/mt76/mt7925/main.c |  2 +-
- drivers/net/wireless/mediatek/mt76/mt7996/main.c | 16 +++++++---------
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c  |  2 +-
- 7 files changed, 22 insertions(+), 24 deletions(-)
+ .../wireless/mediatek/mt76/mt7996/debugfs.c   | 144 +++++++++++-------
+ .../net/wireless/mediatek/mt76/mt7996/init.c  |   6 +-
+ .../wireless/mediatek/mt76/mt7996/mt7996.h    |   2 +-
+ 3 files changed, 89 insertions(+), 63 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac.h b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-index 445d0f0ab779..f7766a9815fe 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac.h
-@@ -427,7 +427,7 @@ void mt76_connac2_mac_write_txwi(struct mt76_dev *dev, __le32 *txwi,
- 				 struct ieee80211_key_conf *key, int pid,
- 				 enum mt76_txq_id qid, u32 changed);
- u16 mt76_connac2_mac_tx_rate_val(struct mt76_phy *mphy,
--				 struct ieee80211_vif *vif,
-+				 struct ieee80211_bss_conf *conf,
- 				 bool beacon, bool mcast);
- bool mt76_connac2_mac_fill_txs(struct mt76_dev *dev, struct mt76_wcid *wcid,
- 			       __le32 *txs_data);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-index 5170af3e3428..6d30f4fc3526 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -291,28 +291,28 @@ EXPORT_SYMBOL_GPL(mt76_connac_init_tx_queues);
- })
- 
- u16 mt76_connac2_mac_tx_rate_val(struct mt76_phy *mphy,
--				 struct ieee80211_vif *vif,
-+				 struct ieee80211_bss_conf *conf,
- 				 bool beacon, bool mcast)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c b/drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c
+index 335699405ac7..7b2bb72b407d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/debugfs.c
+@@ -51,12 +51,10 @@ static ssize_t
+ mt7996_sys_recovery_set(struct file *file, const char __user *user_buf,
+ 			size_t count, loff_t *ppos)
  {
--	struct mt76_vif_link *mvif = (struct mt76_vif_link *)vif->drv_priv;
-+	struct mt76_vif_link *mvif = mt76_vif_conf_link(mphy->dev, conf->vif, conf);
- 	struct cfg80211_chan_def *chandef = mvif->ctx ?
- 					    &mvif->ctx->def : &mphy->chandef;
- 	u8 nss = 0, mode = 0, band = chandef->chan->band;
- 	int rateidx = 0, mcast_rate;
- 	int offset = 0;
+-	struct mt7996_phy *phy = file->private_data;
+-	struct mt7996_dev *dev = phy->dev;
+-	bool band = phy->mt76->band_idx;
+-	char buf[16];
++	struct mt7996_dev *dev = file->private_data;
++	char buf[16], *sep;
+ 	int ret = 0;
+-	u16 val;
++	u16 band, val;
  
--	if (!vif)
-+	if (!conf)
- 		goto legacy;
- 
- 	if (is_mt7921(mphy->dev)) {
--		rateidx = ffs(vif->bss_conf.basic_rates) - 1;
-+		rateidx = ffs(conf->basic_rates) - 1;
- 		goto legacy;
- 	}
- 
- 	if (beacon) {
- 		struct cfg80211_bitrate_mask *mask;
- 
--		mask = &vif->bss_conf.beacon_tx_rate;
-+		mask = &conf->beacon_tx_rate;
- 
- 		__bitrate_mask_check(he_mcs, HE_SU);
- 		__bitrate_mask_check(vht_mcs, VHT);
-@@ -324,11 +324,11 @@ u16 mt76_connac2_mac_tx_rate_val(struct mt76_phy *mphy,
- 		}
- 	}
- 
--	mcast_rate = vif->bss_conf.mcast_rate[band];
-+	mcast_rate = conf->mcast_rate[band];
- 	if (mcast && mcast_rate > 0)
- 		rateidx = mcast_rate - 1;
+ 	if (count >= sizeof(buf))
+ 		return -EINVAL;
+@@ -69,21 +67,26 @@ mt7996_sys_recovery_set(struct file *file, const char __user *user_buf,
  	else
--		rateidx = ffs(vif->bss_conf.basic_rates) - 1;
-+		rateidx = ffs(conf->basic_rates) - 1;
+ 		buf[count] = '\0';
  
- legacy:
- 	if (band != NL80211_BAND_2GHZ)
-@@ -581,7 +581,7 @@ void mt76_connac2_mac_write_txwi(struct mt76_dev *dev, __le32 *txwi,
- 		struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
- 		bool multicast = ieee80211_is_data(hdr->frame_control) &&
- 				 is_multicast_ether_addr(hdr->addr1);
--		u16 rate = mt76_connac2_mac_tx_rate_val(mphy, vif, beacon,
-+		u16 rate = mt76_connac2_mac_tx_rate_val(mphy, &vif->bss_conf, beacon,
- 							multicast);
- 		u32 val = MT_TXD6_FIXED_BW;
+-	if (kstrtou16(buf, 0, &val))
++	sep = strchr(buf, ',');
++	if (!sep)
++		return -EINVAL;
++
++	*sep = 0;
++	if (kstrtou16(buf, 0, &band) || kstrtou16(sep + 1, 0, &val))
+ 		return -EINVAL;
  
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 6e52e184aa20..e9ec9b7e0acb 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -1371,7 +1371,7 @@ u8 mt76_connac_get_phy_mode(struct mt76_phy *phy, struct ieee80211_vif *vif,
- }
- EXPORT_SYMBOL_GPL(mt76_connac_get_phy_mode);
- 
--u8 mt76_connac_get_phy_mode_ext(struct mt76_phy *phy, struct ieee80211_vif *vif,
-+u8 mt76_connac_get_phy_mode_ext(struct mt76_phy *phy, struct ieee80211_bss_conf *conf,
- 				enum nl80211_band band)
+ 	switch (val) {
+ 	/*
+-	 * 0: grab firmware current SER state.
+-	 * 1: trigger & enable system error L1 recovery.
+-	 * 2: trigger & enable system error L2 recovery.
+-	 * 3: trigger & enable system error L3 rx abort.
+-	 * 4: trigger & enable system error L3 tx abort
+-	 * 5: trigger & enable system error L3 tx disable.
+-	 * 6: trigger & enable system error L3 bf recovery.
+-	 * 7: trigger & enable system error L4 mdp recovery.
+-	 * 8: trigger & enable system error full recovery.
+-	 * 9: trigger firmware crash.
++	 * <band>,0: grab firmware current SER state.
++	 * <band>,1: trigger & enable system error L1 recovery.
++	 * <band>,2: trigger & enable system error L2 recovery.
++	 * <band>,3: trigger & enable system error L3 rx abort.
++	 * <band>,4: trigger & enable system error L3 tx abort
++	 * <band>,5: trigger & enable system error L3 tx disable.
++	 * <band>,6: trigger & enable system error L3 bf recovery.
++	 * <band>,7: trigger & enable system error L4 mdp recovery.
++	 * <band>,8: trigger & enable system error full recovery.
++	 * <band>,9: trigger firmware crash.
+ 	 */
+ 	case UNI_CMD_SER_QUERY:
+ 		ret = mt7996_mcu_set_ser(dev, UNI_CMD_SER_QUERY, 0, band);
+@@ -126,8 +129,7 @@ static ssize_t
+ mt7996_sys_recovery_get(struct file *file, char __user *user_buf,
+ 			size_t count, loff_t *ppos)
  {
- 	const struct ieee80211_sta_eht_cap *eht_cap;
-@@ -1382,9 +1382,9 @@ u8 mt76_connac_get_phy_mode_ext(struct mt76_phy *phy, struct ieee80211_vif *vif,
- 		mode |= PHY_MODE_AX_6G;
+-	struct mt7996_phy *phy = file->private_data;
+-	struct mt7996_dev *dev = phy->dev;
++	struct mt7996_dev *dev = file->private_data;
+ 	char *buff;
+ 	int desc = 0;
+ 	ssize_t ret;
+@@ -141,25 +143,25 @@ mt7996_sys_recovery_get(struct file *file, char __user *user_buf,
+ 	desc += scnprintf(buff + desc, bufsz - desc,
+ 			  "Please echo the correct value ...\n");
+ 	desc += scnprintf(buff + desc, bufsz - desc,
+-			  "0: grab firmware transient SER state\n");
++			  "<band>,0: grab firmware transient SER state\n");
+ 	desc += scnprintf(buff + desc, bufsz - desc,
+-			  "1: trigger system error L1 recovery\n");
++			  "<band>,1: trigger system error L1 recovery\n");
+ 	desc += scnprintf(buff + desc, bufsz - desc,
+-			  "2: trigger system error L2 recovery\n");
++			  "<band>,2: trigger system error L2 recovery\n");
+ 	desc += scnprintf(buff + desc, bufsz - desc,
+-			  "3: trigger system error L3 rx abort\n");
++			  "<band>,3: trigger system error L3 rx abort\n");
+ 	desc += scnprintf(buff + desc, bufsz - desc,
+-			  "4: trigger system error L3 tx abort\n");
++			  "<band>,4: trigger system error L3 tx abort\n");
+ 	desc += scnprintf(buff + desc, bufsz - desc,
+-			  "5: trigger system error L3 tx disable\n");
++			  "<band>,5: trigger system error L3 tx disable\n");
+ 	desc += scnprintf(buff + desc, bufsz - desc,
+-			  "6: trigger system error L3 bf recovery\n");
++			  "<band>,6: trigger system error L3 bf recovery\n");
+ 	desc += scnprintf(buff + desc, bufsz - desc,
+-			  "7: trigger system error L4 mdp recovery\n");
++			  "<band>,7: trigger system error L4 mdp recovery\n");
+ 	desc += scnprintf(buff + desc, bufsz - desc,
+-			  "8: trigger system error full recovery\n");
++			  "<band>,8: trigger system error full recovery\n");
+ 	desc += scnprintf(buff + desc, bufsz - desc,
+-			  "9: trigger firmware crash\n");
++			  "<band>,9: trigger firmware crash\n");
  
- 	sband = phy->hw->wiphy->bands[band];
--	eht_cap = ieee80211_get_eht_iftype_cap(sband, vif->type);
-+	eht_cap = ieee80211_get_eht_iftype_cap(sband, conf->vif->type);
- 
--	if (!eht_cap || !eht_cap->has_eht || !vif->bss_conf.eht_support)
-+	if (!eht_cap || !eht_cap->has_eht || !conf->eht_support)
- 		return mode;
- 
- 	switch (band) {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-index 541b3c17168b..894b27cb6185 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.h
-@@ -2018,7 +2018,7 @@ mt76_connac_get_eht_phy_cap(struct mt76_phy *phy, struct ieee80211_vif *vif);
- u8 mt76_connac_get_phy_mode(struct mt76_phy *phy, struct ieee80211_vif *vif,
- 			    enum nl80211_band band,
- 			    struct ieee80211_link_sta *sta);
--u8 mt76_connac_get_phy_mode_ext(struct mt76_phy *phy, struct ieee80211_vif *vif,
-+u8 mt76_connac_get_phy_mode_ext(struct mt76_phy *phy, struct ieee80211_bss_conf *conf,
- 				enum nl80211_band band);
- 
- int mt76_connac_mcu_add_key(struct mt76_dev *dev, struct ieee80211_vif *vif,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index c58838ad0189..7b93e8fb28ef 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -805,7 +805,7 @@ mt7925_get_rates_table(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	u16 rate;
- 	u8 i, idx, ht;
- 
--	rate = mt76_connac2_mac_tx_rate_val(mphy, vif, beacon, mcast);
-+	rate = mt76_connac2_mac_tx_rate_val(mphy, &vif->bss_conf, beacon, mcast);
- 	ht = FIELD_GET(MT_TX_RATE_MODE, rate) > MT_PHY_TYPE_OFDM;
- 
- 	if (beacon && ht) {
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index ab875abfbd0a..1bf45888ea1e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -541,19 +541,17 @@ static void mt7996_configure_filter(struct ieee80211_hw *hw,
+ 	/* SER statistics */
+ 	desc += scnprintf(buff + desc, bufsz - desc,
+@@ -524,16 +526,12 @@ mt7996_txbf_stat_read_phy(struct mt7996_phy *phy, struct seq_file *s)
+ 	seq_puts(s, "\n");
  }
  
- static u8
--mt7996_get_rates_table(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
-+mt7996_get_rates_table(struct mt7996_phy *phy, struct ieee80211_bss_conf *conf,
- 		       bool beacon, bool mcast)
+-static int
+-mt7996_tx_stats_show(struct seq_file *file, void *data)
++static void
++mt7996_tx_stats_show_phy(struct seq_file *file, struct mt7996_phy *phy)
  {
--	struct mt76_vif_link *mvif = (struct mt76_vif_link *)vif->drv_priv;
--	struct mt76_phy *mphy = hw->priv;
-+	struct mt7996_dev *dev = phy->dev;
-+	struct mt76_vif_link *mvif = mt76_vif_conf_link(&dev->mt76, conf->vif, conf);
- 	u16 rate;
- 	u8 i, idx;
- 
--	rate = mt76_connac2_mac_tx_rate_val(mphy, vif, beacon, mcast);
-+	rate = mt76_connac2_mac_tx_rate_val(phy->mt76, conf, beacon, mcast);
- 
- 	if (beacon) {
--		struct mt7996_phy *phy = mphy->priv;
+-	struct mt7996_phy *phy = file->private;
+-	struct mt7996_dev *dev = phy->dev;
+ 	struct mt76_mib_stats *mib = &phy->mib;
+-	int i;
+ 	u32 attempts, success, per;
 -
- 		/* odd index for driver, even index for firmware */
- 		idx = MT7996_BEACON_RATES_TBL + 2 * phy->mt76->band_idx;
- 		if (phy->beacon_rate != rate)
-@@ -626,11 +624,11 @@ static void mt7996_bss_info_changed(struct ieee80211_hw *hw,
+-	mutex_lock(&dev->mt76.mutex);
++	int i;
  
- 	if (changed & BSS_CHANGED_MCAST_RATE)
- 		mvif->mcast_rates_idx =
--			mt7996_get_rates_table(hw, vif, false, true);
-+			mt7996_get_rates_table(phy, info, false, true);
- 
- 	if (changed & BSS_CHANGED_BASIC_RATES)
- 		mvif->basic_rates_idx =
--			mt7996_get_rates_table(hw, vif, false, false);
-+			mt7996_get_rates_table(phy, info, false, false);
- 
- 	/* ensure that enable txcmd_mode after bss_info */
- 	if (changed & (BSS_CHANGED_QOS | BSS_CHANGED_BEACON_ENABLED))
-@@ -650,7 +648,7 @@ static void mt7996_bss_info_changed(struct ieee80211_hw *hw,
- 	if (changed & (BSS_CHANGED_BEACON |
- 		       BSS_CHANGED_BEACON_ENABLED)) {
- 		mvif->beacon_rates_idx =
--			mt7996_get_rates_table(hw, vif, true, false);
-+			mt7996_get_rates_table(phy, info, true, false);
- 
- 		mt7996_mcu_add_beacon(hw, vif, info);
+ 	mt7996_mac_update_stats(phy);
+ 	mt7996_ampdu_stat_read_phy(phy, file);
+@@ -558,6 +556,23 @@ mt7996_tx_stats_show(struct seq_file *file, void *data)
+ 		else
+ 			seq_puts(file, "\n");
  	}
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 83c079debf9a..ada019e44712 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -1039,7 +1039,7 @@ mt7996_mcu_bss_basic_tlv(struct sk_buff *skb,
- 	bss->dtim_period = vif->bss_conf.dtim_period;
- 	bss->phymode = mt76_connac_get_phy_mode(phy, vif,
- 						chandef->chan->band, NULL);
--	bss->phymode_ext = mt76_connac_get_phy_mode_ext(phy, vif,
-+	bss->phymode_ext = mt76_connac_get_phy_mode_ext(phy, &vif->bss_conf,
- 							chandef->chan->band);
++}
++
++static int
++mt7996_tx_stats_show(struct seq_file *file, void *data)
++{
++	struct mt7996_dev *dev = file->private;
++	struct mt7996_phy *phy = &dev->phy;
++
++	mutex_lock(&dev->mt76.mutex);
++
++	mt7996_tx_stats_show_phy(file, phy);
++	phy = mt7996_phy2(dev);
++	if (phy)
++		mt7996_tx_stats_show_phy(file, phy);
++	phy = mt7996_phy3(dev);
++	if (phy)
++		mt7996_tx_stats_show_phy(file, phy);
+ 
+ 	mutex_unlock(&dev->mt76.mutex);
+ 
+@@ -628,8 +643,8 @@ mt7996_sta_hw_queue_read(void *data, struct ieee80211_sta *sta)
+ static int
+ mt7996_hw_queues_show(struct seq_file *file, void *data)
+ {
+-	struct mt7996_phy *phy = file->private;
+-	struct mt7996_dev *dev = phy->dev;
++	struct mt7996_dev *dev = file->private;
++	struct mt7996_phy *phy = &dev->phy;
+ 	static const struct hw_queue_map ple_queue_map[] = {
+ 		{ "CPU_Q0",  0,  1, MT_CTX0	      },
+ 		{ "CPU_Q1",  1,  1, MT_CTX0 + 1	      },
+@@ -685,6 +700,15 @@ mt7996_hw_queues_show(struct seq_file *file, void *data)
+ 	/* iterate per-sta ple queue */
+ 	ieee80211_iterate_stations_atomic(phy->mt76->hw,
+ 					  mt7996_sta_hw_queue_read, file);
++	phy = mt7996_phy2(dev);
++	if (phy)
++		ieee80211_iterate_stations_atomic(phy->mt76->hw,
++						  mt7996_sta_hw_queue_read, file);
++	phy = mt7996_phy3(dev);
++	if (phy)
++		ieee80211_iterate_stations_atomic(phy->mt76->hw,
++						  mt7996_sta_hw_queue_read, file);
++
+ 	/* pse queue */
+ 	seq_puts(file, "PSE non-empty queue info:\n");
+ 	mt7996_hw_queue_read(file, ARRAY_SIZE(pse_queue_map),
+@@ -698,19 +722,29 @@ DEFINE_SHOW_ATTRIBUTE(mt7996_hw_queues);
+ static int
+ mt7996_xmit_queues_show(struct seq_file *file, void *data)
+ {
+-	struct mt7996_phy *phy = file->private;
+-	struct mt7996_dev *dev = phy->dev;
++	struct mt7996_dev *dev = file->private;
++	struct mt7996_phy *phy;
+ 	struct {
+ 		struct mt76_queue *q;
+ 		char *queue;
+ 	} queue_map[] = {
+-		{ phy->mt76->q_tx[MT_TXQ_BE],	 "   MAIN"  },
++		{ dev->mphy.q_tx[MT_TXQ_BE],	 "  MAIN0"  },
++		{ NULL,				 "  MAIN1"  },
++		{ NULL,				 "  MAIN2"  },
+ 		{ dev->mt76.q_mcu[MT_MCUQ_WM],	 "  MCUWM"  },
+ 		{ dev->mt76.q_mcu[MT_MCUQ_WA],	 "  MCUWA"  },
+ 		{ dev->mt76.q_mcu[MT_MCUQ_FWDL], "MCUFWDL" },
+ 	};
+ 	int i;
+ 
++	phy = mt7996_phy2(dev);
++	if (phy)
++		queue_map[1].q = phy->mt76->q_tx[MT_TXQ_BE];
++
++	phy = mt7996_phy3(dev);
++	if (phy)
++		queue_map[2].q = phy->mt76->q_tx[MT_TXQ_BE];
++
+ 	seq_puts(file, "     queue | hw-queued |      head |      tail |\n");
+ 	for (i = 0; i < ARRAY_SIZE(queue_map); i++) {
+ 		struct mt76_queue *q = queue_map[i].q;
+@@ -785,20 +819,20 @@ mt7996_rf_regval_set(void *data, u64 val)
+ DEFINE_DEBUGFS_ATTRIBUTE(fops_rf_regval, mt7996_rf_regval_get,
+ 			 mt7996_rf_regval_set, "0x%08llx\n");
+ 
+-int mt7996_init_debugfs(struct mt7996_phy *phy)
++int mt7996_init_debugfs(struct mt7996_dev *dev)
+ {
+-	struct mt7996_dev *dev = phy->dev;
+ 	struct dentry *dir;
+ 
+-	dir = mt76_register_debugfs_fops(phy->mt76, NULL);
++	dir = mt76_register_debugfs_fops(&dev->mphy, NULL);
+ 	if (!dir)
+ 		return -ENOMEM;
+-	debugfs_create_file("hw-queues", 0400, dir, phy,
++
++	debugfs_create_file("hw-queues", 0400, dir, dev,
+ 			    &mt7996_hw_queues_fops);
+-	debugfs_create_file("xmit-queues", 0400, dir, phy,
++	debugfs_create_file("xmit-queues", 0400, dir, dev,
+ 			    &mt7996_xmit_queues_fops);
+-	debugfs_create_file("tx_stats", 0400, dir, phy, &mt7996_tx_stats_fops);
+-	debugfs_create_file("sys_recovery", 0600, dir, phy,
++	debugfs_create_file("tx_stats", 0400, dir, dev, &mt7996_tx_stats_fops);
++	debugfs_create_file("sys_recovery", 0600, dir, dev,
+ 			    &mt7996_sys_recovery_ops);
+ 	debugfs_create_file("fw_debug_wm", 0600, dir, dev, &fops_fw_debug_wm);
+ 	debugfs_create_file("fw_debug_wa", 0600, dir, dev, &fops_fw_debug_wa);
+@@ -812,17 +846,13 @@ int mt7996_init_debugfs(struct mt7996_phy *phy)
+ 				    mt7996_twt_stats);
+ 	debugfs_create_file("rf_regval", 0600, dir, dev, &fops_rf_regval);
+ 
+-	if (phy->mt76->cap.has_5ghz) {
+-		debugfs_create_u32("dfs_hw_pattern", 0400, dir,
+-				   &dev->hw_pattern);
+-		debugfs_create_file("radar_trigger", 0200, dir, dev,
+-				    &fops_radar_trigger);
+-		debugfs_create_devm_seqfile(dev->mt76.dev, "rdd_monitor", dir,
+-					    mt7996_rdd_monitor);
+-	}
++	debugfs_create_u32("dfs_hw_pattern", 0400, dir, &dev->hw_pattern);
++	debugfs_create_file("radar_trigger", 0200, dir, dev,
++			    &fops_radar_trigger);
++	debugfs_create_devm_seqfile(dev->mt76.dev, "rdd_monitor", dir,
++				    mt7996_rdd_monitor);
+ 
+-	if (phy == &dev->phy)
+-		dev->debugfs_dir = dir;
++	dev->debugfs_dir = dir;
  
  	return 0;
+ }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/init.c b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+index 1ebac1905c22..a28933659c01 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/init.c
+@@ -633,10 +633,6 @@ static int mt7996_register_phy(struct mt7996_dev *dev, struct mt7996_phy *phy,
+ 	if (ret)
+ 		goto error;
+ 
+-	ret = mt7996_init_debugfs(phy);
+-	if (ret)
+-		goto error;
+-
+ 	if (wed == &dev->mt76.mmio.wed_hif2 && mtk_wed_device_active(wed)) {
+ 		u32 irq_mask = dev->mt76.mmio.irqmask | MT_INT_TX_DONE_BAND2;
+ 
+@@ -1461,7 +1457,7 @@ int mt7996_register_device(struct mt7996_dev *dev)
+ 
+ 	dev->recovery.hw_init_done = true;
+ 
+-	ret = mt7996_init_debugfs(&dev->phy);
++	ret = mt7996_init_debugfs(dev);
+ 	if (ret)
+ 		goto error;
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+index 0774ffdde65d..f1384e4e7e7f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mt7996.h
+@@ -680,7 +680,7 @@ int mt7996_dfs_init_radar_detector(struct mt7996_phy *phy);
+ void mt7996_set_stream_he_eht_caps(struct mt7996_phy *phy);
+ void mt7996_set_stream_vht_txbf_caps(struct mt7996_phy *phy);
+ void mt7996_update_channel(struct mt76_phy *mphy);
+-int mt7996_init_debugfs(struct mt7996_phy *phy);
++int mt7996_init_debugfs(struct mt7996_dev *dev);
+ void mt7996_debugfs_rx_fw_monitor(struct mt7996_dev *dev, const void *data, int len);
+ bool mt7996_debugfs_rx_log(struct mt7996_dev *dev, const void *data, int len);
+ int mt7996_mcu_add_key(struct mt76_dev *dev, struct ieee80211_vif *vif,
 -- 
 2.47.1
 
