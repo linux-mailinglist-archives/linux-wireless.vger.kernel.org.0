@@ -1,138 +1,137 @@
-Return-Path: <linux-wireless+bounces-16976-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16977-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 651179FF58B
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jan 2025 03:14:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4C2B9FF61A
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jan 2025 05:31:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E2473A27EC
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jan 2025 02:14:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4AA467A1690
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jan 2025 04:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B808F66;
-	Thu,  2 Jan 2025 02:14:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC61617BD6;
+	Thu,  2 Jan 2025 04:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="eU7nBqv5"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="BVX0ufEv"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34DC8F5B
-	for <linux-wireless@vger.kernel.org>; Thu,  2 Jan 2025 02:14:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374924A00
+	for <linux-wireless@vger.kernel.org>; Thu,  2 Jan 2025 04:31:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735784062; cv=none; b=tPg9ijwbZle0KgKVQ3wDo44xaqWWqOGxRTngiUw5sMAyeKayWp7qrK782D8Ke+Dx/yoxs4HGFmrrGU0D8eNpTxxqCNatzU0pA7ZnaWsgEWz3BznPmvyHGQmy/+NnRrp66Q1S51a7V7DsP8iq0+O2VsRxgt509x45S5YGQ7z8x8M=
+	t=1735792289; cv=none; b=n4CaDv1bDT+FvnPDcmf6K7XFdx33vYjtLdQqBPxKEjDRBfAsn2rzBlZN+aa0wCVX0xJdMTZ5Jc+1M4rmOnyz16+pI+eSjq8+LCXnhb2sqeZRmXhRNHzB2Gzl6wADWLtLjVRSPbzyHWX21Xo1xD16VEt+6fnoWem3pPnIf3vsEhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735784062; c=relaxed/simple;
-	bh=belqC9vT4lmBDldSbZmajs48Hbxtnt+SKAFHzm9I04Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XaXwItzvfRRnvoASc3laSmb/rpOcn6YKmiXw1VhLPdyoGgm2sZy4rjw0aMtNJhGQtJdWhNx7LAIYB9aKZc75GT6dYjuYf74upqhvhQxwacr/mF/dGHDUYlfqjWBNJkmdz1z/a8PFWiCuSjIyw0bzGD2EpDXx9vHGtYxE9tZpA8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=eU7nBqv5; arc=none smtp.client-ip=185.125.188.122
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 2AF813F735
-	for <linux-wireless@vger.kernel.org>; Thu,  2 Jan 2025 02:14:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1735784050;
-	bh=byHhbG91T5UG9+5Qg0wGiCDOInz3RlJuX9hGg0L+ObY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:In-Reply-To;
-	b=eU7nBqv5n0YMpW5HapQHrcHM4EN8/gX4nEDEaKF0ueDxnzqv8FXVVtoRU1oI6g5QX
-	 M3qmxBII3Do8Di09+tHTqc/X4z+tOucVkM2vtI6E3k1WzVHMzn43Vk9aBc9J7CLQ3I
-	 wFsepJgJyftIUH/2+6WAy5afE+nT/jG0+zeAvRU0zIzbxOc6lSbdKSE4pqd8vd0QTz
-	 r0s88wmJdsh1czeTyxhyfudBQinPRnAoCVRm3+0gK1uNFVlTHCqFBroIPHQl4s6mQf
-	 UUEkpMP7wuk869ENLDFQuDuLCwlmBaGHieew5jFDv11J517tZwKmWuCqgEM3Jb/oCF
-	 SGb6xXmV4vU+w==
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-21631cbf87dso131228785ad.3
-        for <linux-wireless@vger.kernel.org>; Wed, 01 Jan 2025 18:14:10 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735784047; x=1736388847;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=byHhbG91T5UG9+5Qg0wGiCDOInz3RlJuX9hGg0L+ObY=;
-        b=HnB5zPcDmL2A+NsQwO8l5pKgRwaUMMrwTzBttJwE732A4EwiGyyemlE+1UzJx4tSfo
-         V1dWx2YvvIMGMJw9eMpfpuxk74Y4R4VUNOabgnZREpkMVNc3b10hRnX71uBwGWdRWnwr
-         G6gtnKrChQHYXHctxcO9cSDyBMOEqtz5wZFi+iiRYz3++pZi/8MLhinfq/OViaOMCrwe
-         VE5SZlMt3fxWrRJvR7GfbJkE7jC1a/Vfm9l8Z6ySyBjlf7l1oYPtDHM/Vue3IVvIS249
-         4MqRsz1pcMo1Z1v/R2Sssdr93B/ocN0aLKoDAUT9Df9ER996opgNCW6BnKSzLsKJiIXO
-         Gtvg==
-X-Gm-Message-State: AOJu0YxNPvaAvIvAUrCVN8HfWSAr0kmB6Qn8Gs49Y2QRTXRrC25HiX3K
-	tjtzRW3OAJNeh/yVPX47ffyw2imn1Lcf5VH0qLEu66emGnqzcq/76Qeheqi6FGM+ta7hJEmgnoS
-	eFJn04kbEQDAd7AE1gCV6Hy2TpZPSt205deYcDULbd54UFycEoDWduVy1fD7wXknlX9Mb8vWuHO
-	nyfofa2u2r3CNmbUY=
-X-Gm-Gg: ASbGncvPFVcWsf3oyc0Fs+Ls3/Vk6M8xdQdegjZ7Oo1i1x0ztvZGbfQaUYI52ZGudAG
-	+5vSepMGW/qBquP/7Bkei3hEmvXNu2CoGhqp3YDiIfcfGdU80FQnJy4rK93cdy4FfZrKRpfJs0N
-	Hvra9ALJKCzdNysf07JeBl0T0aMPvmMnVDbhx6hLQbyerr3WZuM5JHiM7AApFWUHnq0SFcT93Oi
-	9I9gaGL7IELQfBqv/fUlD/fokz+mspNzu8PDG/iSlRB6Dj6tOc6e9PZa5C7235XaH7KyMmCHAMu
-	Rjg8rZytrb+hMmQjM8kqV/up/ELkVpgVkXk=
-X-Received: by 2002:a05:6a20:12cc:b0:1d9:2705:699e with SMTP id adf61e73a8af0-1e5e044ea31mr68543646637.7.1735784047517;
-        Wed, 01 Jan 2025 18:14:07 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGCasflXXvF7DdbfLS1AiJ9zPSN1Nb3vRxEXeGsqgnA75uSp2VkKiRrjbQG4+kzG9N/QUZ7Lg==
-X-Received: by 2002:a05:6a20:12cc:b0:1d9:2705:699e with SMTP id adf61e73a8af0-1e5e044ea31mr68543632637.7.1735784047187;
-        Wed, 01 Jan 2025 18:14:07 -0800 (PST)
-Received: from acelan-precision5470 (118-163-61-247.hinet-ip.hinet.net. [118.163.61.247])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-842e4db5fb6sm17712340a12.85.2025.01.01.18.14.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Jan 2025 18:14:06 -0800 (PST)
-Date: Thu, 2 Jan 2025 10:14:03 +0800
-From: "Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>
-To: Mark Baily <mark16829@gmail.com>
-Cc: linux-wireless@vger.kernel.org
-Subject: Re: MediaTek MT7922 or similar
-Message-ID: <jp4v6tcegezbagnr733wh3c6ljlqddljoncc2vp6rppe527ypw@7d3rm66e44es>
-Mail-Followup-To: Mark Baily <mark16829@gmail.com>, 
-	linux-wireless@vger.kernel.org
-References: <CACZGwE92CovpNv5qGefCKeffk+Y0zgqrhgq-pqOmQ8eDmXzA4w@mail.gmail.com>
+	s=arc-20240116; t=1735792289; c=relaxed/simple;
+	bh=CnGESVeiTd91spCz56Lgro5cjpdE7qcLS/4JJjOamJA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KlntfShexch1wA5Aa22N6AEfRjeOHVP7ID5QXQsCY1ZgRSatgWbxqPDfaPBvS0Dbcy3S4wF7/6V+VqXC0untG/HsRA2UV0NDPbmI4H/ca/2uyK/9+Y8DaY0ZIW9r1hMnF3ekJ6S5L/XWb2Hh7lVmZAMzMXsPYdvA29Al5AyNkyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=BVX0ufEv; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 501NU2SB007955;
+	Thu, 2 Jan 2025 04:31:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=UqB6/cziN3fxnmdaE0pArL
+	mx8fRvdKeWVi1N934YblI=; b=BVX0ufEvqqf4e3pr6pML3fCd3zGMg5HNEV3uDg
+	n8r9ihl69s1FY2oovm6hZNu0/C893GjaF/20Vjrzv6bpe105tZN9O3gyVW+/lqEJ
+	Cp+HL2RCR/jRk0rcd+kM0DGIN4+wWiwI4LwDqSUAn+KSt9DEqeoXTypHGi4ptz/U
+	RvR/DJWgEV9Q41ap/sCiwcw6lgbzJfW5JaQp03b2r0OL0C4pqFGKpGlXwWMBX0gx
+	EwepkjqAMa6boMDETZfgARJBbWnRo7IWQcg8V+bwITLCdrN/Pvr2rU/nIMMBlp0h
+	DKPRGt9sT376MOVG9ThV8tAGr51MwrNOodovSM3YZsxqnteA==
+Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 43vxsr1hxw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Jan 2025 04:31:04 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5024V3hN005217
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 2 Jan 2025 04:31:03 GMT
+Received: from hu-ramess-blr.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Wed, 1 Jan 2025 20:31:01 -0800
+From: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Rameshkumar Sundaram
+	<quic_ramess@quicinc.com>
+Subject: [PATCH] wifi: ath12k: Fix pdev lookup in WBM error processing
+Date: Thu, 2 Jan 2025 10:00:48 +0530
+Message-ID: <20250102043048.2596791-1-quic_ramess@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CACZGwE92CovpNv5qGefCKeffk+Y0zgqrhgq-pqOmQ8eDmXzA4w@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: 51SQEiKHpe_OPzARrTgzHSB3xpGZ4Vbd
+X-Proofpoint-ORIG-GUID: 51SQEiKHpe_OPzARrTgzHSB3xpGZ4Vbd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxlogscore=965
+ lowpriorityscore=0 suspectscore=0 malwarescore=0 mlxscore=0
+ priorityscore=1501 phishscore=0 adultscore=0 clxscore=1011 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501020036
 
-On Wed, Jan 01, 2025 at 08:47:23AM +1100, Mark Baily wrote:
-> Hi,
-> I have a Lenovo E14 AMD laptop with Ryzen 5625U processor and Mediatek
-> wifi / bluetooth adapter. The kernel module it uses is mt7921e.
-> 
-> Starting with the 6.11 and including the 6.12  Linux kernel, the
-> laptop won't resume from suspend with the bluetooth turned on. If I
-> turn bluetooth off, then the laptop resumes OK.
-> 
-> I have read a handful of other people's online posts with the same problem.
-> I am using the Debian Trixie 6.12 kernel but have tested with 6.11 and
-> 6.12 on Debian bookworm - same issue.
-> I am using a fairly recent linux firmware package downloaded from
-> kernel.org (like from Dec 2024).
-> 
-> Just wondering when or if this is likely to be fixed as testing
-> upgrading from Debian bookworm (which works fine with the stock 6.1.0
-> kernel) to Debian Trixie results in this issue occurring.
-> 
-> Here is a snippet from my laptop's journalctl which seems relevant:
-> 
-> Dec 31 20:45:38 debian kernel: mt7921e 0000:02:00.0: Message 00020007
-> (seq 5) timeout
-> Dec 31 20:45:38 debian kernel: mt7921e 0000:02:00.0: PM:
-> dpm_run_callback(): pci_pm_resume returns -110
-> Dec 31 20:45:38 debian kernel: mt7921e 0000:02:00.0: PM: failed to
-> resume async: error -110
-The issue looks pretty similar to this, and has been fixed by 6.13-rc1
-https://bugs.launchpad.net/bugs/2092746
+Currently in ath12k_dp_rx_process_wbm_err(), when processing packets
+received on the WBM error ring, pdev validation is done based upon the
+hw_link_id. But hw_link_id corresponds to link id of a given partner pdev
+in a MLO hardware group, and is not the correct index to use to lookup a
+pdev in an SoC(ab). As a result, pdev validation fails, and the reaped
+packets are dropped instead of being processed.
 
-You may try reproduce the issue by the latest mainline kernel.
-https://people.canonical.com/~acelan/bugs/mainline/
-> 
-> Thanks
-> Mark
-> 
+The correct index to use is the pdev_id, which is already derived in the
+function. So update the logic to validate the pdev based upon the pdev_id
+instead of the hw_link_id. This matches the logic used in other Rx ring
+processing functions.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Fixes: 1a73acb5fba4 ("wifi: ath12k: move to HW link id based receive handling")
+Signed-off-by: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+---
+ drivers/net/wireless/ath/ath12k/dp_rx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index 5c5a3aae393b..5584baec764e 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ 
+ #include <linux/ieee80211.h>
+@@ -4032,7 +4032,7 @@ int ath12k_dp_rx_process_wbm_err(struct ath12k_base *ab,
+ 						      hw_links[hw_link_id].pdev_idx);
+ 		ar = partner_ab->pdevs[pdev_id].ar;
+ 
+-		if (!ar || !rcu_dereference(ar->ab->pdevs_active[hw_link_id])) {
++		if (!ar || !rcu_dereference(ar->ab->pdevs_active[pdev_id])) {
+ 			dev_kfree_skb_any(msdu);
+ 			continue;
+ 		}
+
+base-commit: 09fa3b6974a1245ddd0751747609431494ba5b4f
+-- 
+2.34.1
+
 
