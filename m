@@ -1,73 +1,70 @@
-Return-Path: <linux-wireless+bounces-16995-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-16996-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29D4B9FFA6A
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jan 2025 15:22:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89ACE9FFA88
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jan 2025 15:39:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F32731605CB
-	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jan 2025 14:22:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51205162AD8
+	for <lists+linux-wireless@lfdr.de>; Thu,  2 Jan 2025 14:39:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97BC81B5EBC;
-	Thu,  2 Jan 2025 14:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5319117996;
+	Thu,  2 Jan 2025 14:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CcSHXums"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nncRXgGa"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7221B6CF6
-	for <linux-wireless@vger.kernel.org>; Thu,  2 Jan 2025 14:20:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6858718EFCC
+	for <linux-wireless@vger.kernel.org>; Thu,  2 Jan 2025 14:39:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735827651; cv=none; b=DKMny5B5M6usu8oQmEnFKafcYxtEG6KrfHiGaMgI9a5n5Jfbd6VX7GBvHzaLUjIxsjNB8totAunJ26l/U4YidSRQZAH+R2a88Nj6TaMOUiEC5098R4q7mfgV0ETljY2CvNzFin5RRIKApqVAN9nvZbM8slAljvBg9DGnOrpkfX8=
+	t=1735828775; cv=none; b=p3LjxBymdgO+TQR1Iyfao+IZqT9uHqtzHcLHS6UJnQIa5q0zXBOpHBwqd6qglpa1mfVvtnl68iIBTBQe8vscZ+jGO5nKVG+ZTnwURE2lWuBQfSCamDmuKb4a0G55llH8MddVmTM8Ll9/wCIb83QUIrLxN98Dbkld3sDl+Lpbcbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735827651; c=relaxed/simple;
-	bh=JJPQVWKH+mTq6R4jQgUyomNEBmTpbjK8ktVAeXAAQZE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=O6aE9ecvi54Hx+JvHcBAYtIb9GcpAxpqSGjtRyWzIU1SzW/QEmbAfRuB/aELk+e6JWXOHK8Lr0dlo/GX5Ov0kEgeNSK/T3nJ2R+bvSZ3oy9r6SsuSVSP0RigOHVQePqqe3nTnh6gBnKhWJHoG8KcYptMf61USVhCPtzfeOksPK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CcSHXums; arc=none smtp.client-ip=192.198.163.9
+	s=arc-20240116; t=1735828775; c=relaxed/simple;
+	bh=HXtKT5vfRwNvGxBvyM4rIObrZ/jEEBitIhwbjRcYbQw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=m15wKHHIatPm7O3++BKdrxfdCqDZw20NAlxxesnj3257Rg8RsdH6dKXHL9prrpw7L5YawvHFPx1Z1qINl6FSE3vTCNlgecnILmW9z6GetG7YdDGaDFptOQEluUTs0jPfVZRV74kEY1z2PUNiUNDqmn60clFcrTooDM30RQP2OgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nncRXgGa; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1735827649; x=1767363649;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=JJPQVWKH+mTq6R4jQgUyomNEBmTpbjK8ktVAeXAAQZE=;
-  b=CcSHXumsPUuh5zhbxMme1g2eW6s16afjL7DwmehGFHERfUITcx+V7IXr
-   m8mPCnxfHjFBzvKbzxmyfMjdMDEFdFP7bTZ9O5pg9LPTaCIDVqxRma2ol
-   9iVrzQqFYnfuuYrMc4HFLA/21Tt8YulLKGFzoKPjQTTDQsQ/W3bwxTafR
-   o+yGDtduZ/qc1Nw0wXTcG1u4fVpT5Ldz/PSgDRVG8K1zvVDypccsE3Fdi
-   YQSxlZsSwTsEqHys2nwiuFt5aAzJ4iqJwxWqTH7VXqsItEMvq2esSMGOD
-   lOYuMXZi68FAypytzDnXEkxEYh25o7zjyoIZk4dk12j2jaUQBZ/3PNDKW
-   g==;
-X-CSE-ConnectionGUID: tmMVlW0uTOGrcgWhhKm9Vg==
-X-CSE-MsgGUID: wyNNQi2wQUalROcPcQEIFg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11302"; a="46735133"
+  t=1735828774; x=1767364774;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=HXtKT5vfRwNvGxBvyM4rIObrZ/jEEBitIhwbjRcYbQw=;
+  b=nncRXgGamBvfpXEN+XN5AjlhooH9hEt2JGD4eZuexbWhOUuf5ylUXI3P
+   rVlurELLK6f8IXlWGKbNUZ8yw5AMFJnK96s2FjjNn2Ivu2sG1EkO99VlL
+   ih+favyUMWBw/MqbtJ098nLNwk6McCPDhPBp2sWvM6kxTwm6yg9LDoaAv
+   GlxHm/M9IeDZUvy4Ygh+MD02Vo+9v8KObiJydMJuQ5Zu8IAxfD5WON3rv
+   SlhMILebgdFS4JbHCKLm2n9cz147pTfejhJQNOiB0zTHuMcpgdjzZBmpT
+   +JCpBvUSwCrtJCf/I8bkDX8djYPoiIShN1EnzGHtSJbybiCDRQrVKc0BM
+   w==;
+X-CSE-ConnectionGUID: n4Jx5ZcHRpyy0vyIuqB39g==
+X-CSE-MsgGUID: eDg3SvBPQWO0pAXWxj0qXA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11302"; a="39743434"
 X-IronPort-AV: E=Sophos;i="6.12,285,1728975600"; 
-   d="scan'208";a="46735133"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2025 06:20:49 -0800
-X-CSE-ConnectionGUID: e1Ji5hDAQvCDB1t4cdHL8g==
-X-CSE-MsgGUID: L9Zm+WKvQL+o/6P816zNmw==
+   d="scan'208";a="39743434"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2025 06:39:33 -0800
+X-CSE-ConnectionGUID: de7M2qpiTN+VkKacU7xD4w==
+X-CSE-MsgGUID: Qq4yMrjkRHOgcQ0CudyjQQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,285,1728975600"; 
-   d="scan'208";a="132357455"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="102367788"
 Received: from weis0040.iil.intel.com ([10.12.217.108])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2025 06:20:47 -0800
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2025 06:39:32 -0800
 From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 To: johannes@sipsolutions.net
 Cc: linux-wireless@vger.kernel.org,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 17/17] wifi: mac80211: avoid double free in auth/assoc timeout
-Date: Thu,  2 Jan 2025 16:20:09 +0200
-Message-Id: <20250102161730.0c3f7f781096.I2b458fb53291b06717077a815755288a81274756@changeid>
+	Daniel Gabay <daniel.gabay@intel.com>
+Subject: [PATCH v2 10/15] wifi: iwlwifi: mvm: Move TSO code to shared utility
+Date: Thu,  2 Jan 2025 16:39:18 +0200
+Message-Id: <20250102163748.56efefb9566e.Ib7188572f18afb31840d193a348c17c9b292c7af@changeid>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250102142009.3057049-1-miriam.rachel.korenblit@intel.com>
-References: <20250102142009.3057049-1-miriam.rachel.korenblit@intel.com>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -77,69 +74,296 @@ MIME-Version: 1.0
 Organization: Intel Israel (74) Limited
 Content-Transfer-Encoding: 8bit
 
-In case of authentication/association timeout (as detected in
-ieee80211_iface_work->ieee80211_sta_work), ieee80211_destroy_auth_data
-is called.
-At the beginning of it, the pointer to ifmgd::auth_data memory is
-copied to a local variable.
-If iface_work is queued again during the execution of the current one,
-and then the driver is flushing the wiphy_works (for its needs),
-ieee80211_destroy_auth_data will run again and free auth_data.
-Then when the execution of the original worker continues, the previously
-copied pointer will be freed, causing a kernel bug:
- kernel BUG at mm/slub.c:553! (double free)
+From: Daniel Gabay <daniel.gabay@intel.com>
 
-Same for association timeout (just with ieee80211_destroy_assoc_data and
-ifmgd::assoc_data)
+Move TSO segment logic from mvm to the iwlwifi level, as this code is
+not opmode-dependent and can be shared with the mld driver.
 
-Fix this by NULLifying auth/assoc data right after we copied
-the pointer to it. That way, even in the scenario above, the code will
-not handle the same timeout twice.
-
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
 ---
- net/mac80211/mlme.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+v2: added a missing semicolon
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 4d9e3e58f3cb..3ef5f82a9b87 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -4507,6 +4507,8 @@ static void ieee80211_destroy_auth_data(struct ieee80211_sub_if_data *sdata,
- 
- 	lockdep_assert_wiphy(sdata->local->hw.wiphy);
- 
-+	sdata->u.mgd.auth_data = NULL;
+ drivers/net/wireless/intel/iwlwifi/Makefile   |  1 +
+ .../net/wireless/intel/iwlwifi/iwl-utils.c    | 85 +++++++++++++++++++
+ .../net/wireless/intel/iwlwifi/iwl-utils.h    | 36 ++++++++
+ drivers/net/wireless/intel/iwlwifi/mvm/tx.c   | 82 ++----------------
+ 4 files changed, 127 insertions(+), 77 deletions(-)
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/iwl-utils.c
+ create mode 100644 drivers/net/wireless/intel/iwlwifi/iwl-utils.h
+
+diff --git a/drivers/net/wireless/intel/iwlwifi/Makefile b/drivers/net/wireless/intel/iwlwifi/Makefile
+index 64c123314245..8d118ee92698 100644
+--- a/drivers/net/wireless/intel/iwlwifi/Makefile
++++ b/drivers/net/wireless/intel/iwlwifi/Makefile
+@@ -5,6 +5,7 @@ iwlwifi-objs		+= iwl-io.o
+ iwlwifi-objs		+= iwl-drv.o
+ iwlwifi-objs		+= iwl-debug.o
+ iwlwifi-objs		+= iwl-nvm-utils.o
++iwlwifi-objs		+= iwl-utils.o
+ iwlwifi-objs		+= iwl-phy-db.o iwl-nvm-parse.o
+ iwlwifi-objs		+= pcie/drv.o pcie/rx.o pcie/tx.o pcie/trans.o
+ iwlwifi-objs		+= pcie/ctxt-info.o pcie/ctxt-info-gen3.o
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-utils.c b/drivers/net/wireless/intel/iwlwifi/iwl-utils.c
+new file mode 100644
+index 000000000000..b14ec98e28b6
+--- /dev/null
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-utils.c
+@@ -0,0 +1,85 @@
++/* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
++/*
++ * Copyright (C) 2024 Intel Corporation
++ */
++#include <net/gso.h>
++#include <linux/ieee80211.h>
++#include <net/gso.h>
++#include <net/ip.h>
 +
- 	if (!assoc) {
- 		/*
- 		 * we are not authenticated yet, the only timer that could be
-@@ -4528,7 +4530,6 @@ static void ieee80211_destroy_auth_data(struct ieee80211_sub_if_data *sdata,
- 
- 	cfg80211_put_bss(sdata->local->hw.wiphy, auth_data->bss);
- 	kfree(auth_data);
--	sdata->u.mgd.auth_data = NULL;
- }
- 
- enum assoc_status {
-@@ -4545,6 +4546,8 @@ static void ieee80211_destroy_assoc_data(struct ieee80211_sub_if_data *sdata,
- 
- 	lockdep_assert_wiphy(sdata->local->hw.wiphy);
- 
-+	sdata->u.mgd.assoc_data = NULL;
++#include "iwl-drv.h"
++#include "iwl-utils.h"
 +
- 	if (status != ASSOC_SUCCESS) {
- 		/*
- 		 * we are not associated yet, the only timer that could be
-@@ -4583,7 +4586,6 @@ static void ieee80211_destroy_assoc_data(struct ieee80211_sub_if_data *sdata,
++#ifdef CONFIG_INET
++int iwl_tx_tso_segment(struct sk_buff *skb, unsigned int num_subframes,
++		       netdev_features_t netdev_flags,
++		       struct sk_buff_head *mpdus_skbs)
++{
++	struct sk_buff *tmp, *next;
++	struct ieee80211_hdr *hdr = (void *)skb->data;
++	char cb[sizeof(skb->cb)];
++	u16 i = 0;
++	unsigned int tcp_payload_len;
++	unsigned int mss = skb_shinfo(skb)->gso_size;
++	bool ipv4 = (skb->protocol == htons(ETH_P_IP));
++	bool qos = ieee80211_is_data_qos(hdr->frame_control);
++	u16 ip_base_id = ipv4 ? ntohs(ip_hdr(skb)->id) : 0;
++
++	skb_shinfo(skb)->gso_size = num_subframes * mss;
++	memcpy(cb, skb->cb, sizeof(cb));
++
++	next = skb_gso_segment(skb, netdev_flags);
++	skb_shinfo(skb)->gso_size = mss;
++	skb_shinfo(skb)->gso_type = ipv4 ? SKB_GSO_TCPV4 : SKB_GSO_TCPV6;
++
++	if (IS_ERR(next) && PTR_ERR(next) == -ENOMEM)
++		return -ENOMEM;
++
++	if (WARN_ONCE(IS_ERR(next),
++		      "skb_gso_segment error: %d\n", (int)PTR_ERR(next)))
++		return PTR_ERR(next);
++
++	if (next)
++		consume_skb(skb);
++
++	skb_list_walk_safe(next, tmp, next) {
++		memcpy(tmp->cb, cb, sizeof(tmp->cb));
++		/*
++		 * Compute the length of all the data added for the A-MSDU.
++		 * This will be used to compute the length to write in the TX
++		 * command. We have: SNAP + IP + TCP for n -1 subframes and
++		 * ETH header for n subframes.
++		 */
++		tcp_payload_len = skb_tail_pointer(tmp) -
++			skb_transport_header(tmp) -
++			tcp_hdrlen(tmp) + tmp->data_len;
++
++		if (ipv4)
++			ip_hdr(tmp)->id = htons(ip_base_id + i * num_subframes);
++
++		if (tcp_payload_len > mss) {
++			skb_shinfo(tmp)->gso_size = mss;
++			skb_shinfo(tmp)->gso_type = ipv4 ? SKB_GSO_TCPV4 :
++							   SKB_GSO_TCPV6;
++		} else {
++			if (qos) {
++				u8 *qc;
++
++				if (ipv4)
++					ip_send_check(ip_hdr(tmp));
++
++				qc = ieee80211_get_qos_ctl((void *)tmp->data);
++				*qc &= ~IEEE80211_QOS_CTL_A_MSDU_PRESENT;
++			}
++			skb_shinfo(tmp)->gso_size = 0;
++		}
++
++		skb_mark_not_on_list(tmp);
++		__skb_queue_tail(mpdus_skbs, tmp);
++		i++;
++	}
++
++	return 0;
++}
++IWL_EXPORT_SYMBOL(iwl_tx_tso_segment);
++#endif /* CONFIG_INET */
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-utils.h b/drivers/net/wireless/intel/iwlwifi/iwl-utils.h
+new file mode 100644
+index 000000000000..e3dbe6376036
+--- /dev/null
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-utils.h
+@@ -0,0 +1,36 @@
++/* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
++/*
++ * Copyright (C) 2024 Intel Corporation
++ */
++#ifndef __iwl_utils_h__
++#define __iwl_utils_h__
++
++#ifdef CONFIG_INET
++/**
++ * iwl_tx_tso_segment - Segments a TSO packet into subframes for A-MSDU.
++ * @skb: buffer to segment.
++ * @num_subframes: number of subframes to create.
++ * @netdev_flags: netdev feature flags.
++ * @mpdus_skbs: list to hold the segmented subframes.
++ *
++ * This function segments a large TCP packet into subframes.
++ * subframes are added to the mpdus_skbs list
++ *
++ * Returns: 0 on success and negative value on failure.
++ */
++int iwl_tx_tso_segment(struct sk_buff *skb, unsigned int num_subframes,
++		       netdev_features_t netdev_flags,
++		       struct sk_buff_head *mpdus_skbs);
++#else
++static inline
++int iwl_tx_tso_segment(struct sk_buff *skb, unsigned int num_subframes,
++		       netdev_features_t netdev_flags,
++		       struct sk_buff_head *mpdus_skbs)
++{
++	WARN_ON(1);
++
++	return -1;
++}
++#endif /* CONFIG_INET */
++
++#endif /* __iwl_utils_h__ */
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+index f1a8f4ad8b39..b5f6bb9cab4a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
+@@ -13,6 +13,7 @@
+ 
+ #include "iwl-trans.h"
+ #include "iwl-nvm-utils.h"
++#include "iwl-utils.h"
+ #include "mvm.h"
+ #include "sta.h"
+ #include "time-sync.h"
+@@ -938,78 +939,6 @@ unsigned int iwl_mvm_max_amsdu_size(struct iwl_mvm *mvm,
+ 
+ #ifdef CONFIG_INET
+ 
+-static int
+-iwl_mvm_tx_tso_segment(struct sk_buff *skb, unsigned int num_subframes,
+-		       netdev_features_t netdev_flags,
+-		       struct sk_buff_head *mpdus_skb)
+-{
+-	struct sk_buff *tmp, *next;
+-	struct ieee80211_hdr *hdr = (void *)skb->data;
+-	char cb[sizeof(skb->cb)];
+-	u16 i = 0;
+-	unsigned int tcp_payload_len;
+-	unsigned int mss = skb_shinfo(skb)->gso_size;
+-	bool ipv4 = (skb->protocol == htons(ETH_P_IP));
+-	bool qos = ieee80211_is_data_qos(hdr->frame_control);
+-	u16 ip_base_id = ipv4 ? ntohs(ip_hdr(skb)->id) : 0;
+-
+-	skb_shinfo(skb)->gso_size = num_subframes * mss;
+-	memcpy(cb, skb->cb, sizeof(cb));
+-
+-	next = skb_gso_segment(skb, netdev_flags);
+-	skb_shinfo(skb)->gso_size = mss;
+-	skb_shinfo(skb)->gso_type = ipv4 ? SKB_GSO_TCPV4 : SKB_GSO_TCPV6;
+-
+-	if (IS_ERR(next) && PTR_ERR(next) == -ENOMEM)
+-		return -ENOMEM;
+-
+-	if (WARN_ONCE(IS_ERR(next),
+-		      "skb_gso_segment error: %d\n", (int)PTR_ERR(next)))
+-		return PTR_ERR(next);
+-
+-	if (next)
+-		consume_skb(skb);
+-
+-	skb_list_walk_safe(next, tmp, next) {
+-		memcpy(tmp->cb, cb, sizeof(tmp->cb));
+-		/*
+-		 * Compute the length of all the data added for the A-MSDU.
+-		 * This will be used to compute the length to write in the TX
+-		 * command. We have: SNAP + IP + TCP for n -1 subframes and
+-		 * ETH header for n subframes.
+-		 */
+-		tcp_payload_len = skb_tail_pointer(tmp) -
+-			skb_transport_header(tmp) -
+-			tcp_hdrlen(tmp) + tmp->data_len;
+-
+-		if (ipv4)
+-			ip_hdr(tmp)->id = htons(ip_base_id + i * num_subframes);
+-
+-		if (tcp_payload_len > mss) {
+-			skb_shinfo(tmp)->gso_size = mss;
+-			skb_shinfo(tmp)->gso_type = ipv4 ? SKB_GSO_TCPV4 :
+-							   SKB_GSO_TCPV6;
+-		} else {
+-			if (qos) {
+-				u8 *qc;
+-
+-				if (ipv4)
+-					ip_send_check(ip_hdr(tmp));
+-
+-				qc = ieee80211_get_qos_ctl((void *)tmp->data);
+-				*qc &= ~IEEE80211_QOS_CTL_A_MSDU_PRESENT;
+-			}
+-			skb_shinfo(tmp)->gso_size = 0;
+-		}
+-
+-		skb_mark_not_on_list(tmp);
+-		__skb_queue_tail(mpdus_skb, tmp);
+-		i++;
+-	}
+-
+-	return 0;
+-}
+-
+ static int iwl_mvm_tx_tso(struct iwl_mvm *mvm, struct sk_buff *skb,
+ 			  struct ieee80211_tx_info *info,
+ 			  struct ieee80211_sta *sta,
+@@ -1028,7 +957,7 @@ static int iwl_mvm_tx_tso(struct iwl_mvm *mvm, struct sk_buff *skb,
+ 	if (!mvmsta->max_amsdu_len ||
+ 	    !ieee80211_is_data_qos(hdr->frame_control) ||
+ 	    !mvmsta->amsdu_enabled)
+-		return iwl_mvm_tx_tso_segment(skb, 1, netdev_flags, mpdus_skb);
++		return iwl_tx_tso_segment(skb, 1, netdev_flags, mpdus_skb);
+ 
+ 	/*
+ 	 * Do not build AMSDU for IPv6 with extension headers.
+@@ -1038,7 +967,7 @@ static int iwl_mvm_tx_tso(struct iwl_mvm *mvm, struct sk_buff *skb,
+ 	    ((struct ipv6hdr *)skb_network_header(skb))->nexthdr !=
+ 	    IPPROTO_TCP) {
+ 		netdev_flags &= ~NETIF_F_CSUM_MASK;
+-		return iwl_mvm_tx_tso_segment(skb, 1, netdev_flags, mpdus_skb);
++		return iwl_tx_tso_segment(skb, 1, netdev_flags, mpdus_skb);
  	}
  
- 	kfree(assoc_data);
--	sdata->u.mgd.assoc_data = NULL;
- }
+ 	tid = ieee80211_get_tid(hdr);
+@@ -1052,7 +981,7 @@ static int iwl_mvm_tx_tso(struct iwl_mvm *mvm, struct sk_buff *skb,
+ 	if ((info->flags & IEEE80211_TX_CTL_AMPDU &&
+ 	     !mvmsta->tid_data[tid].amsdu_in_ampdu_allowed) ||
+ 	    !(mvmsta->amsdu_enabled & BIT(tid)))
+-		return iwl_mvm_tx_tso_segment(skb, 1, netdev_flags, mpdus_skb);
++		return iwl_tx_tso_segment(skb, 1, netdev_flags, mpdus_skb);
  
- static void ieee80211_auth_challenge(struct ieee80211_sub_if_data *sdata,
+ 	/*
+ 	 * Take the min of ieee80211 station and mvm station
+@@ -1110,8 +1039,7 @@ static int iwl_mvm_tx_tso(struct iwl_mvm *mvm, struct sk_buff *skb,
+ 	 * Trick the segmentation function to make it
+ 	 * create SKBs that can fit into one A-MSDU.
+ 	 */
+-	return iwl_mvm_tx_tso_segment(skb, num_subframes, netdev_flags,
+-				      mpdus_skb);
++	return iwl_tx_tso_segment(skb, num_subframes, netdev_flags, mpdus_skb);
+ }
+ #else /* CONFIG_INET */
+ static int iwl_mvm_tx_tso(struct iwl_mvm *mvm, struct sk_buff *skb,
 -- 
 2.34.1
 
