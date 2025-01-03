@@ -1,126 +1,174 @@
-Return-Path: <linux-wireless+bounces-17043-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17044-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 251E0A008C9
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jan 2025 12:41:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58DC2A008F0
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jan 2025 12:56:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 007CB162E04
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jan 2025 11:41:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 357F6162EA1
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jan 2025 11:56:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F6C1EE7CF;
-	Fri,  3 Jan 2025 11:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28ECA1F9A9F;
+	Fri,  3 Jan 2025 11:56:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=fiona.klute@gmx.de header.b="g25HS2Vj"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CC11BEF85;
-	Fri,  3 Jan 2025 11:41:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5F7D1F9A96;
+	Fri,  3 Jan 2025 11:56:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735904470; cv=none; b=hQVVBEgaQaaH3aHcAhOIYL6rDaAPJda69ziUwKJTO+HPVD5q/BzhGIk53xMo9z9SUaV4Z3/zEmhw0Orc+uY4kWrrs6GPhX376Y/Xzv3lc16O3NhtgropVnSIA7+l/2Fcn+aBSghW9x6QAn/AB5xsA5N1cBMDkt38l0EzbgqyZqg=
+	t=1735905372; cv=none; b=G09DTGu2ow154DM0pq6AYKn3M1lZaNgEjm3zbwcb+NTI9+szE82ReewNscNmjwdLh0Q6rM7G1bqbYF9FLWrNecQ9V8VWdiOVxuMToAC8ONTxXtTM44azbJkntwyMu4T1a1GP7OvLtq2fl+XpnGXGtrGuFWnbXF0sCvYhonSjLH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735904470; c=relaxed/simple;
-	bh=r0+bPk+18OLFPNZOyzIFvNO34XF2I50Yma4ohzN75aA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XQ7b1eJK7bZQ9YSsxpQywN2RFgvxZqGwAKue68Zv98PR+/0YET7m3bQDgaeBKwuvGdQrJF9yE/jtxzkL4AW8SmdXh0r6vsixyTZi9hWrZoBdJB9mmyyBzWt84Yj0cqOU5xmGlPHqibiZApr2ghLcd0GbmVftHuXFGoI/3UVu08Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.98)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1tTg36-000000005et-3d5p;
-	Fri, 03 Jan 2025 11:41:04 +0000
-Date: Fri, 3 Jan 2025 11:40:52 +0000
-From: Daniel Golle <daniel@makrotopia.org>
-To: Stanislaw Gruszka <stf_xl@wp.pl>
-Cc: Ariel Otilibili <ariel.otilibili-anieli@eurecom.fr>,
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-	Kalle Valo <kvalo@kernel.org>,
-	Tomislav =?utf-8?Q?Po=C5=BEega?= <pozega.tomislav@gmail.com>
-Subject: Re: [PATCH 1/2] rt2x00: Remove unusued value
-Message-ID: <Z3fMxD2mAVsVl58h@pidgin.makrotopia.org>
-References: <20241221124445.1094460-1-ariel.otilibili-anieli@eurecom.fr>
- <20241221124445.1094460-2-ariel.otilibili-anieli@eurecom.fr>
- <20250103085540.GA94204@wp.pl>
+	s=arc-20240116; t=1735905372; c=relaxed/simple;
+	bh=A9b3OFX8SaM49UKKtrDec8vKbuaH5nmSwIWCKZ98mRs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=STBLpE/GtF9NvrLHjhx9Rip8nGgaiwWwyrsAPZzObrKBm/dnj1MZrlKf4h6mg1Wl44r4Zt1yq6sSGWgLyYyMb8jf/Dnm71KyBfdBbpmbWFrh6G8rdA3o8n+T5gDgBRLgrONDHPk4VbWNIYECqYVelr8xm/LU2ZXatiARAhfCguc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=fiona.klute@gmx.de header.b=g25HS2Vj; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1735905356; x=1736510156; i=fiona.klute@gmx.de;
+	bh=A9b3OFX8SaM49UKKtrDec8vKbuaH5nmSwIWCKZ98mRs=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=g25HS2Vjmpf9y0VIOjsY/+PrVmNDOPM29oeEa8hUv7bGAWZq+8nc6ypzJ7M3/8Ki
+	 Mprw8uR7OLgYxyuunWdsex0JVS4b772zmymuQf3jCj5Q7DQP4LpOhwESd6QlM1rld
+	 iQ63KM6kdcZW2QhXHTSJ1FX9WEfjaTyMG6490T7rE6klRseutVEKFp86ymhMNxQP0
+	 mRG2uElFz239qQEeQhG3YUVzeQqSQU+jj0G3HYJ0YHuadSKcn1bHhEar6jl4Ubbv9
+	 oItzrCTxFA1RTxChGA1wTkoj9IBDFbogP/obyxXOQEEb5N6uvMWtDC8Ax13FctdJp
+	 hzcKo4PnkqyhNYr71Q==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.0.24] ([84.249.220.44]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MTiTt-1t45SQ3O0b-00R0DO; Fri, 03
+ Jan 2025 12:55:55 +0100
+Message-ID: <d6f4d483-6f05-4221-8412-5c245e5974b4@gmx.de>
+Date: Fri, 3 Jan 2025 13:55:54 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250103085540.GA94204@wp.pl>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: rtw88: 8703b: Fix RX/TX issues
+To: Ping-Ke Shih <pkshih@realtek.com>, Vasily Khoruzhick
+ <anarsoul@gmail.com>, Kalle Valo <kvalo@kernel.org>,
+ Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+ "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20250103075107.1337533-1-anarsoul@gmail.com>
+ <f69874f3c11f4c7b8b0e3026796bb452@realtek.com>
+Content-Language: en-US, de-DE-1901, de-DE
+From: Fiona Klute <fiona.klute@gmx.de>
+Autocrypt: addr=fiona.klute@gmx.de; keydata=
+ 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
+In-Reply-To: <f69874f3c11f4c7b8b0e3026796bb452@realtek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:3DZztg0NQZ08amkORvwisifWC3zO7pTLBqAEckchA+Vg9kuQyNk
+ 5+L+9P+pKWASX6ks9gLehcpL6AKdzMzPTAtE+1/Z16k6WBcRVixSEtrVVE1dPZp4H8LwAzR
+ YGyb7vVdKWbRAsR3X1Oa6YmLa5vcFkr/1Hg6ObCwitDz8uN16V9xfWLfBImDkSr/wOjmeOh
+ Ihkouq1uaYAHaY889MJSA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:73Hnc9kn0cI=;5qgxQvlND15ROPXQB3eS/EE/r+b
+ nftamQ4BCDBS5808B0XbzzbVZCDD7m54zbqNbTMD3q2S5RX7Dq5a3UkHNyyTibrDHvzurHiUH
+ khavbGc3/hdyNOSjuD795a8+yhAERR1l66tNUweWHRSmgcyPmGSw8PhYl0FrE9HJplVztW4Y3
+ FYKNEtVxSw8J6+ECxTCyF+7LEPW8I0lGNeupS6W/HEvNu9mNSs0m+ONBgIG2N03MpkPNpxJpi
+ Mervi2ZWYrVOHJyrXfkfzZ/0KTY4MBgRfKR0OpCetEUpQtPQPOHHlEwf/9hjSxndi/lqtYupb
+ cWP6RjE/b2HKWQOKf6FMosUM/BMfgdooZYUZXKsXmpnNdxF0MoM4j1qPDg65NKMHogw201nth
+ fzzzl36BAyJdNrEy7eBvU6lvvJu67nbgfP/2L3GN44ljrJzCzra17n8IoYCA+B0WEn4Q5wmGO
+ pBnO9NlzdZlpKjsBfRjnY4bupMjl1SqlDhhYo/xwbyv/mbG1nodddDHmcdR/8heSU3Ku8LgCm
+ GrmZCqpqx/IL5rWfBrnaxDOpMVfHstbgo7we7Q/i3F/mjQ33njAK9Lg+Nkeowtmu7fj3ZGujS
+ BIyANOlxhhGm6JhlRKBJt4MC8irc7/XKM24khiq4TskbfN9BcIXe6kgY/OAEF8cGXk+Rh6+QW
+ pzb35d0H58AZAxcwCiFUZVM24THOgJHuhxP4D6LINzWQA3d4OsMo4vRzgjFU2WxoNVJQH1Xa3
+ Y4nefbyCaxzSaziOGu9bfKIrhYWZEmrJwRzaPsg14/lss4M66xXNddwToP+kTKtODyNvCPdbR
+ effjnqWvwycddxwkNZOVPrIGbEmGoNtFkrN1IF0YpLOdok7f2/haDCi2PfxgV3c/MUzX+FAKz
+ tCQuHI54kVdKg8+rkv1Wmk7NQJKpoH6UIDZ7Mk9qNwVxLpluW7uooHtP7LAlqJJNqnwhm9d+Y
+ vtCDgXKkWu0/55y819Ab7bgL0GSzIXVGIRpkCrV/rzqz9bDXFqMc2U2u5vNZfBJtElWGoq1Pk
+ aQay8x7+yoFq09Pp8Q0yeDlhz/YspxUe9sqCYvM7s7wQFpPRPAMXywKnOJ1L7p/ExuRDqqy0b
+ nXtC2InQyrQRDATl+7V0qwr7n+ZnYC
 
-On Fri, Jan 03, 2025 at 09:55:40AM +0100, Stanislaw Gruszka wrote:
-> On Sat, Dec 21, 2024 at 01:39:32PM +0100, Ariel Otilibili wrote:
-> > Coverity-ID: 1525307
-> > Signed-off-by: Ariel Otilibili <ariel.otilibili-anieli@eurecom.fr>
-> > ---
-> >  drivers/net/wireless/ralink/rt2x00/rt2800lib.c | 6 ------
-> >  1 file changed, 6 deletions(-)
-> > 
-> > diff --git a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-> > index 60c2a12e9d5e..e5f553a1ea24 100644
-> > --- a/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-> > +++ b/drivers/net/wireless/ralink/rt2x00/rt2800lib.c
-> > @@ -8882,13 +8882,10 @@ static void rt2800_rxiq_calibration(struct rt2x00_dev *rt2x00dev)
-> >  
-> >  	for (ch_idx = 0; ch_idx < 2; ch_idx = ch_idx + 1) {
-> >  		if (ch_idx == 0) {
-> > -			rfval = rfb0r1 & (~0x3);
-> >  			rfval = rfb0r1 | 0x1;
-> 
-> I wonder if intention here was different, for example:
-> 
->  			rfval = rfb0r1 & (~0x3);
->   			rfval = rfval | 0x1;
-> 
-> For me the patch looks ok - it does not change existing behaviour,
-> since rfval is overwritten by second line anyway.
+Am 03.01.25 um 11:12 schrieb Ping-Ke Shih:
+> Vasily Khoruzhick <anarsoul@gmail.com> wrote:
+>> Fix 3 typos in 8703b driver. 2 typos in calibration routines are not
+>> fatal and do not seem to have any impact, just fix them to match vendor
+>> driver.
+>
+> Just curious how you can find these typos?
+>
+>>
+>> However the last one in rtw8703b_set_channel_bb() clears too many bits
+>> in REG_OFDM0_TX_PSD_NOISE, causing TX and RX issues (neither rate goes
+>> above MCS0-MCS1). Vendor driver clears only 2 most significant bits.
+>>
+>> With the last typo fixed, the driver is able to reach MCS7 on Pinebook
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 9bb762b3a957 ("wifi: rtw88: Add definitions for 8703b chip")
+>> Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+>
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+>
+> Is this urgent? If not, I will take this via rtw-next tree.
+It's a huge performance improvement, 10x more RX throughput in Iperf
+tests, not just in the reported bit rate (residential, moderately noisy
+environment). TX improved too, but not as massively.
 
-I agree with the likely intention here, however, the vendor driver
-also comes with the dead code, see
-https://github.com/lixuande/rt2860v2/blob/master/files/rt2860v2/common/cmm_rf_cal.c#L2690
+Tested-by: Fiona Klute <fiona.klute@gmx.de>
 
-So this is certainly a bug in the vendor driver as well which got ported
-bug-by-bug to rt2x00... Not sure what is the best thing to do in this
-case.
+Thank you very much Vasily for digging into this!
 
-> 
-> Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
-> 
-> But Tomislav and Daniel, please check if this code is correct.
-> 
-> >  			rt2800_rfcsr_write_bank(rt2x00dev, 0, 1, rfval);
-> > -			rfval = rfb0r2 & (~0x33);
-> >  			rfval = rfb0r2 | 0x11;
-> >  			rt2800_rfcsr_write_bank(rt2x00dev, 0, 2, rfval);
-> > -			rfval = rfb0r42 & (~0x50);
-> >  			rfval = rfb0r42 | 0x10;
-> >  			rt2800_rfcsr_write_bank(rt2x00dev, 0, 42, rfval);
-> >  
-> > @@ -8901,13 +8898,10 @@ static void rt2800_rxiq_calibration(struct rt2x00_dev *rt2x00dev)
-> >  
-> >  			rt2800_bbp_dcoc_write(rt2x00dev, 1, 0x00);
-> >  		} else {
-> > -			rfval = rfb0r1 & (~0x3);
-> >  			rfval = rfb0r1 | 0x2;
-> >  			rt2800_rfcsr_write_bank(rt2x00dev, 0, 1, rfval);
-> > -			rfval = rfb0r2 & (~0x33);
-> >  			rfval = rfb0r2 | 0x22;
-> >  			rt2800_rfcsr_write_bank(rt2x00dev, 0, 2, rfval);
-> > -			rfval = rfb0r42 & (~0x50);
-> >  			rfval = rfb0r42 | 0x40;
-> >  			rt2800_rfcsr_write_bank(rt2x00dev, 0, 42, rfval);
-> >  
-> > -- 
-> > 2.47.1
-> > 
-> 
+Best regards,
+Fiona
+
 
