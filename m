@@ -1,63 +1,63 @@
-Return-Path: <linux-wireless+bounces-17023-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17024-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3014BA002DB
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jan 2025 03:46:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89E8CA002E6
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jan 2025 03:52:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43F771883DCB
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jan 2025 02:46:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54339162BAB
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jan 2025 02:52:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58532186E20;
-	Fri,  3 Jan 2025 02:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED1B514B96E;
+	Fri,  3 Jan 2025 02:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="Ugh97MsT"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="r1ZmIVMN"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 818AA19C56C
-	for <linux-wireless@vger.kernel.org>; Fri,  3 Jan 2025 02:46:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6143343173
+	for <linux-wireless@vger.kernel.org>; Fri,  3 Jan 2025 02:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735872407; cv=none; b=l8+AAIAXhjJsYhf8eYvgRKJ8B1wjG8jhBvzWmU/TwpnpV9JNP5YK9iyr+OLg4yzLSfGho97M5EnVl1h1r2RGB0sEB+BKFV5g16WW5HTmdEpZJ3W0c9+/cH1OYPbSIaesrbKSo9W9Kl8xo8Enob7leo0/7tdfbdqIxGzg9oZUwzE=
+	t=1735872723; cv=none; b=J21zNUivttFnnCqdGR3VPVT1iMXzJnib2EvzZuPmN6lzGPmQpYIvFrslsFUpYu4+gFMT2JcDWaexD+GGWmWEfQOsiHxP3BpnI+YKbvS1aH97t1AmhFJaCvHUy+YcC1JY27OOZ+IXfsxl5jsxda/eFrFpKKPGT6G7TnQs6T9npec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735872407; c=relaxed/simple;
-	bh=isxJd3HQKk7XxPIJpWxBeVOrZ4BCNldeeyd9lC8IW2U=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OvJljbd2SFuS7n9j8uN4NQvuiwpbxjtCiwipgjCBH0FUYRLnJaSqLbCuTc/+gJNo0LkLmN8bcjvloiwmB5TwMfYI8uumPAE5KsD9lJO7Tu8afhBmO76AlguCJyhath5tYgp6MpIWNv5SQGP2JgUiL7RfaRTvoSay/Jo37DchtkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=Ugh97MsT; arc=none smtp.client-ip=211.75.126.72
+	s=arc-20240116; t=1735872723; c=relaxed/simple;
+	bh=XAX/AB0MK3+q2UDV7LOJzdMQTzZmaMFlaOJ6R6qKRhI=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BEZDVfulXsyAB4Vdq2aqo+Tz+9SADquklC14qC/AZa1cvnt/wsZIQHiAdQyEyxBeswRlynLqjTtZy88l1MqXppRvdGtIbADdkiwRWosxDjvGSQVcaiF1ZYjCReRq6QauRXE5CMjgc8qEBjHe2vN7EEtoab0/qnIem56XC79TD7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=r1ZmIVMN; arc=none smtp.client-ip=211.75.126.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5032kfDsB1321071, This message is accepted by code: ctloc85258
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5032pwGtB1324774, This message is accepted by code: ctloc85258
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1735872402; bh=isxJd3HQKk7XxPIJpWxBeVOrZ4BCNldeeyd9lC8IW2U=;
+	t=1735872718; bh=XAX/AB0MK3+q2UDV7LOJzdMQTzZmaMFlaOJ6R6qKRhI=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version:
 	 Content-Transfer-Encoding:Content-Type;
-	b=Ugh97MsTsrhdQ///8Qwe4VQfvxtsmPUeCqVr9XKKU72/hhxSdBVdtfx7gxkWShBtL
-	 BxMK8fUULf6Lln2DVJxC5rG4gH8MszJ/njlMzFCdhKc4iPrYVNFc1KqkJtrnOaO444
-	 NtgW50tI0kkVrtUOSytqRAAtDCfZPBumLW1k8PCQLsAC6tJjmq/CakKuKYKrchuEqS
-	 /umNjsonp016mI6Sz7MpjZz3HWzcCPM7eLWKH7oFXz7F6RTjTBao3Qg4KE3eqiq30n
-	 W/3Epmmwz10o8JU7Hb5mgdNI0bT7SYfWebvYXlaMhAo29mX06LiJretL4Tg12zuZFv
-	 Wbw6XocEh7TbQ==
+	b=r1ZmIVMNCcQc0CWsdt41t3lQsvc7nREnyXEIbPG/Ko9p36q6pV1uAs609o49vZXYu
+	 nF3TfsBK/PAfO/EqSNmbiuJ4BY7ypFUFnBlVdctWDsohy4g8+WZ4y9Grzgo3WLh/ha
+	 RURzz4xJhdLog6GkHcGe0kzq87ndKoD4Trmt8iPvu3bGzXi/WrFRzzMnOyC+adLO8x
+	 rFPnsi9Iwzjl1lqdekpjvBRefM8HUy9rPgE+wUjU9QOMLeO8z6qnRphXWXUfFhPYsS
+	 PNVUCLpj1mYdQyl54ODrwTMtvQVwRGbKj434Pfank36/wo9ENnG8gFRK0O4gmruB75
+	 914E7sYWJl2ug==
 Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5032kfDsB1321071
+	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5032pwGtB1324774
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
-	for <linux-wireless@vger.kernel.org>; Fri, 3 Jan 2025 10:46:42 +0800
+	for <linux-wireless@vger.kernel.org>; Fri, 3 Jan 2025 10:51:58 +0800
 Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
  RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 3 Jan 2025 10:46:42 +0800
+ 15.1.2507.39; Fri, 3 Jan 2025 10:51:59 +0800
 Received: from [127.0.1.1] (172.21.69.94) by RTEXMBS04.realtek.com.tw
  (172.21.6.97) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 3 Jan
- 2025 10:46:42 +0800
+ 2025 10:51:58 +0800
 From: Ping-Ke Shih <pkshih@realtek.com>
 To: <linux-wireless@vger.kernel.org>
-Subject: [PATCH] wifi: rtw89: pci: treat first receiving part as first segment for 8922AE
-Date: Fri, 3 Jan 2025 10:46:09 +0800
-Message-ID: <20250103024609.15135-1-pkshih@realtek.com>
+Subject: [PATCH v2] wifi: rtw89: pci: treat first receiving part as first segment for 8922AE
+Date: Fri, 3 Jan 2025 10:51:26 +0800
+Message-ID: <20250103025126.15378-1-pkshih@realtek.com>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -80,10 +80,12 @@ To have compatible logic, FS determined by what pending skb is existing
 (!new) or not.
 
 Since we expect every single receiving packet in single one segment,
-enlarge 4 bytes for RX BD info, add a debug message to note if RX buffer
-is possibly smaller than expected size.
+enlarge 4 bytes for RX BD info, and add a debug message to note if
+RX buffer is possibly smaller than expected size.
 
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+---
+v2: correct wording in commit message
 ---
  drivers/net/wireless/realtek/rtw89/pci.c        | 12 +++++++++---
  drivers/net/wireless/realtek/rtw89/pci.h        |  4 +++-
