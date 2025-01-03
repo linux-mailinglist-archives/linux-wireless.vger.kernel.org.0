@@ -1,131 +1,153 @@
-Return-Path: <linux-wireless+bounces-17054-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17055-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7E60A00B46
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jan 2025 16:19:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE4C6A00CBC
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jan 2025 18:31:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBE9F1639B7
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jan 2025 15:19:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36DE27A1BC4
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jan 2025 17:31:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87B2D1FA84F;
-	Fri,  3 Jan 2025 15:19:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E75871FC108;
+	Fri,  3 Jan 2025 17:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="AZVJgi4L"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MPTSIQWU"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAAA011CA0
-	for <linux-wireless@vger.kernel.org>; Fri,  3 Jan 2025 15:19:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4E11F9EDF;
+	Fri,  3 Jan 2025 17:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735917545; cv=none; b=ovlj+mqOn4AdHGeGkmQE88Xw/i/MZZjElIvJgJSU1XShbwKUuIpc4Nt+RkNDgMOyhfrr6SzeaoRsNHSNMvUPSxbwku6IHtJI9NGV7Vt0Y4yH0X4efm7Bwqa26bn7cfLs7BDGE6Rfz1v8ayveJw4agbR/NvZVdlg5h/HJc+2106o=
+	t=1735925468; cv=none; b=KJRzWq13LDFDYV91aclKUPYNp6BIgfj4WIXlJcrtwsXZ40x9/Z+LO7nMSpMLg0tTWvrVlRHaqJezgESKoZr0IE7jLa8jlU81iWncd9PcjJ6Tjs7i+7qheG5ZAydkD6SsvEAQUIbWJj6m3ll2l7PlZVLpbxc/kXHtUBalcuh4g34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735917545; c=relaxed/simple;
-	bh=CGB8nJCzb5yHLiu2JB0xT5s1DN9ayx5bmIexjSS5sZE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RBNkpuu9VstfV7ft3dKOoycD9sJHbD6zYJnM4zMh51AJo8Z4rWp71SiBbu7Ys+K4COYN4ZuUsK9jqMzqgW4CEXgovas+fhF5EY9E6YZ35tSxkIlxKsVsy4GXOs8Byq2yxopuiN91RKGuEN9alzWv5ZjxwPO3EZC+jCLS/DIG3W0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=AZVJgi4L; arc=none smtp.client-ip=209.85.222.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7b6f1b54dc3so1824811785a.1
-        for <linux-wireless@vger.kernel.org>; Fri, 03 Jan 2025 07:19:03 -0800 (PST)
+	s=arc-20240116; t=1735925468; c=relaxed/simple;
+	bh=VkCJQVoiRk2IblJ1K3+RMjfMrwoKMGDda4NAbDTenDM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=H9z69/VHj/pAstG4fFcyfrCJJ5YgdsOPKD26pp6qYKcpXsqSTrkcpYwBgh50PI4tCrwjEuzy1EodxxBPxXNsdPSCXjWEPYr5/9qjlmxXBzP+Vhp3NAFuIe6SFMC5l2sOAJqm+1fowPnSJAgDUf4Rq8RRtGcfnR8cEXtbdM+F83k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MPTSIQWU; arc=none smtp.client-ip=209.85.160.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-29fad34bb62so6368121fac.1;
+        Fri, 03 Jan 2025 09:31:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1735917543; x=1736522343; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CGB8nJCzb5yHLiu2JB0xT5s1DN9ayx5bmIexjSS5sZE=;
-        b=AZVJgi4LFgjJiTQIAexsmTdplUM0cWXGuBu6YqQg7Iz980c0iZh9jKFmhCdv69yx7R
-         OSA1IF7JVTdhaLuhamsR1j6cgm5HcPpMbML1A4zOT4LPaJoQdoMxb0cJQR0Rk/HYLgxx
-         kkYwhV5gYv9uOx0gGUWOYjjZHGD9tW7vw6WMmvnPo8CvY4XAD47cBbanFAplj0NMY0hz
-         fK1IY25OEu5xjZKUd7JDzTqWktBCqew5ZY7H+OR2VvSy74obzVUaEiD2QLXoSDZ/SVn2
-         WuYSkTKRqjIw7dGeJC/ZIqfYOlDRhie3CcxG8ppgErfuvX2XqADNQg/4+Hg8UXXh1qNQ
-         iicg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735917543; x=1736522343;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1735925466; x=1736530266; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CGB8nJCzb5yHLiu2JB0xT5s1DN9ayx5bmIexjSS5sZE=;
-        b=RUwTegJOLgb6rtL7ESMK4TbTsGUbXSDUPtCR7KO4pOzKQQ6AoOsdy/ZvaJxu/CYxao
-         iP2N33La/IrEMgs7Z3ZqzisMPgux/C53O4q3n4+yt5L+EFYQcPWpTwbpUUJHWuKz15j7
-         mRvcZBcvAeXpzKrFvciCqyNDYqVD6ceDmLOLUd6HMCfoeHrELPi6dm90k19bsggeFM5N
-         wv7xQWmOgoB8vI6KQGbSAXS1tn3nnQKD+4RHG0lcJg3Efw4mLk5LbYWKNoMb3p+Wa7GR
-         cMi4Od4ynblsKtMZx/dGKKIRFYwod3SKGX02BN/oandjDgZzvqPZ+kRms79WyH23IpJU
-         vAEg==
-X-Forwarded-Encrypted: i=1; AJvYcCUdxrSlKNf6MuRkFqaG/9J1UuT1Lh3YvOGgiJN/pNdFvWmbDuUv4+HvuIkHePkDOkBu8NrZBQmVWw3kIaqdxw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzTpKbS+7kGK0saQHGXWTNcbzbF5O0jfLQ4MeaJB0tAMerow0Rq
-	i52vdlgFnnZQpfHu2Wzs6GBstZ0VIYyY3qnqV6iuXrpL4fbEzAs1rGkLOrmYijQ=
-X-Gm-Gg: ASbGncsSA24X0uoBoihuG/xvIstE/1oxvwzvGvqbYWqB1aTO7AnTcdZCfBaiz0Cq8pu
-	F9YIquju1AsuCRsFz9QGkuB1Vbxrmts5zssZJKe+/A2TkSLgxnp15NfHv9gWyQQmvKj2yHLvCPd
-	KVKqrMWk+s9K2vY0Ne/uqc7JS/j+ufoSyiTOGhKGKsylFvHyUQVh+OzJZFudmU0BkiqPI8qgEaa
-	Zh33i4AJCvG6/l1v2XyPaFk5bwvrfZRTtMoEGZGNjuoVyluXd4SZWHN+LPd/XA1JUD9GFIgO7SD
-	9UH4b46RexKPvqKIUGceVD5lj6TMvQ==
-X-Google-Smtp-Source: AGHT+IHTG+Bq32SHg17tHpm9vXIkHAkuaGHUCVV1avASRsb7eSYGQtc9W1/GwgW3NuW7igfw1fFU3w==
-X-Received: by 2002:a05:620a:488a:b0:7b6:d5cb:43a9 with SMTP id af79cd13be357-7b9ba773db8mr7230744485a.23.1735917542951;
-        Fri, 03 Jan 2025 07:19:02 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-68-128-5.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.68.128.5])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7b9ac478f0fsm1277723385a.71.2025.01.03.07.19.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Jan 2025 07:19:01 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1tTjS0-00000000iwx-2edn;
-	Fri, 03 Jan 2025 11:19:00 -0400
-Date: Fri, 3 Jan 2025 11:19:00 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Alex Williamson <alex.williamson@redhat.com>, kvm@vger.kernel.org,
-	quic_bqiang@quicinc.com, kvalo@kernel.org, prestwoj@gmail.com,
-	linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-	iommu@lists.linux.dev, kernel@quicinc.com,
-	johannes@sipsolutions.net, jtornosm@redhat.com
-Subject: Re: [PATCH RFC/RFT] vfio/pci: Create feature to disable MSI
- virtualization
-Message-ID: <20250103151900.GE26854@ziepe.ca>
-References: <adcb785e-4dc7-4c4a-b341-d53b72e13467@gmail.com>
- <20240812170014.1583783-1-alex.williamson@redhat.com>
- <20240813163053.GK1985367@ziepe.ca>
- <87r0aspby6.ffs@tglx>
- <03fdfde8dc05ecce1f1edececf0800d8cb919ac1.camel@infradead.org>
- <20250103143138.GC26854@ziepe.ca>
- <432d4304b579c5bd6973628c3c4aaad476627f7b.camel@infradead.org>
+        bh=VkCJQVoiRk2IblJ1K3+RMjfMrwoKMGDda4NAbDTenDM=;
+        b=MPTSIQWU5KagRXgpEof3wd7Zz40bf3K01f8ni9fm5yJ+zKHrLnjNm4wCRVIrgm2W/d
+         jprK4R3JehIuq4qEkvjL/r4jZEmQo20OcqPQEUrAFaZDCb4m5uZ24TjtTY80Yp/E7xg8
+         eR/9bhpHjPUIMxTxfG0UhoZiZQp9XsRUehqo7q0vJYevF3GENqQtTUUFO2gGiZaTFbH+
+         bEi6m6l7k5vG47XxNVDSX6yjCu//FC3JJFW8gBP0GGFfPa0LejeY3/hDJ+VRsqDxhWzf
+         1rskW/cO2WkyxC0vdLYj6Xwd7X7/gqTl7Z4T4MeH1ryHHJT1Pst4E/gdH8R8w/+/h3xi
+         5gjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735925466; x=1736530266;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VkCJQVoiRk2IblJ1K3+RMjfMrwoKMGDda4NAbDTenDM=;
+        b=Fso/MuJo0Trdb9ab4KSf4iV6mYEJLEbk+LDYdibLuvoRcpI/3+FMOpXNfi7Waz54uC
+         n8pWi6WkYGd1o2f8pBzCnrLfwqRdSdUnZ3ydLfnRwdVtRX/zgq304Ot/Ntdcq69rA6Fh
+         RT1MzKrJ4zQkb/vqp7OimL3v4rZCd/EnXIrbir2nPpXcjr0tH6CPfcfJevKg3gtOwFDm
+         gaklVvcpDapr5IhgfFsji5lnHdsck1i8Ytpz/xkOVfXLcMHpeibVdQzKImTrh5uCfxQ2
+         kTe7i6xBSDyrSP8kLDj4/C0YYKLBZ8srgZtwljJC3rcw/Fzey5s6J6HLYp9ARdwyGrYC
+         z5YA==
+X-Forwarded-Encrypted: i=1; AJvYcCUTH9jCVQtMOLaIKGGk5aQQn6cDMS8UsiK1s5di+VBKr4olbWtgzBT/RBMfA4Yja7iWi3g8v82lsgqFfoY=@vger.kernel.org, AJvYcCWFMmUaqUMzQ4E/jHSVjzbY3b2VTIeRhXvQj8ux3nkkHgvmZSMMieoF+LcrG4QgesxpgOBXRrthxhKQneqIFKk=@vger.kernel.org, AJvYcCXxr39lNfv/xn47ipbrmq2OpwVQxKaRaQPFjKSDRkH623Y5rv4ITN9YpjDb42smQ4UJ/6huvTH0@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxeGqbz6wvPiMWZ6gbP6giDCNkkdKB7yORnKgs54Eq3J8m67PD
+	ZDtGTJbi8EIMhB3enU3kAjNNbiVGyTXruxa6/7dVxgj9q38rHI3vpPsL7PX5zaLzngPF0iyxOOY
+	3bYo9c0cMSvlCZsOAkiy1BGkS/4w=
+X-Gm-Gg: ASbGnct/qJM+Q8GlfOz0qXMcVpTpbN7m6qpC7uufFKZrbXGre1T81vJY5zW5SUDRa80
+	2mrmGI2aNwoBHZfS4t0vgffrU3LHl3TD0DQR1yM2Hw/fn2MFRwvug
+X-Google-Smtp-Source: AGHT+IGv8bsmLDf1bWVTKaXEgfvA2PqOOdYrUgxm71ByeJc5Z2kLhK08e9vgpB5bdpgBwwQ6hIWkcXkwMTwXA8Vva/0=
+X-Received: by 2002:a05:6871:530e:b0:29f:ecfc:32df with SMTP id
+ 586e51a60fabf-2a7fb234a55mr31178294fac.14.1735925465925; Fri, 03 Jan 2025
+ 09:31:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <432d4304b579c5bd6973628c3c4aaad476627f7b.camel@infradead.org>
+References: <20250103075107.1337533-1-anarsoul@gmail.com> <f69874f3c11f4c7b8b0e3026796bb452@realtek.com>
+In-Reply-To: <f69874f3c11f4c7b8b0e3026796bb452@realtek.com>
+From: Vasily Khoruzhick <anarsoul@gmail.com>
+Date: Fri, 3 Jan 2025 09:30:39 -0800
+Message-ID: <CA+E=qVfsHw_YqwVNPjhp9QydC9RUo=9U6ddA6StrmDNzgrUCxQ@mail.gmail.com>
+Subject: Re: [PATCH] wifi: rtw88: 8703b: Fix RX/TX issues
+To: Ping-Ke Shih <pkshih@realtek.com>
+Cc: Kalle Valo <kvalo@kernel.org>, Fiona Klute <fiona.klute@gmx.de>, 
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>, 
+	"linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 03, 2025 at 02:47:11PM +0000, David Woodhouse wrote:
+On Fri, Jan 3, 2025 at 1:13=E2=80=AFAM Ping-Ke Shih <pkshih@realtek.com> wr=
+ote:
+>
+> Vasily Khoruzhick <anarsoul@gmail.com> wrote:
+> > Fix 3 typos in 8703b driver. 2 typos in calibration routines are not
+> > fatal and do not seem to have any impact, just fix them to match vendor
+> > driver.
+>
+> Just curious how you can find these typos?
 
-> Probably best for the hypervisor to have some way to *advertise* that
-> it's handling this though, as guests also might want to run on
-> hypervisors which don't.
+I added traces to sdio_* functions in linux (see [1]), so I can
+capture register access traces. I captured the traces from both rtw88
+and the vendor driver and wrote a simple parser that decodes the
+traces, see [2]. I guess it would be easier with an USB device, where
+we have usbmon. I really wish there was something like usbmon for
+SDIO.
 
-If the hypervisor doesn't properly virtualize the device it shouldn't
-assign it to a VM to start with :\
+I also added traces for C2H messages to both drivers, since they go
+through sdio_memcpy_fromio() that I don't trace.
 
-Intel looked at the question of advertising clean interrupt remapping
-when trying to virtualize IMS and it didn't seem so great.
+Once I had the traces, I manually compared them (along with register
+dumps, rtw88 has it in debugfs, vendor driver in proc) trying to find
+the writes that do not match. Unfortunately, rtw88 and vendor driver
+flows are different enough, so I couldn't come up with a way to
+compare it automatically
 
-Bare metal machines need to work, so any test they could think of
-adding would either fail on bare metal or fail on existing VMs.
+Adrian and Bitterblue supported me on #linux-wireless on IRC, and one
+of the typos in IQK calibration was actually found by Bitterblue.
 
-VMM's have taken the approach of not telling the guest they are in VMs
-and then also not implementing the bare metal HW behaviors with full
-fidelity. So we have no way to discover that the VMM is, in fact,
-emulating broken "hw".
+It took ~5 evenings and 1 weekend to get to REG_OFDM0_TX_PSD_NOISE
+(0xce4). Once I changed it from 0 to 0x10000000 via reg_write over
+debugfs, it magically fixed the issue. I changed it back to 0 to
+confirm that it breaks it again, and then back to 0x10000000 to see it
+working. Then it was just a matter of grep to find where this register
+is written in rtw88 and compare the corresponding code to the vendor
+driver.
 
-Thus we get this push that all kernels need to accomodate the worst
-VMM behaviors :(
+[1] https://github.com/anarsoul/rtl8723cs-re/blob/master/sdio_traces.patch
+[2] https://github.com/anarsoul/rtl8723cs-re
 
-Jason
+> > However the last one in rtw8703b_set_channel_bb() clears too many bits
+> > in REG_OFDM0_TX_PSD_NOISE, causing TX and RX issues (neither rate goes
+> > above MCS0-MCS1). Vendor driver clears only 2 most significant bits.
+> >
+> > With the last typo fixed, the driver is able to reach MCS7 on Pinebook
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: 9bb762b3a957 ("wifi: rtw88: Add definitions for 8703b chip")
+> > Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+>
+> Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+>
+> Is this urgent? If not, I will take this via rtw-next tree.
+
+Not really, since there aren't not a lot of users of 8723cs, but it
+makes rtw88_8723cs driver usable on rtl8723cs. I don't really have any
+preference on what tree it goes in
+
+Regards,
+Vasily
+
+>
 
