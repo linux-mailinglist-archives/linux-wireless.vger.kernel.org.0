@@ -1,147 +1,152 @@
-Return-Path: <linux-wireless+bounces-17031-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17032-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B68FA0055F
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jan 2025 08:51:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00482A00649
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jan 2025 09:53:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0930F1628B8
-	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jan 2025 07:51:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D61D1881B9D
+	for <lists+linux-wireless@lfdr.de>; Fri,  3 Jan 2025 08:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E0511C4A34;
-	Fri,  3 Jan 2025 07:51:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kefQmGUJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1AE11C5F09;
+	Fri,  3 Jan 2025 08:53:45 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0BC1B21B2;
-	Fri,  3 Jan 2025 07:51:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588494C62;
+	Fri,  3 Jan 2025 08:53:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735890699; cv=none; b=FCiJz1FUwZOhChQRRhf0emsIZS9ZsJVlZCsIwFBhERWa+2sMuaN/FvK4QmcCN9FqdGg8KTYWsYrhvkqD8dSyGOpyVzUBYcE4bzol8s1c3hoK7P19ngVAOLDrpkDfvcDRxCd+7nXjys4Y7+ttNQsqhHHAE9bUUO0oOCmVOibU0QI=
+	t=1735894425; cv=none; b=sIqgndiR0vqOr0y50lpSTHIZZixBeGjO4t9mhykFGGaHE6ab2neKil4L3R04H4o7SQRXL4Z8fajl9CcV13oZa0niIQftC5LlvvxpccrVBvyAcHY0ZsW2MJ4A3tDvJhbniEbADREkxs66wdNMzghwCz1mf+bHwArjtkukFA6I+e8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735890699; c=relaxed/simple;
-	bh=n2GjOR/7chbnuLYqm/dg8k4ovBMU6K9WqEzyltW+Y04=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RleEnTBdtialFWY+yO05MEDSYM8ojZKjpExrNT1IHTiZcWAXAWLVsgLSmxxZ5wU5WY4YSoqLeDtLQW5ZpoEi1Cq5wQl5+MyGl7kYyj2WsTlbMPQXEjFccTOpW396ZG+/vKNiDOQoiFDMQmtUpgeaAEr356E11z9hMaN2TCdnoBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kefQmGUJ; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1735894425; c=relaxed/simple;
+	bh=hnBq03WxBk2PG7EPavzS0kBmjxZJX+qxr5LBLBcNk+c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GKvMCAFA723yft6jwoMhWU+VpjfINIqLRauufistLhfHhli0xlvL4zMHJ9C1N5fQ9ISvZM0iUw4A/VMbSeZvAfZErVxxRlszlqTildvi0UH6TsEOumLWnNL7DPuWLO7nsvqfeGZD/D6o8yATxzef+vZqn7JS63S4ZkYOYrM5iiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-21661be2c2dso151542975ad.1;
-        Thu, 02 Jan 2025 23:51:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1735890697; x=1736495497; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0ivF9EkL0Rz65+IH+vfWR7QI6Gk6ONwax6hJC9wnFvY=;
-        b=kefQmGUJbToDs8N9uOLs1nYWHsTJJ3uhv7nZxr/Y96b0bIy3sOTqnodH3fGdK/IVAE
-         5h7z14QWMgHTrJ6Lm9ZWPchv4He/7H11vUg8LgXoAszLeNpthm09P8ez8ZTvmLgnhIpo
-         cVDQkloGpOHHk+LsCWoKcHvVLIIC3pmg7fFr4VQeJc5dlxoaZe6++JKDNpayWkTUba+4
-         gHsj38Qftk//cK7+IpjaemHAqurgnLuRc4m61QGCt7LebdkiHKx+jROiAB3a3sicCeMj
-         rZ29PF4cQcY/G46zTYW50315T7CG1dTg6HzKjeql1V6TDpG145n5ZUwr/ksyPb0ZRzJN
-         cwtg==
+Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-51878d9511bso3484842e0c.0;
+        Fri, 03 Jan 2025 00:53:43 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735890697; x=1736495497;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0ivF9EkL0Rz65+IH+vfWR7QI6Gk6ONwax6hJC9wnFvY=;
-        b=MdimvhhszYoLmfyaLGEc7dFyjESQs6HfqIb16M0gPC4ou5c3O/5Bn+0r40NPhq5F7L
-         RVVReWScPc46uiuv9hWY9+0AdslC3EsAzCodCjNHC3RkaDgTRb80Je1cqaLs6JseafqW
-         WCAwgX/uCsUUWzS4vXzRPy26/xXAJ/uEvxoqTDFrkTxAUxuf1rqtT2zZ28VTPWXGv+1H
-         hQzgsBmoa5XryAuUuz6OuyVHecOelDgsdU3rayEhPRsh0RIuFgwsr2EAMEstHPws1D4R
-         RaNR/+HKYgbyM/YpEvoFb/yH0pr5cgBa05pLWDjf2GYjtdi2HXO2yTWcPEixngpzsdY8
-         D96Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVIFizBT/+GG67v/+ZTIxwmklqGjoWsKqugdiuF9YC6pPhf37JbT01QGhfgo6+xXnNBPdwoy6AYvk7ILQLjiPk=@vger.kernel.org, AJvYcCVsg/hkpEj9lsFJRGjvsLLOKlM5XWkn9n6rY6HDpEiQa0DNKg+n8Hwq4QEeFAwtvMSCkO9RS+bH@vger.kernel.org, AJvYcCXWuHoikKUdArsDtgn50BRxuqg2kx8mX1DE46nW0+NmWCymuAxNgh6DhYnbH7KcI/L7xkTxNI7oQWqF/d0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMeW0K5Avy5U+M/xRQGSz0sX0b40C9REEHeLw6LpK+QPNdmvCz
-	AI7gvzWC8Fz0T7BGL/hbbBMYCh/7SKbbkHIFFALYzppitaqiZ6Ur
-X-Gm-Gg: ASbGncuYMY57+LttM2KLHXD4t2OgmBede9rXbt6fYjDCIiGby64d+2SFptheim5QTL2
-	6lv6mPafMcHbeydL//IXVEXxwEFuQfo//3uco8mCGrJtazVFKloeQDlZC5VeaGqx1kGJus5sjVL
-	5l8YXWNWu9RSBAsSlVPwyjlpw4B214CmzYtNWutupIV5vScACy2RVVc8ftnPDnRT+/c46UWDqHm
-	eji7iorw5CfSDtz7TCDzcrE/vrupUGnR1ICreZNk8LNV10q4w==
-X-Google-Smtp-Source: AGHT+IFELh5oZZKaHHmgPTNDldXeTPO48beD4h7k0zdIiMthWxdDka/Cc6gvgdYt78okgNjzxhNh+w==
-X-Received: by 2002:a17:902:f705:b0:216:6fbc:3904 with SMTP id d9443c01a7336-219e6e9d91emr755493495ad.13.1735890697199;
-        Thu, 02 Jan 2025 23:51:37 -0800 (PST)
-Received: from anarsoul-xps15.lan ([2604:3d08:7780:1ca9::398])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc964a73sm238932935ad.45.2025.01.02.23.51.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jan 2025 23:51:36 -0800 (PST)
-From: Vasily Khoruzhick <anarsoul@gmail.com>
-To: Ping-Ke Shih <pkshih@realtek.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Fiona Klute <fiona.klute@gmx.de>,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Vasily Khoruzhick <anarsoul@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] wifi: rtw88: 8703b: Fix RX/TX issues
-Date: Thu,  2 Jan 2025 23:50:53 -0800
-Message-ID: <20250103075107.1337533-1-anarsoul@gmail.com>
-X-Mailer: git-send-email 2.47.1
+        d=1e100.net; s=20230601; t=1735894421; x=1736499221;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=j30abThuUeHkj5Ij3LGKLh6rqpnb67GZgQG4O9gJV1M=;
+        b=gPTwaSqoHknGBvVxgMhyCJm09bM+SiANtOjWhwFKq7kI+KlR+KztyiMMK94p0lUju8
+         KstY0xXLDVYPlKFVSJrY288/z829yIIwniF8AQYvFwubucThGgLYe4S8gtppxuaEsOXA
+         InY7ANm8Cn4cmEuWicc44oB59mXc/wZwYq70pHLjL7YP7zQTDSAIVMiRl/9QH9kg4//G
+         XAKhoK7M8HW9Y6cIscLujBtpnA8WtWH8I4OBFIC5hHEIvPnluymIXkY/aNhOqwtLPhDj
+         QnMSPfWQIgHyYkLSgDaBsdBwkYKjJLU2DXiXrFAt3rbJS7QtEVNsAuTb3glc3WCfM4tI
+         2Tdw==
+X-Forwarded-Encrypted: i=1; AJvYcCVRiL7aoS83MptbJoU7qNiYG5yhdQ5Rfml9GJE7LAAiICn5DfeKPG5WCZif4/S6HxPxe3lTGjDLDv3yYOk=@vger.kernel.org, AJvYcCXNwEs6EswPk7wRTkdcT0MfeVH0g+zN1XP2jyU3j3bNk1yLH7KqVmraHMET/91a5ROnVN2wrG3VEPdDcVzDI1w=@vger.kernel.org, AJvYcCXXRvIyr/DI78z4ycVV+/oJ5y+Fv+6bZC9mzoTzSJIDR9QoMLHLgq9rgU2YxIs2pDfQOn2L5i4M@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxt7gxo+CpwBZk+R5E1ioJskW5NsXqs6s4ZU70/2vxA7qpv3Sa6
+	dO5tq7/++EnaWUp5oocoYJLQqrkGtxLhfKDh+ahHMpBIK45ciy4RoV9sFbjo
+X-Gm-Gg: ASbGncvIxtpCjjkCZILwqVzJDC3SzxtYIu0d/dkJGY/m0m2Tef26BqgZuYp79nIyb+e
+	59iRLIBUw3XApjOJCpabC3JRRj1pTKDf/u5PBlhLbO66LRm+EjuBpHtfS3zO2R0015vFE5zGE5r
+	p9KhvjMSW5tj0eNwtypUeFkyCIxRSvKiWk1sapDAnqLojOLt8wR6Rs48gWbTmyn4aq2o3ZY3Hxh
+	dqLj3BwHeclixboqr6mWF14KhBRHk/rI5LmZKvwaEhzpYBbdTxHAfH55KumcUH+WmRFFudNKZOJ
+	E6R0Ds9RU3Rhacluvmc=
+X-Google-Smtp-Source: AGHT+IHYZTID8FLH83OiPee0ltfKHbHyS0FaQxXgHt3Nfk8yMFb93SAt68MWCv/tticBZtpqx69eCA==
+X-Received: by 2002:a05:6122:25db:b0:51b:b750:8303 with SMTP id 71dfb90a1353d-51bb75083dcmr20282265e0c.11.1735894421059;
+        Fri, 03 Jan 2025 00:53:41 -0800 (PST)
+Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com. [209.85.222.47])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-51b7f003249sm2870172e0c.40.2025.01.03.00.53.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Jan 2025 00:53:40 -0800 (PST)
+Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-85b8c94a6b4so2454190241.0;
+        Fri, 03 Jan 2025 00:53:39 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU9Vs7/QONNIlahBG35u6zJkfsdqG13Ewqh1IwVIICkNE6UyGAuS+Gf+Gvkc8Za66L00LISrrHEV/3dkI4=@vger.kernel.org, AJvYcCVcPg7iywaumaIN12TzrOIOfT8RsYOkvkcz8LJiqn+dIJDhxBE6Zdjr7udvWm82IWr1/KndyF/G@vger.kernel.org, AJvYcCWqbkjw/mE1EuSq+AAJ4NpMqy12dOYnOgzIjz/Dyrri1XOp47S/CFTa4KYcDFj8jnovrOQgz/jDum3OK6Dwlqg=@vger.kernel.org
+X-Received: by 2002:a05:6102:160e:b0:4b2:bdf1:c1ba with SMTP id
+ ada2fe7eead31-4b2cc380883mr40018988137.13.1735894419660; Fri, 03 Jan 2025
+ 00:53:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20241224080755.194508-1-philipp.g.hortmann@gmail.com>
+ <b811d4af6a634d61389dfefacd49853c0e77f1d7.camel@sipsolutions.net> <39256db9-3d73-4e86-a49b-300dfd670212@gmail.com>
+In-Reply-To: <39256db9-3d73-4e86-a49b-300dfd670212@gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 3 Jan 2025 09:53:27 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdVGdpVqkdvoFxu84YgBh_0fsAKeBhWFEg+nDyGLwbruig@mail.gmail.com>
+Message-ID: <CAMuHMdVGdpVqkdvoFxu84YgBh_0fsAKeBhWFEg+nDyGLwbruig@mail.gmail.com>
+Subject: Re: [PATCH] net: ethernet: toshiba: ps3_gelic_wireless: Remove driver
+ using deprecated API wext
+To: Philipp Hortmann <philipp.g.hortmann@gmail.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Geoff Levand <geoff@infradead.org>, 
+	Simon Horman <horms@kernel.org>, Alexander Lobakin <aleksander.lobakin@intel.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jeff Johnson <quic_jjohnson@quicinc.com>, 
+	Larry Finger <Larry.Finger@lwfinger.net>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Pavel Machek <pavel@ucw.cz>, Stanislaw Gruszka <stf_xl@wp.pl>, 
+	Gregory Greenman <gregory.greenman@intel.com>, linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, 
+	linux-staging@lists.linux.dev, linux-wireless@vger.kernel.org, 
+	Arnd Bergmann <arnd@arndb.de>, Stefan Lippers-Hollmann <s.l-h@gmx.de>, Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Fix 3 typos in 8703b driver. 2 typos in calibration routines are not
-fatal and do not seem to have any impact, just fix them to match vendor
-driver.
+Hi Philipp,
 
-However the last one in rtw8703b_set_channel_bb() clears too many bits
-in REG_OFDM0_TX_PSD_NOISE, causing TX and RX issues (neither rate goes
-above MCS0-MCS1). Vendor driver clears only 2 most significant bits.
+CC hch
 
-With the last typo fixed, the driver is able to reach MCS7 on Pinebook
+On Fri, Jan 3, 2025 at 7:44=E2=80=AFAM Philipp Hortmann
+<philipp.g.hortmann@gmail.com> wrote:
+> T2 is working but to make this happen the T2 Author has an own repo for
+> patches to apply. In the following video he publishes his view on how
+> well the ps3disk is maintained and tested by the linux kernel community.
+> My impression of this is that ps3disk is not tested on hardware at all.
+> You can find this in a youtube video: =E2=80=9CI can't believe VIP Linux =
+kernel
+> developer BROKE PS3 support=E2=80=9D but watch out that you are in a good=
+ mood
+> otherwise it is pulling you down like me...
+>
+> The commit that is breaking the function is:
+> commit a7f18b74dbe171625afc2751942a92f71a4dd4ba
 
-Cc: stable@vger.kernel.org
-Fixes: 9bb762b3a957 ("wifi: rtw88: Add definitions for 8703b chip")
-Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
----
- drivers/net/wireless/realtek/rtw88/rtw8703b.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Thanks, I see no evidence of this ever being reported upstream, which
+makes it rather difficult to be aware of the issue...
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8703b.c b/drivers/net/wireless/realtek/rtw88/rtw8703b.c
-index a19b94d022ee..1d232adbdd7e 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8703b.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8703b.c
-@@ -903,7 +903,7 @@ static void rtw8703b_set_channel_bb(struct rtw_dev *rtwdev, u8 channel, u8 bw,
- 		rtw_write32_mask(rtwdev, REG_FPGA0_RFMOD, BIT_MASK_RFMOD, 0x0);
- 		rtw_write32_mask(rtwdev, REG_FPGA1_RFMOD, BIT_MASK_RFMOD, 0x0);
- 		rtw_write32_mask(rtwdev, REG_OFDM0_TX_PSD_NOISE,
--				 GENMASK(31, 20), 0x0);
-+				 GENMASK(31, 30), 0x0);
- 		rtw_write32(rtwdev, REG_BBRX_DFIR, 0x4A880000);
- 		rtw_write32(rtwdev, REG_OFDM0_A_TX_AFE, 0x19F60000);
- 		break;
-@@ -1198,9 +1198,9 @@ static u8 rtw8703b_iqk_rx_path(struct rtw_dev *rtwdev,
- 	rtw_write32(rtwdev, REG_RXIQK_TONE_A_11N, 0x38008c1c);
- 	rtw_write32(rtwdev, REG_TX_IQK_TONE_B, 0x38008c1c);
- 	rtw_write32(rtwdev, REG_RX_IQK_TONE_B, 0x38008c1c);
--	rtw_write32(rtwdev, REG_TXIQK_PI_A_11N, 0x8216000f);
-+	rtw_write32(rtwdev, REG_TXIQK_PI_A_11N, 0x8214030f);
- 	rtw_write32(rtwdev, REG_RXIQK_PI_A_11N, 0x28110000);
--	rtw_write32(rtwdev, REG_TXIQK_PI_B, 0x28110000);
-+	rtw_write32(rtwdev, REG_TXIQK_PI_B, 0x82110000);
- 	rtw_write32(rtwdev, REG_RXIQK_PI_B, 0x28110000);
- 
- 	/* LOK setting */
-@@ -1372,7 +1372,7 @@ void rtw8703b_iqk_fill_a_matrix(struct rtw_dev *rtwdev, const s32 result[])
- 		return;
- 
- 	tmp_rx_iqi |= FIELD_PREP(BIT_MASK_RXIQ_S1_X, result[IQK_S1_RX_X]);
--	tmp_rx_iqi |= FIELD_PREP(BIT_MASK_RXIQ_S1_Y1, result[IQK_S1_RX_X]);
-+	tmp_rx_iqi |= FIELD_PREP(BIT_MASK_RXIQ_S1_Y1, result[IQK_S1_RX_Y]);
- 	rtw_write32(rtwdev, REG_A_RXIQI, tmp_rx_iqi);
- 	rtw_write32_mask(rtwdev, REG_RXIQK_MATRIX_LSB_11N, BIT_MASK_RXIQ_S1_Y2,
- 			 BIT_SET_RXIQ_S1_Y2(result[IQK_S1_RX_Y]));
--- 
-2.47.1
+> This fixes are not in Mainline up to today. So who beside T2 Linux is
+> using this? You can find more of those breaking patches... and videos...
 
+Care to tell us where the fix is?
+
+/me looks at the bad commit...
+
+Oh, dev->bounce_size is used before set. Patch sent.
+https://lore.kernel.org/06988f959ea6885b8bd7fb3b9059dd54bc6bbad7.1735894216=
+.git.geert+renesas@glider.be
+
+> The following points are also in the list of reasons:
+> - This driver has a maximum 54MBit/s as it supports only 802.11 b/g.
+> - Using this hardware is security wise not state of the art as WPA3 is
+>    not supported.
+
+If you only do VPN over such an insecure link, I guess it's still safe?
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 
