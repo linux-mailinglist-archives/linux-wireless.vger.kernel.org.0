@@ -1,111 +1,139 @@
-Return-Path: <linux-wireless+bounces-17066-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17067-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A50DA01401
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 Jan 2025 11:38:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4185BA01428
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 Jan 2025 12:40:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00CA73A23A7
-	for <lists+linux-wireless@lfdr.de>; Sat,  4 Jan 2025 10:38:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D2AC1619B8
+	for <lists+linux-wireless@lfdr.de>; Sat,  4 Jan 2025 11:40:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7717117BA3;
-	Sat,  4 Jan 2025 10:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05E615ECDF;
+	Sat,  4 Jan 2025 11:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="xf/cBcmU"
+	dkim=pass (2048-bit key) header.d=public-files.de header.i=frank-w@public-files.de header.b="oci9orCs"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.12])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB49818A6AE
-	for <linux-wireless@vger.kernel.org>; Sat,  4 Jan 2025 10:38:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9545315624B
+	for <linux-wireless@vger.kernel.org>; Sat,  4 Jan 2025 11:40:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735987085; cv=none; b=PGCO+5fBq8YNDp4O6KTkduh/Lq2I2ltn8UFP/1C+P2+bD4hRctwu2bq+UWIzsR4kl7pzjDiE+/uStOKgqY2VOPF9OtWaQo4AYZrS569DaQkWta8aa00Rh/eT6OQmUZNHa8Z384pFSMh+DflqKzlwndMhwqJ8auAh0V8jazXq2ac=
+	t=1735990817; cv=none; b=hceQCAshBS9oFdwhUWo7nkQc7Cw83Av/W3+6zH40CkwhcWLYubQ1KzB8n+cvsY/0BTSZ4NDGbwlVUZS7Ryx6J+grMSciNz4FhZKROhWg+uFKoqOCACSV6MVW8EcLzwq34ZR3CeMXEXCjl/VOw27ApxV42RIOqllTQ+7U+u+ipks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735987085; c=relaxed/simple;
-	bh=j99Hy9f/m/6H2ncMt2PkmqzVoiQQd4NCimgrV8e/PBE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VrjvBE2jI633+5QURDe5fwoz90/Y4TynkdgZxXucMq7zM+UTDpbbudCfByBe0je3pKAYXaIx3JBovqhbQUwZApFPr3ePTKdoGe1ubWrHQ/izn9vFMakKYhFROlR9LznS+3RUpQpcX0diJRZwANrmPYLwx0P8FZQlJXlbDvVCTys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=xf/cBcmU; arc=none smtp.client-ip=212.77.101.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
-Received: (wp-smtpd smtp.wp.pl 9043 invoked from network); 4 Jan 2025 11:37:54 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
-          t=1735987074; bh=qeXFkM/Z+0bLLnbriu+sMFeZVgPmL4DAuWtHihsWRo8=;
-          h=From:To:Cc:Subject;
-          b=xf/cBcmUERlkfMY8kF59exPSp6p4kxCBryrl9n19y/nl3byAAsQMh3xRJM2uJCgsR
-           HREvW9fRraN6gSchMLobc6G+PHDd+/QlGq/0RRyC3JHGgmhwBvahQXrXUao1lg3hRL
-           GiGTs2k9+3ZDwfzx5V9W0ZPiLIUJUcsPCQLM9PIvX2bW3iaFlCdhsX1z5azlVkxMym
-           G5VNSc2++fJtat2ROBpHZifZAdi+r1LKz1W46jvLTT+8p8KYC8xvkqROGsz/wj+H+N
-           90uLJrqKxHTMUcl+tsv5jI/L6nrR7ZuL3cbv0Kn98DHzOJdgL4EF6ZzKjJ3i2AJCHg
-           k+mNeSJryH8+g==
-Received: from host-178.215.207.194-internet.zabrze.debacom.pl (HELO localhost) (stf_xl@wp.pl@[178.215.207.194])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <Ariel.Otilibili-Anieli@eurecom.fr>; 4 Jan 2025 11:37:54 +0100
-Date: Sat, 4 Jan 2025 11:37:53 +0100
-From: Stanislaw Gruszka <stf_xl@wp.pl>
-To: Ariel Otilibili-Anieli <Ariel.Otilibili-Anieli@eurecom.fr>
-Cc: Daniel Golle <daniel@makrotopia.org>, linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
-	Tomislav =?utf-8?Q?Po=C5=BEega?= <pozega.tomislav@gmail.com>
-Subject: Re: [PATCH 1/2] rt2x00: Remove unusued value
-Message-ID: <20250104103753.GA2228@wp.pl>
-References: <20241221124445.1094460-1-ariel.otilibili-anieli@eurecom.fr>
- <20241221124445.1094460-2-ariel.otilibili-anieli@eurecom.fr>
- <20250103085540.GA94204@wp.pl>
- <Z3fMxD2mAVsVl58h@pidgin.makrotopia.org>
- <20250103131002.GA100011@wp.pl>
- <2f7a83-6777e880-a451-5cf12280@99910178>
+	s=arc-20240116; t=1735990817; c=relaxed/simple;
+	bh=VDlHpJUBYm/Cn1DqitWnvyxp3OqAUEcQPE9MLAx/3ok=;
+	h=MIME-Version:Message-ID:From:To:Cc:Subject:Content-Type:
+	 In-Reply-To:References:Date; b=eZRXmFoHF3mlU/prd7w7UY2Qj991oxrKd6NAapLiIoxpsov72Pz5er5S6JCUlDXxJGcSKro+upLw5hC6mdtQ6ALb4pSvPO9GGe58zxPsoeUr9tGicf5DLu8Cvk6DiSWw+ZC+LuXwOwbt0fM5kdJMH8U/EncpWMNg03RsZoldUNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=public-files.de; spf=pass smtp.mailfrom=public-files.de; dkim=pass (2048-bit key) header.d=public-files.de header.i=frank-w@public-files.de header.b=oci9orCs; arc=none smtp.client-ip=212.227.15.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=public-files.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=public-files.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=public-files.de;
+	s=s31663417; t=1735990797; x=1736595597; i=frank-w@public-files.de;
+	bh=icByOsF7hNZZ337PJRmMU4jt4Kwhpb3YWVmnD8BK//Q=;
+	h=X-UI-Sender-Class:MIME-Version:Message-ID:From:To:Cc:Subject:
+	 Content-Type:In-Reply-To:References:Date:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=oci9orCsBP997NsO6Webcy/QtxqLtCu3n+Ffp6T6UlCi73AGINFMwr662IQDRHoC
+	 KLIdlbs59GgfiWBYJ8/N6+6gW7NF1Wx2sABrWNaPllIOaRWpwv/syMc2j28DhohG2
+	 NPzxNjFna/sujqgZ3VBX1y4mn7jZaibSH45BACuuJRDI9YqO2HdFg8zOwhj4sUjia
+	 to5058xv3GAveKMh+pjFQ8huMzsimYGuZ3GXnuFzZAIJqVrGf+cp7c26NfjgFRrzk
+	 M2GBeSuGdPV0GUT3Sr81Vu7cMeE8iG7zV08AhgwLoHNyZ210KgyfWvJ6/EJZDiK3U
+	 o1JG8ZtGnb1NCLLKkw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [194.15.87.187] ([194.15.87.187]) by
+ trinity-msg-rest-gmx-gmx-live-bbc95d94c-9m2wx (via HTTP); Sat, 4 Jan 2025
+ 11:39:57 +0000
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2f7a83-6777e880-a451-5cf12280@99910178>
-X-WP-MailID: 0dd64d0715a5a75b870d14f33d310231
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000000 [EWME]                               
+Message-ID: <trinity-0eec3a68-fc9a-4ec6-8c95-1cd58f3bcff8-1735990797237@trinity-msg-rest-gmx-gmx-live-bbc95d94c-9m2wx>
+From: Frank Wunderlich <frank-w@public-files.de>
+To: frank-w@public-files.de, shayne.chen@mediatek.com
+Cc: linux-wireless@vger.kernel.org, nbd@nbd.name, lorenzo@kernel.org,
+ ryder.lee@mediatek.com, evelyn.tsai@mediatek.com,
+ linux-mediatek@lists.infradead.org, shayne.chen@mediatek.com
+Subject: Aw: Aw: [PATCH wireless] wifi: mt76: mt7996: fix invalid interface
+ combinations
+Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <trinity-67c63297-52b5-4d2c-bcdd-1e86936c4b26-1728494589152@3c-app-gmx-bap26>
+Importance: normal
+References: <20241007135133.5336-1-shayne.chen@mediatek.com>
+ <trinity-67c63297-52b5-4d2c-bcdd-1e86936c4b26-1728494589152@3c-app-gmx-bap26>
+Date: Sat, 4 Jan 2025 11:39:57 +0000
+Sensitivity: Normal
+X-Priority: 3
+X-UI-CLIENT-META-MAIL-DROP: W10=
+X-Provags-ID: V03:K1:6g1zFbGGvW8NaDhbU4zUxc/9aXAyRBjiFU7KoxiifwqVPEXDsU65UuwpojdCJmmV7pPY9
+ c/Y2OzgRPCXRjNLJTq8adLOY4ZyBi9rwZ7n5n4kHIpaP507jrKCmfRMHxeCRyASoGZmf1Yog7oj8
+ fVu44HpeJq4gIaTTUwbIxqzlNJTumwJT5Bxu09kSKmhLC8k2Gj9f3gQ+YaF+9C2QnGn/Xk1YC8F2
+ JAg7W5dJ6Mpbmg4vOfgv6kiakbvWV9UX7gjltnJAx8IOaPkdY6BGhsaZqUtxMdJ72oQRElOd6pz/
+ EbJpVQyfGeuNX10Vj5JQXomdsFQBFvZNUKDVJJRvg6gXIv+c5KLOuGmLP8T/XRml2E=
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:HM0e+AwcpAo=;V2FPj4vVb906xKpudUMHhsDAmxg
+ XKUMfqwDKM37XSgIo0lC+zES26AGSiY6Hd5YJo8m68Cl133F2Vk8IK3MKO5U0mHHsXY++zHl8
+ fgy0cG7oBXFp/dxx9N0ZNj1QDenCWaZzmRUMJJP82a2i/0FbXTltXik2LMZmswReH88Sep+/Q
+ 4WhC0QC7tL0SpP0YfXNmL0gLU0WGIm10/zpiZVPopbaCA9dqqDogahLl25++fOctX2PxqT/ik
+ IGrax0NdXXebnllfBs/QVKhGr1xlgmkHLMrIWtfvjrjhv1hE9RKeOPOemHk26J331iNXaxT6m
+ bM3sypsS+SxX+KpflA2qQRfsGG+y9Yb7El+iW9tRxysUJgvt7brn5ySG7oUsz76Zjm5quLLPI
+ /6YlU1OGtfC4++vOqeC29iK/2euV0q/Wm89LQBCD0ZBnpeZJNsj364zenmM4VmjNLSK4xvuQY
+ x1O36I4lCnaCsF1//1O8FG9nhrfh82030+MrA7L/KrI8k+XwiYM4L9TmtJLeRkRT2COhJowUs
+ T98uUnihYioM2gviOsU4kZcthzfbozdpxBYYdt/6BWxKsg1FGt7pRTbOIyM/5wOMmXTaj8vKj
+ BNVrPwStWoTmsGB1YojyAr7T6n2kZFb3dlYPCKgOZwRXZt38rK0b2DnAB/UJxsvBwnGkyjQdM
+ FX8zXuoHlNbhhnBfk3iDuwiT5doP+l+cI5SrNFNpvgTQE0Cc1f5vOHm7+3oQZrvdJnfLy03Gb
+ XODB6soyBkWvJjLB7wRnM2GRd1LjrjCQXJTz9xnbKVh+TiGgIaUfDzPoXZFEEFCowXO0Xr7a6
+ vh+Gj5UL1XQH9dKwIx0IjUdkOO9dOPVBif8M+7iRBjqFvcXemdYEZNzlrt5Fa8/8tGeC5UYSb
+ ye29bWJmUbo0JtMWVmmsueIG9ZpitzW5g0wc=
+Content-Transfer-Encoding: quoted-printable
 
 Hi
 
-On Fri, Jan 03, 2025 at 02:39:21PM +0100, Ariel Otilibili-Anieli wrote:
-> On Friday, January 03, 2025 14:10 CET, Stanislaw Gruszka <stf_xl@wp.pl> wrote:
-> 
-> > On Fri, Jan 03, 2025 at 11:40:52AM +0000, Daniel Golle wrote:
-> > > On Fri, Jan 03, 2025 at 09:55:40AM +0100, Stanislaw Gruszka wrote:
-> > > 
-> > > I agree with the likely intention here, however, the vendor driver
-> > > also comes with the dead code, see
-> > > https://github.com/lixuande/rt2860v2/blob/master/files/rt2860v2/common/cmm_rf_cal.c#L2690
-> > > 
-> > > So this is certainly a bug in the vendor driver as well which got ported
-> > > bug-by-bug to rt2x00... Not sure what is the best thing to do in this
-> > > case.
-> > 
-> > As this was already tested and match vendor driver I would prefer
-> > not to change behavior even if it looks suspicious.
-> 
-> Thanks for having looked into this; I much appreciate your feedback.
-> 
-> From what you two said, I understand that the patch should remove the duplicate code, and not change the logic behind.
-> 
-> Is this right?
+this seems still not merged to next.
 
-Yes. 
+can wireless/mtk Maintainer please pick this up?
 
-Regards
-Stanislaw
-> 
-> If so; then, I have nothing else to do.
-> > 
-> > Regards
-> > Stanislaw
+> Gesendet: Mittwoch, 9. Oktober 2024 um 19:23
+> Betreff: Aw: [PATCH wireless] wifi: mt76: mt7996: fix invalid interface =
+combinations
+>
+> Hi Shayne
+>
+> > Gesendet: Montag, 07. Oktober 2024 um 15:51 Uhr
+> > Von: "Shayne Chen" <shayne.chen@mediatek.com>
+> > Betreff: [PATCH wireless] wifi: mt76: mt7996: fix invalid interface co=
+mbinations
 > >
-> 
+> > Setting beacon_int_min_gcd and NL80211_IFTYPE_ADHOC in the same interf=
+ace
+> > combination is invalid, which will trigger the following warning trace
+> > and get error returned from wiphy_register().
+> >
+> > [   10.080325] Call trace:
+> > [   10.082761]  wiphy_register+0xc4/0x76c [cfg80211]
+> > [   10.087465]  ieee80211_register_hw+0x800/0xac4 [mac80211]
+> > [   10.092868]  mt76_register_device+0x16c/0x2c0 [mt76]
+> > [   10.097829]  mt7996_register_device+0x740/0x844 [mt7996e]
+> >
+> > Fix this by removing unused adhoc iftype.
+> >
+> > Fixes: 948f65249868 ("wifi: mt76: mt7996: advertize beacon_int_min_gcd=
+")
+> > Reported-by: Frank Wunderlich <frank-w@public-files.de>
+> > Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+>
+> thx for the patch. I can confirm it fixes the issue/trace.
+
+if tested-by is necessary:
+
+Tested-By: Frank Wunderlich <frank-w@public-files.de>
+
+> regards
 
