@@ -1,142 +1,151 @@
-Return-Path: <linux-wireless+bounces-17112-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17113-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07452A02EA4
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 18:10:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3993A02EAA
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 18:13:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 422057A135F
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 17:10:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 187C91880558
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 17:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D719E1514F6;
-	Mon,  6 Jan 2025 17:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0665C1DC9B2;
+	Mon,  6 Jan 2025 17:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=codeweavers.com header.i=@codeweavers.com header.b="cdtEk/Lw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JPbeEh3Q"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.codeweavers.com (mail.codeweavers.com [4.36.192.163])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3687978F2B
-	for <linux-wireless@vger.kernel.org>; Mon,  6 Jan 2025 17:10:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=4.36.192.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0960819CC2A
+	for <linux-wireless@vger.kernel.org>; Mon,  6 Jan 2025 17:13:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736183415; cv=none; b=d74XGtuU4lHYVGLsWl+5HEXkM3YMxbl8Q37aBKQ2Ef0OMYnUdrNicDj1sbd5lJ2dA3Y0yfndwIiycyjQRd+KctCWYLsthtgg6EsGjebzmE1PIHuyDwuDT+iZte8ZEAKVq5gck07oAuhoCjJ3ps059RnZF6FCzuV9UoBcz4EzU04=
+	t=1736183633; cv=none; b=p82NpY98JvFKRvc1XQ/RAaUHHMT8CIpJ6vbQQuQf8qZQ2vjwQWB5E6PSKasIHbGWVhzdEXBSakukCgqiZDJDDFR0v87DWYU+pwzCwj0m8aHzBX0tKSg1VhSEqCPMwMcqAvJfZk2YC6mXYC2sgm8tG8en4MuYvrnbNHLj9TIZh6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736183415; c=relaxed/simple;
-	bh=2Rz+mh7Isoh3FLsG9NIfpNa4HHMrfqwERf08jXPafAQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hbxlJMJh1gFUSW3/pa6wi+1fg4jl2ZbjWErxgNs2NTEXJFtuFMlNEBo1o+2b34rxyj0mGtouDa03gGyIEMDiVCSCwlEJ/cICCcwKy72SVuLb13Njsw908KzBp0u68iaLvzyem2Nue6ycHG9SBZnqvjs464SRa+lOMgZVgwF0yIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeweavers.com; spf=pass smtp.mailfrom=codeweavers.com; dkim=pass (2048-bit key) header.d=codeweavers.com header.i=@codeweavers.com header.b=cdtEk/Lw; arc=none smtp.client-ip=4.36.192.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeweavers.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeweavers.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=codeweavers.com; s=s1; h=Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=XP00aZqYOdF0jBkfRD4YWoeOLKZJ7/4lHiwGMilOEzQ=; b=cdtEk/LwN+cb65Dro8B0NkwiUV
-	rTC36MLPZqd5RT6vh//JxaL7ycRFQtjamgeM1PotADfaNmtuPiMXHuUFJKzN2A+2/BpHXLvB1W+kU
-	/idZcgljO8WZ3HxegWhp3TXd5tMB+wfFBnuZTrTih4UZm/D8LaL2/RtbnQCvRbT8UG+YNqZI6kTaw
-	tPcXOOnyUK51/EzLWztVxPeSvio8hwvmPT1zgiMEaBlto4PB2r7zpJ0VKmX7gAVwFTsTAwrVMLbEY
-	VOdOBZlNTGWARXd1gnOBsjeSuZps43aZcKiMXQj9iRb4Be9CcvU2qBHEBG5Ix8AfZGw0PchzH8S6E
-	2j92TO3g==;
-Received: from cw141ip135.vpn.codeweavers.com ([10.69.141.135] helo=grey.doe.home)
-	by mail.codeweavers.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <stefan@codeweavers.com>)
-	id 1tUqcF-004Y2Q-1i;
-	Mon, 06 Jan 2025 11:10:12 -0600
-From: =?UTF-8?q?Stefan=20D=C3=B6singer?= <stefan@codeweavers.com>
-To: linux-wireless@vger.kernel.org
-Cc: Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: [PATCH v2] wifi: brcmfmac: Check the return value of of_property_read_string_index
-Date: Mon,  6 Jan 2025 20:09:58 +0300
-Message-ID: <20250106170958.3595-1-stefan@codeweavers.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1736183633; c=relaxed/simple;
+	bh=4X6zyYxK1QCiG9SsBLkpMIskQ4/0BPLxlhV1jv2pTrM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HcNNB6buPXLI74Ghvr4btmZlS40kpMOV9d7hezqIuPy0igNOO5lOBTFMjcSHU4OBETxY8fwcqWI0XWGbtRhloX9Ld74RWSbONg8QbNTnvPV9DV96zUwXFrL0/uyuv/5WD4PU71vzY6ilNB17Iup3uxZNNh/bXkjmja5roJo2n0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JPbeEh3Q; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2ee67e9287fso21201919a91.0
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Jan 2025 09:13:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736183630; x=1736788430; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1E4VBveUTiXAQY0x0OPSL/+vTNEOjG/u16OolfG/dLM=;
+        b=JPbeEh3QDAXG8WsLbQKWt3AZ+GwjPebWfHVJL3EbdTbx4FaUvXsrzsqASx3npkdlCa
+         aEj7292Gf9otXQV/bUtCYR5ZfE9zVB1wUY1CasrRL7wDjgAlCcoLsg2LJRTBGqtSGNSy
+         CInyODLoN89yKMSn6sLqHts4Q6PrRGv5YPW+/m/jStmsd2MUwfFof/834ly5l9ilQv3e
+         PNWshJbITqhhkhXZ5JlbbT5dFZHocQfrcCSU3iuT6mOmXuJ0Tsy4QPJsh2ShtpYRqm4l
+         uFt3NjKlkrf6qB3u1Lbyy2asgQmbk0tJ/NI3hDteB7khugRdzW+JqBtr1bUOBG4ZttI6
+         Hn4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736183630; x=1736788430;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1E4VBveUTiXAQY0x0OPSL/+vTNEOjG/u16OolfG/dLM=;
+        b=PyRC8155b8Fz0Yyf5Tsy+DK3m8FMruqZR2pCUSpE1COn/HsAcywbEga3v9AZXqdesK
+         fylnXhOzw/2yaxthFzpVpvaMnMxpjx4du6L6FCOG4yvQZxT/VP2DK0AMLn8V3nAGxk6f
+         c9Zoa5LR178obmi0ihbCNLP2SLrhgQbmQ/9YDSxpDOiyGuzlvDPXitEHab7JMsGyY90R
+         tShvd1z1f8DwvnPXdwVBuVlTlpccYlA4DmZtOjm2tt5OnzR8YwjptGV5ZX2fb/4rMZQ+
+         fS4+nkJwdIWCrtcFyOmgwfaFWcJSxrMEDP2wB74Hd6FujYLD3vEJ9PLtWNljBb6MpKA/
+         hRUA==
+X-Forwarded-Encrypted: i=1; AJvYcCVeJ+RpxKNYbTZWBX0jqOylCR+FSt3iaQis/vE3pGCXcxVw/kAynAHIonkvVcsIogftGON5UidFJeUqJHB6lA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy756j4zeY0bMiyhCVYhSMgwukW9BA8SCrrLyxscpYcDIeYovHb
+	XSRsHn5i5xviqjANam/6ZddGQbDOSylkzWdBfUCN/I5wRSRu5gmZLgdQLEmD08+vh/AFFD/Wb/h
+	fCrTY15oe7s7I4L3XQ7gh8AX3PTs=
+X-Gm-Gg: ASbGncu636C0SKC6EkV8itBsHidFaNa/F29Didxka/QOsZbew35UE9iBVoYb6UeTN+C
+	5aDpaR+XWPsWIx8K2aHwU46/KWOQ+akveZIUyF+gv
+X-Google-Smtp-Source: AGHT+IGFEmKlsE7w4ki0FRERAZd7MgyKM/i6eTRH2L7lzZ9eaCyLEYA1hsVHBLYEJEXYfzPLxFzRrjHg8V+00MjhZ6c=
+X-Received: by 2002:a17:90b:2543:b0:2f4:432d:250d with SMTP id
+ 98e67ed59e1d1-2f452e372edmr79317340a91.21.1736183630396; Mon, 06 Jan 2025
+ 09:13:50 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <CAG17S_OwtNxetb7XzsxkZcygH_CWkZx15evQZkThb3WjqpiKTQ@mail.gmail.com>
+ <CAG17S_NVmXZsAShc1VFh6iTgtT30CdHSBNxhmT=xs4q41--tcw@mail.gmail.com>
+ <fc4c196b-1f55-43a0-90ac-ca282aa6eb7d@gmail.com> <CAG17S_O7rJLXiLv8OcRaoxQWu4jk=L_ut3HpY7BbwkSbRfMWjA@mail.gmail.com>
+ <c586f9fe-e1f8-44dd-a867-ec21c78c7de9@gmail.com> <CAG17S_N6Gw1G8e5dh_1cm3P2DNt_gSbQSAKWd27hvpMZui4yxg@mail.gmail.com>
+ <CAG17S_NgkTQ5wT5nb=6FZZ9gnVMTqOWfWJve47JmfOoVAHZy8A@mail.gmail.com>
+ <CAG17S_Oq+RGOZpE+xa-CV8=VtmJu7G8GWxfVYqg1edEG9wC+yA@mail.gmail.com>
+ <CAG17S_NdA9LdwmA_XfvPOVrhCdqp+BOtAssH0=RE-VSjg=WFnA@mail.gmail.com>
+ <CAG17S_O6Bpc+JhhUuDvE70a+ef9wt9D7jG1gMJDNo1qZCUOg8w@mail.gmail.com>
+ <194115affe0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
+ <CAG17S_O7HbPFB0gubWWP9P-Oecps8K_LG0Y7YDo5DbNGKSLjpA@mail.gmail.com>
+ <CAG17S_MwJC+h7O-htyUxEgB4zHKeGf+9B4QaQ6ZLiVStU_Egkw@mail.gmail.com>
+ <CAG17S_NfqFjjaWj6vGS1HXux6JDy0QKcg8aQAR=aOzNGhO0a3w@mail.gmail.com> <eace9233-1b65-4793-8abe-abd3c640dba8@gmail.com>
+In-Reply-To: <eace9233-1b65-4793-8abe-abd3c640dba8@gmail.com>
+From: KeithG <ys3al35l@gmail.com>
+Date: Mon, 6 Jan 2025 11:13:39 -0600
+Message-ID: <CAG17S_MfQ+FjWQJoiNs30rt4u1O9Z_FXFB7BiS6RAQsG9ReNkA@mail.gmail.com>
+Subject: Re: brcmfmac SAE/WPA3 negotiation - Part 2
+To: Denis Kenzior <denkenz@gmail.com>
+Cc: Arend Van Spriel <arend.vanspriel@broadcom.com>, James Prestwood <prestwoj@gmail.com>, 
+	connman@lists.linux.dev, brcm80211@lists.linux.dev, 
+	linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Somewhen between 6.10 and 6.11 the driver started to crash on my
-MacBookPro14,3. The property doesn't exist and 'tmp' remains
-uninitialized, so we pass a random pointer to devm_kstrdup().
+On Mon, Jan 6, 2025 at 9:26=E2=80=AFAM Denis Kenzior <denkenz@gmail.com> wr=
+ote:
+>
+> Hi Keith,
+>
+> On 1/5/25 6:41 PM, KeithG wrote:
+> > I am looking at the iwmon logs for a successful wpa_supplicant
+> > connection versus one from IWD. Both connect and both pass data and
+> > both grab a DHCP address. I do note one difference in the connection,
+> > though.
+> >
+> > Request : Connect
+> > through the responses RTNL
+> > wpa_supplicant knows it is dynamic
+>
+> wpa_supplicant doesn't manage network interfaces.  I assume you're using =
+ConnMan
+> for this? If so, ConnMan sets the IFF_DYNAMIC flag.  See
+> https://git.kernel.org/pub/scm/network/connman/connman.git/tree/src/inet.=
+c#n372
+>
+> >
+> > Whereas the iwd log does not:
+>
+> iwd doesn't use IFF_DYNAMIC in its DHCP implementation at the moment.
+>
+> According to 'man netdevice':
+>
+>                IFF_DYNAMIC       The addresses are lost when the interfac=
+e
+>                                  goes down.
+>
+> I doubt this is the cause of your DHCP / connection problems.
+>
+> Regards,
+> -Denis
 
-Signed-off-by: Stefan Dösinger <stefan@codeweavers.com>
+Denis,
 
----
+I am using connman to manage the connections. The connman config is
+the same. The one iwmon snippet was with iwd masked and stopped but
+wpa_supplicant installed and the connect performed in connmanctl. The
+other is with wpa_supplicant removed and purged and iwd started,
+running then restarted connman then initiated a connect form
+connmanctl.
 
-v2: Don't assign err, inline of_property_read_string_index into the if
-statement.
+I pored over these logs yesterday and saw a few differences, but this
+was one that stood out. I can look closer again tonight and see if I
+notice anything else that I can summarize.
 
-The crash I am getting looks like this:
-
-BUG: unable to handle page fault for address: 00007f033c669379
-PF: supervisor read access in kernel mode
-PF: error_code(0x0001) - permissions violation
-PGD 8000000101341067 P4D 8000000101341067 PUD 101340067 PMD 1013bb067 PTE 800000010aee9025
-Oops: Oops: 0001 [#1] SMP PTI
-CPU: 4 UID: 0 PID: 827 Comm: (udev-worker) Not tainted 6.11.8-gentoo #1
-Hardware name: Apple Inc. MacBookPro14,3/Mac-551B86E5744E2388, BIOS 529.140.2.0.0 06/23/2024
-RIP: 0010:strlen+0x4/0x30
-Code: f7 75 ec 31 c0 c3 cc cc cc cc 48 89 f8 c3 cc cc cc cc 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa <80> 3f 00 74 14 48 89 f8 48 83 c0 01 80 38 00 75 f7 48 29 f8 c3 cc
-RSP: 0018:ffffb4aac0683ad8 EFLAGS: 00010202
-RAX: 00000000ffffffea RBX: 00007f033c669379 RCX: 0000000000000001
-RDX: 0000000000000cc0 RSI: 00007f033c669379 RDI: 00007f033c669379
-RBP: 00000000ffffffea R08: 0000000000000000 R09: 00000000c0ba916a
-R10: ffffffffffffffff R11: ffffffffb61ea260 R12: ffff91f7815b50c8
-R13: 0000000000000cc0 R14: ffff91fafefffe30 R15: ffffb4aac0683b30
-FS:  00007f033ccbe8c0(0000) GS:ffff91faeed00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f033c669379 CR3: 0000000107b1e004 CR4: 00000000003706f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- ? __die+0x23/0x70
- ? page_fault_oops+0x149/0x4c0
- ? raw_spin_rq_lock_nested+0xe/0x20
- ? sched_balance_newidle+0x22b/0x3c0
- ? update_load_avg+0x78/0x770
- ? exc_page_fault+0x6f/0x150
- ? asm_exc_page_fault+0x26/0x30
- ? __pfx_pci_conf1_write+0x10/0x10
- ? strlen+0x4/0x30
- devm_kstrdup+0x25/0x70
- brcmf_of_probe+0x273/0x350 [brcmfmac]
----
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-index c1f18e2fe540..1681ad00f82e 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
-@@ -99,13 +99,13 @@ int brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
- 	/* Set board-type to the first string of the machine compatible prop */
- 	root = of_find_node_by_path("/");
- 	if (root && err) {
--		char *board_type;
-+		char *board_type = NULL;
- 		const char *tmp;
- 
--		of_property_read_string_index(root, "compatible", 0, &tmp);
--
- 		/* get rid of '/' in the compatible string to be able to find the FW */
--		board_type = devm_kstrdup(dev, tmp, GFP_KERNEL);
-+		if (!of_property_read_string_index(root, "compatible", 0, &tmp))
-+			board_type = devm_kstrdup(dev, tmp, GFP_KERNEL);
-+
- 		if (!board_type) {
- 			of_node_put(root);
- 			return 0;
--- 
-2.45.2
-
+Keith
 
