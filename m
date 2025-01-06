@@ -1,149 +1,140 @@
-Return-Path: <linux-wireless+bounces-17104-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17105-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9D68A0226E
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 11:03:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96A2DA02380
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 11:53:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9FAB161E5E
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 10:03:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2891F3A4905
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 10:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44AF11D8E07;
-	Mon,  6 Jan 2025 10:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774A21DBB31;
+	Mon,  6 Jan 2025 10:53:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=codeweavers.com header.i=@codeweavers.com header.b="L/UQcYQf"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-il1-f205.google.com (mail-il1-f205.google.com [209.85.166.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.codeweavers.com (mail.codeweavers.com [4.36.192.163])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B761B87FF
-	for <linux-wireless@vger.kernel.org>; Mon,  6 Jan 2025 10:03:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.205
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82CD1DACBE
+	for <linux-wireless@vger.kernel.org>; Mon,  6 Jan 2025 10:53:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=4.36.192.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736157809; cv=none; b=FJrBbyFHVuCs8i0N9R5mRrO5XltDlG6LR7qUgHe+xw+vl/K66TNsQ3zWWTJSyKf/y80YFpO1fAzj34S9M55Lmr+1+az7485KJyh0y0cEjPqqYWo1nabhrMBlhO8vf5fn2qxbWAqsvLz4ZvpGkX0ILaxX6xXnDI0cTAfrU91AVY8=
+	t=1736160834; cv=none; b=lF7NxjXIydjuuw8gJdfxPALHutdXyc4W9Vlti6ryMKF+LcHicafcGSaF96I3838nqWxjhD64lG9YIb+1HMsvV0CcbaKj35vydSFhz/Kzu3AjDlDANInqP8c9Qwu7EGgAB9VBRjy5dRY0UzJq7Jhn/FI4YVLCuRDtg5BuNaZxBXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736157809; c=relaxed/simple;
-	bh=5rZA87sgaSizDUAhMWe2cGkjlGEgg0xeoXJfyWjS474=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=FX6Z3mmf503LzrKiguRhAyfqgGKxAgqRhOj9j2BVqi5/5NNSzpgVSwaCPLf/41W2HYM2i43faafUNtDKl+44eLJGWK4ku0MSVZa2b99u+vghYoazUolhlfpo9hOd6p+jiucSS873S5iY9CmidOrKmAomE5NW12cQ4cWnEXs236U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-il1-f205.google.com with SMTP id e9e14a558f8ab-3a9d195e6e5so128421205ab.2
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Jan 2025 02:03:26 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736157806; x=1736762606;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zwgJxPTUKSF4qMLpX2DkfpWAh4DxTz/ZHzgWcnT+2Tk=;
-        b=xQWRhOeGVo6kVT2d+H4ZHerofRIhTz85WC9YHkXCiR1oMCLkm0AO37S/lmEXjGWJLi
-         Ny2u9nGHAxdJ+rPMNoB+IIrojUDH9ZuUKYE9WrxB8UAS7ilqaw+ORstv+8LURd9We0Od
-         5Fa5dLcHBxE0ESRBsadtEC3mfjCKkKMeMJ0+o5pcCfgRz9MXJLN1ubF3U7/GWcp87tMM
-         AQ0IibXdcATyqgNSyxtOEcOXv8pr1PmkKLLy0tfa4xXgo9E4OfGXq08idAs6BL4X43vy
-         S5RmMhgn973h4Y/vppoVwMa1QVOTVv3AYEWoCXO9ntuzUxT451Goga+Ct2753KMibym5
-         g7Bg==
-X-Forwarded-Encrypted: i=1; AJvYcCXYUyNHEcvZn6ryqsieMoz4741gfRmU24KwJUqJMNpnqoZwlcw9+iAkfmIlqyqweEQSL4YoLFApM2c3BnNgig==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDRTWoVpDs7kpJnojSzVm8oL8vLIGEtZmlR+e243Y4I2CQX+K5
-	dZW5QUN3bmyO76isAYUZL9DyFQ6edl/P3TeA1fIbCS9Go5eswxVdUjPpWyYreV/31qry1kaQP/d
-	KDtOL6gx5AR+QGTCNm+anB/m9p1vlb7SVrbhhIHssz4l/Pr7Nlluc9ks=
-X-Google-Smtp-Source: AGHT+IHxGXPVKZrj2VpZjzaFaHlqwrxC7rrNNtc3hFkYAwGi2M46OrDfHFQpRKaDcq/NdmKszv4Z4T1+hmU0zc33iSOsG5WNS11o
+	s=arc-20240116; t=1736160834; c=relaxed/simple;
+	bh=K0+36D2v6Rc+wgZuICv0qcty/N/B/6RM8MSgSYV3jKg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=o/KsHdXJYcNjHSS1PmF9On5oexVP8i18sLUq0keIfxbMr/AdCi5gT467+RPCOdmjcEVyKmUIqKByvpq0/kIBuESAUVsArde6vbW4DObBqmm6mUBYoRzO+f/q6qdcM6+nyatohJeuKXLguIRx3HSc3zYMY4QNtO6vC6gdpQECe6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeweavers.com; spf=pass smtp.mailfrom=codeweavers.com; dkim=pass (2048-bit key) header.d=codeweavers.com header.i=@codeweavers.com header.b=L/UQcYQf; arc=none smtp.client-ip=4.36.192.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeweavers.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeweavers.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=codeweavers.com; s=s1; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=apR3QiAfn797MkdA0DpmauKXC0xjHsjKFMoMar/q1K4=; b=L/UQcYQfQl5dcWU4b3A/0aGxH/
+	voPgy6+cKVQbb3ZbKjcZjU8mGCecmJKaX0JSrIM1dk7zocfoHX4MhQQ32r1UtYwBvcKqbXnzFWATj
+	dIv1+HtxJFGkbSjkDXKKgE5empAL9ZcLPbxglbedNKJis7ZvFjMK6UBPq6EQTDRnjJxJKIySoNWGF
+	6OkmNiM4op349LhhKgYItjML1jnducu4yN9CfES+er5mp0hQBPyzrkbaQmjy4BXiAps1/ksRk1J/Q
+	lo/70sNWiegpP6BBRiktZ+EbYiEMsOaBIuioa37bmYtMXi2GGT9meI3LrAYqpb0UtoSDaXBrwkTOM
+	ZV1IS/Ig==;
+Received: from cw141ip135.vpn.codeweavers.com ([10.69.141.135] helo=grey.doe.home)
+	by mail.codeweavers.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <stefan@codeweavers.com>)
+	id 1tUkUb-0042Ns-2W;
+	Mon, 06 Jan 2025 04:37:54 -0600
+From: =?UTF-8?q?Stefan=20D=C3=B6singer?= <stefan@codeweavers.com>
+To: linux-wireless@vger.kernel.org
+Cc: Arend van Spriel <arend.vanspriel@broadcom.com>
+Subject: [PATCH] wifi: brcmfmac: Check the return value of of_property_read_string_index
+Date: Mon,  6 Jan 2025 13:37:49 +0300
+Message-ID: <20250106103749.5764-1-stefan@codeweavers.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:194c:b0:3a7:7811:1101 with SMTP id
- e9e14a558f8ab-3c2d53403b3mr548640155ab.20.1736157805822; Mon, 06 Jan 2025
- 02:03:25 -0800 (PST)
-Date: Mon, 06 Jan 2025 02:03:25 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <677baa6d.050a0220.a40f5.0009.GAE@google.com>
-Subject: [syzbot] [wireless?] WARNING: ODEBUG bug in __mod_timer (2)
-From: syzbot <syzbot+50abac586029cf8758e0@syzkaller.appspotmail.com>
-To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hello,
+Somewhen between 6.10 and 6.11 the driver started to crash on my
+MacBookPro14,3. The property doesn't exist and 'tmp' remains
+uninitialized, so we pass a random pointer to devm_kstrdup().
 
-syzbot found the following issue on:
+Signed-off-by: Stefan Dösinger <stefan@codeweavers.com>
 
-HEAD commit:    ccb98ccef0e5 Merge tag 'platform-drivers-x86-v6.13-4' of g..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=11a2d6df980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=86dd15278dbfe19f
-dashboard link: https://syzkaller.appspot.com/bug?extid=50abac586029cf8758e0
-compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+---
 
-Unfortunately, I don't have any reproducer for this issue yet.
+The crash I am getting looks like this:
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/d24eb225cff7/disk-ccb98cce.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/dd81532f8240/vmlinux-ccb98cce.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/18b08e4bbf40/bzImage-ccb98cce.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+50abac586029cf8758e0@syzkaller.appspotmail.com
-
-------------[ cut here ]------------
-ODEBUG: assert_init not available (active state 0) object: ffff888068a59b28 object type: timer_list hint: ieee80211_ibss_timer+0x0/0x90
-WARNING: CPU: 0 PID: 7396 at lib/debugobjects.c:612 debug_print_object+0x1a2/0x2b0 lib/debugobjects.c:612
-Modules linked in:
-CPU: 0 UID: 0 PID: 7396 Comm: kworker/u8:11 Not tainted 6.13.0-rc5-syzkaller-00004-gccb98ccef0e5 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Workqueue: events_unbound cfg80211_wiphy_work
-RIP: 0010:debug_print_object+0x1a2/0x2b0 lib/debugobjects.c:612
-Code: fc ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 75 54 48 8b 14 dd e0 81 b1 8b 41 56 4c 89 e6 48 c7 c7 60 76 b1 8b e8 5f 4d bc fc 90 <0f> 0b 90 90 58 83 05 c6 4f 7f 0b 01 48 83 c4 18 5b 5d 41 5c 41 5d
-RSP: 0000:ffffc900045ef7c8 EFLAGS: 00010286
-RAX: 0000000000000000 RBX: 0000000000000005 RCX: ffffffff815a1789
-RDX: ffff88807ea2da00 RSI: ffffffff815a1796 RDI: 0000000000000001
-RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000001 R12: ffffffff8bb17d40
-R13: ffffffff8b4f81a0 R14: ffffffff8a928850 R15: ffffc900045ef888
-FS:  0000000000000000(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+BUG: unable to handle page fault for address: 00007f033c669379
+PF: supervisor read access in kernel mode
+PF: error_code(0x0001) - permissions violation
+PGD 8000000101341067 P4D 8000000101341067 PUD 101340067 PMD 1013bb067 PTE 800000010aee9025
+Oops: Oops: 0001 [#1] SMP PTI
+CPU: 4 UID: 0 PID: 827 Comm: (udev-worker) Not tainted 6.11.8-gentoo #1
+Hardware name: Apple Inc. MacBookPro14,3/Mac-551B86E5744E2388, BIOS 529.140.2.0.0 06/23/2024
+RIP: 0010:strlen+0x4/0x30
+Code: f7 75 ec 31 c0 c3 cc cc cc cc 48 89 f8 c3 cc cc cc cc 0f 1f 40 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa <80> 3f 00 74 14 48 89 f8 48 83 c0 01 80 38 00 75 f7 48 29 f8 c3 cc
+RSP: 0018:ffffb4aac0683ad8 EFLAGS: 00010202
+RAX: 00000000ffffffea RBX: 00007f033c669379 RCX: 0000000000000001
+RDX: 0000000000000cc0 RSI: 00007f033c669379 RDI: 00007f033c669379
+RBP: 00000000ffffffea R08: 0000000000000000 R09: 00000000c0ba916a
+R10: ffffffffffffffff R11: ffffffffb61ea260 R12: ffff91f7815b50c8
+R13: 0000000000000cc0 R14: ffff91fafefffe30 R15: ffffb4aac0683b30
+FS:  00007f033ccbe8c0(0000) GS:ffff91faeed00000(0000) knlGS:0000000000000000
 CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f19769f4d58 CR3: 0000000032a52000 CR4: 00000000003526f0
+CR2: 00007f033c669379 CR3: 0000000107b1e004 CR4: 00000000003706f0
 DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
 DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 Call Trace:
  <TASK>
- debug_object_assert_init+0x1ee/0x2f0 lib/debugobjects.c:1020
- debug_timer_assert_init kernel/time/timer.c:845 [inline]
- debug_assert_init kernel/time/timer.c:890 [inline]
- __mod_timer+0xae/0xdc0 kernel/time/timer.c:1071
- ieee80211_sta_merge_ibss net/mac80211/ibss.c:1272 [inline]
- ieee80211_ibss_work+0x481/0x14c0 net/mac80211/ibss.c:1672
- ieee80211_iface_work+0xd01/0xf00 net/mac80211/iface.c:1689
- cfg80211_wiphy_work+0x3de/0x560 net/wireless/core.c:440
- process_one_work+0x958/0x1b30 kernel/workqueue.c:3229
- process_scheduled_works kernel/workqueue.c:3310 [inline]
- worker_thread+0x6c8/0xf00 kernel/workqueue.c:3391
- kthread+0x2c1/0x3a0 kernel/kthread.c:389
- ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-
-
+ ? __die+0x23/0x70
+ ? page_fault_oops+0x149/0x4c0
+ ? raw_spin_rq_lock_nested+0xe/0x20
+ ? sched_balance_newidle+0x22b/0x3c0
+ ? update_load_avg+0x78/0x770
+ ? exc_page_fault+0x6f/0x150
+ ? asm_exc_page_fault+0x26/0x30
+ ? __pfx_pci_conf1_write+0x10/0x10
+ ? strlen+0x4/0x30
+ devm_kstrdup+0x25/0x70
+ brcmf_of_probe+0x273/0x350 [brcmfmac]
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+index c1f18e2fe540..ee589a7b4f4f 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c
+@@ -99,13 +99,15 @@ int brcmf_of_probe(struct device *dev, enum brcmf_bus_type bus_type,
+ 	/* Set board-type to the first string of the machine compatible prop */
+ 	root = of_find_node_by_path("/");
+ 	if (root && err) {
+-		char *board_type;
++		char *board_type = NULL;
+ 		const char *tmp;
+ 
+-		of_property_read_string_index(root, "compatible", 0, &tmp);
++		err = of_property_read_string_index(root, "compatible", 0, &tmp);
+ 
+ 		/* get rid of '/' in the compatible string to be able to find the FW */
+-		board_type = devm_kstrdup(dev, tmp, GFP_KERNEL);
++		if (!err)
++			board_type = devm_kstrdup(dev, tmp, GFP_KERNEL);
++
+ 		if (!board_type) {
+ 			of_node_put(root);
+ 			return 0;
+-- 
+2.45.2
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
 
