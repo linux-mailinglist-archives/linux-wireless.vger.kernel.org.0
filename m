@@ -1,152 +1,166 @@
-Return-Path: <linux-wireless+bounces-17115-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17116-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8C32A02FF9
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 19:54:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25A71A03179
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 21:34:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BE8818831C9
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 18:54:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C11C18806F5
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 20:34:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD6F86359;
-	Mon,  6 Jan 2025 18:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79CD61DE2A1;
+	Mon,  6 Jan 2025 20:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=codeweavers.com header.i=@codeweavers.com header.b="kpmf6D7+"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="FMychppz"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.codeweavers.com (mail.codeweavers.com [4.36.192.163])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33B6360
-	for <linux-wireless@vger.kernel.org>; Mon,  6 Jan 2025 18:54:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=4.36.192.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47391C69D
+	for <linux-wireless@vger.kernel.org>; Mon,  6 Jan 2025 20:34:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736189657; cv=none; b=OvYjtoEPmFaYQZKBLWMt+8TbPgCImQZpNBY6gxngBiDV4dd04UAaGjEv+meR12VbLavOip+BcK6Iqsm+8CooHIN80p0kGZqhLJ5/gnNADzchm0gT5U4CnqX4vVGixufcd/3hZMGCPd1hi5plSebaGoqC8DDgNyz4LZi2cJyU/HA=
+	t=1736195648; cv=none; b=OfP+A0W7vV4KlMK9hNJ23BbjGSrgrupvJJv1DuKj4bvGSY7w/SEEvQel06sXuj3yuG1qNzrrjQreKlzdExRo2S9xQCgBPMKB8z6Y2X+QTdMnpOJTSfAjKaSoDj8VFcTt7fpkADTj/EbvTlDfmpD3ADIJqXq/2x8n4CrwsfvpJ0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736189657; c=relaxed/simple;
-	bh=D7jTUhOH/CLJqLNlmCKhWm8/E8Audw4gMaV6UPdHHmU=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UEH+k0986WUjQiU6i4nGqrabXnuZPbA7zqC6u4/lgz5kt2FTg7dx1Yp1EuxhBPa6TlHcI45/fdKWMJXzNQMoPVAbADtlN2Gs/G0yIazGg8pTfFPFnW5ASnL4ThdcRXKStE0Zle1jQFwMv5IEMC5478pZ0Bill++sNN4Ww/FXCDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeweavers.com; spf=pass smtp.mailfrom=codeweavers.com; dkim=pass (2048-bit key) header.d=codeweavers.com header.i=@codeweavers.com header.b=kpmf6D7+; arc=none smtp.client-ip=4.36.192.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeweavers.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeweavers.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=codeweavers.com; s=s1; h=Content-Type:MIME-Version:References:In-Reply-To:
-	Message-ID:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=D7jTUhOH/CLJqLNlmCKhWm8/E8Audw4gMaV6UPdHHmU=; b=kpmf6D7+wtetkfgWjx59DOlQae
-	tGmUPBTTCUyCWbXIWGQH0JjzM8fYkrgqUuD9dIQsnKyB+dTSGyrcKUMNVx5Jh6Fn7ldLbIev4yqYW
-	1kJZ6aT3nkyZPGtkRVp3KVMsJjSUyBd1s+HG2WfbGX0KawDZbBWGcEX85faGkiV8xH0gjfUjYcwD/
-	z0LCDpHACrWLoI6YwlFGJYqOMEP/ZgdO8Hr4rvH+ehxu5djocG8Wf/ZdxjsxwrJp7hvfbvyfwKpRI
-	0o192KLaIR+WJJEJ3QMSHHpbpQXdBKJsmjoeVX+nWvNIGbYgo12zazC3KKqevZ1oOBwUnK6k9P4OP
-	GozuasJA==;
-Received: from cw141ip135.vpn.codeweavers.com ([10.69.141.135] helo=grey.localnet)
-	by mail.codeweavers.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <stefan@codeweavers.com>)
-	id 1tUsEu-004iDU-2q;
-	Mon, 06 Jan 2025 12:54:13 -0600
-From: Stefan =?UTF-8?B?RMO2c2luZ2Vy?= <stefan@codeweavers.com>
-To: linux-wireless@vger.kernel.org,
- Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject:
- Re: [PATCH] wifi: brcmfmac: Check the return value of
- of_property_read_string_index
-Date: Mon, 06 Jan 2025 21:53:57 +0300
-Message-ID: <5848081.DvuYhMxLoT@grey>
-Organization: CodeWeavers
-In-Reply-To: <4619776.LvFx2qVVIh@grey>
-References:
- <20250106103749.5764-1-stefan@codeweavers.com>
- <058aba76-817c-480a-9404-38b030325890@broadcom.com> <4619776.LvFx2qVVIh@grey>
+	s=arc-20240116; t=1736195648; c=relaxed/simple;
+	bh=5BevhNW2iK55uA4Y0c1MHgtpjZI0IOrACQc4C/pl/l0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=hC+Vw7KMkZSIVstlA2zCm7suhO804sF3EVqsEFjS97YZlr+4tTkYVo3qH91bAL14yP7WZFFTcEgDKIrZt6eTyuf/Ouiiq7uxZjxp1XGRIvJF5E/bSVH16H+n3dbptqgLutCZD9vl+BUwOAKJJFvih5XkQzSllbLLSP99SCv6Xb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=FMychppz; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 506E5bkv004556
+	for <linux-wireless@vger.kernel.org>; Mon, 6 Jan 2025 20:34:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=q/INDQ7qjJ0ZJyPA3Jb+3D
+	Xmxw6G5RVrvKrAA+KLfMo=; b=FMychppzcMZbzg0Rar8uO5wMwUJhKvl0gjGnWK
+	a9eCfncGDekyUQdTy46AeFyXFh1b/a2oBGMplqjsla4j0In88TSBGeT5DBby7Dlr
+	8nb6HbGR6RLN/rQ9VLnQCUvuKSrPu7TFZRAwzGMlv5jgt2udNYueuPN/YSU7bn2Y
+	GYyUUS4VO34xzyxivMfV7BV7wAPn55L/VCkn/O8igzUfMD5STVa6/wXNYzVGIoif
+	ta22mO7d5xJMNtCqSk2neLcZzKEFFJ+AAQfwIZPs35CzDLamLNco+iTuSWYFyL/P
+	nspBiNjJS5zA/5QKljjSYWvOU6ok2r0o28M64FlnGSWXm3yg==
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 440gmtgtf6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Mon, 06 Jan 2025 20:34:05 +0000 (GMT)
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-21661949f23so351866795ad.3
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Jan 2025 12:34:05 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736195644; x=1736800444;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=q/INDQ7qjJ0ZJyPA3Jb+3DXmxw6G5RVrvKrAA+KLfMo=;
+        b=s0rUbF65q2kwg+54ix0pYF+rWXXmBjGI/BgCWs+XtvSHiTxvrAaQ4PUfcjqeZ7Hrxe
+         SRGzrlcVOXDWDCgeycXu9m3toKpJokV4RC3B8mPgDIOVgVriAXc2vSLa2E2Je14jR/Uk
+         4o33d1W8KZhuMQ53ISEvowdxTUFxZgTHbjCUKh/krQD2zAk8tyXA3c4QOWKd1kIfLutF
+         ZBRP+oA7EinEq+MDpgB+9hwIj6V0wZHyCxG37SjBhW+rxfKfdVIbl91nu/UW6rVqlF00
+         Ib89qRGQ6UTOYd1k+GWYyYVE3+4MBJzF9jYP+ZmfrXFNS1p71Gl/359r9WO9CKPNz8wj
+         TS7A==
+X-Gm-Message-State: AOJu0Yz77Gn0FfaMZ3+aDZRqBPzbTKjdxXek0AYy/4oBhJ3/AnxHxnKq
+	YjGnl01vj/lqkVd2QBKhd/vBXx0xnDFgz7cbp+sFp2en/sJE2bdhakx34t4cAbrVZRWx8PFrCd/
+	dgwKk/4yKidHtMyyPgxLW6ml9K7SaMBIBuY3XEN7BbQaWvICcJtDH++gkBBCkU99wZw==
+X-Gm-Gg: ASbGncsZ2/UNhGU+70CUw7y3O5NWkcjO/dfphxs4985EpA5Hq7+TeLENwY4RBR8Jxq2
+	W2jMCOfypabyWJOmziis01rgIaWJ0WFR6p6sJBmyThdRg93NXNIwghfDPlfNP9Cuh2TvKDYpIAG
+	6qugToGNdN60swpVXRp1L/yLWDABTDNp2oQi0H/jzOO3IuIefn1IP0t1+W1ZC5jIWjsWlreNLvn
+	INuDS2rq91xCtJovr5RThuiUv60fVhRGhMdmYCpiEK0SALffQk1etCBUXgTHX/iQFk96UPzBBy7
+	uGPDrAJOPyB/rRCzQA==
+X-Received: by 2002:a17:903:120d:b0:216:5af7:5a8e with SMTP id d9443c01a7336-219e6ebdc17mr897346985ad.26.1736195644262;
+        Mon, 06 Jan 2025 12:34:04 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IH1weE5s3+aLjElRwpdx44ObYuQj/BDyTP7J1GtI39oyYh/6nED8ahsQdSpNFr2DPhdiLxiTQ==
+X-Received: by 2002:a17:903:120d:b0:216:5af7:5a8e with SMTP id d9443c01a7336-219e6ebdc17mr897346725ad.26.1736195643802;
+        Mon, 06 Jan 2025 12:34:03 -0800 (PST)
+Received: from [169.254.0.1] (Global_NAT1.qualcomm.com. [129.46.96.20])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc9d44a0sm296196145ad.165.2025.01.06.12.34.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jan 2025 12:34:03 -0800 (PST)
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Date: Mon, 06 Jan 2025 12:34:02 -0800
+Subject: [PATCH] wifi: brcmfmac: Add missing Return: to function
+ documentation
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart6115668.lOV4Wx5bFT";
- micalg="pgp-sha256"; protocol="application/pgp-signature"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250106-brcmfmac-kdoc-v1-1-ed72196e21a1@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIADk+fGcC/x3MSw7CMAwA0atUXmMpiSi/qyAWTuJSC5KiGNFKV
+ e+OYfkWMysoN2GFS7dC44+oTNXgdx2kkeqdUbIZggu98+6AsaUyFEr4yFNCn/fn0zGESDGDNa/
+ Ggyz/3/VmjqRsCdU0/i6zNH6yKlZe3lhIKmzbF8JMt++EAAAA
+To: Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, brcm80211@lists.linux.dev,
+        brcm80211-dev-list.pdl@broadcom.com, linux-kernel@vger.kernel.org,
+        Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+X-Mailer: b4 0.14.0
+X-Proofpoint-ORIG-GUID: pTFY0G3TDupUx99pE_OAw-PIsF2gjzmY
+X-Proofpoint-GUID: pTFY0G3TDupUx99pE_OAw-PIsF2gjzmY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
+ mlxscore=0 mlxlogscore=999 clxscore=1015 impostorscore=0 adultscore=0
+ spamscore=0 priorityscore=1501 suspectscore=0 bulkscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501060179
 
---nextPart6115668.lOV4Wx5bFT
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
-From: Stefan =?UTF-8?B?RMO2c2luZ2Vy?= <stefan@codeweavers.com>
-Date: Mon, 06 Jan 2025 21:53:57 +0300
-Message-ID: <5848081.DvuYhMxLoT@grey>
-Organization: CodeWeavers
-In-Reply-To: <4619776.LvFx2qVVIh@grey>
-MIME-Version: 1.0
+Running 'scripts/kernel-doc -Wall -Werror -none' flagged the following
+kernel-doc issues:
 
-Hello Arend,
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:823: warning: No description found for return value of 'brcmf_apsta_add_vif'
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:907: warning: No description found for return value of 'brcmf_mon_add_vif'
+drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:7419: warning: No description found for return value of 'brcmf_setup_ifmodes'
 
-Am Montag, 6. Januar 2025, 14:22:29 Ostafrikanische Zeit schrieb Stefan=20
-D=C3=B6singer:
-> Am Montag, 6. Januar 2025, 14:02:17 Ostafrikanische Zeit schrieb Arend van
->=20
-> Spriel:
-> > On 1/6/2025 11:37 AM, Stefan D=C3=B6singer wrote:
-> > > Somewhen between 6.10 and 6.11 the driver started to crash on my
-> > > MacBookPro14,3. The property doesn't exist and 'tmp' remains
-> > > uninitialized, so we pass a random pointer to devm_kstrdup().
-> >=20
-> > By the looks of it this is an intel-based platform. Is that correct? So
-> > does it have a devicetree? I would expect the root node find to fail,
-> > but apparently is does not. Strange though that root node does not have
-> > a compatible property. Anyway, the analysis looks sane so ...
->=20
-> Yes, this is an Intel based MacBook Pro - the 2017 version.
+Add the missing 'Return:' tags to the kernel-doc of these functions.
 
-I have an updated theory why the codepath was entered: My kernel config had=
-=20
-CONFIG_OF (and CONFIG_OF_OVERLAY) enabled. I did not provide any DTBs on bo=
-ot,=20
-but this configuration apparently resulted in an empty root node being foun=
-d.=20
-I also see an empty (0 byte) /proc/device-tree/name file. With CONFIG_OF=3D=
-n the=20
-of.c file isn't compiled in the first place.
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+---
+FYI these issues were observed as part of my internal pre-commit
+checking of an upcoming cfg80211 change that modifies a driver API.
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-I think we still want to patch the code. While enabling this option on=20
-standard x86 is arguably wrong, the driver shouldn't crash because of it.
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+index 902ac3108782..4b70845e1a26 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -814,6 +814,8 @@ static int brcmf_cfg80211_request_ap_if(struct brcmf_if *ifp)
+  * @name: name of the new interface.
+  * @params: contains mac address for AP or STA device.
+  * @type: interface type.
++ *
++ * Return: pointer to new vif on success, ERR_PTR(-errno) if not
+  */
+ static
+ struct wireless_dev *brcmf_apsta_add_vif(struct wiphy *wiphy, const char *name,
+@@ -900,6 +902,8 @@ static bool brcmf_is_ibssmode(struct brcmf_cfg80211_vif *vif)
+  *
+  * @wiphy: wiphy device of new interface.
+  * @name: name of the new interface.
++ *
++ * Return: pointer to new vif on success, ERR_PTR(-errno) if not
+  */
+ static struct wireless_dev *brcmf_mon_add_vif(struct wiphy *wiphy,
+ 					      const char *name)
+@@ -7412,6 +7416,8 @@ brcmf_txrx_stypes[NUM_NL80211_IFTYPES] = {
+  * p2p, rsdb, and no mbss:
+  *	#STA <= 1, #P2P-DEV <= 1, #{P2P-CL, P2P-GO} <= 2, AP <= 2,
+  *	 channels = 2, 4 total
++ *
++ * Return: 0 on success, negative errno on failure
+  */
+ static int brcmf_setup_ifmodes(struct wiphy *wiphy, struct brcmf_if *ifp)
+ {
 
-I don't know where CONFIG_OF=3Dy came from. This is a kernel configuration =
-grown=20
-over 15 years. I might have accidentally enabled it in a "make oldconfig" r=
-un,=20
-or I enabled it 'just in case' without knowing what I was doing - this=20
-particular Linux installation is on a USB drive that I plug into many=20
-different x86_64 computers, so I enabled pretty much every driver (as a mod=
-ule=20
-if possible).
-
---nextPart6115668.lOV4Wx5bFT
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEQxb0tqoFWyeVMl1sPRO8yFRPGiIFAmd8JsUACgkQPRO8yFRP
-GiKyvA/9FNr8N3NFvVPQF8DwM5hpKSCXVxbDKJSXpQM3odmBf3CzAldk3gjbwhZp
-+9qw1AGfDe9vzrzRuHFnmD6ofkmOVL5Pe5f+xIhpi+FWwRiNJN1X9evF5t6WmVvc
-g35zNfeDfNh03LQuGJcgL4PvRbeZrrOTQOH4fqJx9EgK4wILcib8OWZ7+9B4RdPC
-hf1bCG/Eds1jpl9BKcoTF32L+XyOSg3/toHlCPbGLdB3H7vLEQDUHPMhEdRIrkD/
-169yWcZX86G9aVnys7vTXefKvu5LzhJxRJxhqGWLCsY6jNy5YR8841pp4kTkYly0
-s+APBpsjfxZL1dztLxjDW6HNfEJerVnopsOPcmi9AD7mVwA3KPG7biy8FR1JxhqK
-L8265BTxqSyb8ribjlRYuL1mpuin60nUUgenIlQeu7qye1pkbPEh8Ku32OBAPGpZ
-f6ELGNvvYpm0h2VAc/ldenVSpaNwSzsvoCGhXJypnm56Qo3FRuy25T7ScLt4R8f5
-Gov2vkeLddjB6meXlQlKEdGdE7MZzZvYhLabUzr6J4yo9M5BqG9GdZek5mZg7cfu
-aUGh67NI2csdOXX7XVVf1wSMFjP9LW1HUfRg69A+lza4f8uAf/pypiX2aotZEEvz
-u/UzPyPliZkvSgeTolUN869mjeVcAtjkKMquKU1ZIOXhQHz/70s=
-=aGl+
------END PGP SIGNATURE-----
-
---nextPart6115668.lOV4Wx5bFT--
-
-
+---
+base-commit: b73e56f16250c6124f8975636f1844472f6fd450
+change-id: 20250106-brcmfmac-kdoc-1d498722babd
 
 
