@@ -1,124 +1,152 @@
-Return-Path: <linux-wireless+bounces-17114-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17115-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2AE6A02F60
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 19:01:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8C32A02FF9
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 19:54:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B1401885306
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 18:01:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BE8818831C9
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 18:54:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF37E1DF27C;
-	Mon,  6 Jan 2025 18:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD6F86359;
+	Mon,  6 Jan 2025 18:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U9JtwSRg"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=codeweavers.com header.i=@codeweavers.com header.b="kpmf6D7+"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.codeweavers.com (mail.codeweavers.com [4.36.192.163])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A1E1DEFE8;
-	Mon,  6 Jan 2025 18:01:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33B6360
+	for <linux-wireless@vger.kernel.org>; Mon,  6 Jan 2025 18:54:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=4.36.192.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736186497; cv=none; b=p/m+t+CamDYii04ECzke1yrxZlWkHH/NFTle4amHwG2eU+7PvPyRd9U6x4P2XreO+Rw3XLPh04esY5n9kPGL6QPM9T/ZtNNsh5Cm/Va2MkOwYDSVirix0H7ikVSBTrpVnn/Ihesz4O/V5cE8pQnPXC+2p2WpQqLENkyOt5mUugU=
+	t=1736189657; cv=none; b=OvYjtoEPmFaYQZKBLWMt+8TbPgCImQZpNBY6gxngBiDV4dd04UAaGjEv+meR12VbLavOip+BcK6Iqsm+8CooHIN80p0kGZqhLJ5/gnNADzchm0gT5U4CnqX4vVGixufcd/3hZMGCPd1hi5plSebaGoqC8DDgNyz4LZi2cJyU/HA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736186497; c=relaxed/simple;
-	bh=25zFiJ9WjdEaOSKemZTpzQCKjyijqwYYUDaKfAMPw0I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ckS9Zi7tgaaMXbmz13J3S4aj0EmscgODMPJ6TVariiWNmbWfaovPCugqI3hFwfL4f69w2Af63TFjrKMAEcdd3PsQiCq3yunBUUEot3GyAOepv9JRjoy05vRM7//f8DBmDRI5HUToWQWV2yA+CvxlOG66Fyg23XTAnaxODyjr5tA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U9JtwSRg; arc=none smtp.client-ip=209.85.160.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-29fe83208a4so7031194fac.0;
-        Mon, 06 Jan 2025 10:01:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736186491; x=1736791291; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=o2RF1hIS1QqUJA0GJuODmz1eNECfJRbd58h+IrA3gWc=;
-        b=U9JtwSRgEVwRj0VRE7ftVXMcY5O/Zn2GeHcwnTnsJq9EetHbzTSiDVl88fedZCcd/4
-         4mhreEUF0o9TuJhm1zwroaor8HEH36h/kBw/jjB4+nBqWFLffeajESsn4A7ZU465kHc4
-         XQL3gnogxV/HDlasLLopdd6b41rqz4ZPkTH+HfKYGc0S/siZ1uSYAUBMSzrwsG8u9RF/
-         KlH4rKixmHd9wloFRdEdCKzYP1YjvlUqZo+pTV4kp2DmD088cQPNnO3y7h+T3ClRvIyd
-         rsXTpE0URGNH0vlUY+X8xcF4RDdl1JYOUdwjoHy8FNsjHGmcLyWC2gCS8mcDOO86rGSp
-         wNNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736186491; x=1736791291;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=o2RF1hIS1QqUJA0GJuODmz1eNECfJRbd58h+IrA3gWc=;
-        b=ZoMDY3HGdwf5JI9tTUVJBUHB0CoVYQJ74UCvT4FjdX+3+iCebrHPVXFnbj+ha61sWZ
-         hSQvzdgSsmPeC8U6x/oCHxf6auuYNJ3NP0ESgb89hupvtMYS6/NKPtpFY7Nn160kmw4t
-         v40cIT3eNKkQyjVP5QEprw3QmvGYwps9cqoDDL09WBzcavmeGvHh4SvQjmBhBoEx5Z/0
-         9Td/SxOm63LaAZUn0CBg5LP3mHpv72RHuo4FhZR5vGZ6lfNwMngzcK8nc4I7D12O93rK
-         EmeRMtsfx+uCutJXuxdWiJwVY5JHf6yihzoywbTcEJu1Ffbe9Pbx0GpMDplB7Kt0FEjW
-         8J5Q==
-X-Forwarded-Encrypted: i=1; AJvYcCV5A6hJnYZoN+EzVQg7JkvWPE7eROkkW6UGE8GK9pzvLUkhMAucr9CHumzlIsP1bQ8tDNuuLdTWAAoO8pEr1Q==@vger.kernel.org, AJvYcCWKrSP+XRWuoHYrdB+4GBbCPWr70iBu238ew0JZm848SNLkB3s5n7Jk61kkXr5B88kO0Uv+vEI+@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzec7RERtdPFV7gHziJTrCAnb+BHNBzWHxsMTIndwLZJGokLgOx
-	QeGyrpUImcikNoDoTpAXao7qDOFJjSl/y8EElrzzAs/17aNfKlGEzBkRLuwrP4OwnzqmUE8zUYE
-	kkk0UMBXrYQ+e05zg/2nVaNXriC6HBA==
-X-Gm-Gg: ASbGnctpC6qdisVTtj6zgs+3V1AjI0ECmhjt6PBz3E8BWTaFZQ7rKhrTZ9deo7rL1lN
-	04xQiFOghgSK3lqW1Tn8kc4ctrY/RZxwfZRAF1s8yysWNANjKWPeHfT2KdsSOv8GH8OPRGP+K
-X-Google-Smtp-Source: AGHT+IHMMQMkhdcjtXckGaDXHbmnwQmQ9zOSfOOKxy4QAUALfxddplOM2flNcf+B+K19MWN4bfFtInVgfHk9UzabP60=
-X-Received: by 2002:a05:6871:53c6:b0:29f:c94b:3a06 with SMTP id
- 586e51a60fabf-2a9eaaa6de6mr143701fac.8.1736186490022; Mon, 06 Jan 2025
- 10:01:30 -0800 (PST)
+	s=arc-20240116; t=1736189657; c=relaxed/simple;
+	bh=D7jTUhOH/CLJqLNlmCKhWm8/E8Audw4gMaV6UPdHHmU=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UEH+k0986WUjQiU6i4nGqrabXnuZPbA7zqC6u4/lgz5kt2FTg7dx1Yp1EuxhBPa6TlHcI45/fdKWMJXzNQMoPVAbADtlN2Gs/G0yIazGg8pTfFPFnW5ASnL4ThdcRXKStE0Zle1jQFwMv5IEMC5478pZ0Bill++sNN4Ww/FXCDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeweavers.com; spf=pass smtp.mailfrom=codeweavers.com; dkim=pass (2048-bit key) header.d=codeweavers.com header.i=@codeweavers.com header.b=kpmf6D7+; arc=none smtp.client-ip=4.36.192.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeweavers.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeweavers.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=codeweavers.com; s=s1; h=Content-Type:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=D7jTUhOH/CLJqLNlmCKhWm8/E8Audw4gMaV6UPdHHmU=; b=kpmf6D7+wtetkfgWjx59DOlQae
+	tGmUPBTTCUyCWbXIWGQH0JjzM8fYkrgqUuD9dIQsnKyB+dTSGyrcKUMNVx5Jh6Fn7ldLbIev4yqYW
+	1kJZ6aT3nkyZPGtkRVp3KVMsJjSUyBd1s+HG2WfbGX0KawDZbBWGcEX85faGkiV8xH0gjfUjYcwD/
+	z0LCDpHACrWLoI6YwlFGJYqOMEP/ZgdO8Hr4rvH+ehxu5djocG8Wf/ZdxjsxwrJp7hvfbvyfwKpRI
+	0o192KLaIR+WJJEJ3QMSHHpbpQXdBKJsmjoeVX+nWvNIGbYgo12zazC3KKqevZ1oOBwUnK6k9P4OP
+	GozuasJA==;
+Received: from cw141ip135.vpn.codeweavers.com ([10.69.141.135] helo=grey.localnet)
+	by mail.codeweavers.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <stefan@codeweavers.com>)
+	id 1tUsEu-004iDU-2q;
+	Mon, 06 Jan 2025 12:54:13 -0600
+From: Stefan =?UTF-8?B?RMO2c2luZ2Vy?= <stefan@codeweavers.com>
+To: linux-wireless@vger.kernel.org,
+ Arend van Spriel <arend.vanspriel@broadcom.com>
+Subject:
+ Re: [PATCH] wifi: brcmfmac: Check the return value of
+ of_property_read_string_index
+Date: Mon, 06 Jan 2025 21:53:57 +0300
+Message-ID: <5848081.DvuYhMxLoT@grey>
+Organization: CodeWeavers
+In-Reply-To: <4619776.LvFx2qVVIh@grey>
+References:
+ <20250106103749.5764-1-stefan@codeweavers.com>
+ <058aba76-817c-480a-9404-38b030325890@broadcom.com> <4619776.LvFx2qVVIh@grey>
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250106135434.35936-1-fiona.klute@gmx.de>
-In-Reply-To: <20250106135434.35936-1-fiona.klute@gmx.de>
-From: Vasily Khoruzhick <anarsoul@gmail.com>
-Date: Mon, 6 Jan 2025 10:01:03 -0800
-Message-ID: <CA+E=qVfEdGjDQOftmGfx4e+iw0an6x+ff=Eg_EjRkm-98Vw2Xg@mail.gmail.com>
-Subject: Re: [PATCH] wifi: rtw88: sdio: Fix disconnection after beacon loss
-To: Fiona Klute <fiona.klute@gmx.de>
-Cc: Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org, 
-	Kalle Valo <kvalo@kernel.org>, Bitterblue Smith <rtl8821cerfe2@gmail.com>, Ondrej Jirman <megi@xff.cz>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; boundary="nextPart6115668.lOV4Wx5bFT";
+ micalg="pgp-sha256"; protocol="application/pgp-signature"
+
+--nextPart6115668.lOV4Wx5bFT
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
+From: Stefan =?UTF-8?B?RMO2c2luZ2Vy?= <stefan@codeweavers.com>
+Date: Mon, 06 Jan 2025 21:53:57 +0300
+Message-ID: <5848081.DvuYhMxLoT@grey>
+Organization: CodeWeavers
+In-Reply-To: <4619776.LvFx2qVVIh@grey>
+MIME-Version: 1.0
 
-On Mon, Jan 6, 2025 at 5:54=E2=80=AFAM Fiona Klute <fiona.klute@gmx.de> wro=
-te:
->
-> This is the equivalent of 28818b4d871bc93cc4f5c7c7d7c526a6a096c09c
-> "wifi: rtw88: usb: Fix disconnection after beacon loss" for SDIO
-> chips. Tested on Pinephone (RTL8723CS), random disconnections became
-> rare, instead of a frequent nuisance.
->
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
+Hello Arend,
 
-Tested-by: Vasily Khoruzhick <anarsoul@gmail.com> # Tested on Pinebook
+Am Montag, 6. Januar 2025, 14:22:29 Ostafrikanische Zeit schrieb Stefan=20
+D=C3=B6singer:
+> Am Montag, 6. Januar 2025, 14:02:17 Ostafrikanische Zeit schrieb Arend van
+>=20
+> Spriel:
+> > On 1/6/2025 11:37 AM, Stefan D=C3=B6singer wrote:
+> > > Somewhen between 6.10 and 6.11 the driver started to crash on my
+> > > MacBookPro14,3. The property doesn't exist and 'tmp' remains
+> > > uninitialized, so we pass a random pointer to devm_kstrdup().
+> >=20
+> > By the looks of it this is an intel-based platform. Is that correct? So
+> > does it have a devicetree? I would expect the root node find to fail,
+> > but apparently is does not. Strange though that root node does not have
+> > a compatible property. Anyway, the analysis looks sane so ...
+>=20
+> Yes, this is an Intel based MacBook Pro - the 2017 version.
 
-> ---
->  drivers/net/wireless/realtek/rtw88/sdio.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wire=
-less/realtek/rtw88/sdio.c
-> index 799230eb5f1..e024061bdbf 100644
-> --- a/drivers/net/wireless/realtek/rtw88/sdio.c
-> +++ b/drivers/net/wireless/realtek/rtw88/sdio.c
-> @@ -1192,6 +1192,8 @@ static void rtw_sdio_indicate_tx_status(struct rtw_=
-dev *rtwdev,
->         struct ieee80211_tx_info *info =3D IEEE80211_SKB_CB(skb);
->         struct ieee80211_hw *hw =3D rtwdev->hw;
->
-> +       skb_pull(skb, rtwdev->chip->tx_pkt_desc_sz);
-> +
->         /* enqueue to wait for tx report */
->         if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS) {
->                 rtw_tx_report_enqueue(rtwdev, skb, tx_data->sn);
-> --
-> 2.47.1
->
+I have an updated theory why the codepath was entered: My kernel config had=
+=20
+CONFIG_OF (and CONFIG_OF_OVERLAY) enabled. I did not provide any DTBs on bo=
+ot,=20
+but this configuration apparently resulted in an empty root node being foun=
+d.=20
+I also see an empty (0 byte) /proc/device-tree/name file. With CONFIG_OF=3D=
+n the=20
+of.c file isn't compiled in the first place.
+
+I think we still want to patch the code. While enabling this option on=20
+standard x86 is arguably wrong, the driver shouldn't crash because of it.
+
+I don't know where CONFIG_OF=3Dy came from. This is a kernel configuration =
+grown=20
+over 15 years. I might have accidentally enabled it in a "make oldconfig" r=
+un,=20
+or I enabled it 'just in case' without knowing what I was doing - this=20
+particular Linux installation is on a USB drive that I plug into many=20
+different x86_64 computers, so I enabled pretty much every driver (as a mod=
+ule=20
+if possible).
+
+--nextPart6115668.lOV4Wx5bFT
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEQxb0tqoFWyeVMl1sPRO8yFRPGiIFAmd8JsUACgkQPRO8yFRP
+GiKyvA/9FNr8N3NFvVPQF8DwM5hpKSCXVxbDKJSXpQM3odmBf3CzAldk3gjbwhZp
++9qw1AGfDe9vzrzRuHFnmD6ofkmOVL5Pe5f+xIhpi+FWwRiNJN1X9evF5t6WmVvc
+g35zNfeDfNh03LQuGJcgL4PvRbeZrrOTQOH4fqJx9EgK4wILcib8OWZ7+9B4RdPC
+hf1bCG/Eds1jpl9BKcoTF32L+XyOSg3/toHlCPbGLdB3H7vLEQDUHPMhEdRIrkD/
+169yWcZX86G9aVnys7vTXefKvu5LzhJxRJxhqGWLCsY6jNy5YR8841pp4kTkYly0
+s+APBpsjfxZL1dztLxjDW6HNfEJerVnopsOPcmi9AD7mVwA3KPG7biy8FR1JxhqK
+L8265BTxqSyb8ribjlRYuL1mpuin60nUUgenIlQeu7qye1pkbPEh8Ku32OBAPGpZ
+f6ELGNvvYpm0h2VAc/ldenVSpaNwSzsvoCGhXJypnm56Qo3FRuy25T7ScLt4R8f5
+Gov2vkeLddjB6meXlQlKEdGdE7MZzZvYhLabUzr6J4yo9M5BqG9GdZek5mZg7cfu
+aUGh67NI2csdOXX7XVVf1wSMFjP9LW1HUfRg69A+lza4f8uAf/pypiX2aotZEEvz
+u/UzPyPliZkvSgeTolUN869mjeVcAtjkKMquKU1ZIOXhQHz/70s=
+=aGl+
+-----END PGP SIGNATURE-----
+
+--nextPart6115668.lOV4Wx5bFT--
+
+
+
 
