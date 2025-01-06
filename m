@@ -1,152 +1,149 @@
-Return-Path: <linux-wireless+bounces-17103-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17104-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47F2CA02172
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 10:06:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9D68A0226E
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 11:03:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95D1F1883FB2
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 09:06:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9FAB161E5E
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 10:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D6331D514E;
-	Mon,  6 Jan 2025 09:06:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b="MEwEpiZ6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44AF11D8E07;
+	Mon,  6 Jan 2025 10:03:29 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazolkn19010009.outbound.protection.outlook.com [52.103.66.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f205.google.com (mail-il1-f205.google.com [209.85.166.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C97E1D63CF
-	for <linux-wireless@vger.kernel.org>; Mon,  6 Jan 2025 09:06:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.66.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736154407; cv=fail; b=lgiDiKoGikN/pvgVQ+G7xjslc7gEDmxyEFtBA9jQcU1+gYAEbtMjS65SH7rZ2QUMmWysgScu/JZXcefGDh6VR/5up8kKZ4K141RiVxnaccRgvlO+KQ9wdosZtGw9o4bxaELnm45tJub3N5Dwv4s/dnO1EpT1yR8dFCtpi16lVVQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736154407; c=relaxed/simple;
-	bh=xWUOBF7QuLSziv7dAKVXSbLnKKc8rXfXd7WrylHYU/Y=;
-	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version; b=fuAuYyAMcOAQoO03LZuPADKGhOnh3FgiLy7WfbxMEC3OfbUkj6jykFxoWWoDapJrDz7caGZcX8+rvYPgAqAe4L0JIgonEFW7faRz0ea82ms22hO8EBXtb47DstO3Dp8gArE2R1SqYUKnWLOptBaEzPFuRz+LmQmKb+wFNzarDbI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com; spf=pass smtp.mailfrom=live.com; dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b=MEwEpiZ6; arc=fail smtp.client-ip=52.103.66.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=live.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bNHxfIbq4FapoQGMy1mge50Gq+vkX0/rdpqR0h7JdHVwGxSX3XM1Pd3WolqIzJO3Z1fSMzHcTVq/8V7pl4CFlkwPBQh5IDtvY8vRVEZ4U9nC1Jj+AHMvxdB40MhgzwoifXgF3aLGvG52ccI0C6aKsSDI/zlxpqL0ks9YZ17aOdeb+lfoQ/ax/fS/FIzskqL+ap1qHFf7Wv7ONGUcWGnxaVZltKKhu1jRXKi78RTz5QnTt0WEn5AmrqmZR1z2DG1TOMjfXnih0NP/HoKIXOhFD1HdFufGu7LWgqIatIbwOk+axL92cULMkwHPbhjwF2JqbS0j1IF/Naxn3wLFuJv2/w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xWUOBF7QuLSziv7dAKVXSbLnKKc8rXfXd7WrylHYU/Y=;
- b=gLGUZQ0Y80sTELnlBhjNk0K1+MXzbhgIE2CgGBrNPP3eAAOouEEdHGLZHejEawUl3v+3FPfiI3oGbQHViAIOt4iOoH3OAts02ad19fOwYC5vnNS7sZtRtju72iOeRtDC009d+3XPepuAz1AYCd41kDt+poV4XFmoB0ll6+pxoZbR9N1BcWiynGAZjDyive7xUIDCkJwfKmLGaLFdVNBnynHanYJR2K6KosB+yJuNpxkYM0GBKXQnevk8i0JJ2JoT24I2WRHIkuIrKO1pmkySTW4M/zq1MTb4kZIRTKDl0x+i2OhDiKOl8+Xm/kTxr5WOE6G1xKhf31SyPFCgNIOWmQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xWUOBF7QuLSziv7dAKVXSbLnKKc8rXfXd7WrylHYU/Y=;
- b=MEwEpiZ6Nn6X3mhRiK1uEKNMW0l0IBws5Q+bki/2VG4x7bq7zvDwa2pv4+xf2nGGFaOSVo3TwLS+XzFER9dq1DyfJ0esIGQr+74Ub+bljJVibUpt9DXteJgjfykYZpSEqV6yV3rk4dU4wI1ZhWni42vhdrMGPCOvsN/0rDNzdhygp5/QA3m0Uc25ueHTWbqQ3qeTq6Tnum3WzBgR3ECwp+G2I1P93RtD73aQOSGgNkfKEC6VirXaQATcvabYevAtpHiFlOcLvrIdeDy+FcnEFibEB0wrddfUcS4V4kSeZJISzgVlZG7fE9kX+N7bymbHHyZI2z6HdtQI1P+0Y5vA+Q==
-Received: from OS3P286MB1520.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:179::14)
- by TYWP286MB2939.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:2ff::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8314.17; Mon, 6 Jan
- 2025 09:06:43 +0000
-Received: from OS3P286MB1520.JPNP286.PROD.OUTLOOK.COM
- ([fe80::ecac:4aaa:76ba:91f2]) by OS3P286MB1520.JPNP286.PROD.OUTLOOK.COM
- ([fe80::ecac:4aaa:76ba:91f2%4]) with mapi id 15.20.8314.015; Mon, 6 Jan 2025
- 09:06:43 +0000
-From: Jingwei LI <marscatcn@live.com>
-To: "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: Inquiry Mesh Point Mode Support for mt7921au USB
-Thread-Topic: Inquiry Mesh Point Mode Support for mt7921au USB
-Thread-Index: AQHbYBpD1FF+TbpcSUG1dfHyQJzpuw==
-Date: Mon, 6 Jan 2025 09:06:43 +0000
-Message-ID:
- <OS3P286MB1520BBA59C7E5E2C1F015FBED5102@OS3P286MB1520.JPNP286.PROD.OUTLOOK.COM>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: OS3P286MB1520:EE_|TYWP286MB2939:EE_
-x-ms-office365-filtering-correlation-id: 8d818920-40d9-483c-1f54-08dd2e317086
-x-microsoft-antispam:
- BCL:0;ARA:14566002|8060799006|15080799006|8062599003|15030799003|461199028|7092599003|19110799003|440099028|3412199025|102099032;
-x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?O1y0dqgj/eDy9J9STmjuXn69A0PGmw5ILKN+YROgnrA5sw3KnyOvb7XN0L?=
- =?iso-8859-1?Q?13w1JTqVg/wz9PJyYiXRTJJ4SbzAensd5tLjgLz4vamMSccl46rRW94Q6t?=
- =?iso-8859-1?Q?c/08cuHKGU4M0hr82qPT1JE622npx9bg04VS1OYtWhVklihrqxeQh1rlib?=
- =?iso-8859-1?Q?aIkXcl/1VUNlnvl2E6J8tesN2t2XfM9+/k0LzTKqWXdVZHogpQN/orb3yS?=
- =?iso-8859-1?Q?7U6t4NvTNJodtQCMXXLr07JQWi1ZbUJT972pUhRArvE+53g0y4jkdqzDBl?=
- =?iso-8859-1?Q?5gM7ekuwnXm1U3psaas3iVNaiahOvF5GmG8Z+BS0k07gM0N0p50R79++nF?=
- =?iso-8859-1?Q?vlojZ89+zfDuefEEGl6dEmpib5ZESBKI5MigGoKToXL6P8DM/GzoKLgXjR?=
- =?iso-8859-1?Q?fyU5WrfaSDb8iI3KdPehS8FsTpCqvMHiZu1RvQKVaXkg0p2rfYYuqNXSHy?=
- =?iso-8859-1?Q?vR+Lq5Epwlp30grMGEYJsLu7C2N0mPUezh0JrF2VPnrWIG+Pinx2pCLtui?=
- =?iso-8859-1?Q?3vnkQRMs2mXGeJjXLKEeeHerghdyQat9ed62eZ2jGBtuT24fRNzwSGRMDQ?=
- =?iso-8859-1?Q?8XnpC/4WfcOCqtGtcGaLkQrlJAonL2nrUIoGw+Hu3ppa9dCfr9uN9RAnNe?=
- =?iso-8859-1?Q?ZZ80DrIECoXmLsX2Xa5iW+vLzzNkW5XR/u0lyp4aJqF1cAAH2CWwCcKlKk?=
- =?iso-8859-1?Q?gl57qzyFiitahmFL1YuA4jgIlX4tm5P+/zkUpvBoSxL64jtszImeee3z62?=
- =?iso-8859-1?Q?9vvgkqZu4qWdIGCGcTXe+I2zDuGnLOvu1zCTDHAJdWSR9BERe9t0fX6cu5?=
- =?iso-8859-1?Q?8+C+dNHPAA0cEKJOuHoRDVkGbbmfp3Wammkhz+La2kvtvlHYylmatg0uZi?=
- =?iso-8859-1?Q?L1zMDlHfhuMCDCYj7MgA9cWVG1MqHdsGf2uESQmF52oIRqqTAQWCkcolbV?=
- =?iso-8859-1?Q?jGeHQ17WGfoS0NSuu8HsoOR5uEsthrhElSIz0ztlwxqHm5ipqqBOoZq4az?=
- =?iso-8859-1?Q?cOKuyr1BOjRyCPrcJtWNfjWk7doXo18nPUuawzMvp/DljQS8fSIqTXoIMx?=
- =?iso-8859-1?Q?zV/oGEy3/f5F/S+YViJnn69aNGAejj9zkq08EHQb21fli/7W6oudHqDytg?=
- =?iso-8859-1?Q?rS1iVY9Pi6u49KevjzOhdZ+ITVU4Y=3D?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?yUpr99JTO0zjk1C+5UxMBFCgiBpSwDPCnm4+TTHU4bpGx/6wIQj58uh6vj?=
- =?iso-8859-1?Q?KpIzqh79O2zx075O83vURGVZB2pmAaY4Jy9/pIVKFpnq6zrAeJKcmDr7vx?=
- =?iso-8859-1?Q?Hnsg8a6ncF/rrqCZil34GC88Vm65sWwHmemS4JaCiEdvuYlJvvm72LvPBM?=
- =?iso-8859-1?Q?eJdzopeajK3W0H1E6rqZh4VnBSMGlz7s68k/6Njx2u93LobhPUDvXnDGOj?=
- =?iso-8859-1?Q?U3UwKA0TJUPmEzU97EPX6ITWBuOPWqIVPIYOfw7f9fKFj21FWOQQKNLPuR?=
- =?iso-8859-1?Q?d6L3GJc0PPkfUpfZDSP4kR6oEYZOJ1jodZEcNupVR+I+LqFCwrmbYD98me?=
- =?iso-8859-1?Q?xwf2qwgqAKgOf0uEEEqcrNirOgUcNTOsIdZAvZpfoq5A0xXic3pB/t0oMd?=
- =?iso-8859-1?Q?jUWAAIcKeLLDguU5zoY5CO/hBkG9EJuDaYsD56gz9ZzzMIxK4xoGNdeoEt?=
- =?iso-8859-1?Q?VvbH+vLss8zofzXDSyODvkBQlucrFfv/R0Eu5dL/dhfpuNNNRzSVR/squo?=
- =?iso-8859-1?Q?ATmo+qFOy7UeUQ/XZzZFUrJoB/3Nd39JtMmtzWvLRFYMKtUjnY/cD4vNs/?=
- =?iso-8859-1?Q?w79DsqHuAiLvwei5SpNGQoIvXxLVPvSLxlfIhGu6YjYvcuE0TMGB6tWr1b?=
- =?iso-8859-1?Q?CO/Qev5ri4JgpAgDEseEj904uXvwxVrgQR9e7avClztfWVM6shMfXZycRT?=
- =?iso-8859-1?Q?ry6AvQO0LvN8yybqFK1k5xKV8ZjSD7pCdRYHqyZbhEaGKbUcHh7ZgU32PO?=
- =?iso-8859-1?Q?nl6rZuGufMAL/z+VkoMK/uYUQPV03wztmCdl3NfUHk7oolMOCFO2zu6dFJ?=
- =?iso-8859-1?Q?4OFiajWldICPoVUW5RKhTnfPPFZao9DoR8x6R+fSkchGVEV+J3AScuyG5h?=
- =?iso-8859-1?Q?RBMhPSKMCP7HOOHL21aB0BSVcKTSTGEgwQWzto4Jto9otvIvHg+CuOQwFs?=
- =?iso-8859-1?Q?xTx7mIEw7tSJiWTm2R8MQ0/C+a0+TRZf6k+AOm9IDyz5BSBtwmX8u4udVT?=
- =?iso-8859-1?Q?PUXM4WNWgKbew27x99vWYGZHo+YHkiopWJOfSIjV86V5LG8gVW5QX9MYdC?=
- =?iso-8859-1?Q?3MqJ8prbHCkg1k5j/PlrOQ3XRsWeyx7fd+2WkEv3MPlHppizQgtwZv7+hO?=
- =?iso-8859-1?Q?6AxWquS2410nMZ4bgExTYJpC0/VQnXDpOsFX+NomSm+ySH5NcvtgZoWBXn?=
- =?iso-8859-1?Q?NBQrgqTs519QyudJaWFeQsK9UyQDjtv5tDAoo4l9oB47Q2O3/UWf10hqwW?=
- =?iso-8859-1?Q?IxkgKhhgDwy9DfcfepXQ=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B761B87FF
+	for <linux-wireless@vger.kernel.org>; Mon,  6 Jan 2025 10:03:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.205
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1736157809; cv=none; b=FJrBbyFHVuCs8i0N9R5mRrO5XltDlG6LR7qUgHe+xw+vl/K66TNsQ3zWWTJSyKf/y80YFpO1fAzj34S9M55Lmr+1+az7485KJyh0y0cEjPqqYWo1nabhrMBlhO8vf5fn2qxbWAqsvLz4ZvpGkX0ILaxX6xXnDI0cTAfrU91AVY8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1736157809; c=relaxed/simple;
+	bh=5rZA87sgaSizDUAhMWe2cGkjlGEgg0xeoXJfyWjS474=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=FX6Z3mmf503LzrKiguRhAyfqgGKxAgqRhOj9j2BVqi5/5NNSzpgVSwaCPLf/41W2HYM2i43faafUNtDKl+44eLJGWK4ku0MSVZa2b99u+vghYoazUolhlfpo9hOd6p+jiucSS873S5iY9CmidOrKmAomE5NW12cQ4cWnEXs236U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.166.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-il1-f205.google.com with SMTP id e9e14a558f8ab-3a9d195e6e5so128421205ab.2
+        for <linux-wireless@vger.kernel.org>; Mon, 06 Jan 2025 02:03:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736157806; x=1736762606;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zwgJxPTUKSF4qMLpX2DkfpWAh4DxTz/ZHzgWcnT+2Tk=;
+        b=xQWRhOeGVo6kVT2d+H4ZHerofRIhTz85WC9YHkXCiR1oMCLkm0AO37S/lmEXjGWJLi
+         Ny2u9nGHAxdJ+rPMNoB+IIrojUDH9ZuUKYE9WrxB8UAS7ilqaw+ORstv+8LURd9We0Od
+         5Fa5dLcHBxE0ESRBsadtEC3mfjCKkKMeMJ0+o5pcCfgRz9MXJLN1ubF3U7/GWcp87tMM
+         AQ0IibXdcATyqgNSyxtOEcOXv8pr1PmkKLLy0tfa4xXgo9E4OfGXq08idAs6BL4X43vy
+         S5RmMhgn973h4Y/vppoVwMa1QVOTVv3AYEWoCXO9ntuzUxT451Goga+Ct2753KMibym5
+         g7Bg==
+X-Forwarded-Encrypted: i=1; AJvYcCXYUyNHEcvZn6ryqsieMoz4741gfRmU24KwJUqJMNpnqoZwlcw9+iAkfmIlqyqweEQSL4YoLFApM2c3BnNgig==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDRTWoVpDs7kpJnojSzVm8oL8vLIGEtZmlR+e243Y4I2CQX+K5
+	dZW5QUN3bmyO76isAYUZL9DyFQ6edl/P3TeA1fIbCS9Go5eswxVdUjPpWyYreV/31qry1kaQP/d
+	KDtOL6gx5AR+QGTCNm+anB/m9p1vlb7SVrbhhIHssz4l/Pr7Nlluc9ks=
+X-Google-Smtp-Source: AGHT+IHxGXPVKZrj2VpZjzaFaHlqwrxC7rrNNtc3hFkYAwGi2M46OrDfHFQpRKaDcq/NdmKszv4Z4T1+hmU0zc33iSOsG5WNS11o
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-6efd8.templateTenant
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: OS3P286MB1520.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8d818920-40d9-483c-1f54-08dd2e317086
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Jan 2025 09:06:43.2134
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYWP286MB2939
+X-Received: by 2002:a05:6e02:194c:b0:3a7:7811:1101 with SMTP id
+ e9e14a558f8ab-3c2d53403b3mr548640155ab.20.1736157805822; Mon, 06 Jan 2025
+ 02:03:25 -0800 (PST)
+Date: Mon, 06 Jan 2025 02:03:25 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <677baa6d.050a0220.a40f5.0009.GAE@google.com>
+Subject: [syzbot] [wireless?] WARNING: ODEBUG bug in __mod_timer (2)
+From: syzbot <syzbot+50abac586029cf8758e0@syzkaller.appspotmail.com>
+To: johannes@sipsolutions.net, linux-kernel@vger.kernel.org, 
+	linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-Dear Developers,=0A=
-=0A=
-I'm working with MT7921au USB and found it doesn't support mesh point, whil=
-e mt76 driver entry is marked "yes" in linux-wireless driver capability tab=
-le.=0A=
-Could you kindly clarify if it is due to hardware restrictions, a firmware =
-limitation, or a driver issue? Besides, if it could potentially be addresse=
-d through driver development?=0A=
-=0A=
-Thank you in advance for your time and any insights.=0A=
-=0A=
-Best regards,=0A=
-Jingwei=0A=
+Hello,
+
+syzbot found the following issue on:
+
+HEAD commit:    ccb98ccef0e5 Merge tag 'platform-drivers-x86-v6.13-4' of g..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=11a2d6df980000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=86dd15278dbfe19f
+dashboard link: https://syzkaller.appspot.com/bug?extid=50abac586029cf8758e0
+compiler:       gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+
+Unfortunately, I don't have any reproducer for this issue yet.
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/d24eb225cff7/disk-ccb98cce.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/dd81532f8240/vmlinux-ccb98cce.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/18b08e4bbf40/bzImage-ccb98cce.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+50abac586029cf8758e0@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+ODEBUG: assert_init not available (active state 0) object: ffff888068a59b28 object type: timer_list hint: ieee80211_ibss_timer+0x0/0x90
+WARNING: CPU: 0 PID: 7396 at lib/debugobjects.c:612 debug_print_object+0x1a2/0x2b0 lib/debugobjects.c:612
+Modules linked in:
+CPU: 0 UID: 0 PID: 7396 Comm: kworker/u8:11 Not tainted 6.13.0-rc5-syzkaller-00004-gccb98ccef0e5 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Workqueue: events_unbound cfg80211_wiphy_work
+RIP: 0010:debug_print_object+0x1a2/0x2b0 lib/debugobjects.c:612
+Code: fc ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 75 54 48 8b 14 dd e0 81 b1 8b 41 56 4c 89 e6 48 c7 c7 60 76 b1 8b e8 5f 4d bc fc 90 <0f> 0b 90 90 58 83 05 c6 4f 7f 0b 01 48 83 c4 18 5b 5d 41 5c 41 5d
+RSP: 0000:ffffc900045ef7c8 EFLAGS: 00010286
+RAX: 0000000000000000 RBX: 0000000000000005 RCX: ffffffff815a1789
+RDX: ffff88807ea2da00 RSI: ffffffff815a1796 RDI: 0000000000000001
+RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000001 R12: ffffffff8bb17d40
+R13: ffffffff8b4f81a0 R14: ffffffff8a928850 R15: ffffc900045ef888
+FS:  0000000000000000(0000) GS:ffff8880b8600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f19769f4d58 CR3: 0000000032a52000 CR4: 00000000003526f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ debug_object_assert_init+0x1ee/0x2f0 lib/debugobjects.c:1020
+ debug_timer_assert_init kernel/time/timer.c:845 [inline]
+ debug_assert_init kernel/time/timer.c:890 [inline]
+ __mod_timer+0xae/0xdc0 kernel/time/timer.c:1071
+ ieee80211_sta_merge_ibss net/mac80211/ibss.c:1272 [inline]
+ ieee80211_ibss_work+0x481/0x14c0 net/mac80211/ibss.c:1672
+ ieee80211_iface_work+0xd01/0xf00 net/mac80211/iface.c:1689
+ cfg80211_wiphy_work+0x3de/0x560 net/wireless/core.c:440
+ process_one_work+0x958/0x1b30 kernel/workqueue.c:3229
+ process_scheduled_works kernel/workqueue.c:3310 [inline]
+ worker_thread+0x6c8/0xf00 kernel/workqueue.c:3391
+ kthread+0x2c1/0x3a0 kernel/kthread.c:389
+ ret_from_fork+0x45/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
