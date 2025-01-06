@@ -1,119 +1,104 @@
-Return-Path: <linux-wireless+bounces-17101-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17102-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9023FA01FD9
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 08:23:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9561A02035
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 09:06:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05C71188154B
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 07:23:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F2B6161CF9
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 08:06:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DC51D619E;
-	Mon,  6 Jan 2025 07:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB021D63F6;
+	Mon,  6 Jan 2025 08:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=eurecom.fr header.i=@eurecom.fr header.b="yZzNIEBc"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="lBSlYloT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.eurecom.fr (smtp.eurecom.fr [193.55.113.210])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD8319F41D;
-	Mon,  6 Jan 2025 07:23:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.55.113.210
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32451D79A0;
+	Mon,  6 Jan 2025 08:06:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736148225; cv=none; b=sioDfKbyPSj0O66eCAeToUs1qsvhLX6GE2FIL77jSgZSVP89SYxBNTh9Z3bGkP8/8ojKYeWuoU3Rb9XTYOGDk0We+aGL6kTjiJEOl0iEQMLSxzjyU7ZWhJyGueRcuAj0Z9czBbZqxBTLl+h6kBxQB3Y/9rE4v17mNFuun/xwBeE=
+	t=1736150812; cv=none; b=f+ZmZuL6Weqeqn4Wj0eRKokNxrRngXqZv6yI8YXPVq20aXaVY0eie+GTKvntWazxjoBmFVcp4Vfiy9C/p4H2T5VBqx4bEVKRlQfScTDRXdyKTM5AynOKwfNbeIRMXWb6pOaBfFlGgYWZnf/0YL9aUv5WGkYn654L8oyWlkcYy68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736148225; c=relaxed/simple;
-	bh=Mldq6LasuhhGh76OgTeq6apFEmcXzD/N9uU79E5WMJ4=;
-	h=From:In-Reply-To:Content-Type:References:Date:Cc:To:MIME-Version:
-	 Message-ID:Subject; b=nrWjg8yI8zVLqksKMQaJDeD5GfV8J2kVGBM0LArYSMzPeQT1Pp9OsybCElFzJzbaHMzwH9AiX/yIJUQJ65v0ZhXXyRCyiBqLOy9fbs7XXh8CR267HMfSnixMe6eYD2YlEWBHY4MAAaHggT6E2vAR2Z0OQA2W/jZf+I7ABsSOi8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eurecom.fr; spf=pass smtp.mailfrom=eurecom.fr; dkim=pass (1024-bit key) header.d=eurecom.fr header.i=@eurecom.fr header.b=yZzNIEBc; arc=none smtp.client-ip=193.55.113.210
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eurecom.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eurecom.fr
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=eurecom.fr; i=@eurecom.fr; q=dns/txt; s=default;
-  t=1736148222; x=1767684222;
-  h=from:in-reply-to:references:date:cc:to:mime-version:
-   message-id:subject:content-transfer-encoding;
-  bh=Mldq6LasuhhGh76OgTeq6apFEmcXzD/N9uU79E5WMJ4=;
-  b=yZzNIEBcD4Oc0IP9AsDGXHZibVH7YD50ziLCfjdQnjMYlTjnpE48GxjY
-   QhCSI8ZNqabptGAutKMTJ3pfFVCSuNNZ2rX+okx4Epf2DnOTXLiPUlicN
-   GkhE7xAdS0mL633YOCLD8kypNC1Hd2WWblsahhl20TaK0Cq1Idznfu+gk
-   Q=;
-X-CSE-ConnectionGUID: +Zo/CIoeRKGxxnpUrN0Mvw==
-X-CSE-MsgGUID: tWodmdsgSo6/SelmVepsuA==
-X-IronPort-AV: E=Sophos;i="6.12,292,1728943200"; 
-   d="scan'208";a="28378900"
-Received: from quovadis.eurecom.fr ([10.3.2.233])
-  by drago1i.eurecom.fr with ESMTP; 06 Jan 2025 08:23:34 +0100
-From: "Ariel Otilibili-Anieli" <Ariel.Otilibili-Anieli@eurecom.fr>
-In-Reply-To: <Z3r3vxy8cRRH6w1m@pidgin.makrotopia.org>
-Content-Type: text/plain; charset="utf-8"
-X-Forward: 46.193.43.102
-References: <20241221124445.1094460-1-ariel.otilibili-anieli@eurecom.fr>
- <20241221124445.1094460-2-ariel.otilibili-anieli@eurecom.fr>
- <20250103085540.GA94204@wp.pl>
- <Z3fMxD2mAVsVl58h@pidgin.makrotopia.org>
- <20250103131002.GA100011@wp.pl>
- <2f7a83-6777e880-a451-5cf12280@99910178>
- <20250104103753.GA2228@wp.pl>
- <2f7a8b-67792f00-52db-be99fc0@193911177> <Z3r3vxy8cRRH6w1m@pidgin.makrotopia.org>
-Date: Mon, 06 Jan 2025 08:23:34 +0100
-Cc: "Shiji Yang" <yangshiji66@outlook.com>, "Stanislaw Gruszka" <stf_xl@wp.pl>, linux-wireless@vger.kernel.org, netdev@vger.kernel.org, "Kalle Valo" <kvalo@kernel.org>, =?utf-8?q?Tomislav_Po=C5=BEega?= <pozega.tomislav@gmail.com>, Linux-kernel@vger.kernel.org
-To: "Daniel Golle" <daniel@makrotopia.org>
+	s=arc-20240116; t=1736150812; c=relaxed/simple;
+	bh=UOjMZRVKEF8pAw+QVhlAmTbkMlSLTFrv44rO0QDuaHI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=T3dC2XibmBGdIkJyIPEbDWGllWBw42PP7uJC25EqiTziJF3Ay+usHKd7glmDssejVxqozPd+1sbuiYcv3WIncRQi/4K1srIjL8Zwm7aZaT777BNke/FiWKdyh2gT6UNtzreeddAKJfmULK2Ky5RwM9hPLiYfO5yHGrMoIspMu/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=lBSlYloT; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=UOjMZRVKEF8pAw+QVhlAmTbkMlSLTFrv44rO0QDuaHI=;
+	t=1736150810; x=1737360410; b=lBSlYloTtX2e7qVzJsCoI3iCmBY0n5hs76jC1EHEMmN0YVY
+	orXZT/8dxZWBL9fSlNjEWy+ZiykiVEpx44v1lMdyeQP6FlnVZn0cjcXksAYtDQuQzgynyrWGP3Ooy
+	Usdmnie6KopLxPq/GvpVgZXzGKjelskAj6sIqjleshvhUO0gFESOWFm+O/k/qTd7lS6pPAGlToivp
+	epdXbOCll/jaLfdPgTufFC9oz5pE0tcr3OJrk46tQoNOV4I9GPSKYIMEIV2jRtxnos6GmTeoRKqGO
+	izhnp1+5Vk91VPG2BrMoLgzR3yUVmQtygoIDiHa0lwSwuyrdnPfZvzV4/D45DJpg==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1tUi7e-00000005muW-0BHU;
+	Mon, 06 Jan 2025 09:06:02 +0100
+Message-ID: <edc31a6341e810e23c342f1e90776a3e764c4924.camel@sipsolutions.net>
+Subject: Re: [PATCH] net: ethernet: toshiba: ps3_gelic_wireless: Remove
+ driver using deprecated API wext
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Arnd Bergmann <arnd@arndb.de>, Philipp Hortmann	
+ <philipp.g.hortmann@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>, Geoff
+ Levand <geoff@infradead.org>, Simon Horman <horms@kernel.org>,  Alexander
+ Lobakin <aleksander.lobakin@intel.com>, Netdev <netdev@vger.kernel.org>,
+ linux-kernel@vger.kernel.org
+Cc: Kalle Valo <kvalo@kernel.org>, Alexandre Belloni	
+ <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+  Geert Uytterhoeven <geert@linux-m68k.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Jeff Johnson	 <quic_jjohnson@quicinc.com>,
+ Larry Finger <Larry.Finger@lwfinger.net>,  Nicolas Ferre
+ <nicolas.ferre@microchip.com>, Pavel Machek <pavel@ucw.cz>, Stanislaw
+ Gruszka <stf_xl@wp.pl>,  Gregory Greenman <gregory.greenman@intel.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, 
+	linux-staging@lists.linux.dev, linux-wireless@vger.kernel.org, Stefan
+ Lippers-Hollmann	 <s.l-h@gmx.de>
+Date: Mon, 06 Jan 2025 09:06:00 +0100
+In-Reply-To: <cecd584c-46c0-4c0b-b3fb-b5cee4bbfd12@app.fastmail.com>
+References: <20241224080755.194508-1-philipp.g.hortmann@gmail.com>
+	 <b811d4af6a634d61389dfefacd49853c0e77f1d7.camel@sipsolutions.net>
+	 <39256db9-3d73-4e86-a49b-300dfd670212@gmail.com>
+	 <8414fd0c552de87b3471468665f7fc540b9bfa69.camel@sipsolutions.net>
+	 <cecd584c-46c0-4c0b-b3fb-b5cee4bbfd12@app.fastmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.2 (3.54.2-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <2f7a84-677b8500-5061-4ac1e700@152950135>
-Subject: =?utf-8?q?Re=3A?= [PATCH 1/2] =?utf-8?q?rt2x00=3A?= Remove unusued value
-User-Agent: SOGoMail 5.11.1
-Content-Transfer-Encoding: quoted-printable
+X-malware-bazaar: not-scanned
 
-Hi Daniel, hi Shiji, hi Stanislaw,
+On Sat, 2025-01-04 at 05:15 +0100, Arnd Bergmann wrote:
+>=20
+> I would assume that once removing CFG80211_WEXT becomes an option, we
+> can just put the remaining parts of net/wireless/wext-*.c into both
+> ps3_gelic and ipw2x00, duplicating and then simplifying the
+> implementation. As far as I can tell, there is very little that is
+> actually shared between the two anyway.
 
-On Sunday, January 05, 2025 22:21 CET, Daniel Golle <daniel@makrotopia.=
-org> wrote:
+Indeed.
 
-> H again,
->=20
->=20
-> On Sat, Jan 04, 2025 at 01:51:25PM +0100, Ariel Otilibili-Anieli wrot=
-e:
-> > Great, then; thanks for having acked the patch as such.
->=20
-> I just noticed that Shiji Yang had posted a series of patches for
-> OpenWrt which also addresses the same issue, however, instead of
-> removing the augmented assignment, it fixes it to the supposedly
-> originally intended way.
->=20
-> See
-> https://git.openwrt.org/?p=3Dopenwrt/openwrt.git;a=3Dblob;f=3Dpackage=
-/kernel/mac80211/patches/rt2x00/621-04-rt2x00-fix-register-operation-on=
--RXIQ-calibration.patch;h=3Daa6f9c437c6447831490588b2cead6919accda58;hb=
-=3D5d583901657bdfbbf9fad77d9247872427aa5c99
->=20
-> I suppose this was tested together with the other changes of the same
-> series, so we may want to pick that instead.
+Note that net/wireless/wext-{core,proc,priv}.c are not even related to
+CFG80211_WEXT (wext-{compat,sme}.c are), and just form the core wext
+code that can be treated completely orthogonal and independent of
+cfg80211. This driver doesn't even use CFG80211_WEXT code at all.
 
-Thanks for having put some time into the research, Daniel; I looked int=
-o the openwrt archives for 2024, none of Shiji=E2=80=99s messages menti=
-ons that patch.
-
-Though, if you three agree, I will push a new series, modelled on that =
-patch, and you as Suggested-by.
-
-Have a good week,
-Ariel
->=20
->=20
-> Cheers
->=20
->=20
-> Daniel
->
-
+johannes
 
