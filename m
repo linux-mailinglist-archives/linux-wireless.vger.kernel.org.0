@@ -1,151 +1,124 @@
-Return-Path: <linux-wireless+bounces-17113-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17114-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3993A02EAA
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 18:13:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2AE6A02F60
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 19:01:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 187C91880558
-	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 17:14:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B1401885306
+	for <lists+linux-wireless@lfdr.de>; Mon,  6 Jan 2025 18:01:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0665C1DC9B2;
-	Mon,  6 Jan 2025 17:13:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF37E1DF27C;
+	Mon,  6 Jan 2025 18:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JPbeEh3Q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U9JtwSRg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0960819CC2A
-	for <linux-wireless@vger.kernel.org>; Mon,  6 Jan 2025 17:13:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A1E1DEFE8;
+	Mon,  6 Jan 2025 18:01:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736183633; cv=none; b=p82NpY98JvFKRvc1XQ/RAaUHHMT8CIpJ6vbQQuQf8qZQ2vjwQWB5E6PSKasIHbGWVhzdEXBSakukCgqiZDJDDFR0v87DWYU+pwzCwj0m8aHzBX0tKSg1VhSEqCPMwMcqAvJfZk2YC6mXYC2sgm8tG8en4MuYvrnbNHLj9TIZh6w=
+	t=1736186497; cv=none; b=p/m+t+CamDYii04ECzke1yrxZlWkHH/NFTle4amHwG2eU+7PvPyRd9U6x4P2XreO+Rw3XLPh04esY5n9kPGL6QPM9T/ZtNNsh5Cm/Va2MkOwYDSVirix0H7ikVSBTrpVnn/Ihesz4O/V5cE8pQnPXC+2p2WpQqLENkyOt5mUugU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736183633; c=relaxed/simple;
-	bh=4X6zyYxK1QCiG9SsBLkpMIskQ4/0BPLxlhV1jv2pTrM=;
+	s=arc-20240116; t=1736186497; c=relaxed/simple;
+	bh=25zFiJ9WjdEaOSKemZTpzQCKjyijqwYYUDaKfAMPw0I=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HcNNB6buPXLI74Ghvr4btmZlS40kpMOV9d7hezqIuPy0igNOO5lOBTFMjcSHU4OBETxY8fwcqWI0XWGbtRhloX9Ld74RWSbONg8QbNTnvPV9DV96zUwXFrL0/uyuv/5WD4PU71vzY6ilNB17Iup3uxZNNh/bXkjmja5roJo2n0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JPbeEh3Q; arc=none smtp.client-ip=209.85.216.52
+	 To:Cc:Content-Type; b=ckS9Zi7tgaaMXbmz13J3S4aj0EmscgODMPJ6TVariiWNmbWfaovPCugqI3hFwfL4f69w2Af63TFjrKMAEcdd3PsQiCq3yunBUUEot3GyAOepv9JRjoy05vRM7//f8DBmDRI5HUToWQWV2yA+CvxlOG66Fyg23XTAnaxODyjr5tA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U9JtwSRg; arc=none smtp.client-ip=209.85.160.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2ee67e9287fso21201919a91.0
-        for <linux-wireless@vger.kernel.org>; Mon, 06 Jan 2025 09:13:50 -0800 (PST)
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-29fe83208a4so7031194fac.0;
+        Mon, 06 Jan 2025 10:01:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736183630; x=1736788430; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1736186491; x=1736791291; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1E4VBveUTiXAQY0x0OPSL/+vTNEOjG/u16OolfG/dLM=;
-        b=JPbeEh3QDAXG8WsLbQKWt3AZ+GwjPebWfHVJL3EbdTbx4FaUvXsrzsqASx3npkdlCa
-         aEj7292Gf9otXQV/bUtCYR5ZfE9zVB1wUY1CasrRL7wDjgAlCcoLsg2LJRTBGqtSGNSy
-         CInyODLoN89yKMSn6sLqHts4Q6PrRGv5YPW+/m/jStmsd2MUwfFof/834ly5l9ilQv3e
-         PNWshJbITqhhkhXZ5JlbbT5dFZHocQfrcCSU3iuT6mOmXuJ0Tsy4QPJsh2ShtpYRqm4l
-         uFt3NjKlkrf6qB3u1Lbyy2asgQmbk0tJ/NI3hDteB7khugRdzW+JqBtr1bUOBG4ZttI6
-         Hn4A==
+        bh=o2RF1hIS1QqUJA0GJuODmz1eNECfJRbd58h+IrA3gWc=;
+        b=U9JtwSRgEVwRj0VRE7ftVXMcY5O/Zn2GeHcwnTnsJq9EetHbzTSiDVl88fedZCcd/4
+         4mhreEUF0o9TuJhm1zwroaor8HEH36h/kBw/jjB4+nBqWFLffeajESsn4A7ZU465kHc4
+         XQL3gnogxV/HDlasLLopdd6b41rqz4ZPkTH+HfKYGc0S/siZ1uSYAUBMSzrwsG8u9RF/
+         KlH4rKixmHd9wloFRdEdCKzYP1YjvlUqZo+pTV4kp2DmD088cQPNnO3y7h+T3ClRvIyd
+         rsXTpE0URGNH0vlUY+X8xcF4RDdl1JYOUdwjoHy8FNsjHGmcLyWC2gCS8mcDOO86rGSp
+         wNNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736183630; x=1736788430;
+        d=1e100.net; s=20230601; t=1736186491; x=1736791291;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1E4VBveUTiXAQY0x0OPSL/+vTNEOjG/u16OolfG/dLM=;
-        b=PyRC8155b8Fz0Yyf5Tsy+DK3m8FMruqZR2pCUSpE1COn/HsAcywbEga3v9AZXqdesK
-         fylnXhOzw/2yaxthFzpVpvaMnMxpjx4du6L6FCOG4yvQZxT/VP2DK0AMLn8V3nAGxk6f
-         c9Zoa5LR178obmi0ihbCNLP2SLrhgQbmQ/9YDSxpDOiyGuzlvDPXitEHab7JMsGyY90R
-         tShvd1z1f8DwvnPXdwVBuVlTlpccYlA4DmZtOjm2tt5OnzR8YwjptGV5ZX2fb/4rMZQ+
-         fS4+nkJwdIWCrtcFyOmgwfaFWcJSxrMEDP2wB74Hd6FujYLD3vEJ9PLtWNljBb6MpKA/
-         hRUA==
-X-Forwarded-Encrypted: i=1; AJvYcCVeJ+RpxKNYbTZWBX0jqOylCR+FSt3iaQis/vE3pGCXcxVw/kAynAHIonkvVcsIogftGON5UidFJeUqJHB6lA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy756j4zeY0bMiyhCVYhSMgwukW9BA8SCrrLyxscpYcDIeYovHb
-	XSRsHn5i5xviqjANam/6ZddGQbDOSylkzWdBfUCN/I5wRSRu5gmZLgdQLEmD08+vh/AFFD/Wb/h
-	fCrTY15oe7s7I4L3XQ7gh8AX3PTs=
-X-Gm-Gg: ASbGncu636C0SKC6EkV8itBsHidFaNa/F29Didxka/QOsZbew35UE9iBVoYb6UeTN+C
-	5aDpaR+XWPsWIx8K2aHwU46/KWOQ+akveZIUyF+gv
-X-Google-Smtp-Source: AGHT+IGFEmKlsE7w4ki0FRERAZd7MgyKM/i6eTRH2L7lzZ9eaCyLEYA1hsVHBLYEJEXYfzPLxFzRrjHg8V+00MjhZ6c=
-X-Received: by 2002:a17:90b:2543:b0:2f4:432d:250d with SMTP id
- 98e67ed59e1d1-2f452e372edmr79317340a91.21.1736183630396; Mon, 06 Jan 2025
- 09:13:50 -0800 (PST)
+        bh=o2RF1hIS1QqUJA0GJuODmz1eNECfJRbd58h+IrA3gWc=;
+        b=ZoMDY3HGdwf5JI9tTUVJBUHB0CoVYQJ74UCvT4FjdX+3+iCebrHPVXFnbj+ha61sWZ
+         hSQvzdgSsmPeC8U6x/oCHxf6auuYNJ3NP0ESgb89hupvtMYS6/NKPtpFY7Nn160kmw4t
+         v40cIT3eNKkQyjVP5QEprw3QmvGYwps9cqoDDL09WBzcavmeGvHh4SvQjmBhBoEx5Z/0
+         9Td/SxOm63LaAZUn0CBg5LP3mHpv72RHuo4FhZR5vGZ6lfNwMngzcK8nc4I7D12O93rK
+         EmeRMtsfx+uCutJXuxdWiJwVY5JHf6yihzoywbTcEJu1Ffbe9Pbx0GpMDplB7Kt0FEjW
+         8J5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV5A6hJnYZoN+EzVQg7JkvWPE7eROkkW6UGE8GK9pzvLUkhMAucr9CHumzlIsP1bQ8tDNuuLdTWAAoO8pEr1Q==@vger.kernel.org, AJvYcCWKrSP+XRWuoHYrdB+4GBbCPWr70iBu238ew0JZm848SNLkB3s5n7Jk61kkXr5B88kO0Uv+vEI+@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzec7RERtdPFV7gHziJTrCAnb+BHNBzWHxsMTIndwLZJGokLgOx
+	QeGyrpUImcikNoDoTpAXao7qDOFJjSl/y8EElrzzAs/17aNfKlGEzBkRLuwrP4OwnzqmUE8zUYE
+	kkk0UMBXrYQ+e05zg/2nVaNXriC6HBA==
+X-Gm-Gg: ASbGnctpC6qdisVTtj6zgs+3V1AjI0ECmhjt6PBz3E8BWTaFZQ7rKhrTZ9deo7rL1lN
+	04xQiFOghgSK3lqW1Tn8kc4ctrY/RZxwfZRAF1s8yysWNANjKWPeHfT2KdsSOv8GH8OPRGP+K
+X-Google-Smtp-Source: AGHT+IHMMQMkhdcjtXckGaDXHbmnwQmQ9zOSfOOKxy4QAUALfxddplOM2flNcf+B+K19MWN4bfFtInVgfHk9UzabP60=
+X-Received: by 2002:a05:6871:53c6:b0:29f:c94b:3a06 with SMTP id
+ 586e51a60fabf-2a9eaaa6de6mr143701fac.8.1736186490022; Mon, 06 Jan 2025
+ 10:01:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAG17S_OwtNxetb7XzsxkZcygH_CWkZx15evQZkThb3WjqpiKTQ@mail.gmail.com>
- <CAG17S_NVmXZsAShc1VFh6iTgtT30CdHSBNxhmT=xs4q41--tcw@mail.gmail.com>
- <fc4c196b-1f55-43a0-90ac-ca282aa6eb7d@gmail.com> <CAG17S_O7rJLXiLv8OcRaoxQWu4jk=L_ut3HpY7BbwkSbRfMWjA@mail.gmail.com>
- <c586f9fe-e1f8-44dd-a867-ec21c78c7de9@gmail.com> <CAG17S_N6Gw1G8e5dh_1cm3P2DNt_gSbQSAKWd27hvpMZui4yxg@mail.gmail.com>
- <CAG17S_NgkTQ5wT5nb=6FZZ9gnVMTqOWfWJve47JmfOoVAHZy8A@mail.gmail.com>
- <CAG17S_Oq+RGOZpE+xa-CV8=VtmJu7G8GWxfVYqg1edEG9wC+yA@mail.gmail.com>
- <CAG17S_NdA9LdwmA_XfvPOVrhCdqp+BOtAssH0=RE-VSjg=WFnA@mail.gmail.com>
- <CAG17S_O6Bpc+JhhUuDvE70a+ef9wt9D7jG1gMJDNo1qZCUOg8w@mail.gmail.com>
- <194115affe0.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
- <CAG17S_O7HbPFB0gubWWP9P-Oecps8K_LG0Y7YDo5DbNGKSLjpA@mail.gmail.com>
- <CAG17S_MwJC+h7O-htyUxEgB4zHKeGf+9B4QaQ6ZLiVStU_Egkw@mail.gmail.com>
- <CAG17S_NfqFjjaWj6vGS1HXux6JDy0QKcg8aQAR=aOzNGhO0a3w@mail.gmail.com> <eace9233-1b65-4793-8abe-abd3c640dba8@gmail.com>
-In-Reply-To: <eace9233-1b65-4793-8abe-abd3c640dba8@gmail.com>
-From: KeithG <ys3al35l@gmail.com>
-Date: Mon, 6 Jan 2025 11:13:39 -0600
-Message-ID: <CAG17S_MfQ+FjWQJoiNs30rt4u1O9Z_FXFB7BiS6RAQsG9ReNkA@mail.gmail.com>
-Subject: Re: brcmfmac SAE/WPA3 negotiation - Part 2
-To: Denis Kenzior <denkenz@gmail.com>
-Cc: Arend Van Spriel <arend.vanspriel@broadcom.com>, James Prestwood <prestwoj@gmail.com>, 
-	connman@lists.linux.dev, brcm80211@lists.linux.dev, 
-	linux-wireless@vger.kernel.org
+References: <20250106135434.35936-1-fiona.klute@gmx.de>
+In-Reply-To: <20250106135434.35936-1-fiona.klute@gmx.de>
+From: Vasily Khoruzhick <anarsoul@gmail.com>
+Date: Mon, 6 Jan 2025 10:01:03 -0800
+Message-ID: <CA+E=qVfEdGjDQOftmGfx4e+iw0an6x+ff=Eg_EjRkm-98Vw2Xg@mail.gmail.com>
+Subject: Re: [PATCH] wifi: rtw88: sdio: Fix disconnection after beacon loss
+To: Fiona Klute <fiona.klute@gmx.de>
+Cc: Ping-Ke Shih <pkshih@realtek.com>, linux-wireless@vger.kernel.org, 
+	Kalle Valo <kvalo@kernel.org>, Bitterblue Smith <rtl8821cerfe2@gmail.com>, Ondrej Jirman <megi@xff.cz>, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jan 6, 2025 at 9:26=E2=80=AFAM Denis Kenzior <denkenz@gmail.com> wr=
-ote:
+On Mon, Jan 6, 2025 at 5:54=E2=80=AFAM Fiona Klute <fiona.klute@gmx.de> wro=
+te:
 >
-> Hi Keith,
+> This is the equivalent of 28818b4d871bc93cc4f5c7c7d7c526a6a096c09c
+> "wifi: rtw88: usb: Fix disconnection after beacon loss" for SDIO
+> chips. Tested on Pinephone (RTL8723CS), random disconnections became
+> rare, instead of a frequent nuisance.
 >
-> On 1/5/25 6:41 PM, KeithG wrote:
-> > I am looking at the iwmon logs for a successful wpa_supplicant
-> > connection versus one from IWD. Both connect and both pass data and
-> > both grab a DHCP address. I do note one difference in the connection,
-> > though.
-> >
-> > Request : Connect
-> > through the responses RTNL
-> > wpa_supplicant knows it is dynamic
->
-> wpa_supplicant doesn't manage network interfaces.  I assume you're using =
-ConnMan
-> for this? If so, ConnMan sets the IFF_DYNAMIC flag.  See
-> https://git.kernel.org/pub/scm/network/connman/connman.git/tree/src/inet.=
-c#n372
->
-> >
-> > Whereas the iwd log does not:
->
-> iwd doesn't use IFF_DYNAMIC in its DHCP implementation at the moment.
->
-> According to 'man netdevice':
->
->                IFF_DYNAMIC       The addresses are lost when the interfac=
-e
->                                  goes down.
->
-> I doubt this is the cause of your DHCP / connection problems.
->
-> Regards,
-> -Denis
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
 
-Denis,
+Tested-by: Vasily Khoruzhick <anarsoul@gmail.com> # Tested on Pinebook
 
-I am using connman to manage the connections. The connman config is
-the same. The one iwmon snippet was with iwd masked and stopped but
-wpa_supplicant installed and the connect performed in connmanctl. The
-other is with wpa_supplicant removed and purged and iwd started,
-running then restarted connman then initiated a connect form
-connmanctl.
-
-I pored over these logs yesterday and saw a few differences, but this
-was one that stood out. I can look closer again tonight and see if I
-notice anything else that I can summarize.
-
-Keith
+> ---
+>  drivers/net/wireless/realtek/rtw88/sdio.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wire=
+less/realtek/rtw88/sdio.c
+> index 799230eb5f1..e024061bdbf 100644
+> --- a/drivers/net/wireless/realtek/rtw88/sdio.c
+> +++ b/drivers/net/wireless/realtek/rtw88/sdio.c
+> @@ -1192,6 +1192,8 @@ static void rtw_sdio_indicate_tx_status(struct rtw_=
+dev *rtwdev,
+>         struct ieee80211_tx_info *info =3D IEEE80211_SKB_CB(skb);
+>         struct ieee80211_hw *hw =3D rtwdev->hw;
+>
+> +       skb_pull(skb, rtwdev->chip->tx_pkt_desc_sz);
+> +
+>         /* enqueue to wait for tx report */
+>         if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS) {
+>                 rtw_tx_report_enqueue(rtwdev, skb, tx_data->sn);
+> --
+> 2.47.1
+>
 
