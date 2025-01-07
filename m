@@ -1,181 +1,135 @@
-Return-Path: <linux-wireless+bounces-17140-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17141-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A49A2A03CD8
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2025 11:48:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06539A03D2C
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2025 12:01:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDF9D3A5269
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2025 10:47:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B266188661D
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2025 11:01:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7101E1EBA0B;
-	Tue,  7 Jan 2025 10:47:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110391E501B;
+	Tue,  7 Jan 2025 11:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CpjNhOIS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cyyHy/5h"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7485F1EBA0D;
-	Tue,  7 Jan 2025 10:47:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B891E47C8;
+	Tue,  7 Jan 2025 11:01:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736246839; cv=none; b=dpJvGG5OGRtSXO2cSQZi97Fw5PVcO2gsSEEwwzbftzFLHJX8SQgVjQdGa2Ql1o+Uh1RKBNgMEn+FFQTTbGg9G3ITeHT2xaeU45TyZMQv3+/7CPjFF6Yhj2K6darGVjAhXdjsFvj0HfZ9PdAhyd5bFVZMW9aaDwyy8XbR8qOJvUc=
+	t=1736247678; cv=none; b=X3wq0J9+WxFKisw1ssfnvbTl9NeVq/acUnhJDqw/dSeQ0xL7GUoBDFFF94x0rIYdE+0yjL4hl9RAUvkh4U1fCBTYfBKF+QELEJl3QdcZw34NV3SVBBHh6eshO24tr77gs4js4A2NmWIz8sUt3tWtwUT5UrjGTcRJAkshsEtJJzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736246839; c=relaxed/simple;
-	bh=rmV+IrFXiYRmJO8m/Th28rKjbiFt6MRkkO4Sbqpe3Gw=;
+	s=arc-20240116; t=1736247678; c=relaxed/simple;
+	bh=KEKrs8t58jaBmhFQsL4Q4hxanzR/VOGIqdOtudk9yYw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TNb14KTZ/Gk9LUtJWYCr1QUzqn5NyplQvLv55/qnCE8Zu6ZAo2BAdxeqNqO6QHLuogJ5r69RWkq8BwohWTpreKTnNE+1ULcyCA9R7VYJX2omtq7CvUnuY6rc2vFS5UpK0nv9UmFu6fKGOuKyrvsDt2rJ3BGBfcv3gOPsWYxvq04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CpjNhOIS; arc=none smtp.client-ip=209.85.221.47
+	 To:Cc:Content-Type; b=ixY1RWmUCrnw/qZY+kDhiCatHIV0fLZKNDSzsNk+ZvlQxFy5KFAH4vny6zT+D5qhdUHrBB/w1IFNi/frSq1DHcfh0/NwwyjCWKqrqTBeXy1jtP6sG0mp2OIX0/0QAjRm5rd3DBOWQgG0Ui6lrCPOUDtssPls6dHexfw5d7VW+IU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cyyHy/5h; arc=none smtp.client-ip=209.85.219.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3862df95f92so6746814f8f.2;
-        Tue, 07 Jan 2025 02:47:17 -0800 (PST)
+Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-e4419a47887so19406897276.0;
+        Tue, 07 Jan 2025 03:01:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736246836; x=1736851636; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1736247675; x=1736852475; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fh0AFKuAKxAUWXpt7kGI1qVooHVbo7SNiy/9flSEnaA=;
-        b=CpjNhOISeqslgdQr8wnZOAp9ApHs2YwkPksnqk1MKQ3QUOLtcQZk7hA0hrb07/9/7w
-         DeCq7eKw8HMlHv/jTgrClZY/UpKs0dm6fFCNyiHME+4jwmttynV65KVfS5bhPgIuZSyB
-         NUJc6AHKEfCN1BBVj30d3b9oN7m0Lm5DNKA8F3l+Pg2XPvx8UXMNJFLLMuafrBPbM8sT
-         BWzb4jejI0sE0nYIv9saiZIA0NS2yVLt8jp3rV/VWq+7fHcsZqm3w25fmO/t7IbvdDSZ
-         QmD6Oc7ZQuc1QSx7yVyG8Py/QtnR73wSV9l0ttm/E2hQEfOn3zA4Cars7nJHrcXWM09e
-         o4VA==
+        bh=KEKrs8t58jaBmhFQsL4Q4hxanzR/VOGIqdOtudk9yYw=;
+        b=cyyHy/5huF51Oj+fEAMIUgS6rWFvx4bTB+11Wlf1OU3hfTaAVest3OetTgR2xJeM24
+         rUCwE4cBUV1FV2PJd79Q7UPdB7xT+V3F29KFoGxVr/4H8f26ux9Yn+HdTUKVX3DvPDKt
+         +37TEQU7hi2oufFex1DGm1O/JRm97pokgx7PkxrOoZjvtUfLNRfe4QkdGhbk+OB0gDRD
+         ZIAmpZbzPa1ucA0UR8jYLcLkMaL05kqcTDd4zWC47i/CC1FEcXwdU/VTC5YBJipARKD6
+         5qkV9zFlYzOn1eklkB3sMuU57l2hDu78+1j2GJl4p217y2sZLu9rW3RUwsIazFZ/hy01
+         64Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736246836; x=1736851636;
+        d=1e100.net; s=20230601; t=1736247675; x=1736852475;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fh0AFKuAKxAUWXpt7kGI1qVooHVbo7SNiy/9flSEnaA=;
-        b=mFtrPvJjBAGjxAmAZWbxXqEIyL3aC9hidFvitNPDzHXsPypEbgQzSWR5x4LmpKblzE
-         6nRbfhLPdrGEUiYO3/Kzw1yNVqvr9Y6P035rGl9ZcdfNZ/MZAupgjm5o58zWOOx3Dvlh
-         4+Bmw1MvV2f/xAmMUECW2xG7XCgZocbkXvCLP2nKWEkgoxrEAkKqYma6NAgpwyk+2OnJ
-         47Cfb6Tw4Yz/lvDa3jzYgFZ0C7378AZkuABGCYmYCM5ckf+8gz+4SgXp/zFtQRxRRujl
-         m20u1bMQWjrVCLE1h82pSnf75G6KdXPDznnHie9YpeMfZZxvDHkX0Pqd3wqJsqrCxJke
-         bEJA==
-X-Forwarded-Encrypted: i=1; AJvYcCUBK8ZOT4hMZho0bTffApVOjCLJuhuMqDWczKlvOjbrrZVAsKp+qrEhuZoCc5MfI9b5FYY=@vger.kernel.org, AJvYcCUfHeUaTrTME02pjvkkXLPDOgj7wqJdQlhkzI/V4tzlB1p0B+L+IeYV00CwK4gMso3e2Q39pF3+yOFVgQ==@vger.kernel.org, AJvYcCV6VJPvg9gAUyI7S2BjNXlFtJ1na2/IckmZj0hgV9rWo4kpjFPPnNnzEGrDMIVYdYDGs/W/FfYj1mPe2SpUo0QH@vger.kernel.org, AJvYcCVB/oQ5RAPRCmg3OHubbU4edbCPbpeTIHQHWDs266UAIAJoaIL9/8QnORdjLv/LI6LeVDxczpLbWfMWA8JASGY=@vger.kernel.org, AJvYcCWtpdhJfVVcbI++sm9qYQXuDvFFa/z8W27l4CgSiGStsQOumx5cFLIPPGfqXtrGPxv3UwyQB9W4@vger.kernel.org, AJvYcCX4aI1OkbVCkO3dZ6bdwISAOJtS2vCZ1CF3fAxLy17kqeDR8q2pU0S7QbFKdxdtR1xyyee7e3puIbu7@vger.kernel.org, AJvYcCXUQKrQ0wF2qtY5oOa9v8p6wlWfobcXO5/U5rTmHbot+cStJfWy9e8YNroJ/OujX0M56A8RadBWFo56C5Au@vger.kernel.org, AJvYcCXY8EACV/lA1hY4o105sAatpGB/KNJov3S+W3coJ80N7vX7AIPEuzTtyntcHkwCiXa2gU52CJ33xaTWuA==@vger.kernel.org, AJvYcCXxX0J4F8Jj8JiKybWKhtXJg0TOQObvD7HIyKoS1Z27pLyIO51GPCyfC+8SG5g4c99TNOp2nxcMW2dO@vger.kernel.org
-X-Gm-Message-State: AOJu0YwR7xZHmlYBFjisBzLTlIh6j1zZY0Cd8IVSNcA7I2X0h04MqW17
-	s6eRsNRpJOsrbCMXi9rC9QmOvf5t68olKOc+D9AKSQH4U4fcBckxUY09lkHaqTZEgI2ORXAUMdR
-	3EbLSjbuinzW+g692W18EmOZEMbiJEKd9
-X-Gm-Gg: ASbGncsTONgZgyE2X7IM4+HIcEKSBdwCbzhE8lgyqlRee7wuV/6sHzIVCQ8BbLLN4X2
-	srNBsmR44ZzqwPIXkj2mCY1gDkL92LMaOmpZv
-X-Google-Smtp-Source: AGHT+IHp1K2L48YKiIQv0pwnQlZPYX8cMCBbRBU/fwg+IEmnnlA8QF5/odQWLMrNcSpCZK0F/LO3cHqTWVNEZ39orXM=
-X-Received: by 2002:a05:6000:480a:b0:386:1cd3:89fa with SMTP id
- ffacd0b85a97d-38a221fa8c6mr57843141f8f.33.1736246835555; Tue, 07 Jan 2025
- 02:47:15 -0800 (PST)
+        bh=KEKrs8t58jaBmhFQsL4Q4hxanzR/VOGIqdOtudk9yYw=;
+        b=mazqz7QCVEr9RHNMFXPmL6npCd5bGaafhjnM8QsKgSqtXg49iamKnx7yv7j6CAcP1s
+         BbXjIIeeCkfdaSEegiOWe7kgiEpxSQfOvBh1vcaqZLibKd4kDNQyVnPDU+tYRRqXX7gK
+         Bv6c/jbxlJICXdWPDzra/xWdugd+QD4AeNlBdcH48BBHGA71KPRqTQWc65k0VEspQfqT
+         9lnUH/ek+JwVERPNdMgaACTSuXX+81A5UD2zvUTJiBMYNPuwmFYd6Bi5rVx96xZyXUO3
+         ErWbbpC54QOjUX4kpxaCYJEaPihbXA9ewnH6Wh1fT2YJ53s9PHai3MBXYhjRU888ryEK
+         AiHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUmslrOXTtKxrW6pACVT5TAhD3LbxB5h4g5dWAp5npxvSnuONdDGN8dHvU9XxC12scnp0R56mqL@vger.kernel.org, AJvYcCV0U+XJodV7+as+fau/NYkPwtD2wdYQ/yX9AD57rygZltAxpbv0Ce8mp9lxOZgMEj/6EQ+TTOg6pLBHdEU=@vger.kernel.org, AJvYcCXzD2CK+SWvQq6bos3cBj43WWq0o4dGrx59HSmKvuu6ZoZuY7Y6HpEl0aPyAv0mj0O/BroULpGd8Nc1oBUmbBA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFmM3bdASwH9pzBU2U8g6LYyxO0OnwGK5+pFUGFGMGLQZbeBPk
+	Whrins/IfKEkKlpgl1DubyX8MyblissRNWqp4c7f8pXRap9obfRhMIZbdr0bgZAKS60/aigOseQ
+	AuLlQUg3k24PCUcG+CgLhIGdWH5sQMQPS
+X-Gm-Gg: ASbGncs0bfIk4Orktn05pStNDqZxJql27XNWH7ry18wqSx65NQU2Ktmva/slYkQiE2M
+	K/ahu0gQ6+p4yEG7AfgC9Q2J0P/JXDarMygaU
+X-Google-Smtp-Source: AGHT+IESbclHNi0aP0xGBKr3deuAaZJDr4lG0Dh7OVv9uwUcMBSKaPSMR53J0WwFXMrMQJrmWAWE/FkpXxZoRbiTjjo=
+X-Received: by 2002:a05:6902:c0a:b0:e39:772b:4bae with SMTP id
+ 3f1490d57ef6-e538c207517mr39123922276.6.1736247674657; Tue, 07 Jan 2025
+ 03:01:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250104125732.17335-1-shaw.leon@gmail.com> <20250107085646.42302-1-kuniyu@amazon.com>
-In-Reply-To: <20250107085646.42302-1-kuniyu@amazon.com>
-From: Xiao Liang <shaw.leon@gmail.com>
-Date: Tue, 7 Jan 2025 18:46:38 +0800
-Message-ID: <CABAhCOQAqspiaFO-486UtZpEWsua51f+1f6-LocNhHVfAqW=NQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v7 00/11] net: Improve netns handling in rtnetlink
-To: Kuniyuki Iwashima <kuniyu@amazon.com>
-Cc: andrew+netdev@lunn.ch, b.a.t.m.a.n@lists.open-mesh.org, 
-	bpf@vger.kernel.org, bridge@lists.linux.dev, davem@davemloft.net, 
-	donald.hunter@gmail.com, dsahern@kernel.org, edumazet@google.com, 
-	horms@kernel.org, idosch@nvidia.com, jiri@resnulli.us, kuba@kernel.org, 
-	linux-can@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-ppp@vger.kernel.org, 
-	linux-rdma@vger.kernel.org, linux-wireless@vger.kernel.org, 
-	linux-wpan@vger.kernel.org, liuhangbin@gmail.com, netdev@vger.kernel.org, 
-	osmocom-net-gprs@lists.osmocom.org, pabeni@redhat.com, shuah@kernel.org, 
-	wireguard@lists.zx2c4.com
+References: <20241221124445.1094460-1-ariel.otilibili-anieli@eurecom.fr>
+ <20241221124445.1094460-2-ariel.otilibili-anieli@eurecom.fr>
+ <20250103085540.GA94204@wp.pl> <Z3fMxD2mAVsVl58h@pidgin.makrotopia.org>
+ <20250103131002.GA100011@wp.pl> <2f7a83-6777e880-a451-5cf12280@99910178>
+ <20250104103753.GA2228@wp.pl> <2f7a8b-67792f00-52db-be99fc0@193911177>
+ <Z3r3vxy8cRRH6w1m@pidgin.makrotopia.org> <2f7a84-677b8500-5061-4ac1e700@152950135>
+In-Reply-To: <2f7a84-677b8500-5061-4ac1e700@152950135>
+From: Jonas Gorski <jonas.gorski@gmail.com>
+Date: Tue, 7 Jan 2025 12:01:03 +0100
+Message-ID: <CAOiHx==4Yg=Ne0SHWx1jJTJF0QziVJYxdp0mpAkd-GkVfp+tWw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rt2x00: Remove unusued value
+To: Ariel Otilibili-Anieli <Ariel.Otilibili-Anieli@eurecom.fr>
+Cc: Daniel Golle <daniel@makrotopia.org>, Shiji Yang <yangshiji66@outlook.com>, 
+	Stanislaw Gruszka <stf_xl@wp.pl>, linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+	Kalle Valo <kvalo@kernel.org>, =?UTF-8?Q?Tomislav_Po=C5=BEega?= <pozega.tomislav@gmail.com>, 
+	Linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jan 7, 2025 at 4:57=E2=80=AFPM Kuniyuki Iwashima <kuniyu@amazon.com=
-> wrote:
->
-> From: Xiao Liang <shaw.leon@gmail.com>
-> Date: Sat,  4 Jan 2025 20:57:21 +0800
-[...]
-> > - In amt_newlink() drivers/net/amt.c:
-> >
-> >     amt->net =3D net;
-> >     ...
-> >     amt->stream_dev =3D dev_get_by_index(net, ...
-> >
-> >   Uses net, but amt_lookup_upper_dev() only searches in dev_net.
-> >   So the AMT device may not be properly deleted if it's in a different
-> >   netns from lower dev.
->
-> I think you are right, and the upper device will be leaked
-> and UAF will happen.
->
-> amt must manage a list linked to a lower dev.
->
-> Given no one has reported the issue, another option would be
-> drop cross netns support in a short period.
+Hi,
 
-Yes. I also noticed AMT sets dev->netns_local to prevent netns
-change. Probably it also assumes the same netns during creation.
-
-[...]
-> >
-> > - In gtp_newlink() in drivers/net/gtp.c:
-> >
-> >     gtp->net =3D src_net;
-> >     ...
-> >     gn =3D net_generic(dev_net(dev), gtp_net_id);
-> >     list_add_rcu(&gtp->list, &gn->gtp_dev_list);
-> >
-> >   Uses src_net, but priv is linked to list in dev_net. So it may not be
-> >   properly deleted on removal of link netns.
+On Mon, Jan 6, 2025 at 8:23=E2=80=AFAM Ariel Otilibili-Anieli
+<Ariel.Otilibili-Anieli@eurecom.fr> wrote:
 >
-> The device is linked to a list in the same netns, so the
-> device will not be leaked.  See gtp_net_exit_batch_rtnl().
+> Hi Daniel, hi Shiji, hi Stanislaw,
 >
-> Rather, the problem is the udp tunnel socket netns could be
-> freed earlier than the dev netns.
-
-Yes, you're right. Actually I mean the netns of the socket by "link netns"
-(there's some clarification about this in patch 02).
-
-[...]
-> >
-> > - In pfcp_newlink() in drivers/net/pfcp.c:
-> >
-> >     pfcp->net =3D net;
-> >     ...
-> >     pn =3D net_generic(dev_net(dev), pfcp_net_id);
-> >     list_add_rcu(&pfcp->list, &pn->pfcp_dev_list);
-> >
-> >   Same as above.
+> On Sunday, January 05, 2025 22:21 CET, Daniel Golle <daniel@makrotopia.or=
+g> wrote:
 >
-> I haven't tested pfcp but it seems to have the same problem.
->
-> I'll post patches for gtp and pfcp.
->
-
-It would be nice.
-
->
+> > H again,
 > >
-> > - In lowpan_newlink() in net/ieee802154/6lowpan/core.c:
 > >
-> >     wdev =3D dev_get_by_index(dev_net(ldev), nla_get_u32(tb[IFLA_LINK])=
-);
+> > On Sat, Jan 04, 2025 at 01:51:25PM +0100, Ariel Otilibili-Anieli wrote:
+> > > Great, then; thanks for having acked the patch as such.
 > >
-> >   Looks for IFLA_LINK in dev_net, but in theory the ifindex is defined
-> >   in link netns.
+> > I just noticed that Shiji Yang had posted a series of patches for
+> > OpenWrt which also addresses the same issue, however, instead of
+> > removing the augmented assignment, it fixes it to the supposedly
+> > originally intended way.
+> >
+> > See
+> > https://git.openwrt.org/?p=3Dopenwrt/openwrt.git;a=3Dblob;f=3Dpackage/k=
+ernel/mac80211/patches/rt2x00/621-04-rt2x00-fix-register-operation-on-RXIQ-=
+calibration.patch;h=3Daa6f9c437c6447831490588b2cead6919accda58;hb=3D5d58390=
+1657bdfbbf9fad77d9247872427aa5c99
+> >
+> > I suppose this was tested together with the other changes of the same
+> > series, so we may want to pick that instead.
 >
-> I guess you mean the ifindex is defined in src_net instead.
-> Not sure if it's too late to change the behaviour.
+> Thanks for having put some time into the research, Daniel; I looked into =
+the openwrt archives for 2024, none of Shiji=E2=80=99s messages mentions th=
+at patch.
 
-Yes, it's source net for lowpan. I think it depends on whether
-the interpretation of IFLA_LINK should be considered as part API
-provided by rtnetlink core, or something customizable by driver.
-In the former case, this can be considered as a bug.
+You didn't find anything because these changes came in via a PR on
+github: https://github.com/openwrt/openwrt/pull/16845 :) OpenWrt
+accepts contributions both via email and PR on github.
 
-Thanks.
+Best Regards,
+Jonas
 
