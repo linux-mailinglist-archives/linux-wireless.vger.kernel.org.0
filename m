@@ -1,112 +1,115 @@
-Return-Path: <linux-wireless+bounces-17155-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17156-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B51ACA0488F
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2025 18:45:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8830EA0489C
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2025 18:51:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C5591889384
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2025 17:45:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC85C3A63AA
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2025 17:51:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 228F21F2C48;
-	Tue,  7 Jan 2025 17:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 226781898ED;
+	Tue,  7 Jan 2025 17:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="h0/8tGlS"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ppQxBQyu"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2FBE1E3789
-	for <linux-wireless@vger.kernel.org>; Tue,  7 Jan 2025 17:45:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DED115D1
+	for <linux-wireless@vger.kernel.org>; Tue,  7 Jan 2025 17:51:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736271919; cv=none; b=QZMa/aJicxoPGPeM6cloWCmfV0IULfR3aYnwM3O8QbqX0F8/TE6Xd70xET3D2C5W0OP5KC9x2d7SU04XqOA+Sw5lKP+VKkuYP7JRnIdh8pn3Yr8QKGHwx43deGtI+m7H97inW2KjBKniA+Mwf9dEB8yom6dJM+gaCzrVB56K+IE=
+	t=1736272308; cv=none; b=RDF5ju4ECdG4I3SHh5lhSxC0nugoZDmhAVa5bGwEHLLY7+mV3uW51UpS8RBGxrSe7NY07Yqnqsh9bzeuhashdoCWSpKZ62W+EXyYyG8KfJ4PH3WsXFheOYoEgAicqGL5NrJQZJ2yqK7ZUnMQF3xxr/ErsuA1zrjx+OgwgqLyeRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736271919; c=relaxed/simple;
-	bh=4O441MQ7/1ECwfzwBdnpB3F2Geqpc2NHRW2VlEmXq5Y=;
-	h=From:To:Date:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=D+7n3WYe1M6lhVOOFAiCQbno40wln3Qt+m38HfaGXR+GcYpEjbylNX3wiGLWlSPO5cqvedaFrGb1zWnC1kud+ZHMR8pKgS3OAAqKQKr5F2GfhXqiZNJuIrvRE1bFbrKYkOE7R1wTdsavVvKm6q8LKCfiCmrBBNs0vzYa935TOGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=h0/8tGlS; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-21675fd60feso39044215ad.2
-        for <linux-wireless@vger.kernel.org>; Tue, 07 Jan 2025 09:45:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1736271916; x=1736876716; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=4O441MQ7/1ECwfzwBdnpB3F2Geqpc2NHRW2VlEmXq5Y=;
-        b=h0/8tGlS+eR55oSxbg428Qk9/K7+s+TelKGHeWVn06IZ38xEj7JX7uFurSDxaXFg8Q
-         4prkPenqfZI+3XIzsORvVJ2u/V1KNbYunT+nkOf+w0LlvLz5lXqfiPq+3mnqRTOXADpj
-         tDPNELIxu4qUTRKcfvd8v1ZIc+ZAAOB4OsRWE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736271916; x=1736876716;
-        h=content-transfer-encoding:mime-version:subject:user-agent
-         :references:in-reply-to:message-id:date:to:from:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4O441MQ7/1ECwfzwBdnpB3F2Geqpc2NHRW2VlEmXq5Y=;
-        b=Vb2quJEaZ8+/ZfQzD1UD8hFxhI56m7rwJ6RN25X9Coh53z9gh/eFo8ec8EPTNcGluG
-         t1X8r/y+MvB0ITy3WnyxFWsnsUHymf10ykpE//WX+HrU9wxIjKqtJ1u7fOnSV+B6Dh1T
-         0PoO2+e2mZJ4wD0EbENUyWyCXAwj7qF+9SRNQCqzOalTNAA7M2SHqD8w8uBrDKUfRdK1
-         5sT+DFMNr5ed9fDUz19trRNuvs4j1bN+Nem8rTMFuCDirw/MhxAV8q+HalqSpL7UNXsQ
-         ElVqVgXBerRsIVK3sZNKl0Bg/Ky8I2M49JpgaKQnbDzlqYxM95GgGyyJkKFAq5ZtL/1w
-         4C3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU+O6l/+9DX7Ym1QGL0TPCoFWF3UxR4eGH0ptcOOwU7yXVPE7DZ+zbO8lTM2Hy1nkPzm48JPJiztNg5z47JDQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwD4NlO02kMTeaGNddJAl9CKh0YKbvQddECMEwnXD84h6ipCIKD
-	mRXxV/Mn7JwMgas5yz7EEdW0CIU3UuOp80JHzLwG6S9gHFYI/cPc/xwsGktBbs9eQOgK0A66T9I
-	e+w==
-X-Gm-Gg: ASbGnctbZzdc4oZKPM6/GsmduKz1MQn/Eg0R9gfPHvGtkM6Gk+jj3bcN7V+usaR9VaK
-	ULfyvPFTvc1uMWKy/o+mQPTLTsYFNf/+kfxUgceX4+YIpOofE/NhLH5DHXGzz06/o32e42PJlPc
-	KUpziJlmBAX9kwyuLaoKygutwJoaAJM0j5ncii3+aYxn8tGj95BqeKoKrJbbOQHQmHxP85n6iyW
-	HQ0f5PeTXC8hf65Lxa1co1LsOwiWH2owIoLGfprWDndmWipZAMehFh7ZVrO5CGAgCuSv4+L8wIU
-	i45Z4cuAoYIFR6YbvmA=
-X-Google-Smtp-Source: AGHT+IHOa21ZR+Lr7/3YheszCow8lEFw0Lvzec4fHEOR6yhep5nEp1ly/leR6XcpwqOMs4X6WahxRg==
-X-Received: by 2002:a05:6a21:910c:b0:1e1:f281:8cf5 with SMTP id adf61e73a8af0-1e88cf48a57mr108716637.0.1736271916005;
-        Tue, 07 Jan 2025 09:45:16 -0800 (PST)
-Received: from [192.168.178.74] (f215227.upc-f.chello.nl. [80.56.215.227])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-842dc7eda63sm31187729a12.68.2025.01.07.09.45.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Jan 2025 09:45:15 -0800 (PST)
-From: Arend Van Spriel <arend.vanspriel@broadcom.com>
-To: =?UTF-8?B?U3RlZmFuIETDtnNpbmdlcg==?= <stefan@codeweavers.com>, <linux-wireless@vger.kernel.org>
-Date: Tue, 07 Jan 2025 18:45:12 +0100
-Message-ID: <19441dedc40.279b.9b12b7fc0a3841636cfb5e919b41b954@broadcom.com>
-In-Reply-To: <20250106170958.3595-1-stefan@codeweavers.com>
-References: <20250106170958.3595-1-stefan@codeweavers.com>
-User-Agent: AquaMail/1.54.0 (build: 105400535)
-Subject: Re: [PATCH v2] wifi: brcmfmac: Check the return value of of_property_read_string_index
+	s=arc-20240116; t=1736272308; c=relaxed/simple;
+	bh=0AP+pb5CoTkC4+mnv8ojLh6BURLqjcibBG+frOg0Udo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=p1rRbYB7anIulwUZbhm7zWpzjDezYURHPwyh5CF0jJzYLhQQQXQzR4ysoib45tuUggFPkXYXe+Gbrm1CvdlURrSoztzXj3WBR9yJhQ26hu7FLO9qWiQJb9f5V47SqqEK3q3+qYtR7zrd8314yPsOjVkavhtfO7yckP8EU8DWqy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ppQxBQyu; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 507AfeWc025740;
+	Tue, 7 Jan 2025 17:51:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=SKB2IZnikxWa6Af4Eg/dAJ
+	JHvvzOv7t/0PN1M2lM178=; b=ppQxBQyue04pnYCPb+P+0JFU08UledLHaXZD+c
+	DeGt85jJ4M4m0XoU2C2EMqy242o/6YIpXT60A7bKToqIpVdMPr22idXmfDKpmOOK
+	kiDe9oQ/vyZHA4ynD1KIEFK0RrLC1O9lPMk+mczpLidf43t3iUwqD7CToqwBvw5s
+	vdYiLG+jTCFhfw+p73wJCLYVV5pgH82+BpvjTbQYnTOlKsyMMmbtvudFl2uc8uXO
+	Y+HBZI2vM4JniZIPmB533dhBqpvjWYx7Emd8cRApN05MzaQ1DdqJhPxGBiwSMMei
+	HwV2QwdIIirFYcRFn0mF0Nq7l0PUvilwSom1RUacdhbF4uRQ==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4412r7937w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Jan 2025 17:51:35 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 507HpYdr021767
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 7 Jan 2025 17:51:34 GMT
+Received: from hu-ramess-blr.qualcomm.com (10.80.80.8) by
+ nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Tue, 7 Jan 2025 09:51:32 -0800
+From: Rameshkumar Sundaram <quic_ramess@quicinc.com>
+To: <johannes@sipsolutions.net>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Rameshkumar Sundaram
+	<quic_ramess@quicinc.com>
+Subject: [PATCH 0/3]  wifi: cfg80211: update EML capabilities of an ML Station
+Date: Tue, 7 Jan 2025 23:17:59 +0530
+Message-ID: <20250107174802.1793252-1-quic_ramess@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; format=flowed; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: XYsHYooNRLkTtrr7X7NitEZMTWIVInoi
+X-Proofpoint-ORIG-GUID: XYsHYooNRLkTtrr7X7NitEZMTWIVInoi
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ mlxlogscore=749 malwarescore=0 mlxscore=0 clxscore=1015 spamscore=0
+ suspectscore=0 phishscore=0 adultscore=0 impostorscore=0
+ priorityscore=1501 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2411120000 definitions=main-2501070148
 
-On January 6, 2025 6:10:13 PM Stefan Dösinger <stefan@codeweavers.com> wrote:
+When EMLSR is enabled for an ML association, the EML capabilities
+advertised by the ML Station needs to be updated to drivers in order to
+trigger EMLSR operation.
+Add support to fetch EML capabilities advertised by ML station and
+cache it in ieee80211_sta data structure so that drivers can use them
+whenever required.
 
-> Somewhen between 6.10 and 6.11 the driver started to crash on my
-> MacBookPro14,3. The property doesn't exist and 'tmp' remains
-> uninitialized, so we pass a random pointer to devm_kstrdup().
+Ramasamy Kaliappan (3):
+  wifi: cfg80211: Add support to get EMLSR capabilities of non-AP MLD
+  wifi: mac80211: update ML STA with EML capabilities
+  wifi: ath12k: update EMLSR capabilities of ML Station
 
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-> Signed-off-by: Stefan Dösinger <stefan@codeweavers.com>
->
-> ---
->
-> v2: Don't assign err, inline of_property_read_string_index into the if
-> statement.
+ drivers/net/wireless/ath/ath12k/mac.c |  3 +-
+ drivers/net/wireless/ath/ath12k/wmi.c | 81 ++++++++++++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/wmi.h |  3 +-
+ include/net/cfg80211.h                |  2 +
+ include/net/mac80211.h                |  2 +
+ net/mac80211/cfg.c                    |  3 +
+ net/wireless/nl80211.c                |  8 +++
+ 7 files changed, 98 insertions(+), 4 deletions(-)
 
-[snip]
 
-
-> ---
-> drivers/net/wireless/broadcom/brcm80211/brcmfmac/of.c | 8 ++++----
-> 1 file changed, 4 insertions(+), 4 deletions(-)
-
+base-commit: 09fa3b6974a1245ddd0751747609431494ba5b4f
+-- 
+2.34.1
 
 
