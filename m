@@ -1,164 +1,121 @@
-Return-Path: <linux-wireless+bounces-17167-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17168-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63B1BA04A6B
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2025 20:45:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46700A04B10
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2025 21:37:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C1D6165962
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2025 19:45:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A79493A47DD
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2025 20:37:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C92391F63DB;
-	Tue,  7 Jan 2025 19:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D33FF1F63E7;
+	Tue,  7 Jan 2025 20:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hez8ws1i"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="akilUkDe"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52761F63E7
-	for <linux-wireless@vger.kernel.org>; Tue,  7 Jan 2025 19:45:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF111D958E;
+	Tue,  7 Jan 2025 20:37:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736279120; cv=none; b=ochZzEpdmotth0cDq5VapaaniPGEys31kvzyELNK7hsD/lezbno+Ue1XtVathcOV4QKWfPNn6RIowCtF3mbc4Y5Nl6z/+f4xbR4DCti5e1c2/c11CEyQ0rxFCTIJ6s1wG9L1/2WWmaakzKtnz4kqWmHI862x2/U3jKM5kUBAz3g=
+	t=1736282256; cv=none; b=OklaYNDLfHVzTosdzTFuU95e7+5AU05mPCboLg9JuKv/mCPLhDPQ5cgUhibeF4fqJWRi2niI/mfgmdii34wPvqE5Mm1BNYigO99aAOZ2e3jUMKi4rlInF2+PzGhWSDKg05IJbjjepVYksccevF2Hs7FBNH9ArzQ9pNO7x0etjW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736279120; c=relaxed/simple;
-	bh=RD22hk1daK1JvYQmqzUMipy+wpFHrhVOOLxHdLDCat4=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=WcPtaFeweW1xxd1sh4JGr8zBR1QoUdyzGoZKS8ZWzoP+wPxKo1aejBjJq8KybBMP2uPwJjfXian72TBlDXQF1bB1GC2LyHH+aB01DXM9ifrtfoIjlbFldJMfsYcf5wTOC8vgBkN5KHvTg9gcUqPuhcQGkUOu2TW9VSLcM6W8q3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hez8ws1i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 107A8C4CED6;
-	Tue,  7 Jan 2025 19:45:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736279119;
-	bh=RD22hk1daK1JvYQmqzUMipy+wpFHrhVOOLxHdLDCat4=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=Hez8ws1iQOkuGzCzv/pd107HlI827Ne2jj6TF68CAjNNFnZMlRFtWvFURgD4ke1np
-	 NJTGhA5K9QE5nb3ewhRVCu+qlI7++8gpRb9tTVR1XyCpJkksodlFWG0otAqTHrvahv
-	 gsCP+f292A+WbOfUKTNLU4Wg0MffISZklfS3F/A5KBkENnSnpYuHleT1mF0WDqq/Ru
-	 5UGe+3YgduAq7yYVjF+V6TaYqjC0fhe5Tmq4tECfwzK3CZ6rno33xeFFp/XMqb5KDh
-	 8smLDce6V6hHKoHC6zcWu8EvhTJYR1Ohmtb6L32ZnHI/BnTPjvIVRsOg9JdJtkiJ/r
-	 mP2tMEsHMQ7Ig==
-From: Kalle Valo <kvalo@kernel.org>
-To: Roopni Devanathan <quic_rdevanat@quicinc.com>
-Cc: <ath12k@lists.infradead.org>,  <linux-wireless@vger.kernel.org>,
-  Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-Subject: Re: [PATCH 2/2] wifi: ath12k: Support Transmit Buffer OFDMA Stats
-References: <20241128110949.3672364-1-quic_rdevanat@quicinc.com>
-	<20241128110949.3672364-3-quic_rdevanat@quicinc.com>
-Date: Tue, 07 Jan 2025 21:45:16 +0200
-In-Reply-To: <20241128110949.3672364-3-quic_rdevanat@quicinc.com> (Roopni
-	Devanathan's message of "Thu, 28 Nov 2024 16:39:49 +0530")
-Message-ID: <87jzb6flwz.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1736282256; c=relaxed/simple;
+	bh=5Jv0GFmrXq1jwYZKh042UJxxjdLs2NPvApOPnl4iIdo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dC0aoMPM19W5dYR5LQFSkXjeyzBE4FnMYsux4pq3gRebPfeHoLRMFWeV5dGPxUXGRpNUBIyjiNotXqiq/olO7KJ/TUBnBwqhvk3Bjrq+JJBV/7tI1Sz+pdGx83CIeS0v+ryULQpL2/HGVXVgpJt5ihRgdmtlKMFIQCKGohULqeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=akilUkDe; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2167141dfa1so3100145ad.1;
+        Tue, 07 Jan 2025 12:37:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1736282254; x=1736887054; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=C1H/J3xaLiB+SOTacWZ1CrgmLpcpSfI8SMqoIoJuoKI=;
+        b=akilUkDen0HCyHkfOIrH1031pOPPSYkAoh4fynhniaKwxZU1c3o+FpVS7gX5wWZTXb
+         BfxjbBKj5RqDeqVdObes++Oj5rxHZUEYj8YamkDS8YfqxfOxKhmHnlfpO9BndzIxyPg2
+         h3Rx62qQ5gz+QTmNr0izYFw+jK8sDN5QDFPtvEuH21e/aIsIpUGelhyg8WJDwQ2P4tsq
+         d+4tmBEDAQjpuqVuQcIWhb4+vcuqz+SuZAGHPPQGPuXfPe4Vbzqxv/whoFCACP7w8jGL
+         Xw3D5cLPULHP0smSh3iapPQAp9hvePRTW+ixp9v/LbJtwTuGjc/2Xa/BwSbmvnMJnzGT
+         2AMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736282254; x=1736887054;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=C1H/J3xaLiB+SOTacWZ1CrgmLpcpSfI8SMqoIoJuoKI=;
+        b=UNWBezRVzIMOXUQXqks+kl0autodWHPpoTin4khGpGu03H/mFnf/27Ys+mdffHDnR1
+         1l8Prfl9W0Qt9qtxnNLbC6+ObBxrSAEKbysmE7qCfof+c+4aJJzjVoaKurfss1PCNMI7
+         MsIUK6hTLUlkuiJ6p8wldJ5jyNKeG93BnTHYp0SRrWGEiyohVfLXglQqHmbMfplHwCJr
+         aANA6BYmSGyQxLEUc3msBygsb3luvnA/IZxwl/Jj6/R1weALdHMODTkeAhVjqNvY8bHp
+         gllO5Yxhh+lVBm3tJIDhWhuk8bPt8TNj2AaNjH1lgdXK8lonHNFewtSIxoMSDofroGkp
+         6Jsg==
+X-Forwarded-Encrypted: i=1; AJvYcCUY33woubQu0dC94HXMFWzS3IGCS4rTgpZWtRj+mvVxCwCWCN6+A/4zkeVzUNuPgW4NfINGrEAdqVafVeih@vger.kernel.org, AJvYcCUYwH3bDyOZjMUBo7tFArPVGNRyaU4LShrHN+TGr6BHGipbrILKPbkABHc/BVBLEMozDBRYEEJ8BUk5@vger.kernel.org, AJvYcCWRrmao/ZMuBdjlU9KUmizjnARt0sW8Yoiz+m++9vmBVsPo2FBpstIJIlkDb/9gS+DeZY6R9m1dZRHy6s+q4n4=@vger.kernel.org, AJvYcCWv24sI1Slz8sOyCNClGW68lmAjKJpO/mHXypaQL4JAD0vLt/KGriX68ffORqSOcVCFFClUkkvk@vger.kernel.org, AJvYcCXfdpR7Zrys56ex7wU1XpAJFesEqO8cJc0j8aDcbjOpygqigmxBZP4mUtW32+3xNPUYyzOsThCTr5HN@vger.kernel.org
+X-Gm-Message-State: AOJu0YwzdhX7F9S0xvkH36dQbt0/i1R5VI4yH6YI54HE4u+sn43rM19/
+	lR9fKo8HcSW6PrEdhhhfZ8LOhLVBJxnMRmv2ePUErFLfYI2Ex9Bjt9yptgDi4TiOf9eTMaobVGP
+	5HPHvc22NqEXCHBav9wQCW5ipZWw=
+X-Gm-Gg: ASbGncvjJobGZJpgJocug5YqYcbaex5To3YkIrK6jRLaTWlHv28AgEdoBYDqJvSqIAr
+	T5AbHYx6UDzaT5lVr3A+UNq5+LiMy2ONyZBA59TQZ0AtVtyfeNUNk
+X-Google-Smtp-Source: AGHT+IFpy/zEv8gV0glc3e85eskiQiRjVRs6FkoV/+B0RRM/Pns1lF2tiJiK6t7vuZVqLlK8YkI/dPy0Q3JwAvn8b/M=
+X-Received: by 2002:a17:903:41c6:b0:215:758c:52e8 with SMTP id
+ d9443c01a7336-21a83c148abmr6677255ad.12.1736282254604; Tue, 07 Jan 2025
+ 12:37:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20250107125613.211478-1-krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20250107125613.211478-1-krzysztof.kozlowski@linaro.org>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date: Tue, 7 Jan 2025 21:37:23 +0100
+X-Gm-Features: AbW1kvYyTE4JPE8j-clACseuWPbFM0gz7gQf2hau2axwDVbwPBqu3atU2f_bDWs
+Message-ID: <CAFBinCCwASspnr2u94K=SqTaheS00zwJVjoHOO67-qgw8hNbcg@mail.gmail.com>
+Subject: Re: [PATCH net-next] dt-bindings: net: Correct indentation and style
+ in DTS example
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
+	Jerome Brunet <jbrunet@baylibre.com>, Doug Berger <opendmb@gmail.com>, 
+	Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Ray Jui <rjui@broadcom.com>, 
+	Scott Branden <sbranden@broadcom.com>, Marc Kleine-Budde <mkl@pengutronix.de>, 
+	Vincent Mailhol <mailhol.vincent@wanadoo.fr>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Kalle Valo <kvalo@kernel.org>, 
+	Oleksij Rempel <o.rempel@pengutronix.de>, Dario Binacchi <dariobin@libero.it>, 
+	Christophe Roullier <christophe.roullier@foss.st.com>, 
+	Grygorii Strashko <grygorii.strashko@ti.com>, Siddharth Vadapalli <s-vadapalli@ti.com>, 
+	Roger Quadros <rogerq@kernel.org>, Brian Norris <briannorris@chromium.org>, 
+	Frank Li <Frank.Li@nxp.com>, netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, linux-can@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-wireless@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Roopni Devanathan <quic_rdevanat@quicinc.com> writes:
-
-> From: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+On Tue, Jan 7, 2025 at 1:56=E2=80=AFPM Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
 >
-> Add support to request OFDMA stats of transmit buffers from firmware through
-> HTT stats type 32. These stats give information about NDPA, NDP, BRP and
-> steering mechanisms.
+> DTS example in the bindings should be indented with 2- or 4-spaces and
+> aligned with opening '- |', so correct any differences like 3-spaces or
+> mixtures 2- and 4-spaces in one binding.
 >
-> Note: WCN7850 firmware version -
-> WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4 does not
-> support HTT stats type 32.
+> No functional changes here, but saves some comments during reviews of
+> new patches built on existing code.
 >
-> Sample output:
-> -------------
-> echo 32 > /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats_type
-> cat /sys/kernel/debug/ath12k/pci-0000\:06\:00.0/mac0/htt_stats
-> HTT_TXBF_OFDMA_AX_NDPA_STATS_TLV:
-> ax_ofdma_ndpa_queued = 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0,
-> 17:0, 18:0, 19:0, 20:0, 21:0, 22:0, 23:0, 24:0, 25:0, 26:0, 27:0,
-> 28:0, 29:0, 30:0, 31:0, 32:0, 33:0, 34:0, 35:0, 36:0, 37:0
-> ax_ofdma_ndpa_tried = 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0,
-> 17:0, 18:0, 19:0, 20:0, 21:0, 22:0, 23:0, 24:0, 25:0, 26:0, 27:0,
-> 28:0, 29:0, 30:0, 31:0, 32:0, 33:0, 34:0, 35:0, 36:0, 37:0
-> .....
->
-> HTT_TXBF_OFDMA_AX_NDP_STATS_TLV:
-> ax_ofdma_ndp_queued = 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0,
-> 17:0, 18:0, 19:0, 20:0, 21:0, 22:0, 23:0, 24:0, 25:0, 26:0, 27:0,
-> 28:0, 29:0, 30:0, 31:0, 32:0, 33:0, 34:0, 35:0, 36:0, 37:0
-> ax_ofdma_ndp_tried = 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0,
-> 17:0, 18:0, 19:0, 20:0, 21:0, 22:0, 23:0, 24:0, 25:0, 26:0, 27:0,
-> 28:0, 29:0, 30:0, 31:0, 32:0, 33:0, 34:0, 35:0, 36:0, 37:0
-> .....
->
-> HTT_TXBF_OFDMA_AX_BRP_STATS_TLV:
-> ax_ofdma_brpoll_queued = 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0,
-> 17:0, 18:0, 19:0, 20:0, 21:0, 22:0, 23:0, 24:0, 25:0, 26:0, 27:0,
-> 28:0, 29:0, 30:0, 31:0, 32:0, 33:0, 34:0, 35:0, 36:0, 37:0
-> ax_ofdma_brpoll_tied = 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0,
-> 17:0, 18:0, 19:0, 20:0, 21:0, 22:0, 23:0, 24:0, 25:0, 26:0, 27:0,
-> 28:0, 29:0, 30:0, 31:0, 32:0, 33:0, 34:0, 35:0, 36:0, 37:0
-> .....
->
-> HTT_TXBF_OFDMA_AX_STEER_STATS_TLV:
-> ax_ofdma_num_ppdu_steer = 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0,
-> 17:0, 18:0, 19:0, 20:0, 21:0, 22:0, 23:0, 24:0, 25:0, 26:0, 27:0,
-> 28:0, 29:0, 30:0, 31:0, 32:0, 33:0, 34:0, 35:0, 36:0, 37:0
-> ax_ofdma_num_usrs_prefetch = 1:0, 2:0, 3:0, 4:0, 5:0, 6:0, 7:0, 8:0, 9:0, 10:0, 11:0, 12:0, 13:0, 14:0, 15:0, 16:0,
-> 17:0, 18:0, 19:0, 20:0, 21:0, 22:0, 23:0, 24:0, 25:0, 26:0, 27:0,
-> 28:0, 29:0, 30:0, 31:0, 32:0, 33:0, 34:0, 35:0, 36:0, 37:0
-> .....
->
-> HTT_TXBF_OFDMA_AX_STEER_MPDU_STATS_TLV:
-> rbo_steer_mpdus_tried = 0
-> rbo_steer_mpdus_failed = 0
-> sifs_steer_mpdus_tried = 0
-> sifs_steer_mpdus_failed = 0
->
-> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00214-QCAHKSWPL_SILICONZ-1
->
-> Signed-off-by: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-> Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
-
-[...]
-
-> +static void
-> +ath12k_htt_print_txbf_ofdma_ax_ndpa_stats_tlv(const void *tag_buf, u16 tag_len,
-> +					      struct debug_htt_stats_req *stats_req)
-> +{
-> +	const struct ath12k_htt_txbf_ofdma_ax_ndpa_stats_tlv *stats_buf = tag_buf;
-> +	u32 buf_len = ATH12K_HTT_STATS_BUF_SIZE;
-> +	u32 len = stats_req->buf_len;
-> +	u8 *buf = stats_req->buf;
-> +	u32 num_elements;
-> +	u8 i;
-> +
-> +	if (tag_len < sizeof(*stats_buf))
-> +		return;
-> +
-> +	num_elements = le32_to_cpu(stats_buf->num_elems_ax_ndpa_arr);
-> +
-> +	len += scnprintf(buf + len, buf_len - len, "HTT_TXBF_OFDMA_AX_NDPA_STATS_TLV:\n");
-> +	len += scnprintf(buf + len, buf_len - len, "ax_ofdma_ndpa_queued =");
-> +	for (i = 0; i < num_elements; i++)
-> +		len += scnprintf(buf + len, buf_len - len, " %u:%u,", i + 1,
-> +				 le32_to_cpu(stats_buf->ax_ndpa[i].ax_ofdma_ndpa_queued));
-> +	len--;
-> +	*(buf + len) = '\0';
-
-Please avoid pointer arithmetic, this is simpler:
-
-buf[len] = '\0';
-
-Or should it be just 0 instead of '\0'? Don't know which one is
-preferred.
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> ---
+>  .../bindings/net/amlogic,meson-dwmac.yaml     | 14 +--
+For amlogic,meson-dwmac.yaml:
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
