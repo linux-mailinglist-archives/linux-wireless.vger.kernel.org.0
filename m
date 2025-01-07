@@ -1,119 +1,111 @@
-Return-Path: <linux-wireless+bounces-17137-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17138-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1AC4A03C3D
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2025 11:24:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48230A03C83
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2025 11:35:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C68427A2B3B
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2025 10:23:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EB01161BB0
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2025 10:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 388E61E47CC;
-	Tue,  7 Jan 2025 10:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78E1A1E9B30;
+	Tue,  7 Jan 2025 10:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="EZ8Bk5yi"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Qhzdkakg"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.12])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD861E3DD1
-	for <linux-wireless@vger.kernel.org>; Tue,  7 Jan 2025 10:23:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE321E572A
+	for <linux-wireless@vger.kernel.org>; Tue,  7 Jan 2025 10:33:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736245430; cv=none; b=B3f4GaFhrYq8zT33CagoIx8YX0ey7b+JzyJKkeo72FOiwBIRTRVGQxHdfJcFBINcnbKkBAn7pFUMDUT49VQjhpv4D+vHKDv+vpEF2sAw66R2eBuqoYXhbm/AyIfDAiW4PmPyggy7cw85+75osLqng+FpWHbg2XZT80mub1UjmJg=
+	t=1736246025; cv=none; b=BDY0DPEeQHfHWhRrAmwH3drpokEYqW+8JcxhX0oyu0tq7ZDtooDmE0tXYF79XKChWizHTS1e0fyrVv0xHQiPQfb8U5pc8MB/hBgf8sSqOjKeOary8ZjFR5WzqrYNCUdQjYItErqLjPIInzGFtayixw/lIIGJDS7QSsBijU1GxkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736245430; c=relaxed/simple;
-	bh=ENRZw0wrSlkHL51Eir0SOb6OZkmHuS6753Sg+wvQmdc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X7lgp07bqZT0z7S23InXxVEoj1IdckckCoHRbYYUqDnW6NDF6oKgEEko6cUrxG0/Hl3IiItOj7+t3Ce3xrilyGVsihICDiaKAASWTPjYNnDrC+WHtC3jbTDMxYxOfJgL00S38Bk0DpLOgrtOZRVF0l0LlMJGNPOOHQlGOqj9vfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=EZ8Bk5yi; arc=none smtp.client-ip=212.77.101.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
-Received: (wp-smtpd smtp.wp.pl 30304 invoked from network); 7 Jan 2025 11:23:35 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
-          t=1736245415; bh=ae3iHmFyFKfPB1ihSnkhLzujkbnClLYu78pfaVBQOSw=;
-          h=From:To:Cc:Subject;
-          b=EZ8Bk5yikdhrnF1LQb7Ml1mycW6e7ULMPKyICAmLrP/4+m83yV9/pCdW4Ip0pArwy
-           7D5VBVrNHYbBTLciuG5rJwTbPOk3M9DMTqOLdqfi70VjjbM9yHhYD1T9gpVqYtopEV
-           9RYFWNv/uD1UxvzWFMmVmr7Jy4AUKMDJJrI4f1Q+XL4hBTu489ij4o/5J41hBII/rl
-           u3OEl3XXQGsa6WkdCwPVXMf83ZQSXjU7O/iGbaoCsgYyxH6EppYRfECPUNIi27LYUm
-           aFW/H722LR7iegEkW0J6rV1CRip4P37ykE4XA6U6B4Nsuz5naRdjCHuYULM8XKT6/T
-           jrYHPr5FyKVQw==
-Received: from 89-64-6-19.dynamic.chello.pl (HELO localhost) (stf_xl@wp.pl@[89.64.6.19])
-          (envelope-sender <stf_xl@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with ECDHE-RSA-AES256-GCM-SHA384 encrypted SMTP
-          for <Ariel.Otilibili-Anieli@eurecom.fr>; 7 Jan 2025 11:23:35 +0100
-Date: Tue, 7 Jan 2025 11:23:35 +0100
-From: Stanislaw Gruszka <stf_xl@wp.pl>
-To: Ariel Otilibili-Anieli <Ariel.Otilibili-Anieli@eurecom.fr>
-Cc: Daniel Golle <daniel@makrotopia.org>,
-	Shiji Yang <yangshiji66@outlook.com>,
-	linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-	Kalle Valo <kvalo@kernel.org>,
-	Tomislav =?utf-8?Q?Po=C5=BEega?= <pozega.tomislav@gmail.com>,
-	Linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] rt2x00: Remove unusued value
-Message-ID: <20250107102335.GA2355@wp.pl>
-References: <20241221124445.1094460-1-ariel.otilibili-anieli@eurecom.fr>
- <20241221124445.1094460-2-ariel.otilibili-anieli@eurecom.fr>
- <20250103085540.GA94204@wp.pl>
- <Z3fMxD2mAVsVl58h@pidgin.makrotopia.org>
- <20250103131002.GA100011@wp.pl>
- <2f7a83-6777e880-a451-5cf12280@99910178>
- <20250104103753.GA2228@wp.pl>
- <2f7a8b-67792f00-52db-be99fc0@193911177>
- <Z3r3vxy8cRRH6w1m@pidgin.makrotopia.org>
- <2f7a84-677b8500-5061-4ac1e700@152950135>
+	s=arc-20240116; t=1736246025; c=relaxed/simple;
+	bh=Zp8JC/GDrUTyqZBKVPSVRyWvMyyBsA5WtwVDW+D4SuE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=fhGWTnIG+HIgrOKxkljwikcDi1vTr9j1E7bwAYYBDKWdup50zcrbORGf5XbaA1hSC0mG6OWggeegDRCnCHrmMKBomoOufsUN3R/TJQqyKrcPfmxsgBH7TPedRSgiFI1H6vfFvFrd1gruhM7Y9P4bTakrmP925MifY+3BSUeWrPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=Qhzdkakg; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 507A0dkC019799;
+	Tue, 7 Jan 2025 10:33:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	bng/oGlTfh/22tU8tFNz3Tnv/mZDCP1Htp6/4ME1730=; b=QhzdkakgnXBTMCBY
+	c7W3zNgIPGVPQ/HmRbF8jtWZ2bK5oFue5t70Si92xIBZcEfN42a73133BGG6/kQH
+	p6yXzTkjqEffQepcT6UnWKWFKIlCTQTEIyEdEKletGcTRIlHyu3/RLL5Cd1DJpGv
+	o8lRg0QHzTlFLF1fYvr9d70XXCR3itC+6WDS0181Uru1lPHoiifHZe+hTQpYodgz
+	EKij1zC738QXs4K8ee2UB8liSHDLEeaIvnlZs8WrSLyiffSn3+AIfWGVNDos6I3s
+	DLUXG7X7mcbrZPgpB2yo60FBr3mRS/1d/UeHxolictQnOTCCPV3wPges7gbkp7Re
+	ziCU2w==
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44124xr2gd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Jan 2025 10:33:40 +0000 (GMT)
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 507AXdCK022576
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 7 Jan 2025 10:33:39 GMT
+Received: from [10.152.201.120] (10.80.80.8) by nasanex01c.na.qualcomm.com
+ (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Tue, 7 Jan 2025
+ 02:33:37 -0800
+Message-ID: <f7738ed3-d27a-48a8-b0cc-cb52d47e54f9@quicinc.com>
+Date: Tue, 7 Jan 2025 16:03:34 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2f7a84-677b8500-5061-4ac1e700@152950135>
-X-WP-MailID: 4a31331c3305ef66d84a20dc653f4b86
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000000 [cZNU]                               
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: cfg80211: rearrange kernel document for sinfo
+ structure
+To: Johannes Berg <johannes@sipsolutions.net>
+CC: <linux-wireless@vger.kernel.org>
+References: <20250107041727.3810446-1-quic_sarishar@quicinc.com>
+ <5f774e0f0e00138240108bc0e4028b588e1ac927.camel@sipsolutions.net>
+Content-Language: en-US
+From: Sarika Sharma <quic_sarishar@quicinc.com>
+In-Reply-To: <5f774e0f0e00138240108bc0e4028b588e1ac927.camel@sipsolutions.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: guIX1BcxDwniLK_aSAzLujFbOx8L3hIC
+X-Proofpoint-GUID: guIX1BcxDwniLK_aSAzLujFbOx8L3hIC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxscore=0
+ malwarescore=0 priorityscore=1501 bulkscore=0 suspectscore=0 phishscore=0
+ adultscore=0 lowpriorityscore=0 impostorscore=0 clxscore=1015
+ mlxlogscore=717 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501070087
 
-Hi Ariel,
-
-On Mon, Jan 06, 2025 at 08:23:34AM +0100, Ariel Otilibili-Anieli wrote:
-> Hi Daniel, hi Shiji, hi Stanislaw,
+On 1/7/2025 2:28 PM, Johannes Berg wrote:
+> On Tue, 2025-01-07 at 09:47 +0530, Sarika Sharma wrote:
+>> Currently, the sinfo kernel documentation is not aligned with the
+>> order of the sinfo structure elements. Therefore, rearrange the
+>> kernel documentation fields to align correctly with the structure.
+>> No functionality changes added.
+>>
 > 
-> On Sunday, January 05, 2025 22:21 CET, Daniel Golle <daniel@makrotopia.org> wrote:
+> Why?
 > 
-> > H again,
-> > 
-> > 
-> > On Sat, Jan 04, 2025 at 01:51:25PM +0100, Ariel Otilibili-Anieli wrote:
-> > > Great, then; thanks for having acked the patch as such.
-> > 
-> > I just noticed that Shiji Yang had posted a series of patches for
-> > OpenWrt which also addresses the same issue, however, instead of
-> > removing the augmented assignment, it fixes it to the supposedly
-> > originally intended way.
-> > 
-> > See
-> > https://git.openwrt.org/?p=openwrt/openwrt.git;a=blob;f=package/kernel/mac80211/patches/rt2x00/621-04-rt2x00-fix-register-operation-on-RXIQ-calibration.patch;h=aa6f9c437c6447831490588b2cead6919accda58;hb=5d583901657bdfbbf9fad77d9247872427aa5c99
-> > 
-> > I suppose this was tested together with the other changes of the same
-> > series, so we may want to pick that instead.
-> 
-> Thanks for having put some time into the research, Daniel; I looked into the openwrt archives for 2024, none of Shiji’s messages mentions that patch.
-> 
-> Though, if you three agree, I will push a new series, modelled on that patch, and you as Suggested-by.
+> johannes
 
-Please post that change. But to not mix it with
-patches against other drivers in the same series.
-(multiple rt2x00 patches in one patchset are ok).
-
-And please use "wifi: rt2x00:" as subject prefix.
-
-Thanks
-Stanislaw
+Actually, there is ongoing work to extend sinfo for link-level details. 
+While working on this, I noticed a documentation mismatch and decided to 
+correct the existing documentation first, as it's good to have aligned 
+structure and documentation.
+Since this change is not dependent on anything, sent it separately.
 
