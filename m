@@ -1,127 +1,128 @@
-Return-Path: <linux-wireless+bounces-17118-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17119-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EE69A03402
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2025 01:28:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7215A03486
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2025 02:28:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB5761884E03
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2025 00:28:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DE6F18859BE
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2025 01:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6155F1BC5C;
-	Tue,  7 Jan 2025 00:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E50E134A8;
+	Tue,  7 Jan 2025 01:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="ZMIxgIvI"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="p7cw8yiZ"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77437208AD;
-	Tue,  7 Jan 2025 00:28:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8212F46
+	for <linux-wireless@vger.kernel.org>; Tue,  7 Jan 2025 01:27:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736209687; cv=none; b=uc4czPzsZXDerBpiOBG5dlcguZ6dl+j9pcOijYvYOb/uCEPMnVfd1iyuILbJD6byy85so3NgC+Ij3RFDLnxOavJ1hODe0oKi1mmpbmk4DhJg7PgdFKgScoUltMzEKFe2RykXTzklZQCzZH4q/NhEDxgF3/LwqaRYJAGvm05ZA+4=
+	t=1736213276; cv=none; b=YnELAIjQRobNZvcXonKPdHnPYNGKZB23aW/XZhL6xMAS+LBWgIBj/cGsGvILXKMv6KAHCAEG3rdWFqti1Oc4k+EZz5LrZBf/68QZG09MhX5Giy3NGU6/GxgnbG5NSFN/BRwHNctcc6N8p/6jb5U8DKu+lhAjguvLHtLVX5WIu00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736209687; c=relaxed/simple;
-	bh=jaaGEsVdd7XcrNCceHIfBm3LivSUEjcJegAwk1I9X9A=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=DyFllqVpXWF0JEXZQaiWOuKIY9dMoAPgJJNAjvk2x5MZMSl+S6zYdhtfvyfNlq3/O3kqJ7UqBQOf8y+6akxA6bSQCMP6fc+k2Bof1HVQRZT1SIsBMy2Uy9CS/xkBPfbKGK+l3c9cKwOU1UYQNAenvymIDuz9Z7TiKIFkHVw9dKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=ZMIxgIvI; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5070RhstE3037375, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1736209663; bh=jaaGEsVdd7XcrNCceHIfBm3LivSUEjcJegAwk1I9X9A=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=ZMIxgIvId0mEV+BN1WpZJx5lSR83lSyinAoG1Bbte1KVp2jSaRTjgpyD508qpf32l
-	 FzKcjl6es9V5Yl5sjfYPPkTUpvFJIKeYXTLNKXJu54knjjDkLyCFo0ZftFMXm/reKA
-	 iT+xwHZbcIklH+jonRNhp2O87NAq7XHV/ch3iQhAE3ssbs4RfKCQyuqVJtD58QJEys
-	 3CgE6i5KVEBC0XoLN//S58pcBCwkfFYsRQs+dNMFXPXDT6QvV5hXc+bp+ZmE93qlqB
-	 I1fLtTgNOPhnr81rNSoUXXgZase434HgQ3srOhZikaGtVrHv78jUg/7Vj/o72yVYQS
-	 fy8RhyV1bcweg==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5070RhstE3037375
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 7 Jan 2025 08:27:43 +0800
-Received: from RTEXMBS06.realtek.com.tw (172.21.6.99) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 7 Jan 2025 08:27:44 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS06.realtek.com.tw (172.21.6.99) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 7 Jan 2025 08:27:43 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
- RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
- 15.01.2507.035; Tue, 7 Jan 2025 08:27:43 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Fiona Klute <fiona.klute@gmx.de>,
-        "linux-wireless@vger.kernel.org"
-	<linux-wireless@vger.kernel.org>
-CC: Vasily Khoruzhick <anarsoul@gmail.com>, Kalle Valo <kvalo@kernel.org>,
-        Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        Ondrej Jirman <megi@xff.cz>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH] wifi: rtw88: sdio: Fix disconnection after beacon loss
-Thread-Topic: [PATCH] wifi: rtw88: sdio: Fix disconnection after beacon loss
-Thread-Index: AQHbYEKP0T2UCkJG7UaT2nZInqDC5rMKdLZw
-Date: Tue, 7 Jan 2025 00:27:43 +0000
-Message-ID: <4f1064c7b97b47de88b17c647e4a41c3@realtek.com>
-References: <20250106135434.35936-1-fiona.klute@gmx.de>
-In-Reply-To: <20250106135434.35936-1-fiona.klute@gmx.de>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1736213276; c=relaxed/simple;
+	bh=fiYsqr8h7vSKHbiIzlC3jtXsPUXZAr4L1jZ+3/Iriwg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=dH0OGe/mRSO2/0WUd/segekBofykLN6nGRLQDaz1tRxMvxwH09VegFjWR/nQ5k7hExZVcR480yiHw0lWtdUsg7yt95AQ71jN47EHckV2E0LSaTVL+W7A17ZXUV+C28D47HLrCdCjGkl3wRpMyZGPyWbGf/mrp2u1HcNDypBv1w0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=p7cw8yiZ; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5070MYDq006449;
+	Tue, 7 Jan 2025 01:27:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	FzFz3ZS2SpifsNknJ1s18qEX0TT65AVdtP+7DJjCLMg=; b=p7cw8yiZU0uUkF/c
+	g/BAKOr8mZOkMvJsk0fWAdNdQ0kr3tNEE/G0uH0TYAbv6AcsJIQmNxObyhYNgA2H
+	EFQxJrvRXRf6y9CbRGXe8/gwYybtWz6uy3qU3kmLnxYeWl+AH3m0uDQqoJnqkROX
+	F+AHF8OyZZgUIy/fGpPQuQgp/MHFFrVky4PYi85wnL6pGlw1JfPLBq8vD4wMgLMP
+	QPhwSPYU2K9Q2oA2RmooipYd9gh3dyGHhjZmg1xCmU7mTo+IyhGCSTIJqTPQk0Az
+	NMa6fycUMI5yaRV4biyzxMHQGgWghbjxMhUR9b4fpPtRQJB2k+P5jhJUJAVHx8Pr
+	+Yh3Pw==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 440m4a0syk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Jan 2025 01:27:46 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5071RkPD017097
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 7 Jan 2025 01:27:46 GMT
+Received: from [10.216.19.19] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 6 Jan 2025
+ 17:27:44 -0800
+Message-ID: <33ce0af0-a2d4-415b-9b64-87e42192f933@quicinc.com>
+Date: Tue, 7 Jan 2025 06:57:40 +0530
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: ath12k: fix tx power, max reg power update to
+ firmware
+To: Santhosh Ramesh <quic_santrame@quicinc.com>, <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Sathishkumar Muruganandam
+	<quic_murugana@quicinc.com>
+References: <20240909073049.3423035-1-quic_santrame@quicinc.com>
+Content-Language: en-US
+From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+In-Reply-To: <20240909073049.3423035-1-quic_santrame@quicinc.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: bvJkWwtbXjmZrx306RMBj2uP4W0lmEJF
+X-Proofpoint-ORIG-GUID: bvJkWwtbXjmZrx306RMBj2uP4W0lmEJF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
+ lowpriorityscore=0 mlxlogscore=999 adultscore=0 suspectscore=0 spamscore=0
+ phishscore=0 priorityscore=1501 malwarescore=0 impostorscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2501070009
 
-Fiona Klute <fiona.klute@gmx.de> wrote:
-> This is the equivalent of 28818b4d871bc93cc4f5c7c7d7c526a6a096c09c
+On 9/9/24 13:00, Santhosh Ramesh wrote:
+> From: Sathishkumar Muruganandam <quic_murugana@quicinc.com>
+> 
+> Currently, when the vdev start WMI cmd is sent from host, vdev related
+> parameters such as max_reg_power, max_power, and max_antenna_gain are
+> multiplied by 2 before being sent to the firmware. This is incorrect
+> because the firmware uses 1 dBm steps for power calculations.
+> 
+> This leads to incorrect power values being used in the firmware and
+> radio, potentially causing incorrect behavior.
+> 
+> Fix the update of max_reg_power, max_power, and max_antenna_gain values
+> in the ath12k_mac_vdev_start_restart function, ensuring accurate
+> power settings in the firmware by sending these values as-is,
+> without multiplication.
+> 
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00214-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+> 
 
-Normally use 12 digits as pattern like:=20
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
 
-Commit 28818b4d871b ("wifi: rtw88: usb: Fix disconnection after beacon loss=
-")
-
-I can spin this during merging.=20
-
-> "wifi: rtw88: usb: Fix disconnection after beacon loss" for SDIO
-> chips. Tested on Pinephone (RTL8723CS), random disconnections became
-> rare, instead of a frequent nuisance.
->=20
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
-
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-
+> Signed-off-by: Sathishkumar Muruganandam <quic_murugana@quicinc.com>
+> Signed-off-by: Santhosh Ramesh <quic_santrame@quicinc.com>
 > ---
->  drivers/net/wireless/realtek/rtw88/sdio.c | 2 ++
->  1 file changed, 2 insertions(+)
->=20
-> diff --git a/drivers/net/wireless/realtek/rtw88/sdio.c b/drivers/net/wire=
-less/realtek/rtw88/sdio.c
-> index 799230eb5f1..e024061bdbf 100644
-> --- a/drivers/net/wireless/realtek/rtw88/sdio.c
-> +++ b/drivers/net/wireless/realtek/rtw88/sdio.c
-> @@ -1192,6 +1192,8 @@ static void rtw_sdio_indicate_tx_status(struct rtw_=
-dev *rtwdev,
->         struct ieee80211_tx_info *info =3D IEEE80211_SKB_CB(skb);
->         struct ieee80211_hw *hw =3D rtwdev->hw;
->=20
-> +       skb_pull(skb, rtwdev->chip->tx_pkt_desc_sz);
-> +
->         /* enqueue to wait for tx report */
->         if (info->flags & IEEE80211_TX_CTL_REQ_TX_STATUS) {
->                 rtw_tx_report_enqueue(rtwdev, skb, tx_data->sn);
-> --
-> 2.47.1
 
+Hi Jeff/Kalle,
+
+It would be good, if Fixes tag can be added while applying this patch.
+
+
+-- 
+Aditya
 
