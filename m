@@ -1,129 +1,135 @@
-Return-Path: <linux-wireless+bounces-17151-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17152-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79A2EA04424
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2025 16:22:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8633CA044EA
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2025 16:41:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABF097A144D
-	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2025 15:22:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C06018850C0
+	for <lists+linux-wireless@lfdr.de>; Tue,  7 Jan 2025 15:41:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D99A71F2C44;
-	Tue,  7 Jan 2025 15:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6558770FE;
+	Tue,  7 Jan 2025 15:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q9725PD2"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="F12tsU3E"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B136F1E1041;
-	Tue,  7 Jan 2025 15:22:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27CEE2940F
+	for <linux-wireless@vger.kernel.org>; Tue,  7 Jan 2025 15:40:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736263347; cv=none; b=dqvViYb9QIRfqB9Dw/SlNZOxQP62mB1lPu2RewFJBZi5dgrGHTD+0N5VUpctX7dIX4Gr2y7/aN6eFAh53Mp/FPU+/GtVe3v59JD5Tzb2bO7v0AEeYk6gNcwjfPMscD4LvaSI7tRK8gwQp9EcibavWa0Je9Qx3izuT/e+a1RvC5Y=
+	t=1736264460; cv=none; b=bLUXcbt+glpb7/NR1ekx9+yi3ClOo1Um3BROW8OTh73dSnrBiOOuPqevmtF1/1hG60THoDMvhWJpvv8FyYmRzqRbRk1x1Rswg8HyZwgTPBY+eyqj98fdS8J0LeIkH9zofpB8mpUgWPlw+jUUz9jPQhzfX3bfYkpXTU+IU2YpiOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736263347; c=relaxed/simple;
-	bh=nvMBc9afwU5AP/J5Qb5ULoGNFaGxP7txNGHvynI+1tM=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=JkU34QGGeazjSUiP4FXi8UoGVTvatzkLcNI/PEv9c2J4Cqoy0srU6L/ebEig8DhwaOOE9hE8jGwGu1Ij/LhJGWgUq+ULV8eZ913Wx4Em5V7Ax+GuM8wOEokY3QRyxmV3lhifx84WHk1gIWIS/ExNEPSnJyO9tIeZ2iPb1BoT62A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q9725PD2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C16EDC4CEDD;
-	Tue,  7 Jan 2025 15:22:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736263347;
-	bh=nvMBc9afwU5AP/J5Qb5ULoGNFaGxP7txNGHvynI+1tM=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=Q9725PD2cBcoNoQC+73lxZcSRWElxXUUGY4fNEhSXXOVuNAcGRbY8mjMOjTWozaih
-	 stCJ8M1Xzc+ezs5tBlIsk6ryWhITfziW4Qgp8oYKn8myZMpsKgBePfJlZg6AYarJqA
-	 Ph4z/JBc8BUCqUPSUv7l/45OLSygad6Zcjd9DXRu5y0AFUmN23FIpceZQieCiELov2
-	 MH1ltfVJ6Q5sYl/yU2Z0JF+wvzXtLGG1YQlXTC1tBqO65X+4yZz3NQeJUfAk3L4R9F
-	 JyJPFpmY/OuZKK8xy0QKwSj+nwJ0LeOq3E23GGuF+AXsozVdOpWhZ1P87neO0rOt9D
-	 VJGz72nQeMZeA==
-From: Kalle Valo <kvalo@kernel.org>
-To: Marek Vasut <marex@denx.de>
-Cc: Alexis =?utf-8?Q?Lothor=C3=A9?= <alexis.lothore@bootlin.com>,  Ajay
- Singh
- <ajay.kathat@microchip.com>,  Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-  Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-  linux-wireless@vger.kernel.org,  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH wireless] wifi: wilc1000: unregister wiphy only if it
- has been registered
-References: <20241223-wilc_fix_probe_error_path-v1-1-91fa7bd8e5b6@bootlin.com>
-	<81554a5e-5b86-4944-9565-4e2aed5fd0ef@denx.de>
-Date: Tue, 07 Jan 2025 17:22:23 +0200
-In-Reply-To: <81554a5e-5b86-4944-9565-4e2aed5fd0ef@denx.de> (Marek Vasut's
-	message of "Mon, 23 Dec 2024 20:19:10 +0100")
-Message-ID: <87sepur6mo.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1736264460; c=relaxed/simple;
+	bh=zY5fPz/piu6hVm42d+D5OrjggabVdRmWfGhJbCeTDEY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=N5pxNUEmkePajPHs7k2pnlMYxSuP3E3IpVn/sYfrx8CUxRtx+8G2xmJaoPwTFCfKW6E5E5D4AmGNQ6SyEe29eSufNfekQGyoEiPckyPo0qJQHnTU6XAhSt3bNxOsFwmSG6ZOl7cFqBlgpLsVlgJaZj4GTPELmgKXe4nK03enAl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=F12tsU3E; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 507A8WC8023356
+	for <linux-wireless@vger.kernel.org>; Tue, 7 Jan 2025 15:40:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	ROVA0dL8wI4IAQHMDzUiyFTOabzV8dS56bVqXyw3GZ4=; b=F12tsU3Eq2qn4Kfd
+	kC7lTjxgi5xG80diarSdtHAXehXFtx7A+QxlRj9hcXdshYxP5y7lpPB3L/A5XreM
+	5vB17u8zA2TsdQ8he1Nh+q3Ky1eIDmhIzBPe8RhIlKZRftu1J7uWdCAe1gB561Fq
+	2yQ4a/CfGeBYkwY29xXaP7LmijOEkvQoRAVsLMSOXfLwdC2MWKhTsYYTgkg3t3lk
+	nDpi/xsQlHJiQw/w5XlcDEnkUnf6XEstv4cg/+3n9c0NyIzQSCxiMk2GHv/k9lZX
+	2dRgFkfuLFlv9x2htaVm1EqFvwNjqcZ52vdAKCF33OS+LdlRxWUce9pH568CO9S6
+	cj/H8Q==
+Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44128nrt5x-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linux-wireless@vger.kernel.org>; Tue, 07 Jan 2025 15:40:58 +0000 (GMT)
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-2f46b7851fcso30332732a91.1
+        for <linux-wireless@vger.kernel.org>; Tue, 07 Jan 2025 07:40:58 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736264457; x=1736869257;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ROVA0dL8wI4IAQHMDzUiyFTOabzV8dS56bVqXyw3GZ4=;
+        b=DEJ9iqtjrpgl5hB38GcWvhttcE9PmJqJSwQJvKd3UDezj6490BIwENE2UqjTwtkZns
+         7vJ9RQxJnc4F5iUmz22erP07QJGbtvOCBHLxDtdoeRhrz6WmR770S4FPkivbafOBQAI1
+         2IixXS1eFWbwuSfxJtvY9/Nyp5ZBi1BI+F0LhG8wYMMXXyceQCGwWqmYUloGoi5VC1UV
+         61VLxKIOwml2iKT1dSQayhSwYH0gY1+0+HRHmEjo9F7R8xVyLNDmltaoya39Ba2rk1+1
+         sW020EVgs/8jcjsEBuk6HMW2kn7hTauswcqM0YYu6pvCsoOHwfRlhaX+8iGU1n7p96nx
+         6LQA==
+X-Gm-Message-State: AOJu0YyGCMFye5/yPxvRkIAYg4muj1fxTBY1O9sXW/VednUykBXJwbz7
+	aqW/IKV384+ttj+FMo9h9PO3HxONz23H5GR2uru9k7A2RjvP+cC105JmbUezB1hPvq/K3WFdtI4
+	/hrrdWAHF7tbDTAQeEwGERMWwSPkLSK0q4bK5lwS9P6UmrkWOdG6dqJ2BWPm6Tbffdw==
+X-Gm-Gg: ASbGnct+FgoYq5pPFD2kW/VBkxpihV9pfGOfgjLhbco6Fp3TrbKIAydBVQRKg9/duAp
+	UTFm5+aNUZqK2YHnX8i2PyXwa0Uh9uz/5X+q4gEjIFp61Mj1UO4N3PXLuKc6/dnvOElC+dockzI
+	Xt9hdSdAhfH1C+7aeTgyorcZdFBwqMA/pDVJpALWhKOaloc8jw0mGQoVbfBAXKl+Q8QAW8Jt4qV
+	ZECEuRkNttb5Zn6q2VSqeTmMzdp05B2IFlD3snYP1+D+WddppfxTqFGIjQUiP2wePj95W9Oe+FP
+	JhLrczUqGfuH/QWyHSJiQ3WX0tY+afx7V2n+
+X-Received: by 2002:a05:6a21:3103:b0:1e1:a932:4a40 with SMTP id adf61e73a8af0-1e5e043f517mr88507829637.4.1736264457236;
+        Tue, 07 Jan 2025 07:40:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHjp+ZhxLliIVZRlUZrskzL3M9JEI4yPjtJg3ItDoSn7XQG5HubHTSgbcLZIzAmfwRzfhSf8Q==
+X-Received: by 2002:a05:6a21:3103:b0:1e1:a932:4a40 with SMTP id adf61e73a8af0-1e5e043f517mr88507793637.4.1736264456857;
+        Tue, 07 Jan 2025 07:40:56 -0800 (PST)
+Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-89eaa1c4fdfsm24924629a12.60.2025.01.07.07.40.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Jan 2025 07:40:56 -0800 (PST)
+Message-ID: <53c80072-319c-4a5e-ab40-4a61f0ef022b@oss.qualcomm.com>
+Date: Tue, 7 Jan 2025 07:40:55 -0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] wifi: cfg80211: rearrange kernel document for sinfo
+ structure
+To: Johannes Berg <johannes@sipsolutions.net>,
+        Sarika Sharma <quic_sarishar@quicinc.com>
+Cc: linux-wireless@vger.kernel.org
+References: <20250107041727.3810446-1-quic_sarishar@quicinc.com>
+ <5f774e0f0e00138240108bc0e4028b588e1ac927.camel@sipsolutions.net>
+ <f7738ed3-d27a-48a8-b0cc-cb52d47e54f9@quicinc.com>
+ <00982f1dfed63df24aa5d836fad1c577201754ed.camel@sipsolutions.net>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <00982f1dfed63df24aa5d836fad1c577201754ed.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: ptipA0qidkv-PhBSF_5m-XakKN5qYLOP
+X-Proofpoint-ORIG-GUID: ptipA0qidkv-PhBSF_5m-XakKN5qYLOP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=985
+ priorityscore=1501 bulkscore=0 clxscore=1015 suspectscore=0 mlxscore=0
+ spamscore=0 impostorscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501070131
 
-Marek Vasut <marex@denx.de> writes:
+On 1/7/2025 3:12 AM, Johannes Berg wrote:
+> On Tue, 2025-01-07 at 16:03 +0530, Sarika Sharma wrote:
+>> Actually, there is ongoing work to extend sinfo for link-level details. 
+>> While working on this, I noticed a documentation mismatch and decided to 
+>> correct the existing documentation first, as it's good to have aligned 
+>> structure and documentation.
+> 
+> Why do you think it's good? I don't even agree with that. The code
+> should be laid out to minimize holes, but the docs can be laid out to
+> group functionally related fields.
 
-> On 12/23/24 4:46 PM, Alexis Lothor=C3=A9 wrote:
->
->> There is a specific error path in probe functions in wilc drivers (both
->> sdio and spi) which can lead to kernel panic, as this one for example
->> when using SPI:
->> Unable to handle kernel paging request at virtual address 9f000000
->> when read
->> [9f000000] *pgd=3D00000000
->> Internal error: Oops: 5 [#1] ARM
->> Modules linked in: wilc1000_spi(+) crc_itu_t crc7 wilc1000 cfg80211 blue=
-tooth ecdh_generic ecc
->> CPU: 0 UID: 0 PID: 106 Comm: modprobe Not tainted 6.13.0-rc3+ #22
->> Hardware name: Atmel SAMA5
->> PC is at wiphy_unregister+0x244/0xc40 [cfg80211]
->> LR is at wiphy_unregister+0x1c0/0xc40 [cfg80211]
->> [...]
->>   wiphy_unregister [cfg80211] from wilc_netdev_cleanup+0x380/0x494 [wilc=
-1000]
->>   wilc_netdev_cleanup [wilc1000] from wilc_bus_probe+0x360/0x834 [wilc10=
-00_spi]
->>   wilc_bus_probe [wilc1000_spi] from spi_probe+0x15c/0x1d4
->>   spi_probe from really_probe+0x270/0xb2c
->>   really_probe from __driver_probe_device+0x1dc/0x4e8
->>   __driver_probe_device from driver_probe_device+0x5c/0x140
->>   driver_probe_device from __driver_attach+0x220/0x540
->>   __driver_attach from bus_for_each_dev+0x13c/0x1a8
->>   bus_for_each_dev from bus_add_driver+0x2a0/0x6a4
->>   bus_add_driver from driver_register+0x27c/0x51c
->>   driver_register from do_one_initcall+0xf8/0x564
->>   do_one_initcall from do_init_module+0x2e4/0x82c
->>   do_init_module from load_module+0x59a0/0x70c4
->>   load_module from init_module_from_file+0x100/0x148
->>   init_module_from_file from sys_finit_module+0x2fc/0x924
->>   sys_finit_module from ret_fast_syscall+0x0/0x1c
->> The issue can easily be reproduced, for example by not wiring
->> correctly
->> a wilc device through SPI (and so, make it unresponsive to early SPI
->> commands). It is due to a recent change decoupling wiphy allocation from
->> wiphy registration, however wilc_netdev_cleanup has not been updated
->> accordingly, letting it possibly call wiphy unregister on a wiphy which
->> has never been registered.
->> Fix this crash by moving wiphy_unregister/wiphy_free out of
->> wilc_netdev_cleanup, and by adjusting error paths in both drivers
->> Fixes: fbdf0c5248dc ("wifi: wilc1000: Register wiphy after reading
->> out chipid")
->> Signed-off-by: Alexis Lothor=C3=A9 <alexis.lothore@bootlin.com>
-> Nice find, thank you for fixing it.
->
-> Reviewed-by: Marek Vasut <marex@denx.de>
+Without any documented guidance to that effect I had suggested this during
+internal review to help minimize the size of the diffs where members are being
+refactored out of sinfo into a new per-link struct.
 
-We are quite late in the cycle so I think I'll queue this to
-wireless-next for v6.14.
+But we can drop this since I think we'll be renaming some of the refactored
+members and hence the diff will be big anyway.
 
---=20
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatc=
-hes
+/jeff
 
