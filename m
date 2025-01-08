@@ -1,103 +1,128 @@
-Return-Path: <linux-wireless+bounces-17188-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17189-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE7EEA05692
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jan 2025 10:18:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB31CA05709
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jan 2025 10:38:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A520318883B2
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jan 2025 09:18:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5B687A2B13
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jan 2025 09:38:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B6391EB9ED;
-	Wed,  8 Jan 2025 09:18:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="So8URSuk"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 679151F37C1;
+	Wed,  8 Jan 2025 09:38:01 +0000 (UTC)
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827BF1F37B1;
-	Wed,  8 Jan 2025 09:18:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BFA019F42C;
+	Wed,  8 Jan 2025 09:37:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736327891; cv=none; b=pZ7c2xVsCb1rIDMrzfKGoBxRFd88gBknVRSghQVTDKu6MP6ImPaK9nFvxlnl1GyeEVwWmYM0qYu69MwfMyt6Kzb70tbBppj8B44hxqyMdJah/HzmlIesYHssMmHPpqW2i8/3mOrYI857ezcusHYckXAGgG/p1jx/W3ZHH5EUrWU=
+	t=1736329081; cv=none; b=XQd+hKt60fVxUWHKVhzpLJ6RpZMsM3HDI03fNPrfLqr39c+yrZOMYGhDToTEnASK824fcBmZBCRtYxSC1/LRrSnbgYg9rsf1pvgVJyMQZcZ36YKpqjfo0/Xm0USHYhEdYcFjk2O3M13rHsCnYw6ME2+YgrpXQFv/btjCATp1oEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736327891; c=relaxed/simple;
-	bh=VFnXYasQzmstDMkPgIW9fxpjCN+xG2BSxv+tlcrcKqw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lwMGYj7SK3A8mScBoFuO5VFrzBkzlLfLl5pE/z2yRKGlVJb8jtQJVFBipUDAgXPClO9E6DkU9s4IB5sdL7aAcKe0VuN1K470l7WvnD9Qv8HlIpXek0e5mmJDoUmVXL0U1w+W7yu6Zgwtuj/Mr50OtKt+R26rExHd7C4qdCSq904=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=So8URSuk; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=F/B6giuYYmo56/PqZF8Wm/OoFgz7fHFXjQpFL/Nwp9E=;
-	t=1736327889; x=1737537489; b=So8URSukrGfu+wSVy4F8ZX7XMl0sGYjBthx/0vsABTWkKqd
-	EoKP9Uxi59sZCwf5s5AVkoQJb8UzfbJvPgzjuCD3sNl86xHC9HVnS8ZxZXkFDMim2JMf7tMcV2dnc
-	Srcyle9g7hDpE2bkZgQqwNcVrTIewFLiKUUqpFpsbcP9++nfW+ejuX58ouF3PnsszEg4S3LH8aU7J
-	vxds+BC6HmbFT32OJKp0Amu44omWFvTdEEpaBXZwGnK7r6oX9LNjlDcdU5ijLCdoYIB+8piOx6YNQ
-	rEvUDVw2Rgzy/+eK7VIagbEVJ1Epa2GKzdTXiQVz6482Eu9PMwKQ0bmH924oN5fQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <benjamin@sipsolutions.net>)
-	id 1tVSCM-00000008AbL-3841;
-	Wed, 08 Jan 2025 10:17:58 +0100
-Message-ID: <7d4cd2e755c830803ee8040aafabd7c0632ae335.camel@sipsolutions.net>
-Subject: Re: [PATCH 17/19] wifi: mac80211: also verify requirements in
- EXT_SUPP_RATES
-From: Benjamin Berg <benjamin@sipsolutions.net>
-To: kernel test robot <oliver.sang@intel.com>, Miri Korenblit
-	 <miriam.rachel.korenblit@intel.com>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com, Johannes Berg
- <johannes.berg@intel.com>, 	linux-wireless@vger.kernel.org,
- johannes@sipsolutions.net
-Date: Wed, 08 Jan 2025 10:17:55 +0100
-In-Reply-To: <202501081559.1c188f65-lkp@intel.com>
-References: <202501081559.1c188f65-lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.2 (3.54.2-1.fc41) 
+	s=arc-20240116; t=1736329081; c=relaxed/simple;
+	bh=fV3g+YF8NI3cRH3DfRWU4swOQF7pcduVSxTH7G0FkWE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Dk5Hy4l+8ZvhFy1sOkQ+28EPUjeyE14P3nux8LfrPjD1FmE5yYNMKx0lRI7Xrqfjh07l+naZWQWITPRtH6PSxL3rAP/sBrhL5R+sv27Qo3MZPBX10aK31K9japV8S+O8TiFyY+MMUREhU2mRwBFEjBAekOr9gYGS56S05fKrMeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4YSjRV6mV3z1W3jT;
+	Wed,  8 Jan 2025 17:34:14 +0800 (CST)
+Received: from dggpemf200006.china.huawei.com (unknown [7.185.36.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id A9BDB14035E;
+	Wed,  8 Jan 2025 17:37:56 +0800 (CST)
+Received: from [10.67.120.129] (10.67.120.129) by
+ dggpemf200006.china.huawei.com (7.185.36.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 8 Jan 2025 17:37:55 +0800
+Message-ID: <f86d3fe9-f508-4463-8587-b001979d70c4@huawei.com>
+Date: Wed, 8 Jan 2025 17:37:55 +0800
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v6 1/8] page_pool: introduce page_pool_get_pp()
+ API
+To: Jesper Dangaard Brouer <hawk@kernel.org>, <davem@davemloft.net>,
+	<kuba@kernel.org>, <pabeni@redhat.com>
+CC: <liuyonglong@huawei.com>, <fanghaiqing@huawei.com>,
+	<zhangkun09@huawei.com>, Wei Fang <wei.fang@nxp.com>, Shenwei Wang
+	<shenwei.wang@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>, Jeroen de Borst
+	<jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>,
+	Shailend Chand <shailend@google.com>, Tony Nguyen
+	<anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>, Alexei Starovoitov
+	<ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, John Fastabend
+	<john.fastabend@gmail.com>, Saeed Mahameed <saeedm@nvidia.com>, Leon
+ Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Felix Fietkau
+	<nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, Ryder Lee
+	<ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>, Sean Wang
+	<sean.wang@mediatek.com>, Kalle Valo <kvalo@kernel.org>, Matthias Brugger
+	<matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
+	<angelogioacchino.delregno@collabora.com>, Simon Horman <horms@kernel.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, <imx@lists.linux.dev>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<intel-wired-lan@lists.osuosl.org>, <bpf@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, <linux-wireless@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-mediatek@lists.infradead.org>
+References: <20250106130116.457938-1-linyunsheng@huawei.com>
+ <20250106130116.457938-2-linyunsheng@huawei.com>
+ <02896f96-57dd-47d5-8fa0-8a8aed30fa9a@kernel.org>
+Content-Language: en-US
+From: Yunsheng Lin <linyunsheng@huawei.com>
+In-Reply-To: <02896f96-57dd-47d5-8fa0-8a8aed30fa9a@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemf200006.china.huawei.com (7.185.36.61)
 
-Hi,
+On 2025/1/7 22:52, Jesper Dangaard Brouer wrote:
+> 
+> On 06/01/2025 14.01, Yunsheng Lin wrote:
+>> introduce page_pool_get_pp() API to avoid caller accessing
+>> page->pp directly.
+>>
+> [...]
+> 
+>> diff --git a/include/net/page_pool/helpers.h b/include/net/page_pool/helpers.h
+>> index 543f54fa3020..9c4dbd2289b1 100644
+>> --- a/include/net/page_pool/helpers.h
+>> +++ b/include/net/page_pool/helpers.h
+>> @@ -83,6 +83,11 @@ static inline u64 *page_pool_ethtool_stats_get(u64 *data, const void *stats)
+>>   }
+>>   #endif
+>>   +static inline struct page_pool *page_pool_get_pp(struct page *page)
+>> +{
+>> +    return page->pp;
+>> +}
+> 
+> IMHO the function name "page_pool_get_pp" is problematic. As calling it "get" indicate to me that we are taking some reference on the pp object. Is this you plan in later patches?
 
-On Wed, 2025-01-08 at 15:55 +0800, kernel test robot wrote:
-> Kernel test robot noticed "hwsim.owe_assoc_reject.fail" on:
->=20
-> commit: 1539283361bfb9c62eb3486ded2c4d38e5858510 ("[PATCH 17/19]
-> wifi: mac80211: also verify requirements in EXT_SUPP_RATES")
-> url:
-> https://github.com/intel-lab-lkp/linux/commits/Miri-Korenblit/wifi-mac802=
-11-add-some-support-for-RX-OMI-power-saving/20250101-131018
-> base:
-> https://git.kernel.org/cgit/linux/kernel/git/wireless/wireless-next.git
-> =C2=A0main
-> patch link:
-> https://lore.kernel.org/all/20250101070249.f1840f19afa7.I12e3a0e634ce7014=
-f5067256d9a6215fec6bf165@changeid/
-> patch subject: [PATCH 17/19] wifi: mac80211: also verify requirements
-> in EXT_SUPP_RATES
->=20
-> in testcase: hwsim
-> version: hwsim-x86_64-4ea2c336d-1_20241103
-> with following parameters:
->=20
-> 	test: owe_assoc_reject
+No, this patchset is not going to taking some reference on the pp object.
 
-These failures happen because mac80211 has become more strict and the
-hostap, including the hwsim tests, needs to be updated. The patchset to
-update hostap is:
-  https://patchwork.ozlabs.org/project/hostap/list/?series=3D439300
+> 
+> If it is simply a dereference of page->pp ... then we could call it page2pp ?
 
-Benjamin
+Before this version page_pool_to_pp() is used, this version renamed it to
+page_pool_get_pp() as there is an exising netmem_get_pp() in patch 3, which
+is also simply a dereference of netmem->pp, using page_pool_to_pp() does not
+seem consistent with netmem from API naming point.
+
+> ... but I'm uncertain why we need this change.
+
+This patch is added to make patch 3 more reviewable as page->pp is renamed to
+page->pp_item in patch 3. If there is no helper added in this patch, patch 3
+might need to touch all the places touched in this patch too.
+
+> 
+> --Jesper
+> 
 
