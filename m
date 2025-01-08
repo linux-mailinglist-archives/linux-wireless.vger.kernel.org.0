@@ -1,122 +1,125 @@
-Return-Path: <linux-wireless+bounces-17186-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17187-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92F63A05584
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jan 2025 09:37:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D355A05658
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jan 2025 10:10:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D50218880D2
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jan 2025 08:37:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99DFD164568
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jan 2025 09:10:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB5D1E571F;
-	Wed,  8 Jan 2025 08:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B36E51F2C51;
+	Wed,  8 Jan 2025 09:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GkG/XGFu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bGk3ZOrA"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1891DFD85;
-	Wed,  8 Jan 2025 08:37:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 017B31F2369;
+	Wed,  8 Jan 2025 09:05:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736325427; cv=none; b=h7smiKeQZwZx91pBa6CjIjVFWYjpqZxBOjtRcf9yXDp80stN3uQ7yD9ICIw2WpFmzSyfNo0vjl7wRHHFRHIeIELM/nq00wF8cmxMKxTMCg55ZZW6GjttBzm7zCSLkDXsZDmIFD0pk4cnHT3UiKfknrSF+PDuvzEpfJGm2Zeny3o=
+	t=1736327147; cv=none; b=KjCSrGeGqqqoRAMoLyBy1WIFURrSukG3zxQ7vkFwGeV04qsf40XjCMs4ZyKmoilwttfP3aD/vwhavrXHcqQf3sJOjHSWknRoYdGkWw+DJuw4VsNBQuLa6b+YznveP9fr+YquQCO/q46/3w+O0dZ4N+JaNRtn0MgkgcMld7VIqP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736325427; c=relaxed/simple;
-	bh=nxtV4VMFqi9OawJzTCLL5xTqLQUX4En71MCqEoFkWhU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bGhq08b60gmuQSYhD4NA0IOtPEloev+NFwMVNw3UydjSlO8yg8vMLjNd8JRBJ3AYUAQrrLKTXKw5L0dVuv1fBNYNKQjgpC4RvIa9kfZCBqJmGL3xUopEXWixZ1udyf6trUKaLRC0QGPvJobZrwv+xz8Seo6U2Rw/pnVNjo4t6aE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GkG/XGFu; arc=none smtp.client-ip=209.85.221.46
+	s=arc-20240116; t=1736327147; c=relaxed/simple;
+	bh=B89NSua0s2NL9yMjR0i7yePdrfAUdgeidNmKjSs+5Ak=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=CiEDk63e5r5wDp01zhBGrj3Jrw9FG8WTcJZ9qx7Qoi3TO6lB8sAFVa68gK08m4rFVx613A/+GqDS6Lj8MSczd5CfcTK8FYRTNGpYtg8qWom0tVpmN8okynGr2/in/5XJl/94lbVtagnjqrElB74AAtf5BD2r9wXupqPBxVDz9fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bGk3ZOrA; arc=none smtp.client-ip=209.85.221.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-385e0e224cbso8206786f8f.2;
-        Wed, 08 Jan 2025 00:37:05 -0800 (PST)
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-385dece873cso6205330f8f.0;
+        Wed, 08 Jan 2025 01:05:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736325424; x=1736930224; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1736327144; x=1736931944; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vvettVxfJ9lYY3or3UxLpfyl/cdkwWLgR9kVNnFx6ho=;
-        b=GkG/XGFuEu5fAXYebJ4D+UF1kCOvf9KEv5Ag5qbcOcJAET7p6asIOac8DWx2wzvJDZ
-         pjsikSy6uVdjOKqW9paEA0jTn8RZx0LJHyGP/wxPT4aNsmYUoE2r/UC5+Fq5ZoIDbKCs
-         a2aUfCfzCy+IG4Ph97QlCttaG3A529UNFGBTrr29exWwqgS0FVq0WInljhlpEplKUHpj
-         wiTGspRSfpECmN/hiWF8WjtrkqJMhXIeRUcxVmXklHnrtSiU89rV7S0mRwEtZpikEEAR
-         h+Nx16D+VSFoDiHkbZoeWEopuBkR7bVXVsELelqj/LwjeoUSf9+L9P2dZjHRjm6u0zU0
-         Kx6g==
+        bh=B89NSua0s2NL9yMjR0i7yePdrfAUdgeidNmKjSs+5Ak=;
+        b=bGk3ZOrAI3stkye6PNluYmOGXQR6q3RqLgtj0r1N2qElmjTcfK/gRmYeKgafbWZBj6
+         DShNyMAp6NfVlRX7/ZUsmuoIwxQFWFWQKPlZt+8morqRyzwPyhp2tuj9RdUPvKAVg+5f
+         DlgbAxP/hANx0iveZveIWMnjyMZ+p179V6DmIGhFqFRjum9QtH4OgOV5mtxAtka7p6jH
+         yXnOzEGWVPl/3VjExZ3FPUf3x7uZpDdTEE+YaPxct2gcYJprnL3SkpHF3Xhrnc9NaInn
+         DaRnajH+x8Kl4OBrOUQHA0UY6J5UJrWg7hoHn3kxoJKxSueZVOPSWoH/VRTih0cIjzZN
+         hqog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736325424; x=1736930224;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vvettVxfJ9lYY3or3UxLpfyl/cdkwWLgR9kVNnFx6ho=;
-        b=m+pWUZwxKfJgwVuUdGn763aHhLkNaIxAvh68RRB6/1gvx8+swbfyQd5l7Tf0Wugbbr
-         Yny3fAPyKz0d1zofR8KqIQy3Rz1JwGN2InDMqB291J9+r1YNlP6AbQtgWqR68Uw/P+YE
-         +NGEc8L+6nM/1mNqd68r3cufap23ayN7qoh267u35N01avs9fqYjC9hv4L7BTYOw+amY
-         XbHVP4WNEHNM35RXgr4opxV5ElXSegLi5lGHD328EgcoY8yGmNy+K1IWUhNYPcZZEqh5
-         2AahZ7puXNO1b8tl/vRyZq3DlScuseAiUG5zgC1FnUnfZBptNswzZqi4fvBq6bQnZiZp
-         rkdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU1/Jb0JC861p9qQ0YT6w8tlcDRadJm1mVthU/GJCJ/aPs2/OG/bPF/E+vGj8NDZTEEpH+spV/U5w2u0HL6@vger.kernel.org, AJvYcCUIpC5zXE0t7oUvcWB/V5IeOSQEb3JyBJzcdMECOlhskj1Xem9ljid6oOgOKT5zkVI3dmW0OKvwyFX5BQ==@vger.kernel.org, AJvYcCUnkqVuCcgIhOlnH3+L/QACy0lOxR/Ys+uI9ak8zCrS3p2FxzPR79dz+pSIZdzsCgaSIUHUr/cjvhN4akK6niVV@vger.kernel.org, AJvYcCVIbb/HaeVt1BOSQenc3OJpSPpQIacorerpd9MePdSYL3jCWzso+TrZXa6em5lJPSVGPuUl/fk2LaQj@vger.kernel.org, AJvYcCVpGooN8S/3Sw6DQInUjv1FPTQfAryiBRlzT3hgHXdWQsh941xOaxHDwgormT6NAuWOwsc=@vger.kernel.org, AJvYcCVq7cHEQ23b622HzPTsykqdggc42oImWyP3Yn3AJjFH73sk2dQNa6tBt72gYSJ89qejQD+Cjg0DW4vP@vger.kernel.org, AJvYcCX09hsXpcdb5GMNx6wwVF199+rvCqpA7DoQR4ZjFFwtngpriT2OzVgTSiwrcTvHMBdGXWEBRSDOyuYVxFQrkj4=@vger.kernel.org, AJvYcCXB62Jhgio/XGsI9ATOEF5oXPl/TM1IS053Dj2WLpllLOWs2UuvPOV63ewayHhMibiF7EbcNGyepuWKIg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBilIsjevSNkgXOqOUdmeBdi+JOtq+QxJUmctclmpJcQcNzs3z
-	tgNrkECqI5OP2oLXAOk50oSX7tiMdVBkVWbmbjZ/2uw07cPwcssR0iLPn/GevJzv28CS/mAEdnh
-	Kdot9oXASowOyoWPaZEdaAwWxZTs=
-X-Gm-Gg: ASbGnctSFLdWZYz8JTEjL/mehGoOJcmW/NsZfn/rdixYNWZnlKxBwsifHeaE23bYTJj
-	3msWMhnCAE9iZcE9tQdFZNRpHWA6JCYSbCBpR
-X-Google-Smtp-Source: AGHT+IFnmy3aEmpEtSYOMGcp/W5oHyWUG1cZe2OhDShkb+8U3jvy3oPHzekY3BLrSLnXQaOhfCodhl5ttnW21/EGgAw=
-X-Received: by 2002:a05:6000:4712:b0:385:f38e:c0d3 with SMTP id
- ffacd0b85a97d-38a8731a4d3mr1171129f8f.58.1736325423889; Wed, 08 Jan 2025
- 00:37:03 -0800 (PST)
+        d=1e100.net; s=20230601; t=1736327144; x=1736931944;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=B89NSua0s2NL9yMjR0i7yePdrfAUdgeidNmKjSs+5Ak=;
+        b=XLjLYmOnu8mbKnAg17v10oKLkzKTvcnx2tjj6kIx2tJt5Y2EOeKRmaWytR+L34zasa
+         FEg5E5v/v+ZEs8ZAqz8nVUYAtCDk5bxv6Y/5zgnB9oehwqM7KQpsASe/dPjBnzLd07vQ
+         nsVr5Huzqx5Fbt8Suqrh2DzWfM1GEiUN45euH3/EZckzx+L+TeSEaOb3rm+P5O+GT8Q8
+         eKxvVFBsOfS5saK8ik3ul2Iyem7Pa9sE7S5AwgTl1wl7QLGw46jspu/ivuaCyJNb3BRg
+         nkwrX42XuYrmBkgCRESu8iDjLdpLo/fA9zUsYlqcbr5Q6ib00XkAQLVhrEJFZK+YDn2O
+         5gLw==
+X-Forwarded-Encrypted: i=1; AJvYcCUdbXM1R5acYhlWXJM1qrpQlc6CO9RewSb5+73GR4jfen6EzJudcZ8QXdMof+J2/iz0rpC7hpECY8RIkgyHWb8=@vger.kernel.org, AJvYcCW418WehItRZibHTRsB4APca5LV5D/4FIxfkR0Ob7p/EEq1ibpcNVnYDnHB8F1whAnw5avpQQ43l/DSupo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YywV1eP4M8McKlD1CKi0lzvy4VZQq1qB0LmsFs5VksOcxVy+zEA
+	996bIOH535a0R5CZW51pTXzBRgt2NpQx6moAK1ziW3AIxinuGXjD
+X-Gm-Gg: ASbGnctXhxv2u0seco+0flzMnh0YB+GaTrDR7xaxH5NsbCK/UqRhK80Zk+FsaC8/v4b
+	Zsllv2P9NX0Hg1c0epdf9JgknB5kIhqYwAc1f/Lq3WG1a/jXe3fj37vKkwATnIG4cFXOdj7rVGY
+	MR6ypwjs8JLbU7d3Ly4OZcYeIfF+RgS/1qvzz0zgmCM2BYqB9WJaGPxR8aczvVY/Xbe1kRtn4ys
+	PhPgi/IF5wAEYXf+KEBcTatEtwR8QX3XLY4zT71OCwFmSG8/+L4saDvedpBzj3ndq7IIekapb0=
+X-Google-Smtp-Source: AGHT+IFd7isXdiuuZAhkyVSn84acInMhw1zHLKjbGGjVuf5RC652pAj9eDj91mCMpRDLX6U/2h6MwQ==
+X-Received: by 2002:adf:a41e:0:b0:385:ec9b:e442 with SMTP id ffacd0b85a97d-38a8733a391mr1242495f8f.40.1736327144140;
+        Wed, 08 Jan 2025 01:05:44 -0800 (PST)
+Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c828d39sm54052634f8f.9.2025.01.08.01.05.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 08 Jan 2025 01:05:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20250104125732.17335-1-shaw.leon@gmail.com> <20250104125732.17335-3-shaw.leon@gmail.com>
- <20250107123805.748080ab@kernel.org>
-In-Reply-To: <20250107123805.748080ab@kernel.org>
-From: Xiao Liang <shaw.leon@gmail.com>
-Date: Wed, 8 Jan 2025 16:36:26 +0800
-X-Gm-Features: AbW1kvZots7MSnDo6hVFO1pdLy0jTDp88J1frKk6l9Bo0g1-dsYfw260dsxsY30
-Message-ID: <CABAhCORV_s9m-EJ8914zUXCXt6O_e1wsaOVdSKUtm0Rbvc4orQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v7 02/11] rtnetlink: Pack newlink() params into struct
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Kuniyuki Iwashima <kuniyu@amazon.com>, Donald Hunter <donald.hunter@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Ido Schimmel <idosch@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, Jiri Pirko <jiri@resnulli.us>, 
-	Hangbin Liu <liuhangbin@gmail.com>, linux-rdma@vger.kernel.org, 
-	linux-can@vger.kernel.org, osmocom-net-gprs@lists.osmocom.org, 
-	bpf@vger.kernel.org, linux-ppp@vger.kernel.org, wireguard@lists.zx2c4.com, 
-	linux-wireless@vger.kernel.org, b.a.t.m.a.n@lists.open-mesh.org, 
-	bridge@lists.linux.dev, linux-wpan@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 08 Jan 2025 10:05:43 +0100
+Message-Id: <D6WKLPTWY5GP.1KTCXNQWACLBH@gmail.com>
+Cc: "Kalle Valo" <quic_kvalo@quicinc.com>, "Balamurugan Selvarajan"
+ <quic_bselvara@quicinc.com>, "Carl Huang" <quic_cjhuang@quicinc.com>, "Wen
+ Gong" <quic_wgong@quicinc.com>, <linux-wireless@vger.kernel.org>,
+ <ath12k@lists.infradead.org>, <linux-kernel@vger.kernel.org>, "Sathishkumar
+ Muruganandam" <quic_murugana@quicinc.com>
+Subject: Re: [PATCH] wifi: ath12k: encode max Tx power in scan channel list
+ command
+From: "Nicolas Escande" <nico.escande@gmail.com>
+To: "Aditya Kumar Singh" <quic_adisi@quicinc.com>, "Kalle Valo"
+ <kvalo@kernel.org>, "Jeff Johnson" <jjohnson@kernel.org>, "Vasanthakumar
+ Thiagarajan" <quic_vthiagar@quicinc.com>, "Bhagavathi Perumal S"
+ <quic_bperumal@quicinc.com>, "P Praneesh" <quic_ppranees@quicinc.com>,
+ "Karthikeyan Periyasamy" <quic_periyasa@quicinc.com>, "Pradeep Kumar
+ Chitrapu" <quic_pradeepc@quicinc.com>
+X-Mailer: aerc 0.18.2-0-ge037c095a049
+References: <20250107-add_max_reg_pwr_in_scan_ch_list_cmd-v1-1-70d9963a21e4@quicinc.com>
+In-Reply-To: <20250107-add_max_reg_pwr_in_scan_ch_list_cmd-v1-1-70d9963a21e4@quicinc.com>
 
-On Wed, Jan 8, 2025 at 4:38=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wro=
-te:
+On Tue Jan 7, 2025 at 5:01 AM CET, Aditya Kumar Singh wrote:
+> From: Sathishkumar Muruganandam <quic_murugana@quicinc.com>
 >
-> On Sat,  4 Jan 2025 20:57:23 +0800 Xiao Liang wrote:
-> > -static int amt_newlink(struct net *net, struct net_device *dev,
-> > -                    struct nlattr *tb[], struct nlattr *data[],
-> > -                    struct netlink_ext_ack *extack)
-> > +static int amt_newlink(struct rtnl_newlink_params *params)
-> >  {
-> > -     struct amt_dev *amt =3D netdev_priv(dev);
-> > +     struct netlink_ext_ack *extack =3D params->extack;
-> > +     struct net_device *dev =3D params->dev;
-> > +     struct nlattr **data =3D params->data;
-> > +     struct nlattr **tb =3D params->tb;
-> > +     struct net *net =3D params->net;
-> > +     struct amt_dev *amt;
+> Currently, when sending the scan channel list command to the firmware, th=
+e
+> maximum Tx power is not encoded in the reg2 member. This omission causes
+> the firmware to be unaware of the host's maximum Tx power, leading to
+> incorrect Tx power derivation at firmware level.
 >
-> IMHO you packed a little too much into the struct.
-> Could you take the dev and the extack back out?
-
-Sure. I thought you were suggesting packing them all
-in review of v3...
+> To resolve this issue, encode the maximum Tx power in the scan channel li=
+st
+> command before sending it to firmware.
+>
+> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+> Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_S=
+ILICONZ-3
+>
+> Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+> Signed-off-by: Sathishkumar Muruganandam <quic_murugana@quicinc.com>
+> Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
+Not sure if those are in the righ tag format but
+Tested-by: Nicolas Escande <nico.escande@gmail.com>
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3-03253.1-QCAHKSWPL_SILICONZ-27
 
