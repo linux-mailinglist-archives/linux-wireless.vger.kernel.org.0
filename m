@@ -1,112 +1,112 @@
-Return-Path: <linux-wireless+bounces-17190-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17191-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17DFDA05745
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jan 2025 10:47:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F99FA05783
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jan 2025 10:57:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18B697A2E57
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jan 2025 09:47:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDAB81886D8D
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jan 2025 09:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9902A1A8413;
-	Wed,  8 Jan 2025 09:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E7801F708D;
+	Wed,  8 Jan 2025 09:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="guRLpCOB"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Op2LBewi"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7514D19F42D
-	for <linux-wireless@vger.kernel.org>; Wed,  8 Jan 2025 09:47:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5CC1F6684
+	for <linux-wireless@vger.kernel.org>; Wed,  8 Jan 2025 09:57:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736329622; cv=none; b=pZJKI89gdf2U6XfHtWCcSYUnu600byqfrU5rbA1pUNQTVhjWVciMW3f6hIBsC7KDUZSZ9lafqkjRavST5CqxDgjTuapJeGNGhVCrg7jt1781Qn5H8juMn3bzs9AnulkREffZYsEtXvlAjURulPmkrWxQMezQ2jFMxYysOi569lM=
+	t=1736330224; cv=none; b=Oqz8mYQS+MTnoy4T/XdsCGdyXFaLjhz2mISkNK+0ojEeQ8PUknYhExEprUxuCueyz+VTP7obGscub3XU9MCyBfWrCcJHjnFz+RAbvHsBzdRS9JhclFrLzZY3xEAjGyKkwV5//t//WZ0n0Xm+0AurhkAwHNYSHv9iotNWHfHixfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736329622; c=relaxed/simple;
-	bh=KWNsPCfqO9/2m/mTXBmlfe8OilNN6stsaRNoqlVx2iY=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=A3bX+SJmHxHHXQsXQpT6m88zSu63C+0Dv+19ZMzN3o3Vdxpugv94cPmJYVtQsgmbHrM4YXqMbIZGd0KtVXpK+VXPdOoKfE8LByRPQIq7FjSc14pAmgN+avJV6pNbUCf4LmNVYpsbNbcxsHCowVvYKckvzHgzTqb0v51TGTLzJLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=guRLpCOB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CEB7C4CEE0;
-	Wed,  8 Jan 2025 09:47:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736329622;
-	bh=KWNsPCfqO9/2m/mTXBmlfe8OilNN6stsaRNoqlVx2iY=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=guRLpCOBmlIvvekLtna3SaDjA+ddQ+uDwLmPeVHp1G8XUN9AqXwWTQPPd7KwteI38
-	 MkvogRjMbxXDNxekui72C4HPo/q98P55nt4h/gOVz37ntQBcVvOkBlVpMg9d0FJJMq
-	 Aw8rjcBDcF9+QSoCeT+D1vGCautbPAyfbv4y51qdhL6BEqu47AlV/RpU0qxz6maFul
-	 9vPJZ8Ce16izmmljpmrm3dmlGj5JoQKaLSkfIHHEgnQuBxi37iT2w9DaJfwImfRKFz
-	 D4Wo08KhCBAIyoF7+IaGubP3XOZC4GJPuUPr8aVBx0g/dXM6sNlV3CR6W1lOxPypor
-	 zqSrlMNqsAWCQ==
-From: Kalle Valo <kvalo@kernel.org>
-To: Frank Wunderlich <frank-w@public-files.de>
-Cc: shayne.chen@mediatek.com,  linux-wireless@vger.kernel.org,
-  nbd@nbd.name,  lorenzo@kernel.org,  ryder.lee@mediatek.com,
-  evelyn.tsai@mediatek.com,  linux-mediatek@lists.infradead.org
-Subject: Re: Aw: Aw: [PATCH wireless] wifi: mt76: mt7996: fix invalid
- interface combinations
-References: <20241007135133.5336-1-shayne.chen@mediatek.com>
-	<trinity-67c63297-52b5-4d2c-bcdd-1e86936c4b26-1728494589152@3c-app-gmx-bap26>
-	<trinity-0eec3a68-fc9a-4ec6-8c95-1cd58f3bcff8-1735990797237@trinity-msg-rest-gmx-gmx-live-bbc95d94c-9m2wx>
-Date: Wed, 08 Jan 2025 11:46:58 +0200
-In-Reply-To: <trinity-0eec3a68-fc9a-4ec6-8c95-1cd58f3bcff8-1735990797237@trinity-msg-rest-gmx-gmx-live-bbc95d94c-9m2wx>
-	(Frank Wunderlich's message of "Sat, 4 Jan 2025 11:39:57 +0000")
-Message-ID: <87frltr625.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1736330224; c=relaxed/simple;
+	bh=SuAYiDRqVQnE7XVE8O5FQn/tZL1Ko75u6BC3mzcxFFA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=U7MgTDHKR0h/D5AxU93yECUepBPIYiaP47K+JvPx7AirGuD/2NHSZM1qQcvHyhSKdALobeWiN2fpF3dxvAEpObjOFniFMwFg1H1yY6ObbofgebLFMv+uDjEkCZJgbr/jKOjwuwfmUiP1xU/LUYL2CI488GaTnRcPA2dMhzlLqSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Op2LBewi; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=SuAYiDRqVQnE7XVE8O5FQn/tZL1Ko75u6BC3mzcxFFA=;
+	t=1736330222; x=1737539822; b=Op2LBewiIdcyKcXD6EztP0mjpxAVpixeT/dzJ0tid1ybuEA
+	OsV6aXnsKZqRaYXsumRS8HMIFlF5Hv7IbTQKtuekwR3IsPtms9VCnXe7FyM+7aXLI1OVgzdS+s6ln
+	P/0OVMq/mo3JwrYxarBcEE77nkWZkHxE17ASd4DqJ9CcpKKl0qafCWZekfzEDvMMY0UI7MyeIW1+Y
+	ZUS4bj2YJ+oegyz49y8I16BD4ZmJzhfZaNJ11FQP4RPXiUDIMqeZ3XyW0fwBzCBiZAkx1sJCcLoE9
+	/x0vVPES9r3Yqjd0dBS8d32+VN+RsDTZtSc7ig4QivxnEInhwxuOF9N/iMDKA0sA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1tVSo7-00000008BkH-1Tj3;
+	Wed, 08 Jan 2025 10:56:59 +0100
+Message-ID: <bf5019f034214f5ef81adb9993a92377bb080885.camel@sipsolutions.net>
+Subject: Re: [PATCH] wifi: cfg80211: rearrange kernel document for sinfo
+ structure
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, Sarika Sharma
+	 <quic_sarishar@quicinc.com>
+Cc: linux-wireless@vger.kernel.org
+Date: Wed, 08 Jan 2025 10:56:58 +0100
+In-Reply-To: <53c80072-319c-4a5e-ab40-4a61f0ef022b@oss.qualcomm.com>
+References: <20250107041727.3810446-1-quic_sarishar@quicinc.com>
+	 <5f774e0f0e00138240108bc0e4028b588e1ac927.camel@sipsolutions.net>
+	 <f7738ed3-d27a-48a8-b0cc-cb52d47e54f9@quicinc.com>
+	 <00982f1dfed63df24aa5d836fad1c577201754ed.camel@sipsolutions.net>
+	 <53c80072-319c-4a5e-ab40-4a61f0ef022b@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.2 (3.54.2-1.fc41) 
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-malware-bazaar: not-scanned
 
-Frank Wunderlich <frank-w@public-files.de> writes:
+On Tue, 2025-01-07 at 07:40 -0800, Jeff Johnson wrote:
+> On 1/7/2025 3:12 AM, Johannes Berg wrote:
+> > On Tue, 2025-01-07 at 16:03 +0530, Sarika Sharma wrote:
+> > > Actually, there is ongoing work to extend sinfo for link-level detail=
+s.=20
+> > > While working on this, I noticed a documentation mismatch and decided=
+ to=20
+> > > correct the existing documentation first, as it's good to have aligne=
+d=20
+> > > structure and documentation.
+> >=20
+> > Why do you think it's good? I don't even agree with that. The code
+> > should be laid out to minimize holes, but the docs can be laid out to
+> > group functionally related fields.
+>=20
+> Without any documented guidance to that effect
 
-> Hi
->
-> this seems still not merged to next.
->
-> can wireless/mtk Maintainer please pick this up?
->
->> Gesendet: Mittwoch, 9. Oktober 2024 um 19:23
->> Betreff: Aw: [PATCH wireless] wifi: mt76: mt7996: fix invalid interface combinations
->>
->> Hi Shayne
->>
->> > Gesendet: Montag, 07. Oktober 2024 um 15:51 Uhr
->> > Von: "Shayne Chen" <shayne.chen@mediatek.com>
->> > Betreff: [PATCH wireless] wifi: mt76: mt7996: fix invalid interface combinations
->> >
->> > Setting beacon_int_min_gcd and NL80211_IFTYPE_ADHOC in the same interface
->> > combination is invalid, which will trigger the following warning trace
->> > and get error returned from wiphy_register().
->> >
->> > [   10.080325] Call trace:
->> > [   10.082761]  wiphy_register+0xc4/0x76c [cfg80211]
->> > [   10.087465]  ieee80211_register_hw+0x800/0xac4 [mac80211]
->> > [   10.092868]  mt76_register_device+0x16c/0x2c0 [mt76]
->> > [   10.097829]  mt7996_register_device+0x740/0x844 [mt7996e]
->> >
->> > Fix this by removing unused adhoc iftype.
->> >
->> > Fixes: 948f65249868 ("wifi: mt76: mt7996: advertize beacon_int_min_gcd")
->> > Reported-by: Frank Wunderlich <frank-w@public-files.de>
->> > Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
->>
->> thx for the patch. I can confirm it fixes the issue/trace.
->
-> if tested-by is necessary:
->
-> Tested-By: Frank Wunderlich <frank-w@public-files.de>
+Yeah I don't see anything either? Though kernel-doc certainly could
+complain about the order if it wanted to. I tend to think it doesn't
+need to match though, per above.
 
-Felix, should I take this directly to wireless-next? Ack?
+> I had suggested this during
+> internal review to help minimize the size of the diffs where members are =
+being
+> refactored out of sinfo into a new per-link struct.
 
--- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+Fair enough.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+> But we can drop this since I think we'll be renaming some of the refactor=
+ed
+> members and hence the diff will be big anyway.
+
+I think we can also apply it if you think it makes things easier, I just
+didn't think "it should match" really is a good justification. I don't
+care too much about the order in the docs, but also don't see needlessly
+changing it as a useful thing.
+
+johannes
 
