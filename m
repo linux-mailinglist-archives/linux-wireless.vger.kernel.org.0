@@ -1,112 +1,130 @@
-Return-Path: <linux-wireless+bounces-17191-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17192-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F99FA05783
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jan 2025 10:57:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4952A05818
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jan 2025 11:25:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDAB81886D8D
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jan 2025 09:57:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 297BD1886D4B
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jan 2025 10:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E7801F708D;
-	Wed,  8 Jan 2025 09:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2B41F3D3C;
+	Wed,  8 Jan 2025 10:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="Op2LBewi"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="dVh44mKT"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5CC1F6684
-	for <linux-wireless@vger.kernel.org>; Wed,  8 Jan 2025 09:57:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6467818B463;
+	Wed,  8 Jan 2025 10:25:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736330224; cv=none; b=Oqz8mYQS+MTnoy4T/XdsCGdyXFaLjhz2mISkNK+0ojEeQ8PUknYhExEprUxuCueyz+VTP7obGscub3XU9MCyBfWrCcJHjnFz+RAbvHsBzdRS9JhclFrLzZY3xEAjGyKkwV5//t//WZ0n0Xm+0AurhkAwHNYSHv9iotNWHfHixfc=
+	t=1736331939; cv=none; b=ODIVBPrHEpaU/U/O9MOjhN8Ii4/aGtrn3pOnh8ulhq8vMWiaD8iOiLXC+Km7aCWSe8Y9CMdwPtEtfKvWjEUJS1pOv8HcAjmVhhl6EIBLw4llUufoFf+1jJnAGX9yt6j+WFFrZ9sYaGPKQmKBob7qnLryJMnSA/pl1u1Dmc9trgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736330224; c=relaxed/simple;
-	bh=SuAYiDRqVQnE7XVE8O5FQn/tZL1Ko75u6BC3mzcxFFA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=U7MgTDHKR0h/D5AxU93yECUepBPIYiaP47K+JvPx7AirGuD/2NHSZM1qQcvHyhSKdALobeWiN2fpF3dxvAEpObjOFniFMwFg1H1yY6ObbofgebLFMv+uDjEkCZJgbr/jKOjwuwfmUiP1xU/LUYL2CI488GaTnRcPA2dMhzlLqSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=Op2LBewi; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=SuAYiDRqVQnE7XVE8O5FQn/tZL1Ko75u6BC3mzcxFFA=;
-	t=1736330222; x=1737539822; b=Op2LBewiIdcyKcXD6EztP0mjpxAVpixeT/dzJ0tid1ybuEA
-	OsV6aXnsKZqRaYXsumRS8HMIFlF5Hv7IbTQKtuekwR3IsPtms9VCnXe7FyM+7aXLI1OVgzdS+s6ln
-	P/0OVMq/mo3JwrYxarBcEE77nkWZkHxE17ASd4DqJ9CcpKKl0qafCWZekfzEDvMMY0UI7MyeIW1+Y
-	ZUS4bj2YJ+oegyz49y8I16BD4ZmJzhfZaNJ11FQP4RPXiUDIMqeZ3XyW0fwBzCBiZAkx1sJCcLoE9
-	/x0vVPES9r3Yqjd0dBS8d32+VN+RsDTZtSc7ig4QivxnEInhwxuOF9N/iMDKA0sA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1tVSo7-00000008BkH-1Tj3;
-	Wed, 08 Jan 2025 10:56:59 +0100
-Message-ID: <bf5019f034214f5ef81adb9993a92377bb080885.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: cfg80211: rearrange kernel document for sinfo
- structure
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, Sarika Sharma
-	 <quic_sarishar@quicinc.com>
-Cc: linux-wireless@vger.kernel.org
-Date: Wed, 08 Jan 2025 10:56:58 +0100
-In-Reply-To: <53c80072-319c-4a5e-ab40-4a61f0ef022b@oss.qualcomm.com>
-References: <20250107041727.3810446-1-quic_sarishar@quicinc.com>
-	 <5f774e0f0e00138240108bc0e4028b588e1ac927.camel@sipsolutions.net>
-	 <f7738ed3-d27a-48a8-b0cc-cb52d47e54f9@quicinc.com>
-	 <00982f1dfed63df24aa5d836fad1c577201754ed.camel@sipsolutions.net>
-	 <53c80072-319c-4a5e-ab40-4a61f0ef022b@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.2 (3.54.2-1.fc41) 
+	s=arc-20240116; t=1736331939; c=relaxed/simple;
+	bh=6Rrm2FBFhUJVtb5cxlmW+QR5IW3y+5VjB9DlkBl/S3M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BJYKibEfewnFpAt6f+SFpz996u/u3wq8jmShKuq+XllFxjEJ85OV5hmKKV8H3FxAMPf0wuNP8WUNEl6MqXo/8PDOJKe0l7lw5aIZwPshQGUjEc0Bwx+i7Fz/6JhPGDHWQpesN2CjaNRpH++6K0K8J74OBPC7qz8iZu9YQtkqWd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=dVh44mKT; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=ZqoKu
+	HZMVEBBiT3kyfzHzJeM0FpcgUM9K7Q0ltaNBLI=; b=dVh44mKTztnwMZa1WmVrH
+	OU6jq6TQiYiGYhsnf3pvKjb5M/hHipWJKju1QZgH1B/iNQNO1fXIDUKBD5gpwmSA
+	kxIWd376UBGfsgUqe7pyKntGTv1urfDW/xw7MY4t/6E9P3Zo3tKJQnhdJFJ9ipoW
+	cThJBktZnmbo80h5QZVcjY=
+Received: from hello.company.local (unknown [111.205.82.7])
+	by gzsmtp5 (Coremail) with SMTP id QCgvCgB3HtqKUn5nWp1iJw--.31579S2;
+	Wed, 08 Jan 2025 18:25:15 +0800 (CST)
+From: Liang Jie <buaajxlj@163.com>
+To: pkshih@realtek.com
+Cc: kvalo@kernel.org,
+	phhuang@realtek.com,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Liang Jie <liangjie@lixiang.com>
+Subject: [PATCH] wifi: rtw89: Correct immediate cfg_len calculation for scan_offload_be
+Date: Wed,  8 Jan 2025 18:25:12 +0800
+Message-Id: <20250108102512.3477461-1-buaajxlj@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:QCgvCgB3HtqKUn5nWp1iJw--.31579S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxCry3JFy5JF1kAF4xCr1rWFg_yoW5GFy7pF
+	W8G3WrCrn5Jr13Xa13Zw4xuFW5G3WkGr1YkrWqk395Zwn5Xr1YyFyDKFyjv34Yvr1kZFy5
+	ZFyjvr15W3sxWw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UPR6cUUUUU=
+X-CM-SenderInfo: pexdtyx0omqiywtou0bp/xtbBZwTOIGd+SzaVZgAAsa
 
-On Tue, 2025-01-07 at 07:40 -0800, Jeff Johnson wrote:
-> On 1/7/2025 3:12 AM, Johannes Berg wrote:
-> > On Tue, 2025-01-07 at 16:03 +0530, Sarika Sharma wrote:
-> > > Actually, there is ongoing work to extend sinfo for link-level detail=
-s.=20
-> > > While working on this, I noticed a documentation mismatch and decided=
- to=20
-> > > correct the existing documentation first, as it's good to have aligne=
-d=20
-> > > structure and documentation.
-> >=20
-> > Why do you think it's good? I don't even agree with that. The code
-> > should be laid out to minimize holes, but the docs can be laid out to
-> > group functionally related fields.
->=20
-> Without any documented guidance to that effect
+From: Liang Jie <liangjie@lixiang.com>
 
-Yeah I don't see anything either? Though kernel-doc certainly could
-complain about the order if it wanted to. I tend to think it doesn't
-need to match though, per above.
+This patch ensures the correct calculation of `cfg_len` prior to the
+allocation of the skb in the `rtw89_fw_h2c_scan_offload_be` function,
+particularly when the `SCAN_OFFLOAD_BE_V0` firmware feature is enabled.
+It addresses an issue where an incorrect skb size might be allocated
+due to a delayed setting of `cfg_len`, potentially leading to memory
+inefficiencies.
 
-> I had suggested this during
-> internal review to help minimize the size of the diffs where members are =
-being
-> refactored out of sinfo into a new per-link struct.
+By moving the conditional check and assignment of `cfg_len` before skb
+allocation, the patch guarantees that `len`, which depends on `cfg_len`,
+is accurately computed, ensuring proper skb size and preventing any
+unnecessary memory reservation for firmware operations not supporting
+beyond the `w8` member of the command data structure.
 
-Fair enough.
+This correction helps to optimize memory usage and maintain consistent
+behavior across different firmware versions.
 
-> But we can drop this since I think we'll be renaming some of the refactor=
-ed
-> members and hence the diff will be big anyway.
+Fixes: 6ca6b918f280 ("wifi: rtw89: 8922a: Add new fields for scan offload H2C command")
 
-I think we can also apply it if you think it makes things easier, I just
-didn't think "it should match" really is a good justification. I don't
-care too much about the order in the docs, but also don't see needlessly
-changing it as a useful thing.
+Signed-off-by: Liang Jie <liangjie@lixiang.com>
+---
+ drivers/net/wireless/realtek/rtw89/fw.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-johannes
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 2191c037d72e..5eb4beb9e485 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -5169,7 +5169,7 @@ int rtw89_fw_h2c_scan_offload_be(struct rtw89_dev *rtwdev,
+ 	u8 macc_role_size = sizeof(*macc_role) * option->num_macc_role;
+ 	u8 opch_size = sizeof(*opch) * option->num_opch;
+ 	u8 probe_id[NUM_NL80211_BANDS];
+-	u8 cfg_len = sizeof(*h2c);
++	u8 cfg_len;
+ 	unsigned int cond;
+ 	void *ptr;
+ 	int ret;
+@@ -5178,6 +5178,11 @@ int rtw89_fw_h2c_scan_offload_be(struct rtw89_dev *rtwdev,
+ 
+ 	rtw89_scan_get_6g_disabled_chan(rtwdev, option);
+ 
++	if (RTW89_CHK_FW_FEATURE(SCAN_OFFLOAD_BE_V0, &rtwdev->fw))
++		cfg_len = offsetofend(typeof(*h2c), w8);
++	else
++		cfg_len = sizeof(*h2c);
++
+ 	len = cfg_len + macc_role_size + opch_size;
+ 	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, len);
+ 	if (!skb) {
+@@ -5246,10 +5251,8 @@ int rtw89_fw_h2c_scan_offload_be(struct rtw89_dev *rtwdev,
+ 					   RTW89_H2C_SCANOFLD_BE_W8_PROBE_RATE_6GHZ);
+ 	}
+ 
+-	if (RTW89_CHK_FW_FEATURE(SCAN_OFFLOAD_BE_V0, &rtwdev->fw)) {
+-		cfg_len = offsetofend(typeof(*h2c), w8);
++	if (RTW89_CHK_FW_FEATURE(SCAN_OFFLOAD_BE_V0, &rtwdev->fw))
+ 		goto flex_member;
+-	}
+ 
+ 	h2c->w9 = le32_encode_bits(sizeof(*h2c) / sizeof(h2c->w0),
+ 				   RTW89_H2C_SCANOFLD_BE_W9_SIZE_CFG) |
+-- 
+2.25.1
+
 
