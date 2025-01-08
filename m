@@ -1,59 +1,58 @@
-Return-Path: <linux-wireless+bounces-17195-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17196-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97AE2A05F67
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jan 2025 15:56:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48F6FA05F6A
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jan 2025 15:57:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FEFE7A2AB1
-	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jan 2025 14:56:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00B361888F4F
+	for <lists+linux-wireless@lfdr.de>; Wed,  8 Jan 2025 14:57:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE047148FED;
-	Wed,  8 Jan 2025 14:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2017716CD33;
+	Wed,  8 Jan 2025 14:57:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="glxHO3gI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mkU16KFB"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8652139CF2
-	for <linux-wireless@vger.kernel.org>; Wed,  8 Jan 2025 14:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F002C1FC7D9
+	for <linux-wireless@vger.kernel.org>; Wed,  8 Jan 2025 14:57:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736348193; cv=none; b=GubD/9V5oITSMyxWu/7LrLtX33DnjVKkIOW8w+un3XUgZjQeRiuib/gTNqVKlji6iw/tW191rxVstpGC3bT6Otycw6MHpyjCoQvAiQW+JdIMKXFp8ljmiZqg5/HWUm94C/QqQzuLjGHSglLjlbxqfszOQJbuVAiyqs7kp9yl/AU=
+	t=1736348230; cv=none; b=XYHAfq1n6/Ke0h1ljXtu1CUQxpHszhKlOzdOHwo+I8E4wioeSdZjuI1G3DFGdzm4KbHVfeJJSWWTR3euKngAe7XvbeIAWSK2bgk33hxph2nucbdNvTu+Egyb//DnpCjzUjdnwzWssKdPgbzxDY7UgmgHba+lomOpuhN6TDM2HMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736348193; c=relaxed/simple;
-	bh=VuT6xgyRWwGa0QRorg/GjyRyPZzOxjWoF4dNXx+WQCw=;
+	s=arc-20240116; t=1736348230; c=relaxed/simple;
+	bh=kwo/UmlE+C0omSv+5bK9BtV5or0AnIQAUjUDJRCfLI8=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=b03aGmc93j4u5jW0d8Ie1zllj/4BS+VZzpfzyKLw7efQl33HCTYbPxMvmhIXHMM1oeKXq4ABaSSXm4kdy5WJMQJk4uZ6fY8fxXokxmER1UT4mbsHQjnOeHiOPvMakeso9BKtkRGTQOMX75KSFykbw0Ym4YwI5r5b33krA51RkSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=glxHO3gI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20582C4CED3;
-	Wed,  8 Jan 2025 14:56:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IUM9mtukidQfXeM88Dx1H0+s56GBz72ST/1l6sAO43wk6aHxpE8OhOYdtqtamz5QGWKXEaIWfau/UBjJbqCwFw6eFVV0jlBpQMfrplx/WdXAB4SHx2QinS+z+dq1lZ5ud2vRXQkR49s4kS+QgyH2ylVeAit7z/9EhLwb78Z1J4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mkU16KFB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95B7AC4CEDD;
+	Wed,  8 Jan 2025 14:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736348193;
-	bh=VuT6xgyRWwGa0QRorg/GjyRyPZzOxjWoF4dNXx+WQCw=;
+	s=k20201202; t=1736348229;
+	bh=kwo/UmlE+C0omSv+5bK9BtV5or0AnIQAUjUDJRCfLI8=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=glxHO3gIAxf8UtSHSrhYrta/gtBmFEbv//rEN2BUTymHHqMYaDcnpzfCKB1sA9iv/
-	 5Ld/SidYnCmAH4D6TNkZkPo5LzDH/tmWXfA/y0b1UR/mYBysdlW4Dei/HGy+UAURKs
-	 Q9LdC46yRzwZEJ9bUhslc07WTOHt1kMz1YBPiDPoxkwLYMe3iBWbzUiq/ll9yv1nAi
-	 pO4oPlTvUHfUqzWvV05PCII4R1xeeV+g1lfpK5vEhg6tUw85rJJrZ0xBbmKLqbgZOQ
-	 2Ol8Hxrnk1fGGHLzx0yPuAfhvov2ZkuCXNzhAw9bGecscdsMSKKi4ndh2dbzWdisT7
-	 uPqsYjUaqtwrQ==
+	b=mkU16KFBiyycZ58xhcMya2mZ3kRKnuzgEKHbpbXvWpYwtoWZtV6WdCN9bMH4lG+3y
+	 KwTB67j70L3BoLk0nCPSwEunVK98Z170pR69hkuXciOoRq9zfzV/Tkva/LbsVaK9sP
+	 hpspXgzQR8TMoumqwhMPBzzigFTR8gMhIOrrjYxLsxYcGkuyTCCzP4LNbTi3L3qqYG
+	 BfeN22kKpgG/QsBc0/kwxukmURTn5oGhzwMw3uTqMZJDJ3Afb5ZB+S5xhksaL5Ahpw
+	 wJp73Kp8/hMPfGzWl4s+Toc/dwK0vOnUnFa2X0C6MxbNxGbs1tLnUJMGri0CHSxGOk
+	 ikCNrX96P1iaw==
 From: Kalle Valo <kvalo@kernel.org>
 To: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 Cc: johannes@sipsolutions.net,  linux-wireless@vger.kernel.org,  Anjaneyulu
- <pagadala.yesu.anjaneyulu@intel.com>,  Johannes Berg
- <johannes.berg@intel.com>
-Subject: Re: [PATCH 14/15] wifi: iwlwifi: mvm: add UHB canada support in
- TAS_CONFIG cmd
+ <pagadala.yesu.anjaneyulu@intel.com>
+Subject: Re: [PATCH 15/15] wifi: iwlwifi: mvm: add UHB canada support in
+ GET_TAS_STATUS cmd resp
 References: <20241226154456.473690-1-miriam.rachel.korenblit@intel.com>
-	<20241226174257.0b1d92ad59b8.Ib80f8514a64fc2800a2a20131e730c2bd9c4c4af@changeid>
-Date: Wed, 08 Jan 2025 16:56:30 +0200
-In-Reply-To: <20241226174257.0b1d92ad59b8.Ib80f8514a64fc2800a2a20131e730c2bd9c4c4af@changeid>
-	(Miri Korenblit's message of "Thu, 26 Dec 2024 17:44:55 +0200")
-Message-ID: <874j29qrq9.fsf@kernel.org>
+	<20241226174257.dfd6b8893322.I196393dc3c9c28882f90b43a821a2d76a5c9a046@changeid>
+Date: Wed, 08 Jan 2025 16:57:07 +0200
+In-Reply-To: <20241226174257.dfd6b8893322.I196393dc3c9c28882f90b43a821a2d76a5c9a046@changeid>
+	(Miri Korenblit's message of "Thu, 26 Dec 2024 17:44:56 +0200")
+Message-ID: <87zfk1pd4s.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -67,14 +66,11 @@ Miri Korenblit <miriam.rachel.korenblit@intel.com> writes:
 
 > From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 >
-> extend TAS table support to revision 2 for getting UHB canada
-> enablement from BIOS and send to firmware via TAS_CONFIG cmd
-> based on firmware capability. While on it fixed kernel-doc for
-> struct iwl_tas_config_cmd_v4.
+> dump UHB canada is enabled or not based on firmware capability.
 >
 > Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-Is this name correct?
+Like in patch 14, wondering if the name is correct.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
