@@ -1,94 +1,135 @@
-Return-Path: <linux-wireless+bounces-17205-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17206-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60A52A06A65
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 02:44:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6547A06A6E
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 02:51:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 625B01663CB
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 01:44:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C835216681A
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 01:51:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1DD615E8B;
-	Thu,  9 Jan 2025 01:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A4D8BEC;
+	Thu,  9 Jan 2025 01:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="OsRz38tW"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="jr8q4LmH"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D7FB677
-	for <linux-wireless@vger.kernel.org>; Thu,  9 Jan 2025 01:44:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C15E17BA1;
+	Thu,  9 Jan 2025 01:51:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736387079; cv=none; b=qGHWVct9flWKX8iVnd0Rr4fZ4vbzclP6a/D+b09uYPJpWCC3a+TdiWPYtZHliOSkTiDDf5Nn5uV9lIuyzQgIkPgqE+Hl5MdqCyyD1YrYVgCzrZZmp558HdtkW/H/lrraSLsqCjfJrouF5wdV7WoRu4dv4K60KqtzttrIOl5Zitg=
+	t=1736387474; cv=none; b=tn5h9mBPAtZHy9LYwd7NSjuJBnkC+MaMGXzDaR57zuFvMRMxX8ykxsIAN0lxc8sTSruJvEGXnAVWsSWnOOS6qKdPS9sBrRc2KPfS0kwPZSjswV0RjMIOgXL5gCSVEIEMRF5UVn/pCVZ6+5wFVwr+gxq3oNHc5M/L1lr3zNs1j2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736387079; c=relaxed/simple;
-	bh=99C7Iavof6kWQnI0sPp2+5l0wBuKcmlnKjbiQyHaOlA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=M1LMrWmEsPUf8QELT4Xq5V2t8N1Is0Lqsh2vlQRN25kuTUdRQYbMklwx9yRbhqA70iGOvMiqqGaCY6/Rtf6c691DLDz7aZNkIilOMrbpJkwKvkExeMnU6uhWsq+7EPMWhingwXqGyDDC6l4Nn3n0LpoOx213eAJSJxTEPu+yAd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=OsRz38tW; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 5091iKEd92280894, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1736387060; bh=99C7Iavof6kWQnI0sPp2+5l0wBuKcmlnKjbiQyHaOlA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=OsRz38tWFnqyFJueGw5RGdre4gKiiRNCTDvBECAuWv8QSeMOAEOKBxqP2yz1VlOsT
-	 dqCxO90TVfYUuEF4laQ+pTXM/ZaUJjCzdPFL96miXfEvaBPq+u3Xv40EAc6GZMPyHC
-	 8t3IOw1dEC1/aj+2DKVQjdDHGIM8620xlNEb+capOZ4GX17UkZJ1z3HTqCU/nZjXCP
-	 qvAi/II857888TyXW0irelOl3CH15NUkYqtCRSvqCbfgYjgRDGPitoiQZ00jU3Tcuv
-	 vZr2XLfqFoxv11XljEpCgp8voiAU5P7OuUw3VwcuAWg+p+XB6JrJ7cMmtHtaB75X3f
-	 sP3odvSQ3rlXA==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.06/5.92) with ESMTPS id 5091iKEd92280894
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 9 Jan 2025 09:44:20 +0800
-Received: from RTEXDAG02.realtek.com.tw (172.21.6.101) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 9 Jan 2025 09:44:21 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXDAG02.realtek.com.tw (172.21.6.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Thu, 9 Jan 2025 09:44:21 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
- RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
- 15.01.2507.035; Thu, 9 Jan 2025 09:44:20 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-CC: Sascha Hauer <sha@pengutronix.de>
-Subject: RE: [PATCH v3] wifi: rtw88: Add support for LED blinking
-Thread-Topic: [PATCH v3] wifi: rtw88: Add support for LED blinking
-Thread-Index: AQHbYcJDG/F8wn09QUqtrFg3mpXWdrMNrF0w
-Date: Thu, 9 Jan 2025 01:44:20 +0000
-Message-ID: <646acdbfde054f0ab1e3590a9c994c52@realtek.com>
-References: <6c43451f-ab2f-4e76-ac6e-ff5a18dd981d@gmail.com>
-In-Reply-To: <6c43451f-ab2f-4e76-ac6e-ff5a18dd981d@gmail.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1736387474; c=relaxed/simple;
+	bh=Vny1YKVKvHvmEkjsNQnh66wwszro31tMzIvE4PlL51k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bsxJBgJC9yQohOeHdRk0SRSJBI+L0QAqafl06uSJKuo8XeqauFLOxqjs2X06YOpSQqL7F6Duttrw7HBG7L7t65bhWHmRaLY7ADKNaLDnrneVe/7ygnO3gmbV9FLBwMPPXmuiTQ1ZwMZNUTtAzqW4x8X+CfcGdjEWMTzovKhwc1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=jr8q4LmH; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version; bh=BtiTF
+	KCFSQA031LB/g8P11O/vwolgTQgBUAf430Dqks=; b=jr8q4LmHUIdGt2D618Z2u
+	CHFccZbdJvGhlmJ/S+3PU6jopsgDW6j/l/0xRsj9HBsKN45JrgQv/PYBy5rYcHhX
+	10Bfr33e+K+i+X1cFlA/H38gvsP33zrH4HXBdyS6fwfi/Lj6JGdsWD2Tk6yXcvfb
+	/MmETVH0U675pnbSBy0fcM=
+Received: from hello.company.local (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgBHeeVqK39n_IqODg--.53002S2;
+	Thu, 09 Jan 2025 09:50:35 +0800 (CST)
+From: Liang Jie <buaajxlj@163.com>
+To: pkshih@realtek.com
+Cc: kvalo@kernel.org,
+	phhuang@realtek.com,
+	fanggeng@lixiang.com,
+	yangchen11@lixiang.com,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Liang Jie <liangjie@lixiang.com>
+Subject: [PATCH v2] wifi: rtw89: Correct immediate cfg_len calculation for scan_offload_be
+Date: Thu,  9 Jan 2025 09:50:32 +0800
+Message-Id: <20250109015032.1070045-1-buaajxlj@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PSgvCgBHeeVqK39n_IqODg--.53002S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAF4xZw4rWr1xXFWftrWkWFg_yoW5Xr45pF
+	W8J3WrGrn5Gr13Ww47Zws7ZFZ8Ja1kKr4jyrWqk395Zw15XF1SyFyDKFyYvryjvrWkZFy5
+	ZF1jvr15GasxWaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07Ul_MfUUUUU=
+X-CM-SenderInfo: pexdtyx0omqiywtou0bp/1tbioAzPIGd-JiZv7QAAsZ
 
-Qml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFpbC5jb20+IHdyb3RlOg0KPiBSZWdp
-c3RlciBhIHN0cnVjdCBsZWRfY2xhc3NkZXYgd2l0aCB0aGUga2VybmVsJ3MgTEVEIHN1YnN5c3Rl
-bSBhbmQNCj4gY3JlYXRlIGEgdGhyb3VnaHB1dC1iYXNlZCB0cmlnZ2VyIGZvciBpdC4gVGhlbiBt
-YWM4MDIxMSBtYWtlcyB0aGUgTEVEDQo+IGJsaW5rLg0KPiANCj4gVGVzdGVkIHdpdGggVGVuZGEg
-VTEyIChSVEw4ODEyQVUpLCBUZW5kYSBVOSAoUlRMODgxMUNVKSwgVFAtTGluayBBcmNoZXINCj4g
-VDJVIE5hbm8gKFJUTDg4MTFBVSksIFRQLUxpbmsgQXJjaGVyIFQzVSBQbHVzIChSVEw4ODEyQlUp
-LCBFZGltYXgNCj4gRVctNzYxMVVDQiAoUlRMODgyMUFVKSwgTE04NDIgKFJUTDg4MjJDVSkuDQo+
-IA0KPiBBbHNvIHRlc3RlZCB3aXRoIGRldmljZXMgd2hpY2ggZG9uJ3QgaGF2ZSBMRURzOiB0aGUg
-bGFwdG9wJ3MgaW50ZXJuYWwNCj4gUlRMODgyMkNFIGFuZCBhIG5vLW5hbWUgUlRMODcyM0RVLg0K
-PiANCj4gU2lnbmVkLW9mZi1ieTogQml0dGVyYmx1ZSBTbWl0aCA8cnRsODgyMWNlcmZlMkBnbWFp
-bC5jb20+DQoNCkFja2VkLWJ5OiBQaW5nLUtlIFNoaWggPHBrc2hpaEByZWFsdGVrLmNvbT4NCg0K
-DQo=
+From: Liang Jie <liangjie@lixiang.com>
+
+Ensures the correct calculation of `cfg_len` prior to the allocation of
+the skb in the `rtw89_fw_h2c_scan_offload_be` function, particularly when
+the `SCAN_OFFLOAD_BE_V0` firmware feature is enabled. It addresses an
+issue where an incorrect skb size might be allocated due to a delayed
+setting of `cfg_len`, potentially leading to memory inefficiencies.
+
+By moving the conditional check and assignment of `cfg_len` before skb
+allocation, the patch guarantees that `len`, which depends on `cfg_len`,
+is accurately computed, ensuring proper skb size and preventing any
+unnecessary memory reservation for firmware operations not supporting
+beyond the `w8` member of the command data structure.
+
+This correction helps to optimize memory usage and maintain consistent
+behavior across different firmware versions.
+
+Fixes: 6ca6b918f280 ("wifi: rtw89: 8922a: Add new fields for scan offload H2C command")
+Signed-off-by: Liang Jie <liangjie@lixiang.com>
+---
+
+Changes in v2:
+- Standardized the format of the commit log.
+- Optimized the handling logic for cfg_len.
+- Link to v1: https://lore.kernel.org/linux-wireless/20250109012356.1015198-1-buaajxlj@163.com/
+
+ drivers/net/wireless/realtek/rtw89/fw.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 2191c037d72e..2be1bee724ca 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -5170,6 +5170,7 @@ int rtw89_fw_h2c_scan_offload_be(struct rtw89_dev *rtwdev,
+ 	u8 opch_size = sizeof(*opch) * option->num_opch;
+ 	u8 probe_id[NUM_NL80211_BANDS];
+ 	u8 cfg_len = sizeof(*h2c);
++	u8 ver = U8_MAX;
+ 	unsigned int cond;
+ 	void *ptr;
+ 	int ret;
+@@ -5178,6 +5179,11 @@ int rtw89_fw_h2c_scan_offload_be(struct rtw89_dev *rtwdev,
+ 
+ 	rtw89_scan_get_6g_disabled_chan(rtwdev, option);
+ 
++	if (RTW89_CHK_FW_FEATURE(SCAN_OFFLOAD_BE_V0, &rtwdev->fw)) {
++		cfg_len = offsetofend(typeof(*h2c), w8);
++		ver = 0;
++	}
++
+ 	len = cfg_len + macc_role_size + opch_size;
+ 	skb = rtw89_fw_h2c_alloc_skb_with_hdr(rtwdev, len);
+ 	if (!skb) {
+@@ -5246,10 +5252,8 @@ int rtw89_fw_h2c_scan_offload_be(struct rtw89_dev *rtwdev,
+ 					   RTW89_H2C_SCANOFLD_BE_W8_PROBE_RATE_6GHZ);
+ 	}
+ 
+-	if (RTW89_CHK_FW_FEATURE(SCAN_OFFLOAD_BE_V0, &rtwdev->fw)) {
+-		cfg_len = offsetofend(typeof(*h2c), w8);
++	if (ver == 0)
+ 		goto flex_member;
+-	}
+ 
+ 	h2c->w9 = le32_encode_bits(sizeof(*h2c) / sizeof(h2c->w0),
+ 				   RTW89_H2C_SCANOFLD_BE_W9_SIZE_CFG) |
+-- 
+2.25.1
+
 
