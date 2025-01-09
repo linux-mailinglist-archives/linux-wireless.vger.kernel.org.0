@@ -1,73 +1,105 @@
-Return-Path: <linux-wireless+bounces-17235-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17236-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79116A07550
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 13:10:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBF3CA0758D
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 13:20:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B27293A78B9
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 12:09:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85A581889B83
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 12:20:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E892163B7;
-	Thu,  9 Jan 2025 12:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E23216E39;
+	Thu,  9 Jan 2025 12:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="qqBTodTB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bBTDpivS"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A0C18D
-	for <linux-wireless@vger.kernel.org>; Thu,  9 Jan 2025 12:09:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDCB20551B;
+	Thu,  9 Jan 2025 12:20:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736424595; cv=none; b=Oa/wfjJX/DT5Au6Wr6HKMSZHHm9Whv2/yokFOvg527u2OelXGmfjq0buHrLYlmXne5xME3QXh5Vtl0M4sVSyjfnyzMwYU1jKZ6J2U5WLZ2YCcb3PUQN0CcuWEDHNhITEIwS1ckZ90QrlcZQw/maClJL7W5Qt+5nO4TrDiHlRvIM=
+	t=1736425211; cv=none; b=YycPtU3d2QoUCBx+EGW5366YAD+Erv2zIN76XieugzLe8iaGdfACqp2MnfZ3Gpply2/Q7nmzjZ1FWQ6N5JH86uR5x+QySjGSTWQlKkvVF6NfJj4Vqzd0lnML/iLKwvz7XVou0Q+WBfM7jS7MYBhqALhgCoog1euJJdSQVhcRTPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736424595; c=relaxed/simple;
-	bh=7mwOqo829x+o2yDEHa8TN8o6zC36RFChBP1+dyYT19c=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=GlJnp0G4PSMz/GvYsZSlutxG6kfTB60NvPib59WzxMm2Ua4twYiMgHCDnUBsjs1pj7RYg/aRM18GZmfVVKxiGNWQWM77tHlCVLtZagFnerp5L9uThckVk3bSU3r9/cpYIaVzYHWd14OSCOr536FY6VWK53SiCRInJSDqjTaxfyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=qqBTodTB; arc=none smtp.client-ip=45.145.95.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-	t=1736424583; bh=7mwOqo829x+o2yDEHa8TN8o6zC36RFChBP1+dyYT19c=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=qqBTodTB63rhQUtXFNNDQ6lYZwTZdsi7SA6bk0/Rg+ZdIX+KF9mokH1aGZtmlvx3N
-	 bJEk18qCbac+1f0t5YiESnTr8Th8ohfDlYz+zbkUv+3L03CyOlMn5CIsyBbEPMooad
-	 nxyUnBf1nvR6++WmuQO415CEpLT5TT93OLkVWRrD2tVvXQWK/Asjyqsxp2xoH6iyfN
-	 UA3NJdmfADe9lqHeSurc0b8klpT+ZzQMyozBijQHZiujb41/88JVY8w062cGfTj673
-	 i1JCE9NfTqk/vOjIY7FUwl+EwLIDDd/BuF6EsvdYlQBbSIYk9+vtF3NxihjdZHNZU9
-	 VEgjDZFbc2nUw==
-To: Dmitry Antipov <dmantipov@yandex.ru>
-Cc: Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
- lvc-project@linuxtesting.org, Dmitry Antipov <dmantipov@yandex.ru>
-Subject: Re: [PATCH v2] wifi: ath9k: cleanup ath9k_hw_get_nf_hist_mid()
-In-Reply-To: <20250109080703.106692-1-dmantipov@yandex.ru>
-References: <87bjwp8ax0.fsf@toke.dk>
- <20250109080703.106692-1-dmantipov@yandex.ru>
-Date: Thu, 09 Jan 2025 13:09:43 +0100
-X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87sepsi3y0.fsf@toke.dk>
+	s=arc-20240116; t=1736425211; c=relaxed/simple;
+	bh=1y+/0y5Mn+3mmY+Rqdubf97qrdL5lDWfwQl+N0okVJU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=PTyB+AcmlnwT9fUBunqe7qDx7xb17YJDNwuxxIEcMULg3L5s+1+UgHt8LYFm+xXeGDVNWxloN2+Dd8ztESv4r0wvLvuUCcqZjgQcgaB0++9+BB2EjYHEgrlBK6sCY+gr73WhRfYxgsQAaJ5eFXiE/G13HQzIoGHLZ1jJhnrp4UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bBTDpivS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED65C4CED2;
+	Thu,  9 Jan 2025 12:20:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736425210;
+	bh=1y+/0y5Mn+3mmY+Rqdubf97qrdL5lDWfwQl+N0okVJU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=bBTDpivSMWuijJnQh3u2XfH9P2b2E4ReENVkg276ScYNV8Ss+42DNVlNmjVmLQUr3
+	 apQ2/amP9GMMjCFtqCT61NPIdITDXPY3uOrt3IiBSUrkpuAmcy0AvW1rEVOc+6oMLA
+	 ML6onBd5rB0YzWtEyB5mMrqlq8WiKRlUfKdxN3y4+Ll6leBYD0RWQQi4rH3o/LhEJI
+	 RjkHYtHLgkgOIxn7mk1Zv5WdZ9OkR/GN+tYej1kiYzelwtXhPIVn3q7RGwH5N3NfTl
+	 5UJfKT0FaCYrZQ6CwtVlUj2LKCfvg1L7TLY0H/xKpSbZ3vOqp+CKpUsu6+e7STHpdg
+	 6GZHN7Aa/zmTg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33DFA3805DB2;
+	Thu,  9 Jan 2025 12:20:33 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] dt-bindings: net: Correct indentation and style in
+ DTS example
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <173642523202.1303894.12707902460357622367.git-patchwork-notify@kernel.org>
+Date: Thu, 09 Jan 2025 12:20:32 +0000
+References: <20250107125613.211478-1-krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20250107125613.211478-1-krzysztof.kozlowski@linaro.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, neil.armstrong@linaro.org, khilman@baylibre.com,
+ jbrunet@baylibre.com, martin.blumenstingl@googlemail.com, opendmb@gmail.com,
+ florian.fainelli@broadcom.com, bcm-kernel-feedback-list@broadcom.com,
+ rjui@broadcom.com, sbranden@broadcom.com, mkl@pengutronix.de,
+ mailhol.vincent@wanadoo.fr, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, kvalo@kernel.org, o.rempel@pengutronix.de,
+ dariobin@libero.it, christophe.roullier@foss.st.com,
+ grygorii.strashko@ti.com, s-vadapalli@ti.com, rogerq@kernel.org,
+ briannorris@chromium.org, Frank.Li@nxp.com, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-can@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-wireless@vger.kernel.org
 
-Dmitry Antipov <dmantipov@yandex.ru> writes:
+Hello:
 
-> In 'ath9k_hw_get_nf_hist_mid()', prefer 'memcpy()' and 'sort()'
-> over an ad-hoc things. Briefly tested as a separate module.
->
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
->
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@toke.dk>
+On Tue,  7 Jan 2025 13:56:13 +0100 you wrote:
+> DTS example in the bindings should be indented with 2- or 4-spaces and
+> aligned with opening '- |', so correct any differences like 3-spaces or
+> mixtures 2- and 4-spaces in one binding.
+> 
+> No functional changes here, but saves some comments during reviews of
+> new patches built on existing code.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next] dt-bindings: net: Correct indentation and style in DTS example
+    https://git.kernel.org/netdev/net-next/c/9d8c354a56e9
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
