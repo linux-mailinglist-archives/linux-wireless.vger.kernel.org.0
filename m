@@ -1,116 +1,149 @@
-Return-Path: <linux-wireless+bounces-17250-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17251-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8451A07D8C
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 17:31:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8231DA07FD8
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 19:36:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFB3C1691A0
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 16:31:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44F62188B9E2
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 18:36:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0511621B18C;
-	Thu,  9 Jan 2025 16:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC2B2199239;
+	Thu,  9 Jan 2025 18:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mWpsZD7N"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="FF9VTgZM"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3875421B192
-	for <linux-wireless@vger.kernel.org>; Thu,  9 Jan 2025 16:31:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284391925B3
+	for <linux-wireless@vger.kernel.org>; Thu,  9 Jan 2025 18:36:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736440263; cv=none; b=Kf3FH7m/IyL94rB11exeA95vTc6G0DAuAuWFPb/JvK8JQubBp5A+bzUTuuhscoQlEkO4XIWC4JjaffgB2fo6XHZhZ7W2W2gCmSULZbFH7GzVocrmnXWUBxJqezzgxyz0LCAmgXzhaAR3gz5rCnTKOkkamyoR/pc6i9wUGHTgksQ=
+	t=1736447774; cv=none; b=lRsAVig55N1X6nrX7CFHTPhlub8Ga0J8tZJSbqfFGcISSnLynJztCVWedv7DFjnCYRNAkHA8mfaxfY+r7GCUwurnLcWEVyjV7AgX+1Iauo8xdIwYV6fHTr+3DOpSurCvXL9Fu1OK07p/XA/FOzaOrEyquj5p1GsLDoP8CtHzE6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736440263; c=relaxed/simple;
-	bh=oRnYeIOnuWC95SmBfEcCp3VRJBQGt9FCRwhkajjQKxQ=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=nDD0Tl2br+6s9yIqcIczxf1SXwW0qE7ZPw08/ZfXlSAVuI7VL507rzCMkCy4zagYOaM+ff/nAspA5Q/0EqN4uCnt+F63D+Bxz3kH1j4Qx2GrbiD/WAWTYkxidDtH5fx/kREDbJnscEceJk8Z0IFru3isZDfMDIygHkGOR80fkow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mWpsZD7N; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-43624b2d453so12645375e9.2
-        for <linux-wireless@vger.kernel.org>; Thu, 09 Jan 2025 08:31:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736440260; x=1737045060; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oRnYeIOnuWC95SmBfEcCp3VRJBQGt9FCRwhkajjQKxQ=;
-        b=mWpsZD7NPtJSKBrMWQkaZI2g8sNfzZgXbZo9fXZ3+SwWSRwzATYP1nt6Y0gLViwGBT
-         JmuU1iCcW1PXyzb7dHh9zbhvJK+XRglxnw2l+nHOv5Y0c9i2GhhI9aJsyusRgRjuYRVC
-         JmDtX7IvvplmGMPTbmizsJgd5tGqATDESn/KyGf5ILunEraNVh+BJj0YAbAQlX9WrFFh
-         DUNkgwdMRVCz0wJHpNgky5BTq/d3P7+unJ2I1W5LiIbJWA6ya5gJgSu5PWxLu7tj4ol6
-         /fWS6cflWePfUrxarUqRECo4Jdf6OVXQP4pgRh7QaKzpYepIu+JqGw/EZzHmf/cpH3qe
-         7YvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736440260; x=1737045060;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=oRnYeIOnuWC95SmBfEcCp3VRJBQGt9FCRwhkajjQKxQ=;
-        b=onXcGNj2Wb5D685ZgsIJTEIYLjYpWFf93Q0P1JYHSQkuxfomDLQTxE72tQThh2e7Ie
-         KYLXxVnnNmy4Ek5KfCP0PzhIgwfs7PRucZ1jxhJf6cSoYs0tUtCFvcQPbBujDT8uhtkT
-         1dB7MFMXm+PHWpccEmcJBP1d1GjmcE88nWSfeDawrErPgW2WyMm4QLe7o1HUAIPjE/yh
-         ipnnRPSvV3fLNfswac7gk5Bzj0fdF6xItlD9iSo6HfqqVQymDLsKEktzBh+mr3GXqmj/
-         1ZM95EXTSB6P7IMKRqW7WjW110e+R+n7gRlh1uBAnpVvo4gQPC240pEourR+H2/h8k3a
-         lbfw==
-X-Forwarded-Encrypted: i=1; AJvYcCWXfFOKgUFUN0owjzNjPSoi9YYrpkJ+1U4MKDR5hfFkNs+cwS5wW8as4rJmcYaiDAgzgbPUlD+Zk2UJ5IsmfA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwuEduYQIc7cxMeIgEY7DfStECjviR3QbJ0co7FObrWdLSGr4U6
-	uSmOaI8rRY/ZvdpFuNC6EuE+8Cc8XbDW+UXvhPkfw6tKLqmbyigCUtCiwA==
-X-Gm-Gg: ASbGncsJXhI+bXCZfXd+ksloUmimgwJN57Z1axZpzoTN8jLSPg1m56jWZSUzTe21mu5
-	64eDu5a6mJEDSDLpQ+nCS/LS1ZZq42zgEmgKAebW4KjWGmITQPruaJq/tTmF4YwReTKIBYMwM5P
-	HOw6N/0mmxGOaYblab1i5vhTMh8xx7QzIUqCmdSLbNbPdfW89ybqmAQULre6ar3iElWhwVg9P8K
-	UTZwW6kI6S3BgIHaP6jQxHntac+uvsw8/XTle7xBwNJpPgCCEYG6xWMGxtcmBRWfGeEzog5Gp0=
-X-Google-Smtp-Source: AGHT+IHWfQFGsjf4+Y+aFqbNEF+ExZXERgNKPIjkUWTWO20jHQ2IDfvj88w08hTEa83JRpGzFJXLzQ==
-X-Received: by 2002:a05:600c:314e:b0:434:f5c0:329f with SMTP id 5b1f17b1804b1-436e2697947mr78812065e9.14.1736440260337;
-        Thu, 09 Jan 2025 08:31:00 -0800 (PST)
-Received: from localhost (freebox.vlq16.iliad.fr. [213.36.7.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e9dc860bsm26105725e9.9.2025.01.09.08.30.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Jan 2025 08:30:59 -0800 (PST)
+	s=arc-20240116; t=1736447774; c=relaxed/simple;
+	bh=fK0nVKS40EpuW535Wc7JVlfoQknuEnQUi7Qb85+SfiY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=anUnDv28MTOX8s1hrg+NZ6wzyCU+FrEBgpSheuNnjB9rbjSrag+OJ7OhNs48jVozM6ebDha5jEF+RUKclazVdeAU3mnQ78EOqTW+nANO0rHi9xwx59OPoHnGJ60yLpe6diu/NTd3PhsSciDReFaEUUizgUv3R91DSIGeeLWjC38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=FF9VTgZM; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 509ChPnq005368;
+	Thu, 9 Jan 2025 18:36:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=/Et1IsCtzzZvlBD9OpZHfk
+	g1WgpYWpG4YSVPfrjuKNs=; b=FF9VTgZMMfNYKrFzUyJfhDkfy0F7pgXm23Mg/9
+	03aKgFPTjTBCPPNfVlALjEvI6H7Pwuzqu+mLo2u14p1q1vjSaUVooZ14mWHjNM9H
+	/5kTe58rcBuB2UjdiPhQgSFiu9rWohy0aoOs0H8VfF5V+Ow7XIaGCDmXqDYBvx4g
+	vBCi7HqdPxmr13bQEJtBP2fytSt2lDHnRGLetDuR/biA9YEXRw7V3CcObBW8m00m
+	aaMozcrayygjQMYlUId9F261HSuvwTP1o2q4sxRst9Uik632KaUW1s7+/HFgcGKp
+	Sg0/bITkj4Yk1Am/ZZYmUOub1SAz+2Vg/evr7XXwcnwwNbTw==
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 442epxgv84-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jan 2025 18:36:09 +0000 (GMT)
+Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
+	by NASANPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 509Ia8jQ025415
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 9 Jan 2025 18:36:08 GMT
+Received: from hu-aarasahu-blr.qualcomm.com (10.80.80.8) by
+ nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Thu, 9 Jan 2025 10:36:06 -0800
+From: Aaradhana Sahu <quic_aarasahu@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Aaradhana Sahu
+	<quic_aarasahu@quicinc.com>
+Subject: [PATCH v6 0/5] wifi: ath12k: Factory test mode support
+Date: Fri, 10 Jan 2025 00:05:46 +0530
+Message-ID: <20250109183551.1028791-1-quic_aarasahu@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 09 Jan 2025 17:30:59 +0100
-Message-Id: <D6XOP6P8Z4J9.1ZIE5L6I8DSRQ@gmail.com>
-Cc: <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>, "Steffen
- Moser" <lists@steffen-moser.de>
-Subject: Re: Potential Broadcast Issues After GTK Key Exchange on ath11k
- with IPQ8072A (QCN5024/QCN5054)
-From: "Nicolas Escande" <nico.escande@gmail.com>
-To: "Kalle Valo" <kvalo@kernel.org>, <quic_ramess@quicinc.com>
-X-Mailer: aerc 0.18.2-0-ge037c095a049
-References: <c6366409-9928-4dd7-bf7b-ba7fcf20eabf@steffen-moser.de>
- <Z2Q9POuV-6MIdzRf@pilgrim>
- <b18ede18-0c33-4d14-a7c5-0066cbec39c9@steffen-moser.de>
- <D6VX7M6MGZQB.3LU3FBYJK6CZH@gmail.com> <878qrkdsr7.fsf@kernel.org>
-In-Reply-To: <878qrkdsr7.fsf@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nasanex01c.na.qualcomm.com (10.45.79.139)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: splc9lkr1eH1HgUjX-zImDTojZQJWatw
+X-Proofpoint-GUID: splc9lkr1eH1HgUjX-zImDTojZQJWatw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
+ lowpriorityscore=0 clxscore=1015 bulkscore=0 malwarescore=0 mlxscore=0
+ spamscore=0 phishscore=0 priorityscore=1501 mlxlogscore=999 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2501090147
 
-On Thu Jan 9, 2025 at 2:25 PM CET, Kalle Valo wrote:
-[...]
->
-> Good question, I don't have an answer to that. Could someone (also
-> outside of Qualcomm) send a proper patch ASAP so that we can solve this?
-> And it's good ot include the link to this discussion and describe the
-> symptoms the revert is fixing.
->
-> This is the patch in question:
->
-> https://git.codelinaro.org/clo/qsdk/oss/system/feeds/wlan-open/-/blob/win=
-.wlan_host_opensource.3.0.r24/patches/ath11k/350-ath11k-Revert-clear-the-ke=
-ys-properly-when-DISABLE_K.patch
+Device is booted in factory test mode for calibration.
+The commands are sent from userspace application, which
+is sent to firmware using wmi commands. Firmware sends
+the response to driver as wmi events and driver sends
+these events to the application via netlink message.
 
-I'm not so sure as how to proceed to post a patch from someone else while
-editing the commit message to add more info...
-Rameshkumar Sundaram is surely the best person to do it, no ?=20
+Also added changes related to correct pdev id access for
+fw test cmd.
 
-Thanks
+Aaradhana Sahu (5):
+  wifi: ath: create common testmode_i.h file for ath drivers
+  wifi: ath12k: export ath12k_wmi_tlv_hdr for testmode
+  wifi: ath12k: add factory test mode support
+  wifi: ath12k: Fill pdev id for fw test cmd
+  wifi: ath12k: Disable MLO in Factory Test Mode
+
+---
+v6:
+  -Rebased on ToT
+  -Updated copyright
+  -Added patch[5/5]
+v5:
+  -Updated copyright
+  -Fixed line length within 90 char
+v4:
+  -Rebased on latest ToT
+v3:
+  -Rebased on latest ToT
+  -Updated Tested-on Tag
+  -Removed second parameter of ath12k_core_start()
+  -Updated copyright
+v2:
+  -Rebased on latest ath ToT
+---
+
+ drivers/net/wireless/ath/ath11k/testmode.c    |  80 ++--
+ drivers/net/wireless/ath/ath12k/Makefile      |   1 +
+ drivers/net/wireless/ath/ath12k/core.c        |  29 +-
+ drivers/net/wireless/ath/ath12k/core.h        |  13 +-
+ drivers/net/wireless/ath/ath12k/debug.h       |   3 +-
+ drivers/net/wireless/ath/ath12k/dp.c          |   5 +-
+ drivers/net/wireless/ath/ath12k/mac.c         |  17 +-
+ drivers/net/wireless/ath/ath12k/pci.c         |   3 +-
+ drivers/net/wireless/ath/ath12k/qmi.c         |   4 +-
+ drivers/net/wireless/ath/ath12k/testmode.c    | 395 ++++++++++++++++++
+ drivers/net/wireless/ath/ath12k/testmode.h    |  40 ++
+ drivers/net/wireless/ath/ath12k/wmi.c         |  41 +-
+ drivers/net/wireless/ath/ath12k/wmi.h         |  23 +-
+ drivers/net/wireless/ath/ath12k/wow.c         |   3 +-
+ .../wireless/ath/{ath11k => }/testmode_i.h    |  54 +--
+ 15 files changed, 621 insertions(+), 90 deletions(-)
+ create mode 100644 drivers/net/wireless/ath/ath12k/testmode.c
+ create mode 100644 drivers/net/wireless/ath/ath12k/testmode.h
+ rename drivers/net/wireless/ath/{ath11k => }/testmode_i.h (50%)
+
+
+base-commit: dbe50a7420e22954c747e79e72df2750d795ea77
+-- 
+2.34.1
+
 
