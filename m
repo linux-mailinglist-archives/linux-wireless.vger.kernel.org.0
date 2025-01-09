@@ -1,86 +1,78 @@
-Return-Path: <linux-wireless+bounces-17268-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17269-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE54A081EE
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 22:02:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57CCCA082E2
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 23:42:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36FF63A0372
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 21:02:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B74A188B7CE
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 22:42:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EC9B19A28D;
-	Thu,  9 Jan 2025 21:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1332054FD;
+	Thu,  9 Jan 2025 22:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Dbf7sMmq"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BeoN8nZK"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEE3577102
-	for <linux-wireless@vger.kernel.org>; Thu,  9 Jan 2025 21:02:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5A2A2D
+	for <linux-wireless@vger.kernel.org>; Thu,  9 Jan 2025 22:42:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736456547; cv=none; b=tzcI0aMamkLCH9dp1cXL7/e/Or/r5IPqAEzciP5lBtLqOFpepRriHfmzhOjx5gnv4rVs1jA7hsO4y4rhEJY9T3A7haouBWxex+jz+mK3wg3tl/Wol2FXX9Zh+LH8vybUJRpUzlZt13PYqrKGbBZEIJ4mPLz9gCJNqIxqrXaAJF0=
+	t=1736462535; cv=none; b=DucE1gunquMYZv+IJsVa/UoJj/bq7eDwd2Y7LLtgsznHoGmztNvr343ElI680B835vjAMh+dMHZjm1ddFmNuLbN4GPffZS976CQWsslq3YcbkbvP9FcU3ppclEnh2rcIGLnIa6GJTG+hFYyxXAyPHrS6XVoIdqcpnn6vuCNN1Z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736456547; c=relaxed/simple;
-	bh=J8QOLLzhy4bXiu16wIDcvdjSnUYGIxB9JYdvWEFxs1Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Shfo7sKSzS+A1+gUSnsstnzsFUbY4qcRMck5lRnxxCIIB2wEo5rpnm1CDthLzoVIjHz8bheTtXaa7yzzq4eFRbdfQkWQgGUWp7hFGuLU+08DFlAgZJ/T4yPAOyjXaJTYm+kzgGzs4kw72Aa+3HLlR1CaBvNUcDcq1o7Hlojrci8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Dbf7sMmq; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 509HIdZd012078
-	for <linux-wireless@vger.kernel.org>; Thu, 9 Jan 2025 21:02:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	d20jpSgXHWmcdbS+qzfK/jlD3QyrndY+rUzeWA8JT4Y=; b=Dbf7sMmqABThEAe0
-	NN57cvoHdou+wIS64Aiy60u64MULu2qPbwfSJ/mjXe2aOwEEc4SXXdC/jp421VwX
-	GWb0B6yMPXKyBwkE7lufkoKnG27TE81Ko3yfGf/srrLD3nd61zxDkw2l17BNrbwM
-	HiF4JwDedj8BSHKueB2tCpI8cD7zMgiCuAiMR4OQYVd98wE4SKPIEi0IjzVJYQtH
-	s2eXYrX0uZlEkHnC0qW6TEmkN7NoE131j7SV1ad7IqOsRJ+qZxFIR+yKKCbxfGxk
-	s1st7c0byLExKkqzuHPWNV8cE1RVsSYUc0uGyrC9eMEOGsWPy2j97pEfLp4+i4yf
-	Wo3L9A==
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 442jra8f90-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linux-wireless@vger.kernel.org>; Thu, 09 Jan 2025 21:02:24 +0000 (GMT)
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2178115051dso23782995ad.1
-        for <linux-wireless@vger.kernel.org>; Thu, 09 Jan 2025 13:02:24 -0800 (PST)
+	s=arc-20240116; t=1736462535; c=relaxed/simple;
+	bh=DjYuCCJdFBk6hUzZs3vdRDgyZjFBuG35LC86rX6Y1Jk=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=inQGlIIap1ZDd6KdQIkDyPsGJJIkkFPtxi29qpY919t5IPeE/3sVjTa7+Ec+kf73lqTQrorusJlyFVLDMIu0IYsZ9M9nSoIsOfjvl9BsDJ0NgFC627FptyTaDdcgQuAlI+9UJ7CU1Yg6hDTcdKcKYPfg9QXS3ApAfDfm/ROHh3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BeoN8nZK; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-aab925654d9so294113566b.2
+        for <linux-wireless@vger.kernel.org>; Thu, 09 Jan 2025 14:42:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736462532; x=1737067332; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=/tJwFf2wY7vSBYnR553Q1oGgOief7TZ40aHFz+iKJkg=;
+        b=BeoN8nZKdPsCxub2UQsyoaQkcJGmbwHvUkDXj9RUVMAlhL793zXRwfQe8aB2PEwbwP
+         0zZTeBcdNab4nev0cJVzHfE4IkYAck9HGdnr+1loO7hoAx/SHCFcf8QsPMG7y1SXjJmH
+         t2JYkbkYufmvQI7+gIHT6Vl9QYc/etJk+i0sH352YdQGujTjnt9+b2jqLNHV87/h+MNn
+         JWVUmrdnesA1SC9gxlr1VPWLUriEtavAtiD/JbyAmSrmqrBDA7lqqu0IeUKSdG93pwaS
+         ExZMZ1QllHVhsvRb9wVScuVfr5aq+dAodb6+QWRO5ltggsWsrif0hY0BH4uLX/14aQ2c
+         m7Gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736456544; x=1737061344;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1736462532; x=1737067332;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=d20jpSgXHWmcdbS+qzfK/jlD3QyrndY+rUzeWA8JT4Y=;
-        b=rtmHexgDxqlK1FcwP5dJ4M9ykHfL1lS59h0nvL/SvgLGQzy0KTbhZfzcLSRUJI25Vp
-         zMIxht1jXqeltMJjlvKedyRqAsFBtBOMbHnscfWlMYiCIilVMuNL2nMcr4Ux14VqcICD
-         iYXTRu6xdYlsqNK+erWuNIAm1VuLdv3YID3PPYSXfDbqEHl1OoDADgQsf+5RDgH1QmfW
-         lsNgflnJkURE/csv00K9iYRnaEKHctWjUIB7O1rIuMbsaGrue0xfFG+xnuVbOMhpgyHd
-         MygvTC7/+7QysstJhLl2abr+7IQeKjOveIDzZoT4gcQu71SrjT22lEjN92vpMXvk/Znq
-         QyHA==
-X-Gm-Message-State: AOJu0YxHwquG9pqkeHI+6fOYwMIShQAgYhqT26M9lo6waByr71we2qLt
-	JljcsPtZxbUtrVHneMPOG6lJkGhJUcGTQFGran3tNxO1910VsPrP4A0xdBJ0MAHYBrmMA4i6qw/
-	ioLo9cAwAKwKozyjYoHpQ3MJSNhq+Lonx5x8YF4kDJ4BHkkKF/b6dO1evwr5r3dIjwA==
-X-Gm-Gg: ASbGncuf1Ictu9RvNp0xTnSMy0bKkA00NVnwY5RElMnO5jKInvdkFTjfKAwbB++sya1
-	1JPb66PI+TC4UbMH2Nz1yjMBE87/INMo1+cgG0Zc55cWbj0TwBGJGYtVAagPmW1FGJDrMPFi7VX
-	qvIhZrHzHK6OvQialFwLBxy94mPNVDmHiRp/6DAAl0VrKQfQYyviHZa7MED+lePqv1ym9mDXh2W
-	KGsbUsqxd8/+OXj2USWogs3NSC6+h2x3Utac/YzgcimP53B7YSM24JKj9Ky14BXGSIx3OzlQuF+
-	aumbYGeQrQZ2BsAwLE79WDt0rU0wb8hJylFq
-X-Received: by 2002:a17:902:ce06:b0:216:5561:70d7 with SMTP id d9443c01a7336-21a83fe48c0mr130229075ad.52.1736456543882;
-        Thu, 09 Jan 2025 13:02:23 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGCNbfdNwzmPtgj/WGPz7kYYib0KE+MlhdotcoB7K49Gub/ExHLgm5LfFv/xccluXnL2jgA/w==
-X-Received: by 2002:a17:902:ce06:b0:216:5561:70d7 with SMTP id d9443c01a7336-21a83fe48c0mr130228695ad.52.1736456543484;
-        Thu, 09 Jan 2025 13:02:23 -0800 (PST)
-Received: from [10.227.110.203] (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a9f25c927sm2083345ad.228.2025.01.09.13.02.22
+        bh=/tJwFf2wY7vSBYnR553Q1oGgOief7TZ40aHFz+iKJkg=;
+        b=nRHIhnxIo/8SsTBGLzH2nqnhTEemlVkE3T/moVumMBVKExmuaDbjxnkqxGjsuSsN6r
+         dU9wKmc2HwbwST2muJUrAAHciBJY2fHFugtzoOXuYpWXIc8/JVZIDsqGnGX1MbMyxPAy
+         DjbgrbMeBd3tSZGL77SDHOFUTmn7yTz0uUBlzUvpK/RoepoiWgqfgLJ/YvOxJ4fmJ5bz
+         qbJtYje7IWW5Xy0G38ZLU+ZLJ/8NwybMq7FliLqrlqYbdGqqjAKX1vRPWXZ1ZFcXCj5W
+         AjWXXrNSfHtDL9VBP4nyr2cf0KASWpyzMU9ZJZ9xKk/5h6L9/RdlG30f4kqS2soMrDk/
+         sWfw==
+X-Forwarded-Encrypted: i=1; AJvYcCXY4FAWpldgXtxoMpi2JIZRdn5LMMF81LnvDElnJmKN2MEm+tDTUz83T9d3mMoFg3pX3BPBWSds92M/eVEmVQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyouC8XVe61/z+/RX2lPJtj1p+x4IXFwfxDxk1w4EfQuH+HHJPR
+	DdHs9I2RyFThAZ1pPMZ3ND6yWpFg6mf0xcHGb3UDqaSyUtomugAC53BE4A==
+X-Gm-Gg: ASbGncuLHE63aCB7hTOstmb7hO8qWJvkr0m8I3njUNIpuJzHXo9YdJUDYEMFC9DDHRq
+	ExDISN7JLzy0hfA0QslOfumdRPtjth+AiH7njaHpppNnJB4DQg+awEG8IxRux4SMDlY5Ugfc62s
+	VP2fpcpk6BvGoXpXhisxKZBln077htmy2FVCrxUDy/PdUny15I6LQ2T4ST/f8dEI/RUTveZjnP1
+	9TAKRpOxFZ92SO6zipHJD1F0ESlU6lYNvlRd+qN7ei8y2U2ZmU+R7ETqdLrpbDD
+X-Google-Smtp-Source: AGHT+IGp6Vxx5KGH7fFJZB+NLq65GSQuS4ju9nWqfEkJ8z8IRGxTNUAwAb6EE6DjI+WXxscGl72C4A==
+X-Received: by 2002:a17:907:704:b0:aae:bd36:b198 with SMTP id a640c23a62f3a-ab2abcab421mr699035366b.47.1736462531576;
+        Thu, 09 Jan 2025 14:42:11 -0800 (PST)
+Received: from [192.168.0.50] ([79.119.240.80])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c905f0b3sm111641866b.21.2025.01.09.14.42.09
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 09 Jan 2025 13:02:23 -0800 (PST)
-Message-ID: <b625bfc7-0229-4dad-9059-a71506a70a6a@oss.qualcomm.com>
-Date: Thu, 9 Jan 2025 13:02:22 -0800
+        Thu, 09 Jan 2025 14:42:11 -0800 (PST)
+Message-ID: <43a58f4a-6579-40f8-bb92-6bee8075c72e@gmail.com>
+Date: Fri, 10 Jan 2025 00:42:09 +0200
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -88,89 +80,112 @@ List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 0/5] wifi: ath12k: Factory test mode support
-To: Aaradhana Sahu <quic_aarasahu@quicinc.com>, ath12k@lists.infradead.org
-Cc: linux-wireless@vger.kernel.org
-References: <20250109183551.1028791-1-quic_aarasahu@quicinc.com>
-From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Subject: Re: [RESEND. PATCH] drivers/mediatek: Fix some mt7601u vendor could
+ not connect
+To: Jakub Kicinski <kuba@kernel.org>, WangYuli <wangyuli@uniontech.com>
+Cc: guanwentao@uniontech.com, linux-wireless@vger.kernel.org
+References: <A9442D62405552CE+20240715094714.1553336-1-wangyuli@uniontech.com>
+ <20240715065426.73ba0869@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20250109183551.1028791-1-quic_aarasahu@quicinc.com>
+In-Reply-To: <20240715065426.73ba0869@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: G3Y31Sv-dTtMgIMEn606QfxhvD_ZxOmW
-X-Proofpoint-ORIG-GUID: G3Y31Sv-dTtMgIMEn606QfxhvD_ZxOmW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- priorityscore=1501 malwarescore=0 lowpriorityscore=0 impostorscore=0
- phishscore=0 mlxscore=0 bulkscore=0 spamscore=0 clxscore=1015
- mlxlogscore=999 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2411120000 definitions=main-2501090166
 
-On 1/9/2025 10:35 AM, Aaradhana Sahu wrote:
-> Device is booted in factory test mode for calibration.
-> The commands are sent from userspace application, which
-> is sent to firmware using wmi commands. Firmware sends
-> the response to driver as wmi events and driver sends
-> these events to the application via netlink message.
+On 15/07/2024 16:54, Jakub Kicinski wrote:
+> On Mon, 15 Jul 2024 17:47:14 +0800 WangYuli wrote:
+>> Some mt7601 devices cannot establish a connection properly.
+>> This patch fixes the issue.
+>> We do not know why, but it just works.
 > 
-> Also added changes related to correct pdev id access for
-> fw test cmd.
-> 
-> Aaradhana Sahu (5):
->   wifi: ath: create common testmode_i.h file for ath drivers
->   wifi: ath12k: export ath12k_wmi_tlv_hdr for testmode
->   wifi: ath12k: add factory test mode support
->   wifi: ath12k: Fill pdev id for fw test cmd
->   wifi: ath12k: Disable MLO in Factory Test Mode
-> 
-> ---
-> v6:
->   -Rebased on ToT
->   -Updated copyright
->   -Added patch[5/5]
-> v5:
->   -Updated copyright
->   -Fixed line length within 90 char
-> v4:
->   -Rebased on latest ToT
-> v3:
->   -Rebased on latest ToT
->   -Updated Tested-on Tag
->   -Removed second parameter of ath12k_core_start()
->   -Updated copyright
-> v2:
->   -Rebased on latest ath ToT
-> ---
-> 
->  drivers/net/wireless/ath/ath11k/testmode.c    |  80 ++--
->  drivers/net/wireless/ath/ath12k/Makefile      |   1 +
->  drivers/net/wireless/ath/ath12k/core.c        |  29 +-
->  drivers/net/wireless/ath/ath12k/core.h        |  13 +-
->  drivers/net/wireless/ath/ath12k/debug.h       |   3 +-
->  drivers/net/wireless/ath/ath12k/dp.c          |   5 +-
->  drivers/net/wireless/ath/ath12k/mac.c         |  17 +-
->  drivers/net/wireless/ath/ath12k/pci.c         |   3 +-
->  drivers/net/wireless/ath/ath12k/qmi.c         |   4 +-
->  drivers/net/wireless/ath/ath12k/testmode.c    | 395 ++++++++++++++++++
->  drivers/net/wireless/ath/ath12k/testmode.h    |  40 ++
->  drivers/net/wireless/ath/ath12k/wmi.c         |  41 +-
->  drivers/net/wireless/ath/ath12k/wmi.h         |  23 +-
->  drivers/net/wireless/ath/ath12k/wow.c         |   3 +-
->  .../wireless/ath/{ath11k => }/testmode_i.h    |  54 +--
->  15 files changed, 621 insertions(+), 90 deletions(-)
->  create mode 100644 drivers/net/wireless/ath/ath12k/testmode.c
->  create mode 100644 drivers/net/wireless/ath/ath12k/testmode.h
->  rename drivers/net/wireless/ath/{ath11k => }/testmode_i.h (50%)
-> 
-> 
-> base-commit: dbe50a7420e22954c747e79e72df2750d795ea77
+> Any chance we can gate this on the version of EEPROM or chip or
+> something else? It'd be good to avoid regressions on older devices.
+> Or possibly - could we issue the MCU command as a test and disable
+> the calibration if it fails?
 
-I just had nit comments. Kalle, can you re-review?
+(Removed some people and lists from CC because they seemed
+unnecessary.)
 
-If there are no major comments, I can incorporate my comments when I pull this
-into the 'pending' branch.
+Hi Jakub,
 
-/jeff
+I have Tenda W311MI2 which works with vanilla mt7601u, and a no-name
+"free driver" device from Aliexpress which doesn't. They have the
+same USB IDs.
+
+The Tenda:
+
+Jan 09 22:39:40 ideapad2 kernel: mt7601u 1-2:1.0: ASIC revision: 76010001 MAC revision: 76010500                
+Jan 09 22:39:40 ideapad2 kernel: mt7601u 1-2:1.0: Firmware Version: 0.1.00 Build: 7640 Build time: 201302052146____
+Jan 09 22:39:40 ideapad2 kernel: mt7601u 1-2:1.0: EEPROM ver:0d fae:00                                                                                                     
+
+00000000: 01 76 00 0d 50 2b 73 e8 19 76 ff ff ff ff ff ff  .v..P+s..v......
+00000010: 01 02 8f 14 01 76 00 00 4a 00 01 00 80 50 08 00  .....v..J....P..
+00000020: 03 00 02 00 00 00 ff 01 40 60 80 ff ff ff ff ff  ........@`......
+00000030: ff ff ff ff 11 ff 04 28 ff ff 78 01 ff ff 99 99  .......(..x.....
+00000040: 8c 88 ff 07 08 00 00 00 00 00 00 00 00 00 00 00  ................
+00000050: 00 00 1b 1b 1b 1b 1b 1b 1c 1c 1c 1c 1c 1c 1c 1c  ................
+00000060: ff ff ff ff ff ff ff ff ff ff ff ff ff ff 80 00  ................
+00000070: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+00000080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+00000090: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+000000a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+000000b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+000000c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+000000d0: 20 f9 00 00 00 00 00 00 00 00 00 00 00 00 05 05   ...............
+000000e0: 03 03 04 00 00 00 02 00 00 00 02 00 00 00 02 00  ................
+000000f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+
+The no-name:
+
+Jan 09 21:50:34 ideapad2 kernel: mt7601u 1-4:1.0: ASIC revision: 76010001 MAC revision: 76010500                                                
+Jan 09 21:50:34 ideapad2 kernel: mt7601u 1-4:1.0: EEPROM ver:0d fae:00                                                                                                     
+
+00000000: 01 76 00 0d 00 50 11 00 5b 9b ff ff ff ff ff ff  .v...P..[.......
+00000010: 01 02 8f 14 01 76 00 00 4a 00 01 00 80 50 08 00  .....v..J....P..
+00000020: 03 00 02 00 00 00 ff 01 40 60 80 ff ff ff ff ff  ........@`......
+00000030: ff ff ff ff 11 ff 04 10 ff ff 82 01 ff ff 99 99  ................
+00000040: 8c 88 ff 07 08 00 00 00 00 00 00 00 00 00 00 00  ................
+00000050: 00 00 05 05 05 04 04 04 05 05 06 06 07 07 07 07  ................
+00000060: ff ff ff ff ff ff ff ff ff ff ff ff ff ff 80 00  ................
+00000070: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+00000080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+00000090: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+000000a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+000000b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+000000c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+000000d0: 1e f9 00 00 00 00 00 00 00 00 00 00 00 00 05 05  ................
+000000e0: 03 03 04 00 00 00 02 00 00 00 02 00 00 00 02 00  ................
+000000f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff  ................
+
+The no-name device seems to die after uploading the third chunk of
+the firmware:
+
+Jan 09 16:48:43 ideapad2 kernel: mt7601u 1-4:1.0: Firmware Version: 0.1.00 Build: 7640 Build time: 201302052146____
+Jan 09 16:48:43 ideapad2 kernel: __mt7601u_dma_fw:327 len 14336 dst_addr 64
+Jan 09 16:48:43 ideapad2 kernel: __mt7601u_dma_fw:327 len 14336 dst_addr 14400
+Jan 09 16:48:43 ideapad2 kernel: __mt7601u_dma_fw:327 len 14336 dst_addr 28736
+Jan 09 16:48:43 ideapad2 kernel: mt7601u 1-4:1.0: Vendor request req:07 off:09a8 failed:-110
+Jan 09 16:48:43 ideapad2 kernel: mt7601u 1-4:1.0: Vendor request req:02 off:09a8 failed:-110
+Jan 09 16:48:43 ideapad2 kernel: mt7601u 1-4:1.0: Vendor request req:07 off:0734 failed:-110
+Jan 09 16:48:43 ideapad2 kernel: mt7601u 1-4:1.0: Vendor request req:42 off:0230 failed:-110
+Jan 09 16:48:43 ideapad2 kernel: mt7601u 1-4:1.0: Vendor request req:07 off:0080 failed:-110
+Jan 09 16:48:43 ideapad2 kernel: mt7601u 1-4:1.0: Vendor request req:02 off:0080 failed:-110
+Jan 09 16:48:43 ideapad2 kernel: mt7601u 1-4:1.0: Vendor request req:02 off:0080 failed:-110
+Jan 09 16:48:43 ideapad2 kernel: mt7601u 1-4:1.0: probe with driver mt7601u failed with error -110
+
+Removing the call to mt7601u_vendor_reset() fixes that problem.
+The firmware uploads, the device connects to my network. The
+Tenda still works. The driver included in Windows 10 doesn't do
+that reset with either device.
+
+At first I tried with len=8192 because that's what the Windows
+driver does but it didn't help.
+
+After fixing the firmware upload, I had some USB disconnects with
+the no-name device. They were kind of random. Now I'm testing it
+with those two MCU_CAL_DPD removed. The Windows driver doesn't
+seem to use MCU_CAL_DPD with the Tenda. I didn't check with the
+other one.
+
+I hope this helps.
 
