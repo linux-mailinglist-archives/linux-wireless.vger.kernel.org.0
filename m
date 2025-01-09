@@ -1,65 +1,65 @@
-Return-Path: <linux-wireless+bounces-17215-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17216-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 270CFA06CEF
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 05:26:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D0D6A06CF1
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 05:27:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 295AE162A9B
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 04:26:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 872337A3193
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 04:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 578EF1547CC;
-	Thu,  9 Jan 2025 04:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C06D318A95A;
+	Thu,  9 Jan 2025 04:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="K7YH20dn"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="aYLtbeLs"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F1318A95A;
-	Thu,  9 Jan 2025 04:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4946B18DF73;
+	Thu,  9 Jan 2025 04:25:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736396756; cv=none; b=RMiVVdp7J43shhgu8sCfWVJAjFKjQOGwxw6BzhPEZqzpLjAzapl2WSxTEx5PNFY/EjnlnvbB4XW1rfHN3hdDW29O+sMibV7SADZL93DPcE5glxTYXka8W6V8UKTLS7Hp9k5YuHsLA0RIYBVMI8KkCbVqPBE16lH8RJq1dsdulhM=
+	t=1736396759; cv=none; b=UDhz3WWw0SgCTRsLpxGtZJOxAKnLST4eL6gbYs2oYdSPf0roXwGwtYMPvbNM34t3HdGgQKNU+j3pe8vF9E6P5S2gamE7ze4p+qsOV1wJE756skGo+2rArHIs+hf2Ph5ERTiAtV6weqKQltM6l4iqobHVkXIJdZcMbQSss/W2Brw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736396756; c=relaxed/simple;
-	bh=yVnx7QmQL333aMTCxV/L6JqemkxKRW96RA30bpl6mm0=;
+	s=arc-20240116; t=1736396759; c=relaxed/simple;
+	bh=WW/kfzydofBybGEaWIOo2ZBZVnqRBtjy62+cV/Y9jLE=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=o0ImbxD+BuThv/8eYkYMOF+uxkFOtSzZvMvddabYtL/UKkhVB23BesNZKt62tFRgXEo+NWPidEGTQzrOMkZ8hvyMFC4+Op5nWRD/TqCg4bb+mgXcjm+ChLu0pT/+3/pQhgdtZUPKj8uzZOk1cXOsxSMNJDLNEAoEe8xWVPpu4xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=K7YH20dn; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:To:CC; b=ew1m3sPcGYDgVsk6Q1hVS+tK3Dh9Ua09D9VanXJK/2i3T6we+H4TbecWibfwsUkJdoaomEEVZj4a2lz8IXb355aZsBAce7CuMWLOHtFW1RppZLUWRjbrYDCoLdA/4Fc3UdEaPa32cqtrW7TR70cMMsaBDDwt3h9I09CxO+ixifI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=aYLtbeLs; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5094EttO009534;
-	Thu, 9 Jan 2025 04:25:51 GMT
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 508HbYWG011058;
+	Thu, 9 Jan 2025 04:25:54 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	4jFRmwk4D9j0p1TCQt2qUonJkKjFvjF83i2hjQFPJUk=; b=K7YH20dnEKSjp112
-	3SP1kzSTY/8AuQ4yKKqVl4gStF96rA3sVlGDnKZMn3wUVGzaqPrYrGz+uOstTJme
-	VLJ7UzlGi03L0i53Fu4neKOHBkPEMYayLo3FiYHalG3Nd63jjetH/gjIN4sOd7sX
-	03F5RqAz7Q0iFrdvCEHdUarGLcPB7HpYlChjVmVSXpP9sCywjXZsy9AIY5sCesTN
-	KFdAGUPyD+fXqf7+ypnhX0cIwK0LJigozU5ddMNkBY59IX8/LWwQDS/PWmTjd37N
-	ro5dPPCxT+axMQExACIO+DmbezHyikY6J/mESqr0zJ2Qa2zw5tI33DpXEBEQS9xk
-	LXNzRQ==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44278t80ju-1
+	EJ9XyFfGCxHrQXQRtzJEYp6fmUaUdlCy1HARoqkA6Xc=; b=aYLtbeLswVCPw47k
+	iKkG4h1iXvu7eAszJdSvxPIAtBx3H/AP+nTjo1LXZtveRuIMYZUNw2ri5Hp9YbE8
+	KCEBLBjZAnDRzoLZlqnuzHvgTciPwT+x18Q9WcvyiIOB4FHaC4XJbRjVLPonKnGc
+	jqnhYq0IvUKjPRK8rkLLG3gRP3qQeB65unVaQAjhpX/hnTvki21J4E4p3T6ypSV2
+	kaBsKNY41bjXcENo3bj0pit10J+punktLHfLKlF3qtThPof96HHZAHLJnS3suv5p
+	dfb8pUBZANdDBuCMNFn17Ec4sxTHPrP4T0ogJ4zh6yZDxSFNtgj9QaAVgDHKXbDX
+	q/vN2Q==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 441wx619tq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Jan 2025 04:25:51 +0000 (GMT)
+	Thu, 09 Jan 2025 04:25:54 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5094PoBp010331
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5094PrrF012581
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 9 Jan 2025 04:25:50 GMT
+	Thu, 9 Jan 2025 04:25:53 GMT
 Received: from hu-adisi-blr.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Wed, 8 Jan 2025 20:25:47 -0800
+ 15.2.1544.9; Wed, 8 Jan 2025 20:25:50 -0800
 From: Aditya Kumar Singh <quic_adisi@quicinc.com>
-Date: Thu, 9 Jan 2025 09:55:31 +0530
-Subject: [PATCH 03/10] wifi: ath12k: fix failed to set mhi state error
- during reboot with hardware grouping
+Date: Thu, 9 Jan 2025 09:55:32 +0530
+Subject: [PATCH 04/10] wifi: ath12k: fix firmware assert during reboot with
+ hardware grouping
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -68,7 +68,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20250109-fix_reboot_issues_with_hw_grouping-v1-3-fb39ec03451e@quicinc.com>
+Message-ID: <20250109-fix_reboot_issues_with_hw_grouping-v1-4-fb39ec03451e@quicinc.com>
 References: <20250109-fix_reboot_issues_with_hw_grouping-v1-0-fb39ec03451e@quicinc.com>
 In-Reply-To: <20250109-fix_reboot_issues_with_hw_grouping-v1-0-fb39ec03451e@quicinc.com>
 To: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
@@ -86,68 +86,73 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: moN7WoDuvrwluHOUDNTR-cZCT5F6CMMd
-X-Proofpoint-ORIG-GUID: moN7WoDuvrwluHOUDNTR-cZCT5F6CMMd
+X-Proofpoint-GUID: khtI4-J6aXcYuWN3Dt7z7QGiOnuFuM5S
+X-Proofpoint-ORIG-GUID: khtI4-J6aXcYuWN3Dt7z7QGiOnuFuM5S
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 priorityscore=1501
- bulkscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0 phishscore=0
- adultscore=0 mlxlogscore=928 suspectscore=0 clxscore=1015 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501090033
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ impostorscore=0 adultscore=0 mlxscore=0 spamscore=0 suspectscore=0
+ clxscore=1015 mlxlogscore=999 phishscore=0 malwarescore=0
+ priorityscore=1501 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2411120000 definitions=main-2501090033
 
-With hardware grouping, during reboot, whenever a device is removed, it
-powers down itself and all its partner devices in the same group. Now this
-is done by all devices and hence there is multiple power down for devices
-and hence the following error messages can be seen:
+At present, during PCI shutdown, the power down is only executed for a
+single device. However, when operating in a group, all devices need to be
+powered down simultaneously. Failure to do so will result in a firmware
+assertion.
 
-ath12k_pci 0002:01:00.0: failed to set mhi state POWER_OFF(3) in current mhi state (0x0)
-ath12k_pci 0002:01:00.0: failed to set mhi state: POWER_OFF(3)
-ath12k_pci 0002:01:00.0: failed to set mhi state DEINIT(1) in current mhi state (0x0)
-ath12k_pci 0002:01:00.0: failed to set mhi state: DEINIT(1)
-ath12k_pci 0003:01:00.0: failed to set mhi state POWER_OFF(3) in current mhi state (0x0)
-ath12k_pci 0003:01:00.0: failed to set mhi state: POWER_OFF(3)
-ath12k_pci 0003:01:00.0: failed to set mhi state DEINIT(1) in current mhi state (0x0)
-ath12k_pci 0003:01:00.0: failed to set mhi state: DEINIT(1)
-ath12k_pci 0004:01:00.0: failed to set mhi state POWER_OFF(3) in current mhi state (0x0)
-ath12k_pci 0004:01:00.0: failed to set mhi state: POWER_OFF(3)
-
-To prevent this, check if the ATH12K_PCI_FLAG_INIT_DONE flag is already
-set before powering down. If it is set, it indicates that another partner
-device has already performed the power down, and this device can skip this
-step.
+Hence, introduce a new ath12k_pci_hw_group_power_down() and call it during
+power down. This will ensure that all partner devices are properly powered
+down.
 
 Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
 
 Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/pci.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/pci.c | 23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
-index 06cff3849ab8da3b39677bed3d6ee60af2c814d1..837be309cd45a2d037ee8c3bba8f7be0f457d6b2 100644
+index 837be309cd45a2d037ee8c3bba8f7be0f457d6b2..7f6521a56ffc0f1e9687c94d6829a9c1f1887661 100644
 --- a/drivers/net/wireless/ath/ath12k/pci.c
 +++ b/drivers/net/wireless/ath/ath12k/pci.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2019-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
+@@ -1751,13 +1751,34 @@ static void ath12k_pci_remove(struct pci_dev *pdev)
+ 	ath12k_core_free(ab);
+ }
  
- #include <linux/module.h>
-@@ -1484,6 +1484,9 @@ void ath12k_pci_power_down(struct ath12k_base *ab, bool is_suspend)
- {
- 	struct ath12k_pci *ab_pci = ath12k_pci_priv(ab);
- 
-+	if (!test_bit(ATH12K_PCI_FLAG_INIT_DONE, &ab_pci->flags))
++static void ath12k_pci_hw_group_power_down(struct ath12k_hw_group *ag)
++{
++	struct ath12k_base *ab;
++	int i;
++
++	if (!ag)
 +		return;
 +
- 	/* restore aspm in case firmware bootup fails */
- 	ath12k_pci_aspm_restore(ab_pci);
++	mutex_lock(&ag->mutex);
++
++	for (i = 0; i < ag->num_devices; i++) {
++		ab = ag->ab[i];
++		if (!ab)
++			continue;
++
++		ath12k_pci_power_down(ab, false);
++	}
++
++	mutex_unlock(&ag->mutex);
++}
++
+ static void ath12k_pci_shutdown(struct pci_dev *pdev)
+ {
+ 	struct ath12k_base *ab = pci_get_drvdata(pdev);
+ 	struct ath12k_pci *ab_pci = ath12k_pci_priv(ab);
  
+ 	ath12k_pci_set_irq_affinity_hint(ab_pci, NULL);
+-	ath12k_pci_power_down(ab, false);
++	ath12k_pci_hw_group_power_down(ab->ag);
+ }
+ 
+ static __maybe_unused int ath12k_pci_pm_suspend(struct device *dev)
 
 -- 
 2.34.1
