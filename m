@@ -1,60 +1,58 @@
-Return-Path: <linux-wireless+bounces-17238-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17239-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4172CA07629
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 13:54:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85FA6A07669
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 14:03:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38496167ECB
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 12:54:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCD103A5C70
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 13:03:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B482021764E;
-	Thu,  9 Jan 2025 12:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4DB2010FD;
+	Thu,  9 Jan 2025 13:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cI+khn9d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZU2SKfzq"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F307215074
-	for <linux-wireless@vger.kernel.org>; Thu,  9 Jan 2025 12:54:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048A7BA2E;
+	Thu,  9 Jan 2025 13:03:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736427293; cv=none; b=qFvEaXMgmxwof6RqIbIPMf3gyCxubnQV/sr/DQSHST9236sBeSb3WodagxRQQY+6lUdKpLvfHNJRrSmseRbflEL1xfrMgP+u5AO1Dh6X5SvXvQ/pI3+f2TF2jb2zUOc+aF6tZKLknXWvL3W8yRG9dzBwSlXwz5ddQXtofWuSkd0=
+	t=1736427829; cv=none; b=o+B+VCQF+uhHHyAOGKkEQNhjLSd1Uh4BKvsBbQvC37OpNwS73dK8y7nCY3hrQJgR4cU3i8FEKCOoQLS4pwfdierR4BNqdnalzGGPNKBtp0mfGPcqz2es18NjlAY2w6sgiNbft0U/7QW+a78+D+6bhvuN1Wvc3P8DkuUNAJ5lKrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736427293; c=relaxed/simple;
-	bh=26DM3asp7g2ycXbnbmvs6ssdSgp7CdT28HMGdx8l0AY=;
+	s=arc-20240116; t=1736427829; c=relaxed/simple;
+	bh=N57htIgxqHB4759bpdKXhT7qhOV3adZnhD4UkokENow=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=FFi7wfyNYbcVg8EDHWTl3NqQlNxqoGUB6BtUsFxSGloZw6OalCROj6UWp3NJtauAx4cPYeojyZ8Z+n1zkJ5sUy88F6kfxKEsjVAffvaDdBG+t6i4Sl0aBqyw9JnmjUitJJU1HTQhCuH9hz28d/yGJHmAL4eZCnFiypMTdHpn86c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cI+khn9d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2879EC4CED2;
-	Thu,  9 Jan 2025 12:54:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=B364OOJSyjz3FezYJXREZBWAi5StTq5NId2tq5N1xzObvkcnod3potEgUaz1vhVOGcgttSGuyVz9wBfgZ7sH4nuwg+v/LNy3nBV3QNm21hZVVSJJ3XCso+jRcY9aAQKBuMEd5o9YNOUZzWCen6u41uFchPFSwt21p5W2HqoPLI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZU2SKfzq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C529FC4CED2;
+	Thu,  9 Jan 2025 13:03:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736427293;
-	bh=26DM3asp7g2ycXbnbmvs6ssdSgp7CdT28HMGdx8l0AY=;
+	s=k20201202; t=1736427828;
+	bh=N57htIgxqHB4759bpdKXhT7qhOV3adZnhD4UkokENow=;
 	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=cI+khn9dWVubDDxFNN7F27gzcX1E3aEZrt+2fAsAnu3juif7KyKyNcRTC2cYLJ08b
-	 bNN8nz48qdx2FeaHF4M8v3xl+ncwJ5QitMb0G9PYLHimifIiou3kDypItt6sBAFJ+3
-	 ctzmyT6FxGtnPdxEK+WW5QNcLFpmx9k+p5aq46tLGMtwixXbCY2aqELK0e+y4OM4mx
-	 arW1Xa4n+HcHTU6dORqv/d373yoKCDHvC1FuDBybgXjMXNWdVnIIfn8SB0GWrSmI0r
-	 w6pNWXpXOnLDx+/POrbiucH9Hx1oSlD2LqXNE4Csn9ZELUz8kUuvVOOJ93joV3Pylh
-	 qs9usOwUzOPZQ==
+	b=ZU2SKfzqsNFilqfW9EY+uEmi7QllZLMKhgBRb5qCqBS0XB2vd2oiaQ4USE879ln7K
+	 wX0MUdmlO7DQfe6DXWxyAVxrPxNvEMB6FBkF1oNjQu/3/VfdjQ5VQBpsUiC0tuVWoc
+	 74V4Cdo6ynkbjDFcJNKldBClP23Q1jrHqlweCQYD+VWtPK1/uRd1WrHJceX1dUGOPZ
+	 lrSZUvDs8g8iJHv79xJi2/WZCZQI0t/Qv3xxERkgay5hYnxNLidCVVLhA4ETI683Kn
+	 6YEHDZ+HPACTD5+KNovsOoL1lSRUz9CWWSt1VfoqpOzQcCNq4W0PfM1omi+n8qYJi/
+	 BETGB2SkzOVfg==
 From: Kalle Valo <kvalo@kernel.org>
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Cc: Aditya Kumar Singh <quic_adisi@quicinc.com>,  Aaradhana Sahu
- <quic_aarasahu@quicinc.com>,  ath12k@lists.infradead.org,
-  linux-wireless@vger.kernel.org
-Subject: Re: [PATCH v5 0/4] wifi: ath12k: Factory test mode support
-References: <20240624095305.37189-1-quic_aarasahu@quicinc.com>
-	<d38ac7f6-3596-4336-bd9d-61e99f3b070c@quicinc.com>
-	<b4852e3d-1f9a-40fe-9593-84d5812d25be@quicinc.com>
-	<5f05898c-cc5c-4c31-891e-9d5cb9cf5bfa@oss.qualcomm.com>
-Date: Thu, 09 Jan 2025 14:54:50 +0200
-In-Reply-To: <5f05898c-cc5c-4c31-891e-9d5cb9cf5bfa@oss.qualcomm.com> (Jeff
-	Johnson's message of "Wed, 8 Jan 2025 21:29:27 -0800")
-Message-ID: <87tta8du5h.fsf@kernel.org>
+To: Remi Pommarel <repk@triplefau.lt>
+Cc: ath10k@lists.infradead.org,  linux-wireless@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  Jeff Johnson <jjohnson@kernel.org>,
+  Cedric Veilleux <veilleux.cedric@gmail.com>,  Vasanthakumar Thiagarajan
+ <quic_vthiagar@quicinc.com>
+Subject: Re: [RESEND PATCH v3 0/2] Improve ath10k flush queue mechanism
+References: <cover.1732293922.git.repk@triplefau.lt>
+Date: Thu, 09 Jan 2025 15:03:44 +0200
+In-Reply-To: <cover.1732293922.git.repk@triplefau.lt> (Remi Pommarel's message
+	of "Fri, 22 Nov 2024 17:48:00 +0100")
+Message-ID: <87ldvkdtqn.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
@@ -64,111 +62,38 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Jeff Johnson <jeff.johnson@oss.qualcomm.com> writes:
+Remi Pommarel <repk@triplefau.lt> writes:
 
-> On 1/8/2025 8:55 PM, Aditya Kumar Singh wrote:
+> It has been reported [0] that a 3-4 seconds (actually up to 5 sec) of
+> radio silence could be observed followed by the error below on ath10k
+> devices:
 >
->> On 1/9/25 10:13, Aaradhana Sahu wrote:
->>>
->>>
->>> On 6/24/2024 3:23 PM, Aaradhana Sahu wrote:
->>>> Device is booted in factory test mode for calibration.
->>>> The commands are sent from userspace application, which
->>>> is sent to firmware using wmi commands. Firmware sends
->>>> the response to driver as wmi events and driver sends
->>>> these events to the application via netlink message.
->>>>
->>>> Also added changes related to correct pdev id access for
->>>> fw test cmd.
->>>>
->>>> Aaradhana Sahu (3):
->>>>    wifi: ath: create common testmode_i.h file for ath drivers
->>>>    wifi: ath12k: export ath12k_wmi_tlv_hdr for testmode
->>>>    wifi: ath12k: add factory test mode support
->>>>
->>>> Rajat Soni (1):
->>>>    wifi: ath12k: Fill pdev id for fw test cmd
->>>>
->>>> ---
->>>> v5:
->>>>    -Updated copyright
->>>>    -Fixed line length within 90 char
->>>> v4:
->>>>    -Rebased on latest ToT
->>>> v3:
->>>>    -Rebased on latest ToT
->>>>    -Updated Tested-on Tag
->>>>    -Removed second parameter of ath12k_core_start()
->>>>    -Updated copyright
->>>> v2:
->>>>    -Rebased on latest ath ToT
->>>> ---
->>>>
->>>>   drivers/net/wireless/ath/ath11k/testmode.c    |  78 ++--
->>>>   drivers/net/wireless/ath/ath12k/Makefile      |   1 +
->>>>   drivers/net/wireless/ath/ath12k/core.c        |  22 +-
->>>>   drivers/net/wireless/ath/ath12k/core.h        |  13 +
->>>>   drivers/net/wireless/ath/ath12k/debug.h       |   1 +
->>>>   drivers/net/wireless/ath/ath12k/dp.c          |   3 +
->>>>   drivers/net/wireless/ath/ath12k/mac.c         |  15 +-
->>>>   drivers/net/wireless/ath/ath12k/pci.c         |   1 +
->>>>   drivers/net/wireless/ath/ath12k/testmode.c    | 423 ++++++++++++++++++
->>>>   drivers/net/wireless/ath/ath12k/testmode.h    |  40 ++
->>>>   drivers/net/wireless/ath/ath12k/wmi.c         |  39 +-
->>>>   drivers/net/wireless/ath/ath12k/wmi.h         |  21 +
->>>>   .../wireless/ath/{ath11k => }/testmode_i.h    |  54 +--
->>>>   13 files changed, 636 insertions(+), 75 deletions(-)
->>>>   create mode 100644 drivers/net/wireless/ath/ath12k/testmode.c
->>>>   create mode 100644 drivers/net/wireless/ath/ath12k/testmode.h
->>>>   rename drivers/net/wireless/ath/{ath11k => }/testmode_i.h (50%)
->>>>
->>>>
->>>> base-commit: cac9bfd02678adbcca9a7dce770609b9f7434d37
->>>
->>> Hi Kalle,
->>>
->>> Please let me know, if any thing is pending from the developer side, to merge this series into ath.git tree.
->> 
->> This series does not apply cleanly on latest tip. And base commit is 
->> around 6 months old. So may be you would want to rebase and send a new 
->> version?
->> 
->> Applying: wifi: ath: create common testmode_i.h file for ath drivers
->> Applying: wifi: ath12k: export ath12k_wmi_tlv_hdr for testmode
->> Applying: wifi: ath12k: add factory test mode support
->> error: patch failed: drivers/net/wireless/ath/ath12k/Makefile:26
->> error: drivers/net/wireless/ath/ath12k/Makefile: patch does not apply
->> error: patch failed: drivers/net/wireless/ath/ath12k/core.c:42
->> error: drivers/net/wireless/ath/ath12k/core.c: patch does not apply
->> error: patch failed: drivers/net/wireless/ath/ath12k/core.h:209
->> error: drivers/net/wireless/ath/ath12k/core.h: patch does not apply
->> error: patch failed: drivers/net/wireless/ath/ath12k/debug.h:33
->> error: drivers/net/wireless/ath/ath12k/debug.h: patch does not apply
->> error: patch failed: drivers/net/wireless/ath/ath12k/mac.c:13
->> error: drivers/net/wireless/ath/ath12k/mac.c: patch does not apply
->> error: patch failed: drivers/net/wireless/ath/ath12k/wmi.c:7150
->> error: drivers/net/wireless/ath/ath12k/wmi.c: patch does not apply
->> Patch failed at 0003 wifi: ath12k: add factory test mode support
->> hint: Use 'git am --show-current-patch=diff' to see the failed patch
->> When you have resolved this problem, run "git am --continue".
->> If you prefer to skip this patch, run "git am --skip" instead.
->> To restore the original branch and stop patching, run "git am --abort".
->> 
->> And since you'll be submitting in 2025, don't forget to update
->> copyrights.
->> 
->> 
+>  ath10k_pci 0000:04:00.0: failed to flush transmit queue (skip 0 ar-state 1): 0
 >
-> Make sure to review all the changes that Kalle made locally to the pending
-> version and incorporate those.
+> This is due to how the TX queues are flushed in ath10k. When a STA is
+> removed, mac80211 need to flush queues [1], but because ath10k does not
+> have a lightweight .flush_sta operation, ieee80211_flush_queues() is
+> called instead effectively blocking the whole queue during the drain
+> causing this radio silence. Also because ath10k_flush() waits for all
+> queued to be emptied, not only the flushed ones it could more easily
+> take up to 5 seconds to finish making the whole situation worst.
+>
+> The first patch of this series adds a .flush_sta operation to flush only
+> specific STA traffic avoiding the need to stop whole queues and should
+> be enough in itself to fix the reported issue.
+>
+> The second patch of this series is a proposal to improve ath10k_flush so
+> that it will be less likely to timeout waiting for non related queues to
+> drain.
+>
+> The abose kernel warning could still be observed (e.g. flushing a dead
+> STA) but should be now harmless.
+>
+> [0]: https://lore.kernel.org/all/CA+Xfe4FjUmzM5mvPxGbpJsF3SvSdE5_wgxvgFJ0bsdrKODVXCQ@mail.gmail.com/
+> [1]: commit 0b75a1b1e42e ("wifi: mac80211: flush queues on STA removal")
 
-BTW my changes are available in tag ath-pending-202407031443 and these
-are the commit ids:
-
-194fb8d58727 wifi: ath12k: Fill pdev id for fw test cmd
-0ca2ecc31b40 wifi: ath12k: add factory test mode support
-df17f461e7c3 wifi: ath12k: export ath12k_wmi_tlv_hdr for testmode
-593b976359bf wifi: ath: create common testmode_i.h file for ath drivers
+On what hardware and firmware did you test this? As they can behave very
+differently knowing that is really important.
 
 -- 
 https://patchwork.kernel.org/project/linux-wireless/list/
