@@ -1,65 +1,65 @@
-Return-Path: <linux-wireless+bounces-17219-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17220-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DD39A06CF9
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 05:28:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EB6DA06CFD
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 05:28:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97FFD3A4FC1
-	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 04:27:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11F841889C2B
+	for <lists+linux-wireless@lfdr.de>; Thu,  9 Jan 2025 04:28:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0E3198E84;
-	Thu,  9 Jan 2025 04:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF70618132A;
+	Thu,  9 Jan 2025 04:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="cnU6czzT"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="MEWeGcx9"
 X-Original-To: linux-wireless@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4E41779B8;
-	Thu,  9 Jan 2025 04:26:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC332D052;
+	Thu,  9 Jan 2025 04:26:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736396769; cv=none; b=PkoEYPr1hqQvZnOynKBuk+2xLuTH4xmqpby4DrueIOZ1XPuMrDL1EoQH6J0AVE+kJriq/rH481J0aUgLlh4k6AZMawYrwi+3sfB8NwSWd4nzw8irdRt2+U4yUSLYCtBP3EP+ItAUypSfQYL5EXL2GqMDB6WFMbfYrUzJjjn7Ea0=
+	t=1736396774; cv=none; b=S41SrzB/X2iF+0CKX/tUjLoVHHVpNGH7GiP1OTPNeUorQMDh5N8tT6dy7nVM1E8/F5Z9qNkMJHKUNYbkyPwmFSFw/v2HN5O76o+62lu8rb6lqoxPLSMJe2FxVBEzyTeiEme6Cbm2UHUIz+EUlNB/TnEhP/ACPII1tzWj1tFJEqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736396769; c=relaxed/simple;
-	bh=sppgUpcr2yTiFoJGrMAEKCHIP/iqtujH+DVGeQ497CE=;
+	s=arc-20240116; t=1736396774; c=relaxed/simple;
+	bh=VLJNjJBwe+fZswSlYGCSCRX1xWBjZ/iwaOU/ZeUcpZQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=WPTFIRq1CyHrCZhUl4xWnR/T63jLfBXKvwf3Qy34u+XZqsfk1YbEflIgf7AN9gsii3Ker4JDeyA2i9xxxMoUTR/Pi6GAN2rCvhPUiWjXlb7nbQxAPEKzxmP+wKVoLsFYnaN9e99Pw532YlF4VgaeUcpf94+K4SSQeHJQDNccQ+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=cnU6czzT; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:To:CC; b=CP7Th00w1qZyvMJpFYvlCzGjZMBpIUFk+hAhyuDflO5ds9Nyiyx+ZOD7sdFQukSGH5yqLWKwzlO0npXM7FuScAocMoFvNuRuiFFFN6CHt/uMfU7E8Ip7K++pv3aV5mIc1v4uqGgTYJFFD1d8JCltesry3sC3QUNY85jevUA84/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=MEWeGcx9; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5094FG7Q011340;
-	Thu, 9 Jan 2025 04:26:04 GMT
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 508JuO4R020018;
+	Thu, 9 Jan 2025 04:26:08 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	iiltnXGjXpon6AXoY0wu8ko0AWr6jyGGcSk589H39NU=; b=cnU6czzToBNmUISB
-	+vdxl56gOmy+cikVlOei/o4+kKJKNdyrN08Erf8YiJZge7zAyzk+Y+9Lac60U4Rg
-	EQkAz09ogDiztgj2Z7VwmkhwxU7OaE6nRPcCvrCTioK3ra69xMQdhV4Z97iuJcTR
-	gkhGDKjP/JBoTxiJv2lowXAe6d0eYjK2jKxphhh8PP6W4flpJY4gvjDmNmyHf3CS
-	Vf26AH+W8lbLSTMJyumvydQidEhcDkEB4HBBubJY7boNLEHgzxrPCEN/Jv80lscT
-	vPuOxuMX7+RsHxsFHMOBu5bN6sdeoZrGggvbIeQDf2Bl+gW7KafZGbAPyozV3OHx
-	hKrV2g==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 44278t80kh-1
+	DlXY7dirMdwVtgLQ+3EVcKxBHm7VXIN9okMLCBHb2vA=; b=MEWeGcx9H+n0FusZ
+	CCqt4DPAyBPk/ihBrIYumoIzqBjZ0CpOTnVEfUJyogt+azIepl9ns8SHp5Q5Vr2j
+	1zDGU7qwZZaXUsVm6WZtmemLOe6YiEix+S+ciJPtlQ3Q5b3WDjx/QXy4PoqB+dN4
+	lbgGzJMgmW+VcS1Vug2xCUi9amTtNmSFJB/dToC3ZtXuhA3l3LqDKDT38jmXcOB0
+	6OokmhfWNziN4fjhiuHtDKruxpNKeciZJCCMoSicV7T53Weqn6U+4HNySGEstUOF
+	7j1MMYROe4yRKI44PLDgOBFNxJrdfhcZPFxaqXyS2D4XyEXFsHLRBHwDeg+VJ3Ah
+	JjvBlA==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 441yxfgyd4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 09 Jan 2025 04:26:04 +0000 (GMT)
+	Thu, 09 Jan 2025 04:26:08 +0000 (GMT)
 Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5094Q442028755
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5094Q7mV019829
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 9 Jan 2025 04:26:04 GMT
+	Thu, 9 Jan 2025 04:26:07 GMT
 Received: from hu-adisi-blr.qualcomm.com (10.80.80.8) by
  nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Wed, 8 Jan 2025 20:26:00 -0800
+ 15.2.1544.9; Wed, 8 Jan 2025 20:26:04 -0800
 From: Aditya Kumar Singh <quic_adisi@quicinc.com>
-Date: Thu, 9 Jan 2025 09:55:35 +0530
-Subject: [PATCH 07/10] wifi: ath12k: fix ATH12K_FLAG_REGISTERED flag
- handling
+Date: Thu, 9 Jan 2025 09:55:36 +0530
+Subject: [PATCH 08/10] wifi: ath12k: handle ath12k_core_restart() with
+ hardware grouping
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
@@ -68,7 +68,7 @@ List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20250109-fix_reboot_issues_with_hw_grouping-v1-7-fb39ec03451e@quicinc.com>
+Message-ID: <20250109-fix_reboot_issues_with_hw_grouping-v1-8-fb39ec03451e@quicinc.com>
 References: <20250109-fix_reboot_issues_with_hw_grouping-v1-0-fb39ec03451e@quicinc.com>
 In-Reply-To: <20250109-fix_reboot_issues_with_hw_grouping-v1-0-fb39ec03451e@quicinc.com>
 To: Kalle Valo <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>,
@@ -86,92 +86,59 @@ X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
  nalasex01a.na.qualcomm.com (10.47.209.196)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: LpjmykcKLO7NZ8a3YyeQ2OhGPAK00lXh
-X-Proofpoint-ORIG-GUID: LpjmykcKLO7NZ8a3YyeQ2OhGPAK00lXh
+X-Proofpoint-ORIG-GUID: GpMGdNBHfhzoNXZH7QwXdjeB1-b4IvAn
+X-Proofpoint-GUID: GpMGdNBHfhzoNXZH7QwXdjeB1-b4IvAn
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 priorityscore=1501
- bulkscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0 phishscore=0
- adultscore=0 mlxlogscore=977 suspectscore=0 clxscore=1015 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501090033
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 malwarescore=0
+ lowpriorityscore=0 suspectscore=0 phishscore=0 spamscore=0 mlxscore=0
+ impostorscore=0 priorityscore=1501 adultscore=0 mlxlogscore=999
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501090033
 
-Commit a5686ae820fa ("wifi: ath12k: move ATH12K_FLAG_REGISTERED handling to
-ath12k_mac_register()") relocated the setting of the ATH12K_FLAG_REGISTERED
-flag to the ath12k_mac_register() function. However, this function only
-accesses the first device (ab) via ag->ab[0], resulting in the flag being
-set only for the first device in the group. Similarly,
-ath12k_mac_unregister() only unsets the flag for the first device. The flag
-should actually be set for all devices in the group to avoid issues during
-recovery.
+Currently, when ath12k_core_restart() is called and the ab->is_reset flag
+is set, it invokes ieee80211_restart_hw() for all hardware in the same
+group. However, other hardware might still be in the recovery process,
+making this call inappropriate with grouping into picture.
 
-Hence, move setting and clearing of this flag in the function
-ath12k_core_hw_group_start() and ath12k_core_hw_group_stop() respectively.
+To address this, add a condition to check if the group is ready. If the
+group is not ready, do not call ieee80211_restart_hw().
 
 Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
 
-Fixes: a5686ae820fa ("wifi: ath12k: move ATH12K_FLAG_REGISTERED handling to ath12k_mac_register()")
 Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
 ---
- drivers/net/wireless/ath/ath12k/core.c | 5 +++++
- drivers/net/wireless/ath/ath12k/mac.c  | 6 +-----
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ath/ath12k/core.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
-index 5700fc661ac380b6c01d0571595d27fb1ab7c8c5..b67ef79e62b3fbb5667cb627cf565998a35f3c49 100644
+index b67ef79e62b3fbb5667cb627cf565998a35f3c49..0a9e35695f760799273eeba32b889375232eedc0 100644
 --- a/drivers/net/wireless/ath/ath12k/core.c
 +++ b/drivers/net/wireless/ath/ath12k/core.c
-@@ -920,6 +920,9 @@ static void ath12k_core_hw_group_stop(struct ath12k_hw_group *ag)
- 		ab = ag->ab[i];
- 		if (!ab)
- 			continue;
+@@ -1394,12 +1394,22 @@ static void ath12k_core_restart(struct work_struct *work)
+ 			ath12k_dbg(ab, ATH12K_DBG_BOOT, "reset success\n");
+ 		}
+ 
++		mutex_lock(&ab->ag->mutex);
 +
-+		clear_bit(ATH12K_FLAG_REGISTERED, &ab->dev_flags);
++		if (!ath12k_core_hw_group_start_ready(ab->ag)) {
++			mutex_unlock(&ab->ag->mutex);
++			goto exit_restart;
++		}
 +
- 		ath12k_core_device_cleanup(ab);
+ 		for (i = 0; i < ath12k_get_num_hw(ab); i++) {
+ 			ah = ath12k_ab_to_ah(ab, i);
+ 			ieee80211_restart_hw(ah->hw);
+ 		}
++
++		mutex_unlock(&ab->ag->mutex);
  	}
  
-@@ -1025,6 +1028,8 @@ static int ath12k_core_hw_group_start(struct ath12k_hw_group *ag)
++exit_restart:
+ 	complete(&ab->restart_completed);
+ }
  
- 		mutex_lock(&ab->core_lock);
- 
-+		set_bit(ATH12K_FLAG_REGISTERED, &ab->dev_flags);
-+
- 		ret = ath12k_core_pdev_create(ab);
- 		if (ret) {
- 			ath12k_err(ab, "failed to create pdev core %d\n", ret);
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 48d110e2a7ded61c4094b0ce7e5bbb50b94d5cd4..1ff141ee9e94fed6ac954c0e411a0f8cedb96035 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #include <net/mac80211.h>
-@@ -11251,8 +11251,6 @@ int ath12k_mac_register(struct ath12k_hw_group *ag)
- 			goto err;
- 	}
- 
--	set_bit(ATH12K_FLAG_REGISTERED, &ab->dev_flags);
--
- 	return 0;
- 
- err:
-@@ -11273,8 +11271,6 @@ void ath12k_mac_unregister(struct ath12k_hw_group *ag)
- 	struct ath12k_hw *ah;
- 	int i;
- 
--	clear_bit(ATH12K_FLAG_REGISTERED, &ab->dev_flags);
--
- 	for (i = ath12k_get_num_hw(ab) - 1; i >= 0; i--) {
- 		ah = ath12k_ab_to_ah(ab, i);
- 		if (!ah)
 
 -- 
 2.34.1
