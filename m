@@ -1,87 +1,82 @@
-Return-Path: <linux-wireless+bounces-17287-lists+linux-wireless=lfdr.de@vger.kernel.org>
+Return-Path: <linux-wireless+bounces-17288-lists+linux-wireless=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-wireless@lfdr.de
 Delivered-To: lists+linux-wireless@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C55DA08719
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jan 2025 06:59:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33B73A08830
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jan 2025 07:16:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53FF87A35BC
-	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jan 2025 05:59:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEA9F3AC227
+	for <lists+linux-wireless@lfdr.de>; Fri, 10 Jan 2025 06:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C82F5347C7;
-	Fri, 10 Jan 2025 05:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE4BD206F01;
+	Fri, 10 Jan 2025 06:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="aSNNbnuz"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="LzTkECx/"
 X-Original-To: linux-wireless@vger.kernel.org
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286BA746E
-	for <linux-wireless@vger.kernel.org>; Fri, 10 Jan 2025 05:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D124207667
+	for <linux-wireless@vger.kernel.org>; Fri, 10 Jan 2025 06:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736488784; cv=none; b=qSsWc3pAuO2Nf5GcSpymIwXGj1XGqzMwNzCdJH+2x/IPw9L2XWsuJGXhDoUmFzPlP9lehY3ZTnfdZ59pDngyIHxH6MCqjXkDWfFGjAPO5Qp6mKcP9YsbLcr6nn0mWQNFoxcvjfmOO+DBYXRg8IKE7O6TxkVnuiT6XoLkm4yeqTs=
+	t=1736489569; cv=none; b=KTBsAZrvuG1XGeJpqDe+V64jq4T4OhUSmvH8ff/vBI/45AP8jz1wAa1oYJ5d0Adcfqd+mJhSYlyujXnwCCRh0DnSsJ27WIJMG4focVi+5nb0ZgBnhsZYLezbasnMMj4LsHjj8kA7uQX5C7W0UOOsrzRbnfL9Hiic/nIGUiBTtUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736488784; c=relaxed/simple;
-	bh=oX6xRU8AIX7ZQpu5ud6/strm3NBjvh4+hZ1qISHMZMw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ENJL4wMC2UaoxjVi/SNV1GOgzPIWnQH4Hq4WGkH/+lS2+2X7aZxRW6FPUcqElNOQ2+w6yhL9lfwR5NBOexbySrHYYCyGk+g9BnKFjqONJSC8aSJCRRj5Qri0kUn2uXbQbjCJEIlpbyvSdK9QDdWPqfBaCQzU6+Tn5pU4kzXlK9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=aSNNbnuz; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1736489569; c=relaxed/simple;
+	bh=PMaZbLQJPEtLsI5TFBNXEDkGQZzPCYmrPCrYEV+CxCo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fD+pB8yiIcFMg2NDQL+IxZRQMeOiGrvufnN1lT/DEmzxzHHq+CPCVAmL0OIwElQzJTowR//SsxaVz5c7GyCaYcDGjhMLEMLGW0dfhAFHtv64qcxScp5by+VsWts3PyCgdCku5vJH5nZu9sF29Sg7iljOAO+mFyNv3oE5ni8Y8PE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=LzTkECx/; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
 Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50A3bcpm002618;
-	Fri, 10 Jan 2025 05:59:40 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50A3bvRx002811;
+	Fri, 10 Jan 2025 06:12:44 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	CBLyxeCQ19FwP7e+jJ5DXrk/JRU+KOlh51Lq5aNRTp8=; b=aSNNbnuz2uum7uhe
-	EdeNE3PRPk4q9ujNiO7lL010hGECX8CoOWIGU3HzkVlrxgU7bHKP7Eh52yXurZ4f
-	jqd/U7qRglrBM53YliVxW+k73DAud6yt2LGseXon95Sn5CHs55xcvKoWAK81LIHS
-	1FuUdP6QyGQQMgq+9Phd+fztMyN3XQXYvrWhaaGhsYhmY1zl4PwmW41CahdFznMN
-	s6nfqVDmKvdp32Hwlsm25vjRltVVAIunLFE/ybnZs7BNo7p+RASP9dNMbOMyyv9N
-	dOXRUKpeYwpgMbMgKtSsGsmkG6FuxN33tKSTL8kw6ZwJPzRQ5+IV39rgj7f0OSwx
-	tH7LdA==
-Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 442uteg8fd-1
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=3iS9Iloeshpk4CAshP3Zw4
+	m3Jk+Wr6pCfQ/7Wt9Lpng=; b=LzTkECx/pcwPzj4ZrTx7XB6k6xOLtHzX7e0Jbt
+	NjndJX3CCMKvIZRMHWIAplOMBEwrKPO324PJ8yzR+2ciT4743bnzFerz6tC/tSZU
+	kYU2B91ZD+a1u1FLPDyoOzh3TZFkQLkzWdsgKPSGa+itpFjHtxMkVmNjnS+LD15J
+	+CuEno699QqvI6KZRFOnSxvC7eYdhnxj3tD2i2JO7CXH8mKcJpN+PxC7ErD8/Yck
+	dkT50A0xam9HSPkrvFD4tDxoy/XVdxcVIUyECsKqxzlQpYJTfbaGwucxOB0SM6Xn
+	L8liHQLbrCXbxK+PTRrqJH3D0SDPSvxggROt6GEwkY/dS03w==
+Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 442uteg9db-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jan 2025 05:59:39 +0000 (GMT)
+	Fri, 10 Jan 2025 06:12:44 +0000 (GMT)
 Received: from nasanex01c.na.qualcomm.com (nasanex01c.na.qualcomm.com [10.45.79.139])
-	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50A5xdvU019397
+	by NASANPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 50A6ChiM024425
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jan 2025 05:59:39 GMT
-Received: from [10.152.193.243] (10.80.80.8) by nasanex01c.na.qualcomm.com
- (10.45.79.139) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Thu, 9 Jan 2025
- 21:59:37 -0800
-Message-ID: <f90aac76-30e6-48b0-8d0d-1f576ecc6683@quicinc.com>
-Date: Fri, 10 Jan 2025 11:29:34 +0530
+	Fri, 10 Jan 2025 06:12:43 GMT
+Received: from hu-aarasahu-blr.qualcomm.com (10.80.80.8) by
+ nasanex01c.na.qualcomm.com (10.45.79.139) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Thu, 9 Jan 2025 22:12:41 -0800
+From: Aaradhana Sahu <quic_aarasahu@quicinc.com>
+To: <ath12k@lists.infradead.org>
+CC: <linux-wireless@vger.kernel.org>,
+        Aaradhana Sahu
+	<quic_aarasahu@quicinc.com>
+Subject: [PATCH v7 0/5] wifi: ath12k: Factory test mode support
+Date: Fri, 10 Jan 2025 11:42:19 +0530
+Message-ID: <20250110061224.1839547-1-quic_aarasahu@quicinc.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-wireless@vger.kernel.org
 List-Id: <linux-wireless.vger.kernel.org>
 List-Subscribe: <mailto:linux-wireless+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-wireless+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 5/5] wifi: ath12k: Disable MLO in Factory Test Mode
-To: Aditya Kumar Singh <quic_adisi@quicinc.com>, <ath12k@lists.infradead.org>
-CC: <linux-wireless@vger.kernel.org>
-References: <20250109183551.1028791-1-quic_aarasahu@quicinc.com>
- <20250109183551.1028791-6-quic_aarasahu@quicinc.com>
- <173844c1-b7c6-4aad-b414-d32b761b91df@quicinc.com>
-Content-Language: en-US
-From: Aaradhana Sahu <quic_aarasahu@quicinc.com>
-In-Reply-To: <173844c1-b7c6-4aad-b414-d32b761b91df@quicinc.com>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
  nasanex01c.na.qualcomm.com (10.45.79.139)
 X-QCInternal: smtphost
 X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: AM8kNcoyPBSs_9oiGifynGvOPIYQz4pY
-X-Proofpoint-ORIG-GUID: AM8kNcoyPBSs_9oiGifynGvOPIYQz4pY
+X-Proofpoint-GUID: cDL4JuwF_vvcljkL__qAsssaOiGYvt4e
+X-Proofpoint-ORIG-GUID: cDL4JuwF_vvcljkL__qAsssaOiGYvt4e
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
@@ -89,85 +84,68 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscor
  mlxlogscore=999 lowpriorityscore=0 adultscore=0 bulkscore=0
  impostorscore=0 suspectscore=0 mlxscore=0 phishscore=0 malwarescore=0
  priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501100047
+ engine=8.19.0-2411120000 definitions=main-2501100049
+
+Device is booted in factory test mode for calibration.
+The commands are sent from userspace application, which
+is sent to firmware using wmi commands. Firmware sends
+the response to driver as wmi events and driver sends
+these events to the application via netlink message.
+
+Also added changes related to correct pdev id access for
+fw test cmd.
+
+Aaradhana Sahu (5):
+  wifi: ath: create common testmode_i.h file for ath drivers
+  wifi: ath12k: export ath12k_wmi_tlv_hdr for testmode
+  wifi: ath12k: add factory test mode support
+  wifi: ath12k: Fill pdev id for fw test cmd
+  wifi: ath12k: Disable MLO in Factory Test Mode
+
+---
+v7:
+  -Updated copyright
+  -Moved ath12k_ftm_check in ath12k_core_hw_group_set_mlo_capable()
+v6:
+  -Rebased on ToT
+  -Updated copyright
+  -Added patch[5/5]
+v5:
+  -Updated copyright
+  -Fixed line length within 90 char
+v4:
+  -Rebased on latest ToT
+v3:
+  -Rebased on latest ToT
+  -Updated Tested-on Tag
+  -Removed second parameter of ath12k_core_start()
+  -Updated copyright
+v2:
+  -Rebased on latest ath ToT
+---
+
+ drivers/net/wireless/ath/ath11k/testmode.c    |  80 ++--
+ drivers/net/wireless/ath/ath12k/Makefile      |   1 +
+ drivers/net/wireless/ath/ath12k/core.c        |  30 +-
+ drivers/net/wireless/ath/ath12k/core.h        |  13 +-
+ drivers/net/wireless/ath/ath12k/debug.h       |   3 +-
+ drivers/net/wireless/ath/ath12k/dp.c          |   5 +-
+ drivers/net/wireless/ath/ath12k/mac.c         |  17 +-
+ drivers/net/wireless/ath/ath12k/pci.c         |   3 +-
+ drivers/net/wireless/ath/ath12k/testmode.c    | 394 ++++++++++++++++++
+ drivers/net/wireless/ath/ath12k/testmode.h    |  40 ++
+ drivers/net/wireless/ath/ath12k/wmi.c         |  41 +-
+ drivers/net/wireless/ath/ath12k/wmi.h         |  23 +-
+ drivers/net/wireless/ath/ath12k/wow.c         |   3 +-
+ .../wireless/ath/{ath11k => }/testmode_i.h    |  54 +--
+ 14 files changed, 622 insertions(+), 85 deletions(-)
+ create mode 100644 drivers/net/wireless/ath/ath12k/testmode.c
+ create mode 100644 drivers/net/wireless/ath/ath12k/testmode.h
+ rename drivers/net/wireless/ath/{ath11k => }/testmode_i.h (50%)
 
 
-
-On 1/10/2025 10:29 AM, Aditya Kumar Singh wrote:
-> On 1/10/25 00:05, Aaradhana Sahu wrote:
->> Factory test mode(FTM) is supported only non-mlo(multi-link operation)
->> mode. Therefore, disable MLO when driver boots in FTM mode.
->>
->> Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
->>
->> Signed-off-by: Aaradhana Sahu <quic_aarasahu@quicinc.com>
->> ---
->>   drivers/net/wireless/ath/ath12k/core.c | 5 ++---
->>   drivers/net/wireless/ath/ath12k/qmi.c  | 4 ++--
->>   2 files changed, 4 insertions(+), 5 deletions(-)
->>
->> diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
->> index d0cf82ca6dae..6705e33074aa 100644
->> --- a/drivers/net/wireless/ath/ath12k/core.c
->> +++ b/drivers/net/wireless/ath/ath12k/core.c
->> @@ -1630,10 +1630,9 @@ static struct ath12k_hw_group *ath12k_core_hw_group_assign(struct ath12k_base *a
->>               return NULL;
->>           }
->>   -        if (ath12k_core_get_wsi_info(ag, ab) ||
->> +        if (ath12k_ftm_mode || ath12k_core_get_wsi_info(ag, ab) ||
->>               ath12k_core_get_wsi_index(ag, ab)) {
->> -            ath12k_dbg(ab, ATH12K_DBG_BOOT,
->> -                   "unable to get wsi info from dt, grouping single device");
->> +            ath12k_dbg(ab, ATH12K_DBG_BOOT, "grouping single device");
->>               ag->id = ATH12K_INVALID_GROUP_ID;
->>               ag->num_devices = 1;
-> 
-> Why to even bother and check group list to see if a grp already exist
-> and if not then create a grp and then check ftm_mode?
-> 
-> I think better would be to have something like below?
-> 
-Sure, Thanks for suggestion.
-
-> --- a/drivers/net/wireless/ath/ath12k/core.c
-> +++ b/drivers/net/wireless/ath/ath12k/core.c
-> @@ -1598,6 +1598,9 @@ static struct ath12k_hw_group *ath12k_core_hw_group_assign(struct ath12k_base *a
->  
->         lockdep_assert_held(&ath12k_hw_group_mutex);
->  
-> +       if (ath12k_ftm_mode)
-> +               goto invalid_group;
-> +
->         /* The grouping of multiple devices will be done based on device tree file.
->          * The platforms that do not have any valid group information would have
->          * each device to be part of its own invalid group.
-> 
-> 
->>               memset(ag->wsi_node, 0, sizeof(ag->wsi_node));
->> diff --git a/drivers/net/wireless/ath/ath12k/qmi.c b/drivers/net/wireless/ath/ath12k/qmi.c
->> index 5c3563383fab..344c12b3b937 100644
->> --- a/drivers/net/wireless/ath/ath12k/qmi.c
->> +++ b/drivers/net/wireless/ath/ath12k/qmi.c
->> @@ -1,7 +1,7 @@
->>   // SPDX-License-Identifier: BSD-3-Clause-Clear
->>   /*
->>    * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
->> - * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
->> + * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
->>    */
->>     #include <linux/elf.h>
->> @@ -2265,7 +2265,7 @@ static void ath12k_qmi_phy_cap_send(struct ath12k_base *ab)
->>           goto out;
->>       }
->>   -    if (resp.single_chip_mlo_support_valid &&
->> +    if (!ath12k_ftm_mode && resp.single_chip_mlo_support_valid &&
->>           resp.single_chip_mlo_support)
->>           ab->single_chip_mlo_supp = true;
->>   
-> 
-> Better place would be to set ag->mlo_capable as false in
-> ath12k_core_hw_group_set_mlo_capable() ?
-> 
-Sure, will address in the next version.
+base-commit: dbe50a7420e22954c747e79e72df2750d795ea77
+-- 
+2.34.1
 
 
